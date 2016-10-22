@@ -27,6 +27,7 @@
 
 #include <vector>
 #include <list>
+#include <vector>
 #include <wx/tokenzr.h>
 
 /*! \file
@@ -47,9 +48,10 @@
 class EditorCell : public MathCell
 {
 private:
+  int ChangeNumpadToChar(int c);
   //! A list of all potential autoComplete targets within this cell
   wxArrayString m_wordList;
-  //! Draw a box that marks the current selection
+ //! Draw a box that marks the current selection
   void MarkSelection(long start, long end,double scale, wxDC& dc, TextStyle style,int fontsize);
   /*! The start of the current selection.
 
@@ -355,6 +357,8 @@ private:
     wxString m_text;
     //! Do we really want to style this text portion different than the default?
     bool m_styleThisText;
+    //! By How many pixels we want to indent this line?
+    int m_indentPixels;
   public:    
     //! Defines a piece of styled text
     StyledText(TextStyle style,wxString text)
@@ -364,17 +368,23 @@ private:
         m_styleThisText = true;
       }
 
-    //! Defines a piece of text with the default style
-    StyledText(wxString text)
+    //! Defines a piece of text with the default style that possibly is indented
+    StyledText(wxString text,int indentPixels = 0)
       {
         m_text = text;
         m_style = TS_DEFAULT;
         m_styleThisText = false;
+        m_indentPixels = indentPixels;
       }
     //! Returns the piece of text
     wxString GetText()
       {
         return m_text;
+      }
+    //! Returns the piece of text
+    int GetIndentPixels()
+      {
+        return m_indentPixels;
       }
     //! If StyleSet() is true this function returns the color of this text portion
     TextStyle GetStyle()
@@ -388,7 +398,7 @@ private:
       }
   };
   
-  std::list<StyledText> m_styledText;
+  std::vector<StyledText> m_styledText;
 
 #if wxUSE_UNICODE
   /*! Handle ESC shortcuts for special characters

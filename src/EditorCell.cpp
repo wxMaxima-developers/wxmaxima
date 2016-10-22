@@ -183,26 +183,22 @@ wxString EditorCell::ToRTF()
   case MC_TYPE_INPUT:
   {
     retval += wxT(" ");
-    std::list<StyledText> styledText = m_styledText;
-    while(!styledText.empty())
+    for(std::vector<StyledText>::iterator textSnippet = m_styledText.begin();textSnippet!=m_styledText.end();++textSnippet)
     {
-      // Grab a portion of text from the list.
-      StyledText TextSnippet = styledText.front();
-      styledText.pop_front();
 
-      wxString text =  RTFescape(TextSnippet.GetText());
+      wxString text =  RTFescape(textSnippet->GetText());
 
-      if(TextSnippet.StyleSet())
+      if(textSnippet->StyleSet())
       {
-        retval += wxString::Format(wxT("\\cf%i "),(int)TextSnippet.GetStyle());
-        retval += RTFescape(TextSnippet.GetText());
+        retval += wxString::Format(wxT("\\cf%i "),(int)textSnippet->GetStyle());
+        retval += RTFescape(textSnippet->GetText());
       }
       else
       {
         retval += wxString::Format(wxT("\\cf%i "),(int)TS_DEFAULT);
-        retval += wxT("{")+RTFescape(TextSnippet.GetText())+wxT("}\n");
+        retval += wxT("{")+RTFescape(textSnippet->GetText())+wxT("}\n");
       }
-      if(TextSnippet.GetText().Contains(wxT("\n")))
+      if(textSnippet->GetText().Contains(wxT("\n")))
         {
           retval += wxT("\\pard\\s21\\li1105\\lin1105\\f0\\fs24 ");
         }
@@ -410,11 +406,15 @@ void EditorCell::RecalculateWidths(int fontsize)
       }
 
       dc.GetTextExtent(m_text.SubString(prevNewLinePos, newLinePos), &width1, &height1);
+      // In text cells every second token is a possibly indented line of text. The other
+      // tokens are line endings.
+      if(m_type != MC_TYPE_INPUT)
+        width1 += m_styledText[(m_numberOfLines-1)*2].GetIndentPixels();
       width = MAX(width, width1);
 
       while (newLinePos < m_text.Length() &&
              (
-               (m_text.GetChar(newLinePos) == '\n')||
+               (m_text.GetChar(newLinePos) == '\n') ||
                (m_text.GetChar(newLinePos) == '\r')
                )
         )
@@ -448,20 +448,15 @@ wxString EditorCell::ToHTML()
 
   while(tmp != NULL)
   {
-    std::list<StyledText> styledText = tmp->m_styledText;
-    while(!styledText.empty())
+    for(std::vector<StyledText>::iterator textSnippet = m_styledText.begin();textSnippet!=m_styledText.end();++textSnippet)
     {
-      // Grab a portion of text from the list.
-      StyledText TextSnippet = styledText.front();
-      styledText.pop_front();
-
-      wxString text =  PrependNBSP(EscapeHTMLChars(TextSnippet.GetText()));
-/*      wxString tmp = EscapeHTMLChars(TextSnippet.GetText());
+      wxString text =  PrependNBSP(EscapeHTMLChars(textSnippet->GetText()));
+/*      wxString tmp = EscapeHTMLChars(textSnippet->GetText());
         wxString text = tmp);*/
       
-      if(TextSnippet.StyleSet())
+      if(textSnippet->StyleSet())
       {
-        switch(TextSnippet.GetStyle())
+        switch(textSnippet->GetStyle())
         {
         case TS_CODE_COMMENT:
           retval+=wxT("<span class=\"code_comment\">")+text+wxT("</span>");
@@ -640,16 +635,13 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
     // TextStartingpoint.x -= SCALE_PX(MC_TEXT_PADDING, scale);
     TextStartingpoint.x += SCALE_PX(2, scale);
     wxPoint TextCurrentPoint = TextStartingpoint;
-    std::list<StyledText> styledText = m_styledText;
     int lastStyle = -1;
-    while(!styledText.empty())
+    int line = 0;
+    for(std::vector<StyledText>::iterator textSnippet = m_styledText.begin();textSnippet!=m_styledText.end();++textSnippet)
     {
-      // Grab a portion of text from the list.
-      StyledText TextSnippet = styledText.front();
-      styledText.pop_front();
-      wxString TextToDraw = TextSnippet.GetText();
+      wxString TextToDraw = textSnippet->GetText();
       int width, height;
-      
+
       // A newline is a separate token.
       if((TextToDraw == wxT("\n"))||(TextToDraw == wxT("\r")))
       {
@@ -661,15 +653,19 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
       else
       {
         // We need to draw some text.
-        
+
+        // Indent it if necessary
+        if(m_type != MC_TYPE_INPUT)
+          TextCurrentPoint.x += textSnippet->GetIndentPixels();
+
         // Grab a pen of the right color.
-        if(TextSnippet.StyleSet())
+        if(textSnippet->StyleSet())
         {
           wxDC& dc = parser->GetDC();
-          if(lastStyle != TextSnippet.GetStyle())
+          if(lastStyle != textSnippet->GetStyle())
           {
-            dc.SetTextForeground(parser->GetColor(TextSnippet.GetStyle()));
-            lastStyle = TextSnippet.GetStyle();
+            dc.SetTextForeground(parser->GetColor(textSnippet->GetStyle()));
+            lastStyle = textSnippet->GetStyle();
           }
         }
         else
@@ -767,7 +763,7 @@ void EditorCell::SetForeground()
 
 #ifndef WX_USE_UNICODE
 
-int ChangeNumpadToChar(int c)
+int EditorCell::ChangeNumpadToChar(int c)
 {
   switch (c) {
     case WXK_NUMPAD0:
@@ -2492,6 +2488,11 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
   if (m_changeAsterisk)  
     text.Replace(wxT("*"), wxT("\xB7"));
 
+  // In text cells every second token is a possibly indented line of text. The other
+  // tokens are line endings.
+  if(m_type != MC_TYPE_INPUT)
+    translate.x -= m_styledText[lin*2].GetIndentPixels();
+  
   while (m_positionOfCaret < (signed)text.Length() && text.GetChar(m_positionOfCaret) != '\n' && text.GetChar(m_positionOfCaret) != '\r')
   {
     s = text.SubString(lineStart, m_positionOfCaret);
@@ -2555,6 +2556,12 @@ bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
   int width, height;
   int lineStart = XYToPosition(0, lin);
   int positionOfCaret = lineStart;
+
+  // In text cells every second token is a possibly indented line of text. The other
+  // tokens are line endings.
+  if(m_type != MC_TYPE_INPUT)
+    translate.x -= m_styledText[lin*2].GetIndentPixels();
+
   while (positionOfCaret < (signed)text.Length() && text.GetChar(positionOfCaret) != '\n' && text.GetChar(positionOfCaret) != '\r')
   {
     s = text.SubString(lineStart, positionOfCaret);
@@ -2821,14 +2828,11 @@ int EditorCell::GetLineWidth(wxDC& dc, int line, int pos)
 
   int i = 0;
   
-  std::list<StyledText> styledText = m_styledText;
+  std::vector<StyledText>::iterator textSnippet;
 
-  while(!styledText.empty() && i<line)
+  for(textSnippet = m_styledText.begin();(textSnippet!=m_styledText.end())&&(i<line);++textSnippet)
   {
-    // Grab a portion of text from the list.
-    StyledText textSnippet = styledText.front();
-    styledText.pop_front();
-    wxString text = textSnippet.GetText();
+    wxString text = textSnippet->GetText();
     if ((text.Right(1) == '\n') || (text.Right(1) == '\r'))
       i++;
   }
@@ -2840,11 +2844,9 @@ int EditorCell::GetLineWidth(wxDC& dc, int line, int pos)
   wxString text;
   int textWidth, textHeight;
   pos--;
-  while (!styledText.empty() && pos>=0)
+  for(;(textSnippet!=m_styledText.end())&&(pos>=0);++textSnippet)
   {
-    StyledText textSnippet = styledText.front();
-    styledText.pop_front();
-    text = textSnippet.GetText();
+    text = textSnippet->GetText();
     dc.GetTextExtent(text, &textWidth, &textHeight);
     width += textWidth;
     pos -= text.Length();
@@ -2855,6 +2857,10 @@ int EditorCell::GetLineWidth(wxDC& dc, int line, int pos)
     dc.GetTextExtent(text.SubString(0, text.Length() + pos), &textWidth, &textHeight);
     width += textWidth;
   }
+  // In text cells every second token is a possibly indented line of text. The other
+  // tokens are line endings.
+  if(m_type != MC_TYPE_INPUT)
+    width += m_styledText[line*2].GetIndentPixels();
 
   return width;
 }
@@ -3102,8 +3108,8 @@ wxArrayString EditorCell::StringToTokens(wxString string)
 void EditorCell::StyleText()
 {
   m_wordList.Clear();
-  m_styledText.clear();
-
+  m_styledText.clear();    
+  
   if(m_type == MC_TYPE_INPUT)
   {
     // We have to style code
@@ -3290,87 +3296,170 @@ void EditorCell::StyleText()
       }
       m_styledText.push_back(StyledText(token));
     }
+    m_wordList.Sort();
   }
   else
   {  
     // We have to style ordinary text.
-    // Remove all soft line breaks
+    // Remove all soft line breaks. They will be re-added in the right places
+    // in the next step
     m_text.Replace(wxT("\r"),wxT(" "));
-
+    
     // Insert new soft line breaks where we hit the right border of the worksheet, if
     // this has been requested in the config dialogue
     CellParser *parser = CellParser::Get();
     if(parser->GetAutoWrap())
     {
-      wxString line;
-      size_t lastSpace = 0;    
       SetFont(parser->GetDefaultFontSize());
+      wxString line;
+      size_t lastSpace = 0;
+      int indentation = 0;
+      int lastLineStart = 0;
       int width,height;
       
+      // Is this a new line - or the remainder of the line after a soft break?
+      bool newLine = true;
+      std::list<wxString> prefixes;
+      std::list<int> indentPixels;
       for (size_t i = 0; i<m_text.Length(); i++)
       {
-        if(m_text[i] == '\n')
+        // Extract a line inserting a soft linebreak if necessary
+        while(i<m_text.Length())
         {
-          line = wxEmptyString;
-          lastSpace = 0;
-        }
-        else
-        {
-          parser->GetDC().GetTextExtent(line, &width, &height);
-          if(width + m_currentPoint.x >= parser->GetClientWidth())
+          if(m_text[i] == '\n')
           {
-            // We need a line break
-            if(lastSpace > 0)
-            {
-              m_text[lastSpace]=wxT('\r');
-              line = m_text.SubString(lastSpace + 1,i);
-              lastSpace = 0;
-            }
-            else
-            {
-              if(m_text[i] == ' ')
-              {
-                m_text[i] = wxT('\r');
-                line = wxEmptyString;
-                lastSpace = 0;
-              }
-              else
-                line += m_text[i];
-            }
+            line = m_text.SubString(lastLineStart,i-1);
+            lastLineStart = i+1;
+            lastSpace = 0;
+            indentation = 0;
+            break;
           }
           else
           {
-            if(m_text[i] == ' ')
-              lastSpace = i;
-            line += m_text[i];
+            parser->GetDC().GetTextExtent(m_text.SubString(lastLineStart,i), &width, &height);
+            if((!indentPixels.empty())&&(!newLine))
+              indentation = indentPixels.back();
+            else
+              indentation = 0;
+            if(width + m_currentPoint.x + indentation >= parser->GetClientWidth())
+            {
+              // We need a line break
+              if(lastSpace > 0)
+              {
+                m_text[lastSpace] = wxT('\r');
+                line = m_text.SubString(lastLineStart,lastSpace - 1);
+                i = lastSpace + 1;
+                lastLineStart = i+1;
+                lastSpace = 0;
+                break;
+              }
+              else
+              {
+                if(m_text[i] == ' ')
+                {
+                  m_text[i] = wxT('\r');
+                  line = m_text.SubString(lastLineStart,i-1);
+                  lastLineStart = i+1;
+                  lastSpace = 0;
+                }
+              }
+            }
           }
+          if(m_text[i] == ' ')
+            lastSpace = i;
+          i++;
         }
-      }
-    }
-    
-    wxString token;
-    for (size_t i = 0; i<m_text.Length(); i++)
-    {      
-      if ((m_text.GetChar(i) == '\n') || (m_text.GetChar(i) == '\r'))
-      {
+        // Extract the last line.
+        if(i==m_text.Length())
+          line = m_text.SubString(lastLineStart,i-1);
+
+        // If we fold the cell we only show the first line of text.
         if(m_firstLineOnly)
         {
-          m_styledText.push_back(StyledText(token +
-                                            wxString::Format(_(" ... + %i hidden lines"), m_text.Freq(wxT('\n')))));
-          token = wxEmptyString;
+          m_styledText.push_back(
+            StyledText(
+              line +
+              wxString::Format(_(" ... + %i hidden lines"), m_text.Freq(wxT('\n')))
+              )
+            );
+          line = wxEmptyString;
           break;
         }
-        m_styledText.push_back(StyledText(token));
-        m_styledText.push_back(StyledText(wxT("\n")));
-        token = wxEmptyString;
-      }
-      else
-        token += m_text.GetChar(i);
-    }
-    m_styledText.push_back(StyledText(token));
-  }
-  m_wordList.Sort();
+
+        
+        // Determine how much which line has to be indented for bullet lists
+        // or citations
+        
+        // Handle the start of new lines
+        if(newLine)
+        {
+          // Let's see if the line begins with a "begin indenting" marker:
+          wxString line_trimmed(line);
+          line_trimmed.Trim(false);
+          if(
+            (line_trimmed.StartsWith(wxT("* "))) ||
+            (line_trimmed.StartsWith(wxT("\xB7 "))) ||
+            (line_trimmed.StartsWith(wxT("> ")))
+            )
+          {
+            // An "begin indenting" marker
+            
+            // Remember what a line that is part of this indentation level has to
+            // begin with
+            int width,height;
+            CellParser *parser = CellParser::Get();
+            wxDC& dc = parser->GetDC();
+            // Remember how far to indent subsequent lines
+            dc.GetTextExtent(line.Left(line.Length()-line_trimmed.Length() + 2),&width, &height);
+            indentation = 0;
+            // Remember what a continuation for this indenting object would begin with
+            prefixes.push_back(wxT("  ")+line.Left(line.Length()-line_trimmed.Length()));
+            indentPixels.push_back(width);
+          }
+          else
+          {
+            // No "begin indenting" marker => Let's see if this is a continuation
+            // of a indentation
+            bool indent = false;
+            if(!prefixes.empty())
+            {
+              while (!prefixes.empty())
+              {
+                if(line.StartsWith(prefixes.back()))
+                  break;
+                prefixes.pop_back();
+                indentPixels.pop_back();
+              }
+            }
+            // We don't need indentation as this line was indented
+            // by spaces already.
+            indentation = 0;
+          }
+        }
+
+        int indentation;
+        if((!indentPixels.empty()) && (!newLine))
+          indentation = indentPixels.back();
+        else
+          indentation = 0;
+
+        // Store the indented line in the list of styled text snippets
+        m_styledText.push_back(StyledText(line,indentation));
+
+        // Store the line ending in the list of styled text snippets
+        if (m_text.GetChar(i) == wxT('\n'))
+          m_styledText.push_back(StyledText(wxT("\n")));
+        else
+          m_styledText.push_back(StyledText(wxT("\r")));
+
+        // Is this a real new line of comment - or did we insert a soft linebreak?
+        newLine = ((i==m_text.Length())||(m_text[i] == wxT('\n')));
+
+      } // The loop that loops over all lines
+    } // Do we want to autowrap lines?
+  } // Style text, not code?
 }
+
 
 
 void EditorCell::SetValue(const wxString &text)

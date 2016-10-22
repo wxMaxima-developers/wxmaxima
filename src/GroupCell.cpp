@@ -710,6 +710,7 @@ wxString GroupCell::ToString()
       str = m_input->ToString();
       if(m_input->m_next != NULL)
       {
+        str += wxT("\t");
         str += m_input->m_next->ListToString();
       }
     }
@@ -739,7 +740,7 @@ wxString GroupCell::ToString()
       }
     }
   }
-  return str + wxT("\n");
+  return str;
 }
 
 wxString GroupCell::ToTeX()
