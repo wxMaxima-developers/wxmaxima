@@ -3334,160 +3334,164 @@ void EditorCell::StyleText()
       int i = 0;
       wxString::const_iterator it = m_text.begin();
       if(m_text.Length() > 0)
-      while(it!=m_text.end())
-      {
-        // Extract a line inserting a soft linebreak if necessary
         while(it!=m_text.end())
         {
-          std::cerr<<"Test"<<i<<"\n";
-          if(*it == '\n')
+          // Extract a line inserting a soft linebreak if necessary
+          while(it!=m_text.end())
           {
-            line = m_text.SubString(lastLineStart,i-1);
-            lastLineStart = i + 1;
-            lastSpace = 0;
-            indentation = 0;
-            break;
-          }
-          else
-          {
-            parser->GetDC().GetTextExtent(m_text.SubString(lastLineStart,i), &width, &height);
-            if((!indentPixels.empty())&&(!newLine))
-              indentation = indentPixels.back();
-            else
-              indentation = 0;
-            if(width + m_currentPoint.x + indentation >= parser->GetClientWidth())
+            if(*it=='\n')
             {
-              // We need a line break
-              if(lastSpace > 0)
+              line = m_text.SubString(lastLineStart,i-1);
+              lastLineStart = i + 1;
+              lastSpace = 0;
+              indentation = 0;
+              break;
+            }
+            else
+            {
+              if(*it == ' ')
               {
-                m_text[lastSpace] = wxT('\r');
-                line = m_text.SubString(lastLineStart,lastSpace - 1);
-                i = lastSpace + 1;
-                lastLineStart = i;
-                it = lastSpaceIt;
-                it++;
-                lastSpace = 0;
-                break;
-              }
-              else
-              {
-                if(*it == ' ')
+                parser->GetDC().GetTextExtent(m_text.SubString(lastLineStart,i), &width, &height);
+                if((!indentPixels.empty())&&(!newLine))
+                  indentation = indentPixels.back();
+                else
+                  indentation = 0;
+                if(width + m_currentPoint.x + indentation >= parser->GetClientWidth())
                 {
-                  *it = wxT('\r');
-                  line = m_text.SubString(lastLineStart,i-1);
-                  lastLineStart = i+1;
-                  lastSpace = 0;
+                  // We need a line break
+                  if(lastSpace > 0)
+                  {
+                    m_text[lastSpace] = wxT('\r');
+                    line = m_text.SubString(lastLineStart,lastSpace - 1);
+                    i = lastSpace + 1;
+                    lastLineStart = i;
+                    it = lastSpaceIt;
+                    it++;
+                    lastSpace = 0;
+                    break;
+                  }
+                  else
+                  {
+                  
+                    *it = wxT('\r');
+                    line = m_text.SubString(lastLineStart,i-1);
+                    lastLineStart = i+1;
+                    lastSpace = 0;
+                  
+                  }
                 }
               }
             }
-          }
-          if(*it == ' ')
-          {
-            lastSpace = i;
-            lastSpaceIt = it;
-          }
-          it++;
-          i++;
-        }
-        // Extract the last line.
-        if(i==m_text.Length())
-          line = m_text.SubString(lastLineStart,i-1);
-
-        // If we fold the cell we only show the first line of text.
-        if(m_firstLineOnly)
-        {
-          m_styledText.push_back(
-            StyledText(
-              line +
-              wxString::Format(_(" ... + %i hidden lines"), m_text.Freq(wxT('\n')))
-              )
-            );
-          line = wxEmptyString;
-          break;
-        }
-
-        
-        // Determine how much which line has to be indented for bullet lists
-        // or citations
-        
-        // Handle the start of new lines
-        if(newLine)
-        {
-          // Let's see if the line begins with a "begin indenting" marker:
-          wxString line_trimmed(line);
-          line_trimmed.Trim(false);
-          if(
-            (line_trimmed.StartsWith(wxT("* "))) ||
-            (line_trimmed.StartsWith(wxT("\xB7 "))) ||
-            (line_trimmed.StartsWith(wxT("> ")))
-            )
-          {
-            // An "begin indenting" marker
-            
-            // Remember what a line that is part of this indentation level has to
-            // begin with
-            int width,height;
-            CellParser *parser = CellParser::Get();
-            wxDC& dc = parser->GetDC();
-            
-            // Remember how far to indent subsequent lines
-            indentChar = line.Left(line.Length()-line_trimmed.Length() + 2);
-            dc.GetTextExtent(indentChar,&width, &height);
-            if(!line_trimmed.StartsWith(wxT("> ")))
-              indentChar = wxEmptyString;
-
-            // We don't need additional indentation as this line is already indented by
-            // the spaces and the indent marker at it's beginning.
-            indentation = 0;
-            // Remember what a continuation for this indenting object would begin with
-            prefixes.push_back(wxT("  ")+line.Left(line.Length()-line_trimmed.Length()));
-            indentPixels.push_back(width);
-          }
-          else
-          {
-            // No "begin indenting" marker => Let's see if this is a continuation
-            // of a indentation
-            bool indent = false;
-            if(!prefixes.empty())
+            if(*it == ' ')
             {
-              while (!prefixes.empty())
-              {
-                if(line.StartsWith(prefixes.back()))
-                  break;
-                prefixes.pop_back();
-                indentPixels.pop_back();
-              }
+              lastSpace = i;
+              lastSpaceIt = it;
             }
-            // We don't need indentation as this line was indented
-            // by spaces already.
-            indentation = 0;
+            it++;
+            i++;
           }
-        }
-        
-        if(prefixes.empty())
-          indentChar = wxEmptyString;
-        
-        int indentation;
-        if((!indentPixels.empty()) && (!newLine))
-          indentation = indentPixels.back();
-        else
-          indentation = 0;
-        
-        // Store the indented line in the list of styled text snippets
-        m_styledText.push_back(StyledText(line,indentation,indentChar));
-        
-        // Store the line ending in the list of styled text snippets
-        if (*it == wxT('\n'))
-          m_styledText.push_back(StyledText(wxT("\n")));
-        else
-          m_styledText.push_back(StyledText(wxT("\r")));
-        
-        // Is this a real new line of comment - or did we insert a soft linebreak?
-        newLine = ((i==m_text.Length())||(*it == wxT('\n')));
+          // Extract the last line.
+          if(i==m_text.Length())
+            line = m_text.SubString(lastLineStart,i-1);
 
-        i++;
-        it++;
-      } // The loop that loops over all lines
+          // If we fold the cell we only show the first line of text.
+          if(m_firstLineOnly)
+          {
+            m_styledText.push_back(
+              StyledText(
+                line +
+                wxString::Format(_(" ... + %i hidden lines"), m_text.Freq(wxT('\n')))
+                )
+              );
+            line = wxEmptyString;
+            break;
+          }
+
+        
+          // Determine how much which line has to be indented for bullet lists
+          // or citations
+        
+          // Handle the start of new lines
+          if(newLine)
+          {
+            // Let's see if the line begins with a "begin indenting" marker:
+            wxString line_trimmed(line);
+            line_trimmed.Trim(false);
+            if(
+              (line_trimmed.StartsWith(wxT("* "))) ||
+              (line_trimmed.StartsWith(wxT("\xB7 "))) ||
+              (line_trimmed.StartsWith(wxT("> ")))
+              )
+            {
+              // An "begin indenting" marker
+            
+              // Remember what a line that is part of this indentation level has to
+              // begin with
+              int width,height;
+              CellParser *parser = CellParser::Get();
+              wxDC& dc = parser->GetDC();
+            
+              // Remember how far to indent subsequent lines
+              indentChar = line.Left(line.Length()-line_trimmed.Length() + 2);
+              dc.GetTextExtent(indentChar,&width, &height);
+              if(!line_trimmed.StartsWith(wxT("> ")))
+                indentChar = wxEmptyString;
+
+              // We don't need additional indentation as this line is already indented by
+              // the spaces and the indent marker at it's beginning.
+              indentation = 0;
+              // Remember what a continuation for this indenting object would begin with
+              prefixes.push_back(wxT("  ")+line.Left(line.Length()-line_trimmed.Length()));
+              indentPixels.push_back(width);
+            }
+            else
+            {
+              // No "begin indenting" marker => Let's see if this is a continuation
+              // of a indentation
+              bool indent = false;
+              if(!prefixes.empty())
+              {
+                while (!prefixes.empty())
+                {
+                  if(line.StartsWith(prefixes.back()))
+                    break;
+                  prefixes.pop_back();
+                  indentPixels.pop_back();
+                }
+              }
+              // We don't need indentation as this line was indented
+              // by spaces already.
+              indentation = 0;
+            }
+          }
+        
+          if(prefixes.empty())
+            indentChar = wxEmptyString;
+        
+          int indentation;
+          if((!indentPixels.empty()) && (!newLine))
+            indentation = indentPixels.back();
+          else
+            indentation = 0;
+        
+          // Store the indented line in the list of styled text snippets
+          m_styledText.push_back(StyledText(line,indentation,indentChar));
+        
+          // Store the line ending in the list of styled text snippets
+          if (*it == wxT('\n'))
+            m_styledText.push_back(StyledText(wxT("\n")));
+          else
+            m_styledText.push_back(StyledText(wxT("\r")));
+        
+          // Is this a real new line of comment - or did we insert a soft linebreak?
+          newLine = ((i==m_text.Length())||(*it == wxT('\n')));
+
+          if(it!=m_text.end())
+          {
+            i++;
+            it++;
+          }
+        } // The loop that loops over all lines
     } // Do we want to autowrap lines?
   } // Style text, not code?
 }
