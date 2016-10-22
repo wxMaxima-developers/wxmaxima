@@ -1362,7 +1362,8 @@ bool GroupCell::HideTree(GroupCell *tree)
   GroupCell *tmp = m_hiddenTree;
   while(tmp)
   {
-    tmp->GetLabel()->ClearCacheList();
+    if(tmp->GetLabel())
+      tmp->GetLabel()->ClearCacheList();
     tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }
   
@@ -1417,8 +1418,10 @@ GroupCell *GroupCell::Fold() {
   GroupCell *end = dynamic_cast<GroupCell*>(m_next);
   GroupCell *start = end; // first to fold
 
-  while (end) {
-    end->GetLabel()->ClearCacheList();
+  while (end)
+  {
+    if(end->GetLabel())
+      end->GetLabel()->ClearCacheList();
  
     GroupCell *tmp = dynamic_cast<GroupCell*>(end->m_next);
     if (tmp == NULL)
