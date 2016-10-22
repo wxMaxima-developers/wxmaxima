@@ -654,10 +654,6 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
       {
         // We need to draw some text.
 
-        // Indent it if necessary
-        if(m_type != MC_TYPE_INPUT)
-          TextCurrentPoint.x += textSnippet->GetIndentPixels();
-
         // Grab a pen of the right color.
         if(textSnippet->StyleSet())
         {
@@ -679,6 +675,17 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
         if ((m_changeAsterisk = parser->GetChangeAsterisk())!=0)
           TextToDraw.Replace(wxT("*"), wxT("\xB7"));
 #endif
+
+        // Draw a char that shows we continue an indentation - if this is needed.
+        if(textSnippet->GetIndentChar() != wxEmptyString)
+          dc.DrawText(textSnippet->GetIndentChar(),
+                      TextCurrentPoint.x,
+                      TextCurrentPoint.y - m_center);
+        
+        
+        // Indent the text if necessary
+        if(m_type != MC_TYPE_INPUT)
+          TextCurrentPoint.x += textSnippet->GetIndentPixels();
         
         dc.DrawText(TextToDraw,
                     TextCurrentPoint.x,
@@ -3321,6 +3328,7 @@ void EditorCell::StyleText()
       bool newLine = true;
       std::list<wxString> prefixes;
       std::list<int> indentPixels;
+      wxString indentChar;
       for (size_t i = 0; i<m_text.Length(); i++)
       {
         // Extract a line inserting a soft linebreak if necessary
@@ -3409,8 +3417,15 @@ void EditorCell::StyleText()
             int width,height;
             CellParser *parser = CellParser::Get();
             wxDC& dc = parser->GetDC();
+            
             // Remember how far to indent subsequent lines
-            dc.GetTextExtent(line.Left(line.Length()-line_trimmed.Length() + 2),&width, &height);
+            indentChar = line.Left(line.Length()-line_trimmed.Length() + 2);
+            dc.GetTextExtent(indentChar,&width, &height);
+            if(!line_trimmed.StartsWith(wxT("> ")))
+              indentChar = wxEmptyString;
+
+            // We don't need additional indentation as this line is already indented by
+            // the spaces and the indent marker at it's beginning.
             indentation = 0;
             // Remember what a continuation for this indenting object would begin with
             prefixes.push_back(wxT("  ")+line.Left(line.Length()-line_trimmed.Length()));
@@ -3436,25 +3451,28 @@ void EditorCell::StyleText()
             indentation = 0;
           }
         }
-
+        
+        if(prefixes.empty())
+          indentChar = wxEmptyString;
+        
         int indentation;
         if((!indentPixels.empty()) && (!newLine))
           indentation = indentPixels.back();
         else
           indentation = 0;
-
+        
         // Store the indented line in the list of styled text snippets
-        m_styledText.push_back(StyledText(line,indentation));
-
+        m_styledText.push_back(StyledText(line,indentation,indentChar));
+        
         // Store the line ending in the list of styled text snippets
         if (m_text.GetChar(i) == wxT('\n'))
           m_styledText.push_back(StyledText(wxT("\n")));
         else
           m_styledText.push_back(StyledText(wxT("\r")));
-
+        
         // Is this a real new line of comment - or did we insert a soft linebreak?
         newLine = ((i==m_text.Length())||(m_text[i] == wxT('\n')));
-
+        
       } // The loop that loops over all lines
     } // Do we want to autowrap lines?
   } // Style text, not code?

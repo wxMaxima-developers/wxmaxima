@@ -359,6 +359,8 @@ private:
     bool m_styleThisText;
     //! By How many pixels we want to indent this line?
     int m_indentPixels;
+    //! Chars that mark continued indentation
+    wxString m_indentChar;
   public:    
     //! Defines a piece of styled text
     StyledText(TextStyle style,wxString text)
@@ -369,12 +371,13 @@ private:
       }
 
     //! Defines a piece of text with the default style that possibly is indented
-    StyledText(wxString text,int indentPixels = 0)
+    StyledText(wxString text,int indentPixels = 0,wxString indentChar=wxEmptyString)
       {
         m_text = text;
         m_style = TS_DEFAULT;
         m_styleThisText = false;
         m_indentPixels = indentPixels;
+        m_indentChar = indentChar;
       }
     //! Returns the piece of text
     wxString GetText()
@@ -386,7 +389,12 @@ private:
       {
         return m_indentPixels;
       }
-    //! If StyleSet() is true this function returns the color of this text portion
+
+    wxString GetIndentChar()
+      {
+        return m_indentChar;
+      }
+//! If StyleSet() is true this function returns the color of this text portion
     TextStyle GetStyle()
       {
         return m_style;
