@@ -145,8 +145,8 @@ public:
     This function also generates a wordlist for this EditorCell so Autocompletion can learn
     about variable names contained in lists or cells that still haven't been evaluated.
 
-    For cells containing text instead of code this function adds a <code>\r</code> that serves
-    as a marker that this line is to be broken here until the window's width changes.
+    For cells containing text instead of code this function adds a <code>\r</code> as a marker
+    that this line is to be broken here until the window's width changes.
    */
   void StyleText();
   void Reset();
@@ -381,7 +381,7 @@ private:
       {
         return m_text;
       }
-    //! Returns the piece of text
+    //! By how many pixels do we need to indent this line due to a bullet list or similar?
     int GetIndentPixels()
       {
         return m_indentPixels;
