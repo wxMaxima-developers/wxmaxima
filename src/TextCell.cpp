@@ -766,7 +766,8 @@ wxString TextCell::ToTeX()
     wxString label = text.SubString(1,text.Length()-2);
     text = conditionalLinebreak + wxT("\\tag{") + label + wxT("}");
     label.Replace(wxT("\\% "),wxT(""));
-    text += wxT("\\label{") + label + wxT("}");
+    // Would be a good idea, but apparently breaks mathJaX
+    // text += wxT("\\label{") + label + wxT("}");
   }
   else
   {
