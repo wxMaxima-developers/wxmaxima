@@ -3342,7 +3342,7 @@ void EditorCell::StyleText()
         // Extract a line inserting a soft linebreak if necessary
         while(it!=m_text.end())
         {
-          if(*it=='\n')
+          if(*it=='\n')||(i+1 >= m_text.Length()))
           {
             if(lastSpace > 0)
             {
@@ -3377,10 +3377,10 @@ void EditorCell::StyleText()
           }
           else
           {
-            // Spaces and the end of the text trigger auto-wrapping
-            if((*it == ' ')||(i == m_text.Length() - 1))
+            // Spaces and reaching the end of the text both trigger auto-wrapping
+            if((*it == ' ')||(i >= m_text.Length() - 1))
             {
-              // Does the line indent beyond the right edge of the screen?
+              // Does the line already extend beyond the right edge of the screen?
               parser->GetDC().GetTextExtent(m_text.SubString(lastLineStart,i), &width, &height);
               if((!indentPixels.empty())&&(!newLine))
                 indentation = indentPixels.back();
@@ -3395,9 +3395,9 @@ void EditorCell::StyleText()
                   m_text[lastSpace] = wxT('\r');
                   line = m_text.SubString(lastLineStart,lastSpace - 1);
                   i = lastSpace + 1;
-                  lastLineStart = i;
                   it = lastSpaceIt;
                   it++;
+                  lastLineStart = i;
                   lastSpace = 0;
                   break;
                 }
@@ -3530,7 +3530,7 @@ void EditorCell::StyleText()
           m_styledText.push_back(StyledText(wxT("\r")));
         
         // Is this a real new line of comment - or did we insert a soft linebreak?
-        newLine = ((i==m_text.Length())||(*it == wxT('\n')));
+        newLine = ((i + 1 >= m_text.Length())||(*it == wxT('\n')));
 
         if(it!=m_text.end())
         {
