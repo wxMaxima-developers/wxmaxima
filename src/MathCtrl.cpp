@@ -4908,7 +4908,7 @@ bool MathCtrl::ExportToTeX(wxString file) {
     wxT("}\n\n");
   output<<wxT("%% Created with wxMaxima " VERSION "\n\n");
   output<<wxT("\\setlength{\\parskip}{\\medskipamount}\n");
-  output<<wxT("\\setlength{\\paxorindent}{0pt}\n");
+  output<<wxT("\\setlength{\\parindent}{0pt}\n");
   output<<wxT("\\usepackage[utf8]{luainputenc}\n");
   // Tell LaTeX how to handle a few special characters.
   output<<wxT("\\DeclareUnicodeCharacter{00B5}{\\ensuremath{\\mu}}\n");

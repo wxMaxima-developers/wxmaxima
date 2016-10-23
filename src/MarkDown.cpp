@@ -289,7 +289,7 @@ MarkDownTeX::MarkDownTeX() : MarkDownParser()
   regexReplaceList.push_back(
     new RegexReplacer(L"\x03BE",wxT("\\\\ensuremath{\\\\xi}")));
   regexReplaceList.push_back(
-    new RegexReplacer(L"\x03BF",wxT("\\\\ensuremath{\\\\omnicron}")));
+    new RegexReplacer(L"\x03BF",wxT("\\\\ensuremath{\\\\omicron}")));
   regexReplaceList.push_back(
     new RegexReplacer(L"\x03C0",wxT("\\\\ensuremath{\\\\pi}")));
   regexReplaceList.push_back(
@@ -338,7 +338,7 @@ MarkDownTeX::MarkDownTeX() : MarkDownParser()
   regexReplaceList.push_back(
     new RegexReplacer(L"\x039E",wxT("\\\\ensuremath{\\\\Xi}")));
   regexReplaceList.push_back(
-    new RegexReplacer(L"\x039F",wxT("\\\\ensuremath{\\\\Omnicron}")));
+    new RegexReplacer(L"\x039F",wxT("\\\\ensuremath{\\\\Omicron}")));
   regexReplaceList.push_back(
     new RegexReplacer(L"\x03A0",wxT("\\\\ensuremath{\\\\Pi}")));
   regexReplaceList.push_back(

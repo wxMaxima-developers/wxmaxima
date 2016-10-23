@@ -262,7 +262,7 @@ wxString EditorCell::ToTeX()
   text.Replace(L"\x03BC",wxT("\\ensuremath{\\mu}"));
   text.Replace(L"\x03BD",wxT("\\ensuremath{\\nu}"));
   text.Replace(L"\x03BE",wxT("\\ensuremath{\\xi}"));
-  text.Replace(L"\x03BF",wxT("\\ensuremath{\\omnicron}"));
+  text.Replace(L"\x03BF",wxT("\\ensuremath{\\omicron}"));
   text.Replace(L"\x03C0",wxT("\\ensuremath{\\pi}"));
   text.Replace(L"\x03C1",wxT("\\ensuremath{\\rho}"));
   text.Replace(L"\x03C3",wxT("\\ensuremath{\\sigma}"));
@@ -286,7 +286,7 @@ wxString EditorCell::ToTeX()
   text.Replace(L"\x039C",wxT("\\ensuremath{\\Mu}"));
   text.Replace(L"\x039D",wxT("\\ensuremath{\\Nu}"));
   text.Replace(L"\x039E",wxT("\\ensuremath{\\Xi}"));
-  text.Replace(L"\x039F",wxT("\\ensuremath{\\Omnicron}"));
+  text.Replace(L"\x039F",wxT("\\ensuremath{\\Omicron}"));
   text.Replace(L"\x03A0",wxT("\\ensuremath{\\Pi}"));
   text.Replace(L"\x03A1",wxT("\\ensuremath{\\Rho}"));
   text.Replace(L"\x03A3",wxT("\\ensuremath{\\Sigma}"));

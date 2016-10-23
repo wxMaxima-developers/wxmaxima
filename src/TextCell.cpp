@@ -441,20 +441,33 @@ wxString TextCell::ToTeX()
     else if (text == wxT("%pi"))
       text = wxString(wxT("\x03C0"));
   }
-
+  
   // The string needed in order to ensure we are in math mode. Most TextCells contain names of
   // math objects and therefore can leave this string blank.
   wxString mathModeStart;
   // The string needed in order to close the command that ensures we are in math mode.
   wxString mathModeEnd = wxT(" ");
 
-  if((GetStyle() == TS_ERROR))
+  if(
+    (GetStyle() == TS_ERROR) ||
+    (GetStyle() == TS_LABEL) ||
+    (GetStyle() == TS_USERLABEL) ||
+    (GetStyle() == TS_MAIN_PROMPT) ||
+    (GetStyle() == TS_OTHER_PROMPT)
+    )
   {
     mathModeStart=wxT("\\ensuremath{");
     mathModeEnd  =wxT("}");
+    text.Replace(wxT("\\"), mathModeStart+wxT("\\backslash")+mathModeEnd);
+    text.Replace(wxT("{"), wxT("\\{"));
+    text.Replace(wxT("}"), wxT("\\}"));
   }
   else
   {
+    text.Replace(wxT("\\"), mathModeStart+wxT("\\backslash")+mathModeEnd);
+    text.Replace(wxT("{"), wxT("\\{"));
+    text.Replace(wxT("}"), wxT("\\}"));
+    
     // Babel replaces Umlaute by constructs like \"a - and \" isn't allowed in
     // math mode. Fortunately amsTeX provides the \text command that allows to
     // switch to plain text mode again - but with the math font size.
@@ -466,7 +479,6 @@ wxString TextCell::ToTeX()
     text.Replace(wxT("Ü"), wxT("\\text{Ü}"));  
   }
   
-  text.Replace(wxT("\\"), mathModeStart+wxT("\\backslash")+mathModeEnd);
   text.Replace(wxT("<"), mathModeStart+wxT("<")+mathModeEnd);
   text.Replace(wxT(">"), mathModeStart+wxT(">")+mathModeEnd);
 #if wxUSE_UNICODE
@@ -512,7 +524,7 @@ wxString TextCell::ToTeX()
   text.Replace(L"\x03BC",mathModeStart+wxT("\\mu")+mathModeEnd);
   text.Replace(L"\x03BD",mathModeStart+wxT("\\nu")+mathModeEnd);
   text.Replace(L"\x03BE",mathModeStart+wxT("\\xi")+mathModeEnd);
-  text.Replace(L"\x03BF",mathModeStart+wxT("\\omnicron")+mathModeEnd);
+  text.Replace(L"\x03BF",mathModeStart+wxT("\\omicron")+mathModeEnd);
   text.Replace(L"\x03C0",mathModeStart+wxT("\\pi")+mathModeEnd);
   text.Replace(L"\x03C1",mathModeStart+wxT("\\rho")+mathModeEnd);
   text.Replace(L"\x03C3",mathModeStart+wxT("\\sigma")+mathModeEnd);
@@ -536,7 +548,7 @@ wxString TextCell::ToTeX()
   text.Replace(L"\x039C",mathModeStart+wxT("\\Mu")+mathModeEnd);
   text.Replace(L"\x039D",mathModeStart+wxT("\\Nu")+mathModeEnd);
   text.Replace(L"\x039E",mathModeStart+wxT("\\Xi")+mathModeEnd);
-  text.Replace(L"\x039F",mathModeStart+wxT("\\Omnicron")+mathModeEnd);
+  text.Replace(L"\x039F",mathModeStart+wxT("\\Omicron")+mathModeEnd);
   text.Replace(L"\x03A0",mathModeStart+wxT("\\Pi")+mathModeEnd);
   text.Replace(L"\x03A1",mathModeStart+wxT("\\Rho")+mathModeEnd);
   text.Replace(L"\x03A3",mathModeStart+wxT("\\Sigma")+mathModeEnd);
