@@ -448,13 +448,12 @@ wxString TextCell::ToTeX()
   // The string needed in order to close the command that ensures we are in math mode.
   wxString mathModeEnd = wxT(" ");
 
-  if((GetStyle() == TS_ERROR) || (GetStyle() == TS_DEFAULT))
+  if((GetStyle() == TS_ERROR))
   {
     mathModeStart=wxT("\\ensuremath{");
     mathModeEnd  =wxT("}");
   }
   else
-  if((GetStyle() != TS_ERROR) && (GetStyle() != TS_DEFAULT))
   {
     // Babel replaces Umlaute by constructs like \"a - and \" isn't allowed in
     // math mode. Fortunately amsTeX provides the \text command that allows to
