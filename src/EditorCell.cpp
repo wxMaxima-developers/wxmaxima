@@ -3343,6 +3343,31 @@ void EditorCell::StyleText()
         {
           if(*it=='\n')
           {
+            if(lastSpace > 0)
+            {
+              // Does the line indent beyond the right edge of the screen?
+              parser->GetDC().GetTextExtent(m_text.SubString(lastLineStart,i), &width, &height);
+              if((!indentPixels.empty())&&(!newLine))
+                indentation = indentPixels.back();
+              else
+                indentation = 0;
+              if(width + m_currentPoint.x + indentation >= parser->GetClientWidth())
+              {
+                // We need a line break in front of the last word
+                if(lastSpace > 0)
+                {
+                  m_text[lastSpace] = wxT('\r');
+                  line = m_text.SubString(lastLineStart,lastSpace - 1);
+                  i = lastSpace + 1;
+                  lastLineStart = i;
+                  it = lastSpaceIt;
+                  it++;
+                  lastSpace = 0;
+                  break;
+                }
+              }
+            }
+            
             line = m_text.SubString(lastLineStart,i-1);
             lastLineStart = i + 1;
             lastSpace = 0;
