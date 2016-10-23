@@ -3926,7 +3926,6 @@ bool MathCtrl::ExportToHTML(wxString file) {
     config->Read(wxT("HTMLequationFormat"), &tmp);
     htmlEquationFormat = (ConfigDialogue::htmlExportFormats)tmp;
   }
-  std::cerr <<htmlEquationFormat<<"\n";
   int count = 0;
   GroupCell *tmp = m_tree;
   MarkDownHTML MarkDown;    
