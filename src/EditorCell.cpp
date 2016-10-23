@@ -636,7 +636,6 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
     TextStartingpoint.x += SCALE_PX(2, scale);
     wxPoint TextCurrentPoint = TextStartingpoint;
     int lastStyle = -1;
-    int line = 0;
     for(std::vector<StyledText>::iterator textSnippet = m_styledText.begin();textSnippet!=m_styledText.end();++textSnippet)
     {
       wxString TextToDraw = textSnippet->GetText();
