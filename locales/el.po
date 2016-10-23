@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Greek translation of wxMaxima GUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-17 23:50+0200\n"
+"POT-Creation-Date: 2016-10-22 15:46+0900\n"
 "PO-Revision-Date: 2010-06-04 19:46+0200\n"
 "Last-Translator: aga <akritas@uth.gr>\n"
 "Language-Team: uth <aakritas@uth.gr>\n"
@@ -75,7 +75,7 @@ msgstr ""
 msgid " (Graphics) "
 msgstr ""
 
-#: ../src/EditorCell.cpp:3109 ../src/EditorCell.cpp:3344
+#: ../src/EditorCell.cpp:3120 ../src/EditorCell.cpp:3359
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
@@ -448,7 +448,7 @@ msgstr "Ορισμός οριακών τιμών..."
 msgid "Abort evaluation on error"
 msgstr ""
 
-#: ../src/wxMaximaFrame.cpp:985 ../src/wxMaxima.cpp:4615
+#: ../src/wxMaxima.cpp:4615 ../src/wxMaximaFrame.cpp:985
 msgid "About"
 msgstr "Πληροφορίες για το wxMaxima"
 
@@ -511,7 +511,7 @@ msgstr "Επιπρόσθετοι παράμετροι:"
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr ""
 
-#: ../src/ToolBar.cpp:200 ../src/ToolBar.cpp:244
+#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:242
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -679,7 +679,7 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr ""
 
-#: ../src/GroupCell.cpp:785 ../src/GroupCell.cpp:956
+#: ../src/GroupCell.cpp:791 ../src/GroupCell.cpp:962
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -844,7 +844,7 @@ msgstr ""
 msgid "Cancel"
 msgstr "Ακύρωση"
 
-#: ../src/wxMaximaFrame.cpp:125 ../src/wxMaxima.cpp:937
+#: ../src/wxMaxima.cpp:937 ../src/wxMaximaFrame.cpp:125
 msgid "Cannot start the maxima binary"
 msgstr ""
 
@@ -1007,7 +1007,7 @@ msgstr "Συμπλήρωση Λέξης\tCtrl-K"
 msgid "Complete word"
 msgstr "Συμπλήρωση λέξης"
 
-#: ../src/ToolBar.cpp:158
+#: ../src/ToolBar.cpp:156
 msgid "Completely stop maxima and restart it"
 msgstr ""
 
@@ -1053,8 +1053,8 @@ msgstr "Αρχείο Config (*.ini)|*.ini"
 msgid "Configuration warning"
 msgstr "Προειδοποίηση ρύθμισης"
 
-#: ../src/wxMaximaFrame.cpp:537 ../src/wxMaximaFrame.cpp:540
-#: ../src/ToolBar.cpp:131
+#: ../src/ToolBar.cpp:129 ../src/wxMaximaFrame.cpp:537
+#: ../src/wxMaximaFrame.cpp:540
 msgid "Configure wxMaxima"
 msgstr "Ρυθμίσεις του wxMaxima"
 
@@ -1125,7 +1125,7 @@ msgid "Convert trigonometric functions to exponential form"
 msgstr "Μετατροπή τριγωνομετρικών συναρτήσεων σε εκθετική μορφή"
 
 #: ../src/MathCtrl.cpp:963 ../src/MathCtrl.cpp:976 ../src/MathCtrl.cpp:1022
-#: ../src/MathCtrl.cpp:1069 ../src/ToolBar.cpp:138
+#: ../src/MathCtrl.cpp:1069 ../src/ToolBar.cpp:136
 msgid "Copy"
 msgstr "Αντιγραφή"
 
@@ -1138,13 +1138,13 @@ msgstr "Αντιγραφή προηγούμενης εισαγωγής\tCtrl-I"
 msgid "Copy Previous Output\tCtrl-U"
 msgstr "Αντιγραφή προηγούμενης εισαγωγής\tCtrl-I"
 
-#: ../src/wxMaximaFrame.cpp:513 ../src/MathCtrl.cpp:981
-#: ../src/MathCtrl.cpp:1027
+#: ../src/MathCtrl.cpp:981 ../src/MathCtrl.cpp:1027
+#: ../src/wxMaximaFrame.cpp:513
 msgid "Copy as Image"
 msgstr "Αντιγραφή ως εικόνα"
 
-#: ../src/wxMaximaFrame.cpp:506 ../src/MathCtrl.cpp:977
-#: ../src/MathCtrl.cpp:1023
+#: ../src/MathCtrl.cpp:977 ../src/MathCtrl.cpp:1023
+#: ../src/wxMaximaFrame.cpp:506
 msgid "Copy as LaTeX"
 msgstr "Αντιγραφή ως LaTeX"
 
@@ -1166,7 +1166,7 @@ msgstr "Αντιγραφή ως κείμενο\tCtrl-Shift-C"
 msgid "Copy as plain text"
 msgstr "Αντιγραφή ως εικόνα"
 
-#: ../src/wxMaximaFrame.cpp:502 ../src/ToolBar.cpp:140
+#: ../src/ToolBar.cpp:138 ../src/wxMaximaFrame.cpp:502
 msgid "Copy selection"
 msgstr "Αντιγραφή επιλογής"
 
@@ -1201,7 +1201,7 @@ msgstr "Δημιουργία κελιού με την τελευταία εισ�
 msgid "Cursor"
 msgstr "Κέρσορας"
 
-#: ../src/MathCtrl.cpp:1068 ../src/ToolBar.cpp:135
+#: ../src/MathCtrl.cpp:1068 ../src/ToolBar.cpp:133
 msgid "Cut"
 msgstr "Αποκοπή"
 
@@ -1209,7 +1209,7 @@ msgstr "Αποκοπή"
 msgid "Cut\tCtrl-X"
 msgstr "Αποκοπή\tCtrl-X"
 
-#: ../src/wxMaximaFrame.cpp:499 ../src/ToolBar.cpp:137
+#: ../src/ToolBar.cpp:135 ../src/wxMaximaFrame.cpp:499
 msgid "Cut selection"
 msgstr "Αποκοπή επιλογής"
 
@@ -1350,7 +1350,7 @@ msgstr "Παραγώγιση παράστασης"
 msgid "Differentiate..."
 msgstr "Παραγώγιση..."
 
-#: ../src/LimitWiz.cpp:37 ../src/FindReplacePane.cpp:76
+#: ../src/FindReplacePane.cpp:76 ../src/LimitWiz.cpp:37
 msgid "Direction:"
 msgstr "Κατεύθυνση:"
 
@@ -1565,7 +1565,7 @@ msgstr "Υπολογισμός όλων των κελιών\tCtrl-R"
 msgid "Evaluate All Visible Cells\tCtrl-R"
 msgstr "Υπολογισμός όλων των κελιών\tCtrl-R"
 
-#: ../src/wxMaximaFrame.cpp:584 ../src/MathCtrl.cpp:987
+#: ../src/MathCtrl.cpp:987 ../src/wxMaximaFrame.cpp:584
 msgid "Evaluate Cell(s)"
 msgstr "Υπολογισμός κελιού(-ιών)"
 
@@ -1607,11 +1607,11 @@ msgstr "Υπολογισμός όλων των ονοματικών μορφών
 msgid "Evaluate all visible cells in the document"
 msgstr "Υπολογισμός όλων των κελιών στο έγγραφο"
 
-#: ../src/ToolBar.cpp:170
+#: ../src/ToolBar.cpp:168
 msgid "Evaluate the file from its beginning to the cell above the cursor"
 msgstr ""
 
-#: ../src/ToolBar.cpp:168
+#: ../src/ToolBar.cpp:166
 #, fuzzy
 msgid "Evaluate to point"
 msgstr "Υπολογισμός ονοματικών μορφών"
@@ -1657,7 +1657,7 @@ msgstr "Ανάπτυξη μία παράστασης"
 msgid "Expand trigonometric expression"
 msgstr "Ανάπτυξη τριγωνομετρικής παράστασης"
 
-#: ../src/ToolBar.cpp:111
+#: ../src/ToolBar.cpp:109
 msgid "Expected the icon files to be found at"
 msgstr ""
 
@@ -1745,7 +1745,7 @@ msgstr "Παραγοντικά και Γάμμα"
 msgid "Fatal error"
 msgstr "Ολέθριο σφάλμα"
 
-#: ../src/GroupCell.cpp:1576
+#: ../src/GroupCell.cpp:1582
 #, fuzzy, c-format
 msgid "Figure %d:"
 msgstr "Σχέδιο"
@@ -1777,7 +1777,7 @@ msgstr "Το αρχείο που προσπαθήσατε να ανοίξετε 
 msgid "File:"
 msgstr "Αρχείο:"
 
-#: ../src/ToolBar.cpp:150
+#: ../src/ToolBar.cpp:148
 msgid "Find"
 msgstr "Εύρεση "
 
@@ -1821,7 +1821,7 @@ msgstr "Εύρεση όλων των ριζών ενός πολυωνύμου(bf
 msgid "Find and Replace"
 msgstr "Εύρεση και Αντικατάσταση"
 
-#: ../src/wxMaximaFrame.cpp:522 ../src/ToolBar.cpp:152
+#: ../src/ToolBar.cpp:150 ../src/wxMaximaFrame.cpp:522
 msgid "Find and replace"
 msgstr "Εύρεση και αντικατάσταση"
 
@@ -1873,7 +1873,7 @@ msgstr "Επιλογή Όλων\tCtrl-A"
 msgid "Fold all sections"
 msgstr ""
 
-#: ../src/ToolBar.cpp:164
+#: ../src/ToolBar.cpp:162
 msgid "Follow"
 msgstr ""
 
@@ -1917,7 +1917,7 @@ msgstr "Γραμματοσειρές"
 msgid "Format:"
 msgstr "Μορφή:"
 
-#: ../src/ToolBar.cpp:88
+#: ../src/ToolBar.cpp:86
 #, c-format
 msgid "Frame %i of %i"
 msgstr ""
@@ -2080,7 +2080,7 @@ msgstr "Αρχείο HTML (*.html)|*.html|pdfLaTeX file (*.tex)|*.tex|All|*"
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr ""
 
-#: ../src/ToolBar.cpp:208
+#: ../src/ToolBar.cpp:206
 msgid "Help"
 msgstr "Βοήθεια"
 
@@ -2424,11 +2424,11 @@ msgstr "Ολοκλήρωση παράστασης"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Ολοκλήρωση παράστασης με τον αλγόριθμο Risch "
 
-#: ../src/wxMaximaFrame.cpp:1223 ../src/MathCtrl.cpp:1045
+#: ../src/MathCtrl.cpp:1045 ../src/wxMaximaFrame.cpp:1223
 msgid "Integrate..."
 msgstr "Ολοκλήρωση..."
 
-#: ../src/ToolBar.cpp:159
+#: ../src/ToolBar.cpp:157
 msgid "Interrupt"
 msgstr "Διακοπή"
 
@@ -2436,7 +2436,7 @@ msgstr "Διακοπή"
 msgid "Interrupt current computation"
 msgstr "Διακοπή τρέχοντος υπολογισμού"
 
-#: ../src/ToolBar.cpp:161
+#: ../src/ToolBar.cpp:159
 msgid ""
 "Interrupt current computation. To completely restart maxima press the button "
 "left to this one."
@@ -2851,7 +2851,7 @@ msgstr ""
 msgid "Name:"
 msgstr "Όνομα:"
 
-#: ../src/ToolBar.cpp:113
+#: ../src/ToolBar.cpp:111
 msgid "New"
 msgstr ""
 
@@ -2860,7 +2860,7 @@ msgstr ""
 msgid "New\tCtrl-N"
 msgstr "Νέο\tCtrl-N"
 
-#: ../src/ToolBar.cpp:115
+#: ../src/ToolBar.cpp:113
 #, fuzzy
 msgid "New document"
 msgstr "Άνοιγμα εγγράφου"
@@ -3002,8 +3002,8 @@ msgstr "t-τεστ ενός δείγματος"
 msgid "Online tutorials"
 msgstr "Online διδακτικές παρουσιάσεις"
 
-#: ../src/ConfigDialogue.cpp:662 ../src/main.cpp:347 ../src/wxMaxima.cpp:2805
-#: ../src/ToolBar.cpp:117
+#: ../src/ConfigDialogue.cpp:662 ../src/main.cpp:347 ../src/ToolBar.cpp:115
+#: ../src/wxMaxima.cpp:2805
 msgid "Open"
 msgstr "Άνοιγμα"
 
@@ -3023,7 +3023,7 @@ msgstr "Άνοιγμα ενός εγγράφου"
 msgid "Open a new window"
 msgstr "Άνοιγμα νέου παραθύρου"
 
-#: ../src/ToolBar.cpp:119
+#: ../src/ToolBar.cpp:117
 msgid "Open document"
 msgstr "Άνοιγμα εγγράφου"
 
@@ -3039,7 +3039,7 @@ msgstr "Άνοιγμα αρχείου"
 msgid "Optimize wxmx files for version control"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:147 ../src/ToolBar.cpp:129
+#: ../src/ConfigDialogue.cpp:147 ../src/ToolBar.cpp:127
 msgid "Options"
 msgstr "Επιλογές"
 
@@ -3112,7 +3112,7 @@ msgid ""
 "Found unknown XML Tag name "
 msgstr "Μέρη του εγγράφου δεν θα φορτωθούν σωστά"
 
-#: ../src/MathCtrl.cpp:1055 ../src/MathCtrl.cpp:1070 ../src/ToolBar.cpp:141
+#: ../src/MathCtrl.cpp:1055 ../src/MathCtrl.cpp:1070 ../src/ToolBar.cpp:139
 msgid "Paste"
 msgstr "Επικόλληση"
 
@@ -3120,7 +3120,7 @@ msgstr "Επικόλληση"
 msgid "Paste\tCtrl-V"
 msgstr "Επικόλληση\tCtrl-V"
 
-#: ../src/ToolBar.cpp:143
+#: ../src/ToolBar.cpp:141
 msgid "Paste from clipboard"
 msgstr "Επικόλληση κειμένου από το πρόχειρο"
 
@@ -3255,11 +3255,11 @@ msgstr ""
 msgid "Previous Command\tAlt-Up"
 msgstr "Προηγούμενη εντολή\tAlt-Up"
 
-#: ../src/ToolBar.cpp:126
+#: ../src/ToolBar.cpp:124
 msgid "Print"
 msgstr "Εκτύπωση"
 
-#: ../src/wxMaximaFrame.cpp:483 ../src/ToolBar.cpp:128
+#: ../src/ToolBar.cpp:126 ../src/wxMaximaFrame.cpp:483
 msgid "Print document"
 msgstr "Εκτύπωση εγγράφου"
 
@@ -3365,7 +3365,7 @@ msgstr "Αναφορά σφάλματος"
 msgid "Restart Maxima"
 msgstr "Επανεκίνηση του Maxima"
 
-#: ../src/ToolBar.cpp:156
+#: ../src/ToolBar.cpp:154
 #, fuzzy
 msgid "Restart maxima"
 msgstr "Επανεκίνηση του Maxima"
@@ -3374,7 +3374,7 @@ msgstr "Επανεκίνηση του Maxima"
 msgid "Result"
 msgstr ""
 
-#: ../src/ToolBar.cpp:165
+#: ../src/ToolBar.cpp:163
 msgid "Return to the cell that is currently being evaluated"
 msgstr ""
 
@@ -3418,8 +3418,8 @@ msgstr "Δείγμα 2:"
 msgid "Sample:"
 msgstr "Δείγμα:"
 
-#: ../src/ConfigDialogue.cpp:787 ../src/wxMaxima.cpp:5937
-#: ../src/ToolBar.cpp:120
+#: ../src/ConfigDialogue.cpp:787 ../src/ToolBar.cpp:118
+#: ../src/wxMaxima.cpp:5937
 msgid "Save"
 msgstr "Αποθήκευση"
 
@@ -3451,7 +3451,7 @@ msgstr "Αποθήκευση επιλογής σε εικόνα..."
 msgid "Save animation to file"
 msgstr "Αποθήκευση εφε κίνησης σε αρχείο"
 
-#: ../src/wxMaximaFrame.cpp:472 ../src/ToolBar.cpp:122
+#: ../src/ToolBar.cpp:120 ../src/wxMaximaFrame.cpp:472
 msgid "Save document"
 msgstr "Αποθήκευση εγγράφου"
 
@@ -3562,7 +3562,7 @@ msgstr "Επιλογή υποδείγματος"
 msgid "Select a constant"
 msgstr "Επιλογή μιας μεταβλητής"
 
-#: ../src/wxMaximaFrame.cpp:525 ../src/ToolBar.cpp:144 ../src/ToolBar.cpp:146
+#: ../src/ToolBar.cpp:142 ../src/ToolBar.cpp:144 ../src/wxMaximaFrame.cpp:525
 msgid "Select all"
 msgstr "Επιλογή όλων"
 
@@ -3669,7 +3669,7 @@ msgstr "Εμφάνιση συμβουλών..."
 msgid "Show &Variables"
 msgstr "Εμφάνιση  μεταβλητών"
 
-#: ../src/ToolBar.cpp:210
+#: ../src/ToolBar.cpp:208
 msgid "Show Maxima help"
 msgstr "Εμφάνιση βοήθειας για το Maxima"
 
@@ -3873,7 +3873,7 @@ msgstr "Επίλυση συνήθους διαφορικής εξίσωσης μ
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "Επίλυση συνήθους διαφορικής εξίσωσης με μετασχηματισμό Laplace"
 
-#: ../src/wxMaximaFrame.cpp:1220 ../src/MathCtrl.cpp:1037
+#: ../src/MathCtrl.cpp:1037 ../src/wxMaximaFrame.cpp:1220
 msgid "Solve..."
 msgstr "Επίλυση..."
 
@@ -3901,12 +3901,12 @@ msgstr "Ειδικές μεταβλητές"
 msgid "Start Animation"
 msgstr "Εκκίνηση εφέ κίνησης"
 
-#: ../src/ToolBar.cpp:188
+#: ../src/ToolBar.cpp:186
 #, fuzzy
 msgid "Start or Stop animation"
 msgstr "Εκκίνηση εφέ κίνησης"
 
-#: ../src/ToolBar.cpp:190
+#: ../src/ToolBar.cpp:188
 msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
@@ -3974,7 +3974,7 @@ msgstr "Αντικατάσταση..."
 msgid "Substitute"
 msgstr "Αντικατάσταση"
 
-#: ../src/wxMaximaFrame.cpp:905 ../src/MathCtrl.cpp:1043
+#: ../src/MathCtrl.cpp:1043 ../src/wxMaximaFrame.cpp:905
 msgid "Substitute..."
 msgstr "Αντικατάσταση..."
 
@@ -4637,7 +4637,7 @@ msgstr "Μεγέθυνση κατά 10%"
 msgid "Zoom out 10%"
 msgstr "Σμίκρυνση κατά 10%"
 
-#: ../src/wxMaximaFrame.cpp:287 ../src/wxMaxima.cpp:5713
+#: ../src/wxMaxima.cpp:5713 ../src/wxMaximaFrame.cpp:287
 msgid "[ unsaved ]"
 msgstr "[ δεν έχει αποθηκευθεί ]"
 
@@ -4976,8 +4976,8 @@ msgstr ""
 msgid "unsaved"
 msgstr "[ δεν έχει αποθηκευθεί ]"
 
-#: ../src/wxMaximaFrame.cpp:289 ../src/wxMaxima.cpp:2566
-#: ../src/wxMaxima.cpp:2834
+#: ../src/wxMaxima.cpp:2566 ../src/wxMaxima.cpp:2834
+#: ../src/wxMaximaFrame.cpp:289
 msgid "untitled"
 msgstr "ανώνυμο"
 
@@ -4995,8 +4995,8 @@ msgstr "Έψιλον:"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaximaFrame.cpp:287 ../src/wxMaxima.cpp:5713
-#: ../src/wxMaxima.cpp:5715 ../src/wxMaxima.cpp:5724 ../src/wxMaxima.cpp:5727
+#: ../src/wxMaxima.cpp:5713 ../src/wxMaxima.cpp:5715 ../src/wxMaxima.cpp:5724
+#: ../src/wxMaxima.cpp:5727 ../src/wxMaximaFrame.cpp:287
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s"

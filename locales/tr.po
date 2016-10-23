@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-17 23:50+0200\n"
+"POT-Creation-Date: 2016-10-22 15:46+0900\n"
 "PO-Revision-Date: 2015-12-13 23:30+0200\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -73,7 +73,7 @@ msgstr ""
 msgid " (Graphics) "
 msgstr "(Grafikler)"
 
-#: ../src/EditorCell.cpp:3109 ../src/EditorCell.cpp:3344
+#: ../src/EditorCell.cpp:3120 ../src/EditorCell.cpp:3359
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
@@ -450,7 +450,7 @@ msgstr "&Başlangıç Şartı"
 msgid "Abort evaluation on error"
 msgstr "Hata oluştuğunda değerlendirmeyi durdur"
 
-#: ../src/wxMaximaFrame.cpp:985 ../src/wxMaxima.cpp:4615
+#: ../src/wxMaxima.cpp:4615 ../src/wxMaximaFrame.cpp:985
 msgid "About"
 msgstr "Hakkında"
 
@@ -514,7 +514,7 @@ msgstr "Ek parametreler:"
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "TeX önsözü için ek satırlar:"
 
-#: ../src/ToolBar.cpp:200 ../src/ToolBar.cpp:244
+#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:242
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -699,7 +699,7 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr "Hata: Math hücresi ait olduğu bir Grup hücresi olmadığını düşünüyor."
 
-#: ../src/GroupCell.cpp:785 ../src/GroupCell.cpp:956
+#: ../src/GroupCell.cpp:791 ../src/GroupCell.cpp:962
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -874,7 +874,7 @@ msgstr "Sürüm bilgisi indirilemiyor."
 msgid "Cancel"
 msgstr "İptal et"
 
-#: ../src/wxMaximaFrame.cpp:125 ../src/wxMaxima.cpp:937
+#: ../src/wxMaxima.cpp:937 ../src/wxMaximaFrame.cpp:125
 msgid "Cannot start the maxima binary"
 msgstr ""
 
@@ -1035,7 +1035,7 @@ msgstr "Kelimeyi tamamla \tCtrl-K"
 msgid "Complete word"
 msgstr "Kelimeyi tamamla"
 
-#: ../src/ToolBar.cpp:158
+#: ../src/ToolBar.cpp:156
 msgid "Completely stop maxima and restart it"
 msgstr "Maxima'yı tamamen kapatın ve yeniden başlatın"
 
@@ -1079,8 +1079,8 @@ msgstr "Config dosyası (*.ini)|*.ini"
 msgid "Configuration warning"
 msgstr "Yapılandırma uyarısı"
 
-#: ../src/wxMaximaFrame.cpp:537 ../src/wxMaximaFrame.cpp:540
-#: ../src/ToolBar.cpp:131
+#: ../src/ToolBar.cpp:129 ../src/wxMaximaFrame.cpp:537
+#: ../src/wxMaximaFrame.cpp:540
 msgid "Configure wxMaxima"
 msgstr "Maxima'yı yapılandır"
 
@@ -1147,7 +1147,7 @@ msgid "Convert trigonometric functions to exponential form"
 msgstr "Trigonometric ifadeyi üstel forma dönüştür"
 
 #: ../src/MathCtrl.cpp:963 ../src/MathCtrl.cpp:976 ../src/MathCtrl.cpp:1022
-#: ../src/MathCtrl.cpp:1069 ../src/ToolBar.cpp:138
+#: ../src/MathCtrl.cpp:1069 ../src/ToolBar.cpp:136
 msgid "Copy"
 msgstr "Kopyala"
 
@@ -1159,13 +1159,13 @@ msgstr "Bir önceki girdiyi Kopyala\tCtrl-I"
 msgid "Copy Previous Output\tCtrl-U"
 msgstr "Bir önceki çıktıyı Kopyala\tCtrl-I"
 
-#: ../src/wxMaximaFrame.cpp:513 ../src/MathCtrl.cpp:981
-#: ../src/MathCtrl.cpp:1027
+#: ../src/MathCtrl.cpp:981 ../src/MathCtrl.cpp:1027
+#: ../src/wxMaximaFrame.cpp:513
 msgid "Copy as Image"
 msgstr "Resim olarak Kopyala"
 
-#: ../src/wxMaximaFrame.cpp:506 ../src/MathCtrl.cpp:977
-#: ../src/MathCtrl.cpp:1023
+#: ../src/MathCtrl.cpp:977 ../src/MathCtrl.cpp:1023
+#: ../src/wxMaximaFrame.cpp:506
 msgid "Copy as LaTeX"
 msgstr "LaTeX metni olarak Kopyala"
 
@@ -1187,7 +1187,7 @@ msgstr "Düz metin olarak Kopyala\tCtrl-Shift-C"
 msgid "Copy as plain text"
 msgstr "Resim olarak Kopyala"
 
-#: ../src/wxMaximaFrame.cpp:502 ../src/ToolBar.cpp:140
+#: ../src/ToolBar.cpp:138 ../src/wxMaximaFrame.cpp:502
 msgid "Copy selection"
 msgstr "Seçimi Kopyala"
 
@@ -1221,7 +1221,7 @@ msgstr "Bir önceki çıktı ile yeni bir hücre oluştur"
 msgid "Cursor"
 msgstr "İmleç"
 
-#: ../src/MathCtrl.cpp:1068 ../src/ToolBar.cpp:135
+#: ../src/MathCtrl.cpp:1068 ../src/ToolBar.cpp:133
 msgid "Cut"
 msgstr "Kes"
 
@@ -1229,7 +1229,7 @@ msgstr "Kes"
 msgid "Cut\tCtrl-X"
 msgstr "Kes\tCtrl-X"
 
-#: ../src/wxMaximaFrame.cpp:499 ../src/ToolBar.cpp:137
+#: ../src/ToolBar.cpp:135 ../src/wxMaximaFrame.cpp:499
 msgid "Cut selection"
 msgstr "Seçimi kes"
 
@@ -1370,7 +1370,7 @@ msgstr "İfadenin diferansiyelini al"
 msgid "Differentiate..."
 msgstr "Diferansiyelini al"
 
-#: ../src/LimitWiz.cpp:37 ../src/FindReplacePane.cpp:76
+#: ../src/FindReplacePane.cpp:76 ../src/LimitWiz.cpp:37
 msgid "Direction:"
 msgstr "Uyarı:"
 
@@ -1582,7 +1582,7 @@ msgstr "Bütün Hücreleri Değerlendir \tCtrl-R"
 msgid "Evaluate All Visible Cells\tCtrl-R"
 msgstr "Görünen bütün hücreleri Değerlendir \tCtrl-R"
 
-#: ../src/wxMaximaFrame.cpp:584 ../src/MathCtrl.cpp:987
+#: ../src/MathCtrl.cpp:987 ../src/wxMaximaFrame.cpp:584
 msgid "Evaluate Cell(s)"
 msgstr "Hücre(leri) Değerlendir"
 
@@ -1623,11 +1623,11 @@ msgstr "İfadedeki bütün isim formlarını değerlendir"
 msgid "Evaluate all visible cells in the document"
 msgstr "Belgedeki Görünen bütün hücreleri değerlendir"
 
-#: ../src/ToolBar.cpp:170
+#: ../src/ToolBar.cpp:168
 msgid "Evaluate the file from its beginning to the cell above the cursor"
 msgstr "Dosyayı başlangıcından imlecin üstündeki hücreye kadar değerlendir"
 
-#: ../src/ToolBar.cpp:168
+#: ../src/ToolBar.cpp:166
 msgid "Evaluate to point"
 msgstr "Noktaya Değerlendir "
 
@@ -1672,7 +1672,7 @@ msgstr "Bir ifadeyi genişlet"
 msgid "Expand trigonometric expression"
 msgstr "Trigonometric ifadeyi genişlet"
 
-#: ../src/ToolBar.cpp:111
+#: ../src/ToolBar.cpp:109
 msgid "Expected the icon files to be found at"
 msgstr "Simge dosyalarının bulunması beklenen yer"
 
@@ -1759,7 +1759,7 @@ msgstr "Faktöriyeller ve &Gamma "
 msgid "Fatal error"
 msgstr "Ölümcül Hata"
 
-#: ../src/GroupCell.cpp:1576
+#: ../src/GroupCell.cpp:1582
 #, c-format
 msgid "Figure %d:"
 msgstr "Şekil %d:"
@@ -1789,7 +1789,7 @@ msgstr "Açmaya çalıştığınız dosya yok"
 msgid "File:"
 msgstr "Dosya"
 
-#: ../src/ToolBar.cpp:150
+#: ../src/ToolBar.cpp:148
 msgid "Find"
 msgstr "Bul"
 
@@ -1833,7 +1833,7 @@ msgstr "(Büyük kayan sayı) polinomun bütün köklerini bul"
 msgid "Find and Replace"
 msgstr "Bul ve yerleştir"
 
-#: ../src/wxMaximaFrame.cpp:522 ../src/ToolBar.cpp:152
+#: ../src/ToolBar.cpp:150 ../src/wxMaximaFrame.cpp:522
 msgid "Find and replace"
 msgstr "Bul ve yerleştir"
 
@@ -1885,7 +1885,7 @@ msgstr "Hepsini Klasörle\tCtrl-A-["
 msgid "Fold all sections"
 msgstr "Bütün bölümleri Klasörle"
 
-#: ../src/ToolBar.cpp:164
+#: ../src/ToolBar.cpp:162
 msgid "Follow"
 msgstr "İzle"
 
@@ -1934,7 +1934,7 @@ msgstr "Yazı Tipleri"
 msgid "Format:"
 msgstr "Format:"
 
-#: ../src/ToolBar.cpp:88
+#: ../src/ToolBar.cpp:86
 #, c-format
 msgid "Frame %i of %i"
 msgstr "Çerçeve %i nın %i'si"
@@ -2100,7 +2100,7 @@ msgstr ""
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr "HTML/Metin Hücreleri: Bütün satır kesmelerini çıkarım yap"
 
-#: ../src/ToolBar.cpp:208
+#: ../src/ToolBar.cpp:206
 msgid "Help"
 msgstr "Yardım"
 
@@ -2449,11 +2449,11 @@ msgstr "İfadenin İntegralini Al"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Risch algoritmasıyla İntegralini al"
 
-#: ../src/wxMaximaFrame.cpp:1223 ../src/MathCtrl.cpp:1045
+#: ../src/MathCtrl.cpp:1045 ../src/wxMaximaFrame.cpp:1223
 msgid "Integrate..."
 msgstr "İntegralini Al..."
 
-#: ../src/ToolBar.cpp:159
+#: ../src/ToolBar.cpp:157
 msgid "Interrupt"
 msgstr "Yarıda Kes"
 
@@ -2461,7 +2461,7 @@ msgstr "Yarıda Kes"
 msgid "Interrupt current computation"
 msgstr "Yapılan İşlemi Yarıda Kes"
 
-#: ../src/ToolBar.cpp:161
+#: ../src/ToolBar.cpp:159
 msgid ""
 "Interrupt current computation. To completely restart maxima press the button "
 "left to this one."
@@ -2892,7 +2892,7 @@ msgstr ""
 msgid "Name:"
 msgstr "İsim:"
 
-#: ../src/ToolBar.cpp:113
+#: ../src/ToolBar.cpp:111
 msgid "New"
 msgstr "Yeni"
 
@@ -2900,7 +2900,7 @@ msgstr "Yeni"
 msgid "New\tCtrl-N"
 msgstr "Yeni\tCtrl-N"
 
-#: ../src/ToolBar.cpp:115
+#: ../src/ToolBar.cpp:113
 msgid "New document"
 msgstr "Yeni belge"
 
@@ -3047,8 +3047,8 @@ msgstr "Bir örnek t-testi"
 msgid "Online tutorials"
 msgstr "Çevirimiçi Çalışma Notları"
 
-#: ../src/ConfigDialogue.cpp:662 ../src/main.cpp:347 ../src/wxMaxima.cpp:2805
-#: ../src/ToolBar.cpp:117
+#: ../src/ConfigDialogue.cpp:662 ../src/main.cpp:347 ../src/ToolBar.cpp:115
+#: ../src/wxMaxima.cpp:2805
 msgid "Open"
 msgstr "Aç"
 
@@ -3068,7 +3068,7 @@ msgstr "Bir Belge Aç"
 msgid "Open a new window"
 msgstr "Yeni Bir Pencere Aç"
 
-#: ../src/ToolBar.cpp:119
+#: ../src/ToolBar.cpp:117
 msgid "Open document"
 msgstr "Belge Aç"
 
@@ -3084,7 +3084,7 @@ msgstr "Dosya açılıyor"
 msgid "Optimize wxmx files for version control"
 msgstr "sürüm kontrolünde wxmx dosyalarını optimize et"
 
-#: ../src/ConfigDialogue.cpp:147 ../src/ToolBar.cpp:129
+#: ../src/ConfigDialogue.cpp:147 ../src/ToolBar.cpp:127
 msgid "Options"
 msgstr "Seçenekler"
 
@@ -3157,7 +3157,7 @@ msgid ""
 "Found unknown XML Tag name "
 msgstr "Belgenin parçaları düzgün olarak yüklenemedi!"
 
-#: ../src/MathCtrl.cpp:1055 ../src/MathCtrl.cpp:1070 ../src/ToolBar.cpp:141
+#: ../src/MathCtrl.cpp:1055 ../src/MathCtrl.cpp:1070 ../src/ToolBar.cpp:139
 msgid "Paste"
 msgstr "Yapıştır"
 
@@ -3165,7 +3165,7 @@ msgstr "Yapıştır"
 msgid "Paste\tCtrl-V"
 msgstr "Yapıştır\tCtrl-V"
 
-#: ../src/ToolBar.cpp:143
+#: ../src/ToolBar.cpp:141
 msgid "Paste from clipboard"
 msgstr "Panodan Yapıştır"
 
@@ -3301,11 +3301,11 @@ msgstr ""
 msgid "Previous Command\tAlt-Up"
 msgstr "Bir Önceki Komut\tAlt-Up"
 
-#: ../src/ToolBar.cpp:126
+#: ../src/ToolBar.cpp:124
 msgid "Print"
 msgstr "Yazdır"
 
-#: ../src/wxMaximaFrame.cpp:483 ../src/ToolBar.cpp:128
+#: ../src/ToolBar.cpp:126 ../src/wxMaximaFrame.cpp:483
 msgid "Print document"
 msgstr "Belgeyi Yazdır"
 
@@ -3408,7 +3408,7 @@ msgstr "Hatayı Bildir"
 msgid "Restart Maxima"
 msgstr "Maxima'yı Yeniden Başlat"
 
-#: ../src/ToolBar.cpp:156
+#: ../src/ToolBar.cpp:154
 msgid "Restart maxima"
 msgstr "Maxima'yı Yeniden Başlat"
 
@@ -3416,7 +3416,7 @@ msgstr "Maxima'yı Yeniden Başlat"
 msgid "Result"
 msgstr "Sonuç"
 
-#: ../src/ToolBar.cpp:165
+#: ../src/ToolBar.cpp:163
 msgid "Return to the cell that is currently being evaluated"
 msgstr "Değerlendirilmekte olan hücreye dön"
 
@@ -3460,8 +3460,8 @@ msgstr "Örnek 2:"
 msgid "Sample:"
 msgstr "Örnek:"
 
-#: ../src/ConfigDialogue.cpp:787 ../src/wxMaxima.cpp:5937
-#: ../src/ToolBar.cpp:120
+#: ../src/ConfigDialogue.cpp:787 ../src/ToolBar.cpp:118
+#: ../src/wxMaxima.cpp:5937
 msgid "Save"
 msgstr "Kaydet"
 
@@ -3493,7 +3493,7 @@ msgstr "Seçileni Resim Olarak Kaydet..."
 msgid "Save animation to file"
 msgstr "Animasyonu Dosyaya Kaydet"
 
-#: ../src/wxMaximaFrame.cpp:472 ../src/ToolBar.cpp:122
+#: ../src/ToolBar.cpp:120 ../src/wxMaximaFrame.cpp:472
 msgid "Save document"
 msgstr "Belgeyi Kaydet"
 
@@ -3613,7 +3613,7 @@ msgstr "Alt Örnek Seç"
 msgid "Select a constant"
 msgstr "Bir Sabit Seç"
 
-#: ../src/wxMaximaFrame.cpp:525 ../src/ToolBar.cpp:144 ../src/ToolBar.cpp:146
+#: ../src/ToolBar.cpp:142 ../src/ToolBar.cpp:144 ../src/wxMaximaFrame.cpp:525
 msgid "Select all"
 msgstr "Tümünü Seç"
 
@@ -3719,7 +3719,7 @@ msgstr "Göster &Yararlı Öneriler..."
 msgid "Show &Variables"
 msgstr "Göster &Değişken"
 
-#: ../src/ToolBar.cpp:210
+#: ../src/ToolBar.cpp:208
 msgid "Show Maxima help"
 msgstr "Maxima Yardımını Göster"
 
@@ -3921,7 +3921,7 @@ msgstr "En Yüksek İkinci Derece olan ADD yi Çöz"
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "ADD leri Laplace Dönüşümü ile Çöz"
 
-#: ../src/wxMaximaFrame.cpp:1220 ../src/MathCtrl.cpp:1037
+#: ../src/MathCtrl.cpp:1037 ../src/wxMaximaFrame.cpp:1220
 msgid "Solve..."
 msgstr "Çöz..."
 
@@ -3952,11 +3952,11 @@ msgstr "Özel Sabitler"
 msgid "Start Animation"
 msgstr "Animasyonu Başlat"
 
-#: ../src/ToolBar.cpp:188
+#: ../src/ToolBar.cpp:186
 msgid "Start or Stop animation"
 msgstr "Animasyonu Başlat yada Durdur"
 
-#: ../src/ToolBar.cpp:190
+#: ../src/ToolBar.cpp:188
 msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
@@ -4026,7 +4026,7 @@ msgstr "Yerine koy..."
 msgid "Substitute"
 msgstr "Yerine koy"
 
-#: ../src/wxMaximaFrame.cpp:905 ../src/MathCtrl.cpp:1043
+#: ../src/MathCtrl.cpp:1043 ../src/wxMaximaFrame.cpp:905
 msgid "Substitute..."
 msgstr "Yerine koy..."
 
@@ -4694,7 +4694,7 @@ msgstr "%10 yakınlaştır"
 msgid "Zoom out 10%"
 msgstr "%10 uzaklaştır"
 
-#: ../src/wxMaximaFrame.cpp:287 ../src/wxMaxima.cpp:5713
+#: ../src/wxMaxima.cpp:5713 ../src/wxMaximaFrame.cpp:287
 msgid "[ unsaved ]"
 msgstr "[Kaydedilmemiş]"
 
@@ -5025,8 +5025,8 @@ msgstr "birleşim"
 msgid "unsaved"
 msgstr "kaydedilmemiş"
 
-#: ../src/wxMaximaFrame.cpp:289 ../src/wxMaxima.cpp:2566
-#: ../src/wxMaxima.cpp:2834
+#: ../src/wxMaxima.cpp:2566 ../src/wxMaxima.cpp:2834
+#: ../src/wxMaximaFrame.cpp:289
 msgid "untitled"
 msgstr "Başlıksız"
 
@@ -5044,8 +5044,8 @@ msgstr "Epsilon"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaximaFrame.cpp:287 ../src/wxMaxima.cpp:5713
-#: ../src/wxMaxima.cpp:5715 ../src/wxMaxima.cpp:5724 ../src/wxMaxima.cpp:5727
+#: ../src/wxMaxima.cpp:5713 ../src/wxMaxima.cpp:5715 ../src/wxMaxima.cpp:5724
+#: ../src/wxMaxima.cpp:5727 ../src/wxMaximaFrame.cpp:287
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "
