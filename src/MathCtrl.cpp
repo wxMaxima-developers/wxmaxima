@@ -4478,7 +4478,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
             else
             {
               wxString line = chunk->ListToMathML();            
-              output<<wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">")<<line<<wxT("</math>\n");
+              output<<wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\">")<<line<<wxT("</math>\n");
             }
           }
           else
