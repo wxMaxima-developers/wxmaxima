@@ -3311,6 +3311,10 @@ void EditorCell::StyleText()
     // Remove all soft line breaks. They will be re-added in the right places
     // in the next step
     m_text.Replace(wxT("\r"),wxT(" "));
+
+    // Remove all bullets of item lists as we will introduce them again in the next
+    // step
+    m_text.Replace(wxT("\x2022"),wxT("*"));
     
     // Insert new soft line breaks where we hit the right border of the worksheet, if
     // this has been requested in the config dialogue
@@ -3348,8 +3352,10 @@ void EditorCell::StyleText()
           }
           else
           {
-            if(*it == ' ')
+            // Spaces and the end of the text trigger auto-wrapping
+            if((*it == ' ')||(i == m_text.Length() - 1))
             {
+              // Does the line indent beyond the right edge of the screen?
               parser->GetDC().GetTextExtent(m_text.SubString(lastLineStart,i), &width, &height);
               if((!indentPixels.empty())&&(!newLine))
                 indentation = indentPixels.back();
@@ -3357,7 +3363,8 @@ void EditorCell::StyleText()
                 indentation = 0;
               if(width + m_currentPoint.x + indentation >= parser->GetClientWidth())
               {
-                // We need a line break
+                // We need a line break. Does the current line contain a space we can
+                // break the line at?
                 if(lastSpace > 0)
                 {
                   m_text[lastSpace] = wxT('\r');
@@ -3371,16 +3378,19 @@ void EditorCell::StyleText()
                 }
                 else
                 {
-                  
-                  *it = wxT('\r');
-                  line = m_text.SubString(lastLineStart,i-1);
-                  lastLineStart = i+1;
-                  lastSpace = 0;
-                  
+                  if(*it == wxT(' '))
+                  {
+                    *it = wxT('\r');
+                    line = m_text.SubString(lastLineStart,i-1);
+                    lastLineStart = i+1;
+                    lastSpace = 0;
+                  }
                 }
               }
             }
           }
+
+          // Remember the current space as a point we potentially can break lines at
           if(*it == ' ')
           {
             lastSpace = i;
@@ -3389,7 +3399,8 @@ void EditorCell::StyleText()
           it++;
           i++;
         }
-        // Extract the last line.
+        
+        // If this is the last line of the text we still need to extract it.
         if(i==m_text.Length())
           line = m_text.SubString(lastLineStart,i-1);
 
@@ -3418,6 +3429,7 @@ void EditorCell::StyleText()
           line_trimmed.Trim(false);
           if(
             (line_trimmed.StartsWith(wxT("* "))) ||
+            (line_trimmed.StartsWith(wxT("\x2022 "))) ||
             (line_trimmed.StartsWith(wxT("\xB7 "))) ||
             (line_trimmed.StartsWith(wxT("> ")))
             )
@@ -3430,12 +3442,21 @@ void EditorCell::StyleText()
             CellParser *parser = CellParser::Get();
             wxDC& dc = parser->GetDC();
             
-            // Remember how far to indent subsequent lines
             indentChar = line.Left(line.Length()-line_trimmed.Length() + 2);
+            
+            // Remember how far to indent subsequent lines
             dc.GetTextExtent(indentChar,&width, &height);
+
+            // Every line of a Quote begins with a ">":
             if(!line_trimmed.StartsWith(wxT("> ")))
               indentChar = wxEmptyString;
-
+            
+            // Equip bullet lists with real bullets
+            if (line_trimmed.StartsWith(wxT("* ")))
+              line[line.find("*")] = wxT('\x2022');
+            if (line_trimmed.StartsWith(wxT("\xB7 ")))
+              line[line.find("\xB7")] = wxT('\x2022');
+            
             // We don't need additional indentation as this line is already indented by
             // the spaces and the indent marker at it's beginning.
             indentation = 0;
