@@ -44,6 +44,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
 {
   m_userSymbols = NULL;
   m_EvaluationQueueLength = 0;
+  m_commandsLeftInCurrentCell = 0;
   m_forceStatusbarUpdate = false;
   m_manager.SetManagedWindow(this);
   // console

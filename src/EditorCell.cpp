@@ -3342,7 +3342,7 @@ void EditorCell::StyleText()
         // Extract a line inserting a soft linebreak if necessary
         while(it!=m_text.end())
         {
-          if(*it=='\n')||(i+1 >= m_text.Length()))
+          if((*it=='\n')||(i+1 >= m_text.Length()))
           {
             if(lastSpace > 0)
             {
