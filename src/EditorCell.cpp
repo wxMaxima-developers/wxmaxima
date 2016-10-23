@@ -3370,7 +3370,7 @@ void EditorCell::StyleText()
             }
             
             line = m_text.SubString(lastLineStart,i-1);
-            lastLineStart = i + 1;
+            lastLineStart = i+1;
             lastSpace = 0;
             indentation = 0;
             break;
