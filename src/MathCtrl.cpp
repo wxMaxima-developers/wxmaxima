@@ -40,6 +40,7 @@
 #include "ImgCell.h"
 #include "MarkDown.h"
 #include "ContentAssistantPopup.h"
+#include "ConfigDialogue.h"
 
 #include <wx/clipbrd.h>
 #include <wx/caret.h>
@@ -3919,9 +3920,13 @@ bool MathCtrl::ExportToHTML(wxString file) {
   wxString path, filename, ext;
   wxConfigBase* config= wxConfig::Get();
 
-  bool mathjax = true;
-  config->Read(wxT("exportWithMathJAX"), &mathjax);
-  
+  ConfigDialogue::htmlExportFormats htmlEquationFormat = ConfigDialogue::mathJaX_TeX;
+  {
+    int tmp = htmlEquationFormat;
+    config->Read(wxT("HTMLequationFormat"), &tmp);
+    htmlEquationFormat = (ConfigDialogue::htmlExportFormats)tmp;
+  }
+  std::cerr <<htmlEquationFormat<<"\n";
   int count = 0;
   GroupCell *tmp = m_tree;
   MarkDownHTML MarkDown;    
@@ -3973,7 +3978,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
 // Write styles
 //////////////////////////////////////////////
 
-  if (mathjax)
+  if (htmlEquationFormat != ConfigDialogue::bitmap)
   {
     output << wxT("<script type=\"text/x-mathjax-config\">") << endl;
     output << wxT("  MathJax.Hub.Config({") << endl;
@@ -4352,7 +4357,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   output<<wxT("<!--          Created with wxMaxima version ") + version + wxT("         -->\n");
   output<<wxT("<!-- ***************************************************** -->\n");
 
-  if (mathjax)
+  if (htmlEquationFormat != ConfigDialogue::bitmap)
   {
     // Tell users that have disabled JavaScript why they don't get 2d maths.
     output << wxT("<noscript>");
@@ -4449,31 +4454,32 @@ bool MathCtrl::ExportToHTML(wxString file) {
               filename +
               wxString::Format(_("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"), count);
           }
-          else if (mathjax &&
-                   (chunk->GetType() != MC_TYPE_IMAGE)) {
-            wxString line = chunk->ListToTeX();
-        
-            line.Replace(wxT("<"), wxT("&lt;"));
-            line.Replace(wxT(">"), wxT("&gt;"));
-            // Work around a known limitation in MathJaX: According to
-            // https://github.com/mathjax/MathJax/issues/569 Non-Math Text will still
-            // be interpreted as Text, not as TeX for a long while.
-            //
-            // Removing the "\%o1" by "%o1" currently works fine. But it will
-            // break things if MathJaX will ever start interpreting % as a comment
-            // character like TeX dows. Perhaps a lesser evil is to remove the %
-            // altogether.
-            line.Replace(wxT("\\tag{\\%{}"),wxT("\\tag{"));
-
-            output<<wxT("\\[")<<line<<wxT("\\]\n");
-/*	The following is faster to render but not really there (April 2016):
-           - Firefox and Opera still don't print out equation numbers
-           - MathaJaX doesn't currently correct this
-           - And the combination of MathJaX and IE fails to display nice fractions.
-
-            wxString line = chunk->ListToMathML();            
-            output<<wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">")<<line<<wxT("</math>\n");
-*/
+          else if ((htmlEquationFormat != ConfigDialogue::bitmap) &&
+                   (chunk->GetType() != MC_TYPE_IMAGE))
+          {
+            if(htmlEquationFormat == ConfigDialogue::mathJaX_TeX)
+            {
+              wxString line = chunk->ListToTeX();
+              
+              line.Replace(wxT("<"), wxT("&lt;"));
+              line.Replace(wxT(">"), wxT("&gt;"));
+              // Work around a known limitation in MathJaX: According to
+              // https://github.com/mathjax/MathJax/issues/569 Non-Math Text will still
+              // be interpreted as Text, not as TeX for a long while.
+              //
+              // Removing the "\%o1" by "%o1" currently works fine. But it will
+              // break things if MathJaX will ever start interpreting % as a comment
+              // character like TeX dows. Perhaps a lesser evil is to remove the %
+              // altogether.
+              line.Replace(wxT("\\tag{\\%{}"),wxT("\\tag{"));
+              
+              output<<wxT("\\[")<<line<<wxT("\\]\n");
+            }
+            else
+            {
+              wxString line = chunk->ListToMathML();            
+              output<<wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">")<<line<<wxT("</math>\n");
+            }
           }
           else
           {

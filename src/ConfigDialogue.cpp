@@ -191,7 +191,7 @@ void ConfigDialogue::SetProperties()
   m_bitmapScale->SetToolTip(_("Normally html expects images to be rather low-res but space saving. These images tend to look rather blurry when viewed on modern screens. Therefore this setting was introduces that selects the factor by which the HTML export increases the resolution in respect to the default value."));
   m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HTML. But sometimes the maxima input does scare the user. This option turns off exporting of maxima's input."));
   m_exportContainsWXMX->SetToolTip(_("If this option is set the .wxmx source of the current file is copied to a place a link to is put into the result of an export."));
-  m_exportWithMathJAX->SetToolTip(_("Use MathJAX instead of images in HTML exports to display maxima output. The advantage of MathJAX is that it allows to copy the displayed equations as if they were text, to choose if they should be copied as TeX or MathML instead and displays them in a scaleable format that is really nice to look at. The disadvantage of MathJAX is that it will need JavaScript and a little bit of time in order to typeset an equation."));
+  m_exportWithMathJAX->SetToolTip(_("MathJAX creates scalable High-Quality representations of 2D Maths that can be used for Drag-And-Drop and provides accessability options. The disadvantage of MathJAX is that it needs JavaScript and a little bit of time in order to typeset equations.\nMathML is much faster than MathJaX, if it is supported by the browser. But many MathML implementations tend to lack necessary features.\nBitmaps tend to need more band width than the other two options. They lack support for advanced features like drag-and-drop or accessibility. Also they have problems aligning and scaling with the rest of the text and might use fonts that don't match the rest of the document."));
   m_savePanes->SetToolTip(_("Save panes layout between sessions."));
   m_usepngCairo->SetToolTip(_("The pngCairo terminal offers much better graphics quality (antialiassing and additional line styles). But it will only produce plots if the gnuplot installed on the current system actually supports it."));
   m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
@@ -228,8 +228,8 @@ void ConfigDialogue::SetProperties()
     openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false,
     usePartialForDiff = false,
     wrapLatexMath = true,
-    flowedTextRequested = true, exportInput = true, exportContainsWXMX = false,
-    exportWithMathJAX = true;
+    flowedTextRequested = true, exportInput = true, exportContainsWXMX = false;
+  int exportWithMathJAX = 0;
   bool insertAns = true;
   bool autoIndent = true;
   bool cursorJump = true;
@@ -284,7 +284,7 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("flowedTextRequested"), &flowedTextRequested);
   config->Read(wxT("exportInput"), &exportInput);
   config->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
-  config->Read(wxT("exportWithMathJAX"), &exportWithMathJAX);
+  config->Read(wxT("HTMLequationFormat"), &exportWithMathJAX);
   config->Read(wxT("pos-restore"), &rs);
   config->Read(wxT("matchParens"), &match);
   config->Read(wxT("showLength"), &showLength);
@@ -363,7 +363,7 @@ void ConfigDialogue::SetProperties()
   m_flowedTextRequested->SetValue(flowedTextRequested);
   m_exportInput->SetValue(exportInput);
   m_exportContainsWXMX->SetValue(exportContainsWXMX);
-  m_exportWithMathJAX->SetValue(exportWithMathJAX);
+  m_exportWithMathJAX->SetSelection(exportWithMathJAX);
   m_matchParens->SetValue(match);
   m_showLength->SetSelection(showLength);
   m_autosubscript->SetSelection(autosubscript);
@@ -503,8 +503,8 @@ wxPanel* ConfigDialogue::CreateExportPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(4, 2, 5, 5);
-  wxFlexGridSizer* vsizer = new wxFlexGridSizer(18,1,5,5);
+  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(5, 2, 5, 5);
+  wxFlexGridSizer* vsizer = new wxFlexGridSizer(17,1,5,5);
 
   wxStaticText *dc = new wxStaticText(panel, -1, _("Documentclass for TeX export:"));
   m_documentclass = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, wxDefaultSize.GetY()));
@@ -522,6 +522,15 @@ wxPanel* ConfigDialogue::CreateExportPanel()
   grid_sizer->Add(bs, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_bitmapScale, 0, wxALL, 5);  
 
+  wxStaticText* mj = new wxStaticText(panel, -1, _("Export equations to HTML as:"));
+  wxArrayString mathJaxChoices;
+  mathJaxChoices.Add(_("TeX, interpreted by MathJaX"));
+  mathJaxChoices.Add(_("Bitmaps"));
+  mathJaxChoices.Add(_("MathML + MathJaX as Fill-In"));
+  m_exportWithMathJAX = new wxChoice(panel,-1,wxDefaultPosition,wxDefaultSize,mathJaxChoices);
+  grid_sizer->Add(mj, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_exportWithMathJAX, 0, wxALL, 5);  
+  
   m_AnimateLaTeX = new wxCheckBox(panel, -1, _("Export animations to TeX (Images only move if the PDF viewer supports this)"));
   vsizer->Add(m_AnimateLaTeX, 0, wxALL, 5);
 
@@ -543,9 +552,6 @@ wxPanel* ConfigDialogue::CreateExportPanel()
   m_exportContainsWXMX = new wxCheckBox(panel, -1, _("Add the .wxmx file to the HTML export"));
   vsizer->Add(m_exportContainsWXMX, 0, wxALL, 5);
 
-  m_exportWithMathJAX = new wxCheckBox(panel, -1, _("Use MathJAX in HTML export"));
-  vsizer->Add(m_exportWithMathJAX, 0, wxALL, 5);
-  
   vsizer->AddGrowableRow(10);
   panel->SetSizer(vsizer);
   vsizer->Fit(panel);
@@ -881,7 +887,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("flowedTextRequested"), m_flowedTextRequested->GetValue());
   config->Write(wxT("exportInput"), m_exportInput->GetValue());
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX->GetValue());
-  config->Write(wxT("exportWithMathJAX"), m_exportWithMathJAX->GetValue());
+  config->Write(wxT("HTMLequationFormat"), m_exportWithMathJAX->GetSelection());
   config->Write(wxT("usejsmath"), m_useJSMath->GetValue());
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
   config->Write(wxT("texPreamble"), m_texPreamble->GetValue());

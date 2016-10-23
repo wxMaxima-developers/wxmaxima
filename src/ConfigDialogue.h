@@ -132,6 +132,13 @@ public:
   //! The destructor
   ~ConfigDialogue();
 
+  //! The export formats we support for HTML equations
+  enum htmlExportFormats{
+      mathJaX_TeX=0,
+      bitmap=1,
+      mathML_mathJaX=2
+    };
+
   /*! Called if the color of an item has been changed 
 
     called from class ColorPanel
@@ -200,7 +207,7 @@ protected:
   //! A checkbox that asks if we want to export the input for maxima, as well.
   wxCheckBox* m_exportInput;
   wxCheckBox* m_exportContainsWXMX;
-  wxCheckBox* m_exportWithMathJAX;
+  wxChoice* m_exportWithMathJAX;
   wxCheckBox* m_matchParens;
   wxChoice* m_showLength;
   wxChoice* m_autosubscript;
