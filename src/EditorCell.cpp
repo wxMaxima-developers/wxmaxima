@@ -2650,7 +2650,8 @@ void EditorCell::SetSelection(int start, int end)
         MIN(m_selectionStart, m_selectionEnd),
         MAX(m_selectionStart, m_selectionEnd) - 1
         );
-  }  
+    m_selectionString.Replace(wxT('\r'),wxT(' '));
+  }
 }
 
 void EditorCell::CommentSelection()
@@ -3408,6 +3409,7 @@ void EditorCell::StyleText()
                     line = m_text.SubString(lastLineStart,i-1);
                     lastLineStart = i+1;
                     lastSpace = 0;
+                    break;
                   }
                 }
               }
