@@ -3313,7 +3313,7 @@ void EditorCell::StyleText()
     m_text.Replace(wxT("\r"),wxT(" "));
 
     // Remove all bullets of item lists as we will introduce them again in the next
-    // step
+    // step, as well.
     m_text.Replace(wxT("\x2022"),wxT("*"));
     
     // Insert new soft line breaks where we hit the right border of the worksheet, if
@@ -3358,7 +3358,7 @@ void EditorCell::StyleText()
                 if(lastSpace > 0)
                 {
                   m_text[lastSpace] = wxT('\r');
-                  line = m_text.SubString(lastLineStart,lastSpace - 1);
+                  line = m_text.SubString(lastLineStart,lastSpace-1);
                   i = lastSpace + 1;
                   lastLineStart = i;
                   it = lastSpaceIt;
@@ -3368,8 +3368,11 @@ void EditorCell::StyleText()
                 }
               }
             }
-            
-            line = m_text.SubString(lastLineStart,i-1);
+            if(*it=='\n')
+              line = m_text.SubString(lastLineStart,i-1);
+            else
+              line = m_text.SubString(lastLineStart,i);
+              
             lastLineStart = i+1;
             lastSpace = 0;
             indentation = 0;
