@@ -819,18 +819,18 @@ wxString EditorCell::TabExpand(wxString input, long posInLine)
   input.Replace(wxT("\r\n"),wxT("\n"));
 
   size_t index = 0;
-  while(index < input.Length())
+  
+  wxString::iterator ch = input.begin();
+  while(ch != input.end())
   {
-    wxChar ch = input[index++];
-
-    if((ch == wxT('\n')) || (ch == wxT('\r')))
+    if((*ch == wxT('\n')))
     {
       posInLine = 0;
-      retval += ch;
+      retval += *ch;
       continue;
     }
 
-    if(ch == wxT('\t'))
+    if(*ch == wxT('\t'))
     {
       switch(posInLine - (posInLine / 4) * 4)
       {
@@ -850,7 +850,8 @@ wxString EditorCell::TabExpand(wxString input, long posInLine)
       posInLine = 0;
       continue;
     }
-    retval += ch;
+    retval += *ch;
+    ch++;
     posInLine ++;
   }
   // TODO: Implement the actual TAB expansion
