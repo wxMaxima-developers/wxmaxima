@@ -1933,6 +1933,9 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent& event)
       }
     }
   } // end if (insertLetter)
+
+  if(m_type == MC_TYPE_INPUT)
+    StyleText();
   return true;
 }
 
