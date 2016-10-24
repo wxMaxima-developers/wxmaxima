@@ -705,8 +705,8 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
 
     if (m_displayCaret && m_hasFocus && m_isActive)
     {
-      int caretInLine = 0;
-      int caretInColumn = 0;
+      unsigned int caretInLine = 0;
+      unsigned int caretInColumn = 0;
 
       PositionToXY(m_positionOfCaret, &caretInColumn, &caretInLine);
 
@@ -818,8 +818,6 @@ wxString EditorCell::TabExpand(wxString input, long posInLine)
   // Convert the text to our line endings.
   input.Replace(wxT("\r\n"),wxT("\n"));
 
-  size_t index = 0;
-  
   wxString::iterator ch = input.begin();
   while(ch != input.end())
   {
@@ -1146,7 +1144,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
         m_positionOfCaret = 0;
       else
       {
-        int col, lin;
+        unsigned int col, lin;
         PositionToXY(m_positionOfCaret, &col, &lin);
         m_positionOfCaret = XYToPosition(0, lin);
       }
@@ -1175,7 +1173,8 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
       }
       else
         ClearSelection();
-      int column, line;
+      unsigned int column;
+      unsigned int line;
       PositionToXY(m_positionOfCaret, &column, &line); // get current line
       if (m_caretColumn > -1)
         column = m_caretColumn;
@@ -1216,7 +1215,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
       }
       else
         ClearSelection();
-      int column, line;
+      unsigned int column, line;
       PositionToXY(m_positionOfCaret, &column, &line); // get current line
       if (m_caretColumn > -1)
         column = m_caretColumn;
@@ -1255,7 +1254,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
       else
         ClearSelection();
 
-      int column, line;
+      unsigned int column, line;
       PositionToXY(m_positionOfCaret, &column, &line); // get current line
       if (m_caretColumn > -1)
         column = m_caretColumn;
@@ -1297,7 +1296,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
       else
         ClearSelection();
 
-      int column, line;
+      unsigned int column, line;
       PositionToXY(m_positionOfCaret, &column, &line); // get current line
       if (m_caretColumn > -1)
         column = m_caretColumn;
@@ -1648,7 +1647,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
         {
           if(!event.ShiftDown())
           {
-            int col, line;
+            unsigned int col, line;
             PositionToXY(m_positionOfCaret, &col, &line);
             wxString ins;
             do {
@@ -2403,7 +2402,7 @@ bool EditorCell::AddEnding()
 // position of caret is pos if caret is just before the character
 //   at position pos in m_text.
 //
-void EditorCell::PositionToXY(int position, int* x, int* y)
+void EditorCell::PositionToXY(int position, unsigned int* x,unsigned int* y)
 {
   int col = 0, lin = 0;
   int pos = 0;
@@ -2459,7 +2458,7 @@ wxPoint EditorCell::PositionToPoint(int fontsize, int pos)
     return wxPoint(-1, -1);
 
   int width;
-  int cX, cY;
+  unsigned int cX, cY;
 
   if (pos < 0)
     pos = m_positionOfCaret;
@@ -2492,7 +2491,7 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
   translate.x -= m_currentPoint.x - 2;
   translate.y -= m_currentPoint.y - 2 - m_center;
 
-  int lin = translate.y / m_charHeight;
+  unsigned int lin = translate.y / m_charHeight;
   int width, height;
   int lineStart = XYToPosition(0, lin);
   m_positionOfCaret = lineStart;
@@ -2565,7 +2564,7 @@ bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
   wxPoint translate(point);
   translate.x -= m_currentPoint.x - 2;
   translate.y -= m_currentPoint.y - 2 - m_center;
-  int lin = translate.y / m_charHeight;
+  unsigned int lin = translate.y / m_charHeight;
   int width, height;
   int lineStart = XYToPosition(0, lin);
   int positionOfCaret = lineStart;
@@ -2835,12 +2834,12 @@ void EditorCell::PasteFromClipboard(bool primary)
     wxTheClipboard->UsePrimarySelection(false);
 }
 
-int EditorCell::GetLineWidth(wxDC& dc, int line, int pos)
+int EditorCell::GetLineWidth(wxDC& dc, unsigned int line, int pos)
 {
   if (pos == 0)
     return 0;
 
-  int i = 0;
+  unsigned int i = 0;
   
   std::vector<StyledText>::iterator textSnippet;
 
@@ -3342,7 +3341,7 @@ void EditorCell::StyleText()
       std::list<int> indentPixels;
       wxString indentChar;
 
-      int i = 0;
+      unsigned int i = 0;
       wxString::const_iterator it = m_text.begin();
       while(it!=m_text.end())
       {

@@ -161,7 +161,7 @@ public:
   //! Adds a ";" to the end of the last command in this cell in case that it doesn't end in $ or ;
   bool AddEnding();
   //! Determines which line and column the pos'th char is at.
-  void PositionToXY(int pos, int* line, int* col);
+  void PositionToXY(int pos, unsigned int* line, unsigned int* col);
   //! Determines which index the char at the position "x chars left, y chars down" is at.
   int XYToPosition(int x, int y);
   //! The screen coordinates of the cursor
@@ -217,7 +217,7 @@ public:
   }
   bool FindMatchingQuotes();
   void FindMatchingParens();
-  int GetLineWidth(wxDC& dc, int line, int end);
+  int GetLineWidth(wxDC& dc,unsigned int line, int end);
   //! true, if this cell's width has to be recalculated.
   bool IsDirty()
   {
