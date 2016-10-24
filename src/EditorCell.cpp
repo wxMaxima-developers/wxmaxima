@@ -2404,16 +2404,17 @@ void EditorCell::PositionToXY(int position, int* x, int* y)
   int col = 0, lin = 0;
   int pos = 0;
 
-  while (pos < position)
+  wxString::const_iterator it = m_text.begin();
+  while ((pos < position)&&(it != m_text.end()))
   {
-    if ((m_text.GetChar(pos) == '\n') || (m_text.GetChar(pos) == '\r'))
+    if ((*it == '\n') || (*it == '\r'))
     {
       col = 0,
       lin++;
     }
     else
       col++;
-    pos++;
+    it++;pos++;
   }
 
   *x = col;
@@ -2424,11 +2425,12 @@ int EditorCell::XYToPosition(int x, int y)
 {
   int col = 0, lin = 0, pos = 0;
 
-  while (pos < (int)m_text.Length() && lin < y)
+  wxString::const_iterator it = m_text.begin();
+  while ((it != m_text.end()) && (lin < y))
   {
-    if ((m_text.GetChar(pos) == '\n') || (m_text.GetChar(pos) == '\r'))
+    if ((*it == '\n') || (*it == '\r'))
       lin++;
-    pos++;
+    it++;pos++;
   }
 
   while (pos < (int)m_text.Length() && col < x)
