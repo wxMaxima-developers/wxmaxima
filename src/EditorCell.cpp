@@ -3356,17 +3356,14 @@ void EditorCell::StyleText()
               if(width + m_currentPoint.x + indentation >= parser->GetClientWidth())
               {
                 // We need a line break in front of the last word
-                if(lastSpace > 0)
-                {
-                  m_text[lastSpace] = wxT('\r');
-                  line = m_text.SubString(lastLineStart,lastSpace-1);
-                  i = lastSpace + 1;
-                  lastLineStart = i;
-                  it = lastSpaceIt;
-                  it++;
-                  lastSpace = 0;
-                  break;
-                }
+                m_text[lastSpace] = wxT('\r');
+                line = m_text.SubString(lastLineStart,lastSpace-1);
+                i = lastSpace + 1;
+                it = lastSpaceIt;
+                it++;
+                lastLineStart = i+1;
+                lastSpace = 0;
+                break;
               }
             }
             if(*it=='\n')
@@ -3401,7 +3398,7 @@ void EditorCell::StyleText()
                   i = lastSpace + 1;
                   it = lastSpaceIt;
                   it++;
-                  lastLineStart = i;
+                  lastLineStart = i+1;
                   lastSpace = 0;
                   break;
                 }
@@ -3409,7 +3406,7 @@ void EditorCell::StyleText()
                 {
                   if(*it == wxT(' '))
                   {
-                    *it = wxT('\r');
+                    m_text[i] = wxT('\r');
                     line = m_text.SubString(lastLineStart,i-1);
                     lastLineStart = i+1;
                     lastSpace = 0;
