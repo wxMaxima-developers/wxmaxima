@@ -44,8 +44,6 @@
   Since Unicode doesn't provide us with a "soft linebreak" letter we 
   use <code>\r</code> as a marker that this line has to be broken here if we
   don't want it to extend beyond the right margin of the screen.
-
-  \todo StyleText() is called way too often, currently, slowing down editing.
  */
 class EditorCell : public MathCell
 {

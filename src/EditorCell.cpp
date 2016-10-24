@@ -967,7 +967,6 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
   if (m_isDirty)
   {
     m_width = m_maxDrop = -1;
-    StyleText();
   }
   m_displayCaret = true;
 }
@@ -1327,6 +1326,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
       m_text = m_text.SubString(0, start - 1) +
                m_text.SubString(end, m_text.Length());
       m_positionOfCaret = start;
+      StyleText();
       ClearSelection();
     }
     
@@ -1413,6 +1413,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
       m_text = m_text.SubString(0, m_positionOfCaret - 1) +
         wxT("\n") + indentString +
         m_text.SubString(m_positionOfCaret, m_text.Length());
+      StyleText();
       m_positionOfCaret++;
       if((indentChars > 0)&&(autoIndent))
       {
@@ -1457,7 +1458,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
           m_text.SubString(end, m_text.Length());
         m_positionOfCaret = start;
         ClearSelection();
-      } 
+      }    
     }
     else
     {
@@ -1491,6 +1492,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
           m_text.SubString(m_positionOfCaret + 1, m_text.Length());
       }
     }
+    StyleText();
     break;
 
   case WXK_BACK:
@@ -1574,6 +1576,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
         }
       }
     }
+    StyleText();
     break;
 
   case WXK_TAB:
@@ -1677,6 +1680,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
         }
       }
     }
+    StyleText();
     break;
 /*
   case WXK_SPACE:
@@ -1727,6 +1731,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
       }
     }
 #endif
+    StyleText();
     break;
 
     /* Ignored keys */
@@ -1929,7 +1934,6 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent& event)
       }
     }
   } // end if (insertLetter)
-
   return true;
 }
 
@@ -2302,7 +2306,7 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
       return wxString(wxChar(unicodeval));
     else
       return wxT(" ");
-        
+    
   }
 
   /////////////////////////
