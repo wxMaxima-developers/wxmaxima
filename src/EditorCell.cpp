@@ -3501,7 +3501,6 @@ void EditorCell::StyleText()
           {
             // No "begin indenting" marker => Let's see if this is a continuation
             // of a indentation
-            bool indent = false;
             if(!prefixes.empty())
             {
               while (!prefixes.empty())

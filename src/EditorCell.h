@@ -432,7 +432,7 @@ private:
   int m_caretColumn;
   long m_lastSelectionStart;
 //  long m_oldStart, m_oldEnd;
-  int m_numberOfLines;
+  unsigned int m_numberOfLines;
   bool m_isActive;
   int m_fontSize;
   int m_charHeight;
