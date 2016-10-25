@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-23 21:40+0200\n"
+"POT-Creation-Date: 2016-10-25 18:42+0200\n"
 "PO-Revision-Date: 2016-06-26 18:35+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -77,7 +77,7 @@ msgstr "      -l <назва>"
 msgid " (Graphics) "
 msgstr " (графіка) "
 
-#: ../src/EditorCell.cpp:3133 ../src/EditorCell.cpp:3439
+#: ../src/EditorCell.cpp:3146 ../src/EditorCell.cpp:3452
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
@@ -676,20 +676,20 @@ msgstr "Вада: дріб без чисельника"
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Вада: маємо питання, але не маємо комірки для відповіді на нього"
 
-#: ../src/MathCtrl.cpp:5899
+#: ../src/MathCtrl.cpp:5905
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Вада: отримано запит на зміну вмісту комірки над початком робочого аркуша."
 
-#: ../src/MathCtrl.cpp:5973
+#: ../src/MathCtrl.cpp:5979
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Вада: отримано запит на вилучення комірки над початком робочого аркуша."
 
-#: ../src/MathCtrl.cpp:5942
+#: ../src/MathCtrl.cpp:5948
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -772,7 +772,7 @@ msgstr ""
 "Вада: спроба об’єднати окремі комірки додає область у буфері скасування, але "
 "між цими комірками є інші комірки."
 
-#: ../src/MathCtrl.cpp:6585
+#: ../src/MathCtrl.cpp:6591
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -787,13 +787,13 @@ msgstr "Вада: спроба запису зміни вмісту комірк
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr "Вада: спроба позначити щось у комірці без визначення поточної комірки"
 
-#: ../src/MathCtrl.cpp:5943
+#: ../src/MathCtrl.cpp:5949
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Вада: дія зі скасування із одночасною зміною вмісту комірки і додаванням "
 "комірки."
 
-#: ../src/MathCtrl.cpp:5904 ../src/MathCtrl.cpp:5978 ../src/MathCtrl.cpp:6012
+#: ../src/MathCtrl.cpp:5910 ../src/MathCtrl.cpp:5984 ../src/MathCtrl.cpp:6018
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Вада: запит щодо скасування дій із коміркою поза межами робочого аркуша."
@@ -2067,7 +2067,7 @@ msgstr "Знайти уявну частину комплексного вира
 msgid "Get the real part of complex expression"
 msgstr "Знайти дійсну частину комплексного виразу"
 
-#: ../src/MathCtrl.cpp:5992
+#: ../src/MathCtrl.cpp:5998
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2284,6 +2284,14 @@ msgid ""
 "            x,-10,10\n"
 "        )\n"
 "    );"
+msgstr ""
+
+#: ../data/tips.txt:41
+msgid ""
+"In text cells Bullet lists can be created by beginning a line with \" * \". "
+"The number of spaces in front of the \"*\" determines the indentation level; "
+"Indentation can be continued in the next line by indenting the line using "
+"spaces."
 msgstr ""
 
 #: ../src/ConfigDialogue.cpp:187
@@ -3440,7 +3448,7 @@ msgstr "Перезапустити Maxima"
 msgid "Restart maxima"
 msgstr "Перезапустити maxima"
 
-#: ../src/MathCtrl.cpp:4505
+#: ../src/MathCtrl.cpp:4511
 msgid "Result"
 msgstr "Результат"
 
@@ -4120,6 +4128,13 @@ msgstr "Текстова комірка"
 msgid "Text cell background"
 msgstr "Тло текстової комірки"
 
+#: ../data/tips.txt:42
+msgid ""
+"Text cells can hold Citations that as marked as such by beginning a line "
+"with \" > \". The number of spaces in front of the \">\" determines the "
+"indentation level, as it does with bullet lists."
+msgstr ""
+
 #: ../src/ConfigDialogue.cpp:770
 msgid "Text equal to selection"
 msgstr "Текст, що збігається із позначеним"
@@ -4368,11 +4383,11 @@ msgstr "Переклад"
 msgid "Transpose a matrix"
 msgstr "Транспонувати матрицю"
 
-#: ../src/MathCtrl.cpp:5894
+#: ../src/MathCtrl.cpp:5900
 msgid "Trying to undo an action without starting cell."
 msgstr "Спроба скасування дії без визначення початкової комірки."
 
-#: ../src/MathCtrl.cpp:5961
+#: ../src/MathCtrl.cpp:5967
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Намагаємося скасувати дію, але дія зі скасування є порожньою."
 
@@ -4585,7 +4600,7 @@ msgstr ""
 "Брати рівняння, експортовані за допомогою пункту «Копіювати як LaTeX», у "
 "позначення рівняння, \\[ на початку і \\] наприкінці"
 
-#: ../src/MathCtrl.cpp:6864
+#: ../src/MathCtrl.cpp:6870
 msgid "Wrapped search"
 msgstr "Циклічний пошук"
 
@@ -4729,12 +4744,12 @@ msgstr "[ не збережено* ]"
 msgid "[%i digits]"
 msgstr "[%i цифр]"
 
-#: ../src/MathCtrl.cpp:4454
+#: ../src/MathCtrl.cpp:4460
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Анімована діаграма\" style=\"max-width:90%%;\" >\n"
 
-#: ../src/MathCtrl.cpp:4580
+#: ../src/MathCtrl.cpp:4586
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Анімована діаграма\" style=\"max-width:90%%;\" >"

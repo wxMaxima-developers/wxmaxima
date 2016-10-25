@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-23 21:40+0200\n"
-"PO-Revision-Date: 2016-10-23 21:47+0200\n"
+"POT-Creation-Date: 2016-10-25 18:42+0200\n"
+"PO-Revision-Date: 2016-10-25 18:46+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -72,7 +72,7 @@ msgstr "      -l <name>"
 msgid " (Graphics) "
 msgstr " (Bild) "
 
-#: ../src/EditorCell.cpp:3133 ../src/EditorCell.cpp:3439
+#: ../src/EditorCell.cpp:3146 ../src/EditorCell.cpp:3452
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr "... + %i versteckte Zeilen"
@@ -681,20 +681,20 @@ msgstr "Interner Fehler: Bruch ohne Zähler"
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Interner Fehler: Habe eine Frage, aber weiß nicht, in welcher Zelle"
 
-#: ../src/MathCtrl.cpp:5899
+#: ../src/MathCtrl.cpp:5905
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Interner Fehler: Soll die Zelle vor dem Beginn des Arbeitsblattes ändern."
 
-#: ../src/MathCtrl.cpp:5973
+#: ../src/MathCtrl.cpp:5979
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Interner Fehler: Soll die Zelle vor dem Beginn des Arbeitsblattes löschen."
 
-#: ../src/MathCtrl.cpp:5942
+#: ../src/MathCtrl.cpp:5948
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -775,7 +775,7 @@ msgstr ""
 "Interner Fehler: Versuche, die Hinzufügung von Einzelzellen zu einer Region "
 "zusammenbauen - in der es eine Lücke gibt."
 
-#: ../src/MathCtrl.cpp:6585
+#: ../src/MathCtrl.cpp:6591
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -795,13 +795,13 @@ msgstr ""
 "Interner Fehler: Versuche, innerhalb einer Zelle Text auszuwählen, ohne zu "
 "wissen, in welcher Zelle"
 
-#: ../src/MathCtrl.cpp:5943
+#: ../src/MathCtrl.cpp:5949
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Interner Fehler: Rückgängig will Zellen ändern und gleichzeitig Zellen "
 "hinzufügen."
 
-#: ../src/MathCtrl.cpp:5904 ../src/MathCtrl.cpp:5978 ../src/MathCtrl.cpp:6012
+#: ../src/MathCtrl.cpp:5910 ../src/MathCtrl.cpp:5984 ../src/MathCtrl.cpp:6018
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Interner Fehler: Rückgängigmachen setzt an Zellen außerhalb des "
@@ -2078,7 +2078,7 @@ msgstr "Imaginärteil eines komplexen Ausdrucks bestimmen"
 msgid "Get the real part of complex expression"
 msgstr "Realteil eines komplexen Ausdrucks bestimmen"
 
-#: ../src/MathCtrl.cpp:5992
+#: ../src/MathCtrl.cpp:5998
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2313,6 +2313,14 @@ msgstr ""
 "            x,-10,10\n"
 "        )\n"
 "    );"
+
+#: ../data/tips.txt:41
+msgid ""
+"In text cells Bullet lists can be created by beginning a line with \" * \". "
+"The number of spaces in front of the \"*\" determines the indentation level; "
+"Indentation can be continued in the next line by indenting the line using "
+"spaces."
+msgstr "In Textzellen können Aufzählungen dargestellt werden, indem Zeilen mit der Zeichenkombination \" * \" begonnen werden. Die Anzahl der Leertasten vor dem \"*\" bestimmt dabei, wie weit die Zeile eingerückt wird. Absätze in Aufzählungen werden dadurch realisiert, dass eine Zeile mit Leertasten eingerückt wird."
 
 #: ../src/ConfigDialogue.cpp:187
 msgid ""
@@ -2757,9 +2765,15 @@ msgid ""
 "have problems aligning and scaling with the rest of the text and might use "
 "fonts that don't match the rest of the document."
 msgstr ""
-"MathJaX kann hochqualitative skalierbare Formeln darstellen, erlaubt, diese in andere Programme zu kopieren und untestützt Barrierefreiheit. Dafür benötigt es JavaScript und Zeit.\n"
-"MathML ist deutlich schneller, wenn der Browser es unterstützt, bietet aber in vielen Implementierungen nicht die notwendigen Features.\n"
-"Bilder erfordern meist den Transport von mehr Daten als die anderen Möglichkeiten. Sie unterstützen weder Drag-and-Drop noch Barrierefreiheit. Auch können sie sich weder an den Zeichensatz oder die Zeichengröße anpassen, noch angeben, wo sie relativ zur Zeilenhöhe zentriert sein wollen."
+"MathJaX kann hochqualitative skalierbare Formeln darstellen, erlaubt, diese "
+"in andere Programme zu kopieren und untestützt Barrierefreiheit. Dafür "
+"benötigt es JavaScript und Zeit.\n"
+"MathML ist deutlich schneller, wenn der Browser es unterstützt, bietet aber "
+"in vielen Implementierungen nicht die notwendigen Features.\n"
+"Bilder erfordern meist den Transport von mehr Daten als die anderen "
+"Möglichkeiten. Sie unterstützen weder Drag-and-Drop noch Barrierefreiheit. "
+"Auch können sie sich weder an den Zeichensatz oder die Zeichengröße "
+"anpassen, noch angeben, wo sie relativ zur Zeilenhöhe zentriert sein wollen."
 
 #: ../src/ConfigDialogue.cpp:529
 msgid "MathML + MathJaX as Fill-In"
@@ -3493,7 +3507,7 @@ msgstr "Maxima wird neu gestartet"
 msgid "Restart maxima"
 msgstr "Neustart von Maxima"
 
-#: ../src/MathCtrl.cpp:4505
+#: ../src/MathCtrl.cpp:4511
 msgid "Result"
 msgstr "Resultat"
 
@@ -4171,6 +4185,13 @@ msgstr "Textzelle"
 msgid "Text cell background"
 msgstr "Hintergrundfarbe Textzelle"
 
+#: ../data/tips.txt:42
+msgid ""
+"Text cells can hold Citations that as marked as such by beginning a line "
+"with \" > \". The number of spaces in front of the \">\" determines the "
+"indentation level, as it does with bullet lists."
+msgstr "Zitate können in Textzellen dadurch markiert werden, dass sie mit \" > \" begonnen werden. Wie auch bei Aufzählungen können sie durch zusätzliche Leertasten eingerückt werden. "
+
 #: ../src/ConfigDialogue.cpp:770
 msgid "Text equal to selection"
 msgstr "Identisch mit Auswahl"
@@ -4442,13 +4463,13 @@ msgstr "Übersetzt von"
 msgid "Transpose a matrix"
 msgstr "Eine Matrix transponieren"
 
-#: ../src/MathCtrl.cpp:5894
+#: ../src/MathCtrl.cpp:5900
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 "Versuche, eine Aktion rückgängig zu machen, ohne zu wissen, wo im "
 "Arbeitsblatt."
 
-#: ../src/MathCtrl.cpp:5961
+#: ../src/MathCtrl.cpp:5967
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Soll etwas rückgängig machen, aber die Spezifikation dafür ist leer."
 
@@ -4662,7 +4683,7 @@ msgstr ""
 "Platziere Formeln, die durch \"LaTeX Kopieren\" in die Zwischenablage gelegt "
 "wurden, zwischen \\[ und \\], um TeX in den Mathematik-Modus zu versetzen."
 
-#: ../src/MathCtrl.cpp:6864
+#: ../src/MathCtrl.cpp:6870
 msgid "Wrapped search"
 msgstr "Suche wurde über das Ende des Dokuments hinweg fortgesetzt"
 
@@ -4804,12 +4825,12 @@ msgstr "[ nicht gespeichert* ]"
 msgid "[%i digits]"
 msgstr "[%i Ziffern]"
 
-#: ../src/MathCtrl.cpp:4454
+#: ../src/MathCtrl.cpp:4460
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Animiertes Diagramm\" style=\"max-width:90%%;\" >\n"
 
-#: ../src/MathCtrl.cpp:4580
+#: ../src/MathCtrl.cpp:4586
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Animiertes Diagramm\" style=\"max-width:90%%;\" >"

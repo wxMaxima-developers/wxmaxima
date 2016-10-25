@@ -1509,6 +1509,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
                m_text.SubString(end, m_text.Length());
       m_positionOfCaret = start;
       ClearSelection();
+      StyleText();
       break;
     }
     else
@@ -2445,10 +2446,11 @@ int EditorCell::XYToPosition(int x, int y)
 
   while (pos < (int)m_text.Length() && col < x)
   {
-    if ((m_text.GetChar(pos) == '\n') || (m_text.GetChar(pos) == '\r'))
+    if ((*it == '\n') || (*it == '\r'))
       break;
     pos++;
     col++;
+    it++;
   }
 
   return pos;

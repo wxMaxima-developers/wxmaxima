@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxmaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-23 21:40+0200\n"
+"POT-Creation-Date: 2016-10-25 18:42+0200\n"
 "PO-Revision-Date: 2016-02-22 16:12-0500\n"
 "Last-Translator: kahkonen <mika.m.kahkonen@gmail.com>\n"
 "Language-Team: Finnish\n"
@@ -74,7 +74,7 @@ msgstr "      -l <nimi>"
 msgid " (Graphics) "
 msgstr " (Grafiikat) "
 
-#: ../src/EditorCell.cpp:3133 ../src/EditorCell.cpp:3439
+#: ../src/EditorCell.cpp:3146 ../src/EditorCell.cpp:3452
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
@@ -659,18 +659,18 @@ msgstr ""
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Virhe: Kysymykselle ei ole vastaussolua"
 
-#: ../src/MathCtrl.cpp:5899
+#: ../src/MathCtrl.cpp:5905
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5973
+#: ../src/MathCtrl.cpp:5979
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5942
+#: ../src/MathCtrl.cpp:5948
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -742,7 +742,7 @@ msgid ""
 "there are other cells between them."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6585
+#: ../src/MathCtrl.cpp:6591
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -756,11 +756,11 @@ msgstr "Virhe: Yrittää tallentaa solun sisällön muutoksen ilman solua."
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5943
+#: ../src/MathCtrl.cpp:5949
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5904 ../src/MathCtrl.cpp:5978 ../src/MathCtrl.cpp:6012
+#: ../src/MathCtrl.cpp:5910 ../src/MathCtrl.cpp:5984 ../src/MathCtrl.cpp:6018
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
@@ -2012,7 +2012,7 @@ msgstr ""
 msgid "Get the real part of complex expression"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5992
+#: ../src/MathCtrl.cpp:5998
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2204,6 +2204,14 @@ msgid ""
 "            x,-10,10\n"
 "        )\n"
 "    );"
+msgstr ""
+
+#: ../data/tips.txt:41
+msgid ""
+"In text cells Bullet lists can be created by beginning a line with \" * \". "
+"The number of spaces in front of the \"*\" determines the indentation level; "
+"Indentation can be continued in the next line by indenting the line using "
+"spaces."
 msgstr ""
 
 #: ../src/ConfigDialogue.cpp:187
@@ -3314,7 +3322,7 @@ msgstr "Uudelleenkäynnistä Maxima"
 msgid "Restart maxima"
 msgstr "Uudelleenkäynnistä maxima"
 
-#: ../src/MathCtrl.cpp:4505
+#: ../src/MathCtrl.cpp:4511
 msgid "Result"
 msgstr "Tulos"
 
@@ -3968,6 +3976,13 @@ msgstr "Tekstisolu"
 msgid "Text cell background"
 msgstr ""
 
+#: ../data/tips.txt:42
+msgid ""
+"Text cells can hold Citations that as marked as such by beginning a line "
+"with \" > \". The number of spaces in front of the \">\" determines the "
+"indentation level, as it does with bullet lists."
+msgstr ""
+
 #: ../src/ConfigDialogue.cpp:770
 msgid "Text equal to selection"
 msgstr "Teksti vastaa valintaa"
@@ -4188,11 +4203,11 @@ msgstr "Käännös"
 msgid "Transpose a matrix"
 msgstr "Transponoi matriisi"
 
-#: ../src/MathCtrl.cpp:5894
+#: ../src/MathCtrl.cpp:5900
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5961
+#: ../src/MathCtrl.cpp:5967
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
@@ -4391,7 +4406,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6864
+#: ../src/MathCtrl.cpp:6870
 msgid "Wrapped search"
 msgstr ""
 
@@ -4529,12 +4544,12 @@ msgstr "[ tallentamaton* ]"
 msgid "[%i digits]"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4454
+#: ../src/MathCtrl.cpp:4460
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Animoitu Diagrammi\" style=\"max-width:90%%;\" >\n"
 
-#: ../src/MathCtrl.cpp:4580
+#: ../src/MathCtrl.cpp:4586
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Animoitu Diagrammi\" style=\"max-width:90%%;\" >"
