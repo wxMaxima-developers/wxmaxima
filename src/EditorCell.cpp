@@ -825,6 +825,7 @@ wxString EditorCell::TabExpand(wxString input, long posInLine)
     {
       posInLine = 0;
       retval += *ch;
+      ch++;
       continue;
     }
 
@@ -848,7 +849,8 @@ wxString EditorCell::TabExpand(wxString input, long posInLine)
       posInLine = 0;
       continue;
     }
-    retval += *ch;
+    else
+      retval += *ch;
     ch++;
     posInLine ++;
   }
@@ -1855,10 +1857,12 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent& event)
       m_positionOfCaret = start;
     }
     ClearSelection();
+    StyleText();
   } // end if (m_selectionStart > -1)
   
   // insert letter if we didn't insert brackets around selection
-  if (insertLetter) {
+  if (insertLetter)
+  {
     m_text = m_text.SubString(0, m_positionOfCaret - 1) +
 #if wxUSE_UNICODE
       event.GetUnicodeKey() +
@@ -3403,9 +3407,8 @@ void EditorCell::StyleText()
                 {
                   m_text[lastSpace] = wxT('\r');
                   line = m_text.SubString(lastLineStart,lastSpace - 1);
-                  i = lastSpace + 1;
+                  i = lastSpace;
                   it = lastSpaceIt;
-                  it++;
                   lastLineStart = i+1;
                   lastSpace = 0;
                   break;
