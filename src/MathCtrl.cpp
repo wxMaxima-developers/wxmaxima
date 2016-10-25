@@ -6051,7 +6051,7 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
 
   if (m_activeCell != NULL) {
     SetSelection(NULL);
-    bool match = false;
+    bool match = true;
     bool insertAns = false;
     if (m_activeCell->GetType() == MC_TYPE_INPUT)
     {
