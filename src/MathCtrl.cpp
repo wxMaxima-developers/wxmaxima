@@ -6448,14 +6448,23 @@ void MathCtrl::OnKillFocus(wxFocusEvent& event)
   m_hasFocus = false;
   if (m_activeCell != NULL)
     m_activeCell->SetFocus(false);
+
+  if(m_mouseCaptured)
+  {
+    ReleaseMouse();
+    m_mouseCaptured = false;
+  }
+
 }
 
 void MathCtrl::CheckUnixCopy()
 {
 #if defined __WXGTK__
-  if (CanCopy(true)) {
+  if (CanCopy(true))
+  {
     wxTheClipboard->UsePrimarySelection(true);
-    if (wxTheClipboard->Open()) {
+    if (wxTheClipboard->Open())
+    {
       // The \0 seems to prevent data corruption on seleting strings while evaluating.
       wxTheClipboard->SetData(new wxTextDataObject(GetString() + wxT('\0')));
       wxTheClipboard->Close();
