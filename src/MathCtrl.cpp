@@ -5489,7 +5489,16 @@ bool MathCtrl::CanEdit() {
 }
 
 //! Is called on double click on a cell.
-void MathCtrl::OnDoubleClick(wxMouseEvent &event) {
+void MathCtrl::OnDoubleClick(wxMouseEvent &event)
+{
+
+  // No more track the mouse when it is outside the worksheet
+  if(m_mouseCaptured)
+  {
+    ReleaseMouse();
+    m_mouseCaptured = false;
+  }
+
   if (m_activeCell != NULL) {
     m_activeCell->SelectWordUnderCaret();
   }
