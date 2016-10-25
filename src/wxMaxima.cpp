@@ -5318,7 +5318,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
           index++;
         index++;
       }
-      if((index<len)&&(text[index]!=wxT('\"'))) return(_("Unterminated string."));
+      if((index==len)&&(text[index]!=wxT('\"'))) return(_("Unterminated string."));
       lastC=c;
       break;
 
