@@ -3373,7 +3373,7 @@ void EditorCell::StyleText()
                 i = lastSpace + 1;
                 it = lastSpaceIt;
                 it++;
-                lastLineStart = i+1;
+                lastLineStart = i;
                 lastSpace = 0;
                 break;
               }
@@ -3407,8 +3407,9 @@ void EditorCell::StyleText()
                 {
                   m_text[lastSpace] = wxT('\r');
                   line = m_text.SubString(lastLineStart,lastSpace - 1);
-                  i = lastSpace;
+                  i = lastSpace+1;
                   it = lastSpaceIt;
+                  it++;
                   lastLineStart = i+1;
                   lastSpace = 0;
                   break;
