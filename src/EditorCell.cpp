@@ -3380,10 +3380,15 @@ void EditorCell::StyleText()
               }
             }
             if(*it=='\n')
-              line = m_text.SubString(lastLineStart,i-1);
+            {
+              if (i > 0)
+                line = m_text.SubString(lastLineStart,i-1);
+              else
+                line = wxEmptyString;
+            }
             else
               line = m_text.SubString(lastLineStart,i);
-              
+            
             lastLineStart = i+1;
             lastSpace = 0;
             indentation = 0;
@@ -3436,8 +3441,11 @@ void EditorCell::StyleText()
             lastSpace = i;
             lastSpaceIt = it;
           }
-          it++;
-          i++;
+          if((i>0)||(*it!=wxT('\n')))
+          {
+            it++;
+            i++;
+          }
         }
         
         // If this is the last line of the text we still need to extract it.
