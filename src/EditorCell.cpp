@@ -3413,10 +3413,10 @@ void EditorCell::StyleText()
                 {
                   m_text[lastSpace] = wxT('\r');
                   line = m_text.SubString(lastLineStart,lastSpace - 1);
-                  i = lastSpace+1;
+                  i = lastSpace + 1;
                   it = lastSpaceIt;
                   it++;
-                  lastLineStart = i+1;
+                  lastLineStart = i;
                   lastSpace = 0;
                   break;
                 }
@@ -3441,6 +3441,9 @@ void EditorCell::StyleText()
             lastSpace = i;
             lastSpaceIt = it;
           }
+
+          // Go to the next character if we actually had a string in front of this
+          // newline.
           if((i>0)||(*it!=wxT('\n')))
           {
             it++;
