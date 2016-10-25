@@ -2611,32 +2611,16 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         
         if (m_activeCell->GetType() != MC_TYPE_INPUT)
         {
-          // User tries to evaluate a cell that doesn't contain code.
-          
-          bool enterEvaluates = false;
-          bool controlOrShift = event.ControlDown() || event.ShiftDown();
-          wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
-          if ((!enterEvaluates &&  controlOrShift) ||
-              ( enterEvaluates && !controlOrShift) )
-          { // shift-enter pressed === menu_evaluate event          
-            // In this cell there isn't anything to evaluate. But we can jump to the next
-            // cell. Perhaps there is something there...
-            if(GetActiveCell()->GetParent()->m_next)
-            {
-              // Jump to the next cell.
-              SetActiveCell(dynamic_cast<GroupCell*>(GetActiveCell()->GetParent()->m_next)->GetEditable());
-              ScrollToCaret();
-            }
-            else
-              // No next cell -> Jump to the end of the document.
-              SetHCaret(dynamic_cast<GroupCell*>(GetActiveCell()->GetParent()));
-          }
-          else
-            event.Skip(); // pass the event
-          
+          // User pressed enter inside a cell that doesn't contain code.
+
+          m_activeCell->ProcessEvent(event);
+          Recalculate(dynamic_cast<GroupCell*>(m_activeCell->GetParent()));
+          RecalculateForce();
+          RequestRedraw();
         }
-        else {
-          // User tries to evaluate a cell that actually contains code.
+        else
+        {
+          // User pressed enter inside a cell that does contain code.
           
           bool enterEvaluates = false;
           bool controlOrShift = event.ControlDown() || event.ShiftDown();

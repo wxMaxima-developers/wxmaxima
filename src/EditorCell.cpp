@@ -1327,7 +1327,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
       m_text = m_text.SubString(0, start - 1) +
                m_text.SubString(end, m_text.Length());
       m_positionOfCaret = start;
-      StyleText();
       ClearSelection();
     }
     
@@ -1429,7 +1428,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
       if((!cursorJump)||((cursorAtStartOfLine)&&(!autoIndent)))
         m_positionOfCaret = BeginningOfLine(m_positionOfCaret);
     }      
-      
+    StyleText();  
     break;
 
   case WXK_DELETE:
