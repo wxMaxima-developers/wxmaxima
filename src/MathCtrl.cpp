@@ -6057,13 +6057,6 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
 
   if (m_activeCell != NULL) {
     SetSelection(NULL);
-    bool match = true;
-    bool insertAns = false;
-    if (m_activeCell->GetType() == MC_TYPE_INPUT)
-    {
-      wxConfig::Get()->Read(wxT("matchParens"), &match);
-      wxConfig::Get()->Read(wxT("insertAns"), &insertAns);
-    }
     if(m_activeCell != cell)
     {
       if(m_activeCell != NULL)
@@ -6072,8 +6065,6 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
     if(cell != NULL)
       cell->ActivateCell(true);
     
-    m_activeCell->SetMatchParens(match);
-    m_activeCell->SetInsertAns(insertAns);
     m_switchDisplayCaret = true;
 
     int blinktime = wxCaret::GetBlinkTime();

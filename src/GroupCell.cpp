@@ -72,13 +72,7 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
     m_input->SetType(MC_TYPE_MAIN_PROMPT);
   }
 
-  bool match = true;
-  bool insertAns = false;
-  wxConfig::Get()->Read(wxT("matchParens"), &match);
-  wxConfig::Get()->Read(wxT("insertAns"), &insertAns);
   EditorCell *editor = new EditorCell();
-  editor->SetMatchParens(match);
-  editor->SetInsertAns(insertAns);
 
   switch (groupType) {
     case GC_TYPE_CODE:

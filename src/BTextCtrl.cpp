@@ -19,6 +19,7 @@
 //
 
 #include "BTextCtrl.h"
+#include "CellParser.h"
 #include <wx/config.h>
 
 BTextCtrl::BTextCtrl(wxWindow *parent,
@@ -30,10 +31,8 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
     : wxTextCtrl(parent, id, value, pos, size, style)
 {
   bool fixedFont = true;
-  m_matchParens = true;
   m_skipTab = true;
   wxConfigBase *config = wxConfig::Get();
-  config->Read(wxT("matchParens"), &m_matchParens);
   config->Read(wxT("fixedFontTC"), &fixedFont);
   if (fixedFont)
   {
@@ -57,10 +56,10 @@ BTextCtrl::~BTextCtrl()
 void BTextCtrl::OnChar(wxKeyEvent& event)
 {
 #if wxUSE_UNICODE
- if (!m_matchParens || MatchParenthesis(event.GetUnicodeKey()))
+  if (!CellParser::Get()->GetMatchParens() || MatchParenthesis(event.GetUnicodeKey()))
     event.Skip();
 #else
-  if (!m_matchParens || MatchParenthesis(event.GetKeyCode()))
+  if (!CellParser::Get()->GetMatchParens() || MatchParenthesis(event.GetKeyCode()))
     event.Skip();
 #endif
 }

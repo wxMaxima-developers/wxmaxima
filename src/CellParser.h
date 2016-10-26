@@ -119,12 +119,18 @@ public:
   const wxString GetTeXCMTI() { return m_fontCMTI; }
   void SetPrinter(bool printer) { m_printer = printer; }
   const bool GetPrinter() { return m_printer; }
+  const bool GetMatchParens() { return m_matchParens; }
+  const bool GetInsertAns() { return m_insertAns; }
 
   //! Returns a pointer to the instance of CellParser that exists
   static CellParser *Get() {return m_cellParser;}
 private:
   //! Automatically wrap long lines?
   bool m_autoWrap;
+  //! Do we want to automatically close parenthesis?
+  bool m_matchParens;
+  //! Do we want to automatically insert new cells conaining a "%" at the end of every command?
+  bool m_insertAns;
   //! The CellParser that was active before this one
   CellParser *m_last;
   //! The width of input and output labels [in chars]

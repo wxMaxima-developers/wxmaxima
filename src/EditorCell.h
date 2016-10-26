@@ -214,14 +214,6 @@ public:
   {
     return m_selectionStart != -1;
   }
-  void SetMatchParens(bool match)
-  {
-    m_matchParens = match;
-  }
-    void SetInsertAns(bool insertAns)
-  {
-    m_insertAns = insertAns;
-  }
   bool FindMatchingQuotes();
   void FindMatchingParens();
   int GetLineWidth(wxDC& dc,unsigned int line, int end);
@@ -443,9 +435,7 @@ private:
   bool m_isActive;
   int m_fontSize;
   int m_charHeight;
-  bool m_matchParens;
   int m_paren1, m_paren2;
-  bool m_insertAns;
   //! Does this cell's size have to be recalculated?
   bool m_isDirty;
   bool m_displayCaret;

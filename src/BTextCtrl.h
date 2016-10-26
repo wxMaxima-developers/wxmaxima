@@ -33,16 +33,11 @@ public:
             const wxSize& size = wxDefaultSize,
             long style = 0);
   ~BTextCtrl();
-  void SetMatchParens(bool match)
-  {
-    m_matchParens = match;
-  }
   void SetSkipTab(bool skip)
   {
     m_skipTab = skip;
   }
 private:
-  bool m_matchParens;
   bool m_skipTab;
   bool MatchParenthesis(int code);
   void CloseParenthesis(wxString open, wxString close, bool fromOpen);

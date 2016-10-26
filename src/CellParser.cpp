@@ -70,7 +70,13 @@ void CellParser::ReadConfig()
   wxConfig *config = (wxConfig *)wxConfig::Get();
   m_autoWrap = true;
   config->Read(wxT("autoWrap"), &m_autoWrap);
-  
+
+  m_matchParens = true;
+  config->Read(wxT("matchParens"), &m_matchParens);
+
+  m_insertAns = true;
+  config->Read(wxT("insertAns"), &m_insertAns);
+
   m_labelWidth = 4;
   config->Read(wxT("labelWidth"), &m_labelWidth);
 

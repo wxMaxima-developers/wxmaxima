@@ -27,6 +27,7 @@
 
 #include "ConfigDialogue.h"
 #include "MathCell.h"
+#include "CellParser.h"
 
 #include <wx/config.h>
 #include <wx/fileconf.h>
@@ -222,7 +223,7 @@ void ConfigDialogue::SetProperties()
 
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
-  bool match = true, savePanes = true, UncompressedWXMX=true;
+  bool match, savePanes = true, UncompressedWXMX=true;
   bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true, abortOnError = true, pollStdOut = false;
   bool enterEvaluates = false, saveUntitled = true,
     openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false,
@@ -230,7 +231,7 @@ void ConfigDialogue::SetProperties()
     wrapLatexMath = true,
     flowedTextRequested = true, exportInput = true, exportContainsWXMX = false;
   int exportWithMathJAX = 0;
-  bool insertAns = true;
+  bool insertAns;
   bool autoIndent = true;
   bool cursorJump = true;
   bool autoWrap   = true;
@@ -286,7 +287,7 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
   config->Read(wxT("HTMLequationFormat"), &exportWithMathJAX);
   config->Read(wxT("pos-restore"), &rs);
-  config->Read(wxT("matchParens"), &match);
+  match = CellParser::Get()->GetMatchParens();
   config->Read(wxT("showLength"), &showLength);
   config->Read(wxT("autosubscript"), &autosubscript);
   config->Read(wxT("language"), &lang);
@@ -299,7 +300,7 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("enterEvaluates"), &enterEvaluates);
   config->Read(wxT("saveUntitled"), &saveUntitled);
   config->Read(wxT("openHCaret"), &openHCaret);
-  config->Read(wxT("insertAns"), &insertAns);
+  insertAns = CellParser::Get()->GetInsertAns();
   config->Read(wxT("autoIndent"), &autoIndent);
   config->Read(wxT("cursorJump"), &cursorJump);
   config->Read(wxT("autoWrap"), &autoWrap);

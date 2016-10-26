@@ -58,9 +58,7 @@ EditorCell::EditorCell(wxString text) : MathCell()
   m_selectionStart = -1;
   m_selectionEnd = -1;
   m_isActive = false;
-  m_matchParens = true;
   m_paren1 = m_paren2 = -1;
-  m_insertAns = true;
   m_isDirty = false;
   m_hasFocus = false;
   m_underlined = false;
@@ -1531,7 +1529,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
           { 
             /// If deleting ( in () then delete both.
             int right = m_positionOfCaret;
-            if (m_positionOfCaret < (long)m_text.Length() && m_matchParens &&
+            if (m_positionOfCaret < (long)m_text.Length() && CellParser::Get()->GetMatchParens() &&
                 ((m_text.GetChar(m_positionOfCaret-1) == '[' && m_text.GetChar(m_positionOfCaret) == ']') ||
                  (m_text.GetChar(m_positionOfCaret-1) == '(' && m_text.GetChar(m_positionOfCaret) == ')') ||
                  (m_text.GetChar(m_positionOfCaret-1) == '{' && m_text.GetChar(m_positionOfCaret) == '}') ||
@@ -1797,7 +1795,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent& event)
     long start = MIN(m_selectionEnd, m_selectionStart);
     long end = MAX(m_selectionEnd, m_selectionStart);
 
-    if(m_matchParens)
+    if(CellParser::Get()->GetMatchParens())
     {
       switch (keyCode)
       {
@@ -1873,7 +1871,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent& event)
     
     m_positionOfCaret++;
       
-    if (m_matchParens)
+    if (CellParser::Get()->GetMatchParens())
     {
       switch (keyCode)
       {
@@ -1927,7 +1925,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent& event)
       case '=':
       case ',':
         size_t len = m_text.Length();
-        if (m_insertAns && len == 1 && m_positionOfCaret == 1)
+        if (CellParser::Get()->GetInsertAns() && len == 1 && m_positionOfCaret == 1)
         {
           m_text = m_text.SubString(0, m_positionOfCaret - 2) + wxT("%") +
             m_text.SubString(m_positionOfCaret - 1, m_text.Length());
@@ -3572,7 +3570,7 @@ void EditorCell::SetValue(const wxString &text)
 {
   if (m_type == MC_TYPE_INPUT)
   {
-    if (m_matchParens)
+    if (CellParser::Get()->GetMatchParens())
     {
       if (text == wxT("(")) {
         m_text = wxT("()");
@@ -3600,7 +3598,7 @@ void EditorCell::SetValue(const wxString &text)
       m_positionOfCaret = m_text.Length();
     }
 
-    if (m_insertAns)
+    if (CellParser::Get()->GetInsertAns())
     {
       if (m_text == wxT("+") ||
           m_text == wxT("*") ||
