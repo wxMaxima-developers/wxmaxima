@@ -99,7 +99,17 @@ public:
   const int GetIndent() { return m_indent; }
   void SetIndent(int indent) { m_indent = indent; }
   void SetClientWidth(int width) { m_clientWidth = width; }
+  //! Returns the width of the visible portion of the worksheet
   const int GetClientWidth() { return m_clientWidth; }
+  //! Returns the maximum sensible width for a text line: On big 16:9 screens
+  //  text tends to get \b very wide before it hits the right margin. But text
+  //  blocks that are 1 meter wide and 2 cm high feel - weird.
+  const int GetLineWidth() {
+    if(m_clientWidth<m_zoomFactor * double(m_defaultFontSize)*85)
+      return m_clientWidth;
+    else
+      return double(m_defaultFontSize)*80;
+  }
   const int GetDefaultFontSize() { return int(m_zoomFactor * double(m_defaultFontSize)); }
   const int GetMathFontSize() { return int(m_zoomFactor * double(m_mathFontSize)); }
   const bool GetAutoWrap() { return m_autoWrap;}

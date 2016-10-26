@@ -1646,6 +1646,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
             ClearSelection();
           }
           m_positionOfCaret = start;
+          StyleText();
           break;
         }
         else
@@ -3364,13 +3365,14 @@ void EditorCell::StyleText()
           {
             if(lastSpace > 0)
             {
-              // Does the line indent beyond the right edge of the screen?
+              // Does the line extend too much to the right to fit on the screen /
+              // to be easy to read?
               parser->GetDC().GetTextExtent(m_text.SubString(lastLineStart,i), &width, &height);
               if((!indentPixels.empty())&&(!newLine))
                 indentation = indentPixels.back();
               else
                 indentation = 0;
-              if(width + m_currentPoint.x + indentation >= parser->GetClientWidth())
+              if(width + m_currentPoint.x + indentation >= parser->GetLineWidth())
               {
                 // We need a line break in front of the last word
                 m_text[lastSpace] = wxT('\r');
@@ -3403,13 +3405,14 @@ void EditorCell::StyleText()
             // Spaces and reaching the end of the text both trigger auto-wrapping
             if((*it == ' ')||(i >= m_text.Length() - 1))
             {
-              // Does the line already extend beyond the right edge of the screen?
+              // Does the line extend too much to the right to fit on the screen /
+              // to be easy to read?
               parser->GetDC().GetTextExtent(m_text.SubString(lastLineStart,i), &width, &height);
               if((!indentPixels.empty())&&(!newLine))
                 indentation = indentPixels.back();
               else
                 indentation = 0;
-              if(width + m_currentPoint.x + indentation >= parser->GetClientWidth())
+              if(width + m_currentPoint.x + indentation >= parser->GetLineWidth())
               {
                 // We need a line break. Does the current line contain a space we can
                 // break the line at?
