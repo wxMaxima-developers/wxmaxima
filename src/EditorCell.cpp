@@ -1329,9 +1329,14 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
     }
     
     {
+      // We might want to auto-indent code cells. But for text cells this isn't
+      // the best idea possible.
       bool autoIndent = true;
-      wxConfig::Get()->Read(wxT("autoIndent"), &autoIndent);
-
+      if(m_type == MC_TYPE_INPUT)
+        wxConfig::Get()->Read(wxT("autoIndent"), &autoIndent);
+      else
+        autoIndent = false;
+      
       // If the cursor is at the beginning of a line we will move it there again after
       // indenting.
       bool cursorAtStartOfLine = (m_positionOfCaret == (long)BeginningOfLine(m_positionOfCaret));
@@ -1790,7 +1795,8 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent& event)
 
   // if we have a selection either put parens around it (and don't write the letter afterwards)
   // or delete selection and write letter (insertLetter = true).
-  if (m_selectionStart > -1) {
+  if (m_selectionStart > -1)
+  {
     SaveValue();
     long start = MIN(m_selectionEnd, m_selectionStart);
     long end = MAX(m_selectionEnd, m_selectionStart);
@@ -2574,7 +2580,7 @@ bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
   int width, height;
   int lineStart = XYToPosition(0, lin);
   int positionOfCaret = lineStart;
-
+  
   // In text cells every second token is a possibly indented line of text. The other
   // tokens are line endings.
   if((m_type != MC_TYPE_INPUT)&&(m_styledText.size()>lin*2))

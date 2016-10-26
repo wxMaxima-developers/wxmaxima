@@ -195,7 +195,7 @@ void ConfigDialogue::SetProperties()
   m_exportWithMathJAX->SetToolTip(_("MathJAX creates scalable High-Quality representations of 2D Maths that can be used for Drag-And-Drop and provides accessability options. The disadvantage of MathJAX is that it needs JavaScript and a little bit of time in order to typeset equations.\nMathML is much faster than MathJaX, if it is supported by the browser. But many MathML implementations tend to lack necessary features.\nBitmaps tend to need more band width than the other two options. They lack support for advanced features like drag-and-drop or accessibility. Also they have problems aligning and scaling with the rest of the text and might use fonts that don't match the rest of the document."));
   m_savePanes->SetToolTip(_("Save panes layout between sessions."));
   m_usepngCairo->SetToolTip(_("The pngCairo terminal offers much better graphics quality (antialiassing and additional line styles). But it will only produce plots if the gnuplot installed on the current system actually supports it."));
-  m_matchParens->SetToolTip(_("Write matching parenthesis in text controls."));
+  m_matchParens->SetToolTip(_("Automatically insert matching parenthesis in text controls. Automatical highlighting of matching parenthesis can be suppressed by setting the respective color to match the background of ordinary text."));
   m_showLength->SetToolTip(_("Show long expressions in wxMaxima document."));
   m_autosubscript->SetToolTip(_("false=Don't generate subscripts\ntrue=Automatically convert underscores to subscript markers if the would-be subscript is a number or a single letter\nall=_ marks subscripts."));
   m_language->SetToolTip(_("Language used for wxMaxima GUI."));
