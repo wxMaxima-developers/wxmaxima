@@ -1802,64 +1802,55 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent& event)
     long start = MIN(m_selectionEnd, m_selectionStart);
     long end = MAX(m_selectionEnd, m_selectionStart);
 
-    if(CellParser::Get()->GetMatchParens())
+    switch (keyCode)
     {
-      switch (keyCode)
-      {
-      case '(':
-        m_text = m_text.SubString(0, start - 1) +   wxT("(") +
-          m_text.SubString(start, end - 1) + wxT(")") +
-          m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = start;  insertLetter = false;
-        break;
-      case '\"':
-        m_text = m_text.SubString(0, start - 1) +   wxT("\"") +
-          m_text.SubString(start, end - 1) + wxT("\"") +
-          m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = start;  insertLetter = false;
-        break;
-      case '{':
-        m_text = m_text.SubString(0, start - 1) +   wxT("{") +
-          m_text.SubString(start, end - 1) + wxT("}") +
-          m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = start;  insertLetter = false;
-        break;
-      case '[':
-        m_text = m_text.SubString(0, start - 1) +   wxT("[") +
-          m_text.SubString(start, end - 1) + wxT("]") +
-          m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = start;  insertLetter = false;
-        break;
-      case ')':
-        m_text = m_text.SubString(0, start - 1) +   wxT("(") +
-          m_text.SubString(start, end - 1) + wxT(")") +
-          m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = end + 2; insertLetter = false;
-        break;
-      case '}':
-        m_text = m_text.SubString(0, start - 1) +   wxT("{") +
-          m_text.SubString(start, end - 1) + wxT("}") +
-          m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = end + 2; insertLetter = false;
-        break;
-      case ']':
-        m_text = m_text.SubString(0, start - 1) +   wxT("[") +
-          m_text.SubString(start, end - 1) + wxT("]") +
-          m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = end + 2; insertLetter = false;
-        break;
-      default: // delete selection
-        m_text = m_text.SubString(0, start - 1) +
-          m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = start;
-        break;
-      }
-    }
-    else
-    {
+    case '(':
+      m_text = m_text.SubString(0, start - 1) +   wxT("(") +
+        m_text.SubString(start, end - 1) + wxT(")") +
+        m_text.SubString(end, m_text.Length());
+      m_positionOfCaret = start;  insertLetter = false;
+      break;
+    case '\"':
+      m_text = m_text.SubString(0, start - 1) +   wxT("\"") +
+        m_text.SubString(start, end - 1) + wxT("\"") +
+        m_text.SubString(end, m_text.Length());
+      m_positionOfCaret = start;  insertLetter = false;
+      break;
+    case '{':
+      m_text = m_text.SubString(0, start - 1) +   wxT("{") +
+        m_text.SubString(start, end - 1) + wxT("}") +
+        m_text.SubString(end, m_text.Length());
+      m_positionOfCaret = start;  insertLetter = false;
+      break;
+    case '[':
+      m_text = m_text.SubString(0, start - 1) +   wxT("[") +
+        m_text.SubString(start, end - 1) + wxT("]") +
+        m_text.SubString(end, m_text.Length());
+      m_positionOfCaret = start;  insertLetter = false;
+      break;
+    case ')':
+      m_text = m_text.SubString(0, start - 1) +   wxT("(") +
+        m_text.SubString(start, end - 1) + wxT(")") +
+        m_text.SubString(end, m_text.Length());
+      m_positionOfCaret = end + 2; insertLetter = false;
+      break;
+    case '}':
+      m_text = m_text.SubString(0, start - 1) +   wxT("{") +
+        m_text.SubString(start, end - 1) + wxT("}") +
+        m_text.SubString(end, m_text.Length());
+      m_positionOfCaret = end + 2; insertLetter = false;
+      break;
+    case ']':
+      m_text = m_text.SubString(0, start - 1) +   wxT("[") +
+        m_text.SubString(start, end - 1) + wxT("]") +
+        m_text.SubString(end, m_text.Length());
+      m_positionOfCaret = end + 2; insertLetter = false;
+      break;
+    default: // delete selection
       m_text = m_text.SubString(0, start - 1) +
         m_text.SubString(end, m_text.Length());
       m_positionOfCaret = start;
+      break;
     }
     ClearSelection();
     StyleText();

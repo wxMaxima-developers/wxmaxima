@@ -2619,10 +2619,29 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
         {
           // User pressed enter inside a cell that doesn't contain code.
 
-          m_activeCell->ProcessEvent(event);
-          Recalculate(dynamic_cast<GroupCell*>(m_activeCell->GetParent()));
-          RecalculateForce();
-          RequestRedraw();
+          if ((event.ControlDown()) || (event.ShiftDown()))
+          { // shift-enter pressed => The user doesn't want to make an ordinary
+            // line break.
+            //
+            // In this cell there isn't anything to evaluate. But we can jump to the next
+            // cell. Perhaps there is something there...
+            if(GetActiveCell()->GetParent()->m_next)
+            {
+              // Jump to the next cell.
+              SetActiveCell(dynamic_cast<GroupCell*>(GetActiveCell()->GetParent()->m_next)->GetEditable());
+              ScrollToCaret();
+            }
+            else
+              // No next cell -> Jump to the end of the document.
+              SetHCaret(dynamic_cast<GroupCell*>(GetActiveCell()->GetParent()));
+          }
+	  else
+	  {
+            m_activeCell->ProcessEvent(event);
+            Recalculate(dynamic_cast<GroupCell*>(m_activeCell->GetParent()));
+            RecalculateForce();
+            RequestRedraw();
+	  }
         }
         else
         {
