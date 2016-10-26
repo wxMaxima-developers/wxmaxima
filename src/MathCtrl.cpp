@@ -945,10 +945,16 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event)
   }
 
   // emulate a left click to set the cursor
-  if (!clickInSelection) {
+  if (!clickInSelection)
+  {
     OnMouseLeftDown(event);
     m_leftDown = false;
     m_clickType = CLICK_TYPE_NONE;
+    if(m_mouseCaptured)
+    {
+      ReleaseMouse();
+      m_mouseCaptured = false;
+    }
   }
 
   // construct a menu appropriate to what we have
@@ -6448,13 +6454,6 @@ void MathCtrl::OnKillFocus(wxFocusEvent& event)
   m_hasFocus = false;
   if (m_activeCell != NULL)
     m_activeCell->SetFocus(false);
-
-  if(m_mouseCaptured)
-  {
-    ReleaseMouse();
-    m_mouseCaptured = false;
-  }
-
 }
 
 void MathCtrl::CheckUnixCopy()
@@ -6709,6 +6708,11 @@ void MathCtrl::OnMouseMiddleUp(wxMouseEvent& event)
   if (m_clickType != CLICK_TYPE_NONE)
     PasteFromClipboard(true);
   m_clickType = CLICK_TYPE_NONE;
+  if(m_mouseCaptured)
+  {
+    ReleaseMouse();
+    m_mouseCaptured = false;
+  }
 #endif
 }
 
