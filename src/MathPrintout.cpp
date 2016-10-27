@@ -114,7 +114,7 @@ bool MathPrintout::OnPrintPage(int num)
       if (tmp->m_next != NULL) {
         point.x = marginX;
         point.y += drop + tmp->m_next->GetMaxCenter();
-        point.y += SCALE_PX(MC_GROUP_SKIP, ppiScale);
+        point.y += SCALE_PX(CellParser::Get()->GroupSkip(), ppiScale);
         drop = tmp->m_next->GetMaxDrop();
       }
 
@@ -150,7 +150,7 @@ void MathPrintout::BreakPages()
   GetPageSizePixels(&pageWidth, &pageHeight);
 
   int currentHeight = marginY;
-  int skip = SCALE_PX(MC_GROUP_SKIP, scale);;
+  int skip = SCALE_PX(CellParser::Get()->GroupSkip(), scale);;
 
   GroupCell* tmp = (GroupCell *)m_tree;
   m_pages.push_back(tmp);

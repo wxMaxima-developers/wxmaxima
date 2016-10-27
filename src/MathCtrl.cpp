@@ -356,7 +356,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
       if (tmp->m_next != NULL) {
         point.x = MC_GROUP_LEFT_INDENT;
         point.y += drop + tmp->m_next->GetMaxCenter();
-        point.y += MC_GROUP_SKIP;
+        point.y += CellParser::Get()->GroupSkip();
         drop = tmp->m_next->GetMaxDrop();
       }
       tmp = dynamic_cast<GroupCell *>(tmp->m_next);
@@ -372,11 +372,13 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
     dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_parser->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
 
     if (m_hCaretPosition == NULL)
-      dcm.DrawLine(xstart + MC_GROUP_LEFT_INDENT, 5,xstart + MC_HCARET_WIDTH + MC_GROUP_LEFT_INDENT, 5);
+      dcm.DrawRectangle(xstart + MC_GROUP_LEFT_INDENT,(CellParser::Get()->GroupSkip()-CellParser::Get()->GetCursorWidth())/2 ,
+                   MC_HCARET_WIDTH, CellParser::Get()->GetCursorWidth());
     else {
       wxRect currentGCRect = m_hCaretPosition->GetRect();
-      int caretY = ((int) MC_GROUP_SKIP) / 2 + currentGCRect.GetBottom() + 1;
-      dcm.DrawLine(xstart + MC_GROUP_LEFT_INDENT, caretY,xstart + MC_HCARET_WIDTH + MC_GROUP_LEFT_INDENT,  caretY);
+      int caretY = ((int) CellParser::Get()->GroupSkip()) / 2 + currentGCRect.GetBottom() + 1;
+      dcm.DrawRectangle(xstart + MC_GROUP_LEFT_INDENT, caretY - CellParser::Get()->GetCursorWidth() / 2,
+                   MC_HCARET_WIDTH ,  CellParser::Get()->GetCursorWidth());
     }    
   }
   
@@ -2956,6 +2958,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
         rect.width = GetVirtualSize().x;
       }
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
+      rect.x -= CellParser::Get()->GetCursorWidth() / 2;
       RedrawRect(rect);
     }
   }
@@ -3482,7 +3485,7 @@ void MathCtrl::GetMaxPoint(int* width, int* height) {
 
   while (tmp != NULL) {
     currentHeight += tmp->GetMaxHeight();
-    currentHeight += MC_GROUP_SKIP;
+    currentHeight += CellParser::Get()->GroupSkip();
     *height = currentHeight;
     currentWidth = MC_BASE_INDENT + tmp->GetWidth();
     *width = MAX(currentWidth + MC_BASE_INDENT, *width);
@@ -3632,7 +3635,7 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
         else
         {
           rect = m_hCaretPosition->GetRect();
-          int caretY = ((int) MC_GROUP_SKIP) / 2 + rect.GetBottom() + 1;
+          int caretY = ((int) CellParser::Get()->GroupSkip()) / 2 + rect.GetBottom() + 1;
           rect.SetTop(caretY - 1);
           rect.SetBottom(caretY + 1);
         }

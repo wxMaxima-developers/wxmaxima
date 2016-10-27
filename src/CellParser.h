@@ -97,6 +97,22 @@ public:
   }
   const int GetLabelWidth(){return m_labelWidth;}
   const int GetIndent() { return m_indent; }
+  //! How much vertical space is to be left between two group cells?
+  int GetCursorWidth() {
+    if(wxGetDisplayPPI().x/45 < 1)
+      return 1;
+    else
+      return wxGetDisplayPPI().x/45;
+  }
+  
+  int GroupSkip()
+    {
+      if(GetCursorWidth() < 10)
+        return 20;
+      else
+        return 10 + GetCursorWidth();
+    }
+  
   void SetIndent(int indent) { m_indent = indent; }
   void SetClientWidth(int width) { m_clientWidth = width; }
   //! Returns the width of the visible portion of the worksheet

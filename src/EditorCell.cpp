@@ -713,15 +713,15 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
       dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID))); //TODO is there more efficient way to do this?
 #if defined(__WXMAC__)
       // draw 1 pixel shorter caret than on windows
-      dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
-                  point.y + SCALE_PX(3, scale) - m_center + caretInLine * m_charHeight,
-                  point.x + SCALE_PX(2, scale) + lineWidth,
-                  point.y - SCALE_PX(2, scale) - m_center + (caretInLine + 1) * m_charHeight);
+      dc.DrawRectangle(point.x + SCALE_PX(2, scale) + lineWidth - CellParser::Get()->GetCursorWidth()/2,
+                       point.y + SCALE_PX(3, scale) - m_center + caretInLine * m_charHeight,
+                       CellParser::Get()->GetCursorWidth(),
+                       m_charHeight- SCALE_PX(5, scale));
 #else
-      dc.DrawLine(point.x + SCALE_PX(2, scale) + lineWidth,
-                  point.y + SCALE_PX(2, scale) - m_center + caretInLine * m_charHeight,
-                  point.x + SCALE_PX(2, scale) + lineWidth,
-                  point.y - SCALE_PX(1, scale) - m_center + (caretInLine + 1) * m_charHeight);
+      dc.DrawRectangle(point.x + SCALE_PX(2, scale) + lineWidth-CellParser::Get()->GetCursorWidth()/2,
+                       point.y + SCALE_PX(2, scale) - m_center + caretInLine * m_charHeight,
+                       CellParser::Get()->GetCursorWidth(),
+                       m_charHeight- SCALE_PX(3, scale));
 #endif
     }
 
@@ -2841,8 +2841,19 @@ void EditorCell::PasteFromClipboard(bool primary)
 int EditorCell::GetLineWidth(wxDC& dc, unsigned int line, int pos)
 {
   if (pos == 0)
-    return 0;
-
+  {
+    // Code lines are never indented
+    if(m_type == MC_TYPE_INPUT)
+      return 0;
+    else
+    {
+      if(m_styledText.size() > line * 2)
+        return m_styledText[line*2].GetIndentPixels();
+      else
+        return 0;
+    }
+  }
+  
   unsigned int i = 0;
   
   std::vector<StyledText>::iterator textSnippet;

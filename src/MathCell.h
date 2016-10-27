@@ -37,7 +37,6 @@
 #define MC_LINE_SKIP 2
 #define MC_TEXT_PADDING 1
 
-#define MC_GROUP_SKIP 20
 //! The horizontal amount the worksheet is indented by  
 #define MC_GROUP_LEFT_INDENT 15
 

@@ -451,7 +451,7 @@ void GroupCell::RecalculateSize(int fontsize)
       {
       m_currentPoint.x = MC_GROUP_LEFT_INDENT;
       m_currentPoint.y = dynamic_cast<GroupCell*>(m_previous) -> m_currentPoint.y +
-        dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + MC_GROUP_SKIP;
+        dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + CellParser::Get()->GroupSkip();
       }
       
       m_outputRect.x = m_currentPoint.x;
@@ -485,7 +485,7 @@ void GroupCell::RecalculateSize(int fontsize)
       {
         m_currentPoint.x = MC_GROUP_LEFT_INDENT;
         m_currentPoint.y = dynamic_cast<GroupCell*>(m_previous) -> m_currentPoint.y +
-          dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + MC_GROUP_SKIP;
+          dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + CellParser::Get()->GroupSkip();
       }
     }
   }
