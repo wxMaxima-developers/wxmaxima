@@ -71,7 +71,7 @@ bool MathPrintout::OnPrintPage(int num)
   ppiScale = GetPPIScale();
   GetScreenScale(&screenScaleX, &screenScaleY);
 
-  marginX += SCALE_PX(MC_BASE_INDENT, ppiScale);
+  marginX += SCALE_PX(CellParser::Get()->GetBaseIndent(), ppiScale);
 
   dc->SetUserScale(screenScaleX, screenScaleY);
 
@@ -114,7 +114,7 @@ bool MathPrintout::OnPrintPage(int num)
       if (tmp->m_next != NULL) {
         point.x = marginX;
         point.y += drop + tmp->m_next->GetMaxCenter();
-        point.y += SCALE_PX(CellParser::Get()->GroupSkip(), ppiScale);
+        point.y += SCALE_PX(CellParser::Get()->GetGroupSkip(), ppiScale);
         drop = tmp->m_next->GetMaxDrop();
       }
 
@@ -150,7 +150,7 @@ void MathPrintout::BreakPages()
   GetPageSizePixels(&pageWidth, &pageHeight);
 
   int currentHeight = marginY;
-  int skip = SCALE_PX(CellParser::Get()->GroupSkip(), scale);;
+  int skip = SCALE_PX(CellParser::Get()->GetGroupSkip(), scale);;
 
   GroupCell* tmp = (GroupCell *)m_tree;
   m_pages.push_back(tmp);
@@ -262,10 +262,10 @@ void MathPrintout::Recalculate()
   GetPageSizePixels(&pageWidth, &pageHeight);
 
   parser.SetClientWidth(pageWidth - marginX - marginY
-                        - SCALE_PX(MC_BASE_INDENT, scale));
+                        - SCALE_PX(CellParser::Get()->GetBaseIndent(), scale));
   MathCell::SetCanvasSize(wxSize(pageWidth,pageHeight));
 
-  marginX += SCALE_PX(MC_BASE_INDENT, scale);
+  marginX += SCALE_PX(CellParser::Get()->GetBaseIndent(), scale);
   parser.SetIndent(marginX);
 
   while (tmp != NULL)

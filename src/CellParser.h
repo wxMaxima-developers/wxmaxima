@@ -104,8 +104,18 @@ public:
     else
       return wxGetDisplayPPI().x/45;
   }
-  
-  int GroupSkip()
+
+  //! The y position the worksheet starts at
+  int GetBaseIndent()
+    {
+      if(GetCursorWidth() < 12)
+        return 12;
+      else
+        return 4 + GetCursorWidth();
+    }
+
+  //! The vertical space between GroupCells
+  int GetGroupSkip()
     {
       if(GetCursorWidth() < 10)
         return 20;

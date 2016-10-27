@@ -33,7 +33,6 @@
 #define SCALE_PX(px, scale) ((int)((double)((px)*(scale)) + 0.5))
 
 #define MC_CELL_SKIP 0
-#define MC_BASE_INDENT 12
 #define MC_LINE_SKIP 2
 #define MC_TEXT_PADDING 1
 
