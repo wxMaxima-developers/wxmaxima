@@ -366,20 +366,36 @@ void MathCtrl::OnPaint(wxPaintEvent& event) {
   //
   // Draw horizontal caret
   //
-  if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hCaretBlinkVisible) && (m_hasFocus))
+  if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hCaretBlinkVisible) && (m_hasFocus) && (m_hCaretPosition != NULL))
   {
     // TODO is there more efficient way to do this?
     dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_parser->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
+    dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_parser->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 
-    if (m_hCaretPosition == NULL)
-      dcm.DrawRectangle(xstart + MC_GROUP_LEFT_INDENT,(CellParser::Get()->GroupSkip()-CellParser::Get()->GetCursorWidth())/2 ,
-                   MC_HCARET_WIDTH, CellParser::Get()->GetCursorWidth());
-    else {
-      wxRect currentGCRect = m_hCaretPosition->GetRect();
-      int caretY = ((int) CellParser::Get()->GroupSkip()) / 2 + currentGCRect.GetBottom() + 1;
-      dcm.DrawRectangle(xstart + MC_GROUP_LEFT_INDENT, caretY - CellParser::Get()->GetCursorWidth() / 2,
-                   MC_HCARET_WIDTH ,  CellParser::Get()->GetCursorWidth());
-    }    
+    wxRect currentGCRect = m_hCaretPosition->GetRect();
+    int caretY = ((int) CellParser::Get()->GroupSkip()) / 2 + currentGCRect.GetBottom() + 1;
+    dcm.DrawRectangle(xstart + MC_GROUP_LEFT_INDENT,
+                      caretY - CellParser::Get()->GetCursorWidth() / 2,
+                      MC_HCARET_WIDTH ,  CellParser::Get()->GetCursorWidth());
+  }
+
+  if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hasFocus)  && (m_hCaretPosition == NULL))
+  {
+    if (!m_hCaretBlinkVisible)
+    {
+      dcm.SetBrush(*wxWHITE_BRUSH);
+      dcm.SetPen(*wxWHITE_PEN);
+    }
+    else
+    {
+      dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_parser->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
+      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_parser->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
+    }     
+    
+    wxRect cursor = wxRect(xstart + MC_GROUP_LEFT_INDENT,
+                           (CellParser::Get()->GroupSkip()-CellParser::Get()->GetCursorWidth())/2 ,
+                           MC_HCARET_WIDTH, CellParser::Get()->GetCursorWidth());
+    dcm.DrawRectangle(cursor);
   }
   
   //
