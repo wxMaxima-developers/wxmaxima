@@ -290,7 +290,7 @@ void ParenCell::Draw(wxPoint point, int fontsize)
                         m_bigParenType < 1 ?
 			parser->GetTeXCMRI() :
 			parser->GetTeXCMEX()));
-      if (m_bigParenType < 2)
+      if (m_bigParenType < PARENTHESIS_ASSEMBLED)
       {
         dc.DrawText(m_bigParenType == 0 ? wxT("(") :
                                           wxT(PAREN_OPEN),
@@ -341,11 +341,12 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     }
     else
     {
+      // No TeX fonts
 #ifdef __WXMSW__
       in.x += m_charWidth;
       int fontsize1 = (int) ((PAREN_FONT_SIZE * scale + 0.5));
       SetForeground();
-      if (m_height < (3*m_charHeight)/2)
+      if (m_height <= 2*m_charHeight)
       {
         fontsize1 = (int) ((fontsize * scale + 0.5));
         dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,

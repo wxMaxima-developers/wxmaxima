@@ -146,7 +146,8 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
         m_MenuBar->Enable(menu_remove_output,true);
         if (m_console->m_mainToolBar)
         {
-          m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
+          if(m_EvaluationQueueLength == 0)
+            m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
           m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    false);
           m_console->m_mainToolBar->ShowFollowBitmap();
         }
