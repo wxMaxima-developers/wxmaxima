@@ -116,8 +116,7 @@ wxScrolledCanvas(
   m_leftDown = false;
   m_mouseDrag = false;
   m_mouseOutside = false;
-  m_editingEnabled = true;
-  m_switchDisplayCaret = true;
+  m_blinkDisplayCaret = true;
   m_timer.SetOwner(this, TIMER_ID);
   m_caretTimer.SetOwner(this, CARET_TIMER_ID);
   m_animationTimer.SetOwner(this, ANIMATION_TIMER_ID);
@@ -728,8 +727,7 @@ void MathCtrl::ClearDocument() {
   TreeUndo_ClearBuffers();
   DestroyTree();
 
-  EnableEdit(true);
-  m_switchDisplayCaret = true;
+  m_blinkDisplayCaret = true;
   AnimationRunning(false);
   m_saved = false;
 
@@ -959,13 +957,8 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event)
 
   // construct a menu appropriate to what we have
   //
-  /* If we have no selection or we are not in editing mode don't popup a menu!*/
-  if (m_editingEnabled == false) {
-    delete popupMenu;
-    return;
-  }
   if (m_activeCell == NULL) {
-
+    
     if (IsSelected(MC_TYPE_IMAGE) || IsSelected(MC_TYPE_SLIDE)) {
       popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_image, _("Save Image..."), wxEmptyString, wxITEM_NORMAL);
@@ -1167,7 +1160,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
         m_cellMouseSelectionStartedIn=editor;
         SetActiveCell(editor, false); // do not refresh as we will do so later
         m_activeCell->SelectPointText(*m_dc, m_down);
-        m_switchDisplayCaret = true;
+        m_blinkDisplayCaret = true;
         m_clickType = CLICK_TYPE_INPUT_SELECTION;
         if (editor->GetWidth() == -1)
           Recalculate(clickedInGC);
@@ -1191,7 +1184,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
         m_cellMouseSelectionStartedIn=dynamic_cast<EditorCell*>(m_selectionStart);
         SetActiveCell(m_cellMouseSelectionStartedIn, false);
         m_activeCell->SelectPointText(*m_dc, m_down);
-        m_switchDisplayCaret = true;
+        m_blinkDisplayCaret = true;
         m_clickType = CLICK_TYPE_INPUT_SELECTION;
         FollowEvaluation(true);    
         OpenQuestionCaret();
@@ -1576,7 +1569,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
         SetActiveCell(m_cellMouseSelectionStartedIn);
         // We are still inside the cell => select inside the current cell.
         m_activeCell->SelectRectText(*m_dc, down, up);
-        m_switchDisplayCaret = true;
+        m_blinkDisplayCaret = true;
         wxRect rect = m_activeCell->GetRect();
         CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
         RedrawRect(rect);
@@ -2904,7 +2897,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   // The keypress might have moved the cursor off-screen.
   ScrollToCaret();
   
-  m_switchDisplayCaret = true;
+  m_blinkDisplayCaret = true;
 
   m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - MC_BASE_INDENT);
 
@@ -3621,7 +3614,7 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
     int virtualsize_y;
     GetVirtualSize(&virtualsize_x,&virtualsize_y);
     
-    if (m_switchDisplayCaret) {
+    if (m_blinkDisplayCaret) {
       wxRect rect;
 
       if (m_activeCell != NULL) {
@@ -5497,8 +5490,7 @@ bool MathCtrl::ExportToWXMX(wxString file,bool markAsSaved)
  * CanEdit: we can edit the input if the we have the whole input in selection!
  */
 bool MathCtrl::CanEdit() {
-  if (m_selectionStart == NULL || m_selectionEnd != m_selectionStart
-      || m_editingEnabled == false)
+  if (m_selectionStart == NULL || m_selectionEnd != m_selectionStart)
     return false;
 
   if (!m_selectionStart->IsEditable())
@@ -6084,7 +6076,7 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
     if(cell != NULL)
       cell->ActivateCell(true);
     
-    m_switchDisplayCaret = true;
+    m_blinkDisplayCaret = true;
 
     int blinktime = wxCaret::GetBlinkTime();
     if(blinktime<200)
@@ -6608,7 +6600,7 @@ void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
   ScrollToCell(where);
   
   // Tell the cursor to blink, but to be visible right now.
-  m_switchDisplayCaret = true;
+  m_blinkDisplayCaret = true;
   m_hCaretBlinkVisible = true;
   int blinktime = wxCaret::GetBlinkTime();
   if(blinktime<200)

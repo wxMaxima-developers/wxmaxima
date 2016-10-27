@@ -611,8 +611,6 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
       }
     }
 
-    if((m_console != NULL)&&(addToHistory)) m_console->EnableEdit(false);
-
     if(m_client)
     {
 #if wxUSE_UNICODE
@@ -1083,7 +1081,6 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   m_closing = false; // when restarting maxima this is temporarily true
   
   data = wxEmptyString;
-  m_console->EnableEdit(true);
 
   if (m_console->m_evaluationQueue->Empty())
   {
@@ -1333,12 +1330,9 @@ void wxMaxima::ReadPrompt(wxString &data)
     else { // we don't have an empty queue
       m_ready = false;
       m_console->RequestRedraw();
-      m_console->EnableEdit();
       StatusMaximaBusy(calculating);
       TryEvaluateNextInQueue();
     }
-
-    m_console->EnableEdit();
 
     if (m_console->m_evaluationQueue->Empty())
     {
@@ -1714,8 +1708,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
 
   SetCWD(file);
   
-  m_console->EnableEdit(true);
-
   // We can set the cursor to the last known position.
   if(ActiveCellNumber == 0)
       m_console->SetHCaret(NULL);

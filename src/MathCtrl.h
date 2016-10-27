@@ -560,15 +560,15 @@ private:
   EditorCell *m_cellMouseSelectionStartedIn;
   EditorCell *m_cellKeyboardSelectionStartedIn;
   //! true = blink the cursor
-  bool m_switchDisplayCaret;
+  bool m_blinkDisplayCaret;
   //! Is the blinking vertically-drawn cursor currently visible?
   bool m_hCaretBlinkVisible;
-  /*! Is editing enabled?
-
-    Editing is disabled while we are waiting for maxima.
-   */
-  bool m_editingEnabled;
-  wxTimer m_timer, m_caretTimer, m_animationTimer;
+  //! Time step for autoscrolll when the mouse is outside the window
+  wxTimer m_timer;
+  //! The cursor blink rate. Also the timeout for redrawing the worksheet
+  wxTimer m_caretTimer;
+  //! The animation playback timer
+  wxTimer m_animationTimer;
   //! True only when an animation is running
   bool m_animate;
   wxBitmap *m_memory;
@@ -895,7 +895,6 @@ public:
     }
   }
   bool CanEdit();
-  void EnableEdit(bool enable = true) { m_editingEnabled = enable; }
   bool ActivatePrevInput();
   bool ActivateNextInput(bool input = false);
   //! Scrolls to the cursor
