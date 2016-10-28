@@ -192,6 +192,8 @@ void MathCtrl::RequestRedraw(GroupCell *start)
 }
 
 MathCtrl::~MathCtrl() {
+  if(HasCapture())
+    ReleaseMouse();
   delete m_parser;
   delete m_dc;
   if(m_mainToolBar != NULL)
