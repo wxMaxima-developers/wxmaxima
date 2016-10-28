@@ -969,6 +969,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event)
     if(m_mouseCaptured)
     {
       ReleaseMouse();
+      this->Disconnect(wxEVT_MOTION,wxMouseEventHandler(MathCtrl::OnMouseMotion));
       m_mouseCaptured = false;
     }
   }
@@ -1244,6 +1245,10 @@ void MathCtrl::OnMouseLeftInGc(wxMouseEvent& event, GroupCell *clickedInGc)
  */
 void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
 {
+  // During drag-and-drop We want to track the mouse position.
+  if(event.LeftDown())
+    this->Connect(wxEVT_MOTION,wxMouseEventHandler(MathCtrl::OnMouseMotion),NULL,this);
+  
   m_cellSearchStartedIn = NULL;
   m_indexSearchStartedAt = -1;
 
@@ -1386,6 +1391,7 @@ GroupCell *MathCtrl::FirstVisibleGC()
 
 void MathCtrl::OnMouseLeftUp(wxMouseEvent& event)
 {
+  this->Disconnect(wxEVT_MOTION,wxMouseEventHandler(MathCtrl::OnMouseMotion));
   m_cellSearchStartedIn = NULL;
   m_indexSearchStartedAt = -1;
 
@@ -1393,6 +1399,7 @@ void MathCtrl::OnMouseLeftUp(wxMouseEvent& event)
   if(m_mouseCaptured)
   {
     ReleaseMouse();
+    this->Disconnect(wxEVT_MOTION,wxMouseEventHandler(MathCtrl::OnMouseMotion));
     m_mouseCaptured = false;
   }
   
@@ -5532,6 +5539,7 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event)
   if(m_mouseCaptured)
   {
     ReleaseMouse();
+//    this->Disconnect(wxEVT_MOTION,wxMouseEventHandler(MathCtrl::OnMouseMotion));
     m_mouseCaptured = false;
   }
 
@@ -7431,7 +7439,6 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
   EVT_LEFT_DOWN(MathCtrl::OnMouseLeftDown)
   EVT_RIGHT_DOWN(MathCtrl::OnMouseRightDown)
   EVT_LEFT_DCLICK(MathCtrl::OnDoubleClick)
-  EVT_MOTION(MathCtrl::OnMouseMotion)
   EVT_ENTER_WINDOW(MathCtrl::OnMouseEnter)
   EVT_LEAVE_WINDOW(MathCtrl::OnMouseExit)
   EVT_TIMER(TIMER_ID, MathCtrl::OnTimer)
