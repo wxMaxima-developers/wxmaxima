@@ -216,8 +216,8 @@ MathCtrl::~MathCtrl() {
 /***
  * Redraw the control
  */
-void MathCtrl::OnPaint(wxPaintEvent& event) {
-
+void MathCtrl::OnPaint(wxPaintEvent& event)
+{
   // Inform all cells how wide our display is
   MathCell::SetCanvasSize(GetClientSize());
   wxMemoryDC dcm;
@@ -3652,8 +3652,8 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
         {
           rect = m_hCaretPosition->GetRect();
           int caretY = ((int) CellParser::Get()->GetGroupSkip()) / 2 + rect.GetBottom() + 1;
-          rect.SetTop(caretY - 1);
-          rect.SetBottom(caretY + 1);
+          rect.SetTop(caretY - CellParser::Get()->GetCursorWidth()/2);
+          rect.SetBottom(caretY + (CellParser::Get()->GetCursorWidth()+1)/2);
         }
         rect.SetLeft(0);
         rect.SetRight(virtualsize_x);
