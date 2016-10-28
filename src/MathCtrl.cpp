@@ -964,7 +964,9 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event)
   // emulate a left click to set the cursor
   if (!clickInSelection)
   {
-    OnMouseLeftDown(event);
+    wxMouseEvent dummy=event;
+    dummy.SetShiftDown(false);
+    OnMouseLeftDown(dummy);
     m_leftDown = false;
     m_clickType = CLICK_TYPE_NONE;
     if(HasCapture())
