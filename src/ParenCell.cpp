@@ -297,12 +297,12 @@ void ParenCell::Draw(wxPoint point, int fontsize)
                                           wxT(PAREN_OPEN),
                     point.x,
                     point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) -
-                    (m_bigParenType > PARENTHESIS_NORMAL ? m_signTop : 0));
+                    m_signTop);
         dc.DrawText(m_bigParenType == PARENTHESIS_NORMAL ? wxT(")") :
                                           wxT(PAREN_CLOSE),
                     point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
                     point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) -
-                    (m_bigParenType > PARENTHESIS_NORMAL ? m_signTop : 0));
+                     m_signTop);
       }
       else
       {
