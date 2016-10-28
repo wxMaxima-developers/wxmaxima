@@ -973,7 +973,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event)
       this->Disconnect(wxEVT_MOTION,wxMouseEventHandler(MathCtrl::OnMouseMotion));
     }
   }
-
+  
   // construct a menu appropriate to what we have
   //
   if (m_activeCell == NULL) {
@@ -1127,7 +1127,12 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event)
 
   // create menu if we have any items
   if (popupMenu->GetMenuItemCount() > 0 )
+  {
+    // Perhaps the following line fixes bug # 798
+    ForceRedraw();
+
     PopupMenu(popupMenu);
+  }
   delete popupMenu;
 }
 
