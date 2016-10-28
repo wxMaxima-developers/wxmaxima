@@ -308,7 +308,7 @@ void ParenCell::Draw(wxPoint point, int fontsize)
       {
         // Parenthesis is big enough that it has to be assembled by a top, a
         // bottom and a middle part.
-        int top = point.y - m_center - m_signTop;
+        int top = point.y - m_center - m_signTop - m_signSize/2;
         int bottom = top + m_height;
         dc.DrawText(wxT(PAREN_OPEN_TOP),
                     point.x,
