@@ -346,7 +346,7 @@ void ParenCell::Draw(wxPoint point, int fontsize)
       in.x += m_charWidth;
       int fontsize1 = (int) ((PAREN_FONT_SIZE * scale + 0.5));
       SetForeground();
-      if (m_height <= 2*m_charHeight)
+      if (m_height < (3*m_charHeight)/2)
       {
         fontsize1 = (int) ((fontsize * scale + 0.5));
         dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
