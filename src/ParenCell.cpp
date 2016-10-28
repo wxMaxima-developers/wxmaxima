@@ -223,6 +223,7 @@ void ParenCell::RecalculateWidths(int fontsize)
   }
   else
   {
+    // No TeX fonts
 #if defined __WXMSW__
     wxDC& dc = parser->GetDC();
     int fontsize1 = (int) ((PAREN_FONT_SIZE * scale + 0.5));
@@ -292,20 +293,23 @@ void ParenCell::Draw(wxPoint point, int fontsize)
 			parser->GetTeXCMEX()));
       if (m_bigParenType < PARENTHESIS_ASSEMBLED)
       {
-        dc.DrawText(m_bigParenType == 0 ? wxT("(") :
+        dc.DrawText(m_bigParenType == PARENTHESIS_NORMAL ? wxT("(") :
                                           wxT(PAREN_OPEN),
                     point.x,
                     point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) -
-                    (m_bigParenType > 0 ? m_signTop : 0));
-        dc.DrawText(m_bigParenType == 0 ? wxT(")") :
+                    (m_bigParenType > PARENTHESIS_NORMAL ? m_signTop : 0));
+        dc.DrawText(m_bigParenType == PARENTHESIS_NORMAL ? wxT(")") :
                                           wxT(PAREN_CLOSE),
                     point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
                     point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) -
-                    (m_bigParenType > 0 ? m_signTop : 0));
+                    (m_bigParenType > PARENTHESIS_NORMAL ? m_signTop : 0));
       }
-      else {
+      else
+      {
+        // Parenthesis is big enough that it has to be assembled by a top, a
+        // bottom and a middle part.
         int top = point.y - m_center - m_signTop;
-        int bottom = point.y + m_height - m_center - m_signTop - m_signSize / 2;
+        int bottom = top + m_height;
         dc.DrawText(wxT(PAREN_OPEN_TOP),
                     point.x,
                     top);
