@@ -1252,20 +1252,18 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
 {
   // During drag-and-drop We want to track the mouse position.
   if(event.LeftDown())
+  {
     this->Connect(wxEVT_MOTION,wxMouseEventHandler(MathCtrl::OnMouseMotion),NULL,this);
+    if(!HasCapture())
+      CaptureMouse();
+    m_leftDown = true;
+  }
+
   
   m_cellSearchStartedIn = NULL;
   m_indexSearchStartedAt = -1;
 
   AnimationRunning(false);
-
-  if(!m_leftDown)
-  {
-    // Track the mouse even if it as moved out of the worksheet during drag-and-drop.
-    if(!HasCapture())
-      CaptureMouse();
-    m_leftDown = true;
-  }
 
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_down.x, &m_down.y);
 
