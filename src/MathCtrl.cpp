@@ -86,7 +86,6 @@ wxScrolledCanvas(
   MathCell::ClipToDrawRegion(false);
   m_hCaretBlinkVisible = true;
   m_hasFocus = true;
-  m_mouseCaptured = false;
   m_lastTop    = 0;
   m_lastBottom = 0;
   m_followEvaluation = true;
@@ -966,11 +965,10 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event)
     OnMouseLeftDown(event);
     m_leftDown = false;
     m_clickType = CLICK_TYPE_NONE;
-    if(m_mouseCaptured)
+    if(HasCapture())
     {
       ReleaseMouse();
       this->Disconnect(wxEVT_MOTION,wxMouseEventHandler(MathCtrl::OnMouseMotion));
-      m_mouseCaptured = false;
     }
   }
 
@@ -1257,11 +1255,8 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
   if(!m_leftDown)
   {
     // Track the mouse even if it as moved out of the worksheet during drag-and-drop.
-    if(!m_mouseCaptured)
-    {
+    if(!HasCapture())
       CaptureMouse();
-      m_mouseCaptured = true;
-    }
     m_leftDown = true;
   }
 
@@ -1396,11 +1391,10 @@ void MathCtrl::OnMouseLeftUp(wxMouseEvent& event)
   m_indexSearchStartedAt = -1;
 
   // No more track the mouse when it is outside the worksheet
-  if(m_mouseCaptured)
+  if(HasCapture())
   {
     ReleaseMouse();
     this->Disconnect(wxEVT_MOTION,wxMouseEventHandler(MathCtrl::OnMouseMotion));
-    m_mouseCaptured = false;
   }
   
   AnimationRunning(false);
@@ -5536,11 +5530,10 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event)
 {
 
   // No more track the mouse when it is outside the worksheet
-  if(m_mouseCaptured)
+  if(HasCapture())
   {
     ReleaseMouse();
-//    this->Disconnect(wxEVT_MOTION,wxMouseEventHandler(MathCtrl::OnMouseMotion));
-    m_mouseCaptured = false;
+    this->Disconnect(wxEVT_MOTION,wxMouseEventHandler(MathCtrl::OnMouseMotion));
   }
 
   if (m_activeCell != NULL) {
@@ -6737,10 +6730,10 @@ void MathCtrl::OnMouseMiddleUp(wxMouseEvent& event)
   if (m_clickType != CLICK_TYPE_NONE)
     PasteFromClipboard(true);
   m_clickType = CLICK_TYPE_NONE;
-  if(m_mouseCaptured)
+  if(HasCapture())
   {
     ReleaseMouse();
-    m_mouseCaptured = false;
+    this->Disconnect(wxEVT_MOTION,wxMouseEventHandler(MathCtrl::OnMouseMotion));
   }
 #endif
 }
@@ -7421,7 +7414,6 @@ wxString MathCtrl::RTFEnd()
 
 void MathCtrl::OnMouseCaptureLost(wxMouseCaptureLostEvent& event)
 {
-  m_mouseCaptured = false;
   m_leftDown = false;
 }
 
