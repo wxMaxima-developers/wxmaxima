@@ -129,7 +129,7 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
         m_MenuBar->Enable(menu_remove_output,false);
         if(m_console->m_mainToolBar)
         {
-          m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    false);
+          m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,false);
           m_console->m_mainToolBar->ShowUserInputBitmap();
           m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
           m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    true);
@@ -146,10 +146,9 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
         m_MenuBar->Enable(menu_remove_output,true);
         if (m_console->m_mainToolBar)
         {
-          if(m_EvaluationQueueLength == 0)
-            m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
-          m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    false);
+          if(m_console->GetWorkingGroup() == NULL)m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
           m_console->m_mainToolBar->ShowFollowBitmap();
+          m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,false);
         }
         SetStatusText(_("Ready for user input"), 1);
         // We don't evaluate any cell right now.

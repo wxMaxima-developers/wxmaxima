@@ -5754,7 +5754,7 @@ void MathCtrl::ScrolledAwayFromEvaluation(bool ScrolledAway)
     if(FollowEvaluation()&&(ScrolledAway))
     {
       FollowEvaluation(false);
-      if(m_mainToolBar)
+      if((m_mainToolBar)&&(GetActiveCell()!=NULL))
         m_mainToolBar->EnableTool(ToolBar::tb_follow,true);
     }
     else
