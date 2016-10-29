@@ -291,25 +291,22 @@ void ParenCell::Draw(wxPoint point, int fontsize)
                         m_bigParenType < 1 ?
 			parser->GetTeXCMRI() :
 			parser->GetTeXCMEX()));
-      if (m_bigParenType < PARENTHESIS_ASSEMBLED)
+      if (m_bigParenType < 2)
       {
-        dc.DrawText(m_bigParenType == PARENTHESIS_NORMAL ? wxT("(") :
+        dc.DrawText(m_bigParenType == 0 ? wxT("(") :
                                           wxT(PAREN_OPEN),
                     point.x,
                     point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) -
-                    m_signTop);
-        dc.DrawText(m_bigParenType == PARENTHESIS_NORMAL ? wxT(")") :
+                    (m_bigParenType > 0 ? m_signTop : 0));
+        dc.DrawText(m_bigParenType == 0 ? wxT(")") :
                                           wxT(PAREN_CLOSE),
                     point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
                     point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) -
-                     m_signTop);
+                    (m_bigParenType > 0 ? m_signTop : 0));
       }
-      else
-      {
-        // Parenthesis is big enough that it has to be assembled by a top, a
-        // bottom and a middle part.
-        int top = point.y - m_center - m_signTop - m_signSize/2;
-        int bottom = top + m_height;
+      else {
+        int top = point.y - m_center - m_signTop;
+        int bottom = point.y + m_height - m_center - m_signTop - m_signSize / 2;
         dc.DrawText(wxT(PAREN_OPEN_TOP),
                     point.x,
                     top);
