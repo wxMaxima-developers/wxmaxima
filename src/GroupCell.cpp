@@ -367,7 +367,7 @@ void GroupCell::Recalculate(int d_fontsize, int m_fontsize)
   m_mathFontSize = m_fontsize;
 
   RecalculateWidths(d_fontsize);
-  RecalculateSize(d_fontsize);
+  RecalculateHeight(d_fontsize);
 }
 
 void GroupCell::RecalculateWidths(int fontsize)
@@ -403,7 +403,7 @@ void GroupCell::RecalculateWidths(int fontsize)
         tmp->RecalculateWidths(tmp->IsMath() ? m_mathFontSize : m_fontSize);
         tmp = tmp->m_next;
       }
-      // This is not correct, m_width will be computed correctly in RecalculateSize!
+      // This is not correct, m_width will be computed correctly in RecalculateHeight!
       m_width = m_input->GetFullWidth(scale);
     }
 
@@ -413,7 +413,7 @@ void GroupCell::RecalculateWidths(int fontsize)
   ResetData();
 }
 
-void GroupCell::RecalculateSize(int fontsize)
+void GroupCell::RecalculateHeight(int fontsize)
 {
   CellParser *parser = CellParser::Get();
   if (m_width == -1 || m_height == -1 || parser->ForceUpdate())
@@ -429,7 +429,7 @@ void GroupCell::RecalculateSize(int fontsize)
     }
 
     double scale = parser->GetScale();
-    m_input->RecalculateSizeList(fontsize);
+    m_input->RecalculateHeightList(fontsize);
     m_center = m_input->GetMaxCenter();
     m_height = m_input->GetMaxHeight();
     m_indent = parser->GetIndent();
@@ -438,7 +438,7 @@ void GroupCell::RecalculateSize(int fontsize)
     {
       MathCell *tmp = m_output;
       while (tmp != NULL) {
-        tmp->RecalculateSize(tmp->IsMath() ? m_mathFontSize : m_fontSize);
+        tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
         tmp = tmp->m_next;
       }
       
@@ -523,7 +523,7 @@ void GroupCell::RecalculateAppended()
   // Recalculate size of cells
   tmp = m_appendedCells;
   while (tmp != NULL) {
-    tmp->RecalculateSize(tmp->IsMath() ? m_mathFontSize : m_fontSize);
+    tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
     tmp = tmp->m_next;
   }
 
@@ -553,7 +553,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
   wxDC& dc = parser->GetDC();
   if (m_width == -1 || m_height == -1) {
     RecalculateWidths(fontsize);
-    RecalculateSize(fontsize);
+    RecalculateHeight(fontsize);
   }
   if (DrawThisCell(point))
   {
@@ -1299,7 +1299,7 @@ void GroupCell::BreakUpCells(MathCell *cell, int fontsize, int clientWidth)
     if (tmp->GetWidth() > clientWidth) {
       if (tmp->BreakUp()) {
         tmp->RecalculateWidths(tmp->IsMath() ? m_mathFontSize : m_fontSize);
-        tmp->RecalculateSize(tmp->IsMath() ? m_mathFontSize : m_fontSize);
+        tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
       }
     }
     tmp = tmp->m_nextToDraw;

@@ -76,7 +76,7 @@ public:
   wxMemoryBuffer GetCompressedImage(){return m_image->m_compressedImage;}
 protected:
   Image *m_image;
-  void RecalculateSize(int fontsize);
+  void RecalculateHeight(int fontsize);
   void RecalculateWidths(int fontsize);
   void Draw(wxPoint point, int fontsize);
   wxString ToString();

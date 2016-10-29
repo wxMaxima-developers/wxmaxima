@@ -94,7 +94,7 @@ protected:
   int m_displayed;
   wxFileSystem *m_fileSystem;
   vector<Image*> m_images;
-  void RecalculateSize(int fontsize);
+  void RecalculateHeight(int fontsize);
   void RecalculateWidths(int fontsize);
   void Draw(wxPoint point, int fontsize);
   wxString ToString();

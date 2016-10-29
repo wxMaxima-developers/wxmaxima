@@ -164,7 +164,7 @@ void SlideShow::RecalculateWidths(int fontsize)
   m_center = m_height / 2;
 }
 
-void SlideShow::RecalculateSize(int fontsize)
+void SlideShow::RecalculateHeight(int fontsize)
 {
   // Here we recalculate the width, as well:
   //  - This doesn't cost much time and

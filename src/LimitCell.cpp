@@ -126,11 +126,11 @@ void LimitCell::RecalculateWidths(int fontsize)
   ResetData();
 }
 
-void LimitCell::RecalculateSize(int fontsize)
+void LimitCell::RecalculateHeight(int fontsize)
 {
-  m_under->RecalculateSizeList(MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
-  m_name->RecalculateSizeList(fontsize);
-  m_base->RecalculateSizeList(fontsize);
+  m_under->RecalculateHeightList(MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
+  m_name->RecalculateHeightList(fontsize);
+  m_base->RecalculateHeightList(fontsize);
 
   m_center = MAX(m_base->GetMaxCenter(), m_name->GetMaxCenter());
   m_height = m_center + MAX(m_name->GetMaxDrop() + m_under->GetMaxHeight(),

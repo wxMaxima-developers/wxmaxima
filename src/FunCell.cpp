@@ -103,10 +103,10 @@ void FunCell::RecalculateWidths(int fontsize)
   ResetData();
 }
 
-void FunCell::RecalculateSize(int fontsize)
+void FunCell::RecalculateHeight(int fontsize)
 {
-  m_nameCell->RecalculateSizeList(fontsize);
-  m_argCell->RecalculateSizeList(fontsize);
+  m_nameCell->RecalculateHeightList(fontsize);
+  m_argCell->RecalculateHeightList(fontsize);
   m_center = MAX(m_nameCell->GetMaxCenter(), m_argCell->GetMaxCenter());
   m_height = m_center + MAX(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
 }

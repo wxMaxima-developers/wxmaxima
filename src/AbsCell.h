@@ -72,7 +72,7 @@ protected:
   TextCell *m_close;
   //! The last element of m_innerCell
   MathCell *m_last;
-  void RecalculateSize(int fontsize);
+  void RecalculateHeight(int fontsize);
   void RecalculateWidths(int fontsize);
   void Draw(wxPoint point, int fontsize);
   wxString ToString();

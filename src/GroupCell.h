@@ -111,7 +111,7 @@ public:
   MathCell* GetOutput() { if (m_output == NULL) return NULL; else return m_output->m_next; }
   //
   wxRect GetOutputRect() { return m_outputRect; }
-  void RecalculateSize(int fontsize);
+  void RecalculateHeight(int fontsize);
   void RecalculateWidths(int fontsize);
   void Recalculate(int d_fontsize, int m_fontsize);
   void BreakUpCells(int fontsize, int clientWidth);

@@ -135,7 +135,7 @@ void ParenCell::RecalculateWidths(int fontsize)
   if (parser->CheckTeXFonts())
   {
     wxDC& dc = parser->GetDC();
-    m_innerCell->RecalculateSizeList(fontsize);
+    m_innerCell->RecalculateHeightList(fontsize);
     int size = m_innerCell->GetMaxHeight() * scale;
     /// BUG 2897415: Exporting equations to HTML locks up on Mac
     ///  there is something wrong with what dc.GetTextExtent returns,
@@ -245,11 +245,11 @@ void ParenCell::RecalculateWidths(int fontsize)
   ResetData();
 }
 
-void ParenCell::RecalculateSize(int fontsize)
+void ParenCell::RecalculateHeight(int fontsize)
 {
   CellParser *parser = CellParser::Get();
   double scale = parser->GetScale();
-  m_innerCell->RecalculateSizeList(fontsize);
+  m_innerCell->RecalculateHeightList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(2, scale);
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(1, scale);
 
@@ -267,8 +267,8 @@ void ParenCell::RecalculateSize(int fontsize)
   }
 #endif
 
-  m_open->RecalculateSizeList(fontsize);
-  m_close->RecalculateSizeList(fontsize);
+  m_open->RecalculateHeightList(fontsize);
+  m_close->RecalculateHeightList(fontsize);
 }
 
 void ParenCell::Draw(wxPoint point, int fontsize)

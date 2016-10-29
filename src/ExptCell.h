@@ -55,7 +55,7 @@ public:
   void SetBase(MathCell *base);
   //! Set the exponent
   void SetPower(MathCell *power);
-  void RecalculateSize(int fontsize);
+  void RecalculateHeight(int fontsize);
   void RecalculateWidths(int fontsize);
   void Draw(wxPoint point, int fontsize);
   wxString ToString();

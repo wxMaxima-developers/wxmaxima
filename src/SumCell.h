@@ -44,7 +44,7 @@ public:
   ~SumCell();
   void Destroy();
   MathCell* Copy();
-  void RecalculateSize(int fontsize);
+  void RecalculateHeight(int fontsize);
   void RecalculateWidths(int fontsize);
   void Draw(wxPoint point, int fontsize);
   void SetBase(MathCell* base);

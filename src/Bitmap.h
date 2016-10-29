@@ -59,7 +59,7 @@ protected:
   void DestroyTree();
   void RecalculateWidths();
   void BreakLines();
-  void RecalculateSize();
+  void RecalculateHeight();
   void GetMaxPoint(int* width, int* height);
   void BreakUpCells();
   void Layout(long int maxSize = -1);

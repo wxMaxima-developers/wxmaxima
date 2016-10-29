@@ -143,22 +143,22 @@ void ExptCell::RecalculateWidths(int fontsize)
   ResetData();
 }
 
-void ExptCell::RecalculateSize(int fontsize)
+void ExptCell::RecalculateHeight(int fontsize)
 {
   CellParser *parser = CellParser::Get();
   double scale = parser->GetScale();
-  m_baseCell->RecalculateSizeList(fontsize);
+  m_baseCell->RecalculateHeightList(fontsize);
   if (m_isBroken)
-    m_powCell->RecalculateSizeList(fontsize);
+    m_powCell->RecalculateHeightList(fontsize);
   else
-    m_powCell->RecalculateSizeList(MAX(MC_MIN_SIZE, fontsize - EXPT_DEC));
+    m_powCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - EXPT_DEC));
   m_height = m_baseCell->GetMaxHeight() + m_powCell->GetMaxHeight() -
              SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
   m_center = m_powCell->GetMaxHeight() + m_baseCell->GetMaxCenter() -
              SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
-  m_exp->RecalculateSizeList(fontsize);
-  m_open->RecalculateSizeList(fontsize);
-  m_close->RecalculateSizeList(fontsize);
+  m_exp->RecalculateHeightList(fontsize);
+  m_open->RecalculateHeightList(fontsize);
+  m_close->RecalculateHeightList(fontsize);
 }
 
 void ExptCell::Draw(wxPoint point, int fontsize)

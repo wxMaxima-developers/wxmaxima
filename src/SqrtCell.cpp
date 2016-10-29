@@ -108,7 +108,7 @@ void SqrtCell::RecalculateWidths(int fontsize)
   {
     wxDC& dc = parser->GetDC();
     double scale = parser->GetScale();
-    m_innerCell->RecalculateSizeList(fontsize);
+    m_innerCell->RecalculateHeightList(fontsize);
 
     m_signFontScale = 1.0;
     int fontsize1 = (int)(SIGN_FONT_SCALE*scale*fontsize*m_signFontScale + 0.5);
@@ -155,15 +155,15 @@ void SqrtCell::RecalculateWidths(int fontsize)
   ResetData();
 }
 
-void SqrtCell::RecalculateSize(int fontsize)
+void SqrtCell::RecalculateHeight(int fontsize)
 {
   CellParser *parser = CellParser::Get();
   double scale = parser->GetScale();
-  m_innerCell->RecalculateSizeList(fontsize);
+  m_innerCell->RecalculateHeightList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(3, scale);
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(3, scale);
-  m_open->RecalculateSizeList(fontsize);
-  m_close->RecalculateSizeList(fontsize);
+  m_open->RecalculateHeightList(fontsize);
+  m_close->RecalculateHeightList(fontsize);
 }
 
 void SqrtCell::Draw(wxPoint point, int fontsize)

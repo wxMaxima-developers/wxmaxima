@@ -102,15 +102,15 @@ void ConjugateCell::RecalculateWidths(int fontsize)
   ResetData();
 }
 
-void ConjugateCell::RecalculateSize(int fontsize)
+void ConjugateCell::RecalculateHeight(int fontsize)
 {
   CellParser *parser = CellParser::Get();
   double scale = parser->GetScale();
-  m_innerCell->RecalculateSizeList(fontsize);
+  m_innerCell->RecalculateHeightList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(4, scale);
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(2, scale);
-  m_open->RecalculateSizeList(fontsize);
-  m_close->RecalculateSizeList(fontsize);
+  m_open->RecalculateHeightList(fontsize);
+  m_close->RecalculateHeightList(fontsize);
 }
 
 void ConjugateCell::Draw(wxPoint point, int fontsize)

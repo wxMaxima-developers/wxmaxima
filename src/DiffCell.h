@@ -33,7 +33,7 @@ public:
   MathCell* Copy();
   void SetBase(MathCell *base);
   void SetDiff(MathCell *diff);
-  void RecalculateSize(int fontsize);
+  void RecalculateHeight(int fontsize);
   void RecalculateWidths(int fontsize);
   void Draw(wxPoint point, int fontsize);
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);

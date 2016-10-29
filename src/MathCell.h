@@ -294,16 +294,16 @@ public:
 
     Should set: m_height, m_center.
   */
-  virtual void RecalculateSize(int fontsize) { };
+  virtual void RecalculateHeight(int fontsize) { };
   //! Recalculate the height of this list of cells 
-  void RecalculateSizeList(int fontsize);
+  void RecalculateHeightList(int fontsize);
   //! Marks all widths of this cell as to be recalculated on query.
   virtual void RecalculateWidths(int fontsize);
   //! Marks all widths of this list as to be recalculated on query.
   void RecalculateWidthsList(int fontsize);
   /*! Recalculate both width and height of this list of cells.
 
-    Is faster than a <code>RecalculateSizeList();RecalculateWidths();</code>.
+    Is faster than a <code>RecalculateHeightList();RecalculateWidths();</code>.
    */
   void RecalculateList(int fontsize);
   //! Mark all cached size information as "to be calculated".

@@ -64,7 +64,7 @@ void Bitmap::Layout(long int maxSize)
     RecalculateWidths();
     BreakUpCells();
     BreakLines();
-    RecalculateSize();
+    RecalculateHeight();
   }
   else {
     int fontsize = 12;
@@ -112,7 +112,7 @@ double Bitmap::GetRealHeight()
   return m_height/m_scale;
 }
 
-void Bitmap::RecalculateSize()
+void Bitmap::RecalculateHeight()
 {
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
@@ -127,7 +127,7 @@ void Bitmap::RecalculateSize()
 
   while (tmp != NULL)
   {
-    tmp->RecalculateSize(tmp->IsMath() ? mfontsize : fontsize);
+    tmp->RecalculateHeight(tmp->IsMath() ? mfontsize : fontsize);
     tmp = tmp->m_next;
   }
 }
@@ -363,7 +363,7 @@ void Bitmap::BreakUpCells()
       if (tmp->BreakUp())
       {
         tmp->RecalculateWidths(tmp->IsMath() ? mfontsize : fontsize);
-        tmp->RecalculateSize(tmp->IsMath() ? mfontsize : fontsize);
+        tmp->RecalculateHeight(tmp->IsMath() ? mfontsize : fontsize);
       }
     }
     tmp = tmp->m_nextToDraw;

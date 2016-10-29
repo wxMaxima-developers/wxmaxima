@@ -57,7 +57,7 @@ public:
   void Destroy();
   void SetName(MathCell *base);
   void SetArg(MathCell *index);
-  void RecalculateSize(int fontsize);
+  void RecalculateHeight(int fontsize);
   void RecalculateWidths(int fontsize);
   void Draw(wxPoint point, int fontsize);
   wxString ToString();

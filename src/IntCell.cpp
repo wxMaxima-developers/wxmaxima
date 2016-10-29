@@ -203,15 +203,15 @@ void IntCell::RecalculateWidths(int fontsize)
   ResetData();
 }
 
-void IntCell::RecalculateSize(int fontsize)
+void IntCell::RecalculateHeight(int fontsize)
 {
   CellParser *parser = CellParser::Get();
   double scale = parser->GetScale();
 
-  m_under->RecalculateSizeList(MAX(MC_MIN_SIZE, fontsize - 5));
-  m_over->RecalculateSizeList(MAX(MC_MIN_SIZE, fontsize - 5));
-  m_base->RecalculateSizeList(fontsize);
-  m_var->RecalculateSizeList(fontsize);
+  m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 5));
+  m_over->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 5));
+  m_base->RecalculateHeightList(fontsize);
+  m_var->RecalculateHeightList(fontsize);
 
   if (m_intStyle == INT_DEF)
   {

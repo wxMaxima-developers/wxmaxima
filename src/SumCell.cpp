@@ -156,14 +156,14 @@ void SumCell::RecalculateWidths(int fontsize)
   ResetData();
 }
 
-void SumCell::RecalculateSize(int fontsize)
+void SumCell::RecalculateHeight(int fontsize)
 {
   CellParser *parser = CellParser::Get();
   double scale = parser->GetScale();
 
-  m_under->RecalculateSizeList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
-  m_over->RecalculateSizeList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
-  m_base->RecalculateSizeList(fontsize);
+  m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
+  m_over->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
+  m_base->RecalculateHeightList(fontsize);
 
   m_center = MAX(m_over->GetMaxHeight() + SCALE_PX(4, scale) + m_signSize / 2,
                  m_base->GetMaxCenter());

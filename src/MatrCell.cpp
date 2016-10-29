@@ -112,14 +112,14 @@ void MatrCell::RecalculateWidths(int fontsize)
   ResetData();
 }
 
-void MatrCell::RecalculateSize(int fontsize)
+void MatrCell::RecalculateHeight(int fontsize)
 {
   CellParser *parser = CellParser::Get();
   double scale = parser->GetScale();
 
   for (int i = 0; i < m_matWidth*m_matHeight; i++)
   {
-    m_cells[i]->RecalculateSizeList(MAX(MC_MIN_SIZE, fontsize - 2));
+    m_cells[i]->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 2));
   }
   m_centers.clear();
   m_drops.clear();

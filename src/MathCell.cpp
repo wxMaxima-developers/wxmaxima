@@ -309,7 +309,7 @@ void MathCell::RecalculateList(int fontsize)
   while(tmp!=NULL)
     {
       tmp->RecalculateWidths(fontsize);
-      tmp->RecalculateSize(fontsize);
+      tmp->RecalculateHeight(fontsize);
       tmp=tmp->m_next;
     }  
 }
@@ -326,13 +326,13 @@ void MathCell::ResetSizeList()
 }
 
 
-void MathCell::RecalculateSizeList(int fontsize)
+void MathCell::RecalculateHeightList(int fontsize)
 {
   MathCell *tmp=this;
 
   while(tmp!=NULL)
     {
-      tmp->RecalculateSize(fontsize);
+      tmp->RecalculateHeight(fontsize);
       tmp=tmp->m_next;
     }  
 }

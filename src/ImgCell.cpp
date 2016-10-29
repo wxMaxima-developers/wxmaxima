@@ -131,7 +131,7 @@ void ImgCell::RecalculateWidths(int fontsize)
   m_center = m_height / 2;
 }
 
-void ImgCell::RecalculateSize(int fontsize)
+void ImgCell::RecalculateHeight(int fontsize)
 {
   // Here we recalculate the width, as well:
   //  - This doesn't cost much time and

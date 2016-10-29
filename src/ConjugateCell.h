@@ -60,7 +60,7 @@ protected:
   MathCell *m_innerCell;
   TextCell *m_open, *m_close;
   MathCell *m_last;
-  void RecalculateSize(int fontsize);
+  void RecalculateHeight(int fontsize);
   void RecalculateWidths(int fontsize);
   void Draw(wxPoint point, int fontsize);
   wxString ToString();

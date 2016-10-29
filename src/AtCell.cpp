@@ -103,12 +103,12 @@ void AtCell::RecalculateWidths(int fontsize)
   ResetData();
 }
 
-void AtCell::RecalculateSize(int fontsize)
+void AtCell::RecalculateHeight(int fontsize)
 {
   CellParser *parser = CellParser::Get();
   double scale = parser->GetScale();
-  m_baseCell->RecalculateSizeList(fontsize);
-  m_indexCell->RecalculateSizeList(MAX(MC_MIN_SIZE, fontsize - 3));
+  m_baseCell->RecalculateHeightList(fontsize);
+  m_indexCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 3));
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
              SCALE_PX(7, scale);
   m_center = m_baseCell->GetCenter();

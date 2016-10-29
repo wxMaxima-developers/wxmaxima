@@ -126,14 +126,14 @@ void SubSupCell::RecalculateWidths(int fontsize)
   ResetData();
 }
 
-void SubSupCell::RecalculateSize(int fontsize)
+void SubSupCell::RecalculateHeight(int fontsize)
 {
   CellParser *parser = CellParser::Get();  
   double scale = parser->GetScale();
 
-  m_baseCell->RecalculateSizeList(fontsize);
-  m_indexCell->RecalculateSizeList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
-  m_exptCell->RecalculateSizeList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  m_baseCell->RecalculateHeightList(fontsize);
+  m_indexCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+  m_exptCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
 
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() +
              m_exptCell->GetMaxHeight() -

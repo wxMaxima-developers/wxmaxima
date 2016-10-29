@@ -2940,7 +2940,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     
     m_activeCell->ResetData();
     m_activeCell->RecalculateWidths(MAX(fontsize, MC_MIN_SIZE));
-    m_activeCell->RecalculateSize(MAX(fontsize, MC_MIN_SIZE));
+    m_activeCell->RecalculateHeight(MAX(fontsize, MC_MIN_SIZE));
     
     if (height != m_activeCell->GetHeight() ||
         m_activeCell->GetWidth() + m_activeCell->m_currentPoint.x >=
