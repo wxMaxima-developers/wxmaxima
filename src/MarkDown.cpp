@@ -55,6 +55,7 @@ wxString MarkDownParser::MarkDown(wxString str)
   // The list of indentation levels for bullet lists we found
   // so far
   std::list <size_t> indentationLevels;
+  std::list <wxChar> indentationTypes;
   int quoting=0;
   
   // Now process the input string line-by-line.
@@ -62,22 +63,13 @@ wxString MarkDownParser::MarkDown(wxString str)
   while(lines.HasMoreTokens())
   {
     wxString line = lines.GetNextToken();
+    wxString quotingStart;
+    wxString lineTrimmed = line;
+    lineTrimmed.Trim(false);
 
-    // Handle quoting
-    if(line.StartsWith(quoteChar()))
-    {
-      if(quoting==0)
-        result+=quoteBegin();
-      quoting=1;
-      line=line.Right(line.Length()-quoteChar().Length());
-    }
-    else
-    {
-      if(quoting==1)
-        result+=quoteEnd();
-      
-      quoting=0;
-    }
+    wxString str = line;
+    str = str.Trim(false);
+    size_t index = line.Length()-str.Length();
 
     // Determine the amount of indentation and the contents of the rest
     // of the line.
@@ -87,10 +79,6 @@ wxString MarkDownParser::MarkDown(wxString str)
 
     // Trailing whitespace doesn't help much.
     line=line.Trim();
-
-    wxString str = line;
-    str = str.Trim(false);
-    size_t index = line.Length()-str.Length();
 
     // Does the line contain anything other than spaces?
     if(str != wxEmptyString)
@@ -113,6 +101,7 @@ wxString MarkDownParser::MarkDown(wxString str)
           // This is the first item => Start the itemization.
           result += itemizeBegin()+itemizeItem();
           indentationLevels.push_back(index );
+          indentationTypes.push_back(wxT('*'));
         }
         else
         {
@@ -124,17 +113,67 @@ wxString MarkDownParser::MarkDown(wxString str)
             // A new identation level => add the itemization-start-command.
             result += itemizeEndItem() + itemizeBegin();
             indentationLevels.push_back(index);
+            indentationTypes.push_back(wxT('*'));
           }
           
           // End lists if we are at a old indentation level.
           while(!indentationLevels.empty() && (indentationLevels.back() > index))
             {
-              result += itemizeEnd();
+              if(indentationTypes.back()==wxT('*'))
+                result += itemizeEnd();
+              else
+                result += quoteEnd();
               indentationLevels.pop_back();
+              indentationTypes.pop_back();
             }
           
           // Add a new item marker.
           result += itemizeEndItem() + itemizeItem();
+        }
+        result += str += wxT(" ");
+      }
+      else if(str.StartsWith(quoteChar()+wxT(" ")))
+      {
+        // We are part of a quotation.
+        std::cerr<<"quote\n";
+        // Remove the bullet list start marker from our string.
+        str = str.Right(str.Length()-quoteChar().Length()-1);
+        str = str.Trim(false);
+        
+        // Let's see if this is the first item in the list
+        if(indentationLevels.empty())
+        {
+          // This is the first item => Start the itemization.
+          std::cerr<<"newquote\n";
+          result += quoteBegin();
+          indentationLevels.push_back(index );
+          indentationTypes.push_back(wxT('>'));
+        }
+        else
+        {
+          // We are inside a bullet list.
+
+          // Are we on a new indentation level?
+          if(indentationLevels.back()<index)
+          {
+            std::cerr<<"newquotelevel\n";
+            // A new identation level => add the itemization-start-command.
+            result += quoteBegin();
+            indentationLevels.push_back(index);
+            indentationTypes.push_back(wxT('>'));
+          }
+          
+          // End lists if we are at a old indentation level.
+          while(!indentationLevels.empty() && (indentationLevels.back() > index))
+            {
+              std::cerr<<"oldquotelevel\n";
+              if(indentationTypes.back()==wxT('*'))
+                result += itemizeEnd();
+              else
+                result += quoteEnd();
+              indentationLevels.pop_back();
+              indentationTypes.pop_back();
+            }
         }
         result += str += wxT(" ");
       }
@@ -154,8 +193,12 @@ wxString MarkDownParser::MarkDown(wxString str)
             while((!indentationLevels.empty())&&
                   (indentationLevels.back()>index))
             {
-              result += itemizeEnd();
+              if(indentationTypes.back()==wxT('*'))
+                result += itemizeEnd();
+              else
+                result += quoteEnd();
               indentationLevels.pop_back();
+              indentationTypes.pop_back();
             }
             if(!indentationLevels.empty()) result += itemizeItem();
           }
@@ -179,8 +222,12 @@ wxString MarkDownParser::MarkDown(wxString str)
   // Close all item lists
   while(!indentationLevels.empty())
   {
-    result += itemizeEnd();
+    if(indentationTypes.back()==wxT('*'))
+      result += itemizeEnd();
+    else
+      result += quoteEnd();
     indentationLevels.pop_back();
+    indentationTypes.pop_back();
   }
   return result;
 }
