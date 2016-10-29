@@ -1770,7 +1770,8 @@
 
 ;;;
 ;;; Rewrite of the function load (maxima/src/mload.lisp)
-;;; (displays functions after loading a Maxima package
+;;; (displays functions and variable names after loading a Maxima package so the
+;;; autocomplete functionality knows which function and variable names exist
 ;;;
 (no-warning
  (defun $load (filename)
