@@ -15,7 +15,7 @@
 
 ;; Method:
 
-;; Producing wxxml from a maxima internal expression is done by
+;; Producing wxml from a Maxima internal expression is done by
 ;; a reversal of the parsing process.  Fundamentally, a
 ;; traversal of the expression tree is produced by the program,
 ;; with appropriate substitutions and recognition of the
@@ -34,6 +34,7 @@
     (let ((dir (cond ((pathnamep dir) dir)
                      ((stringp dir)
                       (make-pathname :directory (pathname-directory dir)
+				     :host (pathname-host dir)
                                      :device (pathname-device dir)))
                      (t (error "cd(dir): dir must be a string or pathname.")))))
        #+allegro (excl:chdir dir)
@@ -54,7 +55,7 @@
 
 
 ;;; Without this command encountering unicode characters might cause
-;;; maxima to stop responding on windows.
+;;; Maxima to stop responding on windows.
 #+(and clisp win32) (setf (stream-external-format *socket-connection*) charset:utf-8)
 #+(and clisp win32) (setf custom:*default-file-encoding* charset:utf-8)
 
@@ -1769,7 +1770,7 @@
 
 ;;;
 ;;; Rewrite of the function load (maxima/src/mload.lisp)
-;;; (displays functions after loading a maxima package
+;;; (displays functions after loading a Maxima package
 ;;;
 (no-warning
  (defun $load (filename)
