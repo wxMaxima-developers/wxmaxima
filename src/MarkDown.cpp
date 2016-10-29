@@ -135,7 +135,7 @@ wxString MarkDownParser::MarkDown(wxString str)
       else if(str.StartsWith(quoteChar()+wxT(" ")))
       {
         // We are part of a quotation.
-        std::cerr<<"quote\n";
+        //
         // Remove the bullet list start marker from our string.
         str = str.Right(str.Length()-quoteChar().Length()-1);
         str = str.Trim(false);
@@ -144,7 +144,6 @@ wxString MarkDownParser::MarkDown(wxString str)
         if(indentationLevels.empty())
         {
           // This is the first item => Start the itemization.
-          std::cerr<<"newquote\n";
           result += quoteBegin();
           indentationLevels.push_back(index );
           indentationTypes.push_back(wxT('>'));
@@ -156,7 +155,6 @@ wxString MarkDownParser::MarkDown(wxString str)
           // Are we on a new indentation level?
           if(indentationLevels.back()<index)
           {
-            std::cerr<<"newquotelevel\n";
             // A new identation level => add the itemization-start-command.
             result += quoteBegin();
             indentationLevels.push_back(index);
@@ -166,7 +164,6 @@ wxString MarkDownParser::MarkDown(wxString str)
           // End lists if we are at a old indentation level.
           while(!indentationLevels.empty() && (indentationLevels.back() > index))
             {
-              std::cerr<<"oldquotelevel\n";
               if(indentationTypes.back()==wxT('*'))
                 result += itemizeEnd();
               else
