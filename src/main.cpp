@@ -21,6 +21,13 @@
 
 /*!\mainpage Documentation for the code of wxMaxima
 
+\section whatiswxmaxima What is wxMaxima?
+wxMaxima is a full-featured graphical frontend for maxima, a full-featured
+computer algebra system that will do numeric calculations, if one wants to.
+But it is specialized in manipulating and solving symbolic equations.
+
+\image html wxMaxima.gif "A random screenshot of wxMaxima"
+
 \section Wheretostart Where to start reading the code?
 The main starting points would be:
  - For everything that happens before the main window is displayed: main.cpp
