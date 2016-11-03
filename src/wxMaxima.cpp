@@ -2456,6 +2456,49 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   }
   else
     m_console->m_mainToolBar->AnimationButtonState(ToolBar::Inactive);
+  
+  switch(m_StatusMaximaBusy)
+  {
+  case userinput:
+    m_console->m_mainToolBar->ShowUserInputBitmap();
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    true);
+    break;
+  case waiting:
+    m_console->m_mainToolBar->ShowFollowBitmap();
+    if(m_console->GetWorkingGroup() == NULL)
+    {
+      m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
+      m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow, false);
+    }
+    break;
+  case calculating:
+    m_console->m_mainToolBar->ShowFollowBitmap();
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
+                                         m_console->ScrolledAwayFromEvaluation()
+      );
+    break;
+  case transferring:
+    m_console->m_mainToolBar->ShowFollowBitmap();
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
+                                         m_console->ScrolledAwayFromEvaluation()
+      );
+    break;	
+  case parsing:
+    m_console->m_mainToolBar->ShowFollowBitmap();
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
+                                         m_console->ScrolledAwayFromEvaluation()
+      );
+    break;
+  case disconnected:
+    m_console->m_mainToolBar->ShowFollowBitmap();
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    false);
+    break;
+  }
 }
 
 #endif
