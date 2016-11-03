@@ -1357,7 +1357,9 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
     ScrolledAwayFromEvaluation(true);
   }
 
-  else if (clickedInGC != NULL) {
+  else if (clickedInGC != NULL)
+  {
+    ScrolledAwayFromEvaluation(true);
     OnMouseLeftInGc(event, clickedInGC);
   }
 
@@ -1365,6 +1367,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
     // set hCaret (or activate last cell?)
     SetHCaret(m_last, false);
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
+    ScrolledAwayFromEvaluation(true);
   }
 
   RequestRedraw();
@@ -2870,6 +2873,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
       m_cellKeyboardSelectionStartedIn = m_activeCell;
       m_activeCell -> SelectNone();
       SetActiveCell(NULL);
+      ScrolledAwayFromEvaluation();
       RequestRedraw();
     }
     else
@@ -2993,7 +2997,9 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   }
 }
 
-void MathCtrl::SelectWithChar(int ccode) {
+void MathCtrl::SelectWithChar(int ccode)
+{
+  ScrolledAwayFromEvaluation();
   // start making a selection
   // m_hCaretPositionStart is the first group selected
   // m_hCaretPositionEnd is tle last group selected
