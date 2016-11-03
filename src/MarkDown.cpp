@@ -56,7 +56,6 @@ wxString MarkDownParser::MarkDown(wxString str)
   // so far
   std::list <size_t> indentationLevels;
   std::list <wxChar> indentationTypes;
-  int quoting=0;
   
   // Now process the input string line-by-line.
   wxStringTokenizer lines(str,wxT("\n"),wxTOKEN_RET_EMPTY_ALL);
