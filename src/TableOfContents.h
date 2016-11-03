@@ -21,7 +21,7 @@
 
 /*! \file
 
-  This file contains the definition of the class Structure that handles the 
+  This file contains the definition of the class TableOfContents that handles the 
   table of contents pane.
  */
 #include <wx/wx.h>
@@ -29,8 +29,8 @@
 #include "GroupCell.h"
 #include "EditorCell.h"
 
-#ifndef STRUCTURE_H
-#define STRUCTURE_H
+#ifndef TABLEOFCONTENTS_H
+#define TABLEOFCONTENTS_H
 
 enum {
   structure_ctrl_id = 4,
@@ -40,15 +40,15 @@ enum {
 /*! This class generates a pane containing the table of contents.
 
  */
-class Structure : public wxPanel
+class TableOfContents : public wxPanel
 {
 public:
-  Structure(wxWindow* parent, int id);
+  TableOfContents(wxWindow* parent, int id);
   /* The destructor
    */
-  ~Structure();
+  ~TableOfContents();
   //! Add a file to the recently opened files list.
-  void AddToStructure(wxString cmd);
+  void AddToTableOfContents(wxString cmd);
   //! What happens if someone changes the search box contents
   void OnRegExEvent(wxCommandEvent &ev);
   /*! Update the structure information from the tree 
@@ -75,4 +75,4 @@ private:
   DECLARE_EVENT_TABLE()
 };
 
-#endif // STRUCTURE_H
+#endif // TABLEOFCONTENTS_H

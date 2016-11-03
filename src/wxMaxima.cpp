@@ -2270,7 +2270,7 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
   // contents sooner or later we should do so now that wxMaxima is idle.
   if(m_console->m_scheduleUpdateToc)
   {
-    if(m_console->m_structure)
+    if(m_console->m_tableOfContents)
     {
       m_console->m_scheduleUpdateToc = false;
       GroupCell *cursorPos;
@@ -2282,7 +2282,7 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
         else
           cursorPos = m_console->FirstVisibleGC();
       }
-      m_console->m_structure->Update(m_console->GetTree(),cursorPos);
+      m_console->m_tableOfContents->Update(m_console->GetTree(),cursorPos);
     }
   }
 
@@ -2574,10 +2574,10 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
       SetCWD(filename);
     }
   }
-  if(m_console->m_structure)
+  if(m_console->m_tableOfContents)
   {
     m_console->m_scheduleUpdateToc = false;
-    m_console->m_structure->Update(m_console->GetTree(),m_console->GetHCaret());
+    m_console->m_tableOfContents->Update(m_console->GetTree(),m_console->GetHCaret());
   }
 }
 
@@ -5838,9 +5838,9 @@ void wxMaxima::HistoryDClick(wxCommandEvent& ev)
   m_console->SetFocus();
 }
 
-void wxMaxima::StructureDClick(wxCommandEvent& ev)
+void wxMaxima::TableOfContentsDClick(wxCommandEvent& ev)
 {
-  GroupCell *selection = dynamic_cast<GroupCell*>(m_console->m_structure->GetCell(ev.GetSelection())->GetParent());
+  GroupCell *selection = dynamic_cast<GroupCell*>(m_console->m_tableOfContents->GetCell(ev.GetSelection())->GetParent());
   if(selection)
     m_console->SetHCaret(selection);
   m_console->ScrollToCaret();
@@ -6273,7 +6273,7 @@ EVT_MENU(menu_insert_image, wxMaxima::InsertMenu)
 EVT_MENU_RANGE(menu_pane_hideall, menu_pane_stats, wxMaxima::ShowPane)
 EVT_MENU(menu_show_toolbar, wxMaxima::EditMenu)
 EVT_LISTBOX_DCLICK(history_ctrl_id, wxMaxima::HistoryDClick)
-EVT_LISTBOX_DCLICK(structure_ctrl_id, wxMaxima::StructureDClick)
+EVT_LISTBOX_DCLICK(structure_ctrl_id, wxMaxima::TableOfContentsDClick)
 EVT_BUTTON(menu_stats_histogram, wxMaxima::StatsMenu)
 EVT_BUTTON(menu_stats_piechart, wxMaxima::StatsMenu)
 EVT_BUTTON(menu_stats_scatterplot, wxMaxima::StatsMenu)

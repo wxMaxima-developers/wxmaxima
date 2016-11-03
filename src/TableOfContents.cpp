@@ -25,12 +25,12 @@
   Structure is the class that serves as the Table-Of-Contents sidebar.
 */
 
-#include "Structure.h"
+#include "TableOfContents.h"
 
 #include <wx/sizer.h>
 #include <wx/regex.h>
 
-Structure::Structure(wxWindow* parent, int id) : wxPanel(parent, id)
+TableOfContents::TableOfContents(wxWindow* parent, int id) : wxPanel(parent, id)
 {
   m_displayedItems = new wxListBox(this, structure_ctrl_id);
   m_regex = new wxTextCtrl(this, structure_regex_id);
@@ -47,13 +47,13 @@ Structure::Structure(wxWindow* parent, int id) : wxPanel(parent, id)
   box->SetSizeHints(this);
 }
 
-Structure::~Structure()
+TableOfContents::~TableOfContents()
 {
   delete m_regex;
   delete m_displayedItems;
 }
 
-void Structure::Update(MathCell* tree, GroupCell *cursorPosition)
+void TableOfContents::Update(MathCell* tree, GroupCell *cursorPosition)
 {
   long selection = m_lastSelection;
   if(IsShown())
@@ -94,7 +94,7 @@ void Structure::Update(MathCell* tree, GroupCell *cursorPosition)
     }
 }
 
-void Structure::UpdateDisplay()
+void TableOfContents::UpdateDisplay()
 {
   wxLogNull disableWarnings;
 
@@ -146,7 +146,7 @@ void Structure::UpdateDisplay()
   }
 }
 
-MathCell *Structure::GetCell(int index)
+MathCell *TableOfContents::GetCell(int index)
 {
   wxRegEx matcher;
   int currentIndex = -1;
@@ -193,11 +193,11 @@ MathCell *Structure::GetCell(int index)
   return NULL;
 }
 
-void Structure::OnRegExEvent(wxCommandEvent &ev)
+void TableOfContents::OnRegExEvent(wxCommandEvent &ev)
 {
   UpdateDisplay();
 }
 
-BEGIN_EVENT_TABLE(Structure, wxPanel)
-  EVT_TEXT(structure_regex_id, Structure::OnRegExEvent)
+BEGIN_EVENT_TABLE(TableOfContents, wxPanel)
+  EVT_TEXT(structure_regex_id, TableOfContents::OnRegExEvent)
 END_EVENT_TABLE()

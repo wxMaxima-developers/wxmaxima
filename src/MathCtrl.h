@@ -42,7 +42,7 @@
 #include "FindReplaceDialog.h"
 #include "Autocomplete.h"
 #include "AutocompletePopup.h"
-#include "Structure.h"
+#include "TableOfContents.h"
 #include "ToolBar.h"
 
 /*! The canvas that contains the spreadsheet the whole program is about.
@@ -1053,7 +1053,7 @@ public:
   GroupCell *GetWorkingGroup() { return m_workingGroup; }
   void OpenNextOrCreateCell();
   //! The table of contents pane
-  Structure*    m_structure;
+  TableOfContents*    m_tableOfContents;
   //! Called when the "Scroll to currently evaluated" button is pressed.
   void OnFollow();
   //! The toolbar of the main window: We need to access it and therefore have it defined here.

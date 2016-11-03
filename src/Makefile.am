@@ -63,7 +63,7 @@ wxmaxima_SOURCES = \
 	MarkDown.cpp       MarkDown.h       \
 	ToolBar.cpp        ToolBar.h        \
 	History.cpp        History.h        \
-	Structure.cpp      Structure.h      \
+	TableOfContents.cpp      TableOfContents.h      \
 	XmlInspector.cpp   XmlInspector.h   \
 	Autocomplete.cpp   Autocomplete.h   \
 	PlotFormatWiz.cpp  PlotFormatWiz.h  \

@@ -54,7 +54,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   m_history = new History(this, -1);
 
   // The table of contents
-  m_console->m_structure = new Structure(this, -1);
+  m_console->m_tableOfContents = new TableOfContents(this, -1);
 
   m_xmlInspector = new XmlInspector(this, -1);
   SetupMenu();
@@ -230,8 +230,8 @@ wxMaximaFrame::~wxMaximaFrame()
   // or similar events pending for the wxWindows we want to free the memory
   // for.
   m_history->Destroy();
-  m_console->m_structure->Destroy();
-  m_console->m_structure = NULL;
+  m_console->m_tableOfContents->Destroy();
+  m_console->m_tableOfContents = NULL;
   m_console->Destroy();
 }
 
@@ -275,7 +275,7 @@ void wxMaximaFrame::do_layout()
                     PaneBorder(true).
                     Right());
 
-  m_manager.AddPane(m_console->m_structure,
+  m_manager.AddPane(m_console->m_tableOfContents,
                     wxAuiPaneInfo().Name(wxT("structure")).
                     Caption(_("Table of Contents")).
                     Show(true).
@@ -1116,7 +1116,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
     break;
   case menu_pane_structure:
     m_manager.GetPane(wxT("structure")).Show(show);
-    m_console->m_structure->Update(m_console->GetTree(),m_console->GetHCaret());
+    m_console->m_tableOfContents->Update(m_console->GetTree(),m_console->GetHCaret());
     break;
   case menu_pane_xmlInspector:
     m_manager.GetPane(wxT("XmlInspector")).Show(show);
