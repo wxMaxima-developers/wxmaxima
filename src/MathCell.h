@@ -21,7 +21,7 @@
 
 /*!\file
   
-  The definition of the base class of all cells.
+  The definition of the base class of all cells the worksheet consists of.
  */
 
 #ifndef MATHCELL_H
@@ -77,7 +77,7 @@ enum {
 };
 
 /*!
-  The base class all cell types are derived from
+  The base class all cell types the worksheet can consist of are derived from
 
   Every MathCell is part of a double-linked lists: A MathCell does have 
   a member that points to the previous item (or contains a NULL for the head node 
