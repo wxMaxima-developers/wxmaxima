@@ -27,6 +27,7 @@
 #include <wx/wx.h>
 #include <vector>
 #include "GroupCell.h"
+#include "EditorCell.h"
 
 #ifndef STRUCTURE_H
 #define STRUCTURE_H
@@ -70,7 +71,7 @@ private:
   //! The items we displayed the last time update() was called
   wxArrayString m_items_old;
   
-  std::vector <MathCell *> m_structure;
+  std::vector <GroupCell *> m_structure;
   DECLARE_EVENT_TABLE()
 };
 

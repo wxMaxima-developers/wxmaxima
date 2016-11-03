@@ -141,15 +141,18 @@ void EditorCell::Destroy()
   m_next = NULL;
 }
 
-wxString EditorCell::ToString()
+wxString EditorCell::ToString(bool dontLimitToSelection)
 {
   wxString text = m_text;
   // Remove all soft line breaks
   text.Replace(wxT('\r'),wxT(' '));
-  if (SelectionActive())
+  
+  if (SelectionActive() && (!dontLimitToSelection))
   {
     long start = MIN(m_selectionStart, m_selectionEnd);
     long end = MAX(m_selectionStart, m_selectionEnd) - 1;
+    if(end >= m_text.Length()) end = m_text.Length() - 1;
+    if(start < 0) start = 0;
     text = m_text.SubString(start, end);
   }
 

@@ -120,7 +120,11 @@ public:
   void RecalculateWidths(int fontsize);
   void Draw(wxPoint point, int fontsize);
   //! Convert the current cell to a string
-  wxString ToString();
+  //
+  // \param dontLimitToSelection
+  //  - false: If text is selected return only the selected text
+  //  - true:  Always return all text in this text cell
+  wxString ToString(bool dontLimitToSelection = false);
   //! Convert the current cell to LaTeX code
   wxString ToTeX();
   //! Convert the current cell to XML code for inclusion in a .wxmx file.

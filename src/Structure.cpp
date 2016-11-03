@@ -71,7 +71,7 @@ void Structure::Update(MathCell* tree, GroupCell *cursorPosition)
 	     (groupType == GC_TYPE_SUBSECTION) ||
 	     (groupType == GC_TYPE_SUBSUBSECTION)
             )
-	    m_structure.push_back((MathCell *)cell);
+	    m_structure.push_back(cell);
           
           if(cell == cursorPosition)
           {
@@ -114,18 +114,16 @@ void Structure::UpdateDisplay()
     switch(dynamic_cast<GroupCell*>(m_structure[i])->GetGroupType())
       {
       case GC_TYPE_TITLE:
-	curr = m_structure[i]->ToString();
+	curr = m_structure[i]->GetEditable()->ToString(true);
 	break;
       case GC_TYPE_SECTION:
-	curr = wxT("  ") + m_structure[i]->ToString();
+	curr = wxT("  ") + m_structure[i]->GetEditable()->ToString(true);
 	break;
       case GC_TYPE_SUBSECTION:
-	curr = wxT("    ") + m_structure[i]->ToString();
-	m_structure[i]->ToString();
+	curr = wxT("    ") + m_structure[i]->GetEditable()->ToString(true);
 	break;
       case GC_TYPE_SUBSUBSECTION:
-	curr = wxT("      ") + m_structure[i]->ToString();
-	m_structure[i]->ToString();
+	curr = wxT("      ") + m_structure[i]->GetEditable()->ToString(true);
 	break;
       }
 
@@ -161,22 +159,20 @@ MathCell *Structure::GetCell(int index)
   {
     
     wxString curr;
-    switch(dynamic_cast<GroupCell*>(m_structure[i])->GetGroupType())
+    switch((m_structure[i])->GetGroupType())
     {
     case GC_TYPE_TITLE:
-      curr = m_structure[i]->ToString();
+      curr = m_structure[i]->GetEditable()->ToString(true);
       break;
     case GC_TYPE_SECTION:
-      curr = wxT("  ") + m_structure[i]->ToString();
+      curr = wxT("  ") + m_structure[i]->GetEditable()->ToString(true);
       break;
     case GC_TYPE_SUBSECTION:
-      curr = wxT("    ") + m_structure[i]->ToString();
-      m_structure[i]->ToString();
+      curr = wxT("    ") + m_structure[i]->GetEditable()->ToString(true);
       break;
     case GC_TYPE_SUBSUBSECTION:
-      curr = wxT("      ") + m_structure[i]->ToString();
-	m_structure[i]->ToString();
-	break;
+      curr = wxT("      ") + m_structure[i]->GetEditable()->ToString(true);
+      break;
     }
     
     // Respecting linebreaks doesn't make much sense here.

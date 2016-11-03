@@ -2457,6 +2457,7 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   else
     m_console->m_mainToolBar->AnimationButtonState(ToolBar::Inactive);
   
+  bool follow = m_console->ScrolledAwayFromEvaluation();
   switch(m_StatusMaximaBusy)
   {
   case userinput:
@@ -2475,28 +2476,22 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
   case calculating:
     m_console->m_mainToolBar->ShowFollowBitmap();
     m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-    m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
-                                         m_console->ScrolledAwayFromEvaluation()
-      );
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,follow);
     break;
   case transferring:
     m_console->m_mainToolBar->ShowFollowBitmap();
     m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-    m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
-                                         m_console->ScrolledAwayFromEvaluation()
-      );
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,follow);
     break;	
   case parsing:
     m_console->m_mainToolBar->ShowFollowBitmap();
     m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, true);
-    m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,
-                                         m_console->ScrolledAwayFromEvaluation()
-      );
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,follow);
     break;
   case disconnected:
     m_console->m_mainToolBar->ShowFollowBitmap();
     m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
-    m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,    false);
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,follow);
     break;
   }
 }
@@ -5268,7 +5263,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
   bool evaluating = !m_console->m_evaluationQueue->Empty();
   if(!evaluating)
     m_console->FollowEvaluation(true);
-  MathCell* tmp = m_console->GetActiveCell();
+  EditorCell* tmp = m_console->GetActiveCell();
   if(m_console->QuestionPending())
     evaluating = true;
 
@@ -5280,7 +5275,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
     // case - answering a question. Manually send answer to Maxima.
     if (m_console->GCContainsCurrentQuestion(dynamic_cast<GroupCell*>(tmp->GetParent())))
     {
-      SendMaxima(tmp->ToString(), true);
+      SendMaxima(tmp->ToString(true), true);
       StatusMaximaBusy(calculating);
       m_console->QuestionAnswered();
     }
@@ -5333,6 +5328,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
     case wxT(')'):
     case wxT(']'):
     case wxT('}'):
+      if(delimiters.empty()) return(_("Mismatched parenthesis"));
       if(c!=delimiters.back()) return(_("Mismatched parenthesis"));
       delimiters.pop_back();
       lastC=c;
@@ -5377,7 +5373,12 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
       {
         if(text[index + 1]==wxT('*'))
         {
-          index = text.find(wxT("*/"),index + 2);
+          if(index < len-2)
+          {
+            index = text.find(wxT("*/"),index + 2);
+          }
+          else
+            index = wxNOT_FOUND;
           if(index==wxNOT_FOUND)
             return(_("Unterminated comment."));
           index ++;
@@ -5501,7 +5502,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   wxString text = m_console->m_evaluationQueue->GetCommand();
   if((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
   {
-    wxString parenthesisError=GetUnmatchedParenthesisState(tmp->GetEditable()->ToString());
+    wxString parenthesisError=GetUnmatchedParenthesisState(tmp->GetEditable()->ToString(true));
     if(parenthesisError==wxEmptyString)
     {          
       if(m_console->FollowEvaluation())
