@@ -79,10 +79,16 @@ enum {
 /*!
   The base class all cell types the worksheet can consist of are derived from
 
-  Every MathCell is part of a double-linked lists: A MathCell does have 
-  a member that points to the previous item (or contains a NULL for the head node 
-  of the list) and a member that points to the next cell (or contains a NULL if 
-  this is the end node of a list).
+  Every MathCell is part of two double-linked lists:
+   - A MathCell does have a member m_previous that points to the previous item
+     (or contains a NULL for the head node of the list) and a member named m_next 
+     that points to the next cell (or contains a NULL if this is the end node of a list).
+   - And there is m_previousToDraw and m_nextToDraw that contain fractions and similar 
+     items as one element if they are drawn as a single 2D object that isn't divided by
+     a line break, but will contain every single element of a fraction as a separate 
+     object if the fraction is broken into several lines and therefore displayed in its
+     a linear form.
+
   Also every list of MathCells can be a branch of a tree since every math cell contains
   a pointer to its parent group cell.
 
