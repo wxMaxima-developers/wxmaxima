@@ -156,7 +156,7 @@ void FracCell::SetDenom(MathCell *denom)
 
 void FracCell::RecalculateWidths(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
   if (m_isBroken || m_exponent)
   {
@@ -206,7 +206,7 @@ void FracCell::RecalculateWidths(int fontsize)
 
 void FracCell::RecalculateHeight(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
   if (m_isBroken || m_exponent)
   {
@@ -241,7 +241,7 @@ void FracCell::RecalculateHeight(int fontsize)
 void FracCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
 
   if (DrawThisCell(point) && InUpdateRegion())
   {

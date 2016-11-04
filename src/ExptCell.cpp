@@ -128,7 +128,7 @@ void ExptCell::SetBase(MathCell *base)
 
 void ExptCell::RecalculateWidths(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
   m_baseCell->RecalculateWidthsList(fontsize);
   if (m_isBroken)
@@ -145,7 +145,7 @@ void ExptCell::RecalculateWidths(int fontsize)
 
 void ExptCell::RecalculateHeight(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
   m_baseCell->RecalculateHeightList(fontsize);
   if (m_isBroken)
@@ -167,7 +167,7 @@ void ExptCell::Draw(wxPoint point, int fontsize)
 
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    CellParser *parser = CellParser::Get();
+    Configuration *parser = Configuration::Get();
     double scale = parser->GetScale();
     wxPoint bs, pw;
     bs.x = point.x;

@@ -20,16 +20,16 @@
 //
 
 /*! \file
-  This file defines the class CellParser which serves as a fast configuration storage.
+  This file defines the class Configuration which serves as a fast configuration storage.
  */
 
-#include "CellParser.h"
+#include "Configuration.h"
 
 #include <wx/font.h>
 #include <wx/config.h>
 #include "MathCell.h"
 
-CellParser::CellParser(wxDC& dc) : m_dc(&dc)
+Configuration::Configuration(wxDC& dc) : m_dc(&dc)
 {
   // This is the currently active instance of this class
   m_last = m_cellParser;
@@ -50,7 +50,7 @@ CellParser::CellParser(wxDC& dc) : m_dc(&dc)
   ReadConfig();
 }
 
-CellParser::CellParser(wxDC& dc, double scale) : m_dc(&dc)
+Configuration::Configuration(wxDC& dc, double scale) : m_dc(&dc)
 {
   m_scale = scale;
   m_zoomFactor = 1.0; // affects returned fontsizes
@@ -65,7 +65,7 @@ CellParser::CellParser(wxDC& dc, double scale) : m_dc(&dc)
   ReadConfig();
 }
 
-void CellParser::ReadConfig()
+void Configuration::ReadConfig()
 {
   wxConfig *config = (wxConfig *)wxConfig::Get();
   m_autoWrap = true;
@@ -96,12 +96,12 @@ void CellParser::ReadConfig()
   ReadStyle();
 }
 
-CellParser::~CellParser()
+Configuration::~Configuration()
 {
   m_cellParser = m_last;
 }
 
-wxString CellParser::GetFontName(int type)
+wxString Configuration::GetFontName(int type)
 {
   if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION || type == TS_SECTION || type == TS_TEXT)
     return m_styles[type].font;
@@ -111,7 +111,7 @@ wxString CellParser::GetFontName(int type)
   return m_fontName;
 }
 
-void CellParser::ReadStyle()
+void Configuration::ReadStyle()
 {
   wxConfigBase* config = wxConfig::Get();
 
@@ -382,26 +382,26 @@ void CellParser::ReadStyle()
   m_dc->SetPen(*(wxThePenList->FindOrCreatePen(m_styles[TS_DEFAULT].color, 1, wxPENSTYLE_SOLID)));
 }
 
-wxFontWeight CellParser::IsBold(int st)
+wxFontWeight Configuration::IsBold(int st)
 {
   if (m_styles[st].bold)
     return wxFONTWEIGHT_BOLD;
   return wxFONTWEIGHT_NORMAL;
 }
 
-wxFontStyle CellParser::IsItalic(int st)
+wxFontStyle Configuration::IsItalic(int st)
 {
   if (m_styles[st].italic)
     return wxFONTSTYLE_SLANT;
   return wxFONTSTYLE_NORMAL;
 }
 
-bool CellParser::IsUnderlined(int st)
+bool Configuration::IsUnderlined(int st)
 {
   return m_styles[st].underlined;
 }
 
-wxString CellParser::GetSymbolFontName()
+wxString Configuration::GetSymbolFontName()
 {
 #if defined __WXMSW__
   return wxT("Symbol");
@@ -409,7 +409,7 @@ wxString CellParser::GetSymbolFontName()
   return m_fontName;
 }
 
-wxColour CellParser::GetColor(int st)
+wxColour Configuration::GetColor(int st)
 {
   if (m_outdated)
     return m_styles[TS_OUTDATED].color;
@@ -417,7 +417,7 @@ wxColour CellParser::GetColor(int st)
 }
 
 /*
-wxFontEncoding CellParser::GetGreekFontEncoding()
+wxFontEncoding Configuration::GetGreekFontEncoding()
 {
 #if wxUSE_UNICODE || defined (__WXGTK20__) || defined (__WXMAC__)
   return wxFONTENCODING_DEFAULT;
@@ -430,4 +430,4 @@ wxFontEncoding CellParser::GetGreekFontEncoding()
 */
 
 // Create all static variables
-CellParser *CellParser::m_cellParser = NULL;
+Configuration *Configuration::m_cellParser = NULL;

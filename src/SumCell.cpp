@@ -124,7 +124,7 @@ void SumCell::SetUnder(MathCell *under)
 
 void SumCell::RecalculateWidths(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
 
   m_signSize = SCALE_PX(50, scale);
@@ -158,7 +158,7 @@ void SumCell::RecalculateWidths(int fontsize)
 
 void SumCell::RecalculateHeight(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
 
   m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
@@ -176,7 +176,7 @@ void SumCell::Draw(wxPoint point, int fontsize)
 {
   if (DrawThisCell(point))
   {
-    CellParser *parser = CellParser::Get();
+    Configuration *parser = Configuration::Get();
     wxDC& dc = parser->GetDC();
     double scale = parser->GetScale();
 

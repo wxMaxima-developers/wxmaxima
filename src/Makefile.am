@@ -46,7 +46,7 @@ wxmaxima_SOURCES = \
 	DiffCell.cpp       DiffCell.h       \
 	FunCell.cpp        FunCell.h        \
 	MathCtrl.cpp       MathCtrl.h       \
-	CellParser.cpp     CellParser.h     \
+	Configuration.cpp     Configuration.h     \
 	MathParser.cpp     MathParser.h     \
 	MathPrintout.cpp   MathPrintout.h   \
 	Bitmap.cpp         Bitmap.h         \

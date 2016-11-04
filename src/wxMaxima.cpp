@@ -2493,6 +2493,11 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent& event)
     m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
     m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,follow);
     break;
+  case process_wont_start:
+    m_console->m_mainToolBar->ShowFollowBitmap();
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
+    m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow,false);
+    break;
   }
 }
 

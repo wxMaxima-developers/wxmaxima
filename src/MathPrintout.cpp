@@ -71,7 +71,7 @@ bool MathPrintout::OnPrintPage(int num)
   ppiScale = GetPPIScale();
   GetScreenScale(&screenScaleX, &screenScaleY);
 
-  marginX += SCALE_PX(CellParser::Get()->GetBaseIndent(), ppiScale);
+  marginX += SCALE_PX(Configuration::Get()->GetBaseIndent(), ppiScale);
 
   dc->SetUserScale(screenScaleX, screenScaleY);
 
@@ -96,7 +96,7 @@ bool MathPrintout::OnPrintPage(int num)
     config->Read(wxT("fontsize"), &fontsize);
 
     PrintHeader(num, dc, ppiScale);
-    CellParser parser(*dc, ppiScale);
+    Configuration parser(*dc, ppiScale);
 
     parser.SetIndent(marginX);
     // Inform the output routines that we are printing
@@ -114,7 +114,7 @@ bool MathPrintout::OnPrintPage(int num)
       if (tmp->m_next != NULL) {
         point.x = marginX;
         point.y += drop + tmp->m_next->GetMaxCenter();
-        point.y += SCALE_PX(CellParser::Get()->GetGroupSkip(), ppiScale);
+        point.y += SCALE_PX(Configuration::Get()->GetGroupSkip(), ppiScale);
         drop = tmp->m_next->GetMaxDrop();
       }
 
@@ -150,7 +150,7 @@ void MathPrintout::BreakPages()
   GetPageSizePixels(&pageWidth, &pageHeight);
 
   int currentHeight = marginY;
-  int skip = SCALE_PX(CellParser::Get()->GetGroupSkip(), scale);;
+  int skip = SCALE_PX(Configuration::Get()->GetGroupSkip(), scale);;
 
   GroupCell* tmp = (GroupCell *)m_tree;
   m_pages.push_back(tmp);
@@ -254,7 +254,7 @@ void MathPrintout::Recalculate()
   double scale = GetPPIScale();
 
   wxDC *dc = GetDC();
-  CellParser parser(*dc, scale);
+  Configuration parser(*dc, scale);
 
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
@@ -262,10 +262,10 @@ void MathPrintout::Recalculate()
   GetPageSizePixels(&pageWidth, &pageHeight);
 
   parser.SetClientWidth(pageWidth - marginX - marginY
-                        - SCALE_PX(CellParser::Get()->GetBaseIndent(), scale));
+                        - SCALE_PX(Configuration::Get()->GetBaseIndent(), scale));
   MathCell::SetCanvasSize(wxSize(pageWidth,pageHeight));
 
-  marginX += SCALE_PX(CellParser::Get()->GetBaseIndent(), scale);
+  marginX += SCALE_PX(Configuration::Get()->GetBaseIndent(), scale);
   parser.SetIndent(marginX);
 
   while (tmp != NULL)

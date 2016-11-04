@@ -94,7 +94,7 @@ void FunCell::SetArg(MathCell *arg)
 
 void FunCell::RecalculateWidths(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
   m_argCell->RecalculateWidthsList(fontsize);
   m_nameCell->RecalculateWidthsList(fontsize);
@@ -117,7 +117,7 @@ void FunCell::Draw(wxPoint point, int fontsize)
 
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    CellParser *parser = CellParser::Get();
+    Configuration *parser = Configuration::Get();
     double scale = parser->GetScale();
 
     wxPoint name(point), arg(point);

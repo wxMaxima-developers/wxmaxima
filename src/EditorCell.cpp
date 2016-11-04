@@ -150,7 +150,7 @@ wxString EditorCell::ToString(bool dontLimitToSelection)
   if (SelectionActive() && (!dontLimitToSelection))
   {
     long start = MIN(m_selectionStart, m_selectionEnd);
-    long end = MAX(m_selectionStart, m_selectionEnd) - 1;
+    unsigned long end = MAX(m_selectionStart, m_selectionEnd) - 1;
     if(end >= m_text.Length()) end = m_text.Length() - 1;
     if(start < 0) start = 0;
     text = m_text.SubString(start, end);
@@ -377,7 +377,7 @@ void EditorCell::RecalculateWidths(int fontsize)
     
     StyleText();
   int charWidth;
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
 
   m_isDirty = false;
   if (m_height == -1 || m_width == -1 || parser->ForceUpdate())
@@ -492,7 +492,7 @@ wxString EditorCell::ToHTML()
 
 void EditorCell::MarkSelection(long start, long end,double scale, wxDC& dc, TextStyle style,int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   if((start < 0)||(end < 0)) return;
   wxPoint point, point1;
   long pos1 = start, pos2 = start;
@@ -548,7 +548,7 @@ The order this cell is drawn is:
 void EditorCell::Draw(wxPoint point1, int fontsize)
 {
   MathCell::Draw(point1, fontsize);
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
 
   m_selectionChanged = false;
   double scale = parser->GetScale();
@@ -717,14 +717,14 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
       dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(parser->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 #if defined(__WXMAC__)
       // draw 1 pixel shorter caret than on windows
-      dc.DrawRectangle(point.x + SCALE_PX(2, scale) + lineWidth - CellParser::Get()->GetCursorWidth()/2,
+      dc.DrawRectangle(point.x + SCALE_PX(2, scale) + lineWidth - Configuration::Get()->GetCursorWidth()/2,
                        point.y + SCALE_PX(3, scale) - m_center + caretInLine * m_charHeight,
-                       CellParser::Get()->GetCursorWidth(),
+                       Configuration::Get()->GetCursorWidth(),
                        m_charHeight- SCALE_PX(5, scale));
 #else
-      dc.DrawRectangle(point.x + SCALE_PX(2, scale) + lineWidth-CellParser::Get()->GetCursorWidth()/2,
+      dc.DrawRectangle(point.x + SCALE_PX(2, scale) + lineWidth-Configuration::Get()->GetCursorWidth()/2,
                        point.y + SCALE_PX(2, scale) - m_center + caretInLine * m_charHeight,
-                       CellParser::Get()->GetCursorWidth(),
+                       Configuration::Get()->GetCursorWidth(),
                        m_charHeight- SCALE_PX(3, scale));
 #endif
     }
@@ -736,7 +736,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
 
 void EditorCell::SetFont(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   wxDC& dc = parser->GetDC();
   double scale = parser->GetScale();
 
@@ -764,7 +764,7 @@ void EditorCell::SetFont(int fontsize)
 
 void EditorCell::SetForeground()
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   wxDC& dc = parser->GetDC();
   dc.SetTextForeground(parser->GetColor(m_textStyle));
 }
@@ -1538,7 +1538,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
           { 
             /// If deleting ( in () then delete both.
             int right = m_positionOfCaret;
-            if (m_positionOfCaret < (long)m_text.Length() && CellParser::Get()->GetMatchParens() &&
+            if (m_positionOfCaret < (long)m_text.Length() && Configuration::Get()->GetMatchParens() &&
                 ((m_text.GetChar(m_positionOfCaret-1) == '[' && m_text.GetChar(m_positionOfCaret) == ']') ||
                  (m_text.GetChar(m_positionOfCaret-1) == '(' && m_text.GetChar(m_positionOfCaret) == ')') ||
                  (m_text.GetChar(m_positionOfCaret-1) == '{' && m_text.GetChar(m_positionOfCaret) == '}') ||
@@ -1873,7 +1873,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent& event)
     
     m_positionOfCaret++;
       
-    if (CellParser::Get()->GetMatchParens())
+    if (Configuration::Get()->GetMatchParens())
     {
       switch (keyCode)
       {
@@ -1927,7 +1927,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent& event)
       case '=':
       case ',':
         size_t len = m_text.Length();
-        if (CellParser::Get()->GetInsertAns() && len == 1 && m_positionOfCaret == 1)
+        if (Configuration::Get()->GetInsertAns() && len == 1 && m_positionOfCaret == 1)
         {
           m_text = m_text.SubString(0, m_positionOfCaret - 2) + wxT("%") +
             m_text.SubString(m_positionOfCaret - 1, m_text.Length());
@@ -2457,7 +2457,7 @@ int EditorCell::XYToPosition(int x, int y)
 
 wxPoint EditorCell::PositionToPoint(int fontsize, int pos)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   wxDC& dc = parser->GetDC();
   SetFont(fontsize);
   
@@ -3343,7 +3343,7 @@ void EditorCell::StyleText()
     
     // Insert new soft line breaks where we hit the right border of the worksheet, if
     // this has been requested in the config dialogue
-    CellParser *parser = CellParser::Get();
+    Configuration *parser = Configuration::Get();
     if(parser->GetAutoWrap())
     {
       SetFont(parser->GetDefaultFontSize());
@@ -3503,7 +3503,7 @@ void EditorCell::StyleText()
             // Remember what a line that is part of this indentation level has to
             // begin with
             int width,height;
-            CellParser *parser = CellParser::Get();
+            Configuration *parser = Configuration::Get();
             wxDC& dc = parser->GetDC();
             
             indentChar = line.Left(line.Length()-line_trimmed.Length() + 2);
@@ -3585,7 +3585,7 @@ void EditorCell::SetValue(const wxString &text)
 {
   if (m_type == MC_TYPE_INPUT)
   {
-    if (CellParser::Get()->GetMatchParens())
+    if (Configuration::Get()->GetMatchParens())
     {
       if (text == wxT("(")) {
         m_text = wxT("()");
@@ -3613,7 +3613,7 @@ void EditorCell::SetValue(const wxString &text)
       m_positionOfCaret = m_text.Length();
     }
 
-    if (CellParser::Get()->GetInsertAns())
+    if (Configuration::Get()->GetInsertAns())
     {
       if (m_text == wxT("+") ||
           m_text == wxT("*") ||

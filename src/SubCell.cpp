@@ -95,7 +95,7 @@ void SubCell::SetBase(MathCell *base)
 
 void SubCell::RecalculateWidths(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
   m_baseCell->RecalculateWidthsList(fontsize);
   m_indexCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUB_DEC));
@@ -106,7 +106,7 @@ void SubCell::RecalculateWidths(int fontsize)
 
 void SubCell::RecalculateHeight(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   m_baseCell->RecalculateHeightList(fontsize);
   m_indexCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUB_DEC));
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
@@ -120,7 +120,7 @@ void SubCell::Draw(wxPoint point, int fontsize)
 
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    CellParser *parser = CellParser::Get();
+    Configuration *parser = Configuration::Get();
     double scale = parser->GetScale();
     wxPoint bs, in;
 

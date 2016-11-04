@@ -115,7 +115,7 @@ void SubSupCell::SetExponent(MathCell *exp)
 
 void SubSupCell::RecalculateWidths(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
   m_baseCell->RecalculateWidthsList(fontsize);
   m_indexCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
@@ -128,7 +128,7 @@ void SubSupCell::RecalculateWidths(int fontsize)
 
 void SubSupCell::RecalculateHeight(int fontsize)
 {
-  CellParser *parser = CellParser::Get();  
+  Configuration *parser = Configuration::Get();  
   double scale = parser->GetScale();
 
   m_baseCell->RecalculateHeightList(fontsize);
@@ -145,7 +145,7 @@ void SubSupCell::RecalculateHeight(int fontsize)
 
 void SubSupCell::Draw(wxPoint point, int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   MathCell::Draw(point, fontsize);
 
   if (DrawThisCell(point) && InUpdateRegion())

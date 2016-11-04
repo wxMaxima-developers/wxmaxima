@@ -19,7 +19,7 @@
 //
 
 #include "BTextCtrl.h"
-#include "CellParser.h"
+#include "Configuration.h"
 #include <wx/config.h>
 
 BTextCtrl::BTextCtrl(wxWindow *parent,
@@ -56,10 +56,10 @@ BTextCtrl::~BTextCtrl()
 void BTextCtrl::OnChar(wxKeyEvent& event)
 {
 #if wxUSE_UNICODE
-  if (!CellParser::Get()->GetMatchParens() || MatchParenthesis(event.GetUnicodeKey()))
+  if (!Configuration::Get()->GetMatchParens() || MatchParenthesis(event.GetUnicodeKey()))
     event.Skip();
 #else
-  if (!CellParser::Get()->GetMatchParens() || MatchParenthesis(event.GetKeyCode()))
+  if (!Configuration::Get()->GetMatchParens() || MatchParenthesis(event.GetKeyCode()))
     event.Skip();
 #endif
 }

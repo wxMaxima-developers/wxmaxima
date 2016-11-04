@@ -102,7 +102,7 @@ void TextCell::Destroy()
 
 wxString TextCell::LabelWidthText()
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   wxString result;
 
   for(int i=0;i<parser->GetLabelWidth();i++)
@@ -113,7 +113,7 @@ wxString TextCell::LabelWidthText()
 
 void TextCell::RecalculateWidths(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   SetAltText();
 
   if (m_height == -1 || m_width == -1 || parser->ForceUpdate())
@@ -191,7 +191,7 @@ void TextCell::RecalculateWidths(int fontsize)
 
 void TextCell::Draw(wxPoint point, int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   MathCell::Draw(point, fontsize);
   double scale = parser->GetScale();
   wxDC& dc = parser->GetDC();
@@ -265,7 +265,7 @@ void TextCell::Draw(wxPoint point, int fontsize)
 
 void TextCell::SetFont(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   wxDC& dc = parser->GetDC();
   double scale = parser->GetScale();
 
@@ -1046,7 +1046,7 @@ bool TextCell::IsShortNum()
 
 void TextCell::SetAltText()
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   
   m_altJs = m_alt = false;
   if (GetStyle() == TS_DEFAULT)

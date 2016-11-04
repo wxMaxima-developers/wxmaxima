@@ -54,7 +54,7 @@
 
 #include <wx/wx.h>
 #include <wx/xml/xml.h>
-#include "CellParser.h"
+#include "Configuration.h"
 #include "TextStyle.h"
 
 /*! The supported types of math cells

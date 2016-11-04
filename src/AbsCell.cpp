@@ -95,7 +95,7 @@ void AbsCell::SetInner(MathCell *inner)
 
 void AbsCell::RecalculateWidths(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
   m_innerCell->RecalculateWidthsList(fontsize);
   m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(8, scale);
@@ -106,7 +106,7 @@ void AbsCell::RecalculateWidths(int fontsize)
 
 void AbsCell::RecalculateHeight(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
   m_innerCell->RecalculateHeightList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(4, scale);
@@ -119,7 +119,7 @@ void AbsCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point,fontsize);
 
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
   wxDC& dc = parser->GetDC();
   if (DrawThisCell(point) && InUpdateRegion())

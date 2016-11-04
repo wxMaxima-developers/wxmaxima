@@ -114,7 +114,7 @@ void LimitCell::SetUnder(MathCell *under)
 
 void LimitCell::RecalculateWidths(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
 
   m_base->RecalculateWidthsList(fontsize);
@@ -143,7 +143,7 @@ void LimitCell::Draw(wxPoint point, int fontsize)
 
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    CellParser *parser = CellParser::Get();
+    Configuration *parser = Configuration::Get();
     double scale = parser->GetScale();
     wxPoint base(point), under(point), name(point);
 

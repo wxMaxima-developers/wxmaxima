@@ -125,7 +125,7 @@ void ParenCell::SetInner(MathCell *inner, int type)
 
 void ParenCell::RecalculateWidths(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
   if (m_innerCell == NULL)
     m_innerCell = new TextCell;
@@ -247,7 +247,7 @@ void ParenCell::RecalculateWidths(int fontsize)
 
 void ParenCell::RecalculateHeight(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
   m_innerCell->RecalculateHeightList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(2, scale);
@@ -273,7 +273,7 @@ void ParenCell::RecalculateHeight(int fontsize)
 
 void ParenCell::Draw(wxPoint point, int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   MathCell::Draw(point, fontsize);
   if (DrawThisCell(point)&&(InUpdateRegion()))
   {

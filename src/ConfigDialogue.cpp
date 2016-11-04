@@ -27,7 +27,7 @@
 
 #include "ConfigDialogue.h"
 #include "MathCell.h"
-#include "CellParser.h"
+#include "Configuration.h"
 
 #include <wx/config.h>
 #include <wx/fileconf.h>
@@ -287,7 +287,7 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
   config->Read(wxT("HTMLequationFormat"), &exportWithMathJAX);
   config->Read(wxT("pos-restore"), &rs);
-  match = CellParser::Get()->GetMatchParens();
+  match = Configuration::Get()->GetMatchParens();
   config->Read(wxT("showLength"), &showLength);
   config->Read(wxT("autosubscript"), &autosubscript);
   config->Read(wxT("language"), &lang);
@@ -300,7 +300,7 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("enterEvaluates"), &enterEvaluates);
   config->Read(wxT("saveUntitled"), &saveUntitled);
   config->Read(wxT("openHCaret"), &openHCaret);
-  insertAns = CellParser::Get()->GetInsertAns();
+  insertAns = Configuration::Get()->GetInsertAns();
   config->Read(wxT("autoIndent"), &autoIndent);
   config->Read(wxT("cursorJump"), &cursorJump);
   config->Read(wxT("autoWrap"), &autoWrap);

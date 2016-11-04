@@ -68,7 +68,7 @@ The main things that are important to know are:
    There is, for example, an AbsCell for the <code>abs()</code> command, an IntCell 
    representing <code>integrate</code>, a ParenCell for parenthesis and a FunCell for 
    all the functions no special handling is needed for.
- - CellParser is something like a central object keeping the configuration needed for 
+ - Configuration is something like a central object keeping the configuration needed for 
    displaying cells.
 
 \section CodingStyle The Coding Style

@@ -101,7 +101,7 @@ void SqrtCell::SetInner(MathCell *inner)
 
 void SqrtCell::RecalculateWidths(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
   m_innerCell->RecalculateWidthsList(fontsize);
   if (parser->CheckTeXFonts())
@@ -157,7 +157,7 @@ void SqrtCell::RecalculateWidths(int fontsize)
 
 void SqrtCell::RecalculateHeight(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
   m_innerCell->RecalculateHeightList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(3, scale);
@@ -169,7 +169,7 @@ void SqrtCell::RecalculateHeight(int fontsize)
 void SqrtCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
 
   if (DrawThisCell(point) && InUpdateRegion())
   {

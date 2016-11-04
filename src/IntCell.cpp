@@ -142,7 +142,7 @@ void IntCell::SetVar(MathCell *var)
 
 void IntCell::RecalculateWidths(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
 
   m_signSize = SCALE_PX(50, scale);
@@ -205,7 +205,7 @@ void IntCell::RecalculateWidths(int fontsize)
 
 void IntCell::RecalculateHeight(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
 
   m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 5));
@@ -243,7 +243,7 @@ void IntCell::RecalculateHeight(int fontsize)
 void IntCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
 
   if (DrawThisCell(point) && InUpdateRegion())
   {

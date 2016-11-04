@@ -155,7 +155,7 @@ void SlideShow::RecalculateWidths(int fontsize)
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
   //    we might have intermittent calculation issues otherwise
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
   m_images[m_displayed]->ViewportSize(m_canvasSize.x,m_canvasSize.y,scale);
   
@@ -180,7 +180,7 @@ void SlideShow::Draw(wxPoint point, int fontsize)
   // TODO: Enable this when unselecting text updates the right region.
   //if (!InUpdateRegion()) return;
   
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   wxDC& dc = parser->GetDC();
 
   if (DrawThisCell(point) && (m_images[m_displayed] != NULL))

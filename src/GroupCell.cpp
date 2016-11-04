@@ -372,7 +372,7 @@ void GroupCell::Recalculate(int d_fontsize, int m_fontsize)
 
 void GroupCell::RecalculateWidths(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   if (m_width == -1 || m_height == -1 || parser->ForceUpdate())
   {
     // special case of 'line cell'
@@ -415,7 +415,7 @@ void GroupCell::RecalculateWidths(int fontsize)
 
 void GroupCell::RecalculateHeight(int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   if (m_width == -1 || m_height == -1 || parser->ForceUpdate())
   {
     // special case
@@ -445,13 +445,13 @@ void GroupCell::RecalculateHeight(int fontsize)
       if(m_previous == NULL)
       {
         m_currentPoint.x = MC_GROUP_LEFT_INDENT;
-        m_currentPoint.y = CellParser::Get()->GetBaseIndent() + GetMaxCenter();
+        m_currentPoint.y = Configuration::Get()->GetBaseIndent() + GetMaxCenter();
       }
       else
       {
       m_currentPoint.x = MC_GROUP_LEFT_INDENT;
       m_currentPoint.y = dynamic_cast<GroupCell*>(m_previous) -> m_currentPoint.y +
-        dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + CellParser::Get()->GetGroupSkip();
+        dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + Configuration::Get()->GetGroupSkip();
       }
       
       m_outputRect.x = m_currentPoint.x;
@@ -479,13 +479,13 @@ void GroupCell::RecalculateHeight(int fontsize)
       if(m_previous == NULL)
       {
         m_currentPoint.x = MC_GROUP_LEFT_INDENT;
-        m_currentPoint.y = CellParser::Get()->GetBaseIndent() + GetMaxCenter();
+        m_currentPoint.y = Configuration::Get()->GetBaseIndent() + GetMaxCenter();
       }
       else
       {
         m_currentPoint.x = MC_GROUP_LEFT_INDENT;
         m_currentPoint.y = dynamic_cast<GroupCell*>(m_previous) -> m_currentPoint.y +
-          dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + CellParser::Get()->GetGroupSkip();
+          dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + Configuration::Get()->GetGroupSkip();
       }
     }
   }
@@ -501,7 +501,7 @@ void GroupCell::RecalculateHeight(int fontsize)
 // We assume that appended cells will be in a new line!
 void GroupCell::RecalculateAppended()
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   if (m_appendedCells == NULL)
     return;
 
@@ -548,7 +548,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
 
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   double scale = parser->GetScale();
   wxDC& dc = parser->GetDC();
   if (m_width == -1 || m_height == -1) {

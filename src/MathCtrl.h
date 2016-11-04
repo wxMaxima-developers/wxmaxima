@@ -89,7 +89,7 @@ private:
   */
   wxClientDC *m_dc;
   //! The central settings storage
-  CellParser *m_parser;
+  Configuration *m_parser;
   //! Where do we need to start the repainting of the worksheet?
   GroupCell *m_redrawStart;
   //! Do we need to redraw the worksheet?

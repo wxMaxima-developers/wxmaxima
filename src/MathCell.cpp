@@ -291,7 +291,7 @@ void MathCell::Draw(wxPoint point, int fontsize)
 
 void MathCell::DrawList(wxPoint point, int fontsize)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   MathCell *tmp=this;
   while(tmp!=NULL)
   {
@@ -364,7 +364,7 @@ void MathCell::RecalculateWidths(int fontsize)
  */
 bool MathCell::DrawThisCell(wxPoint point)
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   int top = parser->GetTop();
   int bottom = parser->GetBottom();
   if (top == -1 || bottom == -1)
@@ -967,7 +967,7 @@ void MathCell::DestroyList()
  */
 void MathCell::SetPen()
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   wxDC& dc = parser->GetDC();
   if (m_highlight)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_HIGHLIGHT),
@@ -988,7 +988,7 @@ void MathCell::SetPen()
  */
 void MathCell::UnsetPen()
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   wxDC& dc = parser->GetDC();
   if (m_type == MC_TYPE_PROMPT || m_type == MC_TYPE_INPUT || m_highlight)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_DEFAULT),
@@ -1008,7 +1008,7 @@ void MathCell::CopyData(MathCell *s, MathCell *t)
 
 void MathCell::SetForeground()
 {
-  CellParser *parser = CellParser::Get();
+  Configuration *parser = Configuration::Get();
   wxColour color;
   wxDC& dc = parser->GetDC();
   if (m_highlight)

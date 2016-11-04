@@ -71,7 +71,7 @@ wxScrolledCanvas(
   )
 {
   m_dc = new wxClientDC(this);
-  m_parser = new CellParser(*m_dc);
+  m_parser = new Configuration(*m_dc);
   m_parser->ReadConfig();
   m_cellSearchStartedIn = NULL;
   m_indexSearchStartedAt = -1;
@@ -320,7 +320,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
     //
     wxPoint point;
     point.x = MC_GROUP_LEFT_INDENT;
-    point.y = CellParser::Get()->GetBaseIndent() + m_tree->GetMaxCenter();
+    point.y = Configuration::Get()->GetBaseIndent() + m_tree->GetMaxCenter();
     // Draw tree
     GroupCell* tmp = m_tree;
     drop = tmp->GetMaxDrop();
@@ -357,7 +357,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
       if (tmp->m_next != NULL) {
         point.x = MC_GROUP_LEFT_INDENT;
         point.y += drop + tmp->m_next->GetMaxCenter();
-        point.y += CellParser::Get()->GetGroupSkip();
+        point.y += Configuration::Get()->GetGroupSkip();
         drop = tmp->m_next->GetMaxDrop();
       }
       tmp = dynamic_cast<GroupCell *>(tmp->m_next);
@@ -374,10 +374,10 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
     dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_parser->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 
     wxRect currentGCRect = m_hCaretPosition->GetRect();
-    int caretY = ((int) CellParser::Get()->GetGroupSkip()) / 2 + currentGCRect.GetBottom() + 1;
+    int caretY = ((int) Configuration::Get()->GetGroupSkip()) / 2 + currentGCRect.GetBottom() + 1;
     dcm.DrawRectangle(xstart + MC_GROUP_LEFT_INDENT,
-                      caretY - CellParser::Get()->GetCursorWidth() / 2,
-                      MC_HCARET_WIDTH ,  CellParser::Get()->GetCursorWidth());
+                      caretY - Configuration::Get()->GetCursorWidth() / 2,
+                      MC_HCARET_WIDTH ,  Configuration::Get()->GetCursorWidth());
   }
 
   if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hasFocus)  && (m_hCaretPosition == NULL))
@@ -394,8 +394,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
     }     
     
     wxRect cursor = wxRect(xstart + MC_GROUP_LEFT_INDENT,
-                           (CellParser::Get()->GetBaseIndent()-CellParser::Get()->GetCursorWidth())/2 ,
-                           MC_HCARET_WIDTH, CellParser::Get()->GetCursorWidth());
+                           (Configuration::Get()->GetBaseIndent()-Configuration::Get()->GetCursorWidth())/2 ,
+                           MC_HCARET_WIDTH, Configuration::Get()->GetCursorWidth());
     dcm.DrawRectangle(cursor);
   }
   
@@ -598,7 +598,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
     tmp->AppendOutput(newCell);
     
     m_parser->SetZoomFactor(m_zoomFactor);
-    m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - CellParser::Get()->GetBaseIndent());
+    m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
 
     tmp->RecalculateAppended();
     Recalculate(tmp);
@@ -671,7 +671,7 @@ void MathCtrl::Recalculate(GroupCell *start,bool force)
 
   m_parser->SetZoomFactor(m_zoomFactor);
   m_parser->SetForceUpdate(force);
-  m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - CellParser::Get()->GetBaseIndent());
+  m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
   int d_fontsize = m_parser->GetDefaultFontSize();
   int m_fontsize = m_parser->GetMathFontSize();
 
@@ -2929,7 +2929,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   
   m_blinkDisplayCaret = true;
 
-  m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - CellParser::Get()->GetBaseIndent());
+  m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
 
   if (m_activeCell->IsDirty())
   {
@@ -2939,7 +2939,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     int height = m_activeCell->GetHeight();
     //   int fontsize = m_parser->GetDefaultFontSize();
     m_parser->SetZoomFactor(m_zoomFactor);
-    m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - CellParser::Get()->GetBaseIndent());
+    m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
     int fontsize = m_parser->GetDefaultFontSize();
     
     m_activeCell->ResetData();
@@ -2948,7 +2948,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     
     if (height != m_activeCell->GetHeight() ||
         m_activeCell->GetWidth() + m_activeCell->m_currentPoint.x >=
-        GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - CellParser::Get()->GetBaseIndent())
+        GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent())
       needRecalculate = true;
   }
   
@@ -2986,7 +2986,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
         rect.width = GetVirtualSize().x;
       }
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-      rect.x -= CellParser::Get()->GetCursorWidth() / 2;
+      rect.x -= Configuration::Get()->GetCursorWidth() / 2;
       RedrawRect(rect);
     }
   }
@@ -3508,17 +3508,17 @@ void MathCtrl::OnChar(wxKeyEvent& event)
  */
 void MathCtrl::GetMaxPoint(int* width, int* height) {
   MathCell* tmp = m_tree;
-  int currentHeight= CellParser::Get()->GetBaseIndent();
-  int currentWidth= CellParser::Get()->GetBaseIndent();
-  *width = CellParser::Get()->GetBaseIndent();
-  *height = CellParser::Get()->GetBaseIndent();
+  int currentHeight= Configuration::Get()->GetBaseIndent();
+  int currentWidth= Configuration::Get()->GetBaseIndent();
+  *width = Configuration::Get()->GetBaseIndent();
+  *height = Configuration::Get()->GetBaseIndent();
 
   while (tmp != NULL) {
     currentHeight += tmp->GetMaxHeight();
-    currentHeight += CellParser::Get()->GetGroupSkip();
+    currentHeight += Configuration::Get()->GetGroupSkip();
     *height = currentHeight;
-    currentWidth = CellParser::Get()->GetBaseIndent() + tmp->GetWidth();
-    *width = MAX(currentWidth + CellParser::Get()->GetBaseIndent(), *width);
+    currentWidth = Configuration::Get()->GetBaseIndent() + tmp->GetWidth();
+    *width = MAX(currentWidth + Configuration::Get()->GetBaseIndent(), *width);
     tmp = tmp->m_next;
   }
 }
@@ -3528,7 +3528,7 @@ void MathCtrl::GetMaxPoint(int* width, int* height) {
  */
 void MathCtrl::AdjustSize()
 { 
-  int width= CellParser::Get()->GetBaseIndent(), height= CellParser::Get()->GetBaseIndent();
+  int width= Configuration::Get()->GetBaseIndent(), height= Configuration::Get()->GetBaseIndent();
   int clientWidth, clientHeight, virtualHeight;
 
   GetClientSize(&clientWidth, &clientHeight);
@@ -3660,14 +3660,14 @@ void MathCtrl::OnTimer(wxTimerEvent& event) {
         if (m_hCaretPosition == NULL)
         {
           rect.SetTop(0);
-          rect.SetBottom(CellParser::Get()->GetGroupSkip());
+          rect.SetBottom(Configuration::Get()->GetGroupSkip());
         }
         else
         {
           rect = m_hCaretPosition->GetRect();
-          int caretY = ((int) CellParser::Get()->GetGroupSkip()) / 2 + rect.GetBottom() + 1;
-          rect.SetTop(caretY - CellParser::Get()->GetCursorWidth()/2);
-          rect.SetBottom(caretY + (CellParser::Get()->GetCursorWidth()+1)/2);
+          int caretY = ((int) Configuration::Get()->GetGroupSkip()) / 2 + rect.GetBottom() + 1;
+          rect.SetTop(caretY - Configuration::Get()->GetCursorWidth()/2);
+          rect.SetBottom(caretY + (Configuration::Get()->GetCursorWidth()+1)/2);
         }
         rect.SetLeft(0);
         rect.SetRight(virtualsize_x);

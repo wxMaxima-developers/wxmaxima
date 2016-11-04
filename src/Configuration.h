@@ -18,8 +18,8 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
-#ifndef CELLPARSER_H
-#define CELLPARSER_H
+#ifndef CONFIGURATION_H
+#define CONFIGURATION_H
 
 #include <wx/wx.h>
 #include <wx/fontenum.h>
@@ -38,19 +38,19 @@
   In order to make all cells temporary listen to a different set of configuration 
   than the default one all that has to be done is to create a new configuration 
   object that contains hold the right settings for printing/export as bitmap or 
-  similar: CellParser::Get() will always return the last CellParser that was 
+  similar: Configuration::Get() will always return the last Configuration that was 
   created and therefore as long as the new configuration object exist will return
   a pointer to this object if configuration is needed.
  */
-class CellParser
+class Configuration
 {
 public:
   void ReadConfig();
-  CellParser(wxDC& dc);
+  Configuration(wxDC& dc);
   //! Set the drawing context that is currently active
   void SetContext(wxDC &dc){m_dc = &dc;}
-  CellParser(wxDC& dc, double scale);
-  ~CellParser();
+  Configuration(wxDC& dc, double scale);
+  ~Configuration();
   void SetZoomFactor(double newzoom) { m_zoomFactor = newzoom; }
   void SetScale(double scale) { m_scale = scale; }
   const double GetScale() { return m_scale; }
@@ -158,8 +158,8 @@ public:
   const bool GetMatchParens() { return m_matchParens; }
   const bool GetInsertAns() { return m_insertAns; }
 
-  //! Returns a pointer to the instance of CellParser that exists
-  static CellParser *Get() {return m_cellParser;}
+  //! Returns a pointer to the instance of Configuration that exists
+  static Configuration *Get() {return m_cellParser;}
 private:
   //! Automatically wrap long lines?
   bool m_autoWrap;
@@ -167,8 +167,8 @@ private:
   bool m_matchParens;
   //! Do we want to automatically insert new cells conaining a "%" at the end of every command?
   bool m_insertAns;
-  //! The CellParser that was active before this one
-  CellParser *m_last;
+  //! The Configuration that was active before this one
+  Configuration *m_last;
   //! The width of input and output labels [in chars]
   int m_labelWidth;
   int m_indent;
@@ -189,7 +189,7 @@ private:
   wxFontEncoding m_fontEncoding;
   style m_styles[STYLE_NUM];
   bool m_printer;
-  static CellParser *m_cellParser;
+  static Configuration *m_cellParser;
 };
 
-#endif // CELLPARSER_H
+#endif // CONFIGURATION_H
