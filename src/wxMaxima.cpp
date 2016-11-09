@@ -1347,6 +1347,9 @@ void wxMaxima::ReadPrompt(wxString &data)
   else {
     m_console->QuestionAnswered();
     m_console->QuestionPending(true);
+    // If the user answers a question additional output might be required even
+    // if the question has been preceded by many lines.
+    m_outputCellsFromCurrentCommand = 0;
     if(!o.IsEmpty())
     {
       if (o.Find(wxT("<mth>")) > -1)
