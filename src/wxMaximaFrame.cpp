@@ -431,7 +431,7 @@ void wxMaximaFrame::SetupMenu()
 #endif
   APPEND_MENU_ITEM(m_FileMenu, menu_save_id, _("&Save\tCtrl+S"),
                    _("Save document"), wxT("gtk-save"));
-  APPEND_MENU_ITEM(m_FileMenu, menu_save_as_id, _("Save As...\tShift-Ctrl+S"),
+  APPEND_MENU_ITEM(m_FileMenu, menu_save_as_id, _("Save As...\tShift+Ctrl+S"),
 		   _("Save document as"), wxT("gtk-save"));
   m_FileMenu->Append(menu_load_id, _("&Load Package...\tCtrl+L"),
                      _("Load a Maxima package file"), wxITEM_NORMAL);
@@ -461,7 +461,7 @@ void wxMaximaFrame::SetupMenu()
                      wxITEM_NORMAL);
   APPEND_MENU_ITEM(m_EditMenu, menu_copy_from_console, _("&Copy\tCtrl+C"),
                    _("Copy selection"), wxT("gtk-copy"));
-  m_EditMenu->Append(menu_copy_text_from_console, _("Copy as Text\tCtrl+Shift-C"),
+  m_EditMenu->Append(menu_copy_text_from_console, _("Copy as Text\tCtrl+Shift+C"),
                      _("Copy selection from document as text"),
                      wxITEM_NORMAL);
   m_EditMenu->Append(menu_copy_tex_from_console, _("Copy as LaTeX"),
@@ -504,20 +504,20 @@ void wxMaximaFrame::SetupMenu()
 
   // panes
   m_Maxima_Panes_Sub = new wxMenu;
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_show_toolbar, _("Main Toolbar\tAlt-Shift-B"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_show_toolbar, _("Main Toolbar\tAlt+Shift+B"));
   m_Maxima_Panes_Sub->AppendSeparator();
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_math, _("General Math\tAlt-Shift-M"));
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt-Shift-S"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_math, _("General Math\tAlt+Shift+M"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt+Shift+S"));
 #ifdef wxUSE_UNICODE
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_greek, _("Greek Letters\tAlt-Shift-G"));
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_symbols, _("Symbols\tAlt-Shift-Y"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_greek, _("Greek Letters\tAlt+Shift+G"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_symbols, _("Symbols\tAlt+Shift+Y"));
 #endif
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_history, _("History\tAlt-Shift-I"));
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_structure,  _("Table of Contents\tAlt-Shift-T"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_history, _("History\tAlt+Shift+I"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_structure,  _("Table of Contents\tAlt+Shift+T"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector,  _("XML Inspector"));
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt-Shift-C"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt+Shift+C"));
   m_Maxima_Panes_Sub->AppendSeparator();
-  m_Maxima_Panes_Sub->Append(menu_pane_hideall, _("Hide All Toolbars\tAlt-Shift--"), _("Hide all panes"), wxITEM_NORMAL);
+  m_Maxima_Panes_Sub->Append(menu_pane_hideall, _("Hide All Toolbars\tAlt+Shift+-"), _("Hide all panes"), wxITEM_NORMAL);
   m_Maxima_Panes_Sub->AppendSeparator();
   APPEND_MENU_ITEM(m_Maxima_Panes_Sub, MathCtrl::menu_zoom_in, _("Zoom &In\tCtrl++"),
                    _("Zoom in 10%"), wxT("gtk-zoom-in"));
@@ -533,7 +533,7 @@ void wxMaximaFrame::SetupMenu()
   m_Edit_Zoom_Sub->Append(menu_zoom_300, wxT("300%"), _("Set zoom to 300%"), wxITEM_NORMAL);
 
   m_Maxima_Panes_Sub->Append(wxNewId(), _("Set Zoom"), m_Edit_Zoom_Sub, _("Set Zoom"));
-  m_Maxima_Panes_Sub->Append(menu_fullscreen, _("Full Screen\tAlt-Enter"),
+  m_Maxima_Panes_Sub->Append(menu_fullscreen, _("Full Screen\tAlt+Enter"),
                      _("Toggle full screen editing"),
                      wxITEM_NORMAL);
 
@@ -546,9 +546,9 @@ void wxMaximaFrame::SetupMenu()
                      _("Evaluate active or selected cell(s)"), wxITEM_NORMAL);
   m_CellMenu->Append(menu_evaluate_all_visible, _("Evaluate All Visible Cells\tCtrl+R"),
                      _("Evaluate all visible cells in the document"), wxITEM_NORMAL);
-  m_CellMenu->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl+Shift-R"),
+  m_CellMenu->Append(menu_evaluate_all, _("Evaluate All Cells\tCtrl+Shift+R"),
                      _("Evaluate all cells in the document"), wxITEM_NORMAL);
-  m_CellMenu->Append(ToolBar::tb_evaltillhere, _("Evaluate Cells Above\tCtrl+Shift-P"),
+  m_CellMenu->Append(ToolBar::tb_evaltillhere, _("Evaluate Cells Above\tCtrl+Shift+P"),
                      _("Re-evaluate all cells above the one the cursor is in"), wxITEM_NORMAL);
 
   m_CellMenu->Append(menu_remove_output, _("Remove All Output"),
@@ -560,7 +560,7 @@ void wxMaximaFrame::SetupMenu()
                      _("Create a new cell with previous output"), wxITEM_NORMAL);
   m_CellMenu->Append(menu_autocomplete, _("Complete Word\tCtrl+K"),
                      _("Complete word"), wxITEM_NORMAL);
-  m_CellMenu->Append(menu_autocomplete_templates, _("Show Template\tCtrl+Shift-K"),
+  m_CellMenu->Append(menu_autocomplete_templates, _("Show Template\tCtrl+Shift+K"),
                      _("Show function template"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
   m_CellMenu->Append(menu_insert_input, _("Insert Input &Cell"),
@@ -580,14 +580,14 @@ void wxMaximaFrame::SetupMenu()
   m_CellMenu->Append(menu_insert_image, _("Insert Image..."),
                      _("Insert image"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
-  m_CellMenu->Append(menu_fold_all_cells, _("Fold All\tCtrl+Alt-["),
+  m_CellMenu->Append(menu_fold_all_cells, _("Fold All\tCtrl+Alt+["),
                      _("Fold all sections"), wxITEM_NORMAL);
-  m_CellMenu->Append(menu_unfold_all_cells, _("Unfold All\tCtrl+Alt-]"),
+  m_CellMenu->Append(menu_unfold_all_cells, _("Unfold All\tCtrl+Alt+]"),
                      _("Unfold all folded sections"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
-  m_CellMenu->Append(menu_history_previous, _("Previous Command\tAlt-Up"),
+  m_CellMenu->Append(menu_history_previous, _("Previous Command\tAlt+Up"),
                      _("Recall previous command from history"), wxITEM_NORMAL);
-  m_CellMenu->Append(menu_history_next, _("Next Command\tAlt-Down"),
+  m_CellMenu->Append(menu_history_next, _("Next Command\tAlt+Down"),
                      _("Recall next command from history"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
   m_CellMenu->Append(MathCtrl::popid_merge_cells, _("Merge Cells\tCtrl+M"),
