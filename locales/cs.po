@@ -10,17 +10,15 @@ msgstr ""
 "Project-Id-Version: cs\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-08-26 17:53+0200\n"
-"PO-Revision-Date: 2010-03-10 14:21+0100\n"
-"Last-Translator: Robert Marik <maarik@mendelu.cz>\n"
-"Language-Team:  <cs@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2016-11-05 18:34+0100\n"
+"Last-Translator: Innocent De Marchi <tangram.peces@gmail.com>\n"
+"Language-Team: cs@li.org\n"
+"Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-Language: Czech\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: ../src/wxMaxima.cpp:4427
 #, c-format
@@ -69,24 +67,24 @@ msgstr ""
 
 #: ../src/ConfigDialogue.cpp:668
 msgid "      -X '--dynamic-space-size <int>'"
-msgstr ""
+msgstr "      -X '--dynamic-space-size <int>'"
 
 #: ../src/ConfigDialogue.cpp:664
 msgid "      -l <name>"
-msgstr ""
+msgstr "      -l <name>"
 
 #: ../src/ImgCell.cpp:174 ../src/ImgCell.cpp:179
 msgid " (Graphics) "
-msgstr ""
+msgstr " (Gràfics) "
 
 #: ../src/EditorCell.cpp:2890 ../src/EditorCell.cpp:3061
 #, c-format
 msgid " ... + %i hidden lines"
-msgstr ""
+msgstr " ... + %i linies amagades"
 
 #: ../src/MathParser.cpp:1097
 msgid " << Expression longer than allowed by the configuration setting! >>"
-msgstr ""
+msgstr " << Expressió més llarga del què és permés per la configuració! >>"
 
 #: ../src/wxMaxima.cpp:1607
 msgid ""
@@ -105,16 +103,16 @@ msgstr ""
 
 #: ../src/ConfigDialogue.cpp:520
 msgid "\"Copy LaTeX\" adds equation markers"
-msgstr ""
+msgstr "«Copia LaTeX» afegeix els marcadors d'equacions"
 
 #: ../src/wxMaximaFrame.cpp:1371
 msgid "\"implies\" symbol"
-msgstr ""
+msgstr "símbol «implica»"
 
 #: ../src/wxMaximaFrame.cpp:92
 #, c-format
 msgid "%i cells in evaluation queue"
-msgstr ""
+msgstr "%i cel·les en la coa d'avaluació"
 
 #: ../src/wxMaximaFrame.cpp:753
 msgid "&Algebra"
@@ -393,10 +391,12 @@ msgid ""
 "... [suppressed additional lines since the output is longer than allowed in "
 "the configuration] "
 msgstr ""
+"...[suprimides línies addicionals degut a què la sortida és més llarga del "
+"què permet la configuració] "
 
 #: ../src/wxMaximaFrame.cpp:1361
 msgid "1/2"
-msgstr ""
+msgstr "1/2"
 
 #: ../src/wxMaxima.cpp:4509
 #, fuzzy
@@ -428,7 +428,7 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1420
 msgid "A symbol from the configuration dialogue"
-msgstr ""
+msgstr "Un símbol del formulari de configuració"
 
 #: ../src/wxMaximaFrame.cpp:711
 msgid "A&t Value..."
@@ -436,7 +436,7 @@ msgstr "Hodno&ta v bodě..."
 
 #: ../src/ConfigDialogue.cpp:686
 msgid "Abort evaluation on error"
-msgstr ""
+msgstr "Aturar l'avaluació en cas d'error"
 
 #: ../src/wxMaxima.cpp:4511 ../src/wxMaximaFrame.cpp:966
 msgid "About"
@@ -448,7 +448,7 @@ msgstr "O programu wxMaxima"
 
 #: ../src/ConfigDialogue.cpp:740
 msgid "Active cell bracket"
-msgstr ""
+msgstr "Suport de cel·la activa"
 
 #: ../src/wxMaximaFrame.cpp:740
 msgid "Ad&joint Matrix"
@@ -472,7 +472,7 @@ msgstr "Přidat rovnost k zjednodušovateli racionálních výrazů"
 
 #: ../src/ConfigDialogue.cpp:529
 msgid "Add the .wxmx file to the HTML export"
-msgstr ""
+msgstr "Afegir l'arxiu .wxmx a l'exportació a HTML"
 
 #: ../src/wxMaximaFrame.cpp:636
 msgid "Add to &Path..."
@@ -482,10 +482,12 @@ msgstr "Přidat do &path..."
 msgid ""
 "Additional commands to be added to the preamble of LaTeX output for pdftex."
 msgstr ""
+"Les ordres addicionals s'afegiran en el preàmbul de la sortida de LaTeX per "
+"a pdftex."
 
 #: ../src/ConfigDialogue.cpp:500
 msgid "Additional lines for the TeX preamble:"
-msgstr ""
+msgstr "Línies addicionals per al preàmbul TeX"
 
 #: ../src/ConfigDialogue.cpp:176
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
@@ -498,13 +500,15 @@ msgstr "Doplňkové parametry:"
 
 #: ../src/ConfigDialogue.cpp:583
 msgid "Additional symbols for the \"symbols\" sidebar:"
-msgstr ""
+msgstr "Símbols addicionals per a la barra lateral «símbols»"
 
 #: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:242
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
 msgstr ""
+"Després de fer clic en animacions generades amb with_slider_draw() o "
+"similars, aquest control lliscant permet canviar el quadre actual."
 
 #: ../src/ConfigDialogue.cpp:437
 #, fuzzy
@@ -517,7 +521,7 @@ msgstr "Vše|* "
 
 #: ../src/wxMaximaFrame.cpp:1312
 msgid "Alpha"
-msgstr ""
+msgstr "Alfa"
 
 #: ../src/wxMaxima.cpp:3730
 msgid "Apply"
@@ -537,11 +541,11 @@ msgstr "Pole:"
 
 #: ../src/wxMaxima.cpp:4370
 msgid "Artwork by"
-msgstr ""
+msgstr "Il·lustració de"
 
 #: ../src/ConfigDialogue.cpp:618
 msgid "Ask to save untitled documents"
-msgstr ""
+msgstr "Preguntar si desar els documents sense títol"
 
 #: ../src/wxMaxima.cpp:3542
 msgid "At value"
@@ -549,7 +553,7 @@ msgstr "Hodnota v bodě"
 
 #: ../src/ConfigDialogue.cpp:475
 msgid "Auto-indent new lines"
-msgstr ""
+msgstr "Tabulació automàtica de noves línies"
 
 #: ../src/ConfigDialogue.cpp:213
 msgid ""
@@ -559,10 +563,15 @@ msgid ""
 "installation path when the current document resides on a different drive "
 "than the maxima installation."
 msgstr ""
+"Canvia automàticament el directori de treball de Màxima al directori del "
+"document actua: això és necessari si el document fa servir entrades/sortides "
+"d'arxiu relatives al directori actual però farà que Màxima 5.35 falli en "
+"determinar la ruta de la seva instal·lació quan el document estigui a una "
+"unitat de disc diferent a la de la instal·lació de Màxima."
 
 #: ../src/ConfigDialogue.cpp:589
 msgid "Autosave interval (minutes, 0 means: off):"
-msgstr ""
+msgstr "Interval per desar automàticament (minutes, 0 significa desactivat):"
 
 #: ../src/BC2Wiz.cpp:58 ../src/wxMaxima.cpp:3449
 msgid "BC2"
@@ -570,7 +579,7 @@ msgstr "BC2"
 
 #: ../src/wxMaximaFrame.cpp:1220
 msgid "Barsplot..."
-msgstr ""
+msgstr "Gràfic de barres..."
 
 #: ../src/ConfigDialogue.cpp:889
 msgid "Bat files (*.bat)|*.bat|All|*"
