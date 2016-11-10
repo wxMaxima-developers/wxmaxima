@@ -155,7 +155,6 @@ wxString EditorCell::ToString(bool dontLimitToSelection)
     if(start < 0) start = 0;
     text = m_text.SubString(start, end);
   }
-
   return text;
 }
 

@@ -699,39 +699,40 @@ wxRect GroupCell::HideRect()
 wxString GroupCell::ToString()
 {
   wxString str;
-  if (GetEditable()) {
-    {
-      str = m_input->ToString();
-      if(m_input->m_next != NULL)
-      {
-        str += wxT("\t");
-        str += m_input->m_next->ListToString();
-      }
-    }
+
+  if(m_input != NULL)
+  {
+    str = m_input->ToString();
+    
+    if (GetEditable() != NULL)
+      str += GetEditable()->ToString();
+
     str.Replace(wxT("\n"),wxT("\n\t"));
-    if (m_output != NULL && !m_hide) {
-      MathCell *tmp = m_output;
-      bool firstCell = true;
-      while (tmp != NULL) {
-        if (firstCell || (tmp->ForceBreakLineHere() && str.Length()>0))
+  }
+
+  if (m_output != NULL && !m_hide)
+  {
+    MathCell *tmp = m_output;
+    bool firstCell = true;
+    while (tmp != NULL) {
+      if (firstCell || (tmp->ForceBreakLineHere() && str.Length()>0))
+      {
+        if(firstCell)
+          str += wxT("\n");
+        else
         {
-          if(firstCell)
-            str += wxT("\n");
-          else
-          {
-            str += wxT("\n");
-            if(
-              (tmp->m_nextToDraw != NULL ) &&
+          str += wxT("\n");
+          if(
+            (tmp->m_nextToDraw != NULL ) &&
               (tmp->GetStyle()!=TS_LABEL) &&
-              (tmp->GetStyle()!=TS_USERLABEL)
-              )
-              str += wxT("\t");
-          }
+            (tmp->GetStyle()!=TS_USERLABEL)
+            )
+            str += wxT("\t");
         }
-        str += tmp->ToString();
-        firstCell = false;
-        tmp = tmp->m_nextToDraw;
       }
+      str += tmp->ToString();
+      firstCell = false;
+      tmp = tmp->m_nextToDraw;
     }
   }
   return str;

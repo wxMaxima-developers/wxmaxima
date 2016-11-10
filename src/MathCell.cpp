@@ -467,13 +467,13 @@ wxString MathCell::ListToString()
 
     
     if((!firstline)&&(tmp->m_forceBreakLine))
-      retval+=wxT("\n");
+      retval += wxT("\n");
     
     firstline = false;
-    tmp  =tmp->m_nextToDraw;
+    tmp = tmp->m_nextToDraw;
   }
   
-  return retval;
+ return retval;
 }
 
 wxString MathCell::ToTeX()

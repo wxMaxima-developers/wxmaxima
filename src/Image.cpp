@@ -155,7 +155,6 @@ wxSize Image::ToImageFile(wxString filename)
 
 wxBitmap Image::GetBitmap()
 {
-  // std::cerr<<m_scaledBitmap.GetWidth()<<"\n";
   ViewportSize(m_viewportWidth,m_viewportHeight,m_scale);
 
   // Let's see if we have cached the scaled bitmap with the right size
