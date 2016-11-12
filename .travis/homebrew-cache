@@ -1,6 +1,4 @@
 #!/bin/sh
 
-mkdir .travis-cache
-if [ ! -f .travis-cache/homebrew-cache.tar.gz ]; then
-  tar czf .travis-cache/homebrew-cache.tar.gz --directory /usr/local/Cellar libpng libtiff wxmac
-fi
+if test ! -d .travis-cache; then mkdir .travis-cache;fi
+tar czf .travis-cache/homebrew-cache.tar.gz --directory /usr/local/Cellar libpng libtiff wxmac
