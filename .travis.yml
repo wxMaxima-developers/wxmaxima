@@ -10,6 +10,11 @@ branches:
   only:
     - master
 
+before_deploy:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cd $TRAVIS_BUILD_DIR && .travis/homebrew-cache
+upload-dir: .travis-cache
+local-dir: .travis-cache
+ 
 before_install: 
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update                                             ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y libwxgtk3.0-dev libwxgtk3.0  gettext ; fi
