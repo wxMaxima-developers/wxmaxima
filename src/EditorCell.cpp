@@ -1594,6 +1594,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
       {
         if (SelectionActive())
         {
+          // Selection active and Tab
           SaveValue();
 
           long start = MIN(m_selectionStart,m_selectionEnd);
@@ -1607,7 +1608,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
             start = BeginningOfLine(start);
             long pos = start;
             
-            if((m_text[end-1]==wxT('\n')) || (m_text[end-1]==wxT('\r')))
+            if((m_text[end]==wxT('\n')))
               end++;
 
             if(end > (long)m_text.Length())
@@ -1623,7 +1624,8 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
                     m_text =
                       m_text.SubString(0, pos - 1) +
                       m_text.SubString(pos + 1, m_text.Length());
-                    end--;
+                    if(end > 0)
+                      end--;
                   }
               }
               else
@@ -1656,6 +1658,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
         {
           if(!event.ShiftDown())
           {
+            // Selection active and Tab was pressed without Shift
             unsigned int col, line;
             PositionToXY(m_positionOfCaret, &col, &line);
             wxString ins;
@@ -1671,6 +1674,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
           }
           else
           {
+            // Selection active and Shift+Tab
             long start = BeginningOfLine(m_positionOfCaret);
             if(m_text.SubString(start,start + 3)==wxT("    "))
             {
