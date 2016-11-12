@@ -10,11 +10,6 @@ branches:
     - master
 
 cache: ccache
-  - os: osx
-    directories:
-    - /usr/local/Cellar/libpng
-    - /usr/local/Cellar/libtiff
-    - /usr/local/Cellar/wxmac
 
 before_install: 
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update                                             ; fi
