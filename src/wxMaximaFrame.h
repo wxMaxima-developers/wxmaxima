@@ -423,18 +423,7 @@ public:
   void StatusExportFinished();
   //! Set the status to "Exporting has failed"
   void StatusExportFailed();
-private:
-  //! A panel that shows all user-defined symbols on the symbols pane.
-  wxPanel *m_userSymbols;
-  //! A button per user defined symbol
-  std::list<wxPanel *> m_userSymbolButtons;
-  wxGridSizer *m_userSymbolsSizer;
-  //! The current length of the evaluation queue of commands we still need to send to maxima
-  int m_EvaluationQueueLength;
-  //! The number of commands left in the current of the evaluation queue item
-  int m_commandsLeftInCurrentCell;
-  //! True=We are currently saving.
-  bool m_StatusSaving;
+protected:
   //! The menu bar
   wxMenuBar *m_MenuBar;
   //! The file menu.
@@ -469,6 +458,18 @@ private:
   wxMenu *m_NumericMenu;
   //! The help menu
   wxMenu *m_HelpMenu;
+private:
+  //! A panel that shows all user-defined symbols on the symbols pane.
+  wxPanel *m_userSymbols;
+  //! A button per user defined symbol
+  std::list<wxPanel *> m_userSymbolButtons;
+  wxGridSizer *m_userSymbolsSizer;
+  //! The current length of the evaluation queue of commands we still need to send to maxima
+  int m_EvaluationQueueLength;
+  //! The number of commands left in the current of the evaluation queue item
+  int m_commandsLeftInCurrentCell;
+  //! True=We are currently saving.
+  bool m_StatusSaving;
   
   void set_properties();
   void do_layout();

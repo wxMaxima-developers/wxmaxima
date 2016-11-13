@@ -389,6 +389,7 @@ void GroupCell::RecalculateWidths(int fontsize)
     UnBreakUpCells();
 
     double scale = configuration->GetScale();
+
     m_input->RecalculateWidthsList(fontsize);
 
     // recalculate the position of input in ReEvaluateSelection!
@@ -396,18 +397,29 @@ void GroupCell::RecalculateWidths(int fontsize)
       m_input->m_next->m_currentPoint.x = m_currentPoint.x + m_input->GetWidth() + MC_CELL_SKIP;
     }
 
-    if (m_output == NULL || m_hide) {
-      m_width = m_input->GetFullWidth(scale);
+    if (m_output == NULL || m_hide)
+    {
+      if((configuration->ShowCodeCells()) ||
+         (m_groupType != GC_TYPE_CODE))
+      {
+        m_width = m_input->GetFullWidth(scale);
+      }
+      else
+        m_width = 0;
     }
-
-    else {
+    else
+    {
       MathCell *tmp = m_output;
       while (tmp != NULL) {
         tmp->RecalculateWidths(tmp->IsMath() ? m_mathFontSize : m_fontSize);
         tmp = tmp->m_next;
       }
       // This is not correct, m_width will be computed correctly in RecalculateHeight!
-      m_width = m_input->GetFullWidth(scale);
+      if((configuration->ShowCodeCells()) ||
+         (m_groupType != GC_TYPE_CODE))
+      {
+        m_width = m_input->GetFullWidth(scale);
+      }
     }
 
     BreakUpCells(m_fontSize, configuration->GetClientWidth());
@@ -432,9 +444,19 @@ void GroupCell::RecalculateHeight(int fontsize)
     }
 
     double scale = configuration->GetScale();
-    m_input->RecalculateHeightList(fontsize);
-    m_center = m_input->GetMaxCenter();
-    m_height = m_input->GetMaxHeight();
+    if((configuration->ShowCodeCells()) ||
+       (m_groupType != GC_TYPE_CODE))
+    {
+      m_input->RecalculateHeightList(fontsize);
+      m_center = m_input->GetMaxCenter();
+      m_height = m_input->GetMaxHeight();
+    }
+    else
+    {
+      m_center = 0;
+      m_height = 0;
+    }
+    
     m_indent = configuration->GetIndent();
 
     if (m_output != NULL && !m_hide)
@@ -461,8 +483,17 @@ void GroupCell::RecalculateHeight(int fontsize)
       m_outputRect.y = m_currentPoint.y - m_output->GetMaxCenter();
       m_outputRect.width = 0;
       m_outputRect.height = 0;
-      m_height = m_input->GetMaxHeight();
-      m_width = m_input->GetFullWidth(scale);
+      if((configuration->ShowCodeCells()) ||
+         (m_groupType != GC_TYPE_CODE))
+      {
+        m_height = m_input->GetMaxHeight();
+        m_width = m_input->GetFullWidth(scale);
+      }
+      else
+      {
+        m_height = 0;
+        m_width  = 0;
+      }
 
       tmp = m_output;
       while (tmp != NULL) {
@@ -594,15 +625,25 @@ void GroupCell::Draw(wxPoint point, int fontsize)
     //
     SetPen();
     wxPoint in(point);
-    configuration->Outdated(false);
-    m_input->DrawList(in, fontsize);
-    if (m_groupType == GC_TYPE_CODE && m_input->m_next)
-      configuration->Outdated(((EditorCell *)(m_input->m_next))->ContainsChanges());
 
+    if((configuration->ShowCodeCells()) ||
+       (m_groupType != GC_TYPE_CODE))
+    {
+      configuration->Outdated(false);
+      m_input->DrawList(in, fontsize);
+      if (m_groupType == GC_TYPE_CODE && m_input->m_next)
+        configuration->Outdated(((EditorCell *)(m_input->m_next))->ContainsChanges());
+    }
+    
     if (m_output != NULL && !m_hide) {
       MathCell *tmp = m_output;
       int drop = tmp->GetMaxDrop();
-      in.y += m_input->GetMaxDrop() + m_output->GetMaxCenter();
+      if((configuration->ShowCodeCells()) ||
+         (m_groupType != GC_TYPE_CODE))
+      {
+        in.y += m_input->GetMaxDrop();
+      }
+      in.y += m_output->GetMaxCenter();
       m_outputRect.y = in.y - m_output->GetMaxCenter();
       m_outputRect.x = in.x;
 
@@ -682,11 +723,11 @@ void GroupCell::Draw(wxPoint point, int fontsize)
       dc.DrawLine(point.x - SCALE_PX(10, scale), point.y - m_center + m_height,
           point.x - SCALE_PX(2, scale) , point.y - m_center + m_height);
       // middle horizontal
-      if (m_groupType == GC_TYPE_CODE && m_output != NULL && !m_hide) {
+      if (configuration->ShowCodeCells() && m_groupType == GC_TYPE_CODE && m_output != NULL && !m_hide) {
         dc.DrawLine(point.x - SCALE_PX(6, scale),
-            point.y - m_center + m_input->GetMaxHeight(),
-            point.x - SCALE_PX(10, scale),
-            point.y - m_center + m_input->GetMaxHeight());
+                    point.y - m_center + m_input->GetMaxHeight(),
+                    point.x - SCALE_PX(10, scale),
+                    point.y - m_center + m_input->GetMaxHeight());
       }
     }
 
@@ -702,15 +743,20 @@ wxRect GroupCell::HideRect()
 wxString GroupCell::ToString()
 {
   wxString str;
-
+  Configuration *configuration = Configuration::Get();
+  
   if(m_input != NULL)
   {
-    str = m_input->ToString();
-    
-    if (GetEditable() != NULL)
-      str += GetEditable()->ToString();
-
-    str.Replace(wxT("\n"),wxT("\n\t"));
+    if((configuration->ShowCodeCells()) ||
+       (m_groupType != GC_TYPE_CODE))
+    {
+      str = m_input->ToString();
+      
+      if (GetEditable() != NULL)
+        str += GetEditable()->ToString();
+      
+      str.Replace(wxT("\n"),wxT("\n\t"));
+    }
   }
 
   if (m_output != NULL && !m_hide)
@@ -748,13 +794,17 @@ wxString GroupCell::ToTeX()
 
 wxString GroupCell::ToRTF()
 {
+  Configuration *configuration = Configuration::Get();
   if(m_groupType == GC_TYPE_PAGEBREAK)
     return(wxT("\\page "));
   
   wxString retval;
   if(m_groupType == GC_TYPE_CODE)
   {
-    if(m_input != NULL)
+    if(m_input != NULL &&
+       (configuration->ShowCodeCells()) ||
+       (m_groupType != GC_TYPE_CODE)
+      )
     {
       if(m_previous != NULL)
         retval = wxT("\\par}{\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 \n");
@@ -1108,10 +1158,19 @@ wxString GroupCell::ToXML()
 void GroupCell::SelectRectGroup(wxRect& rect, wxPoint& one, wxPoint& two,
     MathCell **first, MathCell **last)
 {
+  Configuration *configuration = Configuration::Get();
+
   *first = NULL;
   *last = NULL;
 
-  if ((m_input) && (m_input->ContainsRect(rect)))
+    
+  if ((m_input) &&
+      (
+        (configuration->ShowCodeCells()) ||
+        (m_groupType != GC_TYPE_CODE)
+        ) &&
+      (m_input->ContainsRect(rect))
+    )
     m_input->SelectRect(rect, first, last);
   else if (m_output != NULL && !m_hide && m_outputRect.Contains(rect))
     SelectRectInOutput(rect, one, two, first, last);

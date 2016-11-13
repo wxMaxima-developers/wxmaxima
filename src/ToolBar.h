@@ -99,6 +99,7 @@ class ToolBar
     tb_animation_start,
     tb_animation_stop,
     tb_find,
+    tb_hideCode,
     menu_restart_id
   };
 

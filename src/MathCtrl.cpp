@@ -2479,6 +2479,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   // If we just have started typing inside a new cell we don't want the screen
   // to scroll away.
   ScrolledAwayFromEvaluation();
+  
   Recalculate(group);
 
   // Here we tend to get unacceptably long delays before the display is
@@ -4679,6 +4680,12 @@ bool MathCtrl::ExportToHTML(wxString file) {
   return outfileOK && cssOK;
 }
 
+void MathCtrl::CodeCellVisibilityChanged()
+{
+  RecalculateForce();
+  ScrollToCaret();
+}
+
 GroupCell* MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
 {
   bool hide = false;
@@ -6123,6 +6130,14 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
   
   if (callRefresh) // = true default
     RequestRedraw();
+
+  if((GetActiveCell()!= NULL) && (!Configuration::Get()->ShowCodeCells()) &&
+     (GetActiveCell()->GetType() == MC_TYPE_INPUT)
+    )
+  {
+    Configuration::Get()->ShowCodeCells(true);
+    CodeCellVisibilityChanged();
+  }
 }
 
 bool MathCtrl::PointVisibleIs(wxPoint point)

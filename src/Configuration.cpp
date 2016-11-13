@@ -35,6 +35,7 @@ Configuration::Configuration(wxDC& dc) : m_dc(&dc)
   m_last = m_activeConfiguration;
   m_activeConfiguration = this;
 
+  m_showCodeCells = true;
   m_scale = 1.0;
   m_zoomFactor = 1.0; // affects returned fontsizes
   m_top = -1;

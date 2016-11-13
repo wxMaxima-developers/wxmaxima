@@ -600,6 +600,8 @@ public:
   bool RedrawRequested(){return m_redrawRequested;}
   ///@}
 
+  //! To be called after enabling or disabling the visibility of code cells
+  void CodeCellVisibilityChanged();
   //! Re-read the configuration
   void UpdateConfig(){m_configuration->ReadConfig();}
   //! The name of the currently-opened file

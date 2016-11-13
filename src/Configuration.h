@@ -153,6 +153,8 @@ public:
   const wxString GetTeXCMEX() { return m_fontCMEX; }
   const wxString GetTeXCMMI() { return m_fontCMMI; }
   const wxString GetTeXCMTI() { return m_fontCMTI; }
+  const bool ShowCodeCells()  { return m_showCodeCells; }
+  void ShowCodeCells(bool show)  { m_showCodeCells = show; }
   void SetPrinter(bool printer) { m_printer = printer; }
   const bool GetPrinter() { return m_printer; }
   const bool GetMatchParens() { return m_matchParens; }
@@ -189,6 +191,7 @@ private:
   wxFontEncoding m_fontEncoding;
   style m_styles[STYLE_NUM];
   bool m_printer;
+  bool m_showCodeCells;
   static Configuration *m_activeConfiguration;
 };
 

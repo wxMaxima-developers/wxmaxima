@@ -2404,6 +2404,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   else
     menubar->Check(menu_show_toolbar, false);
 
+  menubar->Check(ToolBar::tb_hideCode,!Configuration::Get()->ShowCodeCells());
   if (m_console->GetTree() != NULL)
   {
     menubar->Enable(MathCtrl::popid_divide_cell, m_console->GetActiveCell() != NULL);
@@ -3231,6 +3232,10 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     break;
   case menu_fullscreen:
     ShowFullScreen( !IsFullScreen() );
+    break;
+  case ToolBar::tb_hideCode:
+    Configuration::Get()->ShowCodeCells(!Configuration::Get()->ShowCodeCells());
+    m_console->CodeCellVisibilityChanged();
     break;
   case menu_remove_output:
     m_console->RemoveAllOutput();
@@ -6172,6 +6177,7 @@ EVT_MENU(menu_zoom_150, wxMaxima::EditMenu)
 EVT_MENU(menu_zoom_200, wxMaxima::EditMenu)
 EVT_MENU(menu_zoom_300, wxMaxima::EditMenu)
 EVT_MENU(menu_fullscreen, wxMaxima::EditMenu)
+EVT_MENU(ToolBar::tb_hideCode, wxMaxima::EditMenu)
 EVT_MENU(menu_copy_as_bitmap, wxMaxima::EditMenu)
 EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)
   EVT_MENU(menu_select_all, wxMaxima::EditMenu)
