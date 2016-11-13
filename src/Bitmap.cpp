@@ -67,10 +67,6 @@ void Bitmap::Layout(long int maxSize)
     RecalculateHeight();
   }
   else {
-    int fontsize = 12;
-    wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
-    int mfontsize = fontsize;
-    wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
     GroupCell* tmp = (GroupCell *)m_tree;
 
     wxMemoryDC dc;
@@ -81,7 +77,7 @@ void Bitmap::Layout(long int maxSize)
 
     while (tmp != NULL)
     {
-      tmp->Recalculate(fontsize, mfontsize);
+      tmp->Recalculate();
       tmp = (GroupCell *)tmp->m_next;
     }
   }

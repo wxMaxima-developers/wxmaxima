@@ -113,7 +113,7 @@ public:
   wxRect GetOutputRect() { return m_outputRect; }
   void RecalculateHeight(int fontsize);
   void RecalculateWidths(int fontsize);
-  void Recalculate(int d_fontsize, int m_fontsize);
+  void Recalculate();
   void BreakUpCells(int fontsize, int clientWidth);
   void BreakUpCells(MathCell *cell, int fontsize, int clientWidth);
   void UnBreakUpCells();

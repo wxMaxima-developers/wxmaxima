@@ -245,11 +245,6 @@ void MathPrintout::PrintHeader(int pageNum, wxDC* dc, double scale)
 
 void MathPrintout::Recalculate()
 {
-  wxConfig *config = (wxConfig *)wxConfig::Get();
-  int fontsize = 12;
-  config->Read(wxT("fontSize"), &fontsize);
-  int mfontsize = fontsize;
-  config->Read(wxT("mathfontsize"), &mfontsize);
   GroupCell* tmp = (GroupCell *)m_tree;
   double scale = GetPPIScale();
 
@@ -271,7 +266,7 @@ void MathPrintout::Recalculate()
   while (tmp != NULL)
   {
     tmp->ResetSize();
-    tmp->Recalculate(fontsize, mfontsize);
+    tmp->Recalculate();
     tmp = (GroupCell *)tmp->m_next;
   }
 }

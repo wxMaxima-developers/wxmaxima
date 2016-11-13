@@ -672,12 +672,10 @@ void MathCtrl::Recalculate(GroupCell *start,bool force)
   m_parser->SetZoomFactor(m_zoomFactor);
   m_parser->SetForceUpdate(force);
   m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
-  int d_fontsize = m_parser->GetDefaultFontSize();
-  int m_fontsize = m_parser->GetMathFontSize();
 
   while (tmp != NULL)
   {
-    tmp->Recalculate(d_fontsize, m_fontsize);
+    tmp->Recalculate();
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
  

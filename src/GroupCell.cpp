@@ -361,8 +361,11 @@ void GroupCell::AppendOutput(MathCell *cell)
  // ResetSize();
 }
 
-void GroupCell::Recalculate(int d_fontsize, int m_fontsize)
+void GroupCell::Recalculate()
 {
+  int d_fontsize = Configuration::Get()->GetDefaultFontSize();
+  int m_fontsize = Configuration::Get()->GetMathFontSize();
+
   m_fontSize = d_fontsize;
   m_mathFontSize = m_fontsize;
 
