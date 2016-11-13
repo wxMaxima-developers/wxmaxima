@@ -124,8 +124,8 @@ void SumCell::SetUnder(MathCell *under)
 
 void SumCell::RecalculateWidths(int fontsize)
 {
-  Configuration *parser = Configuration::Get();
-  double scale = parser->GetScale();
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
 
   m_signSize = SCALE_PX(50, scale);
   m_signWidth = SCALE_PX(30, scale);
@@ -137,13 +137,13 @@ void SumCell::RecalculateWidths(int fontsize)
     m_over = new TextCell;
   m_over->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
 
-  if (parser->CheckTeXFonts())
+  if (configuration->CheckTeXFonts())
   {
-    wxDC& dc = parser->GetDC();
+    wxDC& dc = configuration->GetDC();
     int fontsize1 = (int) ((fontsize * 1.5 * scale + 0.5));
     dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
     		          wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                      parser->GetTeXCMEX()));
+                      configuration->GetTeXCMEX()));
     dc.GetTextExtent(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN), &m_signWidth, &m_signSize);
     m_signWCenter = m_signWidth / 2;
     m_signTop = (2* m_signSize) / 5;
@@ -158,8 +158,8 @@ void SumCell::RecalculateWidths(int fontsize)
 
 void SumCell::RecalculateHeight(int fontsize)
 {
-  Configuration *parser = Configuration::Get();
-  double scale = parser->GetScale();
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
 
   m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
   m_over->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
@@ -176,9 +176,9 @@ void SumCell::Draw(wxPoint point, int fontsize)
 {
   if (DrawThisCell(point))
   {
-    Configuration *parser = Configuration::Get();
-    wxDC& dc = parser->GetDC();
-    double scale = parser->GetScale();
+    Configuration *configuration = Configuration::Get();
+    wxDC& dc = configuration->GetDC();
+    double scale = configuration->GetScale();
 
     wxPoint base(point), under(point), over(point), sign(point);
 
@@ -190,13 +190,13 @@ void SumCell::Draw(wxPoint point, int fontsize)
     over.y = point.y - m_signSize / 2 - m_over->GetMaxDrop() - SCALE_PX(2, scale);
     m_over->DrawList(over, MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
 
-    if (parser->CheckTeXFonts())
+    if (configuration->CheckTeXFonts())
     {
       SetForeground();
       int fontsize1 = (int) ((fontsize * 1.5 * scale + 0.5));
       dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
     		            wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                        parser->GetTeXCMEX()));
+                        configuration->GetTeXCMEX()));
       dc.DrawText(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN),
                   sign.x + m_signWCenter - m_signWidth / 2,
                   sign.y - m_signTop);

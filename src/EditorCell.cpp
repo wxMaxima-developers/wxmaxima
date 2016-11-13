@@ -376,13 +376,13 @@ void EditorCell::RecalculateWidths(int fontsize)
     
     StyleText();
   int charWidth;
-  Configuration *parser = Configuration::Get();
+  Configuration *configuration = Configuration::Get();
 
   m_isDirty = false;
-  if (m_height == -1 || m_width == -1 || parser->ForceUpdate())
+  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate())
   {
-    wxDC& dc = parser->GetDC();
-    double scale = parser->GetScale();
+    wxDC& dc = configuration->GetDC();
+    double scale = configuration->GetScale();
     SetFont(fontsize);
 
     // Measure the text hight using characters that might extend below or above the region
@@ -491,7 +491,7 @@ wxString EditorCell::ToHTML()
 
 void EditorCell::MarkSelection(long start, long end,double scale, wxDC& dc, TextStyle style,int fontsize)
 {
-  Configuration *parser = Configuration::Get();
+  Configuration *configuration = Configuration::Get();
   if((start < 0)||(end < 0)) return;
   wxPoint point, point1;
   long pos1 = start, pos2 = start;
@@ -499,10 +499,10 @@ void EditorCell::MarkSelection(long start, long end,double scale, wxDC& dc, Text
 #if defined(__WXMAC__)
   dc.SetPen(wxNullPen); // no border on rectangles
 #else
-  dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(style), 1, wxPENSTYLE_SOLID)) );
+  dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(style), 1, wxPENSTYLE_SOLID)) );
 // window linux, set a pen
 #endif
-  dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser->GetColor(style))) ); //highlight c.
+  dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(style))) ); //highlight c.
   
   
   while (pos1 < end) // go through selection, draw a rect for each line of selection
@@ -547,13 +547,13 @@ The order this cell is drawn is:
 void EditorCell::Draw(wxPoint point1, int fontsize)
 {
   MathCell::Draw(point1, fontsize);
-  Configuration *parser = Configuration::Get();
+  Configuration *configuration = Configuration::Get();
 
   m_selectionChanged = false;
-  double scale = parser->GetScale();
-  wxDC& dc = parser->GetDC();
+  double scale = configuration->GetScale();
+  wxDC& dc = configuration->GetDC();
   wxPoint point(point1);
-  if (m_width == -1 || m_height == -1 || parser->ForceUpdate())
+  if (m_width == -1 || m_height == -1 || configuration->ForceUpdate())
     RecalculateWidths(fontsize);
 
   if (DrawThisCell(point) && !m_isHidden)
@@ -603,9 +603,9 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
 #if defined(__WXMAC__)
         dc.SetPen(wxNullPen); // no border on rectangles
 #else
-        dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID))); // window linux, set a pen
+        dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID))); // window linux, set a pen
 #endif
-        dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser->GetColor(TS_SELECTION))) ); //highlight c.
+        dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))) ); //highlight c.
 
         wxPoint point = PositionToPoint(fontsize, m_paren1);
         int width, height;
@@ -656,10 +656,10 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
         // Grab a pen of the right color.
         if(textSnippet->StyleSet())
         {
-          wxDC& dc = parser->GetDC();
+          wxDC& dc = configuration->GetDC();
           if(lastStyle != textSnippet->GetStyle())
           {
-            dc.SetTextForeground(parser->GetColor(textSnippet->GetStyle()));
+            dc.SetTextForeground(configuration->GetColor(textSnippet->GetStyle()));
             lastStyle = textSnippet->GetStyle();
           }
         }
@@ -671,7 +671,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
 
 #if defined __WXMSW__ || wxUSE_UNICODE
         // replace "*" with centerdot if requested
-        if ((m_changeAsterisk = parser->GetChangeAsterisk())!=0)
+        if ((m_changeAsterisk = configuration->GetChangeAsterisk())!=0)
           TextToDraw.Replace(wxT("*"), wxT("\xB7"));
 #endif
 
@@ -713,7 +713,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
       int lineWidth = GetLineWidth(dc, caretInLine, caretInColumn);
 
  //TODO is there more efficient way to do this?
-      dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(parser->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 #if defined(__WXMAC__)
       // draw 1 pixel shorter caret than on windows
       dc.DrawRectangle(point.x + SCALE_PX(2, scale) + lineWidth - Configuration::Get()->GetCursorWidth()/2,
@@ -735,22 +735,22 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
 
 void EditorCell::SetFont(int fontsize)
 {
-  Configuration *parser = Configuration::Get();
-  wxDC& dc = parser->GetDC();
-  double scale = parser->GetScale();
+  Configuration *configuration = Configuration::Get();
+  wxDC& dc = configuration->GetDC();
+  double scale = configuration->GetScale();
 
-  m_fontSize = parser->GetFontSize(m_textStyle);
+  m_fontSize = configuration->GetFontSize(m_textStyle);
   if (m_fontSize == 0)
     m_fontSize = fontsize;
 
   m_fontSize = (int) (((double)m_fontSize) * scale + 0.5);
   m_fontSize = MAX(m_fontSize, 1);
 
-  m_fontName = parser->GetFontName(m_textStyle);
-  m_fontStyle = parser->IsItalic(m_textStyle);
-  m_fontWeight = parser->IsBold(m_textStyle);
-  m_underlined = parser->IsUnderlined(m_textStyle);
-  m_fontEncoding = parser->GetFontEncoding();
+  m_fontName = configuration->GetFontName(m_textStyle);
+  m_fontStyle = configuration->IsItalic(m_textStyle);
+  m_fontWeight = configuration->IsBold(m_textStyle);
+  m_underlined = configuration->IsUnderlined(m_textStyle);
+  m_fontEncoding = configuration->GetFontEncoding();
 
   dc.SetFont(wxFont(m_fontSize, wxFONTFAMILY_MODERN,
                     m_fontStyle,
@@ -763,9 +763,9 @@ void EditorCell::SetFont(int fontsize)
 
 void EditorCell::SetForeground()
 {
-  Configuration *parser = Configuration::Get();
-  wxDC& dc = parser->GetDC();
-  dc.SetTextForeground(parser->GetColor(m_textStyle));
+  Configuration *configuration = Configuration::Get();
+  wxDC& dc = configuration->GetDC();
+  dc.SetTextForeground(configuration->GetColor(m_textStyle));
 }
 
 #ifndef WX_USE_UNICODE
@@ -2460,8 +2460,8 @@ int EditorCell::XYToPosition(int x, int y)
 
 wxPoint EditorCell::PositionToPoint(int fontsize, int pos)
 {
-  Configuration *parser = Configuration::Get();
-  wxDC& dc = parser->GetDC();
+  Configuration *configuration = Configuration::Get();
+  wxDC& dc = configuration->GetDC();
   SetFont(fontsize);
   
   int x = m_currentPoint.x, y = m_currentPoint.y;
@@ -3346,10 +3346,10 @@ void EditorCell::StyleText()
     
     // Insert new soft line breaks where we hit the right border of the worksheet, if
     // this has been requested in the config dialogue
-    Configuration *parser = Configuration::Get();
-    if(parser->GetAutoWrap())
+    Configuration *configuration = Configuration::Get();
+    if(configuration->GetAutoWrap())
     {
-      SetFont(parser->GetDefaultFontSize());
+      SetFont(configuration->GetDefaultFontSize());
       wxString line;
       size_t lastSpace = 0;
       wxString::const_iterator lastSpaceIt;
@@ -3376,12 +3376,12 @@ void EditorCell::StyleText()
             {
               // Does the line extend too much to the right to fit on the screen /
               // to be easy to read?
-              parser->GetDC().GetTextExtent(m_text.SubString(lastLineStart,i), &width, &height);
+              configuration->GetDC().GetTextExtent(m_text.SubString(lastLineStart,i), &width, &height);
               if((!indentPixels.empty())&&(!newLine))
                 indentation = indentPixels.back();
               else
                 indentation = 0;
-              if(width + m_currentPoint.x + indentation >= parser->GetLineWidth())
+              if(width + m_currentPoint.x + indentation >= configuration->GetLineWidth())
               {
                 // We need a line break in front of the last word
                 m_text[lastSpace] = wxT('\r');
@@ -3416,12 +3416,12 @@ void EditorCell::StyleText()
             {
               // Does the line extend too much to the right to fit on the screen /
               // to be easy to read?
-              parser->GetDC().GetTextExtent(m_text.SubString(lastLineStart,i), &width, &height);
+              configuration->GetDC().GetTextExtent(m_text.SubString(lastLineStart,i), &width, &height);
               if((!indentPixels.empty())&&(!newLine))
                 indentation = indentPixels.back();
               else
                 indentation = 0;
-              if(width + m_currentPoint.x + indentation >= parser->GetLineWidth())
+              if(width + m_currentPoint.x + indentation >= configuration->GetLineWidth())
               {
                 // We need a line break. Does the current line contain a space we can
                 // break the line at?
@@ -3506,8 +3506,8 @@ void EditorCell::StyleText()
             // Remember what a line that is part of this indentation level has to
             // begin with
             int width,height;
-            Configuration *parser = Configuration::Get();
-            wxDC& dc = parser->GetDC();
+            Configuration *configuration = Configuration::Get();
+            wxDC& dc = configuration->GetDC();
             
             indentChar = line.Left(line.Length()-line_trimmed.Length() + 2);
             

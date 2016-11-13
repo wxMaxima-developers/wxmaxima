@@ -97,8 +97,8 @@ void DiffCell::SetBase(MathCell *base)
 
 void DiffCell::RecalculateWidths(int fontsize)
 {
-  Configuration *parser = Configuration::Get();
-  double scale = parser->GetScale();
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
   m_baseCell->RecalculateWidthsList(fontsize);
   m_diffCell->RecalculateWidthsList(fontsize);
   m_width = m_baseCell->GetFullWidth(scale) + m_diffCell->GetFullWidth(scale) + 2*MC_CELL_SKIP;
@@ -123,8 +123,8 @@ void DiffCell::Draw(wxPoint point, int fontsize)
     df.y = point.y;
     m_diffCell->DrawList(df, fontsize);
 
-    Configuration *parser = Configuration::Get();
-    bs.x = point.x + m_diffCell->GetFullWidth(parser->GetScale()) + 2*MC_CELL_SKIP;
+    Configuration *configuration = Configuration::Get();
+    bs.x = point.x + m_diffCell->GetFullWidth(configuration->GetScale()) + 2*MC_CELL_SKIP;
     bs.y = point.y;
     m_baseCell->DrawList(bs, fontsize);
   }

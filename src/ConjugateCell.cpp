@@ -93,8 +93,8 @@ void ConjugateCell::SetInner(MathCell *inner)
 
 void ConjugateCell::RecalculateWidths(int fontsize)
 {
-  Configuration *parser = Configuration::Get();
-  double scale = parser->GetScale();
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
   m_innerCell->RecalculateWidthsList(fontsize);
   m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(8, scale);
   m_open->RecalculateWidthsList(fontsize);
@@ -104,8 +104,8 @@ void ConjugateCell::RecalculateWidths(int fontsize)
 
 void ConjugateCell::RecalculateHeight(int fontsize)
 {
-  Configuration *parser = Configuration::Get();
-  double scale = parser->GetScale();
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
   m_innerCell->RecalculateHeightList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(4, scale);
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(2, scale);
@@ -115,11 +115,11 @@ void ConjugateCell::RecalculateHeight(int fontsize)
 
 void ConjugateCell::Draw(wxPoint point, int fontsize)
 {
-  Configuration *parser = Configuration::Get();
+  Configuration *configuration = Configuration::Get();
   MathCell::Draw(point, fontsize);
 
-  double scale = parser->GetScale();
-  wxDC& dc = parser->GetDC();
+  double scale = configuration->GetScale();
+  wxDC& dc = configuration->GetDC();
   if (DrawThisCell(point) && InUpdateRegion())
   {
     SetPen();

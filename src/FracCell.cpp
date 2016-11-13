@@ -156,8 +156,8 @@ void FracCell::SetDenom(MathCell *denom)
 
 void FracCell::RecalculateWidths(int fontsize)
 {
-  Configuration *parser = Configuration::Get();
-  double scale = parser->GetScale();
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
   if (m_isBroken || m_exponent)
   {
     m_num->RecalculateWidthsList(fontsize);
@@ -170,19 +170,19 @@ void FracCell::RecalculateWidths(int fontsize)
   }
   if (m_exponent && !m_isBroken)
   {
-    wxDC& dc = parser->GetDC();
+    wxDC& dc = configuration->GetDC();
 
     int height;
     int fontsize1 = (int) ((double)(fontsize) * scale + 0.5);
     dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
     		wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-    		parser->GetFontName(TS_VARIABLE)));
+    		configuration->GetFontName(TS_VARIABLE)));
     dc.GetTextExtent(wxT("/"), &m_expDivideWidth, &height);
     m_width = m_num->GetFullWidth(scale) + m_denom->GetFullWidth(scale) + m_expDivideWidth;
   }
   else
   {
-    wxDC& dc = parser->GetDC();
+    wxDC& dc = configuration->GetDC();
 
     // We want half a space's widh of blank space to separate us from the
     // next minus.
@@ -190,7 +190,7 @@ void FracCell::RecalculateWidths(int fontsize)
     int fontsize1 = (int) ((double)(fontsize) * scale + 0.5);
     dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                       wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                      parser->GetFontName(TS_VARIABLE)));
+                      configuration->GetFontName(TS_VARIABLE)));
     dc.GetTextExtent(wxT("X"), &m_horizontalGap, &dummy);
     m_horizontalGap /= 2;
 
@@ -206,8 +206,8 @@ void FracCell::RecalculateWidths(int fontsize)
 
 void FracCell::RecalculateHeight(int fontsize)
 {
-  Configuration *parser = Configuration::Get();
-  double scale = parser->GetScale();
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
   if (m_isBroken || m_exponent)
   {
     m_num->RecalculateHeightList(fontsize);
@@ -241,17 +241,17 @@ void FracCell::RecalculateHeight(int fontsize)
 void FracCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
-  Configuration *parser = Configuration::Get();
+  Configuration *configuration = Configuration::Get();
 
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    wxDC& dc = parser->GetDC();
-    double scale = parser->GetScale();
+    wxDC& dc = configuration->GetDC();
+    double scale = configuration->GetScale();
     wxPoint num, denom;
 
     if (m_exponent && !m_isBroken)
     {
-      double scale = parser->GetScale();
+      double scale = configuration->GetScale();
       
       num.x = point.x;
       num.y = point.y;
@@ -264,7 +264,7 @@ void FracCell::Draw(wxPoint point, int fontsize)
       int fontsize1 = (int) ((double)(fontsize) * scale + 0.5);
       dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
     		  wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-    		  parser->GetFontName(TS_VARIABLE)));
+    		  configuration->GetFontName(TS_VARIABLE)));
       dc.DrawText(wxT("/"),
                   point.x + m_num->GetFullWidth(scale),
                   point.y - m_num->GetMaxCenter() + SCALE_PX(MC_TEXT_PADDING, scale));

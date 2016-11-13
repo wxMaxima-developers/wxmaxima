@@ -95,22 +95,22 @@ void SubCell::SetBase(MathCell *base)
 
 void SubCell::RecalculateWidths(int fontsize)
 {
-  Configuration *parser = Configuration::Get();
-  double scale = parser->GetScale();
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
   m_baseCell->RecalculateWidthsList(fontsize);
   m_indexCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUB_DEC));
   m_width = m_baseCell->GetFullWidth(scale) + m_indexCell->GetFullWidth(scale) -
-            SCALE_PX(2, parser->GetScale());
+            SCALE_PX(2, configuration->GetScale());
   ResetData();
 }
 
 void SubCell::RecalculateHeight(int fontsize)
 {
-  Configuration *parser = Configuration::Get();
+  Configuration *configuration = Configuration::Get();
   m_baseCell->RecalculateHeightList(fontsize);
   m_indexCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUB_DEC));
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
-             SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, parser->GetScale());
+             SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, configuration->GetScale());
   m_center = m_baseCell->GetCenter();
 }
 
@@ -120,8 +120,8 @@ void SubCell::Draw(wxPoint point, int fontsize)
 
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    Configuration *parser = Configuration::Get();
-    double scale = parser->GetScale();
+    Configuration *configuration = Configuration::Get();
+    double scale = configuration->GetScale();
     wxPoint bs, in;
 
     bs.x = point.x;

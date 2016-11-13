@@ -32,8 +32,8 @@
 Configuration::Configuration(wxDC& dc) : m_dc(&dc)
 {
   // This is the currently active instance of this class
-  m_last = m_cellParser;
-  m_cellParser = this;
+  m_last = m_activeConfiguration;
+  m_activeConfiguration = this;
 
   m_scale = 1.0;
   m_zoomFactor = 1.0; // affects returned fontsizes
@@ -98,7 +98,7 @@ void Configuration::ReadConfig()
 
 Configuration::~Configuration()
 {
-  m_cellParser = m_last;
+  m_activeConfiguration = m_last;
 }
 
 wxString Configuration::GetFontName(int type)
@@ -430,4 +430,4 @@ wxFontEncoding Configuration::GetGreekFontEncoding()
 */
 
 // Create all static variables
-Configuration *Configuration::m_cellParser = NULL;
+Configuration *Configuration::m_activeConfiguration = NULL;

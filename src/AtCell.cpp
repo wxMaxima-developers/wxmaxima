@@ -94,8 +94,8 @@ void AtCell::SetBase(MathCell *base)
 
 void AtCell::RecalculateWidths(int fontsize)
 {
-  Configuration *parser = Configuration::Get();
-  double scale = parser->GetScale();
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
   m_baseCell->RecalculateWidthsList(fontsize);
   m_indexCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 4));
   m_width = m_baseCell->GetFullWidth(scale) + m_indexCell->GetFullWidth(scale) +
@@ -105,8 +105,8 @@ void AtCell::RecalculateWidths(int fontsize)
 
 void AtCell::RecalculateHeight(int fontsize)
 {
-  Configuration *parser = Configuration::Get();
-  double scale = parser->GetScale();
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
   m_baseCell->RecalculateHeightList(fontsize);
   m_indexCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 3));
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
@@ -118,9 +118,9 @@ void AtCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
 
-  Configuration *parser = Configuration::Get();
-  double scale = parser->GetScale();
-  wxDC& dc = parser->GetDC();
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
+  wxDC& dc = configuration->GetDC();
   if (DrawThisCell(point) && InUpdateRegion())
   {
     wxPoint bs, in;

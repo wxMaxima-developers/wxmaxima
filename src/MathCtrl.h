@@ -89,7 +89,7 @@ private:
   */
   wxClientDC *m_dc;
   //! The central settings storage
-  Configuration *m_parser;
+  Configuration *m_configuration;
   //! Where do we need to start the repainting of the worksheet?
   GroupCell *m_redrawStart;
   //! Do we need to redraw the worksheet?
@@ -601,7 +601,7 @@ public:
   ///@}
 
   //! Re-read the configuration
-  void UpdateConfig(){m_parser->ReadConfig();}
+  void UpdateConfig(){m_configuration->ReadConfig();}
   //! The name of the currently-opened file
   wxString m_currentFile;
 

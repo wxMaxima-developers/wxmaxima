@@ -159,7 +159,7 @@ public:
   const bool GetInsertAns() { return m_insertAns; }
 
   //! Returns a pointer to the instance of Configuration that exists
-  static Configuration *Get() {return m_cellParser;}
+  static Configuration *Get() {return m_activeConfiguration;}
 private:
   //! Automatically wrap long lines?
   bool m_autoWrap;
@@ -189,7 +189,7 @@ private:
   wxFontEncoding m_fontEncoding;
   style m_styles[STYLE_NUM];
   bool m_printer;
-  static Configuration *m_cellParser;
+  static Configuration *m_activeConfiguration;
 };
 
 #endif // CONFIGURATION_H

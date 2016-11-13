@@ -115,21 +115,21 @@ void SubSupCell::SetExponent(MathCell *exp)
 
 void SubSupCell::RecalculateWidths(int fontsize)
 {
-  Configuration *parser = Configuration::Get();
-  double scale = parser->GetScale();
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
   m_baseCell->RecalculateWidthsList(fontsize);
   m_indexCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
   m_exptCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
   m_width = m_baseCell->GetFullWidth(scale) +
             MAX(m_indexCell->GetFullWidth(scale), m_exptCell->GetFullWidth(scale)) -
-            SCALE_PX(2, parser->GetScale());
+            SCALE_PX(2, configuration->GetScale());
   ResetData();
 }
 
 void SubSupCell::RecalculateHeight(int fontsize)
 {
-  Configuration *parser = Configuration::Get();  
-  double scale = parser->GetScale();
+  Configuration *configuration = Configuration::Get();  
+  double scale = configuration->GetScale();
 
   m_baseCell->RecalculateHeightList(fontsize);
   m_indexCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
@@ -137,7 +137,7 @@ void SubSupCell::RecalculateHeight(int fontsize)
 
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() +
              m_exptCell->GetMaxHeight() -
-             2*SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, parser->GetScale());
+             2*SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, configuration->GetScale());
 
   m_center = m_exptCell->GetMaxHeight() + m_baseCell->GetMaxCenter() -
              SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
@@ -145,12 +145,12 @@ void SubSupCell::RecalculateHeight(int fontsize)
 
 void SubSupCell::Draw(wxPoint point, int fontsize)
 {
-  Configuration *parser = Configuration::Get();
+  Configuration *configuration = Configuration::Get();
   MathCell::Draw(point, fontsize);
 
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    double scale = parser->GetScale();
+    double scale = configuration->GetScale();
     wxPoint bs, in;
 
     bs.x = point.x;

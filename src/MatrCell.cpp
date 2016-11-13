@@ -87,8 +87,8 @@ void MatrCell::Destroy()
 
 void MatrCell::RecalculateWidths(int fontsize)
 {
-  Configuration *parser = Configuration::Get();
-  double scale = parser->GetScale();
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
   for (int i = 0; i < m_matWidth*m_matHeight; i++)
   {
     m_cells[i]->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 2));
@@ -114,8 +114,8 @@ void MatrCell::RecalculateWidths(int fontsize)
 
 void MatrCell::RecalculateHeight(int fontsize)
 {
-  Configuration *parser = Configuration::Get();
-  double scale = parser->GetScale();
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
 
   for (int i = 0; i < m_matWidth*m_matHeight; i++)
   {
@@ -149,9 +149,9 @@ void MatrCell::Draw(wxPoint point, int fontsize)
 
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    Configuration *parser = Configuration::Get();
-    wxDC& dc = parser->GetDC();
-    double scale = parser->GetScale();
+    Configuration *configuration = Configuration::Get();
+    wxDC& dc = configuration->GetDC();
+    double scale = configuration->GetScale();
     wxPoint mp;
     mp.x = point.x + SCALE_PX(5, scale);
     mp.y = point.y - m_center;

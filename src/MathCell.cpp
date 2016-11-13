@@ -291,12 +291,12 @@ void MathCell::Draw(wxPoint point, int fontsize)
 
 void MathCell::DrawList(wxPoint point, int fontsize)
 {
-  Configuration *parser = Configuration::Get();
+  Configuration *configuration = Configuration::Get();
   MathCell *tmp=this;
   while(tmp!=NULL)
   {
     tmp->Draw(point,fontsize);
-    double scale = parser->GetScale();
+    double scale = configuration->GetScale();
     point.x += tmp->m_width + SCALE_PX(MC_CELL_SKIP, scale);
     tmp=tmp->m_nextToDraw;
   }
@@ -364,9 +364,9 @@ void MathCell::RecalculateWidths(int fontsize)
  */
 bool MathCell::DrawThisCell(wxPoint point)
 {
-  Configuration *parser = Configuration::Get();
-  int top = parser->GetTop();
-  int bottom = parser->GetBottom();
+  Configuration *configuration = Configuration::Get();
+  int top = configuration->GetTop();
+  int bottom = configuration->GetBottom();
   if (top == -1 || bottom == -1)
     return true;
   if (point.y - GetMaxCenter() > bottom || point.y + GetMaxDrop() < top)
@@ -967,19 +967,19 @@ void MathCell::DestroyList()
  */
 void MathCell::SetPen()
 {
-  Configuration *parser = Configuration::Get();
-  wxDC& dc = parser->GetDC();
+  Configuration *configuration = Configuration::Get();
+  wxDC& dc = configuration->GetDC();
   if (m_highlight)
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_HIGHLIGHT),
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_HIGHLIGHT),
                 1, wxPENSTYLE_SOLID)));
   else if (m_type == MC_TYPE_PROMPT)
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_OTHER_PROMPT),
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_OTHER_PROMPT),
                 1, wxPENSTYLE_SOLID)));
   else if (m_type == MC_TYPE_INPUT)
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_INPUT),
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_INPUT),
                 1, wxPENSTYLE_SOLID)));
   else
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_DEFAULT),
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_DEFAULT),
                     1, wxPENSTYLE_SOLID)));
 }
 
@@ -988,10 +988,10 @@ void MathCell::SetPen()
  */
 void MathCell::UnsetPen()
 {
-  Configuration *parser = Configuration::Get();
-  wxDC& dc = parser->GetDC();
+  Configuration *configuration = Configuration::Get();
+  wxDC& dc = configuration->GetDC();
   if (m_type == MC_TYPE_PROMPT || m_type == MC_TYPE_INPUT || m_highlight)
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(parser->GetColor(TS_DEFAULT),
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_DEFAULT),
                 1, wxPENSTYLE_SOLID)));
 }
 
@@ -1008,30 +1008,30 @@ void MathCell::CopyData(MathCell *s, MathCell *t)
 
 void MathCell::SetForeground()
 {
-  Configuration *parser = Configuration::Get();
+  Configuration *configuration = Configuration::Get();
   wxColour color;
-  wxDC& dc = parser->GetDC();
+  wxDC& dc = configuration->GetDC();
   if (m_highlight)
   {
-    color = parser->GetColor(TS_HIGHLIGHT);
+    color = configuration->GetColor(TS_HIGHLIGHT);
   }
   else {
     switch (m_type)
     {
     case MC_TYPE_PROMPT:
-      color = parser->GetColor(TS_OTHER_PROMPT);
+      color = configuration->GetColor(TS_OTHER_PROMPT);
       break;
     case MC_TYPE_MAIN_PROMPT:
-      color = parser->GetColor(TS_MAIN_PROMPT);
+      color = configuration->GetColor(TS_MAIN_PROMPT);
       break;
     case MC_TYPE_ERROR:
       color = wxColour(wxT("red"));
       break;
     case MC_TYPE_LABEL:
-      color = parser->GetColor(TS_LABEL);
+      color = configuration->GetColor(TS_LABEL);
       break;
     default:
-      color = parser->GetColor(m_textStyle);
+      color = configuration->GetColor(m_textStyle);
       break;
     }
   }

@@ -71,8 +71,8 @@ wxScrolledCanvas(
   )
 {
   m_dc = new wxClientDC(this);
-  m_parser = new Configuration(*m_dc);
-  m_parser->ReadConfig();
+  m_configuration = new Configuration(*m_dc);
+  m_configuration->ReadConfig();
   m_cellSearchStartedIn = NULL;
   m_indexSearchStartedAt = -1;
   m_redrawStart = NULL;
@@ -194,7 +194,7 @@ void MathCtrl::RequestRedraw(GroupCell *start)
 MathCtrl::~MathCtrl() {
   if(HasCapture())
     ReleaseMouse();
-  delete m_parser;
+  delete m_configuration;
   delete m_dc;
   if(m_mainToolBar != NULL)
     delete m_mainToolBar;
@@ -262,10 +262,10 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
   dcm.SetBackgroundMode(wxTRANSPARENT);
   dcm.SetLogicalFunction(wxCOPY);
 
-  m_parser->SetContext(dcm);
-  m_parser->SetBounds(top, bottom);
-  m_parser->SetZoomFactor(m_zoomFactor);
-  int fontsize = m_parser->GetDefaultFontSize(); // apply zoomfactor to defaultfontsize
+  m_configuration->SetContext(dcm);
+  m_configuration->SetBounds(top, bottom);
+  m_configuration->SetZoomFactor(m_zoomFactor);
+  int fontsize = m_configuration->GetDefaultFontSize(); // apply zoomfactor to defaultfontsize
 
   // Draw content
   if (m_tree != NULL)
@@ -280,10 +280,10 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
 #if defined(__WXMAC__)
       dcm.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
 #else
-      dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_parser->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
+      dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
 // window linux, set a pen
 #endif
-      dcm.SetBrush( *(wxTheBrushList->FindOrCreateBrush(m_parser->GetColor(TS_SELECTION)))); //highlight c.
+      dcm.SetBrush( *(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION)))); //highlight c.
 
       // Draw the marker that tells us which groups are selected -
       // if groups are selected, that is.
@@ -325,12 +325,12 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
     GroupCell* tmp = m_tree;
     drop = tmp->GetMaxDrop();
 
-    dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_parser->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
-    dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_parser->GetColor(TS_DEFAULT))));
+    dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
+    dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_DEFAULT))));
 
     bool changeAsterisk = false;
     config->Read(wxT("changeAsterisk"), &changeAsterisk);
-    m_parser->SetChangeAsterisk(changeAsterisk);
+    m_configuration->SetChangeAsterisk(changeAsterisk);
 
     while (tmp != NULL)
     {
@@ -370,8 +370,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
   if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hCaretBlinkVisible) && (m_hasFocus) && (m_hCaretPosition != NULL))
   {
     // TODO is there more efficient way to do this?
-    dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_parser->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
-    dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_parser->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
+    dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
+    dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 
     wxRect currentGCRect = m_hCaretPosition->GetRect();
     int caretY = ((int) Configuration::Get()->GetGroupSkip()) / 2 + currentGCRect.GetBottom() + 1;
@@ -389,8 +389,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
     }
     else
     {
-      dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_parser->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
-      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_parser->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
+      dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
+      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
     }     
     
     wxRect cursor = wxRect(xstart + MC_GROUP_LEFT_INDENT,
@@ -411,7 +411,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
       if (m_evaluationQueue->IsInQueue(dynamic_cast<GroupCell*>(tmp))) {
         if (m_evaluationQueue->GetCell() == tmp)
           {
-            dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_parser->GetColor(TS_CELL_BRACKET), 2, wxPENSTYLE_SOLID)));
+            dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CELL_BRACKET), 2, wxPENSTYLE_SOLID)));
             rect = wxRect( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
             if(MathCell::InUpdateRegion(rect))
               dcm.DrawRectangle(rect);
@@ -419,7 +419,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
           }
         else
         {
-          dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_parser->GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID)));
+          dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID)));
           rect = wxRect(3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
           if(MathCell::InUpdateRegion(rect))
             dcm.DrawRectangle(rect);
@@ -435,7 +435,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
   dc.Blit(0, rect.GetTop(), sz.x, rect.GetBottom() - rect.GetTop() + 1, &dcm,
           0, rect.GetTop());
 
-  m_parser->SetContext(*m_dc);
+  m_configuration->SetContext(*m_dc);
 
 }
 
@@ -597,8 +597,8 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
     
     tmp->AppendOutput(newCell);
     
-    m_parser->SetZoomFactor(m_zoomFactor);
-    m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
+    m_configuration->SetZoomFactor(m_zoomFactor);
+    m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
 
     tmp->RecalculateAppended();
     Recalculate(tmp);
@@ -669,9 +669,9 @@ void MathCtrl::Recalculate(GroupCell *start,bool force)
   if(m_tree)
     m_tree->SetCanvasSize(GetClientSize());
 
-  m_parser->SetZoomFactor(m_zoomFactor);
-  m_parser->SetForceUpdate(force);
-  m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
+  m_configuration->SetZoomFactor(m_zoomFactor);
+  m_configuration->SetForceUpdate(force);
+  m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
 
   while (tmp != NULL)
   {
@@ -1295,7 +1295,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
     // Set a fake starting point for the selection that is inside the cell the selection started in.
     int startingChar = m_activeCell->GetCaretPosition();
     if(m_activeCell->SelectionActive()) startingChar = m_activeCell->GetSelectionStart();
-    m_down = wxPoint(m_activeCell->PositionToPoint(m_parser->GetDefaultFontSize(),startingChar));
+    m_down = wxPoint(m_activeCell->PositionToPoint(m_configuration->GetDefaultFontSize(),startingChar));
     m_activeCell->SelectNone();
     // Handle the mouse pointer position
     OnMouseMotion(event);
@@ -2927,7 +2927,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
   
   m_blinkDisplayCaret = true;
 
-  m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
+  m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
 
   if (m_activeCell->IsDirty())
   {
@@ -2935,10 +2935,10 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
 
     
     int height = m_activeCell->GetHeight();
-    //   int fontsize = m_parser->GetDefaultFontSize();
-    m_parser->SetZoomFactor(m_zoomFactor);
-    m_parser->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
-    int fontsize = m_parser->GetDefaultFontSize();
+    //   int fontsize = m_configuration->GetDefaultFontSize();
+    m_configuration->SetZoomFactor(m_zoomFactor);
+    m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
+    int fontsize = m_configuration->GetDefaultFontSize();
     
     m_activeCell->ResetData();
     m_activeCell->RecalculateWidths(MAX(fontsize, MC_MIN_SIZE));
@@ -3852,11 +3852,11 @@ void MathCtrl::AddLineToFile(wxTextFile& output, wxString s, bool unicode) {
 }
 
 //Simple iterator over a Maxima input string, skipping comments and strings
-struct SimpleMathParserIterator{
+struct SimpleMathConfigurationIterator{
   const wxString &input; //reference to input string (must be a reference, so it can be modified)
   unsigned int pos;
 
-  SimpleMathParserIterator(const wxString& ainput): input(ainput), pos(0){
+  SimpleMathConfigurationIterator(const wxString& ainput): input(ainput), pos(0){
     if (isValid() && (input[0] == '"' || (input[0] == '/' && input.length() > 1 && input[1] == '*') )) {
       //skip strings or comments at string start
       pos--;
@@ -3910,7 +3910,7 @@ void MathCtrl::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std
       if (prompt && cell && input.Len() > 0) {
         int outputExpressions = 0;
         int initialHiddenExpressions = 0;
-        for (SimpleMathParserIterator it = input; it.isValid(); ++it) {
+        for (SimpleMathConfigurationIterator it = input; it.isValid(); ++it) {
           switch (*it) {
           case '$': if (initialHiddenExpressions == outputExpressions) initialHiddenExpressions++; //fallthrough
           case ';': outputExpressions++;
@@ -5103,7 +5103,7 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
         wxString input = txt->ToString();
 
         if (fixReorderedIndices)
-          for (SimpleMathParserIterator it = input; it.pos + 1 < it.input.length(); ++it)
+          for (SimpleMathConfigurationIterator it = input; it.pos + 1 < it.input.length(); ++it)
             if (*it == '%' &&
                 (input[it.pos+1] == 'i' || input[it.pos+1] == 'o') &&
                 (it.pos == 0 || input[it.pos-1] != '%')){
@@ -5800,7 +5800,7 @@ void MathCtrl::ScrollToCell(MathCell *cell)
 
     if(cellY < 1)
     {      
-      cellY = tmp->GetParent()->PositionToPoint(m_parser->GetDefaultFontSize()).y;
+      cellY = tmp->GetParent()->PositionToPoint(m_configuration->GetDefaultFontSize()).y;
     }
   }
 
@@ -6959,11 +6959,11 @@ bool MathCtrl::CaretVisibleIs()
   {
     if(m_activeCell)
     {
-      wxPoint point = GetActiveCell()->PositionToPoint(m_parser->GetDefaultFontSize());
+      wxPoint point = GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize());
       if(point.y<1)
       {
         RecalculateForce();
-        point = GetActiveCell()->PositionToPoint(m_parser->GetDefaultFontSize());
+        point = GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize());
       }
       return PointVisibleIs(point);
     }
@@ -6983,13 +6983,13 @@ void MathCtrl::ScrollToCaret()
   {
     if(m_activeCell)
     {
-      m_parser->SetZoomFactor(m_zoomFactor);
+      m_configuration->SetZoomFactor(m_zoomFactor);
 
-      wxPoint point = GetActiveCell()->PositionToPoint(m_parser->GetDefaultFontSize());
+      wxPoint point = GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize());
       if(point.y==-1)
       {
         RecalculateForce();
-        point = GetActiveCell()->PositionToPoint(m_parser->GetDefaultFontSize());
+        point = GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize());
       }
       ShowPoint(point);
     }   
@@ -7167,7 +7167,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
   else {
 
     // Find the position for the popup menu
-    wxPoint pos = editor->PositionToPoint(m_parser->GetDefaultFontSize());
+    wxPoint pos = editor->PositionToPoint(m_configuration->GetDefaultFontSize());
     CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
 
     #ifdef __WXGTK__
@@ -7384,7 +7384,7 @@ wxString MathCtrl::RTFStart()
   document += wxT("{\\colortbl;\n");
   for(int i = 1;i<STYLE_NUM;i++)
   {
-    wxColor color = wxColor(m_parser->GetColor(i));
+    wxColor color = wxColor(m_configuration->GetColor(i));
     if(color.IsOk())
       document += wxString::Format(wxT("\\red%i\\green%i\\blue%i;\n"),color.Red(),color.Green(),color.Blue());
     else

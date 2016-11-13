@@ -72,8 +72,8 @@ void Bitmap::Layout(long int maxSize)
     wxMemoryDC dc;
     dc.SelectObject(m_bmp);
     dc.SetUserScale(m_scale,m_scale);
-    Configuration parser(dc);
-    parser.SetClientWidth(BM_FULL_WIDTH);
+    Configuration configuration(dc);
+    configuration.SetClientWidth(BM_FULL_WIDTH);
 
     while (tmp != NULL)
     {
@@ -119,7 +119,7 @@ void Bitmap::RecalculateHeight()
   wxMemoryDC dc;
   dc.SelectObject(m_bmp);
   dc.SetUserScale(m_scale,m_scale);
-  Configuration parser(dc);
+  Configuration configuration(dc);
 
   while (tmp != NULL)
   {
@@ -140,8 +140,8 @@ void Bitmap::RecalculateWidths()
   wxMemoryDC dc;
   dc.SelectObject(m_bmp);
   dc.SetUserScale(m_scale,m_scale);
-  Configuration parser(dc);
-  parser.SetClientWidth(BM_FULL_WIDTH);
+  Configuration configuration(dc);
+  configuration.SetClientWidth(BM_FULL_WIDTH);
 
   while (tmp != NULL)
   {
@@ -235,7 +235,7 @@ void Bitmap::Draw()
     int mfontsize = fontsize;
     wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
 
-    Configuration parser(dc);
+    Configuration configuration(dc);
 
     while (tmp != NULL)
     {
@@ -350,7 +350,7 @@ void Bitmap::BreakUpCells()
   wxMemoryDC dc;
   dc.SelectObject(m_bmp);
   dc.SetUserScale(m_scale,m_scale);
-  Configuration parser(dc);
+  Configuration configuration(dc);
 
   while (tmp != NULL)
   {

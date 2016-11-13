@@ -298,14 +298,31 @@ public:
   virtual wxString GetDiffPart();
   /*! Recalculate the height of the cell and the difference between top and center
 
-    Should set: m_height, m_center.
+    Must set: m_height, m_center.
+
+    \param fontsize In exponents, super- and subscripts the font size is reduced.
+    This cell therefore needs to know which font size it has to be drawn at.
   */
   virtual void RecalculateHeight(int fontsize) { };
-  //! Recalculate the height of this list of cells 
+  /*! Recalculate the height of this list of cells 
+
+    \param fontsize In exponents, super- and subscripts the font size is reduced.
+    This cell therefore needs to know which font size it has to be drawn at.
+   */
   void RecalculateHeightList(int fontsize);
-  //! Marks all widths of this cell as to be recalculated on query.
+  /*! Recalculate the width of this cell.
+
+    Must set: m_width.
+
+    \param fontsize In exponents, super- and subscripts the font size is reduced.
+    This cell therefore needs to know which font size it has to be drawn at.
+   */
   virtual void RecalculateWidths(int fontsize);
-  //! Marks all widths of this list as to be recalculated on query.
+  /*! Recalculates all widths of this list of cells.
+
+    \param fontsize In exponents, super- and subscripts the font size is reduced.
+    This cell therefore needs to know which font size it has to be drawn at.
+   */
   void RecalculateWidthsList(int fontsize);
   /*! Recalculate both width and height of this list of cells.
 
@@ -314,8 +331,9 @@ public:
   void RecalculateList(int fontsize);
   //! Mark all cached size information as "to be calculated".
   void ResetData();
-  //! Mark the cached height informations as "to be calculated".
+  //! Mark the cached height information as "to be calculated".
   void ResetSize() { m_width = m_height = m_center = -1; }
+  //! Mark the cached height information of the whole list of cells as "to be calculated".
   void ResetSizeList();
 
   void SetSkip(bool skip) { m_bigSkip = skip; }

@@ -155,8 +155,8 @@ void SlideShow::RecalculateWidths(int fontsize)
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
   //    we might have intermittent calculation issues otherwise
-  Configuration *parser = Configuration::Get();
-  double scale = parser->GetScale();
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
   m_images[m_displayed]->ViewportSize(m_canvasSize.x,m_canvasSize.y,scale);
   
   m_width  = (scale * m_images[m_displayed]->m_width)  + 2 * m_imageBorderWidth;
@@ -180,13 +180,13 @@ void SlideShow::Draw(wxPoint point, int fontsize)
   // TODO: Enable this when unselecting text updates the right region.
   //if (!InUpdateRegion()) return;
   
-  Configuration *parser = Configuration::Get();
-  wxDC& dc = parser->GetDC();
+  Configuration *configuration = Configuration::Get();
+  wxDC& dc = configuration->GetDC();
 
   if (DrawThisCell(point) && (m_images[m_displayed] != NULL))
   {
     wxMemoryDC bitmapDC;
-    double scale = parser->GetScale();
+    double scale = configuration->GetScale();
     m_images[m_displayed]->ViewportSize(m_canvasSize.x,m_canvasSize.y,scale);
   
     m_height = (m_images[m_displayed]->m_height) + 2 * m_imageBorderWidth;
@@ -195,7 +195,7 @@ void SlideShow::Draw(wxPoint point, int fontsize)
 
     // Slide show cells have a red border except if they are selected
     if(m_drawBoundingBox)
-      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser->GetColor(TS_SELECTION))));
+      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))));
     else
       dc.SetPen(*wxRED_PEN);
 

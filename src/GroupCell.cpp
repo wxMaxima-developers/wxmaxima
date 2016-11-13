@@ -375,8 +375,8 @@ void GroupCell::Recalculate()
 
 void GroupCell::RecalculateWidths(int fontsize)
 {
-  Configuration *parser = Configuration::Get();
-  if (m_width == -1 || m_height == -1 || parser->ForceUpdate())
+  Configuration *configuration = Configuration::Get();
+  if (m_width == -1 || m_height == -1 || configuration->ForceUpdate())
   {
     // special case of 'line cell'
     if (m_groupType == GC_TYPE_PAGEBREAK) {
@@ -388,7 +388,7 @@ void GroupCell::RecalculateWidths(int fontsize)
 
     UnBreakUpCells();
 
-    double scale = parser->GetScale();
+    double scale = configuration->GetScale();
     m_input->RecalculateWidthsList(fontsize);
 
     // recalculate the position of input in ReEvaluateSelection!
@@ -410,16 +410,16 @@ void GroupCell::RecalculateWidths(int fontsize)
       m_width = m_input->GetFullWidth(scale);
     }
 
-    BreakUpCells(m_fontSize, parser->GetClientWidth());
-    BreakLines(parser->GetClientWidth());
+    BreakUpCells(m_fontSize, configuration->GetClientWidth());
+    BreakLines(configuration->GetClientWidth());
   }
   ResetData();
 }
 
 void GroupCell::RecalculateHeight(int fontsize)
 {
-  Configuration *parser = Configuration::Get();
-  if (m_width == -1 || m_height == -1 || parser->ForceUpdate())
+  Configuration *configuration = Configuration::Get();
+  if (m_width == -1 || m_height == -1 || configuration->ForceUpdate())
   {
     // special case
     if (m_groupType == GC_TYPE_PAGEBREAK) {
@@ -431,11 +431,11 @@ void GroupCell::RecalculateHeight(int fontsize)
       return;
     }
 
-    double scale = parser->GetScale();
+    double scale = configuration->GetScale();
     m_input->RecalculateHeightList(fontsize);
     m_center = m_input->GetMaxCenter();
     m_height = m_input->GetMaxHeight();
-    m_indent = parser->GetIndent();
+    m_indent = configuration->GetIndent();
 
     if (m_output != NULL && !m_hide)
     {
@@ -504,14 +504,14 @@ void GroupCell::RecalculateHeight(int fontsize)
 // We assume that appended cells will be in a new line!
 void GroupCell::RecalculateAppended()
 {
-  Configuration *parser = Configuration::Get();
+  Configuration *configuration = Configuration::Get();
   if (m_appendedCells == NULL)
     return;
 
   MathCell *tmp = m_appendedCells;
-  m_fontSize = parser->GetFontSize(TS_TEXT);
-  double scale = parser->GetScale();
-  m_mathFontSize = parser->GetMathFontSize();
+  m_fontSize = configuration->GetFontSize(TS_TEXT);
+  double scale = configuration->GetScale();
+  m_mathFontSize = configuration->GetMathFontSize();
   
   // Recalculate widths of cells
   while (tmp != NULL) {
@@ -520,8 +520,8 @@ void GroupCell::RecalculateAppended()
   }
 
   // Breakup cells and break lines
-  BreakUpCells(m_appendedCells, m_fontSize, parser->GetClientWidth());
-  BreakLines(m_appendedCells, parser->GetClientWidth());
+  BreakUpCells(m_appendedCells, m_fontSize, configuration->GetClientWidth());
+  BreakLines(m_appendedCells, configuration->GetClientWidth());
 
   // Recalculate size of cells
   tmp = m_appendedCells;
@@ -551,9 +551,9 @@ void GroupCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
 
-  Configuration *parser = Configuration::Get();
-  double scale = parser->GetScale();
-  wxDC& dc = parser->GetDC();
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
+  wxDC& dc = configuration->GetDC();
   if (m_width == -1 || m_height == -1) {
     RecalculateWidths(fontsize);
     RecalculateHeight(fontsize);
@@ -565,7 +565,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
     if (m_groupType == GC_TYPE_PAGEBREAK) {
       wxRect rect = GetRect(false);
       int y = rect.GetY();
-      wxPen pen(parser->GetColor(TS_CURSOR), 1, wxPENSTYLE_DOT);
+      wxPen pen(configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_DOT);
       dc.SetPen(pen);      
       dc.DrawLine(0,y,m_canvasSize.GetWidth(),y);
       MathCell::Draw(point, fontsize);
@@ -575,14 +575,14 @@ void GroupCell::Draw(wxPoint point, int fontsize)
     //
     // Paint background if we have a text cell
     //
-    if (m_groupType == GC_TYPE_TEXT && !parser->GetPrinter()) {
+    if (m_groupType == GC_TYPE_TEXT && !configuration->GetPrinter()) {
       wxRect rect = GetRect(false);
       int y = rect.GetY();
 
       if (m_height > 0 && m_width > 0 && y>=0) {
-        wxBrush br(parser->GetColor(TS_TEXT_BACKGROUND));
+        wxBrush br(configuration->GetColor(TS_TEXT_BACKGROUND));
         dc.SetBrush(br);
-        wxPen pen(parser->GetColor(TS_TEXT_BACKGROUND));
+        wxPen pen(configuration->GetColor(TS_TEXT_BACKGROUND));
         dc.SetPen(pen);
         rect.SetWidth(m_canvasSize.GetWidth());
         if(InUpdateRegion(rect))
@@ -594,10 +594,10 @@ void GroupCell::Draw(wxPoint point, int fontsize)
     //
     SetPen();
     wxPoint in(point);
-    parser->Outdated(false);
+    configuration->Outdated(false);
     m_input->DrawList(in, fontsize);
     if (m_groupType == GC_TYPE_CODE && m_input->m_next)
-      parser->Outdated(((EditorCell *)(m_input->m_next))->ContainsChanges());
+      configuration->Outdated(((EditorCell *)(m_input->m_next))->ContainsChanges());
 
     if (m_output != NULL && !m_hide) {
       MathCell *tmp = m_output;
@@ -636,15 +636,15 @@ void GroupCell::Draw(wxPoint point, int fontsize)
       }
     }
 
-    parser->Outdated(false);
+    configuration->Outdated(false);
     MathCell *editable = GetEditable();
     if (editable != NULL && editable->IsActive()) {
-      dc.SetPen( *(wxThePenList->FindOrCreatePen(parser->GetColor(TS_ACTIVE_CELL_BRACKET), 2, wxPENSTYLE_SOLID))); // window linux, set a pen
-      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser->GetColor(TS_ACTIVE_CELL_BRACKET)))); //highlight c.
+      dc.SetPen( *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_ACTIVE_CELL_BRACKET), 2, wxPENSTYLE_SOLID))); // window linux, set a pen
+      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_ACTIVE_CELL_BRACKET)))); //highlight c.
     }
     else {
-      dc.SetPen( *(wxThePenList->FindOrCreatePen(parser->GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID))); // window linux, set a pen
-      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser->GetColor(TS_CELL_BRACKET)))); //highlight c.
+      dc.SetPen( *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID))); // window linux, set a pen
+      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_CELL_BRACKET)))); //highlight c.
     }
 
     if ((!m_hide) && (!m_hiddenTree)) {
@@ -791,7 +791,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
   if (imgCounter == NULL) return wxEmptyString;
   wxString str;
   // Now we might want to introduce some markdown:
-  MarkDownTeX MarkDownParser;
+  MarkDownTeX MarkDown;
 
   switch (m_groupType)
   {
@@ -852,7 +852,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
           str = str.Mid(5, str.Length());
         }
         else {
-          str = MarkDownParser.MarkDown(str);
+          str = MarkDown.MarkDown(str);
         }
         break;
       }

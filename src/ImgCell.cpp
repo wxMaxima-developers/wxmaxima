@@ -122,8 +122,8 @@ void ImgCell::RecalculateWidths(int fontsize)
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
   //    we might have intermittent calculation issues otherwise
-  Configuration *parser = Configuration::Get();
-  double scale = parser->GetScale();
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
   m_image->ViewportSize(m_canvasSize.x,m_canvasSize.y,scale);
   
   m_width  = (scale * m_image->m_width)  + 2 * m_imageBorderWidth;
@@ -147,14 +147,14 @@ void ImgCell::Draw(wxPoint point, int fontsize)
   // TODO: Enable this when unselecting text updates the right region.
   //if (!InUpdateRegion()) return;
 
-  Configuration *parser = Configuration::Get();
-  wxDC& dc = parser->GetDC();
+  Configuration *configuration = Configuration::Get();
+  wxDC& dc = configuration->GetDC();
   if (DrawThisCell(point) && (m_image != NULL))
   {
     wxMemoryDC bitmapDC;
 
     if(m_drawBoundingBox)
-      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(parser->GetColor(TS_SELECTION))));
+      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))));
     else
       SetPen();
     

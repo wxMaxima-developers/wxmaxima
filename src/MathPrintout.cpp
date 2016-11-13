@@ -96,11 +96,11 @@ bool MathPrintout::OnPrintPage(int num)
     config->Read(wxT("fontsize"), &fontsize);
 
     PrintHeader(num, dc, ppiScale);
-    Configuration parser(*dc, ppiScale);
+    Configuration configuration(*dc, ppiScale);
 
-    parser.SetIndent(marginX);
+    configuration.SetIndent(marginX);
     // Inform the output routines that we are printing
-    parser.SetPrinter(true);
+    configuration.SetPrinter(true);
     // Make sure that during print nothing is outside the crop rectangle
     MathCell::ClipToDrawRegion(true);
     
@@ -249,19 +249,19 @@ void MathPrintout::Recalculate()
   double scale = GetPPIScale();
 
   wxDC *dc = GetDC();
-  Configuration parser(*dc, scale);
+  Configuration configuration(*dc, scale);
 
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
   int pageWidth, pageHeight;
   GetPageSizePixels(&pageWidth, &pageHeight);
 
-  parser.SetClientWidth(pageWidth - marginX - marginY
+  configuration.SetClientWidth(pageWidth - marginX - marginY
                         - SCALE_PX(Configuration::Get()->GetBaseIndent(), scale));
   MathCell::SetCanvasSize(wxSize(pageWidth,pageHeight));
 
   marginX += SCALE_PX(Configuration::Get()->GetBaseIndent(), scale);
-  parser.SetIndent(marginX);
+  configuration.SetIndent(marginX);
 
   while (tmp != NULL)
   {
