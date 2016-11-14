@@ -84,7 +84,16 @@ bool Bitmap::Layout(long int maxSize)
 
   int width, height;
   GetMaxPoint(&width, &height);
-  if((maxSize < 0) || (width*height*m_scale*m_scale < maxSize))
+
+  // Too big bitmaps or bitmaps that are too wide or high can crash windows
+  // or the X server.
+  if((maxSize < 0) ||
+     (
+       (width*height*m_scale*m_scale < maxSize) &&
+       (width*m_scale < 20000) &&
+       (height*m_scale < 20000)
+       )
+    )
   {
     // The depth 24 hinders wxWidgets from creating rgb0 bitmaps that some
     // windows applications will interpret as rgba if they appear on

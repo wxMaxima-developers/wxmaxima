@@ -1738,23 +1738,12 @@ bool MathCtrl::Copy(bool astext)
         int bitmapScale = 3;
         wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
         Bitmap bmp_scaled(bitmapScale);
-        bmp_scaled.SetData(tmp2,10000000);
-        
-        bmp = bmp_scaled.GetBitmap();
+        if(bmp_scaled.SetData(tmp2,4000000))
+        {
+          bmp = bmp_scaled.GetBitmap();
+          data->Add(new wxBitmapDataObject(bmp));
+        }
       }
-
-      // If this bitmap was larger than we want to allow it to we try again with a lo-res version
-      if((bmp.GetWidth() <= 1)||(bmp.GetHeight() <= 1))
-      {
-        Bitmap bmp_unscaled;
-        bmp_unscaled.SetData(tmp2,10000000);
-        bmp = bmp_unscaled.GetBitmap();
-      }
-
-      // If the lo-res version was small enough to fit into a reasonable small space we put it
-      // on the clipboard
-      if((bmp.GetWidth() > 1)&&(bmp.GetHeight() > 1))
-        data->Add(new wxBitmapDataObject(bmp));
       MathCell::ClipToDrawRegion(true);
     
       wxTheClipboard->SetData(data);
