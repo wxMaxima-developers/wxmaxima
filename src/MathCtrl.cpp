@@ -4679,6 +4679,12 @@ bool MathCtrl::ExportToHTML(wxString file) {
 
 void MathCtrl::CodeCellVisibilityChanged()
 {
+  // Move the cursor out of the currently active cell if we are about to
+  // hide it
+  if ((GetActiveCell() != NULL) &&(GetActiveCell()->GetType() == MC_TYPE_INPUT))
+  {
+    SetHCaret(dynamic_cast<GroupCell *>(GetActiveCell()->GetParent()));
+  }
   RecalculateForce();
   ScrollToCaret();
 }
