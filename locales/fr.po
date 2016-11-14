@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-13 18:19+0100\n"
+"POT-Creation-Date: 2016-11-14 07:37+0100\n"
 "PO-Revision-Date: 2013-11-04 00:21+0100\n"
 "Last-Translator: Bernard Alfonsi <bernard.alfonsi@free.fr>\n"
 "Language-Team: francais <fr@li.org>\n"
@@ -512,7 +512,7 @@ msgstr "Paramètres supplémentaires:"
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr ""
 
-#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:242
+#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:245
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -689,7 +689,7 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr ""
 
-#: ../src/GroupCell.cpp:840 ../src/GroupCell.cpp:1011
+#: ../src/GroupCell.cpp:843 ../src/GroupCell.cpp:1014
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -1756,7 +1756,7 @@ msgstr "Factorielles et &gamma"
 msgid "Fatal error"
 msgstr "Erreur fatale"
 
-#: ../src/GroupCell.cpp:1643
+#: ../src/GroupCell.cpp:1646
 #, c-format
 msgid "Figure %d:"
 msgstr "Figure %d:"
@@ -2090,7 +2090,7 @@ msgstr "Fichier HTML (*.html)|*.html|fichier pdfLaTeX (*.tex)|*.tex|Tous|*"
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr ""
 
-#: ../src/ToolBar.cpp:206
+#: ../src/ToolBar.cpp:209
 msgid "Help"
 msgstr "Aide"
 
@@ -2098,6 +2098,11 @@ msgstr "Aide"
 #, fuzzy
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "Cacher tout\tAlt+Maj--"
+
+#: ../src/ToolBar.cpp:206
+#, fuzzy
+msgid "Hide Code"
+msgstr "Partager la cellule"
 
 #: ../src/wxMaximaFrame.cpp:519
 #, fuzzy
@@ -3705,7 +3710,7 @@ msgstr "Montrer les as&tuces"
 msgid "Show &Variables"
 msgstr "Montrer les &variables"
 
-#: ../src/ToolBar.cpp:208
+#: ../src/ToolBar.cpp:211
 msgid "Show Maxima help"
 msgstr "Montrer l'aide de Maxima"
 
@@ -4315,6 +4320,10 @@ msgstr "Basculer en plein écran d'édition"
 #: ../src/wxMaximaFrame.cpp:895
 msgid "Toggle numeric output"
 msgstr "Basculer l'affichage numérique entre valeur exacte et valeur approchée"
+
+#: ../src/ToolBar.cpp:208
+msgid "Toggle the visibility of code cells"
+msgstr ""
 
 #: ../src/wxMaxima.cpp:4519
 msgid "Toolbar icons"

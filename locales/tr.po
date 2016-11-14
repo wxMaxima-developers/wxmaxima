@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-13 18:19+0100\n"
+"POT-Creation-Date: 2016-11-14 07:37+0100\n"
 "PO-Revision-Date: 2015-12-13 23:30+0200\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -516,7 +516,7 @@ msgstr "Ek parametreler:"
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "TeX önsözü için ek satırlar:"
 
-#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:242
+#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:245
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -712,7 +712,7 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr "Hata: Math hücresi ait olduğu bir Grup hücresi olmadığını düşünüyor."
 
-#: ../src/GroupCell.cpp:840 ../src/GroupCell.cpp:1011
+#: ../src/GroupCell.cpp:843 ../src/GroupCell.cpp:1014
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -1777,7 +1777,7 @@ msgstr "Faktöriyeller ve &Gamma "
 msgid "Fatal error"
 msgstr "Ölümcül Hata"
 
-#: ../src/GroupCell.cpp:1643
+#: ../src/GroupCell.cpp:1646
 #, c-format
 msgid "Figure %d:"
 msgstr "Şekil %d:"
@@ -2118,13 +2118,18 @@ msgstr ""
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr "HTML/Metin Hücreleri: Bütün satır kesmelerini çıkarım yap"
 
-#: ../src/ToolBar.cpp:206
+#: ../src/ToolBar.cpp:209
 msgid "Help"
 msgstr "Yardım"
 
 #: ../src/wxMaximaFrame.cpp:521
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "Araç çubuklarının hepsini gizle\tAlt+Shift+-"
+
+#: ../src/ToolBar.cpp:206
+#, fuzzy
+msgid "Hide Code"
+msgstr "Hücreyi Böl"
 
 #: ../src/wxMaximaFrame.cpp:519
 #, fuzzy
@@ -3768,7 +3773,7 @@ msgstr "Göster &Yararlı Öneriler..."
 msgid "Show &Variables"
 msgstr "Göster &Değişken"
 
-#: ../src/ToolBar.cpp:208
+#: ../src/ToolBar.cpp:211
 msgid "Show Maxima help"
 msgstr "Maxima Yardımını Göster"
 
@@ -4380,6 +4385,10 @@ msgstr "Tam Ekran Düzenlemesini Çalıştır"
 #: ../src/wxMaximaFrame.cpp:895
 msgid "Toggle numeric output"
 msgstr "Numerik Çıktıyı Çalıştır"
+
+#: ../src/ToolBar.cpp:208
+msgid "Toggle the visibility of code cells"
+msgstr ""
 
 #: ../src/wxMaxima.cpp:4519
 msgid "Toolbar icons"

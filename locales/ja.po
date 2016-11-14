@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxmaxima0.87\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-13 18:19+0100\n"
+"POT-Creation-Date: 2016-11-14 07:37+0100\n"
 "PO-Revision-Date: 2016-10-18 22:57+0900\n"
 "Last-Translator: ARATA Mizuki <minorinoki@gmail.com>\n"
 "Language-Team: Japanese <maxima-discuss@lists.sourceforge.net>\n"
@@ -513,7 +513,7 @@ msgstr "追加パラメーター："
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "「記号」サイドバーへの追加の記号："
 
-#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:242
+#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:245
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -689,7 +689,7 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr ""
 
-#: ../src/GroupCell.cpp:840 ../src/GroupCell.cpp:1011
+#: ../src/GroupCell.cpp:843 ../src/GroupCell.cpp:1014
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -1737,7 +1737,7 @@ msgstr "階乗とガンマ関数(&G)"
 msgid "Fatal error"
 msgstr "致命的なエラー"
 
-#: ../src/GroupCell.cpp:1643
+#: ../src/GroupCell.cpp:1646
 #, c-format
 msgid "Figure %d:"
 msgstr "図 %d:"
@@ -2069,13 +2069,18 @@ msgstr ""
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr ""
 
-#: ../src/ToolBar.cpp:206
+#: ../src/ToolBar.cpp:209
 msgid "Help"
 msgstr "ヘルプ"
 
 #: ../src/wxMaximaFrame.cpp:521
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "全て隠す\tAlt+Shift+-"
+
+#: ../src/ToolBar.cpp:206
+#, fuzzy
+msgid "Hide Code"
+msgstr "セルの分割"
 
 #: ../src/wxMaximaFrame.cpp:519
 #, fuzzy
@@ -3651,7 +3656,7 @@ msgstr "ヒントを表示(&T)..."
 msgid "Show &Variables"
 msgstr "ユーザー定義変数をリスト表示(&V)"
 
-#: ../src/ToolBar.cpp:208
+#: ../src/ToolBar.cpp:211
 msgid "Show Maxima help"
 msgstr "ヘルプ"
 
@@ -4254,6 +4259,10 @@ msgstr "全画面表示の切り替え"
 #: ../src/wxMaximaFrame.cpp:895
 msgid "Toggle numeric output"
 msgstr "平方根やπといった数を自動的に数値で出力"
+
+#: ../src/ToolBar.cpp:208
+msgid "Toggle the visibility of code cells"
+msgstr ""
 
 #: ../src/wxMaxima.cpp:4519
 msgid "Toolbar icons"

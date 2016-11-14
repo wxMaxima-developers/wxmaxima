@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-13 18:19+0100\n"
+"POT-Creation-Date: 2016-11-14 07:37+0100\n"
 "PO-Revision-Date: 2016-10-25 18:46+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -516,7 +516,7 @@ msgstr "Zusätzliche Parameter für Maxima:"
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "Zusätzliche Symbole für die \"Symbole\"-Seitenliste:"
 
-#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:242
+#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:245
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -713,7 +713,7 @@ msgstr "Interner Fehler: soll den Inhalt einer Zelle ändern und sie löschen."
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr "Interner Fehler: Eine MathCell behauptet, keine GroupCell zu besitzen."
 
-#: ../src/GroupCell.cpp:840 ../src/GroupCell.cpp:1011
+#: ../src/GroupCell.cpp:843 ../src/GroupCell.cpp:1014
 msgid "Bug: No image counter to write to!"
 msgstr "Interner Fehler: Habe keinen Bildzähler, den ich beschreiben könnte."
 
@@ -1790,7 +1790,7 @@ msgstr "Fakultät und &Gamma"
 msgid "Fatal error"
 msgstr "Fataler Fehler"
 
-#: ../src/GroupCell.cpp:1643
+#: ../src/GroupCell.cpp:1646
 #, c-format
 msgid "Figure %d:"
 msgstr "Figure %d:"
@@ -2128,13 +2128,18 @@ msgstr ""
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr "HTML/Textzellen: Exportiere alle Zeilenumbrüche"
 
-#: ../src/ToolBar.cpp:206
+#: ../src/ToolBar.cpp:209
 msgid "Help"
 msgstr "Hilfe"
 
 #: ../src/wxMaximaFrame.cpp:521
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "Alle Werkzeugleisten verbergen\tAlt+Shift+-"
+
+#: ../src/ToolBar.cpp:206
+#, fuzzy
+msgid "Hide Code"
+msgstr "Zelle teilen"
 
 #: ../src/wxMaximaFrame.cpp:519
 #, fuzzy
@@ -3834,7 +3839,7 @@ msgstr "Zeige &Tipp ..."
 msgid "Show &Variables"
 msgstr "Zeige &Variablen"
 
-#: ../src/ToolBar.cpp:208
+#: ../src/ToolBar.cpp:211
 msgid "Show Maxima help"
 msgstr "Zeige die Hilfe von Maxima"
 
@@ -4474,6 +4479,10 @@ msgstr "Ganzer Bildschirm ein-/ausschalten"
 #: ../src/wxMaximaFrame.cpp:895
 msgid "Toggle numeric output"
 msgstr "Numerisches Berechnen ein/aus"
+
+#: ../src/ToolBar.cpp:208
+msgid "Toggle the visibility of code cells"
+msgstr ""
 
 #: ../src/wxMaxima.cpp:4519
 msgid "Toolbar icons"

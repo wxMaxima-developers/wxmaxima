@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-13 18:19+0100\n"
+"POT-Creation-Date: 2016-11-14 07:37+0100\n"
 "PO-Revision-Date: 2015-07-04 11:28+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -488,7 +488,7 @@ msgstr ""
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr ""
 
-#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:242
+#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:245
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -664,7 +664,7 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr ""
 
-#: ../src/GroupCell.cpp:840 ../src/GroupCell.cpp:1011
+#: ../src/GroupCell.cpp:843 ../src/GroupCell.cpp:1014
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -1694,7 +1694,7 @@ msgstr ""
 msgid "Fatal error"
 msgstr ""
 
-#: ../src/GroupCell.cpp:1643
+#: ../src/GroupCell.cpp:1646
 #, c-format
 msgid "Figure %d:"
 msgstr ""
@@ -2019,12 +2019,16 @@ msgstr ""
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr ""
 
-#: ../src/ToolBar.cpp:206
+#: ../src/ToolBar.cpp:209
 msgid "Help"
 msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:521
 msgid "Hide All Toolbars\tAlt+Shift+-"
+msgstr ""
+
+#: ../src/ToolBar.cpp:206
+msgid "Hide Code"
 msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:519
@@ -3570,7 +3574,7 @@ msgstr ""
 msgid "Show &Variables"
 msgstr ""
 
-#: ../src/ToolBar.cpp:208
+#: ../src/ToolBar.cpp:211
 msgid "Show Maxima help"
 msgstr ""
 
@@ -4136,6 +4140,10 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:895
 msgid "Toggle numeric output"
+msgstr ""
+
+#: ../src/ToolBar.cpp:208
+msgid "Toggle the visibility of code cells"
 msgstr ""
 
 #: ../src/wxMaxima.cpp:4519

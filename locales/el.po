@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Greek translation of wxMaxima GUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-13 18:19+0100\n"
+"POT-Creation-Date: 2016-11-14 07:37+0100\n"
 "PO-Revision-Date: 2010-06-04 19:46+0200\n"
 "Last-Translator: aga <akritas@uth.gr>\n"
 "Language-Team: uth <aakritas@uth.gr>\n"
@@ -513,7 +513,7 @@ msgstr "Επιπρόσθετοι παράμετροι:"
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr ""
 
-#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:242
+#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:245
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -692,7 +692,7 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr ""
 
-#: ../src/GroupCell.cpp:840 ../src/GroupCell.cpp:1011
+#: ../src/GroupCell.cpp:843 ../src/GroupCell.cpp:1014
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -1763,7 +1763,7 @@ msgstr "Παραγοντικά και Γάμμα"
 msgid "Fatal error"
 msgstr "Ολέθριο σφάλμα"
 
-#: ../src/GroupCell.cpp:1643
+#: ../src/GroupCell.cpp:1646
 #, fuzzy, c-format
 msgid "Figure %d:"
 msgstr "Σχέδιο"
@@ -2098,7 +2098,7 @@ msgstr "Αρχείο HTML (*.html)|*.html|pdfLaTeX file (*.tex)|*.tex|All|*"
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr ""
 
-#: ../src/ToolBar.cpp:206
+#: ../src/ToolBar.cpp:209
 msgid "Help"
 msgstr "Βοήθεια"
 
@@ -2106,6 +2106,11 @@ msgstr "Βοήθεια"
 #, fuzzy
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "Απόκρυψη Όλων\tAlt+Shift+-"
+
+#: ../src/ToolBar.cpp:206
+#, fuzzy
+msgid "Hide Code"
+msgstr "Διαίρεση κελιού"
 
 #: ../src/wxMaximaFrame.cpp:519
 #, fuzzy
@@ -3718,7 +3723,7 @@ msgstr "Εμφάνιση συμβουλών..."
 msgid "Show &Variables"
 msgstr "Εμφάνιση  μεταβλητών"
 
-#: ../src/ToolBar.cpp:208
+#: ../src/ToolBar.cpp:211
 msgid "Show Maxima help"
 msgstr "Εμφάνιση βοήθειας για το Maxima"
 
@@ -4327,6 +4332,10 @@ msgstr "Εναλλαγή επεξεργασίας πλήρης οθόνης"
 #: ../src/wxMaximaFrame.cpp:895
 msgid "Toggle numeric output"
 msgstr "Εναλλαγή αριθμητικού αποτελέσματος"
+
+#: ../src/ToolBar.cpp:208
+msgid "Toggle the visibility of code cells"
+msgstr ""
 
 #: ../src/wxMaxima.cpp:4519
 msgid "Toolbar icons"

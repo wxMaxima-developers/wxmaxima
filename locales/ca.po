@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-13 18:19+0100\n"
+"POT-Creation-Date: 2016-11-14 07:37+0100\n"
 "PO-Revision-Date: 2016-04-28 18:51+0200\n"
 "Last-Translator: Innocent De Marchi <tangram.peces@gmail.com>\n"
 "Language-Team: Innocent De Marchi <tangram.peces@gmail.com>\n"
@@ -513,7 +513,7 @@ msgstr "Paràmetres addicionals:"
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "Línies addicionals per al preàmbul TeX:"
 
-#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:242
+#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:245
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -703,7 +703,7 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr ""
 
-#: ../src/GroupCell.cpp:840 ../src/GroupCell.cpp:1011
+#: ../src/GroupCell.cpp:843 ../src/GroupCell.cpp:1014
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -1785,7 +1785,7 @@ msgstr "Factorials i &gamma"
 msgid "Fatal error"
 msgstr "Error fatal"
 
-#: ../src/GroupCell.cpp:1643
+#: ../src/GroupCell.cpp:1646
 #, c-format
 msgid "Figure %d:"
 msgstr "Figura %d:"
@@ -2121,7 +2121,7 @@ msgstr "Arxiu HTML (*.html)|*.html|Arxiu pdfLaTeX (*.tex)|*.tex"
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr "HTML/Text de les cel·les: exportar els retorns de línia"
 
-#: ../src/ToolBar.cpp:206
+#: ../src/ToolBar.cpp:209
 msgid "Help"
 msgstr "Ajuda"
 
@@ -2129,6 +2129,11 @@ msgstr "Ajuda"
 #, fuzzy
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "&Amaga tot\tAlt+Shift+-"
+
+#: ../src/ToolBar.cpp:206
+#, fuzzy
+msgid "Hide Code"
+msgstr "Dividir cel·la"
 
 #: ../src/wxMaximaFrame.cpp:519
 #, fuzzy
@@ -3747,7 +3752,7 @@ msgstr "Mostra &suggiments..."
 msgid "Show &Variables"
 msgstr "Mostra &variables"
 
-#: ../src/ToolBar.cpp:208
+#: ../src/ToolBar.cpp:211
 msgid "Show Maxima help"
 msgstr "Mostra l'ajuda de Maxima"
 
@@ -4363,6 +4368,10 @@ msgstr "Activa l'edició de pantalla completa"
 #: ../src/wxMaximaFrame.cpp:895
 msgid "Toggle numeric output"
 msgstr "Activa sortida numèrica"
+
+#: ../src/ToolBar.cpp:208
+msgid "Toggle the visibility of code cells"
+msgstr ""
 
 #: ../src/wxMaxima.cpp:4519
 msgid "Toolbar icons"

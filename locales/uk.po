@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-13 18:19+0100\n"
+"POT-Creation-Date: 2016-11-14 07:37+0100\n"
 "PO-Revision-Date: 2016-06-26 18:35+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -516,7 +516,7 @@ msgstr "Додаткові параметри для maxima"
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "Додаткові рядки до преамбули TeX:"
 
-#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:242
+#: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:245
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -712,7 +712,7 @@ msgstr ""
 "Вада: комірка рівняння, у якої немає групи комірок, до якої ця комірка "
 "належить"
 
-#: ../src/GroupCell.cpp:840 ../src/GroupCell.cpp:1011
+#: ../src/GroupCell.cpp:843 ../src/GroupCell.cpp:1014
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -1779,7 +1779,7 @@ msgstr "Факторіали і &гамма-функція"
 msgid "Fatal error"
 msgstr "Критична помилка"
 
-#: ../src/GroupCell.cpp:1643
+#: ../src/GroupCell.cpp:1646
 #, c-format
 msgid "Figure %d:"
 msgstr "Рисунок %d:"
@@ -2117,13 +2117,18 @@ msgstr ""
 msgid "HTML/Text Cells: Export all linebreaks"
 msgstr "Комірки HTML/тексту: Експортувати усі розриви рядків"
 
-#: ../src/ToolBar.cpp:206
+#: ../src/ToolBar.cpp:209
 msgid "Help"
 msgstr "Довідка"
 
 #: ../src/wxMaximaFrame.cpp:521
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "Приховати усі панелі інструментів\tAlt+Shift+-"
+
+#: ../src/ToolBar.cpp:206
+#, fuzzy
+msgid "Hide Code"
+msgstr "Ділити комірку"
 
 #: ../src/wxMaximaFrame.cpp:519
 #, fuzzy
@@ -3770,7 +3775,7 @@ msgstr "Показати п&ідказку…"
 msgid "Show &Variables"
 msgstr "Показати з&мінні"
 
-#: ../src/ToolBar.cpp:208
+#: ../src/ToolBar.cpp:211
 msgid "Show Maxima help"
 msgstr "Показати довідку з Maxima"
 
@@ -4386,6 +4391,10 @@ msgstr "Увімкнути або вимкнути режим повноекра
 #: ../src/wxMaximaFrame.cpp:895
 msgid "Toggle numeric output"
 msgstr "Увімкнути або вимкнути числове виведення"
+
+#: ../src/ToolBar.cpp:208
+msgid "Toggle the visibility of code cells"
+msgstr ""
 
 #: ../src/wxMaxima.cpp:4519
 msgid "Toolbar icons"
