@@ -431,6 +431,8 @@ void GroupCell::RecalculateWidths(int fontsize)
 void GroupCell::RecalculateHeight(int fontsize)
 {
   Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
+
   if (m_width == -1 || m_height == -1 || configuration->ForceUpdate())
   {
     // special case
@@ -443,7 +445,6 @@ void GroupCell::RecalculateHeight(int fontsize)
       return;
     }
 
-    double scale = configuration->GetScale();
     if((configuration->ShowCodeCells()) ||
        (m_groupType != GC_TYPE_CODE))
     {
@@ -522,8 +523,10 @@ void GroupCell::RecalculateHeight(int fontsize)
           dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + Configuration::Get()->GetGroupSkip();
       }
     }
+    if(m_height < SCALE_PX(10, scale))
+      m_height = SCALE_PX(10, scale);
   }
-  
+    
   m_appendedCells = NULL;
 
   if(m_input)
