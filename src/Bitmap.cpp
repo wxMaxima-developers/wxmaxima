@@ -49,15 +49,15 @@ Bitmap::~Bitmap()
     DestroyTree();
 }
 
-void Bitmap::SetData(MathCell* tree,long int maxSize)
+bool Bitmap::SetData(MathCell* tree,long int maxSize)
 {
   if (m_tree != NULL)
     delete m_tree;
   m_tree = tree;
-  Layout(maxSize);
+  return Layout(maxSize);
 }
 
-void Bitmap::Layout(long int maxSize)
+bool Bitmap::Layout(long int maxSize)
 {
   if (m_tree->GetType() != MC_TYPE_GROUP)
   {
@@ -84,17 +84,19 @@ void Bitmap::Layout(long int maxSize)
 
   int width, height;
   GetMaxPoint(&width, &height);
-  if((maxSize < 0) || (width*height < maxSize))
+  if((maxSize < 0) || (width*height*m_scale*m_scale < maxSize))
   {
     // The depth 24 hinders wxWidgets from creating rgb0 bitmaps that some
     // windows applications will interpret as rgba if they appear on
     // the clipboards and therefore render them all-transparent.
     m_bmp.Create(m_width=width * m_scale, m_height=height * m_scale,24);
     Draw();
+    return true;
   }
   else
   {
     m_bmp = wxNullBitmap;
+    return false;
   }
 }
 

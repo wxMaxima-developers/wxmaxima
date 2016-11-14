@@ -44,8 +44,10 @@ public:
     \param tree The list of cells that is to be rendered
     \param maxSize maxSize tells the maximum size [in square pixels] that will be rendered. 
            -1 means: No limit.
+
+    \return true, if the bitmap could be created.
    */
-  void SetData(MathCell* tree,long int maxSize = -1);
+  bool SetData(MathCell* tree,long int maxSize = -1);
   /*! Exports this bitmap to a file
 
     \return The size of the bitmap in millimeters. Sizes <0 indicate that the export has failed.
@@ -62,7 +64,7 @@ protected:
   void RecalculateHeight();
   void GetMaxPoint(int* width, int* height);
   void BreakUpCells();
-  void Layout(long int maxSize = -1);
+  bool Layout(long int maxSize = -1);
   void Draw();
   MathCell *m_tree;
   double GetRealHeight();

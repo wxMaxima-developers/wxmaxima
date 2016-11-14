@@ -1738,7 +1738,7 @@ bool MathCtrl::Copy(bool astext)
         int bitmapScale = 3;
         wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
         Bitmap bmp_scaled(bitmapScale);
-        bmp_scaled.SetData(tmp2,15000000);
+        bmp_scaled.SetData(tmp2,10000000);
         
         bmp = bmp_scaled.GetBitmap();
       }
@@ -1747,7 +1747,7 @@ bool MathCtrl::Copy(bool astext)
       if((bmp.GetWidth() <= 1)||(bmp.GetHeight() <= 1))
       {
         Bitmap bmp_unscaled;
-        bmp_unscaled.SetData(tmp2,15000000);
+        bmp_unscaled.SetData(tmp2,10000000);
         bmp = bmp_unscaled.GetBitmap();
       }
 
