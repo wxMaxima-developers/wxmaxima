@@ -4416,10 +4416,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   //////////////////////////////////////////////
   // Write the actual contents
   //////////////////////////////////////////////
-  
-  bool exportInput = true;
-  wxConfig::Get()->Read(wxT("exportInput"), &exportInput);
-  
+    
   while (tmp != NULL) {
 
     // Handle a code cell
@@ -4429,11 +4426,11 @@ bool MathCtrl::ExportToHTML(wxString file) {
       // Handle the label
       MathCell *out = tmp->GetLabel();
       
-      if(out || exportInput)
+      if(out ||  (Configuration::Get()->ShowCodeCells()))
         output<<wxT("\n\n<!-- Code cell -->\n\n\n");
 
       // Handle the input
-      if(exportInput)
+      if(Configuration::Get()->ShowCodeCells())
       {
         MathCell *prompt = tmp->GetPrompt();
         output<<wxT("<TABLE><TR><TD>\n");

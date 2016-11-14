@@ -204,8 +204,6 @@ protected:
   wxCheckBox* m_usePartialForDiff;
   //! A checkbox that asks if all newlines in text cells have to be passed to HTML.
   wxCheckBox* m_flowedTextRequested;
-  //! A checkbox that asks if we want to export the input for maxima, as well.
-  wxCheckBox* m_exportInput;
   wxCheckBox* m_exportContainsWXMX;
   wxChoice* m_exportWithMathJAX;
   wxCheckBox* m_matchParens;

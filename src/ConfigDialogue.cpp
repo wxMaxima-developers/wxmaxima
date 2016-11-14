@@ -190,7 +190,6 @@ void ConfigDialogue::SetProperties()
   m_wrapLatexMath->SetToolTip(_("Wrap equations exported by the \"copy as LaTeX\" feature between \\[ and \\] as equation markers"));
   m_flowedTextRequested->SetToolTip(_("While text cells in LaTeX are broken into lines by TeX the text displayed on the screen is broken into lines manually. This option, if set tells that lines in HTML output will be broken where they are broken in the worksheet. If this option isn't set manual linebreaks can still be introduced by introducing an empty line."));
   m_bitmapScale->SetToolTip(_("Normally html expects images to be rather low-res but space saving. These images tend to look rather blurry when viewed on modern screens. Therefore this setting was introduces that selects the factor by which the HTML export increases the resolution in respect to the default value."));
-  m_exportInput->SetToolTip(_("Normally we export the whole worksheet to TeX or HTML. But sometimes the maxima input does scare the user. This option turns off exporting of maxima's input."));
   m_exportContainsWXMX->SetToolTip(_("If this option is set the .wxmx source of the current file is copied to a place a link to is put into the result of an export."));
   m_exportWithMathJAX->SetToolTip(_("MathJAX creates scalable High-Quality representations of 2D Maths that can be used for Drag-And-Drop and provides accessability options. The disadvantage of MathJAX is that it needs JavaScript and a little bit of time in order to typeset equations.\nMathML is much faster than MathJaX, if it is supported by the browser. But many MathML implementations tend to lack necessary features.\nBitmaps tend to need more band width than the other two options. They lack support for advanced features like drag-and-drop or accessibility. Also they have problems aligning and scaling with the rest of the text and might use fonts that don't match the rest of the document."));
   m_savePanes->SetToolTip(_("Save panes layout between sessions."));
@@ -229,7 +228,7 @@ void ConfigDialogue::SetProperties()
     openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false,
     usePartialForDiff = false,
     wrapLatexMath = true,
-    flowedTextRequested = true, exportInput = true, exportContainsWXMX = false;
+    flowedTextRequested = true, exportContainsWXMX = false;
   int exportWithMathJAX = 0;
   bool insertAns;
   bool autoIndent = true;
@@ -283,7 +282,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("usePartialForDiff"), &usePartialForDiff);
   config->Read(wxT("wrapLatexMath"), &wrapLatexMath);
   config->Read(wxT("flowedTextRequested"), &flowedTextRequested);
-  config->Read(wxT("exportInput"), &exportInput);
   config->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
   config->Read(wxT("HTMLequationFormat"), &exportWithMathJAX);
   config->Read(wxT("pos-restore"), &rs);
@@ -362,7 +360,6 @@ void ConfigDialogue::SetProperties()
   m_usePartialForDiff->SetValue(usePartialForDiff);
   m_wrapLatexMath->SetValue(wrapLatexMath);
   m_flowedTextRequested->SetValue(flowedTextRequested);
-  m_exportInput->SetValue(exportInput);
   m_exportContainsWXMX->SetValue(exportContainsWXMX);
   m_exportWithMathJAX->SetSelection(exportWithMathJAX);
   m_matchParens->SetValue(match);
@@ -546,9 +543,6 @@ wxPanel* ConfigDialogue::CreateExportPanel()
 
   m_flowedTextRequested = new wxCheckBox(panel, -1, _("HTML/Text Cells: Export all linebreaks"));
   vsizer->Add(m_flowedTextRequested, 0, wxALL, 5);
-
-  m_exportInput = new wxCheckBox(panel, -1, _("Include input cells in the export of a worksheet"));
-  vsizer->Add(m_exportInput, 0, wxALL, 5);
 
   m_exportContainsWXMX = new wxCheckBox(panel, -1, _("Add the .wxmx file to the HTML export"));
   vsizer->Add(m_exportContainsWXMX, 0, wxALL, 5);
@@ -886,7 +880,6 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("usePartialForDiff"), m_usePartialForDiff->GetValue());
   config->Write(wxT("wrapLatexMath"), m_wrapLatexMath->GetValue());
   config->Write(wxT("flowedTextRequested"), m_flowedTextRequested->GetValue());
-  config->Write(wxT("exportInput"), m_exportInput->GetValue());
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX->GetValue());
   config->Write(wxT("HTMLequationFormat"), m_exportWithMathJAX->GetSelection());
   config->Write(wxT("usejsmath"), m_useJSMath->GetValue());

@@ -919,11 +919,9 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter)
 {
   wxString str;
-  bool exportInput = true;
-  wxConfig::Get()->Read(wxT("exportInput"), &exportInput);
 
   // Input cells
-  if(exportInput)
+  if(Configuration::Get()->ShowCodeCells())
   {
     str = wxT("\n\n\\noindent\n%%%%%%%%%%%%%%%\n")
       wxT("%%% INPUT:\n")
