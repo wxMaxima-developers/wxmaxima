@@ -18,6 +18,7 @@ EXTRA_DIST = README.md bootstrap wxmaxima.spec.in     \
 	     art/toolbar/gtk-find.png                        \
 	     art/toolbar/gtk-new.png                         \
 	     art/toolbar/weather-clear.png                   \
+	     art/toolbar/weather-few-clouds.png              \
 	     art/toolbar/software-update-urgent.png          \
 	     art/config/options.png                          \
 	     art/config/maxima.png                           \
