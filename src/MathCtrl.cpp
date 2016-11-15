@@ -3064,27 +3064,46 @@ void MathCtrl::SelectWithChar(int ccode)
   RequestRedraw();
 }
 
-void MathCtrl::SelectEditable(EditorCell *editor, bool top) {
-  if(editor != NULL)
+void MathCtrl::SelectEditable(EditorCell *editor, bool top)
+{
+  if((editor != NULL) &&
+     (
+       (Configuration::Get()->ShowCodeCells()) ||
+       (editor->GetType() != MC_TYPE_INPUT)
+       )
+    )
   {
     SetActiveCell(editor, false);
     m_hCaretActive = false;
 
     if (top)
-      m_activeCell->CaretToStart();
+      editor->CaretToStart();
     else
-      m_activeCell->CaretToEnd();
+      editor->CaretToEnd();
 
     ScrollToCaret();
 
     if (editor->GetWidth() == -1)
       Recalculate(editor->GetParent());
   }
-  else { // can't get editor... jump over cell..
+  else
+  { // can't get editor... jump over to the next cell..
     if (top)
-      m_hCaretPosition = dynamic_cast<GroupCell*>( m_hCaretPosition->m_next);
+    {
+      if(m_hCaretPosition == NULL)
+        SetHCaret(m_tree);
+      else
+      {
+        if(m_hCaretPosition->m_next != NULL)
+        {
+          SetHCaret(dynamic_cast<GroupCell*>( m_hCaretPosition->m_next));
+        }
+        else
+          SetHCaret(m_last);
+      }
+    }
     else
-      m_hCaretPosition = dynamic_cast<GroupCell*>( m_hCaretPosition->m_previous);
+      SetHCaret(dynamic_cast<GroupCell*>( m_hCaretPosition->m_previous));
   }
   RequestRedraw();
 }
@@ -3287,9 +3306,17 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
                 (tmp->GetGroupType()!=GC_TYPE_SUBSECTION)
                 )
               );
-            SetHCaret(dynamic_cast<GroupCell*>(tmp));
-          } else
+            if(dynamic_cast<GroupCell*>(tmp)->GetEditable() != NULL)
+              SetHCaret(dynamic_cast<GroupCell*>(tmp));
+          }
+          else
+          {
+          if(
+            (m_hCaretPosition != NULL) &&
+            (dynamic_cast<GroupCell*>(m_hCaretPosition)->GetEditable() != NULL)
+            )
             SelectEditable(dynamic_cast<GroupCell*>(tmp)->GetEditable(), false);
+          }
         }
         else
           SetHCaret(dynamic_cast<GroupCell*>(m_selectionStart->GetParent()->m_previous));
@@ -3310,10 +3337,17 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
             SetHCaret(tmp);
           }
           else
-            SelectEditable(dynamic_cast<GroupCell*>(tmp)->GetEditable(), false);
+            if(dynamic_cast<GroupCell*>(tmp)->GetEditable() != NULL)
+              SelectEditable(dynamic_cast<GroupCell*>(tmp)->GetEditable(), false);
         }
         else
-          SelectEditable(dynamic_cast<GroupCell*>(m_hCaretPosition)->GetEditable(), false);
+        {
+          if(
+            (m_hCaretPosition != NULL) &&
+            (dynamic_cast<GroupCell*>(m_hCaretPosition)->GetEditable() != NULL)
+            )
+            SelectEditable(dynamic_cast<GroupCell*>(m_hCaretPosition)->GetEditable(), false);
+        }
       }
       else
         event.Skip();
@@ -3341,8 +3375,11 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
                 )
               );
             SetHCaret(dynamic_cast<GroupCell*>(tmp));
-          } else
+          }
+          else
+          {
             SelectEditable(dynamic_cast<GroupCell*>(tmp)->GetEditable(), false);
+          }
         }
         else
           SetHCaret(dynamic_cast<GroupCell*>(m_selectionEnd));
@@ -3363,7 +3400,8 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
                 )
               );
             SetHCaret(tmp);
-          } else
+          }
+          else
             SelectEditable(dynamic_cast<GroupCell*>(tmp)->GetEditable(), false);
         }
         else
@@ -6082,22 +6120,26 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
 /*! Mark a editor cell as the active one
   
  */
-void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh) {
+void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
+{
   if ((m_activeCell != NULL) &&(m_activeCell != cell))
   {
     TreeUndo_CellLeft();
     m_activeCell->ActivateCell(false);
   }
+
+  m_activeCell = cell;
+
   if(cell != NULL)
   {
     cell->ActivateCell(true);
     if(!m_redrawRequested) m_caretTimer.Stop();
   }
   
-  m_activeCell = cell;
   TreeUndo_CellEntered();
 
-  if (m_activeCell != NULL) {
+  if (m_activeCell != NULL)
+  {
     SetSelection(NULL);
     if(m_activeCell != cell)
     {

@@ -1276,7 +1276,8 @@ void GroupCell::SelectRectInOutput(wxRect& rect, wxPoint& one, wxPoint& two,
 
 bool GroupCell::SetEditableContent(wxString text)
 {
-  if (GetEditable()) {
+  if (GetEditable())
+  {
     GetEditable()->SetValue(text);
     return true;
   }
@@ -1286,18 +1287,19 @@ bool GroupCell::SetEditableContent(wxString text)
 
 EditorCell *GroupCell::GetEditable()
 {
-  switch (m_groupType) {
-    case GC_TYPE_CODE:
-    case GC_TYPE_IMAGE:
-    case GC_TYPE_TEXT:
-    case GC_TYPE_TITLE:
-    case GC_TYPE_SECTION:
-    case GC_TYPE_SUBSECTION:
-    case GC_TYPE_SUBSUBSECTION:
-      return GetInput();
-    case GC_TYPE_PAGEBREAK:
-    default:
-      return NULL;
+  switch (m_groupType)
+  {
+  case GC_TYPE_PAGEBREAK:
+    return NULL;
+  case GC_TYPE_CODE:
+  case GC_TYPE_IMAGE:
+  case GC_TYPE_TEXT:
+  case GC_TYPE_TITLE:
+  case GC_TYPE_SECTION:
+  case GC_TYPE_SUBSECTION:
+  case GC_TYPE_SUBSUBSECTION:
+  default:
+    return GetInput();
   }
 }
 
