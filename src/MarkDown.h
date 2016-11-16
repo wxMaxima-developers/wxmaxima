@@ -67,7 +67,6 @@ public:
   //! A list of things we want to replace.
   std::list<RegexReplacer *> RegexReplaceList(){return regexReplaceList;}
  private:    
-  bool m_flowedTextRequested;             //!< For HTML: Do we want to pass all newlines to the output?
   virtual wxString itemizeBegin()=0;      //!< The marker for the begin of an item list
   virtual wxString itemizeEnd()=0;        //!< The marker for the end of an item list
   virtual wxString quoteChar()=0;         //!< The marker for an quote

@@ -24,6 +24,7 @@ MarkDownParser is the class that handles the markdown syntax
 */
 
 #include "MarkDown.h"
+#include "Configuration.h"
 
 MarkDownParser::~MarkDownParser()
 {
@@ -36,8 +37,6 @@ MarkDownParser::~MarkDownParser()
 
 MarkDownParser :: MarkDownParser()
 {
-  m_flowedTextRequested = true;
-  wxConfig::Get()->Read(wxT("flowedTextRequested"), &m_flowedTextRequested);
 }
   
 wxString MarkDownParser::MarkDown(wxString str)
@@ -183,7 +182,7 @@ wxString MarkDownParser::MarkDown(wxString str)
         {
           if(indentationLevels.back() > index)
           {
-            if(NewLineBreaksLine() && !m_flowedTextRequested)
+            if(NewLineBreaksLine() && !Configuration::Get()->GetAutoWrap())
 
             result += itemizeEndItem();
             while((!indentationLevels.empty())&&
@@ -202,7 +201,7 @@ wxString MarkDownParser::MarkDown(wxString str)
         }
         
         // Add the text to the output.        
-        if(!m_flowedTextRequested)
+        if(!Configuration::Get()->GetAutoWrap())
           result += line + "\n";
         else
           result += line + NewLine();

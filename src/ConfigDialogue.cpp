@@ -188,7 +188,6 @@ void ConfigDialogue::SetProperties()
   m_TeXExponentsAfterSubscript->SetToolTip(_("In the LaTeX output: Put exponents after an eventual subscript instead of above it. Might increase readability for some fonts and short subscripts."));
   m_usePartialForDiff->SetToolTip(_("Use the \"partial derivative\" symbol to represent the fraction that represents a diff() when exporting LaTeX"));
   m_wrapLatexMath->SetToolTip(_("Wrap equations exported by the \"copy as LaTeX\" feature between \\[ and \\] as equation markers"));
-  m_flowedTextRequested->SetToolTip(_("While text cells in LaTeX are broken into lines by TeX the text displayed on the screen is broken into lines manually. This option, if set tells that lines in HTML output will be broken where they are broken in the worksheet. If this option isn't set manual linebreaks can still be introduced by introducing an empty line."));
   m_bitmapScale->SetToolTip(_("Normally html expects images to be rather low-res but space saving. These images tend to look rather blurry when viewed on modern screens. Therefore this setting was introduces that selects the factor by which the HTML export increases the resolution in respect to the default value."));
   m_exportContainsWXMX->SetToolTip(_("If this option is set the .wxmx source of the current file is copied to a place a link to is put into the result of an export."));
   m_exportWithMathJAX->SetToolTip(_("MathJAX creates scalable High-Quality representations of 2D Maths that can be used for Drag-And-Drop and provides accessability options. The disadvantage of MathJAX is that it needs JavaScript and a little bit of time in order to typeset equations.\nMathML is much faster than MathJaX, if it is supported by the browser. But many MathML implementations tend to lack necessary features.\nBitmaps tend to need more band width than the other two options. They lack support for advanced features like drag-and-drop or accessibility. Also they have problems aligning and scaling with the rest of the text and might use fonts that don't match the rest of the document."));
@@ -228,7 +227,7 @@ void ConfigDialogue::SetProperties()
     openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false,
     usePartialForDiff = false,
     wrapLatexMath = true,
-    flowedTextRequested = true, exportContainsWXMX = false;
+    exportContainsWXMX = false;
   int exportWithMathJAX = 0;
   bool insertAns;
   bool autoIndent = true;
@@ -281,7 +280,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("TeXExponentsAfterSubscript"), &TeXExponentsAfterSubscript);
   config->Read(wxT("usePartialForDiff"), &usePartialForDiff);
   config->Read(wxT("wrapLatexMath"), &wrapLatexMath);
-  config->Read(wxT("flowedTextRequested"), &flowedTextRequested);
   config->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
   config->Read(wxT("HTMLequationFormat"), &exportWithMathJAX);
   config->Read(wxT("pos-restore"), &rs);
@@ -359,7 +357,6 @@ void ConfigDialogue::SetProperties()
   m_TeXExponentsAfterSubscript->SetValue(TeXExponentsAfterSubscript);
   m_usePartialForDiff->SetValue(usePartialForDiff);
   m_wrapLatexMath->SetValue(wrapLatexMath);
-  m_flowedTextRequested->SetValue(flowedTextRequested);
   m_exportContainsWXMX->SetValue(exportContainsWXMX);
   m_exportWithMathJAX->SetSelection(exportWithMathJAX);
   m_matchParens->SetValue(match);
@@ -540,9 +537,6 @@ wxPanel* ConfigDialogue::CreateExportPanel()
 
   m_wrapLatexMath = new wxCheckBox(panel, -1, _("\"Copy LaTeX\" adds equation markers"));
   vsizer->Add(m_wrapLatexMath, 0, wxALL, 5);
-
-  m_flowedTextRequested = new wxCheckBox(panel, -1, _("HTML/Text Cells: Export all linebreaks"));
-  vsizer->Add(m_flowedTextRequested, 0, wxALL, 5);
 
   m_exportContainsWXMX = new wxCheckBox(panel, -1, _("Add the .wxmx file to the HTML export"));
   vsizer->Add(m_exportContainsWXMX, 0, wxALL, 5);
@@ -879,7 +873,6 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript->GetValue());
   config->Write(wxT("usePartialForDiff"), m_usePartialForDiff->GetValue());
   config->Write(wxT("wrapLatexMath"), m_wrapLatexMath->GetValue());
-  config->Write(wxT("flowedTextRequested"), m_flowedTextRequested->GetValue());
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX->GetValue());
   config->Write(wxT("HTMLequationFormat"), m_exportWithMathJAX->GetSelection());
   config->Write(wxT("usejsmath"), m_useJSMath->GetValue());

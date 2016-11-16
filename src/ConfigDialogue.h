@@ -203,7 +203,6 @@ protected:
   //! A checkbox that asks if TeX should use the \partial symbol for representing diff()
   wxCheckBox* m_usePartialForDiff;
   //! A checkbox that asks if all newlines in text cells have to be passed to HTML.
-  wxCheckBox* m_flowedTextRequested;
   wxCheckBox* m_exportContainsWXMX;
   wxChoice* m_exportWithMathJAX;
   wxCheckBox* m_matchParens;
