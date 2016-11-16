@@ -1180,7 +1180,8 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
     EditorCell * editor = clickedInGC->GetEditable();
     if (editor != NULL) {
       wxRect rect = editor->GetRect();
-      if ((m_down.y >= rect.GetTop()) && (m_down.y <= rect.GetBottom())) {
+      if ((m_down.y >= rect.GetTop()) && (m_down.y <= rect.GetBottom()))
+      {
         m_cellMouseSelectionStartedIn=editor;
         SetActiveCell(editor, false); // do not refresh as we will do so later
         m_activeCell->SelectPointText(*m_dc, m_down);
@@ -4709,10 +4710,11 @@ void MathCtrl::CodeCellVisibilityChanged()
 {
   // Move the cursor out of the currently active cell if we are about to
   // hide it
-  if ((GetActiveCell() != NULL) &&(GetActiveCell()->GetType() == MC_TYPE_INPUT))
-  {
+  if ((GetActiveCell() != NULL) &&
+      (GetActiveCell()->GetType() == MC_TYPE_INPUT) &&
+      (!Configuration::Get()->ShowCodeCells())
+    )
     SetHCaret(dynamic_cast<GroupCell *>(GetActiveCell()->GetParent()));
-  }
   RecalculateForce();
   ScrollToCaret();
 }

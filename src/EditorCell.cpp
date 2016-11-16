@@ -848,6 +848,7 @@ wxString EditorCell::TabExpand(wxString input, long posInLine)
         break;
       }
       posInLine = 0;
+      ch++;
       continue;
     }
     else
