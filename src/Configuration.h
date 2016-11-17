@@ -175,7 +175,7 @@ public:
   const wxString GetTeXCMMI() { return m_fontCMMI; }
   const wxString GetTeXCMTI() { return m_fontCMTI; }
   const bool ShowCodeCells()  { return m_showCodeCells; }
-  void ShowCodeCells(bool show)  { m_showCodeCells = show; }
+  void ShowCodeCells(bool show);
   void SetPrinter(bool printer) { m_printer = printer; }
   const bool GetPrinter() { return m_printer; }
   const bool GetMatchParens() { return m_matchParens; }

@@ -1169,20 +1169,28 @@ void MathCtrl::OnMouseLeftInGcLeft(wxMouseEvent& event, GroupCell *clickedInGC)
  */
 void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
 {
-  if(GCContainsCurrentQuestion(clickedInGC)) {
+  if(GCContainsCurrentQuestion(clickedInGC))
+  {
     // The user clicked at the cell maxima has asked a question in.
     FollowEvaluation(true);
     OpenQuestionCaret();
     return;
   }
-  else {
+  else
+  {
     // The user clicked at a ordinary cell
     EditorCell * editor = clickedInGC->GetEditable();
-    if (editor != NULL) {
+    if (editor != NULL)
+    {
       wxRect rect = editor->GetRect();
-      if ((m_down.y >= rect.GetTop()) && (m_down.y <= rect.GetBottom()))
+      if (
+        ((m_down.y >= rect.GetTop()) && (m_down.y <= rect.GetBottom())) &&
+        ((Configuration::Get()->ShowCodeCells()) ||
+         ((editor->GetType() != MC_TYPE_INPUT)||(clickedInGC->GetOutput()==NULL))
+          )
+        )
       {
-        m_cellMouseSelectionStartedIn=editor;
+        m_cellMouseSelectionStartedIn = editor;
         SetActiveCell(editor, false); // do not refresh as we will do so later
         m_activeCell->SelectPointText(*m_dc, m_down);
         m_blinkDisplayCaret = true;
@@ -1197,29 +1205,16 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
     }
   }
   // what if we tried to select something in output, select it (or if editor, activate it)
-  if ((clickedInGC->GetOutputRect()).Contains(m_down)) {
+  if ((clickedInGC->GetOutputRect()).Contains(m_down))
+  {
     wxRect rect2(m_down.x, m_down.y, 1,1);
     wxPoint mmm(m_down.x + 1, m_down.y +1);
     clickedInGC->SelectRectInOutput(rect2, m_down, mmm,
                                     &m_selectionStart, &m_selectionEnd);
-    if (m_selectionStart != NULL) {
-      if ((m_selectionStart == m_selectionEnd) && (m_selectionStart->GetType() == MC_TYPE_INPUT)
-          && GCContainsCurrentQuestion(clickedInGC))// if we clicked an editor in output - activate it if working!
-      {
-        m_cellMouseSelectionStartedIn=dynamic_cast<EditorCell*>(m_selectionStart);
-        SetActiveCell(m_cellMouseSelectionStartedIn, false);
-        m_activeCell->SelectPointText(*m_dc, m_down);
-        m_blinkDisplayCaret = true;
-        m_clickType = CLICK_TYPE_INPUT_SELECTION;
-        FollowEvaluation(true);    
-        OpenQuestionCaret();
-        RequestRedraw();
-        return;
-      }
-      else {
-        m_clickType = CLICK_TYPE_OUTPUT_SELECTION;
-        m_clickInGC = clickedInGC;
-      }
+    if (m_selectionStart != NULL)
+    {
+      m_clickType = CLICK_TYPE_OUTPUT_SELECTION;
+      m_clickInGC = clickedInGC;
     }
   }
 }
@@ -6168,7 +6163,7 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
   if (callRefresh) // = true default
     RequestRedraw();
 
-  if((GetActiveCell()!= NULL) && (!Configuration::Get()->ShowCodeCells()) &&
+  if((cell != NULL) && (!Configuration::Get()->ShowCodeCells()) &&
      (GetActiveCell()->GetType() == MC_TYPE_INPUT)
     )
   {

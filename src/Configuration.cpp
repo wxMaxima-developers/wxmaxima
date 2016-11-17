@@ -51,6 +51,12 @@ Configuration::Configuration(wxDC& dc) : m_dc(&dc)
   ReadConfig();
 }
 
+
+void Configuration::ShowCodeCells(bool show)
+{
+  m_showCodeCells = show;
+}
+
 Configuration::Configuration(wxDC& dc, double scale) : m_dc(&dc)
 {
   m_scale = scale;
