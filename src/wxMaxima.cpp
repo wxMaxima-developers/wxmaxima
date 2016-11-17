@@ -5222,7 +5222,14 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
 
 void wxMaxima::OnRecentDocument(wxCommandEvent& event)
 {
-  if (SaveNecessary())
+  wxString file = GetRecentDocument(event.GetId() - menu_recent_document_0);
+
+  if (SaveNecessary() &&
+      (
+        (file.EndsWith(wxT(".wxmx"))) ||
+        (file.EndsWith(wxT(".wxm" )))
+        )
+    )
   {
     int close = SaveDocumentP();
 
@@ -5235,7 +5242,6 @@ void wxMaxima::OnRecentDocument(wxCommandEvent& event)
     }
   }
 
-  wxString file = GetRecentDocument(event.GetId() - menu_recent_document_0);
   if (wxFileExists(file))
     OpenFile(file);
   else {

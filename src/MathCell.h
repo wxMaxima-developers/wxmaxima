@@ -32,26 +32,6 @@
 #define ABS(a) ((a)>=0 ? (a) : -(a))
 #define SCALE_PX(px, scale) ((int)((double)((px)*(scale)) + 0.5))
 
-#define MC_CELL_SKIP 0
-#define MC_LINE_SKIP 2
-#define MC_TEXT_PADDING 1
-
-//! The horizontal amount the worksheet is indented by  
-#define MC_GROUP_LEFT_INDENT 15
-
-//! The width of the horizontally-drawn cursor
-#define MC_HCARET_WIDTH 25
-
-#if defined __WXMAC__
- #define MC_EXP_INDENT 2
- #define MC_MIN_SIZE 10
- #define MC_MAX_SIZE 36
-#else
- #define MC_EXP_INDENT 4
- #define MC_MIN_SIZE 8
- #define MC_MAX_SIZE 36
-#endif
-
 #include <wx/wx.h>
 #include <wx/xml/xml.h>
 #include "Configuration.h"
