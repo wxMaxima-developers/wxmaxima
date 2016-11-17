@@ -59,6 +59,9 @@ void Configuration::ShowCodeCells(bool show)
 
 Configuration::Configuration(wxDC& dc, double scale) : m_dc(&dc)
 {
+  // This is the currently active instance of this class
+  m_last = m_activeConfiguration;
+  m_activeConfiguration = this;
   m_scale = scale;
   m_zoomFactor = 1.0; // affects returned fontsizes
   m_top = -1;
@@ -68,7 +71,6 @@ Configuration::Configuration(wxDC& dc, double scale) : m_dc(&dc)
   m_changeAsterisk = false;
   m_outdated = false;
   m_TeXFonts = false;
-
   ReadConfig();
 }
 

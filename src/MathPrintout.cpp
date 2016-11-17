@@ -71,6 +71,13 @@ bool MathPrintout::OnPrintPage(int num)
   ppiScale = GetPPIScale();
   GetScreenScale(&screenScaleX, &screenScaleY);
 
+  Configuration configuration(*dc, ppiScale);
+  
+  configuration.SetIndent(marginX);
+  // Inform the output routines that we are printing
+  configuration.SetPrinter(true);
+  // Make sure that during print nothing is outside the crop rectangle
+
   marginX += SCALE_PX(Configuration::Get()->GetBaseIndent(), ppiScale);
 
   dc->SetUserScale(screenScaleX, screenScaleY);
@@ -96,12 +103,6 @@ bool MathPrintout::OnPrintPage(int num)
     config->Read(wxT("fontsize"), &fontsize);
 
     PrintHeader(num, dc, ppiScale);
-    Configuration configuration(*dc, ppiScale);
-
-    configuration.SetIndent(marginX);
-    // Inform the output routines that we are printing
-    configuration.SetPrinter(true);
-    // Make sure that during print nothing is outside the crop rectangle
     MathCell::ClipToDrawRegion(true);
     
     while (tmp != NULL && tmp->GetGroupType() != GC_TYPE_PAGEBREAK)

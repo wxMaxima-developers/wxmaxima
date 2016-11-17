@@ -2403,8 +2403,10 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   }
   else
     menubar->Check(menu_show_toolbar, false);
-
-  menubar->Check(ToolBar::tb_hideCode,!Configuration::Get()->ShowCodeCells());
+  
+  bool hidecode = !(Configuration::Get()->ShowCodeCells());
+  menubar->Check(ToolBar::tb_hideCode,hidecode);
+  
   if (m_console->GetTree() != NULL)
   {
     menubar->Enable(MathCtrl::popid_divide_cell, m_console->GetActiveCell() != NULL);
