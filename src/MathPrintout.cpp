@@ -68,10 +68,9 @@ bool MathPrintout::OnPrintPage(int num)
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
 
-  ppiScale = GetPPIScale();
-  GetScreenScale(&screenScaleX, &screenScaleY);
 
-  Configuration configuration(*dc, ppiScale);
+  Configuration configuration(*dc);
+  GetScreenScale(&screenScaleX, &screenScaleY);
   
   configuration.SetIndent(marginX);
   // Inform the output routines that we are printing
@@ -247,18 +246,18 @@ void MathPrintout::PrintHeader(int pageNum, wxDC* dc, double scale)
 void MathPrintout::Recalculate()
 {
   GroupCell* tmp = (GroupCell *)m_tree;
-  double scale = GetPPIScale();
 
   wxDC *dc = GetDC();
-  Configuration configuration(*dc, scale);
+  Configuration configuration(*dc);
 
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
   int pageWidth, pageHeight;
   GetPageSizePixels(&pageWidth, &pageHeight);
-
+  int scale = configuration.GetScale();
+  
   configuration.SetClientWidth(pageWidth - marginX - marginY
-                        - SCALE_PX(Configuration::Get()->GetBaseIndent(), scale));
+                               - SCALE_PX(Configuration::Get()->GetBaseIndent(), scale));
   MathCell::SetCanvasSize(wxSize(pageWidth,pageHeight));
 
   marginX += SCALE_PX(Configuration::Get()->GetBaseIndent(), scale);

@@ -70,7 +70,6 @@ public:
   Configuration(wxDC& dc);
   //! Set the drawing context that is currently active
   void SetContext(wxDC &dc){m_dc = &dc;}
-  Configuration(wxDC& dc, double scale);
   ~Configuration();
   void SetZoomFactor(double newzoom) { m_zoomFactor = newzoom; }
   void SetScale(double scale) { m_scale = scale; }
@@ -212,7 +211,7 @@ private:
   wxFontEncoding m_fontEncoding;
   style m_styles[STYLE_NUM];
   bool m_printer;
-  bool m_showCodeCells;
+  static bool m_showCodeCells;
   static Configuration *m_activeConfiguration;
 };
 
