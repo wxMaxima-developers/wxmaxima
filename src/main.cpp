@@ -212,8 +212,8 @@ bool MyApp::OnInit()
   wxApp::SetExitOnFrameDelete(false);
   wxMenuBar *menuBar = new wxMenuBar;
   wxMenu *fileMenu = new wxMenu;
-  fileMenu->Append(wxMaxima::mac_newId, _("&New\tCtrl-N"));
-  fileMenu->Append(wxMaxima::mac_openId, _("&Open\tCtrl-O"));
+  fileMenu->Append(wxMaxima::mac_newId, _("&New\tCtrl+N"));
+  fileMenu->Append(wxMaxima::mac_openId, _("&Open\tCtrl+O"));
   menuBar->Append(fileMenu, _("File"));
   wxMenuBar::MacSetCommonMenuBar(menuBar);
 
