@@ -36,12 +36,14 @@
 MathPrintout::MathPrintout(wxString title) : wxPrintout(title)
 {
   m_numberOfPages = 0;
+  m_oldViewportSize = MathCell::GetCanvasSize();
   m_tree = NULL;
 }
 
 MathPrintout::~MathPrintout()
 {
   DestroyTree();
+  MathCell::SetCanvasSize(m_oldViewportSize);
 }
 
 void MathPrintout::SetData(MathCell* tree)
@@ -70,7 +72,7 @@ bool MathPrintout::OnPrintPage(int num)
 
 
   Configuration configuration(*dc);
-  configuration.SetScale(1.0);
+  configuration.SetScale(2.0);
   
   configuration.SetIndent(marginX);
   // Inform the output routines that we are printing
@@ -79,9 +81,8 @@ bool MathPrintout::OnPrintPage(int num)
 
   marginX += SCALE_PX(Configuration::Get()->GetBaseIndent(), ppiScale);
 
-//  GetScreenScale(&screenScaleX, &screenScaleY);
-//  dc->SetUserScale(screenScaleX, screenScaleY);
-  dc->SetUserScale(2,2);
+  GetScreenScale(&screenScaleX, &screenScaleY);
+  dc->SetUserScale(screenScaleX, screenScaleY);
 
   // Go to current page
   tmp = (GroupCell *)m_pages[num - 1];
@@ -251,7 +252,7 @@ void MathPrintout::Recalculate()
 
   wxDC *dc = GetDC();
   Configuration configuration(*dc);
-  configuration.SetScale(1.0);
+  configuration.SetScale(2.0);
 
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
@@ -296,8 +297,9 @@ void MathPrintout::GetScreenScale(double *scaleX, double *scaleY)
   wxDC *dc = GetDC();
 
   GetPageSizePixels(&pageSizeX, &pageSizeY);
+  MathCell::SetCanvasSize(wxSize(pageSizeX,pageSizeY));
   dc->GetSize(&previewSizeX, &previewSizeY);
-
+  
   *scaleX = ((double)previewSizeX) / ((double)pageSizeX);
   *scaleY = ((double)previewSizeY) / ((double)pageSizeY);
 }

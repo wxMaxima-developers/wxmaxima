@@ -61,6 +61,7 @@ public:
   double GetPPIScale();
   void GetScreenScale(double *scaleX, double *scaleY);
 private:
+  wxSize m_oldViewportSize;
   int m_numberOfPages;
   wxString m_title;
   MathCell* m_tree;

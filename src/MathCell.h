@@ -568,6 +568,7 @@ public:
 
    */
   static void SetCanvasSize(wxSize size)     { m_canvasSize = size; }
+  static wxSize GetCanvasSize()     { return m_canvasSize; }
 
 protected:
   static wxRect m_updateRegion;
