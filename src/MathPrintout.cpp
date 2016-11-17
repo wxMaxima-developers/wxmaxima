@@ -70,7 +70,7 @@ bool MathPrintout::OnPrintPage(int num)
 
 
   Configuration configuration(*dc);
-  GetScreenScale(&screenScaleX, &screenScaleY);
+  configuration.SetScale(1.0);
   
   configuration.SetIndent(marginX);
   // Inform the output routines that we are printing
@@ -79,7 +79,9 @@ bool MathPrintout::OnPrintPage(int num)
 
   marginX += SCALE_PX(Configuration::Get()->GetBaseIndent(), ppiScale);
 
-  dc->SetUserScale(screenScaleX, screenScaleY);
+//  GetScreenScale(&screenScaleX, &screenScaleY);
+//  dc->SetUserScale(screenScaleX, screenScaleY);
+  dc->SetUserScale(2,2);
 
   // Go to current page
   tmp = (GroupCell *)m_pages[num - 1];
@@ -249,6 +251,7 @@ void MathPrintout::Recalculate()
 
   wxDC *dc = GetDC();
   Configuration configuration(*dc);
+  configuration.SetScale(1.0);
 
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
