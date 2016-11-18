@@ -262,7 +262,7 @@ void MathPrintout::Recalculate()
   
   configuration.SetClientWidth(pageWidth - marginX - marginY
                                - SCALE_PX(Configuration::Get()->GetBaseIndent(), scale));
-  MathCell::SetCanvasSize(wxSize(pageWidth,pageHeight));
+  MathCell::SetCanvasSize(wxSize(pageWidth-marginX,pageHeight-marginY));
 
   marginX += SCALE_PX(Configuration::Get()->GetBaseIndent(), scale);
   configuration.SetIndent(marginX);
@@ -297,7 +297,9 @@ void MathPrintout::GetScreenScale(double *scaleX, double *scaleY)
   wxDC *dc = GetDC();
 
   GetPageSizePixels(&pageSizeX, &pageSizeY);
-  MathCell::SetCanvasSize(wxSize(pageSizeX,pageSizeY));
+  int marginX, marginY;
+  GetPageMargins(&marginX, &marginY);
+  MathCell::SetCanvasSize(wxSize(pageSizeX-marginX,pageSizeY-marginX));
   dc->GetSize(&previewSizeX, &previewSizeY);
   
   *scaleX = ((double)previewSizeX) / ((double)pageSizeX);
