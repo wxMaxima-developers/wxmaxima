@@ -567,7 +567,7 @@ public:
   /*! Set the size of the canvas our cells have to be drawn on
 
    */
-  static void SetCanvasSize(wxSize size)     { m_canvasSize = size; }
+  static void SetCanvasSize(wxSize size)     { m_canvasSize = size;}
   static wxSize GetCanvasSize()     { return m_canvasSize; }
 
 protected:

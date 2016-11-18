@@ -126,8 +126,8 @@ void ImgCell::RecalculateWidths(int fontsize)
   double scale = configuration->GetScale();
   m_image->ViewportSize(m_canvasSize.x,m_canvasSize.y,scale);
   
-  m_width  = (scale * m_image->m_width)  + 2 * m_imageBorderWidth;
-  m_height = (scale * m_image->m_height) + 2 * m_imageBorderWidth;
+  m_width  = m_image->m_width  + 2 * m_imageBorderWidth;
+  m_height = m_image->m_height + 2 * m_imageBorderWidth;
   m_center = m_height / 2;
 }
 
@@ -143,6 +143,7 @@ void ImgCell::RecalculateHeight(int fontsize)
 void ImgCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
+  m_image->ViewportSize(m_canvasSize.x,m_canvasSize.y,Configuration::Get()->GetScale());
 
   // TODO: Enable this when unselecting text updates the right region.
   //if (!InUpdateRegion()) return;

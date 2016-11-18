@@ -159,8 +159,8 @@ void SlideShow::RecalculateWidths(int fontsize)
   double scale = configuration->GetScale();
   m_images[m_displayed]->ViewportSize(m_canvasSize.x,m_canvasSize.y,scale);
   
-  m_width  = (scale * m_images[m_displayed]->m_width)  + 2 * m_imageBorderWidth;
-  m_height = (scale * m_images[m_displayed]->m_height) + 2 * m_imageBorderWidth;
+  m_width  = m_images[m_displayed]->m_width  + 2 * m_imageBorderWidth;
+  m_height = m_images[m_displayed]->m_height + 2 * m_imageBorderWidth;
   m_center = m_height / 2;
 }
 
@@ -176,6 +176,7 @@ void SlideShow::RecalculateHeight(int fontsize)
 void SlideShow::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
+  m_images[m_displayed]->ViewportSize(m_canvasSize.x,m_canvasSize.y,Configuration::Get()->GetScale());
 
   // TODO: Enable this when unselecting text updates the right region.
   //if (!InUpdateRegion()) return;

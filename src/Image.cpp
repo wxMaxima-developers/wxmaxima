@@ -308,9 +308,14 @@ void Image::ViewportSize(size_t viewPortWidth,size_t viewPortHeight,double scale
   
   // Shrink to .9* the canvas size, if needed
   if(scale * width > .9 * viewPortWidth)
+  {
     scale = .9 * viewPortWidth / width;
+  }
   if(scale * height > .9 * viewPortHeight)
-    scale = .9 * viewPortHeight / height;
+  {
+    if(scale > .9 * viewPortHeight / height)
+      scale = .9 * viewPortHeight / height;
+  }
 
   // Set the width of the scaled image
   m_height = (int) (scale * height);
