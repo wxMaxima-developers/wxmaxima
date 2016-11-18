@@ -299,7 +299,15 @@ protected:
                   After leaving this function data is empty again.
    */
   void ReadFirstPrompt(wxString &data);
-  /* Reads text that isn't enclosed between xml tags.
+  /*! Determine where the text for ReadMiscText ends
+
+    Every error message or other line maxima outputs should end in a newline character. 
+    But sometimes it doesn't and a <code><mth></code> tag comes first \f$ =>\f$ This 
+    function determines where the miscellaneous text ends.
+   */
+  int GetMiscTextEnd(const wxString &data);
+
+  /*! Reads text that isn't enclosed between xml tags.
 
      Some commands provide status messages before the math output or the command has finished.
      This function makes wxMaxima output them directly as they arrive.
@@ -307,12 +315,12 @@ protected:
      After processing the lines not enclosed in xml tags they are removed from data.
    */
   void ReadMiscText(wxString &data);
-  /* Reads the input prompt from Maxima.
+  /*! Reads the input prompt from Maxima.
 
      After processing the input prompt it is removed from data.
    */
   void ReadPrompt(wxString &data);
-  /* Reads the math cell's contents from Maxima.
+  /*! Reads the math cell's contents from Maxima.
      
      Math cells are enclosed between the tags \<mth\> and \</mth\>. 
      This function removes the from data after appending them

@@ -1098,6 +1098,16 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   }
 }
 
+int wxMaxima::GetMiscTextEnd(const wxString &data)
+{
+  int newlinepos = data.Find("\n");
+  int retval = newlinepos;
+  int mthpos = data.Find("<mth>");
+  if((newlinepos == wxNOT_FOUND) || ((mthpos != wxNOT_FOUND)&&(mthpos<newlinepos)))
+    retval = mthpos;
+  return retval;
+}
+
 void wxMaxima::ReadMiscText(wxString &data)
 {
   if(data.IsEmpty())
@@ -1105,58 +1115,58 @@ void wxMaxima::ReadMiscText(wxString &data)
     
   // Add all text lines to the console until we reach a known XML tag.
   int newLinePos;
-  while((newLinePos=data.Find("\n")) != wxNOT_FOUND)
+  while((newLinePos = GetMiscTextEnd(data)) != wxNOT_FOUND)
+  {
+    if(data.StartsWith(wxT("<mth")))
+      return;
+    
+    if(data.StartsWith(m_promptPrefix))
+      return;
+    
+    if(data.StartsWith(m_symbolsPrefix))
+      return;
+    
+    // extract a string from the Data lines
+    wxString textline;
+    textline = data.Left(newLinePos) + wxT("\n");
+
+    if(data[newLinePos] == wxT('\n'))
     {
-     if(data.StartsWith(wxT("<mth")))
-       return;
+      data = data.Right(data.Length() - newLinePos - 1);
+    }
+    else
+    {
+      data = data.Right(data.Length() - newLinePos);
+    }
+    wxString trimmedLine = textline;
 
-     if(data.StartsWith(m_promptPrefix))
-       return;
+    trimmedLine.Trim(true);
+    trimmedLine.Trim(false);
 
-     if(data.StartsWith(m_symbolsPrefix))
-       return;
-     
-     // extract a string from the Data lines
-     wxString textline;
-     if(newLinePos == 0)
-     {
-       textline = wxT("\n");
-       data = data.Right(data.Length() - 1);
-     }
-     else
-     {
-       textline = data.Left(newLinePos + 1);
-       data = data.Right(data.Length() - newLinePos - 1);
-     }
-     wxString trimmedLine = textline;
+    if(
+      (trimmedLine.StartsWith(wxT("-- an error."))) ||
+      (trimmedLine.Contains(wxT(":incorrect syntax:"))) ||
+      (trimmedLine.StartsWith(wxT("incorrect syntax"))) ||
+      (trimmedLine.StartsWith(wxT("Maxima encountered a Lisp error"))) ||
+      (trimmedLine.StartsWith(wxT("killcontext: no such context")))
+      )
+    {
+      ConsoleAppend(textline,MC_TYPE_ERROR);
 
-     trimmedLine.Trim(true);
-     trimmedLine.Trim(false);
-
-     if(
-       (trimmedLine.StartsWith(wxT("-- an error."))) ||
-       (trimmedLine.Contains(wxT(":incorrect syntax:"))) ||
-       (trimmedLine.StartsWith(wxT("incorrect syntax"))) ||
-       (trimmedLine.StartsWith(wxT("Maxima encountered a Lisp error"))) ||
-       (trimmedLine.StartsWith(wxT("killcontext: no such context")))
-       )
-     {
-       ConsoleAppend(textline,MC_TYPE_ERROR);
-
-       bool abortOnError = false;
-       wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
-       if(abortOnError || m_batchmode)
-         m_console->m_evaluationQueue->Clear();
-       {
-         SetBatchMode(false);
-         // Inform the user that the evaluation queue is empty.
-         EvaluationQueueLength(0);
-         m_console->ScrollToError();
-       }
-     }
-     else
-       ConsoleAppend(textline,MC_TYPE_DEFAULT);
-    }   
+      bool abortOnError = false;
+      wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
+      if(abortOnError || m_batchmode)
+        m_console->m_evaluationQueue->Clear();
+      {
+        SetBatchMode(false);
+        // Inform the user that the evaluation queue is empty.
+        EvaluationQueueLength(0);
+        m_console->ScrollToError();
+      }
+    }
+    else
+      ConsoleAppend(textline,MC_TYPE_DEFAULT);
+  }   
 }
 
 
