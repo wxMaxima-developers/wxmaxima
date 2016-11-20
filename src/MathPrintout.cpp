@@ -72,7 +72,7 @@ bool MathPrintout::OnPrintPage(int num)
 
 
   Configuration configuration(*dc);
-  configuration.SetScale(2.0);
+  configuration.SetScale(1.0);
   
   configuration.SetIndent(marginX);
   // Inform the output routines that we are printing
@@ -252,7 +252,7 @@ void MathPrintout::Recalculate()
 
   wxDC *dc = GetDC();
   Configuration configuration(*dc);
-  configuration.SetScale(2.0);
+  configuration.SetScale(1.0);
 
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
