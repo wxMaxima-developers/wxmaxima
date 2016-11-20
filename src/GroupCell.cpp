@@ -797,8 +797,10 @@ wxString GroupCell::ToRTF()
   if(m_groupType == GC_TYPE_CODE)
   {
     if(m_input != NULL &&
-       (configuration->ShowCodeCells()) ||
-       (m_groupType != GC_TYPE_CODE)
+       (
+         (configuration->ShowCodeCells()) ||
+         (m_groupType != GC_TYPE_CODE)
+         )
       )
     {
       if(m_previous != NULL)

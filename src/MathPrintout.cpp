@@ -63,7 +63,7 @@ bool MathPrintout::HasPage(int num)
 bool MathPrintout::OnPrintPage(int num)
 {
   double screenScaleX, screenScaleY;
-  double ppiScale;
+  double ppiScale = GetPPIScale();
   GroupCell* tmp;
   wxDC* dc = GetDC();
 
