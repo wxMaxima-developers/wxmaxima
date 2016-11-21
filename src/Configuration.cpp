@@ -115,7 +115,7 @@ void Configuration::ReadStyle()
   m_mathFontSize = m_defaultFontSize;
   config->Read(wxT("mathfontsize"), &m_mathFontSize);
 
-  // Encogind - used only for comments
+  // Encoding - used only for comments
   m_fontEncoding = wxFONTENCODING_DEFAULT;
   int encoding = m_fontEncoding;
   config->Read(wxT("fontEncoding"), &encoding);
