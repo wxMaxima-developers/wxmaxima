@@ -72,7 +72,7 @@ bool MathPrintout::OnPrintPage(int num)
 
 
   Configuration configuration(*dc);
-  configuration.SetScale(2.0);
+  configuration.SetScale(ppiScale);
   
   configuration.SetIndent(marginX);
   // Inform the output routines that we are printing
@@ -183,7 +183,7 @@ void MathPrintout::SetupData()
 {
   wxDC *dc = GetDC();
   Configuration configuration(*dc);
-  configuration.SetScale(2.0);
+  configuration.SetScale(GetPPIScale());
   Recalculate();
   BreakPages();
 }
@@ -255,7 +255,7 @@ void MathPrintout::Recalculate()
 
   wxDC *dc = GetDC();
   Configuration configuration(*dc);
-  configuration.SetScale(2.0);
+  configuration.SetScale(GetPPIScale());
 
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
@@ -266,7 +266,6 @@ void MathPrintout::Recalculate()
   configuration.SetClientWidth(pageWidth - marginX - marginY
                                - SCALE_PX(Configuration::Get()->GetBaseIndent(), scale));
   MathCell::SetCanvasSize(wxSize(pageWidth-marginX,pageHeight-marginY));
-
   marginX += SCALE_PX(Configuration::Get()->GetBaseIndent(), scale);
   configuration.SetIndent(marginX);
  
@@ -290,7 +289,7 @@ double MathPrintout::GetPPIScale()
 #if defined __WXMAC__
   return 0.6*((double)ppiPrinterY) / ((double)ppiScreenY);
 #else
-  return ((double)ppiPrinterY) / ((double)ppiScreenY);
+  return 0.6*((double)ppiPrinterY) / ((double)ppiScreenY);
 #endif
 }
 

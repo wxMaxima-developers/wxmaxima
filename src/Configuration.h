@@ -152,10 +152,10 @@ public:
   //  text tends to get \b very wide before it hits the right margin. But text
   //  blocks that are 1 meter wide and 2 cm high feel - weird.
   const int GetLineWidth() {
-    if(m_clientWidth<=m_zoomFactor * double(m_defaultFontSize)*88.0*m_zoomFactor)
+    if(m_clientWidth<=m_zoomFactor * double(m_defaultFontSize)*88.0*m_zoomFactor*m_scale)
       return m_clientWidth;
     else
-      return double(m_defaultFontSize)*88.0*m_zoomFactor;
+      return double(m_defaultFontSize)*88.0*m_zoomFactor*m_scale;
   }
   const int GetDefaultFontSize() { return int(m_zoomFactor * double(m_defaultFontSize)); }
   const int GetMathFontSize() { return int(m_zoomFactor * double(m_mathFontSize)); }
