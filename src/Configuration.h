@@ -22,6 +22,7 @@
 #define CONFIGURATION_H
 
 #include <wx/wx.h>
+#include <wx/config.h>
 #include <wx/fontenum.h>
 
 #include "TextStyle.h"
@@ -179,6 +180,11 @@ public:
   const bool GetPrinter() { return m_printer; }
   const bool GetMatchParens() { return m_matchParens; }
   const bool GetInsertAns() { return m_insertAns; }
+  const bool RestartOnReEvaluation() {return m_restartOnReEvaluation;}
+  const void RestartOnReEvaluation(bool arg)
+    {
+      wxConfig::Get()->Write(wxT("restartOnReEvaluation"),m_restartOnReEvaluation = arg);
+    }
 
   //! Returns a pointer to the instance of Configuration that exists
   static Configuration *Get() {return m_activeConfiguration;}
@@ -206,6 +212,7 @@ private:
   bool m_outdated;
   bool m_TeXFonts;
   bool m_keepPercent;
+  bool m_restartOnReEvaluation;
   wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
   int m_clientWidth;
   wxFontEncoding m_fontEncoding;

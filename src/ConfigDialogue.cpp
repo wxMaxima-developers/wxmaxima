@@ -173,6 +173,7 @@ void ConfigDialogue::SetProperties()
   m_showUserDefinedLabels->SetToolTip(_("If a command begins with a label followed by a : wxMaxima will show this label instead of the %o style label maxima has automatically assigned to the same output cell."));
   m_abortOnError->SetToolTip(_("If multiple cells are evaluated in one go: Abort evaluation if wxMaxima detects that maxima has encountered any error."));
   m_pollStdOut->SetToolTip(_("Once the local network link between maxima and wxMaxima has been established maxima has no reason to send any messages using the system's stdout stream so all this stream transport should be a greeting message; The lisp running maxima will send eventual error messages using the system's stderr stream instead. If this box is checked we will nonetheless watch maxima's stdout stream for messages."));
+  m_restartOnReEvaluation->SetToolTip(_("Maxima provides no \"forget all\" command that flushes all settings a maxima session could make. wxMaxima therefore normally defaults to starting a fresh maxima process every time the worksheet is to be re-evaluated. As this needs a little bit of time this switch allows to disable this behavior."));
   m_maximaProgram->SetToolTip(_("Enter the path to the Maxima executable."));
   m_additionalParameters->SetToolTip(_("Additional parameters for Maxima"
                                        " (e.g. -l clisp)."));
@@ -382,6 +383,7 @@ void ConfigDialogue::SetProperties()
   m_keepPercentWithSpecials->SetValue(keepPercent);
   m_abortOnError->SetValue(abortOnError);
   m_pollStdOut->SetValue(pollStdOut);
+  m_restartOnReEvaluation->SetValue(Configuration::Get()->RestartOnReEvaluation());
   m_defaultFramerate->SetValue(defaultFramerate);
   m_defaultPlotWidth->SetValue(defaultPlotWidth);
   m_defaultPlotHeight->SetValue(defaultPlotHeight);
@@ -706,6 +708,10 @@ wxPanel* ConfigDialogue::CreateMaximaPanel()
   vsizer->Add(m_pollStdOut,0,wxALL, 5);
   panel->SetSizerAndFit(vsizer);
 
+  m_restartOnReEvaluation = new wxCheckBox(panel, -1, _("Start a new maxima for each re-evaluation"));
+  vsizer->Add(m_restartOnReEvaluation,0,wxALL, 5);
+  panel->SetSizerAndFit(vsizer);
+
   return panel;
 }
 
@@ -835,6 +841,7 @@ void ConfigDialogue::WriteSettings()
   wxConfig *config = (wxConfig *)wxConfig::Get();
   config->Write(wxT("abortOnError"), m_abortOnError->GetValue());
   config->Write(wxT("pollStdOut"), m_pollStdOut->GetValue());
+  Configuration::Get()->RestartOnReEvaluation(m_restartOnReEvaluation->GetValue());
   config->Write(wxT("maxima"), m_maximaProgram->GetValue());
   config->Write(wxT("parameters"), m_additionalParameters->GetValue());
   config->Write(wxT("fontSize"), m_fontSize);

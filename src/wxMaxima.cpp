@@ -3435,7 +3435,8 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     m_console->m_evaluationQueue->Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
-    StartMaxima();
+    if(Configuration::Get()->RestartOnReEvaluation())
+      StartMaxima();
     m_console->AddDocumentToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
     EvaluationQueueLength(m_console->m_evaluationQueue->Size(),m_console->m_evaluationQueue->CommandsLeftInCell());
@@ -3447,7 +3448,8 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     m_console->m_evaluationQueue->Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
-    StartMaxima();
+    if(Configuration::Get()->RestartOnReEvaluation())
+      StartMaxima();
     m_console->AddEntireDocumentToEvaluationQueue();
   // Inform the user about the length of the evaluation queue.
     EvaluationQueueLength(m_console->m_evaluationQueue->Size(),m_console->m_evaluationQueue->CommandsLeftInCell());
@@ -3459,7 +3461,8 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     m_console->m_evaluationQueue->Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
-    StartMaxima();
+    if(Configuration::Get()->RestartOnReEvaluation())
+      StartMaxima();
     m_console->AddDocumentTillHereToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
     EvaluationQueueLength(m_console->m_evaluationQueue->Size(),m_console->m_evaluationQueue->CommandsLeftInCell());

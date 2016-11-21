@@ -62,6 +62,9 @@ void Configuration::ReadConfig()
   m_autoWrap = true;
   config->Read(wxT("autoWrap"), &m_autoWrap);
 
+  m_restartOnReEvaluation = true;
+  config->Read(wxT("restartOnReEvaluation"), &m_restartOnReEvaluation);
+
   m_matchParens = true;
   config->Read(wxT("matchParens"), &m_matchParens);
 
