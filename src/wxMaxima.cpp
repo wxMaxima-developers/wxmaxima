@@ -1661,32 +1661,19 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
 
   // read document version and complain
   wxString docversion = xmldoc.GetRoot()->GetAttribute(wxT("version"), wxT("1.0"));
+  if(!CheckWXMXVersion(docversion))
+  {
+    document->Thaw();
+    StatusMaximaBusy(waiting);
+    return false;
+  }
+
+  // Determine where the cursor was before saving
   wxString ActiveCellNumber_String = xmldoc.GetRoot()->GetAttribute(wxT("activecell"), wxT("-1"));
   long ActiveCellNumber;
   if(!ActiveCellNumber_String.ToLong(&ActiveCellNumber))
     ActiveCellNumber = -1;
   
-  double version = 1.0;
-  if (docversion.ToDouble(&version)) {
-    int version_major = int(version);
-    int version_minor = int(10* (version - double(version_major)));
-
-    if (version_major > DOCUMENT_VERSION_MAJOR) {
-      document->Thaw();
-      wxMessageBox(_("Document ") + file +
-                   _(" was saved using a newer version of wxMaxima. Please update your wxMaxima."),
-                   _("Error"), wxOK | wxICON_EXCLAMATION);
-      StatusMaximaBusy(waiting);
-      SetStatusText(_("File could not be opened"), 1);
-      return false;
-    }
-    if (version_minor > DOCUMENT_VERSION_MINOR) {
-      wxMessageBox(_("Document ") + file +
-                   _(" was saved using a newer version of wxMaxima so it may not load correctly. Please update your wxMaxima."),
-                   _("Warning"), wxOK | wxICON_EXCLAMATION);
-    }
-  }
-
   // read zoom factor
   wxString doczoom = xmldoc.GetRoot()->GetAttribute(wxT("zoom"),wxT("100"));
 
@@ -1735,6 +1722,88 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
     if(pos)
       m_console->SetHCaret(pos);
   }
+  StatusMaximaBusy(waiting);
+  SetStatusText(_("File opened"), 1);
+  return true;
+}
+
+bool wxMaxima::CheckWXMXVersion(wxString docversion)
+{
+  double version = 1.0;
+  if (docversion.ToDouble(&version)) {
+    int version_major = int(version);
+    int version_minor = int(10* (version - double(version_major)));
+    
+    if (version_major > DOCUMENT_VERSION_MAJOR) {
+      wxMessageBox(_("Document was saved using a newer version of wxMaxima. Please update your wxMaxima."),
+                   _("Error"), wxOK | wxICON_EXCLAMATION);
+      SetStatusText(_("File could not be opened"), 1);
+      return false;
+    }
+    if (version_minor > DOCUMENT_VERSION_MINOR) {
+      wxMessageBox(_("Document was saved using a newer version of wxMaxima so it may not load correctly. Please update your wxMaxima."),
+                   _("Warning"), wxOK | wxICON_EXCLAMATION);
+    }
+  }
+  return true;
+}
+
+bool wxMaxima::OpenXML(wxString file, MathCtrl *document, bool clearDocument)
+{
+  SetStatusText(_("Opening file"), 1);
+
+  // Show a busy cursor as long as we open a file.
+  wxBusyCursor crs;
+  document->Freeze();
+
+  wxXmlDocument xmldoc;
+
+  // Let's see if we can load the XML contained in this file.
+  xmldoc.Load(file);
+  
+  if (!xmldoc.IsOk())
+  {
+    document->Thaw();
+    wxMessageBox(_("The .xml file doesn't seem to be valid xml or isn't a content.xml extracted from a .wxmx zip archive"), _("Error"),
+                 wxOK | wxICON_EXCLAMATION);
+    StatusMaximaBusy(waiting);
+    SetStatusText(_("File could not be opened"), 1);
+    return false;
+  }
+
+  // Process the XML document
+  if (xmldoc.GetRoot()->GetName() != wxT("wxMaximaDocument")) {
+    document->Thaw();
+    wxMessageBox(_("xml contained in the file claims not to be a wxMaxima worksheet. ") + file, _("Error"),
+                 wxOK | wxICON_EXCLAMATION);
+    StatusMaximaBusy(waiting);
+    SetStatusText(_("File could not be opened"), 1);
+    return false;
+  }
+
+  // read document version and complain
+  wxString docversion = xmldoc.GetRoot()->GetAttribute(wxT("version"), wxT("1.0"));  
+  if(!CheckWXMXVersion(docversion))
+  {
+    document->Thaw();
+    StatusMaximaBusy(waiting);
+    return false;
+  }
+  
+  // Read the worksheet's contents.
+  wxXmlNode *xmlcells = xmldoc.GetRoot();
+  GroupCell *tree = CreateTreeFromXMLNode(xmlcells, file);
+  
+  document->ClearDocument();
+  document->InsertGroupCells(tree); // this also recalculates
+  m_console->m_currentFile = file;
+  ResetTitle(true,true);  
+  document->Thaw();
+  document->RequestRedraw();
+  m_console->SetDefaultHCaret();
+  m_console->SetFocus();
+  SetCWD(file);
+  
   StatusMaximaBusy(waiting);
   SetStatusText(_("File opened"), 1);
   return true;
@@ -2573,6 +2642,9 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 
     else if (file.Right(4) == wxT(".dem"))
       MenuCommand(wxT("demo(\"") + unixFilename + wxT("\")$"));
+    
+    else if (file.Right(4) == wxT(".xml"))
+      OpenXML(file, m_console); // clearDocument = true
 
     else
       MenuCommand(wxT("load(\"") + unixFilename + wxT("\")$"));

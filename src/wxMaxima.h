@@ -367,7 +367,14 @@ protected:
   void ResetTitle(bool saved,bool force = false);
   void FirstOutput(wxString s);
 
-  // Opens a wxm file
+  /*! Opens a content.xml file that has been extracted from a broken .wxmx file
+   */
+  bool OpenXML(wxString file, MathCtrl *document, bool clearDocument = true);
+
+  //! Complains if the version string from the XML file indicates too low a maxima version
+  bool CheckWXMXVersion(wxString docversion);
+
+  //! Opens a wxm file
   bool OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument = true);
   //! Opens a wxmx file
   bool OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocument = true);
