@@ -149,10 +149,7 @@ void MathCtrl::RedrawIfRequested()
 {
   if(m_redrawRequested)
   {
-    if(m_redrawStart != NULL)
-      Refresh(m_redrawStart);
-    else
-      Refresh();
+    Refresh();
     m_redrawRequested = false;
     m_redrawStart = NULL;
   }
@@ -496,7 +493,7 @@ GroupCell *MathCtrl::InsertGroupCells(
   m_tree->SetCanvasSize(GetClientSize());
   if (renumbersections)
     NumberSections();
-  Recalculate(where);
+  Recalculate(where,false);
   m_saved = false; // document has been modified
   
   if(undoBuffer)
@@ -601,7 +598,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
     m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
 
     tmp->RecalculateAppended();
-    Recalculate(tmp);
+    Recalculate(tmp,false);
 
     if(FollowEvaluation()) {
       SetSelection(NULL);
@@ -1154,7 +1151,7 @@ void MathCtrl::OnMouseLeftInGcLeft(wxMouseEvent& event, GroupCell *clickedInGC)
     else {
       clickedInGC->SwitchHide(); // todo if there's nothin to hide, select as normal
       clickedInGC->ResetSize();
-      Recalculate(clickedInGC);
+      Recalculate(clickedInGC,false);
       m_clickType = CLICK_TYPE_NONE; // ignore drag-select
     }
   }
@@ -1196,7 +1193,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
         m_blinkDisplayCaret = true;
         m_clickType = CLICK_TYPE_INPUT_SELECTION;
         if (editor->GetWidth() == -1)
-          Recalculate(clickedInGC);
+          Recalculate(clickedInGC,false);
         // Here we tend to get unacceptably long delays before the display is
         // refreshed by the idle loop => Trigger the refresh manually.
         ForceRedraw();
@@ -2466,7 +2463,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   // to scroll away.
   ScrolledAwayFromEvaluation();
   
-  Recalculate(group);
+  Recalculate(group,false);
 
   // Here we tend to get unacceptably long delays before the display is
   // refreshed by the idle loop => Trigger the refresh manually.
@@ -2645,7 +2642,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
 	  else
 	  {
             m_activeCell->ProcessEvent(event);
-            Recalculate(dynamic_cast<GroupCell*>(m_activeCell->GetParent()));
+            Recalculate(dynamic_cast<GroupCell*>(m_activeCell->GetParent()),false);
             RecalculateForce();
             RequestRedraw();
 	  }
@@ -2687,7 +2684,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
             event.Skip();
             // Sometimes and only in certain zoom factors pressing enter doesn't change the
             // size of an EditorCell. Let's see if that helps...
-            Recalculate(dynamic_cast<GroupCell*>(m_activeCell->GetParent()));
+            Recalculate(dynamic_cast<GroupCell*>(m_activeCell->GetParent()),false);
             RequestRedraw();
           }
         }
@@ -2946,7 +2943,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
         (group->GetGroupType() == GC_TYPE_CODE) &&
         (m_activeCell == group->GetEditable()))
       group->ResetInputLabel();
-    Recalculate(group);
+    Recalculate(group,false);
     RequestRedraw(group);
   }
   else
@@ -3080,7 +3077,7 @@ void MathCtrl::SelectEditable(EditorCell *editor, bool top)
     ScrollToCaret();
 
     if (editor->GetWidth() == -1)
-      Recalculate(editor->GetParent());
+      Recalculate(dynamic_cast<GroupCell*>(editor->GetParent()));
   }
   else
   { // can't get editor... jump over to the next cell..
@@ -6604,7 +6601,7 @@ void MathCtrl::SetWorkingGroup(GroupCell *group)
 
   if (m_workingGroup != NULL)
   {
-    m_workingGroup->SetWorking(group);
+    m_workingGroup->SetWorking(true);
     m_lastWorkingGroup = group;
   }
 }
@@ -6804,7 +6801,7 @@ void MathCtrl::CommentSelection()
     active->CommentSelection();
     active->ResetSize();
     active->GetParent()->ResetSize();
-    Recalculate(active->GetParent());
+    Recalculate(dynamic_cast<GroupCell*>(active->GetParent()));
   }
 }
 
@@ -7056,7 +7053,7 @@ void MathCtrl::Replace(wxString oldString, wxString newString, bool ignoreCase)
       group->ResetSize();
       m_activeCell->ResetSize();
       Recalculate();
-      Refresh(group);
+      Refresh();
     }
     m_cellSearchStartedIn = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
     m_indexSearchStartedAt = GetActiveCell()->GetCaretPosition();
@@ -7205,7 +7202,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
 
     editor->ResetSize();
     editor->GetParent()->ResetSize();
-    Recalculate(editor->GetParent());
+    Recalculate(dynamic_cast<GroupCell*>(editor->GetParent()));
 
     RequestRedraw();
   }
@@ -7266,7 +7263,7 @@ void MathCtrl::OnComplete(wxCommandEvent &event)
 
   editor->ResetSize();
   editor->GetParent()->ResetSize();
-  Recalculate(editor->GetParent());
+  Recalculate(dynamic_cast<GroupCell*>(editor->GetParent()));
 
   RequestRedraw();
 }
@@ -7288,7 +7285,7 @@ void MathCtrl::SetActiveCellText(wxString text)
       parent->ResetSize();
       parent->ResetData();
       parent->ResetInputLabel();
-      Recalculate(parent);
+      Recalculate(parent,false);
       RequestRedraw();
     }
   }
@@ -7307,7 +7304,7 @@ bool MathCtrl::InsertText(wxString text)
     }
     else {
       m_activeCell->InsertText(text);
-      Recalculate(dynamic_cast<GroupCell*>(m_activeCell->GetParent()));
+      Recalculate(dynamic_cast<GroupCell*>(m_activeCell->GetParent()),false);
       RequestRedraw();
     }
   }
