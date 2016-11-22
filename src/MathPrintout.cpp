@@ -66,7 +66,9 @@ bool MathPrintout::OnPrintPage(int num)
   double ppiScale = GetPPIScale();
   GroupCell* tmp;
   wxDC* dc = GetDC();
-
+  dc->SetBackground(*wxWHITE_BRUSH);
+  dc->Clear();
+  
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
 
