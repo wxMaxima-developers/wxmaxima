@@ -705,7 +705,7 @@ public:
   void DestroyTree();
   //! Delete a  part of the worksheet that previously has been unlinked.
   void DestroyTree(MathCell* tree);
-  MathCell* CopyTree();
+  GroupCell* CopyTree();
   /*! Insert group cells into the worksheet
 
     \param cells The list of cells that has to be inserted

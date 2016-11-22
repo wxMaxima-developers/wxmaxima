@@ -36,6 +36,7 @@
 #include <vector>
 
 #include "MathCell.h"
+#include "GroupCell.h"
 
 using namespace std;
 
@@ -45,8 +46,8 @@ public:
   MathPrintout(wxString title);
   ~MathPrintout();
   void DestroyTree();
-  void DestroyTree(MathCell* tree);
-  void SetData(MathCell* tree);
+  void DestroyTree(GroupCell* tree);
+  void SetData(GroupCell* tree);
   void SetupData();
   void BreakPages();
   void Recalculate();
@@ -64,7 +65,7 @@ private:
   wxSize m_oldViewportSize;
   int m_numberOfPages;
   wxString m_title;
-  MathCell* m_tree;
+  GroupCell* m_tree;
   vector<MathCell*> m_pages;
 };
 

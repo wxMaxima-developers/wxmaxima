@@ -385,7 +385,8 @@ void GroupCell::RecalculateWidths(int fontsize)
     m_input->RecalculateWidthsList(fontsize);
 
     // recalculate the position of input in ReEvaluateSelection!
-    if (m_input->m_next != NULL) {
+    if (m_input->m_next != NULL)
+    {
       m_input->m_next->m_currentPoint.x = m_currentPoint.x + m_input->GetWidth() + MC_CELL_SKIP;
     }
 

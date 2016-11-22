@@ -46,7 +46,7 @@ MathPrintout::~MathPrintout()
   MathCell::SetCanvasSize(m_oldViewportSize);
 }
 
-void MathPrintout::SetData(MathCell* tree)
+void MathPrintout::SetData(GroupCell* tree)
 {
   m_tree = tree;
   if (m_tree != NULL)
@@ -251,7 +251,7 @@ void MathPrintout::PrintHeader(int pageNum, wxDC* dc, double scale)
 
 void MathPrintout::Recalculate()
 {
-  GroupCell* tmp = (GroupCell *)m_tree;
+  GroupCell* tmp = m_tree;
 
   wxDC *dc = GetDC();
   Configuration configuration(*dc);
@@ -273,8 +273,7 @@ void MathPrintout::Recalculate()
   {
     tmp->ResetSize();
     tmp->Recalculate();
-    tmp = (GroupCell *)
-      tmp->m_next;
+    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }
 }
 
@@ -318,13 +317,13 @@ void MathPrintout::DestroyTree()
   }
 }
 
-void MathPrintout::DestroyTree(MathCell* tmp)
+void MathPrintout::DestroyTree(GroupCell* tmp)
 {
-  MathCell* tmp1;
+  GroupCell* tmp1;
   while (tmp != NULL)
   {
     tmp1 = tmp;
-    tmp = tmp->m_next;
+    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
     tmp1->Destroy();
     delete tmp1;
   }

@@ -3746,11 +3746,11 @@ void MathCtrl::DestroyTree(MathCell* tmp) {
 /***
  * Copy tree
  */
-MathCell* MathCtrl::CopyTree() {
+GroupCell* MathCtrl::CopyTree() {
   if (m_tree == NULL)
-    return (MathCell*)NULL;
+    return (GroupCell*)NULL;
 
-  return m_tree->CopyList();
+  return dynamic_cast<GroupCell *>(m_tree->CopyList());
 }
 
 /***

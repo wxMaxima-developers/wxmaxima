@@ -2417,7 +2417,7 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
     }
 
     MathPrintout printout(title);
-    MathCell* copy = m_console->CopyTree();
+    GroupCell* copy = m_console->CopyTree();
     printout.SetData(copy);
     if (printer.Print(this, &printout, true))
     {
@@ -2428,8 +2428,9 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
     }
     break;
   }
-  }
+  m_console->RecalculateForce();
   m_console->RequestRedraw();
+  }
 }
 
 void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
