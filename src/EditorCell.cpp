@@ -3580,6 +3580,7 @@ void EditorCell::StyleText()
         }
       } // The loop that loops over all lines
     } // Do we want to autowrap lines?
+    ResetSize();
   } // Style text, not code?
 }
 

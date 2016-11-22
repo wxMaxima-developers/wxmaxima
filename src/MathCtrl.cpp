@@ -2642,7 +2642,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
 	  else
 	  {
             m_activeCell->ProcessEvent(event);
-            Recalculate(dynamic_cast<GroupCell*>(m_activeCell->GetParent()),false);
+            // Recalculate(dynamic_cast<GroupCell*>(m_activeCell->GetParent()),false);
             RecalculateForce();
             RequestRedraw();
 	  }
