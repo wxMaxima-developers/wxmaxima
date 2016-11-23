@@ -146,6 +146,8 @@ wxString EditorCell::ToString(bool dontLimitToSelection)
   wxString text = m_text;
   // Remove all soft line breaks
   text.Replace(wxT('\r'),wxT(' '));
+  // Convert non-breakable spaces to breakable ones
+  text.Replace(wxT("\xa0"),wxT(" "));
   
   if (SelectionActive() && (!dontLimitToSelection))
   {
@@ -216,6 +218,7 @@ wxString EditorCell::ToRTF()
 wxString EditorCell::ToTeX()
 {
   wxString text = m_text;
+  text.Replace(wxT("\xa0"),wxT("~"));
   text.Replace(wxT("\\"), wxT("\\ensuremath{\\backslash}"));
   text.Replace(wxT("\r"), wxEmptyString);
   text.Replace(wxT("^"), wxT("\\^{}"));
@@ -486,7 +489,8 @@ wxString EditorCell::ToHTML()
     }
     tmp = dynamic_cast<EditorCell*>(tmp->m_next);
   }
-  return retval; 
+  retval.Replace(wxT("\xa0"),wxT("&nbsp;"));
+  return retval;
 }
 
 void EditorCell::MarkSelection(long start, long end,double scale, wxDC& dc, TextStyle style,int fontsize)
@@ -1867,12 +1871,19 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent& event)
   // insert letter if we didn't insert brackets around selection
   if (insertLetter)
   {
-    m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+    wxString chr;
+
 #if wxUSE_UNICODE
-      event.GetUnicodeKey() +
+    chr = event.GetUnicodeKey();
 #else
-      wxString::Format(wxT("%c"), ChangeNumpadToChar(event.GetKeyCode())) +
+    chr = wxString::Format(wxT("%c"), ChangeNumpadToChar(event.GetKeyCode()));
 #endif
+    
+    if(event.ShiftDown())
+      chr.Replace(wxT(" "),wxT("\xa0"));
+    
+    m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+      chr +
       m_text.SubString(m_positionOfCaret, m_text.Length());
     
     m_positionOfCaret++;
