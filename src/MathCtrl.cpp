@@ -83,7 +83,7 @@ wxScrolledCanvas(
   m_mathmlFormat2 = wxDataFormat(wxT("application/mathml-presentation+xml"));
   m_rtfFormat = wxDataFormat(wxT("Rich Text Format"));
   m_rtfFormat2 = wxDataFormat(wxT("text/rtf"));
-  MathCell::ClipToDrawRegion(false);
+  MathCell::ClipToDrawRegion(true);
   m_hCaretBlinkVisible = true;
   m_hasFocus = true;
   m_lastTop    = 0;
@@ -216,6 +216,14 @@ MathCtrl::~MathCtrl() {
  */
 void MathCtrl::OnPaint(wxPaintEvent& event)
 {
+  // Don't attempt to refresh the screen as long as the result will
+  // end up on a printed page
+  if(MathCell::Printing())
+  {
+    RequestRedraw();
+    return;
+  }
+  
   // Inform all cells how wide our display is
   MathCell::SetCanvasSize(GetClientSize());
   wxMemoryDC dcm;
@@ -1724,7 +1732,6 @@ bool MathCtrl::Copy(bool astext)
       
       // Add a bitmap representation of the selected output to the clipboard - if this
       // bitmap isn't way too large for this to make sense:
-      MathCell::ClipToDrawRegion(false);
       wxBitmap bmp;
       // Try to fill bmp with a high-res version of the cells
       {
@@ -1737,7 +1744,6 @@ bool MathCtrl::Copy(bool astext)
           data->Add(new wxBitmapDataObject(bmp));
         }
       }
-      MathCell::ClipToDrawRegion(true);
     
       wxTheClipboard->SetData(data);
       wxTheClipboard->Close();
@@ -3757,7 +3763,6 @@ GroupCell* MathCtrl::CopyTree() {
  * Copy selection as bitmap
  */
 bool MathCtrl::CopyBitmap() {
-  MathCell::ClipToDrawRegion(true);
   MathCell* tmp = CopySelection();
 
   int bitmapScale = 3;
@@ -3768,7 +3773,6 @@ bool MathCtrl::CopyBitmap() {
 
   bool retval = bmp.ToClipboard();
   
-  MathCell::ClipToDrawRegion(false);
   return retval;
 }
 
@@ -3786,16 +3790,12 @@ wxSize MathCtrl::CopyToFile(wxString file) {
   }
   else
   {
-    MathCell::ClipToDrawRegion(true);
-
     MathCell* tmp = CopySelection();
 
     Bitmap bmp;
     bmp.SetData(tmp);
 
     wxSize retval=bmp.ToFile(file);
-
-    MathCell::ClipToDrawRegion(false);
 
     return retval;
   }
@@ -3804,16 +3804,12 @@ wxSize MathCtrl::CopyToFile(wxString file) {
 wxSize MathCtrl::CopyToFile(wxString file, MathCell* start, MathCell* end,
                             bool asData,int scale)
 {
-  MathCell::ClipToDrawRegion(true);
-
   MathCell* tmp = CopySelection(start, end, asData);
 
   Bitmap bmp(scale);
   bmp.SetData(tmp);
 
   wxSize retval = bmp.ToFile(file);;
-
-  MathCell::ClipToDrawRegion(false);
 
   return retval;
 }
@@ -3972,7 +3968,7 @@ void MathCtrl::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std
  */
 bool MathCtrl::ExportToHTML(wxString file) {
 
-  MathCell::ClipToDrawRegion(true);
+  MathCell::ClipToDrawRegion(false);
   // The path to the image directory as seen from the html directory
   wxString imgDir_rel;
   // The absolute path to the image directory
@@ -3998,7 +3994,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   if (!wxDirExists(imgDir)) {
     if (!wxMkdir(imgDir))
     {
-      MathCell::ClipToDrawRegion(false);
+      MathCell::ClipToDrawRegion(true);
       return false;
     }
   }
@@ -4006,7 +4002,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   wxFileOutputStream outfile(file);
   if (!outfile.IsOk())
   {
-    MathCell::ClipToDrawRegion(false);
+    MathCell::ClipToDrawRegion(true);
     return false;
   }
 
@@ -4017,7 +4013,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   wxFileOutputStream cssfile(cssfileName);
   if (!cssfile.IsOk())
   {
-    MathCell::ClipToDrawRegion(false);
+    MathCell::ClipToDrawRegion(true);
     return false;
   }
 
@@ -4694,7 +4690,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
   outfile.Close();
   cssfile.Close();
 
-  MathCell::ClipToDrawRegion(false);
+  MathCell::ClipToDrawRegion(true);
   return outfileOK && cssOK;
 }
 

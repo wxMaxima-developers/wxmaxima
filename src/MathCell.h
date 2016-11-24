@@ -112,7 +112,7 @@ public:
   //! Is this cell inside the region that is currently drawn?
   bool InUpdateRegion()
     {
-      if(m_clipToDrawRegion) return true;
+      if(!m_clipToDrawRegion) return true;
       wxRect boundingBox(
         m_currentPoint+wxPoint(0,-m_center),
         m_currentPoint+wxPoint(0,-m_center)+wxPoint(m_width,m_height));
@@ -127,6 +127,7 @@ public:
    */
   static void ClipToDrawRegion(bool printing){m_clipToDrawRegion = printing;}
   //! Delete this cell and all cells that follow it in the list.
+  static bool Printing(){return !m_clipToDrawRegion;}
   void DestroyList();
   
   /*! Add a cell to the end of the list this cell is part of

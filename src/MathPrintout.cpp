@@ -107,7 +107,7 @@ bool MathPrintout::OnPrintPage(int num)
     config->Read(wxT("fontsize"), &fontsize);
 
     PrintHeader(num, dc, ppiScale);
-    MathCell::ClipToDrawRegion(true);
+    MathCell::ClipToDrawRegion(false);
     
     while (tmp != NULL && tmp->GetGroupType() != GC_TYPE_PAGEBREAK)
     {
@@ -127,10 +127,10 @@ bool MathPrintout::OnPrintPage(int num)
       if (tmp == NULL || tmp->BreakPageHere())
         break;
     }
-    MathCell::ClipToDrawRegion(false);
+    MathCell::ClipToDrawRegion(true);
     return true;
   }
-  MathCell::ClipToDrawRegion(false);
+  MathCell::ClipToDrawRegion(true);
   return false;
 }
 

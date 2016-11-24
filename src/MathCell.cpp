@@ -1048,4 +1048,4 @@ bool MathCell::IsMath()
 
 wxSize MathCell::m_canvasSize;
 wxRect MathCell::m_updateRegion;
-bool   MathCell::m_clipToDrawRegion;
+bool   MathCell::m_clipToDrawRegion = true;

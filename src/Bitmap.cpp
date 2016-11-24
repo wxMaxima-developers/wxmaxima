@@ -223,7 +223,7 @@ void Bitmap::GetMaxPoint(int* width, int* height)
 
 void Bitmap::Draw()
 {
-  MathCell::ClipToDrawRegion(true);
+  MathCell::ClipToDrawRegion(false);
   MathCell* tmp = m_tree;
   wxMemoryDC dc;
   dc.SelectObject(m_bmp);
@@ -283,7 +283,7 @@ void Bitmap::Draw()
   m_ppi = dc.GetPPI();
   m_ppi.x *= m_scale;
   m_ppi.y *= m_scale;
-  MathCell::ClipToDrawRegion(false);
+  MathCell::ClipToDrawRegion(true);
 }
 
 wxSize Bitmap::ToFile(wxString file)
