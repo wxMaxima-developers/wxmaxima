@@ -320,11 +320,19 @@ protected:
      After processing the input prompt it is removed from data.
    */
   void ReadPrompt(wxString &data);
+  /*! Reads the output of wxstatusbar() commands
+
+    wxstatusbar allows the user to give and update visual feedback from long-running 
+    commands and makes sure this feedback is deleted once the command is finished.
+   */
+  void ReadStatusBar(wxString &data);
   /*! Reads the math cell's contents from Maxima.
      
      Math cells are enclosed between the tags \<mth\> and \</mth\>. 
      This function removes the from data after appending them
      to the console.
+
+     After processing the status bar marker is removed from data.
    */
   void ReadMath(wxString &data);
   /*! read lisp errors

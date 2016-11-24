@@ -683,6 +683,24 @@ single-
       or <code>wxdeclare_subscript([variable_name1,variable_name2,...]);</code>
       Declaring a variable as subscripted can be reverted using the following
       command: <code>wxdeclare_subscript(variable_name,false);</code> </p>
+    <a name="statusbar"></a>
+    <h3 class="section">User feedback in the statusbar</h3>
+    <p>Long-runnning commands can provide user-feedback in the status bar.
+      This user feedback is replaced by any new feedback that is placed there
+      (allowing to use it as a progress indicator) and is deleted as soon as the
+      current command sent to maxima is finished. It is safe to include
+      <code> wxstatusbar()</code> commands in code that might be run outside of
+      wxMaxima as in this case the command will just be left unevelated.
+    </p>
+
+    <div class="example">
+      <pre class="example">
+(%i2)	for i:1 thru 10 do
+	    (
+	        wxstatusbar(concat("Pass ",i)),
+	        a:makelist(o^i,o,1,10000)
+	    )$
+</pre></div>
     <a name="Plotting"></a>
     <h3 class="section">2.2 Plotting</h3>
     <p>Plotting (having fundamentally to do with graphics) is a place where a
@@ -1331,29 +1349,30 @@ pngdraw2d("Test",
           <ul class="no-bullet">
             <li><a name="toc-Subscripted-variables" href="#Subscripted-variables">2.1
                 Subscripted variables</a></li>
-            <li><a name="toc-Plotting" href="#Plotting">2.2 Plotting</a>
+            <li><a name="toc-Statusbar" href="#statusbar">2.2 Providing user-feedback in the status bar</a></li>
+            <li><a name="toc-Plotting" href="#Plotting">2.3 Plotting</a>
               <ul class="no-bullet">
-                <li><a name="toc-Embedding-a-plot-into-the-work-sheet" href="#Embedding-a-plot-into-the-work-sheet">2.2.1
+                <li><a name="toc-Embedding-a-plot-into-the-work-sheet" href="#Embedding-a-plot-into-the-work-sheet">2.3.1
                     Embedding a plot into the work sheet</a></li>
-                <li><a name="toc-Making-embedded-plots-bigger-or-smaller" href="#Making-embedded-plots-bigger-or-smaller">2.2.2
+                <li><a name="toc-Making-embedded-plots-bigger-or-smaller" href="#Making-embedded-plots-bigger-or-smaller">2.3.2
                     Making embedded plots bigger or smaller</a></li>
-                <li><a name="toc-Better-quality-plots" href="#Better-quality-plots">2.2.3
+                <li><a name="toc-Better-quality-plots" href="#Better-quality-plots">2.3.3
                     Better quality plots</a></li>
-                <li><a name="toc-Embedding-animations-into-the-spreadsheet" href="#Embedding-animations-into-the-spreadsheet">2.2.4
+                <li><a name="toc-Embedding-animations-into-the-spreadsheet" href="#Embedding-animations-into-the-spreadsheet">2.3.4
                     Embedding animations into the spreadsheet</a></li>
                 <li><a name="toc-Opening-multiple-plots-in-contemporaneous-windows"
-                    href="#Opening-multiple-plots-in-contemporaneous-windows">2.2.5
+                    href="#Opening-multiple-plots-in-contemporaneous-windows">2.3.5
                     Opening multiple plots in contemporaneous windows</a></li>
               </ul>
             </li>
-            <li><a name="toc-Embedding-graphics" href="#Embedding-graphics">2.3
+            <li><a name="toc-Embedding-graphics" href="#Embedding-graphics">2.4
                 Embedding graphics</a></li>
-            <li><a name="toc-wxmaximarc" href="#wxmaximarc">2.4 wxmaximarc</a></li>
-            <li><a name="toc-Special-variables" href="#Special-variables">2.5
+            <li><a name="toc-wxmaximarc" href="#wxmaximarc">2.5 wxmaximarc</a></li>
+            <li><a name="toc-Special-variables" href="#Special-variables">2.6
                 Special variables</a></li>
-            <li><a name="toc-Pretty_002dprinting-2D-output" href="#Pretty_002dprinting-2D-output">2.6
+            <li><a name="toc-Pretty_002dprinting-2D-output" href="#Pretty_002dprinting-2D-output">2.7
                 Pretty-printing 2D output</a></li>
-            <li><a name="toc-Bug-reporting" href="#Bug-reporting">2.7 Bug
+            <li><a name="toc-Bug-reporting" href="#Bug-reporting">2.8 Bug
                 reporting</a></li>
           </ul>
         </li>
@@ -1528,6 +1547,8 @@ pngdraw2d("Test",
     the quality of <span style="font-style: italic;">gnuplot</span> plots<br>
     <a href="#Opening-multiple-plots-in-contemporaneous-windows">Plots, multiple</a>:
     open multiple plots in contemporaneous windows<br>
+    <a href="#statusbar">Progress indicators</a>: Giving user feedback in the status
+    bar<br>
     <br>
     <strong>R</strong><br>
     <a href="#I-lost-a-cell-contents-and-undo-doesn_0027t-remember">Recover lost
@@ -1538,6 +1559,8 @@ pngdraw2d("Test",
     dialog boxes, enter commands, and enter special characters<br>
     <a href="#index-Startup-File">Startup file location</a>: location of an
     initialization file that is passed to <em>wxMaxima</em> when it opens<br>
+    <a href="#statusbar">Status bar</a>: Giving user feedback in the status
+    bar<br>
     <a href="#Subscripted-variables">Subscripted variables</a>: using the
     command wxsubscripts to display subscripted variables<br>
     <br>

@@ -713,11 +713,14 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
         // the data string we got - but only do so after the piece of information it
         // is able to detect has been transferred as a whole.
         ReadLoadSymbols(m_currentOutput);
-        
+
+        // Handle XML text: Status bar updates
+        ReadStatusBar(m_currentOutput);
+
         // Handle text that isn't XML output: Mostly Error messages or warnings.
         if(!m_first)
           ReadMiscText(m_currentOutput);
-        
+
         // Handle XML text: All 1D and 2D maths for example.
         ReadMath(m_currentOutput);
         
@@ -1103,8 +1106,14 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
   int newlinepos = data.Find("\n");
   int retval = newlinepos;
   int mthpos = data.Find("<mth>");
+  int lblpos = data.Find("<lbl>");
+  int statpos = data.Find("<statusbar>");
   if((newlinepos == wxNOT_FOUND) || ((mthpos != wxNOT_FOUND)&&(mthpos<newlinepos)))
     retval = mthpos;
+  if((newlinepos == wxNOT_FOUND) || ((lblpos != wxNOT_FOUND)&&(lblpos<newlinepos)))
+    retval = lblpos;
+  if((newlinepos == wxNOT_FOUND) || ((statpos != wxNOT_FOUND)&&(statpos<newlinepos)))
+    retval = statpos;
   return retval;
 }
 
@@ -1169,6 +1178,30 @@ void wxMaxima::ReadMiscText(wxString &data)
   }   
 }
 
+void wxMaxima::ReadStatusBar(wxString &data)
+{
+  if(data.IsEmpty())
+    return;
+  
+  wxString sts = wxT("</statusbar>");
+  int end;
+  if ((end = data.Find(sts)) != wxNOT_FOUND)
+  {
+    wxString o = data.Left(end);
+    int start = data.Find("<statusbar>");
+    
+    wxASSERT_MSG(start != wxNOT_FOUND, _("Bug: Found a statusbar end marker without any matching start marker."));
+    if(start != wxNOT_FOUND)
+      o = o.SubString(start + sts.Length()-1,o.Length());
+    else
+      start = 0;
+
+    SetStatusText(o,0);
+    
+    data = data.Left(start) +
+      data.SubString(end + sts.Length(), data.Length());
+  }
+}
 
 /***
  * Checks if maxima displayed a new chunk of math

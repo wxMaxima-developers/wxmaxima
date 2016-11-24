@@ -29,6 +29,9 @@
 (defvar $wxfilename "")
 (defvar $wxdirname "")
 
+(defun $wxstatusbar (status)
+  (format t "<statusbar>~a</statusbar>~%" status))
+
 (defun wx-cd (dir)
   (when $wxchangedir
     (let ((dir (cond ((pathnamep dir) dir)

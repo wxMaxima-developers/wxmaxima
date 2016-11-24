@@ -118,6 +118,8 @@ bool AutoComplete::LoadSymbols(wxString file)
   m_wordList[command].Add(wxT("wxsubscripts"));
   m_wordList[command].Add(wxT("wxdeclare_subscripted"));
   m_wordList[tmplte].Add(wxT("wxdeclare_subscripted(<name>,<[false]>)"));
+  m_wordList[command].Add(wxT("wxstatusbar"));
+  m_wordList[tmplte ].Add(wxT("wxstatusbar(<string>)"));
 
   /// Load private symbol list (do something different on Windows).
   wxString privateList;
