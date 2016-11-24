@@ -1104,21 +1104,24 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
 int wxMaxima::GetMiscTextEnd(const wxString &data)
 {
   int newlinepos = data.Find("\n");
-  int retval = newlinepos;
   int mthpos = data.Find("<mth>");
   int lblpos = data.Find("<lbl>");
   int statpos = data.Find("<statusbar>");
+  int prmptpos = data.Find("<PROMPT-P/>");
   if((newlinepos == wxNOT_FOUND) || ((mthpos != wxNOT_FOUND)&&(mthpos<newlinepos)))
-    retval = mthpos;
+    newlinepos = mthpos;
   if((newlinepos == wxNOT_FOUND) || ((lblpos != wxNOT_FOUND)&&(lblpos<newlinepos)))
-    retval = lblpos;
+    newlinepos = lblpos;
   if((newlinepos == wxNOT_FOUND) || ((statpos != wxNOT_FOUND)&&(statpos<newlinepos)))
-    retval = statpos;
-  return retval;
+    newlinepos = statpos;
+  if((newlinepos == wxNOT_FOUND) || ((prmptpos != wxNOT_FOUND)&&(prmptpos<newlinepos)))
+    newlinepos = prmptpos;
+  return newlinepos;
 }
 
 void wxMaxima::ReadMiscText(wxString &data)
 {
+  std::cerr<<"Data=\""<<data<<"\"\n";
   if(data.IsEmpty())
     return;
     
@@ -1126,9 +1129,13 @@ void wxMaxima::ReadMiscText(wxString &data)
   int newLinePos;
   while((newLinePos = GetMiscTextEnd(data)) != wxNOT_FOUND)
   {
+    std::cerr<<"newline=\""<<newLinePos<<"\"\n";
     if(data.StartsWith(wxT("<mth")))
       return;
-    
+    if(data.StartsWith(wxT("<statusbar")))
+      return;    
+    if(data.StartsWith(wxT("<PROMPT-P")))
+      return;    
     if(data.StartsWith(m_promptPrefix))
       return;
     
@@ -1139,6 +1146,7 @@ void wxMaxima::ReadMiscText(wxString &data)
     wxString textline;
     textline = data.Left(newLinePos) + wxT("\n");
 
+    std::cerr<<"Textline=\""<<textline<<"\"\n";
     if(data[newLinePos] == wxT('\n'))
     {
       data = data.Right(data.Length() - newLinePos - 1);
@@ -1147,6 +1155,8 @@ void wxMaxima::ReadMiscText(wxString &data)
     {
       data = data.Right(data.Length() - newLinePos);
     }
+
+    std::cerr<<"End: Data=\""<<data<<"\"\n";
     wxString trimmedLine = textline;
 
     trimmedLine.Trim(true);
