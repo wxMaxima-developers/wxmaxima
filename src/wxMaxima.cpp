@@ -1121,7 +1121,6 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
 
 void wxMaxima::ReadMiscText(wxString &data)
 {
-  std::cerr<<"Data=\""<<data<<"\"\n";
   if(data.IsEmpty())
     return;
     
@@ -1129,7 +1128,6 @@ void wxMaxima::ReadMiscText(wxString &data)
   int newLinePos;
   while((newLinePos = GetMiscTextEnd(data)) != wxNOT_FOUND)
   {
-    std::cerr<<"newline=\""<<newLinePos<<"\"\n";
     if(data.StartsWith(wxT("<mth")))
       return;
     if(data.StartsWith(wxT("<statusbar")))
@@ -1146,7 +1144,6 @@ void wxMaxima::ReadMiscText(wxString &data)
     wxString textline;
     textline = data.Left(newLinePos) + wxT("\n");
 
-    std::cerr<<"Textline=\""<<textline<<"\"\n";
     if(data[newLinePos] == wxT('\n'))
     {
       data = data.Right(data.Length() - newLinePos - 1);
@@ -1156,7 +1153,6 @@ void wxMaxima::ReadMiscText(wxString &data)
       data = data.Right(data.Length() - newLinePos);
     }
 
-    std::cerr<<"End: Data=\""<<data<<"\"\n";
     wxString trimmedLine = textline;
 
     trimmedLine.Trim(true);
