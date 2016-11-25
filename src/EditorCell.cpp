@@ -2439,6 +2439,7 @@ void EditorCell::PositionToXY(int position, unsigned int* x,unsigned int* y)
     }
     else
       col++;
+    
     it++;pos++;
   }
 

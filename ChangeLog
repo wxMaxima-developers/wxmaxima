@@ -10,8 +10,10 @@ Current:
     messages, not in silently discarded math elements.
   * Integrals should now always be saved correcly.
   * Markdown: Block quote support
+  * Added a wxstatusbar() command that allows a long-ranging command to send a string
+    about its progress to the status bar.
   * If the maxima process has been killed by the operating system we should detect that
-    now in all cases even if the OS fails to notify us that the network connection with
+    now even if the OS fails to notify us that the network connection with
     maxima has dropped.
   * Support for cells that are >5000 pixels wide
   * Better High-DPI support
