@@ -39,6 +39,7 @@ TextCell::TextCell() : MathCell()
   m_height = -1;
   m_labelWidth = -1;
   m_labelHeight = -1;
+  m_oldFontSize = -1;
   m_realCenter = m_center = -1;
   m_fontSize = 12;
   m_fontSizeLabel = 12;
@@ -116,8 +117,9 @@ void TextCell::RecalculateWidths(int fontsize)
   Configuration *configuration = Configuration::Get();
   SetAltText();
 
-  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate())
+  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() || m_oldFontSize != fontsize)
   {
+    m_oldFontSize = fontsize;
     wxDC& dc = configuration->GetDC();
     double scale = configuration->GetScale();
     SetFont(fontsize);

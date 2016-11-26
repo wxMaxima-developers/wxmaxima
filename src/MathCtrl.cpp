@@ -5678,7 +5678,8 @@ void MathCtrl::AddDocumentToEvaluationQueue()
 {
   FollowEvaluation(true);
   GroupCell* tmp = m_tree;
-  while (tmp != NULL) {
+  while (tmp != NULL)
+  {
     {
       AddToEvaluationQueue(tmp);
       tmp = dynamic_cast<GroupCell*>(tmp->m_next);
@@ -5708,7 +5709,8 @@ void MathCtrl::AddEntireDocumentToEvaluationQueue()
 {
   FollowEvaluation(true);
   GroupCell* tmp = m_tree;
-  while (tmp != NULL) {
+  while (tmp != NULL)
+  {
     AddToEvaluationQueue(tmp);
     m_evaluationQueue->AddHiddenTreeToQueue(tmp);
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);

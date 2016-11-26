@@ -76,6 +76,13 @@ protected:
 
   bool m_alt, m_altJs;
   int m_realCenter;
+  /*! The font size we had the last time we were recalculating this cell
+
+    If a fraction or similar is broken into two lines this changes \f$ \frac{a}{b}\f$ to 
+    \f$ a/b\f$. \f$ \Longrightarrow\f$ we need a mechanism that tells us that the font 
+    size has changed and we need to re-calculate the text width.
+   */
+  int m_oldFontSize;
   //! The line height
   int m_fontSize;
   //! The actual font size for labels (that have a fixed width)
