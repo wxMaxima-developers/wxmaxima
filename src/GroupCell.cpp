@@ -1666,19 +1666,22 @@ bool GroupCell::Contains(GroupCell *cell)
   GroupCell *tmp = this;
 
   // Iterate through all cells
-  while(tmp)
+  while(tmp != NULL)
   {
     // If this is the cell we search for we can end the search.
     if(tmp == cell)
       return true;
 
     // If this cell contains a hidden tree we have to search that at well.
-    if ((tmp->IsFoldable()) && (tmp->GetHiddenTree()) )
-      if (this->GetHiddenTree()->Contains(cell))
+    if ((tmp->IsFoldable()) && (tmp->GetHiddenTree()) != NULL)
+    {
+      std::cerr<<"Hidden\n";
+      if (tmp->GetHiddenTree()->Contains(cell))
         return true;
-
+    }
+    
     // Step to the next cell.
-    tmp= dynamic_cast<GroupCell*>(tmp->m_next);
+    tmp=dynamic_cast<GroupCell*>(tmp->m_next);
   }
   
   return false;
