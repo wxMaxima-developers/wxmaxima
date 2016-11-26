@@ -32,7 +32,7 @@
 (defun $wxstatusbar (status)
   (format t "<statusbar>~a</statusbar>~%" status))
 
-(setf SB-IMPL::*DEFAULT-EXTERNAL-FORMAT* :utf-8)
+#+sbcl (setf SB-IMPL::*DEFAULT-EXTERNAL-FORMAT* :utf-8)
 
 (defun wx-cd (dir)
   (when $wxchangedir
