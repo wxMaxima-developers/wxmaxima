@@ -3024,10 +3024,6 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
       file = fileDialog.GetPath();
       if (file.Length())
       {
-        // Saving calls wxYield(), exporting does do so, too => we need to
-        // avoid triggering an autosave during export.
-        m_autoSaveTimer.Stop();
-        
         int ext = fileDialog.GetFilterIndex();
         if((file.Right(5) != wxT(".html")) &&
            (file.Right(4) != wxT(".mac")) &&
@@ -3238,11 +3234,11 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
     m_autoSaveInterval *= 60000;
 
-    if((m_autoSaveInterval > 10000) && (m_console->m_currentFile.Length() > 0 ))
+    if(m_autoSaveInterval > 10000)
       m_autoSaveTimer.StartOnce(m_autoSaveInterval);
     else
       m_autoSaveTimer.Stop();
-      
+    
     int defaultPlotWidth = 800;
     config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
     int defaultPlotHeight = 600;
