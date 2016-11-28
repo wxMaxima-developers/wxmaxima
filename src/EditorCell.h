@@ -211,7 +211,7 @@ public:
   //! Is there any text selected right now?
   bool SelectionActive()
   {
-    return (m_selectionStart != -1)&&(m_selectionEnd != -1);
+    return (m_selectionStart >= 0)&&(m_selectionEnd >= 0);
   }
 
   bool CanCopy()

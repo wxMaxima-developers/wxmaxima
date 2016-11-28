@@ -170,6 +170,8 @@ void MathPrintout::BreakPages()
     {
       if (tmp->GetGroupType() != GC_TYPE_PAGEBREAK)
         currentHeight = marginY + tmp->GetMaxHeight() + headerHeight;
+      else
+        currentHeight = marginY;
       tmp->BreakPage(true);
       m_pages.push_back(tmp);
       m_numberOfPages++;
