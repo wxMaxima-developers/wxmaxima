@@ -5126,9 +5126,9 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
 
     // Write input
     if (tmp->GetGroupType() == GC_TYPE_CODE) {
-      MathCell *txt = tmp->GetEditable();
+      EditorCell *txt = tmp->GetEditable();
       if (txt != NULL) {
-        wxString input = txt->ToString();
+        wxString input = txt->ToString(true);
 
         if (fixReorderedIndices)
           for (SimpleMathConfigurationIterator it = input; it.pos + 1 < it.input.length(); ++it)
@@ -5169,7 +5169,7 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
 
     // Write text
     else {
-      MathCell *txt = tmp->GetEditable();
+      EditorCell *txt = tmp->GetEditable();
 
       if (wxm) {
         switch (txt->GetType()) {
@@ -5198,7 +5198,7 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
       else
         AddLineToFile(output, wxT("/*"), false);
 
-      wxString comment = txt->ToString();
+      wxString comment = txt->ToString(true);
       AddLineToFile(output, comment, false);
 
       if (wxm) {
@@ -6822,7 +6822,7 @@ wxString MathCtrl::GetInputAboveCaret()
   if (!m_hCaretActive || m_hCaretPosition == NULL)
     return wxEmptyString;
 
-  MathCell *editor = m_hCaretPosition->GetEditable();
+  EditorCell *editor = dynamic_cast<EditorCell *>(m_hCaretPosition->GetEditable());
 
   if (editor != NULL)
     return editor->ToString();
