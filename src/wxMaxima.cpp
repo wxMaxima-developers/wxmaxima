@@ -2916,13 +2916,17 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
     break;
   case AUTO_SAVE_TIMER_ID:
     m_autoSaveIntervalExpired = true;
-    if((m_console->m_keyboardInactive) && (m_console->m_currentFile.Length() > 0) && SaveNecessary())
+    if(m_console->m_keyboardInactive)
     {
-      SaveFile(false);
+      if((m_console->m_currentFile.Length() > 0) && SaveNecessary())
+      {
+        SaveFile(false);
 	
+      }
+      m_autoSaveIntervalExpired = false;
+
       if(m_autoSaveInterval > 10000)
         m_autoSaveTimer.StartOnce(m_autoSaveInterval);
-      m_autoSaveIntervalExpired = false;
     }
     break;
   }
