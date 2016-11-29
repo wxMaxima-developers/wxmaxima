@@ -141,6 +141,12 @@ void EditorCell::Destroy()
   m_next = NULL;
 }
 
+
+wxString EditorCell::ToString()
+{
+  return ToString(false);
+}
+
 wxString EditorCell::ToString(bool dontLimitToSelection)
 {
   wxString text = m_text;
