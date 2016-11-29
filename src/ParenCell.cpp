@@ -136,7 +136,7 @@ void ParenCell::RecalculateWidths(int fontsize)
   {
     wxDC& dc = configuration->GetDC();
     m_innerCell->RecalculateHeightList(fontsize);
-    int size = m_innerCell->GetMaxHeight() * scale;
+    int size = m_innerCell->GetMaxHeight();
     /// BUG 2897415: Exporting equations to HTML locks up on Mac
     ///  there is something wrong with what dc.GetTextExtent returns,
     ///  make sure there is no infinite loop!
