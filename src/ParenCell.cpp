@@ -145,7 +145,7 @@ void ParenCell::RecalculateWidths(int fontsize)
     
     int fontsize1 = (int) ((fontsize * scale + 0.5));
 
-    if (size < 2*fontsize1)
+    if (size <= 2*fontsize1)
     {
       m_bigParenType = PARENTHESIS_NORMAL;
       dc.SetFont(
@@ -157,7 +157,7 @@ void ParenCell::RecalculateWidths(int fontsize)
     }
     else
     {
-      if (size < 4*fontsize1)
+      if (size <= 4.1*fontsize1)
       {
         m_bigParenType = PARENTHESIS_BIG;
         dc.SetFont( wxFont(fontsize1, wxFONTFAMILY_MODERN,
