@@ -3245,7 +3245,9 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
     int defaultPlotHeight = 600;
     config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
-    //      SendMaxima(wxString::Format(wxT(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))"),defaultPlotWidth,defaultPlotHeight));  
+    //      SendMaxima(wxString::Format(wxT(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))"),defaultPlotWidth,defaultPlotHeight));
+    m_console->RecalculateForce();
+    m_console->RequestRedraw();
   }
   break;
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
