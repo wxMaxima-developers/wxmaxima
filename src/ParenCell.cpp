@@ -163,8 +163,7 @@ void ParenCell::RecalculateWidths(int fontsize)
         dc.SetFont( wxFont(fontsize1, wxFONTFAMILY_MODERN,
                            wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                            configuration->GetTeXCMEX()));
-        dc.GetTextExtent(wxT(PAREN_OPEN),
-                         &m_signWidth, &m_signSize);
+        dc.GetTextExtent(wxT(PAREN_OPEN),&m_signWidth, &m_signSize);
       }
       else
       {
@@ -172,7 +171,6 @@ void ParenCell::RecalculateWidths(int fontsize)
 #ifdef __WXMSW__
         dc.GetTextExtent(wxT(PAREN_LEFT_TOP),
                          &m_signWidth, &m_signSize);
-        m_signSize *= 2;
 #else
         dc.GetTextExtent(wxT(PAREN_OPEN),
                          &m_signWidth, &m_signSize);
@@ -191,7 +189,7 @@ void ParenCell::RecalculateWidths(int fontsize)
       if(m_signSize > 0)
         while (m_signSize < TRANSFORM_SIZE(m_bigParenType, size) && i<40)
         {
-          int fontsize1 = (int) ((m_parenFontSize++ * scale + 0.5));
+          int fontsize1 = (int) ((++m_parenFontSize * scale + 0.5));
           dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                            wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                             m_bigParenType == 0 ?
@@ -304,9 +302,10 @@ void ParenCell::Draw(wxPoint point, int fontsize)
                     point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) -
                     (m_bigParenType > 0 ? m_signTop : 0));
       }
-      else {
-        int top = point.y - m_center - m_signTop;
-        int bottom = point.y + m_height - m_center - m_signTop - m_signSize / 2;
+      else
+      {
+        int top =    point.y - m_center - m_signTop;
+        int bottom = top + m_height - m_signSize / 2;
         dc.DrawText(wxT(PAREN_OPEN_TOP),
                     point.x,
                     top);

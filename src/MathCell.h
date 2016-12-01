@@ -539,7 +539,7 @@ public:
   virtual void SetParent(MathCell *parent) {m_group = parent;};
   //! Define which GroupCell is the parent of all cells in this list
   void SetParentList(MathCell *parent);
-  void SetStyle(int style) { m_textStyle = style; }
+  void SetStyle(int style) { m_textStyle = style; ResetData();}
   bool IsMath();
   void SetAltCopyText(wxString text) { m_altCopyText = text; }
   /*! Attach a copy of the list of cells that follows this one to a cell
