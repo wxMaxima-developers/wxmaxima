@@ -381,15 +381,16 @@ wxString EditorCell::ToXML()
 void EditorCell::RecalculateWidths(int fontsize)
 {
   //! Redo the wrapping of lines for non-code cells that support automatic line wrapping
-  if(m_type != MC_TYPE_INPUT)
-    
+  if(m_type != MC_TYPE_INPUT)    
     StyleText();
+  
   int charWidth;
   Configuration *configuration = Configuration::Get();
 
   m_isDirty = false;
   if (m_height == -1 || m_width == -1 || configuration->ForceUpdate())
   {
+    ResetData();
     wxDC& dc = configuration->GetDC();
     double scale = configuration->GetScale();
     SetFont(fontsize);
@@ -447,7 +448,6 @@ void EditorCell::RecalculateWidths(int fontsize)
     // The center lies in the middle of the 1st line
     m_center = m_charHeight / 2;
   }
-  ResetData();
 }
 
 wxString EditorCell::ToHTML()
