@@ -104,8 +104,6 @@ public:
     it between two expirys. 
    */
   wxTimer m_autoSaveTimer;
-  //! Has m_autoSaveTimer expired since the last save?
-  bool m_autoSaveIntervalExpired;
   //! Is triggered when a timer this class is responsible for requires
   void OnTimerEvent(wxTimerEvent& event);
   //! A timer that polls for output from the maxima process.

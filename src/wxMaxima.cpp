@@ -178,7 +178,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_console->m_keyboardInactiveTimer.SetOwner(this,KEYBOARD_INACTIVITY_TIMER_ID);
   m_maximaStdoutPollTimer.SetOwner(this,MAXIMA_STDOUT_POLL_ID);
 
-  m_autoSaveIntervalExpired = false;
   m_autoSaveTimer.SetOwner(this,AUTO_SAVE_TIMER_ID);
   
 #if wxUSE_DRAG_AND_DROP
@@ -2905,26 +2904,16 @@ void wxMaxima::OnTimerEvent(wxTimerEvent& event)
     }
   break;
   case KEYBOARD_INACTIVITY_TIMER_ID:
-    m_console->m_keyboardInactive = true;
-    if(m_autoSaveIntervalExpired)
-    {
-      if((m_console->m_currentFile.Length() > 0) && SaveNecessary())
-        SaveFile(false);
-      m_autoSaveIntervalExpired = false;
-      if(m_autoSaveInterval > 10000)
-        m_autoSaveTimer.StartOnce(m_autoSaveInterval);
-    }
-    break;
   case AUTO_SAVE_TIMER_ID:
-    m_autoSaveIntervalExpired = true;
-    if(m_console->m_keyboardInactive)
+    if((!m_console->m_keyboardInactiveTimer.IsRunning()) && (!m_autoSaveTimer.IsRunning()))
     {
-      if((m_console->m_currentFile.Length() > 0) && SaveNecessary())
-        SaveFile(false);
-      m_autoSaveIntervalExpired = false;
-
       if(m_autoSaveInterval > 10000)
+      {
+        if((m_console->m_currentFile.Length() > 0) && SaveNecessary())
+          SaveFile(false);
+        
         m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+      }
     }
     break;
   }

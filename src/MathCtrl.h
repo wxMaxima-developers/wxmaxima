@@ -697,9 +697,8 @@ public:
   MathCtrl(wxWindow* parent, int id, wxPoint pos, wxSize size);
   //! The destructor
   ~MathCtrl();
+  //! The timer that tells us when the keyboard is inactive so an autosave isn't disrupting
   wxTimer m_keyboardInactiveTimer;
-  //! Reads true if the keyboard was inactive for > 10 seconds
-  bool m_keyboardInactive;
 
   //! Clear the whole worksheet
   void DestroyTree();

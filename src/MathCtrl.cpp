@@ -99,7 +99,6 @@ wxScrolledCanvas(
   m_answerCell = NULL;
   m_scheduleUpdateToc = false;
   m_scrolledAwayFromEvaluation = false;
-  m_keyboardInactive = true;
   m_tree = NULL;
   m_mainToolBar = NULL;
   m_memory = NULL;
@@ -2484,7 +2483,6 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event) {
   // Track the activity of the keyboard. Setting the keyboard
   // to inactive again is done in wxMaxima.cpp
   m_keyboardInactiveTimer.StartOnce(10000);
-  m_keyboardInactive = false;
 
   if(event.ControlDown()&&event.AltDown())
   {
@@ -6813,8 +6811,6 @@ void MathCtrl::OnScrollChanged(wxScrollEvent &ev)
   // We don't want to start the autosave while the user is scrolling through
   // the document since this will shortly halt the scroll
   m_keyboardInactiveTimer.StartOnce(10000);
-  m_keyboardInactive = false;
-
 }
 
 wxString MathCtrl::GetInputAboveCaret()
