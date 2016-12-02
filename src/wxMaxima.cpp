@@ -2537,12 +2537,12 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
     menubar->Enable(MathCtrl::popid_merge_cells, false);
     menubar->Enable(wxID_PRINT, false);
   }
-  double zf = m_console->GetZoomFactor();
-  if (zf < 6.0)
+  double zf = Configuration::Get()->GetZoomFactor();
+  if (zf < Configuration::GetMaxZoomFactor())
     menubar->Enable(MathCtrl::menu_zoom_in, true);
   else
     menubar->Enable(MathCtrl::menu_zoom_in, false);
-  if (zf > 0.8)
+  if (zf > Configuration::GetMinZoomFactor())
     menubar->Enable(MathCtrl::menu_zoom_out, true);
   else
     menubar->Enable(MathCtrl::menu_zoom_out, false);
@@ -3317,15 +3317,10 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     }
     break;
   case MathCtrl::menu_zoom_in:
-    
-    if (m_console->GetZoomFactor() < 6.0) {
-      m_console->SetZoomFactor(m_console->GetZoomFactor() + 0.1);
-    }
+    m_console->SetZoomFactor(Configuration::Get()->GetZoomFactor() + 0.1);
     break;
   case MathCtrl::menu_zoom_out:
-    if (m_console->GetZoomFactor() > 0.8) {
-      m_console->SetZoomFactor(m_console->GetZoomFactor() - 0.1);
-    }
+    m_console->SetZoomFactor(Configuration::Get()->GetZoomFactor() - 0.1);
     break;
   case menu_zoom_80:
     m_console->SetZoomFactor(0.8);

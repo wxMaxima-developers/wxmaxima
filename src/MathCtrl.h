@@ -572,8 +572,6 @@ private:
   wxBitmap *m_memory;
   //! True if no changes have to be saved.
   bool m_saved;
-  //! The current zoom level
-  double m_zoomFactor;
   AutoComplete m_autocomplete;
   wxArrayString m_completions;
   bool m_autocompleteTemplates;
@@ -1018,7 +1016,6 @@ public:
   void UnfoldAll();
   GroupCell *TearOutTree(GroupCell *start, GroupCell *end);
   // methods for zooming the document in and out
-  double GetZoomFactor() { return m_zoomFactor; }
   void SetZoomFactor(double newzoom, bool recalc = true);
   void CommentSelection();
   //! Called if the user is scrolling through the document.

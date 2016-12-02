@@ -121,8 +121,6 @@ wxScrolledCanvas(
   AnimationRunning(false);
   m_saved = false;
   wxConfig *config = (wxConfig *)wxConfig::Get();
-  m_zoomFactor = 1.0; // Let the zoom factor default to 100%
-  config->Read(wxT("ZoomFactor"),&m_zoomFactor);
   m_evaluationQueue = new EvaluationQueue();
   AdjustSize();
   m_autocompleteTemplates = false;
@@ -206,8 +204,6 @@ MathCtrl::~MathCtrl() {
   
   delete m_evaluationQueue;
   m_evaluationQueue = NULL;
-  wxConfig *config = (wxConfig *)wxConfig::Get();
-  config->Write(wxT("ZoomFactor"),m_zoomFactor);
 }
 
 /***
@@ -268,7 +264,6 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
 
   m_configuration->SetContext(dcm);
   m_configuration->SetBounds(top, bottom);
-  m_configuration->SetZoomFactor(m_zoomFactor);
   int fontsize = m_configuration->GetDefaultFontSize(); // apply zoomfactor to defaultfontsize
 
   // Draw content
@@ -601,7 +596,6 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
     
     tmp->AppendOutput(newCell);
     
-    m_configuration->SetZoomFactor(m_zoomFactor);
     m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
 
     tmp->RecalculateAppended();
@@ -629,6 +623,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 
 void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
 {
+  Configuration::Get()->SetZoomFactor(newzoom);
   // Determine if we have a sane thing we can scroll to.
   MathCell *CellToScrollTo = NULL;
   if(CaretVisibleIs())
@@ -650,7 +645,6 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
       CellToScrollTo = CellToScrollTo -> m_next;
     }
   }
-  m_zoomFactor = newzoom;
   if (recalc)
   {
     RecalculateForce();
@@ -673,7 +667,6 @@ void MathCtrl::Recalculate(GroupCell *start,bool force)
   if(m_tree)
     m_tree->SetCanvasSize(GetClientSize());
 
-  m_configuration->SetZoomFactor(m_zoomFactor);
   m_configuration->SetForceUpdate(force);
   m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
 
@@ -2924,7 +2917,6 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event) {
     
     int height = m_activeCell->GetHeight();
     //   int fontsize = m_configuration->GetDefaultFontSize();
-    m_configuration->SetZoomFactor(m_zoomFactor);
     m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
     int fontsize = m_configuration->GetDefaultFontSize();
     
@@ -3592,11 +3584,7 @@ void MathCtrl::OnMouseExit(wxMouseEvent& event) {
 #ifdef GetMagnification
 void MathCtrl::OnMouseMagnify(wxMouseEvent& event)
 {
-  m_zoomFactor += 0.1*event.GetMagnification();
-  if (m_zoomFactor > 6.0)
-    m_zoomFactor = 6;
-  if (m_zoomFactor < 0.8)
-    m_zoomFactor = .8;
+  Configuration::SetZoomFactor(Configuration::GetZoomFactor() + 0.1*event.GetMagnification());
 }
 #endif
 
@@ -5409,7 +5397,7 @@ bool MathCtrl::ExportToWXMX(wxString file,bool markAsSaved)
   output << wxT("\n<wxMaximaDocument version=\"");
   output << DOCUMENT_VERSION_MAJOR << wxT(".");
   output << DOCUMENT_VERSION_MINOR << wxT("\" zoom=\"");
-  output << int(100.0 * m_zoomFactor) << wxT("\"");
+  output << int(100.0 * Configuration::Get()->GetZoomFactor()) << wxT("\"");
 
   // **************************************************************************
   // Find out the number of the cell the cursor is at and save this information
@@ -7021,8 +7009,6 @@ void MathCtrl::ScrollToCaret()
   {
     if(m_activeCell)
     {
-      m_configuration->SetZoomFactor(m_zoomFactor);
-
       wxPoint point = GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize());
       if(point.y==-1)
       {

@@ -72,7 +72,10 @@ public:
   //! Set the drawing context that is currently active
   void SetContext(wxDC &dc){m_dc = &dc;}
   ~Configuration();
-  void SetZoomFactor(double newzoom) { m_zoomFactor = newzoom; }
+  static double GetMinZoomFactor(){return 0.8;}
+  static double GetMaxZoomFactor(){return 6.0;}
+  void SetZoomFactor(double newzoom);
+  double GetZoomFactor(){return m_zoomFactor;}
   void SetScale(double scale) { m_scale = scale; }
   const double GetScale() { return m_scale; }
   //! Get a drawing context suitable for size calculations

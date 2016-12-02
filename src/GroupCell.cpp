@@ -1675,7 +1675,6 @@ bool GroupCell::Contains(GroupCell *cell)
     // If this cell contains a hidden tree we have to search that at well.
     if ((tmp->IsFoldable()) && (tmp->GetHiddenTree()) != NULL)
     {
-      std::cerr<<"Hidden\n";
       if (tmp->GetHiddenTree()->Contains(cell))
         return true;
     }

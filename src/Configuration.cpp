@@ -36,7 +36,6 @@ Configuration::Configuration(wxDC& dc) : m_dc(&dc)
   m_activeConfiguration = this;
 
   m_scale = 1.0;
-  m_zoomFactor = 1.0; // affects returned fontsizes
   m_top = -1;
   m_bottom = -1;
   m_forceUpdate = false;
@@ -74,6 +73,9 @@ void Configuration::ReadConfig()
   m_labelWidth = 4;
   config->Read(wxT("labelWidth"), &m_labelWidth);
 
+  m_zoomFactor = 1.0;
+  config->Read(wxT("ZoomFactor"),&m_zoomFactor);
+
   if (wxFontEnumerator::IsValidFacename(m_fontCMEX = wxT("jsMath-cmex10")) &&
       wxFontEnumerator::IsValidFacename(m_fontCMSY = wxT("jsMath-cmsy10")) &&
       wxFontEnumerator::IsValidFacename(m_fontCMRI = wxT("jsMath-cmr10")) &&
@@ -88,6 +90,17 @@ void Configuration::ReadConfig()
   wxConfig::Get()->Read(wxT("keepPercent"), &m_keepPercent);
 
   ReadStyle();
+}
+
+void Configuration::SetZoomFactor(double newzoom)
+{
+  if (newzoom > GetMaxZoomFactor())
+    newzoom = GetMaxZoomFactor();
+  if (newzoom < GetMinZoomFactor())
+    newzoom = GetMinZoomFactor();
+  
+   m_zoomFactor = newzoom;
+   wxConfig::Get()->Write(wxT("ZoomFactor"),m_zoomFactor);
 }
 
 Configuration::~Configuration()
