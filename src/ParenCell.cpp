@@ -70,6 +70,31 @@ MathCell* ParenCell::Copy()
   return tmp;
 }
 
+void ParenCell::SetFont(int fontsize)
+{
+  Configuration *configuration = Configuration::Get();
+  wxDC& dc = configuration->GetDC();
+  double scale = configuration->GetScale();
+  
+  int fontSize1 = (int) (((double)fontsize) * scale + 0.5);
+  fontSize1 = MAX(fontSize1, 1);
+  
+  wxFont font(fontSize1, wxFONTFAMILY_MODERN,
+              configuration->IsItalic(m_textStyle),
+              configuration->IsBold(m_textStyle),
+              configuration->IsUnderlined(m_textStyle),
+              configuration->GetFontName(m_textStyle),
+              configuration->GetFontEncoding());
+  wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+  dc.SetFont(font);
+  
+  // A fallback if the font we selected is no more installed or isn't working at all.
+  if(!dc.GetFont().IsOk())
+  {
+    dc.SetFont(wxFontInfo(10));
+  }
+}
+
 void ParenCell::Destroy()
 {
   if (m_innerCell != NULL)
@@ -100,6 +125,9 @@ void ParenCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = Configuration::Get();
   double scale = configuration->GetScale();
+
+  m_bigParenType = normal;
+  
   if (m_innerCell == NULL)
     m_innerCell = new TextCell;
 
@@ -107,71 +135,46 @@ void ParenCell::RecalculateWidths(int fontsize)
 
   wxDC& dc = configuration->GetDC();
   m_innerCell->RecalculateHeightList(fontsize);
-  int size = m_innerCell->GetMaxHeight();
+  int height = m_innerCell->GetMaxHeight();
   /// BUG 2897415: Exporting equations to HTML locks up on Mac
   ///  there is something wrong with what dc.GetTextExtent returns,
   ///  make sure there is no infinite loop!
   // Avoid a possible infinite loop.
-  if(size < 2) size = 2;
-    
-  int fontsize1 = (int) ((fontsize * scale + 0.5));
-
-  m_bigParenType = normal;
-  dc.SetFont(
-    wxFont(fontsize1, wxFONTFAMILY_MODERN,
-           wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-           configuration->GetTeXCMRI())
-    );
+  if(height < 1) height = 1;
+  SetFont(fontsize);
+  
   dc.GetTextExtent( wxT("("),&m_parenWidth, &m_parenHeight);
-  if (size >= 1.4*m_parenHeight)
+
+  if (height >= 1.4*m_parenHeight)
   {
+    // An x^2 is slightly higher than an ordinary parenthesis. But it still more or
+    // less fits into one. The current parenthesis contents is larger than that
+    // => We need to combine the parenthesis out of more than one unicode character.
     m_bigParenType = assembled;
     dc.GetTextExtent(Paren_Open_Top(),
                        &m_parenWidth, &m_parenTopHeight);
+    dc.GetTextExtent(Paren_Open_Mid(),
+                     &m_parenWidth, &m_parenMidHeight);
     dc.GetTextExtent(Paren_Open_Bottom(),
                      &m_parenWidth, &m_parenBottomHeight);
-  }
-    
-  if (m_bigParenType != PARENTHESIS_ASSEMBLED)
-  {
-    m_parenFontSize = fontsize;
-    fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
-      
-    int i=0;
-      
-      
-    if(m_signSize > 0)
-      while (m_signSize < TRANSFORM_SIZE(m_bigParenType, size) && i<1000)
-      {
-        int fontsize1 = (int) ((++m_parenFontSize * scale + 0.5));
-        dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                          wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                          m_bigParenType == 0 ?
-                          configuration->GetTeXCMRI() :
-                          configuration->GetTeXCMEX()));
-        dc.GetTextExtent(m_bigParenType == 0 ? wxT("(") :
-                         m_bigParenType == 1 ? Paren_Open() :
-                         Paren_Open_Top(),
-                         &m_signWidth, &m_signSize);
-        // Avoid an infinite loop.
-        if(m_signSize < 2) m_signSize = 2;
-        i++;
-      }
-  }
-  else
-  {
-    m_parenFontSize = fontsize;
-    fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
-    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                      wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                      m_bigParenType < 1 ?
-                      configuration->GetTeXCMRI() :
-                      configuration->GetTeXCMEX()));
-    dc.GetTextExtent(Paren_Open(), &m_signWidth, &m_signSize);
+
+    if((m_parenBottomHeight<1)||(m_parenTopHeight<1)||(m_parenMidHeight<1))
+    {
+      // Obviously the font we are using lacks the possibility to assemble big parenthesis.
+      // Therefore we will draw them by hand.
+      m_bigParenType = handdrawn;
+      m_parenHeight  = height;
+    }
+    else
+    {
+      // Calculate how many middle pieces we need in order to reach the parenthesis height we want.
+      m_parenMidNum = (height - m_parenTopHeight - m_parenBottomHeight + m_parenMidHeight / 2 - 1) / m_parenMidHeight;
+
+      m_parenHeight  = m_parenTopHeight + m_parenBottomHeight + m_parenMidNum * m_parenMidHeight;
+    }
   }
 
-  m_signTop = m_signSize / 5;
-  m_width = m_innerCell->GetFullWidth(scale) + 2*m_signWidth;
+  m_width = m_innerCell->GetFullWidth(scale) + 2*m_parenWidth;
 
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
@@ -182,12 +185,21 @@ void ParenCell::RecalculateHeight(int fontsize)
 {
   Configuration *configuration = Configuration::Get();
   double scale = configuration->GetScale();
-  m_innerCell->RecalculateHeightList(fontsize);
-  m_height = m_innerCell->GetMaxHeight() + SCALE_PX(2, scale);
-  m_center = m_innerCell->GetMaxCenter() + SCALE_PX(1, scale);
 
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
+
+  if(m_isBroken)
+  {
+    m_center = MAX(m_open->GetMaxCenter(),m_innerCell->GetMaxCenter());
+    m_height = MAX(m_open->GetMaxHeight(),m_innerCell->GetMaxHeight());
+  }
+  else
+  {
+    // The "fontsize * scale" part makes sure we leave some vertical space.
+    m_height = m_parenHeight + fontsize * scale / 3;
+    m_center = m_parenHeight/2;
+  }
 }
 
 void ParenCell::Draw(wxPoint point, int fontsize)
@@ -198,65 +210,99 @@ void ParenCell::Draw(wxPoint point, int fontsize)
   {
     double scale = configuration->GetScale();
     wxDC& dc = configuration->GetDC();
-    wxPoint in(point);
-
-    in.x = point.x + m_signWidth;
     SetForeground();
-    int fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
-    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                      wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                      m_bigParenType < 1 ?
-                      configuration->GetTeXCMRI() :
-                      configuration->GetTeXCMEX()));
-    if (m_bigParenType < 2)
+    SetFont(fontsize);
+    switch(m_bigParenType)
     {
-      dc.DrawText(m_bigParenType == 0 ? wxT("(") :
-                  Paren_Open(),
+    case normal:
+      dc.DrawText(Paren_Open(),
                   point.x,
-                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) -
-                  (m_bigParenType > 0 ? m_signTop : 0));
-      dc.DrawText(m_bigParenType == 0 ? wxT(")") :
-                  Paren_Close(),
-                  point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
-                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) -
-                  (m_bigParenType > 0 ? m_signTop : 0));
-    }
-    else
-    {
-      int top =    point.y - m_center - m_signTop;
-      int bottom = top + m_height - m_signSize / 2;
+                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale)
+        );
+      dc.DrawText(Paren_Close(),
+                  point.x + m_parenWidth + m_innerCell->GetFullWidth(scale),
+                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale)
+        );
+      break;
+      
+    case assembled:
+
+      // Draw the left parenthesis
       dc.DrawText(Paren_Open_Top(),
                   point.x,
-                  top);
-      dc.DrawText(Paren_Close_Top(),
-                  point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
-                  top);
+                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale)
+        );
+      for(int i=0;i<m_parenMidNum;i++)
+      {
+        dc.DrawText(Paren_Open_Mid(),
+                    point.x,
+                    point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) + m_parenTopHeight +
+                    i * m_parenMidHeight
+          );
+      }
       dc.DrawText(Paren_Open_Bottom(),
                   point.x,
-                  bottom);
-      dc.DrawText(Paren_Close_Bottom(),
-                  point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
-                  bottom);
-      top = top + m_signSize / 2;
+                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) + m_parenTopHeight +
+                  m_parenMidNum * m_parenMidHeight
+        );
 
-      wxASSERT_MSG(m_signSize>=10,_("Font issue: The Parenthesis sign is too small!"));
-      if(m_signSize <= 10)
-        m_signSize = 10;
-
-      if (top <= bottom)
+      // Draw the right parenthesis
+      dc.DrawText(Paren_Close_Top(),
+                  point.x + m_parenWidth + m_innerCell->GetFullWidth(scale),
+                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale)
+        );
+      for(int i=0;i<m_parenMidNum;i++)
       {
-        while (top < bottom)
-        {
-          dc.DrawText(Paren_Open_Mid(),
-                      point.x,
-                      top-1);
-          dc.DrawText(Paren_Close_Mid(),
-                      point.x + m_width - m_signWidth,
-                      top-1);
-          top += m_signSize / 10;
-        }
+        dc.DrawText(Paren_Close_Mid(),
+                    point.x + m_parenWidth + m_innerCell->GetFullWidth(scale),
+                    point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) + m_parenTopHeight +
+                    i * m_parenMidHeight
+          );
       }
+      dc.DrawText(Paren_Close_Bottom(),
+                  point.x + m_parenWidth + m_innerCell->GetFullWidth(scale),
+                  point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) + m_parenTopHeight +
+                  m_parenMidNum * m_parenMidHeight
+        );
+      break;
+      
+    case handdrawn:
+    default:
+      SetPen();
+      // left
+      dc.DrawLine(point.x + SCALE_PX(5, scale),
+                  point.y - m_innerCell->GetMaxCenter() + SCALE_PX(1, scale),
+                  point.x + SCALE_PX(2, scale),
+                  point.y - m_innerCell->GetMaxCenter() + SCALE_PX(7, scale));
+      dc.DrawLine(point.x + SCALE_PX(2, scale),
+                  point.y - m_innerCell->GetMaxCenter() + SCALE_PX(7, scale),
+                  point.x + SCALE_PX(2, scale),
+                  point.y + m_innerCell->GetMaxDrop() - SCALE_PX(7, scale));
+      dc.DrawLine(point.x + SCALE_PX(2, scale),
+                  point.y + m_innerCell->GetMaxDrop() - SCALE_PX(7, scale),
+                  point.x + SCALE_PX(5, scale),
+                  point.y + m_innerCell->GetMaxDrop() - SCALE_PX(1, scale));
+      // right
+      dc.DrawLine(point.x + m_width - SCALE_PX(5, scale) - 1,
+                  point.y - m_innerCell->GetMaxCenter() + SCALE_PX(1, scale),
+                  point.x + m_width - SCALE_PX(2, scale) - 1,
+                  point.y - m_innerCell->GetMaxCenter() + SCALE_PX(7, scale));
+      dc.DrawLine(point.x + m_width - SCALE_PX(2, scale) - 1,
+                  point.y - m_innerCell->GetMaxCenter() + SCALE_PX(7, scale),
+                  point.x + m_width - SCALE_PX(2, scale) - 1,
+                  point.y + m_innerCell->GetMaxDrop() - SCALE_PX(7, scale));
+      dc.DrawLine(point.x + m_width - SCALE_PX(2, scale) - 1,
+                  point.y + m_innerCell->GetMaxDrop() - SCALE_PX(7, scale),
+                  point.x + m_width - SCALE_PX(5, scale) - 1,
+                  point.y + m_innerCell->GetMaxDrop() - SCALE_PX(1, scale));
+      UnsetPen();
+
     }
+
+    wxPoint in(point);
+    in.x += m_parenWidth;
+    in.y += m_innerCell->GetMaxCenter();
+    in.y -= m_innerCell->GetMaxHeight() / 2;
     m_innerCell->DrawList(in, fontsize);
   }
 }
@@ -364,6 +410,8 @@ bool ParenCell::BreakUp()
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = m_close;
     m_nextToDraw = m_open;
+    m_center = MAX(m_open->GetMaxCenter(),m_innerCell->GetMaxCenter());
+    m_height = MAX(m_open->GetMaxHeight(),m_innerCell->GetMaxHeight());
     return true;
   }
   return false;
