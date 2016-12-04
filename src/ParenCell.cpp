@@ -201,7 +201,7 @@ void ParenCell::RecalculateHeight(int fontsize)
   else
   {
     // The "fontsize * scale" part makes sure we leave some vertical space.
-    m_height = m_parenHeight + fontsize * scale / 3;
+    m_height = m_parenHeight + fontsize * scale / 2;
     m_center = m_parenHeight/2;
   }
 }
