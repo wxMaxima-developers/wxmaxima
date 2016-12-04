@@ -149,7 +149,7 @@ void ParenCell::RecalculateWidths(int fontsize)
     m_bigParenType = small;
     
   
-  if (height >= 1.4*m_parenHeight)
+  if (height >= 1.6*m_parenHeight)
   {
     // An x^2 is slightly higher than an ordinary parenthesis. But it still more or
     // less fits into one. The current parenthesis contents is larger than that
@@ -308,7 +308,8 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     if(m_bigParenType != small)
     {
       in.y += m_innerCell->GetMaxCenter();
-      in.y -= (m_innerCell->GetMaxHeight() + 1) / 2;
+      // Todo: Why is the -6*scale necessary?
+      in.y -= (m_innerCell->GetMaxHeight() - 6*scale) / 2;
     }
     m_innerCell->DrawList(in, fontsize);
   }
