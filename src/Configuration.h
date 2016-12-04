@@ -170,7 +170,7 @@ public:
     return 0;
   }
   void Outdated(bool outdated) { m_outdated = outdated; }
-  const bool CheckTeXFonts() { return m_TeXFonts; }
+  const bool CheckTeXFonts() { return true; }
   const bool CheckKeepPercent() { return m_keepPercent; }
   const wxString GetTeXCMRI() { return m_fontCMRI; }
   const wxString GetTeXCMSY() { return m_fontCMSY; }
