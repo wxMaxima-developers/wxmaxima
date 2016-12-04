@@ -145,6 +145,10 @@ void ParenCell::RecalculateWidths(int fontsize)
   
   dc.GetTextExtent( wxT("("),&m_parenWidth, &m_parenHeight);
 
+  if(height >= m_parenHeight)
+    m_bigParenType = small;
+    
+  
   if (height >= 1.4*m_parenHeight)
   {
     // An x^2 is slightly higher than an ordinary parenthesis. But it still more or
@@ -214,6 +218,7 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     SetFont(fontsize);
     switch(m_bigParenType)
     {
+    case small:
     case normal:
       dc.DrawText(Paren_Open(),
                   point.x,
@@ -226,7 +231,6 @@ void ParenCell::Draw(wxPoint point, int fontsize)
       break;
       
     case assembled:
-
       // Draw the left parenthesis
       dc.DrawText(Paren_Open_Top(),
                   point.x,
@@ -301,8 +305,11 @@ void ParenCell::Draw(wxPoint point, int fontsize)
 
     wxPoint in(point);
     in.x += m_parenWidth;
-    in.y += m_innerCell->GetMaxCenter();
-    in.y -= m_innerCell->GetMaxHeight() / 2;
+    if(m_bigParenType != small)
+    {
+      in.y += m_innerCell->GetMaxCenter();
+      in.y -= (m_innerCell->GetMaxHeight() + 1) / 2;
+    }
     m_innerCell->DrawList(in, fontsize);
   }
 }

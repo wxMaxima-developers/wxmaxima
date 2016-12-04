@@ -115,9 +115,11 @@ private:
   enum parenthesisStyle
   {
     normal = 0,   //!< An ordinary parenthesis sign
-    assembled = 1,//!< Assemble a "Parenthesis top half sign", a bot half sign and (if needed) a
+    small  = 1,   //!< The content is slightly bigger than the parenthesis sign - which is
+                  // still normal-sized
+    assembled = 2,//!< Assemble a "Parenthesis top half sign", a bot half sign and (if needed) a
                               //   vertical line.
-    handdrawn = 2 //!< No suitable font => Draw the parenthesis by hand.
+    handdrawn = 3 //!< No suitable font => Draw the parenthesis by hand.
   };
 
   /* How to create a big parenthesis sign?
