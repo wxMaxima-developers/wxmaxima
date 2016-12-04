@@ -308,8 +308,8 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     if(m_bigParenType != small)
     {
       in.y += m_innerCell->GetMaxCenter();
-      // Todo: Why is the -6*scale necessary?
-      in.y -= (m_innerCell->GetMaxHeight() - 6*scale) / 2;
+      // Todo: Why is the manual correction of the y pos necessary?
+      in.y -= (m_innerCell->GetMaxHeight() - 2 - 2* Configuration::Get()->GetZoomFactor()) / 2;
     }
     m_innerCell->DrawList(in, fontsize);
   }
