@@ -80,9 +80,9 @@ void ParenCell::SetFont(int fontsize)
   fontSize1 = MAX(fontSize1, 1);
   
   wxFont font(fontSize1, wxFONTFAMILY_MODERN,
-              configuration->IsItalic(m_textStyle),
+              wxFONTSTYLE_NORMAL,
               configuration->IsBold(m_textStyle),
-              configuration->IsUnderlined(m_textStyle),
+              false, // parenthesis aren't underlined
               configuration->GetFontName(m_textStyle),
               configuration->GetFontEncoding());
   wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
