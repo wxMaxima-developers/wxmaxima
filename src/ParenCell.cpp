@@ -167,6 +167,7 @@ void ParenCell::RecalculateWidths(int fontsize)
       // Obviously the font we are using lacks the possibility to assemble big parenthesis.
       // Therefore we will draw them by hand.
       m_bigParenType = handdrawn;
+      m_parenWidth   = 8;
       m_parenHeight  = height;
     }
     else
