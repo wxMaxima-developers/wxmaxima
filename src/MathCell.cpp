@@ -969,18 +969,27 @@ void MathCell::SetPen()
 {
   Configuration *configuration = Configuration::Get();
   wxDC& dc = configuration->GetDC();
+
+  int linewidth;
+  if(Printing())
+    linewidth = Configuration::Get()->GetScale();
+  else
+    linewidth = Configuration::Get()->GetZoomFactor() * 1.5;
+  if (linewidth < 1)
+    linewidth = 1;
+  
   if (m_highlight)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_HIGHLIGHT),
-                1, wxPENSTYLE_SOLID)));
+                linewidth, wxPENSTYLE_SOLID)));
   else if (m_type == MC_TYPE_PROMPT)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_OTHER_PROMPT),
-                1, wxPENSTYLE_SOLID)));
+                linewidth, wxPENSTYLE_SOLID)));
   else if (m_type == MC_TYPE_INPUT)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_INPUT),
-                1, wxPENSTYLE_SOLID)));
+                linewidth, wxPENSTYLE_SOLID)));
   else
     dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_DEFAULT),
-                    1, wxPENSTYLE_SOLID)));
+                    linewidth, wxPENSTYLE_SOLID)));
 }
 
 /***

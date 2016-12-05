@@ -30,7 +30,6 @@
 #define PARENCELL_H
 
 #include "MathCell.h"
-#include "TextCell.h"
 #include "Setup.h"
 
 /*! The class that represents parenthesis that are wrapped around text
@@ -52,16 +51,6 @@ class ParenCell : public MathCell
 public:
   ParenCell();
   ~ParenCell();
-
-  wxString Paren_Open(){return wxT("(");}
-  wxString Paren_Open_Top(){return wxT("\x239b");}
-  wxString Paren_Open_Mid(){return wxT("\x239c");}
-  wxString Paren_Open_Bottom(){return wxT("\x239d");}
-  wxString Paren_Close(){return wxT(")");}
-  wxString Paren_Close_Top(){return wxT("\x239e");}
-  wxString Paren_Close_Mid(){return wxT("\x239f");}
-  wxString Paren_Close_Bottom(){return wxT("\x23a0");}
-  
   void Destroy();
   MathCell* Copy();
   void SetInner(MathCell *inner, int style);
@@ -80,46 +69,22 @@ public:
   wxString ToMathML();
   wxString ToOMML();
   wxString ToXML();
-  void SetFont(int fontsize);
   void SetParent(MathCell *parent);
-private:
-  MathCell *m_innerCell;
-  TextCell *m_open, *m_close;
+protected:
+  MathCell *m_innerCell, *m_open, *m_close;
   MathCell *m_last1;
   bool m_print;
-  int m_charWidth;
-  int m_charHeight;
-  int m_charWidth1;
-  int m_charHeight1;
-  /*! The height of the top part of the parenthesis.
-
-    Valid if the parenthesis is assembled out of more than 1 characters.
-   */
-  int m_parenTopHeight;
-  /*! The height of the bottom part of the parenthesis.
-
-    Valid if the parenthesis is assembled out of more than 1 characters.
-   */
-  int m_parenBottomHeight;
-  //! The height of the parenthesis
-  int m_parenHeight;
-  //! The number of middle parts being needed to reach an appropriate parenthesis size
-  int m_parenMidNum;
-  /*! The height of a middle part character of the parenthesis.
-
-    Valid if the parenthesis is assembled out of more than 1 characters; See also m_parenMidNum.
-   */
-  int m_parenMidHeight;
-  //! The width of an parenthesis
-  int m_parenWidth;
+#ifdef __WXMSW__
+  int m_charWidth, m_charHeight;
+  int m_charWidth1, m_charHeight1;
+#endif
+  int m_parenFontSize, m_signTop, m_signSize, m_signWidth;
   enum parenthesisStyle
   {
-    normal = 0,   //!< An ordinary parenthesis sign
-    small  = 1,   //!< The content is slightly bigger than the parenthesis sign - which is
-                  // still normal-sized
-    assembled = 2,//!< Assemble a "Parenthesis top half sign", a bot half sign and (if needed) a
+    PARENTHESIS_NORMAL = 0,   //!< An ordinary parenthesis sign
+    PARENTHESIS_BIG = 1    ,  //!< A "big parenthesis" sign
+    PARENTHESIS_ASSEMBLED = 2 //!< Assemble a "Parenthesis top half sign", a bot half sign and a
                               //   vertical line.
-    handdrawn = 3 //!< No suitable font => Draw the parenthesis by hand.
   };
 
   /* How to create a big parenthesis sign?

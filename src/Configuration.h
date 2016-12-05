@@ -73,7 +73,7 @@ public:
   void SetContext(wxDC &dc){m_dc = &dc;}
   ~Configuration();
   static double GetMinZoomFactor(){return 0.8;}
-  static double GetMaxZoomFactor(){return 6.0;}
+  static double GetMaxZoomFactor(){return 5.8;}
   void SetZoomFactor(double newzoom);
   double GetZoomFactor(){return m_zoomFactor;}
   void SetScale(double scale) { m_scale = scale; }
@@ -170,7 +170,7 @@ public:
     return 0;
   }
   void Outdated(bool outdated) { m_outdated = outdated; }
-  const bool CheckTeXFonts() { return true; }
+  const bool CheckTeXFonts() { return m_TeXFonts; }
   const bool CheckKeepPercent() { return m_keepPercent; }
   const wxString GetTeXCMRI() { return m_fontCMRI; }
   const wxString GetTeXCMSY() { return m_fontCMSY; }

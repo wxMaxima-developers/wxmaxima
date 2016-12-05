@@ -36,6 +36,7 @@ Configuration::Configuration(wxDC& dc) : m_dc(&dc)
   m_activeConfiguration = this;
 
   m_scale = 1.0;
+  m_zoomFactor = 1.0; // affects returned fontsizes
   m_top = -1;
   m_bottom = -1;
   m_forceUpdate = false;

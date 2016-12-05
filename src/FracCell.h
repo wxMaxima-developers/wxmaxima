@@ -30,6 +30,13 @@
 
 #include "MathCell.h"
 
+/* This class represents fractions.
+
+   Fractions can be drawn in 2 ways:
+     - As a 2D fraction (\f$ \frac{a}{b} \f$) if the fraction is narrow enough to fit
+       on the screen, or
+     - as a linear division (\f$ a/b \f$) if it doesn't. 
+ */
 class FracCell : public MathCell
 {
 public:
@@ -82,12 +89,20 @@ protected:
   bool m_exponent;
   int m_fracStyle;
   int m_expDivideWidth;
-  /*! The horizontal gap btween this frac and any minus before or after it
+  /*! The horizontal gap between this frac and any minus before it
   
     This gap hinders avoids the horizontal rule of a fraction from building a straight 
-    nearly-uninterrupted horizontal line together with a minus.
+    nearly-uninterrupted horizontal line together with a minus. It is only introduced
+    if there is an actual minus.
   */
-  int m_horizontalGap;
+  int m_horizontalGapLeft;
+  /*! The horizontal gap between this frac and any minus that follows it
+  
+    This gap hinders avoids the horizontal rule of a fraction from building a straight 
+    nearly-uninterrupted horizontal line together with a minus. It is only introduced
+    if there is an actual minus.
+  */
+  int m_horizontalGapRight;
 };
 
 #endif // FRACCELL_H

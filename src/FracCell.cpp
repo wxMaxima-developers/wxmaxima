@@ -39,7 +39,8 @@ FracCell::FracCell() : MathCell()
   m_expDivideWidth = 12;
   m_fracStyle = FC_NORMAL;
   m_exponent = false;
-  m_horizontalGap = 0;
+  m_horizontalGapLeft = 0;
+  m_horizontalGapRight = 0;
   
   m_open1 = NULL;
   m_close1 = NULL;
@@ -191,10 +192,19 @@ void FracCell::RecalculateWidths(int fontsize)
     dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                       wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                       configuration->GetFontName(TS_VARIABLE)));
-    dc.GetTextExtent(wxT("X"), &m_horizontalGap, &dummy);
-    m_horizontalGap /= 2;
+    if((m_previous!=NULL)&&(m_previous->ToString().EndsWith(wxT("-"))))
+      dc.GetTextExtent(wxT("X"), &m_horizontalGapLeft, &dummy);
+    else
+      m_horizontalGapLeft = 0;
+    m_horizontalGapLeft /= 2;
+    if((m_next!=NULL)&&(m_next->ToString().StartsWith(wxT("-"))))
+      dc.GetTextExtent(wxT("X"), &m_horizontalGapRight, &dummy);
+    else
+      m_horizontalGapRight = 0;
+    m_horizontalGapRight /= 2;
 
-    m_width = MAX(m_num->GetFullWidth(scale), m_denom->GetFullWidth(scale)) + 2 * m_horizontalGap;
+    m_width = MAX(m_num->GetFullWidth(scale), m_denom->GetFullWidth(scale)) +
+      m_horizontalGapLeft + m_horizontalGapRight;
   }
   m_open1->RecalculateWidths(fontsize);
   m_close1->RecalculateWidths(fontsize);
@@ -271,17 +281,19 @@ void FracCell::Draw(wxPoint point, int fontsize)
     }
     else
     {      
-      num.x = point.x + (m_width - m_num->GetFullWidth(scale)) / 2;
+      num.x = point.x + m_horizontalGapLeft +
+        (m_width-m_horizontalGapLeft-m_horizontalGapRight-m_num->GetFullWidth(scale)) / 2;
       num.y = point.y - m_num->GetMaxHeight() + m_num->GetMaxCenter() -
               SCALE_PX(2, scale);
       m_num->DrawList(num, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
 
-      denom.x = point.x + (m_width - m_denom->GetFullWidth(scale)) / 2;
+      denom.x = point.x + m_horizontalGapLeft +
+        (m_width-m_horizontalGapLeft-m_horizontalGapRight-m_denom->GetFullWidth(scale))/2;
       denom.y = point.y + m_denom->GetMaxCenter() + SCALE_PX(2, scale);
       m_denom->DrawList(denom, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
       SetPen();
       if (m_fracStyle != FC_CHOOSE)
-        dc.DrawLine(point.x + m_horizontalGap, point.y, point.x + m_width - m_horizontalGap, point.y);
+        dc.DrawLine(point.x + m_horizontalGapLeft, point.y, point.x + m_width - m_horizontalGapRight, point.y);
       UnsetPen();
     }
   }
