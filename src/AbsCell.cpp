@@ -98,7 +98,7 @@ void AbsCell::RecalculateWidths(int fontsize)
   Configuration *configuration = Configuration::Get();
   double scale = configuration->GetScale();
   m_innerCell->RecalculateWidthsList(fontsize);
-  m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(8, scale);
+  m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(8, scale) + 2 * GetDefaultLineWidth();
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
   ResetData();
@@ -126,17 +126,17 @@ void AbsCell::Draw(wxPoint point, int fontsize)
   {
     SetPen();
     wxPoint in;
-    in.x = point.x + SCALE_PX(4, scale);
+    in.x = point.x + SCALE_PX(4, scale) + GetDefaultLineWidth();
     in.y = point.y;
     m_innerCell->DrawList(in, fontsize);
 
-    dc.DrawLine(point.x + SCALE_PX(2, scale),
+    dc.DrawLine(point.x + SCALE_PX(2, scale) + GetDefaultLineWidth() / 2,
                 point.y - m_center + SCALE_PX(2, scale),
-                point.x + SCALE_PX(2, scale),
+                point.x + SCALE_PX(2, scale) + GetDefaultLineWidth() / 2,
                 point.y - m_center + m_height - SCALE_PX(2, scale));
-    dc.DrawLine(point.x + m_width - SCALE_PX(2, scale) - 1,
+    dc.DrawLine(point.x + m_width - SCALE_PX(2, scale) - 1 - GetDefaultLineWidth() / 2,
                 point.y - m_center + SCALE_PX(2, scale),
-                point.x + m_width - SCALE_PX(2, scale) - 1,
+                point.x + m_width - SCALE_PX(2, scale) - 1 - GetDefaultLineWidth() / 2,
                 point.y - m_center + m_height - SCALE_PX(2, scale));
     UnsetPen();
   }

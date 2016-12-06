@@ -962,14 +962,9 @@ void MathCell::DestroyList()
     tmp = next;
   }
 }
-/***
- * Set the pen in device context accordint to the style of the cell.
- */
-void MathCell::SetPen()
-{
-  Configuration *configuration = Configuration::Get();
-  wxDC& dc = configuration->GetDC();
 
+int MathCell::GetDefaultLineWidth()
+{
   int linewidth;
   if(Printing())
     linewidth = Configuration::Get()->GetScale();
@@ -977,19 +972,30 @@ void MathCell::SetPen()
     linewidth = Configuration::Get()->GetZoomFactor() * 1.5;
   if (linewidth < 1)
     linewidth = 1;
+
+  return linewidth;
+}
+
+/*!
+  Set the pen in device context according to the style of the cell.
+*/
+void MathCell::SetPen()
+{
+  Configuration *configuration = Configuration::Get();
+  wxDC& dc = configuration->GetDC();
   
   if (m_highlight)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_HIGHLIGHT),
-                linewidth, wxPENSTYLE_SOLID)));
+                                              GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
   else if (m_type == MC_TYPE_PROMPT)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_OTHER_PROMPT),
-                linewidth, wxPENSTYLE_SOLID)));
+                                              GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
   else if (m_type == MC_TYPE_INPUT)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_INPUT),
-                linewidth, wxPENSTYLE_SOLID)));
+                                              GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
   else
     dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_DEFAULT),
-                    linewidth, wxPENSTYLE_SOLID)));
+                                              GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
 }
 
 /***

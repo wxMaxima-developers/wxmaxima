@@ -293,7 +293,11 @@ void FracCell::Draw(wxPoint point, int fontsize)
       m_denom->DrawList(denom, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
       SetPen();
       if (m_fracStyle != FC_CHOOSE)
-        dc.DrawLine(point.x + m_horizontalGapLeft, point.y, point.x + m_width - m_horizontalGapRight, point.y);
+        dc.DrawLine(point.x + m_horizontalGapLeft + GetDefaultLineWidth() / 2,
+                    point.y,
+                    point.x + m_width - m_horizontalGapRight - GetDefaultLineWidth() / 2,
+                    point.y
+          );
       UnsetPen();
     }
   }
