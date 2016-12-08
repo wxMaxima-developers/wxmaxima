@@ -208,8 +208,6 @@ int MathCell::GetMaxCenter()
 
 /***
  * Get the maximum drop of cell.
-
-\todo Convert this function to not using recursive function calls any more.
  */
 int MathCell::GetMaxDrop()
 {
@@ -237,8 +235,6 @@ int MathCell::GetMaxHeight()
 }
 
 /*! Get full width of this group.
-
-  \todo Change not to use recursive function calls any more.
  */
 int MathCell::GetFullWidth(double scale)
 {

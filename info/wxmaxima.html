@@ -688,16 +688,19 @@ single-
     <p>Long-runnning commands can provide user-feedback in the status bar.
       This user feedback is replaced by any new feedback that is placed there
       (allowing to use it as a progress indicator) and is deleted as soon as the
-      current command sent to maxima is finished. It is safe to include
-      <code> wxstatusbar()</code> commands in code that might be run outside of
-      wxMaxima as in this case the command will just be left unevelated.
+      current command sent to maxima is finished. It is safe to use
+      <code> wxstatusbar()</code> even in libraries that might be used
+      with plain maxima (as opposed to wxMaxima): If wxMaxima isn't present
+      the <code> wxstatusbar()</code> command will just be left unevelated.
     </p>
-
+	       
     <div class="example">
       <pre class="example">
 (%i2)	for i:1 thru 10 do
 	    (
+	        /* Tell the user how far we got */
 	        wxstatusbar(concat("Pass ",i)),
+	        /* A truly long-running command */
 	        a:makelist(o^i,o,1,10000)
 	    )$
 </pre></div>
