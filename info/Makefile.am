@@ -12,7 +12,7 @@ help_DATA = wxmaxima.html wxmaxima.hhp $(figurefiles)
 EXTRA_DIST = manual.css $(html_DATA)\
     $(genericdirDATA) $(figurefiles) \
     wxmaximaicon.ico \
-    $(html_DATA) wxMaximaWindow.wxmx
+    $(html_DATA) wxMaximaWindow.wxmx wxmaxima.html wxmaxima.hhp
 
 
 if CHM
