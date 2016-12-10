@@ -973,7 +973,7 @@ int MathCell::GetDefaultLineWidth()
   if(Printing())
     linewidth = Configuration::Get()->GetScale();
   else
-    linewidth = Configuration::Get()->GetZoomFactor() * 1.5;
+    linewidth = Configuration::Get()->GetZoomFactor();
   if (linewidth < 1)
     linewidth = 1;
 
