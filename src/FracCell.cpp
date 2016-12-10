@@ -175,9 +175,11 @@ void FracCell::RecalculateWidths(int fontsize)
 
     int height;
     int fontsize1 = (int) ((double)(fontsize) * scale + 0.5);
-    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
+    wxFont font(fontsize1, wxFONTFAMILY_MODERN,
     		wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-    		configuration->GetFontName(TS_VARIABLE)));
+    		configuration->GetFontName(TS_VARIABLE));
+    font.SetPointSize(fontsize1);
+    dc.SetFont(font);
     dc.GetTextExtent(wxT("/"), &m_expDivideWidth, &height);
     m_width = m_num->GetFullWidth(scale) + m_denom->GetFullWidth(scale) + m_expDivideWidth;
   }
@@ -189,9 +191,11 @@ void FracCell::RecalculateWidths(int fontsize)
     // next minus.
     int dummy = 0;
     int fontsize1 = (int) ((double)(fontsize) * scale + 0.5);
-    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                      wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                      configuration->GetFontName(TS_VARIABLE)));
+    wxFont font (fontsize1, wxFONTFAMILY_MODERN,
+           wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
+                 configuration->GetFontName(TS_VARIABLE));
+    font.SetPointSize(fontsize1);
+    dc.SetFont(font);
     if((m_previous!=NULL)&&(m_previous->ToString().EndsWith(wxT("-"))))
       dc.GetTextExtent(wxT("X"), &m_horizontalGapLeft, &dummy);
     else

@@ -141,12 +141,14 @@ void TextCell::RecalculateWidths(int fontsize)
       wxASSERT_MSG((m_labelWidth>0)||(m_text==wxEmptyString),_("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
       while ((m_labelWidth >= m_width)&&(m_fontSizeLabel > 2)) {
         int fontsize1 = (int) (((double) --m_fontSizeLabel) * scale + 0.5);
-        dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-              configuration->IsItalic(m_textStyle),
-              configuration->IsBold(m_textStyle),
-              false, //configuration->IsUnderlined(m_textStyle),
-              configuration->GetFontName(m_textStyle),
-              configuration->GetFontEncoding()));
+        wxFont font(fontsize1, wxFONTFAMILY_MODERN,
+                    configuration->IsItalic(m_textStyle),
+                    configuration->IsBold(m_textStyle),
+                    false, //configuration->IsUnderlined(m_textStyle),
+                    configuration->GetFontName(m_textStyle),
+                    configuration->GetFontEncoding());
+        font.SetPointSize(fontsize1);
+        dc.SetFont(font);
         dc.GetTextExtent(m_text, &m_labelWidth, &m_labelHeight);
       }
     }
@@ -293,6 +295,7 @@ void TextCell::SetFont(int fontsize)
                       configuration->IsBold(m_textStyle),
                       configuration->IsUnderlined(m_textStyle),
                          m_texFontname);
+    font.SetPointSize(m_fontSize);
     wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
     dc.SetFont(font);
   }
@@ -307,6 +310,7 @@ void TextCell::SetFont(int fontsize)
                       m_fontname != wxEmptyString ?
                           m_fontname : configuration->GetFontName(m_textStyle),
                   configuration->GetFontEncoding());
+    font.SetPointSize(m_fontSize);
     wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
     dc.SetFont(font);
   }
@@ -323,6 +327,7 @@ void TextCell::SetFont(int fontsize)
                 false,
                 configuration->GetFontName(m_textStyle),
                 configuration->GetFontEncoding());
+    font.SetPointSize(m_fontSize);
     wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
     dc.SetFont(font);
   }
@@ -335,6 +340,7 @@ void TextCell::SetFont(int fontsize)
                 configuration->IsUnderlined(m_textStyle),
                 configuration->GetFontName(m_textStyle),
                 configuration->GetFontEncoding());
+    font.SetPointSize(m_fontSize);
     wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
     dc.SetFont(font);
   }

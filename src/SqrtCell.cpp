@@ -113,7 +113,9 @@ void SqrtCell::RecalculateWidths(int fontsize)
     m_signFontScale = 1.0;
     int fontsize1 = (int)(SIGN_FONT_SCALE*scale*fontsize*m_signFontScale + 0.5);
 
-    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, configuration->GetTeXCMEX()));
+    wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, configuration->GetTeXCMEX());
+    font.SetPointSize(fontsize1);
+    dc.SetFont(font);
     dc.GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
     m_width = m_innerCell->GetFullWidth(scale) + m_signWidth;
@@ -142,7 +144,9 @@ void SqrtCell::RecalculateWidths(int fontsize)
     }
 
     fontsize1 = (int)(SIGN_FONT_SCALE*scale*fontsize*m_signFontScale + 0.5);
-    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, configuration->GetTeXCMEX()));
+    font = wxFont(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, configuration->GetTeXCMEX());
+    font.SetPointSize(fontsize1);
+    dc.SetFont(font);
     dc.GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
     m_width = m_innerCell->GetFullWidth(scale) + m_signWidth;
@@ -187,7 +191,9 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
 
       int fontsize1 = (int)(SIGN_FONT_SCALE*scale*fontsize*m_signFontScale + 0.5);
 
-      dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, configuration->GetTeXCMEX()));
+      wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, configuration->GetTeXCMEX());
+      font.SetPointSize(fontsize1);
+      dc.SetFont(font);
       SetForeground();
       if (m_signType < 4) {
         dc.DrawText(

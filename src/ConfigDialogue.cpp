@@ -936,7 +936,8 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent& event)
   math = wxGetFontFromUser(this, wxFont(m_mathFontSize, wxFONTFAMILY_DEFAULT,
                                         wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
                                         false, m_mathFontName));
-
+  math.SetPointSize(m_mathFontSize);
+  
   if (math.Ok())
   {
     m_mathFontName = math.GetFaceName();
@@ -967,6 +968,8 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent& event)
                                         wxFONTWEIGHT_NORMAL,
                                         false, fontName,
                                         m_fontEncoding));
+  font.SetPointSize(fontsize);
+
   if (font.Ok())
   {
     if (event.GetId() == font_family)
@@ -1706,7 +1709,10 @@ END_EVENT_TABLE()
     italic = wxFONTSTYLE_SLANT;
   if (m_underlined)
     underlined = true;
-  dc.SetFont(wxFont(m_size, wxFONTFAMILY_MODERN, italic, bold, underlined, m_font));
+  wxFont font = wxFont(m_size, wxFONTFAMILY_MODERN, italic, bold, underlined, m_font);
+  font.SetPointSize(m_size);
+  dc.SetFont(font);
+
   dc.GetTextExtent(example, &text_width, &text_height);
 
   dc.DrawText(example, (panel_width - text_width) / 2,

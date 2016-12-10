@@ -160,9 +160,11 @@ void IntCell::RecalculateWidths(int fontsize)
   if (configuration->CheckTeXFonts()) {
     wxDC& dc = configuration->GetDC();
     int fontsize1 = (int) ((fontsize * scale * 1.5 + 0.5));
-    dc.SetFont( wxFont(fontsize1, wxFONTFAMILY_MODERN,
+    wxFont font(fontsize1, wxFONTFAMILY_MODERN,
 		       wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-		       configuration->GetTeXCMEX()));
+                configuration->GetTeXCMEX());
+    font.SetPointSize(fontsize1);
+    dc.SetFont(font);
     dc.GetTextExtent(wxT("\x5A"), &m_signWidth, &m_signSize);
 
 #if defined __WXMSW__
@@ -181,10 +183,12 @@ void IntCell::RecalculateWidths(int fontsize)
 #if defined __WXMSW__
     wxDC& dc = configuration->GetDC();
     int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
-    dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-		      wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
-		      false,
-                      configuration->GetSymbolFontName()));
+    wxFont font(fontsize1, wxFONTFAMILY_MODERN,
+                wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
+                false,
+                configuration->GetSymbolFontName());
+    font.SetPointSize(fontsize1);
+    dc.SetFont(font);
     dc.GetTextExtent(INTEGRAL_TOP, &m_charWidth, &m_charHeight);
 
     m_width = m_signWidth +
@@ -256,9 +260,11 @@ void IntCell::Draw(wxPoint point, int fontsize)
     {
       SetForeground();
       int fontsize1 = (int) ((fontsize * scale * 1.5 + 0.5));
-      dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-			wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                        configuration->GetTeXCMEX()));
+      wxFont font(fontsize1, wxFONTFAMILY_MODERN,
+                  wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
+                  configuration->GetTeXCMEX());
+      font.SetPointSize(fontsize1);
+      dc.SetFont(font);
       dc.DrawText(wxT("\x5A"),
                   sign.x,
                   sign.y - m_signTop);

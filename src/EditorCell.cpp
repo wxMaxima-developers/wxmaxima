@@ -762,12 +762,14 @@ void EditorCell::SetFont(int fontsize)
   m_underlined = configuration->IsUnderlined(m_textStyle);
   m_fontEncoding = configuration->GetFontEncoding();
 
-  dc.SetFont(wxFont(m_fontSize, wxFONTFAMILY_MODERN,
+  wxFont font(m_fontSize, wxFONTFAMILY_MODERN,
                     m_fontStyle,
                     m_fontWeight,
                     m_underlined,
                     m_fontName,
-                    m_fontEncoding));
+              m_fontEncoding);
+  font.SetPointSize(m_fontSize);
+  dc.SetFont(font);
 
 }
 
@@ -2507,13 +2509,15 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
 {
   wxString s;
   int fontsize1 = m_fontSize;
-
-  dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                    m_fontStyle,
-                    m_fontWeight,
-                    m_underlined,
-                    m_fontName,
-                    m_fontEncoding));
+  
+  wxFont font(fontsize1, wxFONTFAMILY_MODERN,
+              m_fontStyle,
+              m_fontWeight,
+              m_underlined,
+              m_fontName,
+              m_fontEncoding);
+  font.SetPointSize(fontsize1);
+  dc.SetFont(font);
 
   ClearSelection();
   wxPoint translate(point);
@@ -2585,12 +2589,15 @@ bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
   if (m_changeAsterisk)  
     text.Replace(wxT("*"), wxT("\xB7"));
 
-  dc.SetFont(wxFont(m_fontSize, wxFONTFAMILY_MODERN,
-                    m_fontStyle,
-                    m_fontWeight,
-                    m_underlined,
-                    m_fontName,
-                    m_fontEncoding));
+  wxFont font(m_fontSize, wxFONTFAMILY_MODERN,
+              m_fontStyle,
+              m_fontWeight,
+              m_underlined,
+              m_fontName,
+              m_fontEncoding);
+  font.SetPointSize(m_fontSize);
+  dc.SetFont(font);
+  
   wxPoint translate(point);
   translate.x -= m_currentPoint.x - 2;
   translate.y -= m_currentPoint.y - 2 - m_center;

@@ -73,7 +73,7 @@ public:
   void SetContext(wxDC &dc){m_dc = &dc;}
   ~Configuration();
   static double GetMinZoomFactor(){return 0.8;}
-  static double GetMaxZoomFactor(){return 5.8;}
+  static double GetMaxZoomFactor(){return 8.0;}
   void SetZoomFactor(double newzoom);
   double GetZoomFactor(){return m_zoomFactor;}
   void SetScale(double scale) { m_scale = scale; }
