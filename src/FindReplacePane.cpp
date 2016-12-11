@@ -41,43 +41,50 @@ FindReplacePane::FindReplacePane(wxWindow *parent,wxFindReplaceData *data):
   grid_sizer->AddGrowableCol(1,1);
   grid_sizer->AddGrowableCol(2,0);
 
-  grid_sizer->Add(new wxStaticText(this,-1,_("Find:")),wxSizerFlags().Expand());
+  grid_sizer->Add(new wxStaticText(this,-1,_("Find:")),wxSizerFlags().Right().Center().Border(wxALL, 5));
+
   m_searchText = new wxTextCtrl(this,-1,data->GetFindString());
   m_searchText->Connect(
     wxEVT_TEXT,
     wxCommandEventHandler(FindReplacePane::OnFindStringChange),
     NULL, this
     );
-  grid_sizer->Add(m_searchText,wxSizerFlags().Expand());
+  grid_sizer->Add(m_searchText,wxSizerFlags().Expand().Border(wxALL, 5));
 
   m_searchButton = new wxButton (this,wxID_FIND);
-  grid_sizer->Add(m_searchButton,wxSizerFlags().Expand());
+  grid_sizer->Add(m_searchButton,wxSizerFlags().Expand().Border(wxALL, 5));
   m_searchButton->Connect(
     wxEVT_BUTTON,
     wxCommandEventHandler(FindReplacePane::OnSearch),
     NULL, this
     );
-  grid_sizer->Add(new wxStaticText(this,-1,_("Replacement:")),wxSizerFlags().Expand());
+
+  grid_sizer->Add(new wxStaticText(this,-1,_("Replacement:")),wxSizerFlags().Right().Center().Border(wxALL, 5));
+
   m_replaceText = new wxTextCtrl(this,-1,data->GetReplaceString());
   m_replaceText->Connect(
     wxEVT_TEXT,
     wxCommandEventHandler(FindReplacePane::OnReplaceStringChange),
     NULL, this
     );
-  grid_sizer->Add(m_replaceText,wxSizerFlags().Expand());
+  grid_sizer->Add(m_replaceText,wxSizerFlags().Expand().Border(wxALL, 5));
+
   m_replaceButton = new wxButton (this,wxID_REPLACE);
   m_replaceButton->Connect(
     wxEVT_BUTTON,
     wxCommandEventHandler(FindReplacePane::OnReplace),
     NULL, this
     );
-  grid_sizer->Add(m_replaceButton,wxSizerFlags().Expand());
+  grid_sizer->Add(m_replaceButton,wxSizerFlags().Expand().Border(wxALL, 5));
 
-  grid_sizer->Add(new wxStaticText(this,-1,_("Direction:")),wxSizerFlags().Expand());
+  grid_sizer->Add(new wxStaticText(this,-1,_("Direction:")),wxSizerFlags().Right().Center().Border(wxALL, 5));
+
   wxBoxSizer *fbbox=new wxBoxSizer(wxHORIZONTAL);
   m_forward = new wxRadioButton(this,-1,_("Up"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
-  fbbox->Add(m_forward,wxSizerFlags().Expand());
+  fbbox->Add(m_forward,wxSizerFlags().Expand().Border(wxALL, 5));
   m_backwards = new wxRadioButton(this,-1,_("Down"));
+  fbbox->Add(m_backwards,wxSizerFlags().Expand().Border(wxALL, 5));
+
   m_forward->SetValue(!(data->GetFlags() & wxFR_DOWN));
   m_backwards->SetValue(!!(data->GetFlags() & wxFR_DOWN));
   m_forward->Connect(
@@ -91,21 +98,21 @@ FindReplacePane::FindReplacePane(wxWindow *parent,wxFindReplaceData *data):
     NULL, this
     );
 
-  fbbox->Add(m_backwards,wxSizerFlags().Expand());
   grid_sizer->Add(fbbox,wxSizerFlags().Expand());
+
   m_replaceAllButton = new wxButton (this,1,_("Replace All"));
-  grid_sizer->Add(m_replaceAllButton,wxSizerFlags().Expand());
+  grid_sizer->Add(m_replaceAllButton,wxSizerFlags().Expand().Border(wxALL, 5));
   m_replaceAllButton->Connect(
     wxEVT_BUTTON,
     wxCommandEventHandler(FindReplacePane::OnReplaceAll),
     NULL, this
     );
 
-  wxBoxSizer *vbox=new wxBoxSizer(wxVERTICAL);
-  vbox->Add(grid_sizer,wxSizerFlags().Expand());
+  grid_sizer->AddSpacer(0);
+  
   m_matchCase=new wxCheckBox(this,-1,_("Match Case"));
   m_matchCase->SetValue(!!(data->GetFlags() & wxFR_MATCHCASE));
-  vbox->Add(m_matchCase,wxSizerFlags().Expand());
+  grid_sizer->Add(m_matchCase,wxSizerFlags().Expand().Border(wxALL, 5));
   m_matchCase->Connect(
     wxEVT_CHECKBOX,
     wxCommandEventHandler(FindReplacePane::OnMatchCase),
@@ -115,7 +122,7 @@ FindReplacePane::FindReplacePane(wxWindow *parent,wxFindReplaceData *data):
   // If I press <tab> in the search text box I want to arrive in the
   // replacement text box immediately.
   m_replaceText->MoveAfterInTabOrder(m_searchText);
-  this->SetSizerAndFit(vbox);
+  this->SetSizerAndFit(grid_sizer);
 }
 
 void FindReplacePane::SetFindString(wxString string)
