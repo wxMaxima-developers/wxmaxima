@@ -1,29 +1,21 @@
-Current:
+16.12:
   * Not a change in wxMaxima, but useful: In maxima >5.38 the load() command can
     load .wxm files like it would load .mac files.
   * Better detection and diagnosis for maxima process that terminate unexpectedly
+    even if the OS fails to notify us that the network connection with
+    maxima has dropped.
   * Incremental search
   * Automatic line wrap
   * Bullet lists now use real bullets.
-  * A button that temporarily hides all code cells
-  * Errors in xml from maxima or in the output cells of .wxmx files now result in error
-    messages, not in silently discarded math elements.
-  * Integrals should now always be saved correcly.
   * Markdown: Block quote support
-  * Added a wxstatusbar() command that allows a long-ranging command to send a string
+  * A button that temporarily hides all code cells
+  * Massive speedups in the drawing code.
+  * Added a wxstatusbar() command that allows a long-ranging block() to send a string
     about its progress to the status bar.
-  * If the maxima process has been killed by the operating system we should detect that
-    now even if the OS fails to notify us that the network connection with
-    maxima has dropped.
   * Support for cells that are >5000 pixels wide
   * Better High-DPI support
-  * Massive speedups in the drawing code.
   * A Kabyle Translation for users of wxWidgets >= 3.0.1
   * Holding the "evaluate" key now evaluates all cells of the document one-by-one
-  * Even if we scrolled away from evaluation we want to scroll back if an error
-    occurs so the user can see that this has happened.
-  * Smarter decisions on when to recalculate all cell's sizes.
-  * Revised big parts of the cell size recalculation logic.
   * .wxm files now include image cells
   * Drag-and-drop now handles image cells
   * Copy bitmap now can generate higher-resolution bitmaps
@@ -31,15 +23,17 @@ Current:
     including RTF, MathML, wxm, bitmap and plain text.
   * A new "copy as plain text" right-click menu item that copies the input and
     output of a cell.
-  * Make sure that wxMaxima detects (and notifies the user) if maxima crashes
-    or runs out of memory.
   * An all-new manual and improved documentation of the source code.
-  * Parenthesis now are drawn using unicode characters, if available.
-  * Several small editor enhancements.
   * More unicode characters in the symbols pane
   * Several content assistent enhancements for platforms that support it.
   * Corrected a few scrolling bugs.
   * Shift+Click now selects text or cells.
+  * Several small editor enhancements.
+  * Even if we scrolled away from evaluation wxMaxima now scrolls back to the
+    cell if an error occurs.
+  * Integrals should now always be saved correctly.
+  * Errors in xml from maxima or in the output cells of .wxmx files now result in error
+    messages, not in silently discarded math elements.
   * Many additional bug fixes and performance improvements.
 
 16.04:
