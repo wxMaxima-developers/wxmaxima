@@ -256,29 +256,21 @@ int MathCell::GetFullWidth(double scale)
   return m_fullWidth;
 }
 
-/*! Get the width of the line this cell is the first cell of.
+/*! Get the width of this line.
+
+\todo Convert this function to not using recursive function calls any more.
  */
 int MathCell::GetLineWidth(double scale)
-{  
+{
+  int width = m_isBroken ? 0 : m_width;
   if (m_lineWidth == -1)
   {
-    
-    // The final line width will be the sum of the cell widths
-    // of n cells plus (n-1)*SCALE_PX(MC_CELL_SKIP, scale).
-    // The "-1" is done by starting with a negative space.
-    m_lineWidth = - SCALE_PX(MC_CELL_SKIP, scale);
-
-    MathCell *tmp = this;
-    while(tmp != NULL)
-    {
-      m_lineWidth += SCALE_PX(MC_CELL_SKIP, scale); 
-      if((tmp->m_isBroken) || (tmp->m_breakLine) ||
-         (tmp->m_type == MC_TYPE_MAIN_PROMPT))
-        break;
-
-      m_lineWidth += m_width; 
-        tmp = tmp->m_nextToDraw;
-    }
+    if (m_nextToDraw == NULL || m_nextToDraw->m_breakLine ||
+        m_nextToDraw->m_type == MC_TYPE_MAIN_PROMPT)
+      m_lineWidth = width;
+    else
+      m_lineWidth = width + m_nextToDraw->GetLineWidth(scale) +
+                    SCALE_PX(MC_CELL_SKIP, scale);
   }
   return m_lineWidth;
 }
