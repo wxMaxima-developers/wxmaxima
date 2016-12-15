@@ -1,3 +1,7 @@
+;; This is necessary to make file and directory names that contain special characters
+;; work under windows.
+#+sbcl (setf sb-impl::*default-external-format* :UTF-8)
+
 (in-package :maxima)
 
 ;; wxMaxima xml format (based on David Drysdale MathML printing)
@@ -32,8 +36,6 @@
 
 (defun $wxstatusbar (status)
   (format t "<statusbar>~a</statusbar>~%" status))
-
-#+sbcl (setf SB-IMPL::*DEFAULT-EXTERNAL-FORMAT* :utf-8)
 
 (defun wx-cd (dir)
   (when $wxchangedir
