@@ -2,8 +2,26 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_INIT([wxMaxima], [16.12.x-unofficial])
+
 AC_CONFIG_SRCDIR([src/wxMaxima.cpp])
 AM_INIT_AUTOMAKE
+
+dnl See if git exists.  If it does, update VERSION to include a git tag
+AC_CHECK_PROG(git_found, git, true, false)
+if test x"${git_found}" = xtrue; then
+    # Test to see if git describe works (discarding any output).  If
+    # it works, use it.  Otherwise, keep existing value of VERSION.
+    # (git describe fails if git is executed in a non-Git directory, e.g.,
+    # an unpacked tarball. Since the exit codes of git describe are undocumented,
+    # we cannot distinguish that from a missing annotated tag.
+    # Play it safe by refusing to change VERSION.)
+    if git describe > /dev/null 2>&1; then
+        VERSION="`git describe --dirty`"
+        # When building RPMs, hyphens in the version are not allowed, so
+        # replace them with underscores.
+        VERSION=`echo $VERSION | sed 's;-;_;g'`
+    fi
+fi
 
 AC_CONFIG_HEADER(src/Setup.h)
 
@@ -47,7 +65,6 @@ AC_ARG_ENABLE(printing,
 	[wxm_print=true])
 
 dnl osx compile options
-
 
 AC_ARG_WITH(macosx-sdk,
 [  --with-macosx-sdk=PATH  use an OS X SDK at PATH],
