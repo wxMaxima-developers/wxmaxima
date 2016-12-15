@@ -417,6 +417,9 @@ private:
   
   std::vector<StyledText> m_styledText;
 
+  //! How many chars do we need to indent text at the position the caret is currently at?
+  int GetIndentDepth(wxString text,int positionOfCaret);
+
 #if wxUSE_UNICODE
   /*! Handle ESC shortcuts for special characters
 

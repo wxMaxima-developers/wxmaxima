@@ -985,6 +985,64 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
   m_displayCaret = true;
 }
 
+int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
+{
+  int indentChars = 0;
+
+  // Determine how many parenthesis this cell opens or closes before the point
+  long pos = 0;
+  while((pos < (long)text.Length())&&(pos < positionOfCaret))
+  {
+    wxChar ch = text[pos];
+    if(ch == wxT('\\'))
+    {
+      pos++;
+      continue;
+    }
+        
+    if(ch == wxT('\"'))
+    {
+      pos++;
+      while(
+        (pos < (long)text.Length()) &&
+        (pos < positionOfCaret) &&
+        (text[pos] != wxT('\"'))
+        )
+        pos++;
+    }
+        
+    if(
+      (ch == wxT('(')) ||
+      (ch == wxT('[')) ||
+      (ch == wxT('{'))
+      )
+    {
+      indentChars += 4;
+    }
+        
+    if(
+      (ch == wxT(')')) ||
+      (ch == wxT(']')) ||
+      (ch == wxT('}'))
+      )  
+    {
+      indentChars -= 4;
+    }
+    pos++;
+  }
+
+  if((long)text.Length() > positionOfCaret)
+  {
+    if(
+      (text[positionOfCaret] == wxT(')')) ||
+      (text[positionOfCaret] == wxT(']')) ||
+      (text[positionOfCaret] == wxT('}'))
+      )
+      indentChars -= 4;
+  }
+  return indentChars;
+}
+
 bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
 {
   bool done = true;
@@ -1368,63 +1426,11 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
           while((m_text[m_positionOfCaret]==wxT(' '))&&(m_positionOfCaret<(long)m_text.Length()-1))
             m_positionOfCaret++;
       }
+
+      int indentChars = GetIndentDepth(m_text,m_positionOfCaret);
       
-      wxString indentString;
-      int indentChars = 0;
-
-      // Determine how many parenthesis this cell opens or closes before the point
-      long pos = 0;
-      while((pos < (long)m_text.Length())&&(pos < m_positionOfCaret))
-      {
-        wxChar ch = m_text[pos];
-        if(ch == wxT('\\'))
-        {
-          pos++;
-          continue;
-        }
-        
-        if(ch == wxT('\"'))
-        {
-          pos++;
-          while(
-            (pos < (long)m_text.Length()) &&
-            (pos < m_positionOfCaret) &&
-            (m_text[pos] != wxT('\"'))
-            )
-            pos++;
-        }
-        
-        if(
-          (ch == wxT('(')) ||
-          (ch == wxT('[')) ||
-          (ch == wxT('{'))
-          )
-        {
-          indentChars += 4;
-        }
-        
-        if(
-          (ch == wxT(')')) ||
-          (ch == wxT(']')) ||
-          (ch == wxT('}'))
-          )  
-        {
-          indentChars -= 4;
-        }
-        pos++;
-      }
-
-      if((long)m_text.Length() > m_positionOfCaret)
-      {
-        if(
-          (m_text[m_positionOfCaret] == wxT(')')) ||
-          (m_text[m_positionOfCaret] == wxT(']')) ||
-          (m_text[m_positionOfCaret] == wxT('}'))
-          )
-          indentChars -= 4;
-      }
-
       // The string we indent with.
+      wxString indentString;
       if(autoIndent && (indentChars > 0))
         for(int i=0;i<indentChars;i++)
           indentString += wxT(" ");
