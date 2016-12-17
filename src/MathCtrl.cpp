@@ -120,7 +120,6 @@ wxScrolledCanvas(
   m_animationTimer.SetOwner(this, ANIMATION_TIMER_ID);
   AnimationRunning(false);
   m_saved = false;
-  wxConfig *config = (wxConfig *)wxConfig::Get();
   m_evaluationQueue = new EvaluationQueue();
   AdjustSize();
   m_autocompleteTemplates = false;
