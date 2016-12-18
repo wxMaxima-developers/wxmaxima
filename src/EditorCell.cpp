@@ -1064,7 +1064,6 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
     if(!wxIsalnum(ch))
       {
         wxString rest = text.Right(text.Length()-pos-1);
-        std::cerr<<rest<<"\n";
         if(rest.StartsWith(wxT("do"))&&(!wxIsalnum(rest[2])))
         {
           if(!indentChars.empty())
