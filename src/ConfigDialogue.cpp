@@ -223,7 +223,7 @@ void ConfigDialogue::SetProperties()
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
   bool match, savePanes = true, UncompressedWXMX=true;
-  bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true, abortOnError = true, pollStdOut = false;
+  bool fixedFontTC = true, changeAsterisk, usejsmath = true, keepPercent = true, abortOnError = true, pollStdOut = false;
   bool enterEvaluates = false, saveUntitled = true,
     openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false,
     usePartialForDiff = false,
@@ -291,7 +291,7 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("documentclass"), &documentclass);
   config->Read(wxT("texPreamble"), &texPreamble);
   config->Read(wxT("autoSaveInterval"), &autoSaveInterval);
-  config->Read(wxT("changeAsterisk"), &changeAsterisk);
+  changeAsterisk = Configuration::Get()->GetChangeAsterisk();
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
   config->Read(wxT("enterEvaluates"), &enterEvaluates);
@@ -850,7 +850,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("showLength"), m_showLength->GetSelection());
   config->Write(wxT("autosubscript"), m_autosubscript->GetSelection());
   config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());
-  config->Write(wxT("changeAsterisk"), m_changeAsterisk->GetValue());
+  Configuration::Get()->SetChangeAsterisk(m_changeAsterisk->GetValue());
   config->Write(wxT("enterEvaluates"), m_enterEvaluates->GetValue());
   config->Write(wxT("saveUntitled"), m_saveUntitled->GetValue());
   config->Write(wxT("openHCaret"), m_openHCaret->GetValue());

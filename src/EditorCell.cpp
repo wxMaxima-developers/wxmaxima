@@ -44,8 +44,6 @@ EditorCell::EditorCell(wxString text) : MathCell()
 {
   m_numberOfLines = 1;
   m_charHeight = 12;
-  m_changeAsterisk = false;
-  wxConfig::Get()->Read(wxT("changeAsterisk"), &m_changeAsterisk);
   m_selectionChanged = false;
   m_oldSelectionStart = -1;
   m_oldSelectionEnd = -1;
@@ -681,7 +679,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
 
 #if defined __WXMSW__ || wxUSE_UNICODE
         // replace "*" with centerdot and "-" by a Minus if requested
-        if ((m_changeAsterisk = configuration->GetChangeAsterisk())!=0)
+        if (configuration->GetChangeAsterisk())
         {
           TextToDraw.Replace(wxT("*"), wxT("\xB7"));
           if (m_type == MC_TYPE_INPUT)
@@ -2601,7 +2599,7 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
   m_positionOfCaret = lineStart;
 
   wxString text = m_text;
-  if (m_changeAsterisk)  
+  if (Configuration::Get()->GetChangeAsterisk())  
   {
     text.Replace(wxT("*"), wxT("\xB7"));
     if (m_type == MC_TYPE_INPUT)
@@ -2660,7 +2658,7 @@ bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
 
   wxString s;
   wxString text = m_text;
-  if (m_changeAsterisk)
+  if (Configuration::Get()->GetChangeAsterisk())
   {
     text.Replace(wxT("*"), wxT("\xB7"));
     if (m_type == MC_TYPE_INPUT)
@@ -3252,7 +3250,7 @@ void EditorCell::StyleText()
   {
     // We have to style code
     wxString textToStyle = m_text;
-    if (m_changeAsterisk)
+    if (Configuration::Get()->GetChangeAsterisk())
     {
       textToStyle.Replace(wxT("*"), wxT("\xB7"));
       if (m_type == MC_TYPE_INPUT)

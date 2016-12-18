@@ -84,12 +84,6 @@ private:
   static wxString m_selectionString;
   long m_oldSelectionStart;
   long m_oldSelectionEnd;
-  /*! Replace a "*" by a centered dot?
-    
-    Normally we ask the parser for this piece of information. But during recalculation
-    of widths while selecting text we don't know our parser.
-   */
-  bool m_changeAsterisk;
 public:
   //! Set the string that is to be highlighted as "identical to the curent selection"
   static void SetSelectionString(wxString string)

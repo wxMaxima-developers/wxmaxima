@@ -111,14 +111,6 @@ public:
   {
     return m_fontEncoding;
   }
-  const bool GetChangeAsterisk()
-  {
-    return m_changeAsterisk;
-  }
-  void SetChangeAsterisk(bool changeAsterisk)
-  {
-    m_changeAsterisk = changeAsterisk;
-  }
   const int GetLabelWidth(){return m_labelWidth;}
   const int GetIndent() { return m_indent; }
   //! How much vertical space is to be left between two group cells?
@@ -182,6 +174,11 @@ public:
   void SetPrinter(bool printer) { m_printer = printer; }
   const bool GetPrinter() { return m_printer; }
   const bool GetMatchParens() { return m_matchParens; }
+  const bool GetChangeAsterisk() { return m_changeAsterisk; }
+  void SetChangeAsterisk(bool changeAsterisk)
+    {
+      wxConfig::Get()->Write(wxT("changeAsterisk"),m_changeAsterisk = changeAsterisk);
+    }
   const bool GetInsertAns() { return m_insertAns; }
   const bool RestartOnReEvaluation() {return m_restartOnReEvaluation;}
   const void RestartOnReEvaluation(bool arg)
@@ -192,6 +189,13 @@ public:
   //! Returns a pointer to the instance of Configuration that exists
   static Configuration *Get() {return m_activeConfiguration;}
 private:
+  /*! Replace a "*" by a centered dot?
+    
+    Normally we ask the parser for this piece of information. But during recalculation
+    of widths while selecting text we don't know our parser.
+   */
+  bool m_changeAsterisk;
+
   //! Automatically wrap long lines?
   bool m_autoWrap;
   //! Do we want to automatically close parenthesis?
@@ -211,7 +215,6 @@ private:
   int m_defaultFontSize, m_mathFontSize;
   wxString m_mathFontName;
   bool m_forceUpdate;
-  bool m_changeAsterisk;
   bool m_outdated;
   bool m_TeXFonts;
   bool m_keepPercent;

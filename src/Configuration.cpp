@@ -62,6 +62,9 @@ void Configuration::ReadConfig()
   m_autoWrap = true;
   config->Read(wxT("autoWrap"), &m_autoWrap);
 
+  m_changeAsterisk = true;
+  config->Read(wxT("changeAsterisk"), &m_changeAsterisk);
+
   m_restartOnReEvaluation = true;
   config->Read(wxT("restartOnReEvaluation"), &m_restartOnReEvaluation);
 
