@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-10 16:31+0100\n"
+"POT-Creation-Date: 2016-12-18 21:43+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ihor Rokach <rokach@tu.kielce.pl>\n"
 "Language-Team: \n"
@@ -74,7 +74,7 @@ msgstr ""
 msgid " (Graphics) "
 msgstr ""
 
-#: ../src/EditorCell.cpp:3187 ../src/EditorCell.cpp:3506
+#: ../src/EditorCell.cpp:3268 ../src/EditorCell.cpp:3587
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
@@ -631,7 +631,7 @@ msgstr "Przeglądaj"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2137
+#: ../src/MathCtrl.cpp:2136
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
@@ -655,22 +655,22 @@ msgstr ""
 msgid "Bug: Fraction without enumerator"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2369
+#: ../src/MathCtrl.cpp:2368
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5962
+#: ../src/MathCtrl.cpp:5961
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6036
+#: ../src/MathCtrl.cpp:6035
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6005
+#: ../src/MathCtrl.cpp:6004
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -684,11 +684,11 @@ msgstr ""
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
-#: ../src/AbsCell.cpp:202
+#: ../src/AbsCell.cpp:208
 msgid "Bug: No last cell in an absCell!"
 msgstr ""
 
-#: ../src/ConjugateCell.cpp:197
+#: ../src/ConjugateCell.cpp:203
 msgid "Bug: No last cell in an conjugateCell!"
 msgstr ""
 
@@ -696,7 +696,7 @@ msgstr ""
 msgid "Bug: No last cell in an denominator!"
 msgstr ""
 
-#: ../src/ExptCell.cpp:273
+#: ../src/ExptCell.cpp:278
 msgid "Bug: No last cell in an exponent of an exptCell!"
 msgstr ""
 
@@ -704,7 +704,7 @@ msgstr ""
 msgid "Bug: No last cell in an numerator!"
 msgstr ""
 
-#: ../src/ExptCell.cpp:263
+#: ../src/ExptCell.cpp:268
 msgid "Bug: No last cell in the base of an exptCell!"
 msgstr ""
 
@@ -712,17 +712,17 @@ msgstr ""
 msgid "Bug: No last cell inside a parenthesis!"
 msgstr ""
 
-#: ../src/SqrtCell.cpp:326
+#: ../src/SqrtCell.cpp:332
 msgid "Bug: No last cell inside a square root!"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2180
+#: ../src/MathCtrl.cpp:2179
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2147
+#: ../src/MathCtrl.cpp:2146
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 
@@ -730,35 +730,35 @@ msgstr ""
 msgid "Bug: Trying to append NULL to a group cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:620
+#: ../src/MathCtrl.cpp:619
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2071
+#: ../src/MathCtrl.cpp:2070
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6653
+#: ../src/MathCtrl.cpp:6652
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2149
+#: ../src/MathCtrl.cpp:2148
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1563
+#: ../src/MathCtrl.cpp:1562
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6006
+#: ../src/MathCtrl.cpp:6005
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5967 ../src/MathCtrl.cpp:6041 ../src/MathCtrl.cpp:6075
+#: ../src/MathCtrl.cpp:5966 ../src/MathCtrl.cpp:6040 ../src/MathCtrl.cpp:6074
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
@@ -979,7 +979,7 @@ msgstr "Przecinek oddziela kolejne współrzędne na osi OX"
 msgid "Comma separated y coordinates"
 msgstr "Przecinek oddziela kolejne współrzędne na osi OY"
 
-#: ../src/MathCtrl.cpp:1091
+#: ../src/MathCtrl.cpp:1090
 msgid "Comment Selection"
 msgstr "Zakomentuj zaznaczenie"
 
@@ -1113,8 +1113,8 @@ msgstr "Uprość wyrażenie trygonometryczne zawierające ułamki."
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Zamień funkcje trygonometryczne i hiperboliczne na eksponencjalne"
 
-#: ../src/MathCtrl.cpp:979 ../src/MathCtrl.cpp:992 ../src/MathCtrl.cpp:1038
-#: ../src/MathCtrl.cpp:1085 ../src/ToolBar.cpp:136
+#: ../src/MathCtrl.cpp:978 ../src/MathCtrl.cpp:991 ../src/MathCtrl.cpp:1037
+#: ../src/MathCtrl.cpp:1084 ../src/ToolBar.cpp:136
 msgid "Copy"
 msgstr "Kopiuj"
 
@@ -1127,12 +1127,12 @@ msgstr "Kopiuj ostatnie wejście\tCtrl+I"
 msgid "Copy Previous Output\tCtrl+U"
 msgstr "Kopiuj ostatnie wejście\tCtrl+I"
 
-#: ../src/MathCtrl.cpp:997 ../src/MathCtrl.cpp:1043
+#: ../src/MathCtrl.cpp:996 ../src/MathCtrl.cpp:1042
 #: ../src/wxMaximaFrame.cpp:474
 msgid "Copy as Image"
 msgstr "Kopiuj jako obrazek"
 
-#: ../src/MathCtrl.cpp:993 ../src/MathCtrl.cpp:1039
+#: ../src/MathCtrl.cpp:992 ../src/MathCtrl.cpp:1038
 #: ../src/wxMaximaFrame.cpp:467
 msgid "Copy as LaTeX"
 msgstr "Kopiuj jako LaTeX"
@@ -1142,7 +1142,7 @@ msgstr "Kopiuj jako LaTeX"
 msgid "Copy as MathML"
 msgstr "Kopiuj jako obrazek"
 
-#: ../src/MathCtrl.cpp:996 ../src/MathCtrl.cpp:1041
+#: ../src/MathCtrl.cpp:995 ../src/MathCtrl.cpp:1040
 msgid "Copy as MathML (e.g. to word processor)"
 msgstr ""
 
@@ -1150,7 +1150,7 @@ msgstr ""
 msgid "Copy as Text\tCtrl+Shift+C"
 msgstr "Kopiuj jako tekst\tCtrl+Shift+C"
 
-#: ../src/MathCtrl.cpp:994 ../src/MathCtrl.cpp:1040
+#: ../src/MathCtrl.cpp:993 ../src/MathCtrl.cpp:1039
 #, fuzzy
 msgid "Copy as plain text"
 msgstr "Kopiuj jako obrazek"
@@ -1190,7 +1190,7 @@ msgstr "Utwórz nową komórkę z ostatnim wejściem"
 msgid "Cursor"
 msgstr "Kursor"
 
-#: ../src/MathCtrl.cpp:1084 ../src/ToolBar.cpp:133
+#: ../src/MathCtrl.cpp:1083 ../src/ToolBar.cpp:133
 msgid "Cut"
 msgstr "Wytnij"
 
@@ -1268,7 +1268,7 @@ msgstr "Usuń"
 msgid "Delete F&unction..."
 msgstr "Usuń &funkcję"
 
-#: ../src/MathCtrl.cpp:1000 ../src/MathCtrl.cpp:1046
+#: ../src/MathCtrl.cpp:999 ../src/MathCtrl.cpp:1045
 msgid "Delete Selection"
 msgstr "Usuń zaznaczenie"
 
@@ -1332,11 +1332,11 @@ msgstr "Pochodna"
 msgid "Differentiate expression"
 msgstr "Oblicz pochodną wyrażenia"
 
-#: ../src/MathCtrl.cpp:1062
+#: ../src/MathCtrl.cpp:1061
 msgid "Differentiate..."
 msgstr "Pochodna..."
 
-#: ../src/FindReplacePane.cpp:76 ../src/LimitWiz.cpp:37
+#: ../src/LimitWiz.cpp:37 ../src/FindReplacePane.cpp:80
 msgid "Direction:"
 msgstr "Z:"
 
@@ -1364,7 +1364,7 @@ msgstr "Wyświetl czas przeprowadzania obliczeń"
 msgid "Divide"
 msgstr "Podziel"
 
-#: ../src/MathCtrl.cpp:1093
+#: ../src/MathCtrl.cpp:1092
 msgid "Divide Cell"
 msgstr "Podziel komórki"
 
@@ -1423,7 +1423,7 @@ msgstr ""
 msgid "Don't save"
 msgstr "Nie zapisuj"
 
-#: ../src/FindReplacePane.cpp:80
+#: ../src/FindReplacePane.cpp:85
 msgid "Down"
 msgstr ""
 
@@ -1564,7 +1564,7 @@ msgstr "Wykonaj wszystkie komórki\tCtrl+R"
 msgid "Evaluate All Visible Cells\tCtrl+R"
 msgstr "Wykonaj wszystkie komórki\tCtrl+R"
 
-#: ../src/MathCtrl.cpp:1003 ../src/wxMaximaFrame.cpp:547
+#: ../src/MathCtrl.cpp:1002 ../src/wxMaximaFrame.cpp:547
 msgid "Evaluate Cell(s)"
 msgstr "Wykonaj komórki"
 
@@ -1573,19 +1573,19 @@ msgstr "Wykonaj komórki"
 msgid "Evaluate Cells Above\tCtrl+Shift+P"
 msgstr "Wykonaj wszystkie komórki\tCtrl+R"
 
-#: ../src/MathCtrl.cpp:1017 ../src/MathCtrl.cpp:1112
+#: ../src/MathCtrl.cpp:1016 ../src/MathCtrl.cpp:1111
 msgid "Evaluate Part\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1022 ../src/MathCtrl.cpp:1114
+#: ../src/MathCtrl.cpp:1021 ../src/MathCtrl.cpp:1113
 msgid "Evaluate Section\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1032 ../src/MathCtrl.cpp:1118
+#: ../src/MathCtrl.cpp:1031 ../src/MathCtrl.cpp:1117
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1027 ../src/MathCtrl.cpp:1116
+#: ../src/MathCtrl.cpp:1026 ../src/MathCtrl.cpp:1115
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
@@ -1640,7 +1640,7 @@ msgstr "Rozwiń"
 msgid "Expand (tr)"
 msgstr "Rozwiń (tr)"
 
-#: ../src/MathCtrl.cpp:1058
+#: ../src/MathCtrl.cpp:1057
 msgid "Expand Expression"
 msgstr "Rozwiń wyrażenie"
 
@@ -1729,7 +1729,7 @@ msgstr "Faktoryzuj"
 msgid "Factor Complex"
 msgstr "Faktoryzuj zespolenie"
 
-#: ../src/MathCtrl.cpp:1057
+#: ../src/MathCtrl.cpp:1056
 msgid "Factor Expression"
 msgstr "Faktoryzuj wyrażenie"
 
@@ -1798,7 +1798,7 @@ msgstr "Znajdź &granicę..."
 msgid "Find Minimum..."
 msgstr "Znajdź minimum..."
 
-#: ../src/MathCtrl.cpp:1054
+#: ../src/MathCtrl.cpp:1053
 msgid "Find Root..."
 msgstr "Znajdź pierwiastek..."
 
@@ -1893,14 +1893,14 @@ msgid ""
 "\" in the configuration dialogue should be a workaround."
 msgstr ""
 
-#: ../src/SqrtCell.cpp:211
+#: ../src/SqrtCell.cpp:217
 msgid ""
 "Font issue: The sqrt() sign has the size 0! Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
 "\" in the configuration dialogue should be a workaround."
 msgstr ""
 
-#: ../src/SqrtCell.cpp:210
+#: ../src/SqrtCell.cpp:216
 msgid "Font issue? The contents of a sqrt() has the size 0."
 msgstr ""
 
@@ -2044,7 +2044,7 @@ msgstr "Część urojona wyrażenia zespolonego"
 msgid "Get the real part of complex expression"
 msgstr "Część rzeczywista wyrażenia zespolonego"
 
-#: ../src/MathCtrl.cpp:6055
+#: ../src/MathCtrl.cpp:6054
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2340,15 +2340,15 @@ msgstr "Wstaw komórkę &podrozdziału\tCtrl+4"
 msgid "Insert S&ubsubsection Cell\tCtrl+5"
 msgstr "Wstaw komórkę &podrozdziału\tCtrl+4"
 
-#: ../src/MathCtrl.cpp:1076
+#: ../src/MathCtrl.cpp:1075
 msgid "Insert Section Cell"
 msgstr "Wstaw komórkę &rozdziału"
 
-#: ../src/MathCtrl.cpp:1077
+#: ../src/MathCtrl.cpp:1076
 msgid "Insert Subsection Cell"
 msgstr "Wstaw komórkę &podrozdziału"
 
-#: ../src/MathCtrl.cpp:1078
+#: ../src/MathCtrl.cpp:1077
 #, fuzzy
 msgid "Insert Subsubsection Cell"
 msgstr "Wstaw komórkę &podrozdziału"
@@ -2357,11 +2357,11 @@ msgstr "Wstaw komórkę &podrozdziału"
 msgid "Insert T&itle Cell\tCtrl+2"
 msgstr "Wstaw komórkę &tytułową\tCtrl+2"
 
-#: ../src/MathCtrl.cpp:1074
+#: ../src/MathCtrl.cpp:1073
 msgid "Insert Text Cell"
 msgstr "Wstaw komórkę t&ekstową"
 
-#: ../src/MathCtrl.cpp:1075
+#: ../src/MathCtrl.cpp:1074
 msgid "Insert Title Cell"
 msgstr "Wstaw komórkę &tytułowa"
 
@@ -2427,7 +2427,7 @@ msgstr "Całkuj wyrażenie"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Całkuj wyrażenie używając algorytmu Ruscha"
 
-#: ../src/MathCtrl.cpp:1061 ../src/wxMaximaFrame.cpp:1186
+#: ../src/MathCtrl.cpp:1060 ../src/wxMaximaFrame.cpp:1186
 msgid "Integrate..."
 msgstr "Całkuj..."
 
@@ -2656,7 +2656,7 @@ msgstr "Mapuj funkcję do listy"
 msgid "Map function to a matrix"
 msgstr "Mapuj funkcję do macierzy"
 
-#: ../src/FindReplacePane.cpp:106
+#: ../src/FindReplacePane.cpp:113
 #, fuzzy
 msgid "Match Case"
 msgstr "Plik wsadowy"
@@ -2838,7 +2838,7 @@ msgstr "Średnia:"
 msgid "Median..."
 msgstr "Mediana..."
 
-#: ../src/MathCtrl.cpp:1006
+#: ../src/MathCtrl.cpp:1005
 msgid "Merge Cells"
 msgstr "Scal komórki"
 
@@ -3127,7 +3127,7 @@ msgid ""
 "Found unknown XML Tag name "
 msgstr "Części dokumentu nie zostaną wczytane poprawnie"
 
-#: ../src/MathCtrl.cpp:1071 ../src/MathCtrl.cpp:1086 ../src/ToolBar.cpp:139
+#: ../src/MathCtrl.cpp:1070 ../src/MathCtrl.cpp:1085 ../src/ToolBar.cpp:139
 msgid "Paste"
 msgstr "Wklej"
 
@@ -3188,7 +3188,7 @@ msgstr "Wykres 2D"
 msgid "Plot 2D..."
 msgstr "Wykres 2D..."
 
-#: ../src/MathCtrl.cpp:1064
+#: ../src/MathCtrl.cpp:1063
 msgid "Plot 2d..."
 msgstr "Wykres 2D..."
 
@@ -3200,7 +3200,7 @@ msgstr "Wykres 3D"
 msgid "Plot 3D..."
 msgstr "Wykres 3D..."
 
-#: ../src/MathCtrl.cpp:1065
+#: ../src/MathCtrl.cpp:1064
 msgid "Plot 3d..."
 msgstr "Wykres 3D..."
 
@@ -3354,7 +3354,7 @@ msgstr "Usuń wszytskie komórki wyjściowe"
 msgid "Remove output from input cells"
 msgstr "Usuń wyjście z wszystkich komórek wejściowych"
 
-#: ../src/FindReplacePane.cpp:96
+#: ../src/FindReplacePane.cpp:103
 #, fuzzy
 msgid "Replace All"
 msgstr "Zaznacz wszystko"
@@ -3364,7 +3364,7 @@ msgstr "Zaznacz wszystko"
 msgid "Replaced %d occurrences."
 msgstr "Zastąpiono %d razy."
 
-#: ../src/FindReplacePane.cpp:60
+#: ../src/FindReplacePane.cpp:62
 msgid "Replacement:"
 msgstr ""
 
@@ -3381,7 +3381,7 @@ msgstr "Uruchom ponownie Maxime"
 msgid "Restart maxima"
 msgstr "Uruchom ponownie Maxime"
 
-#: ../src/MathCtrl.cpp:4545
+#: ../src/MathCtrl.cpp:4544
 msgid "Result"
 msgstr ""
 
@@ -3434,7 +3434,7 @@ msgstr "Próbka:"
 msgid "Save"
 msgstr "Zapisz"
 
-#: ../src/MathCtrl.cpp:982
+#: ../src/MathCtrl.cpp:981
 msgid "Save Animation..."
 msgstr "Zapisz animację..."
 
@@ -3446,7 +3446,7 @@ msgstr "Zapisz jako"
 msgid "Save As...\tShift+Ctrl+S"
 msgstr "Zapisz jako...\tShift+Ctrl+S"
 
-#: ../src/MathCtrl.cpp:980
+#: ../src/MathCtrl.cpp:979
 msgid "Save Image..."
 msgstr "Zapisz obrazek..."
 
@@ -3552,7 +3552,7 @@ msgid ""
 "JSmath fonts\" in the configuration dialogue should fix it."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1072 ../src/MathCtrl.cpp:1088
+#: ../src/MathCtrl.cpp:1071 ../src/MathCtrl.cpp:1087
 msgid "Select All"
 msgstr "Zaznacz wszystko"
 
@@ -3765,7 +3765,7 @@ msgstr "Uprość (r)"
 msgid "Simplify (tr)"
 msgstr "Uprość (tr)"
 
-#: ../src/MathCtrl.cpp:1056
+#: ../src/MathCtrl.cpp:1055
 msgid "Simplify Expression"
 msgstr "Uprość wyrażenie"
 
@@ -3882,7 +3882,7 @@ msgstr ""
 "Rozwiąż układ liniowych równań różniczkowych przy pomocy transformaty "
 "Laplace'a"
 
-#: ../src/MathCtrl.cpp:1053 ../src/wxMaximaFrame.cpp:1183
+#: ../src/MathCtrl.cpp:1052 ../src/wxMaximaFrame.cpp:1183
 msgid "Solve..."
 msgstr "Rozwiąż..."
 
@@ -3906,7 +3906,7 @@ msgstr "Szczególne"
 msgid "Special constants"
 msgstr "Szczególne stałe"
 
-#: ../src/MathCtrl.cpp:983
+#: ../src/MathCtrl.cpp:982
 msgid "Start Animation"
 msgstr "Uruchom Animacje"
 
@@ -3987,7 +3987,7 @@ msgstr "Podstaw..."
 msgid "Substitute"
 msgstr "Podstaw"
 
-#: ../src/MathCtrl.cpp:1059 ../src/wxMaximaFrame.cpp:868
+#: ../src/MathCtrl.cpp:1058 ../src/wxMaximaFrame.cpp:868
 msgid "Substitute..."
 msgstr "Podstaw..."
 
@@ -4224,7 +4224,7 @@ msgstr "To &Bigfloat"
 msgid "To &Float"
 msgstr "Wartość &zmiennoprzecinkowa"
 
-#: ../src/MathCtrl.cpp:1051
+#: ../src/MathCtrl.cpp:1050
 msgid "To Float"
 msgstr "Wartość zmiennoprzecinkowa"
 
@@ -4316,11 +4316,11 @@ msgstr "Przetłumaczono przez:"
 msgid "Transpose a matrix"
 msgstr "Transponuj macierz"
 
-#: ../src/MathCtrl.cpp:5957
+#: ../src/MathCtrl.cpp:5956
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6024
+#: ../src/MathCtrl.cpp:6023
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
@@ -4399,7 +4399,7 @@ msgstr ""
 msgid "Unterminated string."
 msgstr ""
 
-#: ../src/FindReplacePane.cpp:78
+#: ../src/FindReplacePane.cpp:83
 msgid "Up"
 msgstr ""
 
@@ -4424,7 +4424,11 @@ msgstr "Użyj algorytmu Gosper"
 msgid "Use cairo to improve plot quality."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:208 ../src/ConfigDialogue.cpp:468
+#: ../src/ConfigDialogue.cpp:208
+msgid "Use centered dot and Minus, not Star and Hyphen"
+msgstr ""
+
+#: ../src/ConfigDialogue.cpp:468
 msgid "Use centered dot character for multiplication"
 msgstr "Używaj kropki jako znaku mnożenia (zamiast *)"
 
@@ -4516,7 +4520,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6935
+#: ../src/MathCtrl.cpp:6934
 msgid "Wrapped search"
 msgstr ""
 
@@ -4652,12 +4656,12 @@ msgstr "[ nie zapisane* ]"
 msgid "[%i digits]"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4494
+#: ../src/MathCtrl.cpp:4493
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4620
+#: ../src/MathCtrl.cpp:4619
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr ""
