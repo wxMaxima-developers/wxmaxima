@@ -680,9 +680,13 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
         }
 
 #if defined __WXMSW__ || wxUSE_UNICODE
-        // replace "*" with centerdot if requested
+        // replace "*" with centerdot and "-" by a Minus if requested
         if ((m_changeAsterisk = configuration->GetChangeAsterisk())!=0)
+        {
           TextToDraw.Replace(wxT("*"), wxT("\xB7"));
+          if (m_type == MC_TYPE_INPUT)
+            TextToDraw.Replace(wxT("-"), wxT("\x2212"));
+  }
 #endif
 
         // Draw a char that shows we continue an indentation - if this is needed.
@@ -2599,7 +2603,11 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
 
   wxString text = m_text;
   if (m_changeAsterisk)  
+  {
     text.Replace(wxT("*"), wxT("\xB7"));
+    if (m_type == MC_TYPE_INPUT)
+      text.Replace(wxT("-"), wxT("\x2212"));
+  }
 
   // In text cells every second token is a possibly indented line of text. The other
   // tokens are line endings.
@@ -2653,9 +2661,12 @@ bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
 
   wxString s;
   wxString text = m_text;
-  if (m_changeAsterisk)  
+  if (m_changeAsterisk)
+  {
     text.Replace(wxT("*"), wxT("\xB7"));
-
+    if (m_type == MC_TYPE_INPUT)
+      text.Replace(wxT("-"), wxT("\x2212"));
+  }
   wxFont font(m_fontSize, wxFONTFAMILY_MODERN,
               m_fontStyle,
               m_fontWeight,
@@ -3242,8 +3253,12 @@ void EditorCell::StyleText()
   {
     // We have to style code
     wxString textToStyle = m_text;
-    if (m_changeAsterisk)  
+    if (m_changeAsterisk)
+    {
       textToStyle.Replace(wxT("*"), wxT("\xB7"));
+      if (m_type == MC_TYPE_INPUT)
+        textToStyle.Replace(wxT("-"), wxT("\x2212"));
+    }
     
     if(m_firstLineOnly)
     {

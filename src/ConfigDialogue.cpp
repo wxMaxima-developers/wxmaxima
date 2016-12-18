@@ -205,7 +205,7 @@ void ConfigDialogue::SetProperties()
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   m_getFont->SetToolTip(_("Font used for display in document."));
   m_getMathFont->SetToolTip(_("Font used for displaying math characters in document."));
-  m_changeAsterisk->SetToolTip(_("Use centered dot character for multiplication"));
+  m_changeAsterisk->SetToolTip(_("Use centered dot and Minus, not Star and Hyphen"));
   m_defaultPort->SetToolTip(_("The default port used for communication between Maxima and wxMaxima."));
   m_undoLimit->SetToolTip(_("Save only this number of actions in the undo buffer. 0 means: save an infinite number of actions."));
   m_recentItems->SetToolTip(_("The number of recently opened files that is to be remembered."));
