@@ -159,6 +159,11 @@ void ExptCell::RecalculateHeight(int fontsize)
   m_exp->RecalculateHeightList(fontsize);
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
+  if(m_isBroken)
+  {
+    m_height = MAX(m_baseCell->GetMaxHeight(),m_open->GetMaxHeight());
+    m_center = MAX(m_baseCell->GetMaxCenter(),m_open->GetMaxCenter());
+  }
 }
 
 void ExptCell::Draw(wxPoint point, int fontsize)
@@ -280,6 +285,8 @@ bool ExptCell::BreakUp()
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = m_close;
     m_nextToDraw = m_baseCell;
+    m_height = MAX(m_baseCell->GetMaxHeight(),m_open->GetMaxHeight());
+    m_center = MAX(m_baseCell->GetMaxCenter(),m_open->GetMaxCenter());
     return true;
   }
   return false;
