@@ -203,7 +203,7 @@ private:
    */
   bool m_changeAsterisk;
   //! How many digits of a number we show by default?
-  bool m_displayedDigits;
+  int m_displayedDigits;
   //! Automatically wrap long lines?
   bool m_autoWrap;
   //! Do we want to automatically close parenthesis?

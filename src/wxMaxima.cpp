@@ -5875,7 +5875,8 @@ void wxMaxima::ResetTitle(bool saved,bool force)
   if ((saved != m_fileSaved)||(force))
   {
     m_fileSaved = saved;
-    if (m_console->m_currentFile.Length() == 0) {
+    if (m_console->m_currentFile.Length() == 0)
+    {
 #ifndef __WXMAC__
       if (saved)
         SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
