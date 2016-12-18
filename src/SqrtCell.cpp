@@ -168,6 +168,12 @@ void SqrtCell::RecalculateHeight(int fontsize)
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(3, scale);
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
+  if(m_isBroken)
+  {
+    m_height = MAX(m_innerCell->GetMaxHeight(),m_open->GetMaxHeight());
+    m_center = MAX(m_innerCell->GetMaxCenter(),m_open->GetMaxCenter());
+  }
+
 }
 
 void SqrtCell::Draw(wxPoint point, int fontsize)
@@ -333,6 +339,8 @@ bool SqrtCell::BreakUp()
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = m_close;
     m_nextToDraw = m_open;
+    m_height = MAX(m_innerCell->GetMaxHeight(),m_open->GetMaxHeight());
+    m_center = MAX(m_innerCell->GetMaxCenter(),m_open->GetMaxCenter());
     return true;
   }
   return false;
