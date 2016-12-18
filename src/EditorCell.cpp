@@ -987,7 +987,9 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 
 int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
 {
-  int indentChars = 0;
+  // A list of by how many chars we need to indent the current line.
+  std::list<int> indentChars;
+  indentChars.push_back(0);
 
   // Determine how many parenthesis this cell opens or closes before the point
   long pos = 0;
@@ -1017,17 +1019,69 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
       (ch == wxT('{'))
       )
     {
-      indentChars += 4;
+      if(indentChars.empty())
+        indentChars.push_back(4);
+      else
+        indentChars.push_back(indentChars.back()+4);
     }
-        
+    
     if(
       (ch == wxT(')')) ||
       (ch == wxT(']')) ||
       (ch == wxT('}'))
       )  
     {
-      indentChars -= 4;
+      if(!indentChars.empty())
+        indentChars.pop_back();
     }
+
+    if(
+      (ch == wxT(','))
+      )
+    {
+      // Discard any extra indentation from a "then" or a "do" from the last item
+      // of indentChars.
+      int newIndent;
+      if(!indentChars.empty())
+      {
+        int lst = indentChars.back();
+        indentChars.pop_back();
+        if(!indentChars.empty())
+        {
+          lst = indentChars.back() + 4;
+        }
+        else
+          lst = 0;
+        indentChars.push_back(lst);
+      }
+    }
+
+    // A "do" or a "then" increases the current indentation level by a tab.
+    if(!wxIsalnum(ch))
+      {
+        wxString rest = text.Right(text.Length()-pos-1);
+        std::cerr<<rest<<"\n";
+        if(rest.StartsWith(wxT("do"))&&(!wxIsalnum(rest[2])))
+        {
+          if(!indentChars.empty())
+          {
+            int lst = indentChars.back();
+            indentChars.pop_back();
+            indentChars.push_back(lst+4);
+          }
+        }
+
+        if(rest.StartsWith(wxT("then"))&&(!wxIsalnum(rest[4])))
+        {
+          if(!indentChars.empty())
+          {
+            int lst = indentChars.back();
+            indentChars.pop_back();
+            indentChars.push_back(lst+4);
+          }
+        }
+}
+      
     pos++;
   }
 
@@ -1038,9 +1092,16 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
       (text[positionOfCaret] == wxT(']')) ||
       (text[positionOfCaret] == wxT('}'))
       )
-      indentChars -= 4;
+    {
+      if(!indentChars.empty())
+        indentChars.pop_back();
+    }
   }
-  return indentChars;
+
+  if(indentChars.empty())
+    return 0;
+  else
+    return indentChars.back();
 }
 
 bool EditorCell::HandleSpecialKey(wxKeyEvent& event)

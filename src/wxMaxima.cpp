@@ -685,7 +685,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
         m_xmlInspector->Add(newChars);
       }
 
-      m_currentOutput +=newChars;
+      m_currentOutput += newChars;
 
       if (!m_dispReadOut &&
 	  (m_currentOutput != wxT("\n")) &&
