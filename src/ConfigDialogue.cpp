@@ -223,7 +223,7 @@ void ConfigDialogue::SetProperties()
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
   bool match, savePanes = true, UncompressedWXMX=true;
-  bool fixedFontTC = true, changeAsterisk, usejsmath = true, keepPercent = true, abortOnError = true, pollStdOut = false;
+  bool fixedFontTC = true, usejsmath = true, keepPercent = true, abortOnError = true, pollStdOut = false;
   bool enterEvaluates = false, saveUntitled = true,
     openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false,
     usePartialForDiff = false,
@@ -245,7 +245,6 @@ void ConfigDialogue::SetProperties()
   bool incrementalSearch = true;
   bool showUserDefinedLabels = true;
   int defaultFramerate = 2;
-  int displayedDigits = 100;
   wxString texPreamble=wxEmptyString;
   wxString documentclass=wxT("article");
 #ifdef wxUSE_UNICODE
@@ -275,7 +274,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
   int defaultPlotHeight = 400;
   config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
-  config->Read(wxT("displayedDigits"), &displayedDigits);
   config->Read(wxT("OptimizeForVersionControl"), &UncompressedWXMX);
   config->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
   config->Read(wxT("TeXExponentsAfterSubscript"), &TeXExponentsAfterSubscript);
@@ -291,7 +289,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("documentclass"), &documentclass);
   config->Read(wxT("texPreamble"), &texPreamble);
   config->Read(wxT("autoSaveInterval"), &autoSaveInterval);
-  changeAsterisk = Configuration::Get()->GetChangeAsterisk();
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
   config->Read(wxT("enterEvaluates"), &enterEvaluates);
@@ -363,7 +360,7 @@ void ConfigDialogue::SetProperties()
   m_matchParens->SetValue(match);
   m_showLength->SetSelection(showLength);
   m_autosubscript->SetSelection(autosubscript);
-  m_changeAsterisk->SetValue(changeAsterisk);
+  m_changeAsterisk->SetValue(Configuration::Get()->GetChangeAsterisk());
   m_enterEvaluates->SetValue(enterEvaluates);
   m_saveUntitled->SetValue(saveUntitled);
   m_openHCaret->SetValue(openHCaret);
@@ -387,7 +384,7 @@ void ConfigDialogue::SetProperties()
   m_defaultFramerate->SetValue(defaultFramerate);
   m_defaultPlotWidth->SetValue(defaultPlotWidth);
   m_defaultPlotHeight->SetValue(defaultPlotHeight);
-  m_displayedDigits->SetValue(displayedDigits);
+  m_displayedDigits->SetValue(Configuration::Get()->GetDisplayedDigits());
 #ifdef wxUSE_UNICODE
   m_symbolPaneAdditionalChars->SetValue(symbolPaneAdditionalChars);
 #endif
@@ -875,7 +872,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("DefaultFramerate"), m_defaultFramerate->GetValue());
   config->Write(wxT("defaultPlotWidth"), m_defaultPlotWidth->GetValue());
   config->Write(wxT("defaultPlotHeight"), m_defaultPlotHeight->GetValue());
-  config->Write(wxT("displayedDigits"), m_displayedDigits->GetValue());
+  Configuration::Get()->SetDisplayedDigits(m_displayedDigits->GetValue());
   config->Write(wxT("AnimateLaTeX"), m_AnimateLaTeX->GetValue());
   config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript->GetValue());
   config->Write(wxT("usePartialForDiff"), m_usePartialForDiff->GetValue());

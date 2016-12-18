@@ -41,7 +41,6 @@ Configuration::Configuration(wxDC& dc) : m_dc(&dc)
   m_bottom = -1;
   m_forceUpdate = false;
   m_indent = MC_GROUP_LEFT_INDENT;
-  m_changeAsterisk = false;
   m_outdated = false;
   m_printer = false;
   m_TeXFonts = false;
@@ -64,6 +63,9 @@ void Configuration::ReadConfig()
 
   m_changeAsterisk = true;
   config->Read(wxT("changeAsterisk"), &m_changeAsterisk);
+
+  m_displayedDigits = 100;
+  config->Read(wxT("displayedDigits"), &m_displayedDigits);
 
   m_restartOnReEvaluation = true;
   config->Read(wxT("restartOnReEvaluation"), &m_restartOnReEvaluation);

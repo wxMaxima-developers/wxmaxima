@@ -179,6 +179,13 @@ public:
     {
       wxConfig::Get()->Write(wxT("changeAsterisk"),m_changeAsterisk = changeAsterisk);
     }
+
+  const bool GetDisplayedDigits() { return m_displayedDigits; }
+  void SetDisplayedDigits(bool displayedDigits)
+    {
+      wxConfig::Get()->Write(wxT("displayedDigits"),m_displayedDigits = displayedDigits);
+    }
+
   const bool GetInsertAns() { return m_insertAns; }
   const bool RestartOnReEvaluation() {return m_restartOnReEvaluation;}
   const void RestartOnReEvaluation(bool arg)
@@ -195,7 +202,8 @@ private:
     of widths while selecting text we don't know our parser.
    */
   bool m_changeAsterisk;
-
+  //! How many digits of a number we show by default?
+  bool m_displayedDigits;
   //! Automatically wrap long lines?
   bool m_autoWrap;
   //! Do we want to automatically close parenthesis?
