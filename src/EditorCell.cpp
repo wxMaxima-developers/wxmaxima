@@ -51,6 +51,7 @@ EditorCell::EditorCell(wxString text) : MathCell()
   m_displayCaret = false;
   m_text = wxEmptyString;
   m_fontSize = -1;
+  m_fontSize_Last = -1;
   m_positionOfCaret = 0;
   m_caretColumn = -1; // used when moving up/down between lines
   m_selectionStart = -1;
@@ -386,9 +387,10 @@ void EditorCell::RecalculateWidths(int fontsize)
   Configuration *configuration = Configuration::Get();
 
   m_isDirty = false;
-  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate())
+  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() || fontsize != m_fontSize_Last)
   {
     ResetData();
+    m_fontSize_Last = fontsize;
     wxDC& dc = configuration->GetDC();
     double scale = configuration->GetScale();
     SetFont(fontsize);

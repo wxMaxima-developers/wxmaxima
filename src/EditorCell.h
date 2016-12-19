@@ -437,6 +437,11 @@ private:
   unsigned int m_numberOfLines;
   bool m_isActive;
   int m_fontSize;
+  /*! The font size we were called with  the last time
+
+    We need to know this in order to be able to detect we need a full recalculation.
+   */
+  int m_fontSize_Last;
   int m_charHeight;
   int m_paren1, m_paren2;
   //! Does this cell's size have to be recalculated?
