@@ -36,14 +36,12 @@
 MathPrintout::MathPrintout(wxString title) : wxPrintout(title)
 {
   m_numberOfPages = 0;
-  m_oldViewportSize = MathCell::GetCanvasSize();
   m_tree = NULL;
 }
 
 MathPrintout::~MathPrintout()
 {
   DestroyTree();
-  MathCell::SetCanvasSize(m_oldViewportSize);
 }
 
 void MathPrintout::SetData(GroupCell* tree)
@@ -269,7 +267,7 @@ void MathPrintout::Recalculate()
   
   configuration.SetClientWidth(pageWidth - marginX - marginY
                                - SCALE_PX(Configuration::Get()->GetBaseIndent(), scale));
-  MathCell::SetCanvasSize(wxSize(pageWidth-marginX,pageHeight-marginY));
+  Configuration::Get()->SetCanvasSize(wxSize(pageWidth-marginX,pageHeight-marginY));
   marginX += SCALE_PX(Configuration::Get()->GetBaseIndent(), scale);
   configuration.SetIndent(marginX);
  
@@ -305,7 +303,7 @@ void MathPrintout::GetScreenScale(double *scaleX, double *scaleY)
   GetPageSizePixels(&pageSizeX, &pageSizeY);
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
-  MathCell::SetCanvasSize(wxSize(pageSizeX-marginX,pageSizeY-marginX));
+  Configuration::Get()->SetCanvasSize(wxSize(pageSizeX-marginX,pageSizeY-marginX));
   dc->GetSize(&previewSizeX, &previewSizeY);
   
   *scaleX = ((double)previewSizeX) / ((double)pageSizeX);

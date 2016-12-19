@@ -195,7 +195,12 @@ public:
 
   //! Returns a pointer to the instance of Configuration that exists
   static Configuration *Get() {return m_activeConfiguration;}
+
+  wxSize GetCanvasSize(){return m_canvasSize;}
+  void SetCanvasSize(wxSize siz){m_canvasSize=siz;}
 private:
+  //! The size of the canvas our cells have to be drawn on
+  wxSize m_canvasSize;
   /*! Replace a "*" by a centered dot?
     
     Normally we ask the parser for this piece of information. But during recalculation

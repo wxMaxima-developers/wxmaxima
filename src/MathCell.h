@@ -567,12 +567,6 @@ public:
    */
   bool m_SuppressMultiplicationDot;
 
-  /*! Set the size of the canvas our cells have to be drawn on
-
-   */
-  static void SetCanvasSize(wxSize size)     { m_canvasSize = size;}
-  static wxSize GetCanvasSize()     { return m_canvasSize; }
-
 protected:
   static wxRect m_updateRegion;
 
@@ -582,8 +576,6 @@ protected:
     every math cell has a GroupCell it belongs to.
   */
   MathCell *m_group;
-  //! The size of the canvas our cells have to be drawn on
-  static wxSize m_canvasSize;
   int m_height;
   //! The width of this cell
   int m_width;

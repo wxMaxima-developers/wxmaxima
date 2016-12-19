@@ -1057,6 +1057,5 @@ bool MathCell::IsMath()
            m_textStyle == TS_INPUT);
 }
 
-wxSize MathCell::m_canvasSize;
 wxRect MathCell::m_updateRegion;
 bool   MathCell::m_clipToDrawRegion = true;

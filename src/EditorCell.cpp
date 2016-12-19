@@ -1321,7 +1321,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
 
       if (line < m_numberOfLines-1) // can we go down ?
       {
-        int scrolllength = m_canvasSize.y - m_charHeight;
+        int scrolllength = Configuration::Get()->GetCanvasSize().y - m_charHeight;
         
         while((line < m_numberOfLines-1) && (scrolllength > 0))
         {
@@ -1401,7 +1401,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
 
       if (line > 0) // can we go up?
       {
-        int scrolllength = m_canvasSize.y - m_charHeight;
+        int scrolllength = Configuration::Get()->GetCanvasSize().y - m_charHeight;
         
         while((line > 0) && (scrolllength > 0))
         {

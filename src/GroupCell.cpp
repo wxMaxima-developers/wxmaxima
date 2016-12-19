@@ -594,7 +594,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
       int y = rect.GetY();
       wxPen pen(configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_DOT);
       dc.SetPen(pen);      
-      dc.DrawLine(0,y,m_canvasSize.GetWidth(),y);
+      dc.DrawLine(0,y,Configuration::Get()->GetCanvasSize().GetWidth(),y);
       MathCell::Draw(point, fontsize);
       return;
     }
@@ -611,7 +611,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
         dc.SetBrush(br);
         wxPen pen(configuration->GetColor(TS_TEXT_BACKGROUND));
         dc.SetPen(pen);
-        rect.SetWidth(m_canvasSize.GetWidth());
+        rect.SetWidth(Configuration::Get()->GetCanvasSize().GetWidth());
         if(InUpdateRegion(rect))
           dc.DrawRectangle(CropToUpdateRegion(rect));
       }
