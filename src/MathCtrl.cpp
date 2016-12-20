@@ -5816,12 +5816,12 @@ void MathCtrl::ScrollToCell(MathCell *cell, bool scrollToTop)
     // Scroll upwards if the top of the thing we want to scroll to is less than 1/2
     // scroll unit away from the top of the page
     if (cellTop - m_scrollUnit < view_y)
-      Scroll(-1, MAX(cellTop / m_scrollUnit - 2, 0));
+      Scroll(-1, MAX(cellTop / m_scrollUnit - 4, 0));
     
     // Scroll downwards if the top of the thing we want to scroll to is less than 1/2
     // scroll unit away from the bottom of the page
     if (cellTop + m_scrollUnit > view_y + height)
-      Scroll(-1, MAX(cellTop / m_scrollUnit + 2, 0));
+      Scroll(-1, MAX(cellTop / m_scrollUnit - 4, 0));
   }
   else
   {
@@ -5833,7 +5833,7 @@ void MathCtrl::ScrollToCell(MathCell *cell, bool scrollToTop)
     // Scroll upwards if the bottom of the thing we want to scroll to is less than 1/2
     // scroll unit away from the top of the page
     if (cellBottom - m_scrollUnit < view_y)
-      Scroll(-1, MAX(cellBottom / m_scrollUnit + 4, 0));
+      Scroll(-1, MAX(cellBottom / m_scrollUnit - 4, 0));
   }
   RequestRedraw();
 }
