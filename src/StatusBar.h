@@ -30,6 +30,7 @@
 #include <wx/timer.h>
 #include <wx/statbmp.h>
 #include <wx/statusbr.h>
+#include "Dirstructure.h"
 
 #ifndef STATUSBAR_H
 #define STATUSBAR_H
