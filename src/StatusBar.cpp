@@ -41,6 +41,7 @@ StatusBar::StatusBar(wxWindow *parent, int id): wxStatusBar(parent, id)
   ReceiveTimer.SetOwner(this,wxID_ANY);
   SendTimer.SetOwner(this,wxID_ANY);
   m_icon_shows_receive = m_icon_shows_transmit = false;
+  m_networkState = offline;
 }
 
 void StatusBar::OnTimerEvent(wxTimerEvent& event)
