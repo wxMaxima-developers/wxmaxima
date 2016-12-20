@@ -59,10 +59,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
   m_xmlInspector = new XmlInspector(this, -1);
   SetupMenu();
 
-  CreateStatusBar(2);
-  int widths[] = { -1, 300 };
-  SetStatusWidths(2, widths);
-
+  m_statusBar = new StatusBar(this,-1);
+  SetStatusBar(m_statusBar);
   m_StatusSaving = false;
   // If we need to set the status manually for the first time using StatusMaximaBusy
   // we first have to manually set the last state to something else.

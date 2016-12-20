@@ -43,6 +43,7 @@ surrounding the worksheet.
 #include "History.h"
 #include "ToolBar.h"
 #include "XmlInspector.h"
+#include "StatusBar.h"
 #include <list>
 
 
@@ -424,6 +425,8 @@ public:
   //! Set the status to "Exporting has failed"
   void StatusExportFailed();
 protected:
+  //! The status bar
+  StatusBar *m_statusBar;
   //! The menu bar
   wxMenuBar *m_MenuBar;
   //! The file menu.

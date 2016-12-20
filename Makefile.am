@@ -25,6 +25,13 @@ EXTRA_DIST = README.md bootstrap wxmaxima.spec.in     \
 	     art/config/styles.png                           \
 	     art/config/editing.png                          \
 	     art/config/Document-export.png		     \
+	     art/statusbar/network-error.png		     \
+	     art/statusbar/network-transmit.png		     \
+	     art/statusbar/network-idle.png		     \
+	     art/statusbar/network-offline.png		     \
+	     art/statusbar/network-receive.png		     \
+	     art/statusbar/network-transmit.png		     \
+	     art/statusbar/network-transmit-receive.png	     \
              art/wxmac-doc-wxm.icns art/wxmac-doc-wxmx.icns  \
              art/wxmac-doc.icns art/wxmac.icns               \
              art/wxmac-doc.ico art/maximaicon.ico	     \
@@ -65,8 +72,10 @@ wxMaxima.app: all
 		cp $(srcdir)/locales/wxwin/$$i.mo wxMaxima.app/Contents/Resources/locale/$$i/LC_MESSAGES/wxMaxima-wxstd.mo ; \
 	done
 	mkdir -p wxMaxima.app/Contents/Resources/toolbar
+	mkdir -p wxMaxima.app/Contents/Resources/statusbar
 	mkdir -p wxMaxima.app/Contents/Resources/config
 	cp $(srcdir)/art/toolbar/*.png wxMaxima.app/Contents/Resources/toolbar
+	cp $(srcdir)/art/statusbar/*.png wxMaxima.app/Contents/Resources/statusbar
 	cp $(srcdir)/art/config/*.png wxMaxima.app/Contents/Resources/config
 	mkdir -p wxMaxima.app/Contents/Resources/help
 	cp info/*.html wxMaxima.app/Contents/Resources/help
@@ -96,6 +105,8 @@ endif
 	-cp $(srcdir)/info/*.html wxMaxima/help
 	mkdir -p wxMaxima/art/toolbar
 	cp $(srcdir)/art/toolbar/*.png wxMaxima/art/toolbar
+	mkdir -p wxMaxima/art/statusbar
+	cp $(srcdir)/art/statusbar/*.png wxMaxima/art/statusbar
 	mkdir -p wxMaxima/art/config
 	cp $(srcdir)/art/config/*.png wxMaxima/art/config
 	for i in $(LANGS) ; do \

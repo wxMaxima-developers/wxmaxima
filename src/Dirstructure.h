@@ -108,6 +108,15 @@ public:
   wxString ConfigToolbarDir() {return ResourcesDir();}
 #endif
 
+    //! The directory config art is stored relative to
+#if defined __WXMAC__
+  wxString ConfigStatusbarDir() {return ArtDir()+wxT("statusbar/");}
+#elif defined __WXMSW__
+  wxString ConfigStatusbarDir() {return ArtDir()+wxT("statusbar/");}
+#else
+  wxString ConfigStatusbarDir() {return ResourcesDir();}
+#endif
+
   /*! The directory the locale data is to be found in
 
     Is only used on MSW and MAC

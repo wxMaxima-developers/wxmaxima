@@ -617,6 +617,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 #else
       m_client->Write(s.c_str(), s.Length());
 #endif
+      m_statusBar->NetworkStatus(StatusBar::transmit);
     }
   }
   else
@@ -654,7 +655,8 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
   {
 
   case wxSOCKET_INPUT:
-
+    m_statusBar->NetworkStatus(StatusBar::receive);
+    
     // Read out stderr: We will do that in the background on a regular basis, anyway. 
     // But if we do it manually now, too, the probability that things are presented 
     // to the user in chronological order increases a bit.
@@ -738,6 +740,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     break;
 
   case wxSOCKET_LOST:
+    m_statusBar->NetworkStatus(StatusBar::offline);
     SetBatchMode(false);
     m_console->SetWorkingGroup(NULL);
     m_console->SetSelection(NULL);
@@ -797,6 +800,7 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
       tmp->Close();
       return;
     }
+    m_statusBar->NetworkStatus(StatusBar::idle);
     m_console->QuestionAnswered();
     m_currentOutput = wxEmptyString;
     m_isConnected = true;
@@ -812,6 +816,7 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
   break;
 
   case wxSOCKET_LOST:
+    m_statusBar->NetworkStatus(StatusBar::offline);
     StatusMaximaBusy(disconnected);
     SetBatchMode(false);
     ReadStdErr();
@@ -863,6 +868,7 @@ bool wxMaxima::StartServer()
     m_isRunning = false;
     m_isConnected = false;
     SetStatusText(_("Starting server failed"), 1);
+    m_statusBar->NetworkStatus(StatusBar::error);
     return false;
   }
   SetStatusText(_("Server started"), 1);
@@ -938,6 +944,7 @@ bool wxMaxima::StartMaxima(bool force)
         m_process = NULL;
         m_maximaStdout   = NULL;
         m_maximaStderr   = NULL;
+        m_statusBar->NetworkStatus(StatusBar::offline);
         return false;
       }
       m_maximaStdout = m_process->GetInputStream();
@@ -947,7 +954,10 @@ bool wxMaxima::StartMaxima(bool force)
       SetStatusText(_("Maxima started. Waiting for connection..."), 1);
     }
     else
+    {
+      m_statusBar->NetworkStatus(StatusBar::offline);
       return false;
+    }
 
     if (m_openFile.Length())
     {
@@ -1014,6 +1024,7 @@ void wxMaxima::KillMaxima()
 
 void wxMaxima::OnProcessEvent(wxProcessEvent& event)
 {
+  m_statusBar->NetworkStatus(StatusBar::offline);
   if (!m_closing)
   {
     SetStatusText(_("Maxima process terminated."), 1);
