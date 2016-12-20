@@ -65,11 +65,7 @@ private:
   bool m_icon_shows_receive;
   //! Does the icon show that we currently transmit data?
   bool m_icon_shows_transmit;
-#if defined __WXGTK__
   wxBitmap GetImage(wxString img);
-#else
-  wxImage GetImage(wxString img);
-#endif
   //! The currently shown network status bitmap
   wxStaticBitmap *m_networkStatus;
   //! The bitmap shown on network errors
