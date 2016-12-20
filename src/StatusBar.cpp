@@ -45,8 +45,14 @@ StatusBar::StatusBar(wxWindow *parent, int id): wxStatusBar(parent, id)
 
 void StatusBar::OnTimerEvent(wxTimerEvent& event)
 {
+  // don't do anything if the network status didn't change.
   if((m_icon_shows_receive  == (ReceiveTimer.IsRunning())) &&
      (m_icon_shows_transmit == (SendTimer.IsRunning())))
+    return;
+  
+  // don't do anything if the timer expired, but we aren't connected
+  // to the network any more.
+  if((m_networkState == error) || (m_networkState == offline))
     return;
 
   m_icon_shows_receive  = ReceiveTimer.IsRunning();
@@ -77,12 +83,15 @@ void StatusBar::NetworkStatus(networkState status)
     {
     case idle:
       m_networkStatus->SetBitmap(m_network_idle);
+      m_networkState = status;
       break;
     case error:
       m_networkStatus->SetBitmap(m_network_error);
+      m_networkState = status;
       break;
     case offline:
       m_networkStatus->SetBitmap(m_network_offline);
+      m_networkState = status;
       break;
     case receive:
       {

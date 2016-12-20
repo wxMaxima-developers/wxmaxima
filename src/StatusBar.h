@@ -34,12 +34,13 @@
 #ifndef STATUSBAR_H
 #define STATUSBAR_H
 
-
+//! The class that draws the status bar
 class StatusBar : public wxStatusBar
 {
 public:
   StatusBar(wxWindow *parent, int id);
-  
+
+  //! The network states that can be passed to NetworkStatus()
   enum networkState
   {
     idle,
@@ -48,7 +49,8 @@ public:
     receive,
     transmit
   };
-  
+
+  //! Informs the status bar about networking events.
   void NetworkStatus(networkState status);
   
 protected:
@@ -56,7 +58,11 @@ protected:
   void OnTimerEvent(wxTimerEvent& event);
 
 private:
+  //! The basic network state we currently display without receive or transmit info
+  networkState m_networkState;
+  //! Does the icon show that we currently receive data?
   bool m_icon_shows_receive;
+  //! Does the icon show that we currently transmit data?
   bool m_icon_shows_transmit;
 #if defined __WXGTK__
   wxBitmap GetImage(wxString img);
@@ -65,13 +71,21 @@ private:
 #endif
   //! The currently shown network status bitmap
   wxStaticBitmap *m_networkStatus;
+  //! The bitmap shown on network errors
   wxBitmap m_network_error;
+  //! The bitmap shown while not connected to the network
   wxBitmap m_network_offline;
+  //! The bitmap shown while transmitting data
   wxBitmap m_network_transmit;
+  //! The bitmap shown while not transmitting or receiving data
   wxBitmap m_network_idle;
+  //! The bitmap shown while receiving data
   wxBitmap m_network_receive;
+  //! The bitmap shown while simultaneously receiving and transmitting data
   wxBitmap m_network_transmit_receive;
+  //! The timer that prolongs the showing of the "sending" bitmap a bit.
   wxTimer SendTimer;
+  //! The timer that prolongs the showing of the "receiving" bitmap a bit.
   wxTimer ReceiveTimer;
   wxDECLARE_EVENT_TABLE();
 };
