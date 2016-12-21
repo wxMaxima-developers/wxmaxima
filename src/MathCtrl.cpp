@@ -2396,6 +2396,7 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
   // we scroll to this cell.
   if(FollowEvaluation())
     SetActiveCell(m_answerCell, false);
+
   RequestRedraw();
 }
 
@@ -3058,10 +3059,10 @@ void MathCtrl::SelectEditable(EditorCell *editor, bool top)
     else
       editor->CaretToEnd();
 
-    ScrollToCaret();
-
     if (editor->GetWidth() == -1)
       Recalculate(dynamic_cast<GroupCell*>(editor->GetParent()));
+
+    ScrollToCaret();
   }
   else
   { // can't get editor... jump over to the next cell..
@@ -7016,7 +7017,13 @@ void MathCtrl::ScrollToCaret()
         RecalculateForce();
         point = GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize());
       }
-      ShowPoint(point);
+      if(QuestionPending())
+      {
+        point.x = 0;
+        point.y = GetActiveCell()->GetParent()->GetCurrentY();
+      }
+      else
+        ShowPoint(point);
     }   
   }
 }
@@ -7338,7 +7345,7 @@ void MathCtrl::OnFollow()
       }
       SetSelection(GetWorkingGroup());
       SetHCaret(GetWorkingGroup());
-      ScrollToCell(GetWorkingGroup());
+      ScrollToCell(GetWorkingGroup(),false);
     }
   }
 }
