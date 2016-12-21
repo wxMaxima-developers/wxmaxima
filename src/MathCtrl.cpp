@@ -5782,6 +5782,12 @@ void MathCtrl::ScrollToCell(MathCell *cell, bool scrollToTop)
     return;
   }
 
+  if(cell == GetActiveCell())
+  {
+    ScrollToCaret();
+    return;
+  }
+  
 /*  MathCell *tmp = cell->GetParent();
   if (tmp == NULL)
     return;
