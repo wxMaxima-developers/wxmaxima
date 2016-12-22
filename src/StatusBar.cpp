@@ -30,6 +30,9 @@ StatusBar::StatusBar(wxWindow *parent, int id): wxStatusBar(parent, id)
 {
   int widths[] = { -1, 300, GetSize().GetHeight()};
   SetFieldsCount(3, widths);
+  m_stdToolTip = _("Maxima, the program that does the actual mathematics is kept in a separate process. This means that even if maxima crashes wxMaxima, which displays the worksheet, stays intact.\nThis icon indicates if data is transferred between maxima and wxMaxima.");
+  m_networkErrToolTip = _("Maxima, the program that does the actual mathematics and wxMaxima, which displays the worksheet are kept in separate processes. This means that even if maxima crashes wxMaxima (and therefore the worksheet) stays intact. Both programs communicate over a local network socket. This time this socket could not be created which might be caused by a firewall that it setup to not only intercepts connections from the outside, but also to intercept connections between two programs that run on the same computer.");
+  m_noConnectionToolTip = _("Maxima, the program that does the actual mathematics and wxMaxima, which displays the worksheet are kept in separate processes. This means that even if maxima crashes wxMaxima (and therefore the worksheet) stays intact. Currently the two programs aren't connected to each other which might mean that maxima is still starting up or couldn't be started. Alternatively it can be caused by a firewall that it setup to not only intercepts connections from the outside, but also to intercept connections between two programs that run on the same computer.");
   m_network_error = GetImage("network-error");
   m_network_offline = GetImage("network-offline");
   m_network_transmit = GetImage("network-transmit");
@@ -37,7 +40,7 @@ StatusBar::StatusBar(wxWindow *parent, int id): wxStatusBar(parent, id)
   m_network_receive = GetImage("network-receive");
   m_network_transmit_receive = GetImage("network-transmit-receive");
   m_networkStatus = new wxStaticBitmap(this, wxID_ANY, m_network_offline);
-  m_networkStatus->SetToolTip(_("This icon shows if data is transmitted to or from maxima."));
+  m_networkStatus->SetToolTip(m_stdToolTip);
   ReceiveTimer.SetOwner(this,wxID_ANY);
   SendTimer.SetOwner(this,wxID_ANY);
   m_icon_shows_receive = m_icon_shows_transmit = false;
@@ -84,16 +87,18 @@ void StatusBar::NetworkStatus(networkState status)
     {
     case idle:
       m_networkStatus->SetBitmap(m_network_idle);
-      m_networkState = status;
+      m_networkStatus->SetToolTip(m_stdToolTip);
       break;
     case error:
       m_networkStatus->SetBitmap(m_network_error);
       m_networkState = status;
+      m_networkStatus->SetToolTip(m_networkErrToolTip);
       break;
     case offline:
       m_networkStatus->SetBitmap(m_network_offline);
       m_networkState = status;
-      break;
+      m_networkStatus->SetToolTip(m_noConnectionToolTip);
+  break;
     case receive:
       {
 	ReceiveTimer.StartOnce(100);

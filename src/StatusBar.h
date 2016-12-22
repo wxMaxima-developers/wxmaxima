@@ -59,6 +59,9 @@ protected:
   void OnTimerEvent(wxTimerEvent& event);
 
 private:
+  wxString m_stdToolTip;
+  wxString m_networkErrToolTip;
+  wxString m_noConnectionToolTip;
   //! The basic network state we currently display without receive or transmit info
   networkState m_networkState;
   //! Does the icon show that we currently receive data?
