@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-22 11:50+0100\n"
+"POT-Creation-Date: 2016-12-22 12:17+0100\n"
 "PO-Revision-Date: 2015-12-13 23:30+0200\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -73,7 +73,7 @@ msgstr ""
 msgid " (Graphics) "
 msgstr "(Grafikler)"
 
-#: ../src/EditorCell.cpp:3268 ../src/EditorCell.cpp:3587
+#: ../src/EditorCell.cpp:3267 ../src/EditorCell.cpp:3586
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
@@ -2915,9 +2915,9 @@ msgstr ""
 
 #: ../src/StatusBar.cpp:33
 msgid ""
-"Maxima, the program that does the actual mathematics is kept in a separate "
-"process. This means that even if maxima crashes wxMaxima, which displays the "
-"worksheet, stays intact.\n"
+"Maxima, the program that does the actual mathematics is started as a "
+"separate process. This has the advantage that an eventual crash of maxima "
+"cannot harm wxMaxima, which displays the worksheet.\n"
 "This icon indicates if data is transferred between maxima and wxMaxima."
 msgstr ""
 

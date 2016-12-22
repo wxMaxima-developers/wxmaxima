@@ -30,7 +30,7 @@ StatusBar::StatusBar(wxWindow *parent, int id): wxStatusBar(parent, id)
 {
   int widths[] = { -1, 300, GetSize().GetHeight()};
   SetFieldsCount(3, widths);
-  m_stdToolTip = _("Maxima, the program that does the actual mathematics is kept in a separate process. This means that even if maxima crashes wxMaxima, which displays the worksheet, stays intact.\nThis icon indicates if data is transferred between maxima and wxMaxima.");
+  m_stdToolTip = _("Maxima, the program that does the actual mathematics is started as a separate process. This has the advantage that an eventual crash of maxima cannot harm wxMaxima, which displays the worksheet.\nThis icon indicates if data is transferred between maxima and wxMaxima.");
   m_networkErrToolTip = _("Maxima, the program that does the actual mathematics and wxMaxima, which displays the worksheet are kept in separate processes. This means that even if maxima crashes wxMaxima (and therefore the worksheet) stays intact. Both programs communicate over a local network socket. This time this socket could not be created which might be caused by a firewall that it setup to not only intercepts connections from the outside, but also to intercept connections between two programs that run on the same computer.");
   m_noConnectionToolTip = _("Maxima, the program that does the actual mathematics and wxMaxima, which displays the worksheet are kept in separate processes. This means that even if maxima crashes wxMaxima (and therefore the worksheet) stays intact. Currently the two programs aren't connected to each other which might mean that maxima is still starting up or couldn't be started. Alternatively it can be caused by a firewall that it setup to not only intercepts connections from the outside, but also to intercept connections between two programs that run on the same computer.");
   m_network_error = GetImage("network-error");
@@ -62,19 +62,19 @@ void StatusBar::OnTimerEvent(wxTimerEvent& event)
   m_icon_shows_receive  = ReceiveTimer.IsRunning();
   m_icon_shows_transmit = SendTimer.IsRunning();
 
-  if((ReceiveTimer.IsRunning())&&(SendTimer.IsRunning()))
+  if( m_icon_shows_receive &&  m_icon_shows_transmit)
     {
 	m_networkStatus->SetBitmap(m_network_transmit_receive);
     }			       
-  if((ReceiveTimer.IsRunning())&&(!SendTimer.IsRunning()))
+  if( m_icon_shows_receive && !m_icon_shows_transmit)
     {
 	m_networkStatus->SetBitmap(m_network_receive);
     }			       
-  if((!ReceiveTimer.IsRunning())&&(SendTimer.IsRunning()))
+  if(!m_icon_shows_receive &&  m_icon_shows_transmit)
     {
 	m_networkStatus->SetBitmap(m_network_transmit);
     }			       
-  if((!ReceiveTimer.IsRunning())&&(!SendTimer.IsRunning()))
+  if(!m_icon_shows_receive && !m_icon_shows_transmit)
     {
 	m_networkStatus->SetBitmap(m_network_idle);
     }			       
@@ -86,6 +86,7 @@ void StatusBar::NetworkStatus(networkState status)
     {
     case idle:
       m_networkStatus->SetBitmap(m_network_idle);
+      m_networkState = status;
       m_networkStatus->SetToolTip(m_stdToolTip);
       break;
     case error:
