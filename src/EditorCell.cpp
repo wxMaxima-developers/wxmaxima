@@ -1059,7 +1059,7 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
       }
     }
 
-    // A "do" or a "then" increases the current indentation level by a tab.
+    // A "do" or a "if" increases the current indentation level by a tab.
     if(!wxIsalnum(ch))
       {
         wxString rest = text.Right(text.Length()-pos-1);
@@ -1073,7 +1073,7 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
           }
         }
 
-        if(rest.StartsWith(wxT("then"))&&(!wxIsalnum(rest[4])))
+        if(rest.StartsWith(wxT("if"))&&(!wxIsalnum(rest[2])))
         {
           if(!indentChars.empty())
           {
