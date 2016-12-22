@@ -1045,7 +1045,6 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
     {
       // Discard any extra indentation from a "then" or a "do" from the last item
       // of indentChars.
-      int newIndent;
       if(!indentChars.empty())
       {
         int lst = indentChars.back();

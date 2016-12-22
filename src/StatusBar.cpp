@@ -61,7 +61,6 @@ void StatusBar::OnTimerEvent(wxTimerEvent& event)
 
   m_icon_shows_receive  = ReceiveTimer.IsRunning();
   m_icon_shows_transmit = SendTimer.IsRunning();
-  bool m_icon_shows_transmit;
 
   if((ReceiveTimer.IsRunning())&&(SendTimer.IsRunning()))
     {
