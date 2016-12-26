@@ -25,6 +25,7 @@
   table of contents pane.
  */
 #include <wx/wx.h>
+#include <wx/listctrl.h>
 #include <vector>
 #include "GroupCell.h"
 #include "EditorCell.h"
@@ -58,15 +59,17 @@ public:
       - we call it only on creation of a cell and on leaving it again
       - and we only traverse the tree if the pane is actually shown.
    */
-  void Update(MathCell* tree,GroupCell *pos);
+  void Update(GroupCell* tree,GroupCell *pos);
   //! Get the nth Cell in the table of contents.
-  MathCell *GetCell(int index);
+  GroupCell *GetCell(int index);
+protected:
+  void OnSize(wxSizeEvent& event);
 private:
   //! The last selected item
   long m_lastSelection;
   //! Update the displayed contents.
   void UpdateDisplay();
-  wxListBox *m_displayedItems;
+  wxListCtrl *m_displayedItems;
   wxTextCtrl *m_regex;
   //! The items we displayed the last time update() was called
   wxArrayString m_items_old;

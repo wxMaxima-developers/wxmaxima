@@ -39,8 +39,8 @@ History::History(wxWindow* parent, int id) : wxPanel(parent, id)
   box->AddGrowableCol(0);
   box->AddGrowableRow(0);
 
-  box->Add(m_history, 0, wxEXPAND | wxALL, 0);
-  box->Add(m_regex, 0, wxEXPAND | wxALL, 1);
+  box->Add(m_history, wxSizerFlags().Expand());
+  box->Add(m_regex, wxSizerFlags().Expand());
 
   SetSizer(box);
   box->Fit(this);

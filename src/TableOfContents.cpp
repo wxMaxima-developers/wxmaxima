@@ -32,19 +32,34 @@
 
 TableOfContents::TableOfContents(wxWindow* parent, int id) : wxPanel(parent, id)
 {
-  m_displayedItems = new wxListBox(this, structure_ctrl_id);
+  m_displayedItems = new wxListCtrl(
+    this, structure_ctrl_id,
+    wxDefaultPosition,wxDefaultSize,
+    wxLC_SINGLE_SEL|wxLC_ALIGN_LEFT|wxLC_REPORT|wxLC_NO_HEADER
+    );
+  m_displayedItems->AppendColumn(wxEmptyString);
+  m_displayedItems->InsertItem(0,"Test");
+  m_displayedItems->InsertItem(1,"Test");
   m_regex = new wxTextCtrl(this, structure_regex_id);
+
+  // A box whose 1st row is growable 
   wxFlexGridSizer * box = new wxFlexGridSizer(1);
   box->AddGrowableCol(0);
   box->AddGrowableRow(0);
 
-  box->Add(m_displayedItems, 0, wxEXPAND | wxALL, 0);
-  box->Add(m_regex, 0, wxEXPAND | wxALL, 1);
+  box->Add(m_displayedItems, wxSizerFlags().Expand());
+  box->Add(m_regex, wxSizerFlags().Expand());
   m_lastSelection = -1;
   
   SetSizer(box);
   box->Fit(this);
   box->SetSizeHints(this);
+}
+
+void TableOfContents::OnSize(wxSizeEvent& event)
+{
+    m_displayedItems->SetColumnWidth(0,event.GetSize().x);
+    event.Skip();
 }
 
 TableOfContents::~TableOfContents()
@@ -53,7 +68,7 @@ TableOfContents::~TableOfContents()
   delete m_displayedItems;
 }
 
-void TableOfContents::Update(MathCell* tree, GroupCell *cursorPosition)
+void TableOfContents::Update(GroupCell* tree, GroupCell *cursorPosition)
 {
   long selection = m_lastSelection;
   if(IsShown())
@@ -83,12 +98,18 @@ void TableOfContents::Update(MathCell* tree, GroupCell *cursorPosition)
 	}
       
       UpdateDisplay();
-      if((selection >= 0)&&(m_displayedItems->GetSelection()!=selection))
+
+      long item = -1;
+      item = m_displayedItems->GetNextItem(-1,
+                                           wxLIST_NEXT_ALL,
+                                           wxLIST_STATE_SELECTED);
+
+      if((selection >= 0)&&(item != selection))
       {
-        if((long)m_displayedItems->GetCount() < selection)
-          selection = m_displayedItems->GetCount();
-        if(m_displayedItems->GetCount()>0)
-          m_displayedItems->SetSelection(selection);
+        if((long)m_displayedItems->GetItemCount() < selection)
+          selection = m_displayedItems->GetItemCount();
+        if(m_displayedItems->GetItemCount()>0)
+          m_displayedItems->SetItemState(selection,wxLIST_STATE_SELECTED,wxLIST_STATE_SELECTED);
         m_lastSelection = selection;
       }
     }
@@ -142,11 +163,32 @@ void TableOfContents::UpdateDisplay()
   // Work around a wxWidgets bug: items==m_items_old if items is empty and m_items_old isn't.
   if((items!=m_items_old)||(items.GetCount()==0))
   {
-    m_displayedItems->Set(items);
+
+    // Update the name of all existing items and add new items, if necessary
+    for(int i = 0;i<items.GetCount();i++)
+    {
+      if(i<m_displayedItems->GetItemCount())
+      {
+        m_displayedItems->SetItemText(i,items[i]);
+      }
+      else
+      {
+        m_displayedItems->InsertItem(i,items[i]);
+      }
+      if(m_structure[i]->GetHiddenTree())
+        m_displayedItems->SetItemTextColour(i,wxColor(128,128,128));
+      else
+        m_displayedItems->SetItemTextColour(i,*wxBLACK);
+      }
+    // Delete superfluous items
+    for(int i = items.GetCount(); i < m_displayedItems->GetItemCount();i++)
+    {
+      m_displayedItems->DeleteItem(i);
+    }
   }
 }
 
-MathCell *TableOfContents::GetCell(int index)
+GroupCell *TableOfContents::GetCell(int index)
 {
   wxRegEx matcher;
   int currentIndex = -1;
@@ -200,4 +242,5 @@ void TableOfContents::OnRegExEvent(wxCommandEvent &ev)
 
 BEGIN_EVENT_TABLE(TableOfContents, wxPanel)
   EVT_TEXT(structure_regex_id, TableOfContents::OnRegExEvent)
+  EVT_SIZE(TableOfContents::OnSize)
 END_EVENT_TABLE()

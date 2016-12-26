@@ -258,7 +258,7 @@ protected:
   //! Issued on double click on a history item
   void HistoryDClick(wxCommandEvent& event);
   //! Issued on double click on a table of contents item
-  void TableOfContentsDClick(wxCommandEvent& event);
+  void TableOfContentsSelection(wxListEvent& event);
   void OnInspectorEvent(wxCommandEvent& ev);
   void DumpProcessOutput();
 

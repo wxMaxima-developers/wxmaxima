@@ -5982,7 +5982,7 @@ void wxMaxima::HistoryDClick(wxCommandEvent& ev)
   m_console->SetFocus();
 }
 
-void wxMaxima::TableOfContentsDClick(wxCommandEvent& ev)
+void wxMaxima::TableOfContentsSelection(wxListEvent& ev)
 {
   GroupCell *selection = dynamic_cast<GroupCell*>(m_console->m_tableOfContents->GetCell(ev.GetSelection())->GetParent());
   if(selection)
@@ -6418,7 +6418,7 @@ EVT_MENU(menu_insert_image, wxMaxima::InsertMenu)
 EVT_MENU_RANGE(menu_pane_hideall, menu_pane_stats, wxMaxima::ShowPane)
 EVT_MENU(menu_show_toolbar, wxMaxima::EditMenu)
 EVT_LISTBOX_DCLICK(history_ctrl_id, wxMaxima::HistoryDClick)
-EVT_LISTBOX_DCLICK(structure_ctrl_id, wxMaxima::TableOfContentsDClick)
+EVT_LIST_ITEM_ACTIVATED(structure_ctrl_id, wxMaxima::TableOfContentsSelection)
 EVT_BUTTON(menu_stats_histogram, wxMaxima::StatsMenu)
 EVT_BUTTON(menu_stats_piechart, wxMaxima::StatsMenu)
 EVT_BUTTON(menu_stats_scatterplot, wxMaxima::StatsMenu)
