@@ -7163,6 +7163,15 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
           m_autocomplete.AddWorksheetWords(tmp->GetEditable()->GetWordList());
         
       }
+      else
+      {
+        if((tmp->GetGroupType()==GC_TYPE_CODE)&&(tmp->GetEditable()!=NULL))
+        {
+          wxArrayString wordList = tmp->GetEditable()->GetWordList();
+          wordList.Remove(partial);
+          m_autocomplete.AddWorksheetWords(wordList);
+        }
+      }
       tmp =dynamic_cast<GroupCell*>(tmp->m_next);
     }
   }
