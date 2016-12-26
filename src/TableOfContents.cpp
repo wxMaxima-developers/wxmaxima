@@ -38,8 +38,6 @@ TableOfContents::TableOfContents(wxWindow* parent, int id) : wxPanel(parent, id)
     wxLC_SINGLE_SEL|wxLC_ALIGN_LEFT|wxLC_REPORT|wxLC_NO_HEADER
     );
   m_displayedItems->AppendColumn(wxEmptyString);
-  m_displayedItems->InsertItem(0,"Test");
-  m_displayedItems->InsertItem(1,"Test");
   m_regex = new wxTextCtrl(this, structure_regex_id);
 
   // A box whose 1st row is growable 
