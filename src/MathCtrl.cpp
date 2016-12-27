@@ -120,7 +120,6 @@ wxScrolledCanvas(
   m_animationTimer.SetOwner(this, ANIMATION_TIMER_ID);
   AnimationRunning(false);
   m_saved = false;
-  wxConfig *config = (wxConfig *)wxConfig::Get();
   m_evaluationQueue = new EvaluationQueue();
   AdjustSize();
   m_autocompleteTemplates = false;
@@ -220,7 +219,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
   }
   
   // Inform all cells how wide our display is
-  MathCell::SetCanvasSize(GetClientSize());
+  Configuration::Get()->SetCanvasSize(GetClientSize());
   wxMemoryDC dcm;
   wxPaintDC dc(this);
   
@@ -492,7 +491,7 @@ GroupCell *MathCtrl::InsertGroupCells(
   if (!next) // if there were no further cells
     m_last = lastOfCellsToInsert;
   
-  m_tree->SetCanvasSize(GetClientSize());
+  Configuration::Get()->SetCanvasSize(GetClientSize());
   if (renumbersections)
     NumberSections();
   Recalculate(where,false);
@@ -610,7 +609,6 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
       else
       {
         SetHCaret(tmp);
-        ScrollToCaret();
       }
     }
     RequestRedraw(tmp);
@@ -652,20 +650,20 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
   }
   
   if(CellToScrollTo)
-    ScrollToCell(CellToScrollTo);
+    ScrollToCell(CellToScrollTo,false);
 }
 
 void MathCtrl::Recalculate(GroupCell *start,bool force)
 {
   GroupCell *tmp;
-  
+  Configuration::Get()->SetCanvasSize(GetClientSize());
+
   if(start == NULL)
     tmp = m_tree;
   else
     tmp = start;
 
-  if(m_tree)
-    m_tree->SetCanvasSize(GetClientSize());
+  Configuration::Get()->SetCanvasSize(GetClientSize());
 
   m_configuration->SetForceUpdate(force);
   m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
@@ -716,7 +714,8 @@ void MathCtrl::OnSize(wxSizeEvent& event) {
     AdjustSize();
 
   RequestRedraw();
-  if(CellToScrollTo)ScrollToCell(CellToScrollTo);
+  if(CellToScrollTo)
+    ScrollToCell(CellToScrollTo,false);
   //wxScrolledCanvas::OnSize(event);
 }
 
@@ -2396,13 +2395,8 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
   // If the user wants to be automatically scrolled to the cell evaluation takes place
   // we scroll to this cell.
   if(FollowEvaluation())
-  {
     SetActiveCell(m_answerCell, false);
-    GroupCell *tmp = m_workingGroup;
-    if (tmp->m_next)
-      tmp = dynamic_cast<GroupCell*>(tmp->m_next);
-    ScrollToCell(tmp);
-  }
+
   RequestRedraw();
 }
 
@@ -2456,7 +2450,6 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   SetActiveCell(group->GetEditable(), false);
   if(GetActiveCell() != NULL)
     GetActiveCell()->ClearUndo();
-  ScrollToCell(group);
   // If we just have started typing inside a new cell we don't want the screen
   // to scroll away.
   ScrolledAwayFromEvaluation();
@@ -2826,10 +2819,8 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event)
 
     // If we scrolled away from the cell that is currently being evaluated
     // we need to enable the button that brings us back
-     ScrolledAwayFromEvaluation();
-
-     // We might have moved the cursor off-screen and therefore might need to scroll.
-     ScrollToCell(GetHCaret());
+    ScrolledAwayFromEvaluation();
+    
     return;
   }
   
@@ -2879,8 +2870,6 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event)
     UpdateTableOfContents();
     ScrolledAwayFromEvaluation();
     
-     // We might have moved the cursor off-screen and therefore might need to scroll.
-    ScrollToCell(GetHCaret());
     return;
   }
 
@@ -3021,7 +3010,7 @@ void MathCtrl::SelectWithChar(int ccode)
            m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionEnd->m_previous);
          }
          if (m_hCaretPositionEnd != NULL)
-           ScrollToCell(m_hCaretPositionEnd); 
+           ScrollToCell(m_hCaretPositionEnd,false); 
        }
   }
   else
@@ -3044,7 +3033,7 @@ void MathCtrl::SelectWithChar(int ccode)
         m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionEnd->m_next);
       }
       if (m_hCaretPositionEnd != NULL)
-        ScrollToCell(m_hCaretPositionEnd);
+        ScrollToCell(m_hCaretPositionEnd,false);
     }
   }
 
@@ -3078,10 +3067,10 @@ void MathCtrl::SelectEditable(EditorCell *editor, bool top)
     else
       editor->CaretToEnd();
 
-    ScrollToCaret();
-
     if (editor->GetWidth() == -1)
       Recalculate(dynamic_cast<GroupCell*>(editor->GetParent()));
+
+    ScrollToCaret();
   }
   else
   { // can't get editor... jump over to the next cell..
@@ -3145,24 +3134,21 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
 
     GetClientSize(&width,&height);
 
-
     // Scroll as many cells as are needed to make sure that
     // the new cell is the upmost cell that begins on the new page. 
     while (CellToScrollTo != NULL)
     {      
-      if(CellToScrollTo->GetRect().GetTop() < topleft.y-height)
-      {
-        break;
-      }
       CellToScrollTo = dynamic_cast<GroupCell*>(CellToScrollTo -> m_previous);
+
+      if((CellToScrollTo != NULL) && (CellToScrollTo->GetRect().GetTop() < topleft.y-height))
+        break;
     }
-    // We want to put the cursor to the space above this cell.
+    // We want to put the cursor in the space above the cell we found.
     if(CellToScrollTo != NULL)
       CellToScrollTo = dynamic_cast<GroupCell*>(CellToScrollTo -> m_previous);
     
-    SetHCaret(CellToScrollTo);
-    ScrollToCaret();
     ScrolledAwayFromEvaluation();
+    SetHCaret(CellToScrollTo);
     break;
   }
 #ifdef WXK_NEXT   // Is on some systems a replacement for WXK_PAGEDOWN
@@ -3226,7 +3212,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
       GroupCell *oldCell = GetHCaret();
       SetHCaret(NULL);
       if (m_tree != NULL)
-        ScrollToCell(m_tree);
+        ScrollToCell(m_tree,true);
       if(event.ShiftDown())
       {
         SetSelection(m_tree,oldCell);
@@ -3247,8 +3233,6 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     {
       GroupCell *oldCell = GetHCaret();
       SetHCaret(m_last);
-      if (m_last != NULL)
-        ScrollToCell(m_last);
       if(event.ShiftDown())
       {
         if(oldCell != NULL)
@@ -5619,8 +5603,6 @@ bool MathCtrl::ActivatePrevInput() {
   if (inpt == NULL)
     return false;
 
-  ScrollToCell(inpt);
-
   SetActiveCell(inpt, false);
   m_activeCell->CaretToEnd();
 
@@ -5660,8 +5642,6 @@ bool MathCtrl::ActivateNextInput(bool input) {
 
   if (inpt == NULL)
     return false;
-
-  ScrollToCell(inpt);
 
   SetActiveCell(inpt, false);
   m_activeCell->CaretToStart();
@@ -5807,7 +5787,7 @@ void MathCtrl::FollowEvaluation(bool followEvaluation)
     ScrolledAwayFromEvaluation(false);
 }
 
-void MathCtrl::ScrollToCell(MathCell *cell)
+void MathCtrl::ScrollToCell(MathCell *cell, bool scrollToTop)
 {
   if (cell == NULL)
   {
@@ -5817,27 +5797,28 @@ void MathCtrl::ScrollToCell(MathCell *cell)
     return;
   }
 
-  MathCell *tmp = cell->GetParent();
+  if(cell == GetActiveCell())
+  {
+    ScrollToCaret();
+    return;
+  }
+  
+/*  MathCell *tmp = cell->GetParent();
   if (tmp == NULL)
     return;
-
-  int cellY = tmp->GetCurrentY();
+*/
+  int cellY = cell->GetCurrentY();
 
   if (cellY < 1)
   {
     RecalculateForce();
-    cellY = tmp->GetCurrentY();
-
-    if(cellY < 1)
-    {      
-      cellY = tmp->GetParent()->PositionToPoint(m_configuration->GetDefaultFontSize()).y;
-    }
+    cellY = cell->GetCurrentY();
   }
 
   wxASSERT_MSG(cellY >= -1,wxT("Bug: Cell with negative y position!"));
   
-  int cellDrop = tmp->GetDrop();
-  int cellCenter = tmp->GetCenter();
+  int cellDrop = cell->GetDrop();
+  int cellCenter = cell->GetCenter();
 
   int view_x, view_y;
   int height, width;
@@ -5847,11 +5828,33 @@ void MathCtrl::ScrollToCell(MathCell *cell)
 
   view_y *= m_scrollUnit;
 
-  if (cellY + cellDrop + m_scrollUnit / 2 > view_y + height - height / 10)
-    Scroll(-1, MAX((cellY + cellDrop - height + height / 10) / m_scrollUnit + 4, 0));
-  else if (cellY - cellCenter - m_scrollUnit / 2 < view_y && cellDrop + cellCenter < height)
+  int cellTop    = cellY - cellCenter;
+  int cellBottom = cellY + cellDrop;
+
+  if(scrollToTop)
   {
-    Scroll(-1, MAX(cellY / m_scrollUnit - 2, 0));
+
+    // Scroll upwards if the top of the thing we want to scroll to is less than 1/2
+    // scroll unit away from the top of the page
+    if (cellTop - m_scrollUnit < view_y)
+      Scroll(-1, MAX(cellTop / m_scrollUnit - 1, 0));
+    
+    // Scroll downwards if the top of the thing we want to scroll to is less than 1/2
+    // scroll unit away from the bottom of the page
+    if (cellTop + m_scrollUnit > view_y + height)
+      Scroll(-1, MAX(cellTop / m_scrollUnit - 1, 0));
+  }
+  else
+  {
+    // Scroll downwards if the bottom of the thing we want to scroll to is less
+    // than 1/2 scroll unit away from the bottom of the page
+    if (cellBottom + m_scrollUnit > view_y + height)
+      Scroll(-1, MAX(cellBottom / m_scrollUnit - 1, 0));
+
+    // Scroll upwards if the bottom of the thing we want to scroll to is less than 1/2
+    // scroll unit away from the top of the page
+    if (cellBottom - m_scrollUnit < view_y)
+      Scroll(-1, MAX(cellBottom / m_scrollUnit - 1, 0));
   }
   RequestRedraw();
 }
@@ -6008,7 +6011,6 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
       if (action->m_start->RevealHidden())
         FoldOccurred();
       
-      ScrollToCell(action->m_start);
       SetHCaret(action->m_start);
 
       sourcelist->pop_front();
@@ -6114,11 +6116,13 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
  */
 void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
 {
-  if ((m_activeCell != NULL) &&(m_activeCell != cell))
+  if ((m_activeCell != NULL) && (m_activeCell != cell))
   {
     TreeUndo_CellLeft();
     m_activeCell->ActivateCell(false);
   }
+
+  bool scrollneeded = ((m_activeCell != NULL) && (m_activeCell != cell));
 
   m_activeCell = cell;
 
@@ -6130,13 +6134,13 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
   
   TreeUndo_CellEntered();
 
-  if (m_activeCell != NULL)
+  if (cell != NULL)
   {
     SetSelection(NULL);
-    if(m_activeCell != cell)
+    if(cell != cell)
     {
-      if(m_activeCell != NULL)
-        m_activeCell->ActivateCell(false);
+      if(cell != NULL)
+        cell->ActivateCell(false);
     }
     if(cell != NULL)
       cell->ActivateCell(true);
@@ -6165,6 +6169,8 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
     Configuration::Get()->ShowCodeCells(true);
     CodeCellVisibilityChanged();
   }
+  if(scrollneeded)
+    ScrollToCaret();
 }
 
 bool MathCtrl::PointVisibleIs(wxPoint point)
@@ -6657,7 +6663,6 @@ void MathCtrl::OnActivate(wxActivateEvent& event)
  */
 void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
 {
-
   SetSelection(NULL);
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   SetActiveCell(NULL, false);
@@ -6670,7 +6675,7 @@ void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
   
   if (callRefresh) // = true default
     RequestRedraw();
-  ScrollToCell(where);
+  ScrollToCell(where,false);
   
   // Tell the cursor to blink, but to be visible right now.
   m_blinkDisplayCaret = true;
@@ -7017,7 +7022,7 @@ void MathCtrl::ScrollToCaret()
 {
   if(m_hCaretActive)
   {
-    ScrollToCell(m_hCaretPosition);
+    ScrollToCell(m_hCaretPosition,false);
   }
   else
   {
@@ -7029,7 +7034,13 @@ void MathCtrl::ScrollToCaret()
         RecalculateForce();
         point = GetActiveCell()->PositionToPoint(m_configuration->GetDefaultFontSize());
       }
-      ShowPoint(point);
+      if(QuestionPending())
+      {
+        point.x = 0;
+        point.y = GetActiveCell()->GetParent()->GetCurrentY();
+      }
+      else
+        ShowPoint(point);
     }   
   }
 }
@@ -7351,7 +7362,7 @@ void MathCtrl::OnFollow()
       }
       SetSelection(GetWorkingGroup());
       SetHCaret(GetWorkingGroup());
-      ScrollToCell(GetWorkingGroup());
+      ScrollToCell(GetWorkingGroup(),false);
     }
   }
 }
