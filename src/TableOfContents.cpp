@@ -163,7 +163,7 @@ void TableOfContents::UpdateDisplay()
   {
 
     // Update the name of all existing items and add new items, if necessary
-    for(int i = 0;i<items.GetCount();i++)
+    for(unsigned int i = 0;i<items.GetCount();i++)
     {
       if(i<m_displayedItems->GetItemCount())
       {
@@ -238,7 +238,30 @@ void TableOfContents::OnRegExEvent(wxCommandEvent &ev)
   UpdateDisplay();
 }
 
+void TableOfContents::OnMouseRightDown(wxListEvent& event)
+{
+  if(event.GetIndex()<0)
+    return;
+  wxMenu* popupMenu = new wxMenu();
+
+  m_cellRightClickedOn=m_structure[event.GetIndex()];
+
+  if(m_cellRightClickedOn == NULL)
+    return;
+  
+  if(m_cellRightClickedOn->GetHiddenTree())
+    popupMenu->Append(popid_Unfold, _("Unhide"), wxEmptyString, wxITEM_NORMAL);
+  else
+    popupMenu->Append(popid_Fold, _("Hide"), wxEmptyString, wxITEM_NORMAL);
+    
+  // create menu if we have any items
+  if (popupMenu->GetMenuItemCount() > 0 )
+    PopupMenu(popupMenu);
+  delete popupMenu;
+}
+
 BEGIN_EVENT_TABLE(TableOfContents, wxPanel)
   EVT_TEXT(structure_regex_id, TableOfContents::OnRegExEvent)
   EVT_SIZE(TableOfContents::OnSize)
+  EVT_LIST_ITEM_RIGHT_CLICK(wxID_ANY,TableOfContents::OnMouseRightDown)
 END_EVENT_TABLE()

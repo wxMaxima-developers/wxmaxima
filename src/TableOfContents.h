@@ -44,10 +44,20 @@ enum {
 class TableOfContents : public wxPanel
 {
 public:
+  enum PopIds{
+    /*! The "copy" popup menu item was clicked
+
+      This item is the first of the enum and is assigned a high enough number
+      that it won't collide with the numbers to be found in wxFrame::Event
+     */
+    popid_Fold = wxID_HIGHEST + 500,
+    popid_Unfold = wxID_HIGHEST + 501
+  };
   TableOfContents(wxWindow* parent, int id);
   /* The destructor
    */
   ~TableOfContents();
+  void OnMouseRightDown(wxListEvent& event);
   //! Add a file to the recently opened files list.
   void AddToTableOfContents(wxString cmd);
   //! What happens if someone changes the search box contents
@@ -62,9 +72,13 @@ public:
   void Update(GroupCell* tree,GroupCell *pos);
   //! Get the nth Cell in the table of contents.
   GroupCell *GetCell(int index);
+
+  //! Returns the cell that was last right-clicked on.
+  GroupCell *RightClickedOn(){return m_cellRightClickedOn;}
 protected:
   void OnSize(wxSizeEvent& event);
 private:
+  GroupCell *m_cellRightClickedOn;
   //! The last selected item
   long m_lastSelection;
   //! Update the displayed contents.

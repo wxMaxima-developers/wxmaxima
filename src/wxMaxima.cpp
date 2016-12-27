@@ -5123,6 +5123,26 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   wxString selection = m_console->GetString();
   switch (event.GetId())
   {
+  case TableOfContents::popid_Fold:
+    if(m_console->m_tableOfContents != NULL)
+    {
+      if(m_console->m_tableOfContents->RightClickedOn())
+        m_console->m_tableOfContents->RightClickedOn()->Fold();
+    }
+    m_console->Recalculate();
+    m_console->RequestRedraw();
+    m_console->UpdateTableOfContents();
+    break;
+  case TableOfContents::popid_Unfold:
+    if(m_console->m_tableOfContents != NULL)
+    {
+      if(m_console->m_tableOfContents->RightClickedOn())
+        m_console->m_tableOfContents->RightClickedOn()->Unfold();
+    }
+    m_console->Recalculate();
+    m_console->RequestRedraw();
+    m_console->UpdateTableOfContents();
+    break;
   case MathCtrl::popid_evaluate_section:
   {
     bool evaluating = !m_console->m_evaluationQueue->Empty();
@@ -6408,6 +6428,8 @@ EVT_MENU(MathCtrl::popid_divide_cell, wxMaxima::PopupMenu)
 EVT_MENU(MathCtrl::popid_evaluate, wxMaxima::PopupMenu)
 EVT_MENU(MathCtrl::popid_evaluate_section, wxMaxima::PopupMenu)
 EVT_MENU(MathCtrl::popid_merge_cells, wxMaxima::PopupMenu)
+EVT_MENU(TableOfContents::popid_Fold, wxMaxima::PopupMenu)
+EVT_MENU(TableOfContents::popid_Unfold, wxMaxima::PopupMenu)
 EVT_MENU(menu_evaluate_all_visible, wxMaxima::MaximaMenu)
 EVT_MENU(menu_evaluate_all, wxMaxima::MaximaMenu)
 EVT_MENU(ToolBar::tb_evaltillhere, wxMaxima::MaximaMenu)
