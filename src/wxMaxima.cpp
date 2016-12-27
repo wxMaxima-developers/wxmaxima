@@ -5143,6 +5143,28 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
     m_console->RequestRedraw();
     m_console->UpdateTableOfContents();
     break;
+  case TableOfContents::popid_SelectTocChapter:
+  {
+    if(m_console->m_tableOfContents != NULL)
+    {
+      if(m_console->m_tableOfContents->RightClickedOn())
+      {
+        GroupCell *SelectionStart = m_console->m_tableOfContents->RightClickedOn();
+        GroupCell *SelectionEnd = SelectionStart;
+        while(
+          (SelectionEnd->m_next != NULL)
+          && (dynamic_cast<GroupCell *>(SelectionEnd->m_next)->IsLesserGCType(SelectionStart->GetGroupType()))
+          )
+          SelectionEnd = dynamic_cast<GroupCell *>(SelectionEnd->m_next);
+        m_console->SetActiveCell(NULL);
+        m_console->SetHCaret(SelectionEnd);
+        m_console->SetSelection(SelectionStart,SelectionEnd);
+        m_console->Recalculate();
+        m_console->RequestRedraw();
+      }
+    }
+    break;
+  }
   case MathCtrl::popid_evaluate_section:
   {
     bool evaluating = !m_console->m_evaluationQueue->Empty();
@@ -6430,6 +6452,7 @@ EVT_MENU(MathCtrl::popid_evaluate_section, wxMaxima::PopupMenu)
 EVT_MENU(MathCtrl::popid_merge_cells, wxMaxima::PopupMenu)
 EVT_MENU(TableOfContents::popid_Fold, wxMaxima::PopupMenu)
 EVT_MENU(TableOfContents::popid_Unfold, wxMaxima::PopupMenu)
+EVT_MENU(TableOfContents::popid_SelectTocChapter, wxMaxima::PopupMenu)
 EVT_MENU(menu_evaluate_all_visible, wxMaxima::MaximaMenu)
 EVT_MENU(menu_evaluate_all, wxMaxima::MaximaMenu)
 EVT_MENU(ToolBar::tb_evaltillhere, wxMaxima::MaximaMenu)

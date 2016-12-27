@@ -51,7 +51,8 @@ public:
       that it won't collide with the numbers to be found in wxFrame::Event
      */
     popid_Fold = wxID_HIGHEST + 500,
-    popid_Unfold = wxID_HIGHEST + 501
+    popid_Unfold = wxID_HIGHEST + 501,
+    popid_SelectTocChapter = wxID_HIGHEST + 502
   };
   TableOfContents(wxWindow* parent, int id);
   /* The destructor
