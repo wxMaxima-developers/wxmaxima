@@ -45,11 +45,25 @@ private:
   EditorCell *m_editor;
   AutoComplete::autoCompletionType m_type;
   wxListBox *m_autocompletions;
+  ContentAssistantPopup **m_doneptr;
+protected:
+  void OnDismiss();
+  void OnClose(wxCloseEvent& event);
 public:
-  ContentAssistantPopup(wxWindow *parent, EditorCell* editor, AutoComplete *autocomplete, AutoComplete::autoCompletionType type);
+  ~ContentAssistantPopup();
+  /*! The constructor of the autocompletion window
+
+    \param parent The parent window
+    \param editor The cell that contains the text that is to be completed
+    \param AutoComplete The autocompletion data
+    \param type The type of completion needed
+    \param doneptr A pointer that will be set to NULL when the pop-up is destroyed.
+   */
+  ContentAssistantPopup(wxWindow *parent, EditorCell* editor, AutoComplete *autocomplete, AutoComplete::autoCompletionType type,ContentAssistantPopup **doneptr);
   void UpdateResults();
   void OnKeyPress(wxKeyEvent& event);
   void OnClick(wxCommandEvent& event);
+  DECLARE_EVENT_TABLE()
 };
 
 #endif // CONTENTASSISTANTPOPUP_H

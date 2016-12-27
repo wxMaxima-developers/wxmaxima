@@ -51,6 +51,7 @@ void ContentAssistantPopup::UpdateResults()
     if(!m_editor->IsActive())
       m_editor->ActivateCell(true);
     Dismiss();
+    *m_doneptr = NULL;
     break;
   default:
     m_autocompletions->Set(m_completions);
@@ -113,6 +114,7 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
     if(!m_editor->IsActive())
       m_editor->ActivateCell(true);
     Dismiss();
+    *m_doneptr = NULL;
   }
   break;
   case WXK_LEFT:
@@ -121,6 +123,7 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
     if(!m_editor->IsActive())
       m_editor->ActivateCell(true);
     Dismiss();
+    *m_doneptr = NULL;
     break;
   case WXK_UP:
   {
@@ -163,6 +166,7 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
       m_editor->ActivateCell(true);
     
     Dismiss();
+    *m_doneptr = NULL;
     break;
   }
   default:
@@ -194,6 +198,7 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
       if(!m_editor->IsActive())
         m_editor->ActivateCell(true);
       Dismiss();
+      *m_doneptr = NULL;
 
       // Tell MathCtrl to handle this key event the normal way.
       wxKeyEvent *keyEvent=new wxKeyEvent(event);
@@ -221,16 +226,34 @@ void ContentAssistantPopup::OnClick(wxCommandEvent& event)
     if(!m_editor->IsActive())
       m_editor->ActivateCell(true);
     Dismiss();
+    *m_doneptr = NULL;
   }
+}
+
+void ContentAssistantPopup::OnDismiss()
+{
+  *m_doneptr = NULL;
+}
+
+void ContentAssistantPopup::OnClose(wxCloseEvent& event)
+{
+  *m_doneptr = NULL;
+}
+
+ContentAssistantPopup::~ContentAssistantPopup()
+{
+  *m_doneptr = NULL;
 }
 
 ContentAssistantPopup::ContentAssistantPopup(
   wxWindow *parent,
   EditorCell* editor,
   AutoComplete * autocomplete,
-  AutoComplete::autoCompletionType type
+  AutoComplete::autoCompletionType type,
+  ContentAssistantPopup **doneptr
   ) : wxPopupTransientWindow(parent,-1)
 {
+  m_doneptr = doneptr;
   m_autocomplete = autocomplete;
   m_editor       = editor;
   m_type         = type;
@@ -253,3 +276,7 @@ wxFlexGridSizer *box = new wxFlexGridSizer(1);
   box->Add(m_autocompletions, 0, wxEXPAND | wxALL, 0);
   SetSizerAndFit(box);
 }
+
+BEGIN_EVENT_TABLE(ContentAssistantPopup, wxPopupTransientWindow)
+EVT_CLOSE(ContentAssistantPopup::OnClose)
+END_EVENT_TABLE()

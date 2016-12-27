@@ -39,7 +39,6 @@
 #include "SlideShowCell.h"
 #include "ImgCell.h"
 #include "MarkDown.h"
-#include "ContentAssistantPopup.h"
 #include "ConfigDialogue.h"
 
 #include <wx/clipbrd.h>
@@ -77,6 +76,7 @@ wxScrolledCanvas(
   m_indexSearchStartedAt = -1;
   m_redrawStart = NULL;
   m_redrawRequested = false;
+  m_autocompletePopup = NULL;
   
   m_wxmFormat = wxDataFormat(wxT("text/x-wxmaxima-batch"));
   m_mathmlFormat = wxDataFormat(wxT("MathML"));
@@ -2471,7 +2471,14 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
 /***
  * Support for copying and deleting with keyboard
  */
-void MathCtrl::OnKeyDown(wxKeyEvent& event) {
+void MathCtrl::OnKeyDown(wxKeyEvent& event)
+{
+
+  if(m_autocompletePopup != NULL)
+  {
+    m_autocompletePopup->OnKeyPress(event);
+    return;
+  }
 
   // Track the activity of the keyboard. Setting the keyboard
   // to inactive again is done in wxMaxima.cpp
@@ -2771,7 +2778,8 @@ GroupCell *MathCtrl::EndOfSectioningUnit(GroupCell *start)
  * OnCharInActive sends the event to the active EditorCell
  * and then updates the window.
  */
-void MathCtrl::OnCharInActive(wxKeyEvent& event) {
+void MathCtrl::OnCharInActive(wxKeyEvent& event)
+{
   bool needRecalculate = false;
 
   if (
@@ -3449,7 +3457,13 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
  */
 void MathCtrl::OnChar(wxKeyEvent& event)
 {
-
+  
+  if(m_autocompletePopup != NULL)
+  {
+    m_autocompletePopup->OnKeyPress(event);
+    return;
+  }
+  
   m_cellSearchStartedIn = NULL;
   m_indexSearchStartedAt = -1;
 
@@ -7198,18 +7212,18 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     // On wxGtk a popup window gets informed on keypresses and if somebody
     // clicks a control that is inside it => we can create a content assistant.
     ClientToScreen(&pos.x, &pos.y);
-    ContentAssistantPopup *autocompletePopup;
-    autocompletePopup = new ContentAssistantPopup(this,editor,&m_autocomplete,type);
-    autocompletePopup -> Position(pos, wxDefaultSize);
-    autocompletePopup -> Popup();
+    m_autocompletePopup = new ContentAssistantPopup(this,editor,&m_autocomplete,type,&m_autocompletePopup);
+    m_autocompletePopup -> Position(pos, wxDefaultSize);
+    m_autocompletePopup -> Popup();
+    m_autocompletePopup -> SetFocus();
     #else
     // On Win and Mac a popup window doesn't accept clicks and keypresses.
     // a popup menu at least accepts clicks => we stick to the traditional
     // autocomplete function.
-    wxMenu *popup = new AutocompletePopup(editor,&m_autocomplete,type);
+    AutocompletePopup autocompletePopup = new AutocompletePopup(editor,&m_autocomplete,type);
     // Show the popup menu
-    PopupMenu(popup, pos.x, pos.y);
-    delete popup;
+    PopupMenu(autocompletePopup, pos.x, pos.y);
+    delete m_autocompletePopup;
     #endif
   }
 

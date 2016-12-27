@@ -34,6 +34,7 @@
 #include <wx/textfile.h>
 #include <wx/fdrepdlg.h>
 #include <list>
+#include "ContentAssistantPopup.h"
 
 #include "MathCell.h"
 #include "EditorCell.h"
@@ -891,6 +892,7 @@ public:
       m_hCaretPositionEnd = NULL;
     }
   }
+  ContentAssistantPopup *m_autocompletePopup;
   bool CanEdit();
   bool ActivatePrevInput();
   bool ActivateNextInput(bool input = false);
