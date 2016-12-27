@@ -2466,13 +2466,6 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
  */
 void MathCtrl::OnKeyDown(wxKeyEvent& event)
 {
-
-  if(m_autocompletePopup != NULL)
-  {
-    m_autocompletePopup->OnKeyPress(event);
-    return;
-  }
-
   // Track the activity of the keyboard. Setting the keyboard
   // to inactive again is done in wxMaxima.cpp
   m_keyboardInactiveTimer.StartOnce(10000);
@@ -7182,7 +7175,10 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
         if((tmp->GetGroupType()==GC_TYPE_CODE)&&(tmp->GetEditable()!=NULL))
         {
           wxArrayString wordList = tmp->GetEditable()->GetWordList();
-          wordList.Remove(partial);
+
+          // The current unfinished word is no valid autocompletion.
+          if(partial.Length()>0)
+            wordList.Remove(partial);
           m_autocomplete.AddWorksheetWords(wordList);
         }
       }
