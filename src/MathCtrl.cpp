@@ -7236,7 +7236,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     // On Win and Mac a popup window doesn't accept clicks and keypresses.
     // a popup menu at least accepts clicks => we stick to the traditional
     // autocomplete function.
-    AutocompletePopup autocompletePopup = new AutocompletePopup(editor,&m_autocomplete,type);
+    AutocompletePopup *autocompletePopup = new AutocompletePopup(editor,&m_autocomplete,type);
     // Show the popup menu
     PopupMenu(autocompletePopup, pos.x, pos.y);
     delete m_autocompletePopup;
