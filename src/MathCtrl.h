@@ -899,7 +899,7 @@ public:
   //! Scrolls to the cursor
   void ScrollToCaret();
   //! Scrolls to a given cell
-  void ScrollToCell(MathCell *cell);
+  void ScrollToCell(MathCell *cell,bool scrollToTop);
   //! Returns the cell the cursor that is drawn as a vertical line is in.
   EditorCell* GetActiveCell() { return m_activeCell; }
   //! Is the point currently visible on the worksheet?

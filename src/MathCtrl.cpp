@@ -219,7 +219,6 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
   }
   
   // Inform all cells how wide our display is
-  Configuration::Get()->SetCanvasSize(GetClientSize());
   wxMemoryDC dcm;
   wxPaintDC dc(this);
   
@@ -491,7 +490,6 @@ GroupCell *MathCtrl::InsertGroupCells(
   if (!next) // if there were no further cells
     m_last = lastOfCellsToInsert;
   
-  Configuration::Get()->SetCanvasSize(GetClientSize());
   if (renumbersections)
     NumberSections();
   Recalculate(where,false);
@@ -656,14 +654,11 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
 void MathCtrl::Recalculate(GroupCell *start,bool force)
 {
   GroupCell *tmp;
-  Configuration::Get()->SetCanvasSize(GetClientSize());
 
   if(start == NULL)
     tmp = m_tree;
   else
     tmp = start;
-
-  Configuration::Get()->SetCanvasSize(GetClientSize());
 
   m_configuration->SetForceUpdate(force);
   m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
