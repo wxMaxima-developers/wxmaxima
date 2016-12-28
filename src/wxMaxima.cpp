@@ -5144,7 +5144,6 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
     m_console->UpdateTableOfContents();
     break;
   case TableOfContents::popid_SelectTocChapter:
-  {
     if(m_console->m_tableOfContents != NULL)
     {
       if(m_console->m_tableOfContents->RightClickedOn())
@@ -5159,12 +5158,23 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
         m_console->SetActiveCell(NULL);
         m_console->SetHCaret(SelectionEnd);
         m_console->SetSelection(SelectionStart,SelectionEnd);
-        m_console->Recalculate();
         m_console->RequestRedraw();
       }
     }
     break;
-  }
+    case TableOfContents::popid_EvalTocChapter:
+      std::cerr<<"EvalToc\n";
+      if(m_console->m_tableOfContents != NULL)
+      {
+        if(m_console->m_tableOfContents->RightClickedOn())
+        {
+          bool evaluating = !m_console->m_evaluationQueue->Empty();
+          m_console->AddSectionToEvaluationQueue(m_console->m_tableOfContents->RightClickedOn());
+          if(!evaluating)
+            TryEvaluateNextInQueue();
+        }
+      }
+      break;
   case MathCtrl::popid_evaluate_section:
   {
     bool evaluating = !m_console->m_evaluationQueue->Empty();
@@ -6026,7 +6036,7 @@ void wxMaxima::HistoryDClick(wxCommandEvent& ev)
 
 void wxMaxima::TableOfContentsSelection(wxListEvent& ev)
 {
-  GroupCell *selection = dynamic_cast<GroupCell*>(m_console->m_tableOfContents->GetCell(ev.GetSelection())->GetParent());
+  GroupCell *selection = dynamic_cast<GroupCell*>(m_console->m_tableOfContents->GetCell(ev.GetIndex())->GetParent());
   if(selection)
     m_console->SetHCaret(selection);
   m_console->ScrollToCaret();
@@ -6453,6 +6463,7 @@ EVT_MENU(MathCtrl::popid_merge_cells, wxMaxima::PopupMenu)
 EVT_MENU(TableOfContents::popid_Fold, wxMaxima::PopupMenu)
 EVT_MENU(TableOfContents::popid_Unfold, wxMaxima::PopupMenu)
 EVT_MENU(TableOfContents::popid_SelectTocChapter, wxMaxima::PopupMenu)
+EVT_MENU(TableOfContents::popid_EvalTocChapter, wxMaxima::PopupMenu)
 EVT_MENU(menu_evaluate_all_visible, wxMaxima::MaximaMenu)
 EVT_MENU(menu_evaluate_all, wxMaxima::MaximaMenu)
 EVT_MENU(ToolBar::tb_evaltillhere, wxMaxima::MaximaMenu)

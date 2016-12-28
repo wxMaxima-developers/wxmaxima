@@ -228,7 +228,9 @@ GroupCell *TableOfContents::GetCell(int index)
       currentIndex ++;
 
     if(currentIndex == index)
+    {
       return m_structure[i];
+    }
   }
   return NULL;
 }
@@ -255,6 +257,7 @@ void TableOfContents::OnMouseRightDown(wxListEvent& event)
     {
       popupMenu->Append(popid_Fold, _("Hide"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_SelectTocChapter, _("Select"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_EvalTocChapter, _("Evaluate"), wxEmptyString, wxITEM_NORMAL);
     }
   }
   

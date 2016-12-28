@@ -52,7 +52,8 @@ public:
      */
     popid_Fold = wxID_HIGHEST + 500,
     popid_Unfold = wxID_HIGHEST + 501,
-    popid_SelectTocChapter = wxID_HIGHEST + 502
+    popid_SelectTocChapter = wxID_HIGHEST + 502,
+    popid_EvalTocChapter = wxID_HIGHEST + 503
   };
   TableOfContents(wxWindow* parent, int id);
   /* The destructor
