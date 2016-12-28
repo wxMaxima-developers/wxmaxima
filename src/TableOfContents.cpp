@@ -174,9 +174,9 @@ void TableOfContents::UpdateDisplay()
         m_displayedItems->InsertItem(i,items[i]);
       }
       if(m_structure[i]->GetHiddenTree())
-        m_displayedItems->SetItemTextColour(i,wxColor(128,128,128));
+        m_displayedItems->SetItemTextColour(i,wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT));
       else
-        m_displayedItems->SetItemTextColour(i,*wxBLACK);
+        m_displayedItems->SetItemTextColour(i,wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
       }
     // Delete superfluous items
     for(int i = items.GetCount(); i < m_displayedItems->GetItemCount();i++)
