@@ -1039,6 +1039,7 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
         indentChars.pop_back();
     }
 
+    // A comma removes all extra indentation from a "do" or an "if".
     if(
       (ch == wxT(','))
       )
@@ -1057,6 +1058,20 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
           lst = 0;
         indentChars.push_back(lst);
       }
+    }
+
+    // A semicolon or a dollar sign restarts indentation completely.
+    if(
+      (ch == wxT(';')) ||
+      (ch == wxT('$'))
+      )
+    {
+      // Discard any indentation data
+      while(!indentChars.empty())
+        indentChars.pop_back();
+      
+      // Start fresh with zero indentation.
+      indentChars.push_back(0);
     }
 
     // A "do" or a "if" increases the current indentation level by a tab.
@@ -1082,7 +1097,7 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
             indentChars.push_back(lst+4);
           }
         }
-}
+      }
       
     pos++;
   }
