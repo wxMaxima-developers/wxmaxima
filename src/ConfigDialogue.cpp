@@ -124,6 +124,9 @@ ConfigDialogue::ConfigDialogue(wxWindow* parent)
 #endif
   SetSheetInnerBorder(3);
   SetSheetOuterBorder(3);
+  // Allow the property dialogue sheets to scroll, if they don't fit
+  // on the screen.
+  SetLayoutAdaptationMode(wxDIALOG_ADAPTATION_MODE_ENABLED );
 
   int imgWidth = GetImageWidth();
   wxSize imageSize(imgWidth, imgWidth);
