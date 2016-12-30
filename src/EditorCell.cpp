@@ -1075,27 +1075,29 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
     }
 
     // A "do" or a "if" increases the current indentation level by a tab.
-    if(!wxIsalnum(ch))
+    if((!wxIsalnum(ch))||(pos==0))
       {
         wxString rest = text.Right(text.Length()-pos-1);
-        if(rest.StartsWith(wxT("do"))&&(!wxIsalnum(rest[2])))
+        if(rest.StartsWith(wxT("do"))&&((rest.Length()<3)||(!wxIsalnum(rest[2]))))
         {
+          int lst = 0;
           if(!indentChars.empty())
           {
-            int lst = indentChars.back();
+            lst = indentChars.back();
             indentChars.pop_back();
-            indentChars.push_back(lst+4);
           }
+          indentChars.push_back(lst+4);
         }
-
-        if(rest.StartsWith(wxT("if"))&&(!wxIsalnum(rest[2])))
+        if(rest.StartsWith(wxT("if"))&&((rest.Length()<3)||(!wxIsalnum(rest[2]))))
         {
+          std::cerr<<"If\n";
+          int lst = 0;
           if(!indentChars.empty())
           {
-            int lst = indentChars.back();
+            lst = indentChars.back();
             indentChars.pop_back();
-            indentChars.push_back(lst+4);
           }
+          indentChars.push_back(lst+4);
         }
       }
       
@@ -1115,10 +1117,26 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
     }
   }
 
+  int retval;
   if(indentChars.empty())
-    return 0;
+    retval = 0;
   else
-    return indentChars.back();
+    retval = indentChars.back();
+
+  wxString rightOfCursor = text.Right(text.Length()-positionOfCaret-1);
+  rightOfCursor.Trim();
+  rightOfCursor.Trim(false);
+  if(
+    (rightOfCursor.StartsWith(wxT("else")))||
+    (rightOfCursor.StartsWith(wxT("then")))&&
+    (rightOfCursor.Length()>4)&&
+    (!wxIsalnum(rightOfCursor[4]))
+    )
+    retval -=4;
+
+  if (retval<0) retval = 0;
+    
+  return retval;
 }
 
 bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
