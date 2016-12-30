@@ -3282,6 +3282,7 @@ void EditorCell::StyleText()
   
   if(m_type == MC_TYPE_INPUT)
   {
+    StyledText *lastSpace = NULL;
     // We have to style code
     wxString textToStyle = m_text;
     if (Configuration::Get()->GetChangeAsterisk())
@@ -3357,6 +3358,7 @@ void EditorCell::StyleText()
         continue;
       }
 
+      // Plus and Minus, optionally as part of a number
       if((Ch==wxT('+')) ||
          (Ch==wxT('-'))||
          (Ch==wxT('\x2212'))
@@ -3388,6 +3390,7 @@ void EditorCell::StyleText()
         continue;
       }
 
+      // Comments
       if((token == wxT("/*"))||(token==wxT("/\xB7")))
       {
         m_styledText.push_back(StyledText(TS_CODE_COMMENT,token));
@@ -3399,7 +3402,8 @@ void EditorCell::StyleText()
         }
         continue;
       }
-      
+
+      // End of a command
       if(operators.Find(token) != wxNOT_FOUND)
       {
         if((token==wxT('$'))||(token==wxT(';')))
@@ -3408,6 +3412,8 @@ void EditorCell::StyleText()
           m_styledText.push_back(StyledText(TS_CODE_OPERATOR,token));
         continue;
       }
+
+      // Numbers
       if(isdigit(token[0])||((token[0]==wxT('.'))&&(nextChar>=wxT('0'))&&(nextChar<=wxT('9'))))
       {
         m_styledText.push_back(StyledText(TS_CODE_NUMBER,token));
