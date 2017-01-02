@@ -4116,7 +4116,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
 
   output<<wxT("  <link rel=\"stylesheet\" type=\"text/css\" href=\"")+cssfileName_rel+wxT("\"/>\n");
 
-  wxString version(wxT(VERSION));
+  wxString version(wxT(GITVERSION));
   css<<wxT("\n");
   css<<wxT("/*--------------------------------------------------------\n");
   css<<wxT("  --          Created with wxMaxima version ") + version;
@@ -4951,7 +4951,7 @@ bool MathCtrl::ExportToTeX(wxString file) {
   output<<wxT("\\documentclass[leqno]{") +
     documentclass +
     wxT("}\n\n");
-  output<<wxT("%% Created with wxMaxima " VERSION "\n\n");
+  output<<wxT("%% Created with wxMaxima " GITVERSION "\n\n");
   output<<wxT("\\setlength{\\parskip}{\\medskipamount}\n");
   output<<wxT("\\setlength{\\parindent}{0pt}\n");
   output<<wxT("\\usepackage[utf8]{luainputenc}\n");
@@ -5255,7 +5255,7 @@ bool MathCtrl::ExportToMAC(wxString file)
 
   if (wxm) {
     AddLineToFile(backupfile, wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"), false);
-    wxString version(wxT(VERSION));
+    wxString version(wxT(GITVERSION));
     AddLineToFile(backupfile, wxT("/* [ Created with wxMaxima version ") + version + wxT(" ] */"), false);
   }
 
@@ -5382,7 +5382,7 @@ bool MathCtrl::ExportToWXMX(wxString file,bool markAsSaved)
 
   zip.PutNextEntry(wxT("content.xml"));
   output << wxT("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-  output << wxT("\n<!--   Created by wxMaxima ") << wxT(VERSION) << wxT("   -->");
+  output << wxT("\n<!--   Created by wxMaxima ") << wxT(GITVERSION) << wxT("   -->");
   output << wxT("\n<!--http://wxmaxima.sourceforge.net-->\n");
 
   // write document
