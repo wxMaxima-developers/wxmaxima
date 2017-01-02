@@ -6668,7 +6668,8 @@ void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
   
   if (callRefresh) // = true default
     RequestRedraw();
-  ScrollToCell(where,false);
+  if(where != NULL)
+    ScrollToCell(where,false);
   
   // Tell the cursor to blink, but to be visible right now.
   m_blinkDisplayCaret = true;
