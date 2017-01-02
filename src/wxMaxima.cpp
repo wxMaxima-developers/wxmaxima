@@ -1072,7 +1072,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   if (start == wxNOT_FOUND)
     start = 0;
   FirstOutput(wxT("wxMaxima ")
-              wxT(VERSION)
+              wxT(GITVERSION)
               wxT(" http://andrejv.github.io/wxmaxima/\n") +
               data.SubString(start, data.Length() - 1));
 #endif // __WXMSW__
@@ -1957,7 +1957,7 @@ void wxMaxima::ReadProcessOutput()
     st = 0;
 
   FirstOutput(wxT("wxMaxima ")
-              wxT(VERSION)
+              wxT(GITVERSION)
               wxT(" http://andrejv.github.io/wxmaxima/\n") +
               o.SubString(st, o.Length() - 1));
 }
@@ -4565,7 +4565,7 @@ MyAboutDialog::MyAboutDialog(wxWindow *parent, int id, const wxString title, wxS
         "</body>"
         "</html>"),
     cwd,
-    wxT(VERSION));
+    wxT(GITVERSION));
   
   wxString page_bottom = wxString::Format(
     wxT("<html>"
@@ -4715,7 +4715,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.SetIcon(wxIcon(iconName,wxBITMAP_TYPE_PNG));
     info.SetDescription(description);
     info.SetName(_("wxMaxima"));
-    info.SetVersion(wxT(VERSION));
+    info.SetVersion(wxT(GITVERSION));
     info.SetCopyright(wxT("(C) 2004-2015 Andrej Vodopivec"));
     info.SetWebSite(wxT("http://andrejv.github.io/wxmaxima/"));
 
@@ -5942,9 +5942,9 @@ void wxMaxima::ResetTitle(bool saved,bool force)
     {
 #ifndef __WXMAC__
       if (saved)
-        SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
+        SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) + _("[ unsaved ]"));
       else
-        SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved* ]"));
+        SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) + _("[ unsaved* ]"));
 #endif
     }
     else
@@ -5953,10 +5953,10 @@ void wxMaxima::ResetTitle(bool saved,bool force)
       wxFileName::SplitPath(m_console->m_currentFile, NULL, NULL, &name, &ext);
 #ifndef __WXMAC__
       if (m_fileSaved)
-        SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) +
+        SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) +
                  wxT(" [ ") + name + wxT(".") + ext + wxT(" ]"));
       else
-        SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) +
+        SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) +
                  wxT(" [ ") + name + wxT(".") + ext + wxT("* ]"));
 #else
       SetTitle(name + wxT(".") + ext);
@@ -6089,7 +6089,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
 
     if (version.StartsWith(wxT("wxmaxima = "))) {
       version = version.Mid(11, version.Length()).Trim();
-      long *myVersion = VersionToInt(wxT(VERSION));
+      long *myVersion = VersionToInt(wxT(GITVERSION));
       long *currVersion = VersionToInt(version);
 
       bool upgrade = myVersion[0] < currVersion[0] ||
@@ -6102,7 +6102,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
         bool visit = wxMessageBox(wxString::Format(
                                     _("You have version %s. Current version is %s.\n\n"
                                       "Select OK to visit the wxMaxima webpage."),
-                                    wxT(VERSION), version.c_str()),
+                                    wxT(GITVERSION), version.c_str()),
                                   _("Upgrade"),
                                   wxOK | wxCANCEL | wxICON_INFORMATION) == wxOK;
 

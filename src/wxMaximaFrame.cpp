@@ -243,7 +243,7 @@ void wxMaximaFrame::set_properties()
   SetIcon(wxIcon(icon, wxBITMAP_TYPE_PNG));
 #endif
 #ifndef __WXMAC__
-  SetTitle(wxString::Format(_("wxMaxima %s "), wxT(VERSION)) + _("[ unsaved ]"));
+  SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) + _("[ unsaved ]"));
 #else
   SetTitle(_("untitled"));
 #endif

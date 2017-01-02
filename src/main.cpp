@@ -225,7 +225,7 @@ bool MyApp::OnInit()
   if (cmdLineParser.Found(wxT("v")))
     {
       std::cout<<"wxMaxima ";
-      std::cout << VERSION;
+      std::cout << GITVERSION;
       std::cout<<"\n";
       wxExit();
     }
