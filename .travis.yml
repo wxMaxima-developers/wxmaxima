@@ -9,8 +9,6 @@ branches:
   only:
     - master
 
-cache: ccache
-
 before_install: 
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update                                             ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y libwxgtk3.0-dev libwxgtk3.0  gettext ; fi

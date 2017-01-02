@@ -20,8 +20,8 @@ if test x"${git_found}" = xtrue; then
         # When building RPMs, hyphens in the version are not allowed, so
         # replace them with underscores.
         VERSION=`echo $VERSION | sed 's;-;_;g'`
-        AC_DEFINE_UNQUOTED([GITVERSION], ["$VERSION"], ["The version description including info from git, if available"])
     fi
+    AC_DEFINE_UNQUOTED([GITVERSION], ["$VERSION"], ["The version description including info from git, if available"])
     else
         AC_DEFINE_UNQUOTED([GITVERSION], ["$VERSION"], ["The version description including info from git, if available"])
 fi
