@@ -6204,18 +6204,28 @@ void MathCtrl::ShowPoint(wxPoint point) {
   view_x *= m_scrollUnit;
   view_y *= m_scrollUnit;
 
-  if ((point.y - 2 < view_y) || (point.y + 2 > view_y + height
-                             - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20)) {
+  Configuration *configuration=Configuration::Get();
+  int fontsize_px = configuration->GetZoomFactor()*configuration->GetDefaultFontSize();
+  if (
+    (point.y - fontsize_px < view_y) ||
+    (point.y + fontsize_px > view_y + height - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20)
+    )
+  {
     sc = true;
     scrollToY = point.y - height / 2;
-  } else
+  }
+  else
     scrollToY = view_y;
 
-  if ((point.x - 2 < view_x) || (point.x + 2 > view_x + width
-                             - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20)) {
+  if (
+    (point.x - fontsize_px < view_x) ||
+    (point.x + 2 > view_x + width - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20)
+    )
+  {
     sc = true;
     scrollToX = point.x - width / 2;
-  } else
+  }
+  else
     scrollToX = view_x;
 
   if (sc)
