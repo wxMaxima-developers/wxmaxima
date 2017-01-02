@@ -6162,7 +6162,7 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
     Configuration::Get()->ShowCodeCells(true);
     CodeCellVisibilityChanged();
   }
-  if(scrollneeded)
+  if(scrollneeded && (cell != NULL))
     ScrollToCaret();
 }
 
