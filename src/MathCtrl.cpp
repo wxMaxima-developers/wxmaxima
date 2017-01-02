@@ -1193,6 +1193,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
         m_clickType = CLICK_TYPE_INPUT_SELECTION;
         if (editor->GetWidth() == -1)
           Recalculate(clickedInGC,false);
+        ScrollToCaret();
         // Here we tend to get unacceptably long delays before the display is
         // refreshed by the idle loop => Trigger the refresh manually.
         ForceRedraw();
@@ -6198,17 +6199,23 @@ void MathCtrl::ShowPoint(wxPoint point) {
 
   int scrollToX = -1, scrollToY = -1;
 
+  // Get the position [in pixels] the visible portion of the worksheet starts at
   GetViewStart(&view_x, &view_y);
-  GetSize(&width, &height);
-
   view_x *= m_scrollUnit;
   view_y *= m_scrollUnit;
 
+  // Get the size of the worksheet window
+  GetSize(&width, &height);
+  // The scrollbars make part of the window size, but not of the
+  // size usable for text
+  height -= wxSystemSettings::GetMetric(wxSYS_VTHUMB_Y);
+  width  -= wxSystemSettings::GetMetric(wxSYS_HTHUMB_X);
+
   Configuration *configuration=Configuration::Get();
-  int fontsize_px = configuration->GetZoomFactor()*configuration->GetDefaultFontSize();
+  int fontsize_px = configuration->GetZoomFactor()*configuration->GetScale()*configuration->GetDefaultFontSize();
   if (
     (point.y - fontsize_px < view_y) ||
-    (point.y + fontsize_px > view_y + height - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20)
+    (point.y + fontsize_px > view_y + height - 20)
     )
   {
     sc = true;
@@ -6219,7 +6226,7 @@ void MathCtrl::ShowPoint(wxPoint point) {
 
   if (
     (point.x - fontsize_px < view_x) ||
-    (point.x + 2 > view_x + width - wxSystemSettings::GetMetric(wxSYS_HTHUMB_X) - 20)
+    (point.x + 2 > view_x + width - 20)
     )
   {
     sc = true;
