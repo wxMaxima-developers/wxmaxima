@@ -7383,7 +7383,10 @@ void MathCtrl::OnFollow()
     FollowEvaluation(true);
 
     if(GCContainsCurrentQuestion(GetWorkingGroup()))
+    {
       OpenQuestionCaret();
+      ScrollToCell(GetWorkingGroup(),false);
+    }
     else
     {
       if (GetWorkingGroup()->RevealHidden()) {
