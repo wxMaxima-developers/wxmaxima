@@ -7194,9 +7194,16 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
         {
           wxArrayString wordList = tmp->GetEditable()->GetWordList();
 
-          // The current unfinished word is no valid autocompletion.
+          // The current unfinished word is no valid autocompletion, if there is
+          // such a thing.
           if(partial.Length()>0)
-            wordList.Remove(partial);
+          {
+            // Don't remove the current word from autocompletion if it never has been
+            // added (which happens if autocompletion is called when the cursor is
+            // directly followed by the next command without a space or similar inbetween) 
+            if(wordList.Index(partial) != wxNOT_FOUND)
+              wordList.Remove(partial);
+          }
           m_autocomplete.AddWorksheetWords(wordList);
         }
       }
