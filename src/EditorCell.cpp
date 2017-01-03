@@ -1130,7 +1130,7 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
     (rightOfCursor.StartsWith(wxT("else")))||
     (rightOfCursor.StartsWith(wxT("then")))&&
     (rightOfCursor.Length()>4)&&
-    (!wxIsalnum(rightOfCursor[4]))
+    (!(wxIsalnum(rightOfCursor[4])))
     )
     retval -=4;
 
@@ -3282,7 +3282,6 @@ void EditorCell::StyleText()
   
   if(m_type == MC_TYPE_INPUT)
   {
-    StyledText *lastSpace = NULL;
     // We have to style code
     wxString textToStyle = m_text;
     if (Configuration::Get()->GetChangeAsterisk())
