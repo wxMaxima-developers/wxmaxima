@@ -3309,9 +3309,13 @@ void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace,int &lineWidth
   Configuration *configuration = Configuration::Get();
   configuration->GetDC().GetTextExtent(token, &width, &height);
   lineWidth += width;
-  
+
+  // Normally the cell begins at the x position m_currentPoint.x - but sometimes
+  // m_currentPoint is 0 so we need to determine our own value for the x position.
+  int xindent = (configuration->GetLabelWidth()+1)*configuration->GetDefaultFontSize()*configuration->GetScale()*configuration->GetZoomFactor() +
+    MC_GROUP_LEFT_INDENT + 2 * MC_CELL_SKIP;
   if(
-    (lineWidth + (configuration->GetLabelWidth()+2)*configuration->GetDefaultFontSize()*configuration->GetScale()*configuration->GetZoomFactor() + MC_GROUP_LEFT_INDENT + 2 * MC_CELL_SKIP >= configuration->GetLineWidth()) &&
+    (lineWidth + xindent >= configuration->GetLineWidth()) &&
      (lastSpace!=NULL)&&(lastSpace->GetText()!="\r"))
   {
     int charWidth;
@@ -3589,14 +3593,19 @@ void EditorCell::StyleText()
   else
   {  
     // We have to style ordinary text.
+    Configuration *configuration = Configuration::Get();
 
-    // Remove all bullets of item lists as we will introduce them again in the next
+    // Normally the cell begins at the x position m_currentPoint.x - but sometimes
+    // m_currentPoint is 0 so we need to determine our own value for the x position.
+    int xindent = (configuration->GetLabelWidth()+1)*configuration->GetDefaultFontSize()*configuration->GetScale()*configuration->GetZoomFactor() +
+      MC_GROUP_LEFT_INDENT + 2 * MC_CELL_SKIP;
+
+  // Remove all bullets of item lists as we will introduce them again in the next
     // step, as well.
     m_text.Replace(wxT("\x2022"),wxT("*"));
     
     // Insert new soft line breaks where we hit the right border of the worksheet, if
     // this has been requested in the config dialogue
-    Configuration *configuration = Configuration::Get();
     if(configuration->GetAutoWrap())
     {
       SetFont(configuration->GetDefaultFontSize());
@@ -3636,7 +3645,7 @@ void EditorCell::StyleText()
               // Does the line extend too much to the right to fit on the screen /
               // to be easy to read?
               configuration->GetDC().GetTextExtent(m_text.SubString(lastLineStart,i), &width, &height);
-              if(width + m_currentPoint.x + indentation >= configuration->GetLineWidth())
+              if(width + xindent + indentation >= configuration->GetLineWidth())
               {
                 // We need a line break in front of the last word
                 m_text[lastSpacePos] = wxT('\r');
