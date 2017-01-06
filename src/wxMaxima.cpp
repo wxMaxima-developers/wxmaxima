@@ -5163,7 +5163,6 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
     }
     break;
     case TableOfContents::popid_EvalTocChapter:
-      std::cerr<<"EvalToc\n";
       if(m_console->m_tableOfContents != NULL)
       {
         if(m_console->m_tableOfContents->RightClickedOn())

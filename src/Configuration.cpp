@@ -58,9 +58,12 @@ void Configuration::ShowCodeCells(bool show)
 void Configuration::ReadConfig()
 {
   wxConfig *config = (wxConfig *)wxConfig::Get();
-  m_autoWrap = true;
-  config->Read(wxT("autoWrap"), &m_autoWrap);
+  m_autoWrap = 3;
+  config->Read(wxT("autoWrapMode"), &m_autoWrap);
 
+  m_autoIndent = true;
+  wxConfig::Get()->Read(wxT("autoIndent"), &m_autoIndent);
+  
   m_changeAsterisk = true;
   config->Read(wxT("changeAsterisk"), &m_changeAsterisk);
 
