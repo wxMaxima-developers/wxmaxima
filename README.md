@@ -140,3 +140,8 @@ the Microsoft HTML Help workshop is necessary which
 is distributed separately. If they aren't added to the configure
 command line wxMaxima is shipped with a html version of the manual
 that can be viewed using the internet browser instead.
+
+
+Additional information about installing and configuring wxMaxima
+----------------------------------------------------------------
+ - Mac OS X: https://themaximalist.org/about/my-mac-os-installation/
