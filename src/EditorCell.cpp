@@ -42,6 +42,10 @@ wxString EditorCell::m_selectionString;
 
 EditorCell::EditorCell(wxString text) : MathCell()
 {
+  m_oldViewportWidth = -1;
+  m_oldZoomFactor = -1;
+  m_oldScaleFactor = -1;
+  m_oldDefaultFontSize = -1;
   m_numberOfLines = 1;
   m_charHeight = 12;
   m_selectionChanged = false;
@@ -379,11 +383,18 @@ wxString EditorCell::ToXML()
 
 void EditorCell::RecalculateWidths(int fontsize)
 {
-  // Redo the line wrapping. TODO: Is this the right place to do this?
-  StyleText();
+  Configuration *configuration = Configuration::Get();
+
+  // Redo the line wrapping if the viewport width has changed.
+  if(
+    (configuration->GetClientWidth() != m_oldViewportWidth) ||
+    (configuration->GetZoomFactor() != m_oldZoomFactor) ||
+    (configuration->GetScale() != m_oldScaleFactor) ||
+    (configuration->GetDefaultFontSize() != m_oldDefaultFontSize)
+    )
+    StyleText();
   
   int charWidth;
-  Configuration *configuration = Configuration::Get();
 
   m_isDirty = false;
   if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() || fontsize != m_fontSize_Last)
@@ -3332,6 +3343,13 @@ void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace,int &lineWidth
 
 void EditorCell::StyleText()
 {
+  // Remember what settings we did linebreaks with
+  Configuration *configuration = Configuration::Get();
+  m_oldViewportWidth = configuration->GetClientWidth();
+  m_oldZoomFactor = configuration->GetZoomFactor();
+  m_oldScaleFactor = configuration->GetScale();
+  m_oldDefaultFontSize = configuration->GetDefaultFontSize();
+
   m_wordList.Clear();
   m_styledText.clear();    
   // Remove all soft line breaks. They will be re-added in the right places
@@ -3349,7 +3367,7 @@ void EditorCell::StyleText()
     // help at all.
     bool spaceIsIndentation = true;
     wxString textToStyle = m_text;
-    if (Configuration::Get()->GetChangeAsterisk())
+    if (configuration->GetChangeAsterisk())
     {
       textToStyle.Replace(wxT("*"), wxT("\xB7"));
       if (m_type == MC_TYPE_INPUT)
@@ -3593,7 +3611,6 @@ void EditorCell::StyleText()
   else
   {  
     // We have to style ordinary text.
-    Configuration *configuration = Configuration::Get();
 
     // Normally the cell begins at the x position m_currentPoint.x - but sometimes
     // m_currentPoint is 0 so we need to determine our own value for the x position.
