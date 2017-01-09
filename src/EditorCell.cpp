@@ -1131,8 +1131,10 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
   rightOfCursor.Trim();
   rightOfCursor.Trim(false);
   if(
-    (rightOfCursor.StartsWith(wxT("else")))||
-    (rightOfCursor.StartsWith(wxT("then")))&&
+    (
+      (rightOfCursor.StartsWith(wxT("else")))||
+      (rightOfCursor.StartsWith(wxT("then")))
+      )&&
     (rightOfCursor.Length()>4)&&
     (!(wxIsalnum(rightOfCursor[4])))
     )
@@ -1262,9 +1264,9 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent& event)
       while (m_positionOfCaret < (signed)m_text.Length() && count >= 0)
       {
         m_positionOfCaret++;
-        if (m_text[m_positionOfCaret-1]=='(' || m_text[m_positionOfCaret-1]=='[')
+        if ((m_text[m_positionOfCaret-1]=='(') || (m_text[m_positionOfCaret-1]=='['))
           count++;
-        else if (m_text[m_positionOfCaret-1]==')' || m_text[m_positionOfCaret-1]==']')
+        else if ((m_text[m_positionOfCaret-1]==')') || (m_text[m_positionOfCaret-1]==']'))
           count--;
       }
     }
@@ -3632,7 +3634,6 @@ void EditorCell::StyleText()
       SetFont(configuration->GetDefaultFontSize());
       wxString line;
       size_t lastSpacePos = 0;
-      StyledText *lastSpace = NULL;
       wxString::const_iterator lastSpaceIt;
       int indentation = 0;
       int lastLineStart = 0;
