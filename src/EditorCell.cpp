@@ -3327,16 +3327,16 @@ void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace,int &lineWidth
     MC_GROUP_LEFT_INDENT + 2 * MC_CELL_SKIP;
   if(
     (lineWidth + xindent >= configuration->GetLineWidth()) &&
-     (lastSpace!=NULL)&&(lastSpace->GetText()!="\r"))
+     (lastSpace!=NULL) && (lastSpace->GetText()!="\r"))
   {
     int charWidth;
     int indentationPixels;
     configuration->GetDC().GetTextExtent(wxT(" "), &charWidth, &height);
     indentationPixels = charWidth*GetIndentDepth(m_text,charInCell);
     lineWidth = width + indentationPixels;
-    lastSpace->SetText('\r');
-    text[lastSpacePos]='\r';
+    lastSpace->SetText("\r");
     lastSpace->SetIndentation(indentationPixels);
+    text[lastSpacePos]='\r';
     lastSpace = NULL;
   }
 }
@@ -3433,10 +3433,15 @@ void EditorCell::StyleText()
       {
         if(token.Length()>1)
           m_styledText.push_back(StyledText(token.Left(token.Length()-1)));
+        else
+        {
+          if(!m_styledText.empty())
+            lastSpace = &m_styledText.back();
+          else
+            lastSpace = NULL;
+        }
         m_styledText.push_back(StyledText(wxT(" ")));
-        lastSpace = &m_styledText.back();
         lastSpacePos = pos+token.Length()-1;
-        HandleSoftLineBreaks_Code(lastSpace,lineWidth,token,pos,m_text,lastSpacePos,spaceIsIndentation);
         continue;
       }
       else
@@ -3449,7 +3454,6 @@ void EditorCell::StyleText()
         lineWidth = 0;
         m_styledText.push_back(StyledText(token));
         spaceIsIndentation = true;
-//        HandleSoftLineBreaks_Code(lastSpace,lineWidth,token,pos,m_text,lastSpacePos,spaceIsIndentation);
         continue;
       }
 
@@ -3604,7 +3608,7 @@ void EditorCell::StyleText()
       }
 
       m_styledText.push_back(StyledText(token));
-      HandleSoftLineBreaks_Code(lastSpace,lineWidth,token,pos,m_text,lastSpacePos,spaceIsIndentation);
+//      HandleSoftLineBreaks_Code(lastSpace,lineWidth,token,pos,m_text,lastSpacePos,spaceIsIndentation);
     }
     m_wordList.Sort();
   }
