@@ -441,7 +441,7 @@ private:
   std::vector<StyledText> m_styledText;
 
   //! Adds soft line breaks to code cells, if needed.
-  void HandleSoftLineBreaks_Code(StyledText *&lastSpace,int &lineWidth,const wxString &token,int charInCell,wxString &text,size_t &lastSpacePos,bool spaceIsIndentation);
+  void HandleSoftLineBreaks_Code(StyledText *&lastSpace,int &lineWidth,const wxString &token,unsigned int charInCell,wxString &text,size_t &lastSpacePos,bool spaceIsIndentation);
 
   //! How many chars do we need to indent text at the position the caret is currently at?
   int GetIndentDepth(wxString text,int positionOfCaret);

@@ -163,7 +163,7 @@ void TableOfContents::UpdateDisplay()
   {
 
     // Update the name of all existing items and add new items, if necessary
-    for(int i = 0;i<items.GetCount();i++)
+    for(unsigned int i = 0;i<items.GetCount();i++)
     {
       if(i<(unsigned)m_displayedItems->GetItemCount())
       {

@@ -6131,7 +6131,7 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
   if (cell != NULL)
   {
     SetSelection(NULL);
-    if(cell != cell)
+    if(cell != GetActiveCell())
     {
       if(cell != NULL)
         cell->ActivateCell(false);

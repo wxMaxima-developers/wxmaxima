@@ -2632,7 +2632,7 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
 
   // Find the text snippet the line we search for begins with for determining
   // the indentation needed.
-  int currentLine = 1;
+  unsigned int currentLine = 1;
   int indentPixels = 0;
   std::vector<StyledText>::iterator textSnippet;
   for(textSnippet = m_styledText.begin();
@@ -2729,7 +2729,7 @@ bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
 
   // Find the text snippet the line we search for begins with for determining
   // the indentation needed.
-  int currentLine = 1;
+  unsigned int currentLine = 1;
   int indentPixels = 0;
   std::vector<StyledText>::iterator textSnippet;
   for(textSnippet = m_styledText.begin();
@@ -3011,7 +3011,7 @@ int EditorCell::GetLineWidth(wxDC& dc, unsigned int line, int pos)
 
   // Find the text snippet the line we search for begins with for determining
   // the indentation needed.
-  int currentLine = 1;
+  unsigned int currentLine = 1;
   int indentPixels = 0;
   std::vector<StyledText>::iterator textSnippet;
   for(textSnippet = m_styledText.begin();
@@ -3305,7 +3305,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
   return retval;
 }
 
-void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace,int &lineWidth,const wxString &token,int charInCell,wxString &text,size_t &lastSpacePos,bool spaceIsIndentation)
+void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace,int &lineWidth,const wxString &token,unsigned int charInCell,wxString &text,size_t &lastSpacePos,bool spaceIsIndentation)
 {
   // If we don't want to autowrap code we don't do nothing here.
   if(!Configuration::Get()->GetAutoWrapCode())
