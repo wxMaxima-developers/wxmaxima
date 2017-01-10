@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-22 12:17+0100\n"
-"PO-Revision-Date: 2016-12-22 12:17+0100\n"
+"POT-Creation-Date: 2017-01-10 06:53+0100\n"
+"PO-Revision-Date: 2017-01-10 06:54+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -44,7 +44,7 @@ msgstr ""
 "\n"
 "Maxima Version: "
 
-#: ../src/wxMaxima.cpp:5576
+#: ../src/wxMaxima.cpp:5627
 msgid ""
 "\n"
 "Not connected to Maxima!\n"
@@ -60,11 +60,11 @@ msgstr ""
 "\n"
 "Nicht verbunden."
 
-#: ../src/ConfigDialogue.cpp:683
+#: ../src/ConfigDialogue.cpp:688
 msgid "      -X '--dynamic-space-size <int>'"
 msgstr "      -X '--dynamic-space-size <int>'"
 
-#: ../src/ConfigDialogue.cpp:679
+#: ../src/ConfigDialogue.cpp:684
 msgid "      -l <name>"
 msgstr "      -l <name>"
 
@@ -72,7 +72,7 @@ msgstr "      -l <name>"
 msgid " (Graphics) "
 msgstr " (Bild) "
 
-#: ../src/EditorCell.cpp:3267 ../src/EditorCell.cpp:3586
+#: ../src/EditorCell.cpp:3386 ../src/EditorCell.cpp:3768
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr "... + %i versteckte Zeilen"
@@ -81,7 +81,7 @@ msgstr "... + %i versteckte Zeilen"
 msgid " << Expression longer than allowed by the configuration setting! >>"
 msgstr " << Ausdruck länger, als im Konfigurationsdialog erlaubt >>"
 
-#: ../src/ConfigDialogue.cpp:537
+#: ../src/ConfigDialogue.cpp:542
 msgid "\"Copy LaTeX\" adds equation markers"
 msgstr "\"LaTeX Kopieren\" fügt Mathe-Markierung hinzu"
 
@@ -355,7 +355,7 @@ msgstr "&Winkelfunktionen vereinfachen"
 msgid "&pm3d"
 msgstr "&Farbe nach Höhe"
 
-#: ../src/ConfigDialogue.cpp:560
+#: ../src/ConfigDialogue.cpp:565
 msgid "(Use default language)"
 msgstr "(Standardsprache verwenden)"
 
@@ -386,7 +386,7 @@ msgstr "; %i ausstehende Befehle in aktueller Zelle"
 msgid "<br>Lisp: "
 msgstr "<br>Lisp: "
 
-#: ../src/wxMaxima.cpp:5682
+#: ../src/wxMaxima.cpp:5733
 msgid ""
 "A \":lisp\" as the first command might fail to send a \"finished\" signal."
 msgstr ""
@@ -431,7 +431,7 @@ msgstr "Ein Symbol aus dem Konfigurationsdialog"
 msgid "A&t Value..."
 msgstr "Rand&bedingung setzen ..."
 
-#: ../src/ConfigDialogue.cpp:701
+#: ../src/ConfigDialogue.cpp:706
 msgid "Abort evaluation on error"
 msgstr "Fehler beenden das Evaluieren"
 
@@ -444,7 +444,7 @@ msgstr "Info"
 msgid "About wxMaxima"
 msgstr "Information über wxMaxima"
 
-#: ../src/ConfigDialogue.cpp:759
+#: ../src/ConfigDialogue.cpp:764
 msgid "Active cell bracket"
 msgstr "Klammern aktive Zelle"
 
@@ -468,7 +468,7 @@ msgstr "Verzeichnis zum Pfad hinzufügen"
 msgid "Add equality to the rational simplifier"
 msgstr "Gebe Vereinfacher für rationale Ausdrücke eine Gleichung"
 
-#: ../src/ConfigDialogue.cpp:540
+#: ../src/ConfigDialogue.cpp:545
 msgid "Add the .wxmx file to the HTML export"
 msgstr "Füge die .wxmx-Quellen zum HTML-Export hinzu"
 
@@ -476,26 +476,26 @@ msgstr "Füge die .wxmx-Quellen zum HTML-Export hinzu"
 msgid "Add to &Path..."
 msgstr "Zum &Pfad hinzufügen ..."
 
-#: ../src/ConfigDialogue.cpp:181
+#: ../src/ConfigDialogue.cpp:184
 msgid ""
 "Additional commands to be added to the preamble of LaTeX output for pdftex."
 msgstr ""
 "Zusätzliche Zeilen, die zu der Präambel jedes für pdfTex generierten LaTeX-"
 "Dokuments hinzugefügt werden sollen"
 
-#: ../src/ConfigDialogue.cpp:508
+#: ../src/ConfigDialogue.cpp:513
 msgid "Additional lines for the TeX preamble:"
 msgstr "Zusätzliche Zeilen für die LaTeX-Präambel:"
 
-#: ../src/ConfigDialogue.cpp:178
+#: ../src/ConfigDialogue.cpp:181
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
 msgstr "Zusätzliche Parameter für Maxima (z. B. -l clisp)."
 
-#: ../src/ConfigDialogue.cpp:673
+#: ../src/ConfigDialogue.cpp:678
 msgid "Additional parameters for maxima"
 msgstr "Zusätzliche Parameter für Maxima:"
 
-#: ../src/ConfigDialogue.cpp:591
+#: ../src/ConfigDialogue.cpp:596
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "Zusätzliche Symbole für die \"Symbole\"-Seitenliste:"
 
@@ -508,11 +508,11 @@ msgstr ""
 "erstellt werden) angeklickt sind, erlaubt dieser Schieberegler es, das "
 "aktuell angezeigte Bild zu wählen."
 
-#: ../src/ConfigDialogue.cpp:442
+#: ../src/ConfigDialogue.cpp:450
 msgid "All variable names"
 msgstr "Alle Variablennamen"
 
-#: ../src/ConfigDialogue.cpp:915
+#: ../src/ConfigDialogue.cpp:920
 msgid "All|*"
 msgstr "Alle|*"
 
@@ -540,7 +540,7 @@ msgstr "Array:"
 msgid "Artwork by"
 msgstr "Bildmaterial von"
 
-#: ../src/ConfigDialogue.cpp:631
+#: ../src/ConfigDialogue.cpp:636
 msgid "Ask to save untitled documents"
 msgstr "Frage nach, wenn Dokumente nicht gespeichert sind"
 
@@ -548,11 +548,11 @@ msgstr "Frage nach, wenn Dokumente nicht gespeichert sind"
 msgid "At value"
 msgstr "Randwert"
 
-#: ../src/ConfigDialogue.cpp:480
+#: ../src/ConfigDialogue.cpp:488
 msgid "Auto-indent new lines"
 msgstr "Automatisches Einrücken neuer Zeilen"
 
-#: ../src/ConfigDialogue.cpp:215
+#: ../src/ConfigDialogue.cpp:218
 msgid ""
 "Automatically change maxima's working directory to the one the current "
 "document is in: This is necessary if the document uses File I/O relative to "
@@ -566,7 +566,7 @@ msgstr ""
 "mit  Maxima 5.35) auf Windows-Rechnern dafür, dass Maxima seine eigenen "
 "Dateien auf dem falschen Server sucht."
 
-#: ../src/ConfigDialogue.cpp:197
+#: ../src/ConfigDialogue.cpp:200
 msgid ""
 "Automatically insert matching parenthesis in text controls. Automatic "
 "highlighting of matching parenthesis can be suppressed by setting the "
@@ -577,13 +577,13 @@ msgstr ""
 "unterbunden werden, dass die betreffende Farbe auf die Hintergrundfarbe "
 "abgeändert wird."
 
-#: ../src/ConfigDialogue.cpp:486
-msgid "Automatically wrap long text lines"
-msgstr "Automatischer Zeilenumbruch"
-
-#: ../src/ConfigDialogue.cpp:597
+#: ../src/ConfigDialogue.cpp:602
 msgid "Autosave interval (minutes, 0 means: off):"
 msgstr "Minuten zwischen automatischem Speichern (0 = aus):"
+
+#: ../src/ConfigDialogue.cpp:437
+msgid "Autowrap long lines:"
+msgstr "Automatischer Zeilenumbruch:"
 
 #: ../src/BC2Wiz.cpp:58 ../src/wxMaxima.cpp:3736
 msgid "BC2"
@@ -593,7 +593,7 @@ msgstr "Randwertproblem"
 msgid "Barsplot..."
 msgstr "Balkendiagramm"
 
-#: ../src/ConfigDialogue.cpp:910
+#: ../src/ConfigDialogue.cpp:915
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "Batch-Dateien (*.bat)|*.bat|Alle|*"
 
@@ -620,15 +620,15 @@ msgstr ""
 msgid "Beta"
 msgstr "Beta"
 
-#: ../src/ConfigDialogue.cpp:514
+#: ../src/ConfigDialogue.cpp:519
 msgid "Bitmap scale for export:"
 msgstr "Skalierung der Bitmaps für den Export"
 
-#: ../src/ConfigDialogue.cpp:522
+#: ../src/ConfigDialogue.cpp:527
 msgid "Bitmaps"
 msgstr "Bild"
 
-#: ../src/ConfigDialogue.cpp:780
+#: ../src/ConfigDialogue.cpp:785
 msgid "Bold"
 msgstr "Fett"
 
@@ -649,7 +649,7 @@ msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 "Fehler: Textvervollständigung für eine unbekannte Kategorie aufgerufen."
 
-#: ../src/MathCtrl.cpp:2136
+#: ../src/MathCtrl.cpp:2137
 msgid "Bug: Cell left but not entered."
 msgstr "Interner Fehler: Zelle wurde verlassen, aber zuvor nie besucht."
 
@@ -679,24 +679,24 @@ msgstr "Interner Fehler: Bruch ohne Nenner"
 msgid "Bug: Fraction without enumerator"
 msgstr "Interner Fehler: Bruch ohne Zähler"
 
-#: ../src/MathCtrl.cpp:2368
+#: ../src/MathCtrl.cpp:2369
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Interner Fehler: Habe eine Frage, aber weiß nicht, in welcher Zelle"
 
-#: ../src/MathCtrl.cpp:5965
+#: ../src/MathCtrl.cpp:5973
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Interner Fehler: Soll die Zelle vor dem Beginn des Arbeitsblattes ändern."
 
-#: ../src/MathCtrl.cpp:6038
+#: ../src/MathCtrl.cpp:6046
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Interner Fehler: Soll die Zelle vor dem Beginn des Arbeitsblattes löschen."
 
-#: ../src/MathCtrl.cpp:6007
+#: ../src/MathCtrl.cpp:6015
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -743,7 +743,7 @@ msgstr "Interner Fehler: Kein Ende des Inhalts einer Klammer!"
 msgid "Bug: No last cell inside a square root!"
 msgstr "Interner Fehler: Kein Ende des Arguments einer Wurzel!"
 
-#: ../src/MathCtrl.cpp:2179
+#: ../src/MathCtrl.cpp:2180
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
@@ -751,7 +751,7 @@ msgstr ""
 "Interner Fehler: Soll gleichzeitig zweimal mit dem Sammeln neuer Zellen "
 "beginnen oder aufhören."
 
-#: ../src/MathCtrl.cpp:2146
+#: ../src/MathCtrl.cpp:2147
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 "Interner Fehler: Text wurde geändert, aber es ist unbekannt, für welche "
@@ -769,7 +769,7 @@ msgstr ""
 "Interner Fehler: Rückgängigmachen setzt an Zellen außerhalb des "
 "Arbeitsblattes an."
 
-#: ../src/MathCtrl.cpp:2070
+#: ../src/MathCtrl.cpp:2071
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
@@ -777,7 +777,7 @@ msgstr ""
 "Interner Fehler: Versuche, die Hinzufügung von Einzelzellen zu einer Region "
 "zusammenbauen - in der es eine Lücke gibt."
 
-#: ../src/MathCtrl.cpp:6658
+#: ../src/MathCtrl.cpp:6682
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -785,25 +785,25 @@ msgstr ""
 "Fehler: Versuche, den horizontal dargestellten Cursor in einer Zelle zu "
 "platzieren."
 
-#: ../src/MathCtrl.cpp:2148
+#: ../src/MathCtrl.cpp:2149
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 "Interner Fehler: Versuche, die Änderung des Inhalts einer Zelle zu "
 "dokumentieren, ohne die Zelle zu kennen."
 
-#: ../src/MathCtrl.cpp:1562
+#: ../src/MathCtrl.cpp:1563
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 "Interner Fehler: Versuche, innerhalb einer Zelle Text auszuwählen, ohne zu "
 "wissen, in welcher Zelle"
 
-#: ../src/MathCtrl.cpp:6008
+#: ../src/MathCtrl.cpp:6016
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Interner Fehler: Rückgängig will Zellen ändern und gleichzeitig Zellen "
 "hinzufügen."
 
-#: ../src/MathCtrl.cpp:5970 ../src/MathCtrl.cpp:6043 ../src/MathCtrl.cpp:6077
+#: ../src/MathCtrl.cpp:5978 ../src/MathCtrl.cpp:6051 ../src/MathCtrl.cpp:6085
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Interner Fehler: Rückgängigmachen setzt an Zellen außerhalb des "
@@ -866,11 +866,11 @@ msgstr "Produkte berechnen"
 msgid "Calculate sums"
 msgstr "Summen berechnen"
 
-#: ../src/wxMaxima.cpp:6025
+#: ../src/wxMaxima.cpp:6076
 msgid "Can not connect to the web server."
 msgstr "Keine Verbindung mit dem Webserver."
 
-#: ../src/wxMaxima.cpp:6076
+#: ../src/wxMaxima.cpp:6127
 msgid "Can not download version info."
 msgstr "Kann Information zur Version nicht laden."
 
@@ -886,7 +886,7 @@ msgstr "Kann Information zur Version nicht laden."
 #: ../src/PlotFormatWiz.cpp:48 ../src/SeriesWiz.cpp:49 ../src/SeriesWiz.cpp:51
 #: ../src/SubstituteWiz.cpp:41 ../src/SubstituteWiz.cpp:43 ../src/SumWiz.cpp:44
 #: ../src/SumWiz.cpp:46 ../src/SystemWiz.cpp:38 ../src/SystemWiz.cpp:40
-#: ../src/wxMaxima.cpp:6117
+#: ../src/wxMaxima.cpp:6168
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -898,7 +898,7 @@ msgstr "Kann maxima nicht starten"
 msgid "Canonical (tr)"
 msgstr "Trigrat"
 
-#: ../src/ConfigDialogue.cpp:561
+#: ../src/ConfigDialogue.cpp:566
 msgid "Catalan"
 msgstr "Katalanisch"
 
@@ -906,11 +906,11 @@ msgstr "Katalanisch"
 msgid "Ce&ll"
 msgstr "Ze&llen"
 
-#: ../src/ConfigDialogue.cpp:758
+#: ../src/ConfigDialogue.cpp:763
 msgid "Cell bracket"
 msgstr "Klammern Zelle"
 
-#: ../src/wxMaxima.cpp:5446
+#: ../src/wxMaxima.cpp:5497
 msgid "Cell ends in a backslash"
 msgstr "Zelle endet mit einem Backslash"
 
@@ -948,16 +948,16 @@ msgstr ""
 msgid "Chi"
 msgstr "Chi"
 
-#: ../src/ConfigDialogue.cpp:562
+#: ../src/ConfigDialogue.cpp:567
 msgid "Chinese Simplified"
 msgstr "Chinesisch (vereinfacht)"
 
-#: ../src/ConfigDialogue.cpp:563
+#: ../src/ConfigDialogue.cpp:568
 msgid "Chinese traditional"
 msgstr "Chinesisch (traditionell)"
 
-#: ../src/ConfigDialogue.cpp:732 ../src/ConfigDialogue.cpp:734
-#: ../src/ConfigDialogue.cpp:774
+#: ../src/ConfigDialogue.cpp:737 ../src/ConfigDialogue.cpp:739
+#: ../src/ConfigDialogue.cpp:779
 msgid "Choose font"
 msgstr "Schriftart wählen"
 
@@ -977,31 +977,31 @@ msgstr "Schließen\tCtrl+W"
 msgid "Close window"
 msgstr "Schließe Fenster"
 
-#: ../src/ConfigDialogue.cpp:766
+#: ../src/ConfigDialogue.cpp:771
 msgid "Code highlighting: Comments"
 msgstr "Syntaxhervorhebung: Kommentare"
 
-#: ../src/ConfigDialogue.cpp:770
+#: ../src/ConfigDialogue.cpp:775
 msgid "Code highlighting: End of line"
 msgstr "Syntaxhervorhebung: Zeilenende-Marker"
 
-#: ../src/ConfigDialogue.cpp:765
+#: ../src/ConfigDialogue.cpp:770
 msgid "Code highlighting: Functions"
 msgstr "Syntaxhervorhebung: Funktionen"
 
-#: ../src/ConfigDialogue.cpp:767
+#: ../src/ConfigDialogue.cpp:772
 msgid "Code highlighting: Numbers"
 msgstr "Syntaxhervorhebung: Zahlen"
 
-#: ../src/ConfigDialogue.cpp:769
+#: ../src/ConfigDialogue.cpp:774
 msgid "Code highlighting: Operators"
 msgstr "Syntaxhervorhebung: Operatoren"
 
-#: ../src/ConfigDialogue.cpp:768
+#: ../src/ConfigDialogue.cpp:773
 msgid "Code highlighting: Strings"
 msgstr "Syntaxhervorhebung: Zeichenketten"
 
-#: ../src/ConfigDialogue.cpp:764
+#: ../src/ConfigDialogue.cpp:769
 msgid "Code highlighting: Variables"
 msgstr "Syntaxhervorhebung: Variablen"
 
@@ -1017,7 +1017,7 @@ msgstr "Spalten:"
 msgid "Combine factorials in an expression"
 msgstr "Fakultäten in einem Ausdruck kombinieren"
 
-#: ../src/wxMaxima.cpp:5479
+#: ../src/wxMaxima.cpp:5530
 msgid "Comma directly followed by a closing parenthesis"
 msgstr "Komma wird von einer schließenden Klammer gefolgt"
 
@@ -1086,11 +1086,11 @@ msgstr ""
 msgid "Condition:"
 msgstr "Bedingung:"
 
-#: ../src/ConfigDialogue.cpp:1646 ../src/ConfigDialogue.cpp:1654
+#: ../src/ConfigDialogue.cpp:1651 ../src/ConfigDialogue.cpp:1659
 msgid "Config file (*.ini)|*.ini"
 msgstr "Konfigurationsdatei (*.ini)|*.ini"
 
-#: ../src/ConfigDialogue.cpp:1480
+#: ../src/ConfigDialogue.cpp:1485
 msgid "Configuration warning"
 msgstr "Konfigurationswarnung"
 
@@ -1177,13 +1177,13 @@ msgstr "Kopiere letzte Eingabe\tCtrl+I"
 msgid "Copy Previous Output\tCtrl+U"
 msgstr "Kopiere letzte Ausgabe\tCtrl+U"
 
-#: ../src/wxMaximaFrame.cpp:472 ../src/MathCtrl.cpp:996
-#: ../src/MathCtrl.cpp:1042
+#: ../src/MathCtrl.cpp:996 ../src/MathCtrl.cpp:1042
+#: ../src/wxMaximaFrame.cpp:472
 msgid "Copy as Image"
 msgstr "Als Bild kopieren"
 
-#: ../src/wxMaximaFrame.cpp:465 ../src/MathCtrl.cpp:992
-#: ../src/MathCtrl.cpp:1038
+#: ../src/MathCtrl.cpp:992 ../src/MathCtrl.cpp:1038
+#: ../src/wxMaximaFrame.cpp:465
 msgid "Copy as LaTeX"
 msgstr "Als LaTeX kopieren"
 
@@ -1235,7 +1235,7 @@ msgstr "Neue Zelle mit letzter Eingabe erzeugen."
 msgid "Create a new cell with previous output"
 msgstr "Neue Zelle mit letzter Ausgabe erzeugen."
 
-#: ../src/ConfigDialogue.cpp:760
+#: ../src/ConfigDialogue.cpp:765
 msgid "Cursor"
 msgstr "Cursor"
 
@@ -1251,11 +1251,11 @@ msgstr "Ausschneiden\tCtrl+X"
 msgid "Cut selection"
 msgstr "Auswahl ausschneiden"
 
-#: ../src/ConfigDialogue.cpp:564
+#: ../src/ConfigDialogue.cpp:569
 msgid "Czech"
 msgstr "Tschechisch"
 
-#: ../src/ConfigDialogue.cpp:565
+#: ../src/ConfigDialogue.cpp:570
 msgid "Danish"
 msgstr "Dänisch"
 
@@ -1274,7 +1274,7 @@ msgstr "Datendatei (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgid "Data:"
 msgstr "Daten:"
 
-#: ../src/ConfigDialogue.cpp:704
+#: ../src/ConfigDialogue.cpp:709
 msgid "Debug: watch maxima's stdout stream"
 msgstr "Debug: Überwache den stdout-Datenstrom"
 
@@ -1282,27 +1282,27 @@ msgstr "Debug: Überwache den stdout-Datenstrom"
 msgid "Decompose rational function to partial fractions"
 msgstr "Partialbruchzerlegung"
 
-#: ../src/ConfigDialogue.cpp:738
+#: ../src/ConfigDialogue.cpp:743
 msgid "Default"
 msgstr "Standard"
 
-#: ../src/ConfigDialogue.cpp:612
+#: ../src/ConfigDialogue.cpp:617
 msgid "Default animation framerate:"
 msgstr "Standard-Bildwiederholrate für Animationen:"
 
-#: ../src/ConfigDialogue.cpp:731
+#: ../src/ConfigDialogue.cpp:736
 msgid "Default font:"
 msgstr "Standardschrift:"
 
-#: ../src/ConfigDialogue.cpp:412
+#: ../src/ConfigDialogue.cpp:410
 msgid "Default plot size for new maxima sessions:"
 msgstr "Standardgröße für Graphen beim nächsten Start von Maxima:"
 
-#: ../src/ConfigDialogue.cpp:666
+#: ../src/ConfigDialogue.cpp:671
 msgid "Default port for communication with wxMaxima:"
 msgstr "Standard-Port für die Kommunikation zwischen Maxima und wxMaxima."
 
-#: ../src/ConfigDialogue.cpp:184
+#: ../src/ConfigDialogue.cpp:187
 msgid ""
 "Define the default speed (in frames per second) animations are played back "
 "with."
@@ -1374,7 +1374,7 @@ msgstr "Polynome di&vidieren ..."
 msgid "Diff..."
 msgstr "Differenzieren ..."
 
-#: ../src/wxMaxima.cpp:4333 ../src/wxMaxima.cpp:5245
+#: ../src/wxMaxima.cpp:4333 ../src/wxMaxima.cpp:5296
 msgid "Differentiate"
 msgstr "Differenzieren"
 
@@ -1430,12 +1430,12 @@ msgstr "Dividiere Zahlen oder Polynome"
 msgid "Divide this input cell into two cells"
 msgstr "Teile diese Eingabezelle in zwei Zellen auf."
 
-#: ../src/wxMaxima.cpp:6112
+#: ../src/wxMaxima.cpp:6163
 #, c-format
 msgid "Do you want to save the changes you made in the document \"%s\"?"
 msgstr "Wollen Sie Änderungen im Dokument \"%s\" speichern?"
 
-#: ../src/ConfigDialogue.cpp:757
+#: ../src/ConfigDialogue.cpp:762
 msgid "Document background"
 msgstr "Hintergrundfarbe Dokument"
 
@@ -1456,11 +1456,11 @@ msgstr ""
 "Das Dokument wurde mit einer aktuelleren wxMaxima Version gespeichert. Bitte "
 "aktualisieren Sie wxMaxima."
 
-#: ../src/ConfigDialogue.cpp:503
+#: ../src/ConfigDialogue.cpp:508
 msgid "Documentclass for TeX export:"
 msgstr "Dokumentklasse für TeX-Export:"
 
-#: ../src/ConfigDialogue.cpp:183
+#: ../src/ConfigDialogue.cpp:186
 msgid ""
 "Don't compress the maxima input text and compress images individually: This "
 "enables version control systems like git and svn to effectively spot the "
@@ -1470,7 +1470,7 @@ msgstr ""
 "der Bilder für sich: Dies erlaubt Versionskontroll-Systemen wie svn und git, "
 "genau zu ermitteln, welche Elemente sich geändert haben. "
 
-#: ../src/wxMaxima.cpp:6117
+#: ../src/wxMaxima.cpp:6168
 msgid "Don't save"
 msgstr "Nicht speichern"
 
@@ -1506,7 +1506,7 @@ msgstr "Eliminiere eine Variable aus einem Gleichungssystem"
 msgid "End of proof"
 msgstr "q.e.d. (Beweisende)"
 
-#: ../src/ConfigDialogue.cpp:566
+#: ../src/ConfigDialogue.cpp:571
 msgid "English"
 msgstr "Englisch"
 
@@ -1532,7 +1532,7 @@ msgstr "Geben Sie eine Gleichung zum Vereinfachen rationaler Ausdrücke an:"
 msgid "Enter comma separated list of variables."
 msgstr "Geben Sie die Variablen durch Beistriche getrennt ein."
 
-#: ../src/ConfigDialogue.cpp:471
+#: ../src/ConfigDialogue.cpp:479
 msgid "Enter evaluates cells"
 msgstr "'Eingabe' wertet die Zelle aus"
 
@@ -1544,7 +1544,7 @@ msgstr "Matrix eingeben"
 msgid "Enter new precision for bigfloats:"
 msgstr "Neue Genauigkeit für als Bigfloat deklarierte Zahlen eingeben:"
 
-#: ../src/ConfigDialogue.cpp:177
+#: ../src/ConfigDialogue.cpp:180
 msgid "Enter the path to the Maxima executable."
 msgstr "Geben Sie den Pfad zum Maxima Programm an."
 
@@ -1562,12 +1562,12 @@ msgid "Equation %d:"
 msgstr "Gleichung %d:"
 
 #: ../src/wxMaxima.cpp:3639 ../src/wxMaxima.cpp:3653 ../src/wxMaxima.cpp:3812
-#: ../src/wxMaxima.cpp:5198
+#: ../src/wxMaxima.cpp:5249
 msgid "Equation(s):"
 msgstr "Gleichung(en):"
 
 #: ../src/wxMaxima.cpp:3669 ../src/wxMaxima.cpp:3688 ../src/wxMaxima.cpp:4172
-#: ../src/wxMaxima.cpp:4986 ../src/wxMaxima.cpp:5212
+#: ../src/wxMaxima.cpp:4986 ../src/wxMaxima.cpp:5263
 msgid "Equation:"
 msgstr "Gleichung:"
 
@@ -1586,11 +1586,11 @@ msgstr ""
 msgid "Equations:"
 msgstr "Gleichungen:"
 
-#: ../src/Image.cpp:183 ../src/ConfigDialogue.cpp:923 ../src/wxMaxima.cpp:1516
+#: ../src/Image.cpp:183 ../src/ConfigDialogue.cpp:928 ../src/wxMaxima.cpp:1516
 #: ../src/wxMaxima.cpp:1530 ../src/wxMaxima.cpp:1681 ../src/wxMaxima.cpp:1694
 #: ../src/wxMaxima.cpp:1704 ../src/wxMaxima.cpp:1788 ../src/wxMaxima.cpp:1816
 #: ../src/wxMaxima.cpp:1826 ../src/wxMaxima.cpp:2162 ../src/wxMaxima.cpp:2334
-#: ../src/wxMaxima.cpp:5576 ../src/wxMaxima.cpp:6025 ../src/wxMaxima.cpp:6076
+#: ../src/wxMaxima.cpp:5627 ../src/wxMaxima.cpp:6076 ../src/wxMaxima.cpp:6127
 msgid "Error"
 msgstr "Fehler"
 
@@ -1602,6 +1602,10 @@ msgstr "Fehler!"
 #: ../src/wxMaximaFrame.cpp:1330
 msgid "Eta"
 msgstr "Eta"
+
+#: ../src/TableOfContents.cpp:260
+msgid "Evaluate"
+msgstr "Auswerten"
 
 #: ../src/wxMaximaFrame.cpp:869
 msgid "Evaluate &Noun Forms"
@@ -1615,7 +1619,7 @@ msgstr "Alle Zellen neu auswerten\tCtrl+Shift+R"
 msgid "Evaluate All Visible Cells\tCtrl+R"
 msgstr "Alle sichtbaren Zellen neu auswerten\tCtrl+R"
 
-#: ../src/wxMaximaFrame.cpp:545 ../src/MathCtrl.cpp:1002
+#: ../src/MathCtrl.cpp:1002 ../src/wxMaximaFrame.cpp:545
 msgid "Evaluate Cell(s)"
 msgstr "Zelle(n) auswerten"
 
@@ -1668,11 +1672,11 @@ msgstr "&Zellen bis hier evaluieren"
 msgid "Example"
 msgstr "Beispiel"
 
-#: ../src/ConfigDialogue.cpp:1594 ../src/ConfigDialogue.cpp:1691
+#: ../src/ConfigDialogue.cpp:1599 ../src/ConfigDialogue.cpp:1696
 msgid "Example text"
 msgstr "Mustertext"
 
-#: ../src/ConfigDialogue.cpp:676
+#: ../src/ConfigDialogue.cpp:681
 msgid "Examples:"
 msgstr "Beispiele:"
 
@@ -1708,11 +1712,11 @@ msgstr "Trigonometrische Ausdrücke expandieren"
 msgid "Expected the icon files to be found at"
 msgstr "Habe erwartet, die Icons hier zu finden:"
 
-#: ../src/ConfigDialogue.cpp:147 ../src/wxMaxima.cpp:3009
+#: ../src/ConfigDialogue.cpp:150 ../src/wxMaxima.cpp:3009
 msgid "Export"
 msgstr "Exportieren"
 
-#: ../src/ConfigDialogue.cpp:528
+#: ../src/ConfigDialogue.cpp:533
 msgid ""
 "Export animations to TeX (Images only move if the PDF viewer supports this)"
 msgstr ""
@@ -1723,7 +1727,7 @@ msgstr ""
 msgid "Export document to a HTML or pdfLaTeX file"
 msgstr "Exportiere Dokument als HTML oder pdfLaTex-Datei"
 
-#: ../src/ConfigDialogue.cpp:519
+#: ../src/ConfigDialogue.cpp:524
 msgid "Export equations to HTML as:"
 msgstr "Export von Gleichungen nach HTML als:"
 
@@ -1763,7 +1767,7 @@ msgstr "Ausdruck:"
 #: ../src/SubstituteWiz.cpp:28 ../src/SumWiz.cpp:27 ../src/wxMaxima.cpp:3827
 #: ../src/wxMaxima.cpp:3997 ../src/wxMaxima.cpp:4253 ../src/wxMaxima.cpp:4268
 #: ../src/wxMaxima.cpp:4297 ../src/wxMaxima.cpp:4314 ../src/wxMaxima.cpp:4331
-#: ../src/wxMaxima.cpp:4384 ../src/wxMaxima.cpp:4419 ../src/wxMaxima.cpp:5243
+#: ../src/wxMaxima.cpp:4384 ../src/wxMaxima.cpp:4419 ../src/wxMaxima.cpp:5294
 msgid "Expression:"
 msgstr "Ausdruck:"
 
@@ -1810,7 +1814,7 @@ msgstr "&Datei"
 msgid "File could not be opened"
 msgstr "Datei kann nicht geöffnet werden"
 
-#: ../src/wxMaxima.cpp:5372
+#: ../src/wxMaxima.cpp:5423
 msgid "File not found"
 msgstr "Datei nicht gefunden"
 
@@ -1818,7 +1822,7 @@ msgstr "Datei nicht gefunden"
 msgid "File opened"
 msgstr "Datei geöffnet"
 
-#: ../src/wxMaxima.cpp:5372
+#: ../src/wxMaxima.cpp:5423
 msgid "File you tried to open does not exist."
 msgstr "Datei existiert nicht."
 
@@ -1891,7 +1895,7 @@ msgstr "Minimum suchen"
 msgid "Find real roots of a polynomial"
 msgstr "Finde die reellen Nullstellen eines Polynoms"
 
-#: ../src/wxMaxima.cpp:3672 ../src/wxMaxima.cpp:5215
+#: ../src/wxMaxima.cpp:3672 ../src/wxMaxima.cpp:5266
 msgid "Find root"
 msgstr "Nullstelle suchen"
 
@@ -1899,16 +1903,16 @@ msgstr "Nullstelle suchen"
 msgid "Find:"
 msgstr "Suchen:"
 
-#: ../src/ConfigDialogue.cpp:567
+#: ../src/ConfigDialogue.cpp:572
 msgid "Finnish"
 msgstr "Finnisch"
 
-#: ../src/ConfigDialogue.cpp:634
+#: ../src/ConfigDialogue.cpp:639
 #, c-format
 msgid "Fix reordered reference indices (of %i, %o) before saving"
 msgstr "Neunummerierung der Ein- und Ausgabemarken beim Speichern"
 
-#: ../src/ConfigDialogue.cpp:462
+#: ../src/ConfigDialogue.cpp:470
 msgid "Fixed font in text controls"
 msgstr "Schriftart mit fester Breite in Texteingabefeldern"
 
@@ -1954,15 +1958,15 @@ msgstr ""
 msgid "Font issue? The contents of a sqrt() has the size 0."
 msgstr "Zeichensatzproblem? Das Wurzelzeichen hat die Größe 0."
 
-#: ../src/ConfigDialogue.cpp:206
+#: ../src/ConfigDialogue.cpp:209
 msgid "Font used for display in document."
 msgstr "Schriftart für ein Dokument."
 
-#: ../src/ConfigDialogue.cpp:207
+#: ../src/ConfigDialogue.cpp:210
 msgid "Font used for displaying math characters in document."
 msgstr "Schriftart für mathematische Zeichen in einem Dokument."
 
-#: ../src/ConfigDialogue.cpp:719
+#: ../src/ConfigDialogue.cpp:724
 msgid "Fonts"
 msgstr "Schriftarten"
 
@@ -1975,7 +1979,7 @@ msgstr "Format:"
 msgid "Frame %i of %i"
 msgstr "Bild %i von %i"
 
-#: ../src/ConfigDialogue.cpp:568
+#: ../src/ConfigDialogue.cpp:573
 msgid "French"
 msgstr "Französisch"
 
@@ -1993,7 +1997,7 @@ msgstr "Ganzer Bildschirm\tAlt+Enter"
 msgid "Function"
 msgstr "Funktion"
 
-#: ../src/ConfigDialogue.cpp:741
+#: ../src/ConfigDialogue.cpp:746
 msgid "Function names"
 msgstr "Funktionsnamen"
 
@@ -2022,11 +2026,11 @@ msgstr "Funktionen zum Vereinfachen von trigonometrischen Ausdrücken"
 msgid "GCD"
 msgstr "GGT"
 
-#: ../src/wxMaxima.cpp:5331
+#: ../src/wxMaxima.cpp:5382
 msgid "GIF image (*.gif)|*.gif"
 msgstr "GIF Bild (*.gif)|*.gif"
 
-#: ../src/ConfigDialogue.cpp:569
+#: ../src/ConfigDialogue.cpp:574
 msgid "Galician"
 msgstr "Galicisch"
 
@@ -2058,7 +2062,7 @@ msgstr "Eine Matrix aus einem 2-dimensionalen Array erzeugen"
 msgid "Generate a matrix from a lambda expression"
 msgstr "Matrix aus lambda-Ausdruck erzeugen"
 
-#: ../src/ConfigDialogue.cpp:570
+#: ../src/ConfigDialogue.cpp:575
 msgid "German"
 msgstr "Deutsch"
 
@@ -2094,7 +2098,7 @@ msgstr "Imaginärteil eines komplexen Ausdrucks bestimmen"
 msgid "Get the real part of complex expression"
 msgstr "Realteil eines komplexen Ausdrucks bestimmen"
 
-#: ../src/MathCtrl.cpp:6057
+#: ../src/MathCtrl.cpp:6065
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2102,7 +2106,7 @@ msgstr ""
 "Rückgängigmachen involviert das Löschen einer Zelle, die derzeit nicht "
 "gelöscht werden kann."
 
-#: ../src/ConfigDialogue.cpp:571
+#: ../src/ConfigDialogue.cpp:576
 msgid "Greek"
 msgstr "Griechisch"
 
@@ -2114,7 +2118,7 @@ msgstr "Griechische Buchstaben"
 msgid "Greek Letters\tAlt+Shift+G"
 msgstr "Griechische Buchstaben\tAlt+Shift+G"
 
-#: ../src/ConfigDialogue.cpp:743
+#: ../src/ConfigDialogue.cpp:748
 msgid "Greek constants"
 msgstr "Griechische Konstanten"
 
@@ -2134,6 +2138,10 @@ msgstr ""
 msgid "Help"
 msgstr "Hilfe"
 
+#: ../src/TableOfContents.cpp:258
+msgid "Hide"
+msgstr "Verstecken"
+
 #: ../src/wxMaximaFrame.cpp:520
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "Alle Werkzeugleisten verbergen\tAlt+Shift+-"
@@ -2150,7 +2158,7 @@ msgstr "Zellen mit Code verstecken\tAlt+Ctrl+H"
 msgid "Hide all panes"
 msgstr "Alle Werkzeugleisten ausblenden"
 
-#: ../src/ConfigDialogue.cpp:750
+#: ../src/ConfigDialogue.cpp:755
 msgid "Highlight (dpart)"
 msgstr "Hervorgehoben"
 
@@ -2183,7 +2191,7 @@ msgstr ""
 "werden die Zellen markiert. Mit der Entf-Taste oder Rücktaste wird die "
 "nächste oder vorhergehende Zelle gelöscht."
 
-#: ../src/ConfigDialogue.cpp:572
+#: ../src/ConfigDialogue.cpp:577
 msgid "Hungarian"
 msgstr "Ungarisch"
 
@@ -2199,7 +2207,7 @@ msgstr "Anfangswertproblem 2. Grades"
 msgid "Identical to"
 msgstr "Identisch zu"
 
-#: ../src/ConfigDialogue.cpp:173
+#: ../src/ConfigDialogue.cpp:176
 #, c-format
 msgid ""
 "If a command begins with a label followed by a : wxMaxima will show this "
@@ -2219,7 +2227,7 @@ msgstr ""
 "fertig ist, veranlasst dieser Menüpunkt wxMaxima dazu, neu mit der "
 "Kommunikation zu beginnen. "
 
-#: ../src/ConfigDialogue.cpp:174
+#: ../src/ConfigDialogue.cpp:177
 msgid ""
 "If multiple cells are evaluated in one go: Abort evaluation if wxMaxima "
 "detects that maxima has encountered any error."
@@ -2227,15 +2235,15 @@ msgstr ""
 "Wenn mehrere Zellen auf einmal evaluiert werden sollen und ein Fehler "
 "auftritt: Soll Maxima bei der Fehlermeldung anhalten?"
 
-#: ../src/ConfigDialogue.cpp:433
+#: ../src/ConfigDialogue.cpp:432
 msgid "If not extremely long"
 msgstr "Wenn sie nicht extrem lang sind"
 
-#: ../src/ConfigDialogue.cpp:432
+#: ../src/ConfigDialogue.cpp:431
 msgid "If not very long"
 msgstr "Wenn sie nicht sehr lang sind"
 
-#: ../src/ConfigDialogue.cpp:187
+#: ../src/ConfigDialogue.cpp:190
 msgid ""
 "If numbers are getting longer than this number of digits they will be "
 "displayed abbreviated by an ellipsis."
@@ -2253,7 +2261,7 @@ msgstr ""
 "geräten, indem es die Datei beim Schließen und davor alle paar Minuten "
 "speichert."
 
-#: ../src/ConfigDialogue.cpp:182
+#: ../src/ConfigDialogue.cpp:185
 msgid ""
 "If this number of minutes has elapsed after the last save of the file, the "
 "file has been given a name (by opening or saving it) and the keyboard has "
@@ -2266,7 +2274,7 @@ msgstr ""
 "zwischengespeichert. Ist diese Zahl stattdessen Null, deaktiviert dies das "
 "automatische Speichern."
 
-#: ../src/ConfigDialogue.cpp:193
+#: ../src/ConfigDialogue.cpp:196
 msgid ""
 "If this option is set the .wxmx source of the current file is copied to a "
 "place a link to is put into the result of an export."
@@ -2300,7 +2308,7 @@ msgstr ""
 msgid "Image"
 msgstr "Bild"
 
-#: ../src/wxMaxima.cpp:5838
+#: ../src/wxMaxima.cpp:5889
 msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgstr "Bild-Dateien (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 
@@ -2347,7 +2355,7 @@ msgstr ""
 "Aufzählungen werden dadurch realisiert, dass eine Zeile mit Leertasten "
 "eingerückt wird."
 
-#: ../src/ConfigDialogue.cpp:189
+#: ../src/ConfigDialogue.cpp:192
 msgid ""
 "In the LaTeX output: Put exponents after an eventual subscript instead of "
 "above it. Might increase readability for some fonts and short subscripts."
@@ -2360,7 +2368,7 @@ msgstr ""
 msgid "Include columns:"
 msgstr "Spalten:"
 
-#: ../src/ConfigDialogue.cpp:636
+#: ../src/ConfigDialogue.cpp:641
 msgid "Incremental Search"
 msgstr "Suche während des Tippens"
 
@@ -2387,7 +2395,7 @@ msgstr "Anfangswertproblem (&1) ..."
 msgid "Initial Value Problem (&2)..."
 msgstr "Anfangswertproblem (&2) ..."
 
-#: ../src/ConfigDialogue.cpp:746
+#: ../src/ConfigDialogue.cpp:751
 msgid "Input labels"
 msgstr "Eingabemarken"
 
@@ -2395,7 +2403,7 @@ msgstr "Eingabemarken"
 msgid "Insert"
 msgstr "Zellen Einfügen"
 
-#: ../src/ConfigDialogue.cpp:477
+#: ../src/ConfigDialogue.cpp:485
 msgid "Insert % before an operator at the beginning of a cell"
 msgstr "Ein % Zeichen vor einem Operator am Anfang einer Zelle einfügen"
 
@@ -2411,7 +2419,7 @@ msgstr "Neue &Textzelle\tCtrl+1"
 msgid "Insert Cell\tAlt+Shift+C"
 msgstr "Zellen einfügen\tAlt+Shift+C"
 
-#: ../src/wxMaxima.cpp:5836
+#: ../src/wxMaxima.cpp:5887
 msgid "Insert Image"
 msgstr "Bild einfügen"
 
@@ -2491,7 +2499,7 @@ msgstr "Seitenumbruch einfügen"
 msgid "Insert image"
 msgstr "Bild einfügen"
 
-#: ../src/ConfigDialogue.cpp:441
+#: ../src/ConfigDialogue.cpp:449
 msgid "Integers and single letters"
 msgstr "Zahlen und einzelne Buchstaben"
 
@@ -2503,7 +2511,7 @@ msgstr "Integralzeichen"
 msgid "Integral/Sum:"
 msgstr "Integral/Summe:"
 
-#: ../src/IntegrateWiz.cpp:66 ../src/wxMaxima.cpp:4284 ../src/wxMaxima.cpp:5230
+#: ../src/IntegrateWiz.cpp:66 ../src/wxMaxima.cpp:4284 ../src/wxMaxima.cpp:5281
 msgid "Integrate"
 msgstr "Integrieren"
 
@@ -2519,7 +2527,7 @@ msgstr "Ausdruck integrieren"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Ausdruck mit Risch-Algorithmus integrieren"
 
-#: ../src/wxMaximaFrame.cpp:1184 ../src/MathCtrl.cpp:1060
+#: ../src/MathCtrl.cpp:1060 ../src/wxMaximaFrame.cpp:1184
 msgid "Integrate..."
 msgstr "Integrieren ..."
 
@@ -2539,7 +2547,7 @@ msgstr ""
 "Unterbreche den aktuellen Rechenschritt. Ein kompletter Neustart von Maxima "
 "kann durch einen Klick auf das Symbol links von diesem hier erreicht werden."
 
-#: ../src/ConfigDialogue.cpp:922
+#: ../src/ConfigDialogue.cpp:927
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
@@ -2585,19 +2593,19 @@ msgstr ""
 "\"#\" will, vom load()-Befehl nicht automatisch in Maxima-Befehle "
 "konvertiert werden."
 
-#: ../src/ConfigDialogue.cpp:573
+#: ../src/ConfigDialogue.cpp:578
 msgid "Italian"
 msgstr "Italienisch"
 
-#: ../src/ConfigDialogue.cpp:781
+#: ../src/ConfigDialogue.cpp:786
 msgid "Italic"
 msgstr "Kursiv"
 
-#: ../src/ConfigDialogue.cpp:574
+#: ../src/ConfigDialogue.cpp:579
 msgid "Japanese"
 msgstr "Japanisch"
 
-#: ../src/ConfigDialogue.cpp:576
+#: ../src/ConfigDialogue.cpp:581
 msgid "Kabyle"
 msgstr "Kabylisch"
 
@@ -2605,7 +2613,7 @@ msgstr "Kabylisch"
 msgid "Kappa"
 msgstr "Kappa"
 
-#: ../src/ConfigDialogue.cpp:468
+#: ../src/ConfigDialogue.cpp:476
 #, c-format
 msgid "Keep percent sign with special symbols: %e, %i, etc."
 msgstr "Zeige Prozentzeichen für spezielle Symbole: %e, %i, usw."
@@ -2614,16 +2622,16 @@ msgstr "Zeige Prozentzeichen für spezielle Symbole: %e, %i, usw."
 msgid "LCM"
 msgstr "KGV"
 
-#: ../src/ConfigDialogue.cpp:531
+#: ../src/ConfigDialogue.cpp:536
 msgid "LaTeX: Place exponents after, instead above subscripts"
 msgstr "LaTeX: Platziere Exponenten hinter, nicht direkt über Indizes."
 
-#: ../src/ConfigDialogue.cpp:534
+#: ../src/ConfigDialogue.cpp:539
 msgid "LaTeX: Use the \"partial derivative\" symbol to represent diff()"
 msgstr ""
 "LaTeX: Verwende das \"partielle Ableitung\"-Symbol, um diff() darzustellen"
 
-#: ../src/ConfigDialogue.cpp:448
+#: ../src/ConfigDialogue.cpp:456
 msgid "Label width:"
 msgstr "Breite der Ein- und Ausgabemarken:"
 
@@ -2631,11 +2639,11 @@ msgstr "Breite der Ein- und Ausgabemarken:"
 msgid "Lambda"
 msgstr "Lambda"
 
-#: ../src/ConfigDialogue.cpp:200
+#: ../src/ConfigDialogue.cpp:203
 msgid "Language used for wxMaxima GUI."
 msgstr "Von wxMaxima verwendete Sprache."
 
-#: ../src/ConfigDialogue.cpp:557
+#: ../src/ConfigDialogue.cpp:562
 msgid "Language:"
 msgstr "Sprache:"
 
@@ -2693,7 +2701,7 @@ msgstr "Liste(n):"
 msgid "List:"
 msgstr "Liste:"
 
-#: ../src/ConfigDialogue.cpp:784
+#: ../src/ConfigDialogue.cpp:789
 msgid "Load"
 msgstr "Laden"
 
@@ -2709,7 +2717,7 @@ msgstr "Eine Maxima Batch-Datei laden"
 msgid "Load a Maxima package file"
 msgstr "Ein Maxima Paket laden"
 
-#: ../src/ConfigDialogue.cpp:1652
+#: ../src/ConfigDialogue.cpp:1657
 msgid "Load style from file"
 msgstr "Lade Layout aus einer Datei"
 
@@ -2717,7 +2725,7 @@ msgstr "Lade Layout aus einer Datei"
 msgid "Long Right arrow"
 msgstr "Langer Pfeil nach rechts"
 
-#: ../src/wxMaxima.cpp:3670 ../src/wxMaxima.cpp:5213
+#: ../src/wxMaxima.cpp:3670 ../src/wxMaxima.cpp:5264
 msgid "Lower bound:"
 msgstr "untere Schranke:"
 
@@ -2765,15 +2773,15 @@ msgstr "Eine Funktion auf Elemente einer Matrix anwenden"
 msgid "Match Case"
 msgstr "Groß-/ und Kleinschreibung beachten"
 
-#: ../src/ConfigDialogue.cpp:459
+#: ../src/ConfigDialogue.cpp:467
 msgid "Match parenthesis in text controls"
 msgstr "Automatisch passende Klammern erzeugen"
 
-#: ../src/ConfigDialogue.cpp:733
+#: ../src/ConfigDialogue.cpp:738
 msgid "Math font:"
 msgstr "Math. Schriftart:"
 
-#: ../src/ConfigDialogue.cpp:194
+#: ../src/ConfigDialogue.cpp:197
 msgid ""
 "MathJAX creates scalable High-Quality representations of 2D Maths that can "
 "be used for Drag-And-Drop and provides accessability options. The "
@@ -2796,7 +2804,7 @@ msgstr ""
 "Auch können sie sich weder an den Zeichensatz oder die Zeichengröße "
 "anpassen, noch angeben, wo sie relativ zur Zeilenhöhe zentriert sein wollen."
 
-#: ../src/ConfigDialogue.cpp:523
+#: ../src/ConfigDialogue.cpp:528
 msgid "MathML + MathJaX as Fill-In"
 msgstr "MathML + MathJaX, wo nötig."
 
@@ -2820,7 +2828,7 @@ msgstr "Matrix Name:"
 msgid "Matrix:"
 msgstr "Matrix"
 
-#: ../src/ConfigDialogue.cpp:145
+#: ../src/ConfigDialogue.cpp:148
 msgid "Maxima"
 msgstr "Maxima"
 
@@ -2828,7 +2836,7 @@ msgstr "Maxima"
 msgid "Maxima has a question"
 msgstr "Maxima hat eine Frage."
 
-#: ../src/ConfigDialogue.cpp:745
+#: ../src/ConfigDialogue.cpp:750
 msgid "Maxima input"
 msgstr "Maxima Eingabe"
 
@@ -2852,11 +2860,11 @@ msgstr "Maxima Paket (*.mac)|*.mac|Lisp Paket (*.lisp)|*.lisp|Alle|*"
 msgid "Maxima process terminated."
 msgstr "Maxima wurde beendet."
 
-#: ../src/ConfigDialogue.cpp:654
+#: ../src/ConfigDialogue.cpp:659
 msgid "Maxima program:"
 msgstr "Maxima-Programm:"
 
-#: ../src/ConfigDialogue.cpp:176
+#: ../src/ConfigDialogue.cpp:179
 msgid ""
 "Maxima provides no \"forget all\" command that flushes all settings a maxima "
 "session could make. wxMaxima therefore normally defaults to starting a fresh "
@@ -2869,7 +2877,7 @@ msgstr ""
 "Maxima-Prozess. Dies benötigt jedoch Zeit, weswegen diese Option eingeführt "
 "wurde, die es erlaubt, dieses Verhalten wieder auszuschalten."
 
-#: ../src/ConfigDialogue.cpp:747
+#: ../src/ConfigDialogue.cpp:752
 msgid "Maxima questions"
 msgstr "Maxima Fragen"
 
@@ -3011,7 +3019,7 @@ msgstr ""
 "Rechner gestartet und kommunizieren über ein lokales Netzwerk.\n"
 "Dieses Icon zeigt an, wenn die Programme Daten miteinander austauschen."
 
-#: ../src/ConfigDialogue.cpp:424
+#: ../src/ConfigDialogue.cpp:422
 msgid "Maximum displayed number of digits:"
 msgstr "Maximale angezeigte Zahl an Stellen"
 
@@ -3055,7 +3063,7 @@ msgstr "Nachricht vom stdout von wxMaxima: "
 msgid "Method:"
 msgstr "Methode:"
 
-#: ../src/wxMaxima.cpp:5474 ../src/wxMaxima.cpp:5475
+#: ../src/wxMaxima.cpp:5525 ../src/wxMaxima.cpp:5526
 msgid "Mismatched parenthesis"
 msgstr "Nicht-zusammengehörige Klammern"
 
@@ -3083,7 +3091,7 @@ msgstr "Neu\tCtrl+N"
 msgid "New document"
 msgstr "Neues Dokument"
 
-#: ../src/ConfigDialogue.cpp:483
+#: ../src/ConfigDialogue.cpp:491
 msgid "New lines: Jump to text"
 msgstr "Neue Zeilen: Springe zum Text"
 
@@ -3099,11 +3107,12 @@ msgstr "Parameter:"
 msgid "Next Command\tAlt+Down"
 msgstr "Nächster Befehl\tAlt+Herunter"
 
-#: ../src/ConfigDialogue.cpp:431 ../src/ConfigDialogue.cpp:440
+#: ../src/ConfigDialogue.cpp:430 ../src/ConfigDialogue.cpp:440
+#: ../src/ConfigDialogue.cpp:448
 msgid "No"
 msgstr "Nein"
 
-#: ../src/wxMaxima.cpp:5557
+#: ../src/wxMaxima.cpp:5608
 msgid "No dollar ($) or semicolon (;) at the end of command"
 msgstr "Kein Dollarzeichen ($) oder Semikolon (;) am Ende eines Befehls"
 
@@ -3115,7 +3124,7 @@ msgstr "Keine Übereinstimmung gefunden!"
 msgid "Normality Test..."
 msgstr "Test Normalverteilung"
 
-#: ../src/ConfigDialogue.cpp:192
+#: ../src/ConfigDialogue.cpp:195
 msgid ""
 "Normally html expects images to be rather low-res but space saving. These "
 "images tend to look rather blurry when viewed on modern screens. Therefore "
@@ -3127,7 +3136,7 @@ msgstr ""
 "hochauflösenden oder großen Bildschirmen verschwommen dargestellt. Diese "
 "Einstellung erlaubt es, die Auflösung der Bilder zu vervielfachen. "
 
-#: ../src/ConfigDialogue.cpp:578
+#: ../src/ConfigDialogue.cpp:583
 msgid "Norwegian"
 msgstr "Norwegisch"
 
@@ -3159,7 +3168,7 @@ msgstr "Grad Zähler:"
 msgid "Number of equations:"
 msgstr "Anzahl Gleichungen:"
 
-#: ../src/ConfigDialogue.cpp:740
+#: ../src/ConfigDialogue.cpp:745
 msgid "Numbers"
 msgstr "Zahlen"
 
@@ -3194,7 +3203,7 @@ msgstr "Omega"
 msgid "Omicron"
 msgstr "Omikron"
 
-#: ../src/ConfigDialogue.cpp:175
+#: ../src/ConfigDialogue.cpp:178
 msgid ""
 "Once the local network link between maxima and wxMaxima has been established "
 "maxima has no reason to send any messages using the system's stdout stream "
@@ -3218,7 +3227,7 @@ msgstr "Einstichproben t-Test"
 msgid "Online tutorials"
 msgstr "Online Tutorials"
 
-#: ../src/ToolBar.cpp:115 ../src/main.cpp:354 ../src/ConfigDialogue.cpp:656
+#: ../src/ToolBar.cpp:115 ../src/main.cpp:354 ../src/ConfigDialogue.cpp:661
 #: ../src/wxMaxima.cpp:2972
 msgid "Open"
 msgstr "Öffnen"
@@ -3227,7 +3236,7 @@ msgstr "Öffnen"
 msgid "Open Recent"
 msgstr "Zuletzt geöffnet"
 
-#: ../src/ConfigDialogue.cpp:474
+#: ../src/ConfigDialogue.cpp:482
 msgid "Open a cell when Maxima expects input"
 msgstr "Öffne eine Zelle, wenn Maxima eine Eingabe erwartet"
 
@@ -3251,11 +3260,11 @@ msgstr "Matrix laden"
 msgid "Opening file"
 msgstr "Öffne Datei"
 
-#: ../src/ConfigDialogue.cpp:628
+#: ../src/ConfigDialogue.cpp:633
 msgid "Optimize wxmx files for version control"
 msgstr "Optimiere wxmx-Dateien für Versionskontrollsysteme"
 
-#: ../src/ToolBar.cpp:127 ../src/ConfigDialogue.cpp:148
+#: ../src/ToolBar.cpp:127 ../src/ConfigDialogue.cpp:151
 msgid "Options"
 msgstr "Optionen"
 
@@ -3263,11 +3272,11 @@ msgstr "Optionen"
 msgid "Options:"
 msgstr "Optionen:"
 
-#: ../src/ConfigDialogue.cpp:763
+#: ../src/ConfigDialogue.cpp:768
 msgid "Outdated cells"
 msgstr "Ungültige Zellen"
 
-#: ../src/ConfigDialogue.cpp:748
+#: ../src/ConfigDialogue.cpp:753
 msgid "Output labels"
 msgstr "Ausgabemarken"
 
@@ -3275,7 +3284,7 @@ msgstr "Ausgabemarken"
 msgid "P&ade Approximation..."
 msgstr "P&ade-Approximation ..."
 
-#: ../src/wxMaxima.cpp:3306 ../src/wxMaxima.cpp:5312
+#: ../src/wxMaxima.cpp:3306 ../src/wxMaxima.cpp:5363
 msgid ""
 "PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*."
 "bmp|Portable animap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X "
@@ -3365,7 +3374,7 @@ msgstr "Kreisdiagramm"
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Bitte konfigurieren Sie wxMaxima mit 'Bearbeiten->Einstellungen'."
 
-#: ../src/ConfigDialogue.cpp:1479
+#: ../src/ConfigDialogue.cpp:1484
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "Bitte starten Sie wxMaxima neu, um die Änderungen zu aktivieren!"
 
@@ -3382,7 +3391,7 @@ msgid "Plot &Format..."
 msgstr "Plot &Format ..."
 
 #: ../src/Plot2dWiz.cpp:104 ../src/Plot2dWiz.cpp:450 ../src/Plot2dWiz.cpp:464
-#: ../src/wxMaxima.cpp:4462 ../src/wxMaxima.cpp:5281
+#: ../src/wxMaxima.cpp:4462 ../src/wxMaxima.cpp:5332
 msgid "Plot 2D"
 msgstr "2D Plotten"
 
@@ -3394,7 +3403,7 @@ msgstr "2D Plotten ..."
 msgid "Plot 2d..."
 msgstr "2D Plotten ..."
 
-#: ../src/Plot3dWiz.cpp:108 ../src/wxMaxima.cpp:4448 ../src/wxMaxima.cpp:5294
+#: ../src/Plot3dWiz.cpp:108 ../src/wxMaxima.cpp:4448 ../src/wxMaxima.cpp:5345
 msgid "Plot 3D"
 msgstr "3D Plotten"
 
@@ -3428,7 +3437,7 @@ msgstr "Plot in Datei:"
 msgid "Point:"
 msgstr "Punkt:"
 
-#: ../src/ConfigDialogue.cpp:579
+#: ../src/ConfigDialogue.cpp:584
 msgid "Polish"
 msgstr "Polnisch"
 
@@ -3440,7 +3449,7 @@ msgstr "Polynom 1:"
 msgid "Polynomial 2:"
 msgstr "Polynom 2:"
 
-#: ../src/ConfigDialogue.cpp:580
+#: ../src/ConfigDialogue.cpp:585
 msgid "Portuguese (Brazilian)"
 msgstr "Portugiesisch (Brasilien)"
 
@@ -3520,7 +3529,7 @@ msgstr "Wiederhole nächsten Befehl der Historie."
 msgid "Recall previous command from history"
 msgstr "Wiederhole vorherigen Befehl der Historie."
 
-#: ../src/ConfigDialogue.cpp:607
+#: ../src/ConfigDialogue.cpp:612
 msgid "Recent files list length:"
 msgstr "Länge der Liste zuletzt geöffneter Dateien"
 
@@ -3544,7 +3553,7 @@ msgstr "Trigreduce"
 msgid "Reduce trigonometric expression"
 msgstr "Versucht den Grad von trigonometrischen Ausdrücken zu veringern"
 
-#: ../src/wxMaxima.cpp:625 ../src/wxMaxima.cpp:5690
+#: ../src/wxMaxima.cpp:625 ../src/wxMaxima.cpp:5741
 msgid "Refusing to send cell to maxima: "
 msgstr "Weigere mich, die Zelle an Maxima zu senden: "
 
@@ -3581,7 +3590,7 @@ msgstr "Maxima wird neu gestartet"
 msgid "Restart maxima"
 msgstr "Neustart von Maxima"
 
-#: ../src/MathCtrl.cpp:4529
+#: ../src/MathCtrl.cpp:4537
 msgid "Result"
 msgstr "Resultat"
 
@@ -3613,7 +3622,7 @@ msgstr "Nullstellen eines Polynoms (bfloat)"
 msgid "Rows:"
 msgstr "Zeilen:"
 
-#: ../src/ConfigDialogue.cpp:581
+#: ../src/ConfigDialogue.cpp:586
 msgid "Russian"
 msgstr "Russisch"
 
@@ -3629,8 +3638,8 @@ msgstr "Probe 2:"
 msgid "Sample:"
 msgstr "Probe:"
 
-#: ../src/ToolBar.cpp:118 ../src/ConfigDialogue.cpp:785
-#: ../src/wxMaxima.cpp:6117
+#: ../src/ToolBar.cpp:118 ../src/ConfigDialogue.cpp:790
+#: ../src/wxMaxima.cpp:6168
 msgid "Save"
 msgstr "Speichern"
 
@@ -3658,7 +3667,7 @@ msgstr "Auswahl als Bild speichern"
 msgid "Save Selection to Image..."
 msgstr "Auswahl als Bild speichern ..."
 
-#: ../src/wxMaxima.cpp:5329
+#: ../src/wxMaxima.cpp:5380
 msgid "Save animation to file"
 msgstr "Sichere Animation in Datei"
 
@@ -3670,7 +3679,7 @@ msgstr "Dokument speichern"
 msgid "Save document as"
 msgstr "Dokument speichern als"
 
-#: ../src/ConfigDialogue.cpp:210
+#: ../src/ConfigDialogue.cpp:213
 msgid ""
 "Save only this number of actions in the undo buffer. 0 means: save an "
 "infinite number of actions."
@@ -3678,11 +3687,11 @@ msgstr ""
 "Die Anzahl von Aktionen, die für die Rückgängig-Funktion zu speichern sind. "
 "0 heißt: Keine Begrenzung der Anzahl rückgängig machbaren Aktionen."
 
-#: ../src/ConfigDialogue.cpp:622
+#: ../src/ConfigDialogue.cpp:627
 msgid "Save panes layout"
 msgstr "Layout der Werkzeugleisten sichern"
 
-#: ../src/ConfigDialogue.cpp:195
+#: ../src/ConfigDialogue.cpp:198
 msgid "Save panes layout between sessions."
 msgstr "Layout der Werkzeugleisten zwischen Sitzungen sichern"
 
@@ -3694,19 +3703,19 @@ msgstr "Plot in Datei speichern"
 msgid "Save selection from document to an image file"
 msgstr "Auswahl des Dokumentes in Bild-Datei speichern"
 
-#: ../src/wxMaxima.cpp:5310
+#: ../src/wxMaxima.cpp:5361
 msgid "Save selection to file"
 msgstr "Auswahl in eine Datei speichern"
 
-#: ../src/ConfigDialogue.cpp:1644
+#: ../src/ConfigDialogue.cpp:1649
 msgid "Save style to file"
 msgstr "Speichere Layout in eine Datei"
 
-#: ../src/ConfigDialogue.cpp:619
+#: ../src/ConfigDialogue.cpp:624
 msgid "Save wxMaxima window size/position"
 msgstr "Ort und Größe des wxMaxima-Fensters speichern"
 
-#: ../src/ConfigDialogue.cpp:180
+#: ../src/ConfigDialogue.cpp:183
 msgid "Save wxMaxima window size/position between sessions."
 msgstr "Ort und Größe des wxMaxima-Fensters zwischen Sitzungen speichern"
 
@@ -3734,7 +3743,7 @@ msgstr "Streudiagramm ..."
 msgid "Section"
 msgstr "Kapitel"
 
-#: ../src/ConfigDialogue.cpp:754
+#: ../src/ConfigDialogue.cpp:759
 msgid "Section cell"
 msgstr "Kapitelzelle"
 
@@ -3761,6 +3770,10 @@ msgstr ""
 "fonts.html mit darauffolgendem Anklicken von \"Benutze jsMath-Zeichensätze\" "
 "in der Konfiguration sollte das Problem beheben."
 
+#: ../src/TableOfContents.cpp:259
+msgid "Select"
+msgstr "Auswählen"
+
 #: ../src/MathCtrl.cpp:1071 ../src/MathCtrl.cpp:1087
 msgid "Select All"
 msgstr "Alles auswählen"
@@ -3769,7 +3782,7 @@ msgstr "Alles auswählen"
 msgid "Select All\tCtrl+A"
 msgstr "Alles auswählen\tCtrl+A"
 
-#: ../src/ConfigDialogue.cpp:908 ../src/ConfigDialogue.cpp:913
+#: ../src/ConfigDialogue.cpp:913 ../src/ConfigDialogue.cpp:918
 msgid "Select Maxima program"
 msgstr "Maxima-Programm auswählen"
 
@@ -3799,7 +3812,7 @@ msgstr ""
 "einem Rechtsklick ein Kontextmenü, dass Funktionen zeigt, die auf die "
 "Auswahl angewendet werden können."
 
-#: ../src/ConfigDialogue.cpp:761
+#: ../src/ConfigDialogue.cpp:766
 msgid "Selection"
 msgstr "Auswahl"
 
@@ -3823,7 +3836,7 @@ msgstr "Vergrößerung"
 msgid "Set bigfloat &Precision..."
 msgstr "Genauigkeit für als bigfloat deklarierte Fließkommazahlen setzen ..."
 
-#: ../src/ConfigDialogue.cpp:205
+#: ../src/ConfigDialogue.cpp:208
 msgid "Set fixed font in text controls."
 msgstr "In Eingabefeldern eine Schrift mit fester Breite verwenden."
 
@@ -3932,11 +3945,11 @@ msgstr "Zeige die Definition einer Funktion"
 msgid "Show function template"
 msgstr "Zeige Muster der Funktion"
 
-#: ../src/ConfigDialogue.cpp:198
+#: ../src/ConfigDialogue.cpp:201
 msgid "Show long expressions in wxMaxima document."
 msgstr "Zeige lange Ausdrücke im wxMaxima Dokument."
 
-#: ../src/ConfigDialogue.cpp:429
+#: ../src/ConfigDialogue.cpp:427
 msgid "Show long expressions:"
 msgstr "Auch sehr lange Ausdrücke anzeigen:"
 
@@ -3944,7 +3957,7 @@ msgstr "Auch sehr lange Ausdrücke anzeigen:"
 msgid "Show the definition of function:"
 msgstr "Zeige die Definition der Funktion:"
 
-#: ../src/ConfigDialogue.cpp:456
+#: ../src/ConfigDialogue.cpp:464
 #, c-format
 msgid "Show user-defined labels instead of (%oxx)"
 msgstr "Zeige benutzerdefinierte Ausgabemarken statt (\\%oxx)"
@@ -4013,7 +4026,7 @@ msgstr ""
 msgid "Solution:"
 msgstr "Lösung:"
 
-#: ../src/wxMaxima.cpp:3640 ../src/wxMaxima.cpp:3654 ../src/wxMaxima.cpp:5199
+#: ../src/wxMaxima.cpp:3640 ../src/wxMaxima.cpp:3654 ../src/wxMaxima.cpp:5250
 msgid "Solve"
 msgstr "Gleichung lösen"
 
@@ -4089,11 +4102,11 @@ msgstr "Eine gewöhnliche DGL von höchstens zweitem Grad lösen"
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "Gewöhnliche DGL mit Laplacetransformation lösen"
 
-#: ../src/wxMaximaFrame.cpp:1181 ../src/MathCtrl.cpp:1052
+#: ../src/MathCtrl.cpp:1052 ../src/wxMaximaFrame.cpp:1181
 msgid "Solve..."
 msgstr "Gleichung lösen ..."
 
-#: ../src/ConfigDialogue.cpp:188
+#: ../src/ConfigDialogue.cpp:191
 msgid ""
 "Some PDF viewers are able to display moving images and wxMaxima is able to "
 "output them. If this option is selected additional LaTeX packages might be "
@@ -4104,7 +4117,7 @@ msgstr ""
 "werden allerdings zusätzliche LaTeX-Pakete benötigt, um aus der TeX-Datei "
 "PDF-Dateien zu generiern."
 
-#: ../src/ConfigDialogue.cpp:582
+#: ../src/ConfigDialogue.cpp:587
 msgid "Spanish"
 msgstr "Spanisch"
 
@@ -4113,7 +4126,7 @@ msgstr "Spanisch"
 msgid "Special"
 msgstr "Besondere Werte"
 
-#: ../src/ConfigDialogue.cpp:742
+#: ../src/ConfigDialogue.cpp:747
 msgid "Special constants"
 msgstr "Besondere Konstanten"
 
@@ -4121,7 +4134,7 @@ msgstr "Besondere Konstanten"
 msgid "Start Animation"
 msgstr "Starte Animation"
 
-#: ../src/ConfigDialogue.cpp:708
+#: ../src/ConfigDialogue.cpp:713
 msgid "Start a new maxima for each re-evaluation"
 msgstr "Erneute Auswertung startet ein neues Maxima"
 
@@ -4137,7 +4150,7 @@ msgstr ""
 "Startet oder Stoppt die aktuell ausgewählte Animation, die mit einem der "
 "with_slider-Kommandos erstellt wurde. "
 
-#: ../src/ConfigDialogue.cpp:212
+#: ../src/ConfigDialogue.cpp:215
 msgid "Start searching while the phrase to search for is still being typed."
 msgstr "Beginne die Suche bereits, während das Suchwort eingegeben wird."
 
@@ -4166,15 +4179,15 @@ msgstr "Statistik"
 msgid "Statistics\tAlt+Shift+S"
 msgstr "Statistik\tAlt+Shift+S"
 
-#: ../src/ConfigDialogue.cpp:744
+#: ../src/ConfigDialogue.cpp:749
 msgid "Strings"
 msgstr "Zeichenfolgen"
 
-#: ../src/ConfigDialogue.cpp:146
+#: ../src/ConfigDialogue.cpp:149
 msgid "Style"
 msgstr "Stil"
 
-#: ../src/ConfigDialogue.cpp:720
+#: ../src/ConfigDialogue.cpp:725
 msgid "Styles"
 msgstr "Schriftstile"
 
@@ -4186,7 +4199,7 @@ msgstr "Teilstichprobe ..."
 msgid "Subsection"
 msgstr "Unterkapitel"
 
-#: ../src/ConfigDialogue.cpp:753
+#: ../src/ConfigDialogue.cpp:758
 msgid "Subsection cell"
 msgstr "Unterkapitelzelle"
 
@@ -4195,11 +4208,11 @@ msgid "Subst..."
 msgstr "Substituieren ..."
 
 #: ../src/SubstituteWiz.cpp:54 ../src/wxMaxima.cpp:3602
-#: ../src/wxMaxima.cpp:5268
+#: ../src/wxMaxima.cpp:5319
 msgid "Substitute"
 msgstr "Substituieren"
 
-#: ../src/wxMaximaFrame.cpp:866 ../src/MathCtrl.cpp:1058
+#: ../src/MathCtrl.cpp:1058 ../src/wxMaximaFrame.cpp:866
 msgid "Substitute..."
 msgstr "Substituieren ..."
 
@@ -4207,7 +4220,7 @@ msgstr "Substituieren ..."
 msgid "Subsubsection"
 msgstr "Unter-Unterkapitel"
 
-#: ../src/ConfigDialogue.cpp:752
+#: ../src/ConfigDialogue.cpp:757
 msgid "Subsubsection cell"
 msgstr "Unter-Unterkapitelzelle"
 
@@ -4243,7 +4256,7 @@ msgstr "Tau"
 msgid "Taylor series:"
 msgstr "Taylorreihe:"
 
-#: ../src/ConfigDialogue.cpp:521
+#: ../src/ConfigDialogue.cpp:526
 msgid "TeX, interpreted by MathJaX"
 msgstr "TeX, interpretiert vom MathJaX"
 
@@ -4255,11 +4268,19 @@ msgstr "Tellrat"
 msgid "Text"
 msgstr "Text"
 
-#: ../src/ConfigDialogue.cpp:751
+#: ../src/ConfigDialogue.cpp:442
+msgid "Text & Code"
+msgstr "Text & Code"
+
+#: ../src/ConfigDialogue.cpp:441
+msgid "Text Only"
+msgstr "Nur Text"
+
+#: ../src/ConfigDialogue.cpp:756
 msgid "Text cell"
 msgstr "Textzelle"
 
-#: ../src/ConfigDialogue.cpp:756
+#: ../src/ConfigDialogue.cpp:761
 msgid "Text cell background"
 msgstr "Hintergrundfarbe Textzelle"
 
@@ -4273,7 +4294,7 @@ msgstr ""
 "begonnen werden. Wie auch bei Aufzählungen können sie durch zusätzliche "
 "Leertasten eingerückt werden. "
 
-#: ../src/ConfigDialogue.cpp:762
+#: ../src/ConfigDialogue.cpp:767
 msgid "Text equal to selection"
 msgstr "Identisch mit Auswahl"
 
@@ -4299,7 +4320,7 @@ msgstr ""
 "Die .xml-Datei ist entweder kein gültiges xml, oder keine content.xml, die "
 "von einem .wxmx-Archiv extrahiert wurde."
 
-#: ../src/ConfigDialogue.cpp:186
+#: ../src/ConfigDialogue.cpp:189
 msgid ""
 "The default height for embedded plots. Can be read out or overridden by the "
 "maxima variable wxplot_size."
@@ -4307,11 +4328,11 @@ msgstr ""
 "Die Standardgröße für eingebettete Graphen. Kann von Maxima aus über die "
 "Variable wxplot_size ausgelesen oder geändert werden."
 
-#: ../src/ConfigDialogue.cpp:209
+#: ../src/ConfigDialogue.cpp:212
 msgid "The default port used for communication between Maxima and wxMaxima."
 msgstr "Port für die Kommunikation zwischen Maxima und wxMaxima."
 
-#: ../src/ConfigDialogue.cpp:185
+#: ../src/ConfigDialogue.cpp:188
 msgid ""
 "The default width for embedded plots. Can be read out or overridden by the "
 "maxima variable wxplot_size"
@@ -4319,7 +4340,7 @@ msgstr ""
 "Die Standardgröße für eingebettete Graphen. Kann von Maxima aus über die "
 "Variable wxplot_size ausgelesen oder geändert werden."
 
-#: ../src/ConfigDialogue.cpp:204
+#: ../src/ConfigDialogue.cpp:207
 msgid "The document class LaTeX is instructed to use for our documents."
 msgstr "Die Dokumentklasse für den Export von LaTeX-Dokumenten "
 
@@ -4348,7 +4369,7 @@ msgstr ""
 "In Maxima >5.38 akzeptiert die load()-Funktion .wxm-Dateien als Bibliotheken "
 "mit Maxima-Befehlen."
 
-#: ../src/ConfigDialogue.cpp:211
+#: ../src/ConfigDialogue.cpp:214
 msgid "The number of recently opened files that is to be remembered."
 msgstr ""
 "Die Anzahl der zuletzt geöffneten Dateien, die das Programm sich merken soll."
@@ -4357,7 +4378,7 @@ msgstr ""
 msgid "The offline manual of maxima"
 msgstr "Das in Maxima eingebaute Handbuch"
 
-#: ../src/ConfigDialogue.cpp:196
+#: ../src/ConfigDialogue.cpp:199
 msgid ""
 "The pngCairo terminal offers much better graphics quality (antialiassing and "
 "additional line styles). But it will only produce plots if the gnuplot "
@@ -4435,7 +4456,7 @@ msgstr "Theta"
 msgid "Ticks:"
 msgstr "Startpunkte:"
 
-#: ../src/wxMaxima.cpp:4332 ../src/wxMaxima.cpp:5244
+#: ../src/wxMaxima.cpp:4332 ../src/wxMaxima.cpp:5295
 msgid "Times:"
 msgstr "wie oft:"
 
@@ -4447,7 +4468,7 @@ msgstr "Tipps sind leider nicht verfügbar!"
 msgid "Title"
 msgstr "Titel"
 
-#: ../src/ConfigDialogue.cpp:755
+#: ../src/ConfigDialogue.cpp:760
 msgid "Title cell"
 msgstr "Titelzelle"
 
@@ -4562,17 +4583,17 @@ msgstr "Übersetzt von"
 msgid "Transpose a matrix"
 msgstr "Eine Matrix transponieren"
 
-#: ../src/MathCtrl.cpp:5960
+#: ../src/MathCtrl.cpp:5968
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 "Versuche, eine Aktion rückgängig zu machen, ohne zu wissen, wo im "
 "Arbeitsblatt."
 
-#: ../src/MathCtrl.cpp:6026
+#: ../src/MathCtrl.cpp:6034
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Soll etwas rückgängig machen, aber die Spezifikation dafür ist leer."
 
-#: ../src/ConfigDialogue.cpp:583
+#: ../src/ConfigDialogue.cpp:588
 msgid "Turkish"
 msgstr "Türkisch"
 
@@ -4588,19 +4609,19 @@ msgstr "Zweistichproben t-Test"
 msgid "Type:"
 msgstr "Gestalt:"
 
-#: ../src/ConfigDialogue.cpp:584
+#: ../src/ConfigDialogue.cpp:589
 msgid "Ukrainian"
 msgstr "Ukrainisch"
 
-#: ../src/wxMaxima.cpp:5551
+#: ../src/wxMaxima.cpp:5602
 msgid "Un-closed parenthesis"
 msgstr "Nicht geschlossene Klammer"
 
-#: ../src/wxMaxima.cpp:5509
+#: ../src/wxMaxima.cpp:5560
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr "; oder $, bei dem nicht alle Klammern geschlossen waren"
 
-#: ../src/wxMaxima.cpp:6069
+#: ../src/wxMaxima.cpp:6120
 msgid ""
 "Unable to interpret the version info I got from http://andrejv.github.io//"
 "wxmaxima/version.txt: "
@@ -4608,11 +4629,11 @@ msgstr ""
 "Schaffe es nicht, die folgende Versionsinfo von http://andrejv.github.io/"
 "wxmaxima/version.txt zu interpretieren:"
 
-#: ../src/ConfigDialogue.cpp:782
+#: ../src/ConfigDialogue.cpp:787
 msgid "Underlined"
 msgstr "Unterstrichen"
 
-#: ../src/ConfigDialogue.cpp:438
+#: ../src/ConfigDialogue.cpp:446
 msgid "Underscore converts to subscripts:"
 msgstr "Unterstrich macht tiefgestellt:"
 
@@ -4624,7 +4645,7 @@ msgstr "&Rückgängig\tCtrl+Z"
 msgid "Undo last change"
 msgstr "Letzte Änderung rückgängig machen"
 
-#: ../src/ConfigDialogue.cpp:602
+#: ../src/ConfigDialogue.cpp:607
 msgid "Undo limit (0 for none):"
 msgstr "Rückgängigmachbare Aktionen (0=kein Limit):"
 
@@ -4636,15 +4657,19 @@ msgstr "Alles aufklappen\tCtrl+Alt+A"
 msgid "Unfold all folded sections"
 msgstr "Alle zugeklappten Sektionen aufklappen"
 
+#: ../src/TableOfContents.cpp:255
+msgid "Unhide"
+msgstr "Verstecken aufheben"
+
 #: ../src/wxMaxima.cpp:4637
 msgid "Unicode Support"
 msgstr "Unicode Unterstützung"
 
-#: ../src/wxMaxima.cpp:5526
+#: ../src/wxMaxima.cpp:5577
 msgid "Unterminated comment."
 msgstr "Fehlende Kommentarendemarkierung"
 
-#: ../src/wxMaxima.cpp:5495
+#: ../src/wxMaxima.cpp:5546
 msgid "Unterminated string."
 msgstr "Fehlendes schließendes Anführungszeichen"
 
@@ -4652,11 +4677,11 @@ msgstr "Fehlendes schließendes Anführungszeichen"
 msgid "Up"
 msgstr "Nach oben"
 
-#: ../src/wxMaxima.cpp:6054 ../src/wxMaxima.cpp:6061 ../src/wxMaxima.cpp:6069
+#: ../src/wxMaxima.cpp:6105 ../src/wxMaxima.cpp:6112 ../src/wxMaxima.cpp:6120
 msgid "Upgrade"
 msgstr "Aktualisierung"
 
-#: ../src/wxMaxima.cpp:3670 ../src/wxMaxima.cpp:5213
+#: ../src/wxMaxima.cpp:3670 ../src/wxMaxima.cpp:5264
 msgid "Upper bound:"
 msgstr "obere Schranke:"
 
@@ -4668,23 +4693,23 @@ msgstr "Ypsilon"
 msgid "Use Gosper algorithm"
 msgstr "Verwende Gosper-Algorithmus"
 
-#: ../src/ConfigDialogue.cpp:625
+#: ../src/ConfigDialogue.cpp:630
 msgid "Use cairo to improve plot quality."
 msgstr "Nutze Cairo, um die Bildqualität von Diagrammen zu erhöhen."
 
-#: ../src/ConfigDialogue.cpp:208
+#: ../src/ConfigDialogue.cpp:211
 msgid "Use centered dot and Minus, not Star and Hyphen"
 msgstr "Mal und Minus statt Stern und Bindestrich"
 
-#: ../src/ConfigDialogue.cpp:465
+#: ../src/ConfigDialogue.cpp:473
 msgid "Use centered dot character for multiplication"
 msgstr "Zentrierter Punkt als Zeichen für Multiplikation"
 
-#: ../src/ConfigDialogue.cpp:735
+#: ../src/ConfigDialogue.cpp:740
 msgid "Use jsMath fonts"
 msgstr "Benutze jsMath-Zeichensätze"
 
-#: ../src/ConfigDialogue.cpp:190
+#: ../src/ConfigDialogue.cpp:193
 msgid ""
 "Use the \"partial derivative\" symbol to represent the fraction that "
 "represents a diff() when exporting LaTeX"
@@ -4692,7 +4717,7 @@ msgstr ""
 "Verwende das \"Partielle Ableitung\"-Symbol, um den Bruch, der ein diff() "
 "darstellt, auszudrücken."
 
-#: ../src/ConfigDialogue.cpp:749
+#: ../src/ConfigDialogue.cpp:754
 msgid "User-defined labels"
 msgstr "Benutzerdefinierte Marken"
 
@@ -4702,7 +4727,7 @@ msgid "Value:"
 msgstr "Wert:"
 
 #: ../src/wxMaxima.cpp:3639 ../src/wxMaxima.cpp:3653 ../src/wxMaxima.cpp:4331
-#: ../src/wxMaxima.cpp:5198 ../src/wxMaxima.cpp:5243
+#: ../src/wxMaxima.cpp:5249 ../src/wxMaxima.cpp:5294
 msgid "Variable(s):"
 msgstr "Variable(n):"
 
@@ -4711,11 +4736,11 @@ msgstr "Variable(n):"
 #: ../src/Plot3dWiz.cpp:42 ../src/SeriesWiz.cpp:36 ../src/SumWiz.cpp:30
 #: ../src/wxMaxima.cpp:3669 ../src/wxMaxima.cpp:3688 ../src/wxMaxima.cpp:3928
 #: ../src/wxMaxima.cpp:3997 ../src/wxMaxima.cpp:4253 ../src/wxMaxima.cpp:4268
-#: ../src/wxMaxima.cpp:4419 ../src/wxMaxima.cpp:5212
+#: ../src/wxMaxima.cpp:4419 ../src/wxMaxima.cpp:5263
 msgid "Variable:"
 msgstr "Variable:"
 
-#: ../src/ConfigDialogue.cpp:739
+#: ../src/ConfigDialogue.cpp:744
 msgid "Variables"
 msgstr "Variablen"
 
@@ -4760,11 +4785,11 @@ msgstr ""
 "Gesamtes Dokument (*.wxmx)|*.wxmx|Die Eingabezellen, lesbar von load() in "
 "maxima>5.38 (*.wxm)|*.wxm"
 
-#: ../src/ConfigDialogue.cpp:144
+#: ../src/ConfigDialogue.cpp:147
 msgid "Worksheet"
 msgstr "Arbeitsblatt"
 
-#: ../src/ConfigDialogue.cpp:191
+#: ../src/ConfigDialogue.cpp:194
 msgid ""
 "Wrap equations exported by the \"copy as LaTeX\" feature between \\[ and \\] "
 "as equation markers"
@@ -4772,7 +4797,7 @@ msgstr ""
 "Platziere Formeln, die durch \"LaTeX Kopieren\" in die Zwischenablage gelegt "
 "wurden, zwischen \\[ und \\], um TeX in den Mathematik-Modus zu versetzen."
 
-#: ../src/MathCtrl.cpp:6940
+#: ../src/MathCtrl.cpp:6965
 msgid "Wrapped search"
 msgstr "Suche wurde über das Ende des Dokuments hinweg fortgesetzt"
 
@@ -4788,7 +4813,7 @@ msgstr "XML-Inspektor"
 msgid "Xi"
 msgstr "Xi"
 
-#: ../src/ConfigDialogue.cpp:434
+#: ../src/ConfigDialogue.cpp:433
 msgid "Yes"
 msgstr "Ja"
 
@@ -4857,7 +4882,7 @@ msgstr ""
 "auszuwählenden Zellen. Dies ist nützlich, wenn Sie mehrere Zellen auf einmal "
 "löschen oder auswerten wollen."
 
-#: ../src/wxMaxima.cpp:6051
+#: ../src/wxMaxima.cpp:6102
 #, c-format
 msgid ""
 "You have version %s. Current version is %s.\n"
@@ -4868,11 +4893,11 @@ msgstr ""
 "\n"
 "Wählen Sie OK, um die wxMaxima Homepage zu besuchen."
 
-#: ../src/wxMaxima.cpp:6116
+#: ../src/wxMaxima.cpp:6167
 msgid "Your changes will be lost if you don't save them."
 msgstr "Nicht gespeicherte Änderungen gehen verloren."
 
-#: ../src/wxMaxima.cpp:6061
+#: ../src/wxMaxima.cpp:6112
 msgid "Your version of wxMaxima is up to date."
 msgstr "Ihre wxMaxima Version ist aktuell."
 
@@ -4896,11 +4921,11 @@ msgstr "Zoom in Schritten von 10 %"
 msgid "Zoom out 10%"
 msgstr "Zoom in Schritten von 10 %"
 
-#: ../src/wxMaximaFrame.cpp:246 ../src/wxMaxima.cpp:5893
+#: ../src/wxMaximaFrame.cpp:246 ../src/wxMaxima.cpp:5944
 msgid "[ unsaved ]"
 msgstr "[ nicht gespeichert ]"
 
-#: ../src/wxMaxima.cpp:5895
+#: ../src/wxMaxima.cpp:5946
 msgid "[ unsaved* ]"
 msgstr "[ nicht gespeichert* ]"
 
@@ -4909,12 +4934,12 @@ msgstr "[ nicht gespeichert* ]"
 msgid "[%i digits]"
 msgstr "[%i Ziffern]"
 
-#: ../src/MathCtrl.cpp:4478
+#: ../src/MathCtrl.cpp:4486
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Animiertes Diagramm\" style=\"max-width:90%%;\" >\n"
 
-#: ../src/MathCtrl.cpp:4604
+#: ../src/MathCtrl.cpp:4612
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Animiertes Diagramm\" style=\"max-width:90%%;\" >"
@@ -4979,7 +5004,7 @@ msgstr "Interner Fehler: Fehlerhaftes \"sup\"-Tag"
 msgid "chi"
 msgstr "chi"
 
-#: ../src/ConfigDialogue.cpp:681
+#: ../src/ConfigDialogue.cpp:686
 msgid "choose a lisp maxima was compiled with"
 msgstr "Wählt ein Lisp, mit dem Maxima compiliert wurde, aus."
 
@@ -5016,7 +5041,7 @@ msgstr "eta"
 msgid "exists"
 msgstr "Existiert"
 
-#: ../src/ConfigDialogue.cpp:199
+#: ../src/ConfigDialogue.cpp:202
 msgid ""
 "false=Don't generate subscripts\n"
 "true=Automatically convert underscores to subscript markers if the would-be "
@@ -5083,7 +5108,7 @@ msgstr "Logarithmische Skala"
 msgid "matrix[i,j]:"
 msgstr "Matrix"
 
-#: ../src/ConfigDialogue.cpp:695
+#: ../src/ConfigDialogue.cpp:700
 msgid "maxima's pwd is path to document"
 msgstr "Maxima im Verzeichnis des Dokuments starten"
 
@@ -5201,7 +5226,7 @@ msgstr "symmetrisch"
 msgid "tau"
 msgstr "tau"
 
-#: ../src/ConfigDialogue.cpp:685
+#: ../src/ConfigDialogue.cpp:690
 msgid "tell sbcl to use <int>Mbytes of heap"
 msgstr "wie viele Megabytes soll sbcl als Heap nutzen?"
 
@@ -5225,7 +5250,7 @@ msgstr "Hoch 3"
 msgid "union"
 msgstr "Vereinigung"
 
-#: ../src/wxMaxima.cpp:6098
+#: ../src/wxMaxima.cpp:6149
 msgid "unsaved"
 msgstr "nicht gespeichert"
 
@@ -5247,8 +5272,8 @@ msgstr "ypsilon"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaximaFrame.cpp:246 ../src/wxMaxima.cpp:5893
-#: ../src/wxMaxima.cpp:5895 ../src/wxMaxima.cpp:5904 ../src/wxMaxima.cpp:5907
+#: ../src/wxMaximaFrame.cpp:246 ../src/wxMaxima.cpp:5944
+#: ../src/wxMaxima.cpp:5946 ../src/wxMaxima.cpp:5955 ../src/wxMaxima.cpp:5958
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "
@@ -5282,7 +5307,7 @@ msgstr ""
 msgid "wxMaxima cannot read the xml contents of "
 msgstr "wxMaxima kann den XML-Inhalt nicht öffnen in "
 
-#: ../src/ConfigDialogue.cpp:137 ../src/ConfigDialogue.cpp:171
+#: ../src/ConfigDialogue.cpp:140 ../src/ConfigDialogue.cpp:174
 msgid "wxMaxima configuration"
 msgstr "wxMaxima Konfiguration"
 
@@ -5384,7 +5409,7 @@ msgstr ""
 "\n"
 "    table_form([1,2,3,4,5]);"
 
-#: ../src/ConfigDialogue.cpp:416
+#: ../src/ConfigDialogue.cpp:414
 msgid "x"
 msgstr "x"
 
