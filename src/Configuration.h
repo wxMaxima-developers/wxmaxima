@@ -199,7 +199,7 @@ public:
       wxConfig::Get()->Write(wxT("changeAsterisk"),m_changeAsterisk = changeAsterisk);
     }
 
-  const bool GetDisplayedDigits() { return m_displayedDigits; }
+  const int GetDisplayedDigits() { return m_displayedDigits; }
   void SetDisplayedDigits(bool displayedDigits)
     {
       wxConfig::Get()->Write(wxT("displayedDigits"),m_displayedDigits = displayedDigits);

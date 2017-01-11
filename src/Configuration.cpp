@@ -69,6 +69,8 @@ void Configuration::ReadConfig()
 
   m_displayedDigits = 100;
   config->Read(wxT("displayedDigits"), &m_displayedDigits);
+  if (m_displayedDigits <= 20)
+    m_displayedDigits = 20;
 
   m_restartOnReEvaluation = true;
   config->Read(wxT("restartOnReEvaluation"), &m_restartOnReEvaluation);

@@ -78,7 +78,6 @@ wxXmlNode* MathParser::GetNextTag(wxXmlNode* node)
 
 MathParser::MathParser(wxString zipfile)
 {
-  m_displayedDigits=100;
   m_workingDirectory = wxEmptyString;
   m_ParserStyle = MC_TYPE_DEFAULT;
   m_FracStyle = FracCell::FC_NORMAL;
@@ -481,14 +480,11 @@ MathCell* MathParser::ParseText(wxXmlNode* node, int style)
 #endif
     if (style == TS_NUMBER)
     {
-      m_displayedDigits=100;
-      wxConfigBase *config = wxConfig::Get();
-      config->Read(wxT("displayedDigits"),&m_displayedDigits);
-
-      if (m_displayedDigits<10)m_displayedDigits=10;
-      if ((long)str.Length() > m_displayedDigits)
+      int displayedDigits = Configuration::Get()->GetDisplayedDigits();
+      std::cerr<<displayedDigits<<">"<<str.Length()<<"\n";
+      if (str.Length() > displayedDigits)
 	{
-	  int left= m_displayedDigits/3;
+	  int left = displayedDigits/3;
 	  if (left>30) left=30;
 	  
 	  str = str.Left(left) + wxString::Format(_("[%i digits]"), (int) str.Length() - 2 * left) + str.Right(left);
