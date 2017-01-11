@@ -35,7 +35,11 @@
 #ifndef STATUSBAR_H
 #define STATUSBAR_H
 
-//! The class that draws the status bar
+/*! The class that draws the status bar
+
+  \todo: Rescale the icons if OnSize returns a new vertical size: This enables
+  for screen resolution change awareness.
+ */
 class StatusBar : public wxStatusBar
 {
 public:
