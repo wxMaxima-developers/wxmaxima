@@ -134,7 +134,10 @@ wxBitmap StatusBar::GetImage(wxString name)
 {
   Dirstructure dirstructure;
   wxImage img = wxImage(dirstructure.ConfigStatusbarDir() + name + wxT(".png"));
-  int imgWidth = GetFieldRect().GetHeight();
+  wxRect rect;
+
+  GetFieldRect(2, rect);
+  int imgWidth = rect.GetHeight();
   double scaleFactor = (double)imgWidth / img.GetWidth();
   img.Rescale(imgWidth,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
   return wxBitmap(img);
