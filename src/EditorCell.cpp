@@ -3200,7 +3200,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
   {
     wxChar Ch = string.GetChar(pos);
 
-    // Check for new line
+    // Check for newline characters (hard+soft line break)
     if((Ch==wxT('\n')) || (Ch==wxT('\r')))
     {
       if(token != wxEmptyString) {
@@ -3225,7 +3225,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       pos++;
       token = wxEmptyString;
     }
-    // Check for comment
+    // Check for comments
     else if ((string.Length() > pos+1) &&
              ((Ch == '/' && ((string.GetChar(pos+1) == '*')||(string.GetChar(pos+1) == wxT('\xB7')))) ||
               (((Ch == wxT('*'))||(Ch == wxT('\xB7'))) && ((string.GetChar(pos+1) == wxT('/'))))))
@@ -3273,7 +3273,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       token = wxEmptyString;
     }
     
-    // Find a number that starts at the current positions
+    // Find a number that starts at the current position
     else if (IsNum(Ch))
     {
       if(token != wxEmptyString) {
@@ -3286,6 +3286,20 @@ wxArrayString EditorCell::StringToTokens(wxString string)
              ((string.GetChar(pos)>= wxT('a')) && (string.GetChar(pos)<= wxT('z'))) ||
              ((string.GetChar(pos)>= wxT('A')) && (string.GetChar(pos)<= wxT('Z')))
                )
+        )
+      {
+        token += string.GetChar(pos);
+        pos++;
+      }
+      
+      retval.Add(token + wxT("d"));
+      token=wxEmptyString;
+    }
+    // Merge consecutive spaces into one single token
+    else if (Ch == wxT(' '))
+    {
+      while((pos<size) &&
+            (string.GetChar(pos) == wxT(' '))
         )
       {
         token += string.GetChar(pos);
