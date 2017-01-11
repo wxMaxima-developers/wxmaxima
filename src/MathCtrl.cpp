@@ -5351,16 +5351,31 @@ bool MathCtrl::ExportToWXMX(wxString file,bool markAsSaved)
   output << wxT("text/x-wxmathml");
   zip.PutNextEntry(wxT("format.txt"));
   output << wxT(
-    "\nThis file contains a wxMaxima session.\n"
+    "\n\nThis file contains a wxMaxima session in the .wxmx format.\n"
     ".wxmx files are .xml-based files contained in a .zip container like .odt\n"
     "or .docx files. After changing their name to end in .zip the .xml and\n"
-    "other files inside them can can be extracted using any .zip file viewer.\n"
-    "The reason why part of a .wxmx file still might seem to make sense in a\n"
+    "eventual bitmap files inside them can can be extracted using any .zip file\n"
+    "viewer.\n"
+    "The reason why part of a .wxmx file still might still seem to make sense in a\n"
     "ordinary text viewer is that the text portion of .wxmx by default\n"
-    "isn't compressed: This way if only one line of the text changes this won't\n"
-    "(with a high probability) change the value of half of the bytes of the\n"
-    ".zip archive making the .wxmx file more version-control-friendly.\n"
+    "isn't compressed: The text is typically small and compressing it would\n"
+    "mean that changing a single character would (with a high probability) change\n"
+    "big parts of the  whole contents of the compressed .zip archive.\n"
+    "Even if version control tools like git and svn that remember all changes\n"
+    "that were ever made to a file can handle binary files compression would\n"
+    "make the changed part of the file bigger and therefore seriously reduce\n"
+    "the efficiency of version control\n\n"
     "wxMaxima can be downloaded from https://github.com/andrejv/wxmaxima.\n"
+    "It also is part of the windows installer for maxima\n"
+    "(http://maxima.sourceforge.net).\n\n"
+    "If a .wxmx file is broken but the content.xml portion of the file can still be\n"
+    "viewed using an text editor just save the xml's text as \"content.xml\"\n"
+    "and try to open it using a recent version of wxMaxima.\n"
+    "If it is valid XML (the XML header is intact, all opened tags are closed again,\n"
+    "the text is saved with the text encoding \"UTF8 without BOM\" and the few\n"
+    "special characters XML requires this for are properly escaped)\n"
+    "chances are high that wxMaxima will be able to recover all code and text\n"
+    "from the XML file.\n\n"
     );
 
   /* We might want to compress the rest of this file, though, if the user doesn't 
