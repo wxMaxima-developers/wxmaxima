@@ -3338,18 +3338,20 @@ void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace,int &lineWidth
   configuration->GetDC().GetTextExtent(token, &width, &height);
   lineWidth += width;
 
+  int charWidth;
+  int indentationPixels;
+  configuration->GetDC().GetTextExtent(wxT(" "), &charWidth, &height);
+    indentationPixels = charWidth*GetIndentDepth(m_text,charInCell);
+
   // Normally the cell begins at the x position m_currentPoint.x - but sometimes
   // m_currentPoint is 0 so we need to determine our own value for the x position.
-  int xindent = (configuration->GetLabelWidth()+1)*configuration->GetDefaultFontSize()*configuration->GetScale()*configuration->GetZoomFactor() +
+  int xmargin = (configuration->GetLabelWidth()+1)*configuration->GetDefaultFontSize()*configuration->GetScale()*configuration->GetZoomFactor() +
     MC_GROUP_LEFT_INDENT + 2 * MC_CELL_SKIP;
+
   if(
-    (lineWidth + xindent >= configuration->GetLineWidth()) &&
+    (lineWidth + xmargin + indentationPixels >= configuration->GetLineWidth()) &&
      (lastSpace!=NULL) && (lastSpace->GetText()!="\r"))
   {
-    int charWidth;
-    int indentationPixels;
-    configuration->GetDC().GetTextExtent(wxT(" "), &charWidth, &height);
-    indentationPixels = charWidth*GetIndentDepth(m_text,charInCell);
     lineWidth = width + indentationPixels;
     lastSpace->SetText("\r");
     lastSpace->SetIndentation(indentationPixels);
@@ -3360,8 +3362,12 @@ void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace,int &lineWidth
 
 void EditorCell::StyleText()
 {
-  // Remember what settings we did linebreaks with
+  // We will need to determine the width of text and therefore need to set
+  // the font type and size.
   Configuration *configuration = Configuration::Get();
+  SetFont(configuration->GetDefaultFontSize());
+
+  // Remember what settings we did linebreaks with
   m_oldViewportWidth = configuration->GetClientWidth();
   m_oldZoomFactor = configuration->GetZoomFactor();
   m_oldScaleFactor = configuration->GetScale();
@@ -3644,7 +3650,7 @@ void EditorCell::StyleText()
 
     // Normally the cell begins at the x position m_currentPoint.x - but sometimes
     // m_currentPoint is 0 so we need to determine our own value for the x position.
-    int xindent = (configuration->GetLabelWidth()+1)*configuration->GetDefaultFontSize()*configuration->GetScale()*configuration->GetZoomFactor() +
+    int xmargin = (configuration->GetLabelWidth()+1)*configuration->GetDefaultFontSize()*configuration->GetScale()*configuration->GetZoomFactor() +
       MC_GROUP_LEFT_INDENT + 2 * MC_CELL_SKIP;
 
   // Remove all bullets of item lists as we will introduce them again in the next
@@ -3691,7 +3697,7 @@ void EditorCell::StyleText()
               // Does the line extend too much to the right to fit on the screen /
               // to be easy to read?
               configuration->GetDC().GetTextExtent(m_text.SubString(lastLineStart,i), &width, &height);
-              if(width + xindent + indentation >= configuration->GetLineWidth())
+              if(width + xmargin + indentation >= configuration->GetLineWidth())
               {
                 // We need a line break in front of the last word
                 m_text[lastSpacePos] = wxT('\r');
