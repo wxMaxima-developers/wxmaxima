@@ -210,6 +210,11 @@ public:
     {
       wxConfig::Get()->Write(wxT("insertAns"),m_insertAns = insertAns);
     }
+  const bool GetOpenHCaret() { return m_openHCaret; }
+  void SetOpenHCaret(bool openHCaret)
+    {
+      wxConfig::Get()->Write(wxT("openHCaret"),m_openHCaret = openHCaret);
+    }
   const bool RestartOnReEvaluation() {return m_restartOnReEvaluation;}
   const void RestartOnReEvaluation(bool arg)
     {
@@ -240,6 +245,8 @@ private:
   bool m_matchParens;
   //! Do we want to automatically insert new cells conaining a "%" at the end of every command?
   bool m_insertAns;
+  //! Do we want to automatically open a new cell if maxima has finished evaluating its input?
+  bool m_openHCaret;
   //! The Configuration that was active before this one
   Configuration *m_last;
   //! The width of input and output labels [in chars]

@@ -81,6 +81,10 @@ void Configuration::ReadConfig()
   m_insertAns = true;
   config->Read(wxT("insertAns"), &m_insertAns);
 
+  m_openHCaret = false;
+  config->Read(wxT("openHCaret"), &m_openHCaret);
+  
+    
   m_labelWidth = 4;
   config->Read(wxT("labelWidth"), &m_labelWidth);
 
