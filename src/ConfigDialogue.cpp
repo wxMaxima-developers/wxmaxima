@@ -856,7 +856,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("enterEvaluates"), m_enterEvaluates->GetValue());
   config->Write(wxT("saveUntitled"), m_saveUntitled->GetValue());
   config->Write(wxT("openHCaret"), m_openHCaret->GetValue());
-  config->Write(wxT("insertAns"), m_insertAns->GetValue());
+  Configuration::Get()->SetInsertAns(m_insertAns->GetValue());
   Configuration::Get()->SetAutoIndent(m_autoIndent->GetValue());
   config->Write(wxT("cursorJump"), m_cursorJump->GetValue());
   Configuration::Get()->SetAutoWrap(m_autoWrap->GetSelection());

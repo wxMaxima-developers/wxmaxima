@@ -206,6 +206,10 @@ public:
     }
   
   const bool GetInsertAns() { return m_insertAns; }
+  void SetInsertAns(bool insertAns)
+    {
+      wxConfig::Get()->Write(wxT("insertAns"),m_insertAns = insertAns);
+    }
   const bool RestartOnReEvaluation() {return m_restartOnReEvaluation;}
   const void RestartOnReEvaluation(bool arg)
     {
