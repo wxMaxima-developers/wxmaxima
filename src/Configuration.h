@@ -166,7 +166,6 @@ public:
   */
   void SetAutoWrap(int autoWrap)
     {
-      std::cerr<<"AutoWrap="<<autoWrap<<"\n";
       wxConfig::Get()->Write(wxT("autoWrapMode"),m_autoWrap = autoWrap);
     }
   //! Do we want automatic indentation?

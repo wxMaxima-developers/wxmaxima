@@ -662,10 +662,12 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
       {
         if((TextToDraw == wxT("\n")))
           lastIndent = textSnippet->GetIndentPixels();
+
         // A newline =>
         // set the point to the beginning of the next line.
-        TextCurrentPoint.x = TextStartingpoint.x + textSnippet->GetIndentPixels();
+        TextCurrentPoint.x = TextStartingpoint.x;
         TextCurrentPoint.y += m_charHeight;
+        TextCurrentPoint.x += textSnippet->GetIndentPixels();
       }
       else
       {
@@ -3326,7 +3328,7 @@ void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace,int &lineWidth
 
   // If this token contains spaces and is followed by a space we will do the line break
   // in the next token. 
-  if((charInCell+1<text.Length())&&(token.StartsWith(wxT(" ")))&&(text[charInCell+1]=='\n'))
+  if((charInCell+1<text.Length())&&(token.StartsWith(wxT(" ")))&&(text[charInCell+1]==' '))
     return;
   
   int width,height;
@@ -3419,9 +3421,9 @@ void EditorCell::StyleText()
 
       // Save the last non-whitespace character in lastChar -
       // or a space if there is no such char.
-      wxChar lastChar=wxT(' ');
-      if(lastTokenWithText!=wxEmptyString)
-            lastChar=lastTokenWithText.Right(1)[0];
+      wxChar lastChar = wxT(' ');
+      if(lastTokenWithText != wxEmptyString)
+            lastChar = lastTokenWithText.Right(1)[0];
       wxString tmp = token;
       tmp=tmp.Trim();
       if(tmp!=wxEmptyString)
@@ -3446,17 +3448,26 @@ void EditorCell::StyleText()
       // Handle Spaces
       if(Ch == wxT(' '))
       {
+        // All spaces except the last one (that could cause a line break)
+        // share the same token
         if(token.Length()>1)
           m_styledText.push_back(StyledText(token.Left(token.Length()-1)));
+
+        // Now we push the last space to the list of tokens and remember this
+        // space as the space that potentially serves as the next point to
+        // introduce a soft line break.
+        m_styledText.push_back(StyledText(wxT(" ")));
+        if(!m_styledText.empty())
+        {
+          lastSpace = &m_styledText.back();
+          lastSpacePos = pos+token.Length()-1;
+        }
         else
         {
-          if(!m_styledText.empty())
-            lastSpace = &m_styledText.back();
-          else
-            lastSpace = NULL;
+          lastSpace = NULL;
+          lastSpacePos = -1;
         }
-        m_styledText.push_back(StyledText(wxT(" ")));
-        lastSpacePos = pos+token.Length()-1;
+        
         continue;
       }
       else
