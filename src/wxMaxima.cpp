@@ -1088,9 +1088,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   {
     // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
-    bool open = false;
-    wxConfig::Get()->Read(wxT("openHCaret"), &open);
-    if ((open)&&(m_console->GetActiveCell() != NULL))
+    if ((Configuration::Get()->GetOpenHCaret())&&(m_console->GetActiveCell() == NULL))
       m_console->OpenNextOrCreateCell();
   }
   else
@@ -1384,9 +1382,7 @@ void wxMaxima::ReadPrompt(wxString &data)
 
     if (m_console->m_evaluationQueue->Empty())
     {
-      bool open = false;
-      wxConfig::Get()->Read(wxT("openHCaret"), &open);
-      if ((open)&&(m_console->GetActiveCell() != NULL))
+      if ((Configuration::Get()->GetOpenHCaret())&&(m_console->GetActiveCell() == NULL))
         m_console->OpenNextOrCreateCell();
     }
   }

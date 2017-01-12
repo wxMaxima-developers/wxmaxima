@@ -225,7 +225,7 @@ void ConfigDialogue::SetProperties()
   bool match, savePanes = true, UncompressedWXMX=true;
   bool fixedFontTC = true, changeAsterisk = false, usejsmath = true, keepPercent = true, abortOnError = true, pollStdOut = false;
   bool enterEvaluates = false, saveUntitled = true,
-    openHCaret = false, AnimateLaTeX = true, TeXExponentsAfterSubscript=false,
+    AnimateLaTeX = true, TeXExponentsAfterSubscript=false,
     usePartialForDiff = false,
     wrapLatexMath = true,
     exportContainsWXMX = false;
@@ -296,7 +296,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("panelSize"), &panelSize);
   config->Read(wxT("enterEvaluates"), &enterEvaluates);
   config->Read(wxT("saveUntitled"), &saveUntitled);
-  config->Read(wxT("openHCaret"), &openHCaret);
   insertAns = Configuration::Get()->GetInsertAns();
   config->Read(wxT("autoIndent"), &autoIndent);
   config->Read(wxT("cursorJump"), &cursorJump);
@@ -366,9 +365,9 @@ void ConfigDialogue::SetProperties()
   m_changeAsterisk->SetValue(changeAsterisk);
   m_enterEvaluates->SetValue(enterEvaluates);
   m_saveUntitled->SetValue(saveUntitled);
-  m_openHCaret->SetValue(openHCaret);
   m_insertAns->SetValue(insertAns);
   m_autoIndent->SetValue(autoIndent);
+  m_openHCaret->SetValue(Configuration::Get()->GetOpenHCaret());
   m_cursorJump->SetValue(cursorJump);
   m_autoWrap->SetValue(autoWrap);
   m_labelWidth->SetValue(labelWidth);
@@ -853,9 +852,9 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("changeAsterisk"), m_changeAsterisk->GetValue());
   config->Write(wxT("enterEvaluates"), m_enterEvaluates->GetValue());
   config->Write(wxT("saveUntitled"), m_saveUntitled->GetValue());
-  config->Write(wxT("openHCaret"), m_openHCaret->GetValue());
   config->Write(wxT("insertAns"), m_insertAns->GetValue());
   config->Write(wxT("autoIndent"), m_autoIndent->GetValue());
+  Configuration::Get()->SetOpenHCaret(m_openHCaret->GetValue());
   config->Write(wxT("cursorJump"), m_cursorJump->GetValue());
   config->Write(wxT("autoWrap"), m_autoWrap->GetValue());
   config->Write(wxT("labelWidth"), m_labelWidth->GetValue());
