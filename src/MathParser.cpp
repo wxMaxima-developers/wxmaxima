@@ -478,19 +478,6 @@ MathCell* MathParser::ParseText(wxXmlNode* node, int style)
 #if wxUSE_UNICODE
     str.Replace(wxT("-"), wxT("\x2212")); // unicode minus sign
 #endif
-    if (style == TS_NUMBER)
-    {
-      int displayedDigits = Configuration::Get()->GetDisplayedDigits();
-      std::cerr<<displayedDigits<<">"<<str.Length()<<"\n";
-      if (str.Length() > displayedDigits)
-	{
-	  int left = displayedDigits/3;
-	  if (left>30) left=30;
-	  
-	  str = str.Left(left) + wxString::Format(_("[%i digits]"), (int) str.Length() - 2 * left) + str.Right(left);
-	  //	  str = str.Left(left)+wxT("...");
-	}
-    }
     
     wxStringTokenizer lines(str, wxT('\n'));
     while(lines.HasMoreTokens())

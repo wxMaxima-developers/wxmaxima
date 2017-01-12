@@ -33,6 +33,7 @@
 TextCell::TextCell() : MathCell()
 {
   m_text = wxEmptyString;
+  m_displayedText = wxEmptyString;
   m_fontSize = -1;
   m_highlight = false;
   m_altJs = m_alt = false;
@@ -54,13 +55,8 @@ TextCell::TextCell(wxString text) : MathCell()
   m_realCenter = m_center = -1;
   m_fontSize = 12;
   m_fontSizeLabel = 12;
-  m_text = text;
-  m_text.Replace(wxT("\n"), wxEmptyString);
-  m_text.Replace(wxT("-->"),wxT("\x2794"));
-  m_text.Replace(wxT("->"),wxT("\x2192"));
-  m_text.Replace(wxT("\x2212>"),wxT("\x2192"));
+  SetValue(text);
   m_highlight = false;
-  m_altJs = m_alt = false;
   m_dontEscapeOpeningParenthesis = false;
 }
 
@@ -72,12 +68,27 @@ TextCell::~TextCell()
 
 void TextCell::SetValue(const wxString &text)
 {
+  m_displayedDigits_old = Configuration::Get()->GetDisplayedDigits();
   m_text = text;
-  m_width = -1;
+  ResetSize();
   m_text.Replace(wxT("\n"), wxEmptyString);
   m_text.Replace(wxT("-->"),wxT("\x2794"));
   m_text.Replace(wxT("->"),wxT("\x2192"));
   m_text.Replace(wxT("\x2212>"),wxT("\x2192"));
+
+  m_displayedText = m_text;
+  if (m_textStyle == TS_NUMBER)
+  {
+    int displayedDigits = Configuration::Get()->GetDisplayedDigits();
+    if (m_displayedText.Length() > displayedDigits)
+    {
+      int left = displayedDigits/3;
+      if (left>30) left=30;
+      
+      m_displayedText = m_displayedText.Left(left) + wxString::Format(_("[%i digits]"), (int) m_displayedText.Length() - 2 * left) + m_displayedText.Right(left);
+    }
+  }
+  
   m_alt = m_altJs = false;
 }
 
@@ -86,6 +97,7 @@ MathCell* TextCell::Copy()
   TextCell *retval = new TextCell(wxEmptyString);
   CopyData(this, retval);
   retval->m_text = wxString(m_text);
+  retval->m_displayedText = wxString(m_displayedText);
   retval->m_forceBreakLine = m_forceBreakLine;
   retval->m_bigSkip = m_bigSkip;
   retval->m_isHidden = m_isHidden;
@@ -117,6 +129,14 @@ void TextCell::RecalculateWidths(int fontsize)
   Configuration *configuration = Configuration::Get();
   SetAltText();
 
+  // If the config settings about how many digits to display has changed we
+  // need to regenerate the info which number to show.
+  if(
+    (m_textStyle == TS_NUMBER) &&
+    (m_displayedDigits_old != Configuration::Get()->GetDisplayedDigits())
+    )
+    SetValue(m_text);
+  
   if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() || m_oldFontSize != fontsize)
   {
     m_oldFontSize = fontsize;
@@ -137,8 +157,8 @@ void TextCell::RecalculateWidths(int fontsize)
       m_fontSizeLabel = m_fontSize / scale;
       wxASSERT_MSG((m_width>0)||(m_text==wxEmptyString),_("The letter \"X\" is of width zero. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
       if(m_width < 1) m_width = 10;
-      dc.GetTextExtent(m_text, &m_labelWidth, &m_labelHeight);
-      wxASSERT_MSG((m_labelWidth>0)||(m_text==wxEmptyString),_("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+      dc.GetTextExtent(m_displayedText, &m_labelWidth, &m_labelHeight);
+      wxASSERT_MSG((m_labelWidth>0)||(m_displayedText==wxEmptyString),_("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
       while ((m_labelWidth >= m_width)&&(m_fontSizeLabel > 2)) {
         int fontsize1 = (int) (((double) --m_fontSizeLabel) * scale + 0.5);
         wxFont font(fontsize1, wxFONTFAMILY_MODERN,
@@ -149,7 +169,7 @@ void TextCell::RecalculateWidths(int fontsize)
                     configuration->GetFontEncoding());
         font.SetPointSize(fontsize1);
         dc.SetFont(font);
-        dc.GetTextExtent(m_text, &m_labelWidth, &m_labelHeight);
+        dc.GetTextExtent(m_displayedText, &m_labelWidth, &m_labelHeight);
       }
     }
 
@@ -169,7 +189,7 @@ void TextCell::RecalculateWidths(int fontsize)
     }
 
     /// Empty string has height of X
-    else if (m_text == wxEmptyString)
+    else if (m_displayedText == wxEmptyString)
     {
       dc.GetTextExtent(wxT("gXÄy"), &m_width, &m_height);
       m_width = 0;
@@ -177,7 +197,7 @@ void TextCell::RecalculateWidths(int fontsize)
 
     /// This is the default.
     else
-      dc.GetTextExtent(m_text, &m_width, &m_height);
+      dc.GetTextExtent(m_displayedText, &m_width, &m_height);
 
     m_width = m_width + 2 * SCALE_PX(MC_TEXT_PADDING, scale);
     m_height = m_height + 2 * SCALE_PX(MC_TEXT_PADDING, scale);
@@ -214,7 +234,7 @@ void TextCell::Draw(wxPoint point, int fontsize)
       if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
       {
         SetFont(m_fontSizeLabel);
-        dc.DrawText(m_text,
+        dc.DrawText(m_displayedText,
                     point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                     point.y - m_realCenter + (m_height - m_labelHeight)/2);
       }
@@ -232,13 +252,13 @@ void TextCell::Draw(wxPoint point, int fontsize)
                     point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
       
       /// Change asterisk
-      else if (configuration->GetChangeAsterisk() &&  m_text == wxT("*"))
+      else if (configuration->GetChangeAsterisk() &&  m_displayedText == wxT("*"))
         dc.DrawText(wxT("\xB7"),
                     point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                     point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
       
 #if wxUSE_UNICODE
-      else if (m_text == wxT("#"))
+      else if (m_displayedText == wxT("#"))
         dc.DrawText(wxT("\x2260"),
                     point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                     point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
@@ -250,7 +270,7 @@ void TextCell::Draw(wxPoint point, int fontsize)
         {
         case MC_TYPE_TEXT:
           // TODO: Add markdown formatting for bold, italic and underlined here.
-          dc.DrawText(m_text,
+          dc.DrawText(m_displayedText,
                       point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                       point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
           break;
@@ -258,7 +278,7 @@ void TextCell::Draw(wxPoint point, int fontsize)
           // This cell has already been drawn as an EditorCell => we don't repeat this action here.
           break;
         default:
-          dc.DrawText(m_text,
+          dc.DrawText(m_displayedText,
                       point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                       point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
         }
@@ -436,7 +456,7 @@ wxString TextCell::ToString()
 
 wxString TextCell::ToTeX()
 {
-  wxString text = m_text;
+  wxString text = m_displayedText;
 
   bool keepPercent = true;
   wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
@@ -797,7 +817,7 @@ wxString TextCell::ToTeX()
     }
     else if (GetStyle() == TS_VARIABLE)
     {
-      if((m_text.Length() > 1)&&(text[1]!=wxT('_')))
+      if((m_displayedText.Length() > 1)&&(text[1]!=wxT('_')))
         text = wxT("\\mathit{") + text + wxT("}");
       if (text == wxT("\\% pi"))
         text = wxT("\\ensuremath{\\pi} ");
@@ -850,7 +870,7 @@ wxString TextCell::ToTeX()
 
 wxString TextCell::ToMathML()
 {
-  wxString text=XMLescape(m_text);
+  wxString text=XMLescape(m_displayedText);
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
   if(m_isHidden)
@@ -929,7 +949,7 @@ wxString TextCell::ToOMML()
   if((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
     return wxEmptyString;
 
-  wxString text=XMLescape(m_text);
+  wxString text=XMLescape(m_displayedText);
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
   if(m_isHidden)
@@ -994,7 +1014,7 @@ wxString TextCell::ToOMML()
 wxString TextCell::ToRTF()
 {
   wxString retval;
-  wxString text=m_text;
+  wxString text=m_displayedText;
   text.Replace(wxT("-->"),wxT("\x2192"));
   if((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
   {
@@ -1032,7 +1052,7 @@ wxString TextCell::ToXML()
   if(GetStyle() == TS_ERROR)
     flags += wxT(" type=\"error\"");
     
-  wxString xmlstring = XMLescape(m_text);
+  wxString xmlstring = XMLescape(m_displayedText);
   // convert it, so that the XML configuration doesn't fail
 
   return _T("<") + tag + flags +_T(">") + xmlstring + _T("</") + tag + _T(">");

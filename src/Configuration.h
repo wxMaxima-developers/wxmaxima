@@ -200,11 +200,11 @@ public:
     }
 
   const int GetDisplayedDigits() { return m_displayedDigits; }
-  void SetDisplayedDigits(bool displayedDigits)
+  void SetDisplayedDigits(int displayedDigits)
     {
       wxConfig::Get()->Write(wxT("displayedDigits"),m_displayedDigits = displayedDigits);
     }
-
+  
   const bool GetInsertAns() { return m_insertAns; }
   const bool RestartOnReEvaluation() {return m_restartOnReEvaluation;}
   const void RestartOnReEvaluation(bool arg)
