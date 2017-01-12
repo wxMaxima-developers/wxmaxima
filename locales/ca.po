@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-10 06:53+0100\n"
+"POT-Creation-Date: 2017-01-12 07:02+0100\n"
 "PO-Revision-Date: 2016-11-10 19:22+0100\n"
 "Last-Translator: Innocent De Marchi <tangram.peces@gmail.com>\n"
 "Language-Team: Innocent De Marchi <tangram.peces@gmail.com>\n"
@@ -74,12 +74,12 @@ msgstr "      -l <name>"
 msgid " (Graphics) "
 msgstr "(Gràfics)"
 
-#: ../src/EditorCell.cpp:3386 ../src/EditorCell.cpp:3768
+#: ../src/EditorCell.cpp:3400 ../src/EditorCell.cpp:3782
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr " ... + %i línies amagades"
 
-#: ../src/MathParser.cpp:1102
+#: ../src/MathParser.cpp:1085
 msgid " << Expression longer than allowed by the configuration setting! >>"
 msgstr "<< Expressió més llarga del que permet la configuració! >>"
 
@@ -660,11 +660,11 @@ msgstr ""
 "Error: s'ha trobat el final dels símbols de finalització automàtica sense "
 "començament"
 
-#: ../src/MathParser.cpp:282
+#: ../src/MathParser.cpp:281
 msgid "Bug: Fraction without denominator"
 msgstr "Error: fracció sense denominador"
 
-#: ../src/MathParser.cpp:269 ../src/MathParser.cpp:275
+#: ../src/MathParser.cpp:268 ../src/MathParser.cpp:274
 msgid "Bug: Fraction without enumerator"
 msgstr "Error: fracció sense numerador"
 
@@ -672,7 +672,7 @@ msgstr "Error: fracció sense numerador"
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Error: hi ha una pregunta però no hi ha cap cel·la per contestar-la"
 
-#: ../src/MathCtrl.cpp:5973
+#: ../src/MathCtrl.cpp:5988
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
@@ -680,14 +680,14 @@ msgstr ""
 "Error: hi ha una petició de canviar el contingut d'una cel·la situada abans "
 "de l'inici del full de càlcul."
 
-#: ../src/MathCtrl.cpp:6046
+#: ../src/MathCtrl.cpp:6061
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Error: hi ha una petició d'eliminar una cel·la situada abans de l'inici del "
 "full de càlcul."
 
-#: ../src/MathCtrl.cpp:6015
+#: ../src/MathCtrl.cpp:6030
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -767,7 +767,7 @@ msgstr ""
 "Error: s'està intentant combinar addicions de cel·les individuals a una "
 "regió a la coa de desfer accions però hi ha altres cel·les entre elles."
 
-#: ../src/MathCtrl.cpp:6682
+#: ../src/MathCtrl.cpp:6697
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -787,13 +787,13 @@ msgstr ""
 "Error: s'està intentant seleccionar a l'interior d'una cel·la sense que hi "
 "hagi una cel·la actual"
 
-#: ../src/MathCtrl.cpp:6016
+#: ../src/MathCtrl.cpp:6031
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Error: desfer acció amb canvi del contingut de la cel·la i addició de la "
 "cel·la."
 
-#: ../src/MathCtrl.cpp:5978 ../src/MathCtrl.cpp:6051 ../src/MathCtrl.cpp:6085
+#: ../src/MathCtrl.cpp:5993 ../src/MathCtrl.cpp:6066 ../src/MathCtrl.cpp:6100
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Error: s'està intentant desfer una acció a una cel·la situada fora del full "
@@ -1165,13 +1165,13 @@ msgstr "&Copiar entrada anterior\tCtrl+I"
 msgid "Copy Previous Output\tCtrl+U"
 msgstr "Copiar resultat anterior\tCtrl+U"
 
-#: ../src/MathCtrl.cpp:996 ../src/MathCtrl.cpp:1042
-#: ../src/wxMaximaFrame.cpp:472
+#: ../src/wxMaximaFrame.cpp:472 ../src/MathCtrl.cpp:996
+#: ../src/MathCtrl.cpp:1042
 msgid "Copy as Image"
 msgstr "Copiar com a imatge"
 
-#: ../src/MathCtrl.cpp:992 ../src/MathCtrl.cpp:1038
-#: ../src/wxMaximaFrame.cpp:465
+#: ../src/wxMaximaFrame.cpp:465 ../src/MathCtrl.cpp:992
+#: ../src/MathCtrl.cpp:1038
 msgid "Copy as LaTeX"
 msgstr "Copiar com a &LaTeX"
 
@@ -1574,11 +1574,12 @@ msgstr ""
 msgid "Equations:"
 msgstr "Equacions:"
 
-#: ../src/Image.cpp:183 ../src/ConfigDialogue.cpp:928 ../src/wxMaxima.cpp:1516
-#: ../src/wxMaxima.cpp:1530 ../src/wxMaxima.cpp:1681 ../src/wxMaxima.cpp:1694
-#: ../src/wxMaxima.cpp:1704 ../src/wxMaxima.cpp:1788 ../src/wxMaxima.cpp:1816
-#: ../src/wxMaxima.cpp:1826 ../src/wxMaxima.cpp:2162 ../src/wxMaxima.cpp:2334
-#: ../src/wxMaxima.cpp:5627 ../src/wxMaxima.cpp:6076 ../src/wxMaxima.cpp:6127
+#: ../src/Image.cpp:183 ../src/wxMaxima.cpp:1516 ../src/wxMaxima.cpp:1530
+#: ../src/wxMaxima.cpp:1681 ../src/wxMaxima.cpp:1694 ../src/wxMaxima.cpp:1704
+#: ../src/wxMaxima.cpp:1788 ../src/wxMaxima.cpp:1816 ../src/wxMaxima.cpp:1826
+#: ../src/wxMaxima.cpp:2162 ../src/wxMaxima.cpp:2334 ../src/wxMaxima.cpp:5627
+#: ../src/wxMaxima.cpp:6076 ../src/wxMaxima.cpp:6127
+#: ../src/ConfigDialogue.cpp:928
 msgid "Error"
 msgstr "Error"
 
@@ -1608,7 +1609,7 @@ msgstr "Avaluar totes les cel·les\tCtrl+Shift+R"
 msgid "Evaluate All Visible Cells\tCtrl+R"
 msgstr "Avaluar totes les cel·les visibles\tCtrl+R"
 
-#: ../src/MathCtrl.cpp:1002 ../src/wxMaximaFrame.cpp:545
+#: ../src/wxMaximaFrame.cpp:545 ../src/MathCtrl.cpp:1002
 msgid "Evaluate Cell(s)"
 msgstr "A&valuar cel·la(es)"
 
@@ -1701,7 +1702,7 @@ msgstr "Expandir expressió trigonomètrica"
 msgid "Expected the icon files to be found at"
 msgstr "S'esperava trobar els arxius d'icones a"
 
-#: ../src/ConfigDialogue.cpp:150 ../src/wxMaxima.cpp:3009
+#: ../src/wxMaxima.cpp:3009 ../src/ConfigDialogue.cpp:150
 msgid "Export"
 msgstr "&Exporta"
 
@@ -2090,7 +2091,7 @@ msgstr "Calcula la part imaginària d'una expressió complexa"
 msgid "Get the real part of complex expression"
 msgstr "Calcula la part real d'una expressió complexa"
 
-#: ../src/MathCtrl.cpp:6065
+#: ../src/MathCtrl.cpp:6080
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2501,7 +2502,7 @@ msgstr "Integra expressió"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Integra expressió amb algoritme Risch"
 
-#: ../src/MathCtrl.cpp:1060 ../src/wxMaximaFrame.cpp:1184
+#: ../src/wxMaximaFrame.cpp:1184 ../src/MathCtrl.cpp:1060
 msgid "Integrate..."
 msgstr "Integra..."
 
@@ -3144,8 +3145,8 @@ msgstr "Test t per a una mostra"
 msgid "Online tutorials"
 msgstr "Tutorials en línia"
 
-#: ../src/ToolBar.cpp:115 ../src/main.cpp:354 ../src/ConfigDialogue.cpp:661
-#: ../src/wxMaxima.cpp:2972
+#: ../src/ToolBar.cpp:115 ../src/main.cpp:354 ../src/wxMaxima.cpp:2972
+#: ../src/ConfigDialogue.cpp:661
 msgid "Open"
 msgstr "Obre"
 
@@ -3247,7 +3248,7 @@ msgstr "Fraccions simples"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "Parts del document no s'han carregat correctament!"
 
-#: ../src/MathParser.cpp:1028
+#: ../src/MathParser.cpp:1011
 msgid ""
 "Parts of the document will not be loaded correctly:\n"
 "Found unknown XML Tag name "
@@ -3556,8 +3557,8 @@ msgstr "Exemple 2:"
 msgid "Sample:"
 msgstr "Mostra:"
 
-#: ../src/ToolBar.cpp:118 ../src/ConfigDialogue.cpp:790
-#: ../src/wxMaxima.cpp:6168
+#: ../src/ToolBar.cpp:118 ../src/wxMaxima.cpp:6168
+#: ../src/ConfigDialogue.cpp:790
 msgid "Save"
 msgstr "Desa"
 
@@ -3665,8 +3666,8 @@ msgstr "Secció"
 msgid "Section cell"
 msgstr "Cel·la de secció"
 
-#: ../src/BTextCtrl.cpp:47 ../src/TextCell.cpp:299 ../src/TextCell.cpp:314
-#: ../src/TextCell.cpp:331 ../src/TextCell.cpp:344
+#: ../src/BTextCtrl.cpp:47 ../src/TextCell.cpp:319 ../src/TextCell.cpp:334
+#: ../src/TextCell.cpp:351 ../src/TextCell.cpp:364
 msgid ""
 "Seems like something is broken with a font. Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
@@ -3677,7 +3678,7 @@ msgstr ""
 "l'opció «Fer servir els tipus de lletra JSmath» en la configuració hauria de "
 "solucionar el problema."
 
-#: ../src/TextCell.cpp:141
+#: ../src/TextCell.cpp:161
 msgid ""
 "Seems like something is broken with the maths font. Installing http://www."
 "math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use "
@@ -4022,7 +4023,7 @@ msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr ""
 "Resoldre  equacions diferencials ordinàries amb la transformada de Laplace"
 
-#: ../src/MathCtrl.cpp:1052 ../src/wxMaximaFrame.cpp:1181
+#: ../src/wxMaximaFrame.cpp:1181 ../src/MathCtrl.cpp:1052
 msgid "Solve..."
 msgstr "Resoldre"
 
@@ -4131,7 +4132,7 @@ msgstr "S&ubstitueix"
 msgid "Substitute"
 msgstr "Substitueix"
 
-#: ../src/MathCtrl.cpp:1058 ../src/wxMaximaFrame.cpp:866
+#: ../src/wxMaximaFrame.cpp:866 ../src/MathCtrl.cpp:1058
 msgid "Substitute..."
 msgstr "Substitueix..."
 
@@ -4265,7 +4266,7 @@ msgstr "Es farà servir l'ordre «documentclass» de LaTex en els seus documents
 msgid "The key combination Shift+Space results in a non-breakable space."
 msgstr ""
 
-#: ../src/TextCell.cpp:138
+#: ../src/TextCell.cpp:158
 msgid ""
 "The letter \"X\" is of width zero. Installing http://www.math.union.edu/"
 "~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in "
@@ -4479,11 +4480,11 @@ msgstr "Traduït per"
 msgid "Transpose a matrix"
 msgstr "Matriu transposta"
 
-#: ../src/MathCtrl.cpp:5968
+#: ../src/MathCtrl.cpp:5983
 msgid "Trying to undo an action without starting cell."
 msgstr "Intentant desfer una acció sense cel·la inicial."
 
-#: ../src/MathCtrl.cpp:6034
+#: ../src/MathCtrl.cpp:6049
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Intentant desfer alguna acció sense que hi hagi accions per desfer."
 
@@ -4651,7 +4652,7 @@ msgstr "Variància..."
 msgid "View"
 msgstr "Veure"
 
-#: ../src/MathParser.cpp:1028 ../src/wxMaxima.cpp:1794 ../src/wxMaxima.cpp:1897
+#: ../src/MathParser.cpp:1011 ../src/wxMaxima.cpp:1794 ../src/wxMaxima.cpp:1897
 #: ../src/wxMaxima.cpp:2078
 msgid "Warning"
 msgstr "Avís"
@@ -4690,7 +4691,7 @@ msgstr ""
 "Emboliqui les equacions exportades per la funció «copia a LaTeX» amb \\[ i "
 "\\] com a marcadors d'equació"
 
-#: ../src/MathCtrl.cpp:6965
+#: ../src/MathCtrl.cpp:6980
 msgid "Wrapped search"
 msgstr "Cerca embolicada"
 
@@ -4822,7 +4823,7 @@ msgstr "[sense desar]"
 msgid "[ unsaved* ]"
 msgstr "[sense desar*]"
 
-#: ../src/MathParser.cpp:494
+#: ../src/TextCell.cpp:88
 #, c-format
 msgid "[%i digits]"
 msgstr "[%i dígits]"
@@ -4857,39 +4858,39 @@ msgstr "beta"
 msgid "both sides"
 msgstr "ambdós costats"
 
-#: ../src/MathParser.cpp:441
+#: ../src/MathParser.cpp:440
 msgid "bug:Invalid at tag"
 msgstr "error: etiqueta no vàlida"
 
-#: ../src/MathParser.cpp:298
+#: ../src/MathParser.cpp:297
 msgid "bug:Invalid frac tag"
 msgstr "error: etiqueta de fracció de vàlida"
 
-#: ../src/MathParser.cpp:464
+#: ../src/MathParser.cpp:463
 msgid "bug:Invalid function tag"
 msgstr "error: etiqueta de funció no vàlida"
 
-#: ../src/MathParser.cpp:720
+#: ../src/MathParser.cpp:703
 msgid "bug:Invalid int tag"
 msgstr "error: etiqueta d'enter no vàlida"
 
-#: ../src/MathParser.cpp:631
+#: ../src/MathParser.cpp:614
 msgid "bug:Invalid limit tag"
 msgstr "error: etiqueta de límit no vàlida"
 
-#: ../src/MathParser.cpp:417
+#: ../src/MathParser.cpp:416
 msgid "bug:Invalid sub tag"
 msgstr "error: etiqueta «sub» no vàlida"
 
-#: ../src/MathParser.cpp:386
+#: ../src/MathParser.cpp:385
 msgid "bug:Invalid subsup tag"
 msgstr "error: etiqueta «subsup» no vàlida"
 
-#: ../src/MathParser.cpp:664
+#: ../src/MathParser.cpp:647
 msgid "bug:Invalid sum tag"
 msgstr "error: etiqueta de suma no vàlida"
 
-#: ../src/MathParser.cpp:354
+#: ../src/MathParser.cpp:353
 msgid "bug:Invalid sup tag"
 msgstr "error: etiqueta «sup» no vàlida"
 

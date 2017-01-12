@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-10 06:53+0100\n"
+"POT-Creation-Date: 2017-01-12 07:02+0100\n"
 "PO-Revision-Date: 2017-01-10 06:54+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -72,12 +72,12 @@ msgstr "      -l <name>"
 msgid " (Graphics) "
 msgstr " (Bild) "
 
-#: ../src/EditorCell.cpp:3386 ../src/EditorCell.cpp:3768
+#: ../src/EditorCell.cpp:3400 ../src/EditorCell.cpp:3782
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr "... + %i versteckte Zeilen"
 
-#: ../src/MathParser.cpp:1102
+#: ../src/MathParser.cpp:1085
 msgid " << Expression longer than allowed by the configuration setting! >>"
 msgstr " << Ausdruck länger, als im Konfigurationsdialog erlaubt >>"
 
@@ -671,11 +671,11 @@ msgstr ""
 "Interner Fehler: Habe das Ende von Symbolen für das automatische "
 "Vervollständigen bekommen, aber keinen Beginn von ihnen."
 
-#: ../src/MathParser.cpp:282
+#: ../src/MathParser.cpp:281
 msgid "Bug: Fraction without denominator"
 msgstr "Interner Fehler: Bruch ohne Nenner"
 
-#: ../src/MathParser.cpp:269 ../src/MathParser.cpp:275
+#: ../src/MathParser.cpp:268 ../src/MathParser.cpp:274
 msgid "Bug: Fraction without enumerator"
 msgstr "Interner Fehler: Bruch ohne Zähler"
 
@@ -683,20 +683,20 @@ msgstr "Interner Fehler: Bruch ohne Zähler"
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Interner Fehler: Habe eine Frage, aber weiß nicht, in welcher Zelle"
 
-#: ../src/MathCtrl.cpp:5973
+#: ../src/MathCtrl.cpp:5988
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Interner Fehler: Soll die Zelle vor dem Beginn des Arbeitsblattes ändern."
 
-#: ../src/MathCtrl.cpp:6046
+#: ../src/MathCtrl.cpp:6061
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Interner Fehler: Soll die Zelle vor dem Beginn des Arbeitsblattes löschen."
 
-#: ../src/MathCtrl.cpp:6015
+#: ../src/MathCtrl.cpp:6030
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -777,7 +777,7 @@ msgstr ""
 "Interner Fehler: Versuche, die Hinzufügung von Einzelzellen zu einer Region "
 "zusammenbauen - in der es eine Lücke gibt."
 
-#: ../src/MathCtrl.cpp:6682
+#: ../src/MathCtrl.cpp:6697
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -797,13 +797,13 @@ msgstr ""
 "Interner Fehler: Versuche, innerhalb einer Zelle Text auszuwählen, ohne zu "
 "wissen, in welcher Zelle"
 
-#: ../src/MathCtrl.cpp:6016
+#: ../src/MathCtrl.cpp:6031
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Interner Fehler: Rückgängig will Zellen ändern und gleichzeitig Zellen "
 "hinzufügen."
 
-#: ../src/MathCtrl.cpp:5978 ../src/MathCtrl.cpp:6051 ../src/MathCtrl.cpp:6085
+#: ../src/MathCtrl.cpp:5993 ../src/MathCtrl.cpp:6066 ../src/MathCtrl.cpp:6100
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Interner Fehler: Rückgängigmachen setzt an Zellen außerhalb des "
@@ -1177,13 +1177,13 @@ msgstr "Kopiere letzte Eingabe\tCtrl+I"
 msgid "Copy Previous Output\tCtrl+U"
 msgstr "Kopiere letzte Ausgabe\tCtrl+U"
 
-#: ../src/MathCtrl.cpp:996 ../src/MathCtrl.cpp:1042
-#: ../src/wxMaximaFrame.cpp:472
+#: ../src/wxMaximaFrame.cpp:472 ../src/MathCtrl.cpp:996
+#: ../src/MathCtrl.cpp:1042
 msgid "Copy as Image"
 msgstr "Als Bild kopieren"
 
-#: ../src/MathCtrl.cpp:992 ../src/MathCtrl.cpp:1038
-#: ../src/wxMaximaFrame.cpp:465
+#: ../src/wxMaximaFrame.cpp:465 ../src/MathCtrl.cpp:992
+#: ../src/MathCtrl.cpp:1038
 msgid "Copy as LaTeX"
 msgstr "Als LaTeX kopieren"
 
@@ -1586,11 +1586,12 @@ msgstr ""
 msgid "Equations:"
 msgstr "Gleichungen:"
 
-#: ../src/Image.cpp:183 ../src/ConfigDialogue.cpp:928 ../src/wxMaxima.cpp:1516
-#: ../src/wxMaxima.cpp:1530 ../src/wxMaxima.cpp:1681 ../src/wxMaxima.cpp:1694
-#: ../src/wxMaxima.cpp:1704 ../src/wxMaxima.cpp:1788 ../src/wxMaxima.cpp:1816
-#: ../src/wxMaxima.cpp:1826 ../src/wxMaxima.cpp:2162 ../src/wxMaxima.cpp:2334
-#: ../src/wxMaxima.cpp:5627 ../src/wxMaxima.cpp:6076 ../src/wxMaxima.cpp:6127
+#: ../src/Image.cpp:183 ../src/wxMaxima.cpp:1516 ../src/wxMaxima.cpp:1530
+#: ../src/wxMaxima.cpp:1681 ../src/wxMaxima.cpp:1694 ../src/wxMaxima.cpp:1704
+#: ../src/wxMaxima.cpp:1788 ../src/wxMaxima.cpp:1816 ../src/wxMaxima.cpp:1826
+#: ../src/wxMaxima.cpp:2162 ../src/wxMaxima.cpp:2334 ../src/wxMaxima.cpp:5627
+#: ../src/wxMaxima.cpp:6076 ../src/wxMaxima.cpp:6127
+#: ../src/ConfigDialogue.cpp:928
 msgid "Error"
 msgstr "Fehler"
 
@@ -1619,7 +1620,7 @@ msgstr "Alle Zellen neu auswerten\tCtrl+Shift+R"
 msgid "Evaluate All Visible Cells\tCtrl+R"
 msgstr "Alle sichtbaren Zellen neu auswerten\tCtrl+R"
 
-#: ../src/MathCtrl.cpp:1002 ../src/wxMaximaFrame.cpp:545
+#: ../src/wxMaximaFrame.cpp:545 ../src/MathCtrl.cpp:1002
 msgid "Evaluate Cell(s)"
 msgstr "Zelle(n) auswerten"
 
@@ -1712,7 +1713,7 @@ msgstr "Trigonometrische Ausdrücke expandieren"
 msgid "Expected the icon files to be found at"
 msgstr "Habe erwartet, die Icons hier zu finden:"
 
-#: ../src/ConfigDialogue.cpp:150 ../src/wxMaxima.cpp:3009
+#: ../src/wxMaxima.cpp:3009 ../src/ConfigDialogue.cpp:150
 msgid "Export"
 msgstr "Exportieren"
 
@@ -2098,7 +2099,7 @@ msgstr "Imaginärteil eines komplexen Ausdrucks bestimmen"
 msgid "Get the real part of complex expression"
 msgstr "Realteil eines komplexen Ausdrucks bestimmen"
 
-#: ../src/MathCtrl.cpp:6065
+#: ../src/MathCtrl.cpp:6080
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2527,7 +2528,7 @@ msgstr "Ausdruck integrieren"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Ausdruck mit Risch-Algorithmus integrieren"
 
-#: ../src/MathCtrl.cpp:1060 ../src/wxMaximaFrame.cpp:1184
+#: ../src/wxMaximaFrame.cpp:1184 ../src/MathCtrl.cpp:1060
 msgid "Integrate..."
 msgstr "Integrieren ..."
 
@@ -3227,8 +3228,8 @@ msgstr "Einstichproben t-Test"
 msgid "Online tutorials"
 msgstr "Online Tutorials"
 
-#: ../src/ToolBar.cpp:115 ../src/main.cpp:354 ../src/ConfigDialogue.cpp:661
-#: ../src/wxMaxima.cpp:2972
+#: ../src/ToolBar.cpp:115 ../src/main.cpp:354 ../src/wxMaxima.cpp:2972
+#: ../src/ConfigDialogue.cpp:661
 msgid "Open"
 msgstr "Öffnen"
 
@@ -3330,7 +3331,7 @@ msgstr "Partialbruchzerlegung"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "Teile des Dokuments werden nicht korrekt geladen!"
 
-#: ../src/MathParser.cpp:1028
+#: ../src/MathParser.cpp:1011
 msgid ""
 "Parts of the document will not be loaded correctly:\n"
 "Found unknown XML Tag name "
@@ -3638,8 +3639,8 @@ msgstr "Probe 2:"
 msgid "Sample:"
 msgstr "Probe:"
 
-#: ../src/ToolBar.cpp:118 ../src/ConfigDialogue.cpp:790
-#: ../src/wxMaxima.cpp:6168
+#: ../src/ToolBar.cpp:118 ../src/wxMaxima.cpp:6168
+#: ../src/ConfigDialogue.cpp:790
 msgid "Save"
 msgstr "Speichern"
 
@@ -3747,8 +3748,8 @@ msgstr "Kapitel"
 msgid "Section cell"
 msgstr "Kapitelzelle"
 
-#: ../src/BTextCtrl.cpp:47 ../src/TextCell.cpp:299 ../src/TextCell.cpp:314
-#: ../src/TextCell.cpp:331 ../src/TextCell.cpp:344
+#: ../src/BTextCtrl.cpp:47 ../src/TextCell.cpp:319 ../src/TextCell.cpp:334
+#: ../src/TextCell.cpp:351 ../src/TextCell.cpp:364
 msgid ""
 "Seems like something is broken with a font. Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
@@ -3759,7 +3760,7 @@ msgstr ""
 "darauffolgendem Anklicken von \"Benutze jsMath-Zeichensätze\" in der "
 "Konfiguration sollte das Problem beheben."
 
-#: ../src/TextCell.cpp:141
+#: ../src/TextCell.cpp:161
 msgid ""
 "Seems like something is broken with the maths font. Installing http://www."
 "math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use "
@@ -4102,7 +4103,7 @@ msgstr "Eine gewöhnliche DGL von höchstens zweitem Grad lösen"
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "Gewöhnliche DGL mit Laplacetransformation lösen"
 
-#: ../src/MathCtrl.cpp:1052 ../src/wxMaximaFrame.cpp:1181
+#: ../src/wxMaximaFrame.cpp:1181 ../src/MathCtrl.cpp:1052
 msgid "Solve..."
 msgstr "Gleichung lösen ..."
 
@@ -4212,7 +4213,7 @@ msgstr "Substituieren ..."
 msgid "Substitute"
 msgstr "Substituieren"
 
-#: ../src/MathCtrl.cpp:1058 ../src/wxMaximaFrame.cpp:866
+#: ../src/wxMaximaFrame.cpp:866 ../src/MathCtrl.cpp:1058
 msgid "Substitute..."
 msgstr "Substituieren ..."
 
@@ -4350,7 +4351,7 @@ msgstr ""
 "Die Tastenkombination Shift+Space erzeugt eine Leertaste, die nicht vom "
 "automatischen Zeilenumbruch in Zeilen gebrochen wird."
 
-#: ../src/TextCell.cpp:138
+#: ../src/TextCell.cpp:158
 msgid ""
 "The letter \"X\" is of width zero. Installing http://www.math.union.edu/"
 "~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in "
@@ -4583,13 +4584,13 @@ msgstr "Übersetzt von"
 msgid "Transpose a matrix"
 msgstr "Eine Matrix transponieren"
 
-#: ../src/MathCtrl.cpp:5968
+#: ../src/MathCtrl.cpp:5983
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 "Versuche, eine Aktion rückgängig zu machen, ohne zu wissen, wo im "
 "Arbeitsblatt."
 
-#: ../src/MathCtrl.cpp:6034
+#: ../src/MathCtrl.cpp:6049
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Soll etwas rückgängig machen, aber die Spezifikation dafür ist leer."
 
@@ -4757,7 +4758,7 @@ msgstr "Varianz"
 msgid "View"
 msgstr "Anzeige"
 
-#: ../src/MathParser.cpp:1028 ../src/wxMaxima.cpp:1794 ../src/wxMaxima.cpp:1897
+#: ../src/MathParser.cpp:1011 ../src/wxMaxima.cpp:1794 ../src/wxMaxima.cpp:1897
 #: ../src/wxMaxima.cpp:2078
 msgid "Warning"
 msgstr "Warnung"
@@ -4797,7 +4798,7 @@ msgstr ""
 "Platziere Formeln, die durch \"LaTeX Kopieren\" in die Zwischenablage gelegt "
 "wurden, zwischen \\[ und \\], um TeX in den Mathematik-Modus zu versetzen."
 
-#: ../src/MathCtrl.cpp:6965
+#: ../src/MathCtrl.cpp:6980
 msgid "Wrapped search"
 msgstr "Suche wurde über das Ende des Dokuments hinweg fortgesetzt"
 
@@ -4929,7 +4930,7 @@ msgstr "[ nicht gespeichert ]"
 msgid "[ unsaved* ]"
 msgstr "[ nicht gespeichert* ]"
 
-#: ../src/MathParser.cpp:494
+#: ../src/TextCell.cpp:88
 #, c-format
 msgid "[%i digits]"
 msgstr "[%i Ziffern]"
@@ -4964,39 +4965,39 @@ msgstr "beta"
 msgid "both sides"
 msgstr "beide Seiten"
 
-#: ../src/MathParser.cpp:441
+#: ../src/MathParser.cpp:440
 msgid "bug:Invalid at tag"
 msgstr "Interner Fehler: Fehlerhaftes \"At\"-Tag"
 
-#: ../src/MathParser.cpp:298
+#: ../src/MathParser.cpp:297
 msgid "bug:Invalid frac tag"
 msgstr "Interner Fehler: Fehlerhaftes \"frac\"-Tag"
 
-#: ../src/MathParser.cpp:464
+#: ../src/MathParser.cpp:463
 msgid "bug:Invalid function tag"
 msgstr "Interner Fehler: Fehlerhaftes \"function\" Tag"
 
-#: ../src/MathParser.cpp:720
+#: ../src/MathParser.cpp:703
 msgid "bug:Invalid int tag"
 msgstr "Interner Fehler: Fehlerhaftes \"int\"-Tag"
 
-#: ../src/MathParser.cpp:631
+#: ../src/MathParser.cpp:614
 msgid "bug:Invalid limit tag"
 msgstr "Interner Fehler: Fehlerhaftes \"limit\"-Tag"
 
-#: ../src/MathParser.cpp:417
+#: ../src/MathParser.cpp:416
 msgid "bug:Invalid sub tag"
 msgstr "Interner Fehler: Fehlerhaftes \"sub\"-Tag"
 
-#: ../src/MathParser.cpp:386
+#: ../src/MathParser.cpp:385
 msgid "bug:Invalid subsup tag"
 msgstr "Interner Fehler: Fehlerhaftes \"subsup\"-Tag"
 
-#: ../src/MathParser.cpp:664
+#: ../src/MathParser.cpp:647
 msgid "bug:Invalid sum tag"
 msgstr "Interner Fehler: Fehlerhaftes \"sum\"-Tag"
 
-#: ../src/MathParser.cpp:354
+#: ../src/MathParser.cpp:353
 msgid "bug:Invalid sup tag"
 msgstr "Interner Fehler: Fehlerhaftes \"sup\"-Tag"
 
