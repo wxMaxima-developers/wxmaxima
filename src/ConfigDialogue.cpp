@@ -365,6 +365,7 @@ void ConfigDialogue::SetProperties()
   int val = 0;
   if(Configuration::Get()->GetAutoWrap()) val = 1;
   if(Configuration::Get()->GetAutoWrapCode()) val = 2;
+  std::cerr<<"Val="<<val<<"\n";
   m_autoWrap->SetSelection(val);
   m_labelWidth->SetValue(labelWidth);
   m_undoLimit->SetValue(undoLimit);

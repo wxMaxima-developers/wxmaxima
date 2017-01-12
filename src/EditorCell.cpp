@@ -664,9 +664,8 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
           lastIndent = textSnippet->GetIndentPixels();
         // A newline =>
         // set the point to the beginning of the next line.
-        TextCurrentPoint.x = TextStartingpoint.x;
+        TextCurrentPoint.x = TextStartingpoint.x + textSnippet->GetIndentPixels();
         TextCurrentPoint.y += m_charHeight;
-        TextCurrentPoint.x += textSnippet->GetIndentPixels();
       }
       else
       {

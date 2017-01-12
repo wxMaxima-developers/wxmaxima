@@ -157,7 +157,7 @@ public:
   //! Do we want to have automatic line breaks for text cells?
   const bool GetAutoWrap() { return m_autoWrap > 0;}
   //! Do we want to have automatic line breaks for code cells?
-  const bool GetAutoWrapCode() { return m_autoWrap > 2;}
+  const bool GetAutoWrapCode() { return m_autoWrap > 1;}
   /*! Sets the auto wrap mode
     \param autoWrap 
      - 0: No automatic line breaks
@@ -166,6 +166,7 @@ public:
   */
   void SetAutoWrap(int autoWrap)
     {
+      std::cerr<<"AutoWrap="<<autoWrap<<"\n";
       wxConfig::Get()->Write(wxT("autoWrapMode"),m_autoWrap = autoWrap);
     }
   //! Do we want automatic indentation?
