@@ -1,11 +1,13 @@
 Current:
   * The option to use a Minus instead of a Hyphen.
+  * Table of Contents: Folded items are now grayed out.
+  * Table of Contents: A right-click menu.
+  * An indicator that shows when maxima and wxMaxima exchange data.
+  * Autocompletion now collects words from the current code cell, too.
   * Better indentation of if clauses and of loops.
-  * A network activity indicator.
-  * Table of Contents: Folded items are now grayed out
-  * Autocompletion now honors words from the current code cell.
-  * Automatic line wrap at spaces in code cells
-  * If the number is too long to display we now still copy it
+  * Automatic line wrap now can be done at spaces in code cells, too.
+  * If the number is too long to display it now is still possible to copy it.
+  * Documented that box() highlights text in maxima's output.
   * Several scrolling fixes, again.
   * Many additional bug fixes and stability enhancements.
 
