@@ -3663,7 +3663,7 @@ void EditorCell::StyleText()
     {
       SetFont(configuration->GetDefaultFontSize());
       wxString line;
-      size_t lastSpacePos = 0;
+      int lastSpacePos = -1;
       wxString::const_iterator lastSpaceIt;
       int indentation = 0;
       int lastLineStart = 0;
@@ -3683,10 +3683,11 @@ void EditorCell::StyleText()
         while(it!=m_text.end())
         {
           // Handle hard linebreaks or indent a soft linebreak if necessary
-          if((*it=='\n')||(i+1 >= m_text.Length()))
+          if((*it=='\n')||(it+1 == m_text.end()))
           {
-            // Hard line break (or soft line break necessary)
-            if(lastSpacePos > 0)
+            // Can we introduce a soft line break?
+            // One of the next questions will be: Do we need to?
+            if(lastSpacePos >= 0)
             {
               // How far has the current line to be indented?
               if((!indentPixels.empty())&&(!newLine))
@@ -3694,9 +3695,10 @@ void EditorCell::StyleText()
               else
                 indentation = 0;
 
+              // How long is the current line already?
+              configuration->GetDC().GetTextExtent(m_text.SubString(lastLineStart,i), &width, &height);
               // Does the line extend too much to the right to fit on the screen /
               // to be easy to read?
-              configuration->GetDC().GetTextExtent(m_text.SubString(lastLineStart,i), &width, &height);
               if(width + xmargin + indentation >= configuration->GetLineWidth())
               {
                 // We need a line break in front of the last word
@@ -3706,7 +3708,7 @@ void EditorCell::StyleText()
                 it = lastSpaceIt;
                 it++;
                 lastLineStart = i;
-                lastSpacePos = 0;
+                lastSpacePos = -1;
                 break;
               }
             }
@@ -3721,37 +3723,45 @@ void EditorCell::StyleText()
               line = m_text.SubString(lastLineStart,i);
             
             lastLineStart = i+1;
-            lastSpacePos = 0;
+            lastSpacePos = -1;
             indentation = 0;
             break;
           }
           else
           {
-            // No linebreak
+            // We cannot introduce soft linebreaks since there were no spaces we
+            // could break at.
+            //
+            // TODO: If we handled spaces before we handled soft line breaks this
+            // branch would be unneccessary, right?
             
             // Spaces and reaching the end of the text both trigger auto-wrapping
             if((*it == ' ')||(i >= m_text.Length() - 1))
             {
-              // Does the line extend too much to the right to fit on the screen /
-              // to be easy to read?
+              // Determine the current line's length
               configuration->GetDC().GetTextExtent(m_text.SubString(lastLineStart,i), &width, &height);
+              // Determine the current indentation
               if((!indentPixels.empty())&&(!newLine))
                 indentation = indentPixels.back();
               else
                 indentation = 0;
+
+              // Does the line extend too much to the right to fit on the screen /
+              // to be easy to read?
               if(width + m_currentPoint.x + indentation >= configuration->GetLineWidth())
               {
                 // We need a line break. Does the current line contain a space we can
                 // break the line at?
-                if(lastSpacePos > 0)
+                if(lastSpacePos >= 0)
                 {
+                  // Introduce a soft line break
                   m_text[lastSpacePos] = wxT('\r');
                   line = m_text.SubString(lastLineStart,lastSpacePos - 1);
                   i = lastSpacePos + 1;
                   it = lastSpaceIt;
                   it++;
                   lastLineStart = i;
-                  lastSpacePos = 0;
+                  lastSpacePos = -1;
                   break;
                 }
                 else
@@ -3761,7 +3771,7 @@ void EditorCell::StyleText()
                     m_text[i] = wxT('\r');
                     line = m_text.SubString(lastLineStart,i-1);
                     lastLineStart = i+1;
-                    lastSpacePos = 0;
+                    lastSpacePos = -1;
                     break;
                   }
                 }
@@ -3889,7 +3899,7 @@ void EditorCell::StyleText()
 
         // If the cell doesn't end with the last char of this line we have to
         // add a line ending to the list of styled text snippets
-        if(i + 1 < m_text.Length())
+        if((i + 1 < m_text.Length()) || (m_text[i] == wxT('\n')))
         { 
           // Store the line ending in the list of styled text snippets
           if (*it == wxT('\n'))

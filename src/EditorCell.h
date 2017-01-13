@@ -440,7 +440,10 @@ private:
   
   std::vector<StyledText> m_styledText;
 
-  //! Adds soft line breaks to code cells, if needed.
+  /*! Adds soft line breaks to code cells, if needed.
+
+    \todo: Speedup: The indentation in theory only needs to be calculated once per line break.
+   */
   void HandleSoftLineBreaks_Code(StyledText *&lastSpace,int &lineWidth,const wxString &token,unsigned int charInCell,wxString &text,size_t &lastSpacePos,bool spaceIsIndentation);
 
   //! How many chars do we need to indent text at the position the caret is currently at?
