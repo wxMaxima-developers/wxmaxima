@@ -28,7 +28,7 @@ notification:
     on_failure: change
 
 git:
-  depth: 3
+  depth: 15
 
 script: |
   cp .travis/wxwin.m4 acinclude.m4 &
