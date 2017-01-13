@@ -442,7 +442,11 @@ private:
 
   /*! Adds soft line breaks to code cells, if needed.
 
-    \todo: Speedup: The indentation in theory only needs to be calculated once per line break.
+    \todo: Speedup: The indentation in theory only needs to be calculated once per line break,
+    parenthesis, "if", "then", "else" and "do", not at every single word. Also we could do an
+    incremental indenation calculation that starts at the last word: The current behavior is
+    O(n^2) (scanning the text needs linear time and for each word the indentation algorithm
+    scans the text again) which is unfortunate.
    */
   void HandleSoftLineBreaks_Code(StyledText *&lastSpace,int &lineWidth,const wxString &token,unsigned int charInCell,wxString &text,size_t &lastSpacePos,bool spaceIsIndentation);
 
