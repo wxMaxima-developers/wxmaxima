@@ -8,6 +8,8 @@ Current:
   * Automatic line wrap now can be done at spaces in code cells, too.
   * If the number is too long to display it now is still possible to copy it.
   * Documented that box() highlights text in maxima's output.
+  * the with_slider type of commands now uses wxstatusbar() in order to provide
+  * progress information for the user.
   * Several scrolling fixes, again.
   * Many additional bug fixes and stability enhancements.
 
