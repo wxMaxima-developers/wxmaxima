@@ -199,9 +199,14 @@ public:
       wxConfig::Get()->Write(wxT("changeAsterisk"),m_changeAsterisk = changeAsterisk);
     }
 
-  const int GetDisplayedDigits() { return m_displayedDigits; }
+  /*! Returns the maximum number of displayed digits
+
+    m_displayedDigits is always >= 20, so we can guarantee the number we return to be unsigned.
+   */
+  const unsigned int GetDisplayedDigits() { return m_displayedDigits; }
   void SetDisplayedDigits(int displayedDigits)
     {
+      wxASSERT_MSG(displayedDigits>=20,_("Bug: Maximum number of digits that is to be displayed is too low!"));
       wxConfig::Get()->Write(wxT("displayedDigits"),m_displayedDigits = displayedDigits);
     }
   
