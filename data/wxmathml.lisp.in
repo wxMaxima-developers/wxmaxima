@@ -1394,10 +1394,13 @@
 	 (a-range (meval (cadr scene)))
 	 (expr (caddr scene))
 	 (args (cdddr scene))
+	 (frameno 1)
 	 (images ()))
     (when (integerp a-range)
       (setq a-range (cons '(mlist simp) (loop for i from 1 to a-range collect i))))
     (dolist (aval (reverse (cdr a-range)))
+      ($wxstatusbar (format nil "Preparing Frame #~d" frameno))
+      (setf frameno (+ 1 frameno))
       (let ((preamble ($wxplot_preamble))
 	    (system-preamble (get-plot-option-string '$gnuplot_preamble 2))
 	    (filename (wxplot-filename))
@@ -1452,6 +1455,7 @@
            (a-range (meval (cadr scene)))
            (*windows-OS* t)
            (args (cddr scene))
+	   (frameno 1)
            (images ()))
       (when (integerp a-range)
         (setq a-range (cons '(mlist simp) (loop for i from 1 to a-range collect i))))
@@ -1477,6 +1481,8 @@
           ;; If file_name is not set, show the animation in wxMaxima
           (progn
             (dolist (aval (reverse (cdr a-range)))
+	      ($wxstatusbar (format nil "Preparing Frame #~d" frameno))
+	      (setf frameno (+ 1 frameno))
               (let* ((filename (wxplot-filename nil))
                      (args (cons scene-head
                                  (mapcar #'(lambda (arg) (meval (maxima-substitute aval a arg)))
