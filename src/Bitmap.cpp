@@ -153,6 +153,7 @@ void Bitmap::RecalculateWidths()
   dc.SetUserScale(m_scale,m_scale);
   Configuration configuration(dc);
   configuration.SetClientWidth(BM_FULL_WIDTH);
+  configuration.SetClientHeight(BM_FULL_WIDTH);
 
   while (tmp != NULL)
   {
