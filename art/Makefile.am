@@ -1,4 +1,4 @@
 wxmaximadatadir = ${datadir}/wxMaxima
-wxmaximadata_DATA = art/network-error.png art/network-idle.png art/network-offline.png
-wxmaximadata_DATA += art/network-receive.png art/network-transmit-receive.png
-wxmaximadata_DATA += art/network-transmit.png
+wxmaximadata_DATA = statusbar/network-error.png statusbar/network-idle.png 
+wxmaximadata_DATA += statusbar/network-offline.png statusbar/network-receive.png 
+wxmaximadata_DATA += statusbar/network-transmit.png statusbar/network-transmit-receive.png
