@@ -267,6 +267,7 @@ void MathPrintout::Recalculate()
   
   configuration.SetClientWidth(pageWidth - marginX - marginY
                                - SCALE_PX(Configuration::Get()->GetBaseIndent(), scale));
+  configuration.SetClientHeight(pageHeight);
   Configuration::Get()->SetCanvasSize(wxSize(pageWidth-marginX,pageHeight-marginY));
   marginX += SCALE_PX(Configuration::Get()->GetBaseIndent(), scale);
   configuration.SetIndent(marginX);

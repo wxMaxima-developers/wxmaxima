@@ -141,8 +141,11 @@ public:
   
   void SetIndent(int indent) { m_indent = indent; }
   void SetClientWidth(int width) { m_clientWidth = width; }
+  void SetClientHeight(int height) { m_clientHeight = height; }
   //! Returns the width of the visible portion of the worksheet
   const int GetClientWidth() { return m_clientWidth; }
+  //! Returns the height of the visible portion of the worksheet
+  const int GetClientHeight() { return m_clientHeight; }
   //! Returns the maximum sensible width for a text line: On big 16:9 screens
   //  text tends to get \b very wide before it hits the right margin. But text
   //  blocks that are 1 meter wide and 2 cm high feel - weird.
@@ -271,6 +274,7 @@ private:
   bool m_restartOnReEvaluation;
   wxString m_fontCMRI, m_fontCMSY, m_fontCMEX, m_fontCMMI, m_fontCMTI;
   int m_clientWidth;
+  int m_clientHeight;
   wxFontEncoding m_fontEncoding;
   style m_styles[STYLE_NUM];
   bool m_printer;

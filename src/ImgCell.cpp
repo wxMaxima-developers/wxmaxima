@@ -123,10 +123,7 @@ void ImgCell::RecalculateWidths(int fontsize)
   //  - as image cell's sizes might change when the resolution does
   //    we might have intermittent calculation issues otherwise
   Configuration *configuration = Configuration::Get();
-  m_image->ViewportSize(
-    Configuration::Get()->GetCanvasSize().x,
-    Configuration::Get()->GetCanvasSize().y
-    );
+  m_image-> Recalculate();
   
   m_width  = m_image->m_width  + 2 * m_imageBorderWidth;
   m_height = m_image->m_height + 2 * m_imageBorderWidth;
@@ -145,10 +142,7 @@ void ImgCell::RecalculateHeight(int fontsize)
 void ImgCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
-  m_image->ViewportSize(
-    Configuration::Get()->GetCanvasSize().x,
-    Configuration::Get()->GetCanvasSize().y
-    );
+  m_image->Recalculate();
 
   // TODO: Enable this when unselecting text updates the right region.
   //if (!InUpdateRegion()) return;

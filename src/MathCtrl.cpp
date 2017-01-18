@@ -596,6 +596,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
     tmp->AppendOutput(newCell);
     
     m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
+    m_configuration->SetClientHeight(GetClientSize().GetHeight());
 
     tmp->RecalculateAppended();
     Recalculate(tmp,false);
@@ -667,6 +668,7 @@ void MathCtrl::Recalculate(GroupCell *start,bool force)
 
   m_configuration->SetForceUpdate(force);
   m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
+  m_configuration->SetClientHeight(GetClientSize().GetHeight());
 
   while (tmp != NULL)
   {
@@ -2900,6 +2902,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event)
   m_blinkDisplayCaret = true;
 
   m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
+  m_configuration->SetClientHeight(GetClientSize().GetHeight());
 
   if (m_activeCell->IsDirty())
   {
@@ -2909,6 +2912,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event)
     int height = m_activeCell->GetHeight();
     //   int fontsize = m_configuration->GetDefaultFontSize();
     m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
+    m_configuration->SetClientHeight(GetClientSize().GetHeight());
     int fontsize = m_configuration->GetDefaultFontSize();
     
     m_activeCell->ResetData();

@@ -156,9 +156,7 @@ void SlideShow::RecalculateWidths(int fontsize)
   //  - as image cell's sizes might change when the resolution does
   //    we might have intermittent calculation issues otherwise
   Configuration *configuration = Configuration::Get();
-  m_images[m_displayed]->ViewportSize(
-    Configuration::Get()->GetCanvasSize().x,
-    Configuration::Get()->GetCanvasSize().y);
+  m_images[m_displayed]->Recalculate();
   
   m_width  = m_images[m_displayed]->m_width  + 2 * m_imageBorderWidth;
   m_height = m_images[m_displayed]->m_height + 2 * m_imageBorderWidth;
@@ -177,9 +175,7 @@ void SlideShow::RecalculateHeight(int fontsize)
 void SlideShow::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
-  m_images[m_displayed]->ViewportSize(
-    Configuration::Get()->GetCanvasSize().x,
-    Configuration::Get()->GetCanvasSize().y);
+  m_images[m_displayed]->Recalculate();
 
   // TODO: Enable this when unselecting text updates the right region.
   //if (!InUpdateRegion()) return;
@@ -190,9 +186,7 @@ void SlideShow::Draw(wxPoint point, int fontsize)
   if (DrawThisCell(point) && (m_images[m_displayed] != NULL))
   {
     wxMemoryDC bitmapDC;
-    m_images[m_displayed]->ViewportSize(
-      Configuration::Get()->GetCanvasSize().x,
-      Configuration::Get()->GetCanvasSize().y);
+    m_images[m_displayed]->Recalculate();
   
     m_height = (m_images[m_displayed]->m_height) + 2 * m_imageBorderWidth;
     m_width  = (m_images[m_displayed]->m_width)  + 2 * m_imageBorderWidth;

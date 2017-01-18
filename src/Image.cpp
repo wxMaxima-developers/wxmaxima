@@ -56,21 +56,15 @@ wxBitmap Image::GetUnscaledBitmap()
 
 Image::Image()
 {
-  m_viewportWidth  = 640;
-  m_viewportHeight = 480;
   m_width = 1;
   m_height = 1;
   m_originalWidth = 1;
   m_originalHeight = 1;
-  m_scale          = 1;  
   m_scaledBitmap.Create (1,1);
 }
 
 Image::Image(wxMemoryBuffer image,wxString type)
 {
-  m_viewportWidth  = 640;
-  m_viewportHeight = 480;
-  m_scale          = 1;  
   m_scaledBitmap.Create (1,1);
   m_compressedImage = image;
   m_extension = type;
@@ -91,18 +85,12 @@ Image::Image(wxMemoryBuffer image,wxString type)
 
 Image::Image(const wxBitmap &bitmap)
 {
-  m_viewportWidth  = 640;
-  m_viewportHeight = 480;
-  m_scale          = 1;  
   LoadImage(bitmap);
 }
 
 // constructor which loads an image
 Image::Image(wxString image,bool remove, wxFileSystem *filesystem)
 {
-  m_viewportWidth  = 640;
-  m_viewportHeight = 480;
-  m_scale          = 1;
   m_scaledBitmap.Create (1,1);
   LoadImage(image,remove,filesystem);
 }
@@ -155,7 +143,7 @@ wxSize Image::ToImageFile(wxString filename)
 
 wxBitmap Image::GetBitmap()
 {
-  ViewportSize(m_viewportWidth,m_viewportHeight);
+  Recalculate();
 
   // Let's see if we have cached the scaled bitmap with the right size
   if(m_scaledBitmap.GetWidth() == m_width)
@@ -279,20 +267,20 @@ void Image::LoadImage(wxString image, bool remove,wxFileSystem *filesystem)
       m_originalWidth  = 400;
       m_originalHeight = 250;
     }
-  ViewportSize(m_viewportWidth,m_viewportHeight);
+  Recalculate();
 
 }
 
-void Image::ViewportSize(size_t viewPortWidth,size_t viewPortHeight)
+void Image::Recalculate()
 {
   int width  = m_originalWidth;
   int height = m_originalHeight;
-  m_viewportWidth = viewPortWidth;
-  m_viewportHeight= viewPortHeight;
-  m_scale = Configuration::Get()->GetZoomFactor() * Configuration::Get()->GetScale();
+  double scale;
+  Configuration *configuration = Configuration::Get();
+  scale = configuration->GetZoomFactor() * configuration->GetScale();
 
   // Ensure a minimum size for images.
-  if(m_scale < 0.01) m_scale = 0.01;
+  if(scale < 0.01) scale = 0.01;
   
   if((width < 1) || (height < 1))
     {
@@ -301,25 +289,27 @@ void Image::ViewportSize(size_t viewPortWidth,size_t viewPortHeight)
       return;
     }
 
+  int viewPortHeight = configuration->GetClientHeight();
+  int viewPortWidth = configuration->GetClientWidth();
   if(viewPortHeight < 10)
     viewPortHeight = 10;
   if(viewPortWidth < 10)
     viewPortWidth = 10;  
   
   // Shrink to .9* the canvas size, if needed
-  if(m_scale * width > .9 * viewPortWidth)
+  if(scale * width > .9 * viewPortWidth)
   {
-    m_scale = .9 * viewPortWidth / width;
+    scale = .9 * viewPortWidth / width;
   }
-  if(m_scale * height > .9 * viewPortHeight)
+  if(scale * height > .9 * viewPortHeight)
   {
-    if(m_scale > .9 * viewPortHeight / height)
-      m_scale = .9 * viewPortHeight / height;
+    if(scale > .9 * viewPortHeight / height)
+      scale = .9 * viewPortHeight / height;
   }
 
   // Set the width of the scaled image
-  m_height = (int) (m_scale * height);
-  m_width  = (int) (m_scale * width);
+  m_height = (int) (scale * height);
+  m_width  = (int) (scale * width);
 
   // Clear this cell's image cache if it doesn't contain an image of the size
   // we need right now.
