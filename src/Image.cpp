@@ -155,7 +155,7 @@ wxSize Image::ToImageFile(wxString filename)
 
 wxBitmap Image::GetBitmap()
 {
-  ViewportSize(m_viewportWidth,m_viewportHeight,m_scale);
+  ViewportSize(m_viewportWidth,m_viewportHeight);
 
   // Let's see if we have cached the scaled bitmap with the right size
   if(m_scaledBitmap.GetWidth() == m_width)
@@ -279,47 +279,47 @@ void Image::LoadImage(wxString image, bool remove,wxFileSystem *filesystem)
       m_originalWidth  = 400;
       m_originalHeight = 250;
     }
-  ViewportSize(m_viewportWidth,m_viewportHeight,m_scale);
+  ViewportSize(m_viewportWidth,m_viewportHeight);
 
 }
 
-void Image::ViewportSize(size_t viewPortWidth,size_t viewPortHeight,double scale)
+void Image::ViewportSize(size_t viewPortWidth,size_t viewPortHeight)
 {
   int width  = m_originalWidth;
   int height = m_originalHeight;
   m_viewportWidth = viewPortWidth;
   m_viewportHeight= viewPortHeight;
-  m_scale = scale;
+  m_scale = Configuration::Get()->GetZoomFactor() * Configuration::Get()->GetScale();
 
-  // Ensure a minimum scaling for images.
-  if(scale < 1.0) scale = 1.0;
+  // Ensure a minimum size for images.
+  if(m_scale < 0.01) m_scale = 0.01;
   
-  if((width == 0) || (height == 0))
+  if((width < 1) || (height < 1))
     {
       m_width = 400;
       m_height = 250;
       return;
     }
 
-  if(viewPortHeight < 100)
-    viewPortHeight = 100;
-  if(viewPortWidth < 100)
-    viewPortWidth = 100;  
+  if(viewPortHeight < 10)
+    viewPortHeight = 10;
+  if(viewPortWidth < 10)
+    viewPortWidth = 10;  
   
   // Shrink to .9* the canvas size, if needed
-  if(scale * width > .9 * viewPortWidth)
+  if(m_scale * width > .9 * viewPortWidth)
   {
-    scale = .9 * viewPortWidth / width;
+    m_scale = .9 * viewPortWidth / width;
   }
-  if(scale * height > .9 * viewPortHeight)
+  if(m_scale * height > .9 * viewPortHeight)
   {
-    if(scale > .9 * viewPortHeight / height)
-      scale = .9 * viewPortHeight / height;
+    if(m_scale > .9 * viewPortHeight / height)
+      m_scale = .9 * viewPortHeight / height;
   }
 
   // Set the width of the scaled image
-  m_height = (int) (scale * height);
-  m_width  = (int) (scale * width);
+  m_height = (int) (m_scale * height);
+  m_width  = (int) (m_scale * width);
 
   // Clear this cell's image cache if it doesn't contain an image of the size
   // we need right now.

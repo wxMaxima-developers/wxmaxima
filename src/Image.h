@@ -100,7 +100,7 @@ public:
   //! Returns the image in its unscaled form
   wxBitmap GetUnscaledBitmap();
   //! Needs to be called on changing the viewport size 
-  void ViewportSize(size_t viewPortWidth,size_t viewPortHeight,double scale);
+  void ViewportSize(size_t viewPortWidth,size_t viewPortHeight);
   //! The width of the scaled image
   long m_width;
   //! The height of the scaled image

@@ -72,7 +72,7 @@ public:
   //! Set the drawing context that is currently active
   void SetContext(wxDC &dc){m_dc = &dc;}
   ~Configuration();
-  static double GetMinZoomFactor(){return 0.8;}
+  static double GetMinZoomFactor(){return 0.4;}
   static double GetMaxZoomFactor(){return 8.0;}
   void SetZoomFactor(double newzoom);
   double GetZoomFactor(){return m_zoomFactor;}
