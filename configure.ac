@@ -272,6 +272,7 @@ AC_CONFIG_FILES([
         Doxygen/Doxyfile
         locales/Makefile
         data/Makefile
+        art/Makefile
         data/wxmathml.lisp
         info/Makefile
         test/Makefile
