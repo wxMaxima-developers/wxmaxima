@@ -1,4 +1,4 @@
-SUBDIRS = src locales data info test Doxygen
+SUBDIRS = src locales data info test Doxygen art
 
 DISTCLEAN_FILES = $(distdir).tar.gz.asc
 EXTRA_DIST = README.md bootstrap wxmaxima.spec.in     \
