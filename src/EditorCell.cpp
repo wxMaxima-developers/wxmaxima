@@ -997,6 +997,11 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
 
 int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
 {
+
+  // Don't indent parenthesis that aren't part of code cells.
+  if(m_type != MC_TYPE_INPUT)
+    return 0;
+  
   // A list of by how many chars we need to indent the current line.
   std::list<int> indentChars;
   indentChars.push_back(0);
