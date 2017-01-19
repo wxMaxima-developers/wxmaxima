@@ -122,7 +122,6 @@ void ImgCell::RecalculateWidths(int fontsize)
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
   //    we might have intermittent calculation issues otherwise
-  Configuration *configuration = Configuration::Get();
   m_image-> Recalculate();
   
   m_width  = m_image->m_width  + 2 * m_imageBorderWidth;

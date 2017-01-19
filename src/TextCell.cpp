@@ -79,7 +79,7 @@ void TextCell::SetValue(const wxString &text)
   m_displayedText = m_text;
   if (m_textStyle == TS_NUMBER)
   {
-    int displayedDigits = Configuration::Get()->GetDisplayedDigits();
+    unsigned int displayedDigits = Configuration::Get()->GetDisplayedDigits();
     if (m_displayedText.Length() > displayedDigits)
     {
       int left = displayedDigits/3;
