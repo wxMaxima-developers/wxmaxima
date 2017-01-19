@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-15 14:39+0100\n"
+"POT-Creation-Date: 2017-01-19 19:30+0100\n"
 "PO-Revision-Date: 2013-03-13 11:01+0300\n"
 "Last-Translator: Max Musatov <m1kc@yandex.ru>\n"
 "Language-Team: \n"
@@ -74,16 +74,16 @@ msgstr ""
 msgid "      -l <name>"
 msgstr ""
 
-#: ../src/ImgCell.cpp:189 ../src/ImgCell.cpp:194
+#: ../src/ImgCell.cpp:181 ../src/ImgCell.cpp:186
 msgid " (Graphics) "
 msgstr ""
 
-#: ../src/EditorCell.cpp:3407 ../src/EditorCell.cpp:3808
+#: ../src/EditorCell.cpp:3411 ../src/EditorCell.cpp:3815
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
 
-#: ../src/MathParser.cpp:1085
+#: ../src/MathParser.cpp:966
 msgid " << Expression longer than allowed by the configuration setting! >>"
 msgstr ""
 
@@ -645,7 +645,7 @@ msgstr "Просмотр"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2137
+#: ../src/MathCtrl.cpp:2139
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
@@ -661,30 +661,22 @@ msgstr ""
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
 msgstr ""
 
-#: ../src/MathParser.cpp:281
-msgid "Bug: Fraction without denominator"
-msgstr ""
-
-#: ../src/MathParser.cpp:268 ../src/MathParser.cpp:274
-msgid "Bug: Fraction without enumerator"
-msgstr ""
-
-#: ../src/MathCtrl.cpp:2369
+#: ../src/MathCtrl.cpp:2371
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5988
+#: ../src/MathCtrl.cpp:5992
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6061
+#: ../src/MathCtrl.cpp:6065
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6030
+#: ../src/MathCtrl.cpp:6034
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -692,6 +684,11 @@ msgstr ""
 
 #: ../src/MathCell.cpp:183
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
+msgstr ""
+
+#: ../src/MathParser.cpp:123 ../src/MathParser.cpp:155
+#: ../src/MathParser.cpp:230
+msgid "Bug: Missing contents"
 msgstr ""
 
 #: ../src/GroupCell.cpp:838 ../src/GroupCell.cpp:1007
@@ -730,13 +727,13 @@ msgstr ""
 msgid "Bug: No last cell inside a square root!"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2180
+#: ../src/MathCtrl.cpp:2182
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2147
+#: ../src/MathCtrl.cpp:2149
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 
@@ -744,35 +741,35 @@ msgstr ""
 msgid "Bug: Trying to append NULL to a group cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:618
+#: ../src/MathCtrl.cpp:619
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2071
+#: ../src/MathCtrl.cpp:2073
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6697
+#: ../src/MathCtrl.cpp:6701
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2149
+#: ../src/MathCtrl.cpp:2151
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1563
+#: ../src/MathCtrl.cpp:1565
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6031
+#: ../src/MathCtrl.cpp:6035
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5993 ../src/MathCtrl.cpp:6066 ../src/MathCtrl.cpp:6100
+#: ../src/MathCtrl.cpp:5997 ../src/MathCtrl.cpp:6070 ../src/MathCtrl.cpp:6104
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
@@ -996,7 +993,7 @@ msgstr "Введите список x-координат, разделенных
 msgid "Comma separated y coordinates"
 msgstr "Введите список y-координат, разделенных запятыми"
 
-#: ../src/MathCtrl.cpp:1090
+#: ../src/MathCtrl.cpp:1092
 #, fuzzy
 msgid "Comment Selection"
 msgstr "Копировать выделение"
@@ -1144,8 +1141,8 @@ msgid "Convert trigonometric functions to exponential form"
 msgstr ""
 "Преобразовать тригонометрические функции в экспоненциальное представление"
 
-#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:978 ../src/MathCtrl.cpp:991
-#: ../src/MathCtrl.cpp:1037 ../src/MathCtrl.cpp:1084
+#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:980 ../src/MathCtrl.cpp:993
+#: ../src/MathCtrl.cpp:1039 ../src/MathCtrl.cpp:1086
 msgid "Copy"
 msgstr "Копировать"
 
@@ -1158,12 +1155,12 @@ msgstr "Скопировать предыдущий ввод\tCtrl+I"
 msgid "Copy Previous Output\tCtrl+U"
 msgstr "Скопировать предыдущий ввод\tCtrl+I"
 
-#: ../src/MathCtrl.cpp:996 ../src/MathCtrl.cpp:1042
+#: ../src/MathCtrl.cpp:998 ../src/MathCtrl.cpp:1044
 #: ../src/wxMaximaFrame.cpp:472
 msgid "Copy as Image"
 msgstr "Скопировать изображение"
 
-#: ../src/MathCtrl.cpp:992 ../src/MathCtrl.cpp:1038
+#: ../src/MathCtrl.cpp:994 ../src/MathCtrl.cpp:1040
 #: ../src/wxMaximaFrame.cpp:465
 msgid "Copy as LaTeX"
 msgstr "Скопировать LaTeX"
@@ -1173,7 +1170,7 @@ msgstr "Скопировать LaTeX"
 msgid "Copy as MathML"
 msgstr "Скопировать изображение"
 
-#: ../src/MathCtrl.cpp:995 ../src/MathCtrl.cpp:1040
+#: ../src/MathCtrl.cpp:997 ../src/MathCtrl.cpp:1042
 msgid "Copy as MathML (e.g. to word processor)"
 msgstr ""
 
@@ -1181,7 +1178,7 @@ msgstr ""
 msgid "Copy as Text\tCtrl+Shift+C"
 msgstr "Скопировать текст\tCtrl+Shift+C"
 
-#: ../src/MathCtrl.cpp:993 ../src/MathCtrl.cpp:1039
+#: ../src/MathCtrl.cpp:995 ../src/MathCtrl.cpp:1041
 #, fuzzy
 msgid "Copy as plain text"
 msgstr "Скопировать изображение"
@@ -1221,7 +1218,7 @@ msgstr "Создать новую ячейку с такими же входны
 msgid "Cursor"
 msgstr "Курсор"
 
-#: ../src/ToolBar.cpp:133 ../src/MathCtrl.cpp:1083
+#: ../src/ToolBar.cpp:133 ../src/MathCtrl.cpp:1085
 msgid "Cut"
 msgstr "Вырезать"
 
@@ -1300,7 +1297,7 @@ msgstr "Удалить"
 msgid "Delete F&unction..."
 msgstr "Удалить &функцию"
 
-#: ../src/MathCtrl.cpp:999 ../src/MathCtrl.cpp:1045
+#: ../src/MathCtrl.cpp:1001 ../src/MathCtrl.cpp:1047
 msgid "Delete Selection"
 msgstr "Удалить &выделение"
 
@@ -1366,7 +1363,7 @@ msgstr "Дифференцировать"
 msgid "Differentiate expression"
 msgstr "Дифференцировать выражение"
 
-#: ../src/MathCtrl.cpp:1061
+#: ../src/MathCtrl.cpp:1063
 msgid "Differentiate..."
 msgstr "Дифференцировать..."
 
@@ -1398,7 +1395,7 @@ msgstr "Отображать время выполнения команд"
 msgid "Divide"
 msgstr "Делить"
 
-#: ../src/MathCtrl.cpp:1092
+#: ../src/MathCtrl.cpp:1094
 #, fuzzy
 msgid "Divide Cell"
 msgstr "Делить"
@@ -1568,7 +1565,7 @@ msgstr ""
 msgid "Equations:"
 msgstr "Уравнения:"
 
-#: ../src/Image.cpp:183 ../src/ConfigDialogue.cpp:927 ../src/wxMaxima.cpp:1512
+#: ../src/Image.cpp:171 ../src/ConfigDialogue.cpp:927 ../src/wxMaxima.cpp:1512
 #: ../src/wxMaxima.cpp:1526 ../src/wxMaxima.cpp:1677 ../src/wxMaxima.cpp:1690
 #: ../src/wxMaxima.cpp:1700 ../src/wxMaxima.cpp:1784 ../src/wxMaxima.cpp:1812
 #: ../src/wxMaxima.cpp:1822 ../src/wxMaxima.cpp:2158 ../src/wxMaxima.cpp:2330
@@ -1605,7 +1602,7 @@ msgstr "Вычислить все\tCtrl+R"
 msgid "Evaluate All Visible Cells\tCtrl+R"
 msgstr "Вычислить все\tCtrl+R"
 
-#: ../src/MathCtrl.cpp:1002 ../src/wxMaximaFrame.cpp:545
+#: ../src/MathCtrl.cpp:1004 ../src/wxMaximaFrame.cpp:545
 msgid "Evaluate Cell(s)"
 msgstr "Вычислить"
 
@@ -1614,22 +1611,22 @@ msgstr "Вычислить"
 msgid "Evaluate Cells Above\tCtrl+Shift+P"
 msgstr "Вычислить все\tCtrl+R"
 
-#: ../src/MathCtrl.cpp:1016 ../src/MathCtrl.cpp:1111
+#: ../src/MathCtrl.cpp:1018 ../src/MathCtrl.cpp:1113
 #, fuzzy
 msgid "Evaluate Part\tShift+Ctrl+Enter"
 msgstr "Вычислить поле\tShift+Enter"
 
-#: ../src/MathCtrl.cpp:1021 ../src/MathCtrl.cpp:1113
+#: ../src/MathCtrl.cpp:1023 ../src/MathCtrl.cpp:1115
 #, fuzzy
 msgid "Evaluate Section\tShift+Ctrl+Enter"
 msgstr "Вычислить поле\tShift+Enter"
 
-#: ../src/MathCtrl.cpp:1031 ../src/MathCtrl.cpp:1117
+#: ../src/MathCtrl.cpp:1033 ../src/MathCtrl.cpp:1119
 #, fuzzy
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
 msgstr "Вычислить поле\tShift+Enter"
 
-#: ../src/MathCtrl.cpp:1026 ../src/MathCtrl.cpp:1115
+#: ../src/MathCtrl.cpp:1028 ../src/MathCtrl.cpp:1117
 #, fuzzy
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr "Вычислить поле\tShift+Enter"
@@ -1685,7 +1682,7 @@ msgstr "Раскрыть"
 msgid "Expand (tr)"
 msgstr "Раскрыть (триг)"
 
-#: ../src/MathCtrl.cpp:1057
+#: ../src/MathCtrl.cpp:1059
 #, fuzzy
 msgid "Expand Expression"
 msgstr "Раскрыть выражение"
@@ -1777,7 +1774,7 @@ msgstr "Факторизовать"
 msgid "Factor Complex"
 msgstr "Факторизовать комплексное число"
 
-#: ../src/MathCtrl.cpp:1056
+#: ../src/MathCtrl.cpp:1058
 #, fuzzy
 msgid "Factor Expression"
 msgstr "Факторизовать выражение"
@@ -1848,7 +1845,7 @@ msgstr "Найти &предел..."
 msgid "Find Minimum..."
 msgstr "Найти &минимум..."
 
-#: ../src/MathCtrl.cpp:1053
+#: ../src/MathCtrl.cpp:1055
 msgid "Find Root..."
 msgstr "Найти корень..."
 
@@ -2100,7 +2097,7 @@ msgstr "Вычислить мнимую часть комплексного вы
 msgid "Get the real part of complex expression"
 msgstr "Вычислить вещественную часть комплексного выражения"
 
-#: ../src/MathCtrl.cpp:6080
+#: ../src/MathCtrl.cpp:6084
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2398,15 +2395,15 @@ msgstr "Новый &подраздел\tCtrl+4"
 msgid "Insert S&ubsubsection Cell\tCtrl+5"
 msgstr "Новый &подраздел\tCtrl+4"
 
-#: ../src/MathCtrl.cpp:1075
+#: ../src/MathCtrl.cpp:1077
 msgid "Insert Section Cell"
 msgstr "Новый раздел"
 
-#: ../src/MathCtrl.cpp:1076
+#: ../src/MathCtrl.cpp:1078
 msgid "Insert Subsection Cell"
 msgstr "Новый подраздел"
 
-#: ../src/MathCtrl.cpp:1077
+#: ../src/MathCtrl.cpp:1079
 #, fuzzy
 msgid "Insert Subsubsection Cell"
 msgstr "Новый подраздел"
@@ -2415,11 +2412,11 @@ msgstr "Новый подраздел"
 msgid "Insert T&itle Cell\tCtrl+2"
 msgstr "Новый &заголовок\tCtrl+2"
 
-#: ../src/MathCtrl.cpp:1073
+#: ../src/MathCtrl.cpp:1075
 msgid "Insert Text Cell"
 msgstr "Новый комментарий"
 
-#: ../src/MathCtrl.cpp:1074
+#: ../src/MathCtrl.cpp:1076
 msgid "Insert Title Cell"
 msgstr "Новый заголовок"
 
@@ -2485,7 +2482,7 @@ msgstr "Интегрировать выражение"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Интегрировать выражение при помощи алгоритма Рича"
 
-#: ../src/MathCtrl.cpp:1060 ../src/wxMaximaFrame.cpp:1184
+#: ../src/MathCtrl.cpp:1062 ../src/wxMaximaFrame.cpp:1184
 msgid "Integrate..."
 msgstr "Интегрировать..."
 
@@ -2942,7 +2939,7 @@ msgstr "Средняя величина:"
 msgid "Median..."
 msgstr "Создать список ..."
 
-#: ../src/MathCtrl.cpp:1005
+#: ../src/MathCtrl.cpp:1007
 #, fuzzy
 msgid "Merge Cells"
 msgstr "&Удалить поля"
@@ -3232,13 +3229,13 @@ msgstr "Простые дроби"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr ""
 
-#: ../src/MathParser.cpp:1011
+#: ../src/MathParser.cpp:892
 msgid ""
 "Parts of the document will not be loaded correctly:\n"
 "Found unknown XML Tag name "
 msgstr ""
 
-#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:1070 ../src/MathCtrl.cpp:1085
+#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:1072 ../src/MathCtrl.cpp:1087
 msgid "Paste"
 msgstr "Вставить"
 
@@ -3300,7 +3297,7 @@ msgstr "Двумерный график"
 msgid "Plot 2D..."
 msgstr "Двумерный график..."
 
-#: ../src/MathCtrl.cpp:1063
+#: ../src/MathCtrl.cpp:1065
 msgid "Plot 2d..."
 msgstr "Двумерный график (2D)..."
 
@@ -3312,7 +3309,7 @@ msgstr "Трехмерный график"
 msgid "Plot 3D..."
 msgstr "Трехмерный график..."
 
-#: ../src/MathCtrl.cpp:1064
+#: ../src/MathCtrl.cpp:1066
 msgid "Plot 3d..."
 msgstr "Трёхмерный график (3D)..."
 
@@ -3494,7 +3491,7 @@ msgstr "Перезапустить Maxima"
 msgid "Restart maxima"
 msgstr "Перезапустить Maxima"
 
-#: ../src/MathCtrl.cpp:4537
+#: ../src/MathCtrl.cpp:4541
 msgid "Result"
 msgstr ""
 
@@ -3553,7 +3550,7 @@ msgstr "Пример"
 msgid "Save"
 msgstr "Сохранить"
 
-#: ../src/MathCtrl.cpp:981
+#: ../src/MathCtrl.cpp:983
 msgid "Save Animation..."
 msgstr "Сохранить анимацию..."
 
@@ -3565,7 +3562,7 @@ msgstr "Сохранить как"
 msgid "Save As...\tShift+Ctrl+S"
 msgstr "Сохранить как...\tShift+Ctrl+S"
 
-#: ../src/MathCtrl.cpp:979
+#: ../src/MathCtrl.cpp:981
 msgid "Save Image..."
 msgstr "Сохранить изображение..."
 
@@ -3681,7 +3678,7 @@ msgstr ""
 msgid "Select"
 msgstr "Выделение"
 
-#: ../src/MathCtrl.cpp:1071 ../src/MathCtrl.cpp:1087
+#: ../src/MathCtrl.cpp:1073 ../src/MathCtrl.cpp:1089
 msgid "Select All"
 msgstr "Выделить всё"
 
@@ -3900,7 +3897,7 @@ msgstr "Упростить (рац.)"
 msgid "Simplify (tr)"
 msgstr "Упростить (триг.)"
 
-#: ../src/MathCtrl.cpp:1055
+#: ../src/MathCtrl.cpp:1057
 #, fuzzy
 msgid "Simplify Expression"
 msgstr "Упростить выражение"
@@ -4019,7 +4016,7 @@ msgstr ""
 "Решить обыкновенное дифференциальное уравнение при помощи преобразования "
 "Лапласа"
 
-#: ../src/MathCtrl.cpp:1052 ../src/wxMaximaFrame.cpp:1181
+#: ../src/MathCtrl.cpp:1054 ../src/wxMaximaFrame.cpp:1181
 msgid "Solve..."
 msgstr "Решить..."
 
@@ -4043,7 +4040,7 @@ msgstr "Дополнительно"
 msgid "Special constants"
 msgstr "Специальные константы"
 
-#: ../src/MathCtrl.cpp:982
+#: ../src/MathCtrl.cpp:984
 msgid "Start Animation"
 msgstr "Запустить анимацию"
 
@@ -4125,7 +4122,7 @@ msgstr "Подстановка..."
 msgid "Substitute"
 msgstr "Подставить"
 
-#: ../src/MathCtrl.cpp:1058 ../src/wxMaximaFrame.cpp:866
+#: ../src/MathCtrl.cpp:1060 ../src/wxMaximaFrame.cpp:866
 msgid "Substitute..."
 msgstr "Подставить..."
 
@@ -4305,7 +4302,7 @@ msgid ""
 "find tutorials on using wxMaxima and Maxima."
 msgstr ""
 
-#: ../src/SlideShowCell.cpp:346
+#: ../src/SlideShowCell.cpp:336
 msgid ""
 "There was an error during GIF export!\n"
 "\n"
@@ -4361,7 +4358,7 @@ msgstr "В число с плавающей точкой повышенной &�
 msgid "To &Float"
 msgstr "В число с &плавающей точкой"
 
-#: ../src/MathCtrl.cpp:1050
+#: ../src/MathCtrl.cpp:1052
 msgid "To Float"
 msgstr "В число с плавающей точкой"
 
@@ -4448,11 +4445,11 @@ msgstr "Перевод"
 msgid "Transpose a matrix"
 msgstr "Транспонировать матрицу"
 
-#: ../src/MathCtrl.cpp:5983
+#: ../src/MathCtrl.cpp:5987
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6049
+#: ../src/MathCtrl.cpp:6053
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
@@ -4622,8 +4619,8 @@ msgstr "Переменная:"
 msgid "View"
 msgstr ""
 
-#: ../src/MathParser.cpp:1011 ../src/wxMaxima.cpp:1790 ../src/wxMaxima.cpp:1893
-#: ../src/wxMaxima.cpp:2074
+#: ../src/wxMaxima.cpp:1790 ../src/wxMaxima.cpp:1893 ../src/wxMaxima.cpp:2074
+#: ../src/MathParser.cpp:892
 msgid "Warning"
 msgstr "Предупреждение"
 
@@ -4657,7 +4654,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6980
+#: ../src/MathCtrl.cpp:6984
 msgid "Wrapped search"
 msgstr ""
 
@@ -4776,12 +4773,12 @@ msgstr "[ не сохранено* ]"
 msgid "[%i digits]"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4486
+#: ../src/MathCtrl.cpp:4490
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4612
+#: ../src/MathCtrl.cpp:4616
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr ""
@@ -4806,42 +4803,6 @@ msgstr ""
 #: ../src/LimitWiz.cpp:40
 msgid "both sides"
 msgstr "двусторонний"
-
-#: ../src/MathParser.cpp:440
-msgid "bug:Invalid at tag"
-msgstr ""
-
-#: ../src/MathParser.cpp:297
-msgid "bug:Invalid frac tag"
-msgstr ""
-
-#: ../src/MathParser.cpp:463
-msgid "bug:Invalid function tag"
-msgstr ""
-
-#: ../src/MathParser.cpp:703
-msgid "bug:Invalid int tag"
-msgstr ""
-
-#: ../src/MathParser.cpp:614
-msgid "bug:Invalid limit tag"
-msgstr ""
-
-#: ../src/MathParser.cpp:416
-msgid "bug:Invalid sub tag"
-msgstr ""
-
-#: ../src/MathParser.cpp:385
-msgid "bug:Invalid subsup tag"
-msgstr ""
-
-#: ../src/MathParser.cpp:647
-msgid "bug:Invalid sum tag"
-msgstr ""
-
-#: ../src/MathParser.cpp:353
-msgid "bug:Invalid sup tag"
-msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1314
 #, fuzzy
