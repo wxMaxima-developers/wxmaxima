@@ -12,6 +12,9 @@ Current:
   * progress information for the user.
   * Several scrolling fixes, again.
   * Many additional bug fixes and stability enhancements.
+  * Invalid XML tags are now handled more gracefully
+  * wxMaxima can now directly open a content.xml that has been extracted from a
+    broken .wxmx file (e.G. using a text editor).
 
 16.12:
   * Not a change in wxMaxima, but useful: In maxima >5.38 the load() command can

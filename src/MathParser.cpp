@@ -119,13 +119,14 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
     while (children) {
       if (children->GetName() == wxT("input")) {
         MathCell *editor = ParseTag(children->GetChildren());
+        if(editor == NULL)
+          editor = new EditorCell(_("Bug: Missing contents"));
         group->SetEditableContent(editor->GetValue());
         delete editor;
       }
       if (children->GetName() == wxT("output"))
       {
-        MathCell *tag = ParseTag(children->GetChildren());
-        group->AppendOutput(tag);
+        group->AppendOutput(HandleNullPointer(ParseTag(children->GetChildren())));
       }
       children = GetNextTag(children);
     }
@@ -150,6 +151,8 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
   else if (type == wxT("text")) {
     group = new GroupCell(GC_TYPE_TEXT);
     MathCell *editor = ParseTag(node->GetChildren());
+    if(editor == NULL)
+      editor = new EditorCell(_("Bug: Missing contents"));
     group->SetEditableContent(editor->GetValue());
     delete editor;
   }
@@ -194,6 +197,9 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
         while (xmlcells) {
           MathCell *cell = ParseTag(xmlcells, false);
 
+          if(cell == NULL)
+            continue;
+          
           if(tree == NULL) tree = cell;
 
           if(last == NULL) last = cell;
@@ -216,6 +222,13 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
   group->SetParent(group);
   group->Hide(hide);
   return group;
+}
+
+MathCell *MathParser::HandleNullPointer(MathCell *cell)
+{
+  if(cell == NULL)
+    cell = new TextCell(_("Bug: Missing contents"));
+  return(cell);
 }
 
 MathCell* MathParser::ParseEditorTag(wxXmlNode* node)
@@ -262,41 +275,18 @@ MathCell* MathParser::ParseFracTag(wxXmlNode* node)
   frac->SetHighlight(m_highlight);
   wxXmlNode* child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-  if (child)
-  {
-    MathCell *enumerator = ParseTag(child, false);
-    wxASSERT_MSG(enumerator != NULL,_("Bug: Fraction without enumerator"));
-    if(enumerator==NULL)
-      return NULL;
-    frac->SetNum(enumerator);
-    child = GetNextTag(child);
-    child = SkipWhitespaceNode(child);
-    wxASSERT_MSG(((child != NULL) && (enumerator != NULL)),_("Bug: Fraction without enumerator"));
-    if ((child != NULL) && (enumerator != NULL))
-    {
-      MathCell *denominator = ParseTag(child, false);
-      if(denominator != NULL)
-      {
-        frac->SetDenom(denominator);
-        wxASSERT_MSG(enumerator != NULL,_("Bug: Fraction without denominator"));
-        frac->SetStyle(TS_VARIABLE);
-        
-        if(node->GetAttribute(wxT("line")) == wxT("no"))
-        {
-          frac->SetFracStyle(FracCell::FC_CHOOSE);
-        }
-        if(node->GetAttribute(wxT("diffstyle")) == wxT("yes"))
-          frac->SetFracStyle(FracCell::FC_DIFF);
-        frac->SetType(m_ParserStyle);
-        frac->SetupBreakUps();
-        return frac;
-      }
-    }
-  }
-
-  wxASSERT_MSG(false,_("bug:Invalid frac tag"));
-  delete frac;
-  return NULL;
+  frac->SetNum(HandleNullPointer(ParseTag(child, false)));
+  child = GetNextTag(child);
+  frac->SetDenom(HandleNullPointer(ParseTag(child, false)));
+  frac->SetStyle(TS_VARIABLE);
+  
+  if(node->GetAttribute(wxT("line")) == wxT("no"))
+    frac->SetFracStyle(FracCell::FC_CHOOSE);
+  if(node->GetAttribute(wxT("diffstyle")) == wxT("yes"))
+    frac->SetFracStyle(FracCell::FC_DIFF);
+  frac->SetType(m_ParserStyle);
+  frac->SetupBreakUps();
+  return frac;
 }
 
 MathCell* MathParser::ParseDiffTag(wxXmlNode* node)
@@ -308,16 +298,14 @@ MathCell* MathParser::ParseDiffTag(wxXmlNode* node)
   {
     int fc = m_FracStyle;
     m_FracStyle = FracCell::FC_DIFF;
-    diff->SetDiff(ParseTag(child, false));
+    
+    diff->SetDiff(HandleNullPointer(ParseTag(child, false)));
     m_FracStyle = fc;
     child = GetNextTag(child);
-    if (child)
-    {
-      diff->SetBase(ParseTag(child, true));
-      diff->SetType(m_ParserStyle);
-      diff->SetStyle(TS_VARIABLE);
-      return diff;
-    }
+    
+    diff->SetBase(HandleNullPointer(ParseTag(child, true)));
+    diff->SetType(m_ParserStyle);
+    diff->SetStyle(TS_VARIABLE);
   }
   delete diff;
   return NULL;
@@ -330,29 +318,16 @@ MathCell* MathParser::ParseSupTag(wxXmlNode* node)
     expt->IsMatrix(true);
   wxXmlNode* child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-  if (child)
-  {
-    expt->SetBase(ParseTag(child, false));
-    if(expt != NULL)
-    {
-      child = GetNextTag(child);
-      if (child)
-      {
-        MathCell* power = ParseTag(child, false);
-        if(power)
-        {
-          power->SetExponentFlag();
-          expt->SetPower(power);
-          expt->SetType(m_ParserStyle);
-          expt->SetStyle(TS_VARIABLE);
-          return expt;
-        }
-      }
-    }
-  }
-  wxASSERT_MSG(false,_("bug:Invalid sup tag"));
-  delete expt;
-  return NULL;
+  
+  expt->SetBase(HandleNullPointer(ParseTag(child, false)));
+  child = GetNextTag(child);
+
+  MathCell *power = HandleNullPointer(ParseTag(child, false));
+  power->SetExponentFlag();
+  expt->SetPower(power);
+  expt->SetType(m_ParserStyle);
+  expt->SetStyle(TS_VARIABLE);
+  return expt;
 }
 
 MathCell* MathParser::ParseSubSupTag(wxXmlNode* node)
@@ -360,31 +335,18 @@ MathCell* MathParser::ParseSubSupTag(wxXmlNode* node)
   SubSupCell *subsup = new SubSupCell;
   wxXmlNode* child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-  if (child)
-  {
-    subsup->SetBase(ParseTag(child, false));
-    child = GetNextTag(child);
-    if (child)
-    {
-      MathCell* index = ParseTag(child, false);
-      index->SetExponentFlag();
-      subsup->SetIndex(index);
-      child = GetNextTag(child);
-      if (child)
-      {
-        MathCell* power = ParseTag(child, false);
-        power->SetExponentFlag();
-        subsup->SetExponent(power);
-        subsup->SetType(m_ParserStyle);
-        subsup->SetStyle(TS_VARIABLE);
-        return subsup;
-      }
-    }
-  }
-
-  wxASSERT_MSG(false,_("bug:Invalid subsup tag"));
-  delete subsup;
-  return NULL;
+  subsup->SetBase(HandleNullPointer(ParseTag(child, false)));
+  child = GetNextTag(child);
+  MathCell* index = HandleNullPointer(ParseTag(child, false));
+  index->SetExponentFlag();
+  subsup->SetIndex(index);
+  child = GetNextTag(child);
+  MathCell* power = HandleNullPointer(ParseTag(child, false));
+  power->SetExponentFlag();
+  subsup->SetExponent(power);
+  subsup->SetType(m_ParserStyle);
+  subsup->SetStyle(TS_VARIABLE);
+  return subsup;
 }
 
 MathCell* MathParser::ParseSubTag(wxXmlNode* node)
@@ -392,30 +354,15 @@ MathCell* MathParser::ParseSubTag(wxXmlNode* node)
   SubCell *sub = new SubCell;
   wxXmlNode* child = node->GetChildren();
   child = SkipWhitespaceNode(child);  
-  if (child)
-  {
-    sub->SetBase(ParseTag(child, false));
-    child = GetNextTag(child);
-    if (child)
-    {
-      MathCell* index = ParseTag(child, false);
-      if(index != NULL)
-      {
-        sub->SetIndex(index);
-        index->SetExponentFlag();
-      }
-      else
-        return(NULL);
-      sub->SetType(m_ParserStyle);
-      sub->SetStyle(TS_VARIABLE);
-
-      return sub;
-    }
-  }
-
-  wxASSERT_MSG(false,_("bug:Invalid sub tag"));
-  delete sub;
-  return NULL;
+  sub->SetBase(HandleNullPointer(ParseTag(child, false)));
+  child = GetNextTag(child);
+  MathCell* index = HandleNullPointer(ParseTag(child, false));
+  sub->SetIndex(index);
+  index->SetExponentFlag();
+  sub->SetType(m_ParserStyle);
+  sub->SetStyle(TS_VARIABLE);
+  
+  return sub;
 }
 
 MathCell* MathParser::ParseAtTag(wxXmlNode* node)
@@ -423,23 +370,14 @@ MathCell* MathParser::ParseAtTag(wxXmlNode* node)
   AtCell *at = new AtCell;
   wxXmlNode* child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-
-  if (child)
-  {
-    at->SetBase(ParseTag(child, false));
-    at->SetHighlight(m_highlight);
-    child = GetNextTag(child);
-    if (child)
-    {
-      at->SetIndex(ParseTag(child, false));
-      at->SetType(m_ParserStyle);
-      at->SetStyle(TS_VARIABLE);
-      return at;
-    }
-  }
-  wxASSERT_MSG(false,_("bug:Invalid at tag"));
-  delete at;
-  return NULL;
+  
+  at->SetBase(HandleNullPointer(ParseTag(child, false)));
+  at->SetHighlight(m_highlight);
+  child = GetNextTag(child);
+  at->SetIndex(HandleNullPointer(ParseTag(child, false)));
+  at->SetType(m_ParserStyle);
+  at->SetStyle(TS_VARIABLE);
+  return at;
 }
 
 MathCell* MathParser::ParseFunTag(wxXmlNode* node)
@@ -447,22 +385,13 @@ MathCell* MathParser::ParseFunTag(wxXmlNode* node)
   FunCell *fun = new FunCell;
   wxXmlNode* child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-
-  if (child)
-  {
-    fun->SetName(ParseTag(child, false));
-    child = GetNextTag(child);
-    if (child)
-    {
-      fun->SetType(m_ParserStyle);
-      fun->SetStyle(TS_VARIABLE);
-      fun->SetArg(ParseTag(child, false));
-      return fun;
-    }
-  }
-  wxASSERT_MSG(false,_("bug:Invalid function tag"));
-  delete fun;
-  return NULL;
+  
+  fun->SetName(HandleNullPointer(ParseTag(child, false)));
+  child = GetNextTag(child);
+  fun->SetType(m_ParserStyle);
+  fun->SetStyle(TS_VARIABLE);
+  fun->SetArg(HandleNullPointer(ParseTag(child, false)));
+  return fun;
 }
 
 MathCell* MathParser::ParseText(wxXmlNode* node, int style)
@@ -544,7 +473,8 @@ MathCell* MathParser::ParseSqrtTag(wxXmlNode* node)
   child = SkipWhitespaceNode(child);
   
   SqrtCell* cell = new SqrtCell;
-  cell->SetInner(ParseTag(child, true));
+    
+  cell->SetInner(HandleNullPointer(ParseTag(child, true)));
   cell->SetType(m_ParserStyle);
   cell->SetStyle(TS_VARIABLE);
   cell->SetHighlight(m_highlight);
@@ -556,7 +486,7 @@ MathCell* MathParser::ParseAbsTag(wxXmlNode* node)
   wxXmlNode* child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   AbsCell* cell = new AbsCell;
-  cell->SetInner(ParseTag(child, true));
+  cell->SetInner(HandleNullPointer(ParseTag(child, true)));
   cell->SetType(m_ParserStyle);
   cell->SetStyle(TS_VARIABLE);
   cell->SetHighlight(m_highlight);
@@ -568,7 +498,7 @@ MathCell* MathParser::ParseConjugateTag(wxXmlNode* node)
   wxXmlNode* child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   ConjugateCell* cell = new ConjugateCell;
-  cell->SetInner(ParseTag(child, true));
+  cell->SetInner(HandleNullPointer(ParseTag(child, true)));
   cell->SetType(m_ParserStyle);
   cell->SetStyle(TS_VARIABLE);
   cell->SetHighlight(m_highlight);
@@ -580,7 +510,7 @@ MathCell* MathParser::ParseParenTag(wxXmlNode* node)
   wxXmlNode* child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   ParenCell* cell = new ParenCell;
-  cell->SetInner(ParseTag(child, true), m_ParserStyle);
+  cell->SetInner(HandleNullPointer(ParseTag(child, true)), m_ParserStyle);
   cell->SetHighlight(m_highlight);
   cell->SetStyle(TS_VARIABLE);
   if (node->GetAttributes() != NULL)
@@ -593,27 +523,14 @@ MathCell* MathParser::ParseLimitTag(wxXmlNode* node)
   LimitCell *limit = new LimitCell;
   wxXmlNode* child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-  if (child)
-  {
-    limit->SetName(ParseTag(child, false));
-    child = GetNextTag(child);
-    if (child)
-    {
-      limit->SetUnder(ParseTag(child, false));
-      child = GetNextTag(child);
-      if (child)
-      {
-        limit->SetBase(ParseTag(child, false));
-        limit->SetType(m_ParserStyle);
-        limit->SetStyle(TS_VARIABLE);
-        return limit;
-      }
-    }
-  }
-
-  wxASSERT_MSG(false,_("bug:Invalid limit tag"));
-  delete limit;
-  return NULL;
+  limit->SetName(HandleNullPointer(ParseTag(child, false)));
+  child = GetNextTag(child);
+  limit->SetUnder(HandleNullPointer(ParseTag(child, false)));
+  child = GetNextTag(child);
+  limit->SetBase(HandleNullPointer(ParseTag(child, false)));
+  limit->SetType(m_ParserStyle);
+  limit->SetStyle(TS_VARIABLE);
+  return limit;
 }
 
 MathCell* MathParser::ParseSumTag(wxXmlNode* node)
@@ -626,27 +543,15 @@ MathCell* MathParser::ParseSumTag(wxXmlNode* node)
   if (type == wxT("prod"))
     sum->SetSumStyle(SM_PROD);
   sum->SetHighlight(m_highlight);
-  if (child)
-  {
-    sum->SetUnder(ParseTag(child, false));
-    child = GetNextTag(child);
-    if (child)
-    {
-      if (type != wxT("lsum"))
-        sum->SetOver(ParseTag(child, false));
-      child = GetNextTag(child);
-      if (child)
-      {
-        sum->SetBase(ParseTag(child, false));
-        sum->SetType(m_ParserStyle);
-        sum->SetStyle(TS_VARIABLE);
-        return sum;
-      }
-    }
-  }
-  wxASSERT_MSG(false,_("bug:Invalid sum tag"));
-  delete sum;
-  return NULL;
+  sum->SetUnder(HandleNullPointer(ParseTag(child, false)));
+  child = GetNextTag(child);
+  if (type != wxT("lsum"))
+    sum->SetOver(HandleNullPointer(ParseTag(child, false)));
+  child = GetNextTag(child);
+  sum->SetBase(HandleNullPointer(ParseTag(child, false)));
+  sum->SetType(m_ParserStyle);
+  sum->SetStyle(TS_VARIABLE);
+  return sum;
 }
 
 MathCell* MathParser::ParseIntTag(wxXmlNode* node)
@@ -658,51 +563,27 @@ MathCell* MathParser::ParseIntTag(wxXmlNode* node)
   wxString definiteAtt=node->GetAttribute(wxT("def"),wxT("true"));
   if (definiteAtt != wxT("true"))
   {
-    // A indefinite integral
-    if (child)
-    {
-      in->SetBase(ParseTag(child, false));
-      child = GetNextTag(child);
-      if (child)
-      {
-        in->SetVar(ParseTag(child, true));
-        in->SetType(m_ParserStyle);
-        in->SetStyle(TS_VARIABLE);
-        return in;
-      }
-    }
+    in->SetBase(HandleNullPointer(ParseTag(child, false)));
+    child = GetNextTag(child);
+    in->SetVar(HandleNullPointer(ParseTag(child, true)));
+    in->SetType(m_ParserStyle);
+    in->SetStyle(TS_VARIABLE);
   }
   else
   {
     // A Definite integral
     in->SetIntStyle(IntCell::INT_DEF);
-    if (child)
-    {
-      in->SetUnder(ParseTag(child, false));
-      child = GetNextTag(child);
-      if (child)
-      {
-        in->SetOver(ParseTag(child, false));
-        child = GetNextTag(child);
-        if (child)
-        {
-          in->SetBase(ParseTag(child, false));
-          child = GetNextTag(child);
-          if (child)
-          {
-            in->SetVar(ParseTag(child, true));
-            in->SetType(m_ParserStyle);
-            in->SetStyle(TS_VARIABLE);
-            return in;
-          }
-        }
-      }
-    }
+    in->SetUnder(HandleNullPointer(ParseTag(child, false)));
+    child = GetNextTag(child);
+    in->SetOver(HandleNullPointer(ParseTag(child, false)));
+    child = GetNextTag(child);
+    in->SetBase(HandleNullPointer(ParseTag(child, false)));
+    child = GetNextTag(child);
+    in->SetVar(HandleNullPointer(ParseTag(child, true)));
+    in->SetType(m_ParserStyle);
+    in->SetStyle(TS_VARIABLE);
   }
-  
-  wxASSERT_MSG(false,_("bug:Invalid int tag"));
-  delete in;
-  return NULL;
+  return in;
 }
 
 MathCell* MathParser::ParseTableTag(wxXmlNode* node)
@@ -730,7 +611,7 @@ MathCell* MathParser::ParseTableTag(wxXmlNode* node)
     while (cells)
     {
       matrix->NewColumn();
-      matrix->AddNewCell(ParseTag(cells, false));
+      matrix->AddNewCell(HandleNullPointer(ParseTag(cells, false)));
       cells = GetNextTag(cells);
     }
     rows = rows->GetNext();

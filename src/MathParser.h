@@ -49,6 +49,7 @@ public:
   MathCell* ParseLine(wxString s, int style = MC_TYPE_DEFAULT);
   MathCell* ParseTag(wxXmlNode* node, bool all = true);
 private:
+  MathCell *HandleNullPointer(MathCell *cell);
   wxString m_workingDirectory;
   /*! Get the next xml tag
 
