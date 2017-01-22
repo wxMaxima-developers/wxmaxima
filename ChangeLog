@@ -14,7 +14,8 @@ Current:
   * Many additional bug fixes and stability enhancements.
   * Invalid XML tags are now handled more gracefully
   * wxMaxima can now directly open a content.xml that has been extracted from a
-    broken .wxmx file (e.G. using a text editor).
+    broken .wxmx file (e.G. using a text editor) and that has been saved as
+    "content.xml" (UTF8-encoding without BOM).
 
 16.12:
   * Not a change in wxMaxima, but useful: In maxima >5.38 the load() command can
