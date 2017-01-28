@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-19 19:30+0100\n"
+"POT-Creation-Date: 2017-01-28 08:43+0100\n"
 "PO-Revision-Date: 2017-01-19 19:30+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -77,7 +77,7 @@ msgstr " (Bild) "
 msgid " ... + %i hidden lines"
 msgstr "... + %i versteckte Zeilen"
 
-#: ../src/MathParser.cpp:966
+#: ../src/MathParser.cpp:965
 msgid " << Expression longer than allowed by the configuration setting! >>"
 msgstr " << Ausdruck länger, als im Konfigurationsdialog erlaubt >>"
 
@@ -1161,8 +1161,8 @@ msgstr "Wandle trigonometrischen Ausdruck in eine kanonische Form"
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Ersetze Winkelfunktionen durch Exponentialfunktionen"
 
-#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:980 ../src/MathCtrl.cpp:993
-#: ../src/MathCtrl.cpp:1039 ../src/MathCtrl.cpp:1086
+#: ../src/MathCtrl.cpp:980 ../src/MathCtrl.cpp:993 ../src/MathCtrl.cpp:1039
+#: ../src/MathCtrl.cpp:1086 ../src/ToolBar.cpp:136
 msgid "Copy"
 msgstr "Kopieren"
 
@@ -1236,7 +1236,7 @@ msgstr "Neue Zelle mit letzter Ausgabe erzeugen."
 msgid "Cursor"
 msgstr "Cursor"
 
-#: ../src/ToolBar.cpp:133 ../src/MathCtrl.cpp:1085
+#: ../src/MathCtrl.cpp:1085 ../src/ToolBar.cpp:133
 msgid "Cut"
 msgstr "Ausschneiden"
 
@@ -1383,7 +1383,7 @@ msgstr "Ausdruck differenzieren"
 msgid "Differentiate..."
 msgstr "Differenzieren ..."
 
-#: ../src/LimitWiz.cpp:37 ../src/FindReplacePane.cpp:80
+#: ../src/FindReplacePane.cpp:80 ../src/LimitWiz.cpp:37
 msgid "Direction:"
 msgstr "Richtung:"
 
@@ -1583,11 +1583,12 @@ msgstr ""
 msgid "Equations:"
 msgstr "Gleichungen:"
 
-#: ../src/Image.cpp:171 ../src/ConfigDialogue.cpp:927 ../src/wxMaxima.cpp:1512
-#: ../src/wxMaxima.cpp:1526 ../src/wxMaxima.cpp:1677 ../src/wxMaxima.cpp:1690
-#: ../src/wxMaxima.cpp:1700 ../src/wxMaxima.cpp:1784 ../src/wxMaxima.cpp:1812
-#: ../src/wxMaxima.cpp:1822 ../src/wxMaxima.cpp:2158 ../src/wxMaxima.cpp:2330
-#: ../src/wxMaxima.cpp:5623 ../src/wxMaxima.cpp:6072 ../src/wxMaxima.cpp:6123
+#: ../src/Image.cpp:171 ../src/wxMaxima.cpp:1512 ../src/wxMaxima.cpp:1526
+#: ../src/wxMaxima.cpp:1677 ../src/wxMaxima.cpp:1690 ../src/wxMaxima.cpp:1700
+#: ../src/wxMaxima.cpp:1784 ../src/wxMaxima.cpp:1812 ../src/wxMaxima.cpp:1822
+#: ../src/wxMaxima.cpp:2158 ../src/wxMaxima.cpp:2330 ../src/wxMaxima.cpp:5623
+#: ../src/wxMaxima.cpp:6072 ../src/wxMaxima.cpp:6123
+#: ../src/ConfigDialogue.cpp:927
 msgid "Error"
 msgstr "Fehler"
 
@@ -1709,7 +1710,7 @@ msgstr "Trigonometrische Ausdrücke expandieren"
 msgid "Expected the icon files to be found at"
 msgstr "Habe erwartet, die Icons hier zu finden:"
 
-#: ../src/ConfigDialogue.cpp:150 ../src/wxMaxima.cpp:3005
+#: ../src/wxMaxima.cpp:3005 ../src/ConfigDialogue.cpp:150
 msgid "Export"
 msgstr "Exportieren"
 
@@ -3224,8 +3225,8 @@ msgstr "Einstichproben t-Test"
 msgid "Online tutorials"
 msgstr "Online Tutorials"
 
-#: ../src/ToolBar.cpp:115 ../src/ConfigDialogue.cpp:660 ../src/main.cpp:354
-#: ../src/wxMaxima.cpp:2968
+#: ../src/ToolBar.cpp:115 ../src/main.cpp:354 ../src/wxMaxima.cpp:2968
+#: ../src/ConfigDialogue.cpp:660
 msgid "Open"
 msgstr "Öffnen"
 
@@ -3327,7 +3328,7 @@ msgstr "Partialbruchzerlegung"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "Teile des Dokuments werden nicht korrekt geladen!"
 
-#: ../src/MathParser.cpp:892
+#: ../src/MathParser.cpp:891
 msgid ""
 "Parts of the document will not be loaded correctly:\n"
 "Found unknown XML Tag name "
@@ -3335,7 +3336,7 @@ msgstr ""
 "Teile des Dokuments werden nicht korrekt geladen:\n"
 "Unbekanntes XML-Tag gefunden mit dem Name "
 
-#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:1072 ../src/MathCtrl.cpp:1087
+#: ../src/MathCtrl.cpp:1072 ../src/MathCtrl.cpp:1087 ../src/ToolBar.cpp:139
 msgid "Paste"
 msgstr "Einfügen"
 
@@ -3635,8 +3636,8 @@ msgstr "Probe 2:"
 msgid "Sample:"
 msgstr "Probe:"
 
-#: ../src/ToolBar.cpp:118 ../src/ConfigDialogue.cpp:789
-#: ../src/wxMaxima.cpp:6164
+#: ../src/ToolBar.cpp:118 ../src/wxMaxima.cpp:6164
+#: ../src/ConfigDialogue.cpp:789
 msgid "Save"
 msgstr "Speichern"
 
@@ -4233,6 +4234,12 @@ msgstr "Summenzeichen"
 msgid "Symbols\tAlt+Shift+Y"
 msgstr "Symbole\tAlt+Shift+Y"
 
+#: ../src/ConfigDialogue.cpp:205
+msgid ""
+"Symbols that are entered or copied here will appear in the symbols sidebar "
+"so they can be entered into the worksheet easily."
+msgstr ""
+
 #: ../src/wxMaxima.cpp:4631
 msgid "System info"
 msgstr "System Information"
@@ -4754,8 +4761,8 @@ msgstr "Varianz"
 msgid "View"
 msgstr "Anzeige"
 
-#: ../src/wxMaxima.cpp:1790 ../src/wxMaxima.cpp:1893 ../src/wxMaxima.cpp:2074
-#: ../src/MathParser.cpp:892
+#: ../src/MathParser.cpp:891 ../src/wxMaxima.cpp:1790 ../src/wxMaxima.cpp:1893
+#: ../src/wxMaxima.cpp:2074
 msgid "Warning"
 msgstr "Warnung"
 

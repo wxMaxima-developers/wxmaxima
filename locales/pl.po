@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-19 19:30+0100\n"
+"POT-Creation-Date: 2017-01-28 08:43+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ihor Rokach <rokach@tu.kielce.pl>\n"
 "Language-Team: \n"
@@ -79,7 +79,7 @@ msgstr ""
 msgid " ... + %i hidden lines"
 msgstr ""
 
-#: ../src/MathParser.cpp:966
+#: ../src/MathParser.cpp:965
 msgid " << Expression longer than allowed by the configuration setting! >>"
 msgstr ""
 
@@ -1110,8 +1110,8 @@ msgstr "Uprość wyrażenie trygonometryczne zawierające ułamki."
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Zamień funkcje trygonometryczne i hiperboliczne na eksponencjalne"
 
-#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:980 ../src/MathCtrl.cpp:993
-#: ../src/MathCtrl.cpp:1039 ../src/MathCtrl.cpp:1086
+#: ../src/MathCtrl.cpp:980 ../src/MathCtrl.cpp:993 ../src/MathCtrl.cpp:1039
+#: ../src/MathCtrl.cpp:1086 ../src/ToolBar.cpp:136
 msgid "Copy"
 msgstr "Kopiuj"
 
@@ -1187,7 +1187,7 @@ msgstr "Utwórz nową komórkę z ostatnim wejściem"
 msgid "Cursor"
 msgstr "Kursor"
 
-#: ../src/ToolBar.cpp:133 ../src/MathCtrl.cpp:1085
+#: ../src/MathCtrl.cpp:1085 ../src/ToolBar.cpp:133
 msgid "Cut"
 msgstr "Wytnij"
 
@@ -1333,7 +1333,7 @@ msgstr "Oblicz pochodną wyrażenia"
 msgid "Differentiate..."
 msgstr "Pochodna..."
 
-#: ../src/LimitWiz.cpp:37 ../src/FindReplacePane.cpp:80
+#: ../src/FindReplacePane.cpp:80 ../src/LimitWiz.cpp:37
 msgid "Direction:"
 msgstr "Z:"
 
@@ -1530,11 +1530,12 @@ msgstr ""
 msgid "Equations:"
 msgstr "Równania:"
 
-#: ../src/Image.cpp:171 ../src/ConfigDialogue.cpp:927 ../src/wxMaxima.cpp:1512
-#: ../src/wxMaxima.cpp:1526 ../src/wxMaxima.cpp:1677 ../src/wxMaxima.cpp:1690
-#: ../src/wxMaxima.cpp:1700 ../src/wxMaxima.cpp:1784 ../src/wxMaxima.cpp:1812
-#: ../src/wxMaxima.cpp:1822 ../src/wxMaxima.cpp:2158 ../src/wxMaxima.cpp:2330
-#: ../src/wxMaxima.cpp:5623 ../src/wxMaxima.cpp:6072 ../src/wxMaxima.cpp:6123
+#: ../src/Image.cpp:171 ../src/wxMaxima.cpp:1512 ../src/wxMaxima.cpp:1526
+#: ../src/wxMaxima.cpp:1677 ../src/wxMaxima.cpp:1690 ../src/wxMaxima.cpp:1700
+#: ../src/wxMaxima.cpp:1784 ../src/wxMaxima.cpp:1812 ../src/wxMaxima.cpp:1822
+#: ../src/wxMaxima.cpp:2158 ../src/wxMaxima.cpp:2330 ../src/wxMaxima.cpp:5623
+#: ../src/wxMaxima.cpp:6072 ../src/wxMaxima.cpp:6123
+#: ../src/ConfigDialogue.cpp:927
 msgid "Error"
 msgstr "Błąd"
 
@@ -1662,7 +1663,7 @@ msgstr "Rozwiń wyrażenie trygonometryczne"
 msgid "Expected the icon files to be found at"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:150 ../src/wxMaxima.cpp:3005
+#: ../src/wxMaxima.cpp:3005 ../src/ConfigDialogue.cpp:150
 msgid "Export"
 msgstr "Eksportuj"
 
@@ -3054,8 +3055,8 @@ msgstr ""
 msgid "Online tutorials"
 msgstr "Kursy Online"
 
-#: ../src/ToolBar.cpp:115 ../src/ConfigDialogue.cpp:660 ../src/main.cpp:354
-#: ../src/wxMaxima.cpp:2968
+#: ../src/ToolBar.cpp:115 ../src/main.cpp:354 ../src/wxMaxima.cpp:2968
+#: ../src/ConfigDialogue.cpp:660
 msgid "Open"
 msgstr "Otwórz"
 
@@ -3159,14 +3160,14 @@ msgstr "Ułamek prosty"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "Części dokumentu nie zostaną wczytane poprawnie"
 
-#: ../src/MathParser.cpp:892
+#: ../src/MathParser.cpp:891
 #, fuzzy
 msgid ""
 "Parts of the document will not be loaded correctly:\n"
 "Found unknown XML Tag name "
 msgstr "Części dokumentu nie zostaną wczytane poprawnie"
 
-#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:1072 ../src/MathCtrl.cpp:1087
+#: ../src/MathCtrl.cpp:1072 ../src/MathCtrl.cpp:1087 ../src/ToolBar.cpp:139
 msgid "Paste"
 msgstr "Wklej"
 
@@ -3468,8 +3469,8 @@ msgstr "Przykład 2:"
 msgid "Sample:"
 msgstr "Próbka:"
 
-#: ../src/ToolBar.cpp:118 ../src/ConfigDialogue.cpp:789
-#: ../src/wxMaxima.cpp:6164
+#: ../src/ToolBar.cpp:118 ../src/wxMaxima.cpp:6164
+#: ../src/ConfigDialogue.cpp:789
 msgid "Save"
 msgstr "Zapisz"
 
@@ -4058,6 +4059,12 @@ msgstr ""
 msgid "Symbols\tAlt+Shift+Y"
 msgstr "Statystyka\tAlt+Shift+S"
 
+#: ../src/ConfigDialogue.cpp:205
+msgid ""
+"Symbols that are entered or copied here will appear in the symbols sidebar "
+"so they can be entered into the worksheet easily."
+msgstr ""
+
 #: ../src/wxMaxima.cpp:4631
 msgid "System info"
 msgstr "Informacja o systemie"
@@ -4540,8 +4547,8 @@ msgstr "Wariancja..."
 msgid "View"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1790 ../src/wxMaxima.cpp:1893 ../src/wxMaxima.cpp:2074
-#: ../src/MathParser.cpp:892
+#: ../src/MathParser.cpp:891 ../src/wxMaxima.cpp:1790 ../src/wxMaxima.cpp:1893
+#: ../src/wxMaxima.cpp:2074
 msgid "Warning"
 msgstr "Ostrzeżenie"
 

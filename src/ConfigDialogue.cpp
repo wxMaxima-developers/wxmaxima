@@ -202,7 +202,7 @@ void ConfigDialogue::SetProperties()
   m_autosubscript->SetToolTip(_("false=Don't generate subscripts\ntrue=Automatically convert underscores to subscript markers if the would-be subscript is a number or a single letter\nall=_ marks subscripts."));
   m_language->SetToolTip(_("Language used for wxMaxima GUI."));
 #ifdef wxUSE_UNICODE
-  m_symbolPaneAdditionalChars->SetToolTip("Symbols that are entered or copied here will appear in the symbols sidebar so they can be entered into the worksheet easily.");
+  m_symbolPaneAdditionalChars->SetToolTip(_("Symbols that are entered or copied here will appear in the symbols sidebar so they can be entered into the worksheet easily."));
 #endif
   m_documentclass->SetToolTip(_("The document class LaTeX is instructed to use for our documents."));
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima 0.8.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-19 19:30+0100\n"
+"POT-Creation-Date: 2017-01-28 08:43+0100\n"
 "PO-Revision-Date: 2012-03-14 10:23+0800\n"
 "Last-Translator: cw.ahbong <cwahbong@users.sourceforge.net>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -80,7 +80,7 @@ msgstr ""
 msgid " ... + %i hidden lines"
 msgstr ""
 
-#: ../src/MathParser.cpp:966
+#: ../src/MathParser.cpp:965
 msgid " << Expression longer than allowed by the configuration setting! >>"
 msgstr ""
 
@@ -1105,8 +1105,8 @@ msgstr "轉換三角函數數式為標準準線性形式"
 msgid "Convert trigonometric functions to exponential form"
 msgstr "轉換三角函數數式為指數形式"
 
-#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:980 ../src/MathCtrl.cpp:993
-#: ../src/MathCtrl.cpp:1039 ../src/MathCtrl.cpp:1086
+#: ../src/MathCtrl.cpp:980 ../src/MathCtrl.cpp:993 ../src/MathCtrl.cpp:1039
+#: ../src/MathCtrl.cpp:1086 ../src/ToolBar.cpp:136
 msgid "Copy"
 msgstr "複製"
 
@@ -1182,7 +1182,7 @@ msgstr "以上一個輸入建立一個新的單元"
 msgid "Cursor"
 msgstr "游標"
 
-#: ../src/ToolBar.cpp:133 ../src/MathCtrl.cpp:1085
+#: ../src/MathCtrl.cpp:1085 ../src/ToolBar.cpp:133
 msgid "Cut"
 msgstr "剪下"
 
@@ -1328,7 +1328,7 @@ msgstr "對數式微分"
 msgid "Differentiate..."
 msgstr "微分..."
 
-#: ../src/LimitWiz.cpp:37 ../src/FindReplacePane.cpp:80
+#: ../src/FindReplacePane.cpp:80 ../src/LimitWiz.cpp:37
 msgid "Direction:"
 msgstr "方向："
 
@@ -1522,11 +1522,12 @@ msgstr ""
 msgid "Equations:"
 msgstr "方程式："
 
-#: ../src/Image.cpp:171 ../src/ConfigDialogue.cpp:927 ../src/wxMaxima.cpp:1512
-#: ../src/wxMaxima.cpp:1526 ../src/wxMaxima.cpp:1677 ../src/wxMaxima.cpp:1690
-#: ../src/wxMaxima.cpp:1700 ../src/wxMaxima.cpp:1784 ../src/wxMaxima.cpp:1812
-#: ../src/wxMaxima.cpp:1822 ../src/wxMaxima.cpp:2158 ../src/wxMaxima.cpp:2330
-#: ../src/wxMaxima.cpp:5623 ../src/wxMaxima.cpp:6072 ../src/wxMaxima.cpp:6123
+#: ../src/Image.cpp:171 ../src/wxMaxima.cpp:1512 ../src/wxMaxima.cpp:1526
+#: ../src/wxMaxima.cpp:1677 ../src/wxMaxima.cpp:1690 ../src/wxMaxima.cpp:1700
+#: ../src/wxMaxima.cpp:1784 ../src/wxMaxima.cpp:1812 ../src/wxMaxima.cpp:1822
+#: ../src/wxMaxima.cpp:2158 ../src/wxMaxima.cpp:2330 ../src/wxMaxima.cpp:5623
+#: ../src/wxMaxima.cpp:6072 ../src/wxMaxima.cpp:6123
+#: ../src/ConfigDialogue.cpp:927
 msgid "Error"
 msgstr "錯誤"
 
@@ -1654,7 +1655,7 @@ msgstr "展開三角函數數式"
 msgid "Expected the icon files to be found at"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:150 ../src/wxMaxima.cpp:3005
+#: ../src/wxMaxima.cpp:3005 ../src/ConfigDialogue.cpp:150
 msgid "Export"
 msgstr "匯出"
 
@@ -3046,8 +3047,8 @@ msgstr "單樣本 t-檢驗"
 msgid "Online tutorials"
 msgstr "線上教材"
 
-#: ../src/ToolBar.cpp:115 ../src/ConfigDialogue.cpp:660 ../src/main.cpp:354
-#: ../src/wxMaxima.cpp:2968
+#: ../src/ToolBar.cpp:115 ../src/main.cpp:354 ../src/wxMaxima.cpp:2968
+#: ../src/ConfigDialogue.cpp:660
 msgid "Open"
 msgstr "開啟"
 
@@ -3149,14 +3150,14 @@ msgstr "部分分式"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "文件的某部分將無法被正確的讀取！"
 
-#: ../src/MathParser.cpp:892
+#: ../src/MathParser.cpp:891
 #, fuzzy
 msgid ""
 "Parts of the document will not be loaded correctly:\n"
 "Found unknown XML Tag name "
 msgstr "文件的某部分將無法被正確的讀取！"
 
-#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:1072 ../src/MathCtrl.cpp:1087
+#: ../src/MathCtrl.cpp:1072 ../src/MathCtrl.cpp:1087 ../src/ToolBar.cpp:139
 msgid "Paste"
 msgstr "貼上"
 
@@ -3458,8 +3459,8 @@ msgstr "樣本 2："
 msgid "Sample:"
 msgstr "樣本："
 
-#: ../src/ToolBar.cpp:118 ../src/ConfigDialogue.cpp:789
-#: ../src/wxMaxima.cpp:6164
+#: ../src/ToolBar.cpp:118 ../src/wxMaxima.cpp:6164
+#: ../src/ConfigDialogue.cpp:789
 msgid "Save"
 msgstr "儲存"
 
@@ -4044,6 +4045,12 @@ msgstr ""
 msgid "Symbols\tAlt+Shift+Y"
 msgstr "統計\tAlt+Shift+S"
 
+#: ../src/ConfigDialogue.cpp:205
+msgid ""
+"Symbols that are entered or copied here will appear in the symbols sidebar "
+"so they can be entered into the worksheet easily."
+msgstr ""
+
 #: ../src/wxMaxima.cpp:4631
 msgid "System info"
 msgstr "系統資訊"
@@ -4521,8 +4528,8 @@ msgstr "變異數..."
 msgid "View"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:1790 ../src/wxMaxima.cpp:1893 ../src/wxMaxima.cpp:2074
-#: ../src/MathParser.cpp:892
+#: ../src/MathParser.cpp:891 ../src/wxMaxima.cpp:1790 ../src/wxMaxima.cpp:1893
+#: ../src/wxMaxima.cpp:2074
 msgid "Warning"
 msgstr "警告"
 
