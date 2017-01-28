@@ -307,8 +307,7 @@ MathCell* MathParser::ParseDiffTag(wxXmlNode* node)
     diff->SetType(m_ParserStyle);
     diff->SetStyle(TS_VARIABLE);
   }
-  delete diff;
-  return NULL;
+  return diff;
 }
 
 MathCell* MathParser::ParseSupTag(wxXmlNode* node)
