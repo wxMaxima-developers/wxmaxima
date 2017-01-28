@@ -3262,7 +3262,7 @@ wxArrayString EditorCell::StringToTokens(wxString string)
         token=wxEmptyString;
       }
       
-      while((pos<size) && IsAlphaNum(string.GetChar(pos)))
+      while((pos<size-1) && IsAlphaNum(string.GetChar(pos)))
       {
         if(string.GetChar(pos) == wxT('\\'))
         {
