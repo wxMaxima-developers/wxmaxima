@@ -3264,14 +3264,26 @@ wxArrayString EditorCell::StringToTokens(wxString string)
       
       while((pos<size) && IsAlphaNum(string.GetChar(pos)))
       {
-        if(string.GetChar(pos) == wxT('\\'))
+        wxChar ch=string.GetChar(pos);
+        token += ch;
+        
+        if(ch == wxT('\\'))
         {
-          token += string.GetChar(pos);
           pos++;
-          if((pos<size) && (string.GetChar(pos) == wxT('\n')))
-            continue;
+          if(pos<size)
+          {
+            ch=string.GetChar(pos);
+            if(ch != wxT('\n'))
+              token += string.GetChar(pos);
+            else
+            {
+              retval.Add(token + wxT("d"));
+              token = wxEmptyString;
+              
+              break;
+            }
+          }
         }
-        token += string.GetChar(pos);
         pos++;
       }
       
