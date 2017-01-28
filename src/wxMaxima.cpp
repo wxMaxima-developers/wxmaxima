@@ -1252,6 +1252,7 @@ void wxMaxima::ReadMath(wxString &data)
       if(m_console->m_evaluationQueue->GetUserLabel() != wxEmptyString)
       {
         wxString label = m_console->m_evaluationQueue->GetUserLabel();
+        label.Replace("\\","\\\\");
         m_outputPromptRegEx.Replace(&o,wxT("<lbl userdefined=\"yes\">(")+label+wxT(")</lbl>"),1);
       }
     }
