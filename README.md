@@ -113,7 +113,7 @@ Sometimes the configure step requires an extra
 
 On Windows execute instead:
 
-    ./configure --with-wx-config=<path to wx-config> --with-hhc=<path to hhc.exe> --enable-chm
+    ./configure --with-wx-config=<path to wx-config>
     make
     make allmo
     make wxMaxima.win
@@ -121,25 +121,22 @@ On Windows execute instead:
 which builds the directory structure necessary for running wxMaxima. Note
 that this structure might be lacking a few .dll files, depending on the
 compiler. They will be named libstdc++-6.dll and libgcc_s_sjlj-1.dll or
-similar. If configure is called the following way:
+similar.
 
-    ./configure --with-wx-config=<path to wx-config> --with-hhc=<path to hhc.exe> --enable-chm --enable-fullystatic
+It is also possible to tell the GNU C compiler to try to include all
+necessary .dll files in wxMaxima.exe while compiling wxMaxima:
 
-it is possible that they are already included in the resulting .exe file.
+    ./configure --with-wx-config=<path to wx-config> --enable-static-wx -enable-fullystatic
+    make allmo
+    make wxMaxima.win
+
+
+The build system also offers a build target that creates a zip archive whose
+contents is a self-contained wxMaxima installation that can be placed in the folder
+maxima was installed in, again with the caveat of the .dll files:
 
     make wxMaxima.win.zip
 
-will build the whole application as a zip archive whose contents is a self-contained wxMaxima
-installation that can be placed in the folder maxima was installed in,
-again with the caveat of the .dll files.
-
-The `--enable-chm` and the `--with-hhc` are only necessary to allow the
-builder to convert the wxMaxima offline manual to a format the
-built-in help browser of windows understands. For this conversion
-the Microsoft HTML Help workshop is necessary which 
-is distributed separately. If they aren't added to the configure
-command line wxMaxima is shipped with a html version of the manual
-that can be viewed using the internet browser instead.
 
 
 Additional information about installing and configuring wxMaxima
