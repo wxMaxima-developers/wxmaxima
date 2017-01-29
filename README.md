@@ -124,7 +124,9 @@ compiler. They will be named libstdc++-6.dll and libgcc_s_sjlj-1.dll or
 similar.
 
 It is also possible to tell the GNU C compiler to try to include all
-necessary .dll files in wxMaxima.exe while compiling wxMaxima:
+necessary .dll files in wxMaxima.exe while compiling wxMaxima. In order to
+make this work wxWidgets has to be compiled statically which allows to
+include it directly into an .exe file:
 
     ./configure --with-wx-config=<path to wx-config> --enable-static-wx -enable-fullystatic
     make allmo
