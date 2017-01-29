@@ -17,9 +17,11 @@ if test x"${git_found}" = xtrue; then
     # Play it safe by refusing to change VERSION.)
     if git describe > /dev/null 2>&1; then
         VERSION="`git describe --dirty`"
+        PACKAGE_VERSION="`git describe --dirty`"
         # When building RPMs, hyphens in the version are not allowed, so
         # replace them with underscores.
         VERSION=`echo $VERSION | sed 's;-;_;g'`
+        PACKAGE_VERSION=`echo $PACKAGE_VERSION | sed 's;-;_;g'`
     fi
     AC_DEFINE_UNQUOTED([GITVERSION], ["$VERSION"], ["The version description including info from git, if available"])
     else
