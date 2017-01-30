@@ -88,14 +88,13 @@
 ($put '$wxmaxima (read-wxmaxima-version "@PACKAGE_VERSION@") '$version)
 
 (defun $wxbuild_info ()
-  (let ((wxmaxima-version (cdr ($get '$wxmaxima '$version)))
-        (year (sixth cl-user:*maxima-build-time*))
+  (let ((year (sixth cl-user:*maxima-build-time*))
         (month (fifth cl-user:*maxima-build-time*))
         (day (fourth cl-user:*maxima-build-time*))
         (hour (third cl-user:*maxima-build-time*))
         (minute (second cl-user:*maxima-build-time*))
         (seconds (first cl-user:*maxima-build-time*)))
-    (format t "wxMaxima version: ~{~d~^.~}~%" wxmaxima-version)
+    (format t "wxMaxima version: ~a~%" "@VERSION@")
     (format t "Maxima version: ~a~%" *autoconf-version*)
     (format t "Maxima build date: ~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d~%"
             year month day hour minute seconds)
