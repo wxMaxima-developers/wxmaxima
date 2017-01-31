@@ -684,7 +684,13 @@ wxPanel* ConfigDialogue::CreateMaximaPanel()
   sizer2->Add(ap2, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   wxStaticText *ap3 = new wxStaticText(panel, -1, _("choose a lisp maxima was compiled with"));
   sizer2->Add(ap3, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  wxStaticText *ap4 = new wxStaticText(panel, -1, _("      -X '--dynamic-space-size <int>'"));
+  wxString sbclMemoryParameter;
+#ifdef __WXMSW__
+  sbclMemoryParameter = "      -X \"--dynamic-space-size <int>\"";
+#else
+  sbclMemoryParameter = "      -X '--dynamic-space-size <int>'";
+#endif
+  wxStaticText *ap4 = new wxStaticText(panel, -1, sbclMemoryParameter);
   sizer2->Add(ap4, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   wxStaticText *ap5 = new wxStaticText(panel, -1, _("tell sbcl to use <int>Mbytes of heap"));
   sizer2->Add(ap5, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
