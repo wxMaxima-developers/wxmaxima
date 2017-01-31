@@ -219,6 +219,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
   }
   
   // Inform all cells how wide our display is
+  MathCell::SetCanvasSize(GetClientSize());
   wxMemoryDC dcm;
   wxPaintDC dc(this);
   
@@ -490,6 +491,7 @@ GroupCell *MathCtrl::InsertGroupCells(
   if (!next) // if there were no further cells
     m_last = lastOfCellsToInsert;
   
+  m_tree->SetCanvasSize(GetClientSize());
   if (renumbersections)
     NumberSections();
   Recalculate(where,false);
@@ -659,6 +661,9 @@ void MathCtrl::Recalculate(GroupCell *start,bool force)
     tmp = m_tree;
   else
     tmp = start;
+
+  if(m_tree)
+    m_tree->SetCanvasSize(GetClientSize());
 
   m_configuration->SetForceUpdate(force);
   m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
