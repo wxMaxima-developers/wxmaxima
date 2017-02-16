@@ -774,7 +774,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
         m_unsuccessfullConnectionAttempts ++;
         StartMaxima(true);
       }
-      m_console->m_evaluationQueue->Clear();
+      m_console->m_evaluationQueue.Clear();
       // Inform the user that the evaluation queue is empty.
       EvaluationQueueLength(0);
     }
@@ -836,7 +836,7 @@ void wxMaxima::ServerEvent(wxSocketEvent& event)
         m_unsuccessfullConnectionAttempts ++;
         StartMaxima();
       }
-      m_console->m_evaluationQueue->Clear();
+      m_console->m_evaluationQueue.Clear();
       // Inform the user that the evaluation queue is empty.
       EvaluationQueueLength(0);
     }
@@ -1095,7 +1095,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   
   data = wxEmptyString;
 
-  if (m_console->m_evaluationQueue->Empty())
+  if (m_console->m_evaluationQueue.Empty())
   {
     // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
@@ -1179,7 +1179,7 @@ void wxMaxima::ReadMiscText(wxString &data)
       bool abortOnError = false;
       wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
       if(abortOnError || m_batchmode)
-        m_console->m_evaluationQueue->Clear();
+        m_console->m_evaluationQueue.Clear();
       {
         SetBatchMode(false);
         // Inform the user that the evaluation queue is empty.
@@ -1249,9 +1249,9 @@ void wxMaxima::ReadMath(wxString &data)
     // by the one the user has used - if the configuration option to do so is set.
     if(showUserDefinedLabels)
     {
-      if(m_console->m_evaluationQueue->GetUserLabel() != wxEmptyString)
+      if(m_console->m_evaluationQueue.GetUserLabel() != wxEmptyString)
       {
-        wxString label = m_console->m_evaluationQueue->GetUserLabel();
+        wxString label = m_console->m_evaluationQueue.GetUserLabel();
         label.Replace("\\","\\\\");
         m_outputPromptRegEx.Replace(&o,wxT("<lbl userdefined=\"yes\">(")+label+wxT(")</lbl>"),1);
       }
@@ -1348,11 +1348,11 @@ void wxMaxima::ReadPrompt(wxString &data)
     //m_lastPrompt.Replace(wxT(")"), wxT(":"), false);
     m_lastPrompt = o;
     // remove the event maxima has just processed from the evaluation queue
-    m_console->m_evaluationQueue->RemoveFirst();
+    m_console->m_evaluationQueue.RemoveFirst();
     // if we remove a command from the evaluation queue the next output line will be the
     // first from the next command.
     m_outputCellsFromCurrentCommand = 0;
-    if (m_console->m_evaluationQueue->Empty()) { // queue empty?
+    if (m_console->m_evaluationQueue.Empty()) { // queue empty?
       StatusMaximaBusy(waiting);
       if(m_console->FollowEvaluation())
       {
@@ -1392,7 +1392,7 @@ void wxMaxima::ReadPrompt(wxString &data)
       TryEvaluateNextInQueue();
     }
 
-    if (m_console->m_evaluationQueue->Empty())
+    if (m_console->m_evaluationQueue.Empty())
     {
       if ((Configuration::Get()->GetOpenHCaret())&&(m_console->GetActiveCell() == NULL))
         m_console->OpenNextOrCreateCell();
@@ -1435,7 +1435,7 @@ void wxMaxima::ReadPrompt(wxString &data)
   {
     if(!m_console->QuestionPending())
     {
-      if(m_console->m_evaluationQueue->Empty())
+      if(m_console->m_evaluationQueue.Empty())
         m_maximaStdoutPollTimer.Stop();
     }
   }
@@ -1490,7 +1490,7 @@ void wxMaxima::SetCWD(wxString file)
     SendMaxima(wxT(":lisp-quiet (wx-cd \"") + filenamestring + wxT("\")"));
     if (m_ready)
     {
-      if(m_console->m_evaluationQueue->Empty())
+      if(m_console->m_evaluationQueue.Empty())
         StatusMaximaBusy(waiting);
     }
     m_CWD = workingDirectory;
@@ -1923,7 +1923,7 @@ void wxMaxima::ReadLispError(wxString &data)
     bool abortOnError = false;
     wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
     if(abortOnError || m_batchmode)
-      m_console->m_evaluationQueue->Clear();
+      m_console->m_evaluationQueue.Clear();
     {
       SetBatchMode(false);
       // Inform the user that the evaluation queue is empty.
@@ -2424,7 +2424,7 @@ void wxMaxima::OnIdle(wxIdleEvent& event)
 
 void wxMaxima::MenuCommand(wxString cmd)
 {
-  bool evaluating = (!m_console->m_evaluationQueue->Empty()) && (m_StatusMaximaBusy == waiting);
+  bool evaluating = (!m_console->m_evaluationQueue.Empty()) && (m_StatusMaximaBusy == waiting);
   
   m_console->SetFocus();
 //  ym_console->SetSelection(NULL);
@@ -2514,7 +2514,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
                   (m_console->GetHCaret() != NULL)
     );
 
-  menubar->Enable(menu_triggerEvaluation, !m_console->m_evaluationQueue->Empty());
+  menubar->Enable(menu_triggerEvaluation, !m_console->m_evaluationQueue.Empty());
   menubar->Enable(menu_save_id, (!m_fileSaved));
 
   for (int id = menu_pane_math; id<=menu_pane_stats; id++)
@@ -2883,7 +2883,7 @@ void wxMaxima::ReadStdErr()
     SetBatchMode(false);
     if(abortOnError || m_batchmode)
     {
-      m_console->m_evaluationQueue->Clear();
+      m_console->m_evaluationQueue.Clear();
       // Inform the user that the evaluation queue is empty.
       EvaluationQueueLength(0);
       m_console->ScrollToError();
@@ -3469,7 +3469,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     break;
   case ToolBar::menu_restart_id:
     m_closing = true;
-    m_console->m_evaluationQueue->Clear();
+    m_console->m_evaluationQueue.Clear();
     m_console->ResetInputPrompts();
     StartMaxima(true);
     break;
@@ -3538,40 +3538,40 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
   break;
   case menu_evaluate_all_visible:
   {
-    m_console->m_evaluationQueue->Clear();
+    m_console->m_evaluationQueue.Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
     if(Configuration::Get()->RestartOnReEvaluation())
       StartMaxima();
     m_console->AddDocumentToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
-    EvaluationQueueLength(m_console->m_evaluationQueue->Size(),m_console->m_evaluationQueue->CommandsLeftInCell());
+    EvaluationQueueLength(m_console->m_evaluationQueue.Size(),m_console->m_evaluationQueue.CommandsLeftInCell());
     TryEvaluateNextInQueue();
   }
   break;
   case menu_evaluate_all:
   {
-    m_console->m_evaluationQueue->Clear();
+    m_console->m_evaluationQueue.Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
     if(Configuration::Get()->RestartOnReEvaluation())
       StartMaxima();
     m_console->AddEntireDocumentToEvaluationQueue();
   // Inform the user about the length of the evaluation queue.
-    EvaluationQueueLength(m_console->m_evaluationQueue->Size(),m_console->m_evaluationQueue->CommandsLeftInCell());
+    EvaluationQueueLength(m_console->m_evaluationQueue.Size(),m_console->m_evaluationQueue.CommandsLeftInCell());
     TryEvaluateNextInQueue();
   }
   break;
   case ToolBar::tb_evaltillhere:
   {
-    m_console->m_evaluationQueue->Clear();
+    m_console->m_evaluationQueue.Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
     if(Configuration::Get()->RestartOnReEvaluation())
       StartMaxima();
     m_console->AddDocumentTillHereToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
-    EvaluationQueueLength(m_console->m_evaluationQueue->Size(),m_console->m_evaluationQueue->CommandsLeftInCell());
+    EvaluationQueueLength(m_console->m_evaluationQueue.Size(),m_console->m_evaluationQueue.CommandsLeftInCell());
     TryEvaluateNextInQueue();
   }
   break;
@@ -5165,7 +5165,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
       {
         if(m_console->m_tableOfContents->RightClickedOn())
         {
-          bool evaluating = !m_console->m_evaluationQueue->Empty();
+          bool evaluating = !m_console->m_evaluationQueue.Empty();
           m_console->AddSectionToEvaluationQueue(m_console->m_tableOfContents->RightClickedOn());
           if(!evaluating)
             TryEvaluateNextInQueue();
@@ -5174,7 +5174,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
       break;
   case MathCtrl::popid_evaluate_section:
   {
-    bool evaluating = !m_console->m_evaluationQueue->Empty();
+    bool evaluating = !m_console->m_evaluationQueue.Empty();
     GroupCell *group = NULL;
     if(m_console->GetActiveCell())
     {
@@ -5452,7 +5452,7 @@ void wxMaxima::EditInputMenu(wxCommandEvent& event)
 // of the working group, handle it carefully.
 void wxMaxima::EvaluateEvent(wxCommandEvent& event)
 {
-  bool evaluating = !m_console->m_evaluationQueue->Empty();
+  bool evaluating = !m_console->m_evaluationQueue.Empty();
   if(!evaluating)
     m_console->FollowEvaluation(true);
   EditorCell* tmp = m_console->GetActiveCell();
@@ -5479,7 +5479,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent& event)
     m_console->AddSelectionToEvaluationQueue();
   }
   // Inform the user about the length of the evaluation queue.
-  EvaluationQueueLength(m_console->m_evaluationQueue->Size(),m_console->m_evaluationQueue->CommandsLeftInCell());
+  EvaluationQueueLength(m_console->m_evaluationQueue.Size(),m_console->m_evaluationQueue.CommandsLeftInCell());
   if(!evaluating)
     TryEvaluateNextInQueue();;
 }
@@ -5610,7 +5610,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
 
 void wxMaxima::TriggerEvaluation()
 {
-  if(!m_console->m_evaluationQueue->Empty())
+  if(!m_console->m_evaluationQueue.Empty())
     TryEvaluateNextInQueue();
 }
 
@@ -5625,7 +5625,7 @@ void wxMaxima::TryEvaluateNextInQueue()
       wxMessageBox(_("\nNot connected to Maxima!\n"), _("Error"), wxOK | wxICON_ERROR);
       
       // Clear the evaluation queue.
-      m_console->m_evaluationQueue->Clear();
+      m_console->m_evaluationQueue.Clear();
       m_console->RequestRedraw();
       EvaluationQueueLength(0);
     }
@@ -5640,7 +5640,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   }
   
   // Maxima is connected. Let's test if the evaluation queue is empty.
-  GroupCell *tmp = m_console->m_evaluationQueue->GetCell();
+  GroupCell *tmp = m_console->m_evaluationQueue.GetCell();
   if (tmp == NULL)
   {
     // Maxima is no more busy.
@@ -5657,7 +5657,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   }
 
   // Display the evaluation queue's status.
-  EvaluationQueueLength(m_console->m_evaluationQueue->Size(),m_console->m_evaluationQueue->CommandsLeftInCell());
+  EvaluationQueueLength(m_console->m_evaluationQueue.Size(),m_console->m_evaluationQueue.CommandsLeftInCell());
 
   // We don't want to evaluate a new cell if the user still has to answer
   // a question.
@@ -5672,7 +5672,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   ReadStdErr();
   m_maximaStdoutPollTimer.Start(1000);
 
-  if(m_console->m_evaluationQueue->m_workingGroupChanged)
+  if(m_console->m_evaluationQueue.m_workingGroupChanged)
   {
     // If the cell's output that we are about to remove contains the currently
     // selected cells we undo the selection.
@@ -5691,7 +5691,7 @@ void wxMaxima::TryEvaluateNextInQueue()
     m_console->RequestRedraw();
   }
 
-  wxString text = m_console->m_evaluationQueue->GetCommand();
+  wxString text = m_console->m_evaluationQueue.GetCommand();
   if((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
   {
     wxString parenthesisError=GetUnmatchedParenthesisState(tmp->GetEditable()->ToString(true));
@@ -5720,8 +5720,8 @@ void wxMaxima::TryEvaluateNextInQueue()
       }
       
       SendMaxima(text, true);
-      EvaluationQueueLength(m_console->m_evaluationQueue->Size(),
-                            m_console->m_evaluationQueue->CommandsLeftInCell()
+      EvaluationQueueLength(m_console->m_evaluationQueue.Size(),
+                            m_console->m_evaluationQueue.CommandsLeftInCell()
         );
 
       text.Trim(false);
@@ -5755,13 +5755,13 @@ void wxMaxima::TryEvaluateNextInQueue()
       EvaluationQueueLength(0);
       if(abortOnError || m_batchmode)
       {
-        m_console->m_evaluationQueue->Clear();
+        m_console->m_evaluationQueue.Clear();
         StatusMaximaBusy(waiting);
         m_console->ScrollToError();
       }
       else
       {
-        m_console->m_evaluationQueue->RemoveFirst();
+        m_console->m_evaluationQueue.RemoveFirst();
         m_outputCellsFromCurrentCommand = 0;
         TryEvaluateNextInQueue();
       }
@@ -5770,7 +5770,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   }
   else
   {
-    m_console->m_evaluationQueue->RemoveFirst();
+    m_console->m_evaluationQueue.RemoveFirst();
     m_outputCellsFromCurrentCommand = 0;
     TryEvaluateNextInQueue();
   }

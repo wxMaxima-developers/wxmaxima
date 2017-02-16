@@ -119,7 +119,6 @@ wxScrolledCanvas(
   m_animationTimer.SetOwner(this, ANIMATION_TIMER_ID);
   AnimationRunning(false);
   m_saved = false;
-  m_evaluationQueue = new EvaluationQueue();
   AdjustSize();
   m_autocompleteTemplates = false;
 
@@ -187,15 +186,13 @@ MathCtrl::~MathCtrl() {
   if(HasCapture())
     ReleaseMouse();
   
-  wxDelete(m_mainToolBar);
+  wxDELETE(m_mainToolBar);
   m_mainToolBar = NULL;
   
   if (m_tree != NULL)
     DestroyTree();
   m_tree = NULL;
     
-  delete m_evaluationQueue;
-  m_evaluationQueue = NULL;
   delete m_configuration;
   delete m_dc;
 }
@@ -394,14 +391,14 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
   //
   // Mark groupcells currently in queue. TODO better in gc::draw?
   //
-  if (m_evaluationQueue->GetCell() != NULL) {
+  if (m_evaluationQueue.GetCell() != NULL) {
     GroupCell* tmp = m_tree;
     dcm.SetBrush(*wxTRANSPARENT_BRUSH);
     while (tmp != NULL)
     {
       wxRect rect = tmp->GetRect();
-      if (m_evaluationQueue->IsInQueue(dynamic_cast<GroupCell*>(tmp))) {
-        if (m_evaluationQueue->GetCell() == tmp)
+      if (m_evaluationQueue.IsInQueue(dynamic_cast<GroupCell*>(tmp))) {
+        if (m_evaluationQueue.GetCell() == tmp)
           {
             dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CELL_BRACKET), 2, wxPENSTYLE_SOLID)));
             rect = wxRect( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
@@ -731,7 +728,7 @@ void MathCtrl::ClearDocument() {
   m_activeCell = NULL;
   m_workingGroup = NULL;
 
-  m_evaluationQueue->Clear();
+  m_evaluationQueue.Clear();
   TreeUndo_ClearBuffers();
   DestroyTree();
 
@@ -2028,7 +2025,7 @@ bool MathCtrl::CanDeleteRegion(GroupCell *start, GroupCell *end)
   // We refuse deletion of a cell we are planning to evaluate
   while (tmp != NULL)
   {
-    if(m_evaluationQueue->IsInQueue(tmp))
+    if(m_evaluationQueue.IsInQueue(tmp))
       return false;
 
     if(m_cellMouseSelectionStartedIn)
@@ -2644,7 +2641,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event)
               ( enterEvaluates && !controlOrShift) )
           { // shift-enter pressed === menu_evaluate event
             GroupCell *currentGroup=dynamic_cast<GroupCell*>(GetActiveCell()->GetParent());
-            if((m_evaluationQueue->IsLastInQueue(currentGroup)) &&
+            if((m_evaluationQueue.IsLastInQueue(currentGroup)) &&
                (!QuestionPending()) && (
                  (GetWorkingGroup() != currentGroup) ||
                  !currentGroup->GetInput()->ContainsChanges())
@@ -5684,7 +5681,7 @@ void MathCtrl::AddToEvaluationQueue(GroupCell *cell)
     {
       cell->GetInput()->ContainsChanges(true);
       // ...and add it to the evaluation queue
-      m_evaluationQueue->AddToQueue(cell);
+      m_evaluationQueue.AddToQueue(cell);
     }
   }
 }
@@ -5699,7 +5696,7 @@ void MathCtrl::AddEntireDocumentToEvaluationQueue()
   while (tmp != NULL)
   {
     AddToEvaluationQueue(tmp);
-    m_evaluationQueue->AddHiddenTreeToQueue(tmp);
+    m_evaluationQueue.AddHiddenTreeToQueue(tmp);
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
   SetHCaret(m_last);

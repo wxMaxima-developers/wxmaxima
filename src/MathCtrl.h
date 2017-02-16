@@ -1007,7 +1007,7 @@ public:
   //! Schedule this cell for evaluation
   void AddCellToEvaluationQueue(GroupCell* gc);
   //! The list of cells that have to be evaluated
-  EvaluationQueue* m_evaluationQueue;
+  EvaluationQueue m_evaluationQueue;
   // methods for folding
   GroupCell *UpdateMLast();
   void FoldOccurred();
