@@ -559,7 +559,7 @@ private:
   wxTimer m_animationTimer;
   //! True only when an animation is running
   bool m_animate;
-  wxBitmap *m_memory;
+  wxBitmap m_memory;
   //! True if no changes have to be saved.
   bool m_saved;
   AutoComplete m_autocomplete;

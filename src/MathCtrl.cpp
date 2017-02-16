@@ -101,7 +101,6 @@ wxScrolledCanvas(
   m_scrolledAwayFromEvaluation = false;
   m_tree = NULL;
   m_mainToolBar = NULL;
-  m_memory = NULL;
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
   m_clickType = CLICK_TYPE_NONE;
@@ -187,22 +186,18 @@ void MathCtrl::RequestRedraw(GroupCell *start)
 MathCtrl::~MathCtrl() {
   if(HasCapture())
     ReleaseMouse();
-  delete m_configuration;
-  delete m_dc;
-  if(m_mainToolBar != NULL)
-    delete m_mainToolBar;
+  
+  wxDelete(m_mainToolBar);
   m_mainToolBar = NULL;
   
   if (m_tree != NULL)
     DestroyTree();
   m_tree = NULL;
-  
-  if (m_memory != NULL)
-    delete m_memory;
-  m_memory = NULL;
-  
+    
   delete m_evaluationQueue;
   m_evaluationQueue = NULL;
+  delete m_configuration;
+  delete m_dc;
 }
 
 /***
@@ -244,16 +239,15 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
   if(sz.y == 0) sz.y=1;
   
   // Test if m_memory is NULL (resize event)
-  if (m_memory == NULL) {
-    m_memory = new wxBitmap();
-    m_memory->CreateScaled (sz.x, sz.y, -1, dc.GetContentScaleFactor ());
-  }
+  if ((!m_memory.IsOk())||(m_memory.GetSize()!=sz))
+    m_memory = wxBitmap(sz);
+
   // Prepare memory DC
   wxString bgColStr= wxT("white");
   config->Read(wxT("Style/Background/color"), &bgColStr);
   SetBackgroundColour(wxColour(bgColStr));
 
-  dcm.SelectObject(*m_memory);
+  dcm.SelectObject(m_memory);
   dcm.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
   dcm.Clear();
   PrepareDC(dcm);
@@ -682,9 +676,8 @@ void MathCtrl::Recalculate(GroupCell *start,bool force)
 /***
  * Resize the control
  */
-void MathCtrl::OnSize(wxSizeEvent& event) {
-  wxDELETE(m_memory);
-
+void MathCtrl::OnSize(wxSizeEvent& event)
+{
   // Determine if we have a sane thing we can scroll to.
   MathCell *CellToScrollTo = NULL;
   if(CaretVisibleIs())
