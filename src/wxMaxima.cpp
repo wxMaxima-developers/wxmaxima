@@ -863,7 +863,7 @@ bool wxMaxima::StartServer()
   m_server = new wxSocketServer(addr);
   if (!m_server->Ok())
   {
-    delete m_server;
+    m_server->Destroy();
     m_server = NULL;
     m_isRunning = false;
     m_isConnected = false;
