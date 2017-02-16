@@ -57,7 +57,8 @@ public:
 
   //! Informs the status bar about networking events.
   void NetworkStatus(networkState status);
-  
+
+  wxStaticBitmap *GetNetworkStatusElement(){return m_networkStatus;}
 protected:
   void OnSize(wxSizeEvent& event);
   void OnTimerEvent(wxTimerEvent& event);

@@ -192,6 +192,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_varRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *:"));
   // RegEx for blank statement removal
   m_blankStatementRegEx.Compile(wxT("(^;)|((^|;)(((\\/\\*.*\\*\\/)?([[:space:]]*))+;)+)"));
+
+  m_statusBar->GetNetworkStatusElement()->Connect(wxEVT_LEFT_DCLICK,
+					   wxCommandEventHandler(wxMaxima::NetworkDClick),
+					   NULL, this);
 }
 
 wxMaxima::~wxMaxima()
@@ -6027,9 +6031,10 @@ void wxMaxima::ShowPane(wxCommandEvent &ev)
 
 void wxMaxima::NetworkDClick(wxCommandEvent& ev)
 {
-    m_manager.GetPane(wxT("XmlInspector")).Show(
-      m_manager.GetPane(wxT("XmlInspector")).IsShown()
-      );
+  m_manager.GetPane(wxT("XmlInspector")).Show(
+    !m_manager.GetPane(wxT("XmlInspector")).IsShown()
+    );
+  m_manager.Update();
 }
 
 void wxMaxima::HistoryDClick(wxCommandEvent& ev)
