@@ -222,6 +222,7 @@ protected:
   bool m_working;
   int m_indent;
   int m_fontSize;
+  int m_fontSize_Old;
   int m_mathFontSize;
   MathCell *m_lastInOutput;
   MathCell *m_appendedCells;

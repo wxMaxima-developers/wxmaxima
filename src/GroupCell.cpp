@@ -426,8 +426,9 @@ void GroupCell::RecalculateHeight(int fontsize)
   Configuration *configuration = Configuration::Get();
   double scale = configuration->GetScale();
 
-  if (m_width == -1 || m_height == -1 || configuration->ForceUpdate())
+  if (m_width == -1 || m_height == -1 || configuration->ForceUpdate() || fontsize * scale + .5 != m_fontSize_Old)
   {
+    m_fontSize_Old = fontsize * scale + .5;
     // special case
     if (m_groupType == GC_TYPE_PAGEBREAK) {
       m_width = 10;
