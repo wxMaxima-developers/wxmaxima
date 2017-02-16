@@ -387,6 +387,8 @@ void EditorCell::RecalculateWidths(int fontsize)
   double scale = configuration->GetScale();
 
   // Redo the line wrapping if the viewport width has changed.
+  // Redoing the line wrapping will mark the cell height and width
+  // as "to be recalculated".
   if(
     (configuration->GetClientWidth() != m_oldViewportWidth) ||
     (configuration->GetZoomFactor() != m_oldZoomFactor) ||
@@ -4002,7 +4004,8 @@ void EditorCell::SetValue(const wxString &text)
   // Style the text.
   StyleText();
   if(m_group != NULL)
-    m_group->ResetSize();  
+    m_group->ResetSize();
+  ResetData();
 }
 
 bool EditorCell::CheckChanges()

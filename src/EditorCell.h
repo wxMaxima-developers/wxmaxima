@@ -63,7 +63,7 @@ private:
   int m_oldScaleFactor;
   //! The font size the linewrap was done for.
   int m_oldDefaultFontSize;
-
+  
   int ChangeNumpadToChar(int c);
   //! A list of all potential autoComplete targets within this cell
   wxArrayString m_wordList;
