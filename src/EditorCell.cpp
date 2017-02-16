@@ -424,7 +424,7 @@ void EditorCell::RecalculateWidths(int fontsize)
       ++textSnippet
       )
     {
-      if((textSnippet->GetText() == '\n') || (textSnippet->GetText() == '\r'))
+      if((textSnippet->GetText().StartsWith(wxT('\n')) || (textSnippet->GetText().StartsWith(wxT('\r')))))
       {
         m_numberOfLines++;
         linewidth = textSnippet->GetIndentPixels(); 
