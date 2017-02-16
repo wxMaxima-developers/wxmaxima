@@ -4556,8 +4556,9 @@ MyAboutDialog::MyAboutDialog(wxWindow *parent, int id, const wxString title, wxS
         "<p>"
         "<img src=\"%s/wxmaxima.png\">"
         "</p>"
-        "<h1>wxMaxima %s</h1>"
-        "<p><small>(C) 2004 - 2015 Andrej Vodopivec</small><br></p>"
+        "<h1>wxMaxima</h1>"
+        "<p>%s</p>"
+        "<p><small>(C) 2004 - 2017 Andrej Vodopivec</small><br></p>"
         "</center>"
         "</body>"
         "</html>"),
@@ -4713,7 +4714,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
     info.SetDescription(description);
     info.SetName(_("wxMaxima"));
     info.SetVersion(wxT(GITVERSION));
-    info.SetCopyright(wxT("(C) 2004-2015 Andrej Vodopivec"));
+    info.SetCopyright(wxT("(C) 2004-2017 Andrej Vodopivec"));
     info.SetWebSite(wxT("http://andrejv.github.io/wxmaxima/"));
 
     info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
