@@ -384,6 +384,7 @@ wxString EditorCell::ToXML()
 void EditorCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
 
   // Redo the line wrapping if the viewport width has changed.
   if(
@@ -397,10 +398,10 @@ void EditorCell::RecalculateWidths(int fontsize)
   int charWidth;
 
   m_isDirty = false;
-  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() || fontsize != m_fontSize_Last)
+  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() || fontsize * scale + 0.5 != m_fontSize_Last)
   {
     ResetData();
-    m_fontSize_Last = fontsize;
+    m_fontSize_Last = fontsize * scale + 0.5;
     wxDC& dc = configuration->GetDC();
     double scale = configuration->GetScale();
     SetFont(fontsize);

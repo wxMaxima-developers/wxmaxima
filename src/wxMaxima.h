@@ -255,6 +255,8 @@ protected:
   void InsertMenu(wxCommandEvent& event);          //
   void PrintMenu(wxCommandEvent& event);
   void SliderEvent(wxScrollEvent& event);
+  //! Issued on double click on the network status
+  void NetworkDClick(wxCommandEvent& ev);
   //! Issued on double click on a history item
   void HistoryDClick(wxCommandEvent& event);
   //! Issued on double click on a table of contents item

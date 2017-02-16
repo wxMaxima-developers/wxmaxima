@@ -6024,6 +6024,13 @@ void wxMaxima::ShowPane(wxCommandEvent &ev)
                             !IsPaneDisplayed(static_cast<Event>(id)));
 }
 
+void wxMaxima::NetworkDClick(wxCommandEvent& ev)
+{
+    m_manager.GetPane(wxT("XmlInspector")).Show(
+      m_manager.GetPane(wxT("XmlInspector")).IsShown()
+      );
+}
+
 void wxMaxima::HistoryDClick(wxCommandEvent& ev)
 {
   m_console->OpenHCaret(ev.GetString(), GC_TYPE_CODE);

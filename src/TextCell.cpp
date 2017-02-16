@@ -127,6 +127,7 @@ wxString TextCell::LabelWidthText()
 void TextCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
   SetAltText();
 
   // If the config settings about how many digits to display has changed we
@@ -137,11 +138,10 @@ void TextCell::RecalculateWidths(int fontsize)
     )
     SetValue(m_text);
   
-  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() || m_oldFontSize != fontsize)
+  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() || m_oldFontSize != (((double)fontsize) * scale + 0.5))
   {
-    m_oldFontSize = fontsize;
+    m_oldFontSize = (((double)fontsize) * scale + 0.5);
     wxDC& dc = configuration->GetDC();
-    double scale = configuration->GetScale();
     SetFont(fontsize);
 
     // Labels and prompts are fixed width - adjust font size so that
