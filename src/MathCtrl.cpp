@@ -2677,7 +2677,8 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event)
             event.Skip();
             // Sometimes and only in certain zoom factors pressing enter doesn't change the
             // size of an EditorCell. Let's see if that helps...
-            Recalculate(dynamic_cast<GroupCell*>(m_activeCell->GetParent()),false);
+            m_activeCell->RecalculateWidths(Configuration::Get()->GetDefaultFontSize());
+            Recalculate(dynamic_cast<GroupCell*>(m_activeCell->GetParent()));
             RequestRedraw();
           }
         }
