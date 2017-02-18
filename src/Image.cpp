@@ -277,7 +277,7 @@ void Image::Recalculate()
   int height = m_originalHeight;
   double scale;
   Configuration *configuration = Configuration::Get();
-  scale = configuration->GetZoomFactor() * configuration->GetScale();
+  scale = configuration->GetZoomFactor(); // * configuration->GetScale();
 
   // Ensure a minimum size for images.
   if(scale < 0.01) scale = 0.01;
@@ -291,6 +291,8 @@ void Image::Recalculate()
 
   int viewPortHeight = configuration->GetClientHeight();
   int viewPortWidth = configuration->GetClientWidth();
+
+  std::cerr<<"viewPortHeight="<<viewPortHeight<<", viewPortWidth="<<viewPortWidth<<"\n";
   if(viewPortHeight < 10)
     viewPortHeight = 10;
   if(viewPortWidth < 10)

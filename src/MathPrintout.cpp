@@ -73,6 +73,13 @@ bool MathPrintout::OnPrintPage(int num)
 
   Configuration configuration(*dc);
   configuration.SetScale(ppiScale);
+  int pageWidth, pageHeight;
+  GetPageSizePixels(&pageWidth, &pageHeight);
+  double scale = GetPPIScale();
+
+  configuration.SetClientWidth(pageWidth - marginX - marginY
+                               - SCALE_PX(Configuration::Get()->GetBaseIndent(), scale));
+  configuration.SetClientHeight(pageHeight);
   
   configuration.SetIndent(marginX);
   // Inform the output routines that we are printing
