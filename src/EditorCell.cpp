@@ -2721,15 +2721,8 @@ bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
     if (m_type == MC_TYPE_INPUT)
       text.Replace(wxT("-"), wxT("\x2212"));
   }
-  wxFont font(m_fontSize, wxFONTFAMILY_MODERN,
-              m_fontStyle,
-              m_fontWeight,
-              m_underlined,
-              m_fontName,
-              m_fontEncoding);
-  font.SetPointSize(m_fontSize);
-  dc.SetFont(font);
-
+  SetFont();
+  
   // Determine the line the point would be in
   wxPoint posInCell(point);
   posInCell.x -= m_currentPoint.x - 2;
