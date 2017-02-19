@@ -292,7 +292,6 @@ void Image::Recalculate()
   int viewPortHeight = configuration->GetClientHeight();
   int viewPortWidth = configuration->GetClientWidth();
 
-  std::cerr<<"viewPortHeight="<<viewPortHeight<<", viewPortWidth="<<viewPortWidth<<"\n";
   if(viewPortHeight < 10)
     viewPortHeight = 10;
   if(viewPortWidth < 10)

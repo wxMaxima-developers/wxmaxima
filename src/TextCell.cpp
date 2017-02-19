@@ -293,8 +293,9 @@ void TextCell::SetFont(int fontsize)
   wxDC& dc = configuration->GetDC();
   double scale = configuration->GetScale();
 
-  m_fontSize = (int) (((double)fontsize) * scale + 0.5);
-
+//  m_fontSize = (int) (((double)fontsize) * scale + 0.5);
+  m_fontSize =fontsize;
+  
   if ((m_textStyle == TS_TITLE) ||
       (m_textStyle == TS_SECTION) ||
       (m_textStyle == TS_SUBSECTION) ||
@@ -323,13 +324,24 @@ void TextCell::SetFont(int fontsize)
   // We have an alternative symbol
   else if (m_alt)
   {
-    wxFont font(m_fontSize, wxFONTFAMILY_MODERN,
-                      wxFONTSTYLE_NORMAL,
-                      configuration->IsBold(m_textStyle),
-                      false,
-                      m_fontname != wxEmptyString ?
-                          m_fontname : configuration->GetFontName(m_textStyle),
-                  configuration->GetFontEncoding());
+    wxFont font;;
+    font.SetFamily(wxFONTFAMILY_MODERN);
+    font.SetFaceName(m_fontname != wxEmptyString ?
+                     m_fontname : configuration->GetFontName(m_textStyle));
+    font.SetEncoding(configuration->GetFontEncoding());
+    font.SetPointSize(m_fontSize);
+    font.SetStyle(wxFONTSTYLE_NORMAL);
+    font.SetWeight(configuration->IsBold(m_textStyle));
+    font.SetUnderlined(false);
+    if(!font.IsOk())
+    {
+      font.SetFamily(wxFONTFAMILY_MODERN);
+      font.SetEncoding(configuration->GetFontEncoding());
+      font.SetPointSize(m_fontSize);
+      font.SetStyle(wxFONTSTYLE_NORMAL);
+      font.SetWeight(configuration->IsBold(m_textStyle));
+      font.SetUnderlined(false);
+    }
     font.SetPointSize(m_fontSize);
     wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
     dc.SetFont(font);
