@@ -451,7 +451,7 @@ void EditorCell::RecalculateWidths(int fontsize)
     m_width = width + 2 * SCALE_PX(2, scale);
 
     // Calculate the cell height
-    m_height = m_numberOfLines * ((m_charHeight) + 2 * SCALE_PX(2, scale));
+    m_height = m_numberOfLines * (m_charHeight) + 2 * SCALE_PX(2, scale);
     
     // The center lies in the middle of the 1st line
     m_center = m_charHeight / 2;
@@ -763,27 +763,37 @@ void EditorCell::SetFont(int fontsize)
   double scale = configuration->GetScale();
 
   m_fontSize = configuration->GetFontSize(m_textStyle);
-  if (m_fontSize == 0)
-    m_fontSize = fontsize;
-
-  m_fontSize = (int) (((double)m_fontSize) * scale + 0.5);
-  m_fontSize = MAX(m_fontSize, 1);
+  if (m_fontSize < 1)
+    m_fontSize = configuration->GetDefaultFontSize();
+  else
+    m_fontSize = (int) (((double)m_fontSize) * scale + 0.5);
 
   m_fontName = configuration->GetFontName(m_textStyle);
   m_fontStyle = configuration->IsItalic(m_textStyle);
   m_fontWeight = configuration->IsBold(m_textStyle);
+
   m_underlined = configuration->IsUnderlined(m_textStyle);
   m_fontEncoding = configuration->GetFontEncoding();
 
-  wxFont font(m_fontSize, wxFONTFAMILY_MODERN,
-                    m_fontStyle,
-                    m_fontWeight,
-                    m_underlined,
-                    m_fontName,
-              m_fontEncoding);
+  wxFont font;
+  font.SetFamily(wxFONTFAMILY_MODERN);
+  font.SetFaceName(m_fontName);
+  font.SetEncoding(m_fontEncoding);
+  font.SetStyle(m_fontStyle);
+  font.SetWeight(m_fontWeight);
+  font.SetUnderlined(m_underlined);
+  font.SetEncoding(m_fontEncoding);
+  if(!font.IsOk())
+  {
+    font.SetFamily(wxFONTFAMILY_MODERN);
+    font.SetEncoding(m_fontEncoding);
+    font.SetStyle(m_fontStyle);
+    font.SetWeight(m_fontWeight);
+    font.SetUnderlined(m_underlined);
+  }
   font.SetPointSize(m_fontSize);
+  wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
   dc.SetFont(font);
-
 }
 
 void EditorCell::SetForeground()
@@ -2617,15 +2627,8 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
 {
   wxString s;
   int fontsize1 = m_fontSize;
-  
-  wxFont font(fontsize1, wxFONTFAMILY_MODERN,
-              m_fontStyle,
-              m_fontWeight,
-              m_underlined,
-              m_fontName,
-              m_fontEncoding);
-  font.SetPointSize(fontsize1);
-  dc.SetFont(font);
+
+  SetFont(fontsize1);
 
   ClearSelection();
   wxPoint posInCell(point);
@@ -3017,6 +3020,7 @@ void EditorCell::PasteFromClipboard(bool primary)
 
 int EditorCell::GetLineWidth(wxDC& dc, unsigned int line, int pos)
 {
+  SetFont(m_fontSize);
 
   // Find the text snippet the line we search for begins with for determining
   // the indentation needed.
@@ -3383,7 +3387,7 @@ void EditorCell::StyleText()
   // We will need to determine the width of text and therefore need to set
   // the font type and size.
   Configuration *configuration = Configuration::Get();
-  SetFont(configuration->GetDefaultFontSize());
+  SetFont(m_fontSize);
 
   // Remember what settings we did linebreaks with
   m_oldViewportWidth = configuration->GetClientWidth();
