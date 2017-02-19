@@ -139,7 +139,7 @@ public:
   //! Convert the current cell to RTF code
   wxString ToRTF();
   //! Set the currently used font to the one that matches this cell's formatting
-  void SetFont(int fontsize);
+  void SetFont();
   //! Sets the current color to this cell's foreground color
   void SetForeground();
 

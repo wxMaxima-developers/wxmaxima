@@ -406,7 +406,7 @@ void EditorCell::RecalculateWidths(int fontsize)
     m_fontSize_Last = fontsize * scale + 0.5;
     wxDC& dc = configuration->GetDC();
     double scale = configuration->GetScale();
-    SetFont(fontsize);
+    SetFont();
 
     // Measure the text hight using characters that might extend below or above the region
     // ordinary characters move in.
@@ -647,7 +647,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
     // Draw the text
     //
     SetPen();
-    SetFont(fontsize);
+    SetFont();
 
     wxPoint TextStartingpoint = point;
     // TextStartingpoint.x -= SCALE_PX(MC_TEXT_PADDING, scale);
@@ -756,7 +756,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
   }
 }
 
-void EditorCell::SetFont(int fontsize)
+void EditorCell::SetFont()
 {
   Configuration *configuration = Configuration::Get();
   wxDC& dc = configuration->GetDC();
@@ -2601,7 +2601,7 @@ wxPoint EditorCell::PositionToPoint(int fontsize, int pos)
 {
   Configuration *configuration = Configuration::Get();
   wxDC& dc = configuration->GetDC();
-  SetFont(fontsize);
+  SetFont();
   
   int x = m_currentPoint.x, y = m_currentPoint.y;
   if (x == -1 || y == -1)
@@ -2628,7 +2628,7 @@ void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
   wxString s;
   int fontsize1 = m_fontSize;
 
-  SetFont(fontsize1);
+  SetFont();
 
   ClearSelection();
   wxPoint posInCell(point);
@@ -3020,7 +3020,7 @@ void EditorCell::PasteFromClipboard(bool primary)
 
 int EditorCell::GetLineWidth(wxDC& dc, unsigned int line, int pos)
 {
-  SetFont(m_fontSize);
+  SetFont();
 
   // Find the text snippet the line we search for begins with for determining
   // the indentation needed.
@@ -3387,7 +3387,7 @@ void EditorCell::StyleText()
   // We will need to determine the width of text and therefore need to set
   // the font type and size.
   Configuration *configuration = Configuration::Get();
-  SetFont(m_fontSize);
+  SetFont();
 
   // Remember what settings we did linebreaks with
   m_oldViewportWidth = configuration->GetClientWidth();
@@ -3687,7 +3687,7 @@ void EditorCell::StyleText()
     // this has been requested in the config dialogue
     if(configuration->GetAutoWrap())
     {
-      SetFont(configuration->GetDefaultFontSize());
+      SetFont();
       wxString line;
       int lastSpacePos = -1;
       wxString::const_iterator lastSpaceIt;
