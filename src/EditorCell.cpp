@@ -760,18 +760,17 @@ void EditorCell::SetFont()
 {
   Configuration *configuration = Configuration::Get();
   wxDC& dc = configuration->GetDC();
-  double scale = configuration->GetScale();
 
   m_fontSize = configuration->GetFontSize(m_textStyle);
   if (m_fontSize < 1)
     m_fontSize = configuration->GetDefaultFontSize();
-  else
-    m_fontSize = (int) (((double)m_fontSize) * scale + 0.5);
+
+  double scale = configuration->GetScale();
+  m_fontSize = (int) (((double)m_fontSize) * scale + 0.5);
 
   m_fontName = configuration->GetFontName(m_textStyle);
   m_fontStyle = configuration->IsItalic(m_textStyle);
   m_fontWeight = configuration->IsBold(m_textStyle);
-
   m_underlined = configuration->IsUnderlined(m_textStyle);
   m_fontEncoding = configuration->GetFontEncoding();
 
