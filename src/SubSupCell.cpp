@@ -221,10 +221,10 @@ wxString SubSupCell::ToMathML()
 wxString SubSupCell::ToOMML()
 {
   return wxT("<m:sSubSup><m:e>") +
-    m_baseCell -> ListToOMML() + wxT("</m:e><m:sub>") +
-      m_indexCell -> ListToOMML() + wxT("</m:sub><m:sup>") +
+    m_baseCell -> ListToOMML() + wxT("</m:e><m:sup>") +
+      m_indexCell -> ListToOMML() + wxT("</m:sup><m:sub>") +
     m_exptCell -> ListToOMML() +
-    wxT("</m:sup></m:sSubSup>\n");
+    wxT("</m:sub></m:sSubSup>\n");
 }
 
 wxString SubSupCell::ToXML()
