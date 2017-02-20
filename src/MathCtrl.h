@@ -989,6 +989,12 @@ public:
   void RemoveAllOutput(GroupCell* cell);
   // methods related to evaluation queue
 
+  /*! Trigger the evaluation of the current cell(s)
+  
+    Internally this function simulates a click on the "Cell/Evaluate Cell(s)"
+    button.
+   */
+  void Evaluate();
   //! Adds a group cell to the evaluation queue marking its contents as "outdated".
   void AddToEvaluationQueue(GroupCell *cell);
 

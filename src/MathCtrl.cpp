@@ -2454,6 +2454,12 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   ForceRedraw();
 }
 
+void MathCtrl::Evaluate()
+{
+  wxMenuEvent *EvaluateEvent=new wxMenuEvent(wxEVT_MENU,wxMaximaFrame::menu_evaluate);
+  GetParent()->GetEventHandler()->QueueEvent(EvaluateEvent);
+}
+
 /***
  * Support for copying and deleting with keyboard
  */
@@ -2527,7 +2533,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event)
     else
     {
       if (m_activeCell != NULL && m_activeCell->GetType() == MC_TYPE_INPUT)
-        dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
+        Evaluate();
       else if (m_hCaretActive)
         OpenHCaret(wxT("%"));
       else
@@ -2558,7 +2564,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event)
           if ((!enterEvaluates &&  controlOrShift) ||
               ( enterEvaluates && !controlOrShift) )
           { // shift-enter pressed === menu_evaluate event
-            dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
+            Evaluate();
           } else
             event.Skip();
         }
@@ -2660,7 +2666,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent& event)
             else
             {
               // Finally evaluate the cell
-              dynamic_cast<wxFrame*>(GetParent())->ProcessCommand(wxMaximaFrame::menu_evaluate);
+              Evaluate();
             }
           } else
           {
