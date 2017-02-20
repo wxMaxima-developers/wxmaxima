@@ -2625,8 +2625,6 @@ wxPoint EditorCell::PositionToPoint(int fontsize, int pos)
 void EditorCell::SelectPointText(wxDC& dc, wxPoint& point)
 {
   wxString s;
-  int fontsize1 = m_fontSize;
-
   SetFont();
 
   ClearSelection();
