@@ -3703,7 +3703,7 @@ void EditorCell::StyleText()
           {
             // Can we introduce a soft line break?
             // One of the next questions will be: Do we need to?
-            if(lastSpacePos >= 0)
+            if((lastSpacePos >= 0)&&(*it!='\n'))
             {
               // How far has the current line to be indented?
               if((!indentPixels.empty())&&(!newLine))
