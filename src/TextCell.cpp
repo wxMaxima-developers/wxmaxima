@@ -297,7 +297,7 @@ void TextCell::SetFont(int fontsize)
   wxFontStyle fontStyle;
   wxFontWeight fontWeight;
   wxFontEncoding fontEncoding;
-  bool underlined;
+  bool underlined = configuration->IsUnderlined(m_textStyle);
 
   if ((m_textStyle == TS_TITLE) ||
       (m_textStyle == TS_SECTION) ||
@@ -332,7 +332,6 @@ void TextCell::SetFont(int fontsize)
   fontStyle = configuration->IsItalic(m_textStyle);
   fontWeight = configuration->IsBold(m_textStyle);
 
-  underlined = configuration->IsUnderlined(m_textStyle);
   fontEncoding = configuration->GetFontEncoding();
   
   // Use jsMath
