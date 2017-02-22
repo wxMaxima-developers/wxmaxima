@@ -101,14 +101,14 @@ void StatusBar::NetworkStatus(networkState status)
   break;
     case receive:
       {
-	ReceiveTimer.StartOnce(100);
+	ReceiveTimer.StartOnce(200);
 	wxTimerEvent dummy;
 	OnTimerEvent(dummy);
       }
       break;
     case transmit:
       {
-	SendTimer.StartOnce(100);
+	SendTimer.StartOnce(200);
 	wxTimerEvent dummy;
 	OnTimerEvent(dummy);
       }
