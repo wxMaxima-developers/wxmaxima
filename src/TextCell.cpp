@@ -307,6 +307,11 @@ void TextCell::SetFont(int fontsize)
   {
     // Titles have a fixed font size 
     m_fontSize = configuration->GetFontSize(m_textStyle);
+
+    // While titles and section names may be underlined the section number
+    // isn't. Else the space between section number and section title
+    // would look weird.
+    underlined = false;
   }
   else
   {
