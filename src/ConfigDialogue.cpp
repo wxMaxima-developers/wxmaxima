@@ -975,7 +975,6 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent& event)
                                         wxFONTWEIGHT_NORMAL,
                                         false, fontName,
                                         m_fontEncoding));
-  font.SetPointSize(fontsize);
 
   if (font.Ok())
   {
