@@ -74,24 +74,29 @@ public:
   ~Configuration();
   static double GetMinZoomFactor(){return 0.4;}
   static double GetMaxZoomFactor(){return 8.0;}
+  // Sets the zoom factor the worksheet is displayed at
   void SetZoomFactor(double newzoom);
+  // Determines the zoom factor the worksheet is displayed at
   double GetZoomFactor(){return m_zoomFactor;}
-  void SetScale(double scale) { m_scale = scale; }
+  //! Sets a fixed scale for printing
+  void SetScale(double scale) { m_scale = scale; m_zoomFactor = 1.0; }
+  //! Gets the fixed scale that is used (e.G. during printing)
   const double GetScale() { return m_scale; }
   //! Get a drawing context suitable for size calculations
   wxDC& GetDC() { return *m_dc; }
-  void SetBounds(int top, int bottom) {
-    m_top = top;
-    m_bottom = bottom;
-  }
+  void SetBounds(int top, int bottom)
+    {
+      m_top = top;
+      m_bottom = bottom;
+    }
   const int GetTop()
-  {
-    return m_top;
-  }
+    {
+      return m_top;
+    }
   const int GetBottom()
-  {
-    return m_bottom;
-  }
+    {
+      return m_bottom;
+    }
   wxString GetFontName(int type = TS_DEFAULT);
   wxString GetSymbolFontName();
   wxColour GetColor(int st);
