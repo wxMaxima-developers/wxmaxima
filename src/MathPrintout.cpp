@@ -298,7 +298,7 @@ double MathPrintout::GetPPIScale()
 #if defined __WXMAC__
   return 0.6*((double)ppiPrinterY) / ((double)ppiScreenY);
 #else
-  return ((double)ppiPrinterY) / ((double)ppiScreenY);
+  return 0.6*((double)ppiPrinterY) / ((double)ppiScreenY);
 #endif
 }
 
