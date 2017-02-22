@@ -77,9 +77,9 @@ bool MathPrintout::OnPrintPage(int num)
   GetPageSizePixels(&pageWidth, &pageHeight);
   double scale = GetPPIScale();
 
-  configuration.SetClientWidth(pageWidth - marginX - marginY
+  configuration.SetClientWidth(pageWidth - 2* marginX
                                - SCALE_PX(Configuration::Get()->GetBaseIndent(), scale));
-  configuration.SetClientHeight(pageHeight);
+  configuration.SetClientHeight(pageHeight - 2 * marginY);
   
   configuration.SetIndent(marginX);
   // Inform the output routines that we are printing
