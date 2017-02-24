@@ -194,6 +194,7 @@ void ConfigDialogue::SetProperties()
   m_wrapLatexMath->SetToolTip(_("Wrap equations exported by the \"copy as LaTeX\" feature between \\[ and \\] as equation markers"));
   m_bitmapScale->SetToolTip(_("Normally html expects images to be rather low-res but space saving. These images tend to look rather blurry when viewed on modern screens. Therefore this setting was introduces that selects the factor by which the HTML export increases the resolution in respect to the default value."));
   m_exportContainsWXMX->SetToolTip(_("If this option is set the .wxmx source of the current file is copied to a place a link to is put into the result of an export."));
+  m_printBrackets->SetToolTip(_("For each Text-, Sectioning or code cell wxMaxima can display a bracket showing the extend of the cell and allowing to fold it. This setting now tells if this bracket is to be printed, as well."));
   m_exportWithMathJAX->SetToolTip(_("MathJAX creates scalable High-Quality representations of 2D Maths that can be used for Drag-And-Drop and provides accessability options. The disadvantage of MathJAX is that it needs JavaScript and a little bit of time in order to typeset equations.\nMathML is much faster than MathJaX, if it is supported by the browser. But many MathML implementations tend to lack necessary features.\nBitmaps tend to need more band width than the other two options. They lack support for advanced features like drag-and-drop or accessibility. Also they have problems aligning and scaling with the rest of the text and might use fonts that don't match the rest of the document."));
   m_savePanes->SetToolTip(_("Save panes layout between sessions."));
   m_usepngCairo->SetToolTip(_("The pngCairo terminal offers much better graphics quality (antialiassing and additional line styles). But it will only produce plots if the gnuplot installed on the current system actually supports it."));
@@ -345,26 +346,28 @@ void ConfigDialogue::SetProperties()
   m_savePanes->SetValue(savePanes);
   m_usepngCairo->SetValue(usepngCairo);
 
+  Configuration *configuration = Configuration::Get();
   m_uncomressedWXMX->SetValue(UncompressedWXMX);
   m_AnimateLaTeX->SetValue(AnimateLaTeX);
   m_TeXExponentsAfterSubscript->SetValue(TeXExponentsAfterSubscript);
   m_usePartialForDiff->SetValue(usePartialForDiff);
   m_wrapLatexMath->SetValue(wrapLatexMath);
   m_exportContainsWXMX->SetValue(exportContainsWXMX);
+  m_printBrackets->SetValue(configuration->PrintBrackets());
   m_exportWithMathJAX->SetSelection(exportWithMathJAX);
-  m_matchParens->SetValue(Configuration::Get()->GetMatchParens());
+  m_matchParens->SetValue(configuration->GetMatchParens());
   m_showLength->SetSelection(showLength);
   m_autosubscript->SetSelection(autosubscript);
-  m_changeAsterisk->SetValue(Configuration::Get()->GetChangeAsterisk());
+  m_changeAsterisk->SetValue(configuration->GetChangeAsterisk());
   m_enterEvaluates->SetValue(enterEvaluates);
   m_saveUntitled->SetValue(saveUntitled);
-  m_openHCaret->SetValue(Configuration::Get()->GetOpenHCaret());
-  m_insertAns->SetValue(Configuration::Get()->GetInsertAns());
-  m_autoIndent->SetValue(Configuration::Get()->GetAutoIndent());
+  m_openHCaret->SetValue(configuration->GetOpenHCaret());
+  m_insertAns->SetValue(configuration->GetInsertAns());
+  m_autoIndent->SetValue(configuration->GetAutoIndent());
   m_cursorJump->SetValue(cursorJump);
   int val = 0;
-  if(Configuration::Get()->GetAutoWrap()) val = 1;
-  if(Configuration::Get()->GetAutoWrapCode()) val = 2;
+  if(configuration->GetAutoWrap()) val = 1;
+  if(configuration->GetAutoWrapCode()) val = 2;
   m_autoWrap->SetSelection(val);
   m_labelWidth->SetValue(labelWidth);
   m_undoLimit->SetValue(undoLimit);
@@ -378,11 +381,11 @@ void ConfigDialogue::SetProperties()
   m_keepPercentWithSpecials->SetValue(keepPercent);
   m_abortOnError->SetValue(abortOnError);
   m_pollStdOut->SetValue(pollStdOut);
-  m_restartOnReEvaluation->SetValue(Configuration::Get()->RestartOnReEvaluation());
+  m_restartOnReEvaluation->SetValue(configuration->RestartOnReEvaluation());
   m_defaultFramerate->SetValue(defaultFramerate);
   m_defaultPlotWidth->SetValue(defaultPlotWidth);
   m_defaultPlotHeight->SetValue(defaultPlotHeight);
-  m_displayedDigits->SetValue(Configuration::Get()->GetDisplayedDigits());
+  m_displayedDigits->SetValue(configuration->GetDisplayedDigits());
 #ifdef wxUSE_UNICODE
   m_symbolPaneAdditionalChars->SetValue(symbolPaneAdditionalChars);
 #endif
@@ -543,6 +546,9 @@ wxPanel* ConfigDialogue::CreateExportPanel()
 
   m_exportContainsWXMX = new wxCheckBox(panel, -1, _("Add the .wxmx file to the HTML export"));
   vsizer->Add(m_exportContainsWXMX, 0, wxALL, 5);
+
+  m_printBrackets = new wxCheckBox(panel, -1, _("Print the cell brackets [drawn to their left]"));
+  vsizer->Add(m_printBrackets, 0, wxALL, 5);
 
   vsizer->AddGrowableRow(10);
   panel->SetSizer(vsizer);
@@ -837,7 +843,6 @@ void ConfigDialogue::OnClose(wxCloseEvent& event)
 #endif
   wxConfigBase* config = wxConfig::Get();
   config->Write(wxT("ConfigDialogTab"),m_notebook->GetSelection());
-
 }
 
 void ConfigDialogue::WriteSettings()
@@ -846,9 +851,10 @@ void ConfigDialogue::WriteSettings()
   wxArrayString out;
   wxString maxima = m_maximaProgram->GetValue();
   wxConfig *config = (wxConfig *)wxConfig::Get();
+  Configuration *configuration = Configuration::Get();
   config->Write(wxT("abortOnError"), m_abortOnError->GetValue());
   config->Write(wxT("pollStdOut"), m_pollStdOut->GetValue());
-  Configuration::Get()->RestartOnReEvaluation(m_restartOnReEvaluation->GetValue());
+  configuration->RestartOnReEvaluation(m_restartOnReEvaluation->GetValue());
   config->Write(wxT("maxima"), m_maximaProgram->GetValue());
   config->Write(wxT("parameters"), m_additionalParameters->GetValue());
   config->Write(wxT("fontSize"), m_fontSize);
@@ -857,14 +863,14 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("showLength"), m_showLength->GetSelection());
   config->Write(wxT("autosubscript"), m_autosubscript->GetSelection());
   config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());
-  Configuration::Get()->SetChangeAsterisk(m_changeAsterisk->GetValue());
+  configuration->SetChangeAsterisk(m_changeAsterisk->GetValue());
   config->Write(wxT("enterEvaluates"), m_enterEvaluates->GetValue());
   config->Write(wxT("saveUntitled"), m_saveUntitled->GetValue());
-  Configuration::Get()->SetOpenHCaret(m_openHCaret->GetValue());
-  Configuration::Get()->SetInsertAns(m_insertAns->GetValue());
-  Configuration::Get()->SetAutoIndent(m_autoIndent->GetValue());
+  configuration->SetOpenHCaret(m_openHCaret->GetValue());
+  configuration->SetInsertAns(m_insertAns->GetValue());
+  configuration->SetAutoIndent(m_autoIndent->GetValue());
   config->Write(wxT("cursorJump"), m_cursorJump->GetValue());
-  Configuration::Get()->SetAutoWrap(m_autoWrap->GetSelection());
+  configuration->SetAutoWrap(m_autoWrap->GetSelection());
   config->Write(wxT("labelWidth"), m_labelWidth->GetValue());
   config->Write(wxT("undoLimit"), m_undoLimit->GetValue());
   config->Write(wxT("recentItems"), m_recentItems->GetValue());
@@ -882,12 +888,13 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("DefaultFramerate"), m_defaultFramerate->GetValue());
   config->Write(wxT("defaultPlotWidth"), m_defaultPlotWidth->GetValue());
   config->Write(wxT("defaultPlotHeight"), m_defaultPlotHeight->GetValue());
-  Configuration::Get()->SetDisplayedDigits(m_displayedDigits->GetValue());
+  configuration->SetDisplayedDigits(m_displayedDigits->GetValue());
   config->Write(wxT("AnimateLaTeX"), m_AnimateLaTeX->GetValue());
   config->Write(wxT("TeXExponentsAfterSubscript"), m_TeXExponentsAfterSubscript->GetValue());
   config->Write(wxT("usePartialForDiff"), m_usePartialForDiff->GetValue());
   config->Write(wxT("wrapLatexMath"), m_wrapLatexMath->GetValue());
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX->GetValue());
+  configuration->PrintBrackets(m_printBrackets->GetValue());
   config->Write(wxT("HTMLequationFormat"), m_exportWithMathJAX->GetSelection());
   config->Write(wxT("usejsmath"), m_useJSMath->GetValue());
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());

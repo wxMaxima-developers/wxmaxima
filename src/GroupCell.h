@@ -193,6 +193,8 @@ public:
    */
   void RecalculateAppended();
   void Draw(wxPoint point, int fontsize);
+  //! Draw the bracket of this cell
+  void DrawBracket();
   //! Is this list of cells empty?
   bool Empty();
   //! Does this tree contain the cell "cell"?
@@ -200,6 +202,9 @@ public:
   //! A textual representation of this cell
   wxString ToString();
 
+  //! Is this cell part of the evaluation Queue?
+  void InEvaluationQueue(bool inQueue) {m_inEvaluationQueue = inQueue;}
+  void LastInEvaluationQueue(bool last) {m_lastInEvaluationQueue = last;}
 protected:
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold
@@ -228,6 +233,8 @@ protected:
   MathCell *m_appendedCells;
 private:
   wxRect m_outputRect;
+  bool m_inEvaluationQueue;
+  bool m_lastInEvaluationQueue;
 };
 
 #endif /* GROUPCELL_H */

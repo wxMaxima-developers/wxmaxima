@@ -41,6 +41,8 @@
 
 GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
 {
+  m_inEvaluationQueue = false;
+  m_lastInEvaluationQueue = false;
   m_input = NULL;
   m_output = NULL;
   m_hiddenTree = NULL;
@@ -675,60 +677,92 @@ void GroupCell::Draw(wxPoint point, int fontsize)
     }
 
     configuration->Outdated(false);
-    MathCell *editable = GetEditable();
-    if (editable != NULL && editable->IsActive()) {
-      dc.SetPen( *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_ACTIVE_CELL_BRACKET), 2, wxPENSTYLE_SOLID))); // window linux, set a pen
-      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_ACTIVE_CELL_BRACKET)))); //highlight c.
+    if(configuration->ShowBrackets())
+    {
+      DrawBracket();
     }
-    else {
-      dc.SetPen( *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID))); // window linux, set a pen
-      dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_CELL_BRACKET)))); //highlight c.
-    }
-
-    if ((!m_hide) && (!m_hiddenTree)) {
-      dc.SetBrush(*wxTRANSPARENT_BRUSH);
-    }
-
-    if (IsFoldable()) { // draw a square
-      wxPoint *points = new wxPoint[4];
-      points[0].x = point.x - SCALE_PX(10, scale);
-      points[0].y = point.y - m_center;
-      points[1].x = point.x - SCALE_PX(10, scale);
-      points[1].y = point.y - m_center + SCALE_PX(10, scale);
-      points[2].x = point.x;
-      points[2].y = point.y - m_center + SCALE_PX(10, scale);
-      points[3].x = point.x;
-      points[3].y = point.y - m_center;
-      dc.DrawPolygon(4, points);
-      delete [] points;
-    }
-    else { // draw a triangle and line
-      wxPoint *points = new wxPoint[3];
-      points[0].x = point.x - SCALE_PX(10, scale);
-      points[0].y = point.y - m_center;
-      points[1].x = point.x - SCALE_PX(10, scale);
-      points[1].y = point.y - m_center + SCALE_PX(10, scale);
-      points[2].x = point.x;
-      points[2].y = point.y - m_center;
-      dc.DrawPolygon(3, points);
-      delete [] points;
-
-      // vertical
-      dc.DrawLine(point.x - SCALE_PX(10, scale), point.y - m_center,
-          point.x - SCALE_PX(10, scale), point.y - m_center + m_height);
-      // bottom horizontal
-      dc.DrawLine(point.x - SCALE_PX(10, scale), point.y - m_center + m_height,
-          point.x - SCALE_PX(2, scale) , point.y - m_center + m_height);
-      // middle horizontal
-      if (configuration->ShowCodeCells() && m_groupType == GC_TYPE_CODE && m_output != NULL && !m_hide) {
-        dc.DrawLine(point.x - SCALE_PX(6, scale),
-                    point.y - m_center + m_input->GetMaxHeight(),
-                    point.x - SCALE_PX(10, scale),
-                    point.y - m_center + m_input->GetMaxHeight());
-      }
-    }
-
     UnsetPen();
+  }
+}
+
+void GroupCell::DrawBracket()
+{
+  //
+  // Mark groupcells currently in queue.
+  //
+  Configuration *configuration = Configuration::Get();
+  double scale = configuration->GetScale();
+  wxDC& dc = configuration->GetDC();
+  if (m_inEvaluationQueue)
+  {
+    dc.SetBrush(*wxTRANSPARENT_BRUSH);
+    if(m_lastInEvaluationQueue)
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CELL_BRACKET), 2, wxPENSTYLE_SOLID)));
+    else
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID)));
+
+    wxRect rect = GetRect();
+    rect = wxRect( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
+    if(MathCell::InUpdateRegion(rect))
+      dc.DrawRectangle(rect);
+  }
+  
+  MathCell *editable = GetEditable();
+  if (editable != NULL && editable->IsActive())
+  {
+    dc.SetPen( *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_ACTIVE_CELL_BRACKET), 2, wxPENSTYLE_SOLID))); // window linux, set a pen
+    dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_ACTIVE_CELL_BRACKET)))); //highlight c.
+  }
+  else
+  {
+    dc.SetPen( *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID))); // window linux, set a pen
+    dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_CELL_BRACKET)))); //highlight c.
+  }
+      
+  if ((!m_hide) && (!m_hiddenTree)) {
+    dc.SetBrush(*wxTRANSPARENT_BRUSH);
+  }
+
+  if (IsFoldable())
+  { // draw a square
+    wxPoint *points = new wxPoint[4];
+    points[0].x = m_currentPoint.x - SCALE_PX(10, scale);
+    points[0].y = m_currentPoint.y - m_center;
+    points[1].x = m_currentPoint.x - SCALE_PX(10, scale);
+    points[1].y = m_currentPoint.y - m_center + SCALE_PX(10, scale);
+    points[2].x = m_currentPoint.x;
+    points[2].y = m_currentPoint.y - m_center + SCALE_PX(10, scale);
+    points[3].x = m_currentPoint.x;
+    points[3].y = m_currentPoint.y - m_center;
+    dc.DrawPolygon(4, points);
+    delete [] points;
+  }
+  else
+  { // draw a triangle and line
+    wxPoint *points = new wxPoint[3];
+    points[0].x = m_currentPoint.x - SCALE_PX(10, scale);
+    points[0].y = m_currentPoint.y - m_center;
+    points[1].x = m_currentPoint.x - SCALE_PX(10, scale);
+    points[1].y = m_currentPoint.y - m_center + SCALE_PX(10, scale);
+    points[2].x = m_currentPoint.x;
+    points[2].y = m_currentPoint.y - m_center;
+    dc.DrawPolygon(3, points);
+    delete [] points;
+        
+    // vertical
+    dc.DrawLine(m_currentPoint.x - SCALE_PX(10, scale), m_currentPoint.y - m_center,
+                m_currentPoint.x - SCALE_PX(10, scale), m_currentPoint.y - m_center + m_height);
+    // bottom horizontal
+    dc.DrawLine(m_currentPoint.x - SCALE_PX(10, scale), m_currentPoint.y - m_center + m_height,
+                m_currentPoint.x - SCALE_PX(2, scale) , m_currentPoint.y - m_center + m_height);
+    // middle horizontal
+    if (configuration->ShowCodeCells() && m_groupType == GC_TYPE_CODE && m_output != NULL && !m_hide)
+    {
+      dc.DrawLine(m_currentPoint.x - SCALE_PX(6, scale),
+                  m_currentPoint.y - m_center + m_input->GetMaxHeight(),
+                  m_currentPoint.x - SCALE_PX(10, scale),
+                  m_currentPoint.y - m_center + m_input->GetMaxHeight());
+    }
   }
 }
 

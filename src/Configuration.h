@@ -239,9 +239,23 @@ public:
 
   wxSize GetCanvasSize(){return m_canvasSize;}
   void SetCanvasSize(wxSize siz){m_canvasSize=siz;}
+
+  //! Show the cell brackets [displayed left to each group cell showing its extend]?
+  bool ShowBrackets(){return m_showBrackets;}
+  bool ShowBrackets(bool show){return m_showBrackets = show;}
+  //! Print the cell brackets [displayed left to each group cell showing its extend]?
+  bool PrintBrackets(){return m_printBrackets;}
+  bool PrintBrackets(bool print){
+    wxConfig::Get()->Write(wxT("printBrackets"),m_printBrackets = print);
+    return print;
+  }
 private:
   //! The size of the canvas our cells have to be drawn on
   wxSize m_canvasSize;
+  //! Show the cell brackets [displayed left to each group cell showing its extend]?
+  bool m_showBrackets;
+  //! Print the cell brackets [displayed left to each group cell showing its extend]?
+  bool m_printBrackets;
   /*! Replace a "*" by a centered dot?
     
     Normally we ask the parser for this piece of information. But during recalculation

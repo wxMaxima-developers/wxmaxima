@@ -292,8 +292,10 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
         }
 
       }
-      else {  // We have a selection of output
-        while (tmp != NULL) {
+      else
+      {  // We have a selection of output
+        while (tmp != NULL)
+        {
           if (!tmp->m_isBroken && !tmp->m_isHidden && m_activeCell != tmp)
             tmp->DrawBoundingBox(dcm, false);
           if (tmp == m_selectionEnd)
@@ -323,7 +325,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
 
     while (tmp != NULL)
     {
-      wxRect rect = tmp->GetRect();        
+      wxRect rect = tmp->GetRect();
       // Clear the image cache of all cells above or below the viewport.
       if((rect.GetTop() >= bottom) || (rect.GetBottom() <= top))
       {
@@ -342,7 +344,11 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
 
       tmp->m_currentPoint = point;
       if (tmp->DrawThisCell(point))
+      {
+        tmp->InEvaluationQueue(m_evaluationQueue.IsInQueue(tmp));
+        tmp->LastInEvaluationQueue(m_evaluationQueue.GetCell() == tmp);
         tmp->Draw(point, MAX(fontsize, MC_MIN_SIZE));
+      }
       if (tmp->m_next != NULL) {
         point.x = MC_GROUP_LEFT_INDENT;
         point.y += drop + tmp->m_next->GetMaxCenter();
@@ -386,38 +392,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
                            (Configuration::Get()->GetBaseIndent()-Configuration::Get()->GetCursorWidth())/2 ,
                            MC_HCARET_WIDTH, Configuration::Get()->GetCursorWidth());
     dcm.DrawRectangle(cursor);
-  }
-  
-  //
-  // Mark groupcells currently in queue. TODO better in gc::draw?
-  //
-  if (m_evaluationQueue.GetCell() != NULL) {
-    GroupCell* tmp = m_tree;
-    dcm.SetBrush(*wxTRANSPARENT_BRUSH);
-    while (tmp != NULL)
-    {
-      wxRect rect = tmp->GetRect();
-      if (m_evaluationQueue.IsInQueue(dynamic_cast<GroupCell*>(tmp))) {
-        if (m_evaluationQueue.GetCell() == tmp)
-          {
-            dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CELL_BRACKET), 2, wxPENSTYLE_SOLID)));
-            rect = wxRect( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
-            if(MathCell::InUpdateRegion(rect))
-              dcm.DrawRectangle(rect);
-            
-          }
-        else
-        {
-          dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID)));
-          rect = wxRect(3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
-          if(MathCell::InUpdateRegion(rect))
-            dcm.DrawRectangle(rect);
-          
-        }
-      }
-      tmp = dynamic_cast<GroupCell *>(tmp->m_next);
-    }
-  }
+  }  
   
   // Blit the memory image to the window
   dcm.SetDeviceOrigin(0, 0);

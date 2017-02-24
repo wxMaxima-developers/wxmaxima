@@ -5644,7 +5644,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   }
   
   // Maxima is connected. Let's test if the evaluation queue is empty.
-  GroupCell *tmp = m_console->m_evaluationQueue.GetCell();
+  GroupCell *tmp = dynamic_cast<GroupCell*>(m_console->m_evaluationQueue.GetCell());
   if (tmp == NULL)
   {
     // Maxima is no more busy.

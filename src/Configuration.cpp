@@ -45,6 +45,9 @@ Configuration::Configuration(wxDC& dc) : m_dc(&dc)
   m_printer = false;
   m_TeXFonts = false;
   m_printer = false;
+  m_showBrackets = true;
+  m_printBrackets = false;
+
   m_clientWidth = 800;
   ReadConfig();
 }
@@ -88,6 +91,8 @@ void Configuration::ReadConfig()
   m_labelWidth = 4;
   config->Read(wxT("labelWidth"), &m_labelWidth);
 
+  config->Read(wxT("printBrackets"), &m_printBrackets);
+  
   m_zoomFactor = 1.0;
   config->Read(wxT("ZoomFactor"),&m_zoomFactor);
 
