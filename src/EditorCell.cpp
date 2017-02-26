@@ -3469,7 +3469,7 @@ void EditorCell::StyleText()
       {
         // All spaces except the last one (that could cause a line break)
         // share the same token
-        if(token.Length()>1)
+        if(token.Length()>0)
           m_styledText.push_back(StyledText(token.Left(token.Length()-1)));
 
         // Now we push the last space to the list of tokens and remember this

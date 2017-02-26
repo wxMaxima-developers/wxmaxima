@@ -4669,6 +4669,7 @@ void MyAboutDialog::OnLinkClicked(wxHtmlLinkEvent& event)
 
 BEGIN_EVENT_TABLE(MyAboutDialog, wxDialog)
 EVT_HTML_LINK_CLICKED(wxID_ANY, MyAboutDialog::OnLinkClicked)
+EVT_MOTION(MathCtrl::OnMouseMotion)
 END_EVENT_TABLE()
 
 #endif
