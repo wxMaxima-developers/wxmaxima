@@ -138,6 +138,9 @@ GroupCell::~GroupCell()
   DestroyOutput();
   if (m_hiddenTree)
     delete m_hiddenTree;
+
+  if(this == m_groupCellUnderPointer)
+    m_groupCellUnderPointer = NULL;
 }
 
 /*! Set the parent of this group cell
@@ -685,16 +688,60 @@ void GroupCell::Draw(wxPoint point, int fontsize)
   }
 }
 
+void GroupCell::CellUnderPointer(GroupCell *cell)
+{
+  if(m_groupCellUnderPointer != cell)
+  {
+    GroupCell *tmp = m_groupCellUnderPointer;
+    m_groupCellUnderPointer = cell;
+    if(tmp != NULL)
+      tmp->DrawBracket();
+    if(m_groupCellUnderPointer != NULL)
+      m_groupCellUnderPointer->DrawBracket();
+  }
+}
+
 void GroupCell::DrawBracket()
 {
+  Configuration *configuration = Configuration::Get();
+  bool drawBracket = !configuration->HideBrackets();
+
+  if(this == m_groupCellUnderPointer)
+    drawBracket = true;
+
+  wxDC& dc = configuration->GetDC();
+
+  // Mark this GroupCell as selected if it is selected. Else clear the space we
+  // will add brackets in
+  if((m_currentPoint.y >=m_selectionStart_px) && (m_currentPoint.y <=m_selectionEnd_px))
+  {
+#if defined(__WXMAC__)
+    dc.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
+#else
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
+// window linux, set a pen
+#endif
+    dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))));
+    drawBracket = true;
+  }
+  else
+  {
+    dc.SetBrush(*wxWHITE_BRUSH);
+    dc.SetPen(*wxWHITE_PEN);    
+  }
+  wxRect rect = GetRect();
+  // TODO globally define x coordinates of the left GC brackets
+  rect=wxRect( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
+  if(MathCell::InUpdateRegion(rect))
+    dc.DrawRectangle(MathCell::CropToUpdateRegion(rect));
+
   //
   // Mark groupcells currently in queue.
   //
-  Configuration *configuration = Configuration::Get();
   double scale = configuration->GetScale();
-  wxDC& dc = configuration->GetDC();
   if (m_inEvaluationQueue)
   {
+    drawBracket = true;
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
     if(m_lastInEvaluationQueue)
       dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CELL_BRACKET), 2, wxPENSTYLE_SOLID)));
@@ -710,6 +757,7 @@ void GroupCell::DrawBracket()
   MathCell *editable = GetEditable();
   if (editable != NULL && editable->IsActive())
   {
+    drawBracket = true;
     dc.SetPen( *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_ACTIVE_CELL_BRACKET), 2, wxPENSTYLE_SOLID))); // window linux, set a pen
     dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_ACTIVE_CELL_BRACKET)))); //highlight c.
   }
@@ -718,50 +766,54 @@ void GroupCell::DrawBracket()
     dc.SetPen( *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID))); // window linux, set a pen
     dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_CELL_BRACKET)))); //highlight c.
   }
-      
-  if ((!m_hide) && (!m_hiddenTree)) {
+  
+  if ((!m_hide) && (!m_hiddenTree))
+  {
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
   }
 
-  if (IsFoldable())
-  { // draw a square
-    wxPoint *points = new wxPoint[4];
-    points[0].x = m_currentPoint.x - SCALE_PX(10, scale);
-    points[0].y = m_currentPoint.y - m_center;
-    points[1].x = m_currentPoint.x - SCALE_PX(10, scale);
-    points[1].y = m_currentPoint.y - m_center + SCALE_PX(10, scale);
-    points[2].x = m_currentPoint.x;
-    points[2].y = m_currentPoint.y - m_center + SCALE_PX(10, scale);
-    points[3].x = m_currentPoint.x;
-    points[3].y = m_currentPoint.y - m_center;
-    dc.DrawPolygon(4, points);
-    delete [] points;
-  }
-  else
-  { // draw a triangle and line
-    wxPoint *points = new wxPoint[3];
-    points[0].x = m_currentPoint.x - SCALE_PX(10, scale);
-    points[0].y = m_currentPoint.y - m_center;
-    points[1].x = m_currentPoint.x - SCALE_PX(10, scale);
-    points[1].y = m_currentPoint.y - m_center + SCALE_PX(10, scale);
-    points[2].x = m_currentPoint.x;
-    points[2].y = m_currentPoint.y - m_center;
-    dc.DrawPolygon(3, points);
-    delete [] points;
+  if(drawBracket)
+  {
+    if (IsFoldable())
+    { // draw a square
+      wxPoint *points = new wxPoint[4];
+      points[0].x = m_currentPoint.x - SCALE_PX(10, scale);
+      points[0].y = m_currentPoint.y - m_center;
+      points[1].x = m_currentPoint.x - SCALE_PX(10, scale);
+      points[1].y = m_currentPoint.y - m_center + SCALE_PX(10, scale);
+      points[2].x = m_currentPoint.x;
+      points[2].y = m_currentPoint.y - m_center + SCALE_PX(10, scale);
+      points[3].x = m_currentPoint.x;
+      points[3].y = m_currentPoint.y - m_center;
+      dc.DrawPolygon(4, points);
+      delete [] points;
+    }
+    else
+    { // draw a triangle and line
+      wxPoint *points = new wxPoint[3];
+      points[0].x = m_currentPoint.x - SCALE_PX(10, scale);
+      points[0].y = m_currentPoint.y - m_center;
+      points[1].x = m_currentPoint.x - SCALE_PX(10, scale);
+      points[1].y = m_currentPoint.y - m_center + SCALE_PX(10, scale);
+      points[2].x = m_currentPoint.x;
+      points[2].y = m_currentPoint.y - m_center;
+      dc.DrawPolygon(3, points);
+      delete [] points;
         
-    // vertical
-    dc.DrawLine(m_currentPoint.x - SCALE_PX(10, scale), m_currentPoint.y - m_center,
-                m_currentPoint.x - SCALE_PX(10, scale), m_currentPoint.y - m_center + m_height);
-    // bottom horizontal
-    dc.DrawLine(m_currentPoint.x - SCALE_PX(10, scale), m_currentPoint.y - m_center + m_height,
-                m_currentPoint.x - SCALE_PX(2, scale) , m_currentPoint.y - m_center + m_height);
-    // middle horizontal
-    if (configuration->ShowCodeCells() && m_groupType == GC_TYPE_CODE && m_output != NULL && !m_hide)
-    {
-      dc.DrawLine(m_currentPoint.x - SCALE_PX(6, scale),
-                  m_currentPoint.y - m_center + m_input->GetMaxHeight(),
-                  m_currentPoint.x - SCALE_PX(10, scale),
-                  m_currentPoint.y - m_center + m_input->GetMaxHeight());
+      // vertical
+      dc.DrawLine(m_currentPoint.x - SCALE_PX(10, scale), m_currentPoint.y - m_center,
+                  m_currentPoint.x - SCALE_PX(10, scale), m_currentPoint.y - m_center + m_height);
+      // bottom horizontal
+      dc.DrawLine(m_currentPoint.x - SCALE_PX(10, scale), m_currentPoint.y - m_center + m_height,
+                  m_currentPoint.x - SCALE_PX(2, scale) , m_currentPoint.y - m_center + m_height);
+      // middle horizontal
+      if (configuration->ShowCodeCells() && m_groupType == GC_TYPE_CODE && m_output != NULL && !m_hide)
+      {
+        dc.DrawLine(m_currentPoint.x - SCALE_PX(6, scale),
+                    m_currentPoint.y - m_center + m_input->GetMaxHeight(),
+                    m_currentPoint.x - SCALE_PX(10, scale),
+                    m_currentPoint.y - m_center + m_input->GetMaxHeight());
+      }
     }
   }
 }
@@ -1487,7 +1539,8 @@ bool GroupCell::RevealHidden()
  * This way, the field can be used to traverse up the tree no matter which
  * child we are on. In other words, every child knows its parent node.
  */
-void GroupCell::SetHiddenTreeParent(GroupCell* parent) {
+void GroupCell::SetHiddenTreeParent(GroupCell* parent)
+{
   GroupCell* cell = this;
   while (cell) {
     cell->m_hiddenTreeParent = parent;
@@ -1495,7 +1548,8 @@ void GroupCell::SetHiddenTreeParent(GroupCell* parent) {
   }
 }
 
-GroupCell *GroupCell::Fold() {
+GroupCell *GroupCell::Fold()
+{
   if (!IsFoldable() || m_hiddenTree) // already folded?? shouldn't happen
     return NULL;
   if (m_next == NULL)
@@ -1720,3 +1774,7 @@ bool GroupCell::Contains(GroupCell *cell)
   
   return false;
 }
+
+GroupCell *GroupCell::m_groupCellUnderPointer = NULL;
+int GroupCell::m_selectionStart_px = -1;
+int GroupCell::m_selectionEnd_px = -1;

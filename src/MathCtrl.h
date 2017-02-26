@@ -77,6 +77,8 @@ wxMaxima can display it.
 class MathCtrl: public wxScrolledCanvas
 {
 private:
+  //! The rectangle the groupcell under the pointer is in
+  wxRect m_groupCellUnderPointerRect;
   /*! The size of a scroll step
     
     Defines the size of a 
@@ -886,6 +888,16 @@ public:
   void SetSelection(MathCell* start,MathCell* end) {
     m_selectionStart = start;
     m_selectionEnd = end;
+    if ((start!=NULL)&&(start->GetType() == MC_TYPE_GROUP))
+    {
+      GroupCell::SetSelectionRange_px(
+        dynamic_cast<GroupCell *>(m_selectionStart)->m_currentPoint.y,
+        dynamic_cast<GroupCell *>(m_selectionEnd)->m_currentPoint.y
+        );
+    }
+    else
+      GroupCell::SetSelectionRange_px(-1,-1);
+      
     if(m_selectionStart == NULL)
     {
       m_hCaretPositionStart = NULL;

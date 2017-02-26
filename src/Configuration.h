@@ -74,9 +74,16 @@ public:
   ~Configuration();
   static double GetMinZoomFactor(){return 0.4;}
   static double GetMaxZoomFactor(){return 8.0;}
-  // Sets the zoom factor the worksheet is displayed at
+  //! Hide brackets that are not under the pointer?
+  bool HideBrackets(){return m_hideBrackets;}
+  void HideBrackets(bool hide)
+    {
+      wxConfig::Get()->Write(wxT("hideBrackets"),m_hideBrackets = hide);
+    }
+
+  //! Sets the zoom factor the worksheet is displayed at
   void SetZoomFactor(double newzoom);
-  // Determines the zoom factor the worksheet is displayed at
+  //! Determines the zoom factor the worksheet is displayed at
   double GetZoomFactor(){return m_zoomFactor;}
   //! Sets a fixed scale for printing
   void SetScale(double scale) { m_scale = scale; m_zoomFactor = 1.0; }
@@ -250,6 +257,8 @@ public:
     return print;
   }
 private:
+  //! Hide brackets that are not under the pointer
+  bool m_hideBrackets;
   //! The size of the canvas our cells have to be drawn on
   wxSize m_canvasSize;
   //! Show the cell brackets [displayed left to each group cell showing its extend]?

@@ -214,6 +214,7 @@ void ConfigDialogue::SetProperties()
   m_undoLimit->SetToolTip(_("Save only this number of actions in the undo buffer. 0 means: save an infinite number of actions."));
   m_recentItems->SetToolTip(_("The number of recently opened files that is to be remembered."));
   m_incrementalSearch->SetToolTip(_("Start searching while the phrase to search for is still being typed."));
+  m_hideBrackets->SetToolTip(_("Hide the brackets marking the extend of the worksheet cells at the worksheet's right side if the cells aren't active."));
 
   #ifdef __WXMSW__
   m_wxcd->SetToolTip(_("Automatically change maxima's working directory to the one the current document is in: "
@@ -365,6 +366,7 @@ void ConfigDialogue::SetProperties()
   m_insertAns->SetValue(configuration->GetInsertAns());
   m_autoIndent->SetValue(configuration->GetAutoIndent());
   m_cursorJump->SetValue(cursorJump);
+  m_hideBrackets->SetValue(configuration->HideBrackets());
   int val = 0;
   if(configuration->GetAutoWrap()) val = 1;
   if(configuration->GetAutoWrapCode()) val = 2;
@@ -407,7 +409,7 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
 
   wxArrayString autosubscripts;
   wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
-  wxFlexGridSizer* vsizer = new wxFlexGridSizer(18,1,5,5);
+  wxFlexGridSizer* vsizer = new wxFlexGridSizer(19,1,5,5);
   
   wxStaticText* pw = new wxStaticText(panel, -1, _("Default plot size for new maxima sessions:"));
   wxBoxSizer *PlotWidthHbox=new wxBoxSizer(wxHORIZONTAL);
@@ -492,6 +494,9 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
 
   m_cursorJump = new wxCheckBox(panel, -1, _("New lines: Jump to text"));
   vsizer->Add(m_cursorJump, 0, wxALL, 5);
+
+  m_hideBrackets = new wxCheckBox(panel, -1, _("Hide cell brackets not under pointer"));
+  vsizer->Add(m_hideBrackets, 0, wxALL, 5);
 
   vsizer->AddGrowableRow(10);
   panel->SetSizer(vsizer);
@@ -870,6 +875,7 @@ void ConfigDialogue::WriteSettings()
   configuration->SetInsertAns(m_insertAns->GetValue());
   configuration->SetAutoIndent(m_autoIndent->GetValue());
   config->Write(wxT("cursorJump"), m_cursorJump->GetValue());
+  configuration->HideBrackets(m_hideBrackets->GetValue());
   configuration->SetAutoWrap(m_autoWrap->GetSelection());
   config->Write(wxT("labelWidth"), m_labelWidth->GetValue());
   config->Write(wxT("undoLimit"), m_undoLimit->GetValue());

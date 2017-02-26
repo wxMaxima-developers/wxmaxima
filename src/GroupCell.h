@@ -63,8 +63,15 @@ class GroupCell: public MathCell
 public:
   GroupCell(int groupType, wxString initString = wxEmptyString);
   ~GroupCell();
+  static void CellUnderPointer(GroupCell *cell);
   MathCell* Copy();
   void Destroy();
+  //! Set the y position of the selection start and end
+  static void SetSelectionRange_px(int start, int end)
+    {
+      m_selectionStart_px = start;
+      m_selectionEnd_px = end;
+    }
   // general methods
   int GetGroupType() { return m_groupType; }
   void SetParent(MathCell *parent); // setting parent for all mathcells in GC
@@ -232,6 +239,11 @@ protected:
   MathCell *m_lastInOutput;
   MathCell *m_appendedCells;
 private:
+  static int m_selectionStart_px;
+  static int m_selectionEnd_px;
+
+  //! The GroupCell that is under the mouse pointer 
+  static GroupCell *m_groupCellUnderPointer;
   wxRect m_outputRect;
   bool m_inEvaluationQueue;
   bool m_lastInEvaluationQueue;

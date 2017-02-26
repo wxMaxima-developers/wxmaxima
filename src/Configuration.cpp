@@ -47,7 +47,7 @@ Configuration::Configuration(wxDC& dc) : m_dc(&dc)
   m_printer = false;
   m_showBrackets = true;
   m_printBrackets = false;
-
+  m_hideBrackets = false;
   m_clientWidth = 800;
   ReadConfig();
 }
@@ -65,10 +65,12 @@ void Configuration::ReadConfig()
   config->Read(wxT("autoWrapMode"), &m_autoWrap);
 
   m_autoIndent = true;
-  wxConfig::Get()->Read(wxT("autoIndent"), &m_autoIndent);
+  config->Read(wxT("autoIndent"), &m_autoIndent);
   
   m_changeAsterisk = true;
   config->Read(wxT("changeAsterisk"), &m_changeAsterisk);
+
+  config->Read(wxT("hideBrackets"),&m_hideBrackets);
 
   m_displayedDigits = 100;
   config->Read(wxT("displayedDigits"), &m_displayedDigits);
