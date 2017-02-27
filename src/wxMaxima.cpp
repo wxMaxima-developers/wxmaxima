@@ -5125,7 +5125,30 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   wxString selection = m_console->GetString();
   switch (event.GetId())
   {
+  case MathCtrl::popid_fold:
+  {
+    if(m_console->GetActiveCell())
+    {
+      // This "if" is pure paranoia. But - since the costs of an "if" are low...
+      GroupCell *group = dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetParent());
+      if(group->IsFoldable())
+        group->Fold();
+      else
+        group->Hide(true);
+    }
+    break;
+  }
+  case MathCtrl::popid_unfold:
+  {
+    GroupCell *group = dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetParent());
+    if(group->IsFoldable())
+      group->Unfold();
+    else
+      group->Hide(false);
+    break;
+  }
   case TableOfContents::popid_Fold:
+  {
     if(m_console->m_tableOfContents != NULL)
     {
       if(m_console->m_tableOfContents->RightClickedOn())
@@ -5135,7 +5158,9 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
     m_console->RequestRedraw();
     m_console->UpdateTableOfContents();
     break;
+  }
   case TableOfContents::popid_Unfold:
+  {
     if(m_console->m_tableOfContents != NULL)
     {
       if(m_console->m_tableOfContents->RightClickedOn())
@@ -5145,6 +5170,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
     m_console->RequestRedraw();
     m_console->UpdateTableOfContents();
     break;
+  }
   case TableOfContents::popid_SelectTocChapter:
     if(m_console->m_tableOfContents != NULL)
     {
@@ -6473,6 +6499,8 @@ EVT_MENU(TableOfContents::popid_Fold, wxMaxima::PopupMenu)
 EVT_MENU(TableOfContents::popid_Unfold, wxMaxima::PopupMenu)
 EVT_MENU(TableOfContents::popid_SelectTocChapter, wxMaxima::PopupMenu)
 EVT_MENU(TableOfContents::popid_EvalTocChapter, wxMaxima::PopupMenu)
+EVT_MENU(MathCtrl::popid_fold, wxMaxima::PopupMenu)
+EVT_MENU(MathCtrl::popid_unfold, wxMaxima::PopupMenu)
 EVT_MENU(menu_evaluate_all_visible, wxMaxima::MaximaMenu)
 EVT_MENU(menu_evaluate_all, wxMaxima::MaximaMenu)
 EVT_MENU(ToolBar::tb_evaltillhere, wxMaxima::MaximaMenu)

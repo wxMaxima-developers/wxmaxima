@@ -214,7 +214,7 @@ void ConfigDialogue::SetProperties()
   m_undoLimit->SetToolTip(_("Save only this number of actions in the undo buffer. 0 means: save an infinite number of actions."));
   m_recentItems->SetToolTip(_("The number of recently opened files that is to be remembered."));
   m_incrementalSearch->SetToolTip(_("Start searching while the phrase to search for is still being typed."));
-  m_hideBrackets->SetToolTip(_("Hide the brackets marking the extend of the worksheet cells at the worksheet's right side if the cells aren't active."));
+  m_hideBrackets->SetToolTip(_("Hide the brackets that mark the extend of the worksheet cells at the worksheet's right side and that contain the \"hide\" button of the cell if the cells aren't active."));
 
   #ifdef __WXMSW__
   m_wxcd->SetToolTip(_("Automatically change maxima's working directory to the one the current document is in: "
@@ -495,7 +495,7 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
   m_cursorJump = new wxCheckBox(panel, -1, _("New lines: Jump to text"));
   vsizer->Add(m_cursorJump, 0, wxALL, 5);
 
-  m_hideBrackets = new wxCheckBox(panel, -1, _("Hide cell brackets not under pointer"));
+  m_hideBrackets = new wxCheckBox(panel, -1, _("Intelligently hide cell brackets"));
   vsizer->Add(m_hideBrackets, 0, wxALL, 5);
 
   vsizer->AddGrowableRow(10);

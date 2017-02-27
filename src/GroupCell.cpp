@@ -1467,7 +1467,8 @@ void GroupCell::UnBreakUpCells()
 
 // support for hiding text, code cells
 
-void GroupCell::Hide(bool hide) {
+void GroupCell::Hide(bool hide)
+{
   if (IsFoldable())
     return;
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-24 07:52+0100\n"
+"POT-Creation-Date: 2017-02-27 19:12+0100\n"
 "PO-Revision-Date: 2010-03-10 14:21+0100\n"
 "Last-Translator: Robert Marik <maarik@mendelu.cz>\n"
 "Language-Team:  <cs@li.org>\n"
@@ -49,7 +49,7 @@ msgstr ""
 "\n"
 "Verze programu Maxima: "
 
-#: ../src/wxMaxima.cpp:5629
+#: ../src/wxMaxima.cpp:5655
 msgid ""
 "\n"
 "Not connected to Maxima!\n"
@@ -65,7 +65,7 @@ msgstr ""
 "\n"
 "Není připojeno."
 
-#: ../src/ConfigDialogue.cpp:689
+#: ../src/ConfigDialogue.cpp:694
 msgid "      -l <name>"
 msgstr "      -l <name>"
 
@@ -82,7 +82,7 @@ msgstr " ... + %i linies amagades"
 msgid " << Expression longer than allowed by the configuration setting! >>"
 msgstr " << Expressió més llarga del què és permés per la configuració! >>"
 
-#: ../src/ConfigDialogue.cpp:544
+#: ../src/ConfigDialogue.cpp:549
 msgid "\"Copy LaTeX\" adds equation markers"
 msgstr "«Copia LaTeX» afegeix els marcadors d'equacions"
 
@@ -359,7 +359,7 @@ msgstr "&Trigonometrické zjednodušení"
 msgid "&pm3d"
 msgstr "&pm3d"
 
-#: ../src/ConfigDialogue.cpp:570
+#: ../src/ConfigDialogue.cpp:575
 msgid "(Use default language)"
 msgstr "(Původní jazykové nastavení)"
 
@@ -393,7 +393,7 @@ msgstr ""
 "\n"
 "Lisp: "
 
-#: ../src/wxMaxima.cpp:5735
+#: ../src/wxMaxima.cpp:5761
 msgid ""
 "A \":lisp\" as the first command might fail to send a \"finished\" signal."
 msgstr ""
@@ -433,11 +433,11 @@ msgstr "Un símbol del formulari de configuració"
 msgid "A&t Value..."
 msgstr "Hodno&ta v bodě..."
 
-#: ../src/ConfigDialogue.cpp:717
+#: ../src/ConfigDialogue.cpp:722
 msgid "Abort evaluation on error"
 msgstr "Aturar l'avaluació en cas d'error"
 
-#: ../src/wxMaxima.cpp:4784 ../src/wxMaximaFrame.cpp:946
+#: ../src/wxMaximaFrame.cpp:946 ../src/wxMaxima.cpp:4784
 msgid "About"
 msgstr "O programu"
 
@@ -446,7 +446,7 @@ msgstr "O programu"
 msgid "About wxMaxima"
 msgstr "O programu wxMaxima"
 
-#: ../src/ConfigDialogue.cpp:775
+#: ../src/ConfigDialogue.cpp:780
 msgid "Active cell bracket"
 msgstr "Suport de cel·la activa"
 
@@ -470,7 +470,7 @@ msgstr "Přidat adresář do path:"
 msgid "Add equality to the rational simplifier"
 msgstr "Přidat rovnost k zjednodušovateli racionálních výrazů"
 
-#: ../src/ConfigDialogue.cpp:547
+#: ../src/ConfigDialogue.cpp:552
 msgid "Add the .wxmx file to the HTML export"
 msgstr "Afegir l'arxiu .wxmx a l'exportació a HTML"
 
@@ -485,7 +485,7 @@ msgstr ""
 "Les ordres addicionals s'afegiran en el preàmbul de la sortida de LaTeX per "
 "a pdftex."
 
-#: ../src/ConfigDialogue.cpp:515
+#: ../src/ConfigDialogue.cpp:520
 msgid "Additional lines for the TeX preamble:"
 msgstr "Línies addicionals per al preàmbul TeX"
 
@@ -493,12 +493,12 @@ msgstr "Línies addicionals per al preàmbul TeX"
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
 msgstr "Doplňkové parametry pro program Maxima (např., -l clisp)."
 
-#: ../src/ConfigDialogue.cpp:683
+#: ../src/ConfigDialogue.cpp:688
 #, fuzzy
 msgid "Additional parameters for maxima"
 msgstr "Doplňkové parametry:"
 
-#: ../src/ConfigDialogue.cpp:601
+#: ../src/ConfigDialogue.cpp:606
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "Símbols addicionals per a la barra lateral «símbols»"
 
@@ -510,12 +510,12 @@ msgstr ""
 "Després de fer clic en animacions generades amb with_slider_draw() o "
 "similars, aquest control lliscant permet canviar el quadre actual."
 
-#: ../src/ConfigDialogue.cpp:452
+#: ../src/ConfigDialogue.cpp:454
 #, fuzzy
 msgid "All variable names"
 msgstr "Původní proměnná:"
 
-#: ../src/ConfigDialogue.cpp:932
+#: ../src/ConfigDialogue.cpp:938
 msgid "All|*"
 msgstr "Vše|* "
 
@@ -543,7 +543,7 @@ msgstr "Pole:"
 msgid "Artwork by"
 msgstr "Il·lustració de"
 
-#: ../src/ConfigDialogue.cpp:641
+#: ../src/ConfigDialogue.cpp:646
 msgid "Ask to save untitled documents"
 msgstr "Preguntar si desar els documents sense títol"
 
@@ -551,11 +551,11 @@ msgstr "Preguntar si desar els documents sense títol"
 msgid "At value"
 msgstr "Hodnota v bodě"
 
-#: ../src/ConfigDialogue.cpp:490
+#: ../src/ConfigDialogue.cpp:492
 msgid "Auto-indent new lines"
 msgstr "Tabulació automàtica de noves línies"
 
-#: ../src/ConfigDialogue.cpp:219
+#: ../src/ConfigDialogue.cpp:220
 msgid ""
 "Automatically change maxima's working directory to the one the current "
 "document is in: This is necessary if the document uses File I/O relative to "
@@ -576,11 +576,11 @@ msgid ""
 "respective color to match the background of ordinary text."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:607
+#: ../src/ConfigDialogue.cpp:612
 msgid "Autosave interval (minutes, 0 means: off):"
 msgstr "Interval per desar automàticament (minutes, 0 significa desactivat):"
 
-#: ../src/ConfigDialogue.cpp:439
+#: ../src/ConfigDialogue.cpp:441
 msgid "Autowrap long lines:"
 msgstr ""
 
@@ -592,7 +592,7 @@ msgstr "BC2"
 msgid "Barsplot..."
 msgstr "Gràfic de barres..."
 
-#: ../src/ConfigDialogue.cpp:927
+#: ../src/ConfigDialogue.cpp:933
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "Dávkové soubory (*.bat)|*.bat|Vše|*"
 
@@ -613,15 +613,15 @@ msgstr ""
 msgid "Beta"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:521
+#: ../src/ConfigDialogue.cpp:526
 msgid "Bitmap scale for export:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:529
+#: ../src/ConfigDialogue.cpp:534
 msgid "Bitmaps"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:796
+#: ../src/ConfigDialogue.cpp:801
 msgid "Bold"
 msgstr "Tučný"
 
@@ -642,7 +642,7 @@ msgstr "Prohlížení"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2104
+#: ../src/MathCtrl.cpp:2165
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
@@ -658,22 +658,22 @@ msgstr ""
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2336
+#: ../src/MathCtrl.cpp:2397
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5958
+#: ../src/MathCtrl.cpp:6016
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6031
+#: ../src/MathCtrl.cpp:6089
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6000
+#: ../src/MathCtrl.cpp:6058
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -688,7 +688,7 @@ msgstr ""
 msgid "Bug: Missing contents"
 msgstr ""
 
-#: ../src/GroupCell.cpp:873 ../src/GroupCell.cpp:1042
+#: ../src/GroupCell.cpp:925 ../src/GroupCell.cpp:1094
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -724,49 +724,49 @@ msgstr ""
 msgid "Bug: No last cell inside a square root!"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2147
+#: ../src/MathCtrl.cpp:2208
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2114
+#: ../src/MathCtrl.cpp:2175
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 
-#: ../src/GroupCell.cpp:324
+#: ../src/GroupCell.cpp:327
 msgid "Bug: Trying to append NULL to a group cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:585
+#: ../src/MathCtrl.cpp:571
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2038
+#: ../src/MathCtrl.cpp:2099
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6667
+#: ../src/MathCtrl.cpp:6725
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2116
+#: ../src/MathCtrl.cpp:2177
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1530
+#: ../src/MathCtrl.cpp:1591
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6001
+#: ../src/MathCtrl.cpp:6059
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:5963 ../src/MathCtrl.cpp:6036 ../src/MathCtrl.cpp:6070
+#: ../src/MathCtrl.cpp:6021 ../src/MathCtrl.cpp:6094 ../src/MathCtrl.cpp:6128
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
@@ -828,11 +828,11 @@ msgstr "Výpočet součinu"
 msgid "Calculate sums"
 msgstr "Výpočet sumy"
 
-#: ../src/wxMaxima.cpp:6086
+#: ../src/wxMaxima.cpp:6112
 msgid "Can not connect to the web server."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6137
+#: ../src/wxMaxima.cpp:6163
 msgid "Can not download version info."
 msgstr ""
 
@@ -848,11 +848,11 @@ msgstr ""
 #: ../src/PlotFormatWiz.cpp:48 ../src/SeriesWiz.cpp:49 ../src/SeriesWiz.cpp:51
 #: ../src/SubstituteWiz.cpp:41 ../src/SubstituteWiz.cpp:43 ../src/SumWiz.cpp:44
 #: ../src/SumWiz.cpp:46 ../src/SystemWiz.cpp:38 ../src/SystemWiz.cpp:40
-#: ../src/wxMaxima.cpp:6178
+#: ../src/wxMaxima.cpp:6204
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: ../src/wxMaxima.cpp:947 ../src/wxMaximaFrame.cpp:124
+#: ../src/wxMaximaFrame.cpp:124 ../src/wxMaxima.cpp:947
 msgid "Cannot start the maxima binary"
 msgstr ""
 
@@ -861,7 +861,7 @@ msgstr ""
 msgid "Canonical (tr)"
 msgstr "&Kanonická forma"
 
-#: ../src/ConfigDialogue.cpp:571
+#: ../src/ConfigDialogue.cpp:576
 #, fuzzy
 msgid "Catalan"
 msgstr "Italský"
@@ -870,11 +870,11 @@ msgstr "Italský"
 msgid "Ce&ll"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:774
+#: ../src/ConfigDialogue.cpp:779
 msgid "Cell bracket"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5499
+#: ../src/wxMaxima.cpp:5525
 msgid "Cell ends in a backslash"
 msgstr ""
 
@@ -913,16 +913,16 @@ msgstr ""
 msgid "Chi"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:572
+#: ../src/ConfigDialogue.cpp:577
 msgid "Chinese Simplified"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:573
+#: ../src/ConfigDialogue.cpp:578
 msgid "Chinese traditional"
 msgstr "Tradiční čínština"
 
-#: ../src/ConfigDialogue.cpp:748 ../src/ConfigDialogue.cpp:750
-#: ../src/ConfigDialogue.cpp:790
+#: ../src/ConfigDialogue.cpp:753 ../src/ConfigDialogue.cpp:755
+#: ../src/ConfigDialogue.cpp:795
 msgid "Choose font"
 msgstr "Výběr fontu"
 
@@ -944,31 +944,31 @@ msgstr "&Kopírovat\tCtrl+C"
 msgid "Close window"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:782
+#: ../src/ConfigDialogue.cpp:787
 msgid "Code highlighting: Comments"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:786
+#: ../src/ConfigDialogue.cpp:791
 msgid "Code highlighting: End of line"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:781
+#: ../src/ConfigDialogue.cpp:786
 msgid "Code highlighting: Functions"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:783
+#: ../src/ConfigDialogue.cpp:788
 msgid "Code highlighting: Numbers"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:785
+#: ../src/ConfigDialogue.cpp:790
 msgid "Code highlighting: Operators"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:784
+#: ../src/ConfigDialogue.cpp:789
 msgid "Code highlighting: Strings"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:780
+#: ../src/ConfigDialogue.cpp:785
 msgid "Code highlighting: Variables"
 msgstr ""
 
@@ -984,7 +984,7 @@ msgstr "Sloupce:"
 msgid "Combine factorials in an expression"
 msgstr "Sloučit faktoriály ve výrazu"
 
-#: ../src/wxMaxima.cpp:5532
+#: ../src/wxMaxima.cpp:5558
 msgid "Comma directly followed by a closing parenthesis"
 msgstr ""
 
@@ -996,7 +996,7 @@ msgstr "Zadejte x-ové souřadnice oddělené čárkou"
 msgid "Comma separated y coordinates"
 msgstr "Zadejte y-ové souřadnice oddělené čárkou"
 
-#: ../src/MathCtrl.cpp:1057
+#: ../src/MathCtrl.cpp:1041
 msgid "Comment Selection"
 msgstr "Zakomentovat výběr"
 
@@ -1053,11 +1053,11 @@ msgstr "Výpočet nejmenšího společného násobku (před tím proveďte load(
 msgid "Condition:"
 msgstr "Podmínka:"
 
-#: ../src/ConfigDialogue.cpp:1662 ../src/ConfigDialogue.cpp:1670
+#: ../src/ConfigDialogue.cpp:1668 ../src/ConfigDialogue.cpp:1676
 msgid "Config file (*.ini)|*.ini"
 msgstr "Konfigurační soubor (*.ini)|*.ini"
 
-#: ../src/ConfigDialogue.cpp:1496
+#: ../src/ConfigDialogue.cpp:1502
 msgid "Configuration warning"
 msgstr "Nastavení varovných hlášení"
 
@@ -1131,8 +1131,8 @@ msgstr "Převod trigonometrického výrazu na kanonický kvazilineární tvar"
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Převod trigonometrických funkcí do exponenciálního tvaru"
 
-#: ../src/MathCtrl.cpp:945 ../src/MathCtrl.cpp:958 ../src/MathCtrl.cpp:1004
-#: ../src/MathCtrl.cpp:1051 ../src/ToolBar.cpp:136
+#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:929 ../src/MathCtrl.cpp:942
+#: ../src/MathCtrl.cpp:988 ../src/MathCtrl.cpp:1035
 msgid "Copy"
 msgstr "Kopírovat"
 
@@ -1145,13 +1145,11 @@ msgstr "Kopírovat předchozí vstup\tCtrl+I"
 msgid "Copy Previous Output\tCtrl+U"
 msgstr "Kopírovat předchozí vstup\tCtrl+I"
 
-#: ../src/MathCtrl.cpp:963 ../src/MathCtrl.cpp:1009
-#: ../src/wxMaximaFrame.cpp:472
+#: ../src/wxMaximaFrame.cpp:472 ../src/MathCtrl.cpp:947 ../src/MathCtrl.cpp:993
 msgid "Copy as Image"
 msgstr "Kopírovat jako obrázek"
 
-#: ../src/MathCtrl.cpp:959 ../src/MathCtrl.cpp:1005
-#: ../src/wxMaximaFrame.cpp:465
+#: ../src/wxMaximaFrame.cpp:465 ../src/MathCtrl.cpp:943 ../src/MathCtrl.cpp:989
 msgid "Copy as LaTeX"
 msgstr "Kopírovat jako LaTeX"
 
@@ -1160,7 +1158,7 @@ msgstr "Kopírovat jako LaTeX"
 msgid "Copy as MathML"
 msgstr "Kopírovat jako obrázek"
 
-#: ../src/MathCtrl.cpp:962 ../src/MathCtrl.cpp:1007
+#: ../src/MathCtrl.cpp:946 ../src/MathCtrl.cpp:991
 msgid "Copy as MathML (e.g. to word processor)"
 msgstr ""
 
@@ -1168,7 +1166,7 @@ msgstr ""
 msgid "Copy as Text\tCtrl+Shift+C"
 msgstr "Kopírovat jako text\tCtrl+Shift+C"
 
-#: ../src/MathCtrl.cpp:960 ../src/MathCtrl.cpp:1006
+#: ../src/MathCtrl.cpp:944 ../src/MathCtrl.cpp:990
 #, fuzzy
 msgid "Copy as plain text"
 msgstr "Kopírovat jako obrázek"
@@ -1204,11 +1202,11 @@ msgstr "Vytvořit vstupní pole s předchozím vstupem"
 msgid "Create a new cell with previous output"
 msgstr "Vytvořit vstupní pole s předchozím vstupem"
 
-#: ../src/ConfigDialogue.cpp:776
+#: ../src/ConfigDialogue.cpp:781
 msgid "Cursor"
 msgstr "Kurzor"
 
-#: ../src/MathCtrl.cpp:1050 ../src/ToolBar.cpp:133
+#: ../src/ToolBar.cpp:133 ../src/MathCtrl.cpp:1034
 msgid "Cut"
 msgstr "Vyjmout"
 
@@ -1220,11 +1218,11 @@ msgstr "Vyjmout\tCtrl+X"
 msgid "Cut selection"
 msgstr "Vystřihnout výběr"
 
-#: ../src/ConfigDialogue.cpp:574
+#: ../src/ConfigDialogue.cpp:579
 msgid "Czech"
 msgstr "Česky"
 
-#: ../src/ConfigDialogue.cpp:575
+#: ../src/ConfigDialogue.cpp:580
 msgid "Danish"
 msgstr "Dánsky"
 
@@ -1243,7 +1241,7 @@ msgstr "Datový soubor (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgid "Data:"
 msgstr "Data:"
 
-#: ../src/ConfigDialogue.cpp:720
+#: ../src/ConfigDialogue.cpp:725
 msgid "Debug: watch maxima's stdout stream"
 msgstr ""
 
@@ -1251,23 +1249,23 @@ msgstr ""
 msgid "Decompose rational function to partial fractions"
 msgstr "Rozložit racionální funkci na parciální zlomky"
 
-#: ../src/ConfigDialogue.cpp:754
+#: ../src/ConfigDialogue.cpp:759
 msgid "Default"
 msgstr "Implicitní"
 
-#: ../src/ConfigDialogue.cpp:622
+#: ../src/ConfigDialogue.cpp:627
 msgid "Default animation framerate:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:747
+#: ../src/ConfigDialogue.cpp:752
 msgid "Default font:"
 msgstr "Implicitní font:"
 
-#: ../src/ConfigDialogue.cpp:412
+#: ../src/ConfigDialogue.cpp:414
 msgid "Default plot size for new maxima sessions:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:676
+#: ../src/ConfigDialogue.cpp:681
 #, fuzzy
 msgid "Default port for communication with wxMaxima:"
 msgstr "Standardní port pro komunikaci mezi programy Maxima a wxMaxima."
@@ -1286,7 +1284,7 @@ msgstr "Odstranit"
 msgid "Delete F&unction..."
 msgstr "Zrušit &funkci..."
 
-#: ../src/MathCtrl.cpp:966 ../src/MathCtrl.cpp:1012
+#: ../src/MathCtrl.cpp:950 ../src/MathCtrl.cpp:996
 msgid "Delete Selection"
 msgstr "Odstranit výběr"
 
@@ -1343,7 +1341,7 @@ msgstr "Dělení polynomů..."
 msgid "Diff..."
 msgstr "Derivovat..."
 
-#: ../src/wxMaxima.cpp:4334 ../src/wxMaxima.cpp:5298
+#: ../src/wxMaxima.cpp:4334 ../src/wxMaxima.cpp:5324
 msgid "Differentiate"
 msgstr "Derivovat"
 
@@ -1351,7 +1349,7 @@ msgstr "Derivovat"
 msgid "Differentiate expression"
 msgstr "Derivovat výraz"
 
-#: ../src/MathCtrl.cpp:1028
+#: ../src/MathCtrl.cpp:1012
 msgid "Differentiate..."
 msgstr "Derivovat..."
 
@@ -1383,7 +1381,7 @@ msgstr "Zobrazit čas potřebný pro výpočet"
 msgid "Divide"
 msgstr "Dělit"
 
-#: ../src/MathCtrl.cpp:1059
+#: ../src/MathCtrl.cpp:1043
 msgid "Divide Cell"
 msgstr "Rozdělit pole"
 
@@ -1400,12 +1398,12 @@ msgstr "Dělit čísla nebo polynomy"
 msgid "Divide this input cell into two cells"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6173
+#: ../src/wxMaxima.cpp:6199
 #, c-format
 msgid "Do you want to save the changes you made in the document \"%s\"?"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:773
+#: ../src/ConfigDialogue.cpp:778
 msgid "Document background"
 msgstr "Pozadí dokumentu"
 
@@ -1427,7 +1425,7 @@ msgstr ""
 "bylo uloženo v novější verzi programu wxMaxima. Prosím proveďte update "
 "programu."
 
-#: ../src/ConfigDialogue.cpp:510
+#: ../src/ConfigDialogue.cpp:515
 msgid "Documentclass for TeX export:"
 msgstr ""
 
@@ -1438,7 +1436,7 @@ msgid ""
 "differences."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6178
+#: ../src/wxMaxima.cpp:6204
 msgid "Don't save"
 msgstr ""
 
@@ -1474,7 +1472,7 @@ msgstr "Eliminovat proměnnou ze soustavy rovnic"
 msgid "End of proof"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:576
+#: ../src/ConfigDialogue.cpp:581
 msgid "English"
 msgstr "Anglický"
 
@@ -1501,7 +1499,7 @@ msgstr "Zadejte rovnici pro racionální zjednodušení"
 msgid "Enter comma separated list of variables."
 msgstr "Zadejte seznam proměnných oddělených čárkami."
 
-#: ../src/ConfigDialogue.cpp:481
+#: ../src/ConfigDialogue.cpp:483
 msgid "Enter evaluates cells"
 msgstr "Enter vyhodnocuje výraz"
 
@@ -1533,12 +1531,12 @@ msgid "Equation %d:"
 msgstr "Rovnice %d:"
 
 #: ../src/wxMaxima.cpp:3640 ../src/wxMaxima.cpp:3654 ../src/wxMaxima.cpp:3813
-#: ../src/wxMaxima.cpp:5251
+#: ../src/wxMaxima.cpp:5277
 msgid "Equation(s):"
 msgstr "Rovnice:"
 
 #: ../src/wxMaxima.cpp:3670 ../src/wxMaxima.cpp:3689 ../src/wxMaxima.cpp:4173
-#: ../src/wxMaxima.cpp:4988 ../src/wxMaxima.cpp:5265
+#: ../src/wxMaxima.cpp:4988 ../src/wxMaxima.cpp:5291
 msgid "Equation:"
 msgstr "Rovnice:"
 
@@ -1553,11 +1551,11 @@ msgstr ""
 msgid "Equations:"
 msgstr "Rovnice:"
 
-#: ../src/ConfigDialogue.cpp:940 ../src/Image.cpp:171 ../src/wxMaxima.cpp:1517
+#: ../src/Image.cpp:171 ../src/ConfigDialogue.cpp:946 ../src/wxMaxima.cpp:1517
 #: ../src/wxMaxima.cpp:1531 ../src/wxMaxima.cpp:1682 ../src/wxMaxima.cpp:1695
 #: ../src/wxMaxima.cpp:1705 ../src/wxMaxima.cpp:1789 ../src/wxMaxima.cpp:1817
 #: ../src/wxMaxima.cpp:1827 ../src/wxMaxima.cpp:2163 ../src/wxMaxima.cpp:2335
-#: ../src/wxMaxima.cpp:5629 ../src/wxMaxima.cpp:6086 ../src/wxMaxima.cpp:6137
+#: ../src/wxMaxima.cpp:5655 ../src/wxMaxima.cpp:6112 ../src/wxMaxima.cpp:6163
 msgid "Error"
 msgstr "Chyba"
 
@@ -1589,7 +1587,7 @@ msgstr "Vyhodnotit všechna vstupní pole\tCtrl+R"
 msgid "Evaluate All Visible Cells\tCtrl+R"
 msgstr "Vyhodnotit všechna vstupní pole\tCtrl+R"
 
-#: ../src/MathCtrl.cpp:969 ../src/wxMaximaFrame.cpp:545
+#: ../src/wxMaximaFrame.cpp:545 ../src/MathCtrl.cpp:953
 msgid "Evaluate Cell(s)"
 msgstr "Vyhodnotit vstupní pole"
 
@@ -1598,19 +1596,19 @@ msgstr "Vyhodnotit vstupní pole"
 msgid "Evaluate Cells Above\tCtrl+Shift+P"
 msgstr "Vyhodnotit všechna vstupní pole\tCtrl+R"
 
-#: ../src/MathCtrl.cpp:983 ../src/MathCtrl.cpp:1078
+#: ../src/MathCtrl.cpp:967 ../src/MathCtrl.cpp:1064
 msgid "Evaluate Part\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:988 ../src/MathCtrl.cpp:1080
+#: ../src/MathCtrl.cpp:972 ../src/MathCtrl.cpp:1067
 msgid "Evaluate Section\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:998 ../src/MathCtrl.cpp:1084
+#: ../src/MathCtrl.cpp:982 ../src/MathCtrl.cpp:1072 ../src/MathCtrl.cpp:1103
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:993 ../src/MathCtrl.cpp:1082
+#: ../src/MathCtrl.cpp:977 ../src/MathCtrl.cpp:1070 ../src/MathCtrl.cpp:1094
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
@@ -1644,11 +1642,11 @@ msgstr "Vyhodnotit nevyhodnocené funkce"
 msgid "Example"
 msgstr "Příklad"
 
-#: ../src/ConfigDialogue.cpp:1610 ../src/ConfigDialogue.cpp:1707
+#: ../src/ConfigDialogue.cpp:1616 ../src/ConfigDialogue.cpp:1713
 msgid "Example text"
 msgstr "Text příkladu"
 
-#: ../src/ConfigDialogue.cpp:686
+#: ../src/ConfigDialogue.cpp:691
 #, fuzzy
 msgid "Examples:"
 msgstr "Příklad"
@@ -1665,7 +1663,7 @@ msgstr "Rozložit"
 msgid "Expand (tr)"
 msgstr "Rozložit (trig.)"
 
-#: ../src/MathCtrl.cpp:1024
+#: ../src/MathCtrl.cpp:1008
 msgid "Expand Expression"
 msgstr "Rozložit výraz"
 
@@ -1689,7 +1687,7 @@ msgstr ""
 msgid "Export"
 msgstr "Export"
 
-#: ../src/ConfigDialogue.cpp:535
+#: ../src/ConfigDialogue.cpp:540
 msgid ""
 "Export animations to TeX (Images only move if the PDF viewer supports this)"
 msgstr ""
@@ -1698,7 +1696,7 @@ msgstr ""
 msgid "Export document to a HTML or pdfLaTeX file"
 msgstr "Export dokumentu do HTML nebo pdfLaTeXu"
 
-#: ../src/ConfigDialogue.cpp:526
+#: ../src/ConfigDialogue.cpp:531
 #, fuzzy
 msgid "Export equations to HTML as:"
 msgstr "Export do HTML byl neúspěšný!"
@@ -1742,7 +1740,7 @@ msgstr "Výraz(y):"
 #: ../src/SubstituteWiz.cpp:28 ../src/SumWiz.cpp:27 ../src/wxMaxima.cpp:3828
 #: ../src/wxMaxima.cpp:3998 ../src/wxMaxima.cpp:4254 ../src/wxMaxima.cpp:4269
 #: ../src/wxMaxima.cpp:4298 ../src/wxMaxima.cpp:4315 ../src/wxMaxima.cpp:4332
-#: ../src/wxMaxima.cpp:4385 ../src/wxMaxima.cpp:4420 ../src/wxMaxima.cpp:5296
+#: ../src/wxMaxima.cpp:4385 ../src/wxMaxima.cpp:4420 ../src/wxMaxima.cpp:5322
 msgid "Expression:"
 msgstr "Výraz:"
 
@@ -1754,7 +1752,7 @@ msgstr "Na součin"
 msgid "Factor Complex"
 msgstr "Faktorizovat komplexní výraz"
 
-#: ../src/MathCtrl.cpp:1023
+#: ../src/MathCtrl.cpp:1007
 msgid "Factor Expression"
 msgstr "Faktorizovat výraz"
 
@@ -1774,7 +1772,7 @@ msgstr "Faktoriály a &gamma funkce"
 msgid "Fatal error"
 msgstr "Závažná chyba"
 
-#: ../src/GroupCell.cpp:1676
+#: ../src/GroupCell.cpp:1731
 #, fuzzy, c-format
 msgid "Figure %d:"
 msgstr "Obrázek"
@@ -1790,7 +1788,7 @@ msgstr "Soubor"
 msgid "File could not be opened"
 msgstr "Soubor nenalezen"
 
-#: ../src/wxMaxima.cpp:5425
+#: ../src/wxMaxima.cpp:5451
 msgid "File not found"
 msgstr "Soubor nenalezen"
 
@@ -1799,7 +1797,7 @@ msgstr "Soubor nenalezen"
 msgid "File opened"
 msgstr "Soubor nenalezen"
 
-#: ../src/wxMaxima.cpp:5425
+#: ../src/wxMaxima.cpp:5451
 msgid "File you tried to open does not exist."
 msgstr "Soubor, který se pokoušíte otevřít, neexistuje."
 
@@ -1823,7 +1821,7 @@ msgstr "Najít &limitu..."
 msgid "Find Minimum..."
 msgstr "Najít minimum..."
 
-#: ../src/MathCtrl.cpp:1020
+#: ../src/MathCtrl.cpp:1004
 msgid "Find Root..."
 msgstr "Najít kořen..."
 
@@ -1871,7 +1869,7 @@ msgstr "Najít minimum"
 msgid "Find real roots of a polynomial"
 msgstr "Nаjít reálné kořeny polynomu"
 
-#: ../src/wxMaxima.cpp:3673 ../src/wxMaxima.cpp:5268
+#: ../src/wxMaxima.cpp:3673 ../src/wxMaxima.cpp:5294
 msgid "Find root"
 msgstr "Najdi kořen"
 
@@ -1880,17 +1878,17 @@ msgstr "Najdi kořen"
 msgid "Find:"
 msgstr "Najdi"
 
-#: ../src/ConfigDialogue.cpp:577
+#: ../src/ConfigDialogue.cpp:582
 #, fuzzy
 msgid "Finnish"
 msgstr "Dánsky"
 
-#: ../src/ConfigDialogue.cpp:644
+#: ../src/ConfigDialogue.cpp:649
 #, c-format
 msgid "Fix reordered reference indices (of %i, %o) before saving"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:472
+#: ../src/ConfigDialogue.cpp:474
 msgid "Fixed font in text controls"
 msgstr "Fixní font v textových vstupech"
 
@@ -1937,7 +1935,7 @@ msgstr "Font použitý pro zobrazení v dokumentu."
 msgid "Font used for displaying math characters in document."
 msgstr "Font pro zobrazení matematických symbolů v dokumentu."
 
-#: ../src/ConfigDialogue.cpp:735
+#: ../src/ConfigDialogue.cpp:740
 msgid "Fonts"
 msgstr "Fonty"
 
@@ -1957,7 +1955,7 @@ msgstr "Formát:"
 msgid "Frame %i of %i"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:578
+#: ../src/ConfigDialogue.cpp:583
 msgid "French"
 msgstr "Francouzský"
 
@@ -1975,7 +1973,7 @@ msgstr "Celá obrazovka\tAlt+Enter"
 msgid "Function"
 msgstr "Funkce"
 
-#: ../src/ConfigDialogue.cpp:757
+#: ../src/ConfigDialogue.cpp:762
 msgid "Function names"
 msgstr "Názvy funkcí"
 
@@ -2004,11 +2002,11 @@ msgstr "Funkce pro zjednodušení trigonometických výrazů"
 msgid "GCD"
 msgstr "Největší společný dělitel"
 
-#: ../src/wxMaxima.cpp:5384
+#: ../src/wxMaxima.cpp:5410
 msgid "GIF image (*.gif)|*.gif"
 msgstr "GIF image (*.gif)|*.gif"
 
-#: ../src/ConfigDialogue.cpp:579
+#: ../src/ConfigDialogue.cpp:584
 msgid "Galician"
 msgstr ""
 
@@ -2040,7 +2038,7 @@ msgstr "Vytvořit matici z 2D pole"
 msgid "Generate a matrix from a lambda expression"
 msgstr "Vytvořit matici z lambda výrazu"
 
-#: ../src/ConfigDialogue.cpp:580
+#: ../src/ConfigDialogue.cpp:585
 msgid "German"
 msgstr "Německý"
 
@@ -2076,13 +2074,13 @@ msgstr "Určit imaginární část komplexního výrazu"
 msgid "Get the real part of complex expression"
 msgstr "Určit reálnou část komplexního výrazu"
 
-#: ../src/MathCtrl.cpp:6050
+#: ../src/MathCtrl.cpp:6108
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:581
+#: ../src/ConfigDialogue.cpp:586
 msgid "Greek"
 msgstr ""
 
@@ -2096,7 +2094,7 @@ msgstr "Konstanty označené řeckými písmeny"
 msgid "Greek Letters\tAlt+Shift+G"
 msgstr "Matematické operace\tAlt+Shift+M"
 
-#: ../src/ConfigDialogue.cpp:759
+#: ../src/ConfigDialogue.cpp:764
 msgid "Greek constants"
 msgstr "Konstanty označené řeckými písmeny"
 
@@ -2135,11 +2133,43 @@ msgstr "Rozdělit pole"
 msgid "Hide Code Cells\tAlt+Ctrl+H"
 msgstr "Rozdělit pole"
 
+#: ../src/MathCtrl.cpp:1083
+#, fuzzy
+msgid "Hide Part"
+msgstr "Rozdělit pole"
+
+#: ../src/MathCtrl.cpp:1091
+#, fuzzy
+msgid "Hide Section"
+msgstr "Sekce"
+
+#: ../src/MathCtrl.cpp:1100
+#, fuzzy
+msgid "Hide Subsection"
+msgstr "Podkapitola"
+
+#: ../src/MathCtrl.cpp:1109
+#, fuzzy
+msgid "Hide Subsubsection"
+msgstr "Podkapitola"
+
 #: ../src/wxMaximaFrame.cpp:520
 msgid "Hide all panes"
 msgstr "Skrýt panely nástrojů"
 
-#: ../src/ConfigDialogue.cpp:766
+#: ../src/MathCtrl.cpp:1117
+#, fuzzy
+msgid "Hide contents"
+msgstr "Konstanty označené řeckými písmeny"
+
+#: ../src/ConfigDialogue.cpp:217
+msgid ""
+"Hide the brackets that mark the extend of the worksheet cells at the "
+"worksheet's right side and that contain the \"hide\" button of the cell if "
+"the cells aren't active."
+msgstr ""
+
+#: ../src/ConfigDialogue.cpp:771
 msgid "Highlight (dpart)"
 msgstr "Zvýraznění (dpart)"
 
@@ -2172,7 +2202,7 @@ msgstr ""
 "shift. Stisk klávesy Backspace nebo dvojí stisk klávesy Delete vymaže "
 "sousední pole."
 
-#: ../src/ConfigDialogue.cpp:582
+#: ../src/ConfigDialogue.cpp:587
 msgid "Hungarian"
 msgstr "Maďarský"
 
@@ -2208,11 +2238,11 @@ msgid ""
 "detects that maxima has encountered any error."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:434
+#: ../src/ConfigDialogue.cpp:436
 msgid "If not extremely long"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:433
+#: ../src/ConfigDialogue.cpp:435
 msgid "If not very long"
 msgstr ""
 
@@ -2262,7 +2292,7 @@ msgstr ""
 msgid "Image"
 msgstr "Obraz"
 
-#: ../src/wxMaxima.cpp:5891
+#: ../src/wxMaxima.cpp:5917
 msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgstr "Soubory s obrázky (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 
@@ -2301,7 +2331,7 @@ msgstr ""
 msgid "Include columns:"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:646
+#: ../src/ConfigDialogue.cpp:651
 msgid "Incremental Search"
 msgstr ""
 
@@ -2328,7 +2358,7 @@ msgstr "Počáteční podmínka (&1) ..."
 msgid "Initial Value Problem (&2)..."
 msgstr "Počáteční podmínka (&2) ..."
 
-#: ../src/ConfigDialogue.cpp:762
+#: ../src/ConfigDialogue.cpp:767
 msgid "Input labels"
 msgstr "Značka pro vstup"
 
@@ -2336,7 +2366,7 @@ msgstr "Značka pro vstup"
 msgid "Insert"
 msgstr "Vložit"
 
-#: ../src/ConfigDialogue.cpp:487
+#: ../src/ConfigDialogue.cpp:489
 msgid "Insert % before an operator at the beginning of a cell"
 msgstr ""
 
@@ -2354,7 +2384,7 @@ msgstr "Vložit textové pole\tF6"
 msgid "Insert Cell\tAlt+Shift+C"
 msgstr "Vložit pole\tAlt+Shift+C"
 
-#: ../src/wxMaxima.cpp:5889
+#: ../src/wxMaxima.cpp:5915
 msgid "Insert Image"
 msgstr "Vložit obrázek"
 
@@ -2382,17 +2412,17 @@ msgstr "Vložit pole s podkapitolou\tF8"
 msgid "Insert S&ubsubsection Cell\tCtrl+5"
 msgstr "Vložit pole s podkapitolou\tF8"
 
-#: ../src/MathCtrl.cpp:1042
+#: ../src/MathCtrl.cpp:1026
 #, fuzzy
 msgid "Insert Section Cell"
 msgstr "Vložit pole s kapitolou\tF8"
 
-#: ../src/MathCtrl.cpp:1043
+#: ../src/MathCtrl.cpp:1027
 #, fuzzy
 msgid "Insert Subsection Cell"
 msgstr "Vložit pole s podkapitolou\tF8"
 
-#: ../src/MathCtrl.cpp:1044
+#: ../src/MathCtrl.cpp:1028
 #, fuzzy
 msgid "Insert Subsubsection Cell"
 msgstr "Vložit pole s podkapitolou\tF8"
@@ -2402,12 +2432,12 @@ msgstr "Vložit pole s podkapitolou\tF8"
 msgid "Insert T&itle Cell\tCtrl+2"
 msgstr "Vložit pole s nadpisem\tF9"
 
-#: ../src/MathCtrl.cpp:1040
+#: ../src/MathCtrl.cpp:1024
 #, fuzzy
 msgid "Insert Text Cell"
 msgstr "Vložit textové pole\tF6"
 
-#: ../src/MathCtrl.cpp:1041
+#: ../src/MathCtrl.cpp:1025
 #, fuzzy
 msgid "Insert Title Cell"
 msgstr "Vložit pole s nadpisem\tF9"
@@ -2445,7 +2475,7 @@ msgstr "Vložit zlom stránky"
 msgid "Insert image"
 msgstr "Vložit obrázek"
 
-#: ../src/ConfigDialogue.cpp:451
+#: ../src/ConfigDialogue.cpp:453
 msgid "Integers and single letters"
 msgstr ""
 
@@ -2458,7 +2488,7 @@ msgstr "Integrovat výraz"
 msgid "Integral/Sum:"
 msgstr "Integrál/suma:"
 
-#: ../src/IntegrateWiz.cpp:66 ../src/wxMaxima.cpp:4285 ../src/wxMaxima.cpp:5283
+#: ../src/IntegrateWiz.cpp:66 ../src/wxMaxima.cpp:4285 ../src/wxMaxima.cpp:5309
 msgid "Integrate"
 msgstr "Integrovat"
 
@@ -2474,9 +2504,14 @@ msgstr "Integrovat výraz"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Integrovat výraz pomocí Rischova algoritmu"
 
-#: ../src/MathCtrl.cpp:1027 ../src/wxMaximaFrame.cpp:1184
+#: ../src/wxMaximaFrame.cpp:1184 ../src/MathCtrl.cpp:1011
 msgid "Integrate..."
 msgstr "Integrovat..."
+
+#: ../src/ConfigDialogue.cpp:498
+#, fuzzy
+msgid "Intelligently hide cell brackets"
+msgstr "Suport de cel·la activa"
 
 #: ../src/ToolBar.cpp:157
 msgid "Interrupt"
@@ -2492,7 +2527,7 @@ msgid ""
 "left to this one."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:939
+#: ../src/ConfigDialogue.cpp:945
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
@@ -2528,20 +2563,20 @@ msgid ""
 "that a few special characters like the "
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:583
+#: ../src/ConfigDialogue.cpp:588
 msgid "Italian"
 msgstr "Italský"
 
-#: ../src/ConfigDialogue.cpp:797
+#: ../src/ConfigDialogue.cpp:802
 msgid "Italic"
 msgstr "Kurzíva"
 
-#: ../src/ConfigDialogue.cpp:584
+#: ../src/ConfigDialogue.cpp:589
 #, fuzzy
 msgid "Japanese"
 msgstr "Panely nástrojů"
 
-#: ../src/ConfigDialogue.cpp:586
+#: ../src/ConfigDialogue.cpp:591
 msgid "Kabyle"
 msgstr ""
 
@@ -2549,7 +2584,7 @@ msgstr ""
 msgid "Kappa"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:478
+#: ../src/ConfigDialogue.cpp:480
 #, c-format
 msgid "Keep percent sign with special symbols: %e, %i, etc."
 msgstr ""
@@ -2558,15 +2593,15 @@ msgstr ""
 msgid "LCM"
 msgstr "Nejmenší společný násobek"
 
-#: ../src/ConfigDialogue.cpp:538
+#: ../src/ConfigDialogue.cpp:543
 msgid "LaTeX: Place exponents after, instead above subscripts"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:541
+#: ../src/ConfigDialogue.cpp:546
 msgid "LaTeX: Use the \"partial derivative\" symbol to represent diff()"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:458
+#: ../src/ConfigDialogue.cpp:460
 msgid "Label width:"
 msgstr ""
 
@@ -2578,7 +2613,7 @@ msgstr ""
 msgid "Language used for wxMaxima GUI."
 msgstr "Jazyk používaný GUI programu wxMaxima."
 
-#: ../src/ConfigDialogue.cpp:567
+#: ../src/ConfigDialogue.cpp:572
 msgid "Language:"
 msgstr "Jazyk:"
 
@@ -2635,7 +2670,7 @@ msgstr "Seznam:"
 msgid "List:"
 msgstr "Seznam:"
 
-#: ../src/ConfigDialogue.cpp:800
+#: ../src/ConfigDialogue.cpp:805
 msgid "Load"
 msgstr "Načíst"
 
@@ -2651,7 +2686,7 @@ msgstr "Načíst soubor programu Maxima s použitím dávkového příkazu"
 msgid "Load a Maxima package file"
 msgstr "Načíst Maxima balíček"
 
-#: ../src/ConfigDialogue.cpp:1668
+#: ../src/ConfigDialogue.cpp:1674
 msgid "Load style from file"
 msgstr "Načíst styl ze souboru"
 
@@ -2659,7 +2694,7 @@ msgstr "Načíst styl ze souboru"
 msgid "Long Right arrow"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:3671 ../src/wxMaxima.cpp:5266
+#: ../src/wxMaxima.cpp:3671 ../src/wxMaxima.cpp:5292
 msgid "Lower bound:"
 msgstr "Dolní mez:"
 
@@ -2710,11 +2745,11 @@ msgstr "Použít funkci na prvky matice"
 msgid "Match Case"
 msgstr "Dávkový soubor"
 
-#: ../src/ConfigDialogue.cpp:469
+#: ../src/ConfigDialogue.cpp:471
 msgid "Match parenthesis in text controls"
 msgstr "Kontrola závorek v textovém vstupu"
 
-#: ../src/ConfigDialogue.cpp:749
+#: ../src/ConfigDialogue.cpp:754
 msgid "Math font:"
 msgstr "Matematický font:"
 
@@ -2732,7 +2767,7 @@ msgid ""
 "fonts that don't match the rest of the document."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:530
+#: ../src/ConfigDialogue.cpp:535
 msgid "MathML + MathJaX as Fill-In"
 msgstr ""
 
@@ -2766,7 +2801,7 @@ msgstr "&Maxima"
 msgid "Maxima has a question"
 msgstr "Otázka programu Maxima"
 
-#: ../src/ConfigDialogue.cpp:761
+#: ../src/ConfigDialogue.cpp:766
 msgid "Maxima input"
 msgstr "Vstup programu Maxima"
 
@@ -2791,7 +2826,7 @@ msgstr "Maxima balíček (*.mac)|*.mac|Lisp balíček (*.lisp)|*.lisp|Vše|*"
 msgid "Maxima process terminated."
 msgstr "Proces Maxima ukončen."
 
-#: ../src/ConfigDialogue.cpp:664
+#: ../src/ConfigDialogue.cpp:669
 msgid "Maxima program:"
 msgstr "Program Maxima:"
 
@@ -2803,7 +2838,7 @@ msgid ""
 "a little bit of time this switch allows to disable this behavior."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:763
+#: ../src/ConfigDialogue.cpp:768
 msgid "Maxima questions"
 msgstr "Otázka programu Maxima"
 
@@ -2898,7 +2933,7 @@ msgid ""
 "This icon indicates if data is transferred between maxima and wxMaxima."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:424
+#: ../src/ConfigDialogue.cpp:426
 msgid "Maximum displayed number of digits:"
 msgstr ""
 
@@ -2926,7 +2961,7 @@ msgstr "Průměr:"
 msgid "Median..."
 msgstr "Medián"
 
-#: ../src/MathCtrl.cpp:972
+#: ../src/MathCtrl.cpp:956
 msgid "Merge Cells"
 msgstr "Spojit pole"
 
@@ -2947,7 +2982,7 @@ msgstr ""
 msgid "Method:"
 msgstr "Metoda:"
 
-#: ../src/wxMaxima.cpp:5527 ../src/wxMaxima.cpp:5528
+#: ../src/wxMaxima.cpp:5553 ../src/wxMaxima.cpp:5554
 #, fuzzy
 msgid "Mismatched parenthesis"
 msgstr "Kontrola závorek v textovém vstupu"
@@ -2978,7 +3013,7 @@ msgstr "&Nový\tCtrl+N"
 msgid "New document"
 msgstr "Otevřít dokument"
 
-#: ../src/ConfigDialogue.cpp:493
+#: ../src/ConfigDialogue.cpp:495
 msgid "New lines: Jump to text"
 msgstr ""
 
@@ -2994,12 +3029,12 @@ msgstr "Nová proměnná:"
 msgid "Next Command\tAlt+Down"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:432 ../src/ConfigDialogue.cpp:442
-#: ../src/ConfigDialogue.cpp:450
+#: ../src/ConfigDialogue.cpp:434 ../src/ConfigDialogue.cpp:444
+#: ../src/ConfigDialogue.cpp:452
 msgid "No"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5610
+#: ../src/wxMaxima.cpp:5636
 msgid "No dollar ($) or semicolon (;) at the end of command"
 msgstr ""
 
@@ -3020,7 +3055,7 @@ msgid ""
 "increases the resolution in respect to the default value."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:588
+#: ../src/ConfigDialogue.cpp:593
 msgid "Norwegian"
 msgstr ""
 
@@ -3058,7 +3093,7 @@ msgstr "Stupeň polynomu v čitateli:"
 msgid "Number of equations:"
 msgstr "Počet rovnic:"
 
-#: ../src/ConfigDialogue.cpp:756
+#: ../src/ConfigDialogue.cpp:761
 msgid "Numbers"
 msgstr "Počty"
 
@@ -3112,7 +3147,7 @@ msgstr "Text příkladu"
 msgid "Online tutorials"
 msgstr "Online tutoriály"
 
-#: ../src/ConfigDialogue.cpp:666 ../src/ToolBar.cpp:115 ../src/main.cpp:354
+#: ../src/ToolBar.cpp:115 ../src/main.cpp:354 ../src/ConfigDialogue.cpp:671
 #: ../src/wxMaxima.cpp:2973
 msgid "Open"
 msgstr "Otevřít"
@@ -3121,7 +3156,7 @@ msgstr "Otevřít"
 msgid "Open Recent"
 msgstr "Otevřít naposledy použité"
 
-#: ../src/ConfigDialogue.cpp:484
+#: ../src/ConfigDialogue.cpp:486
 msgid "Open a cell when Maxima expects input"
 msgstr ""
 
@@ -3146,11 +3181,11 @@ msgstr "Otevřít matici"
 msgid "Opening file"
 msgstr "Chyba při otevírání souboru"
 
-#: ../src/ConfigDialogue.cpp:638
+#: ../src/ConfigDialogue.cpp:643
 msgid "Optimize wxmx files for version control"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:151 ../src/ToolBar.cpp:127
+#: ../src/ToolBar.cpp:127 ../src/ConfigDialogue.cpp:151
 msgid "Options"
 msgstr "Volby"
 
@@ -3158,11 +3193,11 @@ msgstr "Volby"
 msgid "Options:"
 msgstr "Volby:"
 
-#: ../src/ConfigDialogue.cpp:779
+#: ../src/ConfigDialogue.cpp:784
 msgid "Outdated cells"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:764
+#: ../src/ConfigDialogue.cpp:769
 msgid "Output labels"
 msgstr "Značky výstupů"
 
@@ -3170,7 +3205,7 @@ msgstr "Značky výstupů"
 msgid "P&ade Approximation..."
 msgstr "P&adého aproximace..."
 
-#: ../src/wxMaxima.cpp:3307 ../src/wxMaxima.cpp:5365
+#: ../src/wxMaxima.cpp:3307 ../src/wxMaxima.cpp:5391
 #, fuzzy
 msgid ""
 "PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*."
@@ -3223,7 +3258,7 @@ msgid ""
 "Found unknown XML Tag name "
 msgstr "Část dokumentu nebude otevřena korektně!"
 
-#: ../src/MathCtrl.cpp:1037 ../src/MathCtrl.cpp:1052 ../src/ToolBar.cpp:139
+#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:1021 ../src/MathCtrl.cpp:1036
 msgid "Paste"
 msgstr "Vložit"
 
@@ -3260,7 +3295,7 @@ msgstr "Koláčový graf"
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Konfigurujte program wxMaxima pomocí 'Edit->Configure'."
 
-#: ../src/ConfigDialogue.cpp:1495
+#: ../src/ConfigDialogue.cpp:1501
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "Aby změny byly provedeny, je nutné program wxMaxima restartovat!"
 
@@ -3277,7 +3312,7 @@ msgid "Plot &Format..."
 msgstr "&Formát grafu..."
 
 #: ../src/Plot2dWiz.cpp:104 ../src/Plot2dWiz.cpp:450 ../src/Plot2dWiz.cpp:464
-#: ../src/wxMaxima.cpp:4463 ../src/wxMaxima.cpp:5334
+#: ../src/wxMaxima.cpp:4463 ../src/wxMaxima.cpp:5360
 msgid "Plot 2D"
 msgstr "2D graf"
 
@@ -3285,11 +3320,11 @@ msgstr "2D graf"
 msgid "Plot 2D..."
 msgstr "2D graf..."
 
-#: ../src/MathCtrl.cpp:1030
+#: ../src/MathCtrl.cpp:1014
 msgid "Plot 2d..."
 msgstr "2D graf..."
 
-#: ../src/Plot3dWiz.cpp:108 ../src/wxMaxima.cpp:4449 ../src/wxMaxima.cpp:5347
+#: ../src/Plot3dWiz.cpp:108 ../src/wxMaxima.cpp:4449 ../src/wxMaxima.cpp:5373
 msgid "Plot 3D"
 msgstr "3D graf"
 
@@ -3297,7 +3332,7 @@ msgstr "3D graf"
 msgid "Plot 3D..."
 msgstr "3D graf..."
 
-#: ../src/MathCtrl.cpp:1031
+#: ../src/MathCtrl.cpp:1015
 msgid "Plot 3d..."
 msgstr "3D graf..."
 
@@ -3323,7 +3358,7 @@ msgstr "Graf do souboru:"
 msgid "Point:"
 msgstr "Bod:"
 
-#: ../src/ConfigDialogue.cpp:589
+#: ../src/ConfigDialogue.cpp:594
 msgid "Polish"
 msgstr "Polský"
 
@@ -3335,7 +3370,7 @@ msgstr "Polynom 1:"
 msgid "Polynomial 2:"
 msgstr "Polynom 2:"
 
-#: ../src/ConfigDialogue.cpp:590
+#: ../src/ConfigDialogue.cpp:595
 msgid "Portuguese (Brazilian)"
 msgstr "Portugalský (Brazilský)"
 
@@ -3371,7 +3406,7 @@ msgstr "Tisk"
 msgid "Print document"
 msgstr "Tisk dokumentu"
 
-#: ../src/ConfigDialogue.cpp:550
+#: ../src/ConfigDialogue.cpp:555
 msgid "Print the cell brackets [drawn to their left]"
 msgstr ""
 
@@ -3418,7 +3453,7 @@ msgstr ""
 msgid "Recall previous command from history"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:617
+#: ../src/ConfigDialogue.cpp:622
 msgid "Recent files list length:"
 msgstr ""
 
@@ -3444,7 +3479,7 @@ msgstr "Zjednodušit (trig.)"
 msgid "Reduce trigonometric expression"
 msgstr "Zjednodušení trigonometrických výrazů"
 
-#: ../src/wxMaxima.cpp:629 ../src/wxMaxima.cpp:5743
+#: ../src/wxMaxima.cpp:629 ../src/wxMaxima.cpp:5769
 msgid "Refusing to send cell to maxima: "
 msgstr ""
 
@@ -3483,7 +3518,7 @@ msgstr "Restart programu Maxima"
 msgid "Restart maxima"
 msgstr "Restart programu Maxima"
 
-#: ../src/MathCtrl.cpp:4507
+#: ../src/MathCtrl.cpp:4568
 msgid "Result"
 msgstr ""
 
@@ -3515,7 +3550,7 @@ msgstr "Kořeny polynomu (bfloat)"
 msgid "Rows:"
 msgstr "Řádky:"
 
-#: ../src/ConfigDialogue.cpp:591
+#: ../src/ConfigDialogue.cpp:596
 msgid "Russian"
 msgstr "Ruský"
 
@@ -3531,12 +3566,12 @@ msgstr "Příklad 2:"
 msgid "Sample:"
 msgstr "Příklad:"
 
-#: ../src/ConfigDialogue.cpp:801 ../src/ToolBar.cpp:118
-#: ../src/wxMaxima.cpp:6178
+#: ../src/ToolBar.cpp:118 ../src/ConfigDialogue.cpp:806
+#: ../src/wxMaxima.cpp:6204
 msgid "Save"
 msgstr "Uložit"
 
-#: ../src/MathCtrl.cpp:948
+#: ../src/MathCtrl.cpp:932
 msgid "Save Animation..."
 msgstr "Uložit animaci..."
 
@@ -3548,7 +3583,7 @@ msgstr "Uložit jako"
 msgid "Save As...\tShift+Ctrl+S"
 msgstr "Uložit jako...\tShift+Ctrl+S"
 
-#: ../src/MathCtrl.cpp:946
+#: ../src/MathCtrl.cpp:930
 msgid "Save Image..."
 msgstr "Uložit obrázek..."
 
@@ -3560,7 +3595,7 @@ msgstr "Uložit výběr jako obrázek"
 msgid "Save Selection to Image..."
 msgstr "Uložit výběr jako obrázek..."
 
-#: ../src/wxMaxima.cpp:5382
+#: ../src/wxMaxima.cpp:5408
 msgid "Save animation to file"
 msgstr "Uložit animaci do souboru"
 
@@ -3578,7 +3613,7 @@ msgid ""
 "infinite number of actions."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:632
+#: ../src/ConfigDialogue.cpp:637
 msgid "Save panes layout"
 msgstr "Uložit nastavení panelů"
 
@@ -3594,15 +3629,15 @@ msgstr "Uložit graf do souboru"
 msgid "Save selection from document to an image file"
 msgstr "Uložit výběr z dokumentu jako obrázkový soubor"
 
-#: ../src/wxMaxima.cpp:5363
+#: ../src/wxMaxima.cpp:5389
 msgid "Save selection to file"
 msgstr "Uložit označené do souboru"
 
-#: ../src/ConfigDialogue.cpp:1660
+#: ../src/ConfigDialogue.cpp:1666
 msgid "Save style to file"
 msgstr "Uložit styl do souboru"
 
-#: ../src/ConfigDialogue.cpp:629
+#: ../src/ConfigDialogue.cpp:634
 msgid "Save wxMaxima window size/position"
 msgstr "Uložit velikost/pozici okna wxMaxima"
 
@@ -3635,7 +3670,7 @@ msgstr ""
 msgid "Section"
 msgstr "Sekce"
 
-#: ../src/ConfigDialogue.cpp:770
+#: ../src/ConfigDialogue.cpp:775
 msgid "Section cell"
 msgstr "Pole kapitoly"
 
@@ -3658,7 +3693,7 @@ msgstr ""
 msgid "Select"
 msgstr "Výběr"
 
-#: ../src/MathCtrl.cpp:1038 ../src/MathCtrl.cpp:1054
+#: ../src/MathCtrl.cpp:1022 ../src/MathCtrl.cpp:1038
 msgid "Select All"
 msgstr "Vybrat vše"
 
@@ -3666,7 +3701,7 @@ msgstr "Vybrat vše"
 msgid "Select All\tCtrl+A"
 msgstr "Vybrat vše\tCtrl+A"
 
-#: ../src/ConfigDialogue.cpp:925 ../src/ConfigDialogue.cpp:930
+#: ../src/ConfigDialogue.cpp:931 ../src/ConfigDialogue.cpp:936
 msgid "Select Maxima program"
 msgstr "Výběr programu Maxima"
 
@@ -3697,7 +3732,7 @@ msgstr ""
 "Výběrem části výstupu a použitím pravého tlačítka myši obrdržíte menu "
 "obsahující funkce vhodné pro práci s právě vybraným výrazem."
 
-#: ../src/ConfigDialogue.cpp:777
+#: ../src/ConfigDialogue.cpp:782
 msgid "Selection"
 msgstr "Výběr"
 
@@ -3832,7 +3867,7 @@ msgstr ""
 msgid "Show long expressions in wxMaxima document."
 msgstr "Zobrazovat dlouhé výrazy v dokumentu wxMaxima."
 
-#: ../src/ConfigDialogue.cpp:429
+#: ../src/ConfigDialogue.cpp:431
 #, fuzzy
 msgid "Show long expressions:"
 msgstr "Zobrazit dlouhé výrazy"
@@ -3841,7 +3876,7 @@ msgstr "Zobrazit dlouhé výrazy"
 msgid "Show the definition of function:"
 msgstr "Zobrazit definici funkce:"
 
-#: ../src/ConfigDialogue.cpp:466
+#: ../src/ConfigDialogue.cpp:468
 #, c-format
 msgid "Show user-defined labels instead of (%oxx)"
 msgstr ""
@@ -3871,7 +3906,7 @@ msgstr "Zjednodušit (rac.)"
 msgid "Simplify (tr)"
 msgstr "Zjednodušit (trig.)"
 
-#: ../src/MathCtrl.cpp:1022
+#: ../src/MathCtrl.cpp:1006
 msgid "Simplify Expression"
 msgstr "Zjednodušit výraz"
 
@@ -3911,7 +3946,7 @@ msgstr ""
 msgid "Solution:"
 msgstr "Řešení:"
 
-#: ../src/wxMaxima.cpp:3641 ../src/wxMaxima.cpp:3655 ../src/wxMaxima.cpp:5252
+#: ../src/wxMaxima.cpp:3641 ../src/wxMaxima.cpp:3655 ../src/wxMaxima.cpp:5278
 msgid "Solve"
 msgstr "Řešit"
 
@@ -3987,7 +4022,7 @@ msgstr "Řešit ODR nejvýše 2. řádu"
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "Řešit ODR pomocí Laplaceovy transfromace"
 
-#: ../src/MathCtrl.cpp:1019 ../src/wxMaximaFrame.cpp:1181
+#: ../src/wxMaximaFrame.cpp:1181 ../src/MathCtrl.cpp:1003
 msgid "Solve..."
 msgstr "Řešit..."
 
@@ -3998,7 +4033,7 @@ msgid ""
 "needed in order to compile the output, though."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:592
+#: ../src/ConfigDialogue.cpp:597
 msgid "Spanish"
 msgstr "Španělský"
 
@@ -4007,16 +4042,16 @@ msgstr "Španělský"
 msgid "Special"
 msgstr "Speciální"
 
-#: ../src/ConfigDialogue.cpp:758
+#: ../src/ConfigDialogue.cpp:763
 msgid "Special constants"
 msgstr "Speciální konstanty"
 
-#: ../src/MathCtrl.cpp:949
+#: ../src/MathCtrl.cpp:933
 #, fuzzy
 msgid "Start Animation"
 msgstr "Spustit animaci"
 
-#: ../src/ConfigDialogue.cpp:724
+#: ../src/ConfigDialogue.cpp:729
 msgid "Start a new maxima for each re-evaluation"
 msgstr ""
 
@@ -4060,7 +4095,7 @@ msgstr "Statistika"
 msgid "Statistics\tAlt+Shift+S"
 msgstr "Statistika\tAlt+Shift+S"
 
-#: ../src/ConfigDialogue.cpp:760
+#: ../src/ConfigDialogue.cpp:765
 msgid "Strings"
 msgstr "Řetězce"
 
@@ -4068,7 +4103,7 @@ msgstr "Řetězce"
 msgid "Style"
 msgstr "Styl"
 
-#: ../src/ConfigDialogue.cpp:736
+#: ../src/ConfigDialogue.cpp:741
 msgid "Styles"
 msgstr "Styly"
 
@@ -4081,7 +4116,7 @@ msgstr "Subst..."
 msgid "Subsection"
 msgstr "Podkapitola"
 
-#: ../src/ConfigDialogue.cpp:769
+#: ../src/ConfigDialogue.cpp:774
 msgid "Subsection cell"
 msgstr "Pole podkapitoly"
 
@@ -4090,11 +4125,11 @@ msgid "Subst..."
 msgstr "Subst..."
 
 #: ../src/SubstituteWiz.cpp:54 ../src/wxMaxima.cpp:3603
-#: ../src/wxMaxima.cpp:5321
+#: ../src/wxMaxima.cpp:5347
 msgid "Substitute"
 msgstr "Provést substituci"
 
-#: ../src/MathCtrl.cpp:1025 ../src/wxMaximaFrame.cpp:866
+#: ../src/wxMaximaFrame.cpp:866 ../src/MathCtrl.cpp:1009
 msgid "Substitute..."
 msgstr "Substituce..."
 
@@ -4103,7 +4138,7 @@ msgstr "Substituce..."
 msgid "Subsubsection"
 msgstr "Podkapitola"
 
-#: ../src/ConfigDialogue.cpp:768
+#: ../src/ConfigDialogue.cpp:773
 #, fuzzy
 msgid "Subsubsection cell"
 msgstr "Pole podkapitoly"
@@ -4148,7 +4183,7 @@ msgstr ""
 msgid "Taylor series:"
 msgstr "Taylorova řada:"
 
-#: ../src/ConfigDialogue.cpp:528
+#: ../src/ConfigDialogue.cpp:533
 msgid "TeX, interpreted by MathJaX"
 msgstr ""
 
@@ -4160,21 +4195,21 @@ msgstr ""
 msgid "Text"
 msgstr "Text"
 
-#: ../src/ConfigDialogue.cpp:444
+#: ../src/ConfigDialogue.cpp:446
 #, fuzzy
 msgid "Text & Code"
 msgstr "Rozdělit pole"
 
-#: ../src/ConfigDialogue.cpp:443
+#: ../src/ConfigDialogue.cpp:445
 #, fuzzy
 msgid "Text Only"
 msgstr "Textové pole"
 
-#: ../src/ConfigDialogue.cpp:767
+#: ../src/ConfigDialogue.cpp:772
 msgid "Text cell"
 msgstr "Textové pole"
 
-#: ../src/ConfigDialogue.cpp:772
+#: ../src/ConfigDialogue.cpp:777
 msgid "Text cell background"
 msgstr "Pozadí textového pole"
 
@@ -4185,7 +4220,7 @@ msgid ""
 "indentation level, as it does with bullet lists."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:778
+#: ../src/ConfigDialogue.cpp:783
 #, fuzzy
 msgid "Text equal to selection"
 msgstr "Vystřihnout výběr"
@@ -4313,7 +4348,7 @@ msgstr ""
 msgid "Ticks:"
 msgstr "Počet dělicích bodů:"
 
-#: ../src/wxMaxima.cpp:4333 ../src/wxMaxima.cpp:5297
+#: ../src/wxMaxima.cpp:4333 ../src/wxMaxima.cpp:5323
 msgid "Times:"
 msgstr "Násobit:"
 
@@ -4325,7 +4360,7 @@ msgstr "Tipy nejsou bohužel k dispozici!"
 msgid "Title"
 msgstr "Název"
 
-#: ../src/ConfigDialogue.cpp:771
+#: ../src/ConfigDialogue.cpp:776
 msgid "Title cell"
 msgstr "Pole nadpisu"
 
@@ -4347,7 +4382,7 @@ msgstr "Přesnost &bigfloat"
 msgid "To &Float"
 msgstr "převést na &Float (plovoucí řádová čárka)"
 
-#: ../src/MathCtrl.cpp:1017
+#: ../src/MathCtrl.cpp:1001
 msgid "To Float"
 msgstr "Float (plovoucí řádová čárka)"
 
@@ -4436,15 +4471,15 @@ msgstr ""
 msgid "Transpose a matrix"
 msgstr "Transponovat matici"
 
-#: ../src/MathCtrl.cpp:5953
+#: ../src/MathCtrl.cpp:6011
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6019
+#: ../src/MathCtrl.cpp:6077
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:593
+#: ../src/ConfigDialogue.cpp:598
 msgid "Turkish"
 msgstr ""
 
@@ -4461,29 +4496,29 @@ msgstr "Text příkladu"
 msgid "Type:"
 msgstr "Typ:"
 
-#: ../src/ConfigDialogue.cpp:594
+#: ../src/ConfigDialogue.cpp:599
 msgid "Ukrainian"
 msgstr "Ukrajinský"
 
-#: ../src/wxMaxima.cpp:5604
+#: ../src/wxMaxima.cpp:5630
 msgid "Un-closed parenthesis"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5562
+#: ../src/wxMaxima.cpp:5588
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6130
+#: ../src/wxMaxima.cpp:6156
 msgid ""
 "Unable to interpret the version info I got from http://andrejv.github.io//"
 "wxmaxima/version.txt: "
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:798
+#: ../src/ConfigDialogue.cpp:803
 msgid "Underlined"
 msgstr "Podtržení"
 
-#: ../src/ConfigDialogue.cpp:448
+#: ../src/ConfigDialogue.cpp:450
 msgid "Underscore converts to subscripts:"
 msgstr ""
 
@@ -4495,7 +4530,7 @@ msgstr "Zpět\tCtrl+Z"
 msgid "Undo last change"
 msgstr "Zpět poslední změnu"
 
-#: ../src/ConfigDialogue.cpp:612
+#: ../src/ConfigDialogue.cpp:617
 msgid "Undo limit (0 for none):"
 msgstr ""
 
@@ -4512,15 +4547,39 @@ msgstr ""
 msgid "Unhide"
 msgstr ""
 
+#: ../src/MathCtrl.cpp:1080
+msgid "Unhide Part"
+msgstr ""
+
+#: ../src/MathCtrl.cpp:1088
+#, fuzzy
+msgid "Unhide Section"
+msgstr "Sekce"
+
+#: ../src/MathCtrl.cpp:1097
+#, fuzzy
+msgid "Unhide Subsection"
+msgstr "Podkapitola"
+
+#: ../src/MathCtrl.cpp:1106
+#, fuzzy
+msgid "Unhide Subsubsection"
+msgstr "Podkapitola"
+
+#: ../src/MathCtrl.cpp:1114
+#, fuzzy
+msgid "Unhide contents"
+msgstr "Konstanty označené řeckými písmeny"
+
 #: ../src/wxMaxima.cpp:4639
 msgid "Unicode Support"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5579
+#: ../src/wxMaxima.cpp:5605
 msgid "Unterminated comment."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5548
+#: ../src/wxMaxima.cpp:5574
 msgid "Unterminated string."
 msgstr ""
 
@@ -4528,11 +4587,11 @@ msgstr ""
 msgid "Up"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6115 ../src/wxMaxima.cpp:6122 ../src/wxMaxima.cpp:6130
+#: ../src/wxMaxima.cpp:6141 ../src/wxMaxima.cpp:6148 ../src/wxMaxima.cpp:6156
 msgid "Upgrade"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:3671 ../src/wxMaxima.cpp:5266
+#: ../src/wxMaxima.cpp:3671 ../src/wxMaxima.cpp:5292
 msgid "Upper bound:"
 msgstr "Horní mez:"
 
@@ -4545,7 +4604,7 @@ msgstr "Epsilon:"
 msgid "Use Gosper algorithm"
 msgstr "Použít Gosperův algoritmus"
 
-#: ../src/ConfigDialogue.cpp:635
+#: ../src/ConfigDialogue.cpp:640
 msgid "Use cairo to improve plot quality."
 msgstr ""
 
@@ -4553,11 +4612,11 @@ msgstr ""
 msgid "Use centered dot and Minus, not Star and Hyphen"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:475
+#: ../src/ConfigDialogue.cpp:477
 msgid "Use centered dot character for multiplication"
 msgstr "Použít centrovanou tečku jako symbol násobení"
 
-#: ../src/ConfigDialogue.cpp:751
+#: ../src/ConfigDialogue.cpp:756
 msgid "Use jsMath fonts"
 msgstr "Použít jsMath"
 
@@ -4567,7 +4626,7 @@ msgid ""
 "represents a diff() when exporting LaTeX"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:765
+#: ../src/ConfigDialogue.cpp:770
 msgid "User-defined labels"
 msgstr ""
 
@@ -4577,7 +4636,7 @@ msgid "Value:"
 msgstr "Hodnota:"
 
 #: ../src/wxMaxima.cpp:3640 ../src/wxMaxima.cpp:3654 ../src/wxMaxima.cpp:4332
-#: ../src/wxMaxima.cpp:5251 ../src/wxMaxima.cpp:5296
+#: ../src/wxMaxima.cpp:5277 ../src/wxMaxima.cpp:5322
 msgid "Variable(s):"
 msgstr "Proměnné:"
 
@@ -4586,11 +4645,11 @@ msgstr "Proměnné:"
 #: ../src/Plot3dWiz.cpp:42 ../src/SeriesWiz.cpp:36 ../src/SumWiz.cpp:30
 #: ../src/wxMaxima.cpp:3670 ../src/wxMaxima.cpp:3689 ../src/wxMaxima.cpp:3929
 #: ../src/wxMaxima.cpp:3998 ../src/wxMaxima.cpp:4254 ../src/wxMaxima.cpp:4269
-#: ../src/wxMaxima.cpp:4420 ../src/wxMaxima.cpp:5265
+#: ../src/wxMaxima.cpp:4420 ../src/wxMaxima.cpp:5291
 msgid "Variable:"
 msgstr "Proměnná:"
 
-#: ../src/ConfigDialogue.cpp:755
+#: ../src/ConfigDialogue.cpp:760
 msgid "Variables"
 msgstr "Proměnné"
 
@@ -4643,7 +4702,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6950
+#: ../src/MathCtrl.cpp:7005
 msgid "Wrapped search"
 msgstr ""
 
@@ -4659,7 +4718,7 @@ msgstr ""
 msgid "Xi"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:435
+#: ../src/ConfigDialogue.cpp:437
 #, fuzzy
 msgid "Yes"
 msgstr "ano"
@@ -4725,7 +4784,7 @@ msgstr ""
 "Shift) můžete vybratvíce polí a pracovat s nimi. Toto je vhodné, pokud "
 "chcete vymazat nebo vyhodnotit více polí."
 
-#: ../src/wxMaxima.cpp:6112
+#: ../src/wxMaxima.cpp:6138
 #, c-format
 msgid ""
 "You have version %s. Current version is %s.\n"
@@ -4733,11 +4792,11 @@ msgid ""
 "Select OK to visit the wxMaxima webpage."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6177
+#: ../src/wxMaxima.cpp:6203
 msgid "Your changes will be lost if you don't save them."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6122
+#: ../src/wxMaxima.cpp:6148
 msgid "Your version of wxMaxima is up to date."
 msgstr ""
 
@@ -4763,11 +4822,11 @@ msgstr "Zvětšit o 10%"
 msgid "Zoom out 10%"
 msgstr "Zmenšit o 10%"
 
-#: ../src/wxMaxima.cpp:5946 ../src/wxMaximaFrame.cpp:246
+#: ../src/wxMaximaFrame.cpp:246 ../src/wxMaxima.cpp:5972
 msgid "[ unsaved ]"
 msgstr "[ neuloženo ]"
 
-#: ../src/wxMaxima.cpp:5948
+#: ../src/wxMaxima.cpp:5974
 msgid "[ unsaved* ]"
 msgstr "[ neuloženo* ]"
 
@@ -4776,12 +4835,12 @@ msgstr "[ neuloženo* ]"
 msgid "[%i digits]"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4456
+#: ../src/MathCtrl.cpp:4517
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4582
+#: ../src/MathCtrl.cpp:4643
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr ""
@@ -4811,7 +4870,7 @@ msgstr "oboustranný"
 msgid "chi"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:691
+#: ../src/ConfigDialogue.cpp:696
 msgid "choose a lisp maxima was compiled with"
 msgstr ""
 
@@ -4915,7 +4974,7 @@ msgstr "logaritmické měřítko"
 msgid "matrix[i,j]:"
 msgstr "matice[i,j]:"
 
-#: ../src/ConfigDialogue.cpp:711
+#: ../src/ConfigDialogue.cpp:716
 msgid "maxima's pwd is path to document"
 msgstr ""
 
@@ -5037,7 +5096,7 @@ msgstr "symetrická"
 msgid "tau"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:701
+#: ../src/ConfigDialogue.cpp:706
 msgid "tell sbcl to use <int>Mbytes of heap"
 msgstr ""
 
@@ -5061,13 +5120,13 @@ msgstr ""
 msgid "union"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6159
+#: ../src/wxMaxima.cpp:6185
 #, fuzzy
 msgid "unsaved"
 msgstr "[ neuloženo ]"
 
-#: ../src/wxMaxima.cpp:2742 ../src/wxMaxima.cpp:3002
-#: ../src/wxMaximaFrame.cpp:248
+#: ../src/wxMaximaFrame.cpp:248 ../src/wxMaxima.cpp:2742
+#: ../src/wxMaxima.cpp:3002
 msgid "untitled"
 msgstr "untitled"
 
@@ -5085,8 +5144,8 @@ msgstr "Epsilon:"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaxima.cpp:5946 ../src/wxMaxima.cpp:5948 ../src/wxMaxima.cpp:5957
-#: ../src/wxMaxima.cpp:5960 ../src/wxMaximaFrame.cpp:246
+#: ../src/wxMaximaFrame.cpp:246 ../src/wxMaxima.cpp:5972
+#: ../src/wxMaxima.cpp:5974 ../src/wxMaxima.cpp:5983 ../src/wxMaxima.cpp:5986
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s"
@@ -5211,7 +5270,7 @@ msgid ""
 "table_form([1,2,3,4,5]);"
 msgstr ""
 
-#: ../src/ConfigDialogue.cpp:416
+#: ../src/ConfigDialogue.cpp:418
 msgid "x"
 msgstr ""
 

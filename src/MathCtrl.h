@@ -691,7 +691,9 @@ public:
     popid_insert_subsection,
     popid_insert_subsubsection,
     menu_zoom_in,
-    menu_zoom_out
+    menu_zoom_out,
+    popid_fold,
+    popid_unfold
   };
   
   //! The constructor

@@ -822,7 +822,8 @@ GroupCell *MathCtrl::ToggleFoldAll(GroupCell *which) {
  * Recursively folds the whole document.
  */
 void MathCtrl::FoldAll() {
-  if (m_tree) {
+  if (m_tree)
+  {
     m_tree->FoldAll();
     FoldOccurred();
   }
@@ -1057,20 +1058,66 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event)
     if(group)
     {
       popupMenu->AppendSeparator();
-      if(StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_TITLE)
+      switch(StartOfSectioningUnit(group)->GetGroupType())
+      {
+      case GC_TYPE_TITLE:
         popupMenu->Append(popid_evaluate_section, _("Evaluate Part\tShift+Ctrl+Enter"), wxEmptyString, wxITEM_NORMAL);
-      if(StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_SECTION)
+        break;
+      case GC_TYPE_SECTION:
         popupMenu->Append(popid_evaluate_section, _("Evaluate Section\tShift+Ctrl+Enter"), wxEmptyString, wxITEM_NORMAL);
-      if(StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_SUBSECTION)
+        break;
+      case GC_TYPE_SUBSECTION:
         popupMenu->Append(popid_evaluate_section, _("Evaluate Subsection\tShift+Ctrl+Enter"), wxEmptyString, wxITEM_NORMAL);
-      if(StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_SUBSUBSECTION)
+      case GC_TYPE_SUBSUBSECTION:
         popupMenu->Append(popid_evaluate_section, _("Evaluate Sub-Subsection\tShift+Ctrl+Enter"), wxEmptyString, wxITEM_NORMAL);
+        break;
+      }
+      switch(group->GetGroupType())
+      {
+      case GC_TYPE_TITLE:
+        if(group->GetHiddenTree() != NULL)
+          popupMenu->Append(popid_unfold,
+                            _("Unhide Part"), wxEmptyString, wxITEM_NORMAL);
+        else
+          popupMenu->Append(popid_fold,
+                            _("Hide Part"), wxEmptyString, wxITEM_NORMAL);
+        break;
+      case GC_TYPE_SECTION:
+        if(group->GetHiddenTree() != NULL)
+          popupMenu->Append(popid_unfold,
+                            _("Unhide Section"), wxEmptyString, wxITEM_NORMAL);
+        else
+          popupMenu->Append(popid_fold,
+                            _("Hide Section"), wxEmptyString, wxITEM_NORMAL);
+        break;
+      case GC_TYPE_SUBSECTION:
+        popupMenu->Append(popid_evaluate_section, _("Evaluate Subsection\tShift+Ctrl+Enter"), wxEmptyString, wxITEM_NORMAL);
+        if(group->GetHiddenTree() != NULL)
+          popupMenu->Append(popid_unfold,
+                            _("Unhide Subsection"), wxEmptyString, wxITEM_NORMAL);
+        else
+          popupMenu->Append(popid_fold,
+                            _("Hide Subsection"), wxEmptyString, wxITEM_NORMAL);
+        break;
+      case GC_TYPE_SUBSUBSECTION:
+        popupMenu->Append(popid_evaluate_section, _("Evaluate Sub-Subsection\tShift+Ctrl+Enter"), wxEmptyString, wxITEM_NORMAL);
+        if(group->GetHiddenTree() != NULL)
+          popupMenu->Append(popid_unfold,
+                            _("Unhide Subsubsection"), wxEmptyString, wxITEM_NORMAL);
+        else
+          popupMenu->Append(popid_fold,
+                            _("Hide Subsubsection"), wxEmptyString, wxITEM_NORMAL);
+        break;
+      default:
+        if(group->GetHiddenTree() != NULL)
+          popupMenu->Append(popid_unfold,
+                            _("Unhide contents"), wxEmptyString, wxITEM_NORMAL);
+        else
+          popupMenu->Append(popid_fold,
+                            _("Hide contents"), wxEmptyString, wxITEM_NORMAL);        
+      }
     }
-    
-    popupMenu->Enable(popid_copy, m_activeCell->CanCopy());
-    popupMenu->Enable(popid_cut, m_activeCell->CanCopy());
   }
-
   // create menu if we have any items
   if (popupMenu->GetMenuItemCount() > 0 )
   {
