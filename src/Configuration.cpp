@@ -48,6 +48,7 @@ Configuration::Configuration(wxDC& dc) : m_dc(&dc)
   m_showBrackets = true;
   m_printBrackets = false;
   m_hideBrackets = false;
+  m_lineWidth_em = 88;
   m_clientWidth = 800;
   ReadConfig();
 }

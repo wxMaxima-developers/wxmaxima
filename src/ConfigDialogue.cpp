@@ -956,12 +956,12 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent& event)
   math = wxGetFontFromUser(this, wxFont(m_mathFontSize, wxFONTFAMILY_DEFAULT,
                                         wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
                                         false, m_mathFontName));
-  math.SetPointSize(m_mathFontSize);
   
   if (math.Ok())
   {
     m_mathFontName = math.GetFaceName();
     m_mathFontSize = math.GetPointSize();
+    math.SetPointSize(m_mathFontSize);
     m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_mathFontSize));
     UpdateExample();
   }

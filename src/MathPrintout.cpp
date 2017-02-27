@@ -74,6 +74,7 @@ bool MathPrintout::OnPrintPage(int num)
   Configuration configuration(*dc);
   configuration.ShowBrackets(configuration.PrintBrackets());
   configuration.SetScale(ppiScale);
+  configuration.LineWidth_em(400);
   int pageWidth, pageHeight;
   GetPageSizePixels(&pageWidth, &pageHeight);
   double scale = GetPPIScale();
@@ -195,6 +196,7 @@ void MathPrintout::SetupData()
   Configuration configuration(*dc);
   configuration.ShowBrackets(configuration.PrintBrackets());
   configuration.SetScale(GetPPIScale());
+  configuration.LineWidth_em(400);
   Recalculate();
   BreakPages();
 }
@@ -267,6 +269,7 @@ void MathPrintout::Recalculate()
   wxDC *dc = GetDC();
   Configuration configuration(*dc);
   configuration.SetScale(GetPPIScale());
+  configuration.LineWidth_em(400);
 
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
