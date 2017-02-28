@@ -3,23 +3,21 @@
 # Eulogio Serradilla <eulogio.sr@terra.es>, 2005.
 # Antonio Ullan <aullan@unex.es>, 2005, 2006, 2007.
 # Mario Rodriguez <mario@edu.xunta.es>, 2009-2015
-# Javier Serrador <serrador@tecknolabs.com>, 2017.
 # Javier F. Serrador <serrador@tecknolabs.com>, 2017.
 msgid ""
 msgstr ""
-"Project-Id-Version: es\n"
+"Project-Id-Version: wmMaxima 16.12.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-27 19:12+0100\n"
-"PO-Revision-Date: 2017-01-09 19:59+0200\n"
-"Last-Translator: Javier F. Serrador <serrador@tecknolabs.com>\n"
-"Language-Team: es@tp.org.es\n"
+"POT-Creation-Date: 2017-02-28 07:20+0100\n"
+"PO-Revision-Date: 2017-02-05 10:22+0200\n"
+"Last-Translator: Francisco F. Serrador <serrador@tecknolabs.com>\n"
+"Language-Team: Spanish Team <es@es.po.com>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.7.1\n"
-"X-Project-Style: kde\n"
 
 #: ../src/wxMaxima.cpp:4700
 #, c-format
@@ -167,7 +165,7 @@ msgstr "&Determinante"
 
 #: ../src/wxMaximaFrame.cpp:745
 msgid "&Differentiate..."
-msgstr "&Derivar..."
+msgstr "&Diferenciar..."
 
 #: ../src/wxMaximaFrame.cpp:501
 msgid "&Edit"
@@ -335,7 +333,7 @@ msgstr "&Simplificar trigonometría"
 
 #: ../src/wxMaximaFrame.cpp:648
 msgid "&Solve..."
-msgstr "&Resolver..."
+msgstr "&Resultado..."
 
 #: ../src/Plot2dWiz.cpp:33
 msgid "&Special"
@@ -490,7 +488,7 @@ msgstr "Líneas adicionales para el preámbulo de TeX:"
 
 #: ../src/ConfigDialogue.cpp:181
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
-msgstr "Parámetros adicionales para Maxima (p. ej. -l clisp)."
+msgstr "Parámetros adicionales para 'maxima' (p. ej. -l clisp)."
 
 #: ../src/ConfigDialogue.cpp:688
 msgid "Additional parameters for maxima"
@@ -560,11 +558,12 @@ msgid ""
 "installation path when the current document resides on a different drive "
 "than the maxima installation."
 msgstr ""
-"Cambiar automáticamente el directorio de trabajo de maxima al que contiene "
+"Cambiar automáticamente el directorio de trabajo de 'maxima' al que contiene "
 "el documento actual: esto es necesario si el documento realiza L/E relativas "
-"al directorio actual, pero hará que maxima 5.35 falle al intentar encontrar "
-"la ruta a su propia instalación si el documento actual se aloja en una "
-"unidad de almacenamiento distinta de aquella en la que maxima está instalado."
+"al directorio actual, pero hará que 'maxima' 5.35 falle al intentar "
+"encontrar la ruta a su propia instalación si el documento actual se aloja en "
+"una unidad de almacenamiento distinta de aquella en la que 'maxima' está "
+"instalado."
 
 #: ../src/ConfigDialogue.cpp:201
 msgid ""
@@ -582,9 +581,8 @@ msgid "Autosave interval (minutes, 0 means: off):"
 msgstr "Intervalo de auto-guardado (minutos, 0 significa: desactivado):"
 
 #: ../src/ConfigDialogue.cpp:441
-#, fuzzy
 msgid "Autowrap long lines:"
-msgstr "Automáticamente salta líneas de texto largas"
+msgstr "Autocortar líneas largas:"
 
 #: ../src/BC2Wiz.cpp:58 ../src/wxMaxima.cpp:3737
 msgid "BC2"
@@ -645,43 +643,43 @@ msgstr "Examinar"
 
 #: ../src/Autocomplete.cpp:163
 msgid "Bug: Autocompletion requested for unknown type of item."
-msgstr "fallo: autocompletado solicitado para un tipo de elemento desconocido."
+msgstr "Bicho: autocompletado solicitado para un tipo de elemento desconocido."
 
 #: ../src/MathCtrl.cpp:2165
 msgid "Bug: Cell left but not entered."
-msgstr "fallo: celda abandonada sin haber entrado."
+msgstr "Bicho: celda abandonada sin haber entrado."
 
 #: ../src/wxMaxima.cpp:1241
 msgid "Bug: Found a math end marker without any start marker."
-msgstr "fallo: encontrado marcador final sin marcador de inicio."
+msgstr "Bicho: encontrado marcador final sin marcador de inicio."
 
 #: ../src/wxMaxima.cpp:1211
 msgid "Bug: Found a statusbar end marker without any matching start marker."
 msgstr ""
-"fallo: se ha encontrado un marcador final de barra de estado sin marcador de "
+"Bicho: se ha encontrado un marcador final de barra de estado sin marcador de "
 "inicio."
 
 #: ../src/wxMaxima.cpp:1286
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
-msgstr "fallo: encontrado fin de autocompletado sin inicio"
+msgstr "Bicho: encontrado fin de autocompletado sin inicio"
 
 #: ../src/MathCtrl.cpp:2397
 msgid "Bug: Got a question but no cell to answer it in"
-msgstr "fallo: obtuvo una pregunta pero sin celda asociada"
+msgstr "Bicho: obtuvo una pregunta pero sin celda asociada"
 
 #: ../src/MathCtrl.cpp:6016
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
-"fallo: se ha solicitado cambiar el contenido de una celda por encima del "
+"Bicho: se ha solicitado cambiar el contenido de una celda por encima del "
 "comienzo de la hoja del cuaderno."
 
 #: ../src/MathCtrl.cpp:6089
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
-"fallo: se ha solicitado eliminar el contenido de una celda por encima del "
+"Bicho: se ha solicitado eliminar el contenido de una celda por encima del "
 "comienzo de la hoja de cuaderno."
 
 #: ../src/MathCtrl.cpp:6058
@@ -689,12 +687,12 @@ msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
 msgstr ""
-"fallo: se ha solicitado cambiar primero el contenido de una celda y luego no "
+"Bicho: se ha solicitado cambiar primero el contenido de una celda y luego no "
 "borrarla."
 
 #: ../src/MathCell.cpp:183
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
-msgstr "fallo: celda sin grupo al que pertenecer"
+msgstr "Bicho: celda sin grupo al que pertenecer"
 
 #: ../src/MathParser.cpp:123 ../src/MathParser.cpp:155
 #: ../src/MathParser.cpp:230
@@ -703,60 +701,60 @@ msgstr ""
 
 #: ../src/GroupCell.cpp:925 ../src/GroupCell.cpp:1094
 msgid "Bug: No image counter to write to!"
-msgstr "fallo: ¡sin contador de imagen para a quien escribir!"
+msgstr "Bicho: ¡sin contador de imagen para a quien escribir!"
 
 #: ../src/AbsCell.cpp:208
 msgid "Bug: No last cell in an absCell!"
-msgstr "fallo: ¡ninguna celda abandonada dentro de un absCell!"
+msgstr "Bicho: ¡ninguna celda abandonada dentro de un absCell!"
 
 #: ../src/ConjugateCell.cpp:203
 msgid "Bug: No last cell in an conjugateCell!"
-msgstr "fallo: ¡celda abandonada sin haber entrado!"
+msgstr "Bicho: ¡celda abandonada sin haber entrado!"
 
 #: ../src/FracCell.cpp:495
 msgid "Bug: No last cell in an denominator!"
-msgstr "fallo: ¡sin última celda en un denominador!"
+msgstr "Bicho: ¡sin última celda en un denominador!"
 
 #: ../src/ExptCell.cpp:278
 msgid "Bug: No last cell in an exponent of an exptCell!"
-msgstr "fallo: ¡sin última celda en un exponente de un expCell!"
+msgstr "Bicho: ¡sin última celda en un exponente de un expCell!"
 
 #: ../src/FracCell.cpp:483
 msgid "Bug: No last cell in an numerator!"
-msgstr "fallo: ¡ninguna última celda en un numerador!"
+msgstr "Bicho: ¡ninguna última celda en un numerador!"
 
 #: ../src/ExptCell.cpp:268
 msgid "Bug: No last cell in the base of an exptCell!"
-msgstr "fallo: ¡sin última celda en la base de un exptCall!"
+msgstr "Bicho: ¡sin última celda en la base de un exptCall!"
 
 #: ../src/ParenCell.cpp:562
 msgid "Bug: No last cell inside a parenthesis!"
-msgstr "fallo: ¡sin última celda dentro de un paréntesis!"
+msgstr "Bicho: ¡sin última celda dentro de un paréntesis!"
 
 #: ../src/SqrtCell.cpp:332
 msgid "Bug: No last cell inside a square root!"
-msgstr "fallo: ¡sin última celda dentro de una raíz cuadrada!"
+msgstr "Bicho: ¡sin última celda dentro de una raíz cuadrada!"
 
 #: ../src/MathCtrl.cpp:2208
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
 msgstr ""
-"fallo: se ha solicitado dos veces en una fila el inicio y final de pegado de "
+"Bicho: se ha solicitado dos veces en una fila el inicio y final de pegado de "
 "acciones de edición."
 
 #: ../src/MathCtrl.cpp:2175
 msgid "Bug: Text changed, but no active cell."
-msgstr "fallo: texto cambiado, pero sin celda activa."
+msgstr "Bicho: texto cambiado, pero sin celda activa."
 
 #: ../src/GroupCell.cpp:327
 msgid "Bug: Trying to append NULL to a group cell."
-msgstr "fallo: intento de agregar NULL a un grupo de celdas."
+msgstr "Bicho: intento de agregar NULL a un grupo de celdas."
 
 #: ../src/MathCtrl.cpp:571
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
-"fallo: intentando agregar el resultado de maxima a una celda fuera de la "
+"Bicho: intentando agregar el resultado de 'maxima' a una celda fuera de la "
 "hoja del cuaderno."
 
 #: ../src/MathCtrl.cpp:2099
@@ -764,7 +762,7 @@ msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
 msgstr ""
-"fallo: intentando unir celdas individuales en una región dentro del búfer de "
+"Bicho: intentando unir celdas individuales en una región dentro del búfer de "
 "deshacer, pero hay otras celdas entre ellas."
 
 #: ../src/MathCtrl.cpp:6725
@@ -772,29 +770,29 @@ msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
-"fallo: intentando mover el cursor horizontalmente a un lugar interno a un "
+"Bicho: intentando mover el cursor horizontalmente a un lugar interno a un "
 "grupo de celdas."
 
 #: ../src/MathCtrl.cpp:2177
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
-"fallo: intentando registrar un cambio del contenido de celda sin una celda."
+"Bicho: intentando registrar un cambio del contenido de celda sin una celda."
 
 #: ../src/MathCtrl.cpp:1591
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
-"fallo: intentando seleccionar dentro de una celda sin tener una celda actual"
+"Bicho: intentando seleccionar dentro de una celda sin tener una celda actual"
 
 #: ../src/MathCtrl.cpp:6059
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
-"fallo: acción de deshacer con ambos contenidos de celda cambian y suman las "
+"Bicho: acción de deshacer con ambos contenidos de celda cambian y suman las "
 "celdas."
 
 #: ../src/MathCtrl.cpp:6021 ../src/MathCtrl.cpp:6094 ../src/MathCtrl.cpp:6128
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
-"fallo: solicitud de deshacer para una celda fuera da la hoja del cuaderno."
+"Bicho: solicitud de deshacer para una celda fuera da la hoja del cuaderno."
 
 #: ../src/wxMaximaFrame.cpp:933
 msgid "Build &Info"
@@ -1038,7 +1036,7 @@ msgstr "Autocompletar"
 
 #: ../src/ToolBar.cpp:156
 msgid "Completely stop maxima and restart it"
-msgstr "Parar completamente maxima y arrancar de nuevo"
+msgstr "Parar completamente 'maxima' y arrancar de nuevo"
 
 #: ../src/wxMaximaFrame.cpp:783
 msgid "Compute continued fraction of a value"
@@ -1278,7 +1276,7 @@ msgstr "Tipografo predeterminada:"
 
 #: ../src/ConfigDialogue.cpp:414
 msgid "Default plot size for new maxima sessions:"
-msgstr "Tamaño predeterminado de gráficos en sesiones de maxima nuevas:"
+msgstr "Tamaño predeterminado de gráficos en sesiones de 'maxima' nuevas:"
 
 #: ../src/ConfigDialogue.cpp:681
 msgid "Default port for communication with wxMaxima:"
@@ -1447,8 +1445,8 @@ msgid ""
 "enables version control systems like git and svn to effectively spot the "
 "differences."
 msgstr ""
-"No comprimir individualmente las instrucciones maxima y las imágenes, ya que "
-"dificulta a los sistemas de control de versiones git, svn detectar "
+"No comprimir individualmente las instrucciones 'maxima' y las imágenes, ya "
+"que dificulta a los sistemas de control de versiones git, svn detectar "
 "diferencias de forma efectiva."
 
 #: ../src/wxMaxima.cpp:6204
@@ -1584,9 +1582,8 @@ msgid "Eta"
 msgstr "TiE"
 
 #: ../src/TableOfContents.cpp:260
-#, fuzzy
 msgid "Evaluate"
-msgstr "Evaluar celda(s)"
+msgstr "Evaluar"
 
 #: ../src/wxMaximaFrame.cpp:869
 msgid "Evaluate &Noun Forms"
@@ -1792,11 +1789,11 @@ msgstr "Fichero"
 #: ../src/wxMaxima.cpp:1708 ../src/wxMaxima.cpp:1790 ../src/wxMaxima.cpp:1820
 #: ../src/wxMaxima.cpp:1830
 msgid "File could not be opened"
-msgstr "El fichero no pudo ser abierto"
+msgstr "El fichero no se ha podido abrir"
 
 #: ../src/wxMaxima.cpp:5451
 msgid "File not found"
-msgstr "El fichero no se encontró"
+msgstr "El fichero no se ha encontrado"
 
 #: ../src/wxMaxima.cpp:1573 ../src/wxMaxima.cpp:1776 ../src/wxMaxima.cpp:1858
 msgid "File opened"
@@ -1804,7 +1801,7 @@ msgstr "Fichero abierto"
 
 #: ../src/wxMaxima.cpp:5451
 msgid "File you tried to open does not exist."
-msgstr "El fichero que intentó abrir no existe."
+msgstr "El fichero que ha intentado abrir no existe."
 
 #: ../src/Plot2dWiz.cpp:80
 msgid "File:"
@@ -1840,7 +1837,7 @@ msgstr "Calcula un límite de una expresión"
 
 #: ../src/wxMaximaFrame.cpp:653
 msgid "Find a root of an equation on an interval"
-msgstr "Calcular una raíz de una ecuación en un intervalo"
+msgstr "Calcula una raíz de una ecuación en un intervalo"
 
 #: ../src/wxMaximaFrame.cpp:655
 msgid "Find all roots of a polynomial"
@@ -1860,11 +1857,11 @@ msgstr "Encontrar y sustituir"
 
 #: ../src/wxMaximaFrame.cpp:716
 msgid "Find eigenvalues of a matrix"
-msgstr "Calcular los valores propios de una matriz"
+msgstr "Calcula los valores propios de una matriz"
 
 #: ../src/wxMaximaFrame.cpp:718
 msgid "Find eigenvectors of a matrix"
-msgstr "Calcular los vectores propios de una matriz"
+msgstr "Calcula los vectores propios de una matriz"
 
 #: ../src/wxMaxima.cpp:4390
 msgid "Find minimum"
@@ -1901,7 +1898,7 @@ msgstr "Encarpetar todo\tCtrl+Alt+["
 
 #: ../src/wxMaximaFrame.cpp:584
 msgid "Fold all sections"
-msgstr "Encarpetar todas las secciones"
+msgstr "Encarpeta todas las secciones"
 
 #: ../src/ToolBar.cpp:162
 msgid "Follow"
@@ -1909,7 +1906,7 @@ msgstr "Seguir"
 
 #: ../src/ParenCell.cpp:342
 msgid "Font issue: The Parenthesis sign is too small!"
-msgstr "Problema tipográfico: ¡paréntesis demasiado pequeño!"
+msgstr "Problema tipográfico: ¡signo de paréntesis demasiado pequeño!"
 
 #: ../src/IntCell.cpp:295 ../src/ParenCell.cpp:409
 msgid ""
@@ -2042,7 +2039,7 @@ msgstr "Generar matriz a partir de expresión..."
 
 #: ../src/wxMaximaFrame.cpp:699
 msgid "Generate a matrix from a 2-dimensional array"
-msgstr "Generar una matriz a partir de una tabla de 2 dimensiones"
+msgstr "Genera una matriz a partir de una tabla de 2 dimensiones"
 
 #: ../src/wxMaximaFrame.cpp:702
 msgid "Generate a matrix from a lambda expression"
@@ -2117,17 +2114,16 @@ msgid ""
 "HTML file (*.html)|*.html|maxima batch file (*.mac)|*.mac|pdfLaTeX file (*."
 "tex)|*.tex"
 msgstr ""
-"Fichero HTML (*.html)|*.html|Fichero por lotes maxima (*.mac)|*.mac|Fichero "
-"pdfLaTeX (*.tex)|*.tex"
+"Fichero HTML (*.html)|*.html|Fichero por lotes 'maxima' (*.mac)|*.mac|"
+"Fichero pdfLaTeX (*.tex)|*.tex"
 
 #: ../src/ToolBar.cpp:209
 msgid "Help"
 msgstr "Ayuda"
 
 #: ../src/TableOfContents.cpp:258
-#, fuzzy
 msgid "Hide"
-msgstr "Ocultar Código"
+msgstr "Ocultar"
 
 #: ../src/wxMaximaFrame.cpp:520
 msgid "Hide All Toolbars\tAlt+Shift+-"
@@ -2144,7 +2140,7 @@ msgstr "Ocultar celda de códigos\tAlt+Mayús+H"
 #: ../src/MathCtrl.cpp:1083
 #, fuzzy
 msgid "Hide Part"
-msgstr "Ocultar Código"
+msgstr "Ocultar"
 
 #: ../src/MathCtrl.cpp:1091
 #, fuzzy
@@ -2233,15 +2229,15 @@ msgid ""
 "same output cell."
 msgstr ""
 "Si una instrucción empieza con una etiqueta seguida de : wxMaxima mostrará "
-"esta etiqueta en lugar de la etiqueta %o por defecto de maxima."
+"esta etiqueta en lugar de la etiqueta %o por defecto de 'maxima'."
 
 #: ../src/wxMaximaFrame.cpp:643
 msgid ""
 "If maxima ever finishes evaluating without wxMaxima realizing this this menu "
 "item can force wxMaxima to try to send commands to maxima again."
 msgstr ""
-"Si maxima tarda en hacer un cálculo, esta opción del menú puede forzar a "
-"wxMaxima a enviar instrucciones nuevamente a maxima."
+"Si 'maxima' tarda en hacer un cálculo, esta opción del menú puede forzar a "
+"wxMaxima a enviar instrucciones nuevamente a 'maxima'."
 
 #: ../src/ConfigDialogue.cpp:177
 msgid ""
@@ -2249,7 +2245,7 @@ msgid ""
 "detects that maxima has encountered any error."
 msgstr ""
 "Si múltiples celdas son evaluadas de una vez: interrumpe el cálculo si "
-"wxMaxima detecta que maxima ha encontrado un error."
+"wxMaxima detecta que 'maxima' ha encontrado un error."
 
 #: ../src/ConfigDialogue.cpp:436
 msgid "If not extremely long"
@@ -2561,7 +2557,7 @@ msgid ""
 "Interrupt current computation. To completely restart maxima press the button "
 "left to this one."
 msgstr ""
-"Interrumpir cálculo actual. Para reiniciar la sesión de maxima pulsar el "
+"Interrumpir cálculo actual. Para reiniciar la sesión de 'maxima' pulsar el "
 "botón a la izquierda de éste."
 
 #: ../src/ConfigDialogue.cpp:945
@@ -2601,10 +2597,11 @@ msgid ""
 "export a file in the .mac or to save it in the .wxm format. Note, though, "
 "that a few special characters like the "
 msgstr ""
-"Es posible crear bibliotecas de Maxima reutilizables en posteriores sesiones "
-"y que serán cargadas con la función load(). Lo único que se necesita hacer "
-"es almacenar los códigos en un fichero de extensión .mac o guardarlo en el "
-"formato .wxm. Note, sin embargo, que unos pocos caracteres como el "
+"Es posible crear bibliotecas de 'maxima' reutilizables en posteriores "
+"sesiones y que serán cargadas con la función load(). Lo único que se "
+"necesita hacer es almacenar los códigos en un fichero de extensión .mac o "
+"guardarlo en el formato .wxm. Note, sin embargo, que unos pocos caracteres "
+"como el "
 
 #: ../src/ConfigDialogue.cpp:588
 msgid "Italian"
@@ -2726,7 +2723,7 @@ msgstr "Cargar paquete"
 
 #: ../src/wxMaximaFrame.cpp:437
 msgid "Load a Maxima file using the batch command"
-msgstr "Cargar un fichero Maxima usando la instrucciones del batch"
+msgstr "Cargar un fichero 'maxima' usando la instrucciones del batch"
 
 #: ../src/wxMaximaFrame.cpp:435
 msgid "Load a Maxima package file"
@@ -2867,15 +2864,15 @@ msgstr "Preparado para la entrada."
 
 #: ../src/wxMaxima.cpp:3117
 msgid "Maxima package (*.mac)|*.mac"
-msgstr "Paquete de Maxima (*.mac)|*.mac"
+msgstr "Paquete de 'maxima' (*.mac)|*.mac"
 
 #: ../src/wxMaxima.cpp:3106
 msgid "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|All|*"
-msgstr "Paquete de Maxima (*.mac)|*.mac|Paquete Lisp (*.lisp)|*.lisp|Todos|*"
+msgstr "Paquete de 'maxima' (*.mac)|*.mac|Paquete Lisp (*.lisp)|*.lisp|Todos|*"
 
 #: ../src/wxMaxima.cpp:1034
 msgid "Maxima process terminated."
-msgstr "Proceso de Maxima terminado."
+msgstr "Proceso de 'maxima' terminado."
 
 #: ../src/ConfigDialogue.cpp:669
 msgid "Maxima program:"
@@ -2889,8 +2886,8 @@ msgid ""
 "a little bit of time this switch allows to disable this behavior."
 msgstr ""
 "Maxima no proporciona ninguna instrucción de tipo \"olvidar todo\" que "
-"deshaga todas las opciones de la sesión de maxima pueda hacer. wxMaxima "
-"entonces normalmente comienza un proceso nuevo, fresco, de maxima cada vez "
+"deshaga todas las opciones de la sesión de 'maxima' pueda hacer. wxMaxima "
+"entonces normalmente comienza un proceso nuevo, fresco, de 'maxima' cada vez "
 "que el cuaderno está para ser re-evaluado. Como esto requiere un poco de "
 "tiempo este característica puede ser desactivada."
 
@@ -2918,7 +2915,7 @@ msgstr ""
 "(0.2) y decimales de precisión arbitraria o flotantes grandes (1b-1). Nótese "
 "que dada su representación binaria interna (no decimal), no es posible "
 "disponer de un número de estándar IEEE que sea exactamente igual a 0.1. Si "
-"se utilizan números en coma flotante en lugar de fracciones, Maxima puede "
+"se utilizan números en coma flotante en lugar de fracciones, 'maxima' puede "
 "introducir (pequeños) errores y utilizar, por ejemplo, la fracción "
 "3602879701896397/36028797018963968 en lugar de 0.1."
 
@@ -2945,8 +2942,8 @@ msgid ""
 "    %[1];\n"
 "    result_b:b=at(b,%);"
 msgstr ""
-"Funciones \"at\" de Maxima permite acceder a variables arbitrarias dentro de "
-"una lista de resultados:\n"
+"Funciones \"at\" de 'maxima' permite acceder a variables arbitrarias dentro "
+"de una lista de resultados:\n"
 "\n"
 "    g1:a*x+y=0;\n"
 "    g2:b*y+x*x=1;\n"
@@ -2970,7 +2967,7 @@ msgid ""
 "    at(result,Values);\n"
 "    float(%);"
 msgstr ""
-"Las características de Maxima son manipulando ecuaciones y en cálculos "
+"Las características de 'maxima' son manipulando ecuaciones y en cálculos "
 "simbólicos. Por lo tanto hace útil para emplear funciones (como opuestas a "
 "ecuaciones con etiquetados) desarrollando y conservando los valores deseados "
 "de variables en una lista, en lugar de asignaciones directas en esos "
@@ -3094,11 +3091,11 @@ msgstr "Crear lineas: Salta al texto"
 
 #: ../src/SubstituteWiz.cpp:34
 msgid "New value:"
-msgstr "Valor nuevo:"
+msgstr "Crear valor:"
 
 #: ../src/wxMaxima.cpp:4173 ../src/wxMaxima.cpp:4299 ../src/wxMaxima.cpp:4316
 msgid "New variable:"
-msgstr "Nueva variable:"
+msgstr "Crear variable:"
 
 #: ../src/wxMaximaFrame.cpp:590
 msgid "Next Command\tAlt+Down"
@@ -3211,12 +3208,12 @@ msgid ""
 "instead. If this box is checked we will nonetheless watch maxima's stdout "
 "stream for messages."
 msgstr ""
-"Una vez establecida la conexión local entre maxima y wxMaxima, maxima no "
+"Una vez establecida la conexión local entre 'maxima' y wxMaxima, 'maxima' no "
 "necesita enviar mensajes por el flujo de salida estándar, por lo que todo el "
-"flujo de salida debería convertirse en un mensaje; El lisp ejecutando maxima "
-"enviará mensajes de error eventuales utilizando el flujo de mensajes de "
-"error del sistema en su lugar. Si esta caja se comprueba no veremos nada más "
-"de las indicaciones de salida de maxima."
+"flujo de salida debería convertirse en un mensaje; El lisp ejecutando "
+"'maxima' enviará mensajes de error eventuales utilizando el flujo de "
+"mensajes de error del sistema en su lugar. Si esta caja se comprueba no "
+"veremos nada más de las indicaciones de salida de maxima."
 
 #: ../src/wxMaxima.cpp:4944
 msgid "One sample t-test"
@@ -3237,7 +3234,7 @@ msgstr "Abrir reciente"
 
 #: ../src/ConfigDialogue.cpp:486
 msgid "Open a cell when Maxima expects input"
-msgstr "Abre una celda cuando Maxima espera una entrada"
+msgstr "Abre una celda cuando 'maxima' espera una entrada"
 
 #: ../src/wxMaximaFrame.cpp:422
 msgid "Open a document"
@@ -3281,7 +3278,7 @@ msgstr "Etiquetas de salida"
 
 #: ../src/wxMaximaFrame.cpp:756
 msgid "P&ade Approximation..."
-msgstr "Aproximación de &Padé..."
+msgstr "&Aproximación de Padé..."
 
 #: ../src/wxMaxima.cpp:3307 ../src/wxMaxima.cpp:5391
 msgid ""
@@ -3473,8 +3470,8 @@ msgid ""
 msgstr ""
 "Pulsando Ctrl+Espacio o Ctrl+Tabulador se inicia una función de "
 "autocompletado que puede no solo completar todas las funciones que están "
-"integradas en el núcleo de Maxima y sus parámetros: También conoce acerca de "
-"parámetros desde los paquetes actualmente cargados y desde funciones que "
+"integradas en el núcleo de 'maxima' y sus parámetros: También conoce acerca "
+"de parámetros desde los paquetes actualmente cargados y desde funciones que "
 "están definidas en el fichero actual."
 
 #: ../src/wxMaximaFrame.cpp:588
@@ -3571,12 +3568,12 @@ msgstr "Quitar resultados de las celdas de entrada"
 
 #: ../src/FindReplacePane.cpp:103
 msgid "Replace All"
-msgstr "Reemplazar todo"
+msgstr "Sustituir todo"
 
 #: ../src/wxMaxima.cpp:3459
 #, c-format
 msgid "Replaced %d occurrences."
-msgstr "Reemplazadas %d coincidencias."
+msgstr "Sustituir %d coincidencias."
 
 #: ../src/FindReplacePane.cpp:62
 msgid "Replacement:"
@@ -3584,7 +3581,7 @@ msgstr "Sustitución:"
 
 #: ../src/wxMaximaFrame.cpp:936
 msgid "Report bug"
-msgstr "Informar de un fallo"
+msgstr "Enviar un bicho"
 
 #: ../src/wxMaximaFrame.cpp:613
 msgid "Restart Maxima"
@@ -3592,7 +3589,7 @@ msgstr "Reiniciar Maxima"
 
 #: ../src/ToolBar.cpp:154
 msgid "Restart maxima"
-msgstr "Reiniciar maxima"
+msgstr "Reiniciar 'maxima'"
 
 #: ../src/MathCtrl.cpp:4568
 msgid "Result"
@@ -3632,11 +3629,11 @@ msgstr "Ruso"
 
 #: ../src/wxMaxima.cpp:4957
 msgid "Sample 1:"
-msgstr "Ejemplo 1:"
+msgstr "Muestra 1:"
 
 #: ../src/wxMaxima.cpp:4957
 msgid "Sample 2:"
-msgstr "Ejemplo 2:"
+msgstr "Muestra 2:"
 
 #: ../src/wxMaxima.cpp:4943
 msgid "Sample:"
@@ -3653,7 +3650,7 @@ msgstr "Guardar animación..."
 
 #: ../src/wxMaxima.cpp:2748
 msgid "Save As"
-msgstr "Guardar como"
+msgstr "Guardar Como"
 
 #: ../src/wxMaximaFrame.cpp:432
 msgid "Save As...\tShift+Ctrl+S"
@@ -3688,8 +3685,8 @@ msgid ""
 "Save only this number of actions in the undo buffer. 0 means: save an "
 "infinite number of actions."
 msgstr ""
-"Guardar solo este número de acciones en el búfer de deshacer. 0 significa "
-"guardar un número infinito de acciones."
+"Guardar solo este número de operaciones en el búfer de deshacer. 0 significa "
+"guardar un número infinito de operaciones."
 
 #: ../src/ConfigDialogue.cpp:637
 msgid "Save panes layout"
@@ -3697,7 +3694,7 @@ msgstr "Guardar disposición de paneles"
 
 #: ../src/ConfigDialogue.cpp:199
 msgid "Save panes layout between sessions."
-msgstr "Guardar disposición de paneles entre sesiones."
+msgstr "Guarda disposición de paneles entre sesiones."
 
 #: ../src/Plot2dWiz.cpp:501 ../src/Plot3dWiz.cpp:449
 msgid "Save plot to file"
@@ -3705,7 +3702,7 @@ msgstr "Guardar gráfico en un fichero"
 
 #: ../src/wxMaximaFrame.cpp:487
 msgid "Save selection from document to an image file"
-msgstr "Guardar selección del documento a imagen"
+msgstr "Guardar selección del documento a un fichero de imagen"
 
 #: ../src/wxMaxima.cpp:5389
 msgid "Save selection to file"
@@ -3713,7 +3710,7 @@ msgstr "Guardar selección en un fichero"
 
 #: ../src/ConfigDialogue.cpp:1666
 msgid "Save style to file"
-msgstr "Guardar estilo en un fichero"
+msgstr "Guardar estilo a un fichero"
 
 #: ../src/ConfigDialogue.cpp:634
 msgid "Save wxMaxima window size/position"
@@ -3803,7 +3800,7 @@ msgstr "Seleccionar todo"
 
 #: ../src/wxMaxima.cpp:3496
 msgid "Select math display algorithm"
-msgstr "Seleccionar el algoritmo de salida matemática"
+msgstr "Seleccionar el algoritmo de vista matemática"
 
 #: ../data/tips.txt:15
 msgid ""
@@ -3844,7 +3841,7 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:888
 msgid "Set plot format"
-msgstr "Establezca el formato de los gráficos"
+msgstr "Opciones del formato gráfico"
 
 #: ../src/wxMaximaFrame.cpp:905
 msgid ""
@@ -3852,7 +3849,7 @@ msgid ""
 "be generated by entering 1.5b12 or as bfloat(1.234)"
 msgstr ""
 "Ajustar la precisión de los números que se define como real grande. Tales "
-"números se pueden generar escribiendo 1.5b12 o bfloat(1.234)"
+"números se pueden generar escribiendo 1'5b12 o bfloat(1'234)"
 
 #: ../src/wxMaximaFrame.cpp:529
 msgid "Set zoom to 100%"
@@ -4139,7 +4136,7 @@ msgstr "Comenzar animación"
 
 #: ../src/ConfigDialogue.cpp:729
 msgid "Start a new maxima for each re-evaluation"
-msgstr "Inicializar un maxima nuevo para cada re-evaluación"
+msgstr "Inicializar un 'maxima' nuevo para cada re-evaluación"
 
 #: ../src/ToolBar.cpp:186
 msgid "Start or Stop animation"
@@ -4229,7 +4226,7 @@ msgstr "Celda de subsubsección"
 
 #: ../src/SumWiz.cpp:58 ../src/wxMaxima.cpp:4406
 msgid "Sum"
-msgstr "Suma"
+msgstr "Sumatorio"
 
 #: ../src/wxMaximaFrame.cpp:1415
 msgid "Sum sign"
@@ -4277,15 +4274,9 @@ msgstr "Tellrat"
 msgid "Text"
 msgstr "Texto"
 
-#: ../src/ConfigDialogue.cpp:446
-#, fuzzy
-msgid "Text & Code"
-msgstr "Ocultar Código"
-
 #: ../src/ConfigDialogue.cpp:445
-#, fuzzy
 msgid "Text Only"
-msgstr "Celda de texto"
+msgstr "Solo texto"
 
 #: ../src/ConfigDialogue.cpp:772
 msgid "Text cell"
@@ -4337,11 +4328,11 @@ msgid ""
 "maxima variable wxplot_size."
 msgstr ""
 "La altura por defecto de los gráficos empotrados. Puede ser leída o ignorada "
-"por la variable de maxima wxplot_size."
+"por la variable de 'maxima' wxplot_size."
 
 #: ../src/ConfigDialogue.cpp:213
 msgid "The default port used for communication between Maxima and wxMaxima."
-msgstr "El puerto predeterminado para comunicación entre Maxima y wxMaxima."
+msgstr "El puerto predeterminado para comunicación entre 'maxima' y wxMaxima."
 
 #: ../src/ConfigDialogue.cpp:188
 msgid ""
@@ -4349,7 +4340,7 @@ msgid ""
 "maxima variable wxplot_size"
 msgstr ""
 "El ancho por defecto de los gráficos empotrados. Puede ser leído o ignorado "
-"por la variable de maxima wxplot_size"
+"por la variable de 'maxima' wxplot_size"
 
 #: ../src/ConfigDialogue.cpp:208
 msgid "The document class LaTeX is instructed to use for our documents."
@@ -4375,7 +4366,7 @@ msgid ""
 "The load() command of Maxima versions >5.38 is able to load .wxm files as "
 "library of maxima's commands."
 msgstr ""
-"La instrucción load() de las versiones posteriores a la 5.38 de Maxima es "
+"La instrucción load() de las versiones posteriores a la 5.38 de 'maxima' es "
 "capaz de cargar ficheros .wxm como bibliotecas de instrucciones de maxima."
 
 #: ../src/ConfigDialogue.cpp:215
@@ -4385,7 +4376,7 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:919
 msgid "The offline manual of maxima"
-msgstr "Manual de maxima sin conexión"
+msgstr "Manual de 'maxima' sin conexión"
 
 #: ../src/ConfigDialogue.cpp:200
 msgid ""
@@ -4431,7 +4422,7 @@ msgid ""
 "http://andrejv.github.com/wxmaxima/help.html for more information and to "
 "find tutorials on using wxMaxima and Maxima."
 msgstr ""
-"Hay muchos recursos sobre Maxima y wxMaxima en Internet. Visítese http://"
+"Hay muchos recursos sobre 'maxima' y wxMaxima en Internet. Visítese http://"
 "andrejv.github.com/wxmaxima/help.html para más información sobre cómo "
 "utilizar wxMaxima y Maxima."
 
@@ -4825,7 +4816,7 @@ msgstr ""
 
 #: ../src/MathCtrl.cpp:7005
 msgid "Wrapped search"
-msgstr "Búsqueda parcial"
+msgstr "Envoltura parcial"
 
 #: ../src/wxMaxima.cpp:4642
 msgid "Written by"
@@ -4869,9 +4860,9 @@ msgid ""
 "function name and pressing F1. wxMaxima will search help index for the "
 "selection or the word under the cursor."
 msgstr ""
-"Se puede obtener información sobre una función de Maxima resaltando o pulse "
-"sobre su nombre y pulsando F1. wxMaxima buscará la ayuda correspondiente a "
-"la palabra bajo el cursor."
+"Se puede obtener información sobre una función de 'maxima' resaltando o "
+"pulse sobre su nombre y pulsando F1. wxMaxima buscará la ayuda "
+"correspondiente a la palabra bajo el cursor."
 
 #: ../data/tips.txt:10
 msgid ""
@@ -4935,11 +4926,11 @@ msgstr "&Ampliar\tCtrl++"
 
 #: ../src/wxMaximaFrame.cpp:524
 msgid "Zoom Ou&t\tCtrl+-"
-msgstr "&Disminuir\tCtrl+-"
+msgstr "&Reducir\tCtrl+-"
 
 #: ../src/wxMaximaFrame.cpp:523
 msgid "Zoom in 10%"
-msgstr "Disminuir 10%"
+msgstr "Reducir 10%"
 
 #: ../src/wxMaximaFrame.cpp:525
 msgid "Zoom out 10%"
@@ -5038,7 +5029,7 @@ msgid ""
 msgstr ""
 "false=No genera subíndices\n"
 "true=Convierte automáticamente los guiones bajos a subíndices si estos son "
-"números o letras sencillas\n"
+"números o letras simples\n"
 "all=_ marca subíndices."
 
 #: ../src/wxMaximaFrame.cpp:1295
@@ -5051,7 +5042,7 @@ msgstr "general"
 
 #: ../src/wxMaximaFrame.cpp:1411
 msgid "greater than or equal"
-msgstr "mayor o igual"
+msgstr "mayor o igual que"
 
 #: ../src/wxMaximaFrame.cpp:1381
 msgid "in"
@@ -5097,7 +5088,7 @@ msgstr "matriz[i,j]:"
 
 #: ../src/ConfigDialogue.cpp:716
 msgid "maxima's pwd is path to document"
-msgstr "el pwd de maxima es la ruta al documento"
+msgstr "“pwd” de 'maxima' como ruta al documento"
 
 #: ../src/wxMaximaFrame.cpp:1304
 msgid "mu"
@@ -5195,7 +5186,7 @@ msgstr "sigma"
 msgid "sqrt (needs parenthesis for its argument to work as a maxima command)"
 msgstr ""
 "sqrt (requiere paréntesis para que el argumento funcione como una "
-"instrucción de maxima)"
+"instrucción de 'maxima')"
 
 #: ../src/wxMaximaFrame.cpp:1400
 msgid "subset"
@@ -5227,11 +5218,11 @@ msgstr "theta"
 
 #: ../src/wxMaximaFrame.cpp:1375
 msgid "to the power of 2"
-msgstr "a la segunda potencia"
+msgstr "al cuadrado"
 
 #: ../src/wxMaximaFrame.cpp:1376
 msgid "to the power of 3"
-msgstr "a la tercera potencia"
+msgstr "al cubo"
 
 #: ../src/wxMaximaFrame.cpp:1397
 msgid "union"
@@ -5305,8 +5296,8 @@ msgid ""
 msgstr ""
 "¡wxMaxima no pudo encontrar Maxima!\n"
 "\n"
-"Configure wxMaxima con 'Editar → Configurar'.\n"
-"A continuación inicie Maxima con 'Maxima → Reiniciar Maxima'."
+"Configure wxMaxima con «Editar → Configurar».\n"
+"A continuación inicie 'maxima' con «Maxima → Reiniciar Maxima»."
 
 #: ../src/wxMaxima.cpp:2333
 msgid ""
@@ -5337,7 +5328,7 @@ msgid ""
 msgstr ""
 "wxMaxima no pudo iniciar el servidor.\n"
 "\n"
-"Verifique si dispone el soporte de red\n"
+"Verifique si dispone el apoyo de red\n"
 "activado e inténtelo de nuevo!"
 
 #: ../data/tips.txt:20
@@ -5346,9 +5337,9 @@ msgid ""
 "If you have made a selection in your document, the selection will be used "
 "instead of '%'."
 msgstr ""
-"En los cuadros de diálogo de wxMaxima aparecen entradas predeterminadas, una "
-"de las cuales es '%'. Si ha hecho una selección en el documento, ésta será "
-"utilizada en lugar de '%'."
+"En los valores de diálogos de wxMaxima aparecen registros de entrada "
+"predeterminados, una de los cuales es '%'. Si ha hecho una selección en el "
+"documento, ésta será utilizada en lugar de '%'."
 
 #: ../src/wxMaxima.cpp:2460
 msgid "wxMaxima document"
@@ -5422,971 +5413,37 @@ msgstr "zeta"
 #~ msgstr "      -X '--dynamic-space-size <int>'"
 
 #~ msgid "Bug: Fraction without denominator"
-#~ msgstr "fallo: fracción sin denominador"
+#~ msgstr "Bicho: fracción sin denominador"
 
 #~ msgid "Bug: Fraction without enumerator"
-#~ msgstr "fallo: fracción sin numerador"
+#~ msgstr "Bicho: fracción sin numerador"
+
+#~ msgid "Text & Code"
+#~ msgstr "Texto y Código"
 
 #~ msgid "bug:Invalid at tag"
-#~ msgstr "fallo:Inválido en etiqueta"
+#~ msgstr "bicho: etiqueta no válida"
 
 #~ msgid "bug:Invalid frac tag"
-#~ msgstr "fallo:Inválido en etiqueta de fracción"
+#~ msgstr "bicho: etiqueta de fracción no válida"
 
 #~ msgid "bug:Invalid function tag"
-#~ msgstr "fallo:Inválido en etiqueta de función"
+#~ msgstr "bicho: etiqueta de función no válida"
 
 #~ msgid "bug:Invalid int tag"
-#~ msgstr "fallo:Inválido en etiqueta entero"
+#~ msgstr "bicho: etiqueta entera no válida"
 
 #~ msgid "bug:Invalid limit tag"
-#~ msgstr "fallo:Inválido en etiqueta de límite"
+#~ msgstr "bicho: etiqueta de límite no válida"
 
 #~ msgid "bug:Invalid sub tag"
-#~ msgstr "fallo:Inválido en subetiqueta"
+#~ msgstr "bicho: subetiqueta no válida"
 
 #~ msgid "bug:Invalid subsup tag"
-#~ msgstr "fallo:Inválido en subsubetiqueta"
+#~ msgstr "bicho: subsubetiqueta no válida"
 
 #~ msgid "bug:Invalid sum tag"
-#~ msgstr "fallo:Inválido en etiqueta de suma"
+#~ msgstr "bicho: etiqueta sumatoria no válida"
 
 #~ msgid "bug:Invalid sup tag"
-#~ msgstr "fallo:Inválido en etiqueta supresión"
-
-#~ msgid "Document "
-#~ msgstr "Documento"
-
-#, fuzzy
-#~ msgid "&New\tCtrl-N"
-#~ msgstr "&Nuevo\tCtrl+N"
-
-#~ msgid "HTML/Text Cells: Export all linebreaks"
-#~ msgstr "Celdas HTML/Texto: Exportar todos los saltos de línea"
-
-#~ msgid "Include input cells in the export of a worksheet"
-#~ msgstr "Incluir las celdas de entrada al exportar una hoja de trabajo"
-
-#~ msgid ""
-#~ "Normally we export the whole worksheet to TeX or HTML. But sometimes the "
-#~ "maxima input does scare the user. This option turns off exporting of "
-#~ "maxima's input."
-#~ msgstr ""
-#~ "Normalmente se exporta la hoja de trabajo completa a TeX o HTML. Si los "
-#~ "códigos de entrada resultasen molestos, esta opción desactiva la "
-#~ "exportación de los mismos."
-
-#~ msgid ""
-#~ "While text cells in LaTeX are broken into lines by TeX the text displayed "
-#~ "on the screen is broken into lines manually. This option, if set tells "
-#~ "that lines in HTML output will be broken where they are broken in the "
-#~ "worksheet. If this option isn't set manual linebreaks can still be "
-#~ "introduced by introducing an empty line."
-#~ msgstr ""
-#~ "Si se activa esta opción, los saltos de línea en HTML se harán en los "
-#~ "mismos puntos que en la hoja de trabajo. Si la opción no se activa, los "
-#~ "saltos de línea se pueden hacer manualmente introduciendo una línea en "
-#~ "blanco."
-
-#~ msgid "Write matching parenthesis in text controls."
-#~ msgstr "Escribir paréntesis coincidentes en los controles de texto."
-
-#~ msgid "Use MathJAX in HTML export"
-#~ msgstr "Utilizar MathJAX al exportar HTML"
-
-#, fuzzy
-#~ msgid ""
-#~ "Use MathJAX instead of images in HTML exports to display maxima output. "
-#~ "The advantage of MathJAX is that it allows to copy the displayed "
-#~ "equations as if they were text, to choose if they should be copied as TeX "
-#~ "or MathML instead and displays them in a scaleable format that is really "
-#~ "nice to look at. The disadvantage of MathJAX is that it will need "
-#~ "JavaScript and a little bit of time in order to typeset an equation."
-#~ msgstr "Utilizar MathJAX en lugar de imágenes al exportar a HTML."
-
-#, fuzzy
-#~ msgid "Custom symbols sidebar glyphs:"
-#~ msgstr "Barra lateral de símbolos"
-
-#~ msgid "My"
-#~ msgstr "Mu"
-
-#~ msgid "Ny"
-#~ msgstr "Nu"
-
-#~ msgid "Omnikron"
-#~ msgstr "Ómicron"
-
-#~ msgid "Ypsilon"
-#~ msgstr "Ýpsilon"
-
-#~ msgid "my"
-#~ msgstr "mu"
-
-#~ msgid "ny"
-#~ msgstr "ni"
-
-#~ msgid "omnikron"
-#~ msgstr "ómicron"
-
-#~ msgid "ypsilon"
-#~ msgstr "ýpsilon"
-
-#~ msgid " << Expression too long to display! >>"
-#~ msgstr " << ¡Expresión excesivamente larga para ser mostrada! >>"
-
-#~ msgid "Copy As Image"
-#~ msgstr "Copiar como imagen"
-
-#~ msgid "Copy LaTeX"
-#~ msgstr "Copiar LaTeX"
-
-#~ msgid "Height:"
-#~ msgstr "Altura:"
-
-#~ msgid "Width:"
-#~ msgstr "Ancho:"
-
-#~ msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
-#~ msgstr ""
-#~ "Intentando situar el cursor en una celda que no es parte de la hoja de "
-#~ "trabajo"
-
-#~ msgid "implies"
-#~ msgstr "implica"
-
-#~ msgid "Panes"
-#~ msgstr "&Paneles"
-
-#~ msgid "Error %d"
-#~ msgstr "Error %d"
-
-#~ msgid "Output from Maxima to stderr (there should be none):\n"
-#~ msgstr "Salidad de Maxima a stderr (debe haber uno):\n"
-
-#~ msgid "Output from Maxima to stdout (there should be none):\n"
-#~ msgstr "Salidad de Maxima a stdout (debe haber uno):\n"
-
-#~ msgid "Structure\tAlt+Shift+T"
-#~ msgstr "Estructura\tAlt+Shift+T"
-
-#~ msgid "Zoom set to "
-#~ msgstr "Establecer ampliación a "
-
-#~ msgid ""
-#~ "wxMaxima xml document (*.wxmx)|*.wxmx|wxMaxima document (*.wxm)|*.wxm|"
-#~ "Maxima batch file (*.mac)|*.mac"
-#~ msgstr ""
-#~ "Documento xml wxMaxima (*.wxmx)|*.wxmx|Documento wxMaxima (*.wxm)|*.wxm|"
-#~ "Archivo por lotes de Maxima (*.mac)|*.mac"
-
-#~ msgid "lines hidden"
-#~ msgstr "líneas ocultas"
-
-#~ msgid "Set &Precision..."
-#~ msgstr "Establecer &precisión"
-
-#~ msgid "Start animation"
-#~ msgstr "Comenzar animación"
-
-#~ msgid "Stop animation"
-#~ msgstr "Para animación"
-
-#~ msgid "Animation"
-#~ msgstr "Animación"
-
-#~ msgid "Find..."
-#~ msgstr "Calcular..."
-
-#~ msgid "History\tAlt+Shift+H"
-#~ msgstr "&Historia\tAlt+Shift+H"
-
-#~ msgid "Re-evaluate All until here\tCtrl+Shift+H"
-#~ msgstr "Re-evaluar todo hasta aquí\tCtrl+Shift+H"
-
-#~ msgid "Redo\tCtrl+Shift+Z"
-#~ msgstr "Rehacer\tCtrl+Shift+Z"
-
-#~ msgid "Default port:"
-#~ msgstr "Puerto predeterminado:"
-
-#~ msgid "Save changes before closing?"
-#~ msgstr "¿Se guardan los cambios antes de cerrar?"
-
-#~ msgid "Save changes?"
-#~ msgstr "¿Guardar cambios?"
-
-#~ msgid "&Cell"
-#~ msgstr "Ce&lda"
-
-#~ msgid "&New Window\tCtrl+N"
-#~ msgstr "&Nueva ventana\tCtrl+N"
-
-#~ msgid "Close document?"
-#~ msgstr "¿Cerrar documento?"
-
-#~ msgid ""
-#~ "Document not saved!\n"
-#~ "\n"
-#~ "Close current document and lose all changes?"
-#~ msgstr ""
-#~ "¡Documento no guardado!\n"
-#~ "\n"
-#~ "¿Cerrar el documento actual y perder todos los cambios?"
-
-#~ msgid ""
-#~ "Document not saved!\n"
-#~ "\n"
-#~ "Quit wxMaxima and lose all changes?"
-#~ msgstr ""
-#~ "¡Documento no guardado!\n"
-#~ "\n"
-#~ "¿Abandonar wxMaxima y perder todos los cambios?"
-
-#~ msgid "Maxima options"
-#~ msgstr "Opciones de Maxima"
-
-#~ msgid "Quit?"
-#~ msgstr "¿Salir?"
-
-#~ msgid "wxMaxima options"
-#~ msgstr "Opciones de wxMaxima"
-
-#~ msgid "Mean"
-#~ msgstr "Media"
-
-#~ msgid ""
-#~ "wxMaxima is a graphical user interface for the\n"
-#~ "computer algebra system Maxima based on wxWidgets."
-#~ msgstr ""
-#~ "wxMaxima es una interface gráfica de usuario para \n"
-#~ "el Sistema de Cálculo Simbólico Maxima, basado en wxWidgets."
-
-#~ msgid "<< Nothing to display >>"
-#~ msgstr "<< Nada que mostrar >>"
-
-#~ msgid "Functions and macros"
-#~ msgstr "Funciones y macros"
-
-#~ msgid "Labels"
-#~ msgstr "Etiquetas"
-
-#~ msgid "Autocomplete"
-#~ msgstr "Autocompletar"
-
-#~ msgid "Copy selection to clipboard when selection is made in document."
-#~ msgstr "Copiar selección al portapapeles cuando se hace en el documento."
-
-#~ msgid "Copy to clipboard on select"
-#~ msgstr "Copiar la selección al portapapeles"
-
-#~ msgid "Input"
-#~ msgstr "Entrada"
-
-#~ msgid "Save document as ..."
-#~ msgstr "Guardar documento como"
-
-#~ msgid "Show Maxima header"
-#~ msgstr "Mostrar el encabezamiento de Maxima"
-
-#~ msgid "Show initial header with Maxima system information."
-#~ msgstr "Mostrar encabezamiento inicial con información de Maxima."
-
-#~ msgid "Adjustment for the size of greek font."
-#~ msgstr "Ajuste para el tamaño de la fuente griega"
-
-#~ msgid "Adjustment:"
-#~ msgstr "Ajuste:"
-
-#~ msgid "Basic"
-#~ msgstr "Básico"
-
-#~ msgid "Button panel:"
-#~ msgstr "Panel de botones:"
-
-#~ msgid "Copy selected cell(s)"
-#~ msgstr "Copiar celda(s) seleccionada(s)"
-
-#~ msgid "Cut Cell(s)\tCtrl+Shift+X"
-#~ msgstr "Cortar Celda(s)\tCtrl+Shift+X"
-
-#~ msgid "Decrease fontsize in document"
-#~ msgstr "Disminuir el tamaño de la fuente en el documento"
-
-#~ msgid "Delete selected cell(s)"
-#~ msgstr "Borrar celda(s) seleccionada(s)"
-
-#~ msgid "Delete selection"
-#~ msgstr "Borrar selección"
-
-#~ msgid "Font used for displaying unicode glyphs in document."
-#~ msgstr "Fuente usada para mostrar glifos unicode en el documento."
-
-#~ msgid "Full"
-#~ msgstr "Completo"
-
-#~ msgid "Increase fontsize in document"
-#~ msgstr "Aumentar el tamaño de fuente del documento."
-
-#~ msgid "Insert input cell"
-#~ msgstr "Insertar celda de entrada"
-
-#~ msgid "Insert input group"
-#~ msgstr "Insertar grupo de entrada"
-
-#~ msgid "Insert text"
-#~ msgstr "Insertar texto"
-
-#~ msgid "New T&itle Cell\tCtrl+Shift+F6"
-#~ msgstr "Celda de nuevo t&ítulo\tCtrl+Shift+F6"
-
-#~ msgid "Off"
-#~ msgstr "Desactivado"
-
-#~ msgid "Paste cell(s) to document"
-#~ msgstr "Pegar celda(s) al documento"
-
-#~ msgid "Product..."
-#~ msgstr "Producto"
-
-#~ msgid "Select file to open"
-#~ msgstr "Seleccionar archivo para abrir"
-
-#~ msgid "Sum..."
-#~ msgstr "Suma"
-
-#~ msgid "To &Float\tCtrl+F"
-#~ msgstr "A real \tCtrl+F"
-
-#~ msgid "Use greek font to display greek characters."
-#~ msgstr "Usar fuente griega para mostrar caracteres griegos."
-
-#~ msgid "Use greek font:"
-#~ msgstr "Usar fuente griega:"
-
-#~ msgid "untitled.wxm"
-#~ msgstr "sinnombre.wxm"
-
-#~ msgid "wxMaxima session (*.wxm)|*.wxm"
-#~ msgstr "Sesión de wxMaxima (*.wxm)|*.wxm"
-
-#~ msgid "aquamarine"
-#~ msgstr "aguamarina"
-
-#~ msgid "black"
-#~ msgstr "negro"
-
-#~ msgid "blue"
-#~ msgstr "azul"
-
-#~ msgid "blue violet"
-#~ msgstr "azul violeta"
-
-#~ msgid "brown"
-#~ msgstr "marrón"
-
-#~ msgid "cadet blue"
-#~ msgstr "azul cadete"
-
-#~ msgid "coral"
-#~ msgstr "coral"
-
-#~ msgid "cornflower blue"
-#~ msgstr "azulina"
-
-#~ msgid "cyan"
-#~ msgstr "cyan"
-
-#~ msgid "dark green"
-#~ msgstr "verde oscuro"
-
-#~ msgid "dark grey"
-#~ msgstr "gris oscuro"
-
-#~ msgid "dark olive green"
-#~ msgstr "verde oliva oscuro"
-
-#~ msgid "dark orchid"
-#~ msgstr "orquídea oscuro"
-
-#~ msgid "dark slate blue"
-#~ msgstr "azul pizarra oscuro"
-
-#~ msgid "dark slate grey"
-#~ msgstr "gris pizarra oscuro"
-
-#~ msgid "dark turquoise"
-#~ msgstr "turquesa oscuro"
-
-#~ msgid "dim grey"
-#~ msgstr "gris débil"
-
-#~ msgid "firebrick"
-#~ msgstr "teja"
-
-#~ msgid "forest green"
-#~ msgstr "verde bosque"
-
-#~ msgid "gold"
-#~ msgstr "oro"
-
-#~ msgid "goldenrod"
-#~ msgstr "barra de oro"
-
-#~ msgid "green yellow"
-#~ msgstr "verde amarillo"
-
-#~ msgid "grey"
-#~ msgstr "gris"
-
-#~ msgid "khaki"
-#~ msgstr "caqui"
-
-#~ msgid "light blue"
-#~ msgstr "azul claro"
-
-#~ msgid "light grey"
-#~ msgstr "gris claro"
-
-#~ msgid "light steel blue"
-#~ msgstr "azul acero claro"
-
-#~ msgid "lime green"
-#~ msgstr "verde lima"
-
-#~ msgid "maroon"
-#~ msgstr "granate"
-
-#~ msgid "medium aquamarine"
-#~ msgstr "aguamarina medio"
-
-#~ msgid "medium blue"
-#~ msgstr "azul medio"
-
-#~ msgid "medium forrest green"
-#~ msgstr "verde bosque medio"
-
-#~ msgid "medium goldenrod"
-#~ msgstr "barra de oro media"
-
-#~ msgid "medium orchid"
-#~ msgstr "orquídea medio"
-
-#~ msgid "medium sea green"
-#~ msgstr "verde mar medio"
-
-#~ msgid "medium slate blue"
-#~ msgstr "azul pizarra medio"
-
-#~ msgid "medium spring green"
-#~ msgstr "verde primavera medio"
-
-#~ msgid "medium turquoise"
-#~ msgstr "turquesa medio"
-
-#~ msgid "medium violet red"
-#~ msgstr "rojo violeta medio"
-
-#~ msgid "midnight blue"
-#~ msgstr "azul medianoche"
-
-#~ msgid "orange"
-#~ msgstr "naranja"
-
-#~ msgid "orange red"
-#~ msgstr "rojo anaranjado"
-
-#~ msgid "pale green"
-#~ msgstr "verde pálido"
-
-#~ msgid "plum"
-#~ msgstr "ciruela"
-
-#~ msgid "purple"
-#~ msgstr "morado"
-
-#~ msgid "red"
-#~ msgstr "rojo"
-
-#~ msgid "salmon"
-#~ msgstr "salmón"
-
-#~ msgid "sea green"
-#~ msgstr "verde mar"
-
-#~ msgid "sienna"
-#~ msgstr "siena"
-
-#~ msgid "sky blue"
-#~ msgstr "azul cielo"
-
-#~ msgid "spring green"
-#~ msgstr "verde primavera"
-
-#~ msgid "steel blue"
-#~ msgstr "azul acero"
-
-#~ msgid "thistle"
-#~ msgstr "cardo"
-
-#~ msgid "turquoise"
-#~ msgstr "turquesa"
-
-#~ msgid "violet"
-#~ msgstr "violeta"
-
-#~ msgid "wheat"
-#~ msgstr "trigo"
-
-#~ msgid "white"
-#~ msgstr "blanco"
-
-#~ msgid "yellow green"
-#~ msgstr "verde amarillo"
-
-#~ msgid " << Unfold >>"
-#~ msgstr " << Desplegar >>"
-
-#~ msgid "Background"
-#~ msgstr "Fondo"
-
-#~ msgid "Copy cells"
-#~ msgstr "Copiar celdas"
-
-#~ msgid "Cut selection from document"
-#~ msgstr "Cortar selección del documento"
-
-#~ msgid "Export to HTML file"
-#~ msgstr "Exportar a un archivo HTML"
-
-#~ msgid "Hidden groups"
-#~ msgstr "Grupos ocultos"
-
-#~ msgid "Integrate ..."
-#~ msgstr "Integrar"
-
-#~ msgid "Main prompts"
-#~ msgstr "Indicadores principales"
-
-#~ msgid "Open session from a file"
-#~ msgstr "Abrir sesión desde un archivo"
-
-#~ msgid "Other prompts"
-#~ msgstr "Otros indicadores"
-
-#~ msgid "Save session"
-#~ msgstr "Guardar sesión"
-
-#~ msgid "Save session to a file"
-#~ msgstr "Guardar sesión en un archivo"
-
-#~ msgid "Save to file"
-#~ msgstr "Guardar en un archivo"
-
-#~ msgid "Select package to load"
-#~ msgstr "Seleccionar paquete para cargar"
-
-#~ msgid "Substitute ..."
-#~ msgstr "Sustituir"
-
-#~ msgid "wxMaxima session"
-#~ msgstr "Sesión de wxMaxima"
-
-#~ msgid "&Copy"
-#~ msgstr "&Copiar"
-
-#~ msgid "&Describe\tCtrl+H"
-#~ msgstr "&Describir\tCtrl+H"
-
-#~ msgid "&Edit input\tCtrl+E"
-#~ msgstr "E&ditar entrada\tCtrl+E"
-
-#~ msgid "&Input\tF7"
-#~ msgstr "&Entrada\tF7"
-
-#~ msgid "&Monitor file"
-#~ msgstr "&Monitorizar archivo"
-
-#~ msgid "&Re-evaluate input\tCtrl+R"
-#~ msgstr "&Re-calcular entrada\tCtrl+R"
-
-#~ msgid "&Read file"
-#~ msgstr "Leer &archivo"
-
-#~ msgid "&Text\tF6"
-#~ msgstr "&Texto\tF6"
-
-#~ msgid ""
-#~ "All|*|Maxima package (*.mac)|*.mac|Demo file (*.dem)|*.dem|Lisp file (*."
-#~ "lisp)|*.lisp"
-#~ msgstr ""
-#~ "Todos|*|Paquete maxima(*.mac)|*.mac|Archivo demo (*.dem)|*.dem|Archivo "
-#~ "lisp (*.lisp)|*.lisp"
-
-#~ msgid "Autoload a file when it is updated"
-#~ msgstr "Autocargar un archivo cuando sea actualizado"
-
-#~ msgid "C&lear screen"
-#~ msgstr "&Limpiar pantalla"
-
-#~ msgid "Copy input"
-#~ msgstr "Copiar entrada"
-
-#~ msgid "Copy input from console"
-#~ msgstr "Copiar entrada desde documento"
-
-#~ msgid "Copy selection from console to input line"
-#~ msgstr "Copiar selección de la consola a la línea de entrada"
-
-#~ msgid "Copy to input"
-#~ msgstr "Copiar a la entrada"
-
-#~ msgid "Delete selected input/output group"
-#~ msgstr "Borrar grupo de entrada/salida seleccionado"
-
-#~ msgid "Delete the contents of console."
-#~ msgstr "Borrar los contenidos de la consola."
-
-#~ msgid "Describe"
-#~ msgstr "Describir"
-
-#~ msgid "Edit input"
-#~ msgstr "Editar entrada"
-
-#~ msgid "Edit selected input"
-#~ msgstr "Editar la entrada seleccionada"
-
-#~ msgid "Edit text"
-#~ msgstr "Editar texto"
-
-#~ msgid "Enter command"
-#~ msgstr "Introducir comando"
-
-#~ msgid "Go to input\tCtrl+Shift+D"
-#~ msgstr "Ir a\tCtrl+Shift+D"
-
-#~ msgid "Go to input\tF4"
-#~ msgstr "Ir a la entrada\tF4"
-
-#~ msgid "Go to output window\tF3"
-#~ msgstr "Ir a la ventana de salida\tF3"
-
-#~ msgid "I&nsert"
-#~ msgstr "I&nsertar"
-
-#~ msgid "INPUT:"
-#~ msgstr "ENTRADA:"
-
-#~ msgid ""
-#~ "If you want to input more than one line at a time, use the 'Multiline "
-#~ "input' button at the right of the input line."
-#~ msgstr ""
-#~ "Si desea introducir más de una línea a la vez, utilice el botón \"Entrada "
-#~ "multilínea\" a la derecha de la línea de entrada."
-
-#~ msgid "Insert new input before selected input"
-#~ msgstr "Insertar nueva entrada antes de la entrada seleccionada"
-
-#~ msgid "Insert section before selected input"
-#~ msgstr "Insertar sección antes de la entrada seleccionada"
-
-#~ msgid "Insert text before selected input"
-#~ msgstr "Insertar texto antes de la entrada seleccionada"
-
-#~ msgid "Insert title before selected input"
-#~ msgstr "Insertar título antes de la entrada seleccionada"
-
-#~ msgid ""
-#~ "Instead of typing a long pathname of a file to input line, you can select "
-#~ "that file using 'File->Select file'."
-#~ msgstr ""
-#~ "En lugar de introducir una ruta larga para un archivo, puede seleccionar "
-#~ "ese archivo utilizando 'Archivo->Seleccionar archivo'."
-
-#~ msgid "Multiline input"
-#~ msgstr "Entrada multilínea"
-
-#~ msgid "Open multiline input dialog"
-#~ msgstr "Abrir diálogo de entrada multilínea"
-
-#~ msgid "Paste input"
-#~ msgstr "Pegar entrada"
-
-#~ msgid "Paste input to console"
-#~ msgstr "Pegar entrada a la consola"
-
-#~ msgid "Re-evaluate all input"
-#~ msgstr "Re-calcular todas las entradas"
-
-#~ msgid "Re-evaluate input"
-#~ msgstr "Re-calcular entrada"
-
-#~ msgid "Read file from command line"
-#~ msgstr "Leer archivo desde línea de comandos"
-
-#~ msgid "Select &file"
-#~ msgstr "Seleccionar &archivo"
-
-#~ msgid "Select a file"
-#~ msgstr "Seleccionar un archivo"
-
-#~ msgid "Select a file (copy filename to input line)"
-#~ msgstr ""
-#~ "Seleccionar un archivo (copiar el nombre del fichero en la línea de "
-#~ "entrada)"
-
-#~ msgid "Select last input\tCtrl+D"
-#~ msgstr "Seleccionar la última entrada\tCtrl+D"
-
-#~ msgid "Select last input\tF2"
-#~ msgstr "Seleccionar la última entrada\tF2"
-
-#~ msgid "Select last input in the colsole!"
-#~ msgstr "¡Seleccionar la última entrada en la consola!"
-
-#~ msgid "Select last input in the console!"
-#~ msgstr "¡Seleccionar la última entrada en la consola!"
-
-#~ msgid "Selection to input\tCtrl+Shift+E"
-#~ msgstr "Selección a entrada\tCtrl+Shift+E"
-
-#~ msgid "Selection to input\tF5"
-#~ msgstr "Selección a entrada\tF5"
-
-#~ msgid "Set focus to the input line"
-#~ msgstr "Poner el foco en la línea de entrada"
-
-#~ msgid "Set focus to the output window"
-#~ msgstr "Poner el foco en la ventana de salida"
-
-#~ msgid "Show the description of a command"
-#~ msgstr "Mostrar la descripción de un comando"
-
-#~ msgid "Show the description of command/variable:"
-#~ msgstr "Mostrar la descripción de un comando/variable:"
-
-#~ msgid ""
-#~ "To enter a matrix A, type 'A : ' to input line and select 'Algebra->Enter "
-#~ "matrix' from menus."
-#~ msgstr ""
-#~ "Para introducir una matriz A, escriba 'A:' en la línea de entrada y "
-#~ "seleccionar 'Algebra->Introducir matriz' del menú"
-
-#~ msgid ""
-#~ "To put parenthesis around an expression you previously typed into the "
-#~ "input line, select the expression with mouse and then type '('."
-#~ msgstr ""
-#~ "Para poner paréntesis a una expresión previamente escrita en la línea de "
-#~ "entrada, seleccionar la expresión con el ratón y entonces escribir '('."
-
-#~ msgid ""
-#~ "To repeat a long command you previously entered in the input line, type "
-#~ "in the first few letters to the input line and then pres tab key."
-#~ msgstr ""
-#~ "Para repetir un comando largo previamente introducido, escribir las "
-#~ "primeras letras del mismo en la línea de entrada y pulsar la tecla "
-#~ "tabulador."
-
-#~ msgid ""
-#~ "You can delete output/input group if you select the input label and "
-#~ "choose 'Edit->Delete selection' from menus."
-#~ msgstr ""
-#~ "Se puede eliminar grupo entrada/salida si se selecciona la etiqueta de "
-#~ "entrada y se elige 'Editar->Eliminar selección' de los menús."
-
-#~ msgid ""
-#~ "You can hide the output by clicking on the output label. Clicking on the "
-#~ "input label hides input and output. Clicking on the label again, shows "
-#~ "hidden expressions."
-#~ msgstr ""
-#~ "Se puede ocultar la salida haciendo clic en la etiqueta de salida. "
-#~ "Haciendo clic otra vez en la etiqueta, se muestran las expresiones "
-#~ "ocultas."
-
-#~ msgid ""
-#~ "You can load a file into maxima by dragging it from a file browser to the "
-#~ "console window."
-#~ msgstr ""
-#~ "Se puede cargar un archivo en maxima arrastrándolo del explorador de "
-#~ "archivos a la ventana de la consola."
-
-#~ msgid ""
-#~ "You can load files into maxima if you drop them on the console window. "
-#~ "You can select a custom function for loading your file. If your custom "
-#~ "function is 'A:read_matrix(%file%, csv)', then %file% will be replaced "
-#~ "with the filename of your file."
-#~ msgstr ""
-#~ "Se pueden cargar archivos en maxima si se arrastran desde la ventana de "
-#~ "la consola. Se puede seleccionar una función personalizada para cargar el "
-#~ "archivo. Si la función personalizada es 'A:read_matrix(%file%, csv)', "
-#~ "entonces %file% será reemplazado con el nombre del archivo."
-
-#~ msgid ""
-#~ "You can select the output of maxima in wxMaxima console with mouse and "
-#~ "copy it to the clipboard with 'Edit->copy'."
-#~ msgstr ""
-#~ "Se puede seleccionar la salida de maxima en la consola de wxMaxima con el "
-#~ "ratón y copiándolo al portapapeles con 'Editar->Copiar.'"
-
-#~ msgid ""
-#~ "You can use the maxima tex command to print the expression in TeX form. "
-#~ "Then you can copy it to text editor to include it in you paper."
-#~ msgstr ""
-#~ "Se puede usar el comando tex de maxima para mostrar la expresión en "
-#~ "formato TeX. Luego se puede copiar a un editor de texto para incluirlo en "
-#~ "su documento."
-
-#~ msgid ""
-#~ "wxMaxima has nice plot dialogs. If you want to modify previous plot "
-#~ "commands, access them using command history and then push the plot button."
-#~ msgstr ""
-#~ "wxMaxima tiene buenos cuadros de diálogo. Si se quiere modificar los "
-#~ "comandos gráficos anteriores, se puede acceder usando la historia de "
-#~ "comandos y a continuación pulsando el botón de gráficos."
-
-#~ msgid ""
-#~ "wxMaxima's input line has command history available using up and down "
-#~ "keys and command completion based on previous input available using the "
-#~ "tab key."
-#~ msgstr ""
-#~ "La línea de entrada de wxMaxima tiene un histórico disponible usando las "
-#~ "teclas de dirección arriba y abajo, y un autocompletado de comandos "
-#~ "basado en la entrada anterior disponible, usando la tecla tabulador."
-
-#~ msgid "Apply function:"
-#~ msgstr "Aplicar función:"
-
-#~ msgid "At point:"
-#~ msgstr "En el punto:"
-
-#~ msgid "Char poly of:"
-#~ msgstr "Polinomio característico de:"
-
-#~ msgid "Comment out"
-#~ msgstr "Comentar"
-
-#~ msgid "Copy &text"
-#~ msgstr "Copiar &texto"
-
-#~ msgid "Copy selection from console (including linebreaks)"
-#~ msgstr "Copiar selección de la consola (saltos de línea incluidos)"
-
-#~ msgid "From array:"
-#~ msgstr "De la tabla:"
-
-#~ msgid "From equations:"
-#~ msgstr "De las ecuaciones:"
-
-#~ msgid "Integrate:"
-#~ msgstr "Integrar:"
-
-#~ msgid "Limit of:"
-#~ msgstr "Límite de:"
-
-#~ msgid "Map function:"
-#~ msgstr "Aplicar la función:"
-
-#~ msgid "Product:"
-#~ msgstr "Producto:"
-
-#~ msgid "Solve &numerically ..."
-#~ msgstr "Resolver &numéricamente"
-
-#~ msgid "Solve equation(s):"
-#~ msgstr "Resolver ecuación(es):"
-
-#~ msgid "Solve equation:"
-#~ msgstr "Resolver ecuación:"
-
-#~ msgid "Solve numerically"
-#~ msgstr "Resolver numéricamente"
-
-#~ msgid "Solve numerically ..."
-#~ msgstr "Resolver numéricamente"
-
-#~ msgid "Substitute:"
-#~ msgstr "Sustituir:"
-
-#~ msgid "Substitution"
-#~ msgstr "Sustitución"
-
-#~ msgid "Sum of:"
-#~ msgstr "Suma de:"
-
-#~ msgid "Unfold"
-#~ msgstr "Desplegar"
-
-#~ msgid "Use &Taylor series"
-#~ msgstr "Usar serie de &Taylor"
-
-#~ msgid "around:"
-#~ msgstr "entorno a:"
-
-#~ msgid "by variable:"
-#~ msgstr "para la variable:"
-
-#~ msgid "change var:"
-#~ msgstr "cambiar var:"
-
-#~ msgid "eliminate variables:"
-#~ msgstr "eliminar las variables:"
-
-#~ msgid "equation:"
-#~ msgstr "ecuación:"
-
-#~ msgid "for function(s):"
-#~ msgstr "para la(s) función(es):"
-
-#~ msgid "for variable(s):"
-#~ msgstr "para la(s) variable(s):"
-
-#~ msgid "from expression:"
-#~ msgstr "de la expresión:"
-
-#~ msgid "function:"
-#~ msgstr "función:"
-
-#~ msgid "in variable:"
-#~ msgstr "respecto la variable:"
-
-#~ msgid "the value is:"
-#~ msgstr "el valor es:"
-
-#~ msgid "variable"
-#~ msgstr "variable"
-
-#~ msgid "variable:"
-#~ msgstr "variable:"
-
-#~ msgid "when variable:"
-#~ msgstr "cuando la variable:"
-
-#~ msgid "with:"
-#~ msgstr "con:"
-
-#~ msgid ""
-#~ "wxMaxima is a wxWidgets interface for the\n"
-#~ "computer algebra system MAXIMA.\n"
-#~ "\n"
-#~ "Version: %s.\n"
-#~ "License: GPL.\n"
-#~ "\n"
-#~ "%s\n"
-#~ "%s"
-#~ msgstr ""
-#~ "wxMaxima es una interfaz wxWidgets para el\n"
-#~ "sistema de cálculo simbólico MAXIMA.\n"
-#~ "\n"
-#~ "Versión: %s.\n"
-#~ "Licencia: GPL.\n"
-#~ "\n"
-#~ "%s\n"
-#~ "%s"
-
-#~ msgid "wxMaxima session (*.wxm)|*.wxm|Maxima batch file (*mac)|*.mac|All|*"
-#~ msgstr ""
-#~ "Sesión wxMaxima (*.wxm)|*.wxm|Archivo por lotes de Maxima (*mac)|*.mac|"
-#~ "Todos|*"
-
-#~ msgid "Maxima session (*.wxm)|*.wxm"
-#~ msgstr "Sesión de Maxima (*.wxm)|*.wxm"
+#~ msgstr "bicho: etiqueta de supresión no válida"
