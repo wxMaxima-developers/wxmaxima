@@ -175,7 +175,7 @@ public:
   //! Do we want to have automatic line breaks for text cells?
   const bool GetAutoWrap() { return m_autoWrap > 0;}
   //! Do we want to have automatic line breaks for code cells?
-  const bool GetAutoWrapCode() { return m_autoWrap > 1;}
+  const bool GetAutoWrapCode() { return false;}
   /*! Sets the auto wrap mode
     \param autoWrap 
      - 0: No automatic line breaks

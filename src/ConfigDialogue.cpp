@@ -369,7 +369,7 @@ void ConfigDialogue::SetProperties()
   m_hideBrackets->SetValue(configuration->HideBrackets());
   int val = 0;
   if(configuration->GetAutoWrap()) val = 1;
-  if(configuration->GetAutoWrapCode()) val = 2;
+//  if(configuration->GetAutoWrapCode()) val = 2;
   m_autoWrap->SetSelection(val);
   m_labelWidth->SetValue(labelWidth);
   m_undoLimit->SetValue(undoLimit);
@@ -443,7 +443,7 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
   wxArrayString autoWrap;
   autoWrap.Add(_("No"));
   autoWrap.Add(_("Text Only"));
-  autoWrap.Add(_("Text & Code"));
+//  autoWrap.Add(_("Text & Code"));
   m_autoWrap = new wxChoice(panel,-1,wxDefaultPosition,wxDefaultSize,autoWrap);
   grid_sizer->Add(m_autoWrap, 0, wxALL, 5);
 
