@@ -49,6 +49,7 @@ Configuration::Configuration(wxDC& dc) : m_dc(&dc)
   m_printBrackets = false;
   m_hideBrackets = false;
   m_lineWidth_em = 88;
+  m_showLabelChoice = 1;
   m_clientWidth = 800;
   ReadConfig();
 }
@@ -67,6 +68,8 @@ void Configuration::ReadConfig()
 
   m_autoIndent = true;
   config->Read(wxT("autoIndent"), &m_autoIndent);
+
+  config->Read(wxT("showLabelChoice"), &m_showLabelChoice);
   
   m_changeAsterisk = true;
   config->Read(wxT("changeAsterisk"), &m_changeAsterisk);

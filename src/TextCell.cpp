@@ -233,10 +233,13 @@ void TextCell::Draw(wxPoint point, int fontsize)
       /// Labels and prompts have special fontsize
       if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
       {
-        SetFont(m_fontSizeLabel);
-        dc.DrawText(m_displayedText,
-                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                    point.y - m_realCenter + (m_height - m_labelHeight)/2);
+        if((m_textStyle == TS_USERLABEL) || (configuration->ShowAutomaticLabels()))
+        {
+          SetFont(m_fontSizeLabel);
+          dc.DrawText(m_displayedText,
+                      point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                      point.y - m_realCenter + (m_height - m_labelHeight)/2);
+        }
       }
       
       /// Check if we are using jsMath and have jsMath character
@@ -503,6 +506,11 @@ wxString TextCell::ToTeX()
     text.Replace(wxT("Ä"), wxT("\\text{Ä}"));
     text.Replace(wxT("Ö"), wxT("\\text{Ö}"));
     text.Replace(wxT("Ü"), wxT("\\text{Ü}"));  
+  }
+
+  if((m_textStyle != TS_USERLABEL) && (!Configuration::Get()->ShowAutomaticLabels()))
+  {
+    text = wxT("");
   }
   
   text.Replace(wxT("<"), mathModeStart+wxT("<")+mathModeEnd);

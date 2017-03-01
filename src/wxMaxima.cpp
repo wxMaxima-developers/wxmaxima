@@ -1244,14 +1244,9 @@ void wxMaxima::ReadMath(wxString &data)
     else
       start = 0;
 
-    bool showUserDefinedLabels = true;
-
-    wxConfigBase *config = wxConfig::Get();
-    config->Read(wxT("showUserDefinedLabels"), &showUserDefinedLabels);
-
     // Replace the name of the automatic label maxima has assigned to the output
     // by the one the user has used - if the configuration option to do so is set.
-    if(showUserDefinedLabels)
+    if(Configuration::Get()->ShowUserLabels())
     {
       if(m_console->m_evaluationQueue.GetUserLabel() != wxEmptyString)
       {

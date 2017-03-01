@@ -173,7 +173,7 @@ void ConfigDialogue::SetProperties()
 {
   SetTitle(_("wxMaxima configuration"));
 
-  m_showUserDefinedLabels->SetToolTip(_("If a command begins with a label followed by a : wxMaxima will show this label instead of the %o style label maxima has automatically assigned to the same output cell."));
+  m_showUserDefinedLabels->SetToolTip(_("Maxima assigns each command/equation an automatic label (which looks like %i1 or %o1. If a command begins with a descriptive name followed by a : wxMaxima will call the descriptive name an \"user-defined label\" instead. This selection now allows to tell wxMaxima if to show only automatic labels, automatic labels if there aren't user-defined ones or no label at all until an user-defined label can be found by wxMaxima's heuristics."));
   m_abortOnError->SetToolTip(_("If multiple cells are evaluated in one go: Abort evaluation if wxMaxima detects that maxima has encountered any error."));
   m_pollStdOut->SetToolTip(_("Once the local network link between maxima and wxMaxima has been established maxima has no reason to send any messages using the system's stdout stream so all this stream transport should be a greeting message; The lisp running maxima will send eventual error messages using the system's stderr stream instead. If this box is checked we will nonetheless watch maxima's stdout stream for messages."));
   m_restartOnReEvaluation->SetToolTip(_("Maxima provides no \"forget all\" command that flushes all settings a maxima session could make. wxMaxima therefore normally defaults to starting a fresh maxima process every time the worksheet is to be re-evaluated. As this needs a little bit of time this switch allows to disable this behavior."));
@@ -245,7 +245,6 @@ void ConfigDialogue::SetProperties()
   int  bitmapScale = 3;
   bool fixReorderedIndices = false;
   bool incrementalSearch = true;
-  bool showUserDefinedLabels = true;
   int defaultFramerate = 2;
   wxString texPreamble=wxEmptyString;
   wxString documentclass=wxT("article");
@@ -301,7 +300,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("bitmapScale"), &bitmapScale);
   config->Read(wxT("fixReorderedIndices"), &fixReorderedIndices);
   config->Read(wxT("incrementalSearch"), &incrementalSearch);
-  config->Read(wxT("showUserDefinedLabels"), &showUserDefinedLabels);
   config->Read(wxT("usejsmath"), &usejsmath);
   config->Read(wxT("keepPercent"), &keepPercent);
   config->Read(wxT("abortOnError"), &abortOnError);
@@ -377,7 +375,6 @@ void ConfigDialogue::SetProperties()
   m_bitmapScale->SetValue(bitmapScale);
   m_fixReorderedIndices->SetValue(fixReorderedIndices);
   m_incrementalSearch->SetValue(incrementalSearch);
-  m_showUserDefinedLabels->SetValue(showUserDefinedLabels);
   m_fixedFontInTC->SetValue(fixedFontTC);
   m_useJSMath->SetValue(usejsmath);
   m_keepPercentWithSpecials->SetValue(keepPercent);
@@ -405,10 +402,10 @@ void ConfigDialogue::SetProperties()
 
 wxPanel* ConfigDialogue::CreateWorksheetPanel()
 {
+  Configuration *configuration = Configuration::Get();
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
-  wxArrayString autosubscripts;
-  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
+  wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(10, 2, 5, 5);
   wxFlexGridSizer* vsizer = new wxFlexGridSizer(19,1,5,5);
   
   wxStaticText* pw = new wxStaticText(panel, -1, _("Default plot size for new maxima sessions:"));
@@ -449,13 +446,23 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
 
   wxStaticText* as = new wxStaticText(panel, -1, _("Underscore converts to subscripts:"));
   grid_sizer->Add(as, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  wxArrayString autosubscripts;
   autosubscripts.Add(_("No"));
   autosubscripts.Add(_("Integers and single letters"));
   autosubscripts.Add(_("All variable names"));
   m_autosubscript = new wxChoice(panel,-1,wxDefaultPosition,wxDefaultSize,autosubscripts);
   grid_sizer->Add(m_autosubscript, 0, wxALL, 5);
 
-  
+  wxStaticText* slt = new wxStaticText(panel, -1, _("Show labels:"));
+  grid_sizer->Add(slt, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  wxArrayString labelchoices;
+  labelchoices.Add(_("Automatic labels (%i1, %o1,...)"));
+  labelchoices.Add(_("User-defined labels if available"));
+  labelchoices.Add(_("Only user-defined labels"));
+  m_showUserDefinedLabels = new wxChoice(panel,-1,wxDefaultPosition,wxDefaultSize,labelchoices);
+  m_showUserDefinedLabels->SetSelection(configuration->GetLabelChoice());
+
+  grid_sizer->Add(m_showUserDefinedLabels, 0, wxALL, 5);  
 
   wxStaticText* lw = new wxStaticText(panel, -1, _("Label width:"));
   grid_sizer->Add(lw, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -464,9 +471,6 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
 
 
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
-
-  m_showUserDefinedLabels = new wxCheckBox(panel, -1, _("Show user-defined labels instead of (%oxx)"));
-  vsizer->Add(m_showUserDefinedLabels, 0, wxALL, 5);
 
   m_matchParens = new wxCheckBox(panel, -1, _("Match parenthesis in text controls"));
   vsizer->Add(m_matchParens, 0, wxALL, 5);
@@ -883,7 +887,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("bitmapScale"), m_bitmapScale->GetValue());
   config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices->GetValue());
   config->Write(wxT("incrementalSearch"), m_incrementalSearch->GetValue());
-  config->Write(wxT("showUserDefinedLabels"), m_showUserDefinedLabels->GetValue());
+  configuration->SetLabelChoice(m_showUserDefinedLabels->GetSelection());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
   #ifdef __WXMSW__
   config->Write(wxT("wxcd"), m_wxcd->GetValue());

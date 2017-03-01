@@ -255,6 +255,15 @@ public:
   bool ShowBrackets(bool show){return m_showBrackets = show;}
   //! Print the cell brackets [displayed left to each group cell showing its extend]?
   bool PrintBrackets(){return m_printBrackets;}
+
+  int GetLabelChoice(){return m_showLabelChoice;}
+  bool ShowAutomaticLabels(){return (m_showLabelChoice<2);}
+  bool ShowUserLabels(){return m_showLabelChoice>0;}
+  void SetLabelChoice(int choice)
+    {
+      wxConfig::Get()->Write(wxT("showLabelChoice"),m_showLabelChoice = choice);
+    }
+
   bool PrintBrackets(bool print){
     wxConfig::Get()->Write(wxT("printBrackets"),m_printBrackets = print);
     return print;
@@ -310,6 +319,7 @@ private:
   style m_styles[STYLE_NUM];
   bool m_printer;
   int m_lineWidth_em;
+  int m_showLabelChoice;
   static bool m_showCodeCells;
   static Configuration *m_activeConfiguration;
 };
