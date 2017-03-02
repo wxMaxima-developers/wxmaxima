@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wmMaxima 16.12.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-01 19:12+0100\n"
+"POT-Creation-Date: 2017-03-02 09:10+0100\n"
 "PO-Revision-Date: 2017-02-05 10:22+0200\n"
 "Last-Translator: Francisco F. Serrador <serrador@tecknolabs.com>\n"
 "Language-Team: Spanish Team <es@es.po.com>\n"
@@ -704,7 +704,7 @@ msgstr "Bicho: celda sin grupo al que pertenecer"
 msgid "Bug: Missing contents"
 msgstr ""
 
-#: ../src/GroupCell.cpp:925 ../src/GroupCell.cpp:1094
+#: ../src/GroupCell.cpp:948 ../src/GroupCell.cpp:1117
 msgid "Bug: No image counter to write to!"
 msgstr "Bicho: ¡sin contador de imagen para a quien escribir!"
 
@@ -1781,7 +1781,7 @@ msgstr "Factoriales y &Gamma"
 msgid "Fatal error"
 msgstr "Error fatal"
 
-#: ../src/GroupCell.cpp:1731
+#: ../src/GroupCell.cpp:1754
 #, c-format
 msgid "Figure %d:"
 msgstr "Figura %d:"
@@ -2849,7 +2849,10 @@ msgid ""
 "wxMaxima will call the descriptive name an \"user-defined label\" instead. "
 "This selection now allows to tell wxMaxima if to show only automatic labels, "
 "automatic labels if there aren't user-defined ones or no label at all until "
-"an user-defined label can be found by wxMaxima's heuristics."
+"an user-defined label can be found by wxMaxima's heuristics; If automatic "
+"labels are suppressed extra vertical space is added between equations in "
+"order to ease discerning which line starts a new equation and which one only "
+"continues the one from the last line."
 msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:128

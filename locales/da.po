@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: da\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-01 19:12+0100\n"
+"POT-Creation-Date: 2017-03-02 09:10+0100\n"
 "PO-Revision-Date: 2009-06-08 20:39-0300\n"
 "Last-Translator: Jens Thostrup <jt@gu-nuuk.gl>\n"
 "Language-Team: danish <matematik@gu_nuuk.gl>\n"
@@ -678,7 +678,7 @@ msgstr ""
 msgid "Bug: Missing contents"
 msgstr ""
 
-#: ../src/GroupCell.cpp:925 ../src/GroupCell.cpp:1094
+#: ../src/GroupCell.cpp:948 ../src/GroupCell.cpp:1117
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -1782,7 +1782,7 @@ msgstr "Fakultet og &Gamma-funktion"
 msgid "Fatal error"
 msgstr "Alvorlig fejl"
 
-#: ../src/GroupCell.cpp:1731
+#: ../src/GroupCell.cpp:1754
 #, fuzzy, c-format
 msgid "Figure %d:"
 msgstr "&Indstillinger..."
@@ -2822,7 +2822,10 @@ msgid ""
 "wxMaxima will call the descriptive name an \"user-defined label\" instead. "
 "This selection now allows to tell wxMaxima if to show only automatic labels, "
 "automatic labels if there aren't user-defined ones or no label at all until "
-"an user-defined label can be found by wxMaxima's heuristics."
+"an user-defined label can be found by wxMaxima's heuristics; If automatic "
+"labels are suppressed extra vertical space is added between equations in "
+"order to ease discerning which line starts a new equation and which one only "
+"continues the one from the last line."
 msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:128

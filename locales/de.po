@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-01 19:12+0100\n"
-"PO-Revision-Date: 2017-03-01 19:15+0100\n"
+"POT-Creation-Date: 2017-03-02 09:10+0100\n"
+"PO-Revision-Date: 2017-03-02 09:11+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -704,7 +704,7 @@ msgstr "Interner Fehler: Eine MathCell behauptet, keine GroupCell zu besitzen."
 msgid "Bug: Missing contents"
 msgstr "Interner Fehler: Fehlender Inhalt"
 
-#: ../src/GroupCell.cpp:925 ../src/GroupCell.cpp:1094
+#: ../src/GroupCell.cpp:948 ../src/GroupCell.cpp:1117
 msgid "Bug: No image counter to write to!"
 msgstr "Interner Fehler: Habe keinen Bildzähler, den ich beschreiben könnte."
 
@@ -1795,7 +1795,7 @@ msgstr "Fakultät und &Gamma"
 msgid "Fatal error"
 msgstr "Fataler Fehler"
 
-#: ../src/GroupCell.cpp:1731
+#: ../src/GroupCell.cpp:1754
 #, c-format
 msgid "Figure %d:"
 msgstr "Figure %d:"
@@ -2870,8 +2870,11 @@ msgid ""
 "wxMaxima will call the descriptive name an \"user-defined label\" instead. "
 "This selection now allows to tell wxMaxima if to show only automatic labels, "
 "automatic labels if there aren't user-defined ones or no label at all until "
-"an user-defined label can be found by wxMaxima's heuristics."
-msgstr "Maxima versieht jeden Befehl und jede Gleichung mit einer Marke (%i1, %o1 oder ähnlich). Falls ein Kommando mit einem beschreibenenderen Namen beginnt, der durch ein : gefolgt wird, kann wxMaxima dies erkennen und stattdessen diesen Bezeichner als \"benutzerdefinierte Marke\" verwenden. Diese Option erlaubt nun, zu entscheiden, was von beiden angezeigt wird, wenn überhaupt."
+"an user-defined label can be found by wxMaxima's heuristics; If automatic "
+"labels are suppressed extra vertical space is added between equations in "
+"order to ease discerning which line starts a new equation and which one only "
+"continues the one from the last line."
+msgstr "Maxima versieht jeden Befehl und jede Gleichung mit einer Marke (%i1, %o1 oder ähnlich). Falls ein Kommando mit einem beschreibenenderen Namen beginnt, der durch ein : gefolgt wird, kann wxMaxima dies erkennen und stattdessen diesen Bezeichner als \"benutzerdefinierte Marke\" verwenden. Diese Option erlaubt nun, zu entscheiden, was von beiden angezeigt wird, wenn überhaupt; Falls keine Marken angezeigt werden, die zeigen, wo eine neue Gleichung beginnt und wo die Gleichung von der letzten Zeile fortgesetzt wird, wird ein kleiner vertikaler Abstand zwischen den Zeilen eingeführt."
 
 #: ../src/wxMaximaFrame.cpp:128
 msgid "Maxima has a question"
