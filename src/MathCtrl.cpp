@@ -1905,7 +1905,7 @@ bool MathCtrl::CopyText()
   bool firstcell = true;
   while (tmp != NULL)
   {
-    if(!firstcell)
+    if((tmp->ForceBreakLineHere())&&(!firstcell))
       result += wxT("\n");
     result += tmp->ToString();
     if (tmp == m_selectionEnd)
