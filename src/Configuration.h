@@ -74,6 +74,19 @@ public:
   ~Configuration();
   static double GetMinZoomFactor(){return 0.4;}
   static double GetMaxZoomFactor(){return 8.0;}
+  /*! Extra space to leave between two equations in output cells.
+
+    Extra space between equations is useful if we don't display labels that show
+    which line begins a new equation and which line merely continues a multi-line
+    equation.
+   */
+  int GetInterEquationSkip()
+    {
+    if (Configuration::Get()->ShowAutomaticLabels())
+      return 0;
+    else  
+      return GetZoomFactor()*GetScale()*m_mathFontSize/2;
+  }
   //! Hide brackets that are not under the pointer?
   bool HideBrackets(){return m_hideBrackets;}
   void HideBrackets(bool hide)

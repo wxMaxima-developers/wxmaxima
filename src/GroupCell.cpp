@@ -497,12 +497,22 @@ void GroupCell::RecalculateHeight(int fontsize)
 
       tmp = m_output;
       while (tmp != NULL) {
-        if (tmp->BreakLineHere() || tmp == m_output) {
+        if (tmp->BreakLineHere() || tmp == m_output)
+        {
           m_width = MAX(m_width, tmp->GetLineWidth(scale));
           m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth(scale));
           m_height += tmp->GetMaxHeight();
           if (tmp->m_bigSkip)
+          {
             m_height += MC_LINE_SKIP;
+            if               (
+                (tmp->m_previousToDraw != NULL) &&
+                (tmp->GetStyle() == TS_LABEL)
+                )
+            {
+              m_height += configuration->GetInterEquationSkip();
+            }
+          }
           m_outputRect.height += tmp->GetMaxHeight() + MC_LINE_SKIP;
         }
         tmp = tmp->m_nextToDraw;
@@ -650,8 +660,20 @@ void GroupCell::Draw(wxPoint point, int fontsize)
       m_outputRect.x = in.x;
 
       while (tmp != NULL) {
+
+        if
+          (
+            (tmp->BreakLineHere()) &&
+            (
+              (tmp->m_previousToDraw != NULL) &&
+              (tmp->GetStyle() == TS_LABEL)
+              )
+            )
+          in.y += configuration->GetInterEquationSkip();
+
         tmp->m_currentPoint = in;
-        if (!tmp->m_isBroken) {
+        if (!tmp->m_isBroken)
+        {
           if (tmp->DrawThisCell(in))
             tmp->Draw(in, MAX(tmp->IsMath() ? m_mathFontSize : m_fontSize, MC_MIN_SIZE));
           if (tmp->m_nextToDraw != NULL) {
@@ -666,11 +688,12 @@ void GroupCell::Draw(wxPoint point, int fontsize)
           }
 
         } else {
-          if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere()) {
+          if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere())
+          {
             in.x = m_indent;
             in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
             if (tmp->m_bigSkip)
-              in.y += MC_LINE_SKIP;
+              in.y += MC_LINE_SKIP;            
             drop = tmp->m_nextToDraw->GetMaxDrop();
           }
         }

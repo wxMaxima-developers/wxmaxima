@@ -118,7 +118,19 @@ public:
   MathCell* GetOutput() { if (m_output == NULL) return NULL; else return m_output->m_next; }
   //
   wxRect GetOutputRect() { return m_outputRect; }
+  /*! Recalculates the height of this GroupCell and all cells inside it if needed.
+    
+    This command will also assign the GroupCell an y coordinate it is plotted at.
+    The y coordinate of all output cells of this GroupCell is assigned during 
+    GroupCell::Draw() by providing MathCell::Draw() with the cell's coordinates.
+   */
   void RecalculateHeight(int fontsize);
+  /*! Recalculates the width of this GroupCell and all cells inside it if needed.
+    
+    This command will also assign the GroupCell an x coordinate it is plotted at.
+    The x coordinate of all output cells of this GroupCell is assigned during 
+    GroupCell::Draw() by providing MathCell::Draw() with the cell's coordinates.
+   */
   void RecalculateWidths(int fontsize);
   void Recalculate();
   void BreakUpCells(int fontsize, int clientWidth);
@@ -199,6 +211,10 @@ public:
     Won't work if text has been added to the end of the line instead.
    */
   void RecalculateAppended();
+  /* Draw this GroupCell
+
+     Also assigns all output cells contained in this GroupCell an y coordinate.
+   */
   void Draw(wxPoint point, int fontsize);
   //! Draw the bracket of this cell
   void DrawBracket();
