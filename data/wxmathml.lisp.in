@@ -70,6 +70,10 @@
 #+(and clisp win32) (setf (stream-external-format *socket-connection*) charset:utf-8)
 #+(and clisp win32) (setf custom:*default-file-encoding* charset:utf-8)
 
+;; Without this command clisp might not be able to access files in paths with
+;; non-ASCII characters.
+#+(and clisp win32) (setf custom:*path-name-encoding* charset:utf-8)
+
 ;;; Muffle compiler-notes globally
 #+sbcl (declaim (sb-ext:muffle-conditions sb-ext:compiler-note))
 (defmacro no-warning (form)
