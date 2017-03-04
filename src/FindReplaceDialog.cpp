@@ -31,11 +31,14 @@
 FindReplaceDialog::FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data, const wxString &title, int style):
   wxDialog(parent,wxID_ANY,title,wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
 {
-  m_active = true;
   m_contents = new FindReplacePane(this,data);
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   vbox->Add(m_contents,wxSizerFlags().Expand());
   SetSizerAndFit(vbox);
+
+  // Remember how wide the user wanted the dialogue to be the last time it was used.
+  if(m_windowSize.x > 0)
+    SetSize(wxSize(GetSize().x,m_windowSize.y));
 }
 
 void FindReplaceDialog::OnKeyDown(wxKeyEvent& event)
@@ -50,6 +53,7 @@ void FindReplaceDialog::OnClose(wxCloseEvent& event)
 {
   wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_CLOSE);
   GetParent()->GetEventHandler()->QueueEvent(findEvent);
+  m_windowSize = GetSize();
 }
 
 void FindReplaceDialog::OnActivate(wxActivateEvent& event)
@@ -58,9 +62,10 @@ void FindReplaceDialog::OnActivate(wxActivateEvent& event)
     SetTransparent(255);
   else
     SetTransparent(180);
-  m_active = true;
 }
 
+
+wxSize FindReplaceDialog::m_windowSize = wxSize(-1,-1);
 
 BEGIN_EVENT_TABLE(FindReplaceDialog, wxDialog)
  EVT_ACTIVATE(FindReplaceDialog::OnActivate)

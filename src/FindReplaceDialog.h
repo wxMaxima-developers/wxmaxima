@@ -39,7 +39,9 @@ class FindReplaceDialog: public wxDialog
 {
 public:
   FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data, const wxString &title, int style=0);
+  //! Returns the standard wxFindReplaceData data structure
   wxFindReplaceData *GetData(){return m_contents->GetData();}
+  //! Set the string we are currently searching for
   void SetFindString(wxString string) {m_contents->SetFindString(string);}
 
 protected:
@@ -47,13 +49,26 @@ protected:
   void OnActivate(wxActivateEvent& event);
   //! We catch a few hot keys here as we don't provide a menu that could declare them
   void OnKeyDown(wxKeyEvent& event);
+  /*! Called on closing the dialogue.
+
+    Informs our parent that it can stop highlighting search results and saves
+    the window geometry for the next time the window is opened.
+  */
   void OnClose(wxCloseEvent& event);
+  /*! The contents of the dialog.
+
+    The contents is split into a separate panel so we can easily make it dockable
+    once dockable dialogues aren't this ugly any more.
+   */
   FindReplacePane *m_contents;
   DECLARE_EVENT_TABLE()
 
   private:
-  bool m_active;
-  
+  /*! Allows to remember how wide the window was the last time it was used.
+
+    I don't think it makes sense to keep this between sessions.
+   */
+  static wxSize m_windowSize;
 };
   
 #endif // FINDREPLACEDIALOG_H
