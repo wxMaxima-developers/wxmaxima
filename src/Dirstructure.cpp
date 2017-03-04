@@ -78,7 +78,18 @@ wxString Dirstructure::MaximaDefaultLocation()
   maxima.MakeAbsolute();
   return maxima.GetFullPath();
 #elif defined __WXMAC__
-  return wxT("/Applications/Maxima.app");
+  wxString command;
+  if (wxFileExists("/Applications/Maxima.app"))
+    command = wxT("/Applications/Maxima.app");
+  if (wxFileExists("/Applications/maxima.app"))
+    command = wxT("/Applications/maxima.app");
+  else if (wxFileExists("/usr/local/bin/maxima"))
+    command = wxT("/usr/local/bin/maxima");
+  else if (wxFileExists("/usr/bin/maxima"))
+    command = wxT("/usr/bin/maxima");
+    else
+      command = wxT("maxima");
+  return command;
 #else
   return wxT("maxima");
 #endif

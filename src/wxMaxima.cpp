@@ -2085,6 +2085,9 @@ wxString wxMaxima::GetCommand(bool params)
 #else
   wxConfig *config = (wxConfig *)wxConfig::Get();
   wxString command, parameters;
+
+  Dirstructure dirstructure;
+  command = dirstructure.MaximaDefaultLocation();
   bool have_config = config->Read(wxT("maxima"), &command);
 
   //Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a
@@ -2093,6 +2096,8 @@ wxString wxMaxima::GetCommand(bool params)
 #if defined (__WXMAC__)
     if (wxFileExists("/Applications/Maxima.app"))
       command = wxT("/Applications/Maxima.app");
+    if (wxFileExists("/Applications/maxima.app"))
+      command = wxT("/Applications/maxima.app");
     else if (wxFileExists("/usr/local/bin/maxima"))
       command = wxT("/usr/local/bin/maxima");
     else if (wxFileExists("/usr/bin/maxima"))
