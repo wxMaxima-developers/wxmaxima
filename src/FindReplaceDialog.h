@@ -69,6 +69,15 @@ protected:
     I don't think it makes sense to keep this between sessions.
    */
   static wxSize m_windowSize;
+  /*! Allows to remember how wide the window was the last time it was used.
+
+    We don't keep this value between sessions because the user might change
+    the screen (and therefore the screen resolution) between sessions. And
+    putting a window off screen (where it is hard to grab and to move it)
+    is possible at least on MSW.
+   */
+  
+  static wxPoint m_windowPos;
 };
   
 #endif // FINDREPLACEDIALOG_H
