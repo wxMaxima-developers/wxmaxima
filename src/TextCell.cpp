@@ -233,7 +233,10 @@ void TextCell::Draw(wxPoint point, int fontsize)
       /// Labels and prompts have special fontsize
       if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
       {
-        if((m_textStyle == TS_USERLABEL) || (configuration->ShowAutomaticLabels()))
+        if(
+          ((m_textStyle == TS_USERLABEL) || (configuration->ShowAutomaticLabels())) &&
+          (configuration->ShowLabels())
+          )
         {
           SetFont(m_fontSizeLabel);
           dc.DrawText(m_displayedText,
@@ -508,7 +511,9 @@ wxString TextCell::ToTeX()
     text.Replace(wxT("Ü"), wxT("\\text{Ü}"));  
   }
 
-  if((m_textStyle != TS_USERLABEL) && (!Configuration::Get()->ShowAutomaticLabels()))
+  if(((m_textStyle != TS_USERLABEL) && (!Configuration::Get()->ShowAutomaticLabels()))||
+    !Configuration::Get()->ShowLabels()
+    )
   {
     text = wxT("");
   }

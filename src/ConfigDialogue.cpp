@@ -459,6 +459,7 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
   labelchoices.Add(_("Automatic labels (%i1, %o1,...)"));
   labelchoices.Add(_("User-defined labels if available"));
   labelchoices.Add(_("Only user-defined labels"));
+  labelchoices.Add(_("Never"));
   m_showUserDefinedLabels = new wxChoice(panel,-1,wxDefaultPosition,wxDefaultSize,labelchoices);
   m_showUserDefinedLabels->SetSelection(configuration->GetLabelChoice());
 

@@ -136,7 +136,7 @@ public:
   {
     return m_fontEncoding;
   }
-  const int GetLabelWidth(){return m_labelWidth;}
+  const int GetLabelWidth(){ return m_labelWidth; }
   const int GetIndent() { return m_indent; }
   //! How much vertical space is to be left between two group cells?
   int GetCursorWidth() {
@@ -260,7 +260,9 @@ public:
   //! Returns a pointer to the instance of Configuration that exists
   static Configuration *Get() {return m_activeConfiguration;}
 
+  //! Reads the size of the current worksheet's visible window. See SetCanvasSize
   wxSize GetCanvasSize(){return m_canvasSize;}
+  //! Sets the size of the current worksheet's visible window.
   void SetCanvasSize(wxSize siz){m_canvasSize=siz;}
 
   //! Show the cell brackets [displayed left to each group cell showing its extend]?
@@ -270,13 +272,17 @@ public:
   bool PrintBrackets(){return m_printBrackets;}
 
   int GetLabelChoice(){return m_showLabelChoice;}
+  //! Do we want to show maxima's automatic labels (%o1, %t1, %i1,...)?
   bool ShowAutomaticLabels(){return (m_showLabelChoice<2);}
-  bool ShowUserLabels(){return m_showLabelChoice>0;}
+  //! Do we want at all to show labels?
+  bool UseUserLabels(){return m_showLabelChoice>0;}
+  //! Do we want at all to show labels?
+  bool ShowLabels(){return m_showLabelChoice<3;}
+  //! Sets the value of the Configuration ChoiceBox that treads displaying labels
   void SetLabelChoice(int choice)
     {
       wxConfig::Get()->Write(wxT("showLabelChoice"),m_showLabelChoice = choice);
     }
-
   bool PrintBrackets(bool print){
     wxConfig::Get()->Write(wxT("printBrackets"),m_printBrackets = print);
     return print;

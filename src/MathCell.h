@@ -216,9 +216,15 @@ public:
    */
   void ForceBreakLine(bool force) { m_forceBreakLine = m_breakLine = force; }
 
-  //! Get the total height of this cell
+  /*! Get the height of this cell
+
+    This value is recalculated by RecalculateHeight; -1 means: Needs to be recalculated.
+  */
   int GetHeight() { return m_height; }
-  //! Get the width of this cell
+  /*! Get the width of this cell
+
+    This value is recalculated by RecalculateWidth; -1 means: Needs to be recalculated.
+  */
   int GetWidth() { return m_width; }
   /*! Get the distance between the top and the center of this cell.
 
@@ -230,7 +236,10 @@ public:
 
 
     Remember that (for example with double fractions) the center does not have to be in the 
-    middle of a cell even if this object is --- by definition --- center-aligned.
+    middle of an output cell even if the current object is --- by definition --- 
+    center-aligned.
+
+    This value is recalculated by RecalculateHeight; -1 means: Needs to be recalculated.
    */
   int GetDrop() { return m_height - m_center; }
 
@@ -479,6 +488,11 @@ public:
      - y=the vertical center of the cell. Which (per example in the case of a fraction)
        might not be the physical center but the vertical position of the horizontal line
        between nummerator and denominator.
+
+    The current point is recalculated 
+     - for GroupCells by GroupCell::RecalculateHeight
+     - for EditorCells by it's GroupCell's RecalculateHeight and
+     - for MathCells when they are drawn.
   */
   wxPoint m_currentPoint;  
   bool m_bigSkip;
@@ -577,7 +591,10 @@ protected:
   */
   MathCell *m_group;
   int m_height;
-  //! The width of this cell
+  /*! The width of this cell.
+
+    Is recalculated by RecalculateHeight.
+   */
   int m_width;
   /*! Caches the width of the list starting with this cell.
 

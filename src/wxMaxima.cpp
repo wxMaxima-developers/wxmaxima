@@ -1246,7 +1246,7 @@ void wxMaxima::ReadMath(wxString &data)
 
     // Replace the name of the automatic label maxima has assigned to the output
     // by the one the user has used - if the configuration option to do so is set.
-    if(Configuration::Get()->ShowUserLabels())
+    if(Configuration::Get()->UseUserLabels())
     {
       if(m_console->m_evaluationQueue.GetUserLabel() != wxEmptyString)
       {
