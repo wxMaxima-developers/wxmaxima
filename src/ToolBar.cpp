@@ -68,6 +68,7 @@ wxBitmap ToolBar::GetImage(wxString name)
 ToolBar::~ToolBar()
 {
   m_plotSlider = NULL;
+  m_toolBar -> Destroy();
 }
 
 void ToolBar::UpdateSlider(SlideShow *cell)

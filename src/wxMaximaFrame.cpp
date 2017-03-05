@@ -1512,11 +1512,9 @@ void wxMaximaFrame::ShowToolBar(bool show)
   {
     if(m_console->m_mainToolBar)
     {
-      if(m_console->m_mainToolBar->GetToolBar())
-        delete m_console->m_mainToolBar->GetToolBar();
-      delete m_console->m_mainToolBar;
-      m_console->m_mainToolBar=NULL;
       SetToolBar(NULL);
+      wxDELETE(m_console->m_mainToolBar);
+      m_console->m_mainToolBar = NULL;
     }
   }
 #endif

@@ -183,10 +183,11 @@ void MathCtrl::RequestRedraw(GroupCell *start)
   }
 }
 
-MathCtrl::~MathCtrl() {
+MathCtrl::~MathCtrl()
+{
   if(HasCapture())
     ReleaseMouse();
-  
+
   wxDELETE(m_mainToolBar);
   m_mainToolBar = NULL;
   
