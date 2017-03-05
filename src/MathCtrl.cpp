@@ -305,10 +305,6 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
     dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
     dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_DEFAULT))));
 
-    bool changeAsterisk = false;
-    config->Read(wxT("changeAsterisk"), &changeAsterisk);
-    m_configuration->SetChangeAsterisk(changeAsterisk);
-
     while (tmp != NULL)
     {
       wxRect rect = tmp->GetRect();
