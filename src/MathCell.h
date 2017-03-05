@@ -99,7 +99,7 @@ public:
     \attention This function Doesn't free the other cells of the list
     that is started by this cell.
    */
-  virtual void Destroy() = 0;
+  virtual void Destroy(){};
 
   //! Sets the region that is to be updated on Draw()
   static void SetUpdateRegion(wxRect region) { m_updateRegion = region; }
@@ -128,7 +128,8 @@ public:
   static void ClipToDrawRegion(bool printing){m_clipToDrawRegion = printing;}
   //! Delete this cell and all cells that follow it in the list.
   static bool Printing(){return !m_clipToDrawRegion;}
-  void DestroyList();
+  //! Deletes this list of cells.
+  void DeleteList();
   
   /*! Add a cell to the end of the list this cell is part of
     

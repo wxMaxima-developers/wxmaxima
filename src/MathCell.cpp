@@ -947,16 +947,17 @@ void MathCell::UnbreakList()
   }
 }
 
-void MathCell::DestroyList()
+void MathCell::DeleteList()
 {
   MathCell *tmp, *next;
   tmp = this;
   while(tmp != NULL)
   {
     next = tmp->m_next;
-    tmp->Destroy();
+    delete tmp;
     tmp = next;
   }
+  delete this;
 }
 
 int MathCell::GetDefaultLineWidth()

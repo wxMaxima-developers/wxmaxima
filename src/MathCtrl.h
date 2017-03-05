@@ -201,13 +201,21 @@ private:
     public:
       void Clear()
         {
-          m_start=NULL;
-          m_oldText=wxEmptyString;
-          m_newCellsEnd=NULL;
-          m_oldCells=NULL;
+          m_start = NULL;
+          m_oldText = wxEmptyString;
+          m_newCellsEnd = NULL;
+          if(m_oldCells)
+            m_oldCells ->DeleteList();
+          m_oldCells = NULL;
         }
       
-      TreeUndoAction(){ Clear(); }
+      TreeUndoAction()
+        {
+          m_start = NULL;
+          m_oldText = wxEmptyString;
+          m_newCellsEnd = NULL;
+          m_oldCells = NULL;
+        }
       
 
       /*! The position this action started at.

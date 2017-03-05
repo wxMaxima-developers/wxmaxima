@@ -2142,8 +2142,6 @@ void MathCtrl::TreeUndo_DiscardAction(std::list <TreeUndoAction *> *actionList)
 {
   TreeUndoAction *Action = actionList->back();
 
-  if(Action->m_oldCells)
-    DestroyTree(Action->m_oldCells);
   delete Action;
 
   actionList->pop_back();
@@ -4582,7 +4580,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
           count++;
 
           // Prepare for fetching the next chunk.
-          chunk->DestroyList();
+          chunk->DeleteList();
           chunkStart = chunkEnd->m_next;
         }
       }
