@@ -50,8 +50,6 @@ History::History(wxWindow* parent, int id) : wxPanel(parent, id)
 
 History::~History()
 {
-  delete m_regex;
-  delete m_history;
 }
 
 void History::AddToHistory(wxString cmd)
