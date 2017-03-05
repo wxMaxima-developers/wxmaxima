@@ -312,7 +312,7 @@ void wxMaximaFrame::do_layout()
   m_manager.AddPane(greekPane,
                     wxAuiPaneInfo().Name(wxT("greek")).
                     Caption(_("Greek Letters")).
-                    Show(false).
+                    Show(true).
                     DockFixed(false).
                     Gripper(true).
                     TopDockable(true).
@@ -330,7 +330,7 @@ void wxMaximaFrame::do_layout()
   m_manager.AddPane(symbolsPane,
                     wxAuiPaneInfo().Name(wxT("symbols")).
                     Caption(_("Mathematical Symbols")).
-                    Show(false).
+                    Show(true).
                     DockFixed(false).
                     Gripper(true).
                     TopDockable(true).
@@ -376,9 +376,6 @@ void wxMaximaFrame::do_layout()
 
   if (loadPanes && !perspective.IsEmpty()) {
     m_manager.LoadPerspective(perspective);
-    bool toolbar = true;
-    config->Read(wxT("AUI/toolbar"), &toolbar);
-    ShowToolBar(toolbar);
     m_manager.GetPane(wxT("greek"))=m_manager.GetPane(wxT("greek")).
       MinSize(greekPane->GetEffectiveMinSize()).
       BestSize(greekPane->GetEffectiveMinSize()).
@@ -392,6 +389,10 @@ void wxMaximaFrame::do_layout()
   }
   else
     m_manager.Update();
+
+  bool toolbar = true;
+  config->Read(wxT("AUI/toolbar"), &toolbar);
+  ShowToolBar(toolbar);
 }
 
 void wxMaximaFrame::SetupMenu()
