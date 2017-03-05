@@ -49,7 +49,7 @@ Configuration::Configuration(wxDC& dc) : m_dc(&dc)
   m_printBrackets = false;
   m_hideBrackets = true;
   m_lineWidth_em = 88;
-  m_showLabelChoice = 2;
+  m_showLabelChoice = 1;
   m_clientWidth = 800;
   ReadConfig();
 }
