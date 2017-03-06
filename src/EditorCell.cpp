@@ -860,7 +860,7 @@ wxString EditorCell::TabExpand(wxString input, long posInLine)
     {
       posInLine = 0;
       retval += *ch;
-      ch++;
+      ++ch;
       continue;
     }
 
@@ -882,12 +882,12 @@ wxString EditorCell::TabExpand(wxString input, long posInLine)
         break;
       }
       posInLine = 0;
-      ch++;
+      ++ch;
       continue;
     }
     else
       retval += *ch;
-    ch++;
+    ++ch;
     posInLine ++;
   }
   // TODO: Implement the actual TAB expansion
@@ -985,10 +985,12 @@ bool EditorCell::HandleCtrlCommand(wxKeyEvent& ev)
 
 void EditorCell::ProcessEvent(wxKeyEvent &event)
 {
-  bool done = false;
+  bool done;
 
 #if defined __WXMAC__
   done = HandleCtrlCommand(event);
+#else
+  done = false;
 #endif
 
   if (!done)
@@ -2478,7 +2480,7 @@ bool EditorCell::ActivateCell(bool active)
   // upon activation unhide the parent groupcell
   if (m_isActive) {
     m_firstLineOnly = false;
-    ((GroupCell *)GetParent())->Hide(false);
+    dynamic_cast<GroupCell *>(GetParent())->Hide(false);
     if (GetType() == MC_TYPE_INPUT)
       FindMatchingParens();
   }
@@ -2565,7 +2567,7 @@ void EditorCell::PositionToXY(int position, unsigned int* x,unsigned int* y)
     else
       col++;
     
-    it++;pos++;
+    ++it;++pos;
   }
 
   *x = col;
@@ -2581,16 +2583,16 @@ int EditorCell::XYToPosition(int x, int y)
   {
     if ((*it == '\n') || (*it == '\r'))
       lin++;
-    it++;pos++;
+    ++it;++pos;
   }
 
   while (pos < (int)m_text.Length() && col < x)
   {
     if ((*it == '\n') || (*it == '\r'))
       break;
-    pos++;
-    col++;
-    it++;
+    ++pos;
+    ++col;
+    ++it;
   }
 
   return pos;
@@ -3722,7 +3724,7 @@ void EditorCell::StyleText()
                 line = m_text.SubString(lastLineStart,lastSpacePos-1);
                 i = lastSpacePos + 1;
                 it = lastSpaceIt;
-                it++;
+                ++it;
                 lastLineStart = i;
                 lastSpacePos = -1;
                 break;
@@ -3775,7 +3777,7 @@ void EditorCell::StyleText()
                   line = m_text.SubString(lastLineStart,lastSpacePos - 1);
                   i = lastSpacePos + 1;
                   it = lastSpaceIt;
-                  it++;
+                  ++it;
                   lastLineStart = i;
                   lastSpacePos = -1;
                   break;
@@ -3806,8 +3808,8 @@ void EditorCell::StyleText()
           // newline.
           if((i>0)||(*it!=wxT('\n')))
           {
-            it++;
-            i++;
+            ++it;
+            ++i;
           }
         }
         
@@ -3929,8 +3931,8 @@ void EditorCell::StyleText()
 
         if(it!=m_text.end())
         {
-          i++;
-          it++;
+          ++i;
+          ++it;
         }
       } // The loop that loops over all lines
     } // Do we want to autowrap lines?

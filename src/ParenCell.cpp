@@ -53,6 +53,10 @@
 
 ParenCell::ParenCell() : MathCell()
 {
+  m_charWidth = 12;
+  m_charWidth1 = 12;
+  m_charHeight = 12;
+  m_charHeight1 = 12;
   m_last1 = NULL;
   m_signSize = 50;
   m_signWidth = 18;
@@ -183,12 +187,11 @@ void ParenCell::RecalculateWidths(int fontsize)
     if (m_bigParenType != PARENTHESIS_ASSEMBLED)
     {
       m_parenFontSize = fontsize;
-      fontsize1 = (int) ((m_parenFontSize * scale + 0.5));
-      
-      int i=0;
-      
+      fontsize1 = (int) ((m_parenFontSize * scale + 0.5));      
       
       if(m_signSize > 0)
+      {
+        int i=0;
         while (m_signSize < TRANSFORM_SIZE(m_bigParenType, size) && i<40)
         {
           int fontsize1 = (int) ((++m_parenFontSize * scale + 0.5));
@@ -207,6 +210,7 @@ void ParenCell::RecalculateWidths(int fontsize)
           if(m_signSize < 2) m_signSize = 2;
           i++;
         }
+      }
     }
     else
     {

@@ -87,9 +87,7 @@ public:
   IntegralType m_intStyle;
   //! How far is the integral sign's center from the top of this cell?
   int m_signTop;
-#if defined __WXMSW__
   int m_charHeight, m_charWidth;
-#endif
 
 private:
 

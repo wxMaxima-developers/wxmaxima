@@ -527,10 +527,9 @@ void wxMaxima::StripComments(wxString& s)
   {
     int start = 0;
     int commentStart = 0;
-    int commentEnd = 0;
     while ((commentStart = s.find(wxT(';'), start)) != wxNOT_FOUND)
     {
-      commentEnd = s.find(wxT('\n'), commentStart);
+      int commentEnd = s.find(wxT('\n'), commentStart);
       if (commentEnd == wxNOT_FOUND)
         commentEnd = s.length();
       s = s.SubString(0, commentStart-1) + s.SubString(commentEnd, s.length());
@@ -654,7 +653,6 @@ void wxMaxima::SanitizeSocketBuffer(char *buffer, int length)
 void wxMaxima::ClientEvent(wxSocketEvent& event)
 {
   char buffer[SOCKET_SIZE + 1];
-  int read;
   switch (event.GetSocketEvent())
   {
 
@@ -675,6 +673,7 @@ void wxMaxima::ClientEvent(wxSocketEvent& event)
     
     if (!m_client->Error())
     {
+      int read;
       read = m_client->LastCount();
       buffer[read] = 0;
       
@@ -894,7 +893,7 @@ bool wxMaxima::StartMaxima(bool force)
   // We only need to start or restart maxima if we aren't connected to a maxima
   // that till now never has done anything and therefore is in perfect working
   // order.
-  if(((m_process == NULL) || ((m_process != NULL) && (m_hasEvaluatedCells))) || force)
+  if((m_process == NULL) || (m_hasEvaluatedCells) || force)
   {
     // The new maxima process will be in its initial condition => mark it as such.
     m_hasEvaluatedCells = false;
@@ -2099,7 +2098,7 @@ wxString wxMaxima::GetCommand(bool params)
   bool have_config = config->Read(wxT("maxima"), &command);
 
   //Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a
-  if (!have_config || (have_config && command.IsSameAs (wxT("1"))))
+  if (!have_config || command.IsSameAs (wxT("1")))
   {
 #if defined (__WXMAC__)
     if (wxFileExists("/Applications/Maxima.app"))
@@ -5420,7 +5419,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
     {
       MathCell *selection = m_console->GetSelectionStart();
       if (selection != NULL && selection->GetType() == MC_TYPE_SLIDE)
-        ((SlideShow *)(selection))->ToGif(file);
+        dynamic_cast<SlideShow *>(selection)->ToGif(file);
     }
   }
   break;
@@ -6027,7 +6026,7 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
     {
       if (m_console->IsSelected(MC_TYPE_SLIDE))
       {    
-        SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
+        SlideShow *cell = dynamic_cast<SlideShow *>(m_console->GetSelectionStart());
         
         m_console->m_mainToolBar->UpdateSlider(cell);
       }
@@ -6040,7 +6039,7 @@ void wxMaxima::SliderEvent(wxScrollEvent &ev)
   if (m_console->AnimationRunning())
     m_console->Animate(false);
 
-  SlideShow *cell = (SlideShow *)m_console->GetSelectionStart();
+  SlideShow *cell = dynamic_cast<SlideShow *>(m_console->GetSelectionStart());
   if (cell != NULL)
   {
     cell->SetDisplayedIndex(ev.GetPosition());

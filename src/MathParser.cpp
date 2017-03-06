@@ -189,7 +189,8 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
         group->SetEditableContent(ed->GetValue());
         delete ed;
       }
-      else if (children->GetName() == wxT("fold")) { // we have folded groupcells
+      else if (children->GetName() == wxT("fold"))
+      { // we have folded groupcells
         wxXmlNode *xmlcells = children->GetChildren();
         xmlcells = SkipWhitespaceNode(xmlcells);
         MathCell *tree = NULL;
@@ -213,7 +214,7 @@ MathCell* MathParser::ParseCellTag(wxXmlNode* node)
           xmlcells = GetNextTag(xmlcells);
         }
         if (tree)
-          group->HideTree((GroupCell *)tree);
+          group->HideTree(dynamic_cast<GroupCell *>(tree));
       }
       children = GetNextTag(children);
     }

@@ -211,6 +211,8 @@ void Image::LoadImage(const wxBitmap &bitmap)
   m_originalWidth  = image.GetWidth();
   m_originalHeight = image.GetHeight();
   m_scaledBitmap.Create (1,1);
+  m_width = 1;
+  m_height = 1;
 }
 
 void Image::LoadImage(wxString image, bool remove,wxFileSystem *filesystem)

@@ -45,6 +45,8 @@ IntCell::IntCell() : MathCell()
   m_signWidth = 18;
   m_signTop = m_signSize / 2;
   m_intStyle = INT_IDEF;
+  m_charWidth = 12;
+  m_charHeight = 12;
 }
 
 IntCell::~IntCell()

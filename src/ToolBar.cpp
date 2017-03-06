@@ -227,9 +227,8 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
         m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_StopButton);
 #endif
       }
-      break;
       m_toolBar->EnableTool(tb_animation_startStop,true);
-      m_plotSlider->Enable(true);
+      break;
     case Stopped:
       if(m_AnimationStartStopState==Running)
       {

@@ -202,13 +202,13 @@ void Plot3DWiz::SetValue(wxString s)
 
 void Plot3DWiz::Parse(wxString s)
 {
-  int depth = 0;
   unsigned int i = 0;
   wxString curr;
   s = s.SubString(7, s.Length());
   // Function to plot
   if (s.StartsWith(wxT("[")))
   {
+    int depth = 0;
     do
     {
       if (s.GetChar(i) == '[')

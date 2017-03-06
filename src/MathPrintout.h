@@ -65,7 +65,7 @@ private:
   int m_numberOfPages;
   wxString m_title;
   GroupCell* m_tree;
-  vector<MathCell*> m_pages;
+  vector<GroupCell*> m_pages;
 };
 
 #endif // MATHPRINTOUT_H

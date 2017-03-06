@@ -224,7 +224,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
   wxRect rect = GetUpdateRegion().GetBox();
   // printf("Updating rect [%d, %d] -> [%d, %d]\n", rect.x, rect.y, rect.width, rect.height);
   wxSize sz = GetSize();
-  int xstart, xend, top, bottom, drop;
+  int xstart, xend, top, bottom;
   CalcUnscrolledPosition(rect.GetLeft(), rect.GetTop(), &xstart, &top);
   CalcUnscrolledPosition(rect.GetRight(), rect.GetBottom(), &xend, &bottom);
   wxRect updateRegion;
@@ -301,7 +301,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
     point.y = Configuration::Get()->GetBaseIndent() + m_tree->GetMaxCenter();
     // Draw tree
     GroupCell* tmp = m_tree;
-    drop = tmp->GetMaxDrop();
+    int drop = tmp->GetMaxDrop();
 
     dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
     dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_DEFAULT))));
@@ -576,8 +576,8 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
   MathCell *CellToScrollTo = NULL;
   if(CaretVisibleIs())
   {
-    MathCell *CellToScrollTo = GetHCaret();
-    if(!CellToScrollTo) CellToScrollTo = GetActiveCell();
+    CellToScrollTo = GetHCaret();
+    CellToScrollTo = GetActiveCell();
   }
   if(!CellToScrollTo) CellToScrollTo = GetWorkingGroup();
   if(!CellToScrollTo)
@@ -1421,7 +1421,7 @@ void MathCtrl::OnMouseWheel(wxMouseEvent& event) {
       //! Step the slide show.
       int rot = event.GetWheelRotation();
     
-      SlideShow *tmp = (SlideShow *)m_selectionStart;
+      SlideShow *tmp = dynamic_cast<SlideShow *>(m_selectionStart);
       
       if (rot > 0)
         tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
@@ -1566,9 +1566,6 @@ void MathCtrl::SelectGroupCells(wxPoint down, wxPoint up)
       dynamic_cast<GroupCell *>(m_selectionStart)->m_currentPoint.y,
       dynamic_cast<GroupCell *>(m_selectionEnd)->m_currentPoint.y
       );
-  else
-    if((m_selectionStart != NULL)&&(m_selectionEnd != NULL))
-      GroupCell::SetSelectionRange_px(-1,-1);
 }
 
 void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
@@ -1695,13 +1692,13 @@ bool MathCtrl::Copy(bool astext)
   else if (m_selectionStart == m_selectionEnd &&
 	   m_selectionStart->GetType() == MC_TYPE_IMAGE)
   {
-    ((ImgCell *)m_selectionStart)->CopyToClipboard();
+    dynamic_cast<ImgCell *>(m_selectionStart)->CopyToClipboard();
     return true;
   }
   else if (m_selectionStart == m_selectionEnd &&
            m_selectionStart->GetType() == MC_TYPE_SLIDE)
   {
-    ((SlideShow *)m_selectionStart)->CopyToClipboard();
+    dynamic_cast<SlideShow *>(m_selectionStart)->CopyToClipboard();
     return true;
   }
   else
@@ -3612,7 +3609,7 @@ void MathCtrl::OnMouseEnter(wxMouseEvent& event) {
 
 void MathCtrl::StepAnimation(int change)
 {
-  SlideShow *tmp = (SlideShow *)m_selectionStart;
+  SlideShow *tmp = dynamic_cast<SlideShow *>(m_selectionStart);
 
   int pos = tmp->GetDisplayedIndex() + change;
   // Change the bitmap
@@ -3744,8 +3741,9 @@ void MathCtrl::DestroyTree() {
 }
 
 void MathCtrl::DestroyTree(MathCell* tmp) {
-  MathCell* tmp1;
-  while (tmp != NULL) {
+  while (tmp != NULL)
+  {
+    MathCell* tmp1;
     tmp1 = tmp;
     tmp = tmp->m_next;
     tmp1->Destroy();
@@ -3788,9 +3786,9 @@ wxSize MathCtrl::CopyToFile(wxString file) {
        m_selectionStart->GetType() == MC_TYPE_SLIDE))
   {
     if (m_selectionStart->GetType() == MC_TYPE_IMAGE)
-      return ((ImgCell *)m_selectionStart)->ToImageFile(file);
+      return dynamic_cast<ImgCell *>(m_selectionStart)->ToImageFile(file);
     else
-      return ((SlideShow *)m_selectionStart)->ToImageFile(file);
+      return dynamic_cast<SlideShow *>(m_selectionStart)->ToImageFile(file);
   }
   else
   {
@@ -4506,7 +4504,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
           // Export the chunk.
           if(chunk->GetType() == MC_TYPE_SLIDE)
           {
-            ((SlideShow *)chunk)->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
+            dynamic_cast<SlideShow *>(chunk)->ToGif(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
             output<<wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
               filename +
               wxString::Format(_("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"), count);
@@ -4631,7 +4629,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
         output<<wxT("<BR/>\n");
         if(tmp->GetLabel()->GetType() == MC_TYPE_SLIDE)
         {
-          ((SlideShow *)tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename +
+          dynamic_cast<SlideShow *>(tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename +
                                                  wxString::Format(wxT("_%d.gif"), count));
           output<<wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
             filename +
@@ -4930,16 +4928,16 @@ GroupCell* MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
       break;
     }
 
-    if (cell) { // if we have created a cell in this pass
+    if (cell)
+    { // if we have created a cell in this pass
       if (!tree)
         tree = last = cell;
-      else {
+      else
+      {
+        last->m_next = last->m_nextToDraw = cell;
+        last->m_next->m_previous = last->m_next->m_previousToDraw = last;
 
-        last->m_next = last->m_nextToDraw = ((MathCell *)cell);
-        last->m_next->m_previous = last->m_next->m_previousToDraw = ((MathCell *)last);
-
-        last = (GroupCell *)last->m_next;
-
+        last = dynamic_cast<GroupCell *>(last->m_next);
       }
       cell = NULL;
     }
@@ -5788,7 +5786,7 @@ void MathCtrl::AddDocumentTillHereToEvaluationQueue()
 }
 void MathCtrl::AddCellToEvaluationQueue(GroupCell* gc)
 {
-  AddToEvaluationQueue((GroupCell*) gc);
+  AddToEvaluationQueue(dynamic_cast<GroupCell*>(gc));
   SetHCaret(gc);
 }
 //////// end of EvaluationQueue related stuff ////////////////
@@ -6626,7 +6624,7 @@ void MathCtrl::Animate(bool run)
 {
   if (CanAnimate()) {
     if (run) {
-      SlideShow *tmp = (SlideShow *)m_selectionStart;
+      SlideShow *tmp = dynamic_cast<SlideShow *>(m_selectionStart);
       AnimationRunning(true);
       m_animationTimer.StartOnce(1000/tmp->GetFrameRate());
       StepAnimation();
@@ -6979,7 +6977,7 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase,bool warn)
   
   while ((pos != start) || (!wrappedSearch))
   {
-    EditorCell *editor = (EditorCell *)(pos->GetEditable());
+    EditorCell *editor = dynamic_cast<EditorCell *>(pos->GetEditable());
     
     if (editor != NULL)
     {
@@ -7126,7 +7124,7 @@ int MathCtrl::ReplaceAll(wxString oldString, wxString newString, bool ignoreCase
 
   while (tmp != NULL)
   {
-    EditorCell *editor = (EditorCell *)(tmp->GetEditable());
+    EditorCell *editor = dynamic_cast<EditorCell *>(tmp->GetEditable());
 
     if (editor != NULL)
     {
@@ -7311,7 +7309,7 @@ void MathCtrl::OnComplete(wxCommandEvent &event)
   if (m_activeCell == NULL)
     return;
 
-  EditorCell *editor = (EditorCell *)m_activeCell;
+  EditorCell *editor = dynamic_cast<EditorCell *>(m_activeCell);
   int caret = editor->GetCaretPosition();
 
   if (editor->GetSelectionString() != wxEmptyString)
@@ -7341,7 +7339,7 @@ void MathCtrl::OnComplete(wxCommandEvent &event)
 
 void MathCtrl::SetActiveCellText(wxString text)
 {
-  EditorCell* active = (EditorCell *)m_activeCell;
+  EditorCell* active = dynamic_cast<EditorCell *>(m_activeCell);
   if (active != NULL)
   {
     GroupCell *parent = dynamic_cast<GroupCell*>(active->GetParent());

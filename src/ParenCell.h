@@ -74,10 +74,8 @@ protected:
   MathCell *m_innerCell, *m_open, *m_close;
   MathCell *m_last1;
   bool m_print;
-#ifdef __WXMSW__
   int m_charWidth, m_charHeight;
   int m_charWidth1, m_charHeight1;
-#endif
   int m_parenFontSize, m_signTop, m_signSize, m_signWidth;
   enum parenthesisStyle
   {

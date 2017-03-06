@@ -32,6 +32,7 @@
 
 TextCell::TextCell() : MathCell()
 {
+  m_displayedDigits_old = -1;
   m_text = wxEmptyString;
   m_displayedText = wxEmptyString;
   m_fontSize = -1;
@@ -44,11 +45,13 @@ TextCell::TextCell() : MathCell()
   m_realCenter = m_center = -1;
   m_fontSize = 12;
   m_fontSizeLabel = 12;
+  m_dontEscapeOpeningParenthesis = false;
   ResetSize();
 }
 
 TextCell::TextCell(wxString text) : MathCell()
 {
+  m_displayedDigits_old = -1;
   m_height = -1;
   m_labelWidth = -1;
   m_labelHeight = -1;
@@ -1084,9 +1087,7 @@ bool TextCell::IsShortNum()
 }
 
 void TextCell::SetAltText()
-{
-  Configuration *configuration = Configuration::Get();
-  
+{  
   m_altJs = m_alt = false;
   if (GetStyle() == TS_DEFAULT)
     return ;
@@ -1122,7 +1123,7 @@ void TextCell::SetAltText()
       m_altJs = true;
     }
 #if wxUSE_UNICODE
-    m_altText = GetSymbolUnicode(configuration->CheckKeepPercent());
+    m_altText = GetSymbolUnicode(Configuration::Get()->CheckKeepPercent());
     if (m_altText != wxEmptyString)
       m_alt = true;
 #elif defined __WXMSW__

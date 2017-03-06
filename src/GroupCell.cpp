@@ -331,7 +331,7 @@ void GroupCell::AppendOutput(MathCell *cell)
     m_output = cell;
 
     if (m_groupType == GC_TYPE_CODE && m_input->m_next != NULL)
-      ((EditorCell *)(m_input->m_next))->ContainsChanges(false);
+      (dynamic_cast<EditorCell *>(m_input->m_next))->ContainsChanges(false);
 
     m_lastInOutput = m_output;
 
@@ -595,7 +595,6 @@ void GroupCell::Draw(wxPoint point, int fontsize)
   MathCell::Draw(point, fontsize);
 
   Configuration *configuration = Configuration::Get();
-  double scale = configuration->GetScale();
   wxDC& dc = configuration->GetDC();
   if (m_width == -1 || m_height == -1) {
     RecalculateWidths(fontsize);
@@ -644,7 +643,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
       configuration->Outdated(false);
       m_input->DrawList(in, fontsize);
       if (m_groupType == GC_TYPE_CODE && m_input->m_next)
-        configuration->Outdated(((EditorCell *)(m_input->m_next))->ContainsChanges());
+        configuration->Outdated((dynamic_cast<EditorCell *>(m_input->m_next))->ContainsChanges());
     }
     
     if (m_output != NULL && !m_hide) {
@@ -1133,7 +1132,7 @@ wxString GroupCell::ToTeXImage(MathCell *tmp, wxString imgDir, wxString filename
     wxConfig::Get()->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
     if((tmp->GetType() == MC_TYPE_SLIDE)&&(AnimateLaTeX))
     {
-      SlideShow* src=(SlideShow *)tmp;
+      SlideShow* src=dynamic_cast<SlideShow *>(tmp);
       str << wxT("\\begin{animateinline}{")+wxString::Format(wxT("%i"), src->GetFrameRate())+wxT("}\n");
       for(int i=0;i<src->Length();i++)
       {
@@ -1586,7 +1585,7 @@ GroupCell *GroupCell::Fold()
   GroupCell *end = dynamic_cast<GroupCell*>(m_next);
   GroupCell *start = end; // first to fold
 
-  while (end)
+  while (end != NULL)
   {
     if(end->GetLabel())
       end->GetLabel()->ClearCacheList();
@@ -1718,7 +1717,8 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
 
   while(tmp != NULL)
   {
-    switch (tmp->m_groupType) {
+    switch (tmp->m_groupType)
+    {
     case GC_TYPE_TITLE:
       section = subsection = subsubsection = 0;
       break;
@@ -1728,7 +1728,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
       {
         wxString num = wxT(" ");
         num << section << wxT(" ");
-        ((TextCell*)tmp->m_input)->SetValue(num);
+        tmp->m_input->SetValue(num);
       }
       break;
     case GC_TYPE_SUBSECTION:
@@ -1737,7 +1737,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
       {
         wxString num = wxT("  ");
         num << section << wxT(".") << subsection << wxT(" ");
-        ((TextCell*)tmp->m_input)->SetValue(num);
+        tmp->m_input->SetValue(num);
       }
       break;
     case GC_TYPE_SUBSUBSECTION:
@@ -1745,14 +1745,14 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
       {
         wxString num = wxT("  ");
         num << section << wxT(".") << subsection << wxT(".") << subsubsection << wxT(" ");
-        ((TextCell*)tmp->m_input)->SetValue(num);
+        m_input->SetValue(num);
       }
       break;
     case GC_TYPE_IMAGE:
       image++;
       {
         wxString num = wxString::Format(_("Figure %d:"), image);
-        ((TextCell*)tmp->m_input)->SetValue(num);
+        tmp->m_input->SetValue(num);
       }
       break;
     default:

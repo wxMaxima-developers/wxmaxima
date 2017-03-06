@@ -94,13 +94,13 @@ bool MathPrintout::OnPrintPage(int num)
   dc->SetUserScale(screenScaleX, screenScaleY);
 
   // Go to current page
-  tmp = (GroupCell *)m_pages[num - 1];
+  tmp = m_pages[num - 1];
 
   // Print page
   if (tmp != NULL)
   {
     if (tmp->GetGroupType() == GC_TYPE_PAGEBREAK)
-      tmp = (GroupCell *)tmp->m_next;
+      tmp = dynamic_cast<GroupCell *>(tmp->m_next);
     if (tmp == NULL)
       return true;
 
@@ -130,7 +130,7 @@ bool MathPrintout::OnPrintPage(int num)
         drop = tmp->m_next->GetMaxDrop();
       }
 
-      tmp = (GroupCell *)tmp->m_next;
+      tmp = dynamic_cast<GroupCell *>(tmp->m_next);
       if (tmp == NULL || tmp->BreakPageHere())
         break;
     }
@@ -164,7 +164,7 @@ void MathPrintout::BreakPages()
   int currentHeight = marginY;
   int skip = SCALE_PX(Configuration::Get()->GetGroupSkip(), scale);;
 
-  GroupCell* tmp = (GroupCell *)m_tree;
+  GroupCell* tmp = dynamic_cast<GroupCell *>(m_tree);
   m_pages.push_back(tmp);
 
   m_numberOfPages = 1;
@@ -186,7 +186,7 @@ void MathPrintout::BreakPages()
     else
       currentHeight += tmp->GetMaxHeight() + skip;
 
-    tmp = (GroupCell *)tmp->m_next;
+    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }
 }
 

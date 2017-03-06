@@ -67,7 +67,7 @@ bool Bitmap::Layout(long int maxSize)
     RecalculateHeight();
   }
   else {
-    GroupCell* tmp = (GroupCell *)m_tree;
+    GroupCell* tmp = dynamic_cast<GroupCell *>(m_tree);
 
     wxMemoryDC dc;
     dc.SelectObject(m_bmp);
@@ -78,7 +78,7 @@ bool Bitmap::Layout(long int maxSize)
     while (tmp != NULL)
     {
       tmp->Recalculate();
-      tmp = (GroupCell *)tmp->m_next;
+      tmp = dynamic_cast<GroupCell *>(tmp->m_next);
     }
   }
 
@@ -340,9 +340,10 @@ void Bitmap::DestroyTree()
 {
   if (m_tree != NULL)
   {
-    MathCell *tmp1, *tmp = m_tree;
+    MathCell *tmp = m_tree;
     while (tmp != NULL)
     {
+      MathCell *tmp1;
       tmp1 = tmp;
       tmp = tmp->m_next;
       tmp1->Destroy();
