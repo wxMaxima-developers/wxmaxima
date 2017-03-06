@@ -46,18 +46,6 @@ SumCell::SumCell() : MathCell()
   m_sumStyle = SM_SUM;
 }
 
-SumCell::~SumCell()
-{
-  if (m_base != NULL)
-    delete m_base;
-  if (m_under != NULL)
-    delete m_under;
-  if (m_over != NULL)
-    delete m_over;
-  if (m_next != NULL)
-    delete m_next;
-}
-
 void SumCell::SetParent(MathCell *parent)
 {
   m_group=parent;
@@ -83,13 +71,9 @@ MathCell* SumCell::Copy()
 
 void SumCell::Destroy()
 {
-  if (m_base != NULL)
-    delete m_base;
-  if (m_under != NULL)
-    delete m_under;
-  if (m_over != NULL)
-    delete m_over;
-  m_next = NULL;
+  wxDELETE(m_base);
+  wxDELETE(m_under);
+  wxDELETE(m_over);
   m_base = NULL;
   m_under = NULL;
   m_over = NULL;

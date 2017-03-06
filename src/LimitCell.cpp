@@ -37,18 +37,6 @@ LimitCell::LimitCell() : MathCell()
   m_name = NULL;
 }
 
-LimitCell::~LimitCell()
-{
-  if (m_base != NULL)
-    delete m_base;
-  if (m_under != NULL)
-    delete m_under;
-  if (m_name != NULL)
-    delete m_name;
-  if (m_next != NULL)
-    delete m_next;
-}
-
 void LimitCell::SetParent(MathCell *parent)
 {
   m_group = parent;
@@ -73,16 +61,10 @@ MathCell* LimitCell::Copy()
 
 void LimitCell::Destroy()
 {
-  if (m_base != NULL)
-    delete m_base;
-  if (m_under != NULL)
-    delete m_under;
-  if (m_name != NULL)
-    delete m_name;
-  m_base = NULL;
-  m_under = NULL;
-  m_name = NULL;
-  m_next = NULL;
+  wxDELETE(m_base);
+  wxDELETE(m_under);
+  wxDELETE(m_name);
+  m_base = m_under = m_name = NULL;
 }
 
 void LimitCell::SetName(MathCell* name)

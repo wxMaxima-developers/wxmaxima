@@ -63,12 +63,6 @@ TextCell::TextCell(wxString text) : MathCell()
   m_dontEscapeOpeningParenthesis = false;
 }
 
-TextCell::~TextCell()
-{
-  if (m_next != NULL)
-    delete m_next;
-}
-
 void TextCell::SetValue(const wxString &text)
 {
   m_displayedDigits_old = Configuration::Get()->GetDisplayedDigits();
@@ -109,11 +103,6 @@ MathCell* TextCell::Copy()
   retval->m_dontEscapeOpeningParenthesis = m_dontEscapeOpeningParenthesis;
   
   return retval;
-}
-
-void TextCell::Destroy()
-{
-  m_next = NULL;
 }
 
 wxString TextCell::LabelWidthText()

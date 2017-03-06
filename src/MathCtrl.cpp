@@ -2253,7 +2253,8 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
   // and unset m_lastWorkingGroup if it points to a cell that isn't valid any more.
   bool renumber = false;
   GroupCell *tmp = start;
-  while (tmp) {
+  while (tmp)
+  {
     if(tmp==m_lastWorkingGroup)
       m_lastWorkingGroup = NULL;
     
@@ -2321,8 +2322,11 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
       }
     }
     else
-      // We don't want to be able to undo this => delete the cells.
-      DestroyTree(start);
+    {
+      // We don't want to be able to undo this => actually delete the cells.
+      start->m_previous = NULL;
+      delete start;
+    }
   }
   else {
     // The deleted cells don't include the first cell of the worksheet.
@@ -2366,8 +2370,11 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
 
     }
     else
+    {
       // We don't want to be able to undo this => delete the cells.
-      DestroyTree(start);
+      start->m_previous = NULL;
+      delete start;
+    }
   }
 
   SetSelection(NULL);
@@ -3730,25 +3737,15 @@ void MathCtrl::RedrawRect(wxRect rect)
 /***
  * Destroy the tree
  */
-void MathCtrl::DestroyTree() {
+void MathCtrl::DestroyTree()
+{
   m_hCaretActive = false;
   SetHCaret(NULL);
-  DestroyTree(m_tree);
-  m_tree = m_last = NULL;
   m_lastWorkingGroup = NULL;
   TreeUndo_ClearUndoActionList();
   TreeUndo_ClearRedoActionList();
-}
-
-void MathCtrl::DestroyTree(MathCell* tmp) {
-  while (tmp != NULL)
-  {
-    MathCell* tmp1;
-    tmp1 = tmp;
-    tmp = tmp->m_next;
-    tmp1->Destroy();
-    delete tmp1;
-  }
+  wxDELETE(m_tree);
+  m_tree = m_last = NULL;
 }
 
 /***
@@ -4575,7 +4572,7 @@ bool MathCtrl::ExportToHTML(wxString file) {
           count++;
 
           // Prepare for fetching the next chunk.
-          chunk->DeleteList();
+          delete chunk;
           chunkStart = chunkEnd->m_next;
         }
       }

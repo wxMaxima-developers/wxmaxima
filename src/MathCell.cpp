@@ -58,11 +58,22 @@ MathCell::MathCell()
   m_currentPoint.y = -1;
 }
 
-/***
- * Derived classes must test if m_next equals NULL if it doesn't delete it!!!
- */
 MathCell::~MathCell()
-{}
+{
+  MathCell *last = this;
+  while(last->m_next != NULL)
+    last = last->m_next;
+
+  while((last != NULL) && (last != this))
+  {
+    MathCell *tmp = last;
+    last = last->m_previous;
+    delete tmp;
+    last->m_next = NULL;
+  }
+  
+  this->Destroy();
+}
 
 void MathCell::SetType(int type)
 {
@@ -945,19 +956,6 @@ void MathCell::UnbreakList()
     tmp->Unbreak();
     tmp=tmp->m_next;
   }
-}
-
-void MathCell::DeleteList()
-{
-  MathCell *tmp, *next;
-  tmp = this;
-  while(tmp != NULL)
-  {
-    next = tmp->m_next;
-    delete tmp;
-    tmp = next;
-  }
-  delete this;
 }
 
 int MathCell::GetDefaultLineWidth()

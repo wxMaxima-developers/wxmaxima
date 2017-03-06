@@ -45,16 +45,6 @@ SqrtCell::SqrtCell() : MathCell()
 }
 
 
-SqrtCell::~SqrtCell()
-{
-  if (m_innerCell != NULL)
-    delete m_innerCell;
-  if (m_next != NULL)
-    delete m_next;
-  delete m_open;
-  delete m_close;
-}
-
 void SqrtCell::SetParent(MathCell *parent)
 {
   m_group = parent;
@@ -79,10 +69,10 @@ MathCell* SqrtCell::Copy()
 
 void SqrtCell::Destroy()
 {
-  if (m_innerCell != NULL)
-    delete m_innerCell;
-  m_innerCell = NULL;
-  m_next = NULL;
+  wxDELETE(m_innerCell);
+  wxDELETE(m_open);
+  wxDELETE(m_close);
+  m_innerCell = m_open = m_close = NULL;
 }
 
 void SqrtCell::SetInner(MathCell *inner)

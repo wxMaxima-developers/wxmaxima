@@ -45,8 +45,7 @@ Bitmap::Bitmap(int scale)
 
 Bitmap::~Bitmap()
 {
-  if (m_tree != NULL)
-    DestroyTree();
+  wxDELETE(m_tree);
 }
 
 bool Bitmap::SetData(MathCell* tree,long int maxSize)
@@ -334,23 +333,6 @@ bool Bitmap::ToClipboard()
     return res;
   }
   return false;
-}
-
-void Bitmap::DestroyTree()
-{
-  if (m_tree != NULL)
-  {
-    MathCell *tmp = m_tree;
-    while (tmp != NULL)
-    {
-      MathCell *tmp1;
-      tmp1 = tmp;
-      tmp = tmp->m_next;
-      tmp1->Destroy();
-      delete tmp1;
-    }
-  }
-  m_tree = NULL;
 }
 
 void Bitmap::BreakUpCells()

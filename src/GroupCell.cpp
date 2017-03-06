@@ -131,18 +131,6 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   SetParent(this);
 }
 
-GroupCell::~GroupCell()
-{
-  if (m_input != NULL)
-    delete m_input;
-  DestroyOutput();
-  if (m_hiddenTree)
-    delete m_hiddenTree;
-
-  if(this == m_groupCellUnderPointer)
-    m_groupCellUnderPointer = NULL;
-}
-
 /*! Set the parent of this group cell
 
  \todo: Is the while loop a simple m_output->SetParentList(parent)?
@@ -168,38 +156,6 @@ bool GroupCell::Empty()
 	  // This cell at maximum contains a prompt.
 	  (ToString().Length()<6)
 	  );
-}
-
-void GroupCell::DestroyOutput(bool destroyFirst)
-{
-  MathCell *tmp = m_output, *tmp1;
-
-  // If there isn't anything to do we can already return.
-  if(tmp == NULL)
-    return;
-
-  // If we are dealing with an image cell we don't delete the actual image.
-  if(!destroyFirst)
-  {
-    tmp1 = tmp;
-    tmp = tmp -> m_next;
-    tmp1->m_next = NULL;
-    tmp1->m_nextToDraw = NULL;
-  }
-
-  // Delete what is left of the output.
-  while (tmp != NULL) {
-    tmp1 = tmp;
-    tmp = tmp->m_next;
-    tmp1->Destroy();
-    delete tmp1;
-  }
-  if(destroyFirst)
-  {
-    m_output = NULL;
-    m_lastInOutput = NULL;
-    m_appendedCells = NULL;
-  }
 }
 
 void GroupCell::ResetInputLabel()
@@ -240,13 +196,11 @@ MathCell* GroupCell::Copy()
 
 void GroupCell::Destroy()
 {
-  if (m_input != NULL)
-    delete m_input;
-  m_input = NULL;
-  if (m_output != NULL)
-    DestroyOutput();
-  m_output = NULL;
-  m_next = NULL;
+  wxDELETE(m_input);
+  wxDELETE(m_output);
+  m_input = m_output = NULL;
+  if(this == m_groupCellUnderPointer)
+    m_groupCellUnderPointer = NULL;
 }
 
 wxString GroupCell::TexEscapeOutputCell(wxString Input)
@@ -290,11 +244,11 @@ void GroupCell::AppendInput(MathCell *cell)
 
 void GroupCell::SetOutput(MathCell *output)
 {
-  if (output == NULL)
-    return ;
-  if (m_output != NULL)
-    DestroyOutput();
-
+  if(output != NULL)
+    return;
+  
+  wxDELETE(m_output);
+  
   m_output = output;
   m_output->SetParent(this);
 
@@ -313,7 +267,11 @@ void GroupCell::RemoveOutput()
   if(m_output == NULL)
     return;
   
-  DestroyOutput(!(GetGroupType() == GC_TYPE_IMAGE));
+  if(!(GetGroupType() == GC_TYPE_IMAGE))
+  {
+    wxDELETE(m_output);
+    m_output = NULL;
+  }
 
   // Calculate the new cell height.
 

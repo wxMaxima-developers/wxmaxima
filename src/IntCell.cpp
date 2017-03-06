@@ -49,20 +49,6 @@ IntCell::IntCell() : MathCell()
   m_charHeight = 12;
 }
 
-IntCell::~IntCell()
-{
-  if (m_base != NULL)
-    delete m_base;
-  if (m_under != NULL)
-    delete m_under;
-  if (m_over != NULL)
-    delete m_over;
-  if (m_var != NULL)
-    delete m_var;
-  if (m_next != NULL)
-    delete m_next;
-}
-
 void IntCell::SetParent(MathCell *parent)
 {
   m_group = parent;
@@ -91,19 +77,11 @@ MathCell* IntCell::Copy()
 
 void IntCell::Destroy()
 {
-  if (m_base != NULL)
-    delete m_base;
-  if (m_under != NULL)
-    delete m_under;
-  if (m_over != NULL)
-    delete m_over;
-  if (m_var != NULL)
-    delete m_var;
-  m_base = NULL;
-  m_under = NULL;
-  m_over = NULL;
-  m_var = NULL;
-  m_next = NULL;
+  wxDELETE(m_base);
+  wxDELETE(m_under);
+  wxDELETE(m_over);
+  wxDELETE(m_var);
+  m_base = m_under = m_over = m_var = NULL;
 }
 
 void IntCell::SetOver(MathCell* over)

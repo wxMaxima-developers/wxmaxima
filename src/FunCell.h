@@ -52,9 +52,7 @@ class FunCell : public MathCell
 {
 public:
   FunCell();
-  ~FunCell();
   MathCell* Copy();
-  void Destroy();
   void SetName(MathCell *base);
   void SetArg(MathCell *index);
   void RecalculateHeight(int fontsize);
@@ -70,6 +68,7 @@ public:
   void Unbreak();
   void SetParent(MathCell *parent);
 protected:
+  void Destroy();
   MathCell *m_nameCell;
   MathCell *m_argCell;
 };

@@ -28,9 +28,7 @@ class AtCell : public MathCell
 {
 public:
   AtCell();
-  ~AtCell();
   MathCell* Copy();
-  void Destroy();
   void SetBase(MathCell *base);
   void SetIndex(MathCell *index);
   void RecalculateHeight(int fontsize);
@@ -44,6 +42,7 @@ public:
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   void SetParent(MathCell *parent);
 protected:
+  void Destroy();
   MathCell *m_baseCell;
   MathCell *m_indexCell;
 };

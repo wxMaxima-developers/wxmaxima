@@ -43,19 +43,6 @@ ExptCell::ExptCell() : MathCell()
   m_close = new TextCell(wxT(")"));
 }
 
-ExptCell::~ExptCell()
-{
-  if (m_baseCell != NULL)
-    delete m_baseCell;
-  if (m_powCell != NULL)
-    delete m_powCell;
-  if (m_next != NULL)
-    delete m_next;
-  delete m_exp;
-  delete m_open;
-  delete m_close;
-}
-
 void ExptCell::SetParent(MathCell *parent)
 {
   m_group = parent;
@@ -83,13 +70,12 @@ MathCell* ExptCell::Copy()
 
 void ExptCell::Destroy()
 {
-  if (m_baseCell != NULL)
-    delete m_baseCell;
-  if (m_powCell != NULL)
-    delete m_powCell;
-  m_baseCell = NULL;
-  m_powCell = NULL;
-  m_next = NULL;
+  wxDELETE(m_baseCell);
+  wxDELETE(m_powCell);
+  wxDELETE(m_exp);
+  wxDELETE(m_open);
+  wxDELETE(m_close);
+  m_baseCell = m_powCell = m_exp = m_open = m_close = NULL;
 }
 
 void ExptCell::SetPower(MathCell *power)

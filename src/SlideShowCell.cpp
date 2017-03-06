@@ -48,14 +48,6 @@ SlideShow::SlideShow(wxFileSystem *filesystem,int framerate) : MathCell()
   m_drawBoundingBox = false;
 }
 
-SlideShow::~SlideShow()
-{
-  for (int i=0; i<m_size; i++)
-    wxDELETE(m_images[i]);
-  wxDELETE(m_next);
-}
-
-
 int SlideShow::GetFrameRate()
 {
   int framerate=2;
@@ -138,7 +130,6 @@ void SlideShow::Destroy()
       wxDELETE(m_images[i]);
       m_images[i] = NULL;
     }
-  m_next = NULL;
 }
 
 void SlideShow::SetDisplayedIndex(int ind)

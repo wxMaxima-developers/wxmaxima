@@ -55,8 +55,6 @@ class AbsCell : public MathCell
 {
 public:
   AbsCell();
-  ~AbsCell();
-  void Destroy();
   void SetInner(MathCell *inner);
   MathCell* Copy();
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
@@ -64,6 +62,7 @@ public:
   void Unbreak();
   void SetParent(MathCell *parent);
 protected:
+  void Destroy();
   //! The contents of the abs() comand
   MathCell *m_innerCell;
   //! The cell containing the eventual "abs" and the opening parenthesis

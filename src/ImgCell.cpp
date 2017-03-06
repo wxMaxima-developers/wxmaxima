@@ -76,12 +76,6 @@ ImgCell::ImgCell(wxString image, bool remove, wxFileSystem *filesystem) : MathCe
   m_drawBoundingBox = false;
 }
 
-ImgCell::~ImgCell()
-{
-  wxDELETE(m_image);
-  wxDELETE(m_next);
-}
-
 void ImgCell::LoadImage(wxString image, bool remove)
 {
   wxDELETE(m_image);
@@ -112,8 +106,6 @@ MathCell* ImgCell::Copy()
 void ImgCell::Destroy()
 {
   wxDELETE(m_image);
-  m_image = NULL;
-  m_next = NULL;
 }
 
 void ImgCell::RecalculateWidths(int fontsize)

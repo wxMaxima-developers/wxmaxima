@@ -37,16 +37,6 @@ ConjugateCell::ConjugateCell() : MathCell()
   m_close = new TextCell(wxT(")"));
 }
 
-ConjugateCell::~ConjugateCell()
-{
-  if (m_innerCell != NULL)
-    delete m_innerCell;
-  if (m_next != NULL)
-    delete m_next;
-  delete m_open;
-  delete m_close;
-}
-
 void ConjugateCell::SetParent(MathCell *parent)
 {
   m_group = parent;
@@ -71,10 +61,10 @@ MathCell* ConjugateCell::Copy()
 
 void ConjugateCell::Destroy()
 {
-  if (m_innerCell != NULL)
-    delete m_innerCell;
-  m_innerCell = NULL;
-  m_next = NULL;
+  wxDELETE(m_innerCell);
+  wxDELETE(m_open);
+  wxDELETE(m_close);  
+  m_innerCell = m_open = m_close = NULL;
 }
 
 void ConjugateCell::SetInner(MathCell *inner)

@@ -49,14 +49,12 @@ public:
     has to be set to -1.
    */
   SlideShow(wxFileSystem *filesystem = NULL,int framerate = -1);
-  ~SlideShow();
   /*! Remove all cached scaled images from memory
 
     To be called when the slideshow is outside of the displayed portion 
     of the screen; The bitmaps will be re-generated when needed.
    */
   virtual void ClearCache();
-  void Destroy();
   void LoadImages(wxArrayString images);
   MathCell* Copy();
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last)
@@ -85,6 +83,7 @@ public:
    */
   int SetFrameRate(int Freq);
 protected:
+  void Destroy();
   /*! The framerate of this cell.
 
     Can contain a frame rate [in Hz] or a -1, which means: Use the default frame rate.

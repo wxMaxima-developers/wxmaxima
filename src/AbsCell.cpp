@@ -39,16 +39,6 @@ AbsCell::AbsCell() : MathCell()
   m_last = NULL;
 }
 
-AbsCell::~AbsCell()
-{
-  if (m_innerCell != NULL)
-    delete m_innerCell;
-  if (m_next != NULL)
-    delete m_next;
-  wxDELETE(m_open);
-  wxDELETE(m_close);
-}
-
 void AbsCell::SetParent(MathCell *parent)
 {
   m_group = parent;
@@ -73,10 +63,12 @@ MathCell* AbsCell::Copy()
 
 void AbsCell::Destroy()
 {
-  if (m_innerCell != NULL)
-    delete m_innerCell;
+  wxDELETE(m_innerCell);
+  wxDELETE(m_open);
+  wxDELETE(m_close);
   m_innerCell = NULL;
-  m_next = NULL;
+  m_open = NULL;
+  m_close = NULL;
 }
 
 void AbsCell::SetInner(MathCell *inner)

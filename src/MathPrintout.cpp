@@ -326,21 +326,6 @@ void MathPrintout::GetScreenScale(double *scaleX, double *scaleY)
 
 void MathPrintout::DestroyTree()
 {
-  if (m_tree != NULL)
-  {
-    DestroyTree(m_tree);
-    m_tree = NULL;
-  }
-}
-
-void MathPrintout::DestroyTree(GroupCell* tmp)
-{
-  GroupCell* tmp1;
-  while (tmp != NULL)
-  {
-    tmp1 = tmp;
-    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
-    tmp1->Destroy();
-    delete tmp1;
-  }
+  wxDELETE(m_tree);
+  m_tree = NULL;
 }

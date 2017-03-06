@@ -90,17 +90,8 @@ class MathCell
 {
 public:
   MathCell();
-  virtual ~MathCell();  
-  /*! Free all memory directly referenced by the contents of this cell
-
-    This command (and the celltype-specific versions of the derived
-    classes) are internally used by the DestroyTree() functions that
-    free the complete list of cells.
-    \attention This function Doesn't free the other cells of the list
-    that is started by this cell.
-   */
-  virtual void Destroy(){};
-
+  //! Delete this list of cells.
+  virtual ~MathCell();
   //! Sets the region that is to be updated on Draw()
   static void SetUpdateRegion(wxRect region) { m_updateRegion = region; }
   //! Get the rectangle that is currently drawn
@@ -127,10 +118,7 @@ public:
    */
   static void ClipToDrawRegion(bool printing){m_clipToDrawRegion = printing;}
   //! Delete this cell and all cells that follow it in the list.
-  static bool Printing(){return !m_clipToDrawRegion;}
-  //! Deletes this list of cells.
-  void DeleteList();
-  
+  static bool Printing(){return !m_clipToDrawRegion;}  
   /*! Add a cell to the end of the list this cell is part of
     
     \param p_next The cell that will be appended to the list.
@@ -589,6 +577,15 @@ public:
   bool m_SuppressMultiplicationDot;
 
 protected:
+  /*! Free all memory directly referenced by the contents of this cell
+
+    This command (and the celltype-specific versions of the derived
+    classes) are internally used by the DestroyTree() functions that
+    free the complete list of cells.
+    \attention This function Doesn't free the other cells of the list
+    that is started by this cell.
+   */
+  virtual void Destroy(){}
   static wxRect m_updateRegion;
 
   /*! The GroupCell this list of cells belongs to.

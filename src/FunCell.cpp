@@ -33,16 +33,6 @@ FunCell::FunCell() : MathCell()
   m_argCell = NULL;
 }
 
-FunCell::~FunCell()
-{
-  if (m_nameCell != NULL)
-    delete m_nameCell;
-  if (m_argCell != NULL)
-    delete m_argCell;
-  if (m_next != NULL)
-    delete m_next;
-}
-
 void FunCell::SetParent(MathCell *parent)
 {
   m_group = parent;
@@ -65,13 +55,9 @@ MathCell* FunCell::Copy()
 
 void FunCell::Destroy()
 {
-  if (m_nameCell != NULL)
-    delete m_nameCell;
-  if (m_argCell != NULL)
-    delete m_argCell;
-  m_nameCell = NULL;
-  m_argCell = NULL;
-  m_next = NULL;
+  wxDELETE(m_nameCell);
+  wxDELETE(m_argCell);
+  m_nameCell = m_argCell = NULL;
 }
 
 void FunCell::SetName(MathCell *name)

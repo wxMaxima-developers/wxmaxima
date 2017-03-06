@@ -33,16 +33,6 @@ AtCell::AtCell() : MathCell()
   m_indexCell = NULL;
 }
 
-AtCell::~AtCell()
-{
-  if (m_baseCell != NULL)
-    delete m_baseCell;
-  if (m_indexCell != NULL)
-    delete m_indexCell;
-  if (m_next != NULL)
-    delete m_next;
-}
-
 void AtCell::SetParent(MathCell *parent)
 {
   m_group=parent;
@@ -64,13 +54,9 @@ MathCell* AtCell::Copy()
 
 void AtCell::Destroy()
 {
-  if (m_baseCell != NULL)
-    delete m_baseCell;
-  if (m_indexCell != NULL)
-    delete m_indexCell;
-  m_baseCell = NULL;
-  m_indexCell = NULL;
-  m_next = NULL;
+  wxDELETE(m_baseCell);
+  wxDELETE(m_indexCell);
+  m_baseCell = m_indexCell = NULL;
 }
 
 

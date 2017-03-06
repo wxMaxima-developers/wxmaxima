@@ -62,10 +62,8 @@ class GroupCell: public MathCell
 {
 public:
   GroupCell(int groupType, wxString initString = wxEmptyString);
-  ~GroupCell();
   static void CellUnderPointer(GroupCell *cell);
   MathCell* Copy();
-  void Destroy();
   //! Set the y position of the selection start and end
   static void SetSelectionRange_px(int start, int end)
     {
@@ -229,21 +227,10 @@ public:
   void InEvaluationQueue(bool inQueue) {m_inEvaluationQueue = inQueue;}
   void LastInEvaluationQueue(bool last) {m_lastInEvaluationQueue = last;}
 protected:
+  void Destroy();
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold
   int m_groupType;
-  /*! Unallocate all output cells
-
-    Use RemoveOutput() instead as RemoveOutput() also triggers a recalculation
-    of the cell's size.
-
-    \param destroyFirst
-     - false: Leave the first output cell intact. Useful for image cells that have an
-     output cell containing the image but that we want to strip from all warnings we
-     might have appended to it.
-     - true:  Destroy all output cells.
-  */
-  void DestroyOutput(bool destroyFirst = true);
   MathCell *m_input;
   MathCell *m_output;
   bool m_hide;

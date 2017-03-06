@@ -37,17 +37,6 @@ MatrCell::MatrCell() : MathCell()
   m_rowNames = m_colNames = false;
 }
 
-MatrCell::~MatrCell()
-{
-  for (unsigned int i = 0; i < m_cells.size(); i++)
-  {
-    if (m_cells[i] != NULL)
-      delete m_cells[i];
-  }
-  if (m_next != NULL)
-    delete m_next;
-}
-
 void MatrCell::SetParent(MathCell *parent)
 {
   m_group = parent;
@@ -82,7 +71,6 @@ void MatrCell::Destroy()
       delete m_cells[i];
     m_cells[i] = NULL;
   }
-  m_next = NULL;
 }
 
 void MatrCell::RecalculateWidths(int fontsize)

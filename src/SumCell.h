@@ -41,8 +41,6 @@ class SumCell : public MathCell
 {
 public:
   SumCell();
-  ~SumCell();
-  void Destroy();
   MathCell* Copy();
   void RecalculateHeight(int fontsize);
   void RecalculateWidths(int fontsize);
@@ -62,6 +60,7 @@ public:
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   void SetParent(MathCell *parent);
 protected:
+  void Destroy();
   MathCell *m_base;
   MathCell *m_under;
   MathCell *m_over;

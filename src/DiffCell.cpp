@@ -34,16 +34,6 @@ DiffCell::DiffCell() : MathCell()
   m_diffCell = NULL;
 }
 
-DiffCell::~DiffCell()
-{
-  if (m_baseCell != NULL)
-    delete m_baseCell;
-  if (m_diffCell != NULL)
-    delete m_diffCell;
-  if (m_next != NULL)
-    delete m_next;
-}
-
 void DiffCell::SetParent(MathCell *parent)
 {
   m_group = parent;
@@ -66,13 +56,9 @@ MathCell* DiffCell::Copy()
 
 void DiffCell::Destroy()
 {
-  if (m_baseCell != NULL)
-    delete m_baseCell;
-  if (m_diffCell != NULL)
-    delete m_diffCell;
-  m_baseCell = NULL;
-  m_diffCell = NULL;
-  m_next = NULL;
+  wxDELETE(m_baseCell);
+  wxDELETE(m_diffCell);
+  m_baseCell = m_diffCell = NULL;
 }
 
 void DiffCell::SetDiff(MathCell *diff)

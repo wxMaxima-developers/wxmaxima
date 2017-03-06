@@ -35,16 +35,6 @@ SubCell::SubCell() : MathCell()
   m_indexCell = NULL;
 }
 
-SubCell::~SubCell()
-{
-  if (m_baseCell != NULL)
-    delete m_baseCell;
-  if (m_indexCell != NULL)
-    delete m_indexCell;
-  if (m_next != NULL)
-    delete m_next;
-}
-
 void SubCell::SetParent(MathCell *parent)
 {
   m_group=parent;
@@ -72,7 +62,6 @@ void SubCell::Destroy()
     delete m_indexCell;
   m_baseCell = NULL;
   m_indexCell = NULL;
-  m_next = NULL;
 }
 
 void SubCell::SetIndex(MathCell *index)

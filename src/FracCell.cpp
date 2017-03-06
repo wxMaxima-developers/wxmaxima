@@ -82,59 +82,16 @@ MathCell* FracCell::Copy()
   return tmp;
 }
 
-FracCell::~FracCell()
-{
-  if (m_open1 != NULL)
-    delete m_open1;
-  m_open1 = NULL;
-  if (m_close1 != NULL)
-    delete m_close1;
-  m_close1 = NULL;
-  if (m_open2 != NULL)
-    delete m_open2;
-  m_open2 = NULL;
-  if (m_close2 != NULL)
-    delete m_close2;
-  m_close2 = NULL;
-  if (m_num != NULL)
-    delete m_num;
-  m_num = NULL;
-  if (m_denom != NULL)
-    delete m_denom;
-  m_denom = NULL;
-  if (m_divide != NULL)
-    delete m_divide;
-  m_divide = NULL;
-  if (m_next != NULL)
-    delete m_next;
-  m_next = NULL;
-}
-
 void FracCell::Destroy()
 {
-  if (m_num != NULL)
-    delete m_num;
-  if (m_denom != NULL)
-    delete m_denom;
-  m_num = NULL;
-  m_denom = NULL;
-  m_next = NULL;
-
-  if(m_open1)
-    delete m_open1;
-  m_open1 = NULL;
-  if(m_open2)
-    delete m_open2;
-  m_open2 = NULL;
-  if(m_close1)
-    delete m_close1;
-  m_close1 = NULL;
-  if(m_close2)
-    delete m_close2;
-  m_close2 = NULL;
-  if(m_divide)
-    delete m_divide;
-  m_divide = NULL;
+  wxDELETE(m_open1);
+  wxDELETE(m_open2);
+  wxDELETE(m_close1);
+  wxDELETE(m_close2);
+  wxDELETE(m_num);
+  wxDELETE(m_denom);
+  wxDELETE(m_divide);
+  m_open1 = m_open2 = m_close1 = m_close2 = m_num = m_denom = m_divide = NULL;
 }
 
 void FracCell::SetNum(MathCell *num)

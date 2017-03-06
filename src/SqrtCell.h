@@ -48,9 +48,7 @@ class SqrtCell : public MathCell
 {
 public:
   SqrtCell();
-  ~SqrtCell();
   MathCell* Copy();
-  void Destroy();
   void SetInner(MathCell *inner);
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   void RecalculateHeight(int fontsize);
@@ -65,6 +63,7 @@ public:
   wxString ToXML();
   void SetParent(MathCell *parent);
 protected:
+  void Destroy();
   MathCell *m_innerCell;
   TextCell *m_open, *m_close;
   MathCell *m_last;

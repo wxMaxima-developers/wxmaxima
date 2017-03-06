@@ -103,8 +103,6 @@ public:
   bool m_selectionChanged;
   //! The constructor
   EditorCell(wxString text = wxEmptyString);
-  //! The destructor
-  ~EditorCell();
 
   /*! Expand all tabulators.
 
@@ -117,7 +115,6 @@ public:
   static wxString EscapeHTMLChars(wxString input);
   //! Convert all but the first of a row of multiple spaces to non-breakable
   static wxString PrependNBSP(wxString input);
-  void Destroy();
   MathCell* Copy();
   //! Recalculate the widths of the current cell.
   void RecalculateWidths(int fontsize);

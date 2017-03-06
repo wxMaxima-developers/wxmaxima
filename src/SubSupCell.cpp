@@ -38,17 +38,6 @@ SubSupCell::SubSupCell() : MathCell()
   m_indexCell = NULL;
   m_exptCell = NULL;
 }
-SubSupCell::~SubSupCell()
-{
-  if (m_baseCell != NULL)
-    delete m_baseCell;
-  if (m_indexCell != NULL)
-    delete m_indexCell;
-  if (m_exptCell != NULL)
-    delete m_exptCell;
-  if (m_next != NULL)
-    delete m_next;
-}
 
 void SubSupCell::SetParent(MathCell *parent)
 {
@@ -83,7 +72,6 @@ void SubSupCell::Destroy()
   m_baseCell = NULL;
   m_indexCell = NULL;
   m_exptCell = NULL;
-  m_next = NULL;
 }
 
 void SubSupCell::SetIndex(MathCell *index)

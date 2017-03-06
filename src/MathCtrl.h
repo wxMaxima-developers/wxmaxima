@@ -204,8 +204,7 @@ private:
           m_start = NULL;
           m_oldText = wxEmptyString;
           m_newCellsEnd = NULL;
-          if(m_oldCells)
-            m_oldCells ->DeleteList();
+          wxDELETE(m_oldCells);
           m_oldCells = NULL;
         }
       
@@ -713,8 +712,7 @@ public:
 
   //! Clear the whole worksheet
   void DestroyTree();
-  //! Delete a  part of the worksheet that previously has been unlinked.
-  void DestroyTree(MathCell* tree);
+  //! Copies the worksheet's entire contents
   GroupCell* CopyTree();
   /*! Insert group cells into the worksheet
 

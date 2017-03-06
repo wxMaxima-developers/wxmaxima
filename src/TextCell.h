@@ -37,9 +37,7 @@ private:
 public:
   TextCell();
   TextCell(wxString text);
-  ~TextCell();
   MathCell* Copy();
-  void Destroy();
   void SetValue(const wxString &text);
   void RecalculateWidths(int fontsize);
   void Draw(wxPoint point, int fontsize);

@@ -27,9 +27,7 @@
 class DiffCell : public MathCell
 {
 public:
-	DiffCell();
-	~DiffCell();
-  void Destroy();
+  DiffCell();
   MathCell* Copy();
   void SetBase(MathCell *base);
   void SetDiff(MathCell *diff);
@@ -44,6 +42,7 @@ public:
   wxString ToXML();
   void SetParent(MathCell *parent);
 protected:
+  void Destroy();
   MathCell *m_baseCell;
   MathCell *m_diffCell;
 };

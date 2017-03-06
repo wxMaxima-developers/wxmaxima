@@ -77,12 +77,6 @@ EditorCell::EditorCell(wxString text) : MathCell()
   ResetSize();
 }
 
-EditorCell::~EditorCell()
-{
-  if (m_next != NULL)
-    delete m_next;
-}
-
 wxString EditorCell::EscapeHTMLChars(wxString input)
 {
   input.Replace(wxT("&"), wxT("&amp;"));  
@@ -138,12 +132,6 @@ MathCell *EditorCell::Copy()
 
   return tmp;
 }
-
-void EditorCell::Destroy()
-{
-  m_next = NULL;
-}
-
 
 wxString EditorCell::ToString()
 {

@@ -28,9 +28,7 @@ class SubSupCell : public MathCell
 {
 public:
   SubSupCell();
-  ~SubSupCell();
   MathCell* Copy();
-  void Destroy();
   void SetBase(MathCell *base);
   void SetIndex(MathCell *index);
   void SetExponent(MathCell *expt);
@@ -45,6 +43,7 @@ public:
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
   void SetParent(MathCell *parent);
 protected:
+  void Destroy();
   MathCell *m_baseCell;
   MathCell *m_exptCell;
   MathCell *m_indexCell;

@@ -40,9 +40,7 @@ class IntCell : public MathCell
 {
 public:
   IntCell();
-  ~IntCell();
   MathCell* Copy();
-  void Destroy();
   void RecalculateHeight(int fontsize);
   void RecalculateWidths(int fontsize);
   void Draw(wxPoint point, int fontsize);
@@ -88,7 +86,8 @@ public:
   //! How far is the integral sign's center from the top of this cell?
   int m_signTop;
   int m_charHeight, m_charWidth;
-
+protected:
+  void Destroy();
 private:
 
 };
