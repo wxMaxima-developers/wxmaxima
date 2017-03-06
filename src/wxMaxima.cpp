@@ -1052,14 +1052,22 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& event)
 
 void wxMaxima::CleanUp()
 {
-  if (m_client)
-    m_client->Notify(false);
+  m_console->QuestionAnswered();
+  m_currentOutput = wxEmptyString;
   if (m_isConnected)
     KillMaxima();
+  if (m_client)
+  {
+    m_client->Notify(false);
+    m_client ->Destroy();
+    m_client = NULL;
+  }
   if (m_isRunning)
-    m_server->Destroy();
-  m_currentOutput = wxEmptyString;
-  m_console->QuestionAnswered();
+  {
+    if(m_server)
+      m_server->Destroy();
+    m_server = NULL;
+  }
   if(m_process != NULL) delete m_process;
   m_process = NULL;
 }
@@ -5105,7 +5113,7 @@ void wxMaxima::OnClose(wxCloseEvent& event)
   if (m_lastPath.Length() > 0)
     config->Write(wxT("lastPath"), m_lastPath);
   m_closing = true;
-  m_process = NULL;
+  CleanUp();
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
 #if defined __WXMAC__
@@ -5114,7 +5122,6 @@ void wxMaxima::OnClose(wxCloseEvent& event)
   // Allow the operating system to keep the clipboard's contents even after we
   // exit - if that ioption is supported by the OS.
   wxTheClipboard->Flush();
-  CleanUp();
   if(m_console->GetTree())
     m_console->DestroyTree();
   Destroy();

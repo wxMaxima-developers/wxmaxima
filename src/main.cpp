@@ -122,7 +122,6 @@ IMPLEMENT_APP(MyApp)
 
 void MyApp::Cleanup_Static()
 {
-  std::cout <<"Cleanup\n";
   if(m_frame)
     m_frame->CleanUp();
 }
