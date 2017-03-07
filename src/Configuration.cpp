@@ -52,6 +52,8 @@ Configuration::Configuration(wxDC& dc) : m_dc(&dc)
   m_showLabelChoice = 1;
   m_clientWidth = 1024;
   m_clientHeight = 768;
+  Dirstructure dirstruct;
+  m_maximaLocation = dirstruct.MaximaDefaultLocation();
   ReadConfig();
 }
 
@@ -61,11 +63,38 @@ void Configuration::ShowCodeCells(bool show)
   m_showCodeCells = show;
 }
 
+bool Configuration::MaximaFound(wxString location)
+{
+  if(location == wxEmptyString)
+    location = m_maximaLocation;
+  bool maximaFound = false;
+  if (wxFileExists(location))
+    maximaFound = true;
+  
+    // Find a maxima within an application package.
+  if (wxFileExists(location+wxT("/Contents/Resources/maxima.sh")))
+    maximaFound = true;
+
+  wxPathList pathlist;
+  pathlist.AddEnvList(wxT("PATH"));
+  wxString path = pathlist.FindAbsoluteValidPath(location);
+  if(!path.empty())
+      maximaFound = true;
+  return maximaFound;
+}
+
 void Configuration::ReadConfig()
 {
+  Dirstructure dirstruct;
+
   wxConfig *config = (wxConfig *)wxConfig::Get();
   m_autoWrap = 3;
   config->Read(wxT("autoWrapMode"), &m_autoWrap);
+
+  config->Read(wxT("maxima"), &m_maximaLocation);
+  //Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a
+  if (m_maximaLocation.IsSameAs (wxT("1")))
+    m_maximaLocation = dirstruct.MaximaDefaultLocation();
 
   m_autoIndent = true;
   config->Read(wxT("autoIndent"), &m_autoIndent);

@@ -26,7 +26,7 @@
 #include <wx/fontenum.h>
 
 #include "TextStyle.h"
-
+#include "Dirstructure.h"
 #include "Setup.h"
 
 
@@ -283,11 +283,29 @@ public:
     {
       wxConfig::Get()->Write(wxT("showLabelChoice"),m_showLabelChoice = choice);
     }
-  bool PrintBrackets(bool print){
-    wxConfig::Get()->Write(wxT("printBrackets"),m_printBrackets = print);
-    return print;
-  }
+  bool PrintBrackets(bool print)
+    {
+      wxConfig::Get()->Write(wxT("printBrackets"),m_printBrackets = print);
+      return print;
+    }
+
+  //! Returns the location of the maxima binary.
+  wxString MaximaLocation(){return m_maximaLocation;}
+  //! Sets the location of the maxima binary.
+  void MaximaLocation(wxString maxima)
+    {
+      wxConfig::Get()->Write(wxT("maxima"),m_maximaLocation = maxima);
+    }
+  /*! Could a maxima binary be found in the path we expect it to be in?
+
+    \param location The location to search for maxima in. 
+    If location == wxEmptyString the default location from the configuration 
+    is taken.
+   */
+  bool MaximaFound(wxString location = wxEmptyString);
+
 private:
+  wxString m_maximaLocation;
   //! Hide brackets that are not under the pointer
   bool m_hideBrackets;
   //! The size of the canvas our cells have to be drawn on

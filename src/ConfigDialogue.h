@@ -175,6 +175,9 @@ private:
   wxPanel* CreateMaximaPanel();
   // end wxGlade
 protected:
+  //! The text "Maxima Program" that can change color.
+  wxStaticText *m_mp;
+  //! Called if the currently active dialogue sheet is changed.
   void OnTabChange(wxBookCtrlEvent& event);
   // begin wxGlade: ConfigDialogue::attributes
   wxTextCtrl* m_maximaProgram;
@@ -287,6 +290,8 @@ protected:
     m_styleCodeHighlightingOperator,
     m_styleCodeHighlightingEndOfLine;
 
+  //! Is called when the path to the maxima binary was changed.
+  void MaximaLocationChanged(wxCommandEvent& unused);
   //! Is called when the configuration dialog is closed.
   void OnClose(wxCloseEvent& event);
   //! Starts the file chooser that allows selecting where the maxima binary lies

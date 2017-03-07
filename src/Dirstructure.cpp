@@ -68,12 +68,19 @@ wxString Dirstructure::UserConfDir()
 wxString Dirstructure::MaximaDefaultLocation()
 {
 #if defined __WXMSW__
-  wxFileName exe = wxStandardPaths::Get().GetExecutablePath();
-  exe.MakeAbsolute();
-  wxString exeDir = exe.GetPathWithSep();
-  wxString maximapath = exeDir + wxT("..") + exe.GetPathSeparator() +
-    wxT("bin")  + exe.GetPathSeparator() + wxT("maxima.bat");
-
+  wxString maxima = wxGetCwd();
+  if (maxima.Right(8) == wxT("wxMaxima"))
+    maxima.Replace(wxT("wxMaxima"), wxT("bin\\maxima.bat"));
+  else
+    maxima.Append("\\maxima.bat");
+  if (!wxFileExists(maxima))
+  {
+    wxFileName exe = wxStandardPaths::Get().GetExecutablePath();
+    exe.MakeAbsolute();
+    wxString exeDir = exe.GetPathWithSep();
+    wxString maximapath = exeDir + wxT("..") + exe.GetPathSeparator() +
+      wxT("bin")  + exe.GetPathSeparator() + wxT("maxima.bat");
+  }
   wxFileName maxima(maximapath);
   maxima.MakeAbsolute();
   return maxima.GetFullPath();

@@ -169,8 +169,28 @@ ConfigDialogue::~ConfigDialogue()
     delete m_imageList;
 }
 
+
+void ConfigDialogue::MaximaLocationChanged(wxCommandEvent& unused)
+{
+  if(Configuration::Get()->MaximaFound(m_maximaProgram->GetValue()))
+  {
+    m_maximaProgram->SetBackgroundColour(
+      wxSystemSettings::GetColour( wxSYS_COLOUR_BACKGROUND)
+      );
+    m_mp->SetForegroundColour(
+      wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT)
+      );
+  }
+  else
+  {
+    m_maximaProgram->SetBackgroundColour(*wxRED);
+    m_mp->SetForegroundColour(*wxRED);
+  }
+}
+
 void ConfigDialogue::SetProperties()
 {
+  Configuration *configuration = Configuration::Get();
   SetTitle(_("wxMaxima configuration"));
 
   m_showUserDefinedLabels->SetToolTip(_("Maxima assigns each command/equation an automatic label (which looks like %i1 or %o1. If a command begins with a descriptive name followed by a : wxMaxima will call the descriptive name an \"user-defined label\" instead. This selection now allows to tell wxMaxima if to show only automatic labels, automatic labels if there aren't user-defined ones or no label at all until an user-defined label can be found by wxMaxima's heuristics; If automatic labels are suppressed extra vertical space is added between equations in order to ease discerning which line starts a new equation and which one only continues the one from the last line."));
@@ -321,21 +341,9 @@ void ConfigDialogue::SetProperties()
   m_texPreamble->SetValue(texPreamble);
   m_autoSaveInterval->SetValue(autoSaveInterval);
 
-  Dirstructure dirstruct;
-
-  if (wxFileExists(dirstruct.MaximaDefaultLocation()))
-  {
-    m_maximaProgram->SetValue(dirstruct.MaximaDefaultLocation());
-    m_maximaProgram->Enable(false);
-    m_mpBrowse->Enable(false);
-  }
-  else
-  {
-    if (mp.Length())
-      m_maximaProgram->SetValue(mp);
-    else
-      m_maximaProgram->SetValue(dirstruct.MaximaDefaultLocation());
-  }
+  m_maximaProgram->SetValue(configuration->MaximaLocation());
+  wxCommandEvent dummy;
+  MaximaLocationChanged(dummy);
   
   m_additionalParameters->SetValue(mc);
   if (rs == 1)
@@ -345,7 +353,6 @@ void ConfigDialogue::SetProperties()
   m_savePanes->SetValue(savePanes);
   m_usepngCairo->SetValue(usepngCairo);
 
-  Configuration *configuration = Configuration::Get();
   m_uncomressedWXMX->SetValue(UncompressedWXMX);
   m_AnimateLaTeX->SetValue(AnimateLaTeX);
   m_TeXExponentsAfterSubscript->SetValue(TeXExponentsAfterSubscript);
@@ -671,14 +678,17 @@ wxPanel* ConfigDialogue::CreateMaximaPanel()
   wxFlexGridSizer* sizer2 = new wxFlexGridSizer(6, 2, 0, 0);  
   wxFlexGridSizer* vsizer = new wxFlexGridSizer(9,1,0,0);
 
-  wxStaticText *mp = new wxStaticText(panel, -1, _("Maxima program:"));
+  m_mp = new wxStaticText(panel, -1, _("Maxima program:"));
   m_maximaProgram = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
   m_mpBrowse = new wxButton(panel, wxID_OPEN, _("Open"));
-  sizer->Add(mp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer->Add(m_mp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer->Add(10, 10);
   sizer->Add(m_maximaProgram, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer->Add(m_mpBrowse, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-
+  m_maximaProgram->Connect(wxEVT_COMMAND_TEXT_UPDATED,
+                           wxCommandEventHandler(ConfigDialogue::MaximaLocationChanged),
+                           NULL, this);
+  
   int defaultPort = 4010;
   wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
   m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 50, 65534, defaultPort);
@@ -859,13 +869,16 @@ void ConfigDialogue::WriteSettings()
 {
   wxString search = wxT("maxima-htmldir");
   wxArrayString out;
-  wxString maxima = m_maximaProgram->GetValue();
   wxConfig *config = (wxConfig *)wxConfig::Get();
   Configuration *configuration = Configuration::Get();
   config->Write(wxT("abortOnError"), m_abortOnError->GetValue());
   config->Write(wxT("pollStdOut"), m_pollStdOut->GetValue());
   configuration->RestartOnReEvaluation(m_restartOnReEvaluation->GetValue());
-  config->Write(wxT("maxima"), m_maximaProgram->GetValue());
+  if(
+    (configuration->MaximaFound())||
+    (configuration->MaximaLocation() != m_maximaProgram->GetValue())
+    )
+    configuration->MaximaLocation(m_maximaProgram->GetValue());
   config->Write(wxT("parameters"), m_additionalParameters->GetValue());
   config->Write(wxT("fontSize"), m_fontSize);
   config->Write(wxT("mathFontsize"), m_mathFontSize);

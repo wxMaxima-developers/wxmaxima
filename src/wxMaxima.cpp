@@ -2060,69 +2060,30 @@ void wxMaxima::SetupVariables()
 
 wxString wxMaxima::GetCommand(bool params)
 {
+  Configuration *configuration = Configuration::Get();
+  wxString parameters, command = configuration->MaximaLocation();
+  wxConfig::Get()->Read(wxT("parameters"), &parameters);
+
 #if defined (__WXMSW__)
-  wxConfig *config = (wxConfig *)wxConfig::Get();
-  wxString maxima = wxGetCwd();
-  wxString parameters;
-
-  if (maxima.Right(8) == wxT("wxMaxima"))
-    maxima.Replace(wxT("wxMaxima"), wxT("bin\\maxima.bat"));
-  else
-    maxima.Append("\\maxima.bat");
-
-  if (!wxFileExists(maxima))
+  if (!wxFileExists(command))
   {
-    config->Read(wxT("maxima"), &maxima);
-    if (!wxFileExists(maxima))
-    {
-      wxMessageBox(_("wxMaxima could not find Maxima!\n\n"
-                     "Please configure wxMaxima with 'Edit->Configure'.\n"
-                     "Then start Maxima with 'Maxima->Restart Maxima'."),
-		   _("Warning"),
-                   wxOK | wxICON_EXCLAMATION);
-      SetStatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
-      return wxEmptyString;
-    }
-  }
-
-  config->Read(wxT("parameters"), &parameters);
-  if (params)
-    return wxT("\"") + maxima + wxT("\" ") + parameters;
-  return maxima;
-#else
-  wxConfig *config = (wxConfig *)wxConfig::Get();
-  wxString command, parameters;
-
-  Dirstructure dirstructure;
-  command = dirstructure.MaximaDefaultLocation();
-  bool have_config = config->Read(wxT("maxima"), &command);
-
-  //Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a
-  if (!have_config || command.IsSameAs (wxT("1")))
-  {
-#if defined (__WXMAC__)
-    if (wxFileExists("/Applications/Maxima.app"))
-      command = wxT("/Applications/Maxima.app");
-    if (wxFileExists("/Applications/maxima.app"))
-      command = wxT("/Applications/maxima.app");
-    else if (wxFileExists("/usr/local/bin/maxima"))
-      command = wxT("/usr/local/bin/maxima");
-    else if (wxFileExists("/usr/bin/maxima"))
-      command = wxT("/usr/bin/maxima");
-    else
-      command = wxT("maxima");
-#else
+    wxMessageBox(_("wxMaxima could not find Maxima!\n\n"
+                   "Please configure wxMaxima with 'Edit->Configure'.\n"
+                   "Then start Maxima with 'Maxima->Restart Maxima'."),
+                 _("Warning"),
+                 wxOK | wxICON_EXCLAMATION);
+    SetStatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
     command = wxT("maxima");
-#endif
-    config->Write(wxT("maxima"), command);
   }
+
+  return wxT("\"") + maximacommand + wxT("\" ") + parameters;
+#else
 
 #if defined (__WXMAC__)
   if (command.Right(4) == wxT(".app")) // if pointing to a Maxima.app
     command.Append(wxT("/Contents/Resources/maxima.sh"));
 #endif
 
-  config->Read(wxT("parameters"), &parameters);
   command = wxT("\"") + command + wxT("\" ") + parameters;
   return command;
 #endif
