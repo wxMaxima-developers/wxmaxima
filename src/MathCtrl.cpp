@@ -886,10 +886,12 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event)
       }
     }
     // SELECTION OF OUTPUT
-    else {
+    else
+    {
       MathCell * tmp = m_selectionStart;
       wxRect rect;
-      while (tmp != NULL) {
+      while (tmp != NULL)
+      {
         rect = tmp->GetRect();
         if (rect.Contains(downx,downy))
           clickInSelection = true;
@@ -2866,15 +2868,17 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event)
       m_activeCell->CaretAtEnd()
       )
   {
-    GroupCell *next=dynamic_cast<GroupCell*>(m_activeCell->GetParent());
-    if(event.ShiftDown()) {
-      SetSelection(
-        dynamic_cast<GroupCell*>(m_activeCell->GetParent()),
-        dynamic_cast<GroupCell*>(m_activeCell->GetParent()->m_next)
-        );
-      m_hCaretPosition = dynamic_cast<GroupCell*>(m_selectionStart);
-      m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_selectionStart);
-      m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_selectionEnd);
+    GroupCell *start = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
+    if(event.ShiftDown())
+    {
+      GroupCell *end = start;
+      if(end->m_next != NULL)
+        end = dynamic_cast<GroupCell*>(end->m_next);
+      
+      SetSelection(start, end);
+      m_hCaretPosition = start;
+      m_hCaretPositionStart = start;
+      m_hCaretPositionEnd = end;
 
       m_cellKeyboardSelectionStartedIn = m_activeCell;
       m_activeCell -> SelectNone();
@@ -2884,14 +2888,14 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event)
     }
     else
     {
-      if (GCContainsCurrentQuestion(next)) {
+      if (GCContainsCurrentQuestion(start)) {
         // The user moved into the cell maxima has asked a question in.
         FollowEvaluation(true);
         OpenQuestionCaret();
         return;
       }
       else
-        SetHCaret(next);
+        SetHCaret(start);
     }
     // Re-calculate the table of contents as we possibly leave a cell that is
     // to be found here.
