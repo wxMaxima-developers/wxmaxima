@@ -525,9 +525,22 @@ GroupCell *MathCtrl::GetLastWorkingGroup()
 
 void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 {
+  if(newCell == NULL)
+    return;
+
   m_saved = false;
 
-  GroupCell *tmp=GetLastWorkingGroup();
+  GroupCell *tmp = GetWorkingGroup();
+  
+  if(tmp == NULL)
+    tmp = GetWorkingGroup();
+
+  if(tmp == NULL)
+  {
+    if(GetActiveCell())
+      tmp = dynamic_cast<GroupCell *>(GetActiveCell()->GetParent());
+  }
+  
   
   // If we still don't have a place to put the line we give up.
   if (tmp == NULL)

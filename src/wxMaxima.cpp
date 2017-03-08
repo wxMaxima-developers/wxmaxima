@@ -5692,8 +5692,8 @@ void wxMaxima::TryEvaluateNextInQueue()
   if((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
   {
     wxString parenthesisError=GetUnmatchedParenthesisState(tmp->GetEditable()->ToString(true));
-    if(parenthesisError==wxEmptyString)
-    {          
+    if(parenthesisError == wxEmptyString)
+    {
       if(m_console->FollowEvaluation())
       {
         m_console->SetSelection(tmp);

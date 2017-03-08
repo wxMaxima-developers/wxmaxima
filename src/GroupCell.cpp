@@ -244,7 +244,7 @@ void GroupCell::AppendInput(MathCell *cell)
 
 void GroupCell::SetOutput(MathCell *output)
 {
-  if(output != NULL)
+  if(output == NULL)
     return;
   
   wxDELETE(m_output);
@@ -285,7 +285,8 @@ void GroupCell::AppendOutput(MathCell *cell)
   wxASSERT_MSG(cell != NULL,_("Bug: Trying to append NULL to a group cell."));
   if(cell == NULL) return;
   cell->SetParentList(this);
-  if (m_output == NULL) {
+  if (m_output == NULL)
+  {
     m_output = cell;
 
     if (m_groupType == GC_TYPE_CODE && m_input->m_next != NULL)
