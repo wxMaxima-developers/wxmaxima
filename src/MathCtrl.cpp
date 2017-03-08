@@ -2064,6 +2064,9 @@ bool MathCtrl::CanDeleteRegion(GroupCell *start, GroupCell *end)
     if(tmp == m_workingGroup)
       return false;
 
+    if(tmp == end)
+      return true;
+    
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
   
