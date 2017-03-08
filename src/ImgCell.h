@@ -36,6 +36,7 @@ public:
   ImgCell(wxMemoryBuffer image,wxString type);
   ImgCell(wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
   ImgCell(const wxBitmap &bitmap);
+  ~ImgCell();
   void LoadImage(wxString image, bool remove = true);
   MathCell* Copy();
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last)
@@ -73,7 +74,6 @@ public:
   //! Returnes the original compressed version of the image
   wxMemoryBuffer GetCompressedImage(){return m_image->m_compressedImage;}
 protected:
-  void Destroy();
   Image *m_image;
   void RecalculateHeight(int fontsize);
   void RecalculateWidths(int fontsize);

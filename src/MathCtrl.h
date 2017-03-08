@@ -97,12 +97,6 @@ private:
   GroupCell *m_redrawStart;
   //! Do we need to redraw the worksheet?
   bool m_redrawRequested;
-  //! Which groupCell incremental search has started in?
-  GroupCell *m_cellSearchStartedIn;
-  //! Which cursor position incremental search has started at?
-  int m_indexSearchStartedAt;
-  
-  
   //! The clipboard format "mathML"
 
   //! A class that publishes wxm data to the clipboard
@@ -554,8 +548,6 @@ private:
     cursor that is drawn as a horizontal line. 
    */
   EditorCell *m_activeCell;
-  EditorCell *m_cellMouseSelectionStartedIn;
-  EditorCell *m_cellKeyboardSelectionStartedIn;
   //! true = blink the cursor
   bool m_blinkDisplayCaret;
   //! Is the blinking vertically-drawn cursor currently visible?

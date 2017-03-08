@@ -73,8 +73,6 @@ wxScrolledCanvas(
   m_dc = new wxClientDC(this);
   m_configuration = new Configuration(*m_dc);
   m_configuration->ReadConfig();
-  m_cellSearchStartedIn = NULL;
-  m_indexSearchStartedAt = -1;
   m_redrawStart = NULL;
   m_redrawRequested = false;
   m_autocompletePopup = NULL;
@@ -94,8 +92,6 @@ wxScrolledCanvas(
   m_workingGroup = NULL;
   TreeUndo_ActiveCell = NULL;
   m_TreeUndoMergeSubsequentEdits = false;
-  m_cellMouseSelectionStartedIn = NULL;
-  m_cellKeyboardSelectionStartedIn = NULL;
   m_questionPrompt = false;
   m_answerCell = NULL;
   m_scheduleUpdateToc = false;
@@ -863,8 +859,7 @@ GroupCell *MathCtrl::TearOutTree(GroupCell *start, GroupCell *end) {
  */
 void MathCtrl::OnMouseRightDown(wxMouseEvent& event)
 {
-  m_cellSearchStartedIn = NULL;
-  m_indexSearchStartedAt = -1;
+  EditorCell::ResetSearchStart();
 
   wxMenu* popupMenu = new wxMenu();
 
@@ -1182,7 +1177,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
           )
         )
       {
-        m_cellMouseSelectionStartedIn = editor;
+        editor->MouseSelectionStartedHere();
         SetActiveCell(editor, false); // do not refresh as we will do so later
         m_activeCell->SelectPointText(*m_dc, m_down);
         m_blinkDisplayCaret = true;
@@ -1247,9 +1242,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
     m_leftDown = true;
   }
 
-  
-  m_cellSearchStartedIn = NULL;
-  m_indexSearchStartedAt = -1;
+  EditorCell::ResetSearchStart();
 
   AnimationRunning(false);
 
@@ -1278,7 +1271,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
     m_clickType = CLICK_TYPE_INPUT_SELECTION;
 
     // The mouse selection was started in the currently active EditorCell
-    m_cellMouseSelectionStartedIn = m_activeCell;
+    m_activeCell->MouseSelectionStartedHere();
     
     // Set a fake starting point for the selection that is inside the cell the selection started in.
     int startingChar = m_activeCell->GetCaretPosition();
@@ -1342,7 +1335,6 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent& event)
     // to automatically follow the evaluation any more.
     ScrolledAwayFromEvaluation(true);
   }
-
   else if (clickedInGC != NULL)
   {
     ScrolledAwayFromEvaluation(true);
@@ -1382,8 +1374,7 @@ GroupCell *MathCtrl::FirstVisibleGC()
 
 void MathCtrl::OnMouseLeftUp(wxMouseEvent& event)
 {
-  m_cellSearchStartedIn = NULL;
-  m_indexSearchStartedAt = -1;
+  EditorCell::ResetSearchStart();
 
   // No more track the mouse when it is outside the worksheet
   if(HasCapture())
@@ -1396,7 +1387,7 @@ void MathCtrl::OnMouseLeftUp(wxMouseEvent& event)
   m_clickType = CLICK_TYPE_NONE;
   CheckUnixCopy();
   SetFocus();
-  m_cellMouseSelectionStartedIn = NULL;
+  EditorCell::ResetMouseSelectionStart();
 }
 
 void MathCtrl::OnMouseWheel(wxMouseEvent& event) {
@@ -1584,9 +1575,12 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
     return;
 
   case CLICK_TYPE_INPUT_SELECTION:
-    wxASSERT_MSG(m_cellMouseSelectionStartedIn != NULL,_("Bug: Trying to select inside a cell without having a current cell"));
-    if (m_cellMouseSelectionStartedIn != NULL) {
-      rect = m_cellMouseSelectionStartedIn->GetRect();
+    wxASSERT_MSG(EditorCell::MouseSelectionStart() != NULL,_("Bug: Trying to select inside a cell without having a current cell"));
+    if (EditorCell::MouseSelectionStart() == NULL)
+      return;
+    
+    {
+      rect = EditorCell::MouseSelectionStart()->GetRect();
 
       // Let's see if we are still inside the cell we started selecting in.
       if((ytop<rect.GetTop()) || (ybottom>rect.GetBottom()))
@@ -1610,7 +1604,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
         // selecting in.
         m_hCaretActive = false;
         SetSelection(NULL);
-        SetActiveCell(m_cellMouseSelectionStartedIn);
+        SetActiveCell(EditorCell::MouseSelectionStart());
         // We are still inside the cell => select inside the current cell.
         m_activeCell->SelectRectText(*m_dc, down, up);
         m_blinkDisplayCaret = true;
@@ -2048,26 +2042,14 @@ bool MathCtrl::CanDeleteRegion(GroupCell *start, GroupCell *end)
   if ((start == NULL)||(end == NULL))
     return false;
   
-  GroupCell *tmp = start;
-  
-  // We refuse deletion of a cell maxima is currently evaluating
-  if(tmp == m_workingGroup)
-    return false;
+  GroupCell *tmp = start;  
 
   // We refuse deletion of a cell we are planning to evaluate
   while (tmp != NULL)
   {
-    if(m_evaluationQueue.IsInQueue(tmp))
+    // We refuse deletion of a cell maxima is currently evaluating
+    if(tmp == m_workingGroup)
       return false;
-
-    if(m_cellMouseSelectionStartedIn)
-    {
-      if(tmp == m_cellMouseSelectionStartedIn->GetParent())
-        return false;
-    }
-    
-    if (tmp == end)
-      break;
 
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
@@ -2235,8 +2217,7 @@ void MathCtrl::DeleteRegion(
 
 void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoAction *> *undoBuffer)
 {
-  m_cellSearchStartedIn = NULL;
-  m_indexSearchStartedAt = -1;
+  EditorCell::ResetSearchStart();
 
   // Abort deletion if there is no valid selection or if we cannot
   // delete it.
@@ -2259,6 +2240,8 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
   {
     if(tmp==m_lastWorkingGroup)
       m_lastWorkingGroup = NULL;
+
+    m_evaluationQueue.Remove(tmp);
     
     if (tmp->IsFoldable() || (tmp->GetGroupType() == GC_TYPE_IMAGE)) {
       renumber = true;
@@ -2826,7 +2809,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event)
       m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_selectionStart);
       m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_selectionEnd);
 
-      m_cellKeyboardSelectionStartedIn = m_activeCell;
+      m_activeCell->KeyboardSelectionStartedHere();
       m_activeCell -> SelectNone();
       SetActiveCell(NULL);
       RequestRedraw(m_hCaretPosition);
@@ -2880,7 +2863,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event)
       m_hCaretPositionStart = start;
       m_hCaretPositionEnd = end;
 
-      m_cellKeyboardSelectionStartedIn = m_activeCell;
+      m_activeCell->KeyboardSelectionStartedHere();
       m_activeCell -> SelectNone();
       SetActiveCell(NULL);
       ScrolledAwayFromEvaluation();
@@ -2905,7 +2888,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event)
     return;
   }
 
-  m_cellKeyboardSelectionStartedIn = NULL;
+  EditorCell::ResetKeyboardSelectionStart();
 
   // an empty cell is removed on backspace/delete
   if ((event.GetKeyCode() == WXK_BACK || event.GetKeyCode() == WXK_DELETE || event.GetKeyCode() == WXK_NUMPAD_DELETE) &&
@@ -3026,13 +3009,13 @@ void MathCtrl::SelectWithChar(int ccode)
       m_hCaretPositionStart = m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_next);
   }
   else if (ccode == WXK_UP) {
-    if(m_cellKeyboardSelectionStartedIn &&
-       (m_hCaretPositionEnd==dynamic_cast<GroupCell*>(m_cellKeyboardSelectionStartedIn->GetParent()->m_next)))
+    if((EditorCell::KeyboardSelectionStart()!= NULL) &&
+       (m_hCaretPositionEnd==dynamic_cast<GroupCell*>(EditorCell::KeyboardSelectionStart()->GetParent()->m_next)))
     {
       // We are in the cell the selection started in
-      SetActiveCell(m_cellKeyboardSelectionStartedIn);
+      SetActiveCell(EditorCell::KeyboardSelectionStart());
       SetSelection(NULL);
-      m_cellKeyboardSelectionStartedIn->ReturnToSelectionFromBot();
+      EditorCell::KeyboardSelectionStart()->ReturnToSelectionFromBot();
       m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
     }
     else
@@ -3051,13 +3034,16 @@ void MathCtrl::SelectWithChar(int ccode)
   else
   {
     // We arrive here if the down key was pressed.
-    if(m_cellKeyboardSelectionStartedIn && (m_hCaretPositionEnd==dynamic_cast<GroupCell*>(m_cellKeyboardSelectionStartedIn->GetParent()->m_previous)))
+    if(
+      (EditorCell::KeyboardSelectionStart() != NULL) &&
+      (m_hCaretPositionEnd==dynamic_cast<GroupCell*>(EditorCell::KeyboardSelectionStart()->GetParent()->m_previous))
+      )
     {
       // We are in the cell the selection started in
-      SetActiveCell(m_cellKeyboardSelectionStartedIn);
+      SetActiveCell(EditorCell::KeyboardSelectionStart());
       SetSelection(NULL);
       m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
-      m_cellKeyboardSelectionStartedIn->ReturnToSelectionFromTop();
+      EditorCell::KeyboardSelectionStart()->ReturnToSelectionFromTop();
     }
     else
     {
@@ -3140,7 +3126,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent& event) {
     return;
   }
 
-  m_cellKeyboardSelectionStartedIn = NULL;
+  EditorCell::ResetKeyboardSelectionStart();
   
   if (m_selectionStart != NULL &&
       m_selectionStart->GetType() == MC_TYPE_SLIDE &&
@@ -3484,9 +3470,7 @@ void MathCtrl::OnChar(wxKeyEvent& event)
     return;
   }
   
-  m_cellSearchStartedIn = NULL;
-  m_indexSearchStartedAt = -1;
-
+  EditorCell::ResetSearchStart();
 #if defined __WXMSW__
   if (event.GetKeyCode() == WXK_NUMPAD_DECIMAL) {
     return;
@@ -6683,8 +6667,8 @@ GroupCell *MathCtrl::GetHCaret()
   if (m_selectionStart)
     return dynamic_cast<GroupCell*>(m_selectionStart->GetParent());
 
-  if (m_cellMouseSelectionStartedIn)
-    return dynamic_cast<GroupCell*>(m_cellMouseSelectionStartedIn->GetParent());
+  if (EditorCell::MouseSelectionStart() != NULL)
+    return dynamic_cast<GroupCell*>(EditorCell::MouseSelectionStart()->GetParent());
 
   // A fallback value that is returned if nothing else seems to work
   return m_last;
@@ -6829,8 +6813,7 @@ void MathCtrl::RemoveAllOutput(GroupCell *tree)
 
 void MathCtrl::OnMouseMiddleUp(wxMouseEvent& event)
 {
-  m_cellSearchStartedIn = NULL;
-  m_indexSearchStartedAt = -1;
+  EditorCell::ResetSearchStart();
 
 #if defined __WXGTK__
   OnMouseLeftDown(event);
@@ -6899,10 +6882,11 @@ wxString MathCtrl::GetOutputAboveCaret()
 
 bool MathCtrl::FindIncremental(wxString str, bool down, bool ignoreCase)
 {
-  if(m_cellSearchStartedIn != NULL)
-    SetActiveCell(m_cellSearchStartedIn->GetEditable());
-  if((m_cellSearchStartedIn!=NULL)&&(m_cellSearchStartedIn->GetEditable()!=NULL))
-    m_cellSearchStartedIn->GetEditable()->CaretToPosition(m_indexSearchStartedAt);
+  if(EditorCell::SearchStart() != NULL)
+  {
+    SetActiveCell(EditorCell::SearchStart());
+    EditorCell::SearchStart()->CaretToPosition(EditorCell::IndexSearchStartedAt());
+  }
   if(str != wxEmptyString)
     return FindNext(str,down,ignoreCase,false);
   else
@@ -6970,8 +6954,7 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase,bool warn)
   if(pos == NULL)
     return false;
 
-  m_cellSearchStartedIn = pos;
-  m_indexSearchStartedAt = pos->GetEditable()->GetCaretPosition();
+  pos->GetEditable()->SearchStartedHere(pos->GetEditable()->GetCaretPosition());
 
   // Remember where to go if we need to wrapp the search.
   GroupCell *start = pos;
@@ -7107,16 +7090,13 @@ void MathCtrl::Replace(wxString oldString, wxString newString, bool ignoreCase)
       Recalculate();
       Refresh();
     }
-    m_cellSearchStartedIn = dynamic_cast<GroupCell*>(m_activeCell->GetParent());
-    m_indexSearchStartedAt = GetActiveCell()->GetCaretPosition();
+    m_activeCell->SearchStartedHere();
   }
 }
 
 int MathCtrl::ReplaceAll(wxString oldString, wxString newString, bool ignoreCase)
 {
-  m_cellSearchStartedIn = NULL;
-  m_indexSearchStartedAt = -1;
-
+  EditorCell::ResetSearchStart();
   
   if (m_tree == NULL)
     return 0;

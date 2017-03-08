@@ -32,6 +32,7 @@ class MatrCell : public MathCell
 {
 public:
   MatrCell();
+  ~MatrCell();
   MathCell* Copy();
   void RecalculateHeight(int fontsize);
   void RecalculateWidths(int fontsize);
@@ -61,7 +62,6 @@ public:
   void RowNames(bool rn) { m_rowNames = rn; }
   void ColNames(bool cn) { m_colNames = cn; }
 protected:
-  void Destroy();
   int m_matWidth;
   int m_matHeight;
   bool m_specialMatrix, m_inferenceMatrix, m_rowNames, m_colNames;

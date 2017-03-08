@@ -55,6 +55,15 @@
 class EditorCell : public MathCell
 {
 private:
+  //! The EditorCell the mouse selection has started in
+  static EditorCell *m_cellMouseSelectionStartedIn;
+  //! The EditorCell the keyboard selection has started in
+  static EditorCell *m_cellKeyboardSelectionStartedIn;
+  //! The EditorCell the search was started in
+  static EditorCell *m_cellSearchStartedIn;
+  //! Which cursor position incremental search has started at?
+  static int m_indexSearchStartedAt;
+
   //! The viewport size the linewrap was done for.
   int m_oldViewportWidth;
   //! The zoom factor the linewrap was done for.
@@ -94,6 +103,32 @@ private:
   long m_oldSelectionStart;
   long m_oldSelectionEnd;
 public:
+
+  static EditorCell *MouseSelectionStart(){return m_cellMouseSelectionStartedIn;}
+  static EditorCell *KeyboardSelectionStart(){return m_cellKeyboardSelectionStartedIn;}
+  static EditorCell *SearchStart(){return m_cellSearchStartedIn;}
+  static int IndexSearchStartedAt(){return m_indexSearchStartedAt;}
+  
+  /*! Remember that this is the cell the search was started in.
+
+    \param index The index of the character the search was started at.
+  */
+  void SearchStartedHere(int index){m_cellSearchStartedIn = this;m_indexSearchStartedAt = index;}
+  void SearchStartedHere(){m_cellSearchStartedIn = this;m_indexSearchStartedAt = m_positionOfCaret;}
+  //! Remember that this is the cell the mouse selection was started in.
+  void MouseSelectionStartedHere(){m_cellMouseSelectionStartedIn = this;}
+  //! Remember that this is the cell the keyboard selection was started in.
+  void KeyboardSelectionStartedHere(){m_cellKeyboardSelectionStartedIn = this;}
+  //! Remember that this is the cell the keyboard selection was started in.
+  void IndexSearchStartedAt(int index){m_indexSearchStartedAt = index;}
+
+  //! Forget where the mouse selection was started
+  static void ResetMouseSelectionStart(){m_cellMouseSelectionStartedIn = NULL;}
+  //! Forget where the keyboard selection was started
+  static void ResetKeyboardSelectionStart(){m_cellKeyboardSelectionStartedIn = NULL;}
+  //! Forget where the search was started
+  static void ResetSearchStart(){m_cellSearchStartedIn = NULL;m_indexSearchStartedAt = -1;}
+  
   //! Set the string that is to be highlighted as "identical to the curent selection"
   static void SetSelectionString(wxString string)
     {m_selectionString = string;}
@@ -103,7 +138,7 @@ public:
   bool m_selectionChanged;
   //! The constructor
   EditorCell(wxString text = wxEmptyString);
-
+  ~EditorCell();
   /*! Expand all tabulators.
 
     \param input The string the tabulators should be expanded in

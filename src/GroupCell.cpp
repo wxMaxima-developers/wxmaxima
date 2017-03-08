@@ -194,7 +194,7 @@ MathCell* GroupCell::Copy()
   return tmp;
 }
 
-void GroupCell::Destroy()
+GroupCell::~GroupCell()
 {
   wxDELETE(m_input);
   wxDELETE(m_output);

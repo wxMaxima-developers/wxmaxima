@@ -50,6 +50,7 @@ class ParenCell : public MathCell
 {
 public:
   ParenCell();
+  ~ParenCell();
   MathCell* Copy();
   void SetInner(MathCell *inner, int style);
   void SetPrint(bool print)
@@ -69,7 +70,6 @@ public:
   wxString ToXML();
   void SetParent(MathCell *parent);
 protected:
-  void Destroy();
   MathCell *m_innerCell, *m_open, *m_close;
   MathCell *m_last1;
   bool m_print;

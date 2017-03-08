@@ -54,7 +54,7 @@ MathCell* SubCell::Copy()
   return tmp;
 }
 
-void SubCell::Destroy()
+SubCell::~SubCell()
 {
   if (m_baseCell != NULL)
     delete m_baseCell;

@@ -59,7 +59,7 @@ MathCell* ConjugateCell::Copy()
   return tmp;
 }
 
-void ConjugateCell::Destroy()
+ConjugateCell::~ConjugateCell()
 {
   wxDELETE(m_innerCell);
   wxDELETE(m_open);

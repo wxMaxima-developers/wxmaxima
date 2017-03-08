@@ -577,15 +577,6 @@ public:
   bool m_SuppressMultiplicationDot;
 
 protected:
-  /*! Free all memory directly referenced by the contents of this cell
-
-    This command (and the celltype-specific versions of the derived
-    classes) are internally used by the DestroyTree() functions that
-    free the complete list of cells.
-    \attention This function Doesn't free the other cells of the list
-    that is started by this cell.
-   */
-  virtual void Destroy(){}
   static wxRect m_updateRegion;
 
   /*! The GroupCell this list of cells belongs to.

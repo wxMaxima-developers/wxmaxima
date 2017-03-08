@@ -122,7 +122,7 @@ MathCell* SlideShow::Copy()
   return tmp;
 }
 
-void SlideShow::Destroy()
+SlideShow::~SlideShow()
 {
   for (int i=0; i<m_size; i++)
     if (m_images[i] != NULL)

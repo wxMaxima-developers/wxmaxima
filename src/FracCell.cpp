@@ -82,7 +82,7 @@ MathCell* FracCell::Copy()
   return tmp;
 }
 
-void FracCell::Destroy()
+FracCell::~FracCell()
 {
   wxDELETE(m_open1);
   wxDELETE(m_open2);

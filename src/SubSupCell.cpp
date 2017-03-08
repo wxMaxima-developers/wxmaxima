@@ -61,7 +61,7 @@ MathCell* SubSupCell::Copy()
   return tmp;
 }
 
-void SubSupCell::Destroy()
+SubSupCell::~SubSupCell()
 {
   if (m_baseCell != NULL)
     delete m_baseCell;

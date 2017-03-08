@@ -59,7 +59,7 @@ MathCell* LimitCell::Copy()
   return tmp;
 }
 
-void LimitCell::Destroy()
+LimitCell::~LimitCell()
 {
   wxDELETE(m_base);
   wxDELETE(m_under);

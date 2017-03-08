@@ -67,6 +67,32 @@ bool EvaluationQueue::IsInQueue(GroupCell* gr)
   return false;
 }
 
+void EvaluationQueue::Remove(GroupCell* gr)
+{
+  if(gr != NULL)
+  {
+    while((m_queue != NULL)&&(m_queue -> group == gr))
+    {
+      EvaluationQueueElement* oldStart = m_queue;
+      m_queue = m_queue->next;
+      delete oldStart;
+    }
+    
+    EvaluationQueueElement* tmp  = m_queue;
+    while (tmp != NULL)
+    {
+      while((tmp->next != NULL) && (tmp->next->group == gr))
+      {
+        EvaluationQueueElement* oldNext = tmp->next;
+        tmp->next = tmp->next->next;
+        delete oldNext;
+      }
+      
+      tmp = tmp->next;
+    }
+  }
+}
+
 void EvaluationQueue::AddToQueue(GroupCell* gr)
 {
   bool emptyWas = Empty();

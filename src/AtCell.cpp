@@ -52,7 +52,7 @@ MathCell* AtCell::Copy()
   return tmp;
 }
 
-void AtCell::Destroy()
+AtCell::~AtCell()
 {
   wxDELETE(m_baseCell);
   wxDELETE(m_indexCell);

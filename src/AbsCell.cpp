@@ -61,7 +61,7 @@ MathCell* AbsCell::Copy()
   return tmp;
 }
 
-void AbsCell::Destroy()
+AbsCell::~AbsCell()
 {
   wxDELETE(m_innerCell);
   wxDELETE(m_open);

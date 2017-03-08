@@ -68,7 +68,7 @@ MathCell* ExptCell::Copy()
   return tmp;
 }
 
-void ExptCell::Destroy()
+ExptCell::~ExptCell()
 {
   wxDELETE(m_baseCell);
   wxDELETE(m_powCell);

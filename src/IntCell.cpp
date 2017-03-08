@@ -75,7 +75,7 @@ MathCell* IntCell::Copy()
   return tmp;
 }
 
-void IntCell::Destroy()
+IntCell::~IntCell()
 {
   wxDELETE(m_base);
   wxDELETE(m_under);

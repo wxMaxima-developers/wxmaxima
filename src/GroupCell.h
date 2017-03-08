@@ -62,6 +62,7 @@ class GroupCell: public MathCell
 {
 public:
   GroupCell(int groupType, wxString initString = wxEmptyString);
+  ~GroupCell();
   static void CellUnderPointer(GroupCell *cell);
   MathCell* Copy();
   //! Set the y position of the selection start and end
@@ -227,7 +228,6 @@ public:
   void InEvaluationQueue(bool inQueue) {m_inEvaluationQueue = inQueue;}
   void LastInEvaluationQueue(bool last) {m_lastInEvaluationQueue = last;}
 protected:
-  void Destroy();
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold
   int m_groupType;

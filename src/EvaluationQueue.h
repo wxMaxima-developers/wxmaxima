@@ -80,6 +80,8 @@ public:
   bool IsInQueue(GroupCell* gr);
   //! Adds a GroupCell to the evaluation queue.
   void AddToQueue(GroupCell* gr);
+  //! Remove a GroupCell from the evaluation queue.
+  void Remove(GroupCell* gr);
   //! Adds all hidden cells attached to the GroupCell gr to the evaluation queue.
   void AddHiddenTreeToQueue(GroupCell* gr);
   //! Removes the first cell in the queue

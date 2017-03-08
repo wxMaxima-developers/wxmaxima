@@ -41,6 +41,7 @@ class FracCell : public MathCell
 {
 public:
   FracCell();
+  ~FracCell();
 
   //! All types of fractions we supportx
   enum FracType {
@@ -78,7 +79,6 @@ public:
   void Unbreak();
   void SetParent(MathCell *parent);
 protected:
-  void Destroy();
   //! The nummerator
   MathCell *m_num;
   //! The denominator

@@ -52,6 +52,7 @@ class FunCell : public MathCell
 {
 public:
   FunCell();
+  ~FunCell();
   MathCell* Copy();
   void SetName(MathCell *base);
   void SetArg(MathCell *index);
@@ -68,7 +69,6 @@ public:
   void Unbreak();
   void SetParent(MathCell *parent);
 protected:
-  void Destroy();
   MathCell *m_nameCell;
   MathCell *m_argCell;
 };

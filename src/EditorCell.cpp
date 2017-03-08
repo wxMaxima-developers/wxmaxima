@@ -212,6 +212,19 @@ wxString EditorCell::ToRTF()
   return retval;
 }
 
+EditorCell::~EditorCell()
+{
+  if(m_cellMouseSelectionStartedIn == this)
+    m_cellMouseSelectionStartedIn = NULL;
+  if(m_cellKeyboardSelectionStartedIn == this)
+    m_cellKeyboardSelectionStartedIn = NULL;
+  if(m_cellSearchStartedIn == this)
+  {
+    m_cellSearchStartedIn = NULL;
+    m_indexSearchStartedAt = 0;
+  }
+}
+
 wxString EditorCell::ToTeX()
 {
   wxString text = m_text;
@@ -4225,3 +4238,8 @@ void EditorCell::CaretToPosition(int pos)
   if (GetType() == MC_TYPE_INPUT)
     FindMatchingParens();
 }
+
+EditorCell *EditorCell::m_cellMouseSelectionStartedIn = NULL;
+EditorCell *EditorCell::m_cellKeyboardSelectionStartedIn = NULL;
+EditorCell *EditorCell::m_cellSearchStartedIn = NULL;
+int EditorCell::m_indexSearchStartedAt = -1;

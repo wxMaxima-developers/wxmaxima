@@ -60,10 +60,12 @@ MathCell::MathCell()
 
 MathCell::~MathCell()
 {
+  // Find the last cell in this list of cells
   MathCell *last = this;
   while(last->m_next != NULL)
     last = last->m_next;
 
+  // Delete all cells beginning with the last one
   while((last != NULL) && (last != this))
   {
     MathCell *tmp = last;
@@ -71,8 +73,6 @@ MathCell::~MathCell()
     delete tmp;
     last->m_next = NULL;
   }
-  
-  this->Destroy();
 }
 
 void MathCell::SetType(int type)

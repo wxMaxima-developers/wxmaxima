@@ -90,7 +90,7 @@ MathCell* ParenCell::Copy()
   return tmp;
 }
 
-void ParenCell::Destroy()
+ParenCell::~ParenCell()
 {
   wxDELETE(m_innerCell);
   wxDELETE(m_open);

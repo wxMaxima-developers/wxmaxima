@@ -53,7 +53,7 @@ MathCell* FunCell::Copy()
   return tmp;
 }
 
-void FunCell::Destroy()
+FunCell::~FunCell()
 {
   wxDELETE(m_nameCell);
   wxDELETE(m_argCell);

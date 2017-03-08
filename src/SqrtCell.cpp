@@ -67,7 +67,7 @@ MathCell* SqrtCell::Copy()
   return tmp;
 }
 
-void SqrtCell::Destroy()
+SqrtCell::~SqrtCell()
 {
   wxDELETE(m_innerCell);
   wxDELETE(m_open);

@@ -34,6 +34,7 @@ class LimitCell : public MathCell
 {
 public:
   LimitCell();
+  ~LimitCell();
   MathCell* Copy();
   void RecalculateHeight(int fontsize);
   void RecalculateWidths(int fontsize);
@@ -50,7 +51,6 @@ public:
   void SetParent(MathCell *parent);
 protected:
   MathCell *m_base;
-  void Destroy();
   MathCell *m_under;
   MathCell *m_name;
 };

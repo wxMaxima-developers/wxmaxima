@@ -69,7 +69,7 @@ MathCell* SumCell::Copy()
   return tmp;
 }
 
-void SumCell::Destroy()
+SumCell::~SumCell()
 {
   wxDELETE(m_base);
   wxDELETE(m_under);

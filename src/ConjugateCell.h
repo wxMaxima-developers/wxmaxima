@@ -48,6 +48,7 @@ class ConjugateCell : public MathCell
 {
 public:
   ConjugateCell();
+  ~ConjugateCell();
   void SetInner(MathCell *inner);
   MathCell* Copy();
   void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
@@ -55,7 +56,6 @@ public:
   void Unbreak();
   void SetParent(MathCell *parent);
 protected:
-  void Destroy();
   MathCell *m_innerCell;
   TextCell *m_open, *m_close;
   MathCell *m_last;

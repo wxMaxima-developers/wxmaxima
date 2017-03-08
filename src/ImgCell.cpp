@@ -103,7 +103,7 @@ MathCell* ImgCell::Copy()
   return tmp;
 }
 
-void ImgCell::Destroy()
+ImgCell::~ImgCell()
 {
   wxDELETE(m_image);
 }

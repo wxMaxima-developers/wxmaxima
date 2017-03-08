@@ -54,7 +54,7 @@ MathCell* DiffCell::Copy()
   return tmp;
 }
 
-void DiffCell::Destroy()
+DiffCell::~DiffCell()
 {
   wxDELETE(m_baseCell);
   wxDELETE(m_diffCell);

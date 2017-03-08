@@ -63,7 +63,7 @@ MathCell* MatrCell::Copy()
   return tmp;
 }
 
-void MatrCell::Destroy()
+MatrCell::~MatrCell()
 {
   for (unsigned int i = 0; i < m_cells.size(); i++)
   {
