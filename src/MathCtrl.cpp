@@ -3041,11 +3041,12 @@ void MathCtrl::SelectWithChar(int ccode)
       if (m_hCaretPositionEnd->m_previous != NULL) {
         if (m_hCaretPosition != NULL && m_hCaretPosition->m_next == m_hCaretPositionEnd)
           m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_previous);
-           m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionEnd->m_previous);
-         }
-         if (m_hCaretPositionEnd != NULL)
-           ScrollToCell(m_hCaretPositionEnd,false); 
-       }
+        if(m_hCaretPositionEnd != NULL)
+          m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionEnd->m_previous);
+      }
+      if (m_hCaretPositionEnd != NULL)
+        ScrollToCell(m_hCaretPositionEnd,false); 
+    }
   }
   else
   {
@@ -3064,13 +3065,14 @@ void MathCtrl::SelectWithChar(int ccode)
       if (m_hCaretPositionEnd->m_next != NULL) {
         if (m_hCaretPosition == m_hCaretPositionEnd)
           m_hCaretPositionStart = dynamic_cast<GroupCell*>(m_hCaretPositionStart->m_next);
-        m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionEnd->m_next);
+        if(m_hCaretPositionEnd != NULL)
+          m_hCaretPositionEnd = dynamic_cast<GroupCell*>(m_hCaretPositionEnd->m_next);
       }
       if (m_hCaretPositionEnd != NULL)
         ScrollToCell(m_hCaretPositionEnd,false);
     }
   }
-
+  
   if ((m_hCaretPositionStart) && (m_hCaretPositionEnd))
   {
     // m_hCaretPositionStart can be above or below m_hCaretPositionEnd
