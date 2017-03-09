@@ -196,11 +196,21 @@ MathCell* GroupCell::Copy()
 
 GroupCell::~GroupCell()
 {
+  MarkAsDeleted();  
   wxDELETE(m_input);
   wxDELETE(m_output);
   m_input = m_output = NULL;
+}
+
+void GroupCell::MarkAsDeleted()
+{
+  EditorCell *input = GetInput();
+  if(input != NULL)
+    input->MarkAsDeleted();
+  if(this == m_lastWorkingGroup)
+    m_lastWorkingGroup = NULL;
   if(this == m_groupCellUnderPointer)
-    m_groupCellUnderPointer = NULL;
+    m_groupCellUnderPointer = NULL;  
 }
 
 wxString GroupCell::TexEscapeOutputCell(wxString Input)
@@ -1759,5 +1769,6 @@ bool GroupCell::Contains(GroupCell *cell)
 }
 
 GroupCell *GroupCell::m_groupCellUnderPointer = NULL;
+GroupCell *GroupCell::m_lastWorkingGroup = NULL;
 int GroupCell::m_selectionStart_px = -1;
 int GroupCell::m_selectionEnd_px = -1;

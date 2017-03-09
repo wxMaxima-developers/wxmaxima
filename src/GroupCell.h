@@ -63,6 +63,35 @@ class GroupCell: public MathCell
 public:
   GroupCell(int groupType, wxString initString = wxEmptyString);
   ~GroupCell();
+  /*! Tell this cell to remove it from all gui actions.
+
+    Normally the gui keeps various pointers to a cell: The cell below the cursor,
+    the cell the selection was started at, the cell that was the last cell maxima
+    appended output to...
+
+    Running this command tells the cell to remove these pointers as the cell is 
+    no more displayed currently.
+   */
+  void MarkAsDeleted();
+  /*! Which GroupCell was the last maxima was working on?
+
+    Must be kept in GroupCell as on deletion a GroupCell will unlink itself from 
+    this pointer.
+   */
+  static GroupCell *GetLastWorkingGroup()
+    {
+      return m_lastWorkingGroup;
+    }
+  //! Mark this cell as being the last cell maxima was working on.
+  void IsLastWorkingGroup()
+    {
+      m_lastWorkingGroup = this;
+    }
+  /*! Marks the cell that is under the mouse pointer.
+
+    Is kept in GroupCell so every GroupCell can decide it is no more under the pointer
+    once it has been deleted from the worksheet.
+   */
   static void CellUnderPointer(GroupCell *cell);
   MathCell* Copy();
   //! Set the y position of the selection start and end
@@ -112,7 +141,12 @@ public:
   void AppendInput(MathCell *cell);
   wxString TexEscapeOutputCell(wxString Input);
   MathCell* GetPrompt() { return m_input; }
-  EditorCell* GetInput() { return dynamic_cast<EditorCell*>(m_input->m_next); }
+  EditorCell* GetInput() {
+    if(m_input != NULL)
+      return dynamic_cast<EditorCell*>(m_input->m_next);
+    else
+      return NULL;
+  }
   MathCell* GetLabel() { return m_output; }
   MathCell* GetOutput() { if (m_output == NULL) return NULL; else return m_output->m_next; }
   //
@@ -250,6 +284,8 @@ private:
   wxRect m_outputRect;
   bool m_inEvaluationQueue;
   bool m_lastInEvaluationQueue;
+  //! The last group cell maxima was working on.
+  static GroupCell *m_lastWorkingGroup;
 };
 
 #endif /* GROUPCELL_H */

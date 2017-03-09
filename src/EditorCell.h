@@ -103,10 +103,29 @@ private:
   long m_oldSelectionStart;
   long m_oldSelectionEnd;
 public:
+  /*! Tells where the mouse selection has started.
 
+    Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
+    remove this pointer.
+   */
   static EditorCell *MouseSelectionStart(){return m_cellMouseSelectionStartedIn;}
+  /*! Tells where the keyboard selection has started.
+
+    Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
+    remove this pointer.
+   */
   static EditorCell *KeyboardSelectionStart(){return m_cellKeyboardSelectionStartedIn;}
+  /*! Tells where the search has started.
+
+    Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
+    remove this pointer.
+   */
   static EditorCell *SearchStart(){return m_cellSearchStartedIn;}
+  /*! At which character inside inside its cell has the search started?
+
+    Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
+    remove this pointer.
+   */
   static int IndexSearchStartedAt(){return m_indexSearchStartedAt;}
   
   /*! Remember that this is the cell the search was started in.
@@ -114,6 +133,7 @@ public:
     \param index The index of the character the search was started at.
   */
   void SearchStartedHere(int index){m_cellSearchStartedIn = this;m_indexSearchStartedAt = index;}
+  //! Remember that this is the cell the search was started in.
   void SearchStartedHere(){m_cellSearchStartedIn = this;m_indexSearchStartedAt = m_positionOfCaret;}
   //! Remember that this is the cell the mouse selection was started in.
   void MouseSelectionStartedHere(){m_cellMouseSelectionStartedIn = this;}
@@ -139,6 +159,16 @@ public:
   //! The constructor
   EditorCell(wxString text = wxEmptyString);
   ~EditorCell();
+  /*! Tell this cell to remove it from all gui actions.
+
+    Normally the gui keeps various pointers to a cell: The cell below the cursor,
+    the cell the selection was started at, the cell that was the last cell maxima
+    appended output to...
+
+    Running this command tells the cell to remove these pointers as the cell is 
+    no more displayed currently.
+   */
+  void MarkAsDeleted();
   /*! Expand all tabulators.
 
     \param input The string the tabulators should be expanded in

@@ -88,7 +88,6 @@ wxScrolledCanvas(
   m_lastTop    = 0;
   m_lastBottom = 0;
   m_followEvaluation = true;
-  m_lastWorkingGroup = NULL;
   m_workingGroup = NULL;
   TreeUndo_ActiveCell = NULL;
   m_TreeUndoMergeSubsequentEdits = false;
@@ -469,7 +468,7 @@ GroupCell *MathCtrl::UpdateMLast()
 
 void MathCtrl::ScrollToError()
 {
-  GroupCell *ErrorCell=GetLastWorkingGroup();
+  GroupCell *ErrorCell = GetLastWorkingGroup();
   if(ErrorCell != NULL)
   {
     if (ErrorCell->RevealHidden())
@@ -483,24 +482,9 @@ void MathCtrl::ScrollToError()
 
 GroupCell *MathCtrl::GetLastWorkingGroup()
 {
-  GroupCell *tmp = NULL;
-  
-  if(m_workingGroup != NULL)
-  {
-    // TODO: In theory m_tree->Contains(m_workingGroup) should always be true.
-    // But sometimes it isn't. Why?
-    if(m_tree->Contains(m_workingGroup))
-      tmp = m_workingGroup;
-  }
-  
-  if (tmp == NULL)
-  {
-    if(m_tree->Contains(m_lastWorkingGroup))
-       tmp = m_lastWorkingGroup;
-  }
-  
-  // This is weird. Let's try the cell below the horizontally drawn cursor:
-  // The cursor should most of the times be near to the cell we are evaluating.
+  GroupCell *tmp = GroupCell::GetLastWorkingGroup();
+
+  // The last group maxima was working on no more exists or has been deleted.
   if (tmp == NULL)
   {
     if(m_hCaretActive)
@@ -2249,14 +2233,10 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
   m_hCaretPosition = NULL;
 
   // check if chapters or sections need to be renumbered
-  // and unset m_lastWorkingGroup if it points to a cell that isn't valid any more.
   bool renumber = false;
   GroupCell *tmp = start;
   while (tmp)
   {
-    if(tmp==m_lastWorkingGroup)
-      m_lastWorkingGroup = NULL;
-
     m_evaluationQueue.Remove(tmp);
     
     if (tmp->IsFoldable() || (tmp->GetGroupType() == GC_TYPE_IMAGE)) {
@@ -2267,6 +2247,9 @@ void MathCtrl::DeleteRegion(GroupCell *start,GroupCell *end,std::list <TreeUndoA
     // Don't keep cached versions of scaled images around in the undo buffer.
     if(tmp->GetOutput())
       tmp->GetOutput()->ClearCacheList();
+
+    // Tell the cells we don't want to keep pointers to them active
+    tmp->MarkAsDeleted();
     
     if (tmp == end)
       break;
@@ -3747,7 +3730,6 @@ void MathCtrl::DestroyTree()
 {
   m_hCaretActive = false;
   SetHCaret(NULL);
-  m_lastWorkingGroup = NULL;
   TreeUndo_ClearUndoActionList();
   TreeUndo_ClearRedoActionList();
   wxDELETE(m_tree);
@@ -6655,7 +6637,7 @@ void MathCtrl::SetWorkingGroup(GroupCell *group)
   if (m_workingGroup != NULL)
   {
     m_workingGroup->SetWorking(true);
-    m_lastWorkingGroup = group;
+    group->IsLastWorkingGroup();
   }
 }
 

@@ -518,8 +518,6 @@ private:
     NULL means that maxima isn't currently evaluating a cell.
    */
   GroupCell *m_workingGroup;
-  //! The last group cell maxima was working on.
-  GroupCell *m_lastWorkingGroup;
   /*! The first cell of the currently selected range of groupCells.
     
     NULL, when no GroupCells are selected and NULL, if only stuff inside a GroupCell

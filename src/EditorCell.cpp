@@ -214,6 +214,11 @@ wxString EditorCell::ToRTF()
 
 EditorCell::~EditorCell()
 {
+  MarkAsDeleted();
+}
+
+void EditorCell::MarkAsDeleted()
+{
   if(m_cellMouseSelectionStartedIn == this)
     m_cellMouseSelectionStartedIn = NULL;
   if(m_cellKeyboardSelectionStartedIn == this)
