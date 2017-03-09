@@ -289,7 +289,7 @@ wxString MatrCell::ToOMML()
 
   retval = wxT("<m:d>");
    if(!m_specialMatrix)
-     retval += wxT("<m:dPr><m:begChr>(</m:begChr><m:endChr>)</m:endChr></m:dPr>");
+     retval += wxT("<m:dPr><m:begChr>(</m:begChr><m:endChr>)</m:endChr> <m:grow>\"1\"</m:grow></m:dPr>");
 
    retval += wxT("<m:e><m:m>");
 
