@@ -45,6 +45,7 @@ Configuration::Configuration(wxDC& dc) : m_dc(&dc)
   m_printer = false;
   m_TeXFonts = false;
   m_printer = false;
+  m_fixReorderedIndices = true;
   m_showBrackets = true;
   m_printBrackets = false;
   m_hideBrackets = true;
@@ -90,6 +91,8 @@ void Configuration::ReadConfig()
   wxConfig *config = (wxConfig *)wxConfig::Get();
   m_autoWrap = 3;
   config->Read(wxT("autoWrapMode"), &m_autoWrap);
+
+  config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
 
   config->Read(wxT("maxima"), &m_maximaLocation);
   //Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a

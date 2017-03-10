@@ -303,7 +303,13 @@ public:
     is taken.
    */
   bool MaximaFound(wxString location = wxEmptyString);
-
+  //! Renumber out-of-order cell labels on saving.
+  bool FixReorderedIndices(){return m_fixReorderedIndices;}
+  void FixReorderedIndices(bool fix)
+    {
+      wxConfig::Get()->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices = fix);
+    }
+  
 private:
   wxString m_maximaLocation;
   //! Hide brackets that are not under the pointer
@@ -357,6 +363,7 @@ private:
   bool m_printer;
   int m_lineWidth_em;
   int m_showLabelChoice;
+  bool m_fixReorderedIndices;
   static bool m_showCodeCells;
   static Configuration *m_activeConfiguration;
 };

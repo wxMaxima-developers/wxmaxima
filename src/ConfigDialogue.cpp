@@ -263,7 +263,6 @@ void ConfigDialogue::SetProperties()
   int showLength = 0;
   int autosubscript = 1;
   int  bitmapScale = 3;
-  bool fixReorderedIndices = false;
   bool incrementalSearch = true;
   int defaultFramerate = 2;
   wxString texPreamble=wxEmptyString;
@@ -318,7 +317,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("undoLimit"), &undoLimit);
   config->Read(wxT("recentItems"), &recentItems);
   config->Read(wxT("bitmapScale"), &bitmapScale);
-  config->Read(wxT("fixReorderedIndices"), &fixReorderedIndices);
   config->Read(wxT("incrementalSearch"), &incrementalSearch);
   config->Read(wxT("usejsmath"), &usejsmath);
   config->Read(wxT("keepPercent"), &keepPercent);
@@ -380,7 +378,7 @@ void ConfigDialogue::SetProperties()
   m_undoLimit->SetValue(undoLimit);
   m_recentItems->SetValue(recentItems);
   m_bitmapScale->SetValue(bitmapScale);
-  m_fixReorderedIndices->SetValue(fixReorderedIndices);
+  m_fixReorderedIndices->SetValue(configuration->FixReorderedIndices());
   m_incrementalSearch->SetValue(incrementalSearch);
   m_fixedFontInTC->SetValue(fixedFontTC);
   m_useJSMath->SetValue(usejsmath);
@@ -899,7 +897,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("undoLimit"), m_undoLimit->GetValue());
   config->Write(wxT("recentItems"), m_recentItems->GetValue());
   config->Write(wxT("bitmapScale"), m_bitmapScale->GetValue());
-  config->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices->GetValue());
+  configuration->FixReorderedIndices(m_fixReorderedIndices->GetValue());
   config->Write(wxT("incrementalSearch"), m_incrementalSearch->GetValue());
   configuration->SetLabelChoice(m_showUserDefinedLabels->GetSelection());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());

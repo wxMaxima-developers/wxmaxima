@@ -5266,9 +5266,10 @@ bool MathCtrl::ExportToMAC(wxString file)
     AddLineToFile(backupfile, wxT("/* [ Created with wxMaxima version ") + version + wxT(" ] */"), false);
   }
 
-  bool fixReorderedIndices;  wxConfig::Get()->Read(wxT("fixReorderedIndices"), &fixReorderedIndices);
+  bool fixReorderedIndices = Configuration::Get()->FixReorderedIndices();
   std::vector<int> cellMap;
-  if (fixReorderedIndices) {
+  if (fixReorderedIndices)
+  {
     int cellIndex = 1;
     CalculateReorderedCellIndices(m_tree, cellIndex,  cellMap);
   }
