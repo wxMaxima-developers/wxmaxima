@@ -1555,7 +1555,8 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
 
   document->InsertGroupCells(tree); // this also recalculates
 
-  if (clearDocument) {
+  if (clearDocument)
+  {
     m_console->m_currentFile = file;
     ResetTitle(true,true);
     document->SetSaved(true);
@@ -1573,7 +1574,9 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
 
   StatusMaximaBusy(waiting);
   SetStatusText(_("File opened"), 1);
-  
+
+  m_console->SetHCaret(NULL);
+  m_console->ScrollToCaret();
   return true;
 }
 

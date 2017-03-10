@@ -602,6 +602,8 @@ public:
     \todo We perhaps could think of only doing this outside of strings.
    */
   wxString UnicodeToMaxima(wxString s);
+  //! Scroll to the start of the worksheet.
+  void ScrollToStart(){Scroll(0,0);}
   //! Unfold the cell that produced the error, if necessary and, if requested, scroll to it
   void ScrollToError();
   //! Get the last known GroupCell maxima was working on
