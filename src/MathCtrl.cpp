@@ -6137,14 +6137,14 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
 
   bool scrollneeded = ((EditorCell::GetActiveCell() != NULL) && (EditorCell::GetActiveCell() != cell));
   
-  EditorCell::DeactivateCursor();
-
   if(cell != NULL)
   {
     cell->ActivateCursor(true);
     if(!m_redrawRequested) m_caretTimer.Stop();
   }
-  
+  else
+    EditorCell::DeactivateCursor();
+
   TreeUndo_CellEntered();
 
   if (cell != NULL)

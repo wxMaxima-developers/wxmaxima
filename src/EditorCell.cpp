@@ -2482,6 +2482,9 @@ void EditorCell::DeactivateCursor()
 
 bool EditorCell::ActivateCursor(bool active)
 {
+  if(m_activeCell != NULL)
+    DeactivateCursor();
+    
   if (active)
   {
     
