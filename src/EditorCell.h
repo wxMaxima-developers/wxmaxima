@@ -236,7 +236,7 @@ public:
   //! Decide what to do if the user pressed a key when this cell was selected
   void ProcessEvent(wxKeyEvent& event);
   //! If the cell is activated it contains a blinking cursor.
-  bool ActivateCursor(bool active);
+  void ActivateCursor();
   //! Deactivate the blinking cursor in the EditorCell it is in.
   static void DeactivateCursor();
   //! Return the index of the 1st char of the line containing the letter #pos.

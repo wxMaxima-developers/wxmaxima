@@ -49,7 +49,7 @@ void ContentAssistantPopup::UpdateResults()
     m_editor->ClearSelection();
     this->GetParent()->GetParent()->Refresh();
     if(!m_editor->IsActive())
-      m_editor->ActivateCursor(true);
+      m_editor->ActivateCursor();
     Dismiss();
     *m_doneptr = NULL;
     break;
@@ -112,7 +112,7 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
         );
     this->GetParent()->GetParent()->Refresh();
     if(!m_editor->IsActive())
-      m_editor->ActivateCursor(true);
+      m_editor->ActivateCursor();
     Dismiss();
     *m_doneptr = NULL;
   }
@@ -121,7 +121,7 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
   case WXK_ESCAPE:
     this->GetParent()->GetParent()->Refresh();
     if(!m_editor->IsActive())
-      m_editor->ActivateCursor(true);
+      m_editor->ActivateCursor();
     Dismiss();
     *m_doneptr = NULL;
     break;
@@ -163,7 +163,7 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
     else
       this->GetParent()->GetParent()->Refresh();
     if(!m_editor->IsActive())
-      m_editor->ActivateCursor(true);
+      m_editor->ActivateCursor();
     
     Dismiss();
     *m_doneptr = NULL;
@@ -196,7 +196,7 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent& event)
         );
       this->GetParent()->GetParent()->Refresh();
       if(!m_editor->IsActive())
-        m_editor->ActivateCursor(true);
+        m_editor->ActivateCursor();
       Dismiss();
       *m_doneptr = NULL;
 
@@ -224,7 +224,7 @@ void ContentAssistantPopup::OnClick(wxCommandEvent& event)
       );
     this->GetParent()->GetParent()->Refresh();
     if(!m_editor->IsActive())
-      m_editor->ActivateCursor(true);
+      m_editor->ActivateCursor();
     Dismiss();
     *m_doneptr = NULL;
   }

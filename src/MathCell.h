@@ -522,7 +522,6 @@ public:
          || (!input && IsComment());
   }
   virtual void ProcessEvent(wxKeyEvent& event) { }
-  virtual bool ActivateCell() { return false; }
   virtual bool AddEnding() { return false; }
   virtual void SelectPointText(wxDC &dc, wxPoint& point) { }
   virtual void SelectRectText(wxDC &dc, wxPoint& one, wxPoint& two) { }

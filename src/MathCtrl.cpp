@@ -6130,16 +6130,13 @@ bool MathCtrl::TreeUndo(std::list <TreeUndoAction *> *sourcelist,std::list <Tree
 void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
 {
   if ((EditorCell::GetActiveCell() != NULL) && (EditorCell::GetActiveCell() != cell))
-  {
     TreeUndo_CellLeft();
-    EditorCell::GetActiveCell()->ActivateCursor(false);
-  }
-
+  
   bool scrollneeded = ((EditorCell::GetActiveCell() != NULL) && (EditorCell::GetActiveCell() != cell));
   
   if(cell != NULL)
   {
-    cell->ActivateCursor(true);
+    cell->ActivateCursor();
     if(!m_redrawRequested) m_caretTimer.Stop();
   }
   else
@@ -6149,15 +6146,6 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
 
   if (cell != NULL)
   {
-    SetSelection(NULL);
-    if(cell != GetActiveCell())
-    {
-      if(cell != NULL)
-        cell->ActivateCursor(false);
-    }
-    if(cell != NULL)
-      cell->ActivateCursor(true);
-    
     m_blinkDisplayCaret = true;
 
     int blinktime = wxCaret::GetBlinkTime();

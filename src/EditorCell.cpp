@@ -2480,35 +2480,24 @@ void EditorCell::DeactivateCursor()
   m_activeCell = NULL;
 }
 
-bool EditorCell::ActivateCursor(bool active)
+void EditorCell::ActivateCursor()
 {
   if(m_activeCell != NULL)
     DeactivateCursor();
     
-  if (active)
-  {
-    
-    SaveValue();
-    m_displayCaret = true;
-    m_hasFocus = true;
-    m_activeCell = this;
-  }
-  else
-    m_activeCell = NULL;
+  SaveValue();
+  m_displayCaret = true;
+  m_hasFocus = true;
+  m_activeCell = this;
   
   ClearSelection();
   m_paren1 = m_paren2 = -1;
-
+  
   // upon activation unhide the parent groupcell
-  if (active)
-  {
-    m_firstLineOnly = false;
-    dynamic_cast<GroupCell *>(GetParent())->Hide(false);
-    if (GetType() == MC_TYPE_INPUT)
-      FindMatchingParens();
-  }
-
-  return true;
+  m_firstLineOnly = false;
+  dynamic_cast<GroupCell *>(GetParent())->Hide(false);
+  if (GetType() == MC_TYPE_INPUT)
+    FindMatchingParens();
 }
 
 bool EditorCell::AddEnding()
