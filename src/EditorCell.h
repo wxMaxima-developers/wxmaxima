@@ -108,8 +108,6 @@ private:
 public:
   //! Which cell the blinking cursor is in?
   static EditorCell *GetActiveCell(){return m_activeCell;}
-  //! Which cell the blinking cursor is in?
-  static void SetActiveCell(EditorCell *cell){m_activeCell = cell;}
   /*! Tells where the mouse selection has started.
 
     Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
@@ -238,7 +236,9 @@ public:
   //! Decide what to do if the user pressed a key when this cell was selected
   void ProcessEvent(wxKeyEvent& event);
   //! If the cell is activated it contains a blinking cursor.
-  bool ActivateCell(bool active);
+  bool ActivateCursor(bool active);
+  //! Deactivate the blinking cursor in the EditorCell it is in.
+  static void DeactivateCursor();
   //! Return the index of the 1st char of the line containing the letter #pos.
   size_t BeginningOfLine(long pos);
   //! Return the index of the last char of the line containing the letter #pos,

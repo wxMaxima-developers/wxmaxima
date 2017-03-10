@@ -6132,16 +6132,16 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
   if ((EditorCell::GetActiveCell() != NULL) && (EditorCell::GetActiveCell() != cell))
   {
     TreeUndo_CellLeft();
-    EditorCell::GetActiveCell()->ActivateCell(false);
+    EditorCell::GetActiveCell()->ActivateCursor(false);
   }
 
   bool scrollneeded = ((EditorCell::GetActiveCell() != NULL) && (EditorCell::GetActiveCell() != cell));
-
-  EditorCell::SetActiveCell(cell);
+  
+  EditorCell::DeactivateCursor();
 
   if(cell != NULL)
   {
-    cell->ActivateCell(true);
+    cell->ActivateCursor(true);
     if(!m_redrawRequested) m_caretTimer.Stop();
   }
   
@@ -6153,10 +6153,10 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
     if(cell != GetActiveCell())
     {
       if(cell != NULL)
-        cell->ActivateCell(false);
+        cell->ActivateCursor(false);
     }
     if(cell != NULL)
-      cell->ActivateCell(true);
+      cell->ActivateCursor(true);
     
     m_blinkDisplayCaret = true;
 

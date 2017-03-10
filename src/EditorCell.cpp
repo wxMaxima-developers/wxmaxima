@@ -2470,9 +2470,19 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
 }
 #endif
 
-bool EditorCell::ActivateCell(bool active)
+void EditorCell::DeactivateCursor()
 {  
-  if (IsActive())
+  if(m_activeCell != NULL)
+  {  
+    m_activeCell->ClearSelection();
+    m_activeCell->m_paren1 = m_activeCell->m_paren2 = -1;
+  }
+  m_activeCell = NULL;
+}
+
+bool EditorCell::ActivateCursor(bool active)
+{
+  if (active)
   {
     
     SaveValue();
@@ -2487,7 +2497,8 @@ bool EditorCell::ActivateCell(bool active)
   m_paren1 = m_paren2 = -1;
 
   // upon activation unhide the parent groupcell
-  if (IsActive()) {
+  if (active)
+  {
     m_firstLineOnly = false;
     dynamic_cast<GroupCell *>(GetParent())->Hide(false);
     if (GetType() == MC_TYPE_INPUT)
