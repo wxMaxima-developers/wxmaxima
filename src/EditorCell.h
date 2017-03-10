@@ -235,7 +235,11 @@ public:
   void Reset();
   //! Decide what to do if the user pressed a key when this cell was selected
   void ProcessEvent(wxKeyEvent& event);
-  //! If the cell is activated it contains a blinking cursor.
+  /*! Activate the blinking cursor in this cell
+    
+    Automatically calls DeactivateCursor on an eventual cell the cursor currently is in.
+    Normally Mathctrl::SetActiveCell() is used in order to get this function called.
+   */
   void ActivateCursor();
   //! Deactivate the blinking cursor in the EditorCell it is in.
   static void DeactivateCursor();

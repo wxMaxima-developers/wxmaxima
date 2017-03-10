@@ -270,8 +270,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
 #endif
       dcm.SetBrush( *(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION)))); //highlight c.
 
-      // Draw the marker that tells us which groups are selected -
-      // if groups are selected, that is.
+      // Draw the marker that tells us which output cells are selected -
+      // if output cells are selected, that is.
       if (m_selectionStart->GetType() != MC_TYPE_GROUP) 
       {  // We have a selection of output
         GroupCell::SetSelectionRange_px(-1,-1);

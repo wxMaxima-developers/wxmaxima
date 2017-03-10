@@ -43,7 +43,7 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
 {
   m_inEvaluationQueue = false;
   m_lastInEvaluationQueue = false;
-  m_input = NULL;
+  m_inputLabel = NULL;
   m_output = NULL;
   m_hiddenTree = NULL;
   m_hiddenTreeParent = NULL;
@@ -67,11 +67,11 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   // set up cell depending on groupType, so we have a working cell
   if (groupType != GC_TYPE_PAGEBREAK) {
     if (groupType == GC_TYPE_CODE)
-      m_input = new TextCell(EMPTY_INPUT_LABEL);
+      m_inputLabel = new TextCell(EMPTY_INPUT_LABEL);
     else
-      m_input = new TextCell(wxT(" "));
+      m_inputLabel = new TextCell(wxT(" "));
 
-    m_input->SetType(MC_TYPE_MAIN_PROMPT);
+    m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
   }
 
   EditorCell *editor = new EditorCell();
@@ -82,32 +82,32 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
       AppendInput(editor);
       break;
     case GC_TYPE_TEXT:
-      m_input->SetType(MC_TYPE_TEXT);
+      m_inputLabel->SetType(MC_TYPE_TEXT);
       editor->SetType(MC_TYPE_TEXT);
       AppendInput(editor);
       break;
     case GC_TYPE_TITLE:
-      m_input->SetType(MC_TYPE_TITLE);
+      m_inputLabel->SetType(MC_TYPE_TITLE);
       editor->SetType(MC_TYPE_TITLE);
       AppendInput(editor);
       break;
     case GC_TYPE_SECTION:
-      m_input->SetType(MC_TYPE_SECTION);
+      m_inputLabel->SetType(MC_TYPE_SECTION);
       editor->SetType(MC_TYPE_SECTION);
       AppendInput(editor);
       break;
     case GC_TYPE_SUBSECTION:
-      m_input->SetType(MC_TYPE_SUBSECTION);
+      m_inputLabel->SetType(MC_TYPE_SUBSECTION);
       editor->SetType(MC_TYPE_SUBSECTION);
       AppendInput(editor);
       break;
     case GC_TYPE_SUBSUBSECTION:
-      m_input->SetType(MC_TYPE_SUBSUBSECTION);
+      m_inputLabel->SetType(MC_TYPE_SUBSUBSECTION);
       editor->SetType(MC_TYPE_SUBSUBSECTION);
       AppendInput(editor);
       break;
     case GC_TYPE_IMAGE:
-      m_input->SetType(MC_TYPE_TEXT);
+      m_inputLabel->SetType(MC_TYPE_TEXT);
       editor->SetType(MC_TYPE_TEXT);
       editor->SetValue(wxEmptyString);
       AppendInput(editor);
@@ -138,8 +138,8 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
 void GroupCell::SetParent(MathCell *parent)
 {
   //m_group = parent;
-  if (m_input != NULL)
-    m_input->SetParentList(parent);
+  if (m_inputLabel != NULL)
+    m_inputLabel->SetParentList(parent);
 
   MathCell *tmp = m_output;
   while (tmp != NULL) {
@@ -161,8 +161,8 @@ bool GroupCell::Empty()
 void GroupCell::ResetInputLabel()
 {
   if (m_groupType == GC_TYPE_CODE) {
-    if (m_input)
-      m_input->SetValue(EMPTY_INPUT_LABEL);
+    if (m_inputLabel)
+      m_inputLabel->SetValue(EMPTY_INPUT_LABEL);
   }
 }
 
@@ -186,8 +186,8 @@ MathCell* GroupCell::Copy()
   GroupCell* tmp = new GroupCell(m_groupType);
   tmp->Hide(m_hide);
   CopyData(this, tmp);
-  if (m_input)
-    tmp->SetInput(m_input->CopyList());
+  if (m_inputLabel)
+    tmp->SetInput(m_inputLabel->CopyList());
   if (m_output != NULL)
     tmp->SetOutput(m_output->CopyList());
 
@@ -197,9 +197,9 @@ MathCell* GroupCell::Copy()
 GroupCell::~GroupCell()
 {
   MarkAsDeleted();  
-  wxDELETE(m_input);
+  wxDELETE(m_inputLabel);
   wxDELETE(m_output);
-  m_input = m_output = NULL;
+  m_inputLabel = m_output = NULL;
 }
 
 void GroupCell::MarkAsDeleted()
@@ -224,25 +224,25 @@ void GroupCell::SetInput(MathCell *input)
 {
   if (input == NULL)
     return ;
-  if (m_input != NULL)
-    delete m_input;
-  m_input = input;
-  m_input->SetParent(this);
+  if (m_inputLabel != NULL)
+    delete m_inputLabel;
+  m_inputLabel = input;
+  m_inputLabel->SetParent(this);
 }
 
 void GroupCell::AppendInput(MathCell *cell)
 {
-  if (m_input == NULL) {
-    m_input = cell;
+  if (m_inputLabel == NULL) {
+    m_inputLabel = cell;
   }
   else
   {
-    if (m_input->m_next == NULL)
-      m_input->AppendCell(cell);
-    else if (m_input->m_next->GetValue().Length() == 0) {
-      delete m_input->m_next;
-      m_input->m_next = m_input->m_nextToDraw = NULL;
-      m_input->AppendCell(cell);
+    if (m_inputLabel->m_next == NULL)
+      m_inputLabel->AppendCell(cell);
+    else if (m_inputLabel->m_next->GetValue().Length() == 0) {
+      delete m_inputLabel->m_next;
+      m_inputLabel->m_next = m_inputLabel->m_nextToDraw = NULL;
+      m_inputLabel->AppendCell(cell);
     }
     else {
       AppendOutput(cell);
@@ -299,8 +299,8 @@ void GroupCell::AppendOutput(MathCell *cell)
   {
     m_output = cell;
 
-    if (m_groupType == GC_TYPE_CODE && m_input->m_next != NULL)
-      (dynamic_cast<EditorCell *>(m_input->m_next))->ContainsChanges(false);
+    if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next != NULL)
+      (dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges(false);
 
     m_lastInOutput = m_output;
 
@@ -356,12 +356,12 @@ void GroupCell::RecalculateWidths(int fontsize)
 
     double scale = configuration->GetScale();
 
-    m_input->RecalculateWidthsList(fontsize);
+    m_inputLabel->RecalculateWidthsList(fontsize);
 
     // recalculate the position of input in ReEvaluateSelection!
-    if (m_input->m_next != NULL)
+    if (m_inputLabel->m_next != NULL)
     {
-      m_input->m_next->m_currentPoint.x = m_currentPoint.x + m_input->GetWidth() + MC_CELL_SKIP;
+      m_inputLabel->m_next->m_currentPoint.x = m_currentPoint.x + m_inputLabel->GetWidth() + MC_CELL_SKIP;
     }
 
     if (m_output == NULL || m_hide)
@@ -369,7 +369,7 @@ void GroupCell::RecalculateWidths(int fontsize)
       if((configuration->ShowCodeCells()) ||
          (m_groupType != GC_TYPE_CODE))
       {
-        m_width = m_input->GetFullWidth(scale);
+        m_width = m_inputLabel->GetFullWidth(scale);
       }
       else
         m_width = 0;
@@ -385,7 +385,7 @@ void GroupCell::RecalculateWidths(int fontsize)
       if((configuration->ShowCodeCells()) ||
          (m_groupType != GC_TYPE_CODE))
       {
-        m_width = m_input->GetFullWidth(scale);
+        m_width = m_inputLabel->GetFullWidth(scale);
       }
     }
 
@@ -416,9 +416,9 @@ void GroupCell::RecalculateHeight(int fontsize)
     if((configuration->ShowCodeCells()) ||
        (m_groupType != GC_TYPE_CODE))
     {
-      m_input->RecalculateHeightList(fontsize);
-      m_center = m_input->GetMaxCenter();
-      m_height = m_input->GetMaxHeight();
+      m_inputLabel->RecalculateHeightList(fontsize);
+      m_center = m_inputLabel->GetMaxCenter();
+      m_height = m_inputLabel->GetMaxHeight();
     }
     else
     {
@@ -455,8 +455,8 @@ void GroupCell::RecalculateHeight(int fontsize)
       if((configuration->ShowCodeCells()) ||
          (m_groupType != GC_TYPE_CODE))
       {
-        m_height = m_input->GetMaxHeight();
-        m_width = m_input->GetFullWidth(scale);
+        m_height = m_inputLabel->GetMaxHeight();
+        m_width = m_inputLabel->GetFullWidth(scale);
       }
       else
       {
@@ -507,8 +507,8 @@ void GroupCell::RecalculateHeight(int fontsize)
     
   m_appendedCells = NULL;
 
-  if(m_input)
-    m_input->m_currentPoint = m_currentPoint;
+  if(m_inputLabel)
+    m_inputLabel->m_currentPoint = m_currentPoint;
   if(GetEditable())
     GetEditable()->m_currentPoint = m_currentPoint;
 }
@@ -610,9 +610,9 @@ void GroupCell::Draw(wxPoint point, int fontsize)
        (m_groupType != GC_TYPE_CODE))
     {
       configuration->Outdated(false);
-      m_input->DrawList(in, fontsize);
-      if (m_groupType == GC_TYPE_CODE && m_input->m_next)
-        configuration->Outdated((dynamic_cast<EditorCell *>(m_input->m_next))->ContainsChanges());
+      m_inputLabel->DrawList(in, fontsize);
+      if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next)
+        configuration->Outdated((dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges());
     }
     
     if (m_output != NULL && !m_hide) {
@@ -621,7 +621,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
       if((configuration->ShowCodeCells()) ||
          (m_groupType != GC_TYPE_CODE))
       {
-        in.y += m_input->GetMaxDrop();
+        in.y += m_inputLabel->GetMaxDrop();
       }
       in.y += m_output->GetMaxCenter();
       m_outputRect.y = in.y - m_output->GetMaxCenter();
@@ -801,9 +801,9 @@ void GroupCell::DrawBracket()
       if (configuration->ShowCodeCells() && m_groupType == GC_TYPE_CODE && m_output != NULL && !m_hide)
       {
         dc.DrawLine(m_currentPoint.x - SCALE_PX(6, scale),
-                    m_currentPoint.y - m_center + m_input->GetMaxHeight(),
+                    m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight(),
                     m_currentPoint.x - SCALE_PX(10, scale),
-                    m_currentPoint.y - m_center + m_input->GetMaxHeight());
+                    m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight());
       }
     }
   }
@@ -819,12 +819,12 @@ wxString GroupCell::ToString()
   wxString str;
   Configuration *configuration = Configuration::Get();
   
-  if(m_input != NULL)
+  if(m_inputLabel != NULL)
   {
     if((configuration->ShowCodeCells()) ||
        (m_groupType != GC_TYPE_CODE))
     {
-      str = m_input->ToString();
+      str = m_inputLabel->ToString();
       
       if (GetEditable() != NULL)
         str += GetEditable()->ToString();
@@ -875,7 +875,7 @@ wxString GroupCell::ToRTF()
   wxString retval;
   if(m_groupType == GC_TYPE_CODE)
   {
-    if(m_input != NULL &&
+    if(m_inputLabel != NULL &&
        (
          (configuration->ShowCodeCells()) ||
          (m_groupType != GC_TYPE_CODE)
@@ -886,7 +886,7 @@ wxString GroupCell::ToRTF()
         retval = wxT("\\par}{\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 \n");
       else
         retval += wxT("\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ");
-      retval += RTFescape(m_input->ToString());
+      retval += RTFescape(m_inputLabel->ToString());
       retval += wxT("\\tab\n");
     }
     else
@@ -941,7 +941,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
             << wxT("  \\begin{center}\n")
             << wxT("    \\includeimage{")
             << filename << wxT("_img/") << image << wxT("}\n")
-            << wxT("  \\caption{") << m_input->m_next->ToTeX() << wxT("}\n")
+            << wxT("  \\caption{") << m_inputLabel->m_next->ToTeX() << wxT("}\n")
             << wxT("  \\end{center}\n")
             << wxT("\\end{figure}\n");
       }
@@ -999,12 +999,12 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
     str = wxT("\n\n\\noindent\n%%%%%%%%%%%%%%%\n")
       wxT("%%% INPUT:\n")
       wxT("\\begin{minipage}[t]{8ex}\\color{red}\\bf\n") +
-      m_input->ToTeX() +
+      m_inputLabel->ToTeX() +
       wxT("\n\\end{minipage}");      
-    if (m_input->m_next!=NULL)
+    if (m_inputLabel->m_next!=NULL)
     {
       
-      wxString input = m_input->m_next->ToTeX();
+      wxString input = m_inputLabel->m_next->ToTeX();
       str += wxT("\n\\begin{minipage}[t]{\\textwidth}\\color{blue}\n") +
         input +
         wxT("\n\\end{minipage}");
@@ -1238,14 +1238,14 @@ void GroupCell::SelectRectGroup(wxRect& rect, wxPoint& one, wxPoint& two,
   *last = NULL;
 
     
-  if ((m_input) &&
+  if ((m_inputLabel) &&
       (
         (configuration->ShowCodeCells()) ||
         (m_groupType != GC_TYPE_CODE)
         ) &&
-      (m_input->ContainsRect(rect))
+      (m_inputLabel->ContainsRect(rect))
     )
-    m_input->SelectRect(rect, first, last);
+    m_inputLabel->SelectRect(rect, first, last);
   else if (m_output != NULL && !m_hide && m_outputRect.Contains(rect))
     SelectRectInOutput(rect, one, two, first, last);
 
@@ -1261,8 +1261,8 @@ void GroupCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
   *first = NULL;
   *last = NULL;
 
-  if (m_input->ContainsRect(rect))
-    m_input->SelectRect(rect, first, last);
+  if (m_inputLabel->ContainsRect(rect))
+    m_inputLabel->SelectRect(rect, first, last);
   else if (m_output != NULL  && !m_hide && m_outputRect.Contains(rect))
     m_output->SelectRect(rect, first, last);
 
@@ -1280,8 +1280,8 @@ void GroupCell::SelectPoint(wxPoint& point, MathCell **first, MathCell **last)
 
   wxRect rect(point.x, point.y, 1, 1);
 
-  if (m_input->ContainsRect(rect))
-    m_input->SelectInner(rect, first, last);
+  if (m_inputLabel->ContainsRect(rect))
+    m_inputLabel->SelectInner(rect, first, last);
 }
 
 void GroupCell::SelectRectInOutput(wxRect& rect, wxPoint& one, wxPoint& two,
@@ -1697,7 +1697,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
       {
         wxString num = wxT(" ");
         num << section << wxT(" ");
-        tmp->m_input->SetValue(num);
+        tmp->m_inputLabel->SetValue(num);
       }
       break;
     case GC_TYPE_SUBSECTION:
@@ -1706,7 +1706,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
       {
         wxString num = wxT("  ");
         num << section << wxT(".") << subsection << wxT(" ");
-        tmp->m_input->SetValue(num);
+        tmp->m_inputLabel->SetValue(num);
       }
       break;
     case GC_TYPE_SUBSUBSECTION:
@@ -1714,14 +1714,14 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
       {
         wxString num = wxT("  ");
         num << section << wxT(".") << subsection << wxT(".") << subsubsection << wxT(" ");
-        m_input->SetValue(num);
+        m_inputLabel->SetValue(num);
       }
       break;
     case GC_TYPE_IMAGE:
       image++;
       {
         wxString num = wxString::Format(_("Figure %d:"), image);
-        tmp->m_input->SetValue(num);
+        tmp->m_inputLabel->SetValue(num);
       }
       break;
     default:
@@ -1737,10 +1737,10 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
 
 bool GroupCell::IsMainInput(MathCell *active)
 {
-  if (m_input->m_next == NULL)
+  if (m_inputLabel->m_next == NULL)
     return false;
 
-  return (active == m_input->m_next);
+  return (active == m_inputLabel->m_next);
 }
 
 bool GroupCell::Contains(GroupCell *cell)

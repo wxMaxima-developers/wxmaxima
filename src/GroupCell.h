@@ -140,10 +140,10 @@ public:
   void SetOutput(MathCell *output);
   void AppendInput(MathCell *cell);
   wxString TexEscapeOutputCell(wxString Input);
-  MathCell* GetPrompt() { return m_input; }
+  MathCell* GetPrompt() { return m_inputLabel; }
   EditorCell* GetInput() {
-    if(m_input != NULL)
-      return dynamic_cast<EditorCell*>(m_input->m_next);
+    if(m_inputLabel != NULL)
+      return dynamic_cast<EditorCell*>(m_inputLabel->m_next);
     else
       return NULL;
   }
@@ -265,7 +265,8 @@ protected:
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold
   int m_groupType;
-  MathCell *m_input;
+  // The input label of this cell. Is followed by the input of the cell.
+  MathCell *m_inputLabel;
   MathCell *m_output;
   bool m_hide;
   bool m_working;
