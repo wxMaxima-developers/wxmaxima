@@ -484,12 +484,12 @@ private:
   wxPoint m_mousePoint;
   /*! Is the active cursor the one represented by a horizontal line? 
 
-    See m_hCaretPosition and m_activeCell for the position of the two
+    See m_hCaretPosition and EditorCell::GetActiveCell() for the position of the two
     types of cursors. 
    */
   bool m_hCaretActive;
   /*! The group above the hcaret, NULL for the top of the document
-    See m_activeCell for the position if the cursor that is drawn as a
+    See EditorCell::GetActiveCell() for the position if the cursor that is drawn as a
     vertical line.
    */
   GroupCell *m_hCaretPosition;
@@ -538,14 +538,6 @@ private:
   MathCell *m_selectionEnd;
   int m_clickType;
   GroupCell *m_clickInGC;
-  /*! The cell the cursor that is drawn as a vertical line is in. 
-    The position of the cursor inside that cell is defined by
-    EditorCell::m_positionOfCaret.
-
-    See also m_hCaretActive and m_hCaretPosition that handle the
-    cursor that is drawn as a horizontal line. 
-   */
-  EditorCell *m_activeCell;
   //! true = blink the cursor
   bool m_blinkDisplayCaret;
   //! Is the blinking vertically-drawn cursor currently visible?
@@ -749,12 +741,12 @@ public:
   void ResetInputPrompts();
   bool CanCopy(bool fromActive = false) {
     return m_selectionStart != NULL ||
-           (fromActive && m_activeCell != NULL && m_activeCell->CanCopy());
+           (fromActive && EditorCell::GetActiveCell() != NULL && EditorCell::GetActiveCell()->CanCopy());
   }
-  bool CanPaste() { return (m_activeCell != NULL) || (m_hCaretActive);
+  bool CanPaste() { return (EditorCell::GetActiveCell() != NULL) || (m_hCaretActive);
   }
   bool CanCut() {
-    return (m_activeCell != NULL && m_activeCell->CanCopy()) ||
+    return (EditorCell::GetActiveCell() != NULL && EditorCell::GetActiveCell()->CanCopy()) ||
            (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_GROUP);
   }
   //! Select the whole document
@@ -911,7 +903,7 @@ public:
   //! Scrolls to a given cell
   void ScrollToCell(MathCell *cell, bool scrollToTop = true);
   //! Returns the cell the cursor that is drawn as a vertical line is in.
-  EditorCell* GetActiveCell() { return m_activeCell; }
+  EditorCell* GetActiveCell() { return EditorCell::GetActiveCell(); }
   //! Is the point currently visible on the worksheet?
   bool PointVisibleIs(wxPoint point);
   //! Is the caret (hcaret or vcaret) currently visible on the worksheet?
@@ -937,7 +929,7 @@ public:
   //! Tell if an animation should run running
   void AnimationRunning(bool state) { m_animate = state; }
   //! Is the editor active in the last cell of the worksheet?
-  bool IsActiveInLast() { return m_activeCell != NULL && m_activeCell->GetParent() == m_last; }
+  bool IsActiveInLast() { return EditorCell::GetActiveCell() != NULL && EditorCell::GetActiveCell()->GetParent() == m_last; }
   //! Informs the worksheet which GroupCell maxima is currently working in
   void SetWorkingGroup(GroupCell *group);
   //! Returns the last cell of the worksheet

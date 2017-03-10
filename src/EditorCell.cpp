@@ -60,7 +60,6 @@ EditorCell::EditorCell(wxString text) : MathCell()
   m_caretColumn = -1; // used when moving up/down between lines
   m_selectionStart = -1;
   m_selectionEnd = -1;
-  m_isActive = false;
   m_paren1 = m_paren2 = -1;
   m_isDirty = false;
   m_hasFocus = false;
@@ -228,6 +227,8 @@ void EditorCell::MarkAsDeleted()
     m_cellSearchStartedIn = NULL;
     m_indexSearchStartedAt = 0;
   }
+  if (m_activeCell == this)
+    m_activeCell = NULL;
 }
 
 wxString EditorCell::ToTeX()
@@ -603,13 +604,13 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
         // Mark only text that won't be marked in the next step:
         // This would not only be unneccessary but also could cause
         // selections to flicker in very long texts
-        if((!m_isActive)||(start!=MIN(m_selectionStart, m_selectionEnd)))
+        if((!IsActive())||(start!=MIN(m_selectionStart, m_selectionEnd)))
           MarkSelection(start,end,scale,dc,TS_EQUALSSELECTION,fontsize);
         start = end;
       }
     }
     
-    if (m_isActive) // draw selection or matching parens
+    if (IsActive()) // draw selection or matching parens
     {
       //
       // Mark selection
@@ -647,7 +648,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
         if(InUpdateRegion(rect))
           dc.DrawRectangle(CropToUpdateRegion(rect));
       } // else if (m_paren1 != -1 && m_paren2 != -1)
-    } // if (m_isActive)
+    } // if (IsActive())
 
     //
     // Draw the text
@@ -731,7 +732,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
     // Draw the caret
     //
 
-    if (m_displayCaret && m_hasFocus && m_isActive)
+    if (m_displayCaret && m_hasFocus && IsActive())
     {
       unsigned int caretInLine = 0;
       unsigned int caretInColumn = 0;
@@ -2470,21 +2471,23 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
 #endif
 
 bool EditorCell::ActivateCell(bool active)
-{
-  m_isActive = active;
-  
-  if (m_isActive)
+{  
+  if (IsActive())
   {
+    
     SaveValue();
     m_displayCaret = true;
     m_hasFocus = true;
+    m_activeCell = this;
   }
+  else
+    m_activeCell = NULL;
   
   ClearSelection();
   m_paren1 = m_paren2 = -1;
 
   // upon activation unhide the parent groupcell
-  if (m_isActive) {
+  if (IsActive()) {
     m_firstLineOnly = false;
     dynamic_cast<GroupCell *>(GetParent())->Hide(false);
     if (GetType() == MC_TYPE_INPUT)
@@ -2711,7 +2714,7 @@ void EditorCell::SelectRectText(wxDC &dc, wxPoint& one, wxPoint& two)
 // If they don't or there is no selection it returns false
 bool EditorCell::IsPointInSelection(wxDC& dc, wxPoint point)
 {
-  if ((m_selectionStart == -1) || (m_selectionEnd == -1) || (m_isActive == false))
+  if ((m_selectionStart == -1) || (m_selectionEnd == -1) || (IsActive() == false))
     return false;
 
   wxRect rect = GetRect();
@@ -4061,7 +4064,7 @@ bool EditorCell::FindNext(wxString str, bool down, bool ignoreCase)
     else
       start = m_selectionStart - 1;
   }
-  else if (m_isActive)
+  else if (IsActive())
     start = m_positionOfCaret;
 
   if (!down && m_selectionStart == 0)
@@ -4247,4 +4250,5 @@ void EditorCell::CaretToPosition(int pos)
 EditorCell *EditorCell::m_cellMouseSelectionStartedIn = NULL;
 EditorCell *EditorCell::m_cellKeyboardSelectionStartedIn = NULL;
 EditorCell *EditorCell::m_cellSearchStartedIn = NULL;
+EditorCell *EditorCell::m_activeCell = NULL;
 int EditorCell::m_indexSearchStartedAt = -1;

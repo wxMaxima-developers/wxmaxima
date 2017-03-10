@@ -63,6 +63,9 @@ private:
   static EditorCell *m_cellSearchStartedIn;
   //! Which cursor position incremental search has started at?
   static int m_indexSearchStartedAt;
+  //! Which cell the blinking cursor is in?
+  static EditorCell *m_activeCell;
+  
 
   //! The viewport size the linewrap was done for.
   int m_oldViewportWidth;
@@ -103,6 +106,10 @@ private:
   long m_oldSelectionStart;
   long m_oldSelectionEnd;
 public:
+  //! Which cell the blinking cursor is in?
+  static EditorCell *GetActiveCell(){return m_activeCell;}
+  //! Which cell the blinking cursor is in?
+  static void SetActiveCell(EditorCell *cell){m_activeCell = cell;}
   /*! Tells where the mouse selection has started.
 
     Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
@@ -308,7 +315,7 @@ public:
     // Style the text anew.
     StyleText();
   }
-  bool IsActive() { return m_isActive; }
+  bool IsActive() { return this == m_activeCell; }
   //! Is the cursor at the start of this cell?
   bool CaretAtStart() { return m_positionOfCaret == 0; }
   //! Move the cursor to the start of this cell
@@ -534,7 +541,6 @@ private:
   long m_lastSelectionStart;
 //  long m_oldStart, m_oldEnd;
   unsigned int m_numberOfLines;
-  bool m_isActive;
   int m_fontSize;
   /*! The font size we were called with  the last time
 
