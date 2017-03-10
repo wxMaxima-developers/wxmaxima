@@ -81,9 +81,9 @@ wxString Dirstructure::MaximaDefaultLocation()
     wxString maximapath = exeDir + wxT("..") + exe.GetPathSeparator() +
       wxT("bin")  + exe.GetPathSeparator() + wxT("maxima.bat");
   }
-  wxFileName maxima(maximapath);
-  maxima.MakeAbsolute();
-  return maxima.GetFullPath();
+  wxFileName maximapath(maxima);
+  maximapath.MakeAbsolute();
+  return maximapath.GetFullPath();
 #elif defined __WXMAC__
   wxString command;
   if (wxFileExists("/Applications/Maxima.app"))
