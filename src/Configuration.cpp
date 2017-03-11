@@ -58,7 +58,6 @@ Configuration::Configuration(wxDC& dc) : m_dc(&dc)
   ReadConfig();
 }
 
-
 void Configuration::ShowCodeCells(bool show)
 {
   m_showCodeCells = show;

@@ -237,7 +237,7 @@ void ParenCell::RecalculateWidths(int fontsize)
     m_width = m_innerCell->GetFullWidth(scale) + 2*m_charWidth;
 #else
     m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(12, configuration->GetScale())
-      + 2 * GetDefaultLineWidth();
+      + 2 * Configuration::Get()->GetDefaultLineWidth();
 #endif
   }
   m_open->RecalculateWidthsList(fontsize);
@@ -424,33 +424,33 @@ void ParenCell::Draw(wxPoint point, int fontsize)
         }
       }
 #else
-      in.x = point.x + SCALE_PX(6, scale) + GetDefaultLineWidth();
+      in.x = point.x + SCALE_PX(6, scale) + Configuration::Get()->GetDefaultLineWidth();
       SetPen();
       // left
-      dc.DrawLine(point.x + SCALE_PX(5, scale) + GetDefaultLineWidth() / 2,
+      dc.DrawLine(point.x + SCALE_PX(5, scale) + Configuration::Get()->GetDefaultLineWidth() / 2,
                   point.y - m_innerCell->GetMaxCenter() + SCALE_PX(1, scale),
-                  point.x + SCALE_PX(2, scale) + GetDefaultLineWidth() / 2,
+                  point.x + SCALE_PX(2, scale) + Configuration::Get()->GetDefaultLineWidth() / 2,
                   point.y - m_innerCell->GetMaxCenter() + SCALE_PX(7, scale));
-      dc.DrawLine(point.x + SCALE_PX(2, scale) + GetDefaultLineWidth() / 2,
+      dc.DrawLine(point.x + SCALE_PX(2, scale) + Configuration::Get()->GetDefaultLineWidth() / 2,
                   point.y - m_innerCell->GetMaxCenter() + SCALE_PX(7, scale),
-                  point.x + SCALE_PX(2, scale) + GetDefaultLineWidth() / 2,
+                  point.x + SCALE_PX(2, scale) + Configuration::Get()->GetDefaultLineWidth() / 2,
                   point.y + m_innerCell->GetMaxDrop() - SCALE_PX(7, scale));
-      dc.DrawLine(point.x + SCALE_PX(2, scale) + GetDefaultLineWidth() / 2,
+      dc.DrawLine(point.x + SCALE_PX(2, scale) + Configuration::Get()->GetDefaultLineWidth() / 2,
                   point.y + m_innerCell->GetMaxDrop() - SCALE_PX(7, scale),
-                  point.x + SCALE_PX(5, scale) + GetDefaultLineWidth() / 2,
+                  point.x + SCALE_PX(5, scale) + Configuration::Get()->GetDefaultLineWidth() / 2,
                   point.y + m_innerCell->GetMaxDrop() - SCALE_PX(1, scale));
       // right
-      dc.DrawLine(point.x + m_width - SCALE_PX(5, scale) - 1 - GetDefaultLineWidth() / 2,
+      dc.DrawLine(point.x + m_width - SCALE_PX(5, scale) - 1 - Configuration::Get()->GetDefaultLineWidth() / 2,
                   point.y - m_innerCell->GetMaxCenter() + SCALE_PX(1, scale),
-                  point.x + m_width - SCALE_PX(2, scale) - 1 - GetDefaultLineWidth() / 2,
+                  point.x + m_width - SCALE_PX(2, scale) - 1 - Configuration::Get()->GetDefaultLineWidth() / 2,
                   point.y - m_innerCell->GetMaxCenter() + SCALE_PX(7, scale));
-      dc.DrawLine(point.x + m_width - SCALE_PX(2, scale) - 1 - GetDefaultLineWidth() / 2,
+      dc.DrawLine(point.x + m_width - SCALE_PX(2, scale) - 1 - Configuration::Get()->GetDefaultLineWidth() / 2,
                   point.y - m_innerCell->GetMaxCenter() + SCALE_PX(7, scale),
-                  point.x + m_width - SCALE_PX(2, scale) - 1 - GetDefaultLineWidth() / 2,
+                  point.x + m_width - SCALE_PX(2, scale) - 1 - Configuration::Get()->GetDefaultLineWidth() / 2,
                   point.y + m_innerCell->GetMaxDrop() - SCALE_PX(7, scale));
-      dc.DrawLine(point.x + m_width - SCALE_PX(2, scale) - 1 - GetDefaultLineWidth() / 2,
+      dc.DrawLine(point.x + m_width - SCALE_PX(2, scale) - 1 - Configuration::Get()->GetDefaultLineWidth() / 2,
                   point.y + m_innerCell->GetMaxDrop() - SCALE_PX(7, scale),
-                  point.x + m_width - SCALE_PX(5, scale) - 1 - GetDefaultLineWidth() / 2,
+                  point.x + m_width - SCALE_PX(5, scale) - 1 - Configuration::Get()->GetDefaultLineWidth() / 2,
                   point.y + m_innerCell->GetMaxDrop() - SCALE_PX(1, scale));
       UnsetPen();
 #endif

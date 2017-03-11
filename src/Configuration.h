@@ -187,13 +187,20 @@ public:
   const int GetClientWidth() { return m_clientWidth; }
   //! Returns the height of the visible portion of the worksheet
   const int GetClientHeight() { return m_clientHeight; }
-  //! The maximum sensible line width in withs of a letter.
+  //! Calculates the default line width for the worksheet
+  int GetDefaultLineWidth()
+    {if(GetScale()*GetZoomFactor()<1)
+        return 1;
+      else
+        return GetScale()*GetZoomFactor();
+    }
+  //! The minimum sensible line width in withs of a letter.
   int LineWidth_em(){return m_lineWidth_em;}
-  //! Set the maximum sensible line width in widths of a lletter.
+  //! Set the minimum sensible line width in widths of a lletter.
   void LineWidth_em(int width ){m_lineWidth_em = width;}
-  //! Returns the maximum sensible width for a text line: On big 16:9 screens
-  //  text tends to get \b very wide before it hits the right margin. But text
-  //  blocks that are 1 meter wide and 2 cm high feel - weird.
+  //! Returns the maximum sensible width for a text line [in characters]:
+  // On big 16:9 screens text tends to get \b very wide before it hits the right margin.
+  // But text blocks that are 1 meter wide and 2 cm high feel - weird.
   const int GetLineWidth() {
     if(m_clientWidth<=m_zoomFactor * double(m_defaultFontSize)*LineWidth_em()*m_zoomFactor*m_scale)
       return m_clientWidth;

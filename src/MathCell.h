@@ -263,8 +263,6 @@ public:
     See GetFullWidth().
    */
   int GetLineWidth(double scale);
-  //! Calculates the default line width
-  int GetDefaultLineWidth();
   /*! Get the x position of the top left of this cell
 
     See m_currentPoint for more details.

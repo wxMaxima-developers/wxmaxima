@@ -706,7 +706,11 @@ void GroupCell::DrawBracket()
 #if defined(__WXMAC__)
     dc.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
 #else
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(
+                  configuration->GetColor(TS_SELECTION),
+                  configuration->GetDefaultLineWidth(),
+                  wxPENSTYLE_SOLID)
+                ));
 // window linux, set a pen
 #endif
     dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))));
@@ -715,7 +719,11 @@ void GroupCell::DrawBracket()
   else
   {
     dc.SetBrush(*wxWHITE_BRUSH);
-    dc.SetPen(*wxWHITE_PEN);    
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(
+                  *wxWHITE,
+                  configuration->GetDefaultLineWidth(),
+                  wxPENSTYLE_SOLID)
+                ));
   }
   wxRect rect = GetRect();
   rect=wxRect( 0, rect.GetTop() - 2, configuration->GetCellBracketWidth(), rect.GetHeight() + 5);
@@ -731,9 +739,14 @@ void GroupCell::DrawBracket()
     drawBracket = true;
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
     if(m_lastInEvaluationQueue)
-      dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CELL_BRACKET), 2, wxPENSTYLE_SOLID)));
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(
+                    configuration->GetColor(TS_CELL_BRACKET),
+                    2*configuration->GetDefaultLineWidth(),
+                    wxPENSTYLE_SOLID)));
     else
-      dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID)));
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CELL_BRACKET),
+                                                configuration->GetDefaultLineWidth(),
+                                                wxPENSTYLE_SOLID)));
 
     wxRect rect = GetRect();
     rect = wxRect( 0, rect.GetTop() - 2, configuration->GetCellBracketWidth(), rect.GetHeight() + 5);
@@ -745,12 +758,16 @@ void GroupCell::DrawBracket()
   if (editable != NULL && editable->IsActive())
   {
     drawBracket = true;
-    dc.SetPen( *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_ACTIVE_CELL_BRACKET), 2, wxPENSTYLE_SOLID))); // window linux, set a pen
+    dc.SetPen( *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_ACTIVE_CELL_BRACKET),
+                                               2*configuration->GetDefaultLineWidth(),
+                                               wxPENSTYLE_SOLID))); // window linux, set a pen
     dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_ACTIVE_CELL_BRACKET)))); //highlight c.
   }
   else
   {
-    dc.SetPen( *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID))); // window linux, set a pen
+    dc.SetPen( *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CELL_BRACKET),
+                                               configuration->GetDefaultLineWidth(),
+                                               wxPENSTYLE_SOLID))); // window linux, set a pen
     dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_CELL_BRACKET)))); //highlight c.
   }
   
@@ -761,15 +778,16 @@ void GroupCell::DrawBracket()
 
   if(drawBracket)
   {
+    int bracketWidth = configuration->GetCellBracketWidth()-configuration->GetDefaultLineWidth();
     if (IsFoldable())
     { // draw a square
       wxPoint *points = new wxPoint[4];
-      points[0].x = m_currentPoint.x - configuration->GetCellBracketWidth();
+      points[0].x = m_currentPoint.x - bracketWidth;
       points[0].y = m_currentPoint.y - m_center;
       points[1].x = m_currentPoint.x - configuration->GetCellBracketWidth();
-      points[1].y = m_currentPoint.y - m_center + configuration->GetCellBracketWidth();
+      points[1].y = m_currentPoint.y - m_center + bracketWidth;
       points[2].x = m_currentPoint.x;
-      points[2].y = m_currentPoint.y - m_center + configuration->GetCellBracketWidth();
+      points[2].y = m_currentPoint.y - m_center + bracketWidth;
       points[3].x = m_currentPoint.x;
       points[3].y = m_currentPoint.y - m_center;
       dc.DrawPolygon(4, points);
@@ -778,27 +796,27 @@ void GroupCell::DrawBracket()
     else
     { // draw a triangle and line
       wxPoint *points = new wxPoint[3];
-      points[0].x = m_currentPoint.x - configuration->GetCellBracketWidth();
+      points[0].x = m_currentPoint.x - bracketWidth;
       points[0].y = m_currentPoint.y - m_center;
-      points[1].x = m_currentPoint.x - configuration->GetCellBracketWidth();
-      points[1].y = m_currentPoint.y - m_center + configuration->GetCellBracketWidth();
+      points[1].x = m_currentPoint.x - bracketWidth;
+      points[1].y = m_currentPoint.y - m_center + bracketWidth;
       points[2].x = m_currentPoint.x;
       points[2].y = m_currentPoint.y - m_center;
       dc.DrawPolygon(3, points);
       delete [] points;
         
       // vertical
-      dc.DrawLine(m_currentPoint.x - configuration->GetCellBracketWidth(), m_currentPoint.y - m_center,
-                  m_currentPoint.x - configuration->GetCellBracketWidth(), m_currentPoint.y - m_center + m_height);
+      dc.DrawLine(m_currentPoint.x - bracketWidth, m_currentPoint.y - m_center,
+                  m_currentPoint.x - bracketWidth, m_currentPoint.y - m_center + m_height);
       // bottom horizontal
-      dc.DrawLine(m_currentPoint.x - configuration->GetCellBracketWidth(), m_currentPoint.y - m_center + m_height,
+      dc.DrawLine(m_currentPoint.x - bracketWidth, m_currentPoint.y - m_center + m_height,
                   m_currentPoint.x - SCALE_PX(2, scale) , m_currentPoint.y - m_center + m_height);
       // middle horizontal
       if (configuration->ShowCodeCells() && m_groupType == GC_TYPE_CODE && m_output != NULL && !m_hide)
       {
-        dc.DrawLine(m_currentPoint.x - configuration->GetCellBracketWidth()/2,
+        dc.DrawLine(m_currentPoint.x - bracketWidth/2,
                     m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight(),
-                    m_currentPoint.x - configuration->GetCellBracketWidth(),
+                    m_currentPoint.x - bracketWidth,
                     m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight());
       }
     }
