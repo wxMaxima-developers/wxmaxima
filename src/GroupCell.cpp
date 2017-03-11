@@ -789,44 +789,44 @@ void GroupCell::DrawBracket()
   {
     int bracketWidth = configuration->GetCellBracketWidth()-configuration->GetDefaultLineWidth();
     if (IsFoldable())
-    { // draw a square
+    { // draw the square that allows hiding and unhiding the cell
       wxPoint *points = new wxPoint[4];
       points[0].x = m_currentPoint.x - bracketWidth;
       points[0].y = m_currentPoint.y - m_center;
-      points[1].x = m_currentPoint.x - configuration->GetCellBracketWidth();
+      points[1].x = m_currentPoint.x - bracketWidth;
       points[1].y = m_currentPoint.y - m_center + bracketWidth;
-      points[2].x = m_currentPoint.x;
+      points[2].x = m_currentPoint.x - configuration->GetDefaultLineWidth();
       points[2].y = m_currentPoint.y - m_center + bracketWidth;
-      points[3].x = m_currentPoint.x;
+      points[3].x = m_currentPoint.x - configuration->GetDefaultLineWidth();
       points[3].y = m_currentPoint.y - m_center;
       dc.DrawPolygon(4, points);
       delete [] points;
     }
     else
-    { // draw a triangle and line
+    { // draw a the triangle that allows hiding and unhiding the cell
       wxPoint *points = new wxPoint[3];
       points[0].x = m_currentPoint.x - bracketWidth;
-      points[0].y = m_currentPoint.y - m_center;
+      points[0].y = m_currentPoint.y - m_center + configuration->GetDefaultLineWidth()/2;
       points[1].x = m_currentPoint.x - bracketWidth;
-      points[1].y = m_currentPoint.y - m_center + bracketWidth;
-      points[2].x = m_currentPoint.x;
-      points[2].y = m_currentPoint.y - m_center;
+      points[1].y = m_currentPoint.y - m_center + bracketWidth - configuration->GetDefaultLineWidth()/2;
+      points[2].x = m_currentPoint.x - configuration->GetDefaultLineWidth();
+      points[2].y = m_currentPoint.y - m_center + configuration->GetDefaultLineWidth()/2;
       dc.DrawPolygon(3, points);
       delete [] points;
         
-      // vertical
-      dc.DrawLine(m_currentPoint.x - bracketWidth, m_currentPoint.y - m_center,
-                  m_currentPoint.x - bracketWidth, m_currentPoint.y - m_center + m_height);
-      // bottom horizontal
-      dc.DrawLine(m_currentPoint.x - bracketWidth, m_currentPoint.y - m_center + m_height,
-                  m_currentPoint.x - SCALE_PX(2, scale) , m_currentPoint.y - m_center + m_height);
+      // The vertical line at the back of the bracket
+      dc.DrawLine(m_currentPoint.x - bracketWidth, m_currentPoint.y - m_center + configuration->GetDefaultLineWidth()/2,
+                  m_currentPoint.x - bracketWidth, m_currentPoint.y - m_center + m_height - configuration->GetDefaultLineWidth());
+      // bottom horizontal line
+      dc.DrawLine(m_currentPoint.x - bracketWidth, m_currentPoint.y - m_center + m_height - configuration->GetDefaultLineWidth(),
+                  m_currentPoint.x - configuration->GetDefaultLineWidth() , m_currentPoint.y - m_center + m_height - configuration->GetDefaultLineWidth());
       // middle horizontal
       if (configuration->ShowCodeCells() && m_groupType == GC_TYPE_CODE && m_output != NULL && !m_hide)
       {
         dc.DrawLine(m_currentPoint.x - bracketWidth/2,
-                    m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight(),
+                    m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight() + configuration->GetDefaultLineWidth()/2,
                     m_currentPoint.x - bracketWidth,
-                    m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight());
+                    m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight() + configuration->GetDefaultLineWidth()/2);
       }
     }
   }
@@ -835,10 +835,10 @@ void GroupCell::DrawBracket()
 wxRect GroupCell::HideRect()
 {
   Configuration *configuration = Configuration::Get();
-  return wxRect(m_currentPoint.x - configuration->GetCellBracketWidth(),
-                m_currentPoint.y - m_center,
-                configuration->GetCellBracketWidth(),
-                configuration->GetCellBracketWidth()
+  return wxRect(m_currentPoint.x - configuration->GetCellBracketWidth() - configuration->GetDefaultLineWidth()/2,
+                m_currentPoint.y - m_center - configuration->GetDefaultLineWidth()/2,
+                configuration->GetCellBracketWidth() + configuration->GetDefaultLineWidth(),
+                configuration->GetCellBracketWidth() + configuration->GetDefaultLineWidth()
     );
 }
 

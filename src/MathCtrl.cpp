@@ -1209,7 +1209,7 @@ void MathCtrl::OnMouseLeftInGc(wxMouseEvent& event, GroupCell *clickedInGc)
   // evaluation any more.
   ScrolledAwayFromEvaluation(true);
 
-  if (m_down.x <= m_configuration->GetCellBracketWidth())
+  if (m_down.x <= m_configuration->GetIndent())
     OnMouseLeftInGcLeft(event, clickedInGc);
   else
     OnMouseLeftInGcCell(event, clickedInGc);
