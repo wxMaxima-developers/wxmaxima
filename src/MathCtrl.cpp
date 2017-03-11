@@ -588,6 +588,11 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
   if (recalc)
   {
     RecalculateForce();
+    if((m_selectionStart != NULL)&&(m_selectionEnd != NULL))
+      GroupCell::SetSelectionRange_px(
+        dynamic_cast<GroupCell *>(m_selectionStart)->m_currentPoint.y,
+        dynamic_cast<GroupCell *>(m_selectionEnd)->m_currentPoint.y
+        );
     RequestRedraw();
   }
   
@@ -3593,7 +3598,7 @@ void MathCtrl::OnMouseExit(wxMouseEvent& event) {
 #ifdef GetMagnification
 void MathCtrl::OnMouseMagnify(wxMouseEvent& event)
 {
-  Configuration::SetZoomFactor(Configuration::GetZoomFactor() + 0.1*event.GetMagnification());
+  SetZoomFactor(Configuration::GetZoomFactor() + 0.1*event.GetMagnification());  
 }
 #endif
 
