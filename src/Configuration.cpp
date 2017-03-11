@@ -40,7 +40,6 @@ Configuration::Configuration(wxDC& dc) : m_dc(&dc)
   m_top = -1;
   m_bottom = -1;
   m_forceUpdate = false;
-  m_indent = MC_GROUP_LEFT_INDENT;
   m_outdated = false;
   m_printer = false;
   m_TeXFonts = false;
@@ -55,6 +54,7 @@ Configuration::Configuration(wxDC& dc) : m_dc(&dc)
   m_clientHeight = 768;
   Dirstructure dirstruct;
   m_maximaLocation = dirstruct.MaximaDefaultLocation();
+  m_indent = -1;
   ReadConfig();
 }
 

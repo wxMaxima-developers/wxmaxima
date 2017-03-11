@@ -458,6 +458,11 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
   m_autosubscript = new wxChoice(panel,-1,wxDefaultPosition,wxDefaultSize,autosubscripts);
   grid_sizer->Add(m_autosubscript, 0, wxALL, 5);
 
+  wxStaticText* lw = new wxStaticText(panel, -1, _("Label width:"));
+  grid_sizer->Add(lw, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  m_labelWidth = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 3, 10);
+  grid_sizer->Add(m_labelWidth, 0, wxALL, 5);
+
   wxStaticText* slt = new wxStaticText(panel, -1, _("Show labels:"));
   grid_sizer->Add(slt, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   wxArrayString labelchoices;
@@ -470,31 +475,26 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
 
   grid_sizer->Add(m_showUserDefinedLabels, 0, wxALL, 5);  
 
-  wxStaticText* lw = new wxStaticText(panel, -1, _("Label width:"));
-  grid_sizer->Add(lw, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  m_labelWidth = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 3, 10);
-  grid_sizer->Add(m_labelWidth, 0, wxALL, 5);
-
-
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
 
-  m_matchParens = new wxCheckBox(panel, -1, _("Match parenthesis in text controls"));
-  vsizer->Add(m_matchParens, 0, wxALL, 5);
 
-  m_fixedFontInTC = new wxCheckBox(panel, -1, _("Fixed font in text controls"));
-  vsizer->Add(m_fixedFontInTC, 0, wxALL, 5);
-
-  m_changeAsterisk = new wxCheckBox(panel, -1, _("Use centered dot character for multiplication"));
-  vsizer->Add(m_changeAsterisk, 0, wxALL, 5);
-
-  m_keepPercentWithSpecials = new wxCheckBox(panel, -1, _("Keep percent sign with special symbols: %e, %i, etc."));
-  vsizer->Add(m_keepPercentWithSpecials, 0, wxALL, 5);
+  m_hideBrackets = new wxCheckBox(panel, -1, _("Intelligently hide cell brackets"));
+  vsizer->Add(m_hideBrackets, 0, wxALL, 5);
 
   m_enterEvaluates = new wxCheckBox(panel, -1, _("Enter evaluates cells"));
   vsizer->Add(m_enterEvaluates, 0, wxALL, 5);
 
   m_openHCaret = new wxCheckBox(panel, -1, _("Open a cell when Maxima expects input"));
   vsizer->Add(m_openHCaret, 0, wxALL, 5);
+
+  m_matchParens = new wxCheckBox(panel, -1, _("Match parenthesis in text controls"));
+  vsizer->Add(m_matchParens, 0, wxALL, 5);
+
+  m_changeAsterisk = new wxCheckBox(panel, -1, _("Use centered dot character for multiplication"));
+  vsizer->Add(m_changeAsterisk, 0, wxALL, 5);
+
+  m_keepPercentWithSpecials = new wxCheckBox(panel, -1, _("Keep percent sign with special symbols: %e, %i, etc."));
+  vsizer->Add(m_keepPercentWithSpecials, 0, wxALL, 5);
 
   m_insertAns = new wxCheckBox(panel, -1, _("Insert % before an operator at the beginning of a cell"));
   vsizer->Add(m_insertAns, 0, wxALL, 5);
@@ -505,8 +505,8 @@ wxPanel* ConfigDialogue::CreateWorksheetPanel()
   m_cursorJump = new wxCheckBox(panel, -1, _("New lines: Jump to text"));
   vsizer->Add(m_cursorJump, 0, wxALL, 5);
 
-  m_hideBrackets = new wxCheckBox(panel, -1, _("Intelligently hide cell brackets"));
-  vsizer->Add(m_hideBrackets, 0, wxALL, 5);
+  m_fixedFontInTC = new wxCheckBox(panel, -1, _("Fixed font in text controls"));
+  vsizer->Add(m_fixedFontInTC, 0, wxALL, 5);
 
   vsizer->AddGrowableRow(10);
   panel->SetSizer(vsizer);

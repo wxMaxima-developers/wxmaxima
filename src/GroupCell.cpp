@@ -57,7 +57,6 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   m_forceBreakLine = true;
   m_breakLine = true;
   m_type = MC_TYPE_GROUP;
-  m_indent = MC_GROUP_LEFT_INDENT;
   m_hide = false;
   m_working = false;
   m_groupType = groupType;
@@ -345,8 +344,9 @@ void GroupCell::RecalculateWidths(int fontsize)
   if (m_width == -1 || m_height == -1 || configuration->ForceUpdate())
   {
     // special case of 'line cell'
-    if (m_groupType == GC_TYPE_PAGEBREAK) {
-      m_width = 10;
+    if (m_groupType == GC_TYPE_PAGEBREAK)
+    {
+      m_width = configuration->GetCellBracketWidth();
       m_height = 2;
       ResetData();
       return;
@@ -400,19 +400,20 @@ void GroupCell::RecalculateHeight(int fontsize)
   Configuration *configuration = Configuration::Get();
   double scale = configuration->GetScale();
 
-  if (m_width == -1 || m_height == -1 || configuration->ForceUpdate() || fontsize * scale + .5 != m_fontSize_Old)
+  if (m_width < 0 || m_height < 0 ||
+      configuration->ForceUpdate() || fontsize * scale + .5 != m_fontSize_Old)
   {
     m_fontSize_Old = fontsize * scale + .5;
     // special case
-    if (m_groupType == GC_TYPE_PAGEBREAK) {
-      m_width = 10;
+    if (m_groupType == GC_TYPE_PAGEBREAK)
+    {
+      m_width = configuration->GetCellBracketWidth();
       m_height = 2;
       m_center = 0;
-      m_indent = 0;
       MathCell::RecalculateWidthsList(fontsize);
       return;
     }
-
+    
     if((configuration->ShowCodeCells()) ||
        (m_groupType != GC_TYPE_CODE))
     {
@@ -426,8 +427,6 @@ void GroupCell::RecalculateHeight(int fontsize)
       m_height = 0;
     }
     
-    m_indent = configuration->GetIndent();
-
     if (m_output != NULL && !m_hide)
     {
       MathCell *tmp = m_output;
@@ -438,75 +437,74 @@ void GroupCell::RecalculateHeight(int fontsize)
       
       if(m_previous == NULL)
       {
-        m_currentPoint.x = MC_GROUP_LEFT_INDENT;
+        m_currentPoint.x = configuration->GetIndent();
         m_currentPoint.y = Configuration::Get()->GetBaseIndent() + GetMaxCenter();
       }
       else
-      {
-      m_currentPoint.x = MC_GROUP_LEFT_INDENT;
-      m_currentPoint.y = dynamic_cast<GroupCell*>(m_previous) -> m_currentPoint.y +
-        dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + Configuration::Get()->GetGroupSkip();
-      }
-      
-      m_outputRect.x = m_currentPoint.x;
-      m_outputRect.y = m_currentPoint.y - m_output->GetMaxCenter();
-      m_outputRect.width = 0;
-      m_outputRect.height = 0;
-      if((configuration->ShowCodeCells()) ||
-         (m_groupType != GC_TYPE_CODE))
-      {
-        m_height = m_inputLabel->GetMaxHeight();
-        m_width = m_inputLabel->GetFullWidth(scale);
-      }
-      else
-      {
-        m_height = 0;
-        m_width  = 0;
-      }
-
-      tmp = m_output;
-      while (tmp != NULL) {
-        if (tmp->BreakLineHere() || tmp == m_output)
-        {
-          m_width = MAX(m_width, tmp->GetLineWidth(scale));
-          m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth(scale));
-          m_height += tmp->GetMaxHeight();
-          if (tmp->m_bigSkip)
-          {
-            m_height += MC_LINE_SKIP;
-            if               (
-                (tmp->m_previousToDraw != NULL) &&
-                (tmp->GetStyle() == TS_LABEL)
-                )
-            {
-              m_height += configuration->GetInterEquationSkip();
-            }
-          }
-          m_outputRect.height += tmp->GetMaxHeight() + MC_LINE_SKIP;
-        }
-        tmp = tmp->m_nextToDraw;
-      }
+        m_currentPoint.y = dynamic_cast<GroupCell*>(m_previous) -> m_currentPoint.y +
+          dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + Configuration::Get()->GetGroupSkip();
+    }
+    
+    m_outputRect.x = m_currentPoint.x;
+    m_outputRect.y = m_currentPoint.y;
+    if(m_output) m_outputRect.y =- m_output->GetMaxCenter();
+    m_outputRect.width = 0;
+    m_outputRect.height = 0;
+    if((configuration->ShowCodeCells()) ||
+       (m_groupType != GC_TYPE_CODE))
+    {
+      m_height = m_inputLabel->GetMaxHeight();
+      m_width = m_inputLabel->GetFullWidth(scale);
     }
     else
     {
-      if(m_previous == NULL)
-      {
-        m_currentPoint.x = MC_GROUP_LEFT_INDENT;
-        m_currentPoint.y = Configuration::Get()->GetBaseIndent() + GetMaxCenter();
-      }
-      else
-      {
-        m_currentPoint.x = MC_GROUP_LEFT_INDENT;
-        m_currentPoint.y = dynamic_cast<GroupCell*>(m_previous) -> m_currentPoint.y +
-          dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + Configuration::Get()->GetGroupSkip();
-      }
+      m_height = 0;
+      m_width  = 0;
     }
-    if(m_height < SCALE_PX(10, scale))
-      m_height = SCALE_PX(10, scale);
-  }
     
+    MathCell *tmp = m_output;
+    while (tmp != NULL)
+    {
+      if (tmp->BreakLineHere() || tmp == m_output)
+      {
+        m_width = MAX(m_width, tmp->GetLineWidth(scale));
+        m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth(scale));
+        m_height += tmp->GetMaxHeight();
+        if (tmp->m_bigSkip)
+        {
+          m_height += MC_LINE_SKIP;
+          if               (
+            (tmp->m_previousToDraw != NULL) &&
+            (tmp->GetStyle() == TS_LABEL)
+            )
+          {
+            m_height += configuration->GetInterEquationSkip();
+          }
+        }
+        m_outputRect.height += tmp->GetMaxHeight() + MC_LINE_SKIP;
+      }
+      tmp = tmp->m_nextToDraw;
+    }
+  }
+  else
+  {
+    Configuration *configuration = Configuration::Get();
+    if(m_previous == NULL)
+    {
+      m_currentPoint.x = configuration->GetIndent();
+      m_currentPoint.y = Configuration::Get()->GetBaseIndent() + GetMaxCenter();
+    }
+    else
+    {
+      m_currentPoint.x = configuration->GetIndent();
+      m_currentPoint.y = dynamic_cast<GroupCell*>(m_previous) -> m_currentPoint.y +
+        dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + Configuration::Get()->GetGroupSkip();
+    }
+  }
+  if(m_height < configuration->GetCellBracketWidth())
+    m_height = configuration->GetCellBracketWidth();  
   m_appendedCells = NULL;
-
+  
   if(m_inputLabel)
     m_inputLabel->m_currentPoint = m_currentPoint;
   if(GetEditable())
@@ -615,7 +613,8 @@ void GroupCell::Draw(wxPoint point, int fontsize)
         configuration->Outdated((dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges());
     }
     
-    if (m_output != NULL && !m_hide) {
+    if (m_output != NULL && !m_hide)
+    {
       MathCell *tmp = m_output;
       int drop = tmp->GetMaxDrop();
       if((configuration->ShowCodeCells()) ||
@@ -646,7 +645,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
             tmp->Draw(in, MAX(tmp->IsMath() ? m_mathFontSize : m_fontSize, MC_MIN_SIZE));
           if (tmp->m_nextToDraw != NULL) {
             if (tmp->m_nextToDraw->BreakLineHere()) {
-              in.x = m_indent;
+              in.x = configuration->GetIndent();
               in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
               if (tmp->m_bigSkip)
                 in.y += MC_LINE_SKIP;
@@ -658,7 +657,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
         } else {
           if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere())
           {
-            in.x = m_indent;
+            in.x = configuration->GetIndent();
             in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
             if (tmp->m_bigSkip)
               in.y += MC_LINE_SKIP;            
@@ -672,9 +671,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
 
     configuration->Outdated(false);
     if(configuration->ShowBrackets())
-    {
       DrawBracket();
-    }
     UnsetPen();
   }
 }
@@ -721,8 +718,7 @@ void GroupCell::DrawBracket()
     dc.SetPen(*wxWHITE_PEN);    
   }
   wxRect rect = GetRect();
-  // TODO globally define x coordinates of the left GC brackets
-  rect=wxRect( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
+  rect=wxRect( 0, rect.GetTop() - 2, configuration->GetCellBracketWidth(), rect.GetHeight() + 5);
   if(MathCell::InUpdateRegion(rect))
     dc.DrawRectangle(MathCell::CropToUpdateRegion(rect));
 
@@ -740,7 +736,7 @@ void GroupCell::DrawBracket()
       dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CELL_BRACKET), 1, wxPENSTYLE_SOLID)));
 
     wxRect rect = GetRect();
-    rect = wxRect( 3, rect.GetTop() - 2, MC_GROUP_LEFT_INDENT, rect.GetHeight() + 5);
+    rect = wxRect( 0, rect.GetTop() - 2, configuration->GetCellBracketWidth(), rect.GetHeight() + 5);
     if(MathCell::InUpdateRegion(rect))
       dc.DrawRectangle(rect);
   }
@@ -768,12 +764,12 @@ void GroupCell::DrawBracket()
     if (IsFoldable())
     { // draw a square
       wxPoint *points = new wxPoint[4];
-      points[0].x = m_currentPoint.x - SCALE_PX(10, scale);
+      points[0].x = m_currentPoint.x - configuration->GetCellBracketWidth();
       points[0].y = m_currentPoint.y - m_center;
-      points[1].x = m_currentPoint.x - SCALE_PX(10, scale);
-      points[1].y = m_currentPoint.y - m_center + SCALE_PX(10, scale);
+      points[1].x = m_currentPoint.x - configuration->GetCellBracketWidth();
+      points[1].y = m_currentPoint.y - m_center + configuration->GetCellBracketWidth();
       points[2].x = m_currentPoint.x;
-      points[2].y = m_currentPoint.y - m_center + SCALE_PX(10, scale);
+      points[2].y = m_currentPoint.y - m_center + configuration->GetCellBracketWidth();
       points[3].x = m_currentPoint.x;
       points[3].y = m_currentPoint.y - m_center;
       dc.DrawPolygon(4, points);
@@ -782,27 +778,27 @@ void GroupCell::DrawBracket()
     else
     { // draw a triangle and line
       wxPoint *points = new wxPoint[3];
-      points[0].x = m_currentPoint.x - SCALE_PX(10, scale);
+      points[0].x = m_currentPoint.x - configuration->GetCellBracketWidth();
       points[0].y = m_currentPoint.y - m_center;
-      points[1].x = m_currentPoint.x - SCALE_PX(10, scale);
-      points[1].y = m_currentPoint.y - m_center + SCALE_PX(10, scale);
+      points[1].x = m_currentPoint.x - configuration->GetCellBracketWidth();
+      points[1].y = m_currentPoint.y - m_center + configuration->GetCellBracketWidth();
       points[2].x = m_currentPoint.x;
       points[2].y = m_currentPoint.y - m_center;
       dc.DrawPolygon(3, points);
       delete [] points;
         
       // vertical
-      dc.DrawLine(m_currentPoint.x - SCALE_PX(10, scale), m_currentPoint.y - m_center,
-                  m_currentPoint.x - SCALE_PX(10, scale), m_currentPoint.y - m_center + m_height);
+      dc.DrawLine(m_currentPoint.x - configuration->GetCellBracketWidth(), m_currentPoint.y - m_center,
+                  m_currentPoint.x - configuration->GetCellBracketWidth(), m_currentPoint.y - m_center + m_height);
       // bottom horizontal
-      dc.DrawLine(m_currentPoint.x - SCALE_PX(10, scale), m_currentPoint.y - m_center + m_height,
+      dc.DrawLine(m_currentPoint.x - configuration->GetCellBracketWidth(), m_currentPoint.y - m_center + m_height,
                   m_currentPoint.x - SCALE_PX(2, scale) , m_currentPoint.y - m_center + m_height);
       // middle horizontal
       if (configuration->ShowCodeCells() && m_groupType == GC_TYPE_CODE && m_output != NULL && !m_hide)
       {
-        dc.DrawLine(m_currentPoint.x - SCALE_PX(6, scale),
+        dc.DrawLine(m_currentPoint.x - configuration->GetCellBracketWidth()/2,
                     m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight(),
-                    m_currentPoint.x - SCALE_PX(10, scale),
+                    m_currentPoint.x - configuration->GetCellBracketWidth(),
                     m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight());
       }
     }
@@ -811,7 +807,12 @@ void GroupCell::DrawBracket()
 
 wxRect GroupCell::HideRect()
 {
-  return wxRect(m_currentPoint.x - 10, m_currentPoint.y - m_center, 10, 10);
+  Configuration *configuration = Configuration::Get();
+  return wxRect(m_currentPoint.x - configuration->GetCellBracketWidth(),
+                m_currentPoint.y - m_center,
+                configuration->GetCellBracketWidth(),
+                configuration->GetCellBracketWidth()
+    );
 }
 
 wxString GroupCell::ToString()
@@ -1383,7 +1384,8 @@ void GroupCell::BreakLines(int fullWidth)
 
 void GroupCell::BreakLines(MathCell *cell, int fullWidth)
 {
-  int currentWidth = m_indent;
+  Configuration *configuration = Configuration::Get();
+  int currentWidth = configuration->GetIndent();
 
   MathCell *tmp = cell;
 
@@ -1392,10 +1394,10 @@ void GroupCell::BreakLines(MathCell *cell, int fullWidth)
     tmp->BreakLine(false);
     if (!tmp->m_isBroken) {
       if (tmp->BreakLineHere() || (currentWidth + tmp->GetWidth() >= fullWidth)) {
-        currentWidth = m_indent + tmp->GetWidth();
+        currentWidth = configuration->GetIndent() + tmp->GetWidth();
         tmp->BreakLine(true);
       } else
-        currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
+        currentWidth += (tmp->GetWidth() + configuration->GetCellBracketWidth());
     }
     tmp = tmp->m_nextToDraw;
   }
@@ -1714,7 +1716,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
       {
         wxString num = wxT("  ");
         num << section << wxT(".") << subsection << wxT(".") << subsubsection << wxT(" ");
-        m_inputLabel->SetValue(num);
+        tmp->m_inputLabel->SetValue(num);
       }
       break;
     case GC_TYPE_IMAGE:

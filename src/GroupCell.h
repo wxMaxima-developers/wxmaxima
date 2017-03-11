@@ -270,7 +270,6 @@ protected:
   MathCell *m_output;
   bool m_hide;
   bool m_working;
-  int m_indent;
   int m_fontSize;
   int m_fontSize_Old;
   int m_mathFontSize;

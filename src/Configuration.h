@@ -34,9 +34,6 @@
 #define MC_LINE_SKIP 2
 #define MC_TEXT_PADDING 1
 
-//! The horizontal amount the worksheet is indented by  
-#define MC_GROUP_LEFT_INDENT 15
-
 //! The width of the horizontally-drawn cursor
 #define MC_HCARET_WIDTH 25
 
@@ -87,6 +84,12 @@ public:
     else  
       return GetZoomFactor()*GetScale()*m_mathFontSize/2;
   }
+
+  int GetCellBracketWidth()
+    {
+      return GetZoomFactor()*GetScale()*8;
+    }
+  
   //! Hide brackets that are not under the pointer?
   bool HideBrackets(){return m_hideBrackets;}
   void HideBrackets(bool hide)
@@ -137,7 +140,14 @@ public:
     return m_fontEncoding;
   }
   const int GetLabelWidth(){ return m_labelWidth; }
-  const int GetIndent() { return m_indent; }
+  //! Get the indentation of GroupCells.
+  const int GetIndent()
+    {
+      if(m_indent < 0)
+        return 2 * GetCellBracketWidth();
+      else
+        return m_indent;
+    }
   //! How much vertical space is to be left between two group cells?
   int GetCursorWidth() {
     if(wxGetDisplayPPI().x/45 < 1)
@@ -163,16 +173,23 @@ public:
       else
         return 10 + GetCursorWidth();
     }
-  
+
+  /*! Set the indentation of GroupCells
+
+    Normallly this parameter is automatically calculated
+   */
   void SetIndent(int indent) { m_indent = indent; }
+  //! Set the width of the visible window for GetClientWidth()
   void SetClientWidth(int width) { m_clientWidth = width; }
+  //! Set the height of the visible window for GetClientHeight()
   void SetClientHeight(int height) { m_clientHeight = height; }
   //! Returns the width of the visible portion of the worksheet
   const int GetClientWidth() { return m_clientWidth; }
   //! Returns the height of the visible portion of the worksheet
   const int GetClientHeight() { return m_clientHeight; }
-  //! The maximum line width in withs of a letter. See LineWidth_em for details.
+  //! The maximum sensible line width in withs of a letter.
   int LineWidth_em(){return m_lineWidth_em;}
+  //! Set the maximum sensible line width in widths of a lletter.
   void LineWidth_em(int width ){m_lineWidth_em = width;}
   //! Returns the maximum sensible width for a text line: On big 16:9 screens
   //  text tends to get \b very wide before it hits the right margin. But text

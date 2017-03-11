@@ -207,7 +207,7 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
   }
   
   // Inform all cells how wide our display is
-  Configuration::Get()->SetCanvasSize(GetClientSize());
+  m_configuration->SetCanvasSize(GetClientSize());
   wxMemoryDC dcm;
   wxPaintDC dc(this);
   
@@ -291,8 +291,8 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
     // Draw content over the highlighting we did until now
     //
     wxPoint point;
-    point.x = MC_GROUP_LEFT_INDENT;
-    point.y = Configuration::Get()->GetBaseIndent() + m_tree->GetMaxCenter();
+    point.x = m_configuration->GetIndent();
+    point.y = m_configuration->GetBaseIndent() + m_tree->GetMaxCenter();
     // Draw tree
     GroupCell* tmp = m_tree;
     int drop = tmp->GetMaxDrop();
@@ -327,9 +327,9 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
         tmp->Draw(point, MAX(fontsize, MC_MIN_SIZE));
       }
       if (tmp->m_next != NULL) {
-        point.x = MC_GROUP_LEFT_INDENT;
+        point.x = m_configuration->GetIndent();
         point.y += drop + tmp->m_next->GetMaxCenter();
-        point.y += Configuration::Get()->GetGroupSkip();
+        point.y += m_configuration->GetGroupSkip();
         drop = tmp->m_next->GetMaxDrop();
       }
       tmp = dynamic_cast<GroupCell *>(tmp->m_next);
@@ -346,10 +346,10 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
     dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 
     wxRect currentGCRect = m_hCaretPosition->GetRect();
-    int caretY = ((int) Configuration::Get()->GetGroupSkip()) / 2 + currentGCRect.GetBottom() + 1;
-    dcm.DrawRectangle(xstart + MC_GROUP_LEFT_INDENT,
-                      caretY - Configuration::Get()->GetCursorWidth() / 2,
-                      MC_HCARET_WIDTH ,  Configuration::Get()->GetCursorWidth());
+    int caretY = ((int) m_configuration->GetGroupSkip()) / 2 + currentGCRect.GetBottom() + 1;
+    dcm.DrawRectangle(xstart + m_configuration->GetCellBracketWidth(),
+                      caretY - m_configuration->GetCursorWidth() / 2,
+                      MC_HCARET_WIDTH ,  m_configuration->GetCursorWidth());
   }
 
   if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hasFocus)  && (m_hCaretPosition == NULL))
@@ -365,9 +365,9 @@ void MathCtrl::OnPaint(wxPaintEvent& event)
       dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
     }     
     
-    wxRect cursor = wxRect(xstart + MC_GROUP_LEFT_INDENT,
-                           (Configuration::Get()->GetBaseIndent()-Configuration::Get()->GetCursorWidth())/2 ,
-                           MC_HCARET_WIDTH, Configuration::Get()->GetCursorWidth());
+    wxRect cursor = wxRect(xstart + m_configuration->GetCellBracketWidth(),
+                           (m_configuration->GetBaseIndent()-m_configuration->GetCursorWidth())/2 ,
+                           MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
     dcm.DrawRectangle(cursor);
   }  
   
@@ -434,7 +434,7 @@ GroupCell *MathCtrl::InsertGroupCells(
   if (!next) // if there were no further cells
     m_last = lastOfCellsToInsert;
   
-  Configuration::Get()->SetCanvasSize(GetClientSize());
+  m_configuration->SetCanvasSize(GetClientSize());
   if (renumbersections)
     NumberSections();
   Recalculate(where,false);
@@ -536,7 +536,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
     
     tmp->AppendOutput(newCell);
     
-    m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
+    m_configuration->SetClientWidth(GetClientSize().GetWidth() - m_configuration->GetCellBracketWidth()- m_configuration->GetBaseIndent());
     m_configuration->SetClientHeight(GetClientSize().GetHeight());
 
     tmp->RecalculateAppended();
@@ -563,7 +563,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 
 void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
 {
-  Configuration::Get()->SetZoomFactor(newzoom);
+  m_configuration->SetZoomFactor(newzoom);
   // Determine if we have a sane thing we can scroll to.
   MathCell *CellToScrollTo = NULL;
   if(CaretVisibleIs())
@@ -598,17 +598,17 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
 void MathCtrl::Recalculate(GroupCell *start,bool force)
 {
   GroupCell *tmp;
-  Configuration::Get()->SetCanvasSize(GetClientSize());
+  m_configuration->SetCanvasSize(GetClientSize());
 
   if(start == NULL)
     tmp = m_tree;
   else
     tmp = start;
 
-  Configuration::Get()->SetCanvasSize(GetClientSize());
+  m_configuration->SetCanvasSize(GetClientSize());
 
   m_configuration->SetForceUpdate(force);
-  m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
+  m_configuration->SetClientWidth(GetClientSize().GetWidth() - m_configuration->GetCellBracketWidth() - m_configuration->GetBaseIndent());
   m_configuration->SetClientHeight(GetClientSize().GetHeight());
 
   while (tmp != NULL)
@@ -867,7 +867,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent& event)
   if ((m_selectionStart != NULL)) {
     // SELECTION OF GROUPCELLS
     if (m_selectionStart->GetType() == MC_TYPE_GROUP) { //a selection of groups
-      if ( downx <= MC_GROUP_LEFT_INDENT + 3) {
+      if ( downx <= m_configuration->GetCellBracketWidth() + 3) {
         wxRect rectStart = m_selectionStart->GetRect();
         wxRect rectEnd = m_selectionEnd->GetRect();
         if (((downy >= rectStart.GetTop()) && (downy <= rectEnd.GetBottom())) ||
@@ -1167,7 +1167,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent& event, GroupCell *clickedInGC)
       wxRect rect = editor->GetRect();
       if (
         ((m_down.y >= rect.GetTop()) && (m_down.y <= rect.GetBottom())) &&
-        ((Configuration::Get()->ShowCodeCells()) ||
+        ((m_configuration->ShowCodeCells()) ||
          ((editor->GetType() != MC_TYPE_INPUT)||(clickedInGC->GetOutput()==NULL))
           )
         )
@@ -1209,7 +1209,7 @@ void MathCtrl::OnMouseLeftInGc(wxMouseEvent& event, GroupCell *clickedInGc)
   // evaluation any more.
   ScrolledAwayFromEvaluation(true);
 
-  if (m_down.x <= MC_GROUP_LEFT_INDENT)
+  if (m_down.x <= m_configuration->GetCellBracketWidth())
     OnMouseLeftInGcLeft(event, clickedInGc);
   else
     OnMouseLeftInGcCell(event, clickedInGc);
@@ -1450,7 +1450,7 @@ void MathCtrl::OnMouseWheel(wxMouseEvent& event) {
 
 void MathCtrl::OnMouseMotion(wxMouseEvent& event)
 {
-  if(Configuration::Get()->HideBrackets())
+  if(m_configuration->HideBrackets())
   {
 
     int x,y;
@@ -2917,7 +2917,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event)
   
   m_blinkDisplayCaret = true;
 
-  m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
+  m_configuration->SetClientWidth(GetClientSize().GetWidth() - m_configuration->GetCellBracketWidth() - Configuration::Get()->GetBaseIndent());
   m_configuration->SetClientHeight(GetClientSize().GetHeight());
 
   if (EditorCell::GetActiveCell()->IsDirty())
@@ -2927,7 +2927,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event)
     
     int height = EditorCell::GetActiveCell()->GetHeight();
     //   int fontsize = m_configuration->GetDefaultFontSize();
-    m_configuration->SetClientWidth(GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent());
+    m_configuration->SetClientWidth(GetClientSize().GetWidth() - m_configuration->GetCellBracketWidth() - Configuration::Get()->GetBaseIndent());
     m_configuration->SetClientHeight(GetClientSize().GetHeight());
     int fontsize = m_configuration->GetDefaultFontSize();
     
@@ -2937,7 +2937,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent& event)
     
     if (height != EditorCell::GetActiveCell()->GetHeight() ||
         EditorCell::GetActiveCell()->GetWidth() + EditorCell::GetActiveCell()->m_currentPoint.x >=
-        GetClientSize().GetWidth() - MC_GROUP_LEFT_INDENT - Configuration::Get()->GetBaseIndent())
+        GetClientSize().GetWidth() - m_configuration->GetCellBracketWidth() - Configuration::Get()->GetBaseIndent())
       needRecalculate = true;
   }
   
