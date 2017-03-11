@@ -726,7 +726,12 @@ void GroupCell::DrawBracket()
                 ));
   }
   wxRect rect = GetRect();
-  rect=wxRect( 0, rect.GetTop() - 2, configuration->GetCellBracketWidth(), rect.GetHeight() + 5);
+  rect=wxRect(
+    configuration->GetIndent()-configuration->GetCellBracketWidth(),
+    rect.GetTop() - 2,
+    configuration->GetCellBracketWidth(),
+    rect.GetHeight() + 5
+    );
   if(MathCell::InUpdateRegion(rect))
     dc.DrawRectangle(MathCell::CropToUpdateRegion(rect));
 
@@ -749,7 +754,11 @@ void GroupCell::DrawBracket()
                                                 wxPENSTYLE_SOLID)));
 
     wxRect rect = GetRect();
-    rect = wxRect( 0, rect.GetTop() - 2, configuration->GetCellBracketWidth(), rect.GetHeight() + 5);
+    rect = wxRect(
+      configuration->GetIndent()-configuration->GetCellBracketWidth(),
+      rect.GetTop() - 2,
+      configuration->GetCellBracketWidth(),
+      rect.GetHeight() + 5);
     if(MathCell::InUpdateRegion(rect))
       dc.DrawRectangle(rect);
   }
