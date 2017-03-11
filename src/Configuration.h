@@ -188,9 +188,9 @@ public:
   //! Returns the height of the visible portion of the worksheet
   const int GetClientHeight() { return m_clientHeight; }
   //! Calculates the default line width for the worksheet
-  int GetDefaultLineWidth()
-    {if(GetScale()*GetZoomFactor()<1)
-        return 1;
+  double GetDefaultLineWidth()
+    {if(GetScale()*GetZoomFactor()<1.0)
+        return 1.0;
       else
         return GetScale()*GetZoomFactor();
     }

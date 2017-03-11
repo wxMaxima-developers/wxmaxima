@@ -746,7 +746,7 @@ void GroupCell::DrawBracket()
     if(m_lastInEvaluationQueue)
       dc.SetPen(*(wxThePenList->FindOrCreatePen(
                     configuration->GetColor(TS_CELL_BRACKET),
-                    2*configuration->GetDefaultLineWidth(),
+                    2.0*configuration->GetDefaultLineWidth(),
                     wxPENSTYLE_SOLID)));
     else
       dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CELL_BRACKET),
@@ -768,7 +768,7 @@ void GroupCell::DrawBracket()
   {
     drawBracket = true;
     dc.SetPen( *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_ACTIVE_CELL_BRACKET),
-                                               2*configuration->GetDefaultLineWidth(),
+                                               2.0*configuration->GetDefaultLineWidth(),
                                                wxPENSTYLE_SOLID))); // window linux, set a pen
     dc.SetBrush( *(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_ACTIVE_CELL_BRACKET)))); //highlight c.
   }
