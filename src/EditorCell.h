@@ -126,7 +126,7 @@ public:
     remove this pointer.
    */
   static EditorCell *SearchStart(){return m_cellSearchStartedIn;}
-  /*! At which character inside inside its cell has the search started?
+  /*! At which character inside its cell has the search started?
 
     Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
     remove this pointer.

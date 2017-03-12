@@ -75,7 +75,7 @@ enum {
   Besides the cell types that are directly user visible there are cells for several
   kinds of items that are displayed in a special way like abs() statements (displayed
   as horizontal rules), subscripts, superscripts and exponents.
-  Another important concept realized realized by a class derived from this one is 
+  Another important concept realized by a class derived from this one is
   the group cell that groups all things that are foldable in the gui like:
    - A combination of maxima input with the output, the input prompt and the output 
      label.
@@ -98,7 +98,7 @@ public:
   static wxRect GetUpdateRegion() { return m_updateRegion;}
   //! The part of the rectangle rect that is in the region that is currently drawn
   static wxRect CropToUpdateRegion(const wxRect &rect);
-  //! Is part of this this rectangle in the region that is currently drawn?
+  //! Is part of this rectangle in the region that is currently drawn?
   static bool InUpdateRegion(const wxRect &rect);
   //! Is this cell inside the region that is currently drawn?
   bool InUpdateRegion()
@@ -133,9 +133,9 @@ public:
   void BreakPage(bool breakPage) { m_breakPage = breakPage; }
   //! Are we allowed to break a line here?
   bool BreakLineHere();
-  //! Does this cell begin begin with a manual linebreak?
+  //! Does this cell begin with a manual linebreak?
   bool ForceBreakLineHere() { return m_forceBreakLine; }
-  //! Does this cell begin begin with a manual page break?  
+  //! Does this cell begin with a manual page break?
   bool BreakPageHere() { return m_breakPage; }
   virtual bool BreakUp() { return false; }
   /*! Is a part of this cell inside a certain rectangle?

@@ -178,7 +178,7 @@ private:
   bool m_canEvalTillHere_old;
   wxToolBar *m_toolBar;
   AnimationStartStopState m_AnimationStartStopState;
-    //! True if we we show the "needs information" button.
+    //! True if we show the "needs information" button.
   bool     m_needsInformation;
 
 };
