@@ -468,14 +468,17 @@ GroupCell *MathCtrl::UpdateMLast()
 void MathCtrl::ScrollToError()
 {
   GroupCell *ErrorCell = GetLastWorkingGroup();
+  if(ErrorCell == NULL)
+    ErrorCell = GetWorkingGroup();
+  
   if(ErrorCell != NULL)
   {
     if (ErrorCell->RevealHidden())
     {
       FoldOccurred();
       Recalculate(true);
-      SetHCaret(ErrorCell);
     }
+    SetHCaret(ErrorCell);
   }
 }
 

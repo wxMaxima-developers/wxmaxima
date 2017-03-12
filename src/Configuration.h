@@ -87,7 +87,7 @@ public:
 
   int GetCellBracketWidth()
     {
-      return GetZoomFactor()*GetScale()*8;
+      return GetZoomFactor()*GetScale()*16;
     }
   
   //! Hide brackets that are not under the pointer?
@@ -144,7 +144,7 @@ public:
   const int GetIndent()
     {
       if(m_indent < 0)
-        return 2 * GetCellBracketWidth();
+        return 3 * GetCellBracketWidth() / 2;
       else
         return m_indent;
     }
