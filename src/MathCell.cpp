@@ -184,11 +184,6 @@ void MathCell::AppendCell(MathCell *p_next)
   p_next->m_previousToDraw = LastToDraw;
 };
 
-
-/***
- * Get the pointer to the parent group cell
- */
-
 MathCell* MathCell::GetParent()
 {
   wxASSERT_MSG(m_group != NULL,_("Bug: Math Cell that claims to have no group Cell it belongs to"));

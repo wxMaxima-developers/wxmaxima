@@ -5822,19 +5822,21 @@ void MathCtrl::ScrollToCell(MathCell *cell, bool scrollToTop)
     return;
   }
   
-/*  MathCell *tmp = cell->GetParent();
-  if (tmp == NULL)
-    return;
-*/
   int cellY = cell->GetCurrentY();
 
-  if (cellY < 1)
+  if (cellY < 0)
   {
     RecalculateForce();
     cellY = cell->GetCurrentY();
   }
 
-  wxASSERT_MSG(cellY >= -1,wxT("Bug: Cell with negative y position!"));
+  if(cellY < 0)
+    cellY = cell->GetParent()->GetCurrentY();
+
+  wxASSERT_MSG(cellY >=0 ,_("Bug: Cell with negative y position!"));
+    
+  if(cellY < 0)
+    return;
   
   int cellDrop = cell->GetDrop();
   int cellCenter = cell->GetCenter();

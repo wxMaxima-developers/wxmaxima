@@ -126,7 +126,8 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
     ImgCell *ic = new ImgCell(initString, false);
     AppendOutput(ic);
   }
-  
+
+  // The GroupCell this cell belongs to is this GroupCell.
   SetParent(this);
 }
 
@@ -400,7 +401,7 @@ void GroupCell::RecalculateHeight(int fontsize)
   Configuration *configuration = Configuration::Get();
   double scale = configuration->GetScale();
 
-  if (m_width < 0 || m_height < 0 ||
+  if (m_width < 0 || m_height < 0 || m_currentPoint.x < 0 || m_currentPoint.y < 0 || 
       configuration->ForceUpdate() || fontsize * scale + .5 != m_fontSize_Old)
   {
     m_fontSize_Old = fontsize * scale + .5;
@@ -427,10 +428,11 @@ void GroupCell::RecalculateHeight(int fontsize)
       m_height = 0;
     }
     
-    if (m_output != NULL && !m_hide)
+    if (!m_hide)
     {
       MathCell *tmp = m_output;
-      while (tmp != NULL) {
+      while (tmp != NULL)
+      {
         tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
         tmp = tmp->m_next;
       }
