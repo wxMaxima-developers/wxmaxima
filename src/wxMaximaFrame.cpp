@@ -641,7 +641,7 @@ void wxMaximaFrame::SetupMenu()
                        _("Display last result in TeX form"), wxITEM_NORMAL);
   m_MaximaMenu->AppendSeparator();
   m_MaximaMenu->Append(menu_triggerEvaluation, _("Manually Trigger Evaluation"),
-                       _("If maxima ever finishes evaluating without wxMaxima realizing this this menu item can force wxMaxima to try to send commands to maxima again."), wxITEM_NORMAL);
+                       _("If maxima ever finishes evaluating without wxMaxima realizing this menu item can force wxMaxima to try to send commands to maxima again."), wxITEM_NORMAL);
   m_MenuBar->Append(m_MaximaMenu, _("&Maxima"));
 
   // Equations menu

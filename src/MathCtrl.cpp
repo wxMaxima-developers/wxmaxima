@@ -5367,7 +5367,7 @@ bool MathCtrl::ExportToWXMX(wxString file,bool markAsSaved)
     "\n\nThis file contains a wxMaxima session in the .wxmx format.\n"
     ".wxmx files are .xml-based files contained in a .zip container like .odt\n"
     "or .docx files. After changing their name to end in .zip the .xml and\n"
-    "eventual bitmap files inside them can can be extracted using any .zip file\n"
+    "eventual bitmap files inside them can be extracted using any .zip file\n"
     "viewer.\n"
     "The reason why part of a .wxmx file still might still seem to make sense in a\n"
     "ordinary text viewer is that the text portion of .wxmx by default\n"
