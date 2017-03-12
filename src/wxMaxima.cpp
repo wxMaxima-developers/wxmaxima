@@ -1003,7 +1003,7 @@ void wxMaxima::KillMaxima()
     m_process = NULL;
   }
 
-  if (m_pid < 0)
+  if (m_pid <= 0)
   {
     if (m_inLispMode)
       SendMaxima(wxT("($quit)"));
