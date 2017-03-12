@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the wxMaxima package.
 #
 # Sergey Semerikov <cc@kpi.dp.ua>, 2007.
-# Yuri Chornoivan <yurchor@ukr.net>, 2013, 2015, 2016.
+# Yuri Chornoivan <yurchor@ukr.net>, 2013, 2015, 2016, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-03-02 09:10+0100\n"
-"PO-Revision-Date: 2016-06-26 18:35+0300\n"
+"PO-Revision-Date: 2017-03-12 10:20+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -76,7 +76,7 @@ msgstr " (графіка) "
 #: ../src/EditorCell.cpp:3420 ../src/EditorCell.cpp:3824
 #, c-format
 msgid " ... + %i hidden lines"
-msgstr ""
+msgstr " ... + %i прихованих рядків"
 
 #: ../src/MathParser.cpp:965
 msgid " << Expression longer than allowed by the configuration setting! >>"
@@ -260,9 +260,8 @@ msgid "&Modulus Computation..."
 msgstr "Обчислення за &модулем…"
 
 #: ../src/main.cpp:215
-#, fuzzy
 msgid "&New\tCtrl+N"
-msgstr "Створити\tCtrl+N"
+msgstr "С&творити\tCtrl+N"
 
 #: ../src/wxMaximaFrame.cpp:907
 msgid "&Numeric"
@@ -277,7 +276,6 @@ msgid "&Nusum"
 msgstr "&Підсумовування (nusum)"
 
 #: ../src/main.cpp:216
-#, fuzzy
 msgid "&Open\tCtrl+O"
 msgstr "&Відкрити\tCtrl+O"
 
@@ -382,7 +380,7 @@ msgstr "1/2"
 #: ../src/wxMaximaFrame.cpp:101
 #, c-format
 msgid "; %i commands left in the current cell"
-msgstr ""
+msgstr "; у поточній комірці лишилося %i команд"
 
 #: ../src/wxMaxima.cpp:4777
 msgid "<br>Lisp: "
@@ -391,7 +389,7 @@ msgstr "<br>Lisp: "
 #: ../src/wxMaxima.cpp:5756
 msgid ""
 "A \":lisp\" as the first command might fail to send a \"finished\" signal."
-msgstr ""
+msgstr "Перша команда «:lisp» іноді не може надіслати сигнал «finished»."
 
 #: ../data/tips.txt:13
 msgid ""
@@ -421,6 +419,9 @@ msgid ""
 "A plot to be embedded into the work sheet by preceding its name with a \"wx"
 "\". \"draw\" can be replaced by \"wxdraw\", plot by \"wxplot\" etc."
 msgstr ""
+"Креслення, яке слід вбудувати до робочого аркуша, з додаванням до назви "
+"префікса «wx». «draw» може бути замінено на «wxdraw», «plot» — на «wxplot» "
+"тощо."
 
 #: ../src/wxMaximaFrame.cpp:1456
 msgid "A symbol from the configuration dialogue"
@@ -493,9 +494,8 @@ msgid "Additional parameters for maxima"
 msgstr "Додаткові параметри для maxima"
 
 #: ../src/ConfigDialogue.cpp:610
-#, fuzzy
 msgid "Additional symbols for the \"symbols\" sidebar:"
-msgstr "Додаткові рядки до преамбули TeX:"
+msgstr "Додаткові символи для бічної панелі «символи»:"
 
 #: ../src/ToolBar.cpp:198 ../src/ToolBar.cpp:245
 msgid ""
@@ -552,7 +552,7 @@ msgstr "Автовідступ у нових рядках"
 #: ../src/ConfigDialogue.cpp:459
 #, c-format
 msgid "Automatic labels (%i1, %o1,...)"
-msgstr ""
+msgstr "Автоматичні мітки (%i1, %o1,...)"
 
 #: ../src/ConfigDialogue.cpp:220
 msgid ""
@@ -574,6 +574,9 @@ msgid ""
 "highlighting of matching parenthesis can be suppressed by setting the "
 "respective color to match the background of ordinary text."
 msgstr ""
+"Автоматично вставляти завершальні дужки у текстові поля. Автоматичне "
+"підсвічування відповідних дужок можна вимкнути встановленням для кольору "
+"підсвічування звичайного кольору тла тексту."
 
 #: ../src/ConfigDialogue.cpp:616
 msgid "Autosave interval (minutes, 0 means: off):"
@@ -581,7 +584,7 @@ msgstr "Інтервал автозбереження (у хвилинах, 0 �
 
 #: ../src/ConfigDialogue.cpp:438
 msgid "Autowrap long lines:"
-msgstr ""
+msgstr "Автоматичне перенесення довгих рядків:"
 
 #: ../src/BC2Wiz.cpp:58 ../src/wxMaxima.cpp:3732
 msgid "BC2"
@@ -623,7 +626,7 @@ msgstr "Масштаб растра для експортування:"
 
 #: ../src/ConfigDialogue.cpp:538
 msgid "Bitmaps"
-msgstr ""
+msgstr "Растрові зображення"
 
 #: ../src/ConfigDialogue.cpp:805
 msgid "Bold"
@@ -654,9 +657,10 @@ msgid "Bug: Found a math end marker without any start marker."
 msgstr "Вада: знайдено позначку завершення формули без позначки її початку."
 
 #: ../src/wxMaxima.cpp:1211
-#, fuzzy
 msgid "Bug: Found a statusbar end marker without any matching start marker."
-msgstr "Вада: знайдено позначку завершення формули без позначки її початку."
+msgstr ""
+"Вада: знайдено позначку завершення панелі стану без відповідної позначки її "
+"початку."
 
 #: ../src/wxMaxima.cpp:1281
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
@@ -698,46 +702,43 @@ msgstr ""
 #: ../src/MathParser.cpp:123 ../src/MathParser.cpp:155
 #: ../src/MathParser.cpp:230
 msgid "Bug: Missing contents"
-msgstr ""
+msgstr "Вада: немає вмісту"
 
 #: ../src/GroupCell.cpp:948 ../src/GroupCell.cpp:1117
 msgid "Bug: No image counter to write to!"
-msgstr ""
+msgstr "Вада: немає лічильника зображень для запису даних!"
 
 #: ../src/AbsCell.cpp:208
 msgid "Bug: No last cell in an absCell!"
-msgstr ""
+msgstr "Вада: немає останньої комірки у absCell!"
 
 #: ../src/ConjugateCell.cpp:203
 msgid "Bug: No last cell in an conjugateCell!"
-msgstr ""
+msgstr "Вада: немає останньої комірки у conjugateCell!"
 
 #: ../src/FracCell.cpp:495
-#, fuzzy
 msgid "Bug: No last cell in an denominator!"
-msgstr "Вада: дріб без знаменника"
+msgstr "Вада: немає останньої комірки у знаменнику!"
 
 #: ../src/ExptCell.cpp:278
 msgid "Bug: No last cell in an exponent of an exptCell!"
-msgstr ""
+msgstr "Вада: немає останньої комірки у степені exptCell!"
 
 #: ../src/FracCell.cpp:483
-#, fuzzy
 msgid "Bug: No last cell in an numerator!"
-msgstr "Вада: дріб без чисельника"
+msgstr "Вада: немає останньої комірки у чисельнику!"
 
 #: ../src/ExptCell.cpp:268
 msgid "Bug: No last cell in the base of an exptCell!"
-msgstr ""
+msgstr "Вада: немає останньої комірки в основі exptCell!"
 
 #: ../src/ParenCell.cpp:562
 msgid "Bug: No last cell inside a parenthesis!"
-msgstr ""
+msgstr "Вада: немає останньої комірки у дужках!"
 
 #: ../src/SqrtCell.cpp:332
-#, fuzzy
 msgid "Bug: No last cell inside a square root!"
-msgstr "Вада: дріб без чисельника"
+msgstr "Вада: немає останньої комірки у квадратному корені!"
 
 #: ../src/MathCtrl.cpp:2208
 msgid ""
@@ -800,14 +801,13 @@ msgid "Build &Info"
 msgstr "Ві&домості щодо збирання"
 
 #: ../data/tips.txt:2
-#, fuzzy
 msgid ""
 "By default, Shift-Enter is used to evaluate commands, while Enter is used "
 "for multiline input. This behaviour can be changed in 'Edit->Configure' "
 "dialog by checking 'Enter evaluates cells'. This switches the roles of these "
 "two key commands."
 msgstr ""
-"Типово, для виконання команд використовується комбінація клавіш Shift+Enter, "
+"Типово, для виконання команд використовується комбінація клавіш Shift-Enter, "
 "а Enter використовується для введення багаторядкових блоків тексту. Таку "
 "поведінку програми можна змінити за допомогою діалогового вікна «Зміни → "
 "Налаштувати»: позначте пункт «Enter для обчислення у комірках». За допомогою "
@@ -879,7 +879,7 @@ msgstr "Скасувати"
 
 #: ../src/wxMaximaFrame.cpp:124 ../src/wxMaxima.cpp:947
 msgid "Cannot start the maxima binary"
-msgstr ""
+msgstr "Не вдалося запустити виконуваний файл maxima"
 
 #: ../src/wxMaximaFrame.cpp:1177
 msgid "Canonical (tr)"
@@ -1186,9 +1186,8 @@ msgid "Copy as Text\tCtrl+Shift+C"
 msgstr "Копіювати як текст\tCtrl+Shift+C"
 
 #: ../src/MathCtrl.cpp:944 ../src/MathCtrl.cpp:990
-#, fuzzy
 msgid "Copy as plain text"
-msgstr "Копіювати як зображення"
+msgstr "Копіювати як звичайний текст"
 
 #: ../src/ToolBar.cpp:138 ../src/wxMaximaFrame.cpp:461
 msgid "Copy selection"
@@ -1405,9 +1404,8 @@ msgid "Divide Cell"
 msgstr "Ділити комірку"
 
 #: ../src/wxMaximaFrame.cpp:595
-#, fuzzy
 msgid "Divide Cell\tCtrl+D"
-msgstr "Ділити комірку"
+msgstr "Поділити комірку\tCtrl+D"
 
 #: ../src/wxMaximaFrame.cpp:777
 msgid "Divide numbers or polynomials"
@@ -1418,30 +1416,30 @@ msgid "Divide this input cell into two cells"
 msgstr "Поділити цю комірку введення на дві комірки"
 
 #: ../src/wxMaxima.cpp:6194
-#, fuzzy, c-format
+#, c-format
 msgid "Do you want to save the changes you made in the document \"%s\"?"
-msgstr "Хочете зберегти зміни, які було внесено до документа «"
+msgstr "Хочете зберегти зміни, які було внесено до документа «%s»?"
 
 #: ../src/ConfigDialogue.cpp:782
 msgid "Document background"
 msgstr "Тло документа"
 
 #: ../src/wxMaxima.cpp:1789
-#, fuzzy
 msgid ""
 "Document was saved using a newer version of wxMaxima so it may not load "
 "correctly. Please update your wxMaxima."
 msgstr ""
-" було збережено за допомогою новішої версії wxMaxima, отже дані може бути "
+"Документ було збережено за допомогою новішої версії wxMaxima, отже дані може "
+"бути "
 "завантажено з помилками. Будь ласка, оновіть вашу версію wxMaxima."
 
 #: ../src/wxMaxima.cpp:1783
-#, fuzzy
 msgid ""
 "Document was saved using a newer version of wxMaxima. Please update your "
 "wxMaxima."
 msgstr ""
-" було збережено за допомогою новішої версії wxMaxima. Будь ласка, оновіть "
+"Документ було збережено за допомогою новішої версії wxMaxima. Будь ласка, "
+"оновіть "
 "вашу версію wxMaxima."
 
 #: ../src/ConfigDialogue.cpp:519
@@ -1464,7 +1462,7 @@ msgstr "Не зберігати"
 
 #: ../src/FindReplacePane.cpp:85
 msgid "Down"
-msgstr ""
+msgstr "Нижче"
 
 #: ../src/wxMaximaFrame.cpp:694
 msgid "E&quations"
@@ -1565,6 +1563,10 @@ msgid ""
 "manipulated with factor(), expand() and similar functions. They can easily "
 "be introduced one into another. Also they are always printed out as 2D maths."
 msgstr ""
+"У рівнянь є декілька переваг над функціями. Наприклад, рівняння можна "
+"обробляти за допомогою функцій factor(), expand() тощо. Рівняння можна дуже "
+"просто вставляти одне в інше. Крім того, рівняння завжди виводяться як "
+"звичайні формули."
 
 #: ../src/wxMaxima.cpp:3745
 msgid "Equations:"
@@ -1588,9 +1590,8 @@ msgid "Eta"
 msgstr "Η"
 
 #: ../src/TableOfContents.cpp:260
-#, fuzzy
 msgid "Evaluate"
-msgstr "Обчислити комірки"
+msgstr "Обчислити"
 
 #: ../src/wxMaximaFrame.cpp:869
 msgid "Evaluate &Noun Forms"
@@ -1712,9 +1713,8 @@ msgid "Export document to a HTML or pdfLaTeX file"
 msgstr "Експортувати документ до файла HTML або pdfLaTeX"
 
 #: ../src/ConfigDialogue.cpp:535
-#, fuzzy
 msgid "Export equations to HTML as:"
-msgstr "Спроба експортування даних до HTML завершилася невдало!"
+msgstr "Експортувати рівняння до HTML як:"
 
 #: ../src/wxMaximaFrame.cpp:211
 msgid "Export failed."
@@ -1884,9 +1884,8 @@ msgid "Find root"
 msgstr "Знайти корінь"
 
 #: ../src/FindReplacePane.cpp:44
-#, fuzzy
 msgid "Find:"
-msgstr "Знайти"
+msgstr "Знайти:"
 
 #: ../src/ConfigDialogue.cpp:586
 msgid "Finnish"
@@ -1961,6 +1960,10 @@ msgid ""
 "showing the extend of the cell and allowing to fold it. This setting now "
 "tells if this bracket is to be printed, as well."
 msgstr ""
+"Для кожної текстової комірки, комірки розділу або комірки з кодом wxMaxima "
+"може показувати дужку, що позначає продовження комірки і надає змогу її "
+"згорнути. За допомогою цього параметра можна визначити, чи слід виводити таку "
+"дужку на друк."
 
 #: ../src/Plot2dWiz.cpp:58 ../src/Plot3dWiz.cpp:59
 msgid "Format:"
@@ -2131,52 +2134,44 @@ msgid "Help"
 msgstr "Довідка"
 
 #: ../src/TableOfContents.cpp:258
-#, fuzzy
 msgid "Hide"
-msgstr "Ділити комірку"
+msgstr "Приховати"
 
 #: ../src/wxMaximaFrame.cpp:520
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "Приховати усі панелі інструментів\tAlt+Shift+-"
 
 #: ../src/ToolBar.cpp:206
-#, fuzzy
 msgid "Hide Code"
-msgstr "Ділити комірку"
+msgstr "Приховати код"
 
 #: ../src/wxMaximaFrame.cpp:518
-#, fuzzy
 msgid "Hide Code Cells\tAlt+Ctrl+H"
-msgstr "Вставити комірку\tAlt+Shift+C"
+msgstr "Приховати комірки з кодом\tAlt+Ctrl+H"
 
 #: ../src/MathCtrl.cpp:1083
-#, fuzzy
 msgid "Hide Part"
-msgstr "Ділити комірку"
+msgstr "Приховати частину"
 
 #: ../src/MathCtrl.cpp:1091
-#, fuzzy
 msgid "Hide Section"
-msgstr "Розділ"
+msgstr "Приховати розділ"
 
 #: ../src/MathCtrl.cpp:1100
-#, fuzzy
 msgid "Hide Subsection"
-msgstr "Підрозділ"
+msgstr "Приховати підрозділ"
 
 #: ../src/MathCtrl.cpp:1109
-#, fuzzy
 msgid "Hide Subsubsection"
-msgstr "Підпідрозділ"
+msgstr "Приховати підпідрозділ"
 
 #: ../src/wxMaximaFrame.cpp:520
 msgid "Hide all panes"
-msgstr "Сховати усі панелі"
+msgstr "Приховати усі панелі"
 
 #: ../src/MathCtrl.cpp:1117
-#, fuzzy
 msgid "Hide contents"
-msgstr "Грецькі сталі"
+msgstr "Приховати вміст"
 
 #: ../src/ConfigDialogue.cpp:217
 msgid ""
@@ -2184,6 +2179,9 @@ msgid ""
 "worksheet's right side and that contain the \"hide\" button of the cell if "
 "the cells aren't active."
 msgstr ""
+"Приховати дужки, які позначають продовження комірок робочого аркуша на "
+"правому полі і містять кнопку приховування комірки, якщо комірки не є "
+"активними."
 
 #: ../src/ConfigDialogue.cpp:775
 msgid "Highlight (dpart)"
@@ -2236,7 +2234,7 @@ msgstr "Ідентичний до"
 
 #: ../src/wxMaximaFrame.cpp:643
 msgid ""
-"If maxima ever finishes evaluating without wxMaxima realizing this this menu "
+"If maxima ever finishes evaluating without wxMaxima realizing this menu "
 "item can force wxMaxima to try to send commands to maxima again."
 msgstr ""
 "Якщо maxima завершує обчислення і wxMaxima цього не помічає, за допомогою "
@@ -2274,6 +2272,10 @@ msgid ""
 "wxMaxima acts like mobile apps that backup the file every few minutes and "
 "save it on closing."
 msgstr ""
+"Якщо у діалоговому вікні налаштовування увімкнено можливість "
+"«Автозбереження», wxMaxima працюватиме як мобільні програми, які створюють "
+"резервну копію файлів кожні декілька хвилин і зберігають файли під час "
+"завершення роботи."
 
 #: ../src/ConfigDialogue.cpp:185
 msgid ""
@@ -2328,7 +2330,7 @@ msgstr "файли зображень (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*
 msgid ""
 "In order to visualize how a parameter affects an equation wxmaxima provides "
 "commands that start with \"with_slider_\" and that create animations. One "
-"example would be:.\n"
+"example would be:\n"
 "\n"
 "    with_slider_draw(\n"
 "        a,[-16,-9,-4,-2,0,1,2,3,4,5,6l7],\n"
@@ -2340,6 +2342,18 @@ msgid ""
 "        )\n"
 "    );"
 msgstr ""
+"З метою візуалізації впливу параметра на рівняння у wxmaxima передбачено "
+"команди, які починаються з «with_slider_» і створюють анімації. Приклад:\n"
+"\n"
+"    with_slider_draw(\n"
+"        a,[-16,-9,-4,-2,0,1,2,3,4,5,6l7],\n"
+"        title=concat(\"a=\",i),\n"
+"        grid=true,\n"
+"        explicit(\n"
+"            x^2-a*x,\n"
+"            x,-10,10\n"
+"        )\n"
+"    );"
 
 #: ../data/tips.txt:41
 msgid ""
@@ -2348,6 +2362,10 @@ msgid ""
 "Indentation can be continued in the next line by indenting the line using "
 "spaces."
 msgstr ""
+"У текстових комірках списки з позначками можна створити, розпочинаючи рядок з "
+"« * ». Кількість пробілів перед символом «*» визначає рівень відступів. "
+"Відступи можна продовжити на наступному рядку додавши на його початку "
+"потрібну кількість пробілів."
 
 #: ../src/ConfigDialogue.cpp:192
 msgid ""
@@ -2364,7 +2382,7 @@ msgstr "Включити такі стовпці:"
 
 #: ../src/ConfigDialogue.cpp:655
 msgid "Incremental Search"
-msgstr ""
+msgstr "Покроковий пошук"
 
 #: ../src/IntegrateWiz.cpp:210 ../src/IntegrateWiz.cpp:220
 #: ../src/IntegrateWiz.cpp:229 ../src/IntegrateWiz.cpp:239
@@ -2511,7 +2529,7 @@ msgstr "Проінтегрувати"
 
 #: ../src/wxMaxima.cpp:4266
 msgid "Integrate (risch)"
-msgstr "Проінтегрувати (Річ)"
+msgstr "Проінтегрувати (Ріш)"
 
 #: ../src/wxMaximaFrame.cpp:738
 msgid "Integrate expression"
@@ -2519,16 +2537,15 @@ msgstr "Проінтегрувати вираз"
 
 #: ../src/wxMaximaFrame.cpp:740
 msgid "Integrate expression with Risch algorithm"
-msgstr "Проінтегрувати вираз за допомогою алгоритму Річа"
+msgstr "Проінтегрувати вираз за допомогою алгоритму Ріша"
 
 #: ../src/MathCtrl.cpp:1011 ../src/wxMaximaFrame.cpp:1184
 msgid "Integrate..."
 msgstr "Проінтегрувати…"
 
 #: ../src/ConfigDialogue.cpp:502
-#, fuzzy
 msgid "Intelligently hide cell brackets"
-msgstr "Дужка активної комірки"
+msgstr "Розумно приховати дужки комірок"
 
 #: ../src/ToolBar.cpp:157
 msgid "Interrupt"
@@ -2573,9 +2590,11 @@ msgid ""
 "It is possible to add custom symbols to the \"symbols\" sidebar by copying "
 "them into the respective field in the configuration dialogue."
 msgstr ""
+"Передбачено можливість додавання нетипових символів на бічну панель "
+"«символи». Достатньо скопіювати ці символи до відповідного поля у діалоговому "
+"вікні налаштовування."
 
 #: ../data/tips.txt:27
-#, fuzzy
 msgid ""
 "It is possible to define reusable Maxima libraries with wxMaxima that can be "
 "later loaded by using the load() function. All that has to be done is to "
@@ -2584,7 +2603,8 @@ msgid ""
 msgstr ""
 "Можна визначити бібліотеки Maxima, які wxMaxima має завантажити за допомогою "
 "функції load(). Для цього всього лише треба експортувати відповідні команди "
-"до файла у форматі .mac."
+"до файла у форматі .mac або зберегти їх у форматі .wxm. Втім, зауважте, що "
+"деякі спеціальні символи, зокрема "
 
 #: ../src/ConfigDialogue.cpp:592
 msgid "Italian"
@@ -2600,7 +2620,7 @@ msgstr "японська"
 
 #: ../src/ConfigDialogue.cpp:595
 msgid "Kabyle"
-msgstr ""
+msgstr "кабильська"
 
 #: ../src/wxMaximaFrame.cpp:1333
 msgid "Kappa"
@@ -2763,9 +2783,8 @@ msgid "Map function to a matrix"
 msgstr "Відобразити функцію на матрицю"
 
 #: ../src/FindReplacePane.cpp:113
-#, fuzzy
 msgid "Match Case"
-msgstr "Пакетний файл"
+msgstr "З урахуванням регістру"
 
 #: ../src/ConfigDialogue.cpp:475
 msgid "Match parenthesis in text controls"
@@ -2788,10 +2807,24 @@ msgid ""
 "have problems aligning and scaling with the rest of the text and might use "
 "fonts that don't match the rest of the document."
 msgstr ""
+"MathJAX створює масштабоване високоякісне представлення звичайних формул, з "
+"яким можна працювати звичайним перетягуванням зі скиданням даних, а також "
+"надає певні можливості з доступності для людей з обмеженими можливостями. "
+"Недоліком MathJAX є те, що для роботи з ним потрібен JavaScript та додатковий "
+"час для показу форматованих рівнянь.\n"
+"MathML є набагато швидшим за MathJaX, якщо його підтримку передбачено у "
+"програмі для перегляду інтернету. Втім, у багатьох реалізацій MathML не "
+"вистачає необхідних можливостей.\n"
+"Растрові зображення потребують надсилання набагато більшого обсягу даних ніж "
+"перші два варіанти. Для них не передбачено підтримки додаткових можливостей, "
+"зокрема перетягування зі скиданням або можливостей доступності. Крім того, у "
+"них є проблеми з вирівнюванням і масштабуванням щодо решти тексту. У "
+"растрових зображеннях можуть використовуватися шрифти, які не пасують до "
+"решти шрифтів документа."
 
 #: ../src/ConfigDialogue.cpp:539
 msgid "MathML + MathJaX as Fill-In"
-msgstr ""
+msgstr "MathML + MathJaX як заповнення"
 
 #: ../src/wxMaximaFrame.cpp:332
 msgid "Mathematical Symbols"
@@ -2821,15 +2854,25 @@ msgstr "Maxima"
 #, c-format
 msgid ""
 "Maxima assigns each command/equation an automatic label (which looks like "
-"%i1 or %o1. If a command begins with a descriptive name followed by a : "
+"%i1 or %o1). If a command begins with a descriptive name followed by a : "
 "wxMaxima will call the descriptive name an \"user-defined label\" instead. "
 "This selection now allows to tell wxMaxima if to show only automatic labels, "
 "automatic labels if there aren't user-defined ones or no label at all until "
-"an user-defined label can be found by wxMaxima's heuristics; If automatic "
+"an user-defined label can be found by wxMaxima's heuristics. If automatic "
 "labels are suppressed extra vertical space is added between equations in "
 "order to ease discerning which line starts a new equation and which one only "
 "continues the one from the last line."
 msgstr ""
+"Maxima автоматично пов’язує з кожною командою або рівнянням мітку (яка "
+"виглядає як %i1 або %o1). Якщо команда починається з описової назви із "
+"наступним символом двокрапки, «:», wxMaxima вважатиме описову назву "
+"«визначеною користувачем міткою». За допомогою цього пункту можна повідомити "
+"wxMaxima, слід показувати лише автоматичні мітки, автоматичні мітки, якщо "
+"немає визначених користувачем міток, чи взагалі не показувати мітки, аж доки "
+"визначену користувачем мітку не буде знайдено за допомогою евристики "
+"wxMaxima. Якщо буде придушено показ автоматичних міток, програма додасть "
+"вертикальний інтервал між рівнянням з метою спрощення візуального розрізнення "
+"рядків різних рівнянь і рядків одного рівняння, поділеного на рядки."
 
 #: ../src/wxMaximaFrame.cpp:128
 msgid "Maxima has a question"
@@ -2844,9 +2887,8 @@ msgid "Maxima is calculating"
 msgstr "Maxima виконує обчислення"
 
 #: ../src/wxMaximaFrame.cpp:109
-#, fuzzy
 msgid "Maxima is ready for input."
-msgstr "Команда Maxima"
+msgstr "Maxima готова до введення команд."
 
 #: ../src/wxMaxima.cpp:3112
 msgid "Maxima package (*.mac)|*.mac"
@@ -2871,6 +2913,12 @@ msgid ""
 "maxima process every time the worksheet is to be re-evaluated. As this needs "
 "a little bit of time this switch allows to disable this behavior."
 msgstr ""
+"У Maxima передбачено команду «забути все», яка вилучає усі параметри "
+"поточного сеансу роботи з maxima. Через це wxMaxima зазвичай починає новий "
+"сеанс maxima кожного разу, коли надходить команда щодо повторного обчислення "
+"робочого аркуша. Оскільки перезапуск maxima потребує певного часу, "
+"передбачено цей пункт, за допомогою якого можна вимкнути перезапуск сеансів і "
+"заощадити трохи часу."
 
 #: ../src/ConfigDialogue.cpp:772
 msgid "Maxima questions"
@@ -2923,6 +2971,14 @@ msgid ""
 "    %[1];\n"
 "    result_b:b=at(b,%);"
 msgstr ""
+"За допомогою функції Maxima «at» можна отримувати доступ до довільних змінних "
+"у списку результатів:\n"
+"\n"
+"    g1:a*x+y=0;\n"
+"    g2:b*y+x*x=1;\n"
+"    solve([g1,g2],[a,b]);\n"
+"    %[1];\n"
+"    result_b:b=at(b,%);"
 
 #: ../data/tips.txt:36
 msgid ""
@@ -2940,6 +2996,19 @@ msgid ""
 "    at(result,Values);\n"
 "    float(%);"
 msgstr ""
+"Перевага Maxima полягає можливості роботи з рівняннями і символічних "
+"обчисленнях. Саме тому, не слід зловживати функціями (на відміну від рівнянь "
+"із мітками). Варто також зберігати поточні значення змінних у списку, а не "
+"надавати значення змінним безпосередньо. Приклад зразкового сеансу:\n"
+"\n"
+"/* Ми зберігаємо поточні значення у списку, щоб ними можна було пізніше "
+"скористатися */\n"
+"    Values:[a=10,c=100];\n"
+"    Pyth:a^2+b^2=c^2;\n"
+"    solve(%,b);\n"
+"    result:%[2];\n"
+"    at(result,Values);\n"
+"    float(%);"
 
 #: ../src/StatusBar.cpp:34
 msgid ""
@@ -2951,6 +3020,14 @@ msgid ""
 "not only intercepts connections from the outside, but also to intercept "
 "connections between two programs that run on the same computer."
 msgstr ""
+"Maxima, програма, яка виконує обчислення, і wxMaxima, програма, яка показує "
+"робочий аркуш, працюють у різних процесах системи. Це означає, що навіть якщо "
+"роботу maxima буде завершено у аварійному режимі, wxMaxima (а отже і робочий "
+"аркуш) не постраждають. Обмін даними між програмами відбувається за допомогою "
+"сокета у локальній мережі. Цього разу такий сокет не вдалося створити через "
+"роботу брандмауера, який налаштовано не лише на перехоплення з’єднань "
+"іззовні, але і на перехоплення з’єднань між програмами, які працюють на "
+"одному комп’ютері."
 
 #: ../src/StatusBar.cpp:35
 msgid ""
@@ -2963,6 +3040,14 @@ msgid ""
 "from the outside, but also to intercept connections between two programs "
 "that run on the same computer."
 msgstr ""
+"Maxima, програма, яка виконує обчислення, і wxMaxima, програма, яка показує "
+"робочий аркуш, працюють у різних процесах системи. Це означає, що навіть якщо "
+"роботу maxima буде завершено у аварійному режимі, wxMaxima (а отже і робочий "
+"аркуш) не постраждають. Зараз ці дві програми не з’єднано одна з одною. Це, "
+"ймовірно, означає, що maxima усе ще запускається, або що maxima не вдалося "
+"запустити. Крім того, проблему може бути спричинено роботою брандмауера, який "
+"налаштовано не лише на перехоплення з’єднань іззовні, але і на перехоплення "
+"з’єднань між програмами, які працюють на одному комп’ютері."
 
 #: ../src/StatusBar.cpp:33
 msgid ""
@@ -2971,6 +3056,10 @@ msgid ""
 "cannot harm wxMaxima, which displays the worksheet.\n"
 "This icon indicates if data is transferred between maxima and wxMaxima."
 msgstr ""
+"Maxima, програму, яка виконує обчислення, запущено у окремому процесі. "
+"Перевагою такої схеми запуску є те, що аварійне завершення роботи maxima не "
+"зашкодить даним у програмі wxMaxima, яка показує робочий аркуш.\n"
+"Ця піктограма є індикатором передавання даних між maxima і wxMaxima."
 
 #: ../src/ConfigDialogue.cpp:423
 msgid "Maximum displayed number of digits:"
@@ -3001,9 +3090,8 @@ msgid "Merge Cells"
 msgstr "Об’єднати комірки"
 
 #: ../src/wxMaximaFrame.cpp:593
-#, fuzzy
 msgid "Merge Cells\tCtrl+M"
-msgstr "Об’єднати комірки"
+msgstr "Об’єднати комірки\tCtrl+M"
 
 #: ../src/wxMaximaFrame.cpp:594
 msgid "Merge the text from two input cells into one"
@@ -3184,9 +3272,8 @@ msgid "Online tutorials"
 msgstr "Навчальні матеріали у інтернеті"
 
 #: ../src/ConfigDialogue.cpp:461
-#, fuzzy
 msgid "Only user-defined labels"
-msgstr "Визначені користувачем мітки"
+msgstr "Лише визначені користувачем мітки"
 
 #: ../src/ConfigDialogue.cpp:675 ../src/ToolBar.cpp:115 ../src/main.cpp:354
 #: ../src/wxMaxima.cpp:2968
@@ -3453,7 +3540,7 @@ msgstr "Надрукувати документ"
 
 #: ../src/ConfigDialogue.cpp:559
 msgid "Print the cell brackets [drawn to their left]"
-msgstr ""
+msgstr "Виводити дужки комірок [показуються ліворуч]"
 
 #: ../src/wxMaxima.cpp:4417
 msgid "Product"
@@ -3497,7 +3584,7 @@ msgstr "Нагадати попередню команду з журналу"
 
 #: ../src/ConfigDialogue.cpp:626
 msgid "Recent files list length:"
-msgstr ""
+msgstr "Довжина списку нещодавніх файлів:"
 
 #: ../src/wxMaximaFrame.cpp:1175
 msgid "Rectform"
@@ -3532,9 +3619,8 @@ msgid "Remove output from input cells"
 msgstr "Вилучити всі виведені дані з комірок для введення даних"
 
 #: ../src/FindReplacePane.cpp:103
-#, fuzzy
 msgid "Replace All"
-msgstr "Позначити все"
+msgstr "Замінити всі"
 
 #: ../src/wxMaxima.cpp:3454
 #, c-format
@@ -3543,7 +3629,7 @@ msgstr "Замінено %d відповідників."
 
 #: ../src/FindReplacePane.cpp:62
 msgid "Replacement:"
-msgstr ""
+msgstr "Заміна:"
 
 #: ../src/wxMaximaFrame.cpp:936
 msgid "Report bug"
@@ -3575,7 +3661,7 @@ msgstr "Стрілка праворуч"
 
 #: ../src/wxMaximaFrame.cpp:739
 msgid "Risch Integration..."
-msgstr "Інтегрування за Річем…"
+msgstr "Інтегрування за Рішем…"
 
 #: ../src/wxMaximaFrame.cpp:654
 msgid "Roots of &Polynomial"
@@ -3737,9 +3823,8 @@ msgstr ""
 "вікні налаштовування."
 
 #: ../src/TableOfContents.cpp:259
-#, fuzzy
 msgid "Select"
-msgstr "Позначення"
+msgstr "Вибрати"
 
 #: ../src/MathCtrl.cpp:1022 ../src/MathCtrl.cpp:1038
 msgid "Select All"
@@ -3913,9 +3998,8 @@ msgid "Show function template"
 msgstr "Показати шаблон функції"
 
 #: ../src/ConfigDialogue.cpp:456
-#, fuzzy
 msgid "Show labels:"
-msgstr "Показати з&мінні"
+msgstr "Показати мітки:"
 
 #: ../src/ConfigDialogue.cpp:202
 msgid "Show long expressions in wxMaxima document."
@@ -4105,7 +4189,7 @@ msgstr "Почати анімацію"
 
 #: ../src/ConfigDialogue.cpp:733
 msgid "Start a new maxima for each re-evaluation"
-msgstr ""
+msgstr "Запускати новий екземпляр maxima для кожного повторного обчислення"
 
 #: ../src/ToolBar.cpp:186
 msgid "Start or Stop animation"
@@ -4121,7 +4205,7 @@ msgstr ""
 
 #: ../src/ConfigDialogue.cpp:216
 msgid "Start searching while the phrase to search for is still being typed."
-msgstr ""
+msgstr "Починати пошук, коли критерій пошуку ще продовжують вводити."
 
 #: ../src/wxMaxima.cpp:298
 msgid "Starting Maxima process failed"
@@ -4210,6 +4294,8 @@ msgid ""
 "Symbols that are entered or copied here will appear in the symbols sidebar "
 "so they can be entered into the worksheet easily."
 msgstr ""
+"Символи, які буде введено або скопійовано сюди, з’являться на бічній панелі "
+"символів для спрощення їхнього введення до робочого аркуша."
 
 #: ../src/wxMaxima.cpp:4632
 msgid "System info"
@@ -4233,7 +4319,7 @@ msgstr "Ряд Тейлора:"
 
 #: ../src/ConfigDialogue.cpp:537
 msgid "TeX, interpreted by MathJaX"
-msgstr ""
+msgstr "TeX, у інтерпретації MathJaX"
 
 #: ../src/wxMaxima.cpp:4138
 msgid "Tellrat"
@@ -4244,9 +4330,8 @@ msgid "Text"
 msgstr "Текст"
 
 #: ../src/ConfigDialogue.cpp:442
-#, fuzzy
 msgid "Text Only"
-msgstr "Текстова комірка"
+msgstr "Лише текст"
 
 #: ../src/ConfigDialogue.cpp:776
 msgid "Text cell"
@@ -4262,6 +4347,9 @@ msgid ""
 "with \" > \". The number of spaces in front of the \">\" determines the "
 "indentation level, as it does with bullet lists."
 msgstr ""
+"У текстових комірках можуть міститися цитати, які слід позначати, починаючи "
+"рядок з « > ». Кількість пробілів перед «>» визначає рівень відступу, так "
+"само як у списках із позначками."
 
 #: ../src/ConfigDialogue.cpp:787
 msgid "Text equal to selection"
@@ -4275,12 +4363,19 @@ msgid ""
 "    r_parallel:R=R_1*R_2/(R_1+R_2);\n"
 "    result:at(ohm,r_parallel);"
 msgstr ""
+"За допомогою функції «at» можна вставити одне рівняння в інше:\n"
+"\n"
+"    ohm:U=R*I;\n"
+"    r_parallel:R=R_1*R_2/(R_1+R_2);\n"
+"    result:at(ohm,r_parallel);"
 
 #: ../src/wxMaxima.cpp:1812
 msgid ""
 "The .xml file doesn't seem to be valid xml or isn't a content.xml extracted "
 "from a .wxmx zip archive"
 msgstr ""
+"Здається, файл .xml не є коректним файлом xml або не є файлом content.xml, "
+"який видобуто з архіву zip .wxmx"
 
 #: ../src/ConfigDialogue.cpp:189
 msgid ""
@@ -4308,7 +4403,7 @@ msgstr "Клас документів LaTeX, який слід використ�
 
 #: ../data/tips.txt:43
 msgid "The key combination Shift+Space results in a non-breakable space."
-msgstr ""
+msgstr "Натискання комбінації клавіш Shift+Пробіл вводить нерозривний пробіл."
 
 #: ../src/TextCell.cpp:158
 msgid ""
@@ -4326,10 +4421,12 @@ msgid ""
 "The load() command of Maxima versions >5.38 is able to load .wxm files as "
 "library of maxima's commands."
 msgstr ""
+"Команда load() у версіях Maxima >5.38 може завантажувати файли .wxm як "
+"бібліотеки команд maxima."
 
 #: ../src/ConfigDialogue.cpp:215
 msgid "The number of recently opened files that is to be remembered."
-msgstr ""
+msgstr "Кількість останніх відкритих файлів, дані яких слід пам’ятати."
 
 #: ../src/wxMaximaFrame.cpp:919
 msgid "The offline manual of maxima"
@@ -4360,6 +4457,19 @@ msgid ""
 "    at(Energy,Values);\n"
 "    W_mech:rhs(%);"
 msgstr ""
+"Команда rhs() («right hand side» або «права частина») надає змогу отримати "
+"результат обробки рівняння у форматі, у якому б його було представлено "
+"функцією:\n"
+"\n"
+"    Values:[\n"
+"        /* m=1.2 tons */\n"
+"        m=1.2*10^3,\n"
+"        /* 100 km/h*/\n"
+"        v=100*10^3/(60*60)\n"
+"    ];\n"
+"    Energy:W=1/2*m*v^2;\n"
+"    at(Energy,Values);\n"
+"    W_mech:rhs(%);"
 
 #: ../data/tips.txt:11
 msgid ""
@@ -4471,14 +4581,13 @@ msgstr ""
 "діалогового вікна «Зміни → Налаштувати»."
 
 #: ../data/tips.txt:1
-#, fuzzy
 msgid ""
 "To start using wxMaxima right away, start typing your command. An input cell "
 "should appear. Then press Shift-Enter to evaluate your command."
 msgstr ""
 "Після запуску wxMaxima ви можете одразу почати вводити команду. У відповідь "
 "програма покаже комірку для введення команди. Натисніть комбінацію клавіш "
-"Shift+Enter, щоб наказати програмі виконати команду."
+"Shift-Enter, щоб наказати програмі виконати команду."
 
 #: ../src/IntegrateWiz.cpp:41 ../src/Plot2dWiz.cpp:40 ../src/Plot2dWiz.cpp:50
 #: ../src/Plot2dWiz.cpp:539 ../src/Plot3dWiz.cpp:39 ../src/Plot3dWiz.cpp:48
@@ -4512,7 +4621,7 @@ msgstr "Увімкнути або вимкнути числове виведен
 
 #: ../src/ToolBar.cpp:208
 msgid "Toggle the visibility of code cells"
-msgstr ""
+msgstr "Увімкнути або вимкнути видимість комірок з кодом"
 
 #: ../src/wxMaxima.cpp:4640
 msgid "Toolbar icons"
@@ -4600,31 +4709,27 @@ msgstr "Розгорнути всі згорнути розділи"
 
 #: ../src/TableOfContents.cpp:255
 msgid "Unhide"
-msgstr ""
+msgstr "Скасувати приховування"
 
 #: ../src/MathCtrl.cpp:1080
 msgid "Unhide Part"
-msgstr ""
+msgstr "Скасувати приховування частини"
 
 #: ../src/MathCtrl.cpp:1088
-#, fuzzy
 msgid "Unhide Section"
-msgstr "Розділ"
+msgstr "Скасувати приховування розділу"
 
 #: ../src/MathCtrl.cpp:1097
-#, fuzzy
 msgid "Unhide Subsection"
-msgstr "Підрозділ"
+msgstr "Скасувати приховування підрозділу"
 
 #: ../src/MathCtrl.cpp:1106
-#, fuzzy
 msgid "Unhide Subsubsection"
-msgstr "Підпідрозділ"
+msgstr "Скасувати приховування підпідрозділ"
 
 #: ../src/MathCtrl.cpp:1114
-#, fuzzy
 msgid "Unhide contents"
-msgstr "Грецькі сталі"
+msgstr "Скасувати приховування змісту"
 
 #: ../src/wxMaxima.cpp:4634
 msgid "Unicode Support"
@@ -4640,7 +4745,7 @@ msgstr "Незавершений рядок."
 
 #: ../src/FindReplacePane.cpp:83
 msgid "Up"
-msgstr ""
+msgstr "Вище"
 
 #: ../src/wxMaxima.cpp:6136 ../src/wxMaxima.cpp:6143 ../src/wxMaxima.cpp:6151
 msgid "Upgrade"
@@ -4664,7 +4769,7 @@ msgstr "Скористатися cairo, щоб покращити якість �
 
 #: ../src/ConfigDialogue.cpp:212
 msgid "Use centered dot and Minus, not Star and Hyphen"
-msgstr ""
+msgstr "Використовувати центровану крапку і мінус, а не зірочку і дефіс"
 
 #: ../src/ConfigDialogue.cpp:481
 msgid "Use centered dot character for multiplication"
@@ -4687,9 +4792,8 @@ msgid "User-defined labels"
 msgstr "Визначені користувачем мітки"
 
 #: ../src/ConfigDialogue.cpp:460
-#, fuzzy
 msgid "User-defined labels if available"
-msgstr "Визначені користувачем мітки"
+msgstr "Визначені користувачем мітки, якщо доступні"
 
 #: ../src/BC2Wiz.cpp:33 ../src/BC2Wiz.cpp:39 ../src/wxMaxima.cpp:3700
 #: ../src/wxMaxima.cpp:3716 ../src/wxMaxima.cpp:3824
@@ -4747,12 +4851,13 @@ msgstr ""
 "позначити його у документі до використання пункту меню."
 
 #: ../src/wxMaxima.cpp:2745
-#, fuzzy
 msgid ""
 "Whole document (*.wxmx)|*.wxmx|The input, readable by load() (maxima > 5.38) "
 "(*.wxm)|*.wxm"
 msgstr ""
-"увесь документ (*.wxmx)|*.wxmx|введені дані без зображень (*.wxm)|*.wxm"
+"увесь документ (*.wxmx)|*.wxmx|введені команди, придатні до читання load() "
+"(maxima > 5.38) "
+"(*.wxm)|*.wxm"
 
 #: ../src/ConfigDialogue.cpp:147
 msgid "Worksheet"
@@ -5232,11 +5337,11 @@ msgstr ""
 
 #: ../src/wxMaxima.cpp:1676
 msgid "wxMaxima cannot open content.xml in the .wxmx zip archive "
-msgstr ""
+msgstr "wxMaxima не вдалося відкрити content.xml у архіві zip .wxmx "
 
 #: ../src/wxMaxima.cpp:1690
 msgid "wxMaxima cannot read the xml contents of "
-msgstr ""
+msgstr "wxMaxima не вдалося прочитати вміст xml "
 
 #: ../src/ConfigDialogue.cpp:140 ../src/ConfigDialogue.cpp:174
 msgid "wxMaxima configuration"
@@ -5336,6 +5441,10 @@ msgid ""
 "\n"
 "table_form([1,2,3,4,5]);"
 msgstr ""
+"У wxMaxima передбачено команду «table_form», за допомогою якої можна "
+"представляти списки у альтернативній формі. Один з прикладів:\n"
+"\n"
+"table_form([1,2,3,4,5]);"
 
 #: ../src/ConfigDialogue.cpp:415
 msgid "x"
@@ -5348,6 +5457,8 @@ msgstr "χ"
 #: ../src/wxMaxima.cpp:1700 ../src/wxMaxima.cpp:1822
 msgid "xml contained in the file claims not to be a wxMaxima worksheet. "
 msgstr ""
+"xml, що міститься у файлі, вказує на те, що ці дані не є робочим аркушем "
+"wxMaxima. "
 
 #: ../src/wxMaximaFrame.cpp:1391
 msgid "xor"
