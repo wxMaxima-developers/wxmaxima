@@ -109,7 +109,10 @@ To build an application bundle of wxMaxima on Mac OS X
     make wxMaxima.app
 
 Sometimes the configure step requires an extra
-`--with-macosx-version-min=10.5` argument.
+`--with-macosx-version-min=10.5` argument. Also in order to create a
+application that runs on other computers, as well, sometimes .dylib
+files may need to be copied into the Frameworks folder of the application
+bundle wxMaxima.app
 
 On Windows execute instead:
 
