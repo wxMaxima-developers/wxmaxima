@@ -5757,7 +5757,8 @@ void wxMaxima::TryEvaluateNextInQueue()
       {
         m_console->m_evaluationQueue.Clear();
         StatusMaximaBusy(waiting);
-        m_console->ScrollToError();
+        m_console->SetHCaret(tmp);
+        m_console->ScrollToCaret();
       }
       else
       {
