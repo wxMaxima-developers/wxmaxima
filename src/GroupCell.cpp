@@ -465,28 +465,29 @@ void GroupCell::RecalculateHeight(int fontsize)
     }
     
     MathCell *tmp = m_output;
-    while (tmp != NULL)
-    {
-      if (tmp->BreakLineHere() || tmp == m_output)
+    if (!m_hide)
+      while (tmp != NULL)
       {
-        m_width = MAX(m_width, tmp->GetLineWidth(scale));
-        m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth(scale));
-        m_height += tmp->GetMaxHeight();
-        if (tmp->m_bigSkip)
+        if (tmp->BreakLineHere() || tmp == m_output)
         {
-          m_height += MC_LINE_SKIP;
-          if               (
-            (tmp->m_previousToDraw != NULL) &&
-            (tmp->GetStyle() == TS_LABEL)
-            )
+          m_width = MAX(m_width, tmp->GetLineWidth(scale));
+          m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth(scale));
+          m_height += tmp->GetMaxHeight();
+          if (tmp->m_bigSkip)
           {
-            m_height += configuration->GetInterEquationSkip();
+            m_height += MC_LINE_SKIP;
+            if               (
+              (tmp->m_previousToDraw != NULL) &&
+              (tmp->GetStyle() == TS_LABEL)
+              )
+            {
+              m_height += configuration->GetInterEquationSkip();
+            }
           }
+          m_outputRect.height += tmp->GetMaxHeight() + MC_LINE_SKIP;
         }
-        m_outputRect.height += tmp->GetMaxHeight() + MC_LINE_SKIP;
+        tmp = tmp->m_nextToDraw;
       }
-      tmp = tmp->m_nextToDraw;
-    }
   }
   else
   {
