@@ -3596,6 +3596,7 @@ void MathCtrl::OnMouseExit(wxMouseEvent& event) {
     m_mousePoint.y = event.GetY();
     m_timer.Start(200, true);
   }
+  GroupCell::CellUnderPointer(NULL);
 }
 
 #ifdef GetMagnification

@@ -174,16 +174,12 @@ void ConfigDialogue::MaximaLocationChanged(wxCommandEvent& unused)
 {
   if(Configuration::Get()->MaximaFound(m_maximaProgram->GetValue()))
   {
-    m_maximaProgram->SetBackgroundColour(
-      wxSystemSettings::GetColour( wxSYS_COLOUR_BACKGROUND)
-      );
     m_mp->SetForegroundColour(
       wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT)
       );
   }
   else
   {
-    m_maximaProgram->SetBackgroundColour(*wxRED);
     m_mp->SetForegroundColour(*wxRED);
   }
 }
