@@ -3417,6 +3417,8 @@ void wxMaxima::OnReplace(wxFindDialogEvent& event)
                            )
     )
     wxMessageBox(_("No matches found!"));
+  else
+    m_console->UpdateTableOfContents();
 }
 
 void wxMaxima::OnReplaceAll(wxFindDialogEvent& event)
@@ -3426,8 +3428,10 @@ void wxMaxima::OnReplaceAll(wxFindDialogEvent& event)
     event.GetReplaceString(),
     !(event.GetFlags() & wxFR_MATCHCASE)
     );
-
+  
   wxMessageBox(wxString::Format(_("Replaced %d occurrences."), count));
+  if(count>0)
+    m_console->UpdateTableOfContents();
 }
 
 void wxMaxima::MaximaMenu(wxCommandEvent& event)
