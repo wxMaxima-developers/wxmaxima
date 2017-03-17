@@ -199,7 +199,8 @@ GroupCell::~GroupCell()
   MarkAsDeleted();  
   wxDELETE(m_inputLabel);
   wxDELETE(m_output);
-  m_inputLabel = m_output = NULL;
+  wxDELETE(m_hiddenTree);
+  m_inputLabel = m_output = m_hiddenTree = NULL;
 }
 
 void GroupCell::MarkAsDeleted()
