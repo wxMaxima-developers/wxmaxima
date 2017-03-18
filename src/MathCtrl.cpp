@@ -675,9 +675,10 @@ void MathCtrl::OnSize(wxSizeEvent& event)
  * was just created, so there is a blank document.
  * Called when opening a new file into existing MathCtrl.
  */
-void MathCtrl::ClearDocument() {
-
+void MathCtrl::ClearDocument()
+{
   SetSelection(NULL);
+  SetActiveCell(NULL,false);
   m_clickType = CLICK_TYPE_NONE;
   m_clickInGC = NULL;
   m_hCaretActive = false;
@@ -6164,10 +6165,6 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
     if(blinktime<200)
       blinktime = 200;
     m_caretTimer.Start(blinktime);
-  }
-
-  if (cell != NULL)
-  {
     m_hCaretActive = false; // we have activated a cell .. disable caret
     m_hCaretPosition = NULL;
   }
