@@ -1349,9 +1349,11 @@ void wxMaxima::ReadPrompt(wxString &data)
       ) ||
     m_inLispMode ||
     (o.StartsWith(wxT("MAXIMA>"))) ||
-    (o.StartsWith(wxT("\nMAXIMA>")))
+    (o.StartsWith(wxT("\nMAXIMA>"))) 
     )
   {
+    o.Trim(true);
+    o.Trim(false);
     // Maxima displayed a new main prompt => We don't have a question
     m_console->QuestionAnswered();
 
