@@ -1338,7 +1338,7 @@ void wxMaxima::ReadPrompt(wxString &data)
 
   // Input prompts have a length > 0 and end in a number followed by a ")".
   // They also begin with a "(". Questions (hopefully)
-  // don't do that; Lisp propmts look like question prompts.
+  // don't do that; Lisp prompts look like question prompts.
   if (
     (
       (o.Length()>3) &&
@@ -1347,7 +1347,9 @@ void wxMaxima::ReadPrompt(wxString &data)
       (o[o.Length()-2]==(wxT(')'))) &&
       (o[0]==(wxT('('))) 
       ) ||
-    m_inLispMode
+    m_inLispMode ||
+    (o.StartsWith(wxT("MAXIMA>"))) ||
+    (o.StartsWith(wxT("\nMAXIMA>")))
     )
   {
     // Maxima displayed a new main prompt => We don't have a question
@@ -1361,7 +1363,8 @@ void wxMaxima::ReadPrompt(wxString &data)
     // if we remove a command from the evaluation queue the next output line will be the
     // first from the next command.
     m_outputCellsFromCurrentCommand = 0;
-    if (m_console->m_evaluationQueue.Empty()) { // queue empty?
+    if (m_console->m_evaluationQueue.Empty())
+    { // queue empty.
       StatusMaximaBusy(waiting);
       if(m_console->FollowEvaluation())
       {
@@ -1407,9 +1410,8 @@ void wxMaxima::ReadPrompt(wxString &data)
         m_console->OpenNextOrCreateCell();
     }
   }
-
-  // We have a question
-  else {
+  else
+  {  // We have a question
     m_console->QuestionAnswered();
     m_console->QuestionPending(true);
     // If the user answers a question additional output might be required even
