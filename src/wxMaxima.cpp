@@ -5498,10 +5498,10 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
   if(text.Right(1) == wxT("\\"))
     return(_("Cell ends in a backslash"));
 
-  bool lisp = false;
+  bool lisp = m_inLispMode;
 
-  wxChar lastC=wxT(';');
-  wxChar lastnonWhitespace=wxT(',');
+  wxChar lastC = wxT(';');
+  wxChar lastnonWhitespace = wxT(',');
   while(index<len)
   {
     wxChar c=text[index];
@@ -5698,7 +5698,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   wxString text = m_console->m_evaluationQueue.GetCommand();
   if((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
   {
-    wxString parenthesisError=GetUnmatchedParenthesisState(tmp->GetEditable()->ToString(true));
+    wxString parenthesisError = GetUnmatchedParenthesisState(tmp->GetEditable()->ToString(true));
     if(parenthesisError == wxEmptyString)
     {
       if(m_console->FollowEvaluation())
