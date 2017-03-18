@@ -1338,13 +1338,16 @@ void wxMaxima::ReadPrompt(wxString &data)
 
   // Input prompts have a length > 0 and end in a number followed by a ")".
   // They also begin with a "(". Questions (hopefully)
-  // don't do that.
+  // don't do that; Lisp propmts look like question prompts.
   if (
-    (o.Length()>3) &&
-    (o[o.Length()-3]>=(wxT('0'))) &&
-    (o[o.Length()-3]<=(wxT('9'))) &&
-    (o[o.Length()-2]==(wxT(')'))) &&
-    (o[0]==(wxT('('))) 
+    (
+      (o.Length()>3) &&
+      (o[o.Length()-3]>=(wxT('0'))) &&
+      (o[o.Length()-3]<=(wxT('9'))) &&
+      (o[o.Length()-2]==(wxT(')'))) &&
+      (o[0]==(wxT('('))) 
+      ) ||
+    m_inLispMode
     )
   {
     // Maxima displayed a new main prompt => We don't have a question
