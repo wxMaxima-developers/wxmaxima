@@ -5642,143 +5642,146 @@ void wxMaxima::TryEvaluateNextInQueue()
     SetupVariables();
     return;
   }
-  
-  // Maxima is connected. Let's test if the evaluation queue is empty.
-  GroupCell *tmp = dynamic_cast<GroupCell*>(m_console->m_evaluationQueue.GetCell());
-  if (tmp == NULL)
-  {
-    // Maxima is no more busy.
-    StatusMaximaBusy(waiting);
-    // If maxima isn't doing anything there is no need to poll for input from
-    // maxima's stdout.
-    m_maximaStdoutPollTimer.Stop();
-    // Inform the user that the evaluation queue length now is 0.
-    EvaluationQueueLength(0);
-    // The cell from the last evaluation might still be shown in it's "evaluating" state
-    // so let's refresh the console to update the display of this.
-    m_console->RequestRedraw();
-    return; //empty queue
-  }
 
-  // Display the evaluation queue's status.
-  EvaluationQueueLength(m_console->m_evaluationQueue.Size(),m_console->m_evaluationQueue.CommandsLeftInCell());
-
-  // We don't want to evaluate a new cell if the user still has to answer
-  // a question.
-  if(m_console->QuestionPending())
-    return;
-
-  // Maxima is connected and the queue contains an item.
-
-  // From now on we look every second if we got some output from a crashing
-  // maxima: Is maxima is working correctly the stdout and stderr descriptors we
-  // poll don't offer any data.
-  ReadStdErr();
-  m_maximaStdoutPollTimer.Start(1000);
-
-  if(m_console->m_evaluationQueue.m_workingGroupChanged)
-  {
-    // If the cell's output that we are about to remove contains the currently
-    // selected cells we undo the selection.
-    if(m_console->GetSelectionStart())
+  do{
+    
+    // Maxima is connected. Let's test if the evaluation queue is empty.
+    GroupCell *tmp = dynamic_cast<GroupCell*>(m_console->m_evaluationQueue.GetCell());
+    if (tmp == NULL)
     {
-      if(m_console->GetSelectionStart()->GetParent()==tmp)
-        m_console->SetSelection(NULL,NULL);
-    }
-    if(m_console->GetSelectionEnd())
-    {
-      if(m_console->GetSelectionEnd()->GetParent()==tmp)
-        m_console->SetSelection(NULL,NULL);
-    }
-    tmp->RemoveOutput();
-    m_console->Recalculate(tmp);
-    m_console->RequestRedraw();
-  }
-
-  wxString text = m_console->m_evaluationQueue.GetCommand();
-  if((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
-  {
-    wxString parenthesisError = GetUnmatchedParenthesisState(tmp->GetEditable()->ToString(true));
-    if(parenthesisError == wxEmptyString)
-    {
-      if(m_console->FollowEvaluation())
-      {
-        m_console->SetSelection(tmp);
-        if(!m_console->GetWorkingGroup())
-        {
-          m_console->SetHCaret(tmp);
-          m_console->ScrollToCaret();
-        }
-      }
-      
-      m_console->SetWorkingGroup(tmp);
-      tmp->GetPrompt()->SetValue(m_lastPrompt);
-      // Clear the monitor that shows the xml representation of the output of the
-      // current maxima command.
-      if(m_xmlInspector)
-      {
-        m_xmlInspector->Clear();
-        m_xmlInspector->Add(wxT("SENT TO MAXIMA:\n\n"));
-        m_xmlInspector->Add(text);
-        m_xmlInspector->Add(wxT("\n\n\nMAXIMA RESPONSE:\n\n"));
-      }
-      
-      SendMaxima(text, true);
-      EvaluationQueueLength(m_console->m_evaluationQueue.Size(),
-                            m_console->m_evaluationQueue.CommandsLeftInCell()
-        );
-
-      text.Trim(false);
-      if(!m_hasEvaluatedCells)
-      {
-        if(text.StartsWith(wxT(":lisp")))
-          SetStatusText(_("A \":lisp\" as the first command might fail to send a \"finished\" signal."));
-      }
-
-      // Mark the current maxima process as "no more in its initial condition".
-      m_hasEvaluatedCells = true;
-    }
-    else
-    {
-      TextCell* cell = new TextCell(_("Refusing to send cell to maxima: " ) +
-                                    parenthesisError + wxT("\n"));
-      cell->SetType(MC_TYPE_ERROR);
-      cell->SetParent(tmp);
-      tmp->SetOutput(cell);
-      m_console->RecalculateForce();
-
-      if(m_console->FollowEvaluation())
-        m_console->SetSelection(NULL);
-        
-      m_console->SetWorkingGroup(NULL);
-      m_console->RequestRedraw();
-      bool abortOnError = false;
-      wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
-      SetBatchMode(false);
-      // Inform the user that the evaluation queue is empty.
+      // Maxima is no more busy.
+      StatusMaximaBusy(waiting);
+      // If maxima isn't doing anything there is no need to poll for input from
+      // maxima's stdout.
+      m_maximaStdoutPollTimer.Stop();
+      // Inform the user that the evaluation queue length now is 0.
       EvaluationQueueLength(0);
-      if(abortOnError || m_batchmode)
+      // The cell from the last evaluation might still be shown in it's "evaluating" state
+      // so let's refresh the console to update the display of this.
+      m_console->RequestRedraw();
+      return; //empty queue
+    }
+
+    // Display the evaluation queue's status.
+    EvaluationQueueLength(m_console->m_evaluationQueue.Size(),m_console->m_evaluationQueue.CommandsLeftInCell());
+
+    // We don't want to evaluate a new cell if the user still has to answer
+    // a question.
+    if(m_console->QuestionPending())
+      return;
+
+    // Maxima is connected and the queue contains an item.
+
+    // From now on we look every second if we got some output from a crashing
+    // maxima: Is maxima is working correctly the stdout and stderr descriptors we
+    // poll don't offer any data.
+    ReadStdErr();
+    m_maximaStdoutPollTimer.Start(1000);
+
+    if(m_console->m_evaluationQueue.m_workingGroupChanged)
+    {
+      // If the cell's output that we are about to remove contains the currently
+      // selected cells we undo the selection.
+      if(m_console->GetSelectionStart())
       {
-        m_console->m_evaluationQueue.Clear();
-        StatusMaximaBusy(waiting);
-        m_console->SetHCaret(tmp);
-        m_console->ScrollToCaret();
+        if(m_console->GetSelectionStart()->GetParent()==tmp)
+          m_console->SetSelection(NULL,NULL);
+      }
+      if(m_console->GetSelectionEnd())
+      {
+        if(m_console->GetSelectionEnd()->GetParent()==tmp)
+          m_console->SetSelection(NULL,NULL);
+      }
+      tmp->RemoveOutput();
+      m_console->Recalculate(tmp);
+      m_console->RequestRedraw();
+    }
+
+    wxString text = m_console->m_evaluationQueue.GetCommand();
+    if((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
+    {
+      wxString parenthesisError = GetUnmatchedParenthesisState(tmp->GetEditable()->ToString(true));
+      if(parenthesisError == wxEmptyString)
+      {
+        if(m_console->FollowEvaluation())
+        {
+          m_console->SetSelection(tmp);
+          if(!m_console->GetWorkingGroup())
+          {
+            m_console->SetHCaret(tmp);
+            m_console->ScrollToCaret();
+          }
+        }
+      
+        m_console->SetWorkingGroup(tmp);
+        tmp->GetPrompt()->SetValue(m_lastPrompt);
+        // Clear the monitor that shows the xml representation of the output of the
+        // current maxima command.
+        if(m_xmlInspector)
+        {
+          m_xmlInspector->Clear();
+          m_xmlInspector->Add(wxT("SENT TO MAXIMA:\n\n"));
+          m_xmlInspector->Add(text);
+          m_xmlInspector->Add(wxT("\n\n\nMAXIMA RESPONSE:\n\n"));
+        }
+      
+        SendMaxima(text, true);
+        EvaluationQueueLength(m_console->m_evaluationQueue.Size(),
+                              m_console->m_evaluationQueue.CommandsLeftInCell()
+          );
+
+        text.Trim(false);
+        if(!m_hasEvaluatedCells)
+        {
+          if(text.StartsWith(wxT(":lisp")))
+            SetStatusText(_("A \":lisp\" as the first command might fail to send a \"finished\" signal."));
+        }
+
+        // Mark the current maxima process as "no more in its initial condition".
+        m_hasEvaluatedCells = true;
       }
       else
       {
-        m_console->m_evaluationQueue.RemoveFirst();
-        m_outputCellsFromCurrentCommand = 0;
-        TryEvaluateNextInQueue();
+        TextCell* cell = new TextCell(_("Refusing to send cell to maxima: " ) +
+                                      parenthesisError + wxT("\n"));
+        cell->SetType(MC_TYPE_ERROR);
+        cell->SetParent(tmp);
+        tmp->SetOutput(cell);
+        m_console->RecalculateForce();
+
+        if(m_console->FollowEvaluation())
+          m_console->SetSelection(NULL);
+        
+        m_console->SetWorkingGroup(NULL);
+        m_console->RequestRedraw();
+        bool abortOnError = false;
+        wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
+        SetBatchMode(false);
+        // Inform the user that the evaluation queue is empty.
+        EvaluationQueueLength(0);
+        if(abortOnError || m_batchmode)
+        {
+          m_console->m_evaluationQueue.Clear();
+          StatusMaximaBusy(waiting);
+          m_console->SetHCaret(tmp);
+          m_console->ScrollToCaret();
+        }
+        else
+        {
+          m_console->m_evaluationQueue.RemoveFirst();
+          m_outputCellsFromCurrentCommand = 0;
+          TryEvaluateNextInQueue();
+        }
       }
+      m_console->Recalculate();
     }
-    m_console->Recalculate();
-  }
-  else
-  {
-    m_console->m_evaluationQueue.RemoveFirst();
-    m_outputCellsFromCurrentCommand = 0;
-    TryEvaluateNextInQueue();
-  }
+    else
+    {
+      m_console->m_evaluationQueue.RemoveFirst();
+      m_outputCellsFromCurrentCommand = 0;
+      TryEvaluateNextInQueue();
+    }
+  } while(m_inLispMode);
 }
 
 void wxMaxima::InsertMenu(wxCommandEvent& event)
