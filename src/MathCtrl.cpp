@@ -131,7 +131,7 @@ wxScrolledCanvas(
   // to be shown causing a size change causing a relayout causing the scrollbar
   // to disappear causing a size change... ...which might be an endless loop.
   ShowScrollbars(wxSHOW_SB_ALWAYS,wxSHOW_SB_ALWAYS);
-
+  ClearDocument();
 }
 
 void MathCtrl::RedrawIfRequested()
