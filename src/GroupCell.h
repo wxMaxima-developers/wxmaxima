@@ -121,8 +121,10 @@ public:
     but it will remove eventual error messages attached to the image.
   */
   void RemoveOutput();
-  // exporting
+
   wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter);
+  //! Convert the current cell to its wxm representation.
+  wxString ToWXM();
   wxString ToRTF();
   wxString ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter);
   wxString ToTeXImage(MathCell *tmp, wxString imgDir, wxString filename, int *imgCounter);

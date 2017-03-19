@@ -194,6 +194,79 @@ MathCell* GroupCell::Copy()
   return tmp;
 }
 
+wxString GroupCell::ToWXM()
+{
+  wxString wxm;
+  if (IsHidden())
+    wxm += wxT("/* [wxMaxima: hide output   ] */\n");
+
+  switch (GetGroupType())
+  {
+  case GC_TYPE_CODE:
+    wxm += wxT("/* [wxMaxima: input   start ] */\n");
+    wxm += GetEditable()->ToString() + wxT("\n");
+    wxm += wxT("/* [wxMaxima: input   end   ] */\n");
+    break;
+  case GC_TYPE_TEXT:
+    wxm += wxT("/* [wxMaxima: comment start ]\n");
+    wxm += GetEditable()->ToString() + wxT("\n");
+    wxm += wxT("   [wxMaxima: comment end   ] */\n");
+    break;
+  case GC_TYPE_SECTION:
+    wxm += wxT("/* [wxMaxima: section start ]\n");
+    wxm += GetEditable()->ToString() + wxT("\n");
+    wxm += wxT("   [wxMaxima: section end   ] */\n");
+    break;
+  case GC_TYPE_SUBSECTION:
+    wxm += wxT("/* [wxMaxima: subsect start ]\n");
+    wxm += GetEditable()->ToString() + wxT("\n");
+    wxm += wxT("   [wxMaxima: subsect end   ] */\n");
+    break;
+  case GC_TYPE_SUBSUBSECTION:
+    wxm += wxT("/* [wxMaxima: subsubsect start ]\n");
+    wxm += GetEditable()->ToString() + wxT("\n");
+    wxm += wxT("   [wxMaxima: subsubsect end   ] */\n");
+    break;
+  case GC_TYPE_TITLE:
+    wxm += wxT("/* [wxMaxima: title   start ]\n");
+    wxm += GetEditable()->ToString() + wxT("\n");
+    wxm += wxT("   [wxMaxima: title   end   ] */\n");
+    break;
+  case GC_TYPE_IMAGE:
+    wxm += wxT("/* [wxMaxima: caption start ]\n");
+    wxm += GetEditable()->ToString() + wxT("\n");
+    wxm += wxT("   [wxMaxima: caption end   ] */\n");
+    if((GetLabel() != NULL)&&(GetLabel()->GetType() == MC_TYPE_IMAGE))
+    {
+      ImgCell *image= dynamic_cast<ImgCell*>(GetLabel());
+      wxm += wxT("/* [wxMaxima: image   start ]\n");
+      wxm += image->GetExtension()+wxT("\n");
+      wxm += wxBase64Encode(image->GetCompressedImage())+wxT("\n");
+      wxm += wxT("   [wxMaxima: image   end   ] */\n");
+    }
+    break;
+  case GC_TYPE_PAGEBREAK:
+    wxm += wxT("/* [wxMaxima: page break    ] */\n");
+    break;
+  }
+
+  // Export eventual hidden trees.
+  GroupCell *tmp = GetHiddenTree();
+  if(tmp != NULL)
+  {
+    wxm += wxT("/* [wxMaxima: fold    start ] */\n");
+    while(tmp != NULL)
+    {
+      wxm += tmp->ToWXM();
+      tmp = dynamic_cast<GroupCell *>(tmp -> m_next);
+    }
+    wxm += wxT("\n/* [wxMaxima: fold    end   ] */\n");
+  }
+  wxm += wxT("\n");
+  return wxm;
+}
+
+
 GroupCell::~GroupCell()
 {
   MarkAsDeleted();  

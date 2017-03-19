@@ -1930,63 +1930,19 @@ bool MathCtrl::CopyCells()
     wxString str;
     wxString rtf = RTFStart();
     GroupCell *tmp = dynamic_cast<GroupCell*>(m_selectionStart->GetParent());
-    GroupCell *end = dynamic_cast<GroupCell*>(m_selectionEnd->GetParent());
+    GroupCell *end = dynamic_cast<GroupCell*>(m_selectionEnd  ->GetParent());
     
     bool firstcell = true;
-    while (tmp != NULL) {
+    while (tmp != NULL) 
+    {
       if(!firstcell)
         str += wxT("\n");
       str += tmp->ToString();
       firstcell = false;
       
       rtf += tmp->ToRTF();
-
-      switch (tmp->GetGroupType())
-      {
-      case GC_TYPE_CODE:
-        wxm += wxT("/* [wxMaxima: input   start ] */\n");
-        wxm += tmp->GetEditable()->ToString() + wxT("\n");
-        wxm += wxT("/* [wxMaxima: input   end   ] */\n");
-        break;
-      case GC_TYPE_TEXT:
-        wxm += wxT("/* [wxMaxima: comment start ]\n");
-        wxm += tmp->GetEditable()->ToString() + wxT("\n");
-        wxm += wxT("   [wxMaxima: comment end   ] */\n");
-        break;
-      case GC_TYPE_SECTION:
-        wxm += wxT("/* [wxMaxima: section start ]\n");
-        wxm += tmp->GetEditable()->ToString() + wxT("\n");
-        wxm += wxT("   [wxMaxima: section end   ] */\n");
-        break;
-      case GC_TYPE_SUBSECTION:
-        wxm += wxT("/* [wxMaxima: subsect start ]\n");
-        wxm += tmp->GetEditable()->ToString() + wxT("\n");
-        wxm += wxT("   [wxMaxima: subsect end   ] */\n");
-        break;
-      case GC_TYPE_SUBSUBSECTION:
-        wxm += wxT("/* [wxMaxima: subsubsect start ]\n");
-        wxm += tmp->GetEditable()->ToString() + wxT("\n");
-        wxm += wxT("   [wxMaxima: subsubsect end   ] */\n");
-        break;
-      case GC_TYPE_TITLE:
-        wxm += wxT("/* [wxMaxima: title   start ]\n");
-        wxm += tmp->GetEditable()->ToString() + wxT("\n");
-        wxm += wxT("   [wxMaxima: title   end   ] */\n");
-        break;
-      case GC_TYPE_IMAGE:
-        wxm += wxT("/* [wxMaxima: caption start ]\n");
-        wxm += tmp->GetEditable()->ToString() + wxT("\n");
-        wxm += wxT("   [wxMaxima: caption end   ] */\n");
-        if((tmp->GetLabel() != NULL)&&(tmp->GetLabel()->GetType() == MC_TYPE_IMAGE))
-        {
-          ImgCell *image= dynamic_cast<ImgCell*>(tmp->GetLabel());
-          wxm += wxT("/* [wxMaxima: image   start ]\n");
-          wxm += image->GetExtension()+wxT("\n");
-          wxm += wxBase64Encode(image->GetCompressedImage())+wxT("\n");
-          wxm += wxT("   [wxMaxima: image   end   ] */\n");
-        }
-        break;
-      }
+      wxm += tmp->ToWXM();
+      
       if (tmp == end)
         break;
       tmp = dynamic_cast<GroupCell*>(tmp->m_next);
