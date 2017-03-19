@@ -5,10 +5,11 @@ Current:
   * The option to use a Minus instead of a Hyphen.
   * Table of Contents: Folded items are now grayed out.
   * Table of Contents: A right-click menu.
-  * An indicator that shows when maxima and wxMaxima exchange data.
+  * Copy-and-paste now includes hidden cells and folded items.
+  * Eye Candy: An indicator that shows when maxima and wxMaxima exchange data.
+    Double-clicking this indicator opens up the network monitor.
   * Autocompletion now collects words from the current code cell, too.
-  * Better indentation of if clauses and of loops.
-  * Automatic line wrap now can be done at spaces in code cells, too.
+  * Better indentation of if clauses and loops.
   * If the number is too long to display it now is still possible to copy it.
   * Documented that box() highlights text in maxima's output.
   * the with_slider type of commands now uses wxstatusbar() in order to provide
@@ -19,6 +20,8 @@ Current:
   * wxMaxima can now directly open a content.xml that has been extracted from a
     broken .wxmx file (e.G. using a text editor) and that has been saved as
     "content.xml" (UTF8-encoding without BOM).
+  * Mac OS: We now use one process per file: Who cares about a Megabyte of RAM
+    if using it allows to improve stability.
 
 16.12:
   * Not a change in wxMaxima, but useful: In maxima >5.38 the load() command can
