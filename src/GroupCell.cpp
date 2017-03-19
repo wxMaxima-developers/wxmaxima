@@ -510,16 +510,16 @@ void GroupCell::RecalculateHeight(int fontsize)
         tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
         tmp = tmp->m_next;
       }
-      
-      if(m_previous == NULL)
-      {
-        m_currentPoint.x = configuration->GetIndent();
-        m_currentPoint.y = Configuration::Get()->GetBaseIndent() + GetMaxCenter();
-      }
-      else
-        m_currentPoint.y = dynamic_cast<GroupCell*>(m_previous) -> m_currentPoint.y +
-          dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + Configuration::Get()->GetGroupSkip();
     }
+    
+    if(m_previous == NULL)
+    {
+      m_currentPoint.x = configuration->GetIndent();
+      m_currentPoint.y = Configuration::Get()->GetBaseIndent() + GetMaxCenter();
+    }
+    else
+      m_currentPoint.y = dynamic_cast<GroupCell*>(m_previous) -> m_currentPoint.y +
+        dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + Configuration::Get()->GetGroupSkip();
     
     m_outputRect.x = m_currentPoint.x;
     m_outputRect.y = m_currentPoint.y;
