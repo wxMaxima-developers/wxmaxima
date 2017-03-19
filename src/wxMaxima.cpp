@@ -2928,7 +2928,7 @@ void wxMaxima::FileMenu(wxCommandEvent& event)
 #elif defined __WXMSW__ || defined __WXGTK20__
   case menu_new_id:
   case ToolBar::tb_new:
-    wxExecute(wxTheApp->argv[0]);
+    wxExecute(wxT("\"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\""));
     break;
 #endif
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
