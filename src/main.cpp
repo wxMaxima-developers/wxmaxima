@@ -390,13 +390,18 @@ void MyApp::MacNewFile()
 {
   wxWindow *frame = GetTopWindow();
   if (frame == NULL)
-  wxExecute(wxT("\"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\""));
-//    NewWindow();
+    NewWindow();
+  else
+    wxExecute(wxT("\"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\""));
 }
 
 void MyApp::MacOpenFile(const wxString &file)
 {
-  NewWindow(file);
+  wxWindow *frame = GetTopWindow();
+  if (frame == NULL)
+    NewWindow(file);
+  else
+    wxExecute(wxT("\"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\" \"")+file+wxT("\"");
 }
 
 #endif
