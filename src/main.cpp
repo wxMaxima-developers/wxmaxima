@@ -396,8 +396,7 @@ void MyApp::MacNewFile()
 
 void MyApp::MacOpenFile(const wxString &file)
 {
-  wxExecute(wxT("\"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\" \"")+                                                                     file+wxT("\""));
-//  NewWindow(file);
+  NewWindow(file);
 }
 
 #endif
