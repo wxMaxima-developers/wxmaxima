@@ -2145,18 +2145,13 @@ void wxMaxima::ShowTip(bool force)
 wxString wxMaxima::GetHelpFile()
 {
 #if defined __WXMSW__
-  wxString command;
+  wxFilename command;
   wxString chm;
   wxString html;
-
-  command = GetCommand(false);
-
-  if (command.empty())
-    return wxEmptyString;
-
-  command.Replace(wxT("bin\\maxima.bat"), wxT("share\\maxima"));
-
-  chm = wxFindFirstFile(command + wxT("\\*"), wxDIR);
+  
+  command = wxFilename(GetCommand(false));
+  
+  chm = wxFindFirstFile(command.GetPathWithSep() + wxT("..\\share\\maxima\\*"), wxDIR);
 
   if (chm.empty())
     return wxEmptyString;
