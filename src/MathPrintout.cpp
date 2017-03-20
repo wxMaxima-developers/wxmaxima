@@ -153,6 +153,7 @@ void MathPrintout::BreakPages()
   if (m_tree == NULL)
     return ;
 
+  MathCell::ClipToDrawRegion(false);
   int pageWidth, pageHeight;
   int marginX, marginY;
   int headerHeight = GetHeaderHeight();
@@ -188,6 +189,7 @@ void MathPrintout::BreakPages()
 
     tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }
+  MathCell::ClipToDrawRegion(true);
 }
 
 void MathPrintout::SetupData()
@@ -284,13 +286,16 @@ void MathPrintout::Recalculate()
   Configuration::Get()->SetCanvasSize(wxSize(pageWidth-marginX,pageHeight-marginY));
   marginX += SCALE_PX(Configuration::Get()->GetBaseIndent(), scale);
   configuration.SetIndent(marginX);
- 
+  configuration.SetPrinter(true);
+  MathCell::ClipToDrawRegion(false);
+
   while (tmp != NULL)
   {
     tmp->ResetSize();
     tmp->Recalculate();
     tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }
+  MathCell::ClipToDrawRegion(true);
 }
 
 double MathPrintout::GetPPIScale()

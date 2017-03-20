@@ -199,7 +199,7 @@ MathCtrl::~MathCtrl()
 void MathCtrl::OnPaint(wxPaintEvent& event)
 {
   // Don't attempt to refresh the screen as long as the result will
-  // end up on a printed page
+  // end up on a printed page instead.
   if(MathCell::Printing())
   {
     RequestRedraw();
