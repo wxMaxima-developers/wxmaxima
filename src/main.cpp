@@ -392,7 +392,7 @@ void MyApp::MacNewFile()
   if (frame == NULL)
     NewWindow();
   else
-    wxExecute(wxT("\"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\""));
+    wxExecute(wxT("open -a -n \"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\""));
 }
 
 void MyApp::MacOpenFile(const wxString &file)
@@ -401,7 +401,7 @@ void MyApp::MacOpenFile(const wxString &file)
   if (frame == NULL)
     NewWindow(file);
   else
-    wxExecute(wxT("\"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\" \"")+file+wxT("\"");
+    wxExecute(wxT("open -a -n \"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\" \"")+file+wxT("\""));
 }
 
 #endif
