@@ -2441,6 +2441,7 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
 
     // Redraws during printing might end up on paper.
     m_console->Freeze();
+    wxBusyCursor crs;
     MathPrintout printout(title);
     GroupCell* copy = m_console->CopyTree();
     printout.SetData(copy);
