@@ -2149,7 +2149,7 @@ wxString wxMaxima::GetHelpFile()
   wxString chm;
   wxString html;
   
-  command = wxFilename(GetCommand(false));
+  command = wxFileName(GetCommand(false));
   
   chm = wxFindFirstFile(command.GetPathWithSep() + wxT("..\\share\\maxima\\*"), wxDIR);
 

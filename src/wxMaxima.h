@@ -119,6 +119,11 @@ public:
            const wxPoint pos, const wxSize size = wxDefaultSize);
   ~wxMaxima();
   void ShowTip(bool force);
+  /*! Get the name of the help file
+
+    \todo We probably should use the help files from the newest maxima version
+    installed instead of the ones from the alphabetically first installation we find.
+   */
   wxString GetHelpFile();
   void ShowMaximaHelp(wxString keyword = wxEmptyString);
   void ShowWxMaximaHelp();
