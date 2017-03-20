@@ -388,8 +388,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
 
 void MyApp::MacNewFile()
 {
-  wxWindow *frame = GetTopWindow();
-  if (frame == NULL)
+  if (m_frame == NULL)
     NewWindow();
   else
     wxExecute(wxT("open -a -n \"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\""));
@@ -397,8 +396,7 @@ void MyApp::MacNewFile()
 
 void MyApp::MacOpenFile(const wxString &file)
 {
-  wxWindow *frame = GetTopWindow();
-  if (frame == NULL)
+  if (m_frame == NULL)
     NewWindow(file);
   else
     wxExecute(wxT("open -a -n \"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\" \"")+file+wxT("\""));
