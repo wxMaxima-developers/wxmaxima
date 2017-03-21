@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-03-19 10:37+0100\n"
-"PO-Revision-Date: 2017-02-17 10:04+0100\n"
+"PO-Revision-Date: 2017-03-21 08:16+0100\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -550,7 +550,7 @@ msgstr "Auto indenta a capo"
 #: ../src/ConfigDialogue.cpp:465
 #, c-format
 msgid "Automatic labels (%i1, %o1,...)"
-msgstr ""
+msgstr "Etichette automatiche (%i1, %o1,...)"
 
 #: ../src/ConfigDialogue.cpp:236
 msgid ""
@@ -646,127 +646,114 @@ msgstr "Naviga"
 
 #: ../src/Autocomplete.cpp:163
 msgid "Bug: Autocompletion requested for unknown type of item."
-msgstr "Errore: autocompletamento richiesto per tipo sconosciuto di elemento."
+msgstr "Bug: autocompletamento richiesto per tipo sconosciuto di elemento."
 
 #: ../src/MathCtrl.cpp:2104
 msgid "Bug: Cell left but not entered."
-msgstr "Errore: cella lasciata ma non immessa."
+msgstr "Bug: cella lasciata ma non immessa."
 
 #: ../src/MathCtrl.cpp:5797
 msgid "Bug: Cell with negative y position!"
-msgstr ""
+msgstr "Bug: cella con posizione y negativa!"
 
 #: ../src/wxMaxima.cpp:1248
 msgid "Bug: Found a math end marker without any start marker."
-msgstr ""
-"Errore: trovato un marcatore di fine equazione senza nessun marcatore di "
-"inizio."
+msgstr "Bug: trovato un marcatore di fine equazione senza nessun marcatore di inizio."
 
 #: ../src/wxMaxima.cpp:1218
 msgid "Bug: Found a statusbar end marker without any matching start marker."
-msgstr ""
-"Errore: trovata un marcatore di fine barra di stato senza un corrispondente "
-"marcatore di inizio."
+msgstr "Bug: trovata un marcatore di fine barra di stato senza un corrispondente marcatore di inizio."
 
 #: ../src/wxMaxima.cpp:1288
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
-msgstr ""
-"Errore: trovato un simbolo di fine autocompletamento senza nessun inizio."
+msgstr "Bug: trovato un simbolo di fine autocompletamento senza nessun inizio."
 
 #: ../src/MathCtrl.cpp:2343
 msgid "Bug: Got a question but no cell to answer it in"
-msgstr "Errore: trovata domanda ma nessuna cella per rispondere"
+msgstr "Bug: trovata domanda ma nessuna cella per rispondere"
 
 #: ../src/MathCtrl.cpp:5961
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
-msgstr ""
-"Errore: trovata una richiesta di cambio dei contenuti della cella sopra "
-"l'inizio del foglio di lavoro."
+msgstr "Bug: trovata una richiesta di cambio dei contenuti della cella sopra l'inizio del foglio di lavoro."
 
 #: ../src/MathCtrl.cpp:6034
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
-msgstr ""
-"Errore: trovata richiesta di cancellazione della cella sopra l'inizio del "
-"foglio di lavoro."
+msgstr "Bug: trovata richiesta di cancellazione della cella sopra l'inizio del foglio di lavoro."
 
 #: ../src/MathCtrl.cpp:6003
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
-msgstr ""
-"Errore:  trovata richiesta cambiamento dei contenuti di una cella seguita da "
-"una richiesta di annullamento della sua cancellazione."
+msgstr "Bug:  trovata richiesta cambiamento dei contenuti di una cella seguita da una richiesta di annullamento della sua cancellazione."
 
 #: ../src/MathCell.cpp:189
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
-msgstr ""
-"Errore: cella di formule che dichiara di non avere gruppi di celle a cui "
-"appartenere"
+msgstr "Bug: cella di formule che dichiara di non avere gruppi di celle a cui appartenere"
 
 #: ../src/MathParser.cpp:123 ../src/MathParser.cpp:155
 #: ../src/MathParser.cpp:231
 msgid "Bug: Missing contents"
-msgstr "Errore: contenuti mancanti"
+msgstr "Bug: contenuti mancanti"
 
 #: ../src/GroupCell.cpp:1021 ../src/GroupCell.cpp:1190
 msgid "Bug: No image counter to write to!"
-msgstr "Errore: nessun contatore immagine su cui scrivere!"
+msgstr "Bug: nessun contatore immagine su cui scrivere!"
 
 #: ../src/AbsCell.cpp:200
 msgid "Bug: No last cell in an absCell!"
-msgstr "Errore: nessuna ultima cella in absCell!"
+msgstr "Bug: nessuna ultima cella in absCell!"
 
 #: ../src/ConjugateCell.cpp:193
 msgid "Bug: No last cell in an conjugateCell!"
-msgstr "Errore: nessuna ultima cella in un conjugateCell!"
+msgstr "Bug: nessuna ultima cella in un conjugateCell!"
 
 #: ../src/FracCell.cpp:452
 msgid "Bug: No last cell in an denominator!"
-msgstr "Errore: nessuna ultima cella in un denominatore!"
+msgstr "Bug: nessuna ultima cella in un denominatore!"
 
 #: ../src/ExptCell.cpp:264
 msgid "Bug: No last cell in an exponent of an exptCell!"
-msgstr "Errore: nessuna ultima cella in un esponente di un exptCell!"
+msgstr "Bug: nessuna ultima cella in un esponente di un exptCell!"
 
 #: ../src/FracCell.cpp:440
 msgid "Bug: No last cell in an numerator!"
-msgstr "Errore: nessuna ultima cella in un numeratore!"
+msgstr "Bug: nessuna ultima cella in un numeratore!"
 
 #: ../src/ExptCell.cpp:254
 msgid "Bug: No last cell in the base of an exptCell!"
-msgstr "Errore: nessuna ultima cella nella base di una exptCell!"
+msgstr "Bug: nessuna ultima cella nella base di una exptCell!"
 
 #: ../src/ParenCell.cpp:555
 msgid "Bug: No last cell inside a parenthesis!"
-msgstr "Errore: nessuna ultima cella dentro una parentesi!"
+msgstr "Bug: nessuna ultima cella dentro una parentesi!"
 
 #: ../src/SqrtCell.cpp:322
 msgid "Bug: No last cell inside a square root!"
-msgstr "Errore: nessuna ultima cella dentro una radice quadrata!"
+msgstr "Bug: nessuna ultima cella dentro una radice quadrata!"
 
 #: ../src/MathCtrl.cpp:2147
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
 msgstr ""
-"Errore: l'inizio o la fine di una fusione di azioni successive di modifiche "
+"Bug: l'inizio o la fine di una fusione di azioni successive di modifiche "
 "sono state richieste per due volte di fila."
 
 #: ../src/MathCtrl.cpp:2114
 msgid "Bug: Text changed, but no active cell."
-msgstr "Errore: testo cambiato, ma nessuna cella attiva."
+msgstr "Bug: testo cambiato, ma nessuna cella attiva."
 
 #: ../src/GroupCell.cpp:369
 msgid "Bug: Trying to append NULL to a group cell."
-msgstr "Errore: tentativo di accodare NULL ad un gruppo di celle."
+msgstr "Bug: tentativo di accodare NULL ad un gruppo di celle."
 
 #: ../src/MathCtrl.cpp:563
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
-"Errore: tentativo di accodare il risultato di maxima ad una cella fuori dal "
+"Bug: tentativo di accodare il risultato di maxima ad una cella fuori dal "
 "foglio di lavoro."
 
 #: ../src/MathCtrl.cpp:2040
@@ -774,7 +761,7 @@ msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
 msgstr ""
-"Errore: tentativo di fondere singole celle aggiunge un campo nel buffer "
+"Bug: tentativo di fondere singole celle aggiunge un campo nel buffer "
 "degli annullamenti ma ci sono altre celle tra di queste."
 
 #: ../src/MathCtrl.cpp:6654
@@ -782,30 +769,30 @@ msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
-"Errore: tentativo di spostare il cursore disegnato orizzontalmente "
+"Bug: tentativo di spostare il cursore disegnato orizzontalmente "
 "all'interno di una Cella di gruppo."
 
 #: ../src/MathCtrl.cpp:2116
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
-"Errore: tentativo di registrare i contenuti dei cambiamenti di una cella "
+"Bug: tentativo di registrare i contenuti dei cambiamenti di una cella "
 "senza una cella."
 
 #: ../src/MathCtrl.cpp:1582
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
-"Errore: tentativo di selezionare dentro una cella senza avere una cella "
+"Bug: tentativo di selezionare dentro una cella senza avere una cella "
 "corrente."
 
 #: ../src/MathCtrl.cpp:6004
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
-"Errore: azione di annullamento con sia cambiamento contenuti cella che "
+"Bug: azione di annullamento con sia cambiamento contenuti cella che "
 "aggiunta cella."
 
 #: ../src/MathCtrl.cpp:5966 ../src/MathCtrl.cpp:6039 ../src/MathCtrl.cpp:6073
 msgid "Bug: Undo request for cell outside worksheet."
-msgstr "Errore: richiesta annullamento per celle fuori dal foglio di lavoro."
+msgstr "Bug: richiesta annullamento per celle fuori dal foglio di lavoro."
 
 #: ../src/wxMaximaFrame.cpp:934
 msgid "Build &Info"
@@ -1970,7 +1957,7 @@ msgid ""
 "For each Text-, Sectioning or code cell wxMaxima can display a bracket "
 "showing the extend of the cell and allowing to fold it. This setting now "
 "tells if this bracket is to be printed, as well."
-msgstr ""
+msgstr "Per ogni testo, sezionamento o cella di codice wxMaxima può mostrare una parentesi che mostra l'estensione della cella permettendo di ripiegarla. Questa impostazione indica se anche questa parentesi deve essere stampata."
 
 #: ../src/Plot2dWiz.cpp:58 ../src/Plot3dWiz.cpp:59
 msgid "Format:"
@@ -2157,40 +2144,35 @@ msgid "Hide Code Cells\tAlt+Ctrl+H"
 msgstr "Nascondi le celle di codice\tAlt+Ctrl+H"
 
 #: ../src/MathCtrl.cpp:1081
-#, fuzzy
 msgid "Hide Part"
-msgstr "Nascondi"
+msgstr "Nascondi parte"
 
 #: ../src/MathCtrl.cpp:1089
-#, fuzzy
 msgid "Hide Section"
-msgstr "Sezione"
+msgstr "Nascondo sezione"
 
 #: ../src/MathCtrl.cpp:1098
-#, fuzzy
 msgid "Hide Subsection"
-msgstr "Sottosezione"
+msgstr "Nascondi sottosezione"
 
 #: ../src/MathCtrl.cpp:1107
-#, fuzzy
 msgid "Hide Subsubsection"
-msgstr "Sottosottosezione"
+msgstr "Nascondo sottosottosezione"
 
 #: ../src/wxMaximaFrame.cpp:521
 msgid "Hide all panes"
 msgstr "Nascondi tutti i pannelli"
 
 #: ../src/MathCtrl.cpp:1115
-#, fuzzy
 msgid "Hide contents"
-msgstr "Costanti greche"
+msgstr "Nascondi i contenuti"
 
 #: ../src/ConfigDialogue.cpp:233
 msgid ""
 "Hide the brackets that mark the extend of the worksheet cells at the "
 "worksheet's right side and that contain the \"hide\" button of the cell if "
 "the cells aren't active."
-msgstr ""
+msgstr "Nascondi le parentesi che marcano l'estensione delle celle del foglio di lavoro sul lato destro del foglio di lavoro e ciò contiene il pulsante \"nascondi\" della cella se le celle non sono attive."
 
 #: ../src/ConfigDialogue.cpp:780
 msgid "Highlight (dpart)"
@@ -2241,14 +2223,10 @@ msgid "Identical to"
 msgstr "Identico a"
 
 #: ../src/wxMaximaFrame.cpp:644
-#, fuzzy
 msgid ""
 "If maxima ever finishes evaluating without wxMaxima realizing this menu item "
 "can force wxMaxima to try to send commands to maxima again."
-msgstr ""
-"Se maxima fisisce l'elaborazione senza che wxMaxima se ne accorga, questa "
-"voce di menu può forzare wxMaxima a provare a spedire di nuovo comandi a "
-"maxima."
+msgstr "Se maxima finisce l'elaborazione senza che wxMaxima se ne accorga, questa voce di menu può forzare wxMaxima a provare a spedire nuovamente comandi a maxima."
 
 #: ../src/ConfigDialogue.cpp:193
 msgid ""
@@ -2333,7 +2311,6 @@ msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgstr "File immagine (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 
 #: ../data/tips.txt:33
-#, fuzzy
 msgid ""
 "In order to visualize how a parameter affects an equation wxmaxima provides "
 "commands that start with \"with_slider_\" and that create animations. One "
@@ -2552,9 +2529,8 @@ msgid "Integrate..."
 msgstr "Integra..."
 
 #: ../src/ConfigDialogue.cpp:477
-#, fuzzy
 msgid "Intelligently hide cell brackets"
-msgstr "Parentesi cella attiva"
+msgstr "Nascondi intelligentemente le parentesi della cella"
 
 #: ../src/ToolBar.cpp:158
 msgid "Interrupt"
@@ -2871,7 +2847,7 @@ msgid ""
 "labels are suppressed extra vertical space is added between equations in "
 "order to ease discerning which line starts a new equation and which one only "
 "continues the one from the last line."
-msgstr ""
+msgstr "Maxima assegna ad ogni comando/equazione un'etichetta automatica (che somiglierà a %i1 o %o1). Se un comando comincia con un nome descrittivo seguito da un : wxMaxima chiamerà il nome descrittivo una \"etichetta definita dall'utente\". Questa selezione permette di dire a wxMaxima se mostrare solo etichette automatiche, etichette automatiche se non ce ne sono di definite dall'utente o nessuna etichetta fino a che non venga rilevata un'etichetta definita dall'utente dall'euristica di wxMaxima. Se le etichette automatiche vengono soppresse, viene aggiunto dello spazio verticale extra tra le equazioni in modo da facilitare la distinzione tra le righe nelle quali comincia una nuova equazione e quelle che sono la continuazione della riga precedente."
 
 #: ../src/wxMaximaFrame.cpp:128
 msgid "Maxima has a question"
@@ -3127,7 +3103,7 @@ msgstr "Nome:"
 
 #: ../src/ConfigDialogue.cpp:468
 msgid "Never"
-msgstr ""
+msgstr "Mai"
 
 #: ../src/ToolBar.cpp:112
 msgid "New"
@@ -3282,9 +3258,8 @@ msgid "Online tutorials"
 msgstr "Guide online"
 
 #: ../src/ConfigDialogue.cpp:467
-#, fuzzy
 msgid "Only user-defined labels"
-msgstr "Etichette personalizzate"
+msgstr "Solo etichette definite dall'utente"
 
 #: ../src/ConfigDialogue.cpp:677 ../src/ToolBar.cpp:116 ../src/main.cpp:353
 #: ../src/wxMaxima.cpp:2946
@@ -3550,7 +3525,7 @@ msgstr "Stampa documento"
 
 #: ../src/ConfigDialogue.cpp:561
 msgid "Print the cell brackets [drawn to their left]"
-msgstr ""
+msgstr "Stampa le parentesi delle celle [disegna alla loro sinistra]"
 
 #: ../src/wxMaxima.cpp:4399
 msgid "Product"
@@ -4008,9 +3983,8 @@ msgid "Show function template"
 msgstr "Mostra un modello di funzione"
 
 #: ../src/ConfigDialogue.cpp:462
-#, fuzzy
 msgid "Show labels:"
-msgstr "Mostra le &variabili"
+msgstr "Mostra etichette:"
 
 #: ../src/ConfigDialogue.cpp:218
 msgid "Show long expressions in wxMaxima document."
@@ -4720,29 +4694,24 @@ msgid "Unhide"
 msgstr "Rivela"
 
 #: ../src/MathCtrl.cpp:1078
-#, fuzzy
 msgid "Unhide Part"
-msgstr "Rivela"
+msgstr "Rivela parte"
 
 #: ../src/MathCtrl.cpp:1086
-#, fuzzy
 msgid "Unhide Section"
-msgstr "Sezione"
+msgstr "Rivela sezione"
 
 #: ../src/MathCtrl.cpp:1095
-#, fuzzy
 msgid "Unhide Subsection"
-msgstr "Sottosezione"
+msgstr "Rivela sottosezione"
 
 #: ../src/MathCtrl.cpp:1104
-#, fuzzy
 msgid "Unhide Subsubsection"
-msgstr "Sottosottosezione"
+msgstr "Rivela sottosottosezione"
 
 #: ../src/MathCtrl.cpp:1112
-#, fuzzy
 msgid "Unhide contents"
-msgstr "Costanti greche"
+msgstr "Rivela i contenuti"
 
 #: ../src/wxMaxima.cpp:4616
 msgid "Unicode Support"
@@ -4802,12 +4771,11 @@ msgstr ""
 
 #: ../src/ConfigDialogue.cpp:779
 msgid "User-defined labels"
-msgstr "Etichette personalizzate"
+msgstr "Etichette definite dall'utente"
 
 #: ../src/ConfigDialogue.cpp:466
-#, fuzzy
 msgid "User-defined labels if available"
-msgstr "Etichette personalizzate"
+msgstr "Etichette definite dall'utente se disponibili"
 
 #: ../src/BC2Wiz.cpp:33 ../src/BC2Wiz.cpp:39 ../src/wxMaxima.cpp:3682
 #: ../src/wxMaxima.cpp:3698 ../src/wxMaxima.cpp:3806
@@ -5481,21 +5449,3 @@ msgstr "sì"
 #: ../src/wxMaximaFrame.cpp:1299
 msgid "zeta"
 msgstr "zeta"
-
-#~ msgid ""
-#~ "If a command begins with a label followed by a : wxMaxima will show this "
-#~ "label instead of the %o style label maxima has automatically assigned to "
-#~ "the same output cell."
-#~ msgstr ""
-#~ "Se un comando comincia con una etichetta seguita da un : wxMaxima "
-#~ "mostrerà questa etichetta invece dello stile etichette %o che maxima ha "
-#~ "automaticamente assegnato alla stessa cella risultati."
-
-#~ msgid "Show user-defined labels instead of (%oxx)"
-#~ msgstr "Mostra etichette personalizzabili invece che (%oxx)"
-
-#~ msgid "Text & Code"
-#~ msgstr "Testo e codice"
-
-#~ msgid "      -X '--dynamic-space-size <int>'"
-#~ msgstr "      -X '--dynamic-space-size <int>'"
