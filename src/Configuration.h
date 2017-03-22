@@ -65,7 +65,13 @@ class Configuration
 {
 public:
   void ReadConfig();
-  Configuration(wxDC& dc);
+  /*! The constructor 
+    
+    \param dc The drawing context that is to be used for drawing objects
+    \param isTopLevel Is this the first configuration instantiated for this
+           worksheet?
+   */
+  Configuration(wxDC& dc,bool isTopLevel = false);
   //! Set the drawing context that is currently active
   void SetContext(wxDC &dc){m_dc = &dc;}
   ~Configuration();
@@ -283,6 +289,8 @@ public:
 
   //! Returns a pointer to the instance of Configuration that exists
   static Configuration *Get() {return m_activeConfiguration;}
+  //! Returns a pointer to the top level configuration of the current window
+  static Configuration *GetTopLevel();
 
   //! Reads the size of the current worksheet's visible window. See SetCanvasSize
   wxSize GetCanvasSize(){return m_canvasSize;}

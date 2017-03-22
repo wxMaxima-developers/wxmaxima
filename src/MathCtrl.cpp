@@ -71,7 +71,7 @@ wxScrolledCanvas(
 {
   m_groupCellUnderPointerRect = wxRect(0,0,0,0);
   m_dc = new wxClientDC(this);
-  m_configuration = new Configuration(*m_dc);
+  m_configuration = new Configuration(*m_dc,true);
   m_configuration->ReadConfig();
   m_redrawStart = NULL;
   m_redrawRequested = false;

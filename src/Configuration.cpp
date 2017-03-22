@@ -29,10 +29,13 @@
 #include <wx/config.h>
 #include "MathCell.h"
 
-Configuration::Configuration(wxDC& dc) : m_dc(&dc)
+Configuration::Configuration(wxDC& dc,bool isTopLevel) : m_dc(&dc)
 {
-  // This is the currently active instance of this class
-  m_last = m_activeConfiguration;
+  // Build the chain of configurations
+  if(isTopLevel)
+    m_last = NULL;
+  else
+    m_last = m_activeConfiguration;
   m_activeConfiguration = this;
 
   m_scale = 1.0;
@@ -81,6 +84,18 @@ bool Configuration::MaximaFound(wxString location)
   if(!path.empty())
       maximaFound = true;
   return maximaFound;
+}
+
+Configuration *Configuration::GetTopLevel()
+{
+  Configuration *retval = Get();
+
+  if(retval != NULL)
+    while(retval->m_last != NULL)
+    {
+      retval = retval->m_last;
+    }
+  return retval;
 }
 
 void Configuration::ReadConfig()
