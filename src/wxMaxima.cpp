@@ -2145,7 +2145,7 @@ void wxMaxima::ShowTip(bool force)
 wxString wxMaxima::GetHelpFile()
 {
 #if defined __WXMSW__
-  wxFilename command;
+  wxFileName command;
   wxString chm;
   wxString html;
   
