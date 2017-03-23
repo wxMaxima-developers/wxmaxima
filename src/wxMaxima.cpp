@@ -2074,6 +2074,11 @@ wxString wxMaxima::GetCommand(bool params)
   wxString parameters, command = configuration->MaximaLocation();
   wxConfig::Get()->Read(wxT("parameters"), &parameters);
 
+  if(!params)
+    parameters = wxEmptyString;
+  else
+    parameters = wxT(" ")+parameters;
+    
 #if defined (__WXMSW__)
   if (!wxFileExists(command))
   {
@@ -2086,15 +2091,15 @@ wxString wxMaxima::GetCommand(bool params)
     command = wxT("maxima");
   }
 
-  return wxT("\"") + command + wxT("\" ") + parameters;
+  return wxT("\"") + command + wxT("\"") + parameters;
 #else
 
 #if defined (__WXMAC__)
   if (command.Right(4) == wxT(".app")) // if pointing to a Maxima.app
-    command.Append(wxT("/Contents/Resources/maxima.sh"));
+    command.Append(wxT("/Contents/Resources/maxima.sh") + parameters);
 #endif
 
-  command = wxT("\"") + command + wxT("\" ") + parameters;
+  command = wxT("\"") + command + wxT("\"") + parameters;
   return command;
 #endif
 }
