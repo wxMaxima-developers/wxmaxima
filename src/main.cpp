@@ -395,7 +395,7 @@ void MyApp::MacNewFile()
   if (m_frame == NULL)
     NewWindow();
   else
-    wxExecute(wxT("open -a -n ")+Dirstructure::GetwxMaximaLocation());
+    wxExecute(wxT("open -na ")+Dirstructure::GetwxMaximaLocation());
 }
 
 void MyApp::MacOpenFile(const wxString &file)
@@ -403,6 +403,6 @@ void MyApp::MacOpenFile(const wxString &file)
   if (m_frame == NULL)
     NewWindow(file);
   else
-    wxExecute(wxT("open -a -n ")+Dirstructure::GetwxMaximaLocation()+wxT(" \"")+file+wxT("\""));
+    wxExecute(wxT("open -na ")+Dirstructure::GetwxMaximaLocation()+wxT(" \'")+file+wxT("\'"));
 }
 #endif
