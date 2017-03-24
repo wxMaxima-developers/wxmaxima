@@ -68,15 +68,20 @@ wxString Dirstructure::GetwxMaximaLocation()
   if(applicationPath.EndsWith(wxT("/Contents/MacOS/")))
   {
     wxString bundle_nonAbsolute;
-    wxFilename bundle = wxFileName(applicationPath+wxT("../../"););
+    wxFileName bundle(applicationPath+wxT("../../"));
     bundle.MakeAbsolute();
     if(bundle.GetFullPath().EndsWith(wxT(".app")))
       return bundle.GetFullPath();
   }
-
+  
+      
   if(wxFileExists(applicationPath))
-    return wxFileName(applicationPath).MakeAbsolute().GetFullPath();
-
+  {
+    wxFileName applicationPathName = wxFileName(applicationPath);
+    applicationPathName.MakeAbsolute();
+    return applicationPathName.GetFullPath();
+  }
+  
   if (wxFileExists("/Applications/wxMaxima.app"))
     return wxT("/Applications/wxMaxima.app");
   if (wxFileExists("/Applications/wxmaxima.app"))
