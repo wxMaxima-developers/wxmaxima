@@ -157,7 +157,7 @@ bool MyApp::OnInit()
   cmdLineParser.Parse();
   wxString ini, file;
 #if wxCHECK_VERSION(3, 1, 1)
-  wxStandardPaths::SetFileLayout(FileLayout_XDG);
+//  wxStandardPaths::SetFileLayout(wxStandardPathsBase::FileLayout_XDG);
 #endif
 #if defined __WXMSW__
   if (cmdLineParser.Found(wxT("f"),&ini))
