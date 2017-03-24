@@ -60,6 +60,35 @@ wxString Dirstructure::Prefix()
   return wxT(PREFIX);
 }
 
+wxString Dirstructure::GetwxMaximaLocation()
+{
+  #if defined __WXMAC__
+  wxString applicationPath = wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPathWithSep();
+  
+  if(applicationPath.EndsWith(wxT("/Contents/MacOS/")))
+  {
+    wxString bundle_nonAbsolute;
+    wxFilename bundle = wxFileName(applicationPath+wxT("../../"););
+    bundle.MakeAbsolute();
+    if(bundle.GetFullPath().EndsWith(wxT(".app")))
+      return bundle.GetFullPath();
+  }
+
+  if(wxFileExists(applicationPath))
+    return wxFileName(applicationPath).MakeAbsolute().GetFullPath();
+
+  if (wxFileExists("/Applications/wxMaxima.app"))
+    return wxT("/Applications/wxMaxima.app");
+  if (wxFileExists("/Applications/wxmaxima.app"))
+    return wxT("/Applications/wxmaxima.app");
+  return(wxT("wxmaxima"));
+  #else
+  
+  return wxStandardPaths::Get().GetExecutablePath();
+  #endif
+
+}
+
 wxString Dirstructure::UserConfDir()
 {
   return wxGetHomeDir()+wxT("/");

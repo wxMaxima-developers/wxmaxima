@@ -122,9 +122,12 @@ public:
     Is only used on MSW and MAC
    */
   wxString LocaleDir() {return ResourcesDir()+wxT("/locale");}
-  
+
+  //! The location of the wxMaxima binary
+  static wxString GetwxMaximaLocation();
+
   //! The path we pass to the operating system if we want it to locate maxima instead
-  wxString MaximaDefaultLocation();
+  static wxString MaximaDefaultLocation();
 
   /*! The contents of the PREFIX macro as a wxString
 

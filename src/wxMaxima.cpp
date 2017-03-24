@@ -2091,7 +2091,10 @@ wxString wxMaxima::GetCommand(bool params)
     command = wxT("maxima");
   }
 
-  return wxT("\"") + command + wxT("\"") + parameters;
+  if (params)
+	  return wxT("\"") + command + wxT("\"") + parameters;
+  else
+	  return command;
 #else
 
 #if defined (__WXMAC__)
