@@ -262,11 +262,8 @@ bool MyApp::OnInit()
 	  wxString CanonicalFilename=FileName.GetFullPath();
 	  NewWindow(CanonicalFilename,batchmode);
 	}
-#ifdefined __WXMAC__
-#else
       else
 	NewWindow();
-#endif
     }
   return true;
 }
@@ -395,7 +392,8 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
 
 void MyApp::MacNewFile()
 {
-  NewWindow();
+  if (m_frame == NULL)
+    NewWindow();
 }
 
 void MyApp::MacOpenFile(const wxString &file)
