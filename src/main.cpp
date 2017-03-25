@@ -394,8 +394,6 @@ void MyApp::MacNewFile()
 {
   if (m_frame == NULL)
     NewWindow();
-  else
-    wxExecute(wxT("open -na ")+Dirstructure::GetwxMaximaLocation());
 }
 
 void MyApp::MacOpenFile(const wxString &file)
