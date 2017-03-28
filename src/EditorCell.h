@@ -24,6 +24,7 @@
 #define EDITORCELL_H
 
 #include "MathCell.h"
+#include "CellPointers.h"
 
 #include <vector>
 #include <list>
@@ -55,18 +56,7 @@
 class EditorCell : public MathCell
 {
 private:
-  //! The EditorCell the mouse selection has started in
-  static EditorCell *m_cellMouseSelectionStartedIn;
-  //! The EditorCell the keyboard selection has started in
-  static EditorCell *m_cellKeyboardSelectionStartedIn;
-  //! The EditorCell the search was started in
-  static EditorCell *m_cellSearchStartedIn;
-  //! Which cursor position incremental search has started at?
-  static int m_indexSearchStartedAt;
-  //! Which cell the blinking cursor is in?
-  static EditorCell *m_activeCell;
-  
-
+  CellPointers *m_cellPointers;
   //! The viewport size the linewrap was done for.
   int m_oldViewportWidth;
   //! The zoom factor the linewrap was done for.
@@ -97,73 +87,60 @@ private:
      If the selection has been done from right to left m_selectionStart>m_selectionEnd.
    */
   long m_selectionEnd;
-  /*! The currently selected string. 
-
-    Since this string is defined statically it is available in every editor cell
-    for highlighting other instances of the selected string.
-  */
-  static wxString m_selectionString;
   long m_oldSelectionStart;
   long m_oldSelectionEnd;
 public:
+  //! The constructor
+  EditorCell(MathCell *parent, Configuration **config,
+             CellPointers *cellPointers, wxString text = wxEmptyString);
+  ~EditorCell();
   //! Which cell the blinking cursor is in?
-  static EditorCell *GetActiveCell(){return m_activeCell;}
+  EditorCell *GetActiveCell(){return dynamic_cast<EditorCell *>(m_cellPointers->m_activeCell);}
   /*! Tells where the mouse selection has started.
 
     Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
     remove this pointer.
    */
-  static EditorCell *MouseSelectionStart(){return m_cellMouseSelectionStartedIn;}
+  EditorCell *MouseSelectionStart(){return dynamic_cast<EditorCell *>(m_cellPointers->m_cellMouseSelectionStartedIn);}
   /*! Tells where the keyboard selection has started.
 
     Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
     remove this pointer.
    */
-  static EditorCell *KeyboardSelectionStart(){return m_cellKeyboardSelectionStartedIn;}
+  EditorCell *KeyboardSelectionStart(){return dynamic_cast<EditorCell *>(m_cellPointers->m_cellKeyboardSelectionStartedIn);}
   /*! Tells where the search has started.
 
     Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
     remove this pointer.
    */
-  static EditorCell *SearchStart(){return m_cellSearchStartedIn;}
+  EditorCell *SearchStart(){return dynamic_cast<EditorCell *>(m_cellPointers->m_cellSearchStartedIn);}
   /*! At which character inside its cell has the search started?
 
     Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
     remove this pointer.
    */
-  static int IndexSearchStartedAt(){return m_indexSearchStartedAt;}
+  int IndexSearchStartedAt(){return m_cellPointers->m_indexSearchStartedAt;}
   
   /*! Remember that this is the cell the search was started in.
 
     \param index The index of the character the search was started at.
   */
-  void SearchStartedHere(int index){m_cellSearchStartedIn = this;m_indexSearchStartedAt = index;}
+  void SearchStartedHere(int index){m_cellPointers->m_cellSearchStartedIn = this;m_cellPointers->m_indexSearchStartedAt = index;}
   //! Remember that this is the cell the search was started in.
-  void SearchStartedHere(){m_cellSearchStartedIn = this;m_indexSearchStartedAt = m_positionOfCaret;}
+  void SearchStartedHere(){m_cellPointers->m_cellSearchStartedIn = this;m_cellPointers->m_indexSearchStartedAt = m_positionOfCaret;}
   //! Remember that this is the cell the mouse selection was started in.
-  void MouseSelectionStartedHere(){m_cellMouseSelectionStartedIn = this;}
+  void MouseSelectionStartedHere(){m_cellPointers->m_cellMouseSelectionStartedIn = this;}
   //! Remember that this is the cell the keyboard selection was started in.
-  void KeyboardSelectionStartedHere(){m_cellKeyboardSelectionStartedIn = this;}
+  void KeyboardSelectionStartedHere(){m_cellPointers->m_cellKeyboardSelectionStartedIn = this;}
   //! Remember that this is the cell the keyboard selection was started in.
-  void IndexSearchStartedAt(int index){m_indexSearchStartedAt = index;}
-
-  //! Forget where the mouse selection was started
-  static void ResetMouseSelectionStart(){m_cellMouseSelectionStartedIn = NULL;}
-  //! Forget where the keyboard selection was started
-  static void ResetKeyboardSelectionStart(){m_cellKeyboardSelectionStartedIn = NULL;}
-  //! Forget where the search was started
-  static void ResetSearchStart(){m_cellSearchStartedIn = NULL;m_indexSearchStartedAt = -1;}
-  
+  void IndexSearchStartedAt(int index){m_cellPointers->m_indexSearchStartedAt = index;}  
   //! Set the string that is to be highlighted as "identical to the curent selection"
-  static void SetSelectionString(wxString string)
-    {m_selectionString = string;}
+  void SetSelectionString(wxString string)
+    {m_cellPointers->m_selectionString = string;}
   //! A list of words that might be applicable to the autocomplete function.
   wxArrayString GetWordList(){return m_wordList;}
   //! Has the selection changed since the last draw event?
   bool m_selectionChanged;
-  //! The constructor
-  EditorCell(wxString text = wxEmptyString);
-  ~EditorCell();
   /*! Tell this cell to remove it from all gui actions.
 
     Normally the gui keeps various pointers to a cell: The cell below the cursor,
@@ -242,7 +219,7 @@ public:
    */
   void ActivateCursor();
   //! Deactivate the blinking cursor in the EditorCell it is in.
-  static void DeactivateCursor();
+  void DeactivateCursor();
   //! Return the index of the 1st char of the line containing the letter #pos.
   size_t BeginningOfLine(long pos);
   //! Return the index of the last char of the line containing the letter #pos,
@@ -319,7 +296,7 @@ public:
     // Style the text anew.
     StyleText();
   }
-  bool IsActive() { return this == m_activeCell; }
+  bool IsActive() { return this == m_cellPointers->m_activeCell; }
   //! Is the cursor at the start of this cell?
   bool CaretAtStart() { return m_positionOfCaret == 0; }
   //! Move the cursor to the start of this cell

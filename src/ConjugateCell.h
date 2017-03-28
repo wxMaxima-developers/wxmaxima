@@ -47,7 +47,7 @@
 class ConjugateCell : public MathCell
 {
 public:
-  ConjugateCell();
+  ConjugateCell(MathCell *parent, Configuration **config);
   ~ConjugateCell();
   void SetInner(MathCell *inner);
   MathCell* Copy();

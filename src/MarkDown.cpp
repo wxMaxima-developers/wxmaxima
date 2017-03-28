@@ -24,7 +24,6 @@ MarkDownParser is the class that handles the markdown syntax
 */
 
 #include "MarkDown.h"
-#include "Configuration.h"
 
 MarkDownParser::~MarkDownParser()
 {
@@ -35,8 +34,9 @@ MarkDownParser::~MarkDownParser()
   }
 }
 
-MarkDownParser :: MarkDownParser()
+MarkDownParser :: MarkDownParser(Configuration *cfg)
 {
+  m_configuration = cfg;
 }
   
 wxString MarkDownParser::MarkDown(wxString str)
@@ -182,7 +182,7 @@ wxString MarkDownParser::MarkDown(wxString str)
         {
           if(indentationLevels.back() > index)
           {
-            if(NewLineBreaksLine() && !Configuration::Get()->GetAutoWrap())
+            if(NewLineBreaksLine() && !m_configuration->GetAutoWrap())
 
             result += itemizeEndItem();
             while((!indentationLevels.empty())&&
@@ -201,7 +201,7 @@ wxString MarkDownParser::MarkDown(wxString str)
         }
         
         // Add the text to the output.        
-        if(!Configuration::Get()->GetAutoWrap())
+        if(!m_configuration->GetAutoWrap())
           result += line + "\n";
         else
           result += line + NewLine();
@@ -227,7 +227,7 @@ wxString MarkDownParser::MarkDown(wxString str)
   return result;
 }
   
-MarkDownTeX::MarkDownTeX() : MarkDownParser()
+MarkDownTeX::MarkDownTeX(Configuration *cfg) : MarkDownParser(cfg)
 {
   regexReplaceList.push_back(
     new RegexReplacer(wxT("#"),wxT("\\\\#")));
@@ -420,7 +420,7 @@ MarkDownTeX::MarkDownTeX() : MarkDownParser()
   #endif
 }
 
-MarkDownHTML::MarkDownHTML() : MarkDownParser()
+MarkDownHTML::MarkDownHTML(Configuration *cfg) : MarkDownParser(cfg)
 {
   regexReplaceList.push_back(
     new RegexReplacer(wxT("\\&lt;=\\&gt;"),wxT("\\&hArr;")));

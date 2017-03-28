@@ -27,7 +27,7 @@
 class SubSupCell : public MathCell
 {
 public:
-  SubSupCell();
+  SubSupCell(MathCell *parent, Configuration **config);
   ~SubSupCell();
   MathCell* Copy();
   void SetBase(MathCell *base);

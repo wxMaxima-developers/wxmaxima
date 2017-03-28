@@ -27,7 +27,7 @@
 class DiffCell : public MathCell
 {
 public:
-  DiffCell();
+  DiffCell(MathCell *parent, Configuration **config);
   ~DiffCell();
   MathCell* Copy();
   void SetBase(MathCell *base);

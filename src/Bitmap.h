@@ -37,7 +37,7 @@ public:
     \param scale By which factor the resolution should be increased in respect
                  to the default 755 DPI?
   */
-  Bitmap(int scale=1);
+  Bitmap(Configuration **configuration,int scale=1);
   ~Bitmap();
   /*! Renders tree as bitmap
     
@@ -71,6 +71,8 @@ protected:
   double GetRealWidth();
 
 private:
+  wxMemoryDC *m_dc;
+  Configuration **m_configuration,*m_oldconfig;
   //! How many times the natural resolution do we want this bitmap to be?
   int m_scale;
   wxBitmap m_bmp;

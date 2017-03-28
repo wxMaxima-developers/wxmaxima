@@ -47,7 +47,7 @@
 class ExptCell : public MathCell
 {
 public:
-  ExptCell();
+  ExptCell(MathCell *parent, Configuration **config);
   ~ExptCell();
   MathCell* Copy();
   //! Set the mantissa

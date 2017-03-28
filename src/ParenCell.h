@@ -49,7 +49,7 @@
 class ParenCell : public MathCell
 {
 public:
-  ParenCell();
+  ParenCell(MathCell *parent, Configuration **config);
   ~ParenCell();
   MathCell* Copy();
   void SetInner(MathCell *inner, int style);

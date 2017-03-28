@@ -31,13 +31,6 @@
 
 Configuration::Configuration(wxDC& dc,bool isTopLevel) : m_dc(&dc)
 {
-  // Build the chain of configurations
-  if(isTopLevel)
-    m_last = NULL;
-  else
-    m_last = m_activeConfiguration;
-  m_activeConfiguration = this;
-
   m_scale = 1.0;
   m_zoomFactor = 1.0; // affects returned fontsizes
   m_top = -1;
@@ -84,18 +77,6 @@ bool Configuration::MaximaFound(wxString location)
   if(!path.empty())
       maximaFound = true;
   return maximaFound;
-}
-
-Configuration *Configuration::GetTopLevel()
-{
-  Configuration *retval = Get();
-
-  if(retval != NULL)
-    while(retval->m_last != NULL)
-    {
-      retval = retval->m_last;
-    }
-  return retval;
 }
 
 void Configuration::ReadConfig()
@@ -178,7 +159,6 @@ void Configuration::SetZoomFactor(double newzoom)
 
 Configuration::~Configuration()
 {
-  m_activeConfiguration = m_last;
 }
 
 wxString Configuration::GetFontName(int type)
@@ -510,6 +490,5 @@ wxFontEncoding Configuration::GetGreekFontEncoding()
 */
 
 // Create all static variables
-Configuration *Configuration::m_activeConfiguration = NULL;
 bool Configuration::m_showCodeCells = true;
 

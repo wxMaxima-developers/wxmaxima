@@ -29,7 +29,9 @@
 class Gen1Wiz: public wxDialog
 {
 public:
-  Gen1Wiz(wxWindow* parent, int id, const wxString& title,
+  Gen1Wiz(wxWindow* parent, int id,
+          Configuration *cfg,
+          const wxString& title,
           const wxString& label, const wxPoint& pos = wxDefaultPosition,
           const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
   wxString GetValue()
@@ -52,7 +54,7 @@ private:
   wxButton* button_2;
 };
 
-wxString GetTextFromUser(wxString label, wxString title, wxString value,
+wxString GetTextFromUser(wxString label, wxString title, Configuration *cfg, wxString value,
                          wxWindow* parent);
 
 #endif // GEN1WIZ_H

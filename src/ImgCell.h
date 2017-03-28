@@ -32,10 +32,10 @@
 class ImgCell : public MathCell
 {
 public:
-  ImgCell();
-  ImgCell(wxMemoryBuffer image,wxString type);
-  ImgCell(wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
-  ImgCell(const wxBitmap &bitmap);
+  ImgCell(MathCell *parent, Configuration **config);
+  ImgCell(MathCell *parent, Configuration **config,wxMemoryBuffer image,wxString type);
+  ImgCell(MathCell *parent, Configuration **config,wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
+  ImgCell(MathCell *parent, Configuration **config,const wxBitmap &bitmap);
   ~ImgCell();
   void LoadImage(wxString image, bool remove = true);
   MathCell* Copy();

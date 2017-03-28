@@ -30,7 +30,7 @@
 
 #define SIGN_FONT_SCALE 2.0
 
-SqrtCell::SqrtCell() : MathCell()
+SqrtCell::SqrtCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
 {
   m_signSize = 50;
   m_signWidth = 18;
@@ -39,9 +39,9 @@ SqrtCell::SqrtCell() : MathCell()
   m_signType = 0;
   m_signFontScale = 0;
   m_innerCell = NULL;
-  m_open = new TextCell(wxT("sqrt("));
+  m_open = new TextCell(parent,config,wxT("sqrt("));
   m_open -> DontEscapeOpeningParenthesis();
-  m_close = new TextCell(wxT(")"));
+  m_close = new TextCell(parent,config,wxT(")"));
 }
 
 
@@ -58,7 +58,7 @@ void SqrtCell::SetParent(MathCell *parent)
 
 MathCell* SqrtCell::Copy()
 {
-  SqrtCell* tmp = new SqrtCell;
+  SqrtCell* tmp = new SqrtCell(m_group,m_configuration);
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
   tmp->m_isBroken = m_isBroken;
@@ -91,7 +91,7 @@ void SqrtCell::SetInner(MathCell *inner)
 
 void SqrtCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_innerCell->RecalculateWidthsList(fontsize);
   if (configuration->CheckTeXFonts())
@@ -151,7 +151,7 @@ void SqrtCell::RecalculateWidths(int fontsize)
 
 void SqrtCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_innerCell->RecalculateHeightList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(3, scale);
@@ -169,7 +169,7 @@ void SqrtCell::RecalculateHeight(int fontsize)
 void SqrtCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
 
   if (DrawThisCell(point) && InUpdateRegion())
   {

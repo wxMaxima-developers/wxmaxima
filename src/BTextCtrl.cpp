@@ -19,17 +19,18 @@
 //
 
 #include "BTextCtrl.h"
-#include "Configuration.h"
 #include <wx/config.h>
 
 BTextCtrl::BTextCtrl(wxWindow *parent,
                      wxWindowID id,
+                     Configuration *cfg,
                      const wxString& value,
                      const wxPoint& pos,
                      const wxSize& size,
                      long style)
     : wxTextCtrl(parent, id, value, pos, size, style)
 {
+  m_config = cfg;
   bool fixedFont = true;
   m_skipTab = true;
   wxConfigBase *config = wxConfig::Get();
@@ -56,10 +57,10 @@ BTextCtrl::~BTextCtrl()
 void BTextCtrl::OnChar(wxKeyEvent& event)
 {
 #if wxUSE_UNICODE
-  if (!Configuration::Get()->GetMatchParens() || MatchParenthesis(event.GetUnicodeKey()))
+  if (!m_config->GetMatchParens() || MatchParenthesis(event.GetUnicodeKey()))
     event.Skip();
 #else
-  if (!Configuration::Get()->GetMatchParens() || MatchParenthesis(event.GetKeyCode()))
+  if (!m_config->GetMatchParens() || MatchParenthesis(event.GetKeyCode()))
     event.Skip();
 #endif
 }

@@ -20,7 +20,9 @@
 
 #include "MatWiz.h"
 
-MatWiz::MatWiz(wxWindow* parent, int id, const wxString& title,
+MatWiz::MatWiz(wxWindow* parent, int id,
+               Configuration *cfg,
+               const wxString& title,
                int type, int w, int h,
                const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
@@ -31,7 +33,7 @@ MatWiz::MatWiz(wxWindow* parent, int id, const wxString& title,
   int width = 50 > 400 / m_width ? 50 : 400 / m_width;
   for (int i = 0; i < h*w; i++)
   {
-    m_inputs.push_back(new BTextCtrl(this, -1, wxT("0"), wxDefaultPosition,
+    m_inputs.push_back(new BTextCtrl(this, -1, cfg, wxT("0"), wxDefaultPosition,
                                      wxSize(width, -1)));
   }
   static_line_1 = new wxStaticLine(this, -1);
@@ -158,15 +160,17 @@ wxString MatWiz::GetValue()
   return cmd;
 }
 
-MatDim::MatDim(wxWindow* parent, int id, const wxString& title,
+MatDim::MatDim(wxWindow* parent, int id,
+               Configuration *cfg,
+               const wxString& title,
                const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_2 = new wxStaticText(this, -1, _("Rows:"));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxT("3"), wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxT("3"), wxDefaultPosition,
                               wxSize(150, -1));
   label_3 = new wxStaticText(this, -1, _("Columns:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxT("3"), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxT("3"), wxDefaultPosition,
                               wxSize(150, -1));
   label_4 = new wxStaticText(this, -1, _("Type:"));
   const wxString choice_1_choices[] =
@@ -179,7 +183,7 @@ MatDim::MatDim(wxWindow* parent, int id, const wxString& title,
   choice_1 = new wxChoice(this, -1, wxDefaultPosition,
                           wxSize(150, -1), 4, choice_1_choices);
   label_0 = new wxStaticText(this, -1, _("Name:"));
-  text_ctrl_0 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_0 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__

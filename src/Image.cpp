@@ -54,8 +54,9 @@ wxBitmap Image::GetUnscaledBitmap()
   return bmp;
 }
 
-Image::Image()
+Image::Image(Configuration **config)
 {
+  m_configuration = config;
   m_width = 1;
   m_height = 1;
   m_originalWidth = 1;
@@ -63,8 +64,9 @@ Image::Image()
   m_scaledBitmap.Create (1,1);
 }
 
-Image::Image(wxMemoryBuffer image,wxString type)
+Image::Image(Configuration **config,wxMemoryBuffer image,wxString type)
 {
+  m_configuration = config;
   m_scaledBitmap.Create (1,1);
   m_compressedImage = image;
   m_extension = type;
@@ -83,14 +85,16 @@ Image::Image(wxMemoryBuffer image,wxString type)
     }
   }
 
-Image::Image(const wxBitmap &bitmap)
+Image::Image(Configuration **config,const wxBitmap &bitmap)
 {
+  m_configuration = config;
   LoadImage(bitmap);
 }
 
 // constructor which loads an image
-Image::Image(wxString image,bool remove, wxFileSystem *filesystem)
+Image::Image(Configuration **config,wxString image,bool remove, wxFileSystem *filesystem)
 {
+  m_configuration = config;  
   m_scaledBitmap.Create (1,1);
   LoadImage(image,remove,filesystem);
 }
@@ -278,7 +282,7 @@ void Image::Recalculate()
   int width  = m_originalWidth;
   int height = m_originalHeight;
   double scale;
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
 
   // We want the image to get bigger if the user zooms in - and
   // if a high printing resolution requires us to scale everything up.

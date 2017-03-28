@@ -30,17 +30,17 @@
 
 #define EXPT_DEC 2
 
-ExptCell::ExptCell() : MathCell()
+ExptCell::ExptCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
 {
-  m_last1=NULL;
-  m_last2=NULL;
+  m_last1 = NULL;
+  m_last2 = NULL;
   m_baseCell = NULL;
   m_powCell = NULL;
   m_isMatrix = false;
-  m_exp = new TextCell(wxT("^"));
-  m_open = new TextCell(wxT("("));
+  m_exp = new TextCell(parent,config,wxT("^"));
+  m_open = new TextCell(parent,config,wxT("("));
   m_open -> DontEscapeOpeningParenthesis();
-  m_close = new TextCell(wxT(")"));
+  m_close = new TextCell(parent,config,wxT(")"));
 }
 
 void ExptCell::SetParent(MathCell *parent)
@@ -58,7 +58,7 @@ void ExptCell::SetParent(MathCell *parent)
 
 MathCell* ExptCell::Copy()
 {
-  ExptCell* tmp = new ExptCell;
+  ExptCell* tmp = new ExptCell(m_group,m_configuration);
   CopyData(this, tmp);
   tmp->SetBase(m_baseCell->CopyList());
   tmp->SetPower(m_powCell->CopyList());
@@ -114,7 +114,7 @@ void ExptCell::SetBase(MathCell *base)
 
 void ExptCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_baseCell->RecalculateWidthsList(fontsize);
   if (m_isBroken)
@@ -131,7 +131,7 @@ void ExptCell::RecalculateWidths(int fontsize)
 
 void ExptCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_baseCell->RecalculateHeightList(fontsize);
   if (m_isBroken)
@@ -158,7 +158,7 @@ void ExptCell::Draw(wxPoint point, int fontsize)
 
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    Configuration *configuration = Configuration::Get();
+    Configuration *configuration = (*m_configuration);
     double scale = configuration->GetScale();
     wxPoint bs, pw;
     bs.x = point.x;

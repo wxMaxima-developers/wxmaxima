@@ -61,7 +61,7 @@ Items where a list of groupcells can be folded include
 class GroupCell: public MathCell
 {
 public:
-  GroupCell(int groupType, wxString initString = wxEmptyString);
+  GroupCell(Configuration **config,int groupType, CellPointers *cellPointers, wxString initString = wxEmptyString);
   ~GroupCell();
   /*! Tell this cell to remove it from all gui actions.
 
@@ -78,28 +78,22 @@ public:
     Must be kept in GroupCell as on deletion a GroupCell will unlink itself from 
     this pointer.
    */
-  static GroupCell *GetLastWorkingGroup()
+  GroupCell *GetLastWorkingGroup()
     {
-      return m_lastWorkingGroup;
+      return dynamic_cast<GroupCell *>(m_cellPointers->m_lastWorkingGroup);
     }
   //! Mark this cell as being the last cell maxima was working on.
   void IsLastWorkingGroup()
     {
-      m_lastWorkingGroup = this;
+      m_cellPointers->m_lastWorkingGroup = this;
     }
   /*! Marks the cell that is under the mouse pointer.
 
     Is kept in GroupCell so every GroupCell can decide it is no more under the pointer
     once it has been deleted from the worksheet.
    */
-  static void CellUnderPointer(GroupCell *cell);
+  void CellUnderPointer(GroupCell *cell);
   MathCell* Copy();
-  //! Set the y position of the selection start and end
-  static void SetSelectionRange_px(int start, int end)
-    {
-      m_selectionStart_px = start;
-      m_selectionEnd_px = end;
-    }
   // general methods
   int GetGroupType() { return m_groupType; }
   void SetParent(MathCell *parent); // setting parent for all mathcells in GC
@@ -277,17 +271,11 @@ protected:
   int m_mathFontSize;
   MathCell *m_lastInOutput;
   MathCell *m_appendedCells;
+  CellPointers *m_cellPointers;
 private:
-  static int m_selectionStart_px;
-  static int m_selectionEnd_px;
-
-  //! The GroupCell that is under the mouse pointer 
-  static GroupCell *m_groupCellUnderPointer;
   wxRect m_outputRect;
   bool m_inEvaluationQueue;
   bool m_lastInEvaluationQueue;
-  //! The last group cell maxima was working on.
-  static GroupCell *m_lastWorkingGroup;
 };
 
 #endif /* GROUPCELL_H */

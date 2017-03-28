@@ -62,15 +62,15 @@ class Image
 {
 public:
   //! A constructor that generates an empty image. See LoadImage()
-  Image();
+  Image(Configuration **config);
   //! A constructor that loads the compressed file from a wxMemoryBuffer
-  Image(wxMemoryBuffer image,wxString type);
+  Image(Configuration **config,wxMemoryBuffer image,wxString type);
   /*! A constructor that loads a bitmap
 
     This constructor actually has to do some compression since we got
     the bitmap in an uncompressed form.
    */
-  Image(const wxBitmap &bitmap);
+  Image(Configuration **config,const wxBitmap &bitmap);
   /*! A constructor that loads an image
 
     \param image The name of the file
@@ -79,7 +79,7 @@ public:
     \param viewport_ysize The height of the viewport the image is to be displayed in
     \param remove true = Delete the file after loading it
    */
-  Image(wxString image,bool remove = true, wxFileSystem *filesystem = NULL);
+  Image(Configuration **config,wxString image,bool remove = true, wxFileSystem *filesystem = NULL);
   /*! Temporarily forget the scaled image in order to save memory
 
     Will recreate the scaled image as soon as needed.
@@ -123,6 +123,8 @@ protected:
   wxBitmap m_scaledBitmap;
   //! The file extension for the current image type
   wxString m_extension;
+private:
+  Configuration **m_configuration;
 };
 
 #endif // IMAGE_H

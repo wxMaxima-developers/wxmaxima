@@ -22,12 +22,14 @@
 #define BTEXTCTRL_H
 
 #include <wx/wx.h>
+#include "Configuration.h"
 
 class BTextCtrl: public wxTextCtrl
 {
 public:
   BTextCtrl(wxWindow *parent,
             wxWindowID id,
+            Configuration *cfg,
             const wxString& value,
             const wxPoint& pos = wxDefaultPosition,
             const wxSize& size = wxDefaultSize,
@@ -42,6 +44,7 @@ private:
   bool MatchParenthesis(int code);
   void CloseParenthesis(wxString open, wxString close, bool fromOpen);
   void OnChar(wxKeyEvent& event);
+  Configuration *m_config;
   DECLARE_EVENT_TABLE()
 };
 

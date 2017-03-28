@@ -434,7 +434,6 @@ protected:
   bool m_inLispMode;                //!< don't add ; in lisp mode
   wxString m_lastPrompt;
   wxString m_lastPath;
-  MathParser m_MParser;
   wxPrintData* m_printData;
   bool m_closing;
   wxString m_openFile;

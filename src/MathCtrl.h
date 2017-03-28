@@ -79,6 +79,7 @@ class MathCtrl: public wxScrolledCanvas
 private:
   //! The rectangle the groupcell under the pointer is in
   wxRect m_groupCellUnderPointerRect;
+  
   /*! The size of a scroll step
     
     Defines the size of a 
@@ -91,8 +92,6 @@ private:
     Drawing is done from a wxPaintDC in OnPaint() instead.
   */
   wxClientDC *m_dc;
-  //! The central settings storage
-  Configuration *m_configuration;
   //! Where do we need to start the repainting of the worksheet?
   GroupCell *m_redrawStart;
   //! Do we need to redraw the worksheet?
@@ -559,6 +558,45 @@ private:
 
 
 public:
+  //! The central settings storage
+  Configuration *m_configuration;
+  //! Get the currently active EditorCell
+  EditorCell *GetActiveCell()
+    {
+      if(m_cellPointers->m_activeCell != NULL)
+        return dynamic_cast<EditorCell *>(m_cellPointers->m_activeCell);
+      else
+        return NULL;
+    }
+  //! Tells us which cell the keyboard selection has started in
+  EditorCell *KeyboardSelectionStart()
+    {
+      if(m_cellPointers->m_cellKeyboardSelectionStartedIn != NULL)
+        return dynamic_cast<EditorCell *>(m_cellPointers->m_cellKeyboardSelectionStartedIn);
+      else
+        return NULL;
+    }
+  EditorCell *MouseSelectionStart()
+    {
+      if(m_cellPointers->m_cellMouseSelectionStartedIn != NULL)
+        return dynamic_cast<EditorCell *>(m_cellPointers->m_cellMouseSelectionStartedIn);
+      else
+        return NULL;
+    }
+  
+  EditorCell *SearchStart()
+    {
+      if(m_cellPointers->m_cellSearchStartedIn != NULL)
+        return dynamic_cast<EditorCell *>(m_cellPointers->m_cellSearchStartedIn);
+      else
+        return NULL;
+    }
+  int IndexSearchStartedAt()
+    {
+      return m_cellPointers->m_indexSearchStartedAt;
+    }
+  //! The pointers to cells that can be deleted by these cells on deletion of the cells.
+  CellPointers *m_cellPointers;
   /*! Update the table of contents
 
     This function actually only schedules the update of the table-of-contents-tab.
@@ -591,7 +629,7 @@ public:
   //! To be called after enabling or disabling the visibility of code cells
   void CodeCellVisibilityChanged();
   //! Re-read the configuration
-  void UpdateConfig(){Configuration::Get()->ReadConfig();}
+  void UpdateConfig(){m_configuration->ReadConfig();}
   //! The name of the currently-opened file
   wxString m_currentFile;
 
@@ -743,12 +781,13 @@ public:
   void ResetInputPrompts();
   bool CanCopy(bool fromActive = false) {
     return m_selectionStart != NULL ||
-           (fromActive && EditorCell::GetActiveCell() != NULL && EditorCell::GetActiveCell()->CanCopy());
+      (fromActive && m_cellPointers->m_activeCell != NULL &&
+       dynamic_cast<EditorCell*>(m_cellPointers->m_activeCell)->CanCopy());
   }
-  bool CanPaste() { return (EditorCell::GetActiveCell() != NULL) || (m_hCaretActive);
+  bool CanPaste() { return (m_cellPointers->m_activeCell != NULL) || (m_hCaretActive);
   }
   bool CanCut() {
-    return (EditorCell::GetActiveCell() != NULL && EditorCell::GetActiveCell()->CanCopy()) ||
+    return (m_cellPointers->m_activeCell != NULL && dynamic_cast<EditorCell*>(m_cellPointers->m_activeCell)->CanCopy()) ||
            (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_GROUP);
   }
   //! Select the whole document
@@ -885,13 +924,13 @@ public:
     m_selectionEnd = end;
     if ((start!=NULL)&&(start->GetType() == MC_TYPE_GROUP))
     {
-      GroupCell::SetSelectionRange_px(
+      m_cellPointers->SetSelectionRange_px(
         dynamic_cast<GroupCell *>(m_selectionStart)->m_currentPoint.y,
         dynamic_cast<GroupCell *>(m_selectionEnd)->m_currentPoint.y
         );
     }
     else
-      GroupCell::SetSelectionRange_px(-1,-1);
+      m_cellPointers->SetSelectionRange_px(-1,-1);
       
     if(m_selectionStart == NULL)
     {
@@ -907,8 +946,6 @@ public:
   void ScrollToCaret();
   //! Scrolls to a given cell
   void ScrollToCell(MathCell *cell, bool scrollToTop = true);
-  //! Returns the cell the cursor that is drawn as a vertical line is in.
-  EditorCell* GetActiveCell() { return EditorCell::GetActiveCell(); }
   //! Is the point currently visible on the worksheet?
   bool PointVisibleIs(wxPoint point);
   //! Is the caret (hcaret or vcaret) currently visible on the worksheet?
@@ -934,7 +971,7 @@ public:
   //! Tell if an animation should run running
   void AnimationRunning(bool state) { m_animate = state; }
   //! Is the editor active in the last cell of the worksheet?
-  bool IsActiveInLast() { return EditorCell::GetActiveCell() != NULL && EditorCell::GetActiveCell()->GetParent() == m_last; }
+  bool IsActiveInLast() { return m_cellPointers->m_activeCell != NULL && m_cellPointers->m_activeCell->GetParent() == m_last; }
   //! Informs the worksheet which GroupCell maxima is currently working in
   void SetWorkingGroup(GroupCell *group);
   //! Returns the last cell of the worksheet

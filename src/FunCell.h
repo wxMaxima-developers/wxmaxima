@@ -51,7 +51,7 @@
 class FunCell : public MathCell
 {
 public:
-  FunCell();
+  FunCell(MathCell *parent, Configuration **config);
   ~FunCell();
   MathCell* Copy();
   void SetName(MathCell *base);

@@ -27,7 +27,7 @@
 
 #include "FunCell.h"
 
-FunCell::FunCell() : MathCell()
+FunCell::FunCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
 {
   m_nameCell = NULL;
   m_argCell = NULL;
@@ -44,7 +44,7 @@ void FunCell::SetParent(MathCell *parent)
 
 MathCell* FunCell::Copy()
 {
-  FunCell* tmp = new FunCell;
+  FunCell* tmp = new FunCell(m_group,m_configuration);
   CopyData(this, tmp);
   tmp->SetName(m_nameCell->CopyList());
   tmp->SetArg(m_argCell->CopyList());
@@ -80,7 +80,7 @@ void FunCell::SetArg(MathCell *arg)
 
 void FunCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_argCell->RecalculateWidthsList(fontsize);
   m_nameCell->RecalculateWidthsList(fontsize);
@@ -103,7 +103,7 @@ void FunCell::Draw(wxPoint point, int fontsize)
 
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    Configuration *configuration = Configuration::Get();
+    Configuration *configuration = (*m_configuration);
     double scale = configuration->GetScale();
 
     wxPoint name(point), arg(point);

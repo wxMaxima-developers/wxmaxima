@@ -33,7 +33,7 @@
 class LimitCell : public MathCell
 {
 public:
-  LimitCell();
+  LimitCell(MathCell *parent, Configuration **config);
   ~LimitCell();
   MathCell* Copy();
   void RecalculateHeight(int fontsize);

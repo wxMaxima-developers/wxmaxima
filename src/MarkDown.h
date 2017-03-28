@@ -32,6 +32,7 @@ MarkDownParser is the class that handles the markdown syntax
 #include <wx/tokenzr.h>
 #include <wx/regex.h>
 #include <list>
+#include "Configuration.h"
 
 /*! A generic markdown Parser.
 
@@ -40,6 +41,7 @@ MarkDownParser is the class that handles the markdown syntax
 class MarkDownParser
 {
 protected:
+  Configuration *m_configuration;
   //! A pair of a regExp and a string that has to replace the matches.
   class RegexReplacer:public wxRegEx
   {
@@ -60,7 +62,7 @@ protected:
   typedef std::list<RegexReplacer *> replaceList;
   replaceList regexReplaceList;
 public:
-  MarkDownParser();
+  MarkDownParser(Configuration *cfg);
   virtual ~MarkDownParser();
   wxString MarkDown(wxString str);
 
@@ -82,7 +84,7 @@ public:
 class MarkDownTeX: public MarkDownParser
 {
 public:
-  MarkDownTeX();
+  MarkDownTeX(Configuration *cfg);
  private:
   virtual wxString quoteBegin(){return wxT("\\begin{quote}\n");}
   virtual wxString quoteEnd  (){return wxT("\\end{quote}\n");}
@@ -99,7 +101,7 @@ public:
 class MarkDownHTML: public MarkDownParser
 {
 public:
-  MarkDownHTML();
+  MarkDownHTML(Configuration *cfg);
  private:
   virtual wxString quoteChar (){return wxT("&gt;");}
   virtual wxString quoteBegin(){return wxT("<blockquote>\n");}

@@ -29,7 +29,9 @@
 class IntegrateWiz: public wxDialog
 {
 public:
-  IntegrateWiz(wxWindow* parent, int id, const wxString& title,
+  IntegrateWiz(wxWindow* parent, int id,
+               Configuration *cfg,
+               const wxString& title,
                const wxPoint& pos = wxDefaultPosition,
                const wxSize& size = wxDefaultSize,
                long style = wxDEFAULT_DIALOG_STYLE);

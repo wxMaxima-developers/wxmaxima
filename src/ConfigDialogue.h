@@ -44,6 +44,7 @@ dialog. The preferences themself will be read directly using
 #define CONFIGDIALOGUE_H
 
 #include "TextStyle.h"
+#include "Configuration.h"
 #include "Setup.h"
 
 enum {
@@ -128,7 +129,7 @@ class ConfigDialogue: public wxPropertySheetDialog
 {
 public:
   //! The constructor
-  ConfigDialogue(wxWindow* parent);
+  ConfigDialogue(wxWindow* parent,Configuration *config);
   //! The destructor
   ~ConfigDialogue();
 
@@ -151,6 +152,7 @@ public:
   */
   void WriteSettings();
 private:
+  Configuration *m_configuration;
   /*! begin wxGlade: ConfigDialogue::methods
 
     This method sets the window title, the tool tips etc.

@@ -26,18 +26,20 @@ enum {
 
 #include "SeriesWiz.h"
 
-SeriesWiz::SeriesWiz(wxWindow* parent, int id, const wxString& title,
+SeriesWiz::SeriesWiz(wxWindow* parent, int id,
+                     Configuration *cfg,
+                     const wxString& title,
                      const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_2 = new wxStaticText(this, -1, _("Expression:"));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, _("Variable:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxT("x"), wxDefaultPosition,
                               wxSize(110, -1));
   label_4 = new wxStaticText(this, -1, _("Point:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, wxT("0"), wxDefaultPosition,
+  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxT("0"), wxDefaultPosition,
                               wxSize(110, -1));
   button_3 = new wxButton(this, special_id, _("Special"));
   label_5 = new wxStaticText(this, -1, _("Depth:"));

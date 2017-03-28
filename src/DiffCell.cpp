@@ -28,7 +28,7 @@
 #include "DiffCell.h"
 #include "wx/config.h"
 
-DiffCell::DiffCell() : MathCell()
+DiffCell::DiffCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
 {
   m_baseCell = NULL;
   m_diffCell = NULL;
@@ -45,7 +45,7 @@ void DiffCell::SetParent(MathCell *parent)
 
 MathCell* DiffCell::Copy()
 {
-  DiffCell* tmp = new DiffCell;
+  DiffCell* tmp = new DiffCell(m_group,m_configuration);
   CopyData(this, tmp);
   tmp->SetDiff(m_diffCell->CopyList());
   tmp->SetBase(m_baseCell->CopyList());
@@ -83,7 +83,7 @@ void DiffCell::SetBase(MathCell *base)
 
 void DiffCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_baseCell->RecalculateWidthsList(fontsize);
   m_diffCell->RecalculateWidthsList(fontsize);
@@ -109,7 +109,7 @@ void DiffCell::Draw(wxPoint point, int fontsize)
     df.y = point.y;
     m_diffCell->DrawList(df, fontsize);
 
-    Configuration *configuration = Configuration::Get();
+    Configuration *configuration = (*m_configuration);
     bs.x = point.x + m_diffCell->GetFullWidth(configuration->GetScale()) + 2*MC_CELL_SKIP;
     bs.y = point.y;
     m_baseCell->DrawList(bs, fontsize);

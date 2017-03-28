@@ -30,7 +30,9 @@
 class SeriesWiz: public wxDialog
 {
 public:
-  SeriesWiz(wxWindow* parent, int id, const wxString& title,
+  SeriesWiz(wxWindow* parent, int id,
+            Configuration *cfg,
+            const wxString& title,
             const wxPoint& pos = wxDefaultPosition,
             const wxSize& size = wxDefaultSize,
             long style = wxDEFAULT_DIALOG_STYLE);

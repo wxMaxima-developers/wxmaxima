@@ -21,9 +21,11 @@
 
 #include "PlotFormatWiz.h"
 
-PlotFormatWiz::PlotFormatWiz(wxWindow* parent, int id, const wxString& title,
-               const wxPoint& pos, const wxSize& size, long style):
-    wxDialog(parent, id, title, pos, size, style)
+PlotFormatWiz::PlotFormatWiz(wxWindow* parent, int id,
+                             Configuration *cfg,
+                             const wxString& title,
+                             const wxPoint& pos, const wxSize& size, long style):
+  wxDialog(parent, id, title, pos, size, style)
 {
   label_1 = new wxStaticText(this, -1, _("Choose new plot format:"));
   const wxString combo_box_1_choices[] = 

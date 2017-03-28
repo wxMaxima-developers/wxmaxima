@@ -47,7 +47,7 @@
 class SqrtCell : public MathCell
 {
 public:
-  SqrtCell();
+  SqrtCell(MathCell *parent, Configuration **config);
   ~SqrtCell();
   MathCell* Copy();
   void SetInner(MathCell *inner);

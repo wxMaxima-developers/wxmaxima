@@ -32,7 +32,7 @@
 
 #define SUBSUP_DEC 3
 
-SubSupCell::SubSupCell() : MathCell()
+SubSupCell::SubSupCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
 {
   m_baseCell = NULL;
   m_indexCell = NULL;
@@ -52,7 +52,7 @@ void SubSupCell::SetParent(MathCell *parent)
 
 MathCell* SubSupCell::Copy()
 {
-  SubSupCell* tmp = new SubSupCell;
+  SubSupCell* tmp = new SubSupCell(m_group,m_configuration);
   CopyData(this, tmp);
   tmp->SetBase(m_baseCell->CopyList());
   tmp->SetIndex(m_indexCell->CopyList());
@@ -103,7 +103,7 @@ void SubSupCell::SetExponent(MathCell *exp)
 
 void SubSupCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_baseCell->RecalculateWidthsList(fontsize);
   m_indexCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
@@ -116,7 +116,7 @@ void SubSupCell::RecalculateWidths(int fontsize)
 
 void SubSupCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();  
+  Configuration *configuration = (*m_configuration);  
   double scale = configuration->GetScale();
 
   m_baseCell->RecalculateHeightList(fontsize);
@@ -133,7 +133,7 @@ void SubSupCell::RecalculateHeight(int fontsize)
 
 void SubSupCell::Draw(wxPoint point, int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   MathCell::Draw(point, fontsize);
 
   if (DrawThisCell(point) && InUpdateRegion())

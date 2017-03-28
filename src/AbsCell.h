@@ -54,7 +54,7 @@
 class AbsCell : public MathCell
 {
 public:
-  AbsCell();
+  AbsCell(MathCell *parent, Configuration **config);
   ~AbsCell();
   void SetInner(MathCell *inner);
   MathCell* Copy();

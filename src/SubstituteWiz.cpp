@@ -21,18 +21,20 @@
 #include "SubstituteWiz.h"
 
 
-SubstituteWiz::SubstituteWiz(wxWindow* parent, int id, const wxString& title,
+SubstituteWiz::SubstituteWiz(wxWindow* parent, int id,
+                             Configuration *cfg,
+                             const wxString& title,
                              const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_2 = new wxStaticText(this, -1, _("Expression:"));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxT("%"), wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxT("%"), wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, _("Old value:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxT("x"), wxDefaultPosition,
                               wxSize(230, -1));
   label_4 = new wxStaticText(this, -1, _("New value:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, wxT("y"), wxDefaultPosition,
+  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxT("y"), wxDefaultPosition,
                               wxSize(230, -1));
   checkbox_1 = new wxCheckBox(this, -1, _("&Rational"));
   static_line_1 = new wxStaticLine(this, -1);

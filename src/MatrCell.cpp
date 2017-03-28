@@ -28,7 +28,7 @@
 
 #include "MatrCell.h"
 
-MatrCell::MatrCell() : MathCell()
+MatrCell::MatrCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
 {
   m_matWidth = 0;
   m_matHeight = 0;
@@ -49,7 +49,7 @@ void MatrCell::SetParent(MathCell *parent)
 
 MathCell* MatrCell::Copy()
 {
-  MatrCell *tmp = new MatrCell;
+  MatrCell *tmp = new MatrCell(m_group,m_configuration);
   CopyData(this, tmp);
   tmp->m_specialMatrix = m_specialMatrix;
   tmp->m_inferenceMatrix = m_inferenceMatrix;
@@ -75,7 +75,7 @@ MatrCell::~MatrCell()
 
 void MatrCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   for (int i = 0; i < m_matWidth*m_matHeight; i++)
   {
@@ -102,7 +102,7 @@ void MatrCell::RecalculateWidths(int fontsize)
 
 void MatrCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
 
   for (int i = 0; i < m_matWidth*m_matHeight; i++)
@@ -137,7 +137,7 @@ void MatrCell::Draw(wxPoint point, int fontsize)
 
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    Configuration *configuration = Configuration::Get();
+    Configuration *configuration = (*m_configuration);
     wxDC& dc = configuration->GetDC();
     double scale = configuration->GetScale();
     wxPoint mp;

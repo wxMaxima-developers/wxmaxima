@@ -30,7 +30,7 @@
 #define MIN_LIMIT_FONT_SIZE 8
 #define LIMIT_FONT_SIZE_DECREASE 1
 
-LimitCell::LimitCell() : MathCell()
+LimitCell::LimitCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
 {
   m_base = NULL;
   m_under = NULL;
@@ -50,7 +50,7 @@ void LimitCell::SetParent(MathCell *parent)
 
 MathCell* LimitCell::Copy()
 {
-  LimitCell* tmp = new LimitCell;
+  LimitCell* tmp = new LimitCell(m_group,m_configuration);
   CopyData(this, tmp);
   tmp->SetBase(m_base->CopyList());
   tmp->SetUnder(m_under->CopyList());
@@ -96,7 +96,7 @@ void LimitCell::SetUnder(MathCell *under)
 
 void LimitCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
 
   m_base->RecalculateWidthsList(fontsize);
@@ -125,7 +125,7 @@ void LimitCell::Draw(wxPoint point, int fontsize)
 
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    Configuration *configuration = Configuration::Get();
+    Configuration *configuration = (*m_configuration);
     double scale = configuration->GetScale();
     wxPoint base(point), under(point), name(point);
 

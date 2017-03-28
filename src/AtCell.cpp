@@ -27,7 +27,7 @@
 
 #include "AtCell.h"
 
-AtCell::AtCell() : MathCell()
+AtCell::AtCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
 {
   m_baseCell = NULL;
   m_indexCell = NULL;
@@ -44,7 +44,7 @@ void AtCell::SetParent(MathCell *parent)
 
 MathCell* AtCell::Copy()
 {
-  AtCell* tmp = new AtCell;
+  AtCell* tmp = new AtCell(m_group,m_configuration);
   CopyData(this, tmp);
   tmp->SetBase(m_baseCell->CopyList());
   tmp->SetIndex(m_indexCell->CopyList());
@@ -80,7 +80,7 @@ void AtCell::SetBase(MathCell *base)
 
 void AtCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_baseCell->RecalculateWidthsList(fontsize);
   m_indexCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 4));
@@ -91,7 +91,7 @@ void AtCell::RecalculateWidths(int fontsize)
 
 void AtCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_baseCell->RecalculateHeightList(fontsize);
   m_indexCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 3));
@@ -104,7 +104,7 @@ void AtCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
 
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   wxDC& dc = configuration->GetDC();
   if (DrawThisCell(point) && InUpdateRegion())

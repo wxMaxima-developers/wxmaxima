@@ -32,7 +32,9 @@ using namespace std;
 class SysWiz: public wxDialog
 {
 public:
-  SysWiz(wxWindow* parent, int id, const wxString& title,
+  SysWiz(wxWindow* parent, int id,
+         Configuration *cfg,
+         const wxString& title,
          int eqn, const wxPoint& pos = wxDefaultPosition,
          const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
   wxString GetValue();
@@ -45,6 +47,7 @@ private:
   wxStaticLine* static_line_1;
   wxButton* button_1;
   wxButton* button_2;
+  Configuration *m_configuration;
 };
 
 #endif // SYSTEMWIZ_H

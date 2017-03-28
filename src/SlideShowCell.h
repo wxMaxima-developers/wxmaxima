@@ -48,7 +48,7 @@ public:
     If the default frame rate from the config is to be used instead this parameter 
     has to be set to -1.
    */
-  SlideShow(wxFileSystem *filesystem = NULL,int framerate = -1);
+  SlideShow(MathCell *parent, Configuration **config,wxFileSystem *filesystem = NULL,int framerate = -1);
   ~SlideShow();
   /*! Remove all cached scaled images from memory
 

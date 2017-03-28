@@ -350,7 +350,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
   switch(ev.GetId())
   {
     case wxMaxima::mac_newId:
-      MacNewFile();
+      NewWindow();
       break;
     case wxMaxima::mac_openId:
       {
@@ -359,7 +359,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
                                       _("wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"),
                                       wxFD_OPEN);
         if (file.Length() > 0)
-          MacOpenFile(file);
+          NewWindow(file);
       }
       break;
     case wxID_EXIT:
@@ -392,15 +392,14 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
 
 void MyApp::MacNewFile()
 {
-  if (m_frame == NULL)
+  wxWindow *frame = GetTopWindow();
+  if (frame == NULL)
     NewWindow();
 }
 
 void MyApp::MacOpenFile(const wxString &file)
 {
-  if (m_frame == NULL)
-    NewWindow(file);
-  else
-    wxExecute(wxT("open -na ")+Dirstructure::GetwxMaximaLocation()+wxT(" \'")+file+wxT("\'"));
+  NewWindow(file);
 }
+
 #endif

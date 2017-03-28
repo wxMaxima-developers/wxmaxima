@@ -35,7 +35,7 @@
   #define INTEGRAL_FONT_SIZE 12
 #endif
 
-IntCell::IntCell() : MathCell()
+IntCell::IntCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
 {
   m_base = NULL;
   m_under = NULL;
@@ -64,7 +64,7 @@ void IntCell::SetParent(MathCell *parent)
 
 MathCell* IntCell::Copy()
 {
-  IntCell *tmp = new IntCell;
+  IntCell *tmp = new IntCell(m_group,m_configuration);
   CopyData(this, tmp);
   tmp->SetBase(m_base->CopyList());
   tmp->SetUnder(m_under->CopyList());
@@ -122,7 +122,7 @@ void IntCell::SetVar(MathCell *var)
 
 void IntCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
 
   m_signSize = SCALE_PX(50, scale);
@@ -131,10 +131,10 @@ void IntCell::RecalculateWidths(int fontsize)
   m_base->RecalculateWidthsList(fontsize);
   m_var->RecalculateWidthsList(fontsize);
   if (m_under == NULL)
-    m_under = new TextCell;
+    m_under = new TextCell(m_group,m_configuration);
   m_under->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 5));
   if (m_over == NULL)
-    m_over = new TextCell;
+    m_over = new TextCell(m_group,m_configuration);
   m_over->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 5));
 
   if (configuration->CheckTeXFonts()) {
@@ -189,7 +189,7 @@ void IntCell::RecalculateWidths(int fontsize)
 
 void IntCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
 
   m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 5));
@@ -227,7 +227,7 @@ void IntCell::RecalculateHeight(int fontsize)
 void IntCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
 
   if (DrawThisCell(point) && InUpdateRegion())
   {

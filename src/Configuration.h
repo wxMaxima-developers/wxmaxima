@@ -64,6 +64,9 @@
 class Configuration
 {
 public:
+  //! Set maxima's working directory
+  void SetWorkingDirectory(wxString dir){m_workingdir = dir;}
+  wxString GetWorkingDirectory(){return m_workingdir;}
   void ReadConfig();
   /*! The constructor 
     
@@ -85,7 +88,7 @@ public:
    */
   int GetInterEquationSkip()
     {
-    if (Configuration::Get()->ShowAutomaticLabels())
+    if (ShowAutomaticLabels())
       return 0;
     else  
       return GetZoomFactor()*GetScale()*m_mathFontSize/2;
@@ -287,11 +290,6 @@ public:
       wxConfig::Get()->Write(wxT("restartOnReEvaluation"),m_restartOnReEvaluation = arg);
     }
 
-  //! Returns a pointer to the instance of Configuration that exists
-  static Configuration *Get() {return m_activeConfiguration;}
-  //! Returns a pointer to the top level configuration of the current window
-  static Configuration *GetTopLevel();
-
   //! Reads the size of the current worksheet's visible window. See SetCanvasSize
   wxSize GetCanvasSize(){return m_canvasSize;}
   //! Sets the size of the current worksheet's visible window.
@@ -343,6 +341,7 @@ public:
     }
   
 private:
+  wxString m_workingdir;
   wxString m_maximaLocation;
   //! Hide brackets that are not under the pointer
   bool m_hideBrackets;
@@ -397,7 +396,6 @@ private:
   int m_showLabelChoice;
   bool m_fixReorderedIndices;
   static bool m_showCodeCells;
-  static Configuration *m_activeConfiguration;
 };
 
 #endif // CONFIGURATION_H

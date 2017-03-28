@@ -39,7 +39,7 @@
 class IntCell : public MathCell
 {
 public:
-  IntCell();
+  IntCell(MathCell *parent, Configuration **config);
   ~IntCell();
   MathCell* Copy();
   void RecalculateHeight(int fontsize);

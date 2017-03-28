@@ -31,12 +31,15 @@
 class Plot2DWiz: public wxDialog
 {
 public:
-  Plot2DWiz(wxWindow* parent, int id, const wxString& title,
+  Plot2DWiz(wxWindow* parent, int id,
+            Configuration *cfg,
+            const wxString& title,
             const wxPoint& pos = wxDefaultPosition,
             const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
   void SetValue(wxString s);
   wxString GetValue();
 private:
+  Configuration *m_configuration;
   void set_properties();
   void do_layout();
   void OnButton(wxCommandEvent& event);
@@ -95,7 +98,8 @@ protected:
 class Plot2DPar: public wxDialog
 {
 public:
-  Plot2DPar(wxWindow* parent, int id, const wxString& title,
+  Plot2DPar(wxWindow* parent, int id, Configuration *configuration,
+            const wxString& title,
             const wxPoint& pos = wxDefaultPosition,
             const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
   void SetValue(wxString s)
@@ -128,9 +132,11 @@ protected:
 class Plot2DDiscrete: public wxDialog
 {
 public:
-  Plot2DDiscrete(wxWindow* parent, int id, const wxString& title,
-            const wxPoint& pos = wxDefaultPosition,
-            const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+  Plot2DDiscrete(wxWindow* parent, int id,
+                 Configuration *cfg,
+                 const wxString& title,
+                 const wxPoint& pos = wxDefaultPosition,
+                 const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
   void SetValue(wxString s)
   {
     text_ctrl_1->SetValue(s);

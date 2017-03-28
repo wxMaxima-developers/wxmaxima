@@ -39,8 +39,9 @@
 #include "Bitmap.h"
 #include "list"
 
-GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
+GroupCell::GroupCell(Configuration **config,int groupType, CellPointers *cellPointers, wxString initString) : MathCell(this,config)
 {
+  m_cellPointers = cellPointers;
   m_inEvaluationQueue = false;
   m_lastInEvaluationQueue = false;
   m_inputLabel = NULL;
@@ -66,14 +67,14 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   // set up cell depending on groupType, so we have a working cell
   if (groupType != GC_TYPE_PAGEBREAK) {
     if (groupType == GC_TYPE_CODE)
-      m_inputLabel = new TextCell(EMPTY_INPUT_LABEL);
+      m_inputLabel = new TextCell(this,m_configuration,EMPTY_INPUT_LABEL);
     else
-      m_inputLabel = new TextCell(wxT(" "));
+      m_inputLabel = new TextCell(this,m_configuration,wxT(" "));
 
     m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
   }
 
-  EditorCell *editor = new EditorCell();
+  EditorCell *editor = new EditorCell(this,m_configuration,m_cellPointers);
 
   switch (groupType) {
     case GC_TYPE_CODE:
@@ -123,7 +124,7 @@ GroupCell::GroupCell(int groupType, wxString initString) : MathCell()
   // when creating an image cell, if a string is provided
   // it loads an image (without deleting it)
   if ((groupType == GC_TYPE_IMAGE) && (initString.Length() > 0)) {
-    ImgCell *ic = new ImgCell(initString, false);
+    ImgCell *ic = new ImgCell(this,m_configuration,initString, false);
     AppendOutput(ic);
   }
 
@@ -183,7 +184,7 @@ void GroupCell::ResetInputLabelList()
 
 MathCell* GroupCell::Copy()
 {
-  GroupCell* tmp = new GroupCell(m_groupType);
+  GroupCell* tmp = new GroupCell(m_configuration,m_groupType,m_cellPointers);
   tmp->Hide(m_hide);
   CopyData(this, tmp);
   if (m_inputLabel)
@@ -281,10 +282,10 @@ void GroupCell::MarkAsDeleted()
   EditorCell *input = GetInput();
   if(input != NULL)
     input->MarkAsDeleted();
-  if(this == m_lastWorkingGroup)
-    m_lastWorkingGroup = NULL;
-  if(this == m_groupCellUnderPointer)
-    m_groupCellUnderPointer = NULL;  
+  if(this == m_cellPointers->m_lastWorkingGroup)
+    m_cellPointers->m_lastWorkingGroup = NULL;
+  if(this == m_cellPointers->m_groupCellUnderPointer)
+    m_cellPointers->m_groupCellUnderPointer = NULL;  
 }
 
 wxString GroupCell::TexEscapeOutputCell(wxString Input)
@@ -360,7 +361,7 @@ void GroupCell::RemoveOutput()
   // Calculate the new cell height.
 
   ResetSize();
-  RecalculateHeight(Configuration::Get()->GetDefaultFontSize());
+  RecalculateHeight((*m_configuration)->GetDefaultFontSize());
   m_hide = false;
 }
 
@@ -403,8 +404,8 @@ void GroupCell::AppendOutput(MathCell *cell)
 
 void GroupCell::Recalculate()
 {
-  int d_fontsize = Configuration::Get()->GetDefaultFontSize();
-  int m_fontsize = Configuration::Get()->GetMathFontSize();
+  int d_fontsize = (*m_configuration)->GetDefaultFontSize();
+  int m_fontsize = (*m_configuration)->GetMathFontSize();
 
   m_fontSize = d_fontsize;
   m_mathFontSize = m_fontsize;
@@ -415,7 +416,7 @@ void GroupCell::Recalculate()
 
 void GroupCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   if (m_width == -1 || m_height == -1 || configuration->ForceUpdate())
   {
     // special case of 'line cell'
@@ -472,7 +473,7 @@ void GroupCell::RecalculateWidths(int fontsize)
 
 void GroupCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
 
   if (m_width < 0 || m_height < 0 || m_currentPoint.x < 0 || m_currentPoint.y < 0 || 
@@ -515,11 +516,11 @@ void GroupCell::RecalculateHeight(int fontsize)
     if(m_previous == NULL)
     {
       m_currentPoint.x = configuration->GetIndent();
-      m_currentPoint.y = Configuration::Get()->GetBaseIndent() + GetMaxCenter();
+      m_currentPoint.y = (*m_configuration)->GetBaseIndent() + GetMaxCenter();
     }
     else
       m_currentPoint.y = dynamic_cast<GroupCell*>(m_previous) -> m_currentPoint.y +
-        dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + Configuration::Get()->GetGroupSkip();
+        dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + (*m_configuration)->GetGroupSkip();
     
     m_outputRect.x = m_currentPoint.x;
     m_outputRect.y = m_currentPoint.y;
@@ -565,17 +566,17 @@ void GroupCell::RecalculateHeight(int fontsize)
   }
   else
   {
-    Configuration *configuration = Configuration::Get();
+    Configuration *configuration = (*m_configuration);
     if(m_previous == NULL)
     {
       m_currentPoint.x = configuration->GetIndent();
-      m_currentPoint.y = Configuration::Get()->GetBaseIndent() + GetMaxCenter();
+      m_currentPoint.y = (*m_configuration)->GetBaseIndent() + GetMaxCenter();
     }
     else
     {
       m_currentPoint.x = configuration->GetIndent();
       m_currentPoint.y = dynamic_cast<GroupCell*>(m_previous) -> m_currentPoint.y +
-        dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + Configuration::Get()->GetGroupSkip();
+        dynamic_cast<GroupCell*>(m_previous) -> GetMaxDrop() + GetMaxCenter() + (*m_configuration)->GetGroupSkip();
     }
   }
   if(m_height < configuration->GetCellBracketWidth())
@@ -591,7 +592,7 @@ void GroupCell::RecalculateHeight(int fontsize)
 // We assume that appended cells will be in a new line!
 void GroupCell::RecalculateAppended()
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   if (m_appendedCells == NULL)
     return;
 
@@ -638,7 +639,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
 
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   wxDC& dc = configuration->GetDC();
   if (m_width == -1 || m_height == -1) {
     RecalculateWidths(fontsize);
@@ -653,7 +654,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
       int y = rect.GetY();
       wxPen pen(configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_DOT);
       dc.SetPen(pen);      
-      dc.DrawLine(0,y,Configuration::Get()->GetCanvasSize().GetWidth(),y);
+      dc.DrawLine(0,y,(*m_configuration)->GetCanvasSize().GetWidth(),y);
       MathCell::Draw(point, fontsize);
       return;
     }
@@ -670,7 +671,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
         dc.SetBrush(br);
         wxPen pen(configuration->GetColor(TS_TEXT_BACKGROUND));
         dc.SetPen(pen);
-        rect.SetWidth(Configuration::Get()->GetCanvasSize().GetWidth());
+        rect.SetWidth((*m_configuration)->GetCanvasSize().GetWidth());
         if(InUpdateRegion(rect))
           dc.DrawRectangle(CropToUpdateRegion(rect));
       }
@@ -755,30 +756,31 @@ void GroupCell::Draw(wxPoint point, int fontsize)
 
 void GroupCell::CellUnderPointer(GroupCell *cell)
 {
-  if(m_groupCellUnderPointer != cell)
+  if(m_cellPointers->m_groupCellUnderPointer != cell)
   {
-    GroupCell *tmp = m_groupCellUnderPointer;
-    m_groupCellUnderPointer = cell;
+    GroupCell *tmp = dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer);
+    m_cellPointers->m_groupCellUnderPointer = cell;
     if(tmp != NULL)
       tmp->DrawBracket();
-    if(m_groupCellUnderPointer != NULL)
-      m_groupCellUnderPointer->DrawBracket();
+    if(m_cellPointers->m_groupCellUnderPointer != NULL)
+      dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer)->DrawBracket();
   }
 }
 
 void GroupCell::DrawBracket()
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   bool drawBracket = !configuration->HideBrackets();
 
-  if(this == m_groupCellUnderPointer)
+  if(this == m_cellPointers->m_groupCellUnderPointer)
     drawBracket = true;
 
   wxDC& dc = configuration->GetDC();
 
   // Mark this GroupCell as selected if it is selected. Else clear the space we
   // will add brackets in
-  if((m_currentPoint.y >=m_selectionStart_px) && (m_currentPoint.y <=m_selectionEnd_px))
+  if((m_currentPoint.y >=m_cellPointers->m_selectionStart_px) &&
+     (m_currentPoint.y <=m_cellPointers->m_selectionEnd_px))
   {
 #if defined(__WXMAC__)
     dc.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
@@ -911,7 +913,7 @@ void GroupCell::DrawBracket()
 
 wxRect GroupCell::HideRect()
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   return wxRect(m_currentPoint.x - configuration->GetCellBracketWidth() - configuration->GetDefaultLineWidth()/2,
                 m_currentPoint.y - m_center - configuration->GetDefaultLineWidth()/2,
                 configuration->GetCellBracketWidth() + configuration->GetDefaultLineWidth(),
@@ -922,7 +924,7 @@ wxRect GroupCell::HideRect()
 wxString GroupCell::ToString()
 {
   wxString str;
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   
   if(m_inputLabel != NULL)
   {
@@ -973,7 +975,7 @@ wxString GroupCell::ToTeX()
 
 wxString GroupCell::ToRTF()
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   if(m_groupType == GC_TYPE_PAGEBREAK)
     return(wxT("\\page "));
   
@@ -1022,7 +1024,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
   if (imgCounter == NULL) return wxEmptyString;
   wxString str;
   // Now we might want to introduce some markdown:
-  MarkDownTeX MarkDown;
+  MarkDownTeX MarkDown(*m_configuration);
 
   switch (m_groupType)
   {
@@ -1099,7 +1101,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
   wxString str;
 
   // Input cells
-  if(Configuration::Get()->ShowCodeCells())
+  if((*m_configuration)->ShowCodeCells())
   {
     str = wxT("\n\n\\noindent\n%%%%%%%%%%%%%%%\n")
       wxT("%%% INPUT:\n")
@@ -1337,7 +1339,7 @@ wxString GroupCell::ToXML()
 void GroupCell::SelectRectGroup(wxRect& rect, wxPoint& one, wxPoint& two,
     MathCell **first, MathCell **last)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
 
   *first = NULL;
   *last = NULL;
@@ -1488,7 +1490,7 @@ void GroupCell::BreakLines(int fullWidth)
 
 void GroupCell::BreakLines(MathCell *cell, int fullWidth)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   int currentWidth = configuration->GetIndent();
 
   MathCell *tmp = cell;
@@ -1873,8 +1875,3 @@ bool GroupCell::Contains(GroupCell *cell)
   
   return false;
 }
-
-GroupCell *GroupCell::m_groupCellUnderPointer = NULL;
-GroupCell *GroupCell::m_lastWorkingGroup = NULL;
-int GroupCell::m_selectionStart_px = -1;
-int GroupCell::m_selectionEnd_px = -1;

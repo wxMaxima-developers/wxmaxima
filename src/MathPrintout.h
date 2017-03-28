@@ -43,7 +43,7 @@ using namespace std;
 class MathPrintout : public wxPrintout
 {
 public:
-  MathPrintout(wxString title);
+  MathPrintout(wxString title,Configuration **configuration);
   ~MathPrintout();
   void DestroyTree();
   void DestroyTree(GroupCell* tree);
@@ -62,6 +62,7 @@ public:
   double GetPPIScale();
   void GetScreenScale(double *scaleX, double *scaleY);
 private:
+  Configuration **m_configuration,*m_oldconfig;
   int m_numberOfPages;
   wxString m_title;
   GroupCell* m_tree;

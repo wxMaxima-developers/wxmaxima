@@ -115,8 +115,9 @@ wxImage ConfigDialogue::GetImage(wxString name)
 }
 
 
-ConfigDialogue::ConfigDialogue(wxWindow* parent)
+ConfigDialogue::ConfigDialogue(wxWindow* parent,Configuration *cfg)
 {
+  m_configuration = cfg;
 #if defined __WXMAC__
   SetSheetStyle(wxPROPSHEET_BUTTONTOOLBOOK | wxPROPSHEET_SHRINKTOFIT);
 #else
@@ -172,7 +173,7 @@ ConfigDialogue::~ConfigDialogue()
 
 void ConfigDialogue::MaximaLocationChanged(wxCommandEvent& unused)
 {
-  if(Configuration::Get()->MaximaFound(m_maximaProgram->GetValue()))
+  if(m_configuration->MaximaFound(m_maximaProgram->GetValue()))
   {
     m_mp->SetForegroundColour(
       wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT)
@@ -186,7 +187,7 @@ void ConfigDialogue::MaximaLocationChanged(wxCommandEvent& unused)
 
 void ConfigDialogue::SetProperties()
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = m_configuration;
   SetTitle(_("wxMaxima configuration"));
 
   m_showUserDefinedLabels->SetToolTip(_("Maxima assigns each command/equation an automatic label (which looks like %i1 or %o1). If a command begins with a descriptive name followed by a : wxMaxima will call the descriptive name an \"user-defined label\" instead. This selection now allows to tell wxMaxima if to show only automatic labels, automatic labels if there aren't user-defined ones or no label at all until an user-defined label can be found by wxMaxima's heuristics. If automatic labels are suppressed extra vertical space is added between equations in order to ease discerning which line starts a new equation and which one only continues the one from the last line."));
@@ -403,7 +404,7 @@ void ConfigDialogue::SetProperties()
 
 wxPanel* ConfigDialogue::CreateWorksheetPanel()
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = m_configuration;
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
   wxFlexGridSizer* grid_sizer = new wxFlexGridSizer(10, 2, 5, 5);
@@ -864,7 +865,7 @@ void ConfigDialogue::WriteSettings()
   wxString search = wxT("maxima-htmldir");
   wxArrayString out;
   wxConfig *config = (wxConfig *)wxConfig::Get();
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = m_configuration;
   config->Write(wxT("abortOnError"), m_abortOnError->GetValue());
   config->Write(wxT("pollStdOut"), m_pollStdOut->GetValue());
   configuration->RestartOnReEvaluation(m_restartOnReEvaluation->GetValue());

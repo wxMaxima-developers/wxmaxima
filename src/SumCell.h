@@ -40,7 +40,7 @@ enum {
 class SumCell : public MathCell
 {
 public:
-  SumCell();
+  SumCell(MathCell *parent, Configuration **config);
   ~SumCell();
   MathCell* Copy();
   void RecalculateHeight(int fontsize);

@@ -29,7 +29,9 @@
 class BC2Wiz: public wxDialog
 {
 public:
-  BC2Wiz(wxWindow* parent, int id, const wxString& title,
+  BC2Wiz(wxWindow* parent, int id,
+         Configuration *cfg,
+         const wxString& title,
          const wxPoint& pos = wxDefaultPosition,
          const wxSize& size = wxDefaultSize,
          long style = wxDEFAULT_DIALOG_STYLE);

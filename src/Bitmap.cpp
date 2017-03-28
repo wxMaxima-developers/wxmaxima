@@ -31,10 +31,12 @@
 #include <wx/clipbrd.h>
 
 #define BM_FULL_WIDTH 1000
-Bitmap::Bitmap(int scale)
+Bitmap::Bitmap(Configuration **configuration,int scale)
 {
+  m_configuration = configuration;
+  m_oldconfig = *m_configuration;
   m_tree = NULL;
-  m_scale=scale;
+  m_scale = scale;
   // The depth 24 hinders wxWidgets from creating rgb0 bitmaps that some
   // windows applications will interpret as rgba if they appear on
   // the clipboards and therefore render them all-transparent.
@@ -46,6 +48,7 @@ Bitmap::Bitmap(int scale)
 Bitmap::~Bitmap()
 {
   wxDELETE(m_tree);
+  *m_configuration = m_oldconfig;
 }
 
 bool Bitmap::SetData(MathCell* tree,long int maxSize)
@@ -58,6 +61,12 @@ bool Bitmap::SetData(MathCell* tree,long int maxSize)
 
 bool Bitmap::Layout(long int maxSize)
 {
+  m_dc = new wxMemoryDC();
+  m_dc->SelectObject(m_bmp);
+  m_dc->SetUserScale(m_scale,m_scale);
+  *m_configuration = new Configuration(*m_dc);
+  (*m_configuration)->SetClientWidth(BM_FULL_WIDTH);
+
   if (m_tree->GetType() != MC_TYPE_GROUP)
   {
     RecalculateWidths();
@@ -67,13 +76,6 @@ bool Bitmap::Layout(long int maxSize)
   }
   else {
     GroupCell* tmp = dynamic_cast<GroupCell *>(m_tree);
-
-    wxMemoryDC dc;
-    dc.SelectObject(m_bmp);
-    dc.SetUserScale(m_scale,m_scale);
-    Configuration configuration(dc);
-    configuration.SetClientWidth(BM_FULL_WIDTH);
-
     while (tmp != NULL)
     {
       tmp->Recalculate();
@@ -99,11 +101,15 @@ bool Bitmap::Layout(long int maxSize)
     // the clipboards and therefore render them all-transparent.
     m_bmp.Create(m_width=width * m_scale, m_height=height * m_scale,24);
     Draw();
+    wxDELETE(*m_configuration);
+    wxDELETE(m_dc);
     return true;
   }
   else
   {
     m_bmp = wxNullBitmap;
+    wxDELETE(*m_configuration);
+    wxDELETE(m_dc);
     return false;
   }
 }
@@ -126,10 +132,8 @@ void Bitmap::RecalculateHeight()
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
   MathCell* tmp = m_tree;
 
-  wxMemoryDC dc;
-  dc.SelectObject(m_bmp);
-  dc.SetUserScale(m_scale,m_scale);
-  Configuration configuration(dc);
+  m_dc->SelectObject(m_bmp);
+  m_dc->SetUserScale(m_scale,m_scale);
 
   while (tmp != NULL)
   {
@@ -147,12 +151,10 @@ void Bitmap::RecalculateWidths()
 
   MathCell* tmp = m_tree;
 
-  wxMemoryDC dc;
-  dc.SelectObject(m_bmp);
-  dc.SetUserScale(m_scale,m_scale);
-  Configuration configuration(dc);
-  configuration.SetClientWidth(BM_FULL_WIDTH);
-  configuration.SetClientHeight(BM_FULL_WIDTH);
+  m_dc->SelectObject(m_bmp);
+  m_dc->SetUserScale(m_scale,m_scale);
+  (*m_configuration)->SetClientWidth(BM_FULL_WIDTH);
+  (*m_configuration)->SetClientHeight(BM_FULL_WIDTH);
 
   while (tmp != NULL)
   {
@@ -225,14 +227,13 @@ void Bitmap::Draw()
 {
   MathCell::ClipToDrawRegion(false);
   MathCell* tmp = m_tree;
-  wxMemoryDC dc;
-  dc.SelectObject(m_bmp);
-  dc.SetUserScale(m_scale,m_scale);
+  m_dc->SelectObject(m_bmp);
+  m_dc->SetUserScale(m_scale,m_scale);
 
   wxString bgColStr = wxT("white");
   wxConfig::Get()->Read(wxT("Style/Background/color"), &bgColStr);
-  dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(bgColStr, wxBRUSHSTYLE_SOLID)));
-  dc.Clear();
+  m_dc->SetBackground(*(wxTheBrushList->FindOrCreateBrush(bgColStr, wxBRUSHSTYLE_SOLID)));
+  m_dc->Clear();
 
   if (tmp != NULL)
   {
@@ -245,8 +246,6 @@ void Bitmap::Draw()
     wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
     int mfontsize = fontsize;
     wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
-
-    Configuration configuration(dc);
 
     while (tmp != NULL)
     {
@@ -278,9 +277,9 @@ void Bitmap::Draw()
       tmp = tmp->m_nextToDraw;
     }
   }
-  dc.SelectObject(wxNullBitmap);
+  m_dc->SelectObject(wxNullBitmap);
   // Update the bitmap's size information.
-  m_ppi = dc.GetPPI();
+  m_ppi = m_dc->GetPPI();
   m_ppi.x *= m_scale;
   m_ppi.y *= m_scale;
   MathCell::ClipToDrawRegion(true);
@@ -342,11 +341,9 @@ void Bitmap::BreakUpCells()
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
-  wxMemoryDC dc;
-  dc.SelectObject(m_bmp);
-  dc.SetUserScale(m_scale,m_scale);
-  Configuration configuration(dc);
-
+  m_dc->SelectObject(m_bmp);
+  m_dc->SetUserScale(m_scale,m_scale);
+ 
   while (tmp != NULL)
   {
     if (tmp->GetWidth() > BM_FULL_WIDTH)
@@ -359,5 +356,5 @@ void Bitmap::BreakUpCells()
     }
     tmp = tmp->m_nextToDraw;
   }
-  dc.SelectObject(wxNullBitmap);
+  m_dc->SelectObject(wxNullBitmap);
 }

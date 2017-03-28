@@ -30,7 +30,7 @@
 
 #define FRAC_DEC 1
 
-FracCell::FracCell() : MathCell()
+FracCell::FracCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
 {
   m_num = NULL;
   m_denom = NULL;
@@ -70,7 +70,7 @@ void FracCell::SetParent(MathCell *parent)
 
 MathCell* FracCell::Copy()
 {
-  FracCell* tmp = new FracCell;
+  FracCell* tmp = new FracCell(m_group,m_configuration);
   CopyData(this, tmp);
   tmp->SetNum(m_num->CopyList());
   tmp->SetDenom(m_denom->CopyList());
@@ -114,7 +114,7 @@ void FracCell::SetDenom(MathCell *denom)
 
 void FracCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   if (m_isBroken || m_exponent)
   {
@@ -177,7 +177,7 @@ void FracCell::RecalculateWidths(int fontsize)
 
 void FracCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   if (m_isBroken || m_exponent)
   {
@@ -212,7 +212,7 @@ void FracCell::RecalculateHeight(int fontsize)
 void FracCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
 
   if (DrawThisCell(point) && InUpdateRegion())
   {
@@ -254,9 +254,9 @@ void FracCell::Draw(wxPoint point, int fontsize)
       m_denom->DrawList(denom, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
       SetPen();
       if (m_fracStyle != FC_CHOOSE)
-        dc.DrawLine(point.x + m_horizontalGapLeft + Configuration::Get()->GetDefaultLineWidth() / 2,
+        dc.DrawLine(point.x + m_horizontalGapLeft + (*m_configuration)->GetDefaultLineWidth() / 2,
                     point.y,
-                    point.x + m_width - m_horizontalGapRight - Configuration::Get()->GetDefaultLineWidth() / 2,
+                    point.x + m_width - m_horizontalGapRight - (*m_configuration)->GetDefaultLineWidth() / 2,
                     point.y
           );
       UnsetPen();
@@ -378,10 +378,10 @@ void FracCell::SetupBreakUps()
 {
   if (m_fracStyle == FC_NORMAL)
   {
-    m_open1 = new TextCell(wxT("("));
-    m_close1 = new TextCell(wxT(")"));
-    m_open2 = new TextCell(wxT("("));
-    m_close2 = new TextCell(wxT(")"));
+    m_open1 = new TextCell(m_group,m_configuration,wxT("("));
+    m_close1 = new TextCell(m_group,m_configuration,wxT(")"));
+    m_open2 = new TextCell(m_group,m_configuration,wxT("("));
+    m_close2 = new TextCell(m_group,m_configuration,wxT(")"));
     if(m_num)
     {
       if (!m_num->IsCompound())
@@ -398,15 +398,15 @@ void FracCell::SetupBreakUps()
         m_close2->m_isHidden = true;
       }
     }
-    m_divide = new TextCell(wxT("/"));
+    m_divide = new TextCell(m_group,m_configuration,wxT("/"));
   }
   else
   {
-    m_open1 = new TextCell(wxT("binomial("));
-    m_close1 = new TextCell(wxT("x"));
-    m_open2 = new TextCell(wxT("x"));
-    m_close2 = new TextCell(wxT(")"));
-    m_divide = new TextCell(wxT(","));
+    m_open1 = new TextCell(m_group,m_configuration,wxT("binomial("));
+    m_close1 = new TextCell(m_group,m_configuration,wxT("x"));
+    m_open2 = new TextCell(m_group,m_configuration,wxT("x"));
+    m_close2 = new TextCell(m_group,m_configuration,wxT(")"));
+    m_divide = new TextCell(m_group,m_configuration,wxT(","));
     m_close1->m_isHidden = true;
     m_open2->m_isHidden = true;
   }

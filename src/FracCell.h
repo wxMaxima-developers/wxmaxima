@@ -40,7 +40,7 @@
 class FracCell : public MathCell
 {
 public:
-  FracCell();
+  FracCell(MathCell *parent, Configuration **config);
   ~FracCell();
 
   //! All types of fractions we supportx

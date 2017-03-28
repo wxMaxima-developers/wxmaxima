@@ -34,7 +34,7 @@
 #define PROD_SIGN "\x59"
 #define SUM_DEC 2
 
-SumCell::SumCell() : MathCell()
+SumCell::SumCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
 {
   m_base = NULL;
   m_under = NULL;
@@ -59,7 +59,7 @@ void SumCell::SetParent(MathCell *parent)
 
 MathCell* SumCell::Copy()
 {
-  SumCell *tmp = new SumCell;
+  SumCell *tmp = new SumCell(m_group,m_configuration);
   CopyData(this, tmp);
   tmp->SetBase(m_base->CopyList());
   tmp->SetUnder(m_under->CopyList());
@@ -108,7 +108,7 @@ void SumCell::SetUnder(MathCell *under)
 
 void SumCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
 
   m_signSize = SCALE_PX(50, scale);
@@ -118,7 +118,7 @@ void SumCell::RecalculateWidths(int fontsize)
   m_base->RecalculateWidthsList(fontsize);
   m_under->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
   if (m_over == NULL)
-    m_over = new TextCell;
+    m_over = new TextCell(m_group,m_configuration);
   m_over->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
 
   if (configuration->CheckTeXFonts())
@@ -144,7 +144,7 @@ void SumCell::RecalculateWidths(int fontsize)
 
 void SumCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
 
   m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
@@ -162,7 +162,7 @@ void SumCell::Draw(wxPoint point, int fontsize)
 {
   if (DrawThisCell(point))
   {
-    Configuration *configuration = Configuration::Get();
+    Configuration *configuration = (*m_configuration);
     wxDC& dc = configuration->GetDC();
     double scale = configuration->GetScale();
 

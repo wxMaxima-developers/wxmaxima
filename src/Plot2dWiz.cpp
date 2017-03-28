@@ -23,32 +23,35 @@
 #include <wx/artprov.h>
 #include <wx/config.h>
 
-Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
+Plot2DWiz::Plot2DWiz(wxWindow* parent, int id,
+                     Configuration *cfg,
+                     const wxString& title,
                      const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
+  m_configuration = cfg;
   label_2 = new wxStaticText(this, -1, _("Expression(s):"));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(300, -1));
   button_3 = new wxButton(this, special, _("&Special"));
   label_3 = new wxStaticText(this, -1, _("Variable:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxT("x"), wxDefaultPosition,
                               wxSize(40, -1));
   label_4 = new wxStaticText(this, -1, _("From:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, wxT("-5"), wxDefaultPosition,
+  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxT("-5"), wxDefaultPosition,
                               wxSize(70, -1));
   label_5 = new wxStaticText(this, -1, _("To:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, wxT("5"), wxDefaultPosition,
+  text_ctrl_4 = new BTextCtrl(this, -1, cfg, wxT("5"), wxDefaultPosition,
                               wxSize(70, -1));
   check_box_1 = new wxCheckBox(this, -1, _("logscale"));
   label_6 = new wxStaticText(this, -1, _("Variable:"));
-  text_ctrl_5 = new BTextCtrl(this, -1, wxT("y"), wxDefaultPosition,
+  text_ctrl_5 = new BTextCtrl(this, -1, cfg, wxT("y"), wxDefaultPosition,
                               wxSize(40, -1), wxTE_READONLY);
   label_7 = new wxStaticText(this, -1, _("From:"));
-  text_ctrl_6 = new BTextCtrl(this, -1, wxT("-5"), wxDefaultPosition,
+  text_ctrl_6 = new BTextCtrl(this, -1, cfg, wxT("-5"), wxDefaultPosition,
                               wxSize(70, -1));
   label_8 = new wxStaticText(this, -1, _("To:"));
-  text_ctrl_7 = new BTextCtrl(this, -1, wxT("5"), wxDefaultPosition,
+  text_ctrl_7 = new BTextCtrl(this, -1, cfg, wxT("5"), wxDefaultPosition,
                               wxSize(70, -1));
   check_box_2 = new wxCheckBox(this, -1, _("logscale"));
   label_9 = new wxStaticText(this, -1, _("Ticks:"));
@@ -78,7 +81,7 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
                                wxSize(280, -1), 4,
                                combo_box_2_choices, wxCB_DROPDOWN);
   label_12 = new wxStaticText(this, -1, _("File:"));
-  text_ctrl_9 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_9 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(280, -1));
   button_4 = new wxBitmapButton(this, file_browse_2d,
                                 wxArtProvider::GetBitmap(wxART_FILE_OPEN,
@@ -447,7 +450,7 @@ void Plot2DWiz::OnPopupMenu(wxCommandEvent &event)
   {
     case parametric_plot:
     {
-      Plot2DPar *wiz = new Plot2DPar(this, -1, _("Plot 2D"));
+      Plot2DPar *wiz = new Plot2DPar(this, -1, m_configuration,_("Plot 2D"));
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
@@ -461,7 +464,7 @@ void Plot2DWiz::OnPopupMenu(wxCommandEvent &event)
     break;
     case discrete_plot:
     {
-      Plot2DDiscrete *wiz = new Plot2DDiscrete(this, -1, _("Plot 2D"));
+      Plot2DDiscrete *wiz = new Plot2DDiscrete(this, -1, m_configuration,_("Plot 2D"));
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
@@ -520,24 +523,24 @@ END_EVENT_TABLE()
 //
 ///////////////////////
 
-Plot2DPar::Plot2DPar(wxWindow* parent, int id, const wxString& title,
+Plot2DPar::Plot2DPar(wxWindow* parent, int id, Configuration *cfg, const wxString& title,
                      const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_2 = new wxStaticText(this, -1, wxT("x = "));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, wxT("y = "));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
   label_4 = new wxStaticText(this, -1, _("Variable:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, wxT("t"), wxDefaultPosition,
+  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxT("t"), wxDefaultPosition,
                               wxSize(40, -1));
   label_5 = new wxStaticText(this, -1, _("From:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_4 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
   label_6 = new wxStaticText(this, -1, _("To:"));
-  text_ctrl_5 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_5 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
   label_7 = new wxStaticText(this, -1, _("Ticks:"));
   spin_ctrl_1 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
@@ -627,15 +630,17 @@ wxString Plot2DPar::GetValue()
 //
 ///////////////////////
 
-Plot2DDiscrete::Plot2DDiscrete(wxWindow* parent, int id, const wxString& title,
+Plot2DDiscrete::Plot2DDiscrete(wxWindow* parent, int id,
+                               Configuration *cfg,
+                               const wxString& title,
                      const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_2 = new wxStaticText(this, -1, wxT("x = "));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, wxT("y = "));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
 
   static_line_1 = new wxStaticLine(this, -1);

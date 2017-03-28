@@ -29,7 +29,9 @@
 class SubstituteWiz: public wxDialog
 {
 public:
-  SubstituteWiz(wxWindow* parent, int id, const wxString& title,
+  SubstituteWiz(wxWindow* parent, int id,
+                Configuration *cfg,
+                const wxString& title,
                 const wxPoint& pos = wxDefaultPosition,
                 const wxSize& size = wxDefaultSize,
                 long style = wxDEFAULT_DIALOG_STYLE);

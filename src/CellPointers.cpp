@@ -1,7 +1,6 @@
 // -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
-//  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
+//  Copyright (C) 2017 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,32 +18,25 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
-#ifndef ATCELL_H
-#define ATCELL_H
+/*! \file
+  This file defines the class CellPonters
 
-#include "MathCell.h"
+  CellPointers is the class cells keep per-worksheet-information in that needs to be 
+  invalidate on deleting cells it points to.
+*/
 
-class AtCell : public MathCell
+#include "CellPointers.h"
+
+CellPointers::CellPointers()
 {
-public:
-  AtCell(MathCell *parent, Configuration **config);
-  ~AtCell();
-  MathCell* Copy();
-  void SetBase(MathCell *base);
-  void SetIndex(MathCell *index);
-  void RecalculateHeight(int fontsize);
-  void RecalculateWidths(int fontsize);
-  void Draw(wxPoint point, int fontsize);
-  wxString ToString();
-  wxString ToTeX();
-  wxString ToXML();
-  wxString ToOMML();
-  wxString ToMathML();
-  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
-  void SetParent(MathCell *parent);
-protected:
-  MathCell *m_baseCell;
-  MathCell *m_indexCell;
-};
-
-#endif // ATCELL_H
+  m_cellMouseSelectionStartedIn = NULL;
+  m_cellKeyboardSelectionStartedIn = NULL;
+  m_cellSearchStartedIn = NULL;
+  m_indexSearchStartedAt = -1;
+  m_activeCell = NULL;
+  m_selectionStart_px = -1;
+  m_selectionEnd_px = -1;
+  m_groupCellUnderPointer = NULL;
+  m_lastWorkingGroup = NULL;
+  m_selectionString = wxEmptyString;
+}

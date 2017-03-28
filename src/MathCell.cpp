@@ -29,8 +29,10 @@
 #include <wx/regex.h>
 #include <wx/sstream.h>
 
-MathCell::MathCell()
+MathCell::MathCell(MathCell *parent, Configuration **config)
 {
+  m_group = parent;
+  m_configuration = config;
   m_next = NULL;
   m_previous = NULL;
   m_nextToDraw = NULL;
@@ -293,7 +295,7 @@ void MathCell::Draw(wxPoint point, int fontsize)
 
 void MathCell::DrawList(wxPoint point, int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   MathCell *tmp=this;
   while(tmp!=NULL)
   {
@@ -366,7 +368,7 @@ void MathCell::RecalculateWidths(int fontsize)
  */
 bool MathCell::DrawThisCell(wxPoint point)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   int top = configuration->GetTop();
   int bottom = configuration->GetBottom();
   if (top == -1 || bottom == -1)
@@ -958,7 +960,7 @@ void MathCell::UnbreakList()
 */
 void MathCell::SetPen()
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   wxDC& dc = configuration->GetDC();
   
   if (m_highlight)
@@ -980,7 +982,7 @@ void MathCell::SetPen()
  */
 void MathCell::UnsetPen()
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   wxDC& dc = configuration->GetDC();
   if (m_type == MC_TYPE_PROMPT || m_type == MC_TYPE_INPUT || m_highlight)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_DEFAULT),
@@ -1000,7 +1002,7 @@ void MathCell::CopyData(MathCell *s, MathCell *t)
 
 void MathCell::SetForeground()
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   wxColour color;
   wxDC& dc = configuration->GetDC();
   if (m_highlight)

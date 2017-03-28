@@ -336,7 +336,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
   // If we want to append an error message to the worksheet and there is no cell
   // that can contain it we need to create such a cell.
   if(m_console->GetTree() == NULL)
-    m_console->InsertGroupCells(new GroupCell(GC_TYPE_CODE,wxEmptyString));
+    m_console->InsertGroupCells(new GroupCell(&(m_console->m_configuration),GC_TYPE_CODE,m_console->m_cellPointers,wxEmptyString));
 
   m_dispReadOut = false;
   s.Replace(m_promptSuffix, wxEmptyString);
@@ -445,7 +445,8 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
 
   s.Replace(wxT("\n"), wxT(" "), true);
 
-  cell = m_MParser.ParseLine(s, type);
+  MathParser mParser(&m_console->m_configuration,m_console->m_cellPointers);
+  cell = mParser.ParseLine(s, type);
 
   wxASSERT_MSG(cell != NULL,_("There was an error in generated XML!\n\n"
                               "Please report this as a bug."));
@@ -463,7 +464,7 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
   // If we want to append an error message to the worksheet and there is no cell
   // that can contain it we need to create such a cell.
   if(m_console->GetTree() == NULL)
-    m_console->InsertGroupCells(new GroupCell(GC_TYPE_CODE,wxEmptyString));
+    m_console->InsertGroupCells(new GroupCell(&(m_console->m_configuration),GC_TYPE_CODE,m_console->m_cellPointers,wxEmptyString));
 
   if(s.IsEmpty())
     return;
@@ -472,7 +473,7 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
 
   if (type == MC_TYPE_MAIN_PROMPT)
   {
-    TextCell* cell = new TextCell(s);
+    TextCell* cell = new TextCell(m_console->GetTree(),&(m_console->m_configuration),s);
     cell->SetType(type);
     m_console->InsertLine(cell, true);
   }
@@ -484,7 +485,7 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
     MathCell *tmp = NULL, *lst = NULL;
     while (tokens.HasMoreTokens())
     {
-      TextCell* cell = new TextCell(tokens.GetNextToken());
+      TextCell* cell = new TextCell(m_console->GetTree(),&(m_console->m_configuration),tokens.GetNextToken());
 
       cell->SetType(type);
 
@@ -1110,7 +1111,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   {
     // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
-    if ((Configuration::Get()->GetOpenHCaret())&&(m_console->GetActiveCell() == NULL))
+    if ((m_console->m_configuration->GetOpenHCaret())&&(m_console->GetActiveCell() == NULL))
       m_console->OpenNextOrCreateCell();
   }
   else
@@ -1253,7 +1254,7 @@ void wxMaxima::ReadMath(wxString &data)
 
     // Replace the name of the automatic label maxima has assigned to the output
     // by the one the user has used - if the configuration option to do so is set.
-    if(Configuration::Get()->UseUserLabels())
+    if(m_console->m_configuration->UseUserLabels())
     {
       if(m_console->m_evaluationQueue.GetUserLabel() != wxEmptyString)
       {
@@ -1408,7 +1409,7 @@ void wxMaxima::ReadPrompt(wxString &data)
 
     if (m_console->m_evaluationQueue.Empty())
     {
-      if ((Configuration::Get()->GetOpenHCaret())&&(m_console->GetActiveCell() == NULL))
+      if ((m_console->m_configuration->GetOpenHCaret())&&(m_console->GetActiveCell() == NULL))
         m_console->OpenNextOrCreateCell();
     }
   }
@@ -1465,7 +1466,8 @@ void wxMaxima::SetCWD(wxString file)
     return;
 
   // Tell the math parser where to search for local files.
-  m_MParser.SetWorkingDirectory(wxFileName(file).GetPath());
+  MathParser mParser(&m_console->m_configuration,m_console->m_cellPointers);
+  m_console->m_configuration->SetWorkingDirectory(wxFileName(file).GetPath());
   
 #if defined __WXMSW__
   file.Replace(wxT("\\"), wxT("/"));
@@ -1873,7 +1875,7 @@ bool wxMaxima::OpenXML(wxString file, MathCtrl *document, bool clearDocument)
 
 GroupCell* wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfilename)
 {
-  MathParser mp(wxmxfilename);
+  MathParser mp(&m_console->m_configuration,m_console->m_cellPointers,wxmxfilename);
   GroupCell *tree = NULL;
   GroupCell *last = NULL;
 
@@ -2070,7 +2072,7 @@ void wxMaxima::SetupVariables()
 
 wxString wxMaxima::GetCommand(bool params)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = m_console->m_configuration;
   wxString parameters, command = configuration->MaximaLocation();
   wxConfig::Get()->Read(wxT("parameters"), &parameters);
 
@@ -2450,7 +2452,7 @@ void wxMaxima::PrintMenu(wxCommandEvent& event)
     // Redraws during printing might end up on paper.
     m_console->Freeze();
     wxBusyCursor crs;
-    MathPrintout printout(title);
+    MathPrintout printout(title,&m_console->m_configuration);
     GroupCell* copy = m_console->CopyTree();
     printout.SetData(copy);
     if (printer.Print(this, &printout, true))
@@ -2519,7 +2521,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
   else
     menubar->Check(menu_show_toolbar, false);
   
-  bool hidecode = !(Configuration::Get()->ShowCodeCells());
+  bool hidecode = !(m_console->m_configuration->ShowCodeCells());
   menubar->Check(ToolBar::tb_hideCode,hidecode);
   
   if (m_console->GetTree() != NULL)
@@ -2534,7 +2536,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent& event)
     menubar->Enable(MathCtrl::popid_merge_cells, false);
     menubar->Enable(wxID_PRINT, false);
   }
-  double zf = Configuration::Get()->GetZoomFactor();
+  double zf = m_console->m_configuration->GetZoomFactor();
   if (zf < Configuration::GetMaxZoomFactor())
     menubar->Enable(MathCtrl::menu_zoom_in, true);
   else
@@ -3153,7 +3155,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
 #endif
     config->Read(wxT("usepngCairo"),&pngcairo_old);
       
-    ConfigDialogue *configW = new ConfigDialogue(this);
+    ConfigDialogue *configW = new ConfigDialogue(this,m_console->m_configuration);
     configW->Centre(wxBOTH);
     if (configW->ShowModal() == wxID_OK)
     {
@@ -3314,10 +3316,10 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     }
     break;
   case MathCtrl::menu_zoom_in:
-    m_console->SetZoomFactor(Configuration::Get()->GetZoomFactor() + 0.1);
+    m_console->SetZoomFactor(m_console->m_configuration->GetZoomFactor() + 0.1);
     break;
   case MathCtrl::menu_zoom_out:
-    m_console->SetZoomFactor(Configuration::Get()->GetZoomFactor() - 0.1);
+    m_console->SetZoomFactor(m_console->m_configuration->GetZoomFactor() - 0.1);
     break;
   case menu_zoom_80:
     m_console->SetZoomFactor(0.8);
@@ -3341,7 +3343,7 @@ void wxMaxima::EditMenu(wxCommandEvent& event)
     ShowFullScreen( !IsFullScreen() );
     break;
   case ToolBar::tb_hideCode:
-    Configuration::Get()->ShowCodeCells(!Configuration::Get()->ShowCodeCells());
+    m_console->m_configuration->ShowCodeCells(!m_console->m_configuration->ShowCodeCells());
     m_console->CodeCellVisibilityChanged();
     break;
   case menu_remove_output:
@@ -3505,7 +3507,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     break;
   case menu_fun_def:
     cmd = GetTextFromUser(_("Show the definition of function:"),
-                          _("Function"), wxEmptyString, this);
+                          _("Function"), m_console->m_configuration, wxEmptyString, this);
     if (cmd.Length())
     {
       cmd = wxT("fundef(") + cmd + wxT(");");
@@ -3534,7 +3536,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     m_console->m_evaluationQueue.Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
-    if(Configuration::Get()->RestartOnReEvaluation())
+    if(m_console->m_configuration->RestartOnReEvaluation())
       StartMaxima();
     m_console->AddDocumentToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
@@ -3547,7 +3549,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     m_console->m_evaluationQueue.Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
-    if(Configuration::Get()->RestartOnReEvaluation())
+    if(m_console->m_configuration->RestartOnReEvaluation())
       StartMaxima();
     m_console->AddEntireDocumentToEvaluationQueue();
   // Inform the user about the length of the evaluation queue.
@@ -3560,7 +3562,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     m_console->m_evaluationQueue.Clear();
     m_console->ResetInputPrompts();
     EvaluationQueueLength(0);
-    if(Configuration::Get()->RestartOnReEvaluation())
+    if(m_console->m_configuration->RestartOnReEvaluation())
       StartMaxima();
     m_console->AddDocumentTillHereToEvaluationQueue();
     // Inform the user about the length of the evaluation queue.
@@ -3570,6 +3572,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
   break;
   case menu_clear_var:
     cmd = GetTextFromUser(_("Delete variable(s):"), _("Delete"),
+                          m_console->m_configuration,
                           wxT("all"), this);
     if (cmd.Length())
     {
@@ -3579,6 +3582,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
     break;
   case menu_clear_fun:
     cmd = GetTextFromUser(_("Delete function(s):"), _("Delete"),
+                          m_console->m_configuration,
                           wxT("all"), this);
     if (cmd.Length())
     {
@@ -3589,7 +3593,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent& event)
   case menu_subst:
   case button_subst:
   {
-    SubstituteWiz *wiz = new SubstituteWiz(this, -1, _("Substitute"));
+    SubstituteWiz *wiz = new SubstituteWiz(this, -1, m_console->m_configuration, _("Substitute"));
     wiz->SetValue(expr);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -3627,7 +3631,9 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
   case menu_solve:
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Equation(s):"), _("Variable(s):"),
-                               expr, wxT("x"), this, -1, _("Solve"), true);
+                               expr, wxT("x"),
+                               m_console->m_configuration,
+                               this, -1, _("Solve"), true);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -3641,7 +3647,9 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
   case menu_solve_to_poly:
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Equation(s):"), _("Variable(s):"),
-                               expr, wxT("x"), this, -1, _("Solve"), true);
+                               expr, wxT("x"),
+                               m_console->m_configuration,
+                               this, -1, _("Solve"), true);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -3659,6 +3667,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
     Gen4Wiz *wiz = new Gen4Wiz(_("Equation:"), _("Variable:"),
                                _("Lower bound:"), _("Upper bound:"),
                                expr, wxT("x"), wxT("-1"), wxT("1"),
+                               m_console->m_configuration,
                                this, -1, _("Find root"), true);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -3677,6 +3686,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
   {
     Gen3Wiz *wiz = new Gen3Wiz(_("Equation:"), _("Function:"), _("Variable:"),
                                expr, wxT("y"), wxT("x"),
+                               m_console->m_configuration,
                                this, -1, _("Solve ODE"));
     wiz->SetValue(expr);
     wiz->Centre(wxBOTH);
@@ -3693,6 +3703,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
   {
     Gen3Wiz *wiz = new Gen3Wiz(_("Solution:"), _("Point:"), _("Value:"),
                                expr, wxT("x="), wxT("y="),
+                               m_console->m_configuration,
                                this, -1, _("IC1"), true);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -3709,6 +3720,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
     Gen4Wiz *wiz = new Gen4Wiz(_("Solution:"), _("Point:"),
                                _("Value:"), _("Derivative:"),
                                expr, wxT("x="), wxT("y="), wxT("'diff(y,x)="),
+                               m_console->m_configuration,
                                this, -1, _("IC2"), true);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -3723,7 +3735,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
   break;
   case menu_bvp:
   {
-    BC2Wiz *wiz = new BC2Wiz(this, -1, _("BC2"));
+    BC2Wiz *wiz = new BC2Wiz(this, -1, m_console->m_configuration, _("BC2"));
     wiz->SetValue(expr);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -3737,7 +3749,9 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
   case menu_eliminate:
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Equations:"),
-                               _("Variables:"), expr, wxEmptyString,
+                               _("Variables:"),
+                               expr, wxEmptyString,
+                               m_console->m_configuration,
                                this, -1, _("Eliminate"), true);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -3753,6 +3767,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
   {
     wxString sz = GetTextFromUser(_("Number of equations:"),
                                   _("Solve algebraic system"),
+                                  m_console->m_configuration,
                                   wxT("3"), this);
     if (sz.Length() == 0)
       return ;
@@ -3763,7 +3778,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
                    wxOK | wxICON_ERROR);
       return ;
     }
-    SysWiz *wiz = new SysWiz(this, -1, _("Solve algebraic system"), isz);
+    SysWiz *wiz = new SysWiz(this, -1, m_console->m_configuration, _("Solve algebraic system"), isz);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -3777,6 +3792,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
   {
     wxString sz = GetTextFromUser(_("Number of equations:"),
                                   _("Solve linear system"),
+                                  m_console->m_configuration,
                                   wxT("3"), this);
     if (sz.Length() == 0)
       return ;
@@ -3787,7 +3803,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
                    wxOK | wxICON_ERROR);
       return ;
     }
-    SysWiz *wiz = new SysWiz(this, -1, _("Solve linear system"), isz);
+    SysWiz *wiz = new SysWiz(this, -1, m_console->m_configuration, _("Solve linear system"), isz);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -3801,6 +3817,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Equation(s):"), _("Function(s):"),
                                expr, wxT("y(x)"),
+                               m_console->m_configuration,
                                this, -1, _("Solve ODE"));
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -3816,6 +3833,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent& event)
   {
     Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Point:"),
                                _("Value:"), expr, wxT("x=0"), wxT("0"),
+                               m_console->m_configuration,
                                this, -1, _("At value"));
     wiz->SetValue(expr);
     wiz->Centre(wxBOTH);
@@ -3868,6 +3886,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Function:"), _("Matrix:"),
                                wxEmptyString, expr,
+                               m_console->m_configuration,
                                this, -1, _("Matrix map"));
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -3882,7 +3901,9 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
   case menu_enter_mat:
   case menu_stats_enterm:
   {
-    MatDim *wiz = new MatDim(this, -1, _("Matrix"));
+    MatDim *wiz = new MatDim(this, -1,
+                             m_console->m_configuration,
+                             _("Matrix"));
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -3900,7 +3921,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
       }
       if (w != h)
         type = MatWiz::MATRIX_GENERAL;
-      MatWiz *mwiz = new MatWiz(this, -1, _("Enter matrix"),
+      MatWiz *mwiz = new MatWiz(this, -1, m_console->m_configuration, _("Enter matrix"),
                                 type, w, h);
       mwiz->Centre(wxBOTH);
       if (mwiz->ShowModal() == wxID_OK)
@@ -3917,6 +3938,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Matrix:"), _("Variable:"),
                                expr, wxT("x"),
+                               m_console->m_configuration,
                                this, -1, _("Char poly"));
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -3932,6 +3954,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
   {
     Gen4Wiz *wiz = new Gen4Wiz(_("Array:"), _("Rows:"), _("Columns:"), _("Name:"),
                                expr, wxT("3"), wxT("3"), wxEmptyString,
+                               m_console->m_configuration,
                                this, -1, _("Generate Matrix"));
     wiz->SetValue(expr);
     wiz->Centre(wxBOTH);
@@ -3951,6 +3974,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
   {
     Gen4Wiz *wiz = new Gen4Wiz(_("matrix[i,j]:"), _("Rows:"), _("Columns:"), _("Name:"),
                                expr, wxT("3"), wxT("3"), wxEmptyString,
+                               m_console->m_configuration,
                                this, -1, _("Generate Matrix"));
     wiz->SetValue(expr);
     wiz->Centre(wxBOTH);
@@ -3971,6 +3995,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Function:"), _("List(s):"),
                                wxEmptyString, expr,
+                               m_console->m_configuration,
                                this, -1, _("Map"));
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -3987,6 +4012,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
     Gen4Wiz *wiz = new Gen4Wiz(_("Expression:"), _("Variable:"),
                                _("From:"), _("To:"),
                                expr, wxT("k"), wxT("1"), wxT("10"),
+                               m_console->m_configuration,
                                this, -1, _("Make list"));
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4004,6 +4030,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent& event)
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Function:"), _("List:"),
                                wxT("\"+\""), expr,
+                               m_console->m_configuration,
                                this, -1, _("Apply"), true);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4129,7 +4156,9 @@ void wxMaxima::SimplifyMenu(wxCommandEvent& event)
     break;
   case menu_tellrat:
     cmd = GetTextFromUser(_("Enter an equation for rational simplification:"),
-                          _("Tellrat"), wxEmptyString, this);
+                          _("Tellrat"),
+                          m_console->m_configuration,
+                          wxEmptyString, this);
     if (cmd.Length())
     {
       cmd = wxT("tellrat(") + cmd + wxT(");");
@@ -4138,7 +4167,9 @@ void wxMaxima::SimplifyMenu(wxCommandEvent& event)
     break;
   case menu_modulus:
     cmd = GetTextFromUser(_("Calculate modulus:"),
-                          _("Modulus"), wxT("false"), this);
+                          _("Modulus"),
+                          m_console->m_configuration,
+                          wxT("false"), this);
     if (cmd.Length())
     {
       cmd = wxT("modulus : ") + cmd + wxT(";");
@@ -4161,6 +4192,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
     Gen4Wiz *wiz = new Gen4Wiz(_("Integral/Sum:"), _("Old variable:"),
                                _("New variable:"), _("Equation:"),
                                expr, wxT("x"), wxT("y"), wxT("y=x"),
+                               m_console->m_configuration,
                                this, -1, _("Change variable"), true);
     wiz->SetValue(expr);
     wiz->Centre(wxBOTH);
@@ -4178,6 +4210,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   {
     Gen3Wiz *wiz = new Gen3Wiz(_("Taylor series:"), _("Num. deg:"),
                                _("Denom. deg:"), expr, wxT("4"), wxT("4"),
+                               m_console->m_configuration,
                                this, -1, _("Pade approximation"));
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4197,6 +4230,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Polynomial 1:"), _("Polynomial 2:"),
                                wxEmptyString, wxEmptyString,
+                               m_console->m_configuration,
                                this, -1, _("LCM"), true);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4212,6 +4246,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Polynomial 1:"), _("Polynomial 2:"),
                                wxEmptyString, wxEmptyString,
+                               m_console->m_configuration,
                                this, -1, _("GCD"), true);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4227,6 +4262,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Polynomial 1:"), _("Polynomial 2:"),
                                expr, wxEmptyString,
+                               m_console->m_configuration,
                                this, -1, _("Divide"), true);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4242,6 +4278,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Expression:"), _("Variable:"),
                                expr, wxT("n"),
+                               m_console->m_configuration,
                                this, -1, _("Partial fractions"));
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4257,6 +4294,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Expression:"), _("Variable:"),
                                expr, wxT("x"),
+                               m_console->m_configuration,
                                this, -1, _("Integrate (risch)"));
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4271,7 +4309,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   case button_integrate:
   case menu_integrate:
   {
-    IntegrateWiz *wiz = new IntegrateWiz(this, -1, _("Integrate"));
+    IntegrateWiz *wiz = new IntegrateWiz(this, -1, m_console->m_configuration, _("Integrate"));
     wiz->SetValue(expr);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4286,6 +4324,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   {
     Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Old variable:"),
                                _("New variable:"), expr, wxT("t"), wxT("s"),
+                               m_console->m_configuration,
                                this, -1, _("Laplace"));
     wiz->SetValue(expr);
     wiz->Centre(wxBOTH);
@@ -4303,6 +4342,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   {
     Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Old variable:"),
                                _("New variable:"), expr, wxT("s"), wxT("t"),
+                               m_console->m_configuration,
                                this, -1, _("Inverse Laplace"));
     wiz->SetValue(expr);
     wiz->Centre(wxBOTH);
@@ -4320,6 +4360,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   {
     Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Variable(s):"),
                                _("Times:"), expr, wxT("x"), wxT("1"),
+                               m_console->m_configuration,
                                this, -1, _("Differentiate"));
     wiz->SetValue(expr);
     wiz->Centre(wxBOTH);
@@ -4344,7 +4385,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   case button_taylor:
   case menu_series:
   {
-    SeriesWiz *wiz = new SeriesWiz(this, -1, _("Series"));
+    SeriesWiz *wiz = new SeriesWiz(this, -1, m_console->m_configuration, _("Series"));
     wiz->SetValue(expr);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4358,7 +4399,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   case button_limit:
   case menu_limit:
   {
-    LimitWiz *wiz = new LimitWiz(this, -1, _("Limit"));
+    LimitWiz *wiz = new LimitWiz(this, -1, m_console->m_configuration, _("Limit"));
     wiz->SetValue(expr);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4376,6 +4417,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
                                _("Initial Estimates:"),
                                _("Epsilon:"),
                                expr, wxT("x"), wxT("1.0"), wxT("1e-4"),
+                               m_console->m_configuration,
                                this, -1, _("Find minimum"));
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4392,7 +4434,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   case button_sum:
   case menu_sum:
   {
-    SumWiz *wiz = new SumWiz(this, -1, _("Sum"));
+    SumWiz *wiz = new SumWiz(this, -1, m_console->m_configuration, _("Sum"));
     wiz->SetValue(expr);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4408,6 +4450,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent& event)
   {
     Gen4Wiz *wiz = new Gen4Wiz(_("Expression:"), _("Variable:"), _("From:"),
                                _("To:"), expr, wxT("k"), wxT("1"), wxT("n"),
+                               m_console->m_configuration,
                                this, -1, _("Product"));
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4435,7 +4478,7 @@ void wxMaxima::PlotMenu(wxCommandEvent& event)
   case button_plot3:
   case gp_plot3:
   {
-    Plot3DWiz *wiz = new Plot3DWiz(this, -1, _("Plot 3D"));
+    Plot3DWiz *wiz = new Plot3DWiz(this, -1, m_console->m_configuration, _("Plot 3D"));
     wiz->SetValue(expr);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4449,7 +4492,7 @@ void wxMaxima::PlotMenu(wxCommandEvent& event)
   case button_plot2:
   case gp_plot2:
   {
-    Plot2DWiz *wiz = new Plot2DWiz(this, -1, _("Plot 2D"));
+    Plot2DWiz *wiz = new Plot2DWiz(this, -1, m_console->m_configuration, _("Plot 2D"));
     wiz->SetValue(expr);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4462,7 +4505,7 @@ void wxMaxima::PlotMenu(wxCommandEvent& event)
   break;
   case menu_plot_format:
   {
-    PlotFormatWiz *wiz = new PlotFormatWiz(this, -1, _("Plot format"));
+    PlotFormatWiz *wiz = new PlotFormatWiz(this, -1, m_console->m_configuration, _("Plot format"));
     wiz->Center(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -4471,6 +4514,7 @@ void wxMaxima::PlotMenu(wxCommandEvent& event)
     wiz->Destroy();
     /*wxString format = GetTextFromUser(_("Enter new plot format:"),
       _("Plot format"),
+      m_console->m_configuration,
       wxT("gnuplot"), this);
       if (format.Length())
       {
@@ -4507,6 +4551,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent& event)
     break;
   case menu_set_precision:
     cmd = GetTextFromUser(_("Enter new precision for bigfloats:"), _("Precision"),
+                          m_console->m_configuration,
                           wxT("16"), this);
     if (cmd.Length())
     {
@@ -4795,6 +4840,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
   case menu_example:
     if (expr == wxT("%"))
       cmd = GetTextFromUser(_("Show an example for the command:"), _("Example"),
+                            m_console->m_configuration,
                             wxEmptyString, this);
     else
       cmd = expr;
@@ -4808,6 +4854,7 @@ void wxMaxima::HelpMenu(wxCommandEvent& event)
   case menu_apropos:
     if (expr == wxT("%"))
       cmd = GetTextFromUser(_("Show all commands similar to:"), _("Apropos"),
+                            m_console->m_configuration,
                             wxEmptyString, this);
     else
       cmd = expr;
@@ -4852,7 +4899,9 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
   case menu_stats_histogram:
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Data:"), _("Classes:"),
-                               expr, wxT("10"), this, -1, _("Histogram"), false);
+                               expr, wxT("10"),
+                               m_console->m_configuration,
+                               this, -1, _("Histogram"), false);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -4866,7 +4915,9 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
   case menu_stats_scatterplot:
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Data:"), _("Classes:"),
-                               expr, wxT("10"), this, -1, _("Scatterplot"), false);
+                               expr, wxT("10"),
+                               m_console->m_configuration,
+                               this, -1, _("Scatterplot"), false);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -4879,21 +4930,27 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
   break;
   case menu_stats_barsplot:
   {
-    wxString data = GetTextFromUser(_("Data:"), _("Enter Data"), expr, this);
+    wxString data = GetTextFromUser(_("Data:"), _("Enter Data"),
+                                    m_console->m_configuration,
+                                    expr, this);
     if (data.Length() > 0)
       MenuCommand(wxT("wxbarsplot(") + data + wxT(");"));
   }
   break;
   case menu_stats_boxplot:
   {
-    wxString data = GetTextFromUser(_("Data:"), _("Enter Data"), expr, this);
+    wxString data = GetTextFromUser(_("Data:"), _("Enter Data"),
+                                    m_console->m_configuration,
+                                    expr, this);
     if (data.Length() > 0)
       MenuCommand(wxT("wxboxplot([") + data + wxT("]);"));
   }
   break;
   case menu_stats_piechart:
   {
-    wxString data = GetTextFromUser(_("Data:"), _("Enter Data"), expr, this);
+    wxString data = GetTextFromUser(_("Data:"), _("Enter Data"),
+                                    m_console->m_configuration,
+                                    expr, this);
     if (data.Length() > 0)
       MenuCommand(wxT("wxpiechart(") + data + wxT(");"));
   }
@@ -4901,28 +4958,36 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
   case menu_stats_mean:
   {
 
-    wxString data = GetTextFromUser(_("Data:"), _("Enter Data"), expr, this);
+    wxString data = GetTextFromUser(_("Data:"), _("Enter Data"),
+                                    m_console->m_configuration,
+                                    expr, this);
     if (data.Length() > 0)
       MenuCommand(wxT("mean(") + data + wxT(");"));
   }
   break;
   case menu_stats_median:
   {
-    wxString data = GetTextFromUser(_("Data:"), _("Enter Data"), expr, this);
+    wxString data = GetTextFromUser(_("Data:"), _("Enter Data"),
+                                    m_console->m_configuration,
+                                    expr, this);
     if (data.Length() > 0)
       MenuCommand(wxT("median(") + data + wxT(");"));
   }
   break;
   case menu_stats_var:
   {
-    wxString data = GetTextFromUser(_("Data:"), _("Enter Data"), expr, this);
+    wxString data = GetTextFromUser(_("Data:"), _("Enter Data"),
+                                    m_console->m_configuration,
+                                    expr, this);
     if (data.Length() > 0)
       MenuCommand(wxT("var(") + data + wxT(");"));
   }
   break;
   case menu_stats_dev:
   {
-    wxString data = GetTextFromUser(_("Data:"), _("Enter Data"), expr, this);
+    wxString data = GetTextFromUser(_("Data:"), _("Enter Data"),
+                                    m_console->m_configuration,
+                                    expr, this);
     if (data.Length() > 0)
       MenuCommand(wxT("std(") + data + wxT(");"));
   }
@@ -4930,7 +4995,9 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
   case menu_stats_tt1:
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Sample:"), _("Mean:"),
-                               expr, wxT("0"), this, -1, _("One sample t-test"), false);
+                               expr, wxT("0"),
+                               m_console->m_configuration,
+                               this, -1, _("One sample t-test"), false);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -4944,7 +5011,9 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
   case menu_stats_tt2:
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Sample 1:"), _("Sample 2:"),
-                               wxEmptyString, wxEmptyString, this, -1,
+                               wxEmptyString, wxEmptyString,
+                               m_console->m_configuration,
+                               this, -1,
                                _("Two sample t-test"), true);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4958,7 +5027,9 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
   break;
   case menu_stats_tnorm:
   {
-    wxString data = GetTextFromUser(_("Data:"), _("Enter Data"), expr, this);
+    wxString data = GetTextFromUser(_("Data:"), _("Enter Data"),
+                                    m_console->m_configuration,
+                                    expr, this);
     if (data.Length() > 0)
       MenuCommand(wxT("test_normality(") + data + wxT(");"));
   }
@@ -4966,7 +5037,9 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
   case menu_stats_linreg:
   {
 
-    wxString data = GetTextFromUser(_("Data Matrix:"), _("Enter Data"), expr, this);
+    wxString data = GetTextFromUser(_("Data Matrix:"), _("Enter Data"),
+                                    m_console->m_configuration,
+                                    expr, this);
     if (data.Length() > 0)
       MenuCommand(wxT("simple_linear_regression(") + data + wxT(");"));
   }
@@ -4976,6 +5049,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
     Gen4Wiz *wiz = new Gen4Wiz(_("Data Matrix:"), _("Col. names:"),
                                _("Equation:"), _("Variables:"),
                                expr, wxT("x,y"), wxT("y=A*x+B"), wxT("A,B"),
+                               m_console->m_configuration,
                                this, -1, _("Least Squares Fit"), true);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -5027,6 +5101,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
                                _("Include columns:"), _("Matrix name:"),
                                expr, wxT("col[1]#'NA"),
                                wxEmptyString, wxEmptyString,
+                               m_console->m_configuration,
                                this, -1, _("Select Subsample"), true);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -5263,7 +5338,9 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   case MathCtrl::popid_solve:
   {
     Gen2Wiz *wiz = new Gen2Wiz(_("Equation(s):"), _("Variable(s):"),
-                               selection, wxT("x"), this, -1, _("Solve"), true);
+                               selection, wxT("x"),
+                               m_console->m_configuration,
+                               this, -1, _("Solve"), true);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
@@ -5279,6 +5356,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
     Gen4Wiz *wiz = new Gen4Wiz(_("Equation:"), _("Variable:"),
                                _("Lower bound:"), _("Upper bound:"),
                                selection, wxT("x"), wxT("-1"), wxT("1"),
+                               m_console->m_configuration,
                                this, -1, _("Find root"), true);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -5294,7 +5372,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   break;
   case MathCtrl::popid_integrate:
   {
-    IntegrateWiz *wiz = new IntegrateWiz(this, -1, _("Integrate"));
+    IntegrateWiz *wiz = new IntegrateWiz(this, -1, m_console->m_configuration, _("Integrate"));
     wiz->SetValue(selection);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -5309,6 +5387,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   {
     Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Variable(s):"),
                                _("Times:"), selection, wxT("x"), wxT("1"),
+                               m_console->m_configuration,
                                this, -1, _("Differentiate"));
     wiz->SetValue(selection);
     wiz->Centre(wxBOTH);
@@ -5332,7 +5411,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   break;
   case MathCtrl::popid_subst:
   {
-    SubstituteWiz *wiz = new SubstituteWiz(this, -1, _("Substitute"));
+    SubstituteWiz *wiz = new SubstituteWiz(this, -1, m_console->m_configuration, _("Substitute"));
     wiz->SetValue(selection);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -5345,7 +5424,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   break;
   case MathCtrl::popid_plot2d:
   {
-    Plot2DWiz *wiz = new Plot2DWiz(this, -1, _("Plot 2D"));
+    Plot2DWiz *wiz = new Plot2DWiz(this, -1, m_console->m_configuration, _("Plot 2D"));
     wiz->SetValue(selection);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -5358,7 +5437,7 @@ void wxMaxima::PopupMenu(wxCommandEvent& event)
   break;
   case MathCtrl::popid_plot3d:
   {
-    Plot3DWiz *wiz = new Plot3DWiz(this, -1, _("Plot 3D"));
+    Plot3DWiz *wiz = new Plot3DWiz(this, -1, m_console->m_configuration,_("Plot 3D"));
     wiz->SetValue(selection);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -5754,7 +5833,8 @@ void wxMaxima::TryEvaluateNextInQueue()
     }
     else
     {
-      TextCell* cell = new TextCell(_("Refusing to send cell to maxima: " ) +
+      TextCell* cell = new TextCell(m_console->GetTree(),&(m_console->m_configuration),
+                                    _("Refusing to send cell to maxima: " ) +
                                     parenthesisError + wxT("\n"));
       cell->SetType(MC_TYPE_ERROR);
       cell->SetParent(tmp);
@@ -5892,7 +5972,7 @@ void wxMaxima::InsertMenu(wxCommandEvent& event)
     break;
   case menu_add_pagebreak:
   case menu_format_pagebreak:
-    m_console->InsertGroupCells(new GroupCell(GC_TYPE_PAGEBREAK),
+    m_console->InsertGroupCells(new GroupCell(&(m_console->m_configuration),GC_TYPE_PAGEBREAK,m_console->m_cellPointers),
                                 m_console->GetHCaret());
     m_console->RecalculateForce();
     m_console->SetFocus();

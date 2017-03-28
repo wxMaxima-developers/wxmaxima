@@ -35,7 +35,7 @@
 #include <wx/clipbrd.h>
 #include <wx/mstream.h>
 
-ImgCell::ImgCell() : MathCell()
+ImgCell::ImgCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
 {
   m_image = NULL;
   m_type = MC_TYPE_IMAGE;
@@ -44,18 +44,18 @@ ImgCell::ImgCell() : MathCell()
   m_drawBoundingBox = false;
 }
 
-ImgCell::ImgCell(wxMemoryBuffer image,wxString type) : MathCell()
+ImgCell::ImgCell(MathCell *parent, Configuration **config,wxMemoryBuffer image,wxString type) : MathCell(parent,config)
 {
-  m_image = new Image(image,type);
+  m_image = new Image(m_configuration,image,type);
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
   m_imageBorderWidth = 1;
   m_drawBoundingBox = false;
 }
 
-ImgCell::ImgCell(const wxBitmap &bitmap) : MathCell()
+ImgCell::ImgCell(MathCell *parent, Configuration **config,const wxBitmap &bitmap) : MathCell(parent,config)
 {
-  m_image = new Image(bitmap);
+  m_image = new Image(m_configuration,bitmap);
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
   m_imageBorderWidth = 1;
@@ -65,21 +65,21 @@ ImgCell::ImgCell(const wxBitmap &bitmap) : MathCell()
 int ImgCell::s_counter = 0;
 
 // constructor which load image
-ImgCell::ImgCell(wxString image, bool remove, wxFileSystem *filesystem) : MathCell()
+ImgCell::ImgCell(MathCell *parent, Configuration **config,wxString image, bool remove, wxFileSystem *filesystem) : MathCell(parent,config)
 {
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
   if(image != wxEmptyString)
-    m_image = new Image(image,remove,filesystem);
+    m_image = new Image(m_configuration,image,remove,filesystem);
   else
-    m_image = new Image();
+    m_image = new Image(m_configuration);
   m_drawBoundingBox = false;
 }
 
 void ImgCell::LoadImage(wxString image, bool remove)
 {
   wxDELETE(m_image);
-  m_image = new Image(image, remove);
+  m_image = new Image(m_configuration,image, remove);
 }
 
 void ImgCell::SetBitmap(const wxBitmap &bitmap)
@@ -87,16 +87,16 @@ void ImgCell::SetBitmap(const wxBitmap &bitmap)
   wxDELETE(m_image);
 
   m_width = m_height = -1;
-  m_image = new Image(bitmap);
+  m_image = new Image(m_configuration,bitmap);
 }
 
 MathCell* ImgCell::Copy()
 {
-  ImgCell* tmp = new ImgCell;
+  ImgCell* tmp = new ImgCell(m_group,m_configuration);
   CopyData(this, tmp);
   tmp->m_drawRectangle = m_drawRectangle;
 
-  Image *img = new Image();
+  Image *img = new Image(m_configuration);
   *img = *m_image;
   tmp->m_image = img;
   
@@ -138,7 +138,7 @@ void ImgCell::Draw(wxPoint point, int fontsize)
   // TODO: Enable this when unselecting text updates the right region.
   //if (!InUpdateRegion()) return;
 
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   wxDC& dc = configuration->GetDC();
   if (DrawThisCell(point) && (m_image != NULL))
   {

@@ -39,7 +39,9 @@ public:
     MATRIX_ANTISYMMETRIC
   };
 
-  MatWiz(wxWindow* parent, int id, const wxString& title, int type,
+  MatWiz(wxWindow* parent, int id,
+         Configuration *cfg,
+         const wxString& title, int type,
          int heigth, int width, const wxPoint& pos = wxDefaultPosition,
          const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
   wxString GetValue();
@@ -58,7 +60,9 @@ private:
 class MatDim: public wxDialog
 {
 public:
-  MatDim(wxWindow* parent, int id, const wxString& title,
+  MatDim(wxWindow* parent, int id,
+         Configuration *cfg,
+         const wxString& title,
          const wxPoint& pos = wxDefaultPosition,
          const wxSize& size = wxDefaultSize,
          long style = wxDEFAULT_DIALOG_STYLE);

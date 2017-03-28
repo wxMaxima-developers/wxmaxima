@@ -20,21 +20,21 @@
 
 #include "SumWiz.h"
 
-SumWiz::SumWiz(wxWindow* parent, int id, const wxString& title,
+SumWiz::SumWiz(wxWindow* parent, int id,Configuration *cfg, const wxString& title,
                const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_2 = new wxStaticText(this, -1, _("Expression:"));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, cfg,wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, _("Variable:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxT("k"), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg,wxT("k"), wxDefaultPosition,
                               wxSize(110, -1));
   label_4 = new wxStaticText(this, -1, _("From:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, wxT("1"), wxDefaultPosition,
+  text_ctrl_3 = new BTextCtrl(this, -1, cfg,wxT("1"), wxDefaultPosition,
                               wxSize(110, -1));
   label_5 = new wxStaticText(this, -1, _("To:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, wxT("inf"), wxDefaultPosition,
+  text_ctrl_4 = new BTextCtrl(this, -1, cfg,wxT("inf"), wxDefaultPosition,
                               wxSize(110, -1));
   checkbox_1 = new wxCheckBox(this, -1, _("&Simplify"));
   checkbox_2 = new wxCheckBox(this, use_nusum_id, _("&Nusum"));

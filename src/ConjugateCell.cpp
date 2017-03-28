@@ -28,13 +28,13 @@
 #include "ConjugateCell.h"
 #include "TextCell.h"
 
-ConjugateCell::ConjugateCell() : MathCell()
+ConjugateCell::ConjugateCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
 {
   m_innerCell = NULL;
   m_last = NULL;
-  m_open = new TextCell(wxT("conjugate("));
+  m_open = new TextCell(parent,config,wxT("conjugate("));
   m_open -> DontEscapeOpeningParenthesis();
-  m_close = new TextCell(wxT(")"));
+  m_close = new TextCell(parent,config,wxT(")"));
 }
 
 void ConjugateCell::SetParent(MathCell *parent)
@@ -50,7 +50,7 @@ void ConjugateCell::SetParent(MathCell *parent)
 
 MathCell* ConjugateCell::Copy()
 {
-  ConjugateCell* tmp = new ConjugateCell;
+  ConjugateCell* tmp = new ConjugateCell(m_group,m_configuration);
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
   tmp->m_isBroken = m_isBroken;
@@ -83,7 +83,7 @@ void ConjugateCell::SetInner(MathCell *inner)
 
 void ConjugateCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_innerCell->RecalculateWidthsList(fontsize);
   m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(8, scale);
@@ -94,7 +94,7 @@ void ConjugateCell::RecalculateWidths(int fontsize)
 
 void ConjugateCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_innerCell->RecalculateHeightList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(4, scale);
@@ -111,7 +111,7 @@ void ConjugateCell::RecalculateHeight(int fontsize)
 
 void ConjugateCell::Draw(wxPoint point, int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   MathCell::Draw(point, fontsize);
 
   double scale = configuration->GetScale();

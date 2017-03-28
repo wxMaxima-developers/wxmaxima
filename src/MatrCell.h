@@ -31,7 +31,7 @@ using namespace std;
 class MatrCell : public MathCell
 {
 public:
-  MatrCell();
+  MatrCell(MathCell *parent, Configuration **config);
   ~MatrCell();
   MathCell* Copy();
   void RecalculateHeight(int fontsize);

@@ -22,27 +22,28 @@
 
 Gen3Wiz::Gen3Wiz(wxString lab1, wxString lab2, wxString lab3,
                  wxString val1, wxString val2, wxString val3,
+                 Configuration *cfg,
                  wxWindow* parent, int id, const wxString& title,
                  bool eq,
                  const wxPoint& pos, const wxSize& size, long style):
     wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_2 = new wxStaticText(this, -1, lab1);
-  text_ctrl_1 = new BTextCtrl(this, -1, val1, wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1,cfg, val1, wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, lab2);
   if (eq)
-    text_ctrl_2 = new BTextCtrl(this, -1, val2, wxDefaultPosition,
+    text_ctrl_2 = new BTextCtrl(this, -1, cfg, val2, wxDefaultPosition,
                                 wxSize(230, -1));
   else
-    text_ctrl_2 = new BTextCtrl(this, -1, val2, wxDefaultPosition,
+    text_ctrl_2 = new BTextCtrl(this, -1, cfg,val2, wxDefaultPosition,
                                 wxSize(110, -1));
   label_4 = new wxStaticText(this, -1, lab3);
   if (eq)
-    text_ctrl_3 = new BTextCtrl(this, -1, val3, wxDefaultPosition,
+    text_ctrl_3 = new BTextCtrl(this, -1, cfg,val3, wxDefaultPosition,
                                 wxSize(230, -1));
   else
-    text_ctrl_3 = new BTextCtrl(this, -1, val3, wxDefaultPosition,
+    text_ctrl_3 = new BTextCtrl(this, -1, cfg,val3, wxDefaultPosition,
                                 wxSize(110, -1));
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
