@@ -51,7 +51,7 @@ execute
 
 On Mac OS X configure wxWidgets with
 
-    ../configure --disable-shared --enable-unicode
+    ../configure --disable-shared --enable-unicode --with-macosx-version-min=10.9 --disable-mediactrl
 
 and on Windows with
 
@@ -109,10 +109,79 @@ To build an application bundle of wxMaxima on Mac OS X
     make wxMaxima.app
 
 Sometimes the configure step requires an extra
-`--with-macosx-version-min=10.5` argument. Also in order to create a
+`--with-macosx-version-min=10.9` argument. Also in order to create a
 application that runs on other computers, as well, sometimes .dylib
 files may need to be copied into the Frameworks folder of the application
 bundle wxMaxima.app
+
+Note: libtiff depends on liblzma.
+
+
+Tomio Arisaka has found out a way to make wxMaxima independent of the shared library
+which is not included in MacOS X:
+    (1) Copy the shared library into the application bundle of wxMaxima.
+    (2) Changes the dependent shared library install name old to new in the shared library of wxMaxima.
+    (3) Changes the dependent shared library install name old to new in the executable file of wxMaxima.
+
+(Note: I use "otool -L" to display the path name of the dependent shared library.)
+--------------------------------------------------------------------------------
+$ cp -iRp ./wxmaxima-15.08.2/wxMaxima.app ./
+$ 
+$ otool -L ./wxMaxima.app/Contents/MacOS/wxmaxima 
+$ 
+$ mkdir ./wxMaxima.app/Contents/MacOS/lib
+$ 
+$ pushd ./wxMaxima.app/Contents/MacOS/lib
+$ 
+$ cp -ip /opt/local/lib/libpng16.16.dylib ./
+$ cp -ip /opt/local/lib/libjpeg.9.dylib ./
+$ cp -ip /opt/local/lib/libtiff.5.dylib ./
+$ cp -ip /opt/local/lib/libexpat.1.dylib ./
+$ cp -ip /opt/local/lib/libz.1.dylib ./
+$ cp -ip /opt/local/lib/libiconv.2.dylib ./
+$ cp -ip /opt/local/lib/liblzma.5.dylib ./
+$ 
+$ otool -L ./libtiff.5.dylib 
+$ 
+$ install_name_tool -change /opt/local/lib/liblzma.5.dylib @executable_path/lib/liblzma.5.dylib libtiff.5.dylib
+$ 
+$ install_name_tool -change /opt/local/lib/libjpeg.9.dylib @executable_path/lib/libjpeg.9.dylib libtiff.5.dylib
+$ 
+$ install_name_tool -change /opt/local/lib/libz.1.dylib @executable_path/lib/libz.1.dylib libtiff.5.dylib
+$ 
+$ otool -L ./libtiff.5.dylib
+$ 
+$ otool -L ./liblzma.5.dylib 
+$ 
+$ install_name_tool -change /opt/local/lib/liblzma.5.dylib @executable_path/lib/liblzma.5.dylib liblzma.5.dylib
+$ 
+$ otool -L ./liblzma.5.dylib 
+$ 
+$ otool -L ./libpng16.16.dylib 
+$ 
+$ install_name_tool -change /opt/local/lib/libz.1.dylib @executable_path/lib/libz.1.dylib libpng16.16.dylib
+$ 
+$ otool -L ./libpng16.16.dylib 
+$ 
+$ pushd ..
+$ 
+$ install_name_tool -change /opt/local/lib/libpng16.16.dylib @executable_path/lib/libpng16.16.dylib wxmaxima
+$ 
+$ install_name_tool -change /opt/local/lib/libjpeg.9.dylib @executable_path/lib/libjpeg.9.dylib wxmaxima
+$ 
+$ install_name_tool -change /opt/local/lib/libtiff.5.dylib @executable_path/lib/libtiff.5.dylib wxmaxima
+$ 
+$ install_name_tool -change /opt/local/lib/libexpat.1.dylib @executable_path/lib/libexpat.1.dylib wxmaxima
+$ 
+$ install_name_tool -change /opt/local/lib/libz.1.dylib @executable_path/lib/libz.1.dylib wxmaxima
+$ 
+$ install_name_tool -change /opt/local/lib/libiconv.2.dylib @executable_path/lib/libiconv.2.dylib wxmaxima
+$ 
+$ popd;popd
+$ 
+$ otool -L ./wxMaxima.app/Contents/MacOS/wxmaxima 
+
+
 
 On Windows execute instead:
 
