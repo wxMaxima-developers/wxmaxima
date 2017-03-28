@@ -95,7 +95,6 @@ There are a few other coding-style rules, as well:
 #include <wx/wx.h>
 #include <wx/tipdlg.h>
 #include <wx/config.h>
-#include <wx/version.h>
 #include <wx/intl.h>
 #include <wx/fs_zip.h>
 #include <wx/image.h>
@@ -156,9 +155,6 @@ bool MyApp::OnInit()
   cmdLineParser.SetDesc(cmdLineDesc);
   cmdLineParser.Parse();
   wxString ini, file;
-#if wxCHECK_VERSION(3, 1, 1)
-//  wxStandardPaths::SetFileLayout(wxStandardPathsBase::FileLayout_XDG);
-#endif
 #if defined __WXMSW__
   if (cmdLineParser.Found(wxT("f"),&ini))
     wxConfig::Set(new wxFileConfig(ini));

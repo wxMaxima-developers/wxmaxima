@@ -884,7 +884,7 @@ public:
 
     \todo Make this use GroupCell::ToWXM()
    */
-  void ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const std::vector<int>& cellMap, bool fixReorderedIndices);
+  void ExportToMAC(wxTextFile& output, GroupCell *tree, bool wxm, const std::vector<int>& cellMap, bool fixReorderedIndices);
   //! Export the file to a text file maxima's load command can read
   bool ExportToMAC(wxString file);
   /*! export to xml compatible file

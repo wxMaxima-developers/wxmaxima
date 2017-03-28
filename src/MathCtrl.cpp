@@ -5059,27 +5059,23 @@ wxString MathCtrl::UnicodeToMaxima(wxString s)
   return retval;
 }
 
-void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const std::vector<int>& cellMap, bool fixReorderedIndices)
+void MathCtrl::ExportToMAC(wxTextFile& output, GroupCell *tree, bool wxm, const std::vector<int>& cellMap, bool fixReorderedIndices)
 {
-  GroupCell* tmp = dynamic_cast<GroupCell*>(tree);
+  GroupCell* tmp = tree;
   
   //
   // Write contents
   //
-  while (tmp != NULL) {
+  while (tmp != NULL)
+  {
+    
+    AddLineToFile(output, tmp->ToWXM());
 
-    if (tmp->IsHidden())
+    if (tmp->GetGroupType() == GC_TYPE_CODE)
     {
-      AddLineToFile(output, wxEmptyString, false);
-      AddLineToFile(output, wxT("/* [wxMaxima: hide output   ] */"), false);
-    }
-    else
-      AddLineToFile(output, wxEmptyString, false);
-
-    // Write input
-    if (tmp->GetGroupType() == GC_TYPE_CODE) {
       EditorCell *txt = tmp->GetEditable();
-      if (txt != NULL) {
+      if (txt != NULL)
+      {
         wxString input = txt->ToString(true);
 
         if (fixReorderedIndices)
@@ -5098,108 +5094,8 @@ void MathCtrl::ExportToMAC(wxTextFile& output, MathCell *tree, bool wxm, const s
               it.pos = startPos + tempstr.length();
             }
 
-
-        if (input.Length()>0) {
-          if (wxm)
-            AddLineToFile(output, wxT("/* [wxMaxima: input   start ] */"), false);
-
-          // Convert all unicode characters that have a direct representation in
-          // maxima to maxima's code.
-          if (!wxm)
-            input = UnicodeToMaxima(input);
-          
-          AddLineToFile(output, input, false);
-          if (wxm)
-            AddLineToFile(output, wxT("/* [wxMaxima: input   end   ] */"), false);
-        }
       }
     }
-    
-    else if (tmp->GetGroupType() == GC_TYPE_PAGEBREAK) {
-      AddLineToFile(output, wxT("/* [wxMaxima: page break    ] */"), false);
-    }
-
-    // Write text
-    else {
-      EditorCell *txt = tmp->GetEditable();
-
-      if (wxm) {
-        switch (txt->GetType()) {
-        case MC_TYPE_TEXT:
-          if(tmp->GetGroupType()==GC_TYPE_IMAGE)
-            AddLineToFile(output, wxT("/* [wxMaxima: caption start ]"), false);
-          else
-            AddLineToFile(output, wxT("/* [wxMaxima: comment start ]"), false);
-          break;
-        case MC_TYPE_SECTION:
-          AddLineToFile(output, wxT("/* [wxMaxima: section start ]"), false);
-          break;
-        case MC_TYPE_SUBSECTION:
-          AddLineToFile(output, wxT("/* [wxMaxima: subsect start ]"), false);
-          break;
-        case MC_TYPE_SUBSUBSECTION:
-          AddLineToFile(output, wxT("/* [wxMaxima: subsubsect start ]"), false);
-          break;
-        case MC_TYPE_TITLE:
-          AddLineToFile(output, wxT("/* [wxMaxima: title   start ]"), false);
-          break;
-        default:
-          AddLineToFile(output, wxT("/*"), false);
-        }
-      }
-      else
-        AddLineToFile(output, wxT("/*"), false);
-
-      wxString comment = txt->ToString(true);
-      AddLineToFile(output, comment, false);
-
-      if (wxm) {
-        switch (txt->GetType()) {
-        case MC_TYPE_TEXT:
-          if(tmp->GetGroupType()==GC_TYPE_IMAGE)
-          {
-            AddLineToFile(output, wxT("   [wxMaxima: caption end   ] */"), false);
-            if((tmp->GetLabel() != NULL)&&(tmp->GetLabel()->GetType() == MC_TYPE_IMAGE))
-            {
-              ImgCell *image= dynamic_cast<ImgCell*>(tmp->GetLabel());
-              AddLineToFile(output, wxT("/* [wxMaxima: image   start ]"), false);
-              AddLineToFile(output,image->GetExtension());
-              AddLineToFile(output,wxBase64Encode(image->GetCompressedImage()));
-              AddLineToFile(output, wxT("   [wxMaxima: image   end   ] */"), false);              
-            }
-          }
-          else
-            AddLineToFile(output, wxT("   [wxMaxima: comment end   ] */"), false);
-          break;
-        case MC_TYPE_SECTION:
-          AddLineToFile(output, wxT("   [wxMaxima: section end   ] */"), false);
-          break;
-        case MC_TYPE_SUBSECTION:
-          AddLineToFile(output, wxT("   [wxMaxima: subsect end   ] */"), false);
-          break;
-        case MC_TYPE_SUBSUBSECTION:
-          AddLineToFile(output, wxT("   [wxMaxima: subsubsect end   ] */"), false);
-          break;
-        case MC_TYPE_TITLE:
-          AddLineToFile(output, wxT("   [wxMaxima: title   end   ] */"), false);
-          break;
-        default:
-          AddLineToFile(output, wxT("*/"), false);
-        }
-      }
-      else
-        AddLineToFile(output, wxT("*/"), false);
-    }
-
-    if (tmp->GetHiddenTree() != NULL)
-    {
-      AddLineToFile(output, wxEmptyString);
-      AddLineToFile(output, wxT("/* [wxMaxima: fold    start ] */"));
-      ExportToMAC(output, tmp->GetHiddenTree(), wxm, cellMap, fixReorderedIndices);
-      AddLineToFile(output, wxEmptyString);
-      AddLineToFile(output, wxT("/* [wxMaxima: fold    end   ] */"));
-    }
-
     tmp = dynamic_cast<GroupCell*>(tmp->m_next);
   }
 }
