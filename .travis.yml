@@ -37,3 +37,4 @@ script: |
   make &&
   make dist &&
   if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make wxMaxima.app ; fi
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then tar cvzf wxMaxima_nightly.app.zip wxMaxima.app ; fi
