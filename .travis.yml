@@ -42,5 +42,5 @@ script: |
   chmod 600 data/wxMaxima.key &&
   eval `ssh-agent -s` &&
   ssh-add data/wxMaxima.key &&
-  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then rsync -e "ssh -o StrictHostKeyChecking=no" wxMaxima.app p33761049-wxMaxima@p33761049.1and1-data.host:/kunden/homepages/30/d67027059/htdocs/wxMaxima; fi
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then rsync -e "ssh -o StrictHostKeyChecking=no" wxMaxima_nightly.app.zip p33761049-wxMaxima@p33761049.1and1-data.host:/kunden/homepages/30/d67027059/htdocs/wxMaxima; fi
 
