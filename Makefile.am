@@ -87,7 +87,7 @@ wxMaxima.app: all
 	@echo "(see README.md)":
 	otool -L src/wxmaxima|cut -f 2|grep "/usr"|cut -d " " -f 1|tee dylibs.txt
 	@echo "Will generate a script named dylibs.sh which (with a little bit"
-	@echo "of luck) will do this automatically.
+	@echo "of luck) will do this automatically."
 	echo "#!/bin/sh">dylibs.sh
 	chmod +x dylibs.sh
 	cat dylibs.sh|sed -e data/dylibs.sed >> dylibs.sh
