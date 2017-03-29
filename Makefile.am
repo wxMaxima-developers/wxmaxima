@@ -90,7 +90,7 @@ wxMaxima.app: all
 	@echo "of luck) will do this automatically."
 	echo "#!/bin/sh">dylibs.sh
 	chmod +x dylibs.sh
-	cat dylibs.sh|sed -f data/dylibs.sed >> dylibs.sh
+	cat dylibs.txt|sed -f data/dylibs.sed >> dylibs.sh
 	@echo "Executing the script..."
 	./dylibs.sh
 	@echo "Done."
