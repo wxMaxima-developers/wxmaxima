@@ -92,6 +92,7 @@ wxMaxima.app: all
 	chmod +x dylibs.sh
 	cat dylibs.txt|sed -f data/dylibs.sed >> dylibs.sh
 	@echo "Executing the script..."
+	-mkdir ./wxMaxima.app/Contents/MacOS/lib
 	./dylibs.sh
 	@echo "Done."
 
