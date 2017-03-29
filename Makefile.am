@@ -82,6 +82,11 @@ wxMaxima.app: all
 	cp $(srcdir)/info/*.jpg  wxMaxima.app/Contents/Resources/help
 	cp $(srcdir)/info/*.png  wxMaxima.app/Contents/Resources/help
 	cp $(srcdir)/info/wxmaxima.hhp wxMaxima.app/Contents/Resources/help
+	@echo "The following dylibs will need to be included in wxMaxima.app"
+	@echo "in order to make it run on systems that haven't them installed"
+	@echo "(see README.md)":
+	otool -L src/wxmaxima|cut -f 2|grep "/usr"|cut -d " " -f 1
+
 
 wxMaxima.win: all
 	mkdir -p wxMaxima/art
