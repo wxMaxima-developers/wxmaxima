@@ -36,5 +36,11 @@ script: |
   ./configure --enable-static-wx --enable-fullystatic&&
   make &&
   make dist &&
-  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make wxMaxima.app ; fi
-  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then tar cvzf wxMaxima_nightly.app.zip wxMaxima.app ; fi
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make wxMaxima.app ; fi &&
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then tar cvzf wxMaxima_nightly.app.zip wxMaxima.app ; fi &&
+  openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv -in data/wxMaxima.key.enc -out data/wxMaxima.key -d &&
+  chmod 600 data/wxMaxima.key &&
+  eval `ssh-agent -s` &&
+  ssh-add deploy_key &&
+  rsync wxMaxima.app p33761049-wxMaxima@p33761049.1and1-data.host:/kunden/homepages/30/d67027059/htdocs/wxMaxima
+
