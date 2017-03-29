@@ -1,1 +1,1 @@
-s#\(.*/\([^/]*\)\)#cp \1 wxMaxima.app/Contents/MacOS/lib/\2;chmod +w wxMaxima.app/Contents/MacOS/lib/\2;install_name_tool -change \1 @executable_path/lib/\2 wxMaxima.app/Contents/MacOS/lib/\2#g;chmod -w wxMaxima.app/Contents/MacOS/lib/\2
+s#\(.*/\([^/]*\)\)#cp \1 wxMaxima.app/Contents/MacOS/lib/\2;chmod +w wxMaxima.app/Contents/MacOS/lib/\2;install_name_tool -change \1 @executable_path/lib/\2 wxMaxima.app/Contents/MacOS/lib/\2;chmod -w wxMaxima.app/Contents/MacOS/lib/\2#g
