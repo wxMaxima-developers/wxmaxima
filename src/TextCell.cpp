@@ -357,15 +357,19 @@ void TextCell::SetFont(int fontsize)
     font.SetUnderlined(underlined);
   }
 
+  if(!font.IsOk())
+    font = *wxNORMAL_FONT;
+
+  font.SetPointSize(m_fontSize);
+  wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+  dc.SetFont(font);
+
   // A fallback if we have been completely unable to set a working font
   if(!dc.GetFont().IsOk())
   {
     dc.SetFont(wxFontInfo(10));
   }
-  
-  font.SetPointSize(m_fontSize);
-  wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
-  dc.SetFont(font);
+
 }
 
 bool TextCell::IsOperator()
