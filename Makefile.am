@@ -85,7 +85,7 @@ wxMaxima.app: all
 	@echo "The following dylibs will need to be included in wxMaxima.app"
 	@echo "in order to make it run on systems that haven't them installed"
 	@echo "(see README.md)":
-	otool -L src/wxmaxima|cut -f 2|grep "/usr"|cut -d " " -f 1|tee dylibs.txt
+	otool -l src/wxmaxima|cut -f 2|grep "name"|grep "/usr/"|sed -e "s#.*\(/usr/[^ ]*\).*#\1#g"|tee dylibs.txt
 	@echo "Will generate a script named dylibs.sh which (with a little bit"
 	@echo "of luck) will do this automatically."
 	echo "#!/bin/sh">dylibs.sh
