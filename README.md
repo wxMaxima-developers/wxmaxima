@@ -94,7 +94,7 @@ program by doing a
 On ubuntu or debian the build prerequisites can be installed by doing
 a
 
-    sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev autoconf imagemagick ibus-gtk ibus-gtk3
+    sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev autoconf imagemagick ibus-gtk ibus-gtk3 checkinstall gettext
 
 beforehand or (if apt-get is configured to load the source package
 repositories and not only the binary packages) by the simpler
