@@ -312,7 +312,7 @@ void wxMaximaFrame::do_layout()
   m_manager.AddPane(greekPane,
                     wxAuiPaneInfo().Name(wxT("greek")).
                     Caption(_("Greek Letters")).
-                    Show(true).
+                    Show(false).
                     DockFixed(false).
                     Gripper(true).
                     TopDockable(true).
@@ -330,7 +330,7 @@ void wxMaximaFrame::do_layout()
   m_manager.AddPane(symbolsPane,
                     wxAuiPaneInfo().Name(wxT("symbols")).
                     Caption(_("Mathematical Symbols")).
-                    Show(true).
+                    Show(false).
                     DockFixed(false).
                     Gripper(true).
                     TopDockable(true).
