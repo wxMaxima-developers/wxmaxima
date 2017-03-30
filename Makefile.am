@@ -85,15 +85,12 @@ wxMaxima.app: all
 	@echo "The following dylibs will need to be included in wxMaxima.app"
 	@echo "in order to make it run on systems that haven't them installed"
 	@echo "(see README.md)":
-	rm -f dylibs2.txt
-	otool -l src/wxmaxima|cut -f 2|grep "name"|grep "/usr/"|grep "\.dylib"|sed -e "s#.*\(/usr/[^ ]*\).*#\1#g"> dylibs.txt
-	for i in `cat dylibs.txt`;do otool -l $i|cut -f 2|grep "name"|grep "/usr/"|grep "\.dylib"|sed -e "s#.*\(/usr/[^ ]*\).*#\1#g" >> dylibs2.txt;done
-	cat dylibs.txt dylibs2.txt
+	otool -l src/wxmaxima|cut -f 2|grep "name"|grep "/usr/"|grep "\.dylib"|sed -e "s#.*\(/usr/[^ ]*\).*#\1#g"|tee dylibs.txt
 	@echo "Will generate a script named dylibs.sh which (with a little bit"
 	@echo "of luck) will do this automatically."
 	echo "#!/bin/sh">dylibs.sh
 	chmod +x dylibs.sh
-	cat dylibs.txt dylibs2.txt|sed -f data/dylibs.sed >> dylibs.sh
+	cat dylibs.txt|sed -f data/dylibs.sed >> dylibs.sh
 	@echo "Executing the script..."
 	-mkdir ./wxMaxima.app/Contents/MacOS/lib
 	./dylibs.sh
