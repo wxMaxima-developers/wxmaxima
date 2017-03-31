@@ -144,6 +144,8 @@ void ParenCell::RecalculateWidths(int fontsize)
       wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMRI());
+      if(!font.IsOk())
+        font = *wxNORMAL_FONT;
       font.SetPointSize(fontsize1);
       dc.SetFont(font);
       dc.GetTextExtent( wxT("("),&m_signWidth, &m_signSize);
@@ -156,6 +158,8 @@ void ParenCell::RecalculateWidths(int fontsize)
         wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                     wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                     configuration->GetTeXCMEX());
+        if(!font.IsOk())
+          font = *wxNORMAL_FONT;
         font.SetPointSize(fontsize1);
         dc.SetFont(font);
         dc.GetTextExtent(wxT(PAREN_OPEN),&m_signWidth, &m_signSize);
@@ -189,6 +193,8 @@ void ParenCell::RecalculateWidths(int fontsize)
                       m_bigParenType == 0 ?
                       configuration->GetTeXCMRI() :
                       configuration->GetTeXCMEX());
+          if(!font.IsOk())
+            font = *wxNORMAL_FONT;
           font.SetPointSize(fontsize1);
           dc.SetFont(font);
           dc.GetTextExtent(m_bigParenType == 0 ? wxT("(") :
@@ -210,6 +216,8 @@ void ParenCell::RecalculateWidths(int fontsize)
                   m_bigParenType < 1 ?
                   configuration->GetTeXCMRI() :
                   configuration->GetTeXCMEX());
+      if(!font.IsOk())
+        font = *wxNORMAL_FONT;
       font.SetPointSize(fontsize1);
       dc.SetFont(font);
       dc.GetTextExtent(wxT(PAREN_OPEN), &m_signWidth, &m_signSize);
@@ -229,6 +237,8 @@ void ParenCell::RecalculateWidths(int fontsize)
                 configuration->IsBold(TS_DEFAULT),
                 configuration->IsUnderlined(TS_DEFAULT),
                 configuration->GetSymbolFontName());
+    if(!font.IsOk())
+      font = *wxNORMAL_FONT;
     font.SetPointSize(fontsize1);
     dc.SetFont(font);
     dc.GetTextExtent(PAREN_LEFT_TOP, &m_charWidth, &m_charHeight);
@@ -261,6 +271,8 @@ void ParenCell::RecalculateHeight(int fontsize)
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                 configuration->GetFontName());
+    if(!font.IsOk())
+      font = *wxNORMAL_FONT;
     font.SetPointSize(fontsize1);
     dc.SetFont(font);
     dc.GetTextExtent(wxT("("), &m_charWidth1, &m_charHeight1);
@@ -299,6 +311,8 @@ void ParenCell::Draw(wxPoint point, int fontsize)
                   m_bigParenType < 1 ?
                   configuration->GetTeXCMRI() :
                   configuration->GetTeXCMEX());
+      if(!font.IsOk())
+        font = *wxNORMAL_FONT;
       font.SetPointSize(fontsize1);
       dc.SetFont(font);
       if (m_bigParenType < 2)
@@ -365,6 +379,8 @@ void ParenCell::Draw(wxPoint point, int fontsize)
                     wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
                     false,
                     configuration->GetFontName());
+        if(!font.IsOk())
+          font = *wxNORMAL_FONT;
         font.SetPointSize(fontsize1);
         dc.SetFont(font);
         dc.DrawText(wxT("("),
@@ -381,6 +397,8 @@ void ParenCell::Draw(wxPoint point, int fontsize)
                     false,
                     configuration->GetSymbolFontName(),
                     wxFONTENCODING_CP1250);
+        if(!font.IsOk())
+          font = *wxNORMAL_FONT;
         font.SetPointSize(fontsize1);
         dc.SetFont(font);
         dc.DrawText(PAREN_LEFT_TOP,

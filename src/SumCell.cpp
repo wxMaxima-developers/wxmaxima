@@ -128,6 +128,8 @@ void SumCell::RecalculateWidths(int fontsize)
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                 configuration->GetTeXCMEX());
+    if(!font.IsOk())
+      font = *wxNORMAL_FONT;
     font.SetPointSize(fontsize1);
     dc.SetFont(font);
     dc.GetTextExtent(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN), &m_signWidth, &m_signSize);
@@ -183,6 +185,8 @@ void SumCell::Draw(wxPoint point, int fontsize)
       wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
+      if(!font.IsOk())
+        font = *wxNORMAL_FONT;
       font.SetPointSize(fontsize1);
       dc.SetFont(font);
       dc.DrawText(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN),

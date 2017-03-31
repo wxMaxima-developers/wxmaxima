@@ -143,6 +143,8 @@ void IntCell::RecalculateWidths(int fontsize)
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
 		       wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                 configuration->GetTeXCMEX());
+    if(!font.IsOk())
+      font = *wxNORMAL_FONT;
     font.SetPointSize(fontsize1);
     dc.SetFont(font);
     dc.GetTextExtent(wxT("\x5A"), &m_signWidth, &m_signSize);
@@ -167,6 +169,8 @@ void IntCell::RecalculateWidths(int fontsize)
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
                 false,
                 configuration->GetSymbolFontName());
+    if(!font.IsOk())
+      font = *wxNORMAL_FONT;
     font.SetPointSize(fontsize1);
     dc.SetFont(font);
     dc.GetTextExtent(INTEGRAL_TOP, &m_charWidth, &m_charHeight);
@@ -243,6 +247,8 @@ void IntCell::Draw(wxPoint point, int fontsize)
       wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
+      if(!font.IsOk())
+        font = *wxNORMAL_FONT;
       font.SetPointSize(fontsize1);
       dc.SetFont(font);
       dc.DrawText(wxT("\x5A"),
