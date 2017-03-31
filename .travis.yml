@@ -33,7 +33,7 @@ git:
 script: |
   cp .travis/wxwin.m4 acinclude.m4 &
   ./bootstrap &&
-  ./configure --enable-static-wx --enable-fullystatic&&
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./configure --with-macosx-version-min=10.9 --enable-static-wx --enable-fullystatic;else ./configure --enable-static-wx --enable-fullystatic;fi&&
   make &&
   make dist &&
   if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make wxMaxima.app ; fi &&
