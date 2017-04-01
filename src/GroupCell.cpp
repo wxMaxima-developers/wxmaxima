@@ -1829,15 +1829,9 @@ bool GroupCell::IsLesserGCType(int comparedTo)
       return (comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION)
              || (comparedTo == GC_TYPE_SUBSECTION);
     case GC_TYPE_SUBSECTION:
-      if ((comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION))
-        return true;
-      else
-        return false;
+      return (comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION);
     case GC_TYPE_SECTION:
-      if (comparedTo == GC_TYPE_TITLE)
-        return true;
-      else
-        return false;
+      return comparedTo == GC_TYPE_TITLE;
     case GC_TYPE_TITLE:
       return false;
     default:
@@ -1902,10 +1896,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
 
 bool GroupCell::IsMainInput(MathCell *active)
 {
-  if (m_inputLabel->m_next == NULL)
-    return false;
-
-  return (active == m_inputLabel->m_next);
+  return m_inputLabel->m_next != NULL && active == m_inputLabel->m_next;
 }
 
 bool GroupCell::Contains(GroupCell *cell)

@@ -148,7 +148,7 @@ wxString EditorCell::ToString(bool dontLimitToSelection)
   if (SelectionActive() && (!dontLimitToSelection))
   {
     long start = MIN(m_selectionStart, m_selectionEnd);
-    unsigned long end = MAX(m_selectionStart, m_selectionEnd) - 1;
+    long end = MAX(m_selectionStart, m_selectionEnd) - 1;
     if (end >= m_text.Length()) end = m_text.Length() - 1;
     if (start < 0) start = 0;
     text = m_text.SubString(start, end);
@@ -175,7 +175,7 @@ wxString EditorCell::ToRTF()
       retval += wxT("\\pard\\s3\\b\\f0\\fs32 ") + RTFescape(m_text) + wxT("\n");
       break;
     case MC_TYPE_PROMPT:
-      retval += wxString::Format(wxT("\\cf%i"), (int) GetStyle()) +
+      retval += wxString::Format(wxT("\\cf%i"), GetStyle()) +
                 wxT("\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ") + RTFescape(m_text) + wxT("\n");
       break;
     case MC_TYPE_INPUT:
@@ -2753,7 +2753,7 @@ void EditorCell::SelectRectText(wxDC &dc, wxPoint &one, wxPoint &two)
 // If they don't or there is no selection it returns false
 bool EditorCell::IsPointInSelection(wxDC &dc, wxPoint point)
 {
-  if ((m_selectionStart == -1) || (m_selectionEnd == -1) || (IsActive() == false))
+  if ((m_selectionStart == -1) || (m_selectionEnd == -1) || !IsActive())
     return false;
 
   wxRect rect = GetRect();
@@ -2810,10 +2810,8 @@ bool EditorCell::IsPointInSelection(wxDC &dc, wxPoint point)
   }
   positionOfCaret = MIN(positionOfCaret, (signed) text.Length());
 
-  if ((m_selectionStart >= positionOfCaret) || (m_selectionEnd <= positionOfCaret))
-    return false;
+  return !((m_selectionStart >= positionOfCaret) || (m_selectionEnd <= positionOfCaret));
 
-  return true;
 }
 
 wxString EditorCell::DivideAtCaret()
@@ -3226,26 +3224,18 @@ bool EditorCell::IsAlpha(wxChar ch)
   if (wxIsalpha(ch))
     return true;
 
-  if (alphas.Find(ch) != wxNOT_FOUND)
-    return true;
+  return alphas.Find(ch) != wxNOT_FOUND;
 
-  return false;
 }
 
 bool EditorCell::IsNum(wxChar ch)
 {
-  if ((ch >= '0' && ch <= '9'))
-    return true;
-
-  return false;
+  return ch >= '0' && ch <= '9';
 }
 
 bool EditorCell::IsAlphaNum(wxChar ch)
 {
-  if (IsAlpha(ch) || IsNum(ch))
-    return true;
-
-  return false;
+  return IsAlpha(ch) || IsNum(ch);
 }
 
 wxArrayString EditorCell::StringToTokens(wxString string)
