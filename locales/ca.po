@@ -5370,24 +5370,85 @@ msgstr "sí"
 msgid "zeta"
 msgstr "zeta"
 
-#~ msgid ""
-#~ "If a command begins with a label followed by a : wxMaxima will show this "
-#~ "label instead of the %o style label maxima has automatically assigned to "
-#~ "the same output cell."
-#~ msgstr ""
-#~ "Si una ordre comença amb una etiqueta seguida de «:» wxMàxima mostrarà "
-#~ "aquesta etiqueta enlloc de l'estil d'etiqueta %o que Màxima assigna "
-#~ "automàticament a la mateixa cel·la de sortida."
-
-#~ msgid "Show user-defined labels instead of (%oxx)"
-#~ msgstr "Mostrar les etiquetes definides per l'usuari enlloc de (%oxx)"
-
-#, fuzzy
-#~ msgid "Text & Code"
-#~ msgstr "Dividir cel·la"
-
 #~ msgid "      -X '--dynamic-space-size <int>'"
 #~ msgstr "      -X '--dynamic-space-size <int>'"
+
+#~ msgid " << Expression too long to display! >>"
+#~ msgstr " << Expressió excessivament llarga per ser mostrada! >>"
+
+#~ msgid " << Unfold >>"
+#~ msgstr " << Desplegar >>"
+
+#~ msgid "&Cell"
+#~ msgstr "Ce&l·la"
+
+#~ msgid "&Copy"
+#~ msgstr "&Copiar"
+
+#~ msgid "&Describe\tCtrl+H"
+#~ msgstr "&Describir\tCtrl+H"
+
+#~ msgid "&Edit input\tCtrl+E"
+#~ msgstr "E&ditar entrada\tCtrl+E"
+
+#~ msgid "&Input\tF7"
+#~ msgstr "&Entrada\tF7"
+
+#~ msgid "&Monitor file"
+#~ msgstr "&Monitorizar archivo"
+
+#, fuzzy
+#~ msgid "&New\tCtrl-N"
+#~ msgstr "&Nou\tCtrl+N"
+
+#~ msgid "&New Window\tCtrl+N"
+#~ msgstr "&Nova finestra\tCtrl+N"
+
+#~ msgid "&Re-evaluate input\tCtrl+R"
+#~ msgstr "&Re-calcular entrada\tCtrl+R"
+
+#~ msgid "&Read file"
+#~ msgstr "Leer &archivo"
+
+#~ msgid "&Text\tF6"
+#~ msgstr "&Texto\tF6"
+
+#~ msgid "<< Nothing to display >>"
+#~ msgstr "<< Nada que mostrar >>"
+
+#~ msgid "Adjustment for the size of greek font."
+#~ msgstr "Ajuste para el tamaño de la fuente griega"
+
+#~ msgid "Adjustment:"
+#~ msgstr "Ajuste:"
+
+#~ msgid ""
+#~ "All|*|Maxima package (*.mac)|*.mac|Demo file (*.dem)|*.dem|Lisp file (*."
+#~ "lisp)|*.lisp"
+#~ msgstr ""
+#~ "Todos|*|Paquete maxima(*.mac)|*.mac|Archivo demo (*.dem)|*.dem|Archivo "
+#~ "lisp (*.lisp)|*.lisp"
+
+#~ msgid "Animation"
+#~ msgstr "Animació"
+
+#~ msgid "Apply function:"
+#~ msgstr "Aplicar función:"
+
+#~ msgid "At point:"
+#~ msgstr "En el punto:"
+
+#~ msgid "Autocomplete"
+#~ msgstr "Autocompletar"
+
+#~ msgid "Autoload a file when it is updated"
+#~ msgstr "Autocargar un archivo cuando sea actualizado"
+
+#~ msgid "Background"
+#~ msgstr "Fondo"
+
+#~ msgid "Basic"
+#~ msgstr "Básico"
 
 #~ msgid "Bug: Fraction without denominator"
 #~ msgstr "Error: fracció sense denominador"
@@ -5395,104 +5456,23 @@ msgstr "zeta"
 #~ msgid "Bug: Fraction without enumerator"
 #~ msgstr "Error: fracció sense numerador"
 
-#~ msgid "bug:Invalid at tag"
-#~ msgstr "error: etiqueta no vàlida"
+#~ msgid "Button panel:"
+#~ msgstr "Panel de botones:"
 
-#~ msgid "bug:Invalid frac tag"
-#~ msgstr "error: etiqueta de fracció de vàlida"
+#~ msgid "C&lear screen"
+#~ msgstr "&Limpiar pantalla"
 
-#~ msgid "bug:Invalid function tag"
-#~ msgstr "error: etiqueta de funció no vàlida"
+#~ msgid "Char poly of:"
+#~ msgstr "Polinomio característico de:"
 
-#~ msgid "bug:Invalid int tag"
-#~ msgstr "error: etiqueta d'enter no vàlida"
+#~ msgid "Close document?"
+#~ msgstr "Tancar document?"
 
-#~ msgid "bug:Invalid limit tag"
-#~ msgstr "error: etiqueta de límit no vàlida"
+#~ msgid "Comment out"
+#~ msgstr "Comentar"
 
-#~ msgid "bug:Invalid sub tag"
-#~ msgstr "error: etiqueta «sub» no vàlida"
-
-#~ msgid "bug:Invalid subsup tag"
-#~ msgstr "error: etiqueta «subsup» no vàlida"
-
-#~ msgid "bug:Invalid sum tag"
-#~ msgstr "error: etiqueta de suma no vàlida"
-
-#~ msgid "bug:Invalid sup tag"
-#~ msgstr "error: etiqueta «sup» no vàlida"
-
-#~ msgid "Use MathJAX in HTML export"
-#~ msgstr "Fer servir MathJAX en l'exportació a HTML"
-
-#~ msgid ""
-#~ "Use MathJAX instead of images in HTML exports to display maxima output. "
-#~ "The advantage of MathJAX is that it allows to copy the displayed "
-#~ "equations as if they were text, to choose if they should be copied as TeX "
-#~ "or MathML instead and displays them in a scaleable format that is really "
-#~ "nice to look at. The disadvantage of MathJAX is that it will need "
-#~ "JavaScript and a little bit of time in order to typeset an equation."
-#~ msgstr ""
-#~ "Feu servir MathJAX enlloc d'imatges en les exportacions HTML per veure "
-#~ "els resultats de Màxima. L'avantatge de MathJAX és que permet copiar les "
-#~ "equacions que es mostren com si fossin text, elegir si s'han de copiar "
-#~ "com a TeX o MathML i mostrar-les en un format escalable que és molt "
-#~ "agradable a la vista. El inconvenient de MathJAX és que cal fer servir "
-#~ "JavaScript i una mica de temps per a fer la composició de cada equació."
-
-#~ msgid "Document "
-#~ msgstr "Document"
-
-#, fuzzy
-#~ msgid "&New\tCtrl-N"
-#~ msgstr "&Nou\tCtrl+N"
-
-#~ msgid "HTML/Text Cells: Export all linebreaks"
-#~ msgstr "HTML/Text de les cel·les: exportar els retorns de línia"
-
-#~ msgid "Include input cells in the export of a worksheet"
-#~ msgstr "Incloure les cel·les d'entrada en l'exportació del full de càlcul"
-
-#~ msgid ""
-#~ "Normally we export the whole worksheet to TeX or HTML. But sometimes the "
-#~ "maxima input does scare the user. This option turns off exporting of "
-#~ "maxima's input."
-#~ msgstr ""
-#~ "Normalment s'exporta tot el full de càlcul a TeX o HTML. Però sovint "
-#~ "l'entrada de Màxima fa espantar a l'usuari. Aquesta opció desactiva "
-#~ "l'exportació de l'entrada de Maxima."
-
-#~ msgid ""
-#~ "While text cells in LaTeX are broken into lines by TeX the text displayed "
-#~ "on the screen is broken into lines manually. This option, if set tells "
-#~ "that lines in HTML output will be broken where they are broken in the "
-#~ "worksheet. If this option isn't set manual linebreaks can still be "
-#~ "introduced by introducing an empty line."
-#~ msgstr ""
-#~ "Mentre que el text en LaTeX de les cel·les és dividit en línies per TeX, "
-#~ "el text que es mostra a la pantalla es divideix en línies manualment. "
-#~ "Aquesta opció, si està seleccionada, determina que les línies en la "
-#~ "sortida HTML es dividiran si estan dividides en el full de càlcul. Si "
-#~ "l'opció no està seleccionada, es podran introduir salts de línia afegint "
-#~ "una línia buida."
-
-#~ msgid "Write matching parenthesis in text controls."
-#~ msgstr "Escriure parèntesi coincidents en els controls de text."
-
-#, fuzzy
-#~ msgid "Ypsilon"
-#~ msgstr "Epsilon:"
-
-#, fuzzy
-#~ msgid "ny"
-#~ msgstr "marina"
-
-#, fuzzy
-#~ msgid "ypsilon"
-#~ msgstr "Epsilon:"
-
-#~ msgid " << Expression too long to display! >>"
-#~ msgstr " << Expressió excessivament llarga per ser mostrada! >>"
+#~ msgid "Copy &text"
+#~ msgstr "Copiar &texto"
 
 #~ msgid "Copy As Image"
 #~ msgstr "Copiar com imatge"
@@ -5500,91 +5480,62 @@ msgstr "zeta"
 #~ msgid "Copy LaTeX"
 #~ msgstr "Copiar LaTeX"
 
-#~ msgid "Height:"
-#~ msgstr "Alçada:"
+#~ msgid "Copy cells"
+#~ msgstr "Copiar celdas"
 
-#~ msgid "Width:"
-#~ msgstr "Amplada:"
+#~ msgid "Copy input"
+#~ msgstr "Copiar entrada"
 
-#~ msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
-#~ msgstr ""
-#~ "Intentant situar el cursor en una cel·la que no pertany al full de càlcul"
+#~ msgid "Copy input from console"
+#~ msgstr "Copiar entrada desde documento"
 
-#, fuzzy
-#~ msgid "implies"
-#~ msgstr "Simplifica"
+#~ msgid "Copy selected cell(s)"
+#~ msgstr "Copiar celda(s) seleccionada(s)"
 
-#~ msgid "Panes"
-#~ msgstr "&Panells"
+#~ msgid "Copy selection from console (including linebreaks)"
+#~ msgstr "Copiar selección de la consola (saltos de línea incluidos)"
 
-#~ msgid "Error %d"
-#~ msgstr "Error %d"
+#~ msgid "Copy selection from console to input line"
+#~ msgstr "Copiar selección de la consola a la línea de entrada"
 
-#~ msgid "Structure\tAlt+Shift+T"
-#~ msgstr "Estrutura\tAlt+Shift+T"
+#~ msgid "Copy selection to clipboard when selection is made in document."
+#~ msgstr "Copiar selección al portapapeles cuando se hace en el documento."
 
-#~ msgid "Zoom set to "
-#~ msgstr "Estableix ampliació a "
+#~ msgid "Copy to clipboard on select"
+#~ msgstr "Copiar la selección al portapapeles"
 
-#~ msgid ""
-#~ "wxMaxima xml document (*.wxmx)|*.wxmx|wxMaxima document (*.wxm)|*.wxm|"
-#~ "Maxima batch file (*.mac)|*.mac"
-#~ msgstr ""
-#~ "Document xml wxMaxima (*.wxmx)|*.wxmx|Document wxMaxima (*.wxm)|*.wxm|"
-#~ "Arxiu per lots de Maxima (*.mac)|*.mac"
+#~ msgid "Copy to input"
+#~ msgstr "Copiar a la entrada"
 
-#~ msgid "Output from Maxima to stderr (there should be none):\n"
-#~ msgstr ""
-#~ "Sortida de Maxima per la sortida d'errors predeterminada (no hi ha "
-#~ "d'haver-ni cap):\n"
+#~ msgid "Cut Cell(s)\tCtrl+Shift+X"
+#~ msgstr "Cortar Celda(s)\tCtrl+Shift+X"
 
-#~ msgid "Output from Maxima to stdout (there should be none):\n"
-#~ msgstr ""
-#~ "Sortida de Maxima per la sortida predeterminada (no hi ha d'haver-ni "
-#~ "cap):\n"
+#~ msgid "Cut selection from document"
+#~ msgstr "Cortar selección del documento"
 
-#~ msgid "lines hidden"
-#~ msgstr "línies ocultes"
-
-#~ msgid "Set &Precision..."
-#~ msgstr "Establir &precisió"
-
-#~ msgid "Start animation"
-#~ msgstr "Inicia animació"
-
-#~ msgid "Stop animation"
-#~ msgstr "Atura l'animació"
-
-#~ msgid "Animation"
-#~ msgstr "Animació"
-
-#~ msgid "Find..."
-#~ msgstr "Calcula..."
-
-#, fuzzy
-#~ msgid "Re-evaluate All until here\tCtrl+Shift+H"
-#~ msgstr "&Re-calcular todo\tCtrl+Shift+R"
-
-#~ msgid "Redo\tCtrl+Shift+Z"
-#~ msgstr "Desfer\tCtrl+Shift+Z"
+#~ msgid "Decrease fontsize in document"
+#~ msgstr "Disminuir el tamaño de la fuente en el documento"
 
 #~ msgid "Default port:"
 #~ msgstr "Port predeterminat:"
 
-#~ msgid "Save changes before closing?"
-#~ msgstr "Voleu desar els canvis abans de tancar?"
+#~ msgid "Delete selected cell(s)"
+#~ msgstr "Borrar celda(s) seleccionada(s)"
 
-#~ msgid "Save changes?"
-#~ msgstr "Desar els canvis?"
+#~ msgid "Delete selected input/output group"
+#~ msgstr "Borrar grupo de entrada/salida seleccionado"
 
-#~ msgid "&Cell"
-#~ msgstr "Ce&l·la"
+#~ msgid "Delete selection"
+#~ msgstr "Borrar selección"
 
-#~ msgid "&New Window\tCtrl+N"
-#~ msgstr "&Nova finestra\tCtrl+N"
+#~ msgid "Delete the contents of console."
+#~ msgstr "Borrar los contenidos de la consola."
 
-#~ msgid "Close document?"
-#~ msgstr "Tancar document?"
+#~ msgid "Describe"
+#~ msgstr "Describir"
+
+#~ msgid "Document "
+#~ msgstr "Document"
 
 #~ msgid ""
 #~ "Document not saved!\n"
@@ -5604,416 +5555,6 @@ msgstr "zeta"
 #~ "\n"
 #~ "Tancar wxMaxima i perdre tots els canvis?"
 
-#~ msgid "Maxima options"
-#~ msgstr "Opcions de Maxima"
-
-#~ msgid "Mean"
-#~ msgstr "Mitjana"
-
-#~ msgid "Quit?"
-#~ msgstr "Sortir?"
-
-#~ msgid "wxMaxima options"
-#~ msgstr "Opcions de wxMaxima"
-
-#~ msgid ""
-#~ "wxMaxima is a graphical user interface for the\n"
-#~ "computer algebra system Maxima based on wxWidgets."
-#~ msgstr ""
-#~ "wxMaxima es una interface gráfica de usuario para \n"
-#~ "el Sistema de Cálculo Simbólico Maxima, basado en wxWidgets."
-
-#~ msgid "<< Nothing to display >>"
-#~ msgstr "<< Nada que mostrar >>"
-
-#~ msgid "Functions and macros"
-#~ msgstr "Funciones y macros"
-
-#~ msgid "Labels"
-#~ msgstr "Etiquetas"
-
-#~ msgid "Autocomplete"
-#~ msgstr "Autocompletar"
-
-#~ msgid "Copy selection to clipboard when selection is made in document."
-#~ msgstr "Copiar selección al portapapeles cuando se hace en el documento."
-
-#~ msgid "Copy to clipboard on select"
-#~ msgstr "Copiar la selección al portapapeles"
-
-#~ msgid "Input"
-#~ msgstr "Entrada"
-
-#~ msgid "Save document as ..."
-#~ msgstr "Guardar documento como"
-
-#~ msgid "Show Maxima header"
-#~ msgstr "Mostrar el encabezamiento de Maxima"
-
-#~ msgid "Show initial header with Maxima system information."
-#~ msgstr "Mostrar encabezamiento inicial con información de Maxima."
-
-#~ msgid "Adjustment for the size of greek font."
-#~ msgstr "Ajuste para el tamaño de la fuente griega"
-
-#~ msgid "Adjustment:"
-#~ msgstr "Ajuste:"
-
-#~ msgid "Basic"
-#~ msgstr "Básico"
-
-#~ msgid "Button panel:"
-#~ msgstr "Panel de botones:"
-
-#~ msgid "Copy selected cell(s)"
-#~ msgstr "Copiar celda(s) seleccionada(s)"
-
-#~ msgid "Cut Cell(s)\tCtrl+Shift+X"
-#~ msgstr "Cortar Celda(s)\tCtrl+Shift+X"
-
-#~ msgid "Decrease fontsize in document"
-#~ msgstr "Disminuir el tamaño de la fuente en el documento"
-
-#~ msgid "Delete selected cell(s)"
-#~ msgstr "Borrar celda(s) seleccionada(s)"
-
-#~ msgid "Delete selection"
-#~ msgstr "Borrar selección"
-
-#~ msgid "Font used for displaying unicode glyphs in document."
-#~ msgstr "Fuente usada para mostrar glifos unicode en el documento."
-
-#~ msgid "Full"
-#~ msgstr "Completo"
-
-#~ msgid "Increase fontsize in document"
-#~ msgstr "Aumentar el tamaño de fuente del documento."
-
-#~ msgid "Insert input cell"
-#~ msgstr "Insertar celda de entrada"
-
-#~ msgid "Insert input group"
-#~ msgstr "Insertar grupo de entrada"
-
-#~ msgid "Insert text"
-#~ msgstr "Insertar texto"
-
-#~ msgid "New T&itle Cell\tCtrl+Shift+F6"
-#~ msgstr "Celda de nuevo t&ítulo\tCtrl+Shift+F6"
-
-#~ msgid "Off"
-#~ msgstr "Desactivado"
-
-#~ msgid "Paste cell(s) to document"
-#~ msgstr "Pegar celda(s) al documento"
-
-#~ msgid "Product..."
-#~ msgstr "Producto"
-
-#~ msgid "Select file to open"
-#~ msgstr "Seleccionar archivo para abrir"
-
-#~ msgid "Sum..."
-#~ msgstr "Suma"
-
-#~ msgid "To &Float\tCtrl+F"
-#~ msgstr "A real \tCtrl+F"
-
-#~ msgid "Use greek font to display greek characters."
-#~ msgstr "Usar fuente griega para mostrar caracteres griegos."
-
-#~ msgid "Use greek font:"
-#~ msgstr "Usar fuente griega:"
-
-#~ msgid "untitled.wxm"
-#~ msgstr "sinnombre.wxm"
-
-#~ msgid "wxMaxima session (*.wxm)|*.wxm"
-#~ msgstr "Sesión de wxMaxima (*.wxm)|*.wxm"
-
-#~ msgid "aquamarine"
-#~ msgstr "aguamarina"
-
-#~ msgid "black"
-#~ msgstr "negro"
-
-#~ msgid "blue"
-#~ msgstr "azul"
-
-#~ msgid "blue violet"
-#~ msgstr "azul violeta"
-
-#~ msgid "brown"
-#~ msgstr "marrón"
-
-#~ msgid "cadet blue"
-#~ msgstr "azul cadete"
-
-#~ msgid "coral"
-#~ msgstr "coral"
-
-#~ msgid "cornflower blue"
-#~ msgstr "azulina"
-
-#~ msgid "cyan"
-#~ msgstr "cyan"
-
-#~ msgid "dark green"
-#~ msgstr "verde oscuro"
-
-#~ msgid "dark grey"
-#~ msgstr "gris oscuro"
-
-#~ msgid "dark olive green"
-#~ msgstr "verde oliva oscuro"
-
-#~ msgid "dark orchid"
-#~ msgstr "orquídea oscuro"
-
-#~ msgid "dark slate blue"
-#~ msgstr "azul pizarra oscuro"
-
-#~ msgid "dark slate grey"
-#~ msgstr "gris pizarra oscuro"
-
-#~ msgid "dark turquoise"
-#~ msgstr "turquesa oscuro"
-
-#~ msgid "dim grey"
-#~ msgstr "gris débil"
-
-#~ msgid "firebrick"
-#~ msgstr "teja"
-
-#~ msgid "forest green"
-#~ msgstr "verde bosque"
-
-#~ msgid "gold"
-#~ msgstr "oro"
-
-#~ msgid "goldenrod"
-#~ msgstr "barra de oro"
-
-#~ msgid "green"
-#~ msgstr "verde"
-
-#~ msgid "green yellow"
-#~ msgstr "verde amarillo"
-
-#~ msgid "grey"
-#~ msgstr "gris"
-
-#~ msgid "khaki"
-#~ msgstr "caqui"
-
-#~ msgid "light blue"
-#~ msgstr "azul claro"
-
-#~ msgid "light grey"
-#~ msgstr "gris claro"
-
-#~ msgid "light steel blue"
-#~ msgstr "azul acero claro"
-
-#~ msgid "lime green"
-#~ msgstr "verde lima"
-
-#~ msgid "maroon"
-#~ msgstr "granate"
-
-#~ msgid "medium aquamarine"
-#~ msgstr "aguamarina medio"
-
-#~ msgid "medium blue"
-#~ msgstr "azul medio"
-
-#~ msgid "medium forrest green"
-#~ msgstr "verde bosque medio"
-
-#~ msgid "medium goldenrod"
-#~ msgstr "barra de oro media"
-
-#~ msgid "medium orchid"
-#~ msgstr "orquídea medio"
-
-#~ msgid "medium sea green"
-#~ msgstr "verde mar medio"
-
-#~ msgid "medium slate blue"
-#~ msgstr "azul pizarra medio"
-
-#~ msgid "medium spring green"
-#~ msgstr "verde primavera medio"
-
-#~ msgid "medium turquoise"
-#~ msgstr "turquesa medio"
-
-#~ msgid "medium violet red"
-#~ msgstr "rojo violeta medio"
-
-#~ msgid "midnight blue"
-#~ msgstr "azul medianoche"
-
-#~ msgid "orange"
-#~ msgstr "naranja"
-
-#~ msgid "orange red"
-#~ msgstr "rojo anaranjado"
-
-#~ msgid "pale green"
-#~ msgstr "verde pálido"
-
-#~ msgid "plum"
-#~ msgstr "ciruela"
-
-#~ msgid "purple"
-#~ msgstr "morado"
-
-#~ msgid "red"
-#~ msgstr "rojo"
-
-#~ msgid "salmon"
-#~ msgstr "salmón"
-
-#~ msgid "sea green"
-#~ msgstr "verde mar"
-
-#~ msgid "sienna"
-#~ msgstr "siena"
-
-#~ msgid "sky blue"
-#~ msgstr "azul cielo"
-
-#~ msgid "spring green"
-#~ msgstr "verde primavera"
-
-#~ msgid "steel blue"
-#~ msgstr "azul acero"
-
-#~ msgid "thistle"
-#~ msgstr "cardo"
-
-#~ msgid "turquoise"
-#~ msgstr "turquesa"
-
-#~ msgid "violet"
-#~ msgstr "violeta"
-
-#~ msgid "wheat"
-#~ msgstr "trigo"
-
-#~ msgid "white"
-#~ msgstr "blanco"
-
-#~ msgid "yellow green"
-#~ msgstr "verde amarillo"
-
-#~ msgid " << Unfold >>"
-#~ msgstr " << Desplegar >>"
-
-#~ msgid "Background"
-#~ msgstr "Fondo"
-
-#~ msgid "Copy cells"
-#~ msgstr "Copiar celdas"
-
-#~ msgid "Cut selection from document"
-#~ msgstr "Cortar selección del documento"
-
-#~ msgid "Export to HTML file"
-#~ msgstr "Exportar a un archivo HTML"
-
-#~ msgid "Hidden groups"
-#~ msgstr "Grupos ocultos"
-
-#~ msgid "Integrate ..."
-#~ msgstr "Integrar"
-
-#~ msgid "Main prompts"
-#~ msgstr "Indicadores principales"
-
-#~ msgid "Open session from a file"
-#~ msgstr "Abrir sesión desde un archivo"
-
-#~ msgid "Other prompts"
-#~ msgstr "Otros indicadores"
-
-#~ msgid "Save session"
-#~ msgstr "Guardar sesión"
-
-#~ msgid "Save session to a file"
-#~ msgstr "Guardar sesión en un archivo"
-
-#~ msgid "Save to file"
-#~ msgstr "Guardar en un archivo"
-
-#~ msgid "Select package to load"
-#~ msgstr "Seleccionar paquete para cargar"
-
-#~ msgid "Substitute ..."
-#~ msgstr "Sustituir"
-
-#~ msgid "wxMaxima session"
-#~ msgstr "Sesión de wxMaxima"
-
-#~ msgid "&Copy"
-#~ msgstr "&Copiar"
-
-#~ msgid "&Describe\tCtrl+H"
-#~ msgstr "&Describir\tCtrl+H"
-
-#~ msgid "&Edit input\tCtrl+E"
-#~ msgstr "E&ditar entrada\tCtrl+E"
-
-#~ msgid "&Input\tF7"
-#~ msgstr "&Entrada\tF7"
-
-#~ msgid "&Monitor file"
-#~ msgstr "&Monitorizar archivo"
-
-#~ msgid "&Re-evaluate input\tCtrl+R"
-#~ msgstr "&Re-calcular entrada\tCtrl+R"
-
-#~ msgid "&Read file"
-#~ msgstr "Leer &archivo"
-
-#~ msgid "&Text\tF6"
-#~ msgstr "&Texto\tF6"
-
-#~ msgid ""
-#~ "All|*|Maxima package (*.mac)|*.mac|Demo file (*.dem)|*.dem|Lisp file (*."
-#~ "lisp)|*.lisp"
-#~ msgstr ""
-#~ "Todos|*|Paquete maxima(*.mac)|*.mac|Archivo demo (*.dem)|*.dem|Archivo "
-#~ "lisp (*.lisp)|*.lisp"
-
-#~ msgid "Autoload a file when it is updated"
-#~ msgstr "Autocargar un archivo cuando sea actualizado"
-
-#~ msgid "C&lear screen"
-#~ msgstr "&Limpiar pantalla"
-
-#~ msgid "Copy input"
-#~ msgstr "Copiar entrada"
-
-#~ msgid "Copy input from console"
-#~ msgstr "Copiar entrada desde documento"
-
-#~ msgid "Copy selection from console to input line"
-#~ msgstr "Copiar selección de la consola a la línea de entrada"
-
-#~ msgid "Copy to input"
-#~ msgstr "Copiar a la entrada"
-
-#~ msgid "Delete selected input/output group"
-#~ msgstr "Borrar grupo de entrada/salida seleccionado"
-
-#~ msgid "Delete the contents of console."
-#~ msgstr "Borrar los contenidos de la consola."
-
-#~ msgid "Describe"
-#~ msgstr "Describir"
-
 #~ msgid "Edit input"
 #~ msgstr "Editar entrada"
 
@@ -6026,6 +5567,30 @@ msgstr "zeta"
 #~ msgid "Enter command"
 #~ msgstr "Introducir comando"
 
+#~ msgid "Error %d"
+#~ msgstr "Error %d"
+
+#~ msgid "Export to HTML file"
+#~ msgstr "Exportar a un archivo HTML"
+
+#~ msgid "Find..."
+#~ msgstr "Calcula..."
+
+#~ msgid "Font used for displaying unicode glyphs in document."
+#~ msgstr "Fuente usada para mostrar glifos unicode en el documento."
+
+#~ msgid "From array:"
+#~ msgstr "De la tabla:"
+
+#~ msgid "From equations:"
+#~ msgstr "De las ecuaciones:"
+
+#~ msgid "Full"
+#~ msgstr "Completo"
+
+#~ msgid "Functions and macros"
+#~ msgstr "Funciones y macros"
+
 #~ msgid "Go to input\tCtrl+Shift+D"
 #~ msgstr "Ir a\tCtrl+Shift+D"
 
@@ -6035,11 +5600,29 @@ msgstr "zeta"
 #~ msgid "Go to output window\tF3"
 #~ msgstr "Ir a la ventana de salida\tF3"
 
+#~ msgid "HTML/Text Cells: Export all linebreaks"
+#~ msgstr "HTML/Text de les cel·les: exportar els retorns de línia"
+
+#~ msgid "Height:"
+#~ msgstr "Alçada:"
+
+#~ msgid "Hidden groups"
+#~ msgstr "Grupos ocultos"
+
 #~ msgid "I&nsert"
 #~ msgstr "I&nsertar"
 
 #~ msgid "INPUT:"
 #~ msgstr "ENTRADA:"
+
+#~ msgid ""
+#~ "If a command begins with a label followed by a : wxMaxima will show this "
+#~ "label instead of the %o style label maxima has automatically assigned to "
+#~ "the same output cell."
+#~ msgstr ""
+#~ "Si una ordre comença amb una etiqueta seguida de «:» wxMàxima mostrarà "
+#~ "aquesta etiqueta enlloc de l'estil d'etiqueta %o que Màxima assigna "
+#~ "automàticament a la mateixa cel·la de sortida."
 
 #~ msgid ""
 #~ "If you want to input more than one line at a time, use the 'Multiline "
@@ -6048,11 +5631,29 @@ msgstr "zeta"
 #~ "Si desea introducir más de una línea a la vez, utilice el botón \"Entrada "
 #~ "multilínea\" a la derecha de la línea de entrada."
 
+#~ msgid "Include input cells in the export of a worksheet"
+#~ msgstr "Incloure les cel·les d'entrada en l'exportació del full de càlcul"
+
+#~ msgid "Increase fontsize in document"
+#~ msgstr "Aumentar el tamaño de fuente del documento."
+
+#~ msgid "Input"
+#~ msgstr "Entrada"
+
+#~ msgid "Insert input cell"
+#~ msgstr "Insertar celda de entrada"
+
+#~ msgid "Insert input group"
+#~ msgstr "Insertar grupo de entrada"
+
 #~ msgid "Insert new input before selected input"
 #~ msgstr "Insertar nueva entrada antes de la entrada seleccionada"
 
 #~ msgid "Insert section before selected input"
 #~ msgstr "Insertar sección antes de la entrada seleccionada"
+
+#~ msgid "Insert text"
+#~ msgstr "Insertar texto"
 
 #~ msgid "Insert text before selected input"
 #~ msgstr "Insertar texto antes de la entrada seleccionada"
@@ -6067,17 +5668,94 @@ msgstr "zeta"
 #~ "En lugar de introducir una ruta larga para un archivo, puede seleccionar "
 #~ "ese archivo utilizando 'Archivo->Seleccionar archivo'."
 
+#~ msgid "Integrate ..."
+#~ msgstr "Integrar"
+
+#~ msgid "Integrate:"
+#~ msgstr "Integrar:"
+
+#~ msgid "Labels"
+#~ msgstr "Etiquetas"
+
+#~ msgid "Limit of:"
+#~ msgstr "Límite de:"
+
+#~ msgid "Main prompts"
+#~ msgstr "Indicadores principales"
+
+#~ msgid "Map function:"
+#~ msgstr "Aplicar la función:"
+
+#~ msgid "Maxima options"
+#~ msgstr "Opcions de Maxima"
+
+#~ msgid "Maxima session (*.wxm)|*.wxm"
+#~ msgstr "Sesión de Maxima (*.wxm)|*.wxm"
+
+#~ msgid "Mean"
+#~ msgstr "Mitjana"
+
 #~ msgid "Multiline input"
 #~ msgstr "Entrada multilínea"
 
+#~ msgid "New T&itle Cell\tCtrl+Shift+F6"
+#~ msgstr "Celda de nuevo t&ítulo\tCtrl+Shift+F6"
+
+#~ msgid ""
+#~ "Normally we export the whole worksheet to TeX or HTML. But sometimes the "
+#~ "maxima input does scare the user. This option turns off exporting of "
+#~ "maxima's input."
+#~ msgstr ""
+#~ "Normalment s'exporta tot el full de càlcul a TeX o HTML. Però sovint "
+#~ "l'entrada de Màxima fa espantar a l'usuari. Aquesta opció desactiva "
+#~ "l'exportació de l'entrada de Maxima."
+
+#~ msgid "Off"
+#~ msgstr "Desactivado"
+
 #~ msgid "Open multiline input dialog"
 #~ msgstr "Abrir diálogo de entrada multilínea"
+
+#~ msgid "Open session from a file"
+#~ msgstr "Abrir sesión desde un archivo"
+
+#~ msgid "Other prompts"
+#~ msgstr "Otros indicadores"
+
+#~ msgid "Output from Maxima to stderr (there should be none):\n"
+#~ msgstr ""
+#~ "Sortida de Maxima per la sortida d'errors predeterminada (no hi ha "
+#~ "d'haver-ni cap):\n"
+
+#~ msgid "Output from Maxima to stdout (there should be none):\n"
+#~ msgstr ""
+#~ "Sortida de Maxima per la sortida predeterminada (no hi ha d'haver-ni "
+#~ "cap):\n"
+
+#~ msgid "Panes"
+#~ msgstr "&Panells"
+
+#~ msgid "Paste cell(s) to document"
+#~ msgstr "Pegar celda(s) al documento"
 
 #~ msgid "Paste input"
 #~ msgstr "Pegar entrada"
 
 #~ msgid "Paste input to console"
 #~ msgstr "Pegar entrada a la consola"
+
+#~ msgid "Product..."
+#~ msgstr "Producto"
+
+#~ msgid "Product:"
+#~ msgstr "Producto:"
+
+#~ msgid "Quit?"
+#~ msgstr "Sortir?"
+
+#, fuzzy
+#~ msgid "Re-evaluate All until here\tCtrl+Shift+H"
+#~ msgstr "&Re-calcular todo\tCtrl+Shift+R"
 
 #~ msgid "Re-evaluate all input"
 #~ msgstr "Re-calcular todas las entradas"
@@ -6087,6 +5765,27 @@ msgstr "zeta"
 
 #~ msgid "Read file from command line"
 #~ msgstr "Leer archivo desde línea de comandos"
+
+#~ msgid "Redo\tCtrl+Shift+Z"
+#~ msgstr "Desfer\tCtrl+Shift+Z"
+
+#~ msgid "Save changes before closing?"
+#~ msgstr "Voleu desar els canvis abans de tancar?"
+
+#~ msgid "Save changes?"
+#~ msgstr "Desar els canvis?"
+
+#~ msgid "Save document as ..."
+#~ msgstr "Guardar documento como"
+
+#~ msgid "Save session"
+#~ msgstr "Guardar sesión"
+
+#~ msgid "Save session to a file"
+#~ msgstr "Guardar sesión en un archivo"
+
+#~ msgid "Save to file"
+#~ msgstr "Guardar en un archivo"
 
 #~ msgid "Select &file"
 #~ msgstr "Seleccionar &archivo"
@@ -6098,6 +5797,9 @@ msgstr "zeta"
 #~ msgstr ""
 #~ "Seleccionar un archivo (copiar el nombre del fichero en la línea de "
 #~ "entrada)"
+
+#~ msgid "Select file to open"
+#~ msgstr "Seleccionar archivo para abrir"
 
 #~ msgid "Select last input\tCtrl+D"
 #~ msgstr "Seleccionar la última entrada\tCtrl+D"
@@ -6111,11 +5813,17 @@ msgstr "zeta"
 #~ msgid "Select last input in the console!"
 #~ msgstr "¡Seleccionar la última entrada en la consola!"
 
+#~ msgid "Select package to load"
+#~ msgstr "Seleccionar paquete para cargar"
+
 #~ msgid "Selection to input\tCtrl+Shift+E"
 #~ msgstr "Selección a entrada\tCtrl+Shift+E"
 
 #~ msgid "Selection to input\tF5"
 #~ msgstr "Selección a entrada\tF5"
+
+#~ msgid "Set &Precision..."
+#~ msgstr "Establir &precisió"
 
 #~ msgid "Set focus to the input line"
 #~ msgstr "Poner el foco en la línea de entrada"
@@ -6123,11 +5831,66 @@ msgstr "zeta"
 #~ msgid "Set focus to the output window"
 #~ msgstr "Poner el foco en la ventana de salida"
 
+#~ msgid "Show Maxima header"
+#~ msgstr "Mostrar el encabezamiento de Maxima"
+
+#~ msgid "Show initial header with Maxima system information."
+#~ msgstr "Mostrar encabezamiento inicial con información de Maxima."
+
 #~ msgid "Show the description of a command"
 #~ msgstr "Mostrar la descripción de un comando"
 
 #~ msgid "Show the description of command/variable:"
 #~ msgstr "Mostrar la descripción de un comando/variable:"
+
+#~ msgid "Show user-defined labels instead of (%oxx)"
+#~ msgstr "Mostrar les etiquetes definides per l'usuari enlloc de (%oxx)"
+
+#~ msgid "Solve &numerically ..."
+#~ msgstr "Resolver &numéricamente"
+
+#~ msgid "Solve equation(s):"
+#~ msgstr "Resolver ecuación(es):"
+
+#~ msgid "Solve equation:"
+#~ msgstr "Resolver ecuación:"
+
+#~ msgid "Solve numerically"
+#~ msgstr "Resolver numéricamente"
+
+#~ msgid "Solve numerically ..."
+#~ msgstr "Resolver numéricamente"
+
+#~ msgid "Start animation"
+#~ msgstr "Inicia animació"
+
+#~ msgid "Stop animation"
+#~ msgstr "Atura l'animació"
+
+#~ msgid "Structure\tAlt+Shift+T"
+#~ msgstr "Estrutura\tAlt+Shift+T"
+
+#~ msgid "Substitute ..."
+#~ msgstr "Sustituir"
+
+#~ msgid "Substitute:"
+#~ msgstr "Sustituir:"
+
+#~ msgid "Substitution"
+#~ msgstr "Sustitución"
+
+#~ msgid "Sum of:"
+#~ msgstr "Suma de:"
+
+#~ msgid "Sum..."
+#~ msgstr "Suma"
+
+#, fuzzy
+#~ msgid "Text & Code"
+#~ msgstr "Dividir cel·la"
+
+#~ msgid "To &Float\tCtrl+F"
+#~ msgstr "A real \tCtrl+F"
 
 #~ msgid ""
 #~ "To enter a matrix A, type 'A : ' to input line and select 'Algebra->Enter "
@@ -6150,6 +5913,60 @@ msgstr "zeta"
 #~ "Para repetir un comando largo previamente introducido, escribir las "
 #~ "primeras letras del mismo en la línea de entrada y pulsar la tecla "
 #~ "tabulador."
+
+#~ msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
+#~ msgstr ""
+#~ "Intentant situar el cursor en una cel·la que no pertany al full de càlcul"
+
+#~ msgid "Unfold"
+#~ msgstr "Desplegar"
+
+#~ msgid "Use &Taylor series"
+#~ msgstr "Usar serie de &Taylor"
+
+#~ msgid "Use MathJAX in HTML export"
+#~ msgstr "Fer servir MathJAX en l'exportació a HTML"
+
+#~ msgid ""
+#~ "Use MathJAX instead of images in HTML exports to display maxima output. "
+#~ "The advantage of MathJAX is that it allows to copy the displayed "
+#~ "equations as if they were text, to choose if they should be copied as TeX "
+#~ "or MathML instead and displays them in a scaleable format that is really "
+#~ "nice to look at. The disadvantage of MathJAX is that it will need "
+#~ "JavaScript and a little bit of time in order to typeset an equation."
+#~ msgstr ""
+#~ "Feu servir MathJAX enlloc d'imatges en les exportacions HTML per veure "
+#~ "els resultats de Màxima. L'avantatge de MathJAX és que permet copiar les "
+#~ "equacions que es mostren com si fossin text, elegir si s'han de copiar "
+#~ "com a TeX o MathML i mostrar-les en un format escalable que és molt "
+#~ "agradable a la vista. El inconvenient de MathJAX és que cal fer servir "
+#~ "JavaScript i una mica de temps per a fer la composició de cada equació."
+
+#~ msgid "Use greek font to display greek characters."
+#~ msgstr "Usar fuente griega para mostrar caracteres griegos."
+
+#~ msgid "Use greek font:"
+#~ msgstr "Usar fuente griega:"
+
+#~ msgid ""
+#~ "While text cells in LaTeX are broken into lines by TeX the text displayed "
+#~ "on the screen is broken into lines manually. This option, if set tells "
+#~ "that lines in HTML output will be broken where they are broken in the "
+#~ "worksheet. If this option isn't set manual linebreaks can still be "
+#~ "introduced by introducing an empty line."
+#~ msgstr ""
+#~ "Mentre que el text en LaTeX de les cel·les és dividit en línies per TeX, "
+#~ "el text que es mostra a la pantalla es divideix en línies manualment. "
+#~ "Aquesta opció, si està seleccionada, determina que les línies en la "
+#~ "sortida HTML es dividiran si estan dividides en el full de càlcul. Si "
+#~ "l'opció no està seleccionada, es podran introduir salts de línia afegint "
+#~ "una línia buida."
+
+#~ msgid "Width:"
+#~ msgstr "Amplada:"
+
+#~ msgid "Write matching parenthesis in text controls."
+#~ msgstr "Escriure parèntesi coincidents en els controls de text."
 
 #~ msgid ""
 #~ "You can delete output/input group if you select the input label and "
@@ -6200,6 +6017,273 @@ msgstr "zeta"
 #~ "formato TeX. Luego se puede copiar a un editor de texto para incluirlo en "
 #~ "su documento."
 
+#, fuzzy
+#~ msgid "Ypsilon"
+#~ msgstr "Epsilon:"
+
+#~ msgid "Zoom set to "
+#~ msgstr "Estableix ampliació a "
+
+#~ msgid "aquamarine"
+#~ msgstr "aguamarina"
+
+#~ msgid "around:"
+#~ msgstr "entorno a:"
+
+#~ msgid "black"
+#~ msgstr "negro"
+
+#~ msgid "blue"
+#~ msgstr "azul"
+
+#~ msgid "blue violet"
+#~ msgstr "azul violeta"
+
+#~ msgid "brown"
+#~ msgstr "marrón"
+
+#~ msgid "bug:Invalid at tag"
+#~ msgstr "error: etiqueta no vàlida"
+
+#~ msgid "bug:Invalid frac tag"
+#~ msgstr "error: etiqueta de fracció de vàlida"
+
+#~ msgid "bug:Invalid function tag"
+#~ msgstr "error: etiqueta de funció no vàlida"
+
+#~ msgid "bug:Invalid int tag"
+#~ msgstr "error: etiqueta d'enter no vàlida"
+
+#~ msgid "bug:Invalid limit tag"
+#~ msgstr "error: etiqueta de límit no vàlida"
+
+#~ msgid "bug:Invalid sub tag"
+#~ msgstr "error: etiqueta «sub» no vàlida"
+
+#~ msgid "bug:Invalid subsup tag"
+#~ msgstr "error: etiqueta «subsup» no vàlida"
+
+#~ msgid "bug:Invalid sum tag"
+#~ msgstr "error: etiqueta de suma no vàlida"
+
+#~ msgid "bug:Invalid sup tag"
+#~ msgstr "error: etiqueta «sup» no vàlida"
+
+#~ msgid "by variable:"
+#~ msgstr "para la variable:"
+
+#~ msgid "cadet blue"
+#~ msgstr "azul cadete"
+
+#~ msgid "change var:"
+#~ msgstr "cambiar var:"
+
+#~ msgid "coral"
+#~ msgstr "coral"
+
+#~ msgid "cornflower blue"
+#~ msgstr "azulina"
+
+#~ msgid "cyan"
+#~ msgstr "cyan"
+
+#~ msgid "dark green"
+#~ msgstr "verde oscuro"
+
+#~ msgid "dark grey"
+#~ msgstr "gris oscuro"
+
+#~ msgid "dark olive green"
+#~ msgstr "verde oliva oscuro"
+
+#~ msgid "dark orchid"
+#~ msgstr "orquídea oscuro"
+
+#~ msgid "dark slate blue"
+#~ msgstr "azul pizarra oscuro"
+
+#~ msgid "dark slate grey"
+#~ msgstr "gris pizarra oscuro"
+
+#~ msgid "dark turquoise"
+#~ msgstr "turquesa oscuro"
+
+#~ msgid "dim grey"
+#~ msgstr "gris débil"
+
+#~ msgid "eliminate variables:"
+#~ msgstr "eliminar las variables:"
+
+#~ msgid "equation:"
+#~ msgstr "ecuación:"
+
+#~ msgid "firebrick"
+#~ msgstr "teja"
+
+#~ msgid "for function(s):"
+#~ msgstr "para la(s) función(es):"
+
+#~ msgid "for variable(s):"
+#~ msgstr "para la(s) variable(s):"
+
+#~ msgid "forest green"
+#~ msgstr "verde bosque"
+
+#~ msgid "from expression:"
+#~ msgstr "de la expresión:"
+
+#~ msgid "function:"
+#~ msgstr "función:"
+
+#~ msgid "gold"
+#~ msgstr "oro"
+
+#~ msgid "goldenrod"
+#~ msgstr "barra de oro"
+
+#~ msgid "green"
+#~ msgstr "verde"
+
+#~ msgid "green yellow"
+#~ msgstr "verde amarillo"
+
+#~ msgid "grey"
+#~ msgstr "gris"
+
+#, fuzzy
+#~ msgid "implies"
+#~ msgstr "Simplifica"
+
+#~ msgid "in variable:"
+#~ msgstr "respecto la variable:"
+
+#~ msgid "khaki"
+#~ msgstr "caqui"
+
+#~ msgid "light blue"
+#~ msgstr "azul claro"
+
+#~ msgid "light grey"
+#~ msgstr "gris claro"
+
+#~ msgid "light steel blue"
+#~ msgstr "azul acero claro"
+
+#~ msgid "lime green"
+#~ msgstr "verde lima"
+
+#~ msgid "lines hidden"
+#~ msgstr "línies ocultes"
+
+#~ msgid "maroon"
+#~ msgstr "granate"
+
+#~ msgid "medium aquamarine"
+#~ msgstr "aguamarina medio"
+
+#~ msgid "medium blue"
+#~ msgstr "azul medio"
+
+#~ msgid "medium forrest green"
+#~ msgstr "verde bosque medio"
+
+#~ msgid "medium goldenrod"
+#~ msgstr "barra de oro media"
+
+#~ msgid "medium orchid"
+#~ msgstr "orquídea medio"
+
+#~ msgid "medium sea green"
+#~ msgstr "verde mar medio"
+
+#~ msgid "medium slate blue"
+#~ msgstr "azul pizarra medio"
+
+#~ msgid "medium spring green"
+#~ msgstr "verde primavera medio"
+
+#~ msgid "medium turquoise"
+#~ msgstr "turquesa medio"
+
+#~ msgid "medium violet red"
+#~ msgstr "rojo violeta medio"
+
+#~ msgid "midnight blue"
+#~ msgstr "azul medianoche"
+
+#, fuzzy
+#~ msgid "ny"
+#~ msgstr "marina"
+
+#~ msgid "orange"
+#~ msgstr "naranja"
+
+#~ msgid "orange red"
+#~ msgstr "rojo anaranjado"
+
+#~ msgid "pale green"
+#~ msgstr "verde pálido"
+
+#~ msgid "plum"
+#~ msgstr "ciruela"
+
+#~ msgid "purple"
+#~ msgstr "morado"
+
+#~ msgid "red"
+#~ msgstr "rojo"
+
+#~ msgid "salmon"
+#~ msgstr "salmón"
+
+#~ msgid "sea green"
+#~ msgstr "verde mar"
+
+#~ msgid "sienna"
+#~ msgstr "siena"
+
+#~ msgid "sky blue"
+#~ msgstr "azul cielo"
+
+#~ msgid "spring green"
+#~ msgstr "verde primavera"
+
+#~ msgid "steel blue"
+#~ msgstr "azul acero"
+
+#~ msgid "the value is:"
+#~ msgstr "el valor es:"
+
+#~ msgid "thistle"
+#~ msgstr "cardo"
+
+#~ msgid "turquoise"
+#~ msgstr "turquesa"
+
+#~ msgid "untitled.wxm"
+#~ msgstr "sinnombre.wxm"
+
+#~ msgid "variable"
+#~ msgstr "variable"
+
+#~ msgid "variable:"
+#~ msgstr "variable:"
+
+#~ msgid "violet"
+#~ msgstr "violeta"
+
+#~ msgid "wheat"
+#~ msgstr "trigo"
+
+#~ msgid "when variable:"
+#~ msgstr "cuando la variable:"
+
+#~ msgid "white"
+#~ msgstr "blanco"
+
+#~ msgid "with:"
+#~ msgstr "con:"
+
 #~ msgid ""
 #~ "wxMaxima has nice plot dialogs. If you want to modify previous plot "
 #~ "commands, access them using command history and then push the plot button."
@@ -6209,124 +6293,11 @@ msgstr "zeta"
 #~ "comandos y a continuación pulsando el botón de gráficos."
 
 #~ msgid ""
-#~ "wxMaxima's input line has command history available using up and down "
-#~ "keys and command completion based on previous input available using the "
-#~ "tab key."
+#~ "wxMaxima is a graphical user interface for the\n"
+#~ "computer algebra system Maxima based on wxWidgets."
 #~ msgstr ""
-#~ "La línea de entrada de wxMaxima tiene un histórico disponible usando las "
-#~ "teclas de dirección arriba y abajo, y un autocompletado de comandos "
-#~ "basado en la entrada anterior disponible, usando la tecla tabulador."
-
-#~ msgid "Apply function:"
-#~ msgstr "Aplicar función:"
-
-#~ msgid "At point:"
-#~ msgstr "En el punto:"
-
-#~ msgid "Char poly of:"
-#~ msgstr "Polinomio característico de:"
-
-#~ msgid "Comment out"
-#~ msgstr "Comentar"
-
-#~ msgid "Copy &text"
-#~ msgstr "Copiar &texto"
-
-#~ msgid "Copy selection from console (including linebreaks)"
-#~ msgstr "Copiar selección de la consola (saltos de línea incluidos)"
-
-#~ msgid "From array:"
-#~ msgstr "De la tabla:"
-
-#~ msgid "From equations:"
-#~ msgstr "De las ecuaciones:"
-
-#~ msgid "Integrate:"
-#~ msgstr "Integrar:"
-
-#~ msgid "Limit of:"
-#~ msgstr "Límite de:"
-
-#~ msgid "Map function:"
-#~ msgstr "Aplicar la función:"
-
-#~ msgid "Product:"
-#~ msgstr "Producto:"
-
-#~ msgid "Solve &numerically ..."
-#~ msgstr "Resolver &numéricamente"
-
-#~ msgid "Solve equation(s):"
-#~ msgstr "Resolver ecuación(es):"
-
-#~ msgid "Solve equation:"
-#~ msgstr "Resolver ecuación:"
-
-#~ msgid "Solve numerically"
-#~ msgstr "Resolver numéricamente"
-
-#~ msgid "Solve numerically ..."
-#~ msgstr "Resolver numéricamente"
-
-#~ msgid "Substitute:"
-#~ msgstr "Sustituir:"
-
-#~ msgid "Substitution"
-#~ msgstr "Sustitución"
-
-#~ msgid "Sum of:"
-#~ msgstr "Suma de:"
-
-#~ msgid "Unfold"
-#~ msgstr "Desplegar"
-
-#~ msgid "Use &Taylor series"
-#~ msgstr "Usar serie de &Taylor"
-
-#~ msgid "around:"
-#~ msgstr "entorno a:"
-
-#~ msgid "by variable:"
-#~ msgstr "para la variable:"
-
-#~ msgid "change var:"
-#~ msgstr "cambiar var:"
-
-#~ msgid "eliminate variables:"
-#~ msgstr "eliminar las variables:"
-
-#~ msgid "equation:"
-#~ msgstr "ecuación:"
-
-#~ msgid "for function(s):"
-#~ msgstr "para la(s) función(es):"
-
-#~ msgid "for variable(s):"
-#~ msgstr "para la(s) variable(s):"
-
-#~ msgid "from expression:"
-#~ msgstr "de la expresión:"
-
-#~ msgid "function:"
-#~ msgstr "función:"
-
-#~ msgid "in variable:"
-#~ msgstr "respecto la variable:"
-
-#~ msgid "the value is:"
-#~ msgstr "el valor es:"
-
-#~ msgid "variable"
-#~ msgstr "variable"
-
-#~ msgid "variable:"
-#~ msgstr "variable:"
-
-#~ msgid "when variable:"
-#~ msgstr "cuando la variable:"
-
-#~ msgid "with:"
-#~ msgstr "con:"
+#~ "wxMaxima es una interface gráfica de usuario para \n"
+#~ "el Sistema de Cálculo Simbólico Maxima, basado en wxWidgets."
 
 #~ msgid ""
 #~ "wxMaxima is a wxWidgets interface for the\n"
@@ -6347,10 +6318,39 @@ msgstr "zeta"
 #~ "%s\n"
 #~ "%s"
 
+#~ msgid "wxMaxima options"
+#~ msgstr "Opcions de wxMaxima"
+
+#~ msgid "wxMaxima session"
+#~ msgstr "Sesión de wxMaxima"
+
+#~ msgid "wxMaxima session (*.wxm)|*.wxm"
+#~ msgstr "Sesión de wxMaxima (*.wxm)|*.wxm"
+
 #~ msgid "wxMaxima session (*.wxm)|*.wxm|Maxima batch file (*mac)|*.mac|All|*"
 #~ msgstr ""
 #~ "Sesión wxMaxima (*.wxm)|*.wxm|Archivo por lotes de Maxima (*mac)|*.mac|"
 #~ "Todos|*"
 
-#~ msgid "Maxima session (*.wxm)|*.wxm"
-#~ msgstr "Sesión de Maxima (*.wxm)|*.wxm"
+#~ msgid ""
+#~ "wxMaxima xml document (*.wxmx)|*.wxmx|wxMaxima document (*.wxm)|*.wxm|"
+#~ "Maxima batch file (*.mac)|*.mac"
+#~ msgstr ""
+#~ "Document xml wxMaxima (*.wxmx)|*.wxmx|Document wxMaxima (*.wxm)|*.wxm|"
+#~ "Arxiu per lots de Maxima (*.mac)|*.mac"
+
+#~ msgid ""
+#~ "wxMaxima's input line has command history available using up and down "
+#~ "keys and command completion based on previous input available using the "
+#~ "tab key."
+#~ msgstr ""
+#~ "La línea de entrada de wxMaxima tiene un histórico disponible usando las "
+#~ "teclas de dirección arriba y abajo, y un autocompletado de comandos "
+#~ "basado en la entrada anterior disponible, usando la tecla tabulador."
+
+#~ msgid "yellow green"
+#~ msgstr "verde amarillo"
+
+#, fuzzy
+#~ msgid "ypsilon"
+#~ msgstr "Epsilon:"

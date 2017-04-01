@@ -5366,30 +5366,41 @@ msgstr "Typografier"
 msgid "zeta"
 msgstr ""
 
-#, fuzzy
-#~ msgid "Text & Code"
-#~ msgstr "Division"
+#~ msgid " << Expression too long to display! >>"
+#~ msgstr "<< Udtrykket er for langt til at kunne vises! >>"
 
-#~ msgid "Document "
-#~ msgstr "Dokument "
+#, fuzzy
+#~ msgid "&Cell"
+#~ msgstr "Celle"
 
 #, fuzzy
 #~ msgid "&New\tCtrl-N"
 #~ msgstr "&Ny\tCtrl+N"
 
-#~ msgid "Write matching parenthesis in text controls."
-#~ msgstr "Anvend automatisk parring af parenteser i indtastningsfelter."
+#~ msgid "&New Window\tCtrl+N"
+#~ msgstr "&Nyt vindue\tCtrl+N"
 
 #, fuzzy
-#~ msgid "Ypsilon"
-#~ msgstr "Udtryk:"
-
-#, fuzzy
-#~ msgid "ypsilon"
-#~ msgstr "Udtryk:"
-
-#~ msgid " << Expression too long to display! >>"
+#~ msgid "<< Nothing to display >>"
 #~ msgstr "<< Udtrykket er for langt til at kunne vises! >>"
+
+#~ msgid "Adjustment for the size of greek font."
+#~ msgstr "Justering af størrelsen for græsk skrifttype."
+
+#~ msgid "Adjustment:"
+#~ msgstr "Justering af størrelse:"
+
+#~ msgid "Animation"
+#~ msgstr "Animation"
+
+#~ msgid "Basic"
+#~ msgstr "Basis"
+
+#~ msgid "Button panel:"
+#~ msgstr "Knappanel:"
+
+#~ msgid "Close document?"
+#~ msgstr "Skal dokumentet lukkes?"
 
 #~ msgid "Copy As Image"
 #~ msgstr "Kopier som billede"
@@ -5397,67 +5408,38 @@ msgstr ""
 #~ msgid "Copy LaTeX"
 #~ msgstr "Kopier som LaTeX"
 
-#~ msgid "Height:"
-#~ msgstr "Højde:"
+#~ msgid "Copy selected cell(s)"
+#~ msgstr "Kopier markerede celler"
 
-#~ msgid "Width:"
-#~ msgstr "Bredde:"
-
-#, fuzzy
-#~ msgid "implies"
-#~ msgstr "Reducer (ratsimp)"
-
-#~ msgid "Error %d"
-#~ msgstr "Fejl %d"
-
-#, fuzzy
-#~ msgid ""
-#~ "wxMaxima xml document (*.wxmx)|*.wxmx|wxMaxima document (*.wxm)|*.wxm|"
-#~ "Maxima batch file (*.mac)|*.mac"
+#~ msgid "Copy selection to clipboard when selection is made in document."
 #~ msgstr ""
-#~ "wxMaxima-dokument (*.wxm)|*.wxm|wxMaxima xml-dokument (*.wxmx)|*.wxmx|"
-#~ "Maxima-batchfil (*.mac)|*.mac|Alle|*"
+#~ "Kopier markering til Udklipsholder, når der er foretaget markering i "
+#~ "dokumentet."
 
-#~ msgid "Set &Precision..."
-#~ msgstr "Vælg &nøjagtighed"
+# Hvilken kontekst?
+#~ msgid "Copy to clipboard on select"
+#~ msgstr "Kopier markering til Udklipsholder"
 
-#~ msgid "Start animation"
-#~ msgstr "Afspil animation"
+#~ msgid "Cut Cell(s)\tCtrl+Shift+X"
+#~ msgstr "Klip celle(r)\tCtrl+Shift+X"
 
-#~ msgid "Stop animation"
-#~ msgstr "Stop animation"
+#~ msgid "Cut selected cell(s)"
+#~ msgstr "Klip markerede celle(r)"
 
-#~ msgid "Animation"
-#~ msgstr "Animation"
-
-#, fuzzy
-#~ msgid "Find..."
-#~ msgstr "Bestem nulpunkt..."
-
-#, fuzzy
-#~ msgid "Re-evaluate All until here\tCtrl+Shift+H"
-#~ msgstr "Beregn alle celler\tCtrl+R"
-
-#, fuzzy
-#~ msgid "Redo\tCtrl+Shift+Z"
-#~ msgstr "Fortryd\tCtrl+Z"
+#~ msgid "Decrease fontsize in document"
+#~ msgstr "Formindsk skriftstørrelse i dokument"
 
 #~ msgid "Default port:"
 #~ msgstr "Standardport:"
 
-#, fuzzy
-#~ msgid "Save changes?"
-#~ msgstr "Gem billede..."
+#~ msgid "Delete selected cell(s)"
+#~ msgstr "Slet markerede celle(r)"
 
-#, fuzzy
-#~ msgid "&Cell"
-#~ msgstr "Celle"
+#~ msgid "Delete selection"
+#~ msgstr "Klip markering"
 
-#~ msgid "&New Window\tCtrl+N"
-#~ msgstr "&Nyt vindue\tCtrl+N"
-
-#~ msgid "Close document?"
-#~ msgstr "Skal dokumentet lukkes?"
+#~ msgid "Document "
+#~ msgstr "Dokument "
 
 #~ msgid ""
 #~ "Document not saved!\n"
@@ -5477,81 +5459,12 @@ msgstr ""
 #~ "\n"
 #~ "Skal wxMaxima afsluttes og ændringerne gå tabt?"
 
-#~ msgid "Maxima options"
-#~ msgstr "Maxima-indstillinger"
-
-#~ msgid "Quit?"
-#~ msgstr "Skal der afsluttes?"
-
-#~ msgid "wxMaxima options"
-#~ msgstr "wxMaxima-indstillinger"
-
-#~ msgid ""
-#~ "wxMaxima is a graphical user interface for the\n"
-#~ "computer algebra system Maxima based on wxWidgets."
-#~ msgstr ""
-#~ "wxMaxima er en grafisk brugerflade for computer \n"
-#~ "algebra systemet MAXIMA baseret på wxWidgets."
+#~ msgid "Error %d"
+#~ msgstr "Fejl %d"
 
 #, fuzzy
-#~ msgid "<< Nothing to display >>"
-#~ msgstr "<< Udtrykket er for langt til at kunne vises! >>"
-
-#, fuzzy
-#~ msgid "Functions and macros"
-#~ msgstr "Navne på funktioner"
-
-#~ msgid "Copy selection to clipboard when selection is made in document."
-#~ msgstr ""
-#~ "Kopier markering til Udklipsholder, når der er foretaget markering i "
-#~ "dokumentet."
-
-# Hvilken kontekst?
-#~ msgid "Copy to clipboard on select"
-#~ msgstr "Kopier markering til Udklipsholder"
-
-#~ msgid "Input"
-#~ msgstr "Input"
-
-#~ msgid "Save document as ..."
-#~ msgstr "Gem dokument som ..."
-
-#~ msgid "Show Maxima header"
-#~ msgstr "Vis Maxima-hoved"
-
-#~ msgid "Show initial header with Maxima system information."
-#~ msgstr ""
-#~ "Vis hoved med  Maxima-systeminformation i begyndelsen af dokumentet."
-
-#~ msgid "Adjustment for the size of greek font."
-#~ msgstr "Justering af størrelsen for græsk skrifttype."
-
-#~ msgid "Adjustment:"
-#~ msgstr "Justering af størrelse:"
-
-#~ msgid "Basic"
-#~ msgstr "Basis"
-
-#~ msgid "Button panel:"
-#~ msgstr "Knappanel:"
-
-#~ msgid "Copy selected cell(s)"
-#~ msgstr "Kopier markerede celler"
-
-#~ msgid "Cut Cell(s)\tCtrl+Shift+X"
-#~ msgstr "Klip celle(r)\tCtrl+Shift+X"
-
-#~ msgid "Cut selected cell(s)"
-#~ msgstr "Klip markerede celle(r)"
-
-#~ msgid "Decrease fontsize in document"
-#~ msgstr "Formindsk skriftstørrelse i dokument"
-
-#~ msgid "Delete selected cell(s)"
-#~ msgstr "Slet markerede celle(r)"
-
-#~ msgid "Delete selection"
-#~ msgstr "Klip markering"
+#~ msgid "Find..."
+#~ msgstr "Bestem nulpunkt..."
 
 #~ msgid "Font used for displaying unicode glyphs in document."
 #~ msgstr "Anvendt skrifttype til visning af Unicode-tegn i dokumentet."
@@ -5559,8 +5472,18 @@ msgstr ""
 #~ msgid "Full"
 #~ msgstr "Komplet"
 
+#, fuzzy
+#~ msgid "Functions and macros"
+#~ msgstr "Navne på funktioner"
+
+#~ msgid "Height:"
+#~ msgstr "Højde:"
+
 #~ msgid "Increase fontsize in document"
 #~ msgstr "Forøg skriftstørrelse i dokument"
+
+#~ msgid "Input"
+#~ msgstr "Input"
 
 # input ELLER inputcelle
 # - se også andre!
@@ -5571,6 +5494,9 @@ msgstr ""
 # - hvilken kontekst?
 #~ msgid "Insert input group"
 #~ msgstr "Indsæt input"
+
+#~ msgid "Maxima options"
+#~ msgstr "Maxima-indstillinger"
 
 #~ msgid "New T&itle Cell\tCtrl+Shift+F6"
 #~ msgstr "Indsæt celle til &overskrift\tCtrl+Shift+F6"
@@ -5584,8 +5510,46 @@ msgstr ""
 #~ msgid "Product..."
 #~ msgstr "Produkt..."
 
+#~ msgid "Quit?"
+#~ msgstr "Skal der afsluttes?"
+
+#, fuzzy
+#~ msgid "Re-evaluate All until here\tCtrl+Shift+H"
+#~ msgstr "Beregn alle celler\tCtrl+R"
+
+#, fuzzy
+#~ msgid "Redo\tCtrl+Shift+Z"
+#~ msgstr "Fortryd\tCtrl+Z"
+
+#, fuzzy
+#~ msgid "Save changes?"
+#~ msgstr "Gem billede..."
+
+#~ msgid "Save document as ..."
+#~ msgstr "Gem dokument som ..."
+
+#~ msgid "Set &Precision..."
+#~ msgstr "Vælg &nøjagtighed"
+
+#~ msgid "Show Maxima header"
+#~ msgstr "Vis Maxima-hoved"
+
+#~ msgid "Show initial header with Maxima system information."
+#~ msgstr ""
+#~ "Vis hoved med  Maxima-systeminformation i begyndelsen af dokumentet."
+
+#~ msgid "Start animation"
+#~ msgstr "Afspil animation"
+
+#~ msgid "Stop animation"
+#~ msgstr "Stop animation"
+
 #~ msgid "Sum..."
 #~ msgstr "Sum..."
+
+#, fuzzy
+#~ msgid "Text & Code"
+#~ msgstr "Division"
 
 #~ msgid "To &Float\tCtrl+F"
 #~ msgstr "Angiv som decimaltal &1\tCtrl+1"
@@ -5599,5 +5563,41 @@ msgstr ""
 #~ msgid "Use greek font:"
 #~ msgstr "Anvend græsk skrifttype:"
 
+#~ msgid "Width:"
+#~ msgstr "Bredde:"
+
+#~ msgid "Write matching parenthesis in text controls."
+#~ msgstr "Anvend automatisk parring af parenteser i indtastningsfelter."
+
+#, fuzzy
+#~ msgid "Ypsilon"
+#~ msgstr "Udtryk:"
+
+#, fuzzy
+#~ msgid "implies"
+#~ msgstr "Reducer (ratsimp)"
+
 #~ msgid "untitled.wxm"
 #~ msgstr "unavngivet.wxm"
+
+#~ msgid ""
+#~ "wxMaxima is a graphical user interface for the\n"
+#~ "computer algebra system Maxima based on wxWidgets."
+#~ msgstr ""
+#~ "wxMaxima er en grafisk brugerflade for computer \n"
+#~ "algebra systemet MAXIMA baseret på wxWidgets."
+
+#~ msgid "wxMaxima options"
+#~ msgstr "wxMaxima-indstillinger"
+
+#, fuzzy
+#~ msgid ""
+#~ "wxMaxima xml document (*.wxmx)|*.wxmx|wxMaxima document (*.wxm)|*.wxm|"
+#~ "Maxima batch file (*.mac)|*.mac"
+#~ msgstr ""
+#~ "wxMaxima-dokument (*.wxm)|*.wxm|wxMaxima xml-dokument (*.wxmx)|*.wxmx|"
+#~ "Maxima-batchfil (*.mac)|*.mac|Alle|*"
+
+#, fuzzy
+#~ msgid "ypsilon"
+#~ msgstr "Udtryk:"

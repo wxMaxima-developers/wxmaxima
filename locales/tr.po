@@ -5357,105 +5357,100 @@ msgstr "evet"
 msgid "zeta"
 msgstr "zeta"
 
-#~ msgid ""
-#~ "If a command begins with a label followed by a : wxMaxima will show this "
-#~ "label instead of the %o style label maxima has automatically assigned to "
-#~ "the same output cell."
-#~ msgstr ""
-#~ "Eğer bir komut şu şeklide bir etiket ile başlarsa: wxMaxima %o tarzı bir "
-#~ "etiket yerine bu etiketi gösterecektir, maxima otomatik olarak aynı çıktı "
-#~ "hücresine bağlanır."
+#~ msgid " << Expression too long to display! >>"
+#~ msgstr " << İfade, görüntülemek için çok uzun!' >>"
 
-#~ msgid "Show user-defined labels instead of (%oxx)"
-#~ msgstr "(%oxx) yerine kullanıcı tanımlı etiketleri göster"
+#~ msgid " << Unfold >>"
+#~ msgstr " << Klasörden çıkart >>"
 
-#, fuzzy
-#~ msgid "Text & Code"
-#~ msgstr "Hücreyi Böl"
+#~ msgid "&Cell"
+#~ msgstr "Hücre"
 
-#~ msgid "Document "
-#~ msgstr "Belge"
+#~ msgid "&Copy"
+#~ msgstr "&Kopyala"
+
+#~ msgid "&Describe\tCtrl+H"
+#~ msgstr "&Tanımla\tCtrl+H"
+
+#~ msgid "&Edit input\tCtrl+E"
+#~ msgstr "&GİRDİyi Düzenle-\tCtrl+E"
+
+#~ msgid "&Input\tF7"
+#~ msgstr "&GİRDİ\tF7"
+
+#~ msgid "&Monitor file"
+#~ msgstr "&Dosyayı İzle"
 
 #, fuzzy
 #~ msgid "&New\tCtrl-N"
 #~ msgstr "&Yeni\tCtrl+N"
 
-#~ msgid "HTML/Text Cells: Export all linebreaks"
-#~ msgstr "HTML/Metin Hücreleri: Bütün satır kesmelerini çıkarım yap"
+#~ msgid "&New Window\tCtrl+N"
+#~ msgstr "&Yeni Pencere\tCtrl+N"
 
-#~ msgid "Include input cells in the export of a worksheet"
-#~ msgstr "Bir çalışma yaprağı çıkarımında girdi hücrelerini içerir"
+#~ msgid "&Re-evaluate input\tCtrl+R"
+#~ msgstr "&Tekrar değerlendir-GİRDİyi\tCtrl+R"
+
+#~ msgid "&Read file"
+#~ msgstr "&Dosyayı Oku"
+
+#~ msgid "&Text\tF6"
+#~ msgstr "&Metin\tF6"
+
+#~ msgid "<< Nothing to display >>"
+#~ msgstr "<< Göstecek hiçbirşey yok! >>"
+
+#~ msgid "Adjustment for the size of greek font."
+#~ msgstr "Yunanca yazı tiplerini boyutu için ayarlama(lar)"
+
+#~ msgid "Adjustment:"
+#~ msgstr "Ayarlama(lar):"
 
 #~ msgid ""
-#~ "Normally we export the whole worksheet to TeX or HTML. But sometimes the "
-#~ "maxima input does scare the user. This option turns off exporting of "
-#~ "maxima's input."
+#~ "All|*|Maxima package (*.mac)|*.mac|Demo file (*.dem)|*.dem|Lisp file (*."
+#~ "lisp)|*.lisp"
 #~ msgstr ""
-#~ "Normal olarak çalışma yaprağının TeX ya da HTML olarak çıkarımını "
-#~ "yaparız. Ancak bazen maxima girdisi kullanıcını keyfini kaçırır. Bu "
-#~ "seçenek maxima'nın girdilerini kapatır."
+#~ "Tümü|*|Maxima paketi(*.mac)|*.mac|demo dosyası(*.dem)|*.dem| lisp dosyası "
+#~ "(*.lisp)|*.lisp"
 
-#~ msgid ""
-#~ "While text cells in LaTeX are broken into lines by TeX the text displayed "
-#~ "on the screen is broken into lines manually. This option, if set tells "
-#~ "that lines in HTML output will be broken where they are broken in the "
-#~ "worksheet. If this option isn't set manual linebreaks can still be "
-#~ "introduced by introducing an empty line."
-#~ msgstr ""
-#~ "LaTeX'teki metin hücreleri TeX tarafından satırlara ayrılırken, ekranda "
-#~ "görüntülenen metin el ile satırlara ayrılır. Bu seçenek,  seçildiğinde, "
-#~ "çalışma yaprağında olan satır kesmelerini  HTML çıkarımında  yapacaktır. "
-#~ "Bu seçenek seçilmediğinde satır kesmeleri boş bir satırla "
-#~ "gösterilecektir. "
+#~ msgid "Animation"
+#~ msgstr "Animasyon"
 
-#~ msgid "Write matching parenthesis in text controls."
-#~ msgstr "Metin kontrolünde parantez eşleştirmesini yaz"
+#~ msgid "Apply function:"
+#~ msgstr "Fonksiyonu uygula:"
 
-#~ msgid "Use MathJAX in HTML export"
-#~ msgstr "HTML olarak çıkarımlarda MathJAX kullan"
+#~ msgid "At point:"
+#~ msgstr "..noktasında:"
 
-#, fuzzy
-#~ msgid ""
-#~ "Use MathJAX instead of images in HTML exports to display maxima output. "
-#~ "The advantage of MathJAX is that it allows to copy the displayed "
-#~ "equations as if they were text, to choose if they should be copied as TeX "
-#~ "or MathML instead and displays them in a scaleable format that is really "
-#~ "nice to look at. The disadvantage of MathJAX is that it will need "
-#~ "JavaScript and a little bit of time in order to typeset an equation."
-#~ msgstr ""
-#~ "Maxima çıktılarının gösteriminde HTML deki \"resim\" gösterimi yerine "
-#~ "MathJAX ı kullan. MathJAX ın avantajlı yanı, gösterilen matematiksel "
-#~ "ifadeleri metinlermiş gibi kopyalar, TeX ya da MathML olarak kopyalama "
-#~ "seçeneği sunar ve güzel bir görünüm kazandırmasıdır. Avantajlı olmayan "
-#~ "yanı ise JavaScript gerektirmesi ve matematiksel ifadeyi yazma işleminin "
-#~ "uzun olasıdır."
+#~ msgid "Autocomplete"
+#~ msgstr "Otomatik tamamla"
 
-#~ msgid "My"
-#~ msgstr "Benim"
+#~ msgid "Autoload a file when it is updated"
+#~ msgstr "Güncellendiğinde otomatik yükle"
 
-#~ msgid "Ny"
-#~ msgstr "Ny"
+#~ msgid "Background"
+#~ msgstr "Arka plan"
 
-#~ msgid "Omnikron"
-#~ msgstr "Omnikron"
+#~ msgid "Basic"
+#~ msgstr "Temel"
 
-#~ msgid "Ypsilon"
-#~ msgstr "Epsilon"
+#~ msgid "Button panel:"
+#~ msgstr "Buton paneli:"
 
-#~ msgid "my"
-#~ msgstr "benim"
+#~ msgid "C&lear screen"
+#~ msgstr "&Ekranı temizle"
 
-#~ msgid "ny"
-#~ msgstr "lacivert"
+#~ msgid "Char poly of:"
+#~ msgstr " matrisinin karakteristik polinomu:"
 
-#~ msgid "omnikron"
-#~ msgstr "omnikron"
+#~ msgid "Close document?"
+#~ msgstr "Belgeyi Kapat?"
 
-#~ msgid "ypsilon"
-#~ msgstr "epsilon"
+#~ msgid "Comment out"
+#~ msgstr "Yorumla"
 
-#~ msgid " << Expression too long to display! >>"
-#~ msgstr " << İfade, görüntülemek için çok uzun!' >>"
+#~ msgid "Copy &text"
+#~ msgstr "Kopyala-&Metin"
 
 #~ msgid "Copy As Image"
 #~ msgstr "Resim olarak Kopyala"
@@ -5463,83 +5458,65 @@ msgstr "zeta"
 #~ msgid "Copy LaTeX"
 #~ msgstr "LaTeX i kopyala"
 
-#~ msgid "Height:"
-#~ msgstr "Yükseklik:"
+#~ msgid "Copy cells"
+#~ msgstr "Hücreleri Kopyala "
 
-#~ msgid "Width:"
-#~ msgstr "Genişlik:"
+#~ msgid "Copy input"
+#~ msgstr "GİRDİyi KOPYALA- "
 
-#~ msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
-#~ msgstr ""
-#~ "Çalşma yaprağının bir parçası olmayan bir hücreye imleci yerleştirmeye "
-#~ "çalışıyor."
+#~ msgid "Copy input from console"
+#~ msgstr "Konsoldan GİRDİYİ Kopyala"
 
-#, fuzzy
-#~ msgid "implies"
-#~ msgstr "Sadeleştir"
+#~ msgid "Copy selected cell(s)"
+#~ msgstr " Seçilen Hücre(leri) Kopyala "
 
-#~ msgid "Panes"
-#~ msgstr "Paneller"
+#~ msgid "Copy selection from console (including linebreaks)"
+#~ msgstr "Kopyala- konsoldan seçileni(satır sonlarını da)"
 
-#~ msgid "Error %d"
-#~ msgstr "HATA %d"
+#~ msgid "Copy selection from console to input line"
+#~ msgstr "Konsoldan Seçileni GİRDİ satırına Kopyala  "
 
-#, fuzzy
-#~ msgid "Structure\tAlt+Shift+T"
-#~ msgstr "Denetleyeci\tAlt+Shift+I"
+#~ msgid "Copy selection to clipboard when selection is made in document."
+#~ msgstr "Belgede seçim yapıldığında seçileni panoya kopyala."
 
-#~ msgid "Zoom set to "
-#~ msgstr "Yakınlaştırmayı ayarla "
+#~ msgid "Copy to clipboard on select"
+#~ msgstr "Seçerken panoya kopyala"
 
-#, fuzzy
-#~ msgid ""
-#~ "wxMaxima xml document (*.wxmx)|*.wxmx|wxMaxima document (*.wxm)|*.wxm|"
-#~ "Maxima batch file (*.mac)|*.mac"
-#~ msgstr ""
-#~ "wxMaxima Belgesi (*.wxm)|*.wxm|xml wxMaxima Belgesi,(*.wxmx)|*.wxmx| "
-#~ "Maxima Kütüğü (*.mac)|*.mac"
+#~ msgid "Copy to input"
+#~ msgstr "Kopyala- GİRDİ satırına "
 
-#~ msgid "lines hidden"
-#~ msgstr "gizlenmiş satırlar"
+#~ msgid "Cut Cell(s)\tCtrl+Shift+X"
+#~ msgstr "Hücre(leri) Kes\tCtrl+Shift+X"
 
-#~ msgid "Set &Precision..."
-#~ msgstr "Hassasiyeti Belirt"
+#~ msgid "Cut selection from document"
+#~ msgstr "Belgeden seçileni Kes  "
 
-#~ msgid "Start animation"
-#~ msgstr "Animasyonu Başlat"
-
-#~ msgid "Stop animation"
-#~ msgstr "Animasyonu durdur"
-
-#~ msgid "Animation"
-#~ msgstr "Animasyon"
+#~ msgid "Decrease fontsize in document"
+#~ msgstr "Belgede yazı tipi boyutunu küçült"
 
 #~ msgid "Default port:"
 #~ msgstr "Varsayılan Port:"
 
-#~ msgid "Find..."
-#~ msgstr "Bul.."
+#~ msgid "Delete selected cell(s)"
+#~ msgstr " Seçilen Hücre(leri) Sil"
+
+#~ msgid "Delete selected input/output group"
+#~ msgstr "Sil-GİRDİ\\ÇIKTI dan Seçim Grubunu "
+
+#~ msgid "Delete selection"
+#~ msgstr "Seçileni Sİl "
+
+#~ msgid "Delete the contents of console."
+#~ msgstr "Konsol içeriğini sil."
+
+#~ msgid "Describe"
+#~ msgstr "Tanımla"
 
 #~ msgid "Diagram of sector..."
 #~ msgstr "Bölüm Diyagramı..."
 
-#~ msgid "Redo\tCtrl+Shift+Z"
-#~ msgstr "Yinele\tCtrl+Shift+Z"
-
-#~ msgid "Save changes before closing?"
-#~ msgstr "Belgeyi Kapatmadan Önce Kaydet"
-
-#~ msgid "Save changes?"
-#~ msgstr "Değişiklikler Kaydedilsin mi?"
-
-#~ msgid "&Cell"
-#~ msgstr "Hücre"
-
-#~ msgid "&New Window\tCtrl+N"
-#~ msgstr "&Yeni Pencere\tCtrl+N"
-
-#~ msgid "Close document?"
-#~ msgstr "Belgeyi Kapat?"
+#~ msgid "Document "
+#~ msgstr "Belge"
 
 #~ msgid ""
 #~ "Document not saved!\n"
@@ -5559,417 +5536,6 @@ msgstr "zeta"
 #~ "\n"
 #~ "wxMaxima'dan çık ve değişiklikleri uygulama ? "
 
-#~ msgid "Maxima options"
-#~ msgstr "Maxima seçenekleri"
-
-#~ msgid "Mean"
-#~ msgstr "Ortalama Değer"
-
-#~ msgid "Quit?"
-#~ msgstr "Çık ?"
-
-#~ msgid "wxMaxima options"
-#~ msgstr "wxMaxima seçenekleri"
-
-#~ msgid ""
-#~ "wxMaxima is a graphical user interface for the\n"
-#~ "computer algebra system Maxima based on wxWidgets."
-#~ msgstr ""
-#~ "wxMaxima, wxWidgets ile geliştirilmiştir. \n"
-#~ "Bilgisayar Cebiri Sistemi Maxima'nın bir grafiksel kullanıcı arayüzüdür."
-
-#~ msgid "<< Nothing to display >>"
-#~ msgstr "<< Göstecek hiçbirşey yok! >>"
-
-#~ msgid "Functions and macros"
-#~ msgstr "Fonksiyonlar ve Makrolar"
-
-#~ msgid "Labels"
-#~ msgstr "Etiketler"
-
-#~ msgid "Autocomplete"
-#~ msgstr "Otomatik tamamla"
-
-#~ msgid "Copy selection to clipboard when selection is made in document."
-#~ msgstr "Belgede seçim yapıldığında seçileni panoya kopyala."
-
-#~ msgid "Copy to clipboard on select"
-#~ msgstr "Seçerken panoya kopyala"
-
-#~ msgid "Input"
-#~ msgstr "GİRDİ"
-
-#~ msgid "Save document as ..."
-#~ msgstr "Belgeyi Farklı Kaydet"
-
-#~ msgid "Show Maxima header"
-#~ msgstr "Maxima başlığını göster"
-
-#~ msgid "Show initial header with Maxima system information."
-#~ msgstr "Başlangıç Başlığını Maxima sisyem bilgisi ile göster."
-
-#~ msgid "Adjustment for the size of greek font."
-#~ msgstr "Yunanca yazı tiplerini boyutu için ayarlama(lar)"
-
-#~ msgid "Adjustment:"
-#~ msgstr "Ayarlama(lar):"
-
-#~ msgid "Basic"
-#~ msgstr "Temel"
-
-#~ msgid "Button panel:"
-#~ msgstr "Buton paneli:"
-
-#~ msgid "Copy selected cell(s)"
-#~ msgstr " Seçilen Hücre(leri) Kopyala "
-
-#~ msgid "Cut Cell(s)\tCtrl+Shift+X"
-#~ msgstr "Hücre(leri) Kes\tCtrl+Shift+X"
-
-#~ msgid "Decrease fontsize in document"
-#~ msgstr "Belgede yazı tipi boyutunu küçült"
-
-#~ msgid "Delete selected cell(s)"
-#~ msgstr " Seçilen Hücre(leri) Sil"
-
-#~ msgid "Delete selection"
-#~ msgstr "Seçileni Sİl "
-
-#~ msgid "Font used for displaying unicode glyphs in document."
-#~ msgstr ""
-#~ "Belgede evrensel kod kabartmaları göstermek için kullanılan yazıtipi"
-
-#~ msgid "Full"
-#~ msgstr "Tüm"
-
-#~ msgid "Increase fontsize in document"
-#~ msgstr "Belgede yazıtipi boyutunu büyüt."
-
-#~ msgid "Insert input cell"
-#~ msgstr "GİRDİ hücresi ekle "
-
-#~ msgid "Insert input group"
-#~ msgstr "GİRDİ grubu ekle"
-
-#~ msgid "Insert text"
-#~ msgstr "Metin Ekle"
-
-#~ msgid "New T&itle Cell\tCtrl+Shift+F6"
-#~ msgstr "Yeni Başlık Hücresi\tCtrl+Shift+F6"
-
-#~ msgid "Off"
-#~ msgstr "Kapalı"
-
-#~ msgid "Paste cell(s) to document"
-#~ msgstr "Hücre(leri) Belgeye Yapıştır"
-
-#~ msgid "Product..."
-#~ msgstr "Çarpım"
-
-#~ msgid "Select file to open"
-#~ msgstr "Seç açılacak dosyayı"
-
-#~ msgid "Sum..."
-#~ msgstr "Toplam.."
-
-#~ msgid "To &Float\tCtrl+F"
-#~ msgstr "Kayan Sayıya \tCtrl+F"
-
-#~ msgid "Use greek font to display greek characters."
-#~ msgstr "Yunanca semboller için yunan yazı tipini kullan"
-
-#~ msgid "Use greek font:"
-#~ msgstr "Yunan yazı tipinin kullan"
-
-#~ msgid "untitled.wxm"
-#~ msgstr "Başlıksız.wxm"
-
-#~ msgid "wxMaxima session (*.wxm)|*.wxm"
-#~ msgstr "wxMaxima oturumu(*.wxm)|*.wxm"
-
-#~ msgid "aquamarine"
-#~ msgstr "deniz yeşili"
-
-#~ msgid "black"
-#~ msgstr "siyah"
-
-#~ msgid "blue"
-#~ msgstr "mavi"
-
-#~ msgid "blue violet"
-#~ msgstr "mavi menekşe"
-
-#~ msgid "brown"
-#~ msgstr "kahverengi"
-
-#~ msgid "cadet blue"
-#~ msgstr "camgöbeği"
-
-#~ msgid "coral"
-#~ msgstr "mercan"
-
-#~ msgid "cornflower blue"
-#~ msgstr "Mavi kantaron"
-
-#~ msgid "cyan"
-#~ msgstr "deniz mavisi"
-
-#~ msgid "dark green"
-#~ msgstr "koyu yeşil"
-
-#~ msgid "dark grey"
-#~ msgstr "koyu gri"
-
-#~ msgid "dark olive green"
-#~ msgstr "koyu zeytin yeşili"
-
-#~ msgid "dark orchid"
-#~ msgstr "koyu orkide"
-
-#~ msgid "dark slate blue"
-#~ msgstr "koyu kurşun mavisi"
-
-#~ msgid "dark slate grey"
-#~ msgstr "koyu kurşun gri"
-
-#~ msgid "dark turquoise"
-#~ msgstr "koyu turkuaz"
-
-#~ msgid "dim grey"
-#~ msgstr "karanlık gir"
-
-#~ msgid "firebrick"
-#~ msgstr "tuğla"
-
-#~ msgid "forest green"
-#~ msgstr "orman yeşili"
-
-#~ msgid "gold"
-#~ msgstr "altın"
-
-#~ msgid "goldenrod"
-#~ msgstr "altın yeşili"
-
-#~ msgid "green"
-#~ msgstr "yeşil"
-
-#~ msgid "green yellow"
-#~ msgstr "yeşil sarı"
-
-#~ msgid "grey"
-#~ msgstr "gri"
-
-#~ msgid "khaki"
-#~ msgstr "haki"
-
-#~ msgid "light blue"
-#~ msgstr "açık mavi"
-
-#~ msgid "light grey"
-#~ msgstr "açık gri"
-
-#~ msgid "light steel blue"
-#~ msgstr "açık çelik mavisi"
-
-#~ msgid "lime green"
-#~ msgstr "lime yeşili"
-
-#~ msgid "maroon"
-#~ msgstr "kestane"
-
-#~ msgid "medium aquamarine"
-#~ msgstr "deniz yeşili-orta"
-
-#~ msgid "medium blue"
-#~ msgstr "mavi-orta"
-
-#~ msgid "medium forrest green"
-#~ msgstr "orman yeşili-orta"
-
-#~ msgid "medium goldenrod"
-#~ msgstr "altın yeşili-orta"
-
-#~ msgid "medium orchid"
-#~ msgstr "orkide-orta"
-
-#~ msgid "medium sea green"
-#~ msgstr "deniz yeşili-orta"
-
-#~ msgid "medium slate blue"
-#~ msgstr "kurşun mavisi-orta"
-
-#~ msgid "medium spring green"
-#~ msgstr "bahar yeşili-orta"
-
-#~ msgid "medium turquoise"
-#~ msgstr "turkuaz-orta"
-
-#~ msgid "medium violet red"
-#~ msgstr "menekşe kırmızısı-orta"
-
-#~ msgid "midnight blue"
-#~ msgstr "geceyerısı mavisi"
-
-#~ msgid "orange"
-#~ msgstr "turuncu"
-
-#~ msgid "orange red"
-#~ msgstr "turuncu kırmızısı"
-
-#~ msgid "pale green"
-#~ msgstr "soluk yeşil"
-
-#~ msgid "plum"
-#~ msgstr "erik"
-
-#~ msgid "purple"
-#~ msgstr "mor"
-
-#~ msgid "red"
-#~ msgstr "kırmızı"
-
-#~ msgid "salmon"
-#~ msgstr "somon"
-
-#~ msgid "sea green"
-#~ msgstr "deniz yeşili"
-
-#~ msgid "sienna"
-#~ msgstr "siena"
-
-#~ msgid "sky blue"
-#~ msgstr "gökyüzü"
-
-#~ msgid "spring green"
-#~ msgstr "bahar yeşili"
-
-#~ msgid "steel blue"
-#~ msgstr "çelik mavisi"
-
-#~ msgid "thistle"
-#~ msgstr "deve dikeni"
-
-#~ msgid "turquoise"
-#~ msgstr "turkuaz"
-
-#~ msgid "violet"
-#~ msgstr "menekşe"
-
-#~ msgid "wheat"
-#~ msgstr "buğday"
-
-#~ msgid "white"
-#~ msgstr "beyaz"
-
-#~ msgid "yellow green"
-#~ msgstr "sarı yeşil"
-
-#~ msgid " << Unfold >>"
-#~ msgstr " << Klasörden çıkart >>"
-
-#~ msgid "Background"
-#~ msgstr "Arka plan"
-
-#~ msgid "Copy cells"
-#~ msgstr "Hücreleri Kopyala "
-
-#~ msgid "Cut selection from document"
-#~ msgstr "Belgeden seçileni Kes  "
-
-#~ msgid "Export to HTML file"
-#~ msgstr "HTML dosyasına Çıkart "
-
-#~ msgid "Hidden groups"
-#~ msgstr "Gizli Gruplar"
-
-#~ msgid "Integrate ..."
-#~ msgstr "İntegralini hesapla"
-
-#~ msgid "Main prompts"
-#~ msgstr "Temel bilgi istemleri"
-
-#~ msgid "Open session from a file"
-#~ msgstr "Bir dosyadan oturum Aç   "
-
-#~ msgid "Other prompts"
-#~ msgstr "Diğer bilgi istemleri"
-
-#~ msgid "Save session"
-#~ msgstr "Oturumu Kaydet "
-
-#~ msgid "Save session to a file"
-#~ msgstr "Oturumu bir dosyaya kaydet  "
-
-#~ msgid "Save to file"
-#~ msgstr "Dosyaya Kaydet"
-
-#~ msgid "Select package to load"
-#~ msgstr "Yüklemek için dosya seç"
-
-#~ msgid "Substitute ..."
-#~ msgstr "Yerine koy"
-
-#~ msgid "wxMaxima session"
-#~ msgstr "wxMaxima oturumu"
-
-#~ msgid "&Copy"
-#~ msgstr "&Kopyala"
-
-#~ msgid "&Describe\tCtrl+H"
-#~ msgstr "&Tanımla\tCtrl+H"
-
-#~ msgid "&Edit input\tCtrl+E"
-#~ msgstr "&GİRDİyi Düzenle-\tCtrl+E"
-
-#~ msgid "&Input\tF7"
-#~ msgstr "&GİRDİ\tF7"
-
-#~ msgid "&Monitor file"
-#~ msgstr "&Dosyayı İzle"
-
-#~ msgid "&Re-evaluate input\tCtrl+R"
-#~ msgstr "&Tekrar değerlendir-GİRDİyi\tCtrl+R"
-
-#~ msgid "&Read file"
-#~ msgstr "&Dosyayı Oku"
-
-#~ msgid "&Text\tF6"
-#~ msgstr "&Metin\tF6"
-
-#~ msgid ""
-#~ "All|*|Maxima package (*.mac)|*.mac|Demo file (*.dem)|*.dem|Lisp file (*."
-#~ "lisp)|*.lisp"
-#~ msgstr ""
-#~ "Tümü|*|Maxima paketi(*.mac)|*.mac|demo dosyası(*.dem)|*.dem| lisp dosyası "
-#~ "(*.lisp)|*.lisp"
-
-#~ msgid "Autoload a file when it is updated"
-#~ msgstr "Güncellendiğinde otomatik yükle"
-
-#~ msgid "C&lear screen"
-#~ msgstr "&Ekranı temizle"
-
-#~ msgid "Copy input"
-#~ msgstr "GİRDİyi KOPYALA- "
-
-#~ msgid "Copy input from console"
-#~ msgstr "Konsoldan GİRDİYİ Kopyala"
-
-#~ msgid "Copy selection from console to input line"
-#~ msgstr "Konsoldan Seçileni GİRDİ satırına Kopyala  "
-
-#~ msgid "Copy to input"
-#~ msgstr "Kopyala- GİRDİ satırına "
-
-#~ msgid "Delete selected input/output group"
-#~ msgstr "Sil-GİRDİ\\ÇIKTI dan Seçim Grubunu "
-
-#~ msgid "Delete the contents of console."
-#~ msgstr "Konsol içeriğini sil."
-
-#~ msgid "Describe"
-#~ msgstr "Tanımla"
-
 #~ msgid "Edit input"
 #~ msgstr "GİRDİyi Düzenle- "
 
@@ -5982,6 +5548,31 @@ msgstr "zeta"
 #~ msgid "Enter command"
 #~ msgstr "Komut gir"
 
+#~ msgid "Error %d"
+#~ msgstr "HATA %d"
+
+#~ msgid "Export to HTML file"
+#~ msgstr "HTML dosyasına Çıkart "
+
+#~ msgid "Find..."
+#~ msgstr "Bul.."
+
+#~ msgid "Font used for displaying unicode glyphs in document."
+#~ msgstr ""
+#~ "Belgede evrensel kod kabartmaları göstermek için kullanılan yazıtipi"
+
+#~ msgid "From array:"
+#~ msgstr "Diziden:"
+
+#~ msgid "From equations:"
+#~ msgstr "Denklemlerden:"
+
+#~ msgid "Full"
+#~ msgstr "Tüm"
+
+#~ msgid "Functions and macros"
+#~ msgstr "Fonksiyonlar ve Makrolar"
+
 #~ msgid "Go to input\tCtrl+Shift+D"
 #~ msgstr "GİRDİye GİT\tCtrl+Shift+D"
 
@@ -5991,11 +5582,29 @@ msgstr "zeta"
 #~ msgid "Go to output window\tF3"
 #~ msgstr "ÇIKTI penceresine GİT \tF3"
 
+#~ msgid "HTML/Text Cells: Export all linebreaks"
+#~ msgstr "HTML/Metin Hücreleri: Bütün satır kesmelerini çıkarım yap"
+
+#~ msgid "Height:"
+#~ msgstr "Yükseklik:"
+
+#~ msgid "Hidden groups"
+#~ msgstr "Gizli Gruplar"
+
 #~ msgid "I&nsert"
 #~ msgstr "&Yerleştir"
 
 #~ msgid "INPUT:"
 #~ msgstr "GİRDİ:"
+
+#~ msgid ""
+#~ "If a command begins with a label followed by a : wxMaxima will show this "
+#~ "label instead of the %o style label maxima has automatically assigned to "
+#~ "the same output cell."
+#~ msgstr ""
+#~ "Eğer bir komut şu şeklide bir etiket ile başlarsa: wxMaxima %o tarzı bir "
+#~ "etiket yerine bu etiketi gösterecektir, maxima otomatik olarak aynı çıktı "
+#~ "hücresine bağlanır."
 
 #~ msgid ""
 #~ "If you want to input more than one line at a time, use the 'Multiline "
@@ -6004,11 +5613,29 @@ msgstr "zeta"
 #~ "Bir defada birden fazla GİRDİ satırı ekleyeceksenizGİRDİ satırının "
 #~ "sağındaki 'Çok Satırlı GİRDİ' butonunu kullanınız."
 
+#~ msgid "Include input cells in the export of a worksheet"
+#~ msgstr "Bir çalışma yaprağı çıkarımında girdi hücrelerini içerir"
+
+#~ msgid "Increase fontsize in document"
+#~ msgstr "Belgede yazıtipi boyutunu büyüt."
+
+#~ msgid "Input"
+#~ msgstr "GİRDİ"
+
+#~ msgid "Insert input cell"
+#~ msgstr "GİRDİ hücresi ekle "
+
+#~ msgid "Insert input group"
+#~ msgstr "GİRDİ grubu ekle"
+
 #~ msgid "Insert new input before selected input"
 #~ msgstr "Seçilen GİRDİ den önce yeni bir GİRDİ yerleştir"
 
 #~ msgid "Insert section before selected input"
 #~ msgstr "Seçilen GİRDİ de önce bölüm yerleştir"
+
+#~ msgid "Insert text"
+#~ msgstr "Metin Ekle"
 
 #~ msgid "Insert text before selected input"
 #~ msgstr "Seçilen GİRDİ de önce metin yerleştir"
@@ -6023,17 +5650,89 @@ msgstr "zeta"
 #~ "Kullanmak istediğiniz dosyanın ismini yazmak yerine 'Klasör-> Klasörü "
 #~ "Seç'i kullanabilirsiniz."
 
+#~ msgid "Integrate ..."
+#~ msgstr "İntegralini hesapla"
+
+#~ msgid "Integrate:"
+#~ msgstr "İntegrali hesapla:"
+
+#~ msgid "Labels"
+#~ msgstr "Etiketler"
+
+#~ msgid "Limit of:"
+#~ msgstr "'nın Limiti:"
+
+#~ msgid "Main prompts"
+#~ msgstr "Temel bilgi istemleri"
+
+#~ msgid "Map function:"
+#~ msgstr "Fonksiyonu Eşle:"
+
+#~ msgid "Maxima options"
+#~ msgstr "Maxima seçenekleri"
+
+#~ msgid "Maxima session (*.wxm)|*.wxm"
+#~ msgstr "Maxima oturumu (*.wxm)|*.wxm"
+
+#~ msgid "Mean"
+#~ msgstr "Ortalama Değer"
+
 #~ msgid "Multiline input"
 #~ msgstr "Çok Satırlı GİRDİ"
 
+#~ msgid "My"
+#~ msgstr "Benim"
+
+#~ msgid "New T&itle Cell\tCtrl+Shift+F6"
+#~ msgstr "Yeni Başlık Hücresi\tCtrl+Shift+F6"
+
+#~ msgid ""
+#~ "Normally we export the whole worksheet to TeX or HTML. But sometimes the "
+#~ "maxima input does scare the user. This option turns off exporting of "
+#~ "maxima's input."
+#~ msgstr ""
+#~ "Normal olarak çalışma yaprağının TeX ya da HTML olarak çıkarımını "
+#~ "yaparız. Ancak bazen maxima girdisi kullanıcını keyfini kaçırır. Bu "
+#~ "seçenek maxima'nın girdilerini kapatır."
+
+#~ msgid "Ny"
+#~ msgstr "Ny"
+
+#~ msgid "Off"
+#~ msgstr "Kapalı"
+
+#~ msgid "Omnikron"
+#~ msgstr "Omnikron"
+
 #~ msgid "Open multiline input dialog"
 #~ msgstr "Çok Satırlı GİRDİ bilgi kutucuğu Aç "
+
+#~ msgid "Open session from a file"
+#~ msgstr "Bir dosyadan oturum Aç   "
+
+#~ msgid "Other prompts"
+#~ msgstr "Diğer bilgi istemleri"
+
+#~ msgid "Panes"
+#~ msgstr "Paneller"
+
+#~ msgid "Paste cell(s) to document"
+#~ msgstr "Hücre(leri) Belgeye Yapıştır"
 
 #~ msgid "Paste input"
 #~ msgstr "GİRDİyi Yapıştır"
 
 #~ msgid "Paste input to console"
 #~ msgstr "GİRDİyi konsola Yapıştır"
+
+#~ msgid "Product..."
+#~ msgstr "Çarpım"
+
+#~ msgid "Product:"
+#~ msgstr "Çarpımı:"
+
+#~ msgid "Quit?"
+#~ msgstr "Çık ?"
 
 #~ msgid "Re-evaluate all\tCtrl+Shift+R"
 #~ msgstr "Tekrar Değerlendir- Tümünü \tCtrl+Shift+R"
@@ -6047,6 +5746,27 @@ msgstr "zeta"
 #~ msgid "Read file from command line"
 #~ msgstr "Komut satırından dosya oku"
 
+#~ msgid "Redo\tCtrl+Shift+Z"
+#~ msgstr "Yinele\tCtrl+Shift+Z"
+
+#~ msgid "Save changes before closing?"
+#~ msgstr "Belgeyi Kapatmadan Önce Kaydet"
+
+#~ msgid "Save changes?"
+#~ msgstr "Değişiklikler Kaydedilsin mi?"
+
+#~ msgid "Save document as ..."
+#~ msgstr "Belgeyi Farklı Kaydet"
+
+#~ msgid "Save session"
+#~ msgstr "Oturumu Kaydet "
+
+#~ msgid "Save session to a file"
+#~ msgstr "Oturumu bir dosyaya kaydet  "
+
+#~ msgid "Save to file"
+#~ msgstr "Dosyaya Kaydet"
+
 #~ msgid "Select &file"
 #~ msgstr "&Dosya Seç"
 
@@ -6055,6 +5775,9 @@ msgstr "zeta"
 
 #~ msgid "Select a file (copy filename to input line)"
 #~ msgstr "Bir dosya Seç (dosya adını GİRDİ satırına kopyala) "
+
+#~ msgid "Select file to open"
+#~ msgstr "Seç açılacak dosyayı"
 
 #~ msgid "Select last input\tCtrl+D"
 #~ msgstr "Son GİRDİyi seç\tCtrl+D"
@@ -6068,11 +5791,17 @@ msgstr "zeta"
 #~ msgid "Select last input in the console!"
 #~ msgstr "Konsoldaki Son GİRDİyi Seç! "
 
+#~ msgid "Select package to load"
+#~ msgstr "Yüklemek için dosya seç"
+
 #~ msgid "Selection to input\tCtrl+Shift+E"
 #~ msgstr "GİRDİ için Seçim\tCtrl+Shift+E"
 
 #~ msgid "Selection to input\tF5"
 #~ msgstr "GİRDİ için Seçim\tF5"
+
+#~ msgid "Set &Precision..."
+#~ msgstr "Hassasiyeti Belirt"
 
 #~ msgid "Set focus to the input line"
 #~ msgstr "GİRDİ satırına odaklan"
@@ -6080,11 +5809,67 @@ msgstr "zeta"
 #~ msgid "Set focus to the output window"
 #~ msgstr "ÇIKTI penceresine odaklan"
 
+#~ msgid "Show Maxima header"
+#~ msgstr "Maxima başlığını göster"
+
+#~ msgid "Show initial header with Maxima system information."
+#~ msgstr "Başlangıç Başlığını Maxima sisyem bilgisi ile göster."
+
 #~ msgid "Show the description of a command"
 #~ msgstr "Bir Komutun tanımını göster"
 
 #~ msgid "Show the description of command/variable:"
 #~ msgstr "Komutun\\değişkenin tanımını göster:"
+
+#~ msgid "Show user-defined labels instead of (%oxx)"
+#~ msgstr "(%oxx) yerine kullanıcı tanımlı etiketleri göster"
+
+#~ msgid "Solve &numerically ..."
+#~ msgstr "&Numerik Çöz"
+
+#~ msgid "Solve equation(s):"
+#~ msgstr "Denklem(leri) Çöz:"
+
+#~ msgid "Solve equation:"
+#~ msgstr "Denklemi çöz:"
+
+#~ msgid "Solve numerically"
+#~ msgstr "Numerik çöz"
+
+#~ msgid "Solve numerically ..."
+#~ msgstr "Numerik çöz"
+
+#~ msgid "Start animation"
+#~ msgstr "Animasyonu Başlat"
+
+#~ msgid "Stop animation"
+#~ msgstr "Animasyonu durdur"
+
+#, fuzzy
+#~ msgid "Structure\tAlt+Shift+T"
+#~ msgstr "Denetleyeci\tAlt+Shift+I"
+
+#~ msgid "Substitute ..."
+#~ msgstr "Yerine koy"
+
+#~ msgid "Substitute:"
+#~ msgstr "Yerine koy:"
+
+#~ msgid "Substitution"
+#~ msgstr "Yerine koymak"
+
+#~ msgid "Sum of:"
+#~ msgstr ".. nın Toplamı:"
+
+#~ msgid "Sum..."
+#~ msgstr "Toplam.."
+
+#, fuzzy
+#~ msgid "Text & Code"
+#~ msgstr "Hücreyi Böl"
+
+#~ msgid "To &Float\tCtrl+F"
+#~ msgstr "Kayan Sayıya \tCtrl+F"
 
 #~ msgid ""
 #~ "To enter a matrix A, type 'A : ' to input line and select 'Algebra->Enter "
@@ -6106,6 +5891,61 @@ msgstr "zeta"
 #~ msgstr ""
 #~ "Komut satırına yazdığınız uzun bir komutunun başındaki bir kaç harfi  "
 #~ "GİRDİ satırna yazıp 'tab' tuşuna basınız."
+
+#~ msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
+#~ msgstr ""
+#~ "Çalşma yaprağının bir parçası olmayan bir hücreye imleci yerleştirmeye "
+#~ "çalışıyor."
+
+#~ msgid "Unfold"
+#~ msgstr "dosyadan çıkart"
+
+#~ msgid "Use &Taylor series"
+#~ msgstr "&Taylor Serisi kullan"
+
+#~ msgid "Use MathJAX in HTML export"
+#~ msgstr "HTML olarak çıkarımlarda MathJAX kullan"
+
+#, fuzzy
+#~ msgid ""
+#~ "Use MathJAX instead of images in HTML exports to display maxima output. "
+#~ "The advantage of MathJAX is that it allows to copy the displayed "
+#~ "equations as if they were text, to choose if they should be copied as TeX "
+#~ "or MathML instead and displays them in a scaleable format that is really "
+#~ "nice to look at. The disadvantage of MathJAX is that it will need "
+#~ "JavaScript and a little bit of time in order to typeset an equation."
+#~ msgstr ""
+#~ "Maxima çıktılarının gösteriminde HTML deki \"resim\" gösterimi yerine "
+#~ "MathJAX ı kullan. MathJAX ın avantajlı yanı, gösterilen matematiksel "
+#~ "ifadeleri metinlermiş gibi kopyalar, TeX ya da MathML olarak kopyalama "
+#~ "seçeneği sunar ve güzel bir görünüm kazandırmasıdır. Avantajlı olmayan "
+#~ "yanı ise JavaScript gerektirmesi ve matematiksel ifadeyi yazma işleminin "
+#~ "uzun olasıdır."
+
+#~ msgid "Use greek font to display greek characters."
+#~ msgstr "Yunanca semboller için yunan yazı tipini kullan"
+
+#~ msgid "Use greek font:"
+#~ msgstr "Yunan yazı tipinin kullan"
+
+#~ msgid ""
+#~ "While text cells in LaTeX are broken into lines by TeX the text displayed "
+#~ "on the screen is broken into lines manually. This option, if set tells "
+#~ "that lines in HTML output will be broken where they are broken in the "
+#~ "worksheet. If this option isn't set manual linebreaks can still be "
+#~ "introduced by introducing an empty line."
+#~ msgstr ""
+#~ "LaTeX'teki metin hücreleri TeX tarafından satırlara ayrılırken, ekranda "
+#~ "görüntülenen metin el ile satırlara ayrılır. Bu seçenek,  seçildiğinde, "
+#~ "çalışma yaprağında olan satır kesmelerini  HTML çıkarımında  yapacaktır. "
+#~ "Bu seçenek seçilmediğinde satır kesmeleri boş bir satırla "
+#~ "gösterilecektir. "
+
+#~ msgid "Width:"
+#~ msgstr "Genişlik:"
+
+#~ msgid "Write matching parenthesis in text controls."
+#~ msgstr "Metin kontrolünde parantez eşleştirmesini yaz"
 
 #~ msgid ""
 #~ "You can delete output/input group if you select the input label and "
@@ -6155,6 +5995,250 @@ msgstr "zeta"
 #~ "Maxima'nın tex(ifade) komutu ile ifadeleri TeX formunda yazdırabilirsiniz."
 #~ "Sonra da (ifadeyi) kopyalayıp TeX belgenize yapıştırabilirsiniz "
 
+#~ msgid "Ypsilon"
+#~ msgstr "Epsilon"
+
+#~ msgid "Zoom set to "
+#~ msgstr "Yakınlaştırmayı ayarla "
+
+#~ msgid "aquamarine"
+#~ msgstr "deniz yeşili"
+
+#~ msgid "around:"
+#~ msgstr "yaklaşık:"
+
+#~ msgid "black"
+#~ msgstr "siyah"
+
+#~ msgid "blue"
+#~ msgstr "mavi"
+
+#~ msgid "blue violet"
+#~ msgstr "mavi menekşe"
+
+#~ msgid "brown"
+#~ msgstr "kahverengi"
+
+#~ msgid "by variable:"
+#~ msgstr "...değişekeni ile:"
+
+#~ msgid "cadet blue"
+#~ msgstr "camgöbeği"
+
+#~ msgid "change var:"
+#~ msgstr "değişkeni değiştir:"
+
+#~ msgid "coral"
+#~ msgstr "mercan"
+
+#~ msgid "cornflower blue"
+#~ msgstr "Mavi kantaron"
+
+#~ msgid "cyan"
+#~ msgstr "deniz mavisi"
+
+#~ msgid "dark green"
+#~ msgstr "koyu yeşil"
+
+#~ msgid "dark grey"
+#~ msgstr "koyu gri"
+
+#~ msgid "dark olive green"
+#~ msgstr "koyu zeytin yeşili"
+
+#~ msgid "dark orchid"
+#~ msgstr "koyu orkide"
+
+#~ msgid "dark slate blue"
+#~ msgstr "koyu kurşun mavisi"
+
+#~ msgid "dark slate grey"
+#~ msgstr "koyu kurşun gri"
+
+#~ msgid "dark turquoise"
+#~ msgstr "koyu turkuaz"
+
+#~ msgid "dim grey"
+#~ msgstr "karanlık gir"
+
+#~ msgid "eliminate variables:"
+#~ msgstr "değişkenleri yok et:"
+
+#~ msgid "equation:"
+#~ msgstr "denklem:"
+
+#~ msgid "firebrick"
+#~ msgstr "tuğla"
+
+#~ msgid "for function(s):"
+#~ msgstr "fonksiyon(lar) için:"
+
+#~ msgid "for variable(s):"
+#~ msgstr "değişken(ler) için:"
+
+#~ msgid "forest green"
+#~ msgstr "orman yeşili"
+
+#~ msgid "from expression:"
+#~ msgstr "ifadesinden:"
+
+#~ msgid "function:"
+#~ msgstr "fonksiyon:"
+
+#~ msgid "gold"
+#~ msgstr "altın"
+
+#~ msgid "goldenrod"
+#~ msgstr "altın yeşili"
+
+#~ msgid "green"
+#~ msgstr "yeşil"
+
+#~ msgid "green yellow"
+#~ msgstr "yeşil sarı"
+
+#~ msgid "grey"
+#~ msgstr "gri"
+
+#, fuzzy
+#~ msgid "implies"
+#~ msgstr "Sadeleştir"
+
+#~ msgid "in variable:"
+#~ msgstr "değişkende:"
+
+#~ msgid "khaki"
+#~ msgstr "haki"
+
+#~ msgid "light blue"
+#~ msgstr "açık mavi"
+
+#~ msgid "light grey"
+#~ msgstr "açık gri"
+
+#~ msgid "light steel blue"
+#~ msgstr "açık çelik mavisi"
+
+#~ msgid "lime green"
+#~ msgstr "lime yeşili"
+
+#~ msgid "lines hidden"
+#~ msgstr "gizlenmiş satırlar"
+
+#~ msgid "maroon"
+#~ msgstr "kestane"
+
+#~ msgid "medium aquamarine"
+#~ msgstr "deniz yeşili-orta"
+
+#~ msgid "medium blue"
+#~ msgstr "mavi-orta"
+
+#~ msgid "medium forrest green"
+#~ msgstr "orman yeşili-orta"
+
+#~ msgid "medium goldenrod"
+#~ msgstr "altın yeşili-orta"
+
+#~ msgid "medium orchid"
+#~ msgstr "orkide-orta"
+
+#~ msgid "medium sea green"
+#~ msgstr "deniz yeşili-orta"
+
+#~ msgid "medium slate blue"
+#~ msgstr "kurşun mavisi-orta"
+
+#~ msgid "medium spring green"
+#~ msgstr "bahar yeşili-orta"
+
+#~ msgid "medium turquoise"
+#~ msgstr "turkuaz-orta"
+
+#~ msgid "medium violet red"
+#~ msgstr "menekşe kırmızısı-orta"
+
+#~ msgid "midnight blue"
+#~ msgstr "geceyerısı mavisi"
+
+#~ msgid "my"
+#~ msgstr "benim"
+
+#~ msgid "ny"
+#~ msgstr "lacivert"
+
+#~ msgid "omnikron"
+#~ msgstr "omnikron"
+
+#~ msgid "orange"
+#~ msgstr "turuncu"
+
+#~ msgid "orange red"
+#~ msgstr "turuncu kırmızısı"
+
+#~ msgid "pale green"
+#~ msgstr "soluk yeşil"
+
+#~ msgid "plum"
+#~ msgstr "erik"
+
+#~ msgid "purple"
+#~ msgstr "mor"
+
+#~ msgid "red"
+#~ msgstr "kırmızı"
+
+#~ msgid "salmon"
+#~ msgstr "somon"
+
+#~ msgid "sea green"
+#~ msgstr "deniz yeşili"
+
+#~ msgid "sienna"
+#~ msgstr "siena"
+
+#~ msgid "sky blue"
+#~ msgstr "gökyüzü"
+
+#~ msgid "spring green"
+#~ msgstr "bahar yeşili"
+
+#~ msgid "steel blue"
+#~ msgstr "çelik mavisi"
+
+#~ msgid "the value is:"
+#~ msgstr "Değer:"
+
+#~ msgid "thistle"
+#~ msgstr "deve dikeni"
+
+#~ msgid "turquoise"
+#~ msgstr "turkuaz"
+
+#~ msgid "untitled.wxm"
+#~ msgstr "Başlıksız.wxm"
+
+#~ msgid "variable"
+#~ msgstr "değişken"
+
+#~ msgid "variable:"
+#~ msgstr "değişken:"
+
+#~ msgid "violet"
+#~ msgstr "menekşe"
+
+#~ msgid "wheat"
+#~ msgstr "buğday"
+
+#~ msgid "when variable:"
+#~ msgstr "değişken...olduğunda:"
+
+#~ msgid "white"
+#~ msgstr "beyaz"
+
+#~ msgid "with:"
+#~ msgstr "ile:"
+
 #~ msgid ""
 #~ "wxMaxima has nice plot dialogs. If you want to modify previous plot "
 #~ "commands, access them using command history and then push the plot button."
@@ -6164,124 +6248,11 @@ msgstr "zeta"
 #~ "ulaşıp Grafik Çiz butonuna basınız."
 
 #~ msgid ""
-#~ "wxMaxima's input line has command history available using up and down "
-#~ "keys and command completion based on previous input available using the "
-#~ "tab key."
+#~ "wxMaxima is a graphical user interface for the\n"
+#~ "computer algebra system Maxima based on wxWidgets."
 #~ msgstr ""
-#~ "wxMaxima'nın GİRDİ satırında yukarı aşağıya tuşlarıyla hareket ederek "
-#~ "geçmiş komutlarınıza ulaşabilirsiniz. Tab tuşu ile de önceki GİRDİ lerin "
-#~ "komut tamamlama işlemini yapabilirsiniz."
-
-#~ msgid "Apply function:"
-#~ msgstr "Fonksiyonu uygula:"
-
-#~ msgid "At point:"
-#~ msgstr "..noktasında:"
-
-#~ msgid "Char poly of:"
-#~ msgstr " matrisinin karakteristik polinomu:"
-
-#~ msgid "Comment out"
-#~ msgstr "Yorumla"
-
-#~ msgid "Copy &text"
-#~ msgstr "Kopyala-&Metin"
-
-#~ msgid "Copy selection from console (including linebreaks)"
-#~ msgstr "Kopyala- konsoldan seçileni(satır sonlarını da)"
-
-#~ msgid "From array:"
-#~ msgstr "Diziden:"
-
-#~ msgid "From equations:"
-#~ msgstr "Denklemlerden:"
-
-#~ msgid "Integrate:"
-#~ msgstr "İntegrali hesapla:"
-
-#~ msgid "Limit of:"
-#~ msgstr "'nın Limiti:"
-
-#~ msgid "Map function:"
-#~ msgstr "Fonksiyonu Eşle:"
-
-#~ msgid "Product:"
-#~ msgstr "Çarpımı:"
-
-#~ msgid "Solve &numerically ..."
-#~ msgstr "&Numerik Çöz"
-
-#~ msgid "Solve equation(s):"
-#~ msgstr "Denklem(leri) Çöz:"
-
-#~ msgid "Solve equation:"
-#~ msgstr "Denklemi çöz:"
-
-#~ msgid "Solve numerically"
-#~ msgstr "Numerik çöz"
-
-#~ msgid "Solve numerically ..."
-#~ msgstr "Numerik çöz"
-
-#~ msgid "Substitute:"
-#~ msgstr "Yerine koy:"
-
-#~ msgid "Substitution"
-#~ msgstr "Yerine koymak"
-
-#~ msgid "Sum of:"
-#~ msgstr ".. nın Toplamı:"
-
-#~ msgid "Unfold"
-#~ msgstr "dosyadan çıkart"
-
-#~ msgid "Use &Taylor series"
-#~ msgstr "&Taylor Serisi kullan"
-
-#~ msgid "around:"
-#~ msgstr "yaklaşık:"
-
-#~ msgid "by variable:"
-#~ msgstr "...değişekeni ile:"
-
-#~ msgid "change var:"
-#~ msgstr "değişkeni değiştir:"
-
-#~ msgid "eliminate variables:"
-#~ msgstr "değişkenleri yok et:"
-
-#~ msgid "equation:"
-#~ msgstr "denklem:"
-
-#~ msgid "for function(s):"
-#~ msgstr "fonksiyon(lar) için:"
-
-#~ msgid "for variable(s):"
-#~ msgstr "değişken(ler) için:"
-
-#~ msgid "from expression:"
-#~ msgstr "ifadesinden:"
-
-#~ msgid "function:"
-#~ msgstr "fonksiyon:"
-
-#~ msgid "in variable:"
-#~ msgstr "değişkende:"
-
-#~ msgid "the value is:"
-#~ msgstr "Değer:"
-
-#~ msgid "variable"
-#~ msgstr "değişken"
-
-#~ msgid "variable:"
-#~ msgstr "değişken:"
-
-#~ msgid "when variable:"
-#~ msgstr "değişken...olduğunda:"
-
-#~ msgid "with:"
-#~ msgstr "ile:"
+#~ "wxMaxima, wxWidgets ile geliştirilmiştir. \n"
+#~ "Bilgisayar Cebiri Sistemi Maxima'nın bir grafiksel kullanıcı arayüzüdür."
 
 #~ msgid ""
 #~ "wxMaxima is a wxWidgets interface for the\n"
@@ -6302,10 +6273,39 @@ msgstr "zeta"
 #~ "%s\n"
 #~ "%s"
 
+#~ msgid "wxMaxima options"
+#~ msgstr "wxMaxima seçenekleri"
+
+#~ msgid "wxMaxima session"
+#~ msgstr "wxMaxima oturumu"
+
+#~ msgid "wxMaxima session (*.wxm)|*.wxm"
+#~ msgstr "wxMaxima oturumu(*.wxm)|*.wxm"
+
 #~ msgid "wxMaxima session (*.wxm)|*.wxm|Maxima batch file (*mac)|*.mac|All|*"
 #~ msgstr ""
 #~ "wxMaxima oturumu (*.wxm)|*.wxm|Maxima Toplu Dosya Kütüğü (*mac)|*.mac|"
 #~ "Tümü|*"
 
-#~ msgid "Maxima session (*.wxm)|*.wxm"
-#~ msgstr "Maxima oturumu (*.wxm)|*.wxm"
+#, fuzzy
+#~ msgid ""
+#~ "wxMaxima xml document (*.wxmx)|*.wxmx|wxMaxima document (*.wxm)|*.wxm|"
+#~ "Maxima batch file (*.mac)|*.mac"
+#~ msgstr ""
+#~ "wxMaxima Belgesi (*.wxm)|*.wxm|xml wxMaxima Belgesi,(*.wxmx)|*.wxmx| "
+#~ "Maxima Kütüğü (*.mac)|*.mac"
+
+#~ msgid ""
+#~ "wxMaxima's input line has command history available using up and down "
+#~ "keys and command completion based on previous input available using the "
+#~ "tab key."
+#~ msgstr ""
+#~ "wxMaxima'nın GİRDİ satırında yukarı aşağıya tuşlarıyla hareket ederek "
+#~ "geçmiş komutlarınıza ulaşabilirsiniz. Tab tuşu ile de önceki GİRDİ lerin "
+#~ "komut tamamlama işlemini yapabilirsiniz."
+
+#~ msgid "yellow green"
+#~ msgstr "sarı yeşil"
+
+#~ msgid "ypsilon"
+#~ msgstr "epsilon"

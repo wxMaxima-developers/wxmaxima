@@ -5327,34 +5327,97 @@ msgstr "да"
 msgid "zeta"
 msgstr ""
 
-#, fuzzy
-#~ msgid "Text & Code"
-#~ msgstr "Делить"
+#~ msgid " << Expression too long to display! >>"
+#~ msgstr " << Слишком длинное выражение! >>"
 
-#~ msgid "Document "
-#~ msgstr "Документ"
+#~ msgid " << Unfold >>"
+#~ msgstr "<< Развернуть >>"
+
+#~ msgid "&Copy"
+#~ msgstr "Копировать"
+
+#~ msgid "&Describe\tCtrl+H"
+#~ msgstr "Описать (describe)\tCtrl+H"
+
+#~ msgid "&Edit input\tCtrl+E"
+#~ msgstr "Редактировать ввод\tCtrl+E"
+
+#~ msgid "&Input\tF7"
+#~ msgstr "Ввод\tF7"
+
+#~ msgid "&Monitor file"
+#~ msgstr "Следить за файлом"
 
 #, fuzzy
 #~ msgid "&New\tCtrl-N"
 #~ msgstr "Новый\tCtrl+N "
 
-#~ msgid "Write matching parenthesis in text controls."
-#~ msgstr "Писать соответствующие скобки в текстовых элементах управления."
+#, fuzzy
+#~ msgid "&New Window\tCtrl+N"
+#~ msgstr "Новый\tCtrl+N "
+
+#~ msgid "&Re-evaluate input\tCtrl+R"
+#~ msgstr "Пересчитать ввод\tCtrl+R"
 
 #, fuzzy
-#~ msgid "Ypsilon"
-#~ msgstr "Выражение:"
+#~ msgid "&Read file"
+#~ msgstr "Прочитать файл"
+
+#~ msgid "&Text\tF6"
+#~ msgstr "Текст\tF6"
 
 #, fuzzy
-#~ msgid "ny"
-#~ msgstr "морской"
-
-#, fuzzy
-#~ msgid "ypsilon"
-#~ msgstr "Выражение:"
-
-#~ msgid " << Expression too long to display! >>"
+#~ msgid "<< Nothing to display >>"
 #~ msgstr " << Слишком длинное выражение! >>"
+
+#~ msgid "Adjustment for the size of greek font."
+#~ msgstr "Корректировка размера греческого шрифта."
+
+#~ msgid "Adjustment:"
+#~ msgstr "Корректировка:"
+
+#~ msgid ""
+#~ "All|*|Maxima package (*.mac)|*.mac|Demo file (*.dem)|*.dem|Lisp file (*."
+#~ "lisp)|*.lisp"
+#~ msgstr ""
+#~ "Все|*|Пакеты Maxima (*.mac)|*.mac|Демо-файлы (*.dem)|*.dem|Lisp-файлы (*."
+#~ "lisp)|*.lisp"
+
+#~ msgid "Animation"
+#~ msgstr "Анимация"
+
+#~ msgid "Apply function:"
+#~ msgstr "Применить функцию:"
+
+#~ msgid "At point:"
+#~ msgstr "В точке:"
+
+#~ msgid "Autoload a file when it is updated"
+#~ msgstr "Загружать файл при его изменении"
+
+#~ msgid "Background"
+#~ msgstr "Фон"
+
+#~ msgid "Basic"
+#~ msgstr "Обычная"
+
+#~ msgid "Button panel:"
+#~ msgstr "Панель:"
+
+#~ msgid "C&lear screen"
+#~ msgstr "Очистить экран"
+
+#~ msgid "Char poly of:"
+#~ msgstr "Характеристический полином:"
+
+#~ msgid "Close document?"
+#~ msgstr "Закрыть документ?"
+
+#~ msgid "Comment out"
+#~ msgstr "Закомментировать"
+
+#~ msgid "Copy &text"
+#~ msgstr "Копировать текст"
 
 #~ msgid "Copy As Image"
 #~ msgstr "Скопировать изображение"
@@ -5362,74 +5425,70 @@ msgstr ""
 #~ msgid "Copy LaTeX"
 #~ msgstr "Скопировать LaTeX"
 
-#~ msgid "Height:"
-#~ msgstr "Высота:"
-
-#~ msgid "Width:"
-#~ msgstr "Ширина:"
+#~ msgid "Copy cells"
+#~ msgstr "Копировать поля"
 
 #, fuzzy
-#~ msgid "implies"
-#~ msgstr "Упростить"
-
-#~ msgid "Panes"
-#~ msgstr "Панели"
-
-#~ msgid "Error %d"
-#~ msgstr "Ошибка %d"
-
-#~ msgid "Zoom set to "
-#~ msgstr "Задать увеличение"
+#~ msgid "Copy input"
+#~ msgstr "Копировать текст"
 
 #, fuzzy
-#~ msgid ""
-#~ "wxMaxima xml document (*.wxmx)|*.wxmx|wxMaxima document (*.wxm)|*.wxm|"
-#~ "Maxima batch file (*.mac)|*.mac"
+#~ msgid "Copy input from console"
+#~ msgstr "Копировать выделение из консоли"
+
+#, fuzzy
+#~ msgid "Copy selected cell(s)"
+#~ msgstr "Копировать выделенные поля"
+
+#~ msgid "Copy selection from console (including linebreaks)"
+#~ msgstr "Копировать выделение из консоли (включая переводы строки)"
+
+#~ msgid "Copy selection from console to input line"
+#~ msgstr "Копировать выделение из консоли в командную строку"
+
+#, fuzzy
+#~ msgid "Copy selection to clipboard when selection is made in document."
 #~ msgstr ""
-#~ "Документ wxMaxima (*.wxm)|*.wxm|XML-документ wxMaxima (*.wxmx)|*.wxmx|"
-#~ "Пакетный файл Maxima (*.mac)|*.mac"
+#~ "Копировать выделение в буфер обмена при выполнении выделения в консоли."
 
-#~ msgid "lines hidden"
-#~ msgstr "скрыто"
-
-#~ msgid "Set &Precision..."
-#~ msgstr "Установить &точность..."
-
-#~ msgid "Start animation"
-#~ msgstr "Запустить анимацию"
-
-#~ msgid "Stop animation"
-#~ msgstr "Остановить анимацию"
-
-#~ msgid "Animation"
-#~ msgstr "Анимация"
-
-#~ msgid "Find..."
-#~ msgstr "Найти..."
+#~ msgid "Copy to clipboard on select"
+#~ msgstr "Копировать в буфер при выделении"
 
 #, fuzzy
-#~ msgid "Re-evaluate All until here\tCtrl+Shift+H"
-#~ msgstr "Пересчитать ввод\tCtrl+R"
+#~ msgid "Copy to input"
+#~ msgstr "Перейти к вводу\tF4"
 
 #, fuzzy
-#~ msgid "Redo\tCtrl+Shift+Z"
-#~ msgstr "Отмена\tCtrl+Z"
+#~ msgid "Cut Cell(s)\tCtrl+Shift+X"
+#~ msgstr "Пересчитать все поля\tCtrl+Shift+R"
+
+#~ msgid "Cut selection from document"
+#~ msgstr "Вырезать выделение из документа"
+
+#~ msgid "Decrease fontsize in document"
+#~ msgstr "Уменьшить шрифт в документе"
 
 #~ msgid "Default port:"
 #~ msgstr "Порт по умолчанию:"
 
-#~ msgid "Save changes before closing?"
-#~ msgstr "Сохранить изменения перед закрытием?"
-
-#~ msgid "Save changes?"
-#~ msgstr "Сохранить изменения?"
-
 #, fuzzy
-#~ msgid "&New Window\tCtrl+N"
-#~ msgstr "Новый\tCtrl+N "
+#~ msgid "Delete selected cell(s)"
+#~ msgstr "Удалить выделенные поля"
 
-#~ msgid "Close document?"
-#~ msgstr "Закрыть документ?"
+#~ msgid "Delete selected input/output group"
+#~ msgstr "Удалить выделенную группу ввода/вывода"
+
+#~ msgid "Delete selection"
+#~ msgstr "Удалить выделение"
+
+#~ msgid "Delete the contents of console."
+#~ msgstr "Удалить содержимое консоли."
+
+#~ msgid "Describe"
+#~ msgstr "Описать"
+
+#~ msgid "Document "
+#~ msgstr "Документ"
 
 #~ msgid ""
 #~ "Document not saved!\n"
@@ -5449,426 +5508,6 @@ msgstr ""
 #~ "\n"
 #~ "Выйти из wxMaxima с потерей всех изменений?"
 
-#~ msgid "Maxima options"
-#~ msgstr "Опции Maxima"
-
-#~ msgid "Quit?"
-#~ msgstr "Выйти?"
-
-#~ msgid "wxMaxima options"
-#~ msgstr "Опции wxMaxima"
-
-#~ msgid ""
-#~ "wxMaxima is a graphical user interface for the\n"
-#~ "computer algebra system Maxima based on wxWidgets."
-#~ msgstr ""
-#~ "wxMaxima - графический интерфейс для\n"
-#~ "системы аналитических вычислений Maxima, основаный на wxWidgets."
-
-#, fuzzy
-#~ msgid "<< Nothing to display >>"
-#~ msgstr " << Слишком длинное выражение! >>"
-
-#, fuzzy
-#~ msgid "Functions and macros"
-#~ msgstr "Имена функций"
-
-#~ msgid "Labels"
-#~ msgstr "Метки"
-
-#, fuzzy
-#~ msgid "Copy selection to clipboard when selection is made in document."
-#~ msgstr ""
-#~ "Копировать выделение в буфер обмена при выполнении выделения в консоли."
-
-#~ msgid "Copy to clipboard on select"
-#~ msgstr "Копировать в буфер при выделении"
-
-#~ msgid "Input"
-#~ msgstr "Ввод"
-
-#~ msgid "Show Maxima header"
-#~ msgstr "Показывать заголовок Maxima"
-
-#~ msgid "Show initial header with Maxima system information."
-#~ msgstr "Показывать начальный заголовок с информацией о Maxima."
-
-#~ msgid "Adjustment for the size of greek font."
-#~ msgstr "Корректировка размера греческого шрифта."
-
-#~ msgid "Adjustment:"
-#~ msgstr "Корректировка:"
-
-#~ msgid "Basic"
-#~ msgstr "Обычная"
-
-#~ msgid "Button panel:"
-#~ msgstr "Панель:"
-
-#, fuzzy
-#~ msgid "Copy selected cell(s)"
-#~ msgstr "Копировать выделенные поля"
-
-#, fuzzy
-#~ msgid "Cut Cell(s)\tCtrl+Shift+X"
-#~ msgstr "Пересчитать все поля\tCtrl+Shift+R"
-
-#~ msgid "Decrease fontsize in document"
-#~ msgstr "Уменьшить шрифт в документе"
-
-#, fuzzy
-#~ msgid "Delete selected cell(s)"
-#~ msgstr "Удалить выделенные поля"
-
-#~ msgid "Delete selection"
-#~ msgstr "Удалить выделение"
-
-#, fuzzy
-#~ msgid "Font used for displaying unicode glyphs in document."
-#~ msgstr "Шрифт для изображения символов юникода в консоли."
-
-#~ msgid "Full"
-#~ msgstr "Полная"
-
-#~ msgid "Increase fontsize in document"
-#~ msgstr "Увеличить размер шрифта в документе"
-
-#, fuzzy
-#~ msgid "Insert input cell"
-#~ msgstr "Вставить новое поле ввода"
-
-#~ msgid "Insert input group"
-#~ msgstr "Вставить группу"
-
-#~ msgid "Insert text"
-#~ msgstr "Вставить текст"
-
-#, fuzzy
-#~ msgid "New T&itle Cell\tCtrl+Shift+F6"
-#~ msgstr "Новый &заголовок\tCtrl+Shift+F6"
-
-#~ msgid "Off"
-#~ msgstr "Выключить"
-
-#, fuzzy
-#~ msgid "Paste cell(s) to document"
-#~ msgstr "Вставить поля"
-
-#~ msgid "Product..."
-#~ msgstr "Произведение ..."
-
-#~ msgid "Select file to open"
-#~ msgstr "Выбрать файл для ввода"
-
-#~ msgid "Sum..."
-#~ msgstr "Суммировать..."
-
-#, fuzzy
-#~ msgid "To &Float\tCtrl+F"
-#~ msgstr "В число с плавающей точкой\tCtrl+F"
-
-#~ msgid "Unicode glyphs:"
-#~ msgstr "Символы юникода:"
-
-#~ msgid "Use greek font to display greek characters."
-#~ msgstr "Использовать греческий шрифт для отображения греческих букв"
-
-#~ msgid "Use greek font:"
-#~ msgstr "Использовать греческий шрифт:"
-
-#~ msgid "untitled.wxm"
-#~ msgstr "untitled.wxm"
-
-#~ msgid "wxMaxima session (*.wxm)|*.wxm"
-#~ msgstr "Сессия wxMaxima (*.wxm)|*.wxm"
-
-#~ msgid "aquamarine"
-#~ msgstr "аквамарин"
-
-#~ msgid "black"
-#~ msgstr "черный"
-
-#~ msgid "blue"
-#~ msgstr "синий"
-
-#~ msgid "blue violet"
-#~ msgstr "сине-фиолетовый"
-
-#~ msgid "brown"
-#~ msgstr "коричневый"
-
-#~ msgid "cadet blue"
-#~ msgstr "кадетский синий"
-
-#~ msgid "coral"
-#~ msgstr "коралловый"
-
-#~ msgid "cornflower blue"
-#~ msgstr "васильковый"
-
-#~ msgid "cyan"
-#~ msgstr "голубой"
-
-#~ msgid "dark green"
-#~ msgstr "темно-зеленый"
-
-#~ msgid "dark grey"
-#~ msgstr "темно-серый"
-
-#~ msgid "dark olive green"
-#~ msgstr "темно-оливковый"
-
-#~ msgid "dark orchid"
-#~ msgstr "темная орхидея"
-
-#~ msgid "dark slate blue"
-#~ msgstr "темный серовато-синий"
-
-#~ msgid "dark slate grey"
-#~ msgstr "темный сероватый"
-
-#~ msgid "dark turquoise"
-#~ msgstr "темно-бирюзовый"
-
-#~ msgid "dim grey"
-#~ msgstr "тускло-серый"
-
-#~ msgid "firebrick"
-#~ msgstr "кирпичный"
-
-#~ msgid "forest green"
-#~ msgstr "лесной зеленый"
-
-#~ msgid "gold"
-#~ msgstr "золотой"
-
-#~ msgid "goldenrod"
-#~ msgstr "золотистый"
-
-#~ msgid "green"
-#~ msgstr "зеленый"
-
-#~ msgid "green yellow"
-#~ msgstr "зелено-желтый"
-
-#~ msgid "grey"
-#~ msgstr "серый"
-
-#~ msgid "khaki"
-#~ msgstr "хаки"
-
-#~ msgid "light blue"
-#~ msgstr "светло-синий"
-
-#~ msgid "light grey"
-#~ msgstr "светло-серый"
-
-#~ msgid "light steel blue"
-#~ msgstr "светло-стальной"
-
-#~ msgid "lime green"
-#~ msgstr "зеленый лайм"
-
-#~ msgid "maroon"
-#~ msgstr "каштановый"
-
-#~ msgid "medium aquamarine"
-#~ msgstr "средний аквамарин"
-
-#~ msgid "medium blue"
-#~ msgstr "средний синий"
-
-#~ msgid "medium forrest green"
-#~ msgstr "средний лесной зеленый"
-
-#~ msgid "medium goldenrod"
-#~ msgstr "средний золотистый"
-
-#~ msgid "medium orchid"
-#~ msgstr "средняя орхидея"
-
-#~ msgid "medium sea green"
-#~ msgstr "средняя морская зелень"
-
-#~ msgid "medium slate blue"
-#~ msgstr "средний серовато-синий"
-
-#~ msgid "medium spring green"
-#~ msgstr "средняя весенняя зелень"
-
-#~ msgid "medium turquoise"
-#~ msgstr "средний бирюзовый"
-
-#~ msgid "medium violet red"
-#~ msgstr "средний фиолетово-красный"
-
-#~ msgid "midnight blue"
-#~ msgstr "полночный синий"
-
-#~ msgid "orange"
-#~ msgstr "оранжевый"
-
-#~ msgid "orange red"
-#~ msgstr "оранжево-красный"
-
-#~ msgid "pale green"
-#~ msgstr "бледно-зеленый"
-
-#~ msgid "plum"
-#~ msgstr "сливовый"
-
-#~ msgid "purple"
-#~ msgstr "пурпурный"
-
-#~ msgid "red"
-#~ msgstr "красный"
-
-#~ msgid "salmon"
-#~ msgstr "семга"
-
-#~ msgid "sea green"
-#~ msgstr "морской зеленый"
-
-#~ msgid "sienna"
-#~ msgstr "сиена"
-
-#~ msgid "sky blue"
-#~ msgstr "небесно-голубой"
-
-#~ msgid "spring green"
-#~ msgstr "весенний зеленый"
-
-#~ msgid "steel blue"
-#~ msgstr "стальной"
-
-#~ msgid "thistle"
-#~ msgstr "чертополох"
-
-#~ msgid "turquoise"
-#~ msgstr "бирюзовый"
-
-#~ msgid "violet"
-#~ msgstr "фиолетовый"
-
-#~ msgid "wheat"
-#~ msgstr "пшеничный"
-
-#~ msgid "white"
-#~ msgstr "белый"
-
-#~ msgid "yellow green"
-#~ msgstr "желто-зеленый"
-
-#~ msgid " << Unfold >>"
-#~ msgstr "<< Развернуть >>"
-
-#~ msgid "Background"
-#~ msgstr "Фон"
-
-#~ msgid "Copy cells"
-#~ msgstr "Копировать поля"
-
-#~ msgid "Cut selection from document"
-#~ msgstr "Вырезать выделение из документа"
-
-#~ msgid "Export to HTML file"
-#~ msgstr "Экспортировать в HTML-файл"
-
-#~ msgid "Hidden groups"
-#~ msgstr "Скрытые группы"
-
-#~ msgid "Integrate ..."
-#~ msgstr "Интегрировать ..."
-
-#~ msgid "Main prompts"
-#~ msgstr "Основное приглашение"
-
-#~ msgid "Open session from a file"
-#~ msgstr "Открыть сессию из файла"
-
-#~ msgid "Other prompts"
-#~ msgstr "Другие приглашения"
-
-#~ msgid "Save session"
-#~ msgstr "Сохранить сессию"
-
-#~ msgid "Save session to a file"
-#~ msgstr "Сохранить сессию в файл"
-
-#~ msgid "Save to file"
-#~ msgstr "Сохранить в файл"
-
-#~ msgid "Select package to load"
-#~ msgstr "Выбрать пакет для загрузки"
-
-#~ msgid "Substitute ..."
-#~ msgstr "Подставить ..."
-
-#~ msgid "wxMaxima session"
-#~ msgstr "Сессия wxMaxima"
-
-#~ msgid "&Copy"
-#~ msgstr "Копировать"
-
-#~ msgid "&Describe\tCtrl+H"
-#~ msgstr "Описать (describe)\tCtrl+H"
-
-#~ msgid "&Edit input\tCtrl+E"
-#~ msgstr "Редактировать ввод\tCtrl+E"
-
-#~ msgid "&Input\tF7"
-#~ msgstr "Ввод\tF7"
-
-#~ msgid "&Monitor file"
-#~ msgstr "Следить за файлом"
-
-#~ msgid "&Re-evaluate input\tCtrl+R"
-#~ msgstr "Пересчитать ввод\tCtrl+R"
-
-#, fuzzy
-#~ msgid "&Read file"
-#~ msgstr "Прочитать файл"
-
-#~ msgid "&Text\tF6"
-#~ msgstr "Текст\tF6"
-
-#~ msgid ""
-#~ "All|*|Maxima package (*.mac)|*.mac|Demo file (*.dem)|*.dem|Lisp file (*."
-#~ "lisp)|*.lisp"
-#~ msgstr ""
-#~ "Все|*|Пакеты Maxima (*.mac)|*.mac|Демо-файлы (*.dem)|*.dem|Lisp-файлы (*."
-#~ "lisp)|*.lisp"
-
-#~ msgid "Autoload a file when it is updated"
-#~ msgstr "Загружать файл при его изменении"
-
-#~ msgid "C&lear screen"
-#~ msgstr "Очистить экран"
-
-#, fuzzy
-#~ msgid "Copy input"
-#~ msgstr "Копировать текст"
-
-#, fuzzy
-#~ msgid "Copy input from console"
-#~ msgstr "Копировать выделение из консоли"
-
-#~ msgid "Copy selection from console to input line"
-#~ msgstr "Копировать выделение из консоли в командную строку"
-
-#, fuzzy
-#~ msgid "Copy to input"
-#~ msgstr "Перейти к вводу\tF4"
-
-#~ msgid "Delete selected input/output group"
-#~ msgstr "Удалить выделенную группу ввода/вывода"
-
-#~ msgid "Delete the contents of console."
-#~ msgstr "Удалить содержимое консоли."
-
-#~ msgid "Describe"
-#~ msgstr "Описать"
-
 #~ msgid "Edit input"
 #~ msgstr "Редактировать ввод"
 
@@ -5881,6 +5520,41 @@ msgstr ""
 #~ msgid "Enter command"
 #~ msgstr "Ввести команду"
 
+#~ msgid "Error %d"
+#~ msgstr "Ошибка %d"
+
+#~ msgid "Export to HTML file"
+#~ msgstr "Экспортировать в HTML-файл"
+
+#~ msgid "Find..."
+#~ msgstr "Найти..."
+
+#~ msgid "Font family:"
+#~ msgstr "Семейство шрифтов:"
+
+#~ msgid "Font size in console window."
+#~ msgstr "Размер шрифта в консоли."
+
+#~ msgid "Font size:"
+#~ msgstr "Размер шрифта:"
+
+#, fuzzy
+#~ msgid "Font used for displaying unicode glyphs in document."
+#~ msgstr "Шрифт для изображения символов юникода в консоли."
+
+#~ msgid "From array:"
+#~ msgstr "Из массива:"
+
+#~ msgid "From equations:"
+#~ msgstr "Из уравнений:"
+
+#~ msgid "Full"
+#~ msgstr "Полная"
+
+#, fuzzy
+#~ msgid "Functions and macros"
+#~ msgstr "Имена функций"
+
 #, fuzzy
 #~ msgid "Go to input\tCtrl+Shift+D"
 #~ msgstr "Заголовок\tCtrl+Shift+F6"
@@ -5890,6 +5564,12 @@ msgstr ""
 
 #~ msgid "Go to output window\tF3"
 #~ msgstr "Перейти к окну вывода\tF3"
+
+#~ msgid "Height:"
+#~ msgstr "Высота:"
+
+#~ msgid "Hidden groups"
+#~ msgstr "Скрытые группы"
 
 #~ msgid "I&nsert"
 #~ msgstr "Вставить"
@@ -5904,11 +5584,27 @@ msgstr ""
 #~ "Если требуется ввести более одной строки, используйте кнопку "
 #~ "'Многострочный ввод' справа от командной строки"
 
+#~ msgid "Increase fontsize in document"
+#~ msgstr "Увеличить размер шрифта в документе"
+
+#~ msgid "Input"
+#~ msgstr "Ввод"
+
+#, fuzzy
+#~ msgid "Insert input cell"
+#~ msgstr "Вставить новое поле ввода"
+
+#~ msgid "Insert input group"
+#~ msgstr "Вставить группу"
+
 #~ msgid "Insert new input before selected input"
 #~ msgstr "Вставить новый ввод до выделенного ввода"
 
 #~ msgid "Insert section before selected input"
 #~ msgstr "Вставить фрагмент до выделенного ввода"
+
+#~ msgid "Insert text"
+#~ msgstr "Вставить текст"
 
 #~ msgid "Insert text before selected input"
 #~ msgstr "Вставить текст до выделенного ввода"
@@ -5923,11 +5619,58 @@ msgstr ""
 #~ "Вместо того, чтобы печатать длинный путь к файлу в командной строке, "
 #~ "можно использовать 'Файл->Выбрать файл'."
 
+#~ msgid "Integrate ..."
+#~ msgstr "Интегрировать ..."
+
+#~ msgid "Integrate:"
+#~ msgstr "Интегрировать:"
+
+#~ msgid "Labels"
+#~ msgstr "Метки"
+
+#~ msgid "Limit of:"
+#~ msgstr "Предел выражения:"
+
+#~ msgid "Main prompts"
+#~ msgstr "Основное приглашение"
+
+#~ msgid "Map function:"
+#~ msgstr "Применить функцию:"
+
+#~ msgid "Maxima options"
+#~ msgstr "Опции Maxima"
+
+#~ msgid "Maxima session (*.wxm)|*.wxm"
+#~ msgstr "Сессия Maxima (*.wxm)|*.wxm"
+
 #~ msgid "Multiline input"
 #~ msgstr "Многострочный ввод"
 
+#, fuzzy
+#~ msgid "New T&itle Cell\tCtrl+Shift+F6"
+#~ msgstr "Новый &заголовок\tCtrl+Shift+F6"
+
+#~ msgid "Off"
+#~ msgstr "Выключить"
+
 #~ msgid "Open multiline input dialog"
 #~ msgstr "Открыть диалог многострочного ввода"
+
+#~ msgid "Open session from a file"
+#~ msgstr "Открыть сессию из файла"
+
+#~ msgid "Other prompts"
+#~ msgstr "Другие приглашения"
+
+#~ msgid "Panes"
+#~ msgstr "Панели"
+
+#~ msgid "Parametric"
+#~ msgstr "Параметрический"
+
+#, fuzzy
+#~ msgid "Paste cell(s) to document"
+#~ msgstr "Вставить поля"
 
 #, fuzzy
 #~ msgid "Paste input"
@@ -5936,6 +5679,19 @@ msgstr ""
 #, fuzzy
 #~ msgid "Paste input to console"
 #~ msgstr "Выделить последний ввод в консоли!"
+
+#~ msgid "Product..."
+#~ msgstr "Произведение ..."
+
+#~ msgid "Product:"
+#~ msgstr "Произведение:"
+
+#~ msgid "Quit?"
+#~ msgstr "Выйти?"
+
+#, fuzzy
+#~ msgid "Re-evaluate All until here\tCtrl+Shift+H"
+#~ msgstr "Пересчитать ввод\tCtrl+R"
 
 #, fuzzy
 #~ msgid "Re-evaluate all input"
@@ -5948,6 +5704,25 @@ msgstr ""
 #~ msgid "Read file from command line"
 #~ msgstr "Прочитать сессию из файла"
 
+#, fuzzy
+#~ msgid "Redo\tCtrl+Shift+Z"
+#~ msgstr "Отмена\tCtrl+Z"
+
+#~ msgid "Save changes before closing?"
+#~ msgstr "Сохранить изменения перед закрытием?"
+
+#~ msgid "Save changes?"
+#~ msgstr "Сохранить изменения?"
+
+#~ msgid "Save session"
+#~ msgstr "Сохранить сессию"
+
+#~ msgid "Save session to a file"
+#~ msgstr "Сохранить сессию в файл"
+
+#~ msgid "Save to file"
+#~ msgstr "Сохранить в файл"
+
 #~ msgid "Select &file"
 #~ msgstr "Выбрать файл"
 
@@ -5956,6 +5731,9 @@ msgstr ""
 
 #~ msgid "Select a file (copy filename to input line)"
 #~ msgstr "Выбрать файл (копировать имя файла в командную строку)"
+
+#~ msgid "Select file to open"
+#~ msgstr "Выбрать файл для ввода"
 
 #, fuzzy
 #~ msgid "Select last input\tCtrl+D"
@@ -5971,6 +5749,9 @@ msgstr ""
 #~ msgid "Select last input in the console!"
 #~ msgstr "Выделить последний ввод в консоли!"
 
+#~ msgid "Select package to load"
+#~ msgstr "Выбрать пакет для загрузки"
+
 #, fuzzy
 #~ msgid "Selection to input\tCtrl+Shift+E"
 #~ msgstr "Выделение во ввод\tF5"
@@ -5978,17 +5759,73 @@ msgstr ""
 #~ msgid "Selection to input\tF5"
 #~ msgstr "Выделение во ввод\tF5"
 
+#~ msgid "Send ranges to &gnuplot"
+#~ msgstr "Передать пределы в gnuplot"
+
+#~ msgid "Set &Precision..."
+#~ msgstr "Установить &точность..."
+
 #~ msgid "Set focus to the input line"
 #~ msgstr "Установить фокус на командную строку"
 
 #~ msgid "Set focus to the output window"
 #~ msgstr "Установить фокус на окно вывода"
 
+#~ msgid "Show Maxima header"
+#~ msgstr "Показывать заголовок Maxima"
+
+#~ msgid "Show initial header with Maxima system information."
+#~ msgstr "Показывать начальный заголовок с информацией о Maxima."
+
 #~ msgid "Show the description of a command"
 #~ msgstr "Показать описание команды"
 
 #~ msgid "Show the description of command/variable:"
 #~ msgstr "Показать описание команды или переменной:"
+
+#~ msgid "Solve &numerically ..."
+#~ msgstr "Решить численно ..."
+
+#~ msgid "Solve equation(s):"
+#~ msgstr "Решить уравнение(ния):"
+
+#~ msgid "Solve equation:"
+#~ msgstr "Решить уравнение:"
+
+#~ msgid "Solve numerically"
+#~ msgstr "Решить численно"
+
+#~ msgid "Solve numerically ..."
+#~ msgstr "Решить численно ..."
+
+#~ msgid "Start animation"
+#~ msgstr "Запустить анимацию"
+
+#~ msgid "Stop animation"
+#~ msgstr "Остановить анимацию"
+
+#~ msgid "Substitute ..."
+#~ msgstr "Подставить ..."
+
+#~ msgid "Substitute:"
+#~ msgstr "Подставить:"
+
+#~ msgid "Substitution"
+#~ msgstr "Подстановка"
+
+#~ msgid "Sum of:"
+#~ msgstr "Сумма:"
+
+#~ msgid "Sum..."
+#~ msgstr "Суммировать..."
+
+#, fuzzy
+#~ msgid "Text & Code"
+#~ msgstr "Делить"
+
+#, fuzzy
+#~ msgid "To &Float\tCtrl+F"
+#~ msgstr "В число с плавающей точкой\tCtrl+F"
 
 #~ msgid ""
 #~ "To enter a matrix A, type 'A : ' to input line and select 'Algebra->Enter "
@@ -6010,6 +5847,27 @@ msgstr ""
 #~ msgstr ""
 #~ "Чтобы повторить ранее введенную длинную команду, достаточно напечатать "
 #~ "несколько первых букв в командной строке и нажать клавишу табуляции."
+
+#~ msgid "Unfold"
+#~ msgstr "Развернуть"
+
+#~ msgid "Unicode glyphs:"
+#~ msgstr "Символы юникода:"
+
+#~ msgid "Use &Taylor series"
+#~ msgstr "Использовать ряд Тейлора"
+
+#~ msgid "Use greek font to display greek characters."
+#~ msgstr "Использовать греческий шрифт для отображения греческих букв"
+
+#~ msgid "Use greek font:"
+#~ msgstr "Использовать греческий шрифт:"
+
+#~ msgid "Width:"
+#~ msgstr "Ширина:"
+
+#~ msgid "Write matching parenthesis in text controls."
+#~ msgstr "Писать соответствующие скобки в текстовых элементах управления."
 
 #~ msgid ""
 #~ "You can delete output/input group if you select the input label and "
@@ -6060,6 +5918,246 @@ msgstr ""
 #~ "Результат затем можно скопировать в любой текстовый редактор и включить в "
 #~ "Вашу статью."
 
+#, fuzzy
+#~ msgid "Ypsilon"
+#~ msgstr "Выражение:"
+
+#~ msgid "Zoom set to "
+#~ msgstr "Задать увеличение"
+
+#~ msgid "aquamarine"
+#~ msgstr "аквамарин"
+
+#~ msgid "around:"
+#~ msgstr "в окрестности:"
+
+#~ msgid "black"
+#~ msgstr "черный"
+
+#~ msgid "blue"
+#~ msgstr "синий"
+
+#~ msgid "blue violet"
+#~ msgstr "сине-фиолетовый"
+
+#~ msgid "brown"
+#~ msgstr "коричневый"
+
+#~ msgid "by variable:"
+#~ msgstr "по переменной:"
+
+#~ msgid "cadet blue"
+#~ msgstr "кадетский синий"
+
+#~ msgid "change var:"
+#~ msgstr "замена переменной:"
+
+#~ msgid "coral"
+#~ msgstr "коралловый"
+
+#~ msgid "cornflower blue"
+#~ msgstr "васильковый"
+
+#~ msgid "cyan"
+#~ msgstr "голубой"
+
+#~ msgid "dark green"
+#~ msgstr "темно-зеленый"
+
+#~ msgid "dark grey"
+#~ msgstr "темно-серый"
+
+#~ msgid "dark olive green"
+#~ msgstr "темно-оливковый"
+
+#~ msgid "dark orchid"
+#~ msgstr "темная орхидея"
+
+#~ msgid "dark slate blue"
+#~ msgstr "темный серовато-синий"
+
+#~ msgid "dark slate grey"
+#~ msgstr "темный сероватый"
+
+#~ msgid "dark turquoise"
+#~ msgstr "темно-бирюзовый"
+
+#~ msgid "dim grey"
+#~ msgstr "тускло-серый"
+
+#~ msgid "eliminate variables:"
+#~ msgstr "исключить переменные:"
+
+#~ msgid "equation:"
+#~ msgstr "уравнение:"
+
+#~ msgid "firebrick"
+#~ msgstr "кирпичный"
+
+#~ msgid "for function(s):"
+#~ msgstr "для функции(ций)"
+
+#~ msgid "for variable(s):"
+#~ msgstr "для переменной(ных):"
+
+#~ msgid "forest green"
+#~ msgstr "лесной зеленый"
+
+#~ msgid "from expression:"
+#~ msgstr "из выражения:"
+
+#~ msgid "function:"
+#~ msgstr "функция:"
+
+#~ msgid "gold"
+#~ msgstr "золотой"
+
+#~ msgid "goldenrod"
+#~ msgstr "золотистый"
+
+#~ msgid "green"
+#~ msgstr "зеленый"
+
+#~ msgid "green yellow"
+#~ msgstr "зелено-желтый"
+
+#~ msgid "grey"
+#~ msgstr "серый"
+
+#, fuzzy
+#~ msgid "implies"
+#~ msgstr "Упростить"
+
+#~ msgid "in variable:"
+#~ msgstr "по переменной:"
+
+#~ msgid "khaki"
+#~ msgstr "хаки"
+
+#~ msgid "light blue"
+#~ msgstr "светло-синий"
+
+#~ msgid "light grey"
+#~ msgstr "светло-серый"
+
+#~ msgid "light steel blue"
+#~ msgstr "светло-стальной"
+
+#~ msgid "lime green"
+#~ msgstr "зеленый лайм"
+
+#~ msgid "lines hidden"
+#~ msgstr "скрыто"
+
+#~ msgid "maroon"
+#~ msgstr "каштановый"
+
+#~ msgid "medium aquamarine"
+#~ msgstr "средний аквамарин"
+
+#~ msgid "medium blue"
+#~ msgstr "средний синий"
+
+#~ msgid "medium forrest green"
+#~ msgstr "средний лесной зеленый"
+
+#~ msgid "medium goldenrod"
+#~ msgstr "средний золотистый"
+
+#~ msgid "medium orchid"
+#~ msgstr "средняя орхидея"
+
+#~ msgid "medium sea green"
+#~ msgstr "средняя морская зелень"
+
+#~ msgid "medium slate blue"
+#~ msgstr "средний серовато-синий"
+
+#~ msgid "medium spring green"
+#~ msgstr "средняя весенняя зелень"
+
+#~ msgid "medium turquoise"
+#~ msgstr "средний бирюзовый"
+
+#~ msgid "medium violet red"
+#~ msgstr "средний фиолетово-красный"
+
+#~ msgid "midnight blue"
+#~ msgstr "полночный синий"
+
+#, fuzzy
+#~ msgid "ny"
+#~ msgstr "морской"
+
+#~ msgid "orange"
+#~ msgstr "оранжевый"
+
+#~ msgid "orange red"
+#~ msgstr "оранжево-красный"
+
+#~ msgid "pale green"
+#~ msgstr "бледно-зеленый"
+
+#~ msgid "plum"
+#~ msgstr "сливовый"
+
+#~ msgid "purple"
+#~ msgstr "пурпурный"
+
+#~ msgid "red"
+#~ msgstr "красный"
+
+#~ msgid "salmon"
+#~ msgstr "семга"
+
+#~ msgid "sea green"
+#~ msgstr "морской зеленый"
+
+#~ msgid "sienna"
+#~ msgstr "сиена"
+
+#~ msgid "sky blue"
+#~ msgstr "небесно-голубой"
+
+#~ msgid "spring green"
+#~ msgstr "весенний зеленый"
+
+#~ msgid "steel blue"
+#~ msgstr "стальной"
+
+#~ msgid "the value is:"
+#~ msgstr "значение:"
+
+#~ msgid "thistle"
+#~ msgstr "чертополох"
+
+#~ msgid "turquoise"
+#~ msgstr "бирюзовый"
+
+#~ msgid "untitled.wxm"
+#~ msgstr "untitled.wxm"
+
+#~ msgid "variable"
+#~ msgstr "переменная"
+
+#~ msgid "variable:"
+#~ msgstr "переменная:"
+
+#~ msgid "violet"
+#~ msgstr "фиолетовый"
+
+#~ msgid "wheat"
+#~ msgstr "пшеничный"
+
+#~ msgid "when variable:"
+#~ msgstr "когда переменная:"
+
+#~ msgid "white"
+#~ msgstr "белый"
+
+#~ msgid "with:"
+#~ msgstr "на:"
+
 #~ msgid ""
 #~ "wxMaxima has nice plot dialogs. If you want to modify previous plot "
 #~ "commands, access them using command history and then push the plot button."
@@ -6069,124 +6167,11 @@ msgstr ""
 #~ "исправить, используя историю команд, и нажав кнопку 'График'."
 
 #~ msgid ""
-#~ "wxMaxima's input line has command history available using up and down "
-#~ "keys and command completion based on previous input available using the "
-#~ "tab key."
+#~ "wxMaxima is a graphical user interface for the\n"
+#~ "computer algebra system Maxima based on wxWidgets."
 #~ msgstr ""
-#~ "Командная строка wxMaxima хранит историю команд, доступную при помощи "
-#~ "клавиш стрелка вверх/вниз, и выполняет автодополнение команд, основанное "
-#~ "на истории, по клавише табуляции."
-
-#~ msgid "Apply function:"
-#~ msgstr "Применить функцию:"
-
-#~ msgid "At point:"
-#~ msgstr "В точке:"
-
-#~ msgid "Char poly of:"
-#~ msgstr "Характеристический полином:"
-
-#~ msgid "Comment out"
-#~ msgstr "Закомментировать"
-
-#~ msgid "Copy &text"
-#~ msgstr "Копировать текст"
-
-#~ msgid "Copy selection from console (including linebreaks)"
-#~ msgstr "Копировать выделение из консоли (включая переводы строки)"
-
-#~ msgid "From array:"
-#~ msgstr "Из массива:"
-
-#~ msgid "From equations:"
-#~ msgstr "Из уравнений:"
-
-#~ msgid "Integrate:"
-#~ msgstr "Интегрировать:"
-
-#~ msgid "Limit of:"
-#~ msgstr "Предел выражения:"
-
-#~ msgid "Map function:"
-#~ msgstr "Применить функцию:"
-
-#~ msgid "Product:"
-#~ msgstr "Произведение:"
-
-#~ msgid "Solve &numerically ..."
-#~ msgstr "Решить численно ..."
-
-#~ msgid "Solve equation(s):"
-#~ msgstr "Решить уравнение(ния):"
-
-#~ msgid "Solve equation:"
-#~ msgstr "Решить уравнение:"
-
-#~ msgid "Solve numerically"
-#~ msgstr "Решить численно"
-
-#~ msgid "Solve numerically ..."
-#~ msgstr "Решить численно ..."
-
-#~ msgid "Substitute:"
-#~ msgstr "Подставить:"
-
-#~ msgid "Substitution"
-#~ msgstr "Подстановка"
-
-#~ msgid "Sum of:"
-#~ msgstr "Сумма:"
-
-#~ msgid "Unfold"
-#~ msgstr "Развернуть"
-
-#~ msgid "Use &Taylor series"
-#~ msgstr "Использовать ряд Тейлора"
-
-#~ msgid "around:"
-#~ msgstr "в окрестности:"
-
-#~ msgid "by variable:"
-#~ msgstr "по переменной:"
-
-#~ msgid "change var:"
-#~ msgstr "замена переменной:"
-
-#~ msgid "eliminate variables:"
-#~ msgstr "исключить переменные:"
-
-#~ msgid "equation:"
-#~ msgstr "уравнение:"
-
-#~ msgid "for function(s):"
-#~ msgstr "для функции(ций)"
-
-#~ msgid "for variable(s):"
-#~ msgstr "для переменной(ных):"
-
-#~ msgid "from expression:"
-#~ msgstr "из выражения:"
-
-#~ msgid "function:"
-#~ msgstr "функция:"
-
-#~ msgid "in variable:"
-#~ msgstr "по переменной:"
-
-#~ msgid "the value is:"
-#~ msgstr "значение:"
-
-#~ msgid "variable"
-#~ msgstr "переменная"
-
-#~ msgid "variable:"
-#~ msgstr "переменная:"
-
-#~ msgid "when variable:"
-#~ msgstr "когда переменная:"
-
-#~ msgid "with:"
-#~ msgstr "на:"
+#~ "wxMaxima - графический интерфейс для\n"
+#~ "системы аналитических вычислений Maxima, основаный на wxWidgets."
 
 #~ msgid ""
 #~ "wxMaxima is a wxWidgets interface for the\n"
@@ -6207,24 +6192,39 @@ msgstr ""
 #~ "%s\n"
 #~ "%s"
 
+#~ msgid "wxMaxima options"
+#~ msgstr "Опции wxMaxima"
+
+#~ msgid "wxMaxima session"
+#~ msgstr "Сессия wxMaxima"
+
+#~ msgid "wxMaxima session (*.wxm)|*.wxm"
+#~ msgstr "Сессия wxMaxima (*.wxm)|*.wxm"
+
 #, fuzzy
 #~ msgid "wxMaxima session (*.wxm)|*.wxm|Maxima batch file (*mac)|*.mac|All|*"
 #~ msgstr "Сессия wxMaxima (*.wxm)|*.wxm"
 
-#~ msgid "Maxima session (*.wxm)|*.wxm"
-#~ msgstr "Сессия Maxima (*.wxm)|*.wxm"
+#, fuzzy
+#~ msgid ""
+#~ "wxMaxima xml document (*.wxmx)|*.wxmx|wxMaxima document (*.wxm)|*.wxm|"
+#~ "Maxima batch file (*.mac)|*.mac"
+#~ msgstr ""
+#~ "Документ wxMaxima (*.wxm)|*.wxm|XML-документ wxMaxima (*.wxmx)|*.wxmx|"
+#~ "Пакетный файл Maxima (*.mac)|*.mac"
 
-#~ msgid "Send ranges to &gnuplot"
-#~ msgstr "Передать пределы в gnuplot"
+#~ msgid ""
+#~ "wxMaxima's input line has command history available using up and down "
+#~ "keys and command completion based on previous input available using the "
+#~ "tab key."
+#~ msgstr ""
+#~ "Командная строка wxMaxima хранит историю команд, доступную при помощи "
+#~ "клавиш стрелка вверх/вниз, и выполняет автодополнение команд, основанное "
+#~ "на истории, по клавише табуляции."
 
-#~ msgid "Font family:"
-#~ msgstr "Семейство шрифтов:"
+#~ msgid "yellow green"
+#~ msgstr "желто-зеленый"
 
-#~ msgid "Font size in console window."
-#~ msgstr "Размер шрифта в консоли."
-
-#~ msgid "Font size:"
-#~ msgstr "Размер шрифта:"
-
-#~ msgid "Parametric"
-#~ msgstr "Параметрический"
+#, fuzzy
+#~ msgid "ypsilon"
+#~ msgstr "Выражение:"

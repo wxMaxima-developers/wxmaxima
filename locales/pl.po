@@ -5265,30 +5265,28 @@ msgstr "tak"
 msgid "zeta"
 msgstr ""
 
-#, fuzzy
-#~ msgid "Text & Code"
-#~ msgstr "Podziel komórki"
+#~ msgid " << Expression too long to display! >>"
+#~ msgstr "<< Wyrażenie jest zbyt długie, aby je wyświetlić >>"
 
-#~ msgid "Document "
-#~ msgstr "Dokument "
+#, fuzzy
+#~ msgid "&Cell"
+#~ msgstr "Komórka"
 
 #, fuzzy
 #~ msgid "&New\tCtrl-N"
 #~ msgstr "Nowy\tCtrl+N"
 
-#~ msgid "Write matching parenthesis in text controls."
-#~ msgstr "Automatycznie zamyka nawiasy w polach tekstowych."
+#~ msgid "&New Window\tCtrl+N"
+#~ msgstr "Nowe okno\tCtrl+N"
 
-#, fuzzy
-#~ msgid "Ypsilon"
-#~ msgstr "Epsilon:"
+#~ msgid "<< Nothing to display >>"
+#~ msgstr "<< Nic do wyświetlenia >>"
 
-#, fuzzy
-#~ msgid "ypsilon"
-#~ msgstr "Epsilon:"
+#~ msgid "Animation"
+#~ msgstr "Animacja"
 
-#~ msgid " << Expression too long to display! >>"
-#~ msgstr "<< Wyrażenie jest zbyt długie, aby je wyświetlić >>"
+#~ msgid "Close document?"
+#~ msgstr "Zamknąć dokument?"
 
 #~ msgid "Copy As Image"
 #~ msgstr "Kopiuj jako obrazek"
@@ -5296,81 +5294,20 @@ msgstr ""
 #~ msgid "Copy LaTeX"
 #~ msgstr "Kopiuj LaTeX"
 
-#~ msgid "Height:"
-#~ msgstr "Wysokość:"
+#~ msgid "Copy selection to clipboard when selection is made in document."
+#~ msgstr "Kopiuj zaznaczenie zrobione w dokumecie do schowka"
 
-#~ msgid "Width:"
-#~ msgstr "Szerokość:"
-
-#, fuzzy
-#~ msgid "implies"
-#~ msgstr "Uprość"
-
-#~ msgid "Panes"
-#~ msgstr "Panele"
-
-#~ msgid "Error %d"
-#~ msgstr "Błąd %d"
-
-#, fuzzy
-#~ msgid "Structure\tAlt+Shift+T"
-#~ msgstr "Statystyka\tAlt+Shift+S"
-
-#~ msgid "Zoom set to "
-#~ msgstr "Powiększenie ustawione na"
-
-#, fuzzy
-#~ msgid ""
-#~ "wxMaxima xml document (*.wxmx)|*.wxmx|wxMaxima document (*.wxm)|*.wxm|"
-#~ "Maxima batch file (*.mac)|*.mac"
-#~ msgstr ""
-#~ "Dokument wxMaxima (*.wxm)|*.wxm|xml dokument wxMaxima (*.wxmx)|*.wxmx|"
-#~ "Plik wsadowy Maxima (*.mac)|*.mac"
-
-#~ msgid "lines hidden"
-#~ msgstr "ukryte linie"
-
-#~ msgid "Set &Precision..."
-#~ msgstr "Ustaw &dokładność"
-
-#~ msgid "Start animation"
-#~ msgstr "Uruchom animacje"
-
-#~ msgid "Stop animation"
-#~ msgstr "Zatrzymaj animacje"
-
-#~ msgid "Animation"
-#~ msgstr "Animacja"
-
-#~ msgid "Find..."
-#~ msgstr "Znajdź..."
-
-#, fuzzy
-#~ msgid "Re-evaluate All until here\tCtrl+Shift+H"
-#~ msgstr "Wykonaj wszystkie komórki\tCtrl+R"
-
-#, fuzzy
-#~ msgid "Redo\tCtrl+Shift+Z"
-#~ msgstr "Cofnij\tCtrl+Z"
+#~ msgid "Copy to clipboard on select"
+#~ msgstr "Kopiuj do schowka przy zaznaczaniu"
 
 #~ msgid "Default port:"
 #~ msgstr "Domyślny port:"
 
-#~ msgid "Save changes before closing?"
-#~ msgstr "Zapisać zmiany przed wyjściem?"
+#~ msgid "Delete selection"
+#~ msgstr "Usuń zaznaczenie"
 
-#~ msgid "Save changes?"
-#~ msgstr "Zapisać zmiany?"
-
-#, fuzzy
-#~ msgid "&Cell"
-#~ msgstr "Komórka"
-
-#~ msgid "&New Window\tCtrl+N"
-#~ msgstr "Nowe okno\tCtrl+N"
-
-#~ msgid "Close document?"
-#~ msgstr "Zamknąć dokument?"
+#~ msgid "Document "
+#~ msgstr "Dokument "
 
 #~ msgid ""
 #~ "Document not saved!\n"
@@ -5390,14 +5327,95 @@ msgstr ""
 #~ "\n"
 #~ "Czy chcesz wyjść z wxMaximy i stracić wszystkie zmiany?"
 
+#~ msgid "Error %d"
+#~ msgstr "Błąd %d"
+
+#~ msgid "Find..."
+#~ msgstr "Znajdź..."
+
+#~ msgid "Functions and macros"
+#~ msgstr "Funkcje i makra"
+
+#~ msgid "Height:"
+#~ msgstr "Wysokość:"
+
+#~ msgid "Input"
+#~ msgstr "Wejście"
+
+#~ msgid "Labels"
+#~ msgstr "Etykiety"
+
 #~ msgid "Maxima options"
 #~ msgstr "Opcje programy Maxima"
+
+#~ msgid "Panes"
+#~ msgstr "Panele"
 
 #~ msgid "Quit?"
 #~ msgstr "Wyjść?"
 
-#~ msgid "wxMaxima options"
-#~ msgstr "wxMaxima preferencje"
+#, fuzzy
+#~ msgid "Re-evaluate All until here\tCtrl+Shift+H"
+#~ msgstr "Wykonaj wszystkie komórki\tCtrl+R"
+
+#, fuzzy
+#~ msgid "Redo\tCtrl+Shift+Z"
+#~ msgstr "Cofnij\tCtrl+Z"
+
+#~ msgid "Save changes before closing?"
+#~ msgstr "Zapisać zmiany przed wyjściem?"
+
+#~ msgid "Save changes?"
+#~ msgstr "Zapisać zmiany?"
+
+#~ msgid "Save document as ..."
+#~ msgstr "Zapisz dokument jako ..."
+
+#~ msgid "Set &Precision..."
+#~ msgstr "Ustaw &dokładność"
+
+#~ msgid "Show Maxima header"
+#~ msgstr "Pokaż nagłówek Maximy"
+
+#~ msgid "Show initial header with Maxima system information."
+#~ msgstr "Pokazuj przy starcie nagłówek Maximy o systemie i kompilacji"
+
+#~ msgid "Start animation"
+#~ msgstr "Uruchom animacje"
+
+#~ msgid "Stop animation"
+#~ msgstr "Zatrzymaj animacje"
+
+#, fuzzy
+#~ msgid "Structure\tAlt+Shift+T"
+#~ msgstr "Statystyka\tAlt+Shift+S"
+
+#, fuzzy
+#~ msgid "Text & Code"
+#~ msgstr "Podziel komórki"
+
+#~ msgid "To &Float\tCtrl+F"
+#~ msgstr "&Wartość\tCtrl+F"
+
+#~ msgid "Width:"
+#~ msgstr "Szerokość:"
+
+#~ msgid "Write matching parenthesis in text controls."
+#~ msgstr "Automatycznie zamyka nawiasy w polach tekstowych."
+
+#, fuzzy
+#~ msgid "Ypsilon"
+#~ msgstr "Epsilon:"
+
+#~ msgid "Zoom set to "
+#~ msgstr "Powiększenie ustawione na"
+
+#, fuzzy
+#~ msgid "implies"
+#~ msgstr "Uprość"
+
+#~ msgid "lines hidden"
+#~ msgstr "ukryte linie"
 
 #~ msgid ""
 #~ "wxMaxima is a graphical user interface for the\n"
@@ -5406,35 +5424,17 @@ msgstr ""
 #~ "wxMaxima jest graficznym interfejsem dla programu Maxima \n"
 #~ "komputerowego systememu obliczeń symbolicznych"
 
-#~ msgid "<< Nothing to display >>"
-#~ msgstr "<< Nic do wyświetlenia >>"
+#~ msgid "wxMaxima options"
+#~ msgstr "wxMaxima preferencje"
 
-#~ msgid "Functions and macros"
-#~ msgstr "Funkcje i makra"
+#, fuzzy
+#~ msgid ""
+#~ "wxMaxima xml document (*.wxmx)|*.wxmx|wxMaxima document (*.wxm)|*.wxm|"
+#~ "Maxima batch file (*.mac)|*.mac"
+#~ msgstr ""
+#~ "Dokument wxMaxima (*.wxm)|*.wxm|xml dokument wxMaxima (*.wxmx)|*.wxmx|"
+#~ "Plik wsadowy Maxima (*.mac)|*.mac"
 
-#~ msgid "Labels"
-#~ msgstr "Etykiety"
-
-#~ msgid "Copy selection to clipboard when selection is made in document."
-#~ msgstr "Kopiuj zaznaczenie zrobione w dokumecie do schowka"
-
-#~ msgid "Copy to clipboard on select"
-#~ msgstr "Kopiuj do schowka przy zaznaczaniu"
-
-#~ msgid "Input"
-#~ msgstr "Wejście"
-
-#~ msgid "Save document as ..."
-#~ msgstr "Zapisz dokument jako ..."
-
-#~ msgid "Show Maxima header"
-#~ msgstr "Pokaż nagłówek Maximy"
-
-#~ msgid "Show initial header with Maxima system information."
-#~ msgstr "Pokazuj przy starcie nagłówek Maximy o systemie i kompilacji"
-
-#~ msgid "Delete selection"
-#~ msgstr "Usuń zaznaczenie"
-
-#~ msgid "To &Float\tCtrl+F"
-#~ msgstr "&Wartość\tCtrl+F"
+#, fuzzy
+#~ msgid "ypsilon"
+#~ msgstr "Epsilon:"

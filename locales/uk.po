@@ -5477,6 +5477,52 @@ msgstr "так"
 msgid "zeta"
 msgstr "ζ"
 
+#~ msgid "      -X '--dynamic-space-size <int>'"
+#~ msgstr "      -X '--dynamic-space-size <ціле число>'"
+
+#~ msgid " << Expression too long to display! >>"
+#~ msgstr " << Занадто довгий вираз! >>"
+
+#, fuzzy
+#~ msgid "&New\tCtrl-N"
+#~ msgstr "&Створити\tCtrl+N"
+
+#~ msgid "Animation"
+#~ msgstr "Анімація"
+
+#~ msgid "Bug: Fraction without denominator"
+#~ msgstr "Вада: дріб без знаменника"
+
+#~ msgid "Bug: Fraction without enumerator"
+#~ msgstr "Вада: дріб без чисельника"
+
+#~ msgid "Copy As Image"
+#~ msgstr "Копіювати як зображення"
+
+#~ msgid "Copy LaTeX"
+#~ msgstr "Копіювати як LaTeX"
+
+#~ msgid "Custom symbols sidebar glyphs:"
+#~ msgstr "Гліфи бічної панелі нетипових символів:"
+
+#~ msgid "Default port:"
+#~ msgstr "Типовий порт:"
+
+#~ msgid "Document "
+#~ msgstr "Документ "
+
+#~ msgid "Error %d"
+#~ msgstr "Помилка %d"
+
+#~ msgid "Find..."
+#~ msgstr "Знайти…"
+
+#~ msgid "HTML/Text Cells: Export all linebreaks"
+#~ msgstr "Комірки HTML/тексту: Експортувати усі розриви рядків"
+
+#~ msgid "Height:"
+#~ msgstr "Висота:"
+
 #~ msgid ""
 #~ "If a command begins with a label followed by a : wxMaxima will show this "
 #~ "label instead of the %o style label maxima has automatically assigned to "
@@ -5486,21 +5532,126 @@ msgstr "ζ"
 #~ "покаже цю мітку а не мітку Maxima типу «%o», яку програма автоматично "
 #~ "призначає для комірки виведення даних."
 
+#~ msgid "Include input cells in the export of a worksheet"
+#~ msgstr ""
+#~ "Включити комірки із введенням команд до експортованого робочого аркуша"
+
+#~ msgid "My"
+#~ msgstr "Μ"
+
+#~ msgid ""
+#~ "Normally we export the whole worksheet to TeX or HTML. But sometimes the "
+#~ "maxima input does scare the user. This option turns off exporting of "
+#~ "maxima's input."
+#~ msgstr ""
+#~ "Зазвичай, до TeX або HTML експортуються усі дані робочого аркуша. Втім, "
+#~ "іноді, команди maxima є зайвими. За допомогою цього пункту ви можете "
+#~ "вимкнути експортування команд maxima."
+
+#~ msgid "Ny"
+#~ msgstr "Ν"
+
+#~ msgid "Omnikron"
+#~ msgstr "Ο"
+
+#~ msgid "Output from Maxima to stderr (there should be none):\n"
+#~ msgstr "Виводити дані з Maxima до stderr (таких даних не повинно бути):\n"
+
+#~ msgid "Output from Maxima to stdout (there should be none):\n"
+#~ msgstr "Виводити дані з Maxima до stdout (таких даних не повинно бути):\n"
+
+#~ msgid "Panes"
+#~ msgstr "Панелі"
+
+#, fuzzy
+#~ msgid "Re-evaluate All until here\tCtrl+Shift+H"
+#~ msgstr "Обчислити усі комірки\tCtrl+Shift+R"
+
+#~ msgid "Redo\tCtrl+Shift+Z"
+#~ msgstr "Повторити\tCtrl+Shift+Z"
+
+#~ msgid "Save changes before closing?"
+#~ msgstr "Зберегти зміни перед закриттям?"
+
+#~ msgid "Save changes?"
+#~ msgstr "Зберегти зміни?"
+
+#~ msgid "Set &Precision..."
+#~ msgstr "Встановити &точність…"
+
 #~ msgid "Show user-defined labels instead of (%oxx)"
 #~ msgstr "Показувати визначені користувачем мітки замість (%oxx)"
+
+#~ msgid "Start animation"
+#~ msgstr "Почати анімацію"
+
+#~ msgid "Stop animation"
+#~ msgstr "Припинити анімацію"
+
+#~ msgid "Structure\tAlt+Shift+T"
+#~ msgstr "Структура\tAlt+Shift+T"
 
 #, fuzzy
 #~ msgid "Text & Code"
 #~ msgstr "Ділити комірку"
 
-#~ msgid "      -X '--dynamic-space-size <int>'"
-#~ msgstr "      -X '--dynamic-space-size <ціле число>'"
+#~ msgid ""
+#~ "The \"Copy as MathML\" feature allows to copy equations in a format MS "
+#~ "Word will automatically recognize as \"formula editor object\". Other "
+#~ "word processor's formula editors have an import functionality for the "
+#~ "MathML format, too."
+#~ msgstr ""
+#~ "За допомогою пункту «Копіювати як MathML» можна скопіювати рівняння у "
+#~ "форматі, який MS Word автоматично розпізнає як «об’єкт редактора формул». "
+#~ "У інших редакторах формул текстових процесорів також передбачено "
+#~ "можливість імпортування даних у форматі MathML."
 
-#~ msgid "Bug: Fraction without denominator"
-#~ msgstr "Вада: дріб без знаменника"
+#~ msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
+#~ msgstr ""
+#~ "Спроба встановлення курсора у комірку, яка не є частиною робочого аркуша"
 
-#~ msgid "Bug: Fraction without enumerator"
-#~ msgstr "Вада: дріб без чисельника"
+#~ msgid "Use MathJAX in HTML export"
+#~ msgstr "Використовувати для експорту до HTML MathJAX"
+
+#~ msgid ""
+#~ "Use MathJAX instead of images in HTML exports to display maxima output. "
+#~ "The advantage of MathJAX is that it allows to copy the displayed "
+#~ "equations as if they were text, to choose if they should be copied as TeX "
+#~ "or MathML instead and displays them in a scaleable format that is really "
+#~ "nice to look at. The disadvantage of MathJAX is that it will need "
+#~ "JavaScript and a little bit of time in order to typeset an equation."
+#~ msgstr ""
+#~ "Використовувати код MathJAX замість зображень формул у експортованих "
+#~ "даних HTML. Перевагою MathJAX є те, що за допомогою коду можна просто "
+#~ "копіювати показані формули як текст у форматі TeX або MathML і бачити "
+#~ "формули у красивому масштабованому форматі. Недоліком MathJAX є те, що "
+#~ "для обробки потрібен JavaScript, і те, що відтворення формули є "
+#~ "тривалішим, ніж показ готового зображення."
+
+#~ msgid ""
+#~ "While text cells in LaTeX are broken into lines by TeX the text displayed "
+#~ "on the screen is broken into lines manually. This option, if set tells "
+#~ "that lines in HTML output will be broken where they are broken in the "
+#~ "worksheet. If this option isn't set manual linebreaks can still be "
+#~ "introduced by introducing an empty line."
+#~ msgstr ""
+#~ "Хоча текстові комірки у LaTeX розбиваються на рядки самим TeX, текст, "
+#~ "показаний на екрані, розбивається на рядки вручну. Якщо буде позначено "
+#~ "цей пункт, рядки у коді HTML буде розбито там, де їх було розбито на "
+#~ "робочому аркуші. Якщо пункт не буде позначено, ви зможете вставляти "
+#~ "розриви рядків вручну, додаючи порожній рядок."
+
+#~ msgid "Width:"
+#~ msgstr "Ширина:"
+
+#~ msgid "Write matching parenthesis in text controls."
+#~ msgstr "Писати відповідні дужки в текстових елементах керування."
+
+#~ msgid "Ypsilon"
+#~ msgstr "Υ"
+
+#~ msgid "Zoom set to "
+#~ msgstr "Встановлено масштаб у "
 
 #~ msgid "bug:Invalid at tag"
 #~ msgstr "вада: некоректний теґ at"
@@ -5529,88 +5680,12 @@ msgstr "ζ"
 #~ msgid "bug:Invalid sup tag"
 #~ msgstr "вада: некоректний теґ sup"
 
-#~ msgid "Document "
-#~ msgstr "Документ "
-
 #, fuzzy
-#~ msgid "&New\tCtrl-N"
-#~ msgstr "&Створити\tCtrl+N"
+#~ msgid "implies"
+#~ msgstr "Спростити"
 
-#~ msgid "HTML/Text Cells: Export all linebreaks"
-#~ msgstr "Комірки HTML/тексту: Експортувати усі розриви рядків"
-
-#~ msgid "Include input cells in the export of a worksheet"
-#~ msgstr ""
-#~ "Включити комірки із введенням команд до експортованого робочого аркуша"
-
-#~ msgid ""
-#~ "Normally we export the whole worksheet to TeX or HTML. But sometimes the "
-#~ "maxima input does scare the user. This option turns off exporting of "
-#~ "maxima's input."
-#~ msgstr ""
-#~ "Зазвичай, до TeX або HTML експортуються усі дані робочого аркуша. Втім, "
-#~ "іноді, команди maxima є зайвими. За допомогою цього пункту ви можете "
-#~ "вимкнути експортування команд maxima."
-
-#~ msgid ""
-#~ "While text cells in LaTeX are broken into lines by TeX the text displayed "
-#~ "on the screen is broken into lines manually. This option, if set tells "
-#~ "that lines in HTML output will be broken where they are broken in the "
-#~ "worksheet. If this option isn't set manual linebreaks can still be "
-#~ "introduced by introducing an empty line."
-#~ msgstr ""
-#~ "Хоча текстові комірки у LaTeX розбиваються на рядки самим TeX, текст, "
-#~ "показаний на екрані, розбивається на рядки вручну. Якщо буде позначено "
-#~ "цей пункт, рядки у коді HTML буде розбито там, де їх було розбито на "
-#~ "робочому аркуші. Якщо пункт не буде позначено, ви зможете вставляти "
-#~ "розриви рядків вручну, додаючи порожній рядок."
-
-#~ msgid "Write matching parenthesis in text controls."
-#~ msgstr "Писати відповідні дужки в текстових елементах керування."
-
-#~ msgid "Use MathJAX in HTML export"
-#~ msgstr "Використовувати для експорту до HTML MathJAX"
-
-#~ msgid ""
-#~ "Use MathJAX instead of images in HTML exports to display maxima output. "
-#~ "The advantage of MathJAX is that it allows to copy the displayed "
-#~ "equations as if they were text, to choose if they should be copied as TeX "
-#~ "or MathML instead and displays them in a scaleable format that is really "
-#~ "nice to look at. The disadvantage of MathJAX is that it will need "
-#~ "JavaScript and a little bit of time in order to typeset an equation."
-#~ msgstr ""
-#~ "Використовувати код MathJAX замість зображень формул у експортованих "
-#~ "даних HTML. Перевагою MathJAX є те, що за допомогою коду можна просто "
-#~ "копіювати показані формули як текст у форматі TeX або MathML і бачити "
-#~ "формули у красивому масштабованому форматі. Недоліком MathJAX є те, що "
-#~ "для обробки потрібен JavaScript, і те, що відтворення формули є "
-#~ "тривалішим, ніж показ готового зображення."
-
-#~ msgid ""
-#~ "The \"Copy as MathML\" feature allows to copy equations in a format MS "
-#~ "Word will automatically recognize as \"formula editor object\". Other "
-#~ "word processor's formula editors have an import functionality for the "
-#~ "MathML format, too."
-#~ msgstr ""
-#~ "За допомогою пункту «Копіювати як MathML» можна скопіювати рівняння у "
-#~ "форматі, який MS Word автоматично розпізнає як «об’єкт редактора формул». "
-#~ "У інших редакторах формул текстових процесорів також передбачено "
-#~ "можливість імпортування даних у форматі MathML."
-
-#~ msgid "Custom symbols sidebar glyphs:"
-#~ msgstr "Гліфи бічної панелі нетипових символів:"
-
-#~ msgid "My"
-#~ msgstr "Μ"
-
-#~ msgid "Ny"
-#~ msgstr "Ν"
-
-#~ msgid "Omnikron"
-#~ msgstr "Ο"
-
-#~ msgid "Ypsilon"
-#~ msgstr "Υ"
+#~ msgid "lines hidden"
+#~ msgstr "приховано"
 
 #~ msgid "my"
 #~ msgstr "μ"
@@ -5621,44 +5696,6 @@ msgstr "ζ"
 #~ msgid "omnikron"
 #~ msgstr "ο"
 
-#~ msgid "ypsilon"
-#~ msgstr "υ"
-
-#~ msgid " << Expression too long to display! >>"
-#~ msgstr " << Занадто довгий вираз! >>"
-
-#~ msgid "Copy As Image"
-#~ msgstr "Копіювати як зображення"
-
-#~ msgid "Copy LaTeX"
-#~ msgstr "Копіювати як LaTeX"
-
-#~ msgid "Height:"
-#~ msgstr "Висота:"
-
-#~ msgid "Width:"
-#~ msgstr "Ширина:"
-
-#~ msgid "Trying to set the cursor to a cell that isn't part of the worksheet"
-#~ msgstr ""
-#~ "Спроба встановлення курсора у комірку, яка не є частиною робочого аркуша"
-
-#, fuzzy
-#~ msgid "implies"
-#~ msgstr "Спростити"
-
-#~ msgid "Panes"
-#~ msgstr "Панелі"
-
-#~ msgid "Error %d"
-#~ msgstr "Помилка %d"
-
-#~ msgid "Structure\tAlt+Shift+T"
-#~ msgstr "Структура\tAlt+Shift+T"
-
-#~ msgid "Zoom set to "
-#~ msgstr "Встановлено масштаб у "
-
 #~ msgid ""
 #~ "wxMaxima xml document (*.wxmx)|*.wxmx|wxMaxima document (*.wxm)|*.wxm|"
 #~ "Maxima batch file (*.mac)|*.mac"
@@ -5666,42 +5703,5 @@ msgstr "ζ"
 #~ "документ xml wxMaxima (*.wxmx)|*.wxmx|документ wxMaxima (*.wxm)|*.wxm|"
 #~ "пакетний файл Maxima (*.mac)|*.mac"
 
-#~ msgid "Output from Maxima to stderr (there should be none):\n"
-#~ msgstr "Виводити дані з Maxima до stderr (таких даних не повинно бути):\n"
-
-#~ msgid "Output from Maxima to stdout (there should be none):\n"
-#~ msgstr "Виводити дані з Maxima до stdout (таких даних не повинно бути):\n"
-
-#~ msgid "lines hidden"
-#~ msgstr "приховано"
-
-#~ msgid "Set &Precision..."
-#~ msgstr "Встановити &точність…"
-
-#~ msgid "Start animation"
-#~ msgstr "Почати анімацію"
-
-#~ msgid "Stop animation"
-#~ msgstr "Припинити анімацію"
-
-#~ msgid "Animation"
-#~ msgstr "Анімація"
-
-#~ msgid "Find..."
-#~ msgstr "Знайти…"
-
-#, fuzzy
-#~ msgid "Re-evaluate All until here\tCtrl+Shift+H"
-#~ msgstr "Обчислити усі комірки\tCtrl+Shift+R"
-
-#~ msgid "Redo\tCtrl+Shift+Z"
-#~ msgstr "Повторити\tCtrl+Shift+Z"
-
-#~ msgid "Default port:"
-#~ msgstr "Типовий порт:"
-
-#~ msgid "Save changes before closing?"
-#~ msgstr "Зберегти зміни перед закриттям?"
-
-#~ msgid "Save changes?"
-#~ msgstr "Зберегти зміни?"
+#~ msgid "ypsilon"
+#~ msgstr "υ"

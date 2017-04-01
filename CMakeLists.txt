@@ -2,23 +2,18 @@ cmake_minimum_required(VERSION 3.7)
 project(wxmaxima)
 
 set(VERSION 17.04.0)
-set(PACKAGE_VERSION 17.04.0)
+set(PACKAGE_VERSION ${VERSION})
 set(PACKAGE wxMaxima)
-
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(wxWidgets_USE_DEBUG ON)
-endif()
-
-set(WXCONFIGENV $ENV{WXCONFIG})
-
-if (NOT "${WXCONFIGENV}" STREQUAL "")
-    set(wxWidgets_FIND_STYLE unix)
-    set(wxWidgets_CONFIG_EXECUTABLE ${WXCONFIGENV})
-endif()
 
 find_package(wxWidgets REQUIRED std xml html adv aui core net base)
 
 include(${wxWidgets_USE_FILE})
+
+find_package(gettext)
+
+if (GETTEXT_FOUND)
+    add_subdirectory(locales)
+endif()
 
 set(SOURCE_FILES
         src/AbsCell.cpp

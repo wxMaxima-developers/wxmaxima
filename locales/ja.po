@@ -5216,39 +5216,8 @@ msgstr "yes"
 msgid "zeta"
 msgstr ""
 
-#~ msgid "Show user-defined labels instead of (%oxx)"
-#~ msgstr "(%oxx) の代わりにユーザー定義のラベルを表示"
-
-#, fuzzy
-#~ msgid "Text & Code"
-#~ msgstr "セルの分割"
-
 #~ msgid "      -X '--dynamic-space-size <int>'"
 #~ msgstr "      -X '--dynamic-space-size <整数>'"
-
-#~ msgid "Document "
-#~ msgstr "ドキュメント "
-
-#, fuzzy
-#~ msgid "&New\tCtrl-N"
-#~ msgstr "新規(&N)\tCtrl+N"
-
-#~ msgid "Include input cells in the export of a worksheet"
-#~ msgstr "ワークシートをエクスポートする際に入力セルを含める"
-
-#~ msgid "Write matching parenthesis in text controls."
-#~ msgstr "テキスト入力ボックスでの括弧の自動補完"
-
-#~ msgid "Use MathJAX in HTML export"
-#~ msgstr "HTMLエクスポート時にMathJaxを使う"
-
-#, fuzzy
-#~ msgid "Ypsilon"
-#~ msgstr "許容誤差："
-
-#, fuzzy
-#~ msgid "ypsilon"
-#~ msgstr "許容誤差："
 
 #~ msgid " << Expression too long to display! >>"
 #~ msgstr ""
@@ -5256,42 +5225,39 @@ msgstr ""
 #~ "バーの「編集」から「設定」ダイアログを開き、「出力に時間がかかる式も表示」"
 #~ "にチェックを入れて下さい） "
 
+#~ msgid "&Cell"
+#~ msgstr "セル(&C)"
+
+#, fuzzy
+#~ msgid "&New\tCtrl-N"
+#~ msgstr "新規(&N)\tCtrl+N"
+
+#~ msgid "Animation"
+#~ msgstr "アニメーション"
+
 #~ msgid "Copy As Image"
 #~ msgstr "画像としてコピー"
 
 #~ msgid "Copy LaTeX"
 #~ msgstr "LaTeXとしてコピー"
 
-#~ msgid "Height:"
-#~ msgstr "列数："
+#~ msgid "Default port:"
+#~ msgstr "通信ポート："
 
-#~ msgid "Width:"
-#~ msgstr "行数："
-
-#, fuzzy
-#~ msgid "implies"
-#~ msgstr "式の整理"
-
-#~ msgid "Panes"
-#~ msgstr "サイドバー"
+#~ msgid "Document "
+#~ msgstr "ドキュメント "
 
 #~ msgid "Error %d"
 #~ msgstr "エラー %d"
 
-#, fuzzy
-#~ msgid "Structure\tAlt+Shift+T"
-#~ msgstr "統計処理\tAlt+Shift+S"
+#~ msgid "Find..."
+#~ msgstr "解を1つ探す"
 
-#~ msgid "Zoom set to "
-#~ msgstr "拡大率 "
+#~ msgid "Height:"
+#~ msgstr "列数："
 
-#, fuzzy
-#~ msgid ""
-#~ "wxMaxima xml document (*.wxmx)|*.wxmx|wxMaxima document (*.wxm)|*.wxm|"
-#~ "Maxima batch file (*.mac)|*.mac"
-#~ msgstr ""
-#~ "wxMaxima document (*.wxm)|*.wxm|wxMaxima xml document (*.wxmx)|*.wxmx|バッ"
-#~ "チファイル (*.mac)|*.mac"
+#~ msgid "Include input cells in the export of a worksheet"
+#~ msgstr "ワークシートをエクスポートする際に入力セルを含める"
 
 #~ msgid "Output from Maxima to stderr (there should be none):\n"
 #~ msgstr ""
@@ -5302,32 +5268,14 @@ msgstr ""
 #~ msgstr ""
 #~ "Maximaからstdout（標準出力）への出力（出力先は空であることが望ましい）:\n"
 
-#~ msgid "lines hidden"
-#~ msgstr "行が非表示"
-
-#~ msgid "Set &Precision..."
-#~ msgstr "浮動小数点の桁数設定(&P)"
-
-#~ msgid "Start animation"
-#~ msgstr "アニメーションの開始"
-
-#~ msgid "Stop animation"
-#~ msgstr "アニメーションの停止"
-
-#~ msgid "Animation"
-#~ msgstr "アニメーション"
-
-#~ msgid "Find..."
-#~ msgstr "解を1つ探す"
+#~ msgid "Panes"
+#~ msgstr "サイドバー"
 
 #~ msgid "Re-evaluate All until here\tCtrl+Shift+H"
 #~ msgstr "ここまでの全てのセルを再評価\tCtrl+Shift+H"
 
 #~ msgid "Redo\tCtrl+Shift+Z"
 #~ msgstr "やり直す\tCtrl+Shift+Z"
-
-#~ msgid "Default port:"
-#~ msgstr "通信ポート："
 
 #~ msgid "Save changes before closing?"
 #~ msgstr ""
@@ -5337,5 +5285,57 @@ msgstr ""
 #~ msgid "Save changes?"
 #~ msgstr "変更の保存"
 
-#~ msgid "&Cell"
-#~ msgstr "セル(&C)"
+#~ msgid "Set &Precision..."
+#~ msgstr "浮動小数点の桁数設定(&P)"
+
+#~ msgid "Show user-defined labels instead of (%oxx)"
+#~ msgstr "(%oxx) の代わりにユーザー定義のラベルを表示"
+
+#~ msgid "Start animation"
+#~ msgstr "アニメーションの開始"
+
+#~ msgid "Stop animation"
+#~ msgstr "アニメーションの停止"
+
+#, fuzzy
+#~ msgid "Structure\tAlt+Shift+T"
+#~ msgstr "統計処理\tAlt+Shift+S"
+
+#, fuzzy
+#~ msgid "Text & Code"
+#~ msgstr "セルの分割"
+
+#~ msgid "Use MathJAX in HTML export"
+#~ msgstr "HTMLエクスポート時にMathJaxを使う"
+
+#~ msgid "Width:"
+#~ msgstr "行数："
+
+#~ msgid "Write matching parenthesis in text controls."
+#~ msgstr "テキスト入力ボックスでの括弧の自動補完"
+
+#, fuzzy
+#~ msgid "Ypsilon"
+#~ msgstr "許容誤差："
+
+#~ msgid "Zoom set to "
+#~ msgstr "拡大率 "
+
+#, fuzzy
+#~ msgid "implies"
+#~ msgstr "式の整理"
+
+#~ msgid "lines hidden"
+#~ msgstr "行が非表示"
+
+#, fuzzy
+#~ msgid ""
+#~ "wxMaxima xml document (*.wxmx)|*.wxmx|wxMaxima document (*.wxm)|*.wxm|"
+#~ "Maxima batch file (*.mac)|*.mac"
+#~ msgstr ""
+#~ "wxMaxima document (*.wxm)|*.wxm|wxMaxima xml document (*.wxmx)|*.wxmx|バッ"
+#~ "チファイル (*.mac)|*.mac"
+
+#, fuzzy
+#~ msgid "ypsilon"
+#~ msgstr "許容誤差："
