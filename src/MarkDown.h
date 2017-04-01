@@ -42,19 +42,21 @@ class MarkDownParser
 {
 protected:
   Configuration *m_configuration;
+
   //! A pair of a regExp and a string that has to replace the matches.
-  class RegexReplacer:public wxRegEx
+  class RegexReplacer : public wxRegEx
   {
   public:
-    RegexReplacer(wxString From,wxString To):wxRegEx(From)
-      {
-      replaceBy=To;
-      }
-    
+    RegexReplacer(wxString From, wxString To) : wxRegEx(From)
+    {
+      replaceBy = To;
+    }
+
     void DoReplace(wxString *line)
-      {
-        Replace(line,replaceBy);
-      }
+    {
+      Replace(line, replaceBy);
+    }
+
   private:
     wxString replaceBy; //!< The thing we replace it with
   };
@@ -63,55 +65,95 @@ protected:
   replaceList regexReplaceList;
 public:
   MarkDownParser(Configuration *cfg);
+
   virtual ~MarkDownParser();
+
   wxString MarkDown(wxString str);
 
   //! A list of things we want to replace.
-  std::list<RegexReplacer *> RegexReplaceList(){return regexReplaceList;}
- private:    
+  std::list<RegexReplacer *> RegexReplaceList()
+  { return regexReplaceList; }
+
+private:
   virtual wxString itemizeBegin()=0;      //!< The marker for the begin of an item list
   virtual wxString itemizeEnd()=0;        //!< The marker for the end of an item list
   virtual wxString quoteChar()=0;         //!< The marker for an quote
   virtual wxString quoteBegin()=0;        //!< The marker that says we want to start quote
-  virtual wxString quoteEnd  ()=0;        //!< The marker that says we want to end quote
+  virtual wxString quoteEnd()=0;        //!< The marker that says we want to end quote
   virtual wxString itemizeItem()=0;       //!< The marker for the begin of an item
   virtual wxString itemizeEndItem()=0;    //!< The marker for the end of an item
   virtual wxString NewLine()=0;           //!< The marker for the beginning of a new line
-  virtual bool     NewLineBreaksLine()=0; //!< Does a single newline in the output actually break lines?
+  virtual bool NewLineBreaksLine()=0; //!< Does a single newline in the output actually break lines?
 };
 
 //! A markdown parser for TeX
-class MarkDownTeX: public MarkDownParser
+class MarkDownTeX : public MarkDownParser
 {
 public:
   MarkDownTeX(Configuration *cfg);
- private:
-  virtual wxString quoteBegin(){return wxT("\\begin{quote}\n");}
-  virtual wxString quoteEnd  (){return wxT("\\end{quote}\n");}
-  virtual wxString quoteChar (){return wxT("\\ensuremath{>}");}
-  virtual wxString itemizeBegin(){return wxT("\\begin{itemize}\n");}
-  virtual wxString itemizeEnd(){return wxT("\\end{itemize}\n");}
-  virtual wxString itemizeItem(){return wxT("\\item ");}
-  virtual wxString itemizeEndItem(){return wxEmptyString;}
-  virtual wxString NewLine(){return wxT(" ");}
-  virtual bool     NewLineBreaksLine(){return false;}
+
+private:
+  virtual wxString quoteBegin()
+  { return wxT("\\begin{quote}\n"); }
+
+  virtual wxString quoteEnd()
+  { return wxT("\\end{quote}\n"); }
+
+  virtual wxString quoteChar()
+  { return wxT("\\ensuremath{>}"); }
+
+  virtual wxString itemizeBegin()
+  { return wxT("\\begin{itemize}\n"); }
+
+  virtual wxString itemizeEnd()
+  { return wxT("\\end{itemize}\n"); }
+
+  virtual wxString itemizeItem()
+  { return wxT("\\item "); }
+
+  virtual wxString itemizeEndItem()
+  { return wxEmptyString; }
+
+  virtual wxString NewLine()
+  { return wxT(" "); }
+
+  virtual bool NewLineBreaksLine()
+  { return false; }
 };
 
 //! A markdown parser for HTML
-class MarkDownHTML: public MarkDownParser
+class MarkDownHTML : public MarkDownParser
 {
 public:
   MarkDownHTML(Configuration *cfg);
- private:
-  virtual wxString quoteChar (){return wxT("&gt;");}
-  virtual wxString quoteBegin(){return wxT("<blockquote>\n");}
-  virtual wxString quoteEnd  (){return wxT("</blockquote>\n");}
-  virtual wxString itemizeBegin(){return wxT("<UL>\n");}
-  virtual wxString itemizeEnd(){return wxT("</UL>\n");}
-  virtual wxString itemizeItem(){return wxT("<LI>");}
-  virtual wxString itemizeEndItem(){return wxT("</LI>\n");}
-  virtual wxString NewLine(){return wxT("<BR>");}
-  virtual bool     NewLineBreaksLine(){return true;}
+
+private:
+  virtual wxString quoteChar()
+  { return wxT("&gt;"); }
+
+  virtual wxString quoteBegin()
+  { return wxT("<blockquote>\n"); }
+
+  virtual wxString quoteEnd()
+  { return wxT("</blockquote>\n"); }
+
+  virtual wxString itemizeBegin()
+  { return wxT("<UL>\n"); }
+
+  virtual wxString itemizeEnd()
+  { return wxT("</UL>\n"); }
+
+  virtual wxString itemizeItem()
+  { return wxT("<LI>"); }
+
+  virtual wxString itemizeEndItem()
+  { return wxT("</LI>\n"); }
+
+  virtual wxString NewLine()
+  { return wxT("<BR>"); }
+
+  virtual bool NewLineBreaksLine()
+  { return true; }
 };
 
 #endif // MARKDOWN_H

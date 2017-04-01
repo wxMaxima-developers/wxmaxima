@@ -33,7 +33,8 @@
 #ifndef TABLEOFCONTENTS_H
 #define TABLEOFCONTENTS_H
 
-enum {
+enum
+{
   structure_ctrl_id = 4,
   structure_regex_id
 };
@@ -44,54 +45,67 @@ enum {
 class TableOfContents : public wxPanel
 {
 public:
-  enum PopIds{
+  enum PopIds
+  {
     /*! The "copy" popup menu item was clicked
 
       This item is the first of the enum and is assigned a high enough number
       that it won't collide with the numbers to be found in wxFrame::Event
      */
-    popid_Fold = wxID_HIGHEST + 500,
+            popid_Fold = wxID_HIGHEST + 500,
     popid_Unfold = wxID_HIGHEST + 501,
     popid_SelectTocChapter = wxID_HIGHEST + 502,
     popid_EvalTocChapter = wxID_HIGHEST + 503
   };
-  TableOfContents(wxWindow* parent, int id);
+
+  TableOfContents(wxWindow *parent, int id);
+
   /* The destructor
    */
   ~TableOfContents();
-  void OnMouseRightDown(wxListEvent& event);
+
+  void OnMouseRightDown(wxListEvent &event);
+
   //! Add a file to the recently opened files list.
   void AddToTableOfContents(wxString cmd);
+
   //! What happens if someone changes the search box contents
   void OnRegExEvent(wxCommandEvent &ev);
-  /*! Update the structure information from the tree 
+
+  /*! Update the structure information from the tree
 
     Since this function traverses the tree and we don't want it 
     to impact the performance too much
       - we call it only on creation of a cell and on leaving it again
       - and we only traverse the tree if the pane is actually shown.
    */
-  void Update(GroupCell* tree,GroupCell *pos);
+  void Update(GroupCell *tree, GroupCell *pos);
+
   //! Get the nth Cell in the table of contents.
   GroupCell *GetCell(int index);
 
   //! Returns the cell that was last right-clicked on.
-  GroupCell *RightClickedOn(){return m_cellRightClickedOn;}
+  GroupCell *RightClickedOn()
+  { return m_cellRightClickedOn; }
+
 protected:
-  void OnSize(wxSizeEvent& event);
+  void OnSize(wxSizeEvent &event);
+
 private:
   GroupCell *m_cellRightClickedOn;
   //! The last selected item
   long m_lastSelection;
+
   //! Update the displayed contents.
   void UpdateDisplay();
+
   wxListCtrl *m_displayedItems;
   wxTextCtrl *m_regex;
   //! The items we displayed the last time update() was called
   wxArrayString m_items_old;
-  
-  std::vector <GroupCell *> m_structure;
-  DECLARE_EVENT_TABLE()
+
+  std::vector<GroupCell *> m_structure;
+DECLARE_EVENT_TABLE()
 };
 
 #endif // TABLEOFCONTENTS_H

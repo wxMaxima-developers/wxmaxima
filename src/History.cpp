@@ -31,11 +31,11 @@
 #include <wx/tokenzr.h>
 #include <wx/regex.h>
 
-History::History(wxWindow* parent, int id) : wxPanel(parent, id)
+History::History(wxWindow *parent, int id) : wxPanel(parent, id)
 {
   m_history = new wxListBox(this, history_ctrl_id);
   m_regex = new wxTextCtrl(this, history_regex_id);
-  wxFlexGridSizer * box = new wxFlexGridSizer(1);
+  wxFlexGridSizer *box = new wxFlexGridSizer(1);
   box->AddGrowableCol(0);
   box->AddGrowableRow(0);
 
@@ -84,11 +84,11 @@ void History::UpdateDisplay()
   if (regex != wxEmptyString)
     matcher.Compile(regex);
 
-  for (unsigned int i=0; i<commands.Count(); i++)
+  for (unsigned int i = 0; i < commands.Count(); i++)
   {
     wxString curr = commands.Item(i);
 
-    if (regex.Length()>0 && matcher.IsValid())
+    if (regex.Length() > 0 && matcher.IsValid())
     {
       if (matcher.Matches(curr))
         display.Add(curr);
@@ -114,18 +114,18 @@ wxString History::GetCommand(bool next)
   {
     --m_current;
     if (m_current < 0)
-      m_current = commands.GetCount()-1;
+      m_current = commands.GetCount() - 1;
     return commands[m_current];
   }
   else
   {
     ++m_current;
-    if (m_current >= (long)commands.GetCount())
+    if (m_current >= (long) commands.GetCount())
       m_current = 0;
     return commands[m_current];
   }
 }
 
 BEGIN_EVENT_TABLE(History, wxPanel)
-  EVT_TEXT(history_regex_id, History::OnRegExEvent)
+                EVT_TEXT(history_regex_id, History::OnRegExEvent)
 END_EVENT_TABLE()

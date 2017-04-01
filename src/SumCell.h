@@ -32,7 +32,8 @@
 
 #include "MathCell.h"
 
-enum {
+enum
+{
   SM_SUM,
   SM_PROD
 };
@@ -41,25 +42,42 @@ class SumCell : public MathCell
 {
 public:
   SumCell(MathCell *parent, Configuration **config);
+
   ~SumCell();
-  MathCell* Copy();
+
+  MathCell *Copy();
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
-  void SetBase(MathCell* base);
-  void SetUnder(MathCell* under);
-  void SetOver(MathCell* name);
+
+  void SetBase(MathCell *base);
+
+  void SetUnder(MathCell *under);
+
+  void SetOver(MathCell *name);
+
   void SetSumStyle(int style)
   {
     m_sumStyle = style;
   }
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToMathML();
+
   wxString ToXML();
+
   wxString ToOMML();
-  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   void SetParent(MathCell *parent);
+
 protected:
   MathCell *m_base;
   MathCell *m_under;

@@ -29,11 +29,11 @@
 //! The maximum number of popup menu entries we show at the same time
 #define AC_MENU_LENGTH 25
 
-    /*! The first number that is open for dynamic ID assignment
+/*! The first number that is open for dynamic ID assignment
 
-      If we want to add additional elements to a pop-up this is the 
-      lowest ID that is guaranteed to be free for this purpose.
-     */
+  If we want to add additional elements to a pop-up this is the
+  lowest ID that is guaranteed to be free for this purpose.
+ */
 #define popid_complete_00 (wxID_HIGHEST + 1000)
 
 class AutocompletePopup : public wxMenu
@@ -45,11 +45,14 @@ private:
   EditorCell *m_editor;
   AutoComplete::autoCompletionType m_type;
 public:
-  AutocompletePopup(EditorCell* editor, AutoComplete *autocomplete, AutoComplete::autoCompletionType type);
+  AutocompletePopup(EditorCell *editor, AutoComplete *autocomplete, AutoComplete::autoCompletionType type);
+
   void UpdateResults();
+
 protected:
-  void ProcessEvent(wxKeyEvent& event);
-  DECLARE_EVENT_TABLE()
+  void ProcessEvent(wxKeyEvent &event);
+
+DECLARE_EVENT_TABLE()
 };
 
 #endif // AUTOCOMPLETEPOPUP_H

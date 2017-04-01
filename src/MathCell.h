@@ -27,8 +27,8 @@
 #ifndef MATHCELL_H
 #define MATHCELL_H
 
-#define MAX(a,b) ((a)>(b) ? (a) : (b))
-#define MIN(a,b) ((a)>(b) ? (b) : (a))
+#define MAX(a, b) ((a)>(b) ? (a) : (b))
+#define MIN(a, b) ((a)>(b) ? (b) : (a))
 #define ABS(a) ((a)>=0 ? (a) : -(a))
 #define SCALE_PX(px, scale) ((int)((double)((px)*(scale)) + 0.5))
 
@@ -39,7 +39,8 @@
 
 /*! The supported types of math cells
  */
-enum {
+enum
+{
   MC_TYPE_DEFAULT,
   MC_TYPE_MAIN_PROMPT,
   MC_TYPE_PROMPT,
@@ -90,25 +91,34 @@ class MathCell
 {
 public:
   MathCell(MathCell *parent, Configuration **config);
+
   //! Delete this list of cells.
   virtual ~MathCell();
+
   //! Sets the region that is to be updated on Draw()
-  static void SetUpdateRegion(wxRect region) { m_updateRegion = region; }
+  static void SetUpdateRegion(wxRect region)
+  { m_updateRegion = region; }
+
   //! Get the rectangle that is currently drawn
-  static wxRect GetUpdateRegion() { return m_updateRegion;}
+  static wxRect GetUpdateRegion()
+  { return m_updateRegion; }
+
   //! The part of the rectangle rect that is in the region that is currently drawn
   static wxRect CropToUpdateRegion(const wxRect &rect);
+
   //! Is part of this rectangle in the region that is currently drawn?
   static bool InUpdateRegion(const wxRect &rect);
+
   //! Is this cell inside the region that is currently drawn?
   bool InUpdateRegion()
-    {
-      if(!m_clipToDrawRegion) return true;
-      wxRect boundingBox(
-        m_currentPoint+wxPoint(0,-m_center),
-        m_currentPoint+wxPoint(0,-m_center)+wxPoint(m_width,m_height));
-      return InUpdateRegion(boundingBox);
-    }
+  {
+    if (!m_clipToDrawRegion) return true;
+    wxRect boundingBox(
+            m_currentPoint + wxPoint(0, -m_center),
+            m_currentPoint + wxPoint(0, -m_center) + wxPoint(m_width, m_height));
+    return InUpdateRegion(boundingBox);
+  }
+
   /*! true = Don't crop anything just because it is not on the screen
 
     On some operating systems drawing text outside the screen is slow so
@@ -116,9 +126,13 @@ public:
     visible. During printing or while creating bitmaps we don't want to crop 
     things to the portion we needed to redraw on the screen last, though.
    */
-  static void ClipToDrawRegion(bool printing){m_clipToDrawRegion = printing;}
+  static void ClipToDrawRegion(bool printing)
+  { m_clipToDrawRegion = printing; }
+
   //! Delete this cell and all cells that follow it in the list.
-  static bool Printing(){return !m_clipToDrawRegion;}  
+  static bool Printing()
+  { return !m_clipToDrawRegion; }
+
   /*! Add a cell to the end of the list this cell is part of
     
     \param p_next The cell that will be appended to the list.
@@ -127,17 +141,29 @@ public:
 
   //! 0 for ordinary cells, 1 for slide shows and diagrams displayed with a 1-pixel border
   int m_imageBorderWidth;
+
   //! Do we want this cell to start with a linebreak?
-  void BreakLine(bool breakLine) { m_breakLine = breakLine; }
+  void BreakLine(bool breakLine)
+  { m_breakLine = breakLine; }
+
   //! Do we want this cell to start with a pagebreak?
-  void BreakPage(bool breakPage) { m_breakPage = breakPage; }
+  void BreakPage(bool breakPage)
+  { m_breakPage = breakPage; }
+
   //! Are we allowed to break a line here?
   bool BreakLineHere();
+
   //! Does this cell begin with a manual linebreak?
-  bool ForceBreakLineHere() { return m_forceBreakLine; }
+  bool ForceBreakLineHere()
+  { return m_forceBreakLine; }
+
   //! Does this cell begin with a manual page break?
-  bool BreakPageHere() { return m_breakPage; }
-  virtual bool BreakUp() { return false; }
+  bool BreakPageHere()
+  { return m_breakPage; }
+
+  virtual bool BreakUp()
+  { return false; }
+
   /*! Is a part of this cell inside a certain rectangle?
 
     \param big The rectangle to test for collision with this cell
@@ -145,15 +171,17 @@ public:
      - true means test this cell and the ones that are following it in the list
      - false means test this cell only.
    */
-  bool ContainsRect(const wxRect& big, bool all = true);
+  bool ContainsRect(const wxRect &big, bool all = true);
+
   /*! Is a given point inside this cell?
 
     \param point The point to test for collision with this cell
    */
-  bool ContainsPoint(const wxPoint& point)
+  bool ContainsPoint(const wxPoint &point)
   {
     return GetRect().Contains(point);
   }
+
   void CopyData(MathCell *s, MathCell *t);
 
   /*! Clears memory from cached items automatically regenerated when the cell is drawn
@@ -161,7 +189,8 @@ public:
     The scaled version of the image will be recreated automatically once it is 
     needed.
    */
-  virtual void ClearCache(){}
+  virtual void ClearCache()
+  {}
 
   /*! Clears the cache of the whole list of cells starting with this one.
 
@@ -178,6 +207,7 @@ public:
      - false: only this cell has to be drawn
    */
   virtual void Draw(wxPoint point, int fontsize);
+
   /*! Draw this list of cells
 
     \param point The x and y position this cell is drawn at
@@ -187,6 +217,7 @@ public:
      - false: only this cell has to be drawn
    */
   void DrawList(wxPoint point, int fontsize);
+
   /*! Draw a rectangle that marks this cell or this list of cells as selected
 
     \param all
@@ -194,7 +225,8 @@ public:
      - false: Draw the bounding box around this cell only
      \param dc Where to draw the box.
   */
-  virtual void DrawBoundingBox(wxDC& dc, bool all = false);
+  virtual void DrawBoundingBox(wxDC &dc, bool all = false);
+
   bool DrawThisCell(wxPoint point);
 
   /*! Insert (or remove) a forced linebreak at the beginning of this cell.
@@ -203,24 +235,31 @@ public:
      - true: Insert a forced linebreak
      - false: Remove the forced linebreak
    */
-  void ForceBreakLine(bool force) { m_forceBreakLine = m_breakLine = force; }
+  void ForceBreakLine(bool force)
+  { m_forceBreakLine = m_breakLine = force; }
 
   /*! Get the height of this cell
 
     This value is recalculated by RecalculateHeight; -1 means: Needs to be recalculated.
   */
-  int GetHeight() { return m_height; }
+  int GetHeight()
+  { return m_height; }
+
   /*! Get the width of this cell
 
     This value is recalculated by RecalculateWidth; -1 means: Needs to be recalculated.
   */
-  int GetWidth() { return m_width; }
+  int GetWidth()
+  { return m_width; }
+
   /*! Get the distance between the top and the center of this cell.
 
     Remember that (for example with double fractions) the center does not have to be in the 
     middle of a cell even if this object is --- by definition --- center-aligned.
    */
-  int GetCenter() { return m_center; }
+  int GetCenter()
+  { return m_center; }
+
   /*! Get the distance between the center and the bottom of this cell
 
 
@@ -230,12 +269,15 @@ public:
 
     This value is recalculated by RecalculateHeight; -1 means: Needs to be recalculated.
    */
-  int GetDrop() { return m_height - m_center; }
+  int GetDrop()
+  { return m_height - m_center; }
 
   /*! 
     Returns the type of this cell.
    */
-  int GetType() { return m_type; }
+  int GetType()
+  { return m_type; }
+
   /*! Returns the maximum distance between center and bottom of this line
 
     Note that the center doesn't need to be exactly in the middle of an object.
@@ -243,6 +285,7 @@ public:
     horizontal line.
    */
   int GetMaxDrop();
+
   /*! Returns the maximum distance between top and center of this line
 
     Note that the center doesn't need to be exactly in the middle of an object.
@@ -250,29 +293,37 @@ public:
     horizontal line.
   */
   int GetMaxCenter();
+
   /*! Returns the total height of this line
 
     Returns GetMaxCenter()+GetMaxDrop()
    */
   int GetMaxHeight();
+
   //! How many pixels would this list of cells be wide if we didn't introduce line breaks?
   int GetFullWidth(double scale);
+
   /*! How many pixels is this list of cells wide?
 
     This command returns the real line width when all line breaks are really performed. 
     See GetFullWidth().
    */
   int GetLineWidth(double scale);
+
   /*! Get the x position of the top left of this cell
 
     See m_currentPoint for more details.
    */
-  int GetCurrentX() { return m_currentPoint.x; }
+  int GetCurrentX()
+  { return m_currentPoint.x; }
+
   /*! Get the y position of the top left of this cell
 
     See m_currentPoint for more details.
    */
-  int GetCurrentY() { return m_currentPoint.y; }
+  int GetCurrentY()
+  { return m_currentPoint.y; }
+
   /*! Get the smallest rectangle this cell fits in
 
     \param all
@@ -280,7 +331,9 @@ public:
       - false: Get the rectangle for this cell only.
    */
   virtual wxRect GetRect(bool all = false);
+
   virtual wxString GetDiffPart();
+
   /*! Recalculate the height of the cell and the difference between top and center
 
     Must set: m_height, m_center.
@@ -288,13 +341,16 @@ public:
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
   */
-  virtual void RecalculateHeight(int fontsize) { };
-  /*! Recalculate the height of this list of cells 
+  virtual void RecalculateHeight(int fontsize)
+  {};
+
+  /*! Recalculate the height of this list of cells
 
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
    */
   void RecalculateHeightList(int fontsize);
+
   /*! Recalculate the width of this cell.
 
     Must set: m_width.
@@ -303,90 +359,126 @@ public:
     This cell therefore needs to know which font size it has to be drawn at.
    */
   virtual void RecalculateWidths(int fontsize);
+
   /*! Recalculates all widths of this list of cells.
 
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
    */
   void RecalculateWidthsList(int fontsize);
+
   /*! Recalculate both width and height of this list of cells.
 
     Is faster than a <code>RecalculateHeightList();RecalculateWidths();</code>.
    */
   void RecalculateList(int fontsize);
+
   //! Mark all cached size information as "to be calculated".
   void ResetData();
+
   //! Mark the cached height information as "to be calculated".
-  void ResetSize() { m_width = m_height = m_center = -1; }
+  void ResetSize()
+  { m_width = m_height = m_center = -1; }
+
   //! Mark the cached height information of the whole list of cells as "to be calculated".
   void ResetSizeList();
 
-  void SetSkip(bool skip) { m_bigSkip = skip; }
+  void SetSkip(bool skip)
+  { m_bigSkip = skip; }
+
   //! Sets the text style according to the type
   void SetType(int type);
-  int GetStyle(){ return m_textStyle; }	//l'ho aggiunto io
+
+  int GetStyle()
+  { return m_textStyle; }  //l'ho aggiunto io
 
   void SetPen();
+
   //! Mark this cell as highlighted (e.G. being in a maxima box)
-  void SetHighlight(bool highlight) { m_highlight = highlight; }
+  void SetHighlight(bool highlight)
+  { m_highlight = highlight; }
+
   //! Is this cell highlighted (e.G. inside a maxima box)
-  bool GetHighlight() { return m_highlight; }
-  virtual void SetExponentFlag() { }
-  virtual void SetValue(const wxString &text) { }
-  virtual wxString GetValue() { return wxEmptyString; }
+  bool GetHighlight()
+  { return m_highlight; }
+
+  virtual void SetExponentFlag()
+  {}
+
+  virtual void SetValue(const wxString &text)
+  {}
+
+  virtual wxString GetValue()
+  { return wxEmptyString; }
 
   //! Get the first cell in this list of cells
   MathCell *first();
+
   //! Get the last cell in this list of cells
   MathCell *last();
-  
-  void SelectRect(wxRect& rect, MathCell** first, MathCell** last);
-  void SelectFirst(wxRect& rect, MathCell** first);
-  void SelectLast(wxRect& rect, MathCell** last);
+
+  void SelectRect(wxRect &rect, MathCell **first, MathCell **last);
+
+  void SelectFirst(wxRect &rect, MathCell **first);
+
+  void SelectLast(wxRect &rect, MathCell **last);
+
   /*! Select a rectangle that is created by a cell inside this cell.
 
     \attention This method has to be overridden by children of the 
     MathCell class.
   */
-  virtual void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+  virtual void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
 
   virtual bool IsOperator();
+
   bool IsCompound();
-  virtual bool IsShortNum() { return false; }
+
+  virtual bool IsShortNum()
+  { return false; }
 
   //! Returns the group cell this cell belongs to
-  MathCell* GetParent();
+  MathCell *GetParent();
 
   //! For the bitmap export we sometimes want to know how big the result will be...
   struct SizeInMillimeters
   {
   public:
-    double x,y;
+    double x, y;
   };
 
-    //! Returns the list's representation as a string.
+  //! Returns the list's representation as a string.
   virtual wxString ListToString();
+
   //! Convert this list to its LaTeX representation
   virtual wxString ListToTeX();
+
   //! Convert this list to an representation fit for saving in a .wxmx file
   virtual wxString ListToXML();
+
   //! Convert this list to a MathML representation
   virtual wxString ListToMathML(bool startofline = false);
+
   //! Convert this list to an OMML representation
   virtual wxString ListToOMML(bool startofline = false);
+
   //! Convert this list to an RTF representation
   virtual wxString ListToRTF(bool startofline = false);
+
   //! Returns the cell's representation as a string.
   virtual wxString ToString();
+
   /*! Returns the cell's representation as RTF.
 
     If this method returns wxEmptyString this might mean that this cell is 
     better handled in OMML.
    */
-  virtual wxString ToRTF() { return wxEmptyString; }
+  virtual wxString ToRTF()
+  { return wxEmptyString; }
 
   //! Converts an OMML tag to the corresponding RTF snippet
   wxString OMML2RTF(wxXmlNode *node);
+
   //! Converts OMML math to RTF math
   wxString OMML2RTF(wxString data);
 
@@ -399,19 +491,26 @@ public:
     Don't know why OMML was implemented in a world that already knows MathML,
     though.
    */
-  virtual wxString ToOMML() { return wxEmptyString; }
+  virtual wxString ToOMML()
+  { return wxEmptyString; }
+
   //! Convert this cell to its LaTeX representation
   virtual wxString ToTeX();
+
   //! Convert this cell to an representation fit for saving in a .wxmx file
   virtual wxString ToXML();
+
   //! Convert this cell to an representation fit for saving in a .wxmx file
   virtual wxString ToMathML();
+
   //! Escape a string for RTF
-  static wxString RTFescape(wxString,bool MarkDown = false);
+  static wxString RTFescape(wxString, bool MarkDown = false);
+
   //! Escape a string for XML
   static wxString XMLescape(wxString);
 
   void UnsetPen();
+
   /*! Unbreak this cell
 
     Some cells have different representations when they contain a line break.
@@ -420,6 +519,7 @@ public:
     This function tries to return a cell to the single-line form.
    */
   virtual void Unbreak();
+
   /*! Unbreak this line
 
     Some cells have different representations when they contain a line break.
@@ -483,7 +583,7 @@ public:
      - for EditorCells by it's GroupCell's RecalculateHeight and
      - for MathCells when they are drawn.
   */
-  wxPoint m_currentPoint;  
+  wxPoint m_currentPoint;
   bool m_bigSkip;
   /*! true means:  This cell is broken into two or more lines.
     
@@ -499,6 +599,7 @@ public:
      - most multiplication dots.
    */
   bool m_isHidden;
+
   /*! Determine if this cell contains text that isn't code
 
     \return true, if this is a text cell, a title cell, a section, a subsection or a subsubsection cell.
@@ -509,28 +610,61 @@ public:
            m_type == MC_TYPE_SUBSECTION || m_type == MC_TYPE_SUBSUBSECTION ||
            m_type == MC_TYPE_TITLE;
   }
+
   bool IsEditable(bool input = false)
   {
-    return (m_type == MC_TYPE_INPUT  &&
+    return (m_type == MC_TYPE_INPUT &&
             m_previous != NULL && m_previous->m_type == MC_TYPE_MAIN_PROMPT)
-         || (!input && IsComment());
+           || (!input && IsComment());
   }
-  virtual void ProcessEvent(wxKeyEvent& event) { }
-  virtual bool AddEnding() { return false; }
-  virtual void SelectPointText(wxDC &dc, wxPoint& point) { }
-  virtual void SelectRectText(wxDC &dc, wxPoint& one, wxPoint& two) { }
-  virtual void PasteFromClipboard(bool primary = false) { }
-  virtual bool CopyToClipboard() { return false; }
-  virtual bool CutToClipboard() { return false; }
-  virtual void SelectAll() { }
-  virtual bool CanCopy() { return false; }
-  virtual void SetMatchParens(bool match) { }
-  virtual wxPoint PositionToPoint(int pos = -1) { return wxPoint(-1, -1); }
-  virtual bool IsDirty() { return false; }
-  virtual void SwitchCaretDisplay() { }
-  virtual void SetFocus(bool focus) { }
+
+  virtual void ProcessEvent(wxKeyEvent &event)
+  {}
+
+  virtual bool AddEnding()
+  { return false; }
+
+  virtual void SelectPointText(wxDC &dc, wxPoint &point)
+  {}
+
+  virtual void SelectRectText(wxDC &dc, wxPoint &one, wxPoint &two)
+  {}
+
+  virtual void PasteFromClipboard(bool primary = false)
+  {}
+
+  virtual bool CopyToClipboard()
+  { return false; }
+
+  virtual bool CutToClipboard()
+  { return false; }
+
+  virtual void SelectAll()
+  {}
+
+  virtual bool CanCopy()
+  { return false; }
+
+  virtual void SetMatchParens(bool match)
+  {}
+
+  virtual wxPoint PositionToPoint(int pos = -1)
+  { return wxPoint(-1, -1); }
+
+  virtual bool IsDirty()
+  { return false; }
+
+  virtual void SwitchCaretDisplay()
+  {}
+
+  virtual void SetFocus(bool focus)
+  {}
+
   void SetForeground();
-  virtual bool IsActive() { return false; }
+
+  virtual bool IsActive()
+  { return false; }
+
   /*! Define which GroupCell is the parent of this cell.
     
     By definition every math cell is part of a group cell.
@@ -540,17 +674,29 @@ public:
     class has to take care that the subCell's SetParent is called when
     the cell's SetParent is called.
    */
-  virtual void SetParent(MathCell *parent) {m_group = parent;};
+  virtual void SetParent(MathCell *parent)
+  { m_group = parent; };
+
   //! Define which GroupCell is the parent of all cells in this list
   void SetParentList(MathCell *parent);
-  void SetStyle(int style) { m_textStyle = style; ResetData();}
+
+  void SetStyle(int style)
+  {
+    m_textStyle = style;
+    ResetData();
+  }
+
   bool IsMath();
-  void SetAltCopyText(wxString text) { m_altCopyText = text; }
+
+  void SetAltCopyText(wxString text)
+  { m_altCopyText = text; }
+
   /*! Attach a copy of the list of cells that follows this one to a cell
     
     Used by MathCell::Copy() when the parameter <code>all</code> is true.
   */
   MathCell *CopyList();
+
   /*! Copy this cell
     
     This method is used by CopyList() which creates a copy of a cell tree. 
@@ -558,7 +704,8 @@ public:
     \return A copy of this cell without the rest of the list this cell is part 
     from.
   */
-  virtual MathCell* Copy() = 0;
+  virtual MathCell *Copy() = 0;
+
   /*! Do we want to begin this cell with a center dot if it is part of a product?
 
     Maxima will represent a product like (a*b*c) by a list like the following:
@@ -594,7 +741,7 @@ protected:
 
     - Will contain -1, if it has not yet been calculated.
     - Won't be recalculated on appending new cells to the list.
-  */  
+  */
   int m_lineWidth;
   int m_center;
   int m_maxCenter;
@@ -613,7 +760,7 @@ protected:
 
      \attention  m_altCopyText is not check in all cell types!
   */
-  wxString m_altCopyText; 
+  wxString m_altCopyText;
   Configuration **m_configuration;
 private:
   static bool m_clipToDrawRegion;

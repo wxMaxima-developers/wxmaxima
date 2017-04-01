@@ -28,20 +28,35 @@ class SubCell : public MathCell
 {
 public:
   SubCell(MathCell *parent, Configuration **config);
+
   ~SubCell();
-  MathCell* Copy();
+
+  MathCell *Copy();
+
   void SetBase(MathCell *base);
+
   void SetIndex(MathCell *index);
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToMathML();
+
   wxString ToOMML();
+
   wxString ToXML();
-  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   void SetParent(MathCell *parent);
+
 protected:
   MathCell *m_baseCell;
   MathCell *m_indexCell;

@@ -63,14 +63,17 @@ class Image
 public:
   //! A constructor that generates an empty image. See LoadImage()
   Image(Configuration **config);
+
   //! A constructor that loads the compressed file from a wxMemoryBuffer
-  Image(Configuration **config,wxMemoryBuffer image,wxString type);
+  Image(Configuration **config, wxMemoryBuffer image, wxString type);
+
   /*! A constructor that loads a bitmap
 
     This constructor actually has to do some compression since we got
     the bitmap in an uncompressed form.
    */
-  Image(Configuration **config,const wxBitmap &bitmap);
+  Image(Configuration **config, const wxBitmap &bitmap);
+
   /*! A constructor that loads an image
 
     \param image The name of the file
@@ -79,38 +82,57 @@ public:
     \param viewport_ysize The height of the viewport the image is to be displayed in
     \param remove true = Delete the file after loading it
    */
-  Image(Configuration **config,wxString image,bool remove = true, wxFileSystem *filesystem = NULL);
+  Image(Configuration **config, wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
+
   /*! Temporarily forget the scaled image in order to save memory
 
     Will recreate the scaled image as soon as needed.
    */
-  void ClearCache() {if((m_scaledBitmap.GetWidth()>1)||(m_scaledBitmap.GetHeight()>1))m_scaledBitmap.Create(1,1);}
+  void ClearCache()
+  { if ((m_scaledBitmap.GetWidth() > 1) || (m_scaledBitmap.GetHeight() > 1))m_scaledBitmap.Create(1, 1); }
+
   //! Reads the compressed image into a memory buffer
   wxMemoryBuffer ReadCompressedImage(wxInputStream *data);
+
   //! Returns the file name extension of the current image
-  wxString GetExtension() {return m_extension;};
+  wxString GetExtension()
+  { return m_extension; };
+
   //! Loads an image from a file
-  void LoadImage(wxString image,bool remove = true, wxFileSystem *filesystem = NULL);
+  void LoadImage(wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
+
   //! "Loads" an image from a bitmap
   void LoadImage(const wxBitmap &bitmap);
+
   //! Saves the image in its original form, or as .png if it originates in a bitmap
   wxSize ToImageFile(wxString filename);
+
   //! Returns the bitmap being displayed
   wxBitmap GetBitmap();
+
   //! Returns the image in its unscaled form
   wxBitmap GetUnscaledBitmap();
-  //! Needs to be called on changing the viewport size 
+
+  //! Needs to be called on changing the viewport size
   void Recalculate();
+
   //! The width of the scaled image
   long m_width;
   //! The height of the scaled image
   long m_height;
+
   //! Returns the original image in its compressed form
-  wxMemoryBuffer GetCompressedImage(){return m_compressedImage;}
+  wxMemoryBuffer GetCompressedImage()
+  { return m_compressedImage; }
+
   //! Returns the original width
-  size_t GetOriginalWidth(){return m_originalWidth;}
+  size_t GetOriginalWidth()
+  { return m_originalWidth; }
+
   //! Returns the original height
-  size_t GetOriginalHeight(){return m_originalHeight;}
+  size_t GetOriginalHeight()
+  { return m_originalHeight; }
+
   //! The image in its original compressed form
   wxMemoryBuffer m_compressedImage;
 

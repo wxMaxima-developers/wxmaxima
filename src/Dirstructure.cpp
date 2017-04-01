@@ -62,41 +62,41 @@ wxString Dirstructure::Prefix()
 
 wxString Dirstructure::GetwxMaximaLocation()
 {
-  #if defined __WXMAC__
+#if defined __WXMAC__
   wxString applicationPath = wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPathWithSep();
-  
-  if(applicationPath.EndsWith(wxT("/Contents/MacOS/")))
+
+  if (applicationPath.EndsWith(wxT("/Contents/MacOS/")))
   {
     wxString bundle_nonAbsolute;
-    wxFileName bundle(applicationPath+wxT("../../"));
+    wxFileName bundle(applicationPath + wxT("../../"));
     bundle.MakeAbsolute();
-    if(bundle.GetFullPath().EndsWith(wxT(".app")))
+    if (bundle.GetFullPath().EndsWith(wxT(".app")))
       return bundle.GetFullPath();
   }
-  
-      
-  if(wxFileExists(applicationPath))
+
+
+  if (wxFileExists(applicationPath))
   {
     wxFileName applicationPathName = wxFileName(applicationPath);
     applicationPathName.MakeAbsolute();
     return applicationPathName.GetFullPath();
   }
-  
+
   if (wxFileExists("/Applications/wxMaxima.app"))
     return wxT("/Applications/wxMaxima.app");
   if (wxFileExists("/Applications/wxmaxima.app"))
     return wxT("/Applications/wxmaxima.app");
-  return(wxT("wxmaxima"));
-  #else
-  
+  return (wxT("wxmaxima"));
+#else
+
   return wxStandardPaths::Get().GetExecutablePath();
-  #endif
+#endif
 
 }
 
 wxString Dirstructure::UserConfDir()
 {
-  return wxGetHomeDir()+wxT("/");
+  return wxGetHomeDir() + wxT("/");
 }
 
 wxString Dirstructure::MaximaDefaultLocation()
@@ -128,8 +128,8 @@ wxString Dirstructure::MaximaDefaultLocation()
     command = wxT("/usr/local/bin/maxima");
   else if (wxFileExists("/usr/bin/maxima"))
     command = wxT("/usr/bin/maxima");
-    else
-      command = wxT("maxima");
+  else
+    command = wxT("maxima");
   return command;
 #else
   return wxT("maxima");

@@ -36,38 +36,65 @@ private:
   bool m_dontEscapeOpeningParenthesis;
 public:
   TextCell(MathCell *parent, Configuration **config);
-  TextCell(MathCell *parent, Configuration **config,wxString text);
-  MathCell* Copy();
+
+  TextCell(MathCell *parent, Configuration **config, wxString text);
+
+  MathCell *Copy();
+
   void SetValue(const wxString &text);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
+
   void SetFont(int fontsize);
+
   /*! Calling this function signals that the "(" this cell ends in isn't part of the function name
 
     The "(" is the opening parenthesis of a function instead.
    */
-  void DontEscapeOpeningParenthesis(){m_dontEscapeOpeningParenthesis = true;}
+  void DontEscapeOpeningParenthesis()
+  { m_dontEscapeOpeningParenthesis = true; }
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToMathML();
+
   wxString ToOMML();
+
   wxString ToRTF();
+
   wxString ToXML();
+
   wxString GetDiffPart();
+
   bool IsOperator();
-  wxString GetValue() { return m_text; }
+
+  wxString GetValue()
+  { return m_text; }
+
   wxString GetGreekStringTeX();
+
   wxString GetSymbolTeX();
+
 #if wxUSE_UNICODE
+
   wxString GetGreekStringUnicode();
+
   wxString GetSymbolUnicode(bool keepPercent);
+
 #elif defined __WXMSW__
   wxString GetGreekStringSymbol();
   wxString GetSymbolSymbol(bool keepPercent);
 #endif
+
   bool IsShortNum();
+
 protected:
   void SetAltText();
+
   //! The text we keep inside this cell
   wxString m_text;
   //! The text we display: m_text might be a number that is longer than we want to display

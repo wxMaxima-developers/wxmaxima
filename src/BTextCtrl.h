@@ -24,28 +24,35 @@
 #include <wx/wx.h>
 #include "Configuration.h"
 
-class BTextCtrl: public wxTextCtrl
+class BTextCtrl : public wxTextCtrl
 {
 public:
   BTextCtrl(wxWindow *parent,
             wxWindowID id,
             Configuration *cfg,
-            const wxString& value,
-            const wxPoint& pos = wxDefaultPosition,
-            const wxSize& size = wxDefaultSize,
+            const wxString &value,
+            const wxPoint &pos = wxDefaultPosition,
+            const wxSize &size = wxDefaultSize,
             long style = 0);
+
   ~BTextCtrl();
+
   void SetSkipTab(bool skip)
   {
     m_skipTab = skip;
   }
+
 private:
   bool m_skipTab;
+
   bool MatchParenthesis(int code);
+
   void CloseParenthesis(wxString open, wxString close, bool fromOpen);
-  void OnChar(wxKeyEvent& event);
+
+  void OnChar(wxKeyEvent &event);
+
   Configuration *m_config;
-  DECLARE_EVENT_TABLE()
+DECLARE_EVENT_TABLE()
 };
 
 #endif // BTEXTCTRL_H

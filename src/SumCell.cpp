@@ -34,13 +34,13 @@
 #define PROD_SIGN "\x59"
 #define SUM_DEC 2
 
-SumCell::SumCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
+SumCell::SumCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
 {
   m_base = NULL;
   m_under = NULL;
   m_over = NULL;
   m_signSize = 50;
-  m_signTop = (2* m_signSize) / 5;
+  m_signTop = (2 * m_signSize) / 5;
   m_signWidth = 30;
   m_signWCenter = 15;
   m_sumStyle = SM_SUM;
@@ -48,7 +48,7 @@ SumCell::SumCell(MathCell *parent, Configuration **config) : MathCell(parent,con
 
 void SumCell::SetParent(MathCell *parent)
 {
-  m_group=parent;
+  m_group = parent;
   if (m_base != NULL)
     m_base->SetParentList(parent);
   if (m_under != NULL)
@@ -57,15 +57,15 @@ void SumCell::SetParent(MathCell *parent)
     m_over->SetParentList(parent);
 }
 
-MathCell* SumCell::Copy()
+MathCell *SumCell::Copy()
 {
-  SumCell *tmp = new SumCell(m_group,m_configuration);
+  SumCell *tmp = new SumCell(m_group, m_configuration);
   CopyData(this, tmp);
   tmp->SetBase(m_base->CopyList());
   tmp->SetUnder(m_under->CopyList());
   tmp->SetOver(m_over->CopyList());
   tmp->m_sumStyle = m_sumStyle;
-  
+
   return tmp;
 }
 
@@ -79,19 +79,19 @@ SumCell::~SumCell()
   m_over = NULL;
 }
 
-void SumCell::SetOver(MathCell* over)
+void SumCell::SetOver(MathCell *over)
 {
   if (over == NULL)
-    return ;
+    return;
   if (m_over != NULL)
     delete m_over;
   m_over = over;
 }
 
-void SumCell::SetBase(MathCell* base)
+void SumCell::SetBase(MathCell *base)
 {
   if (base == NULL)
-    return ;
+    return;
   if (m_base != NULL)
     delete m_base;
   m_base = base;
@@ -100,7 +100,7 @@ void SumCell::SetBase(MathCell* base)
 void SumCell::SetUnder(MathCell *under)
 {
   if (under == NULL)
-    return ;
+    return;
   if (m_under != NULL)
     delete m_under;
   m_under = under;
@@ -118,23 +118,23 @@ void SumCell::RecalculateWidths(int fontsize)
   m_base->RecalculateWidthsList(fontsize);
   m_under->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
   if (m_over == NULL)
-    m_over = new TextCell(m_group,m_configuration);
+    m_over = new TextCell(m_group, m_configuration);
   m_over->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
 
   if (configuration->CheckTeXFonts())
   {
-    wxDC& dc = configuration->GetDC();
+    wxDC &dc = configuration->GetDC();
     int fontsize1 = (int) ((fontsize * 1.5 * scale + 0.5));
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                 configuration->GetTeXCMEX());
-    if(!font.IsOk())
+    if (!font.IsOk())
       font = *wxNORMAL_FONT;
     font.SetPointSize(fontsize1);
     dc.SetFont(font);
     dc.GetTextExtent(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN), &m_signWidth, &m_signSize);
     m_signWCenter = m_signWidth / 2;
-    m_signTop = (2* m_signSize) / 5;
+    m_signTop = (2 * m_signSize) / 5;
     m_signSize = (2 * m_signSize) / 5;
   }
   m_signWCenter = MAX(m_signWCenter, m_under->GetFullWidth(scale) / 2);
@@ -165,7 +165,7 @@ void SumCell::Draw(wxPoint point, int fontsize)
   if (DrawThisCell(point))
   {
     Configuration *configuration = (*m_configuration);
-    wxDC& dc = configuration->GetDC();
+    wxDC &dc = configuration->GetDC();
     double scale = configuration->GetScale();
 
     wxPoint base(point), under(point), over(point), sign(point);
@@ -185,7 +185,7 @@ void SumCell::Draw(wxPoint point, int fontsize)
       wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
-      if(!font.IsOk())
+      if (!font.IsOk())
         font = *wxNORMAL_FONT;
       font.SetPointSize(fontsize1);
       dc.SetFont(font);
@@ -283,7 +283,7 @@ wxString SumCell::ToString()
     s = wxT("product(");
   s += m_base->ListToString();
 
-  MathCell* tmp = m_under;
+  MathCell *tmp = m_under;
   wxString var = tmp->ToString();
   wxString from;
   tmp = tmp->m_next;
@@ -328,10 +328,10 @@ wxString SumCell::ToOMML()
   wxString base = m_base->ListToOMML();
 
   wxString from;
-  if(m_under) from = m_under->ListToOMML();
-  
+  if (m_under) from = m_under->ListToOMML();
+
   wxString to;
-  if(m_over) to = m_over->ListToOMML();
+  if (m_over) to = m_over->ListToOMML();
 
   wxString retval;
 
@@ -340,11 +340,11 @@ wxString SumCell::ToOMML()
     retval += wxT("\x2211");
   else
     retval += wxT("\x220F");
-    
+
   retval += wxT("</m:chr></m:naryPr>");
-  if(from != wxEmptyString)
+  if (from != wxEmptyString)
     retval += wxT("<m:sub>") + from + wxT("</m:sub>");
-  if(to != wxEmptyString)
+  if (to != wxEmptyString)
     retval += wxT("<m:sup>") + to + wxT("</m:sup>");
   retval += wxT("<m:e>") + base + wxT("</m:e></m:nary>");
 
@@ -362,8 +362,8 @@ wxString SumCell::ToXML()
     type = wxT("lsum");
 
   return _T("<sm type=\"") + type + wxT("\"><r>") + m_under->ListToXML() + _T("</r><r>") +
-    m_over->ListToXML() + _T("</r><r>") +
-    m_base->ListToXML() + _T("</r></sm>");
+         m_over->ListToXML() + _T("</r><r>") +
+         m_base->ListToXML() + _T("</r></sm>");
 }
 
 wxString SumCell::ToMathML()
@@ -371,10 +371,10 @@ wxString SumCell::ToMathML()
   wxString base = m_base->ListToMathML();
 
   wxString from;
-  if(m_under) from = m_under->ListToMathML();
-  
+  if (m_under) from = m_under->ListToMathML();
+
   wxString to;
-  if(m_over) to = m_over->ListToMathML();
+  if (m_over) to = m_over->ListToMathML();
 
   wxString retval;
 
@@ -386,32 +386,32 @@ wxString SumCell::ToMathML()
 //    if(!to.IsEmpty())
 //      retval += wxT("<uplimit>") + m_over->ListToMathML() + wxT("</uplimit>");
 //    retval += m_base->ListToMathML() + wxT("</apply>");
-      if(from.IsEmpty() && to.IsEmpty())
-        retval = wxT("<mo>&#x2211;</mo>") + base;
-      if(from.IsEmpty() && !to.IsEmpty())
-        retval = wxT("<mover><mo>&#x2211;</mo>") + to + wxT("</mover>") + base;
-      if(!from.IsEmpty() && to.IsEmpty())
-        retval = wxT("<munder><mo>&#x2211;</mo>") + from + wxT("</munder>") + base;
-      if(!from.IsEmpty() && !to.IsEmpty())
-        retval = wxT("<munderover><mo>&#x2211;</mo>") + from + to + wxT("</munderover>") + base;
+    if (from.IsEmpty() && to.IsEmpty())
+      retval = wxT("<mo>&#x2211;</mo>") + base;
+    if (from.IsEmpty() && !to.IsEmpty())
+      retval = wxT("<mover><mo>&#x2211;</mo>") + to + wxT("</mover>") + base;
+    if (!from.IsEmpty() && to.IsEmpty())
+      retval = wxT("<munder><mo>&#x2211;</mo>") + from + wxT("</munder>") + base;
+    if (!from.IsEmpty() && !to.IsEmpty())
+      retval = wxT("<munderover><mo>&#x2211;</mo>") + from + to + wxT("</munderover>") + base;
   }
   else
   {
     // A product
-      if(from.IsEmpty() && to.IsEmpty())
-        retval = wxT("<mo>&#x220F;</mo>") + base;
-      if(from.IsEmpty() && !to.IsEmpty())
-        retval = wxT("<mover><mo>&#x220F;</mo>") + to + wxT("</mover>") + base;
-      if(!from.IsEmpty() && to.IsEmpty())
-        retval = wxT("<munder><mo>&#x220F;</mo>") + from + wxT("</munder>") + base;
-      if(!from.IsEmpty() && !to.IsEmpty())
-        retval = wxT("<munderover><mo>&#x220F;</mo>") + from + to + wxT("</munderover>") + base;
+    if (from.IsEmpty() && to.IsEmpty())
+      retval = wxT("<mo>&#x220F;</mo>") + base;
+    if (from.IsEmpty() && !to.IsEmpty())
+      retval = wxT("<mover><mo>&#x220F;</mo>") + to + wxT("</mover>") + base;
+    if (!from.IsEmpty() && to.IsEmpty())
+      retval = wxT("<munder><mo>&#x220F;</mo>") + from + wxT("</munder>") + base;
+    if (!from.IsEmpty() && !to.IsEmpty())
+      retval = wxT("<munderover><mo>&#x220F;</mo>") + from + to + wxT("</munderover>") + base;
   }
-  return(wxT("<mrow>")+retval+wxT("</mrow>"));
+  return (wxT("<mrow>") + retval + wxT("</mrow>"));
 }
 
 
-void SumCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
+void SumCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
 {
   *first = NULL;
   *last = NULL;

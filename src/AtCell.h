@@ -28,20 +28,35 @@ class AtCell : public MathCell
 {
 public:
   AtCell(MathCell *parent, Configuration **config);
+
   ~AtCell();
-  MathCell* Copy();
+
+  MathCell *Copy();
+
   void SetBase(MathCell *base);
+
   void SetIndex(MathCell *index);
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToXML();
+
   wxString ToOMML();
+
   wxString ToMathML();
-  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   void SetParent(MathCell *parent);
+
 protected:
   MathCell *m_baseCell;
   MathCell *m_indexCell;

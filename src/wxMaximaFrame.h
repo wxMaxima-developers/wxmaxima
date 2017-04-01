@@ -49,7 +49,7 @@ surrounding the worksheet.
 
 /*! The frame containing the menu and the sidebars
  */
-class wxMaximaFrame: public wxFrame
+class wxMaximaFrame : public wxFrame
 {
 public:
 
@@ -70,24 +70,25 @@ public:
     - Thirdly his enum is used for assigning panels an ID that matches the ID of the event
     that toggles them which makes the handling of these IDs easier.
   */
-  enum Event {
+  enum Event
+  {
 
     /*! Hide all panes
       
       This event is assigned an ID higher than the highest ID wxWidgets assigns to 
       its internal events in order to avoid ID clashes.
     */
-    menu_pane_hideall = wxID_HIGHEST+1,
+            menu_pane_hideall = wxID_HIGHEST + 1,
     /*! Both used as the "toggle the math pane" command and as the ID of the math pane
 
       Since this enum is also used for iterating over the panes it is vital 
       that this entry stays that of the first pane in this enum.
     */
-    menu_pane_math,
-    menu_pane_history,		//!< Both the "toggle the history pane" command and the history pane
-    menu_pane_structure,       	//!< Both the "toggle the structure pane" command and the structure
+            menu_pane_math,
+    menu_pane_history,    //!< Both the "toggle the history pane" command and the history pane
+    menu_pane_structure,        //!< Both the "toggle the structure pane" command and the structure
     menu_pane_xmlInspector,        //!< Both the "toggle the xml monitor" command and the monitor pane
-    menu_pane_format,		//!< Both the "toggle the format pane" command and the format pane
+    menu_pane_format,    //!< Both the "toggle the format pane" command and the format pane
 #ifdef wxUSE_UNICODE
     menu_pane_greek,            //!< Both the "toggle the format pane" command for the "greek" pane
     menu_pane_symbols,          //!< Both the "toggle the format pane" command for the "symbols" pane
@@ -97,7 +98,7 @@ public:
       Since this enum is also used for iterating over the panes it is vital 
       that this entry stays that of the last pane in this enum.
     */
-    menu_pane_stats,
+            menu_pane_stats,
 
     socket_client_id,
     socket_server_id,
@@ -344,38 +345,45 @@ public:
     menu_check_updates
   };
 
- wxMaximaFrame(wxWindow* parent, int id, const wxString& title,
-                const wxPoint& pos = wxDefaultPosition,
-                const wxSize& size = wxDefaultSize,
+  wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
+                const wxPoint &pos = wxDefaultPosition,
+                const wxSize &size = wxDefaultSize,
                 long style = wxDEFAULT_FRAME_STYLE);
-  
+
   /*! The destructor
     
     \ţodo Do we really need to delete m_history? I assume wxWidgets will do this for us
     and we want to avoid a double free.
   */
   ~wxMaximaFrame();
+
   /*! Update the recent documents list
 
     Copies the string array containing the list of recent documents to the
     recent documents menu.
    */
   void UpdateRecentDocuments();
+
   //! Add an entry to the "Recent Documents" list.
   void AddRecentDocument(wxString file);
+
   /*! Remove a file from the "Recent Documents" list.
 
     Removing and re-adding a file will move it to the top of the list.
    */
   void RemoveRecentDocument(wxString file);
+
   //! Read the nth entry in the list of recent documents.
-  wxString GetRecentDocument(int i) { return m_recentDocuments[i]; }
+  wxString GetRecentDocument(int i)
+  { return m_recentDocuments[i]; }
+
   /*! true, if a Pane is currently enabled
 
     \param id The event that toggles the visibility of the pane that is
     to be queried
    */
   bool IsPaneDisplayed(Event id);
+
   /*! Show or hide a sidebar
     
     \param id The type of the sidebar to show/hide
@@ -386,9 +394,11 @@ public:
   void ShowPane(Event id, bool hide);
 
   //! Adds a command to the list  of recently used maxima commands
-  void AddToHistory(wxString cmd) { m_history->AddToHistory(cmd); }
-  
-  enum ToolbarStatus {
+  void AddToHistory(wxString cmd)
+  { m_history->AddToHistory(cmd); }
+
+  enum ToolbarStatus
+  {
     process_wont_start,
     waiting,
     calculating,
@@ -401,7 +411,7 @@ public:
   /*! Inform the user about the length of the evaluation queue.
 
    */
-  void EvaluationQueueLength(int length,int numberOfCommands = -1);
+  void EvaluationQueueLength(int length, int numberOfCommands = -1);
 
   /*! Set the status according to if maxima is calculating 
 
@@ -410,39 +420,47 @@ public:
       - false: Maxima is waiting for input
    */
   void StatusMaximaBusy(ToolbarStatus status);
+
   //! True=Maxima is currently busy.
-  ToolbarStatus m_StatusMaximaBusy;  
+  ToolbarStatus m_StatusMaximaBusy;
+
   //! Set the status to "Maxima is saving"
   void StatusSaveStart();
+
   //! Set the status to "Maxima has finished saving"
   void StatusSaveFinished();
+
   //! Set the status to "Saving has failed"
   void StatusSaveFailed();
+
   //! Set the status to "Maxima is exporting"
   void StatusExportStart();
+
   //! Set the status to "Maxima has finished exporting"
   void StatusExportFinished();
+
   //! Set the status to "Exporting has failed"
   void StatusExportFailed();
+
 protected:
   //! The status bar
   StatusBar *m_statusBar;
   //! The menu bar
   wxMenuBar *m_MenuBar;
   //! The file menu.
-  wxMenu *m_FileMenu; 
+  wxMenu *m_FileMenu;
   //! The edit menu.
-  wxMenu *m_EditMenu; 
+  wxMenu *m_EditMenu;
   //! The cell menu.
-  wxMenu *m_CellMenu; 
+  wxMenu *m_CellMenu;
   //! The zoom submenu
   wxMenu *m_Edit_Zoom_Sub;
   //! The panes submenu
   wxMenu *m_Maxima_Panes_Sub;
   //! The equations menu.
-  wxMenu *m_EquationsMenu; 
+  wxMenu *m_EquationsMenu;
   //! The maxima menu.
-  wxMenu *m_MaximaMenu; 
+  wxMenu *m_MaximaMenu;
   //! The algebra menu.
   wxMenu *m_Algebra_Menu;
   //! The simplify menu
@@ -473,15 +491,23 @@ private:
   int m_commandsLeftInCurrentCell;
   //! True=We are currently saving.
   bool m_StatusSaving;
-  
+
   void set_properties();
+
   void do_layout();
+
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
+
   void SetupToolBar();
+
 #endif
+
   void SetupMenu();
+
   wxPanel *CreateStatPane();
+
   wxPanel *CreateMathPane();
+
   wxPanel *CreateFormatPane();
 
   /*! A button for the greek pane
@@ -493,31 +519,40 @@ private:
                                 translated into a maxima command/operator
 
    */
-  wxPanel *CharButton(wxPanel *parent,wxChar ch,wxString description=wxEmptyString,
+  wxPanel *CharButton(wxPanel *parent, wxChar ch, wxString description = wxEmptyString,
                       bool matchesMaximaCommand = false);
+
 #ifdef wxUSE_UNICODE
+
   wxPanel *CreateGreekPane();
+
   wxPanel *CreateSymbolsPane();
+
 #endif
 protected:
   //! Update the "user symbols" portion of the symbols pane.
   void UpdateUserSymbols();
+
   //! Do we expect the 1st prompt from maxima to appear?
   bool m_first;
+
   void CharacterButtonPressed(wxMouseEvent &event);
+
   void LoadRecentDocuments();
+
   void SaveRecentDocuments();
+
   wxAuiManager m_manager;
   //! A XmlInspector-like xml monitor
   XmlInspector *m_xmlInspector;
   //! true=force an update of the status bar at the next call of StatusMaximaBusy()
   bool m_forceStatusbarUpdate;
   //! The worksheet itself
-  MathCtrl*     m_console;
+  MathCtrl *m_console;
   //! The history pane
-  History*      m_history;
+  History *m_history;
   wxArrayString m_recentDocuments;
-  wxMenu*       m_recentDocumentsMenu;
+  wxMenu *m_recentDocumentsMenu;
 };
 
 #endif // WXMAXIMAFRAME_H

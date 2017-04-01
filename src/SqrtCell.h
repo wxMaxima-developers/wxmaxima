@@ -48,21 +48,37 @@ class SqrtCell : public MathCell
 {
 public:
   SqrtCell(MathCell *parent, Configuration **config);
+
   ~SqrtCell();
-  MathCell* Copy();
+
+  MathCell *Copy();
+
   void SetInner(MathCell *inner);
-  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
+
   bool BreakUp();
+
   void Unbreak();
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToMathML();
+
   wxString ToOMML();
+
   wxString ToXML();
+
   void SetParent(MathCell *parent);
+
 protected:
   MathCell *m_innerCell;
   TextCell *m_open, *m_close;

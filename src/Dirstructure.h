@@ -47,6 +47,7 @@ class Dirstructure
 private:
   //! The directory all data is stored relative to.
   wxString ResourcesDir();
+
   //! The directory the user stores its data in.
   wxString UserConfDir();
 
@@ -55,12 +56,18 @@ public:
 #if defined __WXMSW__
   wxString DataDir() {return ResourcesDir()+wxT("data/");}
 #else
-  wxString DataDir() {return ResourcesDir();}
+
+  wxString DataDir()
+  { return ResourcesDir(); }
+
 #endif
 
   //! The directory the help file is stored in
 #if defined __WXMAC__
-  wxString HelpDir() {return ResourcesDir()+wxT("help/");}
+
+  wxString HelpDir()
+  { return ResourcesDir() + wxT("help/"); }
+
 #elif defined __WXMSW__
   wxString HelpDir() {return ResourcesDir()+wxT("help/");}
 #else
@@ -74,15 +81,22 @@ public:
 #if defined __WXMSW__
   wxString UserAutocompleteFile() {return UserConfDir()+wxT("wxmax.ac");}
 #else
-  wxString UserAutocompleteFile() {return UserConfDir()+wxT(".wxmaxima.ac");}
+
+  wxString UserAutocompleteFile()
+  { return UserConfDir() + wxT(".wxmaxima.ac"); }
+
 #endif
 
   //! The path to wxMaxima's own AutoComplete file
-  wxString AutocompleteFile() {return DataDir() + wxT("autocomplete.txt");}
-  
+  wxString AutocompleteFile()
+  { return DataDir() + wxT("autocomplete.txt"); }
+
   //! The directory art is stored relative to
 #if defined __WXMAC__
-  wxString ArtDir() {return ResourcesDir();}
+
+  wxString ArtDir()
+  { return ResourcesDir(); }
+
 #elif defined __WXMSW__
   wxString ArtDir() {return ResourcesDir()+wxT("art/");}
 #else
@@ -92,7 +106,10 @@ public:
 
   //! The directory config art is stored relative to
 #if defined __WXMAC__
-  wxString ConfigArtDir() {return ArtDir()+wxT("config/");}
+
+  wxString ConfigArtDir()
+  { return ArtDir() + wxT("config/"); }
+
 #elif defined __WXMSW__
   wxString ConfigArtDir() {return ArtDir()+wxT("config/");}
 #else
@@ -101,16 +118,22 @@ public:
 
   //! The directory config art is stored relative to
 #if defined __WXMAC__
-  wxString ConfigToolbarDir() {return ArtDir()+wxT("toolbar/");}
+
+  wxString ConfigToolbarDir()
+  { return ArtDir() + wxT("toolbar/"); }
+
 #elif defined __WXMSW__
   wxString ConfigToolbarDir() {return ArtDir()+wxT("toolbar/");}
 #else
   wxString ConfigToolbarDir() {return ResourcesDir();}
 #endif
 
-    //! The directory config art is stored relative to
+  //! The directory config art is stored relative to
 #if defined __WXMAC__
-  wxString ConfigStatusbarDir() {return ArtDir()+wxT("statusbar/");}
+
+  wxString ConfigStatusbarDir()
+  { return ArtDir() + wxT("statusbar/"); }
+
 #elif defined __WXMSW__
   wxString ConfigStatusbarDir() {return ArtDir()+wxT("statusbar/");}
 #else
@@ -121,7 +144,8 @@ public:
 
     Is only used on MSW and MAC
    */
-  wxString LocaleDir() {return ResourcesDir()+wxT("/locale");}
+  wxString LocaleDir()
+  { return ResourcesDir() + wxT("/locale"); }
 
   //! The location of the wxMaxima binary
   static wxString GetwxMaximaLocation();

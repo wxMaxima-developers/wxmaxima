@@ -34,40 +34,40 @@
 void AutocompletePopup::UpdateResults()
 {
   wxString partial = m_editor->GetSelectionString();
-  
+
   m_completions = m_autocomplete->CompleteSymbol(partial, m_type);
   m_completions.Sort();
 
-  for (unsigned int i=0; i<m_length; i++)
+  for (unsigned int i = 0; i < m_length; i++)
     Destroy(popid_complete_00 + i);
-  
+
   m_length = m_completions.GetCount();
-  if(m_length>AC_MENU_LENGTH) m_length = AC_MENU_LENGTH;
-  
-  for (unsigned int i=0; i<m_length; i++)
+  if (m_length > AC_MENU_LENGTH) m_length = AC_MENU_LENGTH;
+
+  for (unsigned int i = 0; i < m_length; i++)
     Append(popid_complete_00 + i, m_completions[i]);
 }
 
-void AutocompletePopup::ProcessEvent(wxKeyEvent& event)
+void AutocompletePopup::ProcessEvent(wxKeyEvent &event)
 {
   event.Skip();
 }
 
 AutocompletePopup::AutocompletePopup(
-  EditorCell* editor,
-  AutoComplete * autocomplete,
-  AutoComplete::autoCompletionType type
-  ) : wxMenu()
+        EditorCell *editor,
+        AutoComplete *autocomplete,
+        AutoComplete::autoCompletionType type
+) : wxMenu()
 {
   m_autocomplete = autocomplete;
-  m_editor       = editor;
-  m_type         = type;
-  m_length       = 0;
+  m_editor = editor;
+  m_type = type;
+  m_length = 0;
   UpdateResults();
 }
 
 BEGIN_EVENT_TABLE(AutocompletePopup, wxMenu)
 //EVT_KEY_DOWN(AutocompletePopup::ProcessEvent)
-EVT_CHAR(AutocompletePopup::ProcessEvent)
+                EVT_CHAR(AutocompletePopup::ProcessEvent)
 END_EVENT_TABLE()
 

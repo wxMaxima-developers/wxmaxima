@@ -28,7 +28,7 @@
 
 #include "EvaluationQueue.h"
 
-EvaluationQueueElement::EvaluationQueueElement(GroupCell* gr)
+EvaluationQueueElement::EvaluationQueueElement(GroupCell *gr)
 {
   group = gr;
   next = NULL;
@@ -49,17 +49,18 @@ EvaluationQueue::EvaluationQueue()
 
 void EvaluationQueue::Clear()
 {
-  while(!Empty())
+  while (!Empty())
     RemoveFirst();
   m_size = 0;
   m_tokens.Clear();
   m_workingGroupChanged = false;
 }
 
-bool EvaluationQueue::IsInQueue(GroupCell* gr)
+bool EvaluationQueue::IsInQueue(GroupCell *gr)
 {
-  EvaluationQueueElement* tmp = m_queue;
-  while (tmp != NULL) {
+  EvaluationQueueElement *tmp = m_queue;
+  while (tmp != NULL)
+  {
     if (tmp->group == gr)
       return true;
     tmp = tmp->next;
@@ -67,47 +68,48 @@ bool EvaluationQueue::IsInQueue(GroupCell* gr)
   return false;
 }
 
-void EvaluationQueue::Remove(GroupCell* gr)
+void EvaluationQueue::Remove(GroupCell *gr)
 {
-  if(gr != NULL)
+  if (gr != NULL)
   {
-    while((m_queue != NULL)&&(m_queue -> group == gr))
+    while ((m_queue != NULL) && (m_queue->group == gr))
     {
-      EvaluationQueueElement* oldStart = m_queue;
+      EvaluationQueueElement *oldStart = m_queue;
       m_queue = m_queue->next;
       delete oldStart;
     }
-    
-    EvaluationQueueElement* tmp  = m_queue;
+
+    EvaluationQueueElement *tmp = m_queue;
     while (tmp != NULL)
     {
-      while((tmp->next != NULL) && (tmp->next->group == gr))
+      while ((tmp->next != NULL) && (tmp->next->group == gr))
       {
-        EvaluationQueueElement* oldNext = tmp->next;
+        EvaluationQueueElement *oldNext = tmp->next;
         tmp->next = tmp->next->next;
         delete oldNext;
       }
-      
+
       tmp = tmp->next;
     }
   }
 }
 
-void EvaluationQueue::AddToQueue(GroupCell* gr)
+void EvaluationQueue::AddToQueue(GroupCell *gr)
 {
   bool emptyWas = Empty();
   if (gr->GetGroupType() != GC_TYPE_CODE
       || gr->GetEditable() == NULL) // don't add cells which can't be evaluated
     return;
-  EvaluationQueueElement* newelement = new EvaluationQueueElement(gr);
+  EvaluationQueueElement *newelement = new EvaluationQueueElement(gr);
   if (m_last == NULL)
     m_queue = m_last = newelement;
-  else {
+  else
+  {
     m_last->next = newelement;
     m_last = newelement;
   }
   m_size++;
-  if(emptyWas)
+  if (emptyWas)
   {
     m_queue->group->GetEditable()->AddEnding();
     AddTokens(gr->GetEditable()->GetValue());
@@ -119,22 +121,23 @@ void EvaluationQueue::AddToQueue(GroupCell* gr)
  * Add the tree of hidden cells to the EQ by recursively adding cells'
  * hidden branches to the EQ.
  */
-void EvaluationQueue::AddHiddenTreeToQueue(GroupCell* gr)
+void EvaluationQueue::AddHiddenTreeToQueue(GroupCell *gr)
 {
   if (gr == NULL)
     return; // caller should check, but just in case
 
-  GroupCell* cell = gr->GetHiddenTree();
-  while (cell != NULL) {
-    AddToQueue(dynamic_cast<GroupCell*>(cell));
+  GroupCell *cell = gr->GetHiddenTree();
+  while (cell != NULL)
+  {
+    AddToQueue(dynamic_cast<GroupCell *>(cell));
     AddHiddenTreeToQueue(cell);
-    cell = dynamic_cast<GroupCell*>(cell->m_next);
+    cell = dynamic_cast<GroupCell *>(cell->m_next);
   }
 }
 
 void EvaluationQueue::RemoveFirst()
 {
-  if(!m_tokens.IsEmpty())
+  if (!m_tokens.IsEmpty())
   {
     m_workingGroupChanged = false;
     m_tokens.RemoveAt(0);
@@ -143,16 +146,17 @@ void EvaluationQueue::RemoveFirst()
   {
     if (m_queue == NULL)
       return; // shouldn't happen
-    EvaluationQueueElement* tmp = m_queue;
-    if (m_queue == m_last) {
+    EvaluationQueueElement *tmp = m_queue;
+    if (m_queue == m_last)
+    {
       m_queue = m_last = NULL;
     }
     else
       m_queue = m_queue->next;
-    
+
     delete tmp;
     m_size--;
-    if(!Empty())
+    if (!Empty())
     {
       AddTokens(GetCell()->GetEditable()->GetValue());
       m_workingGroupChanged = true;
@@ -168,18 +172,18 @@ void EvaluationQueue::AddTokens(wxString commandString)
 
   wxString token;
 
-  while(index < commandString.Length())
+  while (index < commandString.Length())
   {
     wxChar ch = commandString[index];
 
     // Add strings as a whole
-    if(ch == wxT('\"'))
+    if (ch == wxT('\"'))
     {
       token += ch;
       index++;
-      while((index < commandString.Length()) && ((ch = commandString[index]) != wxT('\"')))
+      while ((index < commandString.Length()) && ((ch = commandString[index]) != wxT('\"')))
       {
-        if(commandString[index]==wxT('\\'))
+        if (commandString[index] == wxT('\\'))
         {
           token += commandString[index];
           index++;
@@ -190,51 +194,51 @@ void EvaluationQueue::AddTokens(wxString commandString)
       if (index < commandString.Length())
       {
         token += commandString[index];
-        index++;  
+        index++;
       }
       continue;
     }
-    
+
     // :lisp -commands should be added as a whole
-    if(ch == wxT(':'))
+    if (ch == wxT(':'))
     {
-      if(commandString.find(wxT("lisp"),index + 1) == index + 1)
+      if (commandString.find(wxT("lisp"), index + 1) == index + 1)
       {
         token += commandString.Right(
-          commandString.Length()-index
-          );
+                commandString.Length() - index
+        );
         break;
       }
     }
 
     // Handle escaped chars
-    if(ch == wxT('\\'))
+    if (ch == wxT('\\'))
     {
-      if((index + 1 < commandString.Length())&&(commandString[index+1]==wxT('\n')))
+      if ((index + 1 < commandString.Length()) && (commandString[index + 1] == wxT('\n')))
       {
-        index+=2;
+        index += 2;
         continue;
       }
-      
+
       token += ch;
       index++;
-      if(index < commandString.Length())
-        token +=  commandString[index++];
+      if (index < commandString.Length())
+        token += commandString[index++];
       continue;
     }
-      
+
     // Remove comments
-    if((ch == wxT('/'))&&
-       (index < commandString.Length() - 1)&&
-       (commandString[index + 1]==wxT('*'))
-      )
+    if ((ch == wxT('/')) &&
+        (index < commandString.Length() - 1) &&
+        (commandString[index + 1] == wxT('*'))
+            )
     {
-      while((index < commandString.Length()) &&
-            !(
-              (commandString[index] == wxT('*')) &&
-              (commandString[index + 1] == wxT('/'))
+      while ((index < commandString.Length()) &&
+             !(
+                     (commandString[index] == wxT('*')) &&
+                     (commandString[index + 1] == wxT('/'))
+             )
               )
-        )
         index++;
       index += 2;
     }
@@ -244,12 +248,12 @@ void EvaluationQueue::AddTokens(wxString commandString)
       token += ch;
       index++;
     }
-      
+
     // If we ended a command we now have to add a new token to the list.
-    if(
-      (ch == wxT(';')) || 
-      (ch == wxT('$'))
-      )
+    if (
+            (ch == wxT(';')) ||
+            (ch == wxT('$'))
+            )
     {
       // trim() the token to allow MathCtrl::TryEvaluateNextInQueue()
       // to detect if the token is empty.
@@ -257,7 +261,7 @@ void EvaluationQueue::AddTokens(wxString commandString)
       // followed by a comment followed by a semicolon work.
       token.Trim(false);
       token.Trim(true);
-      if(token.Length()>1)
+      if (token.Length() > 1)
         m_tokens.Add(token);
       token = wxEmptyString;
     }
@@ -267,13 +271,13 @@ void EvaluationQueue::AddTokens(wxString commandString)
   // will detect if the token is empty.
   token.Trim(false);
   token.Trim(true);
-  if(token.Length()>1)
+  if (token.Length() > 1)
     m_tokens.Add(token);
 }
 
-GroupCell* EvaluationQueue::GetCell()
+GroupCell *EvaluationQueue::GetCell()
 {
-  if(!m_tokens.IsEmpty())
+  if (!m_tokens.IsEmpty())
   {
     return m_queue->group;
   }
@@ -294,26 +298,26 @@ wxString EvaluationQueue::GetCommand()
 {
   wxString retval;
   m_userLabel = wxEmptyString;
-  if(!m_tokens.IsEmpty())
+  if (!m_tokens.IsEmpty())
   {
     retval = m_tokens[0];
 
     wxString userLabel;
     int colonPos;
-    if((colonPos = retval.find(wxT(":")))!=wxNOT_FOUND)
+    if ((colonPos = retval.find(wxT(":"))) != wxNOT_FOUND)
     {
       userLabel = retval.Left(colonPos);
       userLabel.Trim(true);
       userLabel.Trim(false);
-      if((wxIsalpha(userLabel[0]))||(userLabel[0]==wxT('\\'))||(userLabel[0]==wxT('_')))
+      if ((wxIsalpha(userLabel[0])) || (userLabel[0] == wxT('\\')) || (userLabel[0] == wxT('_')))
       {
-        for(size_t i=0;i<userLabel.Length();i++)
+        for (size_t i = 0; i < userLabel.Length(); i++)
         {
-          if(userLabel[i]==wxT('\\'))
+          if (userLabel[i] == wxT('\\'))
             i++;
           else
           {
-            if((!wxIsalnum(userLabel[i]))&&(userLabel[i]!='_'))
+            if ((!wxIsalnum(userLabel[i])) && (userLabel[i] != '_'))
             {
               userLabel = wxEmptyString;
               break;
@@ -321,7 +325,7 @@ wxString EvaluationQueue::GetCommand()
           }
         }
         m_userLabel = userLabel;
-      } 
+      }
     };
   }
   return retval;

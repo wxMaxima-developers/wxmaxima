@@ -44,13 +44,18 @@ inside a wxmx file
 class MathParser
 {
 public:
-  MathParser(Configuration **cfg,CellPointers *cellPointers,wxString zipfile = wxEmptyString);
+  MathParser(Configuration **cfg, CellPointers *cellPointers, wxString zipfile = wxEmptyString);
+
   ~MathParser();
-  MathCell* ParseLine(wxString s, int style = MC_TYPE_DEFAULT);
-  MathCell* ParseTag(wxXmlNode* node, bool all = true);
+
+  MathCell *ParseLine(wxString s, int style = MC_TYPE_DEFAULT);
+
+  MathCell *ParseTag(wxXmlNode *node, bool all = true);
+
 private:
-  
+
   MathCell *HandleNullPointer(MathCell *cell);
+
   /*! Get the next xml tag
 
     wxXmlNode can operate in two modes:
@@ -63,14 +68,14 @@ private:
     If we encounter a non-whitespace text node where we shouldn't we raise an 
     assertion that informs the user that we might want a bug report about this.
    */
-  wxXmlNode* GetNextTag(wxXmlNode* node);
+  wxXmlNode *GetNextTag(wxXmlNode *node);
 
   /*! Returns node - or (if node is a whitespace-only text node) the next one.
 
     If we encounter a non-whitespace text node where we shouldn't we raise an 
     assertion that informs the user that we might want a bug report about this.
    */
-  wxXmlNode* SkipWhitespaceNode(wxXmlNode* node);
+  wxXmlNode *SkipWhitespaceNode(wxXmlNode *node);
 
   /*! Convert XML to a group tree
 
@@ -80,26 +85,46 @@ private:
     has to be reflected here in order to ensure proper
     loading of WXMX files.
   */
-  MathCell* ParseCellTag(wxXmlNode* node);
-  MathCell* ParseEditorTag(wxXmlNode* node);
-  MathCell* ParseFracTag(wxXmlNode* node);
-  MathCell* ParseText(wxXmlNode* node, int style = TS_DEFAULT);
-  MathCell* ParseCharCode(wxXmlNode* node, int style = TS_DEFAULT);
-  MathCell* ParseSupTag(wxXmlNode* node);
-  MathCell* ParseSubTag(wxXmlNode* node);
-  MathCell* ParseAbsTag(wxXmlNode* node);
-  MathCell* ParseConjugateTag(wxXmlNode* node);
-  MathCell* ParseUnderTag(wxXmlNode* node);
-  MathCell* ParseTableTag(wxXmlNode* node);
-  MathCell* ParseAtTag(wxXmlNode* node);
-  MathCell* ParseDiffTag(wxXmlNode* node);
-  MathCell* ParseSumTag(wxXmlNode* node);
-  MathCell* ParseIntTag(wxXmlNode* node);
-  MathCell* ParseFunTag(wxXmlNode* node);
-  MathCell* ParseSqrtTag(wxXmlNode* node);
-  MathCell* ParseLimitTag(wxXmlNode* node);
-  MathCell* ParseParenTag(wxXmlNode* node);
-  MathCell* ParseSubSupTag(wxXmlNode* node);
+  MathCell *ParseCellTag(wxXmlNode *node);
+
+  MathCell *ParseEditorTag(wxXmlNode *node);
+
+  MathCell *ParseFracTag(wxXmlNode *node);
+
+  MathCell *ParseText(wxXmlNode *node, int style = TS_DEFAULT);
+
+  MathCell *ParseCharCode(wxXmlNode *node, int style = TS_DEFAULT);
+
+  MathCell *ParseSupTag(wxXmlNode *node);
+
+  MathCell *ParseSubTag(wxXmlNode *node);
+
+  MathCell *ParseAbsTag(wxXmlNode *node);
+
+  MathCell *ParseConjugateTag(wxXmlNode *node);
+
+  MathCell *ParseUnderTag(wxXmlNode *node);
+
+  MathCell *ParseTableTag(wxXmlNode *node);
+
+  MathCell *ParseAtTag(wxXmlNode *node);
+
+  MathCell *ParseDiffTag(wxXmlNode *node);
+
+  MathCell *ParseSumTag(wxXmlNode *node);
+
+  MathCell *ParseIntTag(wxXmlNode *node);
+
+  MathCell *ParseFunTag(wxXmlNode *node);
+
+  MathCell *ParseSqrtTag(wxXmlNode *node);
+
+  MathCell *ParseLimitTag(wxXmlNode *node);
+
+  MathCell *ParseParenTag(wxXmlNode *node);
+
+  MathCell *ParseSubSupTag(wxXmlNode *node);
+
   int m_ParserStyle;
   int m_FracStyle;
   CellPointers *m_cellPointers;

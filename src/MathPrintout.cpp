@@ -33,7 +33,7 @@
 #define PRINT_MARGIN_HORIZONTAL 5
 #define PRINT_MARGIN_VERTICAL 5
 
-MathPrintout::MathPrintout(wxString title,Configuration **configuration) : wxPrintout(title)
+MathPrintout::MathPrintout(wxString title, Configuration **configuration) : wxPrintout(title)
 {
   m_configuration = configuration;
   m_oldconfig = *m_configuration;
@@ -46,7 +46,7 @@ MathPrintout::~MathPrintout()
   DestroyTree();
 }
 
-void MathPrintout::SetData(GroupCell* tree)
+void MathPrintout::SetData(GroupCell *tree)
 {
   m_tree = tree;
   if (m_tree != NULL)
@@ -64,11 +64,11 @@ bool MathPrintout::OnPrintPage(int num)
 {
   double screenScaleX, screenScaleY;
   double ppiScale = GetPPIScale();
-  GroupCell* tmp;
-  wxDC* dc = GetDC();
+  GroupCell *tmp;
+  wxDC *dc = GetDC();
   dc->SetBackground(*wxWHITE_BRUSH);
   dc->Clear();
-  
+
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
 
@@ -85,7 +85,7 @@ bool MathPrintout::OnPrintPage(int num)
   configuration.SetClientWidth(pageWidth - 2 * marginX
                                - SCALE_PX((*m_configuration)->GetBaseIndent(), scale));
   configuration.SetClientHeight(pageHeight - 2 * marginY);
-  
+
   configuration.SetIndent(marginX);
   // Inform the output routines that we are printing
   configuration.SetPrinter(true);
@@ -110,7 +110,7 @@ bool MathPrintout::OnPrintPage(int num)
     wxPoint point;
     point.x = marginX;
     point.y = marginY + tmp->GetMaxCenter() + GetHeaderHeight();
-    wxConfigBase* config = wxConfig::Get();
+    wxConfigBase *config = wxConfig::Get();
     int fontsize = 12;
     int drop = tmp->GetMaxDrop();
 
@@ -118,7 +118,7 @@ bool MathPrintout::OnPrintPage(int num)
 
     PrintHeader(num, dc, ppiScale);
     MathCell::ClipToDrawRegion(false);
-    
+
     while (tmp != NULL && tmp->GetGroupType() != GC_TYPE_PAGEBREAK)
     {
       // The following line seems to misteriously fix the "subsequent text
@@ -126,7 +126,8 @@ bool MathPrintout::OnPrintPage(int num)
       // No Idea why, though.
       dc->SetPen(wxPen(wxT("light grey"), 1, wxPENSTYLE_SOLID));
       tmp->Draw(point, fontsize);
-      if (tmp->m_next != NULL) {
+      if (tmp->m_next != NULL)
+      {
         point.x = marginX;
         point.y += drop + tmp->m_next->GetMaxCenter();
         point.y += SCALE_PX((*m_configuration)->GetGroupSkip(), ppiScale);
@@ -156,7 +157,7 @@ bool MathPrintout::OnBeginDocument(int startPage, int endPage)
 void MathPrintout::BreakPages()
 {
   if (m_tree == NULL)
-    return ;
+    return;
 
   MathCell::ClipToDrawRegion(false);
   int pageWidth, pageHeight;
@@ -170,7 +171,7 @@ void MathPrintout::BreakPages()
   int currentHeight = marginY;
   int skip = SCALE_PX((*m_configuration)->GetGroupSkip(), scale);;
 
-  GroupCell* tmp = dynamic_cast<GroupCell *>(m_tree);
+  GroupCell *tmp = dynamic_cast<GroupCell *>(m_tree);
   m_pages.push_back(tmp);
 
   m_numberOfPages = 1;
@@ -203,8 +204,8 @@ void MathPrintout::SetupData()
   BreakPages();
 }
 
-void MathPrintout::GetPageInfo(int* minPage, int* maxPage,
-                               int* fromPage, int* toPage)
+void MathPrintout::GetPageInfo(int *minPage, int *maxPage,
+                               int *fromPage, int *toPage)
 {
   *minPage = 1;
   *maxPage = m_numberOfPages;
@@ -217,12 +218,12 @@ void MathPrintout::OnPreparePrinting()
   SetupData();
 }
 
-void MathPrintout::GetPageMargins(int* horizontal, int* vertical)
+void MathPrintout::GetPageMargins(int *horizontal, int *vertical)
 {
   double scale = GetPPIScale();
 
-  *horizontal = (int)(SCALE_PX(PRINT_MARGIN_HORIZONTAL, scale) * 10);
-  *vertical = (int)(SCALE_PX(PRINT_MARGIN_VERTICAL, scale) * 10);
+  *horizontal = (int) (SCALE_PX(PRINT_MARGIN_HORIZONTAL, scale) * 10);
+  *vertical = (int) (SCALE_PX(PRINT_MARGIN_VERTICAL, scale) * 10);
 }
 
 int MathPrintout::GetHeaderHeight()
@@ -236,7 +237,7 @@ int MathPrintout::GetHeaderHeight()
   return height + SCALE_PX(12, ppiScale);
 }
 
-void MathPrintout::PrintHeader(int pageNum, wxDC* dc, double scale)
+void MathPrintout::PrintHeader(int pageNum, wxDC *dc, double scale)
 {
   int page_width, page_height;
   int title_width, title_height;
@@ -266,7 +267,7 @@ void MathPrintout::PrintHeader(int pageNum, wxDC* dc, double scale)
 
 void MathPrintout::Recalculate()
 {
-  GroupCell* tmp = m_tree;
+  GroupCell *tmp = m_tree;
 
   wxDC *dc = GetDC();
   Configuration configuration(*dc);
@@ -282,12 +283,12 @@ void MathPrintout::Recalculate()
   int pageWidth, pageHeight;
   GetPageSizePixels(&pageWidth, &pageHeight);
   int scale = configuration.GetScale();
-  
+
   configuration.SetClientWidth(pageWidth - 2 * marginX
                                - SCALE_PX((*m_configuration)->GetBaseIndent(), scale));
   configuration.SetClientHeight(pageHeight - 2 * marginY);
 
-  configuration.SetCanvasSize(wxSize(pageWidth-marginX,pageHeight-marginY));
+  configuration.SetCanvasSize(wxSize(pageWidth - marginX, pageHeight - marginY));
   marginX += SCALE_PX(configuration.GetBaseIndent(), scale);
   configuration.SetIndent(marginX);
   configuration.SetPrinter(true);
@@ -313,7 +314,7 @@ double MathPrintout::GetPPIScale()
   GetPPIPrinter(&ppiPrinterX, &ppiPrinterY);
 
 #if defined __WXMAC__
-  return 0.6*((double)ppiPrinterY) / ((double)ppiScreenY);
+  return 0.6 * ((double) ppiPrinterY) / ((double) ppiScreenY);
 #else
   return 0.6*((double)ppiPrinterY) / ((double)ppiScreenY);
 #endif
@@ -328,11 +329,11 @@ void MathPrintout::GetScreenScale(double *scaleX, double *scaleY)
   GetPageSizePixels(&pageSizeX, &pageSizeY);
   int marginX, marginY;
   GetPageMargins(&marginX, &marginY);
-  (*m_configuration)->SetCanvasSize(wxSize(pageSizeX-marginX,pageSizeY-marginX));
+  (*m_configuration)->SetCanvasSize(wxSize(pageSizeX - marginX, pageSizeY - marginX));
   dc->GetSize(&previewSizeX, &previewSizeY);
-  
-  *scaleX = ((double)previewSizeX) / ((double)pageSizeX);
-  *scaleY = ((double)previewSizeY) / ((double)pageSizeY);
+
+  *scaleX = ((double) previewSizeX) / ((double) pageSizeX);
+  *scaleY = ((double) previewSizeY) / ((double) pageSizeY);
 }
 
 void MathPrintout::DestroyTree()

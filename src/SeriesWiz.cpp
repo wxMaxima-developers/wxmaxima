@@ -18,7 +18,8 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
-enum {
+enum
+{
   powerseries_id,
   special_id
 };
@@ -26,11 +27,11 @@ enum {
 
 #include "SeriesWiz.h"
 
-SeriesWiz::SeriesWiz(wxWindow* parent, int id,
+SeriesWiz::SeriesWiz(wxWindow *parent, int id,
                      Configuration *cfg,
-                     const wxString& title,
-                     const wxPoint& pos, const wxSize& size, long style):
-    wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+                     const wxString &title,
+                     const wxPoint &pos, const wxSize &size, long style) :
+        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
@@ -74,10 +75,10 @@ void SeriesWiz::set_properties()
 
 void SeriesWiz::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
-  wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(5, 2, 0, 0);
-  wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
+  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(5, 2, 0, 0);
+  wxBoxSizer *sizer_2 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 5);
   grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -102,12 +103,12 @@ void SeriesWiz::do_layout()
   Layout();
 }
 
-void SeriesWiz::OnButton(wxCommandEvent& event)
+void SeriesWiz::OnButton(wxCommandEvent &event)
 {
   wxString choices[] =
-    {
-      wxT("Pi"), wxT("E")
-    };
+          {
+                  wxT("Pi"), wxT("E")
+          };
   wxString choice = wxGetSingleChoice(_("Select a constant"),
                                       _("Constant"), 2, choices, this);
   if (choice.Length())
@@ -143,12 +144,12 @@ wxString SeriesWiz::GetValue()
   return s;
 }
 
-void SeriesWiz::OnCheckbox(wxCommandEvent& event)
+void SeriesWiz::OnCheckbox(wxCommandEvent &event)
 {
   spin_ctrl_1->Enable(!checkbox_1->GetValue());
 }
 
 BEGIN_EVENT_TABLE(SeriesWiz, wxDialog)
-  EVT_BUTTON(special_id, SeriesWiz::OnButton)
-  EVT_CHECKBOX(powerseries_id, SeriesWiz::OnCheckbox)
+                EVT_BUTTON(special_id, SeriesWiz::OnButton)
+                EVT_CHECKBOX(powerseries_id, SeriesWiz::OnCheckbox)
 END_EVENT_TABLE()

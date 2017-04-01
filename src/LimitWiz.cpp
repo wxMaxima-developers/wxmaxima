@@ -20,11 +20,11 @@
 
 #include "LimitWiz.h"
 
-LimitWiz::LimitWiz(wxWindow* parent, int id,
+LimitWiz::LimitWiz(wxWindow *parent, int id,
                    Configuration *cfg,
-                   const wxString& title,
-                   const wxPoint& pos, const wxSize& size, long style):
-    wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+                   const wxString &title,
+                   const wxPoint &pos, const wxSize &size, long style) :
+        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
@@ -38,11 +38,11 @@ LimitWiz::LimitWiz(wxWindow* parent, int id,
   button_1 = new wxButton(this, special, _("Special"));
   label_5 = new wxStaticText(this, -1, _("Direction:"));
   const wxString choice_1_choices[] =
-    {
-      _("both sides"),
-      _("left"),
-      _("right")
-    };
+          {
+                  _("both sides"),
+                  _("left"),
+                  _("right")
+          };
   choice_1 = new wxChoice(this, -1, wxDefaultPosition, wxSize(130, -1),
                           3, choice_1_choices);
   checkbox_1 = new wxCheckBox(this, -1, _("&Taylor series"));
@@ -79,10 +79,10 @@ void LimitWiz::set_properties()
 
 void LimitWiz::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(3, 1, 0, 0);
-  wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(5, 2, 0, 0);
-  wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(3, 1, 0, 0);
+  wxBoxSizer *sizer_2 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(5, 2, 0, 0);
+  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 5);
   grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -132,7 +132,7 @@ wxString LimitWiz::GetValue()
   return s;
 }
 
-void LimitWiz::OnButton(wxCommandEvent& event)
+void LimitWiz::OnButton(wxCommandEvent &event)
 {
   wxString choices[] = {wxT("Pi"), wxT("E"), _("Infinity"),
                         _("- Infinity")};
@@ -151,7 +151,7 @@ void LimitWiz::OnButton(wxCommandEvent& event)
   }
 }
 
-void LimitWiz::OnIdle(wxIdleEvent& ev)
+void LimitWiz::OnIdle(wxIdleEvent &ev)
 {
   wxString point = text_ctrl_3->GetValue();
 
@@ -167,6 +167,6 @@ void LimitWiz::OnIdle(wxIdleEvent& ev)
 }
 
 BEGIN_EVENT_TABLE(LimitWiz, wxDialog)
-  EVT_BUTTON(special, LimitWiz::OnButton)
-  EVT_IDLE(LimitWiz::OnIdle)
+                EVT_BUTTON(special, LimitWiz::OnButton)
+                EVT_IDLE(LimitWiz::OnIdle)
 END_EVENT_TABLE()

@@ -30,7 +30,7 @@
 #define MIN_LIMIT_FONT_SIZE 8
 #define LIMIT_FONT_SIZE_DECREASE 1
 
-LimitCell::LimitCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
+LimitCell::LimitCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
 {
   m_base = NULL;
   m_under = NULL;
@@ -48,14 +48,14 @@ void LimitCell::SetParent(MathCell *parent)
     m_name->SetParentList(parent);
 }
 
-MathCell* LimitCell::Copy()
+MathCell *LimitCell::Copy()
 {
-  LimitCell* tmp = new LimitCell(m_group,m_configuration);
+  LimitCell *tmp = new LimitCell(m_group, m_configuration);
   CopyData(this, tmp);
   tmp->SetBase(m_base->CopyList());
   tmp->SetUnder(m_under->CopyList());
   tmp->SetName(m_name->CopyList());
-    
+
   return tmp;
 }
 
@@ -67,19 +67,19 @@ LimitCell::~LimitCell()
   m_base = m_under = m_name = NULL;
 }
 
-void LimitCell::SetName(MathCell* name)
+void LimitCell::SetName(MathCell *name)
 {
   if (name == NULL)
-    return ;
+    return;
   if (m_name != NULL)
     delete m_name;
   m_name = name;
 }
 
-void LimitCell::SetBase(MathCell* base)
+void LimitCell::SetBase(MathCell *base)
 {
   if (base == NULL)
-    return ;
+    return;
   if (m_base != NULL)
     delete m_base;
   m_base = base;
@@ -88,7 +88,7 @@ void LimitCell::SetBase(MathCell* base)
 void LimitCell::SetUnder(MathCell *under)
 {
   if (under == NULL)
-    return ;
+    return;
   if (m_under != NULL)
     delete m_under;
   m_under = under;
@@ -166,11 +166,11 @@ wxString LimitCell::ToString()
 wxString LimitCell::ToTeX()
 {
   wxString under = m_under->ListToTeX();
-  wxString base  = m_base ->ListToTeX();
+  wxString base = m_base->ListToTeX();
   wxString var = under.SubString(0, under.Find(wxT("->")) - 1);
   wxString to = under.SubString(under.Find(wxT("->")) + 2,
                                 under.Length() - 1);
-  wxString s = wxT("\\lim_{")+var+wxT("\\to ")+to+wxT("}{")+base+wxT("}");
+  wxString s = wxT("\\lim_{") + var + wxT("\\to ") + to + wxT("}{") + base + wxT("}");
   return s;
 }
 
@@ -179,34 +179,34 @@ wxString LimitCell::ToMathML()
   wxString base = m_base->ListToMathML();
 
   wxString from;
-  if(m_under) from = m_under->ListToMathML();
-  
+  if (m_under) from = m_under->ListToMathML();
+
   wxString retval;
-  if(from.IsEmpty())
+  if (from.IsEmpty())
     retval = wxT("<mo>lim</mo>") + base;
   else
     retval = wxT("<munder><mo>lim</mo>") + from + wxT("</munder>\n");
-  return(retval);
+  return (retval);
 }
 
 wxString LimitCell::ToXML()
 {
   return _T("<lm><r>") + m_name->ListToXML() + _T("</r><r>") +
-    m_under->ListToXML() + _T("</r><r>") +
-    m_base->ListToXML() + _T("</r></lm>");
+         m_under->ListToXML() + _T("</r><r>") +
+         m_base->ListToXML() + _T("</r></lm>");
 }
 
 wxString LimitCell::ToOMML()
 {
-  wxString under= m_under->ListToOMML();
-  under.Replace(wxT("->"),wxT("\x2192"));
+  wxString under = m_under->ListToOMML();
+  under.Replace(wxT("->"), wxT("\x2192"));
 
   return _T("<m:func><m:fName><m:limLow><m:e><m:r>lim</m:r></m:e><m:lim>") +
-    under + _T("</m:lim></m:limLow></m:fName><m:e>") +
-    m_base->ListToOMML() + _T("</m:e></m:func>");
+         under + _T("</m:lim></m:limLow></m:fName><m:e>") +
+         m_base->ListToOMML() + _T("</m:e></m:func>");
 }
 
-void LimitCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
+void LimitCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
 {
   *first = NULL;
   *last = NULL;

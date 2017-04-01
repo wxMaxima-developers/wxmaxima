@@ -50,25 +50,42 @@ class ParenCell : public MathCell
 {
 public:
   ParenCell(MathCell *parent, Configuration **config);
+
   ~ParenCell();
-  MathCell* Copy();
+
+  MathCell *Copy();
+
   void SetInner(MathCell *inner, int style);
+
   void SetPrint(bool print)
   {
     m_print = print;
   }
-  void SelectInner(wxRect& rect, MathCell **first, MathCell **last);
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
+
   bool BreakUp();
+
   void Unbreak();
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToMathML();
+
   wxString ToOMML();
+
   wxString ToXML();
+
   void SetParent(MathCell *parent);
+
 protected:
   MathCell *m_innerCell, *m_open, *m_close;
   MathCell *m_last1;
@@ -79,9 +96,9 @@ protected:
   enum parenthesisStyle
   {
     PARENTHESIS_NORMAL = 0,   //!< An ordinary parenthesis sign
-    PARENTHESIS_BIG = 1    ,  //!< A "big parenthesis" sign
+    PARENTHESIS_BIG = 1,  //!< A "big parenthesis" sign
     PARENTHESIS_ASSEMBLED = 2 //!< Assemble a "Parenthesis top half sign", a bot half sign and a
-                              //   vertical line.
+    //   vertical line.
   };
 
   /* How to create a big parenthesis sign?

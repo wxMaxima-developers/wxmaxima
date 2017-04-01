@@ -55,13 +55,21 @@ class AbsCell : public MathCell
 {
 public:
   AbsCell(MathCell *parent, Configuration **config);
+
   ~AbsCell();
+
   void SetInner(MathCell *inner);
-  MathCell* Copy();
-  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+
+  MathCell *Copy();
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   bool BreakUp();
+
   void Unbreak();
+
   void SetParent(MathCell *parent);
+
 protected:
   //! The contents of the abs() comand
   MathCell *m_innerCell;
@@ -71,13 +79,21 @@ protected:
   TextCell *m_close;
   //! The last element of m_innerCell
   MathCell *m_last;
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToMathML();
+
   wxString ToXML();
+
   wxString ToOMML();
 };
 

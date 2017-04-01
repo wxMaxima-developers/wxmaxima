@@ -27,7 +27,7 @@
 
 #include "FunCell.h"
 
-FunCell::FunCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
+FunCell::FunCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
 {
   m_nameCell = NULL;
   m_argCell = NULL;
@@ -42,9 +42,9 @@ void FunCell::SetParent(MathCell *parent)
     m_argCell->SetParentList(parent);
 }
 
-MathCell* FunCell::Copy()
+MathCell *FunCell::Copy()
 {
-  FunCell* tmp = new FunCell(m_group,m_configuration);
+  FunCell *tmp = new FunCell(m_group, m_configuration);
   CopyData(this, tmp);
   tmp->SetName(m_nameCell->CopyList());
   tmp->SetArg(m_argCell->CopyList());
@@ -63,7 +63,7 @@ FunCell::~FunCell()
 void FunCell::SetName(MathCell *name)
 {
   if (name == NULL)
-    return ;
+    return;
   if (m_nameCell != NULL)
     delete m_nameCell;
   m_nameCell = name;
@@ -72,7 +72,7 @@ void FunCell::SetName(MathCell *name)
 void FunCell::SetArg(MathCell *arg)
 {
   if (arg == NULL)
-    return ;
+    return;
   if (m_argCell != NULL)
     delete m_argCell;
   m_argCell = arg;
@@ -130,22 +130,22 @@ wxString FunCell::ToTeX()
     return wxEmptyString;
 
   wxString s;
-  
-  if(
-    (m_nameCell->ToString() == wxT("sin")) ||
-    (m_nameCell->ToString() == wxT("cos")) ||
-    (m_nameCell->ToString() == wxT("cosh")) ||
-    (m_nameCell->ToString() == wxT("cos")) ||
-    (m_nameCell->ToString() == wxT("log")) ||
-    (m_nameCell->ToString() == wxT("cot")) ||
-    (m_nameCell->ToString() == wxT("sec")) ||
-    (m_nameCell->ToString() == wxT("csc")) ||
-    (m_nameCell->ToString() == wxT("tan"))
-    ) 
-    s = wxT("\\")+m_nameCell->ToString()+wxT("{")+m_argCell->ListToTeX()+wxT("}");
+
+  if (
+          (m_nameCell->ToString() == wxT("sin")) ||
+          (m_nameCell->ToString() == wxT("cos")) ||
+          (m_nameCell->ToString() == wxT("cosh")) ||
+          (m_nameCell->ToString() == wxT("cos")) ||
+          (m_nameCell->ToString() == wxT("log")) ||
+          (m_nameCell->ToString() == wxT("cot")) ||
+          (m_nameCell->ToString() == wxT("sec")) ||
+          (m_nameCell->ToString() == wxT("csc")) ||
+          (m_nameCell->ToString() == wxT("tan"))
+          )
+    s = wxT("\\") + m_nameCell->ToString() + wxT("{") + m_argCell->ListToTeX() + wxT("}");
   else
     s = m_nameCell->ListToTeX() + m_argCell->ListToTeX();
-        
+
   return s;
 }
 
@@ -154,24 +154,24 @@ wxString FunCell::ToXML()
 //  if (m_isBroken)
 //    return wxEmptyString;
   return wxT("<fn><r>") + m_nameCell->ListToXML() + wxT("</r>") +
-    m_argCell->ListToXML() + wxT("</fn>");
+         m_argCell->ListToXML() + wxT("</fn>");
 }
 
 wxString FunCell::ToMathML()
 {
 //  if (m_isBroken)
 //    return wxEmptyString;
-  return wxT("<mrow>")+m_nameCell->ListToMathML() +
-    wxT("<mo>&#x2061;</mo>") + m_argCell->ListToMathML()+ wxT("</mrow>\n");
+  return wxT("<mrow>") + m_nameCell->ListToMathML() +
+         wxT("<mo>&#x2061;</mo>") + m_argCell->ListToMathML() + wxT("</mrow>\n");
 }
 
 wxString FunCell::ToOMML()
 {
-  return m_nameCell->ListToOMML() + 
-    m_argCell->ListToOMML();
+  return m_nameCell->ListToOMML() +
+         m_argCell->ListToOMML();
 }
 
-void FunCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
+void FunCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
 {
   *first = NULL;
   *last = NULL;

@@ -52,22 +52,39 @@ class FunCell : public MathCell
 {
 public:
   FunCell(MathCell *parent, Configuration **config);
+
   ~FunCell();
-  MathCell* Copy();
+
+  MathCell *Copy();
+
   void SetName(MathCell *base);
+
   void SetArg(MathCell *index);
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToMathML();
+
   wxString ToXML();
+
   wxString ToOMML();
-  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   bool BreakUp();
+
   void Unbreak();
+
   void SetParent(MathCell *parent);
+
 protected:
   MathCell *m_nameCell;
   MathCell *m_argCell;

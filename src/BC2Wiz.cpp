@@ -20,24 +20,24 @@
 
 #include "BC2Wiz.h"
 
-BC2Wiz::BC2Wiz(wxWindow* parent, int id, Configuration *cfg,const wxString& title,
-               const wxPoint& pos, const wxSize& size, long style):
-    wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+BC2Wiz::BC2Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &title,
+               const wxPoint &pos, const wxSize &size, long style) :
+        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_2 = new wxStaticText(this, -1, _("Solution:"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, _("Point:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, cfg,wxT("x="), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxT("x="), wxDefaultPosition,
                               wxSize(70, -1));
   label_4 = new wxStaticText(this, -1, _("Value:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, cfg,wxT("y="), wxDefaultPosition,
+  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxT("y="), wxDefaultPosition,
                               wxSize(70, -1));
   label_5 = new wxStaticText(this, -1, _("Point:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, cfg,wxT("x="), wxDefaultPosition,
+  text_ctrl_4 = new BTextCtrl(this, -1, cfg, wxT("x="), wxDefaultPosition,
                               wxSize(70, -1));
   label_6 = new wxStaticText(this, -1, _("Value:"));
-  text_ctrl_5 = new BTextCtrl(this, -1, cfg,wxT("y="), wxDefaultPosition,
+  text_ctrl_5 = new BTextCtrl(this, -1, cfg, wxT("y="), wxDefaultPosition,
                               wxSize(70, -1));
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
@@ -68,11 +68,11 @@ void BC2Wiz::set_properties()
 
 void BC2Wiz::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
-  wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(3, 2, 0, 0);
-  wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
-  wxBoxSizer* sizer_3 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
+  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(3, 2, 0, 0);
+  wxBoxSizer *sizer_2 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer *sizer_3 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 5);
   grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);

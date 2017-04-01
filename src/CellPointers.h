@@ -32,8 +32,9 @@ per-worksheet structure.
  */
 class CellPointers
 {
- public:
+public:
   CellPointers();
+
   //! The EditorCell the mouse selection has started in
   MathCell *m_cellMouseSelectionStartedIn;
   //! The EditorCell the keyboard selection has started in
@@ -58,21 +59,28 @@ class CellPointers
     for highlighting other instances of the selected string.
   */
   wxString m_selectionString;
-  
+
   //! Set the y position of the selection start and end
   void SetSelectionRange_px(int start, int end)
-    {
-      m_selectionStart_px = start;
-      m_selectionEnd_px = end;
-    }
+  {
+    m_selectionStart_px = start;
+    m_selectionEnd_px = end;
+  }
+
   //! Forget where the search was started
-  void ResetSearchStart(){
+  void ResetSearchStart()
+  {
     m_cellSearchStartedIn = NULL;
     m_indexSearchStartedAt = -1;
   }
+
   //! Forget where the mouse selection was started
-  void ResetMouseSelectionStart(){m_cellMouseSelectionStartedIn = NULL;}
+  void ResetMouseSelectionStart()
+  { m_cellMouseSelectionStartedIn = NULL; }
+
   //! Forget where the keyboard selection was started
-  void ResetKeyboardSelectionStart(){m_cellKeyboardSelectionStartedIn = NULL;}
+  void ResetKeyboardSelectionStart()
+  { m_cellKeyboardSelectionStartedIn = NULL; }
 };
+
 #endif

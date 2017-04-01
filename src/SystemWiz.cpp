@@ -20,17 +20,17 @@
 
 #include "SystemWiz.h"
 
-SysWiz::SysWiz(wxWindow* parent, int id, Configuration *cfg, const wxString& title, int numEq,
-               const wxPoint& pos, const wxSize& sz, long style):
-    wxDialog(parent, id, title, pos, sz, wxDEFAULT_DIALOG_STYLE)
+SysWiz::SysWiz(wxWindow *parent, int id, Configuration *cfg, const wxString &title, int numEq,
+               const wxPoint &pos, const wxSize &sz, long style) :
+        wxDialog(parent, id, title, pos, sz, wxDEFAULT_DIALOG_STYLE)
 {
   m_size = numEq;
   for (int i = 0; i < m_size; i++)
   {
-    m_inputs.push_back(new BTextCtrl(this, -1, cfg,wxT("0"), wxDefaultPosition,
+    m_inputs.push_back(new BTextCtrl(this, -1, cfg, wxT("0"), wxDefaultPosition,
                                      wxSize(230, -1)));
   }
-  variables = new BTextCtrl(this, -1,cfg, wxEmptyString, wxDefaultPosition,
+  variables = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                             wxSize(230, -1));
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
@@ -60,10 +60,10 @@ void SysWiz::set_properties()
 
 void SysWiz::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(m_size + 1, 2, 0, 0);
-  wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxStaticText* text;
+  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
+  wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(m_size + 1, 2, 0, 0);
+  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  wxStaticText *text;
   for (int i = 1; i <= m_size; i++)
   {
     text = new wxStaticText(this, -1, wxString::Format(_("Equation %d:"), i));

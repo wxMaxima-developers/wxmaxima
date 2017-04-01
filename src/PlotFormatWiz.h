@@ -26,27 +26,32 @@
 #include <wx/statline.h>
 #include "Configuration.h"
 
-class PlotFormatWiz: public wxDialog
+class PlotFormatWiz : public wxDialog
 {
 public:
   PlotFormatWiz(
-    wxWindow* parent, int id,
-    Configuration *cfg,
-    const wxString& title,
-    const wxPoint& pos = wxDefaultPosition,
-    const wxSize& size = wxDefaultSize,
-    long style = wxDEFAULT_DIALOG_STYLE);
+          wxWindow *parent, int id,
+          Configuration *cfg,
+          const wxString &title,
+          const wxPoint &pos = wxDefaultPosition,
+          const wxSize &size = wxDefaultSize,
+          long style = wxDEFAULT_DIALOG_STYLE);
+
   void SetValue(wxString s);
+
   wxString GetValue();
+
 private:
   void set_properties();
+
   void do_layout();
+
 protected:
-  wxStaticText* label_1;
-  wxComboBox* combo_box_1;
-  wxStaticLine* static_line_1;
-  wxButton* button_1;
-  wxButton* button_2;
+  wxStaticText *label_1;
+  wxComboBox *combo_box_1;
+  wxStaticLine *static_line_1;
+  wxButton *button_1;
+  wxButton *button_2;
 };
 
 #endif // PLOTFORMATWIZ_H

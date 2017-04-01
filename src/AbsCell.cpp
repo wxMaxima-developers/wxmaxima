@@ -30,12 +30,12 @@
 #include "AbsCell.h"
 #include "TextCell.h"
 
-AbsCell::AbsCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
+AbsCell::AbsCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
 {
   m_innerCell = NULL;
-  m_open = new TextCell(parent,config,wxT("abs("));
-  m_open -> DontEscapeOpeningParenthesis();
-  m_close = new TextCell(parent,config,wxT(")"));
+  m_open = new TextCell(parent, config, wxT("abs("));
+  m_open->DontEscapeOpeningParenthesis();
+  m_close = new TextCell(parent, config, wxT(")"));
   m_last = NULL;
 }
 
@@ -50,9 +50,9 @@ void AbsCell::SetParent(MathCell *parent)
     m_close->SetParentList(parent);
 }
 
-MathCell* AbsCell::Copy()
+MathCell *AbsCell::Copy()
 {
-  AbsCell* tmp = new AbsCell(m_group,m_configuration);
+  AbsCell *tmp = new AbsCell(m_group, m_configuration);
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
   tmp->m_isBroken = m_isBroken;
@@ -74,13 +74,13 @@ AbsCell::~AbsCell()
 void AbsCell::SetInner(MathCell *inner)
 {
   if (inner == NULL)
-    return ;
+    return;
   if (m_innerCell != NULL)
     delete m_innerCell;
   m_innerCell = inner;
 
   m_last = m_innerCell;
-  if(m_last != NULL)
+  if (m_last != NULL)
     while (m_last->m_next != NULL)
       m_last = m_last->m_next;
 }
@@ -106,20 +106,20 @@ void AbsCell::RecalculateHeight(int fontsize)
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
 
-  if(m_isBroken)
+  if (m_isBroken)
   {
-    m_height = MAX(m_innerCell->GetMaxHeight(),m_open->GetMaxHeight());
-    m_center = MAX(m_innerCell->GetMaxCenter(),m_open->GetMaxCenter());
+    m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
+    m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
   }
 }
 
 void AbsCell::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(point,fontsize);
+  MathCell::Draw(point, fontsize);
 
   Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
-  wxDC& dc = configuration->GetDC();
+  wxDC &dc = configuration->GetDC();
   if (DrawThisCell(point) && InUpdateRegion())
   {
     SetPen();
@@ -159,15 +159,15 @@ wxString AbsCell::ToTeX()
 wxString AbsCell::ToMathML()
 {
   return wxT("<row><mo>|</mo>") +
-    m_innerCell->ListToMathML() +
-    wxT("<mo>|</mo></row>\n");
+         m_innerCell->ListToMathML() +
+         wxT("<mo>|</mo></row>\n");
 //  return wxT("<apply><abs/><ci>") + m_innerCell->ListToMathML() + wxT("</ci></apply>");
 }
 
 wxString AbsCell::ToOMML()
 {
   return wxT("<m:d><m:dPr m:begChr=\"|\" m:endChr=\"|\"></m:dPr><m:e>") +
-    m_innerCell->ListToOMML()+wxT("</m:e></m:d>");
+         m_innerCell->ListToOMML() + wxT("</m:e></m:d>");
 }
 
 wxString AbsCell::ToXML()
@@ -175,7 +175,7 @@ wxString AbsCell::ToXML()
   return wxT("<a>") + m_innerCell->ListToXML() + wxT("</a>");
 }
 
-void AbsCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
+void AbsCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
 {
   *first = NULL;
   *last = NULL;
@@ -197,8 +197,8 @@ bool AbsCell::BreakUp()
     m_isBroken = true;
     m_open->m_nextToDraw = m_innerCell;
     m_innerCell->m_previousToDraw = m_open;
-    wxASSERT_MSG(m_last != NULL,_("Bug: No last cell in an absCell!"));
-    if(m_last != NULL)
+    wxASSERT_MSG(m_last != NULL, _("Bug: No last cell in an absCell!"));
+    if (m_last != NULL)
     {
       m_last->m_nextToDraw = m_close;
       m_close->m_previousToDraw = m_last;
@@ -208,8 +208,8 @@ bool AbsCell::BreakUp()
       m_nextToDraw->m_previousToDraw = m_close;
     m_nextToDraw = m_open;
 
-    m_height = MAX(m_innerCell->GetMaxHeight(),m_open->GetMaxHeight());
-    m_center = MAX(m_innerCell->GetMaxCenter(),m_open->GetMaxCenter());
+    m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
+    m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
 
     return true;
   }

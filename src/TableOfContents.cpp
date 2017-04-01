@@ -30,34 +30,34 @@
 #include <wx/sizer.h>
 #include <wx/regex.h>
 
-TableOfContents::TableOfContents(wxWindow* parent, int id) : wxPanel(parent, id)
+TableOfContents::TableOfContents(wxWindow *parent, int id) : wxPanel(parent, id)
 {
   m_displayedItems = new wxListCtrl(
-    this, structure_ctrl_id,
-    wxDefaultPosition,wxDefaultSize,
-    wxLC_SINGLE_SEL|wxLC_ALIGN_LEFT|wxLC_REPORT|wxLC_NO_HEADER
-    );
+          this, structure_ctrl_id,
+          wxDefaultPosition, wxDefaultSize,
+          wxLC_SINGLE_SEL | wxLC_ALIGN_LEFT | wxLC_REPORT | wxLC_NO_HEADER
+  );
   m_displayedItems->AppendColumn(wxEmptyString);
   m_regex = new wxTextCtrl(this, structure_regex_id);
 
   // A box whose 1st row is growable 
-  wxFlexGridSizer * box = new wxFlexGridSizer(1);
+  wxFlexGridSizer *box = new wxFlexGridSizer(1);
   box->AddGrowableCol(0);
   box->AddGrowableRow(0);
 
   box->Add(m_displayedItems, wxSizerFlags().Expand());
   box->Add(m_regex, wxSizerFlags().Expand());
   m_lastSelection = -1;
-  
+
   SetSizer(box);
   box->Fit(this);
   box->SetSizeHints(this);
 }
 
-void TableOfContents::OnSize(wxSizeEvent& event)
+void TableOfContents::OnSize(wxSizeEvent &event)
 {
-    m_displayedItems->SetColumnWidth(0,event.GetSize().x);
-    event.Skip();
+  m_displayedItems->SetColumnWidth(0, event.GetSize().x);
+  event.Skip();
 }
 
 TableOfContents::~TableOfContents()
@@ -66,51 +66,51 @@ TableOfContents::~TableOfContents()
   delete m_displayedItems;
 }
 
-void TableOfContents::Update(GroupCell* tree, GroupCell *cursorPosition)
+void TableOfContents::Update(GroupCell *tree, GroupCell *cursorPosition)
 {
   long selection = m_lastSelection;
-  if(IsShown())
+  if (IsShown())
+  {
+    GroupCell *cell = dynamic_cast<GroupCell *>(tree);
+    m_structure.clear();
+
+    // Get a new list of tokens.
+    while (cell != NULL)
     {
-      GroupCell* cell=  dynamic_cast<GroupCell*>(tree);
-      m_structure.clear();
-      
-      // Get a new list of tokens.
-      while(cell != NULL)
-	{
-	  int groupType = cell->GetGroupType();
-	  if(
-	     (groupType == GC_TYPE_TITLE) ||
-	     (groupType == GC_TYPE_SECTION) ||
-	     (groupType == GC_TYPE_SUBSECTION) ||
-	     (groupType == GC_TYPE_SUBSUBSECTION)
-            )
-	    m_structure.push_back(cell);
-          
-          if(cell == cursorPosition)
-          {
-            if(!m_structure.empty())
-              selection = m_structure.size()-1;
-          }
+      int groupType = cell->GetGroupType();
+      if (
+              (groupType == GC_TYPE_TITLE) ||
+              (groupType == GC_TYPE_SECTION) ||
+              (groupType == GC_TYPE_SUBSECTION) ||
+              (groupType == GC_TYPE_SUBSUBSECTION)
+              )
+        m_structure.push_back(cell);
 
-	  cell = dynamic_cast<GroupCell*>(cell->m_next);
-	}
-      
-      UpdateDisplay();
-
-      long item = -1;
-      item = m_displayedItems->GetNextItem(-1,
-                                           wxLIST_NEXT_ALL,
-                                           wxLIST_STATE_SELECTED);
-
-      if((selection >= 0)&&(item != selection))
+      if (cell == cursorPosition)
       {
-        if((long)m_displayedItems->GetItemCount() < selection)
-          selection = m_displayedItems->GetItemCount() - 1;
-        if((selection >= 0)&&(selection <m_displayedItems->GetItemCount()))
-          m_displayedItems->SetItemState(selection,wxLIST_STATE_SELECTED,wxLIST_STATE_SELECTED);
-        m_lastSelection = selection;
+        if (!m_structure.empty())
+          selection = m_structure.size() - 1;
       }
+
+      cell = dynamic_cast<GroupCell *>(cell->m_next);
     }
+
+    UpdateDisplay();
+
+    long item = -1;
+    item = m_displayedItems->GetNextItem(-1,
+                                         wxLIST_NEXT_ALL,
+                                         wxLIST_STATE_SELECTED);
+
+    if ((selection >= 0) && (item != selection))
+    {
+      if ((long) m_displayedItems->GetItemCount() < selection)
+        selection = m_displayedItems->GetItemCount() - 1;
+      if ((selection >= 0) && (selection < m_displayedItems->GetItemCount()))
+        m_displayedItems->SetItemState(selection, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+      m_lastSelection = selection;
+    }
+  }
 }
 
 void TableOfContents::UpdateDisplay()
@@ -124,62 +124,62 @@ void TableOfContents::UpdateDisplay()
   if (regex != wxEmptyString)
     matcher.Compile(regex);
 
-  for (unsigned int i=0; i<m_structure.size(); i++)
+  for (unsigned int i = 0; i < m_structure.size(); i++)
   {
     // Indentation further reduces the screen real-estate. So it is to be used
     // sparingly. But we should perhaps add at least a little bit of it to make
     // the list more readable.
     wxString curr;
-    switch(dynamic_cast<GroupCell*>(m_structure[i])->GetGroupType())
-      {
+    switch (dynamic_cast<GroupCell *>(m_structure[i])->GetGroupType())
+    {
       case GC_TYPE_TITLE:
-	curr = m_structure[i]->GetEditable()->ToString(true);
-	break;
+        curr = m_structure[i]->GetEditable()->ToString(true);
+        break;
       case GC_TYPE_SECTION:
-	curr = wxT("  ") + m_structure[i]->GetEditable()->ToString(true);
-	break;
+        curr = wxT("  ") + m_structure[i]->GetEditable()->ToString(true);
+        break;
       case GC_TYPE_SUBSECTION:
-	curr = wxT("    ") + m_structure[i]->GetEditable()->ToString(true);
-	break;
+        curr = wxT("    ") + m_structure[i]->GetEditable()->ToString(true);
+        break;
       case GC_TYPE_SUBSUBSECTION:
-	curr = wxT("      ") + m_structure[i]->GetEditable()->ToString(true);
-	break;
-      }
+        curr = wxT("      ") + m_structure[i]->GetEditable()->ToString(true);
+        break;
+    }
 
     // Respecting linebreaks doesn't make much sense here.
-    curr.Replace(wxT("\n"),wxT(" "));
-    
-    if (regex.Length()>0 && matcher.IsValid())
-      {
-	if (matcher.Matches(curr))
-	  items.Add(curr);
-      }
+    curr.Replace(wxT("\n"), wxT(" "));
+
+    if (regex.Length() > 0 && matcher.IsValid())
+    {
+      if (matcher.Matches(curr))
+        items.Add(curr);
+    }
     else
       items.Add(curr);
   }
 
   // Work around a wxWidgets bug: items==m_items_old if items is empty and m_items_old isn't.
-  if((items!=m_items_old)||(items.GetCount()==0))
+  if ((items != m_items_old) || (items.GetCount() == 0))
   {
 
     // Update the name of all existing items and add new items, if necessary
-    for(unsigned int i = 0;i<items.GetCount();i++)
+    for (unsigned int i = 0; i < items.GetCount(); i++)
     {
-      if(i<(unsigned)m_displayedItems->GetItemCount())
+      if (i < (unsigned) m_displayedItems->GetItemCount())
       {
-        m_displayedItems->SetItemText(i,items[i]);
+        m_displayedItems->SetItemText(i, items[i]);
       }
       else
       {
-        m_displayedItems->InsertItem(i,items[i]);
+        m_displayedItems->InsertItem(i, items[i]);
       }
-      if(m_structure[i]->GetHiddenTree())
-        m_displayedItems->SetItemTextColour(i,wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT));
+      if (m_structure[i]->GetHiddenTree())
+        m_displayedItems->SetItemTextColour(i, wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT));
       else
-        m_displayedItems->SetItemTextColour(i,wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
-      }
+        m_displayedItems->SetItemTextColour(i, wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
+    }
     // Delete superfluous items
-    for(int i = items.GetCount(); i < m_displayedItems->GetItemCount();i++)
+    for (int i = items.GetCount(); i < m_displayedItems->GetItemCount(); i++)
     {
       m_displayedItems->DeleteItem(i);
     }
@@ -195,39 +195,39 @@ GroupCell *TableOfContents::GetCell(int index)
   if (regex != wxEmptyString)
     matcher.Compile(regex);
 
-  for (unsigned int i=0; i<m_structure.size(); i++)
+  for (unsigned int i = 0; i < m_structure.size(); i++)
   {
-    
+
     wxString curr;
-    switch((m_structure[i])->GetGroupType())
+    switch ((m_structure[i])->GetGroupType())
     {
-    case GC_TYPE_TITLE:
-      curr = m_structure[i]->GetEditable()->ToString(true);
-      break;
-    case GC_TYPE_SECTION:
-      curr = wxT("  ") + m_structure[i]->GetEditable()->ToString(true);
-      break;
-    case GC_TYPE_SUBSECTION:
-      curr = wxT("    ") + m_structure[i]->GetEditable()->ToString(true);
-      break;
-    case GC_TYPE_SUBSUBSECTION:
-      curr = wxT("      ") + m_structure[i]->GetEditable()->ToString(true);
-      break;
+      case GC_TYPE_TITLE:
+        curr = m_structure[i]->GetEditable()->ToString(true);
+        break;
+      case GC_TYPE_SECTION:
+        curr = wxT("  ") + m_structure[i]->GetEditable()->ToString(true);
+        break;
+      case GC_TYPE_SUBSECTION:
+        curr = wxT("    ") + m_structure[i]->GetEditable()->ToString(true);
+        break;
+      case GC_TYPE_SUBSUBSECTION:
+        curr = wxT("      ") + m_structure[i]->GetEditable()->ToString(true);
+        break;
     }
-    
+
     // Respecting linebreaks doesn't make much sense here.
-    curr.Replace(wxT("\n"),wxT(" "));
+    curr.Replace(wxT("\n"), wxT(" "));
 
-    if (regex.Length()>0)
+    if (regex.Length() > 0)
     {
-      if((matcher.IsValid())&&((matcher.Matches(curr))))
-        currentIndex ++;
+      if ((matcher.IsValid()) && ((matcher.Matches(curr))))
+        currentIndex++;
     }
-    
-    else
-      currentIndex ++;
 
-    if(currentIndex == index)
+    else
+      currentIndex++;
+
+    if (currentIndex == index)
     {
       return m_structure[i];
     }
@@ -240,18 +240,18 @@ void TableOfContents::OnRegExEvent(wxCommandEvent &ev)
   UpdateDisplay();
 }
 
-void TableOfContents::OnMouseRightDown(wxListEvent& event)
+void TableOfContents::OnMouseRightDown(wxListEvent &event)
 {
-  if(event.GetIndex()<0)
+  if (event.GetIndex() < 0)
     return;
-  wxMenu* popupMenu = new wxMenu();
+  wxMenu *popupMenu = new wxMenu();
 
-  m_cellRightClickedOn=m_structure[event.GetIndex()];
+  m_cellRightClickedOn = m_structure[event.GetIndex()];
 
-  if(m_cellRightClickedOn != NULL)
+  if (m_cellRightClickedOn != NULL)
   {
-    
-    if(m_cellRightClickedOn->GetHiddenTree())
+
+    if (m_cellRightClickedOn->GetHiddenTree())
       popupMenu->Append(popid_Unfold, _("Unhide"), wxEmptyString, wxITEM_NORMAL);
     else
     {
@@ -260,15 +260,15 @@ void TableOfContents::OnMouseRightDown(wxListEvent& event)
       popupMenu->Append(popid_EvalTocChapter, _("Evaluate"), wxEmptyString, wxITEM_NORMAL);
     }
   }
-  
+
   // create menu if we have any items
-  if (popupMenu->GetMenuItemCount() > 0 )
+  if (popupMenu->GetMenuItemCount() > 0)
     PopupMenu(popupMenu);
   delete popupMenu;
 }
 
 BEGIN_EVENT_TABLE(TableOfContents, wxPanel)
-  EVT_TEXT(structure_regex_id, TableOfContents::OnRegExEvent)
-  EVT_SIZE(TableOfContents::OnSize)
-  EVT_LIST_ITEM_RIGHT_CLICK(wxID_ANY,TableOfContents::OnMouseRightDown)
+                EVT_TEXT(structure_regex_id, TableOfContents::OnRegExEvent)
+                EVT_SIZE(TableOfContents::OnSize)
+                EVT_LIST_ITEM_RIGHT_CLICK(wxID_ANY, TableOfContents::OnMouseRightDown)
 END_EVENT_TABLE()

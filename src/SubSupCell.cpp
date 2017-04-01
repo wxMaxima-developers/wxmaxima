@@ -32,7 +32,7 @@
 
 #define SUBSUP_DEC 3
 
-SubSupCell::SubSupCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
+SubSupCell::SubSupCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
 {
   m_baseCell = NULL;
   m_indexCell = NULL;
@@ -50,9 +50,9 @@ void SubSupCell::SetParent(MathCell *parent)
     m_exptCell->SetParentList(parent);
 }
 
-MathCell* SubSupCell::Copy()
+MathCell *SubSupCell::Copy()
 {
-  SubSupCell* tmp = new SubSupCell(m_group,m_configuration);
+  SubSupCell *tmp = new SubSupCell(m_group, m_configuration);
   CopyData(this, tmp);
   tmp->SetBase(m_baseCell->CopyList());
   tmp->SetIndex(m_indexCell->CopyList());
@@ -77,7 +77,7 @@ SubSupCell::~SubSupCell()
 void SubSupCell::SetIndex(MathCell *index)
 {
   if (index == NULL)
-    return ;
+    return;
   if (m_indexCell != NULL)
     delete m_indexCell;
   m_indexCell = index;
@@ -86,7 +86,7 @@ void SubSupCell::SetIndex(MathCell *index)
 void SubSupCell::SetBase(MathCell *base)
 {
   if (base == NULL)
-    return ;
+    return;
   if (m_baseCell != NULL)
     delete m_baseCell;
   m_baseCell = base;
@@ -95,7 +95,7 @@ void SubSupCell::SetBase(MathCell *base)
 void SubSupCell::SetExponent(MathCell *exp)
 {
   if (exp == NULL)
-    return ;
+    return;
   if (m_exptCell != NULL)
     delete m_exptCell;
   m_exptCell = exp;
@@ -116,7 +116,7 @@ void SubSupCell::RecalculateWidths(int fontsize)
 
 void SubSupCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);  
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
 
   m_baseCell->RecalculateHeightList(fontsize);
@@ -125,7 +125,7 @@ void SubSupCell::RecalculateHeight(int fontsize)
 
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() +
              m_exptCell->GetMaxHeight() -
-             2*SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, configuration->GetScale());
+             2 * SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, configuration->GetScale());
 
   m_center = m_exptCell->GetMaxHeight() + m_baseCell->GetMaxCenter() -
              SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
@@ -179,51 +179,51 @@ wxString SubSupCell::ToTeX()
 {
   wxConfigBase *config = wxConfig::Get();
 
-  bool TeXExponentsAfterSubscript=false;
-  
-  config->Read(wxT("TeXExponentsAfterSubscript"),&TeXExponentsAfterSubscript);
+  bool TeXExponentsAfterSubscript = false;
+
+  config->Read(wxT("TeXExponentsAfterSubscript"), &TeXExponentsAfterSubscript);
 
   wxString s;
 
-  if(TeXExponentsAfterSubscript)
+  if (TeXExponentsAfterSubscript)
     s = wxT("{{{") + m_baseCell->ListToTeX() + wxT("}_{") +
-      m_indexCell->ListToTeX() + wxT("}}^{") +
-      m_exptCell->ListToTeX() + wxT("}}");
+        m_indexCell->ListToTeX() + wxT("}}^{") +
+        m_exptCell->ListToTeX() + wxT("}}");
   else
     s = wxT("{{") + m_baseCell->ListToTeX() + wxT("}_{") +
-      m_indexCell->ListToTeX() + wxT("}^{") +
-      m_exptCell->ListToTeX() + wxT("}}");
-  
+        m_indexCell->ListToTeX() + wxT("}^{") +
+        m_exptCell->ListToTeX() + wxT("}}");
+
   return s;
 }
 
 wxString SubSupCell::ToMathML()
 {
-    return wxT("<msubsup>") +
-      m_baseCell -> ListToMathML() +
-      m_exptCell -> ListToMathML() +
-      m_indexCell -> ListToMathML() +
-    wxT("</msubsup>\n");
+  return wxT("<msubsup>") +
+         m_baseCell->ListToMathML() +
+         m_exptCell->ListToMathML() +
+         m_indexCell->ListToMathML() +
+         wxT("</msubsup>\n");
 }
 
 wxString SubSupCell::ToOMML()
 {
   return wxT("<m:sSubSup><m:e>") +
-    m_baseCell -> ListToOMML() + wxT("</m:e><m:sup>") +
-      m_indexCell -> ListToOMML() + wxT("</m:sup><m:sub>") +
-    m_exptCell -> ListToOMML() +
-    wxT("</m:sub></m:sSubSup>\n");
+         m_baseCell->ListToOMML() + wxT("</m:e><m:sup>") +
+         m_indexCell->ListToOMML() + wxT("</m:sup><m:sub>") +
+         m_exptCell->ListToOMML() +
+         wxT("</m:sub></m:sSubSup>\n");
 }
 
 wxString SubSupCell::ToXML()
 {
   return _T("<ie><r>") + m_baseCell->ListToXML()
-    + _T("</r><r>") + m_exptCell->ListToXML()
-    + _T("</r><r>") + m_indexCell->ListToXML()
-    + _T("</r></ie>");
+         + _T("</r><r>") + m_exptCell->ListToXML()
+         + _T("</r><r>") + m_indexCell->ListToXML()
+         + _T("</r></ie>");
 }
 
-void SubSupCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
+void SubSupCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
 {
   *first = NULL;
   *last = NULL;

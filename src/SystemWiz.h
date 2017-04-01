@@ -27,26 +27,31 @@
 #include "BTextCtrl.h"
 
 #include <vector>
+
 using namespace std;
 
-class SysWiz: public wxDialog
+class SysWiz : public wxDialog
 {
 public:
-  SysWiz(wxWindow* parent, int id,
+  SysWiz(wxWindow *parent, int id,
          Configuration *cfg,
-         const wxString& title,
-         int eqn, const wxPoint& pos = wxDefaultPosition,
-         const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+         const wxString &title,
+         int eqn, const wxPoint &pos = wxDefaultPosition,
+         const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+
   wxString GetValue();
+
 private:
   void set_properties();
+
   void do_layout();
+
   int m_size;
-  vector<BTextCtrl*> m_inputs;
-  BTextCtrl* variables;
-  wxStaticLine* static_line_1;
-  wxButton* button_1;
-  wxButton* button_2;
+  vector<BTextCtrl *> m_inputs;
+  BTextCtrl *variables;
+  wxStaticLine *static_line_1;
+  wxButton *button_1;
+  wxButton *button_2;
   Configuration *m_configuration;
 };
 

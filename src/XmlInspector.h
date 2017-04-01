@@ -30,7 +30,8 @@
 #ifndef XMLINSPECTOR_H
 #define XMLINSPECTOR_H
 
-enum {
+enum
+{
   XmlInspector_ctrl_id = 4,
   XmlInspector_regex_id
 };
@@ -41,17 +42,22 @@ enum {
 class XmlInspector : public wxTextCtrl
 {
 public:
-  XmlInspector(wxWindow* parent, int id);
+  XmlInspector(wxWindow *parent, int id);
+
   /*! The destructor
    */
-    ~XmlInspector();
+  ~XmlInspector();
+
   //! Remove all text from the editor.
   virtual void Clear();
+
   //! Add some text.
   void Add(wxString text);
+
 private:
   wxChar m_lastChar;
   int m_indentLevel;
+
   wxString IndentString(int level);
 };
 

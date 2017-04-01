@@ -33,23 +33,23 @@ wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
 
   char *buf = new char[8192];
 
-  while(data->CanRead())
-    {
-      data->Read(buf,8192);
-      size_t siz;
-      retval.AppendData(buf,siz=data->LastRead());
-    }
-  
-  delete [] buf;
+  while (data->CanRead())
+  {
+    data->Read(buf, 8192);
+    size_t siz;
+    retval.AppendData(buf, siz = data->LastRead());
+  }
+
+  delete[] buf;
   return retval;
 }
 
 wxBitmap Image::GetUnscaledBitmap()
 {
-  wxMemoryInputStream istream(m_compressedImage.GetData(),m_compressedImage.GetDataLen());
+  wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
   wxImage img(istream, wxBITMAP_TYPE_ANY);
   wxBitmap bmp;
-  if(img.Ok())
+  if (img.Ok())
     bmp = wxBitmap(img);
   return bmp;
 }
@@ -61,86 +61,86 @@ Image::Image(Configuration **config)
   m_height = 1;
   m_originalWidth = 1;
   m_originalHeight = 1;
-  m_scaledBitmap.Create (1,1);
+  m_scaledBitmap.Create(1, 1);
 }
 
-Image::Image(Configuration **config,wxMemoryBuffer image,wxString type)
+Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
 {
   m_configuration = config;
-  m_scaledBitmap.Create (1,1);
+  m_scaledBitmap.Create(1, 1);
   m_compressedImage = image;
   m_extension = type;
   m_width = 1;
   m_height = 1;
-  m_originalWidth  = 640;
-  m_originalHeight = 480;  
+  m_originalWidth = 640;
+  m_originalHeight = 480;
 
   wxImage Image;
-  if(m_compressedImage.GetDataLen()>0)
-    {
-      wxMemoryInputStream istream(m_compressedImage.GetData(),m_compressedImage.GetDataLen());
-      Image.LoadFile(istream);
-      m_originalWidth  = Image.GetWidth();
-      m_originalHeight = Image.GetHeight();  
-    }
+  if (m_compressedImage.GetDataLen() > 0)
+  {
+    wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
+    Image.LoadFile(istream);
+    m_originalWidth = Image.GetWidth();
+    m_originalHeight = Image.GetHeight();
   }
+}
 
-Image::Image(Configuration **config,const wxBitmap &bitmap)
+Image::Image(Configuration **config, const wxBitmap &bitmap)
 {
   m_configuration = config;
   LoadImage(bitmap);
 }
 
 // constructor which loads an image
-Image::Image(Configuration **config,wxString image,bool remove, wxFileSystem *filesystem)
+Image::Image(Configuration **config, wxString image, bool remove, wxFileSystem *filesystem)
 {
-  m_configuration = config;  
-  m_scaledBitmap.Create (1,1);
-  LoadImage(image,remove,filesystem);
+  m_configuration = config;
+  m_scaledBitmap.Create(1, 1);
+  LoadImage(image, remove, filesystem);
 }
 
 wxSize Image::ToImageFile(wxString filename)
 {
   wxFileName fn(filename);
   wxString ext = fn.GetExt();
-  if(filename.Lower().EndsWith(GetExtension().Lower()))
+  if (filename.Lower().EndsWith(GetExtension().Lower()))
   {
-    wxFile file(filename,wxFile::write);
-    if(!file.IsOpened())
-      return wxSize(-1,-1);
-    
+    wxFile file(filename, wxFile::write);
+    if (!file.IsOpened())
+      return wxSize(-1, -1);
+
     file.Write(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
-    if(file.Close())
-      return wxSize(m_originalWidth,m_originalHeight);
+    if (file.Close())
+      return wxSize(m_originalWidth, m_originalHeight);
     else
-      return wxSize(-1,-1);
+      return wxSize(-1, -1);
   }
   else
   {
     wxBitmap bitmap = GetUnscaledBitmap();
-    wxImage image=bitmap.ConvertToImage();
+    wxImage image = bitmap.ConvertToImage();
     wxBitmapType mimetype = wxBITMAP_TYPE_ANY;
-    if((ext.Lower() == wxT("jpg")) || (ext.Lower() == wxT("jpeg")))
+    if ((ext.Lower() == wxT("jpg")) || (ext.Lower() == wxT("jpeg")))
       mimetype = wxBITMAP_TYPE_JPEG;
-    else if(ext.Lower() == wxT("png"))
+    else if (ext.Lower() == wxT("png"))
       mimetype = wxBITMAP_TYPE_PNG;
-    else if(ext.Lower() == wxT("pcx"))
+    else if (ext.Lower() == wxT("pcx"))
       mimetype = wxBITMAP_TYPE_PCX;
-    else if(ext.Lower() == wxT("pnm"))
+    else if (ext.Lower() == wxT("pnm"))
       mimetype = wxBITMAP_TYPE_PNM;
-    else if((ext.Lower() == wxT("tif")) || (ext.Lower() == wxT("tiff")))
+    else if ((ext.Lower() == wxT("tif")) || (ext.Lower() == wxT("tiff")))
       mimetype = wxBITMAP_TYPE_TIFF;
-    else if(ext.Lower() == wxT("xpm"))
+    else if (ext.Lower() == wxT("xpm"))
       mimetype = wxBITMAP_TYPE_XPM;
-    else if(ext.Lower() == wxT("ico"))
+    else if (ext.Lower() == wxT("ico"))
       mimetype = wxBITMAP_TYPE_ICO;
-    else if(ext.Lower() == wxT("cur"))
+    else if (ext.Lower() == wxT("cur"))
       mimetype = wxBITMAP_TYPE_CUR;
     else
-      return(wxSize(-1,-1));
-    
-    if(!image.SaveFile(filename,mimetype))
-      return wxSize(-1,-1);
+      return (wxSize(-1, -1));
+
+    if (!image.SaveFile(filename, mimetype))
+      return wxSize(-1, -1);
     return image.GetSize();
   }
 }
@@ -150,54 +150,54 @@ wxBitmap Image::GetBitmap()
   Recalculate();
 
   // Let's see if we have cached the scaled bitmap with the right size
-  if(m_scaledBitmap.GetWidth() == m_width)
+  if (m_scaledBitmap.GetWidth() == m_width)
     return m_scaledBitmap;
 
 
   // Seems like we need to create a new scaled bitmap.
-  if(m_scaledBitmap.GetWidth()!=m_width)
+  if (m_scaledBitmap.GetWidth() != m_width)
+  {
+    wxImage img;
+    if (m_compressedImage.GetDataLen() > 0)
     {
-      wxImage img;
-      if(m_compressedImage.GetDataLen() > 0)
-	{
-	  wxMemoryInputStream istream(m_compressedImage.GetData(),m_compressedImage.GetDataLen());
-	  
-	  img = wxImage(istream, wxBITMAP_TYPE_ANY);
-	}
+      wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
 
-      if(img.Ok())
-	m_scaledBitmap = wxBitmap(img);
-      else
-	{
-	  // Create a "image not loaded" bitmap.
-	  m_scaledBitmap.Create(400, 250);
-	  
-	  wxString error(_("Error"));
-	  
-	  wxMemoryDC dc;
-	  dc.SelectObject(m_scaledBitmap);
-	  
-	  int width = 0, height = 0;
-	  dc.GetTextExtent(error, &width, &height);
-	  
-	  dc.DrawRectangle(0, 0, 400, 250);
-	  dc.DrawLine(0, 0,   400, 250);
-	  dc.DrawLine(0, 250, 400, 0);
-	  dc.DrawText(error, 200 - width/2, 125 - height/2);
-	  
-	  dc.GetTextExtent(error, &width, &height);
-	  dc.DrawText(error, 200 - width/2, 150 - height/2);
-	}
+      img = wxImage(istream, wxBITMAP_TYPE_ANY);
     }
-  
+
+    if (img.Ok())
+      m_scaledBitmap = wxBitmap(img);
+    else
+    {
+      // Create a "image not loaded" bitmap.
+      m_scaledBitmap.Create(400, 250);
+
+      wxString error(_("Error"));
+
+      wxMemoryDC dc;
+      dc.SelectObject(m_scaledBitmap);
+
+      int width = 0, height = 0;
+      dc.GetTextExtent(error, &width, &height);
+
+      dc.DrawRectangle(0, 0, 400, 250);
+      dc.DrawLine(0, 0, 400, 250);
+      dc.DrawLine(0, 250, 400, 0);
+      dc.DrawText(error, 200 - width / 2, 125 - height / 2);
+
+      dc.GetTextExtent(error, &width, &height);
+      dc.DrawText(error, 200 - width / 2, 150 - height / 2);
+    }
+  }
+
   // Make sure we stay within sane defaults
-  if(m_width<1)m_width = 1;
-  if(m_height<1)m_height = 1;
+  if (m_width < 1)m_width = 1;
+  if (m_height < 1)m_height = 1;
 
   // Create a scaled bitmap and return it.
-  wxImage img=m_scaledBitmap.ConvertToImage();
-  img.Rescale(m_width, m_height,wxIMAGE_QUALITY_BICUBIC);
-  m_scaledBitmap = wxBitmap(img,24);
+  wxImage img = m_scaledBitmap.ConvertToImage();
+  img.Rescale(m_width, m_height, wxIMAGE_QUALITY_BICUBIC);
+  m_scaledBitmap = wxBitmap(img, 24);
   return m_scaledBitmap;
 }
 
@@ -206,27 +206,29 @@ void Image::LoadImage(const wxBitmap &bitmap)
   // Convert the bitmap to a png image we can use as m_compressedImage
   wxImage image = bitmap.ConvertToImage();
   wxMemoryOutputStream stream;
-  image.SaveFile(stream,wxBITMAP_TYPE_PNG);
+  image.SaveFile(stream, wxBITMAP_TYPE_PNG);
   m_compressedImage.AppendData(stream.GetOutputStreamBuffer()->GetBufferStart(),
-			       stream.GetOutputStreamBuffer()->GetBufferSize());
+                               stream.GetOutputStreamBuffer()->GetBufferSize());
 
   // Set the info about the image.
   m_extension = wxT("png");
-  m_originalWidth  = image.GetWidth();
+  m_originalWidth = image.GetWidth();
   m_originalHeight = image.GetHeight();
-  m_scaledBitmap.Create (1,1);
+  m_scaledBitmap.Create(1, 1);
   m_width = 1;
   m_height = 1;
 }
 
-void Image::LoadImage(wxString image, bool remove,wxFileSystem *filesystem)
+void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
 {
   m_compressedImage.Clear();
-  m_scaledBitmap.Create (1,1);
+  m_scaledBitmap.Create(1, 1);
 
-  if (filesystem) {
+  if (filesystem)
+  {
     wxFSFile *fsfile = filesystem->OpenFile(image);
-    if (fsfile) { // open successful
+    if (fsfile)
+    { // open successful
 
       wxInputStream *istream = fsfile->GetStream();
 
@@ -238,48 +240,49 @@ void Image::LoadImage(wxString image, bool remove,wxFileSystem *filesystem)
     // "too many open files" error.
     delete fsfile;
   }
-  else {
+  else
+  {
     wxFile file(image);
-    if(file.IsOpened())
-      {
-	wxFileInputStream strm(file);
-	bool ok=strm.IsOk();
-	if(ok)
-	    m_compressedImage = ReadCompressedImage(&strm);
-	
-	file.Close();
-	if(ok && remove)
-	  wxRemoveFile (image);
-      }
+    if (file.IsOpened())
+    {
+      wxFileInputStream strm(file);
+      bool ok = strm.IsOk();
+      if (ok)
+        m_compressedImage = ReadCompressedImage(&strm);
+
+      file.Close();
+      if (ok && remove)
+        wxRemoveFile(image);
+    }
   }
 
   wxImage Image;
-  if(m_compressedImage.GetDataLen()>0)
-    {
-      wxMemoryInputStream istream(m_compressedImage.GetData(),m_compressedImage.GetDataLen());
-      Image.LoadFile(istream);
-    }
-  
+  if (m_compressedImage.GetDataLen() > 0)
+  {
+    wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
+    Image.LoadFile(istream);
+  }
+
   m_extension = wxFileName(image).GetExt();
 
-  if(Image.Ok())
-    {
-      m_originalWidth  = Image.GetWidth();
-      m_originalHeight = Image.GetHeight();
-    }
+  if (Image.Ok())
+  {
+    m_originalWidth = Image.GetWidth();
+    m_originalHeight = Image.GetHeight();
+  }
   else
-    {
-      // Leave space for an image showing an error message
-      m_originalWidth  = 400;
-      m_originalHeight = 250;
-    }
+  {
+    // Leave space for an image showing an error message
+    m_originalWidth = 400;
+    m_originalHeight = 250;
+  }
   Recalculate();
 
 }
 
 void Image::Recalculate()
 {
-  int width  = m_originalWidth;
+  int width = m_originalWidth;
   int height = m_originalHeight;
   double scale;
   Configuration *configuration = (*m_configuration);
@@ -289,40 +292,40 @@ void Image::Recalculate()
   scale = configuration->GetZoomFactor() * configuration->GetScale();
 
   // Ensure a minimum size for images.
-  if(scale < 0.01) scale = 0.01;
-  
-  if((width < 1) || (height < 1))
-    {
-      m_width = 400;
-      m_height = 250;
-      return;
-    }
+  if (scale < 0.01) scale = 0.01;
+
+  if ((width < 1) || (height < 1))
+  {
+    m_width = 400;
+    m_height = 250;
+    return;
+  }
 
   int viewPortHeight = configuration->GetClientHeight();
   int viewPortWidth = configuration->GetClientWidth();
 
-  if(viewPortHeight < 10)
+  if (viewPortHeight < 10)
     viewPortHeight = 10;
-  if(viewPortWidth < 10)
-    viewPortWidth = 10;  
-  
+  if (viewPortWidth < 10)
+    viewPortWidth = 10;
+
   // Shrink to .9* the canvas size, if needed
-  if(scale * width > .9 * viewPortWidth)
+  if (scale * width > .9 * viewPortWidth)
   {
     scale = .9 * viewPortWidth / width;
   }
-  if(scale * height > .9 * viewPortHeight)
+  if (scale * height > .9 * viewPortHeight)
   {
-    if(scale > .9 * viewPortHeight / height)
+    if (scale > .9 * viewPortHeight / height)
       scale = .9 * viewPortHeight / height;
   }
 
   // Set the width of the scaled image
   m_height = (int) (scale * height);
-  m_width  = (int) (scale * width);
+  m_width = (int) (scale * width);
 
   // Clear this cell's image cache if it doesn't contain an image of the size
   // we need right now.
-  if(m_scaledBitmap.GetWidth() != m_width)
+  if (m_scaledBitmap.GetWidth() != m_width)
     ClearCache();
 }

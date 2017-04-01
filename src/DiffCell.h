@@ -28,20 +28,35 @@ class DiffCell : public MathCell
 {
 public:
   DiffCell(MathCell *parent, Configuration **config);
+
   ~DiffCell();
-  MathCell* Copy();
+
+  MathCell *Copy();
+
   void SetBase(MathCell *base);
+
   void SetDiff(MathCell *diff);
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
-  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToMathML();
+
   wxString ToOMML();
+
   wxString ToXML();
+
   void SetParent(MathCell *parent);
+
 protected:
   MathCell *m_baseCell;
   MathCell *m_diffCell;

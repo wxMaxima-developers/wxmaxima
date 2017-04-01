@@ -34,21 +34,37 @@ class LimitCell : public MathCell
 {
 public:
   LimitCell(MathCell *parent, Configuration **config);
+
   ~LimitCell();
-  MathCell* Copy();
+
+  MathCell *Copy();
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
-  void SetBase(MathCell* base);
-  void SetUnder(MathCell* under);
-  void SetName(MathCell* name);
+
+  void SetBase(MathCell *base);
+
+  void SetUnder(MathCell *under);
+
+  void SetName(MathCell *name);
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToXML();
+
   wxString ToOMML();
+
   wxString ToMathML();
-  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   void SetParent(MathCell *parent);
+
 protected:
   MathCell *m_base;
   MathCell *m_under;

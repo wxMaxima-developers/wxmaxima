@@ -31,6 +31,7 @@
 #include <wx/filename.h>
 
 #if defined (__WXMSW__) || defined (__WXMAC__)
+
 wxImage ToolBar::GetImage(wxString name)
 {
   Dirstructure dirstructure;
@@ -39,19 +40,20 @@ wxImage ToolBar::GetImage(wxString name)
   // But we want to do so in discrete steps as scaling bitmaps by odd
   // factors will add visible antialiassing to things that are clearly
   // meant to be sharp lines.
-  int resolutionMultiplier = wxGetDisplayPPI().x/72;
+  int resolutionMultiplier = wxGetDisplayPPI().x / 72;
   int imgWidth = 24 * resolutionMultiplier;
-  int width,height;
-  wxDisplaySize(&width,&height);
-  if(width <= 800)
+  int width, height;
+  wxDisplaySize(&width, &height);
+  if (width <= 800)
     imgWidth = 24;
-  if(imgWidth < 24)
+  if (imgWidth < 24)
     imgWidth = 24;
 
-  double scaleFactor = (double)imgWidth / img.GetWidth();
-  img.Rescale(imgWidth,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
+  double scaleFactor = (double) imgWidth / img.GetWidth();
+  img.Rescale(imgWidth, img.GetHeight() * scaleFactor, wxIMAGE_QUALITY_HIGH);
   return img;
 }
+
 #else
 wxBitmap ToolBar::GetImage(wxString name)
 {
@@ -68,7 +70,7 @@ wxBitmap ToolBar::GetImage(wxString name)
 ToolBar::~ToolBar()
 {
   m_plotSlider = NULL;
-  m_toolBar -> Destroy();
+  m_toolBar->Destroy();
 }
 
 void ToolBar::UpdateSlider(SlideShow *cell)
@@ -76,15 +78,15 @@ void ToolBar::UpdateSlider(SlideShow *cell)
   int slideShowDisplayedIndex = cell->GetDisplayedIndex();
   int slideShowMaxIndex = cell->Length();
 
-  if((m_slideShowDisplayedIndex != slideShowDisplayedIndex) || (m_slideShowMaxIndex != slideShowMaxIndex))
+  if ((m_slideShowDisplayedIndex != slideShowDisplayedIndex) || (m_slideShowMaxIndex != slideShowMaxIndex))
   {
     m_slideShowMaxIndex = slideShowMaxIndex;
     m_slideShowDisplayedIndex = slideShowDisplayedIndex;
-    if(m_plotSlider != NULL)
+    if (m_plotSlider != NULL)
     {
       m_plotSlider->SetRange(0, cell->Length() - 1);
       m_plotSlider->SetValue(cell->GetDisplayedIndex());
-      m_plotSlider->SetToolTip(wxString::Format(_("Frame %i of %i"),cell->GetDisplayedIndex() + 1,cell->Length()));
+      m_plotSlider->SetToolTip(wxString::Format(_("Frame %i of %i"), cell->GetDisplayedIndex() + 1, cell->Length()));
     }
   }
 }
@@ -99,8 +101,8 @@ ToolBar::ToolBar(wxToolBar *tbar)
 
   m_toolBar = tbar;
   m_needsInformation = false;
-  m_AnimationStartStopState=Inactive;
-  
+  m_AnimationStartStopState = Inactive;
+
   m_toolBar->SetToolBitmapSize(wxSize(24, 24));
 
 #if defined __WXMSW__
@@ -160,9 +162,9 @@ ToolBar::ToolBar(wxToolBar *tbar)
                      _("Interrupt current computation. To completely restart maxima press the button left to this one."));
   m_followIcon = GetImage(wxT("weather-clear"));
   m_needsInformationIcon = GetImage(wxT("software-update-urgent"));
-  m_toolBar->AddTool(tb_follow, _("Follow"),m_followIcon,
+  m_toolBar->AddTool(tb_follow, _("Follow"), m_followIcon,
                      _("Return to the cell that is currently being evaluated"));
-  m_toolBar->EnableTool(tb_follow,false);
+  m_toolBar->EnableTool(tb_follow, false);
 
   m_toolBar->AddTool(tb_evaltillhere, _("Evaluate to point"),
                      GetImage(wxT("go-bottom")),
@@ -174,11 +176,11 @@ ToolBar::ToolBar(wxToolBar *tbar)
 
   // Seems like on MSW changing the image of this button has strange side-effects
   // so we combine both images into one for this OS.
-  #if defined __WXMSW__
+#if defined __WXMSW__
   m_PlayButton = GetImage(wxT("media-playback-startstop"));
-  #else
+#else
   m_PlayButton = GetImage(wxT("media-playback-start"));
-  #endif
+#endif
   m_StopButton = GetImage(wxT("media-playback-stop"));
 
   // It felt like a good idea to combine the play and the stop button.
@@ -187,16 +189,17 @@ ToolBar::ToolBar(wxToolBar *tbar)
   m_toolBar->AddTool(tb_animation_startStop, _("Start or Stop animation"),
                      m_PlayButton,
                      _("Start or stop the currently selected animation that has been created with the with_slider class of commands"));
-  m_toolBar->EnableTool(tb_animation_startStop,false);
-  int sliderWidth = wxGetDisplayPPI().x*200/72;
-  int width,height;
-  wxDisplaySize(&width,&height);
-  if(width<800)
-    sliderWidth = MIN(sliderWidth,100);
+  m_toolBar->EnableTool(tb_animation_startStop, false);
+  int sliderWidth = wxGetDisplayPPI().x * 200 / 72;
+  int width, height;
+  wxDisplaySize(&width, &height);
+  if (width < 800)
+    sliderWidth = MIN(sliderWidth, 100);
   m_plotSlider = new wxSlider(m_toolBar, plot_slider_id, 0, 0, 10,
-			      wxDefaultPosition, wxSize(sliderWidth, -1),
-			      wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
-  m_plotSlider->SetToolTip(_("After clicking on animations created with with_slider_draw() or similar this slider allows to change the current frame."));
+                              wxDefaultPosition, wxSize(sliderWidth, -1),
+                              wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
+  m_plotSlider->SetToolTip(
+          _("After clicking on animations created with with_slider_draw() or similar this slider allows to change the current frame."));
   m_plotSlider->Enable(false);
   m_slideShowMaxIndex = -1;
   m_slideShowDisplayedIndex = -1;
@@ -215,44 +218,45 @@ ToolBar::ToolBar(wxToolBar *tbar)
 
 void ToolBar::AnimationButtonState(AnimationStartStopState state)
 {
-  if(m_AnimationStartStopState != state)
+  if (m_AnimationStartStopState != state)
   {
-    switch(state)
+    switch (state)
     {
-    case Running:
-      m_plotSlider->Enable(true);
-      if(m_AnimationStartStopState!=Running)
-      {
+      case Running:
+        m_plotSlider->Enable(true);
+        if (m_AnimationStartStopState != Running)
+        {
 #ifndef __WXMSW__
-        m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_StopButton);
+          m_toolBar->SetToolNormalBitmap(tb_animation_startStop, m_StopButton);
 #endif
-      }
-      m_toolBar->EnableTool(tb_animation_startStop,true);
-      break;
-    case Stopped:
-      if(m_AnimationStartStopState==Running)
-      {
+        }
+        m_toolBar->EnableTool(tb_animation_startStop, true);
+        break;
+      case Stopped:
+        if (m_AnimationStartStopState == Running)
+        {
 #ifndef __WXMSW__
-        m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);      
+          m_toolBar->SetToolNormalBitmap(tb_animation_startStop, m_PlayButton);
 #endif
-      }
-      m_toolBar->EnableTool(tb_animation_startStop,true);
-      m_plotSlider->Enable(true);
-      break;
-    case Inactive:
-      m_toolBar->EnableTool(tb_animation_startStop,false);
-      m_plotSlider->Enable(false);
-      m_plotSlider->SetToolTip(_("After clicking on animations created with with_slider_draw() or similar this slider allows to change the current frame."));
-      m_slideShowMaxIndex = -1;
-      m_slideShowDisplayedIndex = -1;
+        }
+        m_toolBar->EnableTool(tb_animation_startStop, true);
+        m_plotSlider->Enable(true);
+        break;
+      case Inactive:
+        m_toolBar->EnableTool(tb_animation_startStop, false);
+        m_plotSlider->Enable(false);
+        m_plotSlider->SetToolTip(
+                _("After clicking on animations created with with_slider_draw() or similar this slider allows to change the current frame."));
+        m_slideShowMaxIndex = -1;
+        m_slideShowDisplayedIndex = -1;
 
-      if(m_AnimationStartStopState==Running)
-      {
+        if (m_AnimationStartStopState == Running)
+        {
 #ifndef __WXMSW__
-        m_toolBar->SetToolNormalBitmap(tb_animation_startStop,m_PlayButton);
+          m_toolBar->SetToolNormalBitmap(tb_animation_startStop, m_PlayButton);
 #endif
-      }
-      break;
+        }
+        break;
     }
     m_AnimationStartStopState = state;
   }

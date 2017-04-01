@@ -27,7 +27,7 @@
 
 #include "AtCell.h"
 
-AtCell::AtCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
+AtCell::AtCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
 {
   m_baseCell = NULL;
   m_indexCell = NULL;
@@ -35,16 +35,16 @@ AtCell::AtCell(MathCell *parent, Configuration **config) : MathCell(parent,confi
 
 void AtCell::SetParent(MathCell *parent)
 {
-  m_group=parent;
+  m_group = parent;
   if (m_baseCell != NULL)
     m_baseCell->SetParentList(parent);
   if (m_indexCell != NULL)
     m_indexCell->SetParentList(parent);
 }
 
-MathCell* AtCell::Copy()
+MathCell *AtCell::Copy()
 {
-  AtCell* tmp = new AtCell(m_group,m_configuration);
+  AtCell *tmp = new AtCell(m_group, m_configuration);
   CopyData(this, tmp);
   tmp->SetBase(m_baseCell->CopyList());
   tmp->SetIndex(m_indexCell->CopyList());
@@ -63,7 +63,7 @@ AtCell::~AtCell()
 void AtCell::SetIndex(MathCell *index)
 {
   if (index == NULL)
-    return ;
+    return;
   if (m_indexCell != NULL)
     delete m_indexCell;
   m_indexCell = index;
@@ -72,7 +72,7 @@ void AtCell::SetIndex(MathCell *index)
 void AtCell::SetBase(MathCell *base)
 {
   if (base == NULL)
-    return ;
+    return;
   if (m_baseCell != NULL)
     delete m_baseCell;
   m_baseCell = base;
@@ -106,7 +106,7 @@ void AtCell::Draw(wxPoint point, int fontsize)
 
   Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
-  wxDC& dc = configuration->GetDC();
+  wxDC &dc = configuration->GetDC();
   if (DrawThisCell(point) && InUpdateRegion())
   {
     wxPoint bs, in;
@@ -117,7 +117,7 @@ void AtCell::Draw(wxPoint point, int fontsize)
 
     in.x = point.x + m_baseCell->GetFullWidth(scale) + SCALE_PX(4, scale);
     in.y = point.y + m_baseCell->GetMaxDrop() +
-           + m_indexCell->GetMaxCenter() - SCALE_PX(7, scale);
+           +m_indexCell->GetMaxCenter() - SCALE_PX(7, scale);
     m_indexCell->DrawList(in, MAX(MC_MIN_SIZE, fontsize - 3));
     SetPen();
     dc.DrawLine(in.x - SCALE_PX(2, scale),
@@ -146,24 +146,24 @@ wxString AtCell::ToTeX()
 
 wxString AtCell::ToMathML()
 {
-  return wxT("<msub>") + m_baseCell->ListToMathML() + 
-    m_indexCell->ListToMathML() + wxT("</msub>\n");
+  return wxT("<msub>") + m_baseCell->ListToMathML() +
+         m_indexCell->ListToMathML() + wxT("</msub>\n");
 }
 
 wxString AtCell::ToOMML()
 {
-  return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sub>") + 
-    m_indexCell->ListToOMML() + wxT("</m:sub></m:sSub>\n");
+  return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sub>") +
+         m_indexCell->ListToOMML() + wxT("</m:sub></m:sSub>\n");
 }
 
 
 wxString AtCell::ToXML()
 {
   return wxT("<at><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
-    m_indexCell->ListToXML() + wxT("</r></at>");
+         m_indexCell->ListToXML() + wxT("</r></at>");
 }
 
-void AtCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
+void AtCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
 {
   *first = NULL;
   *last = NULL;

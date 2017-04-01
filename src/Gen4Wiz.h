@@ -26,53 +26,60 @@
 
 #include "BTextCtrl.h"
 
-class Gen4Wiz: public wxDialog
+class Gen4Wiz : public wxDialog
 {
 public:
   Gen4Wiz(wxString lab1, wxString lab2, wxString lab3, wxString lab4,
           wxString val1, wxString val2, wxString val3, wxString val4,
           Configuration *cfg,
-          wxWindow* parent, int id, const wxString& title,
+          wxWindow *parent, int id, const wxString &title,
           bool eq = false,
-          const wxPoint& pos = wxDefaultPosition,
-          const wxSize& size = wxDefaultSize,
+          const wxPoint &pos = wxDefaultPosition,
+          const wxSize &size = wxDefaultSize,
           long style = wxDEFAULT_DIALOG_STYLE);
+
   void SetValue(const wxString &s)
   {
     text_ctrl_1->SetValue(s);
     text_ctrl_1->SetSelection(-1, -1);
   }
+
   wxString GetValue1()
   {
     return text_ctrl_1->GetValue();
   };
+
   wxString GetValue2()
   {
     return text_ctrl_2->GetValue();
   };
+
   wxString GetValue3()
   {
     return text_ctrl_3->GetValue();
   };
+
   wxString GetValue4()
   {
     return text_ctrl_4->GetValue();
   };
 private:
   void set_properties();
+
   void do_layout();
+
 protected:
-  wxStaticText* label_2;
-  BTextCtrl* text_ctrl_1;
-  wxStaticText* label_3;
-  BTextCtrl* text_ctrl_2;
-  wxStaticText* label_4;
-  BTextCtrl* text_ctrl_3;
-  wxStaticText* label_5;
-  BTextCtrl* text_ctrl_4;
-  wxStaticLine* static_line_1;
-  wxButton* button_1;
-  wxButton* button_2;
+  wxStaticText *label_2;
+  BTextCtrl *text_ctrl_1;
+  wxStaticText *label_3;
+  BTextCtrl *text_ctrl_2;
+  wxStaticText *label_4;
+  BTextCtrl *text_ctrl_3;
+  wxStaticText *label_5;
+  BTextCtrl *text_ctrl_4;
+  wxStaticLine *static_line_1;
+  wxButton *button_1;
+  wxButton *button_2;
 };
 
 #endif // GEN4WIZ_H

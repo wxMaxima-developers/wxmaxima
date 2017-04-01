@@ -29,7 +29,7 @@
 
 #define SUB_DEC 2
 
-SubCell::SubCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
+SubCell::SubCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
 {
   m_baseCell = NULL;
   m_indexCell = NULL;
@@ -37,16 +37,16 @@ SubCell::SubCell(MathCell *parent, Configuration **config) : MathCell(parent,con
 
 void SubCell::SetParent(MathCell *parent)
 {
-  m_group=parent;
+  m_group = parent;
   if (m_baseCell != NULL)
     m_baseCell->SetParentList(parent);
   if (m_indexCell != NULL)
     m_indexCell->SetParentList(parent);
 }
 
-MathCell* SubCell::Copy()
+MathCell *SubCell::Copy()
 {
-  SubCell* tmp = new SubCell(m_group,m_configuration);
+  SubCell *tmp = new SubCell(m_group, m_configuration);
   CopyData(this, tmp);
   tmp->SetBase(m_baseCell->CopyList());
   tmp->SetIndex(m_indexCell->CopyList());
@@ -67,7 +67,7 @@ SubCell::~SubCell()
 void SubCell::SetIndex(MathCell *index)
 {
   if (index == NULL)
-    return ;
+    return;
   if (m_indexCell != NULL)
     delete m_indexCell;
   m_indexCell = index;
@@ -76,7 +76,7 @@ void SubCell::SetIndex(MathCell *index)
 void SubCell::SetBase(MathCell *base)
 {
   if (base == NULL)
-    return ;
+    return;
   if (m_baseCell != NULL)
     delete m_baseCell;
   m_baseCell = base;
@@ -127,7 +127,8 @@ void SubCell::Draw(wxPoint point, int fontsize)
 
 wxString SubCell::ToString()
 {
-  if (m_altCopyText != wxEmptyString) {
+  if (m_altCopyText != wxEmptyString)
+  {
     return m_altCopyText;
   }
 
@@ -143,31 +144,31 @@ wxString SubCell::ToString()
 wxString SubCell::ToTeX()
 {
   wxString s;
-  wxString base=m_baseCell->ListToTeX();
-  wxString index=m_indexCell->ListToTeX();
-  if(base.Length()>1)
-    s = wxT("{{") + base  + wxT("}_");
+  wxString base = m_baseCell->ListToTeX();
+  wxString index = m_indexCell->ListToTeX();
+  if (base.Length() > 1)
+    s = wxT("{{") + base + wxT("}_");
   else
-    s = wxT("{" ) + base  + wxT( "_");
-  if(index.Length()>1)
+    s = wxT("{") + base + wxT("_");
+  if (index.Length() > 1)
     s += wxT("{") + index + wxT("}}");
   else
-    s +=            index + wxT( "}");
+    s += index + wxT("}");
   return s;
 }
 
 wxString SubCell::ToMathML()
 {
   return wxT("<msub>") +
-    m_baseCell -> ListToMathML() +
-    m_indexCell -> ListToMathML() +
-    wxT("</msub>\n");
+         m_baseCell->ListToMathML() +
+         m_indexCell->ListToMathML() +
+         wxT("</msub>\n");
 }
 
 wxString SubCell::ToOMML()
 {
-  return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sub>") + 
-    m_indexCell->ListToOMML() + wxT("</m:sub></m:sSub>\n");
+  return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sub>") +
+         m_indexCell->ListToOMML() + wxT("</m:sub></m:sSub>\n");
 }
 
 wxString SubCell::ToXML()
@@ -175,13 +176,13 @@ wxString SubCell::ToXML()
   if (m_altCopyText == wxEmptyString)
   {
     return _T("<i><r>") + m_baseCell->ListToXML() + _T("</r><r>") +
-      m_indexCell->ListToXML() + _T("</r></i>");
+           m_indexCell->ListToXML() + _T("</r></i>");
   }
   return _T("<i altCopy=\"" + m_altCopyText + "\"><r>") + m_baseCell->ListToXML() + _T("</r><r>") +
-      m_indexCell->ListToXML() + _T("</r></i>");
+         m_indexCell->ListToXML() + _T("</r></i>");
 }
 
-void SubCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
+void SubCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
 {
   *first = NULL;
   *last = NULL;

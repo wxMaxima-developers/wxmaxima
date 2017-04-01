@@ -29,18 +29,19 @@
 #include <wx/aui/aui.h>
 #include "SlideShowCell.h"
 
-#define MAX(a,b) ((a)>(b) ? (a) : (b))
-#define MIN(a,b) ((a)>(b) ? (b) : (a))
+#define MAX(a, b) ((a)>(b) ? (a) : (b))
+#define MIN(a, b) ((a)>(b) ? (b) : (a))
 
 #ifndef _WXMAXIMA_TOOLBAR_H
 #define _WXMAXIMA_TOOLBAR_H
 
 class ToolBar
 {
- public:
+public:
   /*! All states the "start/stop animation" toolbar button can be in
    */
-  enum AnimationStartStopState {
+  enum AnimationStartStopState
+  {
     Running, //!< The animation is running
     Stopped, //!< The animation is stopped
     Inactive //!< No animation is currently running
@@ -49,38 +50,51 @@ class ToolBar
 #if defined __WXGTK__
   wxBitmap GetImage(wxString img);
 #else
+
   wxImage GetImage(wxString img);
+
 #endif
+
   ToolBar(wxToolBar *tbar);
+
   virtual ~ToolBar();
+
   //! Show that user input is needed for maxima to continue
-  void ShowUserInputBitmap() {
-    if(!m_needsInformation)
+  void ShowUserInputBitmap()
+  {
+    if (!m_needsInformation)
     {
       m_toolBar->SetToolNormalBitmap(tb_follow, m_needsInformationIcon);
       m_needsInformation = true;
     }
   }
+
   //! Stop showing that user input is needed for maxima to continue
-  void ShowFollowBitmap() {
-    if(m_needsInformation)
+  void ShowFollowBitmap()
+  {
+    if (m_needsInformation)
     {
-      m_toolBar->SetToolNormalBitmap(tb_follow,m_followIcon);
+      m_toolBar->SetToolNormalBitmap(tb_follow, m_followIcon);
       m_needsInformation = false;
     }
   }
-  void EnableTool(int id, bool enable) {
+
+  void EnableTool(int id, bool enable)
+  {
     m_toolBar->EnableTool(id, enable);
   }
-  wxToolBar *GetToolBar() {
+
+  wxToolBar *GetToolBar()
+  {
     return m_toolBar;
   }
 
   void AnimationButtonState(AnimationStartStopState state);
-      
+
   /*! A list of all events the Toolbar can receive
    */
-  enum Event {
+  enum Event
+  {
     plot_slider_id = 5500,
     tb_new,
     tb_open,
@@ -104,7 +118,7 @@ class ToolBar
   };
 
   //! The slider for animations
-  wxSlider* m_plotSlider;
+  wxSlider *m_plotSlider;
 
 #if defined __WXGTK__
   wxBitmap  m_followIcon;
@@ -113,59 +127,59 @@ class ToolBar
   wxBitmap  m_StopButton;
 #else
   wxImage m_followIcon;
-  wxImage  m_needsInformationIcon;
-  wxImage  m_PlayButton;
-  wxImage  m_StopButton;
+  wxImage m_needsInformationIcon;
+  wxImage m_PlayButton;
+  wxImage m_StopButton;
 #endif
 
   void CanCopy(bool value)
+  {
+    if (value != m_canCopy_old)
     {
-      if (value!=m_canCopy_old)
-      {
-        EnableTool(tb_copy,value);
-        m_canCopy_old = value;
-      }
+      EnableTool(tb_copy, value);
+      m_canCopy_old = value;
     }
-  
+  }
+
   void CanCut(bool value)
+  {
+    if (value != m_canCut_old)
     {
-      if (value!=m_canCut_old)
-      {
-        EnableTool(tb_cut,value);
-        m_canCut_old = value;
-      }
+      EnableTool(tb_cut, value);
+      m_canCut_old = value;
     }
+  }
 
   void CanSave(bool value)
+  {
+    if (value != m_canSave_old)
     {
-      if (value!=m_canSave_old)
-      {
-        EnableTool(tb_save,value);
-        m_canSave_old = value;
-      }
+      EnableTool(tb_save, value);
+      m_canSave_old = value;
     }
-  
+  }
+
   void CanPrint(bool value)
+  {
+    if (value != m_canPrint_old)
     {
-      if (value!=m_canPrint_old)
-      {
-        EnableTool(tb_print,value);
-        m_canPrint_old = value;
-      }
+      EnableTool(tb_print, value);
+      m_canPrint_old = value;
     }
-  
+  }
+
   void CanEvalTillHere(bool value)
+  {
+    if (value != m_canEvalTillHere_old)
     {
-      if (value!=m_canEvalTillHere_old)
-      {
-        EnableTool(tb_evaltillhere,value);
-        m_canEvalTillHere_old = value;
-      }
+      EnableTool(tb_evaltillhere, value);
+      m_canEvalTillHere_old = value;
     }
+  }
 
   //! Updates the slider to match the Slide Show cell.
   void UpdateSlider(SlideShow *cell);
-  
+
 private:
   //! The position in the current slideshow at the last call of UpdateSlider()
   int m_slideShowDisplayedIndex;
@@ -178,8 +192,8 @@ private:
   bool m_canEvalTillHere_old;
   wxToolBar *m_toolBar;
   AnimationStartStopState m_AnimationStartStopState;
-    //! True if we show the "needs information" button.
-  bool     m_needsInformation;
+  //! True if we show the "needs information" button.
+  bool m_needsInformation;
 
 };
 

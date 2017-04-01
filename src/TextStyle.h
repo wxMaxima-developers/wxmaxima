@@ -30,9 +30,8 @@ shown on the work sheet.
 //! A text style for the work sheet
 struct style
 {
-  style() :
-    bold(false), italic(false), underlined(false)
-    {  };
+  style() : bold(false), italic(false), underlined(false)
+  {};
   wxColour color;
   wxString font;
   int fontSize;

@@ -48,24 +48,40 @@ class ConjugateCell : public MathCell
 {
 public:
   ConjugateCell(MathCell *parent, Configuration **config);
+
   ~ConjugateCell();
+
   void SetInner(MathCell *inner);
-  MathCell* Copy();
-  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+
+  MathCell *Copy();
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   bool BreakUp();
+
   void Unbreak();
+
   void SetParent(MathCell *parent);
+
 protected:
   MathCell *m_innerCell;
   TextCell *m_open, *m_close;
   MathCell *m_last;
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToMathML();
+
   wxString ToOMML();
+
   wxString ToXML();
 };
 

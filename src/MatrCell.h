@@ -32,40 +32,65 @@ class MatrCell : public MathCell
 {
 public:
   MatrCell(MathCell *parent, Configuration **config);
+
   ~MatrCell();
-  MathCell* Copy();
+
+  MathCell *Copy();
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
-  void AddNewCell(MathCell* cell)
+
+  void AddNewCell(MathCell *cell)
   {
     m_cells.push_back(cell);
   }
+
   void NewRow()
   {
     m_matHeight++;
   }
+
   void NewColumn()
   {
     m_matWidth++;
   }
+
   void SetDimension();
-  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToMathML();
+
   wxString ToOMML();
+
   wxString ToXML();
-  void SetSpecialFlag(bool special) { m_specialMatrix = special; }
-  void SetInferenceFlag(bool inference) { m_inferenceMatrix = inference; }
+
+  void SetSpecialFlag(bool special)
+  { m_specialMatrix = special; }
+
+  void SetInferenceFlag(bool inference)
+  { m_inferenceMatrix = inference; }
+
   void SetParent(MathCell *parent);
-  void RowNames(bool rn) { m_rowNames = rn; }
-  void ColNames(bool cn) { m_colNames = cn; }
+
+  void RowNames(bool rn)
+  { m_rowNames = rn; }
+
+  void ColNames(bool cn)
+  { m_colNames = cn; }
+
 protected:
   int m_matWidth;
   int m_matHeight;
   bool m_specialMatrix, m_inferenceMatrix, m_rowNames, m_colNames;
-  vector<MathCell*> m_cells;
+  vector<MathCell *> m_cells;
   vector<int> m_widths;
   vector<int> m_drops;
   vector<int> m_centers;

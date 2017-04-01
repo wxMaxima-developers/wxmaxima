@@ -26,13 +26,16 @@
 #include "StatusBar.h"
 #include <wx/artprov.h>
 
-StatusBar::StatusBar(wxWindow *parent, int id): wxStatusBar(parent, id)
+StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id)
 {
-  int widths[] = { -1, 300, GetSize().GetHeight()};
+  int widths[] = {-1, 300, GetSize().GetHeight()};
   SetFieldsCount(3, widths);
-  m_stdToolTip = _("Maxima, the program that does the actual mathematics is started as a separate process. This has the advantage that an eventual crash of maxima cannot harm wxMaxima, which displays the worksheet.\nThis icon indicates if data is transferred between maxima and wxMaxima.");
-  m_networkErrToolTip = _("Maxima, the program that does the actual mathematics and wxMaxima, which displays the worksheet are kept in separate processes. This means that even if maxima crashes wxMaxima (and therefore the worksheet) stays intact. Both programs communicate over a local network socket. This time this socket could not be created which might be caused by a firewall that it setup to not only intercepts connections from the outside, but also to intercept connections between two programs that run on the same computer.");
-  m_noConnectionToolTip = _("Maxima, the program that does the actual mathematics and wxMaxima, which displays the worksheet are kept in separate processes. This means that even if maxima crashes wxMaxima (and therefore the worksheet) stays intact. Currently the two programs aren't connected to each other which might mean that maxima is still starting up or couldn't be started. Alternatively it can be caused by a firewall that it setup to not only intercepts connections from the outside, but also to intercept connections between two programs that run on the same computer.");
+  m_stdToolTip = _(
+          "Maxima, the program that does the actual mathematics is started as a separate process. This has the advantage that an eventual crash of maxima cannot harm wxMaxima, which displays the worksheet.\nThis icon indicates if data is transferred between maxima and wxMaxima.");
+  m_networkErrToolTip = _(
+          "Maxima, the program that does the actual mathematics and wxMaxima, which displays the worksheet are kept in separate processes. This means that even if maxima crashes wxMaxima (and therefore the worksheet) stays intact. Both programs communicate over a local network socket. This time this socket could not be created which might be caused by a firewall that it setup to not only intercepts connections from the outside, but also to intercept connections between two programs that run on the same computer.");
+  m_noConnectionToolTip = _(
+          "Maxima, the program that does the actual mathematics and wxMaxima, which displays the worksheet are kept in separate processes. This means that even if maxima crashes wxMaxima (and therefore the worksheet) stays intact. Currently the two programs aren't connected to each other which might mean that maxima is still starting up or couldn't be started. Alternatively it can be caused by a firewall that it setup to not only intercepts connections from the outside, but also to intercept connections between two programs that run on the same computer.");
   m_network_error = GetImage("network-error");
   m_network_offline = GetImage("network-offline");
   m_network_transmit = GetImage("network-transmit");
@@ -41,49 +44,49 @@ StatusBar::StatusBar(wxWindow *parent, int id): wxStatusBar(parent, id)
   m_network_transmit_receive = GetImage("network-transmit-receive");
   m_networkStatus = new wxStaticBitmap(this, wxID_ANY, m_network_offline);
   m_networkStatus->SetToolTip(m_stdToolTip);
-  ReceiveTimer.SetOwner(this,wxID_ANY);
-  SendTimer.SetOwner(this,wxID_ANY);
+  ReceiveTimer.SetOwner(this, wxID_ANY);
+  SendTimer.SetOwner(this, wxID_ANY);
   m_icon_shows_receive = m_icon_shows_transmit = false;
   m_networkState = offline;
 }
 
-void StatusBar::OnTimerEvent(wxTimerEvent& event)
+void StatusBar::OnTimerEvent(wxTimerEvent &event)
 {
   // don't do anything if the network status didn't change.
-  if((m_icon_shows_receive  == (ReceiveTimer.IsRunning())) &&
-     (m_icon_shows_transmit == (SendTimer.IsRunning())))
+  if ((m_icon_shows_receive == (ReceiveTimer.IsRunning())) &&
+      (m_icon_shows_transmit == (SendTimer.IsRunning())))
     return;
-  
+
   // don't do anything if the timer expired, but we aren't connected
   // to the network any more.
-  if((m_networkState == error) || (m_networkState == offline))
+  if ((m_networkState == error) || (m_networkState == offline))
     return;
 
-  m_icon_shows_receive  = ReceiveTimer.IsRunning();
+  m_icon_shows_receive = ReceiveTimer.IsRunning();
   m_icon_shows_transmit = SendTimer.IsRunning();
 
-  if( m_icon_shows_receive &&  m_icon_shows_transmit)
-    {
-	m_networkStatus->SetBitmap(m_network_transmit_receive);
-    }			       
-  if( m_icon_shows_receive && !m_icon_shows_transmit)
-    {
-	m_networkStatus->SetBitmap(m_network_receive);
-    }			       
-  if(!m_icon_shows_receive &&  m_icon_shows_transmit)
-    {
-	m_networkStatus->SetBitmap(m_network_transmit);
-    }			       
-  if(!m_icon_shows_receive && !m_icon_shows_transmit)
-    {
-	m_networkStatus->SetBitmap(m_network_idle);
-    }			       
+  if (m_icon_shows_receive && m_icon_shows_transmit)
+  {
+    m_networkStatus->SetBitmap(m_network_transmit_receive);
+  }
+  if (m_icon_shows_receive && !m_icon_shows_transmit)
+  {
+    m_networkStatus->SetBitmap(m_network_receive);
+  }
+  if (!m_icon_shows_receive && m_icon_shows_transmit)
+  {
+    m_networkStatus->SetBitmap(m_network_transmit);
+  }
+  if (!m_icon_shows_receive && !m_icon_shows_transmit)
+  {
+    m_networkStatus->SetBitmap(m_network_idle);
+  }
 }
 
 void StatusBar::NetworkStatus(networkState status)
 {
-  switch(status)
-    {
+  switch (status)
+  {
     case idle:
       m_networkStatus->SetBitmap(m_network_idle);
       m_networkState = status;
@@ -98,34 +101,34 @@ void StatusBar::NetworkStatus(networkState status)
       m_networkStatus->SetBitmap(m_network_offline);
       m_networkState = status;
       m_networkStatus->SetToolTip(m_noConnectionToolTip);
-  break;
+      break;
     case receive:
-      {
-	ReceiveTimer.StartOnce(200);
-	wxTimerEvent dummy;
-	OnTimerEvent(dummy);
-      }
+    {
+      ReceiveTimer.StartOnce(200);
+      wxTimerEvent dummy;
+      OnTimerEvent(dummy);
+    }
       break;
     case transmit:
-      {
-	SendTimer.StartOnce(200);
-	wxTimerEvent dummy;
-	OnTimerEvent(dummy);
-      }
-      break;	
+    {
+      SendTimer.StartOnce(200);
+      wxTimerEvent dummy;
+      OnTimerEvent(dummy);
     }
+      break;
+  }
 }
 
-void StatusBar::OnSize(wxSizeEvent& event)
+void StatusBar::OnSize(wxSizeEvent &event)
 {
   wxRect rect;
-  
+
   GetFieldRect(2, rect);
   wxSize size = m_networkStatus->GetSize();
-  
+
   m_networkStatus->Move(rect.x + (rect.width - size.x) / 2,
-			rect.y + (rect.height - size.y) / 2);
-  
+                        rect.y + (rect.height - size.y) / 2);
+
   event.Skip();
 }
 
@@ -138,8 +141,8 @@ wxBitmap StatusBar::GetImage(wxString name)
 
   GetFieldRect(2, rect);
   int imgWidth = rect.GetHeight();
-  double scaleFactor = (double)imgWidth / img.GetWidth();
-  img.Rescale(imgWidth,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
+  double scaleFactor = (double) imgWidth / img.GetWidth();
+  img.Rescale(imgWidth, img.GetHeight() * scaleFactor, wxIMAGE_QUALITY_HIGH);
   return wxBitmap(img);
 }
 #else
@@ -160,6 +163,6 @@ wxBitmap StatusBar::GetImage(wxString name)
 
 
 wxBEGIN_EVENT_TABLE(StatusBar, wxStatusBar)
-EVT_SIZE(StatusBar::OnSize)
-EVT_TIMER(wxID_ANY, StatusBar::OnTimerEvent)
+                EVT_SIZE(StatusBar::OnSize)
+                EVT_TIMER(wxID_ANY, StatusBar::OnTimerEvent)
 wxEND_EVENT_TABLE()

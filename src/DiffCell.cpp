@@ -28,7 +28,7 @@
 #include "DiffCell.h"
 #include "wx/config.h"
 
-DiffCell::DiffCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
+DiffCell::DiffCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
 {
   m_baseCell = NULL;
   m_diffCell = NULL;
@@ -43,9 +43,9 @@ void DiffCell::SetParent(MathCell *parent)
     m_diffCell->SetParentList(parent);
 }
 
-MathCell* DiffCell::Copy()
+MathCell *DiffCell::Copy()
 {
-  DiffCell* tmp = new DiffCell(m_group,m_configuration);
+  DiffCell *tmp = new DiffCell(m_group, m_configuration);
   CopyData(this, tmp);
   tmp->SetDiff(m_diffCell->CopyList());
   tmp->SetBase(m_baseCell->CopyList());
@@ -87,7 +87,7 @@ void DiffCell::RecalculateWidths(int fontsize)
   double scale = configuration->GetScale();
   m_baseCell->RecalculateWidthsList(fontsize);
   m_diffCell->RecalculateWidthsList(fontsize);
-  m_width = m_baseCell->GetFullWidth(scale) + m_diffCell->GetFullWidth(scale) + 2*MC_CELL_SKIP;
+  m_width = m_baseCell->GetFullWidth(scale) + m_diffCell->GetFullWidth(scale) + 2 * MC_CELL_SKIP;
   ResetData();
 }
 
@@ -103,14 +103,15 @@ void DiffCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
 
-  if (DrawThisCell(point) && InUpdateRegion()) {
+  if (DrawThisCell(point) && InUpdateRegion())
+  {
     wxPoint bs, df;
     df.x = point.x;
     df.y = point.y;
     m_diffCell->DrawList(df, fontsize);
 
     Configuration *configuration = (*m_configuration);
-    bs.x = point.x + m_diffCell->GetFullWidth(configuration->GetScale()) + 2*MC_CELL_SKIP;
+    bs.x = point.x + m_diffCell->GetFullWidth(configuration->GetScale()) + 2 * MC_CELL_SKIP;
     bs.y = point.y;
     m_baseCell->DrawList(bs, fontsize);
   }
@@ -120,7 +121,7 @@ wxString DiffCell::ToString()
 {
   if (m_isBroken)
     return wxEmptyString;
-  MathCell* tmp = m_baseCell->m_next;
+  MathCell *tmp = m_baseCell->m_next;
   wxString s = wxT("'diff(");
   if (tmp != NULL)
     s += tmp->ListToString();
@@ -133,13 +134,13 @@ wxString DiffCell::ToTeX()
 {
   if (m_isBroken)
     return wxEmptyString;
-  wxString diff=m_diffCell->ListToTeX();
-  wxString function=m_baseCell->ListToTeX();
+  wxString diff = m_diffCell->ListToTeX();
+  wxString function = m_baseCell->ListToTeX();
 
   bool usePartialForDiff = false;
   wxConfig::Get()->Read(wxT("usePartialForDiff"), &usePartialForDiff);
-  if(usePartialForDiff)
-    diff.Replace(wxT("\\frac{d}{d"),wxT("\\frac{\\partial}{\\partial"));
+  if (usePartialForDiff)
+    diff.Replace(wxT("\\frac{d}{d"), wxT("\\frac{\\partial}{\\partial"));
 
   wxString s = diff + function;
   return s;
@@ -149,8 +150,8 @@ wxString DiffCell::ToMathML()
 {
   wxString retval;
 
-  retval = wxT("<mrow>")+m_diffCell->ListToMathML();
-  if(m_baseCell) 
+  retval = wxT("<mrow>") + m_diffCell->ListToMathML();
+  if (m_baseCell)
     retval += m_baseCell->ListToMathML();
   retval += wxT("</mrow>\n");
   // retval = wxT("<apply><diff/><ci>") + m_diffCell->ListToMathML() + wxT("</ci>");
@@ -165,7 +166,7 @@ wxString DiffCell::ToOMML()
   wxString retval;
 
   retval = m_diffCell->ListToOMML();
-  if(m_baseCell)
+  if (m_baseCell)
     retval += m_baseCell->ListToOMML();
 
   return retval;
@@ -176,13 +177,14 @@ wxString DiffCell::ToXML()
   return _T("<d>") + m_diffCell->ListToXML() + m_baseCell->ListToXML() + _T("</d>");
 }
 
-void DiffCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
+void DiffCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
 {
   *first = NULL;
   *last = NULL;
   if (m_baseCell->ContainsRect(rect))
     m_baseCell->SelectRect(rect, first, last);
-  if (*first == NULL || *last == NULL) {
+  if (*first == NULL || *last == NULL)
+  {
     *first = this;
     *last = this;
   }

@@ -28,7 +28,7 @@
 
 #include "MatrCell.h"
 
-MatrCell::MatrCell(MathCell *parent, Configuration **config) : MathCell(parent,config)
+MatrCell::MatrCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
 {
   m_matWidth = 0;
   m_matHeight = 0;
@@ -47,9 +47,9 @@ void MatrCell::SetParent(MathCell *parent)
   }
 }
 
-MathCell* MatrCell::Copy()
+MathCell *MatrCell::Copy()
 {
-  MatrCell *tmp = new MatrCell(m_group,m_configuration);
+  MatrCell *tmp = new MatrCell(m_group, m_configuration);
   CopyData(this, tmp);
   tmp->m_specialMatrix = m_specialMatrix;
   tmp->m_inferenceMatrix = m_inferenceMatrix;
@@ -57,9 +57,9 @@ MathCell* MatrCell::Copy()
   tmp->m_colNames = m_colNames;
   tmp->m_matWidth = m_matWidth;
   tmp->m_matHeight = m_matHeight;
-  for (int i = 0; i < m_matWidth*m_matHeight; i++)
+  for (int i = 0; i < m_matWidth * m_matHeight; i++)
     (tmp->m_cells).push_back(m_cells[i]->CopyList());
-  
+
   return tmp;
 }
 
@@ -77,7 +77,7 @@ void MatrCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
-  for (int i = 0; i < m_matWidth*m_matHeight; i++)
+  for (int i = 0; i < m_matWidth * m_matHeight; i++)
   {
     m_cells[i]->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 2));
   }
@@ -105,7 +105,7 @@ void MatrCell::RecalculateHeight(int fontsize)
   Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
 
-  for (int i = 0; i < m_matWidth*m_matHeight; i++)
+  for (int i = 0; i < m_matWidth * m_matHeight; i++)
   {
     m_cells[i]->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 2));
   }
@@ -138,7 +138,7 @@ void MatrCell::Draw(wxPoint point, int fontsize)
   if (DrawThisCell(point) && InUpdateRegion())
   {
     Configuration *configuration = (*m_configuration);
-    wxDC& dc = configuration->GetDC();
+    wxDC &dc = configuration->GetDC();
     double scale = configuration->GetScale();
     wxPoint mp;
     mp.x = point.x + SCALE_PX(5, scale);
@@ -151,7 +151,7 @@ void MatrCell::Draw(wxPoint point, int fontsize)
         mp.y += m_centers[j];
         wxPoint mp1(mp);
         mp1.x = mp.x + (m_widths[i] - m_cells[j * m_matWidth + i]->GetFullWidth(scale)) / 2;
-        m_cells[j*m_matWidth + i]->DrawList(mp1, MAX(MC_MIN_SIZE, fontsize - 2));
+        m_cells[j * m_matWidth + i]->DrawList(mp1, MAX(MC_MIN_SIZE, fontsize - 2));
         mp.y += (m_drops[j] + SCALE_PX(10, scale));
       }
       mp.x += (m_widths[i] + SCALE_PX(10, scale));
@@ -164,17 +164,18 @@ void MatrCell::Draw(wxPoint point, int fontsize)
                     point.y - m_center + SCALE_PX(2, scale),
                     point.x + SCALE_PX(1, scale),
                     point.y + m_center - SCALE_PX(2, scale));
-      else {
+      else
+      {
         if (m_rowNames)
-          dc.DrawLine(point.x + m_widths[0] + 2*SCALE_PX(5, scale),
+          dc.DrawLine(point.x + m_widths[0] + 2 * SCALE_PX(5, scale),
                       point.y - m_center + SCALE_PX(2, scale),
-                      point.x + m_widths[0] + 2*SCALE_PX(5, scale),
+                      point.x + m_widths[0] + 2 * SCALE_PX(5, scale),
                       point.y + m_center - SCALE_PX(2, scale));
         if (m_colNames)
           dc.DrawLine(point.x + SCALE_PX(1, scale),
-                      point.y - m_center + m_centers[0] + m_drops[0] + 2*SCALE_PX(5, scale),
+                      point.y - m_center + m_centers[0] + m_drops[0] + 2 * SCALE_PX(5, scale),
                       point.x + SCALE_PX(1, scale) + m_width,
-                      point.y - m_center + m_centers[0] + m_drops[0] + 2*SCALE_PX(5, scale));
+                      point.y - m_center + m_centers[0] + m_drops[0] + 2 * SCALE_PX(5, scale));
       }
     }
     else
@@ -236,15 +237,15 @@ wxString MatrCell::ToTeX()
   //ToDo: We ignore colNames and rowNames here. Are they currently in use?
   wxString s;
 
-    if(!m_specialMatrix)
-      s = wxT("\\begin{pmatrix}");
-    else
-    {
-      s = wxT("\\begin{array}{");
-      for (int j = 0; j < m_matWidth; j++)
-        s += wxT("c");
-      s += wxT("}");
-    }
+  if (!m_specialMatrix)
+    s = wxT("\\begin{pmatrix}");
+  else
+  {
+    s = wxT("\\begin{array}{");
+    for (int j = 0; j < m_matWidth; j++)
+      s += wxT("c");
+    s += wxT("}");
+  }
   for (int i = 0; i < m_matHeight; i++)
   {
     for (int j = 0; j < m_matWidth; j++)
@@ -256,20 +257,20 @@ wxString MatrCell::ToTeX()
     if (i < m_matHeight - 1)
       s += wxT("\\\\\n");
   }
-    if(!m_specialMatrix)
-      s += wxT("\\end{pmatrix}");
-    else
-      s += wxT("\\end{array}");
+  if (!m_specialMatrix)
+    s += wxT("\\end{pmatrix}");
+  else
+    s += wxT("\\end{array}");
   return s;
 }
 
 wxString MatrCell::ToMathML()
 {
   wxString retval;
-  if(!m_specialMatrix)
+  if (!m_specialMatrix)
     retval = wxT("<mrow><mo>(</mo><mrow>");
-  retval +=  wxT("<mtable>");
-  
+  retval += wxT("<mtable>");
+
   for (int i = 0; i < m_matHeight; i++)
   {
     retval += wxT("<mtr>");
@@ -278,7 +279,7 @@ wxString MatrCell::ToMathML()
     retval += wxT("</mtr>");
   }
   retval += wxT("</mtable>\n");
-  if(!m_specialMatrix)
+  if (!m_specialMatrix)
     retval += wxT("</mrow><mo>)</mo></mrow>\n");
   return retval;
 }
@@ -288,21 +289,21 @@ wxString MatrCell::ToOMML()
   wxString retval;
 
   retval = wxT("<m:d>");
-   if(!m_specialMatrix)
-     retval += wxT("<m:dPr><m:begChr>(</m:begChr><m:endChr>)</m:endChr> <m:grow>\"1\"</m:grow></m:dPr>");
+  if (!m_specialMatrix)
+    retval += wxT("<m:dPr><m:begChr>(</m:begChr><m:endChr>)</m:endChr> <m:grow>\"1\"</m:grow></m:dPr>");
 
-   retval += wxT("<m:e><m:m>");
+  retval += wxT("<m:e><m:m>");
 
-   for (int i = 0; i < m_matHeight; i++)
-   {
-     retval += wxT("<m:mr>");
-     for (int j = 0; j < m_matWidth; j++)
-       retval += wxT("<m:e>") + m_cells[i * m_matWidth + j]->ListToOMML() + wxT("</m:e>");
-     retval += wxT("</m:mr>");
-   }
+  for (int i = 0; i < m_matHeight; i++)
+  {
+    retval += wxT("<m:mr>");
+    for (int j = 0; j < m_matWidth; j++)
+      retval += wxT("<m:e>") + m_cells[i * m_matWidth + j]->ListToOMML() + wxT("</m:e>");
+    retval += wxT("</m:mr>");
+  }
 
-   retval += wxT("</m:m></m:e></m:d>");
-   return retval;
+  retval += wxT("</m:m></m:e></m:d>");
+  return retval;
 }
 
 wxString MatrCell::ToXML()
@@ -310,14 +311,14 @@ wxString MatrCell::ToXML()
   wxString s = wxEmptyString;
   if (m_specialMatrix)
     s = wxString::Format(
-      wxT("<tb special=\"true\" inference=\"%s\" rownames=\"%s\" colnames=\"%s\">"),
-      m_inferenceMatrix ? wxT("true") : wxT("false"),
-      m_rowNames ? wxT("true") : wxT("false"),
-      m_colNames ? wxT("true") : wxT("false"));
+            wxT("<tb special=\"true\" inference=\"%s\" rownames=\"%s\" colnames=\"%s\">"),
+            m_inferenceMatrix ? wxT("true") : wxT("false"),
+            m_rowNames ? wxT("true") : wxT("false"),
+            m_colNames ? wxT("true") : wxT("false"));
   else
     s = wxT("<tb>");
-  
-for (int i = 0; i < m_matHeight; i++)
+
+  for (int i = 0; i < m_matHeight; i++)
   {
     s += wxT("<mtr>");
     for (int j = 0; j < m_matWidth; j++)
@@ -335,7 +336,7 @@ void MatrCell::SetDimension()
     m_matWidth = m_matWidth / m_matHeight;
 }
 
-void MatrCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
+void MatrCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
 {
   *first = NULL;
   *last = NULL;
@@ -343,8 +344,8 @@ void MatrCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
   {
     for (int j = 0; j < m_matWidth; j++)
     {
-      if (m_cells[i*m_matWidth + j]->ContainsRect(rect))
-        m_cells[i*m_matWidth + j]->SelectRect(rect, first, last);
+      if (m_cells[i * m_matWidth + j]->ContainsRect(rect))
+        m_cells[i * m_matWidth + j]->SelectRect(rect, first, last);
     }
   }
   if (*first == NULL || *last == NULL)
