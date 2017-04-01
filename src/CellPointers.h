@@ -22,7 +22,7 @@
 #define CELLPOINTERS_H
 
 #include <wx/wx.h>
-#include <MathCell.h>
+#include "MathCell.h"
 
 /*! The storage for pointers to cells.
 
