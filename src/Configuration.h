@@ -99,7 +99,7 @@ public:
     which line begins a new equation and which line merely continues a multi-line
     equation.
    */
-  int GetInterEquationSkip()
+  double GetInterEquationSkip()
   {
     if (ShowAutomaticLabels())
       return 0;
@@ -109,7 +109,7 @@ public:
 
   int GetCellBracketWidth()
   {
-    return GetZoomFactor() * GetScale() * 16;
+    return (int) (GetZoomFactor() * GetScale() * 16);
   }
 
   //! Hide brackets that are not under the pointer?
@@ -251,12 +251,12 @@ public:
   { return m_clientHeight; }
 
   //! Calculates the default line width for the worksheet
-  double GetDefaultLineWidth()
+  int GetDefaultLineWidth()
   {
     if (GetScale() * GetZoomFactor() < 1.0)
-      return 1.0;
+      return 1;
     else
-      return GetScale() * GetZoomFactor();
+      return (int) (GetScale() * GetZoomFactor());
   }
 
   //! The minimum sensible line width in withs of a letter.
@@ -275,7 +275,7 @@ public:
     if (m_clientWidth <= m_zoomFactor * double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor * m_scale)
       return m_clientWidth;
     else
-      return double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor * m_scale;
+      return (const int) (double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor * m_scale);
   }
 
   const int GetDefaultFontSize()
@@ -369,7 +369,7 @@ public:
 
     m_displayedDigits is always >= 20, so we can guarantee the number we return to be unsigned.
    */
-  const unsigned int GetDisplayedDigits()
+  const int GetDisplayedDigits()
   { return m_displayedDigits; }
 
   void SetDisplayedDigits(int displayedDigits)
