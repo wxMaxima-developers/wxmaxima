@@ -177,6 +177,12 @@ void Configuration::ReadStyle()
 
   // Font
   config->Read(wxT("Style/fontname"), &m_fontName);
+#ifdef __WXOSX_MAC__
+  if (m_fontName.IsEmpty())
+  {
+    m_fontName = "Monaco";
+  }
+#endif
 
   // Default fontsize
   m_defaultFontSize = 12;
@@ -193,6 +199,12 @@ void Configuration::ReadStyle()
   // Math font
   m_mathFontName = wxEmptyString;
   config->Read(wxT("Style/Math/fontname"), &m_mathFontName);
+#ifdef __WXOSX_MAC__
+  if (m_mathFontName.IsEmpty())
+  {
+    m_mathFontName = "Monaco";
+  }
+#endif
 
   wxString tmp;
 
@@ -215,6 +227,9 @@ void Configuration::ReadStyle()
   m_styles[TS_TEXT].italic = false;
   m_styles[TS_TEXT].underlined = false;
   m_styles[TS_TEXT].fontSize = 0;
+#ifdef __WXOSX_MAC__
+  m_styles[TS_TEXT].font = "Monaco";
+#endif
   config->Read(wxT("Style/Text/fontsize"),
                &m_styles[TS_TEXT].fontSize);
   config->Read(wxT("Style/Text/fontname"),
@@ -276,6 +291,9 @@ void Configuration::ReadStyle()
   m_styles[TS_SUBSUBSECTION].italic = false;
   m_styles[TS_SUBSUBSECTION].underlined = false;
   m_styles[TS_SUBSUBSECTION].fontSize = 14;
+#ifdef __WXOSX_MAC__
+  m_styles[TS_SUBSUBSECTION].font = "Monaco";
+#endif
   config->Read(wxT("Style/Subsubsection/fontsize"),
                &m_styles[TS_SUBSUBSECTION].fontSize);
   config->Read(wxT("Style/Subsubsection/fontname"),
@@ -288,6 +306,9 @@ void Configuration::ReadStyle()
   m_styles[TS_SUBSECTION].italic = false;
   m_styles[TS_SUBSECTION].underlined = false;
   m_styles[TS_SUBSECTION].fontSize = 16;
+#ifdef __WXOSX_MAC__
+  m_styles[TS_SUBSECTION].font = "Monaco";
+#endif
   config->Read(wxT("Style/Subsection/fontsize"),
                &m_styles[TS_SUBSECTION].fontSize);
   config->Read(wxT("Style/Subsection/fontname"),
@@ -300,6 +321,9 @@ void Configuration::ReadStyle()
   m_styles[TS_SECTION].italic = true;
   m_styles[TS_SECTION].underlined = false;
   m_styles[TS_SECTION].fontSize = 18;
+#ifdef __WXOSX_MAC__
+  m_styles[TS_SECTION].font = "Monaco";
+#endif
   config->Read(wxT("Style/Section/fontsize"),
                &m_styles[TS_SECTION].fontSize);
   config->Read(wxT("Style/Section/fontname"),
@@ -312,6 +336,9 @@ void Configuration::ReadStyle()
   m_styles[TS_TITLE].italic = false;
   m_styles[TS_TITLE].underlined = true;
   m_styles[TS_TITLE].fontSize = 24;
+#ifdef __WXOSX_MAC__
+  m_styles[TS_TITLE].font = "Monaco";
+#endif
   config->Read(wxT("Style/Title/fontsize"),
                &m_styles[TS_TITLE].fontSize);
   config->Read(wxT("Style/Title/fontname"),
