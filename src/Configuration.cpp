@@ -226,7 +226,7 @@ void Configuration::ReadStyle()
   m_styles[TS_TEXT].bold = false;
   m_styles[TS_TEXT].italic = false;
   m_styles[TS_TEXT].underlined = false;
-  m_styles[TS_TEXT].fontSize = 0;
+  m_styles[TS_TEXT].fontSize = 12;
 #ifdef __WXOSX_MAC__
   m_styles[TS_TEXT].font = "Monaco";
 #endif
