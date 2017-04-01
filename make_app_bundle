@@ -1,0 +1,28 @@
+#!/bin/sh
+
+mkdir -p wxMaxima.app/Contents/MacOS
+mkdir -p wxMaxima.app/Contents/Resources
+cp test/testbench_simple.wxmx wxMaxima.app/Contents/Resources
+cp data/wxmathml.lisp wxMaxima.app/Contents/Resources
+cp data/wxmaxima.png wxMaxima.app/Contents/Resources
+cp data/wxmaxima.svg wxMaxima.app/Contents/Resources
+cp data/autocomplete.txt wxMaxima.app/Contents/Resources
+cp data/tips*.txt wxMaxima.app/Contents/Resources
+cp art/wxmac.icns wxMaxima.app/Contents/Resources
+cp art/wxmac-doc.icns wxMaxima.app/Contents/Resources
+cp art/wxmac-doc-wxm.icns wxMaxima.app/Contents/Resources
+cp art/wxmac-doc-wxmx.icns wxMaxima.app/Contents/Resources
+cp data/Info.plist wxMaxima.app/Contents
+cp data/PkgInfo wxMaxima.app/Contents
+cp wxmaxima wxMaxima.app/Contents/MacOS
+mkdir -p wxMaxima.app/Contents/Resources/toolbar
+mkdir -p wxMaxima.app/Contents/Resources/statusbar
+mkdir -p wxMaxima.app/Contents/Resources/config
+cp art/toolbar/*.png wxMaxima.app/Contents/Resources/toolbar
+cp art/statusbar/*.png wxMaxima.app/Contents/Resources/statusbar
+cp art/config/*.png wxMaxima.app/Contents/Resources/config
+mkdir -p wxMaxima.app/Contents/Resources/help
+cp info/*.html wxMaxima.app/Contents/Resources/help
+cp info/*.jpg  wxMaxima.app/Contents/Resources/help
+cp info/*.png  wxMaxima.app/Contents/Resources/help
+cp info/wxmaxima.hhp wxMaxima.app/Contents/Resources/help
