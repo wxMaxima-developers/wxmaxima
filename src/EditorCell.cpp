@@ -1076,9 +1076,7 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
     }
 
     // A comma removes all extra indentation from a "do" or an "if".
-    if(
-      (ch == wxT(','))
-      )
+    if(ch == wxT(','))
     {
       // Discard any extra indentation from a "then" or a "do" from the last item
       // of indentChars.
