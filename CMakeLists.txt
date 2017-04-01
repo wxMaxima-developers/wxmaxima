@@ -5,11 +5,17 @@ set(VERSION 17.04.0)
 set(PACKAGE_VERSION 17.04.0)
 set(PACKAGE wxMaxima)
 
-set(wxWidgets_FIND_STYLE unix)
-set(wxWidgets_USE_DEBUG ON)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(wxWidgets_USE_DEBUG ON)
+endif()
 
-# ADD THE PATH TO wx-config
-set(wxWidgets_CONFIG_EXECUTABLE /Users/andrej/Projects/wxWidgets-static/wx-config)
+set(WXCONFIGENV $ENV{WXCONFIG})
+
+if (NOT "${WXCONFIGENV}" STREQUAL "")
+    set(wxWidgets_FIND_STYLE unix)
+    set(wxWidgets_CONFIG_EXECUTABLE ${WXCONFIGENV})
+endif()
+
 find_package(wxWidgets REQUIRED std xml html adv aui core net base)
 
 include(${wxWidgets_USE_FILE})
@@ -147,8 +153,10 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/Setup.h.cin ${CMAKE_CURRENT_SOURC
 
 add_executable(wxmaxima ${SOURCE_FILES})
 
-set(CMAKE_CXX_FLAGS -mmacosx-version-min=10.7)
-set(CMAKE_EXE_LINKER_FLAGS -mmacosx-version-min=10.7)
+if (APPLE)
+    set(CMAKE_CXX_FLAGS -mmacosx-version-min=10.7)
+    set(CMAKE_EXE_LINKER_FLAGS -mmacosx-version-min=10.7)
+endif()
 
 target_link_libraries(wxmaxima ${wxWidgets_CXX_FLAGS} ${wxWidgets_LIBRARIES})
 
