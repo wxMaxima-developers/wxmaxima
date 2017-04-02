@@ -133,6 +133,8 @@ add_executable(wxmaxima ${SOURCE_FILES})
 
 target_link_libraries(wxmaxima ${wxWidgets_CXX_FLAGS} ${wxWidgets_LIBRARIES})
 
+install(TARGETS wxmaxima RUNTIME DESTINATION bin)
+
 if (APPLE)
     set(CMAKE_CXX_FLAGS -mmacosx-version-min=10.7)
     set(CMAKE_EXE_LINKER_FLAGS -mmacosx-version-min=10.7)

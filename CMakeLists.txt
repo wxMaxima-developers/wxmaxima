@@ -12,9 +12,12 @@ add_definitions (-DPREFIX=\"${CMAKE_INSTALL_PREFIX}\")
 
 add_subdirectory(locales)
 add_subdirectory(src)
+add_subdirectory(data)
+add_subdirectory(info)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/data/wxmathml.lisp.in ${CMAKE_CURRENT_SOURCE_DIR}/data/wxmathml.lisp)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/Setup.h.cin ${CMAKE_CURRENT_SOURCE_DIR}/src/Setup.h)
+
 
 if (APPLE)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/data/Info.plist.in ${CMAKE_CURRENT_SOURCE_DIR}/data/Info.plist)
