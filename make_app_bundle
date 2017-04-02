@@ -14,7 +14,7 @@ cp art/wxmac-doc-wxm.icns wxMaxima.app/Contents/Resources
 cp art/wxmac-doc-wxmx.icns wxMaxima.app/Contents/Resources
 cp data/Info.plist wxMaxima.app/Contents
 cp data/PkgInfo wxMaxima.app/Contents
-cp wxmaxima wxMaxima.app/Contents/MacOS
+cp src/wxmaxima wxMaxima.app/Contents/MacOS
 mkdir -p wxMaxima.app/Contents/Resources/toolbar
 mkdir -p wxMaxima.app/Contents/Resources/statusbar
 mkdir -p wxMaxima.app/Contents/Resources/config
