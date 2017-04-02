@@ -14,8 +14,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/Setup.h.cin ${CMAKE_CURRENT_SOURC
 
 if (APPLE)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/data/Info.plist.in ${CMAKE_CURRENT_SOURCE_DIR}/data/Info.plist)
-endif()
-
-add_custom_target(wxMaxima.app
+    add_custom_target(wxMaxima.app
         DEPENDS wxmaxima
         COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/make_app_bundle)
+endif()
