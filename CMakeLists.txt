@@ -15,13 +15,20 @@ add_subdirectory(src)
 add_subdirectory(data)
 add_subdirectory(info)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/data/wxmathml.lisp.in ${CMAKE_CURRENT_SOURCE_DIR}/data/wxmathml.lisp)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/Setup.h.cin ${CMAKE_CURRENT_SOURCE_DIR}/src/Setup.h)
-
-
 if (APPLE)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/data/Info.plist.in ${CMAKE_CURRENT_SOURCE_DIR}/data/Info.plist)
     add_custom_target(wxMaxima.app
         DEPENDS wxmaxima
         COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/make_app_bundle)
 endif()
+
+# Build Packages
+set(CPACK_GENERATOR "TGZ;TBZ2;DEB;RPM")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "wxMaxima is a GUI for the CAS Maxima")
+set(CPACK_PACKAGE_VENDOR "The wxMaxima Team")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/README.md")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
+set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${VERSION}")
+set(CPACK_PACKAGE_CONTACT "The wxMaxima Team <wxmaxima-devel@lists.sourceforge.net>")
+set(CPACK_PACKAGE_SECTION "science")
+set(CPACK_PACKAGE_VERSION "${VERSION}")
+set(CPack)

@@ -133,6 +133,8 @@ add_executable(wxmaxima ${SOURCE_FILES})
 
 target_link_libraries(wxmaxima ${wxWidgets_CXX_FLAGS} ${wxWidgets_LIBRARIES})
 
+configure_file(Setup.h.cin Setup.h)
+
 install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 
 if (APPLE)
