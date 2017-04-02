@@ -19,6 +19,7 @@ set(PIXMAPS
 
 install(FILES ${PIXMAPS}           DESTINATION share/wxmaxima/pixmaps)
 
+install(FILES wxmaxima             DESTINATION share/bash-completion/completions)
 install(FILES wxmaxima.1           DESTINATION share/man/man1)
 install(FILES wxmaxima-16.xpm      DESTINATION share/pixmaps)
 install(FILES wxmaxima-32.xpm      DESTINATION share/pixmaps)
