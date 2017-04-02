@@ -129,11 +129,20 @@ set(SOURCE_FILES
         XmlInspector.cpp
         XmlInspector.h)
 
+# We put Setup.h into binary dir
+include_directories("${CMAKE_CURRENT_BINARY_DIR}}")
+
 add_executable(wxmaxima ${SOURCE_FILES})
+
+if (APPLE)
+    set_target_properties(wxmaxima PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_BINARY_DIR}
+            RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_BINARY_DIR})
+endif()
 
 target_link_libraries(wxmaxima ${wxWidgets_CXX_FLAGS} ${wxWidgets_LIBRARIES})
 
-configure_file(Setup.h.cin Setup.h)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Setup.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Setup.h)
 
 install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 
