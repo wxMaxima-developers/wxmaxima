@@ -27,5 +27,5 @@ set(TRANSLATION_FILES
 if (GETTEXT_FOUND)
     gettext_create_translations(wxMaxima.pot ${TRANSLATION_FILES})
 else()
-    MESSAGE(Gettext not found - translations will be disabled)
+    MESSAGE("Gettext not found - translations will be disabled")
 endif()

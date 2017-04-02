@@ -1,4 +1,4 @@
-find_package(wxWidgets REQUIRED std xml html adv aui core net base)
+find_package(wxWidgets REQUIRED std xml html adv aui core net base REQUIRED)
 
 include(${wxWidgets_USE_FILE})
 
@@ -122,7 +122,6 @@ set(SOURCE_FILES
         TextStyle.h
         ToolBar.cpp
         ToolBar.h
-        wx_inc.h
         wxMaxima.cpp
         wxMaxima.h
         wxMaximaFrame.cpp
