@@ -6,6 +6,10 @@ set(PACKAGE_VERSION ${VERSION})
 set(GITVERSION ${VERSION})
 set(PACKAGE wxMaxima)
 
+# PREFIX should be defined, since it is used in the sourcecode and
+# defined by the automake build system, but not defined by CMake by default.
+add_definitions (-DPREFIX=\"${CMAKE_INSTALL_PREFIX}\")
+
 add_subdirectory(locales)
 add_subdirectory(src)
 

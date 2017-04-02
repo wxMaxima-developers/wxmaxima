@@ -1,4 +1,4 @@
-find_package(gettext)
+find_package(Gettext)
 
 set(TRANSLATION_FILES
         fr.po
@@ -27,5 +27,5 @@ set(TRANSLATION_FILES
 if (GETTEXT_FOUND)
     gettext_create_translations(wxMaxima.pot ${TRANSLATION_FILES})
 else()
-    MESSAGE("Gettext not found - translations will be disabled")
+    MESSAGE(STATUS "Gettext not found - translations will be disabled")
 endif()
