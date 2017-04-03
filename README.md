@@ -43,22 +43,12 @@ instructions for compiling wxWidgets and wxMaxima with autotools.
 ### Compiling wxWidgets on Mac OS X and Windows
 
 Before compiling wxMaxima you need to compile the wxWidgets
-library. Download the source, unarchive and in the source directory
-execute
+library. Download the source (we recommend version 3.1 for Mac OS X),
+unarchive and in the source directory execute
 
     mkdir build
     cd build
-
-On Mac OS X configure wxWidgets with
-
-    ../configure --disable-shared --enable-unicode --with-macosx-version-min=10.9 --disable-mediactrl
-
-and on Windows with
-
-    ../configure --disable-shared
-
-Now build wxWidgets with
-
+    ../configure
     make
 
 You do not need to install the library with `make install`. You will
@@ -69,8 +59,17 @@ are two files in `build/lib/wx/config`. The correct file to use is
 need to copy the file `wxwin.m4` to `acinclude.m4` in the wxMaxima
 source directory.
 
+#### Mac OS X specific instructions
 
-### Compiling with autotools
+Building on Mac OS X sometimes requires additional arguments to the
+configure script. To build a portable binary configure wxWidgets with
+
+    ../configure --disable-shared ---with-libjpeg=builtin --with-libpng=builtin --with-regex=builtin --with-libtiff=builtin --with-zlib=builtin --with-expat=builtin --with-macosx-version-min=10.7
+
+With these options the build process will take a little longer, but
+the resulting binary will have less library dependencides.
+
+### Compiling wxMaxima with autotools
 
 If you are not building an official tarball but using the git version it
 is necessary to execute `./bootstrap` first in order to get the file
@@ -101,87 +100,19 @@ repositories and not only the binary packages) by the simpler
 
     sudo apt-get build-dep wxmaxima
 
+#### Mac OS X specific instructions
+
 To build an application bundle of wxMaxima on Mac OS X
 
-    ./configure --with-wx-config=<path to wx-config>
+    ./configure --with-wx-config=<path to wx-config> --with-macosx-version-min=10.7
     make
     make allmo
     make wxMaxima.app
 
-Sometimes the configure step requires an extra
-`--with-macosx-version-min=10.9` argument. Also in order to create a
-application that runs on other computers, as well, sometimes .dylib
-files may need to be copied into the Frameworks folder of the application
-bundle wxMaxima.app
+Note that the version specified in `--with-macosx-version-min` should match the version
+used when configuring wxWidgets.
 
-Note: libtiff depends on liblzma.
-
-
-Tomio Arisaka has found out a way to make wxMaxima independent of the shared library
-which is not included in MacOS X:
-    (1) Copy the shared library into the application bundle of wxMaxima.
-    (2) Changes the dependent shared library install name old to new in the shared library of wxMaxima.
-    (3) Changes the dependent shared library install name old to new in the executable file of wxMaxima.
-
-(Note: I use "otool -L" to display the path name of the dependent shared library.)
---------------------------------------------------------------------------------
-$ cp -iRp ./wxmaxima-15.08.2/wxMaxima.app ./
-$ 
-$ otool -L ./wxMaxima.app/Contents/MacOS/wxmaxima 
-$ 
-$ mkdir ./wxMaxima.app/Contents/MacOS/lib
-$ 
-$ pushd ./wxMaxima.app/Contents/MacOS/lib
-$ 
-$ cp -ip /opt/local/lib/libpng16.16.dylib ./
-$ cp -ip /opt/local/lib/libjpeg.9.dylib ./
-$ cp -ip /opt/local/lib/libtiff.5.dylib ./
-$ cp -ip /opt/local/lib/libexpat.1.dylib ./
-$ cp -ip /opt/local/lib/libz.1.dylib ./
-$ cp -ip /opt/local/lib/libiconv.2.dylib ./
-$ cp -ip /opt/local/lib/liblzma.5.dylib ./
-$ 
-$ otool -L ./libtiff.5.dylib 
-$ 
-$ install_name_tool -change /opt/local/lib/liblzma.5.dylib @executable_path/lib/liblzma.5.dylib libtiff.5.dylib
-$ 
-$ install_name_tool -change /opt/local/lib/libjpeg.9.dylib @executable_path/lib/libjpeg.9.dylib libtiff.5.dylib
-$ 
-$ install_name_tool -change /opt/local/lib/libz.1.dylib @executable_path/lib/libz.1.dylib libtiff.5.dylib
-$ 
-$ otool -L ./libtiff.5.dylib
-$ 
-$ otool -L ./liblzma.5.dylib 
-$ 
-$ install_name_tool -change /opt/local/lib/liblzma.5.dylib @executable_path/lib/liblzma.5.dylib liblzma.5.dylib
-$ 
-$ otool -L ./liblzma.5.dylib 
-$ 
-$ otool -L ./libpng16.16.dylib 
-$ 
-$ install_name_tool -change /opt/local/lib/libz.1.dylib @executable_path/lib/libz.1.dylib libpng16.16.dylib
-$ 
-$ otool -L ./libpng16.16.dylib 
-$ 
-$ pushd ..
-$ 
-$ install_name_tool -change /opt/local/lib/libpng16.16.dylib @executable_path/lib/libpng16.16.dylib wxmaxima
-$ 
-$ install_name_tool -change /opt/local/lib/libjpeg.9.dylib @executable_path/lib/libjpeg.9.dylib wxmaxima
-$ 
-$ install_name_tool -change /opt/local/lib/libtiff.5.dylib @executable_path/lib/libtiff.5.dylib wxmaxima
-$ 
-$ install_name_tool -change /opt/local/lib/libexpat.1.dylib @executable_path/lib/libexpat.1.dylib wxmaxima
-$ 
-$ install_name_tool -change /opt/local/lib/libz.1.dylib @executable_path/lib/libz.1.dylib wxmaxima
-$ 
-$ install_name_tool -change /opt/local/lib/libiconv.2.dylib @executable_path/lib/libiconv.2.dylib wxmaxima
-$ 
-$ popd;popd
-$ 
-$ otool -L ./wxMaxima.app/Contents/MacOS/wxmaxima 
-
-
+#### Windows specific instructions
 
 On Windows execute instead:
 
