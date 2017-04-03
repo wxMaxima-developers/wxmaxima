@@ -129,31 +129,29 @@ set(SOURCE_FILES
         XmlInspector.cpp
         XmlInspector.h)
 
-IF (WINDOWS)
-  SET(SOURCE_FILES Resources.rc ${SOURCE_FILES})
-ENDIF()
+if (WINDOWS)
+  set(SOURCE_FILES Resources.rc ${SOURCE_FILES})
+endif()
 
 # We put Setup.h into binary dir
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
-IF (WIN32)
-  add_executable(wxmaxima WIN32 ${SOURCE_FILES})
-ELSE ()
-  add_executable(wxmaxima ${SOURCE_FILES})
-ENDIF()
-
-if (APPLE)
-    set_target_properties(wxmaxima PROPERTIES
-            RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_BINARY_DIR}
-            RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_BINARY_DIR})
-endif()
-
 if (WIN32)
-    set_target_properties(wxmaxima PROPERTIES
-            RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}
-            RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR})
+  add_executable(wxmaxima WIN32 ${SOURCE_FILES})
+  set_target_properties(wxmaxima PROPERTIES
+          RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_CURRENT_SOURCE_DIR}
+          RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR})
+elseif(APPLE)
+  add_executable(wxmaxima ${SOURCE_FILES})
+  set_target_properties(wxmaxima PROPERTIES
+          RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
+          RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS)
+  add_dependencies(wxmaxima wxMaxima.app)
+  set(CMAKE_CXX_FLAGS -mmacosx-version-min=10.7)
+  set(CMAKE_EXE_LINKER_FLAGS -mmacosx-version-min=10.7)
+else()
+  add_executable(wxmaxima ${SOURCE_FILES})
 endif()
-
 
 target_link_libraries(wxmaxima ${wxWidgets_CXX_FLAGS} ${wxWidgets_LIBRARIES})
 
@@ -161,7 +159,80 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Setup.h.cin ${CMAKE_CURRENT_BINARY_DI
 
 install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 
-if (APPLE)
-    set(CMAKE_CXX_FLAGS -mmacosx-version-min=10.7)
-    set(CMAKE_EXE_LINKER_FLAGS -mmacosx-version-min=10.7)
+# OSX and Windows binary folders
+if (APPLE OR WIN32)
+    # DEFINE FILES
+    file(GLOB RESOURCES_FILES
+            ${CMAKE_BINARY_DIR}/data/wxmathml.lisp
+            ${CMAKE_SOURCE_DIR}/test/testbench_simple.wxmx
+            ${CMAKE_SOURCE_DIR}/data/wxmaxima.png
+            ${CMAKE_SOURCE_DIR}/data/wxmaxima.svg
+            ${CMAKE_SOURCE_DIR}/data/autocomplete.txt
+            ${CMAKE_SOURCE_DIR}/data/tips*.txt
+            ${CMAKE_SOURCE_DIR}/art/wxmac.icns
+            ${CMAKE_SOURCE_DIR}/art/wxmac-doc.icns
+            ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxm.icns
+            ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxmx.icns)
+    file(GLOB HELP_FILES
+            ${CMAKE_SOURCE_DIR}/info/*.html
+            ${CMAKE_SOURCE_DIR}/info/*.jpg
+            ${CMAKE_SOURCE_DIR}/info/*.png
+            ${CMAKE_SOURCE_DIR}/info/wxmaxima.hhp)
+    file(GLOB CONTENT_FILES
+            ${CMAKE_BINARY_DIR}/data/Info.plist
+            ${CMAKE_SOURCE_DIR}/data/PkgInfo)
+    file(GLOB TOOLBAR_FILES
+            ${CMAKE_SOURCE_DIR}/art/toolbar/*.png)
+    file(GLOB STATUSBAR_FILES
+            ${CMAKE_SOURCE_DIR}/art/statusbar/*.png)
+    file(GLOB CONFIG_FILES
+            ${CMAKE_SOURCE_DIR}/art/config/*.png)
+
+    if (APPLE)
+        # DEFINE DIRECTORIES
+        set(APP_DIR ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents)
+        set(APP_MACOSX_DIR ${APP_DIR}/MacOS)
+        set(APP_RESOURCES_DIR ${APP_DIR}/Resources)
+        set(APP_HELP_DIR ${APP_RESOURCES_DIR}/help)
+        # CUSTOM TARGET
+        add_custom_target(wxMaxima.app)
+        add_custom_command(TARGET wxMaxima.app PRE_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_MACOSX_DIR})
+        add_custom_command(TARGET wxMaxima.app PRE_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_HELP_DIR})
+        add_custom_command(TARGET wxMaxima.app PRE_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_RESOURCES_DIR}/toolbar)
+        add_custom_command(TARGET wxMaxima.app PRE_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_RESOURCES_DIR}/statusbar)
+        add_custom_command(TARGET wxMaxima.app PRE_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_RESOURCES_DIR}/config)
+        foreach(f ${RESOURCE_FILES})
+            add_custom_command(TARGET wxMaxima.app PRE_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
+        endforeach()
+        foreach(f ${CONTENT_FILES})
+            add_custom_command(TARGET wxMaxima.app PRE_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_DIR})
+        endforeach()
+        foreach(f ${STATUSBAR_FILES})
+            add_custom_command(TARGET wxMaxima.app PRE_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR}/statusbar)
+        endforeach()
+        foreach(f ${TOOLBAR_FILES})
+            add_custom_command(TARGET wxMaxima.app PRE_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR}/toolbar)
+        endforeach()
+        foreach(f ${CONFIG_FILES})
+            add_custom_command(TARGET wxMaxima.app PRE_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR}/config)
+        endforeach()
+        foreach(f ${RESOURCE_FILES})
+            add_custom_command(TARGET wxMaxima.app PRE_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
+        endforeach()
+        foreach(f ${HELP_FILES})
+            add_custom_command(TARGET wxMaxima.app PRE_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_HELP_DIR})
+        endforeach()
+    endif(APPLE)
 endif()

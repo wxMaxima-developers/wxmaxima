@@ -5,27 +5,25 @@ if (APPLE)
 endif()
 
 set(DATAFILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/tips.txt
         ${CMAKE_CURRENT_BINARY_DIR}/wxmathml.lisp
+        ${CMAKE_CURRENT_SOURCE_DIR}/tips.txt
         ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.png
         ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.svg
         ${CMAKE_CURRENT_SOURCE_DIR}/autocomplete.txt)
 
-install(FILES ${DATAFILES}         DESTINATION share/wxMaxima)
-
 set(PIXMAPS
         ${CMAKE_CURRENT_SOURCE_DIR}/text-x-wxmathml.svg
-        ${CMAKE_CURRENT_SOURCE_DIR}/text-x-wxmaxima-batch.svg)
+        ${CMAKE_CURRENT_SOURCE_DIR}/text-x-wxmaxima-batch.svg
+        ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-16.xpm
+        ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-32.xpm
+        ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.png
+        ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.svg
+        ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-32.xpm)
 
-install(FILES ${PIXMAPS}           DESTINATION share/pixmaps)
-
+install(FILES ${DATAFILES}                                     DESTINATION share/wxMaxima)
+install(FILES ${PIXMAPS}                                       DESTINATION share/pixmaps)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima             DESTINATION share/bash-completion/completions)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.1           DESTINATION share/man/man1)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-16.xpm      DESTINATION share/pixmaps)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-32.xpm      DESTINATION share/pixmaps)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.png         DESTINATION share/pixmaps)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.svg         DESTINATION share/pixmaps)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-32.xpm      DESTINATION share/pixmaps)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxMaxima.appdata.xml DESTINATION share/appdata)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxMaxima.desktop     DESTINATION share/applications)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/x-wxmathml.xml       DESTINATION share/mime/packages)

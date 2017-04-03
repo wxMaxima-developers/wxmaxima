@@ -1,5 +1,6 @@
-install(DIRECTORY . DESTINATION share/doc/wxmaxima
-        FILES_MATCHING PATTERN ${CMAKE_CURRENT_SOURCE_DIR}}/*.html
-            PATTERN ${CMAKE_CURRENT_SOURCE_DIR}}/*.jpg
-            PATTERN ${CMAKE_CURRENT_SOURCE_DIR}}/*.png
-            PATTERN ${CMAKE_CURRENT_SOURCE_DIR}}/*.hhp)
+file(GLOB INFO_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/*.jpg
+        ${CMAKE_CURRENT_SOURCE_DIR}/*.png
+        ${CMAKE_CURRENT_SOURCE_DIR}/*.html)
+
+install(FILES ${INFO_FILES} DESTINATION share/doc/wxmaxima)

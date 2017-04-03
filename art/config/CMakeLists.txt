@@ -1,2 +1,3 @@
-file(GLOB pngfiles ${CMAKE_CURRENT_SOURCE_DIR}/*.png)
-install(FILES ${pngfiles} DESTINATION share/wxMaxima)
+file(GLOB CONFIG_PNGFILES ${CMAKE_CURRENT_SOURCE_DIR}/*.png)
+
+install(FILES ${CONFIG_PNGFILES} DESTINATION share/wxMaxima)
