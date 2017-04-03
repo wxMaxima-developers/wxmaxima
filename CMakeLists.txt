@@ -14,6 +14,7 @@ add_subdirectory(locales)
 add_subdirectory(src)
 add_subdirectory(data)
 add_subdirectory(info)
+add_subdirectory(art)
 
 if (APPLE)
     add_custom_target(wxMaxima.app
@@ -47,6 +48,9 @@ if (APPLE)
 
 endif()
 
+install(FILES COPYING README README.md DESTINATION share/wxMaxima)
+install(FILES test/testbench_simple.wxmx DESTINATION share/wxMaxima)
+
 # Build Packages
 set(CPACK_GENERATOR "TGZ;TBZ2;DEB;RPM")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "wxMaxima is a GUI for the CAS Maxima")
@@ -57,4 +61,4 @@ set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${VERSION}")
 set(CPACK_PACKAGE_CONTACT "The wxMaxima Team <wxmaxima-devel@lists.sourceforge.net>")
 set(CPACK_PACKAGE_SECTION "science")
 set(CPACK_PACKAGE_VERSION "${VERSION}")
-set(CPack)
+include(CPack)
