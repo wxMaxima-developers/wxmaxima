@@ -207,31 +207,31 @@ if (APPLE OR WIN32)
         add_custom_command(TARGET wxMaxima.app PRE_BUILD
                 COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_RESOURCES_DIR}/config)
         foreach(f ${RESOURCE_FILES})
-            add_custom_command(TARGET wxMaxima.app PRE_BUILD
+            add_custom_command(TARGET wxMaxima.app
                 COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
         endforeach()
         foreach(f ${CONTENT_FILES})
-            add_custom_command(TARGET wxMaxima.app PRE_BUILD
+            add_custom_command(TARGET wxMaxima.app
                     COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_DIR})
         endforeach()
         foreach(f ${STATUSBAR_FILES})
-            add_custom_command(TARGET wxMaxima.app PRE_BUILD
+            add_custom_command(TARGET wxMaxima.app
                     COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR}/statusbar)
         endforeach()
         foreach(f ${TOOLBAR_FILES})
-            add_custom_command(TARGET wxMaxima.app PRE_BUILD
+            add_custom_command(TARGET wxMaxima.app
                     COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR}/toolbar)
         endforeach()
         foreach(f ${CONFIG_FILES})
-            add_custom_command(TARGET wxMaxima.app PRE_BUILD
+            add_custom_command(TARGET wxMaxima.app
                     COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR}/config)
         endforeach()
-        foreach(f ${RESOURCE_FILES})
-            add_custom_command(TARGET wxMaxima.app PRE_BUILD
+        foreach(f ${RESOURCES_FILES})
+            add_custom_command(TARGET wxMaxima.app
                     COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
         endforeach()
         foreach(f ${HELP_FILES})
-            add_custom_command(TARGET wxMaxima.app PRE_BUILD
+            add_custom_command(TARGET wxMaxima.app
                     COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_HELP_DIR})
         endforeach()
     endif(APPLE)
