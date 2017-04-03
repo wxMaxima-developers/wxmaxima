@@ -1,4 +1,4 @@
-find_package(wxWidgets REQUIRED std xml html adv aui core net base REQUIRED)
+﻿find_package(wxWidgets REQUIRED std xml html adv aui core net base REQUIRED)
 
 include(${wxWidgets_USE_FILE})
 
@@ -129,8 +129,12 @@ set(SOURCE_FILES
         XmlInspector.cpp
         XmlInspector.h)
 
+IF (WINDOWS)
+  SET(SOURCE_FILES Resources.rc ${SOURCE_FILES})
+ENDIF()
+
 # We put Setup.h into binary dir
-include_directories("${CMAKE_CURRENT_BINARY_DIR}}")
+include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 add_executable(wxmaxima ${SOURCE_FILES})
 
