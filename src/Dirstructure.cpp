@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2015      Gunter Königsmann <wxMaxima@physikbuch.de>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
@@ -42,6 +42,8 @@ wxString Dirstructure::ResourcesDir()
     exe = exe.Left(lastBackslash + 1);
   else
     exe = exe.Left(lastSlash + 1);
+  if (exe.EndsWith("src/") || exe.EndsWith("src\\"))
+    exe = exe.Left(exe.Len() - 4);
   return exe;
 #elif defined __WXMAC__
   wxString exe = wxStandardPaths::Get().GetExecutablePath();

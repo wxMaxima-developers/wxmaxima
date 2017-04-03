@@ -142,11 +142,18 @@ ELSE ()
   add_executable(wxmaxima ${SOURCE_FILES})
 ENDIF()
 
-if (APPLE OR WIN32)
+if (APPLE)
     set_target_properties(wxmaxima PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_BINARY_DIR}
             RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_BINARY_DIR})
 endif()
+
+if (WIN32)
+    set_target_properties(wxmaxima PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}
+            RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR})
+endif()
+
 
 target_link_libraries(wxmaxima ${wxWidgets_CXX_FLAGS} ${wxWidgets_LIBRARIES})
 
