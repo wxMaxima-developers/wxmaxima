@@ -1,5 +1,4 @@
-﻿
-find_package(wxWidgets REQUIRED std xml html adv aui core net base)
+﻿find_package(wxWidgets REQUIRED std xml html adv aui core net base)
 
 include(${wxWidgets_USE_FILE})
 
@@ -137,9 +136,13 @@ ENDIF()
 # We put Setup.h into binary dir
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
-add_executable(wxmaxima ${SOURCE_FILES})
+IF (WIN32)
+  add_executable(wxmaxima WIN32 ${SOURCE_FILES})
+ELSE ()
+  add_executable(wxmaxima ${SOURCE_FILES})
+ENDIF()
 
-if (APPLE)
+if (APPLE OR WIN32)
     set_target_properties(wxmaxima PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_BINARY_DIR}
             RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_BINARY_DIR})
