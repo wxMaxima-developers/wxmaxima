@@ -606,7 +606,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
         long end = start + m_cellPointers->m_selectionString.Length();
 
         // Mark only text that won't be marked in the next step:
-        // This would not only be unneccessary but also could cause
+        // This would not only be unnecessary but also could cause
         // selections to flicker in very long texts
         if ((!IsActive()) || (start != MIN(m_selectionStart, m_selectionEnd)))
           MarkSelection(start, end, scale, dc, TS_EQUALSSELECTION, fontsize);
@@ -3815,7 +3815,7 @@ void EditorCell::StyleText()
             // could break at.
             //
             // TODO: If we handled spaces before we handled soft line breaks this
-            // branch would be unneccessary, right?
+            // branch would be unnecessary, right?
 
             // Spaces and reaching the end of the text both trigger auto-wrapping
             if ((*it == ' ') || (i >= m_text.Length() - 1))
