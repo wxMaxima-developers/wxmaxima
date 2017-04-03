@@ -15,7 +15,6 @@ set(PIXMAPS
         ${CMAKE_CURRENT_SOURCE_DIR}/text-x-wxmathml.svg
         ${CMAKE_CURRENT_SOURCE_DIR}/text-x-wxmaxima-batch.svg
         ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-16.xpm
-        ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-32.xpm
         ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.png
         ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.svg
         ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-32.xpm)

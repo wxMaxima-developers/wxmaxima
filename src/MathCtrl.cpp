@@ -5585,7 +5585,7 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
     name << i << wxT(".*");
     name = fsystem->FindFirst(name);
 
-    // Todo: Ths file remains as memory leak. But calling delete on it
+    // TODO: This file remains as memory leak. But calling delete on it
     // causes already-freed memory to be overwritten.
     wxFSFile *fsfile = fsystem->OpenFile(name);
 

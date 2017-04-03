@@ -296,7 +296,7 @@ public:
   //! Sets the cursor to the screen coordinate point
   void SelectPointText(wxDC &dc, wxPoint &point);
 
-  //! Selects the text beween the screen coordinates one and two
+  //! Selects the text between the screen coordinates one and two
   void SelectRectText(wxDC &dc, wxPoint &one, wxPoint &two);
 
   //! Selects the word the cursor is currently at.
