@@ -25,7 +25,6 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-16.xpm      DESTINATION share
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-32.xpm      DESTINATION share/pixmaps)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.png         DESTINATION share/pixmaps)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.svg         DESTINATION share/pixmaps)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima-32.xpm      DESTINATION share/pixmaps)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxMaxima.appdata.xml DESTINATION share/appdata)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxMaxima.desktop     DESTINATION share/applications)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/x-wxmathml.xml       DESTINATION share/mime/packages)
