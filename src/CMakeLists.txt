@@ -138,19 +138,24 @@ endif()
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 if (WIN32)
-  add_executable(wxmaxima WIN32 ${SOURCE_FILES})
-  set_target_properties(wxmaxima PROPERTIES
-          RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima
-          RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima)
-  add_dependencies(wxmaxima wxMaxima.win)
+    add_executable(wxmaxima WIN32 ${SOURCE_FILES})
+    set_target_properties(wxmaxima PROPERTIES
+              RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima
+              RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima)
+    add_dependencies(wxmaxima wxMaxima.win)
 elseif(APPLE)
-  add_executable(wxmaxima ${SOURCE_FILES})
-  set_target_properties(wxmaxima PROPERTIES
-          RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
-          RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS)
-  add_dependencies(wxmaxima wxMaxima.app)
+    if (MACOSX_VERSION_MIN)
+        message(STATUS "Compiling with min macosx version ${MACOSX_VERSION_MIN}")
+        set(CMAKE_CXX_FLAGS -mmacosx-version-min=${MACOSX_VERSION_MIN})
+        set(CMAKE_CXX_FLAGS -mmacosx-version-min=${MACODX_VERISON_MIN})
+    endif(MACOSX_VERSION_MIN)
+    add_executable(wxmaxima ${SOURCE_FILES})
+    set_target_properties(wxmaxima PROPERTIES
+              RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
+              RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS)
+    add_dependencies(wxmaxima wxMaxima.app)
 else()
-  add_executable(wxmaxima ${SOURCE_FILES})
+    add_executable(wxmaxima ${SOURCE_FILES})
 endif()
 
 target_link_libraries(wxmaxima ${wxWidgets_CXX_FLAGS} ${wxWidgets_LIBRARIES})
