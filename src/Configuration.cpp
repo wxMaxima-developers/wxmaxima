@@ -31,7 +31,7 @@
 
 Configuration::Configuration(wxDC &dc, bool isTopLevel) : m_dc(&dc)
 {
-  m_mathJaxURL = wxT("https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML");
+  m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML");
   m_scale = 1.0;
   m_zoomFactor = 1.0; // affects returned fontsizes
   m_top = -1;
