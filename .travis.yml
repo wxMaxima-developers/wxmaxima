@@ -28,4 +28,4 @@ notification:
 git:
   depth: 15
 
-script: mkdir build && cd build && cmake .. && cmake --build .
+script: mkdir build && cd build && CXXFLAGS=-Wall cmake .. && cmake --build . && cmake --build . -- translations && cmake --build . -- install DESTDIR=$(pwd)/installtest
