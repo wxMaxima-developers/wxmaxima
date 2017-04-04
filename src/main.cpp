@@ -174,16 +174,6 @@ bool MyApp::OnInit()
   Dirstructure dirstructure;
 
 
-  wxConfigBase *config = wxConfig::Get();
-  config->Read(wxT("language"), &lang);
-  if (lang == wxLANGUAGE_UNKNOWN)
-    lang = wxLocale::GetSystemLanguage();
-
-  {
-    wxLogNull disableErrors;
-    m_locale.Init(lang);
-  }
-
 #if defined (__WXMSW__)
   wxSetEnv(wxT("LANG"), m_locale.GetName());
   if (!wxGetEnv(wxT("BUILD_DIR"), NULL))
@@ -206,6 +196,19 @@ bool MyApp::OnInit()
   wxGetEnv(wxT("PATH"), &path);
   wxSetEnv(wxT("PATH"), path << wxT(":/usr/local/bin"));
 #endif
+
+  wxConfigBase *config = wxConfig::Get();
+  config->Read(wxT("language"), &lang);
+  if (lang == wxLANGUAGE_UNKNOWN)
+    lang = wxLocale::GetSystemLanguage();
+
+  {
+    // Mute errors for the case that only one of wxWidgets and wxMaxima
+    // has translations for the current language.
+    wxLogNull disableErrors;
+    m_locale.Init(lang);
+  }
+
 
 
 #if defined (__WXMAC__)
