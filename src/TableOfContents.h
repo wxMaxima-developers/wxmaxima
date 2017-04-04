@@ -79,7 +79,7 @@ public:
       - we call it only on creation of a cell and on leaving it again
       - and we only traverse the tree if the pane is actually shown.
    */
-  void Update(GroupCell *tree, GroupCell *pos);
+  void UpdateTableOfContents(GroupCell *tree, GroupCell *pos);
 
   //! Get the nth Cell in the table of contents.
   GroupCell *GetCell(int index);

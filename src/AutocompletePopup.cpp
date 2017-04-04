@@ -48,7 +48,7 @@ void AutocompletePopup::UpdateResults()
     Append(popid_complete_00 + i, m_completions[i]);
 }
 
-void AutocompletePopup::ProcessEvent(wxKeyEvent &event)
+void AutocompletePopup::ProcessCharEvent(wxKeyEvent &event)
 {
   event.Skip();
 }
@@ -68,6 +68,6 @@ AutocompletePopup::AutocompletePopup(
 
 BEGIN_EVENT_TABLE(AutocompletePopup, wxMenu)
 //EVT_KEY_DOWN(AutocompletePopup::ProcessEvent)
-                EVT_CHAR(AutocompletePopup::ProcessEvent)
+                EVT_CHAR(AutocompletePopup::ProcessCharEvent)
 END_EVENT_TABLE()
 

@@ -648,7 +648,7 @@ public:
   virtual void SetMatchParens(bool match)
   {}
 
-  virtual wxPoint PositionToPoint(int pos = -1)
+  virtual wxPoint PositionToPoint(int fontsize, int pos = -1)
   { return wxPoint(-1, -1); }
 
   virtual bool IsDirty()

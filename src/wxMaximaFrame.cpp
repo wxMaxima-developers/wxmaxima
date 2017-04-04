@@ -1123,7 +1123,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
       break;
     case menu_pane_structure:
       m_manager.GetPane(wxT("structure")).Show(show);
-      m_console->m_tableOfContents->Update(m_console->GetTree(), m_console->GetHCaret());
+      m_console->m_tableOfContents->UpdateTableOfContents(m_console->GetTree(), m_console->GetHCaret());
       break;
     case menu_pane_xmlInspector:
       m_manager.GetPane(wxT("XmlInspector")).Show(show);

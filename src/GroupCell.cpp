@@ -837,7 +837,6 @@ void GroupCell::DrawBracket()
   //
   // Mark groupcells currently in queue.
   //
-  double scale = configuration->GetScale();
   if (m_inEvaluationQueue)
   {
     drawBracket = true;

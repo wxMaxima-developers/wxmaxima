@@ -2431,7 +2431,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
         else
           cursorPos = m_console->FirstVisibleGC();
       }
-      m_console->m_tableOfContents->Update(m_console->GetTree(), cursorPos);
+      m_console->m_tableOfContents->UpdateTableOfContents(m_console->GetTree(), cursorPos);
     }
   }
 
@@ -2743,7 +2743,7 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
   if (m_console->m_tableOfContents)
   {
     m_console->m_scheduleUpdateToc = false;
-    m_console->m_tableOfContents->Update(m_console->GetTree(), m_console->GetHCaret());
+    m_console->m_tableOfContents->UpdateTableOfContents(m_console->GetTree(), m_console->GetHCaret());
   }
   m_console->RecalculateForce();
   m_console->RequestRedraw();

@@ -47,8 +47,7 @@ public:
   }
 
 private:
-  bool equal;
-
+  
   void set_properties();
 
   void do_layout();

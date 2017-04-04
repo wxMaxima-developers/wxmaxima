@@ -52,7 +52,6 @@ private:
   wxStaticLine *static_line_1;
   wxButton *button_1;
   wxButton *button_2;
-  Configuration *m_configuration;
 };
 
 #endif // SYSTEMWIZ_H

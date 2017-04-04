@@ -50,7 +50,7 @@ public:
   void UpdateResults();
 
 protected:
-  void ProcessEvent(wxKeyEvent &event);
+  void ProcessCharEvent(wxKeyEvent &event);
 
 DECLARE_EVENT_TABLE()
 };

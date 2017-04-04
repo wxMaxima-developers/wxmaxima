@@ -508,8 +508,6 @@ private:
   bool m_insertAns;
   //! Do we want to automatically open a new cell if maxima has finished evaluating its input?
   bool m_openHCaret;
-  //! The Configuration that was active before this one
-  Configuration *m_last;
   //! The width of input and output labels [in chars]
   int m_labelWidth;
   int m_indent;

@@ -66,7 +66,7 @@ TableOfContents::~TableOfContents()
   delete m_displayedItems;
 }
 
-void TableOfContents::Update(GroupCell *tree, GroupCell *cursorPosition)
+void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *cursorPosition)
 {
   long selection = m_lastSelection;
   if (IsShown())
