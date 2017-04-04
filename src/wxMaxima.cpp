@@ -2354,7 +2354,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   }
 
 #if defined (__WXMSW__)
-                                                                                                                          if(wxFileName(MaximaHelpFile).GetFullPath().Right(4)==wxT(".chm"))
+  if(wxFileName(MaximaHelpFile).GetFullPath().Right(4)==wxT(".chm"))
     ShowCHMHelp(MaximaHelpFile,keyword);
   else {
     Dirstructure dirstructure;
@@ -6333,9 +6333,8 @@ int wxMaxima::SaveDocumentP()
   wxMessageDialog dialog(this,
                          wxString::Format(_("Do you want to save the changes you made in the document \"%s\"?"),
                                           file),
-                         wxEmptyString, wxCENTER | wxYES_NO | wxCANCEL);
-
-  dialog.SetTitle("wxMaxima");
+                         "wxMaxima", wxCENTER | wxYES_NO | wxCANCEL);
+  
   dialog.SetExtendedMessage(_("Your changes will be lost if you don't save them."));
   dialog.SetYesNoCancelLabels(_("Save"), _("Don't save"), _("Cancel"));
 

@@ -1,4 +1,4 @@
-language: cpp
+﻿language: cpp
 sudo: required
 
 os:
@@ -6,8 +6,6 @@ os:
   - osx
 
 osx_image: xcode8.2
-
-cache: ccache
 
 branches:
   only:
