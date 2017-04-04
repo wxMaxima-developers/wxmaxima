@@ -149,8 +149,6 @@ elseif(APPLE)
           RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
           RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS)
   add_dependencies(wxmaxima wxMaxima.app)
-  set(CMAKE_CXX_FLAGS -mmacosx-version-min=10.7)
-  set(CMAKE_EXE_LINKER_FLAGS -mmacosx-version-min=10.7)
 else()
   add_executable(wxmaxima ${SOURCE_FILES})
 endif()
