@@ -3684,8 +3684,16 @@ void MathCtrl::OnMouseExit(wxMouseEvent &event)
     m_mousePoint.y = event.GetY();
     m_timer.Start(200, true);
   }
-  if (m_tree)
-    m_tree->CellUnderPointer(NULL);
+
+  // If only the bracket of the cell under the mouse pointer is shown perhaps it
+  // is logical to stop displaying it if the mouse pointer is outside the window.
+  // If this isn't the case I'm not against the following block being deleted.
+  if(m_configuration->HideBrackets())
+  {
+    if (m_tree)
+      m_tree->CellUnderPointer(NULL);
+    RequestRedraw();
+  }
 }
 
 #ifdef GetMagnification
