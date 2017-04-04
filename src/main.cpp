@@ -173,6 +173,16 @@ bool MyApp::OnInit()
 
   Dirstructure dirstructure;
 
+  wxConfigBase *config = wxConfig::Get();
+  lang = wxLocale::GetSystemLanguage();
+  config->Read(wxT("language"), &lang);
+
+  // If wxWidgets or wxMaxima doesn't provide a translation for the current language
+  // we don't want this to throw an error => Mute errors for the next command.
+  {
+    wxLogNull disableErrors;
+    m_locale.Init(lang);
+  }
 
 #if defined (__WXMSW__)
   wxSetEnv(wxT("LANG"), m_locale.GetName());
@@ -187,7 +197,8 @@ bool MyApp::OnInit()
 #endif
 
   m_locale.AddCatalogLookupPathPrefix(dirstructure.LocaleDir());
-
+  m_locale.AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
+  m_locale.AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
   m_locale.AddCatalog(wxT("wxMaxima"));
   m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
 
@@ -196,20 +207,6 @@ bool MyApp::OnInit()
   wxGetEnv(wxT("PATH"), &path);
   wxSetEnv(wxT("PATH"), path << wxT(":/usr/local/bin"));
 #endif
-
-  wxConfigBase *config = wxConfig::Get();
-  config->Read(wxT("language"), &lang);
-  if (lang == wxLANGUAGE_UNKNOWN)
-    lang = wxLocale::GetSystemLanguage();
-
-  {
-    // Mute errors for the case that only one of wxWidgets and wxMaxima
-    // has translations for the current language.
-    wxLogNull disableErrors;
-    m_locale.Init(lang);
-  }
-
-
 
 #if defined (__WXMAC__)
   wxApp::SetExitOnFrameDelete(false);
