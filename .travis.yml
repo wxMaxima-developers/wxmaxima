@@ -35,7 +35,6 @@ script: |
   cd build &&
   cmake .. &&
   make &&
-  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make wxMaxima.app ; fi &&
   if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then tar cvzf wxMaxima_nightly.app.zip wxMaxima.app ; fi &&
   openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv -in data/wxMaxima.key.enc -out data/wxMaxima.key -d &&
   chmod 600 data/wxMaxima.key &&
