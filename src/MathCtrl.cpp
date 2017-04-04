@@ -1542,6 +1542,9 @@ void MathCtrl::OnMouseMotion(wxMouseEvent &event)
         m_tree->CellUnderPointer(tmp);
       if (tmp != NULL)
         m_groupCellUnderPointerRect = tmp->GetRect();
+      else
+        m_groupCellUnderPointerRect = wxRect(-1,-1,0,0);
+      
       RequestRedraw();
     }
   }
