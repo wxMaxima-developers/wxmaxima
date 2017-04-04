@@ -7,6 +7,8 @@ os:
 
 osx_image: xcode8.2
 
+cache: ccache
+
 branches:
   only:
     - master
@@ -29,3 +31,13 @@ git:
   depth: 15
 
 install: mkdir build && cd build && cmake .. && cmake --build .
+
+script: |
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make wxMaxima.app ; fi &&
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then tar cvzf wxMaxima_nightly.app.zip wxMaxima.app ; fi &&
+  openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv -in data/wxMaxima.key.enc -out data/wxMaxima.key -d &&
+  chmod 600 data/wxMaxima.key &&
+  eval `ssh-agent -s` &&
+  ssh-add data/wxMaxima.key &&
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then echo "put wxMaxima_nightly.app.zip" |sftp -i wxMaxima/wxMaxima.key -o StrictHostKeyChecking=no p33761049-wxMaxima@p33761049.1and1-data.host: ; fi
+
