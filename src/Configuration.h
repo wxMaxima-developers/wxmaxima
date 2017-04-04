@@ -475,6 +475,8 @@ public:
     wxConfig::Get()->Write(wxT("fixReorderedIndices"), m_fixReorderedIndices = fix);
   }
 
+  //! Returns the URL MathJaX can be found at.
+  wxString MathJaXURL(){ return m_mathJaxURL;}
 private:
   wxString m_workingdir;
   wxString m_maximaLocation;
@@ -530,6 +532,7 @@ private:
   int m_lineWidth_em;
   int m_showLabelChoice;
   bool m_fixReorderedIndices;
+  wxString m_mathJaxURL;
   static bool m_showCodeCells;
 };
 
