@@ -634,6 +634,14 @@ void MathCtrl::Recalculate(GroupCell *start, bool force)
   }
 
   AdjustSize();
+  
+  if(CellsSelected())
+  {
+    m_cellPointers->SetSelectionRange_px(
+      dynamic_cast<GroupCell *>(m_selectionStart)->m_currentPoint.y,
+      dynamic_cast<GroupCell *>(m_selectionEnd)->m_currentPoint.y
+      );
+  }
 }
 
 /***
@@ -3692,6 +3700,7 @@ void MathCtrl::OnMouseExit(wxMouseEvent &event)
   {
     if (m_tree)
       m_tree->CellUnderPointer(NULL);
+    m_groupCellUnderPointerRect = wxRect(-1,-1,0,0);
     RequestRedraw();
   }
 }
