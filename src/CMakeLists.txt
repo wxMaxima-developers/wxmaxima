@@ -129,7 +129,8 @@ set(SOURCE_FILES
         XmlInspector.cpp
         XmlInspector.h)
 
-if (WINDOWS)
+if (WIN32)
+  include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
   set(SOURCE_FILES Resources.rc ${SOURCE_FILES})
 endif()
 
