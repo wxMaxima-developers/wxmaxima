@@ -211,7 +211,7 @@ if (APPLE OR WIN32)
             add_custom_command(TARGET wxMaxima.app
                 COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
         endforeach()
-        foreach(f ${RESOURCE_FILES_OSX})
+        foreach(f ${RESOURCES_FILES_OSX})
             add_custom_command(TARGET wxMaxima.app
                 COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
         endforeach()
