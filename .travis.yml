@@ -1,4 +1,4 @@
-language: cpp
+﻿language: cpp
 sudo: required
 
 os:
@@ -17,7 +17,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update                                             ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y libwxgtk3.0-dev libwxgtk3.0  gettext ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                                  ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxwidgets gettext texinfo       ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxwidgets gettext texinfo cmake ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=$PATH:/usr/local/opt/gettext/bin ; fi
 
 notification:
@@ -31,11 +31,10 @@ git:
   depth: 15
 
 script: |
-  cp .travis/wxwin.m4 acinclude.m4 &
-  ./bootstrap &&
-  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./configure --with-macosx-version-min=10.9 --enable-static-wx --enable-fullystatic;else ./configure --enable-static-wx --enable-fullystatic;fi&&
+  mkdir build &&
+  cd build &&
+  cmake .. &&
   make &&
-  make dist &&
   if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make wxMaxima.app ; fi &&
   if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then tar cvzf wxMaxima_nightly.app.zip wxMaxima.app ; fi &&
   openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv -in data/wxMaxima.key.enc -out data/wxMaxima.key -d &&
