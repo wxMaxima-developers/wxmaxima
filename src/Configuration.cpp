@@ -88,6 +88,8 @@ void Configuration::ReadConfig()
   m_autoWrap = 3;
   config->Read(wxT("autoWrapMode"), &m_autoWrap);
 
+  config->Read(wxT("mathJaxURL"), &m_mathJaxURL);
+
   config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
 
   config->Read(wxT("maxima"), &m_maximaLocation);
