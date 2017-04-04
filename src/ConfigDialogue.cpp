@@ -962,7 +962,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("texPreamble"), m_texPreamble->GetValue());
   config->Write(wxT("autoSaveInterval"), m_autoSaveInterval->GetValue());
   config->Write(wxT("documentclass"), m_documentclass->GetValue());
-  configuration->MathJaXURL(m_documentclass->GetValue());
+  configuration->MathJaXURL(m_mathJaxURL->GetValue());
   if (m_saveSize->GetValue())
     config->Write(wxT("pos-restore"), 1);
   else
