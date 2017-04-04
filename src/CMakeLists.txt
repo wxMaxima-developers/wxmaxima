@@ -1,4 +1,4 @@
-find_package(wxWidgets REQUIRED std xml html adv aui core net base)
+﻿find_package(wxWidgets REQUIRED std xml html adv aui core net base)
 
 include(${wxWidgets_USE_FILE})
 
@@ -139,8 +139,9 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 if (WIN32)
   add_executable(wxmaxima WIN32 ${SOURCE_FILES})
   set_target_properties(wxmaxima PROPERTIES
-          RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_CURRENT_SOURCE_DIR}
-          RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR})
+          RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima
+          RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima)
+  add_dependencies(wxmaxima wxMaxima.win)
 elseif(APPLE)
   add_executable(wxmaxima ${SOURCE_FILES})
   set_target_properties(wxmaxima PROPERTIES
@@ -168,7 +169,8 @@ if (APPLE OR WIN32)
             ${CMAKE_SOURCE_DIR}/data/wxmaxima.png
             ${CMAKE_SOURCE_DIR}/data/wxmaxima.svg
             ${CMAKE_SOURCE_DIR}/data/autocomplete.txt
-            ${CMAKE_SOURCE_DIR}/data/tips*.txt
+            ${CMAKE_SOURCE_DIR}/data/tips*.txt)
+    file(GLOB RESOURCES_FILES_OSX
             ${CMAKE_SOURCE_DIR}/art/wxmac.icns
             ${CMAKE_SOURCE_DIR}/art/wxmac-doc.icns
             ${CMAKE_SOURCE_DIR}/art/wxmac-doc-wxm.icns
@@ -210,6 +212,10 @@ if (APPLE OR WIN32)
             add_custom_command(TARGET wxMaxima.app
                 COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
         endforeach()
+        foreach(f ${RESOURCE_FILES_OSX})
+            add_custom_command(TARGET wxMaxima.app
+                COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
+        endforeach()
         foreach(f ${CONTENT_FILES})
             add_custom_command(TARGET wxMaxima.app
                     COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_DIR})
@@ -235,4 +241,50 @@ if (APPLE OR WIN32)
                     COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_HELP_DIR})
         endforeach()
     endif(APPLE)
+
+    if (WIN32)
+        # DEFINE DIRECTORIES
+        set(APP_DIR ${CMAKE_BINARY_DIR}/wxMaxima)
+        set(APP_DATA_DIR ${APP_DIR}/data)
+        set(APP_HELP_DIR ${APP_DIR}/help)
+        set(APP_ART_DIR ${APP_DIR}/art)
+        # CUSTOM TARGET
+        add_custom_target(wxMaxima.win)
+        add_custom_command(TARGET wxMaxima.win PRE_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_DIR})
+        add_custom_command(TARGET wxMaxima.win PRE_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_DATA_DIR})
+        add_custom_command(TARGET wxMaxima.win PRE_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_HELP_DIR})
+        add_custom_command(TARGET wxMaxima.win PRE_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_ART_DIR}/toolbar)
+        add_custom_command(TARGET wxMaxima.win PRE_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_ART_DIR}/statusbar)
+        add_custom_command(TARGET wxMaxima.win PRE_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_ART_DIR}/config)
+        foreach(f ${RESOURCE_FILES})
+            add_custom_command(TARGET wxMaxima.win
+                COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_DATA_DIR})
+        endforeach()
+        foreach(f ${STATUSBAR_FILES})
+            add_custom_command(TARGET wxMaxima.win
+                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_ART_DIR}/statusbar)
+        endforeach()
+        foreach(f ${TOOLBAR_FILES})
+            add_custom_command(TARGET wxMaxima.win
+                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_ART_DIR}/toolbar)
+        endforeach()
+        foreach(f ${CONFIG_FILES})
+            add_custom_command(TARGET wxMaxima.win
+                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_ART_DIR}/config)
+        endforeach()
+        foreach(f ${RESOURCES_FILES})
+            add_custom_command(TARGET wxMaxima.win
+                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_DATA_DIR})
+        endforeach()
+        foreach(f ${HELP_FILES})
+            add_custom_command(TARGET wxMaxima.win
+                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_HELP_DIR})
+        endforeach()
+    endif(WIN32)
 endif()
