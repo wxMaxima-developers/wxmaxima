@@ -201,6 +201,7 @@ void ConfigDialogue::SetProperties()
   m_maximaProgram->SetToolTip(_("Enter the path to the Maxima executable."));
   m_additionalParameters->SetToolTip(_("Additional parameters for Maxima"
                                                " (e.g. -l clisp)."));
+  m_mathJaxURL->SetToolTip(_("The URL MathJaX.js should be downloaded from by our HTML export."));
   m_saveSize->SetToolTip(_("Save wxMaxima window size/position between sessions."));
   m_texPreamble->SetToolTip(_("Additional commands to be added to the preamble of LaTeX output for pdftex."));
   m_autoSaveInterval->SetToolTip(
@@ -356,6 +357,7 @@ void ConfigDialogue::SetProperties()
 #endif
 
   m_documentclass->SetValue(documentclass);
+  m_mathJaxURL->SetValue(configuration->MathJaXURL());
   m_texPreamble->SetValue(texPreamble);
   m_autoSaveInterval->SetValue(autoSaveInterval);
 
@@ -542,33 +544,38 @@ wxPanel *ConfigDialogue::CreateExportPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(5, 2, 5, 5);
+  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(6, 2, 5, 5);
   wxFlexGridSizer *vsizer = new wxFlexGridSizer(17, 1, 5, 5);
 
   wxStaticText *dc = new wxStaticText(panel, -1, _("Documentclass for TeX export:"));
-  m_documentclass = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, wxDefaultSize.GetY()));
+  m_documentclass = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350, wxDefaultSize.GetY()));
   grid_sizer->Add(dc, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_documentclass, 0, wxALL, 5);
 
   wxStaticText *tp = new wxStaticText(panel, -1, _("Additional lines for the TeX preamble:"));
-  m_texPreamble = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, 100),
+  m_texPreamble = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350, 100),
                                  wxTE_MULTILINE | wxHSCROLL);
   grid_sizer->Add(tp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_texPreamble, 0, wxALL, 5);
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
+
+  wxStaticText *mj = new wxStaticText(panel, -1, _("URL MathJaX.js lies at:"));
+  m_mathJaxURL = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350, wxDefaultSize.GetY()));
+  grid_sizer->Add(mj, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_mathJaxURL, 0, wxALL, 5);
 
   wxStaticText *bs = new wxStaticText(panel, -1, _("Bitmap scale for export:"));
   m_bitmapScale = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 1, 3);
   grid_sizer->Add(bs, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_bitmapScale, 0, wxALL, 5);
 
-  wxStaticText *mj = new wxStaticText(panel, -1, _("Export equations to HTML as:"));
+  wxStaticText *mju = new wxStaticText(panel, -1, _("Export equations to HTML as:"));
   wxArrayString mathJaxChoices;
   mathJaxChoices.Add(_("TeX, interpreted by MathJaX"));
   mathJaxChoices.Add(_("Bitmaps"));
   mathJaxChoices.Add(_("MathML + MathJaX as Fill-In"));
   m_exportWithMathJAX = new wxChoice(panel, -1, wxDefaultPosition, wxDefaultSize, mathJaxChoices);
-  grid_sizer->Add(mj, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(mju, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_exportWithMathJAX, 0, wxALL, 5);
 
   m_AnimateLaTeX = new wxCheckBox(panel, -1,
@@ -955,6 +962,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("texPreamble"), m_texPreamble->GetValue());
   config->Write(wxT("autoSaveInterval"), m_autoSaveInterval->GetValue());
   config->Write(wxT("documentclass"), m_documentclass->GetValue());
+  configuration->MathJaXURL(m_documentclass->GetValue());
   if (m_saveSize->GetValue())
     config->Write(wxT("pos-restore"), 1);
   else

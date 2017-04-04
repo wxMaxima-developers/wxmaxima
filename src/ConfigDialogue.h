@@ -202,6 +202,7 @@ protected:
   wxSpinCtrl *m_autoSaveInterval;
   wxButton *m_mpBrowse;
   wxTextCtrl *m_additionalParameters;
+  wxTextCtrl *m_mathJaxURL;
   wxChoice *m_language;
   wxTextCtrl *m_symbolPaneAdditionalChars;
   wxCheckBox *m_saveSize;
