@@ -15,12 +15,17 @@ Current:
   * the with_slider type of commands now uses wxstatusbar() in order to provide
   * progress information for the user.
   * Several scrolling fixes, again.
-  * Many additional bug fixes and stability enhancements.
   * Invalid XML tags are now handled more gracefully
   * Deduplicated the code for saving .wxm files
   * wxMaxima can now directly open a content.xml that has been extracted from a
     broken .wxmx file (e.G. using a text editor) and that has been saved as
     "content.xml" (UTF8-encoding without BOM).
+  * cmake is now our main build system: It is supported under MSVC, XCode,
+    Code::Blocks, its output looks much nicer than the one from the autotools
+    and setting it up uses much more straightforward constructs.
+    The recipe to build a debian package using cmake can be found at
+    https://code.launchpad.net/~peterpall/wxmaxima/packaging
+  * Many additional bug fixes and stability enhancements.
 
 16.12:
   * Not a change in wxMaxima, but useful: In maxima >5.38 the load() command can
