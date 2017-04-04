@@ -90,7 +90,7 @@ program by doing a
     make allmo
     checkinstall -D make install
 
-On ubuntu or debian the build prerequisites can be installed by doing
+On Ubuntu or Debian the build prerequisites can be installed by doing
 a
 
     sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev autoconf imagemagick ibus-gtk ibus-gtk3 checkinstall gettext
@@ -143,6 +143,22 @@ maxima was installed in, again with the caveat of the .dll files:
     make wxMaxima.win.zip
 
 
+### Compiling wxMaxima with CMake
+
+wxMaxima can also be build using the CMake build system.
+The following steps will build and install wxMaxima using CMake:
+
+    mkdir build
+    cd build
+    cmake ..
+    cmake --build .
+    cmake --build . -- translations
+    sudo cmake --build . -- install
+
+If you want to create binary packages (tar.gz, tar.bz2, DEB & RPM), you can
+create them with:
+
+    cmake --build . -- package
 
 Additional information about installing and configuring wxMaxima
 ----------------------------------------------------------------
