@@ -2963,7 +2963,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
   wxString cmd;
   bool forceSave = false;
 #if defined __WXMSW__
-                                                                                                                          wxString b = wxT("\\");
+  wxString b = wxT("\\");
   wxString f = wxT("/");
 #endif
 
@@ -2974,7 +2974,8 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
       Close();
       break;
 #elif defined __WXMSW__ || defined __WXGTK20__
-                                                                                                                            case menu_new_id:
+                                                                                                                          
+  case menu_new_id:
   case ToolBar::tb_new:
     wxExecute(wxT("\"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\""));
     break;
@@ -6334,6 +6335,7 @@ int wxMaxima::SaveDocumentP()
                                           file),
                          wxEmptyString, wxCENTER | wxYES_NO | wxCANCEL);
 
+  dialog.SetTitle("wxMaxima");
   dialog.SetExtendedMessage(_("Your changes will be lost if you don't save them."));
   dialog.SetYesNoCancelLabels(_("Save"), _("Don't save"), _("Cancel"));
 
