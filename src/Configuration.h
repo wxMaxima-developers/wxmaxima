@@ -478,7 +478,7 @@ public:
   //! Returns the URL MathJaX can be found at.
   wxString MathJaXURL(){ return m_mathJaxURL;}
   //! Returns the URL MathJaX can be found at.
-  wxString MathJaXURL(wxString url){wxConfig::Get()->Write(wxT("mathJaxURL"), m_mathJaxURL = url);}
+  void MathJaXURL(wxString url){wxConfig::Get()->Write(wxT("mathJaxURL"), m_mathJaxURL = url);}
 private:
   wxString m_workingdir;
   wxString m_maximaLocation;
