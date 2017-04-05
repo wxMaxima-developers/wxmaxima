@@ -2,7 +2,10 @@ html: html_local
 html_local: html/index.html
 
 html/index.html latex/index.tex: FORCE index.html
-	doxygen Doxyfile
+	cat ${srcdir}/../Doxygen/Doxyfile >Doxyfile.real
+	echo "INPUT = ${srcdir}/../src ${srcdir}/..">>Doxyfile.real
+	echo "PROJECT_LOGO = ${srcdir}/../data/wxmaxima.png">>Doxyfile.real
+	doxygen Doxyfile.real
 
 index.html:
 	echo "<head>">index.html

@@ -19,6 +19,7 @@ endif(MACOSX_VERSION_MIN)
 
 add_subdirectory(locales)
 add_subdirectory(src)
+add_subdirectory(Doxygen)
 add_subdirectory(data)
 add_subdirectory(info)
 add_subdirectory(art)

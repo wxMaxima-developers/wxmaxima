@@ -270,7 +270,6 @@ AC_CONFIG_FILES([
         Makefile
         src/Makefile
         Doxygen/Makefile
-        Doxygen/Doxyfile
         locales/Makefile
         data/Makefile
         art/Makefile
