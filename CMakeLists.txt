@@ -38,4 +38,27 @@ set(CPACK_PACKAGE_CONTACT "The wxMaxima Team <wxmaxima-devel@lists.sourceforge.n
 set(CPACK_PACKAGE_SECTION "science")
 set(CPACK_PACKAGE_VERSION "${VERSION}")
 set(CPACK_INSTALL_SCRIPT ${CMAKE_SOURCE_DIR}/cmake_install.cmake)
+
+# Build a tarball
+set(CPACK_SOURCE_IGNORE_FILES
+  "build/"
+  ".git/"
+  "Doxygen/html/"
+  "\\\\.gmo$"
+  "\\\\.mo$"
+  "~$"
+  "CPackConfig.cmake"
+  "CPackSourceConfig.cmake"
+  "CMakeCache.txt"
+  "CMakeFiles"
+  "_CPack_Packages"
+  "wxmaxima-.*\\\\.tgz$"
+  "wxmaxima-.*\\\\.deb$"
+  "wxmaxima-.*\\\\.rpm$"
+  "wxmaxima-.*\\\\.bz2$"
+  "wxmaxima-.*\\\\.xz$"
+  "wxmaxima-.*\\\\.Z$"
+  "wxmaxima-.*\\\\.gz$"
+  "${CPACK_SOURCE_IGNORE_FILES}")
+add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 include(CPack)
