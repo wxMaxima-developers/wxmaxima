@@ -220,7 +220,7 @@ wxString ImgCell::ToRTF()
                        stream.GetOutputStreamBuffer()->GetBufferSize());
   }
 
-  image += wxString::Format(wxT("\\picw%li\\pich%li "),
+  image += wxString::Format(wxT("\\picw%lu\\pich%lu "),
                             m_image->GetOriginalWidth(),
                             m_image->GetOriginalHeight()
   );
