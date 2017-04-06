@@ -37,7 +37,6 @@ set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${VERSION}")
 set(CPACK_PACKAGE_CONTACT "The wxMaxima Team <wxmaxima-devel@lists.sourceforge.net>")
 set(CPACK_PACKAGE_SECTION "science")
 set(CPACK_PACKAGE_VERSION "${VERSION}")
-set(CPACK_INSTALL_SCRIPT ${CMAKE_SOURCE_DIR}/cmake_install.cmake)
 
 # Build a tarball
 set(CPACK_SOURCE_IGNORE_FILES
