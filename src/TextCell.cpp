@@ -306,8 +306,7 @@ void TextCell::SetFont(int fontsize)
   if ((m_textStyle == TS_TITLE) ||
       (m_textStyle == TS_SECTION) ||
       (m_textStyle == TS_SUBSECTION) ||
-      (m_textStyle == TS_SUBSUBSECTION)
-          )
+      (m_textStyle == TS_SUBSUBSECTION))
   {
     // Titles have a fixed font size 
     m_fontSize = configuration->GetFontSize(m_textStyle);
@@ -322,6 +321,7 @@ void TextCell::SetFont(int fontsize)
     // Font within maths has a dynamic font size that might be reduced for example
     // within fractions, subscripts or superscripts.
     m_fontSize = fontsize;
+    m_fontSizeLabel = fontsize;
 
   }
 
