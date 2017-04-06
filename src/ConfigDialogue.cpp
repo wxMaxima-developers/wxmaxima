@@ -417,11 +417,11 @@ void ConfigDialogue::SetProperties()
 #endif
   m_getStyleFont->Enable(false);
 
-  if (!wxFontEnumerator::IsValidFacename(wxT("jsMath-cmex10")) ||
-      !wxFontEnumerator::IsValidFacename(wxT("jsMath-cmsy10")) ||
-      !wxFontEnumerator::IsValidFacename(wxT("jsMath-cmr10")) ||
-      !wxFontEnumerator::IsValidFacename(wxT("jsMath-cmmi10")) ||
-      !wxFontEnumerator::IsValidFacename(wxT("jsMath-cmti10")))
+  if (!wxFontEnumerator::IsValidFacename(FONT_CMEX10) ||
+      !wxFontEnumerator::IsValidFacename(FONT_CMSY10) ||
+      !wxFontEnumerator::IsValidFacename(FONT_CMR10) ||
+      !wxFontEnumerator::IsValidFacename(FONT_CMMI10) ||
+      !wxFontEnumerator::IsValidFacename(FONT_CMTI10))
     m_useJSMath->Enable(false);
 
   ReadStyles();

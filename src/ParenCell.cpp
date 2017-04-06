@@ -317,13 +317,11 @@ void ParenCell::Draw(wxPoint point, int fontsize)
       dc.SetFont(font);
       if (m_bigParenType < 2)
       {
-        dc.DrawText(m_bigParenType == 0 ? wxT("(") :
-                    wxT(PAREN_OPEN),
+        dc.DrawText(m_bigParenType == 0 ? wxT("(") : wxT(PAREN_OPEN),
                     point.x,
                     point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) -
                     (m_bigParenType > 0 ? m_signTop : 0));
-        dc.DrawText(m_bigParenType == 0 ? wxT(")") :
-                    wxT(PAREN_CLOSE),
+        dc.DrawText(m_bigParenType == 0 ? wxT(")") : wxT(PAREN_CLOSE),
                     point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
                     point.y - m_center + SCALE_PX(MC_TEXT_PADDING, scale) -
                     (m_bigParenType > 0 ? m_signTop : 0));
