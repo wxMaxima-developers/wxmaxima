@@ -133,12 +133,11 @@ void Configuration::ReadConfig()
   m_zoomFactor = 1.0;
   config->Read(wxT("ZoomFactor"), &m_zoomFactor);
 
-  
-  if (wxFontEnumerator::IsValidFacename(m_fontCMEX = FONT_CMEX10) &&
-      wxFontEnumerator::IsValidFacename(m_fontCMSY = FONT_CMSY10) &&
-      wxFontEnumerator::IsValidFacename(m_fontCMRI = FONT_CMR10) &&
-      wxFontEnumerator::IsValidFacename(m_fontCMMI = FONT_CMMI10) &&
-      wxFontEnumerator::IsValidFacename(m_fontCMTI = FONT_CMTI10))
+  if (wxFontEnumerator::IsValidFacename(m_fontCMEX = wxT("jsMath-cmex10")) &&
+      wxFontEnumerator::IsValidFacename(m_fontCMSY = wxT("jsMath-cmsy10")) &&
+      wxFontEnumerator::IsValidFacename(m_fontCMRI = wxT("jsMath-cmr10")) &&
+      wxFontEnumerator::IsValidFacename(m_fontCMMI = wxT("jsMath-cmmi10")) &&
+      wxFontEnumerator::IsValidFacename(m_fontCMTI = wxT("jsMath-cmti10")))
   {
     m_TeXFonts = true;
     config->Read(wxT("usejsmath"), &m_TeXFonts);

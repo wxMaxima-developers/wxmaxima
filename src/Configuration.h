@@ -47,12 +47,6 @@
 #define MC_MAX_SIZE 36
 #endif
 
-#define FONT_CMEX10 "jsMath-cmex10"
-#define FONT_CMSY10 "jsMath-cmsy10"
-#define FONT_CMR10 "jsMath-cmr10"
-#define FONT_CMMI10 "jsMath-cmmi10"
-#define FONT_CMTI10 "jsMath-cmti10"
-
 /*! The configuration storage for the current worksheet.
 
   Caching the information here means we don't need to search for the configuration

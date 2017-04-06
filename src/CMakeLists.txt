@@ -188,8 +188,6 @@ if (APPLE OR WIN32)
             ${CMAKE_SOURCE_DIR}/art/statusbar/*.png)
     file(GLOB CONFIG_FILES
             ${CMAKE_SOURCE_DIR}/art/config/*.png)
-    file(GLOB FONT_FILES
-            ${CMAKE_SOURCE_DIR}/art/fonts/*.ttf)
 
     if (APPLE)
         # DEFINE DIRECTORIES
@@ -197,7 +195,6 @@ if (APPLE OR WIN32)
         set(APP_MACOSX_DIR ${APP_DIR}/MacOS)
         set(APP_RESOURCES_DIR ${APP_DIR}/Resources)
         set(APP_HELP_DIR ${APP_RESOURCES_DIR}/help)
-        set(APP_FONTS_DIR ${APP_RESOURCES_DIR}/fonts)		
         # CUSTOM TARGET
         add_custom_target(wxMaxima.app)
         add_custom_command(TARGET wxMaxima.app PRE_BUILD
@@ -210,8 +207,6 @@ if (APPLE OR WIN32)
                 COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_RESOURCES_DIR}/statusbar)
         add_custom_command(TARGET wxMaxima.app PRE_BUILD
                 COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_RESOURCES_DIR}/config)
-        add_custom_command(TARGET wxMaxima.app PRE_BUILD
-                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_FONTS_DIR})
         foreach(f ${RESOURCE_FILES})
             add_custom_command(TARGET wxMaxima.app
                 COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
@@ -243,10 +238,6 @@ if (APPLE OR WIN32)
         foreach(f ${HELP_FILES})
             add_custom_command(TARGET wxMaxima.app
                     COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_HELP_DIR})
-        endforeach()
-        foreach(f ${FONT_FILES})
-            add_custom_command(TARGET wxMaxima.app
-                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_FONTS_DIR})
         endforeach()
     endif(APPLE)
 
