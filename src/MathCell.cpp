@@ -184,7 +184,7 @@ void MathCell::AppendCell(MathCell *p_next)
   // Append p_next to this list.
   LastToDraw->m_nextToDraw = p_next;
   p_next->m_previousToDraw = LastToDraw;
-};
+}
 
 MathCell *MathCell::GetParent()
 {
@@ -194,7 +194,6 @@ MathCell *MathCell::GetParent()
 
 /***
  * Get the maximum drop of the center.
-
  */
 int MathCell::GetMaxCenter()
 {
