@@ -41,7 +41,7 @@ TextCell::TextCell(MathCell *parent, Configuration **config) : MathCell(parent, 
   m_height = -1;
   m_labelWidth = -1;
   m_labelHeight = -1;
-  m_oldFontSize = -1;
+  m_lastCalculationFontSize = -1;
   m_realCenter = m_center = -1;
   m_fontSize = 12;
   m_fontSizeLabel = 12;
@@ -56,6 +56,7 @@ TextCell::TextCell(MathCell *parent, Configuration **config, wxString text) : Ma
   m_labelWidth = -1;
   m_labelHeight = -1;
   m_realCenter = m_center = -1;
+  m_lastCalculationFontSize = -1;
   m_fontSize = 12;
   m_fontSizeLabel = 12;
   SetValue(text);
@@ -133,9 +134,9 @@ void TextCell::RecalculateWidths(int fontsize)
     SetValue(m_text);
 
   if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() ||
-      m_oldFontSize != (((double) fontsize) * scale + 0.5))
+      m_lastCalculationFontSize != fontsize)
   {
-    m_oldFontSize = (((double) fontsize) * scale + 0.5);
+    m_lastCalculationFontSize = fontsize;
     wxDC &dc = configuration->GetDC();
     SetFont(fontsize);
 
@@ -149,22 +150,18 @@ void TextCell::RecalculateWidths(int fontsize)
       else
         dc.GetTextExtent(wxT("(%o") + LabelWidthText() + wxT(")/R/"), &m_width, &m_height);
 
-      m_fontSizeLabel = m_fontSize / scale;
+      // We will decrease it before use
+      m_fontSizeLabel = m_fontSize;
       wxASSERT_MSG((m_width > 0) || (m_text == wxEmptyString),
                    _("The letter \"X\" is of width zero. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
       if (m_width < 1) m_width = 10;
       dc.GetTextExtent(m_displayedText, &m_labelWidth, &m_labelHeight);
       wxASSERT_MSG((m_labelWidth > 0) || (m_displayedText == wxEmptyString),
                    _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+      wxFont font(dc.GetFont());
       while ((m_labelWidth >= m_width) && (m_fontSizeLabel > 2))
       {
         int fontsize1 = (int) (((double) --m_fontSizeLabel) * scale + 0.5);
-        wxFont font(fontsize1, wxFONTFAMILY_MODERN,
-                    configuration->IsItalic(m_textStyle),
-                    configuration->IsBold(m_textStyle),
-                    false, //configuration->IsUnderlined(m_textStyle),
-                    configuration->GetFontName(m_textStyle),
-                    configuration->GetFontEncoding());
         font.SetPointSize(fontsize1);
         dc.SetFont(font);
         dc.GetTextExtent(m_displayedText, &m_labelWidth, &m_labelHeight);
@@ -218,7 +215,7 @@ void TextCell::Draw(wxPoint point, int fontsize)
   double scale = configuration->GetScale();
   wxDC &dc = configuration->GetDC();
 
-  if (m_width == -1 || m_height == -1)
+  if (m_width == -1 || m_height == -1 || fontsize != m_lastCalculationFontSize)
     RecalculateWidths(fontsize);
 
   if (DrawThisCell(point) && !m_isHidden)
@@ -231,12 +228,11 @@ void TextCell::Draw(wxPoint point, int fontsize)
       /// Labels and prompts have special fontsize
       if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
       {
-        if (
-                ((m_textStyle == TS_USERLABEL) || (configuration->ShowAutomaticLabels())) &&
-                (configuration->ShowLabels())
-                )
+        if ((m_textStyle == TS_USERLABEL || configuration->ShowAutomaticLabels()) &&
+            configuration->ShowLabels())
         {
-          SetFont(m_fontSizeLabel);
+          SetFontSizeForLabel(dc, scale);
+          // Draw the label
           dc.DrawText(m_displayedText,
                       point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                       point.y - m_realCenter + (m_height - m_labelHeight) / 2);
@@ -291,6 +287,14 @@ void TextCell::Draw(wxPoint point, int fontsize)
   }
 }
 
+void TextCell::SetFontSizeForLabel(wxDC &dc, double scale)
+{
+  wxFont font(dc.GetFont());
+  int fontsize1 = (int) (((double) m_fontSizeLabel) * scale + 0.5);
+  font.SetPointSize(fontsize1);
+  dc.SetFont(font);
+}
+
 void TextCell::SetFont(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
@@ -321,8 +325,6 @@ void TextCell::SetFont(int fontsize)
     // Font within maths has a dynamic font size that might be reduced for example
     // within fractions, subscripts or superscripts.
     m_fontSize = fontsize;
-    m_fontSizeLabel = fontsize;
-
   }
 
   // Ensure a sane minimum font size
@@ -330,7 +332,7 @@ void TextCell::SetFont(int fontsize)
     m_fontSize = 4;
 
   // The font size scales with the worksheet
-  m_fontSize = (int) (((double) m_fontSize) * scale + 0.5);
+  int fontsize1 = (int) (((double) m_fontSize) * scale + 0.5);
 
   fontName = configuration->GetFontName(m_textStyle);
   fontStyle = configuration->IsItalic(m_textStyle);
@@ -366,7 +368,7 @@ void TextCell::SetFont(int fontsize)
   if (!font.IsOk())
     font = *wxNORMAL_FONT;
 
-  font.SetPointSize(m_fontSize);
+  font.SetPointSize(fontsize1);
   wxASSERT_MSG(font.IsOk(),
                _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
   dc.SetFont(font);
@@ -376,7 +378,6 @@ void TextCell::SetFont(int fontsize)
   {
     dc.SetFont(wxFontInfo(10));
   }
-
 }
 
 bool TextCell::IsOperator()
