@@ -34,7 +34,6 @@ EXTRA_DIST = README.md bootstrap wxmaxima.spec.in     \
 	     art/statusbar/network-transmit-receive.png	     \
              art/wxmac-doc-wxm.icns art/wxmac-doc-wxmx.icns  \
              art/wxmac-doc.icns art/wxmac.icns               \
-             art/wxmac-doc.ico art/maximaicon.ico	     \
 	     art/wxmac-doc.png				     \
 	     art/toolbar/showCurrentCell.png       	     \
 	     art/toolbar/dialog-information.png
