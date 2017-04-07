@@ -296,13 +296,13 @@ MathCell *MathParser::ParseFracTag(wxXmlNode *node)
   frac->SetNum(HandleNullPointer(ParseTag(child, false)));
   child = GetNextTag(child);
   frac->SetDenom(HandleNullPointer(ParseTag(child, false)));
-  frac->SetStyle(TS_VARIABLE);
-
+  
   if (node->GetAttribute(wxT("line")) == wxT("no"))
     frac->SetFracStyle(FracCell::FC_CHOOSE);
   if (node->GetAttribute(wxT("diffstyle")) == wxT("yes"))
     frac->SetFracStyle(FracCell::FC_DIFF);
   frac->SetType(m_ParserStyle);
+  frac->SetStyle(TS_VARIABLE);
   frac->SetupBreakUps();
   return frac;
 }
