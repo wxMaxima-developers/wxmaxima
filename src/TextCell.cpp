@@ -1120,7 +1120,7 @@ void TextCell::SetAltText()
   {
     m_altJs = true;
     m_altJsText = GetGreekStringTeX();
-    m_texFontname = wxT("jsMath-cmmi10");
+    m_texFontname = CMMI10;
 
 #if wxUSE_UNICODE
     m_alt = true;
@@ -1139,11 +1139,11 @@ void TextCell::SetAltText()
     if (m_altJsText != wxEmptyString)
     {
       if (m_text == wxT("+") || m_text == wxT("="))
-        m_texFontname = wxT("jsMath-cmr10");
+        m_texFontname = CMR10;
       else if (m_text == wxT("%pi"))
-        m_texFontname = wxT("jsMath-cmmi10");
+        m_texFontname = CMMI10;
       else
-        m_texFontname = wxT("jsMath-cmsy10");
+        m_texFontname = CMSY10;
       m_altJs = true;
     }
 #if wxUSE_UNICODE

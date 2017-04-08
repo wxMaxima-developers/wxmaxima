@@ -189,11 +189,11 @@ bool MyApp::OnInit()
   if (!wxGetEnv(wxT("BUILD_DIR"), NULL))
     wxSetWorkingDirectory(wxPathOnly(wxString(argv[0])));
   /* Add private jsMath fonts, if they exist */ 
-  if (wxFileExists("fonts/jsMath-cmex10.ttf")) AddFontResource(wxT("fonts/jsMath-cmex10.ttf"));
-  if (wxFileExists("fonts/jsMath-cmsy10.ttf")) AddFontResource(wxT("fonts/jsMath-cmsy10.ttf"));
-  if (wxFileExists("fonts/jsMath-cmr10.ttf"))  AddFontResource(wxT("fonts/jsMath-cmr10.ttf"));
-  if (wxFileExists("fonts/jsMath-cmmi10.ttf")) AddFontResource(wxT("fonts/jsMath-cmmi10.ttf"));
-  if (wxFileExists("fonts/jsMath-cmti10.ttf")) AddFontResource(wxT("fonts/jsMath-cmti10.ttf"));
+  if (wxFileExists("fonts/" CMEX10)) AddFontResource(wxT("fonts/" CMEX10));
+  if (wxFileExists("fonts/" CMSY10)) AddFontResource(wxT("fonts/" CMSY10));
+  if (wxFileExists("fonts/" CMR10))  AddFontResource(wxT("fonts/" CMR10));
+  if (wxFileExists("fonts/" CMMI10)) AddFontResource(wxT("fonts/" CMMI10));
+  if (wxFileExists("fonts/" CMTI10)) AddFontResource(wxT("fonts/" CMTI10));
 #endif
 
   m_locale.AddCatalogLookupPathPrefix(dirstructure.LocaleDir());
@@ -268,11 +268,11 @@ bool MyApp::OnInit()
 #if defined (__WXMSW__)
 int MyApp::OnExit()
 {
-  if (wxFileExists("fonts/jsMath-cmex10.ttf")) RemoveFontResource(wxT("fonts/jsMath-cmex10.ttf"));
-  if (wxFileExists("fonts/jsMath-cmsy10.ttf")) RemoveFontResource(wxT("fonts/jsMath-cmsy10.ttf"));
-  if (wxFileExists("fonts/jsMath-cmr10.ttf"))  RemoveFontResource(wxT("fonts/jsMath-cmr10.ttf"));
-  if (wxFileExists("fonts/jsMath-cmmi10.ttf")) RemoveFontResource(wxT("fonts/jsMath-cmmi10.ttf"));
-  if (wxFileExists("fonts/jsMath-cmti10.ttf")) RemoveFontResource(wxT("fonts/jsMath-cmti10.ttf"));
+  if (wxFileExists("fonts/" CMEX10)) RemoveFontResource(wxT("fonts/" CMEX10));
+  if (wxFileExists("fonts/" CMSY10)) RemoveFontResource(wxT("fonts/" CMSY10));
+  if (wxFileExists("fonts/" CMR10))  RemoveFontResource(wxT("fonts/" CMR10));
+  if (wxFileExists("fonts/" CMMI10)) RemoveFontResource(wxT("fonts/" CMMI10));
+  if (wxFileExists("fonts/" CMTI10)) RemoveFontResource(wxT("fonts/" CMTI10));
 
   return true;
 }

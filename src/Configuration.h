@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -46,6 +46,13 @@
 #define MC_MIN_SIZE 8
 #define MC_MAX_SIZE 36
 #endif
+
+#define CMEX10 "jsMath-cmex10"
+#define CMSY10 "jsMath-cmsy10"
+#define CMR10  "jsMath-cmr10"
+#define CMMI10 "jsMath-cmmi10"
+#define CMTI10 "jsMath-cmti10"
+
 
 /*! The configuration storage for the current worksheet.
 
