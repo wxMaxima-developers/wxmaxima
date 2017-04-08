@@ -917,7 +917,6 @@ void MathCell::ResetData()
   m_breakLine = m_forceBreakLine;
 }
 
-
 MathCell *MathCell::first()
 {
   MathCell *tmp = this;

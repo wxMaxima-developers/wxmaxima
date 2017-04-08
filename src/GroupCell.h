@@ -336,6 +336,8 @@ public:
   void LastInEvaluationQueue(bool last)
   { m_lastInEvaluationQueue = last; }
 
+  //! Called on MathCtrl resize
+  void OnSize();
 protected:
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold

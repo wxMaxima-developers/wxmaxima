@@ -482,6 +482,27 @@ void GroupCell::RecalculateWidths(int fontsize)
   ResetData();
 }
 
+// Called on resize events
+// We need to forget line breaks/breakup cells and
+// breakup cells and compute new line breaks
+void GroupCell::OnSize()
+{
+  // Unbreakup cells
+  MathCell *tmp = m_output;
+  while (tmp != NULL)
+  {
+    tmp->Unbreak();
+    tmp->BreakLine(false);
+    tmp->ResetData();
+    tmp = tmp->m_next;
+  }
+  int clientWidth = (*m_configuration)->GetClientWidth();
+  BreakUpCells(m_fontSize, clientWidth);
+  BreakLines(clientWidth);
+  ResetData();
+  ResetSize();
+}
+
 void GroupCell::RecalculateHeight(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
@@ -1553,7 +1574,7 @@ void GroupCell::BreakLines(MathCell *cell, int fullWidth)
         tmp->BreakLine(true);
       }
       else
-        currentWidth += (tmp->GetWidth() + configuration->GetCellBracketWidth());
+        currentWidth += tmp->GetWidth();
     }
     tmp = tmp->m_nextToDraw;
   }

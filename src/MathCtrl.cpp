@@ -672,10 +672,20 @@ void MathCtrl::OnSize(wxSizeEvent &event)
     }
   }
 
-  if (m_tree != NULL)
+  MathCell *tmp = m_tree;
+  if (tmp != NULL)
   {
+    int clientWidth, clientHeight;
+    GetClientSize(&clientWidth, &clientHeight);
+    m_configuration->SetClientWidth(clientWidth - m_configuration->GetCellBracketWidth() - m_configuration->GetBaseIndent());
+    m_configuration->SetClientHeight(clientHeight);
+    
     SetSelection(NULL);
-    RecalculateForce();
+    while (tmp != NULL)
+    {
+      dynamic_cast<GroupCell*>(tmp)->OnSize();
+      tmp = tmp->m_next;
+    }
   }
   else
     AdjustSize();
