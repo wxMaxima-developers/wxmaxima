@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2008-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
@@ -501,99 +501,131 @@ void GroupCell::OnSize()
   BreakLines(clientWidth);
   ResetData();
   ResetSize();
+  EditorCell *editorCell = GetEditable();
+  if (editorCell != NULL) {
+    editorCell->ResetSize();
+    editorCell->RecalculateWidths(m_fontSize);
+  }
+  if (m_inputLabel != NULL) {
+    m_inputLabel->ResetData();
+  }
+}
+
+void GroupCell::RecalculateHeightInput(int fontsize)
+{
+  Configuration *configuration = (*m_configuration);
+  double scale = configuration->GetScale();
+
+  // special case
+  if (m_groupType == GC_TYPE_PAGEBREAK)
+  {
+    m_width = configuration->GetCellBracketWidth();
+    m_height = 2;
+    m_center = 0;
+    MathCell::RecalculateWidthsList(fontsize);
+    return;
+  }
+  
+  if ((configuration->ShowCodeCells()) ||
+      (m_groupType != GC_TYPE_CODE))
+  {
+    m_inputLabel->RecalculateHeightList(fontsize);
+    m_center = m_inputLabel->GetMaxCenter();
+    m_height = m_inputLabel->GetMaxHeight();
+  }
+  else
+  {
+    m_center = 0;
+    m_height = 0;
+  }
+  
+  if (!m_hide)
+  {
+    MathCell *tmp = m_output;
+    while (tmp != NULL)
+    {
+      tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
+      tmp = tmp->m_next;
+    }
+  }
+  
+  if (m_previous == NULL)
+  {
+    m_currentPoint.x = configuration->GetIndent();
+    m_currentPoint.y = (*m_configuration)->GetBaseIndent() + GetMaxCenter();
+  }
+  else
+    m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y +
+    dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetMaxCenter() +
+    (*m_configuration)->GetGroupSkip();
+  
+  m_outputRect.x = m_currentPoint.x;
+  m_outputRect.y = m_currentPoint.y;
+  if (m_output) m_outputRect.y -= m_output->GetMaxCenter();
+  m_outputRect.width = 0;
+  m_outputRect.height = 0;
+  if ((configuration->ShowCodeCells()) ||
+      (m_groupType != GC_TYPE_CODE))
+  {
+    m_height = m_inputLabel->GetMaxHeight();
+    m_width = m_inputLabel->GetFullWidth(scale);
+  }
+  else
+  {
+    m_height = 0;
+    m_width = 0;
+  }
+  
+  m_inputHeight = m_height;
+  m_inputWidth = m_width;
+}
+
+void GroupCell::RecalculateHeightOutput(int fontsize)
+{
+  Configuration *configuration = (*m_configuration);
+  double scale = configuration->GetScale();
+
+  MathCell *tmp = m_output;
+  if (!m_hide)
+  {
+    while (tmp != NULL)
+    {
+      if (tmp->BreakLineHere() || tmp == m_output)
+      {
+        m_width = MAX(m_width, tmp->GetLineWidth(scale));
+        m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth(scale));
+        m_height += tmp->GetMaxHeight();
+        if (tmp->m_bigSkip)
+        {
+          m_height += MC_LINE_SKIP;
+          if (tmp->m_previousToDraw != NULL &&
+              tmp->GetStyle() == TS_LABEL)
+          {
+            m_height += configuration->GetInterEquationSkip();
+          }
+        }
+        m_outputRect.height += tmp->GetMaxHeight() + MC_LINE_SKIP;
+      }
+      tmp = tmp->m_nextToDraw;
+    }
+  }
+  
+  m_outputWidth = m_width;
+  m_outputHeight = m_height - m_inputHeight;
 }
 
 void GroupCell::RecalculateHeight(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
 
   if (m_width < 0 || m_height < 0 || m_currentPoint.x < 0 || m_currentPoint.y < 0 ||
-      configuration->ForceUpdate() || fontsize * scale + .5 != m_fontSize_Old)
+      configuration->ForceUpdate() || fontsize != m_fontSize_Old)
   {
-    m_fontSize_Old = (int) (fontsize * scale + .5);
-    // special case
-    if (m_groupType == GC_TYPE_PAGEBREAK)
-    {
-      m_width = configuration->GetCellBracketWidth();
-      m_height = 2;
-      m_center = 0;
-      MathCell::RecalculateWidthsList(fontsize);
-      return;
-    }
+    m_fontSize_Old = fontsize;
 
-    if ((configuration->ShowCodeCells()) ||
-        (m_groupType != GC_TYPE_CODE))
-    {
-      m_inputLabel->RecalculateHeightList(fontsize);
-      m_center = m_inputLabel->GetMaxCenter();
-      m_height = m_inputLabel->GetMaxHeight();
-    }
-    else
-    {
-      m_center = 0;
-      m_height = 0;
-    }
-
-    if (!m_hide)
-    {
-      MathCell *tmp = m_output;
-      while (tmp != NULL)
-      {
-        tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
-        tmp = tmp->m_next;
-      }
-    }
-
-    if (m_previous == NULL)
-    {
-      m_currentPoint.x = configuration->GetIndent();
-      m_currentPoint.y = (*m_configuration)->GetBaseIndent() + GetMaxCenter();
-    }
-    else
-      m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y +
-                         dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetMaxCenter() +
-                         (*m_configuration)->GetGroupSkip();
-
-    m_outputRect.x = m_currentPoint.x;
-    m_outputRect.y = m_currentPoint.y;
-    if (m_output) m_outputRect.y -= m_output->GetMaxCenter();
-    m_outputRect.width = 0;
-    m_outputRect.height = 0;
-    if ((configuration->ShowCodeCells()) ||
-        (m_groupType != GC_TYPE_CODE))
-    {
-      m_height = m_inputLabel->GetMaxHeight();
-      m_width = m_inputLabel->GetFullWidth(scale);
-    }
-    else
-    {
-      m_height = 0;
-      m_width = 0;
-    }
-
-    MathCell *tmp = m_output;
-    if (!m_hide)
-      while (tmp != NULL)
-      {
-        if (tmp->BreakLineHere() || tmp == m_output)
-        {
-          m_width = MAX(m_width, tmp->GetLineWidth(scale));
-          m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth(scale));
-          m_height += tmp->GetMaxHeight();
-          if (tmp->m_bigSkip)
-          {
-            m_height += MC_LINE_SKIP;
-            if (tmp->m_previousToDraw != NULL &&
-                    tmp->GetStyle() == TS_LABEL)
-            {
-              m_height += configuration->GetInterEquationSkip();
-            }
-          }
-          m_outputRect.height += tmp->GetMaxHeight() + MC_LINE_SKIP;
-        }
-        tmp = tmp->m_nextToDraw;
-      }
+    RecalculateHeightInput(fontsize);
+    
+    RecalculateHeightOutput(fontsize);
   }
   else
   {

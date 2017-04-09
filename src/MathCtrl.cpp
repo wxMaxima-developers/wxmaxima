@@ -649,6 +649,7 @@ void MathCtrl::Recalculate(GroupCell *start, bool force)
  */
 void MathCtrl::OnSize(wxSizeEvent &event)
 {
+  Freeze();
   // Determine if we have a sane thing we can scroll to.
   MathCell *CellToScrollTo = NULL;
   if (CaretVisibleIs())
@@ -673,6 +674,7 @@ void MathCtrl::OnSize(wxSizeEvent &event)
   }
 
   MathCell *tmp = m_tree;
+  MathCell *prev = NULL;
   if (tmp != NULL)
   {
     int clientWidth, clientHeight;
@@ -684,12 +686,27 @@ void MathCtrl::OnSize(wxSizeEvent &event)
     while (tmp != NULL)
     {
       dynamic_cast<GroupCell*>(tmp)->OnSize();
+      
+      if (prev == NULL)
+      {
+        tmp->m_currentPoint.x = m_configuration->GetIndent();
+        tmp->m_currentPoint.y = m_configuration->GetBaseIndent() + tmp->GetMaxCenter();
+      }
+      else
+      {
+        tmp->m_currentPoint.x = m_configuration->GetIndent();
+        tmp->m_currentPoint.y = prev->m_currentPoint.y + prev->GetMaxDrop() + tmp->GetMaxCenter() +
+          m_configuration->GetGroupSkip();
+      }
+
+      prev = tmp;
       tmp = tmp->m_next;
     }
   }
   else
     AdjustSize();
 
+  Thaw();
   RequestRedraw();
   if (CellToScrollTo)
     ScrollToCell(CellToScrollTo, false);

@@ -3426,6 +3426,567 @@ void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidt
   }
 }
 
+void EditorCell::StyleTextCode()
+{
+  Configuration *configuration = (*m_configuration);
+
+  // We have to style code
+  StyledText *lastSpace = NULL;
+  size_t lastSpacePos = 0;
+  // If a space is part of the initial spaces that do the indentation of a cell it is
+  // not eligible for soft line breaks: It would add a soft line break that causes
+  // the same indentation to be introduced in the new line again and therefore would not
+  // help at all.
+  bool spaceIsIndentation = true;
+  int indentationPixels = 0;
+  wxString textToStyle = m_text;
+  if (configuration->GetChangeAsterisk())
+  {
+    textToStyle.Replace(wxT("*"), wxT("\xB7"));
+    if (m_type == MC_TYPE_INPUT)
+      textToStyle.Replace(wxT("-"), wxT("\x2212"));
+  }
+  
+  // Handle folding of EditorCells
+  if (m_firstLineOnly)
+  {
+    long newlinepos = textToStyle.Find(wxT("\n"));
+    if (newlinepos != wxNOT_FOUND)
+    {
+      textToStyle = textToStyle.Left(newlinepos) +
+      wxString::Format(_(" ... + %i hidden lines"), textToStyle.Freq(wxT('\n')));
+    }
+  }
+  
+  // Split the line into commands, numbers etc.
+  wxArrayString tokens = StringToTokens(textToStyle);
+  
+  // Now handle the text pieces one by one
+  wxString lastTokenWithText;
+  int pos = 0;
+  int lineWidth = 0;
+  wxString token;
+  for (size_t i = 0; i < tokens.GetCount(); i++)
+  {
+    pos += token.Length();
+    token = tokens[i];
+    token = token.Left(token.Length() - 1);
+    if (token.Length() < 1)
+      continue;
+    wxChar Ch = token[0];
+    
+    // Save the last non-whitespace character in lastChar -
+    // or a space if there is no such char.
+    wxChar lastChar = wxT(' ');
+    if (lastTokenWithText != wxEmptyString)
+      lastChar = lastTokenWithText.Right(1)[0];
+    wxString tmp = token;
+    tmp = tmp.Trim();
+    if (tmp != wxEmptyString)
+      lastTokenWithText = tmp;
+    
+    // Save the next non-whitespace character in lastChar -
+    // or a space if there is no such char.
+    wxChar nextChar = wxT(' ');
+    size_t o = i + 1;
+    while (o < tokens.GetCount())
+    {
+      wxString nextToken = tokens[o];
+      nextToken = nextToken.Trim(false);
+      if (nextToken != wxT("d"))
+      {
+        nextChar = nextToken[0];
+        break;
+      }
+      o++;
+    }
+    
+    // Handle Spaces
+    if (Ch == wxT(' '))
+    {
+      // All spaces except the last one (that could cause a line break)
+      // share the same token
+      if (token.Length() > 0)
+        m_styledText.push_back(StyledText(token.Left(token.Length() - 1)));
+      
+      // Now we push the last space to the list of tokens and remember this
+      // space as the space that potentially serves as the next point to
+      // introduce a soft line break.
+      m_styledText.push_back(StyledText(wxT(" ")));
+      if (!m_styledText.empty())
+      {
+        lastSpace = &m_styledText.back();
+        lastSpacePos = pos + token.Length() - 1;
+      }
+      else
+      {
+        lastSpace = NULL;
+        lastSpacePos = -1;
+      }
+      
+      continue;
+    }
+    else
+      spaceIsIndentation = false;
+    
+    // Handle Newlines
+    if (Ch == wxT('\n'))
+    {
+      lastSpace = NULL;
+      lineWidth = 0;
+      m_styledText.push_back(StyledText(token));
+      spaceIsIndentation = true;
+      int charWidth, height;
+      configuration->GetDC().GetTextExtent(wxT(" "), &charWidth, &height);
+      indentationPixels = charWidth * GetIndentDepth(m_text, pos);
+      continue;
+    }
+    
+    // Handle comments
+    if (token == wxT("\""))
+    {
+      m_styledText.push_back(StyledText(TS_CODE_STRING, token));
+      if (i + 1 < tokens.GetCount())
+      {
+        i++;
+        token = tokens[i];
+        token = token.Left(token.Length() - 1);
+        m_styledText.push_back(StyledText(TS_CODE_STRING, token));
+        while ((i + 1 < tokens.GetCount()) && token != wxT("\""))
+        {
+          i++;
+          token = tokens[i];
+          token = token.Left(token.Length() - 1);
+          m_styledText.push_back(StyledText(TS_CODE_STRING, token));
+        }
+      }
+      HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+                                indentationPixels);
+      continue;
+    }
+    
+    // Plus and Minus, optionally as part of a number
+    if ((Ch == wxT('+')) ||
+        (Ch == wxT('-')) ||
+        (Ch == wxT('\x2212'))
+        )
+    {
+      if (
+          (nextChar >= wxT('0')) &&
+          (nextChar <= wxT('9'))
+          )
+      {
+        // Our sign precedes a number.
+        if (
+            (wxIsalnum(lastChar)) ||
+            (lastChar == wxT('%')) ||
+            (lastChar == wxT(')')) ||
+            (lastChar == wxT('}')) ||
+            (lastChar == wxT(']'))
+            )
+        {
+          m_styledText.push_back(StyledText(TS_CODE_OPERATOR, token));
+        }
+        else
+        {
+          m_styledText.push_back(StyledText(TS_CODE_NUMBER, token));
+        }
+      }
+      else
+        m_styledText.push_back(StyledText(TS_CODE_OPERATOR, token));
+      
+      HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+                                indentationPixels);
+      continue;
+    }
+    
+    // Comments
+    if ((token == wxT("/*")) || (token == wxT("/\xB7")))
+    {
+      m_styledText.push_back(StyledText(TS_CODE_COMMENT, token));
+      while ((i + 1 < tokens.GetCount()) && (token != wxT("*/")) && (token != wxT("\xB7/")))
+      {
+        i++;
+        token = tokens[i];
+        token = token.Left(token.Length() - 1);
+        m_styledText.push_back(StyledText(TS_CODE_COMMENT, token));
+      }
+      
+      HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+                                indentationPixels);
+      continue;
+    }
+    
+    // End of a command
+    if (operators.Find(token) != wxNOT_FOUND)
+    {
+      if ((token == wxT('$')) || (token == wxT(';')))
+        m_styledText.push_back(StyledText(TS_CODE_ENDOFLINE, token));
+      else
+        m_styledText.push_back(StyledText(TS_CODE_OPERATOR, token));
+      
+      HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+                                indentationPixels);
+      continue;
+    }
+    
+    // Numbers
+    if (isdigit(token[0]) || ((token[0] == wxT('.')) && (nextChar >= wxT('0')) && (nextChar <= wxT('9'))))
+    {
+      m_styledText.push_back(StyledText(TS_CODE_NUMBER, token));
+      HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+                                indentationPixels);
+      continue;
+    }
+    
+    // Text
+    if ((IsAlpha(token[0])) || (token[0] == wxT('\\')))
+    {
+      // Sometimes we can differ between variables and functions by the context.
+      // But I assume there cannot be an algorithm that always makes
+      // the right decision here:
+      //  - Function names can be used without the parenthesis that make out
+      //    functions.
+      //  - The same name can stand for a function and a variable
+      //  - There are indexed functions
+      //  - using lambda a user can store a function in a variable
+      //  - and is U_C1(t) really meant as a function or does it represent a variable
+      //    named U_C1 that depends on t?
+      if ((tokens.GetCount() > i + 1))
+      {
+        wxString nextToken = tokens[i + 1];
+        nextToken = nextToken.Trim(false);
+        
+        if (token == wxT("for") ||
+            token == wxT("in") ||
+            token == wxT("then") ||
+            token == wxT("while") ||
+            token == wxT("do") ||
+            token == wxT("thru") ||
+            token == wxT("next") ||
+            token == wxT("step") ||
+            token == wxT("unless") ||
+            token == wxT("from") ||
+            token == wxT("if") ||
+            token == wxT("else") ||
+            token == wxT("elif") ||
+            token == wxT("and") ||
+            token == wxT("or") ||
+            token == wxT("not") ||
+            token == wxT("not") ||
+            token == wxT("true") ||
+            token == wxT("false"))
+          m_styledText.push_back(token);
+        else if (nextChar == wxT('('))
+        {
+          m_styledText.push_back(StyledText(TS_CODE_FUNCTION, token));
+          m_wordList.Add(token);
+        }
+        else
+        {
+          m_styledText.push_back(StyledText(TS_CODE_VARIABLE, token));
+          m_wordList.Add(token);
+        }
+        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+                                  indentationPixels);
+        continue;
+      }
+      else
+      {
+        m_styledText.push_back(StyledText(TS_CODE_VARIABLE, token));
+        m_wordList.Add(token);
+        
+        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+                                  indentationPixels);
+        continue;
+      }
+    }
+    
+    m_styledText.push_back(StyledText(token));
+    //      HandleSoftLineBreaks_Code(lastSpace,lineWidth,token,pos,m_text,lastSpacePos,spaceIsIndentation);
+  }
+  m_wordList.Sort();
+}
+
+void EditorCell::StyleTextTexts()
+{
+  Configuration *configuration = (*m_configuration);
+  
+  // Normally the cell begins at the x position m_currentPoint.x - but sometimes
+  // m_currentPoint is 0 so we need to determine our own value for the x position.
+  int xmargin =
+  (configuration->GetLabelWidth() + 1) * configuration->GetDefaultFontSize() * configuration->GetScale() *
+  configuration->GetZoomFactor() +
+  configuration->GetCellBracketWidth() + 2 * MC_CELL_SKIP;
+  
+  // Remove all bullets of item lists as we will introduce them again in the next
+  // step, as well.
+  m_text.Replace(wxT("\x2022"), wxT("*"));
+  
+  // Insert new soft line breaks where we hit the right border of the worksheet, if
+  // this has been requested in the config dialogue
+  if (configuration->GetAutoWrap())
+  {
+    SetFont();
+    wxString line;
+    int lastSpacePos = -1;
+    wxString::const_iterator lastSpaceIt;
+    int indentation = 0;
+    int lastLineStart = 0;
+    int width, height;
+    
+    // Is this a new line - or the remainder of the line after a soft break?
+    bool newLine = true;
+    std::list<wxString> prefixes;
+    std::list<int> indentPixels;
+    wxString indentChar;
+    
+    unsigned int i = 0;
+    wxString::const_iterator it = m_text.begin();
+    while (it != m_text.end())
+    {
+      // Extract a line inserting a soft linebreak if necessary
+      while (it != m_text.end())
+      {
+        // Handle hard linebreaks or indent a soft linebreak if necessary
+        if ((*it == '\n') || (it + 1 == m_text.end()))
+        {
+          // Can we introduce a soft line break?
+          // One of the next questions will be: Do we need to?
+          if ((lastSpacePos >= 0) && (*it != '\n'))
+          {
+            // How far has the current line to be indented?
+            if ((!indentPixels.empty()) && (!newLine))
+              indentation = indentPixels.back();
+            else
+              indentation = 0;
+            
+            // How long is the current line already?
+            configuration->GetDC().GetTextExtent(m_text.SubString(lastLineStart, i), &width, &height);
+            // Does the line extend too much to the right to fit on the screen /
+            // to be easy to read?
+            if (width + xmargin + indentation >= configuration->GetLineWidth())
+            {
+              // We need a line break in front of the last word
+              m_text[lastSpacePos] = wxT('\r');
+              line = m_text.SubString(lastLineStart, lastSpacePos - 1);
+              i = lastSpacePos + 1;
+              it = lastSpaceIt;
+              ++it;
+              lastLineStart = i;
+              lastSpacePos = -1;
+              break;
+            }
+          }
+          if (*it == '\n')
+          {
+            if (i > 0)
+              line = m_text.SubString(lastLineStart, i - 1);
+            else
+              line = wxEmptyString;
+          }
+          else
+            line = m_text.SubString(lastLineStart, i);
+          
+          lastLineStart = i + 1;
+          lastSpacePos = -1;
+          indentation = 0;
+          break;
+        }
+        else
+        {
+          // We cannot introduce soft linebreaks since there were no spaces we
+          // could break at.
+          //
+          // TODO: If we handled spaces before we handled soft line breaks this
+          // branch would be unnecessary, right?
+          
+          // Spaces and reaching the end of the text both trigger auto-wrapping
+          if ((*it == ' ') || (i >= m_text.Length() - 1))
+          {
+            // Determine the current line's length
+            configuration->GetDC().GetTextExtent(m_text.SubString(lastLineStart, i), &width, &height);
+            // Determine the current indentation
+            if ((!indentPixels.empty()) && (!newLine))
+              indentation = indentPixels.back();
+            else
+              indentation = 0;
+            
+            // Does the line extend too much to the right to fit on the screen /
+            // to be easy to read?
+            if (width + m_currentPoint.x + indentation >= configuration->GetLineWidth())
+            {
+              // We need a line break. Does the current line contain a space we can
+              // break the line at?
+              if (lastSpacePos >= 0)
+              {
+                // Introduce a soft line break
+                m_text[lastSpacePos] = wxT('\r');
+                line = m_text.SubString(lastLineStart, lastSpacePos - 1);
+                i = lastSpacePos + 1;
+                it = lastSpaceIt;
+                ++it;
+                lastLineStart = i;
+                lastSpacePos = -1;
+                break;
+              }
+              else
+              {
+                if (*it == wxT(' '))
+                {
+                  m_text[i] = wxT('\r');
+                  line = m_text.SubString(lastLineStart, i - 1);
+                  lastLineStart = i + 1;
+                  lastSpacePos = -1;
+                  break;
+                }
+              }
+            }
+          }
+        }
+        
+        // Remember the current space as a point we potentially can break lines at
+        if (*it == ' ')
+        {
+          lastSpacePos = i;
+          lastSpaceIt = it;
+        }
+        
+        // Go to the next character if we actually had a string in front of this
+        // newline.
+        if ((i > 0) || (*it != wxT('\n')))
+        {
+          ++it;
+          ++i;
+        }
+      }
+      
+      // If this is the last line of the text we still need to extract it.
+      if (i == m_text.Length())
+        line = m_text.SubString(lastLineStart, i - 1);
+      
+      // If we fold the cell we only show the first line of text.
+      if (m_firstLineOnly)
+      {
+        m_styledText.push_back(
+                               StyledText(
+                                          line +
+                                          wxString::Format(_(" ... + %i hidden lines"), m_text.Freq(wxT('\n')))
+                                          )
+                               );
+        line = wxEmptyString;
+        break;
+      }
+      
+      
+      // Determine how much which line has to be indented for bullet lists
+      // or citations
+      
+      // Handle the start of new lines
+      if (newLine)
+      {
+        // Let's see if the line begins with a "begin indenting" marker:
+        wxString line_trimmed(line);
+        line_trimmed.Trim(false);
+        if (
+            (line_trimmed.StartsWith(wxT("* "))) ||
+            (line_trimmed.StartsWith(wxT("\x2022 "))) ||
+            (line_trimmed.StartsWith(wxT("\xB7 "))) ||
+            (line_trimmed.StartsWith(wxT("> ")))
+            )
+        {
+          // An "begin indenting" marker
+          
+          // Remember what a line that is part of this indentation level has to
+          // begin with
+          int width, height;
+          Configuration *configuration = (*m_configuration);
+          wxDC &dc = configuration->GetDC();
+          
+          indentChar = line.Left(line.Length() - line_trimmed.Length() + 2);
+          
+          // Remember how far to indent subsequent lines
+          dc.GetTextExtent(indentChar, &width, &height);
+          
+          // Every line of a Quote begins with a ">":
+          if (!line_trimmed.StartsWith(wxT("> ")))
+            indentChar = wxEmptyString;
+          
+          // Equip bullet lists with real bullets
+          if (line_trimmed.StartsWith(wxT("* ")))
+            line[line.find("*")] = wxT('\x2022');
+          if (line_trimmed.StartsWith(wxT("\xB7 ")))
+            line[line.find("\xB7")] = wxT('\x2022');
+          
+          // We don't need additional indentation as this line is already indented by
+          // the spaces and the indent marker at it's beginning.
+          indentation = 0;
+          // Remember what a continuation for this indenting object would begin with
+          prefixes.push_back(wxT("  ") + line.Left(line.Length() - line_trimmed.Length()));
+          indentPixels.push_back(width);
+        }
+        else
+        {
+          // No "begin indenting" marker => Let's see if this is a continuation
+          // of a indentation
+          if (!prefixes.empty())
+          {
+            while (!prefixes.empty())
+            {
+              if (line.StartsWith(prefixes.back()))
+                break;
+              prefixes.pop_back();
+              indentPixels.pop_back();
+            }
+          }
+          // We don't need indentation as this line was indented
+          // by spaces already.
+          indentation = 0;
+        }
+      }
+      
+      if (prefixes.empty())
+        indentChar = wxEmptyString;
+      
+      int indentation;
+      if ((!indentPixels.empty()) && (!newLine))
+        indentation = indentPixels.back();
+      else
+        indentation = 0;
+      
+      // Equip the last soft linebreak with indentation.
+      if (m_styledText.size() > 0)
+      {
+        if (m_styledText.back().GetText() == wxT("\r"))
+          m_styledText.back().SetIndentation(indentation);
+      }
+      // Store the indented line in the list of styled text snippets
+      m_styledText.push_back(StyledText(line, 0, indentChar));
+      
+      // If the cell doesn't end with the last char of this line we have to
+      // add a line ending to the list of styled text snippets
+      if ((i + 1 < m_text.Length()) || (m_text[i] == wxT('\n')))
+      {
+        // Store the line ending in the list of styled text snippets
+        if (*it == wxT('\n'))
+          m_styledText.push_back(StyledText(wxT("\n"), 0, indentChar));
+        else
+          m_styledText.push_back(StyledText(wxT("\r"), 0, indentChar));
+      }
+      
+      // Is this a real new line of comment - or did we insert a soft linebreak?
+      newLine = ((i + 1 >= m_text.Length()) || (*it == wxT('\n')));
+      
+      if (it != m_text.end())
+      {
+        ++i;
+        ++it;
+      }
+    } // The loop that loops over all lines
+  } // Do we want to autowrap lines?
+  ResetSize();
+} // Style text, not code?
+
 void EditorCell::StyleText()
 {
   // We will need to determine the width of text and therefore need to set
@@ -3447,561 +4008,12 @@ void EditorCell::StyleText()
   // Do we need to style code or text?
   if (m_type == MC_TYPE_INPUT)
   {
-    // We have to style code
-    StyledText *lastSpace = NULL;
-    size_t lastSpacePos = 0;
-    // If a space is part of the initial spaces that do the indentation of a cell it is
-    // not eligible for soft line breaks: It would add a soft line break that causes
-    // the same indentation to be introduced in the new line again and therefore would not
-    // help at all.
-    bool spaceIsIndentation = true;
-    int indentationPixels = 0;
-    wxString textToStyle = m_text;
-    if (configuration->GetChangeAsterisk())
-    {
-      textToStyle.Replace(wxT("*"), wxT("\xB7"));
-      if (m_type == MC_TYPE_INPUT)
-        textToStyle.Replace(wxT("-"), wxT("\x2212"));
-    }
-
-    // Handle folding of EditorCells
-    if (m_firstLineOnly)
-    {
-      long newlinepos = textToStyle.Find(wxT("\n"));
-      if (newlinepos != wxNOT_FOUND)
-      {
-        textToStyle = textToStyle.Left(newlinepos) +
-                      wxString::Format(_(" ... + %i hidden lines"), textToStyle.Freq(wxT('\n')));
-      }
-    }
-
-    // Split the line into commands, numbers etc.
-    wxArrayString tokens = StringToTokens(textToStyle);
-
-    // Now handle the text pieces one by one
-    wxString lastTokenWithText;
-    int pos = 0;
-    int lineWidth = 0;
-    wxString token;
-    for (size_t i = 0; i < tokens.GetCount(); i++)
-    {
-      pos += token.Length();
-      token = tokens[i];
-      token = token.Left(token.Length() - 1);
-      if (token.Length() < 1)
-        continue;
-      wxChar Ch = token[0];
-
-      // Save the last non-whitespace character in lastChar -
-      // or a space if there is no such char.
-      wxChar lastChar = wxT(' ');
-      if (lastTokenWithText != wxEmptyString)
-        lastChar = lastTokenWithText.Right(1)[0];
-      wxString tmp = token;
-      tmp = tmp.Trim();
-      if (tmp != wxEmptyString)
-        lastTokenWithText = tmp;
-
-      // Save the next non-whitespace character in lastChar -
-      // or a space if there is no such char.
-      wxChar nextChar = wxT(' ');
-      size_t o = i + 1;
-      while (o < tokens.GetCount())
-      {
-        wxString nextToken = tokens[o];
-        nextToken = nextToken.Trim(false);
-        if (nextToken != wxT("d"))
-        {
-          nextChar = nextToken[0];
-          break;
-        }
-        o++;
-      }
-
-      // Handle Spaces
-      if (Ch == wxT(' '))
-      {
-        // All spaces except the last one (that could cause a line break)
-        // share the same token
-        if (token.Length() > 0)
-          m_styledText.push_back(StyledText(token.Left(token.Length() - 1)));
-
-        // Now we push the last space to the list of tokens and remember this
-        // space as the space that potentially serves as the next point to
-        // introduce a soft line break.
-        m_styledText.push_back(StyledText(wxT(" ")));
-        if (!m_styledText.empty())
-        {
-          lastSpace = &m_styledText.back();
-          lastSpacePos = pos + token.Length() - 1;
-        }
-        else
-        {
-          lastSpace = NULL;
-          lastSpacePos = -1;
-        }
-
-        continue;
-      }
-      else
-        spaceIsIndentation = false;
-
-      // Handle Newlines
-      if (Ch == wxT('\n'))
-      {
-        lastSpace = NULL;
-        lineWidth = 0;
-        m_styledText.push_back(StyledText(token));
-        spaceIsIndentation = true;
-        int charWidth, height;
-        configuration->GetDC().GetTextExtent(wxT(" "), &charWidth, &height);
-        indentationPixels = charWidth * GetIndentDepth(m_text, pos);
-        continue;
-      }
-
-      // Handle comments
-      if (token == wxT("\""))
-      {
-        m_styledText.push_back(StyledText(TS_CODE_STRING, token));
-        if (i + 1 < tokens.GetCount())
-        {
-          i++;
-          token = tokens[i];
-          token = token.Left(token.Length() - 1);
-          m_styledText.push_back(StyledText(TS_CODE_STRING, token));
-          while ((i + 1 < tokens.GetCount()) && token != wxT("\""))
-          {
-            i++;
-            token = tokens[i];
-            token = token.Left(token.Length() - 1);
-            m_styledText.push_back(StyledText(TS_CODE_STRING, token));
-          }
-        }
-        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
-                                  indentationPixels);
-        continue;
-      }
-
-      // Plus and Minus, optionally as part of a number
-      if ((Ch == wxT('+')) ||
-          (Ch == wxT('-')) ||
-          (Ch == wxT('\x2212'))
-              )
-      {
-        if (
-                (nextChar >= wxT('0')) &&
-                (nextChar <= wxT('9'))
-                )
-        {
-          // Our sign precedes a number.
-          if (
-                  (wxIsalnum(lastChar)) ||
-                  (lastChar == wxT('%')) ||
-                  (lastChar == wxT(')')) ||
-                  (lastChar == wxT('}')) ||
-                  (lastChar == wxT(']'))
-                  )
-          {
-            m_styledText.push_back(StyledText(TS_CODE_OPERATOR, token));
-          }
-          else
-          {
-            m_styledText.push_back(StyledText(TS_CODE_NUMBER, token));
-          }
-        }
-        else
-          m_styledText.push_back(StyledText(TS_CODE_OPERATOR, token));
-
-        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
-                                  indentationPixels);
-        continue;
-      }
-
-      // Comments
-      if ((token == wxT("/*")) || (token == wxT("/\xB7")))
-      {
-        m_styledText.push_back(StyledText(TS_CODE_COMMENT, token));
-        while ((i + 1 < tokens.GetCount()) && (token != wxT("*/")) && (token != wxT("\xB7/")))
-        {
-          i++;
-          token = tokens[i];
-          token = token.Left(token.Length() - 1);
-          m_styledText.push_back(StyledText(TS_CODE_COMMENT, token));
-        }
-
-        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
-                                  indentationPixels);
-        continue;
-      }
-
-      // End of a command
-      if (operators.Find(token) != wxNOT_FOUND)
-      {
-        if ((token == wxT('$')) || (token == wxT(';')))
-          m_styledText.push_back(StyledText(TS_CODE_ENDOFLINE, token));
-        else
-          m_styledText.push_back(StyledText(TS_CODE_OPERATOR, token));
-
-        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
-                                  indentationPixels);
-        continue;
-      }
-
-      // Numbers
-      if (isdigit(token[0]) || ((token[0] == wxT('.')) && (nextChar >= wxT('0')) && (nextChar <= wxT('9'))))
-      {
-        m_styledText.push_back(StyledText(TS_CODE_NUMBER, token));
-        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
-                                  indentationPixels);
-        continue;
-      }
-
-      // Text
-      if ((IsAlpha(token[0])) || (token[0] == wxT('\\')))
-      {
-        // Sometimes we can differ between variables and functions by the context.
-        // But I assume there cannot be an algorithm that always makes
-        // the right decision here:
-        //  - Function names can be used without the parenthesis that make out
-        //    functions.
-        //  - The same name can stand for a function and a variable
-        //  - There are indexed functions
-        //  - using lambda a user can store a function in a variable
-        //  - and is U_C1(t) really meant as a function or does it represent a variable
-        //    named U_C1 that depends on t?
-        if ((tokens.GetCount() > i + 1))
-        {
-          wxString nextToken = tokens[i + 1];
-          nextToken = nextToken.Trim(false);
-
-          if (token == wxT("for") ||
-              token == wxT("in") ||
-              token == wxT("then") ||
-              token == wxT("while") ||
-              token == wxT("do") ||
-              token == wxT("thru") ||
-              token == wxT("next") ||
-              token == wxT("step") ||
-              token == wxT("unless") ||
-              token == wxT("from") ||
-              token == wxT("if") ||
-              token == wxT("else") ||
-              token == wxT("elif") ||
-              token == wxT("and") ||
-              token == wxT("or") ||
-              token == wxT("not") ||
-              token == wxT("not") ||
-              token == wxT("true") ||
-              token == wxT("false"))
-            m_styledText.push_back(token);
-          else if (nextChar == wxT('('))
-          {
-            m_styledText.push_back(StyledText(TS_CODE_FUNCTION, token));
-            m_wordList.Add(token);
-          }
-          else
-          {
-            m_styledText.push_back(StyledText(TS_CODE_VARIABLE, token));
-            m_wordList.Add(token);
-          }
-          HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
-                                    indentationPixels);
-          continue;
-        }
-        else
-        {
-          m_styledText.push_back(StyledText(TS_CODE_VARIABLE, token));
-          m_wordList.Add(token);
-
-          HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
-                                    indentationPixels);
-          continue;
-        }
-      }
-
-      m_styledText.push_back(StyledText(token));
-//      HandleSoftLineBreaks_Code(lastSpace,lineWidth,token,pos,m_text,lastSpacePos,spaceIsIndentation);
-    }
-    m_wordList.Sort();
+    StyleTextCode();
   }
   else
   {
-    // We have to style ordinary text.
-
-    // Normally the cell begins at the x position m_currentPoint.x - but sometimes
-    // m_currentPoint is 0 so we need to determine our own value for the x position.
-    int xmargin =
-            (configuration->GetLabelWidth() + 1) * configuration->GetDefaultFontSize() * configuration->GetScale() *
-            configuration->GetZoomFactor() +
-            configuration->GetCellBracketWidth() + 2 * MC_CELL_SKIP;
-
-    // Remove all bullets of item lists as we will introduce them again in the next
-    // step, as well.
-    m_text.Replace(wxT("\x2022"), wxT("*"));
-
-    // Insert new soft line breaks where we hit the right border of the worksheet, if
-    // this has been requested in the config dialogue
-    if (configuration->GetAutoWrap())
-    {
-      SetFont();
-      wxString line;
-      int lastSpacePos = -1;
-      wxString::const_iterator lastSpaceIt;
-      int indentation = 0;
-      int lastLineStart = 0;
-      int width, height;
-
-      // Is this a new line - or the remainder of the line after a soft break?
-      bool newLine = true;
-      std::list<wxString> prefixes;
-      std::list<int> indentPixels;
-      wxString indentChar;
-
-      unsigned int i = 0;
-      wxString::const_iterator it = m_text.begin();
-      while (it != m_text.end())
-      {
-        // Extract a line inserting a soft linebreak if necessary
-        while (it != m_text.end())
-        {
-          // Handle hard linebreaks or indent a soft linebreak if necessary
-          if ((*it == '\n') || (it + 1 == m_text.end()))
-          {
-            // Can we introduce a soft line break?
-            // One of the next questions will be: Do we need to?
-            if ((lastSpacePos >= 0) && (*it != '\n'))
-            {
-              // How far has the current line to be indented?
-              if ((!indentPixels.empty()) && (!newLine))
-                indentation = indentPixels.back();
-              else
-                indentation = 0;
-
-              // How long is the current line already?
-              configuration->GetDC().GetTextExtent(m_text.SubString(lastLineStart, i), &width, &height);
-              // Does the line extend too much to the right to fit on the screen /
-              // to be easy to read?
-              if (width + xmargin + indentation >= configuration->GetLineWidth())
-              {
-                // We need a line break in front of the last word
-                m_text[lastSpacePos] = wxT('\r');
-                line = m_text.SubString(lastLineStart, lastSpacePos - 1);
-                i = lastSpacePos + 1;
-                it = lastSpaceIt;
-                ++it;
-                lastLineStart = i;
-                lastSpacePos = -1;
-                break;
-              }
-            }
-            if (*it == '\n')
-            {
-              if (i > 0)
-                line = m_text.SubString(lastLineStart, i - 1);
-              else
-                line = wxEmptyString;
-            }
-            else
-              line = m_text.SubString(lastLineStart, i);
-
-            lastLineStart = i + 1;
-            lastSpacePos = -1;
-            indentation = 0;
-            break;
-          }
-          else
-          {
-            // We cannot introduce soft linebreaks since there were no spaces we
-            // could break at.
-            //
-            // TODO: If we handled spaces before we handled soft line breaks this
-            // branch would be unnecessary, right?
-
-            // Spaces and reaching the end of the text both trigger auto-wrapping
-            if ((*it == ' ') || (i >= m_text.Length() - 1))
-            {
-              // Determine the current line's length
-              configuration->GetDC().GetTextExtent(m_text.SubString(lastLineStart, i), &width, &height);
-              // Determine the current indentation
-              if ((!indentPixels.empty()) && (!newLine))
-                indentation = indentPixels.back();
-              else
-                indentation = 0;
-
-              // Does the line extend too much to the right to fit on the screen /
-              // to be easy to read?
-              if (width + m_currentPoint.x + indentation >= configuration->GetLineWidth())
-              {
-                // We need a line break. Does the current line contain a space we can
-                // break the line at?
-                if (lastSpacePos >= 0)
-                {
-                  // Introduce a soft line break
-                  m_text[lastSpacePos] = wxT('\r');
-                  line = m_text.SubString(lastLineStart, lastSpacePos - 1);
-                  i = lastSpacePos + 1;
-                  it = lastSpaceIt;
-                  ++it;
-                  lastLineStart = i;
-                  lastSpacePos = -1;
-                  break;
-                }
-                else
-                {
-                  if (*it == wxT(' '))
-                  {
-                    m_text[i] = wxT('\r');
-                    line = m_text.SubString(lastLineStart, i - 1);
-                    lastLineStart = i + 1;
-                    lastSpacePos = -1;
-                    break;
-                  }
-                }
-              }
-            }
-          }
-
-          // Remember the current space as a point we potentially can break lines at
-          if (*it == ' ')
-          {
-            lastSpacePos = i;
-            lastSpaceIt = it;
-          }
-
-          // Go to the next character if we actually had a string in front of this
-          // newline.
-          if ((i > 0) || (*it != wxT('\n')))
-          {
-            ++it;
-            ++i;
-          }
-        }
-
-        // If this is the last line of the text we still need to extract it.
-        if (i == m_text.Length())
-          line = m_text.SubString(lastLineStart, i - 1);
-
-        // If we fold the cell we only show the first line of text.
-        if (m_firstLineOnly)
-        {
-          m_styledText.push_back(
-                  StyledText(
-                          line +
-                          wxString::Format(_(" ... + %i hidden lines"), m_text.Freq(wxT('\n')))
-                  )
-          );
-          line = wxEmptyString;
-          break;
-        }
-
-
-        // Determine how much which line has to be indented for bullet lists
-        // or citations
-
-        // Handle the start of new lines
-        if (newLine)
-        {
-          // Let's see if the line begins with a "begin indenting" marker:
-          wxString line_trimmed(line);
-          line_trimmed.Trim(false);
-          if (
-                  (line_trimmed.StartsWith(wxT("* "))) ||
-                  (line_trimmed.StartsWith(wxT("\x2022 "))) ||
-                  (line_trimmed.StartsWith(wxT("\xB7 "))) ||
-                  (line_trimmed.StartsWith(wxT("> ")))
-                  )
-          {
-            // An "begin indenting" marker
-
-            // Remember what a line that is part of this indentation level has to
-            // begin with
-            int width, height;
-            Configuration *configuration = (*m_configuration);
-            wxDC &dc = configuration->GetDC();
-
-            indentChar = line.Left(line.Length() - line_trimmed.Length() + 2);
-
-            // Remember how far to indent subsequent lines
-            dc.GetTextExtent(indentChar, &width, &height);
-
-            // Every line of a Quote begins with a ">":
-            if (!line_trimmed.StartsWith(wxT("> ")))
-              indentChar = wxEmptyString;
-
-            // Equip bullet lists with real bullets
-            if (line_trimmed.StartsWith(wxT("* ")))
-              line[line.find("*")] = wxT('\x2022');
-            if (line_trimmed.StartsWith(wxT("\xB7 ")))
-              line[line.find("\xB7")] = wxT('\x2022');
-
-            // We don't need additional indentation as this line is already indented by
-            // the spaces and the indent marker at it's beginning.
-            indentation = 0;
-            // Remember what a continuation for this indenting object would begin with
-            prefixes.push_back(wxT("  ") + line.Left(line.Length() - line_trimmed.Length()));
-            indentPixels.push_back(width);
-          }
-          else
-          {
-            // No "begin indenting" marker => Let's see if this is a continuation
-            // of a indentation
-            if (!prefixes.empty())
-            {
-              while (!prefixes.empty())
-              {
-                if (line.StartsWith(prefixes.back()))
-                  break;
-                prefixes.pop_back();
-                indentPixels.pop_back();
-              }
-            }
-            // We don't need indentation as this line was indented
-            // by spaces already.
-            indentation = 0;
-          }
-        }
-
-        if (prefixes.empty())
-          indentChar = wxEmptyString;
-
-        int indentation;
-        if ((!indentPixels.empty()) && (!newLine))
-          indentation = indentPixels.back();
-        else
-          indentation = 0;
-
-        // Equip the last soft linebreak with indentation.
-        if (m_styledText.size() > 0)
-        {
-          if (m_styledText.back().GetText() == wxT("\r"))
-            m_styledText.back().SetIndentation(indentation);
-        }
-        // Store the indented line in the list of styled text snippets
-        m_styledText.push_back(StyledText(line, 0, indentChar));
-
-        // If the cell doesn't end with the last char of this line we have to
-        // add a line ending to the list of styled text snippets
-        if ((i + 1 < m_text.Length()) || (m_text[i] == wxT('\n')))
-        {
-          // Store the line ending in the list of styled text snippets
-          if (*it == wxT('\n'))
-            m_styledText.push_back(StyledText(wxT("\n"), 0, indentChar));
-          else
-            m_styledText.push_back(StyledText(wxT("\r"), 0, indentChar));
-        }
-
-        // Is this a real new line of comment - or did we insert a soft linebreak?
-        newLine = ((i + 1 >= m_text.Length()) || (*it == wxT('\n')));
-
-        if (it != m_text.end())
-        {
-          ++i;
-          ++it;
-        }
-      } // The loop that loops over all lines
-    } // Do we want to autowrap lines?
-    ResetSize();
-  } // Style text, not code?
+    StyleTextTexts();
+  }
 }
 
 

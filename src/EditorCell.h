@@ -259,6 +259,8 @@ public:
     that this line is to be broken here until the window's width changes.
    */
   void StyleText();
+  void StyleTextCode();
+  void StyleTextTexts();
 
   void Reset();
 
