@@ -751,7 +751,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
       dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 #if defined(__WXMAC__)
       // draw 1 pixel shorter caret than on windows
-      dc.DrawRectangle(point.x + SCALE_PX(2, scale) + lineWidth - (*m_configuration)->GetCursorWidth() / 2,
+      dc.DrawRectangle(point.x + SCALE_PX(2, scale) + lineWidth - (*m_configuration)->GetCursorWidth(),
                        point.y + SCALE_PX(3, scale) - m_center + caretInLine * m_charHeight,
                        (*m_configuration)->GetCursorWidth(),
                        m_charHeight - SCALE_PX(5, scale));

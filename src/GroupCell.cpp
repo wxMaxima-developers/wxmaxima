@@ -509,6 +509,7 @@ void GroupCell::OnSize()
   if (m_inputLabel != NULL) {
     m_inputLabel->ResetData();
   }
+  RecalculateHeight(m_fontSize);
 }
 
 void GroupCell::RecalculateHeightInput(int fontsize)
@@ -785,6 +786,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
           in.y += configuration->GetInterEquationSkip();
 
         tmp->m_currentPoint = in;
+        
         if (!tmp->m_isBroken)
         {
           if (tmp->DrawThisCell(in))

@@ -1368,6 +1368,7 @@ protected:
   //! Is called if this element looses or gets the focus
   void OnActivate(wxActivateEvent &event);
 
+  void UpdateConfigurationClientSize();
 DECLARE_EVENT_TABLE()
 };
 

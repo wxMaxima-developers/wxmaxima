@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
@@ -266,7 +266,7 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
 #if defined(__WXMAC__)
       dcm.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
 #else
-                                                                                                                              dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
+      dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
 // window linux, set a pen
 #endif
       dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION)))); //highlight c.
@@ -544,10 +544,8 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 
     tmp->AppendOutput(newCell);
 
-    m_configuration->SetClientWidth(
-            GetClientSize().GetWidth() - m_configuration->GetCellBracketWidth() - m_configuration->GetBaseIndent());
-    m_configuration->SetClientHeight(GetClientSize().GetHeight());
-
+    UpdateConfigurationClientSize();
+    
     tmp->RecalculateAppended();
     Recalculate(tmp, false);
 
@@ -623,10 +621,8 @@ void MathCtrl::Recalculate(GroupCell *start, bool force)
   m_configuration->SetCanvasSize(GetClientSize());
 
   m_configuration->SetForceUpdate(force);
-  m_configuration->SetClientWidth(
-          GetClientSize().GetWidth() - m_configuration->GetCellBracketWidth() - m_configuration->GetBaseIndent());
-  m_configuration->SetClientHeight(GetClientSize().GetHeight());
-
+  UpdateConfigurationClientSize();
+  
   while (tmp != NULL)
   {
     tmp->Recalculate();
@@ -677,10 +673,7 @@ void MathCtrl::OnSize(wxSizeEvent &event)
   MathCell *prev = NULL;
   if (tmp != NULL)
   {
-    int clientWidth, clientHeight;
-    GetClientSize(&clientWidth, &clientHeight);
-    m_configuration->SetClientWidth(clientWidth - m_configuration->GetCellBracketWidth() - m_configuration->GetBaseIndent());
-    m_configuration->SetClientHeight(clientHeight);
+    UpdateConfigurationClientSize();
     
     SetSelection(NULL);
     while (tmp != NULL)
@@ -2871,6 +2864,14 @@ GroupCell *MathCtrl::EndOfSectioningUnit(GroupCell *start)
   return end;
 }
 
+void MathCtrl::UpdateConfigurationClientSize()
+{
+  m_configuration->SetClientWidth(GetClientSize().GetWidth() -
+                                  m_configuration->GetCellBracketWidth() -
+                                  m_configuration->GetBaseIndent());
+  m_configuration->SetClientHeight(GetClientSize().GetHeight());
+}
+
 /****
  * OnCharInActive is called when we have a wxKeyEvent and
  * an EditorCell is active.
@@ -2882,19 +2883,15 @@ void MathCtrl::OnCharInActive(wxKeyEvent &event)
 {
   bool needRecalculate = false;
 
-  if (
-          (
-                  (event.GetKeyCode() == WXK_UP) ||
-                  (event.GetKeyCode() == WXK_PAGEUP)
+  if ((event.GetKeyCode() == WXK_UP ||
+       event.GetKeyCode() == WXK_PAGEUP
 #ifdef WXK_PRIOR
                   || (event.GetKeyCode() != WXK_PRIOR)
 #endif
 #ifdef WXK_NUMPAD_PRIOR
                   || (event.GetKeyCode() != WXK_NUMPAD_PRIOR)
 #endif
-          ) &&
-          GetActiveCell()->CaretAtStart()
-          )
+        ) && GetActiveCell()->CaretAtStart())
   {
     GroupCell *previous = dynamic_cast<GroupCell *>((GetActiveCell()->GetParent())->m_previous);
     if (event.ShiftDown())
@@ -2933,19 +2930,15 @@ void MathCtrl::OnCharInActive(wxKeyEvent &event)
     return;
   }
 
-  if (
-          (
-                  (event.GetKeyCode() == WXK_DOWN) ||
-                  (event.GetKeyCode() == WXK_PAGEDOWN)
+  if ((event.GetKeyCode() == WXK_DOWN ||
+       event.GetKeyCode() == WXK_PAGEDOWN
 #ifdef WXK_NEXT
                   || (event.GetKeyCode() != WXK_NEXT)
 #endif
 #ifdef WXK_NUMPAD_NEXT
                   || (event.GetKeyCode() != WXK_NUMPAD_NEXT)
 #endif
-          ) &&
-          GetActiveCell()->CaretAtEnd()
-          )
+      ) && GetActiveCell()->CaretAtEnd())
   {
     GroupCell *start = dynamic_cast<GroupCell *>(GetActiveCell()->GetParent());
     if (event.ShiftDown())
@@ -3003,12 +2996,13 @@ void MathCtrl::OnCharInActive(wxKeyEvent &event)
   ///
   /// send event to active cell
   ///
-  wxString oldValue = GetActiveCell()->GetValue();
+  EditorCell *activeCell = GetActiveCell();
+  wxString oldValue = activeCell->GetValue();
 
   GetActiveCell()->ProcessEvent(event);
 
   // Update title and toolbar in order to reflect the "unsaved" state of the worksheet.
-  if ((IsSaved()) && (GetActiveCell()->GetValue() != oldValue))
+  if (IsSaved() && activeCell->GetValue() != oldValue)
   {
     m_saved = false;
     RequestRedraw();
@@ -3018,20 +3012,14 @@ void MathCtrl::OnCharInActive(wxKeyEvent &event)
 
   m_blinkDisplayCaret = true;
 
-  m_configuration->SetClientWidth(
-          GetClientSize().GetWidth() - m_configuration->GetCellBracketWidth() - m_configuration->GetBaseIndent());
-  m_configuration->SetClientHeight(GetClientSize().GetHeight());
+  UpdateConfigurationClientSize();
 
-  if (GetActiveCell()->IsDirty())
+  if (activeCell->IsDirty())
   {
     m_saved = false;
 
-
-    int height = GetActiveCell()->GetHeight();
+    int height = activeCell->GetHeight();
     //   int fontsize = m_configuration->GetDefaultFontSize();
-    m_configuration->SetClientWidth(
-            GetClientSize().GetWidth() - m_configuration->GetCellBracketWidth() - m_configuration->GetBaseIndent());
-    m_configuration->SetClientHeight(GetClientSize().GetHeight());
     int fontsize = m_configuration->GetDefaultFontSize();
 
     GetActiveCell()->ResetData();
@@ -3086,6 +3074,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent &event)
       RedrawRect(rect);
     }
   }
+  
   if (GetActiveCell())
   {
     if (IsLesserGCType(GC_TYPE_TEXT, dynamic_cast<GroupCell *>(GetActiveCell()->GetParent())->GetGroupType()))
