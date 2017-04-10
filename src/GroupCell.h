@@ -340,6 +340,9 @@ public:
 
   //! Called on MathCtrl resize
   void OnSize();
+  
+  //! Reset the data when the input size changes
+  void InputHeightChanged();
 protected:
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold

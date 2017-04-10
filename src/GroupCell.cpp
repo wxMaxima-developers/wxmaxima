@@ -482,6 +482,21 @@ void GroupCell::RecalculateWidths(int fontsize)
   ResetData();
 }
 
+void GroupCell::InputHeightChanged()
+{
+  ResetData();
+  ResetSize();
+  EditorCell *editorCell = GetEditable();
+  if (editorCell != NULL) {
+    editorCell->ResetSize();
+    editorCell->RecalculateWidths(m_fontSize);
+  }
+  if (m_inputLabel != NULL) {
+    m_inputLabel->ResetData();
+  }
+  RecalculateHeight(m_fontSize);
+}
+
 // Called on resize events
 // We need to forget line breaks/breakup cells and
 // breakup cells and compute new line breaks
@@ -499,17 +514,7 @@ void GroupCell::OnSize()
   int clientWidth = (*m_configuration)->GetClientWidth();
   BreakUpCells(m_fontSize, clientWidth);
   BreakLines(clientWidth);
-  ResetData();
-  ResetSize();
-  EditorCell *editorCell = GetEditable();
-  if (editorCell != NULL) {
-    editorCell->ResetSize();
-    editorCell->RecalculateWidths(m_fontSize);
-  }
-  if (m_inputLabel != NULL) {
-    m_inputLabel->ResetData();
-  }
-  RecalculateHeight(m_fontSize);
+  InputHeightChanged();
 }
 
 void GroupCell::RecalculateHeightInput(int fontsize)

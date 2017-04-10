@@ -2713,7 +2713,6 @@ void MathCtrl::OnKeyDown(wxKeyEvent &event)
         else
         {
           // User pressed "Evaluate" inside an active cell.
-
           if (GetActiveCell()->GetType() != MC_TYPE_INPUT)
           {
             // User pressed enter inside a cell that doesn't contain code.
@@ -2738,7 +2737,8 @@ void MathCtrl::OnKeyDown(wxKeyEvent &event)
             {
               GetActiveCell()->ProcessEvent(event);
               // Recalculate(dynamic_cast<GroupCell*>(GetActiveCell()->GetParent()),false);
-              RecalculateForce();
+              GroupCell *parent = dynamic_cast<GroupCell*>(GetActiveCell()->GetParent());
+              parent->InputHeightChanged();
               RequestRedraw();
             }
           }
@@ -2791,12 +2791,12 @@ void MathCtrl::OnKeyDown(wxKeyEvent &event)
 
     case WXK_ESCAPE:
 #ifndef wxUSE_UNICODE
-                                                                                                                              if (GetActiveCell() == NULL) {
-      SetSelection(NULL);
-      RequestRedraw();
-    }
-    else
-      SetHCaret(GetActiveCell()->GetParent()); // also refreshes
+      if (GetActiveCell() == NULL) {
+        SetSelection(NULL);
+        RequestRedraw();
+      }
+      else
+        SetHCaret(GetActiveCell()->GetParent()); // also refreshes
 #else
       event.Skip();
 #endif
