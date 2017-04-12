@@ -527,11 +527,14 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
     tmp = GetWorkingGroup();
 
   if (tmp == NULL)
+    tmp = GetLastWorkingGroup();
+                                             
+  if (tmp == NULL)
   {
     if (GetActiveCell())
       tmp = dynamic_cast<GroupCell *>(GetActiveCell()->GetParent());
-  }
-
+  }  
+                                             
 
   // If we still don't have a place to put the line we give up.
   if (tmp == NULL)
