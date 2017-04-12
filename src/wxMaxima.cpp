@@ -3891,6 +3891,14 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
       wiz->Destroy();
     }
       break;
+    case menu_lhs:
+      cmd = wxT("lhs(") + expr + wxT(");");
+      MenuCommand(cmd);
+      break;
+    case menu_rhs:
+      cmd = wxT("rhs(") + expr + wxT(");");
+      MenuCommand(cmd);
+      break;
     default:
       break;
   }
@@ -6488,6 +6496,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(menu_trigrat, wxMaxima::SimplifyMenu)
                 EVT_MENU(menu_solve_de, wxMaxima::EquationsMenu)
                 EVT_MENU(menu_atvalue, wxMaxima::EquationsMenu)
+                EVT_MENU(menu_lhs, wxMaxima::EquationsMenu)
+                EVT_MENU(menu_rhs, wxMaxima::EquationsMenu)
                 EVT_MENU(menu_sum, wxMaxima::CalculusMenu)
                 EVT_MENU(menu_product, wxMaxima::CalculusMenu)
                 EVT_MENU(menu_change_var, wxMaxima::CalculusMenu)

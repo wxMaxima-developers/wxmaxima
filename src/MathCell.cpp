@@ -466,12 +466,11 @@ wxString MathCell::ListToString()
 
   while (tmp != NULL)
   {
-    retval += tmp->ToString();
-
-
     if ((!firstline) && (tmp->m_forceBreakLine))
       retval += wxT("\n");
 
+    retval += tmp->ToString();
+    
     firstline = false;
     tmp = tmp->m_nextToDraw;
   }
