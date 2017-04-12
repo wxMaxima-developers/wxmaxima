@@ -467,10 +467,7 @@ wxString TextCell::ToTeX()
 {
   wxString text = m_displayedText;
 
-  bool keepPercent = true;
-  wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
-
-  if (!keepPercent)
+  if (!(*m_configuration)->CheckKeepPercent())
   {
     if (text == wxT("%e"))
       text = wxT("e");
@@ -517,12 +514,11 @@ wxString TextCell::ToTeX()
     text.Replace(wxT("Ü"), wxT("\\text{Ü}"));
   }
 
-  if (((m_textStyle != TS_USERLABEL) && (!(*m_configuration)->ShowAutomaticLabels())) ||
+  // If we don't want to show automatic labels the following "if" empties the label.
+  if (((m_textStyle = TS_LABEL) && (!(*m_configuration)->ShowAutomaticLabels())) ||
       !(*m_configuration)->ShowLabels()
-          )
-  {
+    )
     text = wxT("");
-  }
 
   text.Replace(wxT("<"), mathModeStart + wxT("<") + mathModeEnd);
   text.Replace(wxT(">"), mathModeStart + wxT(">") + mathModeEnd);
