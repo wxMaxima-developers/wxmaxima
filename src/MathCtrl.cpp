@@ -2578,7 +2578,12 @@ void MathCtrl::OnKeyDown(wxKeyEvent &event)
       return;
     }
   }
-
+  if(event.AltDown() && ((event.GetKeyCode()==WXK_UP)||(event.GetKeyCode()==WXK_DOWN)))
+    {
+      event.Skip();
+      return;
+    }
+    
   // Handling of the keys this class has to handle
   switch (event.GetKeyCode())
   {
@@ -3583,6 +3588,12 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
 void MathCtrl::OnChar(wxKeyEvent &event)
 {
 
+  if(event.AltDown() && ((event.GetKeyCode()==WXK_UP)||(event.GetKeyCode()==WXK_DOWN)))
+  {
+    event.Skip();
+    return;
+  }
+  
   if (m_autocompletePopup != NULL)
   {
     m_autocompletePopup->OnKeyPress(event);
