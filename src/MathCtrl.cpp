@@ -2567,6 +2567,9 @@ void MathCtrl::OnKeyDown(wxKeyEvent &event)
   // to inactive again is done in wxMaxima.cpp
   m_keyboardInactiveTimer.StartOnce(10000);
 
+  // If Alt and Ctrl are down at the same time we are almost entirely sure that
+  // this is a hotkey we need to pass to the main application. One exception is
+  // curly brackets in - I think it was france.
   if (event.ControlDown() && event.AltDown())
   {
     if (
@@ -2578,6 +2581,8 @@ void MathCtrl::OnKeyDown(wxKeyEvent &event)
       return;
     }
   }
+
+  // Alt+Up and Alt+Down are hotkeys, too.
   if(event.AltDown() && ((event.GetKeyCode()==WXK_UP)||(event.GetKeyCode()==WXK_DOWN)))
     {
       event.Skip();
@@ -3588,6 +3593,8 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
 void MathCtrl::OnChar(wxKeyEvent &event)
 {
 
+  // Alt+Up and Alt+Down are hotkeys. In order for the main application to realize
+  // them they need to be passed to it using the event's Skip() function.
   if(event.AltDown() && ((event.GetKeyCode()==WXK_UP)||(event.GetKeyCode()==WXK_DOWN)))
   {
     event.Skip();
@@ -3599,10 +3606,10 @@ void MathCtrl::OnChar(wxKeyEvent &event)
     m_autocompletePopup->OnKeyPress(event);
     return;
   }
-
+  
   m_cellPointers->ResetSearchStart();
 #if defined __WXMSW__
-                                                                                                                          if (event.GetKeyCode() == WXK_NUMPAD_DECIMAL) {
+  if (event.GetKeyCode() == WXK_NUMPAD_DECIMAL) {
     return;
   }
 #endif
