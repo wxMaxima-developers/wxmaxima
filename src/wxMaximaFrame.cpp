@@ -695,10 +695,10 @@ void wxMaximaFrame::SetupMenu()
                           _("Setup atvalues for solving ODE with "
                                     "Laplace transformation"), wxITEM_NORMAL);
   m_EquationsMenu->AppendSeparator();
-  m_EquationsMenu->Append(menu_lhs, _("Left side of the \"=\""),
+  m_EquationsMenu->Append(menu_lhs, _("Left side to the \"=\""),
                           _("The half of the equation that is to the left of the \"=\""),
                           wxITEM_NORMAL);
-  m_EquationsMenu->Append(menu_rhs, _("Right side of the \"=\""),
+  m_EquationsMenu->Append(menu_rhs, _("Right side to the \"=\""),
                           _("The half of the equation that is to the right of the \"=\""),
                           wxITEM_NORMAL);
   m_MenuBar->Append(m_EquationsMenu, _("E&quations"));
