@@ -515,8 +515,8 @@ wxString TextCell::ToTeX()
   }
 
   // If we don't want to show automatic labels the following "if" empties the label.
-  if (((m_textStyle = TS_LABEL) && (!(*m_configuration)->ShowAutomaticLabels())) ||
-      !(*m_configuration)->ShowLabels()
+  if ((m_textStyle == TS_LABEL) && (((!(*m_configuration)->ShowAutomaticLabels())) ||
+                                    !(*m_configuration)->ShowLabels())
     )
     text = wxT("");
 
