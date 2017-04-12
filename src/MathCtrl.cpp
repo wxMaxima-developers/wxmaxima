@@ -3724,10 +3724,10 @@ void MathCtrl::OnMouseExit(wxMouseEvent &event)
   }
 }
 
-#ifdef GetMagnification
-                                                                                                                        void MathCtrl::OnMouseMagnify(wxMouseEvent& event)
+#if wxCHECK_VERSION(3,1,0)
+void MathCtrl::OnMagnify(wxMouseEvent& event)
 {
-  SetZoomFactor(Configuration::GetZoomFactor() + 0.1*event.GetMagnification());
+  SetZoomFactor(m_configuration->GetZoomFactor() + event.GetMagnification());
 }
 #endif
 
@@ -7664,7 +7664,7 @@ void MathCtrl::OnMouseCaptureLost(wxMouseCaptureLostEvent &event)
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
                 EVT_MENU_RANGE(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, MathCtrl::OnComplete)
-#ifdef GetMagnification
+#if wxCHECK_VERSION(3,1,0)
                 EVT_MAGNIFY(MathCtrl::OnMagnify)
 #endif
                 EVT_ACTIVATE(MathCtrl::OnActivate)

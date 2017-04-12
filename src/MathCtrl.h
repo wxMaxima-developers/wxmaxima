@@ -423,8 +423,10 @@ private:
    */
   bool m_autoSaveIntervalExpired;
 
+#if wxCHECK_VERSION(3,1,0)
   //! Handle pinch-to-zoom-events
-  void OnMouseMagnify(wxMouseEvent &event);
+  void OnMagnify(wxMouseEvent &event);
+#endif
 
   void OnMouseExit(wxMouseEvent &event);
 
