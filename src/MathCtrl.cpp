@@ -4202,7 +4202,7 @@ bool MathCtrl::ExportToHTML(wxString file)
 
   wxTextOutputStream css(cssfile);
 
-  output << wxT("<!DOCTYPE HTML\">\n");
+  output << wxT("<!DOCTYPE HTML>\n");
   output << wxT("<HTML>\n");
   output << wxT(" <HEAD>\n");
   output << wxT("  <TITLE>") + filename + wxT("</TITLE>\n");
