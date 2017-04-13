@@ -4218,7 +4218,8 @@ bool MathCtrl::ExportToHTML(wxString file)
     output << wxT("<script type=\"text/x-mathjax-config\">") << endl;
     output << wxT("  MathJax.Hub.Config({") << endl;
     output << wxT("    displayAlign: \"left\",") << endl;
-    output << wxT("    context: \"MathJax\"") << endl;
+    output << wxT("    context: \"MathJax\",") << endl;
+    output << wxT("    TeX: {TagSide: \"left\"}") << endl;
     output << wxT("  })") << endl;
     output << wxT("</script>") << endl;
     output << wxT("<script type=\"text/javascript\"") << endl;
@@ -4722,11 +4723,12 @@ bool MathCtrl::ExportToHTML(wxString file)
               // https://github.com/mathjax/MathJax/issues/569 Non-Math Text will still
               // be interpreted as Text, not as TeX for a long while.
               //
-              // Removing the "\%o1" by "%o1" currently works fine. But it will
-              // break things if MathJaX will ever start interpreting % as a comment
-              // character like TeX dows. Perhaps a lesser evil is to remove the %
-              // altogether.
-              line.Replace(wxT("\\tag{\\%{}"), wxT("\\tag{"));
+              // So instead of  "\%o1" print "%o1" - that works fine now.
+	      // Since we are using a *fixed* Mathjax version for an export,
+	      // nothing will happen, if Mathjax changes that behaviour and would interpret
+	      // the % as TeX comment. When we would upgrade to the new MathJax version
+	      // we would need to escape the % with \%, but now that is not necessary.
+              line.Replace(wxT("\\tag{\\% "), wxT("\\tag{%"));
 
               output << wxT("\\[") << line << wxT("\\]\n");
             }
