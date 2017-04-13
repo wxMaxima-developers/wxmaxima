@@ -13,7 +13,7 @@ branches:
 
 before_install: 
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update                                             ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y libwxgtk3.0-dev libwxgtk3.0  gettext ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y libwxgtk3.0-dev libwxgtk3.0 gettext doxygen graphviz ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                                  ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxwidgets gettext texinfo       ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=$PATH:/usr/local/opt/gettext/bin ; fi
@@ -28,4 +28,4 @@ notification:
 git:
   depth: 15
 
-script: mkdir build && cd build && CXXFLAGS=-Wall cmake .. && cmake --build . && cmake --build . -- translations && cmake --build . -- install DESTDIR=$(pwd)/installtest
+script: mkdir build && cd build && CXXFLAGS=-Wall cmake .. && cmake --build . && cmake --build . -- translations && cmake --build . -- html && cmake --build . -- install DESTDIR=$(pwd)/installtest
