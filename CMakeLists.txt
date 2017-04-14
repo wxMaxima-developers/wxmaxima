@@ -11,11 +11,11 @@ set(PACKAGE wxMaxima)
 add_definitions(-DPREFIX=\"${CMAKE_INSTALL_PREFIX}\")
 
 # MacOSX version-min compiler settings
-if (MACOSX_VERSION_MIN)
+if(MACOSX_VERSION_MIN)
     message(STATUS "Compiling with min macosx version ${MACOSX_VERSION_MIN}")
     set(CMAKE_CXX_FLAGS -mmacosx-version-min=${MACOSX_VERSION_MIN})
     set(CMAKE_EXE_LINKER_FLAGS -mmacosx-version-min=${MACOSX_VERSION_MIN})
-endif(MACOSX_VERSION_MIN)
+endif()
 
 add_subdirectory(locales)
 add_subdirectory(src)

@@ -129,15 +129,15 @@ set(SOURCE_FILES
         XmlInspector.cpp
         XmlInspector.h)
 
-if (WIN32)
-  include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
-  set(SOURCE_FILES Resources.rc ${SOURCE_FILES})
+if(WIN32)
+    include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
+    set(SOURCE_FILES Resources.rc ${SOURCE_FILES})
 endif()
 
 # We put Setup.h into binary dir
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
-if (WIN32)
+if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
     set_target_properties(wxmaxima PROPERTIES
               RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima
@@ -160,7 +160,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Setup.h.cin ${CMAKE_CURRENT_BINARY_DI
 install(TARGETS wxmaxima RUNTIME DESTINATION bin)
 
 # OSX and Windows binary folders
-if (APPLE OR WIN32)
+if(APPLE OR WIN32)
     # DEFINE FILES
     file(GLOB RESOURCES_FILES
             ${CMAKE_BINARY_DIR}/data/wxmathml.lisp
@@ -191,7 +191,7 @@ if (APPLE OR WIN32)
     file(GLOB FONT_FILES
             ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf)
 
-    if (APPLE)
+    if(APPLE)
         # DEFINE DIRECTORIES
         set(APP_DIR ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents)
         set(APP_MACOSX_DIR ${APP_DIR}/MacOS)
@@ -248,9 +248,9 @@ if (APPLE OR WIN32)
             add_custom_command(TARGET wxMaxima.app
                     COMMAND ${CMAKE_COMMAND} -E copy ${f} ${APP_FONTS_DIR})
         endforeach()
-    endif(APPLE)
+    endif()
 
-    if (WIN32)
+    if(WIN32)
         # DEFINE DIRECTORIES
         set(APP_DIR ${CMAKE_BINARY_DIR}/wxMaxima)
         set(APP_DATA_DIR ${APP_DIR}/data)
@@ -294,5 +294,5 @@ if (APPLE OR WIN32)
             add_custom_command(TARGET wxMaxima.win
                     COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_HELP_DIR})
         endforeach()
-    endif(WIN32)
+    endif()
 endif()
