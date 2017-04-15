@@ -935,7 +935,7 @@ bool wxMaxima::StartMaxima(bool force)
     {
 
 #if defined(__WXMSW__)
-                                                                                                                              wxString clisp = command.SubString(1, command.Length() - 3);
+      wxString clisp = command.SubString(1, command.Length() - 3);
       clisp.Replace("\\bin\\maxima.bat", "\\clisp-*.*");
       if (wxFindFirstFile(clisp, wxDIR).empty())
         command.Append(wxString::Format(wxT(" -s %d "), m_port));
@@ -998,7 +998,7 @@ void wxMaxima::Interrupt(wxCommandEvent &event)
     return;
   }
 #if defined (__WXMSW__)
-                                                                                                                          wxString path, maxima = GetCommand(false);
+  wxString path, maxima = GetCommand(false);
   wxArrayString out;
   maxima = maxima.SubString(2, maxima.Length() - 3);
   wxFileName::SplitPath(maxima, &path, NULL, NULL);
@@ -1095,7 +1095,7 @@ void wxMaxima::CleanUp()
 void wxMaxima::ReadFirstPrompt(wxString &data)
 {
 #if defined(__WXMSW__)
-                                                                                                                          int start = 0;
+  int start = 0;
   start = data.Find(wxT("Maxima"));
   if (start == wxNOT_FOUND)
     start = 0;
@@ -1653,7 +1653,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   wxmxURI.Replace("#", "%23");
 
 #ifdef  __WXMSW__
-                                                                                                                          // Fixes a missing "///" after the "file:". This works because we always get absolute
+  // Fixes a missing "///" after the "file:". This works because we always get absolute
   // file names.
   wxRegEx uriCorector1("^file:([a-zA-Z]):");
   wxRegEx uriCorector2("^file:([a-zA-Z][a-zA-Z]):");
@@ -2073,7 +2073,7 @@ void wxMaxima::SetupVariables()
                               defaultPlotHeight));
 
 #if defined (__WXMSW__)
-                                                                                                                          wxString cwd = wxGetCwd();
+  wxString cwd = wxGetCwd();
   cwd.Replace(wxT("\\"), wxT("/"));
   SendMaxima(wxT(":lisp-quiet ($load \"") + cwd + wxT("/data/wxmathml\")"));
 #elif defined (__WXMAC__)
@@ -2085,7 +2085,7 @@ void wxMaxima::SetupVariables()
   if (wxFileExists(gnuplotbin))
     SendMaxima(wxT(":lisp-quiet (setf $gnuplot_command \"") + gnuplotbin + wxT("\")"));
 #else
-                                                                                                                          wxString prefix = wxT(PREFIX);
+  wxString prefix = wxT(PREFIX);
   SendMaxima(wxT(":lisp-quiet ($load \"") + prefix +
              wxT("/share/wxMaxima/wxmathml\")"));
 #endif
@@ -2116,7 +2116,7 @@ wxString wxMaxima::GetCommand(bool params)
     parameters = wxT(" ") + parameters;
 
 #if defined (__WXMSW__)
-                                                                                                                          if (!wxFileExists(command))
+  if (!wxFileExists(command))
   {
     wxMessageBox(_("wxMaxima could not find Maxima!\n\n"
                    "Please configure wxMaxima with 'Edit->Configure'.\n"
@@ -2163,7 +2163,7 @@ void wxMaxima::ShowTip(bool force)
   wxString prefix = wxT(MACPREFIX);
   prefix += wxT("/");
 #else
-                                                                                                                          wxString prefix = wxT(PREFIX);
+  wxString prefix = wxT(PREFIX);
   prefix += wxT("/share/wxMaxima/");
 #endif
 
@@ -2189,7 +2189,7 @@ void wxMaxima::ShowTip(bool force)
 wxString wxMaxima::GetHelpFile()
 {
 #if defined __WXMSW__
-                                                                                                                          wxFileName command;
+  wxFileName command;
   wxString chm;
   wxString html;
 
@@ -2274,7 +2274,7 @@ wxString wxMaxima::GetHelpFile()
 void wxMaxima::ShowHTMLHelp(wxString helpfile, wxString otherhelpfile, wxString keyword)
 {
 #if defined (__WXMSW__)
-                                                                                                                          // Cygwin uses /c/something instead of c:/something and passes this path to the
+  // Cygwin uses /c/something instead of c:/something and passes this path to the
   // web browser - which doesn't support cygwin paths => convert the path to a
   // native windows pathname if needed.
   if(helpfile.Length()>1 && helpfile[1]==wxT('/'))
@@ -2301,7 +2301,7 @@ void wxMaxima::ShowHTMLHelp(wxString helpfile, wxString otherhelpfile, wxString 
 }
 
 #if defined (__WXMSW__)
-                                                                                                                        void wxMaxima::ShowCHMHelp(wxString helpfile,wxString keyword)
+void wxMaxima::ShowCHMHelp(wxString helpfile,wxString keyword)
 {
   if (m_chmhelpFile != helpfile)
     m_chmhelpCtrl.LoadFile(helpfile);
@@ -2323,12 +2323,12 @@ void wxMaxima::ShowWxMaximaHelp()
   wxString htmldir = dirstructure.HelpDir();
 
 #if CHM == true
-                                                                                                                          wxString helpfile = htmldir + wxT("wxmaxima.chm");
+  wxString helpfile = htmldir + wxT("wxmaxima.chm");
   ShowCHMHelp(helpfile,wxT("%"));
 #else
   wxString helpfile = htmldir + wxT("wxmaxima.html");
 #if defined (__WXMSW__)
-                                                                                                                          // Cygwin uses /c/something instead of c:/something and passes this path to the
+  // Cygwin uses /c/something instead of c:/something and passes this path to the
   // web browser - which doesn't support cygwin paths => convert the path to a
   // native windows pathname if needed.
   if(helpfile.Length()>1 && helpfile[1]==wxT('/'))
@@ -3191,7 +3191,6 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
 #endif
     {
       wxConfigBase *config = wxConfig::Get();
-
 #if defined (__WXMAC__)
       bool pngcairo_old = false;
 #else
@@ -3215,22 +3214,22 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       configW->Destroy();
 
 #if defined (__WXMSW__)
-                                                                                                                              bool wxcd = true;
-    config->Read(wxT("wxcd"),&wxcd);
-    if(wxcd)
-    {
-      SendMaxima(wxT(":lisp-quiet (setq $wxchangedir t)"));
-      if (m_console->m_currentFile != wxEmptyString)
+      bool wxcd = true;
+      config->Read(wxT("wxcd"),&wxcd);
+      if(wxcd)
       {
-        wxString filename(m_console->m_currentFile);
-        SetCWD(filename);
+        SendMaxima(wxT(":lisp-quiet (setq $wxchangedir t)"));
+        if (m_console->m_currentFile != wxEmptyString)
+        {
+          wxString filename(m_console->m_currentFile);
+          SetCWD(filename);
+        }
       }
-    }
-    else
-    {
-      SetCWD(wxStandardPaths::Get().GetExecutablePath());
-      SendMaxima(wxT(":lisp-quiet (setq $wxchangedir nil)"));
-    }
+      else
+      {
+        SetCWD(wxStandardPaths::Get().GetExecutablePath());
+        SendMaxima(wxT(":lisp-quiet (setq $wxchangedir nil)"));
+      }
 #endif
 
 #if defined (__WXMAC__)
@@ -3277,7 +3276,6 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
       int defaultPlotHeight = 600;
       config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
-      //      SendMaxima(wxString::Format(wxT(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))"),defaultPlotWidth,defaultPlotHeight));
       m_console->RecalculateForce();
       m_console->RequestRedraw();
     }
@@ -4635,7 +4633,7 @@ MyAboutDialog::MyAboutDialog(wxWindow *parent, int id, const wxString title, wxS
 #if defined __WXMAC__
   cwd = cwd + wxT("/") + wxT(MACPREFIX);
 #else
-                                                                                                                          cwd.Replace(wxT("\\"), wxT("/"));
+  cwd.Replace(wxT("\\"), wxT("/"));
   cwd = cwd + wxT("/data/");
 #endif
 
@@ -4779,86 +4777,86 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
   {
     case wxID_ABOUT:
 #if defined __WXGTK__
-                                                                                                                              {
-    wxAboutDialogInfo info;
-    wxString description;
+    {
+      wxAboutDialogInfo info;
+      wxString description;
 
-    description = _("wxMaxima is a graphical user interface for the computer algebra system Maxima based on wxWidgets.");
+      description = _("wxMaxima is a graphical user interface for the computer algebra system Maxima based on wxWidgets.");
 
-    description += wxString::Format(
-      _("\n\nwxWidgets: %d.%d.%d\nUnicode support: %s"),
-      wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER,
-#if wxUSE_UNICODE
-      _("yes")
-#else
-      _("no")
-#endif
-      );
-    if (m_maximaVersion != wxEmptyString)
-      description += _("\nMaxima version: ") + m_maximaVersion;
-    else
-      description += _("\nNot connected.");
-    if (m_lispVersion != wxEmptyString)
-      description += _("\nLisp: ") + m_lispVersion;
+      description += wxString::Format(
+        _("\n\nwxWidgets: %d.%d.%d\nUnicode support: %s"),
+        wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER,
+  #if wxUSE_UNICODE
+        _("yes")
+  #else
+        _("no")
+  #endif
+        );
+      if (m_maximaVersion != wxEmptyString)
+        description += _("\nMaxima version: ") + m_maximaVersion;
+      else
+        description += _("\nNot connected.");
+      if (m_lispVersion != wxEmptyString)
+        description += _("\nLisp: ") + m_lispVersion;
 
-    wxString iconName = wxT(PREFIX);
-    iconName += wxT("/share/wxMaxima/wxmaxima.png");
-    info.SetIcon(wxIcon(iconName,wxBITMAP_TYPE_PNG));
-    info.SetDescription(description);
-    info.SetName(_("wxMaxima"));
-    info.SetVersion(wxT(GITVERSION));
-    info.SetCopyright(wxT("(C) 2004-2017 Andrej Vodopivec"));
-    info.SetWebSite(wxT("http://andrejv.github.io/wxmaxima/"));
+      wxString iconName = wxT(PREFIX);
+      iconName += wxT("/share/wxMaxima/wxmaxima.png");
+      info.SetIcon(wxIcon(iconName,wxBITMAP_TYPE_PNG));
+      info.SetDescription(description);
+      info.SetName(_("wxMaxima"));
+      info.SetVersion(wxT(GITVERSION));
+      info.SetCopyright(wxT("(C) 2004-2017 Andrej Vodopivec"));
+      info.SetWebSite(wxT("http://andrejv.github.io/wxmaxima/"));
 
-    info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
-    info.AddDeveloper(wxT("Ziga Lenarcic <ziga.lenarcic@gmail.com>"));
-    info.AddDeveloper(wxT("Doug Ilijev <doug.ilijev@gmail.com>"));
-    info.AddDeveloper(wxT("Gunter Königsmann <wxMaxima@physikbuch.de>"));
+      info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
+      info.AddDeveloper(wxT("Ziga Lenarcic <ziga.lenarcic@gmail.com>"));
+      info.AddDeveloper(wxT("Doug Ilijev <doug.ilijev@gmail.com>"));
+      info.AddDeveloper(wxT("Gunter Königsmann <wxMaxima@physikbuch.de>"));
 
-    info.AddTranslator(wxT("Innocent de Marchi (ca)"));
-    info.AddTranslator(wxT("Josef Barak (cs)"));
-    info.AddTranslator(wxT("Robert Marik (cs)"));
-    info.AddTranslator(wxT("Jens Thostrup (da)"));
-    info.AddTranslator(wxT("Harald Geyer (de)"));
-    info.AddTranslator(wxT("Dieter Kaiser (de)"));
-    info.AddTranslator(wxT("Gunter Königsmann (de)"));
-    info.AddTranslator(wxT("Alkis Akritas (el)"));
-    info.AddTranslator(wxT("Evgenia Kelepesi-Akritas (el)"));
-    info.AddTranslator(wxT("Kostantinos Derekas (el)"));
-    info.AddTranslator(wxT("Mario Rodriguez Riotorto (es)"));
-    info.AddTranslator(wxT("Antonio Ullan (es)"));
-    info.AddTranslator(wxT("Eric Delevaux (fr)"));
-    info.AddTranslator(wxT("Michele Gosse (fr)"));
-#if wxUSE_UNICODE
-    info.AddTranslator(wxT("Blahota István (hu)"));
-#else
-    info.AddTranslator(wxT("Blahota Istvan (hu)"));
-#endif
-    info.AddTranslator(wxT("Marco Ciampa (it)"));
-#if wxUSE_UNICODE
-    info.AddTranslator(wxT("Asbjørn Apeland (nb)"));
-#else
-    info.AddTranslator(wxT("Asbjorn Apeland (nb)"));
-#endif
-    info.AddTranslator(wxT("Rafal Topolnicki (pl)"));
-    info.AddTranslator(wxT("Eduardo M. Kalinowski (pt_br)"));
-    info.AddTranslator(wxT("Alexey Beshenov (ru)"));
-    info.AddTranslator(wxT("Vadim V. Zhytnikov (ru)"));
-#if wxUSE_UNICODE
-    info.AddTranslator(wxT("Tufan Şirin (tr)"));
-#else
-    info.AddTranslator(wxT("Tufan Sirin (tr)"));
-#endif
-    info.AddTranslator(wxT("Sergey Semerikov (uk)"));
-    info.AddTranslator(wxT("Frank Weng (zh_TW)"));
-    info.AddTranslator(wxT("cw.ahbong (zh_TW)"));
+      info.AddTranslator(wxT("Innocent de Marchi (ca)"));
+      info.AddTranslator(wxT("Josef Barak (cs)"));
+      info.AddTranslator(wxT("Robert Marik (cs)"));
+      info.AddTranslator(wxT("Jens Thostrup (da)"));
+      info.AddTranslator(wxT("Harald Geyer (de)"));
+      info.AddTranslator(wxT("Dieter Kaiser (de)"));
+      info.AddTranslator(wxT("Gunter Königsmann (de)"));
+      info.AddTranslator(wxT("Alkis Akritas (el)"));
+      info.AddTranslator(wxT("Evgenia Kelepesi-Akritas (el)"));
+      info.AddTranslator(wxT("Kostantinos Derekas (el)"));
+      info.AddTranslator(wxT("Mario Rodriguez Riotorto (es)"));
+      info.AddTranslator(wxT("Antonio Ullan (es)"));
+      info.AddTranslator(wxT("Eric Delevaux (fr)"));
+      info.AddTranslator(wxT("Michele Gosse (fr)"));
+  #if wxUSE_UNICODE
+      info.AddTranslator(wxT("Blahota István (hu)"));
+  #else
+      info.AddTranslator(wxT("Blahota Istvan (hu)"));
+  #endif
+      info.AddTranslator(wxT("Marco Ciampa (it)"));
+  #if wxUSE_UNICODE
+      info.AddTranslator(wxT("Asbjørn Apeland (nb)"));
+  #else
+      info.AddTranslator(wxT("Asbjorn Apeland (nb)"));
+  #endif
+      info.AddTranslator(wxT("Rafal Topolnicki (pl)"));
+      info.AddTranslator(wxT("Eduardo M. Kalinowski (pt_br)"));
+      info.AddTranslator(wxT("Alexey Beshenov (ru)"));
+      info.AddTranslator(wxT("Vadim V. Zhytnikov (ru)"));
+  #if wxUSE_UNICODE
+      info.AddTranslator(wxT("Tufan Şirin (tr)"));
+  #else
+      info.AddTranslator(wxT("Tufan Sirin (tr)"));
+  #endif
+      info.AddTranslator(wxT("Sergey Semerikov (uk)"));
+      info.AddTranslator(wxT("Frank Weng (zh_TW)"));
+      info.AddTranslator(wxT("cw.ahbong (zh_TW)"));
 
-    info.AddArtist(wxT("wxMaxima icon: Sven Hodapp"));
-    info.AddArtist(wxT("Toolbar and config icons: The TANGO Project"));
-    info.AddArtist(wxT("svg version of the icon: Gunter Königsmann"));
+      info.AddArtist(wxT("wxMaxima icon: Sven Hodapp"));
+      info.AddArtist(wxT("Toolbar and config icons: The TANGO Project"));
+      info.AddArtist(wxT("svg version of the icon: Gunter Königsmann"));
 
-    wxAboutBox(info);
-  }
+      wxAboutBox(info);
+    }
 #else
     {
       wxString description;
@@ -6106,7 +6104,7 @@ void wxMaxima::ResetTitle(bool saved, bool force)
     if (m_console->m_currentFile.Length() == 0)
     {
 #ifndef __WXMAC__
-                                                                                                                              if (saved)
+      if (saved)
         SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) + _("[ unsaved ]"));
       else
         SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) + _("[ unsaved* ]"));
@@ -6117,7 +6115,7 @@ void wxMaxima::ResetTitle(bool saved, bool force)
       wxString name, ext;
       wxFileName::SplitPath(m_console->m_currentFile, NULL, NULL, &name, &ext);
 #ifndef __WXMAC__
-                                                                                                                              if (m_fileSaved)
+      if (m_fileSaved)
         SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) +
                  wxT(" [ ") + name + wxT(".") + ext + wxT(" ]"));
       else
@@ -6133,7 +6131,7 @@ void wxMaxima::ResetTitle(bool saved, bool force)
     if (m_console->m_currentFile != wxEmptyString)
       SetRepresentedFilename(m_console->m_currentFile);
 #else
-                                                                                                                            WindowRef win = (WindowRef)MacGetTopLevelWindowRef();
+    WindowRef win = (WindowRef)MacGetTopLevelWindowRef();
     SetWindowModified(win,!saved);
     if (m_console->m_currentFile != wxEmptyString)
     {
