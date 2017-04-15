@@ -699,9 +699,8 @@ void MathCtrl::OnSize(wxSizeEvent &event)
       tmp = tmp->m_next;
     }
   }
-  else
-    AdjustSize();
 
+  AdjustSize();
   Thaw();
   RequestRedraw();
   if (CellToScrollTo)
