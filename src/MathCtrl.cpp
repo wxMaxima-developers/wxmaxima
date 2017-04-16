@@ -259,7 +259,7 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
     //
     // First draw selection under content with wxCOPY and selection brush/color
     //
-    if (m_selectionStart != NULL)
+    if (CellsSelected())
     {
       MathCell *tmp = m_selectionStart;
 
@@ -599,10 +599,10 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
   if (recalc)
   {
     RecalculateForce();
-    if ((m_selectionStart != NULL) && (m_selectionEnd != NULL))
+    if (CellsSelected())
       m_cellPointers->SetSelectionRange_px(
-              dynamic_cast<GroupCell *>(m_selectionStart)->m_currentPoint.y,
-              dynamic_cast<GroupCell *>(m_selectionEnd)->m_currentPoint.y
+              m_selectionStart->m_currentPoint.y,
+              m_selectionEnd->m_currentPoint.y
       );
     RequestRedraw();
   }
@@ -637,8 +637,8 @@ void MathCtrl::Recalculate(GroupCell *start, bool force)
   if(CellsSelected())
   {
     m_cellPointers->SetSelectionRange_px(
-      dynamic_cast<GroupCell *>(m_selectionStart)->m_currentPoint.y,
-      dynamic_cast<GroupCell *>(m_selectionEnd)->m_currentPoint.y
+      m_selectionStart->m_currentPoint.y,
+      m_selectionEnd->m_currentPoint.y
       );
   }
 }
@@ -1650,10 +1650,10 @@ void MathCtrl::SelectGroupCells(wxPoint down, wxPoint up)
     m_hCaretPositionEnd = dynamic_cast<GroupCell *>(m_selectionStart);
   }
 
-  if ((m_selectionStart != NULL) && (m_selectionEnd != NULL))
+  if (CellsSelected())
     m_cellPointers->SetSelectionRange_px(
-            dynamic_cast<GroupCell *>(m_selectionStart)->m_currentPoint.y,
-            dynamic_cast<GroupCell *>(m_selectionEnd)->m_currentPoint.y
+            m_selectionStart->m_currentPoint.y,
+            m_selectionEnd->m_currentPoint.y
     );
 }
 
