@@ -7,7 +7,7 @@
 @c 
 @c (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
 @c (C) 2015 Mixpn Wilson
-@c Based on a file from the maxima sources that was created from
+@c Based on a file from the Maxima sources that was created from
 @c Jim Van Zandt <jrv@vanzandt.mv.com>
 
 @c to update the menus do: 
@@ -25,7 +25,7 @@
 
 @c %**end of header
 @ifinfo
-This is a Texinfo wxMaxima manual based on the maxima
+This is a Texinfo wxMaxima manual based on the Maxima
 manual which is Copyright 1994,2001 William F. Schelter.
 
 The original version if the wxMaxima manual was written in
@@ -55,7 +55,7 @@ successfully used in a variety of applications like maths, computer
 science and biochemistry.
 
 wxMaxima is a graphical user interface that allows to use all of
-maxima's functions providing convenient wizards for accessing the most
+Maxima's functions providing convenient wizards for accessing the most
 commonly used of them.
 @end titlepage
 @end iftex
@@ -78,7 +78,7 @@ features that make wxMaxima one of the most popular GUIs for Maxima.
 @ifnottex
 @menu
 * Introduction::    wxMaxima basics
-* Extensions::      The commands wxMaxima adds to maxima
+* Extensions::      The commands wxMaxima adds to Maxima
 * Troubleshooting:: What to do if wxMaxima doesn't work as expected
 * FAQ::             Frequently asked questions
 * CommandLine::     The command-line arguments wxMaxima supports
@@ -132,13 +132,13 @@ be solved analytically.
 Extensive documentation for Maxima is available on the internet,
 
 
-There is extensive documentation for maxima 
+There is extensive documentation for Maxima 
 @uref{href="http://maxima.sourceforge.net/documentation.html, available in the internet}
 
 part of this documentation is also available in wxMaxima's help menu:
 Pressing the @key{Help} key (on most systems that would be the
 @key{F1} key) wxmaxima's context-sensitive help feature 
-will automatically jump to maxima's manual page for the command at the
+will automatically jump to Maxima's manual page for the command at the
 cursor.
 @subsection wxMaxima
 wxMaxima is a graphical user interface that provides the full
@@ -158,7 +158,7 @@ The calculations are performed by the Maxima command-line tool in the
 background.
 @section  Worksheet basics
 Much of wxMaxima is self-explaining, but some details require
-attention. @uref{http://andrejv.github.io/wxmaxima/help.html, This site}
+attention. @uref{https://andrejv.github.io/wxmaxima/help.html, This site}
 contains a number of workbooks that address various aspects of 
 Maxima. Working through some of these (particularly the "10 minute (wx)Maxima tutorial") will 
 increase one's familiarity with both the content of Maxima and the use of wxMaxima to interact
@@ -184,7 +184,7 @@ input cells that will eventually be sent to Maxima.
 
 @end ifnotinfo
 
-On evaluation of an input cell's contents the input cell maxima
+On evaluation of an input cell's contents the input cell Maxima
 assigns a label to the input (by default shown in red and recognizable
 by the @code{%i}) by which it can be referenced later n the wxMaxima
 session. The output that Maxima generates will be shown in a different
@@ -215,12 +215,13 @@ The worksheet is organized in cells that work like very much like the
 styles word processors offer. Each cell can contain one of the following
 types of content:
 @itemize @bullet
-@item one or more lines of maxima input
+@item one or more lines of Maxima input
 @item an image
-@item a title, section or a subsection
-@item Output of or a question from maxima 
+@item a title, section, subsection or subsubsection
+@item Output of or a question from Maxima
 @item normal a text block that can for example used for explaining the meaning
       of the math cell's contents.
+@item a page break
 @end itemize
 The default behavior of wxMaxima when text is input is to automatically
 create a math cell. Cells of other types can be created
@@ -393,14 +394,14 @@ If a special symbol isn't in the list it is possible to input arbitrary
 unicode characters by pressing @code{<ESC>number of the character<ESC>}.
 @code{<ESC>61<ESC>} therefore results in an @code{a}.
 
-Be aware that a maxima running on a lisp without unicode support
+Be aware that a Maxima running on a lisp without unicode support
 might not be able to deal with files that contain special unicode
 characters.
 
 Please note that most of these symbols (notable exceptions are the
-logic symbols) don't have a special meaning in maxima and therefore
+logic symbols) don't have a special meaning in Maxima and therefore
 will be interpreted as ordinary characters - or might provoke
-unexpected results in case that the maxima is being run
+unexpected results in case that the Maxima is being run
 by a lisp that doesn't support dealing with special unicode characters.
 @subsection Side Panes
 Shortcuts to the most important Maxima commands and a history of the last
@@ -475,7 +476,7 @@ The material that is developed in a wxMaxima session can be stored for
 later use in any of three ways:
 @subsection .mac
 @file{.mac} files are ordinary text files that can be read using
-maxima's read command or wxMaxima's File/Batch File menu entry.
+Maxima's read command or wxMaxima's File/Batch File menu entry.
 
 @ifnotinfo
 One Example:
@@ -497,7 +498,7 @@ You can be use @code{.mac} files for writing own library of
 macros. But since they don't contain enough structural information
 they cannot be read back as a wxMaxima session.
 @subsection .wxm
-@file{.wxm} files contain the input for maxima, as well as any
+@file{.wxm} files contain the input for Maxima, as well as any
 text cells, title cells and chapter or section cells the user has typed
 in. Pictures and Maxima's output are not saved along with the
 @file{.wxm} file, though.
@@ -555,10 +556,10 @@ The animation framerate that is used for new animations is kept in
 the variable @var{wxanimate_framerate}. The initial value this
 variable will contain in a new worksheet can be changed using the
 configuration dialogue.
-@subsection Default plot size for new maxima sessions
+@subsection Default plot size for new Maxima sessions
 After the next start plots embedded into the worksheet will be created
 with this size if the value of  @var{wxplot_size} isn't changed by
-maxima.
+Maxima.
 
 In order to set the plot size of a single graph only use the following
 notation can be used that sets a variable's value for one command only:
@@ -590,7 +591,7 @@ wxMaxima will insert a closing one after it.
 text will be put between the matched signs.
 @end itemize
 @subsection Autosave interval
-If this value is set to a value bigger than zero maxima will work in a
+If this value is set to a value bigger than zero Maxima will work in a
 more mobile-device-like fashion: 
 @itemize @bullet
 @item Files are saved automatically on exit
@@ -601,7 +602,7 @@ a name to save the file with, though. This means this feature will
 only work if the file has already been saved to or opened from the
 disk.
 @node Extensions
-@chapter Extensions to maxima
+@chapter Extensions to Maxima
 wxMaxima is predominantly a graphical user interface for Maxima. That is, it primarily 
 passes along commands to Maxima and reports the results of executing those commands. In some
 cases, however, it adds functionality to Maxima. wxMaxima's ability to generate reports by
@@ -630,7 +631,7 @@ Maxima normally instructs the external program gnuplot to open a
 separate window for every diagram it creates. Since many times it is
 convenient to embed graphs into the work sheet instead wxMaxima
 provides its own set of plot functions that don't differ from the
-corresponding maxima functions save in their name: They are all
+corresponding Maxima functions save in their name: They are all
 prefixed by a ``wx''. For example  @command{wxplot} corresponds to
 @command{plot}, @command{wxdraw} corresponds to @command{draw} and
 @command{wxhistogram} corresponds to @command{histogram}.
@@ -651,7 +652,7 @@ the size of the following plots:
         )
     )$
 @end example
-If the size of only one plot is to be changed maxima provides a
+If the size of only one plot is to be changed Maxima provides a
 canonical way to change an attribute only for the current cell.
 @example
      %i1 wxplot_size:[1200,800];
@@ -792,7 +793,7 @@ startup file can be placed in.
 @end example
 @section Special variables
 @itemize @bullet
-@item @var{wxsubscripts} tells maxima if it should convert variable
+@item @var{wxsubscripts} tells Maxima if it should convert variable
       names that contain an underscore (@code{R_150}) or the like into
       subscripted variables. See @code{wxdeclare_subscript} for details
       which variable names are automatically converted.
@@ -967,7 +968,7 @@ have been issued recently.
 %i1 playback();
 @end example
 @end itemize
-@section wxMaxima starts up with the message ``Maxima process Terminated.''
+@section wxMaxima starts up with the message ``Maxima process terminated.''
 One possible reason is that Maxima cannot be found in the location that is
 set in the ``Maxima'' tab of wxMaxima's configuration dialog and therefore
 won't run at all. Setting the path to a working Maxima binary should
@@ -992,18 +993,18 @@ on. If @var{wxchangedir} is @code{true} and the current file is saved
 on a different drive than the one Maxima is installed on Maxima
 therefore might fail to load the additional packages it was bundled
 with.
-@section My sbcl-based maxima runs out of memory
+@section My SBCL-based Maxima runs out of memory
 SBCL by default comes with a memory limit that allows it to run even on
 low-end computers. When compiling a big software package like lapack
 or dealing with extremely big lists or equations this limit might be
-too low. In order to extend the limits sbcl can be provided with the
+too low. In order to extend the limits SBCL can be provided with the
 command line parameter
-@code{--dynamic-space-size} that tells sbcl how many megabytes it
-should reserve. A 32bit-windows-sbcl can reserve up to 999 Megabytes,
-1800. A 64-bit sbcl version running on windows can be instructed to use
+@code{--dynamic-space-size} that tells SBCL how many megabytes it
+should reserve. A 32bit-Windows-SBCL can reserve up to 999 Megabytes.
+A 64-bit SBCL version running on Windows can be instructed to use
 more than the about 1280 Megabytes compiling lapack needs.
 
-One way to provide maxima (and thus sbcl) with command line parameters is
+One way to provide Maxima (and thus SBCL) with command line parameters is
 the @code{additional parameters} field of wxMaxima's configuration
 dialogue.
 @ifnotinfo
@@ -1015,13 +1016,13 @@ dialogue.
 Installing the package @code{ibus-gtk} should resolve this issue. See
 (@uref{https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558}) for details.
 @section wxMaxima halts when Maxima processes Greek characters or Umlauts
-If your Maxima is based on sbcl the following lines have to be added to your
+If your Maxima is based on SBCL the following lines have to be added to your
 @file{.sblrc}:
 @example
 (setf sb-impl::*default-external-format* :utf-8)
 @end example
 The folder this file has to be placed in is system- and installation-specific.
-But any sbcl-based Maxima that already has evaluated
+But any SBCL-based Maxima that already has evaluated
 a cell in the current session will happily tell where it can be found after
 getting the following command:
 @example
