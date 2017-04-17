@@ -6,6 +6,9 @@ set(PACKAGE_VERSION ${VERSION})
 set(GITVERSION ${VERSION})
 set(PACKAGE wxMaxima)
 
+# should the PDF doku be build from the texinfo source? (requires a TeX installation)
+option(BUILD_PDF_DOCUMENTATION "Build the PDF documentation." NO)
+
 # PREFIX should be defined, since it is used in the sourcecode and
 # defined by the automake build system, but not defined by CMake by default.
 add_definitions(-DPREFIX=\"${CMAKE_INSTALL_PREFIX}\")

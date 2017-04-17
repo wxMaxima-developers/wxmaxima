@@ -16,8 +16,7 @@ else()
     add_custom_target(wxmaxima.html ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.html)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.html DESTINATION share/doc/wxmaxima)
     
-    # makeinfo on MacOS does not know the option "--pdf"??? Do not build the PDF there.
-    if(NOT APPLE)
+    if(BUILD_PDF_DOCUMENTATION)
         add_custom_command(OUTPUT "wxmaxima.pdf"
             COMMAND ${MAKEINFO} -o wxmaxima.pdf --pdf --force --no-split ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.texi)
         add_custom_target(wxmaxima.pdf  ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.pdf)
