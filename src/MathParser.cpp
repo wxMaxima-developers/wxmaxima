@@ -772,17 +772,24 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
         wxString userdefined = node->GetAttribute(wxT("userdefined"), wxT("no"));
         
         if ( userdefined != wxT("yes"))
+        {
           tmp = ParseText(node->GetChildren(), TS_LABEL);
+        }
         else
         {
           tmp = ParseText(node->GetChildren(), TS_USERLABEL);
-          if(user_lbl == wxEmptyString)
-            user_lbl = dynamic_cast<TextCell *>(tmp)->GetValue();
-        }
-        
-        if(m_userDefinedLabel != wxEmptyString)
-          dynamic_cast<TextCell *>(tmp)->SetUserDefinedLabel(user_lbl);
 
+          // Backwards compatibility: If we haven't saved the user-defined label's text,
+          // but remember that there is one we have saved the user-defined label as
+          // automatic label instead.
+          if(user_lbl == wxEmptyString)
+          {
+            user_lbl = dynamic_cast<TextCell *>(tmp)->GetValue();
+            user_lbl = user_lbl.substr(1,user_lbl.Length() - 2);
+          }
+        }
+
+        dynamic_cast<TextCell *>(tmp)->SetUserDefinedLabel(user_lbl);
         tmp->ForceBreakLine(true);
       }
       else if (tagName == wxT("st"))
