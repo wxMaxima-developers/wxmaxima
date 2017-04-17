@@ -768,19 +768,21 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
       }
       else if (tagName == wxT("lbl"))
       {
-        if (node->GetAttribute(wxT("userdefined"), wxT("no")) != wxT("yes"))
+        wxString user_lbl = node->GetAttribute(wxT("userdefinedlabel"), m_userDefinedLabel);
+        wxString userdefined = node->GetAttribute(wxT("userdefined"), wxT("no"));
+        
+        if ( userdefined != wxT("yes"))
           tmp = ParseText(node->GetChildren(), TS_LABEL);
         else
+        {
           tmp = ParseText(node->GetChildren(), TS_USERLABEL);
-
-        // Set the automatic label maxima gave this cell, if there is any.
+          if(user_lbl == wxEmptyString)
+            user_lbl = dynamic_cast<TextCell *>(tmp)->GetValue();
+        }
+        
         if(m_userDefinedLabel != wxEmptyString)
-          dynamic_cast<TextCell *>(tmp)->SetUserDefinedLabel(m_userDefinedLabel);
-        
-        wxString user_lbl;
-        if ((user_lbl = node->GetAttribute(wxT("userdefinedlabel"), wxEmptyString)) != wxEmptyString)
           dynamic_cast<TextCell *>(tmp)->SetUserDefinedLabel(user_lbl);
-        
+
         tmp->ForceBreakLine(true);
       }
       else if (tagName == wxT("st"))
