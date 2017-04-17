@@ -1,4 +1,4 @@
-figurefiles =  NoiseFilter.jpg maxima_screenshot.jpg InputCell.jpg
+figurefiles =  NoiseFilter.jpg maxima_screenshot.png InputCell.jpg
 figurefiles += wxMaximaWindow.jpg wxMaximaLogo.jpg wxMaximaLogo.png SidePanes.jpg ezUnits.jpg
 figurefiles += BatchImage.jpg wxMaxima_configuration_001.jpg wxMaxima_configuration_002.jpg
 figurefiles += wxMaxima_configuration_001.png wxMaxima_configuration_002.png sbclMemory.png
