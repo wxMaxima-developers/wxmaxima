@@ -20,7 +20,7 @@
 //
 
 /*! \file
-  This file defines the class MathParser that reads wxmx data and math from maxma.
+  This file defines the class MathParser that reads wxmx data and math from Maxima.
 */
 
 #include <wx/config.h>

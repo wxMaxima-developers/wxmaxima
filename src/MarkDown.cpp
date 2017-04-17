@@ -18,9 +18,10 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
-/*!\file This file contains the code for MarkDownParser.
+/*!\file
+  This file contains the code for MarkDownParser.
 
-MarkDownParser is the class that handles the markdown syntax
+  MarkDownParser is the class that handles the markdown syntax
 */
 
 #include "MarkDown.h"
