@@ -5,15 +5,16 @@ if(NOT MAKEINFO)
     message(WARNING "Makeinfo not found. Old wxmaxima.html will be installed.")
     install(FILES wxmaxima.html DESTINATION share/doc/wxmaxima)
 else()
+    message(WARNING "Makeinfo found at ${MAKEINFO}")
     add_custom_command(OUTPUT "wxmaxima.info"
-        COMMAND ${MAKEINFO} -o ${file}.info --no-split ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.texi)
+        COMMAND ${MAKEINFO} -o wxmaxima.info --no-split ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.texi)
     add_custom_command(OUTPUT "wxmaxima.html"
-        COMMAND ${MAKEINFO} -o ${file}.info --html --no-split ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.texi)
+        COMMAND ${MAKEINFO} -o wxmaxima.html --html --no-split ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.texi)
     add_custom_command(OUTPUT "wxmaxima.pdf"
-        COMMAND ${MAKEINFO} -o ${file}.info --pdf --no-split ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.texi)
-    add_custom_target(wxmaxima.info ALL DEPENDS wxmaxima.info)
-    add_custom_target(wxmaxima.html ALL DEPENDS wxmaxima.html)
-    add_custom_target(wxmaxima.pdf  ALL DEPENDS wxmaxima.pdf)
+        COMMAND ${MAKEINFO} -o wxmaxima.pdf --pdf --no-split ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.texi)
+    add_custom_target(wxmaxima.info ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.info)
+    add_custom_target(wxmaxima.html ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.html)
+    add_custom_target(wxmaxima.pdf  ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.pdf)
     # where should the info file be installed? Is it used anywhere?
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.html ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.pdf DESTINATION share/doc/wxmaxima)
 endif()
