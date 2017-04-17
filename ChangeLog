@@ -23,11 +23,14 @@ Current:
   * MathJaX export can now be configured to instruct the html export to download
     MathJaX from a different URL: They moved the URL one can use and might do so
     again somewhere in the future.
+  * Maximum number of digits and if we use user-defined labels now are no more
+    hardcoded into the worksheet at evaluation time.
   * cmake is now our main build system: It is supported under MSVC, XCode,
     Code::Blocks, its output looks much nicer than the one from the autotools
     and setting it up uses much more straightforward constructs.
     The recipe to build a debian package using cmake can be found at
     https://code.launchpad.net/~peterpall/wxmaxima/packaging
+  * Massive speed-ups
   * Many additional bug fixes and stability enhancements.
 
 16.12:
