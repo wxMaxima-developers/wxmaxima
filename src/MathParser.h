@@ -48,6 +48,7 @@ public:
 
   ~MathParser();
 
+  void SetUserLabel(wxString label){ m_userDefinedLabel = label; }
   MathCell *ParseLine(wxString s, int style = MC_TYPE_DEFAULT);
 
   MathCell *ParseTag(wxXmlNode *node, bool all = true);
@@ -125,6 +126,7 @@ private:
 
   MathCell *ParseSubSupTag(wxXmlNode *node);
 
+  wxString m_userDefinedLabel;
   int m_ParserStyle;
   int m_FracStyle;
   CellPointers *m_cellPointers;

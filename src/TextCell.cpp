@@ -33,7 +33,7 @@
 TextCell::TextCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
 {
   m_displayedDigits_old = -1;
-  m_text = wxEmptyString;
+  m_text = m_userDefinedLabel = wxEmptyString;
   m_displayedText = wxEmptyString;
   m_fontSize = -1;
   m_highlight = false;
@@ -122,6 +122,21 @@ wxString TextCell::LabelWidthText()
 void TextCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
+
+  // If the setting has changed and we want to show a user-defined label
+  // instead of an automatic one or vice versa we decide that here.
+  if(
+    (m_textStyle == TS_USERLABEL) &&
+    (!configuration->UseUserLabels())
+    )
+    m_textStyle = TS_LABEL;
+  if(
+    (m_textStyle == TS_LABEL) &&
+    (configuration->UseUserLabels()) &&
+    (m_userDefinedLabel != wxEmptyString)
+    )
+    m_textStyle = TS_USERLABEL;
+  
   double scale = configuration->GetScale();
   SetAltText();
 
@@ -144,18 +159,23 @@ void TextCell::RecalculateWidths(int fontsize)
     // they fit in
     if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
     {
+      wxString text = m_text;
+
+      if(m_textStyle == TS_USERLABEL)
+        text = wxT("(") + m_userDefinedLabel + wxT(")");
+
       // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
-      if (m_text.Right(2) != wxT("/ "))
+      if (text.Right(2) != wxT("/ "))
         dc.GetTextExtent(wxT("(%o") + LabelWidthText() + wxT(")"), &m_width, &m_height);
       else
         dc.GetTextExtent(wxT("(%o") + LabelWidthText() + wxT(")/R/"), &m_width, &m_height);
 
       // We will decrease it before use
       m_fontSizeLabel = m_fontSize;
-      wxASSERT_MSG((m_width > 0) || (m_text == wxEmptyString),
+      wxASSERT_MSG((m_width > 0) || (text == wxEmptyString),
                    _("The letter \"X\" is of width zero. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
       if (m_width < 1) m_width = 10;
-      dc.GetTextExtent(m_displayedText, &m_labelWidth, &m_labelHeight);
+      dc.GetTextExtent(text, &m_labelWidth, &m_labelHeight);
       wxASSERT_MSG((m_labelWidth > 0) || (m_displayedText == wxEmptyString),
                    _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
       wxFont font(dc.GetFont());
@@ -164,7 +184,7 @@ void TextCell::RecalculateWidths(int fontsize)
         int fontsize1 = (int) (((double) --m_fontSizeLabel) * scale + 0.5);
         font.SetPointSize(fontsize1);
         dc.SetFont(font);
-        dc.GetTextExtent(m_displayedText, &m_labelWidth, &m_labelHeight);
+        dc.GetTextExtent(text, &m_labelWidth, &m_labelHeight);
       }
     }
 
@@ -233,9 +253,14 @@ void TextCell::Draw(wxPoint point, int fontsize)
         {
           SetFontSizeForLabel(dc, scale);
           // Draw the label
-          dc.DrawText(m_displayedText,
-                      point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                      point.y - m_realCenter + (m_height - m_labelHeight) / 2);
+          if(m_textStyle == TS_USERLABEL)
+            dc.DrawText(wxT("(") + m_userDefinedLabel + wxT(")"),
+                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                        point.y - m_realCenter + (m_height - m_labelHeight) / 2);
+          else
+            dc.DrawText(m_displayedText,
+                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                        point.y - m_realCenter + (m_height - m_labelHeight) / 2);            
         }
       }
 
@@ -1087,6 +1112,8 @@ wxString TextCell::ToXML()
 
   wxString xmlstring = XMLescape(m_displayedText);
   // convert it, so that the XML configuration doesn't fail
+  if(m_userDefinedLabel != wxEmptyString)
+    flags += wxT(" userdefinedlabel=\"") + XMLescape(m_userDefinedLabel) + wxT("\"");
 
   return _T("<") + tag + flags + _T(">") + xmlstring + _T("</") + tag + _T(">");
 }

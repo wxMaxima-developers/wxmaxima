@@ -335,7 +335,7 @@ void wxMaxima::FirstOutput(wxString s)
  * It will call
  * DoConsoleAppend if s is in xml and DoRawCosoleAppend if s is not in xml.
  */
-void wxMaxima::ConsoleAppend(wxString s, int type)
+void wxMaxima::ConsoleAppend(wxString s, int type, wxString userLabel)
 {
   // If we want to append an error message to the worksheet and there is no cell
   // that can contain it we need to create such a cell.
@@ -417,7 +417,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
         wxString rest = s.SubString(start, end);
 
         DoConsoleAppend(wxT("<span>") + rest +
-                        wxT("</span>"), type, false);
+                        wxT("</span>"), type, false, true, userLabel);
         s = s.SubString(end + 1, s.Length());
       }
 //      wxSafeYield();
@@ -435,7 +435,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
     else
       s = s + wxT(" ");
 
-    DoConsoleAppend(wxT("<span>") + s + wxT("</span>"), type, true);
+    DoConsoleAppend(wxT("<span>") + s + wxT("</span>"), type, true, true, userLabel);
   }
 
   else if (type == MC_TYPE_ERROR)
@@ -447,7 +447,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type)
 }
 
 void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
-                               bool bigSkip)
+                               bool bigSkip, wxString userLabel)
 {
   MathCell *cell;
 
@@ -457,6 +457,7 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
   s.Replace(wxT("\n"), wxT(" "), true);
 
   MathParser mParser(&m_console->m_configuration, m_console->m_cellPointers);
+  mParser.SetUserLabel(userLabel);
   cell = mParser.ParseLine(s, type);
 
   wxASSERT_MSG(cell != NULL, _("There was an error in generated XML!\n\n"
@@ -1268,23 +1269,20 @@ void wxMaxima::ReadMath(wxString &data)
     else
       start = 0;
 
-    // Replace the name of the automatic label maxima has assigned to the output
-    // by the one the user has used - if the configuration option to do so is set.
-    if (m_console->m_configuration->UseUserLabels())
-    {
-      if (m_console->m_evaluationQueue.GetUserLabel() != wxEmptyString)
-      {
-        wxString label = m_console->m_evaluationQueue.GetUserLabel();
-        label.Replace("\\", "\\\\");
-        m_outputPromptRegEx.Replace(&o, wxT("<lbl userdefined=\"yes\">(") + label + wxT(")</lbl>"), 1);
-      }
-    }
-
     o.Trim(true);
     o.Trim(false);
 
     if (o.Length() > 0)
-      ConsoleAppend(o + mth, MC_TYPE_DEFAULT);
+    {
+      if (m_console->m_configuration->UseUserLabels())
+      {
+        ConsoleAppend(o + mth, MC_TYPE_DEFAULT,m_console->m_evaluationQueue.GetUserLabel());
+      }
+      else
+      {
+        ConsoleAppend(o + mth, MC_TYPE_DEFAULT);
+      }
+    }
 
     data = data.Left(start) +
            data.SubString(end + mth.Length(), data.Length());

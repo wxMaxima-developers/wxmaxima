@@ -772,6 +772,15 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
           tmp = ParseText(node->GetChildren(), TS_LABEL);
         else
           tmp = ParseText(node->GetChildren(), TS_USERLABEL);
+
+        // Set the automatic label maxima gave this cell, if there is any.
+        if(m_userDefinedLabel != wxEmptyString)
+          dynamic_cast<TextCell *>(tmp)->SetUserDefinedLabel(m_userDefinedLabel);
+        
+        wxString user_lbl;
+        if ((user_lbl = node->GetAttribute(wxT("userdefinedlabel"), wxEmptyString)) != wxEmptyString)
+          dynamic_cast<TextCell *>(tmp)->SetUserDefinedLabel(user_lbl);
+        
         tmp->ForceBreakLine(true);
       }
       else if (tagName == wxT("st"))

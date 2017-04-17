@@ -41,7 +41,11 @@ public:
 
   MathCell *Copy();
 
+  //! Set the text contained in this cell
   void SetValue(const wxString &text);
+
+  //! Set the automatic label maxima has assigned the current equation
+  void SetUserDefinedLabel(wxString userDefinedLabel){m_userDefinedLabel = userDefinedLabel;}
 
   void RecalculateWidths(int fontsize);
 
@@ -100,6 +104,8 @@ protected:
 
   //! The text we keep inside this cell
   wxString m_text;
+  //! The text we keep inside this cell
+  wxString m_userDefinedLabel;
   //! The text we display: m_text might be a number that is longer than we want to display
   wxString m_displayedText;
   //! How many maximum digits did we display the last time this cell was recalculated?

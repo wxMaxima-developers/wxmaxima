@@ -281,9 +281,9 @@ protected:
    */
   void ClientEvent(wxSocketEvent &event);
 
-  void ConsoleAppend(wxString s, int type);        //!< append maxima output to console
+  void ConsoleAppend(wxString s, int type, wxString userLabel = wxEmptyString);        //!< append maxima output to console
   void DoConsoleAppend(wxString s, int type,       //
-                       bool newLine = true, bool bigSkip = true);
+                       bool newLine = true, bool bigSkip = true, wxString userLabel = wxEmptyString);
 
   void DoRawConsoleAppend(wxString s, int type);   //
 
