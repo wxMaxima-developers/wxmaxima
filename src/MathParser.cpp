@@ -779,9 +779,9 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
         {
           tmp = ParseText(node->GetChildren(), TS_USERLABEL);
 
-          // Backwards compatibility: If we haven't saved the user-defined label's text,
-          // but remember that there is one we have saved the user-defined label as
-          // automatic label instead.
+          // Backwards compatibility to 17.04/17.12:
+          // If we cannot find the user-defined label's text but still know that there
+          // is one it's value has been saved as "automatic label" instead.
           if(user_lbl == wxEmptyString)
           {
             user_lbl = dynamic_cast<TextCell *>(tmp)->GetValue();

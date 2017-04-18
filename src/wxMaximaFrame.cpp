@@ -1058,6 +1058,10 @@ void wxMaximaFrame::UpdateRecentDocuments()
 
 void wxMaximaFrame::AddRecentDocument(wxString file)
 {
+  // On windows this loads the recent documents list that might have been saved
+  // by another wxMaxima instance.
+  LoadRecentDocuments();
+  
   wxFileName FileName = file;
   FileName.MakeAbsolute();
   wxString CanonicalFilename = FileName.GetFullPath();
@@ -1069,6 +1073,10 @@ void wxMaximaFrame::AddRecentDocument(wxString file)
   m_recentDocuments.Insert(CanonicalFilename, 0);
 
   UpdateRecentDocuments();
+
+  // Since on windows another wxMaxima instance can load our recent document list
+  // once we have saved it we do so no:
+  SaveRecentDocuments();
 }
 
 void wxMaximaFrame::RemoveRecentDocument(wxString file)
