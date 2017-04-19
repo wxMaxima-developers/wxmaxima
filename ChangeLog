@@ -15,11 +15,15 @@ Current:
   * the with_slider type of commands now uses wxstatusbar() in order to provide
   * progress information for the user.
   * Several scrolling fixes, again.
+  * Two concurrent wxMaxima instances now no more overwrite each other's "Recent files"
+    list.
   * Invalid XML tags are now handled more gracefully
   * Deduplicated the code for saving .wxm files
   * content.xml files that have been extracted from a broken .wxmx file (e.G.
     using a text editor as UTF8-encoded TeXt without BOM can now be loaded by
     wxMaxima in order to reconstruct the worksheet.
+  * MacOs: Upgrading from a previous version should no more cause crashes due to
+    font issues.
   * MathJaX export can now be configured to instruct the html export to download
     MathJaX from a different URL: They moved the URL one can use and might do so
     again somewhere in the future.
