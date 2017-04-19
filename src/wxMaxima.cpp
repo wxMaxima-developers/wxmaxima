@@ -1528,6 +1528,9 @@ void wxMaxima::SetCWD(wxString file)
 // Clear document (if clearDocument == true), then insert file
 bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument)
 {
+  // Show a busy cursor while we open the file.
+  wxBusyCursor crs;
+
   SetStatusText(_("Opening file"), 1);
   document->Freeze();
 
@@ -1543,9 +1546,6 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
     SetStatusText(_("File could not be opened"), 1);
     return false;
   }
-
-  // Show a busy cursor as long as we open a file.
-  wxBusyCursor crs;
 
   if (inputFile.GetFirstLine() !=
       wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"))
@@ -1605,10 +1605,11 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
 
 bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocument)
 {
+  // Show a busy cursor while we open a file.
+  wxBusyCursor crs;
+
   SetStatusText(_("Opening file"), 1);
 
-  // Show a busy cursor as long as we open a file.
-  wxBusyCursor crs;
   document->Freeze();
 
   // If the file is empty we don't want to generate an error, but just
@@ -1835,10 +1836,11 @@ bool wxMaxima::CheckWXMXVersion(wxString docversion)
 
 bool wxMaxima::OpenXML(wxString file, MathCtrl *document, bool clearDocument)
 {
-  SetStatusText(_("Opening file"), 1);
-
   // Show a busy cursor as long as we open a file.
   wxBusyCursor crs;
+
+  SetStatusText(_("Opening file"), 1);
+
   document->Freeze();
 
   wxXmlDocument xmldoc;
