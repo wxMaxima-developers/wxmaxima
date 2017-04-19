@@ -616,14 +616,18 @@ void GroupCell::RecalculateHeightOutput(int fontsize)
             m_height += configuration->GetInterEquationSkip();
           }
         }
-        m_outputRect.height += tmp->GetMaxHeight() + MC_LINE_SKIP;
       }
+      
+   //   if (tmp->m_bigSkip)
+   //     m_height += MC_LINE_SKIP;
+
       tmp = tmp->m_nextToDraw;
     }
   }
   
   m_outputWidth = m_width;
   m_outputHeight = m_height - m_inputHeight;
+  m_outputRect.height = m_inputHeight + m_height + MC_LINE_SKIP;
 }
 
 void GroupCell::RecalculateHeight(int fontsize)
@@ -704,10 +708,13 @@ void GroupCell::RecalculateAppended()
     {
       m_width = MAX(m_width, tmp->GetLineWidth(scale));
       m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth(scale));
-      m_height += tmp->GetMaxHeight();
+      m_height            += tmp->GetMaxHeight() + configuration->GetInterEquationSkip();
+      m_outputRect.height += tmp->GetMaxHeight() + configuration->GetInterEquationSkip();
       if (tmp->m_bigSkip)
-        m_height += MC_LINE_SKIP;
-      m_outputRect.height += tmp->GetMaxHeight() + MC_LINE_SKIP;
+      {
+        m_height            += MC_LINE_SKIP;
+        m_outputRect.height += MC_LINE_SKIP;
+      }
     }
     tmp = tmp->m_nextToDraw;
   }
