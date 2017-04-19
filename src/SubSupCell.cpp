@@ -63,14 +63,11 @@ MathCell *SubSupCell::Copy()
 
 SubSupCell::~SubSupCell()
 {
-  if (m_baseCell != NULL)
-    delete m_baseCell;
-  if (m_indexCell != NULL)
-    delete m_indexCell;
-  if (m_exptCell != NULL)
-    delete m_exptCell;
+  wxDELETE(m_baseCell);
   m_baseCell = NULL;
+  wxDELETE(m_indexCell);
   m_indexCell = NULL;
+  wxDELETE(m_exptCell);
   m_exptCell = NULL;
 }
 
@@ -78,8 +75,7 @@ void SubSupCell::SetIndex(MathCell *index)
 {
   if (index == NULL)
     return;
-  if (m_indexCell != NULL)
-    delete m_indexCell;
+  wxDELETE(m_indexCell);
   m_indexCell = index;
 }
 
@@ -87,8 +83,7 @@ void SubSupCell::SetBase(MathCell *base)
 {
   if (base == NULL)
     return;
-  if (m_baseCell != NULL)
-    delete m_baseCell;
+  wxDELETE(m_baseCell);
   m_baseCell = base;
 }
 
@@ -96,8 +91,7 @@ void SubSupCell::SetExponent(MathCell *exp)
 {
   if (exp == NULL)
     return;
-  if (m_exptCell != NULL)
-    delete m_exptCell;
+  wxDELETE(m_exptCell);
   m_exptCell = exp;
 }
 

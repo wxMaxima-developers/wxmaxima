@@ -75,8 +75,7 @@ void AbsCell::SetInner(MathCell *inner)
 {
   if (inner == NULL)
     return;
-  if (m_innerCell != NULL)
-    delete m_innerCell;
+  wxDELETE(m_innerCell);
   m_innerCell = inner;
 
   m_last = m_innerCell;

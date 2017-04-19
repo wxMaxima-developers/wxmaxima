@@ -88,8 +88,7 @@ void IntCell::SetOver(MathCell *over)
 {
   if (over == NULL)
     return;
-  if (m_over != NULL)
-    delete m_over;
+  wxDELETE(m_over);
   m_over = over;
 }
 
@@ -97,8 +96,7 @@ void IntCell::SetBase(MathCell *base)
 {
   if (base == NULL)
     return;
-  if (m_base != NULL)
-    delete m_base;
+  wxDELETE(m_base);
   m_base = base;
 }
 
@@ -106,8 +104,7 @@ void IntCell::SetUnder(MathCell *under)
 {
   if (under == NULL)
     return;
-  if (m_under != NULL)
-    delete m_under;
+  wxDELETE(m_under);
   m_under = under;
 }
 
@@ -115,8 +112,7 @@ void IntCell::SetVar(MathCell *var)
 {
   if (var == NULL)
     return;
-  if (m_var != NULL)
-    delete m_var;
+  wxDELETE(m_var);
   m_var = var;
 }
 

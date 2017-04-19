@@ -40,10 +40,6 @@ class EvaluationQueueElement
 public:
   EvaluationQueueElement(GroupCell *gr);
 
-  ~EvaluationQueueElement()
-  {
-  }
-
   GroupCell *group;
   EvaluationQueueElement *next;
 };

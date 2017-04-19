@@ -82,8 +82,7 @@ void ExptCell::SetPower(MathCell *power)
 {
   if (power == NULL)
     return;
-  if (m_powCell != NULL)
-    delete m_powCell;
+  wxDELETE(m_powCell);
   m_powCell = power;
 
   if (!m_powCell->IsCompound())
@@ -102,8 +101,7 @@ void ExptCell::SetBase(MathCell *base)
 {
   if (base == NULL)
     return;
-  if (m_baseCell != NULL)
-    delete m_baseCell;
+  wxDELETE(m_baseCell);
   m_baseCell = base;
 
   m_last1 = base;

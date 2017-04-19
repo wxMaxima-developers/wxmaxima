@@ -72,7 +72,7 @@ MathCell::~MathCell()
   {
     MathCell *tmp = last;
     last = last->m_previous;
-    delete tmp;
+    wxDELETE(tmp);
     last->m_next = NULL;
   }
 }

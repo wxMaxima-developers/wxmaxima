@@ -56,10 +56,8 @@ MathCell *SubCell::Copy()
 
 SubCell::~SubCell()
 {
-  if (m_baseCell != NULL)
-    delete m_baseCell;
-  if (m_indexCell != NULL)
-    delete m_indexCell;
+  wxDELETE(m_baseCell);
+  wxDELETE(m_indexCell);
   m_baseCell = NULL;
   m_indexCell = NULL;
 }
@@ -68,8 +66,7 @@ void SubCell::SetIndex(MathCell *index)
 {
   if (index == NULL)
     return;
-  if (m_indexCell != NULL)
-    delete m_indexCell;
+  wxDELETE(m_indexCell);
   m_indexCell = index;
 }
 
@@ -77,8 +74,7 @@ void SubCell::SetBase(MathCell *base)
 {
   if (base == NULL)
     return;
-  if (m_baseCell != NULL)
-    delete m_baseCell;
+  wxDELETE(m_baseCell);
   m_baseCell = base;
 }
 

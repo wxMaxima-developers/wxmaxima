@@ -166,8 +166,8 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 
 ConfigDialogue::~ConfigDialogue()
 {
-  if (m_imageList != NULL)
-    delete m_imageList;
+  wxDELETE(m_imageList);
+  m_imageList = NULL;
 }
 
 
@@ -1069,7 +1069,7 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
 
 void ConfigDialogue::ReadStyles(wxString file)
 {
-  wxConfigBase *config;
+  wxConfigBase *config = NULL;
   if (file == wxEmptyString)
     config = wxConfig::Get();
   else
@@ -1375,12 +1375,12 @@ void ConfigDialogue::ReadStyles(wxString file)
   m_underlinedCB->SetValue(m_styleDefault.underlined);
 
   if (file != wxEmptyString)
-    delete config;
+    wxDELETE(config);
 }
 
 void ConfigDialogue::WriteStyles(wxString file)
 {
-  wxConfigBase *config;
+  wxConfigBase *config = NULL;
   if (file == wxEmptyString)
     config = wxConfig::Get();
   else
@@ -1496,7 +1496,7 @@ void ConfigDialogue::WriteStyles(wxString file)
     wxFile fl(file, wxFile::write);
     wxFileOutputStream str(fl);
     ((wxFileConfig *) config)->Save(str);
-    delete config;
+    wxDELETE(config);
   }
 }
 

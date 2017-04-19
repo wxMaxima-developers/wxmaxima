@@ -98,8 +98,7 @@ void FracCell::SetNum(MathCell *num)
 {
   if (num == NULL)
     return;
-  if (m_num != NULL)
-    delete m_num;
+  wxDELETE(m_num);
   m_num = num;
 }
 
@@ -107,8 +106,7 @@ void FracCell::SetDenom(MathCell *denom)
 {
   if (denom == NULL)
     return;
-  if (m_denom != NULL)
-    delete m_denom;
+  wxDELETE(m_denom);
   m_denom = denom;
 }
 

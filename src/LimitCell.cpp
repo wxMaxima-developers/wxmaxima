@@ -71,8 +71,7 @@ void LimitCell::SetName(MathCell *name)
 {
   if (name == NULL)
     return;
-  if (m_name != NULL)
-    delete m_name;
+  wxDELETE(m_name);
   m_name = name;
 }
 
@@ -80,8 +79,7 @@ void LimitCell::SetBase(MathCell *base)
 {
   if (base == NULL)
     return;
-  if (m_base != NULL)
-    delete m_base;
+  wxDELETE(m_base);
   m_base = base;
 }
 
@@ -89,8 +87,7 @@ void LimitCell::SetUnder(MathCell *under)
 {
   if (under == NULL)
     return;
-  if (m_under != NULL)
-    delete m_under;
+  wxDELETE(m_under);
   m_under = under;
 }
 

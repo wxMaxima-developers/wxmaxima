@@ -102,8 +102,7 @@ void ParenCell::SetInner(MathCell *inner, int type)
 {
   if (inner == NULL)
     return;
-  if (m_innerCell != NULL)
-    delete m_innerCell;
+  wxDELETE(m_innerCell);
   m_innerCell = inner;
   m_type = type;
 

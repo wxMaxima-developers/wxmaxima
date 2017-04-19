@@ -206,18 +206,14 @@ wxMaxima::~wxMaxima()
   m_client = NULL;
 
   if (m_process)
-  {
     m_process->Detach();
-    m_process = NULL;
-    m_maximaStdout = NULL;
-    m_maximaStderr = NULL;
-  }
 
-  if (m_printData != NULL)
-  {
-    delete m_printData;
-    m_printData = NULL;
-  }
+  m_process = NULL;
+  m_maximaStdout = NULL;
+  m_maximaStderr = NULL;
+
+  wxDELETE(m_printData);
+  m_printData = NULL;
 }
 
 
@@ -1085,7 +1081,8 @@ void wxMaxima::CleanUp()
       m_server->Destroy();
     m_server = NULL;
   }
-  if (m_process != NULL) delete m_process;
+  if(m_process)
+    m_process->Detach();
   m_process = NULL;
 }
 
@@ -1573,7 +1570,7 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
 
   GroupCell *tree = m_console->CreateTreeFromWXMCode(wxmLines);
 
-  delete wxmLines;
+  wxDELETE(wxmLines);
 
   // from here on code is identical for wxm and wxmx
   if (clearDocument)
@@ -1680,7 +1677,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
       // a letter of ascii code 27 in content.xml. Let's filter this char out.
 
       // Re-open the file.
-      delete fsfile;
+      wxDELETE(fsfile);
       fsfile = fs.OpenFile(filename);
       if (fsfile)
       {
@@ -1718,7 +1715,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   }
 
 
-  delete fsfile;
+  wxDELETE(fsfile);
 
   if (!xmldoc.IsOk())
   {
@@ -2174,7 +2171,7 @@ void wxMaxima::ShowTip(bool force)
     tipNum = t->GetCurrentTip();
     config->Write(wxT("tipNum"), tipNum);
     config->Flush();
-    delete t;
+    wxDELETE(t);
   }
   else
   {
@@ -2489,9 +2486,7 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
       printout.SetData(copy);
       if (printer.Print(this, &printout, true))
       {
-        if (m_printData != NULL)
-          delete m_printData;
-
+        wxDELETE(m_printData);
         m_printData = new wxPrintData(printer.GetPrintDialogData().GetPrintData());
       }
       m_console->Thaw();

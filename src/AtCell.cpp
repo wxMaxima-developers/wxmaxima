@@ -64,8 +64,7 @@ void AtCell::SetIndex(MathCell *index)
 {
   if (index == NULL)
     return;
-  if (m_indexCell != NULL)
-    delete m_indexCell;
+  wxDELETE(m_indexCell);
   m_indexCell = index;
 }
 
@@ -73,8 +72,7 @@ void AtCell::SetBase(MathCell *base)
 {
   if (base == NULL)
     return;
-  if (m_baseCell != NULL)
-    delete m_baseCell;
+  wxDELETE(m_baseCell);
   m_baseCell = base;
 }
 

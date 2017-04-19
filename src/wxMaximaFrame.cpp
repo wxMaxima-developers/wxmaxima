@@ -1028,7 +1028,7 @@ void wxMaximaFrame::UpdateRecentDocuments()
     if (m_recentDocumentsMenu->FindItem(i) != NULL)
     {
       wxMenuItem *item = m_recentDocumentsMenu->Remove(i);
-      delete item;
+      wxDELETE(item);
       item = NULL;
     }
 
@@ -1047,8 +1047,7 @@ void wxMaximaFrame::UpdateRecentDocuments()
     if (m_recentDocumentsMenu->FindItem(i, NULL) != NULL)
     {
       wxMenuItem *item = m_recentDocumentsMenu->Remove(i);
-      if (item != NULL)
-        delete item;
+      wxDELETE(item);
       item = NULL;
     }
   }
@@ -1068,8 +1067,9 @@ void wxMaximaFrame::AddRecentDocument(wxString file)
   // the registry and is queried every time we request data while on Mac computers
   // all windows share a central wxConfig object and therefore the same recent
   // documents list.
-  wxConfig::Get()->Flush();
-  delete wxConfig::Get();
+  wxConfigBase *config = wxConfig::Get();
+  config->Flush();
+  wxDELETE(config);
   wxConfig::Set(new wxConfig(wxT("wxMaxima")));
   #endif
   

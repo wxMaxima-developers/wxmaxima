@@ -95,7 +95,7 @@ MathParser::MathParser(Configuration **cfg, CellPointers *cellPointers, wxString
 MathParser::~MathParser()
 {
   if (m_fileSystem)
-    delete m_fileSystem;
+    wxDELETE(m_fileSystem);
 }
 
 // ParseCellTag
@@ -127,7 +127,7 @@ MathCell *MathParser::ParseCellTag(wxXmlNode *node)
         if (editor == NULL)
           editor = new EditorCell(group, m_configuration, m_cellPointers, _("Bug: Missing contents"));
         group->SetEditableContent(editor->GetValue());
-        delete editor;
+        wxDELETE(editor);
       }
       if (children->GetName() == wxT("output"))
       {
@@ -147,7 +147,7 @@ MathCell *MathParser::ParseCellTag(wxXmlNode *node)
       {
         MathCell *ed = ParseEditorTag(children);
         group->SetEditableContent(ed->GetValue());
-        delete ed;
+        wxDELETE(ed);
       }
       else
         group->AppendOutput(ParseTag(children));
@@ -165,7 +165,7 @@ MathCell *MathParser::ParseCellTag(wxXmlNode *node)
     if (editor == NULL)
       editor = new EditorCell(group, m_configuration, m_cellPointers, _("Bug: Missing contents"));
     group->SetEditableContent(editor->GetValue());
-    delete editor;
+    wxDELETE(editor);
   }
   else
   {
@@ -201,7 +201,7 @@ MathCell *MathParser::ParseCellTag(wxXmlNode *node)
       {
         MathCell *ed = ParseEditorTag(children);
         group->SetEditableContent(ed->GetValue());
-        delete ed;
+        wxDELETE(ed);
       }
       else if (children->GetName() == wxT("fold"))
       { // we have folded groupcells

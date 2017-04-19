@@ -1197,7 +1197,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
 
     PopupMenu(popupMenu);
   }
-  delete popupMenu;
+  wxDELETE(popupMenu);
 }
 
 
@@ -2182,11 +2182,12 @@ void MathCtrl::TreeUndo_ClearBuffers()
 
 void MathCtrl::TreeUndo_DiscardAction(std::list<TreeUndoAction *> *actionList)
 {
-  TreeUndoAction *Action = actionList->back();
-
-  delete Action;
-
-  actionList->pop_back();
+  if(!actionList->empty())
+  {
+    TreeUndoAction *Action = actionList->back();
+    wxDELETE(Action);
+    actionList->pop_back();
+  }
 }
 
 void MathCtrl::TreeUndo_CellLeft()
@@ -2378,7 +2379,7 @@ void MathCtrl::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUndo
     {
       // We don't want to be able to undo this => actually delete the cells.
       start->m_previous = NULL;
-      delete start;
+      wxDELETE(start);
     }
   }
   else
@@ -2428,7 +2429,7 @@ void MathCtrl::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUndo
     {
       // We don't want to be able to undo this => delete the cells.
       start->m_previous = NULL;
-      delete start;
+      wxDELETE(start);
     }
   }
 
@@ -4777,7 +4778,7 @@ bool MathCtrl::ExportToHTML(wxString file)
           count++;
 
           // Prepare for fetching the next chunk.
-          delete chunk;
+          wxDELETE(chunk);
           chunkStart = chunkEnd->m_next;
         }
       }
@@ -5656,12 +5657,12 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
       while (!(imagefile->Eof()))
         imagefile->Read(zip);
 
-      delete imagefile;
+      wxDELETE(imagefile);
       wxMemoryFSHandler::RemoveFile(name);
     }
   }
 
-  delete fsystem;
+  wxDELETE(fsystem);
 
   if (!zip.Close())
     return false;
@@ -7434,7 +7435,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     AutocompletePopup *autocompletePopup = new AutocompletePopup(editor, &m_autocomplete, type);
     // Show the popup menu
     PopupMenu(autocompletePopup, pos.x, pos.y);
-    delete m_autocompletePopup;
+    wxDELETE(m_autocompletePopup);
 #endif
   }
 

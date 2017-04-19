@@ -65,8 +65,7 @@ void DiffCell::SetDiff(MathCell *diff)
 {
   if (diff == NULL)
     return;
-  if (m_diffCell != NULL)
-    delete m_diffCell;
+  wxDELETE(m_diffCell);
   m_diffCell = diff;
 
   m_diffCell->m_SuppressMultiplicationDot = true;
@@ -76,8 +75,7 @@ void DiffCell::SetBase(MathCell *base)
 {
   if (base == NULL)
     return;
-  if (m_baseCell != NULL)
-    delete m_baseCell;
+  wxDELETE(m_baseCell);
   m_baseCell = base;
 }
 

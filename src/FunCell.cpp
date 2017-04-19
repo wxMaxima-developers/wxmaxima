@@ -64,8 +64,7 @@ void FunCell::SetName(MathCell *name)
 {
   if (name == NULL)
     return;
-  if (m_nameCell != NULL)
-    delete m_nameCell;
+  wxDELETE(m_nameCell);
   m_nameCell = name;
 }
 
@@ -73,8 +72,7 @@ void FunCell::SetArg(MathCell *arg)
 {
   if (arg == NULL)
     return;
-  if (m_argCell != NULL)
-    delete m_argCell;
+  wxDELETE(m_argCell);
   m_argCell = arg;
 }
 

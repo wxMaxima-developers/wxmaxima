@@ -312,8 +312,7 @@ void GroupCell::SetInput(MathCell *input)
 {
   if (input == NULL)
     return;
-  if (m_inputLabel != NULL)
-    delete m_inputLabel;
+  wxDELETE(m_inputLabel);
   m_inputLabel = input;
   m_inputLabel->SetParent(this);
 }
@@ -330,7 +329,7 @@ void GroupCell::AppendInput(MathCell *cell)
       m_inputLabel->AppendCell(cell);
     else if (m_inputLabel->m_next->GetValue().Length() == 0)
     {
-      delete m_inputLabel->m_next;
+      wxDELETE(m_inputLabel->m_next);
       m_inputLabel->m_next = m_inputLabel->m_nextToDraw = NULL;
       m_inputLabel->AppendCell(cell);
     }

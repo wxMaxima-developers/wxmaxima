@@ -83,8 +83,7 @@ void SumCell::SetOver(MathCell *over)
 {
   if (over == NULL)
     return;
-  if (m_over != NULL)
-    delete m_over;
+  wxDELETE(m_over);
   m_over = over;
 }
 
@@ -92,8 +91,7 @@ void SumCell::SetBase(MathCell *base)
 {
   if (base == NULL)
     return;
-  if (m_base != NULL)
-    delete m_base;
+  wxDELETE(m_base);
   m_base = base;
 }
 
@@ -101,8 +99,7 @@ void SumCell::SetUnder(MathCell *under)
 {
   if (under == NULL)
     return;
-  if (m_under != NULL)
-    delete m_under;
+  wxDELETE(m_under);
   m_under = under;
 }
 

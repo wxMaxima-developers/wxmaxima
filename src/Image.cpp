@@ -238,7 +238,7 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
     // Closing and deleting fsfile is important: If this line is missing
     // opening .wxmx files containing hundreds of images might lead to a
     // "too many open files" error.
-    delete fsfile;
+    wxDELETE(fsfile);
   }
   else
   {

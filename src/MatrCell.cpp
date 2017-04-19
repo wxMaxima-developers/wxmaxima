@@ -67,8 +67,7 @@ MatrCell::~MatrCell()
 {
   for (unsigned int i = 0; i < m_cells.size(); i++)
   {
-    if (m_cells[i] != NULL)
-      delete m_cells[i];
+    wxDELETE(m_cells[i]);
     m_cells[i] = NULL;
   }
 }

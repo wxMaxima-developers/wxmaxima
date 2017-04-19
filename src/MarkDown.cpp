@@ -30,7 +30,7 @@ MarkDownParser::~MarkDownParser()
 {
   while (!regexReplaceList.empty())
   {
-    delete regexReplaceList.front();
+    wxDELETE(regexReplaceList.front());
     regexReplaceList.pop_front();
   }
 }

@@ -62,8 +62,8 @@ void TableOfContents::OnSize(wxSizeEvent &event)
 
 TableOfContents::~TableOfContents()
 {
-  delete m_regex;
-  delete m_displayedItems;
+  wxDELETE(m_regex);
+  wxDELETE(m_displayedItems);
 }
 
 void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *cursorPosition)
@@ -264,7 +264,7 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event)
   // create menu if we have any items
   if (popupMenu->GetMenuItemCount() > 0)
     PopupMenu(popupMenu);
-  delete popupMenu;
+  wxDELETE(popupMenu);
 }
 
 BEGIN_EVENT_TABLE(TableOfContents, wxPanel)
