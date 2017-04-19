@@ -1058,8 +1058,23 @@ void wxMaximaFrame::UpdateRecentDocuments()
 
 void wxMaximaFrame::AddRecentDocument(wxString file)
 {
-  // On windows this loads the recent documents list that might have been saved
-  // by another wxMaxima instance.
+  #ifdef __WXGTK__
+  // wxGTK uses wxFileConf. ...and wxFileConf loads the config file only once
+  // on inintialisation => Let's reload the config file before adding recently
+  // used documents in order to avoid overwriting documents other wxMaxima
+  // instances have written.
+  //
+  // On MSW this normally isn't necessary as wxMaxima will save the config in
+  // the registry and is queried every time we request data while on Mac computers
+  // all windows share a central wxConfig object and therefore the same recent
+  // documents list.
+  wxConfig::Get()->Flush();
+  delete wxConfig::Get();
+  wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+  #endif
+  
+  // Now let's load the recent document list another wxMaxima instance might
+  // have updated...
   LoadRecentDocuments();
   
   wxFileName FileName = file;
@@ -1074,9 +1089,10 @@ void wxMaximaFrame::AddRecentDocument(wxString file)
 
   UpdateRecentDocuments();
 
-  // Since on windows another wxMaxima instance can load our recent document list
-  // once we have saved it we do so no:
+  // Save the updated "recent documents" list so that another wxMaxima process can
+  // read it before adding other documents.
   SaveRecentDocuments();
+  wxConfig::Get()->Flush();
 }
 
 void wxMaximaFrame::RemoveRecentDocument(wxString file)

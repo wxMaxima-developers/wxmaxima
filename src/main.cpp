@@ -162,6 +162,7 @@ bool MyApp::OnInit()
   else
     wxConfig::Set(new wxConfig(wxT("wxMaxima")));
 #else
+  // Attention: The config file is changed by wxMaximaFrame::wxMaximaFrame::AddRecentDocument
   wxConfig::Set(new wxConfig(wxT("wxMaxima")));
 #endif
 
