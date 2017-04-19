@@ -199,7 +199,13 @@ public:
     GroupCell::Draw() by providing MathCell::Draw() with the cell's coordinates.
    */
   void RecalculateHeight(int fontsize);
+  //! Recalculate the height of the input part of the cell
   void RecalculateHeightInput(int fontsize);
+  /*! Recalculate the height of the output part of the cell
+
+    \attention Needs to be in sync with the height calculation done during Draw() and
+    during RecalculateAppended.
+   */
   void RecalculateHeightOutput(int fontsize);
 
   /*! Recalculates the width of this GroupCell and all cells inside it if needed.
@@ -310,12 +316,21 @@ public:
   /*! Recalculate the cell dimensions after appending new lines.
 
     Won't work if text has been added to the end of the line instead.
+    \attention Needs to be in sync with the height calculation done during Draw() and
+    during RecalculateHeightOutput
    */
   void RecalculateAppended();
 
   /* Draw this GroupCell
 
      Also assigns all output cells contained in this GroupCell an y coordinate.
+
+    \attention The height the output has needs to be in sync with the height
+    calculation done during RecalculateAppended() and during 
+    RecalculateHeightOutput(). 
+    \attention The y position used here must be in sync with the one calculated 
+    by RecalculateHeightOutput().
+
    */
   void Draw(wxPoint point, int fontsize);
 
