@@ -76,47 +76,54 @@ GroupCell::GroupCell(Configuration **config, int groupType, CellPointers *cellPo
     m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
   }
 
-  EditorCell *editor = new EditorCell(this, m_configuration, m_cellPointers);
+  EditorCell *editor = NULL;
 
   switch (groupType)
   {
     case GC_TYPE_CODE:
+      editor = new EditorCell(this, m_configuration, m_cellPointers);
       editor->SetType(MC_TYPE_INPUT);
       AppendInput(editor);
       break;
     case GC_TYPE_TEXT:
       m_inputLabel->SetType(MC_TYPE_TEXT);
+      editor = new EditorCell(this, m_configuration, m_cellPointers);
       editor->SetType(MC_TYPE_TEXT);
       AppendInput(editor);
       break;
     case GC_TYPE_TITLE:
       m_inputLabel->SetType(MC_TYPE_TITLE);
+      editor = new EditorCell(this, m_configuration, m_cellPointers);
       editor->SetType(MC_TYPE_TITLE);
       AppendInput(editor);
       break;
     case GC_TYPE_SECTION:
       m_inputLabel->SetType(MC_TYPE_SECTION);
+      editor = new EditorCell(this, m_configuration, m_cellPointers);
       editor->SetType(MC_TYPE_SECTION);
       AppendInput(editor);
       break;
     case GC_TYPE_SUBSECTION:
       m_inputLabel->SetType(MC_TYPE_SUBSECTION);
+      editor = new EditorCell(this, m_configuration, m_cellPointers);
       editor->SetType(MC_TYPE_SUBSECTION);
       AppendInput(editor);
       break;
     case GC_TYPE_SUBSUBSECTION:
       m_inputLabel->SetType(MC_TYPE_SUBSUBSECTION);
+      editor = new EditorCell(this, m_configuration, m_cellPointers);
       editor->SetType(MC_TYPE_SUBSUBSECTION);
       AppendInput(editor);
       break;
     case GC_TYPE_IMAGE:
       m_inputLabel->SetType(MC_TYPE_TEXT);
+      editor = new EditorCell(this, m_configuration, m_cellPointers);
       editor->SetType(MC_TYPE_TEXT);
       editor->SetValue(wxEmptyString);
       AppendInput(editor);
       break;
     default:
-      delete editor;
+      wxDELETE(editor);
       editor = NULL;
       break;
   }
