@@ -2919,17 +2919,17 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight)
   {
     if (!IsAlphaNum(m_text.GetChar(left - 1)))
     {
-      if (left < 1)
-        break;
-
-      // An escaped non-alphanumeric character and a dot inside a number are part of a word.
-      if ((m_text.GetChar(left - 2) != wxT('\\')) &&
-          !(
-                  (m_text.GetChar(left - 1) == wxT('.')) &&
-                  ((IsNum(m_text.GetChar(left - 2)) || (IsNum(m_text.GetChar(left)))))
-          )
+      if (left >= 2)
+      {
+        // An escaped non-alphanumeric character and a dot inside a number are part of a word.
+        if ((m_text.GetChar(left - 2) != wxT('\\')) &&
+            !(
+              (m_text.GetChar(left - 1) == wxT('.')) &&
+              ((IsNum(m_text.GetChar(left - 2)) || (IsNum(m_text.GetChar(left)))))
               )
+          )
         break;
+      }
     }
     left--;
   }

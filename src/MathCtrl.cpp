@@ -5717,9 +5717,7 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event)
     ReleaseMouse();
 
   if (GetActiveCell() != NULL)
-  {
     GetActiveCell()->SelectWordUnderCaret();
-  }
   else if (m_selectionStart != NULL)
   {
     GroupCell *parent = dynamic_cast<GroupCell *>(m_selectionStart->GetParent());
