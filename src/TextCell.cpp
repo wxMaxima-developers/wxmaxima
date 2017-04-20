@@ -103,6 +103,7 @@ MathCell *TextCell::Copy()
   retval->m_isHidden = m_isHidden;
   retval->m_textStyle = m_textStyle;
   retval->m_highlight = m_highlight;
+  retval->m_userDefinedLabel = m_userDefinedLabel;
   retval->m_dontEscapeOpeningParenthesis = m_dontEscapeOpeningParenthesis;
 
   return retval;
