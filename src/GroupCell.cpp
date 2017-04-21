@@ -707,7 +707,7 @@ void GroupCell::RecalculateAppended()
       if (tmp->m_previousToDraw != NULL &&
           tmp->GetStyle() == TS_LABEL)
       {
-        m_height += configuration->GetInterEquationSkip();
+        m_height +=            configuration->GetInterEquationSkip();
         m_outputRect.height += configuration->GetInterEquationSkip();
       }
 
