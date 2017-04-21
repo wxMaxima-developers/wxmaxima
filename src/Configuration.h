@@ -143,7 +143,7 @@ public:
   }
 
   //! Gets the fixed scale that is used (e.G. during printing)
-  const double GetScale()
+  double GetScale()
   { return m_scale; }
 
   //! Get a drawing context suitable for size calculations
@@ -156,12 +156,12 @@ public:
     m_bottom = bottom;
   }
 
-  const int GetTop()
+  int GetTop()
   {
     return m_top;
   }
 
-  const int GetBottom()
+  int GetBottom()
   {
     return m_bottom;
   }
@@ -185,21 +185,21 @@ public:
     m_forceUpdate = force;
   }
 
-  const bool ForceUpdate()
+  bool ForceUpdate()
   {
     return m_forceUpdate;
   }
 
-  const wxFontEncoding GetFontEncoding()
+  wxFontEncoding GetFontEncoding()
   {
     return m_fontEncoding;
   }
 
-  const int GetLabelWidth()
+  int GetLabelWidth()
   { return m_labelWidth; }
 
   //! Get the indentation of GroupCells.
-  const int GetIndent()
+  int GetIndent()
   {
     if (m_indent < 0)
       return 3 * GetCellBracketWidth() / 2;
@@ -250,11 +250,11 @@ public:
   { m_clientHeight = height; }
 
   //! Returns the width of the visible portion of the worksheet
-  const int GetClientWidth()
+  int GetClientWidth()
   { return m_clientWidth; }
 
   //! Returns the height of the visible portion of the worksheet
-  const int GetClientHeight()
+  int GetClientHeight()
   { return m_clientHeight; }
 
   //! Calculates the default line width for the worksheet
@@ -277,7 +277,7 @@ public:
   //! Returns the maximum sensible width for a text line [in characters]:
   // On big 16:9 screens text tends to get \b very wide before it hits the right margin.
   // But text blocks that are 1 meter wide and 2 cm high feel - weird.
-  const int GetLineWidth()
+  int GetLineWidth()
   {
     if (m_clientWidth <= m_zoomFactor * double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor * m_scale)
       return m_clientWidth;
@@ -285,18 +285,18 @@ public:
       return (const int) (double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor * m_scale);
   }
 
-  const int GetDefaultFontSize()
+  int GetDefaultFontSize()
   { return int(m_zoomFactor * double(m_defaultFontSize)); }
 
-  const int GetMathFontSize()
+  int GetMathFontSize()
   { return int(m_zoomFactor * double(m_mathFontSize)); }
 
   //! Do we want to have automatic line breaks for text cells?
-  const bool GetAutoWrap()
+  bool GetAutoWrap()
   { return m_autoWrap > 0; }
 
   //! Do we want to have automatic line breaks for code cells?
-  const bool GetAutoWrapCode()
+  bool GetAutoWrapCode()
   { return false; }
 
   /*! Sets the auto wrap mode
@@ -311,7 +311,7 @@ public:
   }
 
   //! Do we want automatic indentation?
-  const bool GetAutoIndent()
+  bool GetAutoIndent()
   { return m_autoIndent; }
 
   void SetAutoIndent(bool autoIndent)
@@ -319,7 +319,7 @@ public:
     wxConfig::Get()->Write(wxT("autoIndent"), m_autoIndent = autoIndent);
   }
 
-  const int GetFontSize(int st)
+  int GetFontSize(int st)
   {
     if (st == TS_TEXT || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
       return int(m_zoomFactor * double(m_styles[st].fontSize));
@@ -329,10 +329,10 @@ public:
   void Outdated(bool outdated)
   { m_outdated = outdated; }
 
-  const bool CheckTeXFonts()
+  bool CheckTeXFonts()
   { return m_TeXFonts; }
 
-  const bool CheckKeepPercent()
+  bool CheckKeepPercent()
   { return m_keepPercent; }
 
   const wxString GetTeXCMRI()
@@ -350,7 +350,7 @@ public:
   const wxString GetTeXCMTI()
   { return m_fontCMTI; }
 
-  const bool ShowCodeCells()
+  bool ShowCodeCells()
   { return m_showCodeCells; }
 
   void ShowCodeCells(bool show);
@@ -358,13 +358,13 @@ public:
   void SetPrinter(bool printer)
   { m_printer = printer; }
 
-  const bool GetPrinter()
+  bool GetPrinter()
   { return m_printer; }
 
-  const bool GetMatchParens()
+  bool GetMatchParens()
   { return m_matchParens; }
 
-  const bool GetChangeAsterisk()
+  bool GetChangeAsterisk()
   { return m_changeAsterisk; }
 
   void SetChangeAsterisk(bool changeAsterisk)
@@ -376,7 +376,7 @@ public:
 
     m_displayedDigits is always >= 20, so we can guarantee the number we return to be unsigned.
    */
-  const int GetDisplayedDigits()
+  int GetDisplayedDigits()
   { return m_displayedDigits; }
 
   void SetDisplayedDigits(int displayedDigits)
@@ -385,7 +385,7 @@ public:
     wxConfig::Get()->Write(wxT("displayedDigits"), m_displayedDigits = displayedDigits);
   }
 
-  const bool GetInsertAns()
+  bool GetInsertAns()
   { return m_insertAns; }
 
   void SetInsertAns(bool insertAns)
@@ -393,7 +393,7 @@ public:
     wxConfig::Get()->Write(wxT("insertAns"), m_insertAns = insertAns);
   }
 
-  const bool GetOpenHCaret()
+  bool GetOpenHCaret()
   { return m_openHCaret; }
 
   void SetOpenHCaret(bool openHCaret)
@@ -401,10 +401,10 @@ public:
     wxConfig::Get()->Write(wxT("openHCaret"), m_openHCaret = openHCaret);
   }
 
-  const bool RestartOnReEvaluation()
+  bool RestartOnReEvaluation()
   { return m_restartOnReEvaluation; }
 
-  const void RestartOnReEvaluation(bool arg)
+  void RestartOnReEvaluation(bool arg)
   {
     wxConfig::Get()->Write(wxT("restartOnReEvaluation"), m_restartOnReEvaluation = arg);
   }
