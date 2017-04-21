@@ -608,19 +608,12 @@ void GroupCell::RecalculateHeightOutput(int fontsize)
         m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth(scale));
         m_height += tmp->GetMaxHeight();
         if (tmp->m_bigSkip)
-        {
           m_height += MC_LINE_SKIP;
-          if (tmp->m_previousToDraw != NULL &&
-              tmp->GetStyle() == TS_LABEL)
-          {
-            m_height += configuration->GetInterEquationSkip();
-          }
-        }
+        
+        if (tmp->m_previousToDraw != NULL &&
+            tmp->GetStyle() == TS_LABEL)
+          m_height += configuration->GetInterEquationSkip();
       }
-      
-   //   if (tmp->m_bigSkip)
-   //     m_height += MC_LINE_SKIP;
-
       tmp = tmp->m_nextToDraw;
     }
   }
@@ -710,6 +703,14 @@ void GroupCell::RecalculateAppended()
       m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth(scale));
       m_height            += tmp->GetMaxHeight() + configuration->GetInterEquationSkip();
       m_outputRect.height += tmp->GetMaxHeight() + configuration->GetInterEquationSkip();
+      
+      if (tmp->m_previousToDraw != NULL &&
+          tmp->GetStyle() == TS_LABEL)
+      {
+        m_height += configuration->GetInterEquationSkip();
+        m_outputRect.height += configuration->GetInterEquationSkip();
+      }
+
       if (tmp->m_bigSkip)
       {
         m_height            += MC_LINE_SKIP;
@@ -798,11 +799,17 @@ void GroupCell::Draw(wxPoint point, int fontsize)
       while (tmp != NULL)
       {
 
-        if (tmp->BreakLineHere() &&
-                tmp->m_previousToDraw != NULL &&
-                tmp->GetStyle() == TS_LABEL)
-          in.y += configuration->GetInterEquationSkip();
 
+        if (tmp->BreakLineHere())
+        {
+          if (tmp->m_bigSkip)
+            in.y += MC_LINE_SKIP;
+          
+          if (tmp->m_previousToDraw != NULL &&
+              tmp->GetStyle() == TS_LABEL)
+            in.y += configuration->GetInterEquationSkip();
+        }
+        
         tmp->m_currentPoint = in;
         
         if (!tmp->m_isBroken)
@@ -815,8 +822,6 @@ void GroupCell::Draw(wxPoint point, int fontsize)
             {
               in.x = configuration->GetIndent();
               in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
-              if (tmp->m_bigSkip)
-                in.y += MC_LINE_SKIP;
               drop = tmp->m_nextToDraw->GetMaxDrop();
             }
             else
@@ -830,12 +835,9 @@ void GroupCell::Draw(wxPoint point, int fontsize)
           {
             in.x = configuration->GetIndent();
             in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
-            if (tmp->m_bigSkip)
-              in.y += MC_LINE_SKIP;
             drop = tmp->m_nextToDraw->GetMaxDrop();
           }
         }
-
         tmp = tmp->m_nextToDraw;
       }
     }
