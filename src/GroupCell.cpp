@@ -701,13 +701,13 @@ void GroupCell::RecalculateAppended()
     {
       m_width = MAX(m_width, tmp->GetLineWidth(scale));
       m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth(scale));
-      m_height            += tmp->GetMaxHeight() + configuration->GetInterEquationSkip();
-      m_outputRect.height += tmp->GetMaxHeight() + configuration->GetInterEquationSkip();
+      m_height            += tmp->GetMaxHeight();
+      m_outputRect.height += tmp->GetMaxHeight();
       
       if (tmp->m_previousToDraw != NULL &&
           tmp->GetStyle() == TS_LABEL)
       {
-        m_height +=            configuration->GetInterEquationSkip();
+        m_height            += configuration->GetInterEquationSkip();
         m_outputRect.height += configuration->GetInterEquationSkip();
       }
 
