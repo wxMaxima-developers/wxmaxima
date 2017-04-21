@@ -2581,7 +2581,26 @@ bool EditorCell::AddEnding()
     }
   }
   text.Trim();
-  if (!(text.EndsWith(wxT(";")) || text.EndsWith(wxT("$"))))
+
+  bool endingNeeded = true;
+
+  // Cells ending in ";" or in "$" don't require us to add an ending.
+  if (text.EndsWith(wxT(";")))
+    endingNeeded = false;
+  if (text.EndsWith(wxT("$")))
+    endingNeeded = false;
+
+  // Cells ending in "(to-maxima)" (with optional spaces around the "to-maxima")
+  // don't require us to add an ending, neither.
+  if(text.EndsWith(wxT(")")))
+  {
+    text = text.SubString(0,text.Length()-2);
+    text.Trim();
+      if (text.EndsWith(wxT("to-maxima")))
+        endingNeeded = false;
+  }
+  
+  if(endingNeeded)
   {
     m_text += wxT(";");
     m_paren1 = m_paren2 = m_width = -1;

@@ -5734,7 +5734,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
         }
         else lastC = c;
         break;
-
+        
       default:
         if ((c != wxT('\n')) && (c != wxT(' ')) && (c != wxT('\t')))
           lastC = c;
@@ -5757,7 +5757,26 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
 
   if ((!lisp))
   {
-    if ((lastC != wxT(';')) && (lastC != wxT('$')))
+
+    bool endingNeeded = true;
+    
+    // Cells ending in ";" or in "$" don't require us to add an ending.
+    if (text.EndsWith(wxT(";")))
+      endingNeeded = false;
+    if (text.EndsWith(wxT("$")))
+      endingNeeded = false;
+    
+    // Cells ending in "(to-maxima)" (with optional spaces around the "to-maxima")
+    // don't require us to add an ending, neither.
+    if(text.EndsWith(wxT(")")))
+    {
+      text = text.SubString(0,text.Length()-2);
+      text.Trim();
+      if (text.EndsWith(wxT("to-maxima")))
+        endingNeeded = false;
+    }
+
+    if(endingNeeded)
       return _("No dollar ($) or semicolon (;) at the end of command");
   }
   return wxEmptyString;
