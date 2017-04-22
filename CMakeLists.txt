@@ -42,6 +42,9 @@ set(CPACK_PACKAGE_SECTION "science")
 set(CPACK_PACKAGE_ICON ${CMAKE_SOURCE_DIR}/data/wxmaxima.png)
 set(CPACK_PACKAGE_VERSION "${VERSION}")
 
+set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "maxima, maxima-doc, imagemagick")
+
 # Build a tarball
 set(CPACK_SOURCE_IGNORE_FILES
   "build/"
