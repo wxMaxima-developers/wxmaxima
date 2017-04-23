@@ -198,6 +198,7 @@ bool MyApp::OnInit()
 #endif
 
   m_locale.AddCatalogLookupPathPrefix(dirstructure.LocaleDir());
+  m_locale.AddCatalogLookupPathPrefix(dirstructure.LocaleDir()+wxT("/wxwin"));
   m_locale.AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
   m_locale.AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
   m_locale.AddCatalog(wxT("wxMaxima"));
