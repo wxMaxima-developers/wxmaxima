@@ -3,7 +3,13 @@ find_package(Gettext)
 file(GLOB TRANSLATION_FILES *.po)
 
 if(GETTEXT_FOUND)
-    gettext_create_translations(wxMaxima.pot ${TRANSLATION_FILES})
+    foreach(POFILE ${TRANSLATION_FILES})
+        string(REGEX REPLACE ".*locales/(.*).po$" "\\1" LANG ${POFILE})
+        gettext_process_po_files(${LANG} ALL PO_FILES ${POFILE})
+        install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo"
+                DESTINATION "share/wxMaxima/locale/${LANG}/"
+                RENAME "wxMaxima.mo")
+    endforeach()
 else()
     message(STATUS "Gettext not found - translations will be disabled")
 endif()
