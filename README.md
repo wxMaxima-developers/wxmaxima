@@ -152,7 +152,6 @@ The following steps will build and install wxMaxima using CMake:
     cd build
     cmake ..
     cmake --build .
-    cmake --build . -- translations
     sudo cmake --build . -- install
 
 If you want to create binary packages (tar.gz, tar.bz2, DEB & RPM), you can
