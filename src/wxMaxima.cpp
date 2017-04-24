@@ -1524,6 +1524,57 @@ void wxMaxima::SetCWD(wxString file)
   }
 }
 
+wxString wxMaxima::ReadMacContents(wxString file)
+{
+  bool xMaximaFile = file.Lower().EndsWith(wxT(".out"));
+
+    // open mac file
+  wxTextFile inputFile(file);
+  wxArrayString *wxmLines = NULL;
+
+  if (!inputFile.Open())
+  {
+    wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
+    StatusMaximaBusy(waiting);
+    SetStatusText(_("File could not be opened"), 1);
+    return wxEmptyString;
+  }
+
+  bool input = true;
+  wxString macContents;
+  wxString line = inputFile.GetFirstLine();
+  do
+  {
+    if(xMaximaFile)
+    {
+      // Detect output cells.
+      if(line.StartsWith(wxT("(%o")))
+        input = false;
+      
+      if(line.StartsWith(wxT("(%i")))
+      {
+        int end = line.Find(wxT(")"));
+        if(end > 0)
+        {
+          line = line.Right(line.Length() - end - 2);
+          input = true;
+        }
+      }
+
+    }
+
+    if(input)
+      macContents += line + wxT("\n");
+
+    if(!inputFile.Eof())
+      line = inputFile.GetNextLine();
+    
+  } while (!inputFile.Eof());
+  inputFile.Close();
+
+  return macContents;
+}
+
 bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument)
 {
   // Show a busy cursor while we open the file.
@@ -1532,33 +1583,20 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
   SetStatusText(_("Opening file"), 1);
   document->Freeze();
 
-  // open wxm file
-  wxTextFile inputFile(file);
-  wxArrayString *wxmLines = NULL;
+  wxString macContents = ReadMacContents(file);
 
-  if (!inputFile.Open())
+  if(macContents == wxEmptyString)
   {
     document->Thaw();
-    wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
-    StatusMaximaBusy(waiting);
-    SetStatusText(_("File could not be opened"), 1);
     return false;
   }
-
-  wxString macContents = inputFile.GetFirstLine();
   
-  while(!inputFile.Eof())
-  {
-    macContents += inputFile.GetNextLine() + wxT("\n");
-  }
-  inputFile.Close();
-
   if (clearDocument)
     document->ClearDocument();
 
   GroupCell *tree = NULL;
   GroupCell *last = NULL;
-  wxString line;
+  wxString line = wxEmptyString;
   wxChar lastChar = wxT(' ');
   wxString::iterator ch = macContents.begin();
   while (ch != macContents.end())
@@ -1600,11 +1638,15 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
         line.Trim(true);
         line.Trim(false);
         if(!line.StartsWith(wxT("/* [wxMaxima: ")))
+        {
+          GroupCell *cell;
           document->InsertGroupCells(
-            new GroupCell(&(document->m_configuration),
+            cell = new GroupCell(&(document->m_configuration),
                           GC_TYPE_TEXT, document->m_cellPointers,
                           line.SubString(2,line.length()-3)),
-            document->GetHCaret());
+            last);
+          last = cell;
+        }
 
         line = wxEmptyString;
       }
@@ -1641,15 +1683,16 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
       line += *ch;
 
       // A line ending followed by a new line means: We want to insert a new code cell.
-      if(((lastChar == wxT('$'))) || ((lastChar == wxT(';'))) && (*ch == wxT('\n')))
+      if(((lastChar == wxT('$')) || ((lastChar == wxT(';')))) && (*ch == wxT('\n')))
       {
         line.Trim(true);
         line.Trim(false);
+        GroupCell *cell;
         document->InsertGroupCells(
-          new GroupCell(&(document->m_configuration),
+          cell = new GroupCell(&(document->m_configuration),
                         GC_TYPE_CODE, document->m_cellPointers, line),
-          document->GetHCaret());
-
+          last);
+        last = cell;
         line = wxEmptyString;
       }
       lastChar = *ch;
@@ -1665,7 +1708,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
     document->InsertGroupCells(
       new GroupCell(&(document->m_configuration),
                     GC_TYPE_CODE, document->m_cellPointers, line),
-      document->GetHCaret());
+      last);
   }
   
   document->RecalculateForce();
@@ -2879,6 +2922,9 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
     else if (file.Right(4).Lower() == wxT(".mac"))
       OpenMACFile(file, m_console);
 
+    else if (file.Right(4).Lower() == wxT(".out"))
+      OpenMACFile(file, m_console);
+
     else if (file.Right(5).Lower() == wxT(".wxmx"))
       OpenWXMXFile(file, m_console); // clearDocument = true
 
@@ -3170,9 +3216,10 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
 
       wxString file = wxFileSelector(_("Open"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
-                                     _("All openable types (*.wxm, *.wxmx, *.mac, *.xml)|*.wxm;*.wxmx;*.mac;*.xml|"
+                                     _("All openable types (*.wxm, *.wxmx, *.mac, *.out, *.xml)|*.wxm;*.wxmx;*.mac;*.out;*.xml|"
                                       "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx|"
                                       "Maxima session (*.mac)|*.mac|"
+                                      "Xmaxima session (*.out)|*.out|"
                                       "xml from broken .wxmx (*.xml)|*.xml"),
                                      wxFD_OPEN);
 
