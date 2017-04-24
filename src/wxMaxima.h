@@ -158,7 +158,7 @@ public:
   void SendMaxima(wxString s, bool history = false);
 
   void OpenFile(wxString file,
-                wxString command = wxEmptyString); //!< Open a file
+                wxString command = wxEmptyString, bool importMac = false); //!< Open a file
   bool DocumentSaved()
   { return m_fileSaved; }
 
@@ -190,6 +190,9 @@ private:
   /*! A human-readable presentation of eventual unmatched-parenthesis type errors
 
     If text doesn't contain any error this function returns wxEmptyString
+
+    \todo: Use iterators for traversing the string as they are *way* faster than
+    the current method.
    */
   wxString GetUnmatchedParenthesisState(wxString text);
 
@@ -447,6 +450,9 @@ protected:
 
   //! Complains if the version string from the XML file indicates too low a maxima version
   bool CheckWXMXVersion(wxString docversion);
+
+  //! Opens a .mac file from Xmaxima
+  bool OpenMACFile(wxString file, MathCtrl *document, bool clearDocument = true);
 
   //! Opens a wxm file
   bool OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument = true);

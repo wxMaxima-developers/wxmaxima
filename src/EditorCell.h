@@ -259,6 +259,11 @@ public:
     that this line is to be broken here until the window's width changes.
    */
   void StyleText();
+  /*! Is Called by StyleText() for code cells
+
+    \todo This function gets *extremely* slow for long code cells (a cell with 13000 words
+    needs minutes in order to run through this function).
+  */
   void StyleTextCode();
   void StyleTextTexts();
 
@@ -516,6 +521,9 @@ private:
   /*! Divide a string into tokens
 
     Used when styling text.
+
+    \todo Use iterators in order to iterate over strings: They are much faster than
+    the current method.
    */
   wxArrayString StringToTokens(wxString string);
 

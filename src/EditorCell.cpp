@@ -3485,245 +3485,246 @@ void EditorCell::StyleTextCode()
   int pos = 0;
   int lineWidth = 0;
   wxString token;
-  for (size_t i = 0; i < tokens.GetCount(); i++)
-  {
-    pos += token.Length();
-    token = tokens[i];
-    token = token.Left(token.Length() - 1);
-    if (token.Length() < 1)
-      continue;
-    wxChar Ch = token[0];
-    
-    // Save the last non-whitespace character in lastChar -
-    // or a space if there is no such char.
-    wxChar lastChar = wxT(' ');
-    if (lastTokenWithText != wxEmptyString)
-      lastChar = lastTokenWithText.Right(1)[0];
-    wxString tmp = token;
-    tmp = tmp.Trim();
-    if (tmp != wxEmptyString)
-      lastTokenWithText = tmp;
-    
-    // Save the next non-whitespace character in lastChar -
-    // or a space if there is no such char.
-    wxChar nextChar = wxT(' ');
-    size_t o = i + 1;
-    while (o < tokens.GetCount())
+  if(tokens.GetCount() > 0)
+    for (size_t i = 0; i < tokens.GetCount(); i++)
     {
-      wxString nextToken = tokens[o];
-      nextToken = nextToken.Trim(false);
-      if (nextToken != wxT("d"))
-      {
-        nextChar = nextToken[0];
-        break;
-      }
-      o++;
-    }
-    
-    // Handle Spaces
-    if (Ch == wxT(' '))
-    {
-      // All spaces except the last one (that could cause a line break)
-      // share the same token
-      if (token.Length() > 0)
-        m_styledText.push_back(StyledText(token.Left(token.Length() - 1)));
+      pos += token.Length();
+      token = tokens[i];
+      token = token.Left(token.Length() - 1);
+      if (token.Length() < 1)
+        continue;
+      wxChar Ch = token[0];
       
-      // Now we push the last space to the list of tokens and remember this
-      // space as the space that potentially serves as the next point to
-      // introduce a soft line break.
-      m_styledText.push_back(StyledText(wxT(" ")));
-      if (!m_styledText.empty())
+      // Save the last non-whitespace character in lastChar -
+      // or a space if there is no such char.
+      wxChar lastChar = wxT(' ');
+      if (lastTokenWithText != wxEmptyString)
+        lastChar = lastTokenWithText.Right(1)[0];
+      wxString tmp = token;
+      tmp = tmp.Trim();
+      if (tmp != wxEmptyString)
+        lastTokenWithText = tmp;
+      
+      // Save the next non-whitespace character in lastChar -
+      // or a space if there is no such char.
+      wxChar nextChar = wxT(' ');
+      size_t o = i + 1;
+      while (o < tokens.GetCount())
       {
-        lastSpace = &m_styledText.back();
-        lastSpacePos = pos + token.Length() - 1;
+        wxString nextToken = tokens[o];
+        nextToken = nextToken.Trim(false);
+        if (nextToken != wxT("d"))
+        {
+          nextChar = nextToken[0];
+        break;
+        }
+        o++;
+      }
+      
+      // Handle Spaces
+      if (Ch == wxT(' '))
+      {
+        // All spaces except the last one (that could cause a line break)
+      // share the same token
+        if (token.Length() > 0)
+          m_styledText.push_back(StyledText(token.Left(token.Length() - 1)));
+        
+        // Now we push the last space to the list of tokens and remember this
+        // space as the space that potentially serves as the next point to
+        // introduce a soft line break.
+        m_styledText.push_back(StyledText(wxT(" ")));
+        if (!m_styledText.empty())
+        {
+          lastSpace = &m_styledText.back();
+          lastSpacePos = pos + token.Length() - 1;
+        }
+        else
+        {
+          lastSpace = NULL;
+          lastSpacePos = -1;
+        }
+        
+        continue;
       }
       else
+        spaceIsIndentation = false;
+      
+      // Handle Newlines
+      if (Ch == wxT('\n'))
       {
         lastSpace = NULL;
-        lastSpacePos = -1;
+        lineWidth = 0;
+        m_styledText.push_back(StyledText(token));
+        spaceIsIndentation = true;
+        int charWidth, height;
+        configuration->GetDC().GetTextExtent(wxT(" "), &charWidth, &height);
+        indentationPixels = charWidth * GetIndentDepth(m_text, pos);
+        continue;
       }
       
-      continue;
-    }
-    else
-      spaceIsIndentation = false;
-    
-    // Handle Newlines
-    if (Ch == wxT('\n'))
-    {
-      lastSpace = NULL;
-      lineWidth = 0;
-      m_styledText.push_back(StyledText(token));
-      spaceIsIndentation = true;
-      int charWidth, height;
-      configuration->GetDC().GetTextExtent(wxT(" "), &charWidth, &height);
-      indentationPixels = charWidth * GetIndentDepth(m_text, pos);
-      continue;
-    }
-    
-    // Handle comments
-    if (token == wxT("\""))
-    {
-      m_styledText.push_back(StyledText(TS_CODE_STRING, token));
-      if (i + 1 < tokens.GetCount())
+      // Handle comments
+      if (token == wxT("\""))
       {
-        i++;
-        token = tokens[i];
-        token = token.Left(token.Length() - 1);
         m_styledText.push_back(StyledText(TS_CODE_STRING, token));
-        while ((i + 1 < tokens.GetCount()) && token != wxT("\""))
+        if (i + 1 < tokens.GetCount())
         {
           i++;
           token = tokens[i];
           token = token.Left(token.Length() - 1);
           m_styledText.push_back(StyledText(TS_CODE_STRING, token));
+          while ((i + 1 < tokens.GetCount()) && token != wxT("\""))
+          {
+            i++;
+            token = tokens[i];
+            token = token.Left(token.Length() - 1);
+            m_styledText.push_back(StyledText(TS_CODE_STRING, token));
+          }
         }
+        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+                                  indentationPixels);
+        continue;
       }
-      HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
-                                indentationPixels);
-      continue;
-    }
-    
-    // Plus and Minus, optionally as part of a number
-    if ((Ch == wxT('+')) ||
-        (Ch == wxT('-')) ||
-        (Ch == wxT('\x2212'))
+      
+      // Plus and Minus, optionally as part of a number
+      if ((Ch == wxT('+')) ||
+          (Ch == wxT('-')) ||
+          (Ch == wxT('\x2212'))
         )
-    {
-      if (
+      {
+        if (
           (nextChar >= wxT('0')) &&
           (nextChar <= wxT('9'))
           )
-      {
-        // Our sign precedes a number.
-        if (
+        {
+          // Our sign precedes a number.
+          if (
             (wxIsalnum(lastChar)) ||
             (lastChar == wxT('%')) ||
             (lastChar == wxT(')')) ||
             (lastChar == wxT('}')) ||
             (lastChar == wxT(']'))
             )
-        {
-          m_styledText.push_back(StyledText(TS_CODE_OPERATOR, token));
+          {
+            m_styledText.push_back(StyledText(TS_CODE_OPERATOR, token));
+          }
+          else
+          {
+            m_styledText.push_back(StyledText(TS_CODE_NUMBER, token));
+          }
         }
         else
-        {
-          m_styledText.push_back(StyledText(TS_CODE_NUMBER, token));
-        }
-      }
-      else
-        m_styledText.push_back(StyledText(TS_CODE_OPERATOR, token));
+          m_styledText.push_back(StyledText(TS_CODE_OPERATOR, token));
       
-      HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
-                                indentationPixels);
-      continue;
-    }
+        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+                                  indentationPixels);
+        continue;
+      }
     
-    // Comments
-    if ((token == wxT("/*")) || (token == wxT("/\xB7")))
-    {
-      m_styledText.push_back(StyledText(TS_CODE_COMMENT, token));
-      while ((i + 1 < tokens.GetCount()) && (token != wxT("*/")) && (token != wxT("\xB7/")))
+      // Comments
+      if ((token == wxT("/*")) || (token == wxT("/\xB7")))
       {
-        i++;
-        token = tokens[i];
-        token = token.Left(token.Length() - 1);
         m_styledText.push_back(StyledText(TS_CODE_COMMENT, token));
-      }
-      
-      HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
-                                indentationPixels);
-      continue;
-    }
-    
-    // End of a command
-    if (operators.Find(token) != wxNOT_FOUND)
-    {
-      if ((token == wxT('$')) || (token == wxT(';')))
-        m_styledText.push_back(StyledText(TS_CODE_ENDOFLINE, token));
-      else
-        m_styledText.push_back(StyledText(TS_CODE_OPERATOR, token));
-      
-      HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
-                                indentationPixels);
-      continue;
-    }
-    
-    // Numbers
-    if (isdigit(token[0]) || ((token[0] == wxT('.')) && (nextChar >= wxT('0')) && (nextChar <= wxT('9'))))
-    {
-      m_styledText.push_back(StyledText(TS_CODE_NUMBER, token));
-      HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
-                                indentationPixels);
-      continue;
-    }
-    
-    // Text
-    if ((IsAlpha(token[0])) || (token[0] == wxT('\\')))
-    {
-      // Sometimes we can differ between variables and functions by the context.
-      // But I assume there cannot be an algorithm that always makes
-      // the right decision here:
-      //  - Function names can be used without the parenthesis that make out
-      //    functions.
-      //  - The same name can stand for a function and a variable
-      //  - There are indexed functions
-      //  - using lambda a user can store a function in a variable
-      //  - and is U_C1(t) really meant as a function or does it represent a variable
-      //    named U_C1 that depends on t?
-      if ((tokens.GetCount() > i + 1))
-      {
-        wxString nextToken = tokens[i + 1];
-        nextToken = nextToken.Trim(false);
-        
-        if (token == wxT("for") ||
-            token == wxT("in") ||
-            token == wxT("then") ||
-            token == wxT("while") ||
-            token == wxT("do") ||
-            token == wxT("thru") ||
-            token == wxT("next") ||
-            token == wxT("step") ||
-            token == wxT("unless") ||
-            token == wxT("from") ||
-            token == wxT("if") ||
-            token == wxT("else") ||
-            token == wxT("elif") ||
-            token == wxT("and") ||
-            token == wxT("or") ||
-            token == wxT("not") ||
-            token == wxT("not") ||
-            token == wxT("true") ||
-            token == wxT("false"))
-          m_styledText.push_back(token);
-        else if (nextChar == wxT('('))
+        while ((i + 1 < tokens.GetCount()) && (token != wxT("*/")) && (token != wxT("\xB7/")))
         {
-          m_styledText.push_back(StyledText(TS_CODE_FUNCTION, token));
-          m_wordList.Add(token);
+          i++;
+          token = tokens[i];
+          token = token.Left(token.Length() - 1);
+          m_styledText.push_back(StyledText(TS_CODE_COMMENT, token));
+        }
+      
+        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+                                  indentationPixels);
+        continue;
+      }
+    
+      // End of a command
+      if (operators.Find(token) != wxNOT_FOUND)
+      {
+        if ((token == wxT('$')) || (token == wxT(';')))
+          m_styledText.push_back(StyledText(TS_CODE_ENDOFLINE, token));
+        else
+          m_styledText.push_back(StyledText(TS_CODE_OPERATOR, token));
+      
+        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+                                  indentationPixels);
+        continue;
+      }
+    
+      // Numbers
+      if (isdigit(token[0]) || ((token[0] == wxT('.')) && (nextChar >= wxT('0')) && (nextChar <= wxT('9'))))
+      {
+        m_styledText.push_back(StyledText(TS_CODE_NUMBER, token));
+        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+                                  indentationPixels);
+        continue;
+      }
+    
+      // Text
+      if ((IsAlpha(token[0])) || (token[0] == wxT('\\')))
+      {
+        // Sometimes we can differ between variables and functions by the context.
+        // But I assume there cannot be an algorithm that always makes
+        // the right decision here:
+        //  - Function names can be used without the parenthesis that make out
+        //    functions.
+        //  - The same name can stand for a function and a variable
+        //  - There are indexed functions
+        //  - using lambda a user can store a function in a variable
+        //  - and is U_C1(t) really meant as a function or does it represent a variable
+        //    named U_C1 that depends on t?
+        if ((tokens.GetCount() > i + 1))
+        {
+          wxString nextToken = tokens[i + 1];
+          nextToken = nextToken.Trim(false);
+        
+          if (token == wxT("for") ||
+              token == wxT("in") ||
+              token == wxT("then") ||
+              token == wxT("while") ||
+              token == wxT("do") ||
+              token == wxT("thru") ||
+              token == wxT("next") ||
+              token == wxT("step") ||
+              token == wxT("unless") ||
+              token == wxT("from") ||
+              token == wxT("if") ||
+              token == wxT("else") ||
+              token == wxT("elif") ||
+              token == wxT("and") ||
+              token == wxT("or") ||
+              token == wxT("not") ||
+              token == wxT("not") ||
+              token == wxT("true") ||
+              token == wxT("false"))
+            m_styledText.push_back(token);
+          else if (nextChar == wxT('('))
+          {
+            m_styledText.push_back(StyledText(TS_CODE_FUNCTION, token));
+            m_wordList.Add(token);
+          }
+          else
+          {
+            m_styledText.push_back(StyledText(TS_CODE_VARIABLE, token));
+            m_wordList.Add(token);
+          }
+          HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+                                    indentationPixels);
+          continue;
         }
         else
         {
           m_styledText.push_back(StyledText(TS_CODE_VARIABLE, token));
           m_wordList.Add(token);
-        }
-        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
-                                  indentationPixels);
-        continue;
-      }
-      else
-      {
-        m_styledText.push_back(StyledText(TS_CODE_VARIABLE, token));
-        m_wordList.Add(token);
         
-        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
-                                  indentationPixels);
-        continue;
+          HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+                                    indentationPixels);
+          continue;
+        }
       }
-    }
     
-    m_styledText.push_back(StyledText(token));
-    //      HandleSoftLineBreaks_Code(lastSpace,lineWidth,token,pos,m_text,lastSpacePos,spaceIsIndentation);
-  }
+      m_styledText.push_back(StyledText(token));
+      //      HandleSoftLineBreaks_Code(lastSpace,lineWidth,token,pos,m_text,lastSpacePos,spaceIsIndentation);
+    }
   m_wordList.Sort();
 }
 

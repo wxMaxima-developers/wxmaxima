@@ -1524,6 +1524,178 @@ void wxMaxima::SetCWD(wxString file)
   }
 }
 
+// OpenMacfile
+// Clear document (if clearDocument == true), then insert file
+bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument)
+{
+  // Show a busy cursor while we open the file.
+  wxBusyCursor crs;
+
+  SetStatusText(_("Opening file"), 1);
+  document->Freeze();
+
+  // open wxm file
+  wxTextFile inputFile(file);
+  wxArrayString *wxmLines = NULL;
+
+  if (!inputFile.Open())
+  {
+    document->Thaw();
+    wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
+    StatusMaximaBusy(waiting);
+    SetStatusText(_("File could not be opened"), 1);
+    return false;
+  }
+
+  wxString macContents = inputFile.GetFirstLine();
+  
+  while(!inputFile.Eof())
+  {
+    macContents += inputFile.GetNextLine() + wxT("\n");
+  }
+  inputFile.Close();
+
+  if (clearDocument)
+    document->ClearDocument();
+
+  GroupCell *tree = NULL;
+  GroupCell *last = NULL;
+  wxString line;
+  wxChar lastChar = wxT(' ');
+  wxString::iterator ch = macContents.begin();
+  while (ch != macContents.end())
+  {
+    
+    // Handle comments
+    if((*ch == '*') and (lastChar == '/'))
+    {
+      // Does the current line contain nothing but a comment?
+      bool isCommentLine = false;
+      wxString test = line;
+      test.Trim(false);
+      if(test == wxT("/"))
+      {
+        isCommentLine = true;
+        line.Trim(false);
+      }
+
+      // Skip to the end of the comment
+      while (ch != macContents.end())
+      {
+        line += *ch;
+          
+        if ((lastChar == wxT('*')) && (*ch == wxT('/')))
+        {
+          lastChar = *ch;
+          if(ch != macContents.end())
+            ++ch;
+          break;
+        }
+        
+        lastChar = *ch;
+        if(ch != macContents.end())
+          ++ch;
+      }
+      
+      if(isCommentLine)
+      {
+        line.Trim(true);
+        line.Trim(false);
+        document->InsertGroupCells(
+          new GroupCell(&(document->m_configuration),
+                        GC_TYPE_TEXT, document->m_cellPointers,
+                        line.SubString(2,line.length()-3)),
+          document->GetHCaret());
+
+        line = wxEmptyString;
+      }
+    }
+    // Handle strings
+    else if((*ch == '\"') )
+    {
+      // Skip to the end of the string
+      while (ch != macContents.end())
+      {
+        line += *ch;
+          
+        if ((*ch == wxT('\"')))
+        {
+          lastChar = *ch;
+          if(ch != macContents.end())
+            ++ch;
+          break;
+        }
+      }
+    }
+    // Handle escaped chars
+    else if((*ch == '\\') )
+    {
+      if(ch != macContents.end())
+      {
+        line += *ch;
+        lastChar = *ch;
+        ++ch;
+      }
+    }
+    else
+    {
+      line += *ch;
+
+      // A line ending followed by a new line means: We want to insert a new code cell.
+      if(((lastChar == wxT('$'))) || ((lastChar == wxT(';'))) && (*ch == wxT('\n')))
+      {
+        line.Trim(true);
+        line.Trim(false);
+        document->InsertGroupCells(
+          new GroupCell(&(document->m_configuration),
+                        GC_TYPE_CODE, document->m_cellPointers, line),
+          document->GetHCaret());
+
+        line = wxEmptyString;
+      }
+      lastChar = *ch;
+      if(ch != macContents.end())
+        ++ch;
+    }
+  }
+
+  line.Trim(true);
+  line.Trim(false);
+  if(line != wxEmptyString)
+  {
+    document->InsertGroupCells(
+      new GroupCell(&(document->m_configuration),
+                    GC_TYPE_CODE, document->m_cellPointers, line),
+      document->GetHCaret());
+  }
+  
+  document->RecalculateForce();
+  
+  if (clearDocument)
+  {
+    m_console->m_currentFile = file;
+    ResetTitle(true, true);
+    document->SetSaved(true);
+  }
+  else
+    ResetTitle(false);
+
+  document->Thaw();
+  document->RequestRedraw(); // redraw document outside Freeze-Thaw
+
+  m_console->SetDefaultHCaret();
+  m_console->SetFocus();
+
+  SetCWD(file);
+
+  StatusMaximaBusy(waiting);
+  SetStatusText(_("File opened"), 1);
+
+  m_console->SetHCaret(NULL);
+  m_console->ScrollToCaret();
+  return true;
+}
+
 // OpenWXMFile
 // Clear document (if clearDocument == true), then insert file
 bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument)
@@ -2685,7 +2857,7 @@ wxString wxMaxima::GetDefaultEntry()
   return wxT("%");
 }
 
-void wxMaxima::OpenFile(wxString file, wxString cmd)
+void wxMaxima::OpenFile(wxString file, wxString cmd, bool importMac)
 {
   if (file.Length() && wxFileExists(file))
   {
@@ -2702,16 +2874,19 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
       MenuCommand(cmd + wxT("(\"") + unixFilename + wxT("\")$"));
     }
 
-    else if (file.Right(4) == wxT(".wxm"))
+    else if (file.Right(4).Lower() == wxT(".wxm"))
       OpenWXMFile(file, m_console);
 
-    else if (file.Right(5) == wxT(".wxmx"))
+    else if ((file.Right(4).Lower() == wxT(".mac")) && importMac)
+      OpenMACFile(file, m_console);
+
+    else if (file.Right(5).Lower() == wxT(".wxmx"))
       OpenWXMXFile(file, m_console); // clearDocument = true
 
-    else if (file.Right(4) == wxT(".dem"))
+    else if (file.Right(4).Lower() == wxT(".dem"))
       MenuCommand(wxT("demo(\"") + unixFilename + wxT("\")$"));
 
-    else if (file.Right(4) == wxT(".xml"))
+    else if (file.Right(4).Lower() == wxT(".xml"))
       OpenXML(file, m_console); // clearDocument = true
 
     else
@@ -2996,10 +3171,11 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
 
       wxString file = wxFileSelector(_("Open"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
-                                     _("wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"),
+                                     _("wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx|"
+                                      "Xmaxima document (*.mac)|*.mac"),
                                      wxFD_OPEN);
 
-      OpenFile(file);
+      OpenFile(file,wxEmptyString,true);
     }
       break;
 
