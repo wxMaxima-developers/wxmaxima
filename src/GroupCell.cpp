@@ -208,59 +208,68 @@ MathCell *GroupCell::Copy()
   return tmp;
 }
 
-wxString GroupCell::ToWXM()
+wxString GroupCell::ToWXM(bool wxm)
 {
-  wxString wxm;
+  wxString retval;
   if (IsHidden())
-    wxm += wxT("/* [wxMaxima: hide output   ] */\n");
+    retval += wxT("/* [wxMaxima: hide output   ] */\n");
 
   switch (GetGroupType())
   {
     case GC_TYPE_CODE:
-      wxm += wxT("/* [wxMaxima: input   start ] */\n");
-      wxm += GetEditable()->ToString() + wxT("\n");
-      wxm += wxT("/* [wxMaxima: input   end   ] */\n");
+      if(wxm)
+        retval += wxT("/* [wxMaxima: input   start ] */\n");
+      retval += GetEditable()->ToString() + wxT("\n");
+      if(wxm)
+        retval += wxT("/* [wxMaxima: input   end   ] */\n");
       break;
     case GC_TYPE_TEXT:
-      wxm += wxT("/* [wxMaxima: comment start ]\n");
-      wxm += GetEditable()->ToString() + wxT("\n");
-      wxm += wxT("   [wxMaxima: comment end   ] */\n");
+      if(wxm)
+      {
+        retval += wxT("/* [wxMaxima: comment start ]\n");
+        retval += GetEditable()->ToString() + wxT("\n");
+        retval += wxT("   [wxMaxima: comment end   ] */\n");
+      }
+      else
+      {
+        retval += wxT("/* ") + GetEditable()->ToString() + wxT(" */\n");
+      }
       break;
     case GC_TYPE_SECTION:
-      wxm += wxT("/* [wxMaxima: section start ]\n");
-      wxm += GetEditable()->ToString() + wxT("\n");
-      wxm += wxT("   [wxMaxima: section end   ] */\n");
+      retval += wxT("/* [wxMaxima: section start ]\n");
+      retval += GetEditable()->ToString() + wxT("\n");
+      retval += wxT("   [wxMaxima: section end   ] */\n");
       break;
     case GC_TYPE_SUBSECTION:
-      wxm += wxT("/* [wxMaxima: subsect start ]\n");
-      wxm += GetEditable()->ToString() + wxT("\n");
-      wxm += wxT("   [wxMaxima: subsect end   ] */\n");
+      retval += wxT("/* [wxMaxima: subsect start ]\n");
+      retval += GetEditable()->ToString() + wxT("\n");
+      retval += wxT("   [wxMaxima: subsect end   ] */\n");
       break;
     case GC_TYPE_SUBSUBSECTION:
-      wxm += wxT("/* [wxMaxima: subsubsect start ]\n");
-      wxm += GetEditable()->ToString() + wxT("\n");
-      wxm += wxT("   [wxMaxima: subsubsect end   ] */\n");
+      retval += wxT("/* [wxMaxima: subsubsect start ]\n");
+      retval += GetEditable()->ToString() + wxT("\n");
+      retval += wxT("   [wxMaxima: subsubsect end   ] */\n");
       break;
     case GC_TYPE_TITLE:
-      wxm += wxT("/* [wxMaxima: title   start ]\n");
-      wxm += GetEditable()->ToString() + wxT("\n");
-      wxm += wxT("   [wxMaxima: title   end   ] */\n");
+      retval += wxT("/* [wxMaxima: title   start ]\n");
+      retval += GetEditable()->ToString() + wxT("\n");
+      retval += wxT("   [wxMaxima: title   end   ] */\n");
       break;
     case GC_TYPE_IMAGE:
-      wxm += wxT("/* [wxMaxima: caption start ]\n");
-      wxm += GetEditable()->ToString() + wxT("\n");
-      wxm += wxT("   [wxMaxima: caption end   ] */\n");
+      retval += wxT("/* [wxMaxima: caption start ]\n");
+      retval += GetEditable()->ToString() + wxT("\n");
+      retval += wxT("   [wxMaxima: caption end   ] */\n");
       if ((GetLabel() != NULL) && (GetLabel()->GetType() == MC_TYPE_IMAGE))
       {
         ImgCell *image = dynamic_cast<ImgCell *>(GetLabel());
-        wxm += wxT("/* [wxMaxima: image   start ]\n");
-        wxm += image->GetExtension() + wxT("\n");
-        wxm += wxBase64Encode(image->GetCompressedImage()) + wxT("\n");
-        wxm += wxT("   [wxMaxima: image   end   ] */\n");
+        retval += wxT("/* [wxMaxima: image   start ]\n");
+        retval += image->GetExtension() + wxT("\n");
+        retval += wxBase64Encode(image->GetCompressedImage()) + wxT("\n");
+        retval += wxT("   [wxMaxima: image   end   ] */\n");
       }
       break;
     case GC_TYPE_PAGEBREAK:
-      wxm += wxT("/* [wxMaxima: page break    ] */\n");
+      retval += wxT("/* [wxMaxima: page break    ] */\n");
       break;
   }
 
@@ -268,16 +277,16 @@ wxString GroupCell::ToWXM()
   GroupCell *tmp = GetHiddenTree();
   if (tmp != NULL)
   {
-    wxm += wxT("/* [wxMaxima: fold    start ] */\n");
+    retval += wxT("/* [wxMaxima: fold    start ] */\n");
     while (tmp != NULL)
     {
-      wxm += tmp->ToWXM();
+      retval += tmp->ToWXM();
       tmp = dynamic_cast<GroupCell *>(tmp->m_next);
     }
-    wxm += wxT("\n/* [wxMaxima: fold    end   ] */\n");
+    retval += wxT("\n/* [wxMaxima: fold    end   ] */\n");
   }
-  wxm += wxT("\n");
-  return wxm;
+  retval += wxT("\n");
+  return retval;
 }
 
 

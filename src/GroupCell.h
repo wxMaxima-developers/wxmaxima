@@ -136,8 +136,13 @@ public:
 
   wxString ToTeX(wxString imgDir, wxString filename, int *imgCounter);
 
-  //! Convert the current cell to its wxm representation.
-  wxString ToWXM();
+  /*! Convert the current cell to its wxm representation.
+
+    \param wxm:
+    - true: We mean to export to a .wxm file.
+    - false: We generate a.mac file instead that doesn't look nice with a dedicated comment per input line.
+   */
+  wxString ToWXM(bool wxm = true);
 
   wxString ToRTF();
 

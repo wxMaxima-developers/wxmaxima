@@ -5343,9 +5343,9 @@ void MathCtrl::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const 
   while (tmp != NULL)
   {
 
-    AddLineToFile(output, tmp->ToWXM());
+    AddLineToFile(output, tmp->ToWXM(wxm));
 
-    if (tmp->GetGroupType() == GC_TYPE_CODE)
+    if ((wxm)&&(tmp->GetGroupType() == GC_TYPE_CODE))
     {
       EditorCell *txt = tmp->GetEditable();
       if (txt != NULL)
