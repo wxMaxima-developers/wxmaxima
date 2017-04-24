@@ -158,7 +158,7 @@ public:
   void SendMaxima(wxString s, bool history = false);
 
   void OpenFile(wxString file,
-                wxString command = wxEmptyString, bool importMac = false); //!< Open a file
+                wxString command = wxEmptyString); //!< Open a file
   bool DocumentSaved()
   { return m_fileSaved; }
 

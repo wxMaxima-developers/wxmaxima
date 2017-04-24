@@ -2856,7 +2856,7 @@ wxString wxMaxima::GetDefaultEntry()
   return wxT("%");
 }
 
-void wxMaxima::OpenFile(wxString file, wxString cmd, bool importMac)
+void wxMaxima::OpenFile(wxString file, wxString cmd)
 {
   if (file.Length() && wxFileExists(file))
   {
@@ -2876,7 +2876,7 @@ void wxMaxima::OpenFile(wxString file, wxString cmd, bool importMac)
     else if (file.Right(4).Lower() == wxT(".wxm"))
       OpenWXMFile(file, m_console);
 
-    else if ((file.Right(4).Lower() == wxT(".mac")) && importMac)
+    else if (file.Right(4).Lower() == wxT(".mac"))
       OpenMACFile(file, m_console);
 
     else if (file.Right(5).Lower() == wxT(".wxmx"))
@@ -3176,7 +3176,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
                                       "xml from broken .wxmx (*.xml)|*.xml"),
                                      wxFD_OPEN);
 
-      OpenFile(file,wxEmptyString,true);
+      OpenFile(file,wxEmptyString);
     }
       break;
 
