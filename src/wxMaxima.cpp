@@ -1524,8 +1524,6 @@ void wxMaxima::SetCWD(wxString file)
   }
 }
 
-// OpenMacfile
-// Clear document (if clearDocument == true), then insert file
 bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument)
 {
   // Show a busy cursor while we open the file.
@@ -1673,7 +1671,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
   
   if (clearDocument)
   {
-    m_console->m_currentFile = file;
+    m_console->m_currentFile = file.SubString(0,file.Length()-4) + wxT("wxmx");
     ResetTitle(true, true);
     document->SetSaved(true);
   }
@@ -3171,8 +3169,10 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
 
       wxString file = wxFileSelector(_("Open"), m_lastPath,
                                      wxEmptyString, wxEmptyString,
-                                     _("wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx|"
-                                      "Xmaxima document (*.mac)|*.mac"),
+                                     _("All openable types (*.wxm, *.wxmx, *.mac, *.xml)|*.wxm;*.wxmx;*.mac;*.xml|"
+                                      "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx|"
+                                      "Maxima session (*.mac)|*.mac|"
+                                      "xml from broken .wxmx (*.xml)|*.xml"),
                                      wxFD_OPEN);
 
       OpenFile(file,wxEmptyString,true);
