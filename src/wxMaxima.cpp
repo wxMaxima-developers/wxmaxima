@@ -1599,11 +1599,12 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
       {
         line.Trim(true);
         line.Trim(false);
-        document->InsertGroupCells(
-          new GroupCell(&(document->m_configuration),
-                        GC_TYPE_TEXT, document->m_cellPointers,
-                        line.SubString(2,line.length()-3)),
-          document->GetHCaret());
+        if(!line.StartsWith(wxT("/* [wxMaxima: ")))
+          document->InsertGroupCells(
+            new GroupCell(&(document->m_configuration),
+                          GC_TYPE_TEXT, document->m_cellPointers,
+                          line.SubString(2,line.length()-3)),
+            document->GetHCaret());
 
         line = wxEmptyString;
       }
