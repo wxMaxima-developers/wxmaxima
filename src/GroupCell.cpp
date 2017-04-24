@@ -211,6 +211,7 @@ MathCell *GroupCell::Copy()
 wxString GroupCell::ToWXM(bool wxm)
 {
   wxString retval;
+  bool trailingNewline = true;
   if (IsHidden())
     retval += wxT("/* [wxMaxima: hide output   ] */\n");
 
@@ -222,6 +223,8 @@ wxString GroupCell::ToWXM(bool wxm)
       retval += GetEditable()->ToString() + wxT("\n");
       if(wxm)
         retval += wxT("/* [wxMaxima: input   end   ] */\n");
+      else
+        trailingNewline = false;
       break;
     case GC_TYPE_TEXT:
       if(wxm)
@@ -233,6 +236,7 @@ wxString GroupCell::ToWXM(bool wxm)
       else
       {
         retval += wxT("/* ") + GetEditable()->ToString() + wxT(" */\n");
+        trailingNewline = false;
       }
       break;
     case GC_TYPE_SECTION:
@@ -285,7 +289,9 @@ wxString GroupCell::ToWXM(bool wxm)
     }
     retval += wxT("\n/* [wxMaxima: fold    end   ] */\n");
   }
-  retval += wxT("\n");
+  if(trailingNewline)
+    retval += wxT("\n");
+  
   return retval;
 }
 
