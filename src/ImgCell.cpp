@@ -221,8 +221,8 @@ wxString ImgCell::ToRTF()
   }
 
   image += wxString::Format(wxT("\\picw%lu\\pich%lu "),
-                            m_image->GetOriginalWidth(),
-                            m_image->GetOriginalHeight()
+                            (unsigned long)m_image->GetOriginalWidth(),
+                            (unsigned long)m_image->GetOriginalHeight()
   );
 
   // Convert the data into a hexadecimal string
