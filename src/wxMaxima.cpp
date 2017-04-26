@@ -5983,6 +5983,8 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
   {
 
     bool endingNeeded = true;
+    test.Trim(true);
+    test.Trim(false);
     
     // Cells ending in ";" or in "$" don't require us to add an ending.
     if (text.EndsWith(wxT(";")))
