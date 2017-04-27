@@ -6355,7 +6355,18 @@ bool MathCtrl::PointVisibleIs(wxPoint point)
 
 void MathCtrl::ShowPoint(wxPoint point)
 {
-  wxASSERT_MSG((point.x >= 0) && (point.y >= 0), wxT("Bug: Trying to scroll to a non-existing position!"));
+  // TODO: I have deactivated this assert for the release as it scares the users
+  // in a case we don't seem to have a problem. But we perhaps should try to find
+  // out why it is triggered.
+  //
+  // Test case:
+  //  - Create a code cell
+  //  - Press the "hide all code cells" button.
+  //  - click between 2 worksheet cells which makes the cursor appear as a horizontal
+  //    line
+  //  - press any letter.
+  //
+  //  wxASSERT_MSG((point.x >= 0) && (point.y >= 0), wxT("Bug: Trying to scroll to a non-existing position!"));
   if (point.x == -1 || point.y == -1)
     return;
 

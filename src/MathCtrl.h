@@ -1113,7 +1113,19 @@ public:
   //! The first groupCell that is currently visible.
   GroupCell *FirstVisibleGC();
 
-  //! Scrolls to a point on the worksheet
+  /*! Scrolls to a point on the worksheet
+  
+    \todo I have deactivated this assert for the release as it scares the users
+    in a case we don't seem to have a problem. But we perhaps should try to find
+    out why it is triggered.
+    
+    Test case:
+      - Create a code cell
+      - Press the "hide all code cells" button.
+      - click between 2 worksheet cells which makes the cursor appear as a horizontal
+        line
+      - press any letter.
+   */
   void ShowPoint(wxPoint point);
 
   void OnSetFocus(wxFocusEvent &event);
