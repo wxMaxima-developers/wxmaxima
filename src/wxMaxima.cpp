@@ -1637,13 +1637,103 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
       {
         line.Trim(true);
         line.Trim(false);
-        if(!line.StartsWith(wxT("/* [wxMaxima: ")))
+
+        // Is this a comment from wxMaxima?
+        if(line.StartsWith(wxT("/* [wxMaxima: ")))
         {
+
+          // Add the rest of this comment block to the "line".
+          while(
+            (
+              !(              
+                  (line.EndsWith(" end   ] */")) ||
+                  (line.EndsWith(" end   ] */\n"))
+                  )
+              ) &&
+            (ch != macContents.end())
+            )
+          {
+            while(ch != macContents.end())
+            {
+              wxChar c = *ch;
+              line += *ch;
+              ++ch;
+              if(c == wxT('\n'))
+                break;
+            }
+          }
+
+          // If the last block was a caption block we need to read in the image
+          // the caption was for, as well.
+          if(line.StartsWith(wxT("/* [wxMaxima: caption start ]")))
+          {
+            if(ch != macContents.end())
+            {
+              line += *ch;
+              ++ch;
+            }
+            while(ch != macContents.end())
+            {
+              wxChar c = *ch;
+              line += *ch;
+              ++ch;
+              if(c == wxT('\n'))
+                break;
+            }
+            while(
+              (
+                !(              
+                  (line.EndsWith(" end   ] */")) ||
+                  (line.EndsWith(" end   ] */\n"))
+                  )
+              ) &&
+              (ch != macContents.end())
+              )
+            {
+              while(ch != macContents.end())
+              {
+                wxChar c = *ch;
+                line += *ch;
+                ++ch;
+                if(c == wxT('\n'))
+                  break;
+              }
+            }
+          }
+
+          
+          //  Convert the comment block to an array of lines
+          wxStringTokenizer tokenizer(line, "\n");
+          wxArrayString commentLines;
+          while ( tokenizer.HasMoreTokens() )
+            commentLines.Add(tokenizer.GetNextToken());
+
+          // Interpret this array of lines as wxm code.
           GroupCell *cell;
           document->InsertGroupCells(
+            cell = m_console->CreateTreeFromWXMCode(&commentLines),
+            last);
+          last = cell;
+          
+        }
+          else
+        {
+          GroupCell *cell;
+
+          if((line.StartsWith("/* ")) || (line.StartsWith("/*\n")))
+            line = line.SubString(3,line.length()-1);
+          else
+            line = line.SubString(2,line.length()-1);
+
+          if((line.EndsWith(" */")) || (line.EndsWith("\n*/")))
+            line = line.SubString(0,line.length()-4);
+          else
+            line = line.SubString(0,line.length()-3);
+          
+          document->InsertGroupCells(
             cell = new GroupCell(&(document->m_configuration),
-                          GC_TYPE_TEXT, document->m_cellPointers,
-                          line.SubString(2,line.length()-3)),
+                                 GC_TYPE_TEXT, document->m_cellPointers,
+                                 line),
             last);
           last = cell;
         }
