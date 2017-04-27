@@ -14,7 +14,7 @@ _wxmaxima()
             return
             ;;
         --open|-o)
-            _filedir
+            _filedir '@(mac|wxm|wxmx|out|xml)'
             return
             ;;
     esac
