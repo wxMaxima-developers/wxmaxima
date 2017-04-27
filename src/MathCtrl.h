@@ -784,6 +784,7 @@ public:
     popid_comment_selection,
     popid_divide_cell,
     popid_copy_image,
+    popid_copy_rtf,
     popid_delete,
     popid_simplify,
     popid_expand,
@@ -1004,6 +1005,9 @@ public:
 
   //! Copy a bitmap of the current selection to the clipboard
   bool CopyBitmap();
+
+  //! Copy a rtf version of the current selection to the clipboard
+  bool CopyRTF();
 
   wxSize CopyToFile(wxString file);
 

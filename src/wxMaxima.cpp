@@ -2817,6 +2817,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &event)
 #if defined __WXMSW__ || defined __WXMAC__
   menubar->Enable(menu_copy_as_bitmap, m_console->CanCopy());
 #endif
+  menubar->Enable(menu_copy_as_rtf, m_console->CanCopy());
   menubar->Enable(menu_copy_to_file, m_console->CanCopy());
   menubar->Enable(menu_copy_text_from_console, m_console->CanCopy());
   menubar->Enable(menu_select_all, m_console->GetTree() != NULL);
@@ -3636,6 +3637,10 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     case menu_copy_as_bitmap:
       if (m_console->CanCopy())
         m_console->CopyBitmap();
+      break;
+    case menu_copy_as_rtf:
+      if (m_console->CanCopy())
+        m_console->CopyRTF();
       break;
     case menu_copy_to_file:
     {
@@ -5691,6 +5696,10 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       if (m_console->CanCopy())
         m_console->CopyBitmap();
       break;
+    case MathCtrl::popid_copy_rtf:
+      if (m_console->CanCopy())
+        m_console->CopyRTF();
+      break;
     case MathCtrl::popid_simplify:
       MenuCommand(wxT("ratsimp(") + selection + wxT(");"));
       break;
@@ -6689,6 +6698,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_COMMAND_SCROLL(ToolBar::plot_slider_id, wxMaxima::SliderEvent)
                 EVT_MENU(MathCtrl::popid_copy, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_copy_image, wxMaxima::PopupMenu)
+                EVT_MENU(MathCtrl::popid_copy_rtf, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_insert_text, wxMaxima::InsertMenu)
                 EVT_MENU(MathCtrl::popid_insert_title, wxMaxima::InsertMenu)
                 EVT_MENU(MathCtrl::popid_insert_section, wxMaxima::InsertMenu)
@@ -6869,6 +6879,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(menu_fullscreen, wxMaxima::EditMenu)
                 EVT_MENU(ToolBar::tb_hideCode, wxMaxima::EditMenu)
                 EVT_MENU(menu_copy_as_bitmap, wxMaxima::EditMenu)
+                EVT_MENU(menu_copy_as_rtf, wxMaxima::EditMenu)
                 EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)
                 EVT_MENU(menu_select_all, wxMaxima::EditMenu)
                 EVT_MENU(menu_subst, wxMaxima::MaximaMenu)

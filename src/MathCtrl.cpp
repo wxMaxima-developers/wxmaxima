@@ -1003,6 +1003,8 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
                               wxITEM_NORMAL);
           popupMenu->Append(popid_copy_image, _("Copy as Image"),
                             wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_copy_rtf, _("Copy as RTF"),
+                            wxEmptyString, wxITEM_NORMAL);
           if (CanDeleteSelection())
             popupMenu->Append(popid_delete, _("Delete Selection"), wxEmptyString, wxITEM_NORMAL);
         }
@@ -1054,6 +1056,8 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
                             wxITEM_NORMAL);
 
           popupMenu->Append(popid_copy_image, _("Copy as Image"),
+                            wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_copy_rtf, _("Copy as RTF"),
                             wxEmptyString, wxITEM_NORMAL);
           if (CanDeleteSelection())
             popupMenu->Append(popid_delete, _("Delete Selection"), wxEmptyString, wxITEM_NORMAL);
@@ -2055,6 +2059,15 @@ bool MathCtrl::CopyCells()
     data->Add(new RtfDataObject2(rtf));
     data->Add(new wxTextDataObject(str));
     data->Add(new wxmDataObject(wxm));
+
+    {
+      MathCell *tmp2 = CopySelection();
+      int bitmapScale = 3;
+      wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
+      Bitmap bmp(&m_configuration, bitmapScale);
+      if (bmp.SetData(tmp2, 4000000))
+        data->Add(new wxBitmapDataObject(bmp.GetBitmap()));
+    }
 
     wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
@@ -3921,6 +3934,38 @@ bool MathCtrl::CopyBitmap()
   bool retval = bmp.ToClipboard();
 
   return retval;
+}
+
+bool MathCtrl::CopyRTF()
+{
+  if(!CellsSelected())
+    return false;
+
+  if (!wxTheClipboard->Open())
+    return false;
+
+  wxDataObjectComposite *data = new wxDataObjectComposite;
+  
+  wxString rtf = RTFStart();
+  GroupCell *tmp = dynamic_cast<GroupCell *>(m_selectionStart->GetParent());
+  GroupCell *end = dynamic_cast<GroupCell *>(m_selectionEnd->GetParent());
+  
+  while (tmp != NULL)
+  {
+    rtf += tmp->ToRTF();
+    if (tmp == end)
+      break;
+    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+  }
+  
+  rtf += wxT("\\par") + RTFEnd();
+  
+  data->Add(new RtfDataObject(rtf), true);
+  data->Add(new RtfDataObject2(rtf));
+
+  wxTheClipboard->SetData(data);
+  wxTheClipboard->Close();
+  return true;
 }
 
 wxSize MathCtrl::CopyToFile(wxString file)

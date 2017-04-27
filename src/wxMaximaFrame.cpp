@@ -474,6 +474,9 @@ void wxMaximaFrame::SetupMenu()
                      _("Copy selection from document as an image"),
                      wxITEM_NORMAL);
 #endif
+  m_EditMenu->Append(menu_copy_as_rtf, _("Copy as RTF"),
+                     _("Copy selection from document as rtf that a word processor might understand"),
+                     wxITEM_NORMAL);
   m_EditMenu->Append(menu_paste, _("Paste\tCtrl+V"),
                      _("Paste text from clipboard"),
                      wxITEM_NORMAL);
