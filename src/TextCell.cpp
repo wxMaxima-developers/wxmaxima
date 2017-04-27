@@ -426,7 +426,7 @@ wxString TextCell::ToString()
   {
     text = m_text;
     if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
-      text = m_userDefinedLabel;
+      text = wxT("(") + m_userDefinedLabel + wxT(")");
 #if wxUSE_UNICODE
     text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
     text.Replace(wxT("\x2794"), wxT("-->"));
@@ -496,7 +496,7 @@ wxString TextCell::ToTeX()
   wxString text = m_displayedText;
 
   if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
-    text = m_userDefinedLabel;
+    text = wxT("(") + m_userDefinedLabel + wxT(")");
 
   if (!(*m_configuration)->CheckKeepPercent())
   {
@@ -917,7 +917,7 @@ wxString TextCell::ToMathML()
   wxString text = XMLescape(m_displayedText);
 
   if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
-    text = XMLescape(m_userDefinedLabel);
+    text = XMLescape(wxT("(") + m_userDefinedLabel + wxT(")"));
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
   if (m_isHidden)
@@ -1068,7 +1068,7 @@ wxString TextCell::ToRTF()
   wxString text = m_displayedText;
 
   if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
-    text = m_userDefinedLabel;
+    text = wxT("(") + m_userDefinedLabel + wxT(")");
   
   text.Replace(wxT("-->"), wxT("\x2192"));
   if ((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
