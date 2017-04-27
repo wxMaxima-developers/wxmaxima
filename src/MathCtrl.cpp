@@ -5079,6 +5079,10 @@ GroupCell *MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
         hide = false;
       }
 
+      // Gracefully handle captions without images
+      if(wxmLines->IsEmpty())
+        break;
+      
       wxmLines->RemoveAt(0);
       if (wxmLines->Item(0) == wxT("/* [wxMaxima: image   start ]"))
       {
