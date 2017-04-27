@@ -1700,7 +1700,6 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
               }
             }
           }
-
           
           //  Convert the comment block to an array of lines
           wxStringTokenizer tokenizer(line, "\n");

@@ -281,13 +281,15 @@ wxString GroupCell::ToWXM(bool wxm)
   GroupCell *tmp = GetHiddenTree();
   if (tmp != NULL)
   {
-    retval += wxT("/* [wxMaxima: fold    start ] */\n");
+    if(wxm)
+      retval += wxT("/* [wxMaxima: fold    start ] */\n");
     while (tmp != NULL)
     {
-      retval += tmp->ToWXM();
+      retval += tmp->ToWXM(wxm);
       tmp = dynamic_cast<GroupCell *>(tmp->m_next);
     }
-    retval += wxT("\n/* [wxMaxima: fold    end   ] */\n");
+    if(wxm)
+      retval += wxT("\n/* [wxMaxima: fold    end   ] */\n");
   }
   if(trailingNewline)
     retval += wxT("\n");
