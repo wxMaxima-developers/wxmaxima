@@ -6016,7 +6016,8 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
         {
           if (c == wxT('\\'))
             index++;
-          index++;
+          if(index < len)
+            index++;
         }
         if ((index == len) && (text[index] != wxT('\"'))) return (_("Unterminated string."));
         lastC = c;
@@ -6025,6 +6026,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
       case wxT(':'):
         if ((long) text.find(wxT("lisp"), index + 1) == index + 1)
           lisp = true;
+        index++;
         lastC = c;
         break;
 
@@ -6085,9 +6087,9 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
     text.Trim(false);
     
     // Cells ending in ";" or in "$" don't require us to add an ending.
-    if (text.EndsWith(wxT(";")))
+    if (lastC == wxT(';'))
       endingNeeded = false;
-    if (text.EndsWith(wxT("$")))
+    if (lastC == wxT('$'))
       endingNeeded = false;
     
     // Cells ending in "(to-maxima)" (with optional spaces around the "to-maxima")
