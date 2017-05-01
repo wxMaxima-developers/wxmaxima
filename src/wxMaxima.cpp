@@ -6026,7 +6026,6 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
       case wxT(':'):
         if ((long) text.find(wxT("lisp"), index + 1) == index + 1)
           lisp = true;
-        index++;
         lastC = c;
         break;
 
