@@ -8,8 +8,8 @@ os:
 osx_image: xcode8.3
 
 branches:
-  only:
-    - master
+  except:
+  - gh_pages
 
 cache:
   ccache: true
