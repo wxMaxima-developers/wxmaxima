@@ -3765,11 +3765,11 @@ void EditorCell::StyleTextTexts()
     wxString::const_iterator it = m_text.begin();
     while (it != m_text.end())
     {
-      wxString::const_iterator nextChar(it);
-      ++nextChar;
       // Extract a line inserting a soft linebreak if necessary
       while (it != m_text.end())
       {
+        wxString::const_iterator nextChar(it);
+        ++nextChar;
         // Handle hard linebreaks or indent a soft linebreak if necessary
         if ((*it == '\n') || (nextChar == m_text.end()))
         {
