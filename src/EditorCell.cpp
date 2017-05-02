@@ -3775,7 +3775,7 @@ void EditorCell::StyleTextTexts()
         {
           // Can we introduce a soft line break?
           // One of the next questions will be: Do we need to?
-          if ((lastSpacePos >= 0) && (*it != '\n'))
+          if (lastSpacePos >= 0)
           {
             // How far has the current line to be indented?
             if ((!indentPixels.empty()) && (!newLine))
@@ -3784,23 +3784,23 @@ void EditorCell::StyleTextTexts()
               indentation = 0;
             
             // How long is the current line already?
-            configuration->GetDC().GetTextExtent(m_text.SubString(lastLineStart, i), &width, &height);
-            // Does the line extend too much to the right to fit on the screen /
-            // to be easy to read?
+            configuration->GetDC().GetTextExtent(
+                                                 m_text.SubString(lastLineStart, i),
+                                                 &width, &height);
+            // Do we need to introduce a soft line break?
             if (width + xmargin + indentation >= configuration->GetLineWidth())
             {
-              // We need a line break in front of the last word
+              // We need a line break in front of the last space
               m_text[lastSpacePos] = wxT('\r');
               line = m_text.SubString(lastLineStart, lastSpacePos - 1);
-              i = lastSpacePos + 1;
+              i = lastSpacePos;
               it = lastSpaceIt;
-              ++it;
-              lastLineStart = i;
+              lastLineStart = i + 1;
               lastSpacePos = -1;
               break;
             }
           }
-          if (*it == '\n')
+          if ((*it == '\n') || (*it == '\r'))
           {
             if (i > 0)
               line = m_text.SubString(lastLineStart, i - 1);
@@ -3823,8 +3823,9 @@ void EditorCell::StyleTextTexts()
           // TODO: If we handled spaces before we handled soft line breaks this
           // branch would be unnecessary, right?
           
-          // Spaces and reaching the end of the text both trigger auto-wrapping
-          if ((*it == ' ') || (nextChar == m_text.end()))
+          // Spaces, newlines and reaching the end of the text all trigger
+          // auto-wrapping
+          if ((*it == ' ') || (*it == '\n') || (nextChar == m_text.end()))
           {
             // Determine the current line's length
             configuration->GetDC().GetTextExtent(m_text.SubString(lastLineStart, i), &width, &height);
