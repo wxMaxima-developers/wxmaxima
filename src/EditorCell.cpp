@@ -3005,14 +3005,13 @@ bool EditorCell::CopyToClipboard()
 
     // For some reason wxMaxima sometimes hangs when putting string on the
     // clipboard. Also Valgrind tells me that if I don't add a null byte to my string 
-    // one byte too much is accessed. But adding Null bytes doesn't feel like being a
-    // real solution.
+    // one byte too much is accessed. 
     //
-    // Let's hope using a wxDataObjectComposite uses a different code path:
+    // Another hope is that using a wxDataObjectComposite uses a different code path:
     // Valgrind tells me that the clipboard uses an uninitialized 64 bit value
     // in this case when using a 64 bit linux box instead.
     wxDataObjectComposite *data = new wxDataObjectComposite;
-    data->Add(new wxTextDataObject(s));
+    data->Add(new wxTextDataObject(s + wxT('\0')));
     wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
   }

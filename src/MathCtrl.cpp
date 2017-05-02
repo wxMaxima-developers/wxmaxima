@@ -1982,7 +1982,9 @@ bool MathCtrl::CopyTeX()
 
   if (wxTheClipboard->Open())
   {
-    wxTheClipboard->SetData(new wxTextDataObject(s));
+    wxDataObjectComposite *data = new wxDataObjectComposite;
+    data->Add(new wxTextDataObject(s));
+    wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
     return true;
   }
@@ -2015,7 +2017,9 @@ bool MathCtrl::CopyText()
 
   if (wxTheClipboard->Open())
   {
-    wxTheClipboard->SetData(new wxTextDataObject(result));
+    wxDataObjectComposite *data = new wxDataObjectComposite;
+    data->Add(new wxTextDataObject(result));
+    wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
     return true;
   }
@@ -6785,8 +6789,11 @@ void MathCtrl::CheckUnixCopy()
     wxTheClipboard->UsePrimarySelection(true);
     if (wxTheClipboard->Open())
     {
+      wxDataObjectComposite *data = new wxDataObjectComposite;
       // The \0 seems to prevent data corruption on seleting strings while evaluating.
-      wxTheClipboard->SetData(new wxTextDataObject(GetString() + wxT('\0')));
+      // The wxTextDataObject is a speculative go at the same bug.
+      data->Add(new wxTextDataObject(GetString() + wxT('\0')));
+      wxTheClipboard->SetData(data);
       wxTheClipboard->Close();
     }
     wxTheClipboard->UsePrimarySelection(false);
