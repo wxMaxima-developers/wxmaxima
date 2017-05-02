@@ -3765,11 +3765,13 @@ void EditorCell::StyleTextTexts()
     wxString::const_iterator it = m_text.begin();
     while (it != m_text.end())
     {
+      wxString::const_iterator nextChar(it);
+      ++nextChar;
       // Extract a line inserting a soft linebreak if necessary
       while (it != m_text.end())
       {
         // Handle hard linebreaks or indent a soft linebreak if necessary
-        if ((*it == '\n') || (it + 1 == m_text.end()))
+        if ((*it == '\n') || (nextChar == m_text.end()))
         {
           // Can we introduce a soft line break?
           // One of the next questions will be: Do we need to?
@@ -3822,7 +3824,7 @@ void EditorCell::StyleTextTexts()
           // branch would be unnecessary, right?
           
           // Spaces and reaching the end of the text both trigger auto-wrapping
-          if ((*it == ' ') || (i >= m_text.Length() - 1))
+          if ((*it == ' ') || (nextChar == m_text.end()))
           {
             // Determine the current line's length
             configuration->GetDC().GetTextExtent(m_text.SubString(lastLineStart, i), &width, &height);
