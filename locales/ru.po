@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-30 10:59+0200\n"
+"POT-Creation-Date: 2017-05-02 19:08+0200\n"
 "PO-Revision-Date: 2013-03-13 11:01+0300\n"
 "Last-Translator: Max Musatov <m1kc@yandex.ru>\n"
 "Language-Team: \n"
@@ -50,7 +50,7 @@ msgstr ""
 "\n"
 "Версия Maxima: "
 
-#: ../src/wxMaxima.cpp:6124
+#: ../src/wxMaxima.cpp:6125
 msgid ""
 "\n"
 "Not connected to Maxima!\n"
@@ -74,7 +74,7 @@ msgstr ""
 msgid " (Graphics) "
 msgstr ""
 
-#: ../src/EditorCell.cpp:3476 ../src/EditorCell.cpp:3894
+#: ../src/EditorCell.cpp:3485 ../src/EditorCell.cpp:3906
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
@@ -402,7 +402,7 @@ msgstr ""
 msgid "<br>Lisp: "
 msgstr "<br>Lisp: "
 
-#: ../src/wxMaxima.cpp:6231
+#: ../src/wxMaxima.cpp:6232
 msgid ""
 "A \":lisp\" as the first command might fail to send a \"finished\" signal."
 msgstr ""
@@ -444,7 +444,7 @@ msgstr "Значение в &точке..."
 msgid "Abort evaluation on error"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:5184 ../src/wxMaximaFrame.cpp:959
+#: ../src/wxMaximaFrame.cpp:959 ../src/wxMaxima.cpp:5184
 msgid "About"
 msgstr "О программе"
 
@@ -653,11 +653,11 @@ msgstr "Просмотр"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2219
+#: ../src/MathCtrl.cpp:2223
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6033
+#: ../src/MathCtrl.cpp:6037
 msgid "Bug: Cell with negative y position!"
 msgstr ""
 
@@ -673,22 +673,22 @@ msgstr ""
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2465
+#: ../src/MathCtrl.cpp:2469
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6200
+#: ../src/MathCtrl.cpp:6204
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6275
+#: ../src/MathCtrl.cpp:6279
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6243
+#: ../src/MathCtrl.cpp:6247
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -739,13 +739,13 @@ msgstr ""
 msgid "Bug: No last cell inside a square root!"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2263
+#: ../src/MathCtrl.cpp:2267
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2229
+#: ../src/MathCtrl.cpp:2233
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 
@@ -757,19 +757,19 @@ msgstr ""
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2154
+#: ../src/MathCtrl.cpp:2158
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6915
+#: ../src/MathCtrl.cpp:6922
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2231
+#: ../src/MathCtrl.cpp:2235
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 
@@ -777,11 +777,11 @@ msgstr ""
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6244
+#: ../src/MathCtrl.cpp:6248
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6205 ../src/MathCtrl.cpp:6280 ../src/MathCtrl.cpp:6315
+#: ../src/MathCtrl.cpp:6209 ../src/MathCtrl.cpp:6284 ../src/MathCtrl.cpp:6319
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
@@ -840,11 +840,11 @@ msgstr "Вычислить произведения"
 msgid "Calculate sums"
 msgstr "Вычислить суммы"
 
-#: ../src/wxMaxima.cpp:6586
+#: ../src/wxMaxima.cpp:6587
 msgid "Can not connect to the web server."
 msgstr "Не удалось соединиться с сервером."
 
-#: ../src/wxMaxima.cpp:6641
+#: ../src/wxMaxima.cpp:6642
 msgid "Can not download version info."
 msgstr "Не удалось загрузить информацию об обновлениях."
 
@@ -860,11 +860,11 @@ msgstr "Не удалось загрузить информацию об обн�
 #: ../src/PlotFormatWiz.cpp:51 ../src/SeriesWiz.cpp:52 ../src/SeriesWiz.cpp:54
 #: ../src/SubstituteWiz.cpp:43 ../src/SubstituteWiz.cpp:45 ../src/SumWiz.cpp:44
 #: ../src/SumWiz.cpp:46 ../src/SystemWiz.cpp:38 ../src/SystemWiz.cpp:40
-#: ../src/wxMaxima.cpp:6683
+#: ../src/wxMaxima.cpp:6684
 msgid "Cancel"
 msgstr "Отменить"
 
-#: ../src/wxMaxima.cpp:960 ../src/wxMaximaFrame.cpp:123
+#: ../src/wxMaximaFrame.cpp:123 ../src/wxMaxima.cpp:960
 msgid "Cannot start the maxima binary"
 msgstr ""
 
@@ -1167,13 +1167,13 @@ msgstr "Скопировать предыдущий ввод\tCtrl+I"
 msgid "Copy Previous Output\tCtrl+U"
 msgstr "Скопировать предыдущий ввод\tCtrl+I"
 
-#: ../src/MathCtrl.cpp:1004 ../src/MathCtrl.cpp:1058
-#: ../src/wxMaximaFrame.cpp:473
+#: ../src/wxMaximaFrame.cpp:473 ../src/MathCtrl.cpp:1004
+#: ../src/MathCtrl.cpp:1058
 msgid "Copy as Image"
 msgstr "Скопировать изображение"
 
-#: ../src/MathCtrl.cpp:999 ../src/MathCtrl.cpp:1053
-#: ../src/wxMaximaFrame.cpp:466
+#: ../src/wxMaximaFrame.cpp:466 ../src/MathCtrl.cpp:999
+#: ../src/MathCtrl.cpp:1053
 msgid "Copy as LaTeX"
 msgstr "Скопировать LaTeX"
 
@@ -1186,8 +1186,8 @@ msgstr "Скопировать изображение"
 msgid "Copy as MathML (e.g. to word processor)"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1006 ../src/MathCtrl.cpp:1060
-#: ../src/wxMaximaFrame.cpp:477
+#: ../src/wxMaximaFrame.cpp:477 ../src/MathCtrl.cpp:1006
+#: ../src/MathCtrl.cpp:1060
 #, fuzzy
 msgid "Copy as RTF"
 msgstr "Скопировать LaTeX"
@@ -1437,7 +1437,7 @@ msgstr "Делить числа или полиномы"
 msgid "Divide this input cell into two cells"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6678
+#: ../src/wxMaxima.cpp:6679
 #, fuzzy, c-format
 msgid "Do you want to save the changes you made in the document \"%s\"?"
 msgstr "Сохранить изменения в документе \""
@@ -1474,7 +1474,7 @@ msgid ""
 "differences."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6683
+#: ../src/wxMaxima.cpp:6684
 msgid "Don't save"
 msgstr "Не сохранять"
 
@@ -1593,8 +1593,8 @@ msgstr "Уравнения:"
 #: ../src/wxMaxima.cpp:1847 ../src/wxMaxima.cpp:1858 ../src/wxMaxima.cpp:2014
 #: ../src/wxMaxima.cpp:2027 ../src/wxMaxima.cpp:2038 ../src/wxMaxima.cpp:2126
 #: ../src/wxMaxima.cpp:2159 ../src/wxMaxima.cpp:2170 ../src/wxMaxima.cpp:2485
-#: ../src/wxMaxima.cpp:2652 ../src/wxMaxima.cpp:6124 ../src/wxMaxima.cpp:6586
-#: ../src/wxMaxima.cpp:6641
+#: ../src/wxMaxima.cpp:2652 ../src/wxMaxima.cpp:6125 ../src/wxMaxima.cpp:6587
+#: ../src/wxMaxima.cpp:6642
 msgid "Error"
 msgstr "Ошибка"
 
@@ -1627,7 +1627,7 @@ msgstr "Вычислить все\tCtrl+R"
 msgid "Evaluate All Visible Cells\tCtrl+R"
 msgstr "Вычислить все\tCtrl+R"
 
-#: ../src/MathCtrl.cpp:1012 ../src/wxMaximaFrame.cpp:550
+#: ../src/wxMaximaFrame.cpp:550 ../src/MathCtrl.cpp:1012
 msgid "Evaluate Cell(s)"
 msgstr "Вычислить"
 
@@ -2130,7 +2130,7 @@ msgstr "Вычислить мнимую часть комплексного вы
 msgid "Get the real part of complex expression"
 msgstr "Вычислить вещественную часть комплексного выражения"
 
-#: ../src/MathCtrl.cpp:6295
+#: ../src/MathCtrl.cpp:6299
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2335,7 +2335,7 @@ msgstr ""
 msgid "Image"
 msgstr "Изображение"
 
-#: ../src/wxMaxima.cpp:6390
+#: ../src/wxMaxima.cpp:6391
 msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgstr "Изображения (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 
@@ -2427,7 +2427,7 @@ msgstr "Новый &комментарий\tCtrl+1"
 msgid "Insert Cell\tAlt+Shift+C"
 msgstr "Добавить ячейку\tAlt+Shift+C"
 
-#: ../src/wxMaxima.cpp:6388
+#: ../src/wxMaxima.cpp:6389
 msgid "Insert Image"
 msgstr "Вставить изображение"
 
@@ -2539,7 +2539,7 @@ msgstr "Интегрировать выражение"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Интегрировать выражение при помощи алгоритма Рича"
 
-#: ../src/MathCtrl.cpp:1079 ../src/wxMaximaFrame.cpp:1225
+#: ../src/wxMaximaFrame.cpp:1225 ../src/MathCtrl.cpp:1079
 msgid "Integrate..."
 msgstr "Интегрировать..."
 
@@ -3094,7 +3094,7 @@ msgstr "Следующая команда\tAlt+Down"
 msgid "No"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6104
+#: ../src/wxMaxima.cpp:6105
 msgid "No dollar ($) or semicolon (;) at the end of command"
 msgstr ""
 
@@ -3544,7 +3544,7 @@ msgstr "Привести (триг.)"
 msgid "Reduce trigonometric expression"
 msgstr "Привести тригонометрическое выражение"
 
-#: ../src/wxMaxima.cpp:641 ../src/wxMaxima.cpp:6240
+#: ../src/wxMaxima.cpp:641 ../src/wxMaxima.cpp:6241
 msgid "Refusing to send cell to maxima: "
 msgstr ""
 
@@ -3583,7 +3583,7 @@ msgstr "Перезапустить Maxima"
 msgid "Restart maxima"
 msgstr "Перезапустить Maxima"
 
-#: ../src/MathCtrl.cpp:4809
+#: ../src/MathCtrl.cpp:4813
 msgid "Result"
 msgstr ""
 
@@ -3642,7 +3642,7 @@ msgid "Sample:"
 msgstr "Пример"
 
 #: ../src/ConfigDialogue.cpp:858 ../src/ToolBar.cpp:121
-#: ../src/wxMaxima.cpp:6683
+#: ../src/wxMaxima.cpp:6684
 msgid "Save"
 msgstr "Сохранить"
 
@@ -3754,7 +3754,7 @@ msgstr "Раздел"
 msgid "Section cell"
 msgstr "Раздел"
 
-#: ../src/BTextCtrl.cpp:49 ../src/EditorCell.cpp:811 ../src/TextCell.cpp:399
+#: ../src/BTextCtrl.cpp:49 ../src/TextCell.cpp:399 ../src/EditorCell.cpp:811
 msgid ""
 "Seems like something is broken with a font. Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
@@ -4111,7 +4111,7 @@ msgstr ""
 "Решить обыкновенное дифференциальное уравнение при помощи преобразования "
 "Лапласа"
 
-#: ../src/MathCtrl.cpp:1071 ../src/wxMaximaFrame.cpp:1222
+#: ../src/wxMaximaFrame.cpp:1222 ../src/MathCtrl.cpp:1071
 msgid "Solve..."
 msgstr "Решить..."
 
@@ -4217,7 +4217,7 @@ msgstr "Подстановка..."
 msgid "Substitute"
 msgstr "Подставить"
 
-#: ../src/MathCtrl.cpp:1077 ../src/wxMaximaFrame.cpp:879
+#: ../src/wxMaximaFrame.cpp:879 ../src/MathCtrl.cpp:1077
 msgid "Substitute..."
 msgstr "Подставить..."
 
@@ -4553,11 +4553,11 @@ msgstr "Перевод"
 msgid "Transpose a matrix"
 msgstr "Транспонировать матрицу"
 
-#: ../src/MathCtrl.cpp:6194
+#: ../src/MathCtrl.cpp:6198
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 
-#: ../src/MathCtrl.cpp:6262
+#: ../src/MathCtrl.cpp:6266
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
@@ -4586,15 +4586,15 @@ msgstr ""
 msgid "Ukrainian"
 msgstr "Украинский"
 
-#: ../src/wxMaxima.cpp:6077
+#: ../src/wxMaxima.cpp:6078
 msgid "Un-closed parenthesis"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6035
+#: ../src/wxMaxima.cpp:6036
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6633
+#: ../src/wxMaxima.cpp:6634
 msgid ""
 "Unable to interpret the version info I got from http://andrejv.github.io//"
 "wxmaxima/version.txt: "
@@ -4662,12 +4662,12 @@ msgstr "Греческие константы"
 msgid "Unicode Support"
 msgstr "Поддержка Unicode"
 
-#: ../src/wxMaxima.cpp:6052
+#: ../src/wxMaxima.cpp:6053
 #, fuzzy
 msgid "Unterminated comment."
 msgstr "Раскомментировать"
 
-#: ../src/wxMaxima.cpp:6021
+#: ../src/wxMaxima.cpp:6022
 msgid "Unterminated string."
 msgstr ""
 
@@ -4675,7 +4675,7 @@ msgstr ""
 msgid "Up"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6617 ../src/wxMaxima.cpp:6624 ../src/wxMaxima.cpp:6634
+#: ../src/wxMaxima.cpp:6618 ../src/wxMaxima.cpp:6625 ../src/wxMaxima.cpp:6635
 msgid "Upgrade"
 msgstr "Обновиться"
 
@@ -4794,7 +4794,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:7196
+#: ../src/MathCtrl.cpp:7203
 msgid "Wrapped search"
 msgstr ""
 
@@ -4862,7 +4862,7 @@ msgid ""
 "cells."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6614
+#: ../src/wxMaxima.cpp:6615
 #, c-format
 msgid ""
 "You have version %s. Current version is %s.\n"
@@ -4870,11 +4870,11 @@ msgid ""
 "Select OK to visit the wxMaxima webpage."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6682
+#: ../src/wxMaxima.cpp:6683
 msgid "Your changes will be lost if you don't save them."
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6624
+#: ../src/wxMaxima.cpp:6625
 msgid "Your version of wxMaxima is up to date."
 msgstr ""
 
@@ -4900,11 +4900,11 @@ msgstr "Увеличить на 10%"
 msgid "Zoom out 10%"
 msgstr "Уменьшить на 10%"
 
-#: ../src/wxMaxima.cpp:6446 ../src/wxMaximaFrame.cpp:245
+#: ../src/wxMaximaFrame.cpp:245 ../src/wxMaxima.cpp:6447
 msgid "[ unsaved ]"
 msgstr "[ не сохранено ]"
 
-#: ../src/wxMaxima.cpp:6448
+#: ../src/wxMaxima.cpp:6449
 msgid "[ unsaved* ]"
 msgstr "[ не сохранено* ]"
 
@@ -4913,12 +4913,12 @@ msgstr "[ не сохранено* ]"
 msgid "[%i digits]"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4756
+#: ../src/MathCtrl.cpp:4760
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:4892
+#: ../src/MathCtrl.cpp:4896
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr ""
@@ -5200,12 +5200,12 @@ msgstr ""
 msgid "union"
 msgstr ""
 
-#: ../src/wxMaxima.cpp:6663
+#: ../src/wxMaxima.cpp:6664
 msgid "unsaved"
 msgstr "не сохранено"
 
-#: ../src/wxMaxima.cpp:3070 ../src/wxMaxima.cpp:3340
-#: ../src/wxMaximaFrame.cpp:247
+#: ../src/wxMaximaFrame.cpp:247 ../src/wxMaxima.cpp:3070
+#: ../src/wxMaxima.cpp:3340
 msgid "untitled"
 msgstr "без названия"
 
@@ -5223,8 +5223,8 @@ msgstr "Выражение:"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: ../src/wxMaxima.cpp:6446 ../src/wxMaxima.cpp:6448 ../src/wxMaxima.cpp:6457
-#: ../src/wxMaxima.cpp:6460 ../src/wxMaximaFrame.cpp:245
+#: ../src/wxMaximaFrame.cpp:245 ../src/wxMaxima.cpp:6447
+#: ../src/wxMaxima.cpp:6449 ../src/wxMaxima.cpp:6458 ../src/wxMaxima.cpp:6461
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s"
