@@ -67,4 +67,9 @@ set(CPACK_SOURCE_IGNORE_FILES
   "wxmaxima-.*\\\\.gz$"
   "${CPACK_SOURCE_IGNORE_FILES}")
 add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
+
+add_custom_target(checksums COMMAND test -f wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.tar.gz && ${CMAKE_COMMAND} -E md5sum wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.tar.gz >checksums.txt
+                            COMMAND test -f wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.tar.bz2 && ${CMAKE_COMMAND} -E md5sum wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.tar.bz2 >>checksums.txt
+                            COMMAND test -f wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.deb && ${CMAKE_COMMAND} -E md5sum wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.deb >>checksums.txt
+                            COMMAND test -f wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.rpm && ${CMAKE_COMMAND} -E md5sum wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.rpm >>checksums.txt)
 include(CPack)
