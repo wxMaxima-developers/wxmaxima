@@ -69,10 +69,16 @@ set(CPACK_SOURCE_IGNORE_FILES
 
 add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 
-add_custom_target(gpg COMMAND gpg --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.bz2
-  COMMAND gpg --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz
-  COMMAND gpg --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.xz
-  COMMAND gpg --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.Z)
+# Debian wants to be able to download a signature of the source package from the
+# project's download directory. If it cannot find it it will still work, but will
+# issue a warning. For details see
+# https://lintian.debian.org/tags/debian-watch-may-check-gpg-signature.html
+find_program(gpg NAMES gpg pgp)
+add_custom_target(gpg DEPENDS dist
+  COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.bz2
+  COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz
+  COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.xz
+  COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.Z)
 
 find_program(sha1sum   NAMES sha1sum)
 find_program(sha256sum NAMES sha256sum)
