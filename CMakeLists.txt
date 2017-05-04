@@ -66,7 +66,13 @@ set(CPACK_SOURCE_IGNORE_FILES
   "wxmaxima-.*\\\\.Z$"
   "wxmaxima-.*\\\\.gz$"
   "${CPACK_SOURCE_IGNORE_FILES}")
+
 add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
+
+add_custom_target(gpg COMMAND gpg --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.bz2
+  COMMAND gpg --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz
+  COMMAND gpg --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.xz
+  COMMAND gpg --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.Z)
 
 find_program(sha1sum   NAMES sha1sum)
 find_program(sha256sum NAMES sha256sum)
