@@ -166,6 +166,8 @@ public:
   { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 
 private:
+  //! Clear the evaluation queue and return true if "Abort on Error" is set. 
+  bool AbortOnError();
   //! This string allows us to detect when the string we search for has changed.
   wxString m_oldFindString;
   //! This string allows us to detect when the string we search for has changed.
@@ -197,6 +199,10 @@ private:
   wxString GetUnmatchedParenthesisState(wxString text);
 
 protected:
+  //! Is this window active?
+  bool m_isActive;
+  //! Called when this window is activated or deactivated.
+  void OnActivate(wxActivateEvent &event);
   //! Is called on start and whenever the configuration changes
   void ConfigChanged();
 

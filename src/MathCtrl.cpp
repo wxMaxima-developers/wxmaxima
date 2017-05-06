@@ -7786,3 +7786,4 @@ wxDataFormat MathCtrl::m_mathmlFormat2;
 wxDataFormat MathCtrl::m_rtfFormat;
 wxDataFormat MathCtrl::m_rtfFormat2;
 wxDataFormat MathCtrl::m_wxmFormat;
+

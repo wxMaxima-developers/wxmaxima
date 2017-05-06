@@ -17,6 +17,8 @@ Current:
   * Several scrolling fixes, again.
   * Two concurrent wxMaxima instances now no more overwrite each other's "Recent files"
     list.
+  * If a error message or question arises in a worksheet that isn't the active window
+    now the operating system is asked to notify the user in a non-disrupting way.
   * Invalid XML tags are now handled more gracefully
   * Deduplicated the code for saving .wxm files
   * content.xml files that have been extracted from a broken .wxmx file (e.G.

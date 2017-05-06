@@ -1570,4 +1570,3 @@ void wxMaximaFrame::ShowToolBar(bool show)
   }
 #endif
 }
-

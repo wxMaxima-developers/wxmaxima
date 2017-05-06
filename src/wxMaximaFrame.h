@@ -37,6 +37,7 @@ surrounding the worksheet.
 #include <wx/bmpbuttn.h>
 #include <wx/arrstr.h>
 #include <wx/aui/aui.h>
+#include <wx/notifmsg.h>
 
 #include "MathCtrl.h"
 #include "Setup.h"
@@ -446,6 +447,8 @@ public:
   void StatusExportFailed();
 
 protected:
+  //! Issued if a notification is closed.
+  void OnNotificationClose(wxCommandEvent WXUNUSED(&event));
   //! The status bar
   StatusBar *m_statusBar;
   //! The menu bar
@@ -537,6 +540,10 @@ private:
 
 #endif
 protected:
+  //! A error notification message
+  wxNotificationMessage m_notificationMessage;
+  //! A error notification message
+  bool m_notificationMessageActive;
   //! Update the "user symbols" portion of the symbols pane.
   void UpdateUserSymbols();
 
