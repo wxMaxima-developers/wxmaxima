@@ -371,6 +371,15 @@ public:
   {
     wxConfig::Get()->Write(wxT("changeAsterisk"), m_changeAsterisk = changeAsterisk);
   }
+  
+  //! Notify the user if maxima is idle?
+  bool NotifyIfIdle()
+  { return m_notifyIfIdle; }
+
+  void NotifyIfIdle(bool notify)
+  {
+    wxConfig::Get()->Write(wxT("notifyIfIdle"), m_notifyIfIdle = notify);
+  }
 
   /*! Returns the maximum number of displayed digits
 
@@ -503,6 +512,8 @@ private:
     of widths while selecting text we don't know our parser.
    */
   bool m_changeAsterisk;
+  //! Notify the user if maxima is idle
+  bool m_notifyIfIdle;
   //! How many digits of a number we show by default?
   int m_displayedDigits;
   //! Automatically wrap long lines?

@@ -19,6 +19,8 @@ Current:
     list.
   * If a error message or question arises in a worksheet that isn't the active window
     now the operating system is asked to notify the user in a non-disrupting way.
+  * The notification can be activated for the case that the window isn't active and maxima
+    finishes calculating, too.
   * Invalid XML tags are now handled more gracefully
   * Deduplicated the code for saving .wxm files
   * content.xml files that have been extracted from a broken .wxmx file (e.G.

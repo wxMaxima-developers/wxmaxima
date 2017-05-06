@@ -36,11 +36,13 @@ Configuration::Configuration(wxDC &dc, bool isTopLevel) : m_dc(&dc)
   m_zoomFactor = 1.0; // affects returned fontsizes
   m_top = -1;
   m_bottom = -1;
+  m_changeAsterisk = true;
   m_forceUpdate = false;
   m_outdated = false;
   m_printer = false;
   m_TeXFonts = false;
   m_printer = false;
+  m_notifyIfIdle = true;
   m_fixReorderedIndices = true;
   m_showBrackets = true;
   m_printBrackets = false;
@@ -102,8 +104,9 @@ void Configuration::ReadConfig()
 
   config->Read(wxT("showLabelChoice"), &m_showLabelChoice);
 
-  m_changeAsterisk = true;
   config->Read(wxT("changeAsterisk"), &m_changeAsterisk);
+
+  config->Read(wxT("notifyIfIdle"), &m_notifyIfIdle);
 
   config->Read(wxT("hideBrackets"), &m_hideBrackets);
 

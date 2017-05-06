@@ -254,6 +254,8 @@ void ConfigDialogue::SetProperties()
           _("Save only this number of actions in the undo buffer. 0 means: save an infinite number of actions."));
   m_recentItems->SetToolTip(_("The number of recently opened files that is to be remembered."));
   m_incrementalSearch->SetToolTip(_("Start searching while the phrase to search for is still being typed."));
+  m_notifyIfIdle->SetToolTip(_("Issue a notification if maxima finishes calculating while the wxMaxima window isn't in focus."));
+
   m_hideBrackets->SetToolTip(
           _("Hide the brackets that mark the extend of the worksheet cells at the worksheet's right side and that contain the \"hide\" button of the cell if the cells aren't active."));
 
@@ -402,6 +404,7 @@ void ConfigDialogue::SetProperties()
   m_bitmapScale->SetValue(bitmapScale);
   m_fixReorderedIndices->SetValue(configuration->FixReorderedIndices());
   m_incrementalSearch->SetValue(incrementalSearch);
+  m_notifyIfIdle->SetValue(configuration->NotifyIfIdle());
   m_fixedFontInTC->SetValue(fixedFontTC);
   m_useJSMath->SetValue(usejsmath);
   m_keepPercentWithSpecials->SetValue(keepPercent);
@@ -610,7 +613,7 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(6, 2, 5, 5);
-  wxFlexGridSizer *vsizer = new wxFlexGridSizer(17, 1, 5, 5);
+  wxFlexGridSizer *vsizer = new wxFlexGridSizer(18, 1, 5, 5);
 
   wxStaticText *lang = new wxStaticText(panel, -1, _("Language:"));
   const wxString m_language_choices[] =
@@ -697,6 +700,10 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   m_incrementalSearch = new wxCheckBox(panel, -1, _("Incremental Search"));
   vsizer->Add(m_incrementalSearch, 0, wxALL, 5);
 
+  m_notifyIfIdle = new wxCheckBox(panel, -1, _("Warn if an inactive window is idle"));
+  vsizer->Add(m_notifyIfIdle, 0, wxALL, 5);
+
+  
   vsizer->AddGrowableRow(10);
   panel->SetSizer(vsizer);
   vsizer->Fit(panel);
@@ -938,6 +945,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("bitmapScale"), m_bitmapScale->GetValue());
   configuration->FixReorderedIndices(m_fixReorderedIndices->GetValue());
   config->Write(wxT("incrementalSearch"), m_incrementalSearch->GetValue());
+  configuration->NotifyIfIdle(m_notifyIfIdle->GetValue());
   configuration->SetLabelChoice(m_showUserDefinedLabels->GetSelection());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
 #ifdef __WXMSW__

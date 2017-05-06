@@ -124,6 +124,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
         wxMaximaFrame(parent, id, title, pos, size)
 {
   m_notificationMessage.SetParent(this);
+  m_notificationMessage.SetTitle(_("wxMaxima"));
   m_notificationMessageActive = false;
   m_isActive = true;
   m_outputPromptRegEx.Compile(wxT("<lbl>.*</lbl>"));
@@ -1429,7 +1430,6 @@ void wxMaxima::ReadPrompt(wxString &data)
     m_outputCellsFromCurrentCommand = 0;
     if(!m_isActive)
     {
-      m_notificationMessage.SetTitle(_("Maxima Question"));
       m_notificationMessage.SetMessage(_("Maxima asks a question!"));
       m_notificationMessage.SetFlags(wxICON_INFORMATION);
       if(!m_notificationMessageActive)
@@ -3220,7 +3220,6 @@ bool wxMaxima::AbortOnError()
 
   if((!m_isActive) &&(!m_notificationMessageActive))
   {
-    m_notificationMessage.SetTitle(_("Maxima Error"));
     m_notificationMessage.SetMessage(_("Maxima has issued an error!"));
     m_notificationMessage.SetFlags(wxICON_ERROR);
     m_notificationMessage.Show();
@@ -6173,6 +6172,18 @@ void wxMaxima::TryEvaluateNextInQueue()
     // The cell from the last evaluation might still be shown in it's "evaluating" state
     // so let's refresh the console to update the display of this.
     m_console->RequestRedraw();
+
+    // If the window isn't active we can inform the user that maxima in the meantime
+    // has finished working.
+    if((!m_isActive) && (m_console->m_configuration->NotifyIfIdle()))
+    {
+      m_notificationMessage.SetMessage(_("Maxima has finished calculating."));
+      m_notificationMessage.SetFlags(wxICON_INFORMATION);
+      if(!m_notificationMessageActive)
+        m_notificationMessage.Show();
+      m_notificationMessageActive = true;
+    }
+
     return; //empty queue
   }
 
