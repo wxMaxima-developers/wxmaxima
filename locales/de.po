@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-05-06 22:01+0200\n"
-"PO-Revision-Date: 2017-05-06 15:43+0200\n"
+"PO-Revision-Date: 2017-05-07 09:54+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -2636,7 +2636,7 @@ msgstr "Iota"
 msgid ""
 "Issue a notification if maxima finishes calculating while the wxMaxima "
 "window isn't in focus."
-msgstr ""
+msgstr "Informiere den Benutzer, wenn Maxima mit dem Rechnen fertig wird, während das Fenster gerade nicht aktiv ist."
 
 #: ../data/tips.txt:35
 msgid ""
@@ -2937,9 +2937,8 @@ msgid "Maxima has a question"
 msgstr "Maxima hat eine Frage."
 
 #: ../src/wxMaxima.cpp:6180
-#, fuzzy
 msgid "Maxima has finished calculating."
-msgstr "Maxima ist beim Rechnen"
+msgstr "Maxima ist mit dem Rechnen fertig."
 
 #: ../src/wxMaxima.cpp:3223
 msgid "Maxima has issued an error!"
@@ -4929,7 +4928,7 @@ msgstr "Anzeige"
 
 #: ../src/ConfigDialogue.cpp:703
 msgid "Warn if an inactive window is idle"
-msgstr ""
+msgstr "Information über rechnungsende in inaktivem Fenster"
 
 #: ../src/MathParser.cpp:929 ../src/wxMaxima.cpp:2138 ../src/wxMaxima.cpp:2245
 #: ../src/wxMaxima.cpp:2419
