@@ -17,8 +17,9 @@ Current:
   * Several scrolling fixes, again.
   * Two concurrent wxMaxima instances now no more overwrite each other's "Recent files"
     list.
-  * If a error message or question arises in a worksheet that isn't the active window
-    now the operating system is asked to notify the user in a non-disrupting way.
+  * If a error message or question arises or maxima finishes calculating and the window
+    currently isn't active the operating system is asked to notify the user in a
+    non-disrupting way. For the case of the end of a calculation this can be turned off.
   * The notification can be activated for the case that the window isn't active and maxima
     finishes calculating, too.
   * Invalid XML tags are now handled more gracefully
