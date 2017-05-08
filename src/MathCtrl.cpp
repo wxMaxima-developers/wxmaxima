@@ -524,9 +524,6 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   GroupCell *tmp = GetWorkingGroup();
 
   if (tmp == NULL)
-    tmp = GetWorkingGroup();
-
-  if (tmp == NULL)
     tmp = GetLastWorkingGroup();
                                              
   if (tmp == NULL)
@@ -1196,7 +1193,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
   // create menu if we have any items
   if (popupMenu->GetMenuItemCount() > 0)
   {
-    // Perhaps the following line fixes bug # 798
+    // Perhaps the following line fixes bug # 798. TODO: Is it really needed?
     ForceRedraw();
 
     PopupMenu(popupMenu);

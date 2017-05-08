@@ -23,6 +23,7 @@
 
 #include <wx/wx.h>
 #include "MathCell.h"
+#include <list>
 
 /*! The storage for pointers to cells.
 
@@ -34,7 +35,20 @@ class CellPointers
 {
 public:
   CellPointers();
+  //! A list of cells containing error messages.
+  class ErrorList
+  {
+  public:
+    ErrorList(){};
+    std::list<MathCell *> m_errorList;
+    bool Empty(){return m_errorList.empty();}
+    void Remove(MathCell * cell){m_errorList.remove(cell);}
+    void Add(MathCell * cell){m_errorList.push_back(cell);}
+    MathCell *Head(){if(m_errorList.empty())return NULL; else return m_errorList.front();}
+  };
 
+  //! The list of cells maxima has complained about errors in
+  ErrorList m_errorList;
   //! The EditorCell the mouse selection has started in
   MathCell *m_cellMouseSelectionStartedIn;
   //! The EditorCell the keyboard selection has started in
@@ -43,6 +57,8 @@ public:
   MathCell *m_cellSearchStartedIn;
   //! Which cursor position incremental search has started at?
   int m_indexSearchStartedAt;
+  //! Which GroupCell the last error message was in?
+  MathCell *m_error;
   //! Which cell the blinking cursor is in?
   MathCell *m_activeCell;
   //! The y position the selection starts at

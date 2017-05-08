@@ -440,7 +440,22 @@ void wxMaxima::ConsoleAppend(wxString s, int type, wxString userLabel)
   }
 
   else if (type == MC_TYPE_ERROR)
+  {
     DoRawConsoleAppend(s, MC_TYPE_ERROR);
+    GroupCell *tmp = m_console->GetWorkingGroup();
+    
+    if (tmp == NULL)
+      tmp = m_console->GetLastWorkingGroup();
+    
+    if (tmp == NULL)
+    {
+    if (m_console->GetActiveCell())
+      tmp = dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetParent());
+    }
+    
+    if(tmp != NULL)
+      m_console->m_cellPointers->m_errorList.Add(tmp);
+  }
   else
     DoConsoleAppend(wxT("<span>") + s + wxT("</span>"), type, false);
 
@@ -2834,7 +2849,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &event)
                   (m_console->GetHCaret() != NULL)
   );
 
-  menubar->Enable(menu_triggerEvaluation, !m_console->m_evaluationQueue.Empty());
+  menubar->Enable(menu_jumptoerror, !m_console->m_cellPointers->m_errorList.Empty());
   menubar->Enable(menu_save_id, (!m_fileSaved));
 
   for (int id = menu_pane_math; id <= menu_pane_stats; id++)
@@ -3831,9 +3846,9 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
   wxString f = wxT("/");
   switch (event.GetId())
   {
-    case menu_triggerEvaluation:
-      m_console->QuestionAnswered();
-      TryEvaluateNextInQueue();
+    case menu_jumptoerror:
+      if(m_console->m_cellPointers->m_errorList.Head())
+        m_console->SetActiveCell(dynamic_cast<GroupCell *>(m_console->m_cellPointers->m_errorList.Head())->GetEditable());
       break;
     case ToolBar::menu_restart_id:
       m_closing = true;
@@ -5958,15 +5973,17 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &event)
       tmp->AddEnding();
     // if active cell is part of a working group, we have a special
     // case - answering a question. Manually send answer to Maxima.
-    if (m_console->GCContainsCurrentQuestion(dynamic_cast<GroupCell *>(tmp->GetParent())))
+    GroupCell *cell = dynamic_cast<GroupCell *>(tmp->GetParent());
+    if (m_console->GCContainsCurrentQuestion(cell))
     {
       SendMaxima(tmp->ToString(true), true);
       StatusMaximaBusy(calculating);
       m_console->QuestionAnswered();
     }
     else
-    { // normally just add to queue
-      m_console->AddCellToEvaluationQueue(dynamic_cast<GroupCell *>(tmp->GetParent()));
+    { // normally just add to queue (and mark the cell as no more containing an error message)
+      m_console->m_cellPointers->m_errorList.Remove(cell);
+      m_console->AddCellToEvaluationQueue(cell);
     }
   }
   else
@@ -6123,12 +6140,6 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
       return _("No dollar ($) or semicolon (;) at the end of command");
   }
   return wxEmptyString;
-}
-
-void wxMaxima::TriggerEvaluation()
-{
-  if (!m_console->m_evaluationQueue.Empty())
-    TryEvaluateNextInQueue();
 }
 
 //! Tries to evaluate next group cell in queue
@@ -6571,12 +6582,10 @@ void wxMaxima::TableOfContentsSelection(wxListEvent &ev)
   m_console->SetFocus();
 }
 
-//! Called when the "Scroll to currently evaluated" button is pressed.
 void wxMaxima::OnFollow(wxCommandEvent &event)
 {
   m_console->OnFollow();
 }
-
 
 long *VersionToInt(wxString version)
 {
@@ -6879,6 +6888,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(gp_plot3, wxMaxima::PlotMenu)
                 EVT_MENU(menu_plot_format, wxMaxima::PlotMenu)
                 EVT_MENU(menu_soft_restart, wxMaxima::MaximaMenu)
+                EVT_MENU(menu_jumptoerror, wxMaxima::MaximaMenu)
                 EVT_MENU(menu_display, wxMaxima::MaximaMenu)
                 EVT_MENU(menu_pade, wxMaxima::CalculusMenu)
                 EVT_MENU(menu_add_path, wxMaxima::MaximaMenu)
