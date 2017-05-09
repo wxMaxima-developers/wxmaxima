@@ -5175,6 +5175,28 @@ GroupCell *MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
         hide = false;
       }
     }
+    if (wxmLines->Item(0) == wxT("/* [wxMaxima: answer  start ] */"))
+    {
+      wxmLines->RemoveAt(0);
+
+      wxString line;
+      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("/* [wxMaxima: answer  end   ] */")))
+      {
+        if (line.Length() == 0)
+          line += wxmLines->Item(0);
+        else
+          line += wxT("\n") + wxmLines->Item(0);
+
+        wxmLines->RemoveAt(0);
+      }
+
+      cell = new GroupCell(&m_configuration, GC_TYPE_CODE, m_cellPointers, line);
+      if (hide)
+      {
+        cell->Hide(true);
+        hide = false;
+      }
+    }
 
     else if (wxmLines->Item(0) == wxT("/* [wxMaxima: page break    ] */"))
     {
