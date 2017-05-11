@@ -601,7 +601,7 @@ void wxMaximaFrame::SetupMenu()
                      _("Divide this input cell into two cells"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
   m_CellMenu->AppendCheckItem(MathCtrl::popid_auto_answer, _("Automatically answer questions"),
-                     _(""));
+                     _("Automatically fill in answers known from the last run"));
 
   m_MenuBar->Append(m_CellMenu, _("Ce&ll"));
 

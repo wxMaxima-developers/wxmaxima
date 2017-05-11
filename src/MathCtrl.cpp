@@ -1041,7 +1041,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
                             wxITEM_NORMAL);
         }
           popupMenu->AppendCheckItem(popid_auto_answer, _("Automatically answer questions"),
-                                     _("If checked this cell will automatically answer questions"));
+                                     _("Automatically fill in answers known from the last run"));
       }
 
       else
@@ -1149,7 +1149,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
         case GC_TYPE_CODE:
           popupMenu->AppendSeparator();
           popupMenu->AppendCheckItem(popid_auto_answer, _("Automatically answer questions"),
-                                     _("If checked this cell will automatically answer questions"));
+                                     _("Automatically fill in answers known from the last run"));
           popupMenu->Check(popid_auto_answer,group->AutoAnswer());
           break;
         case GC_TYPE_TITLE:
