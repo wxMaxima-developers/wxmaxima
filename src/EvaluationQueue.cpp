@@ -1,8 +1,8 @@
 ﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
-//  Copyright (C) 2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
-//            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
-//            (C) 2015 Gunter Königsmann <wxMaxima@physikbuch.de>
+//  Copyright (C) 2009      Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
+//            (C) 2012      Doug Ilijev <doug.ilijev@gmail.com>
+//            (C) 2015-2017 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,22 +28,14 @@
 
 #include "EvaluationQueue.h"
 
-EvaluationQueueElement::EvaluationQueueElement(GroupCell *gr)
-{
-  group = gr;
-  next = NULL;
-}
-
 bool EvaluationQueue::Empty()
 {
-  return (m_queue == NULL) && (m_tokens.IsEmpty());
+  return (m_queue.empty()) && (m_tokens.IsEmpty());
 }
 
 EvaluationQueue::EvaluationQueue()
 {
   m_size = 0;
-  m_queue = NULL;
-  m_last = NULL;
   m_workingGroupChanged = false;
 }
 
@@ -58,63 +50,44 @@ void EvaluationQueue::Clear()
 
 bool EvaluationQueue::IsInQueue(GroupCell *gr)
 {
-  EvaluationQueueElement *tmp = m_queue;
-  while (tmp != NULL)
-  {
-    if (tmp->group == gr)
+  for(std::list<GroupCell *>::iterator it=m_queue.begin(); it != m_queue.end(); ++it)
+    if (*it == gr)
       return true;
-    tmp = tmp->next;
-  }
+  
   return false;
 }
 
 void EvaluationQueue::Remove(GroupCell *gr)
 {
-  if (gr != NULL)
+  bool removeFirst = (gr == m_queue.front());
+  m_queue.remove(gr);
+  if(removeFirst)
   {
-    while ((m_queue != NULL) && (m_queue->group == gr))
-    {
-      EvaluationQueueElement *oldStart = m_queue;
-      m_queue = m_queue->next;
-      delete oldStart;
-    }
-
-    EvaluationQueueElement *tmp = m_queue;
-    while (tmp != NULL)
-    {
-      while ((tmp->next != NULL) && (tmp->next->group == gr))
-      {
-        EvaluationQueueElement *oldNext = tmp->next;
-        tmp->next = tmp->next->next;
-        delete oldNext;
-      }
-
-      tmp = tmp->next;
-    }
+    m_tokens.Clear();
+    if(!m_queue.empty())
+      AddTokens(gr);
   }
+  m_size = m_queue.size();
 }
 
 void EvaluationQueue::AddToQueue(GroupCell *gr)
 {
-  bool emptyWas = Empty();
+  if(gr == NULL)
+    return;
+  
   if (gr->GetGroupType() != GC_TYPE_CODE
       || gr->GetEditable() == NULL) // don't add cells which can't be evaluated
     return;
-  EvaluationQueueElement *newelement = new EvaluationQueueElement(gr);
-  if (m_last == NULL)
-    m_queue = m_last = newelement;
-  else
+
+  gr->GetEditable()->AddEnding();
+
+  if(m_queue.empty())
   {
-    m_last->next = newelement;
-    m_last = newelement;
-  }
-  m_size++;
-  if (emptyWas)
-  {
-    m_queue->group->GetEditable()->AddEnding();
-    AddTokens(gr->GetEditable()->GetValue());
+    AddTokens(gr);
     m_workingGroupChanged = true;
   }
+  m_size++;
+  m_queue.push_back(gr);
 }
 
 /**
@@ -144,31 +117,28 @@ void EvaluationQueue::RemoveFirst()
   }
   else
   {
-    if (m_queue == NULL)
-      return; // shouldn't happen
-    EvaluationQueueElement *tmp = m_queue;
-    if (m_queue == m_last)
-    {
-      m_queue = m_last = NULL;
-    }
-    else
-      m_queue = m_queue->next;
+    if(m_queue.empty())
+      return;
 
-    delete tmp;
+    m_queue.pop_front();
     m_size--;
     if (!Empty())
     {
-      AddTokens(GetCell()->GetEditable()->GetValue());
+      AddTokens(GetCell());
       m_workingGroupChanged = true;
     }
   }
-
 }
 
-void EvaluationQueue::AddTokens(wxString commandString)
+void EvaluationQueue::AddTokens(GroupCell *cell)
 {
+  if(cell == NULL)
+    return;
+  
+  wxString commandString = cell->GetEditable()->GetValue();
   size_t index = 0;
 
+  m_knownAnswers = cell->m_knownAnswers;
 
   wxString token;
 
@@ -277,21 +247,10 @@ void EvaluationQueue::AddTokens(wxString commandString)
 
 GroupCell *EvaluationQueue::GetCell()
 {
-  if (!m_tokens.IsEmpty())
-  {
-    return m_queue->group;
-  }
+  if(m_queue.empty())
+    return NULL;
   else
-  {
-    if (m_queue != NULL)
-    {
-      m_queue->group->GetEditable()->AddEnding();
-      m_queue->group->GetEditable()->ContainsChanges(false);
-      return m_queue->group;
-    }
-    else
-      return NULL; // queue is empty
-  }
+    return m_queue.front();
 }
 
 wxString EvaluationQueue::GetCommand()

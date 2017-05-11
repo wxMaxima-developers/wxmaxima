@@ -65,6 +65,19 @@ public:
 
   ~GroupCell();
 
+  //! Does this GroupCell save the answer to a question?
+  bool AutoAnswer(){return m_autoAnswer;}
+  //! Does this GroupCell save the answer to a question?
+  void AutoAnswer(bool autoAnswer){
+    m_autoAnswer = autoAnswer;
+    if(GetEditable() != NULL) GetEditable()->AutoAnswer(autoAnswer);
+  }
+  // Add a new answer to the cell
+  void AddAnswer(wxString answer)
+    {
+      if(answer != wxEmptyString)
+        m_knownAnswers.push_back(answer);
+    }
   /*! Tell this cell to remove it from all gui actions.
 
     Normally the gui keeps various pointers to a cell: The cell below the cursor,
@@ -366,6 +379,9 @@ public:
   
   //! Reset the data when the input size changes
   void InputHeightChanged();
+
+  //! A list of answers provided by the user
+  std::list<wxString> m_knownAnswers;
 protected:
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold
@@ -382,6 +398,8 @@ protected:
   MathCell *m_appendedCells;
   CellPointers *m_cellPointers;
 private:
+  //! Does this GroupCell save the answer to a question?
+  bool m_autoAnswer;
   wxRect m_outputRect;
   bool m_inEvaluationQueue;
   bool m_lastInEvaluationQueue;

@@ -1040,6 +1040,8 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
           popupMenu->Append(popid_evaluate_section, _("Evaluate Sub-Subsection\tShift+Ctrl+Enter"), wxEmptyString,
                             wxITEM_NORMAL);
         }
+          popupMenu->AppendCheckItem(popid_auto_answer, _("Automatically answer questions"),
+                                     _("If checked this cell will automatically answer questions"));
       }
 
       else
@@ -1144,6 +1146,12 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
       }
       switch (group->GetGroupType())
       {
+        case GC_TYPE_CODE:
+          popupMenu->AppendSeparator();
+          popupMenu->AppendCheckItem(popid_auto_answer, _("Automatically answer questions"),
+                                     _("If checked this cell will automatically answer questions"));
+          popupMenu->Check(popid_auto_answer,group->AutoAnswer());
+          break;
         case GC_TYPE_TITLE:
           if (group->GetHiddenTree() != NULL)
             popupMenu->Append(popid_unfold,
@@ -2483,10 +2491,28 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
   {
     m_answerCell = new EditorCell(m_workingGroup, &m_configuration, m_cellPointers);
     m_answerCell->SetType(MC_TYPE_INPUT);
+    bool autoEvaluate = false;
+    if(txt == wxEmptyString)
+    {
+      m_answersExhausted = m_evaluationQueue.AnswersEmpty();
+      if(!m_answersExhausted)
+      {
+        txt = m_evaluationQueue.GetAnswer();
+        m_evaluationQueue.RemoveFirstAnswer();
+        autoEvaluate = m_workingGroup->AutoAnswer();
+      }
+    }
     m_answerCell->SetValue(txt);
     m_answerCell->CaretToEnd();
 
     m_workingGroup->AppendOutput(m_answerCell);
+
+    // If we filled in an answer and "AutoAnswer" is true we issue an evaluation event here.
+    if(autoEvaluate)
+    {
+      wxMenuEvent *EvaluateEvent = new wxMenuEvent(wxEVT_MENU, wxMaximaFrame::menu_evaluate);
+      GetParent()->GetEventHandler()->QueueEvent(EvaluateEvent);
+    }
     RecalculateForce();
   }
   // If the user wants to be automatically scrolled to the cell evaluation takes place
@@ -2550,7 +2576,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
     }
   }
   InsertGroupCells(group, m_hCaretPosition);
-
+  
   // activate editor
   SetActiveCell(group->GetEditable(), false);
   if (GetActiveCell() != NULL)
@@ -5189,15 +5215,14 @@ GroupCell *MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
 
         wxmLines->RemoveAt(0);
       }
-
-      cell = new GroupCell(&m_configuration, GC_TYPE_CODE, m_cellPointers, line);
-      if (hide)
-      {
-        cell->Hide(true);
-        hide = false;
-      }
+      if(last != NULL)
+        last->AddAnswer(line);
     }
-
+    if (wxmLines->Item(0) == wxT("/* [wxMaxima: autoanswer    ] */"))
+    {
+      if(last != NULL)
+        last->AutoAnswer(true);
+    }
     else if (wxmLines->Item(0) == wxT("/* [wxMaxima: page break    ] */"))
     {
       wxmLines->RemoveAt(0);

@@ -1,8 +1,8 @@
 ﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
-//  Copyright (C) 2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
-//            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
-//            (C) 2015 Gunter Königsmann <wxMaxima@physikbuch.de>
+//  Copyright (C) 2009      Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
+//            (C) 2012      Doug Ilijev <doug.ilijev@gmail.com>
+//            (C) 2015-2017 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,16 +33,7 @@ that still have to be sent to maxima.
 
 #include "GroupCell.h"
 #include "wx/arrstr.h"
-
-//! A queue element
-class EvaluationQueueElement
-{
-public:
-  EvaluationQueueElement(GroupCell *gr);
-
-  GroupCell *group;
-  EvaluationQueueElement *next;
-};
+#include <list>
 
 //! A simple FIFO queue with manual removal of elements
 class EvaluationQueue
@@ -52,11 +43,14 @@ private:
   int m_size;
   //! The label the user has assigned to the current command.
   wxString m_userLabel;
-  EvaluationQueueElement *m_queue;
-  EvaluationQueueElement *m_last;
+  //! The groupCells in the evaluation Queue.
+  std::list<GroupCell *>m_queue;
 
   //! Adds all commands in commandString as separate tokens to the queue.
-  void AddTokens(wxString commandString);
+  void AddTokens(GroupCell *cell);
+
+  //! A list of answers provided by the user
+  std::list<wxString> m_knownAnswers;
 
 public:
   /*! Query for the label the user has assigned to the current command.  
@@ -78,10 +72,10 @@ public:
   //! Is GroupCell gr part of the evaluation queue?
   bool IsLastInQueue(GroupCell *gr)
   {
-    if (m_last == NULL)
+    if (m_queue.empty())
       return false;
     else
-      return (gr == m_last->group);
+      return (gr == m_queue.front());
   }
 
   //! Is GroupCell gr part of the evaluation queue?
@@ -92,12 +86,15 @@ public:
 
   //! Remove a GroupCell from the evaluation queue.
   void Remove(GroupCell *gr);
-
+  
   //! Adds all hidden cells attached to the GroupCell gr to the evaluation queue.
   void AddHiddenTreeToQueue(GroupCell *gr);
 
-  //! Removes the first cell in the queue
+  //! Removes the first command in the queue
   void RemoveFirst();
+
+  //! Removes the first answer in the queue
+  void RemoveFirstAnswer(){m_knownAnswers.pop_front();}
 
   /*! Gets the cell the next command in the queue belongs to
 
@@ -108,11 +105,23 @@ public:
   //! Is the queue empty?
   bool Empty();
 
+  //! Is the answer queue empty?
+  bool AnswersEmpty() {return m_knownAnswers.empty();}
+
   //! Clear the queue
   void Clear();
 
   //! Return the next command that needs to be evaluated.
   wxString GetCommand();
+  
+  //! Return the next known answer.
+  wxString GetAnswer()
+  {
+    if(!m_knownAnswers.empty())
+      return (m_knownAnswers.front());
+    else
+      return wxEmptyString;
+  }
 
   //! Get the size of the queue
   int Size()

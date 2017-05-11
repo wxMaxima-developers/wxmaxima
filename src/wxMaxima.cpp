@@ -770,7 +770,6 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
 
           // The prompt that tells us that maxima awaits the next command
           ReadPrompt(m_currentOutput);
-
         }
       }
       break;
@@ -1464,7 +1463,9 @@ void wxMaxima::ReadPrompt(wxString &data)
         m_console->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
     }
     else
+    {
       m_console->OpenQuestionCaret();
+    }
     StatusMaximaBusy(userinput);
   }
 
@@ -5976,7 +5977,10 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &event)
     GroupCell *cell = dynamic_cast<GroupCell *>(tmp->GetParent());
     if (m_console->GCContainsCurrentQuestion(cell))
     {
-      SendMaxima(tmp->ToString(true), true);
+      wxString answer = tmp->ToString(true);
+      if(m_console->m_answersExhausted)
+        cell->AddAnswer(answer);
+      SendMaxima(answer, true);
       StatusMaximaBusy(calculating);
       m_console->QuestionAnswered();
     }
@@ -6306,6 +6310,8 @@ void wxMaxima::TryEvaluateNextInQueue()
     m_outputCellsFromCurrentCommand = 0;
     TryEvaluateNextInQueue();
   }
+  m_console->m_answersExhausted = m_console->m_evaluationQueue.AnswersEmpty();
+
 }
 
 void wxMaxima::InsertMenu(wxCommandEvent &event)
@@ -6314,6 +6320,28 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
   bool output = false;
   switch (event.GetId())
   {
+    case MathCtrl::popid_auto_answer:
+      if((m_console->GetActiveCell() != NULL) &&
+         (dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetParent())->GetGroupType() == GC_TYPE_CODE))
+        dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetParent())->AutoAnswer(event.IsChecked());
+      else if((m_console->GetSelectionStart() != NULL)&&
+              (m_console->GetSelectionStart()->GetType() == MC_TYPE_GROUP))
+      {
+        GroupCell *gc = dynamic_cast<GroupCell *>(m_console->GetSelectionStart());
+        while(gc != NULL)
+        {
+          if(gc->GetGroupType() == GC_TYPE_CODE)
+            gc->AutoAnswer(event.IsChecked());
+
+          if(gc == m_console->GetSelectionEnd())
+            break;
+          gc = dynamic_cast<GroupCell *>(gc->m_next);
+        }
+      }
+      m_fileSaved = false;
+      m_console->RequestRedraw();
+      return;
+      break;
     case menu_insert_previous_output:
       output = true;
     case MathCtrl::popid_insert_input:
@@ -7030,6 +7058,7 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_MENU(menu_insert_image, wxMaxima::InsertMenu)
                 EVT_MENU_RANGE(menu_pane_hideall, menu_pane_stats, wxMaxima::ShowPane)
                 EVT_MENU(menu_show_toolbar, wxMaxima::EditMenu)
+                EVT_MENU(MathCtrl::popid_auto_answer, wxMaxima::InsertMenu)
                 EVT_LISTBOX_DCLICK(history_ctrl_id, wxMaxima::HistoryDClick)
                 EVT_LIST_ITEM_ACTIVATED(structure_ctrl_id, wxMaxima::TableOfContentsSelection)
                 EVT_BUTTON(menu_stats_histogram, wxMaxima::StatsMenu)

@@ -42,6 +42,7 @@
 GroupCell::GroupCell(Configuration **config, int groupType, CellPointers *cellPointers, wxString initString) : MathCell(
         this, config)
 {
+  m_autoAnswer = false;
   m_cellPointers = cellPointers;
   m_inEvaluationQueue = false;
   m_lastInEvaluationQueue = false;
@@ -200,6 +201,7 @@ MathCell *GroupCell::Copy()
   GroupCell *tmp = new GroupCell(m_configuration, m_groupType, m_cellPointers);
   tmp->Hide(m_hide);
   CopyData(this, tmp);
+  tmp->AutoAnswer(m_autoAnswer);
   if (m_inputLabel)
     tmp->SetInput(m_inputLabel->CopyList());
   if (m_output != NULL)
@@ -225,6 +227,19 @@ wxString GroupCell::ToWXM(bool wxm)
         retval += wxT("/* [wxMaxima: input   end   ] */\n");
       else
         trailingNewline = false;
+
+      // Export the list of known answers
+      if(wxm)
+      {
+        for(std::list<wxString>::iterator it = m_knownAnswers.begin(); it != m_knownAnswers.end();++it)
+        {
+          retval += wxT("/* [wxMaxima: answer  start ] */\n");
+          retval += *it + wxT("\n");
+          retval += wxT("/* [wxMaxima: answer  end   ] */\n");
+        }
+        if (m_autoAnswer)
+          retval += wxT("/* [wxMaxima: autoanswer    ] */\n");
+      }
       break;
     case GC_TYPE_TEXT:
       if(wxm)
@@ -1371,8 +1386,23 @@ wxString GroupCell::ToXML()
   switch (m_groupType)
   {
     case GC_TYPE_CODE:
+    {
       str += wxT(" type=\"code\"");
+      int i = 0;
+      for(std::list<wxString>::iterator it = m_knownAnswers.begin(); it != m_knownAnswers.end();++it)
+      {
+        i++;
+        // In theory the attribute should be saved and read verbatim, with the exception
+        // of the characters XML wants to be quoted. In reality wxWidget's newline handling
+        // seems to be broken => escape newlines.
+        wxString answer = MathCell::XMLescape(*it);
+        answer.Replace(wxT("\n"),wxT("&#10;"));
+        str += wxString::Format(wxT(" answer%i=\""),i) + answer + wxT("\"");
+      }
+      if(m_autoAnswer)
+        str += wxT(" auto_answer=\"yes\"");
       break;
+    }
     case GC_TYPE_IMAGE:
       str += wxT(" type=\"image\"");
       break;

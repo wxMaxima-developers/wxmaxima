@@ -615,7 +615,8 @@ private:
 public:
   //! The central settings storage
   Configuration *m_configuration;
-
+  //! Is the list of known answers exhausted for the current Working Group?
+  bool m_answersExhausted;
   //! Get the currently active EditorCell
   EditorCell *GetActiveCell()
   {
@@ -814,6 +815,7 @@ public:
     popid_insert_section,
     popid_insert_subsection,
     popid_insert_subsubsection,
+    popid_auto_answer,
     menu_zoom_in,
     menu_zoom_out,
     popid_fold,

@@ -60,8 +60,10 @@
   - Bumped to version 1.4 when we started allowing to embed .jpg images in a .wxmx
     file. wxMaxima versions between 13.04 and 15.08 replace these images by a 
     "image cannot be loaded" marker but will correctly display the rest of the file.
+  - Bumped to version 1.5 when GroupCells were added an attribute that allows them to
+    be used as an answer to questions.
  */
-#define DOCUMENT_VERSION_MINOR 4
+#define DOCUMENT_VERSION_MINOR 5
 
 
 #ifndef __WXGTK__

@@ -599,6 +599,9 @@ void wxMaximaFrame::SetupMenu()
                      _("Merge the text from two input cells into one"), wxITEM_NORMAL);
   m_CellMenu->Append(MathCtrl::popid_divide_cell, _("Divide Cell\tCtrl+D"),
                      _("Divide this input cell into two cells"), wxITEM_NORMAL);
+  m_CellMenu->AppendSeparator();
+  m_CellMenu->AppendCheckItem(MathCtrl::popid_auto_answer, _("Automatically answer questions"),
+                     _(""));
 
   m_MenuBar->Append(m_CellMenu, _("Ce&ll"));
 

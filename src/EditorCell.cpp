@@ -41,6 +41,7 @@ const wxString operators = wxT("+-*/^:=#'!\";$");
 EditorCell::EditorCell(MathCell *parent, Configuration **config,
                        CellPointers *cellPointers, wxString text) : MathCell(parent, config)
 {
+  m_autoAnswer = false;
   m_cellPointers = cellPointers;
   m_oldViewportWidth = -1;
   m_oldZoomFactor = -1;
@@ -781,7 +782,17 @@ void EditorCell::SetFont()
   m_fontSize = (int) (((double) m_fontSize) * scale + 0.5);
 
   m_fontName = configuration->GetFontName(m_textStyle);
-  m_fontStyle = configuration->IsItalic(m_textStyle);
+  // Cells that save answers are displayed differently to
+  // ordinary cells in order to make transparent that this cell is special.
+  if(!m_autoAnswer)
+    m_fontStyle = configuration->IsItalic(m_textStyle);
+  else
+  {
+    if(configuration->IsItalic(m_textStyle) != wxFONTSTYLE_SLANT)
+      m_fontStyle = wxFONTSTYLE_SLANT;
+    else
+      m_fontStyle = wxFONTSTYLE_NORMAL;
+  }
   m_fontWeight = configuration->IsBold(m_textStyle);
   m_underlined = configuration->IsUnderlined(m_textStyle);
   m_fontEncoding = configuration->GetFontEncoding();
