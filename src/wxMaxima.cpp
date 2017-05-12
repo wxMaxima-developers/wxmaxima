@@ -1446,8 +1446,9 @@ void wxMaxima::ReadPrompt(wxString &data)
     {
       m_notificationMessage.SetMessage(_("Maxima asks a question!"));
       m_notificationMessage.SetFlags(wxICON_INFORMATION);
-      if(!m_notificationMessageActive)
-        m_notificationMessage.Show();
+      if(m_notificationMessageActive)
+        m_notificationMessage.Close();
+      m_notificationMessage.Show();
       m_notificationMessageActive = true;
     }
     if (!o.IsEmpty())
@@ -3234,10 +3235,12 @@ bool wxMaxima::AbortOnError()
   wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
   SetBatchMode(false);
 
-  if((!m_isActive) &&(!m_notificationMessageActive))
+  if(!m_isActive)
   {
     m_notificationMessage.SetMessage(_("Maxima has issued an error!"));
     m_notificationMessage.SetFlags(wxICON_ERROR);
+    if(m_notificationMessageActive)
+      m_notificationMessage.Close();
     m_notificationMessage.Show();
     m_notificationMessageActive = true;
   }
@@ -6194,8 +6197,9 @@ void wxMaxima::TryEvaluateNextInQueue()
     {
       m_notificationMessage.SetMessage(_("Maxima has finished calculating."));
       m_notificationMessage.SetFlags(wxICON_INFORMATION);
-      if(!m_notificationMessageActive)
-        m_notificationMessage.Show();
+      if(m_notificationMessageActive)
+        m_notificationMessage.Close();
+      m_notificationMessage.Show();
       m_notificationMessageActive = true;
     }
 
