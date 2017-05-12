@@ -6744,9 +6744,13 @@ int wxMaxima::SaveDocumentP()
 void wxMaxima::OnActivate(wxActivateEvent &event)
 {
   m_isActive = event.GetActive();
-  if(m_notificationMessageActive)
-    m_notificationMessage.Close();
-  m_notificationMessageActive = false;
+
+  if(m_isActive)
+  {
+    if(m_notificationMessageActive)
+      m_notificationMessage.Close();
+    m_notificationMessageActive = false;
+  }
 }
 
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
