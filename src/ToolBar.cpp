@@ -35,7 +35,7 @@
 wxImage ToolBar::GetImage(wxString name)
 {
   Dirstructure dirstructure;
-  wxImage img = wxImage(dirstructure.ConfigToolbarDir() + name + wxT(".png"));
+  wxImage img = wxImage(dirstructure.ConfigToolbarDir() + wxT("/") + name + wxT(".png"));
   // We want to scale the images according to the display's resolution.
   // But we want to do so in discrete steps as scaling bitmaps by odd
   // factors will add visible antialiassing to things that are clearly
@@ -108,7 +108,7 @@ ToolBar::ToolBar(wxToolBar *tbar)
 #if defined __WXMSW__
   // If there are packaging issues we want to have a detailed error message.
   Dirstructure dirstructure;
-  wxFileName test(dirstructure.ConfigToolbarDir() + wxT("gtk-new.png"));  
+  wxFileName test(dirstructure.ConfigToolbarDir()  + wxT("/") + wxT("gtk-new.png"));  
   wxASSERT_MSG(test.IsFileReadable(),_("Expected the icon files to be found at")+dirstructure.ConfigToolbarDir());
                
   m_toolBar->AddTool(tb_new, _("New"),

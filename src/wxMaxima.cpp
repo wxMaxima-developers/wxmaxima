@@ -2635,10 +2635,10 @@ void wxMaxima::ShowWxMaximaHelp()
   wxString htmldir = dirstructure.HelpDir();
 
 #if CHM == true
-  wxString helpfile = htmldir + wxT("wxmaxima.chm");
+  wxString helpfile = htmldir + wxT("/wxmaxima.chm");
   ShowCHMHelp(helpfile,wxT("%"));
 #else
-  wxString helpfile = htmldir + wxT("wxmaxima.html");
+  wxString helpfile = htmldir + wxT("/wxmaxima.html");
 #if defined (__WXMSW__)
   // Cygwin uses /c/something instead of c:/something and passes this path to the
   // web browser - which doesn't support cygwin paths => convert the path to a
@@ -2649,7 +2649,7 @@ void wxMaxima::ShowWxMaximaHelp()
     helpfile[2]=wxT(':');
   }
 #endif // __WXMSW__
-  wxLaunchDefaultBrowser(helpfile);
+  wxLaunchDefaultBrowser(wxT("file:///") + helpfile);
 #endif // CHM=false
 }
 
@@ -2671,13 +2671,13 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   else {
     Dirstructure dirstructure;
     wxString htmldir = dirstructure.HelpDir();
-    wxString wxMaximaHelpFile = htmldir + wxT("wxmaxima.hhp");
+    wxString wxMaximaHelpFile = htmldir + wxT("/wxmaxima.hhp");
     ShowHTMLHelp(MaximaHelpFile,wxMaximaHelpFile,keyword);
   }
 #else
   Dirstructure dirstructure;
   wxString htmldir = dirstructure.HelpDir();
-  wxString wxMaximaHelpFile = htmldir + wxT("wxmaxima.hhp");
+  wxString wxMaximaHelpFile = htmldir + wxT("/wxmaxima.hhp");
   ShowHTMLHelp(MaximaHelpFile, wxMaximaHelpFile, keyword);
 #endif
 

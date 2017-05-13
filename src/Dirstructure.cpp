@@ -72,20 +72,82 @@ wxString Dirstructure::ResourcesDir()
     dirs = exe.GetDirs();
   }
   
-  return exe.GetPath();
-}
+  std::cerr<<"ResourcesDir="<<exe.GetPath()<<"\n";
 
-wxString Dirstructure::Prefix()
-{
-#ifndef PREFIX
-#define PREFIX "/usr"
-#endif
-  return wxT(PREFIX);
+  return exe.GetPath();
 }
 
 wxString Dirstructure::UserConfDir()
 {
   return wxGetHomeDir() + wxT("/");
+}
+
+wxString Dirstructure::DataDir()
+{
+  wxString dir = ResourcesDir();
+  if(wxDirExists(dir + wxT("/data")))
+    dir += wxT("/data");
+  if(wxDirExists(dir + wxT("/wxMaxima")))
+    dir += wxT("/wxMaxima");
+
+  std::cerr<<"DataDir="<<dir<<"\n";
+  return dir;
+}
+
+wxString Dirstructure::HelpDir()
+{
+  wxString dir = ResourcesDir();
+  if(wxDirExists(dir + wxT("/doc/wxmaxima")))
+    dir += wxT("/doc/wxmaxima");
+
+  if(wxDirExists(dir + wxT("/help")))
+    dir += wxT("/help");
+
+  std::cerr<<"HelpDir="<<dir<<"\n";
+  return dir;
+}
+
+wxString Dirstructure::ArtDir()
+{
+  wxString dir = ResourcesDir();
+  if(wxDirExists(dir + wxT("/wxMaxima")))
+    dir += wxT("/wxMaxima");
+
+  if(wxDirExists(dir + wxT("/art")))
+    dir += wxT("/art");
+
+  std::cerr<<"ArtDir="<<dir<<"\n";
+  return dir;
+}
+
+wxString Dirstructure::ConfigArtDir()
+{
+  wxString dir = ArtDir();
+  if(wxDirExists(dir + wxT("/config")))
+    dir += wxT("/config");
+
+  std::cerr<<"ConfigArtDir="<<dir<<"\n";
+  return dir;
+}
+
+wxString Dirstructure::ConfigToolbarDir()
+{
+  wxString dir = ArtDir();
+  if(wxDirExists(dir + wxT("/toolbar")))
+    dir += wxT("/toolbar");
+
+  std::cerr<<"ToolbarArtDir="<<dir<<"\n";
+  return dir;
+}
+
+wxString Dirstructure::ConfigStatusbarDir()
+{
+  wxString dir = ArtDir();
+  if(wxDirExists(dir + wxT("/statusbar")))
+    dir += wxT("/statusbar");
+
+  std::cerr<<"StatusbarArtDir="<<dir<<"\n";
+  return dir;
 }
 
 wxString Dirstructure::MaximaDefaultLocation()

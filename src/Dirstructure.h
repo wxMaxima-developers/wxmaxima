@@ -53,26 +53,10 @@ private:
 
 public:
   //! The directory general data is stored in
-#if defined __WXMSW__
-  wxString DataDir() {return ResourcesDir()+wxT("data/");}
-#else
-
-  wxString DataDir()
-  { return ResourcesDir(); }
-
-#endif
+  wxString DataDir();
 
   //! The directory the help file is stored in
-#if defined __WXMAC__
-
-  wxString HelpDir()
-  { return ResourcesDir() + wxT("help/"); }
-
-#elif defined __WXMSW__
-  wxString HelpDir() {return ResourcesDir()+wxT("help/");}
-#else
-  wxString HelpDir() {return Prefix()+wxT("/share/doc/wxmaxima/");}
-#endif
+  wxString HelpDir();
 
   /*! The file private accellerator key information is stored in
 
@@ -89,56 +73,19 @@ public:
 
   //! The path to wxMaxima's own AutoComplete file
   wxString AutocompleteFile()
-  { return DataDir() + wxT("autocomplete.txt"); }
+  { return DataDir() + wxT("/autocomplete.txt"); }
 
   //! The directory art is stored relative to
-#if defined __WXMAC__
+  wxString ArtDir();
 
-  wxString ArtDir()
-  { return ResourcesDir(); }
+  //! The directory art for the config dialogue is stored relative to
+  wxString ConfigArtDir();
 
-#elif defined __WXMSW__
-  wxString ArtDir() {return ResourcesDir()+wxT("art/");}
-#else
-  wxString ArtDir() {return ResourcesDir();}
-#endif
-
-
-  //! The directory config art is stored relative to
-#if defined __WXMAC__
-
-  wxString ConfigArtDir()
-  { return ArtDir() + wxT("config/"); }
-
-#elif defined __WXMSW__
-  wxString ConfigArtDir() {return ArtDir()+wxT("config/");}
-#else
-  wxString ConfigArtDir() {return ResourcesDir();}
-#endif
-
-  //! The directory config art is stored relative to
-#if defined __WXMAC__
-
-  wxString ConfigToolbarDir()
-  { return ArtDir() + wxT("toolbar/"); }
-
-#elif defined __WXMSW__
-  wxString ConfigToolbarDir() {return ArtDir()+wxT("toolbar/");}
-#else
-  wxString ConfigToolbarDir() {return ResourcesDir();}
-#endif
-
-  //! The directory config art is stored relative to
-#if defined __WXMAC__
-
-  wxString ConfigStatusbarDir()
-  { return ArtDir() + wxT("statusbar/"); }
-
-#elif defined __WXMSW__
-  wxString ConfigStatusbarDir() {return ArtDir()+wxT("statusbar/");}
-#else
-  wxString ConfigStatusbarDir() {return ResourcesDir();}
-#endif
+  //! The directory art for the toolbar is stored relative to
+  wxString ConfigToolbarDir();
+  
+  //! The directory art for the status bar is stored relative to
+  wxString ConfigStatusbarDir();
 
   /*! The directory the locale data is to be found in
 

@@ -136,7 +136,7 @@ wxBitmap StatusBar::GetImage(wxString name)
 #if defined (__WXMSW__) || defined (__WXMAC__)
 {
   Dirstructure dirstructure;
-  wxImage img = wxImage(dirstructure.ConfigStatusbarDir() + name + wxT(".png"));
+  wxImage img = wxImage(dirstructure.ConfigStatusbarDir() + wxT("/") + name + wxT(".png"));
   wxRect rect;
 
   GetFieldRect(2, rect);
