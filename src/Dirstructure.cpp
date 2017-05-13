@@ -34,24 +34,45 @@
 
 wxString Dirstructure::ResourcesDir()
 {
-#if defined __WXMSW__
-  wxString exe = wxStandardPaths::Get().GetExecutablePath();
-  int lastSlash = exe.rfind(wxT('/'));
-  int lastBackslash = exe.rfind(wxT('\\'));
-  if (lastSlash < lastBackslash)
-    exe = exe.Left(lastBackslash + 1);
-  else
-    exe = exe.Left(lastSlash + 1);
-  if (exe.EndsWith("src/") || exe.EndsWith("src\\"))
-    exe = exe.Left(exe.Len() - 4);
-  return exe;
-#elif defined __WXMAC__
-  wxString exe = wxStandardPaths::Get().GetExecutablePath();
-  exe.Replace(wxT("MacOS/wxmaxima"), wxT("Resources/"));
-  return exe;
-#else
-  return Prefix()+wxT("/share/wxMaxima/");
-#endif
+  // Our ressources dir is somewhere near to the dir the binary can be found.
+  wxFileName exe(wxStandardPaths::Get().GetExecutablePath());
+  
+  // We only need the drive and the directory part of the path to the binary
+  exe.ClearExt();
+  exe.SetName(wxEmptyString);
+  
+  // If the binary is in a source or bin folder the resources dir is one level above
+  wxArrayString dirs = exe.GetDirs();
+  if((dirs.Last().Upper() == wxT("SRC")) || (dirs.Last().Upper() == wxT("BIN")))
+  {
+    exe.RemoveLastDir();
+    dirs = exe.GetDirs();
+  }
+  
+  // If the binary is in the wxMaxima folder the resources dir is two levels above as we
+  // are in MacOS/wxmaxima
+  if((dirs.Last().Upper() == wxT("WXMAXIMA")) && (dirs[dirs.GetCount()-1].Upper() == wxT("MACOS")))
+  {
+    exe.RemoveLastDir();
+    exe.RemoveLastDir();
+    dirs = exe.GetDirs();
+  }
+  
+  // If there is a Resources folder the ressources are there
+  if(wxDirExists(exe.GetPath() + wxT("/Resources")))
+  {
+    exe.SetPath(exe.GetPath() + wxT("/Resources"));
+    dirs = exe.GetDirs();
+  }
+  
+  // If there is a share folder the ressources are there
+  if(wxDirExists(exe.GetPath() + wxT("/share")))
+  {
+    exe.SetPath(exe.GetPath() + wxT("/share"));
+    dirs = exe.GetDirs();
+  }
+  
+  return exe.GetPath();
 }
 
 wxString Dirstructure::Prefix()
@@ -60,40 +81,6 @@ wxString Dirstructure::Prefix()
 #define PREFIX "/usr"
 #endif
   return wxT(PREFIX);
-}
-
-wxString Dirstructure::GetwxMaximaLocation()
-{
-#if defined __WXMAC__
-  wxString applicationPath = wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPathWithSep();
-
-  if (applicationPath.EndsWith(wxT("/Contents/MacOS/")))
-  {
-    wxString bundle_nonAbsolute;
-    wxFileName bundle(applicationPath + wxT("../../"));
-    bundle.MakeAbsolute();
-    if (bundle.GetFullPath().EndsWith(wxT(".app")))
-      return bundle.GetFullPath();
-  }
-
-
-  if (wxFileExists(applicationPath))
-  {
-    wxFileName applicationPathName = wxFileName(applicationPath);
-    applicationPathName.MakeAbsolute();
-    return applicationPathName.GetFullPath();
-  }
-
-  if (wxFileExists("/Applications/wxMaxima.app"))
-    return wxT("/Applications/wxMaxima.app");
-  if (wxFileExists("/Applications/wxmaxima.app"))
-    return wxT("/Applications/wxmaxima.app");
-  return (wxT("wxmaxima"));
-#else
-
-  return wxStandardPaths::Get().GetExecutablePath();
-#endif
-
 }
 
 wxString Dirstructure::UserConfDir()
