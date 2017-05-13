@@ -367,30 +367,27 @@ void wxMaximaFrame::do_layout()
                             Fixed().
                             Left());
 
+  m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).
+            MinSize(greekPane->GetEffectiveMinSize()).
+            BestSize(greekPane->GetEffectiveMinSize()).
+            Show(true).
+            MaxSize(greekPane->GetEffectiveMinSize());
+  
+  m_manager.GetPane(wxT("symbols")) = m_manager.GetPane(wxT("symbols")).
+            MinSize(symbolsPane->GetEffectiveMinSize()).
+            BestSize(symbolsPane->GetEffectiveMinSize()).
+            Show(true).
+            MaxSize(symbolsPane->GetEffectiveMinSize());
+
+  
   wxConfigBase *config = wxConfig::Get();
   bool loadPanes = true;
   wxString perspective;
   config->Read(wxT("AUI/savePanes"), &loadPanes);
   config->Read(wxT("AUI/perspective"), &perspective);
 
-  if (loadPanes && !perspective.IsEmpty())
-  {
-    m_manager.LoadPerspective(perspective);
-    m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).
-            MinSize(greekPane->GetEffectiveMinSize()).
-            BestSize(greekPane->GetEffectiveMinSize()).
-            Show(true).
-            MaxSize(greekPane->GetEffectiveMinSize());
-
-    m_manager.GetPane(wxT("symbols")) = m_manager.GetPane(wxT("symbols")).
-            MinSize(symbolsPane->GetEffectiveMinSize()).
-            BestSize(symbolsPane->GetEffectiveMinSize()).
-            Show(true).
-            MaxSize(symbolsPane->GetEffectiveMinSize());
-
-  }
-  else
-    m_manager.Update();
+  m_manager.LoadPerspective(perspective);
+  m_manager.Update();
 
   bool toolbar = true;
   config->Read(wxT("AUI/toolbar"), &toolbar);
