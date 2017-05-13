@@ -27,8 +27,13 @@ add_subdirectory(data)
 add_subdirectory(info)
 add_subdirectory(art)
 
-install(FILES COPYING README README.md DESTINATION share/wxMaxima)
-install(FILES test/testbench_simple.wxmx DESTINATION share/wxMaxima)
+if(WIN32)
+    install(FILES COPYING README README.md DESTINATION wxMaxima/doc)
+    install(FILES test/testbench_simple.wxmx DESTINATION wxMaxima/data)
+else()
+    install(FILES COPYING README README.md DESTINATION share/wxMaxima)
+    install(FILES test/testbench_simple.wxmx DESTINATION share/wxMaxima)
+endif()
 
 # Build Packages
 set(CPACK_GENERATOR "TGZ;TBZ2;DEB;RPM")

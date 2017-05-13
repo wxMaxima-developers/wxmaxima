@@ -15,10 +15,6 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
-    set_target_properties(wxmaxima PROPERTIES
-              RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima
-              RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima)
-    add_dependencies(wxmaxima wxMaxima.win)
 elseif(APPLE)
     add_executable(wxmaxima ${SOURCE_FILES})
     set_target_properties(wxmaxima PROPERTIES
@@ -33,10 +29,14 @@ target_link_libraries(wxmaxima ${wxWidgets_CXX_FLAGS} ${wxWidgets_LIBRARIES})
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Setup.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Setup.h)
 
-install(TARGETS wxmaxima RUNTIME DESTINATION bin)
+if(WIN32)
+    install(TARGETS wxmaxima RUNTIME DESTINATION wxMaxima)
+else()
+    install(TARGETS wxmaxima RUNTIME DESTINATION bin)
+endif()
 
-# OSX and Windows binary folders
-if(APPLE OR WIN32)
+# OSX binary folders
+if(APPLE)
     # DEFINE FILES
     file(GLOB RESOURCES_FILES
             ${CMAKE_BINARY_DIR}/data/wxmathml.lisp
@@ -123,52 +123,6 @@ if(APPLE OR WIN32)
         foreach(f ${FONT_FILES})
             add_custom_command(TARGET wxMaxima.app
                     COMMAND ${CMAKE_COMMAND} -E copy ${f} ${APP_FONTS_DIR})
-        endforeach()
-    endif()
-
-    if(WIN32)
-        # DEFINE DIRECTORIES
-        set(APP_DIR ${CMAKE_BINARY_DIR}/wxMaxima)
-        set(APP_DATA_DIR ${APP_DIR}/data)
-        set(APP_HELP_DIR ${APP_DIR}/help)
-        set(APP_ART_DIR ${APP_DIR}/art)
-        # CUSTOM TARGET
-        add_custom_target(wxMaxima.win)
-        add_custom_command(TARGET wxMaxima.win PRE_BUILD
-                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_DIR})
-        add_custom_command(TARGET wxMaxima.win PRE_BUILD
-                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_DATA_DIR})
-        add_custom_command(TARGET wxMaxima.win PRE_BUILD
-                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_HELP_DIR})
-        add_custom_command(TARGET wxMaxima.win PRE_BUILD
-                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_ART_DIR}/toolbar)
-        add_custom_command(TARGET wxMaxima.win PRE_BUILD
-                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_ART_DIR}/statusbar)
-        add_custom_command(TARGET wxMaxima.win PRE_BUILD
-                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_ART_DIR}/config)
-        foreach(f ${RESOURCE_FILES})
-            add_custom_command(TARGET wxMaxima.win
-                COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_DATA_DIR})
-        endforeach()
-        foreach(f ${STATUSBAR_FILES})
-            add_custom_command(TARGET wxMaxima.win
-                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_ART_DIR}/statusbar)
-        endforeach()
-        foreach(f ${TOOLBAR_FILES})
-            add_custom_command(TARGET wxMaxima.win
-                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_ART_DIR}/toolbar)
-        endforeach()
-        foreach(f ${CONFIG_FILES})
-            add_custom_command(TARGET wxMaxima.win
-                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_ART_DIR}/config)
-        endforeach()
-        foreach(f ${RESOURCES_FILES})
-            add_custom_command(TARGET wxMaxima.win
-                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_DATA_DIR})
-        endforeach()
-        foreach(f ${HELP_FILES})
-            add_custom_command(TARGET wxMaxima.win
-                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_HELP_DIR})
         endforeach()
     endif()
 endif()
