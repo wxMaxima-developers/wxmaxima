@@ -34,24 +34,52 @@
 
 wxString Dirstructure::ResourcesDir()
 {
-#if defined __WXMSW__
-  wxString exe = wxStandardPaths::Get().GetExecutablePath();
-  int lastSlash = exe.rfind(wxT('/'));
-  int lastBackslash = exe.rfind(wxT('\\'));
-  if (lastSlash < lastBackslash)
-    exe = exe.Left(lastBackslash + 1);
-  else
-    exe = exe.Left(lastSlash + 1);
-  if (exe.EndsWith("src/") || exe.EndsWith("src\\"))
-    exe = exe.Left(exe.Len() - 4);
-  return exe;
-#elif defined __WXMAC__
-  wxString exe = wxStandardPaths::Get().GetExecutablePath();
-  exe.Replace(wxT("MacOS/wxmaxima"), wxT("Resources/"));
-  return exe;
-#else
-  return Prefix()+wxT("/share/wxMaxima/");
-#endif
+  // Our ressources dir is somewhere near to the dir the binary can be found.
+  wxFileName exe(wxStandardPaths::Get().GetExecutablePath());
+  
+  // We only need the drive and the directory part of the path to the binary
+  exe.ClearExt();
+  exe.SetName(wxEmptyString);
+  
+  // If the binary is in a source or bin folder the resources dir is one level above
+  wxArrayString dirs = exe.GetDirs();
+  if((dirs.Last().Upper() == wxT("SRC")) || (dirs.Last().Upper() == wxT("BIN")))
+  {
+    exe.RemoveLastDir();
+    dirs = exe.GetDirs();
+  }
+  
+  // If the binary is in the wxMaxima folder the resources dir is two levels above as we
+  // are in MacOS/wxmaxima
+  if((dirs.Last().Upper() == wxT("WXMAXIMA")) && (dirs[dirs.GetCount()-1].Upper() == wxT("MACOS")))
+  {
+    exe.RemoveLastDir();
+    exe.RemoveLastDir();
+    dirs = exe.GetDirs();
+  }
+  
+  // If there is a Resources folder the ressources are there
+  if(wxDirExists(exe.GetPath() + wxT("/Resources")))
+  {
+    exe.SetPath(exe.GetPath() + wxT("/Resources"));
+    dirs = exe.GetDirs();
+  }
+  
+  // If there is a share folder the ressources are there
+  if(wxDirExists(exe.GetPath() + wxT("/share")))
+  {
+    exe.SetPath(exe.GetPath() + wxT("/share"));
+    dirs = exe.GetDirs();
+  }
+  
+  // If there is a data folder the ressources are there
+  if(wxDirExists(exe.GetPath() + wxT("/data")))
+  {
+    exe.SetPath(exe.GetPath() + wxT("/data"));
+    dirs = exe.GetDirs();
+  }
+
+  return exe.GetPath();
 }
 
 wxString Dirstructure::Prefix()
