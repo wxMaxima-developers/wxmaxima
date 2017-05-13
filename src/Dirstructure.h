@@ -147,9 +147,6 @@ public:
   wxString LocaleDir()
   { return ResourcesDir() + wxT("/locale"); }
 
-  //! The location of the wxMaxima binary
-  static wxString GetwxMaximaLocation();
-
   //! The path we pass to the operating system if we want it to locate maxima instead
   static wxString MaximaDefaultLocation();
 

@@ -72,13 +72,6 @@ wxString Dirstructure::ResourcesDir()
     dirs = exe.GetDirs();
   }
   
-  // If there is a data folder the ressources are there
-  if(wxDirExists(exe.GetPath() + wxT("/data")))
-  {
-    exe.SetPath(exe.GetPath() + wxT("/data"));
-    dirs = exe.GetDirs();
-  }
-
   return exe.GetPath();
 }
 
@@ -88,40 +81,6 @@ wxString Dirstructure::Prefix()
 #define PREFIX "/usr"
 #endif
   return wxT(PREFIX);
-}
-
-wxString Dirstructure::GetwxMaximaLocation()
-{
-#if defined __WXMAC__
-  wxString applicationPath = wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPathWithSep();
-
-  if (applicationPath.EndsWith(wxT("/Contents/MacOS/")))
-  {
-    wxString bundle_nonAbsolute;
-    wxFileName bundle(applicationPath + wxT("../../"));
-    bundle.MakeAbsolute();
-    if (bundle.GetFullPath().EndsWith(wxT(".app")))
-      return bundle.GetFullPath();
-  }
-
-
-  if (wxFileExists(applicationPath))
-  {
-    wxFileName applicationPathName = wxFileName(applicationPath);
-    applicationPathName.MakeAbsolute();
-    return applicationPathName.GetFullPath();
-  }
-
-  if (wxFileExists("/Applications/wxMaxima.app"))
-    return wxT("/Applications/wxMaxima.app");
-  if (wxFileExists("/Applications/wxmaxima.app"))
-    return wxT("/Applications/wxmaxima.app");
-  return (wxT("wxmaxima"));
-#else
-
-  return wxStandardPaths::Get().GetExecutablePath();
-#endif
-
 }
 
 wxString Dirstructure::UserConfDir()
