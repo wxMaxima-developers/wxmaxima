@@ -72,8 +72,6 @@ wxString Dirstructure::ResourcesDir()
     dirs = exe.GetDirs();
   }
   
-  std::cerr<<"ResourcesDir="<<exe.GetPath()<<"\n";
-
   return exe.GetPath();
 }
 
@@ -90,7 +88,6 @@ wxString Dirstructure::DataDir()
   if(wxDirExists(dir + wxT("/wxMaxima")))
     dir += wxT("/wxMaxima");
 
-  std::cerr<<"DataDir="<<dir<<"\n";
   return dir;
 }
 
@@ -106,7 +103,6 @@ wxString Dirstructure::HelpDir()
     if(wxDirExists(dir + wxT("/info")))
     dir += wxT("/info");
 
-  std::cerr<<"HelpDir="<<dir<<"\n";
   return dir;
 }
 
@@ -119,7 +115,6 @@ wxString Dirstructure::ArtDir()
   if(wxDirExists(dir + wxT("/art")))
     dir += wxT("/art");
 
-  std::cerr<<"ArtDir="<<dir<<"\n";
   return dir;
 }
 
@@ -129,7 +124,6 @@ wxString Dirstructure::ConfigArtDir()
   if(wxDirExists(dir + wxT("/config")))
     dir += wxT("/config");
 
-  std::cerr<<"ConfigArtDir="<<dir<<"\n";
   return dir;
 }
 
@@ -139,7 +133,6 @@ wxString Dirstructure::ConfigToolbarDir()
   if(wxDirExists(dir + wxT("/toolbar")))
     dir += wxT("/toolbar");
 
-  std::cerr<<"ToolbarArtDir="<<dir<<"\n";
   return dir;
 }
 
@@ -149,7 +142,6 @@ wxString Dirstructure::ConfigStatusbarDir()
   if(wxDirExists(dir + wxT("/statusbar")))
     dir += wxT("/statusbar");
 
-  std::cerr<<"StatusbarArtDir="<<dir<<"\n";
   return dir;
 }
 
