@@ -386,7 +386,10 @@ void wxMaximaFrame::do_layout()
   config->Read(wxT("AUI/savePanes"), &loadPanes);
   config->Read(wxT("AUI/perspective"), &perspective);
 
-  m_manager.LoadPerspective(perspective);
+  // Loads the window states. We tell wxaui not to recalculate and display the
+  // results of this step now as we will do so manually after
+  // eventually adding the toolbar.
+  m_manager.LoadPerspective(perspective,false);
 
   bool toolbar = true;
   config->Read(wxT("AUI/toolbar"), &toolbar);
