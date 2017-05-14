@@ -387,11 +387,12 @@ void wxMaximaFrame::do_layout()
   config->Read(wxT("AUI/perspective"), &perspective);
 
   m_manager.LoadPerspective(perspective);
-  m_manager.Update();
 
   bool toolbar = true;
   config->Read(wxT("AUI/toolbar"), &toolbar);
   ShowToolBar(toolbar);
+  
+  m_manager.Update();
 }
 
 void wxMaximaFrame::SetupMenu()
