@@ -1087,12 +1087,6 @@ wxString GroupCell::ToString()
         else
         {
           str += wxT("\n");
-          if (
-                  (tmp->m_nextToDraw != NULL) &&
-                  (tmp->GetStyle() != TS_LABEL) &&
-                  (tmp->GetStyle() != TS_USERLABEL)
-                  )
-            str += wxT("\t");
         }
       }
       str += tmp->ToString();

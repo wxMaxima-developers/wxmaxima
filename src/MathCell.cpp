@@ -467,8 +467,24 @@ wxString MathCell::ListToString()
   while (tmp != NULL)
   {
     if ((!firstline) && (tmp->m_forceBreakLine))
-      retval += wxT("\n");
-
+    {
+      if(!retval.EndsWith(wxT('\n')))
+        retval += wxT("\n");
+      // if(
+      //    (tmp->GetStyle() != TS_LABEL) &&
+      //    (tmp->GetStyle() != TS_USERLABEL) &&
+      //    (tmp->GetStyle() != TS_MAIN_PROMPT) &&
+      //    (tmp->GetStyle() != TS_OTHER_PROMPT))
+      //   retval += wxT("\t");        
+    }
+    // if(firstline)
+    // {
+    //   if((tmp->GetStyle() != TS_LABEL) &&
+    //      (tmp->GetStyle() != TS_USERLABEL) &&
+    //      (tmp->GetStyle() != TS_MAIN_PROMPT) &&
+    //      (tmp->GetStyle() != TS_OTHER_PROMPT))
+    //     retval += wxT("\t");        
+    // }
     retval += tmp->ToString();
     
     firstline = false;

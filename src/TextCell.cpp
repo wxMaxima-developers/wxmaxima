@@ -480,12 +480,11 @@ wxString TextCell::ToString()
     case TS_USERLABEL:
     case TS_MAIN_PROMPT:
     case TS_OTHER_PROMPT:
-      if (m_next != NULL)
       {
         text.Trim();
         text += wxT("\t");
+        break;
       }
-      break;
   }
 
   return text;
