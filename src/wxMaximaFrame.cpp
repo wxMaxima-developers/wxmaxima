@@ -394,7 +394,10 @@ void wxMaximaFrame::do_layout()
   // eventually adding the toolbar.
   if(perspective == wxEmptyString)
     m_manager.LoadPerspective(perspective,false);
-
+  
+  if(!m_manager.GetPane(wxT("console")).IsShown())
+    m_manager.GetPane(wxT("console")).Show(true);
+  
   bool toolbar = true;
   config->Read(wxT("AUI/toolbar"), &toolbar);
   ShowToolBar(toolbar);
