@@ -262,6 +262,7 @@ void wxMaximaFrame::do_layout()
                             Center().
                             CloseButton(false).
                             CaptionVisible(false).
+                            MinSize(wxSize(100,100)).
                             PaneBorder(false));
 
   m_manager.AddPane(m_history,
