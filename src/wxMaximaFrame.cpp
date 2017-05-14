@@ -83,6 +83,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   wxAcceleratorTable accel(11, entries);
   SetAcceleratorTable(accel);
 
+  Move(pos);
+  SetSize(size);
+
   set_properties();
   do_layout();
 }
@@ -389,7 +392,7 @@ void wxMaximaFrame::do_layout()
   // Loads the window states. We tell wxaui not to recalculate and display the
   // results of this step now as we will do so manually after
   // eventually adding the toolbar.
-  if(perspective = wxEmptyString)
+  if(perspective == wxEmptyString)
     m_manager.LoadPerspective(perspective,false);
 
   bool toolbar = true;

@@ -320,8 +320,6 @@ void MyApp::NewWindow(wxString file, bool batchmode)
   m_frame = new wxMaxima((wxFrame *) NULL, -1, _("wxMaxima"),
                          wxPoint(x, y), wxSize(w, h));
 
-  m_frame->Move(wxPoint(x, y));
-  m_frame->SetSize(wxSize(w, h));
   if (m == 1)
     m_frame->Maximize(true);
 
