@@ -115,6 +115,7 @@ wxString History::GetCommand(bool next)
     --m_current;
     if (m_current < 0)
       m_current = commands.GetCount() - 1;
+    m_history->SetSelection(m_current);
     return commands[m_current];
   }
   else
@@ -122,6 +123,7 @@ wxString History::GetCommand(bool next)
     ++m_current;
     if (m_current >= (long) commands.GetCount())
       m_current = 0;
+    m_history->SetSelection(m_current);
     return commands[m_current];
   }
 }
