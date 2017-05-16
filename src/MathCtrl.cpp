@@ -729,6 +729,7 @@ void MathCtrl::ClearDocument()
   m_blinkDisplayCaret = true;
   AnimationRunning(false);
   m_saved = false;
+  UpdateTableOfContents();
 
   Recalculate();
   Scroll(0, 0);
@@ -6135,7 +6136,10 @@ void MathCtrl::Undo()
   else
   {
     if (CanTreeUndo())
+    {
       TreeUndo();
+      UpdateTableOfContents();
+    }
   }
 }
 
@@ -6203,6 +6207,7 @@ void MathCtrl::Redo()
     if (CanTreeRedo())
     {
       TreeRedo();
+      UpdateTableOfContents();      
     }
   }
 }

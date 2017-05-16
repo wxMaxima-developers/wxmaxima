@@ -1830,7 +1830,10 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
     document->SetSaved(true);
   }
   else
+  {
     ResetTitle(false);
+    m_console->UpdateTableOfContents();
+  }
 
   document->Thaw();
   document->RequestRedraw(); // redraw document outside Freeze-Thaw
@@ -5618,60 +5621,71 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       break;
     }
     case TableOfContents::popid_Fold:
-    {
       if (m_console->m_tableOfContents != NULL)
       {
-        if (m_console->m_tableOfContents->RightClickedOn())
+        // We only update the table of contents when there is time => no guarantee that the
+        // cell that was clicked at actually still is part of the tree.
+        if (m_console->GetTree()->Contains(m_console->m_tableOfContents->RightClickedOn()))
+        {
           m_console->m_tableOfContents->RightClickedOn()->Fold();
+          m_console->Recalculate();
+          m_console->RequestRedraw();
+          m_console->UpdateTableOfContents();
+        }
       }
-      m_console->Recalculate();
-      m_console->RequestRedraw();
-      m_console->UpdateTableOfContents();
       break;
-    }
     case TableOfContents::popid_Unfold:
-    {
       if (m_console->m_tableOfContents != NULL)
       {
-        if (m_console->m_tableOfContents->RightClickedOn())
+        // We only update the table of contents when there is time => no guarantee that the
+        // cell that was clicked at actually still is part of the tree.
+        if (m_console->GetTree()->Contains(m_console->m_tableOfContents->RightClickedOn()))
+        {
           m_console->m_tableOfContents->RightClickedOn()->Unfold();
+          m_console->Recalculate();
+          m_console->RequestRedraw();
+          m_console->UpdateTableOfContents();
+        }
       }
-      m_console->Recalculate();
-      m_console->RequestRedraw();
-      m_console->UpdateTableOfContents();
       break;
-    }
     case TableOfContents::popid_SelectTocChapter:
       if (m_console->m_tableOfContents != NULL)
       {
         if (m_console->m_tableOfContents->RightClickedOn())
         {
           GroupCell *SelectionStart = m_console->m_tableOfContents->RightClickedOn();
-          GroupCell *SelectionEnd = SelectionStart;
-          while (
-                  (SelectionEnd->m_next != NULL)
-                  && (dynamic_cast<GroupCell *>(SelectionEnd->m_next)->IsLesserGCType(SelectionStart->GetGroupType()))
-                  )
-            SelectionEnd = dynamic_cast<GroupCell *>(SelectionEnd->m_next);
-          m_console->SetActiveCell(NULL);
-          m_console->SetHCaret(SelectionEnd);
-          m_console->SetSelection(SelectionStart, SelectionEnd);
-          m_console->RequestRedraw();
+          // We only update the table of contents when there is time => no guarantee that the
+          // cell that was clicked at actually still is part of the tree.
+          if(m_console->GetTree()->Contains(SelectionStart))
+          {
+            GroupCell *SelectionEnd = SelectionStart;
+            while (
+              (SelectionEnd->m_next != NULL)
+              && (dynamic_cast<GroupCell *>(SelectionEnd->m_next)->IsLesserGCType(SelectionStart->GetGroupType()))
+              )
+              SelectionEnd = dynamic_cast<GroupCell *>(SelectionEnd->m_next);
+            m_console->SetActiveCell(NULL);
+            m_console->SetHCaret(SelectionEnd);
+            m_console->SetSelection(SelectionStart, SelectionEnd);
+            m_console->RequestRedraw();
+          }
         }
       }
       break;
     case TableOfContents::popid_EvalTocChapter:
-      if (m_console->m_tableOfContents != NULL)
+    {
+      GroupCell *SelectionStart = m_console->m_tableOfContents->RightClickedOn();
+      // We only update the table of contents when there is time => no guarantee that the
+      // cell that was clicked at actually still is part of the tree.
+      if (m_console->GetTree()->Contains(SelectionStart))
       {
-        if (m_console->m_tableOfContents->RightClickedOn())
-        {
-          bool evaluating = !m_console->m_evaluationQueue.Empty();
-          m_console->AddSectionToEvaluationQueue(m_console->m_tableOfContents->RightClickedOn());
-          if (!evaluating)
-            TryEvaluateNextInQueue();
-        }
+        bool evaluating = !m_console->m_evaluationQueue.Empty();
+        m_console->AddSectionToEvaluationQueue(m_console->m_tableOfContents->RightClickedOn());
+        if (!evaluating)
+          TryEvaluateNextInQueue();
       }
       break;
+    }
     case MathCtrl::popid_evaluate_section:
     {
       bool evaluating = !m_console->m_evaluationQueue.Empty();
@@ -6608,10 +6622,15 @@ void wxMaxima::HistoryDClick(wxCommandEvent &ev)
 void wxMaxima::TableOfContentsSelection(wxListEvent &ev)
 {
   GroupCell *selection = dynamic_cast<GroupCell *>(m_console->m_tableOfContents->GetCell(ev.GetIndex())->GetParent());
-  if (selection)
+  
+  // We only update the table of contents when there is time => no guarantee that the
+  // cell that was clicked at actually still is part of the tree.
+  if (m_console->GetTree()->Contains(selection))
+  {
     m_console->SetHCaret(selection);
-  m_console->ScrollToCaret();
-  m_console->SetFocus();
+    m_console->ScrollToCaret();
+    m_console->SetFocus();
+  }
 }
 
 void wxMaxima::OnFollow(wxCommandEvent &event)
