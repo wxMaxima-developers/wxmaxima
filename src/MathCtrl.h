@@ -613,6 +613,10 @@ private:
 
 
 public:
+  //! A error notification message
+  wxNotificationMessage m_notificationMessage;
+  //! A error notification message
+  bool m_notificationMessageActive;
   //! The central settings storage
   Configuration *m_configuration;
   //! Is the list of known answers exhausted for the current Working Group?

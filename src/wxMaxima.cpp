@@ -123,9 +123,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
                    const wxPoint pos, const wxSize size) :
         wxMaximaFrame(parent, id, title, pos, size)
 {
-  m_notificationMessage.SetParent(this);
-  m_notificationMessage.SetTitle(_("wxMaxima"));
-  m_notificationMessageActive = false;
+  m_console->m_notificationMessage.SetParent(this);
+  m_console->m_notificationMessage.SetTitle(_("wxMaxima"));
+  m_console->m_notificationMessageActive = false;
   m_isActive = true;
   m_outputPromptRegEx.Compile(wxT("<lbl>.*</lbl>"));
   wxConfig *config = (wxConfig *) wxConfig::Get();
@@ -1444,12 +1444,12 @@ void wxMaxima::ReadPrompt(wxString &data)
     m_outputCellsFromCurrentCommand = 0;
     if(!m_isActive)
     {
-      m_notificationMessage.SetMessage(_("Maxima asks a question!"));
-      m_notificationMessage.SetFlags(wxICON_INFORMATION);
-      if(m_notificationMessageActive)
-        m_notificationMessage.Close();
-      m_notificationMessage.Show();
-      m_notificationMessageActive = true;
+      m_console->m_notificationMessage.SetMessage(_("Maxima asks a question!"));
+      m_console->m_notificationMessage.SetFlags(wxICON_INFORMATION);
+      if(m_console->m_notificationMessageActive)
+        m_console->m_notificationMessage.Close();
+      m_console->m_notificationMessage.Show();
+      m_console->m_notificationMessageActive = true;
     }
     if (!o.IsEmpty())
     {
@@ -3240,17 +3240,17 @@ bool wxMaxima::AbortOnError()
 
   if(!m_isActive)
   {
-    m_notificationMessage.SetMessage(_("Maxima has issued an error!"));
-    m_notificationMessage.SetFlags(wxICON_ERROR);
-    if(m_notificationMessageActive)
-      m_notificationMessage.Close();
-    m_notificationMessage.Show();
-    m_notificationMessageActive = true;
+    m_console->m_notificationMessage.SetMessage(_("Maxima has issued an error!"));
+    m_console->m_notificationMessage.SetFlags(wxICON_ERROR);
+    if(m_console->m_notificationMessageActive)
+      m_console->m_notificationMessage.Close();
+    m_console->m_notificationMessage.Show();
+    m_console->m_notificationMessageActive = true;
   }
   
   #if wxUSE_NOTIFICATION_MESSAGE
-  // if(m_notificationMessage)
-  //   m_notificationMessage -> Connect(wxEVT_NOTIFICATION_MESSAGE_DISMISSED,
+  // if(m_console->m_notificationMessage)
+  //   m_console->m_notificationMessage -> Connect(wxEVT_NOTIFICATION_MESSAGE_DISMISSED,
   //                                    wxCommandEventHandler(wxMaximaFrame::OnNotificationClose),
   //                                    NULL, this);
   #endif
@@ -6209,12 +6209,12 @@ void wxMaxima::TryEvaluateNextInQueue()
     // has finished working.
     if((!m_isActive) && (m_console->m_configuration->NotifyIfIdle()))
     {
-      m_notificationMessage.SetMessage(_("Maxima has finished calculating."));
-      m_notificationMessage.SetFlags(wxICON_INFORMATION);
-      if(m_notificationMessageActive)
-        m_notificationMessage.Close();
-      m_notificationMessage.Show();
-      m_notificationMessageActive = true;
+      m_console->m_notificationMessage.SetMessage(_("Maxima has finished calculating."));
+      m_console->m_notificationMessage.SetFlags(wxICON_INFORMATION);
+      if(m_console->m_notificationMessageActive)
+        m_console->m_notificationMessage.Close();
+      m_console->m_notificationMessage.Show();
+      m_console->m_notificationMessageActive = true;
     }
 
     return; //empty queue
@@ -6766,14 +6766,16 @@ int wxMaxima::SaveDocumentP()
 
 void wxMaxima::OnActivate(wxActivateEvent &event)
 {
+  #ifndef __WXMSW__
   m_isActive = event.GetActive();
 
   if(m_isActive)
   {
-    if(m_notificationMessageActive)
-      m_notificationMessage.Close();
-    m_notificationMessageActive = false;
+    if(m_console->m_notificationMessageActive)
+      m_console->m_notificationMessage.Close();
+    m_console->m_notificationMessageActive = false;
   }
+  #endif
 }
 
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)

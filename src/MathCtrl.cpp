@@ -911,6 +911,10 @@ GroupCell *MathCtrl::TearOutTree(GroupCell *start, GroupCell *end)
  */
 void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
 {
+  if(m_notificationMessageActive)
+    m_notificationMessage.Close();
+  m_notificationMessageActive = false;
+
   m_cellPointers->ResetSearchStart();
 
   wxMenu *popupMenu = new wxMenu();
@@ -1324,6 +1328,8 @@ void MathCtrl::OnMouseLeftInGc(wxMouseEvent &event, GroupCell *clickedInGc)
  */
 void MathCtrl::OnMouseLeftDown(wxMouseEvent &event)
 {
+  if(m_notificationMessageActive)
+    m_notificationMessage.Close();
   // During drag-and-drop We want to track the mouse position.
   if (event.LeftDown())
   {
@@ -2604,6 +2610,10 @@ void MathCtrl::Evaluate()
  */
 void MathCtrl::OnKeyDown(wxKeyEvent &event)
 {
+  if(m_notificationMessageActive)
+    m_notificationMessage.Close();
+  m_notificationMessageActive = false;
+
   // Track the activity of the keyboard. Setting the keyboard
   // to inactive again is done in wxMaxima.cpp
   m_keyboardInactiveTimer.StartOnce(10000);
@@ -3633,7 +3643,10 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
  */
 void MathCtrl::OnChar(wxKeyEvent &event)
 {
-
+  if(m_notificationMessageActive)
+    m_notificationMessage.Close();
+  m_notificationMessageActive = false;
+  
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to realize
   // them they need to be passed to it using the event's Skip() function.
   if(event.AltDown() && ((event.GetKeyCode()==WXK_UP)||(event.GetKeyCode()==WXK_DOWN)))

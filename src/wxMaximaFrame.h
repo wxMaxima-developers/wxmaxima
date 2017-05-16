@@ -540,10 +540,6 @@ private:
 
 #endif
 protected:
-  //! A error notification message
-  wxNotificationMessage m_notificationMessage;
-  //! A error notification message
-  bool m_notificationMessageActive;
   //! Update the "user symbols" portion of the symbols pane.
   void UpdateUserSymbols();
 
