@@ -77,8 +77,6 @@ wxMaxima can display it.
 class MathCtrl : public wxScrolledCanvas
 {
 private:
-  //! Is called if this element looses or gets the focus
-  void OnActivate(wxActivateEvent &event);
   //! The rectangle the groupcell under the pointer is in
   wxRect m_groupCellUnderPointerRect;
 
