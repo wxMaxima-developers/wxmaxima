@@ -5632,7 +5632,8 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       {
         // We only update the table of contents when there is time => no guarantee that the
         // cell that was clicked at actually still is part of the tree.
-        if (m_console->GetTree()->Contains(m_console->m_tableOfContents->RightClickedOn()))
+        if ((m_console->GetTree()) &&
+            (m_console->GetTree()->Contains(m_console->m_tableOfContents->RightClickedOn())))
         {
           m_console->m_tableOfContents->RightClickedOn()->Fold();
           m_console->Recalculate();
@@ -5646,7 +5647,8 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       {
         // We only update the table of contents when there is time => no guarantee that the
         // cell that was clicked at actually still is part of the tree.
-        if (m_console->GetTree()->Contains(m_console->m_tableOfContents->RightClickedOn()))
+        if ((m_console->GetTree()) &&
+            (m_console->GetTree()->Contains(m_console->m_tableOfContents->RightClickedOn())))
         {
           m_console->m_tableOfContents->RightClickedOn()->Unfold();
           m_console->Recalculate();
@@ -5663,7 +5665,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
           GroupCell *SelectionStart = m_console->m_tableOfContents->RightClickedOn();
           // We only update the table of contents when there is time => no guarantee that the
           // cell that was clicked at actually still is part of the tree.
-          if(m_console->GetTree()->Contains(SelectionStart))
+          if((m_console->GetTree()) && (m_console->GetTree()->Contains(SelectionStart)))
           {
             GroupCell *SelectionEnd = SelectionStart;
             while (
@@ -5684,7 +5686,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       GroupCell *SelectionStart = m_console->m_tableOfContents->RightClickedOn();
       // We only update the table of contents when there is time => no guarantee that the
       // cell that was clicked at actually still is part of the tree.
-      if (m_console->GetTree()->Contains(SelectionStart))
+      if ((m_console->GetTree()) && (m_console->GetTree()->Contains(SelectionStart)))
       {
         bool evaluating = !m_console->m_evaluationQueue.Empty();
         m_console->AddSectionToEvaluationQueue(m_console->m_tableOfContents->RightClickedOn());
@@ -6632,7 +6634,7 @@ void wxMaxima::TableOfContentsSelection(wxListEvent &ev)
   
   // We only update the table of contents when there is time => no guarantee that the
   // cell that was clicked at actually still is part of the tree.
-  if (m_console->GetTree()->Contains(selection))
+  if ((m_console->GetTree()) && (m_console->GetTree()->Contains(selection)))
   {
     m_console->SetHCaret(selection);
     m_console->ScrollToCaret();

@@ -74,7 +74,7 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *cursorPo
     GroupCell *cell = dynamic_cast<GroupCell *>(tree);
     m_structure.clear();
 
-    // Get a new list of tokens.
+    // Get the current list of tokens that should be in the Table Of Contents.
     while (cell != NULL)
     {
       int groupType = cell->GetGroupType();
@@ -86,6 +86,7 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *cursorPo
               )
         m_structure.push_back(cell);
 
+      // Select the cell with the cursor
       if (cell == cursorPosition)
       {
         if (!m_structure.empty())
@@ -94,8 +95,6 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *cursorPo
 
       cell = dynamic_cast<GroupCell *>(cell->m_next);
     }
-
-    UpdateDisplay();
 
     long item = -1;
     item = m_displayedItems->GetNextItem(-1,
@@ -110,6 +109,7 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *cursorPo
         m_displayedItems->SetItemState(selection, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
       m_lastSelection = selection;
     }
+    UpdateDisplay();
   }
 }
 
@@ -124,6 +124,8 @@ void TableOfContents::UpdateDisplay()
   if (regex != wxEmptyString)
     matcher.Compile(regex);
 
+  // Create a wxArrayString containing all section/chapter/... titles we want
+  // to display
   for (unsigned int i = 0; i < m_structure.size(); i++)
   {
     // Indentation further reduces the screen real-estate. So it is to be used
@@ -161,28 +163,26 @@ void TableOfContents::UpdateDisplay()
   // Work around a wxWidgets bug: items==m_items_old if items is empty and m_items_old isn't.
   if ((items != m_items_old) || (items.GetCount() == 0))
   {
-
-    // Update the name of all existing items and add new items, if necessary
+    std::cerr<<"Count="<<items.GetCount()<<"\n";
+    // Update the name of all existing items and add new items, if necessary.
+    // We don't just empty the item list and create a new one since on Windows this
+    // causes excessive flickering.
     for (unsigned int i = 0; i < items.GetCount(); i++)
     {
       if (i < (unsigned) m_displayedItems->GetItemCount())
-      {
         m_displayedItems->SetItemText(i, items[i]);
-      }
       else
-      {
         m_displayedItems->InsertItem(i, items[i]);
-      }
+      
       if (m_structure[i]->GetHiddenTree())
         m_displayedItems->SetItemTextColour(i, wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT));
       else
         m_displayedItems->SetItemTextColour(i, wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
     }
     // Delete superfluous items
-    for (int i = items.GetCount(); i < m_displayedItems->GetItemCount(); i++)
-    {
-      m_displayedItems->DeleteItem(i);
-    }
+    for (int i = m_displayedItems->GetItemCount(); i > items.GetCount() ; i--)
+      m_displayedItems->DeleteItem(i - 1);
+    m_items_old = items;
   }
 }
 
