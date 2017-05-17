@@ -33,7 +33,7 @@ wxMac. See the section about compiling wxWidgets.
 
 ### Compiling on Windows
 
-On Windows install MinGW (http://sourceforge.net/projects/mingw/). In
+On Windows install MinGW (https://sourceforge.net/projects/mingw/). In
 the installation process make sure you select `g++`, `MSYS Basic
 System` and `MinGW Developer ToolKit` in the `Select components` page
 of the installer.  Then run the MinGW Shell and follow the
