@@ -3546,7 +3546,14 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       bool pngcairo_old=true;
 #endif
       config->Read(wxT("usepngCairo"), &pngcairo_old);
-
+      // wxGTK uses wxFileConf. ...and wxFileConf loads the config file only once
+      // on inintialisation => Let's reload the config file before entering the
+      // config dialogue.
+      config->Flush();
+      wxDELETE(config);
+      wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+      config = wxConfig::Get();
+      
       ConfigDialogue *configW = new ConfigDialogue(this, m_console->m_configuration);
       configW->Centre(wxBOTH);
       if (configW->ShowModal() == wxID_OK)
