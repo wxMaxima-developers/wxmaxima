@@ -7817,7 +7817,6 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
 #if wxCHECK_VERSION(3,1,0)
                 EVT_MAGNIFY(MathCtrl::OnMagnify)
 #endif
-                EVT_ACTIVATE(MathCtrl::OnActivate)
                 EVT_SIZE(MathCtrl::OnSize)
                 EVT_PAINT(MathCtrl::OnPaint)
                 EVT_MOUSE_CAPTURE_LOST(MathCtrl::OnMouseCaptureLost)

@@ -6778,6 +6778,7 @@ void wxMaxima::OnActivate(wxActivateEvent &event)
     m_console->m_notificationMessageActive = false;
 #endif
   }
+  m_console->OnActivate(event);
 }
 
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
