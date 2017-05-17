@@ -615,6 +615,8 @@ private:
 public:
   //! A error notification message
   wxNotificationMessage m_notificationMessage;
+  //! Is called if this element looses or gets the focus
+  void OnActivate(wxActivateEvent &event);
   //! A error notification message
   bool m_notificationMessageActive;
   //! The central settings storage
@@ -1389,9 +1391,6 @@ public:
   void OpenQuestionCaret(wxString txt = wxT(""));
 
 protected:
-  //! Is called if this element looses or gets the focus
-  void OnActivate(wxActivateEvent &event);
-
   void UpdateConfigurationClientSize();
 DECLARE_EVENT_TABLE()
 };
