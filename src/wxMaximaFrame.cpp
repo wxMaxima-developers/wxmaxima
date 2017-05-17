@@ -393,7 +393,7 @@ void wxMaximaFrame::do_layout()
   // Loads the window states. We tell wxaui not to recalculate and display the
   // results of this step now as we will do so manually after
   // eventually adding the toolbar.
-  if(perspective == wxEmptyString)
+  if(perspective != wxEmptyString)
     m_manager.LoadPerspective(perspective,false);
   
   if(!m_manager.GetPane(wxT("console")).IsShown())
