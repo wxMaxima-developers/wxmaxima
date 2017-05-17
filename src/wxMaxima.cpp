@@ -6766,16 +6766,18 @@ int wxMaxima::SaveDocumentP()
 
 void wxMaxima::OnActivate(wxActivateEvent &event)
 {
-  #ifndef __WXMSW__
   m_isActive = event.GetActive();
 
   if(m_isActive)
   {
+    // I suspect that windows issues a "is active" signal if the window contents is changed
+    // without the window being actually active.
+#ifndef __WXMSW__
     if(m_console->m_notificationMessageActive)
       m_console->m_notificationMessage.Close();
     m_console->m_notificationMessageActive = false;
+#endif
   }
-  #endif
 }
 
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
