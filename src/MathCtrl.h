@@ -77,6 +77,10 @@ wxMaxima can display it.
 class MathCtrl : public wxScrolledCanvas
 {
 private:
+  //! Is our window currently active?
+  bool m_windowActive;
+  //! A error notification message
+  wxNotificationMessage *m_notificationMessage;
   //! The rectangle the groupcell under the pointer is in
   wxRect m_groupCellUnderPointerRect;
 
@@ -613,12 +617,18 @@ private:
 
 
 public:
-  //! A error notification message
-  wxNotificationMessage m_notificationMessage;
+  //! Is this window active?
+  void WindowActive(bool active){m_windowActive = active;}
+  //! Clears the notification message from SetNotification
+  void ClearNotification();
+  /*! Inform the user that something happened in a non-active window 
+
+    This command will be ignored if the wxMaxima window is currently active
+   */
+  void SetNotification(wxString message, int flags = wxICON_INFORMATION);
+
   //! Is called if this element looses or gets the focus
   void OnActivate(wxActivateEvent &event);
-  //! A error notification message
-  bool m_notificationMessageActive;
   //! The central settings storage
   Configuration *m_configuration;
   //! Is the list of known answers exhausted for the current Working Group?

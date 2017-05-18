@@ -123,9 +123,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
                    const wxPoint pos, const wxSize size) :
         wxMaximaFrame(parent, id, title, pos, size)
 {
-  m_console->m_notificationMessage.SetParent(this);
-  m_console->m_notificationMessage.SetTitle(_("wxMaxima"));
-  m_console->m_notificationMessageActive = false;
   m_isActive = true;
   m_outputPromptRegEx.Compile(wxT("<lbl>.*</lbl>"));
   wxConfig *config = (wxConfig *) wxConfig::Get();
@@ -1442,15 +1439,7 @@ void wxMaxima::ReadPrompt(wxString &data)
     // If the user answers a question additional output might be required even
     // if the question has been preceded by many lines.
     m_outputCellsFromCurrentCommand = 0;
-    if(!m_isActive)
-    {
-      m_console->m_notificationMessage.SetMessage(_("Maxima asks a question!"));
-      m_console->m_notificationMessage.SetFlags(wxICON_INFORMATION);
-      if(m_console->m_notificationMessageActive)
-        m_console->m_notificationMessage.Close();
-      m_console->m_notificationMessage.Show();
-      m_console->m_notificationMessageActive = true;
-    }
+    m_console->SetNotification(_("Maxima asks a question!"),wxICON_INFORMATION);
     if (!o.IsEmpty())
     {
       if (o.Find(wxT("<mth>")) > -1)
@@ -3238,23 +3227,8 @@ bool wxMaxima::AbortOnError()
   wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
   SetBatchMode(false);
 
-  if(!m_isActive)
-  {
-    m_console->m_notificationMessage.SetMessage(_("Maxima has issued an error!"));
-    m_console->m_notificationMessage.SetFlags(wxICON_ERROR);
-    if(m_console->m_notificationMessageActive)
-      m_console->m_notificationMessage.Close();
-    m_console->m_notificationMessage.Show();
-    m_console->m_notificationMessageActive = true;
-  }
-  
-  #if wxUSE_NOTIFICATION_MESSAGE
-  // if(m_console->m_notificationMessage)
-  //   m_console->m_notificationMessage -> Connect(wxEVT_NOTIFICATION_MESSAGE_DISMISSED,
-  //                                    wxCommandEventHandler(wxMaximaFrame::OnNotificationClose),
-  //                                    NULL, this);
-  #endif
-  
+  m_console->SetNotification(_("Maxima has issued an error!"),wxICON_ERROR);
+    
   if (abortOnError || m_batchmode)
   {
     m_console->m_evaluationQueue.Clear();
@@ -6216,15 +6190,8 @@ void wxMaxima::TryEvaluateNextInQueue()
 
     // If the window isn't active we can inform the user that maxima in the meantime
     // has finished working.
-    if((!m_isActive) && (m_console->m_configuration->NotifyIfIdle()))
-    {
-      m_console->m_notificationMessage.SetMessage(_("Maxima has finished calculating."));
-      m_console->m_notificationMessage.SetFlags(wxICON_INFORMATION);
-      if(m_console->m_notificationMessageActive)
-        m_console->m_notificationMessage.Close();
-      m_console->m_notificationMessage.Show();
-      m_console->m_notificationMessageActive = true;
-    }
+    if(m_console->m_configuration->NotifyIfIdle())
+      m_console->SetNotification(_("Maxima has finished calculating."));
 
     return; //empty queue
   }
@@ -6775,18 +6742,12 @@ int wxMaxima::SaveDocumentP()
 
 void wxMaxima::OnActivate(wxActivateEvent &event)
 {
-  m_isActive = event.GetActive();
-  if(m_isActive)
-  {
-    // I suspect that windows issues a "is active" signal if the window contents is changed
-    // without the window being actually active.
-#ifndef __WXMSW__
-    if(m_console->m_notificationMessageActive)
-      m_console->m_notificationMessage.Close();
-    m_console->m_notificationMessageActive = false;
-#endif
-  }
-  m_console->OnActivate(event);
+  m_console->WindowActive(event.GetActive());
+}
+
+void wxMaxima::OnMinimize(wxIconizeEvent &event)
+{
+  m_console->WindowActive(!event.IsIconized());
 }
 
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
@@ -7132,6 +7093,7 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_FIND_REPLACE_ALL(wxID_ANY, wxMaxima::OnReplaceAll)
                 EVT_FIND_CLOSE(wxID_ANY, wxMaxima::OnFindClose)
                 EVT_ACTIVATE(wxMaxima::OnActivate)
+                EVT_ICONIZE(wxMaxima::OnMinimize)
 END_EVENT_TABLE()
 
 /* Local Variables:       */

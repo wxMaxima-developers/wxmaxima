@@ -163,7 +163,6 @@ void TableOfContents::UpdateDisplay()
   // Work around a wxWidgets bug: items==m_items_old if items is empty and m_items_old isn't.
   if ((items != m_items_old) || (items.GetCount() == 0))
   {
-    std::cerr<<"Count="<<items.GetCount()<<"\n";
     // Update the name of all existing items and add new items, if necessary.
     // We don't just empty the item list and create a new one since on Windows this
     // causes excessive flickering.

@@ -69,6 +69,7 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
 #endif
         )
 {
+  m_notificationMessage = NULL;
   m_cellPointers = new CellPointers;
   m_dc = new wxClientDC(this);
   m_configuration = new Configuration(*m_dc, true);
@@ -86,6 +87,7 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
   MathCell::ClipToDrawRegion(true);
   m_hCaretBlinkVisible = true;
   m_hasFocus = true;
+  m_windowActive = true;
   m_lastTop = 0;
   m_lastBottom = 0;
   m_followEvaluation = true;
@@ -911,9 +913,7 @@ GroupCell *MathCtrl::TearOutTree(GroupCell *start, GroupCell *end)
  */
 void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
 {
-  if(m_notificationMessageActive)
-    m_notificationMessage.Close();
-  m_notificationMessageActive = false;
+  ClearNotification();
 
   m_cellPointers->ResetSearchStart();
 
@@ -1328,8 +1328,8 @@ void MathCtrl::OnMouseLeftInGc(wxMouseEvent &event, GroupCell *clickedInGc)
  */
 void MathCtrl::OnMouseLeftDown(wxMouseEvent &event)
 {
-  if(m_notificationMessageActive)
-    m_notificationMessage.Close();
+  ClearNotification();
+
   // During drag-and-drop We want to track the mouse position.
   if (event.LeftDown())
   {
@@ -2610,9 +2610,7 @@ void MathCtrl::Evaluate()
  */
 void MathCtrl::OnKeyDown(wxKeyEvent &event)
 {
-  if(m_notificationMessageActive)
-    m_notificationMessage.Close();
-  m_notificationMessageActive = false;
+  ClearNotification();
 
   // Track the activity of the keyboard. Setting the keyboard
   // to inactive again is done in wxMaxima.cpp
@@ -3637,15 +3635,36 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
   RequestRedraw();
 }
 
+void MathCtrl::ClearNotification()
+{
+  if(m_notificationMessage != NULL)
+  {
+    m_notificationMessage->Close();
+    delete m_notificationMessage;
+  }
+  m_notificationMessage = NULL;
+}
+
+void MathCtrl::SetNotification(wxString message, int flags)
+{
+  if(m_windowActive)
+    return;
+  
+  ClearNotification();
+  m_notificationMessage = new wxNotificationMessage(wxT("wxMaxima"),
+                                                    message,
+                                                    this,
+                                                    flags);
+  if(m_notificationMessage)
+    m_notificationMessage->Show();
+}
 /*****
  * OnChar handles key events. If we have an active cell, sends the
  * event to the active cell, else moves the cursor between groups.
  */
 void MathCtrl::OnChar(wxKeyEvent &event)
 {
-  if(m_notificationMessageActive)
-    m_notificationMessage.Close();
-  m_notificationMessageActive = false;
+  ClearNotification();
   
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to realize
   // them they need to be passed to it using the event's Skip() function.

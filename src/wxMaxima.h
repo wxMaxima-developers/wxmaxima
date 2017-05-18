@@ -205,6 +205,8 @@ protected:
   bool m_isActive;
   //! Called when this window is activated or deactivated.
   void OnActivate(wxActivateEvent &event);
+  //! Called when this window is minimized.
+  void OnMinimize(wxIconizeEvent &event);
   //! Is called on start and whenever the configuration changes
   void ConfigChanged();
   //! Called when the "Scroll to last error" button is pressed.
