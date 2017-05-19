@@ -2862,7 +2862,7 @@ wxString EditorCell::DivideAtCaret()
                    (newText[whiteSpaceEnd] == wxT('\t'))
            )
             )
-      whiteSpaceEnd--;
+      whiteSpaceEnd++;
 
     if ((newText[whiteSpaceEnd] == wxT('\n')) || (newText[whiteSpaceEnd] == wxT('\r')))
       newText = newText.SubString(0, whiteSpaceEnd - 1);
