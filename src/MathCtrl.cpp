@@ -474,12 +474,12 @@ GroupCell *MathCtrl::UpdateMLast()
 
 void MathCtrl::ScrollToError()
 {
-  if(m_cellPointers->m_errorList.Tail())
-  {
-    SetActiveCell(dynamic_cast<GroupCell *>(m_cellPointers->m_errorList.Head())->GetEditable());
-    dynamic_cast<GroupCell *>(m_cellPointers->m_errorList.Tail())->GetEditable()->CaretToEnd();
-  }
-  else
+//  if(m_cellPointers->m_errorList.Tail())
+//  {
+//    SetActiveCell(dynamic_cast<GroupCell *>(m_cellPointers->m_errorList.Head())->GetEditable());
+//    dynamic_cast<GroupCell *>(m_cellPointers->m_errorList.Tail())->GetEditable()->CaretToEnd();
+//  }
+//  else
   {
     GroupCell *ErrorCell = GetLastWorkingGroup();
     if (ErrorCell == NULL)
