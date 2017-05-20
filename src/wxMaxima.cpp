@@ -6298,10 +6298,10 @@ void wxMaxima::TryEvaluateNextInQueue()
       cell->SetParent(tmp);
       tmp->SetOutput(cell);
       m_console->RecalculateForce();
-
+      
       if (m_console->FollowEvaluation())
         m_console->SetSelection(NULL);
-
+      
       m_console->SetWorkingGroup(NULL);
       m_console->RequestRedraw();
       if(!AbortOnError())
@@ -6310,6 +6310,8 @@ void wxMaxima::TryEvaluateNextInQueue()
         m_outputCellsFromCurrentCommand = 0;
         TryEvaluateNextInQueue();
       }
+      if((tmp)&&(tmp->GetEditable()))
+        m_console->SetActiveCell(tmp->GetEditable());
     }
     m_console->Recalculate();
   }
