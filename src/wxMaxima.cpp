@@ -2787,19 +2787,26 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
         title << wxT(".") << suffix;
       }
 
-      // Redraws during printing might end up on paper.
+      // Redraws during printing might end up on paper => temporarily block all redraw
+      // events for the console
       m_console->Freeze();
-      wxBusyCursor crs;
-      MathPrintout printout(title, &m_console->m_configuration);
-      GroupCell *copy = m_console->CopyTree();
-      printout.SetData(copy);
-      if (printer.Print(this, &printout, true))
       {
-        wxDELETE(m_printData);
-        m_printData = new wxPrintData(printer.GetPrintDialogData().GetPrintData());
+        wxEventBlocker blocker(m_console);
+        wxBusyCursor crs;
+        MathPrintout printout(title, &m_console->m_configuration);
+        GroupCell *copy = m_console->CopyTree();
+        printout.SetData(copy);
+        if (printer.Print(this, &printout, true))
+        {
+          wxDELETE(m_printData);
+          m_printData = new wxPrintData(printer.GetPrintDialogData().GetPrintData());
+        }
+        break;
       }
       m_console->Thaw();
-      break;
+      // The console didn't receive redraw events for quite a long time =>
+      // request it to be redrawn as soon as possible.
+      m_console->RequestRedraw();
     }
       m_console->RecalculateForce();
       m_console->RequestRedraw();
