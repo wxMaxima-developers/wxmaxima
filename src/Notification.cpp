@@ -28,10 +28,24 @@
  */
 
 #include "Notification.h"
-
 Notification::Notification(const wxString &title,
 			   const wxString &message,
 			   wxWindow *parent,
 			   int flags): wxNotificationMessage (title, message, parent, flags)
 {
+  m_parent = parent;
 }
+
+void Notification::OnClick(wxCommandEvent &event)
+{
+  if(m_parent != NULL)
+  {
+    m_parent->Raise();
+  }
+}
+
+BEGIN_EVENT_TABLE(Notification, wxNotificationMessage)
+#ifdef EVT_NOTIFICATION_MESSAGE_CLICK
+  EVT_NOTIFICATION_MESSAGE_CLICK(Notification::OnClick)
+#endif
+END_EVENT_TABLE()

@@ -31,6 +31,7 @@
 #define NOTIFICATION_H
 
 #include <wx/notifmsg.h>
+#include <wx/wx.h>
 
 class Notification: public wxNotificationMessage
 {
@@ -39,6 +40,11 @@ public:
                const wxString &message=wxEmptyString,
                wxWindow *parent=NULL,
                int flags=wxICON_INFORMATION);
+private:
+  wxWindow *m_parent;
+protected:
+  void OnClick(wxCommandEvent &event);
+DECLARE_EVENT_TABLE()
 };
 
 #endif
