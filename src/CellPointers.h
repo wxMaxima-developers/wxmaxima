@@ -45,6 +45,7 @@ public:
     void Remove(MathCell * cell){m_errorList.remove(cell);}
     void Add(MathCell * cell){m_errorList.push_back(cell);}
     MathCell *Head(){if(m_errorList.empty())return NULL; else return m_errorList.front();}
+    MathCell *Tail(){if(m_errorList.empty())return NULL; else return m_errorList.back();}
   };
 
   //! The list of cells maxima has complained about errors in

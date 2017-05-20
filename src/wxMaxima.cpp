@@ -3844,7 +3844,10 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
   {
     case menu_jumptoerror:
       if(m_console->m_cellPointers->m_errorList.Head())
+      {
         m_console->SetActiveCell(dynamic_cast<GroupCell *>(m_console->m_cellPointers->m_errorList.Head())->GetEditable());
+        dynamic_cast<GroupCell *>(m_console->m_cellPointers->m_errorList.Head())->GetEditable()->CaretToEnd();
+      }
       break;
     case ToolBar::menu_restart_id:
       m_closing = true;
@@ -6284,6 +6287,10 @@ void wxMaxima::TryEvaluateNextInQueue()
     }
     else
     {
+      // Manually mark the current cell as the one that has caused an error.
+      m_console->m_cellPointers->m_errorList.Add(tmp);
+      // Inform the user about the error (which automatically causes the worksheet
+      // to the cell we marked as erroneous a few seconds ago.
       TextCell *cell = new TextCell(m_console->GetTree(), &(m_console->m_configuration),
                                     _("Refusing to send cell to maxima: ") +
                                     parenthesisError + wxT("\n"));
