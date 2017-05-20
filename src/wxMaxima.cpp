@@ -511,7 +511,8 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
     MathCell *tmp = NULL, *lst = NULL;
     while (tokens.HasMoreTokens())
     {
-      TextCell *cell = new TextCell(m_console->GetTree(), &(m_console->m_configuration), tokens.GetNextToken());
+      TextCell *cell = new TextCell(m_console->GetTree(), &(m_console->m_configuration),
+                                    tokens.GetNextToken());
 
       cell->SetType(type);
 

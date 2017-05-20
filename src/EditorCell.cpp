@@ -2588,8 +2588,8 @@ bool EditorCell::AddEnding()
       }
       else
         text += m_text[index];
-      index++;
     }
+    index++;
   }
   text.Trim();
 
