@@ -49,6 +49,7 @@ wxmaxima_SOURCES = \
 	Configuration.cpp     Configuration.h     \
 	MathParser.cpp     MathParser.h     \
 	MathPrintout.cpp   MathPrintout.h   \
+	Notification.cpp   Notification.h   \
 	Bitmap.cpp         Bitmap.h         \
 	MyTipProvider.cpp  MyTipProvider.h  \
 	EditorCell.cpp     EditorCell.h     \
