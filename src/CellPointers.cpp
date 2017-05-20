@@ -40,3 +40,13 @@ CellPointers::CellPointers()
   m_lastWorkingGroup = NULL;
   m_selectionString = wxEmptyString;
 }
+
+bool CellPointers::ErrorList::Contains(MathCell *cell)
+{
+  for(std::list<MathCell *>::iterator it = m_errorList.begin(); it != m_errorList.end();++it)
+  {
+    if((*it)==cell)
+      return true;
+  }
+  return false;
+}

@@ -924,6 +924,17 @@ void GroupCell::DrawBracket()
     dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))));
     drawBracket = true;
   }
+  else if (m_cellPointers->m_errorList.Contains(this))
+  {
+#if defined(__WXMAC__)
+    dc.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
+#else
+    dc.SetPen(*wxRED_PEN);
+// window linux, set a pen
+#endif
+    dc.SetBrush(*wxRED_BRUSH);
+    drawBracket = true;
+  }
   else
   {
     dc.SetBrush(*wxWHITE_BRUSH);

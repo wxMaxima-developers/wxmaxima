@@ -43,6 +43,7 @@ public:
     std::list<MathCell *> m_errorList;
     bool Empty(){return m_errorList.empty();}
     void Remove(MathCell * cell){m_errorList.remove(cell);}
+    bool Contains(MathCell * cell);
     void Add(MathCell * cell){m_errorList.push_back(cell);}
     MathCell *Head(){if(m_errorList.empty())return NULL; else return m_errorList.front();}
     MathCell *Tail(){if(m_errorList.empty())return NULL; else return m_errorList.back();}
