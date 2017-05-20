@@ -3651,7 +3651,7 @@ void MathCtrl::SetNotification(wxString message, int flags)
     return;
   
   ClearNotification();
-  m_notificationMessage = new wxNotificationMessage(wxT("wxMaxima"),
+  m_notificationMessage = new Notification(wxT("wxMaxima"),
                                                     message,
                                                     this,
                                                     flags);

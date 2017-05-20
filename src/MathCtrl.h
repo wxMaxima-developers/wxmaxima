@@ -36,6 +36,7 @@
 #include <list>
 #include "ContentAssistantPopup.h"
 
+#include "Notification.h"
 #include "MathCell.h"
 #include "EditorCell.h"
 #include "GroupCell.h"
@@ -80,7 +81,7 @@ private:
   //! Is our window currently active?
   bool m_windowActive;
   //! A error notification message
-  wxNotificationMessage *m_notificationMessage;
+  Notification *m_notificationMessage;
   //! The rectangle the groupcell under the pointer is in
   wxRect m_groupCellUnderPointerRect;
 
