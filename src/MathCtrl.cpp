@@ -473,26 +473,24 @@ GroupCell *MathCtrl::UpdateMLast()
 
 void MathCtrl::ScrollToError()
 {
-//  if(m_cellPointers->m_errorList.Tail())
-//  {
-//    SetActiveCell(dynamic_cast<GroupCell *>(m_cellPointers->m_errorList.Head())->GetEditable());
-//    dynamic_cast<GroupCell *>(m_cellPointers->m_errorList.Tail())->GetEditable()->CaretToEnd();
-//  }
-//  else
+  GroupCell *ErrorCell;
+  
+  ErrorCell = dynamic_cast<GroupCell *>(m_cellPointers->m_errorList.Tail());
+  
+  if (ErrorCell == NULL)
+    ErrorCell = GetWorkingGroup();
+  
+  if (ErrorCell == NULL)
+    ErrorCell = GetLastWorkingGroup();
+  
+  if (ErrorCell != NULL)
   {
-    GroupCell *ErrorCell = GetLastWorkingGroup();
-    if (ErrorCell == NULL)
-      ErrorCell = GetWorkingGroup();
-    
-    if (ErrorCell != NULL)
+    if (ErrorCell->RevealHidden())
     {
-      if (ErrorCell->RevealHidden())
-      {
-        FoldOccurred();
-        Recalculate(true);
-      }
-      SetHCaret(ErrorCell);
+      FoldOccurred();
+      Recalculate(true);
     }
+      SetHCaret(ErrorCell);
   }
 }
 
