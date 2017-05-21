@@ -55,6 +55,7 @@
 #include <wx/txtstrm.h>
 #include <wx/filesys.h>
 #include <wx/fs_mem.h>
+#include <stdlib.h>
 
 //! The default delay between animation steps in milliseconds
 #define ANIMATION_TIMER_TIMEOUT 300
@@ -1747,8 +1748,8 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
       SetSelection(NULL);
       rect.x = MIN(down.x, up.x);
       rect.y = MIN(down.y, up.y);
-      rect.width = MAX(ABS(down.x - up.x), 1);
-      rect.height = MAX(ABS(down.y - up.y), 1);
+      rect.width = MAX(abs(down.x - up.x), 1);
+      rect.height = MAX(abs(down.y - up.y), 1);
 
       if (m_clickInGC != NULL)
         m_clickInGC->SelectRectInOutput(rect, down, up, &m_selectionStart, &m_selectionEnd);
