@@ -91,7 +91,6 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
   m_lastTop = 0;
   m_lastBottom = 0;
   m_followEvaluation = true;
-  m_workingGroup = NULL;
   TreeUndo_ActiveCell = NULL;
   m_TreeUndoMergeSubsequentEdits = false;
   m_questionPrompt = false;
@@ -478,11 +477,8 @@ void MathCtrl::ScrollToError()
   ErrorCell = dynamic_cast<GroupCell *>(m_cellPointers->m_errorList.LastError());
   
   if (ErrorCell == NULL)
-    ErrorCell = GetWorkingGroup();
-  
-  if (ErrorCell == NULL)
-    ErrorCell = GetLastWorkingGroup();
-  
+    ErrorCell = GetWorkingGroup(true);
+    
   if (ErrorCell != NULL)
   {
     if (ErrorCell->RevealHidden())
@@ -494,9 +490,11 @@ void MathCtrl::ScrollToError()
   }
 }
 
-GroupCell *MathCtrl::GetLastWorkingGroup()
+GroupCell *MathCtrl::GetWorkingGroup(bool resortToLast)
 {
-  GroupCell *tmp = dynamic_cast<GroupCell *>(m_cellPointers->m_lastWorkingGroup);
+  GroupCell *tmp = dynamic_cast<GroupCell *>(m_cellPointers->GetWorkingGroup(resortToLast));
+  if(!resortToLast)
+    return tmp;
 
   // The last group maxima was working on no more exists or has been deleted.
   if (tmp == NULL)
@@ -528,10 +526,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 
   m_saved = false;
 
-  GroupCell *tmp = GetWorkingGroup();
-
-  if (tmp == NULL)
-    tmp = GetLastWorkingGroup();
+  GroupCell *tmp = GetWorkingGroup(true);
                                              
   if (tmp == NULL)
   {
@@ -586,7 +581,7 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
     CellToScrollTo = GetHCaret();
     CellToScrollTo = GetActiveCell();
   }
-  if (!CellToScrollTo) CellToScrollTo = GetWorkingGroup();
+  if (!CellToScrollTo) CellToScrollTo = GetWorkingGroup(true);
   if (!CellToScrollTo)
   {
     wxPoint topleft;
@@ -660,7 +655,7 @@ void MathCtrl::OnSize(wxSizeEvent &event)
     CellToScrollTo = m_hCaretPosition;
     if (!CellToScrollTo) CellToScrollTo = GetActiveCell();
   }
-  if (!CellToScrollTo) CellToScrollTo = m_workingGroup;
+  if (!CellToScrollTo) CellToScrollTo = GetWorkingGroup(true);
 
   if (!CellToScrollTo)
   {
@@ -727,7 +722,6 @@ void MathCtrl::ClearDocument()
   m_hCaretActive = false;
   SetHCaret(NULL); // horizontal caret at the top of document
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
-  m_workingGroup = NULL;
 
   m_evaluationQueue.Clear();
   TreeUndo_ClearBuffers();
@@ -2143,7 +2137,7 @@ bool MathCtrl::CanDeleteRegion(GroupCell *start, GroupCell *end)
   while (tmp != NULL)
   {
     // We refuse deletion of a cell maxima is currently evaluating
-    if (tmp == m_workingGroup)
+    if (tmp == GetWorkingGroup())
       return false;
 
     if (tmp == end)
@@ -2483,7 +2477,7 @@ void MathCtrl::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUndo
 
 void MathCtrl::OpenQuestionCaret(wxString txt)
 {
-  wxASSERT_MSG(m_workingGroup != NULL, _("Bug: Got a question but no cell to answer it in"));
+  wxASSERT_MSG(GetWorkingGroup() != NULL, _("Bug: Got a question but no cell to answer it in"));
 
   // We are leaving the input part of the current cell in this step.
   TreeUndo_CellLeft();
@@ -2492,16 +2486,19 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
   TreeUndo_ActiveCell = NULL;
 
   // Make sure that the cell containing the question is visible
-  if (m_workingGroup->RevealHidden())
+  if (GetWorkingGroup()->RevealHidden())
   {
     FoldOccurred();
-    Recalculate(m_workingGroup, true);
+    Recalculate(GetWorkingGroup(), true);
   }
 
   // If we still haven't a cell to put the answer in we now create one.
   if (m_cellPointers->m_answerCell == NULL)
   {
-    m_cellPointers->m_answerCell = new EditorCell(m_workingGroup, &m_configuration, m_cellPointers);
+    m_cellPointers->m_answerCell = new EditorCell(
+      GetWorkingGroup(),
+      &m_configuration,
+      m_cellPointers);
     m_cellPointers->m_answerCell->SetType(MC_TYPE_INPUT);
     bool autoEvaluate = false;
     if(txt == wxEmptyString)
@@ -2511,13 +2508,13 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
       {
         txt = m_evaluationQueue.GetAnswer();
         m_evaluationQueue.RemoveFirstAnswer();
-        autoEvaluate = m_workingGroup->AutoAnswer();
+        autoEvaluate = GetWorkingGroup()->AutoAnswer();
       }
     }
     m_cellPointers->m_answerCell->SetValue(txt);
     dynamic_cast<EditorCell *>(m_cellPointers->m_answerCell)->CaretToEnd();
 
-    m_workingGroup->AppendOutput(m_cellPointers->m_answerCell);
+    GetWorkingGroup()->AppendOutput(m_cellPointers->m_answerCell);
 
     // If we filled in an answer and "AutoAnswer" is true we issue an evaluation event here.
     if(autoEvaluate)
@@ -2540,11 +2537,11 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   // if we are inside cell maxima is currently evaluating
   // bypass normal behaviour and insert an EditorCell into
   // the output of the working group.
-  if (m_workingGroup)
+  if (GetWorkingGroup())
   {
     if (GetActiveCell() != NULL)
     {
-      if ((GetActiveCell()->GetParent() == m_workingGroup) && (m_questionPrompt))
+      if ((GetActiveCell()->GetParent() == GetWorkingGroup()) && (m_questionPrompt))
       {
         OpenQuestionCaret(txt);
         return;
@@ -2552,7 +2549,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
     }
     if (m_hCaretPosition != NULL)
     {
-      if ((m_hCaretPosition == m_workingGroup->m_next) && (m_questionPrompt))
+      if ((m_hCaretPosition == GetWorkingGroup()->m_next) && (m_questionPrompt))
       {
         OpenQuestionCaret(txt);
         return;
@@ -2876,8 +2873,8 @@ void MathCtrl::OnKeyDown(wxKeyEvent &event)
 
 bool MathCtrl::GCContainsCurrentQuestion(GroupCell *cell)
 {
-  if (m_workingGroup)
-    return ((cell == m_workingGroup) && m_questionPrompt);
+  if (GetWorkingGroup())
+    return ((cell == GetWorkingGroup()) && m_questionPrompt);
   else
     return false;
 }
@@ -6933,14 +6930,14 @@ void MathCtrl::Animate(bool run)
 
 void MathCtrl::SetWorkingGroup(GroupCell *group)
 {
-  if (m_workingGroup != NULL)
-    m_workingGroup->SetWorking(false);
+  if (GetWorkingGroup() != NULL)
+    GetWorkingGroup()->SetWorking(false);
 
-  m_workingGroup = group;
+  m_cellPointers->SetWorkingGroup(group);
 
-  if (m_workingGroup != NULL)
+  if (group != NULL)
   {
-    m_workingGroup->SetWorking(true);
+    group->SetWorking(true);
     group->IsLastWorkingGroup();
   }
 }
@@ -6950,10 +6947,10 @@ bool MathCtrl::IsSelectionInWorking()
   if (m_selectionStart == NULL)
     return false;
 
-  if (m_workingGroup == NULL)
+  if (GetWorkingGroup() == NULL)
     return false;
 
-  if (m_selectionStart->GetParent() != m_workingGroup)
+  if (m_selectionStart->GetParent() != GetWorkingGroup())
     return false;
 
   return true;
@@ -7084,7 +7081,7 @@ void MathCtrl::SaveValue()
 void MathCtrl::RemoveAllOutput()
 {
   // We don't want to remove all output if maxima is currently evaluating.
-  if (m_workingGroup != NULL)
+  if (GetWorkingGroup() != NULL)
     return;
 
   SetSelection(NULL); // TODO only setselection NULL when selection is in the output

@@ -330,6 +330,8 @@ void GroupCell::MarkAsDeleted()
   if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetParent() == this))
     m_cellPointers->m_answerCell = NULL;
   m_cellPointers->m_errorList.Remove(this);
+  if (this == m_cellPointers->m_workingGroup)
+    m_cellPointers->m_workingGroup = NULL;
   if (this == m_cellPointers->m_lastWorkingGroup)
     m_cellPointers->m_lastWorkingGroup = NULL;
   if (this == m_cellPointers->m_groupCellUnderPointer)

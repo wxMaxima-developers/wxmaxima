@@ -572,11 +572,6 @@ private:
   //! The list of tree that contains the document itself
   GroupCell *m_tree;
   GroupCell *m_last;
-  /*! The group cell maxima is currently working on.
-
-    NULL means that maxima isn't currently evaluating a cell.
-   */
-  GroupCell *m_workingGroup;
   /*! The first cell of the currently selected range of groupCells.
     
     NULL, when no GroupCells are selected and NULL, if only stuff inside a GroupCell
@@ -744,9 +739,6 @@ public:
 
   //! Unfold the cell that produced the error, if necessary and, if requested, scroll to it
   void ScrollToError();
-
-  //! Get the last known GroupCell maxima was working on
-  GroupCell *GetLastWorkingGroup();
 
   //! The find-and-replace-dialog
   FindReplaceDialog *m_findDialog;
@@ -1353,9 +1345,13 @@ public:
 
   bool InsertText(wxString text);
 
-  GroupCell *GetWorkingGroup()
-  { return m_workingGroup; }
-
+  /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
+    
+    \param resortToLast true = if we already have set the cell maxima works on to NULL
+    use the last cell maxima was known to work on.
+  */
+  GroupCell *GetWorkingGroup(bool resortToLast = false);
+  
   void OpenNextOrCreateCell();
 
   //! The table of contents pane

@@ -439,10 +439,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type, wxString userLabel)
   else if (type == MC_TYPE_ERROR)
   {
     DoRawConsoleAppend(s, MC_TYPE_ERROR);
-    GroupCell *tmp = m_console->GetWorkingGroup();
-    
-    if (tmp == NULL)
-      tmp = m_console->GetLastWorkingGroup();
+    GroupCell *tmp = m_console->GetWorkingGroup(true);
     
     if (tmp == NULL)
     {

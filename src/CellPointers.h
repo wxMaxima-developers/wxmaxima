@@ -35,6 +35,25 @@ class CellPointers
 {
 public:
   CellPointers();
+  /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
+    
+    \param resortToLast true = if we already have set the cell maxima works on to NULL
+    use the last cell maxima was known to work on.
+   */
+  MathCell *GetWorkingGroup(bool resortToLast = false)
+    {
+      if ((m_workingGroup != NULL) || (!resortToLast))
+        return m_workingGroup;
+      else
+        return m_lastWorkingGroup;
+    }
+  //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
+  void SetWorkingGroup(MathCell *group)
+    {
+      if(group != NULL)
+        m_lastWorkingGroup = group;
+      m_workingGroup = group;
+    }
   //! A list of editor cells containing error messages.
   class ErrorList
   {
@@ -81,6 +100,11 @@ public:
   MathCell *m_answerCell;
   //! The last group cell maxima was working on.
   MathCell *m_lastWorkingGroup;
+  /*! The group cell maxima is currently working on.
+
+    NULL means that maxima isn't currently evaluating a cell.
+   */
+  MathCell *m_workingGroup;
   /*! The currently selected string. 
 
     Since this string is defined here it is available in every editor cell

@@ -40,6 +40,7 @@ CellPointers::CellPointers()
   m_groupCellUnderPointer = NULL;
   m_lastWorkingGroup = NULL;
   m_selectionString = wxEmptyString;
+  m_workingGroup = NULL;
 }
 
 bool CellPointers::ErrorList::Contains(MathCell *cell)
