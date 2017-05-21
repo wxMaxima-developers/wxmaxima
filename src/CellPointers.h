@@ -67,6 +67,8 @@ public:
   int m_selectionEnd_px;
   //! The GroupCell that is under the mouse pointer 
   MathCell *m_groupCellUnderPointer;
+  //! The EditorCell that contains the currently active question from maxima 
+  MathCell *m_answerCell;
   //! The last group cell maxima was working on.
   MathCell *m_lastWorkingGroup;
   /*! The currently selected string. 

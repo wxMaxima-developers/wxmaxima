@@ -95,7 +95,6 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
   TreeUndo_ActiveCell = NULL;
   m_TreeUndoMergeSubsequentEdits = false;
   m_questionPrompt = false;
-  m_answerCell = NULL;
   m_scheduleUpdateToc = false;
   m_scrolledAwayFromEvaluation = false;
   m_tree = NULL;
@@ -2502,10 +2501,10 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
   }
 
   // If we still haven't a cell to put the answer in we now create one.
-  if (m_answerCell == NULL)
+  if (m_cellPointers->m_answerCell == NULL)
   {
-    m_answerCell = new EditorCell(m_workingGroup, &m_configuration, m_cellPointers);
-    m_answerCell->SetType(MC_TYPE_INPUT);
+    m_cellPointers->m_answerCell = new EditorCell(m_workingGroup, &m_configuration, m_cellPointers);
+    m_cellPointers->m_answerCell->SetType(MC_TYPE_INPUT);
     bool autoEvaluate = false;
     if(txt == wxEmptyString)
     {
@@ -2517,10 +2516,10 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
         autoEvaluate = m_workingGroup->AutoAnswer();
       }
     }
-    m_answerCell->SetValue(txt);
-    m_answerCell->CaretToEnd();
+    m_cellPointers->m_answerCell->SetValue(txt);
+    dynamic_cast<EditorCell *>(m_cellPointers->m_answerCell)->CaretToEnd();
 
-    m_workingGroup->AppendOutput(m_answerCell);
+    m_workingGroup->AppendOutput(m_cellPointers->m_answerCell);
 
     // If we filled in an answer and "AutoAnswer" is true we issue an evaluation event here.
     if(autoEvaluate)
@@ -2533,7 +2532,7 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
   // If the user wants to be automatically scrolled to the cell evaluation takes place
   // we scroll to this cell.
   if (FollowEvaluation())
-    SetActiveCell(m_answerCell, false);
+    SetActiveCell(dynamic_cast<EditorCell *>(m_cellPointers->m_answerCell), false);
 
   RequestRedraw();
 }
@@ -2889,7 +2888,7 @@ void MathCtrl::QuestionAnswered()
 {
   if (m_questionPrompt)
     SetActiveCell(NULL);
-  m_answerCell = NULL;
+  m_cellPointers->m_answerCell = NULL;
   m_questionPrompt = false;
 }
 

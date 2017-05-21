@@ -32,6 +32,7 @@ CellPointers::CellPointers()
   m_cellMouseSelectionStartedIn = NULL;
   m_cellKeyboardSelectionStartedIn = NULL;
   m_cellSearchStartedIn = NULL;
+  m_answerCell = NULL;
   m_indexSearchStartedAt = -1;
   m_activeCell = NULL;
   m_selectionStart_px = -1;
