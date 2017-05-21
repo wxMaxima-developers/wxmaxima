@@ -32,6 +32,7 @@ CellPointers::CellPointers()
   m_cellMouseSelectionStartedIn = NULL;
   m_cellKeyboardSelectionStartedIn = NULL;
   m_cellSearchStartedIn = NULL;
+  m_answerCell = NULL;
   m_indexSearchStartedAt = -1;
   m_activeCell = NULL;
   m_selectionStart_px = -1;
@@ -39,4 +40,15 @@ CellPointers::CellPointers()
   m_groupCellUnderPointer = NULL;
   m_lastWorkingGroup = NULL;
   m_selectionString = wxEmptyString;
+  m_workingGroup = NULL;
+}
+
+bool CellPointers::ErrorList::Contains(MathCell *cell)
+{
+  for(std::list<MathCell *>::iterator it = m_errorList.begin(); it != m_errorList.end();++it)
+  {
+    if((*it)==cell)
+      return true;
+  }
+  return false;
 }

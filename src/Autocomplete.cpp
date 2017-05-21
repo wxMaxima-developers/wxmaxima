@@ -110,6 +110,7 @@ bool AutoComplete::LoadSymbols(wxString file)
   m_wordList[command].Add(wxT("wxplot_size"));
   m_wordList[command].Add(wxT("wxdraw_list"));
   m_wordList[command].Add(wxT("wxbuild_info"));
+  m_wordList[command].Add(wxT("wxbug_report"));
   m_wordList[command].Add(wxT("show_image"));
   m_wordList[tmplte].Add(wxT("show_image(<imagename>)"));
   m_wordList[command].Add(wxT("table_form"));

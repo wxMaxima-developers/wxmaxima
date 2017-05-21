@@ -327,7 +327,11 @@ void GroupCell::MarkAsDeleted()
   EditorCell *input = GetInput();
   if (input != NULL)
     input->MarkAsDeleted();
+  if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetParent() == this))
+    m_cellPointers->m_answerCell = NULL;
   m_cellPointers->m_errorList.Remove(this);
+  if (this == m_cellPointers->m_workingGroup)
+    m_cellPointers->m_workingGroup = NULL;
   if (this == m_cellPointers->m_lastWorkingGroup)
     m_cellPointers->m_lastWorkingGroup = NULL;
   if (this == m_cellPointers->m_groupCellUnderPointer)
@@ -379,7 +383,10 @@ void GroupCell::SetOutput(MathCell *output)
 {
   if (output == NULL)
     return;
-
+  
+  if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetParent() == this))
+    m_cellPointers->m_answerCell = NULL;
+  
   wxDELETE(m_output);
 
   m_output = output;
@@ -399,6 +406,9 @@ void GroupCell::RemoveOutput()
   // If there is nothing to do we can skip the rest of this action.
   if (m_output == NULL)
     return;
+
+  if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetParent() == this))
+    m_cellPointers->m_answerCell = NULL;
 
   if (!(GetGroupType() == GC_TYPE_IMAGE))
   {
@@ -922,6 +932,28 @@ void GroupCell::DrawBracket()
 // window linux, set a pen
 #endif
     dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))));
+    drawBracket = true;
+  }
+  else if (m_cellPointers->m_errorList.Contains(this))
+  {
+#if defined(__WXMAC__)
+    dc.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
+#else
+    dc.SetPen(*wxRED_PEN);
+// window linux, set a pen
+#endif
+    dc.SetBrush(*wxRED_BRUSH);
+    drawBracket = true;
+  }
+  else if ((m_cellPointers->m_answerCell) && (m_cellPointers->m_answerCell->GetParent() == this))
+  {
+#if defined(__WXMAC__)
+    dc.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
+#else
+    dc.SetPen(*wxYELLOW_PEN);
+// window linux, set a pen
+#endif
+    dc.SetBrush(*wxYELLOW_BRUSH);
     drawBracket = true;
   }
   else

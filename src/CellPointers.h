@@ -35,17 +35,47 @@ class CellPointers
 {
 public:
   CellPointers();
-  //! A list of cells containing error messages.
+  /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
+    
+    \param resortToLast true = if we already have set the cell maxima works on to NULL
+    use the last cell maxima was known to work on.
+   */
+  MathCell *GetWorkingGroup(bool resortToLast = false)
+    {
+      if ((m_workingGroup != NULL) || (!resortToLast))
+        return m_workingGroup;
+      else
+        return m_lastWorkingGroup;
+    }
+  //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
+  void SetWorkingGroup(MathCell *group)
+    {
+      if(group != NULL)
+        m_lastWorkingGroup = group;
+      m_workingGroup = group;
+    }
+  //! A list of editor cells containing error messages.
   class ErrorList
   {
   public:
     ErrorList(){};
-    std::list<MathCell *> m_errorList;
+    //! Is the list of errors empty?
     bool Empty(){return m_errorList.empty();}
+    //! Remove one specific GroupCell from the list of errors
     void Remove(MathCell * cell){m_errorList.remove(cell);}
+    //! Does the list of GroupCell with errors contain cell?
+    bool Contains(MathCell * cell);
+    //! Mark this GroupCell as containing errors
     void Add(MathCell * cell){m_errorList.push_back(cell);}
-    MathCell *Head(){if(m_errorList.empty())return NULL; else return m_errorList.front();}
-    MathCell *Tail(){if(m_errorList.empty())return NULL; else return m_errorList.back();}
+    //! The first GroupCell with error that is still in the list
+    MathCell *FirstError(){if(m_errorList.empty())return NULL; else return m_errorList.front();}
+    //! The last GroupCell with errors in the list
+    MathCell *LastError(){if(m_errorList.empty())return NULL; else return m_errorList.back();}
+    //! Empty the list of GroupCells with errors
+    void Clear(){m_errorList.clear();}
+  private:
+    //! A list of GroupCells that contain errors
+    std::list<MathCell *> m_errorList;
   };
 
   //! The list of cells maxima has complained about errors in
@@ -66,8 +96,15 @@ public:
   int m_selectionEnd_px;
   //! The GroupCell that is under the mouse pointer 
   MathCell *m_groupCellUnderPointer;
+  //! The EditorCell that contains the currently active question from maxima 
+  MathCell *m_answerCell;
   //! The last group cell maxima was working on.
   MathCell *m_lastWorkingGroup;
+  /*! The group cell maxima is currently working on.
+
+    NULL means that maxima isn't currently evaluating a cell.
+   */
+  MathCell *m_workingGroup;
   /*! The currently selected string. 
 
     Since this string is defined here it is available in every editor cell
