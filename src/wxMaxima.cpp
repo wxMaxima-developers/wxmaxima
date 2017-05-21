@@ -1000,6 +1000,7 @@ bool wxMaxima::StartMaxima(bool force)
       OpenFile(file);
     }
   }
+  m_console->m_cellPointers->m_errorList.Clear();
   return true;
 }
 
@@ -3843,10 +3844,10 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
   switch (event.GetId())
   {
     case menu_jumptoerror:
-      if(m_console->m_cellPointers->m_errorList.Head())
+      if(m_console->m_cellPointers->m_errorList.FirstError())
       {
-        m_console->SetActiveCell(dynamic_cast<GroupCell *>(m_console->m_cellPointers->m_errorList.Head())->GetEditable());
-        dynamic_cast<GroupCell *>(m_console->m_cellPointers->m_errorList.Head())->GetEditable()->CaretToEnd();
+        m_console->SetActiveCell(dynamic_cast<GroupCell *>(m_console->m_cellPointers->m_errorList.FirstError())->GetEditable());
+        dynamic_cast<GroupCell *>(m_console->m_cellPointers->m_errorList.FirstError())->GetEditable()->CaretToEnd();
       }
       break;
     case ToolBar::menu_restart_id:

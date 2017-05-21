@@ -475,7 +475,7 @@ void MathCtrl::ScrollToError()
 {
   GroupCell *ErrorCell;
   
-  ErrorCell = dynamic_cast<GroupCell *>(m_cellPointers->m_errorList.Tail());
+  ErrorCell = dynamic_cast<GroupCell *>(m_cellPointers->m_errorList.LastError());
   
   if (ErrorCell == NULL)
     ErrorCell = GetWorkingGroup();

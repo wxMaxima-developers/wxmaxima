@@ -35,18 +35,28 @@ class CellPointers
 {
 public:
   CellPointers();
-  //! A list of cells containing error messages.
+  //! A list of editor cells containing error messages.
   class ErrorList
   {
   public:
     ErrorList(){};
-    std::list<MathCell *> m_errorList;
+    //! Is the list of errors empty?
     bool Empty(){return m_errorList.empty();}
+    //! Remove one specific GroupCell from the list of errors
     void Remove(MathCell * cell){m_errorList.remove(cell);}
+    //! Does the list of GroupCell with errors contain cell?
     bool Contains(MathCell * cell);
+    //! Mark this GroupCell as containing errors
     void Add(MathCell * cell){m_errorList.push_back(cell);}
-    MathCell *Head(){if(m_errorList.empty())return NULL; else return m_errorList.front();}
-    MathCell *Tail(){if(m_errorList.empty())return NULL; else return m_errorList.back();}
+    //! The first GroupCell with error that is still in the list
+    MathCell *FirstError(){if(m_errorList.empty())return NULL; else return m_errorList.front();}
+    //! The last GroupCell with errors in the list
+    MathCell *LastError(){if(m_errorList.empty())return NULL; else return m_errorList.back();}
+    //! Empty the list of GroupCells with errors
+    void Clear(){m_errorList.clear();}
+  private:
+    //! A list of GroupCells that contain errors
+    std::list<MathCell *> m_errorList;
   };
 
   //! The list of cells maxima has complained about errors in
