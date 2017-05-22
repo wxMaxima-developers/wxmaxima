@@ -919,7 +919,7 @@ msgstr "Abbrechen"
 
 #: ../src/wxMaxima.cpp:974 ../src/wxMaximaFrame.cpp:126
 msgid "Cannot start the maxima binary"
-msgstr "Kann maxima nicht starten"
+msgstr "Kann Maxima nicht starten"
 
 #: ../src/wxMaximaFrame.cpp:1231
 msgid "Canonical (tr)"
@@ -1107,7 +1107,7 @@ msgstr "Inverse einer Matrix berechnen"
 #: ../src/wxMaximaFrame.cpp:799
 msgid "Compute the least common multiple (do load(functs) before using)"
 msgstr ""
-"Kleinste gemeinsames Vielfache berechnen (vorher load(functs) ausführen)"
+"Kleinstes gemeinsames Vielfaches berechnen (vorher load(functs) ausführen)"
 
 #: ../src/wxMaxima.cpp:5497
 msgid "Condition:"
@@ -4497,8 +4497,8 @@ msgstr "Die Seite der Gleichung, die rechts vom \"=\" steht."
 #: ../data/tips.txt:43
 msgid "The key combination Shift+Space results in a non-breakable space."
 msgstr ""
-"Die Tastenkombination Shift+Space erzeugt eine Leertaste, die nicht vom "
-"automatischen Zeilenumbruch in Zeilen gebrochen wird."
+"Die Tastenkombination Shift+Space erzeugt ein Leerzeichen, das nicht vom "
+"automatischen Zeilenumbruch in Zeilen umgebrochen wird."
 
 #: ../src/TextCell.cpp:182
 msgid ""
@@ -4522,7 +4522,7 @@ msgstr ""
 #: ../src/ConfigDialogue.cpp:256
 msgid "The number of recently opened files that is to be remembered."
 msgstr ""
-"Die Anzahl der zuletzt geöffneten Dateien, die das Programm sich merken soll."
+"Die Anzahl der zuletzt geöffneten Dateien, die sich das Programm merken soll."
 
 #: ../src/wxMaximaFrame.cpp:945
 msgid "The offline manual of maxima"
@@ -4555,7 +4555,7 @@ msgid ""
 "    W_mech:rhs(%);"
 msgstr ""
 "Der rhs() (steht für \"right hand side\")-Befehl erlaubt es, das Ergebnis "
-"einer Gleichung in dem Format zu konvertieren, das eine Funktion zurückgeben "
+"einer Gleichung in das Format zu konvertieren, das eine Funktion zurückgeben "
 "würde:\n"
 "\n"
 "    Values:[\n"
@@ -4667,7 +4667,7 @@ msgid ""
 "depending on where you want the cursor to appear afterwards."
 msgstr ""
 "Sie können Klammern um einen Ausdruck einfügen, indem Sie diesen markieren "
-"und dann entweder '(' oder ')' drücken, je nach dem wo der Cursor nach der "
+"und dann entweder '(' oder ')' drücken, je nachdem, wo der Cursor nach der "
 "Eingabe stehen soll."
 
 #: ../data/tips.txt:23
@@ -4937,7 +4937,7 @@ msgstr "Anzeige"
 
 #: ../src/ConfigDialogue.cpp:704
 msgid "Warn if an inactive window is idle"
-msgstr "Information über rechnungsende in inaktivem Fenster"
+msgstr "Information über Rechnungsende in inaktivem Fenster"
 
 #: ../src/MathParser.cpp:938 ../src/wxMaxima.cpp:2146 ../src/wxMaxima.cpp:2253
 #: ../src/wxMaxima.cpp:2427
@@ -4954,7 +4954,7 @@ msgid ""
 "is '%'. To apply the function to some other value, select it in the document "
 "before executing a menu command."
 msgstr ""
-"Werden Funktionen mit einem Argument von einem Menu ausgewählt, ist das "
+"Werden Funktionen mit einem Argument von einem Menü ausgewählt, ist das "
 "Standardargument '%'. Wollen Sie die Funktion auf einen anderen Wert "
 "anwenden, können Sie diesen im Dokument markieren und dann den Menübefehl "
 "ausführen."
@@ -4976,7 +4976,7 @@ msgid ""
 "Wrap equations exported by the \"copy as LaTeX\" feature between \\[ and \\] "
 "as equation markers"
 msgstr ""
-"Platziere Formeln, die durch \"LaTeX Kopieren\" in die Zwischenablage gelegt "
+"Platziere Formeln, die durch \"LaTeX Kopieren\" in der Zwischenablage abgelegt "
 "wurden, zwischen \\[ und \\], um TeX in den Mathematik-Modus zu versetzen."
 
 #: ../src/MathCtrl.cpp:7286
@@ -5046,7 +5046,7 @@ msgid ""
 "used for commenting and structuring your calculations."
 msgstr ""
 "Sie können verschiedene Zelltypen in ein wxMaxima-Dokument einfügen. Diese "
-"Typen finden Sie im Menü unter 'Bearbeiten->Zelle'. Beachten Sie, dass nur "
+"Typen finden Sie im Menü unter 'Bearbeiten->Zelle'. Beachten Sie, daß nur "
 "Eingabezellen von Maxima ausgewertet werden. Die anderen Zelltypen dienen "
 "dazu, das wxMaxima-Dokument zu strukturieren und mit Kommentaren zu versehen."
 
@@ -5195,7 +5195,7 @@ msgid ""
 "all=_ marks subscripts."
 msgstr ""
 "false=Erzeuge keine subscripts\n"
-"true=Automatisches Konvertieren des Text nach einem Unterstrich in "
+"true=Automatisches Konvertieren des Textes nach einem Unterstrich in "
 "tiefgestellten Text, wenn dieser eine ganze Zahl oder ein einzelner "
 "Buchstabe ist.\n"
 "all=Alles nach einem Unterstrich wird tiefgestellt."
@@ -5374,7 +5374,7 @@ msgstr "tau"
 
 #: ../src/ConfigDialogue.cpp:764
 msgid "tell sbcl to use <int>Mbytes of heap"
-msgstr "wie viele Megabytes soll sbcl als Heap nutzen?"
+msgstr "wie viele Megabytes soll SBCL als Heap nutzen?"
 
 #: ../src/wxMaximaFrame.cpp:1442
 msgid "there is no"
