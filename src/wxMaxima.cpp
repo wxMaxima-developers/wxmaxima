@@ -1612,7 +1612,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
   {
     
     // Handle comments
-    if((*ch == '*') and (lastChar == '/'))
+    if((*ch == '*') && (lastChar == '/'))
     {
       // Does the current line contain nothing but a comment?
       bool isCommentLine = false;
