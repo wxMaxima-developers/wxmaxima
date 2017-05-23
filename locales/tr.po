@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-21 09:29+0200\n"
+"POT-Creation-Date: 2017-05-23 10:05+0200\n"
 "PO-Revision-Date: 2015-12-13 23:30+0200\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -562,8 +562,8 @@ msgstr ""
 msgid "Automatic labels (%i1, %o1,...)"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1047 ../src/MathCtrl.cpp:1155
-#: ../src/wxMaximaFrame.cpp:613
+#: ../src/wxMaximaFrame.cpp:613 ../src/MathCtrl.cpp:1048
+#: ../src/MathCtrl.cpp:1156
 msgid "Automatically answer questions"
 msgstr ""
 
@@ -581,8 +581,8 @@ msgstr ""
 "belgeleri açmayabilir. (Örn: maxima C: de kurulu,  belgeniz D: de... 5.35 "
 "hata verebiliyor.)"
 
-#: ../src/MathCtrl.cpp:1048 ../src/MathCtrl.cpp:1156
-#: ../src/wxMaximaFrame.cpp:614
+#: ../src/wxMaximaFrame.cpp:614 ../src/MathCtrl.cpp:1049
+#: ../src/MathCtrl.cpp:1157
 msgid "Automatically fill in answers known from the last run"
 msgstr ""
 
@@ -666,11 +666,11 @@ msgstr "Göz at"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr "Hata: Bilinmeyen bir öge için otomatik tamamlama isteği."
 
-#: ../src/MathCtrl.cpp:2234
+#: ../src/MathCtrl.cpp:2235
 msgid "Bug: Cell left but not entered."
 msgstr "Hata: Hücre geride bırakıldı ancak (değerlendirmeye) girmedi."
 
-#: ../src/MathCtrl.cpp:6116
+#: ../src/MathCtrl.cpp:6117
 msgid "Bug: Cell with negative y position!"
 msgstr ""
 
@@ -687,11 +687,11 @@ msgstr "Hata: Başlangıç işaretçisi olmadan bir matematik sonlandrıcı işa
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
 msgstr "Hata: Başlamamış otomatik tamamlama sonlandırması bulundu"
 
-#: ../src/MathCtrl.cpp:2480
+#: ../src/MathCtrl.cpp:2481
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Hata: Bir soru alındı ama yanıtı içeren bir hücre yok"
 
-#: ../src/MathCtrl.cpp:6287
+#: ../src/MathCtrl.cpp:6288
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
@@ -699,13 +699,13 @@ msgstr ""
 "Hata: Çalışma yaprağının başladığı noktanın üstünde bir hücrenin içeriğini "
 "değiştirme istemi."
 
-#: ../src/MathCtrl.cpp:6362
+#: ../src/MathCtrl.cpp:6363
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Hata: Çalışma yaprağının başlangıcının üstünde bir hücreyi silme isteği. "
 
-#: ../src/MathCtrl.cpp:6330
+#: ../src/MathCtrl.cpp:6331
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -757,7 +757,7 @@ msgstr ""
 msgid "Bug: No last cell inside a square root!"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:2278
+#: ../src/MathCtrl.cpp:2279
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
@@ -765,7 +765,7 @@ msgstr ""
 "Hata: Bir sonraki düzenleme eylemlerinin birleştirmesinin  başlatılması yada "
 "sonlandırılması, bir satırda iki defa istendi. "
 
-#: ../src/MathCtrl.cpp:2244
+#: ../src/MathCtrl.cpp:2245
 msgid "Bug: Text changed, but no active cell."
 msgstr "Hata: Metin değişti, ancak aktif hücre yok"
 
@@ -773,13 +773,13 @@ msgstr "Hata: Metin değişti, ancak aktif hücre yok"
 msgid "Bug: Trying to append NULL to a group cell."
 msgstr "Hata: Hücresi olmayan bir hücre içeriğini yazmaya çalışıyor."
 
-#: ../src/MathCtrl.cpp:570
+#: ../src/MathCtrl.cpp:571
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 "Hata: Maxima çıktısını çalışma yaprağı dışındaki bir hücreye eklemeye "
 "çalışıyor."
 
-#: ../src/MathCtrl.cpp:2169
+#: ../src/MathCtrl.cpp:2170
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
@@ -787,29 +787,29 @@ msgstr ""
 "Hata: Geri al arabelleğinin bir bölgesinde ayrı ayrı hücreleri birleştirmeye "
 "çalışıyor Ancak ikisi arasında başka hücreler var."
 
-#: ../src/MathCtrl.cpp:7005
+#: ../src/MathCtrl.cpp:7006
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 "Hata:Yatay-çizilen imleci bir HücreGrubu içinde hareket ettirmeye çalışıyor."
 
-#: ../src/MathCtrl.cpp:2246
+#: ../src/MathCtrl.cpp:2247
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr "Hata: Hücresi olmayan bir hücre içeriğini yazmaya çalışıyor."
 
-#: ../src/MathCtrl.cpp:1690
+#: ../src/MathCtrl.cpp:1691
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 "Hata: Geçerli bir hücresi olmayan bir hücrenin içinde seçim yapmaya çalışıyor"
 
-#: ../src/MathCtrl.cpp:6331
+#: ../src/MathCtrl.cpp:6332
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Hata: Hücre içeriği değişiklikleri ve hücre ekleme durumlarının her ikisi "
 "için Geri Al eylemi."
 
-#: ../src/MathCtrl.cpp:6292 ../src/MathCtrl.cpp:6367 ../src/MathCtrl.cpp:6402
+#: ../src/MathCtrl.cpp:6293 ../src/MathCtrl.cpp:6368 ../src/MathCtrl.cpp:6403
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr "Hata: Geri al isteği çalışma yaprağı dışındaki bir hücreye ait."
 
@@ -1035,7 +1035,7 @@ msgstr "Virgülle ayrılmış x koordinatları."
 msgid "Comma separated y coordinates"
 msgstr "Virgülle ayrılmış y koordinatları"
 
-#: ../src/MathCtrl.cpp:1114
+#: ../src/MathCtrl.cpp:1115
 msgid "Comment Selection"
 msgstr "Komut Seçimi"
 
@@ -1168,8 +1168,8 @@ msgstr "Trigonometric ifadeyi kanonik yarı-doğrusal forma dönüştür"
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Trigonometric ifadeyi üstel forma dönüştür"
 
-#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:983 ../src/MathCtrl.cpp:999
-#: ../src/MathCtrl.cpp:1055 ../src/MathCtrl.cpp:1108
+#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:984 ../src/MathCtrl.cpp:1000
+#: ../src/MathCtrl.cpp:1056 ../src/MathCtrl.cpp:1109
 msgid "Copy"
 msgstr "Kopyala"
 
@@ -1181,13 +1181,13 @@ msgstr "Bir önceki girdiyi Kopyala\tCtrl+I"
 msgid "Copy Previous Output\tCtrl+U"
 msgstr "Bir önceki çıktıyı Kopyala\tCtrl+I"
 
-#: ../src/MathCtrl.cpp:1005 ../src/MathCtrl.cpp:1061
-#: ../src/wxMaximaFrame.cpp:484
+#: ../src/wxMaximaFrame.cpp:484 ../src/MathCtrl.cpp:1006
+#: ../src/MathCtrl.cpp:1062
 msgid "Copy as Image"
 msgstr "Resim olarak Kopyala"
 
-#: ../src/MathCtrl.cpp:1000 ../src/MathCtrl.cpp:1056
-#: ../src/wxMaximaFrame.cpp:477
+#: ../src/wxMaximaFrame.cpp:477 ../src/MathCtrl.cpp:1001
+#: ../src/MathCtrl.cpp:1057
 msgid "Copy as LaTeX"
 msgstr "LaTeX metni olarak Kopyala"
 
@@ -1196,12 +1196,12 @@ msgstr "LaTeX metni olarak Kopyala"
 msgid "Copy as MathML"
 msgstr "Resim olarak Kopyala"
 
-#: ../src/MathCtrl.cpp:1003 ../src/MathCtrl.cpp:1058
+#: ../src/MathCtrl.cpp:1004 ../src/MathCtrl.cpp:1059
 msgid "Copy as MathML (e.g. to word processor)"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1007 ../src/MathCtrl.cpp:1063
-#: ../src/wxMaximaFrame.cpp:488
+#: ../src/wxMaximaFrame.cpp:488 ../src/MathCtrl.cpp:1008
+#: ../src/MathCtrl.cpp:1064
 #, fuzzy
 msgid "Copy as RTF"
 msgstr "LaTeX metni olarak Kopyala"
@@ -1210,7 +1210,7 @@ msgstr "LaTeX metni olarak Kopyala"
 msgid "Copy as Text\tCtrl+Shift+C"
 msgstr "Düz metin olarak Kopyala\tCtrl+Shift+C"
 
-#: ../src/MathCtrl.cpp:1001 ../src/MathCtrl.cpp:1057
+#: ../src/MathCtrl.cpp:1002 ../src/MathCtrl.cpp:1058
 #, fuzzy
 msgid "Copy as plain text"
 msgstr "Resim olarak Kopyala"
@@ -1255,7 +1255,7 @@ msgstr "Bir önceki çıktı ile yeni bir hücre oluştur"
 msgid "Cursor"
 msgstr "İmleç"
 
-#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:1107
+#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:1108
 msgid "Cut"
 msgstr "Kes"
 
@@ -1336,7 +1336,7 @@ msgstr "Sil"
 msgid "Delete F&unction..."
 msgstr "Fonksiyonu Sil"
 
-#: ../src/MathCtrl.cpp:1010 ../src/MathCtrl.cpp:1066
+#: ../src/MathCtrl.cpp:1011 ../src/MathCtrl.cpp:1067
 msgid "Delete Selection"
 msgstr "Seçimi Sil"
 
@@ -1400,7 +1400,7 @@ msgstr "Diferansiyelini al"
 msgid "Differentiate expression"
 msgstr "İfadenin diferansiyelini al"
 
-#: ../src/MathCtrl.cpp:1083
+#: ../src/MathCtrl.cpp:1084
 msgid "Differentiate..."
 msgstr "Diferansiyelini al"
 
@@ -1432,7 +1432,7 @@ msgstr "Geçen süreyi göster"
 msgid "Divide"
 msgstr "Böl"
 
-#: ../src/MathCtrl.cpp:1116
+#: ../src/MathCtrl.cpp:1117
 msgid "Divide Cell"
 msgstr "Hücreyi Böl"
 
@@ -1636,7 +1636,7 @@ msgstr "Bütün Hücreleri Değerlendir \tCtrl+R"
 msgid "Evaluate All Visible Cells\tCtrl+R"
 msgstr "Görünen bütün hücreleri Değerlendir \tCtrl+R"
 
-#: ../src/MathCtrl.cpp:1013 ../src/wxMaximaFrame.cpp:560
+#: ../src/wxMaximaFrame.cpp:560 ../src/MathCtrl.cpp:1014
 msgid "Evaluate Cell(s)"
 msgstr "Hücre(leri) Değerlendir"
 
@@ -1645,19 +1645,19 @@ msgstr "Hücre(leri) Değerlendir"
 msgid "Evaluate Cells Above\tCtrl+Shift+P"
 msgstr "Bunun üstündeki Hücreleri Değerlendir \tCtrl+Shift+P"
 
-#: ../src/MathCtrl.cpp:1027 ../src/MathCtrl.cpp:1137
+#: ../src/MathCtrl.cpp:1028 ../src/MathCtrl.cpp:1138
 msgid "Evaluate Part\tShift+Ctrl+Enter"
 msgstr "Değerlendir kısmı\tShift+Ctrl+Enter"
 
-#: ../src/MathCtrl.cpp:1032 ../src/MathCtrl.cpp:1140
+#: ../src/MathCtrl.cpp:1033 ../src/MathCtrl.cpp:1141
 msgid "Evaluate Section\tShift+Ctrl+Enter"
 msgstr "Değerlendir  Bölümü\tShift+Ctrl+Enter"
 
-#: ../src/MathCtrl.cpp:1044 ../src/MathCtrl.cpp:1147 ../src/MathCtrl.cpp:1186
+#: ../src/MathCtrl.cpp:1045 ../src/MathCtrl.cpp:1148 ../src/MathCtrl.cpp:1187
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
 msgstr "Alt+Alt kısmı değerlendir \tShift+Ctrl+Enter"
 
-#: ../src/MathCtrl.cpp:1038 ../src/MathCtrl.cpp:1144 ../src/MathCtrl.cpp:1176
+#: ../src/MathCtrl.cpp:1039 ../src/MathCtrl.cpp:1145 ../src/MathCtrl.cpp:1177
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr "Alt kısmı Değerlendir\\tShift+Ctrl+Enter"
 
@@ -1710,7 +1710,7 @@ msgstr "Genişlet"
 msgid "Expand (tr)"
 msgstr "Genişlet (trig.)"
 
-#: ../src/MathCtrl.cpp:1079
+#: ../src/MathCtrl.cpp:1080
 msgid "Expand Expression"
 msgstr "İfadeyi Genişlet"
 
@@ -1798,7 +1798,7 @@ msgstr "Çarpan"
 msgid "Factor Complex"
 msgstr "KarmaşıkSayı Çarpanları"
 
-#: ../src/MathCtrl.cpp:1078
+#: ../src/MathCtrl.cpp:1079
 msgid "Factor Expression"
 msgstr "İfadenin Çarpanları"
 
@@ -1866,7 +1866,7 @@ msgstr "Hesapla &Limit"
 msgid "Find Minimum..."
 msgstr "Minimumu hesapla"
 
-#: ../src/MathCtrl.cpp:1075
+#: ../src/MathCtrl.cpp:1076
 msgid "Find Root..."
 msgstr "Kökünü bul"
 
@@ -2126,7 +2126,7 @@ msgstr "KarmaşıkSayı bir ifadenin sanal kısmını hesapla "
 msgid "Get the real part of complex expression"
 msgstr "KarmaşıkSayı bir ifadenin gerçek kısmını hesapla"
 
-#: ../src/MathCtrl.cpp:6382
+#: ../src/MathCtrl.cpp:6383
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2187,22 +2187,22 @@ msgstr "Hücreyi Böl"
 msgid "Hide Code Cells\tAlt+Ctrl+H"
 msgstr "Hücre Yerleştir\tAlt+Shift+C"
 
-#: ../src/MathCtrl.cpp:1165
+#: ../src/MathCtrl.cpp:1166
 #, fuzzy
 msgid "Hide Part"
 msgstr "Hücreyi Böl"
 
-#: ../src/MathCtrl.cpp:1173
+#: ../src/MathCtrl.cpp:1174
 #, fuzzy
 msgid "Hide Section"
 msgstr "Kısım"
 
-#: ../src/MathCtrl.cpp:1183
+#: ../src/MathCtrl.cpp:1184
 #, fuzzy
 msgid "Hide Subsection"
 msgstr "Alt Kısım"
 
-#: ../src/MathCtrl.cpp:1193
+#: ../src/MathCtrl.cpp:1194
 #, fuzzy
 msgid "Hide Subsubsection"
 msgstr "Alt+alt Kısım"
@@ -2211,7 +2211,7 @@ msgstr "Alt+alt Kısım"
 msgid "Hide all panes"
 msgstr "Bütün panoları gizle"
 
-#: ../src/MathCtrl.cpp:1201
+#: ../src/MathCtrl.cpp:1202
 #, fuzzy
 msgid "Hide contents"
 msgstr "Yunanca Sabitler"
@@ -2461,15 +2461,15 @@ msgstr "Alt Kısım hücresi Ekle\tCtrl+4"
 msgid "Insert S&ubsubsection Cell\tCtrl+5"
 msgstr "Alt+alt &Kısım hücresi Ekle\tCtrl+5"
 
-#: ../src/MathCtrl.cpp:1098
+#: ../src/MathCtrl.cpp:1099
 msgid "Insert Section Cell"
 msgstr "Kısım Hücresi Ekle"
 
-#: ../src/MathCtrl.cpp:1099
+#: ../src/MathCtrl.cpp:1100
 msgid "Insert Subsection Cell"
 msgstr "Alt Kısım hücresi Ekle"
 
-#: ../src/MathCtrl.cpp:1100
+#: ../src/MathCtrl.cpp:1101
 msgid "Insert Subsubsection Cell"
 msgstr "Alt+alt Kısım hücresi Ekle"
 
@@ -2477,11 +2477,11 @@ msgstr "Alt+alt Kısım hücresi Ekle"
 msgid "Insert T&itle Cell\tCtrl+2"
 msgstr "Başlık Hücresi Ekle\tCtrl+2"
 
-#: ../src/MathCtrl.cpp:1096
+#: ../src/MathCtrl.cpp:1097
 msgid "Insert Text Cell"
 msgstr "Metin Hücresi Ekle"
 
-#: ../src/MathCtrl.cpp:1097
+#: ../src/MathCtrl.cpp:1098
 msgid "Insert Title Cell"
 msgstr "Başlık Hücresi Ekle"
 
@@ -2545,7 +2545,7 @@ msgstr "İfadenin İntegralini Al"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Risch algoritmasıyla İntegralini al"
 
-#: ../src/MathCtrl.cpp:1082 ../src/wxMaximaFrame.cpp:1238
+#: ../src/wxMaximaFrame.cpp:1238 ../src/MathCtrl.cpp:1083
 msgid "Integrate..."
 msgstr "İntegralini Al..."
 
@@ -3055,7 +3055,7 @@ msgstr "Ortalama:"
 msgid "Median..."
 msgstr "Medyan..."
 
-#: ../src/MathCtrl.cpp:1016
+#: ../src/MathCtrl.cpp:1017
 msgid "Merge Cells"
 msgstr "Hücreleri birleştir"
 
@@ -3358,7 +3358,7 @@ msgid ""
 "Found unknown XML Tag name "
 msgstr "Belgenin parçaları düzgün olarak yüklenemedi!"
 
-#: ../src/ToolBar.cpp:142 ../src/MathCtrl.cpp:1093 ../src/MathCtrl.cpp:1109
+#: ../src/ToolBar.cpp:142 ../src/MathCtrl.cpp:1094 ../src/MathCtrl.cpp:1110
 msgid "Paste"
 msgstr "Yapıştır"
 
@@ -3419,7 +3419,7 @@ msgstr "2B Grafik"
 msgid "Plot 2D..."
 msgstr "2B Grafik..."
 
-#: ../src/MathCtrl.cpp:1085
+#: ../src/MathCtrl.cpp:1086
 msgid "Plot 2d..."
 msgstr "2B Grafik..."
 
@@ -3431,7 +3431,7 @@ msgstr "3B Grafik"
 msgid "Plot 3D..."
 msgstr "3B Grafik..."
 
-#: ../src/MathCtrl.cpp:1086
+#: ../src/MathCtrl.cpp:1087
 msgid "Plot 3d..."
 msgstr "3B Grafik...."
 
@@ -3617,7 +3617,7 @@ msgstr "Maxima'yı Yeniden Başlat"
 msgid "Restart maxima"
 msgstr "Maxima'yı Yeniden Başlat"
 
-#: ../src/MathCtrl.cpp:4871
+#: ../src/MathCtrl.cpp:4872
 msgid "Result"
 msgstr "Sonuç"
 
@@ -3674,7 +3674,7 @@ msgstr "Örnek:"
 msgid "Save"
 msgstr "Kaydet"
 
-#: ../src/MathCtrl.cpp:987
+#: ../src/MathCtrl.cpp:988
 msgid "Save Animation..."
 msgstr "Animasyonu Kaydet"
 
@@ -3686,7 +3686,7 @@ msgstr "Faklı Kaydet"
 msgid "Save As...\tShift+Ctrl+S"
 msgstr "Faklı Kaydet\tShift+Ctrl+S"
 
-#: ../src/MathCtrl.cpp:984
+#: ../src/MathCtrl.cpp:985
 msgid "Save Image..."
 msgstr "Resmi Kaydet..."
 
@@ -3805,7 +3805,7 @@ msgstr ""
 msgid "Select"
 msgstr "Seçim"
 
-#: ../src/MathCtrl.cpp:1094 ../src/MathCtrl.cpp:1111
+#: ../src/MathCtrl.cpp:1095 ../src/MathCtrl.cpp:1112
 msgid "Select All"
 msgstr "Tümünü Seç"
 
@@ -4018,7 +4018,7 @@ msgstr "Sadeleştir(özd)"
 msgid "Simplify (tr)"
 msgstr "Sadeleştir (trig_özd)"
 
-#: ../src/MathCtrl.cpp:1077
+#: ../src/MathCtrl.cpp:1078
 msgid "Simplify Expression"
 msgstr "İfadeyi Sadeleştir"
 
@@ -4134,7 +4134,7 @@ msgstr "En Yüksek İkinci Derece olan ADD yi Çöz"
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "ADD leri Laplace Dönüşümü ile Çöz"
 
-#: ../src/MathCtrl.cpp:1074 ../src/wxMaximaFrame.cpp:1235
+#: ../src/wxMaximaFrame.cpp:1235 ../src/MathCtrl.cpp:1075
 msgid "Solve..."
 msgstr "Çöz..."
 
@@ -4161,7 +4161,7 @@ msgstr "Özel"
 msgid "Special constants"
 msgstr "Özel Sabitler"
 
-#: ../src/MathCtrl.cpp:988
+#: ../src/MathCtrl.cpp:989
 msgid "Start Animation"
 msgstr "Animasyonu Başlat"
 
@@ -4243,7 +4243,7 @@ msgstr "Yerine koy..."
 msgid "Substitute"
 msgstr "Yerine koy"
 
-#: ../src/MathCtrl.cpp:1080 ../src/wxMaximaFrame.cpp:892
+#: ../src/wxMaximaFrame.cpp:892 ../src/MathCtrl.cpp:1081
 msgid "Substitute..."
 msgstr "Yerine koy..."
 
@@ -4507,7 +4507,7 @@ msgstr "BüyükKayanSayı ya"
 msgid "To &Float"
 msgstr "KayanSayıya"
 
-#: ../src/MathCtrl.cpp:1072
+#: ../src/MathCtrl.cpp:1073
 msgid "To Float"
 msgstr "KayanSayıya"
 
@@ -4598,12 +4598,12 @@ msgstr "Çeviri:"
 msgid "Transpose a matrix"
 msgstr "Transpoze Matris"
 
-#: ../src/MathCtrl.cpp:6281
+#: ../src/MathCtrl.cpp:6282
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 "Hücre (değerlendirlmesi) başlatılmadan bir eylemi geri almaya çalışıyor."
 
-#: ../src/MathCtrl.cpp:6349
+#: ../src/MathCtrl.cpp:6350
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Birşeyi geri almaya çalışıyor ancak geri alacak bir şey yok."
 
@@ -4680,26 +4680,26 @@ msgstr "Klasörlenmiş bütün kısımları Klasörden Çıkar"
 msgid "Unhide"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1162
+#: ../src/MathCtrl.cpp:1163
 msgid "Unhide Part"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:1170
+#: ../src/MathCtrl.cpp:1171
 #, fuzzy
 msgid "Unhide Section"
 msgstr "Kısım"
 
-#: ../src/MathCtrl.cpp:1180
+#: ../src/MathCtrl.cpp:1181
 #, fuzzy
 msgid "Unhide Subsection"
 msgstr "Alt Kısım"
 
-#: ../src/MathCtrl.cpp:1190
+#: ../src/MathCtrl.cpp:1191
 #, fuzzy
 msgid "Unhide Subsubsection"
 msgstr "Alt+alt Kısım"
 
-#: ../src/MathCtrl.cpp:1198
+#: ../src/MathCtrl.cpp:1199
 #, fuzzy
 msgid "Unhide contents"
 msgstr "Yunanca Sabitler"
@@ -4846,7 +4846,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: ../src/MathCtrl.cpp:7286
+#: ../src/MathCtrl.cpp:7287
 msgid "Wrapped search"
 msgstr ""
 
@@ -4980,14 +4980,14 @@ msgstr "[Kaydedilmemiş*]"
 msgid "[%i digits]"
 msgstr "[%i basamaklar]"
 
-#: ../src/MathCtrl.cpp:4818
+#: ../src/MathCtrl.cpp:4819
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr ""
 "_%d.gif\"  alt=\"Hareketli çizim (Animasyon)\" style=\"maks-genişlik:90%%;\" "
 ">\n"
 
-#: ../src/MathCtrl.cpp:4954
+#: ../src/MathCtrl.cpp:4955
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr ""

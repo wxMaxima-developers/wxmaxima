@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-21 09:29+0200\n"
+"POT-Creation-Date: 2017-05-23 10:05+0200\n"
 "PO-Revision-Date: 2017-03-12 10:20+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -561,8 +561,8 @@ msgstr "Автовідступ у нових рядках"
 msgid "Automatic labels (%i1, %o1,...)"
 msgstr "Автоматичні мітки (%i1, %o1,...)"
 
-#: ../src/MathCtrl.cpp:1047 ../src/MathCtrl.cpp:1155
-#: ../src/wxMaximaFrame.cpp:613
+#: ../src/wxMaximaFrame.cpp:613 ../src/MathCtrl.cpp:1048
+#: ../src/MathCtrl.cpp:1156
 msgid "Automatically answer questions"
 msgstr ""
 
@@ -580,8 +580,8 @@ msgstr ""
 "знайти власний шлях до встановлення maxima 5.35, якщо документ зберігається "
 "на диску, відмінному від того, куди встановлено maxima."
 
-#: ../src/MathCtrl.cpp:1048 ../src/MathCtrl.cpp:1156
-#: ../src/wxMaximaFrame.cpp:614
+#: ../src/wxMaximaFrame.cpp:614 ../src/MathCtrl.cpp:1049
+#: ../src/MathCtrl.cpp:1157
 msgid "Automatically fill in answers known from the last run"
 msgstr ""
 
@@ -665,11 +665,11 @@ msgstr "Перегляд"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr "Вада: надіслано запит щодо автодоповнення для невідомого типу записів."
 
-#: ../src/MathCtrl.cpp:2234
+#: ../src/MathCtrl.cpp:2235
 msgid "Bug: Cell left but not entered."
 msgstr "Вада: полишено комірку без введення даних."
 
-#: ../src/MathCtrl.cpp:6116
+#: ../src/MathCtrl.cpp:6117
 msgid "Bug: Cell with negative y position!"
 msgstr ""
 
@@ -689,24 +689,24 @@ msgstr ""
 "Вада: знайдено завершальні символи автоматичного доповнення, але не знайдено "
 "початкових."
 
-#: ../src/MathCtrl.cpp:2480
+#: ../src/MathCtrl.cpp:2481
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Вада: маємо питання, але не маємо комірки для відповіді на нього"
 
-#: ../src/MathCtrl.cpp:6287
+#: ../src/MathCtrl.cpp:6288
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Вада: отримано запит на зміну вмісту комірки над початком робочого аркуша."
 
-#: ../src/MathCtrl.cpp:6362
+#: ../src/MathCtrl.cpp:6363
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Вада: отримано запит на вилучення комірки над початком робочого аркуша."
 
-#: ../src/MathCtrl.cpp:6330
+#: ../src/MathCtrl.cpp:6331
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -761,7 +761,7 @@ msgstr "Вада: немає останньої комірки у дужках!"
 msgid "Bug: No last cell inside a square root!"
 msgstr "Вада: немає останньої комірки у квадратному корені!"
 
-#: ../src/MathCtrl.cpp:2278
+#: ../src/MathCtrl.cpp:2279
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
@@ -769,7 +769,7 @@ msgstr ""
 "Вада: надіслано запит на початок і завершення об’єднання послідовних дій з "
 "редагування два рази поспіль."
 
-#: ../src/MathCtrl.cpp:2244
+#: ../src/MathCtrl.cpp:2245
 msgid "Bug: Text changed, but no active cell."
 msgstr "Вада: змінено текст, але немає активної комірки."
 
@@ -777,13 +777,13 @@ msgstr "Вада: змінено текст, але немає активної 
 msgid "Bug: Trying to append NULL to a group cell."
 msgstr "Вада: спроба дописування NULL до комірки групи."
 
-#: ../src/MathCtrl.cpp:570
+#: ../src/MathCtrl.cpp:571
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 "Вада: спроба дописати виведені maxima дані до комірки поза межами робочого "
 "аркуша."
 
-#: ../src/MathCtrl.cpp:2169
+#: ../src/MathCtrl.cpp:2170
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
@@ -791,28 +791,28 @@ msgstr ""
 "Вада: спроба об’єднати окремі комірки додає область у буфері скасування, але "
 "між цими комірками є інші комірки."
 
-#: ../src/MathCtrl.cpp:7005
+#: ../src/MathCtrl.cpp:7006
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 "Вада: спроба пересунути горизонтальний курсор до місця усередині GroupCell."
 
-#: ../src/MathCtrl.cpp:2246
+#: ../src/MathCtrl.cpp:2247
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr "Вада: спроба запису зміни вмісту комірки без визначення комірки."
 
-#: ../src/MathCtrl.cpp:1690
+#: ../src/MathCtrl.cpp:1691
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr "Вада: спроба позначити щось у комірці без визначення поточної комірки"
 
-#: ../src/MathCtrl.cpp:6331
+#: ../src/MathCtrl.cpp:6332
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Вада: дія зі скасування із одночасною зміною вмісту комірки і додаванням "
 "комірки."
 
-#: ../src/MathCtrl.cpp:6292 ../src/MathCtrl.cpp:6367 ../src/MathCtrl.cpp:6402
+#: ../src/MathCtrl.cpp:6293 ../src/MathCtrl.cpp:6368 ../src/MathCtrl.cpp:6403
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Вада: запит щодо скасування дій із коміркою поза межами робочого аркуша."
@@ -1037,7 +1037,7 @@ msgstr "Список координат за віссю x, відокремле�
 msgid "Comma separated y coordinates"
 msgstr "Список координат за віссю y, відокремлених комами"
 
-#: ../src/MathCtrl.cpp:1114
+#: ../src/MathCtrl.cpp:1115
 msgid "Comment Selection"
 msgstr "Закоментувати позначене"
 
@@ -1173,8 +1173,8 @@ msgstr "Перетворити тригонометричний вираз в к
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Перетворювати тригонометричні функції у експоненційну форму"
 
-#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:983 ../src/MathCtrl.cpp:999
-#: ../src/MathCtrl.cpp:1055 ../src/MathCtrl.cpp:1108
+#: ../src/ToolBar.cpp:139 ../src/MathCtrl.cpp:984 ../src/MathCtrl.cpp:1000
+#: ../src/MathCtrl.cpp:1056 ../src/MathCtrl.cpp:1109
 msgid "Copy"
 msgstr "Копіювати"
 
@@ -1186,13 +1186,13 @@ msgstr "Копіювати попередню введену команду\tCtr
 msgid "Copy Previous Output\tCtrl+U"
 msgstr "Копіювати попередній результат\tCtrl+U"
 
-#: ../src/MathCtrl.cpp:1005 ../src/MathCtrl.cpp:1061
-#: ../src/wxMaximaFrame.cpp:484
+#: ../src/wxMaximaFrame.cpp:484 ../src/MathCtrl.cpp:1006
+#: ../src/MathCtrl.cpp:1062
 msgid "Copy as Image"
 msgstr "Копіювати як зображення"
 
-#: ../src/MathCtrl.cpp:1000 ../src/MathCtrl.cpp:1056
-#: ../src/wxMaximaFrame.cpp:477
+#: ../src/wxMaximaFrame.cpp:477 ../src/MathCtrl.cpp:1001
+#: ../src/MathCtrl.cpp:1057
 msgid "Copy as LaTeX"
 msgstr "Копіювати як LaTeX"
 
@@ -1200,12 +1200,12 @@ msgstr "Копіювати як LaTeX"
 msgid "Copy as MathML"
 msgstr "Копіювати як MathML"
 
-#: ../src/MathCtrl.cpp:1003 ../src/MathCtrl.cpp:1058
+#: ../src/MathCtrl.cpp:1004 ../src/MathCtrl.cpp:1059
 msgid "Copy as MathML (e.g. to word processor)"
 msgstr "Копіювати як MathML (наприклад для текстових процесорів)"
 
-#: ../src/MathCtrl.cpp:1007 ../src/MathCtrl.cpp:1063
-#: ../src/wxMaximaFrame.cpp:488
+#: ../src/wxMaximaFrame.cpp:488 ../src/MathCtrl.cpp:1008
+#: ../src/MathCtrl.cpp:1064
 #, fuzzy
 msgid "Copy as RTF"
 msgstr "Копіювати як LaTeX"
@@ -1214,7 +1214,7 @@ msgstr "Копіювати як LaTeX"
 msgid "Copy as Text\tCtrl+Shift+C"
 msgstr "Копіювати як текст\tCtrl+Shift+C"
 
-#: ../src/MathCtrl.cpp:1001 ../src/MathCtrl.cpp:1057
+#: ../src/MathCtrl.cpp:1002 ../src/MathCtrl.cpp:1058
 msgid "Copy as plain text"
 msgstr "Копіювати як звичайний текст"
 
@@ -1262,7 +1262,7 @@ msgstr "Створити нову комірку з попереднім рез�
 msgid "Cursor"
 msgstr "Курсор"
 
-#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:1107
+#: ../src/ToolBar.cpp:136 ../src/MathCtrl.cpp:1108
 msgid "Cut"
 msgstr "Вирізати"
 
@@ -1340,7 +1340,7 @@ msgstr "Вилучити"
 msgid "Delete F&unction..."
 msgstr "Вилучити ф&ункцію…"
 
-#: ../src/MathCtrl.cpp:1010 ../src/MathCtrl.cpp:1066
+#: ../src/MathCtrl.cpp:1011 ../src/MathCtrl.cpp:1067
 msgid "Delete Selection"
 msgstr "Вилучити позначене"
 
@@ -1404,7 +1404,7 @@ msgstr "Продиференціювати"
 msgid "Differentiate expression"
 msgstr "Продиференціювати вираз"
 
-#: ../src/MathCtrl.cpp:1083
+#: ../src/MathCtrl.cpp:1084
 msgid "Differentiate..."
 msgstr "Продиференціювати…"
 
@@ -1436,7 +1436,7 @@ msgstr "Показати час, витрачений на обчислення"
 msgid "Divide"
 msgstr "Ділити"
 
-#: ../src/MathCtrl.cpp:1116
+#: ../src/MathCtrl.cpp:1117
 msgid "Divide Cell"
 msgstr "Ділити комірку"
 
@@ -1641,7 +1641,7 @@ msgstr "Обчислити усі комірки\tCtrl+Shift+R"
 msgid "Evaluate All Visible Cells\tCtrl+R"
 msgstr "Обчислити усі видимі комірки\tCtrl+R"
 
-#: ../src/MathCtrl.cpp:1013 ../src/wxMaximaFrame.cpp:560
+#: ../src/wxMaximaFrame.cpp:560 ../src/MathCtrl.cpp:1014
 msgid "Evaluate Cell(s)"
 msgstr "Обчислити комірки"
 
@@ -1649,19 +1649,19 @@ msgstr "Обчислити комірки"
 msgid "Evaluate Cells Above\tCtrl+Shift+P"
 msgstr "Обчислити комірку вище\tCtrl+Shift+P"
 
-#: ../src/MathCtrl.cpp:1027 ../src/MathCtrl.cpp:1137
+#: ../src/MathCtrl.cpp:1028 ../src/MathCtrl.cpp:1138
 msgid "Evaluate Part\tShift+Ctrl+Enter"
 msgstr "Обчислити частину\tShift+Ctrl+Enter"
 
-#: ../src/MathCtrl.cpp:1032 ../src/MathCtrl.cpp:1140
+#: ../src/MathCtrl.cpp:1033 ../src/MathCtrl.cpp:1141
 msgid "Evaluate Section\tShift+Ctrl+Enter"
 msgstr "Обчислити розділ\tShift+Ctrl+Enter"
 
-#: ../src/MathCtrl.cpp:1044 ../src/MathCtrl.cpp:1147 ../src/MathCtrl.cpp:1186
+#: ../src/MathCtrl.cpp:1045 ../src/MathCtrl.cpp:1148 ../src/MathCtrl.cpp:1187
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
 msgstr "Обчислити підпідрозділ\tShift+Ctrl+Enter"
 
-#: ../src/MathCtrl.cpp:1038 ../src/MathCtrl.cpp:1144 ../src/MathCtrl.cpp:1176
+#: ../src/MathCtrl.cpp:1039 ../src/MathCtrl.cpp:1145 ../src/MathCtrl.cpp:1177
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr "Обчислити підрозділ\tShift+Ctrl+Enter"
 
@@ -1713,7 +1713,7 @@ msgstr "Розкрити"
 msgid "Expand (tr)"
 msgstr "Розкрити (триг)"
 
-#: ../src/MathCtrl.cpp:1079
+#: ../src/MathCtrl.cpp:1080
 msgid "Expand Expression"
 msgstr "Розкрити вираз"
 
@@ -1800,7 +1800,7 @@ msgstr "Розкласти на множники"
 msgid "Factor Complex"
 msgstr "Розкласти на комплексні множники"
 
-#: ../src/MathCtrl.cpp:1078
+#: ../src/MathCtrl.cpp:1079
 msgid "Factor Expression"
 msgstr "Розкласти на множники вираз"
 
@@ -1868,7 +1868,7 @@ msgstr "Знайти &границю…"
 msgid "Find Minimum..."
 msgstr "Знайти мінімум…"
 
-#: ../src/MathCtrl.cpp:1075
+#: ../src/MathCtrl.cpp:1076
 msgid "Find Root..."
 msgstr "Знайти корінь…"
 
@@ -2130,7 +2130,7 @@ msgstr "Знайти уявну частину комплексного вира
 msgid "Get the real part of complex expression"
 msgstr "Знайти дійсну частину комплексного виразу"
 
-#: ../src/MathCtrl.cpp:6382
+#: ../src/MathCtrl.cpp:6383
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2186,19 +2186,19 @@ msgstr "Приховати код"
 msgid "Hide Code Cells\tAlt+Ctrl+H"
 msgstr "Приховати комірки з кодом\tAlt+Ctrl+H"
 
-#: ../src/MathCtrl.cpp:1165
+#: ../src/MathCtrl.cpp:1166
 msgid "Hide Part"
 msgstr "Приховати частину"
 
-#: ../src/MathCtrl.cpp:1173
+#: ../src/MathCtrl.cpp:1174
 msgid "Hide Section"
 msgstr "Приховати розділ"
 
-#: ../src/MathCtrl.cpp:1183
+#: ../src/MathCtrl.cpp:1184
 msgid "Hide Subsection"
 msgstr "Приховати підрозділ"
 
-#: ../src/MathCtrl.cpp:1193
+#: ../src/MathCtrl.cpp:1194
 msgid "Hide Subsubsection"
 msgstr "Приховати підпідрозділ"
 
@@ -2206,7 +2206,7 @@ msgstr "Приховати підпідрозділ"
 msgid "Hide all panes"
 msgstr "Приховати усі панелі"
 
-#: ../src/MathCtrl.cpp:1201
+#: ../src/MathCtrl.cpp:1202
 msgid "Hide contents"
 msgstr "Приховати вміст"
 
@@ -2483,15 +2483,15 @@ msgstr "Вставити комірку п&ідрозділу\tCtrl+4"
 msgid "Insert S&ubsubsection Cell\tCtrl+5"
 msgstr "Вставити комірку підпі&дрозділу\tCtrl+5"
 
-#: ../src/MathCtrl.cpp:1098
+#: ../src/MathCtrl.cpp:1099
 msgid "Insert Section Cell"
 msgstr "Вставити комірку розділу"
 
-#: ../src/MathCtrl.cpp:1099
+#: ../src/MathCtrl.cpp:1100
 msgid "Insert Subsection Cell"
 msgstr "Вставити комірку підрозділу"
 
-#: ../src/MathCtrl.cpp:1100
+#: ../src/MathCtrl.cpp:1101
 msgid "Insert Subsubsection Cell"
 msgstr "Вставити комірку підпідрозділу"
 
@@ -2499,11 +2499,11 @@ msgstr "Вставити комірку підпідрозділу"
 msgid "Insert T&itle Cell\tCtrl+2"
 msgstr "Вставити комірку з&аголовка\tCtrl+2"
 
-#: ../src/MathCtrl.cpp:1096
+#: ../src/MathCtrl.cpp:1097
 msgid "Insert Text Cell"
 msgstr "Вставити текстову комірку (коментар)"
 
-#: ../src/MathCtrl.cpp:1097
+#: ../src/MathCtrl.cpp:1098
 msgid "Insert Title Cell"
 msgstr "Вставити комірку заголовка"
 
@@ -2567,7 +2567,7 @@ msgstr "Проінтегрувати вираз"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Проінтегрувати вираз за допомогою алгоритму Ріша"
 
-#: ../src/MathCtrl.cpp:1082 ../src/wxMaximaFrame.cpp:1238
+#: ../src/wxMaximaFrame.cpp:1238 ../src/MathCtrl.cpp:1083
 msgid "Integrate..."
 msgstr "Проінтегрувати…"
 
@@ -3143,7 +3143,7 @@ msgstr "Середнє:"
 msgid "Median..."
 msgstr "Медіана…"
 
-#: ../src/MathCtrl.cpp:1016
+#: ../src/MathCtrl.cpp:1017
 msgid "Merge Cells"
 msgstr "Об’єднати комірки"
 
@@ -3449,7 +3449,7 @@ msgstr ""
 "Частину документа не вдалося завантажити:\n"
 "Виявлено невідомий теґ XML із назвою "
 
-#: ../src/ToolBar.cpp:142 ../src/MathCtrl.cpp:1093 ../src/MathCtrl.cpp:1109
+#: ../src/ToolBar.cpp:142 ../src/MathCtrl.cpp:1094 ../src/MathCtrl.cpp:1110
 msgid "Paste"
 msgstr "Вставити"
 
@@ -3510,7 +3510,7 @@ msgstr "Двовимірний графік"
 msgid "Plot 2D..."
 msgstr "Двовимірний графік…"
 
-#: ../src/MathCtrl.cpp:1085
+#: ../src/MathCtrl.cpp:1086
 msgid "Plot 2d..."
 msgstr "Двовимірний графік…"
 
@@ -3522,7 +3522,7 @@ msgstr "Тривимірний графік"
 msgid "Plot 3D..."
 msgstr "Тривимірний графік…"
 
-#: ../src/MathCtrl.cpp:1086
+#: ../src/MathCtrl.cpp:1087
 msgid "Plot 3d..."
 msgstr "Тривимірний графік…"
 
@@ -3706,7 +3706,7 @@ msgstr "Перезапустити Maxima"
 msgid "Restart maxima"
 msgstr "Перезапустити maxima"
 
-#: ../src/MathCtrl.cpp:4871
+#: ../src/MathCtrl.cpp:4872
 msgid "Result"
 msgstr "Результат"
 
@@ -3763,7 +3763,7 @@ msgstr "Вибірка:"
 msgid "Save"
 msgstr "Зберегти"
 
-#: ../src/MathCtrl.cpp:987
+#: ../src/MathCtrl.cpp:988
 msgid "Save Animation..."
 msgstr "Зберегти анімацію…"
 
@@ -3775,7 +3775,7 @@ msgstr "Зберегти як"
 msgid "Save As...\tShift+Ctrl+S"
 msgstr "Зберегти як\tShift+Ctrl+S"
 
-#: ../src/MathCtrl.cpp:984
+#: ../src/MathCtrl.cpp:985
 msgid "Save Image..."
 msgstr "Зберегти зображення…"
 
@@ -3893,7 +3893,7 @@ msgstr ""
 msgid "Select"
 msgstr "Вибрати"
 
-#: ../src/MathCtrl.cpp:1094 ../src/MathCtrl.cpp:1111
+#: ../src/MathCtrl.cpp:1095 ../src/MathCtrl.cpp:1112
 msgid "Select All"
 msgstr "Позначити все"
 
@@ -4104,7 +4104,7 @@ msgstr "Спростити (рац)"
 msgid "Simplify (tr)"
 msgstr "Спростити (триг)"
 
-#: ../src/MathCtrl.cpp:1077
+#: ../src/MathCtrl.cpp:1078
 msgid "Simplify Expression"
 msgstr "Спростити вираз"
 
@@ -4222,7 +4222,7 @@ msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr ""
 "Розв’язати звичайне диференціальне рівняння за допомогою перетворення Лапласа"
 
-#: ../src/MathCtrl.cpp:1074 ../src/wxMaximaFrame.cpp:1235
+#: ../src/wxMaximaFrame.cpp:1235 ../src/MathCtrl.cpp:1075
 msgid "Solve..."
 msgstr "Розв’язати…"
 
@@ -4250,7 +4250,7 @@ msgstr "Додатково"
 msgid "Special constants"
 msgstr "Додаткові сталі"
 
-#: ../src/MathCtrl.cpp:988
+#: ../src/MathCtrl.cpp:989
 msgid "Start Animation"
 msgstr "Почати анімацію"
 
@@ -4332,7 +4332,7 @@ msgstr "Підставити…"
 msgid "Substitute"
 msgstr "Підставити"
 
-#: ../src/MathCtrl.cpp:1080 ../src/wxMaximaFrame.cpp:892
+#: ../src/wxMaximaFrame.cpp:892 ../src/MathCtrl.cpp:1081
 msgid "Substitute..."
 msgstr "Підставити…"
 
@@ -4625,7 +4625,7 @@ msgstr "У число &підвищеної точності з рухомою �
 msgid "To &Float"
 msgstr "У число з &рухомою крапкою"
 
-#: ../src/MathCtrl.cpp:1072
+#: ../src/MathCtrl.cpp:1073
 msgid "To Float"
 msgstr "У число з рухомою крапкою"
 
@@ -4714,11 +4714,11 @@ msgstr "Переклад"
 msgid "Transpose a matrix"
 msgstr "Транспонувати матрицю"
 
-#: ../src/MathCtrl.cpp:6281
+#: ../src/MathCtrl.cpp:6282
 msgid "Trying to undo an action without starting cell."
 msgstr "Спроба скасування дії без визначення початкової комірки."
 
-#: ../src/MathCtrl.cpp:6349
+#: ../src/MathCtrl.cpp:6350
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Намагаємося скасувати дію, але дія зі скасування є порожньою."
 
@@ -4794,23 +4794,23 @@ msgstr "Розгорнути всі згорнути розділи"
 msgid "Unhide"
 msgstr "Скасувати приховування"
 
-#: ../src/MathCtrl.cpp:1162
+#: ../src/MathCtrl.cpp:1163
 msgid "Unhide Part"
 msgstr "Скасувати приховування частини"
 
-#: ../src/MathCtrl.cpp:1170
+#: ../src/MathCtrl.cpp:1171
 msgid "Unhide Section"
 msgstr "Скасувати приховування розділу"
 
-#: ../src/MathCtrl.cpp:1180
+#: ../src/MathCtrl.cpp:1181
 msgid "Unhide Subsection"
 msgstr "Скасувати приховування підрозділу"
 
-#: ../src/MathCtrl.cpp:1190
+#: ../src/MathCtrl.cpp:1191
 msgid "Unhide Subsubsection"
 msgstr "Скасувати приховування підпідрозділ"
 
-#: ../src/MathCtrl.cpp:1198
+#: ../src/MathCtrl.cpp:1199
 msgid "Unhide contents"
 msgstr "Скасувати приховування змісту"
 
@@ -4957,7 +4957,7 @@ msgstr ""
 "Брати рівняння, експортовані за допомогою пункту «Копіювати як LaTeX», у "
 "позначення рівняння, \\[ на початку і \\] наприкінці"
 
-#: ../src/MathCtrl.cpp:7286
+#: ../src/MathCtrl.cpp:7287
 msgid "Wrapped search"
 msgstr "Циклічний пошук"
 
@@ -5097,12 +5097,12 @@ msgstr "[ не збережено* ]"
 msgid "[%i digits]"
 msgstr "[%i цифр]"
 
-#: ../src/MathCtrl.cpp:4818
+#: ../src/MathCtrl.cpp:4819
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Анімована діаграма\" style=\"max-width:90%%;\" >\n"
 
-#: ../src/MathCtrl.cpp:4954
+#: ../src/MathCtrl.cpp:4955
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Анімована діаграма\" style=\"max-width:90%%;\" >"
