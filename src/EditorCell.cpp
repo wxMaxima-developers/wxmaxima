@@ -36,7 +36,7 @@
 
 #define ESC_CHAR wxT('\xA6')
 
-const wxString operators = wxT("+-*/^:=#'!\";$");
+const wxString operators = wxT("+-*/^:=#'!;$");
 
 EditorCell::EditorCell(MathCell *parent, Configuration **config,
                        CellPointers *cellPointers, wxString text) : MathCell(parent, config)
@@ -1050,26 +1050,30 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
   std::list<int> indentChars;
   indentChars.push_back(0);
 
+  wxString::const_iterator it = m_text.begin();
+
   // Determine how many parenthesis this cell opens or closes before the point
   long pos = 0;
-  while ((pos < (long) text.Length()) && (pos < positionOfCaret))
+  while ((pos < positionOfCaret) && (it != m_text.end()))
   {
-    wxChar ch = text[pos];
+    wxChar ch = *it;
     if (ch == wxT('\\'))
     {
-      pos++;
+      ++pos;++it;
       continue;
     }
 
     if (ch == wxT('\"'))
     {
-      pos++;
+      ++pos;++it;
       while (
-              (pos < (long) text.Length()) &&
+              (it != m_text.end()) &&
               (pos < positionOfCaret) &&
-              (text[pos] != wxT('\"'))
+              (*it != wxT('\"'))
               )
-        pos++;
+      {
+        ++pos;++it;
+      }
     }
 
     if (
@@ -1130,7 +1134,15 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
     // A "do" or an "if" increases the current indentation level by a tab.
     if ((!wxIsalnum(ch)) || (pos == 0))
     {
-      wxString rest = text.Right(text.Length() - pos - 1);
+      // Concatenate the current with the following two characters
+      wxString::const_iterator it2(it);
+      wxString rest(*it2);
+      ++it2;
+      rest += wxString(*it2);
+      ++it2;
+      rest += wxString(*it2);
+
+      // Handle a "do"
       if (rest.StartsWith(wxT("do")) && ((rest.Length() < 3) || (!wxIsalnum(rest[2]))))
       {
         int lst = 0;
@@ -1141,6 +1153,8 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
         }
         indentChars.push_back(lst + 4);
       }
+
+      // Handle a "if"
       if (rest.StartsWith(wxT("if")) && ((rest.Length() < 3) || (!wxIsalnum(rest[2]))))
       {
         int lst = 0;
@@ -1153,10 +1167,10 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
       }
     }
 
-    pos++;
+    ++pos;++it;
   }
 
-  if ((long) text.Length() > positionOfCaret)
+  if (it != m_text.end())
   {
     if (
             (text[positionOfCaret] == wxT(')')) ||
@@ -1175,7 +1189,17 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
   else
     retval = indentChars.back();
 
-  wxString rightOfCursor = text.Right(text.Length() - positionOfCaret - 1);
+  // A fast way to get the next 5 characters
+  wxString rightOfCursor;
+  for(int i=0; i<5; i++)
+  {
+    if (it == m_text.end())
+      break;
+    
+    rightOfCursor += *it;
+    ++it;
+  }
+  
   rightOfCursor.Trim();
   rightOfCursor.Trim(false);
   if (
@@ -3277,30 +3301,39 @@ bool EditorCell::IsAlphaNum(wxChar ch)
   return IsAlpha(ch) || IsNum(ch);
 }
 
-wxArrayString EditorCell::StringToTokens(wxString string)
+wxArrayString EditorCell::StringToTokens(wxString text)
 {
-  size_t size = string.Length();
-  size_t pos = 0;
   wxArrayString retval;
   wxString token;
-
-  while (pos < size)
+  
+  wxString::const_iterator it = text.begin();
+  
+  while (it != text.end())
   {
-    wxChar Ch = string.GetChar(pos);
+    // Determine the current char and the one that will follow it
+    wxChar Ch = *it;
+    wxString::const_iterator it2(it);
+    it2++;
+    wxChar nextChar;
+
+    if(it2 != text.end())
+      nextChar = *it2;
+    else
+      nextChar = wxT(' ');
 
     // Check for newline characters (hard+soft line break)
     if ((Ch == wxT('\n')) || (Ch == wxT('\r')))
     {
       if (token != wxEmptyString)
       {
-        retval.Add(token + wxT("d"));
+        retval.Add(token);
         token = wxEmptyString;
       }
-      retval.Add(wxT("\nd"));
-      pos++;
+      retval.Add(wxT("\n"));
+      it++;
     }
-      // A minus and a plus are special tokens as they can be both
-      // operators or part of a number.
+    // A minus and a plus are special tokens as they can be both
+    // operators or part of a number.
     else if (
             (Ch == wxT('+')) ||
             (Ch == wxT('-')) ||
@@ -3308,118 +3341,144 @@ wxArrayString EditorCell::StringToTokens(wxString string)
             )
     {
       if (token != wxEmptyString)
-        retval.Add(token + wxT("d"));
+        retval.Add(token);
       token = wxString(Ch);
-      retval.Add(token + wxT("d"));
-      pos++;
+      retval.Add(token);
+      it++;
       token = wxEmptyString;
     }
-      // Check for comments
-    else if ((string.Length() > pos + 1) &&
-             ((Ch == '/' && ((string.GetChar(pos + 1) == '*') || (string.GetChar(pos + 1) == wxT('\xB7')))) ||
-              (((Ch == wxT('*')) || (Ch == wxT('\xB7'))) && ((string.GetChar(pos + 1) == wxT('/'))))))
+    // Check for "comment start" or "comment end" markers
+    else if (((Ch == '/') && ((nextChar == wxT('*')) || (nextChar == wxT('\xB7')))) ||
+             (((Ch == wxT('*')) || (Ch == wxT('\xB7'))) && ((nextChar == wxT('/')))))
     {
       if (token != wxEmptyString)
       {
-        retval.Add(token + wxT("d"));
+        retval.Add(token);
         token = wxEmptyString;
       }
-      retval.Add(string.SubString(pos, pos + 1) + wxT("d"));
-      pos = pos + 2;
+      retval.Add(wxString(Ch) + nextChar);
+      ++it;
+      if(it != text.end())
+      {
+        ++it;
+      }
     }
 
-      // Find operators that starts at the current position
+    // Find operators that starts at the current position
     else if (operators.Find(Ch) != wxNOT_FOUND)
     {
       if (token != wxEmptyString)
       {
-        retval.Add(token + wxT("d"));
+        retval.Add(token);
         token = wxEmptyString;
       }
-      retval.Add(wxString(string.GetChar(pos++)) + wxT("d"));
+      retval.Add(wxString(Ch));
+      ++it;
     }
-
-      // Find a keyword that starts at the current position
+    // Find a keyword that starts at the current position
     else if ((IsAlpha(Ch)) || (Ch == wxT('\\')))
     {
       if (token != wxEmptyString)
       {
-        retval.Add(token + wxT("d"));
+        retval.Add(token);
         token = wxEmptyString;
       }
 
-      while ((pos < size) && IsAlphaNum(string.GetChar(pos)))
+      while ((it != text.end()) && IsAlphaNum(Ch = *it))
       {
-        wxChar ch = string.GetChar(pos);
-        token += ch;
+        token += Ch;
 
-        if (ch == wxT('\\'))
+        if (Ch == wxT('\\'))
         {
-          pos++;
-          if (pos < size)
+          ++it;
+          if (it != text.end())
           {
-            ch = string.GetChar(pos);
-            if (ch != wxT('\n'))
-              token += string.GetChar(pos);
+            Ch = *it;
+            if (Ch != wxT('\n'))
+              token += Ch;
             else
             {
-              retval.Add(token + wxT("d"));
+              retval.Add(token);
               token = wxEmptyString;
 
               break;
             }
           }
         }
-        pos++;
+        it++;
       }
+      retval.Add(token);
+      token = wxEmptyString;
+    }    
+    // Find a string that starts at the current position
+    else if (Ch == wxT('\"'))
+    {
+      if (token != wxEmptyString)
+        retval.Add(token);
 
-      retval.Add(token + wxT("d"));
+      // Add the opening quote
+      token = Ch;
+      it++;
+
+      // Add the string contents
+      while (it != text.end())  
+      {
+        Ch = *it;
+        token += Ch;
+        ++it;
+        if(Ch == wxT('\"'))
+          break;
+      }
+      
+      retval.Add(token);
       token = wxEmptyString;
     }
-
-      // Find a number that starts at the current position
+    // Find a number
     else if (IsNum(Ch))
     {
       if (token != wxEmptyString)
       {
-        retval.Add(token + wxT("d"));
+        retval.Add(token);
         token = wxEmptyString;
       }
 
-      while ((pos < size) &&
-             (IsNum(string.GetChar(pos)) ||
-              ((string.GetChar(pos) >= wxT('a')) && (string.GetChar(pos) <= wxT('z'))) ||
-              ((string.GetChar(pos) >= wxT('A')) && (string.GetChar(pos) <= wxT('Z')))
+      while ((it != text.end()) &&
+             (IsNum(Ch) ||
+              ((Ch >= wxT('a')) && (Ch <= wxT('z'))) ||
+              ((Ch >= wxT('A')) && (Ch <= wxT('Z')))
              )
               )
       {
-        token += string.GetChar(pos);
-        pos++;
+        token += Ch;
+        it++;Ch = *it;
       }
 
-      retval.Add(token + wxT("d"));
+      retval.Add(token);
       token = wxEmptyString;
     }
-      // Merge consecutive spaces into one single token
+    // Merge consecutive spaces into one single token
     else if (Ch == wxT(' '))
     {
-      while ((pos < size) &&
-             (string.GetChar(pos) == wxT(' '))
+      while ((it != text.end()) &&
+             (Ch == wxT(' '))
               )
       {
-        token += string.GetChar(pos);
-        pos++;
+        token += Ch;
+        it++;Ch = *it;
       }
 
-      retval.Add(token + wxT("d"));
+      retval.Add(token);
       token = wxEmptyString;
     }
     else
-      token = token + string.GetChar(pos++);
+    {
+      token = token + Ch;
+      it++;
+    }
   }
 
   // Add the last token we detected to the token list
-  retval.Add(token + wxT("d"));
+  retval.Add(token);
 
   return retval;
 }
@@ -3510,7 +3569,6 @@ void EditorCell::StyleTextCode()
     {
       pos += token.Length();
       token = tokens[i];
-      token = token.Left(token.Length() - 1);
       if (token.Length() < 1)
         continue;
       wxChar Ch = token[0];
@@ -3533,7 +3591,7 @@ void EditorCell::StyleTextCode()
       {
         wxString nextToken = tokens[o];
         nextToken = nextToken.Trim(false);
-        if (nextToken != wxT("d"))
+        if (nextToken != wxEmptyString)
         {
           nextChar = nextToken[0];
         break;
@@ -3546,8 +3604,8 @@ void EditorCell::StyleTextCode()
       {
         // All spaces except the last one (that could cause a line break)
       // share the same token
-        if (token.Length() > 0)
-          m_styledText.push_back(StyledText(token.Left(token.Length() - 1)));
+        if (token.Length() > 1)
+          m_styledText.push_back(StyledText(token.Right(token.Length()-1)));
         
         // Now we push the last space to the list of tokens and remember this
         // space as the space that potentially serves as the next point to
@@ -3583,23 +3641,9 @@ void EditorCell::StyleTextCode()
       }
       
       // Handle comments
-      if (token == wxT("\""))
+      if (token.StartsWith(wxT("\"")))
       {
         m_styledText.push_back(StyledText(TS_CODE_STRING, token));
-        if (i + 1 < tokens.GetCount())
-        {
-          i++;
-          token = tokens[i];
-          token = token.Left(token.Length() - 1);
-          m_styledText.push_back(StyledText(TS_CODE_STRING, token));
-          while ((i + 1 < tokens.GetCount()) && token != wxT("\""))
-          {
-            i++;
-            token = tokens[i];
-            token = token.Left(token.Length() - 1);
-            m_styledText.push_back(StyledText(TS_CODE_STRING, token));
-          }
-        }
         HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
                                   indentationPixels);
         continue;
@@ -3648,7 +3692,6 @@ void EditorCell::StyleTextCode()
         {
           i++;
           token = tokens[i];
-          token = token.Left(token.Length() - 1);
           m_styledText.push_back(StyledText(TS_CODE_COMMENT, token));
         }
       

@@ -526,9 +526,6 @@ private:
   /*! Divide a string into tokens
 
     Used when styling text.
-
-    \todo Use iterators in order to iterate over strings: They are much faster than
-    the current method.
    */
   wxArrayString StringToTokens(wxString string);
 
@@ -583,9 +580,6 @@ private:
     }
 
     /*! Defines a piece of text with the default style that possibly is indented
-
-      \todo Currently we access every char of the string by telling wxWidgets that we want
-      char #n. The wxWidgets docs tell that using an iterator is much more efficient.
      */
     StyledText(wxString text, int indentPixels = 0, wxString indentChar = wxEmptyString)
     {
@@ -650,7 +644,11 @@ private:
   void HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidth, const wxString &token, unsigned int charInCell,
                                  wxString &text, size_t &lastSpacePos, bool spaceIsIndentation, int &indentationPixels);
 
-  //! How many chars do we need to indent text at the position the caret is currently at?
+  /*! How many chars do we need to indent text at the position the caret is currently at?
+
+    \todo We should provide an alternative function that allows to resume the calculation
+    for the next word/line - which would provide an additional speedup.
+   */
   int GetIndentDepth(wxString text, int positionOfCaret);
 
 #if wxUSE_UNICODE
