@@ -1,3 +1,15 @@
+wxmaxima (17.05.0-1) unstable; urgency=medium
+
+  * New upstream release with many new features, bugfixes and performance
+    improvements
+  * Switched the build system to cmake replacing the dependency to dh-autoreconf
+    by the dependency to cmake
+  * debian/rules: Cleaned up override_dh_auto_build and override_dh_auto_install
+  * Dropped the patch that repairs chdir for gcl as it was upstreamed.
+  * Added lintian overrides for two tango icons (public domain) whose svg source
+    erroneously marked them as proprietary.
+ -- Gunter Königsmann <wxmaxima@physikbuch.de>  Wed, 24 May 2017 09:15:36 +0100
+
 wxmaxima (16.12.2-2) unstable; urgency=medium
 
   * Resolved an incompatibility with the gcl debian is currently shipped with.
