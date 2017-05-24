@@ -3312,7 +3312,8 @@ wxArrayString EditorCell::StringToTokens(wxString text)
     // Determine the current char and the one that will follow it
     wxChar Ch = *it;
     wxString::const_iterator it2(it);
-    it2++;
+    if(it2 != text.end())
+      it2++;
     wxChar nextChar;
 
     if(it2 != text.end())
@@ -3404,7 +3405,8 @@ wxArrayString EditorCell::StringToTokens(wxString text)
             }
           }
         }
-        it++;
+        if(it != text.end())
+          it++;
       }
       retval.Add(token);
       token = wxEmptyString;
