@@ -747,7 +747,6 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
 
       int lineWidth = GetLineWidth(dc, caretInLine, caretInColumn);
 
-      //TODO is there more efficient way to do this?
       dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
       dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 #if defined(__WXMAC__)

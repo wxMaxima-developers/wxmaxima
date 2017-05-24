@@ -137,8 +137,7 @@ void ImgCell::Draw(wxPoint point, int fontsize)
   MathCell::Draw(point, fontsize);
   m_image->Recalculate();
 
-  // TODO: Enable this when unselecting text updates the right region.
-  //if (!InUpdateRegion()) return;
+  if (!InUpdateRegion()) return;
 
   Configuration *configuration = (*m_configuration);
   wxDC &dc = configuration->GetDC();

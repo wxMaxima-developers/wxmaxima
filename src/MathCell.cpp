@@ -264,20 +264,30 @@ int MathCell::GetFullWidth(double scale)
 }
 
 /*! Get the width of this line.
-
-\todo Convert this function to not using recursive function calls any more.
  */
 int MathCell::GetLineWidth(double scale)
 {
-  int width = m_isBroken ? 0 : m_width;
-  if (m_lineWidth == -1)
+  if (m_lineWidth < 0)
   {
-    if (m_nextToDraw == NULL || m_nextToDraw->m_breakLine ||
-        m_nextToDraw->m_type == MC_TYPE_MAIN_PROMPT)
-      m_lineWidth = width;
-    else
-      m_lineWidth = width + m_nextToDraw->GetLineWidth(scale) +
-                    SCALE_PX(MC_CELL_SKIP, scale);
+    m_lineWidth = 0;
+    int width = m_width;
+
+    MathCell *tmp = this;
+    while(tmp != NULL)
+    {      
+      width += tmp->m_width;
+      width += SCALE_PX(MC_CELL_SKIP, scale);
+      
+      if (width > m_lineWidth)
+        m_lineWidth = width;
+
+      tmp = tmp->m_nextToDraw;
+      if(tmp != NULL)
+      {
+        if(tmp->m_isBroken || tmp->m_breakLine || (tmp->m_type == MC_TYPE_MAIN_PROMPT))
+          break;
+      }
+    }
   }
   return m_lineWidth;
 }
