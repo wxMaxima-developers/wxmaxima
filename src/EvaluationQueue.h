@@ -39,7 +39,14 @@ that still have to be sent to maxima.
 class EvaluationQueue
 {
 private:
-  wxArrayString m_tokens;
+  /*! A list of all the commands in the current cell
+
+    We need to track each single command:
+     - If we send more than one command at once maxima will interpret the command
+       as an answer to an eventual question and
+     - we need to know when to switch to the next cell
+   */
+  std::list<wxString> m_commands;
   int m_size;
   //! The label the user has assigned to the current command.
   wxString m_userLabel;
@@ -123,7 +130,7 @@ public:
       return wxEmptyString;
   }
 
-  //! Get the size of the queue
+  //! Get the size of the queue [in cells]
   int Size()
   {
     return m_size;
@@ -132,7 +139,7 @@ public:
   //! Get the size of the queue
   int CommandsLeftInCell()
   {
-    return m_tokens.GetCount();
+    return m_commands.size();
   }
 };
 

@@ -30,7 +30,7 @@
 
 bool EvaluationQueue::Empty()
 {
-  return (m_queue.empty()) && (m_tokens.IsEmpty());
+  return (m_queue.empty()) && (m_commands.empty());
 }
 
 EvaluationQueue::EvaluationQueue()
@@ -44,7 +44,7 @@ void EvaluationQueue::Clear()
   while (!Empty())
     RemoveFirst();
   m_size = 0;
-  m_tokens.Clear();
+  m_commands.clear();
   m_workingGroupChanged = false;
 }
 
@@ -63,7 +63,7 @@ void EvaluationQueue::Remove(GroupCell *gr)
   m_queue.remove(gr);
   if(removeFirst)
   {
-    m_tokens.Clear();
+    m_commands.clear();
     if(!m_queue.empty())
       AddTokens(gr);
   }
@@ -110,10 +110,10 @@ void EvaluationQueue::AddHiddenTreeToQueue(GroupCell *gr)
 
 void EvaluationQueue::RemoveFirst()
 {
-  if (!m_tokens.IsEmpty())
+  if (!m_commands.empty())
   {
     m_workingGroupChanged = false;
-    m_tokens.RemoveAt(0);
+    m_commands.pop_front();
   }
   else
   {
@@ -232,7 +232,7 @@ void EvaluationQueue::AddTokens(GroupCell *cell)
       token.Trim(false);
       token.Trim(true);
       if (token.Length() > 1)
-        m_tokens.Add(token);
+        m_commands.push_back(token);
       token = wxEmptyString;
     }
   }
@@ -242,7 +242,7 @@ void EvaluationQueue::AddTokens(GroupCell *cell)
   token.Trim(false);
   token.Trim(true);
   if (token.Length() > 1)
-    m_tokens.Add(token);
+    m_commands.push_back(token);
 }
 
 GroupCell *EvaluationQueue::GetCell()
@@ -257,9 +257,9 @@ wxString EvaluationQueue::GetCommand()
 {
   wxString retval;
   m_userLabel = wxEmptyString;
-  if (!m_tokens.IsEmpty())
+  if (!m_commands.empty())
   {
-    retval = m_tokens[0];
+    retval = m_commands.front();
 
     wxString userLabel;
     int colonPos;
