@@ -345,7 +345,6 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
   if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hCaretBlinkVisible) && (m_hasFocus) &&
       (m_hCaretPosition != NULL))
   {
-    // TODO is there more efficient way to do this?
     dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
     dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 
@@ -1205,12 +1204,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
   }
   // create menu if we have any items
   if (popupMenu->GetMenuItemCount() > 0)
-  {
-    // Perhaps the following line fixes bug # 798. TODO: Is it really needed?
-    ForceRedraw();
-
     PopupMenu(popupMenu);
-  }
   wxDELETE(popupMenu);
 }
 
@@ -7075,7 +7069,13 @@ void MathCtrl::RemoveAllOutput()
   if (GetWorkingGroup() != NULL)
     return;
 
-  SetSelection(NULL); // TODO only setselection NULL when selection is in the output
+  if(CellsSelected())
+  {
+    // If the selection is in the output we want to remove the selection.
+    if(m_selectionStart->GetType() != MC_TYPE_GROUP)
+      SetSelection(NULL);
+  }
+
   SetActiveCell(NULL);
 
   RemoveAllOutput(m_tree);
