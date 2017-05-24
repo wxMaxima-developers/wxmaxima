@@ -499,6 +499,10 @@ public:
   int GetCaretPosition()
   { return m_positionOfCaret; }
 
+  //! Set the cursor's current position inside the cell.
+  int SetCaretPosition(int pos)
+  { m_positionOfCaret = pos; }
+
   bool FindNextTemplate(bool left = false);
 
   void InsertText(wxString text);

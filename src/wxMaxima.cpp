@@ -570,7 +570,8 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
   // Normally we catch parenthesis errors before adding cells to the
   // evaluation queue. But if the error is introduced only after the
   // cell is placed in the evaluation queue we need to catch it here.
-  wxString parenthesisError = GetUnmatchedParenthesisState(s);
+  int index;
+  wxString parenthesisError = GetUnmatchedParenthesisState(s,index);
   if (parenthesisError == wxEmptyString)
   {
 
@@ -6009,13 +6010,17 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &event)
     TryEvaluateNextInQueue();;
 }
 
-wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
+wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
 {
-
+  index = 0;
+  
   std::list<wxChar> delimiters;
 
   if (text.Right(1) == wxT("\\"))
+  {
+    index = text.Length() - 1;
     return (_("Cell ends in a backslash"));
+  }
 
   bool lisp = m_inLispMode;
 
@@ -6057,19 +6062,19 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
 
       // Escaped characters
       case wxT('\\'):
-        ++it;
+        ++it;++index;
         lastC = c;
         break;
 
       // Strings
       case wxT('\"'):
-        ++it;
+        ++it;++index;
         while ((it != text.end()) && (c = *it) != wxT('\"'))
         {
           if (c == wxT('\\'))
-            ++it;
+            ++it;++index;
           if(it != text.end())
-            ++it;
+            ++it;++index;
         }
         if ((it != text.end()) && (*it != wxT('\"'))) return (_("Unterminated string."));
         lastC = c;
@@ -6115,12 +6120,12 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
             // Comment start. Let's search for the comment end.
 
             if (it != text.end())
-              ++it;
+              ++it;++index;
             lastC = ' ';
             while(it != text.end())
             {
               lastC = *it;
-              ++it;
+              ++it;++index;
 
               // We reached the end of the string without finding a comment end.
               if(it == text.end())
@@ -6149,7 +6154,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text)
             )
       lastnonWhitespace = c;
 
-    ++it;
+    ++it;++index;
   }
   if (!delimiters.empty())
   {
@@ -6273,7 +6278,8 @@ void wxMaxima::TryEvaluateNextInQueue()
   wxString text = m_console->m_evaluationQueue.GetCommand();
   if ((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
   {
-    wxString parenthesisError = GetUnmatchedParenthesisState(tmp->GetEditable()->ToString(true));
+    int index;
+    wxString parenthesisError = GetUnmatchedParenthesisState(tmp->GetEditable()->ToString(true),index);
     if (parenthesisError == wxEmptyString)
     {
       if (m_console->FollowEvaluation())
@@ -6325,6 +6331,7 @@ void wxMaxima::TryEvaluateNextInQueue()
       cell->SetType(MC_TYPE_ERROR);
       cell->SetParent(tmp);
       tmp->SetOutput(cell);
+      tmp->GetInput()->SetCaretPosition(index);
       m_console->RecalculateForce();
       
       if (m_console->FollowEvaluation())

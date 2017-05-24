@@ -198,7 +198,7 @@ private:
     \todo: Use iterators for traversing the string as they are *way* faster than
     the current method.
    */
-  wxString GetUnmatchedParenthesisState(wxString text);
+  wxString GetUnmatchedParenthesisState(wxString text,int &index);
 
 protected:
   //! Is this window active?
