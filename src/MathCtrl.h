@@ -1086,6 +1086,8 @@ public:
   //! Select the cell range start-end
   void SetSelection(MathCell *start, MathCell *end)
   {
+    if((m_selectionStart != start) || (m_selectionEnd != end))
+      RequestRedraw();
     m_selectionStart = start;
     m_selectionEnd = end;
     if ((start != NULL) && (start->GetType() == MC_TYPE_GROUP))
