@@ -6086,16 +6086,19 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
         // Extract 5 chars of the string.
         wxString command;
         wxString::const_iterator it2(it);
-        for(int i = 0;i < 5;i++)
-          if(it2 != text.end())
-          {
-            command += wxString(*it2);
-            ++it2;
-          }
+        if(it2 != text.end())
+        {
+          command += wxString(*it2);          
+          ++it2;
+        }
+        while((it2 != text.end()) && (wxIsalpha(*it2)))
+        {
+          command += wxString(*it2);
+          ++it2;
+        }
 
         // Let's see if this is a :lisp-quiet or a :lisp
-        // TODO: Should we handle label names like :lisptest or :list-quiettext?
-        if (command == wxT(":lisp"))
+        if ((command == wxT(":lisp")) || (command == wxT(":lisp-quiet")))
           lisp = true;
         lastC = c;
         break;

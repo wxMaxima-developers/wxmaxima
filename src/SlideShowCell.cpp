@@ -170,8 +170,7 @@ void SlideShow::Draw(wxPoint point, int fontsize)
   MathCell::Draw(point, fontsize);
   m_images[m_displayed]->Recalculate();
 
-  // TODO: Enable this when unselecting text updates the right region.
-  //if (!InUpdateRegion()) return;
+  if (!InUpdateRegion()) return;
 
   Configuration *configuration = (*m_configuration);
   wxDC &dc = configuration->GetDC();
