@@ -308,8 +308,6 @@ public:
   /*! Fold all cells
 
     \return the cell's address if folding was successful, else NULL
-    \todo This function is still recursive and therefore can provoke stack overflows
-    -> Convert to a while loop.
   */
   GroupCell *FoldAll();
 
