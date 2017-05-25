@@ -760,7 +760,6 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
           // Handle eventual error messages
           if (!m_first)
           {
-            ReadLispError(m_currentOutput);
             ReadMiscText(m_currentOutput);
           }
 
@@ -1174,6 +1173,40 @@ void wxMaxima::ReadMiscText(wxString &data)
   if (data.IsEmpty())
     return;
 
+  bool error = false;
+
+  // A version of the text where each line begins with non-whitespace and whitespace
+  // characters are merged.
+  wxString mergedWhitespace = wxT("\n");
+  bool whitespace = true;
+  for ( wxString::iterator it=data.begin(); it!=data.end(); ++it)
+  {
+    if((*it == wxT(' ')) || (*it == wxT('\t')))
+    {
+      // Merge non-newline whitespace to a space.
+      if(!whitespace)
+        mergedWhitespace += wxT(' ');
+    }
+    else
+      mergedWhitespace += *it;
+        
+    if((*it == wxT(' ')) || (*it == wxT('\t')) || (*it == wxT('\n')))
+      whitespace = true;
+    else
+      whitespace = false;
+  }
+
+  if (
+    (mergedWhitespace.Contains(wxT("\n-- an error."))) ||
+    (mergedWhitespace.Contains(wxT(":incorrect syntax:"))) ||
+    (mergedWhitespace.Contains(wxT("\nincorrect syntax"))) ||
+    (mergedWhitespace.Contains(wxT("\nMaxima encountered a Lisp error"))) ||
+    (mergedWhitespace.Contains(wxT("\nkillcontext: no such context"))) ||
+    (mergedWhitespace.Contains(wxT("\ndbl:MAXIMA>>"))) ||  // a gcl error message
+    (mergedWhitespace.Contains(wxT("\nTo enable the Lisp debugger set *debugger-hook* to nil."))) // a scbl error message
+    )
+    error = true;
+
   // Add all text lines to the console until we reach a known XML tag.
   int newLinePos;
   while ((newLinePos = GetMiscTextEnd(data)) != wxNOT_FOUND)
@@ -1186,7 +1219,6 @@ void wxMaxima::ReadMiscText(wxString &data)
       return;
     if (data.StartsWith(m_promptPrefix))
       return;
-
     if (data.StartsWith(m_symbolsPrefix))
       return;
 
@@ -1208,16 +1240,9 @@ void wxMaxima::ReadMiscText(wxString &data)
     trimmedLine.Trim(true);
     trimmedLine.Trim(false);
 
-    if (
-            (trimmedLine.StartsWith(wxT("-- an error."))) ||
-            (trimmedLine.Contains(wxT(":incorrect syntax:"))) ||
-            (trimmedLine.StartsWith(wxT("incorrect syntax"))) ||
-            (trimmedLine.StartsWith(wxT("Maxima encountered a Lisp error"))) ||
-            (trimmedLine.StartsWith(wxT("killcontext: no such context")))
-            )
+    if(error)
     {
       ConsoleAppend(textline, MC_TYPE_ERROR);
-
       AbortOnError();
     }
     else
@@ -2259,29 +2284,6 @@ GroupCell *wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfil
     xmlcells = xmlcells->GetNext();
   }
   return tree;
-}
-
-/***
- * This works only for gcl by default - other lisps have different prompts.
- */
-void wxMaxima::ReadLispError(wxString &data)
-{
-  if (data.IsEmpty())
-    return;
-
-  static const wxString lispError = wxT("dbl:MAXIMA>>"); // gcl
-  int end = data.Find(lispError);
-  if (end > -1)
-  {
-    m_inLispMode = true;
-    wxString o = data.Left(end);
-    ConsoleAppend(o, MC_TYPE_DEFAULT);
-    ConsoleAppend(lispError, MC_TYPE_ERROR);
-
-    data = wxEmptyString;
-
-    AbortOnError();
-  }
 }
 
 #ifndef __WXMSW__

@@ -406,16 +406,6 @@ protected:
    */
   void ReadMath(wxString &data);
 
-  /*! read lisp errors
-
-    Lisp errors typically don't provide a prompt prefix/suffix.
-
-    After processing the error it is removed from data.
-
-    \todo Add detection for lisp error prefixes for more lisps.
-   */
-  void ReadLispError(wxString &data);
-
   /*! Reads autocompletion templates we get on definition of a function or variable
 
     After processing the templates they are removed from data.
