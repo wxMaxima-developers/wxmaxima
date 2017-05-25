@@ -158,8 +158,6 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
           break;
       }
     }
-    // TODO: Is this needed in order to make the status bar update?
-    // m_console->ForceRedraw();
   }
   m_StatusMaximaBusy = status;
   m_forceStatusbarUpdate = false;
