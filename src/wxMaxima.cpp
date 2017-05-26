@@ -5601,6 +5601,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
           group->Fold();
         else
           group->Hide(true);
+        m_console->UpdateTableOfContents();
       }
       break;
     }
@@ -5611,6 +5612,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
         group->Unfold();
       else
         group->Hide(false);
+      m_console->UpdateTableOfContents();
       break;
     }
     case TableOfContents::popid_Fold:
