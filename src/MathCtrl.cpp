@@ -5270,10 +5270,16 @@ GroupCell *MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
     {
       wxmLines->RemoveAt(0);
 
-      last->HideTree(CreateTreeFromWXMCode(wxmLines));
+      wxArrayString hiddenTree;
+      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("/* [wxMaxima: fold    end   ] */")))
+      {
+        hiddenTree.Add(wxmLines->Item(0));
+        wxmLines->RemoveAt(0);
+      }      
+      last->HideTree(CreateTreeFromWXMCode(&hiddenTree));
     }
 
-    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: fold    end   ] */"))
+    else if (wxmLines->Item(0) == wxT(""))
     {
       wxmLines->RemoveAt(0);
 
