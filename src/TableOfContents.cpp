@@ -179,7 +179,7 @@ void TableOfContents::UpdateDisplay()
         m_displayedItems->SetItemTextColour(i, wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
     }
     // Delete superfluous items
-    for (int i = m_displayedItems->GetItemCount(); i > items.GetCount() ; i--)
+    for (unsigned int i = m_displayedItems->GetItemCount(); i > items.GetCount() ; i--)
       m_displayedItems->DeleteItem(i - 1);
     m_items_old = items;
   }

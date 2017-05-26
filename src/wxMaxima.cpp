@@ -1565,7 +1565,6 @@ wxString wxMaxima::ReadMacContents(wxString file)
 
     // open mac file
   wxTextFile inputFile(file);
-  wxArrayString *wxmLines = NULL;
 
   if (!inputFile.Open())
   {
@@ -1629,7 +1628,6 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
   if (clearDocument)
     document->ClearDocument();
 
-  GroupCell *tree = NULL;
   GroupCell *last = NULL;
   wxString line = wxEmptyString;
   wxChar lastChar = wxT(' ');
