@@ -500,7 +500,7 @@ public:
   { return m_positionOfCaret; }
 
   //! Set the cursor's current position inside the cell.
-  int SetCaretPosition(int pos)
+  void SetCaretPosition(int pos)
   { m_positionOfCaret = pos; }
 
   bool FindNextTemplate(bool left = false);
