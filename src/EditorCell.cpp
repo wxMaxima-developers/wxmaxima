@@ -150,7 +150,7 @@ wxString EditorCell::ToString(bool dontLimitToSelection)
   {
     long start = MIN(m_selectionStart, m_selectionEnd);
     long end = MAX(m_selectionStart, m_selectionEnd) - 1;
-    if (end >= m_text.Length()) end = m_text.Length() - 1;
+    if (end >= (signed)m_text.Length()) end = m_text.Length() - 1;
     if (start < 0) start = 0;
     text = m_text.SubString(start, end);
   }
