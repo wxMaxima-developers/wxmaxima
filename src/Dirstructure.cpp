@@ -117,6 +117,24 @@ wxString Dirstructure::ArtDir()
   return dir;
 }
 
+wxString Dirstructure::AppIconDir()
+{
+  wxString dir = ResourcesDir();
+
+  if(wxFileExists(ResourcesDir() + wxT("/wxmaxima.png")))
+    return ResourcesDir();
+  else
+  {
+    if(wxDirExists(dir + wxT("/wxMaxima")))
+      dir += wxT("/wxMaxima");
+    
+    if(wxDirExists(dir + wxT("/data")))
+      dir += wxT("/data");
+    
+    return dir;
+  }
+}
+
 wxString Dirstructure::ConfigArtDir()
 {
   wxString dir = ArtDir();

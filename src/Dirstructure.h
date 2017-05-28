@@ -45,13 +45,17 @@
 class Dirstructure
 {
 private:
-  //! The directory all data is stored relative to.
-  wxString ResourcesDir();
-
   //! The directory the user stores its data in.
   wxString UserConfDir();
 
+  //! The directory all data is stored relative to.
+  wxString ResourcesDir();
+
 public:
+
+  //! The directory the application icon is stored in
+  wxString AppIconDir();
+
   //! The directory general data is stored in
   wxString DataDir();
 

@@ -5143,8 +5143,10 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       if (m_lispVersion != wxEmptyString)
         description += _("\nLisp: ") + m_lispVersion;
 
-      wxString iconName = wxT(PREFIX);
-      iconName += wxT("/share/wxMaxima/wxmaxima.png");
+      Dirstructure dirstruct;
+      
+      wxString iconName = dirstruct.AppIconDir();
+      iconName += wxT("/wxmaxima.png");
       info.SetIcon(wxIcon(iconName,wxBITMAP_TYPE_PNG));
       info.SetDescription(description);
       info.SetName(_("wxMaxima"));
