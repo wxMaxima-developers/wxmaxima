@@ -241,7 +241,7 @@ void wxMaximaFrame::set_properties()
   Dirstructure dirstruct;
   
   wxString icon(dirstruct.AppIconDir());
-  icon += wxT("/share/wxMaxima/wxmaxima.png");
+  icon += wxT("/wxmaxima.png");
   SetIcon(wxIcon(icon, wxBITMAP_TYPE_PNG));
 #endif
 #ifndef __WXMAC__
