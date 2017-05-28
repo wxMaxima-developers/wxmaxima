@@ -48,6 +48,7 @@
        #+clisp (ext:cd dir)
        #+cmu (setf (ext:default-directory) dir)
        #+cormanlisp (ccl:set-current-directory dir)
+       #+gcl (si::chdir dir)
        #+lispworks (hcl:change-directory dir)
        #+lucid (lcl:working-directory dir)
        #+sbcl (sb-posix:chdir dir)
