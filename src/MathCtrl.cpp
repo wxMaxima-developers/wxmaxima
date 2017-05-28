@@ -1975,14 +1975,29 @@ bool MathCtrl::CopyTeX()
       s = wxT("\\[");
   }
 
-  while (tmp != NULL)
+  if (tmp->GetType() != MC_TYPE_GROUP)
   {
-    s += tmp->ToTeX();
-    if (tmp == m_selectionEnd)
-      break;
-    tmp = tmp->m_next;
+    while (tmp != NULL)
+    {
+      s += tmp->ToTeX();
+      if (tmp == m_selectionEnd)
+        break;
+      tmp = tmp->m_next;
+    }
   }
-
+  else
+  {
+    GroupCell *gc = dynamic_cast<GroupCell *>(tmp);
+    int imgCtr;
+    while (gc != NULL)
+    {
+      s += gc->ToTeX(wxEmptyString,wxEmptyString,&imgCtr);
+      if (gc == m_selectionEnd)
+        break;
+      gc = dynamic_cast<GroupCell *>(gc->m_next);
+    }
+  }
+  
   if ((inMath == true) && (wrapLatexMath))
     s += wxT("\\]");
 
