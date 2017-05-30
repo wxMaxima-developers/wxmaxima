@@ -30,21 +30,31 @@
 #ifndef NOTIFICATION_H
 #define NOTIFICATION_H
 
+#include "GroupCell.h"
 #include <wx/notifmsg.h>
 #include <wx/wx.h>
 
 class Notification: public wxNotificationMessage
 {
 public:
+  Notification();
   Notification(const wxString &title,
                const wxString &message=wxEmptyString,
                wxWindow *parent=NULL,
                int flags=wxICON_INFORMATION);
+  virtual void Show();
+  virtual void SetParent(wxWindow *parent);
+  virtual wxWindow *GetParent(){return m_parent;}
+  virtual bool Close();
+  bool IsShown(){return m_shown;}
+  //! The cell we signal an error for
+  GroupCell *m_errorNotificationCell;
 private:
+  bool m_shown;
   wxWindow *m_parent;
 protected:
   void OnClick(wxCommandEvent &event);
-DECLARE_EVENT_TABLE()
+  void OnDismissed(wxCommandEvent &event);
 };
 
 #endif

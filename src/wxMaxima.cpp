@@ -3233,8 +3233,14 @@ bool wxMaxima::AbortOnError()
   wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
   SetBatchMode(false);
 
-  m_console->SetNotification(_("Maxima has issued an error!"),wxICON_ERROR);
-    
+  if (m_console->m_notificationMessage != NULL)
+  {
+    if (m_console->GetWorkingGroup(true) !=
+        m_console->m_notificationMessage->m_errorNotificationCell)
+      m_console->SetNotification(_("Maxima has issued an error!"),wxICON_ERROR);
+    m_console->m_notificationMessage->m_errorNotificationCell = m_console->GetWorkingGroup(true);
+  }
+  
   if (abortOnError || m_batchmode)
   {
     m_console->m_evaluationQueue.Clear();

@@ -28,24 +28,75 @@
  */
 
 #include "Notification.h"
+Notification::Notification():wxNotificationMessage()
+{
+  m_shown = false;
+  m_parent = NULL;
+  m_errorNotificationCell = NULL;
+  #if wxCHECK_VERSION(3, 1, 0)
+//  AddAction(wxID_ANY,_("Focus window"));
+  Connect(wxEVT_NOTIFICATION_MESSAGE_CLICK,
+          wxCommandEventHandler(Notification::OnClick),NULL,this);
+  Connect(wxEVT_NOTIFICATION_MESSAGE_DISMISSED,
+          wxCommandEventHandler(Notification::OnDismissed),NULL,this);
+  Connect(wxEVT_NOTIFICATION_MESSAGE_ACTION,
+          wxCommandEventHandler(Notification::OnClick),NULL,this);
+#endif
+}
+
 Notification::Notification(const wxString &title,
 			   const wxString &message,
 			   wxWindow *parent,
 			   int flags): wxNotificationMessage (title, message, parent, flags)
 {
+  m_shown = false;
+  m_errorNotificationCell = NULL;
   m_parent = parent;
+  #if wxCHECK_VERSION(3, 1, 0)
+//  AddAction(wxID_ANY,_("Focus window"));
+  Connect(wxEVT_NOTIFICATION_MESSAGE_CLICK,
+          wxCommandEventHandler(Notification::OnClick),NULL,this);
+  Connect(wxEVT_NOTIFICATION_MESSAGE_DISMISSED,
+          wxCommandEventHandler(Notification::OnDismissed),NULL,this);
+  Connect(wxEVT_NOTIFICATION_MESSAGE_ACTION,
+          wxCommandEventHandler(Notification::OnClick),NULL,this);
+  #endif
+}
+
+void Notification::SetParent(wxWindow *parent)
+{
+  m_parent = parent;
+  wxNotificationMessage::SetParent(parent);
+}
+
+void Notification::Show()
+{
+  wxNotificationMessage::Show();
+  m_shown = true;
+}
+
+bool Notification::Close()
+{
+  m_shown = false;
+  m_errorNotificationCell = NULL;
+  if(IsShown())
+    return wxNotificationMessage::Close();
+  else
+    return false;
 }
 
 void Notification::OnClick(wxCommandEvent &event)
 {
-  if(m_parent != NULL)
+  if(GetParent() != NULL)
   {
-    m_parent->Raise();
+    GetParent()->Raise();
+    GetParent()->Show();
+    GetParent()->SetFocus();
   }
+  m_shown = false;
 }
 
-BEGIN_EVENT_TABLE(Notification, wxNotificationMessage)
-#ifdef EVT_NOTIFICATION_MESSAGE_CLICK
-  EVT_NOTIFICATION_MESSAGE_CLICK(Notification::OnClick)
-#endif
-END_EVENT_TABLE()
+void Notification::OnDismissed(wxCommandEvent &event)
+{
+  m_shown = false;
+}
