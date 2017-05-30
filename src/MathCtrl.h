@@ -80,8 +80,6 @@ class MathCtrl : public wxScrolledCanvas
 private:
   //! Is our window currently active?
   bool m_windowActive;
-  //! A error notification message
-  Notification *m_notificationMessage;
   //! The rectangle the groupcell under the pointer is in
   wxRect m_groupCellUnderPointerRect;
 
@@ -613,6 +611,8 @@ private:
 
 
 public:
+  //! A error notification message
+  Notification *m_notificationMessage;
   //! Is this window active?
   void WindowActive(bool active){m_windowActive = active;}
   //! Clears the notification message from SetNotification
@@ -622,7 +622,7 @@ public:
     This command will be ignored if the wxMaxima window is currently active
    */
   void SetNotification(wxString message, int flags = wxICON_INFORMATION);
-
+  
   //! Is called if this element looses or gets the focus
   void OnActivate(wxActivateEvent &event);
   //! The central settings storage

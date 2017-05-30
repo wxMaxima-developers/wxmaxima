@@ -3651,10 +3651,8 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
 void MathCtrl::ClearNotification()
 {
   if(m_notificationMessage != NULL)
-  {
     m_notificationMessage->Close();
-    delete m_notificationMessage;
-  }
+  delete m_notificationMessage;
   m_notificationMessage = NULL;
 }
 
@@ -3664,12 +3662,29 @@ void MathCtrl::SetNotification(wxString message, int flags)
     return;
   
   ClearNotification();
+  
   m_notificationMessage = new Notification(wxT("wxMaxima"),
-                                                    message,
-                                                    this,
-                                                    flags);
-  if(m_notificationMessage)
+                                           message,
+                                           GetParent(),
+                                           flags);
+
+  if(m_notificationMessage != NULL)
+  {
     m_notificationMessage->Show();
+    
+    // In wxGTK 3.1.0 Leaving the notification message object alive until the message
+    // hits its timeout causes a crash (http://trac.wxwidgets.org/ticket/17876).
+    // Let's work around this crash by deleting the object as fast as we can and
+    // hoping that this crash will be fixed before version 3.1.2 is out.
+#if wxCHECK_VERSION(3, 1, 2)
+#else
+#ifdef __WXGTK__
+    m_notificationMessage->Close();
+    delete m_notificationMessage;
+    m_notificationMessage = NULL;
+#endif
+#endif 
+  }
 }
 /*****
  * OnChar handles key events. If we have an active cell, sends the
