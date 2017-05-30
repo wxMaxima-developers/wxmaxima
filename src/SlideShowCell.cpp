@@ -28,6 +28,8 @@
 #include "SlideShowCell.h"
 #include "ImgCell.h"
 
+#include <wx/quantize.h>
+#include <wx/imaggif.h>
 #include <wx/file.h>
 #include <wx/filename.h>
 #include <wx/filesys.h>
@@ -37,6 +39,8 @@
 #include <wx/config.h>
 #include "wx/config.h"
 #include <wx/mstream.h>
+#include <wx/wfstream.h>
+#include <wx/anidecod.h>
 
 SlideShow::SlideShow(MathCell *parent, Configuration **config, wxFileSystem *filesystem, int framerate) : MathCell(
         parent, config)
@@ -299,64 +303,32 @@ wxString SlideShow::ToRTF()
 wxSize SlideShow::ToGif(wxString file)
 {
   wxArrayString which;
-  bool success = true;
 
-  wxString convert(wxT("convert -delay " + wxString::Format(wxT("%i"), 100 / GetFrameRate())));
-  // At least one ImageMagick version for windows comes without that symlink
-  // See https://github.com/andrejv/wxmaxima/issues/757
-  wxString convert2(wxT("magick -delay " + wxString::Format(wxT("%i"), 100 / GetFrameRate())));
-  wxString convertArgs;
-
-  wxString tmpdir = wxFileName::GetTempDir();
+  wxImageArray gifFrames;
 
   for (int i = 0; i < m_size; i++)
   {
-    wxFileName imgname(tmpdir, wxString::Format(wxT("wxm_anim%d.png"), i));
-
-    wxImage image = m_images[i]->ToImageFile(imgname.GetFullPath());
-
-    convert << wxT(" \"") << imgname.GetFullPath() << wxT("\"");
+    wxImage frame;
+    // Reduce the frame to at most 256 colors
+    wxQuantize::Quantize(m_images[m_displayed]->GetUnscaledBitmap().ConvertToImage(),frame);
+    // Gif supports only fully transparent or not transparent at all.
+    frame.ConvertAlphaToMask();
+    gifFrames.Add(frame);
   }
 
-  convert << wxT(" \"") << file << wxT("\"");
-
-#if defined __WXMSW__
-  if (!wxShell(convert))
-    if (!wxShell(convert2))
-#else
-  if (wxExecute(convert, wxEXEC_SYNC) != 0)
-    if (wxExecute(convert2, wxEXEC_SYNC) != 0)
-#endif
-    {
-      success = false;
-      wxMessageBox(
-              _("There was an error during GIF export!\n\nMake sure ImageMagick is installed and wxMaxima can find the convert program."),
-              wxT("Error"), wxICON_ERROR);
-    }
-
-  for (int i = 0; i < m_size; i++)
+  wxFile fl(file, wxFile::write);
+  if(fl.IsOpened())
   {
-    wxFileName imgname(tmpdir, wxString::Format(wxT("wxm_anim%d.png"), i));
-    wxRemoveFile(imgname.GetFullPath());
-  }
-
-  if (success)
-  {
-    if (m_size > 0)
-      return wxSize(m_images[1]->GetOriginalWidth(), m_images[1]->GetOriginalHeight());
-    else
+    wxFileOutputStream outStream(fl);
+    if(outStream.IsOk())
     {
-      wxSize retval;
-      retval.x = retval.y = 0;
-      return retval;
+      wxGIFHandler gif;
+      
+      if(gif.SaveAnimation(gifFrames, &outStream, false, 1000 / GetFrameRate()))
+        return wxSize(m_images[1]->GetOriginalWidth(), m_images[1]->GetOriginalHeight());
     }
   }
-  else
-  {
-    wxSize retval;
-    retval.x = retval.y = -1;
-    return retval;
-  }
+  return wxSize(-1,-1);
 }
 
 void SlideShow::ClearCache()
