@@ -125,19 +125,27 @@ void TextCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
 
+  bool recalculateNeeded = false;
+  
   // If the setting has changed and we want to show a user-defined label
   // instead of an automatic one or vice versa we decide that here.
   if(
     (m_textStyle == TS_USERLABEL) &&
     (!configuration->UseUserLabels())
     )
+  {
     m_textStyle = TS_LABEL;
+    recalculateNeeded = true;
+  }
   if(
     (m_textStyle == TS_LABEL) &&
     (configuration->UseUserLabels()) &&
     (m_userDefinedLabel != wxEmptyString)
     )
+  {
     m_textStyle = TS_USERLABEL;
+    recalculateNeeded = true;
+  }
   
   double scale = configuration->GetScale();
   SetAltText();
@@ -148,10 +156,16 @@ void TextCell::RecalculateWidths(int fontsize)
           (m_textStyle == TS_NUMBER) &&
           (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits())
           )
+  {
     SetValue(m_text);
+    recalculateNeeded = true;
+  }
 
   if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() ||
       m_lastCalculationFontSize != fontsize)
+    recalculateNeeded = true;
+
+  if(recalculateNeeded)
   {
     m_lastCalculationFontSize = fontsize;
     wxDC &dc = configuration->GetDC();
