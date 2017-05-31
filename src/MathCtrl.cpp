@@ -3674,8 +3674,8 @@ void MathCtrl::SetNotification(wxString message, int flags)
     
     // In wxGTK 3.1.0 Leaving the notification message object alive until the message
     // hits its timeout causes a crash (http://trac.wxwidgets.org/ticket/17876).
-    // Let's work around this crash by deleting the object as fast as we can and
-    // hoping that this crash will be fixed before version 3.1.2 is out.
+    // Let's work around this crash by deleting the object as fast as we can.
+    // The crash is fixed in version 3.1.1.
 #if wxCHECK_VERSION(3, 1, 2)
 #else
 #ifdef __WXGTK__

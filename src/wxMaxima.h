@@ -168,6 +168,8 @@ public:
   { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 
 private:
+  //! A RegEx that matches gnuplot errors.
+  wxRegEx m_gnuplotErrorRegex;
   //! Clear the evaluation queue and return true if "Abort on Error" is set. 
   bool AbortOnError();
   //! This string allows us to detect when the string we search for has changed.

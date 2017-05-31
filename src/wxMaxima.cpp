@@ -131,6 +131,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_CWD = wxEmptyString;
   m_port = 4010;
   m_pid = -1;
+  m_gnuplotErrorRegex.Compile(wxT("\".*\\.gnuplot\", line [0-9][0-9]*: "));
   m_hasEvaluatedCells = false;
   m_process = NULL;
   m_maximaStdout = NULL;
@@ -1196,6 +1197,7 @@ void wxMaxima::ReadMiscText(wxString &data)
       whitespace = false;
   }
 
+  
   if (
     (mergedWhitespace.Contains(wxT("\n-- an error."))) ||
     (mergedWhitespace.Contains(wxT(":incorrect syntax:"))) ||
@@ -1203,7 +1205,8 @@ void wxMaxima::ReadMiscText(wxString &data)
     (mergedWhitespace.Contains(wxT("\nMaxima encountered a Lisp error"))) ||
     (mergedWhitespace.Contains(wxT("\nkillcontext: no such context"))) ||
     (mergedWhitespace.Contains(wxT("\ndbl:MAXIMA>>"))) ||  // a gcl error message
-    (mergedWhitespace.Contains(wxT("\nTo enable the Lisp debugger set *debugger-hook* to nil."))) // a scbl error message
+    (mergedWhitespace.Contains(wxT("\nTo enable the Lisp debugger set *debugger-hook* to nil."))) || // a scbl error message
+    (m_gnuplotErrorRegex.Matches(mergedWhitespace))
     )
     error = true;
 
