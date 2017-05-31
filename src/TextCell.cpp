@@ -29,10 +29,10 @@
 #include "TextCell.h"
 #include "Setup.h"
 #include "wx/config.h"
-#include "wx/regex.h"
 
 TextCell::TextCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
 {
+  m_unescapeRegEx.Compile(wxT("\\\\(.)"));
   m_displayedDigits_old = -1;
   m_text = m_userDefinedLabel = wxEmptyString;
   m_displayedText = wxEmptyString;
@@ -166,8 +166,7 @@ void TextCell::RecalculateWidths(int fontsize)
       if(m_textStyle == TS_USERLABEL)
       {
         text = wxT("(") + m_userDefinedLabel + wxT(")");
-        wxRegEx unescape(wxT("\\\\(.)"));
-        unescape.ReplaceAll(&text,wxT("\\1"));
+        m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
       }
       
       // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
@@ -262,8 +261,7 @@ void TextCell::Draw(wxPoint point, int fontsize)
           if(m_textStyle == TS_USERLABEL)
           {
             wxString text = m_userDefinedLabel;
-            wxRegEx unescape(wxT("\\\\(.)"));
-            unescape.ReplaceAll(&text,wxT("\\1"));
+            m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
             dc.DrawText(wxT("(") + text + wxT(")"),
                         point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                         point.y - m_realCenter + (m_height - m_labelHeight) / 2);

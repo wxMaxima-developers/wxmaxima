@@ -127,6 +127,8 @@ private:
   MathCell *ParseSubSupTag(wxXmlNode *node);
 
   wxString m_userDefinedLabel;
+  wxRegEx m_graphRegex;
+
   int m_ParserStyle;
   int m_FracStyle;
   CellPointers *m_cellPointers;

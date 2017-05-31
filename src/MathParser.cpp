@@ -78,6 +78,7 @@ wxXmlNode *MathParser::GetNextTag(wxXmlNode *node)
 
 MathParser::MathParser(Configuration **cfg, CellPointers *cellPointers, wxString zipfile)
 {
+  m_graphRegex.Compile(wxT("[[:cntrl:]]"));
   m_configuration = cfg;
   m_cellPointers = cellPointers;
   m_ParserStyle = MC_TYPE_DEFAULT;
@@ -980,12 +981,11 @@ MathCell *MathParser::ParseLine(wxString s, int style)
       showLength = 0;
       break;
   }
-  wxRegEx graph(wxT("[[:cntrl:]]"));
 
 #if wxUSE_UNICODE
-  graph.Replace(&s, wxT("\xFFFD"));
+  m_graphRegex.Replace(&s, wxT("\xFFFD"));
 #else
-  graph.Replace(&s, wxT("?"));
+  m_graphRegex.Replace(&s, wxT("?"));
 #endif
 
   if (((long) s.Length() < showLength) || (showLength == 0))
