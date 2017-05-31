@@ -611,8 +611,6 @@ private:
 
 
 public:
-  //! Update the current answer to contain the string passed to this function.
-  void UpdateAnswer(wxString answer);
   //! A error notification message
   Notification *m_notificationMessage;
   //! Is this window active?
@@ -629,8 +627,6 @@ public:
   void OnActivate(wxActivateEvent &event);
   //! The central settings storage
   Configuration *m_configuration;
-  //! Is the list of known answers exhausted for the current Working Group?
-  bool m_answersExhausted;
   //! Get the currently active EditorCell
   EditorCell *GetActiveCell()
   {
@@ -683,7 +679,21 @@ public:
     m_scheduleUpdateToc = true;
   }
 
-  ///@{
+  /*! Handle redrawing the worksheet or of parts of it
+    
+    This functionality is important for scrolling, if we have changed anything
+    that needs updating or if part of the screen memory containing a window was  
+    overwritten by a window that was in front of it and now needs to be redrawn
+    for this reason.
+
+    We don't redraw the window immediately if this seems necessary but wait
+    for the idle loop instead - which is called when all selected gui events 
+    have been processed. This allows us to handle events as fast as the user 
+    can type and (if the user types faster than we can display the text) 
+    enables us to update the display as often as the typing speed allows, but
+    not more often.
+    @{
+  */
   //! Request the worksheet to be redrawn
   void MarkRefreshAsDone()
   {
@@ -715,7 +725,7 @@ public:
   //! Is a Redraw requested?
   bool RedrawRequested()
   { return m_redrawRequested; }
-  ///@}
+  //! @}
 
   //! To be called after enabling or disabling the visibility of code cells
   void CodeCellVisibilityChanged();
@@ -1370,6 +1380,13 @@ public:
   //! Set this cell as the currently selected one
   void SelectGroupCell(GroupCell *cell);
 
+  /*! Handling questions from and answers for maxima
+  @{
+  */
+  //! Update the current answer to contain the string passed to this function.
+  void UpdateAnswer(wxString answer);
+  //! Is the list of known answers exhausted for the current Working Group?
+  bool m_answersExhausted;
   //! Mark the current question from maxima as "answered"..
   void QuestionAnswered();
 
@@ -1382,7 +1399,7 @@ public:
   */
   bool QuestionPending()
   { return m_questionPrompt; }
-
+  //!@}
   //! Converts a wxm description into individual cells
   GroupCell *CreateTreeFromWXMCode(wxArrayString *wxmLines);
 
