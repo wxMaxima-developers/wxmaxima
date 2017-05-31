@@ -2485,6 +2485,38 @@ void MathCtrl::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUndo
   RequestRedraw();
 }
 
+void MathCtrl::UpdateAnswer(wxString txt)
+{
+  GroupCell *answerCell = GetWorkingGroup();
+  if(answerCell == NULL)
+    return;
+
+  std::list<wxString> knownAnswers = answerCell->m_knownAnswers;
+
+  // Remove all answers after the current one
+  std::list<wxString> answersToAppend = m_evaluationQueue.GetKnownAnswers();
+  while(!answersToAppend.empty())
+  {
+    if(!knownAnswers.empty())
+      knownAnswers.pop_back();
+    answersToAppend.pop_back();
+  }
+
+  // Replace the current answer or append it to the list of known answers
+  if(!knownAnswers.empty())
+    knownAnswers.pop_back();
+  knownAnswers.push_back(txt);
+  // Append the unused known answers again
+  answersToAppend = m_evaluationQueue.GetKnownAnswers();
+  while(!answersToAppend.empty())
+  {
+    knownAnswers.push_back((answersToAppend.front()));
+    answersToAppend.pop_front();
+  }
+
+  answerCell->m_knownAnswers = knownAnswers;
+}
+
 void MathCtrl::OpenQuestionCaret(wxString txt)
 {
   wxASSERT_MSG(GetWorkingGroup() != NULL, _("Bug: Got a question but no cell to answer it in"));

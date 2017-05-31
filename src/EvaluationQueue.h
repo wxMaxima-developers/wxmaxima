@@ -112,6 +112,9 @@ public:
   //! Is the queue empty?
   bool Empty();
 
+  //! How many saved answers do we have left?
+  std::list<wxString> GetKnownAnswers(){return m_knownAnswers;}
+  
   //! Is the answer queue empty?
   bool AnswersEmpty() {return m_knownAnswers.empty();}
 

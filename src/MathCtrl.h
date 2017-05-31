@@ -611,6 +611,8 @@ private:
 
 
 public:
+  //! Update the current answer to contain the string passed to this function.
+  void UpdateAnswer(wxString answer);
   //! A error notification message
   Notification *m_notificationMessage;
   //! Is this window active?

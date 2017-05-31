@@ -6001,8 +6001,12 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &event)
     if (m_console->GCContainsCurrentQuestion(cell))
     {
       wxString answer = tmp->ToString(true);
+      // Add the answer to the current working cell or update the answer
+      // that is stored within it.
       if(m_console->m_answersExhausted)
         cell->AddAnswer(answer);
+      else
+        m_console->UpdateAnswer(answer);
       SendMaxima(answer, true);
       StatusMaximaBusy(calculating);
       m_console->QuestionAnswered();
