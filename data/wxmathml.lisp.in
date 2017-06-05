@@ -54,7 +54,7 @@
        #+sbcl (sb-posix:chdir dir)
        #+sbcl (setf *default-pathname-defaults* (sb-ext:native-pathname (format nil "~A~A" (sb-posix:getcwd) "/")))
        #+ccl (ccl:cwd dir)
-       #+ecl (si:chdir dir)
+       #+ecl (si::chdir dir)
        ;;; Officially gcl supports (si:chdir dir), too. But the version
        ;;; shipped with debian and ubuntu (at least in Feb 2017) doesn't.
        #+gcl (xchdir dir)
