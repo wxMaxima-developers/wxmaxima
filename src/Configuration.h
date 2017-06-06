@@ -551,7 +551,7 @@ private:
   int m_showLabelChoice;
   bool m_fixReorderedIndices;
   wxString m_mathJaxURL;
-  static bool m_showCodeCells;
+  bool m_showCodeCells;
 };
 
 #endif // CONFIGURATION_H

@@ -530,6 +530,3 @@ wxFontEncoding Configuration::GetGreekFontEncoding()
 }
 */
 
-// Create all static variables
-bool Configuration::m_showCodeCells = true;
-

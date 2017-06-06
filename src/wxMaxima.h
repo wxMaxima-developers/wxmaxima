@@ -575,7 +575,7 @@ public:
 
   //! A pointer to the currently running wxMaxima instance
   static wxMaxima *m_frame;
-#if defined (__WXMAC__)
+
   wxWindowList topLevelWindows;
 
   void OnFileMenu(wxCommandEvent &ev);
@@ -583,8 +583,6 @@ public:
   virtual void MacNewFile();
 
   virtual void MacOpenFile(const wxString &file);
-
-#endif
 };
 
 DECLARE_APP(MyApp)

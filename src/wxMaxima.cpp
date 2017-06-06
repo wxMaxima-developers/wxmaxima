@@ -3304,20 +3304,15 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
 
   switch (event.GetId())
   {
-#if defined __WXMAC__
-    case mac_closeId:
-      Close();
-      break;
-#elif defined __WXMSW__ || defined __WXGTK20__
-                                                                                                                          
+  case mac_closeId:
+    Close();
+    break;
+
   case menu_new_id:
   case ToolBar::tb_new:
     wxExecute(wxT("\"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\""));
     break;
-#endif
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
     case ToolBar::tb_open:
-#endif
     case menu_open_id:
     {
       if (SaveNecessary())

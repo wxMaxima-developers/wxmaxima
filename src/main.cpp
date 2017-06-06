@@ -208,9 +208,7 @@ bool MyApp::OnInit()
   wxString path;
   wxGetEnv(wxT("PATH"), &path);
   wxSetEnv(wxT("PATH"), path << wxT(":/usr/local/bin"));
-#endif
 
-#if defined (__WXMAC__)
   wxApp::SetExitOnFrameDelete(false);
   wxMenuBar *menuBar = new wxMenuBar;
   wxMenu *fileMenu = new wxMenu;
@@ -280,9 +278,7 @@ int MyApp::OnExit()
 }
 #endif
 
-#if defined __WXMAC__
 int window_counter = 0;
-#endif
 
 void MyApp::NewWindow(wxString file, bool batchmode)
 {
@@ -340,8 +336,6 @@ void MyApp::NewWindow(wxString file, bool batchmode)
   m_frame->InitSession();
   m_frame->ShowTip(false);
 }
-
-#if defined (__WXMAC__)
 
 void MyApp::OnFileMenu(wxCommandEvent &ev)
 {
@@ -401,5 +395,3 @@ void MyApp::MacOpenFile(const wxString &file)
 {
   NewWindow(file);
 }
-
-#endif

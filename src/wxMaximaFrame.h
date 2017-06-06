@@ -279,11 +279,9 @@ public:
     menu_paste_input,
     menu_fullscreen,
     menu_remove_output,
-#if defined (__WXMAC__)
     mac_newId,
     mac_openId,
     mac_closeId,
-#endif
     menu_recent_documents,
     menu_recent_document_0,
     menu_recent_document_1,
