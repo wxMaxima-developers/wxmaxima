@@ -308,10 +308,8 @@ void MyApp::NewWindow(wxString file, bool batchmode)
     w = 950;
   }
 
-#if defined __WXMAC__
   x += topLevelWindows.GetCount() * 20;
   y += topLevelWindows.GetCount() * 20;
-#endif
 
   m_frame = new wxMaxima((wxFrame *) NULL, -1, _("wxMaxima"),
                          wxPoint(x, y), wxSize(w, h));
