@@ -3308,10 +3308,6 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
     Close();
     break;
 
-  case menu_new_id:
-  case ToolBar::tb_new:
-    wxExecute(wxT("\"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\""));
-    break;
     case ToolBar::tb_open:
     case menu_open_id:
     {
@@ -6819,9 +6815,7 @@ void wxMaxima::OnMinimize(wxIconizeEvent &event)
 
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
 
-#if defined __WXMAC__
                 EVT_MENU(mac_closeId, wxMaxima::FileMenu)
-#endif
                 EVT_MENU(menu_check_updates, wxMaxima::HelpMenu)
                 EVT_TIMER(KEYBOARD_INACTIVITY_TIMER_ID, wxMaxima::OnTimerEvent)
                 EVT_TIMER(MAXIMA_STDOUT_POLL_ID, wxMaxima::OnTimerEvent)
@@ -6893,7 +6887,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(menu_bug_report, wxMaxima::HelpMenu)
                 EVT_MENU(menu_build_info, wxMaxima::HelpMenu)
                 EVT_MENU(menu_interrupt_id, wxMaxima::Interrupt)
-                EVT_MENU(menu_new_id, wxMaxima::FileMenu)
                 EVT_MENU(menu_open_id, wxMaxima::FileMenu)
                 EVT_MENU(menu_batch_id, wxMaxima::FileMenu)
                 EVT_MENU(menu_ratsimp, wxMaxima::SimplifyMenu)
@@ -6998,9 +6991,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(menu_to_fact, wxMaxima::SimplifyMenu)
                 EVT_MENU(menu_to_gamma, wxMaxima::SimplifyMenu)
                 EVT_MENU(wxID_PRINT, wxMaxima::PrintMenu)
-#if defined (__WXMSW__) || (__WXGTK20__) || defined (__WXMAC__)
                 EVT_TOOL(ToolBar::tb_print, wxMaxima::PrintMenu)
-#endif
                 EVT_MENU(MathCtrl::menu_zoom_in, wxMaxima::EditMenu)
                 EVT_MENU(MathCtrl::menu_zoom_out, wxMaxima::EditMenu)
                 EVT_MENU(menu_zoom_80, wxMaxima::EditMenu)
@@ -7016,10 +7007,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)
                 EVT_MENU(menu_select_all, wxMaxima::EditMenu)
                 EVT_MENU(menu_subst, wxMaxima::MaximaMenu)
-#if defined (__WXMSW__) || defined (__WXGTK20__)
-                EVT_TOOL(ToolBar::tb_new, wxMaxima::FileMenu)
-#endif
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
                 EVT_TOOL(ToolBar::tb_open, wxMaxima::FileMenu)
                 EVT_TOOL(ToolBar::tb_save, wxMaxima::FileMenu)
                 EVT_TOOL(ToolBar::tb_copy, wxMaxima::EditMenu)
@@ -7033,7 +7020,6 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_TOOL(ToolBar::tb_animation_start, wxMaxima::FileMenu)
                 EVT_TOOL(ToolBar::tb_animation_stop, wxMaxima::FileMenu)
                 EVT_TOOL(ToolBar::tb_find, wxMaxima::EditMenu)
-#endif
                 EVT_TOOL(ToolBar::tb_follow, wxMaxima::OnFollow)
                 EVT_SOCKET(socket_server_id, wxMaxima::ServerEvent)
                 EVT_SOCKET(socket_client_id, wxMaxima::ClientEvent)

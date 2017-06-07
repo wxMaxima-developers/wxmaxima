@@ -583,6 +583,7 @@ public:
   virtual void MacNewFile();
 
   virtual void MacOpenFile(const wxString &file);
+  DECLARE_EVENT_TABLE()
 };
 
 DECLARE_APP(MyApp)

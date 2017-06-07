@@ -341,8 +341,15 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
 {
   switch (ev.GetId())
   {
+    case wxMaximaFrame::menu_new_id:
+    case ToolBar::tb_new:
     case wxMaxima::mac_newId:
+      std::cerr<<"NewWindow\n";
+#if defined __WXMAC__
       NewWindow();
+#else
+      wxExecute(wxT("\"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\""));
+#endif
       break;
     case wxMaxima::mac_openId:
     {
@@ -395,3 +402,8 @@ void MyApp::MacOpenFile(const wxString &file)
 {
   NewWindow(file);
 }
+
+BEGIN_EVENT_TABLE(MyApp, wxApp)
+  EVT_MENU(wxMaximaFrame::menu_new_id, MyApp::OnFileMenu)
+  EVT_TOOL(ToolBar::tb_new, MyApp::OnFileMenu)
+END_EVENT_TABLE()
