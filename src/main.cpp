@@ -325,11 +325,9 @@ void MyApp::NewWindow(wxString file, bool batchmode)
   }
 
   m_frame->SetBatchMode(batchmode);
-#if defined __WXMAC__
   topLevelWindows.Append(m_frame);
   if (topLevelWindows.GetCount() > 1)
     m_frame->SetTitle(wxString::Format(_("untitled %d"), ++window_counter));
-#endif
 
   SetTopWindow(m_frame);
   m_frame->Show(true);
@@ -344,7 +342,6 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
     case wxMaximaFrame::menu_new_id:
     case ToolBar::tb_new:
     case wxMaxima::mac_newId:
-      std::cerr<<"NewWindow\n";
 #if defined __WXMAC__
       NewWindow();
 #else
@@ -363,7 +360,6 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
       break;
     case wxID_EXIT:
     {
-#if defined __WXMAC__
       bool quit = true;
       wxWindowList::compatibility_iterator node = topLevelWindows.GetFirst();
       while (node)
@@ -379,13 +375,6 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
       }
       if (quit)
         wxExit();
-#else
-      wxWindow *frame = GetTopWindow();
-      if (frame == NULL)
-        wxExit();
-      else if (frame->Close())
-        wxExit();
-#endif
     }
       break;
   }
