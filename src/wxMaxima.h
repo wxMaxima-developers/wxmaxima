@@ -565,6 +565,11 @@ public:
 
   /*! Create a new window
 
+    The mac platform insists in making all windows of an application
+    share the same process. On the other platforms we create a separate
+    process for every wxMaxima session instead which means that each
+    process uses the NewWindow() function only once.
+
     \param file The file name
     \param batchmode Do we want to execute the file and save it, but halt on error?
    */
