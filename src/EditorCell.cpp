@@ -3419,7 +3419,7 @@ wxArrayString EditorCell::StringToTokens(wxString text)
 
       // Add the opening quote
       token = Ch;
-      it++;
+      ++it;
 
       // Add the string contents
       while (it != text.end())  
@@ -3641,10 +3641,21 @@ void EditorCell::StyleTextCode()
         continue;
       }
       
-      // Handle comments
+      // Handle strings
       if (token.StartsWith(wxT("\"")))
       {
-        m_styledText.push_back(StyledText(TS_CODE_STRING, token));
+        // Handle the first few lines of a multi-line string
+        int pos;
+        while((pos = token.Find(wxT('\n'))) != wxNOT_FOUND)
+        {
+          wxString line = token.Left(pos - 1);
+          m_styledText.push_back(StyledText(TS_CODE_STRING, line));
+          m_styledText.push_back(wxString(token[pos]));
+          token = token.Right(token.length()-pos-1);
+        }
+        // Handle the last line of a multi-line string
+        if(token != wxEmptyString)
+          m_styledText.push_back(StyledText(TS_CODE_STRING, token));
         HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
                                   indentationPixels);
         continue;
