@@ -303,6 +303,8 @@ void wxMaxima::InitSession()
   Refresh();
   ConfigChanged();
   m_console->SetFocus();
+  if (m_autoSaveInterval > 10000)
+    m_autoSaveTimer.StartOnce(m_autoSaveInterval);
 }
 
 void wxMaxima::FirstOutput(wxString s)
@@ -3169,6 +3171,7 @@ bool wxMaxima::SaveFile(bool forceSave)
     if (m_autoSaveInterval > 10000)
       m_autoSaveTimer.StartOnce(m_autoSaveInterval);
     StatusSaveFinished();
+    RemoveTempAutosavefile();
     return true;
   }
 
@@ -3284,12 +3287,40 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
         {
           if ((m_console->m_currentFile.Length() > 0) && SaveNecessary())
             SaveFile(false);
-
+          else
+          {
+            if(SaveNecessary())
+              m_console->ExportToWXMX(GetTempAutosavefileName());
+          }
+          
           m_autoSaveTimer.StartOnce(m_autoSaveInterval);
         }
       }
       break;
   }
+}
+
+wxString wxMaxima::GetTempAutosavefileName()
+{
+  wxString name = wxStandardPaths::Get().GetTempDir()+
+    wxString::Format("/untitled_%li_%li.wxmx",
+                     wxGetProcessId(),m_pid);
+
+  if (name != m_tempfileName)
+  {
+    RemoveTempAutosavefile();
+  }
+  m_tempfileName = name;
+}
+
+void wxMaxima::RemoveTempAutosavefile()
+{
+  if(m_tempfileName != wxEmptyString)
+  {
+    if(wxFileExists(m_tempfileName))
+      wxRemoveFile(m_tempfileName);
+  }
+  m_tempfileName = wxEmptyString;
 }
 
 void wxMaxima::FileMenu(wxCommandEvent &event)
