@@ -41,6 +41,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                              long style) :
         wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
 {
+  m_recentDocumentsMenu = NULL;
   m_userSymbols = NULL;
   m_EvaluationQueueLength = 0;
   m_commandsLeftInCurrentCell = 0;
@@ -1032,6 +1033,15 @@ void wxMaximaFrame::SaveRecentDocuments()
 
 void wxMaximaFrame::UpdateRecentDocuments()
 {
+  
+  if(m_recentDocumentsMenu == NULL)
+    m_recentDocumentsMenu = new wxMenu();
+
+  int itemNumber = m_recentDocumentsMenu->GetMenuItemCount();
+
+  for(int i=0;i<itemNumber;i++)
+    m_recentDocumentsMenu->Remove(0);
+  
   long recentItems = 10;
   wxConfig::Get()->Read(wxT("recentItems"), &recentItems);
 
@@ -1041,13 +1051,6 @@ void wxMaximaFrame::UpdateRecentDocuments()
   // Iterate through all the entries to the recent documents menu.
   for (int i = menu_recent_document_0; i <= menu_recent_document_0 + recentItems; i++)
   {
-    if (m_recentDocumentsMenu->FindItem(i) != NULL)
-    {
-      wxMenuItem *item = m_recentDocumentsMenu->Remove(i);
-      wxDELETE(item);
-      item = NULL;
-    }
-
     if (i - menu_recent_document_0 < (signed) m_recentDocuments.Count())
     {
       wxFileName filename(m_recentDocuments[i - menu_recent_document_0]);
@@ -1058,17 +1061,94 @@ void wxMaximaFrame::UpdateRecentDocuments()
     }
   }
 
-  for (int i = menu_recent_document_0 + recentItems; i <= menu_recent_document_0 + 30; i++)
+  m_recentDocumentsMenu->Append(menu_recent_document_separator,
+                          wxEmptyString, wxEmptyString, wxITEM_SEPARATOR);
+
+  int index =  menu_unsaved_document_0;
+  std::list<wxString> autoSaveFileList = GetTempAutosaveFiles();
+  for(std::list<wxString>::iterator it = autoSaveFileList.begin();
+      it != autoSaveFileList.end();++it)
   {
-    if (m_recentDocumentsMenu->FindItem(i, NULL) != NULL)
+    m_recentDocumentsMenu->Append(index, *it);
+    index++;
+  }
+  
+  SaveRecentDocuments();
+}
+
+std::list<wxString> wxMaximaFrame::GetTempAutosaveFiles()
+{
+  wxConfigBase *config = wxConfig::Get();
+  wxString autoSaveFiles;
+  wxString autoSaveFiles_new;
+  config->Read("AutoSaveFiles",&autoSaveFiles);
+  wxStringTokenizer files(autoSaveFiles, wxT(";"));
+
+  std::list<wxString> autoSaveFileList;
+  while(files.HasMoreTokens())
+  {
+    wxString filename = files.GetNextToken();
+    if(filename != wxEmptyString)
     {
-      wxMenuItem *item = m_recentDocumentsMenu->Remove(i);
-      wxDELETE(item);
-      item = NULL;
+      if(wxFileExists(filename))
+      {
+        autoSaveFileList.push_back(filename);
+      }
     }
   }
+  autoSaveFileList.unique();
 
-  SaveRecentDocuments();
+  for(std::list<wxString>::iterator it = autoSaveFileList.begin(); it != autoSaveFileList.end();++it)
+  {
+    autoSaveFiles_new += *it + wxString(wxT(";"));
+  }
+  config->Write("AutoSaveFiles",autoSaveFiles_new);
+
+  return autoSaveFileList;
+}
+
+void wxMaximaFrame::ReReadConfig()
+{
+  wxConfigBase *config = wxConfig::Get();
+  config->Flush();
+  wxDELETE(config);
+  wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+}    
+
+wxString wxMaximaFrame::GetTempAutosavefileName()
+{
+  wxString name = wxStandardPaths::Get().GetTempDir()+
+    wxString::Format("/untitled_%li_%li.wxmx",
+                     wxGetProcessId(),m_pid);
+
+  if (name != m_tempfileName)
+  {
+    RemoveTempAutosavefile();
+  }
+  m_tempfileName = name;
+  return m_tempfileName;
+}
+
+void wxMaximaFrame::RegisterAutoSaveFile(wxString name)
+{
+  wxConfigBase *config = wxConfig::Get();
+  wxString autoSaveFiles;
+  config->Read("AutoSaveFiles",&autoSaveFiles);
+  if(autoSaveFiles.Find(m_tempfileName) == wxNOT_FOUND)
+  {
+    config->Write("AutoSaveFiles",m_tempfileName + wxT(";") + autoSaveFiles);
+    GetTempAutosaveFiles();
+  }
+}
+
+void wxMaximaFrame::RemoveTempAutosavefile()
+{
+  if(m_tempfileName != wxEmptyString)
+  {
+    if(wxFileExists(m_tempfileName))
+      wxRemoveFile(m_tempfileName);
+  }
+  m_tempfileName = wxEmptyString;
 }
 
 void wxMaximaFrame::AddRecentDocument(wxString file)

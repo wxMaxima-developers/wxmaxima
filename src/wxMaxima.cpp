@@ -1944,6 +1944,7 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
 
   m_console->SetHCaret(NULL);
   m_console->ScrollToCaret();
+  RemoveTempAutosavefile();
   return true;
 }
 
@@ -1975,6 +1976,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
     ResetTitle(true, true);
     document->SetSaved(true);
     document->Thaw();
+    RemoveTempAutosavefile();
     return true;
   }
 
@@ -2150,6 +2152,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   }
   StatusMaximaBusy(waiting);
   SetStatusText(_("File opened"), 1);
+  RemoveTempAutosavefile();
   return true;
 }
 
@@ -3305,42 +3308,6 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
   }
 }
 
-wxString wxMaxima::GetTempAutosavefileName()
-{
-  wxString name = wxStandardPaths::Get().GetTempDir()+
-    wxString::Format("/untitled_%li_%li.wxmx",
-                     wxGetProcessId(),m_pid);
-
-  if (name != m_tempfileName)
-  {
-    RemoveTempAutosavefile();
-  }
-  m_tempfileName = name;
-  return m_tempfileName;
-}
-
-void wxMaxima::RegisterAutoSaveFile(wxString name)
-{
-  wxConfigBase *config = wxConfig::Get();
-  wxString autoSaveFiles;
-  config->Read("AutoSaveFiles",&autoSaveFiles);
-  if(autoSaveFiles.find(m_tempfileName) == wxNOT_FOUND)
-  {
-    config->Write("AutoSaveFiles",m_tempfileName+wxT(";")+autoSaveFiles);
-    GetTempAutosaveFiles();
-  }
-}
-
-void wxMaxima::RemoveTempAutosavefile()
-{
-  if(m_tempfileName != wxEmptyString)
-  {
-    if(wxFileExists(m_tempfileName))
-      wxRemoveFile(m_tempfileName);
-  }
-  m_tempfileName = wxEmptyString;
-}
-
 void wxMaxima::FileMenu(wxCommandEvent &event)
 {
   wxString expr = GetDefaultEntry();
@@ -3554,46 +3521,6 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
   }
   m_console->RequestRedraw();
 }
-
-std::list<wxString> wxMaxima::GetTempAutosaveFiles()
-{
-  wxConfigBase *config = wxConfig::Get();
-  wxString autoSaveFiles;
-  wxString autoSaveFiles_new;
-  config->Read("AutoSaveFiles",&autoSaveFiles);
-  wxStringTokenizer files(autoSaveFiles, wxT(";"));
-
-  std::list<wxString> autoSaveFileList;
-  while(files.HasMoreTokens())
-  {
-    wxString filename = files.GetNextToken();
-    if(filename != wxEmptyString)
-    {
-      if(wxFileExists(filename))
-      {
-        autoSaveFileList.push_back(filename);
-      }
-    }
-  }
-  autoSaveFileList.unique();
-
-  for(std::list<wxString>::iterator it = autoSaveFileList.begin(); it != autoSaveFileList.end();++it)
-  {
-    autoSaveFiles_new += *it + wxString(wxT(";"));
-  }
-  config->Write("AutoSaveFiles",autoSaveFiles_new);
-
-  return autoSaveFileList;
-}
-
-void wxMaxima::ReReadConfig()
-{
-  wxConfigBase *config = wxConfig::Get();
-  config->Flush();
-  wxDELETE(config);
-  wxConfig::Set(new wxConfig(wxT("wxMaxima")));
-}
-    
 
 void wxMaxima::EditMenu(wxCommandEvent &event)
 {
@@ -5671,6 +5598,8 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   if (m_console->GetTree())
     m_console->DestroyTree();
   Destroy();
+
+  RemoveTempAutosavefile();
 }
 
 void wxMaxima::PopupMenu(wxCommandEvent &event)
@@ -6025,6 +5954,55 @@ void wxMaxima::OnRecentDocument(wxCommandEvent &event)
 
   if (wxFileExists(file))
     OpenFile(file);
+  else
+  {
+    wxMessageBox(_("File you tried to open does not exist."), _("File not found"), wxOK);
+    RemoveRecentDocument(file);
+  }
+}
+
+void wxMaxima::OnUnsavedDocument(wxCommandEvent &event)
+{
+
+  wxString file;
+  
+  int index =  menu_unsaved_document_0;
+  std::list<wxString> autoSaveFileList = GetTempAutosaveFiles();
+  for(std::list<wxString>::iterator it = autoSaveFileList.begin();
+      it != autoSaveFileList.end();++it)
+  {
+    if(index == event.GetId())
+      file = *it;
+    index++;
+  }
+
+  if(file == wxEmptyString)
+    return;
+      
+  if (SaveNecessary() &&
+      (
+              (file.EndsWith(wxT(".wxmx"))) ||
+              (file.EndsWith(wxT(".wxm")))
+      )
+          )
+  {
+    int close = SaveDocumentP();
+
+    if (close == wxID_CANCEL)
+      return;
+
+    if (close == wxID_YES)
+    {
+      if (!SaveFile())
+        return;
+    }
+  }
+
+  if (wxFileExists(file))
+  {
+    OpenFile(file);
+    m_tempfileName = file;
+  }
   else
   {
     wxMessageBox(_("File you tried to open does not exist."), _("File not found"), wxOK);
@@ -7196,6 +7174,7 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_IDLE(wxMaxima::OnIdle)
                 EVT_MENU(menu_remove_output, wxMaxima::EditMenu)
                 EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_29, wxMaxima::OnRecentDocument)
+                EVT_MENU_RANGE(menu_unsaved_document_0, menu_unsaved_document_29, wxMaxima::OnUnsavedDocument)
                 EVT_MENU(menu_insert_image, wxMaxima::InsertMenu)
                 EVT_MENU_RANGE(menu_pane_hideall, menu_pane_stats, wxMaxima::ShowPane)
                 EVT_MENU(menu_show_toolbar, wxMaxima::EditMenu)

@@ -313,6 +313,37 @@ public:
     menu_recent_document_27,
     menu_recent_document_28,
     menu_recent_document_29,
+    menu_recent_document_separator,
+    menu_unsaved_document_0,
+    menu_unsaved_document_1,
+    menu_unsaved_document_2,
+    menu_unsaved_document_3,
+    menu_unsaved_document_4,
+    menu_unsaved_document_5,
+    menu_unsaved_document_6,
+    menu_unsaved_document_7,
+    menu_unsaved_document_8,
+    menu_unsaved_document_9,
+    menu_unsaved_document_10,
+    menu_unsaved_document_11,
+    menu_unsaved_document_12,
+    menu_unsaved_document_13,
+    menu_unsaved_document_14,
+    menu_unsaved_document_15,
+    menu_unsaved_document_16,
+    menu_unsaved_document_17,
+    menu_unsaved_document_18,
+    menu_unsaved_document_19,
+    menu_unsaved_document_20,
+    menu_unsaved_document_21,
+    menu_unsaved_document_22,
+    menu_unsaved_document_23,
+    menu_unsaved_document_24,
+    menu_unsaved_document_25,
+    menu_unsaved_document_26,
+    menu_unsaved_document_27,
+    menu_unsaved_document_28,
+    menu_unsaved_document_29,
     menu_insert_image,
     menu_stats_mean,
     menu_stats_median,
@@ -445,6 +476,10 @@ public:
   void StatusExportFailed();
 
 protected:
+  //! The process id of maxima. Is determined by ReadFirstPrompt.
+  long m_pid;
+  //! The last name GetTempAutosavefileName() has returned.
+  wxString m_tempfileName;
   //! Issued if a notification is closed.
   void OnNotificationClose(wxCommandEvent WXUNUSED(&event));
   //! The status bar
@@ -483,6 +518,20 @@ protected:
   wxMenu *m_NumericMenu;
   //! The help menu
   wxMenu *m_HelpMenu;
+  //! Remove an eventual temporary autosave file.
+  void RemoveTempAutosavefile();
+  //! Re-read the configuration.
+  void ReReadConfig();  
+  /*! Determine a suitable name for a temporary autosave file.
+    
+    Is used if we want to autosave the current file, but still have no 
+    filename to save it to.
+  */  
+  wxString GetTempAutosavefileName();
+  //! Remember an temporary autosave file name.
+  void RegisterAutoSaveFile(wxString name);
+  //! Generates a list of all temporary autosave files we didn't open yet.
+  std::list<wxString> GetTempAutosaveFiles();
 private:
   //! A panel that shows all user-defined symbols on the symbols pane.
   wxPanel *m_userSymbols;

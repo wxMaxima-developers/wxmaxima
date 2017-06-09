@@ -168,21 +168,6 @@ public:
   { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 
 private:
-  //! Re-read the configuration.
-  void ReReadConfig();
-  /*! Determine a suitable name for a temporary autosave file.
-
-    Is used if we want to autosave the current file, but still have no 
-    filename to save it to.
-   */  
-  wxString GetTempAutosavefileName();
-  //! Remove an eventual temporary autosave file.
-  void RemoveTempAutosavefile();
-  //! Remember an temporary autosave file name.
-  void RegisterAutoSaveFile(wxString name);
-  //! Generates a list of all temporary autosave files we didn't open yet.
-  std::list<wxString> GetTempAutosaveFiles();
-  
   //! A RegEx that matches gnuplot errors.
   wxRegEx m_gnuplotErrorRegex;
   //! Clear the evaluation queue and return true if "Abort on Error" is set. 
@@ -217,8 +202,6 @@ private:
    */
   wxString GetUnmatchedParenthesisState(wxString text,int &index);
 
-  //! The last name GetTempAutosavefileName() has returned.
-  wxString m_tempfileName;
 protected:
   //! Is this window active?
   bool m_isActive;
@@ -249,6 +232,7 @@ protected:
   void CheckForUpdates(bool reportUpToDate = false);
 
   void OnRecentDocument(wxCommandEvent &event);
+  void OnUnsavedDocument(wxCommandEvent &event);
 
   /*! The idle task that refreshes the gui (worksheet, menus, title line,...)
 
@@ -507,8 +491,6 @@ protected:
   bool m_isConnected;
   //! Is maxima running?
   bool m_isRunning;
-  //! The process id of maxima. Is determined by ReadFirstPrompt.
-  long m_pid;
   wxProcess *m_process;
   //! The stdout of the maxima process
   wxInputStream *m_maximaStdout;
