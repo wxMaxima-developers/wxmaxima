@@ -3290,7 +3290,12 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
           else
           {
             if(SaveNecessary())
-              m_console->ExportToWXMX(GetTempAutosavefileName());
+            {
+              wxString name = GetTempAutosavefileName();
+              m_console->ExportToWXMX(name);
+              RegisterAutoSaveFile(name);
+              m_fileSaved = false;
+            }
           }
           
           m_autoSaveTimer.StartOnce(m_autoSaveInterval);
@@ -3311,7 +3316,11 @@ wxString wxMaxima::GetTempAutosavefileName()
     RemoveTempAutosavefile();
   }
   m_tempfileName = name;
+  return m_tempfileName;
+}
 
+void wxMaxima::RegisterAutoSaveFile(wxString name)
+{
   wxConfigBase *config = wxConfig::Get();
   wxString autoSaveFiles;
   config->Read("AutoSaveFiles",&autoSaveFiles);
@@ -3320,7 +3329,6 @@ wxString wxMaxima::GetTempAutosavefileName()
     config->Write("AutoSaveFiles",m_tempfileName+wxT(";")+autoSaveFiles);
     GetTempAutosaveFiles();
   }
-  return m_tempfileName;
 }
 
 void wxMaxima::RemoveTempAutosavefile()

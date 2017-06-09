@@ -178,6 +178,8 @@ private:
   wxString GetTempAutosavefileName();
   //! Remove an eventual temporary autosave file.
   void RemoveTempAutosavefile();
+  //! Remember an temporary autosave file name.
+  void RegisterAutoSaveFile(wxString name);
   //! Generates a list of all temporary autosave files we didn't open yet.
   std::list<wxString> GetTempAutosaveFiles();
   
