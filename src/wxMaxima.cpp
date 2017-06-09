@@ -3315,8 +3315,11 @@ wxString wxMaxima::GetTempAutosavefileName()
   wxConfigBase *config = wxConfig::Get();
   wxString autoSaveFiles;
   config->Read("AutoSaveFiles",&autoSaveFiles);
-  config->Write("AutoSaveFiles",m_tempfileName+wxT(";")+autoSaveFiles);
-  GetTempAutosaveFiles();
+  if(autoSaveFiles.find(m_tempfileName) == wxNOT_FOUND)
+  {
+    config->Write("AutoSaveFiles",m_tempfileName+wxT(";")+autoSaveFiles);
+    GetTempAutosaveFiles();
+  }
   return m_tempfileName;
 }
 
