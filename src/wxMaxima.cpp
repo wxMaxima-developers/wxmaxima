@@ -3311,6 +3311,13 @@ wxString wxMaxima::GetTempAutosavefileName()
     RemoveTempAutosavefile();
   }
   m_tempfileName = name;
+
+  wxConfigBase *config = wxConfig::Get();
+  wxString autoSaveFiles;
+  config->Read("AutoSaveFiles",&autoSaveFiles);
+  config->Write("AutoSaveFiles",m_tempfileName+wxT(";")+autoSaveFiles);
+  GetTempAutosaveFiles();
+  return m_tempfileName;
 }
 
 void wxMaxima::RemoveTempAutosavefile()
@@ -3537,6 +3544,46 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
   m_console->RequestRedraw();
 }
 
+std::list<wxString> wxMaxima::GetTempAutosaveFiles()
+{
+  wxConfigBase *config = wxConfig::Get();
+  wxString autoSaveFiles;
+  wxString autoSaveFiles_new;
+  config->Read("AutoSaveFiles",&autoSaveFiles);
+  wxStringTokenizer files(autoSaveFiles, wxT(";"));
+
+  std::list<wxString> autoSaveFileList;
+  while(files.HasMoreTokens())
+  {
+    wxString filename = files.GetNextToken();
+    if(filename != wxEmptyString)
+    {
+      if(wxFileExists(filename))
+      {
+        autoSaveFileList.push_back(filename);
+      }
+    }
+  }
+  autoSaveFileList.unique();
+
+  for(std::list<wxString>::iterator it = autoSaveFileList.begin(); it != autoSaveFileList.end();++it)
+  {
+    autoSaveFiles_new += *it + wxString(wxT(";"));
+  }
+  config->Write("AutoSaveFiles",autoSaveFiles_new);
+
+  return autoSaveFileList;
+}
+
+void wxMaxima::ReReadConfig()
+{
+  wxConfigBase *config = wxConfig::Get();
+  config->Flush();
+  wxDELETE(config);
+  wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+}
+    
+
 void wxMaxima::EditMenu(wxCommandEvent &event)
 {
   //if (m_console->m_findDialog != NULL) {
@@ -3561,9 +3608,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       // wxGTK uses wxFileConf. ...and wxFileConf loads the config file only once
       // on inintialisation => Let's reload the config file before entering the
       // config dialogue.
-      config->Flush();
-      wxDELETE(config);
-      wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+      ReReadConfig();
       config = wxConfig::Get();
       
       ConfigDialogue *configW = new ConfigDialogue(this, m_console->m_configuration);

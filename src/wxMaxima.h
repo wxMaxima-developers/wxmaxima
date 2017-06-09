@@ -168,14 +168,19 @@ public:
   { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 
 private:
+  //! Re-read the configuration.
+  void ReReadConfig();
   /*! Determine a suitable name for a temporary autosave file.
 
     Is used if we want to autosave the current file, but still have no 
     filename to save it to.
-   */
+   */  
   wxString GetTempAutosavefileName();
   //! Remove an eventual temporary autosave file.
   void RemoveTempAutosavefile();
+  //! Generates a list of all temporary autosave files we didn't open yet.
+  std::list<wxString> GetTempAutosaveFiles();
+  
   //! A RegEx that matches gnuplot errors.
   wxRegEx m_gnuplotErrorRegex;
   //! Clear the evaluation queue and return true if "Abort on Error" is set. 
