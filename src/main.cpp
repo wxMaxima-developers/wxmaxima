@@ -340,6 +340,11 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
     case wxMaximaFrame::menu_new_id:
     case ToolBar::tb_new:
     case wxMaxima::mac_newId:
+
+      // Mac computers insist that all instances of a new application need to share
+      // the same process. On all other OSes we create a separate process for each
+      // window: This way if one instance of wxMaxima crashes all the other instances
+      // are still alive.
 #if defined __WXMAC__
       NewWindow();
 #else
