@@ -1158,7 +1158,9 @@ void wxMaximaFrame::RemoveTempAutosavefile()
 {
   if(m_tempfileName != wxEmptyString)
   {
-    if(wxFileExists(m_tempfileName))
+    // Don't delete the file if we have opened it and haven't saved it under a
+    // different name yet.
+    if(wxFileExists(m_tempfileName) && (m_tempfileName != m_console->m_currentFile))
       wxRemoveFile(m_tempfileName);
   }
   m_tempfileName = wxEmptyString;
