@@ -1040,7 +1040,7 @@ void wxMaximaFrame::UpdateRecentDocuments()
   int itemNumber = m_recentDocumentsMenu->GetMenuItemCount();
 
   for(int i=0;i<itemNumber;i++)
-    m_recentDocumentsMenu->Remove(0);
+    m_recentDocumentsMenu->Destroy(m_recentDocumentsMenu->FindItemByPosition(0));
   
   long recentItems = 10;
   wxConfig::Get()->Read(wxT("recentItems"), &recentItems);
