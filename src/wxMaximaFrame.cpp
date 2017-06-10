@@ -1069,7 +1069,12 @@ void wxMaximaFrame::UpdateRecentDocuments()
   for(std::list<wxString>::iterator it = autoSaveFileList.begin();
       it != autoSaveFileList.end();++it)
   {
-    m_recentDocumentsMenu->Append(index, *it);
+    wxStructStat stat;
+    wxStat(*it,&stat);
+    wxDateTime modified(stat.st_mtime);
+    m_recentDocumentsMenu->Append(index, *it + wxT(" (") +
+                                  modified.FormatDate() + wxT(" ") +
+                                  modified.FormatTime() + wxT(")"));
     index++;
   }
   
@@ -1104,6 +1109,11 @@ std::list<wxString> wxMaximaFrame::GetTempAutosaveFiles()
   }
   config->Write("AutoSaveFiles",autoSaveFiles_new);
 
+  if(!autoSaveFileList.empty())
+  {
+    if(autoSaveFileList.front() == m_tempfileName)
+      autoSaveFileList.pop_front();
+  }
   return autoSaveFileList;
 }
 
@@ -1133,10 +1143,13 @@ void wxMaximaFrame::RegisterAutoSaveFile(wxString name)
 {
   wxConfigBase *config = wxConfig::Get();
   wxString autoSaveFiles;
+  ReReadConfig();
   config->Read("AutoSaveFiles",&autoSaveFiles);
   if(autoSaveFiles.Find(m_tempfileName) == wxNOT_FOUND)
   {
-    config->Write("AutoSaveFiles",m_tempfileName + wxT(";") + autoSaveFiles);
+    autoSaveFiles = m_tempfileName + wxT(";") + autoSaveFiles;
+    config->Write("AutoSaveFiles", autoSaveFiles);
+    config->Flush();
     GetTempAutosaveFiles();
   }
 }
