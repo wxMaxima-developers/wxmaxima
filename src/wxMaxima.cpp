@@ -3288,12 +3288,23 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
       {
         if (m_autoSaveInterval > 10000)
         {
-          if ((m_console->m_currentFile.Length() > 0) && SaveNecessary())
-            SaveFile(false);
-          else
+          if(SaveNecessary())
           {
-            if(SaveNecessary())
+            if ((m_console->m_currentFile.Length() > 0) && )
             {
+              // Automatically safe the file for the user making it seem like the file
+              // is always saved - 
+              SaveFile(false);
+            }
+            else
+            {
+              // The file hasn't been given a name yet.
+              // The temporary backup file that is only used if the file still hasn't
+              // been given a name by the user isn't important enough to produce
+              // asserts.
+              wxLogNull noWarningDuringBackup;
+
+              // Save the file and remember the file name.
               wxString name = GetTempAutosavefileName();
               m_console->ExportToWXMX(name);
               RegisterAutoSaveFile(name);
