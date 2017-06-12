@@ -1131,10 +1131,10 @@ wxString wxMaximaFrame::GetTempAutosavefileName()
     wxString::Format("/untitled_%li_%li.wxmx",
                      wxGetProcessId(),m_pid);
 
+  // If the file name changes there is no reason to let the old file lie around.
   if (name != m_tempfileName)
-  {
     RemoveTempAutosavefile();
-  }
+
   m_tempfileName = name;
   return m_tempfileName;
 }

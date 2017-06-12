@@ -3290,7 +3290,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
         {
           if(SaveNecessary())
           {
-            if ((m_console->m_currentFile.Length() > 0) && )
+            if ((m_console->m_currentFile.Length() > 0))
             {
               // Automatically safe the file for the user making it seem like the file
               // is always saved - 
