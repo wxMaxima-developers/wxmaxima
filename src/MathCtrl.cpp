@@ -6905,6 +6905,7 @@ void MathCtrl::OnSetFocus(wxFocusEvent &event)
   wxTimerEvent dummy;
   dummy.SetId(CARET_TIMER_ID);
   OnTimer(dummy);
+  event.Skip();
 }
 
 void MathCtrl::OnKillFocus(wxFocusEvent &event)
@@ -6912,6 +6913,7 @@ void MathCtrl::OnKillFocus(wxFocusEvent &event)
   m_hasFocus = false;
   if (GetActiveCell() != NULL)
     GetActiveCell()->SetFocus(false);
+  event.Skip();
 }
 
 void MathCtrl::CheckUnixCopy()
