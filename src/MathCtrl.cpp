@@ -1011,6 +1011,8 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
         }
         popupMenu->AppendSeparator();
         popupMenu->Append(popid_evaluate, _("Evaluate Cell(s)"), wxEmptyString, wxITEM_NORMAL);
+        if(m_selectionStart == m_selectionEnd)
+          popupMenu->Append(popid_evaluate_rest, _("Evaluate Cells Below"), wxEmptyString, wxITEM_NORMAL);
 
         if (CanMergeSelection())
           popupMenu->Append(popid_merge_cells, _("Merge Cells"), wxEmptyString, wxITEM_NORMAL);
@@ -1098,6 +1100,9 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
       popupMenu->Append(popid_insert_section, _("Insert Section Cell"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_insert_subsection, _("Insert Subsection Cell"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_insert_subsubsection, _("Insert Subsubsection Cell"), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->AppendSeparator();
+        popupMenu->Append(popid_evaluate_till_here, _("Evaluate Cells Above"), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_evaluate_rest, _("Evaluate Cells Below"), wxEmptyString, wxITEM_NORMAL);
     }
   }
 
@@ -6062,6 +6067,19 @@ void MathCtrl::AddSectionToEvaluationQueue(GroupCell *start)
   // Find the end of the current section
   GroupCell *end = EndOfSectioningUnit(start);
   AddSelectionToEvaluationQueue(start, end);
+}
+
+void MathCtrl::AddRestToEvaluationQueue()
+{
+  if(!CellsSelected())
+    return;
+
+  GroupCell *start = dynamic_cast<GroupCell *>(m_selectionStart->GetParent());
+
+  if(start->m_next != NULL)
+    start = dynamic_cast<GroupCell *>(start->m_next);
+  
+  AddSelectionToEvaluationQueue(start, m_last);
 }
 
 void MathCtrl::AddSelectionToEvaluationQueue()

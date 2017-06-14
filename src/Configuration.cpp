@@ -55,6 +55,8 @@ Configuration::Configuration(wxDC &dc, bool isTopLevel) : m_dc(&dc)
   m_maximaLocation = dirstruct.MaximaDefaultLocation();
   m_indent = -1;
   ReadConfig();
+  m_showCodeCells = true;
+
 }
 
 void Configuration::ShowCodeCells(bool show)

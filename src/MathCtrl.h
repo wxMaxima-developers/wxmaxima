@@ -830,6 +830,8 @@ public:
     popid_animation_start,
     popid_evaluate,
     popid_evaluate_section,
+    popid_evaluate_rest,
+    popid_evaluate_till_here,
     popid_merge_cells,
     popid_insert_text,
     popid_insert_title,
@@ -1279,6 +1281,9 @@ public:
   //! Schedule all cells stopping with the one the caret is in for evaluation
   void AddDocumentTillHereToEvaluationQueue();
 
+  //! Add all cells below the cursor to the evaluation queue.
+  void AddRestToEvaluationQueue();
+  
   //! Adds a chapter, a section or a subsection to the evaluation queue
   void AddSectionToEvaluationQueue(GroupCell *start);
 

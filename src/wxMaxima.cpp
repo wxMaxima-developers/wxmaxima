@@ -5739,6 +5739,22 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       }
     }
       break;
+    case MathCtrl::popid_evaluate_rest:
+      m_console->AddRestToEvaluationQueue();
+      EvaluationQueueLength(m_console->m_evaluationQueue.Size(), m_console->m_evaluationQueue.CommandsLeftInCell());
+      TryEvaluateNextInQueue();
+      break;
+    case MathCtrl::popid_evaluate_till_here:
+      m_console->m_evaluationQueue.Clear();
+      m_console->ResetInputPrompts();
+      EvaluationQueueLength(0);
+      if (m_console->m_configuration->RestartOnReEvaluation())
+        StartMaxima();
+      m_console->AddDocumentTillHereToEvaluationQueue();
+      // Inform the user about the length of the evaluation queue.
+      EvaluationQueueLength(m_console->m_evaluationQueue.Size(), m_console->m_evaluationQueue.CommandsLeftInCell());
+      TryEvaluateNextInQueue();
+      break;
     case MathCtrl::popid_copy:
       if (m_console->CanCopy(true))
         m_console->Copy();
@@ -7176,6 +7192,8 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_MENU(MathCtrl::popid_divide_cell, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_evaluate, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_evaluate_section, wxMaxima::PopupMenu)
+                EVT_MENU(MathCtrl::popid_evaluate_rest, wxMaxima::PopupMenu)
+                EVT_MENU(MathCtrl::popid_evaluate_till_here, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_merge_cells, wxMaxima::PopupMenu)
                 EVT_MENU(TableOfContents::popid_Fold, wxMaxima::PopupMenu)
                 EVT_MENU(TableOfContents::popid_Unfold, wxMaxima::PopupMenu)
