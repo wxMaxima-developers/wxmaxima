@@ -6764,11 +6764,15 @@ int wxMaxima::SaveDocumentP()
 void wxMaxima::OnActivate(wxActivateEvent &event)
 {
   m_console->WindowActive(event.GetActive());
+  event.Skip();
 }
 
 void wxMaxima::OnMinimize(wxIconizeEvent &event)
 {
   m_console->WindowActive(!event.IsIconized());
+  if(!event.IsIconized())
+    m_console->SetFocus();
+  event.Skip();
 }
 
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)

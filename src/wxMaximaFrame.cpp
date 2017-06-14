@@ -41,6 +41,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                              long style) :
         wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
 {
+  m_recentDocumentsMenu = NULL;
   m_userSymbols = NULL;
   m_EvaluationQueueLength = 0;
   m_commandsLeftInCurrentCell = 0;
@@ -158,8 +159,6 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
           break;
       }
     }
-    // TODO: Is this needed in order to make the status bar update?
-    // m_console->ForceRedraw();
   }
   m_StatusMaximaBusy = status;
   m_forceStatusbarUpdate = false;
