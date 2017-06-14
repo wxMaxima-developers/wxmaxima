@@ -5739,6 +5739,12 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       }
     }
       break;
+    case MathCtrl::popid_evaluate:
+      {
+        wxCommandEvent *dummy = new wxCommandEvent;          
+        EvaluateEvent(*dummy);
+      }
+      break;
     case MathCtrl::popid_evaluate_rest:
       m_console->AddRestToEvaluationQueue();
       EvaluationQueueLength(m_console->m_evaluationQueue.Size(), m_console->m_evaluationQueue.CommandsLeftInCell());
