@@ -1141,9 +1141,9 @@ wxString wxMaximaFrame::GetTempAutosavefileName()
 
 void wxMaximaFrame::RegisterAutoSaveFile(wxString name)
 {
-  wxConfigBase *config = wxConfig::Get();
   wxString autoSaveFiles;
   ReReadConfig();
+  wxConfigBase *config = wxConfig::Get();
   config->Read("AutoSaveFiles",&autoSaveFiles);
   if(autoSaveFiles.Find(m_tempfileName) == wxNOT_FOUND)
   {
