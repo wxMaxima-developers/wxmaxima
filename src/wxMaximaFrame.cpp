@@ -1061,24 +1061,25 @@ void wxMaximaFrame::UpdateRecentDocuments()
     }
   }
 
-  m_recentDocumentsMenu->Append(menu_recent_document_separator,
-                          wxEmptyString, wxEmptyString, wxITEM_SEPARATOR);
-
-  int index =  menu_unsaved_document_0;
   std::list<wxString> autoSaveFileList = GetTempAutosaveFiles();
-  for(std::list<wxString>::iterator it = autoSaveFileList.begin();
-      it != autoSaveFileList.end();++it)
+  if(!autoSaveFileList.empty())
   {
-    wxStructStat stat;
-    wxStat(*it,&stat);
-    wxDateTime modified(stat.st_mtime);
-    m_recentDocumentsMenu->Append(index, *it + wxT(" (") +
-                                  modified.FormatDate() + wxT(" ") +
-                                  modified.FormatTime() + wxT(")"));
-    index++;
+    m_recentDocumentsMenu->Append(menu_recent_document_separator,
+                                  wxEmptyString, wxEmptyString, wxITEM_SEPARATOR);
+    
+    int index =  menu_unsaved_document_0;
+    for(std::list<wxString>::iterator it = autoSaveFileList.begin();
+        it != autoSaveFileList.end();++it)
+    {
+      wxStructStat stat;
+      wxStat(*it,&stat);
+      wxDateTime modified(stat.st_mtime);
+      m_recentDocumentsMenu->Append(index, *it + wxT(" (") +
+                                    modified.FormatDate() + wxT(" ") +
+                                    modified.FormatTime() + wxT(")"));
+      index++;
+    }
   }
-  
-  SaveRecentDocuments();
 }
 
 std::list<wxString> wxMaximaFrame::GetTempAutosaveFiles()
