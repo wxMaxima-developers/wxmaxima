@@ -6071,14 +6071,21 @@ void MathCtrl::AddSectionToEvaluationQueue(GroupCell *start)
 
 void MathCtrl::AddRestToEvaluationQueue()
 {
-  if(!CellsSelected())
-    return;
+  GroupCell *start = NULL;
+  if(CellsSelected())
+  {
+    start = dynamic_cast<GroupCell *>(m_selectionStart->GetParent());
+  }
 
-  GroupCell *start = dynamic_cast<GroupCell *>(m_selectionStart->GetParent());
+  if(start == NULL)
+    start = GetHCaret();
 
-  if(start->m_next != NULL)
+  if(start != NULL)
     start = dynamic_cast<GroupCell *>(start->m_next);
-  
+
+  if(start == NULL)
+    return;
+    
   AddSelectionToEvaluationQueue(start, m_last);
 }
 
