@@ -373,12 +373,14 @@ void wxMaximaFrame::do_layout()
                             Left());
 
   m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).
+            Caption(_("Greek Letters")).
             MinSize(greekPane->GetEffectiveMinSize()).
             BestSize(greekPane->GetEffectiveMinSize()).
             Show(true).
             MaxSize(greekPane->GetEffectiveMinSize());
   
   m_manager.GetPane(wxT("symbols")) = m_manager.GetPane(wxT("symbols")).
+            Caption(_("Symbols")).
             MinSize(symbolsPane->GetEffectiveMinSize()).
             BestSize(symbolsPane->GetEffectiveMinSize()).
             Show(true).
