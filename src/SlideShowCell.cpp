@@ -287,7 +287,7 @@ wxString SlideShow::ToRTF()
                        stream.GetOutputStreamBuffer()->GetBufferSize());
   }
 
-  image += wxString::Format(wxT("\\picw%li\\pich%li "),
+  image += wxString::Format(wxT("\\picw%lu\\pich%lu "),
                             m_images[m_displayed]->GetOriginalWidth(),
                             m_images[m_displayed]->GetOriginalHeight()
   );
