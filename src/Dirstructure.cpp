@@ -71,6 +71,20 @@ wxString Dirstructure::ResourcesDir()
     dirs = exe.GetDirs();
   }
   
+  // If there is a wxmaxima folder the ressources are there
+  if(wxDirExists(exe.GetPath() + wxT("/wxmaxima")))
+  {
+    exe.AppendDir("wxmaxima");
+    dirs = exe.GetDirs();
+  }
+  
+  // If there is a wxMaxima folder the ressources are there
+  if(wxDirExists(exe.GetPath() + wxT("/wxMaxima")))
+  {
+    exe.AppendDir("wxMaxima");
+    dirs = exe.GetDirs();
+  }
+  
   return exe.GetPath();
 }
 
