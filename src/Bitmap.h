@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //  Copyright (C) 2015      Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -37,8 +37,10 @@ public:
     \param scale By which factor the resolution should be increased in respect
                  to the default 755 DPI?
   */
-  Bitmap(int scale=1);
+  Bitmap(Configuration **configuration, int scale = 1);
+
   ~Bitmap();
+
   /*! Renders tree as bitmap
     
     \param tree The list of cells that is to be rendered
@@ -47,30 +49,47 @@ public:
 
     \return true, if the bitmap could be created.
    */
-  bool SetData(MathCell* tree,long int maxSize = -1);
+  bool SetData(MathCell *tree, long int maxSize = -1);
+
   /*! Exports this bitmap to a file
 
     \return The size of the bitmap in millimeters. Sizes <0 indicate that the export has failed.
    */
   wxSize ToFile(wxString file);
+
   //! Returns the bitmap representation of the list of cells that was passed to SetData()
-  wxBitmap GetBitmap(){return m_bmp;}
+  wxBitmap GetBitmap()
+  { return m_bmp; }
+
   //! Copies the bitmap representation of the list of cells that was passed to SetData()
   bool ToClipboard();
+
 protected:
   void DestroyTree();
+
   void RecalculateWidths();
+
   void BreakLines();
+
   void RecalculateHeight();
-  void GetMaxPoint(int* width, int* height);
+
+  void GetMaxPoint(int *width, int *height);
+
   void BreakUpCells();
+
   bool Layout(long int maxSize = -1);
+
   void Draw();
+
   MathCell *m_tree;
+
   double GetRealHeight();
+
   double GetRealWidth();
 
 private:
+  wxMemoryDC *m_dc;
+  Configuration **m_configuration, *m_oldconfig;
   //! How many times the natural resolution do we want this bitmap to be?
   int m_scale;
   wxBitmap m_bmp;
@@ -80,7 +99,7 @@ private:
   long m_height;
   //! The resolution of the bitmap.
   wxSize m_ppi;
-  
+
 };
 
 #endif // BITMAP_H

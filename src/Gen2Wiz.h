@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -26,36 +26,43 @@
 
 #include "BTextCtrl.h"
 
-class Gen2Wiz: public wxDialog
+class Gen2Wiz : public wxDialog
 {
 public:
   Gen2Wiz(wxString lab1, wxString lab2,
           wxString val1, wxString val2,
-          wxWindow* parent, int id, const wxString& title,
+          Configuration *cfg,
+          wxWindow *parent, int id, const wxString &title,
           bool eq = false,
-          const wxPoint& pos = wxDefaultPosition,
-          const wxSize& size = wxDefaultSize,
+          const wxPoint &pos = wxDefaultPosition,
+          const wxSize &size = wxDefaultSize,
           long style = wxDEFAULT_DIALOG_STYLE);
+
   wxString GetValue1()
   {
     return text_ctrl_1->GetValue();
   }
+
   wxString GetValue2()
   {
     return text_ctrl_2->GetValue();
   }
+
 private:
   bool equal;
+
   void set_properties();
+
   void do_layout();
+
 protected:
-  wxStaticText* label_2;
-  BTextCtrl* text_ctrl_1;
-  wxStaticText* label_3;
-  BTextCtrl* text_ctrl_2;
-  wxStaticLine* static_line_1;
-  wxButton* button_1;
-  wxButton* button_2;
+  wxStaticText *label_2;
+  BTextCtrl *text_ctrl_1;
+  wxStaticText *label_3;
+  BTextCtrl *text_ctrl_2;
+  wxStaticLine *static_line_1;
+  wxButton *button_1;
+  wxButton *button_2;
 };
 
 

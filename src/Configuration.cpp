@@ -29,21 +29,20 @@
 #include <wx/config.h>
 #include "MathCell.h"
 
-Configuration::Configuration(wxDC& dc) : m_dc(&dc)
+Configuration::Configuration(wxDC &dc, bool isTopLevel) : m_dc(&dc)
 {
-  // This is the currently active instance of this class
-  m_last = m_activeConfiguration;
-  m_activeConfiguration = this;
-
+  m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML");
   m_scale = 1.0;
   m_zoomFactor = 1.0; // affects returned fontsizes
   m_top = -1;
   m_bottom = -1;
+  m_changeAsterisk = true;
   m_forceUpdate = false;
   m_outdated = false;
   m_printer = false;
   m_TeXFonts = false;
   m_printer = false;
+  m_notifyIfIdle = true;
   m_fixReorderedIndices = true;
   m_showBrackets = true;
   m_printBrackets = false;
@@ -56,6 +55,8 @@ Configuration::Configuration(wxDC& dc) : m_dc(&dc)
   m_maximaLocation = dirstruct.MaximaDefaultLocation();
   m_indent = -1;
   ReadConfig();
+  m_showCodeCells = true;
+
 }
 
 void Configuration::ShowCodeCells(bool show)
@@ -65,21 +66,21 @@ void Configuration::ShowCodeCells(bool show)
 
 bool Configuration::MaximaFound(wxString location)
 {
-  if(location == wxEmptyString)
+  if (location == wxEmptyString)
     location = m_maximaLocation;
   bool maximaFound = false;
   if (wxFileExists(location))
     maximaFound = true;
-  
-    // Find a maxima within an application package.
-  if (wxFileExists(location+wxT("/Contents/Resources/maxima.sh")))
+
+  // Find a maxima within an application package.
+  if (wxFileExists(location + wxT("/Contents/Resources/maxima.sh")))
     maximaFound = true;
 
   wxPathList pathlist;
   pathlist.AddEnvList(wxT("PATH"));
   wxString path = pathlist.FindAbsoluteValidPath(location);
-  if(!path.empty())
-      maximaFound = true;
+  if (!path.empty())
+    maximaFound = true;
   return maximaFound;
 }
 
@@ -87,26 +88,29 @@ void Configuration::ReadConfig()
 {
   Dirstructure dirstruct;
 
-  wxConfig *config = (wxConfig *)wxConfig::Get();
+  wxConfig *config = (wxConfig *) wxConfig::Get();
   m_autoWrap = 3;
   config->Read(wxT("autoWrapMode"), &m_autoWrap);
+
+  config->Read(wxT("mathJaxURL"), &m_mathJaxURL);
 
   config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
 
   config->Read(wxT("maxima"), &m_maximaLocation);
   //Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a
-  if (m_maximaLocation.IsSameAs (wxT("1")))
+  if (m_maximaLocation.IsSameAs(wxT("1")))
     m_maximaLocation = dirstruct.MaximaDefaultLocation();
 
   m_autoIndent = true;
   config->Read(wxT("autoIndent"), &m_autoIndent);
 
   config->Read(wxT("showLabelChoice"), &m_showLabelChoice);
-  
-  m_changeAsterisk = true;
+
   config->Read(wxT("changeAsterisk"), &m_changeAsterisk);
 
-  config->Read(wxT("hideBrackets"),&m_hideBrackets);
+  config->Read(wxT("notifyIfIdle"), &m_notifyIfIdle);
+
+  config->Read(wxT("hideBrackets"), &m_hideBrackets);
 
   m_displayedDigits = 100;
   config->Read(wxT("displayedDigits"), &m_displayedDigits);
@@ -124,21 +128,21 @@ void Configuration::ReadConfig()
 
   m_openHCaret = false;
   config->Read(wxT("openHCaret"), &m_openHCaret);
-  
-    
+
+
   m_labelWidth = 4;
   config->Read(wxT("labelWidth"), &m_labelWidth);
 
   config->Read(wxT("printBrackets"), &m_printBrackets);
-  
-  m_zoomFactor = 1.0;
-  config->Read(wxT("ZoomFactor"),&m_zoomFactor);
 
-  if (wxFontEnumerator::IsValidFacename(m_fontCMEX = wxT("jsMath-cmex10")) &&
-      wxFontEnumerator::IsValidFacename(m_fontCMSY = wxT("jsMath-cmsy10")) &&
-      wxFontEnumerator::IsValidFacename(m_fontCMRI = wxT("jsMath-cmr10")) &&
-      wxFontEnumerator::IsValidFacename(m_fontCMMI = wxT("jsMath-cmmi10")) &&
-      wxFontEnumerator::IsValidFacename(m_fontCMTI = wxT("jsMath-cmti10")))
+  m_zoomFactor = 1.0;
+  config->Read(wxT("ZoomFactor"), &m_zoomFactor);
+
+  if (wxFontEnumerator::IsValidFacename(m_fontCMEX = CMEX10) &&
+      wxFontEnumerator::IsValidFacename(m_fontCMSY = CMSY10) &&
+      wxFontEnumerator::IsValidFacename(m_fontCMRI = CMR10) &&
+      wxFontEnumerator::IsValidFacename(m_fontCMMI = CMMI10) &&
+      wxFontEnumerator::IsValidFacename(m_fontCMTI = CMTI10))
   {
     m_TeXFonts = true;
     config->Read(wxT("usejsmath"), &m_TeXFonts);
@@ -156,14 +160,13 @@ void Configuration::SetZoomFactor(double newzoom)
     newzoom = GetMaxZoomFactor();
   if (newzoom < GetMinZoomFactor())
     newzoom = GetMinZoomFactor();
-  
-   m_zoomFactor = newzoom;
-   wxConfig::Get()->Write(wxT("ZoomFactor"),m_zoomFactor);
+
+  m_zoomFactor = newzoom;
+  wxConfig::Get()->Write(wxT("ZoomFactor"), m_zoomFactor);
 }
 
 Configuration::~Configuration()
 {
-  m_activeConfiguration = m_last;
 }
 
 wxString Configuration::GetFontName(int type)
@@ -171,17 +174,23 @@ wxString Configuration::GetFontName(int type)
   if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION || type == TS_SECTION || type == TS_TEXT)
     return m_styles[type].font;
   else if (type == TS_NUMBER || type == TS_VARIABLE || type == TS_FUNCTION ||
-      type == TS_SPECIAL_CONSTANT || type == TS_STRING)
+           type == TS_SPECIAL_CONSTANT || type == TS_STRING)
     return m_mathFontName;
   return m_fontName;
 }
 
 void Configuration::ReadStyle()
 {
-  wxConfigBase* config = wxConfig::Get();
+  wxConfigBase *config = wxConfig::Get();
 
   // Font
   config->Read(wxT("Style/fontname"), &m_fontName);
+#ifdef __WXOSX_MAC__
+  if (m_fontName.IsEmpty())
+  {
+    m_fontName = "Monaco";
+  }
+#endif
 
   // Default fontsize
   m_defaultFontSize = 12;
@@ -193,11 +202,17 @@ void Configuration::ReadStyle()
   m_fontEncoding = wxFONTENCODING_DEFAULT;
   int encoding = m_fontEncoding;
   config->Read(wxT("fontEncoding"), &encoding);
-  m_fontEncoding = (wxFontEncoding)encoding;
+  m_fontEncoding = (wxFontEncoding) encoding;
 
   // Math font
   m_mathFontName = wxEmptyString;
   config->Read(wxT("Style/Math/fontname"), &m_mathFontName);
+#ifdef __WXOSX_MAC__
+  if (m_mathFontName.IsEmpty())
+  {
+    m_mathFontName = "Monaco";
+  }
+#endif
 
   wxString tmp;
 
@@ -219,7 +234,10 @@ void Configuration::ReadStyle()
   m_styles[TS_TEXT].bold = false;
   m_styles[TS_TEXT].italic = false;
   m_styles[TS_TEXT].underlined = false;
-  m_styles[TS_TEXT].fontSize = 0;
+  m_styles[TS_TEXT].fontSize = 12;
+#ifdef __WXOSX_MAC__
+  m_styles[TS_TEXT].font = "Monaco";
+#endif
   config->Read(wxT("Style/Text/fontsize"),
                &m_styles[TS_TEXT].fontSize);
   config->Read(wxT("Style/Text/fontname"),
@@ -267,20 +285,23 @@ void Configuration::ReadStyle()
   m_styles[TS_CODE_OPERATOR].italic = true;
   m_styles[TS_CODE_OPERATOR].underlined = false;
   READ_STYLES(TS_CODE_OPERATOR, "Style/CodeHighlighting/Operator/")
-    
+
   // Line endings in highlighted code
   m_styles[TS_CODE_ENDOFLINE].color = wxT("rgb(128,128,128)");
   m_styles[TS_CODE_ENDOFLINE].bold = false;
   m_styles[TS_CODE_ENDOFLINE].italic = true;
   m_styles[TS_CODE_ENDOFLINE].underlined = false;
   READ_STYLES(TS_CODE_ENDOFLINE, "Style/CodeHighlighting/EndOfLine/")
-    
+
   // Subsubsection
   m_styles[TS_SUBSUBSECTION].color = wxT("black");
   m_styles[TS_SUBSUBSECTION].bold = true;
   m_styles[TS_SUBSUBSECTION].italic = false;
   m_styles[TS_SUBSUBSECTION].underlined = false;
   m_styles[TS_SUBSUBSECTION].fontSize = 14;
+#ifdef __WXOSX_MAC__
+  m_styles[TS_SUBSUBSECTION].font = "Monaco";
+#endif
   config->Read(wxT("Style/Subsubsection/fontsize"),
                &m_styles[TS_SUBSUBSECTION].fontSize);
   config->Read(wxT("Style/Subsubsection/fontname"),
@@ -293,6 +314,9 @@ void Configuration::ReadStyle()
   m_styles[TS_SUBSECTION].italic = false;
   m_styles[TS_SUBSECTION].underlined = false;
   m_styles[TS_SUBSECTION].fontSize = 16;
+#ifdef __WXOSX_MAC__
+  m_styles[TS_SUBSECTION].font = "Monaco";
+#endif
   config->Read(wxT("Style/Subsection/fontsize"),
                &m_styles[TS_SUBSECTION].fontSize);
   config->Read(wxT("Style/Subsection/fontname"),
@@ -305,6 +329,9 @@ void Configuration::ReadStyle()
   m_styles[TS_SECTION].italic = true;
   m_styles[TS_SECTION].underlined = false;
   m_styles[TS_SECTION].fontSize = 18;
+#ifdef __WXOSX_MAC__
+  m_styles[TS_SECTION].font = "Monaco";
+#endif
   config->Read(wxT("Style/Section/fontsize"),
                &m_styles[TS_SECTION].fontSize);
   config->Read(wxT("Style/Section/fontname"),
@@ -317,6 +344,9 @@ void Configuration::ReadStyle()
   m_styles[TS_TITLE].italic = false;
   m_styles[TS_TITLE].underlined = true;
   m_styles[TS_TITLE].fontSize = 24;
+#ifdef __WXOSX_MAC__
+  m_styles[TS_TITLE].font = "Monaco";
+#endif
   config->Read(wxT("Style/Title/fontsize"),
                &m_styles[TS_TITLE].fontSize);
   config->Read(wxT("Style/Title/fontname"),
@@ -403,26 +433,31 @@ void Configuration::ReadStyle()
   // Highlight
   m_styles[TS_HIGHLIGHT].color = m_styles[TS_DEFAULT].color;
   if (config->Read(wxT("Style/Highlight/color"),
-                   &tmp)) m_styles[TS_HIGHLIGHT].color.Set(tmp);
+                   &tmp))
+    m_styles[TS_HIGHLIGHT].color.Set(tmp);
 
   // Text background
   m_styles[TS_TEXT_BACKGROUND].color = wxColour(wxT("white"));
   if (config->Read(wxT("Style/TextBackground/color"),
-                   &tmp)) m_styles[TS_TEXT_BACKGROUND].color.Set(tmp);
+                   &tmp))
+    m_styles[TS_TEXT_BACKGROUND].color.Set(tmp);
 
   // Cell bracket colors
   m_styles[TS_CELL_BRACKET].color = wxColour(wxT("rgb(0,0,0)"));
   if (config->Read(wxT("Style/CellBracket/color"),
-                   &tmp)) m_styles[TS_CELL_BRACKET].color.Set(tmp);
+                   &tmp))
+    m_styles[TS_CELL_BRACKET].color.Set(tmp);
 
   m_styles[TS_ACTIVE_CELL_BRACKET].color = wxT("rgb(255,0,0)");
   if (config->Read(wxT("Style/ActiveCellBracket/color"),
-                  &tmp)) m_styles[TS_ACTIVE_CELL_BRACKET].color.Set(tmp);
+                   &tmp))
+    m_styles[TS_ACTIVE_CELL_BRACKET].color.Set(tmp);
 
   // Cursor (hcaret in MathCtrl and caret in EditorCell)
   m_styles[TS_CURSOR].color = wxT("rgb(0,0,0)");
   if (config->Read(wxT("Style/Cursor/color"),
-                   &tmp)) m_styles[TS_CURSOR].color.Set(tmp);
+                   &tmp))
+    m_styles[TS_CURSOR].color.Set(tmp);
 
   // Selection color defaults to light grey on windows
 #if defined __WXMSW__
@@ -431,15 +466,18 @@ void Configuration::ReadStyle()
   m_styles[TS_SELECTION].color = wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT);
 #endif
   if (config->Read(wxT("Style/Selection/color"),
-                   &tmp)) m_styles[TS_SELECTION].color.Set(tmp);
+                   &tmp))
+    m_styles[TS_SELECTION].color.Set(tmp);
   m_styles[TS_EQUALSSELECTION].color = wxT("rgb(192,255,192)");
   if (config->Read(wxT("Style/EqualsSelection/color"),
-                   &tmp)) m_styles[TS_EQUALSSELECTION].color.Set(tmp);
+                   &tmp))
+    m_styles[TS_EQUALSSELECTION].color.Set(tmp);
 
   // Outdated cells
   m_styles[TS_OUTDATED].color = wxT("rgb(153,153,153)");
   if (config->Read(wxT("Style/Outdated/color"),
-                     &tmp)) m_styles[TS_OUTDATED].color.Set(tmp);
+                   &tmp))
+    m_styles[TS_OUTDATED].color.Set(tmp);
 
 
 #undef READ_STYLES
@@ -493,8 +531,4 @@ wxFontEncoding Configuration::GetGreekFontEncoding()
 #endif
 }
 */
-
-// Create all static variables
-Configuration *Configuration::m_activeConfiguration = NULL;
-bool Configuration::m_showCodeCells = true;
 

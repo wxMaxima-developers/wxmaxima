@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -19,17 +19,18 @@
 //
 
 #include "BTextCtrl.h"
-#include "Configuration.h"
 #include <wx/config.h>
 
 BTextCtrl::BTextCtrl(wxWindow *parent,
                      wxWindowID id,
-                     const wxString& value,
-                     const wxPoint& pos,
-                     const wxSize& size,
+                     Configuration *cfg,
+                     const wxString &value,
+                     const wxPoint &pos,
+                     const wxSize &size,
                      long style)
-    : wxTextCtrl(parent, id, value, pos, size, style)
+        : wxTextCtrl(parent, id, value, pos, size, style)
 {
+  m_config = cfg;
   bool fixedFont = true;
   m_skipTab = true;
   wxConfigBase *config = wxConfig::Get();
@@ -44,7 +45,8 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
 #else
     font = wxFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, 0, wxEmptyString);
 #endif
-    wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+    wxASSERT_MSG(font.IsOk(),
+                 _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
     SetFont(font);
   }
 }
@@ -53,13 +55,13 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
 BTextCtrl::~BTextCtrl()
 {}
 
-void BTextCtrl::OnChar(wxKeyEvent& event)
+void BTextCtrl::OnChar(wxKeyEvent &event)
 {
 #if wxUSE_UNICODE
-  if (!Configuration::Get()->GetMatchParens() || MatchParenthesis(event.GetUnicodeKey()))
+  if (!m_config->GetMatchParens() || MatchParenthesis(event.GetUnicodeKey()))
     event.Skip();
 #else
-  if (!Configuration::Get()->GetMatchParens() || MatchParenthesis(event.GetKeyCode()))
+  if (!m_config->GetMatchParens() || MatchParenthesis(event.GetKeyCode()))
     event.Skip();
 #endif
 }
@@ -69,40 +71,40 @@ bool BTextCtrl::MatchParenthesis(int code)
   bool skip = true;
   switch (code)
   {
-  case '(':
-    CloseParenthesis(wxT("("), wxT(")"), true);
-    skip = false;
-    break;
-  case ')':
-    CloseParenthesis(wxT("("), wxT(")"), false);
-    skip = false;
-    break;
-  case '[':
-    CloseParenthesis(wxT("["), wxT("]"), true);
-    skip = false;
-    break;
-  case ']':
-    CloseParenthesis(wxT("["), wxT("]"), false);
-    skip = false;
-    break;
-  case '{':
-    CloseParenthesis(wxT("{"), wxT("}"), true);
-    skip = false;
-    break;
-  case '}':
-    CloseParenthesis(wxT("{"), wxT("}"), false);
-    skip = false;
-    break;
-  case '"':
-    CloseParenthesis(wxT("\""), wxT("\""), true);
-    skip = false;
-    break;
-  case WXK_UP:
-  case WXK_DOWN:
-  case WXK_TAB:
-    skip = m_skipTab;
-  default:
-    break;
+    case '(':
+      CloseParenthesis(wxT("("), wxT(")"), true);
+      skip = false;
+      break;
+    case ')':
+      CloseParenthesis(wxT("("), wxT(")"), false);
+      skip = false;
+      break;
+    case '[':
+      CloseParenthesis(wxT("["), wxT("]"), true);
+      skip = false;
+      break;
+    case ']':
+      CloseParenthesis(wxT("["), wxT("]"), false);
+      skip = false;
+      break;
+    case '{':
+      CloseParenthesis(wxT("{"), wxT("}"), true);
+      skip = false;
+      break;
+    case '}':
+      CloseParenthesis(wxT("{"), wxT("}"), false);
+      skip = false;
+      break;
+    case '"':
+      CloseParenthesis(wxT("\""), wxT("\""), true);
+      skip = false;
+      break;
+    case WXK_UP:
+    case WXK_DOWN:
+    case WXK_TAB:
+      skip = m_skipTab;
+    default:
+      break;
   }
 
   return skip;
@@ -121,11 +123,12 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen)
 
     if (!fromOpen && charHere == close)
       SetInsertionPoint(insp + 1);
-    else {
-      wxString newtext = 
-        (insp > 0 ? text.SubString(0, insp-1) : wxT("")) +
-        (fromOpen ? open : wxT(""))  + close +
-        text.SubString(insp, text.length());
+    else
+    {
+      wxString newtext =
+              (insp > 0 ? text.SubString(0, insp - 1) : wxT("")) +
+              (fromOpen ? open : wxT("")) + close +
+              text.SubString(insp, text.length());
 
       ChangeValue(newtext);
 
@@ -136,10 +139,10 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen)
   {
     wxString text = GetValue();
 
-    wxString newtext = 
-      (from > 0 ? text.SubString(0, from - 1) : wxT("")) +
-      open + text.SubString(from, to - 1) + close +
-      text.SubString(to, text.length());
+    wxString newtext =
+            (from > 0 ? text.SubString(0, from - 1) : wxT("")) +
+            open + text.SubString(from, to - 1) + close +
+            text.SubString(to, text.length());
 
     ChangeValue(newtext);
 
@@ -152,8 +155,8 @@ void BTextCtrl::CloseParenthesis(wxString open, wxString close, bool fromOpen)
 
 BEGIN_EVENT_TABLE(BTextCtrl, wxTextCtrl)
 #if defined __WXGTK__
-  EVT_KEY_DOWN(BTextCtrl::OnChar)
+                EVT_KEY_DOWN(BTextCtrl::OnChar)
 #else
-  EVT_CHAR(BTextCtrl::OnChar)
+                EVT_CHAR(BTextCtrl::OnChar)
 #endif
 END_EVENT_TABLE()

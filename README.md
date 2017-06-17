@@ -33,7 +33,7 @@ wxMac. See the section about compiling wxWidgets.
 
 ### Compiling on Windows
 
-On Windows install MinGW (http://sourceforge.net/projects/mingw/). In
+On Windows install MinGW (https://sourceforge.net/projects/mingw/). In
 the installation process make sure you select `g++`, `MSYS Basic
 System` and `MinGW Developer ToolKit` in the `Select components` page
 of the installer.  Then run the MinGW Shell and follow the
@@ -43,22 +43,12 @@ instructions for compiling wxWidgets and wxMaxima with autotools.
 ### Compiling wxWidgets on Mac OS X and Windows
 
 Before compiling wxMaxima you need to compile the wxWidgets
-library. Download the source, unarchive and in the source directory
-execute
+library. Download the source (we recommend version 3.1 for Mac OS X),
+unarchive and in the source directory execute
 
     mkdir build
     cd build
-
-On Mac OS X configure wxWidgets with
-
-    ../configure --disable-shared --enable-unicode
-
-and on Windows with
-
-    ../configure --disable-shared
-
-Now build wxWidgets with
-
+    ../configure
     make
 
 You do not need to install the library with `make install`. You will
@@ -69,8 +59,17 @@ are two files in `build/lib/wx/config`. The correct file to use is
 need to copy the file `wxwin.m4` to `acinclude.m4` in the wxMaxima
 source directory.
 
+#### Mac OS X specific instructions
 
-### Compiling with autotools
+Building on Mac OS X sometimes requires additional arguments to the
+configure script. To build a portable binary configure wxWidgets with
+
+    ../configure --disable-shared ---with-libjpeg=builtin --with-libpng=builtin --with-regex=builtin --with-libtiff=builtin --with-zlib=builtin --with-expat=builtin --with-macosx-version-min=10.7
+
+With these options the build process will take a little longer, but
+the resulting binary will have less library dependencides.
+
+### Compiling wxMaxima with autotools
 
 If you are not building an official tarball but using the git version it
 is necessary to execute `./bootstrap` first in order to get the file
@@ -91,25 +90,29 @@ program by doing a
     make allmo
     checkinstall -D make install
 
-On ubuntu or debian the build prerequisites can be installed by doing
+On Ubuntu or Debian the build prerequisites can be installed by doing
 a
 
-    sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev autoconf imagemagick ibus-gtk ibus-gtk3
+    sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev autoconf ibus-gtk ibus-gtk3 checkinstall gettext
 
 beforehand or (if apt-get is configured to load the source package
 repositories and not only the binary packages) by the simpler
 
     sudo apt-get build-dep wxmaxima
 
+#### Mac OS X specific instructions
+
 To build an application bundle of wxMaxima on Mac OS X
 
-    ./configure --with-wx-config=<path to wx-config>
+    ./configure --with-wx-config=<path to wx-config> --with-macosx-version-min=10.7
     make
     make allmo
     make wxMaxima.app
 
-Sometimes the configure step requires an extra
-`--with-macosx-version-min=10.5` argument.
+Note that the version specified in `--with-macosx-version-min` should match the version
+used when configuring wxWidgets.
+
+#### Windows specific instructions
 
 On Windows execute instead:
 
@@ -140,6 +143,21 @@ maxima was installed in, again with the caveat of the .dll files:
     make wxMaxima.win.zip
 
 
+### Compiling wxMaxima with CMake
+
+wxMaxima can also be build using the CMake build system.
+The following steps will build and install wxMaxima using CMake:
+
+    mkdir build
+    cd build
+    cmake ..
+    cmake --build .
+    sudo cmake --build . -- install
+
+If you want to create binary packages (tar.gz, tar.bz2, DEB & RPM), you can
+create them with:
+
+    cmake --build . -- package
 
 Additional information about installing and configuring wxMaxima
 ----------------------------------------------------------------

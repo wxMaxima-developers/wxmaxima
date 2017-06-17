@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -51,23 +51,40 @@
 class FunCell : public MathCell
 {
 public:
-  FunCell();
+  FunCell(MathCell *parent, Configuration **config);
+
   ~FunCell();
-  MathCell* Copy();
+
+  MathCell *Copy();
+
   void SetName(MathCell *base);
+
   void SetArg(MathCell *index);
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToMathML();
+
   wxString ToXML();
+
   wxString ToOMML();
-  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   bool BreakUp();
+
   void Unbreak();
+
   void SetParent(MathCell *parent);
+
 protected:
   MathCell *m_nameCell;
   MathCell *m_argCell;

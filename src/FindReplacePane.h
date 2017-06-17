@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
@@ -38,7 +38,7 @@
 
 /*! The find+replace pane
  */
-class FindReplacePane: public wxPanel
+class FindReplacePane : public wxPanel
 {
 private:
   //! The storage the search strings and settings are kept in
@@ -55,23 +55,37 @@ private:
   wxCheckBox *m_matchCase;
 
 public:
-  FindReplacePane(wxWindow *parent,wxFindReplaceData *data);
-  wxString GetFindString(){return m_findReplaceData->GetFindString();}
+  FindReplacePane(wxWindow *parent, wxFindReplaceData *data);
+
+  wxString GetFindString()
+  { return m_findReplaceData->GetFindString(); }
+
   void SetFindString(wxString string);
-  wxFindReplaceData *GetData(){return m_findReplaceData;}
+
+  wxFindReplaceData *GetData()
+  { return m_findReplaceData; }
 
 protected:
-  void OnActivate(wxActivateEvent& event);
-  void OnSearch(wxCommandEvent& event);
-  void OnReplace(wxCommandEvent& event);
-  void OnReplaceAll(wxCommandEvent& event);
-  void OnReplaceStringChange(wxCommandEvent& event);
-  void OnFindStringChange(wxCommandEvent& event);
-  void OnDirectionChange(wxCommandEvent& event);
-  void OnMatchCase(wxCommandEvent& event);
-  void OnKeyDown(wxKeyEvent& event);
-  DECLARE_EVENT_TABLE()
-  
+  void OnActivate(wxActivateEvent &event);
+
+  void OnSearch(wxCommandEvent &event);
+
+  void OnReplace(wxCommandEvent &event);
+
+  void OnReplaceAll(wxCommandEvent &event);
+
+  void OnReplaceStringChange(wxCommandEvent &event);
+
+  void OnFindStringChange(wxCommandEvent &event);
+
+  void OnDirectionChange(wxCommandEvent &event);
+
+  void OnMatchCase(wxCommandEvent &event);
+
+  void OnKeyDown(wxKeyEvent &event);
+
+DECLARE_EVENT_TABLE()
+
 };
-  
+
 #endif // FINDREPLACEPANE_H

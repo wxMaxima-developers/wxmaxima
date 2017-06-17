@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -30,17 +30,17 @@
 
 #define EXPT_DEC 2
 
-ExptCell::ExptCell() : MathCell()
+ExptCell::ExptCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
 {
-  m_last1=NULL;
-  m_last2=NULL;
+  m_last1 = NULL;
+  m_last2 = NULL;
   m_baseCell = NULL;
   m_powCell = NULL;
   m_isMatrix = false;
-  m_exp = new TextCell(wxT("^"));
-  m_open = new TextCell(wxT("("));
-  m_open -> DontEscapeOpeningParenthesis();
-  m_close = new TextCell(wxT(")"));
+  m_exp = new TextCell(parent, config, wxT("^"));
+  m_open = new TextCell(parent, config, wxT("("));
+  m_open->DontEscapeOpeningParenthesis();
+  m_close = new TextCell(parent, config, wxT(")"));
 }
 
 void ExptCell::SetParent(MathCell *parent)
@@ -56,9 +56,9 @@ void ExptCell::SetParent(MathCell *parent)
     m_close->SetParentList(parent);
 }
 
-MathCell* ExptCell::Copy()
+MathCell *ExptCell::Copy()
 {
-  ExptCell* tmp = new ExptCell;
+  ExptCell *tmp = new ExptCell(m_group, m_configuration);
   CopyData(this, tmp);
   tmp->SetBase(m_baseCell->CopyList());
   tmp->SetPower(m_powCell->CopyList());
@@ -81,9 +81,8 @@ ExptCell::~ExptCell()
 void ExptCell::SetPower(MathCell *power)
 {
   if (power == NULL)
-    return ;
-  if (m_powCell != NULL)
-    delete m_powCell;
+    return;
+  wxDELETE(m_powCell);
   m_powCell = power;
 
   if (!m_powCell->IsCompound())
@@ -93,7 +92,7 @@ void ExptCell::SetPower(MathCell *power)
   }
 
   m_last2 = power;
-  if(m_last2 != NULL)
+  if (m_last2 != NULL)
     while (m_last2->m_next != NULL)
       m_last2 = m_last2->m_next;
 }
@@ -101,20 +100,19 @@ void ExptCell::SetPower(MathCell *power)
 void ExptCell::SetBase(MathCell *base)
 {
   if (base == NULL)
-    return ;
-  if (m_baseCell != NULL)
-    delete m_baseCell;
+    return;
+  wxDELETE(m_baseCell);
   m_baseCell = base;
 
   m_last1 = base;
-  if(m_last1 != NULL)
+  if (m_last1 != NULL)
     while (m_last1->m_next != NULL)
       m_last1 = m_last1->m_next;
 }
 
 void ExptCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_baseCell->RecalculateWidthsList(fontsize);
   if (m_isBroken)
@@ -131,7 +129,7 @@ void ExptCell::RecalculateWidths(int fontsize)
 
 void ExptCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_baseCell->RecalculateHeightList(fontsize);
   if (m_isBroken)
@@ -145,10 +143,10 @@ void ExptCell::RecalculateHeight(int fontsize)
   m_exp->RecalculateHeightList(fontsize);
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
-  if(m_isBroken)
+  if (m_isBroken)
   {
-    m_height = MAX(m_baseCell->GetMaxHeight(),m_open->GetMaxHeight());
-    m_center = MAX(m_baseCell->GetMaxCenter(),m_open->GetMaxCenter());
+    m_height = MAX(m_baseCell->GetMaxHeight(), m_open->GetMaxHeight());
+    m_center = MAX(m_baseCell->GetMaxCenter(), m_open->GetMaxCenter());
   }
 }
 
@@ -158,7 +156,7 @@ void ExptCell::Draw(wxPoint point, int fontsize)
 
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    Configuration *configuration = Configuration::Get();
+    Configuration *configuration = (*m_configuration);
     double scale = configuration->GetScale();
     wxPoint bs, pw;
     bs.x = point.x;
@@ -210,16 +208,16 @@ wxString ExptCell::GetDiffPart()
 wxString ExptCell::ToMathML()
 {
   return wxT("<msup>") +
-    m_baseCell -> ListToMathML() +
-    m_powCell -> ListToMathML() +
-    wxT("</msup>\n");
+         m_baseCell->ListToMathML() +
+         m_powCell->ListToMathML() +
+         wxT("</msup>\n");
 //  return wxT("<apply><power/>") + m_baseCell->ListToMathML() + m_powCell->ListToMathML() + wxT("</apply>");
 }
 
 wxString ExptCell::ToOMML()
 {
-  return wxT("<m:sSup><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sup>") + 
-    m_powCell->ListToOMML() + wxT("</m:sup></m:sSup>\n");
+  return wxT("<m:sSup><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sup>") +
+         m_powCell->ListToOMML() + wxT("</m:sup></m:sSup>\n");
 }
 
 wxString ExptCell::ToXML()
@@ -227,10 +225,10 @@ wxString ExptCell::ToXML()
 //  if (m_isBroken)
 //    return wxEmptyString;
   return _T("<e><r>") + m_baseCell->ListToXML() + _T("</r><r>") +
-    m_powCell->ListToXML() + _T("</r></e>");
+         m_powCell->ListToXML() + _T("</r></e>");
 }
 
-void ExptCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
+void ExptCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
 {
   *first = NULL;
   *last = NULL;
@@ -251,8 +249,8 @@ bool ExptCell::BreakUp()
   {
     m_isBroken = true;
     m_baseCell->m_previousToDraw = this;
-    wxASSERT_MSG(m_last1 != NULL,_("Bug: No last cell in the base of an exptCell!"));
-    if(m_last1 != NULL)
+    wxASSERT_MSG(m_last1 != NULL, _("Bug: No last cell in the base of an exptCell!"));
+    if (m_last1 != NULL)
     {
       m_last1->m_nextToDraw = m_exp;
       m_exp->m_previousToDraw = m_last1;
@@ -261,8 +259,8 @@ bool ExptCell::BreakUp()
     m_open->m_previousToDraw = m_exp;
     m_open->m_nextToDraw = m_powCell;
     m_powCell->m_previousToDraw = m_open;
-    wxASSERT_MSG(m_last2 != NULL,_("Bug: No last cell in an exponent of an exptCell!"));
-    if(m_last2 != NULL)
+    wxASSERT_MSG(m_last2 != NULL, _("Bug: No last cell in an exponent of an exptCell!"));
+    if (m_last2 != NULL)
     {
       m_last2->m_nextToDraw = m_close;
       m_close->m_previousToDraw = m_last2;
@@ -271,8 +269,8 @@ bool ExptCell::BreakUp()
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = m_close;
     m_nextToDraw = m_baseCell;
-    m_height = MAX(m_baseCell->GetMaxHeight(),m_open->GetMaxHeight());
-    m_center = MAX(m_baseCell->GetMaxCenter(),m_open->GetMaxCenter());
+    m_height = MAX(m_baseCell->GetMaxHeight(), m_open->GetMaxHeight());
+    m_center = MAX(m_baseCell->GetMaxCenter(), m_open->GetMaxCenter());
     return true;
   }
   return false;

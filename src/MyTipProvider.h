@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2006-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -27,13 +27,17 @@
 class MyTipProvider : public wxTipProvider
 {
 public:
-  MyTipProvider(const wxString& filename, int n);
+  MyTipProvider(const wxString &filename, int n);
+
   ~MyTipProvider();
+
   wxString GetTip();
+
   int GetCurrentTip()
   {
     return m_current;
   }
+
 private:
   int m_current;
   wxTextFile m_file;

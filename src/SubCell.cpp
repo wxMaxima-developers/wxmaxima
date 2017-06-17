@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -29,7 +29,7 @@
 
 #define SUB_DEC 2
 
-SubCell::SubCell() : MathCell()
+SubCell::SubCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
 {
   m_baseCell = NULL;
   m_indexCell = NULL;
@@ -37,16 +37,16 @@ SubCell::SubCell() : MathCell()
 
 void SubCell::SetParent(MathCell *parent)
 {
-  m_group=parent;
+  m_group = parent;
   if (m_baseCell != NULL)
     m_baseCell->SetParentList(parent);
   if (m_indexCell != NULL)
     m_indexCell->SetParentList(parent);
 }
 
-MathCell* SubCell::Copy()
+MathCell *SubCell::Copy()
 {
-  SubCell* tmp = new SubCell;
+  SubCell *tmp = new SubCell(m_group, m_configuration);
   CopyData(this, tmp);
   tmp->SetBase(m_baseCell->CopyList());
   tmp->SetIndex(m_indexCell->CopyList());
@@ -56,10 +56,8 @@ MathCell* SubCell::Copy()
 
 SubCell::~SubCell()
 {
-  if (m_baseCell != NULL)
-    delete m_baseCell;
-  if (m_indexCell != NULL)
-    delete m_indexCell;
+  wxDELETE(m_baseCell);
+  wxDELETE(m_indexCell);
   m_baseCell = NULL;
   m_indexCell = NULL;
 }
@@ -67,24 +65,22 @@ SubCell::~SubCell()
 void SubCell::SetIndex(MathCell *index)
 {
   if (index == NULL)
-    return ;
-  if (m_indexCell != NULL)
-    delete m_indexCell;
+    return;
+  wxDELETE(m_indexCell);
   m_indexCell = index;
 }
 
 void SubCell::SetBase(MathCell *base)
 {
   if (base == NULL)
-    return ;
-  if (m_baseCell != NULL)
-    delete m_baseCell;
+    return;
+  wxDELETE(m_baseCell);
   m_baseCell = base;
 }
 
 void SubCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_baseCell->RecalculateWidthsList(fontsize);
   m_indexCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUB_DEC));
@@ -95,7 +91,7 @@ void SubCell::RecalculateWidths(int fontsize)
 
 void SubCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   m_baseCell->RecalculateHeightList(fontsize);
   m_indexCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUB_DEC));
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
@@ -109,7 +105,7 @@ void SubCell::Draw(wxPoint point, int fontsize)
 
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    Configuration *configuration = Configuration::Get();
+    Configuration *configuration = (*m_configuration);
     double scale = configuration->GetScale();
     wxPoint bs, in;
 
@@ -127,7 +123,8 @@ void SubCell::Draw(wxPoint point, int fontsize)
 
 wxString SubCell::ToString()
 {
-  if (m_altCopyText != wxEmptyString) {
+  if (m_altCopyText != wxEmptyString)
+  {
     return m_altCopyText;
   }
 
@@ -143,31 +140,31 @@ wxString SubCell::ToString()
 wxString SubCell::ToTeX()
 {
   wxString s;
-  wxString base=m_baseCell->ListToTeX();
-  wxString index=m_indexCell->ListToTeX();
-  if(base.Length()>1)
-    s = wxT("{{") + base  + wxT("}_");
+  wxString base = m_baseCell->ListToTeX();
+  wxString index = m_indexCell->ListToTeX();
+  if (base.Length() > 1)
+    s = wxT("{{") + base + wxT("}_");
   else
-    s = wxT("{" ) + base  + wxT( "_");
-  if(index.Length()>1)
+    s = wxT("{") + base + wxT("_");
+  if (index.Length() > 1)
     s += wxT("{") + index + wxT("}}");
   else
-    s +=            index + wxT( "}");
+    s += index + wxT("}");
   return s;
 }
 
 wxString SubCell::ToMathML()
 {
   return wxT("<msub>") +
-    m_baseCell -> ListToMathML() +
-    m_indexCell -> ListToMathML() +
-    wxT("</msub>\n");
+         m_baseCell->ListToMathML() +
+         m_indexCell->ListToMathML() +
+         wxT("</msub>\n");
 }
 
 wxString SubCell::ToOMML()
 {
-  return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sub>") + 
-    m_indexCell->ListToOMML() + wxT("</m:sub></m:sSub>\n");
+  return wxT("<m:sSub><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sub>") +
+         m_indexCell->ListToOMML() + wxT("</m:sub></m:sSub>\n");
 }
 
 wxString SubCell::ToXML()
@@ -175,13 +172,13 @@ wxString SubCell::ToXML()
   if (m_altCopyText == wxEmptyString)
   {
     return _T("<i><r>") + m_baseCell->ListToXML() + _T("</r><r>") +
-      m_indexCell->ListToXML() + _T("</r></i>");
+           m_indexCell->ListToXML() + _T("</r></i>");
   }
   return _T("<i altCopy=\"" + m_altCopyText + "\"><r>") + m_baseCell->ListToXML() + _T("</r><r>") +
-      m_indexCell->ListToXML() + _T("</r></i>");
+         m_indexCell->ListToXML() + _T("</r></i>");
 }
 
-void SubCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
+void SubCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
 {
   *first = NULL;
   *last = NULL;

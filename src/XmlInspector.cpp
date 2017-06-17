@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //            (C) 2015-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
@@ -30,7 +30,9 @@
 #include <wx/sizer.h>
 #include <wx/regex.h>
 
-XmlInspector::XmlInspector(wxWindow* parent, int id) : wxTextCtrl(parent,id,wxEmptyString,wxDefaultPosition,wxDefaultSize,wxTE_READONLY | wxTE_RICH | wxHSCROLL | wxTE_MULTILINE)
+XmlInspector::XmlInspector(wxWindow *parent, int id) : wxTextCtrl(parent, id, wxEmptyString, wxDefaultPosition,
+                                                                  wxDefaultSize, wxTE_READONLY | wxTE_RICH | wxHSCROLL |
+                                                                                 wxTE_MULTILINE)
 {
   Clear();
 }
@@ -49,43 +51,43 @@ void XmlInspector::Clear()
 wxString XmlInspector::IndentString(int level)
 {
   wxString result;
-  for (int i=0;i<=level;i++)
+  for (int i = 0; i <= level; i++)
     result += wxT(" ");
   return result;
 }
 
 void XmlInspector::Add(wxString text)
 {
-  size_t index=0;
-  text.Replace(wxT("$FUNCTION:"),wxT("\n$FUNCTION:"));      
-  while(index < text.Length())
+  size_t index = 0;
+  text.Replace(wxT("$FUNCTION:"), wxT("\n$FUNCTION:"));
+  while (index < text.Length())
   {
     wxChar ch = text[index];
 
     // Assume that all tags add indentation
-    if(ch == wxT('>'))
+    if (ch == wxT('>'))
     {
-      m_indentLevel ++;
-      if(text.Left(index+1).EndsWith(wxT("</wxxml-symbols>")))
+      m_indentLevel++;
+      if (text.Left(index + 1).EndsWith(wxT("</wxxml-symbols>")))
         m_indentLevel = 0;
     }
-      
+
     // A closing tag needs to remove the indentation of the opening tag 
     // plus the indentation of the closing tag
-    if((m_lastChar == wxT('<')) && (ch == wxT('/')))
-        m_indentLevel -= 2;
-    
+    if ((m_lastChar == wxT('<')) && (ch == wxT('/')))
+      m_indentLevel -= 2;
+
     // Self-closing Tags remove their own indentation
-    if((m_lastChar == wxT('/'))&&(ch == wxT('>')))
-        m_indentLevel -= 1;
+    if ((m_lastChar == wxT('/')) && (ch == wxT('>')))
+      m_indentLevel -= 1;
 
     // Add a linebreak and indent if we are at the space between 2 tags
-    if((m_lastChar == wxT('>')) && (ch == wxT('<')))
+    if ((m_lastChar == wxT('>')) && (ch == wxT('<')))
     {
-      text = text.Left(index) + wxT ("\n") + IndentString(m_indentLevel) + text.Right(text.Length()-index);
-      index += 1 + m_indentLevel; 
+      text = text.Left(index) + wxT ("\n") + IndentString(m_indentLevel) + text.Right(text.Length() - index);
+      index += 1 + m_indentLevel;
     }
-      
+
     index++;
     m_lastChar = ch;
   }

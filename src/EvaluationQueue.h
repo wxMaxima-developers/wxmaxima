@@ -1,8 +1,8 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
-//  Copyright (C) 2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
-//            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
-//            (C) 2015 Gunter Königsmann <wxMaxima@physikbuch.de>
+//  Copyright (C) 2009      Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
+//            (C) 2012      Doug Ilijev <doug.ilijev@gmail.com>
+//            (C) 2015-2017 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,29 +33,32 @@ that still have to be sent to maxima.
 
 #include "GroupCell.h"
 #include "wx/arrstr.h"
-
-//! A queue element
-class EvaluationQueueElement {
-  public:
-    EvaluationQueueElement(GroupCell* gr);
-    ~EvaluationQueueElement() {
-    }
-    GroupCell* group;
-    EvaluationQueueElement* next;
-};
+#include <list>
 
 //! A simple FIFO queue with manual removal of elements
 class EvaluationQueue
 {
 private:
-  wxArrayString m_tokens;
+  /*! A list of all the commands in the current cell
+
+    We need to track each single command:
+     - If we send more than one command at once maxima will interpret the command
+       as an answer to an eventual question and
+     - we need to know when to switch to the next cell
+   */
+  std::list<wxString> m_commands;
   int m_size;
   //! The label the user has assigned to the current command.
   wxString m_userLabel;
-  EvaluationQueueElement* m_queue;
-  EvaluationQueueElement* m_last;
+  //! The groupCells in the evaluation Queue.
+  std::list<GroupCell *>m_queue;
+
   //! Adds all commands in commandString as separate tokens to the queue.
-  void AddTokens(wxString commandString);
+  void AddTokens(GroupCell *cell);
+
+  //! A list of answers provided by the user
+  std::list<wxString> m_knownAnswers;
+
 public:
   /*! Query for the label the user has assigned to the current command.  
 
@@ -63,52 +66,84 @@ public:
     (in which case we assume the user wanted to hide it and for example didn't use
     it as a label at all) we return wxEmptyString.
   */
-  wxString GetUserLabel(){return m_userLabel;}
+  wxString GetUserLabel()
+  { return m_userLabel; }
+
   bool m_workingGroupChanged;
+
   EvaluationQueue();
-  ~EvaluationQueue() {};
+
+  ~EvaluationQueue()
+  {};
 
   //! Is GroupCell gr part of the evaluation queue?
-  bool IsLastInQueue(GroupCell* gr)
-    {
-      if(m_last == NULL)
-        return false;
-      else
-        return(gr == m_last->group);
-    }
+  bool IsLastInQueue(GroupCell *gr)
+  {
+    if (m_queue.empty())
+      return false;
+    else
+      return (gr == m_queue.front());
+  }
+
   //! Is GroupCell gr part of the evaluation queue?
-  bool IsInQueue(GroupCell* gr);
+  bool IsInQueue(GroupCell *gr);
+
   //! Adds a GroupCell to the evaluation queue.
-  void AddToQueue(GroupCell* gr);
+  void AddToQueue(GroupCell *gr);
+
   //! Remove a GroupCell from the evaluation queue.
-  void Remove(GroupCell* gr);
+  void Remove(GroupCell *gr);
+  
   //! Adds all hidden cells attached to the GroupCell gr to the evaluation queue.
-  void AddHiddenTreeToQueue(GroupCell* gr);
-  //! Removes the first cell in the queue
+  void AddHiddenTreeToQueue(GroupCell *gr);
+
+  //! Removes the first command in the queue
   void RemoveFirst();
+
+  //! Removes the first answer in the queue
+  void RemoveFirstAnswer(){m_knownAnswers.pop_front();}
+
   /*! Gets the cell the next command in the queue belongs to
 
     The command itself can be read out by issuing GetCommand();
    */
-  GroupCell* GetCell();
+  GroupCell *GetCell();
+
   //! Is the queue empty?
   bool Empty();
+
+  //! How many saved answers do we have left?
+  std::list<wxString> GetKnownAnswers(){return m_knownAnswers;}
+  
+  //! Is the answer queue empty?
+  bool AnswersEmpty() {return m_knownAnswers.empty();}
+
   //! Clear the queue
   void Clear();
+
   //! Return the next command that needs to be evaluated.
   wxString GetCommand();
   
-  //! Get the size of the queue
+  //! Return the next known answer.
+  wxString GetAnswer()
+  {
+    if(!m_knownAnswers.empty())
+      return (m_knownAnswers.front());
+    else
+      return wxEmptyString;
+  }
+
+  //! Get the size of the queue [in cells]
   int Size()
-    {
-      return m_size;
-    }
+  {
+    return m_size;
+  }
 
   //! Get the size of the queue
   int CommandsLeftInCell()
-    {
-      return m_tokens.GetCount();
-    }
+  {
+    return m_commands.size();
+  }
 };
 
 

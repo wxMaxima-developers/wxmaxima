@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -29,13 +29,13 @@
 #include "TextCell.h"
 
 #if defined __WXMSW__
-  #define INTEGRAL_TOP "\xF3"
-  #define INTEGRAL_BOTTOM "\xF5"
-  #define INTEGRAL_EXTEND "\xF4"
-  #define INTEGRAL_FONT_SIZE 12
+#define INTEGRAL_TOP "\xF3"
+#define INTEGRAL_BOTTOM "\xF5"
+#define INTEGRAL_EXTEND "\xF4"
+#define INTEGRAL_FONT_SIZE 12
 #endif
 
-IntCell::IntCell() : MathCell()
+IntCell::IntCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
 {
   m_base = NULL;
   m_under = NULL;
@@ -62,9 +62,9 @@ void IntCell::SetParent(MathCell *parent)
     m_var->SetParentList(parent);
 }
 
-MathCell* IntCell::Copy()
+MathCell *IntCell::Copy()
 {
-  IntCell *tmp = new IntCell;
+  IntCell *tmp = new IntCell(m_group, m_configuration);
   CopyData(this, tmp);
   tmp->SetBase(m_base->CopyList());
   tmp->SetUnder(m_under->CopyList());
@@ -84,45 +84,41 @@ IntCell::~IntCell()
   m_base = m_under = m_over = m_var = NULL;
 }
 
-void IntCell::SetOver(MathCell* over)
+void IntCell::SetOver(MathCell *over)
 {
   if (over == NULL)
-    return ;
-  if (m_over != NULL)
-    delete m_over;
+    return;
+  wxDELETE(m_over);
   m_over = over;
 }
 
-void IntCell::SetBase(MathCell* base)
+void IntCell::SetBase(MathCell *base)
 {
   if (base == NULL)
-    return ;
-  if (m_base != NULL)
-    delete m_base;
+    return;
+  wxDELETE(m_base);
   m_base = base;
 }
 
 void IntCell::SetUnder(MathCell *under)
 {
   if (under == NULL)
-    return ;
-  if (m_under != NULL)
-    delete m_under;
+    return;
+  wxDELETE(m_under);
   m_under = under;
 }
 
 void IntCell::SetVar(MathCell *var)
 {
   if (var == NULL)
-    return ;
-  if (m_var != NULL)
-    delete m_var;
+    return;
+  wxDELETE(m_var);
   m_var = var;
 }
 
 void IntCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
 
   m_signSize = SCALE_PX(50, scale);
@@ -131,18 +127,21 @@ void IntCell::RecalculateWidths(int fontsize)
   m_base->RecalculateWidthsList(fontsize);
   m_var->RecalculateWidthsList(fontsize);
   if (m_under == NULL)
-    m_under = new TextCell;
+    m_under = new TextCell(m_group, m_configuration);
   m_under->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 5));
   if (m_over == NULL)
-    m_over = new TextCell;
+    m_over = new TextCell(m_group, m_configuration);
   m_over->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 5));
 
-  if (configuration->CheckTeXFonts()) {
-    wxDC& dc = configuration->GetDC();
+  if (configuration->CheckTeXFonts())
+  {
+    wxDC &dc = configuration->GetDC();
     int fontsize1 = (int) ((fontsize * scale * 1.5 + 0.5));
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
-		       wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
+                wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                 configuration->GetTeXCMEX());
+    if (!font.IsOk())
+      font = *wxNORMAL_FONT;
     font.SetPointSize(fontsize1);
     dc.SetFont(font);
     dc.GetTextExtent(wxT("\x5A"), &m_signWidth, &m_signSize);
@@ -159,7 +158,8 @@ void IntCell::RecalculateWidths(int fontsize)
               m_var->GetFullWidth(scale) +
               SCALE_PX(4, scale);
   }
-  else {
+  else
+  {
 #if defined __WXMSW__
     wxDC& dc = configuration->GetDC();
     int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
@@ -167,6 +167,8 @@ void IntCell::RecalculateWidths(int fontsize)
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
                 false,
                 configuration->GetSymbolFontName());
+    if(!font.IsOk())
+      font = *wxNORMAL_FONT;
     font.SetPointSize(fontsize1);
     dc.SetFont(font);
     dc.GetTextExtent(INTEGRAL_TOP, &m_charWidth, &m_charHeight);
@@ -189,7 +191,7 @@ void IntCell::RecalculateWidths(int fontsize)
 
 void IntCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
 
   m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 5));
@@ -220,18 +222,18 @@ void IntCell::RecalculateHeight(int fontsize)
   {
     m_center = MAX(m_signSize / 2, m_base->GetMaxCenter());
     m_height = m_center +
-      MAX(m_signSize / 2, m_base->GetMaxDrop());
+               MAX(m_signSize / 2, m_base->GetMaxDrop());
   }
 }
 
 void IntCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
 
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    wxDC& dc = configuration->GetDC();
+    wxDC &dc = configuration->GetDC();
     double scale = configuration->GetScale();
 
     wxPoint base(point), under(point), over(point), var(point), sign(point);
@@ -243,6 +245,8 @@ void IntCell::Draw(wxPoint point, int fontsize)
       wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
+      if (!font.IsOk())
+        font = *wxNORMAL_FONT;
       font.SetPointSize(fontsize1);
       dc.SetFont(font);
       dc.DrawText(wxT("\x5A"),
@@ -257,8 +261,8 @@ void IntCell::Draw(wxPoint point, int fontsize)
       int m_signWCenter = m_signWidth / 2;
 
       dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-			wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
-			false,
+      wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
+      false,
                         configuration->GetSymbolFontName()));
       dc.DrawText(INTEGRAL_TOP,
                   sign.x + m_signWCenter - m_charWidth / 2,
@@ -275,17 +279,17 @@ void IntCell::Draw(wxPoint point, int fontsize)
         wxASSERT_MSG(m_charHeight>=2,_("Font issue: The char height is too small! Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should be a workaround."));
         if(m_charHeight <= 2)
           m_charHeight = 2;
-        
+
         while (top < bottom)
         {
           dc.DrawText(INTEGRAL_EXTEND,
-		      point.x + m_signWCenter - m_charWidth / 2,
-		      top);
+          point.x + m_signWCenter - m_charWidth / 2,
+          top);
           top += (2*m_charHeight)/3;
         }
         dc.DrawText(INTEGRAL_EXTEND,
-		    point.x + m_signWCenter - m_charWidth / 2,
-		    sign.y + (m_signSize + 1) / 2 - (3 * m_charHeight) / 2);
+        point.x + m_signWCenter - m_charWidth / 2,
+        sign.y + (m_signSize + 1) / 2 - (3 * m_charHeight) / 2);
       }
 #else
       SetPen();
@@ -333,7 +337,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
       m_under->DrawList(under, MAX(MC_MIN_SIZE, fontsize - 5));
 
       if (configuration->CheckTeXFonts())
-        over.x += 2*m_signWidth;
+        over.x += 2 * m_signWidth;
       else
         over.x += m_signWidth;
 
@@ -352,7 +356,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
     }
 
     else if (configuration->CheckTeXFonts())
-      base.x += 2*m_signWidth;
+      base.x += 2 * m_signWidth;
     else
       base.x += m_signWidth;
 
@@ -369,7 +373,7 @@ wxString IntCell::ToString()
 
   s += m_base->ListToString();
 
-  MathCell* tmp = m_var;
+  MathCell *tmp = m_var;
   wxString var;
   tmp = tmp->m_next;
   if (tmp != NULL)
@@ -413,27 +417,27 @@ wxString IntCell::ToMathML()
   wxString base = m_base->ListToMathML();
 
   wxString var;
-  if(m_var) var = m_var->ListToMathML();
-  
+  if (m_var) var = m_var->ListToMathML();
+
   wxString from;
-  if(m_under) from = m_under->ListToMathML();
-  
+  if (m_under) from = m_under->ListToMathML();
+
   wxString to;
-  if(m_over) to = m_over->ListToMathML();
+  if (m_over) to = m_over->ListToMathML();
 
   wxString retval;
-  if(from.IsEmpty() && to.IsEmpty())
+  if (from.IsEmpty() && to.IsEmpty())
     retval = wxT("<mo>&#x222B;</mo>") + base;
-  if(from.IsEmpty() && !to.IsEmpty())
+  if (from.IsEmpty() && !to.IsEmpty())
     retval = wxT("<mover><mo>&#x222B;</mo>") + to + wxT("</mover>") + base;
-  if(!from.IsEmpty() && to.IsEmpty())
+  if (!from.IsEmpty() && to.IsEmpty())
     retval = wxT("<munder><mo>&#x222B;</mo>") + from + wxT("</munder>") + base;
-  if(!from.IsEmpty() && !to.IsEmpty())
-    retval = wxT("<munderover><mo>&#x222B;</mo>") + from + to + wxT("</munderover>\n")+ base;
-  if(!var.IsEmpty())
+  if (!from.IsEmpty() && !to.IsEmpty())
+    retval = wxT("<munderover><mo>&#x222B;</mo>") + from + to + wxT("</munderover>\n") + base;
+  if (!var.IsEmpty())
     retval = retval + var;
 
-  return(wxT("<mrow>") + retval + wxT("</mrow>"));
+  return (wxT("<mrow>") + retval + wxT("</mrow>"));
 }
 
 wxString IntCell::ToOMML()
@@ -441,20 +445,20 @@ wxString IntCell::ToOMML()
   wxString base = m_base->ListToOMML();
 
   wxString var;
-  if(m_var) var = m_var->ListToOMML();
-  
+  if (m_var) var = m_var->ListToOMML();
+
   wxString from;
-  if(m_under) from = m_under->ListToOMML();
-  
+  if (m_under) from = m_under->ListToOMML();
+
   wxString to;
-  if(m_over) to = m_over->ListToOMML();
+  if (m_over) to = m_over->ListToOMML();
 
   wxString retval;
 
   retval = wxT("<m:nary><m:naryPr><m:chr>\x222b</m:chr></m:naryPr>");
-  if(from != wxEmptyString)
+  if (from != wxEmptyString)
     retval += wxT("<m:sub>") + from + wxT("</m:sub>");
-  if(to != wxEmptyString)
+  if (to != wxEmptyString)
     retval += wxT("<m:sup>") + to + wxT("</m:sup>");
   retval += wxT("<m:e><m:r>") + base + var + wxT("</m:r></m:e></m:nary>");
 
@@ -464,32 +468,32 @@ wxString IntCell::ToOMML()
 wxString IntCell::ToXML()
 {
   wxString from;
-  if(m_under != NULL)
+  if (m_under != NULL)
     from = m_under->ListToXML();
-  from = wxT("<r>")+from+wxT("</r>");
+  from = wxT("<r>") + from + wxT("</r>");
 
   wxString to;
-  if(m_over != NULL)
+  if (m_over != NULL)
     to = m_over->ListToXML();
-  to = wxT("<r>")+to+wxT("</r>");
+  to = wxT("<r>") + to + wxT("</r>");
 
   wxString base;
-  if(m_base != NULL)
+  if (m_base != NULL)
     base = m_base->ListToXML();
-  base = wxT("<r>")+base+wxT("</r>");
+  base = wxT("<r>") + base + wxT("</r>");
 
   wxString var;
-  if(m_var != NULL)
+  if (m_var != NULL)
     var = m_var->ListToXML();
-  var = wxT("<r>")+var+wxT("</r>");
+  var = wxT("<r>") + var + wxT("</r>");
 
   if (m_intStyle == INT_DEF)
     return wxT("<in>") + from + to + base + var + wxT("</in>");
   else
-    return wxT("<in def=\"false\">") + base + var  + wxT("</in>");
+    return wxT("<in def=\"false\">") + base + var + wxT("</in>");
 }
 
-void IntCell::SelectInner(wxRect& rect, MathCell** first, MathCell** last)
+void IntCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
 {
   *first = NULL;
   *last = NULL;

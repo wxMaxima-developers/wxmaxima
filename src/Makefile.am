@@ -49,6 +49,7 @@ wxmaxima_SOURCES = \
 	Configuration.cpp     Configuration.h     \
 	MathParser.cpp     MathParser.h     \
 	MathPrintout.cpp   MathPrintout.h   \
+	Notification.cpp   Notification.h   \
 	Bitmap.cpp         Bitmap.h         \
 	MyTipProvider.cpp  MyTipProvider.h  \
 	EditorCell.cpp     EditorCell.h     \
@@ -64,6 +65,7 @@ wxmaxima_SOURCES = \
 	MarkDown.cpp       MarkDown.h       \
 	ToolBar.cpp        ToolBar.h        \
 	History.cpp        History.h        \
+	CellPointers.cpp        CellPointers.h        \
 	TableOfContents.cpp      TableOfContents.h      \
 	XmlInspector.cpp   XmlInspector.h   \
 	Autocomplete.cpp   Autocomplete.h   \

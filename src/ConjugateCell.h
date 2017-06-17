@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -47,25 +47,41 @@
 class ConjugateCell : public MathCell
 {
 public:
-  ConjugateCell();
+  ConjugateCell(MathCell *parent, Configuration **config);
+
   ~ConjugateCell();
+
   void SetInner(MathCell *inner);
-  MathCell* Copy();
-  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+
+  MathCell *Copy();
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   bool BreakUp();
+
   void Unbreak();
+
   void SetParent(MathCell *parent);
+
 protected:
   MathCell *m_innerCell;
   TextCell *m_open, *m_close;
   MathCell *m_last;
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToMathML();
+
   wxString ToOMML();
+
   wxString ToXML();
 };
 

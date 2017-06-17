@@ -34,7 +34,6 @@ EXTRA_DIST = README.md bootstrap wxmaxima.spec.in     \
 	     art/statusbar/network-transmit-receive.png	     \
              art/wxmac-doc-wxm.icns art/wxmac-doc-wxmx.icns  \
              art/wxmac-doc.icns art/wxmac.icns               \
-             art/wxmac-doc.ico art/maximaicon.ico	     \
 	     art/wxmac-doc.png				     \
 	     art/toolbar/showCurrentCell.png       	     \
 	     art/toolbar/dialog-information.png
@@ -82,6 +81,19 @@ wxMaxima.app: all
 	cp $(srcdir)/info/*.jpg  wxMaxima.app/Contents/Resources/help
 	cp $(srcdir)/info/*.png  wxMaxima.app/Contents/Resources/help
 	cp $(srcdir)/info/wxmaxima.hhp wxMaxima.app/Contents/Resources/help
+	@echo "The following dylibs will need to be included in wxMaxima.app"
+	@echo "in order to make it run on systems that haven't them installed"
+	@echo "(see README.md)":
+	otool -l src/wxmaxima|cut -f 2|grep "name"|grep "/usr/"|grep "\.dylib"|grep -v libc++.1.dylib|grep -v libSystem.B.dylib|sed -e "s#.*\(/usr/[^ ]*\).*#\1#g"|tee dylibs.txt
+	@echo "Will generate a script named dylibs.sh which (with a little bit"
+	@echo "of luck) will do this automatically."
+	echo "#!/bin/sh">dylibs.sh
+	chmod +x dylibs.sh
+	cat dylibs.txt|sed -f data/dylibs.sed >> dylibs.sh
+	@echo "Executing the script..."
+	-mkdir ./wxMaxima.app/Contents/MacOS/lib
+	./dylibs.sh
+	@echo "Done."
 
 wxMaxima.win: all
 	mkdir -p wxMaxima/art

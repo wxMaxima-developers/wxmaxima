@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -30,10 +30,11 @@
 #include "Setup.h"
 #include "wx/config.h"
 
-TextCell::TextCell() : MathCell()
+TextCell::TextCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
 {
+  m_unescapeRegEx.Compile(wxT("\\\\(.)"));
   m_displayedDigits_old = -1;
-  m_text = wxEmptyString;
+  m_text = m_userDefinedLabel = wxEmptyString;
   m_displayedText = wxEmptyString;
   m_fontSize = -1;
   m_highlight = false;
@@ -41,7 +42,7 @@ TextCell::TextCell() : MathCell()
   m_height = -1;
   m_labelWidth = -1;
   m_labelHeight = -1;
-  m_oldFontSize = -1;
+  m_lastCalculationFontSize = -1;
   m_realCenter = m_center = -1;
   m_fontSize = 12;
   m_fontSizeLabel = 12;
@@ -49,13 +50,14 @@ TextCell::TextCell() : MathCell()
   ResetSize();
 }
 
-TextCell::TextCell(wxString text) : MathCell()
+TextCell::TextCell(MathCell *parent, Configuration **config, wxString text) : MathCell(parent, config)
 {
   m_displayedDigits_old = -1;
   m_height = -1;
   m_labelWidth = -1;
   m_labelHeight = -1;
   m_realCenter = m_center = -1;
+  m_lastCalculationFontSize = -1;
   m_fontSize = 12;
   m_fontSizeLabel = 12;
   SetValue(text);
@@ -65,33 +67,35 @@ TextCell::TextCell(wxString text) : MathCell()
 
 void TextCell::SetValue(const wxString &text)
 {
-  m_displayedDigits_old = Configuration::Get()->GetDisplayedDigits();
+  m_displayedDigits_old = (*m_configuration)->GetDisplayedDigits();
   m_text = text;
   ResetSize();
   m_text.Replace(wxT("\n"), wxEmptyString);
-  m_text.Replace(wxT("-->"),wxT("\x2794"));
-  m_text.Replace(wxT("->"),wxT("\x2192"));
-  m_text.Replace(wxT("\x2212>"),wxT("\x2192"));
+  m_text.Replace(wxT("-->"), wxT("\x2794"));
+  m_text.Replace(wxT("->"), wxT("\x2192"));
+  m_text.Replace(wxT("\x2212>"), wxT("\x2192"));
 
   m_displayedText = m_text;
   if (m_textStyle == TS_NUMBER)
   {
-    unsigned int displayedDigits = Configuration::Get()->GetDisplayedDigits();
+    unsigned int displayedDigits = (*m_configuration)->GetDisplayedDigits();
     if (m_displayedText.Length() > displayedDigits)
     {
-      int left = displayedDigits/3;
-      if (left>30) left=30;
-      
-      m_displayedText = m_displayedText.Left(left) + wxString::Format(_("[%i digits]"), (int) m_displayedText.Length() - 2 * left) + m_displayedText.Right(left);
+      int left = displayedDigits / 3;
+      if (left > 30) left = 30;
+
+      m_displayedText = m_displayedText.Left(left) +
+                        wxString::Format(_("[%i digits]"), (int) m_displayedText.Length() - 2 * left) +
+                        m_displayedText.Right(left);
     }
   }
-  
+
   m_alt = m_altJs = false;
 }
 
-MathCell* TextCell::Copy()
+MathCell *TextCell::Copy()
 {
-  TextCell *retval = new TextCell(wxEmptyString);
+  TextCell *retval = new TextCell(m_group, m_configuration, wxEmptyString);
   CopyData(this, retval);
   retval->m_text = wxString(m_text);
   retval->m_displayedText = wxString(m_displayedText);
@@ -100,17 +104,18 @@ MathCell* TextCell::Copy()
   retval->m_isHidden = m_isHidden;
   retval->m_textStyle = m_textStyle;
   retval->m_highlight = m_highlight;
+  retval->m_userDefinedLabel = m_userDefinedLabel;
   retval->m_dontEscapeOpeningParenthesis = m_dontEscapeOpeningParenthesis;
-  
+
   return retval;
 }
 
 wxString TextCell::LabelWidthText()
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   wxString result;
 
-  for(int i=0;i<configuration->GetLabelWidth();i++)
+  for (int i = 0; i < configuration->GetLabelWidth(); i++)
     result += wxT("X");
 
   return result;
@@ -118,54 +123,91 @@ wxString TextCell::LabelWidthText()
 
 void TextCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
+
+  bool recalculateNeeded = false;
+  
+  // If the setting has changed and we want to show a user-defined label
+  // instead of an automatic one or vice versa we decide that here.
+  if(
+    (m_textStyle == TS_USERLABEL) &&
+    (!configuration->UseUserLabels())
+    )
+  {
+    m_textStyle = TS_LABEL;
+    recalculateNeeded = true;
+  }
+  if(
+    (m_textStyle == TS_LABEL) &&
+    (configuration->UseUserLabels()) &&
+    (m_userDefinedLabel != wxEmptyString)
+    )
+  {
+    m_textStyle = TS_USERLABEL;
+    recalculateNeeded = true;
+  }
+  
   double scale = configuration->GetScale();
   SetAltText();
 
   // If the config settings about how many digits to display has changed we
   // need to regenerate the info which number to show.
-  if(
-    (m_textStyle == TS_NUMBER) &&
-    (m_displayedDigits_old != Configuration::Get()->GetDisplayedDigits())
-    )
-    SetValue(m_text);
-  
-  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() || m_oldFontSize != (((double)fontsize) * scale + 0.5))
+  if (
+          (m_textStyle == TS_NUMBER) &&
+          (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits())
+          )
   {
-    m_oldFontSize = (((double)fontsize) * scale + 0.5);
-    wxDC& dc = configuration->GetDC();
+    SetValue(m_text);
+    recalculateNeeded = true;
+  }
+
+  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() ||
+      m_lastCalculationFontSize != fontsize)
+    recalculateNeeded = true;
+
+  if(recalculateNeeded)
+  {
+    m_lastCalculationFontSize = fontsize;
+    wxDC &dc = configuration->GetDC();
     SetFont(fontsize);
 
     // Labels and prompts are fixed width - adjust font size so that
     // they fit in
     if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
     {
-      // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
-      if (m_text.Right(2) != wxT("/ "))
-        dc.GetTextExtent(wxT("(%o")+LabelWidthText()+wxT(")"), &m_width, &m_height);
-      else
-        dc.GetTextExtent(wxT("(%o")+LabelWidthText()+wxT(")/R/"), &m_width, &m_height);
+      wxString text = m_text;
 
-      m_fontSizeLabel = m_fontSize / scale;
-      wxASSERT_MSG((m_width>0)||(m_text==wxEmptyString),_("The letter \"X\" is of width zero. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
-      if(m_width < 1) m_width = 10;
-      dc.GetTextExtent(m_displayedText, &m_labelWidth, &m_labelHeight);
-      wxASSERT_MSG((m_labelWidth>0)||(m_displayedText==wxEmptyString),_("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
-      while ((m_labelWidth >= m_width)&&(m_fontSizeLabel > 2)) {
+      if(m_textStyle == TS_USERLABEL)
+      {
+        text = wxT("(") + m_userDefinedLabel + wxT(")");
+        m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
+      }
+      
+      // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
+      if (text.Right(2) != wxT("/ "))
+        dc.GetTextExtent(wxT("(%o") + LabelWidthText() + wxT(")"), &m_width, &m_height);
+      else
+        dc.GetTextExtent(wxT("(%o") + LabelWidthText() + wxT(")/R/"), &m_width, &m_height);
+
+      // We will decrease it before use
+      m_fontSizeLabel = m_fontSize;
+      wxASSERT_MSG((m_width > 0) || (text == wxEmptyString),
+                   _("The letter \"X\" is of width zero. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+      if (m_width < 1) m_width = 10;
+      dc.GetTextExtent(text, &m_labelWidth, &m_labelHeight);
+      wxASSERT_MSG((m_labelWidth > 0) || (m_displayedText == wxEmptyString),
+                   _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+      wxFont font(dc.GetFont());
+      while ((m_labelWidth >= m_width) && (m_fontSizeLabel > 2))
+      {
         int fontsize1 = (int) (((double) --m_fontSizeLabel) * scale + 0.5);
-        wxFont font(fontsize1, wxFONTFAMILY_MODERN,
-                    configuration->IsItalic(m_textStyle),
-                    configuration->IsBold(m_textStyle),
-                    false, //configuration->IsUnderlined(m_textStyle),
-                    configuration->GetFontName(m_textStyle),
-                    configuration->GetFontEncoding());
         font.SetPointSize(fontsize1);
         dc.SetFont(font);
-        dc.GetTextExtent(m_displayedText, &m_labelWidth, &m_labelHeight);
+        dc.GetTextExtent(text, &m_labelWidth, &m_labelHeight);
       }
     }
 
-    /// Check if we are using jsMath and have jsMath character
+      /// Check if we are using jsMath and have jsMath character
     else if (m_altJs && configuration->CheckTeXFonts())
     {
       dc.GetTextExtent(m_altJsText, &m_width, &m_height);
@@ -174,20 +216,20 @@ void TextCell::RecalculateWidths(int fontsize)
         m_height = m_height / 2;
     }
 
-    /// We are using a special symbol
+      /// We are using a special symbol
     else if (m_alt)
     {
       dc.GetTextExtent(m_altText, &m_width, &m_height);
     }
 
-    /// Empty string has height of X
+      /// Empty string has height of X
     else if (m_displayedText == wxEmptyString)
     {
       dc.GetTextExtent(wxT("gXÄy"), &m_width, &m_height);
       m_width = 0;
     }
 
-    /// This is the default.
+      /// This is the default.
     else
       dc.GetTextExtent(m_displayedText, &m_width, &m_height);
 
@@ -207,12 +249,12 @@ void TextCell::RecalculateWidths(int fontsize)
 
 void TextCell::Draw(wxPoint point, int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   MathCell::Draw(point, fontsize);
   double scale = configuration->GetScale();
-  wxDC& dc = configuration->GetDC();
+  wxDC &dc = configuration->GetDC();
 
-  if (m_width == -1 || m_height == -1)
+  if (m_width == -1 || m_height == -1 || fontsize != m_lastCalculationFontSize)
     RecalculateWidths(fontsize);
 
   if (DrawThisCell(point) && !m_isHidden)
@@ -220,75 +262,91 @@ void TextCell::Draw(wxPoint point, int fontsize)
     SetFont(fontsize);
     SetForeground();
 
-    if(InUpdateRegion())
+    if (InUpdateRegion())
     {
       /// Labels and prompts have special fontsize
       if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
       {
-        if(
-          ((m_textStyle == TS_USERLABEL) || (configuration->ShowAutomaticLabels())) &&
-          (configuration->ShowLabels())
-          )
+        if ((m_textStyle == TS_USERLABEL || configuration->ShowAutomaticLabels()) &&
+            configuration->ShowLabels())
         {
-          SetFont(m_fontSizeLabel);
-          dc.DrawText(m_displayedText,
-                      point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                      point.y - m_realCenter + (m_height - m_labelHeight)/2);
+          SetFontSizeForLabel(dc, scale);
+          // Draw the label
+          if(m_textStyle == TS_USERLABEL)
+          {
+            wxString text = m_userDefinedLabel;
+            m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
+            dc.DrawText(wxT("(") + text + wxT(")"),
+                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                        point.y - m_realCenter + (m_height - m_labelHeight) / 2);
+          }
+          else
+            dc.DrawText(m_displayedText,
+                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                        point.y - m_realCenter + (m_height - m_labelHeight) / 2);            
         }
       }
-      
-      /// Check if we are using jsMath and have jsMath character
+
+        /// Check if we are using jsMath and have jsMath character
       else if (m_altJs && configuration->CheckTeXFonts())
         dc.DrawText(m_altJsText,
                     point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                     point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-      
-      /// We are using a special symbol
+
+        /// We are using a special symbol
       else if (m_alt)
         dc.DrawText(m_altText,
                     point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                     point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-      
-      /// Change asterisk
-      else if (configuration->GetChangeAsterisk() &&  m_displayedText == wxT("*"))
+
+        /// Change asterisk
+      else if (configuration->GetChangeAsterisk() && m_displayedText == wxT("*"))
         dc.DrawText(wxT("\xB7"),
                     point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                     point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-      
+
 #if wxUSE_UNICODE
       else if (m_displayedText == wxT("#"))
         dc.DrawText(wxT("\x2260"),
                     point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                     point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 #endif
-      /// This is the default.
+        /// This is the default.
       else
       {
-        switch(GetType())
+        switch (GetType())
         {
-        case MC_TYPE_TEXT:
-          // TODO: Add markdown formatting for bold, italic and underlined here.
-          dc.DrawText(m_displayedText,
-                      point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                      point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-          break;
-        case MC_TYPE_INPUT:
-          // This cell has already been drawn as an EditorCell => we don't repeat this action here.
-          break;
-        default:
-          dc.DrawText(m_displayedText,
-                      point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                      point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+          case MC_TYPE_TEXT:
+            // TODO: Add markdown formatting for bold, italic and underlined here.
+            dc.DrawText(m_displayedText,
+                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                        point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+            break;
+          case MC_TYPE_INPUT:
+            // This cell has already been drawn as an EditorCell => we don't repeat this action here.
+            break;
+          default:
+            dc.DrawText(m_displayedText,
+                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                        point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
         }
       }
     }
   }
 }
 
+void TextCell::SetFontSizeForLabel(wxDC &dc, double scale)
+{
+  wxFont font(dc.GetFont());
+  int fontsize1 = (int) (((double) m_fontSizeLabel) * scale + 0.5);
+  font.SetPointSize(fontsize1);
+  dc.SetFont(font);
+}
+
 void TextCell::SetFont(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
-  wxDC& dc = configuration->GetDC();
+  Configuration *configuration = (*m_configuration);
+  wxDC &dc = configuration->GetDC();
   double scale = configuration->GetScale();
 
   wxString fontName;
@@ -300,8 +358,7 @@ void TextCell::SetFont(int fontsize)
   if ((m_textStyle == TS_TITLE) ||
       (m_textStyle == TS_SECTION) ||
       (m_textStyle == TS_SUBSECTION) ||
-      (m_textStyle == TS_SUBSUBSECTION)
-    )
+      (m_textStyle == TS_SUBSUBSECTION))
   {
     // Titles have a fixed font size 
     m_fontSize = configuration->GetFontSize(m_textStyle);
@@ -316,7 +373,6 @@ void TextCell::SetFont(int fontsize)
     // Font within maths has a dynamic font size that might be reduced for example
     // within fractions, subscripts or superscripts.
     m_fontSize = fontsize;
-    
   }
 
   // Ensure a sane minimum font size
@@ -324,22 +380,22 @@ void TextCell::SetFont(int fontsize)
     m_fontSize = 4;
 
   // The font size scales with the worksheet
-  m_fontSize = (int) (((double)m_fontSize) * scale + 0.5);
-  
+  int fontsize1 = (int) (((double) m_fontSize) * scale + 0.5);
+
   fontName = configuration->GetFontName(m_textStyle);
   fontStyle = configuration->IsItalic(m_textStyle);
   fontWeight = configuration->IsBold(m_textStyle);
 
   fontEncoding = configuration->GetFontEncoding();
-  
+
   // Use jsMath
   if (m_altJs && configuration->CheckTeXFonts())
-    fontName = m_texFontname;  
-  // We have an alternative symbol
+    fontName = m_texFontname;
+    // We have an alternative symbol
   else if (m_alt)
     fontName = m_fontname != wxEmptyString ?
-      m_fontname : configuration->GetFontName(m_textStyle);
-  
+               m_fontname : configuration->GetFontName(m_textStyle);
+
   wxFont font;
   font.SetFamily(wxFONTFAMILY_MODERN);
   font.SetFaceName(fontName);
@@ -348,7 +404,7 @@ void TextCell::SetFont(int fontsize)
   font.SetWeight(fontWeight);
   font.SetUnderlined(underlined);
   font.SetEncoding(fontEncoding);
-  if(!font.IsOk())
+  if (!font.IsOk())
   {
     font.SetFamily(wxFONTFAMILY_MODERN);
     font.SetEncoding(fontEncoding);
@@ -357,15 +413,19 @@ void TextCell::SetFont(int fontsize)
     font.SetUnderlined(underlined);
   }
 
+  if (!font.IsOk())
+    font = *wxNORMAL_FONT;
+
+  font.SetPointSize(fontsize1);
+  wxASSERT_MSG(font.IsOk(),
+               _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+  dc.SetFont(font);
+
   // A fallback if we have been completely unable to set a working font
-  if(!dc.GetFont().IsOk())
+  if (!dc.GetFont().IsOk())
   {
     dc.SetFont(wxFontInfo(10));
   }
-  
-  font.SetPointSize(m_fontSize);
-  wxASSERT_MSG(font.IsOk(),_("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
-  dc.SetFont(font);
 }
 
 bool TextCell::IsOperator()
@@ -384,69 +444,71 @@ wxString TextCell::ToString()
   wxString text;
   if (m_altCopyText != wxEmptyString)
     text = m_altCopyText;
-  else {
+  else
+  {
     text = m_text;
+    if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
+      text = wxT("(") + m_userDefinedLabel + wxT(")");
 #if wxUSE_UNICODE
     text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
-    text.Replace(wxT("\x2794"),wxT("-->"));
-    text.Replace(wxT("\x2192"),wxT("->"));
+    text.Replace(wxT("\x2794"), wxT("-->"));
+    text.Replace(wxT("\x2192"), wxT("->"));
 #endif
   }
-  switch(m_textStyle)
+  switch (m_textStyle)
   {
-  case TS_VARIABLE:
-  case TS_FUNCTION:
-    // The only way for variable or function names to contain quotes and
-    // characters that clearly represent operators is that these chars
-    // are quoted by a backslash: They cannot be quoted by quotation
-    // marks since maxima would'nt allow strings here.
-  {
-    // TODO: We could escape the - char inside a variable name.
-    // But we get false positives, then.
-    wxString charsNeedingQuotes("\\'\"()[]{}^+*/&§?:;=#<>$");
-    bool isOperator = true;
-    for(size_t i=0;i<m_text.Length();i++)
+    case TS_VARIABLE:
+    case TS_FUNCTION:
+      // The only way for variable or function names to contain quotes and
+      // characters that clearly represent operators is that these chars
+      // are quoted by a backslash: They cannot be quoted by quotation
+      // marks since maxima would'nt allow strings here.
     {
-      if((m_text[i]==wxT(' ')) || (charsNeedingQuotes.Find(m_text[i]) == wxNOT_FOUND))
+      // TODO: We could escape the - char inside a variable name.
+      // But we get false positives, then.
+      wxString charsNeedingQuotes("\\'\"()[]{}^+*/&§?:;=#<>$");
+      bool isOperator = true;
+      for (size_t i = 0; i < m_text.Length(); i++)
       {
-        isOperator = false;
+        if ((m_text[i] == wxT(' ')) || (charsNeedingQuotes.Find(m_text[i]) == wxNOT_FOUND))
+        {
+          isOperator = false;
+          break;
+        }
+      }
+
+      if (!isOperator)
+      {
+        wxString lastChar;
+        if ((m_dontEscapeOpeningParenthesis) && (text.Length() > 0) && (text[text.Length() - 1] == wxT('(')))
+        {
+          lastChar = text[text.Length() - 1];
+          text = text.Left(text.Length() - 1);
+        }
+        for (size_t i = 0; i < charsNeedingQuotes.Length(); i++)
+          text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
+        text += lastChar;
+      }
+      break;
+    }
+    case TS_STRING:
+      text = wxT("\"") + text + wxT("\"");
+      break;
+
+      // Labels sometimes end with a few spaces. But if they are long they don't do
+      // that any more => Add a TAB to the end of any label replacing trailing
+      // whitespace. But don't do this if we copy only the label.
+    case TS_LABEL:
+    case TS_USERLABEL:
+    case TS_MAIN_PROMPT:
+    case TS_OTHER_PROMPT:
+      {
+        text.Trim();
+        text += wxT("\t");
         break;
       }
-    }
-
-    if(!isOperator)
-    {
-      wxString lastChar;
-      if((m_dontEscapeOpeningParenthesis)&&(text.Length()>0)&&(text[text.Length()-1]==wxT('(')))
-      {
-        lastChar = text[text.Length()-1];
-        text = text.Left(text.Length()-1);
-      }
-      for(size_t i=0;i<charsNeedingQuotes.Length();i++)
-        text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
-      text += lastChar;
-    }
-    break;
   }
-  case TS_STRING:
-    text = wxT("\"") + text + wxT("\"");
-    break;
 
-    // Labels sometimes end with a few spaces. But if they are long they don't do
-    // that any more => Add a TAB to the end of any label replacing trailing
-    // whitespace. But don't do this if we copy only the label.
-  case TS_LABEL:
-  case TS_USERLABEL:
-  case TS_MAIN_PROMPT:
-  case TS_OTHER_PROMPT:
-    if(m_next != NULL)
-    {
-      text.Trim();
-      text += wxT("\t");
-    }
-    break;
-  }
-  
   return text;
 }
 
@@ -454,10 +516,11 @@ wxString TextCell::ToTeX()
 {
   wxString text = m_displayedText;
 
-  bool keepPercent = true;
-  wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
-  
-  if (!keepPercent) {
+  if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
+    text = wxT("(") + m_userDefinedLabel + wxT(")");
+
+  if (!(*m_configuration)->CheckKeepPercent())
+  {
     if (text == wxT("%e"))
       text = wxT("e");
     else if (text == wxT("%i"))
@@ -465,33 +528,33 @@ wxString TextCell::ToTeX()
     else if (text == wxT("%pi"))
       text = wxString(wxT("\x03C0"));
   }
-  
+
   // The string needed in order to ensure we are in math mode. Most TextCells contain names of
   // math objects and therefore can leave this string blank.
   wxString mathModeStart;
   // The string needed in order to close the command that ensures we are in math mode.
   wxString mathModeEnd = wxT(" ");
 
-  if(
-    (GetStyle() == TS_ERROR) ||
-    (GetStyle() == TS_LABEL) ||
-    (GetStyle() == TS_USERLABEL) ||
-    (GetStyle() == TS_MAIN_PROMPT) ||
-    (GetStyle() == TS_OTHER_PROMPT)
-    )
+  if (
+          (GetStyle() == TS_ERROR) ||
+          (GetStyle() == TS_LABEL) ||
+          (GetStyle() == TS_USERLABEL) ||
+          (GetStyle() == TS_MAIN_PROMPT) ||
+          (GetStyle() == TS_OTHER_PROMPT)
+          )
   {
-    mathModeStart=wxT("\\ensuremath{");
-    mathModeEnd  =wxT("}");
-    text.Replace(wxT("\\"), mathModeStart+wxT("\\backslash")+mathModeEnd);
+    mathModeStart = wxT("\\ensuremath{");
+    mathModeEnd = wxT("}");
+    text.Replace(wxT("\\"), mathModeStart + wxT("\\backslash") + mathModeEnd);
     text.Replace(wxT("{"), wxT("\\{"));
     text.Replace(wxT("}"), wxT("\\}"));
   }
   else
   {
-    text.Replace(wxT("\\"), mathModeStart+wxT("\\backslash")+mathModeEnd);
+    text.Replace(wxT("\\"), mathModeStart + wxT("\\backslash") + mathModeEnd);
     text.Replace(wxT("{"), wxT("\\{"));
     text.Replace(wxT("}"), wxT("\\}"));
-    
+
     // Babel replaces Umlaute by constructs like \"a - and \" isn't allowed in
     // math mode. Fortunately amsTeX provides the \text command that allows to
     // switch to plain text mode again - but with the math font size.
@@ -500,123 +563,122 @@ wxString TextCell::ToTeX()
     text.Replace(wxT("ü"), wxT("\\text{ü}"));
     text.Replace(wxT("Ä"), wxT("\\text{Ä}"));
     text.Replace(wxT("Ö"), wxT("\\text{Ö}"));
-    text.Replace(wxT("Ü"), wxT("\\text{Ü}"));  
+    text.Replace(wxT("Ü"), wxT("\\text{Ü}"));
   }
 
-  if(((m_textStyle != TS_USERLABEL) && (!Configuration::Get()->ShowAutomaticLabels()))||
-    !Configuration::Get()->ShowLabels()
+  // If we don't want to show automatic labels the following "if" empties the label.
+  if ((m_textStyle == TS_LABEL) && (((!(*m_configuration)->ShowAutomaticLabels())) ||
+                                    !(*m_configuration)->ShowLabels())
     )
-  {
     text = wxT("");
-  }
-  
-  text.Replace(wxT("<"), mathModeStart+wxT("<")+mathModeEnd);
-  text.Replace(wxT(">"), mathModeStart+wxT(">")+mathModeEnd);
+
+  text.Replace(wxT("<"), mathModeStart + wxT("<") + mathModeEnd);
+  text.Replace(wxT(">"), mathModeStart + wxT(">") + mathModeEnd);
 #if wxUSE_UNICODE
   text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
-  text.Replace(L"\x00B1",mathModeStart+wxT("\\pm")+mathModeEnd);
-  text.Replace(L"\x03B1",mathModeStart+wxT("\\alpha")+mathModeEnd);
-  text.Replace(L"\x00B2",mathModeStart+wxT("^2")+mathModeEnd);
-  text.Replace(L"\x00B3",mathModeStart+wxT("^3")+mathModeEnd);
-  text.Replace(L"\x221A",mathModeStart+wxT("\\sqrt{}")+mathModeEnd);
-  text.Replace(L"\x2148",mathModeStart+wxT("\\mathbbm{i}")+mathModeEnd);
-  text.Replace(L"\x2147",mathModeStart+wxT("\\mathbbm{e}")+mathModeEnd);
-  text.Replace(L"\x210f",mathModeStart+wxT("\\hbar")+mathModeEnd);
-  text.Replace(L"\x2203",mathModeStart+wxT("\\exists")+mathModeEnd);
-  text.Replace(L"\x2204",mathModeStart+wxT("\\nexists")+mathModeEnd);
-  text.Replace(L"\x2208",mathModeStart+wxT("\\in")+mathModeEnd);
-  text.Replace(L"\x21D2",mathModeStart+wxT("\\Longrightarrow")+mathModeEnd);
-  text.Replace(L"\x221e",mathModeStart+wxT("\\infty")+mathModeEnd);
-  text.Replace(L"\x22C0",mathModeStart+wxT("\\wedge")+mathModeEnd);
-  text.Replace(L"\x22C1",mathModeStart+wxT("\\vee")+mathModeEnd);
-  text.Replace(L"\x22bb",mathModeStart+wxT("\\oplus")+mathModeEnd);
-  text.Replace(L"\x22BC",mathModeStart+wxT("\\overline{\\wedge}")+mathModeEnd);
-  text.Replace(L"\x22BB",mathModeStart+wxT("\\overline{\\vee}")+mathModeEnd);
-  text.Replace(L"\x00AC",mathModeStart+wxT("\\setminus")+mathModeEnd);
-  text.Replace(L"\x22C3",mathModeStart+wxT("\\cup")+mathModeEnd);
-  text.Replace(L"\x22C2",mathModeStart+wxT("\\cap")+mathModeEnd);
-  text.Replace(L"\x2286",mathModeStart+wxT("\\subseteq")+mathModeEnd);
-  text.Replace(L"\x2282",mathModeStart+wxT("\\subset")+mathModeEnd);
-  text.Replace(L"\x2288",mathModeStart+wxT("\\not\\subseteq")+mathModeEnd);
-  text.Replace(L"\x0127",mathModeStart+wxT("\\hbar")+mathModeEnd);
-  text.Replace(L"\x0126",mathModeStart+wxT("\\Hbar")+mathModeEnd);
-  text.Replace(L"\x2205",mathModeStart+wxT("\\emptyset")+mathModeEnd);
-  text.Replace(L"\x00BD",mathModeStart+wxT("\\frac{1}{2}")+mathModeEnd);
-  text.Replace(L"\x03B2",mathModeStart+wxT("\\beta")+mathModeEnd);
-  text.Replace(L"\x03B3",mathModeStart+wxT("\\gamma")+mathModeEnd);
-  text.Replace(L"\x03B4",mathModeStart+wxT("\\delta")+mathModeEnd);
-  text.Replace(L"\x03B5",mathModeStart+wxT("\\epsilon")+mathModeEnd);
-  text.Replace(L"\x03B6",mathModeStart+wxT("\\zeta")+mathModeEnd);
-  text.Replace(L"\x03B7",mathModeStart+wxT("\\eta")+mathModeEnd);
-  text.Replace(L"\x03B8",mathModeStart+wxT("\\theta")+mathModeEnd);
-  text.Replace(L"\x03B9",mathModeStart+wxT("\\iota")+mathModeEnd);
-  text.Replace(L"\x03BA",mathModeStart+wxT("\\kappa")+mathModeEnd);
-  text.Replace(L"\x03BB",mathModeStart+wxT("\\lambda")+mathModeEnd);
-  text.Replace(L"\x03BC",mathModeStart+wxT("\\mu")+mathModeEnd);
-  text.Replace(L"\x03BD",mathModeStart+wxT("\\nu")+mathModeEnd);
-  text.Replace(L"\x03BE",mathModeStart+wxT("\\xi")+mathModeEnd);
-  text.Replace(L"\x03BF",mathModeStart+wxT("\\omicron")+mathModeEnd);
-  text.Replace(L"\x03C0",mathModeStart+wxT("\\pi")+mathModeEnd);
-  text.Replace(L"\x03C1",mathModeStart+wxT("\\rho")+mathModeEnd);
-  text.Replace(L"\x03C3",mathModeStart+wxT("\\sigma")+mathModeEnd);
-  text.Replace(L"\x03C4",mathModeStart+wxT("\\tau")+mathModeEnd);
-  text.Replace(L"\x03C5",mathModeStart+wxT("\\upsilon")+mathModeEnd);
-  text.Replace(L"\x03C6",mathModeStart+wxT("\\phi")+mathModeEnd);
-  text.Replace(L"\x03C7",mathModeStart+wxT("\\chi")+mathModeEnd);
-  text.Replace(L"\x03C8",mathModeStart+wxT("\\psi")+mathModeEnd);
-  text.Replace(L"\x03C9",mathModeStart+wxT("\\omega")+mathModeEnd);
-  text.Replace(L"\x0391",mathModeStart+wxT("\\Alpha")+mathModeEnd);
-  text.Replace(L"\x0392",mathModeStart+wxT("\\Beta")+mathModeEnd);
-  text.Replace(L"\x0393",mathModeStart+wxT("\\Gamma")+mathModeEnd);
-  text.Replace(L"\x0394",mathModeStart+wxT("\\Delta")+mathModeEnd);
-  text.Replace(L"\x0395",mathModeStart+wxT("\\Epsilon")+mathModeEnd);
-  text.Replace(L"\x0396",mathModeStart+wxT("\\Zeta")+mathModeEnd);
-  text.Replace(L"\x0397",mathModeStart+wxT("\\Eta")+mathModeEnd);
-  text.Replace(L"\x0398",mathModeStart+wxT("\\Theta")+mathModeEnd);
-  text.Replace(L"\x0399",mathModeStart+wxT("\\Iota")+mathModeEnd);
-  text.Replace(L"\x039A",mathModeStart+wxT("\\Kappa")+mathModeEnd);
-  text.Replace(L"\x039B",mathModeStart+wxT("\\Lambda")+mathModeEnd);
-  text.Replace(L"\x039C",mathModeStart+wxT("\\Mu")+mathModeEnd);
-  text.Replace(L"\x039D",mathModeStart+wxT("\\Nu")+mathModeEnd);
-  text.Replace(L"\x039E",mathModeStart+wxT("\\Xi")+mathModeEnd);
-  text.Replace(L"\x039F",mathModeStart+wxT("\\Omicron")+mathModeEnd);
-  text.Replace(L"\x03A0",mathModeStart+wxT("\\Pi")+mathModeEnd);
-  text.Replace(L"\x03A1",mathModeStart+wxT("\\Rho")+mathModeEnd);
-  text.Replace(L"\x03A3",mathModeStart+wxT("\\Sigma")+mathModeEnd);
-  text.Replace(L"\x03A4",mathModeStart+wxT("\\Tau")+mathModeEnd);
-  text.Replace(L"\x03A5",mathModeStart+wxT("\\Upsilon")+mathModeEnd);
-  text.Replace(L"\x03A6",mathModeStart+wxT("\\Phi")+mathModeEnd);
-  text.Replace(L"\x03A7",mathModeStart+wxT("\\Chi")+mathModeEnd);
-  text.Replace(L"\x03A8",mathModeStart+wxT("\\Psi")+mathModeEnd);
-  text.Replace(L"\x03A9",mathModeStart+wxT("\\Omega")+mathModeEnd);
-  text.Replace(L"\x2202",mathModeStart+wxT("\\partial")+mathModeEnd);
-  text.Replace(L"\x222b",mathModeStart+wxT("\\int")+mathModeEnd);
-  text.Replace(L"\x2245",mathModeStart+wxT("\\approx")+mathModeEnd);
-  text.Replace(L"\x221d",mathModeStart+wxT("\\propto")+mathModeEnd);
-  text.Replace(L"\x2260",mathModeStart+wxT("\\neq")+mathModeEnd);
-  text.Replace(L"\x2264",mathModeStart+wxT("\\leq")+mathModeEnd);
-  text.Replace(L"\x2265",mathModeStart+wxT("\\geq")+mathModeEnd);
-  text.Replace(L"\x226A",mathModeStart+wxT("\\ll")+mathModeEnd);
-  text.Replace(L"\x226B",mathModeStart+wxT("\\gg")+mathModeEnd);
-  text.Replace(L"\x220e",mathModeStart+wxT("\\blacksquare")+mathModeEnd);
-  text.Replace(L"\x2263",mathModeStart+wxT("\\equiv")+mathModeEnd);
-  text.Replace(L"\x2211",mathModeStart+wxT("\\sum")+mathModeEnd);
-  text.Replace(L"\x220F",mathModeStart+wxT("\\prod")+mathModeEnd);
-  text.Replace(L"\x2225",mathModeStart+wxT("\\parallel")+mathModeEnd);
-  text.Replace(L"\x27C2",mathModeStart+wxT("\\bot")+mathModeEnd);
-  text.Replace(wxT("~"),mathModeStart+wxT("\\sim ")+mathModeEnd);
+  text.Replace(L"\x00B1", mathModeStart + wxT("\\pm") + mathModeEnd);
+  text.Replace(L"\x03B1", mathModeStart + wxT("\\alpha") + mathModeEnd);
+  text.Replace(L"\x00B2", mathModeStart + wxT("^2") + mathModeEnd);
+  text.Replace(L"\x00B3", mathModeStart + wxT("^3") + mathModeEnd);
+  text.Replace(L"\x221A", mathModeStart + wxT("\\sqrt{}") + mathModeEnd);
+  text.Replace(L"\x2148", mathModeStart + wxT("\\mathbbm{i}") + mathModeEnd);
+  text.Replace(L"\x2147", mathModeStart + wxT("\\mathbbm{e}") + mathModeEnd);
+  text.Replace(L"\x210f", mathModeStart + wxT("\\hbar") + mathModeEnd);
+  text.Replace(L"\x2203", mathModeStart + wxT("\\exists") + mathModeEnd);
+  text.Replace(L"\x2204", mathModeStart + wxT("\\nexists") + mathModeEnd);
+  text.Replace(L"\x2208", mathModeStart + wxT("\\in") + mathModeEnd);
+  text.Replace(L"\x21D2", mathModeStart + wxT("\\Longrightarrow") + mathModeEnd);
+  text.Replace(L"\x221e", mathModeStart + wxT("\\infty") + mathModeEnd);
+  text.Replace(L"\x22C0", mathModeStart + wxT("\\wedge") + mathModeEnd);
+  text.Replace(L"\x22C1", mathModeStart + wxT("\\vee") + mathModeEnd);
+  text.Replace(L"\x22bb", mathModeStart + wxT("\\oplus") + mathModeEnd);
+  text.Replace(L"\x22BC", mathModeStart + wxT("\\overline{\\wedge}") + mathModeEnd);
+  text.Replace(L"\x22BB", mathModeStart + wxT("\\overline{\\vee}") + mathModeEnd);
+  text.Replace(L"\x00AC", mathModeStart + wxT("\\setminus") + mathModeEnd);
+  text.Replace(L"\x22C3", mathModeStart + wxT("\\cup") + mathModeEnd);
+  text.Replace(L"\x22C2", mathModeStart + wxT("\\cap") + mathModeEnd);
+  text.Replace(L"\x2286", mathModeStart + wxT("\\subseteq") + mathModeEnd);
+  text.Replace(L"\x2282", mathModeStart + wxT("\\subset") + mathModeEnd);
+  text.Replace(L"\x2288", mathModeStart + wxT("\\not\\subseteq") + mathModeEnd);
+  text.Replace(L"\x0127", mathModeStart + wxT("\\hbar") + mathModeEnd);
+  text.Replace(L"\x0126", mathModeStart + wxT("\\Hbar") + mathModeEnd);
+  text.Replace(L"\x2205", mathModeStart + wxT("\\emptyset") + mathModeEnd);
+  text.Replace(L"\x00BD", mathModeStart + wxT("\\frac{1}{2}") + mathModeEnd);
+  text.Replace(L"\x03B2", mathModeStart + wxT("\\beta") + mathModeEnd);
+  text.Replace(L"\x03B3", mathModeStart + wxT("\\gamma") + mathModeEnd);
+  text.Replace(L"\x03B4", mathModeStart + wxT("\\delta") + mathModeEnd);
+  text.Replace(L"\x03B5", mathModeStart + wxT("\\epsilon") + mathModeEnd);
+  text.Replace(L"\x03B6", mathModeStart + wxT("\\zeta") + mathModeEnd);
+  text.Replace(L"\x03B7", mathModeStart + wxT("\\eta") + mathModeEnd);
+  text.Replace(L"\x03B8", mathModeStart + wxT("\\theta") + mathModeEnd);
+  text.Replace(L"\x03B9", mathModeStart + wxT("\\iota") + mathModeEnd);
+  text.Replace(L"\x03BA", mathModeStart + wxT("\\kappa") + mathModeEnd);
+  text.Replace(L"\x03BB", mathModeStart + wxT("\\lambda") + mathModeEnd);
+  text.Replace(L"\x03BC", mathModeStart + wxT("\\mu") + mathModeEnd);
+  text.Replace(L"\x03BD", mathModeStart + wxT("\\nu") + mathModeEnd);
+  text.Replace(L"\x03BE", mathModeStart + wxT("\\xi") + mathModeEnd);
+  text.Replace(L"\x03BF", mathModeStart + wxT("\\omicron") + mathModeEnd);
+  text.Replace(L"\x03C0", mathModeStart + wxT("\\pi") + mathModeEnd);
+  text.Replace(L"\x03C1", mathModeStart + wxT("\\rho") + mathModeEnd);
+  text.Replace(L"\x03C3", mathModeStart + wxT("\\sigma") + mathModeEnd);
+  text.Replace(L"\x03C4", mathModeStart + wxT("\\tau") + mathModeEnd);
+  text.Replace(L"\x03C5", mathModeStart + wxT("\\upsilon") + mathModeEnd);
+  text.Replace(L"\x03C6", mathModeStart + wxT("\\phi") + mathModeEnd);
+  text.Replace(L"\x03C7", mathModeStart + wxT("\\chi") + mathModeEnd);
+  text.Replace(L"\x03C8", mathModeStart + wxT("\\psi") + mathModeEnd);
+  text.Replace(L"\x03C9", mathModeStart + wxT("\\omega") + mathModeEnd);
+  text.Replace(L"\x0391", mathModeStart + wxT("\\Alpha") + mathModeEnd);
+  text.Replace(L"\x0392", mathModeStart + wxT("\\Beta") + mathModeEnd);
+  text.Replace(L"\x0393", mathModeStart + wxT("\\Gamma") + mathModeEnd);
+  text.Replace(L"\x0394", mathModeStart + wxT("\\Delta") + mathModeEnd);
+  text.Replace(L"\x0395", mathModeStart + wxT("\\Epsilon") + mathModeEnd);
+  text.Replace(L"\x0396", mathModeStart + wxT("\\Zeta") + mathModeEnd);
+  text.Replace(L"\x0397", mathModeStart + wxT("\\Eta") + mathModeEnd);
+  text.Replace(L"\x0398", mathModeStart + wxT("\\Theta") + mathModeEnd);
+  text.Replace(L"\x0399", mathModeStart + wxT("\\Iota") + mathModeEnd);
+  text.Replace(L"\x039A", mathModeStart + wxT("\\Kappa") + mathModeEnd);
+  text.Replace(L"\x039B", mathModeStart + wxT("\\Lambda") + mathModeEnd);
+  text.Replace(L"\x039C", mathModeStart + wxT("\\Mu") + mathModeEnd);
+  text.Replace(L"\x039D", mathModeStart + wxT("\\Nu") + mathModeEnd);
+  text.Replace(L"\x039E", mathModeStart + wxT("\\Xi") + mathModeEnd);
+  text.Replace(L"\x039F", mathModeStart + wxT("\\Omicron") + mathModeEnd);
+  text.Replace(L"\x03A0", mathModeStart + wxT("\\Pi") + mathModeEnd);
+  text.Replace(L"\x03A1", mathModeStart + wxT("\\Rho") + mathModeEnd);
+  text.Replace(L"\x03A3", mathModeStart + wxT("\\Sigma") + mathModeEnd);
+  text.Replace(L"\x03A4", mathModeStart + wxT("\\Tau") + mathModeEnd);
+  text.Replace(L"\x03A5", mathModeStart + wxT("\\Upsilon") + mathModeEnd);
+  text.Replace(L"\x03A6", mathModeStart + wxT("\\Phi") + mathModeEnd);
+  text.Replace(L"\x03A7", mathModeStart + wxT("\\Chi") + mathModeEnd);
+  text.Replace(L"\x03A8", mathModeStart + wxT("\\Psi") + mathModeEnd);
+  text.Replace(L"\x03A9", mathModeStart + wxT("\\Omega") + mathModeEnd);
+  text.Replace(L"\x2202", mathModeStart + wxT("\\partial") + mathModeEnd);
+  text.Replace(L"\x222b", mathModeStart + wxT("\\int") + mathModeEnd);
+  text.Replace(L"\x2245", mathModeStart + wxT("\\approx") + mathModeEnd);
+  text.Replace(L"\x221d", mathModeStart + wxT("\\propto") + mathModeEnd);
+  text.Replace(L"\x2260", mathModeStart + wxT("\\neq") + mathModeEnd);
+  text.Replace(L"\x2264", mathModeStart + wxT("\\leq") + mathModeEnd);
+  text.Replace(L"\x2265", mathModeStart + wxT("\\geq") + mathModeEnd);
+  text.Replace(L"\x226A", mathModeStart + wxT("\\ll") + mathModeEnd);
+  text.Replace(L"\x226B", mathModeStart + wxT("\\gg") + mathModeEnd);
+  text.Replace(L"\x220e", mathModeStart + wxT("\\blacksquare") + mathModeEnd);
+  text.Replace(L"\x2263", mathModeStart + wxT("\\equiv") + mathModeEnd);
+  text.Replace(L"\x2211", mathModeStart + wxT("\\sum") + mathModeEnd);
+  text.Replace(L"\x220F", mathModeStart + wxT("\\prod") + mathModeEnd);
+  text.Replace(L"\x2225", mathModeStart + wxT("\\parallel") + mathModeEnd);
+  text.Replace(L"\x27C2", mathModeStart + wxT("\\bot") + mathModeEnd);
+  text.Replace(wxT("~"), mathModeStart + wxT("\\sim ") + mathModeEnd);
   text.Replace(wxT("_"), wxT("\\_ "));
   text.Replace(wxT("$"), wxT("\\$ "));
   text.Replace(wxT("%"), wxT("\\% "));
   text.Replace(wxT("&"), wxT("\\& "));
-  text.Replace(wxT("@"), mathModeStart+wxT("@")+mathModeEnd);
-  text.Replace(wxT("#"), mathModeStart+wxT("\\neq")+mathModeEnd);
+  text.Replace(wxT("@"), mathModeStart + wxT("@") + mathModeEnd);
+  text.Replace(wxT("#"), mathModeStart + wxT("\\neq") + mathModeEnd);
   text.Replace(wxT("\xDCB6"), wxT("~")); // A non-breakable space
-  text.Replace(wxT("<"), mathModeStart+wxT("<")+mathModeEnd);
-  text.Replace(wxT(">"), mathModeStart+wxT(">")+mathModeEnd);
-  text.Replace(wxT("\x219D"), mathModeStart+wxT("\\leadsto")+mathModeEnd);
-  text.Replace(wxT("\x2192"), mathModeStart+wxT("\\rightarrow")+mathModeEnd);
-  text.Replace(wxT("\x2794"), mathModeStart+wxT("\\longrightarrow")+mathModeEnd);
+  text.Replace(wxT("<"), mathModeStart + wxT("<") + mathModeEnd);
+  text.Replace(wxT(">"), mathModeStart + wxT(">") + mathModeEnd);
+  text.Replace(wxT("\x219D"), mathModeStart + wxT("\\leadsto") + mathModeEnd);
+  text.Replace(wxT("\x2192"), mathModeStart + wxT("\\rightarrow") + mathModeEnd);
+  text.Replace(wxT("\x2794"), mathModeStart + wxT("\\longrightarrow") + mathModeEnd);
 #endif
 
 
@@ -628,20 +690,20 @@ wxString TextCell::ToTeX()
     // is chosen to show that this is a multiplication.
     // But any use of \mathit{} will change to ordinary text spacing which means we need
     // to add a \, to show that we want to multiply the two long variable names.
-    if((text == wxT("*"))||(text == wxT("\xB7")))
+    if ((text == wxT("*")) || (text == wxT("\xB7")))
     {
       // We have a hidden multiplication sign
-      if(
+      if (
         // This multiplication sign is between 2 cells
-        ((m_previous != NULL)&&(m_next != NULL)) &&
-        // These cells are two variable names
-        ((m_previous->GetStyle() == TS_VARIABLE) && (m_next->GetStyle() == TS_VARIABLE)) &&
-        // The variable name prior to this cell has no subscript
-        (!(m_previous->ToString().Contains(wxT('_')))) &&
-        // we will be using \mathit{} for the TeX outout.
-        ((m_next->ToString().Length() > 1) || (m_next->ToString().Length() > 1))
-        )
-        text=wxT("\\, ");
+              ((m_previous != NULL) && (m_next != NULL)) &&
+              // These cells are two variable names
+              ((m_previous->GetStyle() == TS_VARIABLE) && (m_next->GetStyle() == TS_VARIABLE)) &&
+              // The variable name prior to this cell has no subscript
+              (!(m_previous->ToString().Contains(wxT('_')))) &&
+              // we will be using \mathit{} for the TeX outout.
+              ((m_next->ToString().Length() > 1) || (m_next->ToString().Length() > 1))
+              )
+        text = wxT("\\, ");
       else
         text = wxT(" ");
     }
@@ -658,32 +720,32 @@ wxString TextCell::ToTeX()
       to begin a parenthesis with a centered dot even if this
       parenthesis does contain a product.
     */
-    
+
     if (m_SuppressMultiplicationDot)
     {
-      text.Replace(wxT("*"),wxT("\\, "));
-      text.Replace(wxT("\xB7"),wxT("\\, "));
+      text.Replace(wxT("*"), wxT("\\, "));
+      text.Replace(wxT("\xB7"), wxT("\\, "));
     }
     else
     {
       // If we want to know if the last element was a "d" we first have to
       // look if there actually is a last element.
-      if(m_previous)
+      if (m_previous)
       {
-        if (m_previous->GetStyle() == TS_SPECIAL_CONSTANT && m_previous->ToTeX()==wxT("d"))
+        if (m_previous->GetStyle() == TS_SPECIAL_CONSTANT && m_previous->ToTeX() == wxT("d"))
         {
-          text.Replace(wxT("*"),wxT("\\, "));
-          text.Replace(wxT("\xB7"),wxT("\\, "));
+          text.Replace(wxT("*"), wxT("\\, "));
+          text.Replace(wxT("\xB7"), wxT("\\, "));
         }
         else
         {
-          text.Replace(wxT("*"),wxT("\\cdot "));
-          text.Replace(wxT("\xB7"),wxT("\\cdot "));
+          text.Replace(wxT("*"), wxT("\\cdot "));
+          text.Replace(wxT("\xB7"), wxT("\\cdot "));
         }
       }
     }
   }
-  
+
   if (GetStyle() == TS_GREEK_CONSTANT)
   {
     if (text == wxT("\\% alpha"))
@@ -782,10 +844,10 @@ wxString TextCell::ToTeX()
       return wxT("\\Psi ");
     else if (text == wxT("\\% Omega"))
       return wxT("\\Omega ");
-    
+
     return text;
   }
-  
+
   if (GetStyle() == TS_SPECIAL_CONSTANT)
   {
     if (text == wxT("inf"))
@@ -799,15 +861,15 @@ wxString TextCell::ToTeX()
     else
       return text;
   }
-  
-  if ((GetStyle() == TS_LABEL)||(GetStyle() == TS_USERLABEL))
+
+  if ((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
   {
     wxString conditionalLinebreak;
-    if(m_previous) conditionalLinebreak = wxT("\\]\n\\[");
+    if (m_previous) conditionalLinebreak = wxT("\\]\n\\[");
     text.Trim(true);
-    wxString label = text.SubString(1,text.Length()-2);
+    wxString label = text.SubString(1, text.Length() - 2);
     text = conditionalLinebreak + wxT("\\tag{") + label + wxT("}");
-    label.Replace(wxT("\\% "),wxT(""));
+    label.Replace(wxT("\\% "), wxT(""));
     // Would be a good idea, but apparently breaks mathJaX
     // text += wxT("\\label{") + label + wxT("}");
   }
@@ -815,57 +877,57 @@ wxString TextCell::ToTeX()
   {
     if (GetStyle() == TS_FUNCTION)
     {
-      if(text!=wxEmptyString)
+      if (text != wxEmptyString)
         text = wxT("\\operatorname{") + text + wxT("}");
     }
     else if (GetStyle() == TS_VARIABLE)
     {
-      if((m_displayedText.Length() > 1)&&(text[1]!=wxT('_')))
+      if ((m_displayedText.Length() > 1) && (text[1] != wxT('_')))
         text = wxT("\\mathit{") + text + wxT("}");
       if (text == wxT("\\% pi"))
         text = wxT("\\ensuremath{\\pi} ");
-      text.Replace(wxT("\\text{ä}"),wxT("\\text{\\textit{ä}}"));
-      text.Replace(wxT("\\text{ö}"),wxT("\\text{\\textit{ö}}"));
-      text.Replace(wxT("\\text{ü}"),wxT("\\text{\\textit{ü}}"));
-      text.Replace(wxT("\\text{Ä}"),wxT("\\text{\\textit{Ä}}"));
-      text.Replace(wxT("\\text{Ö}"),wxT("\\text{\\textit{Ö}}"));
-      text.Replace(wxT("\\text{Ü}"),wxT("\\text{\\textit{Ü}}"));
+      text.Replace(wxT("\\text{ä}"), wxT("\\text{\\textit{ä}}"));
+      text.Replace(wxT("\\text{ö}"), wxT("\\text{\\textit{ö}}"));
+      text.Replace(wxT("\\text{ü}"), wxT("\\text{\\textit{ü}}"));
+      text.Replace(wxT("\\text{Ä}"), wxT("\\text{\\textit{Ä}}"));
+      text.Replace(wxT("\\text{Ö}"), wxT("\\text{\\textit{Ö}}"));
+      text.Replace(wxT("\\text{Ü}"), wxT("\\text{\\textit{Ü}}"));
     }
     else if (GetStyle() == TS_ERROR)
     {
-      if(text.Length() > 1)
+      if (text.Length() > 1)
         text = wxT("\\mbox{") + text + wxT("}");
     }
     else if (GetStyle() == TS_DEFAULT)
     {
-      if((text.Length() > 2)&&(text!=wxT("\\,"))&&(text!=wxT("\\, ")))
+      if ((text.Length() > 2) && (text != wxT("\\,")) && (text != wxT("\\, ")))
         text = wxT("\\mbox{") + text + wxT("}");
     }
   }
-  
+
   if (
-    (GetStyle() != TS_FUNCTION) &&
-    (GetStyle() != TS_OUTDATED) &&
-    (GetStyle() != TS_VARIABLE) &&
-    (GetStyle() != TS_NUMBER)   &&
-    (GetStyle() != TS_GREEK_CONSTANT)   &&
-    (GetStyle() != TS_SPECIAL_CONSTANT)
-    )
+          (GetStyle() != TS_FUNCTION) &&
+          (GetStyle() != TS_OUTDATED) &&
+          (GetStyle() != TS_VARIABLE) &&
+          (GetStyle() != TS_NUMBER) &&
+          (GetStyle() != TS_GREEK_CONSTANT) &&
+          (GetStyle() != TS_SPECIAL_CONSTANT)
+          )
     text.Replace(wxT("^"), wxT("\\textasciicircum"));
-  
-  if((GetStyle() == TS_DEFAULT)||(GetStyle() == TS_STRING))
+
+  if ((GetStyle() == TS_DEFAULT) || (GetStyle() == TS_STRING))
   {
-    if(text.Length()>1)
+    if (text.Length() > 1)
     {
-      if(((m_forceBreakLine)||(m_breakLine)))
+      if (((m_forceBreakLine) || (m_breakLine)))
         //text=wxT("\\ifhmode\\\\fi\n")+text;
-        text = wxT("\\mbox{}\\\\")+text;
+        text = wxT("\\mbox{}\\\\") + text;
 /*      if(GetStyle() != TS_DEFAULT)
         text.Replace(wxT(" "), wxT("\\, "));*/
     }
   }
 
-  if ((GetStyle() == TS_LABEL)||(GetStyle() == TS_LABEL))
+  if ((GetStyle() == TS_LABEL) || (GetStyle() == TS_LABEL))
     text = text + wxT(" ");
 
   return text;
@@ -873,155 +935,166 @@ wxString TextCell::ToTeX()
 
 wxString TextCell::ToMathML()
 {
-  wxString text=XMLescape(m_displayedText);
+  wxString text = XMLescape(m_displayedText);
+
+  if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
+    text = XMLescape(wxT("(") + m_userDefinedLabel + wxT(")"));
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
-  if(m_isHidden)
+  if (m_isHidden)
   {
-    text.Replace(wxT("*"),     wxT("&#8290;"));
-    text.Replace(wxT("\xB7"),  wxT("&#8290;"));
-    if(text != wxT ("&#8290;"))
+    text.Replace(wxT("*"), wxT("&#8290;"));
+    text.Replace(wxT("\xB7"), wxT("&#8290;"));
+    if (text != wxT ("&#8290;"))
       text = wxEmptyString;
   }
-  text.Replace(wxT("*"),  wxT("\xB7"));
-      
-  switch(GetStyle())
+  text.Replace(wxT("*"), wxT("\xB7"));
+
+  switch (GetStyle())
   {
-  case TS_GREEK_CONSTANT:
-    text = GetGreekStringUnicode();
-  case TS_SPECIAL_CONSTANT:
-  {
-    // The "d" from d/dt can be written as a special unicode symbol. But firefox doesn't
-    // support this currently => Commenting it out.
-    // if((GetStyle() == TS_SPECIAL_CONSTANT) && (text == wxT("d")))
-    //   text = wxT("&#2146;");
-    bool keepPercent = true;
-    wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
-    if (!keepPercent) {
-      if (text == wxT("%e"))
-        text = wxT("e");
-      else if (text == wxT("%i"))
-        text = wxT("i");
+    case TS_GREEK_CONSTANT:
+      text = GetGreekStringUnicode();
+    case TS_SPECIAL_CONSTANT:
+    {
+      // The "d" from d/dt can be written as a special unicode symbol. But firefox doesn't
+      // support this currently => Commenting it out.
+      // if((GetStyle() == TS_SPECIAL_CONSTANT) && (text == wxT("d")))
+      //   text = wxT("&#2146;");
+      bool keepPercent = true;
+      wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
+      if (!keepPercent)
+      {
+        if (text == wxT("%e"))
+          text = wxT("e");
+        else if (text == wxT("%i"))
+          text = wxT("i");
+      }
     }
-  }
-  case TS_VARIABLE:
-  {
-    bool keepPercent = true;
-    wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
-      
-    if (!keepPercent) {
-      if (text == wxT("%pi"))
-        text = wxT("\x03C0");
+    case TS_VARIABLE:
+    {
+      bool keepPercent = true;
+      wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
+
+      if (!keepPercent)
+      {
+        if (text == wxT("%pi"))
+          text = wxT("\x03C0");
+      }
     }
+    case TS_FUNCTION:
+      if (text == wxT("inf"))
+        text = wxT("\x221e");
+      return wxT("<mi>") + text + wxT("</mi>\n");
+      break;
+    case TS_NUMBER:
+      return wxT("<mn>") + text + wxT("</mn>\n");
+      break;
+
+    case TS_LABEL:
+    case TS_USERLABEL:
+      return wxT("<mtext>") + text + wxT("</mtext></mtd><mtd>\n");
+      break;
+
+    case TS_STRING:
+    default:
+      if (text.StartsWith(wxT("\"")))
+        return wxT("<ms>") + text + wxT("</ms>\n");
+      else
+        return wxT("<mo>") + text + wxT("</mo>\n");
   }
-  case TS_FUNCTION:
-    if(text == wxT("inf"))
-      text = wxT("\x221e");
-    return wxT("<mi>")+text+wxT("</mi>\n");
-    break;
-  case TS_NUMBER:
-    return wxT("<mn>")+text+wxT("</mn>\n");
-    break;
 
-  case TS_LABEL:
-  case TS_USERLABEL:
-    return wxT("<mtext>")+text+wxT("</mtext></mtd><mtd>\n");
-    break;
-
-  case TS_STRING:
-  default:
-    if (text.StartsWith(wxT("\"")))
-      return wxT("<ms>")+text+wxT("</ms>\n");
-    else
-      return wxT("<mo>")+text+wxT("</mo>\n");
-  }
-
-  return wxT("<mo>")+text+wxT("</mo>\n");
+  return wxT("<mo>") + text + wxT("</mo>\n");
 }
 
 wxString TextCell::ToOMML()
 {
   //Text-only lines are better handled in RTF.
-  if(
-    ((m_previous != NULL) && (m_previous->GetStyle() != TS_LABEL) && (!m_previous->ForceBreakLineHere())) &&
-    (ForceBreakLineHere())
-    )
+  if (
+          ((m_previous != NULL) && (m_previous->GetStyle() != TS_LABEL) && (!m_previous->ForceBreakLineHere())) &&
+          (ForceBreakLineHere())
+          )
     return wxEmptyString;
 
   // Labels are text-only.
-  if((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
+  if ((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
     return wxEmptyString;
 
-  wxString text=XMLescape(m_displayedText);
+  wxString text = XMLescape(m_displayedText);
 
   // If we didn't display a multiplication dot we want to do the same in MathML.
-  if(m_isHidden)
+  if (m_isHidden)
   {
-    text.Replace(wxT("*"),     wxT("&#8290;"));
-    text.Replace(wxT("\xB7"),  wxT("&#8290;"));
-    if(text != wxT ("&#8290;"))
+    text.Replace(wxT("*"), wxT("&#8290;"));
+    text.Replace(wxT("\xB7"), wxT("&#8290;"));
+    if (text != wxT ("&#8290;"))
       text = wxEmptyString;
   }
-  text.Replace(wxT("*"),  wxT("\xB7"));
-      
-  switch(GetStyle())
+  text.Replace(wxT("*"), wxT("\xB7"));
+
+  switch (GetStyle())
   {
-  case TS_GREEK_CONSTANT:
-    text = GetGreekStringUnicode();
-  case TS_SPECIAL_CONSTANT:
-  {
-    // The "d" from d/dt can be written as a special unicode symbol. But firefox doesn't
-    // support this currently => Commenting it out.
-    // if((GetStyle() == TS_SPECIAL_CONSTANT) && (text == wxT("d")))
-    //   text = wxT("&#2146;");
-    bool keepPercent = true;
-    wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
-    if (!keepPercent) {
-      if (text == wxT("%e"))
-        text = wxT("e");
-      else if (text == wxT("%i"))
-        text = wxT("i");
+    case TS_GREEK_CONSTANT:
+      text = GetGreekStringUnicode();
+    case TS_SPECIAL_CONSTANT:
+    {
+      // The "d" from d/dt can be written as a special unicode symbol. But firefox doesn't
+      // support this currently => Commenting it out.
+      // if((GetStyle() == TS_SPECIAL_CONSTANT) && (text == wxT("d")))
+      //   text = wxT("&#2146;");
+      bool keepPercent = true;
+      wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
+      if (!keepPercent)
+      {
+        if (text == wxT("%e"))
+          text = wxT("e");
+        else if (text == wxT("%i"))
+          text = wxT("i");
+      }
+    }
+    case TS_VARIABLE:
+    {
+      bool keepPercent = true;
+      wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
+
+      if (!keepPercent)
+      {
+        if (text == wxT("%pi"))
+          text = wxT("\x03C0");
+      }
+    }
+    case TS_FUNCTION:
+      if (text == wxT("inf"))
+        text = wxT("\x221e");
+      break;
+    case TS_NUMBER:
+      break;
+
+    case TS_LABEL:
+    case TS_USERLABEL:
+      return wxEmptyString;
+      break;
+
+    case TS_STRING:
+    default:
+    {
     }
   }
-  case TS_VARIABLE:
-  {
-    bool keepPercent = true;
-    wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
-      
-    if (!keepPercent) {
-      if (text == wxT("%pi"))
-        text = wxT("\x03C0");
-    }
-  }
-  case TS_FUNCTION:
-    if(text == wxT("inf"))
-      text = wxT("\x221e");
-    break;
-  case TS_NUMBER:
-    break;
-
-  case TS_LABEL:
-  case TS_USERLABEL:
-    return wxEmptyString;
-    break;
-
-  case TS_STRING:
-  default:
-  {
-  }
-  }
-  text = wxT("<m:t>")+text+wxT("</m:t>\n");
+  text = wxT("<m:t>") + text + wxT("</m:t>\n");
   return text;
 }
 
 wxString TextCell::ToRTF()
 {
   wxString retval;
-  wxString text=m_displayedText;
-  text.Replace(wxT("-->"),wxT("\x2192"));
-  if((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
+  wxString text = m_displayedText;
+
+  if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
+    text = wxT("(") + m_userDefinedLabel + wxT(")");
+  
+  text.Replace(wxT("-->"), wxT("\x2192"));
+  if ((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
   {
-    retval += wxString::Format(wxT("\\cf%i{"),(int)GetStyle());
+    retval += wxString::Format(wxT("\\cf%i{"), (int) GetStyle());
     retval += RTFescape(text);
     retval += wxT("}\\cf0");
   }
@@ -1032,33 +1105,51 @@ wxString TextCell::ToXML()
 {
   wxString tag;
   wxString flags;
-  if(m_isHidden)tag=_T("h");
+  if (m_isHidden)tag = _T("h");
   else
-    switch(GetStyle())
+    switch (GetStyle())
     {
-    case TS_GREEK_CONSTANT: tag=_T("g");break;
-    case TS_SPECIAL_CONSTANT: tag=_T("s");break;
-    case TS_VARIABLE: tag=_T("v");break;
-    case TS_FUNCTION: tag=_T("fnm");break;
-    case TS_NUMBER: tag=_T("n");break;
-    case TS_STRING: tag=_T("st");break;
-    case TS_LABEL: tag=_T("lbl");break;
-    case TS_USERLABEL: tag=_T("lbl");
-      flags += wxT(" userdefined=\"yes\"");
-      break;
-    default: tag=_T("t");
+      case TS_GREEK_CONSTANT:
+        tag = _T("g");
+        break;
+      case TS_SPECIAL_CONSTANT:
+        tag = _T("s");
+        break;
+      case TS_VARIABLE:
+        tag = _T("v");
+        break;
+      case TS_FUNCTION:
+        tag = _T("fnm");
+        break;
+      case TS_NUMBER:
+        tag = _T("n");
+        break;
+      case TS_STRING:
+        tag = _T("st");
+        break;
+      case TS_LABEL:
+        tag = _T("lbl");
+        break;
+      case TS_USERLABEL:
+        tag = _T("lbl");
+        flags += wxT(" userdefined=\"yes\"");
+        break;
+      default:
+        tag = _T("t");
     }
 
-  if((m_forceBreakLine)&&(GetStyle()!=TS_LABEL)&&(GetStyle()!=TS_USERLABEL))
+  if ((m_forceBreakLine) && (GetStyle() != TS_LABEL) && (GetStyle() != TS_USERLABEL))
     flags += wxT(" breakline=\"true\"");
-    
-  if(GetStyle() == TS_ERROR)
+
+  if (GetStyle() == TS_ERROR)
     flags += wxT(" type=\"error\"");
-    
+
   wxString xmlstring = XMLescape(m_displayedText);
   // convert it, so that the XML configuration doesn't fail
+  if(m_userDefinedLabel != wxEmptyString)
+    flags += wxT(" userdefinedlabel=\"") + XMLescape(m_userDefinedLabel) + wxT("\"");
 
-  return _T("<") + tag + flags +_T(">") + xmlstring + _T("</") + tag + _T(">");
+  return _T("<") + tag + flags + _T(">") + xmlstring + _T("</") + tag + _T(">");
 }
 
 wxString TextCell::GetDiffPart()
@@ -1076,17 +1167,17 @@ bool TextCell::IsShortNum()
 }
 
 void TextCell::SetAltText()
-{  
+{
   m_altJs = m_alt = false;
   if (GetStyle() == TS_DEFAULT)
-    return ;
+    return;
 
   /// Greek characters are defined in jsMath, Windows and Unicode
   if (GetStyle() == TS_GREEK_CONSTANT)
   {
     m_altJs = true;
     m_altJsText = GetGreekStringTeX();
-    m_texFontname = wxT("jsMath-cmmi10");
+    m_texFontname = CMMI10;
 
 #if wxUSE_UNICODE
     m_alt = true;
@@ -1098,21 +1189,22 @@ void TextCell::SetAltText()
 #endif
   }
 
-  /// Check for other symbols
-  else {
+    /// Check for other symbols
+  else
+  {
     m_altJsText = GetSymbolTeX();
     if (m_altJsText != wxEmptyString)
     {
       if (m_text == wxT("+") || m_text == wxT("="))
-        m_texFontname = wxT("jsMath-cmr10");
+        m_texFontname = CMR10;
       else if (m_text == wxT("%pi"))
-        m_texFontname = wxT("jsMath-cmmi10");
+        m_texFontname = CMMI10;
       else
-        m_texFontname = wxT("jsMath-cmsy10");
+        m_texFontname = CMSY10;
       m_altJs = true;
     }
 #if wxUSE_UNICODE
-    m_altText = GetSymbolUnicode(Configuration::Get()->CheckKeepPercent());
+    m_altText = GetSymbolUnicode((*m_configuration)->CheckKeepPercent());
     if (m_altText != wxEmptyString)
       m_alt = true;
 #elif defined __WXMSW__
@@ -1276,12 +1368,13 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent)
   else if (m_text == wxT("-->"))
     return wxT("\x2794");
 #endif
- /*
-  else if (GetStyle() == TS_SPECIAL_CONSTANT && m_text == wxT("d"))
-    return wxT("\x2202");
-  */
+  /*
+   else if (GetStyle() == TS_SPECIAL_CONSTANT && m_text == wxT("d"))
+     return wxT("\x2202");
+   */
 
-  if (!keepPercent) {
+  if (!keepPercent)
+  {
     if (m_text == wxT("%e"))
       return wxT("e");
     else if (m_text == wxT("%i"))

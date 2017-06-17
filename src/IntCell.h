@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //  Copyright (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -39,37 +39,56 @@
 class IntCell : public MathCell
 {
 public:
-  IntCell();
+  IntCell(MathCell *parent, Configuration **config);
+
   ~IntCell();
-  MathCell* Copy();
+
+  MathCell *Copy();
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
-  void SetBase(MathCell* base);
+
+  void SetBase(MathCell *base);
+
   //! Set the lower limit of the integral
-  void SetUnder(MathCell* under);
+  void SetUnder(MathCell *under);
+
   //! Set the higher limit of the integral
-  void SetOver(MathCell* name);
-  //! Set the integration variable 
-  void SetVar(MathCell* var);
-  enum IntegralType{
+  void SetOver(MathCell *name);
+
+  //! Set the integration variable
+  void SetVar(MathCell *var);
+
+  enum IntegralType
+  {
     INT_DEF, //!< An definite integral, meaning an integral with limits.
     INT_IDEF //!> An indefinite integral, meaning an integral without limits
   };
+
   //! Choose between definite and indefinite integrals
   void SetIntStyle(IntegralType style)
   {
     m_intStyle = style;
   }
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToMathML();
+
   wxString ToOMML();
+
   wxString ToXML();
-  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   void SetParent(MathCell *parent);
 
- protected:
+protected:
   //! The part of the formula that is to be integrated.
   MathCell *m_base;
   //! The lower limit of the integral

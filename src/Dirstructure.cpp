@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2015      Gunter Königsmann <wxMaxima@physikbuch.de>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
@@ -34,35 +34,132 @@
 
 wxString Dirstructure::ResourcesDir()
 {
-#if defined __WXMSW__
-  wxString exe = wxStandardPaths::Get().GetExecutablePath();
-  int lastSlash = exe.rfind(wxT('/'));
-  int lastBackslash = exe.rfind(wxT('\\'));
-  if (lastSlash < lastBackslash)
-    exe = exe.Left(lastBackslash + 1);
-  else
-    exe = exe.Left(lastSlash + 1);
-  return exe;
-#elif defined __WXMAC__
-  wxString exe = wxStandardPaths::Get().GetExecutablePath();
-  exe.Replace(wxT("MacOS/wxmaxima"), wxT("Resources/"));
-  return exe;
-#else
-  return Prefix()+wxT("/share/wxMaxima/");
-#endif
-}
-
-wxString Dirstructure::Prefix()
-{
-#ifndef PREFIX
-#define PREFIX "/usr"
-#endif
-  return wxT(PREFIX);
+  // Our ressources dir is somewhere near to the dir the binary can be found.
+  wxFileName exe(wxStandardPaths::Get().GetExecutablePath());
+  
+  // We only need the drive and the directory part of the path to the binary
+  exe.ClearExt();
+  exe.SetName(wxEmptyString);
+  
+  // If the binary is in a source or bin folder the resources dir is one level above
+  wxArrayString dirs = exe.GetDirs();
+  if((dirs.Last().Upper() == wxT("SRC")) || (dirs.Last().Upper() == wxT("BIN")))
+  {
+    exe.RemoveLastDir();
+    dirs = exe.GetDirs();
+  }
+  
+  // If the binary is in the wxMaxima folder the resources dir is two levels above as we
+  // are in MacOS/wxmaxima
+  if((dirs.Last().Upper() == wxT("MACOS")))
+  {
+    exe.RemoveLastDir();
+    dirs = exe.GetDirs();
+  }
+  
+  // If there is a Resources folder the ressources are there
+  if(wxDirExists(exe.GetPath() + wxT("/Resources")))
+  {
+    exe.AppendDir("Resources");
+    dirs = exe.GetDirs();
+  }
+  
+  // If there is a share folder the ressources are there
+  if(wxDirExists(exe.GetPath() + wxT("/share")))
+  {
+    exe.AppendDir("share");
+    dirs = exe.GetDirs();
+  }
+  
+  return exe.GetPath();
 }
 
 wxString Dirstructure::UserConfDir()
 {
-  return wxGetHomeDir()+wxT("/");
+  return wxGetHomeDir() + wxT("/");
+}
+
+wxString Dirstructure::DataDir()
+{
+  wxString dir = ResourcesDir();
+  if(wxDirExists(dir + wxT("/data")))
+    dir += wxT("/data");
+  if(wxDirExists(dir + wxT("/wxMaxima")))
+    dir += wxT("/wxMaxima");
+
+  return dir;
+}
+
+wxString Dirstructure::HelpDir()
+{
+  wxString dir = ResourcesDir();
+  if(wxDirExists(dir + wxT("/doc/wxmaxima")))
+    dir += wxT("/doc/wxmaxima");
+
+  if(wxDirExists(dir + wxT("/help")))
+    dir += wxT("/help");
+
+    if(wxDirExists(dir + wxT("/info")))
+    dir += wxT("/info");
+
+  return dir;
+}
+
+wxString Dirstructure::ArtDir()
+{
+  wxString dir = ResourcesDir();
+  if(wxDirExists(dir + wxT("/wxMaxima")))
+    dir += wxT("/wxMaxima");
+
+  if(wxDirExists(dir + wxT("/art")))
+    dir += wxT("/art");
+
+  return dir;
+}
+
+wxString Dirstructure::AppIconDir()
+{
+  wxString dir = ResourcesDir();
+
+  if(wxFileExists(ResourcesDir() + wxT("/wxmaxima.png")))
+    return ResourcesDir();
+  else
+  {
+    if(wxDirExists(dir + wxT("/wxMaxima")))
+      dir += wxT("/wxMaxima");
+    
+    if(wxDirExists(dir + wxT("/data")))
+      dir += wxT("/data");
+    
+    return dir;
+  }
+}
+
+wxString Dirstructure::ConfigArtDir()
+{
+  wxString dir = ArtDir();
+  if(wxDirExists(dir + wxT("/config")))
+    dir += wxT("/config");
+
+  return dir;
+}
+
+wxString Dirstructure::ConfigToolbarDir()
+{
+  wxString dir = ArtDir();
+  if(wxDirExists(dir + wxT("/toolbar")))
+    dir += wxT("/toolbar");
+
+  return dir;
+}
+
+wxString Dirstructure::ConfigStatusbarDir()
+{
+  wxString dir = ArtDir();
+  if(wxDirExists(dir + wxT("/statusbar")))
+    dir += wxT("/statusbar");
+
+  return dir;
 }
 
 wxString Dirstructure::MaximaDefaultLocation()
@@ -94,8 +191,8 @@ wxString Dirstructure::MaximaDefaultLocation()
     command = wxT("/usr/local/bin/maxima");
   else if (wxFileExists("/usr/bin/maxima"))
     command = wxT("/usr/bin/maxima");
-    else
-      command = wxT("maxima");
+  else
+    command = wxT("maxima");
   return command;
 #else
   return wxT("maxima");

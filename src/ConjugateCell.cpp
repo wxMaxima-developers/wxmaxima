@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
@@ -28,13 +28,13 @@
 #include "ConjugateCell.h"
 #include "TextCell.h"
 
-ConjugateCell::ConjugateCell() : MathCell()
+ConjugateCell::ConjugateCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
 {
   m_innerCell = NULL;
   m_last = NULL;
-  m_open = new TextCell(wxT("conjugate("));
-  m_open -> DontEscapeOpeningParenthesis();
-  m_close = new TextCell(wxT(")"));
+  m_open = new TextCell(parent, config, wxT("conjugate("));
+  m_open->DontEscapeOpeningParenthesis();
+  m_close = new TextCell(parent, config, wxT(")"));
 }
 
 void ConjugateCell::SetParent(MathCell *parent)
@@ -48,14 +48,14 @@ void ConjugateCell::SetParent(MathCell *parent)
     m_close->SetParentList(parent);
 }
 
-MathCell* ConjugateCell::Copy()
+MathCell *ConjugateCell::Copy()
 {
-  ConjugateCell* tmp = new ConjugateCell;
+  ConjugateCell *tmp = new ConjugateCell(m_group, m_configuration);
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
   tmp->m_isBroken = m_isBroken;
   tmp->m_open->DontEscapeOpeningParenthesis();
- 
+
   return tmp;
 }
 
@@ -63,16 +63,15 @@ ConjugateCell::~ConjugateCell()
 {
   wxDELETE(m_innerCell);
   wxDELETE(m_open);
-  wxDELETE(m_close);  
+  wxDELETE(m_close);
   m_innerCell = m_open = m_close = NULL;
 }
 
 void ConjugateCell::SetInner(MathCell *inner)
 {
   if (inner == NULL)
-    return ;
-  if (m_innerCell != NULL)
-    delete m_innerCell;
+    return;
+  wxDELETE(m_innerCell);
   m_innerCell = inner;
 
   m_last = m_innerCell;
@@ -83,7 +82,7 @@ void ConjugateCell::SetInner(MathCell *inner)
 
 void ConjugateCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_innerCell->RecalculateWidthsList(fontsize);
   m_width = m_innerCell->GetFullWidth(scale) + SCALE_PX(8, scale);
@@ -94,7 +93,7 @@ void ConjugateCell::RecalculateWidths(int fontsize)
 
 void ConjugateCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_innerCell->RecalculateHeightList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(4, scale);
@@ -102,20 +101,20 @@ void ConjugateCell::RecalculateHeight(int fontsize)
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
 
-  if(m_isBroken)
+  if (m_isBroken)
   {
-    m_height = MAX(m_innerCell->GetMaxHeight(),m_open->GetMaxHeight());
-    m_center = MAX(m_innerCell->GetMaxCenter(),m_open->GetMaxCenter());
+    m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
+    m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
   }
 }
 
 void ConjugateCell::Draw(wxPoint point, int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   MathCell::Draw(point, fontsize);
 
   double scale = configuration->GetScale();
-  wxDC& dc = configuration->GetDC();
+  wxDC &dc = configuration->GetDC();
   if (DrawThisCell(point) && InUpdateRegion())
   {
     SetPen();
@@ -128,8 +127,8 @@ void ConjugateCell::Draw(wxPoint point, int fontsize)
                 point.y - m_center + SCALE_PX(2, scale),
                 point.x + m_width - SCALE_PX(2, scale) - 1,
                 point.y - m_center + SCALE_PX(2, scale)
-		);
-		//                point.y - m_center + m_height - SCALE_PX(2, scale));
+    );
+    //                point.y - m_center + m_height - SCALE_PX(2, scale));
     UnsetPen();
   }
 }
@@ -154,13 +153,13 @@ wxString ConjugateCell::ToMathML()
 {
 //  return wxT("<apply><conjugate/><ci>") + m_innerCell->ListToMathML() + wxT("</ci></apply>");
   return wxT("<mover accent=\"true\">") + m_innerCell->ListToMathML() +
-    wxT("<mo>&#xaf;</mo></mover>\n");
+         wxT("<mo>&#xaf;</mo></mover>\n");
 }
 
 wxString ConjugateCell::ToOMML()
 {
   return wxT("<m:bar><m:barPr><m:pos m:val=\"top\"/> </m:barPr><m:e>") +
-    m_innerCell->ListToOMML() + wxT("</m:e></m:bar>");
+         m_innerCell->ListToOMML() + wxT("</m:e></m:bar>");
 }
 
 wxString ConjugateCell::ToXML()
@@ -168,7 +167,7 @@ wxString ConjugateCell::ToXML()
   return wxT("<cj>") + m_innerCell->ListToXML() + wxT("</cj>");
 }
 
-void ConjugateCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
+void ConjugateCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
 {
   *first = NULL;
   *last = NULL;
@@ -190,8 +189,8 @@ bool ConjugateCell::BreakUp()
     m_isBroken = true;
     m_open->m_nextToDraw = m_innerCell;
     m_innerCell->m_previousToDraw = m_open;
-    wxASSERT_MSG(m_last != NULL,_("Bug: No last cell in an conjugateCell!"));
-    if(m_last != NULL)
+    wxASSERT_MSG(m_last != NULL, _("Bug: No last cell in an conjugateCell!"));
+    if (m_last != NULL)
     {
       m_last->m_nextToDraw = m_close;
       m_close->m_previousToDraw = m_last;
@@ -200,8 +199,8 @@ bool ConjugateCell::BreakUp()
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = m_close;
     m_nextToDraw = m_open;
-    m_height = MAX(m_innerCell->GetMaxHeight(),m_open->GetMaxHeight());
-    m_center = MAX(m_innerCell->GetMaxCenter(),m_open->GetMaxCenter());
+    m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
+    m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
     return true;
   }
   return false;

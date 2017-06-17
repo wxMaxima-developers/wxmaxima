@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -22,6 +22,7 @@
 #ifndef TEXTCELL_H
 #define TEXTCELL_H
 
+#include "wx/regex.h"
 #include "MathCell.h"
 
 /*! A Text cell
@@ -35,45 +36,83 @@ private:
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis;
 public:
-  TextCell();
-  TextCell(wxString text);
-  MathCell* Copy();
+  TextCell(MathCell *parent, Configuration **config);
+
+  TextCell(MathCell *parent, Configuration **config, wxString text);
+
+  MathCell *Copy();
+
+  //! Set the text contained in this cell
   void SetValue(const wxString &text);
+
+  //! Set the automatic label maxima has assigned the current equation
+  void SetUserDefinedLabel(wxString userDefinedLabel){m_userDefinedLabel = userDefinedLabel;}
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
+
   void SetFont(int fontsize);
+
   /*! Calling this function signals that the "(" this cell ends in isn't part of the function name
 
     The "(" is the opening parenthesis of a function instead.
    */
-  void DontEscapeOpeningParenthesis(){m_dontEscapeOpeningParenthesis = true;}
+  void DontEscapeOpeningParenthesis()
+  { m_dontEscapeOpeningParenthesis = true; }
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToMathML();
+
   wxString ToOMML();
+
   wxString ToRTF();
+
   wxString ToXML();
+
   wxString GetDiffPart();
+
   bool IsOperator();
-  wxString GetValue() { return m_text; }
+
+  wxString GetValue()
+  { return m_text; }
+
   wxString GetGreekStringTeX();
+
   wxString GetSymbolTeX();
+
 #if wxUSE_UNICODE
+
   wxString GetGreekStringUnicode();
+
   wxString GetSymbolUnicode(bool keepPercent);
+
 #elif defined __WXMSW__
   wxString GetGreekStringSymbol();
   wxString GetSymbolSymbol(bool keepPercent);
 #endif
+
   bool IsShortNum();
+
 protected:
   void SetAltText();
+  
+  //! Resets the font size to label size
+  void SetFontSizeForLabel(wxDC &dc, double scale);
+
+  wxRegEx m_unescapeRegEx;
+
   //! The text we keep inside this cell
   wxString m_text;
+  //! The text we keep inside this cell
+  wxString m_userDefinedLabel;
   //! The text we display: m_text might be a number that is longer than we want to display
   wxString m_displayedText;
   //! How many maximum digits did we display the last time this cell was recalculated?
-  unsigned int m_displayedDigits_old;
+  int m_displayedDigits_old;
   wxString m_altText, m_altJsText;
   wxString m_fontname, m_texFontname;
 
@@ -85,7 +124,7 @@ protected:
     \f$ a/b\f$. \f$ \Longrightarrow\f$ we need a mechanism that tells us that the font 
     size has changed and we need to re-calculate the text width.
    */
-  double m_oldFontSize;
+  int m_lastCalculationFontSize;
   //! The line height
   int m_fontSize;
   //! The actual font size for labels (that have a fixed width)

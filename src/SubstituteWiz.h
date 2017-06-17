@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -26,32 +26,39 @@
 
 #include "BTextCtrl.h"
 
-class SubstituteWiz: public wxDialog
+class SubstituteWiz : public wxDialog
 {
 public:
-  SubstituteWiz(wxWindow* parent, int id, const wxString& title,
-                const wxPoint& pos = wxDefaultPosition,
-                const wxSize& size = wxDefaultSize,
+  SubstituteWiz(wxWindow *parent, int id,
+                Configuration *cfg,
+                const wxString &title,
+                const wxPoint &pos = wxDefaultPosition,
+                const wxSize &size = wxDefaultSize,
                 long style = wxDEFAULT_DIALOG_STYLE);
+
   wxString GetValue();
+
   void SetValue(wxString s)
   {
     text_ctrl_1->SetValue(s);
   }
+
 private:
   void set_properties();
+
   void do_layout();
+
 protected:
-  wxStaticText* label_2;
-  BTextCtrl* text_ctrl_1;
-  wxStaticText* label_3;
-  BTextCtrl* text_ctrl_2;
-  wxStaticText* label_4;
-  BTextCtrl* text_ctrl_3;
-  wxStaticLine* static_line_1;
-  wxButton* button_1;
-  wxButton* button_2;
-  wxCheckBox* checkbox_1;
+  wxStaticText *label_2;
+  BTextCtrl *text_ctrl_1;
+  wxStaticText *label_3;
+  BTextCtrl *text_ctrl_2;
+  wxStaticText *label_4;
+  BTextCtrl *text_ctrl_3;
+  wxStaticLine *static_line_1;
+  wxButton *button_1;
+  wxButton *button_2;
+  wxCheckBox *checkbox_1;
 };
 
 #endif // SUBSTITUTEWIT_H

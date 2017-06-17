@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -30,7 +30,7 @@
 
 #define SIGN_FONT_SCALE 2.0
 
-SqrtCell::SqrtCell() : MathCell()
+SqrtCell::SqrtCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
 {
   m_signSize = 50;
   m_signWidth = 18;
@@ -39,9 +39,9 @@ SqrtCell::SqrtCell() : MathCell()
   m_signType = 0;
   m_signFontScale = 0;
   m_innerCell = NULL;
-  m_open = new TextCell(wxT("sqrt("));
-  m_open -> DontEscapeOpeningParenthesis();
-  m_close = new TextCell(wxT(")"));
+  m_open = new TextCell(parent, config, wxT("sqrt("));
+  m_open->DontEscapeOpeningParenthesis();
+  m_close = new TextCell(parent, config, wxT(")"));
 }
 
 
@@ -56,9 +56,9 @@ void SqrtCell::SetParent(MathCell *parent)
     m_close->SetParentList(parent);
 }
 
-MathCell* SqrtCell::Copy()
+MathCell *SqrtCell::Copy()
 {
-  SqrtCell* tmp = new SqrtCell;
+  SqrtCell *tmp = new SqrtCell(m_group, m_configuration);
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
   tmp->m_isBroken = m_isBroken;
@@ -78,32 +78,32 @@ SqrtCell::~SqrtCell()
 void SqrtCell::SetInner(MathCell *inner)
 {
   if (inner == NULL)
-    return ;
-  if (m_innerCell != NULL)
-    delete m_innerCell;
+    return;
+  wxDELETE(m_innerCell);
   m_innerCell = inner;
 
   m_last = inner;
-  if(m_last != NULL)
+  if (m_last != NULL)
     while (m_last->m_next != NULL)
       m_last = m_last->m_next;
 }
 
 void SqrtCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_innerCell->RecalculateWidthsList(fontsize);
   if (configuration->CheckTeXFonts())
   {
-    wxDC& dc = configuration->GetDC();
+    wxDC &dc = configuration->GetDC();
     double scale = configuration->GetScale();
     m_innerCell->RecalculateHeightList(fontsize);
 
     m_signFontScale = 1.0;
-    int fontsize1 = (int)(SIGN_FONT_SCALE*scale*fontsize*m_signFontScale + 0.5);
+    int fontsize1 = (int) (SIGN_FONT_SCALE * scale * fontsize * m_signFontScale + 0.5);
 
-    wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, configuration->GetTeXCMEX());
+    wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
+                configuration->GetTeXCMEX());
     font.SetPointSize(fontsize1);
     dc.SetFont(font);
     dc.GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
@@ -112,29 +112,35 @@ void SqrtCell::RecalculateWidths(int fontsize)
 
     int size = m_innerCell->GetMaxHeight();
 
-    if  (size <= (m_signSize) / 5)  {
+    if (size <= (m_signSize) / 5)
+    {
       m_signType = 1;
       m_signFontScale = (5.0 * size) / (1.5 * m_signSize);
     }
-    else if (size <= (2*m_signSize) / 5) {
+    else if (size <= (2 * m_signSize) / 5)
+    {
       m_signType = 2;
       m_signFontScale = (5.0 * size) / (2.2 * m_signSize);
     }
-    else if (size <= (3*m_signSize) / 5) {
+    else if (size <= (3 * m_signSize) / 5)
+    {
       m_signType = 3;
       m_signFontScale = (5.0 * size) / (3.0 * m_signSize);
     }
-    else if (size <= (4*m_signSize) / 5 ) {
+    else if (size <= (4 * m_signSize) / 5)
+    {
       m_signType = 4;
       m_signFontScale = (5.0 * size) / (3.8 * m_signSize);
     }
-    else {
+    else
+    {
       m_signType = 5;
       m_signFontScale = 1.0;
     }
 
-    fontsize1 = (int)(SIGN_FONT_SCALE*scale*fontsize*m_signFontScale + 0.5);
-    font = wxFont(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, configuration->GetTeXCMEX());
+    fontsize1 = (int) (SIGN_FONT_SCALE * scale * fontsize * m_signFontScale + 0.5);
+    font = wxFont(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
+                  configuration->GetTeXCMEX());
     font.SetPointSize(fontsize1);
     dc.SetFont(font);
     dc.GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
@@ -151,17 +157,17 @@ void SqrtCell::RecalculateWidths(int fontsize)
 
 void SqrtCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   m_innerCell->RecalculateHeightList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + SCALE_PX(3, scale);
   m_center = m_innerCell->GetMaxCenter() + SCALE_PX(3, scale);
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
-  if(m_isBroken)
+  if (m_isBroken)
   {
-    m_height = MAX(m_innerCell->GetMaxHeight(),m_open->GetMaxHeight());
-    m_center = MAX(m_innerCell->GetMaxCenter(),m_open->GetMaxCenter());
+    m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
+    m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
   }
 
 }
@@ -169,11 +175,11 @@ void SqrtCell::RecalculateHeight(int fontsize)
 void SqrtCell::Draw(wxPoint point, int fontsize)
 {
   MathCell::Draw(point, fontsize);
-  Configuration *configuration = Configuration::Get();
+  Configuration *configuration = (*m_configuration);
 
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    wxDC& dc = configuration->GetDC();
+    wxDC &dc = configuration->GetDC();
     double scale = configuration->GetScale();
 
     wxPoint in(point);
@@ -185,35 +191,40 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
       in.x += m_signWidth;
       double scale = configuration->GetScale();
 
-      int fontsize1 = (int)(SIGN_FONT_SCALE*scale*fontsize*m_signFontScale + 0.5);
+      int fontsize1 = (int) (SIGN_FONT_SCALE * scale * fontsize * m_signFontScale + 0.5);
 
-      wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, configuration->GetTeXCMEX());
+      wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
+                  configuration->GetTeXCMEX());
       font.SetPointSize(fontsize1);
       dc.SetFont(font);
       SetForeground();
-      if (m_signType < 4) {
+      if (m_signType < 4)
+      {
         dc.DrawText(
-            m_signType == 1 ? wxT("p") :
-              m_signType == 2 ? wxT("q") :
+                m_signType == 1 ? wxT("p") :
+                m_signType == 2 ? wxT("q") :
                 m_signType == 3 ? wxT("r") : wxT("s"),
-          point.x,
-          point.y - m_innerCell->GetMaxCenter() - m_signTop);
+                point.x,
+                point.y - m_innerCell->GetMaxCenter() - m_signTop);
       }
-      else {
-        int yBottom = point.y + m_innerCell->GetMaxDrop() - 3.2*m_signTop;
+      else
+      {
+        int yBottom = point.y + m_innerCell->GetMaxDrop() - 3.2 * m_signTop;
         int yTop = point.y - m_innerCell->GetMaxCenter() - m_signTop;
         int dy = m_signSize / 10;
-        wxASSERT_MSG((yTop != 0) || (yBottom != 0),_("Font issue? The contents of a sqrt() has the size 0."));
-        wxASSERT_MSG(dy>0,_("Font issue: The sqrt() sign has the size 0! Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should be a workaround."));
-        if(dy <= 0)
+        wxASSERT_MSG((yTop != 0) || (yBottom != 0), _("Font issue? The contents of a sqrt() has the size 0."));
+        wxASSERT_MSG(dy > 0,
+                     _("Font issue: The sqrt() sign has the size 0! Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should be a workaround."));
+        if (dy <= 0)
           dy = 1;
         dc.DrawText(wxT("t"),
-            point.x,
-            yBottom);
+                    point.x,
+                    yBottom);
         dc.DrawText(wxT("v"),
-            point.x,
-            yTop);
-        while (yTop < yBottom) {
+                    point.x,
+                    yTop);
+        while (yTop < yBottom)
+        {
           yTop += dy;
           dc.DrawText(wxT("u"),
                       point.x,
@@ -282,12 +293,13 @@ wxString SqrtCell::ToTeX()
 
 wxString SqrtCell::ToMathML()
 {
-  return wxT("<msqrt>") + m_innerCell->ListToMathML() +wxT("</msqrt>\n");
+  return wxT("<msqrt>") + m_innerCell->ListToMathML() + wxT("</msqrt>\n");
 }
 
 wxString SqrtCell::ToOMML()
 {
-  return wxT("<m:rad><m:radPr m:degHide=\"1\"></m:radPr><m:deg></m:deg><m:e>") + m_innerCell->ListToOMML() +wxT("</m:e></m:rad>\n");
+  return wxT("<m:rad><m:radPr m:degHide=\"1\"></m:radPr><m:deg></m:deg><m:e>") + m_innerCell->ListToOMML() +
+         wxT("</m:e></m:rad>\n");
 }
 
 wxString SqrtCell::ToXML()
@@ -297,7 +309,7 @@ wxString SqrtCell::ToXML()
   return _T("<q>") + m_innerCell->ListToXML() + _T("</q>");
 }
 
-void SqrtCell::SelectInner(wxRect& rect, MathCell **first, MathCell **last)
+void SqrtCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
 {
   *first = NULL;
   *last = NULL;
@@ -319,8 +331,8 @@ bool SqrtCell::BreakUp()
     m_isBroken = true;
     m_open->m_nextToDraw = m_innerCell;
     m_innerCell->m_previousToDraw = m_open;
-    wxASSERT_MSG(m_last != NULL,_("Bug: No last cell inside a square root!"));
-    if(m_last != NULL)
+    wxASSERT_MSG(m_last != NULL, _("Bug: No last cell inside a square root!"));
+    if (m_last != NULL)
     {
       m_last->m_nextToDraw = m_close;
       m_close->m_previousToDraw = m_last;
@@ -329,8 +341,8 @@ bool SqrtCell::BreakUp()
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = m_close;
     m_nextToDraw = m_open;
-    m_height = MAX(m_innerCell->GetMaxHeight(),m_open->GetMaxHeight());
-    m_center = MAX(m_innerCell->GetMaxCenter(),m_open->GetMaxCenter());
+    m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
+    m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
     return true;
   }
   return false;

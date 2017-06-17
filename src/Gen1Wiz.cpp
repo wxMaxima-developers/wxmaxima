@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -20,13 +20,13 @@
 
 #include "Gen1Wiz.h"
 
-Gen1Wiz::Gen1Wiz(wxWindow* parent, int id, const wxString& title,
-                 const wxString& label1,
-                 const wxPoint& pos, const wxSize& size, long style):
-    wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &title,
+                 const wxString &label1,
+                 const wxPoint &pos, const wxSize &size, long style) :
+        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_2 = new wxStaticText(this, -1, label1);
-  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(300, -1));
   static_line_1 = new wxStaticLine(this, -1);
 
@@ -57,8 +57,8 @@ void Gen1Wiz::set_properties()
 
 void Gen1Wiz::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
-  wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
+  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_1->Add(label_2, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
   grid_sizer_1->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 5);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
@@ -72,10 +72,10 @@ void Gen1Wiz::do_layout()
   Layout();
 }
 
-wxString GetTextFromUser(wxString label, wxString title, wxString value,
-                         wxWindow* parent)
+wxString GetTextFromUser(wxString label, wxString title, Configuration *cfg, wxString value,
+                         wxWindow *parent)
 {
-  Gen1Wiz *wiz = new Gen1Wiz(parent, -1, title, label);
+  Gen1Wiz *wiz = new Gen1Wiz(parent, -1, cfg, title, label);
   wiz->SetValue(value);
   wxString val;
   wiz->Centre(wxBOTH);

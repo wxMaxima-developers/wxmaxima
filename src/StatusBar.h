@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -58,10 +58,13 @@ public:
   //! Informs the status bar about networking events.
   void NetworkStatus(networkState status);
 
-  wxStaticBitmap *GetNetworkStatusElement(){return m_networkStatus;}
+  wxStaticBitmap *GetNetworkStatusElement()
+  { return m_networkStatus; }
+
 protected:
-  void OnSize(wxSizeEvent& event);
-  void OnTimerEvent(wxTimerEvent& event);
+  void OnSize(wxSizeEvent &event);
+
+  void OnTimerEvent(wxTimerEvent &event);
 
 private:
   wxString m_stdToolTip;
@@ -73,7 +76,9 @@ private:
   bool m_icon_shows_receive;
   //! Does the icon show that we currently transmit data?
   bool m_icon_shows_transmit;
+
   wxBitmap GetImage(wxString img);
+
   //! The currently shown network status bitmap
   wxStaticBitmap *m_networkStatus;
   //! The bitmap shown on network errors
@@ -92,7 +97,8 @@ private:
   wxTimer SendTimer;
   //! The timer that prolongs the showing of the "receiving" bitmap a bit.
   wxTimer ReceiveTimer;
-  wxDECLARE_EVENT_TABLE();
+wxDECLARE_EVENT_TABLE();
 };
+
 #endif
 

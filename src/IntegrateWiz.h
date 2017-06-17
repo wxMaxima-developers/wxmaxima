@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -26,51 +26,61 @@
 
 #include "BTextCtrl.h"
 
-class IntegrateWiz: public wxDialog
+class IntegrateWiz : public wxDialog
 {
 public:
-  IntegrateWiz(wxWindow* parent, int id, const wxString& title,
-               const wxPoint& pos = wxDefaultPosition,
-               const wxSize& size = wxDefaultSize,
+  IntegrateWiz(wxWindow *parent, int id,
+               Configuration *cfg,
+               const wxString &title,
+               const wxPoint &pos = wxDefaultPosition,
+               const wxSize &size = wxDefaultSize,
                long style = wxDEFAULT_DIALOG_STYLE);
+
   void SetValue(wxString s)
   {
     text_ctrl_1->SetValue(s);
     text_ctrl_1->SetSelection(-1, -1);
   }
+
   wxString GetValue();
+
 private:
   void set_properties();
+
   void do_layout();
-  void OnButton(wxCommandEvent& event);
-  void OnCheckbox(wxCommandEvent& event);
+
+  void OnButton(wxCommandEvent &event);
+
+  void OnCheckbox(wxCommandEvent &event);
+
   //! An enum for the integral types we support.
-  enum IntegralType {
+  enum IntegralType
+  {
     definite_id,
     special_from,
     special_to,
     numeric_id
   };
 
- protected:
-  wxStaticText* label_2;
-  BTextCtrl* text_ctrl_1;
-  wxStaticText* label_3;
-  BTextCtrl* text_ctrl_2;
-  wxCheckBox* checkbox_1;
-  wxStaticText* label_4;
-  BTextCtrl* text_ctrl_3;
-  wxButton* button_3;
-  wxStaticText* label_5;
-  BTextCtrl* text_ctrl_4;
-  wxButton* button_4;
-  wxStaticLine* static_line_1;
-  wxButton* button_1;
-  wxButton* button_2;
-  wxCheckBox* checkbox_2;
-  wxStaticText* label_6;
-  wxChoice* choice_1;
-  DECLARE_EVENT_TABLE()
+protected:
+  wxStaticText *label_2;
+  BTextCtrl *text_ctrl_1;
+  wxStaticText *label_3;
+  BTextCtrl *text_ctrl_2;
+  wxCheckBox *checkbox_1;
+  wxStaticText *label_4;
+  BTextCtrl *text_ctrl_3;
+  wxButton *button_3;
+  wxStaticText *label_5;
+  BTextCtrl *text_ctrl_4;
+  wxButton *button_4;
+  wxStaticLine *static_line_1;
+  wxButton *button_1;
+  wxButton *button_2;
+  wxCheckBox *checkbox_2;
+  wxStaticText *label_6;
+  wxChoice *choice_1;
+DECLARE_EVENT_TABLE()
 };
 
 #endif // INTEGRATEWIZ_H

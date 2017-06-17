@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -26,41 +26,51 @@
 
 #include "BTextCtrl.h"
 
-class SumWiz: public wxDialog
+class SumWiz : public wxDialog
 {
 public:
-  SumWiz(wxWindow* parent, int id, const wxString& title,
-         const wxPoint& pos = wxDefaultPosition,
-         const wxSize& size = wxDefaultSize,
+  SumWiz(wxWindow *parent, int id,
+         Configuration *cfg,
+         const wxString &title,
+         const wxPoint &pos = wxDefaultPosition,
+         const wxSize &size = wxDefaultSize,
          long style = wxDEFAULT_DIALOG_STYLE);
+
   void SetValue(wxString s)
   {
     text_ctrl_1->SetValue(s);
     text_ctrl_1->SetSelection(-1, -1);
   }
+
   wxString GetValue();
+
 private:
-  enum {
+  enum
+  {
     use_nusum_id
   };
+
   void set_properties();
+
   void do_layout();
-  void OnCheckbox(wxCommandEvent& event);
+
+  void OnCheckbox(wxCommandEvent &event);
+
 protected:
-  wxStaticText* label_2;
-  BTextCtrl* text_ctrl_1;
-  wxStaticText* label_3;
-  BTextCtrl* text_ctrl_2;
-  wxStaticText* label_4;
-  BTextCtrl* text_ctrl_3;
-  wxStaticText* label_5;
-  BTextCtrl* text_ctrl_4;
-  wxStaticLine* static_line_1;
-  wxButton* button_1;
-  wxButton* button_2;
-  wxCheckBox* checkbox_1;
-  wxCheckBox* checkbox_2;
-  DECLARE_EVENT_TABLE()
+  wxStaticText *label_2;
+  BTextCtrl *text_ctrl_1;
+  wxStaticText *label_3;
+  BTextCtrl *text_ctrl_2;
+  wxStaticText *label_4;
+  BTextCtrl *text_ctrl_3;
+  wxStaticText *label_5;
+  BTextCtrl *text_ctrl_4;
+  wxStaticLine *static_line_1;
+  wxButton *button_1;
+  wxButton *button_2;
+  wxCheckBox *checkbox_1;
+  wxCheckBox *checkbox_2;
+DECLARE_EVENT_TABLE()
 };
 
 #endif // SUMWIZ_H

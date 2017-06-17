@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -43,29 +43,48 @@ using namespace std;
 class MathPrintout : public wxPrintout
 {
 public:
-  MathPrintout(wxString title);
+  MathPrintout(wxString title, Configuration **configuration);
+
   ~MathPrintout();
+
   void DestroyTree();
-  void DestroyTree(GroupCell* tree);
-  void SetData(GroupCell* tree);
+
+  void DestroyTree(GroupCell *tree);
+
+  void SetData(GroupCell *tree);
+
   void SetupData();
+
   void BreakPages();
+
   void Recalculate();
+
   bool OnPrintPage(int num);
+
   bool HasPage(int num);
-  void GetPageInfo(int* minPage, int* maxPage, int* pageFrom, int* pageTo);
+
+  void GetPageInfo(int *minPage, int *maxPage, int *pageFrom, int *pageTo);
+
   bool OnBeginDocument(int startPage, int endPage);
+
   void OnPreparePrinting();
-  void GetPageMargins(int* horizontal, int* vertical);
+
+  void GetPageMargins(int *horizontal, int *vertical);
+
   int GetHeaderHeight();
-  void PrintHeader(int pageNum, wxDC* dc, double scale);
+
+  void PrintHeader(int pageNum, wxDC *dc, double scale);
+
   double GetPPIScale();
+
   void GetScreenScale(double *scaleX, double *scaleY);
+
 private:
+  Configuration **m_configuration, *m_oldconfig;
   int m_numberOfPages;
   wxString m_title;
-  GroupCell* m_tree;
-  vector<GroupCell*> m_pages;
+  GroupCell *m_tree;
+  vector<GroupCell *> m_pages;
 };
 
 #endif // MATHPRINTOUT_H

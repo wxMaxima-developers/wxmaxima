@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -30,9 +30,8 @@ shown on the work sheet.
 //! A text style for the work sheet
 struct style
 {
-  style() :
-    bold(false), italic(false), underlined(false)
-    {  };
+  style() : bold(false), italic(false), underlined(false)
+  {};
   wxColour color;
   wxString font;
   int fontSize;

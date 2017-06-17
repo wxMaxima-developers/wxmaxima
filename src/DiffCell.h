@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -27,21 +27,36 @@
 class DiffCell : public MathCell
 {
 public:
-  DiffCell();
+  DiffCell(MathCell *parent, Configuration **config);
+
   ~DiffCell();
-  MathCell* Copy();
+
+  MathCell *Copy();
+
   void SetBase(MathCell *base);
+
   void SetDiff(MathCell *diff);
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
-  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToMathML();
+
   wxString ToOMML();
+
   wxString ToXML();
+
   void SetParent(MathCell *parent);
+
 protected:
   MathCell *m_baseCell;
   MathCell *m_diffCell;

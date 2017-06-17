@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -47,22 +47,38 @@
 class SqrtCell : public MathCell
 {
 public:
-  SqrtCell();
+  SqrtCell(MathCell *parent, Configuration **config);
+
   ~SqrtCell();
-  MathCell* Copy();
+
+  MathCell *Copy();
+
   void SetInner(MathCell *inner);
-  void SelectInner(wxRect& rect, MathCell** first, MathCell** last);
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
+
   bool BreakUp();
+
   void Unbreak();
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToMathML();
+
   wxString ToOMML();
+
   wxString ToXML();
+
   void SetParent(MathCell *parent);
+
 protected:
   MathCell *m_innerCell;
   TextCell *m_open, *m_close;

@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -27,43 +27,52 @@
 #include "BTextCtrl.h"
 
 
-class LimitWiz: public wxDialog
+class LimitWiz : public wxDialog
 {
 public:
-  LimitWiz(wxWindow* parent, int id, const wxString& title,
-           const wxPoint& pos = wxDefaultPosition,
-           const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+  LimitWiz(wxWindow *parent, int id,
+           Configuration *cfg,
+           const wxString &title,
+           const wxPoint &pos = wxDefaultPosition,
+           const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+
   void SetValue(wxString s)
   {
     text_ctrl_1->SetValue(s);
     text_ctrl_1->SetSelection(-1, -1);
   }
+
   wxString GetValue();
+
 private:
-  void OnButton(wxCommandEvent& event);
-  void OnIdle(wxIdleEvent& event);
+  void OnButton(wxCommandEvent &event);
+
+  void OnIdle(wxIdleEvent &event);
+
   void set_properties();
+
   void do_layout();
 
-  enum {
+  enum
+  {
     special
   };
 
 protected:
-  wxStaticText* label_2;
-  BTextCtrl* text_ctrl_1;
-  wxStaticText* label_3;
-  BTextCtrl* text_ctrl_2;
-  wxStaticText* label_4;
-  BTextCtrl* text_ctrl_3;
-  wxButton* button_1;
-  wxStaticText* label_5;
-  wxChoice* choice_1;
-  wxCheckBox* checkbox_1;
-  wxStaticLine* static_line_1;
-  wxButton* button_2;
-  wxButton* button_3;
-  DECLARE_EVENT_TABLE()
+  wxStaticText *label_2;
+  BTextCtrl *text_ctrl_1;
+  wxStaticText *label_3;
+  BTextCtrl *text_ctrl_2;
+  wxStaticText *label_4;
+  BTextCtrl *text_ctrl_3;
+  wxButton *button_1;
+  wxStaticText *label_5;
+  wxChoice *choice_1;
+  wxCheckBox *checkbox_1;
+  wxStaticLine *static_line_1;
+  wxButton *button_2;
+  wxButton *button_3;
+DECLARE_EVENT_TABLE()
 };
 
 #endif // LIMITWIZ_H

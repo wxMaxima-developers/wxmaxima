@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2015      Gunter Königsmann <wxMaxima@physikbuch.de>
 //            (C) 2013 Doug Ilijev <doug.ilijev@gmail.com>
@@ -45,27 +45,22 @@
 class Dirstructure
 {
 private:
-  //! The directory all data is stored relative to.
-  wxString ResourcesDir();
   //! The directory the user stores its data in.
   wxString UserConfDir();
 
+  //! The directory all data is stored relative to.
+  wxString ResourcesDir();
+
 public:
+
+  //! The directory the application icon is stored in
+  wxString AppIconDir();
+
   //! The directory general data is stored in
-#if defined __WXMSW__
-  wxString DataDir() {return ResourcesDir()+wxT("data/");}
-#else
-  wxString DataDir() {return ResourcesDir();}
-#endif
+  wxString DataDir();
 
   //! The directory the help file is stored in
-#if defined __WXMAC__
-  wxString HelpDir() {return ResourcesDir()+wxT("help/");}
-#elif defined __WXMSW__
-  wxString HelpDir() {return ResourcesDir()+wxT("help/");}
-#else
-  wxString HelpDir() {return Prefix()+wxT("/share/doc/wxmaxima/");}
-#endif
+  wxString HelpDir();
 
   /*! The file private accellerator key information is stored in
 
@@ -74,57 +69,37 @@ public:
 #if defined __WXMSW__
   wxString UserAutocompleteFile() {return UserConfDir()+wxT("wxmax.ac");}
 #else
-  wxString UserAutocompleteFile() {return UserConfDir()+wxT(".wxmaxima.ac");}
+
+  wxString UserAutocompleteFile()
+  { return UserConfDir() + wxT(".wxmaxima.ac"); }
+
 #endif
 
   //! The path to wxMaxima's own AutoComplete file
-  wxString AutocompleteFile() {return DataDir() + wxT("autocomplete.txt");}
-  
+  wxString AutocompleteFile()
+  { return DataDir() + wxT("/autocomplete.txt"); }
+
   //! The directory art is stored relative to
-#if defined __WXMAC__
-  wxString ArtDir() {return ResourcesDir();}
-#elif defined __WXMSW__
-  wxString ArtDir() {return ResourcesDir()+wxT("art/");}
-#else
-  wxString ArtDir() {return ResourcesDir();}
-#endif
+  wxString ArtDir();
 
+  //! The directory art for the config dialogue is stored relative to
+  wxString ConfigArtDir();
 
-  //! The directory config art is stored relative to
-#if defined __WXMAC__
-  wxString ConfigArtDir() {return ArtDir()+wxT("config/");}
-#elif defined __WXMSW__
-  wxString ConfigArtDir() {return ArtDir()+wxT("config/");}
-#else
-  wxString ConfigArtDir() {return ResourcesDir();}
-#endif
-
-  //! The directory config art is stored relative to
-#if defined __WXMAC__
-  wxString ConfigToolbarDir() {return ArtDir()+wxT("toolbar/");}
-#elif defined __WXMSW__
-  wxString ConfigToolbarDir() {return ArtDir()+wxT("toolbar/");}
-#else
-  wxString ConfigToolbarDir() {return ResourcesDir();}
-#endif
-
-    //! The directory config art is stored relative to
-#if defined __WXMAC__
-  wxString ConfigStatusbarDir() {return ArtDir()+wxT("statusbar/");}
-#elif defined __WXMSW__
-  wxString ConfigStatusbarDir() {return ArtDir()+wxT("statusbar/");}
-#else
-  wxString ConfigStatusbarDir() {return ResourcesDir();}
-#endif
+  //! The directory art for the toolbar is stored relative to
+  wxString ConfigToolbarDir();
+  
+  //! The directory art for the status bar is stored relative to
+  wxString ConfigStatusbarDir();
 
   /*! The directory the locale data is to be found in
 
     Is only used on MSW and MAC
    */
-  wxString LocaleDir() {return ResourcesDir()+wxT("/locale");}
-  
+  wxString LocaleDir()
+  { return ResourcesDir() + wxT("/locale"); }
+
   //! The path we pass to the operating system if we want it to locate maxima instead
-  wxString MaximaDefaultLocation();
+  static wxString MaximaDefaultLocation();
 
   /*! The contents of the PREFIX macro as a wxString
 

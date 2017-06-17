@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -21,18 +21,20 @@
 #include "SubstituteWiz.h"
 
 
-SubstituteWiz::SubstituteWiz(wxWindow* parent, int id, const wxString& title,
-                             const wxPoint& pos, const wxSize& size, long style):
-    wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+SubstituteWiz::SubstituteWiz(wxWindow *parent, int id,
+                             Configuration *cfg,
+                             const wxString &title,
+                             const wxPoint &pos, const wxSize &size, long style) :
+        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_2 = new wxStaticText(this, -1, _("Expression:"));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxT("%"), wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxT("%"), wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, _("Old value:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxT("x"), wxDefaultPosition,
                               wxSize(230, -1));
   label_4 = new wxStaticText(this, -1, _("New value:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, wxT("y"), wxDefaultPosition,
+  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxT("y"), wxDefaultPosition,
                               wxSize(230, -1));
   checkbox_1 = new wxCheckBox(this, -1, _("&Rational"));
   static_line_1 = new wxStaticLine(this, -1);
@@ -64,9 +66,9 @@ void SubstituteWiz::set_properties()
 
 void SubstituteWiz::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(3, 1, 0, 0);
-  wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(4, 2, 0, 0);
+  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(3, 1, 0, 0);
+  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(4, 2, 0, 0);
   grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 5);
   grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);

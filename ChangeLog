@@ -1,24 +1,56 @@
 Current:
-  * A config item that allows to disable printing of Cell brackets
-  * Cell brackets of inactive cells can now be hidden
+  * Jump to the char containing the error on encountering unmatched parenthesis.
+  * Attempt to mark the whole error message in red.
+  * A "evaluate cells below" button.
+  * Autosave now even works for unsaved documents adding them to the
+    "recent documents" list if needed.
+  * Several Bug Fixes and Performance improvements.
+
+17.05:
+  * A config item that allows to disable printing of Cell brackets.
+  * Cell brackets of inactive cells can now be hidden.
   * Due to popular demand we can now suppress the output of automatic labels.
   * The option to use a Minus instead of a Hyphen.
   * Table of Contents: Folded items are now grayed out.
   * Table of Contents: A right-click menu.
-  * An indicator that shows when maxima and wxMaxima exchange data.
+  * Copy-and-paste now includes hidden cells and folded items.
+  * Eye Candy: An indicator that shows when maxima and wxMaxima exchange data.
+    Double-clicking this indicator opens up the network monitor.
   * Autocompletion now collects words from the current code cell, too.
-  * Better indentation of if clauses and of loops.
-  * Automatic line wrap now can be done at spaces in code cells, too.
+  * Better indentation of if clauses and loops.
   * If the number is too long to display it now is still possible to copy it.
   * Documented that box() highlights text in maxima's output.
   * the with_slider type of commands now uses wxstatusbar() in order to provide
   * progress information for the user.
   * Several scrolling fixes, again.
-  * Many additional bug fixes and stability enhancements.
+  * Two concurrent wxMaxima instances now no more overwrite each other's "Recent files"
+    list.
+  * If a error message or question arises or maxima finishes calculating and the window
+    currently isn't active the operating system is asked to notify the user in a
+    non-disrupting way. For the case of the end of a calculation this can be turned off.
+  * The notification can be activated for the case that the window isn't active and maxima
+    finishes calculating, too.
   * Invalid XML tags are now handled more gracefully
-  * wxMaxima can now directly open a content.xml that has been extracted from a
-    broken .wxmx file (e.G. using a text editor) and that has been saved as
-    "content.xml" (UTF8-encoding without BOM).
+  * Deduplicated the code for saving .wxm files
+  * content.xml files that have been extracted from a broken .wxmx file (e.G.
+    using a text editor as UTF8-encoded TeXt without BOM can now be loaded by
+    wxMaxima in order to reconstruct the worksheet.
+  * MacOs: Upgrading from a previous version should no more cause crashes due to
+    font issues.
+  * MathJaX export can now be configured to instruct the html export to download
+    MathJaX from a different URL: They moved the URL one can use and might do so
+    again somewhere in the future.
+  * Maximum number of digits and if we use user-defined labels now are no more
+    hardcoded into the worksheet at evaluation time.
+  * Anwers to maxima's questions are now remembered across sessions.
+  * cmake is now our main build system: It is supported under MSVC, XCode,
+    Code::Blocks, its output looks much nicer than the one from the autotools
+    and setting it up uses much more straightforward constructs.
+    The recipe to build a debian package using cmake can be found at
+    https://code.launchpad.net/~peterpall/wxmaxima/packaging
+  * Massive speed-ups
+  * File/Open can now import .mac and .out files from Xmaxima
+  * Many additional bug fixes and stability enhancements.
 
 16.12:
   * Not a change in wxMaxima, but useful: In maxima >5.38 the load() command can

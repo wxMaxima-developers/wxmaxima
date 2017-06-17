@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -23,32 +23,35 @@
 #include <wx/artprov.h>
 #include <wx/config.h>
 
-Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
-                     const wxPoint& pos, const wxSize& size, long style):
-    wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+Plot2DWiz::Plot2DWiz(wxWindow *parent, int id,
+                     Configuration *cfg,
+                     const wxString &title,
+                     const wxPoint &pos, const wxSize &size, long style) :
+        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
+  m_configuration = cfg;
   label_2 = new wxStaticText(this, -1, _("Expression(s):"));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(300, -1));
   button_3 = new wxButton(this, special, _("&Special"));
   label_3 = new wxStaticText(this, -1, _("Variable:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxT("x"), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxT("x"), wxDefaultPosition,
                               wxSize(40, -1));
   label_4 = new wxStaticText(this, -1, _("From:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, wxT("-5"), wxDefaultPosition,
+  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxT("-5"), wxDefaultPosition,
                               wxSize(70, -1));
   label_5 = new wxStaticText(this, -1, _("To:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, wxT("5"), wxDefaultPosition,
+  text_ctrl_4 = new BTextCtrl(this, -1, cfg, wxT("5"), wxDefaultPosition,
                               wxSize(70, -1));
   check_box_1 = new wxCheckBox(this, -1, _("logscale"));
   label_6 = new wxStaticText(this, -1, _("Variable:"));
-  text_ctrl_5 = new BTextCtrl(this, -1, wxT("y"), wxDefaultPosition,
+  text_ctrl_5 = new BTextCtrl(this, -1, cfg, wxT("y"), wxDefaultPosition,
                               wxSize(40, -1), wxTE_READONLY);
   label_7 = new wxStaticText(this, -1, _("From:"));
-  text_ctrl_6 = new BTextCtrl(this, -1, wxT("-5"), wxDefaultPosition,
+  text_ctrl_6 = new BTextCtrl(this, -1, cfg, wxT("-5"), wxDefaultPosition,
                               wxSize(70, -1));
   label_8 = new wxStaticText(this, -1, _("To:"));
-  text_ctrl_7 = new BTextCtrl(this, -1, wxT("5"), wxDefaultPosition,
+  text_ctrl_7 = new BTextCtrl(this, -1, cfg, wxT("5"), wxDefaultPosition,
                               wxSize(70, -1));
   check_box_2 = new wxCheckBox(this, -1, _("logscale"));
   label_9 = new wxStaticText(this, -1, _("Ticks:"));
@@ -57,28 +60,28 @@ Plot2DWiz::Plot2DWiz(wxWindow* parent, int id, const wxString& title,
   text_ctrl_8->SetValue(10);
   label_10 = new wxStaticText(this, -1, _("Format:"));
   const wxString combo_box_1_choices[] =
-    {
-      _("default"),
-      _("inline"),
-      wxT("gnuplot"),
-      wxT("xmaxima")
-    };
+          {
+                  _("default"),
+                  _("inline"),
+                  wxT("gnuplot"),
+                  wxT("xmaxima")
+          };
   combo_box_1 = new wxComboBox(this, -1, wxEmptyString, wxDefaultPosition,
                                wxSize(150, -1), 4,
                                combo_box_1_choices, wxCB_DROPDOWN);
   label_11 = new wxStaticText(this, -1, _("Options:"));
   const wxString combo_box_2_choices[] =
-    {
-      wxT("set zeroaxis;"),
-      wxT("set size ratio 1; set zeroaxis;"),
-      wxT("set grid;"),
-      wxT("set polar; set zeroaxis;")
-    };
+          {
+                  wxT("set zeroaxis;"),
+                  wxT("set size ratio 1; set zeroaxis;"),
+                  wxT("set grid;"),
+                  wxT("set polar; set zeroaxis;")
+          };
   combo_box_2 = new wxComboBox(this, combobox, wxEmptyString, wxDefaultPosition,
                                wxSize(280, -1), 4,
                                combo_box_2_choices, wxCB_DROPDOWN);
   label_12 = new wxStaticText(this, -1, _("File:"));
-  text_ctrl_9 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_9 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(280, -1));
   button_4 = new wxBitmapButton(this, file_browse_2d,
                                 wxArtProvider::GetBitmap(wxART_FILE_OPEN,
@@ -134,13 +137,13 @@ void Plot2DWiz::set_properties()
 
 void Plot2DWiz::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
-  wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(7, 2, 0, 0);
-  wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
-  wxBoxSizer* sizer_3 = new wxBoxSizer(wxHORIZONTAL);
-  wxBoxSizer* sizer_4 = new wxBoxSizer(wxHORIZONTAL);
-  wxBoxSizer* sizer_5 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
+  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(7, 2, 0, 0);
+  wxBoxSizer *sizer_2 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer *sizer_3 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer *sizer_4 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer *sizer_5 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
   sizer_2->Add(text_ctrl_1, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer_2->Add(button_3, 0, wxALL, 5);
@@ -226,8 +229,7 @@ void Plot2DWiz::Parse(wxString s)
     else
       curr += s.GetChar(i);
     i++;
-  }
-  while (depth > 0);
+  } while (depth > 0);
   text_ctrl_1->SetValue(curr);
   // Independent variable
   while (i < s.Length() && s.GetChar(i) != '[')
@@ -415,7 +417,7 @@ wxString Plot2DWiz::GetValue()
       file = file + wxT(".eps");
     s += wxT(",\n [gnuplot_out_file, \"") + file + wxT("\"]");
   }
-  // inline?
+    // inline?
   else if (f == _("inline"))
     s = wxT("wx") + s;
 
@@ -428,9 +430,9 @@ wxString Plot2DWiz::GetValue()
   return s;
 }
 
-void Plot2DWiz::OnButton(wxCommandEvent& event)
+void Plot2DWiz::OnButton(wxCommandEvent &event)
 {
-  wxMenu* popupMenu = new wxMenu();
+  wxMenu *popupMenu = new wxMenu();
 
   popupMenu->Append(parametric_plot, _("Parametric plot"));
   popupMenu->Append(discrete_plot, _("Discrete plot"));
@@ -443,11 +445,11 @@ void Plot2DWiz::OnButton(wxCommandEvent& event)
 
 void Plot2DWiz::OnPopupMenu(wxCommandEvent &event)
 {
-  switch(event.GetId())
+  switch (event.GetId())
   {
     case parametric_plot:
     {
-      Plot2DPar *wiz = new Plot2DPar(this, -1, _("Plot 2D"));
+      Plot2DPar *wiz = new Plot2DPar(this, -1, m_configuration, _("Plot 2D"));
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
@@ -458,10 +460,10 @@ void Plot2DWiz::OnPopupMenu(wxCommandEvent &event)
         text_ctrl_1->AppendText(wiz->GetValue());
       }
     }
-    break;
+      break;
     case discrete_plot:
     {
-      Plot2DDiscrete *wiz = new Plot2DDiscrete(this, -1, _("Plot 2D"));
+      Plot2DDiscrete *wiz = new Plot2DDiscrete(this, -1, m_configuration, _("Plot 2D"));
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
@@ -472,7 +474,7 @@ void Plot2DWiz::OnPopupMenu(wxCommandEvent &event)
         text_ctrl_1->AppendText(wiz->GetValue());
       }
     }
-    break;
+      break;
   }
 }
 
@@ -496,7 +498,7 @@ void Plot2DWiz::OnCombobox(wxCommandEvent &event)
   }
 }
 
-void Plot2DWiz::OnFileBrowse(wxCommandEvent& event)
+void Plot2DWiz::OnFileBrowse(wxCommandEvent &event)
 {
   wxString file = wxFileSelector(_("Save plot to file"), wxEmptyString,
                                  wxT("plot2d.eps"), wxT("eps"),
@@ -507,11 +509,11 @@ void Plot2DWiz::OnFileBrowse(wxCommandEvent& event)
 }
 
 BEGIN_EVENT_TABLE(Plot2DWiz, wxDialog)
-  EVT_COMBOBOX(combobox, Plot2DWiz::OnCombobox)
-  EVT_BUTTON(special, Plot2DWiz::OnButton)
-  EVT_BUTTON(file_browse_2d, Plot2DWiz::OnFileBrowse)
-  EVT_MENU(parametric_plot, Plot2DWiz::OnPopupMenu)
-  EVT_MENU(discrete_plot, Plot2DWiz::OnPopupMenu)
+                EVT_COMBOBOX(combobox, Plot2DWiz::OnCombobox)
+                EVT_BUTTON(special, Plot2DWiz::OnButton)
+                EVT_BUTTON(file_browse_2d, Plot2DWiz::OnFileBrowse)
+                EVT_MENU(parametric_plot, Plot2DWiz::OnPopupMenu)
+                EVT_MENU(discrete_plot, Plot2DWiz::OnPopupMenu)
 END_EVENT_TABLE()
 
 ///////////////////////
@@ -520,24 +522,24 @@ END_EVENT_TABLE()
 //
 ///////////////////////
 
-Plot2DPar::Plot2DPar(wxWindow* parent, int id, const wxString& title,
-                     const wxPoint& pos, const wxSize& size, long style):
-    wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+Plot2DPar::Plot2DPar(wxWindow *parent, int id, Configuration *cfg, const wxString &title,
+                     const wxPoint &pos, const wxSize &size, long style) :
+        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_2 = new wxStaticText(this, -1, wxT("x = "));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, wxT("y = "));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
   label_4 = new wxStaticText(this, -1, _("Variable:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, wxT("t"), wxDefaultPosition,
+  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxT("t"), wxDefaultPosition,
                               wxSize(40, -1));
   label_5 = new wxStaticText(this, -1, _("From:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_4 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
   label_6 = new wxStaticText(this, -1, _("To:"));
-  text_ctrl_5 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_5 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
   label_7 = new wxStaticText(this, -1, _("Ticks:"));
   spin_ctrl_1 = new wxSpinCtrl(this, -1, wxEmptyString, wxDefaultPosition,
@@ -572,10 +574,10 @@ void Plot2DPar::set_properties()
 
 void Plot2DPar::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
-  wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(4, 2, 0, 0);
-  wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
+  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(4, 2, 0, 0);
+  wxBoxSizer *sizer_2 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 5);
   grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -627,15 +629,17 @@ wxString Plot2DPar::GetValue()
 //
 ///////////////////////
 
-Plot2DDiscrete::Plot2DDiscrete(wxWindow* parent, int id, const wxString& title,
-                     const wxPoint& pos, const wxSize& size, long style):
-    wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+Plot2DDiscrete::Plot2DDiscrete(wxWindow *parent, int id,
+                               Configuration *cfg,
+                               const wxString &title,
+                               const wxPoint &pos, const wxSize &size, long style) :
+        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_2 = new wxStaticText(this, -1, wxT("x = "));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, wxT("y = "));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
 
   static_line_1 = new wxStaticLine(this, -1);
@@ -668,9 +672,9 @@ void Plot2DDiscrete::set_properties()
 
 void Plot2DDiscrete::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(2, 2, 0, 0);
-  wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
+  wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(2, 2, 0, 0);
+  wxBoxSizer *sizer_2 = new wxBoxSizer(wxHORIZONTAL);
   grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 5);
   grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);

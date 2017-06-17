@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -22,27 +22,37 @@
 #define BTEXTCTRL_H
 
 #include <wx/wx.h>
+#include "Configuration.h"
 
-class BTextCtrl: public wxTextCtrl
+class BTextCtrl : public wxTextCtrl
 {
 public:
   BTextCtrl(wxWindow *parent,
             wxWindowID id,
-            const wxString& value,
-            const wxPoint& pos = wxDefaultPosition,
-            const wxSize& size = wxDefaultSize,
+            Configuration *cfg,
+            const wxString &value,
+            const wxPoint &pos = wxDefaultPosition,
+            const wxSize &size = wxDefaultSize,
             long style = 0);
+
   ~BTextCtrl();
+
   void SetSkipTab(bool skip)
   {
     m_skipTab = skip;
   }
+
 private:
   bool m_skipTab;
+
   bool MatchParenthesis(int code);
+
   void CloseParenthesis(wxString open, wxString close, bool fromOpen);
-  void OnChar(wxKeyEvent& event);
-  DECLARE_EVENT_TABLE()
+
+  void OnChar(wxKeyEvent &event);
+
+  Configuration *m_config;
+DECLARE_EVENT_TABLE()
 };
 
 #endif // BTEXTCTRL_H

@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
@@ -44,9 +44,11 @@ dialog. The preferences themself will be read directly using
 #define CONFIGDIALOGUE_H
 
 #include "TextStyle.h"
+#include "Configuration.h"
 #include "Setup.h"
 
-enum {
+enum
+{
   color_id,
   listbox_styleFor,
   checkbox_bold,
@@ -93,15 +95,17 @@ public:
   }
 
   //! Sets the font size of the example
-  void SetFontSize(int size) { m_size = size; }
+  void SetFontSize(int size)
+  { m_size = size; }
+
 private:
   /*! Actually updates the formatting example
 
     This function is called after ConfigDialogue::UpdateExample() changes the example's style.
  */
-  void OnPaint(wxPaintEvent& event);
+  void OnPaint(wxPaintEvent &event);
 
- private:
+private:
   //! The foreground color of the currently selected item type
   wxColour m_fgColor;
   //! Is the currently selected item type displayed in italic?
@@ -114,7 +118,7 @@ private:
   wxString m_font;
   //! The size of the characters of the currently selected item type
   int m_size;
-  DECLARE_EVENT_TABLE()
+DECLARE_EVENT_TABLE()
 };
 
 /*! The configuration dialog
@@ -124,33 +128,39 @@ This class draws and handles the configuration dialog.
 Code that needs to know the value of the preferences that are set here reads 
 them directly using <code> config->Read </code>, instead.
  */
-class ConfigDialogue: public wxPropertySheetDialog
+class ConfigDialogue : public wxPropertySheetDialog
 {
 public:
   //! The constructor
-  ConfigDialogue(wxWindow* parent);
+  ConfigDialogue(wxWindow *parent, Configuration *config);
+
   //! The destructor
   ~ConfigDialogue();
 
   //! The export formats we support for HTML equations
-  enum htmlExportFormats{
-      mathJaX_TeX=0,
-      bitmap=1,
-      mathML_mathJaX=2
-    };
+  enum htmlExportFormats
+  {
+    mathJaX_TeX = 0,
+    bitmap = 1,
+    mathML_mathJaX = 2
+  };
 
   /*! Called if the color of an item has been changed 
 
     called from class ColorPanel
   */
   void OnChangeColor();
+
   /*! Stores the settings from the configuration dialog.
 
     wxWidgets knows how to store the settings to gconf, the registry or wherever the current 
     system expects settings to be saved to.
   */
   void WriteSettings();
+
 private:
+  Configuration *m_configuration;
+
   /*! begin wxGlade: ConfigDialogue::methods
 
     This method sets the window title, the tool tips etc.
@@ -164,190 +174,220 @@ private:
   int GetImageWidth();
 
   //! The panel that allows to set the editing options
-  wxPanel* CreateWorksheetPanel();
+  wxPanel *CreateWorksheetPanel();
+
   //! A panel that allows to set general options
-  wxPanel* CreateOptionsPanel();
+  wxPanel *CreateOptionsPanel();
+
   //! The panel that allows to set options affecting the export functionality
-  wxPanel* CreateExportPanel();
+  wxPanel *CreateExportPanel();
+
   //! The panel that allows to change styles
-  wxPanel* CreateStylePanel();
+  wxPanel *CreateStylePanel();
+
   //! The panel that allows to change maxima-specific configurations.
-  wxPanel* CreateMaximaPanel();
+  wxPanel *CreateMaximaPanel();
   // end wxGlade
 protected:
   //! The text "Maxima Program" that can change color.
   wxStaticText *m_mp;
+
   //! Called if the currently active dialogue sheet is changed.
-  void OnTabChange(wxBookCtrlEvent& event);
+  void OnTabChange(wxBookCtrlEvent &event);
+
   // begin wxGlade: ConfigDialogue::attributes
-  wxTextCtrl* m_maximaProgram;
-  wxTextCtrl* m_documentclass;
-  wxTextCtrl* m_texPreamble;
-  wxSpinCtrl* m_autoSaveInterval;
-  wxButton* m_mpBrowse;
-  wxTextCtrl* m_additionalParameters;
-  wxChoice* m_language;
-  wxTextCtrl* m_symbolPaneAdditionalChars;
-  wxCheckBox* m_saveSize;
-  wxCheckBox* m_abortOnError;
-  wxCheckBox* m_pollStdOut;
-  wxCheckBox* m_restartOnReEvaluation;
-  wxCheckBox* m_wrapLatexMath;
-  wxCheckBox* m_savePanes;
-  wxCheckBox* m_usepngCairo;
-  wxCheckBox* m_uncomressedWXMX;
-  wxSpinCtrl* m_defaultFramerate;
-  wxSpinCtrl* m_defaultPlotWidth;
-  wxSpinCtrl* m_defaultPlotHeight;
-  wxSpinCtrl* m_displayedDigits;
+  wxTextCtrl *m_maximaProgram;
+  wxTextCtrl *m_documentclass;
+  wxTextCtrl *m_texPreamble;
+  wxSpinCtrl *m_autoSaveInterval;
+  wxButton *m_mpBrowse;
+  wxTextCtrl *m_additionalParameters;
+  wxTextCtrl *m_mathJaxURL;
+  wxChoice *m_language;
+  wxTextCtrl *m_symbolPaneAdditionalChars;
+  wxCheckBox *m_saveSize;
+  wxCheckBox *m_abortOnError;
+  wxCheckBox *m_pollStdOut;
+  wxCheckBox *m_restartOnReEvaluation;
+  wxCheckBox *m_wrapLatexMath;
+  wxCheckBox *m_savePanes;
+  wxCheckBox *m_usepngCairo;
+  wxCheckBox *m_uncomressedWXMX;
+  wxSpinCtrl *m_defaultFramerate;
+  wxSpinCtrl *m_defaultPlotWidth;
+  wxSpinCtrl *m_defaultPlotHeight;
+  wxSpinCtrl *m_displayedDigits;
   //! A checkbox that allows to select if the LaTeX file should contain animations.
-  wxCheckBox* m_AnimateLaTeX;
+  wxCheckBox *m_AnimateLaTeX;
   //! A checkbox that asks if TeX should put the exponents above or after the subscripts.
-  wxCheckBox* m_TeXExponentsAfterSubscript;
+  wxCheckBox *m_TeXExponentsAfterSubscript;
   //! A checkbox that asks if TeX should use the \partial symbol for representing diff()
-  wxCheckBox* m_usePartialForDiff;
+  wxCheckBox *m_usePartialForDiff;
   //! A checkbox that asks if all newlines in text cells have to be passed to HTML.
-  wxCheckBox* m_exportContainsWXMX;
-  wxCheckBox* m_printBrackets;
-  wxChoice* m_exportWithMathJAX;
-  wxCheckBox* m_matchParens;
-  wxChoice* m_showLength;
-  wxChoice* m_autosubscript;
-  wxCheckBox* m_enterEvaluates;
-  wxCheckBox* m_saveUntitled;
-  wxCheckBox* m_openHCaret;
-  wxCheckBox* m_insertAns;
-  wxCheckBox* m_autoIndent;
-  wxCheckBox* m_cursorJump;
-  wxCheckBox* m_hideBrackets;
-  wxChoice*   m_autoWrap;
-  wxSpinCtrl* m_labelWidth;
-  wxSpinCtrl* m_undoLimit;
-  wxSpinCtrl* m_recentItems;
-  wxSpinCtrl* m_bitmapScale;
-  wxCheckBox* m_fixReorderedIndices;
-  wxCheckBox* m_incrementalSearch;
-  wxChoice* m_showUserDefinedLabels;
-  wxButton* m_getFont;
-  wxButton* m_getStyleFont;
+  wxCheckBox *m_exportContainsWXMX;
+  wxCheckBox *m_printBrackets;
+  wxChoice *m_exportWithMathJAX;
+  wxCheckBox *m_matchParens;
+  wxChoice *m_showLength;
+  wxChoice *m_autosubscript;
+  wxCheckBox *m_enterEvaluates;
+  wxCheckBox *m_saveUntitled;
+  wxCheckBox *m_openHCaret;
+  wxCheckBox *m_insertAns;
+  wxCheckBox *m_autoIndent;
+  wxCheckBox *m_cursorJump;
+  wxCheckBox *m_hideBrackets;
+  wxChoice *m_autoWrap;
+  wxSpinCtrl *m_labelWidth;
+  wxSpinCtrl *m_undoLimit;
+  wxSpinCtrl *m_recentItems;
+  wxSpinCtrl *m_bitmapScale;
+  wxCheckBox *m_fixReorderedIndices;
+  wxCheckBox *m_incrementalSearch;
+  wxCheckBox *m_notifyIfIdle;
+  wxChoice *m_showUserDefinedLabels;
+  wxButton *m_getFont;
+  wxButton *m_getStyleFont;
   wxFontEncoding m_fontEncoding;
-  wxListBox* m_styleFor;
+  wxListBox *m_styleFor;
 #ifndef __WXMSW__
-  wxPanel* m_styleColor;
+  wxPanel *m_styleColor;
 #else
   wxButton* m_styleColor;
 #endif
-  wxCheckBox* m_boldCB;
-  wxCheckBox* m_italicCB;
-  wxCheckBox* m_underlinedCB;
-  wxCheckBox* m_fixedFontInTC;
-  wxCheckBox* m_unixCopy;
-  wxCheckBox* m_changeAsterisk;
-  wxCheckBox* m_useJSMath;
-  wxCheckBox* m_keepPercentWithSpecials;
-  wxBookCtrlBase* m_notebook;
-  wxStaticText* m_mathFont;
-  wxButton* m_getMathFont;
+  wxCheckBox *m_boldCB;
+  wxCheckBox *m_italicCB;
+  wxCheckBox *m_underlinedCB;
+  wxCheckBox *m_fixedFontInTC;
+  wxCheckBox *m_unixCopy;
+  wxCheckBox *m_changeAsterisk;
+  wxCheckBox *m_useJSMath;
+  wxCheckBox *m_keepPercentWithSpecials;
+  wxBookCtrlBase *m_notebook;
+  wxStaticText *m_mathFont;
+  wxButton *m_getMathFont;
   wxString m_mathFontName;
   wxButton *m_saveStyle, *m_loadStyle;
-  wxSpinCtrl* m_defaultPort;
-  #ifdef __WXMSW__
+  wxSpinCtrl *m_defaultPort;
+#ifdef __WXMSW__
   wxCheckBox* m_wxcd;
-  #endif
-  ExamplePanel* m_examplePanel;
+#endif
+  ExamplePanel *m_examplePanel;
   // end wxGlade
   style m_styleDefault,
-    m_styleVariable,
-    m_styleFunction,
-    m_styleNumber,
-    m_styleSpecial,
-    m_styleGreek,
-    m_styleString,
-    m_styleInput,
-    m_styleMainPrompt,
-    m_styleOtherPrompt,
-    m_styleLabel,
-    m_styleUserDefinedLabel,
-    m_styleHighlight,
-    m_styleText,
-    m_styleSubsubsection,
-    m_styleSubsection,
-    m_styleSection,
-    m_styleTitle,
-    m_styleTextBackground,
-    m_styleBackground,
-    m_styleCellBracket,
-    m_styleActiveCellBracket,
-    m_styleCursor,
-    m_styleSelection,
-    m_styleEqualsSelection,
-    m_styleOutdated,
-    m_styleCodeHighlightingVariable,
-    m_styleCodeHighlightingFunction,
-    m_styleCodeHighlightingComment,
-    m_styleCodeHighlightingNumber,
-    m_styleCodeHighlightingString,
-    m_styleCodeHighlightingOperator,
-    m_styleCodeHighlightingEndOfLine;
+          m_styleVariable,
+          m_styleFunction,
+          m_styleNumber,
+          m_styleSpecial,
+          m_styleGreek,
+          m_styleString,
+          m_styleInput,
+          m_styleMainPrompt,
+          m_styleOtherPrompt,
+          m_styleLabel,
+          m_styleUserDefinedLabel,
+          m_styleHighlight,
+          m_styleText,
+          m_styleSubsubsection,
+          m_styleSubsection,
+          m_styleSection,
+          m_styleTitle,
+          m_styleTextBackground,
+          m_styleBackground,
+          m_styleCellBracket,
+          m_styleActiveCellBracket,
+          m_styleCursor,
+          m_styleSelection,
+          m_styleEqualsSelection,
+          m_styleOutdated,
+          m_styleCodeHighlightingVariable,
+          m_styleCodeHighlightingFunction,
+          m_styleCodeHighlightingComment,
+          m_styleCodeHighlightingNumber,
+          m_styleCodeHighlightingString,
+          m_styleCodeHighlightingOperator,
+          m_styleCodeHighlightingEndOfLine;
 
   //! Is called when the path to the maxima binary was changed.
-  void MaximaLocationChanged(wxCommandEvent& unused);
+  void MaximaLocationChanged(wxCommandEvent &unused);
+
   //! Is called when the configuration dialog is closed.
-  void OnClose(wxCloseEvent& event);
+  void OnClose(wxCloseEvent &event);
+
   //! Starts the file chooser that allows selecting where the maxima binary lies
-  void OnMpBrowse(wxCommandEvent& event);
+  void OnMpBrowse(wxCommandEvent &event);
+
 #if defined __WXMSW__
   //! Is called when the color button is pressed.
   void OnColorButton(wxCommandEvent& event);
 #endif
+
   //! Starts the font selector dialog for the math font
-  void OnMathBrowse(wxCommandEvent& event);
+  void OnMathBrowse(wxCommandEvent &event);
+
   //! Called if a new item type that is to be styled is selected
-  void OnChangeStyle(wxCommandEvent& event);
+  void OnChangeStyle(wxCommandEvent &event);
+
   //! A message dialog that appears if a change cannot be applied now.
-  void OnChangeWarning(wxCommandEvent& event);
+  void OnChangeWarning(wxCommandEvent &event);
+
   //! Called if one of the checkboxes for bold, italic or underlined is toggled
-  void OnCheckbox(wxCommandEvent& event);
+  void OnCheckbox(wxCommandEvent &event);
+
   //! Reads the style settings from a file
   void ReadStyles(wxString file = wxEmptyString);
+
   //! Saves the style settings to a file.
   void WriteStyles(wxString file = wxEmptyString);
+
   //! Sets the style example's style on style changes.
   void UpdateExample();
+
   //! Called if the font family is changed.
-  void OnChangeFontFamily(wxCommandEvent& event);
+  void OnChangeFontFamily(wxCommandEvent &event);
+
   //! A "export the configuration" dialog
-  void LoadSave(wxCommandEvent& event);
+  void LoadSave(wxCommandEvent &event);
+
   //! The size of the text font
   int m_fontSize;
   //! The size of the maths font.
   int m_mathFontSize;
+
   /*! A pointer to the style that is currently selected for being edited.
     
     \attention Should match whatever is put in m_styleFor
   */
-  style* GetStylePointer();
+  style *GetStylePointer();
+
   //! A list containing the pictograms for the tabs.
   wxImageList *m_imageList;
-  DECLARE_EVENT_TABLE()
+DECLARE_EVENT_TABLE()
 };
 
 #ifndef __WXMSW__
+
 class ColorPanel : public wxPanel
 {
 public:
-  ColorPanel(ConfigDialogue * conf, wxWindow *parent, int id, wxPoint pos, wxSize size, long style) : wxPanel(parent, id, pos, size, style)
+  ColorPanel(ConfigDialogue *conf, wxWindow *parent, int id, wxPoint pos, wxSize size, long style) : wxPanel(parent, id,
+                                                                                                             pos, size,
+                                                                                                             style)
   {
-     m_configDialogue = conf;
-     SetBackgroundColour(wxColour(0,0,0));
+    m_configDialogue = conf;
+    SetBackgroundColour(wxColour(0, 0, 0));
   };
-  void OnClick(wxMouseEvent &event) {
-      m_configDialogue->OnChangeColor();
+
+  void OnClick(wxMouseEvent &event)
+  {
+    m_configDialogue->OnChangeColor();
   }
+
 private:
-  ConfigDialogue * m_configDialogue;
-  DECLARE_EVENT_TABLE()
+  ConfigDialogue *m_configDialogue;
+DECLARE_EVENT_TABLE()
 };
+
 #endif // __WXMSW__
 
 #endif // CONFIG_H

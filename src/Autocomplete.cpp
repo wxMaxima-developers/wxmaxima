@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //  Copyright (C) 2015-2016 Gunter Königsmann     <wxMaxima@physikbuch.de>
@@ -44,11 +44,11 @@ void AutoComplete::ClearWorksheetWords()
 void AutoComplete::AddWorksheetWords(wxArrayString wordlist)
 {
   wxArrayString::iterator it;
-    for( it = wordlist.begin(); it != wordlist.end(); ++it )
-    {
-      if(m_worksheetWords[*it]!=1)
-        m_worksheetWords[*it]=1;
-    }
+  for (it = wordlist.begin(); it != wordlist.end(); ++it)
+  {
+    if (m_worksheetWords[*it] != 1)
+      m_worksheetWords[*it] = 1;
+  }
 }
 
 bool AutoComplete::LoadSymbols(wxString file)
@@ -56,19 +56,19 @@ bool AutoComplete::LoadSymbols(wxString file)
   if (!wxFileExists(file))
     return false;
 
-  for(int i=command;i<=unit;i++)
+  for (int i = command; i <= unit; i++)
   {
-    if (m_wordList[i].GetCount()!=0)
+    if (m_wordList[i].GetCount() != 0)
       m_wordList[i].Clear();
   }
- 
+
   wxString line;
   wxString rest, function;
   wxTextFile index(file);
 
   index.Open();
 
-  for(line = index.GetFirstLine(); !index.Eof(); line = index.GetNextLine())
+  for (line = index.GetFirstLine(); !index.Eof(); line = index.GetNextLine())
   {
     if (line.StartsWith(wxT("FUNCTION: ")) ||
         line.StartsWith(wxT("OPTION  : ")))
@@ -110,8 +110,9 @@ bool AutoComplete::LoadSymbols(wxString file)
   m_wordList[command].Add(wxT("wxplot_size"));
   m_wordList[command].Add(wxT("wxdraw_list"));
   m_wordList[command].Add(wxT("wxbuild_info"));
+  m_wordList[command].Add(wxT("wxbug_report"));
   m_wordList[command].Add(wxT("show_image"));
-  m_wordList[tmplte ].Add(wxT("show_image(<imagename>)"));
+  m_wordList[tmplte].Add(wxT("show_image(<imagename>)"));
   m_wordList[command].Add(wxT("table_form"));
   m_wordList[tmplte].Add(wxT("table_form(<data>)"));
   m_wordList[tmplte].Add(wxT("table_form(<data>,<[options]>)"));
@@ -119,12 +120,12 @@ bool AutoComplete::LoadSymbols(wxString file)
   m_wordList[command].Add(wxT("wxdeclare_subscripted"));
   m_wordList[tmplte].Add(wxT("wxdeclare_subscripted(<name>,<[false]>)"));
   m_wordList[command].Add(wxT("wxstatusbar"));
-  m_wordList[tmplte ].Add(wxT("wxstatusbar(<string>)"));
+  m_wordList[tmplte].Add(wxT("wxstatusbar(<string>)"));
 
   /// Load private symbol list (do something different on Windows).
   wxString privateList;
   Dirstructure dirstruct;
-  
+
   privateList = dirstruct.UserAutocompleteFile();
 
   if (wxFileExists(privateList))
@@ -133,7 +134,7 @@ bool AutoComplete::LoadSymbols(wxString file)
 
     priv.Open();
 
-    for(line = priv.GetFirstLine(); !priv.Eof(); line = priv.GetNextLine())
+    for (line = priv.GetFirstLine(); !priv.Eof(); line = priv.GetNextLine())
     {
       if (line.StartsWith(wxT("FUNCTION: ")) ||
           line.StartsWith(wxT("OPTION  : ")))
@@ -141,7 +142,7 @@ bool AutoComplete::LoadSymbols(wxString file)
       else if (line.StartsWith(wxT("TEMPLATE: ")))
         m_wordList[tmplte].Add(FixTemplate(line.Mid(10)));
       else if (line.StartsWith(wxT("UNIT: ")))
-        m_wordList[unit].Add(FixTemplate(line.Mid(6)));      
+        m_wordList[unit].Add(FixTemplate(line.Mid(6)));
     }
 
     priv.Close();
@@ -160,11 +161,11 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
   wxArrayString completions;
   wxArrayString perfectCompletions;
 
-  wxASSERT_MSG((type>=command)&&(type<=unit),_("Bug: Autocompletion requested for unknown type of item."));
-  
+  wxASSERT_MSG((type >= command) && (type <= unit), _("Bug: Autocompletion requested for unknown type of item."));
+
   if (type != tmplte)
   {
-    for (size_t i=0; i<m_wordList[type].GetCount(); i++)
+    for (size_t i = 0; i < m_wordList[type].GetCount(); i++)
     {
       if (m_wordList[type][i].StartsWith(partial) &&
           completions.Index(m_wordList[type][i]) == wxNOT_FOUND)
@@ -173,7 +174,7 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
   }
   else
   {
-    for (size_t i=0; i<m_wordList[type].GetCount(); i++)
+    for (size_t i = 0; i < m_wordList[type].GetCount(); i++)
     {
       wxString templ = m_wordList[type][i];
       if (templ.StartsWith(partial))
@@ -192,11 +193,11 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
   if (type == command)
   {
     WorksheetWords::iterator it;
-    for( it = m_worksheetWords.begin(); it != m_worksheetWords.end(); ++it )
+    for (it = m_worksheetWords.begin(); it != m_worksheetWords.end(); ++it)
     {
       if (it->first.StartsWith(partial))
       {
-        if(completions.Index(it->first) == wxNOT_FOUND)
+        if (completions.Index(it->first) == wxNOT_FOUND)
         {
           completions.Add(it->first);
         }
@@ -205,7 +206,7 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
   }
 
   completions.Sort();
-  
+
   if (perfectCompletions.Count() > 0)
     return perfectCompletions;
   return completions;
@@ -241,8 +242,8 @@ void AutoComplete::AddSymbol(wxString fun, autoCompletionType type)
     fun = FixTemplate(fun);
     wxString funName = fun.SubString(0, fun.Find(wxT("(")));
     long count = fun.Freq('<');
-    size_t i=0;
-    for (i=0; i<m_wordList[type].GetCount(); i++)
+    size_t i = 0;
+    for (i = 0; i < m_wordList[type].GetCount(); i++)
     {
       wxString t = m_wordList[type][i];
       if (t.StartsWith(funName) && (t.Freq('<') == count))

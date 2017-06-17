@@ -270,7 +270,6 @@ AC_CONFIG_FILES([
         Makefile
         src/Makefile
         Doxygen/Makefile
-        Doxygen/Doxyfile
         locales/Makefile
         data/Makefile
         art/Makefile
@@ -279,7 +278,6 @@ AC_CONFIG_FILES([
         test/Makefile
         wxmaxima.spec
         data/Info.plist
-	data/wxMaxima.desktop
 ])
 
 AC_OUTPUT

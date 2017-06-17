@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //  Copyright (C) 2015 Gunter Königsmann     <wxMaxima@physikbuch.de>
@@ -35,7 +35,8 @@
 
 class AutoComplete
 {
-  WX_DECLARE_STRING_HASH_MAP(int,WorksheetWords);
+  WX_DECLARE_STRING_HASH_MAP(int, WorksheetWords);
+
 public:
   //! All types of things we can autocomplete
   enum autoCompletionType
@@ -44,17 +45,23 @@ public:
     tmplte,  //! Function templates
     unit     //! Unit names. \attention Must be the last entry in this enum 
   };
-    
+
   AutoComplete();
+
   bool LoadSymbols(wxString file);
-  void AddSymbol(wxString fun, autoCompletionType type=command);
+
+  void AddSymbol(wxString fun, autoCompletionType type = command);
+
   //! Add words to the list of words that appear in the workSheet's code cells
   void AddWorksheetWords(wxArrayString wordlist);
+
   //! Clear the list of words that appear in the workSheet's code cells
   void ClearWorksheetWords();
 
-  wxArrayString CompleteSymbol(wxString partial, autoCompletionType type=command);
+  wxArrayString CompleteSymbol(wxString partial, autoCompletionType type = command);
+
   wxString FixTemplate(wxString templ);
+
 private:
   wxArrayString m_wordList[3];
   wxRegEx m_args;

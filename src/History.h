@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -29,7 +29,8 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-enum {
+enum
+{
   history_ctrl_id = 1,
   history_regex_id
 };
@@ -40,24 +41,30 @@ enum {
 class History : public wxPanel
 {
 public:
-  History(wxWindow* parent, int id);
+  History(wxWindow *parent, int id);
+
   /* The destructor
 
      \todo Save the history on exit and reload it on loading a file?
    */
   ~History();
+
   //! Add a file to the recently opened files list.
   void AddToHistory(wxString cmd);
+
   void OnRegExEvent(wxCommandEvent &ev);
+
   void UpdateDisplay();
+
   wxString GetCommand(bool next);
+
 private:
   wxListBox *m_history;
   wxTextCtrl *m_regex;
   wxArrayString commands;
   //! The currently selected item. -1=none.
   long m_current;
-  DECLARE_EVENT_TABLE()
+DECLARE_EVENT_TABLE()
 };
 
 #endif // HISTORY_H

@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -20,18 +20,20 @@
 
 #include "MatWiz.h"
 
-MatWiz::MatWiz(wxWindow* parent, int id, const wxString& title,
+MatWiz::MatWiz(wxWindow *parent, int id,
+               Configuration *cfg,
+               const wxString &title,
                int type, int w, int h,
-               const wxPoint& pos, const wxSize& size, long style):
-    wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+               const wxPoint &pos, const wxSize &size, long style) :
+        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   m_height = h;
   m_width = w;
   m_matrixType = type;
   int width = 50 > 400 / m_width ? 50 : 400 / m_width;
-  for (int i = 0; i < h*w; i++)
+  for (int i = 0; i < h * w; i++)
   {
-    m_inputs.push_back(new BTextCtrl(this, -1, wxT("0"), wxDefaultPosition,
+    m_inputs.push_back(new BTextCtrl(this, -1, cfg, wxT("0"), wxDefaultPosition,
                                      wxSize(width, -1)));
   }
   static_line_1 = new wxStaticLine(this, -1);
@@ -54,26 +56,29 @@ void MatWiz::set_properties()
   if (m_matrixType == MATRIX_ANTISYMMETRIC)
   {
     for (int i = 0; i < m_height; i++)
-      for (int j = 0; j <= i; j++) {
-        m_inputs[i*m_width + j]->SetValue(wxEmptyString);
-        m_inputs[i*m_width + j]->Enable(false);
+      for (int j = 0; j <= i; j++)
+      {
+        m_inputs[i * m_width + j]->SetValue(wxEmptyString);
+        m_inputs[i * m_width + j]->Enable(false);
       }
   }
   else if (m_matrixType == MATRIX_SYMMETRIC)
   {
     for (int i = 0; i < m_height; i++)
-      for (int j = 0; j < i; j++) {
-        m_inputs[i*m_width + j]->SetValue(wxEmptyString);
-        m_inputs[i*m_width + j]->Enable(false);
+      for (int j = 0; j < i; j++)
+      {
+        m_inputs[i * m_width + j]->SetValue(wxEmptyString);
+        m_inputs[i * m_width + j]->Enable(false);
       }
   }
   else if (m_matrixType == MATRIX_DIAGONAL)
   {
     for (int i = 0; i < m_height; i++)
       for (int j = 0; j < m_width; j++)
-        if (i != j) {
-          m_inputs[i*m_width + j]->SetValue(wxEmptyString);
-          m_inputs[i*m_width + j]->Enable(false);
+        if (i != j)
+        {
+          m_inputs[i * m_width + j]->SetValue(wxEmptyString);
+          m_inputs[i * m_width + j]->Enable(false);
         }
   }
 #if defined __WXMSW__
@@ -88,10 +93,10 @@ void MatWiz::set_properties()
 
 void MatWiz::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(m_height + 1, m_width + 1, 2, 2);
-  wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxStaticText* text;
+  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
+  wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(m_height + 1, m_width + 1, 2, 2);
+  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  wxStaticText *text;
   grid_sizer_2->Add(20, 20, 0, 0);
   for (int i = 1; i <= m_width; i++)
   {
@@ -108,7 +113,7 @@ void MatWiz::do_layout()
                       wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL, 0);
     for (int i = 0; i < m_width; i++)
     {
-      grid_sizer_2->Add(m_inputs[j*m_width + i], 0, wxALL, 1);
+      grid_sizer_2->Add(m_inputs[j * m_width + i], 0, wxALL, 1);
     }
   }
   grid_sizer_1->Add(grid_sizer_2, 1, wxALL | wxALIGN_CENTER_HORIZONTAL, 0);
@@ -136,7 +141,8 @@ wxString MatWiz::GetValue()
         cmd += m_inputs[j * m_width + i]->GetValue();
       else if (m_matrixType == MATRIX_ANTISYMMETRIC && i > j)
         cmd += wxT("-(") + m_inputs[j * m_width + i]->GetValue() + wxT(")");
-      else {
+      else
+      {
         wxString entry = m_inputs[i * m_width + j]->GetValue();
         if (entry == wxEmptyString)
           entry = wxT("0");
@@ -158,28 +164,30 @@ wxString MatWiz::GetValue()
   return cmd;
 }
 
-MatDim::MatDim(wxWindow* parent, int id, const wxString& title,
-               const wxPoint& pos, const wxSize& size, long style):
-    wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+MatDim::MatDim(wxWindow *parent, int id,
+               Configuration *cfg,
+               const wxString &title,
+               const wxPoint &pos, const wxSize &size, long style) :
+        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_2 = new wxStaticText(this, -1, _("Rows:"));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxT("3"), wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxT("3"), wxDefaultPosition,
                               wxSize(150, -1));
   label_3 = new wxStaticText(this, -1, _("Columns:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxT("3"), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxT("3"), wxDefaultPosition,
                               wxSize(150, -1));
   label_4 = new wxStaticText(this, -1, _("Type:"));
   const wxString choice_1_choices[] =
-    {
-      _("general"),
-      _("diagonal"),
-      _("symmetric"),
-      _("antisymmetric")
-    };
+          {
+                  _("general"),
+                  _("diagonal"),
+                  _("symmetric"),
+                  _("antisymmetric")
+          };
   choice_1 = new wxChoice(this, -1, wxDefaultPosition,
                           wxSize(150, -1), 4, choice_1_choices);
   label_0 = new wxStaticText(this, -1, _("Name:"));
-  text_ctrl_0 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_0 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(70, -1));
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
@@ -211,9 +219,9 @@ void MatDim::set_properties()
 
 void MatDim::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
-  wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(4, 2, 0, 0);
+  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
+  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(4, 2, 0, 0);
   grid_sizer_2->Add(label_2, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 5);
   grid_sizer_2->Add(label_3, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);

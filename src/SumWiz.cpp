@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -20,21 +20,21 @@
 
 #include "SumWiz.h"
 
-SumWiz::SumWiz(wxWindow* parent, int id, const wxString& title,
-               const wxPoint& pos, const wxSize& size, long style):
-    wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+SumWiz::SumWiz(wxWindow *parent, int id, Configuration *cfg, const wxString &title,
+               const wxPoint &pos, const wxSize &size, long style) :
+        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_2 = new wxStaticText(this, -1, _("Expression:"));
-  text_ctrl_1 = new BTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, _("Variable:"));
-  text_ctrl_2 = new BTextCtrl(this, -1, wxT("k"), wxDefaultPosition,
+  text_ctrl_2 = new BTextCtrl(this, -1, cfg, wxT("k"), wxDefaultPosition,
                               wxSize(110, -1));
   label_4 = new wxStaticText(this, -1, _("From:"));
-  text_ctrl_3 = new BTextCtrl(this, -1, wxT("1"), wxDefaultPosition,
+  text_ctrl_3 = new BTextCtrl(this, -1, cfg, wxT("1"), wxDefaultPosition,
                               wxSize(110, -1));
   label_5 = new wxStaticText(this, -1, _("To:"));
-  text_ctrl_4 = new BTextCtrl(this, -1, wxT("inf"), wxDefaultPosition,
+  text_ctrl_4 = new BTextCtrl(this, -1, cfg, wxT("inf"), wxDefaultPosition,
                               wxSize(110, -1));
   checkbox_1 = new wxCheckBox(this, -1, _("&Simplify"));
   checkbox_2 = new wxCheckBox(this, use_nusum_id, _("&Nusum"));
@@ -72,10 +72,10 @@ void SumWiz::set_properties()
 
 void SumWiz::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
-  wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxBoxSizer* sizer_2 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(6, 2, 0, 0);
+  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
+  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer *sizer_2 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(6, 2, 0, 0);
   grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 5);
   grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -123,11 +123,11 @@ wxString SumWiz::GetValue()
   return s;
 }
 
-void SumWiz::OnCheckbox(wxCommandEvent& event)
+void SumWiz::OnCheckbox(wxCommandEvent &event)
 {
   checkbox_1->Enable(!checkbox_2->GetValue());
 }
 
 BEGIN_EVENT_TABLE(SumWiz, wxDialog)
-  EVT_CHECKBOX(use_nusum_id, SumWiz::OnCheckbox)
+                EVT_CHECKBOX(use_nusum_id, SumWiz::OnCheckbox)
 END_EVENT_TABLE()

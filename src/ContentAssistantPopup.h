@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //  Copyright (C) 2015-2016 Gunter Königsmann     <wxMaxima@physikbuch.de>
@@ -48,9 +48,12 @@ private:
   ContentAssistantPopup **m_doneptr;
 protected:
   void OnDismiss();
-  void OnClose(wxCloseEvent& event);
+
+  void OnClose(wxCloseEvent &event);
+
 public:
   ~ContentAssistantPopup();
+
   /*! The constructor of the autocompletion window
 
     \param parent The parent window
@@ -59,11 +62,16 @@ public:
     \param type The type of completion needed
     \param doneptr A pointer that will be set to NULL when the pop-up is destroyed.
    */
-  ContentAssistantPopup(wxWindow *parent, EditorCell* editor, AutoComplete *autocomplete, AutoComplete::autoCompletionType type,ContentAssistantPopup **doneptr);
+  ContentAssistantPopup(wxWindow *parent, EditorCell *editor, AutoComplete *autocomplete,
+                        AutoComplete::autoCompletionType type, ContentAssistantPopup **doneptr);
+
   void UpdateResults();
-  void OnKeyPress(wxKeyEvent& event);
-  void OnClick(wxCommandEvent& event);
-  DECLARE_EVENT_TABLE()
+
+  void OnKeyPress(wxKeyEvent &event);
+
+  void OnClick(wxCommandEvent &event);
+
+DECLARE_EVENT_TABLE()
 };
 
 #endif // CONTENTASSISTANTPOPUP_H

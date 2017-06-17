@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -47,30 +47,49 @@
 class ExptCell : public MathCell
 {
 public:
-  ExptCell();
+  ExptCell(MathCell *parent, Configuration **config);
+
   ~ExptCell();
-  MathCell* Copy();
+
+  MathCell *Copy();
+
   //! Set the mantissa
   void SetBase(MathCell *base);
+
   //! Set the exponent
   void SetPower(MathCell *power);
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToXML();
+
   wxString ToOMML();
+
   wxString ToMathML();
+
   wxString GetDiffPart();
-  void SelectInner(wxRect& rect, MathCell **first, MathCell **last);
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   void IsMatrix(bool isMatrix)
   {
     m_isMatrix = isMatrix;
   }
+
   bool BreakUp();
+
   void Unbreak();
+
   void SetParent(MathCell *parent);
+
 protected:
   MathCell *m_baseCell, *m_powCell;
   TextCell *m_open, *m_close;

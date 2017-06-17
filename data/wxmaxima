@@ -14,14 +14,14 @@ _wxmaxima()
             return
             ;;
         --open|-o)
-            _filedir
+            _filedir '@(mac|wxm|wxmx|out|xml)'
             return
             ;;
     esac
 
     $split && return 0
 
-    _filedir '@(|mac|wxm|wxmx)'
+    _filedir '@(mac|wxm|wxmx|out|xml)'
 } &&
 complete -F _wxmaxima wxmaxima
 

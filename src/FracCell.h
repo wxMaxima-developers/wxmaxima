@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -40,44 +40,65 @@
 class FracCell : public MathCell
 {
 public:
-  FracCell();
+  FracCell(MathCell *parent, Configuration **config);
+
   ~FracCell();
 
   //! All types of fractions we supportx
-  enum FracType {
+  enum FracType
+  {
     FC_NORMAL,
     FC_CHOOSE,
     FC_DIFF
   };
 
-  MathCell* Copy();
+  MathCell *Copy();
+
   void RecalculateHeight(int fontsize);
+
   void RecalculateWidths(int fontsize);
+
   void Draw(wxPoint point, int fontsize);
+
   void SetFracStyle(int style)
   {
     m_fracStyle = style;
   }
+
   //! Set the nummerator for the fraction
-  void SetNum(MathCell* num);
+  void SetNum(MathCell *num);
+
   //! Set the denominator of the fraction
-  void SetDenom(MathCell* denom);
+  void SetDenom(MathCell *denom);
+
   //! Answers the question if this is an operator by returning "true".
   bool IsOperator()
   {
     return true;
   }
-  void SelectInner(wxRect& rect, MathCell **first, MathCell **last);
+
+  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+
   wxString ToString();
+
   wxString ToTeX();
+
   wxString ToMathML();
+
   wxString ToOMML();
+
   wxString ToXML();
+
   void SetExponentFlag();
+
   bool BreakUp();
+
   void SetupBreakUps();
+
   void Unbreak();
+
   void SetParent(MathCell *parent);
+
 protected:
   //! The nummerator
   MathCell *m_num;

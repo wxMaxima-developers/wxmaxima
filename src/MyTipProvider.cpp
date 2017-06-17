@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2006-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -26,8 +26,8 @@
 
 #include "MyTipProvider.h"
 
-MyTipProvider::MyTipProvider(const wxString& filename, int n)
-    :  wxTipProvider(n), m_current(n), m_file(filename)
+MyTipProvider::MyTipProvider(const wxString &filename, int n)
+        : wxTipProvider(n), m_current(n), m_file(filename)
 {
   m_file.Open();
 }
@@ -56,7 +56,7 @@ wxString MyTipProvider::GetTip()
       break;
   }
 
-  if (tip.StartsWith(wxT("_(\"" ), &tip))
+  if (tip.StartsWith(wxT("_(\""), &tip))
   {
     tip = tip.BeforeLast(wxT('\"'));
     tip.Replace(wxT("\\\""), wxT("\""));

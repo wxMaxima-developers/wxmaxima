@@ -1,4 +1,4 @@
-// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //
@@ -22,33 +22,34 @@
 
 Gen4Wiz::Gen4Wiz(wxString lab1, wxString lab2, wxString lab3, wxString lab4,
                  wxString val1, wxString val2, wxString val3, wxString val4,
-                 wxWindow* parent, int id, const wxString& title, bool eq,
-                 const wxPoint& pos, const wxSize& size, long style):
-    wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+                 Configuration *cfg,
+                 wxWindow *parent, int id, const wxString &title, bool eq,
+                 const wxPoint &pos, const wxSize &size, long style) :
+        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
   label_2 = new wxStaticText(this, -1, lab1);
-  text_ctrl_1 = new BTextCtrl(this, -1, val1, wxDefaultPosition,
+  text_ctrl_1 = new BTextCtrl(this, -1, cfg, val1, wxDefaultPosition,
                               wxSize(230, -1));
   label_3 = new wxStaticText(this, -1, lab2);
   if (eq)
-    text_ctrl_2 = new BTextCtrl(this, -1, val2, wxDefaultPosition,
+    text_ctrl_2 = new BTextCtrl(this, -1, cfg, val2, wxDefaultPosition,
                                 wxSize(230, -1));
   else
-    text_ctrl_2 = new BTextCtrl(this, -1, val2, wxDefaultPosition,
+    text_ctrl_2 = new BTextCtrl(this, -1, cfg, val2, wxDefaultPosition,
                                 wxSize(110, -1));
   label_4 = new wxStaticText(this, -1, lab3);
   if (eq)
-    text_ctrl_3 = new BTextCtrl(this, -1, val3, wxDefaultPosition,
+    text_ctrl_3 = new BTextCtrl(this, -1, cfg, val3, wxDefaultPosition,
                                 wxSize(230, -1));
   else
-    text_ctrl_3 = new BTextCtrl(this, -1, val3, wxDefaultPosition,
+    text_ctrl_3 = new BTextCtrl(this, -1, cfg, val3, wxDefaultPosition,
                                 wxSize(110, -1));
   label_5 = new wxStaticText(this, -1, lab4);
   if (eq)
-    text_ctrl_4 = new BTextCtrl(this, -1, val4, wxDefaultPosition,
+    text_ctrl_4 = new BTextCtrl(this, -1, cfg, val4, wxDefaultPosition,
                                 wxSize(230, -1));
   else
-    text_ctrl_4 = new BTextCtrl(this, -1, val4, wxDefaultPosition,
+    text_ctrl_4 = new BTextCtrl(this, -1, cfg, val4, wxDefaultPosition,
                                 wxSize(110, -1));
   static_line_1 = new wxStaticLine(this, -1);
 #if defined __WXMSW__
@@ -65,9 +66,9 @@ Gen4Wiz::Gen4Wiz(wxString lab1, wxString lab2, wxString lab3, wxString lab4,
 
 void Gen4Wiz::do_layout()
 {
-  wxFlexGridSizer* grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
-  wxBoxSizer* sizer_1 = new wxBoxSizer(wxHORIZONTAL);
-  wxFlexGridSizer* grid_sizer_2 = new wxFlexGridSizer(4, 2, 0, 0);
+  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 1, 0, 0);
+  wxBoxSizer *sizer_1 = new wxBoxSizer(wxHORIZONTAL);
+  wxFlexGridSizer *grid_sizer_2 = new wxFlexGridSizer(4, 2, 0, 0);
   grid_sizer_2->Add(label_2, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
   grid_sizer_2->Add(text_ctrl_1, 0, wxALL, 5);
   grid_sizer_2->Add(label_3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
