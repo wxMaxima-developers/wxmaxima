@@ -12,7 +12,7 @@ if(GETTEXT_FOUND)
                     RENAME "wxMaxima.mo")
 	else()
             install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo"
-                    DESTINATION "share/wxMaxima/locale/${LANG}/"
+                    DESTINATION "share/locale/${LANG}/LC_MESSAGES/"
                     RENAME "wxMaxima.mo")
 	endif()
     endforeach()
