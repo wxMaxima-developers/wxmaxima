@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-06-15 15:35+0200\n"
-"PO-Revision-Date: 2017-03-12 10:20+0200\n"
+"PO-Revision-Date: 2017-06-17 16:30+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -511,6 +511,9 @@ msgid ""
 "out;*.xml|wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx|Maxima session (*."
 "mac)|*.mac|Xmaxima session (*.out)|*.out|xml from broken .wxmx (*.xml)|*.xml"
 msgstr ""
+"усі придатні типи (*.wxm, *.wxmx, *.mac, *.out, *.xml)|*.wxm;*.wxmx;*.mac;*."
+"out;*.xml|документ wxMaxima (*.wxm, *.wxmx)|*.wxm;*.wxmx|сеанс Maxima (*."
+"mac)|*.mac|сеанс Xmaxima (*.out)|*.out|xml з пошкодженого .wxmx (*.xml)|*.xml"
 
 #: ../src/ConfigDialogue.cpp:486
 msgid "All variable names"
@@ -564,7 +567,7 @@ msgstr "Автоматичні мітки (%i1, %o1,...)"
 #: ../src/MathCtrl.cpp:1049 ../src/MathCtrl.cpp:1160
 #: ../src/wxMaximaFrame.cpp:616
 msgid "Automatically answer questions"
-msgstr ""
+msgstr "Автоматично відповідати на питання"
 
 #: ../src/ConfigDialogue.cpp:264
 msgid ""
@@ -584,6 +587,7 @@ msgstr ""
 #: ../src/wxMaximaFrame.cpp:617
 msgid "Automatically fill in answers known from the last run"
 msgstr ""
+"Автоматично заповнювати відповіді, які відомі з часу попереднього запуску"
 
 #: ../src/ConfigDialogue.cpp:239
 msgid ""
@@ -671,7 +675,7 @@ msgstr "Вада: полишено комірку без введення дан
 
 #: ../src/MathCtrl.cpp:6202
 msgid "Bug: Cell with negative y position!"
-msgstr ""
+msgstr "Вада: комірка із від’ємною координатою y!"
 
 #: ../src/wxMaxima.cpp:1300
 msgid "Bug: Found a math end marker without any start marker."
@@ -1206,9 +1210,8 @@ msgstr "Копіювати як MathML (наприклад для текстов
 
 #: ../src/MathCtrl.cpp:1007 ../src/MathCtrl.cpp:1065
 #: ../src/wxMaximaFrame.cpp:491
-#, fuzzy
 msgid "Copy as RTF"
-msgstr "Копіювати як LaTeX"
+msgstr "Копіювати як RTF"
 
 #: ../src/wxMaximaFrame.cpp:477
 msgid "Copy as Text\tCtrl+Shift+C"
@@ -1227,12 +1230,11 @@ msgid "Copy selection from document as an image"
 msgstr "Копіювати позначений фрагмент документа як зображення"
 
 #: ../src/wxMaximaFrame.cpp:492
-#, fuzzy
 msgid ""
 "Copy selection from document as rtf that a word processor might understand"
 msgstr ""
-"Скопіювати позначений фрагмент з документа у форматі MathML, який "
-"використовується для показу рівнянь у багатьох текстових процесорах"
+"Скопіювати позначений фрагмент з документа у форматі rtf, який можна "
+"використати у текстовому процесорі Word"
 
 #: ../src/wxMaximaFrame.cpp:478
 msgid "Copy selection from document as text"
@@ -1646,18 +1648,16 @@ msgid "Evaluate Cell(s)"
 msgstr "Обчислити комірки"
 
 #: ../src/MathCtrl.cpp:1104
-#, fuzzy
 msgid "Evaluate Cells Above"
-msgstr "Обчислити комірки"
+msgstr "Обчислити комірки вище"
 
 #: ../src/wxMaximaFrame.cpp:569
 msgid "Evaluate Cells Above\tCtrl+Shift+P"
 msgstr "Обчислити комірку вище\tCtrl+Shift+P"
 
 #: ../src/MathCtrl.cpp:1015 ../src/MathCtrl.cpp:1105
-#, fuzzy
 msgid "Evaluate Cells Below"
-msgstr "Обчислити комірки"
+msgstr "Обчислити комірки нижче"
 
 #: ../src/MathCtrl.cpp:1029 ../src/MathCtrl.cpp:1142
 msgid "Evaluate Part\tShift+Ctrl+Enter"
@@ -2628,6 +2628,8 @@ msgid ""
 "Issue a notification if maxima finishes calculating while the wxMaxima "
 "window isn't in focus."
 msgstr ""
+"Видавати сповіщення, якщо maxima завершує обчислення, доки wxMaxima не "
+"перебуває у фокусі."
 
 #: ../data/tips.txt:35
 msgid ""
@@ -2664,11 +2666,11 @@ msgstr "японська"
 
 #: ../src/wxMaximaFrame.cpp:663
 msgid "Jump to first error"
-msgstr ""
+msgstr "Перейти до першої помилки"
 
 #: ../src/wxMaximaFrame.cpp:664
 msgid "Jump to the first cell maxima has reported an error in."
-msgstr ""
+msgstr "Перейти до першої комірки, щодо якої maxima повідомлено про помилку."
 
 #: ../src/ConfigDialogue.cpp:638
 msgid "Kabyle"
@@ -2737,7 +2739,7 @@ msgstr "Наближення за методом найменших квадра
 
 #: ../src/wxMaximaFrame.cpp:717
 msgid "Left side to the \"=\""
-msgstr ""
+msgstr "Ліва частина рівності до «=»"
 
 #: ../data/tips.txt:29
 msgid ""
@@ -2903,9 +2905,8 @@ msgid "Maxima"
 msgstr "Maxima"
 
 #: ../src/wxMaxima.cpp:1472
-#, fuzzy
 msgid "Maxima asks a question!"
-msgstr "У Maxima є питання"
+msgstr "У Maxima є питання!"
 
 #: ../src/ConfigDialogue.cpp:194
 #, c-format
@@ -2937,14 +2938,12 @@ msgid "Maxima has a question"
 msgstr "У Maxima є питання"
 
 #: ../src/wxMaxima.cpp:6347
-#, fuzzy
 msgid "Maxima has finished calculating."
-msgstr "Maxima виконує обчислення"
+msgstr "Maxima завершила обчислення."
 
 #: ../src/wxMaxima.cpp:3250
-#, fuzzy
 msgid "Maxima has issued an error!"
-msgstr "У Maxima є питання"
+msgstr "Maxima повідомлено про помилку!"
 
 #: ../src/ConfigDialogue.cpp:824
 msgid "Maxima input"
@@ -3191,7 +3190,7 @@ msgstr "Назва:"
 
 #: ../src/ConfigDialogue.cpp:501
 msgid "Never"
-msgstr ""
+msgstr "Ніколи"
 
 #: ../src/ToolBar.cpp:114
 msgid "New"
@@ -3734,7 +3733,7 @@ msgstr "Стрілка праворуч"
 
 #: ../src/wxMaximaFrame.cpp:720
 msgid "Right side to the \"=\""
-msgstr ""
+msgstr "Права частина рівності до «=»"
 
 #: ../src/wxMaximaFrame.cpp:768
 msgid "Risch Integration..."
@@ -4364,7 +4363,7 @@ msgstr "Знак суми"
 
 #: ../src/wxMaximaFrame.cpp:383
 msgid "Symbols"
-msgstr ""
+msgstr "Символи"
 
 #: ../src/wxMaximaFrame.cpp:529
 msgid "Symbols\tAlt+Shift+Y"
@@ -4460,7 +4459,7 @@ msgstr ""
 
 #: ../src/ConfigDialogue.cpp:205
 msgid "The URL MathJaX.js should be downloaded from by our HTML export."
-msgstr ""
+msgstr "Адреса, з якої слід отримати MathJaX.js під час експортування до HTML."
 
 #: ../src/ConfigDialogue.cpp:216
 msgid ""
@@ -4488,11 +4487,11 @@ msgstr "Клас документів LaTeX, який слід використ�
 
 #: ../src/wxMaximaFrame.cpp:718
 msgid "The half of the equation that is to the left of the \"=\""
-msgstr ""
+msgstr "Частина рівняння ліворуч від символу «=»"
 
 #: ../src/wxMaximaFrame.cpp:721
 msgid "The half of the equation that is to the right of the \"=\""
-msgstr ""
+msgstr "Частина рівняння праворуч від символу «=»"
 
 #: ../data/tips.txt:43
 msgid "The key combination Shift+Space results in a non-breakable space."
@@ -4743,7 +4742,7 @@ msgstr "Тип:"
 
 #: ../src/ConfigDialogue.cpp:566
 msgid "URL MathJaX.js lies at:"
-msgstr ""
+msgstr "Адреса MathJaX.js:"
 
 #: ../src/ConfigDialogue.cpp:646
 msgid "Ukrainian"
@@ -4919,7 +4918,7 @@ msgstr "Перегляд"
 
 #: ../src/ConfigDialogue.cpp:704
 msgid "Warn if an inactive window is idle"
-msgstr ""
+msgstr "Попереджати, якщо неактивне вікно бездіяльне"
 
 #: ../src/MathParser.cpp:939 ../src/wxMaxima.cpp:2178 ../src/wxMaxima.cpp:2285
 #: ../src/wxMaxima.cpp:2436
