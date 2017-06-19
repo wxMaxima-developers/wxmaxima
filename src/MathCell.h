@@ -92,6 +92,18 @@ class MathCell
 public:
   MathCell(MathCell *parent, Configuration **config);
 
+  /*! Sets the ToolTip this cell provides.
+
+    wxEmptyString means: No ToolTip
+   */
+  wxString SetToolTip(wxString toolTip){m_toolTip = toolTip;}
+
+  /*! Returns the ToolTip this cell provides.
+
+    wxEmptyString means: No ToolTip
+   */
+  wxString GetToolTip(){return m_toolTip;}
+  
   //! Delete this list of cells.
   virtual ~MathCell();
 
@@ -717,6 +729,7 @@ public:
   bool m_SuppressMultiplicationDot;
 
 protected:
+  wxString m_toolTip;
   static wxRect m_updateRegion;
 
   /*! The GroupCell this list of cells belongs to.

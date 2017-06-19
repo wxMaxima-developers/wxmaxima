@@ -112,6 +112,12 @@ public:
    */
   void CellUnderPointer(GroupCell *cell);
 
+  /*! Returns the tooltip for the element at the position <pos>.
+    
+    wxEmptyString means: No toolTip.
+   */
+  wxString GetToolTip(const wxPoint &point);
+
   MathCell *Copy();
 
   // general methods

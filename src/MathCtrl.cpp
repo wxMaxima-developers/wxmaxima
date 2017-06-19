@@ -1554,9 +1554,6 @@ void MathCtrl::OnMouseWheel(wxMouseEvent &event)
 
 void MathCtrl::OnMouseMotion(wxMouseEvent &event)
 {
-  if (m_configuration->HideBrackets())
-  {
-
     int x, y;
     CalcUnscrolledPosition(event.GetX(), event.GetY(), &x, &y);
     if (
@@ -1581,23 +1578,24 @@ void MathCtrl::OnMouseMotion(wxMouseEvent &event)
         m_groupCellUnderPointerRect = tmp->GetRect();
       else
         m_groupCellUnderPointerRect = wxRect(-1,-1,0,0);
-      
-      RequestRedraw();
     }
-  }
+    if (m_configuration->HideBrackets())
+      RequestRedraw();
 
-  if (m_tree == NULL || !m_leftDown)
-    return;
-  m_mouseDrag = true;
-  CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_up.x, &m_up.y);
-  if (m_mouseOutside)
-  {
-    m_mousePoint.x = event.GetX();
-    m_mousePoint.y = event.GetY();
-  }
-  ClickNDrag(m_down, m_up);
+    if (m_cellPointers->m_groupCellUnderPointer != NULL)
+    {
+      if ((dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer)->GetOutputRect()).Contains(wxPoint(x,y)))
+      {
+        SetToolTip(
+          dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer)->GetToolTip(wxPoint(x,y))
+          );
+      }
+      else
+        SetToolTip(wxEmptyString);
+    }
+    else
+      SetToolTip(wxEmptyString);
 }
-
 
 void MathCtrl::SelectGroupCells(wxPoint down, wxPoint up)
 {

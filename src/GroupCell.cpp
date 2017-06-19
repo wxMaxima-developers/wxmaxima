@@ -1645,6 +1645,29 @@ void GroupCell::SelectRectInOutput(wxRect &rect, wxPoint &one, wxPoint &two,
   }
 }
 
+wxString GroupCell::GetToolTip(const wxPoint &point)
+{
+  wxString retval;
+  
+  if (m_hide)
+    return retval;
+
+  MathCell *tmp = m_output;
+  MathCell *cellUnderPointer = NULL;
+  while (tmp != NULL)
+  {
+
+    // If a cell contains a cell containing a tooltip the tooltip of the
+    // containing cell will be overridden.
+    if (tmp->ContainsPoint(point))
+      retval = tmp->GetToolTip();
+
+    tmp = tmp->m_nextToDraw;
+  }
+
+  return retval;
+}
+
 bool GroupCell::SetEditableContent(wxString text)
 {
   if (GetEditable())

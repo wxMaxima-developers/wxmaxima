@@ -67,6 +67,8 @@ TextCell::TextCell(MathCell *parent, Configuration **config, wxString text) : Ma
 
 void TextCell::SetValue(const wxString &text)
 {
+  wxString toolTip;
+
   m_displayedDigits_old = (*m_configuration)->GetDisplayedDigits();
   m_text = text;
   ResetSize();
@@ -87,10 +89,13 @@ void TextCell::SetValue(const wxString &text)
       m_displayedText = m_displayedText.Left(left) +
                         wxString::Format(_("[%i digits]"), (int) m_displayedText.Length() - 2 * left) +
                         m_displayedText.Right(left);
+      toolTip = _("The maximum number of displayed digits can be changed in the configuration dialogue");
     }
   }
 
   m_alt = m_altJs = false;
+
+  SetToolTip(toolTip);
 }
 
 MathCell *TextCell::Copy()
