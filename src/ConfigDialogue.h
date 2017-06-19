@@ -287,6 +287,7 @@ protected:
           m_styleLabel,
           m_styleUserDefinedLabel,
           m_styleHighlight,
+          m_styleWarning,
           m_styleText,
           m_styleSubsubsection,
           m_styleSubsection,

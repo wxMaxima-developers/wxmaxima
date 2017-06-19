@@ -537,6 +537,7 @@ wxString TextCell::ToTeX()
 
   if (
           (GetStyle() == TS_ERROR) ||
+          (GetStyle() == TS_WARNING) ||
           (GetStyle() == TS_LABEL) ||
           (GetStyle() == TS_USERLABEL) ||
           (GetStyle() == TS_MAIN_PROMPT) ||
@@ -893,7 +894,7 @@ wxString TextCell::ToTeX()
       text.Replace(wxT("\\text{Ö}"), wxT("\\text{\\textit{Ö}}"));
       text.Replace(wxT("\\text{Ü}"), wxT("\\text{\\textit{Ü}}"));
     }
-    else if (GetStyle() == TS_ERROR)
+    else if ((GetStyle() == TS_ERROR) || (GetStyle() == TS_WARNING))
     {
       if (text.Length() > 1)
         text = wxT("\\mbox{") + text + wxT("}");
@@ -1143,6 +1144,9 @@ wxString TextCell::ToXML()
 
   if (GetStyle() == TS_ERROR)
     flags += wxT(" type=\"error\"");
+
+    if (GetStyle() == TS_WARNING)
+    flags += wxT(" type=\"warning\"");
 
   wxString xmlstring = XMLescape(m_displayedText);
   // convert it, so that the XML configuration doesn't fail

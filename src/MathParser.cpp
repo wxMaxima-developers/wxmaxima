@@ -439,11 +439,20 @@ MathCell *MathParser::ParseText(wxXmlNode *node, int style)
     while (lines.HasMoreTokens())
     {
       TextCell *cell = new TextCell(NULL, m_configuration);
-      if (style != TS_ERROR)
-        cell->SetType(m_ParserStyle);
-      else
+      switch(style)
+      {
+      case TS_ERROR:
         cell->SetType(MC_TYPE_ERROR);
-      cell->SetStyle(style);
+        break;
+        
+      case TS_WARNING:
+        cell->SetType(MC_TYPE_WARNING);
+        break;
+        
+      default:
+        cell->SetType(m_ParserStyle);
+      }
+
       cell->SetHighlight(m_highlight);
       cell->SetValue(lines.GetNextToken());
       if (retval == NULL)
@@ -677,6 +686,8 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
         TextStyle style = TS_DEFAULT;
         if (node->GetAttribute(wxT("type")) == wxT("error"))
           style = TS_ERROR;
+        if (node->GetAttribute(wxT("type")) == wxT("warning"))
+          style = TS_WARNING;
         tmp = ParseText(node->GetChildren(), style);
       }
       else if (tagName == wxT("n"))

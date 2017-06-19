@@ -827,6 +827,7 @@ wxPanel *ConfigDialogue::CreateStylePanel()
                   _("Output labels"),
                   _("User-defined labels"),
                   _("Highlight (dpart)"),
+                  _("Maxima warnings"),
                   _("Text cell"),
                   _("Subsubsection cell"),
                   _("Subsection cell"),
@@ -1199,6 +1200,13 @@ void ConfigDialogue::ReadStyles(wxString file)
   m_styleLabel.underlined = false;
   READ_STYLE(m_styleLabel, "Style/Label/")
 
+  // Warnings
+  m_styleWarning.color = wxT("orange");
+  m_styleWarning.bold = true;
+  m_styleWarning.italic = false;
+  m_styleWarning.underlined = false;
+  READ_STYLE(m_styleWarning, "Style/Warning/")
+
   // User-defined Labels
   m_styleUserDefinedLabel.color = wxT("rgb(255,64,0)");
   m_styleUserDefinedLabel.bold = false;
@@ -1440,7 +1448,10 @@ void ConfigDialogue::WriteStyles(wxString file)
   // Label
   WRITE_STYLE(m_styleLabel, "Style/Label/")
 
-  // Label
+  // Warning
+  WRITE_STYLE(m_styleWarning, "Style/Warning/")
+
+  // User-defined Label
   WRITE_STYLE(m_styleUserDefinedLabel, "Style/UserDefinedLabel/")
 
   // Special
@@ -1623,63 +1634,66 @@ style *ConfigDialogue::GetStylePointer()
       tmp = &m_styleHighlight;
       break;
     case 13:
-      tmp = &m_styleText;
+      tmp = &m_styleWarning;
       break;
     case 14:
-      tmp = &m_styleSubsubsection;
+      tmp = &m_styleText;
       break;
     case 15:
-      tmp = &m_styleSubsection;
+      tmp = &m_styleSubsubsection;
       break;
     case 16:
-      tmp = &m_styleSection;
+      tmp = &m_styleSubsection;
       break;
     case 17:
-      tmp = &m_styleTitle;
+      tmp = &m_styleSection;
       break;
     case 18:
-      tmp = &m_styleTextBackground;
+      tmp = &m_styleTitle;
       break;
     case 19:
-      tmp = &m_styleBackground;
+      tmp = &m_styleTextBackground;
       break;
     case 20:
-      tmp = &m_styleCellBracket;
+      tmp = &m_styleBackground;
       break;
     case 21:
-      tmp = &m_styleActiveCellBracket;
+      tmp = &m_styleCellBracket;
       break;
     case 22:
-      tmp = &m_styleCursor;
+      tmp = &m_styleActiveCellBracket;
       break;
     case 23:
-      tmp = &m_styleSelection;
+      tmp = &m_styleCursor;
       break;
     case 24:
-      tmp = &m_styleEqualsSelection;
+      tmp = &m_styleSelection;
       break;
     case 25:
-      tmp = &m_styleOutdated;
+      tmp = &m_styleEqualsSelection;
       break;
     case 26:
-      tmp = &m_styleCodeHighlightingVariable;
+      tmp = &m_styleOutdated;
       break;
     case 27:
-      tmp = &m_styleCodeHighlightingFunction;
+      tmp = &m_styleCodeHighlightingVariable;
       break;
     case 28:
-      tmp = &m_styleCodeHighlightingComment;
+      tmp = &m_styleCodeHighlightingFunction;
       break;
     case 29:
-      tmp = &m_styleCodeHighlightingNumber;
+      tmp = &m_styleCodeHighlightingComment;
       break;
     case 30:
-      tmp = &m_styleCodeHighlightingString;
+      tmp = &m_styleCodeHighlightingNumber;
       break;
     case 31:
-      tmp = &m_styleCodeHighlightingOperator;
+      tmp = &m_styleCodeHighlightingString;
       break;
     case 32:
+      tmp = &m_styleCodeHighlightingOperator;
+      break;
+    case 33:
       tmp = &m_styleCodeHighlightingEndOfLine;
       break;
     default:

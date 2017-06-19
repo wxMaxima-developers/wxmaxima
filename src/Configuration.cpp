@@ -353,6 +353,16 @@ void Configuration::ReadStyle()
                &m_styles[TS_TITLE].font);
   READ_STYLES(TS_TITLE, "Style/Title/")
 
+  // Warning
+  m_styles[TS_WARNING].color = wxT("orange");
+  m_styles[TS_WARNING].bold = true;
+  m_styles[TS_WARNING].italic = false;
+  m_styles[TS_WARNING].underlined = false;
+  m_styles[TS_WARNING].fontSize = 24;
+  config->Read(wxT("Style/Warning/fontname"),
+               &m_styles[TS_WARNING].font);
+  READ_STYLES(TS_WARNING, "Style/Warning/")
+  
   // Main prompt
   m_styles[TS_MAIN_PROMPT].color = wxT("rgb(255,128,128)");
   m_styles[TS_MAIN_PROMPT].bold = false;

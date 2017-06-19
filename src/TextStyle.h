@@ -66,6 +66,7 @@ enum TextStyle
   TS_SUBSUBSECTION,
   TS_SECTION,
   TS_TITLE,
+  TS_WARNING,
   TS_ERROR,
   TS_CELL_BRACKET,
   TS_ACTIVE_CELL_BRACKET,
@@ -83,6 +84,6 @@ enum TextStyle
 };
 
 //! The number of entries TextStyle is long
-#define STYLE_NUM 33
+#define STYLE_NUM 34
 
 #endif // TEXTSTYLE_H

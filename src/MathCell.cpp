@@ -98,6 +98,9 @@ void MathCell::SetType(int type)
     case MC_TYPE_ERROR:
       m_textStyle = TS_ERROR;
       break;
+    case MC_TYPE_WARNING:
+      m_textStyle = TS_WARNING;
+      break;
     case MC_TYPE_TEXT:
       m_textStyle = TS_TEXT;
       break;
@@ -1045,6 +1048,9 @@ void MathCell::SetForeground()
         break;
       case MC_TYPE_ERROR:
         color = wxColour(wxT("red"));
+        break;
+      case MC_TYPE_WARNING:
+        color = configuration->GetColor(TS_WARNING);
         break;
       case MC_TYPE_LABEL:
         color = configuration->GetColor(TS_LABEL);

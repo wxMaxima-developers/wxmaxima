@@ -375,7 +375,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type, wxString userLabel)
       return;
   }
 
-  if (type != MC_TYPE_ERROR)
+  if ((type != MC_TYPE_ERROR) && (type != MC_TYPE_WARNING))
     StatusMaximaBusy(parsing);
 
   if (type == MC_TYPE_DEFAULT)
@@ -452,6 +452,10 @@ void wxMaxima::ConsoleAppend(wxString s, int type, wxString userLabel)
     
     if(tmp != NULL)
       m_console->m_cellPointers->m_errorList.Add(tmp);
+  }
+  else if (type == MC_TYPE_WARNING)
+  {
+    DoRawConsoleAppend(s, MC_TYPE_WARNING);
   }
   else
     DoConsoleAppend(wxT("<span>") + s + wxT("</span>"), type, false);
@@ -1176,7 +1180,8 @@ void wxMaxima::ReadMiscText(wxString &data)
   if (data.IsEmpty())
     return;
 
-  bool error = false;
+  bool error   = false;
+  bool warning = false;
 
   // A version of the text where each line begins with non-whitespace and whitespace
   // characters are merged.
@@ -1212,6 +1217,15 @@ void wxMaxima::ReadMiscText(wxString &data)
     )
     error = true;
 
+  if ((mergedWhitespace.StartsWith(wxT("Warning:"))) ||
+      (mergedWhitespace.StartsWith(wxT("warning:"))) ||
+      (mergedWhitespace.Contains(wxT("\nWarning:"))) ||
+      (mergedWhitespace.Contains(wxT("\nwarning:"))) ||
+      (mergedWhitespace.Contains(wxT(": Warning:"))) ||
+      (mergedWhitespace.Contains(wxT(": warning:")))
+    )
+    warning = true;
+  
   // Add all text lines to the console until we reach a known XML tag.
   int newLinePos;
   while ((newLinePos = GetMiscTextEnd(data)) != wxNOT_FOUND)
@@ -1251,7 +1265,12 @@ void wxMaxima::ReadMiscText(wxString &data)
       AbortOnError();
     }
     else
-      ConsoleAppend(textline, MC_TYPE_DEFAULT);
+    {
+      if(warning)
+        ConsoleAppend(textline, MC_TYPE_WARNING);
+      else
+        ConsoleAppend(textline, MC_TYPE_DEFAULT);
+    }
   }
 }
 
