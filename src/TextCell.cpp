@@ -67,7 +67,7 @@ TextCell::TextCell(MathCell *parent, Configuration **config, wxString text) : Ma
 
 void TextCell::SetValue(const wxString &text)
 {
-  wxString toolTip;
+  m_toolTip = wxEmptyString;
 
   m_displayedDigits_old = (*m_configuration)->GetDisplayedDigits();
   m_text = text;
@@ -89,13 +89,27 @@ void TextCell::SetValue(const wxString &text)
       m_displayedText = m_displayedText.Left(left) +
                         wxString::Format(_("[%i digits]"), (int) m_displayedText.Length() - 2 * left) +
                         m_displayedText.Right(left);
-      toolTip = _("The maximum number of displayed digits can be changed in the configuration dialogue");
+      m_toolTip = _("The maximum number of displayed digits can be changed in the configuration dialogue");
     }
+  }
+  else
+  {
+    if(text.StartsWith(wxT("rat: replaced ")))
+      m_toolTip = _("Normally computers use floating-point numbers that can be handled "
+                  "incredibly fast while being accurate to dozends of digits. "
+                  "They will, though, introduce a small error into some common numbers. "
+                  "For example 0.1 is represented as 3602879701896397/36028797018963968.\n"
+                  "As mathemathics is based on the fact that numbers that are exactly "
+                  "equal cancel each other out small errors can quickly add up to big errors "
+                  "(see Wilkinson's Polynomials or Rump's Polynomials). Some maxima "
+                  "commands therefore use rat() in order to automatically convert floats to "
+                  "exact numbers (like 1/10 or sqrt(2)/2) where floating-point errors might "
+                  "add up.\n"
+                  "The info that this was done can be turned off by setting "
+                  "ratprint to false.");
   }
 
   m_alt = m_altJs = false;
-
-  SetToolTip(toolTip);
 }
 
 MathCell *TextCell::Copy()

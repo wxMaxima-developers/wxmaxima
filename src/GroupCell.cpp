@@ -1648,7 +1648,7 @@ void GroupCell::SelectRectInOutput(wxRect &rect, wxPoint &one, wxPoint &two,
 wxString GroupCell::GetToolTip(const wxPoint &point)
 {
   wxString retval;
-  
+
   if (m_hide)
     return retval;
 

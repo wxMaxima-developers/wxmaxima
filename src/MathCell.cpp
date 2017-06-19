@@ -31,6 +31,7 @@
 
 MathCell::MathCell(MathCell *parent, Configuration **config)
 {
+  m_toolTip = wxEmptyString;
   m_group = parent;
   m_configuration = config;
   m_next = NULL;

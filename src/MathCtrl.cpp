@@ -1595,6 +1595,17 @@ void MathCtrl::OnMouseMotion(wxMouseEvent &event)
     }
     else
       SetToolTip(wxEmptyString);
+    
+    if (m_tree == NULL || !m_leftDown)
+      return;
+    m_mouseDrag = true;
+    CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_up.x, &m_up.y);
+    if (m_mouseOutside)
+    {
+      m_mousePoint.x = event.GetX();
+      m_mousePoint.y = event.GetY();
+    }
+    ClickNDrag(m_down, m_up);
 }
 
 void MathCtrl::SelectGroupCells(wxPoint down, wxPoint up)

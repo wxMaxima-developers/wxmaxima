@@ -1219,7 +1219,9 @@ void wxMaxima::ReadMiscText(wxString &data)
 
   if ((mergedWhitespace.StartsWith(wxT("Warning:"))) ||
       (mergedWhitespace.StartsWith(wxT("warning:"))) ||
+      (mergedWhitespace.StartsWith(wxT("WARNING:"))) ||
       (mergedWhitespace.Contains(wxT("\nWarning:"))) ||
+      (mergedWhitespace.Contains(wxT("\nWARNING:"))) ||
       (mergedWhitespace.Contains(wxT("\nwarning:"))) ||
       (mergedWhitespace.Contains(wxT(": Warning:"))) ||
       (mergedWhitespace.Contains(wxT(": warning:")))
