@@ -108,6 +108,13 @@ void TextCell::SetValue(const wxString &text)
                   "ratprint to false.");
     if(text.StartsWith(wxT("expt: undefined: 0 to a negative exponent.")))
       m_toolTip = _("Division by 0.");
+    if(text.StartsWith(wxT("Only symbols can be bound")))
+      m_toolTip = _("This error message is most probably caused by a try to assign "
+                    "a value to a number instead of a variable name.\n"
+                    "One probable cause is using a variable that already has a numeric "
+                    "value as a loop counter.");
+
+The most probable cause for this error is that there was an attempt to either use a number or a variable whose numerical value is known as a loop counter. 
   }
   m_alt = m_altJs = false;
 }
