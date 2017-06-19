@@ -106,8 +106,9 @@ void TextCell::SetValue(const wxString &text)
                   "add up.\n"
                   "The info that this was done can be turned off by setting "
                   "ratprint to false.");
+    if(text.StartsWith(wxT("expt: undefined: 0 to a negative exponent.")))
+      m_toolTip = _("Division by 0.");
   }
-
   m_alt = m_altJs = false;
 }
 
