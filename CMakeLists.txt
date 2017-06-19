@@ -35,8 +35,19 @@ else()
     install(FILES test/testbench_simple.wxmx DESTINATION share/wxMaxima)
 endif()
 
+
 # Build Packages
-set(CPACK_GENERATOR "TGZ;TBZ2;DEB;RPM")
+set(CPACK_GENERATOR "TGZ;TBZ2;DEB")
+
+# build RPMs only if rpmbuild is installed
+find_program(RPMBUILD_EXECUTABLE rpmbuild)
+if(NOT RPMBUILD_EXECUTABLE)
+    message(STATUS "rpmbuild not found - no RPM package will be build with make package.")
+else()
+    message(STATUS "rpmbuild found - RPM package can be build with make package.")
+    list(APPEND  CPACK_GENERATOR "RPM")
+endif()
+
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "wxMaxima is a GUI for the CAS Maxima")
 set(CPACK_PACKAGE_VENDOR "The wxMaxima Team")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/README.md")
