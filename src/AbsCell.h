@@ -60,6 +60,10 @@ public:
 
   void SetInner(MathCell *inner);
 
+  virtual wxString GetToolTip(const wxPoint &point){
+    return GetToolTipList(point,m_innerCell);
+  }
+
   MathCell *Copy();
 
   void SelectInner(wxRect &rect, MathCell **first, MathCell **last);

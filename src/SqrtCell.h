@@ -51,6 +51,10 @@ public:
 
   ~SqrtCell();
 
+  virtual wxString GetToolTip(const wxPoint &point){
+    return GetToolTipList(point,m_innerCell);
+  }
+
   MathCell *Copy();
 
   void SetInner(MathCell *inner);

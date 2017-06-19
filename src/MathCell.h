@@ -93,12 +93,19 @@ public:
   MathCell(MathCell *parent, Configuration **config);
 
   wxString m_toolTip;
+
   /*! Returns the ToolTip this cell provides.
 
     wxEmptyString means: No ToolTip
    */
-  wxString GetToolTip(){return m_toolTip;}
-  
+  virtual wxString GetToolTip(const wxPoint &point)
+    {
+      if(ContainsPoint(point))
+        return m_toolTip;
+      else
+        return wxEmptyString;
+    }
+
   //! Delete this list of cells.
   virtual ~MathCell();
 
@@ -724,6 +731,14 @@ public:
   bool m_SuppressMultiplicationDot;
 
 protected:
+  //! Determines if any of the lists contains a ToolTip for the point given.
+  wxString GetToolTipList(const wxPoint &point,
+                          MathCell *list1,
+                          MathCell *list2 = NULL,
+                          MathCell *list3 = NULL,
+                          MathCell *list4 = NULL,
+                          MathCell *list5 = NULL
+    );
   static wxRect m_updateRegion;
 
   /*! The GroupCell this list of cells belongs to.

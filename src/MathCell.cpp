@@ -893,6 +893,55 @@ void MathCell::SelectFirst(wxRect &rect, MathCell **first)
     *first = NULL;
 }
 
+wxString MathCell::GetToolTipList(const wxPoint &point,
+                                  MathCell *list1,
+                                  MathCell *list2,
+                                  MathCell *list3,
+                                  MathCell *list4,
+                                  MathCell *list5
+  )
+{
+  wxString toolTip;
+
+  while(list1 != NULL)
+  {
+    toolTip = list1->GetToolTip(point);
+    if(toolTip != wxEmptyString)
+      return toolTip;
+    list1 = list1->m_next;
+  }
+  while(list2 != NULL)
+  {
+    toolTip = list2->GetToolTip(point);
+    if(toolTip != wxEmptyString)
+      return toolTip;
+    list2 = list2->m_next;
+  }
+  while(list3 != NULL)
+  {
+    toolTip = list3->GetToolTip(point);
+    if(toolTip != wxEmptyString)
+      return toolTip;
+    list3 = list3->m_next;
+  }
+  while(list4 != NULL)
+  {
+    toolTip = list4->GetToolTip(point);
+    if(toolTip != wxEmptyString)
+      return toolTip;
+    list4 = list4->m_next;
+  }
+  while(list5 != NULL)
+  {
+    toolTip = list5->GetToolTip(point);
+    if(toolTip != wxEmptyString)
+      return toolTip;
+    list5 = list5->m_next;
+  }
+  return m_toolTip;
+}
+
+
 /***
  * Find the last cell in rectangle rect in this line.
  */

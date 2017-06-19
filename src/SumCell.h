@@ -47,6 +47,10 @@ public:
 
   MathCell *Copy();
 
+  virtual wxString GetToolTip(const wxPoint &point){
+    return GetToolTipList(point,m_base,m_over,m_under);
+  }
+  
   void RecalculateHeight(int fontsize);
 
   void RecalculateWidths(int fontsize);

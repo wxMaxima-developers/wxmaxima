@@ -31,6 +31,10 @@ public:
 
   ~DiffCell();
 
+  virtual wxString GetToolTip(const wxPoint &point){
+    return GetToolTipList(point, m_baseCell, m_diffCell);
+  }
+
   MathCell *Copy();
 
   void SetBase(MathCell *base);

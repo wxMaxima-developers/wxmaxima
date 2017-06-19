@@ -1659,10 +1659,10 @@ wxString GroupCell::GetToolTip(const wxPoint &point)
 
     // If a cell contains a cell containing a tooltip the tooltip of the
     // containing cell will be overridden.
-    if (tmp->ContainsPoint(point))
-      retval = tmp->GetToolTip();
+    if(tmp->GetToolTip(point) != wxEmptyString)
+      retval = tmp->GetToolTip(point);
 
-    tmp = tmp->m_nextToDraw;
+    tmp = tmp->m_next;
   }
 
   return retval;

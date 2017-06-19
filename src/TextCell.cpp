@@ -68,7 +68,6 @@ TextCell::TextCell(MathCell *parent, Configuration **config, wxString text) : Ma
 void TextCell::SetValue(const wxString &text)
 {
   m_toolTip = wxEmptyString;
-
   m_displayedDigits_old = (*m_configuration)->GetDisplayedDigits();
   m_text = text;
   ResetSize();

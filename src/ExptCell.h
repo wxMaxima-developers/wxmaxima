@@ -51,6 +51,10 @@ public:
 
   ~ExptCell();
 
+  virtual wxString GetToolTip(const wxPoint &point){
+      return GetToolTipList(point, m_baseCell, m_powCell);
+  }
+
   MathCell *Copy();
 
   //! Set the mantissa

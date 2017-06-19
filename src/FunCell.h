@@ -55,6 +55,10 @@ public:
 
   ~FunCell();
 
+  virtual wxString GetToolTip(const wxPoint &point){
+    return GetToolTipList(point, m_nameCell, m_argCell);
+  }
+
   MathCell *Copy();
 
   void SetName(MathCell *base);

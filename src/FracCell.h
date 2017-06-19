@@ -44,6 +44,10 @@ public:
 
   ~FracCell();
 
+  virtual wxString GetToolTip(const wxPoint &point){
+    return GetToolTipList(point, m_num, m_denom);
+  }
+
   //! All types of fractions we supportx
   enum FracType
   {

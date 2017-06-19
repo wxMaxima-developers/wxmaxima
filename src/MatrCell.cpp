@@ -47,6 +47,19 @@ void MatrCell::SetParent(MathCell *parent)
   }
 }
 
+wxString MatrCell::GetToolTip(const wxPoint &point)
+{
+  wxString toolTip;
+  
+  for (unsigned int i = 0; i < m_cells.size(); i++)
+  {
+    toolTip = GetToolTipList(point, m_cells[i]);
+    if (toolTip != wxEmptyString)
+      return toolTip;
+  }
+  return GetToolTip(point);
+}
+
 MathCell *MatrCell::Copy()
 {
   MatrCell *tmp = new MatrCell(m_group, m_configuration);

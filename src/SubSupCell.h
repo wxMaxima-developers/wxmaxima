@@ -31,6 +31,10 @@ public:
 
   ~SubSupCell();
 
+  virtual wxString GetToolTip(const wxPoint &point){
+    return GetToolTipList(point, m_baseCell, m_exptCell, m_indexCell);
+  }
+
   MathCell *Copy();
 
   void SetBase(MathCell *base);
