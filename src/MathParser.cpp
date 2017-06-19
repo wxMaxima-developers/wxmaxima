@@ -448,11 +448,11 @@ MathCell *MathParser::ParseText(wxXmlNode *node, int style)
       case TS_WARNING:
         cell->SetType(MC_TYPE_WARNING);
         break;
-        
       default:
         cell->SetType(m_ParserStyle);
       }
-
+      cell->SetStyle(style);
+      
       cell->SetHighlight(m_highlight);
       cell->SetValue(lines.GetNextToken());
       if (retval == NULL)
