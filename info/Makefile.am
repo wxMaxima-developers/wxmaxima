@@ -1,5 +1,5 @@
-figurefiles =  NoiseFilter.jpg maxima_screenshot.png InputCell.jpg
-figurefiles += wxMaximaWindow.png wxMaximaLogo.jpg wxMaximaLogo.png SidePanes.jpg ezUnits.jpg
+figurefiles =  cell-example.png cell-example.wxmx maxima_screenshot.png InputCell.jpg
+figurefiles += wxMaximaWindow.png wxMaximaLogo.jpg wxMaximaLogo.png SidePanes.png ezUnits.jpg
 figurefiles += BatchImage.jpg wxMaxima_configuration_001.jpg wxMaxima_configuration_002.jpg
 figurefiles += wxMaxima_configuration_001.png wxMaxima_configuration_002.png sbclMemory.png
 figurefiles += ezUnits.png BatchImage.png Autocomplete1.jpg Autocomplete2.jpg

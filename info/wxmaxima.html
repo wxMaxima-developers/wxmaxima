@@ -207,7 +207,7 @@ functions.
       right-click. Indeed, an entire workbook can be exported, either as an HTML
       file or as a LaTeX file. Documentation for wxMaxima, including workbooks
       to illustrate aspects of its use, is online at the <span style="font-style: italic;">wxMaxima</span>
-      <a target="_blank" href="http://andrejv.github.io/wxmaxima/help.html">help
+      <a target="_blank" href="https://andrejv.github.io/wxmaxima/help.html">help
         site</a>, as well as via the help menu.</p>
     <img alt="wxMaxima window" src="./wxMaximaWindow.png">
     <p>The calculations that are entered in <em>wxMaxima</em> are performed by
@@ -216,7 +216,7 @@ functions.
     To <a title="To top of document" href="#Top" accesskey="u" rel="up">top</a>
     <h3 class="section">1.2 Workbook basics</h3>
     <p>Much of <span style="font-style: italic;">wxMaxima</span> is
-      self-explaining, but some details require attention. <a href="http://andrejv.github.io/wxmaxima/help.html">This
+      self-explaining, but some details require attention. <a href="https://andrejv.github.io/wxmaxima/help.html">This
         site</a> contains a number of workbooks that address various aspects of
       <span style="font-style: italic;">wxMaxima</span>. Working through some of
       these (particularly the "10 minute (wx)Maxima tutorial") will increase
@@ -263,9 +263,9 @@ functions.
       by changing the values of several cells and then gradually reverting the
       unneeded changes is rather easy. Furthermore the worksheet itself has a
       global undo buffer that can undo cell edits, adds and deletes. </p>
-    <p>The figure below shows a title cell, a section cell, a text cell, and
-      part of an input/output cell.</p>
-    <img alt="Noise filter " src="./NoiseFilter.jpg">
+    <p>The figure below shows different cell types (Title cells, section cells, subsection cells, 
+    text cells, input/output cells and an image cell.</p>
+    <img alt="Example of different wxMaxima cells" src="./cell-example.png">
     <p><a name="Cells"></a></p>
     To <a title="To top of document" href="#Top" accesskey="u" rel="up">top</a>
     <h4 class="subsection">1.2.2 Cells</h4>
@@ -459,13 +459,13 @@ leadsto       a "leads to" sign
     <h4 class="subsection">1.2.6 Side Panes</h4>
     <p>Shortcuts to the most important <em>Maxima</em> commands and a history
       of the last issued commands can be accessed using the side panes. They can
-      be enabled using the "Panes" entry in the "Maxima" menu. The shortcuts can
+      be enabled using the "View" menu. The shortcuts can
       be moved to where the location is most convenient, inside or outside the <em>wxMaxima</em>
       window. The same commands can be accessed via the menus. Also, a pane that
       contains Greek letters can be opened. This pane provides an alternative to
       the methods of entering these letters that the preceding section
       discusses.</p>
-    <img alt="Side panes" src="./SidePanes.jpg">
+    <img alt="Example of different side panes" src="./SidePanes.png">
     <h4>1.2.7 MathML output </h4>
     <p>Several word processors and similar programs either recognize MathML
       input and automatically insert it as an editable 2D equation - or (like
@@ -878,7 +878,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
 </pre></div>
     <a name="Special-variables"></a>To <a title="To top of document" href="#Top"
       accesskey="u" rel="up">top</a>
-    <h3 class="section">2.5 Special variableswx</h3>
+    <h3 class="section">2.5 Special variables wx...</h3>
     <ul>
       <li> <var>wxsubscripts</var> tells <em>Maxima</em> if it should convert
         variable names that contain an underscore (<code>R_150</code> or the
@@ -1032,8 +1032,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
       simple equations</h3>
     <p>The jsMath fonts allow for excellent 2D-display of equations. But there
       are broken versions of this package that crash <span style="font-style: italic;">wxMaxima</span>.
-      A working version can be downloaded from <a href="http://www.math.union.edu/%7Edpvc/jsmath/download/jsMath-fonts.html%20math.union.edu">http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html
-        math.union.edu</a>. To make <span style="font-style: italic;">wxMaxima</span>
+      A working version can be downloaded from <a href="http://www.math.union.edu/%7Edpvc/jsmath/download/jsMath-fonts.html">http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html</a>. To make <span style="font-style: italic;">wxMaxima</span>
       actually use these fonts the according checkbox has to be enabled in the
       Styles tab of <span style="font-style: italic;">wxMaxima</span>’s
       configuration dialogue. </p>
@@ -1041,7 +1040,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
       href="#Top" accesskey="u" rel="up">top</a>
     <h3 class="section">3.6 Outputting animations doesn’t work</h3>
     <p><span style="font-style: italic;">wxMaxima</span> relies on a third-party
-      tool (<a href="http://www.imagemagick.org/">ImageMagick</a>) to convert
+      tool (<a href="https://www.imagemagick.org/">ImageMagick</a>) to convert
       animations to the animated gif format. This process works only if this
       package is installed and known to the system (on Windows the path to <span
         style="font-style: italic;">ImageMagick</span>’s <samp>convert.exe</samp>
