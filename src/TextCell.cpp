@@ -145,7 +145,14 @@ void TextCell::SetValue(const wxString &text)
                     "converts it to a list and makes it appendable.");
     if(text.StartsWith(wxT("part: invalid index of list or matrix.")))
       m_toolTip = _("The [] or the part() command tried to access a list or matrix "
-                    "element that doesn't exist.\n");
+                    "element that doesn't exist.");
+    if(text.StartsWith(wxT("apply: subscript must be an integer; found:")))
+      m_toolTip = _("the [] operator tried to extract an element of a list, a matrix, "
+                    "an equation or an array. But instead of an integer number "
+                    "something was used whose numerical value is unknown or not an "
+                    "integer.\n"
+                    "Floating-point numbers are bound to contain small rounding errors "
+                    "and aren't allowed as an array index.");
   }
   m_alt = m_altJs = false;
 }
