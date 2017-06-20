@@ -1590,7 +1590,10 @@ void MathCtrl::OnMouseMotion(wxMouseEvent &event)
         wxString toolTip = dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer)->GetToolTip(wxPoint(x,y));
 
         if(toolTip != wxEmptyString)
-          SetToolTip(toolTip);
+        {
+          if(toolTip != GetToolTip())
+            SetToolTip(toolTip);
+        }
         else
         {
           UnsetToolTip();
