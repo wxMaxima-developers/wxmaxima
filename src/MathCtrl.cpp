@@ -30,6 +30,7 @@
 
 #include "wxMaxima.h"
 #include <wx/richtext/richtextbuffer.h>
+#include <wx/tooltip.h>
 #include "wxMaximaFrame.h"
 #include "MathCtrl.h"
 #include "Bitmap.h"
@@ -1591,13 +1592,28 @@ void MathCtrl::OnMouseMotion(wxMouseEvent &event)
         if(toolTip != wxEmptyString)
           SetToolTip(toolTip);
         else
+        {
           UnsetToolTip();
+          // Disabling and re-enabling tooltips resets the tooltip poput delay timer.
+          wxToolTip::Enable(false);
+          wxToolTip::Enable(true);
+        }
       }
       else
+      {
         UnsetToolTip();
+        // Disabling and re-enabling tooltips resets the tooltip poput delay timer.
+        wxToolTip::Enable(false);
+        wxToolTip::Enable(true);
+      }
     }
     else
+    {
       UnsetToolTip();
+      // Disabling and re-enabling tooltips resets the tooltip poput delay timer.
+      wxToolTip::Enable(false);
+      wxToolTip::Enable(true);
+    }
     
     if (m_tree == NULL || !m_leftDown)
       return;
