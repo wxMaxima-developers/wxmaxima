@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-20 06:46+0200\n"
+"POT-Creation-Date: 2017-06-20 07:03+0200\n"
 "PO-Revision-Date: 2013-01-04 00:31+0800\n"
 "Last-Translator: crickzhang1 <crickzhang1@gmail.com>\n"
 "Language-Team: amateur\n"
@@ -1402,7 +1402,7 @@ msgstr "将数字或多项式相除"
 msgid "Divide this input cell into two cells"
 msgstr ""
 
-#: ../src/TextCell.cpp:132
+#: ../src/TextCell.cpp:135
 msgid "Division by 0."
 msgstr ""
 
@@ -3090,7 +3090,7 @@ msgstr "无法找到匹配项！"
 msgid "Normality Test..."
 msgstr "正态分布检验"
 
-#: ../src/TextCell.cpp:117
+#: ../src/TextCell.cpp:120
 msgid ""
 "Normally computers use floating-point numbers that can be handled incredibly "
 "fast while being accurate to dozends of digits. They will, though, introduce "
@@ -3737,14 +3737,14 @@ msgstr "节"
 msgid "Section cell"
 msgstr "节单元"
 
-#: ../src/BTextCtrl.cpp:49 ../src/EditorCell.cpp:821 ../src/TextCell.cpp:467
+#: ../src/BTextCtrl.cpp:49 ../src/EditorCell.cpp:821 ../src/TextCell.cpp:470
 msgid ""
 "Seems like something is broken with a font. Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
 "\" in the configuration dialogue should fix it."
 msgstr ""
 
-#: ../src/TextCell.cpp:245
+#: ../src/TextCell.cpp:248
 msgid ""
 "Seems like something is broken with the maths font. Installing http://www."
 "math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use "
@@ -4333,7 +4333,7 @@ msgstr ""
 msgid "The key combination Shift+Space results in a non-breakable space."
 msgstr ""
 
-#: ../src/TextCell.cpp:241
+#: ../src/TextCell.cpp:244
 msgid ""
 "The letter \"X\" is of width zero. Installing http://www.math.union.edu/"
 "~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in "
@@ -4414,7 +4414,7 @@ msgstr ""
 msgid "Theta"
 msgstr ""
 
-#: ../src/TextCell.cpp:134
+#: ../src/TextCell.cpp:137
 msgid ""
 "This error message is most probably caused by a try to assign a value to a "
 "number instead of a variable name.\n"
@@ -5115,6 +5115,12 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1548
 msgid "or"
+msgstr ""
+
+#: ../src/TextCell.cpp:117
+msgid ""
+"part() was used in order to extract the nth element of somethingthat was "
+"less than n elements long."
 msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1563

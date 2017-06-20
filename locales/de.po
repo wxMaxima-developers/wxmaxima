@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-20 06:46+0200\n"
+"POT-Creation-Date: 2017-06-20 07:03+0200\n"
 "PO-Revision-Date: 2017-06-15 15:36+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -1469,7 +1469,7 @@ msgstr "Dividiere Zahlen oder Polynome"
 msgid "Divide this input cell into two cells"
 msgstr "Teile diese Eingabezelle in zwei Zellen auf."
 
-#: ../src/TextCell.cpp:132
+#: ../src/TextCell.cpp:135
 msgid "Division by 0."
 msgstr ""
 
@@ -3283,7 +3283,7 @@ msgstr "Keine Übereinstimmung gefunden!"
 msgid "Normality Test..."
 msgstr "Test Normalverteilung"
 
-#: ../src/TextCell.cpp:117
+#: ../src/TextCell.cpp:120
 msgid ""
 "Normally computers use floating-point numbers that can be handled incredibly "
 "fast while being accurate to dozends of digits. They will, though, introduce "
@@ -3937,7 +3937,7 @@ msgstr "Kapitel"
 msgid "Section cell"
 msgstr "Kapitelzelle"
 
-#: ../src/BTextCtrl.cpp:49 ../src/EditorCell.cpp:821 ../src/TextCell.cpp:467
+#: ../src/BTextCtrl.cpp:49 ../src/EditorCell.cpp:821 ../src/TextCell.cpp:470
 msgid ""
 "Seems like something is broken with a font. Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
@@ -3948,7 +3948,7 @@ msgstr ""
 "darauffolgendem Anklicken von \"Benutze jsMath-Zeichensätze\" in der "
 "Konfiguration sollte das Problem beheben."
 
-#: ../src/TextCell.cpp:245
+#: ../src/TextCell.cpp:248
 msgid ""
 "Seems like something is broken with the maths font. Installing http://www."
 "math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use "
@@ -4560,7 +4560,7 @@ msgstr ""
 "Die Tastenkombination Shift+Space erzeugt ein Leerzeichen, das nicht vom "
 "automatischen Zeilenumbruch in Zeilen umgebrochen wird."
 
-#: ../src/TextCell.cpp:241
+#: ../src/TextCell.cpp:244
 msgid ""
 "The letter \"X\" is of width zero. Installing http://www.math.union.edu/"
 "~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in "
@@ -4664,7 +4664,7 @@ msgstr ""
 msgid "Theta"
 msgstr "Theta"
 
-#: ../src/TextCell.cpp:134
+#: ../src/TextCell.cpp:137
 msgid ""
 "This error message is most probably caused by a try to assign a value to a "
 "number instead of a variable name.\n"
@@ -5384,6 +5384,12 @@ msgstr "omikron"
 #: ../src/wxMaximaFrame.cpp:1548
 msgid "or"
 msgstr "Oder"
+
+#: ../src/TextCell.cpp:117
+msgid ""
+"part() was used in order to extract the nth element of somethingthat was "
+"less than n elements long."
+msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:1563
 msgid "partial sign"
