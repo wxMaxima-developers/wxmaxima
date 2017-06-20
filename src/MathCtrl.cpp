@@ -1586,15 +1586,18 @@ void MathCtrl::OnMouseMotion(wxMouseEvent &event)
     {
       if ((dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer)->GetOutputRect()).Contains(wxPoint(x,y)))
       {
-        SetToolTip(
-          dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer)->GetToolTip(wxPoint(x,y))
-          );
+        wxString toolTip = dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer)->GetToolTip(wxPoint(x,y));
+
+        if(toolTip != wxEmptyString)
+          SetToolTip(toolTip);
+        else
+          UnsetToolTip();
       }
       else
-        SetToolTip(wxEmptyString);
+        UnsetToolTip();
     }
     else
-      SetToolTip(wxEmptyString);
+      UnsetToolTip();
     
     if (m_tree == NULL || !m_leftDown)
       return;

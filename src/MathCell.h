@@ -730,6 +730,9 @@ public:
    */
   bool m_SuppressMultiplicationDot;
 
+  //! Set the tooltip of this math cell. wxEmptyString means: no tooltip.
+  void SetToolTip(const wxString &tooltip){m_toolTip = tooltip;}
+
 protected:
   //! Determines if any of the lists contains a ToolTip for the point given.
   wxString GetToolTipList(const wxPoint &point,
