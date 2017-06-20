@@ -114,7 +114,7 @@ void TextCell::SetValue(const wxString &text)
   else
   {
     if(text.StartsWith(wxT("part: fell off the end.")))
-       m_toolTip = _("part() was used in order to extract the nth element of something"
+       m_toolTip = _("part() was used in order to extract the nth element of something "
                      "that was less than n elements long.");
     if(text.StartsWith(wxT("rat: replaced ")))
       m_toolTip = _("Normally computers use floating-point numbers that can be handled "
