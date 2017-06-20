@@ -114,8 +114,8 @@ void TextCell::SetValue(const wxString &text)
   else
   {
     if(text.StartsWith(wxT("part: fell off the end.")))
-       m_toolTip = _("part() was used in order to extract the nth element of something "
-                     "that was less than n elements long.");
+       m_toolTip = _("part() or the [] operator was used in order to extract the nth element "
+                     "of something that was less than n elements long.");
     if(text.StartsWith(wxT("rat: replaced ")))
       m_toolTip = _("Normally computers use floating-point numbers that can be handled "
                     "incredibly fast while being accurate to dozends of digits. "
@@ -138,6 +138,14 @@ void TextCell::SetValue(const wxString &text)
                     "a value to a number instead of a variable name.\n"
                     "One probable cause is using a variable that already has a numeric "
                     "value as a loop counter.");
+    if(text.StartsWith(wxT("append: operators of arguments must all be the same.")))
+      m_toolTip = _("Most probably it was attempted to append something to a list "
+                    "that isn't a list.\n"
+                    "Enclosing the new element for the list in brackets ([]) "
+                    "converts it to a list and makes it appendable.");
+    if(text.StartsWith(wxT("part: invalid index of list or matrix.")))
+      m_toolTip = _("The [] or the part() command tried to access a list or matrix "
+                    "element that doesn't exist.\n");
   }
   m_alt = m_altJs = false;
 }
