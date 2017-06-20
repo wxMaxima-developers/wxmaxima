@@ -95,17 +95,19 @@ void TextCell::SetValue(const wxString &text)
   {
     if(text.StartsWith(wxT("rat: replaced ")))
       m_toolTip = _("Normally computers use floating-point numbers that can be handled "
-                  "incredibly fast while being accurate to dozends of digits. "
-                  "They will, though, introduce a small error into some common numbers. "
-                  "For example 0.1 is represented as 3602879701896397/36028797018963968.\n"
-                  "As mathemathics is based on the fact that numbers that are exactly "
-                  "equal cancel each other out small errors can quickly add up to big errors "
-                  "(see Wilkinson's Polynomials or Rump's Polynomials). Some maxima "
-                  "commands therefore use rat() in order to automatically convert floats to "
-                  "exact numbers (like 1/10 or sqrt(2)/2) where floating-point errors might "
-                  "add up.\n"
-                  "The info that this was done can be turned off by setting "
-                  "ratprint to false.");
+                    "incredibly fast while being accurate to dozends of digits. "
+                    "They will, though, introduce a small error into some common numbers. "
+                    "For example 0.1 is represented as 3602879701896397/36028797018963968.\n"
+                    "As mathemathics is based on the fact that numbers that are exactly "
+                    "equal cancel each other out small errors can quickly add up to big errors "
+                    "(see Wilkinson's Polynomials or Rump's Polynomials). Some maxima "
+                    "commands therefore use rat() in order to automatically convert floats to "
+                    "exact numbers (like 1/10 or sqrt(2)/2) where floating-point errors might "
+                    "add up.\n\n"
+                    "This error message doesn't occur if exact numbers (1/10 instead of 0.1) "
+                    "are used.\n"
+                    "The info that numbers have automatically been converted can be suppressed "
+                    "by setting ratprint to false.");
     if(text.StartsWith(wxT("expt: undefined: 0 to a negative exponent.")))
       m_toolTip = _("Division by 0.");
     if(text.StartsWith(wxT("Only symbols can be bound")))
