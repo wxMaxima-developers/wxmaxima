@@ -48,6 +48,7 @@ TextCell::TextCell(MathCell *parent, Configuration **config) : MathCell(parent, 
   m_fontSizeLabel = 12;
   m_dontEscapeOpeningParenthesis = false;
   ResetSize();
+  m_initialToolTip = (*m_configuration)->GetDefaultMathCellToolTip();
 }
 
 TextCell::TextCell(MathCell *parent, Configuration **config, wxString text) : MathCell(parent, config)
@@ -63,11 +64,12 @@ TextCell::TextCell(MathCell *parent, Configuration **config, wxString text) : Ma
   SetValue(text);
   m_highlight = false;
   m_dontEscapeOpeningParenthesis = false;
+  m_initialToolTip = (*m_configuration)->GetDefaultMathCellToolTip();
 }
 
 void TextCell::SetValue(const wxString &text)
 {
-  m_toolTip = wxEmptyString;
+  m_toolTip = m_initialToolTip;
   m_displayedDigits_old = (*m_configuration)->GetDisplayedDigits();
   m_text = text;
   ResetSize();
@@ -77,6 +79,24 @@ void TextCell::SetValue(const wxString &text)
   m_text.Replace(wxT("\x2212>"), wxT("\x2192"));
 
   m_displayedText = m_text;
+  if (m_textStyle == TS_VARIABLE)
+  {
+    if (m_text == wxT("pnz"))
+      m_toolTip = _("Either positive, negative or zero.\n"
+                    "Normally the result of sign() if the sign cannot be determined."
+        );
+
+    if (m_text == wxT("pz"))
+      m_toolTip = _("Either positive or zero.\n"
+                    "A possible result of sign()."
+        );
+  
+    if (m_text == wxT("nz"))
+      m_toolTip = _("Either negative or zero"
+                    "A possible result of sign()."
+        );
+  }
+  
   if (m_textStyle == TS_NUMBER)
   {
     unsigned int displayedDigits = (*m_configuration)->GetDisplayedDigits();

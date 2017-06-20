@@ -133,7 +133,7 @@ protected:
 private:
   //! Produces a text sample that determines the label width
   wxString LabelWidthText();
-
+  wxString m_initialToolTip;
 };
 
 #endif // TEXTCELL_H

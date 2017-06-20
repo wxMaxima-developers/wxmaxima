@@ -1493,11 +1493,15 @@ void wxMaxima::ReadPrompt(wxString &data)
     m_console->SetNotification(_("Maxima asks a question!"),wxICON_INFORMATION);
     if (!o.IsEmpty())
     {
+      m_console->m_configuration->SetDefaultMathCellToolTip(
+        _("Most questions can be avoided using the assume() "
+          "and the declare() command"));
       if (o.Find(wxT("<mth>")) > -1)
         DoConsoleAppend(o, MC_TYPE_PROMPT);
       else
         DoRawConsoleAppend(o, MC_TYPE_PROMPT);
-    }
+      m_console->m_configuration->SetDefaultMathCellToolTip(wxEmptyString);
+  }
     if (m_console->ScrolledAwayFromEvaluation())
     {
       if (m_console->m_mainToolBar)

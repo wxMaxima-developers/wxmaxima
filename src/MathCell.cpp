@@ -59,6 +59,7 @@ MathCell::MathCell(MathCell *parent, Configuration **config)
   m_imageBorderWidth = 0;
   m_currentPoint.x = -1;
   m_currentPoint.y = -1;
+  m_toolTip = (*m_configuration)->GetDefaultMathCellToolTip();
 }
 
 MathCell::~MathCell()

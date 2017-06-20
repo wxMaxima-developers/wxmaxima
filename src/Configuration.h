@@ -495,6 +495,11 @@ public:
   wxString MathJaXURL(){ return m_mathJaxURL;}
   //! Returns the URL MathJaX can be found at.
   void MathJaXURL(wxString url){wxConfig::Get()->Write(wxT("mathJaxURL"), m_mathJaxURL = url);}
+
+  //! Sets the default toolTip for new cells
+  void SetDefaultMathCellToolTip(wxString defaultToolTip){m_defaultToolTip = defaultToolTip;}
+  //! Gets the default toolTip for new cells
+  wxString GetDefaultMathCellToolTip(){return m_defaultToolTip;}
 private:
   wxString m_workingdir;
   wxString m_maximaLocation;
@@ -538,6 +543,7 @@ private:
   wxString m_mathFontName;
   bool m_forceUpdate;
   bool m_outdated;
+  wxString m_defaultToolTip;
   bool m_TeXFonts;
   bool m_keepPercent;
   bool m_restartOnReEvaluation;
