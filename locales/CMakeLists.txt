@@ -33,7 +33,7 @@ if(GETTEXT_FOUND)
 	# Call msgmerge for each language and create a merged language file
         message (STATUS "Create PO-file for language ${LANG}")
 	execute_process(
-	    COMMAND ${GETTEXT_MSGMERGE_EXECUTABLE} ${CMAKE_SOURCE_DIR}/locales/${LANG}.po ${CMAKE_SOURCE_DIR}/locales/wxMaxima.pot
+	    COMMAND ${GETTEXT_MSGMERGE_EXECUTABLE} ${CMAKE_SOURCE_DIR}/locales/${LANG}.po ${CMAKE_BINARY_DIR}/wxMaxima.pot
 	    OUTPUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.po"
             ERROR_QUIET)
     endforeach()
