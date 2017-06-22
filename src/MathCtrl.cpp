@@ -493,7 +493,9 @@ void MathCtrl::ScrollToError()
 
 GroupCell *MathCtrl::GetWorkingGroup(bool resortToLast)
 {
-  GroupCell *tmp = dynamic_cast<GroupCell *>(m_cellPointers->GetWorkingGroup(resortToLast));
+  GroupCell *tmp = NULL;
+  if(m_cellPointers->GetWorkingGroup(resortToLast))
+    tmp = dynamic_cast<GroupCell *>(m_cellPointers->GetWorkingGroup(resortToLast));
   if(!resortToLast)
     return tmp;
 
@@ -582,7 +584,8 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
     CellToScrollTo = GetHCaret();
     CellToScrollTo = GetActiveCell();
   }
-  if (!CellToScrollTo) CellToScrollTo = GetWorkingGroup(true);
+  if (!CellToScrollTo)
+    CellToScrollTo = GetWorkingGroup(true);
   if (!CellToScrollTo)
   {
     wxPoint topleft;
@@ -656,7 +659,8 @@ void MathCtrl::OnSize(wxSizeEvent &event)
     CellToScrollTo = m_hCaretPosition;
     if (!CellToScrollTo) CellToScrollTo = GetActiveCell();
   }
-  if (!CellToScrollTo) CellToScrollTo = GetWorkingGroup(true);
+  if (!CellToScrollTo)
+    CellToScrollTo = GetWorkingGroup(true);
 
   if (!CellToScrollTo)
   {
