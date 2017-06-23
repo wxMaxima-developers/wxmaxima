@@ -1060,6 +1060,10 @@ void wxMaximaFrame::UpdateRecentDocuments()
       wxString label(fullname + wxT("   [ ") + path + wxT(" ]"));
 
       m_recentDocumentsMenu->Append(i, label);
+      if(wxFileExists(filename.GetFullPath()))
+        m_recentDocumentsMenu->Enable(i, true);
+      else
+        m_recentDocumentsMenu->Enable(i, false);
     }
   }
 
