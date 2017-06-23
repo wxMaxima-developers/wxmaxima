@@ -28,13 +28,14 @@
 #include "ConjugateCell.h"
 #include "TextCell.h"
 
-ConjugateCell::ConjugateCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
+ConjugateCell::ConjugateCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
+  m_cellPointers = cellPointers;
   m_innerCell = NULL;
   m_last = NULL;
-  m_open = new TextCell(parent, config, wxT("conjugate("));
+  m_open = new TextCell(parent, config, cellPointers, wxT("conjugate("));
   m_open->DontEscapeOpeningParenthesis();
-  m_close = new TextCell(parent, config, wxT(")"));
+  m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
 void ConjugateCell::SetParent(MathCell *parent)
@@ -50,7 +51,7 @@ void ConjugateCell::SetParent(MathCell *parent)
 
 MathCell *ConjugateCell::Copy()
 {
-  ConjugateCell *tmp = new ConjugateCell(m_group, m_configuration);
+  ConjugateCell *tmp = new ConjugateCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
   tmp->m_isBroken = m_isBroken;
@@ -61,10 +62,24 @@ MathCell *ConjugateCell::Copy()
 
 ConjugateCell::~ConjugateCell()
 {
+  if(this == m_cellPointers->m_selectionStart)
+    m_cellPointers->m_selectionStart = NULL;
+  if(this == m_cellPointers->m_selectionEnd)
+    m_cellPointers->m_selectionEnd = NULL;
   wxDELETE(m_innerCell);
   wxDELETE(m_open);
   wxDELETE(m_close);
   m_innerCell = m_open = m_close = NULL;
+  MarkAsDeleted();
+}
+
+void ConjugateCell::MarkAsDeleted()
+{
+  MarkAsDeletedList(m_innerCell, m_open, m_close);
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
 }
 
 void ConjugateCell::SetInner(MathCell *inner)

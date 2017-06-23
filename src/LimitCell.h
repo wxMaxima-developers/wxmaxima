@@ -29,13 +29,16 @@
 #define LIMITCELL_H
 
 #include "MathCell.h"
+#include "CellPointers.h"
 
 class LimitCell : public MathCell
 {
 public:
-  LimitCell(MathCell *parent, Configuration **config);
+  LimitCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~LimitCell();
+
+  void MarkAsDeleted();
 
   virtual wxString GetToolTip(const wxPoint &point){
     return GetToolTipList(point, m_base, m_under, m_name);
@@ -73,6 +76,9 @@ protected:
   MathCell *m_base;
   MathCell *m_under;
   MathCell *m_name;
+
+private:
+  CellPointers *m_cellPointers;
 };
 
 #endif // LIMITCELL_H

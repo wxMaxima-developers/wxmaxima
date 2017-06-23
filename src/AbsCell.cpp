@@ -30,12 +30,13 @@
 #include "AbsCell.h"
 #include "TextCell.h"
 
-AbsCell::AbsCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
+AbsCell::AbsCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
+  m_cellPointers = cellPointers;
   m_innerCell = NULL;
-  m_open = new TextCell(parent, config, wxT("abs("));
+  m_open = new TextCell(parent, config, cellPointers, wxT("abs("));
   m_open->DontEscapeOpeningParenthesis();
-  m_close = new TextCell(parent, config, wxT(")"));
+  m_close = new TextCell(parent, config, cellPointers, wxT(")"));
   m_last = NULL;
 }
 
@@ -52,7 +53,7 @@ void AbsCell::SetParent(MathCell *parent)
 
 MathCell *AbsCell::Copy()
 {
-  AbsCell *tmp = new AbsCell(m_group, m_configuration);
+  AbsCell *tmp = new AbsCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
   tmp->m_isBroken = m_isBroken;
@@ -69,7 +70,18 @@ AbsCell::~AbsCell()
   m_innerCell = NULL;
   m_open = NULL;
   m_close = NULL;
+  MarkAsDeleted();
 }
+
+void AbsCell::MarkAsDeleted()
+{
+  MarkAsDeletedList(m_innerCell, m_open, m_close);
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
+}
+
 
 void AbsCell::SetInner(MathCell *inner)
 {

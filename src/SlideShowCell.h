@@ -30,6 +30,7 @@
 
 #include "MathCell.h"
 #include "Image.h"
+#include "CellPointers.h"
 #include <wx/image.h>
 
 #include <wx/filesys.h>
@@ -48,9 +49,11 @@ public:
     If the default frame rate from the config is to be used instead this parameter 
     has to be set to -1.
    */
-  SlideShow(MathCell *parent, Configuration **config, wxFileSystem *filesystem = NULL, int framerate = -1);
+  SlideShow(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxFileSystem *filesystem = NULL, int framerate = -1);
 
   ~SlideShow();
+  
+  void MarkAsDeleted();
 
   /*! Remove all cached scaled images from memory
 
@@ -133,6 +136,7 @@ protected:
 
 private:
   bool m_drawBoundingBox;
+  CellPointers *m_cellPointers;
 };
 
 #endif // SLIDESHOWCELL_H

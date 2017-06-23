@@ -30,6 +30,7 @@
 #define PARENCELL_H
 
 #include "MathCell.h"
+#include "CellPointers.h"
 #include "Setup.h"
 
 /*! The class that represents parenthesis that are wrapped around text
@@ -49,9 +50,11 @@
 class ParenCell : public MathCell
 {
 public:
-  ParenCell(MathCell *parent, Configuration **config);
+  ParenCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~ParenCell();
+
+  void MarkAsDeleted();
 
   virtual wxString GetToolTip(const wxPoint &point){
     return GetToolTipList(point,m_innerCell);
@@ -109,6 +112,9 @@ protected:
      - 0 = 
    */
   parenthesisStyle m_bigParenType;
+
+private:
+  CellPointers *m_cellPointers;
 };
 
 #endif // PARENCELL_H

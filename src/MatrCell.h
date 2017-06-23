@@ -23,6 +23,7 @@
 #define MATRCELL_H
 
 #include "MathCell.h"
+#include "CellPointers.h"
 
 #include <vector>
 
@@ -31,9 +32,11 @@ using namespace std;
 class MatrCell : public MathCell
 {
 public:
-  MatrCell(MathCell *parent, Configuration **config);
+  MatrCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~MatrCell();
+
+  void MarkAsDeleted();
 
   virtual wxString GetToolTip(const wxPoint &point);
 
@@ -96,6 +99,9 @@ protected:
   vector<int> m_widths;
   vector<int> m_drops;
   vector<int> m_centers;
+
+private:
+  CellPointers *m_cellPointers;
 };
 
 #endif // MATRCELL_H

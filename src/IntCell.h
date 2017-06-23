@@ -31,6 +31,7 @@
 
 #include "MathCell.h"
 #include "Setup.h"
+#include "CellPointers.h"
 
 /*! This class represents an integral
 
@@ -39,9 +40,11 @@
 class IntCell : public MathCell
 {
 public:
-  IntCell(MathCell *parent, Configuration **config);
+  IntCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~IntCell();
+
+  void MarkAsDeleted();
 
   virtual wxString GetToolTip(const wxPoint &point){
     return GetToolTipList(point, m_base, m_under, m_over, m_var);
@@ -111,7 +114,7 @@ protected:
   int m_signTop;
   int m_charHeight, m_charWidth;
 private:
-
+  CellPointers *m_cellPointers;
 };
 
 #endif  // INTCELL_H

@@ -70,9 +70,9 @@ GroupCell::GroupCell(Configuration **config, int groupType, CellPointers *cellPo
   if (groupType != GC_TYPE_PAGEBREAK)
   {
     if (groupType == GC_TYPE_CODE)
-      m_inputLabel = new TextCell(this, m_configuration, EMPTY_INPUT_LABEL);
+      m_inputLabel = new TextCell(this, m_configuration, m_cellPointers, EMPTY_INPUT_LABEL);
     else
-      m_inputLabel = new TextCell(this, m_configuration, wxT(" "));
+      m_inputLabel = new TextCell(this, m_configuration, m_cellPointers, wxT(" "));
 
     m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
   }
@@ -136,7 +136,7 @@ GroupCell::GroupCell(Configuration **config, int groupType, CellPointers *cellPo
   // it loads an image (without deleting it)
   if ((groupType == GC_TYPE_IMAGE) && (initString.Length() > 0))
   {
-    ImgCell *ic = new ImgCell(this, m_configuration, initString, false);
+    ImgCell *ic = new ImgCell(this, m_configuration, m_cellPointers, initString, false);
     AppendOutput(ic);
   }
 
@@ -315,10 +315,18 @@ GroupCell::~GroupCell()
   wxDELETE(m_output);
   wxDELETE(m_hiddenTree);
   m_inputLabel = m_output = m_hiddenTree = NULL;
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
 }
 
 void GroupCell::MarkAsDeleted()
 {
+  if(this == m_cellPointers->m_selectionStart)
+    m_cellPointers->m_selectionStart = NULL;
+  if(this == m_cellPointers->m_selectionEnd)
+    m_cellPointers->m_selectionEnd = NULL;
   EditorCell *input = GetInput();
   if (input != NULL)
     input->MarkAsDeleted();
@@ -331,6 +339,8 @@ void GroupCell::MarkAsDeleted()
     m_cellPointers->m_lastWorkingGroup = NULL;
   if (this == m_cellPointers->m_groupCellUnderPointer)
     m_cellPointers->m_groupCellUnderPointer = NULL;
+  if(m_output)
+    m_output->MarkAsDeletedList(m_output);
 }
 
 wxString GroupCell::TexEscapeOutputCell(wxString Input)
@@ -911,10 +921,21 @@ void GroupCell::DrawBracket()
 
   wxDC &dc = configuration->GetDC();
 
+
+  int selectionStart_px = -1;
+  if((m_cellPointers->m_selectionStart != NULL) &&
+     (m_cellPointers->m_selectionStart->GetType() == MC_TYPE_GROUP))
+    selectionStart_px = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart)->m_currentPoint.y;
+
+  int selectionEnd_px = -1;
+  if((m_cellPointers->m_selectionEnd != NULL) &&
+     (m_cellPointers->m_selectionEnd->GetType() == MC_TYPE_GROUP))
+    selectionEnd_px = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionEnd)->m_currentPoint.y;
+  
   // Mark this GroupCell as selected if it is selected. Else clear the space we
   // will add brackets in
-  if ((m_currentPoint.y >= m_cellPointers->m_selectionStart_px) &&
-      (m_currentPoint.y <= m_cellPointers->m_selectionEnd_px))
+  if ((m_currentPoint.y >= selectionStart_px) &&
+      (m_currentPoint.y <= selectionEnd_px))
   {
 #if defined(__WXMAC__)
     dc.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR

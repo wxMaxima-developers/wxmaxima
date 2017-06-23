@@ -24,6 +24,7 @@
 
 #include "MathCell.h"
 #include "TextCell.h"
+#include "CellPointers.h"
 
 /*! \file
 
@@ -47,9 +48,11 @@
 class SqrtCell : public MathCell
 {
 public:
-  SqrtCell(MathCell *parent, Configuration **config);
+  SqrtCell(MathCell *parent, Configuration **config, CellPointers *m_cellPointers);
 
   ~SqrtCell();
+
+  void MarkAsDeleted();
 
   virtual wxString GetToolTip(const wxPoint &point){
     return GetToolTipList(point,m_innerCell);
@@ -90,6 +93,9 @@ protected:
   int m_signWidth, m_signSize, m_signTop;
   int m_signType;
   double m_signFontScale;
+
+private:
+  CellPointers *m_cellPointers;
 };
 
 #endif // SQRTCELL_H

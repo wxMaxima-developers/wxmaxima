@@ -90,10 +90,6 @@ public:
   int m_indexSearchStartedAt;
   //! Which cell the blinking cursor is in?
   MathCell *m_activeCell;
-  //! The y position the selection starts at
-  int m_selectionStart_px;
-  //! The y position the selection ends at
-  int m_selectionEnd_px;
   //! The GroupCell that is under the mouse pointer 
   MathCell *m_groupCellUnderPointer;
   //! The EditorCell that contains the currently active question from maxima 
@@ -112,13 +108,6 @@ public:
   */
   wxString m_selectionString;
 
-  //! Set the y position of the selection start and end
-  void SetSelectionRange_px(int start, int end)
-  {
-    m_selectionStart_px = start;
-    m_selectionEnd_px = end;
-  }
-
   //! Forget where the search was started
   void ResetSearchStart()
   {
@@ -133,6 +122,30 @@ public:
   //! Forget where the keyboard selection was started
   void ResetKeyboardSelectionStart()
   { m_cellKeyboardSelectionStartedIn = NULL; }
+  
+  /*! The first cell of the currently selected range of groupCells.
+    
+    NULL, when no GroupCells are selected and NULL, if only stuff inside a GroupCell
+    is selected and therefore the selection is handled by EditorCell; This cell is 
+    always above m_selectionEnd.
+    
+    See also m_hCaretPositionStart
+  */
+  MathCell *m_selectionStart;
+  /*! The last cell of the currently selected range of groupCells.
+    
+    NULL, when no GroupCells are selected and NULL, if only stuff inside a GroupCell
+    is selected and therefore the selection is handled by EditorCell; This cell is 
+    always below m_selectionStart.
+    
+    See also m_hCaretPositionEnd
+  */
+
+  //! The cell currently under the mouse pointer
+  MathCell *m_cellUnderPointer;
+  
+  MathCell *m_selectionEnd;
+
 };
 
 #endif

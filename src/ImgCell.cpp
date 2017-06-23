@@ -35,8 +35,9 @@
 #include <wx/clipbrd.h>
 #include <wx/mstream.h>
 
-ImgCell::ImgCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
+ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
+  m_cellPointers = cellPointers;
   m_image = NULL;
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
@@ -44,9 +45,10 @@ ImgCell::ImgCell(MathCell *parent, Configuration **config) : MathCell(parent, co
   m_drawBoundingBox = false;
 }
 
-ImgCell::ImgCell(MathCell *parent, Configuration **config, wxMemoryBuffer image, wxString type) : MathCell(parent,
+ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellpointers, wxMemoryBuffer image, wxString type) : MathCell(parent,
                                                                                                            config)
 {
+  m_cellPointers = cellpointers;
   m_image = new Image(m_configuration, image, type);
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
@@ -54,8 +56,9 @@ ImgCell::ImgCell(MathCell *parent, Configuration **config, wxMemoryBuffer image,
   m_drawBoundingBox = false;
 }
 
-ImgCell::ImgCell(MathCell *parent, Configuration **config, const wxBitmap &bitmap) : MathCell(parent, config)
+ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellpointers, const wxBitmap &bitmap) : MathCell(parent, config)
 {
+  m_cellPointers = cellpointers;
   m_image = new Image(m_configuration, bitmap);
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
@@ -66,9 +69,10 @@ ImgCell::ImgCell(MathCell *parent, Configuration **config, const wxBitmap &bitma
 int ImgCell::s_counter = 0;
 
 // constructor which load image
-ImgCell::ImgCell(MathCell *parent, Configuration **config, wxString image, bool remove, wxFileSystem *filesystem)
+ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellpointers, wxString image, bool remove, wxFileSystem *filesystem)
         : MathCell(parent, config)
 {
+  m_cellPointers = cellpointers;
   m_type = MC_TYPE_IMAGE;
   m_drawRectangle = true;
   if (image != wxEmptyString)
@@ -94,7 +98,7 @@ void ImgCell::SetBitmap(const wxBitmap &bitmap)
 
 MathCell *ImgCell::Copy()
 {
-  ImgCell *tmp = new ImgCell(m_group, m_configuration);
+  ImgCell *tmp = new ImgCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->m_drawRectangle = m_drawRectangle;
 
@@ -108,6 +112,16 @@ MathCell *ImgCell::Copy()
 ImgCell::~ImgCell()
 {
   wxDELETE(m_image);
+  MarkAsDeleted();
+}
+
+void ImgCell::MarkAsDeleted()
+{
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
+  ClearCache();
 }
 
 void ImgCell::RecalculateWidths(int fontsize)

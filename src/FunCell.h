@@ -23,6 +23,7 @@
 #define FUNCELL_H
 
 #include "MathCell.h"
+#include "CellPointers.h"
 /*! \file
 
   This file declares the class FunCell() that represents a maxima function.
@@ -51,9 +52,11 @@
 class FunCell : public MathCell
 {
 public:
-  FunCell(MathCell *parent, Configuration **config);
+  FunCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~FunCell();
+
+  void MarkAsDeleted();
 
   virtual wxString GetToolTip(const wxPoint &point){
     return GetToolTipList(point, m_nameCell, m_argCell);
@@ -92,6 +95,9 @@ public:
 protected:
   MathCell *m_nameCell;
   MathCell *m_argCell;
+
+private:
+  CellPointers *m_cellPointers;
 };
 
 

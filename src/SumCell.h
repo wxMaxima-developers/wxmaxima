@@ -31,6 +31,7 @@
 #define SUMCELL_H
 
 #include "MathCell.h"
+#include "CellPointers.h"
 
 enum
 {
@@ -41,15 +42,18 @@ enum
 class SumCell : public MathCell
 {
 public:
-  SumCell(MathCell *parent, Configuration **config);
+  SumCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~SumCell();
+  
+  void MarkAsDeleted();
 
   MathCell *Copy();
-
-  virtual wxString GetToolTip(const wxPoint &point){
-    return GetToolTipList(point,m_base,m_over,m_under);
-  }
+  CellPointers *m_cellPointers;
+  virtual wxString GetToolTip(const wxPoint &point)
+    {
+      return GetToolTipList(point,m_base,m_over,m_under);
+    }
   
   void RecalculateHeight(int fontsize);
 

@@ -30,17 +30,18 @@
 
 #define EXPT_DEC 2
 
-ExptCell::ExptCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
+ExptCell::ExptCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
+  m_cellPointers = cellPointers;
   m_last1 = NULL;
   m_last2 = NULL;
   m_baseCell = NULL;
   m_powCell = NULL;
   m_isMatrix = false;
-  m_exp = new TextCell(parent, config, wxT("^"));
-  m_open = new TextCell(parent, config, wxT("("));
+  m_exp = new TextCell(parent, config, cellPointers, wxT("^"));
+  m_open = new TextCell(parent, config, cellPointers, wxT("("));
   m_open->DontEscapeOpeningParenthesis();
-  m_close = new TextCell(parent, config, wxT(")"));
+  m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
 void ExptCell::SetParent(MathCell *parent)
@@ -58,7 +59,7 @@ void ExptCell::SetParent(MathCell *parent)
 
 MathCell *ExptCell::Copy()
 {
-  ExptCell *tmp = new ExptCell(m_group, m_configuration);
+  ExptCell *tmp = new ExptCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetBase(m_baseCell->CopyList());
   tmp->SetPower(m_powCell->CopyList());
@@ -76,6 +77,16 @@ ExptCell::~ExptCell()
   wxDELETE(m_open);
   wxDELETE(m_close);
   m_baseCell = m_powCell = m_exp = m_open = m_close = NULL;
+  MarkAsDeleted();
+}
+
+void ExptCell::MarkAsDeleted()
+{
+  MarkAsDeletedList(m_baseCell,m_powCell,m_exp,m_open,m_close);
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
 }
 
 void ExptCell::SetPower(MathCell *power)

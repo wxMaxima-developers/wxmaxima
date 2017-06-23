@@ -503,7 +503,7 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
 
   if (type == MC_TYPE_MAIN_PROMPT)
   {
-    TextCell *cell = new TextCell(m_console->GetTree(), &(m_console->m_configuration), s);
+    TextCell *cell = new TextCell(m_console->GetTree(), &(m_console->m_configuration), m_console->m_cellPointers, s);
     cell->SetType(type);
     m_console->InsertLine(cell, true);
   }
@@ -516,6 +516,7 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
     while (tokens.HasMoreTokens())
     {
       TextCell *cell = new TextCell(m_console->GetTree(), &(m_console->m_configuration),
+                                    m_console->m_cellPointers,
                                     tokens.GetNextToken());
 
       cell->SetType(type);
@@ -6460,6 +6461,7 @@ void wxMaxima::TryEvaluateNextInQueue()
       // Inform the user about the error (which automatically causes the worksheet
       // to the cell we marked as erroneous a few seconds ago.
       TextCell *cell = new TextCell(m_console->GetTree(), &(m_console->m_configuration),
+                                    m_console->m_cellPointers,
                                     _("Refusing to send cell to maxima: ") +
                                     parenthesisError + wxT("\n"));
       cell->SetType(MC_TYPE_ERROR);

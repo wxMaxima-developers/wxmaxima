@@ -51,8 +51,9 @@
   type == 1 ? 2*size:              \
       (3*size)/2)
 
-ParenCell::ParenCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
+ParenCell::ParenCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
+  m_cellPointers = cellPointers;
   m_charWidth = 12;
   m_charWidth1 = 12;
   m_charHeight = 12;
@@ -65,8 +66,8 @@ ParenCell::ParenCell(MathCell *parent, Configuration **config) : MathCell(parent
   m_bigParenType = PARENTHESIS_NORMAL;
   m_innerCell = NULL;
   m_print = true;
-  m_open = new TextCell(parent, config, wxT("("));
-  m_close = new TextCell(parent, config, wxT(")"));
+  m_open = new TextCell(parent, config, cellPointers, wxT("("));
+  m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
 void ParenCell::SetParent(MathCell *parent)
@@ -82,7 +83,7 @@ void ParenCell::SetParent(MathCell *parent)
 
 MathCell *ParenCell::Copy()
 {
-  ParenCell *tmp = new ParenCell(m_group, m_configuration);
+  ParenCell *tmp = new ParenCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList(), m_type);
   tmp->m_isBroken = m_isBroken;
@@ -96,6 +97,16 @@ ParenCell::~ParenCell()
   wxDELETE(m_open);
   wxDELETE(m_close);
   m_innerCell = m_open = m_close = NULL;
+  MarkAsDeleted();
+}
+
+void ParenCell::MarkAsDeleted()
+{
+  MarkAsDeletedList(m_innerCell, m_open, m_close);
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
 }
 
 void ParenCell::SetInner(MathCell *inner, int type)
@@ -120,7 +131,7 @@ void ParenCell::RecalculateWidths(int fontsize)
   Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
   if (m_innerCell == NULL)
-    m_innerCell = new TextCell(m_group, m_configuration);
+    m_innerCell = new TextCell(m_group, m_configuration, m_cellPointers);
 
   m_innerCell->RecalculateWidthsList(fontsize);
 

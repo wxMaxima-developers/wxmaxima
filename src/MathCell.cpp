@@ -894,12 +894,61 @@ void MathCell::SelectFirst(wxRect &rect, MathCell **first)
     *first = NULL;
 }
 
+
+void MathCell::MarkAsDeletedList(MathCell *list1,
+                                 MathCell *list2,
+                                 MathCell *list3,
+                                 MathCell *list4,
+                                 MathCell *list5,
+                                 MathCell *list6,
+                                 MathCell *list7
+  )
+{
+  while(list1 != NULL)
+  {
+    list1->MarkAsDeleted();
+    list1 = list1->m_next;
+  }
+  while(list2 != NULL)
+  {
+    list2->MarkAsDeleted();
+    list2 = list2->m_next;
+  }
+  while(list3 != NULL)
+  {
+    list3->MarkAsDeleted();
+    list3 = list3->m_next;
+  }
+  while(list4 != NULL)
+  {
+    list4->MarkAsDeleted();
+    list4 = list4->m_next;
+  }
+  while(list5 != NULL)
+  {
+    list5->MarkAsDeleted();
+    list5 = list5->m_next;
+  }
+  while(list6 != NULL)
+  {
+    list6->MarkAsDeleted();
+    list6 = list6->m_next;
+  }
+  while(list7 != NULL)
+  {
+    list7->MarkAsDeleted();
+    list7 = list7->m_next;
+  }
+}
+
 wxString MathCell::GetToolTipList(const wxPoint &point,
                                   MathCell *list1,
                                   MathCell *list2,
                                   MathCell *list3,
                                   MathCell *list4,
-                                  MathCell *list5
+                                  MathCell *list5,
+                                  MathCell *list6,
+                                  MathCell *list7
   )
 {
   wxString toolTip;
@@ -938,6 +987,20 @@ wxString MathCell::GetToolTipList(const wxPoint &point,
     if(toolTip != wxEmptyString)
       return toolTip;
     list5 = list5->m_next;
+  }
+  while(list6 != NULL)
+  {
+    toolTip = list6->GetToolTip(point);
+    if(toolTip != wxEmptyString)
+      return toolTip;
+    list6 = list6->m_next;
+  }
+  while(list7 != NULL)
+  {
+    toolTip = list7->GetToolTip(point);
+    if(toolTip != wxEmptyString)
+      return toolTip;
+    list7 = list7->m_next;
   }
   return m_toolTip;
 }

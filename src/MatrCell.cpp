@@ -28,8 +28,9 @@
 
 #include "MatrCell.h"
 
-MatrCell::MatrCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
+MatrCell::MatrCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
+  m_cellPointers = cellPointers;
   m_matWidth = 0;
   m_matHeight = 0;
   m_specialMatrix = false;
@@ -62,7 +63,7 @@ wxString MatrCell::GetToolTip(const wxPoint &point)
 
 MathCell *MatrCell::Copy()
 {
-  MatrCell *tmp = new MatrCell(m_group, m_configuration);
+  MatrCell *tmp = new MatrCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->m_specialMatrix = m_specialMatrix;
   tmp->m_inferenceMatrix = m_inferenceMatrix;
@@ -83,6 +84,18 @@ MatrCell::~MatrCell()
     wxDELETE(m_cells[i]);
     m_cells[i] = NULL;
   }
+  MarkAsDeleted();
+}
+
+void MatrCell::MarkAsDeleted()
+{
+  for (unsigned int i = 0; i < m_cells.size(); i++)
+    if(m_cells[i])
+      m_cells[i]->MarkAsDeletedList(m_cells[i]);
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
 }
 
 void MatrCell::RecalculateWidths(int fontsize)

@@ -27,8 +27,9 @@
 
 #include "AtCell.h"
 
-AtCell::AtCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
+AtCell::AtCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
+  m_cellPointers = cellPointers;
   m_baseCell = NULL;
   m_indexCell = NULL;
 }
@@ -44,7 +45,7 @@ void AtCell::SetParent(MathCell *parent)
 
 MathCell *AtCell::Copy()
 {
-  AtCell *tmp = new AtCell(m_group, m_configuration);
+  AtCell *tmp = new AtCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetBase(m_baseCell->CopyList());
   tmp->SetIndex(m_indexCell->CopyList());
@@ -57,8 +58,17 @@ AtCell::~AtCell()
   wxDELETE(m_baseCell);
   wxDELETE(m_indexCell);
   m_baseCell = m_indexCell = NULL;
+  MarkAsDeleted();
 }
 
+void AtCell::MarkAsDeleted()
+{
+  MarkAsDeletedList(m_baseCell, m_indexCell);
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
+}
 
 void AtCell::SetIndex(MathCell *index)
 {

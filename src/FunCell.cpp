@@ -27,8 +27,9 @@
 
 #include "FunCell.h"
 
-FunCell::FunCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
+FunCell::FunCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
+  m_cellPointers = cellPointers;
   m_nameCell = NULL;
   m_argCell = NULL;
 }
@@ -44,7 +45,7 @@ void FunCell::SetParent(MathCell *parent)
 
 MathCell *FunCell::Copy()
 {
-  FunCell *tmp = new FunCell(m_group, m_configuration);
+  FunCell *tmp = new FunCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetName(m_nameCell->CopyList());
   tmp->SetArg(m_argCell->CopyList());
@@ -58,6 +59,16 @@ FunCell::~FunCell()
   wxDELETE(m_nameCell);
   wxDELETE(m_argCell);
   m_nameCell = m_argCell = NULL;
+  MarkAsDeleted();
+}
+
+void FunCell::MarkAsDeleted()
+{
+  MarkAsDeletedList(m_nameCell,m_argCell);
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
 }
 
 void FunCell::SetName(MathCell *name)

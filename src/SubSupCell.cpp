@@ -32,8 +32,9 @@
 
 #define SUBSUP_DEC 3
 
-SubSupCell::SubSupCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
+SubSupCell::SubSupCell(MathCell *parent, Configuration **config,CellPointers *cellPointers) : MathCell(parent, config)
 {
+  m_cellPointers = cellPointers;
   m_baseCell = NULL;
   m_indexCell = NULL;
   m_exptCell = NULL;
@@ -52,7 +53,7 @@ void SubSupCell::SetParent(MathCell *parent)
 
 MathCell *SubSupCell::Copy()
 {
-  SubSupCell *tmp = new SubSupCell(m_group, m_configuration);
+  SubSupCell *tmp = new SubSupCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetBase(m_baseCell->CopyList());
   tmp->SetIndex(m_indexCell->CopyList());
@@ -69,7 +70,18 @@ SubSupCell::~SubSupCell()
   m_indexCell = NULL;
   wxDELETE(m_exptCell);
   m_exptCell = NULL;
+  MarkAsDeleted();
 }
+
+void SubSupCell::MarkAsDeleted()
+{
+  MarkAsDeletedList(m_baseCell, m_indexCell, m_exptCell);
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
+}
+
 
 void SubSupCell::SetIndex(MathCell *index)
 {

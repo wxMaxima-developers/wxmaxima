@@ -35,7 +35,7 @@
 #define INTEGRAL_FONT_SIZE 12
 #endif
 
-IntCell::IntCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
+IntCell::IntCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
   m_base = NULL;
   m_under = NULL;
@@ -47,6 +47,7 @@ IntCell::IntCell(MathCell *parent, Configuration **config) : MathCell(parent, co
   m_intStyle = INT_IDEF;
   m_charWidth = 12;
   m_charHeight = 12;
+  m_cellPointers = cellPointers;
 }
 
 void IntCell::SetParent(MathCell *parent)
@@ -64,7 +65,7 @@ void IntCell::SetParent(MathCell *parent)
 
 MathCell *IntCell::Copy()
 {
-  IntCell *tmp = new IntCell(m_group, m_configuration);
+  IntCell *tmp = new IntCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetBase(m_base->CopyList());
   tmp->SetUnder(m_under->CopyList());
@@ -81,7 +82,16 @@ IntCell::~IntCell()
   wxDELETE(m_under);
   wxDELETE(m_over);
   wxDELETE(m_var);
-  m_base = m_under = m_over = m_var = NULL;
+  MarkAsDeleted();
+}
+
+void IntCell::MarkAsDeleted()
+{
+  MarkAsDeletedList(m_base, m_under, m_over, m_var);
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
 }
 
 void IntCell::SetOver(MathCell *over)
@@ -127,10 +137,10 @@ void IntCell::RecalculateWidths(int fontsize)
   m_base->RecalculateWidthsList(fontsize);
   m_var->RecalculateWidthsList(fontsize);
   if (m_under == NULL)
-    m_under = new TextCell(m_group, m_configuration);
+    m_under = new TextCell(m_group, m_configuration, m_cellPointers);
   m_under->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 5));
   if (m_over == NULL)
-    m_over = new TextCell(m_group, m_configuration);
+    m_over = new TextCell(m_group, m_configuration, m_cellPointers);
   m_over->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 5));
 
   if (configuration->CheckTeXFonts())

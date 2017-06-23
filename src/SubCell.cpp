@@ -29,8 +29,9 @@
 
 #define SUB_DEC 2
 
-SubCell::SubCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
+SubCell::SubCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
+  m_cellPointers = cellPointers;
   m_baseCell = NULL;
   m_indexCell = NULL;
 }
@@ -46,7 +47,7 @@ void SubCell::SetParent(MathCell *parent)
 
 MathCell *SubCell::Copy()
 {
-  SubCell *tmp = new SubCell(m_group, m_configuration);
+  SubCell *tmp = new SubCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetBase(m_baseCell->CopyList());
   tmp->SetIndex(m_indexCell->CopyList());
@@ -60,7 +61,18 @@ SubCell::~SubCell()
   wxDELETE(m_indexCell);
   m_baseCell = NULL;
   m_indexCell = NULL;
+  MarkAsDeleted();
 }
+
+void SubCell::MarkAsDeleted()
+{
+  MarkAsDeletedList(m_baseCell, m_indexCell);
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
+}
+
 
 void SubCell::SetIndex(MathCell *index)
 {

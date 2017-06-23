@@ -30,11 +30,12 @@
 #define MIN_LIMIT_FONT_SIZE 8
 #define LIMIT_FONT_SIZE_DECREASE 1
 
-LimitCell::LimitCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
+LimitCell::LimitCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
   m_base = NULL;
   m_under = NULL;
   m_name = NULL;
+  m_cellPointers = cellPointers;
 }
 
 void LimitCell::SetParent(MathCell *parent)
@@ -50,7 +51,7 @@ void LimitCell::SetParent(MathCell *parent)
 
 MathCell *LimitCell::Copy()
 {
-  LimitCell *tmp = new LimitCell(m_group, m_configuration);
+  LimitCell *tmp = new LimitCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetBase(m_base->CopyList());
   tmp->SetUnder(m_under->CopyList());
@@ -65,7 +66,18 @@ LimitCell::~LimitCell()
   wxDELETE(m_under);
   wxDELETE(m_name);
   m_base = m_under = m_name = NULL;
+  MarkAsDeleted();
 }
+
+void LimitCell::MarkAsDeleted()
+{
+  MarkAsDeletedList(m_base, m_under, m_name);
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
+}
+
 
 void LimitCell::SetName(MathCell *name)
 {

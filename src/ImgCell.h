@@ -23,25 +23,29 @@
 #define IMGCELL_H
 
 #include "MathCell.h"
+#include "CellPointers.h"
 #include <wx/image.h>
 #include "Image.h"
 
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
+#include "CellPointers.h"
 
 class ImgCell : public MathCell
 {
 public:
-  ImgCell(MathCell *parent, Configuration **config);
+  ImgCell(MathCell *parent, Configuration **config, CellPointers *cellpointers);
 
-  ImgCell(MathCell *parent, Configuration **config, wxMemoryBuffer image, wxString type);
+  ImgCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type);
 
-  ImgCell(MathCell *parent, Configuration **config, wxString image, bool remove = true,
+  ImgCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove = true,
           wxFileSystem *filesystem = NULL);
 
-  ImgCell(MathCell *parent, Configuration **config, const wxBitmap &bitmap);
+  ImgCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap);
 
   ~ImgCell();
+
+  void MarkAsDeleted();
 
   void LoadImage(wxString image, bool remove = true);
 
@@ -126,6 +130,8 @@ protected:
 
 private:
   bool m_drawBoundingBox;
+
+  CellPointers *m_cellPointers;
 };
 
 #endif // IMGCELL_H

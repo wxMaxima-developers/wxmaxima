@@ -29,13 +29,15 @@
 
 #include "SumCell.h"
 #include "TextCell.h"
+#include "CellPointers.h"
 
 #define SUM_SIGN "\x58"
 #define PROD_SIGN "\x59"
 #define SUM_DEC 2
 
-SumCell::SumCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
+SumCell::SumCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
+  m_cellPointers = cellPointers;
   m_base = NULL;
   m_under = NULL;
   m_over = NULL;
@@ -59,7 +61,7 @@ void SumCell::SetParent(MathCell *parent)
 
 MathCell *SumCell::Copy()
 {
-  SumCell *tmp = new SumCell(m_group, m_configuration);
+  SumCell *tmp = new SumCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetBase(m_base->CopyList());
   tmp->SetUnder(m_under->CopyList());
@@ -77,7 +79,18 @@ SumCell::~SumCell()
   m_base = NULL;
   m_under = NULL;
   m_over = NULL;
+  MarkAsDeleted();
 }
+
+void SumCell::MarkAsDeleted()
+{
+  MarkAsDeletedList(m_base, m_under, m_over);
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
+}
+
 
 void SumCell::SetOver(MathCell *over)
 {
@@ -115,7 +128,7 @@ void SumCell::RecalculateWidths(int fontsize)
   m_base->RecalculateWidthsList(fontsize);
   m_under->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
   if (m_over == NULL)
-    m_over = new TextCell(m_group, m_configuration);
+    m_over = new TextCell(m_group, m_configuration, m_cellPointers);
   m_over->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
 
   if (configuration->CheckTeXFonts())

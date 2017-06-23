@@ -31,16 +31,18 @@ CellPointers::CellPointers()
 {
   m_cellMouseSelectionStartedIn = NULL;
   m_cellKeyboardSelectionStartedIn = NULL;
+  m_cellUnderPointer = NULL;
   m_cellSearchStartedIn = NULL;
   m_answerCell = NULL;
   m_indexSearchStartedAt = -1;
   m_activeCell = NULL;
-  m_selectionStart_px = -1;
-  m_selectionEnd_px = -1;
   m_groupCellUnderPointer = NULL;
   m_lastWorkingGroup = NULL;
-  m_selectionString = wxEmptyString;
   m_workingGroup = NULL;
+  m_selectionString = wxEmptyString;
+  m_selectionStart = NULL;
+  m_selectionEnd = NULL;
+
 }
 
 bool CellPointers::ErrorList::Contains(MathCell *cell)

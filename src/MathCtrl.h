@@ -553,13 +553,13 @@ private:
   /*! The start for the selection when selecting group with the horizontally drawn cursor
 
     This cell does define were the selection was actually started and therefore does not need 
-    to be above m_hCaretPositionEnd in the worksheet. See also m_selectionStart.
+    to be above m_hCaretPositionEnd in the worksheet. See also m_cellPointers->m_selectionStart.
    */
   GroupCell *m_hCaretPositionStart;
   /*! The end of the selection when selecting group with the horizontally drawn cursor
 
     This cell does define where the selection was actually ended and therefore does not need 
-    to be below m_hCaretPositionEnd in the worksheet. See also m_selectionEnd.
+    to be below m_hCaretPositionEnd in the worksheet. See also m_cellPointers->m_selectionEnd.
    */
   GroupCell *m_hCaretPositionEnd;
   bool m_leftDown;
@@ -570,24 +570,6 @@ private:
   //! The list of tree that contains the document itself
   GroupCell *m_tree;
   GroupCell *m_last;
-  /*! The first cell of the currently selected range of groupCells.
-    
-    NULL, when no GroupCells are selected and NULL, if only stuff inside a GroupCell
-    is selected and therefore the selection is handled by EditorCell; This cell is 
-    always above m_selectionEnd.
-
-    See also m_hCaretPositionStart
-   */
-  MathCell *m_selectionStart;
-  /*! The last cell of the currently selected range of groupCells.
-    
-    NULL, when no GroupCells are selected and NULL, if only stuff inside a GroupCell
-    is selected and therefore the selection is handled by EditorCell; This cell is 
-    always below m_selectionStart.
-
-    See also m_hCaretPositionEnd
-   */
-  MathCell *m_selectionEnd;
   int m_clickType;
   GroupCell *m_clickInGC;
   //! true = blink the cursor
@@ -912,7 +894,7 @@ public:
 
   bool CanCopy(bool fromActive = false)
   {
-    return m_selectionStart != NULL ||
+    return m_cellPointers->m_selectionStart != NULL ||
            (fromActive && m_cellPointers->m_activeCell != NULL &&
             dynamic_cast<EditorCell *>(m_cellPointers->m_activeCell)->CanCopy());
   }
@@ -926,7 +908,7 @@ public:
   {
     return (m_cellPointers->m_activeCell != NULL &&
             dynamic_cast<EditorCell *>(m_cellPointers->m_activeCell)->CanCopy()) ||
-           (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_GROUP);
+           (m_cellPointers->m_selectionStart != NULL && m_cellPointers->m_selectionStart->GetType() == MC_TYPE_GROUP);
   }
 
   //! Select the whole document
@@ -935,7 +917,7 @@ public:
   //! Is at least one entire cell selected?
   bool CellsSelected()
   {
-    return ((m_selectionStart != NULL) && (m_selectionEnd != NULL));
+    return ((m_cellPointers->m_selectionStart != NULL) && (m_cellPointers->m_selectionEnd != NULL));
   }
 
   /*! Delete a range of cells
@@ -987,8 +969,8 @@ public:
   //! Does it make sense to enable the "Play" button and the slider now? 
   bool CanAnimate()
   {
-    return m_selectionStart != NULL && m_selectionStart == m_selectionEnd &&
-           m_selectionStart->GetType() == MC_TYPE_SLIDE;
+    return m_cellPointers->m_selectionStart != NULL && m_cellPointers->m_selectionStart == m_cellPointers->m_selectionEnd &&
+           m_cellPointers->m_selectionStart->GetType() == MC_TYPE_SLIDE;
   }
 
   void Animate(bool run);
@@ -1084,14 +1066,14 @@ public:
     NULL means: No cell is selected.
   */
   MathCell *GetSelectionStart()
-  { return m_selectionStart; }
+  { return m_cellPointers->m_selectionStart; }
 
   /*! Return the last of the currently selected cells.
 
     NULL means: No cell is selected.
   */
   MathCell *GetSelectionEnd()
-  { return m_selectionEnd; }
+  { return m_cellPointers->m_selectionEnd; }
 
   //! Select the cell sel
   void SetSelection(MathCell *sel)
@@ -1100,21 +1082,12 @@ public:
   //! Select the cell range start-end
   void SetSelection(MathCell *start, MathCell *end)
   {
-    if((m_selectionStart != start) || (m_selectionEnd != end))
+    if((m_cellPointers->m_selectionStart != start) || (m_cellPointers->m_selectionEnd != end))
       RequestRedraw();
-    m_selectionStart = start;
-    m_selectionEnd = end;
-    if ((start != NULL) && (start->GetType() == MC_TYPE_GROUP))
-    {
-      m_cellPointers->SetSelectionRange_px(
-              dynamic_cast<GroupCell *>(m_selectionStart)->m_currentPoint.y,
-              dynamic_cast<GroupCell *>(m_selectionEnd)->m_currentPoint.y
-      );
-    }
-    else
-      m_cellPointers->SetSelectionRange_px(-1, -1);
+    m_cellPointers->m_selectionStart = start;
+    m_cellPointers->m_selectionEnd = end;
 
-    if (m_selectionStart == NULL)
+    if (m_cellPointers->m_selectionStart == NULL)
     {
       m_hCaretPositionStart = NULL;
       m_hCaretPositionEnd = NULL;

@@ -30,8 +30,9 @@
 
 #define SIGN_FONT_SCALE 2.0
 
-SqrtCell::SqrtCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
+SqrtCell::SqrtCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
+  m_cellPointers = cellPointers;
   m_signSize = 50;
   m_signWidth = 18;
   m_signTop = m_signSize / 2;
@@ -39,9 +40,9 @@ SqrtCell::SqrtCell(MathCell *parent, Configuration **config) : MathCell(parent, 
   m_signType = 0;
   m_signFontScale = 0;
   m_innerCell = NULL;
-  m_open = new TextCell(parent, config, wxT("sqrt("));
+  m_open = new TextCell(parent, config, cellPointers, wxT("sqrt("));
   m_open->DontEscapeOpeningParenthesis();
-  m_close = new TextCell(parent, config, wxT(")"));
+  m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
 
@@ -58,7 +59,7 @@ void SqrtCell::SetParent(MathCell *parent)
 
 MathCell *SqrtCell::Copy()
 {
-  SqrtCell *tmp = new SqrtCell(m_group, m_configuration);
+  SqrtCell *tmp = new SqrtCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
   tmp->m_isBroken = m_isBroken;
@@ -73,7 +74,18 @@ SqrtCell::~SqrtCell()
   wxDELETE(m_open);
   wxDELETE(m_close);
   m_innerCell = m_open = m_close = NULL;
+  MarkAsDeleted();
 }
+
+void SqrtCell::MarkAsDeleted()
+{
+  MarkAsDeletedList(m_innerCell, m_open, m_close);
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
+}
+
 
 void SqrtCell::SetInner(MathCell *inner)
 {

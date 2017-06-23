@@ -23,13 +23,16 @@
 #define SUBCELL_H
 
 #include "MathCell.h"
+#include "CellPointers.h"
 
 class SubCell : public MathCell
 {
 public:
-  SubCell(MathCell *parent, Configuration **config);
+  SubCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~SubCell();
+
+  void MarkAsDeleted();
 
   virtual wxString GetToolTip(const wxPoint &point){
     return GetToolTipList(point, m_baseCell, m_indexCell);
@@ -64,6 +67,9 @@ public:
 protected:
   MathCell *m_baseCell;
   MathCell *m_indexCell;
+
+private:
+  CellPointers *m_cellPointers;
 };
 
 #endif // SUBCELL_H

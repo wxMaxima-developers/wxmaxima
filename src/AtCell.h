@@ -23,13 +23,18 @@
 #define ATCELL_H
 
 #include "MathCell.h"
+#include "CellPointers.h"
 
 class AtCell : public MathCell
 {
 public:
-  AtCell(MathCell *parent, Configuration **config);
+  AtCell(MathCell *parent, Configuration **config, CellPointers *m_cellPointers);
 
   ~AtCell();
+
+  void MarkAsDeleted();
+
+  CellPointers *m_cellPointers;
 
   virtual wxString GetToolTip(const wxPoint &point){
     return GetToolTipList(point, m_baseCell, m_indexCell);

@@ -23,13 +23,16 @@
 #define DIFFCELL_H
 
 #include "MathCell.h"
+#include "CellPointers.h"
 
 class DiffCell : public MathCell
 {
 public:
-  DiffCell(MathCell *parent, Configuration **config);
+  DiffCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~DiffCell();
+  
+  void MarkAsDeleted();
 
   virtual wxString GetToolTip(const wxPoint &point){
     return GetToolTipList(point, m_baseCell, m_diffCell);
@@ -64,6 +67,9 @@ public:
 protected:
   MathCell *m_baseCell;
   MathCell *m_diffCell;
+
+private:
+  CellPointers *m_cellPointers;
 };
 
 #endif // DIFFCELL_H

@@ -30,8 +30,9 @@
 
 #define FRAC_DEC 1
 
-FracCell::FracCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
+FracCell::FracCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
+  m_cellPointers = cellPointers;
   m_num = NULL;
   m_denom = NULL;
   m_last1 = NULL;
@@ -70,7 +71,7 @@ void FracCell::SetParent(MathCell *parent)
 
 MathCell *FracCell::Copy()
 {
-  FracCell *tmp = new FracCell(m_group, m_configuration);
+  FracCell *tmp = new FracCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetNum(m_num->CopyList());
   tmp->SetDenom(m_denom->CopyList());
@@ -92,6 +93,16 @@ FracCell::~FracCell()
   wxDELETE(m_denom);
   wxDELETE(m_divide);
   m_open1 = m_open2 = m_close1 = m_close2 = m_num = m_denom = m_divide = NULL;
+  MarkAsDeleted();
+}
+
+void FracCell::MarkAsDeleted()
+{
+  MarkAsDeletedList(m_open1,m_open2,m_close1,m_close2,m_num,m_denom,m_divide);
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
 }
 
 void FracCell::SetNum(MathCell *num)
@@ -376,10 +387,10 @@ void FracCell::SetupBreakUps()
 {
   if (m_fracStyle == FC_NORMAL)
   {
-    m_open1 = new TextCell(m_group, m_configuration, wxT("("));
-    m_close1 = new TextCell(m_group, m_configuration, wxT(")"));
-    m_open2 = new TextCell(m_group, m_configuration, wxT("("));
-    m_close2 = new TextCell(m_group, m_configuration, wxT(")"));
+    m_open1 = new TextCell(m_group, m_configuration, m_cellPointers, wxT("("));
+    m_close1 = new TextCell(m_group, m_configuration, m_cellPointers, wxT(")"));
+    m_open2 = new TextCell(m_group, m_configuration, m_cellPointers, wxT("("));
+    m_close2 = new TextCell(m_group, m_configuration, m_cellPointers, wxT(")"));
     if (m_num)
     {
       if (!m_num->IsCompound())
@@ -396,15 +407,15 @@ void FracCell::SetupBreakUps()
         m_close2->m_isHidden = true;
       }
     }
-    m_divide = new TextCell(m_group, m_configuration, wxT("/"));
+    m_divide = new TextCell(m_group, m_configuration, m_cellPointers, wxT("/"));
   }
   else
   {
-    m_open1 = new TextCell(m_group, m_configuration, wxT("binomial("));
-    m_close1 = new TextCell(m_group, m_configuration, wxT("x"));
-    m_open2 = new TextCell(m_group, m_configuration, wxT("x"));
-    m_close2 = new TextCell(m_group, m_configuration, wxT(")"));
-    m_divide = new TextCell(m_group, m_configuration, wxT(","));
+    m_open1 = new TextCell(m_group, m_configuration, m_cellPointers, wxT("binomial("));
+    m_close1 = new TextCell(m_group, m_configuration, m_cellPointers, wxT("x"));
+    m_open2 = new TextCell(m_group, m_configuration, m_cellPointers, wxT("x"));
+    m_close2 = new TextCell(m_group, m_configuration, m_cellPointers, wxT(")"));
+    m_divide = new TextCell(m_group, m_configuration, m_cellPointers, wxT(","));
     m_close1->m_isHidden = true;
     m_open2->m_isHidden = true;
   }

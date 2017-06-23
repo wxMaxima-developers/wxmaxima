@@ -42,9 +42,10 @@
 #include <wx/wfstream.h>
 #include <wx/anidecod.h>
 
-SlideShow::SlideShow(MathCell *parent, Configuration **config, wxFileSystem *filesystem, int framerate) : MathCell(
+SlideShow::SlideShow(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxFileSystem *filesystem, int framerate) : MathCell(
         parent, config)
 {
+  m_cellPointers = cellPointers;
   m_size = m_displayed = 0;
   m_type = MC_TYPE_SLIDE;
   m_fileSystem = filesystem; // NULL when not loading from wxmx
@@ -115,7 +116,7 @@ void SlideShow::LoadImages(wxArrayString images)
 
 MathCell *SlideShow::Copy()
 {
-  SlideShow *tmp = new SlideShow(m_group, m_configuration);
+  SlideShow *tmp = new SlideShow(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
 
   for (size_t i = 0; i < m_images.size(); i++)
@@ -137,6 +138,16 @@ SlideShow::~SlideShow()
       wxDELETE(m_images[i]);
       m_images[i] = NULL;
     }
+  MarkAsDeleted();
+}
+
+void SlideShow::MarkAsDeleted()
+{
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
+  ClearCache();
 }
 
 void SlideShow::SetDisplayedIndex(int ind)

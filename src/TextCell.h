@@ -24,6 +24,7 @@
 
 #include "wx/regex.h"
 #include "MathCell.h"
+#include "CellPointers.h"
 
 /*! A Text cell
 
@@ -36,10 +37,16 @@ private:
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis;
 public:
-  TextCell(MathCell *parent, Configuration **config);
+  TextCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
 
-  TextCell(MathCell *parent, Configuration **config, wxString text);
+  TextCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxString text);
 
+  void MarkAsDeleted();
+  
+  CellPointers *m_cellPointers;
+
+  ~TextCell();
+  
   MathCell *Copy();
 
   //! Set the text contained in this cell

@@ -24,6 +24,7 @@
 
 #include "MathCell.h"
 #include "TextCell.h"
+#include "CellPointers.h"
 
 /*! \file
 
@@ -47,9 +48,11 @@
 class ConjugateCell : public MathCell
 {
 public:
-  ConjugateCell(MathCell *parent, Configuration **config);
+  ConjugateCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~ConjugateCell();
+
+  void MarkAsDeleted();
 
   virtual wxString GetToolTip(const wxPoint &point){
     return GetToolTipList(point,m_innerCell);
@@ -87,6 +90,9 @@ protected:
   wxString ToOMML();
 
   wxString ToXML();
+
+private:
+  CellPointers *m_cellPointers;
 };
 
 #endif // CONJUGATECELL_H

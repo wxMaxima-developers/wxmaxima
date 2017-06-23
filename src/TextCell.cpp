@@ -29,9 +29,11 @@
 #include "TextCell.h"
 #include "Setup.h"
 #include "wx/config.h"
+#include "CellPointers.h"
 
-TextCell::TextCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
+TextCell::TextCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
+  m_cellPointers = cellPointers;
   m_unescapeRegEx.Compile(wxT("\\\\(.)"));
   m_displayedDigits_old = -1;
   m_text = m_userDefinedLabel = wxEmptyString;
@@ -51,8 +53,9 @@ TextCell::TextCell(MathCell *parent, Configuration **config) : MathCell(parent, 
   m_initialToolTip = (*m_configuration)->GetDefaultMathCellToolTip();
 }
 
-TextCell::TextCell(MathCell *parent, Configuration **config, wxString text) : MathCell(parent, config)
+TextCell::TextCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxString text) : MathCell(parent, config)
 {
+  m_cellPointers = cellPointers;
   m_displayedDigits_old = -1;
   m_height = -1;
   m_labelWidth = -1;
@@ -65,6 +68,19 @@ TextCell::TextCell(MathCell *parent, Configuration **config, wxString text) : Ma
   m_highlight = false;
   m_dontEscapeOpeningParenthesis = false;
   m_initialToolTip = (*m_configuration)->GetDefaultMathCellToolTip();
+}
+
+TextCell::~TextCell()
+{
+  MarkAsDeleted();
+}
+
+void TextCell::MarkAsDeleted()
+{
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
 }
 
 void TextCell::SetValue(const wxString &text)
@@ -159,7 +175,7 @@ void TextCell::SetValue(const wxString &text)
 
 MathCell *TextCell::Copy()
 {
-  TextCell *retval = new TextCell(m_group, m_configuration, wxEmptyString);
+  TextCell *retval = new TextCell(m_group, m_configuration, m_cellPointers, wxEmptyString);
   CopyData(this, retval);
   retval->m_text = wxString(m_text);
   retval->m_displayedText = wxString(m_displayedText);

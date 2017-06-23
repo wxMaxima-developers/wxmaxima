@@ -28,10 +28,11 @@
 #include "DiffCell.h"
 #include "wx/config.h"
 
-DiffCell::DiffCell(MathCell *parent, Configuration **config) : MathCell(parent, config)
+DiffCell::DiffCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
   m_baseCell = NULL;
   m_diffCell = NULL;
+  m_cellPointers = cellPointers;
 }
 
 void DiffCell::SetParent(MathCell *parent)
@@ -45,7 +46,7 @@ void DiffCell::SetParent(MathCell *parent)
 
 MathCell *DiffCell::Copy()
 {
-  DiffCell *tmp = new DiffCell(m_group, m_configuration);
+  DiffCell *tmp = new DiffCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetDiff(m_diffCell->CopyList());
   tmp->SetBase(m_baseCell->CopyList());
@@ -59,6 +60,16 @@ DiffCell::~DiffCell()
   wxDELETE(m_baseCell);
   wxDELETE(m_diffCell);
   m_baseCell = m_diffCell = NULL;
+  MarkAsDeleted();
+}
+
+void DiffCell::MarkAsDeleted()
+{
+  MarkAsDeletedList(m_baseCell, m_diffCell);
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
 }
 
 void DiffCell::SetDiff(MathCell *diff)

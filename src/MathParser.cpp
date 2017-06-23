@@ -253,7 +253,7 @@ MathCell *MathParser::ParseCellTag(wxXmlNode *node)
 MathCell *MathParser::HandleNullPointer(MathCell *cell)
 {
   if (cell == NULL)
-    cell = new TextCell(NULL, m_configuration, _("Bug: Missing contents"));
+    cell = new TextCell(NULL, m_configuration, m_cellPointers, _("Bug: Missing contents"));
   return (cell);
 }
 
@@ -298,7 +298,7 @@ MathCell *MathParser::ParseEditorTag(wxXmlNode *node)
 
 MathCell *MathParser::ParseFracTag(wxXmlNode *node)
 {
-  FracCell *frac = new FracCell(NULL, m_configuration);
+  FracCell *frac = new FracCell(NULL, m_configuration, m_cellPointers);
   frac->SetFracStyle(m_FracStyle);
   frac->SetHighlight(m_highlight);
   wxXmlNode *child = node->GetChildren();
@@ -319,7 +319,7 @@ MathCell *MathParser::ParseFracTag(wxXmlNode *node)
 
 MathCell *MathParser::ParseDiffTag(wxXmlNode *node)
 {
-  DiffCell *diff = new DiffCell(NULL, m_configuration);
+  DiffCell *diff = new DiffCell(NULL, m_configuration, m_cellPointers);
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   if (child)
@@ -340,7 +340,7 @@ MathCell *MathParser::ParseDiffTag(wxXmlNode *node)
 
 MathCell *MathParser::ParseSupTag(wxXmlNode *node)
 {
-  ExptCell *expt = new ExptCell(NULL, m_configuration);
+  ExptCell *expt = new ExptCell(NULL, m_configuration, m_cellPointers);
   if (node->GetAttributes() != NULL)
     expt->IsMatrix(true);
   wxXmlNode *child = node->GetChildren();
@@ -359,7 +359,7 @@ MathCell *MathParser::ParseSupTag(wxXmlNode *node)
 
 MathCell *MathParser::ParseSubSupTag(wxXmlNode *node)
 {
-  SubSupCell *subsup = new SubSupCell(NULL, m_configuration);
+  SubSupCell *subsup = new SubSupCell(NULL, m_configuration, m_cellPointers);
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   subsup->SetBase(HandleNullPointer(ParseTag(child, false)));
@@ -378,7 +378,7 @@ MathCell *MathParser::ParseSubSupTag(wxXmlNode *node)
 
 MathCell *MathParser::ParseSubTag(wxXmlNode *node)
 {
-  SubCell *sub = new SubCell(NULL, m_configuration);
+  SubCell *sub = new SubCell(NULL, m_configuration, m_cellPointers);
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   sub->SetBase(HandleNullPointer(ParseTag(child, false)));
@@ -394,7 +394,7 @@ MathCell *MathParser::ParseSubTag(wxXmlNode *node)
 
 MathCell *MathParser::ParseAtTag(wxXmlNode *node)
 {
-  AtCell *at = new AtCell(NULL, m_configuration);
+  AtCell *at = new AtCell(NULL, m_configuration, m_cellPointers);
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
 
@@ -409,7 +409,7 @@ MathCell *MathParser::ParseAtTag(wxXmlNode *node)
 
 MathCell *MathParser::ParseFunTag(wxXmlNode *node)
 {
-  FunCell *fun = new FunCell(NULL, m_configuration);
+  FunCell *fun = new FunCell(NULL, m_configuration, m_cellPointers);
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
 
@@ -438,7 +438,7 @@ MathCell *MathParser::ParseText(wxXmlNode *node, int style)
     wxStringTokenizer lines(str, wxT('\n'));
     while (lines.HasMoreTokens())
     {
-      TextCell *cell = new TextCell(NULL, m_configuration);
+      TextCell *cell = new TextCell(NULL, m_configuration, m_cellPointers);
       switch(style)
       {
       case TS_ERROR:
@@ -466,7 +466,7 @@ MathCell *MathParser::ParseText(wxXmlNode *node, int style)
   }
 
   if (retval == NULL)
-    retval = new TextCell(NULL, m_configuration);
+    retval = new TextCell(NULL, m_configuration, m_cellPointers);
 
   wxString breaklineattrib;
   if (node != NULL)
@@ -484,7 +484,7 @@ MathCell *MathParser::ParseText(wxXmlNode *node, int style)
 
 MathCell *MathParser::ParseCharCode(wxXmlNode *node, int style)
 {
-  TextCell *cell = new TextCell(NULL, m_configuration);
+  TextCell *cell = new TextCell(NULL, m_configuration, m_cellPointers);
   wxString str;
   if ((node != NULL) && ((str = node->GetContent()) != wxEmptyString))
   {
@@ -508,7 +508,7 @@ MathCell *MathParser::ParseSqrtTag(wxXmlNode *node)
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
 
-  SqrtCell *cell = new SqrtCell(NULL, m_configuration);
+  SqrtCell *cell = new SqrtCell(NULL, m_configuration, m_cellPointers);
 
   cell->SetInner(HandleNullPointer(ParseTag(child, true)));
   cell->SetType(m_ParserStyle);
@@ -521,7 +521,7 @@ MathCell *MathParser::ParseAbsTag(wxXmlNode *node)
 {
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-  AbsCell *cell = new AbsCell(NULL, m_configuration);
+  AbsCell *cell = new AbsCell(NULL, m_configuration, m_cellPointers);
   cell->SetInner(HandleNullPointer(ParseTag(child, true)));
   cell->SetType(m_ParserStyle);
   cell->SetStyle(TS_VARIABLE);
@@ -533,7 +533,7 @@ MathCell *MathParser::ParseConjugateTag(wxXmlNode *node)
 {
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-  ConjugateCell *cell = new ConjugateCell(NULL, m_configuration);
+  ConjugateCell *cell = new ConjugateCell(NULL, m_configuration, m_cellPointers);
   cell->SetInner(HandleNullPointer(ParseTag(child, true)));
   cell->SetType(m_ParserStyle);
   cell->SetStyle(TS_VARIABLE);
@@ -545,7 +545,7 @@ MathCell *MathParser::ParseParenTag(wxXmlNode *node)
 {
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
-  ParenCell *cell = new ParenCell(NULL, m_configuration);
+  ParenCell *cell = new ParenCell(NULL, m_configuration, m_cellPointers);
   cell->SetInner(HandleNullPointer(ParseTag(child, true)), m_ParserStyle);
   cell->SetHighlight(m_highlight);
   cell->SetStyle(TS_VARIABLE);
@@ -556,7 +556,7 @@ MathCell *MathParser::ParseParenTag(wxXmlNode *node)
 
 MathCell *MathParser::ParseLimitTag(wxXmlNode *node)
 {
-  LimitCell *limit = new LimitCell(NULL, m_configuration);
+  LimitCell *limit = new LimitCell(NULL, m_configuration, m_cellPointers);
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   limit->SetName(HandleNullPointer(ParseTag(child, false)));
@@ -571,7 +571,7 @@ MathCell *MathParser::ParseLimitTag(wxXmlNode *node)
 
 MathCell *MathParser::ParseSumTag(wxXmlNode *node)
 {
-  SumCell *sum = new SumCell(NULL, m_configuration);
+  SumCell *sum = new SumCell(NULL, m_configuration, m_cellPointers);
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   wxString type = node->GetAttribute(wxT("type"), wxT("sum"));
@@ -592,7 +592,7 @@ MathCell *MathParser::ParseSumTag(wxXmlNode *node)
 
 MathCell *MathParser::ParseIntTag(wxXmlNode *node)
 {
-  IntCell *in = new IntCell(NULL, m_configuration);
+  IntCell *in = new IntCell(NULL, m_configuration, m_cellPointers);
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   in->SetHighlight(m_highlight);
@@ -624,7 +624,7 @@ MathCell *MathParser::ParseIntTag(wxXmlNode *node)
 
 MathCell *MathParser::ParseTableTag(wxXmlNode *node)
 {
-  MatrCell *matrix = new MatrCell(NULL, m_configuration);
+  MatrCell *matrix = new MatrCell(NULL, m_configuration, m_cellPointers);
   matrix->SetHighlight(m_highlight);
 
   if (node->GetAttribute(wxT("special"), wxT("false")) == wxT("true"))
@@ -749,7 +749,7 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
       }
       else if (tagName == wxT("mspace"))
       {
-        tmp = new TextCell(NULL, m_configuration, wxT(" "));
+        tmp = new TextCell(NULL, m_configuration, m_cellPointers, wxT(" "));
       }
       else if (tagName == wxT("at"))
       {
@@ -785,7 +785,7 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
         if (tmp != NULL)
           tmp->ForceBreakLine(true);
         else
-          tmp = new TextCell(NULL, m_configuration, wxT(" "));
+          tmp = new TextCell(NULL, m_configuration, m_cellPointers, wxT(" "));
       }
       else if (tagName == wxT("lbl"))
       {
@@ -834,11 +834,11 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
 #endif
 
         if (m_fileSystem) // loading from zip
-          imageCell = new ImgCell(NULL, m_configuration, filename, false, m_fileSystem);
+          imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, false, m_fileSystem);
         else
         {
           if (node->GetAttribute(wxT("del"), wxT("yes")) != wxT("no"))
-            imageCell = new ImgCell(NULL, m_configuration, filename, true, NULL);
+            imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, true, NULL);
           else
           {
             // This is the only case show_image() produces ergo this is the only
@@ -850,7 +850,7 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
                     )
               filename = (*m_configuration)->GetWorkingDirectory() + wxT("/") + filename;
 
-            imageCell = new ImgCell(NULL, m_configuration, filename, false, NULL);
+            imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, false, NULL);
           }
         }
 
@@ -861,7 +861,7 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
       }
       else if (tagName == wxT("slide"))
       {
-        SlideShow *slideShow = new SlideShow(NULL, m_configuration, m_fileSystem);
+        SlideShow *slideShow = new SlideShow(NULL, m_configuration, m_cellPointers, m_fileSystem);
         wxString str(node->GetChildren()->GetContent());
         wxArrayString images;
         wxString framerate;
@@ -1020,7 +1020,7 @@ MathCell *MathParser::ParseLine(wxString s, int style)
   }
   else
   {
-    cell = new TextCell(NULL, m_configuration,
+    cell = new TextCell(NULL, m_configuration, m_cellPointers,
                         _(" << Expression longer than allowed by the configuration setting! >>"));
     cell->SetToolTip(_("The maximum size of a expression wxMaxima is allowed to be displayed"
                        "can be changed in the configuration dialogue."

@@ -24,6 +24,7 @@
 
 #include "MathCell.h"
 #include "TextCell.h"
+#include "CellPointers.h"
 
 /*!\file
 
@@ -47,9 +48,11 @@
 class ExptCell : public MathCell
 {
 public:
-  ExptCell(MathCell *parent, Configuration **config);
+  ExptCell(MathCell *parent, Configuration **config, CellPointers *cellpointers);
 
   ~ExptCell();
+
+  void MarkAsDeleted();
 
   virtual wxString GetToolTip(const wxPoint &point){
       return GetToolTipList(point, m_baseCell, m_powCell);
@@ -100,6 +103,9 @@ protected:
   MathCell *m_last2;
   MathCell *m_exp, *m_last1;
   bool m_isMatrix;
+
+private:
+  CellPointers *m_cellPointers;
 };
 
 

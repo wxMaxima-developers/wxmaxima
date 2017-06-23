@@ -31,11 +31,12 @@
 
 #include "MathCell.h"
 #include "TextCell.h"
+#include "CellPointers.h"
 
 /*! \file
-
+  
   This file defines the class for the cell type that represents an abs(x) block.
- */
+*/
 
 /*! A cell that represents an abs(x) block
   
@@ -54,9 +55,11 @@
 class AbsCell : public MathCell
 {
 public:
-  AbsCell(MathCell *parent, Configuration **config);
+  AbsCell(MathCell *parent, Configuration **config, CellPointers *m_cellPointers);
 
   ~AbsCell();
+  
+  void MarkAsDeleted();
 
   void SetInner(MathCell *inner);
 
@@ -99,6 +102,9 @@ protected:
   wxString ToXML();
 
   wxString ToOMML();
+
+private:
+  CellPointers *m_cellPointers;
 };
 
 #endif // ABSCELL_H

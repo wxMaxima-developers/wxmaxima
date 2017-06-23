@@ -100,8 +100,6 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
   m_scrolledAwayFromEvaluation = false;
   m_tree = NULL;
   m_mainToolBar = NULL;
-  m_selectionStart = NULL;
-  m_selectionEnd = NULL;
   m_clickType = CLICK_TYPE_NONE;
   m_clickInGC = NULL;
   m_last = NULL;
@@ -263,7 +261,7 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
     //
     if (CellsSelected())
     {
-      MathCell *tmp = m_selectionStart;
+      MathCell *tmp = m_cellPointers->m_selectionStart;
 
 #if defined(__WXMAC__)
       dcm.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
@@ -275,14 +273,13 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
 
       // Draw the marker that tells us which output cells are selected -
       // if output cells are selected, that is.
-      if (m_selectionStart->GetType() != MC_TYPE_GROUP)
+      if (m_cellPointers->m_selectionStart->GetType() != MC_TYPE_GROUP)
       {  // We have a selection of output
-        m_cellPointers->SetSelectionRange_px(-1, -1);
         while (tmp != NULL)
         {
           if (!tmp->m_isBroken && !tmp->m_isHidden && GetActiveCell() != tmp)
             tmp->DrawBoundingBox(dcm, false);
-          if (tmp == m_selectionEnd)
+          if (tmp == m_cellPointers->m_selectionEnd)
             break;
           tmp = tmp->m_nextToDraw;
         } // end while (1)
@@ -494,7 +491,7 @@ void MathCtrl::ScrollToError()
 GroupCell *MathCtrl::GetWorkingGroup(bool resortToLast)
 {
   GroupCell *tmp = NULL;
-  if(m_cellPointers->GetWorkingGroup(resortToLast))
+  if(m_cellPointers->GetWorkingGroup(resortToLast) != NULL)
     tmp = dynamic_cast<GroupCell *>(m_cellPointers->GetWorkingGroup(resortToLast));
   if(!resortToLast)
     return tmp;
@@ -584,8 +581,7 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
     CellToScrollTo = GetHCaret();
     CellToScrollTo = GetActiveCell();
   }
-  if (!CellToScrollTo)
-    CellToScrollTo = GetWorkingGroup(true);
+  if (!CellToScrollTo) CellToScrollTo = GetWorkingGroup(true);
   if (!CellToScrollTo)
   {
     wxPoint topleft;
@@ -602,11 +598,6 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
   if (recalc)
   {
     RecalculateForce();
-    if (CellsSelected())
-      m_cellPointers->SetSelectionRange_px(
-              m_selectionStart->m_currentPoint.y,
-              m_selectionEnd->m_currentPoint.y
-      );
     RequestRedraw();
   }
 
@@ -637,13 +628,6 @@ void MathCtrl::Recalculate(GroupCell *start, bool force)
 
   AdjustSize();
   
-  if(CellsSelected())
-  {
-    m_cellPointers->SetSelectionRange_px(
-      m_selectionStart->m_currentPoint.y,
-      m_selectionEnd->m_currentPoint.y
-      );
-  }
 }
 
 /***
@@ -659,8 +643,7 @@ void MathCtrl::OnSize(wxSizeEvent &event)
     CellToScrollTo = m_hCaretPosition;
     if (!CellToScrollTo) CellToScrollTo = GetActiveCell();
   }
-  if (!CellToScrollTo)
-    CellToScrollTo = GetWorkingGroup(true);
+  if (!CellToScrollTo) CellToScrollTo = GetWorkingGroup(true);
 
   if (!CellToScrollTo)
   {
@@ -929,15 +912,15 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
   //
   bool clickInSelection = false;
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &downx, &downy);
-  if ((m_selectionStart != NULL))
+  if ((m_cellPointers->m_selectionStart != NULL))
   {
     // SELECTION OF GROUPCELLS
-    if (m_selectionStart->GetType() == MC_TYPE_GROUP)
+    if (m_cellPointers->m_selectionStart->GetType() == MC_TYPE_GROUP)
     { //a selection of groups
       if (downx <= m_configuration->GetCellBracketWidth() + 3)
       {
-        wxRect rectStart = m_selectionStart->GetRect();
-        wxRect rectEnd = m_selectionEnd->GetRect();
+        wxRect rectStart = m_cellPointers->m_selectionStart->GetRect();
+        wxRect rectEnd = m_cellPointers->m_selectionEnd->GetRect();
         if (((downy >= rectStart.GetTop()) && (downy <= rectEnd.GetBottom())) ||
             ((downy >= rectEnd.GetTop()) && (downy <= rectStart.GetBottom())))
           clickInSelection = true;
@@ -946,7 +929,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
       // SELECTION OF OUTPUT
     else
     {
-      MathCell *tmp = m_selectionStart;
+      MathCell *tmp = m_cellPointers->m_selectionStart;
       wxRect rect;
       while (tmp != NULL)
       {
@@ -954,7 +937,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
         if (rect.Contains(downx, downy))
           clickInSelection = true;
 
-        if (tmp == m_selectionEnd)
+        if (tmp == m_cellPointers->m_selectionEnd)
           break;
         tmp = tmp->m_nextToDraw;
       }
@@ -994,9 +977,9 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
       }
     }
 
-    else if (m_selectionStart != NULL)
+    else if (m_cellPointers->m_selectionStart != NULL)
     {
-      if (m_selectionStart->GetType() == MC_TYPE_GROUP)
+      if (m_cellPointers->m_selectionStart->GetType() == MC_TYPE_GROUP)
       {
 
         if (CanCopy())
@@ -1004,7 +987,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
           popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_tex, _("Copy as LaTeX"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_text, _("Copy as plain text"), wxEmptyString, wxITEM_NORMAL);
-          if (m_selectionStart == m_selectionEnd)
+          if (m_cellPointers->m_selectionStart == m_cellPointers->m_selectionEnd)
             popupMenu->Append(popid_copy_mathml, _("Copy as MathML (e.g. to word processor)"), wxEmptyString,
                               wxITEM_NORMAL);
           popupMenu->Append(popid_copy_image, _("Copy as Image"),
@@ -1016,7 +999,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
         }
         popupMenu->AppendSeparator();
         popupMenu->Append(popid_evaluate, _("Evaluate Cell(s)"), wxEmptyString, wxITEM_NORMAL);
-        if(m_selectionStart == m_selectionEnd)
+        if(m_cellPointers->m_selectionStart == m_cellPointers->m_selectionEnd)
           popupMenu->Append(popid_evaluate_rest, _("Evaluate Cells Below"), wxEmptyString, wxITEM_NORMAL);
 
         if (CanMergeSelection())
@@ -1024,10 +1007,10 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
 
         // Add a "evaluate this <sectioning unit>" context menu entry.
         GroupCell *group;
-        if (m_selectionEnd != NULL)
-          group = dynamic_cast<GroupCell *>(m_selectionEnd);
+        if (m_cellPointers->m_selectionEnd != NULL)
+          group = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionEnd);
         else
-          group = dynamic_cast<GroupCell *>(m_selectionStart);
+          group = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart);
         if (StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_TITLE)
         {
           popupMenu->AppendSeparator();
@@ -1131,11 +1114,11 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
       wxASSERT(GetActiveCell()->GetParent() != NULL);
       group = dynamic_cast<GroupCell *>(GetActiveCell()->GetParent());
     }
-    if (m_selectionStart != NULL)
+    if (m_cellPointers->m_selectionStart != NULL)
     {
-      if (m_selectionStart->GetType() == MC_TYPE_GROUP)
+      if (m_cellPointers->m_selectionStart->GetType() == MC_TYPE_GROUP)
       {
-        group = dynamic_cast<GroupCell *>(m_selectionStart);
+        group = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart);
       }
     }
     if (group)
@@ -1296,8 +1279,8 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent &event, GroupCell *clickedInGC)
     wxRect rect2(m_down.x, m_down.y, 1, 1);
     wxPoint mmm(m_down.x + 1, m_down.y + 1);
     clickedInGC->SelectRectInOutput(rect2, m_down, mmm,
-                                    &m_selectionStart, &m_selectionEnd);
-    if (m_selectionStart != NULL)
+                                    &m_cellPointers->m_selectionStart, &m_cellPointers->m_selectionEnd);
+    if (m_cellPointers->m_selectionStart != NULL)
     {
       m_clickType = CLICK_TYPE_OUTPUT_SELECTION;
       m_clickInGC = clickedInGC;
@@ -1518,14 +1501,14 @@ void MathCtrl::OnMouseWheel(wxMouseEvent &event)
       //! Step the slide show.
       int rot = event.GetWheelRotation();
 
-      SlideShow *tmp = dynamic_cast<SlideShow *>(m_selectionStart);
+      SlideShow *tmp = dynamic_cast<SlideShow *>(m_cellPointers->m_selectionStart);
 
       if (rot > 0)
         tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
       else
         tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() - 1) % tmp->Length());
 
-      wxRect rect = m_selectionStart->GetRect();
+      wxRect rect = m_cellPointers->m_selectionStart->GetRect();
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
       RedrawRect(rect);
 
@@ -1650,7 +1633,7 @@ void MathCtrl::SelectGroupCells(wxPoint down, wxPoint up)
     rect = tmp->GetRect();
     if (ytop <= rect.GetBottom())
     {
-      m_selectionStart = tmp;
+      m_cellPointers->m_selectionStart = tmp;
       break;
     }
     tmp = dynamic_cast<GroupCell *>(tmp->m_next);
@@ -1663,19 +1646,19 @@ void MathCtrl::SelectGroupCells(wxPoint down, wxPoint up)
     rect = tmp->GetRect();
     if (ybottom < rect.GetTop())
     {
-      m_selectionEnd = tmp->m_previous;
+      m_cellPointers->m_selectionEnd = tmp->m_previous;
       break;
     }
     tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }
   if (tmp == NULL)
-    m_selectionEnd = m_last;
+    m_cellPointers->m_selectionEnd = m_last;
 
-  if (m_selectionStart)
+  if (m_cellPointers->m_selectionStart)
   {
-    if (m_selectionEnd == (m_selectionStart->m_previous))
+    if (m_cellPointers->m_selectionEnd == (m_cellPointers->m_selectionStart->m_previous))
     {
-      SetHCaret(dynamic_cast<GroupCell *>(m_selectionEnd), false);
+      SetHCaret(dynamic_cast<GroupCell *>(m_cellPointers->m_selectionEnd), false);
     }
     else
     {
@@ -1691,25 +1674,19 @@ void MathCtrl::SelectGroupCells(wxPoint down, wxPoint up)
 
   if (down.y > up.y)
   {
-    m_hCaretPositionStart = dynamic_cast<GroupCell *>(m_selectionStart);
-    m_hCaretPositionEnd = dynamic_cast<GroupCell *>(m_selectionEnd);
+    m_hCaretPositionStart = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart);
+    m_hCaretPositionEnd = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionEnd);
   }
   else
   {
-    m_hCaretPositionStart = dynamic_cast<GroupCell *>(m_selectionEnd);
-    m_hCaretPositionEnd = dynamic_cast<GroupCell *>(m_selectionStart);
+    m_hCaretPositionStart = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionEnd);
+    m_hCaretPositionEnd = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart);
   }
-
-  if (CellsSelected())
-    m_cellPointers->SetSelectionRange_px(
-            m_selectionStart->m_currentPoint.y,
-            m_selectionEnd->m_currentPoint.y
-    );
 }
 
 void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
 {
-  MathCell *selectionStartOld = m_selectionStart, *selectionEndOld = m_selectionEnd;
+  MathCell *selectionStartOld = m_cellPointers->m_selectionStart, *selectionEndOld = m_cellPointers->m_selectionEnd;
   wxRect rect;
 
   int ytop = MIN(down.y, up.y);
@@ -1760,8 +1737,8 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
           RedrawRect(rect);
 
           // Remove the marker that we need to refresh
-          selectionStartOld = m_selectionStart;
-          selectionEndOld = m_selectionEnd;
+          selectionStartOld = m_cellPointers->m_selectionStart;
+          selectionEndOld = m_cellPointers->m_selectionEnd;
         }
         break;
       }
@@ -1777,7 +1754,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
       rect.height = MAX(abs(down.y - up.y), 1);
 
       if (m_clickInGC != NULL)
-        m_clickInGC->SelectRectInOutput(rect, down, up, &m_selectionStart, &m_selectionEnd);
+        m_clickInGC->SelectRectInOutput(rect, down, up, &m_cellPointers->m_selectionStart, &m_cellPointers->m_selectionEnd);
       break;
 
     default:
@@ -1785,7 +1762,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
   } // end switch
 
   // Refresh only if the selection has changed
-  if ((selectionStartOld != m_selectionStart) || (selectionEndOld != m_selectionEnd))
+  if ((selectionStartOld != m_cellPointers->m_selectionStart) || (selectionEndOld != m_cellPointers->m_selectionEnd))
     RequestRedraw();
 }
 
@@ -1795,7 +1772,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
 wxString MathCtrl::GetString(bool lb)
 {
 
-  if (m_selectionStart == NULL)
+  if (m_cellPointers->m_selectionStart == NULL)
   {
     if (GetActiveCell() == NULL)
       return wxEmptyString;
@@ -1804,13 +1781,13 @@ wxString MathCtrl::GetString(bool lb)
   }
 
   wxString s;
-  MathCell *tmp = m_selectionStart;
+  MathCell *tmp = m_cellPointers->m_selectionStart;
   while (tmp != NULL)
   {
     if (lb && tmp->BreakLineHere() && s.Length() > 0)
       s += wxT("\n");
     s += tmp->ToString();
-    if (tmp == m_selectionEnd)
+    if (tmp == m_cellPointers->m_selectionEnd)
       break;
     tmp = tmp->m_nextToDraw;
   }
@@ -1827,23 +1804,23 @@ bool MathCtrl::Copy(bool astext)
     return GetActiveCell()->CopyToClipboard();
   }
 
-  if (m_selectionStart == NULL)
+  if (m_cellPointers->m_selectionStart == NULL)
     return false;
 
-  if (!astext && m_selectionStart->GetType() == MC_TYPE_GROUP)
+  if (!astext && m_cellPointers->m_selectionStart->GetType() == MC_TYPE_GROUP)
     return CopyCells();
     /// If the selection is IMAGE or SLIDESHOW, copy it to clipboard
     /// as image.
-  else if (m_selectionStart == m_selectionEnd &&
-           m_selectionStart->GetType() == MC_TYPE_IMAGE)
+  else if (m_cellPointers->m_selectionStart == m_cellPointers->m_selectionEnd &&
+           m_cellPointers->m_selectionStart->GetType() == MC_TYPE_IMAGE)
   {
-    dynamic_cast<ImgCell *>(m_selectionStart)->CopyToClipboard();
+    dynamic_cast<ImgCell *>(m_cellPointers->m_selectionStart)->CopyToClipboard();
     return true;
   }
-  else if (m_selectionStart == m_selectionEnd &&
-           m_selectionStart->GetType() == MC_TYPE_SLIDE)
+  else if (m_cellPointers->m_selectionStart == m_cellPointers->m_selectionEnd &&
+           m_cellPointers->m_selectionStart->GetType() == MC_TYPE_SLIDE)
   {
-    dynamic_cast<SlideShow *>(m_selectionStart)->CopyToClipboard();
+    dynamic_cast<SlideShow *>(m_cellPointers->m_selectionStart)->CopyToClipboard();
     return true;
   }
   else
@@ -1918,11 +1895,11 @@ wxString MathCtrl::ConvertSelectionToMathML()
   if (GetActiveCell() != NULL)
     return wxEmptyString;
 
-  if ((m_selectionStart == NULL) || (m_selectionEnd == NULL))
+  if ((m_cellPointers->m_selectionStart == NULL) || (m_cellPointers->m_selectionEnd == NULL))
     return wxEmptyString;
 
   wxString s;
-  MathCell *tmp = CopySelection(m_selectionStart, m_selectionEnd, true);
+  MathCell *tmp = CopySelection(m_cellPointers->m_selectionStart, m_cellPointers->m_selectionEnd, true);
 
   s = wxString(wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n")) +
       wxT("<semantics>") +
@@ -1995,11 +1972,11 @@ bool MathCtrl::CopyTeX()
   if (GetActiveCell() != NULL)
     return false;
 
-  if (m_selectionStart == NULL)
+  if (m_cellPointers->m_selectionStart == NULL)
     return false;
 
   wxString s;
-  MathCell *tmp = m_selectionStart;
+  MathCell *tmp = m_cellPointers->m_selectionStart;
 
   bool inMath = false;
   wxString label;
@@ -2020,7 +1997,7 @@ bool MathCtrl::CopyTeX()
     while (tmp != NULL)
     {
       s += tmp->ToTeX();
-      if (tmp == m_selectionEnd)
+      if (tmp == m_cellPointers->m_selectionEnd)
         break;
       tmp = tmp->m_next;
     }
@@ -2032,7 +2009,7 @@ bool MathCtrl::CopyTeX()
     while (gc != NULL)
     {
       s += gc->ToTeX(wxEmptyString,wxEmptyString,&imgCtr);
-      if (gc == m_selectionEnd)
+      if (gc == m_cellPointers->m_selectionEnd)
         break;
       gc = dynamic_cast<GroupCell *>(gc->m_next);
     }
@@ -2058,11 +2035,11 @@ bool MathCtrl::CopyText()
   if (GetActiveCell() != NULL)
     return false;
 
-  if (m_selectionStart == NULL)
+  if (m_cellPointers->m_selectionStart == NULL)
     return false;
 
   wxString result;
-  MathCell *tmp = m_selectionStart;
+  MathCell *tmp = m_cellPointers->m_selectionStart;
 
   bool firstcell = true;
   while (tmp != NULL)
@@ -2070,7 +2047,7 @@ bool MathCtrl::CopyText()
     if ((tmp->ForceBreakLineHere()) && (!firstcell))
       result += wxT("\n");
     result += tmp->ToString();
-    if (tmp == m_selectionEnd)
+    if (tmp == m_cellPointers->m_selectionEnd)
       break;
     tmp = tmp->m_next;
     firstcell = false;
@@ -2090,7 +2067,7 @@ bool MathCtrl::CopyText()
 
 bool MathCtrl::CopyCells()
 {
-  if (m_selectionStart == NULL)
+  if (m_cellPointers->m_selectionStart == NULL)
     return false;
 
   if (wxTheClipboard->Open())
@@ -2099,8 +2076,8 @@ bool MathCtrl::CopyCells()
     wxString wxm;
     wxString str;
     wxString rtf = RTFStart();
-    GroupCell *tmp = dynamic_cast<GroupCell *>(m_selectionStart->GetParent());
-    GroupCell *end = dynamic_cast<GroupCell *>(m_selectionEnd->GetParent());
+    GroupCell *tmp = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart->GetParent());
+    GroupCell *end = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionEnd->GetParent());
 
     bool firstcell = true;
     while (tmp != NULL)
@@ -2144,23 +2121,23 @@ bool MathCtrl::CopyCells()
 
 bool MathCtrl::CanDeleteSelection()
 {
-  if ((m_selectionStart == NULL) || (m_selectionEnd == NULL))
+  if ((m_cellPointers->m_selectionStart == NULL) || (m_cellPointers->m_selectionEnd == NULL))
     return false;
 
   return CanDeleteRegion(
-          dynamic_cast<GroupCell *>(m_selectionStart->GetParent()),
-          dynamic_cast<GroupCell *>(m_selectionEnd->GetParent())
+          dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart->GetParent()),
+          dynamic_cast<GroupCell *>(m_cellPointers->m_selectionEnd->GetParent())
   );
 }
 
 void MathCtrl::DeleteSelection()
 {
   DeleteRegion(
-          dynamic_cast<GroupCell *>(m_selectionStart->GetParent()),
-          dynamic_cast<GroupCell *>(m_selectionEnd->GetParent())
+          dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart->GetParent()),
+          dynamic_cast<GroupCell *>(m_cellPointers->m_selectionEnd->GetParent())
   );
   TreeUndo_ClearRedoActionList();
-  m_selectionStart = m_selectionEnd = NULL;
+  m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
   UpdateTableOfContents();
 }
 
@@ -2643,8 +2620,8 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   {
     SetHCaret(dynamic_cast<GroupCell *>(GetActiveCell()->GetParent()), false);
   }
-  else if (m_selectionStart != NULL)
-    SetHCaret(dynamic_cast<GroupCell *>(m_selectionStart->GetParent()), false);
+  else if (m_cellPointers->m_selectionStart != NULL)
+    SetHCaret(dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart->GetParent()), false);
 
   if (!m_hCaretActive)
   {
@@ -3044,9 +3021,9 @@ void MathCtrl::OnCharInActive(wxKeyEvent &event)
     if (event.ShiftDown())
     {
       SetSelection(previous, dynamic_cast<GroupCell *>((GetActiveCell()->GetParent())));
-      m_hCaretPosition = dynamic_cast<GroupCell *>(m_selectionStart);
-      m_hCaretPositionEnd = dynamic_cast<GroupCell *>(m_selectionStart);
-      m_hCaretPositionStart = dynamic_cast<GroupCell *>(m_selectionEnd);
+      m_hCaretPosition = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart);
+      m_hCaretPositionEnd = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart);
+      m_hCaretPositionStart = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionEnd);
 
       GetActiveCell()->KeyboardSelectionStartedHere();
       GetActiveCell()->SelectNone();
@@ -3376,8 +3353,8 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
 
   m_cellPointers->ResetKeyboardSelectionStart();
 
-  if (m_selectionStart != NULL &&
-      m_selectionStart->GetType() == MC_TYPE_SLIDE &&
+  if (m_cellPointers->m_selectionStart != NULL &&
+      m_cellPointers->m_selectionStart->GetType() == MC_TYPE_SLIDE &&
       ccode == WXK_SPACE)
   {
     Animate(!AnimationRunning());
@@ -3550,11 +3527,11 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
       ScrolledAwayFromEvaluation(true);
       if (m_hCaretActive)
       {
-        if (m_selectionStart != NULL)
+        if (m_cellPointers->m_selectionStart != NULL)
         {
           if (event.CmdDown())
           {
-            GroupCell *tmp = dynamic_cast<GroupCell *>(m_selectionStart);
+            GroupCell *tmp = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart);
             if (tmp->m_previous)
             {
               do tmp = dynamic_cast<GroupCell *>(tmp->m_previous);
@@ -3578,7 +3555,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
             }
           }
           else
-            SetHCaret(dynamic_cast<GroupCell *>(m_selectionStart->GetParent()->m_previous));
+            SetHCaret(dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart->GetParent()->m_previous));
         }
         else if (m_hCaretPosition != NULL)
         {
@@ -3612,8 +3589,8 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
         else
           event.Skip();
       }
-      else if (m_selectionStart != NULL)
-        SetHCaret(dynamic_cast<GroupCell *>(m_selectionStart->GetParent()->m_previous));
+      else if (m_cellPointers->m_selectionStart != NULL)
+        SetHCaret(dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart->GetParent()->m_previous));
       else if (!ActivatePrevInput())
         event.Skip();
       break;
@@ -3622,11 +3599,11 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
       ScrolledAwayFromEvaluation(true);
       if (m_hCaretActive)
       {
-        if (m_selectionEnd != NULL)
+        if (m_cellPointers->m_selectionEnd != NULL)
         {
           if (event.CmdDown())
           {
-            MathCell *tmp = m_selectionEnd;
+            MathCell *tmp = m_cellPointers->m_selectionEnd;
             if (tmp->m_next)
             {
               do tmp = dynamic_cast<GroupCell *>(tmp->m_next);
@@ -3645,7 +3622,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
             }
           }
           else
-            SetHCaret(dynamic_cast<GroupCell *>(m_selectionEnd));
+            SetHCaret(dynamic_cast<GroupCell *>(m_cellPointers->m_selectionEnd));
 
         }
         else if (m_hCaretPosition != NULL && m_hCaretPosition->m_next != NULL)
@@ -3678,15 +3655,15 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
         }
 
       }
-      else if (m_selectionEnd != NULL)
-        SetHCaret(dynamic_cast<GroupCell *>(m_selectionEnd->GetParent()));
+      else if (m_cellPointers->m_selectionEnd != NULL)
+        SetHCaret(dynamic_cast<GroupCell *>(m_cellPointers->m_selectionEnd->GetParent()));
       else if (!ActivateNextInput())
         event.Skip();
       break;
 
     case WXK_RETURN:
       ScrolledAwayFromEvaluation();
-      if (m_selectionStart == NULL || m_selectionEnd == NULL)
+      if (m_cellPointers->m_selectionStart == NULL || m_cellPointers->m_selectionEnd == NULL)
         OpenHCaret(wxEmptyString);
       else
         OpenHCaret(GetString());
@@ -3932,7 +3909,7 @@ void MathCtrl::OnMouseEnter(wxMouseEvent &event)
 
 void MathCtrl::StepAnimation(int change)
 {
-  SlideShow *tmp = dynamic_cast<SlideShow *>(m_selectionStart);
+  SlideShow *tmp = dynamic_cast<SlideShow *>(m_cellPointers->m_selectionStart);
 
   int pos = tmp->GetDisplayedIndex() + change;
   // Change the bitmap
@@ -3943,7 +3920,7 @@ void MathCtrl::StepAnimation(int change)
   tmp->SetDisplayedIndex(pos);
 
   // Refresh the displayed bitmap
-  wxRect rect = m_selectionStart->GetRect();
+  wxRect rect = m_cellPointers->m_selectionStart->GetRect();
   CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
   RedrawRect(rect);
 
@@ -4107,8 +4084,8 @@ bool MathCtrl::CopyRTF()
   wxDataObjectComposite *data = new wxDataObjectComposite;
   
   wxString rtf = RTFStart();
-  GroupCell *tmp = dynamic_cast<GroupCell *>(m_selectionStart->GetParent());
-  GroupCell *end = dynamic_cast<GroupCell *>(m_selectionEnd->GetParent());
+  GroupCell *tmp = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart->GetParent());
+  GroupCell *end = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionEnd->GetParent());
   
   while (tmp != NULL)
   {
@@ -4131,15 +4108,15 @@ bool MathCtrl::CopyRTF()
 wxSize MathCtrl::CopyToFile(wxString file)
 {
 
-  if (m_selectionStart != NULL &&
-      m_selectionStart == m_selectionEnd &&
-      (m_selectionStart->GetType() == MC_TYPE_IMAGE ||
-       m_selectionStart->GetType() == MC_TYPE_SLIDE))
+  if (m_cellPointers->m_selectionStart != NULL &&
+      m_cellPointers->m_selectionStart == m_cellPointers->m_selectionEnd &&
+      (m_cellPointers->m_selectionStart->GetType() == MC_TYPE_IMAGE ||
+       m_cellPointers->m_selectionStart->GetType() == MC_TYPE_SLIDE))
   {
-    if (m_selectionStart->GetType() == MC_TYPE_IMAGE)
-      return dynamic_cast<ImgCell *>(m_selectionStart)->ToImageFile(file);
+    if (m_cellPointers->m_selectionStart->GetType() == MC_TYPE_IMAGE)
+      return dynamic_cast<ImgCell *>(m_cellPointers->m_selectionStart)->ToImageFile(file);
     else
-      return dynamic_cast<SlideShow *>(m_selectionStart)->ToImageFile(file);
+      return dynamic_cast<SlideShow *>(m_cellPointers->m_selectionStart)->ToImageFile(file);
   }
   else
   {
@@ -4172,7 +4149,7 @@ wxSize MathCtrl::CopyToFile(wxString file, MathCell *start, MathCell *end,
  */
 MathCell *MathCtrl::CopySelection(bool asData)
 {
-  return CopySelection(m_selectionStart, m_selectionEnd, asData);
+  return CopySelection(m_cellPointers->m_selectionStart, m_cellPointers->m_selectionEnd, asData);
 }
 
 MathCell *MathCtrl::CopySelection(MathCell *start, MathCell *end, bool asData)
@@ -5310,7 +5287,7 @@ GroupCell *MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
           wxmLines->RemoveAt(0);
         }
 
-        cell->SetOutput(new ImgCell(NULL, &m_configuration, wxBase64Decode(line), imgtype));
+        cell->SetOutput(new ImgCell(NULL, &m_configuration, m_cellPointers, wxBase64Decode(line), imgtype));
       }
     }
       // Print input
@@ -5926,16 +5903,16 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
  */
 bool MathCtrl::CanEdit()
 {
-  if (m_selectionStart == NULL || m_selectionEnd != m_selectionStart)
+  if (m_cellPointers->m_selectionStart == NULL || m_cellPointers->m_selectionEnd != m_cellPointers->m_selectionStart)
     return false;
 
-  if (!m_selectionStart->IsEditable())
+  if (!m_cellPointers->m_selectionStart->IsEditable())
     return false;
 
-  if (m_selectionStart->m_previous == NULL)
+  if (m_cellPointers->m_selectionStart->m_previous == NULL)
     return false;
 
-  if (m_selectionStart->m_previous->GetType() != MC_TYPE_MAIN_PROMPT)
+  if (m_cellPointers->m_selectionStart->m_previous->GetType() != MC_TYPE_MAIN_PROMPT)
     return false;
 
   return true;
@@ -5951,11 +5928,11 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event)
 
   if (GetActiveCell() != NULL)
     GetActiveCell()->SelectWordUnderCaret();
-  else if (m_selectionStart != NULL)
+  else if (m_cellPointers->m_selectionStart != NULL)
   {
-    GroupCell *parent = dynamic_cast<GroupCell *>(m_selectionStart->GetParent());
-    MathCell *selectionStart = m_selectionStart;
-    MathCell *selectionEnd = m_selectionEnd;
+    GroupCell *parent = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart->GetParent());
+    MathCell *selectionStart = m_cellPointers->m_selectionStart;
+    MathCell *selectionEnd = m_cellPointers->m_selectionEnd;
     parent->SelectOutput(&selectionStart, &selectionEnd);
   }
 
@@ -5966,12 +5943,12 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &event)
 
 bool MathCtrl::ActivatePrevInput()
 {
-  if (m_selectionStart == NULL && GetActiveCell() == NULL)
+  if (m_cellPointers->m_selectionStart == NULL && GetActiveCell() == NULL)
     return false;
 
   GroupCell *tmp;
-  if (m_selectionStart != NULL)
-    tmp = dynamic_cast<GroupCell *>(m_selectionStart->GetParent());
+  if (m_cellPointers->m_selectionStart != NULL)
+    tmp = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart->GetParent());
   else
   {
     tmp = dynamic_cast<GroupCell *>(GetActiveCell()->GetParent());
@@ -6006,12 +5983,12 @@ bool MathCtrl::ActivatePrevInput()
 
 bool MathCtrl::ActivateNextInput(bool input)
 {
-  if (m_selectionStart == NULL && GetActiveCell() == NULL)
+  if (m_cellPointers->m_selectionStart == NULL && GetActiveCell() == NULL)
     return false;
 
   GroupCell *tmp;
-  if (m_selectionStart != NULL)
-    tmp = dynamic_cast<GroupCell *>(m_selectionStart->GetParent());
+  if (m_cellPointers->m_selectionStart != NULL)
+    tmp = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart->GetParent());
   else
   {
     tmp = dynamic_cast<GroupCell *>(GetActiveCell()->GetParent());
@@ -6109,7 +6086,7 @@ void MathCtrl::AddRestToEvaluationQueue()
   GroupCell *start = NULL;
   if(CellsSelected())
   {
-    start = dynamic_cast<GroupCell *>(m_selectionStart->GetParent());
+    start = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart->GetParent());
   }
 
   if(start == NULL)
@@ -6126,7 +6103,7 @@ void MathCtrl::AddRestToEvaluationQueue()
 
 void MathCtrl::AddSelectionToEvaluationQueue()
 {
-  AddSelectionToEvaluationQueue(dynamic_cast<GroupCell *>(m_selectionStart), dynamic_cast<GroupCell *>(m_selectionEnd));
+  AddSelectionToEvaluationQueue(dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart), dynamic_cast<GroupCell *>(m_cellPointers->m_selectionEnd));
 }
 
 void MathCtrl::AddSelectionToEvaluationQueue(GroupCell *start, GroupCell *end)
@@ -6674,7 +6651,7 @@ bool MathCtrl::CutToClipboard()
     RequestRedraw();
     return true;
   }
-  else if (m_selectionStart != NULL && m_selectionStart->GetType() == MC_TYPE_GROUP)
+  else if (m_cellPointers->m_selectionStart != NULL && m_cellPointers->m_selectionStart->GetType() == MC_TYPE_GROUP)
   {
     CopyCells();
     DeleteSelection();
@@ -6753,7 +6730,7 @@ void MathCtrl::PasteFromClipboard(bool primary)
           {
             if (m_hCaretActive)
             {
-              if ((m_selectionStart != NULL) && (m_selectionStart->GetType() == MC_TYPE_GROUP))
+              if ((m_cellPointers->m_selectionStart != NULL) && (m_cellPointers->m_selectionStart->GetType() == MC_TYPE_GROUP))
                 DeleteSelection();
 
               if (m_hCaretPosition == NULL)
@@ -6821,7 +6798,7 @@ void MathCtrl::PasteFromClipboard(bool primary)
       {
         wxBitmapDataObject bitmap;
         wxTheClipboard->GetData(bitmap);
-        ImgCell *ic = new ImgCell(group, &m_configuration, bitmap.GetBitmap());
+        ImgCell *ic = new ImgCell(group, &m_configuration, m_cellPointers, bitmap.GetBitmap());
         group->AppendOutput(ic);
       }
     }
@@ -6919,7 +6896,7 @@ void MathCtrl::DivideCell()
 void MathCtrl::MergeCells()
 {
   wxString newcell = wxEmptyString;
-  MathCell *tmp = m_selectionStart;
+  MathCell *tmp = m_cellPointers->m_selectionStart;
   if (!tmp)
     return;
   if (tmp->GetType() != MC_TYPE_GROUP)
@@ -6931,15 +6908,15 @@ void MathCtrl::MergeCells()
       newcell += wxT("\n");
     newcell += dynamic_cast<GroupCell *>(tmp)->GetEditable()->GetValue();
 
-    if (tmp == m_selectionEnd)
+    if (tmp == m_cellPointers->m_selectionEnd)
       break;
     tmp = tmp->m_next;
   }
 
-  EditorCell *editor = dynamic_cast<GroupCell *>(m_selectionStart)->GetEditable();
+  EditorCell *editor = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart)->GetEditable();
   editor->SetValue(newcell);
 
-  m_selectionStart = dynamic_cast<GroupCell *>(m_selectionStart->m_next);
+  m_cellPointers->m_selectionStart = dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart->m_next);
   DeleteSelection();
   editor->GetParent()->ResetSize();
   dynamic_cast<GroupCell *>(editor->GetParent())->ResetInputLabel();
@@ -6999,17 +6976,17 @@ void MathCtrl::CheckUnixCopy()
 //! Is this cell selected?
 bool MathCtrl::IsSelected(int type)
 {
-  if (m_selectionStart == NULL)
+  if (m_cellPointers->m_selectionStart == NULL)
     return false;
 
   else if (type == MC_TYPE_IMAGE || type == MC_TYPE_SLIDE)
   {
-    if (m_selectionStart != m_selectionEnd || m_selectionStart->GetType() != type)
+    if (m_cellPointers->m_selectionStart != m_cellPointers->m_selectionEnd || m_cellPointers->m_selectionStart->GetType() != type)
       return false;
     else
       return true;
   }
-  else if (m_selectionStart->GetType() != type)
+  else if (m_cellPointers->m_selectionStart->GetType() != type)
     return false;
 
   return true;
@@ -7022,7 +6999,7 @@ void MathCtrl::Animate(bool run)
   {
     if (run)
     {
-      SlideShow *tmp = dynamic_cast<SlideShow *>(m_selectionStart);
+      SlideShow *tmp = dynamic_cast<SlideShow *>(m_cellPointers->m_selectionStart);
       AnimationRunning(true);
       m_animationTimer.StartOnce(1000 / tmp->GetFrameRate());
       StepAnimation();
@@ -7056,13 +7033,13 @@ void MathCtrl::SetWorkingGroup(GroupCell *group)
 
 bool MathCtrl::IsSelectionInWorking()
 {
-  if (m_selectionStart == NULL)
+  if (m_cellPointers->m_selectionStart == NULL)
     return false;
 
   if (GetWorkingGroup() == NULL)
     return false;
 
-  if (m_selectionStart->GetParent() != GetWorkingGroup())
+  if (m_cellPointers->m_selectionStart->GetParent() != GetWorkingGroup())
     return false;
 
   return true;
@@ -7076,8 +7053,8 @@ GroupCell *MathCtrl::GetHCaret()
   if (GetActiveCell())
     return dynamic_cast<GroupCell *>(GetActiveCell()->GetParent());
 
-  if (m_selectionStart)
-    return dynamic_cast<GroupCell *>(m_selectionStart->GetParent());
+  if (m_cellPointers->m_selectionStart)
+    return dynamic_cast<GroupCell *>(m_cellPointers->m_selectionStart->GetParent());
 
   if (MouseSelectionStart() != NULL)
     return dynamic_cast<GroupCell *>(MouseSelectionStart()->GetParent());
@@ -7199,7 +7176,7 @@ void MathCtrl::RemoveAllOutput()
   if(CellsSelected())
   {
     // If the selection is in the output we want to remove the selection.
-    if(m_selectionStart->GetType() != MC_TYPE_GROUP)
+    if(m_cellPointers->m_selectionStart->GetType() != MC_TYPE_GROUP)
       SetSelection(NULL);
   }
 
@@ -7287,8 +7264,8 @@ wxString MathCtrl::GetOutputAboveCaret()
   if (!m_hCaretActive || m_hCaretPosition == NULL)
     return wxEmptyString;
 
-  MathCell *selectionStart = m_selectionStart;
-  MathCell *selectionEnd = m_selectionEnd;
+  MathCell *selectionStart = m_cellPointers->m_selectionStart;
+  MathCell *selectionEnd = m_cellPointers->m_selectionEnd;
   m_hCaretPosition->SelectOutput(&selectionStart, &selectionEnd);
 
   wxString output = GetString();
@@ -7986,4 +7963,3 @@ wxDataFormat MathCtrl::m_mathmlFormat2;
 wxDataFormat MathCtrl::m_rtfFormat;
 wxDataFormat MathCtrl::m_rtfFormat2;
 wxDataFormat MathCtrl::m_wxmFormat;
-
