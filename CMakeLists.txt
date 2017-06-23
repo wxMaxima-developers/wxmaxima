@@ -6,6 +6,10 @@ set(PACKAGE_VERSION ${VERSION})
 set(GITVERSION ${VERSION})
 set(PACKAGE wxMaxima)
 
+if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
+    message(WARNING "In-source builds are strongly discouraged. Make an out-of-source build.")
+endif()
+
 # should the PDF doku be build from the texinfo source? (requires a TeX installation)
 option(BUILD_PDF_DOCUMENTATION "Build the PDF documentation." NO)
 
