@@ -52,7 +52,17 @@ public:
   SlideShow(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxFileSystem *filesystem = NULL, int framerate = -1);
 
   ~SlideShow();
-  
+
+  virtual wxString GetToolTip(const wxPoint &point)
+    {
+      if(ContainsPoint(point))
+      {
+        m_cellPointers->m_cellUnderPointer = this;
+        return m_toolTip;
+      }
+      else
+        return wxEmptyString;
+    }
   void MarkAsDeleted();
 
   /*! Remove all cached scaled images from memory

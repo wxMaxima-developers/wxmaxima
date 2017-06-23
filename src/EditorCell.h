@@ -548,7 +548,17 @@ private:
   bool IsNum(wxChar c);
 
   bool IsAlphaNum(wxChar c);
-
+  
+  virtual wxString GetToolTip(const wxPoint &point)
+    {
+      if(ContainsPoint(point))
+      {
+        m_cellPointers->m_cellUnderPointer = this;
+        return m_toolTip;
+      }
+      else
+        return wxEmptyString;
+    }
   /*! A piece of styled text for syntax highlighting
 
     A piece of styled text may be
@@ -593,7 +603,7 @@ private:
       m_indentPixels = indentPixels;
       m_indentChar = indentChar;
     }
-
+    
     //! Returns the piece of text
     wxString GetText()
     {

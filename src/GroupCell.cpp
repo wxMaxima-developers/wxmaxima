@@ -1668,11 +1668,18 @@ void GroupCell::SelectRectInOutput(wxRect &rect, wxPoint &one, wxPoint &two,
 
 wxString GroupCell::GetToolTip(const wxPoint &point)
 {
+  if(ContainsPoint(point))
+  {
+    // Default assumption: will be overwritten by the next command,
+    // if there is a more accurate solution.
+    m_cellPointers->m_cellUnderPointer = this;
+  }
+  
   wxString retval;
 
   if (m_hide)
     return retval;
-
+  
   MathCell *tmp = m_output;
   MathCell *cellUnderPointer = NULL;
   while (tmp != NULL)

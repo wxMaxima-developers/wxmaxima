@@ -1549,7 +1549,7 @@ void MathCtrl::OnMouseMotion(wxMouseEvent &event)
             (y > m_groupCellUnderPointerRect.GetBottom())
             )
     {
-      // find out the group cell the selection begins in
+      // find out which group cell lies under the pointer
       GroupCell *tmp = m_tree;
       wxRect rect;
 
@@ -1574,35 +1574,32 @@ void MathCtrl::OnMouseMotion(wxMouseEvent &event)
     {
       if ((dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer)->GetOutputRect()).Contains(wxPoint(x,y)))
       {
+        m_cellPointers->m_cellUnderPointer = NULL;
         wxString toolTip = dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer)->GetToolTip(wxPoint(x,y));
 
         if(toolTip != wxEmptyString)
         {
           if(toolTip != GetToolTip())
+          {
+            // Disabling and re-enabling tooltips resets the tooltip poput delay timer.
+            wxToolTip::Enable(false);
+            wxToolTip::Enable(true);
             SetToolTip(toolTip);
+          }
         }
         else
-        {
           UnsetToolTip();
-          // Disabling and re-enabling tooltips resets the tooltip poput delay timer.
-          wxToolTip::Enable(false);
-          wxToolTip::Enable(true);
-        }
       }
       else
-      {
         UnsetToolTip();
-        // Disabling and re-enabling tooltips resets the tooltip poput delay timer.
-        wxToolTip::Enable(false);
-        wxToolTip::Enable(true);
-      }
     }
     else
     {
-      UnsetToolTip();
-      // Disabling and re-enabling tooltips resets the tooltip poput delay timer.
-      wxToolTip::Enable(false);
-      wxToolTip::Enable(true);
+      if(m_cellPointers->m_cellUnderPointer != NULL)
+      {
+        UnsetToolTip();
+        m_cellPointers->m_cellUnderPointer = NULL;
+      }
     }
     
     if (m_tree == NULL || !m_leftDown)

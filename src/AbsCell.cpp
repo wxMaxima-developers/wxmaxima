@@ -201,6 +201,7 @@ void AbsCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
   }
 }
 
+
 bool AbsCell::BreakUp()
 {
   if (!m_isBroken)

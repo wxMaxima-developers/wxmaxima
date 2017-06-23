@@ -98,13 +98,7 @@ public:
 
     wxEmptyString means: No ToolTip
    */
-  virtual wxString GetToolTip(const wxPoint &point)
-    {
-      if(ContainsPoint(point))
-        return m_toolTip;
-      else
-        return wxEmptyString;
-    }
+  virtual wxString GetToolTip(const wxPoint &point) = 0;
 
   //! Delete this list of cells.
   virtual ~MathCell();

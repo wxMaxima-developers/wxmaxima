@@ -51,6 +51,13 @@ void MatrCell::SetParent(MathCell *parent)
 wxString MatrCell::GetToolTip(const wxPoint &point)
 {
   wxString toolTip;
+
+  if(ContainsPoint(point))
+      {
+        // Default assumption: will be overwritten by the next command,
+        // if there is a more accurate solution.
+        m_cellPointers->m_cellUnderPointer = this;
+      }
   
   for (unsigned int i = 0; i < m_cells.size(); i++)
   {

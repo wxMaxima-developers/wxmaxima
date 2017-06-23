@@ -48,6 +48,12 @@ public:
   void MarkAsDeleted();
 
   virtual wxString GetToolTip(const wxPoint &point){
+    if(ContainsPoint(point))
+      {
+        // Default assumption: will be overwritten by the next command,
+        // if there is a more accurate solution.
+        m_cellPointers->m_cellUnderPointer = this;
+      }
     return GetToolTipList(point,m_open1,m_open2,m_close1,m_close2,m_num,m_denom,m_divide);
   }
 
