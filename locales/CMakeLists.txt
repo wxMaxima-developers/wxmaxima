@@ -34,12 +34,13 @@ if(GETTEXT_FOUND)
         message (STATUS "Create PO-file for language ${LANG}")
 	execute_process(
 	    COMMAND ${GETTEXT_MSGMERGE_EXECUTABLE} ${CMAKE_SOURCE_DIR}/locales/${LANG}.po ${CMAKE_BINARY_DIR}/wxMaxima.pot
-	    OUTPUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.po"
+	    OUTPUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.po.new"
             ERROR_QUIET)
+	file(RENAME "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.po.new" "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.po")
     endforeach()
     message (STATUS "The new POT and PO files were generated in the build directory.")
     message (STATUS "Call 'make update-locale' to modify the wxMaxima sourcecode.")
-    
+
     
     file(GLOB NEW_PO_FILES "${CMAKE_BINARY_DIR}/locales/*.po")
     add_custom_target(update-locale
