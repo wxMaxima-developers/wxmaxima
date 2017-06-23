@@ -58,7 +58,7 @@ wxString MatrCell::GetToolTip(const wxPoint &point)
     if (toolTip != wxEmptyString)
       return toolTip;
   }
-  return GetToolTip(point);
+  return m_toolTip;
 }
 
 MathCell *MatrCell::Copy()
