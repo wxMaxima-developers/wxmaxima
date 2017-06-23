@@ -345,7 +345,8 @@ wxSize SlideShow::ToGif(wxString file)
 void SlideShow::ClearCache()
 {
   for (int i = 0; i < m_size; i++)
-    m_images[i]->ClearCache();
+    if(m_images[i] != NULL)
+      m_images[i]->ClearCache();
 }
 
 bool SlideShow::CopyToClipboard()
