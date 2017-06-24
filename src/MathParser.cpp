@@ -253,7 +253,12 @@ MathCell *MathParser::ParseCellTag(wxXmlNode *node)
 MathCell *MathParser::HandleNullPointer(MathCell *cell)
 {
   if (cell == NULL)
+  {
     cell = new TextCell(NULL, m_configuration, m_cellPointers, _("Bug: Missing contents"));
+    cell->SetToolTip(_("The xml data from maxima or from the .wxmx file was missing data here.\n"
+                       "If you find a way how to reproduce this problem please file a bug"
+                       "report against wxMaxima."));
+  }
   return (cell);
 }
 
