@@ -71,6 +71,10 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
 #endif
         )
 {
+  m_pointer_x = -1;
+  m_pointer_y = -1;
+  m_mouseMotionWas = false;
+
   m_notificationMessage = NULL;
   m_cellPointers = new CellPointers;
   m_dc = new wxClientDC(this);
@@ -137,6 +141,67 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
 
 void MathCtrl::RedrawIfRequested()
 {
+  if(m_mouseMotionWas)
+  {
+    if (
+      (m_pointer_y < m_groupCellUnderPointerRect.GetTop()) ||
+      (m_pointer_y > m_groupCellUnderPointerRect.GetBottom())
+      )
+    {
+      // find out which group cell lies under the pointer
+      GroupCell *tmp = m_tree;
+      wxRect rect;
+    
+      while (tmp != NULL)
+      {
+        rect = tmp->GetRect();
+        if (m_pointer_y <= rect.GetBottom())
+          break;
+        tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+      }
+      if (m_tree)
+        m_tree->CellUnderPointer(tmp);
+      if (tmp != NULL)
+        m_groupCellUnderPointerRect = tmp->GetRect();
+      else
+        m_groupCellUnderPointerRect = wxRect(-1,-1,0,0);
+    }
+    if (m_configuration->HideBrackets())
+      RequestRedraw();
+  
+    if (m_cellPointers->m_groupCellUnderPointer != NULL)
+    {
+      if ((dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer)->GetOutputRect()).Contains(wxPoint(m_pointer_x,m_pointer_y)))
+      {
+        m_cellPointers->m_cellUnderPointer = NULL;
+        wxString toolTip = dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer)->GetToolTip(wxPoint(m_pointer_x,m_pointer_y));
+      
+        if(toolTip != wxEmptyString)
+        {
+          if(toolTip != GetToolTip())
+          {
+            // Disabling and re-enabling tooltips resets the tooltip poput delay timer.
+            wxToolTip::Enable(false);
+            wxToolTip::Enable(true);
+            SetToolTip(toolTip);
+          }
+        }
+        else
+          UnsetToolTip();
+      }
+      else
+        UnsetToolTip();
+    }
+    else
+    {
+      if(m_cellPointers->m_cellUnderPointer != NULL)
+      {
+        UnsetToolTip();
+        m_cellPointers->m_cellUnderPointer = NULL;
+      }
+    }
+    m_mouseMotionWas = false;
+  }
   if (m_redrawRequested)
   {
     Refresh();
@@ -1542,70 +1607,14 @@ void MathCtrl::OnMouseWheel(wxMouseEvent &event)
 
 void MathCtrl::OnMouseMotion(wxMouseEvent &event)
 {
-    int x, y;
-    CalcUnscrolledPosition(event.GetX(), event.GetY(), &x, &y);
-    if (
-            (y < m_groupCellUnderPointerRect.GetTop()) ||
-            (y > m_groupCellUnderPointerRect.GetBottom())
-            )
-    {
-      // find out which group cell lies under the pointer
-      GroupCell *tmp = m_tree;
-      wxRect rect;
-
-      while (tmp != NULL)
-      {
-        rect = tmp->GetRect();
-        if (y <= rect.GetBottom())
-          break;
-        tmp = dynamic_cast<GroupCell *>(tmp->m_next);
-      }
-      if (m_tree)
-        m_tree->CellUnderPointer(tmp);
-      if (tmp != NULL)
-        m_groupCellUnderPointerRect = tmp->GetRect();
-      else
-        m_groupCellUnderPointerRect = wxRect(-1,-1,0,0);
-    }
-    if (m_configuration->HideBrackets())
-      RequestRedraw();
-
-    if (m_cellPointers->m_groupCellUnderPointer != NULL)
-    {
-      if ((dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer)->GetOutputRect()).Contains(wxPoint(x,y)))
-      {
-        m_cellPointers->m_cellUnderPointer = NULL;
-        wxString toolTip = dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer)->GetToolTip(wxPoint(x,y));
-
-        if(toolTip != wxEmptyString)
-        {
-          if(toolTip != GetToolTip())
-          {
-            // Disabling and re-enabling tooltips resets the tooltip poput delay timer.
-            wxToolTip::Enable(false);
-            wxToolTip::Enable(true);
-            SetToolTip(toolTip);
-          }
-        }
-        else
-          UnsetToolTip();
-      }
-      else
-        UnsetToolTip();
-    }
-    else
-    {
-      if(m_cellPointers->m_cellUnderPointer != NULL)
-      {
-        UnsetToolTip();
-        m_cellPointers->m_cellUnderPointer = NULL;
-      }
-    }
+    CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_pointer_x, &m_pointer_y);
+    m_mouseMotionWas = true;
     
     if (m_tree == NULL || !m_leftDown)
       return;
     m_mouseDrag = true;
-    CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_up.x, &m_up.y);
+    m_up.x = m_pointer_x;
+    m_up.y = m_pointer_y;
     if (m_mouseOutside)
     {
       m_mousePoint.x = event.GetX();

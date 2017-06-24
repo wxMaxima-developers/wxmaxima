@@ -683,7 +683,10 @@ public:
     m_redrawRequested = false;
   }
 
-  //! Redraw the worksheet if RequestRedraw() has been called.
+  /*! Redraw the worksheet if RequestRedraw() has been called.
+
+    Also handles setting tooltips and redrawing the brackets on mouse movements.
+   */
   void RedrawIfRequested();
 
   //! Redraw the worksheet region merging this action with an eventual RequestRedraw()
@@ -1398,6 +1401,13 @@ public:
 
 protected:
   void UpdateConfigurationClientSize();
+
+  //! The x position of the mouse pointer
+  int m_pointer_x;
+  //! The y position of the mouse pointer
+  int m_pointer_y;
+  //! Was there a mouse motion we didn't react to until now?
+  bool m_mouseMotionWas;
 DECLARE_EVENT_TABLE()
 };
 
