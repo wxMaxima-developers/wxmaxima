@@ -611,6 +611,8 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
         // selections to flicker in very long texts
         if ((!IsActive()) || (start != MIN(m_selectionStart, m_selectionEnd)))
           MarkSelection(start, end, scale, dc, TS_EQUALSSELECTION, fontsize);
+        if(m_cellPointers->m_selectionString.Length() == 0)
+          end++;
         start = end;
       }
     }
