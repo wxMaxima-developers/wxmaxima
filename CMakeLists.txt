@@ -105,7 +105,7 @@ find_program(sha256sum NAMES sha256sum)
 find_program(sha512sum NAMES sha512sum)
 file(WRITE "${CMAKE_BINARY_DIR}/create-checksums.sh" "#!/bin/sh\n")
 # create checksums for binary packages
-# make package must be run  before make checksums to get them.
+# "make package" must be run before "make checksums" to get them.
 foreach(ext "tar.gz" "tar.bz2" "deb" "rpm")
     file(APPEND "${CMAKE_BINARY_DIR}/create-checksums.sh" "test -f wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.${ext} && ${CMAKE_COMMAND} -E md5sum wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.${ext} >> checksums-md5.txt\n")
     file(APPEND "${CMAKE_BINARY_DIR}/create-checksums.sh" "test -f wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.${ext} && ${sha1sum} wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.${ext} >> checksums-sha1.txt\n")
@@ -114,7 +114,7 @@ foreach(ext "tar.gz" "tar.bz2" "deb" "rpm")
 endforeach(ext)
 
 # create checksums for source packages
-# make package_source msut be run before make checksums to get them.
+# "make package_source" must be run before "make checksums" to get them.
 foreach(ext "tar.gz" "tar.bz2" "tar.xz" "tar.Z")
     file(APPEND "${CMAKE_BINARY_DIR}/create-checksums.sh" "test -f wxmaxima-${VERSION}.${ext} && ${CMAKE_COMMAND} -E md5sum wxmaxima-${VERSION}.${ext} >> checksums-md5.txt\n")
     file(APPEND "${CMAKE_BINARY_DIR}/create-checksums.sh" "test -f wxmaxima-${VERSION}.${ext} && ${sha1sum} wxmaxima-${VERSION}.${ext} >> checksums-sha1.txt\n")
@@ -125,4 +125,5 @@ file(APPEND "${CMAKE_BINARY_DIR}/create-checksums.sh" "exit 0\n")
 
 add_custom_target(checksums COMMAND chmod +x ${CMAKE_BINARY_DIR}/create-checksums.sh
 			    COMMAND ${CMAKE_BINARY_DIR}/create-checksums.sh)
+
 include(CPack)
