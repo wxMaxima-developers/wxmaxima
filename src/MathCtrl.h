@@ -80,8 +80,6 @@ class MathCtrl : public wxScrolledCanvas
 private:
   //! Is our window currently active?
   bool m_windowActive;
-  //! The rectangle the groupcell under the pointer is in
-  wxRect m_groupCellUnderPointerRect;
 
   /*! The size of a scroll step
     

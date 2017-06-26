@@ -80,7 +80,6 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
   m_dc = new wxClientDC(this);
   m_configuration = new Configuration(*m_dc, true);
   m_configuration->ReadConfig();
-  m_groupCellUnderPointerRect = wxRect(0, 0, 0, 0);
   m_redrawStart = NULL;
   m_redrawRequested = false;
   m_autocompletePopup = NULL;
@@ -143,11 +142,13 @@ void MathCtrl::RedrawIfRequested()
 {
   if(m_mouseMotionWas)
   {
-    if (
-      (m_pointer_y < m_groupCellUnderPointerRect.GetTop()) ||
-      (m_pointer_y > m_groupCellUnderPointerRect.GetBottom())
+    if ((m_cellPointers->m_groupCellUnderPointer == NULL) ||
+        (m_pointer_y < m_cellPointers->m_groupCellUnderPointer->GetRect().GetTop()) ||
+        (m_pointer_y > m_cellPointers->m_groupCellUnderPointer->GetRect().GetBottom())
       )
     {
+      GroupCell *oldGroupCellUnderPointer = dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer);
+      
       // find out which group cell lies under the pointer
       GroupCell *tmp = m_tree;
       wxRect rect;
@@ -161,13 +162,10 @@ void MathCtrl::RedrawIfRequested()
       }
       if (m_tree)
         m_tree->CellUnderPointer(tmp);
-      if (tmp != NULL)
-        m_groupCellUnderPointerRect = tmp->GetRect();
-      else
-        m_groupCellUnderPointerRect = wxRect(-1,-1,0,0);
+      
+      if ((m_configuration->HideBrackets()) && (oldGroupCellUnderPointer != m_cellPointers->m_groupCellUnderPointer))
+        RequestRedraw();
     }
-    if (m_configuration->HideBrackets())
-      RequestRedraw();
   
     if (m_cellPointers->m_groupCellUnderPointer != NULL)
     {
@@ -3896,7 +3894,6 @@ void MathCtrl::OnMouseExit(wxMouseEvent &event)
   {
     if (m_tree)
       m_tree->CellUnderPointer(NULL);
-    m_groupCellUnderPointerRect = wxRect(-1,-1,0,0);
     RequestRedraw();
   }
 }
