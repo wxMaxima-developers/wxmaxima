@@ -133,7 +133,46 @@ void TextCell::SetValue(const wxString &text)
     if (m_text == wxT("inf"))
       m_toolTip = _("-∞.");
 
-  }
+    if(m_text.StartsWith("%r"))
+    {
+      wxString number;
+
+      number = m_text.Right(m_text.Length()-2);
+
+      bool isrnum = (number != wxEmptyString);
+     
+      for (wxString::iterator it = number.begin(); it != number.end(); ++it)
+        if(!wxIsdigit(*it))
+        {
+          isrnum = false;
+          break;
+        }
+
+      if(isrnum)
+        m_toolTip = _("A variable that can be assigned a number to.\n"
+          "Often used by solve() and algsys(), if there is an infinitive number of results.");
+    }
+
+  
+    if(m_text.StartsWith("%i"))
+    {
+      wxString number;
+
+      number = m_text.Right(m_text.Length()-2);
+
+      bool isinum = (number != wxEmptyString);
+     
+      for (wxString::iterator it = number.begin(); it != number.end(); ++it)
+        if(!wxIsdigit(*it))
+        {
+          isinum = false;
+          break;
+        }
+
+      if(isinum)
+        m_toolTip = _("An integration constant.");
+    }
+}
   
   if (m_textStyle == TS_NUMBER)
   {
