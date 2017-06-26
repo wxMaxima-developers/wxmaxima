@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima 0.8.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-25 11:11+0200\n"
+"POT-Creation-Date: 2017-06-26 20:06+0200\n"
 "PO-Revision-Date: 2012-03-14 10:23+0800\n"
 "Last-Translator: cw.ahbong <cwahbong@users.sourceforge.net>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -563,8 +563,8 @@ msgstr ""
 msgid "Automatic labels (%i1, %o1,...)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1102
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1213
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1099
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1210
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:616
 msgid "Automatically answer questions"
 msgstr ""
@@ -578,8 +578,8 @@ msgid ""
 "than the maxima installation."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1103
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1214
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1100
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1211
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:617
 msgid "Automatically fill in answers known from the last run"
 msgstr ""
@@ -658,11 +658,11 @@ msgstr "瀏覽"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2267
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2264
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6220
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6216
 msgid "Bug: Cell with negative y position!"
 msgstr ""
 
@@ -678,22 +678,22 @@ msgstr ""
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2545
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2542
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6391
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6387
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6466
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6462
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6434
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6430
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -713,8 +713,8 @@ msgstr ""
 msgid "Bug: Missing contents"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1200
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1375
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1205
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1380
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -750,13 +750,13 @@ msgstr ""
 msgid "Bug: No last cell inside a square root!"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2311
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2308
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2277
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2274
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 
@@ -764,37 +764,37 @@ msgstr ""
 msgid "Bug: Trying to append NULL to a group cell."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:635
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:632
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2202
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2199
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7100
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7096
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2279
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2276
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1708
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1705
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6435
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6431
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6396
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6471
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6506
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6392
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6467
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6502
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
@@ -855,11 +855,11 @@ msgstr "計算乘積"
 msgid "Calculate sums"
 msgstr "計算加總"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6829
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6830
 msgid "Can not connect to the web server."
 msgstr "無法連線至網路伺服器。"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6884
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6885
 msgid "Can not download version info."
 msgstr "無法下載版本資訊。"
 
@@ -899,7 +899,7 @@ msgstr "無法下載版本資訊。"
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:46
 #: /home/gunter/src/wxmaxima/src/SystemWiz.cpp:38
 #: /home/gunter/src/wxmaxima/src/SystemWiz.cpp:40
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6926
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6927
 msgid "Cancel"
 msgstr "取消"
 
@@ -1045,7 +1045,7 @@ msgstr "x 座標，以逗號分隔"
 msgid "Comma separated y coordinates"
 msgstr "y 座標，以逗號分隔"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1172
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1169
 msgid "Comment Selection"
 msgstr "將所選區域變成註解"
 
@@ -1181,10 +1181,10 @@ msgstr "轉換三角函數數式為標準準線性形式"
 msgid "Convert trigonometric functions to exponential form"
 msgstr "轉換三角函數數式為指數形式"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1036
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1052
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1110
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1166
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1033
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1049
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1107
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1163
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:139
 msgid "Copy"
 msgstr "複製"
@@ -1198,14 +1198,14 @@ msgstr "複製上一個輸入\tCtrl+I"
 msgid "Copy Previous Output\tCtrl+U"
 msgstr "複製上一個輸入\tCtrl+I"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1058
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1116
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1055
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1113
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:487
 msgid "Copy as Image"
 msgstr "複製為圖片"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1053
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1111
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1050
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1108
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:480
 msgid "Copy as LaTeX"
 msgstr "複製為 LaTeX 格式"
@@ -1215,13 +1215,13 @@ msgstr "複製為 LaTeX 格式"
 msgid "Copy as MathML"
 msgstr "複製為圖片"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1056
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1113
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1053
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1110
 msgid "Copy as MathML (e.g. to word processor)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1060
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1118
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1057
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1115
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:491
 #, fuzzy
 msgid "Copy as RTF"
@@ -1231,8 +1231,8 @@ msgstr "複製為 LaTeX 格式"
 msgid "Copy as Text\tCtrl+Shift+C"
 msgstr "複製為純文字\tCtrl+Shift+C"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1054
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1112
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1051
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1109
 #, fuzzy
 msgid "Copy as plain text"
 msgstr "複製為圖片"
@@ -1279,7 +1279,7 @@ msgstr "以上一個輸入建立一個新的單元"
 msgid "Cursor"
 msgstr "游標"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1165
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1162
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:136
 msgid "Cut"
 msgstr "剪下"
@@ -1368,8 +1368,8 @@ msgstr "刪除"
 msgid "Delete F&unction..."
 msgstr "刪除函數(&U)..."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1063
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1121
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1060
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1118
 msgid "Delete Selection"
 msgstr "刪除所選區域"
 
@@ -1434,7 +1434,7 @@ msgstr "微分"
 msgid "Differentiate expression"
 msgstr "對數式微分"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1138
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1135
 msgid "Differentiate..."
 msgstr "微分..."
 
@@ -1468,7 +1468,7 @@ msgstr "顯示評算所花費的時間"
 msgid "Divide"
 msgstr "數字／多項式相除"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1174
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1171
 msgid "Divide Cell"
 msgstr "分割單元"
 
@@ -1489,7 +1489,7 @@ msgstr ""
 msgid "Division by 0."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6921
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6922
 #, fuzzy, c-format
 msgid "Do you want to save the changes you made in the document \"%s\"?"
 msgstr "您是否想儲存於此文件中的變更： \""
@@ -1524,7 +1524,7 @@ msgid ""
 "differences."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6926
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6927
 msgid "Don't save"
 msgstr "不要儲存"
 
@@ -1679,8 +1679,8 @@ msgstr "方程式："
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2523
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2690
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6337
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6829
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6884
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6830
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6885
 msgid "Error"
 msgstr "錯誤"
 
@@ -1716,12 +1716,12 @@ msgstr "評算所有單元\tCtrl+R"
 msgid "Evaluate All Visible Cells\tCtrl+R"
 msgstr "評算所有單元\tCtrl+R"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1066
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1063
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:563
 msgid "Evaluate Cell(s)"
 msgstr "評算單元"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1157
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1154
 #, fuzzy
 msgid "Evaluate Cells Above"
 msgstr "評算單元"
@@ -1731,31 +1731,31 @@ msgstr "評算單元"
 msgid "Evaluate Cells Above\tCtrl+Shift+P"
 msgstr "評算所有單元\tCtrl+R"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1068
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1158
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1065
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1155
 #, fuzzy
 msgid "Evaluate Cells Below"
 msgstr "評算單元"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1082
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1195
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1079
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1192
 msgid "Evaluate Part\tShift+Ctrl+Enter"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1087
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1198
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1084
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1195
 msgid "Evaluate Section\tShift+Ctrl+Enter"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1099
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1205
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1244
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1096
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1202
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1241
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1093
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1202
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1234
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1090
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1199
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1231
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
@@ -1811,7 +1811,7 @@ msgstr "展開"
 msgid "Expand (tr)"
 msgstr "展開 (三角)"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1134
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1131
 msgid "Expand Expression"
 msgstr "展開數式"
 
@@ -1911,7 +1911,7 @@ msgstr "因式分解"
 msgid "Factor Complex"
 msgstr "複數因式分解"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1133
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1130
 msgid "Factor Expression"
 msgstr "因式分解數式"
 
@@ -1931,7 +1931,7 @@ msgstr "階乘與 Gamma 函數(&G)"
 msgid "Fatal error"
 msgstr "嚴重錯誤"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2077
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2082
 #, c-format
 msgid "Figure %d:"
 msgstr "圖 %d:"
@@ -1990,7 +1990,7 @@ msgstr "求極限(&L)..."
 msgid "Find Minimum..."
 msgstr "求極小值..."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1130
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1127
 msgid "Find Root..."
 msgstr "找根..."
 
@@ -2256,7 +2256,7 @@ msgstr "取得複數數式的虛部"
 msgid "Get the real part of complex expression"
 msgstr "取得複數數式的實部"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6486
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6482
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2316,22 +2316,22 @@ msgstr "分割單元"
 msgid "Hide Code Cells\tAlt+Ctrl+H"
 msgstr "插入(單元)\tAlt+Shift+C"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1223
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1220
 #, fuzzy
 msgid "Hide Part"
 msgstr "分割單元"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1231
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1228
 #, fuzzy
 msgid "Hide Section"
 msgstr "章節"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1241
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1238
 #, fuzzy
 msgid "Hide Subsection"
 msgstr "子章節"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1251
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1248
 #, fuzzy
 msgid "Hide Subsubsection"
 msgstr "子章節"
@@ -2340,7 +2340,7 @@ msgstr "子章節"
 msgid "Hide all panes"
 msgstr "隱藏所有窗格"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1259
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1256
 #, fuzzy
 msgid "Hide contents"
 msgstr "希臘字母"
@@ -2460,7 +2460,7 @@ msgstr ""
 msgid "Image"
 msgstr "圖片"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6630
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6631
 msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgstr "圖片檔 (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 
@@ -2553,7 +2553,7 @@ msgstr "插入文字單元(&T)\tCtrl+1"
 msgid "Insert Cell\tAlt+Shift+C"
 msgstr "插入(單元)\tAlt+Shift+C"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6628
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6629
 msgid "Insert Image"
 msgstr "插入圖片"
 
@@ -2578,15 +2578,15 @@ msgstr "插入子章節單元(&U)\tCtrl+4"
 msgid "Insert S&ubsubsection Cell\tCtrl+5"
 msgstr "插入子章節單元(&U)\tCtrl+4"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1153
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1150
 msgid "Insert Section Cell"
 msgstr "插入章節單元"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1154
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1151
 msgid "Insert Subsection Cell"
 msgstr "插入子章節單元"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1155
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1152
 #, fuzzy
 msgid "Insert Subsubsection Cell"
 msgstr "插入子章節單元"
@@ -2595,11 +2595,11 @@ msgstr "插入子章節單元"
 msgid "Insert T&itle Cell\tCtrl+2"
 msgstr "插入標題單元(&I)\tCtrl+2"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1151
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1148
 msgid "Insert Text Cell"
 msgstr "插入文字單元"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1152
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1149
 msgid "Insert Title Cell"
 msgstr "插入標題單元"
 
@@ -2667,7 +2667,7 @@ msgstr "對數式積分"
 msgid "Integrate expression with Risch algorithm"
 msgstr "使用 Risch 演算法積分數式"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1137
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1134
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1340
 msgid "Integrate..."
 msgstr "積分..."
@@ -3166,7 +3166,7 @@ msgstr "平均值："
 msgid "Median..."
 msgstr "中位數..."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1071
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1068
 msgid "Merge Cells"
 msgstr "合併單元"
 
@@ -3540,8 +3540,8 @@ msgid ""
 "Found unknown XML Tag name "
 msgstr "文件的某部分將無法被正確的讀取！"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1148
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1167
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1145
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1164
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:142
 msgid "Paste"
 msgstr "貼上"
@@ -3606,7 +3606,7 @@ msgstr "二維繪圖"
 msgid "Plot 2D..."
 msgstr "二維繪圖..."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1140
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1137
 msgid "Plot 2d..."
 msgstr "二維繪圖..."
 
@@ -3620,7 +3620,7 @@ msgstr "三維繪圖"
 msgid "Plot 3D..."
 msgstr "三維繪圖..."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1141
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1138
 msgid "Plot 3d..."
 msgstr "三維繪圖..."
 
@@ -3816,7 +3816,7 @@ msgstr "重新啟動 Maxima"
 msgid "Restart maxima"
 msgstr "重新啟動 Maxima"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:4952
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:4948
 msgid "Result"
 msgstr ""
 
@@ -3872,11 +3872,11 @@ msgstr "樣本："
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:867
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:121
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6926
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6927
 msgid "Save"
 msgstr "儲存"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1040
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1037
 msgid "Save Animation..."
 msgstr "儲存動畫..."
 
@@ -3888,7 +3888,7 @@ msgstr "另存新檔"
 msgid "Save As...\tShift+Ctrl+S"
 msgstr "另存新檔...\tShift+Ctrl+S"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1037
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1034
 msgid "Save Image..."
 msgstr "儲存圖片..."
 
@@ -4002,8 +4002,8 @@ msgstr ""
 msgid "Select"
 msgstr "所選區域"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1149
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1169
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1146
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1166
 msgid "Select All"
 msgstr "全部選取"
 
@@ -4221,7 +4221,7 @@ msgstr "化簡根式"
 msgid "Simplify (tr)"
 msgstr "化簡 (三角)"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1132
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1129
 msgid "Simplify Expression"
 msgstr "化簡數式"
 
@@ -4343,7 +4343,7 @@ msgstr "解常微分方程式 (最大 2 階)"
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "以 Laplace 變換解常微分方程式"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1129
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1126
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1337
 msgid "Solve..."
 msgstr "求解..."
@@ -4370,7 +4370,7 @@ msgstr "特殊"
 msgid "Special constants"
 msgstr "特殊常數"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1041
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1038
 msgid "Start Animation"
 msgstr "開始動畫"
 
@@ -4453,7 +4453,7 @@ msgstr "代換"
 msgid "Substitute"
 msgstr "代換"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1135
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1132
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:895
 msgid "Substitute..."
 msgstr "代換..."
@@ -4743,7 +4743,7 @@ msgstr "計算長浮點數(&B)"
 msgid "To &Float"
 msgstr "計算浮點數(&F)"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1127
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1124
 msgid "To Float"
 msgstr "計算浮點數"
 
@@ -4837,11 +4837,11 @@ msgstr "翻譯者"
 msgid "Transpose a matrix"
 msgstr "計算轉置矩陣"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6385
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6381
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6453
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6449
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
@@ -4877,7 +4877,7 @@ msgstr ""
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6876
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6877
 msgid ""
 "Unable to interpret the version info I got from http://andrejv.github.io//"
 "wxmaxima/version.txt: "
@@ -4916,26 +4916,26 @@ msgstr ""
 msgid "Unhide"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1220
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1217
 msgid "Unhide Part"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1228
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1225
 #, fuzzy
 msgid "Unhide Section"
 msgstr "章節"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1238
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1235
 #, fuzzy
 msgid "Unhide Subsection"
 msgstr "子章節"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1248
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1245
 #, fuzzy
 msgid "Unhide Subsubsection"
 msgstr "子章節"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1256
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1253
 #, fuzzy
 msgid "Unhide contents"
 msgstr "希臘字母"
@@ -4956,9 +4956,9 @@ msgstr ""
 msgid "Up"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6860
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6867
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6877
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6861
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6868
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6878
 msgid "Upgrade"
 msgstr "升級"
 
@@ -5102,7 +5102,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7387
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7383
 msgid "Wrapped search"
 msgstr ""
 
@@ -5180,7 +5180,7 @@ msgstr ""
 "您可以透過滑鼠(在單元之間或左側的單元框拖曳)或鍵盤(在移動水平游標時按住Shift"
 "鍵)選取多個單元，然後對所選區域操作。這在您想要刪除或評算多個單元時很有用。"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6857
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6858
 #, c-format
 msgid ""
 "You have version %s. Current version is %s.\n"
@@ -5191,11 +5191,11 @@ msgstr ""
 "\n"
 "按「確認」至 wxMaxima 首頁。"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6925
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6926
 msgid "Your changes will be lost if you don't save them."
 msgstr "如果您未儲存，您所做的所有修改將遺失。"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6867
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6868
 msgid "Your version of wxMaxima is up to date."
 msgstr "您的 wxMaxima 是最新版本"
 
@@ -5221,12 +5221,12 @@ msgstr "將顯示比例放大 10%"
 msgid "Zoom out 10%"
 msgstr "將顯示比例縮小 10%"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6686
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6687
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:249
 msgid "[ unsaved ]"
 msgstr "[ 未儲存 ]"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6688
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6689
 msgid "[ unsaved* ]"
 msgstr "[ 未儲存* ]"
 
@@ -5235,12 +5235,12 @@ msgstr "[ 未儲存* ]"
 msgid "[%i digits]"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:4899
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:4895
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5035
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5031
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr ""
@@ -5543,7 +5543,7 @@ msgstr ""
 msgid "union"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6906
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6907
 msgid "unsaved"
 msgstr "未儲存"
 
@@ -5568,10 +5568,10 @@ msgstr "Epsilon:"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6686
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6688
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6697
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6700
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6687
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6689
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6698
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6701
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:249
 #, c-format
 msgid "wxMaxima %s "

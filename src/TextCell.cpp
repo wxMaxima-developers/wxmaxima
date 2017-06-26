@@ -111,6 +111,28 @@ void TextCell::SetValue(const wxString &text)
       m_toolTip = _("Either negative or zero"
                     "A possible result of sign()."
         );
+
+    if (m_text == wxT("und"))
+      m_toolTip = _("The result was undefined.");
+
+        if (m_text == wxT("ind"))
+      m_toolTip = _("The result was indefinite.");
+
+    if (m_text == wxT("zeroa"))
+      m_toolTip = _("Infinitesimal above zero.");
+
+    if (m_text == wxT("zerob"))
+      m_toolTip = _("Infinitesimal below zero.");
+
+    if (m_text == wxT("inf"))
+      m_toolTip = _("+∞.");
+
+    if (m_text == wxT("infinity"))
+      m_toolTip = _("Complex infinity.");
+        
+    if (m_text == wxT("inf"))
+      m_toolTip = _("-∞.");
+
   }
   
   if (m_textStyle == TS_NUMBER)
