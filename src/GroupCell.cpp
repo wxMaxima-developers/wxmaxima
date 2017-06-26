@@ -913,6 +913,11 @@ void GroupCell::CellUnderPointer(GroupCell *cell)
 
 void GroupCell::DrawBracket()
 {
+  // If the current cell doesn't know where it is on the screen we don't
+  // attempt to draw it's bracket.
+  if((GetRect().GetLeft() < 0) || (GetRect().GetTop() < 0))
+    return;
+  
   Configuration *configuration = (*m_configuration);
   bool drawBracket = !configuration->HideBrackets();
 
