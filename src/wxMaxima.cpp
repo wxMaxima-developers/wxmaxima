@@ -342,7 +342,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type, wxString userLabel)
   // that can contain it we need to create such a cell.
   if (m_console->GetTree() == NULL)
     m_console->InsertGroupCells(
-            new GroupCell(&(m_console->m_configuration), GC_TYPE_CODE, m_console->m_cellPointers, wxEmptyString));
+            new GroupCell(&(m_console->m_configuration), GC_TYPE_CODE, &m_console->m_cellPointers, wxEmptyString));
 
   m_dispReadOut = false;
   s.Replace(m_promptSuffix, wxEmptyString);
@@ -451,7 +451,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type, wxString userLabel)
     }
     
     if(tmp != NULL)
-      m_console->m_cellPointers->m_errorList.Add(tmp);
+      m_console->m_cellPointers.m_errorList.Add(tmp);
   }
   else if (type == MC_TYPE_WARNING)
   {
@@ -473,7 +473,7 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
 
   s.Replace(wxT("\n"), wxT(" "), true);
 
-  MathParser mParser(&m_console->m_configuration, m_console->m_cellPointers);
+  MathParser mParser(&m_console->m_configuration, &m_console->m_cellPointers);
   mParser.SetUserLabel(userLabel);
   cell = mParser.ParseLine(s, type);
 
@@ -494,7 +494,7 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
   // that can contain it we need to create such a cell.
   if (m_console->GetTree() == NULL)
     m_console->InsertGroupCells(
-            new GroupCell(&(m_console->m_configuration), GC_TYPE_CODE, m_console->m_cellPointers, wxEmptyString));
+            new GroupCell(&(m_console->m_configuration), GC_TYPE_CODE, &m_console->m_cellPointers, wxEmptyString));
 
   if (s.IsEmpty())
     return;
@@ -503,7 +503,7 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
 
   if (type == MC_TYPE_MAIN_PROMPT)
   {
-    TextCell *cell = new TextCell(m_console->GetTree(), &(m_console->m_configuration), m_console->m_cellPointers, s);
+    TextCell *cell = new TextCell(m_console->GetTree(), &(m_console->m_configuration), &m_console->m_cellPointers, s);
     cell->SetType(type);
     m_console->InsertLine(cell, true);
   }
@@ -516,7 +516,7 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
     while (tokens.HasMoreTokens())
     {
       TextCell *cell = new TextCell(m_console->GetTree(), &(m_console->m_configuration),
-                                    m_console->m_cellPointers,
+                                    &m_console->m_cellPointers,
                                     tokens.GetNextToken());
 
       cell->SetType(type);
@@ -1005,7 +1005,7 @@ bool wxMaxima::StartMaxima(bool force)
       OpenFile(file);
     }
   }
-  m_console->m_cellPointers->m_errorList.Clear();
+  m_console->m_cellPointers.m_errorList.Clear();
   return true;
 }
 
@@ -1544,7 +1544,7 @@ void wxMaxima::SetCWD(wxString file)
     return;
 
   // Tell the math parser where to search for local files.
-  MathParser mParser(&m_console->m_configuration, m_console->m_cellPointers);
+  MathParser mParser(&m_console->m_configuration, &m_console->m_cellPointers);
   m_console->m_configuration->SetWorkingDirectory(wxFileName(file).GetPath());
 
 #if defined __WXMSW__
@@ -1795,7 +1795,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
           
           document->InsertGroupCells(
             cell = new GroupCell(&(document->m_configuration),
-                                 GC_TYPE_TEXT, document->m_cellPointers,
+                                 GC_TYPE_TEXT, &document->m_cellPointers,
                                  line),
             last);
           last = cell;
@@ -1843,7 +1843,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
         GroupCell *cell;
         document->InsertGroupCells(
           cell = new GroupCell(&(document->m_configuration),
-                        GC_TYPE_CODE, document->m_cellPointers, line),
+                        GC_TYPE_CODE, &document->m_cellPointers, line),
           last);
         last = cell;
         line = wxEmptyString;
@@ -1860,7 +1860,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
   {
     document->InsertGroupCells(
       new GroupCell(&(document->m_configuration),
-                    GC_TYPE_CODE, document->m_cellPointers, line),
+                    GC_TYPE_CODE, &document->m_cellPointers, line),
       last);
   }
   
@@ -2274,7 +2274,7 @@ bool wxMaxima::OpenXML(wxString file, MathCtrl *document, bool clearDocument)
 
 GroupCell *wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfilename)
 {
-  MathParser mp(&m_console->m_configuration, m_console->m_cellPointers, wxmxfilename);
+  MathParser mp(&m_console->m_configuration, &m_console->m_cellPointers, wxmxfilename);
   GroupCell *tree = NULL;
   GroupCell *last = NULL;
 
@@ -2884,7 +2884,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &event)
                   (m_console->GetHCaret() != NULL)
   );
 
-  menubar->Enable(menu_jumptoerror, !m_console->m_cellPointers->m_errorList.Empty());
+  menubar->Enable(menu_jumptoerror, !m_console->m_cellPointers.m_errorList.Empty());
   menubar->Enable(menu_save_id, (!m_fileSaved));
 
   for (int id = menu_pane_math; id <= menu_pane_stats; id++)
@@ -3893,10 +3893,10 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
   switch (event.GetId())
   {
     case menu_jumptoerror:
-      if(m_console->m_cellPointers->m_errorList.FirstError())
+      if(m_console->m_cellPointers.m_errorList.FirstError())
       {
-        m_console->SetActiveCell(dynamic_cast<GroupCell *>(m_console->m_cellPointers->m_errorList.FirstError())->GetEditable());
-        dynamic_cast<GroupCell *>(m_console->m_cellPointers->m_errorList.FirstError())->GetEditable()->CaretToEnd();
+        m_console->SetActiveCell(dynamic_cast<GroupCell *>(m_console->m_cellPointers.m_errorList.FirstError())->GetEditable());
+        dynamic_cast<GroupCell *>(m_console->m_cellPointers.m_errorList.FirstError())->GetEditable()->CaretToEnd();
       }
       break;
     case ToolBar::menu_restart_id:
@@ -6128,7 +6128,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &event)
     }
     else
     { // normally just add to queue (and mark the cell as no more containing an error message)
-      m_console->m_cellPointers->m_errorList.Remove(cell);
+      m_console->m_cellPointers.m_errorList.Remove(cell);
       m_console->AddCellToEvaluationQueue(cell);
     }
   }
@@ -6457,11 +6457,11 @@ void wxMaxima::TryEvaluateNextInQueue()
     else
     {
       // Manually mark the current cell as the one that has caused an error.
-      m_console->m_cellPointers->m_errorList.Add(tmp);
+      m_console->m_cellPointers.m_errorList.Add(tmp);
       // Inform the user about the error (which automatically causes the worksheet
       // to the cell we marked as erroneous a few seconds ago.
       TextCell *cell = new TextCell(m_console->GetTree(), &(m_console->m_configuration),
-                                    m_console->m_cellPointers,
+                                    &m_console->m_cellPointers,
                                     _("Refusing to send cell to maxima: ") +
                                     parenthesisError + wxT("\n"));
       cell->SetType(MC_TYPE_ERROR);
@@ -6616,7 +6616,8 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_add_pagebreak:
     case menu_format_pagebreak:
       m_console->InsertGroupCells(
-              new GroupCell(&(m_console->m_configuration), GC_TYPE_PAGEBREAK, m_console->m_cellPointers),
+              new GroupCell(&(m_console->m_configuration), GC_TYPE_PAGEBREAK,
+                            &m_console->m_cellPointers),
               m_console->GetHCaret());
       m_console->RecalculateForce();
       m_console->SetFocus();

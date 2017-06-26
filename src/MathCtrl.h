@@ -551,13 +551,13 @@ private:
   /*! The start for the selection when selecting group with the horizontally drawn cursor
 
     This cell does define were the selection was actually started and therefore does not need 
-    to be above m_hCaretPositionEnd in the worksheet. See also m_cellPointers->m_selectionStart.
+    to be above m_hCaretPositionEnd in the worksheet. See also m_cellPointers.m_selectionStart.
    */
   GroupCell *m_hCaretPositionStart;
   /*! The end of the selection when selecting group with the horizontally drawn cursor
 
     This cell does define where the selection was actually ended and therefore does not need 
-    to be below m_hCaretPositionEnd in the worksheet. See also m_cellPointers->m_selectionEnd.
+    to be below m_hCaretPositionEnd in the worksheet. See also m_cellPointers.m_selectionEnd.
    */
   GroupCell *m_hCaretPositionEnd;
   bool m_leftDown;
@@ -610,8 +610,8 @@ public:
   //! Get the currently active EditorCell
   EditorCell *GetActiveCell()
   {
-    if (m_cellPointers->m_activeCell != NULL)
-      return dynamic_cast<EditorCell *>(m_cellPointers->m_activeCell);
+    if (m_cellPointers.m_activeCell != NULL)
+      return dynamic_cast<EditorCell *>(m_cellPointers.m_activeCell);
     else
       return NULL;
   }
@@ -619,35 +619,35 @@ public:
   //! Tells us which cell the keyboard selection has started in
   EditorCell *KeyboardSelectionStart()
   {
-    if (m_cellPointers->m_cellKeyboardSelectionStartedIn != NULL)
-      return dynamic_cast<EditorCell *>(m_cellPointers->m_cellKeyboardSelectionStartedIn);
+    if (m_cellPointers.m_cellKeyboardSelectionStartedIn != NULL)
+      return dynamic_cast<EditorCell *>(m_cellPointers.m_cellKeyboardSelectionStartedIn);
     else
       return NULL;
   }
 
   EditorCell *MouseSelectionStart()
   {
-    if (m_cellPointers->m_cellMouseSelectionStartedIn != NULL)
-      return dynamic_cast<EditorCell *>(m_cellPointers->m_cellMouseSelectionStartedIn);
+    if (m_cellPointers.m_cellMouseSelectionStartedIn != NULL)
+      return dynamic_cast<EditorCell *>(m_cellPointers.m_cellMouseSelectionStartedIn);
     else
       return NULL;
   }
 
   EditorCell *SearchStart()
   {
-    if (m_cellPointers->m_cellSearchStartedIn != NULL)
-      return dynamic_cast<EditorCell *>(m_cellPointers->m_cellSearchStartedIn);
+    if (m_cellPointers.m_cellSearchStartedIn != NULL)
+      return dynamic_cast<EditorCell *>(m_cellPointers.m_cellSearchStartedIn);
     else
       return NULL;
   }
 
   int IndexSearchStartedAt()
   {
-    return m_cellPointers->m_indexSearchStartedAt;
+    return m_cellPointers.m_indexSearchStartedAt;
   }
 
   //! The pointers to cells that can be deleted by these cells on deletion of the cells.
-  CellPointers *m_cellPointers;
+  CellPointers m_cellPointers;
 
   /*! Update the table of contents
 
@@ -895,21 +895,21 @@ public:
 
   bool CanCopy(bool fromActive = false)
   {
-    return m_cellPointers->m_selectionStart != NULL ||
-           (fromActive && m_cellPointers->m_activeCell != NULL &&
-            dynamic_cast<EditorCell *>(m_cellPointers->m_activeCell)->CanCopy());
+    return m_cellPointers.m_selectionStart != NULL ||
+           (fromActive && m_cellPointers.m_activeCell != NULL &&
+            dynamic_cast<EditorCell *>(m_cellPointers.m_activeCell)->CanCopy());
   }
 
   bool CanPaste()
   {
-    return (m_cellPointers->m_activeCell != NULL) || (m_hCaretActive);
+    return (m_cellPointers.m_activeCell != NULL) || (m_hCaretActive);
   }
 
   bool CanCut()
   {
-    return (m_cellPointers->m_activeCell != NULL &&
-            dynamic_cast<EditorCell *>(m_cellPointers->m_activeCell)->CanCopy()) ||
-           (m_cellPointers->m_selectionStart != NULL && m_cellPointers->m_selectionStart->GetType() == MC_TYPE_GROUP);
+    return (m_cellPointers.m_activeCell != NULL &&
+            dynamic_cast<EditorCell *>(m_cellPointers.m_activeCell)->CanCopy()) ||
+           (m_cellPointers.m_selectionStart != NULL && m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP);
   }
 
   //! Select the whole document
@@ -918,7 +918,7 @@ public:
   //! Is at least one entire cell selected?
   bool CellsSelected()
   {
-    return ((m_cellPointers->m_selectionStart != NULL) && (m_cellPointers->m_selectionEnd != NULL));
+    return ((m_cellPointers.m_selectionStart != NULL) && (m_cellPointers.m_selectionEnd != NULL));
   }
 
   /*! Delete a range of cells
@@ -970,8 +970,8 @@ public:
   //! Does it make sense to enable the "Play" button and the slider now? 
   bool CanAnimate()
   {
-    return m_cellPointers->m_selectionStart != NULL && m_cellPointers->m_selectionStart == m_cellPointers->m_selectionEnd &&
-           m_cellPointers->m_selectionStart->GetType() == MC_TYPE_SLIDE;
+    return m_cellPointers.m_selectionStart != NULL && m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd &&
+           m_cellPointers.m_selectionStart->GetType() == MC_TYPE_SLIDE;
   }
 
   void Animate(bool run);
@@ -1067,14 +1067,14 @@ public:
     NULL means: No cell is selected.
   */
   MathCell *GetSelectionStart()
-  { return m_cellPointers->m_selectionStart; }
+  { return m_cellPointers.m_selectionStart; }
 
   /*! Return the last of the currently selected cells.
 
     NULL means: No cell is selected.
   */
   MathCell *GetSelectionEnd()
-  { return m_cellPointers->m_selectionEnd; }
+  { return m_cellPointers.m_selectionEnd; }
 
   //! Select the cell sel
   void SetSelection(MathCell *sel)
@@ -1083,12 +1083,12 @@ public:
   //! Select the cell range start-end
   void SetSelection(MathCell *start, MathCell *end)
   {
-    if((m_cellPointers->m_selectionStart != start) || (m_cellPointers->m_selectionEnd != end))
+    if((m_cellPointers.m_selectionStart != start) || (m_cellPointers.m_selectionEnd != end))
       RequestRedraw();
-    m_cellPointers->m_selectionStart = start;
-    m_cellPointers->m_selectionEnd = end;
+    m_cellPointers.m_selectionStart = start;
+    m_cellPointers.m_selectionEnd = end;
 
-    if (m_cellPointers->m_selectionStart == NULL)
+    if (m_cellPointers.m_selectionStart == NULL)
     {
       m_hCaretPositionStart = NULL;
       m_hCaretPositionEnd = NULL;
@@ -1157,7 +1157,7 @@ public:
 
   //! Is the editor active in the last cell of the worksheet?
   bool IsActiveInLast()
-  { return m_cellPointers->m_activeCell != NULL && m_cellPointers->m_activeCell->GetParent() == m_last; }
+  { return m_cellPointers.m_activeCell != NULL && m_cellPointers.m_activeCell->GetParent() == m_last; }
 
   //! Informs the worksheet which GroupCell maxima is currently working in
   void SetWorkingGroup(GroupCell *group);
