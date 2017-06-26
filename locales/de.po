@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-06-25 11:11+0200\n"
-"PO-Revision-Date: 2017-06-25 14:45+0200\n"
+"PO-Revision-Date: 2017-06-26 19:49+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1551,7 +1551,7 @@ msgstr "Teile diese Eingabezelle in zwei Zellen auf."
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:151
 msgid "Division by 0."
-msgstr ""
+msgstr "Division durch 0."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6921
 #, c-format
@@ -1619,19 +1619,23 @@ msgstr "Eigen&werte"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:111
 msgid "Either negative or zeroA possible result of sign()."
-msgstr ""
+msgstr "Negativ oder Null. Kann von sign() zurückgeliefert werden."
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:106
 msgid ""
 "Either positive or zero.\n"
 "A possible result of sign()."
 msgstr ""
+"Positiv oder Null.\n"
+"Kann von sign() zurückgeliefert werden."
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:101
 msgid ""
 "Either positive, negative or zero.\n"
 "Normally the result of sign() if the sign cannot be determined."
 msgstr ""
+"Positiv, negativ oder Null.\n"
+"Kann von sign() zurückgeliefert werden."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4192
 msgid "Eliminate"
@@ -4786,7 +4790,7 @@ msgstr ""
 msgid ""
 "The [] or the part() command tried to access a list or matrix element that "
 "doesn't exist."
-msgstr ""
+msgstr "[] oder part() hat versucht, auf ein nichtexistentes Listen- oder Matrixelement zuzugreifen."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:216
 msgid ""
@@ -4849,13 +4853,13 @@ msgstr ""
 msgid ""
 "The maximum number of displayed digits can be changed in the configuration "
 "dialogue"
-msgstr ""
+msgstr "Die maximal angezeigte Zahl an Ziffern kann im Konfigurationsdialog geändert werden."
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:1030
 msgid ""
 "The maximum size of a expression wxMaxima is allowed to be displayedcan be "
 "changed in the configuration dialogue."
-msgstr ""
+msgstr "Die maximale Menge an Daten, die wxMaxima anzuzeigen bereit ist, kann im Konfigurationsdialog gewählt werden."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:256
 msgid "The number of recently opened files that is to be remembered."
@@ -4911,7 +4915,7 @@ msgid ""
 "The xml data from maxima or from the .wxmx file was missing data here.\n"
 "If you find a way how to reproduce this problem please file a bugreport "
 "against wxMaxima."
-msgstr ""
+msgstr "Hier fehlte in der Ausgabe von maxima oder in der .wxmx-Datei ein Element. Wenn dies reproduzierbar ist, bittet das wxMaxima-Team um einen Bug Report für wxMaxima."
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:11
 msgid ""
@@ -4944,6 +4948,8 @@ msgid ""
 "One probable cause is using a variable that already has a numeric value as a "
 "loop counter."
 msgstr ""
+"Vermutlich wurde versucht, einer Zahl anstatt einer Variable einen Inhalt zu geben.\n"
+"Ein möglicher Weg, diese Fehlermeldung zu bekommen, ist, eine Variable, deren Wert bereits bekannt ist, als Schleifenzähler zu verwenden."
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:57
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:544
@@ -5704,7 +5710,7 @@ msgstr "Oder"
 msgid ""
 "part() or the [] operator was used in order to extract the nth element of "
 "something that was less than n elements long."
-msgstr ""
+msgstr "part() oder [] wurde verwendet, um das n-te Element von etwas zu ermitteln, das weniger als n Elemente lang war."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1567
 msgid "partial sign"
@@ -5776,6 +5782,8 @@ msgid ""
 "Floating-point numbers are bound to contain small rounding errors and aren't "
 "allowed as an array index."
 msgstr ""
+"[] wurde verwendet, um ein Element von einer Liste, einer Matrix, einer Gleichung oder einem Array zu extrahieren. Als Nummer dieses Elements wurde aber etwas verwendet, dessen numerischer Wert unbekannt oder keine ganze Zahl ist.\n"
+"Da Fließkommazahlen oft kleine Rundungsfehler enthalten, sind sie nicht als Elementnummer zugelassen."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1544
 msgid "there is no"
