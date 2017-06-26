@@ -255,6 +255,8 @@ MathCtrl::~MathCtrl()
 
   wxDELETE(m_configuration);
   wxDELETE(m_dc);
+  wxDELETE(m_cellPointers);
+  m_cellPointers = NULL;
 }
 
 /***
