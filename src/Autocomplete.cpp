@@ -33,7 +33,7 @@
 
 AutoComplete::AutoComplete()
 {
-  m_args.Compile(wxT("[[]<([^>]*)>[]]"));
+  wxASSERT(m_args.Compile(wxT("[[]<([^>]*)>[]]")));
 }
 
 void AutoComplete::ClearWorksheetWords()

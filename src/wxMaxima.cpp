@@ -124,14 +124,14 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
         wxMaximaFrame(parent, id, title, pos, size)
 {
   m_isActive = true;
-  m_outputPromptRegEx.Compile(wxT("<lbl>.*</lbl>"));
+  wxASSERT(m_outputPromptRegEx.Compile(wxT("<lbl>.*</lbl>")));
   wxConfig *config = (wxConfig *) wxConfig::Get();
   m_unsuccessfullConnectionAttempts = 0;
   m_outputCellsFromCurrentCommand = 0;
   m_CWD = wxEmptyString;
   m_port = 4010;
   m_pid = -1;
-  m_gnuplotErrorRegex.Compile(wxT("\".*\\.gnuplot\", line [0-9][0-9]*: "));
+  wxASSERT(m_gnuplotErrorRegex.Compile(wxT("\".*\\.gnuplot\", line [0-9][0-9]*: ")));
   m_hasEvaluatedCells = false;
   m_process = NULL;
   m_maximaStdout = NULL;
@@ -191,11 +191,11 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   StatusMaximaBusy(disconnected);
 
   /// RegEx for function definitions
-  m_funRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *\\(([[:alnum:]%_,[[.].] ]*)\\) *:="));
+  wxASSERT(m_funRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *\\(([[:alnum:]%_,[[.].] ]*)\\) *:=")));
   // RegEx for variable definitions
-  m_varRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *:"));
+  wxASSERT(m_varRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *:")));
   // RegEx for blank statement removal
-  m_blankStatementRegEx.Compile(wxT("(^;)|((^|;)(((\\/\\*.*\\*\\/)?([[:space:]]*))+;)+)"));
+  wxASSERT(m_blankStatementRegEx.Compile(wxT("(^;)|((^|;)(((\\/\\*.*\\*\\/)?([[:space:]]*))+;)+)")));
 
   m_statusBar->GetNetworkStatusElement()->Connect(wxEVT_LEFT_DCLICK,
                                                   wxCommandEventHandler(wxMaxima::NetworkDClick),

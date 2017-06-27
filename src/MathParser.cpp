@@ -78,7 +78,7 @@ wxXmlNode *MathParser::GetNextTag(wxXmlNode *node)
 
 MathParser::MathParser(Configuration **cfg, CellPointers *cellPointers, wxString zipfile)
 {
-  m_graphRegex.Compile(wxT("[[:cntrl:]]"));
+  wxASSERT(m_graphRegex.Compile(wxT("[[:cntrl:]]")));
   m_configuration = cfg;
   m_cellPointers = cellPointers;
   m_ParserStyle = MC_TYPE_DEFAULT;

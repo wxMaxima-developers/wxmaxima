@@ -34,7 +34,7 @@
 TextCell::TextCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
   m_cellPointers = cellPointers;
-  m_unescapeRegEx.Compile(wxT("\\\\(.)"));
+  wxASSERT(m_unescapeRegEx.Compile(wxT("\\\\(.)")));
   m_displayedDigits_old = -1;
   m_text = m_userDefinedLabel = wxEmptyString;
   m_displayedText = wxEmptyString;

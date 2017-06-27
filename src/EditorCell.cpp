@@ -4350,9 +4350,9 @@ bool EditorCell::FindNextTemplate(bool left)
   wxRegEx varsRegex;
 
   if (left)
-    varsRegex.Compile(wxT("(<[^> \n]+>)[^>]*$"));
+    wxASSERT(varsRegex.Compile(wxT("(<[^> \n]+>)[^>]*$")));
   else
-    varsRegex.Compile(wxT("(<[^> \n]+>)"));
+    wxASSERT(varsRegex.Compile(wxT("(<[^> \n]+>)")));
 
   int positionOfCaret = m_positionOfCaret;
   if (!left && m_selectionEnd != -1)
