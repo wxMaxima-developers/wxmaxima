@@ -108,7 +108,7 @@ void TextCell::SetValue(const wxString &text)
         );
   
     if (m_text == wxT("nz"))
-      m_toolTip = _("Either negative or zero"
+      m_toolTip = _("Either negative or zero.\n"
                     "A possible result of sign()."
         );
 
@@ -150,7 +150,7 @@ void TextCell::SetValue(const wxString &text)
 
       if(isrnum)
         m_toolTip = _("A variable that can be assigned a number to.\n"
-          "Often used by solve() and algsys(), if there is an infinitive number of results.");
+          "Often used by solve() and algsys(), if there is an infinite number of results.");
     }
 
   
