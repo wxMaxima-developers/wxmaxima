@@ -299,8 +299,8 @@ wxString SlideShow::ToRTF()
   }
 
   image += wxString::Format(wxT("\\picw%lu\\pich%lu "),
-                            m_images[m_displayed]->GetOriginalWidth(),
-                            m_images[m_displayed]->GetOriginalHeight()
+                            (unsigned long)m_images[m_displayed]->GetOriginalWidth(),
+                            (unsigned long)m_images[m_displayed]->GetOriginalHeight()
   );
 
   // Convert the data into a hexadecimal string
