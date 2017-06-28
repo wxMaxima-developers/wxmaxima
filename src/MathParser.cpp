@@ -258,6 +258,7 @@ MathCell *MathParser::HandleNullPointer(MathCell *cell)
     cell->SetToolTip(_("The xml data from maxima or from the .wxmx file was missing data here.\n"
                        "If you find a way how to reproduce this problem please file a bug"
                        "report against wxMaxima."));
+    cell->SetStyle(TS_ERROR);
   }
   return (cell);
 }
