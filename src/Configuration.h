@@ -53,6 +53,15 @@
 #define CMMI10 "jsMath-cmmi10"
 #define CMTI10 "jsMath-cmti10"
 
+#define LIBERTINE1 "LinLibertine_DRah.ttf"
+#define LIBERTINE2 "LinLibertine_I.ttf"
+#define LIBERTINE3 "LinLibertine_Mah.ttf"
+#define LIBERTINE4 "LinLibertine_Rah.ttf"
+#define LIBERTINE5 "LinLibertine_RBah.ttf"
+#define LIBERTINE6 "LinLibertine_RBIah.ttf"
+#define LIBERTINE7 "LinLibertine_RIah.ttf"
+#define LIBERTINE8 "LinLibertine_RZah.ttf"
+#define LIBERTINE9 "LinLibertine_RZIah.ttf"
 
 /*! The configuration storage for the current worksheet.
 
