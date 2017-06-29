@@ -125,13 +125,13 @@ void TextCell::SetValue(const wxString &text)
       m_toolTip = _("Infinitesimal below zero.");
 
     if (m_text == wxT("inf"))
-      m_toolTip = _("+∞.");
+      m_toolTip = wxT("+∞.");
 
     if (m_text == wxT("infinity"))
       m_toolTip = _("Complex infinity.");
         
     if (m_text == wxT("inf"))
-      m_toolTip = _("-∞.");
+      m_toolTip = wxT("-∞.");
 
     if(m_text.StartsWith("%r"))
     {
