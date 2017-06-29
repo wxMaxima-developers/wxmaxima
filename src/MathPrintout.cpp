@@ -75,6 +75,7 @@ bool MathPrintout::OnPrintPage(int num)
 
   Configuration configuration(*dc);
   *m_configuration = &configuration;
+  configuration.ShowCodeCells(m_oldconfig->ShowCodeCells());
   configuration.ShowBrackets(configuration.PrintBrackets());
   configuration.SetScale(ppiScale);
   configuration.LineWidth_em(400);
@@ -272,6 +273,7 @@ void MathPrintout::Recalculate()
   wxDC *dc = GetDC();
   Configuration configuration(*dc);
   *m_configuration = &configuration;
+  configuration.ShowCodeCells(m_oldconfig->ShowCodeCells());
   configuration.SetScale(GetPPIScale());
   configuration.LineWidth_em(400);
   configuration.ShowBrackets(configuration.PrintBrackets());
