@@ -3722,7 +3722,7 @@ void MathCtrl::SetNotification(wxString message, int flags)
 
   if(m_notificationMessage != NULL)
   {
-    m_notificationMessage->Show();
+    m_notificationMessage->Show(true);
     
     // In wxGTK 3.1.0 Leaving the notification message object alive until the message
     // hits its timeout causes a crash (http://trac.wxwidgets.org/ticket/17876).

@@ -69,10 +69,15 @@ void Notification::SetParent(wxWindow *parent)
   wxNotificationMessage::SetParent(parent);
 }
 
-void Notification::Show()
+void Notification::Show(bool show)
 {
-  wxNotificationMessage::Show();
-  m_shown = true;
+  if(show)
+  {
+    wxNotificationMessage::Show();
+    m_shown = true;
+  }
+  else
+    Close();
 }
 
 bool Notification::Close()
