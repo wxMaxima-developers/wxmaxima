@@ -183,6 +183,17 @@ void Configuration::ReadStyle()
 {
   wxConfigBase *config = wxConfig::Get();
 
+
+  #ifdef __WXMSW__
+  wxFont font;
+  font.SetFamily(wxFONTFAMILY_MODERN);
+  font.SetFaceName(wxT("Linux Libertine O"));
+  font.SetEncoding(wxFONTENCODING_UTF8);
+  font.SetStyle(wxFONTSTYLE_NORMAL );
+  if(font.IsOk())
+    m_fontName = wxT("Linux Libertine O");
+  #endif
+  
   // Font
   config->Read(wxT("Style/fontname"), &m_fontName);
 #ifdef __WXOSX_MAC__
@@ -205,7 +216,12 @@ void Configuration::ReadStyle()
   m_fontEncoding = (wxFontEncoding) encoding;
 
   // Math font
-  m_mathFontName = wxEmptyString;
+  #ifdef __WXMSW__
+  if(font.IsOk())
+    m_mathFontName = wxT("Linux Libertine O");
+  else
+    m_mathFontName = wxEmptyString;
+  #endif
   config->Read(wxT("Style/Math/fontname"), &m_mathFontName);
 #ifdef __WXOSX_MAC__
   if (m_mathFontName.IsEmpty())

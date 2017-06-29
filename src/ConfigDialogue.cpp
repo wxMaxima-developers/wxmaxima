@@ -1018,10 +1018,20 @@ void ConfigDialogue::OnMpBrowse(wxCommandEvent &event)
 
 void ConfigDialogue::OnMathBrowse(wxCommandEvent &event)
 {
+    wxFont font;
+#ifdef __WXMSW__
+  font.SetFamily(wxFONTFAMILY_MODERN);
+  font.SetFaceName(wxT("Linux Libertine O"));
+  font.SetEncoding(wxFONTENCODING_UTF8);
+  font.SetStyle(wxFONTSTYLE_NORMAL );
+  if(!font.IsOk())
+#endif
+    font = wxFont(m_mathFontSize, wxFONTFAMILY_DEFAULT,
+                  wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
+                  false, m_mathFontName);
+  
   wxFont math;
-  math = wxGetFontFromUser(this, wxFont(m_mathFontSize, wxFONTFAMILY_DEFAULT,
-                                        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
-                                        false, m_mathFontName));
+  math = wxGetFontFromUser(this, font);
 
   if (math.Ok())
   {
@@ -1039,6 +1049,16 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
   int fontsize = m_fontSize;
   style *tmp = GetStylePointer();
   wxString fontName;
+
+#ifdef __WXMSW__
+  wxFont font;
+  font.SetFamily(wxFONTFAMILY_MODERN);
+  font.SetFaceName(wxT("Linux Libertine O"));
+  font.SetEncoding(wxFONTENCODING_UTF8);
+  font.SetStyle(wxFONTSTYLE_NORMAL );
+  if(font.IsOk())
+    fontName = wxT("Linux Libertine O");
+#endif
 
   if (tmp == &m_styleText || tmp == &m_styleTitle || tmp == &m_styleSubsubsection || tmp == &m_styleSubsection ||
       tmp == &m_styleSection)

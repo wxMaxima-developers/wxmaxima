@@ -517,8 +517,8 @@ void TextCell::SetFont(int fontsize)
   }
 
   // Ensure a sane minimum font size
-  if (m_fontSize < 4)
-    m_fontSize = 4;
+  if (fontsize < 4)
+    fontsize = 4;
 
   // The font size scales with the worksheet
   int fontsize1 = (int) (((double) m_fontSize) * scale + 0.5);
