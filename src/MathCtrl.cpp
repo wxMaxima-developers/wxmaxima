@@ -2646,7 +2646,11 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
       SetHCaret(result, false);
     }
   }
-  m_configuration->ShowCodeCells(true);
+  if((type == MC_TYPE_INPUT) && !m_configuration->ShowCodeCells())
+  {
+    m_configuration->ShowCodeCells(true);
+    CodeCellVisibilityChanged();
+  }
   Recalculate(group, false);
   InsertGroupCells(group, m_hCaretPosition);
   Recalculate(group, false);
