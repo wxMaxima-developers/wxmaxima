@@ -60,7 +60,7 @@ public:
   wxString DataDir();
 
     //! The directory our private fonts are stored in
-  wxString FontDir(){return DataDir()+wxT("/fonts");}
+  wxString FontDir(){return DataDir()+wxT("/../fonts");}
 
   //! The directory the help file is stored in
   wxString HelpDir();

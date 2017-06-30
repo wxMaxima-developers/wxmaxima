@@ -87,7 +87,6 @@ bool Configuration::MaximaFound(wxString location)
 void Configuration::ReadConfig()
 {
   Dirstructure dirstruct;
-
   wxConfig *config = (wxConfig *) wxConfig::Get();
   m_autoWrap = 3;
   config->Read(wxT("autoWrapMode"), &m_autoWrap);
@@ -188,7 +187,6 @@ void Configuration::ReadStyle()
   wxFont font;
   font.SetFamily(wxFONTFAMILY_MODERN);
   font.SetFaceName(wxT("Linux Libertine O"));
-  font.SetEncoding(wxFONTENCODING_UTF8);
   font.SetStyle(wxFONTSTYLE_NORMAL );
   if(font.IsOk())
     m_fontName = wxT("Linux Libertine O");

@@ -1022,7 +1022,6 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent &event)
 #ifdef __WXMSW__
   font.SetFamily(wxFONTFAMILY_MODERN);
   font.SetFaceName(wxT("Linux Libertine O"));
-  font.SetEncoding(wxFONTENCODING_UTF8);
   font.SetStyle(wxFONTSTYLE_NORMAL );
   if(!font.IsOk())
 #endif
@@ -1053,7 +1052,6 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
 #ifdef __WXMSW__
   font.SetFamily(wxFONTFAMILY_MODERN);
   font.SetFaceName(wxT("Linux Libertine O"));
-  font.SetEncoding(wxFONTENCODING_UTF8);
   font.SetStyle(wxFONTSTYLE_NORMAL );
   if(font.IsOk())
     fontName = wxT("Linux Libertine O");
