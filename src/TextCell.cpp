@@ -266,7 +266,7 @@ void TextCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
 
-  bool recalculateNeeded = false;
+  bool recalculateNeeded = configuration->ForceUpdate();
   
   // If the setting has changed and we want to show a user-defined label
   // instead of an automatic one or vice versa we decide that here.
@@ -302,8 +302,7 @@ void TextCell::RecalculateWidths(int fontsize)
     recalculateNeeded = true;
   }
 
-  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() ||
-      m_lastCalculationFontSize != fontsize)
+  if (m_height == -1 || m_width == -1 || m_lastCalculationFontSize != fontsize)
     recalculateNeeded = true;
 
   if(recalculateNeeded)
@@ -334,7 +333,7 @@ void TextCell::RecalculateWidths(int fontsize)
       m_fontSizeLabel = m_fontSize;
       wxASSERT_MSG((m_width > 0) || (text == wxEmptyString),
                    _("The letter \"X\" is of width zero. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
-      if (m_width < 1) m_width = 10;
+      if (m_width < 1) m_width = 1;
       dc.GetTextExtent(text, &m_labelWidth, &m_labelHeight);
       wxASSERT_MSG((m_labelWidth > 0) || (m_displayedText == wxEmptyString),
                    _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
@@ -348,7 +347,7 @@ void TextCell::RecalculateWidths(int fontsize)
       }
     }
 
-      /// Check if we are using jsMath and have jsMath character
+    // Check if we are using jsMath and have jsMath character
     else if (m_altJs && configuration->CheckTeXFonts())
     {
       dc.GetTextExtent(m_altJsText, &m_width, &m_height);
@@ -357,27 +356,27 @@ void TextCell::RecalculateWidths(int fontsize)
         m_height = m_height / 2;
     }
 
-      /// We are using a special symbol
+    // We are using a special symbol
     else if (m_alt)
     {
       dc.GetTextExtent(m_altText, &m_width, &m_height);
     }
 
-      /// Empty string has height of X
+    // Empty string has the ame height as an X
     else if (m_displayedText == wxEmptyString)
     {
       dc.GetTextExtent(wxT("gXÄy"), &m_width, &m_height);
       m_width = 0;
     }
 
-      /// This is the default.
+    // This is the default.
     else
       dc.GetTextExtent(m_displayedText, &m_width, &m_height);
 
-    m_width = m_width + 2 * SCALE_PX(MC_TEXT_PADDING, scale);
-    m_height = m_height + 2 * SCALE_PX(MC_TEXT_PADDING, scale);
+    m_width  += 2 * SCALE_PX(MC_TEXT_PADDING, scale);
+    m_height += 2 * SCALE_PX(MC_TEXT_PADDING, scale);
 
-    /// Hidden cells (multiplication * is not displayed)
+    // Hidden cells (multiplication * is not displayed)
     if (m_isHidden)
     {
       m_height = 0;
@@ -405,13 +404,11 @@ void TextCell::Draw(wxPoint point, int fontsize)
 
     if (InUpdateRegion())
     {
-      /// Labels and prompts have special fontsize
       if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
       {
         if ((m_textStyle == TS_USERLABEL || configuration->ShowAutomaticLabels()) &&
             configuration->ShowLabels())
         {
-          SetFontSizeForLabel(dc, scale);
           // Draw the label
           if(m_textStyle == TS_USERLABEL)
           {
@@ -476,14 +473,6 @@ void TextCell::Draw(wxPoint point, int fontsize)
   }
 }
 
-void TextCell::SetFontSizeForLabel(wxDC &dc, double scale)
-{
-  wxFont font(dc.GetFont());
-  int fontsize1 = (int) (((double) m_fontSizeLabel) * scale + 0.5);
-  font.SetPointSize(fontsize1);
-  dc.SetFont(font);
-}
-
 void TextCell::SetFont(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
@@ -503,7 +492,7 @@ void TextCell::SetFont(int fontsize)
   {
     // Titles have a fixed font size 
     m_fontSize = configuration->GetFontSize(m_textStyle);
-
+      
     // While titles and section names may be underlined the section number
     // isn't. Else the space between section number and section title
     // would look weird.
@@ -516,12 +505,16 @@ void TextCell::SetFont(int fontsize)
     m_fontSize = fontsize;
   }
 
-  // Ensure a sane minimum font size
-  if (fontsize < 4)
-    fontsize = 4;
-
   // The font size scales with the worksheet
   int fontsize1 = (int) (((double) m_fontSize) * scale + 0.5);
+
+  // Labels have a special font size
+  if((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL) || (GetStyle() == TS_MAIN_PROMPT))
+    fontsize1 = (int) (((double) m_fontSizeLabel) * scale + 0.5);
+  
+  // Ensure a sane minimum font size
+  if (fontsize1 < 1)
+    fontsize1 = 1;
 
   fontName = configuration->GetFontName(m_textStyle);
   fontStyle = configuration->IsItalic(m_textStyle);
