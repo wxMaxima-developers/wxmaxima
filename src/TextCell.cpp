@@ -294,14 +294,14 @@ void TextCell::RecalculateWidths(int fontsize)
   // If the config settings about how many digits to display has changed we
   // need to regenerate the info which number to show.
   if (
-          (m_textStyle == TS_NUMBER) &&
-          (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits())
-          )
+    (m_textStyle == TS_NUMBER) &&
+    (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits())
+    )
   {
     SetValue(m_text);
     recalculateNeeded = true;
   }
-
+  
   if (m_height == -1 || m_width == -1 || m_lastCalculationFontSize != fontsize)
     recalculateNeeded = true;
 
@@ -311,84 +311,106 @@ void TextCell::RecalculateWidths(int fontsize)
     wxDC &dc = configuration->GetDC();
     SetFont(fontsize);
 
+    wxString textToDraw = GetTextToDraw();
+    
     // Labels and prompts are fixed width - adjust font size so that
     // they fit in
-    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
-    {
-      wxString text = m_text;
-
-      if(m_textStyle == TS_USERLABEL)
-      {
-        text = wxT("(") + m_userDefinedLabel + wxT(")");
-        m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
-      }
-      
+    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) ||
+        (m_textStyle == TS_MAIN_PROMPT))
+    {      
       // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
-      if (text.Right(2) != wxT("/ "))
+      if (textToDraw.Right(2) != wxT("/ "))
         dc.GetTextExtent(wxT("(%o") + LabelWidthText() + wxT(")"), &m_width, &m_height);
       else
         dc.GetTextExtent(wxT("(%o") + LabelWidthText() + wxT(")/R/"), &m_width, &m_height);
-
+      
       // We will decrease it before use
       m_fontSizeLabel = m_fontSize;
-      wxASSERT_MSG((m_width > 0) || (text == wxEmptyString),
-                   _("The letter \"X\" is of width zero. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+
       if (m_width < 1) m_width = 1;
-      dc.GetTextExtent(text, &m_labelWidth, &m_labelHeight);
+      dc.GetTextExtent(textToDraw, &m_labelWidth, &m_labelHeight);
       wxASSERT_MSG((m_labelWidth > 0) || (m_displayedText == wxEmptyString),
                    _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
       wxFont font(dc.GetFont());
-      while ((m_labelWidth >= m_width) && (m_fontSizeLabel > 2))
+      while ((m_labelWidth >= m_width) && (m_fontSizeLabel >= 2))
       {
         int fontsize1 = (int) (((double) --m_fontSizeLabel) * scale + 0.5);
         font.SetPointSize(fontsize1);
         dc.SetFont(font);
-        dc.GetTextExtent(text, &m_labelWidth, &m_labelHeight);
+        dc.GetTextExtent(textToDraw, &m_labelWidth, &m_labelHeight);
       }
     }
-
-    // Check if we are using jsMath and have jsMath character
-    else if (m_altJs && configuration->CheckTeXFonts())
+    else
     {
-      dc.GetTextExtent(m_altJsText, &m_width, &m_height);
+      dc.GetTextExtent(textToDraw, &m_width, &m_height);
 
       if (m_texFontname == wxT("jsMath-cmsy10"))
         m_height = m_height / 2;
+
+      // Hidden cells (multiplication * is not displayed)
+      if (m_isHidden)
+      {
+        m_width = m_width / 4;
+      }
+
+      // Empty string has the same height as an X
+      if (m_displayedText == wxEmptyString)
+      {
+        dc.GetTextExtent(wxT("gXÄy"), &m_width, &m_height);
+        m_width = 0;
+      }
     }
-
-    // We are using a special symbol
-    else if (m_alt)
-    {
-      dc.GetTextExtent(m_altText, &m_width, &m_height);
-    }
-
-    // Empty string has the ame height as an X
-    else if (m_displayedText == wxEmptyString)
-    {
-      dc.GetTextExtent(wxT("gXÄy"), &m_width, &m_height);
-      m_width = 0;
-    }
-
-    // This is the default.
-    else
-      dc.GetTextExtent(m_displayedText, &m_width, &m_height);
-
     m_width  += 2 * SCALE_PX(MC_TEXT_PADDING, scale);
     m_height += 2 * SCALE_PX(MC_TEXT_PADDING, scale);
 
-    // Hidden cells (multiplication * is not displayed)
-    if (m_isHidden)
-    {
-      m_height = 0;
-      m_width = m_width / 4;
-    }
   }
   m_realCenter = m_center = m_height / 2;
   ResetData();
 }
 
+wxString TextCell::GetTextToDraw()
+{
+  wxString textToDraw = m_displayedText;
+    Configuration *configuration = (*m_configuration);
+    
+  if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
+  {
+    if ((m_textStyle == TS_USERLABEL || configuration->ShowAutomaticLabels()) &&
+        configuration->ShowLabels())
+    {
+      if(m_textStyle == TS_USERLABEL)
+      {
+        wxString text = m_userDefinedLabel;
+        m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
+        textToDraw = wxT("(") + text + wxT(")");
+      }
+    }
+  }
+
+  /// Check if we are using jsMath and have jsMath character
+  else if (m_altJs && configuration->CheckTeXFonts())
+    textToDraw = m_altJsText;
+    
+  /// We are using a special symbol
+  else if (m_alt)
+    textToDraw = m_altText;
+
+  /// Change asterisk
+  else if (configuration->GetChangeAsterisk() && m_displayedText == wxT("*"))
+    textToDraw = wxT("\xB7");
+
+  else if (m_displayedText == wxT("#"))
+    textToDraw = wxT("\x2260");
+
+  return textToDraw;
+}
+
 void TextCell::Draw(wxPoint point, int fontsize)
 {
+  // Input cells have already been drawn by EditorCell.
+  if (GetType() == MC_TYPE_INPUT)
+    return;
+        
   Configuration *configuration = (*m_configuration);
   MathCell::Draw(point, fontsize);
   double scale = configuration->GetScale();
@@ -401,72 +423,15 @@ void TextCell::Draw(wxPoint point, int fontsize)
   {
     SetForeground();
     SetFont(fontsize);
-    
+
     if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
-    {
-      if ((m_textStyle == TS_USERLABEL || configuration->ShowAutomaticLabels()) &&
-          configuration->ShowLabels())
-      {
-        // Draw the label
-        if(m_textStyle == TS_USERLABEL)
-        {
-          wxString text = m_userDefinedLabel;
-          m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
-          dc.DrawText(wxT("(") + text + wxT(")"),
-                      point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                      point.y - m_realCenter + (m_height - m_labelHeight) / 2);
-        }
-        else
-          dc.DrawText(m_displayedText,
-                      point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                      point.y - m_realCenter + (m_height - m_labelHeight) / 2);            
-      }
-    }
-
-    /// Check if we are using jsMath and have jsMath character
-    else if (m_altJs && configuration->CheckTeXFonts())
-      dc.DrawText(m_altJsText,
+      dc.DrawText(GetTextToDraw(),
                   point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-
-    /// We are using a special symbol
-    else if (m_alt)
-      dc.DrawText(m_altText,
-                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-
-    /// Change asterisk
-    else if (configuration->GetChangeAsterisk() && m_displayedText == wxT("*"))
-      dc.DrawText(wxT("\xB7"),
-                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-
-#if wxUSE_UNICODE
-    else if (m_displayedText == wxT("#"))
-      dc.DrawText(wxT("\x2260"),
-                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-#endif
-    /// This is the default.
+                  point.y - m_realCenter + (m_height - m_labelHeight) / 2);            
     else
-    {
-      switch (GetType())
-      {
-      case MC_TYPE_TEXT:
-        // TODO: Add markdown formatting for bold, italic and underlined here.
-        dc.DrawText(m_displayedText,
-                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-        break;
-      case MC_TYPE_INPUT:
-        // This cell has already been drawn as an EditorCell => we don't repeat this action here.
-        break;
-      default:
-        dc.DrawText(m_displayedText,
-                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-      }
-    }
+      dc.DrawText(GetTextToDraw(),
+                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
   }
 }
 
@@ -480,8 +445,7 @@ void TextCell::SetFont(int fontsize)
   wxFontStyle fontStyle;
   wxFontWeight fontWeight;
   wxFontEncoding fontEncoding;
-  bool underlined = configuration->IsUnderlin
-    ed(m_textStyle);
+  bool underlined = configuration->IsUnderlined(m_textStyle);
 
   if ((m_textStyle == TS_TITLE) ||
       (m_textStyle == TS_SECTION) ||
