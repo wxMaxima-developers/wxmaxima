@@ -397,77 +397,74 @@ void TextCell::Draw(wxPoint point, int fontsize)
   if (m_width == -1 || m_height == -1 || fontsize != m_lastCalculationFontSize)
     RecalculateWidths(fontsize);
 
-  if (DrawThisCell(point) && !m_isHidden)
+  if (DrawThisCell(point) && !m_isHidden && InUpdateRegion())
   {
-    SetFont(fontsize);
     SetForeground();
-
-    if (InUpdateRegion())
+    SetFont(fontsize);
+    
+    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
     {
-      if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
+      if ((m_textStyle == TS_USERLABEL || configuration->ShowAutomaticLabels()) &&
+          configuration->ShowLabels())
       {
-        if ((m_textStyle == TS_USERLABEL || configuration->ShowAutomaticLabels()) &&
-            configuration->ShowLabels())
+        // Draw the label
+        if(m_textStyle == TS_USERLABEL)
         {
-          // Draw the label
-          if(m_textStyle == TS_USERLABEL)
-          {
-            wxString text = m_userDefinedLabel;
-            m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
-            dc.DrawText(wxT("(") + text + wxT(")"),
-                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                        point.y - m_realCenter + (m_height - m_labelHeight) / 2);
-          }
-          else
-            dc.DrawText(m_displayedText,
-                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                        point.y - m_realCenter + (m_height - m_labelHeight) / 2);            
+          wxString text = m_userDefinedLabel;
+          m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
+          dc.DrawText(wxT("(") + text + wxT(")"),
+                      point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                      point.y - m_realCenter + (m_height - m_labelHeight) / 2);
         }
+        else
+          dc.DrawText(m_displayedText,
+                      point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                      point.y - m_realCenter + (m_height - m_labelHeight) / 2);            
       }
+    }
 
-        /// Check if we are using jsMath and have jsMath character
-      else if (m_altJs && configuration->CheckTeXFonts())
-        dc.DrawText(m_altJsText,
-                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+    /// Check if we are using jsMath and have jsMath character
+    else if (m_altJs && configuration->CheckTeXFonts())
+      dc.DrawText(m_altJsText,
+                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 
-        /// We are using a special symbol
-      else if (m_alt)
-        dc.DrawText(m_altText,
-                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+    /// We are using a special symbol
+    else if (m_alt)
+      dc.DrawText(m_altText,
+                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 
-        /// Change asterisk
-      else if (configuration->GetChangeAsterisk() && m_displayedText == wxT("*"))
-        dc.DrawText(wxT("\xB7"),
-                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+    /// Change asterisk
+    else if (configuration->GetChangeAsterisk() && m_displayedText == wxT("*"))
+      dc.DrawText(wxT("\xB7"),
+                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 
 #if wxUSE_UNICODE
-      else if (m_displayedText == wxT("#"))
-        dc.DrawText(wxT("\x2260"),
+    else if (m_displayedText == wxT("#"))
+      dc.DrawText(wxT("\x2260"),
+                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+#endif
+    /// This is the default.
+    else
+    {
+      switch (GetType())
+      {
+      case MC_TYPE_TEXT:
+        // TODO: Add markdown formatting for bold, italic and underlined here.
+        dc.DrawText(m_displayedText,
                     point.x + SCALE_PX(MC_TEXT_PADDING, scale),
                     point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-#endif
-        /// This is the default.
-      else
-      {
-        switch (GetType())
-        {
-          case MC_TYPE_TEXT:
-            // TODO: Add markdown formatting for bold, italic and underlined here.
-            dc.DrawText(m_displayedText,
-                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                        point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-            break;
-          case MC_TYPE_INPUT:
-            // This cell has already been drawn as an EditorCell => we don't repeat this action here.
-            break;
-          default:
-            dc.DrawText(m_displayedText,
-                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                        point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-        }
+        break;
+      case MC_TYPE_INPUT:
+        // This cell has already been drawn as an EditorCell => we don't repeat this action here.
+        break;
+      default:
+        dc.DrawText(m_displayedText,
+                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
       }
     }
   }
@@ -483,7 +480,8 @@ void TextCell::SetFont(int fontsize)
   wxFontStyle fontStyle;
   wxFontWeight fontWeight;
   wxFontEncoding fontEncoding;
-  bool underlined = configuration->IsUnderlined(m_textStyle);
+  bool underlined = configuration->IsUnderlin
+    ed(m_textStyle);
 
   if ((m_textStyle == TS_TITLE) ||
       (m_textStyle == TS_SECTION) ||
