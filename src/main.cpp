@@ -189,23 +189,27 @@ bool MyApp::OnInit()
   wxSetEnv(wxT("LANG"), m_locale.GetName());
   if (!wxGetEnv(wxT("BUILD_DIR"), NULL))
     wxSetWorkingDirectory(wxPathOnly(wxString(argv[0])));
+
+    DirStructure dirstruct;
+    wxString fontPrefix = dirstruct.GetFontDir + wxT("/");
+
   /* Add private jsMath fonts, if they exist */ 
-  if (wxFileExists("fonts/" CMEX10)) AddFontResource(wxT("fonts/" CMEX10));
-  if (wxFileExists("fonts/" CMSY10)) AddFontResource(wxT("fonts/" CMSY10));
-  if (wxFileExists("fonts/" CMR10))  AddFontResource(wxT("fonts/" CMR10));
-  if (wxFileExists("fonts/" CMMI10)) AddFontResource(wxT("fonts/" CMMI10));
-  if (wxFileExists("fonts/" CMTI10)) AddFontResource(wxT("fonts/" CMTI10));
+  if (wxFileExists(fontPrefix + CMEX10)) AddFontResource(wxT(fontPrefix + CMEX10));
+  if (wxFileExists(fontPrefix + CMSY10)) AddFontResource(wxT(fontPrefix + CMSY10));
+  if (wxFileExists(fontPrefix + CMR10))  AddFontResource(wxT(fontPrefix + CMR10));
+  if (wxFileExists(fontPrefix + CMMI10)) AddFontResource(wxT(fontPrefix + CMMI10));
+  if (wxFileExists(fontPrefix + CMTI10)) AddFontResource(wxT(fontPrefix + CMTI10));
 
   /* Add private Libertine fonts, if they exist */
-  if (wxFileExists("fonts/" LIBERTINE1)) AddFontResource(wxT("fonts/" LIBERTINE1));
-  if (wxFileExists("fonts/" LIBERTINE2)) AddFontResource(wxT("fonts/" LIBERTINE2));
-  if (wxFileExists("fonts/" LIBERTINE3)) AddFontResource(wxT("fonts/" LIBERTINE3));
-  if (wxFileExists("fonts/" LIBERTINE4)) AddFontResource(wxT("fonts/" LIBERTINE4));
-  if (wxFileExists("fonts/" LIBERTINE5)) AddFontResource(wxT("fonts/" LIBERTINE5));
-  if (wxFileExists("fonts/" LIBERTINE6)) AddFontResource(wxT("fonts/" LIBERTINE6));
-  if (wxFileExists("fonts/" LIBERTINE7)) AddFontResource(wxT("fonts/" LIBERTINE7));
-  if (wxFileExists("fonts/" LIBERTINE8)) AddFontResource(wxT("fonts/" LIBERTINE8));
-  if (wxFileExists("fonts/" LIBERTINE9)) AddFontResource(wxT("fonts/" LIBERTINE9));
+  if (wxFileExists(fontPrefix + LIBERTINE1)) AddFontResource(wxT(fontPrefix + LIBERTINE1));
+  if (wxFileExists(fontPrefix + LIBERTINE2)) AddFontResource(wxT(fontPrefix + LIBERTINE2));
+  if (wxFileExists(fontPrefix + LIBERTINE3)) AddFontResource(wxT(fontPrefix + LIBERTINE3));
+  if (wxFileExists(fontPrefix + LIBERTINE4)) AddFontResource(wxT(fontPrefix + LIBERTINE4));
+  if (wxFileExists(fontPrefix + LIBERTINE5)) AddFontResource(wxT(fontPrefix + LIBERTINE5));
+  if (wxFileExists(fontPrefix + LIBERTINE6)) AddFontResource(wxT(fontPrefix + LIBERTINE6));
+  if (wxFileExists(fontPrefix + LIBERTINE7)) AddFontResource(wxT(fontPrefix + LIBERTINE7));
+  if (wxFileExists(fontPrefix + LIBERTINE8)) AddFontResource(wxT(fontPrefix + LIBERTINE8));
+  if (wxFileExists(fontPrefix + LIBERTINE9)) AddFontResource(wxT(fontPrefix + LIBERTINE9));
 #endif
 
   m_locale.AddCatalogLookupPathPrefix(dirstructure.LocaleDir());
@@ -279,21 +283,23 @@ bool MyApp::OnInit()
 #if defined (__WXMSW__)
 int MyApp::OnExit()
 {
-  if (wxFileExists("fonts/" CMEX10)) RemoveFontResource(wxT("fonts/" CMEX10));
-  if (wxFileExists("fonts/" CMSY10)) RemoveFontResource(wxT("fonts/" CMSY10));
-  if (wxFileExists("fonts/" CMR10))  RemoveFontResource(wxT("fonts/" CMR10));
-  if (wxFileExists("fonts/" CMMI10)) RemoveFontResource(wxT("fonts/" CMMI10));
-  if (wxFileExists("fonts/" CMTI10)) RemoveFontResource(wxT("fonts/" CMTI10));
+  DirStructure dirstruct;
+  wxString fontPrefix = dirstruct.GetFontDir + wxT("/");
+  if (wxFileExists(fontPrefix + CMEX10)) RemoveFontResource(wxT(fontPrefix + CMEX10));
+  if (wxFileExists(fontPrefix + CMSY10)) RemoveFontResource(wxT(fontPrefix + CMSY10));
+  if (wxFileExists(fontPrefix + CMR10))  RemoveFontResource(wxT(fontPrefix + CMR10));
+  if (wxFileExists(fontPrefix + CMMI10)) RemoveFontResource(wxT(fontPrefix + CMMI10));
+  if (wxFileExists(fontPrefix + CMTI10)) RemoveFontResource(wxT(fontPrefix + CMTI10));
 
-  if (wxFileExists("fonts/" LIBERTINE1)) RemoveFontResource(wxT("fonts/" LIBERTINE1));
-  if (wxFileExists("fonts/" LIBERTINE2)) RemoveFontResource(wxT("fonts/" LIBERTINE2));
-  if (wxFileExists("fonts/" LIBERTINE3)) RemoveFontResource(wxT("fonts/" LIBERTINE3));
-  if (wxFileExists("fonts/" LIBERTINE4)) RemoveFontResource(wxT("fonts/" LIBERTINE4));
-  if (wxFileExists("fonts/" LIBERTINE5)) RemoveFontResource(wxT("fonts/" LIBERTINE5));
-  if (wxFileExists("fonts/" LIBERTINE6)) RemoveFontResource(wxT("fonts/" LIBERTINE6));
-  if (wxFileExists("fonts/" LIBERTINE7)) RemoveFontResource(wxT("fonts/" LIBERTINE7));
-  if (wxFileExists("fonts/" LIBERTINE8)) RemoveFontResource(wxT("fonts/" LIBERTINE8));
-  if (wxFileExists("fonts/" LIBERTINE9)) RemoveFontResource(wxT("fonts/" LIBERTINE9));
+  if (wxFileExists(fontPrefix + LIBERTINE1)) RemoveFontResource(wxT(fontPrefix + LIBERTINE1));
+  if (wxFileExists(fontPrefix + LIBERTINE2)) RemoveFontResource(wxT(fontPrefix + LIBERTINE2));
+  if (wxFileExists(fontPrefix + LIBERTINE3)) RemoveFontResource(wxT(fontPrefix + LIBERTINE3));
+  if (wxFileExists(fontPrefix + LIBERTINE4)) RemoveFontResource(wxT(fontPrefix + LIBERTINE4));
+  if (wxFileExists(fontPrefix + LIBERTINE5)) RemoveFontResource(wxT(fontPrefix + LIBERTINE5));
+  if (wxFileExists(fontPrefix + LIBERTINE6)) RemoveFontResource(wxT(fontPrefix + LIBERTINE6));
+  if (wxFileExists(fontPrefix + LIBERTINE7)) RemoveFontResource(wxT(fontPrefix + LIBERTINE7));
+  if (wxFileExists(fontPrefix + LIBERTINE8)) RemoveFontResource(wxT(fontPrefix + LIBERTINE8));
+  if (wxFileExists(fontPrefix + LIBERTINE9)) RemoveFontResource(wxT(fontPrefix + LIBERTINE9));
 
   return true;
 }
