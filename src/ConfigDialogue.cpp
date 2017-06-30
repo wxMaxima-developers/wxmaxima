@@ -1051,7 +1051,6 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
   wxString fontName;
 
 #ifdef __WXMSW__
-  wxFont font;
   font.SetFamily(wxFONTFAMILY_MODERN);
   font.SetFaceName(wxT("Linux Libertine O"));
   font.SetEncoding(wxFONTENCODING_UTF8);
