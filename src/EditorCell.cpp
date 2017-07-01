@@ -787,10 +787,10 @@ void EditorCell::SetFont()
   m_fontSize = configuration->GetFontSize(m_textStyle);
   if (m_fontSize < 1)
     m_fontSize = configuration->GetDefaultFontSize();
-  
+
   double scale = configuration->GetScale();
   m_fontSize = (int) (((double) m_fontSize) * scale + 0.5);
-    
+
   m_fontName = configuration->GetFontName(m_textStyle);
   // Cells that save answers are displayed differently to
   // ordinary cells in order to make transparent that this cell is special.

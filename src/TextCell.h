@@ -118,6 +118,9 @@ public:
 protected:
   void SetAltText();
   
+  //! Resets the font size to label size
+  void SetFontSizeForLabel(wxDC &dc, double scale);
+
   wxRegEx m_unescapeRegEx;
 
   //! The text we keep inside this cell

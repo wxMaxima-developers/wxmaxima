@@ -266,7 +266,7 @@ void TextCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
 
-  bool recalculateNeeded = configuration->ForceUpdate();
+  bool recalculateNeeded = false;
   
   // If the setting has changed and we want to show a user-defined label
   // instead of an automatic one or vice versa we decide that here.
@@ -302,7 +302,8 @@ void TextCell::RecalculateWidths(int fontsize)
     recalculateNeeded = true;
   }
 
-  if (m_height == -1 || m_width == -1 || m_lastCalculationFontSize != fontsize)
+  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() ||
+      m_lastCalculationFontSize != fontsize)
     recalculateNeeded = true;
 
   if(recalculateNeeded)
@@ -333,7 +334,7 @@ void TextCell::RecalculateWidths(int fontsize)
       m_fontSizeLabel = m_fontSize;
       wxASSERT_MSG((m_width > 0) || (text == wxEmptyString),
                    _("The letter \"X\" is of width zero. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
-      if (m_width < 1) m_width = 1;
+      if (m_width < 1) m_width = 10;
       dc.GetTextExtent(text, &m_labelWidth, &m_labelHeight);
       wxASSERT_MSG((m_labelWidth > 0) || (m_displayedText == wxEmptyString),
                    _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
@@ -347,7 +348,7 @@ void TextCell::RecalculateWidths(int fontsize)
       }
     }
 
-    // Check if we are using jsMath and have jsMath character
+      /// Check if we are using jsMath and have jsMath character
     else if (m_altJs && configuration->CheckTeXFonts())
     {
       dc.GetTextExtent(m_altJsText, &m_width, &m_height);
@@ -356,27 +357,27 @@ void TextCell::RecalculateWidths(int fontsize)
         m_height = m_height / 2;
     }
 
-    // We are using a special symbol
+      /// We are using a special symbol
     else if (m_alt)
     {
       dc.GetTextExtent(m_altText, &m_width, &m_height);
     }
 
-    // Empty string has the ame height as an X
+      /// Empty string has height of X
     else if (m_displayedText == wxEmptyString)
     {
       dc.GetTextExtent(wxT("gXÄy"), &m_width, &m_height);
       m_width = 0;
     }
 
-    // This is the default.
+      /// This is the default.
     else
       dc.GetTextExtent(m_displayedText, &m_width, &m_height);
 
-    m_width  += 2 * SCALE_PX(MC_TEXT_PADDING, scale);
-    m_height += 2 * SCALE_PX(MC_TEXT_PADDING, scale);
+    m_width = m_width + 2 * SCALE_PX(MC_TEXT_PADDING, scale);
+    m_height = m_height + 2 * SCALE_PX(MC_TEXT_PADDING, scale);
 
-    // Hidden cells (multiplication * is not displayed)
+    /// Hidden cells (multiplication * is not displayed)
     if (m_isHidden)
     {
       m_height = 0;
@@ -397,77 +398,90 @@ void TextCell::Draw(wxPoint point, int fontsize)
   if (m_width == -1 || m_height == -1 || fontsize != m_lastCalculationFontSize)
     RecalculateWidths(fontsize);
 
-  if (DrawThisCell(point) && !m_isHidden && InUpdateRegion())
+  if (DrawThisCell(point) && !m_isHidden)
   {
-    SetForeground();
     SetFont(fontsize);
-    
-    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
+    SetForeground();
+
+    if (InUpdateRegion())
     {
-      if ((m_textStyle == TS_USERLABEL || configuration->ShowAutomaticLabels()) &&
-          configuration->ShowLabels())
+      /// Labels and prompts have special fontsize
+      if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
       {
-        // Draw the label
-        if(m_textStyle == TS_USERLABEL)
+        if ((m_textStyle == TS_USERLABEL || configuration->ShowAutomaticLabels()) &&
+            configuration->ShowLabels())
         {
-          wxString text = m_userDefinedLabel;
-          m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
-          dc.DrawText(wxT("(") + text + wxT(")"),
-                      point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                      point.y - m_realCenter + (m_height - m_labelHeight) / 2);
+          SetFontSizeForLabel(dc, scale);
+          // Draw the label
+          if(m_textStyle == TS_USERLABEL)
+          {
+            wxString text = m_userDefinedLabel;
+            m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
+            dc.DrawText(wxT("(") + text + wxT(")"),
+                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                        point.y - m_realCenter + (m_height - m_labelHeight) / 2);
+          }
+          else
+            dc.DrawText(m_displayedText,
+                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                        point.y - m_realCenter + (m_height - m_labelHeight) / 2);            
         }
-        else
-          dc.DrawText(m_displayedText,
-                      point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                      point.y - m_realCenter + (m_height - m_labelHeight) / 2);            
       }
-    }
 
-    /// Check if we are using jsMath and have jsMath character
-    else if (m_altJs && configuration->CheckTeXFonts())
-      dc.DrawText(m_altJsText,
-                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+        /// Check if we are using jsMath and have jsMath character
+      else if (m_altJs && configuration->CheckTeXFonts())
+        dc.DrawText(m_altJsText,
+                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 
-    /// We are using a special symbol
-    else if (m_alt)
-      dc.DrawText(m_altText,
-                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+        /// We are using a special symbol
+      else if (m_alt)
+        dc.DrawText(m_altText,
+                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 
-    /// Change asterisk
-    else if (configuration->GetChangeAsterisk() && m_displayedText == wxT("*"))
-      dc.DrawText(wxT("\xB7"),
-                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+        /// Change asterisk
+      else if (configuration->GetChangeAsterisk() && m_displayedText == wxT("*"))
+        dc.DrawText(wxT("\xB7"),
+                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 
 #if wxUSE_UNICODE
-    else if (m_displayedText == wxT("#"))
-      dc.DrawText(wxT("\x2260"),
-                  point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                  point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+      else if (m_displayedText == wxT("#"))
+        dc.DrawText(wxT("\x2260"),
+                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
 #endif
-    /// This is the default.
-    else
-    {
-      switch (GetType())
+        /// This is the default.
+      else
       {
-      case MC_TYPE_TEXT:
-        // TODO: Add markdown formatting for bold, italic and underlined here.
-        dc.DrawText(m_displayedText,
-                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
-        break;
-      case MC_TYPE_INPUT:
-        // This cell has already been drawn as an EditorCell => we don't repeat this action here.
-        break;
-      default:
-        dc.DrawText(m_displayedText,
-                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+        switch (GetType())
+        {
+          case MC_TYPE_TEXT:
+            // TODO: Add markdown formatting for bold, italic and underlined here.
+            dc.DrawText(m_displayedText,
+                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                        point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+            break;
+          case MC_TYPE_INPUT:
+            // This cell has already been drawn as an EditorCell => we don't repeat this action here.
+            break;
+          default:
+            dc.DrawText(m_displayedText,
+                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                        point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+        }
       }
     }
   }
+}
+
+void TextCell::SetFontSizeForLabel(wxDC &dc, double scale)
+{
+  wxFont font(dc.GetFont());
+  int fontsize1 = (int) (((double) m_fontSizeLabel) * scale + 0.5);
+  font.SetPointSize(fontsize1);
+  dc.SetFont(font);
 }
 
 void TextCell::SetFont(int fontsize)
@@ -489,7 +503,7 @@ void TextCell::SetFont(int fontsize)
   {
     // Titles have a fixed font size 
     m_fontSize = configuration->GetFontSize(m_textStyle);
-      
+
     // While titles and section names may be underlined the section number
     // isn't. Else the space between section number and section title
     // would look weird.
@@ -502,16 +516,12 @@ void TextCell::SetFont(int fontsize)
     m_fontSize = fontsize;
   }
 
+  // Ensure a sane minimum font size
+  if (fontsize < 4)
+    fontsize = 4;
+
   // The font size scales with the worksheet
   int fontsize1 = (int) (((double) m_fontSize) * scale + 0.5);
-
-  // Labels have a special font size
-  if((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL) || (GetStyle() == TS_MAIN_PROMPT))
-    fontsize1 = (int) (((double) m_fontSizeLabel) * scale + 0.5);
-  
-  // Ensure a sane minimum font size
-  if (fontsize1 < 1)
-    fontsize1 = 1;
 
   fontName = configuration->GetFontName(m_textStyle);
   fontStyle = configuration->IsItalic(m_textStyle);
