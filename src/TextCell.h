@@ -116,9 +116,6 @@ public:
     }
   
 protected:
-  //! Determine which piece of text has to be drawn
-  wxString GetTextToDraw();
-  
   void SetAltText();
   
   wxRegEx m_unescapeRegEx;
