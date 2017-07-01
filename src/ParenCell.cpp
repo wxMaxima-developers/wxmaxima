@@ -125,7 +125,7 @@ void ParenCell::SetFont(int fontsize)
   wxFontStyle fontStyle;
   wxFontWeight fontWeight;
   wxFontEncoding fontEncoding;
-  bool underlined = configuration->IsUnderlined(TS_DEFAULT);
+  bool underlined = configuration->IsUnderlined(TS_FUNCTION);
 
   // Ensure a sane minimum font size
   if (fontsize < 4)
@@ -141,7 +141,7 @@ void ParenCell::SetFont(int fontsize)
   {
   case ascii:
   case assembled_unicode:
-    fontName = configuration->GetFontName(TS_DEFAULT);
+    fontName = configuration->GetFontName(TS_FUNCTION);
     break;
 
   case assembled_unicode_fallbackfont:
@@ -153,11 +153,11 @@ void ParenCell::SetFont(int fontsize)
     break;
 
   default:
-    fontName = configuration->GetFontName(TS_DEFAULT);
+    fontName = configuration->GetFontName(TS_FUNCTION);
   }
-  fontStyle = configuration->IsItalic(TS_DEFAULT);
-  fontWeight = configuration->IsBold(TS_DEFAULT);
-  fontName = configuration->GetFontName(TS_DEFAULT);
+  fontStyle = configuration->IsItalic(TS_FUNCTION);
+  fontWeight = configuration->IsBold(TS_FUNCTION);
+  fontName = configuration->GetFontName(TS_FUNCTION);
 
   wxFont font;
   font.SetFamily(wxFONTFAMILY_MODERN);
