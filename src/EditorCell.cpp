@@ -216,10 +216,6 @@ wxString EditorCell::ToRTF()
 EditorCell::~EditorCell()
 {
   MarkAsDeleted();
-  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
-    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
-  if(this == m_cellPointers->m_cellUnderPointer)
-    m_cellPointers->m_cellUnderPointer = NULL;
 }
 
 void EditorCell::MarkAsDeleted()

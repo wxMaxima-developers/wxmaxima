@@ -82,6 +82,7 @@ IntCell::~IntCell()
   wxDELETE(m_under);
   wxDELETE(m_over);
   wxDELETE(m_var);
+  m_base = m_under = m_over = m_var = NULL;
   MarkAsDeleted();
 }
 

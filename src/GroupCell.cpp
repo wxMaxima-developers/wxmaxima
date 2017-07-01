@@ -315,10 +315,6 @@ GroupCell::~GroupCell()
   wxDELETE(m_output);
   wxDELETE(m_hiddenTree);
   m_inputLabel = m_output = m_hiddenTree = NULL;
-  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
-    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
-  if(this == m_cellPointers->m_cellUnderPointer)
-    m_cellPointers->m_cellUnderPointer = NULL;
 }
 
 void GroupCell::MarkAsDeleted()
@@ -341,6 +337,10 @@ void GroupCell::MarkAsDeleted()
     m_cellPointers->m_groupCellUnderPointer = NULL;
   if(m_output)
     m_output->MarkAsDeletedList(m_output);
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
 }
 
 wxString GroupCell::TexEscapeOutputCell(wxString Input)
