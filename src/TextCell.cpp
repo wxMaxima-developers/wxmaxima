@@ -480,8 +480,7 @@ void TextCell::SetFont(int fontsize)
   wxFontStyle fontStyle;
   wxFontWeight fontWeight;
   wxFontEncoding fontEncoding;
-  bool underlined = configuration->IsUnderlin
-    ed(m_textStyle);
+  bool underlined = configuration->IsUnderlined(m_textStyle);
 
   if ((m_textStyle == TS_TITLE) ||
       (m_textStyle == TS_SECTION) ||
