@@ -2651,7 +2651,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
     m_configuration->ShowCodeCells(true);
     CodeCellVisibilityChanged();
   }
-  Recalculate(group, false);
+
   InsertGroupCells(group, m_hCaretPosition);
   Recalculate(group, false);
   
