@@ -4072,26 +4072,27 @@ void EditorCell::StyleTextTexts()
       }
       // Store the indented line in the list of styled text snippets
       m_styledText.push_back(StyledText(line, 0, indentChar));
-      
-      // If the cell doesn't end with the last char of this line we have to
-      // add a line ending to the list of styled text snippets
-      if ((i + 1 < m_text.Length()) || (m_text[i] == wxT('\n')))
+
+      if(it != m_text.end())
       {
-        // Store the line ending in the list of styled text snippets
-        if (*it == wxT('\n'))
-          m_styledText.push_back(StyledText(wxT("\n"), 0, indentChar));
-        else
-          m_styledText.push_back(StyledText(wxT("\r"), 0, indentChar));
+        
+        // If the cell doesn't end with the last char of this line we have to
+        // add a line ending to the list of styled text snippets
+        if ((i + 1 < m_text.Length()) || (m_text[i] == wxT('\n')))
+        {
+          // Store the line ending in the list of styled text snippets
+          if (*it == wxT('\n'))
+            m_styledText.push_back(StyledText(wxT("\n"), 0, indentChar));
+          else
+            m_styledText.push_back(StyledText(wxT("\r"), 0, indentChar));
+        }
       }
       
       // Is this a real new line of comment - or did we insert a soft linebreak?
       newLine = ((i + 1 >= m_text.Length()) || (*it == wxT('\n')));
       
-      if (it < m_text.end())
-      {
-        ++i;
-        ++it;
-      }
+      ++i;
+      ++it;
     } // The loop that loops over all lines
   } // Do we want to autowrap lines?
   ResetSize();
