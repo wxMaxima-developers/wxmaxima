@@ -4073,7 +4073,7 @@ void EditorCell::StyleTextTexts()
       // Store the indented line in the list of styled text snippets
       m_styledText.push_back(StyledText(line, 0, indentChar));
 
-      if(it != m_text.end())
+      if(it < m_text.end())
       {
         
         // If the cell doesn't end with the last char of this line we have to
