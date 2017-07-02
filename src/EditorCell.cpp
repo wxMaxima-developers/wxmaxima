@@ -889,7 +889,7 @@ wxString EditorCell::TabExpand(wxString input, long posInLine)
   input.Replace(wxT("\r\n"), wxT("\n"));
 
   wxString::iterator ch = input.begin();
-  while (ch != input.end())
+  while (ch < input.end())
   {
     if ((*ch == wxT('\n')))
     {
@@ -922,8 +922,10 @@ wxString EditorCell::TabExpand(wxString input, long posInLine)
     }
     else
       retval += *ch;
-    ++ch;
-    posInLine++;
+    if(ch < input.end())
+      {
+        ++ch;++posInLine;
+      }
   }
   // TODO: Implement the actual TAB expansion
   return retval;
@@ -1060,7 +1062,7 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
 
   // Determine how many parenthesis this cell opens or closes before the point
   long pos = 0;
-  while ((pos < positionOfCaret) && (it != m_text.end()))
+  while ((pos < positionOfCaret) && (it < m_text.end()))
   {
     wxChar ch = *it;
     if (ch == wxT('\\'))
@@ -1073,7 +1075,7 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
     {
       ++pos;++it;
       while (
-              (it != m_text.end()) &&
+              (it < m_text.end()) &&
               (pos < positionOfCaret) &&
               (*it != wxT('\"'))
               )
@@ -1144,10 +1146,13 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
       wxString::const_iterator it2(it);
       wxString rest(*it2);
       ++it2;
-      rest += wxString(*it2);
-      ++it2;
-      rest += wxString(*it2);
-
+      if(it2 < m_text.end())
+      {
+        rest += wxString(*it2);
+        ++it2;
+        if(it2 < m_text.end())
+          rest += wxString(*it2);
+      }
       // Handle a "do"
       if (rest.StartsWith(wxT("do")) && ((rest.Length() < 3) || (!wxIsalnum(rest[2]))))
       {
@@ -1173,10 +1178,13 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
       }
     }
 
-    ++pos;++it;
+    if(it < m_text.end())
+    {
+      ++pos;++it;
+    }
   }
 
-  if (it != m_text.end())
+  if (it < m_text.end())
   {
     if (
             (text[positionOfCaret] == wxT(')')) ||
@@ -1199,7 +1207,7 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
   wxString rightOfCursor;
   for(int i=0; i<5; i++)
   {
-    if (it == m_text.end())
+    if (it >= m_text.end())
       break;
     
     rightOfCursor += *it;
@@ -2662,12 +2670,12 @@ void EditorCell::PositionToXY(int position, unsigned int *x, unsigned int *y)
   int pos = 0;
 
   wxString::const_iterator it = m_text.begin();
-  while ((pos < position) && (it != m_text.end()))
+  while ((pos < position) && (it < m_text.end()))
   {
     if ((*it == '\n') || (*it == '\r'))
     {
-      col = 0,
-              lin++;
+      col = 0;
+      lin++;
     }
     else
       col++;
@@ -2685,15 +2693,15 @@ int EditorCell::XYToPosition(int x, int y)
   int col = 0, lin = 0, pos = 0;
 
   wxString::const_iterator it = m_text.begin();
-  while ((it != m_text.end()) && (lin < y))
+  while ((it < m_text.end()) && (lin < y))
   {
     if ((*it == '\n') || (*it == '\r'))
       lin++;
-    ++it;
-    ++pos;
+    
+    ++it;++pos;
   }
 
-  while (pos < (int) m_text.Length() && col < x)
+  while ((it < m_text.end()) && (pos < (int) m_text.Length()) && (col < x))
   {
     if ((*it == '\n') || (*it == '\r'))
       break;
@@ -2754,7 +2762,7 @@ void EditorCell::SelectPointText(wxDC &dc, wxPoint &point)
   int indentPixels = 0;
   std::vector<StyledText>::iterator textSnippet;
   for (textSnippet = m_styledText.begin();
-       ((textSnippet != m_styledText.end()) && (currentLine <= lin)); ++textSnippet)
+       ((textSnippet < m_styledText.end()) && (currentLine <= lin)); ++textSnippet)
   {
     if ((textSnippet->GetText() == '\n') || (textSnippet->GetText() == '\r'))
     {
@@ -2845,7 +2853,7 @@ bool EditorCell::IsPointInSelection(wxDC &dc, wxPoint point)
   int indentPixels = 0;
   std::vector<StyledText>::iterator textSnippet;
   for (textSnippet = m_styledText.begin();
-       ((textSnippet != m_styledText.end()) && (currentLine < lin)); ++textSnippet)
+       ((textSnippet < m_styledText.end()) && (currentLine < lin)); ++textSnippet)
   {
     if ((textSnippet->GetText() == '\n') || (textSnippet->GetText() == '\r'))
     {
@@ -3137,7 +3145,7 @@ int EditorCell::GetLineWidth(wxDC &dc, unsigned int line, int pos)
   int indentPixels = 0;
   std::vector<StyledText>::iterator textSnippet;
   for (textSnippet = m_styledText.begin();
-       ((textSnippet != m_styledText.end()) && (currentLine <= line)); ++textSnippet)
+       ((textSnippet < m_styledText.end()) && (currentLine <= line)); ++textSnippet)
   {
     if ((textSnippet->GetText() == '\n') || (textSnippet->GetText() == '\r'))
     {
@@ -3153,7 +3161,7 @@ int EditorCell::GetLineWidth(wxDC &dc, unsigned int line, int pos)
 
   unsigned int i = 0;
 
-  for (textSnippet = m_styledText.begin(); (textSnippet != m_styledText.end()) && (i < line); ++textSnippet)
+  for (textSnippet = m_styledText.begin(); (textSnippet < m_styledText.end()) && (i < line); ++textSnippet)
   {
     wxString text = textSnippet->GetText();
     if ((text.Right(1) == '\n') || (text.Right(1) == '\r'))
@@ -3167,7 +3175,7 @@ int EditorCell::GetLineWidth(wxDC &dc, unsigned int line, int pos)
   wxString text;
   int textWidth, textHeight;
   pos--;
-  for (; (textSnippet != m_styledText.end()) && (pos >= 0); ++textSnippet)
+  for (; (textSnippet < m_styledText.end()) && (pos >= 0); ++textSnippet)
   {
     text = textSnippet->GetText();
     dc.GetTextExtent(text, &textWidth, &textHeight);
@@ -3314,16 +3322,16 @@ wxArrayString EditorCell::StringToTokens(wxString text)
   
   wxString::const_iterator it = text.begin();
   
-  while (it != text.end())
+  while (it < text.end())
   {
     // Determine the current char and the one that will follow it
     wxChar Ch = *it;
     wxString::const_iterator it2(it);
-    if(it2 != text.end())
-      it2++;
+    if(it2 < text.end())
+      ++it2;
     wxChar nextChar;
 
-    if(it2 != text.end())
+    if(it2 < text.end())
       nextChar = *it2;
     else
       nextChar = wxT(' ');
@@ -3365,10 +3373,8 @@ wxArrayString EditorCell::StringToTokens(wxString text)
       }
       retval.Add(wxString(Ch) + nextChar);
       ++it;
-      if(it != text.end())
-      {
+      if(it < text.end())
         ++it;
-      }
     }
 
     // Find operators that starts at the current position
@@ -3391,14 +3397,14 @@ wxArrayString EditorCell::StringToTokens(wxString text)
         token = wxEmptyString;
       }
 
-      while ((it != text.end()) && IsAlphaNum(Ch = *it))
+      while ((it < text.end()) && IsAlphaNum(Ch = *it))
       {
         token += Ch;
 
         if (Ch == wxT('\\'))
         {
           ++it;
-          if (it != text.end())
+          if (it < text.end())
           {
             Ch = *it;
             if (Ch != wxT('\n'))
@@ -3412,8 +3418,8 @@ wxArrayString EditorCell::StringToTokens(wxString text)
             }
           }
         }
-        if(it != text.end())
-          it++;
+        if(it < text.end())
+          ++it;
       }
       retval.Add(token);
       token = wxEmptyString;
@@ -3429,15 +3435,14 @@ wxArrayString EditorCell::StringToTokens(wxString text)
       ++it;
 
       // Add the string contents
-      while (it != text.end())  
+      while (it < text.end())  
       {
         Ch = *it;
         token += Ch;
         ++it;
         if(Ch == wxT('\"'))
           break;
-      }
-      
+      } 
       retval.Add(token);
       token = wxEmptyString;
     }
@@ -3450,7 +3455,7 @@ wxArrayString EditorCell::StringToTokens(wxString text)
         token = wxEmptyString;
       }
 
-      while ((it != text.end()) &&
+      while ((it < text.end()) &&
              (IsNum(Ch) ||
               ((Ch >= wxT('a')) && (Ch <= wxT('z'))) ||
               ((Ch >= wxT('A')) && (Ch <= wxT('Z')))
@@ -3467,12 +3472,12 @@ wxArrayString EditorCell::StringToTokens(wxString text)
     // Merge consecutive spaces into one single token
     else if (Ch == wxT(' '))
     {
-      while ((it != text.end()) &&
+      while ((it < text.end()) &&
              (Ch == wxT(' '))
               )
       {
         token += Ch;
-        it++;Ch = *it;
+        ++it;Ch = *it;
       }
 
       retval.Add(token);
@@ -3845,15 +3850,15 @@ void EditorCell::StyleTextTexts()
     
     unsigned int i = 0;
     wxString::const_iterator it = m_text.begin();
-    while (it != m_text.end())
+    while (it < m_text.end())
     {
       // Extract a line inserting a soft linebreak if necessary
-      while (it != m_text.end())
+      while (it < m_text.end())
       {
         wxString::const_iterator nextChar(it);
         ++nextChar;
         // Handle hard linebreaks or indent a soft linebreak if necessary
-        if ((*it == '\n') || (nextChar == m_text.end()))
+        if ((*it == '\n') || (nextChar >= m_text.end()))
         {
           // Can we introduce a soft line break?
           // One of the next questions will be: Do we need to?
@@ -3907,7 +3912,7 @@ void EditorCell::StyleTextTexts()
           
           // Spaces, newlines and reaching the end of the text all trigger
           // auto-wrapping
-          if ((*it == ' ') || (*it == '\n') || (nextChar == m_text.end()))
+          if ((*it == ' ') || (*it == '\n') || (nextChar >= m_text.end()))
           {
             // Determine the current line's length
             configuration->GetDC().GetTextExtent(m_text.SubString(lastLineStart, i), &width, &height);
@@ -4082,7 +4087,7 @@ void EditorCell::StyleTextTexts()
       // Is this a real new line of comment - or did we insert a soft linebreak?
       newLine = ((i + 1 >= m_text.Length()) || (*it == wxT('\n')));
       
-      if (it != m_text.end())
+      if (it < m_text.end())
       {
         ++i;
         ++it;
