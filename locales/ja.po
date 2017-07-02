@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxmaxima0.87\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-30 08:22+0200\n"
+"POT-Creation-Date: 2017-07-02 06:45+0200\n"
 "PO-Revision-Date: 2016-10-18 22:57+0900\n"
 "Last-Translator: ARATA Mizuki <minorinoki@gmail.com>\n"
 "Language-Team: Japanese <maxima-discuss@lists.sourceforge.net>\n"
@@ -75,8 +75,8 @@ msgstr "      -l <名前>"
 msgid " (Graphics) "
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3567
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3983
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3563
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3979
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
@@ -262,7 +262,7 @@ msgstr "Maximaのヘルプ(&M)"
 msgid "&Modulus Computation..."
 msgstr "法を設定する(&M)..."
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:226
+#: /home/gunter/src/wxmaxima/src/main.cpp:231
 #, fuzzy
 msgid "&New\tCtrl+N"
 msgstr "新規作成\tCtrl+N"
@@ -279,7 +279,7 @@ msgstr "結果を小数で出力(&N)"
 msgid "&Nusum"
 msgstr "数式で出力(&N)"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:227
+#: /home/gunter/src/wxmaxima/src/main.cpp:232
 #, fuzzy
 msgid "&Open\tCtrl+O"
 msgstr "開く(&O)\tCtrl+O"
@@ -755,7 +755,7 @@ msgstr ""
 msgid "Bug: No last cell in the base of an exptCell!"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ParenCell.cpp:504
+#: /home/gunter/src/wxmaxima/src/ParenCell.cpp:500
 msgid "Bug: No last cell inside a parenthesis!"
 msgstr ""
 
@@ -1122,12 +1122,12 @@ msgstr ""
 "（col[i]#Xでi列のXを除外）\n"
 "（col[i]=Xでi列のXのみ抽出）"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1783
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1792
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1781
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1790
 msgid "Config file (*.ini)|*.ini"
 msgstr "設定ファイル (*.ini)|*.ini"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1610
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1608
 msgid "Configuration warning"
 msgstr "設定変更の有効化"
 
@@ -1808,8 +1808,8 @@ msgstr "現在位置より上のセルを再評価"
 msgid "Example"
 msgstr "使用例"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1727
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1829
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1725
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1827
 msgid "Example text"
 msgstr "テキストの例"
 
@@ -1953,7 +1953,7 @@ msgstr "致命的なエラー"
 msgid "Figure %d:"
 msgstr "図 %d:"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:228
+#: /home/gunter/src/wxmaxima/src/main.cpp:233
 msgid "File"
 msgstr "ファイル"
 
@@ -2092,7 +2092,7 @@ msgstr "すべてのセクションを折りたたむ"
 msgid "Follow"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/IntCell.cpp:289
+#: /home/gunter/src/wxmaxima/src/IntCell.cpp:290
 msgid ""
 "Font issue: The char height is too small! Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
@@ -2886,7 +2886,7 @@ msgstr "バッチ処理に使うファイルの読み込み"
 msgid "Load a Maxima package file"
 msgstr "パッケージファイルの読み込み"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1790
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1788
 msgid "Load style from file"
 msgstr "スタイルの読み込み"
 
@@ -3438,7 +3438,7 @@ msgstr "ユーザー定義のラベル"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:725
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:118
-#: /home/gunter/src/wxmaxima/src/main.cpp:377
+#: /home/gunter/src/wxmaxima/src/main.cpp:384
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3381
 msgid "Open"
 msgstr "参照"
@@ -3596,7 +3596,7 @@ msgstr ""
 "メニューバーの「編集」から「設定」ダイアログを開き、wxMaximaを設定してくださ"
 "い"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1609
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1607
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "変更を有効にするにはwxMaximaを再起動する必要があります"
 
@@ -3952,7 +3952,7 @@ msgstr "選択範囲を画像として保存"
 msgid "Save selection to file"
 msgstr "画像として保存"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1781
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1779
 msgid "Save style to file"
 msgstr "スタイルの保存"
 
@@ -3993,7 +3993,7 @@ msgid "Section cell"
 msgstr "セクションセル"
 
 #: /home/gunter/src/wxmaxima/src/BTextCtrl.cpp:49
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:832
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:828
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:562
 msgid ""
 "Seems like something is broken with a font. Installing http://www.math.union."
@@ -5562,7 +5562,7 @@ msgstr "[ 無題 ]"
 msgid "untitled"
 msgstr "無題"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:349
+#: /home/gunter/src/wxmaxima/src/main.cpp:356
 #, c-format
 msgid "untitled %d"
 msgstr "無題 %d"
@@ -5571,7 +5571,7 @@ msgstr "無題 %d"
 msgid "upsilon"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:335
+#: /home/gunter/src/wxmaxima/src/main.cpp:342
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5203
 msgid "wxMaxima"
 msgstr "wxMaxima"
@@ -5670,7 +5670,7 @@ msgstr ""
 msgid "wxMaxima document"
 msgstr "wxMaxima document"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:379
+#: /home/gunter/src/wxmaxima/src/main.cpp:386
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgstr "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 

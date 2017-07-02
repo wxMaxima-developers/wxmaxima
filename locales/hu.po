@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-30 08:22+0200\n"
+"POT-Creation-Date: 2017-07-02 06:45+0200\n"
 "PO-Revision-Date: 2017-06-19 08:49+0200\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
@@ -72,8 +72,8 @@ msgstr "      -l <név>"
 msgid " (Graphics) "
 msgstr " (Grafika) "
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3567
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3983
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3563
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3979
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr " ... + %i rejtett sorok"
@@ -259,7 +259,7 @@ msgstr "&Maxima súgó"
 msgid "&Modulus Computation..."
 msgstr "&Modulus beállítása..."
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:226
+#: /home/gunter/src/wxmaxima/src/main.cpp:231
 msgid "&New\tCtrl+N"
 msgstr "Ú&j\tCtrl+N"
 
@@ -275,7 +275,7 @@ msgstr "&Numerikus integrálás"
 msgid "&Nusum"
 msgstr "&Numerikus összegzés"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:227
+#: /home/gunter/src/wxmaxima/src/main.cpp:232
 msgid "&Open\tCtrl+O"
 msgstr "&Megnyitás\tCtrl+O"
 
@@ -778,7 +778,7 @@ msgstr "Hiba: Nincs utolsó cella egy számlálóban!"
 msgid "Bug: No last cell in the base of an exptCell!"
 msgstr "Hiba: Nincs utolsó cella egy exptCell alapjában!"
 
-#: /home/gunter/src/wxmaxima/src/ParenCell.cpp:504
+#: /home/gunter/src/wxmaxima/src/ParenCell.cpp:500
 msgid "Bug: No last cell inside a parenthesis!"
 msgstr "Hiba: Nincs utolsó cella egy zárójelpár belsejében!"
 
@@ -1152,12 +1152,12 @@ msgstr ""
 msgid "Condition:"
 msgstr "Feltétel:"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1783
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1792
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1781
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1790
 msgid "Config file (*.ini)|*.ini"
 msgstr "Konfigurációs fájl (*.ini)|*.ini"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1610
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1608
 msgid "Configuration warning"
 msgstr "Figyelmeztetés a beállításokkal kapcsolatban"
 
@@ -1838,8 +1838,8 @@ msgstr "Kiértékelés eddig"
 msgid "Example"
 msgstr "Példa"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1727
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1829
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1725
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1827
 msgid "Example text"
 msgstr "Példaszöveg"
 
@@ -1982,7 +1982,7 @@ msgstr "Végzetes hiba"
 msgid "Figure %d:"
 msgstr "%d. ábra:"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:228
+#: /home/gunter/src/wxmaxima/src/main.cpp:233
 msgid "File"
 msgstr "Fájl"
 
@@ -2117,7 +2117,7 @@ msgstr "Minden fejezet elrejtése"
 msgid "Follow"
 msgstr "Követés"
 
-#: /home/gunter/src/wxmaxima/src/IntCell.cpp:289
+#: /home/gunter/src/wxmaxima/src/IntCell.cpp:290
 msgid ""
 "Font issue: The char height is too small! Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
@@ -2963,7 +2963,7 @@ msgstr "Batch parancsokat használó Maxima fájl betöltése"
 msgid "Load a Maxima package file"
 msgstr "Maxima csomagfájl betöltése"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1790
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1788
 msgid "Load style from file"
 msgstr "Stílusfájl betöltése"
 
@@ -3588,7 +3588,7 @@ msgstr "Csak a felhasználó által definiált címkék"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:725
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:118
-#: /home/gunter/src/wxmaxima/src/main.cpp:377
+#: /home/gunter/src/wxmaxima/src/main.cpp:384
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3381
 msgid "Open"
 msgstr "Megnyitás"
@@ -3745,7 +3745,7 @@ msgstr "Tortadiagram..."
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Kérem állítsa be a wxMaximát a 'Szerkesztés->Beállítás' menüpontban."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1609
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1607
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "A változások életbe lépéséhez indítsa újra a wxMaximát!"
 
@@ -4107,7 +4107,7 @@ msgstr "Kijelölt rész fájlba másolása a dokumentumból"
 msgid "Save selection to file"
 msgstr "Kijelölt rész mentése fájlba"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1781
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1779
 msgid "Save style to file"
 msgstr "Stílus mentése fájlba"
 
@@ -4148,7 +4148,7 @@ msgid "Section cell"
 msgstr "Fejezetcella"
 
 #: /home/gunter/src/wxmaxima/src/BTextCtrl.cpp:49
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:832
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:828
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:562
 msgid ""
 "Seems like something is broken with a font. Installing http://www.math.union."
@@ -5786,7 +5786,7 @@ msgstr "mentetlen"
 msgid "untitled"
 msgstr "névtelen"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:349
+#: /home/gunter/src/wxmaxima/src/main.cpp:356
 #, c-format
 msgid "untitled %d"
 msgstr "névtelen %d"
@@ -5795,7 +5795,7 @@ msgstr "névtelen %d"
 msgid "upsilon"
 msgstr "üpszilon"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:335
+#: /home/gunter/src/wxmaxima/src/main.cpp:342
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5203
 msgid "wxMaxima"
 msgstr "wxMaxima"
@@ -5901,7 +5901,7 @@ msgstr ""
 msgid "wxMaxima document"
 msgstr "wxMaxima dokumentum"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:379
+#: /home/gunter/src/wxmaxima/src/main.cpp:386
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgstr "wxMaxima dokumentum (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 

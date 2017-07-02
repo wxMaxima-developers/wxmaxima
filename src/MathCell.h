@@ -324,10 +324,10 @@ public:
    */
   int GetMaxHeight();
 
-  //! How many pixels would this list of cells be wide if we didn't introduce line breaks?
+  //! How many pixels is this list of cells wide?
   int GetFullWidth(double scale);
 
-  /*! How many pixels is this list of cells wide?
+  /*! How many pixels is the current line of this list of cells wide?
 
     This command returns the real line width when all line breaks are really performed. 
     See GetFullWidth().

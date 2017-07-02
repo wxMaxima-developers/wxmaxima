@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wmMaxima 16.12.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-30 08:22+0200\n"
+"POT-Creation-Date: 2017-07-02 06:45+0200\n"
 "PO-Revision-Date: 2017-02-05 10:22+0200\n"
 "Last-Translator: Francisco F. Serrador <serrador@tecknolabs.com>\n"
 "Language-Team: Spanish Team <es@es.po.com>\n"
@@ -73,8 +73,8 @@ msgstr "      -l <name>"
 msgid " (Graphics) "
 msgstr " (Gráficos) "
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3567
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3983
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3563
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3979
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr " ... + %i líneas ocultas"
@@ -261,7 +261,7 @@ msgstr "Ayuda de &Maxima"
 msgid "&Modulus Computation..."
 msgstr "Cálculo del &módulos..."
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:226
+#: /home/gunter/src/wxmaxima/src/main.cpp:231
 msgid "&New\tCtrl+N"
 msgstr "&Nuevo\tCtrl+N"
 
@@ -277,7 +277,7 @@ msgstr "&Integración numérica"
 msgid "&Nusum"
 msgstr "&Nusum"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:227
+#: /home/gunter/src/wxmaxima/src/main.cpp:232
 msgid "&Open\tCtrl+O"
 msgstr "&Abrir\tCtrl+O"
 
@@ -783,7 +783,7 @@ msgstr "Bicho: ¡ninguna última celda en un numerador!"
 msgid "Bug: No last cell in the base of an exptCell!"
 msgstr "Bicho: ¡sin última celda en la base de un exptCall!"
 
-#: /home/gunter/src/wxmaxima/src/ParenCell.cpp:504
+#: /home/gunter/src/wxmaxima/src/ParenCell.cpp:500
 msgid "Bug: No last cell inside a parenthesis!"
 msgstr "Bicho: ¡sin última celda dentro de un paréntesis!"
 
@@ -1162,12 +1162,12 @@ msgstr "Calcula el mínimo común múltiplo (cargar(funciones) antes de usar)"
 msgid "Condition:"
 msgstr "Condición:"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1783
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1792
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1781
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1790
 msgid "Config file (*.ini)|*.ini"
 msgstr "Fichero de configuración (*.ini)|*.ini"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1610
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1608
 msgid "Configuration warning"
 msgstr "Advertencia sobre configuración"
 
@@ -1851,8 +1851,8 @@ msgstr "Evaluar hasta el punto"
 msgid "Example"
 msgstr "Ejemplo"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1727
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1829
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1725
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1827
 msgid "Example text"
 msgstr "Texto de ejemplo"
 
@@ -1995,7 +1995,7 @@ msgstr "Error fatal"
 msgid "Figure %d:"
 msgstr "Figura %d:"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:228
+#: /home/gunter/src/wxmaxima/src/main.cpp:233
 msgid "File"
 msgstr "Fichero"
 
@@ -2130,7 +2130,7 @@ msgstr "Encarpeta todas las secciones"
 msgid "Follow"
 msgstr "Seguir"
 
-#: /home/gunter/src/wxmaxima/src/IntCell.cpp:289
+#: /home/gunter/src/wxmaxima/src/IntCell.cpp:290
 msgid ""
 "Font issue: The char height is too small! Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
@@ -2979,7 +2979,7 @@ msgstr "Cargar un fichero 'maxima' usando la instrucciones del batch"
 msgid "Load a Maxima package file"
 msgstr "Cargar un paquete Maxima"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1790
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1788
 msgid "Load style from file"
 msgstr "Leer estilo desde un fichero"
 
@@ -3583,7 +3583,7 @@ msgstr "Etiquetas definidas por el usuario"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:725
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:118
-#: /home/gunter/src/wxmaxima/src/main.cpp:377
+#: /home/gunter/src/wxmaxima/src/main.cpp:384
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3381
 msgid "Open"
 msgstr "Abrir"
@@ -3740,7 +3740,7 @@ msgstr "Diagrama de sectores..."
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Configure wxMaxima con 'Editar→Configurar'."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1609
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1607
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "¡Reinicie wxMaxima para que los cambios tengan efecto!"
 
@@ -4103,7 +4103,7 @@ msgstr "Guardar selección del documento a un fichero de imagen"
 msgid "Save selection to file"
 msgstr "Guardar selección en un fichero"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1781
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1779
 msgid "Save style to file"
 msgstr "Guardar estilo a un fichero"
 
@@ -4144,7 +4144,7 @@ msgid "Section cell"
 msgstr "Celda de sección"
 
 #: /home/gunter/src/wxmaxima/src/BTextCtrl.cpp:49
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:832
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:828
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:562
 msgid ""
 "Seems like something is broken with a font. Installing http://www.math.union."
@@ -5773,7 +5773,7 @@ msgstr "no guardado"
 msgid "untitled"
 msgstr "sin nombre"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:349
+#: /home/gunter/src/wxmaxima/src/main.cpp:356
 #, c-format
 msgid "untitled %d"
 msgstr "sin título %d"
@@ -5782,7 +5782,7 @@ msgstr "sin título %d"
 msgid "upsilon"
 msgstr "upsilon"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:335
+#: /home/gunter/src/wxmaxima/src/main.cpp:342
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5203
 msgid "wxMaxima"
 msgstr "wxMaxima"
@@ -5886,7 +5886,7 @@ msgstr ""
 msgid "wxMaxima document"
 msgstr "Documento wxMaxima"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:379
+#: /home/gunter/src/wxmaxima/src/main.cpp:386
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgstr "Documento wxMaxima (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 

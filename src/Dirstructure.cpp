@@ -98,8 +98,8 @@ wxString Dirstructure::HelpDir()
 
   if(wxDirExists(dir + wxT("/help")))
     dir += wxT("/help");
-
-    if(wxDirExists(dir + wxT("/info")))
+  
+  if(wxDirExists(dir + wxT("/info")))
     dir += wxT("/info");
 
   return dir;

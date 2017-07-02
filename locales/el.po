@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Greek translation of wxMaxima GUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-30 08:22+0200\n"
+"POT-Creation-Date: 2017-07-02 06:45+0200\n"
 "PO-Revision-Date: 2010-06-04 19:46+0200\n"
 "Last-Translator: aga <akritas@uth.gr>\n"
 "Language-Team: uth <aakritas@uth.gr>\n"
@@ -72,8 +72,8 @@ msgstr ""
 msgid " (Graphics) "
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3567
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3983
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3563
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3979
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
@@ -261,7 +261,7 @@ msgstr "Εμφάνιση βοήθειας για το Maxima"
 msgid "&Modulus Computation..."
 msgstr "Ορισμός του modulo (για rat, κτλ)..."
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:226
+#: /home/gunter/src/wxmaxima/src/main.cpp:231
 #, fuzzy
 msgid "&New\tCtrl+N"
 msgstr "Νέο\tCtrl+N"
@@ -278,7 +278,7 @@ msgstr "Αριθμητική Ολοκλήρωση"
 msgid "&Nusum"
 msgstr "Νusum"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:227
+#: /home/gunter/src/wxmaxima/src/main.cpp:232
 #, fuzzy
 msgid "&Open\tCtrl+O"
 msgstr "Άνοιγμα\tCtrl+O"
@@ -758,7 +758,7 @@ msgstr ""
 msgid "Bug: No last cell in the base of an exptCell!"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ParenCell.cpp:504
+#: /home/gunter/src/wxmaxima/src/ParenCell.cpp:500
 msgid "Bug: No last cell inside a parenthesis!"
 msgstr ""
 
@@ -1132,12 +1132,12 @@ msgstr ""
 msgid "Condition:"
 msgstr "Συνθήκη:"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1783
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1792
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1781
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1790
 msgid "Config file (*.ini)|*.ini"
 msgstr "Αρχείο Config (*.ini)|*.ini"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1610
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1608
 msgid "Configuration warning"
 msgstr "Προειδοποίηση ρύθμισης"
 
@@ -1832,8 +1832,8 @@ msgstr "Υπολογισμός ονοματικών μορφών"
 msgid "Example"
 msgstr "Παράδειγμα"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1727
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1829
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1725
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1827
 msgid "Example text"
 msgstr "Παράδειγμα κειμένου"
 
@@ -1979,7 +1979,7 @@ msgstr "Ολέθριο σφάλμα"
 msgid "Figure %d:"
 msgstr "Σχέδιο"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:228
+#: /home/gunter/src/wxmaxima/src/main.cpp:233
 msgid "File"
 msgstr "Αρχείο"
 
@@ -2119,7 +2119,7 @@ msgstr ""
 msgid "Follow"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/IntCell.cpp:289
+#: /home/gunter/src/wxmaxima/src/IntCell.cpp:290
 msgid ""
 "Font issue: The char height is too small! Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
@@ -2928,7 +2928,7 @@ msgstr "Φόρτωση ένος αρχείου Maxima με την εντολή b
 msgid "Load a Maxima package file"
 msgstr "Φόρτωση αρχείου πακέτου Maxima"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1790
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1788
 msgid "Load style from file"
 msgstr "Φόρτωση στυλ από αρχείο"
 
@@ -3489,7 +3489,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:725
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:118
-#: /home/gunter/src/wxmaxima/src/main.cpp:377
+#: /home/gunter/src/wxmaxima/src/main.cpp:384
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3381
 msgid "Open"
 msgstr "Άνοιγμα"
@@ -3647,7 +3647,7 @@ msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr ""
 "Παρακαλώ ρυθμίστε το wxMaxima μεσα απο το μενου 'Επεξεργασία->Ρυθμίσεις'."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1609
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1607
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr ""
 "Παρακαλώ κάντε επανεκκίνηση του wxMaxima για να ενεργοποιηθούν οι αλλαγές!"
@@ -4011,7 +4011,7 @@ msgstr "Αποθήκευση επιλογής από το έγγραφο σε έ
 msgid "Save selection to file"
 msgstr "Αποθήκευση επιλογής σε αρχείο"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1781
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1779
 msgid "Save style to file"
 msgstr "Αποθήκευση στυλ σε αρχείο"
 
@@ -4053,7 +4053,7 @@ msgid "Section cell"
 msgstr "Κελί ενότητας"
 
 #: /home/gunter/src/wxmaxima/src/BTextCtrl.cpp:49
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:832
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:828
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:562
 msgid ""
 "Seems like something is broken with a font. Installing http://www.math.union."
@@ -5661,7 +5661,7 @@ msgstr "[ δεν έχει αποθηκευθεί ]"
 msgid "untitled"
 msgstr "ανώνυμο"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:349
+#: /home/gunter/src/wxmaxima/src/main.cpp:356
 #, fuzzy, c-format
 msgid "untitled %d"
 msgstr "ανώνυμο"
@@ -5671,7 +5671,7 @@ msgstr "ανώνυμο"
 msgid "upsilon"
 msgstr "Έψιλον:"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:335
+#: /home/gunter/src/wxmaxima/src/main.cpp:342
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5203
 msgid "wxMaxima"
 msgstr "wxMaxima"
@@ -5773,7 +5773,7 @@ msgstr ""
 msgid "wxMaxima document"
 msgstr "έγγραφο wxMaxima"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:379
+#: /home/gunter/src/wxmaxima/src/main.cpp:386
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgstr "έγγραφο wxMaxima (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 

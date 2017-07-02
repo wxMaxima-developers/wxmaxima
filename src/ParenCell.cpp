@@ -336,6 +336,7 @@ void ParenCell::Draw(wxPoint point, int fontsize)
       break;
     case assembled_unicode:
     case assembled_unicode_fallbackfont:
+    case assembled_unicode_fallbackfont2:
     {
       int top = point.y - m_center + SCALE_PX (1,scale);
       int bottom = top + m_signHeight - m_signBotHeight - SCALE_PX (2,scale);

@@ -1286,9 +1286,9 @@ wxString TextCell::ToXML()
   if (GetStyle() == TS_ERROR)
     flags += wxT(" type=\"error\"");
 
-    if (GetStyle() == TS_WARNING)
+  if (GetStyle() == TS_WARNING)
     flags += wxT(" type=\"warning\"");
-
+  
   wxString xmlstring = XMLescape(m_displayedText);
   // convert it, so that the XML configuration doesn't fail
   if(m_userDefinedLabel != wxEmptyString)

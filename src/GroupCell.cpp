@@ -1686,7 +1686,6 @@ wxString GroupCell::GetToolTip(const wxPoint &point)
     return retval;
   
   MathCell *tmp = m_output;
-  MathCell *cellUnderPointer = NULL;
   while (tmp != NULL)
   {
 
