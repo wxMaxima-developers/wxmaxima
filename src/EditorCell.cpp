@@ -1023,12 +1023,10 @@ bool EditorCell::HandleCtrlCommand(wxKeyEvent &ev)
 
 void EditorCell::ProcessEvent(wxKeyEvent &event)
 {
-  bool done;
+  bool done = false;
 
 #if defined __WXMAC__
   done = HandleCtrlCommand(event);
-#else
-  done = false;
 #endif
 
   if (!done)
