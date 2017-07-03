@@ -31,6 +31,7 @@
 
 Configuration::Configuration(wxDC &dc, bool isTopLevel) : m_dc(&dc)
 {
+  m_parenthesisDrawMode = unknown;
   m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML");
   m_scale = 1.0;
   m_zoomFactor = 1.0; // affects returned fontsizes
@@ -153,6 +154,60 @@ void Configuration::ReadConfig()
   ReadStyle();
 }
 
+Configuration::drawMode Configuration::GetParenthesisDrawMode()
+{
+  if(m_parenthesisDrawMode == unknown)
+  {
+    m_parenthesisDrawMode = ascii;
+    wxFont font = GetDC().GetFont();
+    if (CharsExistInFont(font,
+                         wxT(PAREN_OPEN_TOP_UNICODE),
+                         wxT(PAREN_OPEN_EXTEND_UNICODE),
+                         wxT(PAREN_OPEN_BOTTOM_UNICODE))
+      )
+    {
+      m_parenthesisDrawMode = assembled_unicode;
+      return m_parenthesisDrawMode;
+    }
+    font.SetFaceName(wxT("Linux Libertine"));
+    if (CharsExistInFont(font,
+                         wxT(PAREN_OPEN_TOP_UNICODE),
+                         wxT(PAREN_OPEN_EXTEND_UNICODE),
+                         wxT(PAREN_OPEN_BOTTOM_UNICODE))
+      )
+    {
+      m_parenthesisDrawMode = assembled_unicode_fallbackfont;
+      return m_parenthesisDrawMode;
+    }
+      
+    font.SetFaceName(wxT("Linux Libertine O"));
+    if (CharsExistInFont(font,
+                         wxT(PAREN_OPEN_TOP_UNICODE),
+                         wxT(PAREN_OPEN_EXTEND_UNICODE),
+                         wxT(PAREN_OPEN_BOTTOM_UNICODE))
+      )
+    {
+      m_parenthesisDrawMode = assembled_unicode_fallbackfont;
+      return m_parenthesisDrawMode;
+    }
+  }
+  return m_parenthesisDrawMode;
+}
+
+bool Configuration::IsEqual(wxBitmap bitmap1, wxBitmap bitmap2)
+{
+  if (bitmap1.GetSize()!=bitmap2.GetSize())
+    return false;
+
+  wxImage img1=bitmap1.ConvertToImage();
+  wxImage img2=bitmap2.ConvertToImage();
+  int bytes = img1.GetWidth()*img1.GetHeight();
+  if(bytes < 0)
+    return false;
+
+  return(memcmp(img1.GetData(),img2.GetData(),bytes));
+}
+
 void Configuration::SetZoomFactor(double newzoom)
 {
   if (newzoom > GetMaxZoomFactor())
@@ -168,6 +223,57 @@ Configuration::~Configuration()
 {
 }
 
+bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2, wxString char3)
+{
+  // Letters with width or height = 0 don't exist in the current font
+  int width1,height1,descent1;
+  GetDC().GetTextExtent(char1,&width1,&height1,&descent1);
+  if((width1 < 1) || (height1-descent1 < 1))
+    return false;
+  int width2,height2,descent2;
+  GetDC().GetTextExtent(char2,&width2,&height2,&descent2);
+  if((width2 < 1) || (height2-descent2 < 1))
+    return false;
+  int width3,height3,descent3;
+  GetDC().GetTextExtent(char3,&width3,&height3,&descent3);
+  if((width3 < 1) || (height3-descent3 < 1))
+    return false;
+
+  if(((width1 != width2) &&
+      (width1 != width3) &&
+      (width2 != width3))||
+     ((height1 != height2) &&
+      (height1 != height3) &&
+      (height2 != height3)))
+    return true;
+  
+  wxBitmap bmp1(width1,height1);
+  wxMemoryDC dc1(bmp1);
+  dc1.SetFont(font);
+  dc1.SelectObject(bmp1);
+  dc1.Clear();
+  dc1.DrawText(char1,wxPoint(0,0));
+  
+  wxBitmap bmp2(width2,height2);
+  wxMemoryDC dc2(bmp2);
+  dc1.SetFont(font);
+  dc2.SelectObject(bmp2);
+  dc2.Clear();
+  dc2.DrawText(char2,wxPoint(0,0));
+  
+  wxBitmap bmp3(width3,height3);
+  wxMemoryDC dc3(bmp3);
+  dc1.SetFont(font);
+  dc3.SelectObject(bmp3);
+  dc3.Clear();
+  dc3.DrawText(char3,wxPoint(0,0));
+
+  if(IsEqual(bmp1,bmp2) && IsEqual(bmp2,bmp3) && IsEqual(bmp1,bmp3))
+    return true; 
+  else
+    return false;
+}
+
 wxString Configuration::GetFontName(int type)
 {
   if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION || type == TS_SECTION || type == TS_TEXT)
@@ -180,6 +286,7 @@ wxString Configuration::GetFontName(int type)
 
 void Configuration::ReadStyle()
 {
+  m_parenthesisDrawMode = unknown;
   wxConfigBase *config = wxConfig::Get();
 
 

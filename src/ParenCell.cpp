@@ -29,13 +29,6 @@
 #include "ParenCell.h"
 #include "TextCell.h"
 
-#define PAREN_OPEN_TOP_UNICODE     "\x239b"
-#define PAREN_OPEN_EXTEND_UNICODE  "\x239c"
-#define PAREN_OPEN_BOTTOM_UNICODE  "\x239d"
-#define PAREN_CLOSE_TOP_UNICODE    "\x239e"
-#define PAREN_CLOSE_EXTEND_UNICODE "\x239f"
-#define PAREN_CLOSE_BOTTOM_UNICODE "\x23a0"
-
 ParenCell::ParenCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
 {
   m_cellPointers = cellPointers;
@@ -51,7 +44,7 @@ ParenCell::ParenCell(MathCell *parent, Configuration **config, CellPointers *cel
   m_signBotHeight = 12;
   m_signWidth = 12;
   m_parenFontSize = 12;
-  m_bigParenType = ascii;
+  m_bigParenType = Configuration::ascii;
   m_innerCell = NULL;
   m_print = true;
   m_open = new TextCell(parent, config, cellPointers, wxT("("));
@@ -139,16 +132,16 @@ void ParenCell::SetFont(int fontsize)
 
   switch(m_bigParenType)
   {
-  case ascii:
-  case assembled_unicode:
+  case Configuration::ascii:
+  case Configuration::assembled_unicode:
     fontName = configuration->GetFontName(TS_FUNCTION);
     break;
 
-  case assembled_unicode_fallbackfont:
+  case Configuration::assembled_unicode_fallbackfont:
     fontName = wxT("Linux Libertine");
     break;
 
-  case assembled_unicode_fallbackfont2:
+  case Configuration::assembled_unicode_fallbackfont2:
     fontName = wxT("Linux Libertine O");
     break;
 
@@ -182,9 +175,9 @@ void ParenCell::SetFont(int fontsize)
 
   // A fallback if we have been completely unable to set a working font
   if (!dc.GetFont().IsOk())
-    m_bigParenType = handdrawn;
+    m_bigParenType = Configuration::handdrawn;
 
-  if(m_bigParenType != handdrawn)
+  if(m_bigParenType != Configuration::handdrawn)
     dc.SetFont(font);
 }
 
@@ -208,7 +201,7 @@ void ParenCell::RecalculateWidths(int fontsize)
   // to bother which exotic method we need to use for drawing nice parenthesis.
   if (fontsize1*3 > size)
   {
-    m_bigParenType = ascii;
+    m_bigParenType = Configuration::ascii;
     m_open->RecalculateWidthsList(fontsize);
     m_close->RecalculateWidthsList(fontsize);
     m_signWidth = m_open->GetWidth();
@@ -216,60 +209,18 @@ void ParenCell::RecalculateWidths(int fontsize)
   }
   else
   {
-    m_bigParenType = assembled_unicode;
-    SetFont(fontsize);
-    int signWidth1,signWidth2,signWidth3,descent,leading;
-    dc.GetTextExtent(wxT(PAREN_OPEN_TOP_UNICODE),    &signWidth1, &m_signTopHeight, &descent, &leading);
-    m_signTopHeight -= descent + 1;
-    dc.GetTextExtent(wxT(PAREN_OPEN_EXTEND_UNICODE), &signWidth2, &m_extendHeight, &descent, &leading);
-    m_extendHeight -= descent + 1;
-    dc.GetTextExtent(wxT(PAREN_OPEN_BOTTOM_UNICODE), &signWidth3, &m_signBotHeight, &descent, &leading);
-    m_signBotHeight -= descent + 1;
-    
-    if(
-      (signWidth1 < 1 ) ||
-      (signWidth2 < 1 ) ||
-      (signWidth3 < 1 ) ||
-      (m_signTopHeight < 1) ||
-      (m_extendHeight < 1) ||
-      (m_signBotHeight < 1)
-      )
+    m_bigParenType = configuration->GetParenthesisDrawMode();
+    if(m_bigParenType != Configuration::handdrawn)
     {
-      m_bigParenType = assembled_unicode_fallbackfont;
       SetFont(fontsize);
-      dc.GetTextExtent(wxT(PAREN_OPEN_TOP_UNICODE),    &signWidth1, &m_signTopHeight, &descent);
-      dc.GetTextExtent(wxT(PAREN_OPEN_EXTEND_UNICODE), &signWidth2, &m_extendHeight, &descent);
-      dc.GetTextExtent(wxT(PAREN_OPEN_BOTTOM_UNICODE),    &signWidth3, &m_signBotHeight, &descent);
-      
-      if(
-        (signWidth1 < 1 ) ||
-        (signWidth2 < 1 ) ||
-        (signWidth3 < 1 ) ||
-        (m_signTopHeight < 1) ||
-        (m_extendHeight < 1) ||
-        (m_signBotHeight < 1)
-        )
-      {
-        m_bigParenType = assembled_unicode_fallbackfont2;
-        SetFont(fontsize);
-        dc.GetTextExtent(wxT(PAREN_OPEN_TOP_UNICODE),    &signWidth1, &m_signTopHeight, &descent);
-        dc.GetTextExtent(wxT(PAREN_OPEN_EXTEND_UNICODE), &signWidth2, &m_extendHeight, &descent);
-        dc.GetTextExtent(wxT(PAREN_OPEN_BOTTOM_UNICODE),    &signWidth3, &m_signBotHeight, &descent);
-        
-        if(
-          (signWidth1 < 1 ) ||
-          (signWidth2 < 1 ) ||
-          (signWidth3 < 1 ) ||
-          (m_signTopHeight < 1) ||
-          (m_extendHeight < 1) ||
-          (m_signBotHeight < 1)
-          )
-          m_bigParenType = handdrawn;
-      }
-    }
-    
-    if(m_bigParenType != handdrawn)
-    {
+      int signWidth1,signWidth2,signWidth3,descent,leading;
+      dc.GetTextExtent(wxT(PAREN_OPEN_TOP_UNICODE),    &signWidth1, &m_signTopHeight, &descent, &leading);
+      m_signTopHeight -= descent + 1;
+      dc.GetTextExtent(wxT(PAREN_OPEN_EXTEND_UNICODE), &signWidth2, &m_extendHeight, &descent, &leading);
+      m_extendHeight -= descent + 1;
+      dc.GetTextExtent(wxT(PAREN_OPEN_BOTTOM_UNICODE), &signWidth3, &m_signBotHeight, &descent, &leading);
+      m_signBotHeight -= descent + 1;
+
       m_signWidth = signWidth1;
       if(m_signWidth < signWidth2)
         m_signWidth = signWidth2;
@@ -329,14 +280,14 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     
     switch(m_bigParenType)
     {            
-    case ascii:
+    case Configuration::ascii:
       m_open->DrawList(point, fontsize);
       m_close->DrawList(wxPoint(point.x + m_signWidth + m_innerCell->GetFullWidth(scale),point.y), fontsize);
       in.x += m_open->GetWidth();
       break;
-    case assembled_unicode:
-    case assembled_unicode_fallbackfont:
-    case assembled_unicode_fallbackfont2:
+    case Configuration::assembled_unicode:
+    case Configuration::assembled_unicode_fallbackfont:
+    case Configuration::assembled_unicode_fallbackfont2:
     {
       int top = point.y - m_center + SCALE_PX (1,scale);
       int bottom = top + m_signHeight - m_signBotHeight - SCALE_PX (2,scale);
@@ -368,7 +319,7 @@ void ParenCell::Draw(wxPoint point, int fontsize)
       in.y += (m_innerCell->GetCenter() - m_innerCell->GetMaxHeight() /2);
     }
     break;
-    case handdrawn:
+    default:
       in.x = point.x + SCALE_PX(6, scale) + (*m_configuration)->GetDefaultLineWidth();
       SetPen();
       // left

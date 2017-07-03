@@ -100,6 +100,9 @@ public:
   void SetParent(MathCell *parent);
 
 protected:
+   /*! How to create a big parenthesis sign?
+   */
+  Configuration::drawMode m_bigParenType;
   int m_fontSize;
   void SetFont(int fontsize);
   MathCell *m_innerCell, *m_open, *m_close;
@@ -109,19 +112,6 @@ protected:
   int m_charWidth, m_charHeight;
   int m_charWidth1, m_charHeight1;
   int m_parenFontSize, m_signWidth, m_signHeight, m_signTopHeight, m_signBotHeight, m_extendHeight;
-  enum parenthesisStyle
-  {
-    ascii,              //!< An ordinary parenthesis sign created using ascii characters
-    assembled_unicode,  //!< A "big parenthesis" assembled of unicode characters
-    assembled_unicode_fallbackfont,  //!< A "big parenthesis" assembled of unicode characters of the fallback font, Freetype version
-    assembled_unicode_fallbackfont2,  //!< A "big parenthesis" assembled of unicode characters of the fallback font, Opentype version
-    handdrawn           //!< A  parenthesis sign that was created using draw commands
-  };
-
-  /* How to create a big parenthesis sign?
-     - 0 = 
-   */
-  parenthesisStyle m_bigParenType;
 
 private:
   CellPointers *m_cellPointers;

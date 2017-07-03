@@ -34,6 +34,13 @@
 #define MC_LINE_SKIP 2
 #define MC_TEXT_PADDING 1
 
+#define PAREN_OPEN_TOP_UNICODE     "\x239b"
+#define PAREN_OPEN_EXTEND_UNICODE  "\x239c"
+#define PAREN_OPEN_BOTTOM_UNICODE  "\x239d"
+#define PAREN_CLOSE_TOP_UNICODE    "\x239e"
+#define PAREN_CLOSE_EXTEND_UNICODE "\x239f"
+#define PAREN_CLOSE_BOTTOM_UNICODE "\x23a0"
+
 //! The width of the horizontally-drawn cursor
 #define MC_HCARET_WIDTH 25
 
@@ -80,6 +87,16 @@
 class Configuration
 {
 public:
+  enum drawMode
+  {
+    ascii,              //!< Use ascii characters only
+    assembled_unicode_fallbackfont,  //!< Unicode, fallbackfont 1
+    assembled_unicode,  //!< Unicode, current font
+    assembled_unicode_fallbackfont2,  //!< Unicode, fallbackfont 2
+    handdrawn,           //!< A  parenthesis sign that was created using draw commands
+    unknown
+  };
+
   //! Set maxima's working directory
   void SetWorkingDirectory(wxString dir)
   { m_workingdir = dir; }
@@ -509,7 +526,13 @@ public:
   void SetDefaultMathCellToolTip(wxString defaultToolTip){m_defaultToolTip = defaultToolTip;}
   //! Gets the default toolTip for new cells
   wxString GetDefaultMathCellToolTip(){return m_defaultToolTip;}
+  //! Which way do we want to draw parenthesis?
+  drawMode GetParenthesisDrawMode();
+
 private:
+  bool IsEqual(wxBitmap bitmap1, wxBitmap bitmap2);
+  bool CharsExistInFont(wxFont font, wxString char1, wxString char2, wxString char3); 
+  drawMode m_parenthesisDrawMode;
   wxString m_workingdir;
   wxString m_maximaLocation;
   //! Hide brackets that are not under the pointer
