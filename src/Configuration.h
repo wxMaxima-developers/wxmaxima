@@ -530,8 +530,22 @@ public:
   drawMode GetParenthesisDrawMode();
 
 private:
+  //! A replacement for the non-existing "==" operator for wxBitmaps.
   bool IsEqual(wxBitmap bitmap1, wxBitmap bitmap2);
-  bool CharsExistInFont(wxFont font, wxString char1, wxString char2, wxString char3); 
+  /*! Do these chars exist in the given font?
+
+    wxWidgets currently doesn't define such a function. But we can do the following:
+      - Test if any of these characters has the width or height 0 (or even less)
+        which clearly indicates that this char doesn't exist.
+      - Test if any two of the characters are equal when rendered as bitmaps: 
+        If they are we most probably didn't get render real characters but rather
+        render placeholders for characters.
+
+      As these might be costly operations it is important to cache the result
+      of this function.
+   */
+  bool CharsExistInFont(wxFont font, wxString char1, wxString char2, wxString char3);
+  //! Caches the information on how to draw big parenthesis for GetParenthesisDrawMode().
   drawMode m_parenthesisDrawMode;
   wxString m_workingdir;
   wxString m_maximaLocation;
