@@ -6538,6 +6538,8 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
 
   if (cell != NULL)
   {
+    m_cellPointers.m_selectionStart = NULL;
+    m_cellPointers.m_selectionEnd = NULL;
     cell->ActivateCursor();
     if (!m_redrawRequested) m_caretTimer.Stop();
   }
