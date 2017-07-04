@@ -3666,7 +3666,7 @@ void EditorCell::StyleTextCode()
         int pos;
         while((pos = token.Find(wxT('\n'))) != wxNOT_FOUND)
         {
-          wxString line = token.Left(pos - 1);
+          wxString line = token.Left(pos);
           m_styledText.push_back(StyledText(TS_CODE_STRING, line));
           m_styledText.push_back(wxString(token[pos]));
           token = token.Right(token.length()-pos-1);
