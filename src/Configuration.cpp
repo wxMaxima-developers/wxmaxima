@@ -256,14 +256,14 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
   
   wxBitmap bmp2(width2,height2);
   wxMemoryDC dc2(bmp2);
-  dc1.SetFont(font);
+  dc2.SetFont(font);
   dc2.SelectObject(bmp2);
   dc2.Clear();
   dc2.DrawText(char2,wxPoint(0,0));
   
   wxBitmap bmp3(width3,height3);
   wxMemoryDC dc3(bmp3);
-  dc1.SetFont(font);
+  dc3.SetFont(font);
   dc3.SelectObject(bmp3);
   dc3.Clear();
   dc3.DrawText(char3,wxPoint(0,0));
