@@ -4308,16 +4308,16 @@ msgstr "Fonksiyon Şablonunu Göster"
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:495
 #, fuzzy
 msgid "Show labels:"
-msgstr "Göster &Değişken"
+msgstr "Etiketi göster"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:240
 msgid "Show long expressions in wxMaxima document."
-msgstr "wxMaxima Belgesinde Uzun İfadeleri Göster"
+msgstr "wxMaxima Belgesinde Uzun İfadeleri Göster."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:462
 #, fuzzy
 msgid "Show long expressions:"
-msgstr "Uzun İfadeleri Göster"
+msgstr "Uzun İfadeleri Göster:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3946
 msgid "Show the definition of function:"
@@ -4507,7 +4507,7 @@ msgstr "Animasyonu Başlat"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:787
 msgid "Start a new maxima for each re-evaluation"
-msgstr ""
+msgstr "Her tekrar değerlendirme için yeni bir maxima başlat"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:189
 msgid "Start or Stop animation"
@@ -4523,7 +4523,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:257
 msgid "Start searching while the phrase to search for is still being typed."
-msgstr ""
+msgstr "Aramak istediğiniz ifade yazmaya devam ederken aramayı başlat"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:301
 msgid "Starting Maxima process failed"
@@ -4609,7 +4609,7 @@ msgstr "Toplam işareti"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:383
 msgid "Symbols"
-msgstr ""
+msgstr "Semboller"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:529
 msgid "Symbols\tAlt+Shift+Y"
@@ -4620,6 +4620,8 @@ msgid ""
 "Symbols that are entered or copied here will appear in the symbols sidebar "
 "so they can be entered into the worksheet easily."
 msgstr ""
+"Buraya girilen veya kopyalanan simgeler simgeler kenar çubuğunda görünür"
+"ve çalışma sayfasına kolayca girilebilirler."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5118
 msgid "System info"
@@ -4644,7 +4646,7 @@ msgstr "Taylor Serileri:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:578
 msgid "TeX, interpreted by MathJaX"
-msgstr ""
+msgstr "TeX MathJaX tarafından yorumlendı"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4604
 msgid "Tellrat"
@@ -4685,23 +4687,27 @@ msgid ""
 "    ohm:U=R*I;\n"
 "    r_parallel:R=R_1*R_2/(R_1+R_2);\n"
 "    result:at(ohm,r_parallel);"
-msgstr ""
+msgstr "\"at\" fonksiyonu bir eşitliği diğer bir eşitliğin içinde tanımlamayı sağlar:\n"
+"\n"
+"    ohm:U=R*I;\n"
+"    r_parallel:R=R_1*R_2/(R_1+R_2);\n"
+"    result:at(ohm,r_parallel);"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2228
 msgid ""
 "The .xml file doesn't seem to be valid xml or isn't a content.xml extracted "
 "from a .wxmx zip archive"
-msgstr ""
+msgstr ".xml dosyası geçerli değil ya da .xml olarak çıkarılan bir içerik değil. "
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:205
 msgid "The URL MathJaX.js should be downloaded from by our HTML export."
-msgstr ""
+msgstr "MathJaX URL ' si bizim HTML Çıkarttan indirilmeli"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:224
 msgid ""
 "The [] or the part() command tried to access a list or matrix element that "
 "doesn't exist."
-msgstr ""
+msgstr "[] ya da part() komutu varolmayan bir liste yada matris elemanına ulaşmaya çalıştı."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:216
 msgid ""
@@ -4729,15 +4735,15 @@ msgstr "LaTeX belge sınıfı bizim belgelerimizi kullanmak için yönlendirilir
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:718
 msgid "The half of the equation that is to the left of the \"=\""
-msgstr ""
+msgstr "Denklemin \"=\" işaretinin solunda kalan yarısı"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:721
 msgid "The half of the equation that is to the right of the \"=\""
-msgstr ""
+msgstr "Denklemin \"=\" işaretinin sağında kalan yarısı"
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:43
 msgid "The key combination Shift+Space results in a non-breakable space."
-msgstr ""
+msgstr "Shift+ boşluk a basıldığında bölünemeyen boşluk elde edilir."
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:336
 msgid ""
@@ -4753,23 +4759,26 @@ msgstr ""
 msgid ""
 "The load() command of Maxima versions >5.38 is able to load .wxm files as "
 "library of maxima's commands."
-msgstr ""
+msgstr "5.38 den yukarı Maxima versiyonları .wxm dosyalarını"
+"maxima komutlarının kütüphanesi olarak yükler"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:188
 msgid ""
 "The maximum number of displayed digits can be changed in the configuration "
 "dialogue"
-msgstr ""
+msgstr "En fazla görüntülenen basamak sayısı Yapılandırma sekmesinde değiştirilebilir"
+"sekme"
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:1032
 msgid ""
-"The maximum size of a expression wxMaxima is allowed to be displayedcan be "
+"The maximum size of a expression wxMaxima is allowed to be displayed can be "
 "changed in the configuration dialogue."
-msgstr ""
+msgstr "WxMaxima'da görüntülenecek maksimum ifade boyutu "
+"Yapılandırma sekmesinde değiştirilebilir.."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:256
 msgid "The number of recently opened files that is to be remembered."
-msgstr ""
+msgstr "Hatırlanmak en son açılan dosya sayısı."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:948
 msgid "The offline manual of maxima"
@@ -4786,11 +4795,11 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:119
 msgid "The result was indefinite."
-msgstr ""
+msgstr "Sonuç belirsiz."
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:116
 msgid "The result was undefined."
-msgstr ""
+msgstr "Sonuç tanımsız."
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:40
 msgid ""
@@ -5064,31 +5073,31 @@ msgstr "Klasörlenmiş bütün kısımları Klasörden Çıkar"
 
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:254
 msgid "Unhide"
-msgstr ""
+msgstr "Gizleme!"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1217
 msgid "Unhide Part"
-msgstr ""
+msgstr "Bölümü gizleme!"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1225
 #, fuzzy
 msgid "Unhide Section"
-msgstr "Kısım"
+msgstr "Kısım'ı gizleme!"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1235
 #, fuzzy
 msgid "Unhide Subsection"
-msgstr "Alt Kısım"
+msgstr "Alt Kısmı gizleme!"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1245
 #, fuzzy
 msgid "Unhide Subsubsection"
-msgstr "Alt+alt Kısım"
+msgstr "Alt+alt Kısmı gizleme!"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1253
 #, fuzzy
 msgid "Unhide contents"
-msgstr "Yunanca Sabitler"
+msgstr "İçeriği gizleme!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5120
 msgid "Unicode Support"
@@ -5104,7 +5113,7 @@ msgstr "Sonlandırılmamış dizi"
 
 #: /home/gunter/src/wxmaxima/src/FindReplacePane.cpp:83
 msgid "Up"
-msgstr ""
+msgstr "Yukarı"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6861
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6868
@@ -5132,7 +5141,7 @@ msgstr "Çizim kalitesini arttırmak için cairo kullan."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:252
 msgid "Use centered dot and Minus, not Star and Hyphen"
-msgstr ""
+msgstr "Ortalanmış nokta ve eksiyi kullan Yıldız ve kısa çizgiyi değil"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:522
 msgid "Use centered dot character for multiplication"
@@ -5146,7 +5155,8 @@ msgstr "jsMath Yazı tipini kullan"
 msgid ""
 "Use the \"partial derivative\" symbol to represent the fraction that "
 "represents a diff() when exporting LaTeX"
-msgstr ""
+msgstr "LaTeX olarak çıkarım yaparken bir diff() kesirinde "
+"\" kısmi türev\" işaretini kullan."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:828
 msgid "User-defined labels"
@@ -5214,7 +5224,7 @@ msgstr "Görünüm"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:704
 msgid "Warn if an inactive window is idle"
-msgstr ""
+msgstr "Etkin olmayan bir pencere boşta kalırsa uyar."
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:957
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2204
@@ -5259,7 +5269,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7387
 msgid "Wrapped search"
-msgstr ""
+msgstr "Kaydırlılan arama"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5123
 msgid "Written by"
@@ -5432,7 +5442,7 @@ msgstr "orkide"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:754
 msgid "choose a lisp maxima was compiled with"
-msgstr ""
+msgstr "maximaya ygun bir lisp seçin"
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:64
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:388
@@ -5683,11 +5693,11 @@ msgstr "theta"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1532
 msgid "to the power of 2"
-msgstr ""
+msgstr "2 üssü"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1534
 msgid "to the power of 3"
-msgstr ""
+msgstr "3 üssü"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1559
 msgid "union"
@@ -6093,10 +6103,10 @@ msgstr "zeta"
 #~ "wxMaxima'dan çık ve değişiklikleri uygulama ? "
 
 #~ msgid "Edit input"
-#~ msgstr "GİRDİyi Düzenle- "
+#~ msgstr "Girdi'yi Düzenle- "
 
 #~ msgid "Edit selected input"
-#~ msgstr "Seçilen GİRDİyi Düzenle"
+#~ msgstr "Seçilen Girdi'yi Düzenle"
 
 #~ msgid "Edit text"
 #~ msgstr "Metin Düzenle-"
@@ -6105,7 +6115,7 @@ msgstr "zeta"
 #~ msgstr "Komut gir"
 
 #~ msgid "Error %d"
-#~ msgstr "HATA %d"
+#~ msgstr "Hata %d"
 
 #~ msgid "Export to HTML file"
 #~ msgstr "HTML dosyasına Çıkart "
@@ -6130,13 +6140,13 @@ msgstr "zeta"
 #~ msgstr "Fonksiyonlar ve Makrolar"
 
 #~ msgid "Go to input\tCtrl+Shift+D"
-#~ msgstr "GİRDİye GİT\tCtrl+Shift+D"
+#~ msgstr "Girdi'ye Git\tCtrl+Shift+D"
 
 #~ msgid "Go to input\tF4"
-#~ msgstr "GİRDİye GİT-\tF4"
+#~ msgstr "Girdi'ye Git-\tF4"
 
 #~ msgid "Go to output window\tF3"
-#~ msgstr "ÇIKTI penceresine GİT \tF3"
+#~ msgstr "Çıktı penceresine Git \tF3"
 
 #~ msgid "HTML/Text Cells: Export all linebreaks"
 #~ msgstr "HTML/Metin Hücreleri: Bütün satır kesmelerini çıkarım yap"
