@@ -158,7 +158,7 @@ Configuration::drawMode Configuration::GetParenthesisDrawMode()
 {
   if(m_parenthesisDrawMode == unknown)
   {
-    m_parenthesisDrawMode = ascii;
+    m_parenthesisDrawMode = handdrawn;
     wxFont font = GetDC().GetFont();
     if (CharsExistInFont(font,
                          wxT(PAREN_OPEN_TOP_UNICODE),
