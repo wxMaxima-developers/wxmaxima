@@ -115,10 +115,8 @@ void ParenCell::SetFont(int fontsize)
   double scale = configuration->GetScale();
 
   wxString fontName;
-  wxFontStyle fontStyle;
   wxFontWeight fontWeight;
   wxFontEncoding fontEncoding;
-  bool underlined = configuration->IsUnderlined(TS_FUNCTION);
 
   // Ensure a sane minimum font size
   if (fontsize < 4)
@@ -148,7 +146,6 @@ void ParenCell::SetFont(int fontsize)
   default:
     fontName = configuration->GetFontName(TS_FUNCTION);
   }
-  fontStyle = configuration->IsItalic(TS_FUNCTION);
   fontWeight = configuration->IsBold(TS_FUNCTION);
   fontName = configuration->GetFontName(TS_FUNCTION);
 
@@ -156,16 +153,16 @@ void ParenCell::SetFont(int fontsize)
   font.SetFamily(wxFONTFAMILY_MODERN);
   font.SetFaceName(fontName);
   font.SetEncoding(fontEncoding);
-  font.SetStyle(fontStyle);
+  font.SetStyle(wxFONTSTYLE_NORMAL);
   font.SetWeight(fontWeight);
-  font.SetUnderlined(underlined);
+  font.SetUnderlined(false);
   if (!font.IsOk())
   {
     font.SetFamily(wxFONTFAMILY_MODERN);
     font.SetEncoding(fontEncoding);
-    font.SetStyle(fontStyle);
+    font.SetStyle(wxFONTSTYLE_NORMAL);
     font.SetWeight(fontWeight);
-    font.SetUnderlined(underlined);
+    font.SetUnderlined(false);
   }
 
   if (!font.IsOk())
@@ -215,7 +212,8 @@ void ParenCell::RecalculateWidths(int fontsize)
       SetFont(fontsize);
       int signWidth1,signWidth2,signWidth3,descent,leading;
       dc.GetTextExtent(wxT(PAREN_OPEN_TOP_UNICODE),    &signWidth1, &m_signTopHeight, &descent, &leading);
-      m_signTopHeight -= descent + 1;
+//      m_signTopHeight -= descent + 1;
+      std::cerr<<descent<<" "<<leading<<"\n";
       dc.GetTextExtent(wxT(PAREN_OPEN_EXTEND_UNICODE), &signWidth2, &m_extendHeight, &descent, &leading);
       m_extendHeight -= descent + 1;
       dc.GetTextExtent(wxT(PAREN_OPEN_BOTTOM_UNICODE), &signWidth3, &m_signBotHeight, &descent, &leading);
