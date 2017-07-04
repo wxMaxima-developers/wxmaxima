@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-02 06:45+0200\n"
-"PO-Revision-Date: 2017-06-26 19:49+0200\n"
+"PO-Revision-Date: 2017-07-04 07:49+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -435,6 +435,8 @@ msgid ""
 "Often used by solve() and algsys(), if there is an infinite number of "
 "results."
 msgstr ""
+"Eine Variable, die mit einer beliebigen Zahl gefüllt werden kann.\n"
+"Wird von solve() und algsys() verwendet, falls es unendlich viele Resultate gibt."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:713
 msgid "A&t Value..."
@@ -547,7 +549,7 @@ msgstr "Alpha"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:173
 msgid "An integration constant."
-msgstr ""
+msgstr "Eine Integrationskonstante."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4479
 msgid "Apply"
@@ -1144,9 +1146,8 @@ msgid "Completely stop maxima and restart it"
 msgstr "Vollständiges Beenden und Neustart von Maxima"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:131
-#, fuzzy
 msgid "Complex infinity."
-msgstr "&Komplexe Ausdrücke"
+msgstr "&Komplex unendlich."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:812
 msgid "Compute continued fraction of a value"
@@ -1634,7 +1635,6 @@ msgid "Eigen&values"
 msgstr "Eigen&werte"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:111
-#, fuzzy
 msgid ""
 "Either negative or zero.\n"
 "A possible result of sign()."
@@ -2630,11 +2630,11 @@ msgstr "Suche während des Tippens"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:122
 msgid "Infinitesimal above zero."
-msgstr ""
+msgstr "Eine positive Null."
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:125
 msgid "Infinitesimal below zero."
-msgstr ""
+msgstr "Eine negative Null."
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:211
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:221
@@ -3249,9 +3249,8 @@ msgid "Maxima version: "
 msgstr "Maxima Version: "
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:830
-#, fuzzy
 msgid "Maxima warnings"
-msgstr "Maxima Eingabe"
+msgstr "Warnungen von Maxima"
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:38
 msgid ""
@@ -3506,6 +3505,10 @@ msgid ""
 "The info that numbers have automatically been converted can be suppressed by "
 "setting ratprint to false."
 msgstr ""
+"Computer verwenden meist Fließkommazahlen: Dank dediziertem Fließkomma-Rechenwerk kann mit Fließkommazahlen sehr schnell gerechnet werden und Fließkommazahlen sind auf viele Stellen hinter dem Komma genau.\n"
+"Allerdings fügt die Arbeit mit Fließkommazahlen in einige sehr harmlos klingende Zahlen einen kleinen Fehler ein: 0.1 wird beispielsweise als 3602879701896397/36028797018963968 ausgedrückt.\n"
+"Die Mathematik basiert nun darauf, dass sich exakt gleich große Zahlen gegenseitig aus einer Glechung kürzen, was bedeutet, dass auch kleine Fehler sich erstaunlich schnell aufaddieren können (Siehe Wilkinson's und Rump's Polynome). Maxima nutzt daher in Situationen, in denen dies wahrscheinlich ist, rat(), um Fließkommazahlen in echte Brücke zu konvertieren, wie 1/10 oder sqrt(2)/2.\n"
+"Die Warnung von rat() tritt nicht auf, wenn von Vornherein exakte Zahlen verwendet werden (z.B. 1/10 statt 0.1). Sie kann zudem unterdrückt werden, indem ratprint auf false gesetzt wird."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:228
 msgid ""
@@ -4915,11 +4918,11 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:119
 msgid "The result was indefinite."
-msgstr ""
+msgstr "Das Resultat war unbestimmt."
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:116
 msgid "The result was undefined."
-msgstr ""
+msgstr "Das Resultat war undefiniert."
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:40
 msgid ""
