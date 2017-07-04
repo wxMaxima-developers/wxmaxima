@@ -3375,7 +3375,7 @@ wxArrayString EditorCell::StringToTokens(wxString text)
         ++it;
     }
 
-    // Find operators that starts at the current position
+    // Find operators that start at the current position
     else if (operators.Find(Ch) != wxNOT_FOUND)
     {
       if (token != wxEmptyString)
@@ -3438,7 +3438,15 @@ wxArrayString EditorCell::StringToTokens(wxString text)
         Ch = *it;
         token += Ch;
         ++it;
-        if(Ch == wxT('\"'))
+        if(Ch == wxT('\\'))
+        {
+          if(it < text.end())
+          {
+            token += *it;
+            ++it;
+          }
+        }
+        else if(Ch == wxT('\"'))
           break;
       } 
       retval.Add(token);
