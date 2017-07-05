@@ -196,16 +196,20 @@ Configuration::drawMode Configuration::GetParenthesisDrawMode()
 
 bool Configuration::IsEqual(wxBitmap bitmap1, wxBitmap bitmap2)
 {
-  if (bitmap1.GetSize()!=bitmap2.GetSize())
+  if (bitmap1.GetSize() != bitmap2.GetSize())
     return false;
 
   wxImage img1=bitmap1.ConvertToImage();
   wxImage img2=bitmap2.ConvertToImage();
-  int bytes = img1.GetWidth()*img1.GetHeight();
+  int bytes = img1.GetWidth()*img1.GetHeight()*3;
+
+  img1.SaveFile("img1.png",wxBITMAP_TYPE_PNG);
+  img2.SaveFile("img2.png",wxBITMAP_TYPE_PNG);
   if(bytes < 0)
     return false;
 
-  return(memcmp(img1.GetData(),img2.GetData(),bytes));
+  bool equal = (memcmp(img1.GetData(),img2.GetData(),bytes) == 0);
+  return equal;
 }
 
 void Configuration::SetZoomFactor(double newzoom)
@@ -268,10 +272,10 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
   dc3.Clear();
   dc3.DrawText(char3,wxPoint(0,0));
 
-  if(IsEqual(bmp1,bmp2) && IsEqual(bmp2,bmp3) && IsEqual(bmp1,bmp3))
-    return true; 
+  if(IsEqual(bmp1,bmp2) || IsEqual(bmp2,bmp3) || IsEqual(bmp1,bmp3))
+    return false; 
   else
-    return false;
+    return true;
 }
 
 wxString Configuration::GetFontName(int type)
