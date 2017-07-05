@@ -259,6 +259,27 @@ void ParenCell::RecalculateHeight(int fontsize)
     m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
   }
+
+  if(m_innerCell)
+  {
+    m_innerCell->m_currentPoint = m_currentPoint;
+    switch(m_bigParenType)
+    {
+    case Configuration::ascii:
+      m_innerCell->m_currentPoint.x += m_open->GetWidth();
+      break;
+    case Configuration::assembled_unicode:
+    case Configuration::assembled_unicode_fallbackfont:
+    case Configuration::assembled_unicode_fallbackfont2:
+      m_innerCell->m_currentPoint.x += m_signWidth;
+      // Center the contents of the parenthesis vertically.
+      m_innerCell->m_currentPoint.y += m_center - m_signHeight / 2;
+      
+      break;
+    default:
+      m_innerCell->m_currentPoint.x = m_currentPoint.x + SCALE_PX(6, scale) + (*m_configuration)->GetDefaultLineWidth();
+    }
+  }
 }
 
 void ParenCell::Draw(wxPoint point, int fontsize)
@@ -271,7 +292,6 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     wxDC &dc = configuration->GetDC();
     wxPoint in(point);
 
-    in.x = point.x;
     SetForeground();
     SetFont(m_parenFontSize);
     
