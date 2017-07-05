@@ -203,8 +203,6 @@ bool Configuration::IsEqual(wxBitmap bitmap1, wxBitmap bitmap2)
   wxImage img2=bitmap2.ConvertToImage();
   int bytes = img1.GetWidth()*img1.GetHeight()*3;
 
-  img1.SaveFile("img1.png",wxBITMAP_TYPE_PNG);
-  img2.SaveFile("img2.png",wxBITMAP_TYPE_PNG);
   if(bytes < 0)
     return false;
 
