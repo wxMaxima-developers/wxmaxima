@@ -3707,9 +3707,11 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
 void MathCtrl::ClearNotification()
 {
   if(m_notificationMessage != NULL)
+  {
     m_notificationMessage->Close();
-  delete m_notificationMessage;
-  m_notificationMessage = NULL;
+    delete m_notificationMessage;
+    m_notificationMessage = NULL;
+  }
 }
 
 void MathCtrl::SetNotification(wxString message, int flags)
