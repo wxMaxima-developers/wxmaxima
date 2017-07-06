@@ -154,12 +154,70 @@ void Configuration::ReadConfig()
   ReadStyle();
 }
 
+wxFont Configuration::GetFont(int textStyle, int fontSize)
+{
+  wxString fontName;
+  wxFontStyle fontStyle;
+  wxFontWeight fontWeight;
+  wxFontEncoding fontEncoding;
+  bool underlined = IsUnderlined(textStyle);
+  
+  if ((textStyle == TS_TITLE) ||
+      (textStyle == TS_SECTION) ||
+      (textStyle == TS_SUBSECTION) ||
+      (textStyle == TS_SUBSUBSECTION))
+  {
+    // While titles and section names may be underlined the section number
+    // isn't. Else the space between section number and section title
+    // would look weird.
+    underlined = false;
+  }
+
+  // Ensure a sane minimum font size
+  if (fontSize < 4)
+    fontSize = 4;
+  
+  
+  // The font size scales with the worksheet
+  int fontSize1 = (int) (((double) fontSize) * GetScale() + 0.5);
+  
+  fontName = GetFontName(textStyle);
+  fontStyle = IsItalic(textStyle);
+  fontWeight = IsBold(textStyle);
+  
+  fontEncoding = GetFontEncoding();
+  
+  wxFont font;
+  font.SetFamily(wxFONTFAMILY_MODERN);
+  font.SetFaceName(fontName);
+  font.SetEncoding(fontEncoding);
+  font.SetStyle(fontStyle);
+  font.SetWeight(fontWeight);
+  font.SetUnderlined(underlined);
+  font.SetEncoding(fontEncoding);
+  if (!font.IsOk())
+  {
+    font.SetFamily(wxFONTFAMILY_MODERN);
+    font.SetEncoding(fontEncoding);
+    font.SetStyle(fontStyle);
+    font.SetWeight(fontWeight);
+    font.SetUnderlined(underlined);
+  }
+  
+  if (!font.IsOk())
+    font = *wxNORMAL_FONT;
+  
+  font.SetPointSize(fontSize1);
+
+  return font;
+}
+
 Configuration::drawMode Configuration::GetParenthesisDrawMode()
 {
   if(m_parenthesisDrawMode == unknown)
   {
     m_parenthesisDrawMode = handdrawn;
-    wxFont font = GetDC().GetFont();
+    wxFont font = GetFont(TS_FUNCTION,20);
     if (CharsExistInFont(font,
                          wxT(PAREN_OPEN_TOP_UNICODE),
                          wxT(PAREN_OPEN_EXTEND_UNICODE),
@@ -187,7 +245,7 @@ Configuration::drawMode Configuration::GetParenthesisDrawMode()
                          wxT(PAREN_OPEN_BOTTOM_UNICODE))
       )
     {
-      m_parenthesisDrawMode = assembled_unicode_fallbackfont;
+      m_parenthesisDrawMode = assembled_unicode_fallbackfont2;
       return m_parenthesisDrawMode;
     }
   }

@@ -488,13 +488,6 @@ void TextCell::SetFont(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
   wxDC &dc = configuration->GetDC();
-  double scale = configuration->GetScale();
-
-  wxString fontName;
-  wxFontStyle fontStyle;
-  wxFontWeight fontWeight;
-  wxFontEncoding fontEncoding;
-  bool underlined = configuration->IsUnderlined(m_textStyle);
 
   if ((m_textStyle == TS_TITLE) ||
       (m_textStyle == TS_SECTION) ||
@@ -503,11 +496,6 @@ void TextCell::SetFont(int fontsize)
   {
     // Titles have a fixed font size 
     m_fontSize = configuration->GetFontSize(m_textStyle);
-
-    // While titles and section names may be underlined the section number
-    // isn't. Else the space between section number and section title
-    // would look weird.
-    underlined = false;
   }
   else
   {
@@ -516,52 +504,25 @@ void TextCell::SetFont(int fontsize)
     m_fontSize = fontsize;
   }
 
-  // Ensure a sane minimum font size
-  if (fontsize < 4)
-    fontsize = 4;
-
-  // The font size scales with the worksheet
-  int fontsize1 = (int) (((double) m_fontSize) * scale + 0.5);
-
-  fontName = configuration->GetFontName(m_textStyle);
-  fontStyle = configuration->IsItalic(m_textStyle);
-  fontWeight = configuration->IsBold(m_textStyle);
-
-  fontEncoding = configuration->GetFontEncoding();
-
+  wxFont font = configuration->GetFont(m_textStyle,fontsize);
+  
   // Use jsMath
   if (m_altJs && configuration->CheckTeXFonts())
-    fontName = m_texFontname;
-    // We have an alternative symbol
-  else if (m_alt)
-    fontName = m_fontname != wxEmptyString ?
-               m_fontname : configuration->GetFontName(m_textStyle);
-
-  wxFont font;
-  font.SetFamily(wxFONTFAMILY_MODERN);
-  font.SetFaceName(fontName);
-  font.SetEncoding(fontEncoding);
-  font.SetStyle(fontStyle);
-  font.SetWeight(fontWeight);
-  font.SetUnderlined(underlined);
-  font.SetEncoding(fontEncoding);
+    font.SetFaceName(m_texFontname);
+  
   if (!font.IsOk())
   {
     font.SetFamily(wxFONTFAMILY_MODERN);
-    font.SetEncoding(fontEncoding);
-    font.SetStyle(fontStyle);
-    font.SetWeight(fontWeight);
-    font.SetUnderlined(underlined);
+    font.SetFaceName(wxEmptyString);
   }
-
+  
   if (!font.IsOk())
     font = *wxNORMAL_FONT;
-
-  font.SetPointSize(fontsize1);
+  
   wxASSERT_MSG(font.IsOk(),
                _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
   dc.SetFont(font);
-
+  
   // A fallback if we have been completely unable to set a working font
   if (!dc.GetFont().IsOk())
   {

@@ -43,7 +43,6 @@ ParenCell::ParenCell(MathCell *parent, Configuration **config, CellPointers *cel
   m_signHeight = 50;
   m_signBotHeight = 12;
   m_signWidth = 12;
-  m_parenFontSize = 12;
   m_bigParenType = Configuration::ascii;
   m_innerCell = NULL;
   m_print = true;
@@ -112,63 +111,43 @@ void ParenCell::SetFont(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
   wxDC &dc = configuration->GetDC();
-  double scale = configuration->GetScale();
 
-  wxString fontName;
-  wxFontWeight fontWeight;
-  wxFontEncoding fontEncoding;
-
-  // Ensure a sane minimum font size
-  if (fontsize < 4)
-    fontsize = 4;
-  m_parenFontSize = fontsize;
+  wxFont font;
+  if(m_bigParenType == Configuration::ascii)
+    font = configuration->GetFont(TS_FUNCTION, fontsize);
+  else
+    font = configuration->GetFont(TS_FUNCTION, configuration->GetMathFontSize());
   
-  // The font size scales with the worksheet
-  int fontsize1 = (int) (((double) fontsize) * scale + 0.5);
-
-  fontEncoding = configuration->GetFontEncoding();
-
   switch(m_bigParenType)
   {
   case Configuration::ascii:
   case Configuration::assembled_unicode:
-    fontName = configuration->GetFontName(TS_FUNCTION);
     break;
 
   case Configuration::assembled_unicode_fallbackfont:
-    fontName = wxT("Linux Libertine");
+    font.SetFaceName(wxT("Linux Libertine"));
     break;
 
   case Configuration::assembled_unicode_fallbackfont2:
-    fontName = wxT("Linux Libertine O");
+    font.SetFaceName(wxT("Linux Libertine O"));
     break;
 
   default:
-    fontName = configuration->GetFontName(TS_FUNCTION);
+    break;
   }
-  fontWeight = configuration->IsBold(TS_FUNCTION);
-  fontName = configuration->GetFontName(TS_FUNCTION);
 
-  wxFont font;
-  font.SetFamily(wxFONTFAMILY_MODERN);
-  font.SetFaceName(fontName);
-  font.SetEncoding(fontEncoding);
   font.SetStyle(wxFONTSTYLE_NORMAL);
-  font.SetWeight(fontWeight);
   font.SetUnderlined(false);
   if (!font.IsOk())
   {
     font.SetFamily(wxFONTFAMILY_MODERN);
-    font.SetEncoding(fontEncoding);
     font.SetStyle(wxFONTSTYLE_NORMAL);
-    font.SetWeight(fontWeight);
+    font.SetFaceName(wxEmptyString);
     font.SetUnderlined(false);
   }
 
   if (!font.IsOk())
     font = *wxNORMAL_FONT;
-
-  font.SetPointSize(fontsize1);
 
   // A fallback if we have been completely unable to set a working font
   if (!dc.GetFont().IsOk())
@@ -198,7 +177,8 @@ void ParenCell::RecalculateWidths(int fontsize)
   // to bother which exotic method we need to use for drawing nice parenthesis.
   if (fontsize1*3 > size)
   {
-    m_bigParenType = Configuration::ascii;
+    if(configuration->GetParenthesisDrawMode() != Configuration::handdrawn)
+      m_bigParenType = Configuration::ascii;
     m_open->RecalculateWidthsList(fontsize);
     m_close->RecalculateWidthsList(fontsize);
     m_signWidth = m_open->GetWidth();
@@ -293,7 +273,7 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     wxPoint in(point);
 
     SetForeground();
-    SetFont(m_parenFontSize);
+    SetFont(configuration->GetMathFontSize());
     
     switch(m_bigParenType)
     {            

@@ -111,7 +111,7 @@ protected:
   int m_numberOfExtensions;
   int m_charWidth, m_charHeight;
   int m_charWidth1, m_charHeight1;
-  int m_parenFontSize, m_signWidth, m_signHeight, m_signTopHeight, m_signBotHeight, m_extendHeight;
+  int m_signWidth, m_signHeight, m_signTopHeight, m_signBotHeight, m_extendHeight;
 
 private:
   CellPointers *m_cellPointers;

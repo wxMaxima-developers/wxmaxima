@@ -528,6 +528,13 @@ public:
   wxString GetDefaultMathCellToolTip(){return m_defaultToolTip;}
   //! Which way do we want to draw parenthesis?
   drawMode GetParenthesisDrawMode();
+  /*! Get the font for a given text style
+
+    \param textStyle The text style to get the font for
+    \param fontSize Only relevant for math cells: Super- and subscripts can have different
+    font styles than the rest.
+   */
+  wxFont GetFont(int textStyle, int fontSize);
 
 private:
   //! A replacement for the non-existing "==" operator for wxBitmaps.
