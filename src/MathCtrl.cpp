@@ -29,6 +29,7 @@
 
 
 #include "wxMaxima.h"
+#include "SVGout.h"
 #include <wx/richtext/richtextbuffer.h>
 #include <wx/tooltip.h>
 #include "wxMaximaFrame.h"
@@ -4077,6 +4078,18 @@ bool MathCtrl::CopyBitmap()
   bmp.SetData(tmp);
 
   bool retval = bmp.ToClipboard();
+
+  return retval;
+}
+
+bool MathCtrl::CopySVG()
+{
+  MathCell *tmp = CopySelection();
+
+  Svgout svg(&m_configuration);
+  svg.SetData(tmp);
+
+  bool retval = svg.ToClipboard();
 
   return retval;
 }

@@ -483,11 +483,12 @@ void wxMaximaFrame::SetupMenu()
   m_EditMenu->Append(MathCtrl::popid_copy_mathml, _("Copy as MathML"),
                      _("Copy selection from document in a MathML format many word processors can display as 2d equation"),
                      wxITEM_NORMAL);
-#if defined __WXMSW__ || defined __WXMAC__
   m_EditMenu->Append(menu_copy_as_bitmap, _("Copy as Image"),
                      _("Copy selection from document as an image"),
                      wxITEM_NORMAL);
-#endif
+  m_EditMenu->Append(menu_copy_as_svg, _("Copy as SVG"),
+                     _("Copy selection from document as an SVG image"),
+                     wxITEM_NORMAL);
   m_EditMenu->Append(menu_copy_as_rtf, _("Copy as RTF"),
                      _("Copy selection from document as rtf that a word processor might understand"),
                      wxITEM_NORMAL);

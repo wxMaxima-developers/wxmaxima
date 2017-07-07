@@ -527,6 +527,8 @@ public:
   //! Gets the default toolTip for new cells
   wxString GetDefaultMathCellToolTip(){return m_defaultToolTip;}
   //! Which way do we want to draw parenthesis?
+  void SetParenthesisDrawMode(drawMode mode){m_parenthesisDrawMode = mode;}
+
   drawMode GetParenthesisDrawMode();
   /*! Get the font for a given text style
 

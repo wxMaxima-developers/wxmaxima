@@ -1014,6 +1014,9 @@ public:
   //! Copy a bitmap of the current selection to the clipboard
   bool CopyBitmap();
 
+    //! Copy a svg of the current selection to the clipboard
+  bool CopySVG();
+
   //! Copy a rtf version of the current selection to the clipboard
   bool CopyRTF();
 

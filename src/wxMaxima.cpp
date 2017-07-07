@@ -2861,6 +2861,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &event)
   menubar->Enable(MathCtrl::popid_copy_mathml, m_console->CanCopy());
 #if defined __WXMSW__ || defined __WXMAC__
   menubar->Enable(menu_copy_as_bitmap, m_console->CanCopy());
+  menubar->Enable(menu_copy_as_svg, m_console->CanCopy());
 #endif
   menubar->Enable(menu_copy_as_rtf, m_console->CanCopy());
   menubar->Enable(menu_copy_to_file, m_console->CanCopy());
@@ -3716,6 +3717,10 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     case menu_copy_as_bitmap:
       if (m_console->CanCopy())
         m_console->CopyBitmap();
+      break;
+    case menu_copy_as_svg:
+      if (m_console->CanCopy())
+        m_console->CopySVG();
       break;
     case menu_copy_as_rtf:
       if (m_console->CanCopy())
@@ -7134,6 +7139,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(menu_fullscreen, wxMaxima::EditMenu)
                 EVT_MENU(ToolBar::tb_hideCode, wxMaxima::EditMenu)
                 EVT_MENU(menu_copy_as_bitmap, wxMaxima::EditMenu)
+                EVT_MENU(menu_copy_as_svg, wxMaxima::EditMenu)
                 EVT_MENU(menu_copy_as_rtf, wxMaxima::EditMenu)
                 EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)
                 EVT_MENU(menu_select_all, wxMaxima::EditMenu)
@@ -7169,6 +7175,7 @@ EVT_UPDATE_UI(MathCtrl::menu_zoom_in, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(MathCtrl::menu_zoom_out, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(wxID_PRINT, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_copy_as_bitmap, wxMaxima::UpdateMenus)
+EVT_UPDATE_UI(menu_copy_as_svg, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_copy_to_file, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_evaluate, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_evaluate_all, wxMaxima::UpdateMenus)

@@ -249,6 +249,7 @@ public:
     menu_zoom_200,
     menu_zoom_300,
     menu_copy_as_bitmap,
+    menu_copy_as_svg,
     menu_copy_as_rtf,
     menu_copy_to_file,
     menu_export_html,
