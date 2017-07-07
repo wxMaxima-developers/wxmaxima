@@ -4095,7 +4095,6 @@ bool MathCtrl::CopySVG()
 
   bool retval = svg.ToClipboard();
 
-  wxDELETE(tmp);  
   return retval;
 }
 

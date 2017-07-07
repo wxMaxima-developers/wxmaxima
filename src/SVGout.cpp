@@ -277,7 +277,6 @@ bool Svgout::ToClipboard()
 {
   if (wxTheClipboard->Open())
   {
-    Layout();
     wxString svgContents;
     wxFileInputStream str(m_filename);
     wxTextInputStream istrm(str);
