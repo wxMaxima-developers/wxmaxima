@@ -75,7 +75,7 @@ bool Svgout::Layout(long int maxSize)
   // of a big unicode parenthesis wasn't accurate enough in svg to be
   // usable. Also the probability was high that the right font wasn't
   // available in inkscape.
-  (*m_configuration)->SetParenthesisDrawMode(Configuration::handdrawn);
+//  (*m_configuration)->SetParenthesisDrawMode(Configuration::handdrawn);
   if (m_tree->GetType() != MC_TYPE_GROUP)
   {
     RecalculateWidths();
@@ -278,15 +278,18 @@ bool Svgout::ToClipboard()
   if (wxTheClipboard->Open())
   {
     wxString svgContents;
-    wxFileInputStream str(m_filename);
-    wxTextInputStream istrm(str);
-    
-    while (!str.Eof())
-      svgContents += istrm.ReadLine() + wxT("\n");
+    {
+      wxFileInputStream str(m_filename);
+      wxTextInputStream istrm(str);
+      
+      while (!str.Eof())
+        svgContents += istrm.ReadLine() + wxT("\n");
+    }
+    wxRemoveFile(m_filename);
+    m_filename = wxEmptyString;
     
     bool res = wxTheClipboard->SetData(new SVGDataObject(svgContents));
     wxTheClipboard->Close();
-    wxRemoveFile(m_filename);
     m_filename = wxEmptyString;
     return res;
   }
