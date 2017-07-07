@@ -37,9 +37,7 @@ private:
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis;
 public:
-  TextCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
-
-  TextCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxString text);
+  TextCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString);
 
   void MarkAsDeleted();
   

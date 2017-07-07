@@ -31,39 +31,18 @@
 #include "wx/config.h"
 #include "CellPointers.h"
 
-TextCell::TextCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
-{
-  m_cellPointers = cellPointers;
-  wxASSERT(m_unescapeRegEx.Compile(wxT("\\\\(.)")));
-  m_displayedDigits_old = -1;
-  m_text = m_userDefinedLabel = wxEmptyString;
-  m_displayedText = wxEmptyString;
-  m_fontSize = -1;
-  m_highlight = false;
-  m_altJs = m_alt = false;
-  m_height = -1;
-  m_labelWidth = -1;
-  m_labelHeight = -1;
-  m_lastCalculationFontSize = -1;
-  m_realCenter = m_center = -1;
-  m_fontSize = 12;
-  m_fontSizeLabel = 12;
-  m_dontEscapeOpeningParenthesis = false;
-  ResetSize();
-  m_initialToolTip = (*m_configuration)->GetDefaultMathCellToolTip();
-}
-
 TextCell::TextCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxString text) : MathCell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_displayedDigits_old = -1;
   m_height = -1;
+  wxASSERT(m_unescapeRegEx.Compile(wxT("\\\\(.)")));
   m_labelWidth = -1;
   m_labelHeight = -1;
   m_realCenter = m_center = -1;
   m_lastCalculationFontSize = -1;
-  m_fontSize = 12;
-  m_fontSizeLabel = 12;
+  m_fontSize = -1;
+  m_fontSizeLabel = -1;
   SetValue(text);
   m_highlight = false;
   m_dontEscapeOpeningParenthesis = false;
