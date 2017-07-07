@@ -2186,15 +2186,14 @@ bool EditorCell::FindMatchingQuotes()
     return false;
   }
 
-  if (pos > (long) m_text.Length() - 1)
-    pos = (long) m_text.Length() - 1;
-
-  if ((pos == (long) m_text.Length() - 1) ||
+  if(pos >= (long)m_text.Length())
+    pos = m_text.Length()-1;
+  if ((pos >= (long) m_text.Length() - 1)||
       (wxString(wxT("\"")).Find(m_text.GetChar(pos)) == -1))
   {
     pos--;
-    if ((pos < 0) ||
-        (wxString(wxT("\"")).Find(m_text.GetChar(pos)) == -1))
+    if (pos < 0 ||
+        wxString(wxT("\"")).Find(m_text.GetChar(pos)) == -1)
     {
       m_paren1 = m_paren2 = -1;
       return false;
@@ -2244,15 +2243,14 @@ void EditorCell::FindMatchingParens()
     return;
   }
 
-  if (m_paren2 > (long) m_text.Length() - 1)
-    m_paren2 = (long) m_text.Length() - 1;
-  
-  if ((m_paren2 == (long) m_text.Length() - 1) ||
+  if(m_paren2 >= (long)m_text.Length())
+    m_paren2 = m_text.Length() - 1;
+  if ((m_paren2 >= (long) m_text.Length() - 1)||
       (wxString(wxT("([{}])")).Find(m_text.GetChar(m_paren2)) == -1))
   {
     m_paren2--;
-    if ((m_paren2 < 0) ||
-        (wxString(wxT("([{}])")).Find(m_text.GetChar(m_paren2)) == -1))
+    if (m_paren2 < 0 ||
+        wxString(wxT("([{}])")).Find(m_text.GetChar(m_paren2)) == -1)
     {
       m_paren1 = m_paren2 = -1;
       return;
