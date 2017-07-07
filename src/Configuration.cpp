@@ -171,6 +171,9 @@ wxFont Configuration::GetFont(int textStyle, int fontSize)
     // isn't. Else the space between section number and section title
     // would look weird.
     underlined = false;
+
+    // Besides that these items have a fixed font size.
+    fontSize = GetFontSize(textStyle);
   }
 
   // Ensure a sane minimum font size
