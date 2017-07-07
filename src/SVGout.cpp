@@ -71,6 +71,10 @@ bool Svgout::Layout(long int maxSize)
 
   *m_configuration = new Configuration(*dc);
   (*m_configuration)->SetClientWidth(BM_FULL_WIDTH);
+  // The last time I tried it the vertical positioning of the elements
+  // of a big unicode parenthesis wasn't accurate enough in svg to be
+  // usable. Also the probability was high that the right font wasn't
+  // available in inkscape.
   (*m_configuration)->SetParenthesisDrawMode(Configuration::ascii);
   if (m_tree->GetType() != MC_TYPE_GROUP)
   {
