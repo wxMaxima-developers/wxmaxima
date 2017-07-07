@@ -1195,6 +1195,7 @@ wxString TextCell::ToRTF()
     text = wxT("(") + m_userDefinedLabel + wxT(")");
   
   text.Replace(wxT("-->"), wxT("\x2192"));
+  test.Replace(wxT("\xDCB6"), wxT(" "));
   if ((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
   {
     retval += wxString::Format(wxT("\\cf%i{"), (int) GetStyle());
