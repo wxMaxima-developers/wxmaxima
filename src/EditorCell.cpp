@@ -593,7 +593,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
 
   if (DrawThisCell(point) && !m_isHidden)
   {
-    dc.SetLogicalFunction(wxCOPY); // opaque (for everything except the caret)
+//    dc.SetLogicalFunction(wxCOPY); // opaque (for everything except the caret)
 
     // Need correct m_currentPoint before we call MathCell::Draw!
     //  m_currentPoint.x = point.x;

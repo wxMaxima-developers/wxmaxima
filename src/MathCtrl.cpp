@@ -310,7 +310,7 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
   PrepareDC(dcm);
   dcm.SetMapMode(wxMM_TEXT);
   dcm.SetBackgroundMode(wxTRANSPARENT);
-  dcm.SetLogicalFunction(wxCOPY);
+//  dcm.SetLogicalFunction(wxCOPY);
 
   m_configuration->SetContext(dcm);
   m_configuration->SetBounds(top, bottom);
