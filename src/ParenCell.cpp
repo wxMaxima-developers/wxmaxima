@@ -207,8 +207,6 @@ void ParenCell::RecalculateWidths(int fontsize)
       if(m_numberOfExtensions < 0)
         m_numberOfExtensions = 0;
       m_signHeight = m_signTopHeight + m_signBotHeight + m_extendHeight * m_numberOfExtensions;
-      m_height = MAX(m_signHeight,m_innerCell->GetMaxHeight()) + SCALE_PX(2, scale);
-      m_center = m_signHeight / 2;
     }
     else
       m_signWidth = SCALE_PX(6, configuration->GetScale()) + (*m_configuration)->GetDefaultLineWidth();
@@ -239,25 +237,31 @@ void ParenCell::RecalculateHeight(int fontsize)
     m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
   }
-
-  if(m_innerCell)
+  else
   {
-    m_innerCell->m_currentPoint = m_currentPoint;
-    switch(m_bigParenType)
+    if(m_innerCell)
     {
-    case Configuration::ascii:
-      m_innerCell->m_currentPoint.x += m_open->GetWidth();
-      break;
-    case Configuration::assembled_unicode:
-    case Configuration::assembled_unicode_fallbackfont:
-    case Configuration::assembled_unicode_fallbackfont2:
+      m_innerCell->m_currentPoint = m_currentPoint;
+      switch(m_bigParenType)
+      {
+      case Configuration::ascii:
+        m_signWidth = m_open->GetWidth();
+        m_signHeight = m_charHeight1;
+        break;
+      case Configuration::assembled_unicode:
+      case Configuration::assembled_unicode_fallbackfont:
+      case Configuration::assembled_unicode_fallbackfont2:
+        m_innerCell->m_currentPoint.x += m_signWidth;
+        // Center the contents of the parenthesis vertically.
+        //  m_innerCell->m_currentPoint.y += m_center - m_signHeight / 2;
+
+      default:
+        m_signWidth = SCALE_PX(6, scale) + (*m_configuration)->GetDefaultLineWidth();
+      } 
       m_innerCell->m_currentPoint.x += m_signWidth;
-      // Center the contents of the parenthesis vertically.
-      m_innerCell->m_currentPoint.y += m_center - m_signHeight / 2;
+      m_height = MAX(m_signHeight,m_innerCell->GetMaxHeight()) + SCALE_PX(2, scale);      
+      m_center = m_height / 2;
       
-      break;
-    default:
-      m_innerCell->m_currentPoint.x = m_currentPoint.x + SCALE_PX(6, scale) + (*m_configuration)->GetDefaultLineWidth();
     }
   }
 }
@@ -313,7 +317,7 @@ void ParenCell::Draw(wxPoint point, int fontsize)
       
       in.x += m_signWidth;
       // Center the contents of the parenthesis vertically.
-      in.y += (m_innerCell->GetCenter() - m_innerCell->GetMaxHeight() /2);
+      in.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
     }
     break;
     default:
@@ -459,7 +463,6 @@ bool ParenCell::BreakUp()
 
     m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
-
     return true;
   }
   return false;

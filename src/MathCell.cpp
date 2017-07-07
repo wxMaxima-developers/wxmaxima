@@ -223,7 +223,6 @@ int MathCell::GetMaxCenter()
  */
 int MathCell::GetMaxDrop()
 {
-
   if (m_maxDrop < 0)
   {
     MathCell *tmp = this;

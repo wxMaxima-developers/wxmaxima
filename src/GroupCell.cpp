@@ -2054,6 +2054,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
           wxString num = wxT(" ");
           num << section << wxT(" ");
           tmp->m_inputLabel->SetValue(num);
+          tmp->m_inputLabel->SetStyle(TS_SECTION);
         }
         break;
       case GC_TYPE_SUBSECTION:
@@ -2063,6 +2064,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
           wxString num = wxT("  ");
           num << section << wxT(".") << subsection << wxT(" ");
           tmp->m_inputLabel->SetValue(num);
+          tmp->m_inputLabel->SetStyle(TS_SUBSECTION);
         }
         break;
       case GC_TYPE_SUBSUBSECTION:
@@ -2071,6 +2073,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
           wxString num = wxT("  ");
           num << section << wxT(".") << subsection << wxT(".") << subsubsection << wxT(" ");
           tmp->m_inputLabel->SetValue(num);
+          tmp->m_inputLabel->SetStyle(TS_SUBSUBSECTION);
         }
         break;
       case GC_TYPE_IMAGE:
