@@ -5824,6 +5824,10 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       if (m_console->CanCopy())
         m_console->CopyBitmap();
       break;
+    case MathCtrl::popid_copy_svg:
+      if (m_console->CanCopy())
+        m_console->CopySVG();
+      break;
     case MathCtrl::popid_copy_rtf:
       if (m_console->CanCopy())
         m_console->CopyRTF();

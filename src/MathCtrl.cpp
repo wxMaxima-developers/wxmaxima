@@ -1055,6 +1055,8 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
                               wxITEM_NORMAL);
           popupMenu->Append(popid_copy_image, _("Copy as Image"),
                             wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_copy_svg, _("Copy as SVG"),
+                            wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_rtf, _("Copy as RTF"),
                             wxEmptyString, wxITEM_NORMAL);
           if (CanDeleteSelection())
@@ -1112,6 +1114,8 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
                             wxITEM_NORMAL);
 
           popupMenu->Append(popid_copy_image, _("Copy as Image"),
+                            wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_copy_svg, _("Copy as SVG"),
                             wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_rtf, _("Copy as RTF"),
                             wxEmptyString, wxITEM_NORMAL);

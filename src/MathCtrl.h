@@ -789,6 +789,7 @@ public:
     popid_comment_selection,
     popid_divide_cell,
     popid_copy_image,
+    popid_copy_svg,
     popid_copy_rtf,
     popid_delete,
     popid_simplify,
