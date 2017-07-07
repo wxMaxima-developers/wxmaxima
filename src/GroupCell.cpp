@@ -120,16 +120,14 @@ GroupCell::GroupCell(Configuration **config, int groupType, CellPointers *cellPo
       m_inputLabel->SetType(MC_TYPE_TEXT);
       editor = new EditorCell(this, m_configuration, m_cellPointers);
       editor->SetType(MC_TYPE_TEXT);
-      editor->SetValue(wxEmptyString);
       AppendInput(editor);
       break;
     default:
-      wxDELETE(editor);
       editor = NULL;
       break;
   }
 
-  if (editor != NULL)
+  if ((editor != NULL) && (initString != wxEmptyString))
     editor->SetValue(initString);
 
   // when creating an image cell, if a string is provided
