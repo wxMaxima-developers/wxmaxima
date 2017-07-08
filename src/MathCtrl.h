@@ -810,6 +810,7 @@ public:
     popid_copy_text,
     popid_copy_mathml,
     popid_image,
+    popid_svg,
     popid_animation_save,
     popid_animation_start,
     popid_evaluate,

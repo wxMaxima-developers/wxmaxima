@@ -45,7 +45,6 @@ Svgout::Svgout(Configuration **configuration, wxString filename, int scale)
   if (filename == wxEmptyString)
   {
     filename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
-    filename = wxT("/tmp/test.svg");
   }
   m_filename = filename;
 }
@@ -264,10 +263,9 @@ Svgout::SVGDataObject::SVGDataObject() : wxCustomDataObject(m_svgFormat)
 {
 }
 
-Svgout::SVGDataObject::SVGDataObject(wxString data) : wxCustomDataObject(m_svgFormat)
+Svgout::SVGDataObject::SVGDataObject(wxMemoryBuffer data) : wxCustomDataObject(m_svgFormat)
 {
-  m_databuf = data.utf8_str();
-  SetData(m_databuf.length(), m_databuf.data());
+  SetData(data.GetBufSize(), data.GetData());
 }
 
 
@@ -277,13 +275,19 @@ bool Svgout::ToClipboard()
 {
   if (wxTheClipboard->Open())
   {
-    wxString svgContents;
+    wxMemoryBuffer svgContents;
     {
+      char *data =(char *) malloc(8192);
+      if(data == NULL)
+        return false;
       wxFileInputStream str(m_filename);
-      wxTextInputStream istrm(str);
       
       while (!str.Eof())
-        svgContents += istrm.ReadLine() + wxT("\n");
+      {
+        str.Read(data,8192);
+        svgContents.AppendData(data,str.LastRead());
+      }
+      free(data);
     }
     wxRemoveFile(m_filename);
     m_filename = wxEmptyString;

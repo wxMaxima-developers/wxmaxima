@@ -76,14 +76,12 @@ protected:
   double GetRealWidth();
 
   
-  /*! An object that can be filled with MathML data for the clipboard
-
-    \todo Is there a way to make this object share its data with MathMLDataObject2?
+  /*! An object that can be filled with SVG data for the clipboard
    */
   class SVGDataObject : public wxCustomDataObject
   {
   public:
-    SVGDataObject(wxString data);
+    SVGDataObject(wxMemoryBuffer data);
 
     SVGDataObject();
 
