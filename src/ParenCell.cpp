@@ -192,11 +192,11 @@ void ParenCell::RecalculateWidths(int fontsize)
       SetFont(fontsize);
       int signWidth1,signWidth2,signWidth3,descent,leading;
       dc.GetTextExtent(wxT(PAREN_OPEN_TOP_UNICODE),    &signWidth1, &m_signTopHeight, &descent, &leading);
-      m_signTopHeight -= descent + SCALE_PX(2, configuration->GetScale());
+      m_signTopHeight -= descent + SCALE_PX(1, configuration->GetScale()) + 1;
       dc.GetTextExtent(wxT(PAREN_OPEN_EXTEND_UNICODE), &signWidth2, &m_extendHeight, &descent, &leading);
-      m_extendHeight -= descent + SCALE_PX(2, configuration->GetScale());
+      m_extendHeight -= descent + SCALE_PX(1, configuration->GetScale()) + 1;
       dc.GetTextExtent(wxT(PAREN_OPEN_BOTTOM_UNICODE), &signWidth3, &m_signBotHeight, &descent, &leading);
-      m_signBotHeight -= descent + SCALE_PX(2, configuration->GetScale());
+      m_signBotHeight -= descent + SCALE_PX(1, configuration->GetScale()) + 1;
 
       m_signWidth = signWidth1;
       if(m_signWidth < signWidth2)
@@ -274,7 +274,7 @@ void ParenCell::Draw(wxPoint point, int fontsize)
   {
     double scale = configuration->GetScale();
     wxDC &dc = configuration->GetDC();
-    wxPoint in(point);
+    wxPoint innerCellPos(point);
 
     SetForeground();
     SetFont(configuration->GetMathFontSize());
@@ -284,7 +284,7 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     case Configuration::ascii:
       m_open->DrawList(point, fontsize);
       m_close->DrawList(wxPoint(point.x + m_signWidth + m_innerCell->GetFullWidth(scale),point.y), fontsize);
-      in.x += m_open->GetWidth();
+      innerCellPos.x += m_open->GetWidth();
       break;
     case Configuration::assembled_unicode:
     case Configuration::assembled_unicode_fallbackfont:
@@ -315,13 +315,14 @@ void ParenCell::Draw(wxPoint point, int fontsize)
                     top + m_signTopHeight + i*m_extendHeight);
       }
       
-      in.x += m_signWidth;
+      innerCellPos.x += m_signWidth;
       // Center the contents of the parenthesis vertically.
-      in.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
+      innerCellPos.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
     }
     break;
     default:
-      in.x = point.x + SCALE_PX(6, scale) + (*m_configuration)->GetDefaultLineWidth();
+      innerCellPos.x = point.x + SCALE_PX(6, scale) + (*m_configuration)->GetDefaultLineWidth();
+      innerCellPos.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
       SetPen();
       // left
       dc.DrawLine(point.x + SCALE_PX(5, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
@@ -353,7 +354,7 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     }
     
     UnsetPen();
-    m_innerCell->DrawList(in, fontsize);
+    m_innerCell->DrawList(innerCellPos, fontsize);
   }
 }
 
