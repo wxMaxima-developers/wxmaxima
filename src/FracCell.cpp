@@ -135,43 +135,29 @@ void FracCell::RecalculateWidths(int fontsize)
     m_num->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
     m_denom->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
   }
+  wxDC &dc = configuration->GetDC();
+  dc.SetFont(configuration->GetFont(TS_VARIABLE,fontsize));
   if (m_exponent && !m_isBroken)
   {
-    wxDC &dc = configuration->GetDC();
 
     int height;
-    int fontsize1 = (int) ((double) (fontsize) * scale + 0.5);
-    wxFont font(fontsize1, wxFONTFAMILY_MODERN,
-                wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                configuration->GetFontName(TS_VARIABLE));
-    font.SetPointSize(fontsize1);
-    dc.SetFont(font);
     dc.GetTextExtent(wxT("/"), &m_expDivideWidth, &height);
     m_width = m_num->GetFullWidth(scale) + m_denom->GetFullWidth(scale) + m_expDivideWidth;
   }
   else
   {
-    wxDC &dc = configuration->GetDC();
-
     // We want half a space's widh of blank space to separate us from the
     // next minus.
-    int dummy = 0;
-    int fontsize1 = (int) ((double) (fontsize) * scale + 0.5);
-    wxFont font(fontsize1, wxFONTFAMILY_MODERN,
-                wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                configuration->GetFontName(TS_VARIABLE));
-    font.SetPointSize(fontsize1);
-    dc.SetFont(font);
-    if ((m_previous != NULL) && (m_previous->ToString().EndsWith(wxT("-"))))
+    int dummy;
+    m_horizontalGapLeft = 0;
+    if (((m_previous != NULL) && (m_previous->ToString().EndsWith(wxT("-")))) ||
+        (m_previous == NULL))
       dc.GetTextExtent(wxT("X"), &m_horizontalGapLeft, &dummy);
-    else
-      m_horizontalGapLeft = 0;
     m_horizontalGapLeft /= 2;
-    if ((m_next != NULL) && (m_next->ToString().StartsWith(wxT("-"))))
+    m_horizontalGapRight = 0;
+    if (((m_next != NULL) && (m_next->ToString().StartsWith(wxT("-")))) ||
+        (m_next == NULL))
       dc.GetTextExtent(wxT("X"), &m_horizontalGapRight, &dummy);
-    else
-      m_horizontalGapRight = 0;
-    m_horizontalGapRight /= 2;
 
     m_width = MAX(m_num->GetFullWidth(scale), m_denom->GetFullWidth(scale)) +
               m_horizontalGapLeft + m_horizontalGapRight;
