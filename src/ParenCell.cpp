@@ -241,7 +241,6 @@ void ParenCell::RecalculateHeight(int fontsize)
   {
     if(m_innerCell)
     {
-      m_innerCell->m_currentPoint = m_currentPoint;
       switch(m_bigParenType)
       {
       case Configuration::ascii:
@@ -254,14 +253,18 @@ void ParenCell::RecalculateHeight(int fontsize)
         m_innerCell->m_currentPoint.x += m_signWidth;
         // Center the contents of the parenthesis vertically.
         //  m_innerCell->m_currentPoint.y += m_center - m_signHeight / 2;
-
+        break;
       default:
         m_signWidth = SCALE_PX(6, scale) + (*m_configuration)->GetDefaultLineWidth();
-      } 
-      m_innerCell->m_currentPoint.x += m_signWidth;
+      }
+      m_innerCell->m_currentPoint.x = m_currentPoint.x + m_signWidth;
+      m_innerCell->m_currentPoint.y = m_currentPoint.y;
+
+      // Center the argument of all big parenthesis vertically
+      if(m_bigParenType != Configuration::ascii)
+        m_innerCell->m_currentPoint.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
       m_height = MAX(m_signHeight,m_innerCell->GetMaxHeight()) + SCALE_PX(2, scale);      
-      m_center = m_height / 2;
-      
+      m_center = m_height / 2;   
     }
   }
 }
@@ -282,14 +285,18 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     switch(m_bigParenType)
     {            
     case Configuration::ascii:
+      innerCellPos.x += m_open->GetWidth();
       m_open->DrawList(point, fontsize);
       m_close->DrawList(wxPoint(point.x + m_signWidth + m_innerCell->GetFullWidth(scale),point.y), fontsize);
-      innerCellPos.x += m_open->GetWidth();
       break;
     case Configuration::assembled_unicode:
     case Configuration::assembled_unicode_fallbackfont:
     case Configuration::assembled_unicode_fallbackfont2:
     {
+      innerCellPos.x += m_signWidth;
+      // Center the contents of the parenthesis vertically.
+      innerCellPos.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
+
       int top = point.y - m_center + SCALE_PX (1,scale);
       int bottom = top + m_signHeight - m_signBotHeight - SCALE_PX (2,scale);
       dc.DrawText(wxT(PAREN_OPEN_TOP_UNICODE),
@@ -314,10 +321,6 @@ void ParenCell::Draw(wxPoint point, int fontsize)
                     point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
                     top + m_signTopHeight + i*m_extendHeight);
       }
-      
-      innerCellPos.x += m_signWidth;
-      // Center the contents of the parenthesis vertically.
-      innerCellPos.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
     }
     break;
     default:

@@ -150,13 +150,11 @@ void FracCell::RecalculateWidths(int fontsize)
     // next minus.
     int dummy;
     m_horizontalGapLeft = 0;
-    if (((m_previous != NULL) && (m_previous->ToString().EndsWith(wxT("-")))) ||
-        (m_previous == NULL))
+    if (((m_previous != NULL) && (m_previous->ToString().EndsWith(wxT("-")))))
       dc.GetTextExtent(wxT("X"), &m_horizontalGapLeft, &dummy);
     m_horizontalGapLeft /= 2;
     m_horizontalGapRight = 0;
-    if (((m_next != NULL) && (m_next->ToString().StartsWith(wxT("-")))) ||
-        (m_next == NULL))
+    if (((m_next != NULL) && (m_next->ToString().StartsWith(wxT("-")))))
       dc.GetTextExtent(wxT("X"), &m_horizontalGapRight, &dummy);
 
     m_width = MAX(m_num->GetFullWidth(scale), m_denom->GetFullWidth(scale)) +
