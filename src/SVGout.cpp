@@ -64,11 +64,9 @@ bool Svgout::SetData(MathCell *tree, long int maxSize)
 
 bool Svgout::Layout(long int maxSize)
 {
-  wxMemoryDC *dc = new wxMemoryDC();
-  wxBitmap bmp(10,10);
-  dc->SelectObject(bmp);
+  m_dc = new wxSVGFileDC(m_filename);
 
-  *m_configuration = new Configuration(*dc);
+  *m_configuration = new Configuration(*m_dc);
   (*m_configuration)->SetClientWidth(BM_FULL_WIDTH);
   // The last time I tried it the vertical positioning of the elements
   // of a big unicode parenthesis wasn't accurate enough in svg to be
@@ -92,13 +90,12 @@ bool Svgout::Layout(long int maxSize)
     }
   }
 
-  int width, height;
-  GetMaxPoint(&width, &height);
-  wxDELETE(dc);
-  m_dc = new wxSVGFileDC(m_filename,width,height);
   if(!m_dc->IsOk())
     return false;
-  (*m_configuration)->SetContext(*m_dc);
+
+  int width, height;
+  GetMaxPoint(&width, &height);
+
   Draw();
   wxDELETE(*m_configuration);
   wxDELETE(m_dc);

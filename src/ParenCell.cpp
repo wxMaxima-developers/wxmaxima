@@ -192,11 +192,11 @@ void ParenCell::RecalculateWidths(int fontsize)
       SetFont(fontsize);
       int signWidth1,signWidth2,signWidth3,descent,leading;
       dc.GetTextExtent(wxT(PAREN_OPEN_TOP_UNICODE),    &signWidth1, &m_signTopHeight, &descent, &leading);
-      m_signTopHeight -= descent + SCALE_PX(1, configuration->GetScale()) + 1;
+      m_signTopHeight -= 2*descent + SCALE_PX(2, configuration->GetScale()) + 1;
       dc.GetTextExtent(wxT(PAREN_OPEN_EXTEND_UNICODE), &signWidth2, &m_extendHeight, &descent, &leading);
-      m_extendHeight -= descent + SCALE_PX(1, configuration->GetScale()) + 1;
+      m_extendHeight -= 2*descent + SCALE_PX(2, configuration->GetScale()) + 1;
       dc.GetTextExtent(wxT(PAREN_OPEN_BOTTOM_UNICODE), &signWidth3, &m_signBotHeight, &descent, &leading);
-      m_signBotHeight -= descent + SCALE_PX(1, configuration->GetScale()) + 1;
+      m_signBotHeight -= descent + SCALE_PX(2, configuration->GetScale()) + 1;
 
       m_signWidth = signWidth1;
       if(m_signWidth < signWidth2)
