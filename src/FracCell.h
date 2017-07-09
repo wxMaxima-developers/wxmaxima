@@ -121,6 +121,8 @@ protected:
   MathCell *m_last1, *m_last2;
   bool m_exponent;
   int m_fracStyle;
+  //! How much wider should the horizontal line be on both ends than num or denom?
+  int m_protrusion;
   int m_expDivideWidth;
   /*! The horizontal gap between this frac and any minus before it
   

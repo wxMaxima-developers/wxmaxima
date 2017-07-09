@@ -948,7 +948,7 @@ bool wxMaxima::StartMaxima(bool force)
     m_console->SetWorkingGroup(NULL);
 
     m_variablesOK = false;
-    wxString command = GetCommand();;
+    wxString command = GetCommand();
 
     if (command.Length() > 0)
     {

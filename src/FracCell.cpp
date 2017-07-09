@@ -42,7 +42,8 @@ FracCell::FracCell(MathCell *parent, Configuration **config, CellPointers *cellP
   m_exponent = false;
   m_horizontalGapLeft = 0;
   m_horizontalGapRight = 0;
-
+  m_protrusion = 0;
+  
   m_open1 = NULL;
   m_close1 = NULL;
   m_open2 = NULL;
@@ -139,26 +140,33 @@ void FracCell::RecalculateWidths(int fontsize)
   dc.SetFont(configuration->GetFont(TS_VARIABLE,fontsize));
   if (m_exponent && !m_isBroken)
   {
-
+    m_protrusion = 0;
     int height;
     dc.GetTextExtent(wxT("/"), &m_expDivideWidth, &height);
     m_width = m_num->GetFullWidth(scale) + m_denom->GetFullWidth(scale) + m_expDivideWidth;
   }
   else
   {
+    int dummy;
+
+    dc.GetTextExtent(wxT("X"), &m_protrusion, &dummy);
+    m_protrusion /= 3;
+    
     // We want half a space's widh of blank space to separate us from the
     // next minus.
-    int dummy;
-    m_horizontalGapLeft = 0;
-    if (((m_previous != NULL) && (m_previous->ToString().EndsWith(wxT("-")))))
-      dc.GetTextExtent(wxT("X"), &m_horizontalGapLeft, &dummy);
-    m_horizontalGapLeft /= 2;
-    m_horizontalGapRight = 0;
-    if (((m_next != NULL) && (m_next->ToString().StartsWith(wxT("-")))))
-      dc.GetTextExtent(wxT("X"), &m_horizontalGapRight, &dummy);
 
+    if (((m_previous != NULL) && (m_previous->ToString().EndsWith(wxT("-")))))
+      m_horizontalGapLeft = m_protrusion;
+    else
+      m_horizontalGapLeft = 0;
+
+    if (((m_next != NULL) && (m_next->ToString().StartsWith(wxT("-")))))
+      m_horizontalGapRight = m_protrusion;
+    else
+      m_horizontalGapRight = 0;
+    
     m_width = MAX(m_num->GetFullWidth(scale), m_denom->GetFullWidth(scale)) +
-              m_horizontalGapLeft + m_horizontalGapRight;
+              2 * m_protrusion + m_horizontalGapLeft + m_horizontalGapRight;
   }
   m_open1->RecalculateWidths(fontsize);
   m_close1->RecalculateWidths(fontsize);
