@@ -142,7 +142,8 @@ public:
   {
     mathJaX_TeX = 0,
     bitmap = 1,
-    mathML_mathJaX = 2
+    mathML_mathJaX = 2,
+    svg = 3
   };
 
   /*! Called if the color of an item has been changed 

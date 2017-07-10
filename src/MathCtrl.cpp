@@ -4420,7 +4420,8 @@ bool MathCtrl::ExportToHTML(wxString file)
 // Write styles
 //////////////////////////////////////////////
 
-  if (htmlEquationFormat != ConfigDialogue::bitmap)
+  if ((htmlEquationFormat != ConfigDialogue::bitmap) &&
+      (htmlEquationFormat != ConfigDialogue::svg))
   {
     output << wxT("<script type=\"text/x-mathjax-config\">") << endl;
     output << wxT("  MathJax.Hub.Config({") << endl;
@@ -4817,7 +4818,8 @@ bool MathCtrl::ExportToHTML(wxString file)
   output << wxT("<!--          Created with wxMaxima version ") + version + wxT("         -->\n");
   output << wxT("<!-- ***************************************************** -->\n");
 
-  if (htmlEquationFormat != ConfigDialogue::bitmap)
+  if ((htmlEquationFormat != ConfigDialogue::bitmap) &&
+      (htmlEquationFormat != ConfigDialogue::svg))
   {
     // Tell users that have disabled JavaScript why they don't get 2d maths.
     output << wxT("<noscript>");
@@ -4917,13 +4919,14 @@ bool MathCtrl::ExportToHTML(wxString file)
                       filename +
                       wxString::Format(_("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"), count);
           }
-          else if ((htmlEquationFormat != ConfigDialogue::bitmap) &&
-                   (chunk->GetType() != MC_TYPE_IMAGE))
+          else if (chunk->GetType() != MC_TYPE_IMAGE)
           {
-            if (htmlEquationFormat == ConfigDialogue::mathJaX_TeX)
+            switch(htmlEquationFormat)
+            {
+            case ConfigDialogue::mathJaX_TeX:
             {
               wxString line = chunk->ListToTeX();
-
+              
               line.Replace(wxT("<"), wxT("&lt;"));
               line.Replace(wxT(">"), wxT("&gt;"));
               // Work around a known limitation in MathJaX: According to
@@ -4936,56 +4939,93 @@ bool MathCtrl::ExportToHTML(wxString file)
 	      // the % as TeX comment. When we would upgrade to the new MathJax version
 	      // we would need to escape the % with \%, but now that is not necessary.
               line.Replace(wxT("\\tag{\\% "), wxT("\\tag{%"));
-
+              
               output << wxT("\\[") << line << wxT("\\]\n");
+              wxDELETE(chunk);
+              break;
             }
-            else
+            
+            case ConfigDialogue::svg:
             {
-              wxString line = chunk->ListToMathML();
-              output << wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\">") << line
-                     << wxT("</math>\n");
-            }
-          }
-          else
-          {
-            wxString ext;
-            wxSize size;
-            // Something we want to export as an image.
-            if (chunk->GetType() == MC_TYPE_IMAGE)
+              wxString alttext = _("Result");
+              alttext = chunk->ListToString();
+              alttext = EditorCell::EscapeHTMLChars(alttext);
+              Svgout svgout(&m_configuration, imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.svg"), count));
+              svgout.SetData(chunk);                            
+              wxString line = wxT("  <img src=\"") +
+                filename + wxT("_htmlimg/") + filename +
+                wxString::Format(wxT("_%d.svg\" style=\"max-width:90%%;\" alt=\""),
+                                 count) +
+                alttext +
+                wxT("\" ><BR/>\n");
+              
+              output << line << endl;              
+              break;
+            }     
+
+            case ConfigDialogue::bitmap:
             {
-              ext = wxT(".") + dynamic_cast<ImgCell *>(chunk)->GetExtension();
-              size = dynamic_cast<ImgCell *>(chunk)->ToImageFile(
-                      imgDir + wxT("/") + filename + wxString::Format(wxT("_%d"), count) + ext);
-            }
-            else
-            {
+              wxString ext;
+              wxSize size;
               int bitmapScale = 3;
               ext = wxT(".png");
               wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
               size = CopyToFile(imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.png"), count),
                                 chunk,
                                 NULL, true, bitmapScale);
-            }
+              int borderwidth = 0;
+              wxString alttext = _("Result");
+              alttext = chunk->ListToString();
+              alttext = EditorCell::EscapeHTMLChars(alttext);
+              borderwidth = chunk->m_imageBorderWidth;
+              
+              wxString line = wxT("  <img src=\"") +
+                filename + wxT("_htmlimg/") + filename +
+                wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
+                                 count, ext, size.x / bitmapScale - 2 * borderwidth) +
+                alttext +
+                wxT("\" ><BR/>\n");
 
+              output << line << endl;
+              wxDELETE(chunk);
+              break;
+            }     
+
+            default:
+            {
+              wxString line = chunk->ListToMathML();
+              output << wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\">") << line
+                     << wxT("</math>\n");
+              wxDELETE(chunk);
+            }
+            }
+          }
+          else
+          {
+            wxString ext;
+            wxSize size;
+            ext = wxT(".") + dynamic_cast<ImgCell *>(chunk)->GetExtension();
+            size = dynamic_cast<ImgCell *>(chunk)->ToImageFile(
+              imgDir + wxT("/") + filename + wxString::Format(wxT("_%d"), count) + ext);
             int borderwidth = 0;
-            wxString alttext = _("Result");
+            wxString alttext = _("Image");
             alttext = chunk->ListToString();
             alttext = EditorCell::EscapeHTMLChars(alttext);
             borderwidth = chunk->m_imageBorderWidth;
-
+            
             wxString line = wxT("  <img src=\"") +
-                            filename + wxT("_htmlimg/") + filename +
-                            wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
-                                             count, ext, size.x - 2 * borderwidth) +
-                            alttext +
-                            wxT("\" ><BR/>\n");
-
+              filename + wxT("_htmlimg/") + filename +
+              wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
+                               count, ext, size.x - 2 * borderwidth) +
+              alttext +
+              wxT("\" ><BR/>\n");
+            
             output << line << endl;
+            wxDELETE(chunk);
+            
           }
           count++;
 
-          // Prepare for fetching the next chunk.
-          wxDELETE(chunk);
           chunkStart = chunkEnd->m_next;
         }
       }
@@ -5112,6 +5152,7 @@ bool MathCtrl::ExportToHTML(wxString file)
   cssfile.Close();
 
   MathCell::ClipToDrawRegion(true);
+  RecalculateForce();
   return outfileOK && cssOK;
 }
 

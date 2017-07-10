@@ -578,6 +578,7 @@ wxPanel *ConfigDialogue::CreateExportPanel()
   mathJaxChoices.Add(_("TeX, interpreted by MathJaX"));
   mathJaxChoices.Add(_("Bitmaps"));
   mathJaxChoices.Add(_("MathML + MathJaX as Fill-In"));
+  mathJaxChoices.Add(_("SVG graphics"));
   m_exportWithMathJAX = new wxChoice(panel, -1, wxDefaultPosition, wxDefaultSize, mathJaxChoices);
   grid_sizer->Add(mju, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_exportWithMathJAX, 0, wxALL, 5);
