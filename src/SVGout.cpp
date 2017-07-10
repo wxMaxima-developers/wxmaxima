@@ -24,7 +24,8 @@
  */
 
 #include "SVGout.h"
-#include <wx/txtstrm.h>
+#include <wx/txtstrm.h> 
+#include <wx/filename.h> 
 #include <wx/wfstream.h>
 #include "Configuration.h"
 #include "GroupCell.h"

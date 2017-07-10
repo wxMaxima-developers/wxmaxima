@@ -38,7 +38,6 @@ Bitmap::Bitmap(Configuration **configuration, int scale)
   m_oldconfig = *m_configuration;
   m_tree = NULL;
   m_scale = scale;
-  (*m_configuration)->SetScale(scale);
   // The depth 24 hinders wxWidgets from creating rgb0 bitmaps that some
   // windows applications will interpret as rgba if they appear on
   // the clipboards and therefore render them all-transparent.
@@ -67,6 +66,7 @@ bool Bitmap::Layout(long int maxSize)
   m_dc->SetUserScale(m_scale, m_scale);
   *m_configuration = new Configuration(*m_dc);
   (*m_configuration)->SetScale(m_scale);
+  (*m_configuration)->SetZoomFactor(1);
   (*m_configuration)->SetClientWidth(BM_FULL_WIDTH);
 
   if (m_tree->GetType() != MC_TYPE_GROUP)
