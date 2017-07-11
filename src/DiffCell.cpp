@@ -110,10 +110,9 @@ void DiffCell::RecalculateHeight(int fontsize)
 
 void DiffCell::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(point, fontsize);
-
   if (DrawThisCell(point) && InUpdateRegion())
-  {
+  { 
+    MathCell::Draw(point, fontsize);
     wxPoint bs, df;
     df.x = point.x;
     df.y = point.y;

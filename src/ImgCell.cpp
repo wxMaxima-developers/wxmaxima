@@ -148,15 +148,16 @@ void ImgCell::RecalculateHeight(int fontsize)
 
 void ImgCell::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(point, fontsize);
-  m_image->Recalculate();
-
-  if (!InUpdateRegion()) return;
-
-  Configuration *configuration = (*m_configuration);
-  wxDC &dc = configuration->GetDC();
   if (DrawThisCell(point) && (m_image != NULL))
   {
+    
+    MathCell::Draw(point, fontsize);
+    m_image->Recalculate();
+    
+    if (!InUpdateRegion()) return;
+    
+    Configuration *configuration = (*m_configuration);
+    wxDC &dc = configuration->GetDC();
     wxMemoryDC bitmapDC;
 
     if (m_drawBoundingBox)

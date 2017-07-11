@@ -152,7 +152,8 @@ void GroupCell::SetParent(MathCell *parent)
     m_inputLabel->SetParentList(parent);
 
   MathCell *tmp = m_output;
-  tmp->SetParentList(parent);
+  if(m_output != NULL)
+    tmp->SetParentList(parent);
 }
 
 bool GroupCell::Empty()
@@ -772,17 +773,18 @@ void GroupCell::RecalculateAppended()
 
 void GroupCell::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(point, fontsize);
-
-  Configuration *configuration = (*m_configuration);
-  wxDC &dc = configuration->GetDC();
-  if (m_width == -1 || m_height == -1)
-  {
-    RecalculateWidths(fontsize);
-    RecalculateHeight(fontsize);
-  }
   if (DrawThisCell(point))
   {
+    
+    MathCell::Draw(point, fontsize);
+    
+    Configuration *configuration = (*m_configuration);
+    wxDC &dc = configuration->GetDC();
+    if (m_width == -1 || m_height == -1)
+    {
+      RecalculateWidths(fontsize);
+      RecalculateHeight(fontsize);
+    }
     // draw a thick line for 'page break'
     // and return
     if (m_groupType == GC_TYPE_PAGEBREAK)

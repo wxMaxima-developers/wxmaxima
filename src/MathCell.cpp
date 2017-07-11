@@ -381,6 +381,9 @@ void MathCell::RecalculateWidths(int fontsize)
  */
 bool MathCell::DrawThisCell(wxPoint point)
 {
+  if((point.x < 0) || (point.y < 0))
+    return false;
+  
   Configuration *configuration = (*m_configuration);
   int top = configuration->GetTop();
   int bottom = configuration->GetBottom();

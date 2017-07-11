@@ -581,18 +581,19 @@ The order this cell is drawn is:
 */
 void EditorCell::Draw(wxPoint point1, int fontsize)
 {
-  MathCell::Draw(point1, fontsize);
-  Configuration *configuration = (*m_configuration);
-
-  m_selectionChanged = false;
-  double scale = configuration->GetScale();
-  wxDC &dc = configuration->GetDC();
-  wxPoint point(point1);
-  if (m_width == -1 || m_height == -1 || configuration->ForceUpdate())
-    RecalculateWidths(fontsize);
-
-  if (DrawThisCell(point) && !m_isHidden)
+  if (DrawThisCell(point1) && !m_isHidden)
   {
+    
+    MathCell::Draw(point1, fontsize);
+    Configuration *configuration = (*m_configuration);
+    
+    m_selectionChanged = false;
+    double scale = configuration->GetScale();
+    wxDC &dc = configuration->GetDC();
+    wxPoint point(point1);
+    if (m_width == -1 || m_height == -1 || configuration->ForceUpdate())
+      RecalculateWidths(fontsize);
+    
 //    dc.SetLogicalFunction(wxCOPY); // opaque (for everything except the caret)
 
     // Need correct m_currentPoint before we call MathCell::Draw!
@@ -4123,18 +4124,18 @@ void EditorCell::StyleText()
 
   m_wordList.Clear();
   m_styledText.clear();
+
+  if(m_text == wxEmptyString)
+    return;
+  
   // Remove all soft line breaks. They will be re-added in the right places
   // in the next step
   m_text.Replace(wxT("\r"), wxT(" "));
   // Do we need to style code or text?
   if (m_type == MC_TYPE_INPUT)
-  {
     StyleTextCode();
-  }
   else
-  {
     StyleTextTexts();
-  }
 }
 
 
@@ -4167,13 +4168,13 @@ void EditorCell::SetValue(const wxString &text)
       else
       {
         m_text = text;
-        m_positionOfCaret = m_text.Length();
+        m_positionOfCaret = m_text.Length() - 1;
       }
     }
     else
     {
       m_text = text;
-      m_positionOfCaret = m_text.Length();
+      m_positionOfCaret = m_text.Length() - 1;
     }
 
     if ((*m_configuration)->GetInsertAns())
@@ -4186,14 +4187,14 @@ void EditorCell::SetValue(const wxString &text)
           m_text == wxT(","))
       {
         m_text = wxT("%") + m_text;
-        m_positionOfCaret = m_text.Length();
+        m_positionOfCaret = m_text.Length() - 1;
       }
     }
   }
   else
   {
     m_text = text;
-    m_positionOfCaret = m_text.Length();
+    m_positionOfCaret = m_text.Length() - 1;
   }
 
   FindMatchingParens();
@@ -4422,7 +4423,7 @@ bool EditorCell::FindNextTemplate(bool left)
 
 void EditorCell::CaretToEnd()
 {
-  m_positionOfCaret = m_text.Length();
+  m_positionOfCaret = m_text.Length() - 1;
   if (GetType() == MC_TYPE_INPUT)
     FindMatchingParens();
 }

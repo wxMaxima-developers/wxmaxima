@@ -369,16 +369,17 @@ void TextCell::RecalculateWidths(int fontsize)
 
 void TextCell::Draw(wxPoint point, int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
-  MathCell::Draw(point, fontsize);
-  double scale = configuration->GetScale();
-  wxDC &dc = configuration->GetDC();
-
-  if (m_width == -1 || m_height == -1 || fontsize != m_lastCalculationFontSize)
-    RecalculateWidths(fontsize);
-
   if (DrawThisCell(point) && !m_isHidden)
   {
+    
+    Configuration *configuration = (*m_configuration);
+    MathCell::Draw(point, fontsize);
+    double scale = configuration->GetScale();
+    wxDC &dc = configuration->GetDC();
+    
+    if (m_width == -1 || m_height == -1 || fontsize != m_lastCalculationFontSize)
+      RecalculateWidths(fontsize);
+    
     SetFont(fontsize);
     SetForeground();
 

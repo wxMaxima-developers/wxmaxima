@@ -139,11 +139,10 @@ void SubSupCell::RecalculateHeight(int fontsize)
 
 void SubSupCell::Draw(wxPoint point, int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
-  MathCell::Draw(point, fontsize);
-
   if (DrawThisCell(point) && InUpdateRegion())
   {
+    Configuration *configuration = (*m_configuration);
+    MathCell::Draw(point, fontsize);
     double scale = configuration->GetScale();
     wxPoint bs, in;
 

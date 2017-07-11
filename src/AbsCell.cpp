@@ -126,13 +126,14 @@ void AbsCell::RecalculateHeight(int fontsize)
 
 void AbsCell::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(point, fontsize);
-
-  Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
-  wxDC &dc = configuration->GetDC();
   if (DrawThisCell(point) && InUpdateRegion())
   {
+    
+    MathCell::Draw(point, fontsize);
+    
+    Configuration *configuration = (*m_configuration);
+    double scale = configuration->GetScale();
+    wxDC &dc = configuration->GetDC();
     SetPen();
     wxPoint in;
     in.x = point.x + SCALE_PX(4, scale) + (*m_configuration)->GetDefaultLineWidth();

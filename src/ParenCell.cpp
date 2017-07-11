@@ -271,10 +271,10 @@ void ParenCell::RecalculateHeight(int fontsize)
 
 void ParenCell::Draw(wxPoint point, int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
-  MathCell::Draw(point, fontsize);
   if (DrawThisCell(point) && (InUpdateRegion()))
-  {
+  { 
+    Configuration *configuration = (*m_configuration);
+    MathCell::Draw(point, fontsize);
     double scale = configuration->GetScale();
     wxDC &dc = configuration->GetDC();
     wxPoint innerCellPos(point);

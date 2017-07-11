@@ -110,13 +110,13 @@ void AtCell::RecalculateHeight(int fontsize)
 
 void AtCell::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(point, fontsize);
-
-  Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
-  wxDC &dc = configuration->GetDC();
   if (DrawThisCell(point) && InUpdateRegion())
   {
+    MathCell::Draw(point, fontsize);
+    
+    Configuration *configuration = (*m_configuration);
+    double scale = configuration->GetScale();
+    wxDC &dc = configuration->GetDC();
     wxPoint bs, in;
 
     bs.x = point.x;

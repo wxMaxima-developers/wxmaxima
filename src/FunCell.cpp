@@ -108,10 +108,9 @@ void FunCell::RecalculateHeight(int fontsize)
 
 void FunCell::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(point, fontsize);
-
   if (DrawThisCell(point) && InUpdateRegion())
   {
+    MathCell::Draw(point, fontsize);
     Configuration *configuration = (*m_configuration);
     double scale = configuration->GetScale();
 

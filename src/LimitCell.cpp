@@ -130,10 +130,9 @@ void LimitCell::RecalculateHeight(int fontsize)
 
 void LimitCell::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(point, fontsize);
-
   if (DrawThisCell(point) && InUpdateRegion())
-  {
+  {   
+    MathCell::Draw(point, fontsize);
     Configuration *configuration = (*m_configuration);
     double scale = configuration->GetScale();
     wxPoint base(point), under(point), name(point);

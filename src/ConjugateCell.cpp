@@ -125,13 +125,13 @@ void ConjugateCell::RecalculateHeight(int fontsize)
 
 void ConjugateCell::Draw(wxPoint point, int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
-  MathCell::Draw(point, fontsize);
-
-  double scale = configuration->GetScale();
-  wxDC &dc = configuration->GetDC();
   if (DrawThisCell(point) && InUpdateRegion())
   {
+    Configuration *configuration = (*m_configuration);
+    MathCell::Draw(point, fontsize);
+    
+    double scale = configuration->GetScale();
+    wxDC &dc = configuration->GetDC();
     SetPen();
     wxPoint in;
     in.x = point.x + SCALE_PX(4, scale);

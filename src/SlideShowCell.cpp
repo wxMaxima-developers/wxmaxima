@@ -182,16 +182,15 @@ void SlideShow::RecalculateHeight(int fontsize)
 
 void SlideShow::Draw(wxPoint point, int fontsize)
 {
-  MathCell::Draw(point, fontsize);
-  m_images[m_displayed]->Recalculate();
-
-  if (!InUpdateRegion()) return;
-
-  Configuration *configuration = (*m_configuration);
-  wxDC &dc = configuration->GetDC();
-
   if (DrawThisCell(point) && (m_images[m_displayed] != NULL))
   {
+    MathCell::Draw(point, fontsize);
+    m_images[m_displayed]->Recalculate();
+    
+    if (!InUpdateRegion()) return;
+    
+    Configuration *configuration = (*m_configuration);
+    wxDC &dc = configuration->GetDC();
     wxMemoryDC bitmapDC;
     m_images[m_displayed]->Recalculate();
 

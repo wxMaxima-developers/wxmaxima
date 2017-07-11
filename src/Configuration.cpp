@@ -57,7 +57,7 @@ Configuration::Configuration(wxDC &dc, bool isTopLevel) : m_dc(&dc)
   m_indent = -1;
   ReadConfig();
   m_showCodeCells = true;
-
+  m_defaultToolTip = wxEmptyString;
 }
 
 void Configuration::ShowCodeCells(bool show)
