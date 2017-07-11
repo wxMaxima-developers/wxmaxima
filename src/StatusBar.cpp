@@ -149,7 +149,11 @@ wxBitmap StatusBar::GetImage(wxString name)
 #else
 {
   wxImage img;
-  img = wxArtProvider::GetBitmap(name,wxART_TOOLBAR).ConvertToImage();
+  wxBitmap bitmap = wxArtProvider::GetBitmap(name,wxART_TOOLBAR);
+
+  if (bitmap.IsOk())
+    img = bitmap.ConvertToImage();
+  
   if(!img.IsOk())
   {
     Dirstructure dirstructure;
