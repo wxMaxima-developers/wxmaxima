@@ -112,7 +112,7 @@ void SqrtCell::RecalculateWidths(int fontsize)
     m_innerCell->RecalculateHeightList(fontsize);
 
     m_signFontScale = 1.0;
-    int fontsize1 = (int) (SIGN_FONT_SCALE * scale * fontsize * m_signFontScale + 0.5);
+    int fontsize1 = SCALE_PX(SIGN_FONT_SCALE * fontsize * m_signFontScale,scale);
 
     wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                 configuration->GetTeXCMEX());
@@ -150,7 +150,7 @@ void SqrtCell::RecalculateWidths(int fontsize)
       m_signFontScale = 1.0;
     }
 
-    fontsize1 = (int) (SIGN_FONT_SCALE * scale * fontsize * m_signFontScale + 0.5);
+    fontsize1 = SCALE_PX(SIGN_FONT_SCALE * fontsize * m_signFontScale,scale);
     font = wxFont(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
     font.SetPointSize(fontsize1);
@@ -202,7 +202,7 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
       in.x += m_signWidth;
       double scale = configuration->GetScale();
 
-      int fontsize1 = (int) (SIGN_FONT_SCALE * scale * fontsize * m_signFontScale + 0.5);
+      int fontsize1 = SCALE_PX(SIGN_FONT_SCALE * fontsize * m_signFontScale, scale);
 
       wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());

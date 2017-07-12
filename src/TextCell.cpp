@@ -320,7 +320,7 @@ void TextCell::RecalculateWidths(int fontsize)
       wxFont font(dc.GetFont());
       while ((m_labelWidth >= m_width) && (m_fontSizeLabel > 2))
       {
-        int fontsize1 = (int) (((double) --m_fontSizeLabel) * scale + 0.5);
+        int fontsize1 = SCALE_PX(--m_fontSizeLabel, scale);
         font.SetPointSize(fontsize1);
         dc.SetFont(font);
         dc.GetTextExtent(text, &m_labelWidth, &m_labelHeight);
@@ -459,7 +459,7 @@ void TextCell::Draw(wxPoint point, int fontsize)
 void TextCell::SetFontSizeForLabel(wxDC &dc, double scale)
 {
   wxFont font(dc.GetFont());
-  int fontsize1 = (int) (((double) m_fontSizeLabel) * scale + 0.5);
+  int fontsize1 = SCALE_PX(m_fontSizeLabel, scale);
   font.SetPointSize(fontsize1);
   dc.SetFont(font);
 }

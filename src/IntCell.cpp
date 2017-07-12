@@ -132,8 +132,8 @@ void IntCell::RecalculateWidths(int fontsize)
   Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
 
-  m_signSize = SCALE_PX(50, scale);
-  m_signWidth = SCALE_PX(18, scale);
+  m_signSize = SCALE_PX(50, scale) * configuration->GetZoomFactor();
+  m_signWidth = SCALE_PX(18, scale) * configuration->GetZoomFactor();
 
   m_base->RecalculateWidthsList(fontsize);
   m_var->RecalculateWidthsList(fontsize);
@@ -147,7 +147,7 @@ void IntCell::RecalculateWidths(int fontsize)
   if (configuration->CheckTeXFonts())
   {
     wxDC &dc = configuration->GetDC();
-    int fontsize1 = (int) ((fontsize * scale * 1.5 + 0.5));
+    int fontsize1 = SCALE_PX(fontsize * 1.5, scale);
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                 configuration->GetTeXCMEX());
@@ -173,7 +173,7 @@ void IntCell::RecalculateWidths(int fontsize)
   {
 #if defined __WXMSW__
     wxDC& dc = configuration->GetDC();
-    int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
+    int fontsize1 = SCALE_PX(INTEGRAL_FONT_SIZE, scale);
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
                 false,
@@ -252,7 +252,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
     if (configuration->CheckTeXFonts())
     {
       SetForeground();
-      int fontsize1 = (int) ((fontsize * scale * 1.5 + 0.5));
+      int fontsize1 = SCALE_PX(fontsize * 1.5, scale);
       wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
@@ -268,7 +268,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
     {
 #if defined __WXMSW__
       SetForeground();
-      int fontsize1 = (int) ((INTEGRAL_FONT_SIZE * scale + 0.5));
+      int fontsize1 = SCALE_PX(INTEGRAL_FONT_SIZE, scale);
       int m_signWCenter = m_signWidth / 2;
 
       dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,

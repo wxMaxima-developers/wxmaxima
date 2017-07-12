@@ -121,9 +121,9 @@ void SumCell::RecalculateWidths(int fontsize)
   Configuration *configuration = (*m_configuration);
   double scale = configuration->GetScale();
 
-  m_signSize = SCALE_PX(50, scale);
-  m_signWidth = SCALE_PX(30, scale);
-  m_signWCenter = SCALE_PX(15, scale);
+  m_signSize = SCALE_PX(50, scale) * configuration->GetZoomFactor();
+  m_signWidth = SCALE_PX(30, scale) * configuration->GetZoomFactor();
+  m_signWCenter = SCALE_PX(15, scale) * configuration->GetZoomFactor();
 
   m_base->RecalculateWidthsList(fontsize);
   m_under->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
@@ -192,7 +192,7 @@ void SumCell::Draw(wxPoint point, int fontsize)
     if (configuration->CheckTeXFonts())
     {
       SetForeground();
-      int fontsize1 = (int) ((fontsize * 1.5 * scale + 0.5));
+      int fontsize1 = SCALE_PX(fontsize * 1.5, scale);
       wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());

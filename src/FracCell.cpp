@@ -233,7 +233,7 @@ void FracCell::Draw(wxPoint point, int fontsize)
       m_num->DrawList(num, fontsize);
       m_denom->DrawList(denom, fontsize);
 
-      int fontsize1 = (int) ((double) (fontsize) * scale + 0.5);
+      int fontsize1 = SCALE_PX(fontsize, scale);
       dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                         wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                         configuration->GetFontName(TS_VARIABLE)));

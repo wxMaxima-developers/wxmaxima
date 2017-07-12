@@ -172,7 +172,7 @@ void ParenCell::RecalculateWidths(int fontsize)
   wxDC &dc = configuration->GetDC();
   int size = m_innerCell->GetMaxHeight();
   if (fontsize < 4) fontsize = 4;
-  int fontsize1 = (int) ((fontsize * scale + 0.5));
+  int fontsize1 = SCALE_PX(fontsize, scale);
   // If our font provides all the unicode chars we need we don't need
   // to bother which exotic method we need to use for drawing nice parenthesis.
   if (fontsize1*3 > size)

@@ -418,7 +418,7 @@ void EditorCell::RecalculateWidths(int fontsize)
   if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() || fontsize * scale + 0.5 != m_fontSize_Last)
   {
     ResetData();
-    m_fontSize_Last = fontsize * scale + 0.5;
+    m_fontSize_Last = SCALE_PX(fontsize,scale);
     wxDC &dc = configuration->GetDC();
     double scale = configuration->GetScale();
     SetFont();
@@ -786,7 +786,7 @@ void EditorCell::SetFont()
     m_fontSize = configuration->GetDefaultFontSize();
 
   double scale = configuration->GetScale();
-  m_fontSize = (int) (((double) m_fontSize) * scale + 0.5);
+  m_fontSize = SCALE_PX(m_fontSize, scale);
 
   m_fontName = configuration->GetFontName(m_textStyle);
   // Cells that save answers are displayed differently to
