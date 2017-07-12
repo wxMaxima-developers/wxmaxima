@@ -151,7 +151,6 @@ void SumCell::RecalculateWidths(int fontsize)
   m_signWCenter = MAX(m_signWCenter, m_over->GetFullWidth(scale) / 2);
   m_width = 2 * m_signWCenter + m_base->GetFullWidth(scale) + SCALE_PX(4, scale);
 
-  std::cerr<<m_signSize << "\n";
   ResetData();
 }
 
