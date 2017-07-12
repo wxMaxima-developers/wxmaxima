@@ -7,7 +7,7 @@ set(GITVERSION ${VERSION})
 set(PACKAGE wxMaxima)
 
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
-    message(WARNING "In-source builds are strongly discouraged. Make an out-of-source build.")
+    message(WARNING "In-source builds are strongly discouraged. Please make an out-of-source-build instead (which means: run cmake and build the program from a different directory than the one the source package is in).")
 endif()
 
 # should the PDF doku be build from the texinfo source? (requires a TeX installation)

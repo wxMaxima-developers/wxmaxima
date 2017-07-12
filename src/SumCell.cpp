@@ -134,7 +134,7 @@ void SumCell::RecalculateWidths(int fontsize)
   if (configuration->CheckTeXFonts())
   {
     wxDC &dc = configuration->GetDC();
-    int fontsize1 = (int) ((fontsize * 1.5 * scale + 0.5));
+    int fontsize1 = SCALE_PX(configuration->GetMathFontSize(), scale);
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                 configuration->GetTeXCMEX());
@@ -151,6 +151,7 @@ void SumCell::RecalculateWidths(int fontsize)
   m_signWCenter = MAX(m_signWCenter, m_over->GetFullWidth(scale) / 2);
   m_width = 2 * m_signWCenter + m_base->GetFullWidth(scale) + SCALE_PX(4, scale);
 
+  std::cerr<<m_signSize << "\n";
   ResetData();
 }
 
