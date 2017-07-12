@@ -4168,13 +4168,13 @@ void EditorCell::SetValue(const wxString &text)
       else
       {
         m_text = text;
-        m_positionOfCaret = m_text.Length() - 1;
+        m_positionOfCaret = m_text.Length() ;
       }
     }
     else
     {
       m_text = text;
-      m_positionOfCaret = m_text.Length() - 1;
+      m_positionOfCaret = m_text.Length() ;
     }
 
     if ((*m_configuration)->GetInsertAns())
@@ -4187,16 +4187,19 @@ void EditorCell::SetValue(const wxString &text)
           m_text == wxT(","))
       {
         m_text = wxT("%") + m_text;
-        m_positionOfCaret = m_text.Length() - 1;
+        m_positionOfCaret = m_text.Length() ;
       }
     }
   }
   else
   {
     m_text = text;
-    m_positionOfCaret = m_text.Length() - 1;
+    m_positionOfCaret = m_text.Length() ;
   }
 
+  if(m_positionOfCaret < 0)
+    m_positionOfCaret = 0;
+  
   FindMatchingParens();
   m_containsChanges = true;
 
@@ -4257,7 +4260,7 @@ bool EditorCell::FindNext(wxString str, bool down, bool ignoreCase)
     if (down)
       start = m_selectionStart + 1;
     else
-      start = m_selectionStart - 1;
+      start = m_selectionStart ;
   }
   else if (IsActive())
     start = m_positionOfCaret;
