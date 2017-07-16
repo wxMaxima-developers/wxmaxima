@@ -30,31 +30,6 @@
 #include <wx/artprov.h>
 #include <wx/filename.h>
 
-#if defined (__WXMSW__) || defined (__WXMAC__)
-
-wxImage ToolBar::GetImage(wxString name)
-{
-  Dirstructure dirstructure;
-  wxImage img = wxImage(dirstructure.ConfigToolbarDir() + wxT("/") + name + wxT(".png"));
-  // We want to scale the images according to the display's resolution.
-  // But we want to do so in discrete steps as scaling bitmaps by odd
-  // factors will add visible antialiassing to things that are clearly
-  // meant to be sharp lines.
-  int resolutionMultiplier = wxGetDisplayPPI().x / 72;
-  int imgWidth = 24 * resolutionMultiplier;
-  int width, height;
-  wxDisplaySize(&width, &height);
-  if (width <= 24)
-    imgWidth = 24;
-  if (imgWidth < 24)
-    imgWidth = 24;
-
-  double scaleFactor = (double) imgWidth / img.GetWidth();
-  img.Rescale(imgWidth, img.GetHeight() * scaleFactor, wxIMAGE_QUALITY_HIGH);
-  return img;
-}
-
-#else
 wxBitmap ToolBar::GetImage(wxString name)
 {
   wxImage img;
@@ -70,7 +45,6 @@ wxBitmap ToolBar::GetImage(wxString name)
   img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
   return img;
 }
-#endif
 
 ToolBar::~ToolBar()
 {
