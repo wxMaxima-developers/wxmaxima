@@ -60,6 +60,11 @@ wxBitmap ToolBar::GetImage(wxString name)
   wxImage img;
   img = wxArtProvider::GetBitmap(name,wxART_TOOLBAR).ConvertToImage();
 
+  if(!img.IsOk())
+  {
+    Dirstructure dirstructure;
+    img = wxImage(dirstructure.ConfigToolbarDir() + wxT("/") + name + wxT(".png"));
+  }
   double imgWidth = wxGetDisplayPPI().x*24/72;
   double scaleFactor = imgWidth / img.GetWidth();
   img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
