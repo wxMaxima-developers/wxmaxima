@@ -32,8 +32,11 @@
 
 wxBitmap ToolBar::GetImage(wxString name)
 {
+  wxBitmap bmp = wxArtProvider::GetBitmap(name,wxART_TOOLBAR);
+  
   wxImage img;
-  img = wxArtProvider::GetBitmap(name,wxART_TOOLBAR).ConvertToImage();
+  if(bmp.IsOk())
+    img = wxArtProvider::GetBitmap(name,wxART_TOOLBAR).ConvertToImage();
 
   if(!img.IsOk())
   {

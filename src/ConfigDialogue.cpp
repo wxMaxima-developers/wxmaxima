@@ -97,8 +97,11 @@ int ConfigDialogue::GetImageWidth()
 
 wxImage ConfigDialogue::GetImage(wxString name)
 {
+  wxBitmap bmp = wxArtProvider::GetBitmap(name,wxART_TOOLBAR);
+
   wxImage img;
-  img = wxArtProvider::GetBitmap(name,wxART_TOOLBAR).ConvertToImage();
+  if(bmp.IsOk())
+    img = bmp.ConvertToImage();
   
   if(!img.IsOk())
   {
