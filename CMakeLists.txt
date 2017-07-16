@@ -111,7 +111,7 @@ foreach(ext "tar.gz" "tar.bz2" "deb" "rpm")
     file(APPEND "${CMAKE_BINARY_DIR}/create-checksums.sh" "test -f wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.${ext} && ${sha1sum} wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.${ext} >> checksums-sha1.txt\n")
     file(APPEND "${CMAKE_BINARY_DIR}/create-checksums.sh" "test -f wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.${ext} && ${sha256sum} wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.${ext} >> checksums-sha256.txt\n")
     file(APPEND "${CMAKE_BINARY_DIR}/create-checksums.sh" "test -f wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.${ext} && ${sha512sum} wxmaxima-${VERSION}-${CMAKE_SYSTEM_NAME}.${ext} >> checksums-sha512.txt\n")
-endforeach(ext)
+endforeach()
 
 # create checksums for source packages
 # "make package_source" must be run before "make checksums" to get them.
@@ -120,10 +120,10 @@ foreach(ext "tar.gz" "tar.bz2" "tar.xz" "tar.Z")
     file(APPEND "${CMAKE_BINARY_DIR}/create-checksums.sh" "test -f wxmaxima-${VERSION}.${ext} && ${sha1sum} wxmaxima-${VERSION}.${ext} >> checksums-sha1.txt\n")
     file(APPEND "${CMAKE_BINARY_DIR}/create-checksums.sh" "test -f wxmaxima-${VERSION}.${ext} && ${sha256sum} wxmaxima-${VERSION}.${ext} >> checksums-sha256.txt\n")
     file(APPEND "${CMAKE_BINARY_DIR}/create-checksums.sh" "test -f wxmaxima-${VERSION}.${ext} && ${sha512sum} wxmaxima-${VERSION}.${ext} >> checksums-sha512.txt\n")
-endforeach(ext)
+endforeach()
 file(APPEND "${CMAKE_BINARY_DIR}/create-checksums.sh" "exit 0\n")
 
 add_custom_target(checksums COMMAND chmod +x ${CMAKE_BINARY_DIR}/create-checksums.sh
-			    COMMAND ${CMAKE_BINARY_DIR}/create-checksums.sh)
+                            COMMAND ${CMAKE_BINARY_DIR}/create-checksums.sh)
 
 include(CPack)
