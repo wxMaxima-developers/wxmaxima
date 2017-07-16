@@ -303,39 +303,39 @@ void IntCell::Draw(wxPoint point, int fontsize)
         sign.y + (m_signSize + 1) / 2 - (3 * m_charHeight) / 2);
       }
 #else
-      SetPen();
+      SetPen(1.5);
       // top decoration
       int m_signWCenter = m_signWidth / 2;
       dc.DrawLine(sign.x + m_signWCenter,
-                  sign.y - (m_signSize + 1) / 2 + Scale_Px(12, scale) - 1,
+                  sign.y - (m_signSize + 1) / 2 + Scale_Px(13, scale),
                   sign.x + m_signWCenter + Scale_Px(3, scale),
-                  sign.y - (m_signSize + 1) / 2 + Scale_Px(3, scale));
+                  sign.y - (m_signSize + 1) / 2 + Scale_Px(4, scale));
       dc.DrawLine(sign.x + m_signWCenter + Scale_Px(3, scale),
-                  sign.y - (m_signSize + 1) / 2 + Scale_Px(3, scale),
+                  sign.y - (m_signSize + 1) / 2 + Scale_Px(4, scale),
                   sign.x + m_signWCenter + Scale_Px(6, scale),
-                  sign.y - (m_signSize + 1) / 2);
+                  sign.y - (m_signSize + 1) / 2 + Scale_Px(2, scale));
       dc.DrawLine(sign.x + m_signWCenter + Scale_Px(6, scale),
-                  sign.y - (m_signSize + 1) / 2,
+                  sign.y - (m_signSize + 1) / 2 + Scale_Px(2, scale),
                   sign.x + m_signWCenter + Scale_Px(9, scale),
-                  sign.y - (m_signSize + 1) / 2 + Scale_Px(3, scale));
+                  sign.y - (m_signSize + 1) / 2 + Scale_Px(4, scale));
       // bottom decoration
       dc.DrawLine(sign.x + m_signWCenter,
-                  sign.y + (m_signSize + 1) / 2 - Scale_Px(12, scale) + 1,
+                  sign.y + (m_signSize + 1) / 2 - Scale_Px(14, scale),
                   sign.x + m_signWCenter - Scale_Px(3, scale),
-                  sign.y + (m_signSize + 1) / 2 - Scale_Px(3, scale));
+                  sign.y + (m_signSize + 1) / 2 - Scale_Px(5, scale));
       dc.DrawLine(sign.x + m_signWCenter - Scale_Px(3, scale),
-                  sign.y + (m_signSize + 1) / 2 - Scale_Px(3, scale),
+                  sign.y + (m_signSize + 1) / 2 - Scale_Px(5, scale),
                   sign.x + m_signWCenter - Scale_Px(6, scale),
-                  sign.y + (m_signSize + 1) / 2);
-      dc.DrawLine(sign.x + m_signWCenter - Scale_Px(6, scale),
-                  sign.y + (m_signSize + 1) / 2,
-                  sign.x + m_signWCenter - Scale_Px(9, scale),
                   sign.y + (m_signSize + 1) / 2 - Scale_Px(3, scale));
+      dc.DrawLine(sign.x + m_signWCenter - Scale_Px(6, scale),
+                  sign.y + (m_signSize + 1) / 2 - Scale_Px(3, scale),
+                  sign.x + m_signWCenter - Scale_Px(9, scale),
+                  sign.y + (m_signSize + 1) / 2 - Scale_Px(5, scale));
       // line
       dc.DrawLine(sign.x + m_signWCenter,
-                  sign.y - (m_signSize + 1) / 2 + Scale_Px(12, scale) - 1,
+                  sign.y - (m_signSize + 1) / 2 + Scale_Px(13, scale),
                   sign.x + m_signWCenter,
-                  sign.y + (m_signSize + 1) / 2 - Scale_Px(12, scale) + 1);
+                  sign.y + (m_signSize + 1) / 2 - Scale_Px(14, scale));
       UnsetPen();
 #endif
     }

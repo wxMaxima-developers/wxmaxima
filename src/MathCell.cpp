@@ -1103,23 +1103,23 @@ void MathCell::UnbreakList()
 /*!
   Set the pen in device context according to the style of the cell.
 */
-void MathCell::SetPen()
+void MathCell::SetPen(double lineWidth)
 {
   Configuration *configuration = (*m_configuration);
   wxDC &dc = configuration->GetDC();
 
   if (m_highlight)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_HIGHLIGHT),
-                                              configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
+                                              lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
   else if (m_type == MC_TYPE_PROMPT)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_OTHER_PROMPT),
-                                              configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
+                                              lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
   else if (m_type == MC_TYPE_INPUT)
     dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_INPUT),
-                                              configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
+                                              lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
   else
     dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_DEFAULT),
-                                              configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
+                                              lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
 }
 
 /***

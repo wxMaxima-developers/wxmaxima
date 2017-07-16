@@ -30,7 +30,7 @@
 #include <wx/artprov.h>
 #include <wx/filename.h>
 
-wxBitmap ToolBar::GetImage(wxString name)
+wxImage ToolBar::GetImage(wxString name)
 {
   wxBitmap bmp = wxArtProvider::GetBitmap(name,wxART_TOOLBAR);
   

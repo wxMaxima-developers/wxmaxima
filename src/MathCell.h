@@ -418,7 +418,7 @@ public:
   int GetStyle()
   { return m_textStyle; }  //l'ho aggiunto io
 
-  void SetPen();
+  void SetPen(double lineWidth = 1.0);
 
   //! Mark this cell as highlighted (e.G. being in a maxima box)
   void SetHighlight(bool highlight)

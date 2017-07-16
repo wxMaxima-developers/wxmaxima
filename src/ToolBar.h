@@ -46,14 +46,8 @@ public:
     Stopped, //!< The animation is stopped
     Inactive //!< No animation is currently running
   };
-
-#if defined __WXGTK__
-  wxBitmap GetImage(wxString img);
-#else
-
+  
   wxImage GetImage(wxString img);
-
-#endif
 
   ToolBar(wxToolBar *tbar);
 

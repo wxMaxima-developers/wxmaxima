@@ -205,7 +205,7 @@ void SumCell::Draw(wxPoint point, int fontsize)
     }
     else
     {
-      SetPen();
+      SetPen(1.5);
       if (m_sumStyle == SM_SUM)
       {
         //DRAW SUM SIGN
