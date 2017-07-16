@@ -97,8 +97,14 @@ int ConfigDialogue::GetImageWidth()
 
 wxImage ConfigDialogue::GetImage(wxString name)
 {
-  Dirstructure dirstruct;
-  wxImage img(dirstruct.ConfigArtDir() + wxT("/") + name);
+  wxImage img;
+  img = wxArtProvider::GetBitmap(name,wxART_TOOLBAR).ConvertToImage();
+  
+  if(!img.IsOk())
+  {
+    Dirstructure dirstruct;
+    img = wxImage(dirstruct.ConfigArtDir() + wxT("/") + name);
+  }
 
   // We want to scale the images according to the display's resolution.
   // But we want to do so in discrete steps as scaling bitmaps by odd
