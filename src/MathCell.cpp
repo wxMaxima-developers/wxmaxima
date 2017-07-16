@@ -315,6 +315,7 @@ void MathCell::DrawList(wxPoint point, int fontsize)
     tmp->Draw(point, fontsize);
     double scale = configuration->GetScale();
     point.x += tmp->m_width + Scale_Px(MC_CELL_SKIP, scale);
+    wxASSERT(tmp != tmp->m_nextToDraw);
     tmp = tmp->m_nextToDraw;
   }
 }
