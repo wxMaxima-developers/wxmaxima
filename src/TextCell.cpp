@@ -320,7 +320,7 @@ void TextCell::RecalculateWidths(int fontsize)
       wxFont font(dc.GetFont());
       while ((m_labelWidth >= m_width) && (m_fontSizeLabel > 2))
       {
-        int fontsize1 = SCALE_PX(--m_fontSizeLabel, scale);
+        int fontsize1 = Scale_Px(--m_fontSizeLabel, scale);
         font.SetPointSize(fontsize1);
         dc.SetFont(font);
         dc.GetTextExtent(text, &m_labelWidth, &m_labelHeight);
@@ -353,8 +353,8 @@ void TextCell::RecalculateWidths(int fontsize)
     else
       dc.GetTextExtent(m_displayedText, &m_width, &m_height);
 
-    m_width = m_width + 2 * SCALE_PX(MC_TEXT_PADDING, scale);
-    m_height = m_height + 2 * SCALE_PX(MC_TEXT_PADDING, scale);
+    m_width = m_width + 2 * Scale_Px(MC_TEXT_PADDING, scale);
+    m_height = m_height + 2 * Scale_Px(MC_TEXT_PADDING, scale);
 
     /// Hidden cells (multiplication * is not displayed)
     if (m_isHidden)
@@ -398,12 +398,12 @@ void TextCell::Draw(wxPoint point, int fontsize)
             wxString text = m_userDefinedLabel;
             m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
             dc.DrawText(wxT("(") + text + wxT(")"),
-                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                        point.x + Scale_Px(MC_TEXT_PADDING, scale),
                         point.y - m_realCenter + (m_height - m_labelHeight) / 2);
           }
           else
             dc.DrawText(m_displayedText,
-                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
+                        point.x + Scale_Px(MC_TEXT_PADDING, scale),
                         point.y - m_realCenter + (m_height - m_labelHeight) / 2);            
         }
       }
@@ -411,26 +411,26 @@ void TextCell::Draw(wxPoint point, int fontsize)
         /// Check if we are using jsMath and have jsMath character
       else if (m_altJs && configuration->CheckTeXFonts())
         dc.DrawText(m_altJsText,
-                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+                    point.x + Scale_Px(MC_TEXT_PADDING, scale),
+                    point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING, scale));
 
         /// We are using a special symbol
       else if (m_alt)
         dc.DrawText(m_altText,
-                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+                    point.x + Scale_Px(MC_TEXT_PADDING, scale),
+                    point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING, scale));
 
         /// Change asterisk
       else if (configuration->GetChangeAsterisk() && m_displayedText == wxT("*"))
         dc.DrawText(wxT("\xB7"),
-                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+                    point.x + Scale_Px(MC_TEXT_PADDING, scale),
+                    point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING, scale));
 
 #if wxUSE_UNICODE
       else if (m_displayedText == wxT("#"))
         dc.DrawText(wxT("\x2260"),
-                    point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                    point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+                    point.x + Scale_Px(MC_TEXT_PADDING, scale),
+                    point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING, scale));
 #endif
         /// This is the default.
       else
@@ -440,16 +440,16 @@ void TextCell::Draw(wxPoint point, int fontsize)
           case MC_TYPE_TEXT:
             // TODO: Add markdown formatting for bold, italic and underlined here.
             dc.DrawText(m_displayedText,
-                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                        point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+                        point.x + Scale_Px(MC_TEXT_PADDING, scale),
+                        point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING, scale));
             break;
           case MC_TYPE_INPUT:
             // This cell has already been drawn as an EditorCell => we don't repeat this action here.
             break;
           default:
             dc.DrawText(m_displayedText,
-                        point.x + SCALE_PX(MC_TEXT_PADDING, scale),
-                        point.y - m_realCenter + SCALE_PX(MC_TEXT_PADDING, scale));
+                        point.x + Scale_Px(MC_TEXT_PADDING, scale),
+                        point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING, scale));
         }
       }
     }
@@ -459,7 +459,7 @@ void TextCell::Draw(wxPoint point, int fontsize)
 void TextCell::SetFontSizeForLabel(wxDC &dc, double scale)
 {
   wxFont font(dc.GetFont());
-  int fontsize1 = SCALE_PX(m_fontSizeLabel, scale);
+  int fontsize1 = Scale_Px(m_fontSizeLabel, scale);
   font.SetPointSize(fontsize1);
   dc.SetFont(font);
 }

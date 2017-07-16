@@ -93,7 +93,7 @@ void AtCell::RecalculateWidths(int fontsize)
   m_baseCell->RecalculateWidthsList(fontsize);
   m_indexCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 4));
   m_width = m_baseCell->GetFullWidth(scale) + m_indexCell->GetFullWidth(scale) +
-            SCALE_PX(4, scale);
+            Scale_Px(4, scale);
   ResetData();
 }
 
@@ -104,7 +104,7 @@ void AtCell::RecalculateHeight(int fontsize)
   m_baseCell->RecalculateHeightList(fontsize);
   m_indexCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 3));
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
-             SCALE_PX(7, scale);
+             Scale_Px(7, scale);
   m_center = m_baseCell->GetCenter();
 }
 
@@ -123,14 +123,14 @@ void AtCell::Draw(wxPoint point, int fontsize)
     bs.y = point.y;
     m_baseCell->DrawList(bs, fontsize);
 
-    in.x = point.x + m_baseCell->GetFullWidth(scale) + SCALE_PX(4, scale);
+    in.x = point.x + m_baseCell->GetFullWidth(scale) + Scale_Px(4, scale);
     in.y = point.y + m_baseCell->GetMaxDrop() +
-           +m_indexCell->GetMaxCenter() - SCALE_PX(7, scale);
+           +m_indexCell->GetMaxCenter() - Scale_Px(7, scale);
     m_indexCell->DrawList(in, MAX(MC_MIN_SIZE, fontsize - 3));
     SetPen();
-    dc.DrawLine(in.x - SCALE_PX(2, scale),
+    dc.DrawLine(in.x - Scale_Px(2, scale),
                 bs.y - m_baseCell->GetMaxCenter(),
-                in.x - SCALE_PX(2, scale),
+                in.x - Scale_Px(2, scale),
                 in.y);
     UnsetPen();
   }

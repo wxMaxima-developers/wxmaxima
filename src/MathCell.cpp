@@ -257,11 +257,11 @@ int MathCell::GetFullWidth(double scale)
     // We begin this calculation with a negative offset since the full width of only a single
     // cell doesn't contain the space that separates two cells - that is automatically added
     // to every cell in the next step.
-    m_fullWidth = -SCALE_PX(MC_CELL_SKIP, scale);
+    m_fullWidth = -Scale_Px(MC_CELL_SKIP, scale);
     while (tmp != NULL)
     {
       m_fullWidth += tmp->m_width;
-      tmp = tmp->m_next + SCALE_PX(MC_CELL_SKIP, scale);
+      tmp = tmp->m_next + Scale_Px(MC_CELL_SKIP, scale);
     }
   }
   return m_fullWidth;
@@ -280,7 +280,7 @@ int MathCell::GetLineWidth(double scale)
     while(tmp != NULL)
     {      
       width += tmp->m_width;
-      width += SCALE_PX(MC_CELL_SKIP, scale);
+      width += Scale_Px(MC_CELL_SKIP, scale);
       
       if (width > m_lineWidth)
         m_lineWidth = width;
@@ -314,7 +314,7 @@ void MathCell::DrawList(wxPoint point, int fontsize)
   {
     tmp->Draw(point, fontsize);
     double scale = configuration->GetScale();
-    point.x += tmp->m_width + SCALE_PX(MC_CELL_SKIP, scale);
+    point.x += tmp->m_width + Scale_Px(MC_CELL_SKIP, scale);
     tmp = tmp->m_nextToDraw;
   }
 }

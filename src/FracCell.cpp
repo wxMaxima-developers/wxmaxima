@@ -193,8 +193,8 @@ void FracCell::RecalculateHeight(int fontsize)
   if (!m_exponent)
   {
     m_height = m_num->GetMaxHeight() + m_denom->GetMaxHeight() +
-               SCALE_PX(4, scale);
-    m_center = m_num->GetMaxHeight() + SCALE_PX(2, scale);
+               Scale_Px(4, scale);
+    m_center = m_num->GetMaxHeight() + Scale_Px(2, scale);
   }
   else
   {
@@ -233,25 +233,25 @@ void FracCell::Draw(wxPoint point, int fontsize)
       m_num->DrawList(num, fontsize);
       m_denom->DrawList(denom, fontsize);
 
-      int fontsize1 = SCALE_PX(fontsize, scale);
+      int fontsize1 = Scale_Px(fontsize, scale);
       dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                         wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                         configuration->GetFontName(TS_VARIABLE)));
       dc.DrawText(wxT("/"),
                   point.x + m_num->GetFullWidth(scale),
-                  point.y - m_num->GetMaxCenter() + SCALE_PX(MC_TEXT_PADDING, scale));
+                  point.y - m_num->GetMaxCenter() + Scale_Px(MC_TEXT_PADDING, scale));
     }
     else
     {
       num.x = point.x + m_horizontalGapLeft +
               (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_num->GetFullWidth(scale)) / 2;
       num.y = point.y - m_num->GetMaxHeight() + m_num->GetMaxCenter() -
-              SCALE_PX(2, scale);
+              Scale_Px(2, scale);
       m_num->DrawList(num, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
 
       denom.x = point.x + m_horizontalGapLeft +
                 (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_denom->GetFullWidth(scale)) / 2;
-      denom.y = point.y + m_denom->GetMaxCenter() + SCALE_PX(2, scale);
+      denom.y = point.y + m_denom->GetMaxCenter() + Scale_Px(2, scale);
       m_denom->DrawList(denom, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
       SetPen();
       if (m_fracStyle != FC_CHOOSE)

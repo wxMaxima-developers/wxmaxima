@@ -94,7 +94,7 @@ void FunCell::RecalculateWidths(int fontsize)
   m_argCell->RecalculateWidthsList(fontsize);
   m_nameCell->RecalculateWidthsList(fontsize);
   m_width = m_nameCell->GetFullWidth(scale) + m_argCell->GetFullWidth(scale) -
-            SCALE_PX(1, scale);
+            Scale_Px(1, scale);
   ResetData();
 }
 
@@ -117,7 +117,7 @@ void FunCell::Draw(wxPoint point, int fontsize)
     wxPoint name(point), arg(point);
     m_nameCell->DrawList(name, fontsize);
 
-    arg.x += m_nameCell->GetFullWidth(scale) - SCALE_PX(1, scale);
+    arg.x += m_nameCell->GetFullWidth(scale) - Scale_Px(1, scale);
     m_argCell->DrawList(arg, fontsize);
   }
 }

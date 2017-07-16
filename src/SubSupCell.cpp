@@ -116,7 +116,7 @@ void SubSupCell::RecalculateWidths(int fontsize)
   m_exptCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
   m_width = m_baseCell->GetFullWidth(scale) +
             MAX(m_indexCell->GetFullWidth(scale), m_exptCell->GetFullWidth(scale)) -
-            SCALE_PX(2, configuration->GetScale());
+            Scale_Px(2, configuration->GetScale());
   ResetData();
 }
 
@@ -131,10 +131,10 @@ void SubSupCell::RecalculateHeight(int fontsize)
 
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() +
              m_exptCell->GetMaxHeight() -
-             2 * SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, configuration->GetScale());
+             2 * Scale_Px((8 * fontsize) / 10 + MC_EXP_INDENT, configuration->GetScale());
 
   m_center = m_exptCell->GetMaxHeight() + m_baseCell->GetMaxCenter() -
-             SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
+             Scale_Px((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
 }
 
 void SubSupCell::Draw(wxPoint point, int fontsize)
@@ -150,15 +150,15 @@ void SubSupCell::Draw(wxPoint point, int fontsize)
     bs.y = point.y;
     m_baseCell->DrawList(bs, fontsize);
 
-    in.x = point.x + m_baseCell->GetFullWidth(scale) - SCALE_PX(2, scale);
+    in.x = point.x + m_baseCell->GetFullWidth(scale) - Scale_Px(2, scale);
     in.y = point.y + m_baseCell->GetMaxDrop() +
            m_indexCell->GetMaxCenter() -
-           SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
+           Scale_Px((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
     m_indexCell->DrawList(in, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
 
     in.y = point.y - m_baseCell->GetMaxCenter() - m_exptCell->GetMaxHeight()
            + m_exptCell->GetMaxCenter() +
-           SCALE_PX((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
+           Scale_Px((8 * fontsize) / 10 + MC_EXP_INDENT, scale);
     m_exptCell->DrawList(in, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
   }
 }

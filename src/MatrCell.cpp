@@ -125,10 +125,10 @@ void MatrCell::RecalculateWidths(int fontsize)
   m_width = 0;
   for (int i = 0; i < m_matWidth; i++)
   {
-    m_width += (m_widths[i] + SCALE_PX(10, scale));
+    m_width += (m_widths[i] + Scale_Px(10, scale));
   }
-  if (m_width < SCALE_PX(14, scale))
-    m_width = SCALE_PX(14, scale);
+  if (m_width < Scale_Px(14, scale))
+    m_width = Scale_Px(14, scale);
   ResetData();
 }
 
@@ -156,10 +156,10 @@ void MatrCell::RecalculateHeight(int fontsize)
   m_height = 0;
   for (int i = 0; i < m_matHeight; i++)
   {
-    m_height += (m_centers[i] + m_drops[i] + SCALE_PX(10, scale));
+    m_height += (m_centers[i] + m_drops[i] + Scale_Px(10, scale));
   }
   if (m_height == 0)
-    m_height = fontsize + SCALE_PX(10, scale);
+    m_height = fontsize + Scale_Px(10, scale);
   m_center = m_height / 2;
 }
 
@@ -172,71 +172,71 @@ void MatrCell::Draw(wxPoint point, int fontsize)
     wxDC &dc = configuration->GetDC();
     double scale = configuration->GetScale();
     wxPoint mp;
-    mp.x = point.x + SCALE_PX(5, scale);
+    mp.x = point.x + Scale_Px(5, scale);
     mp.y = point.y - m_center;
     for (int i = 0; i < m_matWidth; i++)
     {
-      mp.y = point.y - m_center + SCALE_PX(5, scale);
+      mp.y = point.y - m_center + Scale_Px(5, scale);
       for (int j = 0; j < m_matHeight; j++)
       {
         mp.y += m_centers[j];
         wxPoint mp1(mp);
         mp1.x = mp.x + (m_widths[i] - m_cells[j * m_matWidth + i]->GetFullWidth(scale)) / 2;
         m_cells[j * m_matWidth + i]->DrawList(mp1, MAX(MC_MIN_SIZE, fontsize - 2));
-        mp.y += (m_drops[j] + SCALE_PX(10, scale));
+        mp.y += (m_drops[j] + Scale_Px(10, scale));
       }
-      mp.x += (m_widths[i] + SCALE_PX(10, scale));
+      mp.x += (m_widths[i] + Scale_Px(10, scale));
     }
     SetPen();
     if (m_specialMatrix)
     {
       if (m_inferenceMatrix)
-        dc.DrawLine(point.x + SCALE_PX(1, scale),
-                    point.y - m_center + SCALE_PX(2, scale),
-                    point.x + SCALE_PX(1, scale),
-                    point.y + m_center - SCALE_PX(2, scale));
+        dc.DrawLine(point.x + Scale_Px(1, scale),
+                    point.y - m_center + Scale_Px(2, scale),
+                    point.x + Scale_Px(1, scale),
+                    point.y + m_center - Scale_Px(2, scale));
       else
       {
         if (m_rowNames)
-          dc.DrawLine(point.x + m_widths[0] + 2 * SCALE_PX(5, scale),
-                      point.y - m_center + SCALE_PX(2, scale),
-                      point.x + m_widths[0] + 2 * SCALE_PX(5, scale),
-                      point.y + m_center - SCALE_PX(2, scale));
+          dc.DrawLine(point.x + m_widths[0] + 2 * Scale_Px(5, scale),
+                      point.y - m_center + Scale_Px(2, scale),
+                      point.x + m_widths[0] + 2 * Scale_Px(5, scale),
+                      point.y + m_center - Scale_Px(2, scale));
         if (m_colNames)
-          dc.DrawLine(point.x + SCALE_PX(1, scale),
-                      point.y - m_center + m_centers[0] + m_drops[0] + 2 * SCALE_PX(5, scale),
-                      point.x + SCALE_PX(1, scale) + m_width,
-                      point.y - m_center + m_centers[0] + m_drops[0] + 2 * SCALE_PX(5, scale));
+          dc.DrawLine(point.x + Scale_Px(1, scale),
+                      point.y - m_center + m_centers[0] + m_drops[0] + 2 * Scale_Px(5, scale),
+                      point.x + Scale_Px(1, scale) + m_width,
+                      point.y - m_center + m_centers[0] + m_drops[0] + 2 * Scale_Px(5, scale));
       }
     }
     else
     {
       // left bracket
-      dc.DrawLine(point.x + SCALE_PX(5, scale),
-                  point.y - m_center + SCALE_PX(2, scale),
-                  point.x + SCALE_PX(1, scale),
-                  point.y - m_center + SCALE_PX(2, scale));
-      dc.DrawLine(point.x + SCALE_PX(1, scale),
-                  point.y - m_center + SCALE_PX(2, scale),
-                  point.x + SCALE_PX(1, scale),
-                  point.y + m_center - SCALE_PX(2, scale));
-      dc.DrawLine(point.x + SCALE_PX(1, scale),
-                  point.y + m_center - SCALE_PX(2, scale),
-                  point.x + SCALE_PX(5, scale),
-                  point.y + m_center - SCALE_PX(2, scale));
+      dc.DrawLine(point.x + Scale_Px(5, scale),
+                  point.y - m_center + Scale_Px(2, scale),
+                  point.x + Scale_Px(1, scale),
+                  point.y - m_center + Scale_Px(2, scale));
+      dc.DrawLine(point.x + Scale_Px(1, scale),
+                  point.y - m_center + Scale_Px(2, scale),
+                  point.x + Scale_Px(1, scale),
+                  point.y + m_center - Scale_Px(2, scale));
+      dc.DrawLine(point.x + Scale_Px(1, scale),
+                  point.y + m_center - Scale_Px(2, scale),
+                  point.x + Scale_Px(5, scale),
+                  point.y + m_center - Scale_Px(2, scale));
       // right bracket
-      dc.DrawLine(point.x + m_width - SCALE_PX(5, scale) - 1,
-                  point.y - m_center + SCALE_PX(2, scale),
-                  point.x + m_width - SCALE_PX(1, scale) - 1,
-                  point.y - m_center + SCALE_PX(2, scale));
-      dc.DrawLine(point.x + m_width - SCALE_PX(1, scale) - 1,
-                  point.y - m_center + SCALE_PX(2, scale),
-                  point.x + m_width - SCALE_PX(1, scale) - 1,
-                  point.y + m_center - SCALE_PX(2, scale));
-      dc.DrawLine(point.x + m_width - SCALE_PX(1, scale) - 1,
-                  point.y + m_center - SCALE_PX(2, scale),
-                  point.x + m_width - SCALE_PX(5, scale) - 1,
-                  point.y + m_center - SCALE_PX(2, scale));
+      dc.DrawLine(point.x + m_width - Scale_Px(5, scale) - 1,
+                  point.y - m_center + Scale_Px(2, scale),
+                  point.x + m_width - Scale_Px(1, scale) - 1,
+                  point.y - m_center + Scale_Px(2, scale));
+      dc.DrawLine(point.x + m_width - Scale_Px(1, scale) - 1,
+                  point.y - m_center + Scale_Px(2, scale),
+                  point.x + m_width - Scale_Px(1, scale) - 1,
+                  point.y + m_center - Scale_Px(2, scale));
+      dc.DrawLine(point.x + m_width - Scale_Px(1, scale) - 1,
+                  point.y + m_center - Scale_Px(2, scale),
+                  point.x + m_width - Scale_Px(5, scale) - 1,
+                  point.y + m_center - Scale_Px(2, scale));
     }
     UnsetPen();
   }

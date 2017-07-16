@@ -182,7 +182,7 @@ wxFont Configuration::GetFont(int textStyle, int fontSize)
   
   
   // The font size scales with the worksheet
-  int fontSize1 = SCALE_PX(fontSize,GetScale());
+  int fontSize1 = MathCell::Scale_Px(fontSize,GetScale());
   
   fontName = GetFontName(textStyle);
   fontStyle = IsItalic(textStyle);

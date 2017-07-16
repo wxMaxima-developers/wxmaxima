@@ -29,7 +29,6 @@
 
 #define MAX(a, b) ((a)>(b) ? (a) : (b))
 #define MIN(a, b) ((a)>(b) ? (b) : (a))
-#define SCALE_PX(px, scale) ((int)((double)((px)*(scale)) + 0.5))
 
 #include <wx/wx.h>
 #include <wx/xml/xml.h>
@@ -91,6 +90,9 @@ class MathCell
 {
 public:
   MathCell(MathCell *parent, Configuration **config);
+
+  //! Scale font sizes and line widths for displaying/printing
+  static int Scale_Px(double px, double scale){return (int)(px*scale + 0.5); }
 
   wxString m_toolTip;
 

@@ -84,7 +84,7 @@ bool MathPrintout::OnPrintPage(int num)
   double scale = GetPPIScale();
 
   configuration.SetClientWidth(pageWidth - 2 * marginX
-                               - SCALE_PX((*m_configuration)->GetBaseIndent(), scale));
+                               - MathCell::Scale_Px((*m_configuration)->GetBaseIndent(), scale));
   configuration.SetClientHeight(pageHeight - 2 * marginY);
 
   configuration.SetIndent(marginX);
@@ -92,7 +92,7 @@ bool MathPrintout::OnPrintPage(int num)
   configuration.SetPrinter(true);
   // Make sure that during print nothing is outside the crop rectangle
 
-  marginX += SCALE_PX((*m_configuration)->GetBaseIndent(), ppiScale);
+  marginX += MathCell::Scale_Px((*m_configuration)->GetBaseIndent(), ppiScale);
 
   GetScreenScale(&screenScaleX, &screenScaleY);
   dc->SetUserScale(screenScaleX, screenScaleY);
@@ -131,7 +131,7 @@ bool MathPrintout::OnPrintPage(int num)
       {
         point.x = marginX;
         point.y += drop + tmp->m_next->GetMaxCenter();
-        point.y += SCALE_PX((*m_configuration)->GetGroupSkip(), ppiScale);
+        point.y += MathCell::Scale_Px((*m_configuration)->GetGroupSkip(), ppiScale);
         drop = tmp->m_next->GetMaxDrop();
       }
 
@@ -170,7 +170,7 @@ void MathPrintout::BreakPages()
   GetPageSizePixels(&pageWidth, &pageHeight);
 
   int currentHeight = marginY;
-  int skip = SCALE_PX((*m_configuration)->GetGroupSkip(), scale);;
+  int skip = MathCell::Scale_Px((*m_configuration)->GetGroupSkip(), scale);;
 
   GroupCell *tmp = dynamic_cast<GroupCell *>(m_tree);
   m_pages.push_back(tmp);
@@ -223,8 +223,8 @@ void MathPrintout::GetPageMargins(int *horizontal, int *vertical)
 {
   double scale = GetPPIScale();
 
-  *horizontal = (int) (SCALE_PX(PRINT_MARGIN_HORIZONTAL, scale) * 10);
-  *vertical = (int) (SCALE_PX(PRINT_MARGIN_VERTICAL, scale) * 10);
+  *horizontal = (int) (MathCell::Scale_Px(PRINT_MARGIN_HORIZONTAL, scale) * 10);
+  *vertical = (int) (MathCell::Scale_Px(PRINT_MARGIN_VERTICAL, scale) * 10);
 }
 
 int MathPrintout::GetHeaderHeight()
@@ -233,9 +233,9 @@ int MathPrintout::GetHeaderHeight()
   double ppiScale = GetPPIScale();
   int width, height;
 
-  dc->SetFont(wxFont(SCALE_PX(10, ppiScale), wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
+  dc->SetFont(wxFont(MathCell::Scale_Px(10, ppiScale), wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
   dc->GetTextExtent(GetTitle(), &width, &height);
-  return height + SCALE_PX(12, ppiScale);
+  return height + MathCell::Scale_Px(12, ppiScale);
 }
 
 void MathPrintout::PrintHeader(int pageNum, wxDC *dc, double scale)
@@ -251,7 +251,7 @@ void MathPrintout::PrintHeader(int pageNum, wxDC *dc, double scale)
   dc->SetTextForeground(wxColour(wxT("grey")));
   dc->SetPen(wxPen(wxT("light grey"), 1, wxPENSTYLE_SOLID));
 
-  dc->SetFont(wxFont(SCALE_PX(10, scale), wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
+  dc->SetFont(wxFont(MathCell::Scale_Px(10, scale), wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
   dc->GetTextExtent(GetTitle(), &title_width, &title_height);
   wxString page = wxString::Format(wxT("%d / %d"), pageNum, m_numberOfPages);
   dc->GetTextExtent(page, &page_width, &page_height);
@@ -259,8 +259,8 @@ void MathPrintout::PrintHeader(int pageNum, wxDC *dc, double scale)
   dc->DrawText(GetTitle(), marginX, marginY);
   dc->DrawText(page, pageWidth - page_width - marginX, marginY);
 
-  dc->DrawLine(marginX, marginY + title_height + SCALE_PX(3, scale),
-               pageWidth - marginX, marginY + title_height + SCALE_PX(3, scale));
+  dc->DrawLine(marginX, marginY + title_height + MathCell::Scale_Px(3, scale),
+               pageWidth - marginX, marginY + title_height + MathCell::Scale_Px(3, scale));
 
   dc->SetTextForeground(wxColour(wxT("black")));
   dc->SetPen(wxPen(wxT("black"), 1, wxPENSTYLE_SOLID));
@@ -287,11 +287,11 @@ void MathPrintout::Recalculate()
   int scale = configuration.GetScale();
 
   configuration.SetClientWidth(pageWidth - 2 * marginX
-                               - SCALE_PX((*m_configuration)->GetBaseIndent(), scale));
+                               - MathCell::Scale_Px((*m_configuration)->GetBaseIndent(), scale));
   configuration.SetClientHeight(pageHeight - 2 * marginY);
 
   configuration.SetCanvasSize(wxSize(pageWidth - marginX, pageHeight - marginY));
-  marginX += SCALE_PX(configuration.GetBaseIndent(), scale);
+  marginX += MathCell::Scale_Px(configuration.GetBaseIndent(), scale);
   configuration.SetIndent(marginX);
   configuration.SetPrinter(true);
   MathCell::ClipToDrawRegion(false);
