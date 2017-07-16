@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-12 20:37+0200\n"
+"POT-Creation-Date: 2017-07-16 20:58+0200\n"
 "PO-Revision-Date: 2017-06-17 16:30+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -512,8 +512,8 @@ msgstr "Додаткові параметри для maxima"
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "Додаткові символи для бічної панелі «символи»:"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:202
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:249
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:207
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:254
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -1122,7 +1122,7 @@ msgstr "Завершити слово\tCtrl+K"
 msgid "Complete word"
 msgstr "Завершити слово"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:159
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:164
 msgid "Completely stop maxima and restart it"
 msgstr "Повністю зупинити і перезапустити maxima"
 
@@ -1174,7 +1174,7 @@ msgstr "Файл налаштувань (*.ini)|*.ini"
 msgid "Configuration warning"
 msgstr "Попередження щодо налаштувань"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:132
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:137
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:515
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:518
 msgid "Configure wxMaxima"
@@ -1251,7 +1251,7 @@ msgstr "Перетворювати тригонометричні функції
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1050
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1110
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1168
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:139
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:144
 msgid "Copy"
 msgstr "Копіювати"
 
@@ -1306,7 +1306,7 @@ msgstr "Копіювати як текст\tCtrl+Shift+C"
 msgid "Copy as plain text"
 msgstr "Копіювати як звичайний текст"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:141
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:146
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:476
 msgid "Copy selection"
 msgstr "Копіювати позначене"
@@ -1356,7 +1356,7 @@ msgid "Cursor"
 msgstr "Курсор"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1167
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:136
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:141
 msgid "Cut"
 msgstr "Вирізати"
 
@@ -1364,7 +1364,7 @@ msgstr "Вирізати"
 msgid "Cut\tCtrl+X"
 msgstr "Вирізати\tCtrl+X"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:138
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:143
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:473
 msgid "Cut selection"
 msgstr "Вирізати позначене"
@@ -1852,11 +1852,11 @@ msgstr "Обчислити всі необчислювані (noun) форми �
 msgid "Evaluate all visible cells in the document"
 msgstr "Виконати обчислення у всіх видимих комірках документа"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:171
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:176
 msgid "Evaluate the file from its beginning to the cell above the cursor"
 msgstr "Виконати у файлі обчислення від початку до комірки під курсором"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:169
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:174
 msgid "Evaluate to point"
 msgstr "Обчислити до пункту"
 
@@ -1901,7 +1901,7 @@ msgstr "Розкрити вираз"
 msgid "Expand trigonometric expression"
 msgstr "Розкрити тригонометричний вираз"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:112
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:117
 msgid "Expected the icon files to be found at"
 msgstr "Очікувалося, що файли піктограм можна знайти у"
 
@@ -2044,7 +2044,7 @@ msgstr "Файла, який ви намагалися відкрити, не і
 msgid "File:"
 msgstr "Файл:"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:151
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:156
 msgid "Find"
 msgstr "Знайти"
 
@@ -2088,7 +2088,7 @@ msgstr "Знайти всі корені полінома (підв. точні�
 msgid "Find and Replace"
 msgstr "Знайти і замінити"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:153
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:158
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:500
 msgid "Find and replace"
 msgstr "Знайти і замінити"
@@ -2139,7 +2139,7 @@ msgstr "Згорнути все\tCtrl+Alt+["
 msgid "Fold all sections"
 msgstr "Згорнути усі розділи"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:165
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:170
 msgid "Follow"
 msgstr "Перейти"
 
@@ -2197,7 +2197,7 @@ msgstr ""
 msgid "Format:"
 msgstr "Формат:"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:89
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:94
 #, c-format
 msgid "Frame %i of %i"
 msgstr "Кадр %i з %i"
@@ -2367,7 +2367,7 @@ msgstr ""
 "файл HTML (*.html)|*.html|пакетний файл maxima (*.mac)|*.mac|файл pdfLaTeX "
 "(*.tex)|*.tex"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:213
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:218
 msgid "Help"
 msgstr "Довідка"
 
@@ -2379,7 +2379,7 @@ msgstr "Приховати"
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "Приховати усі панелі інструментів\tAlt+Shift+-"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:210
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:215
 msgid "Hide Code"
 msgstr "Приховати код"
 
@@ -2791,7 +2791,7 @@ msgstr "Проінтегрувати…"
 msgid "Intelligently hide cell brackets"
 msgstr "Розумно приховати дужки комірок"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:160
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:165
 msgid "Interrupt"
 msgstr "Перервати"
 
@@ -2800,7 +2800,7 @@ msgstr "Перервати"
 msgid "Interrupt current computation"
 msgstr "Перервати поточні обчислення"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:162
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:167
 msgid ""
 "Interrupt current computation. To completely restart maxima press the button "
 "left to this one."
@@ -3423,7 +3423,7 @@ msgstr "Назва:"
 msgid "Never"
 msgstr "Ніколи"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:114
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:119
 msgid "New"
 msgstr "Створити"
 
@@ -3432,7 +3432,7 @@ msgstr "Створити"
 msgid "New\tCtrl+N"
 msgstr "Створити\tCtrl+N"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:116
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:121
 msgid "New document"
 msgstr "Новий документ"
 
@@ -3629,7 +3629,7 @@ msgid "Only user-defined labels"
 msgstr "Лише визначені користувачем мітки"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:726
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:118
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:123
 #: /home/gunter/src/wxmaxima/src/main.cpp:384
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3382
 msgid "Open"
@@ -3652,7 +3652,7 @@ msgstr "Відкрити документ"
 msgid "Open a new window"
 msgstr "Відкрити нове вікно"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:120
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:125
 msgid "Open document"
 msgstr "Відкрити документ"
 
@@ -3672,7 +3672,7 @@ msgid "Optimize wxmx files for version control"
 msgstr "Оптимізувати файли wxmx для системи керування версіями"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:152
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:130
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:135
 msgid "Options"
 msgstr "Параметри"
 
@@ -3751,7 +3751,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1150
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1169
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:142
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:147
 msgid "Paste"
 msgstr "Вставити"
 
@@ -3759,7 +3759,7 @@ msgstr "Вставити"
 msgid "Paste\tCtrl+V"
 msgstr "Вставити\tCtrl+V"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:144
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:149
 msgid "Paste from clipboard"
 msgstr "Вставити з буфера"
 
@@ -3909,11 +3909,11 @@ msgstr ""
 msgid "Previous Command\tAlt+Up"
 msgstr "Попередня команда\tAlt+↑"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:127
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:132
 msgid "Print"
 msgstr "Надрукувати"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:129
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:134
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:457
 msgid "Print document"
 msgstr "Надрукувати документ"
@@ -4020,7 +4020,7 @@ msgstr "Повідомити про ваду"
 msgid "Restart Maxima"
 msgstr "Перезапустити Maxima"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:157
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:162
 msgid "Restart maxima"
 msgstr "Перезапустити maxima"
 
@@ -4029,7 +4029,7 @@ msgstr "Перезапустити maxima"
 msgid "Result"
 msgstr "Результат"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:166
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:171
 msgid "Return to the cell that is currently being evaluated"
 msgstr "Повернутися до комірки, у якій виконуються обчислення"
 
@@ -4085,7 +4085,7 @@ msgid "Sample:"
 msgstr "Вибірка:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:868
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:121
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:126
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6937
 msgid "Save"
 msgstr "Зберегти"
@@ -4118,7 +4118,7 @@ msgstr "Зберегти позначене як зображення…"
 msgid "Save animation to file"
 msgstr "Зберегти анімацію до файла"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:123
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:128
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:446
 msgid "Save document"
 msgstr "Зберегти документ"
@@ -4249,8 +4249,8 @@ msgstr "Виберіть підвибірку"
 msgid "Select a constant"
 msgstr "Виберіть сталу"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:145
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:147
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:150
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:152
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:503
 msgid "Select all"
 msgstr "Позначити все"
@@ -4358,7 +4358,7 @@ msgstr "Показати п&ідказку…"
 msgid "Show &Variables"
 msgstr "Показати з&мінні"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:215
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:220
 msgid "Show Maxima help"
 msgstr "Показати довідку з Maxima"
 
@@ -4607,11 +4607,11 @@ msgstr "Почати анімацію"
 msgid "Start a new maxima for each re-evaluation"
 msgstr "Запускати новий екземпляр maxima для кожного повторного обчислення"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:189
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:194
 msgid "Start or Stop animation"
 msgstr "Почати або зупинити анімацію"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:191
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:196
 msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
@@ -5093,7 +5093,7 @@ msgstr "Увімкнути або вимкнути режим повноекра
 msgid "Toggle numeric output"
 msgstr "Увімкнути або вимкнути числове виведення"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:212
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:217
 msgid "Toggle the visibility of code cells"
 msgstr "Увімкнути або вимкнути видимість комірок з кодом"
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxmaxima0.87\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-12 20:37+0200\n"
+"POT-Creation-Date: 2017-07-16 20:58+0200\n"
 "PO-Revision-Date: 2016-10-18 22:57+0900\n"
 "Last-Translator: ARATA Mizuki <minorinoki@gmail.com>\n"
 "Language-Team: Japanese <maxima-discuss@lists.sourceforge.net>\n"
@@ -509,8 +509,8 @@ msgstr "追加パラメーター："
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "「記号」サイドバーへの追加の記号："
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:202
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:249
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:207
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:254
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -1077,7 +1077,7 @@ msgstr "単語補完\tCtrl+K"
 msgid "Complete word"
 msgstr "単語補完"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:159
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:164
 msgid "Completely stop maxima and restart it"
 msgstr ""
 
@@ -1131,7 +1131,7 @@ msgstr "設定ファイル (*.ini)|*.ini"
 msgid "Configuration warning"
 msgstr "設定変更の有効化"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:132
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:137
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:515
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:518
 msgid "Configure wxMaxima"
@@ -1208,7 +1208,7 @@ msgstr "三角関数および双曲線関数を指数関数に変換"
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1050
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1110
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1168
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:139
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:144
 msgid "Copy"
 msgstr "コピー"
 
@@ -1264,7 +1264,7 @@ msgstr "テキストとしてコピー\tCtrl+Shift+C"
 msgid "Copy as plain text"
 msgstr "標準テキストとしてコピー"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:141
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:146
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:476
 msgid "Copy selection"
 msgstr "コピー"
@@ -1311,7 +1311,7 @@ msgid "Cursor"
 msgstr "カーソル"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1167
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:136
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:141
 msgid "Cut"
 msgstr "切り取り"
 
@@ -1319,7 +1319,7 @@ msgstr "切り取り"
 msgid "Cut\tCtrl+X"
 msgstr "切り取り\tCtrl+X"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:138
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:143
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:473
 msgid "Cut selection"
 msgstr "切り取り"
@@ -1808,11 +1808,11 @@ msgstr "'integrateのような未評価の式を評価"
 msgid "Evaluate all visible cells in the document"
 msgstr "ドキュメント内の全てのセルを評価"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:171
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:176
 msgid "Evaluate the file from its beginning to the cell above the cursor"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:169
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:174
 msgid "Evaluate to point"
 msgstr "現在位置より上のセルを再評価"
 
@@ -1857,7 +1857,7 @@ msgstr "展開"
 msgid "Expand trigonometric expression"
 msgstr "三角関数および双曲線関数の展開"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:112
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:117
 msgid "Expected the icon files to be found at"
 msgstr ""
 
@@ -2003,7 +2003,7 @@ msgstr ""
 msgid "File:"
 msgstr "EPS形式で出力："
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:151
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:156
 msgid "Find"
 msgstr "検索"
 
@@ -2047,7 +2047,7 @@ msgstr "方程式の解を浮動小数点で求める"
 msgid "Find and Replace"
 msgstr "検索と置換"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:153
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:158
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:500
 msgid "Find and replace"
 msgstr "検索と置換"
@@ -2100,7 +2100,7 @@ msgstr "全て折りたたむ\tCtrl+Alt+["
 msgid "Fold all sections"
 msgstr "すべてのセクションを折りたたむ"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:165
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:170
 msgid "Follow"
 msgstr ""
 
@@ -2146,7 +2146,7 @@ msgstr ""
 msgid "Format:"
 msgstr "表示方法："
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:89
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:94
 #, c-format
 msgid "Frame %i of %i"
 msgstr ""
@@ -2315,7 +2315,7 @@ msgstr ""
 "HTML ドキュメント (*.html)|*.html|maxima バッチファイル (*.mac)|*.mac|"
 "pdfLaTeX ファイル (*.tex)|*.tex"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:213
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:218
 msgid "Help"
 msgstr "ヘルプ"
 
@@ -2328,7 +2328,7 @@ msgstr "セルの分割"
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "全て隠す\tAlt+Shift+-"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:210
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:215
 #, fuzzy
 msgid "Hide Code"
 msgstr "セルの分割"
@@ -2709,7 +2709,7 @@ msgstr "積分..."
 msgid "Intelligently hide cell brackets"
 msgstr "アクティブセル"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:160
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:165
 msgid "Interrupt"
 msgstr "強制終了"
 
@@ -2718,7 +2718,7 @@ msgstr "強制終了"
 msgid "Interrupt current computation"
 msgstr "処理を強制終了"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:162
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:167
 msgid ""
 "Interrupt current computation. To completely restart maxima press the button "
 "left to this one."
@@ -3255,7 +3255,7 @@ msgstr "変数名："
 msgid "Never"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:114
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:119
 msgid "New"
 msgstr "新規作成"
 
@@ -3264,7 +3264,7 @@ msgstr "新規作成"
 msgid "New\tCtrl+N"
 msgstr "新規作成\tCtrl+N"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:116
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:121
 msgid "New document"
 msgstr "新しいドキュメントの作成"
 
@@ -3450,7 +3450,7 @@ msgid "Only user-defined labels"
 msgstr "ユーザー定義のラベル"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:726
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:118
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:123
 #: /home/gunter/src/wxmaxima/src/main.cpp:384
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3382
 msgid "Open"
@@ -3473,7 +3473,7 @@ msgstr "ドキュメントを開く"
 msgid "Open a new window"
 msgstr "新しいウィンドウを開く"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:120
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:125
 msgid "Open document"
 msgstr "開く"
 
@@ -3493,7 +3493,7 @@ msgid "Optimize wxmx files for version control"
 msgstr "バージョン管理のためにwxmxファイルを最適化する"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:152
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:130
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:135
 msgid "Options"
 msgstr "オプション"
 
@@ -3571,7 +3571,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1150
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1169
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:142
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:147
 msgid "Paste"
 msgstr "貼り付け"
 
@@ -3579,7 +3579,7 @@ msgstr "貼り付け"
 msgid "Paste\tCtrl+V"
 msgstr "貼り付け\tCtrl+V"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:144
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:149
 msgid "Paste from clipboard"
 msgstr "貼り付け"
 
@@ -3726,11 +3726,11 @@ msgstr ""
 msgid "Previous Command\tAlt+Up"
 msgstr "履歴から入力（前）\tAlt+Up"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:127
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:132
 msgid "Print"
 msgstr "印刷"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:129
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:134
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:457
 msgid "Print document"
 msgstr "印刷"
@@ -3837,7 +3837,7 @@ msgstr "バグの報告"
 msgid "Restart Maxima"
 msgstr "ラベル番号をリセット"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:157
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:162
 msgid "Restart maxima"
 msgstr "ラベル番号をリセット"
 
@@ -3846,7 +3846,7 @@ msgstr "ラベル番号をリセット"
 msgid "Result"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:166
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:171
 msgid "Return to the cell that is currently being evaluated"
 msgstr ""
 
@@ -3901,7 +3901,7 @@ msgid "Sample:"
 msgstr "標本（リスト/行ベクトル）："
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:868
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:121
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:126
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6937
 msgid "Save"
 msgstr "設定の保存"
@@ -3934,7 +3934,7 @@ msgstr "選択範囲を画像として保存..."
 msgid "Save animation to file"
 msgstr "アニメーションの開始"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:123
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:128
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:446
 msgid "Save document"
 msgstr "上書き保存"
@@ -4056,8 +4056,8 @@ msgstr "標本抽出"
 msgid "Select a constant"
 msgstr "定数を選択してください"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:145
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:147
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:150
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:152
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:503
 msgid "Select all"
 msgstr "全て選択"
@@ -4161,7 +4161,7 @@ msgstr "ヒントを表示(&T)..."
 msgid "Show &Variables"
 msgstr "ユーザー定義変数をリスト表示(&V)"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:215
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:220
 msgid "Show Maxima help"
 msgstr "ヘルプ"
 
@@ -4406,11 +4406,11 @@ msgstr "アニメーションの開始"
 msgid "Start a new maxima for each re-evaluation"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:189
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:194
 msgid "Start or Stop animation"
 msgstr "アニメーションの開始・停止"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:191
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:196
 msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
@@ -4859,7 +4859,7 @@ msgstr "全画面表示の切り替え"
 msgid "Toggle numeric output"
 msgstr "平方根やπといった数を自動的に数値で出力"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:212
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:217
 msgid "Toggle the visibility of code cells"
 msgstr ""
 
