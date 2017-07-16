@@ -284,12 +284,12 @@ public:
   { return m_clientHeight; }
 
   //! Calculates the default line width for the worksheet
-  int GetDefaultLineWidth()
+  double GetDefaultLineWidth()
   {
     if (GetScale() * GetZoomFactor() < 1.0)
       return 1;
     else
-      return (int) (GetScale() * GetZoomFactor());
+      return GetScale() * GetZoomFactor();
   }
 
   //! The minimum sensible line width in withs of a letter.
