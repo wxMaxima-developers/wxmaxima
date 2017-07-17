@@ -51,6 +51,8 @@
 #include <wx/tokenzr.h>
 #include <wx/xml/xml.h>
 #include <wx/mstream.h>
+#include <wx/graphics.h>
+#include <wx/dcgraph.h>
 
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
@@ -273,7 +275,8 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
   // Inform all cells how wide our display is
   m_configuration->SetCanvasSize(GetClientSize());
   wxMemoryDC dcm;
-  wxPaintDC dc(this);
+  wxPaintDC dcp(this);
+  wxGCDC dc(dcp);
 
   // Get the font size
   wxConfig *config = (wxConfig *) wxConfig::Get();
@@ -305,14 +308,14 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
   SetBackgroundColour(wxColour(bgColStr));
 
   dcm.SelectObject(m_memory);
-  dcm.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
-  dcm.Clear();
-  PrepareDC(dcm);
-  dcm.SetMapMode(wxMM_TEXT);
-  dcm.SetBackgroundMode(wxTRANSPARENT);
-//  dcm.SetLogicalFunction(wxCOPY);
+  dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
+  dc.Clear();
+  PrepareDC(dc);
+  dc.SetMapMode(wxMM_TEXT);
+  dc.SetBackgroundMode(wxTRANSPARENT);
+//  dc.SetLogicalFunction(wxCOPY);
 
-  m_configuration->SetContext(dcm);
+  m_configuration->SetContext(dc);
   m_configuration->SetBounds(top, bottom);
   int fontsize = m_configuration->GetDefaultFontSize(); // apply zoomfactor to defaultfontsize
 
@@ -327,12 +330,12 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
       MathCell *tmp = m_cellPointers.m_selectionStart;
 
 #if defined(__WXMAC__)
-      dcm.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
+      dc.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
 #else
-      dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
 // window linux, set a pen
 #endif
-      dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION)))); //highlight c.
+      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION)))); //highlight c.
 
       // Draw the marker that tells us which output cells are selected -
       // if output cells are selected, that is.
@@ -341,7 +344,7 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
         while (tmp != NULL)
         {
           if (!tmp->m_isBroken && !tmp->m_isHidden && GetActiveCell() != tmp)
-            tmp->DrawBoundingBox(dcm, false);
+            tmp->DrawBoundingBox(dc, false);
           if (tmp == m_cellPointers.m_selectionEnd)
             break;
           tmp = tmp->m_nextToDraw;
@@ -360,8 +363,8 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
     GroupCell *tmp = m_tree;
     int drop = tmp->GetMaxDrop();
 
-    dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
-    dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_DEFAULT))));
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
+    dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_DEFAULT))));
 
     while (tmp != NULL)
     {
@@ -406,12 +409,12 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
   if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hCaretBlinkVisible) && (m_hasFocus) &&
       (m_hCaretPosition != NULL))
   {
-    dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
     dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 
     wxRect currentGCRect = m_hCaretPosition->GetRect();
     int caretY = ((int) m_configuration->GetGroupSkip()) / 2 + currentGCRect.GetBottom() + 1;
-    dcm.DrawRectangle(xstart + m_configuration->GetCellBracketWidth(),
+    dc.DrawRectangle(xstart + m_configuration->GetCellBracketWidth(),
                       caretY - m_configuration->GetCursorWidth() / 2,
                       MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
   }
@@ -420,24 +423,24 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
   {
     if (!m_hCaretBlinkVisible)
     {
-      dcm.SetBrush(*wxWHITE_BRUSH);
-      dcm.SetPen(*wxWHITE_PEN);
+      dc.SetBrush(*wxWHITE_BRUSH);
+      dc.SetPen(*wxWHITE_PEN);
     }
     else
     {
-      dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
       dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
     }
 
     wxRect cursor = wxRect(xstart + m_configuration->GetCellBracketWidth(),
                            (m_configuration->GetBaseIndent() - m_configuration->GetCursorWidth()) / 2,
                            MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
-    dcm.DrawRectangle(cursor);
+    dc.DrawRectangle(cursor);
   }
 
   // Blit the memory image to the window
-  dcm.SetDeviceOrigin(0, 0);
-  dc.Blit(0, rect.GetTop(), sz.x, rect.GetBottom() - rect.GetTop() + 1, &dcm,
+  dc.SetDeviceOrigin(0, 0);
+  dcp.Blit(0, rect.GetTop(), sz.x, rect.GetBottom() - rect.GetTop() + 1, &dc,
           0, rect.GetTop());
 
   m_configuration->SetContext(*m_dc);
