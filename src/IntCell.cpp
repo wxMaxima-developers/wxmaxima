@@ -308,12 +308,12 @@ void IntCell::Draw(wxPoint point, int fontsize)
       // top decoration
       int m_signWCenter = m_signWidth / 2;
       dc.DrawEllipticArc(sign.x + m_signWCenter - Scale_Px(0,scale),
-                         sign.y - (m_signSize + 1) / 2 + Scale_Px(1.5, scale),
-                         Scale_Px(12, scale),
+                         sign.y - (m_signSize + 1) / 2 + Scale_Px(3, scale),
+                         Scale_Px(12.5, scale),
                          Scale_Px(19, scale),90,180);
       dc.DrawEllipticArc(sign.x + m_signWCenter + Scale_Px(3, scale),
                          sign.y - (m_signSize + 1) / 2 + Scale_Px(1.5, scale),
-                         Scale_Px(8, scale),
+                         Scale_Px(8.5, scale),
                          Scale_Px(12, scale),20,90);
 
       // bottom decoration
@@ -323,8 +323,8 @@ void IntCell::Draw(wxPoint point, int fontsize)
                          Scale_Px(19, scale),270,359);
       dc.DrawEllipticArc(sign.x + m_signWCenter - Scale_Px(11, scale),
                          sign.y + (m_signSize + 1) / 2 - Scale_Px(17.5, scale),
-                         Scale_Px(8, scale),
-                         Scale_Px(12, scale),200,270);
+                         Scale_Px(8.5, scale),
+                         Scale_Px(12.5, scale),200,270);
       // line
       dc.DrawLine(sign.x + m_signWCenter,
                   sign.y - (m_signSize + 1) / 2 + Scale_Px(12, scale),
