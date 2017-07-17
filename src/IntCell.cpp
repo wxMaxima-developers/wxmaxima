@@ -304,38 +304,32 @@ void IntCell::Draw(wxPoint point, int fontsize)
       }
 #else
       SetPen(1.5);
+      dc.SetBrush(*wxTRANSPARENT_BRUSH);
       // top decoration
       int m_signWCenter = m_signWidth / 2;
-      dc.DrawLine(sign.x + m_signWCenter,
-                  sign.y - (m_signSize + 1) / 2 + Scale_Px(13, scale),
-                  sign.x + m_signWCenter + Scale_Px(3, scale),
-                  sign.y - (m_signSize + 1) / 2 + Scale_Px(4, scale));
-      dc.DrawLine(sign.x + m_signWCenter + Scale_Px(3, scale),
-                  sign.y - (m_signSize + 1) / 2 + Scale_Px(4, scale),
-                  sign.x + m_signWCenter + Scale_Px(6, scale),
-                  sign.y - (m_signSize + 1) / 2 + Scale_Px(2, scale));
-      dc.DrawLine(sign.x + m_signWCenter + Scale_Px(6, scale),
-                  sign.y - (m_signSize + 1) / 2 + Scale_Px(2, scale),
-                  sign.x + m_signWCenter + Scale_Px(9, scale),
-                  sign.y - (m_signSize + 1) / 2 + Scale_Px(4, scale));
+      dc.DrawEllipticArc(sign.x + m_signWCenter - Scale_Px(0,scale),
+                         sign.y - (m_signSize + 1) / 2 + Scale_Px(1.5, scale),
+                         Scale_Px(12, scale),
+                         Scale_Px(19, scale),90,180);
+      dc.DrawEllipticArc(sign.x + m_signWCenter + Scale_Px(5, scale),
+                         sign.y - (m_signSize + 1) / 2 + Scale_Px(1.5, scale),
+                         Scale_Px(8, scale),
+                         Scale_Px(12, scale),20,90);
+
       // bottom decoration
-      dc.DrawLine(sign.x + m_signWCenter,
-                  sign.y + (m_signSize + 1) / 2 - Scale_Px(14, scale),
-                  sign.x + m_signWCenter - Scale_Px(3, scale),
-                  sign.y + (m_signSize + 1) / 2 - Scale_Px(5, scale));
-      dc.DrawLine(sign.x + m_signWCenter - Scale_Px(3, scale),
-                  sign.y + (m_signSize + 1) / 2 - Scale_Px(5, scale),
-                  sign.x + m_signWCenter - Scale_Px(6, scale),
-                  sign.y + (m_signSize + 1) / 2 - Scale_Px(3, scale));
-      dc.DrawLine(sign.x + m_signWCenter - Scale_Px(6, scale),
-                  sign.y + (m_signSize + 1) / 2 - Scale_Px(3, scale),
-                  sign.x + m_signWCenter - Scale_Px(9, scale),
-                  sign.y + (m_signSize + 1) / 2 - Scale_Px(5, scale));
+      dc.DrawEllipticArc(sign.x + m_signWCenter - Scale_Px(13, scale),
+                         sign.y + (m_signSize + 1) / 2 - Scale_Px(23.5, scale),
+                         Scale_Px(12, scale),
+                         Scale_Px(19, scale),270,360);
+      dc.DrawEllipticArc(sign.x + m_signWCenter - Scale_Px(13, scale),
+                         sign.y + (m_signSize + 1) / 2 - Scale_Px(17.5, scale),
+                         Scale_Px(8, scale),
+                         Scale_Px(12, scale),200,270);
       // line
       dc.DrawLine(sign.x + m_signWCenter,
-                  sign.y - (m_signSize + 1) / 2 + Scale_Px(13, scale),
+                  sign.y - (m_signSize + 1) / 2 + Scale_Px(12, scale),
                   sign.x + m_signWCenter,
-                  sign.y + (m_signSize + 1) / 2 - Scale_Px(14, scale));
+                  sign.y + (m_signSize + 1) / 2 - Scale_Px(15, scale));
       UnsetPen();
 #endif
     }
