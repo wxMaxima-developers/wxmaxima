@@ -160,8 +160,10 @@ void SqrtCell::RecalculateWidths(int fontsize)
     m_width = m_innerCell->GetFullWidth(scale) + m_signWidth;
   }
   else
-    m_width = m_innerCell->GetFullWidth(scale) + Scale_Px(10, scale) +
-              3 * Scale_Px(1, scale) + 1;
+  {
+    int zoomFactor = configuration->GetZoomFactor();
+    m_width = m_innerCell->GetFullWidth(scale) + Scale_Px(13, scale * zoomFactor) + 1;
+  }
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
   ResetData();
@@ -252,33 +254,33 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
     }
     else
     {
-      in.x += Scale_Px(10, scale) + Scale_Px(1, scale) + 1;
-
+      int zoomFactor = configuration->GetZoomFactor();
+      in.x += Scale_Px(10, scale*zoomFactor) + Scale_Px(1, scale*zoomFactor) + 1;
       SetPen();
       dc.DrawLine(point.x,
                   point.y,
-                  point.x + Scale_Px(3, scale),
-                  point.y - Scale_Px(1, scale));
-      dc.DrawLine(point.x + Scale_Px(3, scale),
-                  point.y - Scale_Px(1, scale),
-                  point.x + Scale_Px(7, scale),
-                  point.y + m_height - m_center - Scale_Px(4, scale));
-      dc.DrawLine(point.x + Scale_Px(3, scale) + 1,
-                  point.y - Scale_Px(1, scale),
-                  point.x + Scale_Px(7, scale) + 1,
-                  point.y + m_height - m_center - Scale_Px(4, scale));
-      dc.DrawLine(point.x + Scale_Px(7, scale) + 1,
-                  point.y + m_height - m_center - Scale_Px(4, scale),
-                  point.x + Scale_Px(10, scale),
-                  point.y - m_center + Scale_Px(2, scale));
-      dc.DrawLine(point.x + Scale_Px(10, scale),
-                  point.y - m_center + Scale_Px(2, scale),
-                  point.x + m_width - Scale_Px(1, scale),
-                  point.y - m_center + Scale_Px(2, scale));
-      dc.DrawLine(point.x + m_width - Scale_Px(1, scale),
-                  point.y - m_center + Scale_Px(2, scale),
-                  point.x + m_width - Scale_Px(1, scale),
-                  point.y - m_center + Scale_Px(6, scale));
+                  point.x + Scale_Px(3, scale*zoomFactor),
+                  point.y - Scale_Px(1, scale*zoomFactor));
+      dc.DrawLine(point.x + Scale_Px(3, scale*zoomFactor),
+                  point.y - Scale_Px(1, scale*zoomFactor),
+                  point.x + Scale_Px(7, scale*zoomFactor),
+                  point.y + m_height - m_center - Scale_Px(4, scale*zoomFactor));
+      dc.DrawLine(point.x + Scale_Px(3, scale*zoomFactor) + 1,
+                  point.y - Scale_Px(1, scale*zoomFactor),
+                  point.x + Scale_Px(7, scale*zoomFactor) + 1,
+                  point.y + m_height - m_center - Scale_Px(4, scale*zoomFactor));
+      dc.DrawLine(point.x + Scale_Px(7, scale*zoomFactor) + 1,
+                  point.y + m_height - m_center - Scale_Px(4, scale*zoomFactor),
+                  point.x + Scale_Px(10, scale*zoomFactor),
+                  point.y - m_center + Scale_Px(2, scale*zoomFactor));
+      dc.DrawLine(point.x + Scale_Px(10, scale*zoomFactor),
+                  point.y - m_center + Scale_Px(2, scale*zoomFactor),
+                  point.x + m_width - Scale_Px(1, scale*zoomFactor),
+                  point.y - m_center + Scale_Px(2, scale*zoomFactor));
+      dc.DrawLine(point.x + m_width - Scale_Px(1, scale*zoomFactor),
+                  point.y - m_center + Scale_Px(2, scale*zoomFactor),
+                  point.x + m_width - Scale_Px(1, scale*zoomFactor),
+                  point.y - m_center + Scale_Px(6, scale*zoomFactor));
       UnsetPen();
     }
 
