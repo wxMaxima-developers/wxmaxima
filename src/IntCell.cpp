@@ -325,7 +325,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
       dc.DrawEllipticArc(sign.x + m_signWCenter - Scale_Px(11, scale*zoomFactor),
                          sign.y + (m_signSize + 1) / 2 - Scale_Px(17.5, scale*zoomFactor),
                          Scale_Px(8.5, scale*zoomFactor),
-                         Scale_Px(12.5, scale*zoomFactor),200,230);
+                         Scale_Px(12.5, scale*zoomFactor),180,210);
       // line
       dc.DrawLine(sign.x + m_signWCenter,
                   sign.y - (m_signSize + 1) / 2 + Scale_Px(12, scale*zoomFactor),
