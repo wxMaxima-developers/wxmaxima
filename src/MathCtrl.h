@@ -112,7 +112,7 @@ private:
     
     Drawing is done from a wxPaintDC in OnPaint() instead. 
    */
-  wxGCDC *m_dc;
+  wxDC *m_dc;
   //! Where do we need to start the repainting of the worksheet?
   GroupCell *m_redrawStart;
   //! Do we need to redraw the worksheet?

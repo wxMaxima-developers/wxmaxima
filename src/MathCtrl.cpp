@@ -264,11 +264,15 @@ MathCtrl::~MathCtrl()
 
 void MathCtrl::SetDC()
 {
-  if(m_dc == NULL)
-  {
+  if(m_clientDc == NULL)
     m_clientDc = new wxClientDC(this);
+  // On windows the antialiassing DC flickers => Disabling it here
+#ifndef __WXMSW__
+  if(m_dc == NULL)
     m_dc = new wxGCDC (*m_clientDc);
-  }
+#else
+  m_dc = clientDc;
+#endif
   m_configuration->SetContext(*m_dc);
 }
 
@@ -289,8 +293,12 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
   m_configuration->SetCanvasSize(GetClientSize());
   wxMemoryDC dcm;
   wxPaintDC dcp(this);
+  // On windows the antialiassing DC flickers => Disabling it here
+#ifndef __WXMSW__
   wxGCDC dc(dcp);
-
+#else
+  #define dc dcp
+#endif
   // Get the font size
   wxConfig *config = (wxConfig *) wxConfig::Get();
 
