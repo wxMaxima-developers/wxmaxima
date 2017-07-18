@@ -203,6 +203,9 @@ void ParenCell::RecalculateWidths(int fontsize)
         m_signWidth = signWidth2;
       if(m_signWidth < signWidth3)
         m_signWidth = signWidth3;
+
+      if(m_extendHeight < 1)
+        m_extendHeight = 1
       m_numberOfExtensions = ((size - m_signTopHeight - m_signBotHeight + m_extendHeight/ 2 - 1) / m_extendHeight);
       if(m_numberOfExtensions < 0)
         m_numberOfExtensions = 0;
