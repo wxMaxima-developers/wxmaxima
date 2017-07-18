@@ -51,8 +51,6 @@
 #include <wx/tokenzr.h>
 #include <wx/xml/xml.h>
 #include <wx/mstream.h>
-#include <wx/graphics.h>
-#include <wx/dcgraph.h>
 
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
@@ -79,9 +77,7 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
   m_mouseMotionWas = false;
 
   m_notificationMessage = NULL;
-  m_dc = new wxClientDC(this);
-  m_configuration = new Configuration(*m_dc, true);
-  m_configuration->ReadConfig();
+  m_clientDc = NULL;
   m_redrawStart = NULL;
   m_redrawRequested = false;
   m_autocompletePopup = NULL;
@@ -137,6 +133,9 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
   // to be shown causing a size change causing a relayout causing the scrollbar
   // to disappear causing a size change... ...which might be an endless loop.
   ShowScrollbars(wxSHOW_SB_ALWAYS, wxSHOW_SB_ALWAYS);
+  m_dc = NULL;
+  m_configuration = new Configuration(*m_dc, true);
+  m_configuration->ReadConfig();
   ClearDocument();
 }
 
@@ -257,13 +256,27 @@ MathCtrl::~MathCtrl()
 
   wxDELETE(m_configuration);
   wxDELETE(m_dc);
+  wxDELETE(m_clientDc);
+  m_dc = NULL;
+  m_clientDc = NULL;
+  m_configuration = NULL;
+}
+
+void MathCtrl::SetDC()
+{
+  if(m_dc == NULL)
+  {
+    m_clientDc = new wxClientDC(this);
+    m_dc = new wxGCDC (*m_clientDc);
+  }
+  m_configuration->SetContext(*m_dc);
 }
 
 /***
  * Redraw the control
  */
 void MathCtrl::OnPaint(wxPaintEvent &event)
-{
+{  
   // Don't attempt to refresh the screen as long as the result will
   // end up on a printed page instead.
   if (MathCell::Printing())
@@ -443,8 +456,7 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
   dcp.Blit(0, rect.GetTop(), sz.x, rect.GetBottom() - rect.GetTop() + 1, &dc,
           0, rect.GetTop());
 
-  m_configuration->SetContext(*m_dc);
-
+  SetDC();
 }
 
 GroupCell *MathCtrl::InsertGroupCells(GroupCell *cells, GroupCell *where)
@@ -673,6 +685,9 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
 
 void MathCtrl::Recalculate(GroupCell *start, bool force)
 {
+  if(m_dc == NULL)
+    return;
+
   GroupCell *tmp;
   m_configuration->SetCanvasSize(GetClientSize());
 
@@ -785,8 +800,6 @@ void MathCtrl::ClearDocument()
   AnimationRunning(false);
   m_saved = false;
   UpdateTableOfContents();
-
-  Recalculate();
   Scroll(0, 0);
 }
 

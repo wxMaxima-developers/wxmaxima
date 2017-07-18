@@ -675,8 +675,6 @@ void Configuration::ReadStyle()
 
 
 #undef READ_STYLES
-
-  m_dc->SetPen(*(wxThePenList->FindOrCreatePen(m_styles[TS_DEFAULT].color, 1, wxPENSTYLE_SOLID)));
 }
 
 wxFontWeight Configuration::IsBold(int st)

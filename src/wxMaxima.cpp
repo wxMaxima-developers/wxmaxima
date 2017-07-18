@@ -997,13 +997,6 @@ bool wxMaxima::StartMaxima(bool force)
       m_statusBar->NetworkStatus(StatusBar::offline);
       return false;
     }
-
-    if (m_openFile.Length())
-    {
-      wxString file = m_openFile;
-      m_openFile = wxEmptyString;
-      OpenFile(file);
-    }
   }
   m_console->m_cellPointers.m_errorList.Clear();
   return true;
@@ -2715,8 +2708,28 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
 
 void wxMaxima::OnIdle(wxIdleEvent &event)
 {
-  bool screenHasChanged = m_console->RedrawRequested();
+  // If wxMaxima has to open a file on startup we wait for that until we have
+  // a valid draw context for size calculations.
+  //
+  // The draw context is created on displaying the worksheet for the 1st time
+  // and after drawing the worksheet onIdle is called => we won't miss this
+  // event when we wait for it here.
+  if ((m_console != NULL) && (&m_console->m_configuration->GetDC() != NULL) &&
+      (m_openFile.Length()))
+  {
+    wxString file = m_openFile;
+    m_openFile = wxEmptyString;
+    OpenFile(file);
 
+    // After doing such big a thing we should end our idle event and request
+    // a new one to be issued once the computer has time for doing real
+    // background stuff.
+    event.RequestMore();
+    return;
+  }
+
+  bool screenHasChanged = m_console->RedrawRequested();
+  
   // Incremental search is done from the idle task. This means that we don't forcefully
   // need to do a new search on every character that is entered into the search box.
   if (m_console->m_findDialog != NULL)
