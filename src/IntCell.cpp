@@ -344,7 +344,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
       dc.DrawLine(sign.x + m_signWCenter,
                   sign.y - m_signSize / 2 + m_signWidth / 2,
                   sign.x + m_signWCenter,
-                  sign.y + m_signSize / 2 - m_signWidth / 2);
+                  sign.y + m_signSize / 2 - m_signWidth / 2 - Scale_Px(1, scale*zoomFactor));
       UnsetPen();
 #endif
     }
