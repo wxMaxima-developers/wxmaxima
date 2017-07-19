@@ -266,12 +266,12 @@ void MathCtrl::SetDC()
 {
   if(m_clientDc == NULL)
     m_clientDc = new wxClientDC(this);
-  // On windows the antialiassing DC flickers => Disabling it here
+  // On windows the antialiassing wxGCDC flickers => Disabling it here
 #ifndef __WXMSW__
   if(m_dc == NULL)
     m_dc = new wxGCDC (*m_clientDc);
 #else
-  m_dc = clientDc;
+  m_dc = m_clientDc;
 #endif
   m_configuration->SetContext(*m_dc);
 }
