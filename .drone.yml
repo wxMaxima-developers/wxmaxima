@@ -1,0 +1,11 @@
+build:
+image: teaci/msys64
+shell: mingw64
+pull: true
+commands:
+- pacman -S --needed --noconfirm --noprogressbar mingw-w64-i686-wxWidgets mingw-w64-i686-gcc mingw-w64-i686-pkg-config mingw-w64-i686-cmake
+- ./cmake
+- make
+
+environment:
+- LANG=C.UTF-8
