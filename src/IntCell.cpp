@@ -305,46 +305,39 @@ void IntCell::Draw(wxPoint point, int fontsize)
         sign.y + (m_signSize + 1) / 2 - (3 * m_charHeight) / 2);
       }
 #else
-
-      // When printing the line width isn't scaled with the curve radius.
-      // During displaying it is on wxGTK
-      if(!Printing())
-#ifdef __WXGTK__
-        SetPen(2);
-#else
-        SetPen(1);
-#endif      
-      else
-        SetPen(1);
-      
-      dc.SetBrush(*wxWHITE_BRUSH);
+      SetPen(2);
       // top decoration
       int m_signWCenter = m_signWidth / 2;
-      int zoomFactor = configuration->GetZoomFactor();
-      dc.DrawEllipticArc(sign.x + m_signWCenter,
-                         sign.y - m_signSize / 2 + Scale_Px(1, scale*zoomFactor),
-                         m_signWidth / 2,
-                         m_signWidth,90,180);
-      dc.DrawEllipticArc(sign.x + m_signWCenter,
-                         sign.y - m_signSize / 2 + Scale_Px(1, scale*zoomFactor),
-                         m_signWidth / 2,
-                         m_signWidth / 2,60,90);
-
-      // bottom decoration
-      dc.DrawEllipticArc(sign.x,
-                         sign.y + m_signSize / 2 - m_signWidth - Scale_Px(2, scale*zoomFactor),
-                         m_signWidth / 2,
-                         m_signWidth,270,360);
-      dc.DrawEllipticArc(sign.x,
-                         sign.y + m_signSize / 2 - m_signWidth/2 - Scale_Px(2, scale*zoomFactor),
-                         m_signWidth / 2,
-                         m_signWidth / 2,250,270);
-      // line
-      SetPen(1);
       dc.DrawLine(sign.x + m_signWCenter,
-                  sign.y - m_signSize / 2 + m_signWidth / 2,
+                  sign.y - (m_signSize + 1) / 2 + Scale_Px(12, scale) - 1,
+                  sign.x + m_signWCenter + Scale_Px(3, scale),
+                  sign.y - (m_signSize + 1) / 2 + Scale_Px(3, scale));
+      dc.DrawLine(sign.x + m_signWCenter + Scale_Px(3, scale),
+                  sign.y - (m_signSize + 1) / 2 + Scale_Px(3, scale),
+                  sign.x + m_signWCenter + Scale_Px(6, scale),
+                  sign.y - (m_signSize + 1) / 2);
+      dc.DrawLine(sign.x + m_signWCenter + Scale_Px(6, scale),
+                  sign.y - (m_signSize + 1) / 2,
+                  sign.x + m_signWCenter + Scale_Px(9, scale),
+                  sign.y - (m_signSize + 1) / 2 + Scale_Px(3, scale));
+      // bottom decoration
+      dc.DrawLine(sign.x + m_signWCenter,
+                  sign.y + (m_signSize + 1) / 2 - Scale_Px(12, scale) + 1,
+                  sign.x + m_signWCenter - Scale_Px(3, scale),
+                  sign.y + (m_signSize + 1) / 2 - Scale_Px(3, scale));
+      dc.DrawLine(sign.x + m_signWCenter - Scale_Px(3, scale),
+                  sign.y + (m_signSize + 1) / 2 - Scale_Px(3, scale),
+                  sign.x + m_signWCenter - Scale_Px(6, scale),
+                  sign.y + (m_signSize + 1) / 2);
+      dc.DrawLine(sign.x + m_signWCenter - Scale_Px(6, scale),
+                  sign.y + (m_signSize + 1) / 2,
+                  sign.x + m_signWCenter - Scale_Px(9, scale),
+                  sign.y + (m_signSize + 1) / 2 - Scale_Px(3, scale));
+      // line
+      dc.DrawLine(sign.x + m_signWCenter,
+                  sign.y - (m_signSize + 1) / 2 + Scale_Px(12, scale) - 1,
                   sign.x + m_signWCenter,
-                  sign.y + m_signSize / 2 - m_signWidth / 2 - Scale_Px(1, scale*zoomFactor));
+                  sign.y + (m_signSize + 1) / 2 - Scale_Px(12, scale) + 1);
       UnsetPen();
 #endif
     }

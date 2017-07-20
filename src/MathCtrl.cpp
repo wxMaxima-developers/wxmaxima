@@ -266,7 +266,8 @@ void MathCtrl::SetDC()
 {
   if(m_clientDc == NULL)
     m_clientDc = new wxClientDC(this);
-  // On windows the antialiassing wxGCDC flickers => Disabling it here
+  // On windows the antialiassing wxGCDC flickers and supports only a few fonts
+  // => Only using the antialiassing wxGCDC on platforms != wxMSW
 #ifndef __WXMSW__
   if(m_dc == NULL)
     m_dc = new wxGCDC (*m_clientDc);
