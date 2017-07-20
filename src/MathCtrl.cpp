@@ -5793,8 +5793,19 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
      00000030  6e 2f 65 70 75 62 2b 7a  69 70 50 4b 03 04 14 00  |n/epub+zipPK....|
 
   */
-
+ 
   // Make sure that the mime type is stored as plain text.
+  //
+  // We will keep that setting for the rest of the file for the following reasons:
+  //  - Compression of the .zip file won't improve compression of the embedded .png images
+  //  - The text part of the file is too small to justify compression
+  //  - not compressing the text part of the file allows version control systems to
+  //    determine which lines have changed and to track differences between file versions
+  //    efficiently (in a compressed text virtually every byte might change when one
+  //    byte at the start of the uncompressed original is)
+  //  - and if anything crashes in a bad way chances are high that the uncompressed
+  //    contents of the .wxmx file can be rescued using a text editor.
+  //  Who would - under these circumstances - care about a kilobyte?
   zip.SetLevel(0);
   zip.PutNextEntry(wxT("mimetype"));
   output << wxT("text/x-wxmathml");
@@ -5826,21 +5837,6 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
                   "chances are high that wxMaxima will be able to recover all code and text\n"
                   "from the XML file.\n\n"
   );
-
-  /* We might want to compress the rest of this file, though, if the user doesn't
-     use a version control system like git or svn:
-
-     Compressed files tend to completely change their structure if actually only
-     a single line of the uncompressed file has been modified. This means that
-     changing a line of input might lead to git or svn having to deal with
-     a file that has changes all over the place.
-
-     If we don't use compression the increase of the file size might be small:
-     - The images are saved in the png format and therefore are compressed and
-     - content.xml typically is small and therefore won't get much smaller during
-     compression.
-  */
-  bool VcFriendlyWXMX = true;
 
   // next zip entry is "content.xml", xml of m_tree
 
@@ -5928,10 +5924,6 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
 
   if (m_tree != NULL)output << xmlText;
   output << wxT("\n</wxMaximaDocument>");
-
-  wxConfig::Get()->Read(wxT("OptimizeForVersionControl"), &VcFriendlyWXMX);
-  if (!VcFriendlyWXMX)
-    zip.SetLevel(9);
 
   // save images from memory to zip file
   wxFileSystem *fsystem = new wxFileSystem();

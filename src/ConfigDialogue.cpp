@@ -216,8 +216,6 @@ void ConfigDialogue::SetProperties()
   m_texPreamble->SetToolTip(_("Additional commands to be added to the preamble of LaTeX output for pdftex."));
   m_autoSaveInterval->SetToolTip(
           _("If this number of minutes has elapsed after the last save of the file, the file has been given a name (by opening or saving it) and the keyboard has been inactive for > 10 seconds the file is saved. If this number is zero the file isn't saved automatically at all."));
-  m_uncomressedWXMX->SetToolTip(
-          _("Don't compress the maxima input text and compress images individually: This enables version control systems like git and svn to effectively spot the differences."));
   m_defaultFramerate->SetToolTip(_("Define the default speed (in frames per second) animations are played back with."));
   m_defaultPlotWidth->SetToolTip(
           _("The default width for embedded plots. Can be read out or overridden by the maxima variable wxplot_size"));
@@ -280,7 +278,7 @@ void ConfigDialogue::SetProperties()
 
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
-  bool savePanes = true, UncompressedWXMX = true;
+  bool savePanes = true;
   bool fixedFontTC = true, usejsmath = true, keepPercent = true, abortOnError = true, pollStdOut = false;
   bool enterEvaluates = false, saveUntitled = true,
           AnimateLaTeX = true, TeXExponentsAfterSubscript = false,
@@ -327,7 +325,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
   int defaultPlotHeight = 400;
   config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
-  config->Read(wxT("OptimizeForVersionControl"), &UncompressedWXMX);
   config->Read(wxT("AnimateLaTeX"), &AnimateLaTeX);
   config->Read(wxT("TeXExponentsAfterSubscript"), &TeXExponentsAfterSubscript);
   config->Read(wxT("usePartialForDiff"), &usePartialForDiff);
@@ -385,7 +382,6 @@ void ConfigDialogue::SetProperties()
   m_savePanes->SetValue(savePanes);
   m_usepngCairo->SetValue(usepngCairo);
 
-  m_uncomressedWXMX->SetValue(UncompressedWXMX);
   m_AnimateLaTeX->SetValue(AnimateLaTeX);
   m_TeXExponentsAfterSubscript->SetValue(TeXExponentsAfterSubscript);
   m_usePartialForDiff->SetValue(usePartialForDiff);
@@ -700,9 +696,6 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   m_usepngCairo = new wxCheckBox(panel, -1, _("Use cairo to improve plot quality."));
   vsizer->Add(m_usepngCairo, 0, wxALL, 5);
 
-  m_uncomressedWXMX = new wxCheckBox(panel, -1, _("Optimize wxmx files for version control"));
-  vsizer->Add(m_uncomressedWXMX, 0, wxALL, 5);
-
   m_saveUntitled = new wxCheckBox(panel, -1, _("Ask to save untitled documents"));
   vsizer->Add(m_saveUntitled, 0, wxALL, 5);
 
@@ -965,7 +958,6 @@ void ConfigDialogue::WriteSettings()
 #endif
   config->Write(wxT("AUI/savePanes"), m_savePanes->GetValue());
   config->Write(wxT("usepngCairo"), m_usepngCairo->GetValue());
-  config->Write(wxT("OptimizeForVersionControl"), m_uncomressedWXMX->GetValue());
   config->Write(wxT("DefaultFramerate"), m_defaultFramerate->GetValue());
   config->Write(wxT("defaultPlotWidth"), m_defaultPlotWidth->GetValue());
   config->Write(wxT("defaultPlotHeight"), m_defaultPlotHeight->GetValue());

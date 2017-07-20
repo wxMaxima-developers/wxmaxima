@@ -213,7 +213,6 @@ protected:
   wxCheckBox *m_wrapLatexMath;
   wxCheckBox *m_savePanes;
   wxCheckBox *m_usepngCairo;
-  wxCheckBox *m_uncomressedWXMX;
   wxSpinCtrl *m_defaultFramerate;
   wxSpinCtrl *m_defaultPlotWidth;
   wxSpinCtrl *m_defaultPlotHeight;
