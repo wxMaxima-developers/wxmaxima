@@ -35,8 +35,6 @@
 #include <wx/fdrepdlg.h>
 #include <list>
 #include "ContentAssistantPopup.h"
-#include <wx/graphics.h>
-#include <wx/dcgraph.h>
 
 #include "Notification.h"
 #include "MathCell.h"
@@ -90,29 +88,11 @@ private:
     calculates some widths in.
   */
   int m_scrollUnit;
-  /*! The drawing contect used for constructing m_dc 
+  /*! The drawing contect used for calculating sizes. 
 
-    m_dc (which is thedrawing context used in order to recalculate sizes) 
-    can only be constructed if there is a drawing context it can 
-    operate on. This context can draw (even if all it draws is overwritten
-    by any paint event), but other than the wxPaintDC used for actually
-    drawing the worksheet in OnPaint() this DC exists not only temporarily.
-    
     Drawing is done from a wxPaintDC in OnPaint() instead.
   */
-  wxClientDC *m_clientDc;
-  /*! The drawing context used for calculating sizes
-
-    This drawing context is created as soon as there is an object it
-    could theoretically draw on, which happens only after MathCtrl::MathCtrl
-    has finished. If something was actually drawn in this context every 
-    repaint event would overwrite it, but other than the wxPaintDC used 
-    for actually drawing the worksheet in OnPaint() this DC exists not only 
-    temporarily.
-    
-    Drawing is done from a wxPaintDC in OnPaint() instead. 
-   */
-  wxDC *m_dc;
+  wxClientDC *m_dc;
   //! Where do we need to start the repainting of the worksheet?
   GroupCell *m_redrawStart;
   //! Do we need to redraw the worksheet?
@@ -613,17 +593,6 @@ private:
 public:
   //! A error notification message
   Notification *m_notificationMessage;
-  /*! Sets a valid dc for recalculation
-
-    For determining the size of objects a drawing context is needed.
-    Unfortunately a drawing context allowing to antialias lines can only be
-    created if there is an object it could actually draw on.
-    Which is only the case *after* the constructor of window was called.
-
-    This function has therefore to be called between MathCtrl::MathCtrl() and
-    the first time we actually need to determine an object's size.
-   */
-  void SetDC();
   //! Is this window active?
   void WindowActive(bool active){m_windowActive = active;}
   //! Clears the notification message from SetNotification
