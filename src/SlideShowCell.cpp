@@ -312,6 +312,10 @@ wxString SlideShow::ToRTF()
 
 wxSize SlideShow::ToGif(wxString file)
 {
+  // Show a busy cursor as long as we export a .gif file (which might be a lengthy
+  // action).
+  wxBusyCursor crs;
+
   wxArrayString which;
 
   wxImageArray gifFrames;
