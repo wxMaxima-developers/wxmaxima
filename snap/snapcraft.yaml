@@ -4,6 +4,10 @@ summary: A nightly build of wxMaxima, a gui for Maxima, a full-featured CAS.
 description: wxMaxima is a quite full-featured graphical user interface for maxima.
 confinement: strict
 grade: devel
+build-packages:
+     - libwxbase3.0-dev
+     - libwxgtk3.0-dev
+     - gettext
 
 apps:
   wxmaxima:
@@ -13,7 +17,3 @@ parts:
   wxmaxima:
     plugin: autotools
     source: .
-    stage-packages:
-     - libwxbase3.0-dev
-     - libwxgtk3.0-dev
-     - gettext
