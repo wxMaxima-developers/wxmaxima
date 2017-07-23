@@ -14,5 +14,6 @@ parts:
     plugin: autotools
     source: .
     stage-packages:
+     - libwxbase3.0-dev
      - libwxgtk3.0-dev
      - gettext
