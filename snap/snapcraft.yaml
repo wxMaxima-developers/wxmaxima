@@ -13,3 +13,6 @@ parts:
   wxmaxima:
     plugin: autotools
     source: .
+    stage-packages:
+     - libwxgtk3.0-dev
+     - gettext
