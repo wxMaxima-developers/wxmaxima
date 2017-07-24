@@ -925,7 +925,7 @@ void GroupCell::DrawBracket()
     drawBracket = true;
 
   wxDC &dc = configuration->GetDC();
-
+  wxDC &antialiassingDC = configuration->GetAntialiassingDC();
 
   int selectionStart_px = -1;
   if((m_cellPointers->m_selectionStart != NULL) &&
@@ -1027,14 +1027,14 @@ void GroupCell::DrawBracket()
   if (editable != NULL && editable->IsActive())
   {
     drawBracket = true;
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_ACTIVE_CELL_BRACKET),
+    antialiassingDC.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_ACTIVE_CELL_BRACKET),
                                               2 * configuration->GetDefaultLineWidth(),
                                               wxPENSTYLE_SOLID))); // window linux, set a pen
     dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_ACTIVE_CELL_BRACKET)))); //highlight c.
   }
   else
   {
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CELL_BRACKET),
+    antialiassingDC.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CELL_BRACKET),
                                               configuration->GetDefaultLineWidth(),
                                               wxPENSTYLE_SOLID))); // window linux, set a pen
     dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_CELL_BRACKET)))); //highlight c.
@@ -1059,7 +1059,7 @@ void GroupCell::DrawBracket()
       points[2].y = m_currentPoint.y - m_center + bracketWidth;
       points[3].x = m_currentPoint.x - configuration->GetDefaultLineWidth();
       points[3].y = m_currentPoint.y - m_center;
-      dc.DrawPolygon(4, points);
+      antialiassingDC.DrawPolygon(4, points);
       delete[] points;
     }
     else
@@ -1071,23 +1071,23 @@ void GroupCell::DrawBracket()
       points[1].y = m_currentPoint.y - m_center + bracketWidth - configuration->GetDefaultLineWidth() / 2;
       points[2].x = m_currentPoint.x - configuration->GetDefaultLineWidth();
       points[2].y = m_currentPoint.y - m_center + configuration->GetDefaultLineWidth() / 2;
-      dc.DrawPolygon(3, points);
+      antialiassingDC.DrawPolygon(3, points);
       delete[] points;
 
       // The vertical line at the back of the bracket
-      dc.DrawLine(m_currentPoint.x - bracketWidth,
+      antialiassingDC.DrawLine(m_currentPoint.x - bracketWidth,
                   m_currentPoint.y - m_center + configuration->GetDefaultLineWidth() / 2,
                   m_currentPoint.x - bracketWidth,
                   m_currentPoint.y - m_center + m_height - configuration->GetDefaultLineWidth());
       // bottom horizontal line
-      dc.DrawLine(m_currentPoint.x - bracketWidth,
+      antialiassingDC.DrawLine(m_currentPoint.x - bracketWidth,
                   m_currentPoint.y - m_center + m_height - configuration->GetDefaultLineWidth(),
                   m_currentPoint.x - configuration->GetDefaultLineWidth(),
                   m_currentPoint.y - m_center + m_height - configuration->GetDefaultLineWidth());
       // middle horizontal
       if (configuration->ShowCodeCells() && m_groupType == GC_TYPE_CODE && m_output != NULL && !m_hide)
       {
-        dc.DrawLine(m_currentPoint.x - bracketWidth / 2,
+        antialiassingDC.DrawLine(m_currentPoint.x - bracketWidth / 2,
                     m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight() +
                     configuration->GetDefaultLineWidth() / 2,
                     m_currentPoint.x - bracketWidth,

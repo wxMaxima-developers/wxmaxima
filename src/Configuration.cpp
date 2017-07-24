@@ -29,8 +29,9 @@
 #include <wx/config.h>
 #include "MathCell.h"
 
-Configuration::Configuration(wxDC &dc, bool isTopLevel) : m_dc(&dc)
+Configuration::Configuration(wxDC &dc, bool isTopLevel) : m_dc(&dc) 
 {
+  m_antialiassingDC = m_dc;
   m_parenthesisDrawMode = unknown;
   m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML");
   m_scale = 1.0;
@@ -55,6 +56,7 @@ Configuration::Configuration(wxDC &dc, bool isTopLevel) : m_dc(&dc)
   Dirstructure dirstruct;
   m_maximaLocation = dirstruct.MaximaDefaultLocation();
   m_indent = -1;
+  m_antiAliasLines = false;
   ReadConfig();
   m_showCodeCells = true;
   m_defaultToolTip = wxEmptyString;
@@ -94,6 +96,8 @@ void Configuration::ReadConfig()
 
   config->Read(wxT("mathJaxURL"), &m_mathJaxURL);
 
+  config->Read(wxT("antiAliasLines"), & m_antiAliasLines);
+  
   config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
 
   config->Read(wxT("maxima"), &m_maximaLocation);

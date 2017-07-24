@@ -51,6 +51,7 @@
 #include <wx/tokenzr.h>
 #include <wx/xml/xml.h>
 #include <wx/mstream.h>
+#include <wx/dcgraph.h>
 
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
@@ -313,6 +314,8 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
   dcm.SetBackgroundMode(wxTRANSPARENT);
 
   m_configuration->SetContext(dcm);
+  wxGCDC antiAliassingDC(dcm);
+  m_configuration->SetAntialiassingDC(antiAliassingDC);
   m_configuration->SetBounds(top, bottom);
   int fontsize = m_configuration->GetDefaultFontSize(); // apply zoomfactor to defaultfontsize
 
@@ -441,7 +444,7 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
           0, rect.GetTop());
 
   m_configuration->SetContext(*m_dc);
-
+  m_configuration->UnsetAntialiassingDC();
 }
 
 GroupCell *MathCtrl::InsertGroupCells(GroupCell *cells, GroupCell *where)

@@ -118,6 +118,12 @@ public:
   void SetContext(wxDC &dc)
   { m_dc = &dc; }
 
+  void SetAntialiassingDC(wxDC &antialiassingDC)
+    {m_antialiassingDC = &antialiassingDC;}
+
+  void UnsetAntialiassingDC()
+    {m_antialiassingDC = NULL;}
+
   ~Configuration();
 
   static double GetMinZoomFactor()
@@ -175,6 +181,15 @@ public:
   //! Get a drawing context suitable for size calculations
   wxDC &GetDC()
   { return *m_dc; }
+
+  //! Get a drawing context suitable for size calculations
+  wxDC &GetAntialiassingDC()
+    {
+      if ((m_antialiassingDC) && (m_antiAliasLines))
+        return *m_antialiassingDC;
+      else
+        return *m_dc;
+    }
 
   void SetBounds(int top, int bottom)
   {
@@ -521,7 +536,11 @@ public:
   wxString MathJaXURL(){ return m_mathJaxURL;}
   //! Returns the URL MathJaX can be found at.
   void MathJaXURL(wxString url){wxConfig::Get()->Write(wxT("mathJaxURL"), m_mathJaxURL = url);}
-
+  bool AntiAliasLines(){return m_antiAliasLines;}
+  void AntiAliasLines(bool antiAlias)
+    {
+      wxConfig::Get()->Write(wxT("antiAliasLines"), m_antiAliasLines = antiAlias );
+    }
   //! Sets the default toolTip for new cells
   void SetDefaultMathCellToolTip(wxString defaultToolTip){m_defaultToolTip = defaultToolTip;}
   //! Gets the default toolTip for new cells
@@ -589,9 +608,11 @@ private:
   //! The width of input and output labels [in chars]
   int m_labelWidth;
   int m_indent;
+  bool m_antiAliasLines;
   double m_scale;
   double m_zoomFactor;
   wxDC *m_dc;
+  wxDC *m_antialiassingDC;
   int m_top, m_bottom;
   wxString m_fontName;
   int m_defaultFontSize, m_mathFontSize;

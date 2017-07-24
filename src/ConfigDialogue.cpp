@@ -242,6 +242,8 @@ void ConfigDialogue::SetProperties()
   m_savePanes->SetToolTip(_("Save panes layout between sessions."));
   m_usepngCairo->SetToolTip(
           _("The pngCairo terminal offers much better graphics quality (antialiassing and additional line styles). But it will only produce plots if the gnuplot installed on the current system actually supports it."));
+  m_antialiasLines->SetToolTip(
+          _("Try to antialias lines (which allows to move them by a fraction of a pixel, but reduces their sharpness)."));
   m_matchParens->SetToolTip(
           _("Automatically insert matching parenthesis in text controls. Automatic highlighting of matching parenthesis can be suppressed by setting the respective color to match the background of ordinary text."));
   m_showLength->SetToolTip(_("Show long expressions in wxMaxima document."));
@@ -381,6 +383,7 @@ void ConfigDialogue::SetProperties()
     m_saveSize->SetValue(false);
   m_savePanes->SetValue(savePanes);
   m_usepngCairo->SetValue(usepngCairo);
+  m_antialiasLines->SetValue(configuration->AntiAliasLines());
 
   m_AnimateLaTeX->SetValue(AnimateLaTeX);
   m_TeXExponentsAfterSubscript->SetValue(TeXExponentsAfterSubscript);
@@ -696,6 +699,9 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   m_usepngCairo = new wxCheckBox(panel, -1, _("Use cairo to improve plot quality."));
   vsizer->Add(m_usepngCairo, 0, wxALL, 5);
 
+  m_antialiasLines = new wxCheckBox(panel, -1, _("Antialias lines."));
+  vsizer->Add(m_antialiasLines, 0, wxALL, 5);
+
   m_saveUntitled = new wxCheckBox(panel, -1, _("Ask to save untitled documents"));
   vsizer->Add(m_saveUntitled, 0, wxALL, 5);
 
@@ -958,6 +964,7 @@ void ConfigDialogue::WriteSettings()
 #endif
   config->Write(wxT("AUI/savePanes"), m_savePanes->GetValue());
   config->Write(wxT("usepngCairo"), m_usepngCairo->GetValue());
+  configuration->AntiAliasLines(m_antialiasLines->GetValue());
   config->Write(wxT("DefaultFramerate"), m_defaultFramerate->GetValue());
   config->Write(wxT("defaultPlotWidth"), m_defaultPlotWidth->GetValue());
   config->Write(wxT("defaultPlotHeight"), m_defaultPlotHeight->GetValue());
