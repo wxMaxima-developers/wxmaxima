@@ -53,6 +53,8 @@ public:
 
   ~SlideShow();
 
+  bool IsOk(){return (m_size>0) && (m_images[m_displayed]->IsOk());}
+  
   virtual wxString GetToolTip(const wxPoint &point)
     {
       if(ContainsPoint(point))

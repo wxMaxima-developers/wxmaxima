@@ -110,6 +110,9 @@ public:
   //! Returns the bitmap being displayed
   wxBitmap GetBitmap();
 
+  //! Does the image show an actual image or an "broken image" symbol?
+  bool IsOk() {return m_isOk;}
+  
   //! Returns the image in its unscaled form
   wxBitmap GetUnscaledBitmap();
 
@@ -145,6 +148,8 @@ protected:
   wxBitmap m_scaledBitmap;
   //! The file extension for the current image type
   wxString m_extension;
+  //! Does this image contain an actual image?
+  bool m_isOk;
 private:
   Configuration **m_configuration;
 };

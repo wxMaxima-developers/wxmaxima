@@ -310,6 +310,23 @@ wxString SlideShow::ToRTF()
 }
 
 
+virtual wxString SlideShow::GetToolTip(const wxPoint &point)
+{
+  if(ContainsPoint(point))
+  {
+    m_cellPointers->m_cellUnderPointer = this;
+    if(!IsOk())
+      return(_("The image could not be displayed. It may be broken, in a wrong format or "
+               "be the result of gnuplot not being able to write the image or not being "
+               "able to understand what maxima wanted to plot."));
+    else
+      return m_toolTip;
+  }
+  else
+    return wxEmptyString;
+}
+
+
 wxSize SlideShow::ToGif(wxString file)
 {
   // Show a busy cursor as long as we export a .gif file (which might be a lengthy

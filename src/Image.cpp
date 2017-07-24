@@ -62,6 +62,7 @@ Image::Image(Configuration **config)
   m_originalWidth = 1;
   m_originalHeight = 1;
   m_scaledBitmap.Create(1, 1);
+  m_isOk = false;  
 }
 
 Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
@@ -80,6 +81,7 @@ Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
   {
     wxMemoryInputStream istream(m_compressedImage.GetData(), m_compressedImage.GetDataLen());
     Image.LoadFile(istream);
+    m_isOk = Image.IsOk();
     m_originalWidth = Image.GetWidth();
     m_originalHeight = Image.GetHeight();
   }
@@ -164,11 +166,13 @@ wxBitmap Image::GetBitmap()
 
       img = wxImage(istream, wxBITMAP_TYPE_ANY);
     }
+    m_isOk = true;
 
     if (img.Ok())
       m_scaledBitmap = wxBitmap(img);
     else
     {
+      m_isOk = false;
       // Create a "image not loaded" bitmap.
       m_scaledBitmap.Create(400, 250);
 
@@ -205,6 +209,7 @@ void Image::LoadImage(const wxBitmap &bitmap)
 {
   // Convert the bitmap to a png image we can use as m_compressedImage
   wxImage image = bitmap.ConvertToImage();
+  m_isOk = image.IsOk();
   wxMemoryOutputStream stream;
   image.SaveFile(stream, wxBITMAP_TYPE_PNG);
   m_compressedImage.AppendData(stream.GetOutputStreamBuffer()->GetBufferStart(),
@@ -256,6 +261,8 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
     }
   }
 
+  m_isOk = false;
+  
   wxImage Image;
   if (m_compressedImage.GetDataLen() > 0)
   {
@@ -269,12 +276,14 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
   {
     m_originalWidth = Image.GetWidth();
     m_originalHeight = Image.GetHeight();
+    m_isOk = true;
   }
   else
   {
     // Leave space for an image showing an error message
     m_originalWidth = 400;
     m_originalHeight = 250;
+    m_isOk = false;
   }
   Recalculate();
 

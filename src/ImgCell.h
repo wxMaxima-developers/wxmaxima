@@ -76,16 +76,7 @@ public:
   virtual void ClearCache()
   { if (m_image)m_image->ClearCache(); }
 
-  virtual wxString GetToolTip(const wxPoint &point)
-    {
-      if(ContainsPoint(point))
-      {
-        m_cellPointers->m_cellUnderPointer = this;
-        return m_toolTip;
-      }
-      else
-        return wxEmptyString;
-    }
+  virtual wxString GetToolTip(const wxPoint &point);
   
   //! Sets the bitmap that is shown
   void SetBitmap(const wxBitmap &bitmap);
