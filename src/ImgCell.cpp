@@ -124,12 +124,12 @@ void ImgCell::MarkAsDeleted()
   ClearCache();
 }
 
-virtual wxString ImgCell::GetToolTip(const wxPoint &point)
+wxString ImgCell::GetToolTip(const wxPoint &point)
 {
   if(ContainsPoint(point))
   {
     m_cellPointers->m_cellUnderPointer = this;
-    if(!IsOk())
+    if(!m_image->IsOk())
       return(_("The image could not be displayed. It may be broken, in a wrong format or "
                "be the result of gnuplot not being able to write the image or not being "
                "able to understand what maxima wanted to plot."));

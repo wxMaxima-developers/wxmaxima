@@ -55,16 +55,8 @@ public:
 
   bool IsOk(){return (m_size>0) && (m_images[m_displayed]->IsOk());}
   
-  virtual wxString GetToolTip(const wxPoint &point)
-    {
-      if(ContainsPoint(point))
-      {
-        m_cellPointers->m_cellUnderPointer = this;
-        return m_toolTip;
-      }
-      else
-        return wxEmptyString;
-    }
+  virtual wxString GetToolTip(const wxPoint &point);
+
   void MarkAsDeleted();
 
   /*! Remove all cached scaled images from memory
