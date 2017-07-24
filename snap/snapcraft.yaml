@@ -8,6 +8,13 @@ grade: devel
 apps:
   wxmaxima:
     command: wxmaxima
+    desktop: usr/share/applications/wxMaxima.desktop
+    plugs:
+     - network
+     - home
+     - removable-media
+     - optical-drive
+     - process-control
 
 parts:
   wxmaxima:
@@ -17,12 +24,6 @@ parts:
      - libwxbase3.0-dev
      - libwxgtk3.0-dev
      - gettext
-    plugs:
-     - network
-     - home
-     - removable-media
-     - optical-drive
-     - process-control
     stage-packages:
      - maxima
      - maxima-doc
