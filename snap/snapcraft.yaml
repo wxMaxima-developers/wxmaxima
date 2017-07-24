@@ -4,11 +4,12 @@ summary: A nightly build of wxMaxima, a gui for Maxima, a full-featured CAS.
 description: wxMaxima is a quite full-featured graphical user interface for maxima.
 confinement: strict
 grade: devel
+icon: data/wxmaxima.svg
 
 apps:
   wxmaxima:
     command: wxmaxima
-    desktop: usr/share/applications/wxMaxima.desktop
+    desktop: data/wxMaxima.desktop
     plugs:
      - network
      - home
