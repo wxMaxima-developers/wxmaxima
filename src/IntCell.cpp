@@ -197,6 +197,8 @@ void IntCell::RecalculateWidths(int fontsize)
               MAX(m_over->GetFullWidth(scale), m_under->GetFullWidth(scale)) +
               m_var->GetFullWidth(scale) +
               Scale_Px(4, scale);
+    if(m_signSize < 40)
+      m_signSize = 40;
 #endif
   }
   ResetData();
@@ -308,36 +310,28 @@ void IntCell::Draw(wxPoint point, int fontsize)
       SetPen(2);
       // top decoration
       int m_signWCenter = m_signWidth / 2;
-      dc.DrawLine(sign.x + m_signWCenter,
-                  sign.y - (m_signSize + 1) / 2 + Scale_Px(12, scale) - 1,
-                  sign.x + m_signWCenter + Scale_Px(3, scale),
-                  sign.y - (m_signSize + 1) / 2 + Scale_Px(3, scale));
-      dc.DrawLine(sign.x + m_signWCenter + Scale_Px(3, scale),
-                  sign.y - (m_signSize + 1) / 2 + Scale_Px(3, scale),
-                  sign.x + m_signWCenter + Scale_Px(6, scale),
-                  sign.y - (m_signSize + 1) / 2);
-      dc.DrawLine(sign.x + m_signWCenter + Scale_Px(6, scale),
-                  sign.y - (m_signSize + 1) / 2,
-                  sign.x + m_signWCenter + Scale_Px(9, scale),
-                  sign.y - (m_signSize + 1) / 2 + Scale_Px(3, scale));
-      // bottom decoration
-      dc.DrawLine(sign.x + m_signWCenter,
-                  sign.y + (m_signSize + 1) / 2 - Scale_Px(12, scale) + 1,
-                  sign.x + m_signWCenter - Scale_Px(3, scale),
-                  sign.y + (m_signSize + 1) / 2 - Scale_Px(3, scale));
-      dc.DrawLine(sign.x + m_signWCenter - Scale_Px(3, scale),
-                  sign.y + (m_signSize + 1) / 2 - Scale_Px(3, scale),
-                  sign.x + m_signWCenter - Scale_Px(6, scale),
-                  sign.y + (m_signSize + 1) / 2);
-      dc.DrawLine(sign.x + m_signWCenter - Scale_Px(6, scale),
-                  sign.y + (m_signSize + 1) / 2,
-                  sign.x + m_signWCenter - Scale_Px(9, scale),
-                  sign.y + (m_signSize + 1) / 2 - Scale_Px(3, scale));
+      wxPoint pointList[10];
+      pointList[0] = wxPoint(sign.x + m_signWCenter + 2 * (m_signWidth / 4),
+                             sign.y - (m_signSize + 1) / 2 + m_signWidth / 4);
+      pointList[1] = wxPoint(sign.x + m_signWCenter + m_signWidth / 4,
+                             sign.y - (m_signSize + 1) / 2);
+      pointList[2] = wxPoint(sign.x + m_signWCenter,
+                             sign.y - (m_signSize + 1) / 2 + 2* (m_signWidth / 4));
+
+      // The line
+      pointList[3] = wxPoint(sign.x + m_signWCenter,
+                               sign.y);
+      
+      // Bottom Decoration
+      pointList[4] = wxPoint(sign.x + m_signWCenter,
+                             sign.y + (m_signSize + 1) / 2 - 2* (m_signWidth / 4));
+      pointList[5] = wxPoint(sign.x + m_signWCenter - m_signWidth / 4,
+                             sign.y + (m_signSize + 1) / 2);
+      pointList[6] = wxPoint(sign.x + m_signWCenter - 2 * (m_signWidth / 4),
+                             sign.y + (m_signSize + 1) / 2 - m_signWidth / 4);
+
+      dc.DrawSpline(7,pointList);
       // line
-      dc.DrawLine(sign.x + m_signWCenter,
-                  sign.y - (m_signSize + 1) / 2 + Scale_Px(12, scale) - 1,
-                  sign.x + m_signWCenter,
-                  sign.y + (m_signSize + 1) / 2 - Scale_Px(12, scale) + 1);
       UnsetPen();
 #endif
     }
