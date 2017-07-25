@@ -245,7 +245,8 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
         }
       }
 
-      dc.DrawLine(point.x + m_signWidth,
+      wxDC &adc = configuration->GetAntialiassingDC();
+      adc.DrawLine(point.x + m_signWidth,
                   point.y - m_innerCell->GetMaxCenter(),
                   point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
                   point.y - m_innerCell->GetMaxCenter());
@@ -255,29 +256,30 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
     else
     {
       int zoomFactor = configuration->GetZoomFactor();
+      wxDC &adc = configuration->GetAntialiassingDC();
       in.x += Scale_Px(10, scale*zoomFactor) + Scale_Px(1, scale*zoomFactor) + 1;
       SetPen();
-      dc.DrawLine(point.x,
+      adc.DrawLine(point.x,
                   point.y,
                   point.x + Scale_Px(3, scale*zoomFactor),
                   point.y - Scale_Px(1, scale*zoomFactor));
-      dc.DrawLine(point.x + Scale_Px(3, scale*zoomFactor),
+      adc.DrawLine(point.x + Scale_Px(3, scale*zoomFactor),
                   point.y - Scale_Px(1, scale*zoomFactor),
                   point.x + Scale_Px(7, scale*zoomFactor),
                   point.y + m_height - m_center - Scale_Px(4, scale*zoomFactor));
-      dc.DrawLine(point.x + Scale_Px(3, scale*zoomFactor) + 1,
+      adc.DrawLine(point.x + Scale_Px(3, scale*zoomFactor) + 1,
                   point.y - Scale_Px(1, scale*zoomFactor),
                   point.x + Scale_Px(7, scale*zoomFactor) + 1,
                   point.y + m_height - m_center - Scale_Px(4, scale*zoomFactor));
-      dc.DrawLine(point.x + Scale_Px(7, scale*zoomFactor) + 1,
+      adc.DrawLine(point.x + Scale_Px(7, scale*zoomFactor) + 1,
                   point.y + m_height - m_center - Scale_Px(4, scale*zoomFactor),
                   point.x + Scale_Px(10, scale*zoomFactor),
                   point.y - m_center + Scale_Px(2, scale*zoomFactor));
-      dc.DrawLine(point.x + Scale_Px(10, scale*zoomFactor),
+      adc.DrawLine(point.x + Scale_Px(10, scale*zoomFactor),
                   point.y - m_center + Scale_Px(2, scale*zoomFactor),
                   point.x + m_width - Scale_Px(1, scale*zoomFactor),
                   point.y - m_center + Scale_Px(2, scale*zoomFactor));
-      dc.DrawLine(point.x + m_width - Scale_Px(1, scale*zoomFactor),
+      adc.DrawLine(point.x + m_width - Scale_Px(1, scale*zoomFactor),
                   point.y - m_center + Scale_Px(2, scale*zoomFactor),
                   point.x + m_width - Scale_Px(1, scale*zoomFactor),
                   point.y - m_center + Scale_Px(6, scale*zoomFactor));

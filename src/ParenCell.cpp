@@ -328,36 +328,39 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     }
     break;
     default:
+    {
+      wxDC &adc = configuration->GetAntialiassingDC();
       innerCellPos.x = point.x + Scale_Px(6, scale) + (*m_configuration)->GetDefaultLineWidth();
       innerCellPos.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
       SetPen();
       // left
-      dc.DrawLine(point.x + Scale_Px(5, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
-                  point.y - m_innerCell->GetMaxCenter() + Scale_Px(1, scale),
-                  point.x + Scale_Px(2, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
-                  point.y - m_innerCell->GetMaxCenter() + Scale_Px(7, scale));
-      dc.DrawLine(point.x + Scale_Px(2, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
-                  point.y - m_innerCell->GetMaxCenter() + Scale_Px(7, scale),
-                  point.x + Scale_Px(2, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
-                  point.y + m_innerCell->GetMaxDrop() - Scale_Px(7, scale));
-      dc.DrawLine(point.x + Scale_Px(2, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
-                  point.y + m_innerCell->GetMaxDrop() - Scale_Px(7, scale),
-                  point.x + Scale_Px(5, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
-                  point.y + m_innerCell->GetMaxDrop() - Scale_Px(1, scale));
+      adc.DrawLine(point.x + Scale_Px(5, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
+                   point.y - m_innerCell->GetMaxCenter() + Scale_Px(1, scale),
+                   point.x + Scale_Px(2, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
+                   point.y - m_innerCell->GetMaxCenter() + Scale_Px(7, scale));
+      adc.DrawLine(point.x + Scale_Px(2, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
+                   point.y - m_innerCell->GetMaxCenter() + Scale_Px(7, scale),
+                   point.x + Scale_Px(2, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
+                   point.y + m_innerCell->GetMaxDrop() - Scale_Px(7, scale));
+      adc.DrawLine(point.x + Scale_Px(2, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
+                   point.y + m_innerCell->GetMaxDrop() - Scale_Px(7, scale),
+                   point.x + Scale_Px(5, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
+                   point.y + m_innerCell->GetMaxDrop() - Scale_Px(1, scale));
       // right
-      dc.DrawLine(point.x + m_width - Scale_Px(5, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
-                  point.y - m_innerCell->GetMaxCenter() + Scale_Px(1, scale),
-                  point.x + m_width - Scale_Px(2, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
-                  point.y - m_innerCell->GetMaxCenter() + Scale_Px(7, scale));
-      dc.DrawLine(point.x + m_width - Scale_Px(2, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
-                  point.y - m_innerCell->GetMaxCenter() + Scale_Px(7, scale),
-                  point.x + m_width - Scale_Px(2, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
-                  point.y + m_innerCell->GetMaxDrop() - Scale_Px(7, scale));
-      dc.DrawLine(point.x + m_width - Scale_Px(2, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
-                  point.y + m_innerCell->GetMaxDrop() - Scale_Px(7, scale),
-                  point.x + m_width - Scale_Px(5, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
-                  point.y + m_innerCell->GetMaxDrop() - Scale_Px(1, scale));
+      adc.DrawLine(point.x + m_width - Scale_Px(5, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
+                   point.y - m_innerCell->GetMaxCenter() + Scale_Px(1, scale),
+                   point.x + m_width - Scale_Px(2, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
+                   point.y - m_innerCell->GetMaxCenter() + Scale_Px(7, scale));
+      adc.DrawLine(point.x + m_width - Scale_Px(2, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
+                   point.y - m_innerCell->GetMaxCenter() + Scale_Px(7, scale),
+                   point.x + m_width - Scale_Px(2, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
+                   point.y + m_innerCell->GetMaxDrop() - Scale_Px(7, scale));
+      adc.DrawLine(point.x + m_width - Scale_Px(2, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
+                   point.y + m_innerCell->GetMaxDrop() - Scale_Px(7, scale),
+                   point.x + m_width - Scale_Px(5, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
+                   point.y + m_innerCell->GetMaxDrop() - Scale_Px(1, scale));
       break;
+    }
     }
     
     UnsetPen();

@@ -211,32 +211,34 @@ void MatrCell::Draw(wxPoint point, int fontsize)
     }
     else
     {
+      
       // left bracket
-      dc.DrawLine(point.x + Scale_Px(5, scale),
-                  point.y - m_center + Scale_Px(2, scale),
-                  point.x + Scale_Px(1, scale),
-                  point.y - m_center + Scale_Px(2, scale));
-      dc.DrawLine(point.x + Scale_Px(1, scale),
-                  point.y - m_center + Scale_Px(2, scale),
-                  point.x + Scale_Px(1, scale),
-                  point.y + m_center - Scale_Px(2, scale));
-      dc.DrawLine(point.x + Scale_Px(1, scale),
-                  point.y + m_center - Scale_Px(2, scale),
-                  point.x + Scale_Px(5, scale),
-                  point.y + m_center - Scale_Px(2, scale));
+      wxDC &adc = configuration->GetAntialiassingDC();
+      adc.DrawLine(point.x + Scale_Px(5, scale),
+                   point.y - m_center + Scale_Px(2, scale),
+                   point.x + Scale_Px(1, scale),
+                   point.y - m_center + Scale_Px(2, scale));
+      adc.DrawLine(point.x + Scale_Px(1, scale),
+                   point.y - m_center + Scale_Px(2, scale),
+                   point.x + Scale_Px(1, scale),
+                   point.y + m_center - Scale_Px(2, scale));
+      adc.DrawLine(point.x + Scale_Px(1, scale),
+                   point.y + m_center - Scale_Px(2, scale),
+                   point.x + Scale_Px(5, scale),
+                   point.y + m_center - Scale_Px(2, scale));
       // right bracket
-      dc.DrawLine(point.x + m_width - Scale_Px(5, scale) - 1,
-                  point.y - m_center + Scale_Px(2, scale),
-                  point.x + m_width - Scale_Px(1, scale) - 1,
-                  point.y - m_center + Scale_Px(2, scale));
-      dc.DrawLine(point.x + m_width - Scale_Px(1, scale) - 1,
-                  point.y - m_center + Scale_Px(2, scale),
-                  point.x + m_width - Scale_Px(1, scale) - 1,
-                  point.y + m_center - Scale_Px(2, scale));
-      dc.DrawLine(point.x + m_width - Scale_Px(1, scale) - 1,
-                  point.y + m_center - Scale_Px(2, scale),
-                  point.x + m_width - Scale_Px(5, scale) - 1,
-                  point.y + m_center - Scale_Px(2, scale));
+      adc.DrawLine(point.x + m_width - Scale_Px(5, scale) - 1,
+                   point.y - m_center + Scale_Px(2, scale),
+                   point.x + m_width - Scale_Px(1, scale) - 1,
+                   point.y - m_center + Scale_Px(2, scale));
+      adc.DrawLine(point.x + m_width - Scale_Px(1, scale) - 1,
+                   point.y - m_center + Scale_Px(2, scale),
+                   point.x + m_width - Scale_Px(1, scale) - 1,
+                   point.y + m_center - Scale_Px(2, scale));
+      adc.DrawLine(point.x + m_width - Scale_Px(1, scale) - 1,
+                   point.y + m_center - Scale_Px(2, scale),
+                   point.x + m_width - Scale_Px(5, scale) - 1,
+                   point.y + m_center - Scale_Px(2, scale));
     }
     UnsetPen();
   }

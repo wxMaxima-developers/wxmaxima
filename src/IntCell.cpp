@@ -330,7 +330,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
       pointList[6] = wxPoint(sign.x + m_signWCenter - 2 * (m_signWidth / 4),
                              sign.y + (m_signSize + 1) / 2 - m_signWidth / 4);
 
-      dc.DrawSpline(7,pointList);
+      configuration->GetAntialiassingDC().DrawSpline(7,pointList);
       // line
       UnsetPen();
 #endif
