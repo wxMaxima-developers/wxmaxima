@@ -1,12 +1,14 @@
 Current:
   * Jump to the char containing the error on encountering unmatched parenthesis.
   * Attempt to mark the whole error message in red.
-  * A "evaluate cells below" button.
+  * Detect and mark most warnings.
+  * A "evaluate cells below" right-click-menu item.
   * Autosave now even works for unsaved documents adding them to the
     "recent documents" list if needed.
   * Big parenthesis are now drawn using unicode characters, if available.
-  * Nicer integral, Product and Sum signs including antialiassing even if no font
-    provides them.
+  * Nicer integral, Product and Sum signs, optionally including antialiassing
+    even if no font provides them.
+  * MouseOver tooltip for some of the most exotic worksheet items.
   * Several Bug Fixes and Performance improvements.
   * A "Copy as svg" function that is as good as wxSVGFileDc allows us to be.
   * Worksheet objects now can provide their own ToolTips.
