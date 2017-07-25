@@ -187,7 +187,7 @@ void MatrCell::Draw(wxPoint point, int fontsize)
       }
       mp.x += (m_widths[i] + Scale_Px(10, scale));
     }
-    SetPen();
+    SetPen(1.5);
     if (m_specialMatrix)
     {
       if (m_inferenceMatrix)

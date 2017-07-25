@@ -1120,6 +1120,10 @@ void MathCell::SetPen(double lineWidth)
   else
     dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_DEFAULT),
                                               lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
+
+  if(&configuration->GetAntialiassingDC() != &dc)
+    configuration->GetAntialiassingDC().SetPen(dc.GetPen());
+
 }
 
 /***

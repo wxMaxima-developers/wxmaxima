@@ -191,7 +191,7 @@ void SumCell::Draw(wxPoint point, int fontsize)
     if (configuration->CheckTeXFonts())
     {
       SetForeground();
-      int fontsize1 = Scale_Px(fontsize * 1.5, scale);
+      int fontsize1 = Scale_Px(configuration->GetMathFontSize(), scale);
       wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
