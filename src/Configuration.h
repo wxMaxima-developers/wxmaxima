@@ -54,11 +54,11 @@
 #define MC_MAX_SIZE 36
 #endif
 
-#define CMEX10 "jsMath-cmex10.ttf"
-#define CMSY10 "jsMath-cmsy10.ttf"
-#define CMR10  "jsMath-cmr10.ttf"
-#define CMMI10 "jsMath-cmmi10.ttf"
-#define CMTI10 "jsMath-cmti10.ttf"
+#define CMEX10 "jsMath-cmex10"
+#define CMSY10 "jsMath-cmsy10"
+#define CMR10  "jsMath-cmr10"
+#define CMMI10 "jsMath-cmmi10"
+#define CMTI10 "jsMath-cmti10"
 
 #define LIBERTINE1 "LinLibertine_DRah.ttf"
 #define LIBERTINE2 "LinLibertine_I.ttf"

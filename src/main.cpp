@@ -194,11 +194,11 @@ bool MyApp::OnInit()
     wxString fontPrefix = dirstruct.FontDir() + wxT("/");
 
   /* Add private jsMath fonts, if they exist */ 
-  if (wxFileExists(fontPrefix + wxT(CMEX10))) AddFontResource(fontPrefix + wxT(CMEX10));
-  if (wxFileExists(fontPrefix + wxT(CMSY10))) AddFontResource(fontPrefix + wxT(CMSY10));
-  if (wxFileExists(fontPrefix + wxT(CMR10)))  AddFontResource(fontPrefix + wxT(CMR10));
-  if (wxFileExists(fontPrefix + wxT(CMMI10))) AddFontResource(fontPrefix + wxT(CMMI10));
-  if (wxFileExists(fontPrefix + wxT(CMTI10))) AddFontResource(fontPrefix + wxT(CMTI10));
+    if (wxFileExists(fontPrefix + wxT(CMEX10) + wxT(".ttf"))) AddFontResource(fontPrefix + wxT(CMEX10) + wxT(".ttf"));
+  if (wxFileExists(fontPrefix + wxT(CMSY10) + wxT(".ttf"))) AddFontResource(fontPrefix + wxT(CMSY10) + wxT(".ttf"));
+  if (wxFileExists(fontPrefix + wxT(CMR10) + wxT(".ttf")))  AddFontResource(fontPrefix + wxT(CMR10) + wxT(".ttf"));
+  if (wxFileExists(fontPrefix + wxT(CMMI10) + wxT(".ttf"))) AddFontResource(fontPrefix + wxT(CMMI10) + wxT(".ttf"));
+  if (wxFileExists(fontPrefix + wxT(CMTI10) + wxT(".ttf"))) AddFontResource(fontPrefix + wxT(CMTI10) + wxT(".ttf"));
 
   /* Add private Libertine fonts, if they exist */
   if (wxFileExists(fontPrefix + wxT(LIBERTINE1))) 
