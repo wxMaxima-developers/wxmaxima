@@ -56,7 +56,7 @@ Configuration::Configuration(wxDC &dc, bool isTopLevel) : m_dc(&dc)
   Dirstructure dirstruct;
   m_maximaLocation = dirstruct.MaximaDefaultLocation();
   m_indent = -1;
-  m_antiAliasLines = false;
+  m_antiAliasLines = true;
   ReadConfig();
   m_showCodeCells = true;
   m_defaultToolTip = wxEmptyString;
