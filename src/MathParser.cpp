@@ -423,8 +423,7 @@ MathCell *MathParser::ParseFunTag(wxXmlNode *node)
   child = GetNextTag(child);
   fun->SetType(m_ParserStyle);
   fun->SetStyle(TS_VARIABLE);
-  // No special Handling for NULL args here: They are completely legal in this case.
-  fun->SetArg(ParseTag(child, false));
+  fun->SetArg(HandleNullPointer(ParseTag(child, false)));
   return fun;
 }
 
@@ -553,6 +552,7 @@ MathCell *MathParser::ParseParenTag(wxXmlNode *node)
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   ParenCell *cell = new ParenCell(NULL, m_configuration, m_cellPointers);
+  // No special Handling for NULL args here: They are completely legal in this case.
   cell->SetInner(ParseTag(child, true), m_ParserStyle);
   cell->SetHighlight(m_highlight);
   cell->SetStyle(TS_VARIABLE);
