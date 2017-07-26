@@ -553,7 +553,7 @@ MathCell *MathParser::ParseParenTag(wxXmlNode *node)
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
   ParenCell *cell = new ParenCell(NULL, m_configuration, m_cellPointers);
-  cell->SetInner(HandleNullPointer(ParseTag(child, true)), m_ParserStyle);
+  cell->SetInner(ParseTag(child, true), m_ParserStyle);
   cell->SetHighlight(m_highlight);
   cell->SetStyle(TS_VARIABLE);
   if (node->GetAttributes() != NULL)
