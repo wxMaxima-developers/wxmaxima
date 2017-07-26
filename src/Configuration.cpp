@@ -657,12 +657,9 @@ void Configuration::ReadStyle()
                    &tmp))
     m_styles[TS_CURSOR].color.Set(tmp);
 
-  // Selection color defaults to light grey on windows
-#if defined __WXMSW__
-  m_styles[TS_SELECTION].color = wxColour(wxT("light grey"));
-#else
-  m_styles[TS_SELECTION].color = wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT);
-#endif
+  wxSystemSettings settings;
+  m_styles[TS_SELECTION].color = settings.GetColour(wxSYS_COLOUR_HIGHLIGHT);
+
   if (config->Read(wxT("Style/Selection/color"),
                    &tmp))
     m_styles[TS_SELECTION].color.Set(tmp);
