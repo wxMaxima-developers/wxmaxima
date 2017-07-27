@@ -541,6 +541,33 @@ public:
     {
       wxConfig::Get()->Write(wxT("antiAliasLines"), m_antiAliasLines = antiAlias );
     }
+
+  bool CopyBitmap(){return m_copyBitmap;}
+  void CopyBitmap(bool copyBitmap)
+    {
+      wxConfig::Get()->Write(wxT("copyBitmap"), m_copyBitmap = copyBitmap );
+    }
+  bool CopyMathML(){return m_copyMathML;}
+  void CopyMathML(bool copyMathML)
+    {
+      wxConfig::Get()->Write(wxT("copyMathML"), m_copyMathML = copyMathML );
+    }
+  bool CopyMathMLHTML(){return m_copyMathMLHTML;}
+  void CopyMathMLHTML(bool copyMathMLHTML)
+    {
+      wxConfig::Get()->Write(wxT("copyMathMLHTML"), m_copyMathMLHTML = copyMathMLHTML );
+    }
+  bool CopyRTF(){return m_copyRTF;}
+  void CopyRTF(bool copyRTF)
+    {
+      wxConfig::Get()->Write(wxT("copyRTF"), m_copyRTF = copyRTF );
+    }
+  bool CopySVG(){return m_copySVG;}
+  void CopySVG(bool copySVG)
+    {
+      wxConfig::Get()->Write(wxT("copySVG"), m_copySVG = copySVG );
+    }
+
   //! Sets the default toolTip for new cells
   void SetDefaultMathCellToolTip(wxString defaultToolTip){m_defaultToolTip = defaultToolTip;}
   //! Gets the default toolTip for new cells
@@ -634,6 +661,11 @@ private:
   bool m_fixReorderedIndices;
   wxString m_mathJaxURL;
   bool m_showCodeCells;
+  bool m_copyBitmap;
+  bool m_copyMathML;
+  bool m_copyMathMLHTML;
+  bool m_copyRTF;
+  bool m_copySVG;
 };
 
 #endif // CONFIGURATION_H

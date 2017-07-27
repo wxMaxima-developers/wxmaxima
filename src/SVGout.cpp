@@ -270,28 +270,31 @@ Svgout::SVGDataObject::SVGDataObject(wxMemoryBuffer data) : wxCustomDataObject(m
 
 wxDataFormat Svgout::m_svgFormat;
 
-bool Svgout::ToClipboard()
+Svgout::SVGDataObject *Svgout::GetDataObject()
 {
-  if (wxTheClipboard->Open())
-  {
     wxMemoryBuffer svgContents;
     {
       char *data =(char *) malloc(8192);
-      if(data == NULL)
-        return false;
       wxFileInputStream str(m_filename);
-      
-      while (!str.Eof())
-      {
-        str.Read(data,8192);
-        svgContents.AppendData(data,str.LastRead());
-      }
+      if(str.IsOk())
+        while (!str.Eof())
+        {
+          str.Read(data,8192);
+          svgContents.AppendData(data,str.LastRead());
+        }
       free(data);
     }
     wxRemoveFile(m_filename);
     m_filename = wxEmptyString;
-    
-    bool res = wxTheClipboard->SetData(new SVGDataObject(svgContents));
+
+    return new SVGDataObject(svgContents);
+}
+
+bool Svgout::ToClipboard()
+{
+  if (wxTheClipboard->Open())
+  {
+    bool res = wxTheClipboard->SetData(GetDataObject());
     wxTheClipboard->Close();
     m_filename = wxEmptyString;
     return res;

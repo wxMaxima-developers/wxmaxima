@@ -104,6 +104,9 @@ private:
   //! The resolution of the svgout.
   wxSize m_ppi;
 
+public:
+  //! Returns the svg representation in a format that can be placed on the clipBoard.
+  SVGDataObject *GetDataObject();
 };
 
 #endif // SVGOUT_H

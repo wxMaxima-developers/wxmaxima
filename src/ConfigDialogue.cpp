@@ -106,7 +106,7 @@ wxImage ConfigDialogue::GetImage(wxString name)
   if(!img.IsOk())
   {
     Dirstructure dirstruct;
-    img = wxImage(dirstruct.ConfigArtDir() + wxT("/") + name);
+    img = wxImage(dirstruct.ConfigArtDir() + wxT("/") + name + wxT(".png"));
   }
 
   // We want to scale the images according to the display's resolution.
@@ -141,11 +141,12 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   int imgWidth = GetImageWidth();
   wxSize imageSize(imgWidth, imgWidth);
   m_imageList = new wxImageList(imgWidth, imgWidth);
-  m_imageList->Add(GetImage(wxT("editing.png")));
-  m_imageList->Add(GetImage(wxT("maxima.png")));
-  m_imageList->Add(GetImage(wxT("styles.png")));
-  m_imageList->Add(GetImage(wxT("Document-export.png")));
-  m_imageList->Add(GetImage(wxT("options.png")));
+  m_imageList->Add(GetImage(wxT("editing")));
+  m_imageList->Add(GetImage(wxT("maxima")));
+  m_imageList->Add(GetImage(wxT("styles")));
+  m_imageList->Add(GetImage(wxT("Document-export")));
+  m_imageList->Add(GetImage(wxT("options")));
+  m_imageList->Add(GetImage(wxT("edit-copy")));
 
   Create(parent, wxID_ANY, _("wxMaxima configuration"),
          wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
@@ -159,6 +160,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   m_notebook->AddPage(CreateStylePanel(), _("Style"), false, 2);
   m_notebook->AddPage(CreateExportPanel(), _("Export"), false, 3);
   m_notebook->AddPage(CreateOptionsPanel(), _("Options"), false, 4);
+  m_notebook->AddPage(CreateClipboardPanel(), _("Copy"), false, 5);
 #ifndef __WXMAC__
   CreateButtons(wxOK | wxCANCEL);
 #endif
@@ -800,6 +802,40 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   return panel;
 }
 
+wxPanel *ConfigDialogue::CreateClipboardPanel()
+{
+  wxPanel *panel = new wxPanel(m_notebook, -1);
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  Configuration *configuration = m_configuration;
+
+  wxStaticText *descr = new wxStaticText(panel, -1, _("Clipboard formats to offer by default:"));
+  vbox->Add(descr, 0, wxALL);
+
+  m_copyBitmap = new wxCheckBox(panel, -1, _("Bitmap"));
+  m_copyBitmap->SetValue(configuration->CopyBitmap());
+  vbox->Add(m_copyBitmap, 0, wxALL, 5);
+
+  m_copyMathML = new wxCheckBox(panel, -1, _("MathML description"));
+  m_copyMathML->SetValue(configuration->CopyMathML());
+  vbox->Add(m_copyMathML, 0, wxALL, 5);
+
+  m_copyMathMLHTML = new wxCheckBox(panel, -1, _("MathML as HTML"));
+  m_copyMathMLHTML->SetValue(configuration->CopyMathMLHTML());
+  vbox->Add(m_copyMathMLHTML, 0, wxALL, 5);
+
+  m_copyRTF = new wxCheckBox(panel, -1, _("RTF with OMML maths"));
+  m_copyRTF->SetValue(configuration->CopyRTF());
+  vbox->Add(m_copyRTF, 0, wxALL, 5);
+
+  m_copySVG = new wxCheckBox(panel, -1, _("Scalable Vector Graphics (svg)"));
+  m_copySVG->SetValue(configuration->CopySVG());
+  vbox->Add(m_copySVG, 0, wxALL, 5);
+
+  panel->SetSizerAndFit(vbox);
+
+  return panel;
+}
+
 wxPanel *ConfigDialogue::CreateStylePanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
@@ -993,6 +1029,13 @@ void ConfigDialogue::WriteSettings()
 #ifdef wxUSE_UNICODE
   config->Write(wxT("symbolPaneAdditionalChars"), m_symbolPaneAdditionalChars->GetValue());
 #endif
+
+  configuration->CopyBitmap(m_copyBitmap->GetValue());
+  configuration->CopyMathML(m_copyMathML->GetValue());
+  configuration->CopyMathMLHTML(m_copyMathMLHTML->GetValue());
+  configuration->CopyRTF(m_copyRTF->GetValue());
+  configuration->CopySVG(m_copySVG->GetValue());
+  
   WriteStyles();
   config->Flush();
 }

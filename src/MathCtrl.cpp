@@ -1846,55 +1846,70 @@ bool MathCtrl::Copy(bool astext)
       wxString s = GetString(true);
       data->Add(new wxmDataObject(s));
 
-      // Add a mathML representation of the data to the clipboard
-      s = ConvertSelectionToMathML();
-      if (s != wxEmptyString)
+      if(m_configuration->CopyMathML())
       {
-        // We mark the MathML version of the data on the clipboard as "preferred"
-        // as if an application supports MathML neither bitmaps nor plain text
-        // makes much sense.
-        data->Add(new MathMLDataObject(s), true);
-        data->Add(new MathMLDataObject2(s), true);
-        // wxMathML is a HTML5 flavour, as well.
-        // See https://github.com/fred-wang/Mathzilla/blob/master/mathml-copy/lib/copy-mathml.js#L21
-        //
-        // Unfortunately MS Word and Libreoffice Writer don't like this idea so I have
-        // disabled the following line of code again:
-        //
-        // data->Add(new wxHTMLDataObject(s));
-      }
-
-      // Add a RTF representation of the currently selected text
-      // to the clipboard: For some reason libreoffice likes RTF more than
-      // it likes the MathML - which is standartized.
-      MathCell *tmp2 = CopySelection();
-      if (tmp2 != NULL)
-      {
-        wxString rtf;
-        rtf = RTFStart() + tmp2->ListToRTF() + wxT("\\par\n") + RTFEnd();
-        data->Add(new RtfDataObject(rtf));
-        data->Add(new RtfDataObject2(rtf), true);
-      }
-
-      // Add a string representation of the selected output to the clipboard
-      s = tmp2->ListToString();
-      data->Add(new wxTextDataObject(s));
-
-      // Add a bitmap representation of the selected output to the clipboard - if this
-      // bitmap isn't way too large for this to make sense:
-      wxBitmap bmp;
-      // Try to fill bmp with a high-res version of the cells
-      {
-        int bitmapScale = 3;
-        wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
-        Bitmap bmp_scaled(&m_configuration, bitmapScale);
-        if (bmp_scaled.SetData(tmp2, 4000000))
+        // Add a mathML representation of the data to the clipboard
+        s = ConvertSelectionToMathML();
+        if (s != wxEmptyString)
         {
-          bmp = bmp_scaled.GetBitmap();
-          data->Add(new wxBitmapDataObject(bmp));
+          // We mark the MathML version of the data on the clipboard as "preferred"
+          // as if an application supports MathML neither bitmaps nor plain text
+          // makes much sense.
+          data->Add(new MathMLDataObject(s), true);
+          data->Add(new MathMLDataObject2(s), true);
+          if(m_configuration->CopyMathMLHTML())
+            data->Add(new wxHTMLDataObject(s), true);
+          // wxMathML is a HTML5 flavour, as well.
+          // See https://github.com/fred-wang/Mathzilla/blob/master/mathml-copy/lib/copy-mathml.js#L21
+          //
+          // Unfortunately MS Word and Libreoffice Writer don't like this idea so I have
+          // disabled the following line of code again:
+          //
+          // data->Add(new wxHTMLDataObject(s));
         }
       }
 
+      if(m_configuration->CopyRTF())
+      {
+        // Add a RTF representation of the currently selected text
+        // to the clipboard: For some reason libreoffice likes RTF more than
+        // it likes the MathML - which is standartized.
+        MathCell *tmp = CopySelection();
+        if (tmp != NULL)
+        {
+          wxString rtf;
+          rtf = RTFStart() + tmp->ListToRTF() + wxT("\\par\n") + RTFEnd();
+          data->Add(new RtfDataObject(rtf));
+          data->Add(new RtfDataObject2(rtf), true);
+        }
+        wxDELETE(tmp);
+      }
+      
+      // Add a string representation of the selected output to the clipboard
+      MathCell *tmp = CopySelection();
+      s = tmp->ListToString();
+      data->Add(new wxTextDataObject(s));
+      wxDELETE(tmp);
+      
+      if(m_configuration->CopyBitmap())
+      {
+        // Add a bitmap representation of the selected output to the clipboard - if this
+        // bitmap isn't way too large for this to make sense:
+        wxBitmap bmp;
+        // Try to fill bmp with a high-res version of the cells
+        {
+          int bitmapScale = 3;
+          wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
+          Bitmap bmp_scaled(&m_configuration, bitmapScale);
+          MathCell *tmp = CopySelection();
+          if (bmp_scaled.SetData(tmp, 4000000))
+          {
+            bmp = bmp_scaled.GetBitmap();
+            data->Add(new wxBitmapDataObject(bmp));
+          }
+          wxDELETE(tmp);
+        }
+      }
       wxTheClipboard->SetData(data);
       wxTheClipboard->Close();
       return true;
@@ -2100,7 +2115,8 @@ bool MathCtrl::CopyCells()
       str += tmp->ToString();
       firstcell = false;
 
-      rtf += tmp->ToRTF();
+      if(m_configuration->CopyRTF())
+        rtf += tmp->ToRTF();
       wxm += tmp->ToWXM();
 
       if (tmp == end)
@@ -2110,11 +2126,15 @@ bool MathCtrl::CopyCells()
 
     rtf += wxT("\\par") + RTFEnd();
 
-    data->Add(new RtfDataObject(rtf), true);
-    data->Add(new RtfDataObject2(rtf));
+    if(m_configuration->CopyRTF())
+    {
+      data->Add(new RtfDataObject(rtf), true);
+      data->Add(new RtfDataObject2(rtf));
+    }
     data->Add(new wxTextDataObject(str));
     data->Add(new wxmDataObject(wxm));
 
+    if(m_configuration->CopyBitmap())
     {
       MathCell *tmp2 = CopySelection();
       int bitmapScale = 3;
@@ -2124,6 +2144,15 @@ bool MathCtrl::CopyCells()
         data->Add(new wxBitmapDataObject(bmp.GetBitmap()));
     }
 
+    if(m_configuration->CopySVG())
+    {    
+      MathCell *tmp = CopySelection();
+      
+      Svgout svg(&m_configuration);
+      svg.SetData(tmp);
+      data->Add(svg.GetDataObject());
+    }
+    
     wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
     return true;

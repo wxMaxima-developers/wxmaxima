@@ -1,23 +1,3 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-msgid ""
-msgstr ""
-"Project-Id-Version: Greek translation of wxMaxima GUI\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-18 22:33+0200\n"
-"PO-Revision-Date: 2010-06-04 19:46+0200\n"
-"Last-Translator: aga <akritas@uth.gr>\n"
-"Language-Team: uth <aakritas@uth.gr>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Greek\n"
-"X-Poedit-Country: GREECE\n"
-
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5200
 #, c-format
 msgid ""
@@ -26,49 +6,37 @@ msgid ""
 "wxWidgets: %d.%d.%d\n"
 "Unicode support: %s"
 msgstr ""
-"\n"
-"\n"
-"wxWidgets: %d.%d.%d\n"
-"υποστήριξη Unicode: %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5213
 msgid ""
 "\n"
 "Lisp: "
 msgstr ""
-"\n"
-"Lisp: "
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5209
 msgid ""
 "\n"
 "Maxima version: "
 msgstr ""
-"\n"
-"Έκδοση  Maxima:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6360
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6381
 msgid ""
 "\n"
 "Not connected to Maxima!\n"
 msgstr ""
-"\n"
-"Δεν υπάρχει σύνδεση με το Maxima!\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5211
 msgid ""
 "\n"
 "Not connected."
 msgstr ""
-"\n"
-"Δεν υπάρχει σύνδεση."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:762
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:761
 msgid "      -l <name>"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:191
-#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:196
+#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:207
+#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:212
 msgid " (Graphics) "
 msgstr ""
 
@@ -82,7 +50,7 @@ msgstr ""
 msgid " << Expression longer than allowed by the configuration setting! >>"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:606
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:605
 msgid "\"Copy LaTeX\" adds equation markers"
 msgstr ""
 
@@ -97,272 +65,268 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:763
 msgid "&Algebra"
-msgstr "Άλγεβρα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:757
 msgid "&Apply to List..."
-msgstr "Εφαρμογή σε λίστα..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:954
 msgid "&Apropos..."
-msgstr "Σχετικά..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:451
 msgid "&Batch File...\tCtrl+B"
-msgstr "Αρχείο Batch...\tCtrl+B"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:707
 msgid "&Boundary Value Problem..."
-msgstr "Πρόβλημα οριακών τιμών..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:965
 msgid "&Bug Report"
-msgstr "Αναφορά σφάλματος"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:815
 msgid "&Calculus"
-msgstr "Μαθηματική Ανάλυση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:866
 msgid "&Canonical Form"
-msgstr "Κανονική μορφή"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:739
 msgid "&Characteristic Polynomial..."
-msgstr "Χαρακτηριστικό πολυώνυμο..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:636
 msgid "&Clear Memory"
-msgstr "Εκκαθάριση μνήμης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:849
 msgid "&Combine Factorials"
-msgstr "Συνδυασμός παραγοντικών"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:892
 msgid "&Complex Simplification"
-msgstr "Μιγαδική απλοποίηση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:812
 msgid "&Continued Fraction"
-msgstr "Συνεχή κλάσματα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:475
 msgid "&Copy\tCtrl+C"
-msgstr "Αντιγραφή\tCtrl+C"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:37
 msgid "&Definite integration"
-msgstr "Ορισμένη ολοκλήρωση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:886
 msgid "&Demoivre"
-msgstr "Μετατροπή σε τριγωνομετρικές συναρτήσεις (Demoivre)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:742
 msgid "&Determinant"
-msgstr "Ορίζουσα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:775
 msgid "&Differentiate..."
-msgstr "Παραγώγιση..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:520
 msgid "&Edit"
-msgstr "Επεξεργασία"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:692
 msgid "&Eliminate Variable..."
-msgstr "Απαλοιφή μεταβλητής..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:734
 msgid "&Enter Matrix..."
-msgstr "Εισαγωγή πίνακα..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:951
 msgid "&Example..."
-msgstr "Παράδειγμα..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:829
 msgid "&Expand Expression"
-msgstr "Ανάπτυξη έκφρασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:863
 msgid "&Expand Trigonometric"
-msgstr "Ανάπτυξη τριγωνομετρικών παραστάσεων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:889
 msgid "&Exponentialize"
-msgstr "Μετατροπή σε εκθετικές συναρτήσεις"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:453
 msgid "&Export..."
-msgstr "Εξαγωγή..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:824
 msgid "&Factor Expression"
-msgstr "Παραγοντοποίηση παράστασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:462
 msgid "&File"
-msgstr "Αρχείο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:675
 msgid "&Find Root..."
-msgstr "Εύρεση Ρίζας..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:728
 msgid "&Generate Matrix..."
-msgstr "Δημιουργία πίνακα..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:799
 msgid "&Greatest Common Divisor..."
-msgstr "Μέγιστος Κοινός Διαιρέτης..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:984
 msgid "&Help"
-msgstr "Βοήθεια"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:767
 msgid "&Integrate..."
-msgstr "Ολοκλήρωση..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:627
 msgid "&Interrupt\tCtrl+."
-msgstr "Διακοπή\tCtrl+."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:631
 msgid "&Interrupt\tCtrl+G"
-msgstr "Διακοπή\tCtrl+G"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:736
 msgid "&Invert Matrix"
-msgstr "Αντιστροφος πίνακας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:449
 msgid "&Load Package...\tCtrl+L"
-msgstr "Φόρτωση πακέτου...\tCtrl+L"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:759
-#, fuzzy
 msgid "&Map to List(s)..."
-msgstr "Εφαρμογή στα μέλη λίστας..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:667
 msgid "&Maxima"
-msgstr "Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:948
-#, fuzzy
 msgid "&Maxima help"
-msgstr "Εμφάνιση βοήθειας για το Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:907
 msgid "&Modulus Computation..."
-msgstr "Ορισμός του modulo (για rat, κτλ)..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:231
-#, fuzzy
 msgid "&New\tCtrl+N"
-msgstr "Νέο\tCtrl+N"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:937
 msgid "&Numeric"
-msgstr "Αριθμητικοί Υπολογισμοί"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:46
 msgid "&Numerical integration"
-msgstr "Αριθμητική Ολοκλήρωση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:40
 msgid "&Nusum"
-msgstr "Νusum"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:232
-#, fuzzy
 msgid "&Open\tCtrl+O"
-msgstr "Άνοιγμα\tCtrl+O"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:436
 msgid "&Open...\tCtrl+O"
-msgstr "Άνοιγμα...\tCtrl+O"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:919
 msgid "&Plot"
-msgstr "Γράφημα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:48
 msgid "&Power series"
-msgstr "Δυναμοσειρές"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:456
 msgid "&Print...\tCtrl+P"
-msgstr "Εκτύπωση...\tCtrl+P"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/SubstituteWiz.cpp:39
 msgid "&Rational"
-msgstr "Ρητός(-ή)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:860
 msgid "&Reduce Trigonometric"
-msgstr "Αναγωγή τριγωνομετρικών παραστάσεων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:635
 msgid "&Restart Maxima"
-msgstr "Επανεκκίνηση  Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:683
 msgid "&Roots of Polynomial (Real)"
-msgstr "Ρίζες πολυωνύμου (πραγματικές)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:445
 msgid "&Save\tCtrl+S"
-msgstr "Αποθήκευση\tCtrl+S"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:39
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:909
 msgid "&Simplify"
-msgstr "Απλοποίηση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:819
 msgid "&Simplify Expression"
-msgstr "Απλοποίηση έκφρασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:846
 msgid "&Simplify Factorials"
-msgstr "Απλοποίηση παραγοντικών"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:857
 msgid "&Simplify Trigonometric"
-msgstr "Απλοποίηση τριγωνομετρικών παραστάσεων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:671
 msgid "&Solve..."
-msgstr "Επίλυση..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:36
 msgid "&Special"
-msgstr "Ειδικό"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:48
 msgid "&Taylor series"
-msgstr "Σειρές Taylor"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:752
 msgid "&Transpose Matrix"
-msgstr "Ανάστροφος πίνακας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:869
 msgid "&Trigonometric Simplification"
-msgstr "Τριγωνομετρική απλοποίηση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:84
 msgid "&pm3d"
-msgstr "pm3d"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:632
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:631
 msgid "(Use default language)"
-msgstr "(Χρήση Προεπιλεγμένης Γλώσσας)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:212
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:223
@@ -371,7 +335,7 @@ msgstr "(Χρήση Προεπιλεγμένης Γλώσσας)"
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:138
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:149
 msgid "- Infinity"
-msgstr "- 'Απειρο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:366
 msgid ""
@@ -390,9 +354,9 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5284
 msgid "<br>Lisp: "
-msgstr "<br>Lisp: "
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6474
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6495
 msgid ""
 "A \":lisp\" as the first command might fail to send a \"finished\" signal."
 msgstr ""
@@ -403,9 +367,6 @@ msgid ""
 "horizontal line between cells. It indicates where a new cell will appear if "
 "you type or paste text or execute a menu command."
 msgstr ""
-"Ένας οριζόντιος κέρσορας πρωτοεμφανίστηκε στο wxMaxima 0.8.0. Φαίνεται ως "
-"μία οριζόντια γραμμή μεταξύ των κελιών. Υποδεικνύει που θα εμφανιστεί ένα "
-"νέο κελί αν γράψετε ή επικολλήσετε κείμενο ή εκτελέσετε μια εντολή."
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:8
 msgid ""
@@ -414,10 +375,6 @@ msgid ""
 "calculations. When saving your document, select 'wxMaxima XML document' "
 "format."
 msgstr ""
-"Ένας νέος τύπος αρχείου πρωτοεμφανίστηκε στο wxMaxima 0.8.2 που αποθηκεύει "
-"όχι μόνο τις εντολές και το κείμενο των σχολίων, αλλά και τα αποτελέσματα "
-"των υπολογισμών. Όταν αποθηκεύετε το αρχείο, επέλεξτε τον τύπο 'wxMaxima XML "
-"document' ."
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:31
 msgid ""
@@ -438,74 +395,73 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:714
 msgid "A&t Value..."
-msgstr "Ορισμός οριακών τιμών..."
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:790
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:789
 msgid "Abort evaluation on error"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5286
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:976
 msgid "About"
-msgstr "Πληροφορίες για το wxMaxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:977
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:980
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:981
 msgid "About wxMaxima"
-msgstr "Πληροφορίες για το wxMaxima"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:849
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:882
 msgid "Active cell bracket"
-msgstr "Άγκιστρο ενεργού κελιού"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:750
 msgid "Ad&joint Matrix"
-msgstr "Προσαρτημένος πίνακας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:904
 msgid "Add Algebraic E&quality..."
-msgstr "Εισαγωγή αλγεβρικής ισότητας..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:639
 msgid "Add a directory to search path"
-msgstr "Προσθήκη καταλόγου στην διαδρομή αναζήτησης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3976
 msgid "Add dir to path:"
-msgstr "Προσθήκη καταλόγου στο μονοπάτι:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:905
 msgid "Add equality to the rational simplifier"
-msgstr "Προσθήκη ισότητας στον απλοποιητή ρητών (παραστάσεων)"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:609
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:608
 msgid "Add the .wxmx file to the HTML export"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:638
 msgid "Add to &Path..."
-msgstr "Προσθήκη στο μονοπάτι..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:216
 msgid ""
 "Additional commands to be added to the preamble of LaTeX output for pdftex."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:568
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:567
 msgid "Additional lines for the TeX preamble:"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:212
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
-msgstr "Επιπρόσθετοι παράμετροι για το maxima (π.χ. -l clisp)"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:756
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:755
 msgid "Additional parameters for maxima"
-msgstr "Επιπρόσθετοι παράμετροι:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:664
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:663
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr ""
 
@@ -523,14 +479,13 @@ msgid ""
 "mac)|*.mac|Xmaxima session (*.out)|*.out|xml from broken .wxmx (*.xml)|*.xml"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:495
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:494
 msgid "All variable names"
-msgstr "Παλιά μεταβλητή:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1014
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1054
 msgid "All|*"
-msgstr "Όλα|*"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1482
 msgid "Alpha"
@@ -540,45 +495,49 @@ msgstr ""
 msgid "An integration constant."
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:702
+msgid "Antialias lines."
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4497
 msgid "Apply"
-msgstr "Εφαρμογή"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:758
 msgid "Apply function to a list"
-msgstr "Εφαρμογή συνάρτησης σε μία λίστα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5324
 msgid "Apropos"
-msgstr "Σχετικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4418
 msgid "Array:"
-msgstr "Πίνακας:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5142
 msgid "Artwork by"
-msgstr "Υπέυθυνος γραφικών"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:706
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:705
 msgid "Ask to save untitled documents"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4292
 msgid "At value"
-msgstr "Ορισμός οριακών τιμών"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:540
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:539
 msgid "Auto-indent new lines"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:507
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:506
 #, c-format
 msgid "Automatic labels (%i1, %o1,...)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1126
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1239
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1107
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1220
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:617
 msgid "Automatically answer questions"
 msgstr ""
@@ -592,8 +551,8 @@ msgid ""
 "than the maxima installation."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1127
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1240
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1108
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1221
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:618
 msgid "Automatically fill in answers known from the last run"
 msgstr ""
@@ -605,31 +564,30 @@ msgid ""
 "respective color to match the background of ordinary text."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:670
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:669
 msgid "Autosave interval (minutes, 0 means: off):"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:481
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:480
 msgid "Autowrap long lines:"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:58
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4193
 msgid "BC2"
-msgstr "BC2"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1389
-#, fuzzy
 msgid "Barsplot..."
-msgstr "Διάγραμμα ράβδων"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1009
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1049
 msgid "Bat files (*.bat)|*.bat|All|*"
-msgstr "Αρχεία Bat  (*.bat)|*.bat|All|*"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3543
 msgid "Batch File"
-msgstr "Αρχείο Batch"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:25
 msgid ""
@@ -644,41 +602,44 @@ msgstr ""
 msgid "Beta"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:580
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:812
+msgid "Bitmap"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:579
 msgid "Bitmap scale for export:"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:588
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:587
 msgid "Bitmaps"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:872
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:905
 msgid "Bold"
-msgstr "Έντονα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2869
 msgid "Both horizontal and vertical cursor active at the same time"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1391
-#, fuzzy
 msgid "Boxplot..."
-msgstr "Θηκόγραμμα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:113
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:115
 msgid "Browse"
-msgstr "Πλοήγηση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:164
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2293
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2274
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6304
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6277
 msgid "Bug: Cell with negative y position!"
 msgstr ""
 
@@ -694,22 +655,22 @@ msgstr ""
 msgid "Bug: Found the end of autocompletion symbols but no beginning"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2571
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2552
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6475
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6448
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6550
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6523
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6518
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6491
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -719,7 +680,7 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Configuration.h:419
+#: /home/gunter/src/wxmaxima/src/Configuration.h:434
 msgid "Bug: Maximum number of digits that is to be displayed is too low!"
 msgstr ""
 
@@ -729,8 +690,8 @@ msgstr ""
 msgid "Bug: Missing contents"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1205
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1380
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1206
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1381
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -758,21 +719,21 @@ msgstr ""
 msgid "Bug: No last cell in the base of an exptCell!"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ParenCell.cpp:461
+#: /home/gunter/src/wxmaxima/src/ParenCell.cpp:464
 msgid "Bug: No last cell inside a parenthesis!"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/SqrtCell.cpp:347
+#: /home/gunter/src/wxmaxima/src/SqrtCell.cpp:349
 msgid "Bug: No last cell inside a square root!"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2337
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2318
 msgid ""
 "Bug: Start or end of merging of subsequent editing actions was requested two "
 "times in a row."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2303
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2284
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 
@@ -780,104 +741,97 @@ msgstr ""
 msgid "Bug: Trying to append NULL to a group cell."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:656
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:636
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2228
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2209
 msgid ""
 "Bug: Trying to merge individual cell adds to a region in the undo buffer but "
 "there are other cells between them."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7186
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7159
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2305
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2286
 msgid "Bug: Trying to record a cell contents change without a cell."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1734
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1715
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6519
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6492
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6480
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6555
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6590
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6453
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6528
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6563
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:963
 msgid "Build &Info"
-msgstr "Πληροφορίες για το Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:2
-#, fuzzy
 msgid ""
 "By default, Shift-Enter is used to evaluate commands, while Enter is used "
 "for multiline input. This behaviour can be changed in 'Edit->Configure' "
 "dialog by checking 'Enter evaluates cells'. This switches the roles of these "
 "two key commands."
 msgstr ""
-"Εξ'ορισμού το Shift+Enter χρησιμοποιείται για την εκτέλεση εντολών, ενώ το "
-"Enter για την εισαγωγή πολλαπλών γραμμών. Αυτή η συμπεριφορά μπορεί να "
-"αλλάξει απο το μενού 'Επεξεργασία->Ρυθμίσεις' επιλέγοντας το 'Enter "
-"υπολογίζει τα κελιά'. Αυτό εναλλάσει  τη λειτουργικότητα των δύο "
-"προαναφερθέντων εντολών του πληκτρολογίου."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:772
 msgid "C&hange Variable..."
-msgstr "Αλλαγή μεταβλητής..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:517
 msgid "C&onfigure"
-msgstr "Ρυθμίσεις"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:791
 msgid "Calculate &Product..."
-msgstr "Υπολογισμός γινομένου..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:789
 msgid "Calculate Su&m..."
-msgstr "Υπολογισμός αθροίσματος..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:929
 msgid "Calculate bigfloat value of the last result"
-msgstr "Υπολογισμός της τιμής του τελευταίου αποτελέσματος με bigfloat"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:926
 msgid "Calculate float value of the last result"
-msgstr "Υπολογισμός της τιμής του τελευταίου αποτέλεσματος προσεγγιστικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4632
 msgid "Calculate modulus:"
-msgstr "Υπολογισμοί  modulo ακέραιο:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:932
-#, fuzzy
 msgid "Calculate numeric value of the last result"
-msgstr "Υπολογισμός της τιμής του τελευταίου αποτέλεσματος προσεγγιστικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:792
 msgid "Calculate products"
-msgstr "Υπολογισμός γινομένων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:790
 msgid "Calculate sums"
-msgstr "Υπολογισμος αθροισμάτων"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6853
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6874
 msgid "Can not connect to the web server."
-msgstr "Η σύνδεση με τον web server δεν ήταν εφικτή."
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6908
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6929
 msgid "Can not download version info."
 msgstr ""
 
@@ -917,9 +871,9 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:46
 #: /home/gunter/src/wxmaxima/src/SystemWiz.cpp:38
 #: /home/gunter/src/wxmaxima/src/SystemWiz.cpp:40
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6950
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6971
 msgid "Cancel"
-msgstr "Ακύρωση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:982
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:127
@@ -928,20 +882,19 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1334
 msgid "Canonical (tr)"
-msgstr "Κανονική μορφή (τρ)"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:633
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:632
 msgid "Catalan"
-msgstr "Ιταλικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:620
 msgid "Ce&ll"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:848
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:881
 msgid "Cell bracket"
-msgstr "Άγκιστρο κελιού"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6176
 msgid "Cell ends in a backslash"
@@ -949,112 +902,112 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:658
 msgid "Change &2d Display"
-msgstr "Αλλαγή 2-Δ προβολής μαθηματικών"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:659
 msgid "Change the 2d display algorithm used to display math output"
 msgstr ""
-"Αλλαγή του 2-Δ αλγορίθμου προβολής που χρησιμοποιείται για την απεικόνιση "
-"μαθηματικών αποτελεσμάτων"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4659
 msgid "Change variable"
-msgstr "Αλλαγή μεταβλητής"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:773
 msgid "Change variable in integral or sum"
-msgstr "Αλλαγή μεταβλητής στο ολοκλήρωμα ή στο άθροισμα "
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4405
 msgid "Char poly"
-msgstr "Χαρακτηριστικό πολυώνυμο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:968
 msgid "Check for Updates"
-msgstr "Έλεγχος για ενημερώσεις"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:969
 msgid "Check if a newer version of wxMaxima/Maxima exist."
-msgstr "Έλεγχος ύπαρξης νεότερης έκδοσης του  wxMaxima/Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1503
 msgid "Chi"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:634
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:633
 msgid "Chinese Simplified"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:635
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:634
 msgid "Chinese traditional"
-msgstr "Κινέζικα παραδοσιακά"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:821
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:823
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:865
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:854
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:856
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:898
 msgid "Choose font"
-msgstr "Επιλογή γραμματοσειράς"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/PlotFormatWiz.cpp:30
-#, fuzzy
 msgid "Choose new plot format:"
-msgstr "Εισαγωγή νέου τύπου σχεδίασης:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5369
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5385
 msgid "Classes:"
-msgstr "Τάξεις:"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:809
+msgid "Clipboard formats to offer by default:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:442
-#, fuzzy
 msgid "Close\tCtrl+W"
-msgstr "Αντιγραφή\tCtrl+C"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:443
 msgid "Close window"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:856
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:889
 msgid "Code highlighting: Comments"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:860
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:893
 msgid "Code highlighting: End of line"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:855
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:888
 msgid "Code highlighting: Functions"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:857
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:890
 msgid "Code highlighting: Numbers"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:859
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:892
 msgid "Code highlighting: Operators"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:858
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:891
 msgid "Code highlighting: Strings"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:854
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:887
 msgid "Code highlighting: Variables"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5517
 msgid "Col. names:"
-msgstr "Oνόματα στηλών:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MatWiz.cpp:176
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4418
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4438
 msgid "Columns:"
-msgstr "Στήλες:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:850
 msgid "Combine factorials in an expression"
-msgstr "Συνδυασμός παραγοντικών σε μια παράσταση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6214
 msgid "Comma directly followed by a closing parenthesis"
@@ -1062,249 +1015,234 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:667
 msgid "Comma separated x coordinates"
-msgstr "Συντεταγμένες του x χωρισμένες με κόμμα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:668
 msgid "Comma separated y coordinates"
-msgstr "Συντεταγμένες του y χωρισμένες με κόμμα"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1198
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1179
 msgid "Comment Selection"
-msgstr "Επιλογή Σχολίων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:510
 msgid "Comment out the currently selected text"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:509
-#, fuzzy
 msgid "Comment selection\tCtrl+/"
-msgstr "Επιλογή Σχολίων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:580
 msgid "Complete Word\tCtrl+K"
-msgstr "Συμπλήρωση Λέξης\tCtrl+K"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:581
 msgid "Complete word"
-msgstr "Συμπλήρωση λέξης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:141
 msgid "Completely stop maxima and restart it"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:110
-#, fuzzy
 msgid "Complex infinity."
-msgstr "Μιγαδική απλοποίηση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:813
 msgid "Compute continued fraction of a value"
-msgstr "Υπολογισμός συνεχούς κλάσματος μιας τιμής"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:751
 msgid "Compute the adjoint matrix"
-msgstr "Υπολογισμός του προσαρτημένου πίνακα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:740
 msgid "Compute the characteristic polynomial of a matrix"
-msgstr "Υπολογισμός του χαρακτηριστικού πολυωνύμου ενός πίνακα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:743
 msgid "Compute the determinant of a matrix"
-msgstr "Υπολογισμός ορίζουσας πίνακα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:800
 msgid "Compute the greatest common divisor"
-msgstr "Υπολογισμός μέγιστου κοινού διαιρέτη"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:737
 msgid "Compute the inverse of a matrix"
-msgstr "Υπολογισμός αντιστρόφου πίνακα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:803
 msgid "Compute the least common multiple (do load(functs) before using)"
 msgstr ""
-"Υπολογισμός του ελαχίστου κοινού πολλαπλασίου (εκτελέστε load(functs) πριν "
-"τη χρήση)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5569
 msgid "Condition:"
-msgstr "Συνθήκη:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1791
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1800
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1828
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1837
 msgid "Config file (*.ini)|*.ini"
-msgstr "Αρχείο Config (*.ini)|*.ini"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1618
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1655
 msgid "Configuration warning"
-msgstr "Προειδοποίηση ρύθμισης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:114
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:515
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:518
 msgid "Configure wxMaxima"
-msgstr "Ρυθμίσεις του wxMaxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:214
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:233
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:140
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:113
 msgid "Constant"
-msgstr "Σταθερά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:834
 msgid "Contract Logarithms"
-msgstr "Συστολή λογαρίθμων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:841
 msgid "Convert binomials, beta and gamma function to factorials"
-msgstr "Μετατροπή διωνυμικών,συναρτήσεων Βήτα και Γάμμα σε παραγοντικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:844
 msgid "Convert binomials, factorials and beta function to gamma function"
 msgstr ""
-"Μετατροπή διωνύμων, παραγοντικών και Βήτα συναρτήσεων σε Γάμμα συνάρτηση"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:878
 msgid "Convert complex expression to polar form"
-msgstr "Μετατροπή μιγαδικής παράστασης σε πολική μορφή"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:875
 msgid "Convert complex expression to rect form"
-msgstr "Μετατροπή μιγαδικών παραστάσεων σε ορθογώνιες συντεταγμένες"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:887
 msgid ""
 "Convert exponential function of imaginary argument to trigonometric form"
 msgstr ""
-"Μετατροπή της εκθετικής συνάρτησης φανταστικής μεταβλητής σε τριγωνομετρική "
-"μορφή"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:832
 msgid "Convert logarithm of product to sum of logarithms"
-msgstr "Μετατροπή λογαρίθμου γινομένου σε άθροισμα λογαρίθμων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:835
 msgid "Convert sum of logarithms to logarithm of product"
-msgstr "Μετατροπή αθροίσματος λογαρίθμων σε λογάριθμο γινομένου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:840
 msgid "Convert to &Factorials"
-msgstr "Μετατροπή σε παραγοντικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:843
 msgid "Convert to &Gamma"
-msgstr "Μετατροπή σε Γάμμα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:877
 msgid "Convert to &Polarform"
-msgstr "Μετατροπή σε πολική μορφή"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:874
 msgid "Convert to &Rectform"
-msgstr "Μετατροπή σε ορθογώνιες συντεταγμένες"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:867
 msgid "Convert trigonometric expression to canonical quasilinear form"
-msgstr "Μετατροπή τριγωνομετρικής παράστασης σε κανονική ημιγραμμική μορφή"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:890
-#, fuzzy
 msgid "Convert trigonometric functions to exponential form"
-msgstr "Μετατροπή τριγωνομετρικών συναρτήσεων σε εκθετική μορφή"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1058
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1074
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1134
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1192
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1039
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1055
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1115
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1173
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:121
 msgid "Copy"
-msgstr "Αντιγραφή"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:576
 msgid "Copy Previous Input\tCtrl+I"
-msgstr "Αντιγραφή προηγούμενης εισαγωγής\tCtrl+I"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:578
-#, fuzzy
 msgid "Copy Previous Output\tCtrl+U"
-msgstr "Αντιγραφή προηγούμενης εισαγωγής\tCtrl+I"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1080
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1140
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1061
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1121
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:486
 msgid "Copy as Image"
-msgstr "Αντιγραφή ως εικόνα"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1075
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1135
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1056
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1116
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:480
 msgid "Copy as LaTeX"
-msgstr "Αντιγραφή ως LaTeX"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:483
-#, fuzzy
 msgid "Copy as MathML"
-msgstr "Αντιγραφή ως εικόνα"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1078
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1137
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1059
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1118
 msgid "Copy as MathML (e.g. to word processor)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1084
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1144
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1065
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1125
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:492
-#, fuzzy
 msgid "Copy as RTF"
-msgstr "Αντιγραφή ως LaTeX"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1082
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1142
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1063
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1123
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:489
-#, fuzzy
 msgid "Copy as SVG"
-msgstr "Αντιγραφή ως LaTeX"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:477
 msgid "Copy as Text\tCtrl+Shift+C"
-msgstr "Αντιγραφή ως κείμενο\tCtrl+Shift+C"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1076
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1136
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1057
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1117
 msgid "Copy as plain text"
-msgstr "Αντιγραφή ως εικόνα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:123
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:476
 msgid "Copy selection"
-msgstr "Αντιγραφή επιλογής"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:490
-#, fuzzy
 msgid "Copy selection from document as an SVG image"
-msgstr "Αντιγραφή επιλογής από  έγγραφο ως εικόνα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:487
 msgid "Copy selection from document as an image"
-msgstr "Αντιγραφή επιλογής από  έγγραφο ως εικόνα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:493
-#, fuzzy
 msgid ""
 "Copy selection from document as rtf that a word processor might understand"
-msgstr "Αντιγραφή επιλογής από  έγγραφο ως εικόνα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:478
 msgid "Copy selection from document as text"
-msgstr "Αντιγραφή επιλογής από  έγγραφο ως κείμενο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:481
 msgid "Copy selection from document in LaTeX format"
-msgstr "Αντιγραφή επιλογής από έγγραφο σε μορφή LaTeX "
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:484
 msgid ""
@@ -1314,48 +1252,47 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:577
 msgid "Create a new cell with previous input"
-msgstr "Δημιουργία κελιού με την τελευταία εισαγωγή"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:579
-#, fuzzy
 msgid "Create a new cell with previous output"
-msgstr "Δημιουργία κελιού με την τελευταία εισαγωγή"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:850
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:883
 msgid "Cursor"
-msgstr "Κέρσορας"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1191
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1172
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:118
 msgid "Cut"
-msgstr "Αποκοπή"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:472
 msgid "Cut\tCtrl+X"
-msgstr "Αποκοπή\tCtrl+X"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:120
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:473
 msgid "Cut selection"
-msgstr "Αποκοπή επιλογής"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:635
+msgid "Czech"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:636
-msgid "Czech"
-msgstr "Τσεχικά"
-
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:637
 msgid "Danish"
-msgstr "Δανικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5508
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5517
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5569
 msgid "Data Matrix:"
-msgstr "Πίνακας Δεδομένων:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5538
 msgid "Data file (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
-msgstr "Αρχείο δεδομένων (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5369
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5385
@@ -1368,40 +1305,37 @@ msgstr "Αρχείο δεδομένων (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5456
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5498
 msgid "Data:"
-msgstr "Δεδομένα:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:793
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:792
 msgid "Debug: watch maxima's stdout stream"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:810
 msgid "Decompose rational function to partial fractions"
-msgstr "Ανάλυση ρητής συνάρτησης σε μερικά κλάσματα"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:827
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:860
 msgid "Default"
-msgstr "Προεπιλεγμένος"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:686
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:685
 msgid "Default animation framerate:"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:820
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:853
 msgid "Default font:"
-msgstr "Προεπιλεγμένη γραμματοσειρά:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:451
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:450
 msgid "Default plot size for new maxima sessions:"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:749
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:748
 msgid "Default port for communication with wxMaxima:"
 msgstr ""
-"Η προεπιλεγμένη θύρα που χρησιμοποιείται για την επικοινωνία μεταξύ του "
-"Maxima και του wxMaxima"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:221
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:219
 msgid ""
 "Define the default speed (in frames per second) animations are played back "
 "with."
@@ -1410,40 +1344,40 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4029
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4039
 msgid "Delete"
-msgstr "Διαγραφή"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:649
 msgid "Delete F&unction..."
-msgstr "Διαγραφή συνάρτησης..."
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1087
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1147
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1068
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1128
 msgid "Delete Selection"
-msgstr "Διαγραφή επιλογής"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:651
 msgid "Delete V&ariable..."
-msgstr "Διαγραφή μεταβλητής..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:650
 msgid "Delete a function"
-msgstr "Διαγραφή μίας συνάρτησης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:652
 msgid "Delete a variable"
-msgstr "Διαγραφή μίας μεταβλητής"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:637
 msgid "Delete all values from memory"
-msgstr "Διαγραφή όλων των τιμών από τη μνήμη"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4039
 msgid "Delete function(s):"
-msgstr "Διαγραφή συνάρτησης(-σεων)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4029
 msgid "Delete variable(s):"
-msgstr "Διαγραφή μεταβλητής(-ών):"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1485
 msgid "Delta"
@@ -1451,84 +1385,82 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4675
 msgid "Denom. deg:"
-msgstr "Βαθμός Παρανομαστή:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:46
 msgid "Depth:"
-msgstr "Βάθος:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4176
 msgid "Derivative:"
-msgstr "Παράγωγος:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1375
-#, fuzzy
 msgid "Deviation..."
-msgstr "Απόκλιση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:806
 msgid "Di&vide Polynomials..."
-msgstr "Διαίρεση πολυωνύμων..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1340
 msgid "Diff..."
-msgstr "Παραγώγιση..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4827
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5910
 msgid "Differentiate"
-msgstr "Παραγώγιση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:776
 msgid "Differentiate expression"
-msgstr "Παραγώγιση παράστασης"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1164
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1145
 msgid "Differentiate..."
-msgstr "Παραγώγιση..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/FindReplacePane.cpp:80
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:39
 msgid "Direction:"
-msgstr "Κατεύθυνση:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:438
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:660
 msgid "Discrete plot"
-msgstr "Διακριτή σχεδίαση."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:661
 msgid "Display Te&X Form"
-msgstr "Εμφάνιση σε μορφή TeX"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3943
 msgid "Display algorithm"
-msgstr "Αλγόριθμος προβολής μαθηματικών"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:662
 msgid "Display last result in TeX form"
-msgstr "Εμφάνιση τελευταίου αποτελέσματος σε μορφή TeX"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:656
 msgid "Display time used for evaluation"
-msgstr "Εμφάνιση του χρόνου που απαιτήθηκε για τον υπολογισμό"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4729
 msgid "Divide"
-msgstr "Διαίρεση"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1200
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1181
 msgid "Divide Cell"
-msgstr "Διαίρεση κελιού"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:614
-#, fuzzy
 msgid "Divide Cell\tCtrl+D"
-msgstr "Διαίρεση κελιού"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:807
 msgid "Divide numbers or polynomials"
-msgstr "Διαίρεση αριθμών ή πολυωνύμων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:615
 msgid "Divide this input cell into two cells"
@@ -1538,45 +1470,32 @@ msgstr ""
 msgid "Division by 0."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6945
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6966
 #, c-format
 msgid "Do you want to save the changes you made in the document \"%s\"?"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:847
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:880
 msgid "Document background"
-msgstr "Φόντο εγγράφου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2196
-#, fuzzy
 msgid ""
 "Document was saved using a newer version of wxMaxima so it may not load "
 "correctly. Please update your wxMaxima."
 msgstr ""
-"είχε αποθηκευθεί χρησιμοποιώντας μια νεότερη έκδοση του wxMaxima. Έτσι "
-"μπορεί να μην φορτωθεί σωστά.Παρακαλώ ενημερώστε το wxMaxima σας."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2188
-#, fuzzy
 msgid ""
 "Document was saved using a newer version of wxMaxima. Please update your "
 "wxMaxima."
 msgstr ""
-"είχε αποθηκευθεί χρησιμοποιώντας μια νεότερη έκδοση του wxMaxima. Παρακαλώ "
-"ενημερώστε το wxMaxima σας."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:563
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:562
 msgid "Documentclass for TeX export:"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:220
-msgid ""
-"Don't compress the maxima input text and compress images individually: This "
-"enables version control systems like git and svn to effectively spot the "
-"differences."
-msgstr ""
-
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6950
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6971
 msgid "Don't save"
 msgstr ""
 
@@ -1586,19 +1505,19 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:724
 msgid "E&quations"
-msgstr "Εξισώσεις"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:460
 msgid "E&xit\tCtrl+Q"
-msgstr "Έξοδος\tCtrl+Q"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:747
 msgid "Eige&nvectors"
-msgstr "Ιδιοδιανύσματα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:745
 msgid "Eigen&values"
-msgstr "Ιδιοτιμές"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:90
 msgid ""
@@ -1620,19 +1539,19 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4210
 msgid "Eliminate"
-msgstr "Απαλειφή"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:693
 msgid "Eliminate a variable from a system of equations"
-msgstr "Απαλειφή μεταβλητής από σύστημα εξισώσεων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1587
 msgid "End of proof"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:638
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:637
 msgid "English"
-msgstr "Αγγλικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5401
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5410
@@ -1643,63 +1562,60 @@ msgstr "Αγγλικά"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5456
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5498
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5508
-#, fuzzy
 msgid "Enter Data"
-msgstr "Εισαγωγή πίνακα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1396
 msgid "Enter Matrix..."
-msgstr "Εισαγωγή πίνακα..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:735
 msgid "Enter a matrix"
-msgstr "Εισαγωγή πίνακα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4621
 msgid "Enter an equation for rational simplification:"
-msgstr "Εισαγωγή εξίσωσης για ρητή απλοποίηση:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/SystemWiz.cpp:50
 msgid "Enter comma separated list of variables."
-msgstr "Εισαγωγή λίστας μεταβλητών χωρισμένες με κόμμα"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:522
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:521
 msgid "Enter evaluates cells"
-msgstr "Το Enter υπολογίζει τα κελιά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4387
 msgid "Enter matrix"
-msgstr "Εισαγωγή πίνακα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5017
-#, fuzzy
 msgid "Enter new precision for bigfloats:"
-msgstr "Εισαγωγή νέας τιμής ακρίβειας:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:211
 msgid "Enter the path to the Maxima executable."
-msgstr "Εισαγωγή της διαδρομής στο εκτελέσιμο αρχείο του maxima."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1486
-#, fuzzy
 msgid "Epsilon"
-msgstr "Έψιλον:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4882
 msgid "Epsilon:"
-msgstr "Έψιλον:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/SystemWiz.cpp:69
 #, c-format
 msgid "Equation %d:"
-msgstr "Εξίσωση %d:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4088
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4104
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4273
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5859
 msgid "Equation(s):"
-msgstr "Εξίσωση(-εις):"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4122
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4142
@@ -1707,7 +1623,7 @@ msgstr "Εξίσωση(-εις):"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5518
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5875
 msgid "Equation:"
-msgstr "Εξίσωση:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:37
 msgid ""
@@ -1718,10 +1634,10 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4206
 msgid "Equations:"
-msgstr "Εξισώσεις:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1022
-#: /home/gunter/src/wxmaxima/src/Image.cpp:175
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1062
+#: /home/gunter/src/wxmaxima/src/Image.cpp:179
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1595
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1907
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1918
@@ -1733,11 +1649,11 @@ msgstr "Εξισώσεις:"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2233
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2516
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2683
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6360
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6853
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6908
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6381
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6874
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6929
 msgid "Error"
-msgstr "Σφάλμα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3485
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3499
@@ -1746,141 +1662,132 @@ msgstr "Σφάλμα"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4257
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4381
 msgid "Error!"
-msgstr "Σφάλμα!"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1488
 msgid "Eta"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:259
-#, fuzzy
 msgid "Evaluate"
-msgstr "Υπολογισμός κελιού(-ιών)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:899
 msgid "Evaluate &Noun Forms"
-msgstr "Υπολογισμός ονοματικών μορφών"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:568
-#, fuzzy
 msgid "Evaluate All Cells\tCtrl+Shift+R"
-msgstr "Υπολογισμός όλων των κελιών\tCtrl+R"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:566
-#, fuzzy
 msgid "Evaluate All Visible Cells\tCtrl+R"
-msgstr "Υπολογισμός όλων των κελιών\tCtrl+R"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1090
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1071
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:564
 msgid "Evaluate Cell(s)"
-msgstr "Υπολογισμός κελιού(-ιών)"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1183
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1164
 msgid "Evaluate Cells Above"
-msgstr "Υπολογισμός κελιού(-ιών)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:570
-#, fuzzy
 msgid "Evaluate Cells Above\tCtrl+Shift+P"
-msgstr "Υπολογισμός όλων των κελιών\tCtrl+R"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1092
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1184
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1073
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1165
 msgid "Evaluate Cells Below"
-msgstr "Υπολογισμός κελιού(-ιών)"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1106
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1221
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1087
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1202
 msgid "Evaluate Part\tShift+Ctrl+Enter"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1111
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1224
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1092
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1205
 msgid "Evaluate Section\tShift+Ctrl+Enter"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1123
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1231
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1270
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1104
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1212
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1251
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1117
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1228
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1260
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1098
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1209
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1241
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:565
 msgid "Evaluate active or selected cell(s)"
-msgstr "Υπολογισμός ενεργού(-ών) ή επιλεγμένου(-ων) κελιού(-ών)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:569
 msgid "Evaluate all cells in the document"
-msgstr "Υπολογισμός όλων των κελιών στο έγγραφο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:900
 msgid "Evaluate all noun forms in expression"
-msgstr "Υπολογισμός όλων των ονοματικών μορφών στην παράσταση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:567
-#, fuzzy
 msgid "Evaluate all visible cells in the document"
-msgstr "Υπολογισμός όλων των κελιών στο έγγραφο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:153
 msgid "Evaluate the file from its beginning to the cell above the cursor"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:151
-#, fuzzy
 msgid "Evaluate to point"
-msgstr "Υπολογισμός ονοματικών μορφών"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5310
 msgid "Example"
-msgstr "Παράδειγμα"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1735
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1837
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1772
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1874
 msgid "Example text"
-msgstr "Παράδειγμα κειμένου"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:759
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:758
 msgid "Examples:"
-msgstr "Παράδειγμα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:461
 msgid "Exit wxMaxima"
-msgstr "Έξοδος από το wxMaxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1331
 msgid "Expand"
-msgstr "Ανάπτυξη"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1336
 msgid "Expand (tr)"
-msgstr "Ανάπτυξη (τρ)"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1160
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1141
 msgid "Expand Expression"
-msgstr "Ανάπτυξη παράστασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:831
 msgid "Expand Logarithms"
-msgstr "Ανάπτυξη λογαρίθμων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:830
 msgid "Expand an expression"
-msgstr "Ανάπτυξη μία παράστασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:864
 msgid "Expand trigonometric expression"
-msgstr "Ανάπτυξη τριγωνομετρικής παράστασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:94
 msgid "Expected the icon files to be found at"
@@ -1889,26 +1796,24 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:160
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3436
 msgid "Export"
-msgstr "Εξαγωγή"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:596
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:595
 msgid ""
 "Export animations to TeX (Images only move if the PDF viewer supports this)"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:454
 msgid "Export document to a HTML or pdfLaTeX file"
-msgstr "Εξαγωγή εγγράφου σε HTML ή pdfLaTeX αρχείο"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:585
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:584
 msgid "Export equations to HTML as:"
-msgstr "Η εξαγωγή σε HTML απέτυχε!"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:212
-#, fuzzy
 msgid "Export failed."
-msgstr "Η εξαγωγή σε TeX απέτυχε"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:198
 msgid "Export successful."
@@ -1916,29 +1821,27 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3513
 msgid "Exporting to HTML failed!"
-msgstr "Η εξαγωγή σε HTML απέτυχε!"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3485
 msgid "Exporting to TeX failed!"
-msgstr "Η εξαγωγή σε TeX απέτυχε"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3499
-#, fuzzy
 msgid "Exporting to maxima batch file failed!"
-msgstr "Η εξαγωγή σε TeX απέτυχε"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:188
-#, fuzzy
 msgid "Exporting..."
-msgstr "Εξαγωγή..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:32
 msgid "Expression"
-msgstr "Παράσταση:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:33
 msgid "Expression(s):"
-msgstr "Παράσταση(-εις):"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:31
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:29
@@ -1956,44 +1859,44 @@ msgstr "Παράσταση(-εις):"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4915
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5907
 msgid "Expression:"
-msgstr "Παράσταση:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1330
 msgid "Factor"
-msgstr "Παραγοντοποίηση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:826
 msgid "Factor Complex"
-msgstr "Παραγοντοποίηση παράστασης (Μιγαδική)"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1159
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1140
 msgid "Factor Expression"
-msgstr "Παραγοντοποίηση παράστασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:825
 msgid "Factor an expression"
-msgstr "Παραγοντοποίηση μιας παράστασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:827
 msgid "Factor an expression in Gaussian numbers"
-msgstr "Παραγοντοποίηση παράστασης σε Γκαουσιανούς αριθμούς"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:852
 msgid "Factorials and &Gamma"
-msgstr "Παραγοντικά και Γάμμα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:292
 msgid "Fatal error"
-msgstr "Ολέθριο σφάλμα"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2084
-#, fuzzy, c-format
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2085
+#, c-format
 msgid "Figure %d:"
-msgstr "Σχέδιο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:233
 msgid "File"
-msgstr "Αρχείο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1597
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1909
@@ -2003,125 +1906,120 @@ msgstr "Αρχείο"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2190
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2225
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2236
-#, fuzzy
 msgid "File could not be opened"
-msgstr "Το αρχείο δεν βρέθηκε"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6040
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6089
 msgid "File not found"
-msgstr "Το αρχείο δεν βρέθηκε"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1883
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1962
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2173
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2264
-#, fuzzy
 msgid "File opened"
-msgstr "Το αρχείο δεν βρέθηκε"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6040
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6089
 msgid "File you tried to open does not exist."
-msgstr "Το αρχείο που προσπαθήσατε να ανοίξετε δεν υπάρχει"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:83
 msgid "File:"
-msgstr "Αρχείο:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:133
 msgid "Find"
-msgstr "Εύρεση "
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:500
 msgid "Find\tCtrl+F"
-msgstr "Εύρεση \tCtrl+F"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:777
 msgid "Find &Limit..."
-msgstr "Εύρεση ορίου..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:780
 msgid "Find Minimum..."
-msgstr "Εύρεση ελαχίστου..."
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1156
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1137
 msgid "Find Root..."
-msgstr "Εύρεση ρίζας..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:781
 msgid "Find a (unconstrained) minimum of an expression"
-msgstr "Εύρεση ενός (μη δεσμευμένου) ελαχίστου μιας παράστασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:778
 msgid "Find a limit of an expression"
-msgstr "Εύρεση ορίου μιας παράστασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:676
 msgid "Find a root of an equation on an interval"
-msgstr "Εύρεση ρίζας μιας εξίσωσης σε ένα διάστημα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:678
 msgid "Find all roots of a polynomial"
-msgstr "Εύρεση όλων των ριζών ενός πολυωνύμου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:681
 msgid "Find all roots of a polynomial (bfloat)"
-msgstr "Εύρεση όλων των ριζών ενός πολυωνύμου(bfloat)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3819
 msgid "Find and Replace"
-msgstr "Εύρεση και Αντικατάσταση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:135
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:500
 msgid "Find and replace"
-msgstr "Εύρεση και αντικατάσταση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:746
 msgid "Find eigenvalues of a matrix"
-msgstr "Εύρεση ιδιοτιμών πίνακα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:748
 msgid "Find eigenvectors of a matrix"
-msgstr "Εύρεση ιδιοδιανυσμάτων πίνακα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4885
 msgid "Find minimum"
-msgstr "Εύρεση ελαχίστου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:684
 msgid "Find real roots of a polynomial"
-msgstr "Εύρεση πραγματικών ριζών πολυωνύμου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4126
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5879
 msgid "Find root"
-msgstr "Εύρεση ρίζας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/FindReplacePane.cpp:44
-#, fuzzy
 msgid "Find:"
-msgstr "Εύρεση "
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:639
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:638
 msgid "Finnish"
-msgstr "Δανικά"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:709
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:708
 #, c-format
 msgid "Fix reordered reference indices (of %i, %o) before saving"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:546
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:545
 msgid "Fixed font in text controls"
-msgstr "Σταθερή γραμματοσειρά στον έλεγχο κειμένου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:602
-#, fuzzy
 msgid "Fold All\tCtrl+Alt+["
-msgstr "Επιλογή Όλων\tCtrl+A"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:603
 msgid "Fold all sections"
@@ -2131,7 +2029,7 @@ msgstr ""
 msgid "Follow"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/IntCell.cpp:292
+#: /home/gunter/src/wxmaxima/src/IntCell.cpp:294
 msgid ""
 "Font issue: The char height is too small! Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
@@ -2151,19 +2049,17 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:259
 msgid "Font used for display in document."
-msgstr "Γραμματοσειρά που χρησιμοποιείται για την εμφάνιση στο έγγραφο."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:260
 msgid "Font used for displaying math characters in document."
 msgstr ""
-"Γραμματοσειρά που χρησιμοποιείται για την εμφάνιση των μαθηματικών "
-"χαρακτήρων στο έγγραφο."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:808
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:841
 msgid "Fonts"
-msgstr "Γραμματοσειρές"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:241
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:239
 msgid ""
 "For each Text-, Sectioning or code cell wxMaxima can display a bracket "
 "showing the extend of the cell and allowing to fold it. This setting now "
@@ -2173,16 +2069,16 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:61
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:60
 msgid "Format:"
-msgstr "Μορφή:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:71
 #, c-format
 msgid "Frame %i of %i"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:640
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:639
 msgid "French"
-msgstr "Γαλλικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:38
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:40
@@ -2194,52 +2090,52 @@ msgstr "Γαλλικά"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4476
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4915
 msgid "From:"
-msgstr "Από:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:555
 msgid "Full Screen\tAlt+Enter"
-msgstr "Πλήρης οθόνη\tAlt+Enter"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3965
 msgid "Function"
-msgstr "Συνάρτηση"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:830
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:863
 msgid "Function names"
-msgstr "Ονόματα συναρτήσεων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4273
 msgid "Function(s):"
-msgstr "Συνάρτηση(-εις):"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4142
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4350
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4459
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4494
 msgid "Function:"
-msgstr "Συνάρτηση:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:894
 msgid "Functions for complex simplification"
-msgstr "Συναρτήσεις για μιγαδική απλοποίηση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:854
 msgid "Functions for simplifying factorials and gamma function"
-msgstr "Συναρτήσεις για απλοποίηση παραγοντικών και Γάμμα συναρτήσεων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:871
 msgid "Functions for simplifying trigonometric expressions"
-msgstr "Συναρτήσεις για απλοποίηση τριγωνομετρικών παραστάσεων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4713
 msgid "GCD"
-msgstr "ΜΚΔ"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5997
 msgid "GIF image (*.gif)|*.gif"
-msgstr "Εικόνα GIF (*.gif)|*.gif"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:641
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:640
 msgid "Galician"
 msgstr ""
 
@@ -2249,153 +2145,141 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:353
 msgid "General Math"
-msgstr "Γενικά Μαθηματικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:526
 msgid "General Math\tAlt+Shift+M"
-msgstr "Γενικά Μαθηματικά\tAlt+Shift+M"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4421
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4441
 msgid "Generate Matrix"
-msgstr "Δημιουργία πίνακα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:731
 msgid "Generate Matrix from Expression..."
-msgstr "Δημιουργία πίνακα απο παράσταση..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:729
 msgid "Generate a matrix from a 2-dimensional array"
-msgstr "Δημιουργία πίνακα από 2-Δ πίνακα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:732
 msgid "Generate a matrix from a lambda expression"
-msgstr "Δημιουργία πίνακα από παράσταση lambda"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:642
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:641
 msgid "German"
-msgstr "Γερμανικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:883
 msgid "Get &Imaginary Part"
-msgstr "Εξαγωγή φανταστικού μέρους"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:783
 msgid "Get &Series..."
-msgstr "Υπολογισμός σειρών..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:794
 msgid "Get Laplace transformation of an expression"
-msgstr "Υπολογισμός μετασχηματισμού Laplace μιας παράστασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:880
 msgid "Get Real P&art"
-msgstr "Εξαγωγή πραγματικού μέρους"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:797
 msgid "Get inverse Laplace transformation of an expression"
-msgstr "Υπολογισμός του αντίστροφου μετασχηματισμού Laplace μιας παράστασης\""
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:784
 msgid "Get the Taylor or power series of expression"
-msgstr "Υπολογισμός σειράς Taylor ή δυναμοσειράς μιας παράστασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:884
 msgid "Get the imaginary part of complex expression"
-msgstr "Υπολογισμός φανταστικού μέρους μιας μιγαδικής παράστασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:881
 msgid "Get the real part of complex expression"
-msgstr "Υπολογισμός πραγματικού μέρους μιας μιγαδικής παράστασης"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6570
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6543
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:643
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:642
 msgid "Greek"
-msgstr "Ελληνικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:318
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:376
-#, fuzzy
 msgid "Greek Letters"
-msgstr "Ελληνικές σταθερές"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:529
-#, fuzzy
 msgid "Greek Letters\tAlt+Shift+G"
-msgstr "Γενικά Μαθηματικά\tAlt+Shift+M"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:832
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:865
 msgid "Greek constants"
-msgstr "Ελληνικές σταθερές"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:52
 msgid "Grid:"
-msgstr "Πλέγμα:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3438
-#, fuzzy
 msgid ""
 "HTML file (*.html)|*.html|maxima batch file (*.mac)|*.mac|pdfLaTeX file (*."
 "tex)|*.tex"
-msgstr "Αρχείο HTML (*.html)|*.html|pdfLaTeX file (*.tex)|*.tex|All|*"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:195
 msgid "Help"
-msgstr "Βοήθεια"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:257
-#, fuzzy
 msgid "Hide"
-msgstr "Διαίρεση κελιού"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:538
-#, fuzzy
 msgid "Hide All Toolbars\tAlt+Shift+-"
-msgstr "Απόκρυψη Όλων\tAlt+Shift+-"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:192
-#, fuzzy
 msgid "Hide Code"
-msgstr "Διαίρεση κελιού"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:537
-#, fuzzy
 msgid "Hide Code Cells\tAlt+Ctrl+H"
-msgstr "Προσθήκη κελιού\tAlt+Shift+C"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1249
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1230
 msgid "Hide Part"
-msgstr "Διαίρεση κελιού"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1257
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1238
 msgid "Hide Section"
-msgstr "Ενότητα"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1267
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1248
 msgid "Hide Subsection"
-msgstr "Υποενότητα"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1277
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1258
 msgid "Hide Subsubsection"
-msgstr "Υποενότητα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:538
 msgid "Hide all panes"
-msgstr "Απόκρυψη όλων των παλετών"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1285
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1266
 msgid "Hide contents"
-msgstr "Ελληνικές σταθερές"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:270
 msgid ""
@@ -2404,26 +2288,25 @@ msgid ""
 "the cells aren't active."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:839
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:872
 msgid "Highlight (dpart)"
-msgstr "Επισήμανση (dpart)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5372
 msgid "Histogram"
-msgstr "Ιστόγραμμα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1387
 msgid "Histogram..."
-msgstr "Ιστόγραμμα..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:271
 msgid "History"
-msgstr "Ιστορικό"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:532
-#, fuzzy
 msgid "History\tAlt+Shift+I"
-msgstr "Ιστορικό\tAlt+Shift+H"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:14
 msgid ""
@@ -2432,22 +2315,18 @@ msgid ""
 "select cells, pressing backspace or delete twice will delete a cell next to "
 "it."
 msgstr ""
-"Ο οριζόντιος κέρσορας λειτουργεί σαν κανονικός κέρσορας,αλλά ενεργεί στα "
-"κελιά: (α) πίεστε το πάνω ή το κάτω βέλος για να τον μετακινήσετε, (β) "
-"κρατώντας πατημένο το Shift ενώ τον μετακινείτε, επιλέγει κελιά, και (γ) "
-"πιέζοντας το backspace ή το delete 2 φορές διαγράφει ένα κελί δίπλα του."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:644
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:643
 msgid "Hungarian"
-msgstr "Ουγγρικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4162
 msgid "IC1"
-msgstr "IC1"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4179
 msgid "IC2"
-msgstr "IC2"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1579
 msgid "Identical to"
@@ -2459,15 +2338,15 @@ msgid ""
 "detects that maxima has encountered any error."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:476
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:475
 msgid "If not extremely long"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:475
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:474
 msgid "If not very long"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:227
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:225
 msgid ""
 "If numbers are getting longer than this number of digits they will be "
 "displayed abbreviated by an ellipsis."
@@ -2488,7 +2367,7 @@ msgid ""
 "file isn't saved automatically at all."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:239
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:237
 msgid ""
 "If this option is set the .wxmx source of the current file is copied to a "
 "place a link to is put into the result of an export."
@@ -2506,17 +2385,15 @@ msgid ""
 "If your calculation is taking too long to evaluate, you can try 'Maxima-"
 ">Interrupt' or 'Maxima->Restart Maxima' menu commands."
 msgstr ""
-"Αν ο υπολογισμός σας καθυστερεί πολύ, μπορείτε να δοκιμάσετε τις εντολές του "
-"μενού 'Maxima->Διακοπή' ή 'Maxima->Επανεκκίνηση Maxima'."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5035
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5016
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1646
 msgid "Image"
-msgstr "Εικόνα"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6654
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6675
 msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
-msgstr "Αρχεία εικόνας (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:33
 msgid ""
@@ -2543,7 +2420,7 @@ msgid ""
 "spaces."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:231
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:229
 msgid ""
 "In the LaTeX output: Put exponents after an eventual subscript instead of "
 "above it. Might increase readability for some fonts and short subscripts."
@@ -2551,9 +2428,9 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5570
 msgid "Include columns:"
-msgstr "Συμπεριέλαβε τις στήλες:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:711
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:710
 msgid "Incremental Search"
 msgstr ""
 
@@ -2573,190 +2450,175 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:147
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1548
 msgid "Infinity"
-msgstr "Άπειρο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:964
 msgid "Info about Maxima build"
-msgstr "Πληροφορίες για το Maxima build"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4881
 msgid "Initial Estimates:"
-msgstr "Αρχικές Εκτιμήσεις:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:701
 msgid "Initial Value Problem (&1)..."
-msgstr "Πρόβλημα αρχικών τιμών (&1)..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:704
 msgid "Initial Value Problem (&2)..."
-msgstr "Πρόβλημα αρχικών τιμών (&2)..."
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:835
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:868
 msgid "Input labels"
-msgstr "Ετικέτες εισαγωγής"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:365
 msgid "Insert"
-msgstr "Προσθήκη"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:537
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:536
 msgid "Insert % before an operator at the beginning of a cell"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:591
-#, fuzzy
 msgid "Insert &Section Cell\tCtrl+3"
-msgstr "Προσθήκη κελιού &ενότητας\tF8"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:587
-#, fuzzy
 msgid "Insert &Text Cell\tCtrl+1"
-msgstr "Προσθήκη κελιού &κειμένου\tF6"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:535
 msgid "Insert Cell\tAlt+Shift+C"
-msgstr "Προσθήκη κελιού\tAlt+Shift+C"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6652
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6673
 msgid "Insert Image"
-msgstr "Προσθήκη εικόνας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:599
 msgid "Insert Image..."
-msgstr "Προσθήκη εικόνας..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:585
-#, fuzzy
 msgid "Insert Input &Cell"
-msgstr "Προσθήκη κελιού εντολών"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:597
-#, fuzzy
 msgid "Insert Page Break"
-msgstr "Προσθήκη Page Break\tF10"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:593
-#, fuzzy
 msgid "Insert S&ubsection Cell\tCtrl+4"
-msgstr "Προσθήκη κελιού υποενότητας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:595
-#, fuzzy
 msgid "Insert S&ubsubsection Cell\tCtrl+5"
-msgstr "Προσθήκη κελιού υποενότητας"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1179
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1160
 msgid "Insert Section Cell"
-msgstr "Προσθήκη κελιού &ενότητας\tF8"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1180
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1161
 msgid "Insert Subsection Cell"
-msgstr "Προσθήκη κελιού υποενότητας"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1181
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1162
 msgid "Insert Subsubsection Cell"
-msgstr "Προσθήκη κελιού υποενότητας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:589
-#, fuzzy
 msgid "Insert T&itle Cell\tCtrl+2"
-msgstr "Προσθήκη κελιού τίτλου"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1177
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1158
 msgid "Insert Text Cell"
-msgstr "Προσθήκη κελιού &κειμένου\tF6"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1178
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1159
 msgid "Insert Title Cell"
-msgstr "Προσθήκη κελιού τίτλου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:586
 msgid "Insert a new input cell"
-msgstr "Προσθήκη νέου κελιού εντολών"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:592
 msgid "Insert a new section cell"
-msgstr "Προσθήκη νέου κελιού ενότητας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:594
 msgid "Insert a new subsection cell"
-msgstr "Προσθήκη νέου κελιού υποενότητας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:596
-#, fuzzy
 msgid "Insert a new subsubsection cell"
-msgstr "Προσθήκη νέου κελιού υποενότητας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:588
 msgid "Insert a new text cell"
-msgstr "Προσθήκη νέου κελιού κειμένου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:590
 msgid "Insert a new title cell"
-msgstr "Προσθήκη νέου κελιού τίτλου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:598
 msgid "Insert a page break"
-msgstr "Προσθήκη αλλαγής σελίδας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:600
 msgid "Insert image"
-msgstr "Προσθήκη εικόνας"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:494
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:493
 msgid "Integers and single letters"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1569
-#, fuzzy
 msgid "Integral sign"
-msgstr "Ολοκλήρωση παράστασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4655
 msgid "Integral/Sum:"
-msgstr "Ολοκλήρωμα/Άθροισμα:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:67
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4775
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5894
 msgid "Integrate"
-msgstr "Ολοκλήρωση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4761
 msgid "Integrate (risch)"
-msgstr "Ολοκλήρωση (risch)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:768
 msgid "Integrate expression"
-msgstr "Ολοκλήρωση παράστασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:770
 msgid "Integrate expression with Risch algorithm"
-msgstr "Ολοκλήρωση παράστασης με τον αλγόριθμο Risch "
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1163
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1144
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1341
 msgid "Integrate..."
-msgstr "Ολοκλήρωση..."
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:519
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:518
 msgid "Intelligently hide cell brackets"
-msgstr "Άγκιστρο ενεργού κελιού"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:142
 msgid "Interrupt"
-msgstr "Διακοπή"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:628
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:632
 msgid "Interrupt current computation"
-msgstr "Διακοπή τρέχοντος υπολογισμού"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:144
 msgid ""
@@ -2764,23 +2626,20 @@ msgid ""
 "left to this one."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1021
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1061
 msgid ""
 "Invalid entry for Maxima program.\n"
 "\n"
 "Please enter the path to Maxima program again."
 msgstr ""
-"Μη έγκυρη είσοδος για πρόγραμμα maxima .\n"
-" \n"
-"Παρακαλώ δώστε ξανά την διαδρομη για το πρόγραμμα maxima ."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4809
 msgid "Inverse Laplace"
-msgstr "Αντίστροφος Laplace"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:796
 msgid "Inverse Laplace T&ransform..."
-msgstr "Αντίστροφος μετασχηματισμός Laplace..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1490
 msgid "Iota"
@@ -2806,17 +2665,17 @@ msgid ""
 "that a few special characters like the "
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:645
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:644
 msgid "Italian"
-msgstr "Ιταλικά"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:873
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:906
 msgid "Italic"
-msgstr "Πλάγια γραφή"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:646
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:645
 msgid "Japanese"
-msgstr "Ιαπωνικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:664
 msgid "Jump to first error"
@@ -2826,7 +2685,7 @@ msgstr ""
 msgid "Jump to the first cell maxima has reported an error in."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:648
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:647
 msgid "Kabyle"
 msgstr ""
 
@@ -2834,24 +2693,24 @@ msgstr ""
 msgid "Kappa"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:534
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:533
 #, c-format
 msgid "Keep percent sign with special symbols: %e, %i, etc."
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4697
 msgid "LCM"
-msgstr "ΕΚΠ"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:599
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:598
 msgid "LaTeX: Place exponents after, instead above subscripts"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:603
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:602
 msgid "LaTeX: Use the \"partial derivative\" symbol to represent diff()"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:499
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:498
 msgid "Label width:"
 msgstr ""
 
@@ -2861,19 +2720,19 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:252
 msgid "Language used for wxMaxima GUI."
-msgstr "Γλώσσα που χρησιμοποιείται για το GUI του wxMaxima"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:629
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:628
 msgid "Language:"
-msgstr "Γλώσσα:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4791
 msgid "Laplace"
-msgstr "Laplace"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:793
 msgid "Laplace &Transform..."
-msgstr "Μετασχηματισμός Laplace..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1584
 msgid "Leads to"
@@ -2881,15 +2740,15 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:802
 msgid "Least Common Multiple..."
-msgstr "Ελάχιστο Κοινό Πολλαπλάσιο..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5521
 msgid "Least Squares Fit"
-msgstr "Παρεμβολή ελαχίστων τετραγώνων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1383
 msgid "Least Squares Fit..."
-msgstr "Παρεμβολή ελαχίστων τετραγώνων..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:718
 msgid "Left side to the \"=\""
@@ -2905,45 +2764,43 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:68
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4866
 msgid "Limit"
-msgstr "Όριο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1342
 msgid "Limit..."
-msgstr "Όριο..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1382
-#, fuzzy
 msgid "Linear Regression..."
-msgstr "Γραμμική παλινδρόμηση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4459
-#, fuzzy
 msgid "List(s):"
-msgstr "Λίστα:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4494
 msgid "List:"
-msgstr "Λίστα:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:876
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:909
 msgid "Load"
-msgstr "Φόρτωση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3532
 msgid "Load Package"
-msgstr "Φόρτωση πακέτου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:452
 msgid "Load a Maxima file using the batch command"
-msgstr "Φόρτωση ένος αρχείου Maxima με την εντολή batch."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:450
 msgid "Load a Maxima package file"
-msgstr "Φόρτωση αρχείου πακέτου Maxima"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1798
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1835
 msgid "Load style from file"
-msgstr "Φόρτωση στυλ από αρχείο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1586
 msgid "Long Right arrow"
@@ -2952,59 +2809,57 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4123
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5876
 msgid "Lower bound:"
-msgstr "Κάτω φράγμα:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:761
 msgid "Ma&p to Matrix..."
-msgstr "Εφαρμογή στα μέλη πίνακα..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:524
-#, fuzzy
 msgid "Main Toolbar\tAlt+Shift+B"
-msgstr "Γραμμή εργαλείων\tAlt+Shift+T"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:755
 msgid "Make &List..."
-msgstr "Δημιουργία λίστας..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4479
 msgid "Make list"
-msgstr "Δημιουργία λίστας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:756
 msgid "Make list from expression"
-msgstr "Δημιουργία λίστας από παράσταση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:897
 msgid "Make substitution in expression"
-msgstr "Αντικατάσταση σε παράσταση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4462
 msgid "Map"
-msgstr "Απεικόνιση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:760
 msgid "Map function to a list"
-msgstr "Εφαρμογή συνάρτησης στα μέλη λίστας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:762
 msgid "Map function to a matrix"
-msgstr "Εφαρμογή συνάρτησης στα μέλη πίνακα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/FindReplacePane.cpp:113
-#, fuzzy
 msgid "Match Case"
-msgstr "Αρχείο Batch"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:528
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:527
 msgid "Match parenthesis in text controls"
-msgstr "Αντιστοίχιση παρενθέσεων σε έλεγχο κειμένου"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:822
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:855
 msgid "Math font:"
-msgstr "Γραμματοσειρά Μath:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:243
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:241
 msgid ""
 "MathJAX creates scalable High-Quality representations of 2D Maths that can "
 "be used for Drag-And-Drop and provides accessability options. The "
@@ -3018,8 +2873,16 @@ msgid ""
 "fonts that don't match the rest of the document."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:589
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:588
 msgid "MathML + MathJaX as Fill-In"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:820
+msgid "MathML as HTML"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:816
+msgid "MathML description"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:336
@@ -3028,30 +2891,28 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4369
 msgid "Matrix"
-msgstr "Πίνακας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4353
 msgid "Matrix map"
-msgstr "Απεικόνιση πίνακα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5570
 msgid "Matrix name:"
-msgstr "Όνομα πίνακα:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4350
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4402
 msgid "Matrix:"
-msgstr "Πίνακας:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:158
-#, fuzzy
 msgid "Maxima"
-msgstr "Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1487
-#, fuzzy
 msgid "Maxima asks a question!"
-msgstr "Ερωτήσεις για το Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:203
 #, c-format
@@ -3068,48 +2929,44 @@ msgid ""
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:131
-#, fuzzy
 msgid "Maxima has a question"
-msgstr "Ερωτήσεις για το Maxima"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6396
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6417
 msgid "Maxima has finished calculating."
-msgstr "Το Maxima κάνει υπολογισμούς"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3290
-#, fuzzy
 msgid "Maxima has issued an error!"
-msgstr "Ερωτήσεις για το Maxima"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:834
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:867
 msgid "Maxima input"
-msgstr "Είσοδος Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:146
 msgid "Maxima is calculating"
-msgstr "Το Maxima κάνει υπολογισμούς"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:112
-#, fuzzy
 msgid "Maxima is ready for input."
-msgstr "Είσοδος Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3545
 msgid "Maxima package (*.mac)|*.mac"
-msgstr "Πακέτο Maxima (*.mac)|*.mac"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3534
 msgid "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|All|*"
-msgstr "Πακέτο Maxima(*.mac)|*.mac|πακέτο Lisp (*.lisp)|*.lisp|All|*"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1063
 msgid "Maxima process terminated."
-msgstr "Η διαδικασία Maxima τερμάτισε."
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:733
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:732
 msgid "Maxima program:"
-msgstr "Πρόγραμμα Maxima:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:210
 msgid ""
@@ -3119,13 +2976,13 @@ msgid ""
 "a little bit of time this switch allows to disable this behavior."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:836
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:869
 msgid "Maxima questions"
-msgstr "Ερωτήσεις για το Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:993
 msgid "Maxima started. Waiting for connection..."
-msgstr "Το Maxima ξεκίνησε. Περιμένει για σύνδεση..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:5
 msgid ""
@@ -3144,17 +3001,14 @@ msgid ""
 "Maxima uses ':' to set values ('a : 3;') and ':=' to define functions "
 "('f(x) := x^2;')."
 msgstr ""
-"Το Maxima χρησιμοποιεί το ‘:’ για απόδοση τιμών σε μεταβλητές ('a : 3;') και "
-"το ‘:=’ για ορισμό συναρτήσεων ('f(x) := x^2;')."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5280
 msgid "Maxima version: "
-msgstr "Έκδοση Maxima "
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:840
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:873
 msgid "Maxima warnings"
-msgstr "Επιλογές του Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:38
 msgid ""
@@ -3216,40 +3070,37 @@ msgid ""
 "This icon indicates if data is transferred between maxima and wxMaxima."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:465
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:464
 msgid "Maximum displayed number of digits:"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1380
 msgid "Mean Difference Test..."
-msgstr "Τεστ μέσης διαφοράς..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1379
 msgid "Mean Test..."
-msgstr "Τεστ μέσης τιμής..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1372
-#, fuzzy
 msgid "Mean..."
-msgstr "Απεικόνιση..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5465
 msgid "Mean:"
-msgstr "Μέση τιμή:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1373
-#, fuzzy
 msgid "Median..."
-msgstr "Διάμεση τιμή"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1095
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1076
 msgid "Merge Cells"
-msgstr "Συγχώνευση κελιών"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:612
-#, fuzzy
 msgid "Merge Cells\tCtrl+M"
-msgstr "Συγχώνευση κελιών"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:613
 msgid "Merge the text from two input cells into one"
@@ -3261,17 +3112,16 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:47
 msgid "Method:"
-msgstr "Μέθοδος:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6209
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6210
-#, fuzzy
 msgid "Mismatched parenthesis"
-msgstr "Αντιστοίχιση παρενθέσεων σε έλεγχο κειμένου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4633
 msgid "Modulus"
-msgstr "Modulus"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:198
 msgid ""
@@ -3294,9 +3144,9 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4418
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4438
 msgid "Name:"
-msgstr "Όνομα:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:510
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:509
 msgid "Never"
 msgstr ""
 
@@ -3306,53 +3156,49 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:430
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:433
-#, fuzzy
 msgid "New\tCtrl+N"
-msgstr "Νέο\tCtrl+N"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:98
-#, fuzzy
 msgid "New document"
-msgstr "Άνοιγμα εγγράφου"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:543
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:542
 msgid "New lines: Jump to text"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/SubstituteWiz.cpp:36
 msgid "New value:"
-msgstr "Νέα τιμή:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4656
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4789
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4807
 msgid "New variable:"
-msgstr "Νέα μεταβλητή:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:609
-#, fuzzy
 msgid "Next Command\tAlt+Down"
-msgstr "Επόμενη εντολή\tAlt+Down"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:474
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:484
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:493
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:473
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:483
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:492
 msgid "No"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6346
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6367
 msgid "No dollar ($) or semicolon (;) at the end of command"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3864
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3887
 msgid "No matches found!"
-msgstr "Καμμία αντιστοίχιση δεν βρέθηκε"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1381
-#, fuzzy
 msgid "Normality Test..."
-msgstr "Τεστ κανονικότητας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:176
 msgid ""
@@ -3372,7 +3218,7 @@ msgid ""
 "setting ratprint to false."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:237
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:235
 msgid ""
 "Normally html expects images to be rather low-res but space saving. These "
 "images tend to look rather blurry when viewed on modern screens. Therefore "
@@ -3380,29 +3226,26 @@ msgid ""
 "increases the resolution in respect to the default value."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:650
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:649
 msgid "Norwegian"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4381
 msgid "Not a valid matrix dimension!"
-msgstr "Μη έγκυρη διάσταση πίνακα!"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4232
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4257
 msgid "Not a valid number of equations!"
-msgstr "Μη έγκυρος αριθμός εξισώσεων!"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:158
-#, fuzzy
 msgid "Not connected to maxima"
 msgstr ""
-"\n"
-"Δεν υπάρχει σύνδεση με το Maxima!\n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5282
 msgid "Not connected."
-msgstr "Δεν είστε συνδεδεμένοι."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1494
 msgid "Nu"
@@ -3410,16 +3253,16 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4674
 msgid "Num. deg:"
-msgstr "Βαθμός Αριθμητή:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4223
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4248
 msgid "Number of equations:"
-msgstr "Αριθμός εξισώσεων:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:829
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:862
 msgid "Numbers"
-msgstr "Αριθμοί"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:44
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:48
@@ -3458,17 +3301,17 @@ msgstr "Αριθμοί"
 #: /home/gunter/src/wxmaxima/src/SystemWiz.cpp:37
 #: /home/gunter/src/wxmaxima/src/SystemWiz.cpp:41
 msgid "OK"
-msgstr "Εντάξει"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/SubstituteWiz.cpp:33
 msgid "Old value:"
-msgstr "Παλιά τιμή:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4655
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4788
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4806
 msgid "Old variable:"
-msgstr "Παλιά μεταβλητή:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1505
 msgid "Omega"
@@ -3490,103 +3333,96 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5468
 msgid "One sample t-test"
-msgstr "t-τεστ ενός δείγματος"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:961
 msgid "Online tutorials"
-msgstr "Online διδακτικές παρουσιάσεις"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:509
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:508
 msgid "Only user-defined labels"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:735
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:734
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:100
 #: /home/gunter/src/wxmaxima/src/main.cpp:384
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3395
 msgid "Open"
-msgstr "Άνοιγμα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:439
 msgid "Open Recent"
-msgstr "Άνοιγμα πρόσφατου"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:525
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:524
 msgid "Open a cell when Maxima expects input"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:437
 msgid "Open a document"
-msgstr "Άνοιγμα ενός εγγράφου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:431
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:434
 msgid "Open a new window"
-msgstr "Άνοιγμα νέου παραθύρου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:102
 msgid "Open document"
-msgstr "Άνοιγμα εγγράφου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5536
 msgid "Open matrix"
-msgstr "Άνοιγμα πίνακα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1641
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1897
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1975
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2208
 msgid "Opening file"
-msgstr "Άνοιγμα αρχείου"
-
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:703
-msgid "Optimize wxmx files for version control"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:161
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:112
 msgid "Options"
-msgstr "Επιλογές"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:72
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:71
 msgid "Options:"
-msgstr "Επιλογές:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:853
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:886
 msgid "Outdated cells"
-msgstr "Μη ενημερωμένα κελιά"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:837
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:870
 msgid "Output labels"
-msgstr "Ετικέτες εξόδου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:786
 msgid "P&ade Approximation..."
-msgstr "Προσέγγιση Pade..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3746
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5978
-#, fuzzy
 msgid ""
 "PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*."
 "bmp|Portable animap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X "
 "pixmap (*.xpm)|*.xpm"
 msgstr ""
-"Εικόνα PNG (*.png)|*.png| εικόνα JPEG (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*."
-"bmp|X pixmap (*.xpm)|*.xpm"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4677
 msgid "Pade approximation"
-msgstr "Προσέγγιση Pade..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:787
 msgid "Pade approximation of a Taylor series"
-msgstr "Προσέγγιση Pade σειράς Taylor"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1647
 msgid "Pagebreak"
-msgstr "Αλλαγή σελίδας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1582
 msgid "Parallel to"
@@ -3595,48 +3431,47 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:437
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:563
 msgid "Parametric plot"
-msgstr "Παραμετρικό γράφημα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:154
 msgid "Parsing output"
-msgstr "Συντακτική ανάλυση αποτελέσματος"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:809
 msgid "Partial &Fractions..."
-msgstr "Μερικά κλάσματα..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4745
 msgid "Partial fractions"
-msgstr "Μερικά κλάσματα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2304
 msgid "Parts of the document will not be loaded correctly!"
-msgstr "Μέρη του εγγράφου δεν θα φορτωθούν σωστά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:956
-#, fuzzy
 msgid ""
 "Parts of the document will not be loaded correctly:\n"
 "Found unknown XML Tag name "
-msgstr "Μέρη του εγγράφου δεν θα φορτωθούν σωστά"
+msgstr ""
 
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1155
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1174
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1193
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:124
 msgid "Paste"
-msgstr "Επικόλληση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:495
 msgid "Paste\tCtrl+V"
-msgstr "Επικόλληση\tCtrl+V"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:126
 msgid "Paste from clipboard"
-msgstr "Επικόλληση κειμένου από το πρόχειρο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:496
 msgid "Paste text from clipboard"
-msgstr "Επικόλληση κειμένου από το πρόχειρο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1583
 msgid "Perpendicular to"
@@ -3651,31 +3486,28 @@ msgid "Pi"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1390
-#, fuzzy
 msgid "Piechart..."
-msgstr "Κυκλικό διάγραμμα (πίτας)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2457
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr ""
-"Παρακαλώ ρυθμίστε το wxMaxima μεσα απο το μενου 'Επεξεργασία->Ρυθμίσεις'."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1617
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1654
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr ""
-"Παρακαλώ κάντε επανεκκίνηση του wxMaxima για να ενεργοποιηθούν οι αλλαγές!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:913
 msgid "Plot &2d..."
-msgstr "2-Δ γράφημα..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:915
 msgid "Plot &3d..."
-msgstr "3-Δ γράφημα..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:917
 msgid "Plot &Format..."
-msgstr "Μορφή γραφήματος..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:107
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:452
@@ -3683,45 +3515,45 @@ msgstr "Μορφή γραφήματος..."
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4959
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5947
 msgid "Plot 2D"
-msgstr "2-Δ γράφημα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1344
 msgid "Plot 2D..."
-msgstr "2-Δ γράφημα..."
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1166
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1147
 msgid "Plot 2d..."
-msgstr "2-Δ γράφημα..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:109
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4945
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5960
 msgid "Plot 3D"
-msgstr "3-Δ γράφημα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1345
 msgid "Plot 3D..."
-msgstr "3-Δ γράφημα..."
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1167
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1148
 msgid "Plot 3d..."
-msgstr "3-Δ γράφημα..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4972
 msgid "Plot format"
-msgstr "Μορφή γραφήματος"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:914
 msgid "Plot in 2 dimensions"
-msgstr "Γράφημα σε 2 διαστάσεις"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:916
 msgid "Plot in 3 dimensions"
-msgstr "Γράφημα σε 3 διαστάσεις"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:85
 msgid "Plot to file:"
-msgstr "Γράφημα σε αρχείο:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:30
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:36
@@ -3731,36 +3563,36 @@ msgstr "Γράφημα σε αρχείο:"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4175
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4289
 msgid "Point:"
-msgstr "Σημείο:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:651
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:650
 msgid "Polish"
-msgstr "Πολωνικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4694
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4710
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4726
 msgid "Polynomial 1:"
-msgstr "Πολυώνυμο 1:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4694
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4710
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4726
 msgid "Polynomial 2:"
-msgstr "Πολυώνυμο 2:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:652
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:651
 msgid "Portuguese (Brazilian)"
-msgstr "Πορτογαλλικά(Βραζιλίας)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:505
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:450
 msgid "Postscript file (*.eps)|*.eps|All|*"
-msgstr "Αρχείο Postscript (*.eps)|*.eps|All|*"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5017
 msgid "Precision"
-msgstr "Ακρίβεια"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:514
 msgid "Preferences...\tCtrl+,"
@@ -3775,34 +3607,36 @@ msgid ""
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:607
-#, fuzzy
 msgid "Previous Command\tAlt+Up"
-msgstr "Προηγούμενη εντολή\tAlt+Up"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:109
 msgid "Print"
-msgstr "Εκτύπωση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:111
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:457
 msgid "Print document"
-msgstr "Εκτύπωση εγγράφου"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:612
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:611
 msgid "Print the cell brackets [drawn to their left]"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4918
 msgid "Product"
-msgstr "Γινόμενο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1581
-#, fuzzy
 msgid "Product sign"
-msgstr "Γινόμενο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1504
 msgid "Psi"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:824
+msgid "RTF with OMML maths"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:293
@@ -3810,78 +3644,74 @@ msgid "Raw XML monitor"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:571
-#, fuzzy
 msgid "Re-evaluate all cells above the one the cursor is in"
-msgstr "Υπολογισμός όλων των κελιών στο έγγραφο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1395
 msgid "Read Matrix..."
-msgstr "Aνάγνωση πίνακα..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:150
 msgid "Reading Maxima output"
-msgstr "Διάβασμα αποτελέσματος Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:141
 msgid "Ready for user input"
-msgstr "Έτοιμο για είσοδο από το χρήστη"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:610
 msgid "Recall next command from history"
-msgstr "Επανάκληση επόμενης εντολής από το ιστορικό "
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:608
 msgid "Recall previous command from history"
-msgstr "Επανάκληση προηγούμενης εντολής από το ιστορικό "
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:681
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:680
 msgid "Recent files list length:"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1332
 msgid "Rectform"
-msgstr "Καρτεσιανή μορφή"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:468
-#, fuzzy
 msgid "Redo\tCtrl+Y"
-msgstr "Αναίρεση\tCtrl+Z"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:469
-#, fuzzy
 msgid "Redo last change"
-msgstr "Αναίρεση τελευταίας αλλαγής"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1337
 msgid "Reduce (tr)"
-msgstr "Αναγωγή (τρ)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:861
 msgid "Reduce trigonometric expression"
-msgstr "Αναγωγή τριγωνομετρικής παράστασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:665
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6488
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6509
 msgid "Refusing to send cell to maxima: "
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:573
 msgid "Remove All Output"
-msgstr "Αφαίρεση όλων των αποτελεσμάτων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:574
 msgid "Remove output from input cells"
-msgstr "Αφαίρεση αποτελεσμάτων από τα κελιά εντολών"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/FindReplacePane.cpp:103
-#, fuzzy
 msgid "Replace All"
-msgstr "Επιλογή όλων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3900
 #, c-format
 msgid "Replaced %d occurrences."
-msgstr "Αντικατεστημένες %d εμφανίσεις"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/FindReplacePane.cpp:62
 msgid "Replacement:"
@@ -3889,19 +3719,18 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:966
 msgid "Report bug"
-msgstr "Αναφορά σφάλματος"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:635
 msgid "Restart Maxima"
-msgstr "Επανεκίνηση του Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:139
-#, fuzzy
 msgid "Restart maxima"
-msgstr "Επανεκίνηση του Maxima"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:4974
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5001
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:4955
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:4982
 msgid "Result"
 msgstr ""
 
@@ -3923,84 +3752,84 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:769
 msgid "Risch Integration..."
-msgstr "Ολοκλήρωση Risch..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:677
 msgid "Roots of &Polynomial"
-msgstr "Ρίζες πολυωνύμου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:680
 msgid "Roots of Polynomial (bfloat)"
-msgstr "Ρίζες πολυωνύμου (bfloat)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MatWiz.cpp:173
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4418
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4438
 msgid "Rows:"
-msgstr "Γραμμές:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:653
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:652
 msgid "Russian"
-msgstr "Ρωσικά"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:590
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:589
 msgid "SVG graphics"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5481
 msgid "Sample 1:"
-msgstr "Δείγμα 1:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5481
 msgid "Sample 2:"
-msgstr "Δείγμα 2:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5465
 msgid "Sample:"
-msgstr "Δείγμα:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:877
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:910
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:103
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6950
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6971
 msgid "Save"
-msgstr "Αποθήκευση"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1062
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1043
 msgid "Save Animation..."
-msgstr "Αποθήκευση εφε κίνησης ..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3135
 msgid "Save As"
-msgstr "Αποθήκευση ως"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:447
 msgid "Save As...\tShift+Ctrl+S"
-msgstr "Αποθήκευση ως...\tShift+Ctrl+S"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1059
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1040
 msgid "Save Image..."
-msgstr "Αποθήκευση εικόνας..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3744
 msgid "Save Selection to Image"
-msgstr "Αποθήκευση επιλογής σε εικόνα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:505
 msgid "Save Selection to Image..."
-msgstr "Αποθήκευση επιλογής σε εικόνα..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5995
 msgid "Save animation to file"
-msgstr "Αποθήκευση εφε κίνησης σε αρχείο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:105
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:446
 msgid "Save document"
-msgstr "Αποθήκευση εγγράφου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:448
 msgid "Save document as"
-msgstr "Αποθήκευση εγγράφου ως"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:264
 msgid ""
@@ -4008,43 +3837,42 @@ msgid ""
 "infinite number of actions."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:697
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:696
 msgid "Save panes layout"
-msgstr "Αποθήκευση της διάταξης των παλετών"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:244
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:242
 msgid "Save panes layout between sessions."
-msgstr "Αποθήκευση μεγέθους/θέσης παραθύρου του wxMaxima μεταξύ συνεδριών."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:503
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:448
 msgid "Save plot to file"
-msgstr "Αποθήκευση γραφήματος σε αρχείο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:506
 msgid "Save selection from document to an image file"
-msgstr "Αποθήκευση επιλογής από το έγγραφο σε ένα αρχείο εικόνας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5976
 msgid "Save selection to file"
-msgstr "Αποθήκευση επιλογής σε αρχείο"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1789
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1826
 msgid "Save style to file"
-msgstr "Αποθήκευση στυλ σε αρχείο"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:694
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:693
 msgid "Save wxMaxima window size/position"
-msgstr "Αποθήκευση μεγέθους/θέσης παραθύρου του wxMaxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:215
 msgid "Save wxMaxima window size/position between sessions."
-msgstr "Αποθήκευση μεγέθους/θέσης παραθύρου του wxMaxima μεταξύ συνεδριών."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:205
-#, fuzzy
 msgid "Saving failed."
-msgstr "Η εκκίνηση του εξυπηρετητή απέτυχε"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:181
 msgid "Saving successful."
@@ -4054,21 +3882,25 @@ msgstr ""
 msgid "Saving..."
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:828
+msgid "Scalable Vector Graphics (svg)"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5388
 msgid "Scatterplot"
-msgstr "Διάγραμμα διασποράς"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1388
 msgid "Scatterplot..."
-msgstr "Διάγραμμα διασποράς..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1645
 msgid "Section"
-msgstr "Ενότητα"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:844
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:877
 msgid "Section cell"
-msgstr "Κελί ενότητας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/BTextCtrl.cpp:49
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:829
@@ -4087,88 +3919,82 @@ msgid ""
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:258
-#, fuzzy
 msgid "Select"
-msgstr "Επιλογή"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1175
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1195
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1156
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1176
 msgid "Select All"
-msgstr "Επιλογή όλων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:502
 msgid "Select All\tCtrl+A"
-msgstr "Επιλογή Όλων\tCtrl+A"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1007
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1012
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1047
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1052
 msgid "Select Maxima program"
-msgstr "Επιλογή προγράμματος Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5574
 msgid "Select Subsample"
-msgstr "Επιλογή υποδείγματος"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:213
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:232
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:139
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:112
 msgid "Select a constant"
-msgstr "Επιλογή μιας μεταβλητής"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:127
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:129
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:503
 msgid "Select all"
-msgstr "Επιλογή όλων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3942
 msgid "Select math display algorithm"
-msgstr "Επιλογή αλγορίθμου προβολής μαθηματικών"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:15
-#, fuzzy
 msgid ""
 "Selecting a part of an output and right-clicking on the selection will bring "
 "up a menu with convenient functions that will operate on the selection."
 msgstr ""
-"Επιλέγοντας ένα μέρος του αποτελέσματος και κάνοντας δεξί κλίκ πάνω στην "
-"επιλογή προκύπτει ένα μενού με κατάλληλες συναρτήσεις οι οποίες μπορούν να "
-"εφαρμοστούν στην επιλογή."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:851
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:884
 msgid "Selection"
-msgstr "Επιλογή"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:65
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4852
 msgid "Series"
-msgstr "Σειρές"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1343
 msgid "Series..."
-msgstr "Σειρές..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:913
 msgid "Server started"
-msgstr "Ο εξυπηρετητής ξεκίνησε"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:554
 msgid "Set Zoom"
-msgstr "Ορισμός Μεγέθυνσης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:934
-#, fuzzy
 msgid "Set bigfloat &Precision..."
-msgstr "Ορισμός ακρίβειας bigfloat"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:258
 msgid "Set fixed font in text controls."
-msgstr "Ορισμός σταθερού μεγέθους γραμματοσειράς στους ελέγχους κειμένου."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:918
 msgid "Set plot format"
-msgstr "Ορισμός μορφής γραφήματος"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:935
 msgid ""
@@ -4178,121 +4004,116 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:548
 msgid "Set zoom to 100%"
-msgstr "Ορισμός ζουμ στο 100%"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:549
 msgid "Set zoom to 120%"
-msgstr "Ορισμός ζουμ στο 120%"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:550
 msgid "Set zoom to 150%"
-msgstr "Ορισμός ζουμ στο 150%"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:551
 msgid "Set zoom to 200%"
-msgstr "Ορισμός ζουμ στο 200%"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:552
 msgid "Set zoom to 300%"
-msgstr "Ορισμός ζουμ στο 300%"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:547
 msgid "Set zoom to 80%"
-msgstr "Ορισμός ζουμ στο 80%"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:715
 msgid "Setup atvalues for solving ODE with Laplace transformation"
 msgstr ""
-"Ορισμός τιμών με την atvalues για την επίλυση ΣΔΕ με το μετασχηματισμό "
-"Laplace"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:908
 msgid "Setup modulus computation"
-msgstr "Εγκατάσταση υπολογισμών modulo"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:644
 msgid "Show &Definition..."
-msgstr "Εμφάνιση ορισμού..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:642
 msgid "Show &Functions"
-msgstr "Εμφάνιση συναρτήσεων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:957
 msgid "Show &Tips..."
-msgstr "Εμφάνιση συμβουλών..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:647
 msgid "Show &Variables"
-msgstr "Εμφάνιση  μεταβλητών"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:197
 msgid "Show Maxima help"
-msgstr "Εμφάνιση βοήθειας για το Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:582
 msgid "Show Template\tCtrl+Shift+K"
-msgstr "Εμφάνιση προτύπου\tCtrl+Shift+K"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:958
 msgid "Show a tip"
-msgstr "Εμφάνιση μιας συμβουλής"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5324
 msgid "Show all commands similar to:"
-msgstr "Εμφάνιση ολων των εντολών που είναι παρόμοιες με:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5310
 msgid "Show an example for the command:"
-msgstr "Εμφάνιση ενός παραδείγματος για την εντολή:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:952
 msgid "Show an example of usage"
-msgstr "Εμφάνιση ενός παραδείγματος χρήσης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:955
 msgid "Show commands similar to"
-msgstr "Εμφάνιση εντολών παρόμοιες με"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:643
 msgid "Show defined functions"
-msgstr "Εμφάνιση των συναρτήσεων που έχουν οριστεί"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:648
 msgid "Show defined variables"
-msgstr "Εμφάνιση των μεταβλητών που έχουν οριστεί"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:645
 msgid "Show definition of a function"
-msgstr "Εμφάνιση του ορισμού μίας συνάρτησης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:583
 msgid "Show function template"
-msgstr "Εμφάνιση συναρτήσεων"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:504
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:503
 msgid "Show labels:"
-msgstr "Εμφάνιση  μεταβλητών"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:249
 msgid "Show long expressions in wxMaxima document."
-msgstr "Εμφάνιση μεγάλων παραστάσεων στο έγγραφο του wxMaxima"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:471
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:470
 msgid "Show long expressions:"
-msgstr "Εμφάνιση μεγάλων παραστάσεων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3964
 msgid "Show the definition of function:"
-msgstr "Εμφάνιση ορισμού συνάρτησης:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:943
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:946
-#, fuzzy
 msgid "Show wxMaxima help"
-msgstr "Εμφάνιση βοήθειας για το Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1499
 msgid "Sigma"
@@ -4300,183 +4121,177 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1328
 msgid "Simplify"
-msgstr "Απλοποίηση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:821
 msgid "Simplify &Radicals"
-msgstr "Απλοποίηση ριζικών"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1329
 msgid "Simplify (r)"
-msgstr "Απλοποίηση (ρ)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1335
 msgid "Simplify (tr)"
-msgstr "Απλοποίηση (τρ)"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1158
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1139
 msgid "Simplify Expression"
-msgstr "Απλοποίηση παράστασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:847
 msgid "Simplify an expression containing factorials"
-msgstr "Απλοποίηση παράστασης που περιέχει παραγοντικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:822
 msgid "Simplify expression containing radicals"
-msgstr "Απλοποίηση παράστασης που περιέχει ριζικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:820
 msgid "Simplify rational expression"
-msgstr "Απλοποίηση ρητής παράστασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:66
 msgid "Simplify the sum"
-msgstr "Απλοποίηση αθροίσματος"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:858
 msgid "Simplify trigonometric expression"
-msgstr "Απλοποίηση τριγωνομετρικής παράστασης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:24
-#, fuzzy
 msgid ""
 "Since wxMaxima 0.8.2 you can also insert images into your documents. Use "
 "'Cell->Insert Image...' menu command. Note that you have to save your "
 "document in 'wxMaxima XML document' format if you want the image to be saved "
 "along with your document."
 msgstr ""
-"Από την έκδοση 0.8.2 του wxMaxima και μετά μπορεί να εισαχθεί μια εικόνα στα "
-"έγγραφά. Χρησιμοποίηστε την εντολή του μενού 'Επεξεργασία->Προσθήκη "
-"εικόνας...’. Σημείωστε πως πρέπει να αποθηκεύετε το έγγραφο σε μορφή "
-"'wxMaxima XML document' αν θέλετε να αποθηκευθεί η εικόνα μαζί με το έγγραφο."
 
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:27
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4159
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4175
 msgid "Solution:"
-msgstr "Λύση:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4091
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4107
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5862
 msgid "Solve"
-msgstr "Επίλυση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:689
 msgid "Solve &Algebraic System..."
-msgstr "Επίλυση αλγεβρικού συστήματος..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:686
 msgid "Solve &Linear System..."
-msgstr "Επίλυση γραμμικού συστήματος..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:697
 msgid "Solve &ODE..."
-msgstr "Επίλυση ΣΔΕ..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:673
 msgid "Solve (to_poly)..."
-msgstr "Επίλυση (to_poly)..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4145
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4276
 msgid "Solve ODE"
-msgstr "Επίλυση ΣΔΕ"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:711
 msgid "Solve ODE with Lapla&ce..."
-msgstr "Επίλυση ΣΔΕ με Laplace..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1339
 msgid "Solve ODE..."
-msgstr "Επίλυση ΣΔΕ..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4224
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4236
 msgid "Solve algebraic system"
-msgstr "Επίλυση αλγεβρικού συστήματος"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:690
 msgid "Solve algebraic system of equations"
-msgstr "Επίλυση αλγεβρικού συστήματος εξισώσεων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:708
 msgid "Solve boundary value problem for second degree ODE"
-msgstr "Επίλυση προβλήματος οριακών τιμών για δευτεροβάθμια ΣΔΕ"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:672
 msgid "Solve equation(s)"
-msgstr "Επίλυση εξίσωσης(-εων)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:674
 msgid "Solve equation(s) with to_poly_solve"
-msgstr "Επίλυση εξίσωσης(-εων) με to_poly_solve"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:702
 msgid "Solve initial value problem for first degree ODE"
-msgstr "Επίλυση προβλήματος αρχικών τιμών για πρωτοβάθμια ΣΔΕ"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:705
 msgid "Solve initial value problem for second degree ODE"
-msgstr "Επίλυση προβλήματος αρχικών τιμών για δευτεροβάθμια ΣΔΕ"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4249
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4261
 msgid "Solve linear system"
-msgstr "Επίλυση γραμμικού συστήματος"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:687
 msgid "Solve linear system of equations"
-msgstr "Επίλυση γραμμικού συστήματος εξισώσεων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:698
 msgid "Solve ordinary differential equation of maximum degree 2"
-msgstr "Επίλυση συνήθους διαφορικής εξίσωσης μέγιστου βαθμού 2"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:712
 msgid "Solve ordinary differential equations with Laplace transformation"
-msgstr "Επίλυση συνήθους διαφορικής εξίσωσης με μετασχηματισμό Laplace"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1155
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1136
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1338
 msgid "Solve..."
-msgstr "Επίλυση..."
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:229
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:227
 msgid ""
 "Some PDF viewers are able to display moving images and wxMaxima is able to "
 "output them. If this option is selected additional LaTeX packages might be "
 "needed in order to compile the output, though."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:654
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:653
 msgid "Spanish"
-msgstr "Ισπανικά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:41
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:45
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:38
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:45
 msgid "Special"
-msgstr "Ειδικός"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:831
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:864
 msgid "Special constants"
-msgstr "Ειδικές μεταβλητές"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1063
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1044
 msgid "Start Animation"
-msgstr "Εκκίνηση εφέ κίνησης"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:797
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:796
 msgid "Start a new maxima for each re-evaluation"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:171
-#, fuzzy
 msgid "Start or Stop animation"
-msgstr "Εκκίνηση εφέ κίνησης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:173
 msgid ""
@@ -4490,83 +4305,81 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:301
 msgid "Starting Maxima process failed"
-msgstr "Η εκκίνηση της διεργασίας Maxima απέτυχε"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:978
 msgid "Starting Maxima..."
-msgstr "Εκκίνηση Maxima..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:299
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:909
 msgid "Starting server failed"
-msgstr "Η εκκίνηση του εξυπηρετητή απέτυχε"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:890
 #, c-format
 msgid "Starting server on port %d"
-msgstr "Εκκίνηση του εξυπηρετητή στη θύρα %d"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:304
 msgid "Statistics"
-msgstr "Στατιστική"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:527
 msgid "Statistics\tAlt+Shift+S"
-msgstr "Στατιστική\tAlt+Shift+S"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:833
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:866
 msgid "Strings"
-msgstr "Συμβολοσειρές"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:159
 msgid "Style"
-msgstr "Στυλ"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:809
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:842
 msgid "Styles"
-msgstr "Στυλ"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1400
 msgid "Subsample..."
-msgstr "Υποδείγμα..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1643
 msgid "Subsection"
-msgstr "Υποενότητα"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:843
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:876
 msgid "Subsection cell"
-msgstr "Κελί υποενότητας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1333
 msgid "Subst..."
-msgstr "Αντικατάσταση..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/SubstituteWiz.cpp:56
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4051
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5934
 msgid "Substitute"
-msgstr "Αντικατάσταση"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1161
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1142
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:896
 msgid "Substitute..."
-msgstr "Αντικατάσταση..."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1644
-#, fuzzy
 msgid "Subsubsection"
-msgstr "Υποενότητα"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:842
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:875
 msgid "Subsubsection cell"
-msgstr "Κελί υποενότητας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:58
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4901
 msgid "Sum"
-msgstr "Άθροισμα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1580
 msgid "Sum sign"
@@ -4577,9 +4390,8 @@ msgid "Symbols"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:530
-#, fuzzy
 msgid "Symbols\tAlt+Shift+Y"
-msgstr "Στατιστική\tAlt+Shift+S"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:255
 msgid ""
@@ -4589,16 +4401,15 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5136
 msgid "System info"
-msgstr "Πληροφορίες συστήματος"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:282
 msgid "Table of Contents"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:533
-#, fuzzy
 msgid "Table of Contents\tAlt+Shift+T"
-msgstr "Γραμμή εργαλείων\tAlt+Shift+T"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1500
 msgid "Tau"
@@ -4606,32 +4417,31 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4674
 msgid "Taylor series:"
-msgstr "Σειρές Taylor:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:587
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:586
 msgid "TeX, interpreted by MathJaX"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4622
 msgid "Tellrat"
-msgstr "Tellrat"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1641
 msgid "Text"
-msgstr "Κείμενο"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:485
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:484
 msgid "Text Only"
-msgstr "Κελί κειμένου"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:841
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:874
 msgid "Text cell"
-msgstr "Κελί κειμένου"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:846
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:879
 msgid "Text cell background"
-msgstr "Φόντο κελιού κειμένου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:42
 msgid ""
@@ -4640,10 +4450,9 @@ msgid ""
 "indentation level, as it does with bullet lists."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:852
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:885
 msgid "Text equal to selection"
-msgstr "Αποκοπή επιλογής"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:39
 msgid ""
@@ -4670,7 +4479,7 @@ msgid ""
 "doesn't exist."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:225
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:223
 msgid ""
 "The default height for embedded plots. Can be read out or overridden by the "
 "maxima variable wxplot_size."
@@ -4679,10 +4488,8 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:262
 msgid "The default port used for communication between Maxima and wxMaxima."
 msgstr ""
-"Η προεπιλεγμένη θύρα που χρησιμοποιείται για την επικοινωνία μεταξύ του "
-"Maxima και του wxMaxima"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:223
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:221
 msgid ""
 "The default width for embedded plots. Can be read out or overridden by the "
 "maxima variable wxplot_size"
@@ -4698,6 +4505,14 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:722
 msgid "The half of the equation that is to the right of the \"=\""
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:133
+#: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:319
+msgid ""
+"The image could not be displayed. It may be broken, in a wrong format or be "
+"the result of gnuplot not being able to write the image or not being able to "
+"understand what maxima wanted to plot."
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:43
@@ -4737,7 +4552,7 @@ msgstr ""
 msgid "The offline manual of maxima"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:246
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:244
 msgid ""
 "The pngCairo terminal offers much better graphics quality (antialiassing and "
 "additional line styles). But it will only produce plots if the gnuplot "
@@ -4776,16 +4591,11 @@ msgid ""
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:11
-#, fuzzy
 msgid ""
 "There are many resources about Maxima and wxMaxima on the internet. Visit "
 "http://andrejv.github.com/wxmaxima/help.html for more information and to "
 "find tutorials on using wxMaxima and Maxima."
 msgstr ""
-"Υπάρχουν πολλές πηγές πληροφοριών σχετικά με το Maxima και το wxMaxima στο "
-"Διαδίκτυο. Επισκεφτείτε τη διεύθυνση http://wxmaxima.sourceforge.net/wiki/"
-"index.php/Tutorials για να βρείτε περισσότερες πληροφορίες για τη χρήση των "
-"Maxima και wxMaxima."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:480
 msgid ""
@@ -4793,7 +4603,6 @@ msgid ""
 "\n"
 "Please report this as a bug."
 msgstr ""
-"Υπήρξε σφάλμα στο δημιουργημένο XML! Παρακαλώ αναφέρετε αυτό το σφάλμα."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1489
 msgid "Theta"
@@ -4810,24 +4619,24 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:57
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:544
 msgid "Ticks:"
-msgstr "Σημάνσεις:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4825
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5908
 msgid "Times:"
-msgstr "Φορές:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MyTipProvider.cpp:44
 msgid "Tips not available, sorry!"
-msgstr "Οι συμβουλές δεν ειναι διαθέσιμες, συγνώμη!"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1642
 msgid "Title"
-msgstr "Τίτλος"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:845
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:878
 msgid "Title cell"
-msgstr "Κελί τίτλου"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:9
 msgid ""
@@ -4835,22 +4644,18 @@ msgid ""
 "fold or unfold, click in the square next to the cell. If you shift-click, "
 "all sublevels of that cell will also fold/unfold."
 msgstr ""
-"Ο τίτλος, η ενότητα και η υποενότητα των κελιών μπορούν να αναδιπλωθούν και "
-"να αποκρύψουν τα περιεχόμενά τους. Για την δίπλωση ή ξεδίπλωση, καντε κλικ "
-"στο τετραγωνάκι που βρίσκεται δίπλα απο το κελί. Επιπλέον αν κανετε shift-"
-"κλικ, ολα τα υποεπίπεδα του κελιού επίσης θα διπλωθούν/ξεδιπλωθούν."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:928
 msgid "To &Bigfloat"
-msgstr "Σε μεγάλο αριθμό κινητής υποδιαστολής (bigfloat)"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:925
 msgid "To &Float"
-msgstr "Σε αριθμό κινητής υποδιαστολής"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1153
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1134
 msgid "To Float"
-msgstr "Σε αριθμό κινητής υποδιαστολής"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:931
 msgid "To Numeri&c\tCtrl+Shift+N"
@@ -4862,37 +4667,24 @@ msgid ""
 "Plot2d dialog. You can also plot in spherical and cylindrical coordinates in "
 "3D."
 msgstr ""
-"Για να σχεδιάσετε σε πολικές συντεταγμένες, επιλέξτε 'set polar' στην "
-"καταχώρηση Επιλογές στον διάλογο του Plot2d. Μπορείτε επίσης να σχεδιάσετε "
-"σε σφαιρικές και κυλινδρικές συντεταγμένες σε 3-Δ."
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:21
-#, fuzzy
 msgid ""
 "To put parentheses around an expression, select it, and press '(' or ')' "
 "depending on where you want the cursor to appear afterwards."
 msgstr ""
-"Για να βάλετε παρενθέσεις γύρω από μια παράσταση, επιλέξτε την και πατήστε "
-"‘(’ ή ‘)’ ανάλογα με το που θέλετε να εμφανιστεί ο κέρσορας μετά."
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:23
 msgid ""
 "To save the size and position of wxMaxima windows between session, use 'Edit-"
 ">Configure' dialog."
 msgstr ""
-"Για να αποθηκεύσετε το μέγεθος και τη θέση από τα παράθυρα του wxMaxima "
-"μεταξύ διαφορετικών συνεδριών, χρησιμοποιήστε το διάλογο 'Επεξεργασία-"
-">Ρυθμίσεις'"
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:1
-#, fuzzy
 msgid ""
 "To start using wxMaxima right away, start typing your command. An input cell "
 "should appear. Then press Shift-Enter to evaluate your command."
 msgstr ""
-"Για να ξεκινήσετε να χρησιμοποιείτε το wxMaxima άμεσα, γράψτε την εντολή που "
-"θέλετε. Ένα κελί εντολών θα εμφανιστεί. Μετά πατήστε Shift+Enter για να "
-"εκτελεσθεί η εντολή σας."
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:42
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:43
@@ -4904,31 +4696,31 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4476
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4916
 msgid "To:"
-msgstr "Μέχρι:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:902
 msgid "Toggle &Algebraic Flag"
-msgstr "Εναλλαγή αλγεβρικής σημαίας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:923
 msgid "Toggle &Numeric Output"
-msgstr "Εναλλαγή μορφής αποτελεσμάτων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:655
 msgid "Toggle &Time Display"
-msgstr "Εναλλαγή εμφάνισης της ώρας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:903
 msgid "Toggle algebraic flag"
-msgstr "Εναλλαγή αλγεβρικής σημαίας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:556
 msgid "Toggle full screen editing"
-msgstr "Εναλλαγή επεξεργασίας πλήρης οθόνης"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:924
 msgid "Toggle numeric output"
-msgstr "Εναλλαγή αριθμητικού αποτελέσματος"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:194
 msgid "Toggle the visibility of code cells"
@@ -4936,86 +4728,91 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5144
 msgid "Toolbar icons"
-msgstr "Εικονίδια γραμμής εργαλείων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5145
 msgid "Translated by"
-msgstr "Μεταφρασμένο από"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:753
 msgid "Transpose a matrix"
-msgstr "Αναστροφή πίνακα"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6469
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:246
+msgid ""
+"Try to antialias lines (which allows to move them by a fraction of a pixel, "
+"but reduces their sharpness)."
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6442
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6537
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6510
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:655
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:654
 msgid "Turkish"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:960
 msgid "Tutorials"
-msgstr "Διδακτικές παρουσιάσεις"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5485
 msgid "Two sample t-test"
-msgstr "t-τεστ δυο δειγμάτων"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MatWiz.cpp:179
 msgid "Type:"
-msgstr "Τύπος:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:575
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:574
 msgid "URL MathJaX.js lies at:"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:656
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:655
 msgid "Ukrainian"
-msgstr "Ουκρανικά"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6319
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6340
 msgid "Un-closed parenthesis"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6265
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6286
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6900
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6921
 msgid ""
 "Unable to interpret the version info I got from http://andrejv.github.io//"
 "wxmaxima/version.txt: "
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:874
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:907
 msgid "Underlined"
-msgstr "Υπογραμμισμένος"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:490
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:489
 msgid "Underscore converts to subscripts:"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:465
 msgid "Undo\tCtrl+Z"
-msgstr "Αναίρεση\tCtrl+Z"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:466
 msgid "Undo last change"
-msgstr "Αναίρεση τελευταίας αλλαγής"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:676
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:675
 msgid "Undo limit (0 for none):"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:604
-#, fuzzy
 msgid "Unfold All\tCtrl+Alt+]"
-msgstr "Επιλογή Όλων\tCtrl+A"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:605
 msgid "Unfold all folded sections"
@@ -5025,35 +4822,31 @@ msgstr ""
 msgid "Unhide"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1246
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1227
 msgid "Unhide Part"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1254
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1235
 msgid "Unhide Section"
-msgstr "Ενότητα"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1264
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1245
 msgid "Unhide Subsection"
-msgstr "Υποενότητα"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1274
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1255
 msgid "Unhide Subsubsection"
-msgstr "Υποενότητα"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1282
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1263
 msgid "Unhide contents"
-msgstr "Ελληνικές σταθερές"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5138
 msgid "Unicode Support"
-msgstr "Υποστήριξη Unicode"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6290
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6311
 msgid "Unterminated comment."
 msgstr ""
 
@@ -5065,27 +4858,26 @@ msgstr ""
 msgid "Up"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6884
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6891
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6901
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6905
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6912
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6922
 msgid "Upgrade"
-msgstr "Αναβάθμιση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4123
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5876
 msgid "Upper bound:"
-msgstr "Άνω φράγμα:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1501
-#, fuzzy
 msgid "Upsilon"
-msgstr "Έψιλον:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:67
 msgid "Use Gosper algorithm"
-msgstr "Χρήση του αλγορίθμου του Gosper"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:700
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:699
 msgid "Use cairo to improve plot quality."
 msgstr ""
 
@@ -5093,25 +4885,25 @@ msgstr ""
 msgid "Use centered dot and Minus, not Star and Hyphen"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:531
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:530
 msgid "Use centered dot character for multiplication"
-msgstr "Χρήση κεντραρισμένης τελείας για πολλαπλασιασμό"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:824
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:857
 msgid "Use jsMath fonts"
-msgstr "Χρήση γραμματοσειράς jsMath "
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:233
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:231
 msgid ""
 "Use the \"partial derivative\" symbol to represent the fraction that "
 "represents a diff() when exporting LaTeX"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:838
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:871
 msgid "User-defined labels"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:508
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:507
 msgid "User-defined labels if available"
 msgstr ""
 
@@ -5121,7 +4913,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4176
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4290
 msgid "Value:"
-msgstr "Τιμή:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4088
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4104
@@ -5129,7 +4921,7 @@ msgstr "Τιμή:"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5859
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5907
 msgid "Variable(s):"
-msgstr "Μεταβλητή(-ές):"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:34
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:32
@@ -5149,29 +4941,28 @@ msgstr "Μεταβλητή(-ές):"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4915
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5875
 msgid "Variable:"
-msgstr "Μεταβλητή:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:828
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:861
 msgid "Variables"
-msgstr "Μεταβλητές"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/SystemWiz.cpp:73
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4207
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4880
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5518
 msgid "Variables:"
-msgstr "Μεταβλητές:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1374
-#, fuzzy
 msgid "Variance..."
-msgstr "Διακύμανση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:559
 msgid "View"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:714
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:713
 msgid "Warn if an inactive window is idle"
 msgstr ""
 
@@ -5180,12 +4971,12 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2304
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2455
 msgid "Warning"
-msgstr "Προειδοποίηση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:110
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:256
 msgid "Welcome to wxMaxima"
-msgstr "Καλωσορίσατε στο wxMaxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:22
 msgid ""
@@ -5193,10 +4984,6 @@ msgid ""
 "is '%'. To apply the function to some other value, select it in the document "
 "before executing a menu command."
 msgstr ""
-"Όταν εφαρμόζετε συναρτήσεις με ένα όρισμα από καταλόγους επιλογής, το "
-"προεπιλεγμένο όρισμα είναι το '%'.Για να εφαρμόσετε τη συνάρτηση σε κάποια "
-"άλλη τιμή, επιλέξτε την στο κείμενο προτού να εκτελέσετε μία εντολή από τον "
-"κατάλογο."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3137
 msgid ""
@@ -5208,19 +4995,19 @@ msgstr ""
 msgid "Worksheet"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:235
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:233
 msgid ""
 "Wrap equations exported by the \"copy as LaTeX\" feature between \\[ and \\] "
 "as equation markers"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7473
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7446
 msgid "Wrapped search"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5141
 msgid "Written by"
-msgstr "Γραμμένο από"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:534
 msgid "XML Inspector"
@@ -5230,10 +5017,9 @@ msgstr ""
 msgid "Xi"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:477
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:476
 msgid "Yes"
-msgstr "Ναι"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:4
 msgid ""
@@ -5241,22 +5027,13 @@ msgid ""
 "output of previous commands using variables '%on' where n is the number of "
 "output."
 msgstr ""
-"Μπορείτε να έχετε πρόσβαση στο τελευταίο αποτέσμα χρησιμοποιώντας τη "
-"μεταβλητή ‘%’. Μπορείτε να έχετε πρόσβαση σε αποτελέσματα προηγούμενων "
-"εντολών χρησιμοποιώντας τις μεταβλητές ‘%on’ όπου n είναι ο αριθμός της "
-"αποτελέσματος."
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:17
-#, fuzzy
 msgid ""
 "You can evaluate your whole document by using 'Cell->Evaluate All Cells' "
 "menu command or the appropriate key shortcut. The cells will be evaluated in "
 "the order they appear in the document."
 msgstr ""
-"Μπορείτε να υπολογήσετε όλο το έγγραφό σας χρησιμοποιώντας την ενολή του "
-"μενού 'Επεξεργασία->Κελί->Υπολογισμός όλων των κελιών' ή την αντίστοιχη "
-"συντόμευση. Τα κελιά θα υπολογισθούν με τη σειρά με την οποία εμφανίζονται "
-"μέσα στο έγγραφο."
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:12
 msgid ""
@@ -5264,31 +5041,19 @@ msgid ""
 "function name and pressing F1. wxMaxima will search help index for the "
 "selection or the word under the cursor."
 msgstr ""
-"Μπορείτε να ζητήσετε βοήθεια για μια συνάρτηση του Maxima αν την επιλέξετε ή "
-"κάνετε κλικ πάνω στο όνομά της και στη συνέχεια πατήσετε F1. Το wxMaxima θα "
-"ψάξει το ευρετήριο της βοήθειας για την επιλεγμένη λέξη ή για τη λέξη που "
-"είναι κατω από τον κέρσορα."
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:10
 msgid ""
 "You can hide output part of cells by clicking in the triangle on the left "
 "side of cells. This works on text cells also."
 msgstr ""
-"Μπορείτε να κρύψετε το μέρος των αποτελεσμάτων των κελιών κάνοντας κλικ στο "
-"τρίγωνο στα αριστερά των κελιών. Ανάλογο ισχύει επίσης και για τα κελιά "
-"κειμένου."
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:7
-#, fuzzy
 msgid ""
 "You can insert different types of 'cells' in wxMaxima documents using the "
 "'Cell' menu. Note that only 'input cells' can be evaluated, while others are "
 "used for commenting and structuring your calculations."
 msgstr ""
-"Μπορείτε να εισάγετε διαφορετικά είδη κελιών σε έγγραφο του wxMaxima "
-"χρησιμοποιώντας το υπομενού 'Επεξεργασία->Κελί'. Σημειώστε ότι μόνο τα κελιά "
-"'εντολών' μπορούν να υπολογισθούν, ενώ τα άλλα χρησιμοποιούνται για "
-"σχολιασμό του εγγράφου ή για να σας βοηθήσουν στην δομή των λογισμών σας."
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:16
 msgid ""
@@ -5298,74 +5063,63 @@ msgid ""
 "selection. This comes in handy when you want to delete or evaluate multiple "
 "cells."
 msgstr ""
-"Μπορείτε να επιλέξετε πολλαπλά κελιά είτε με το ποντίκι – κάνοντας κλικ και "
-"σέρνωντας το ποντίκι από ανάμεσα στα κελιά ή από το άγκιστρο στα αριστερά "
-"του κελιού - είτε με το πληκτρολόγιο - κρατώντας πατημένο το Shift ενώ "
-"μετακινείτε τον οριζόντιο κέρσορα - και μετά να εκτελέσετε κάτι στην "
-"επιλογή. Αυτό είναι χρήσιμο αν θέλετε να διαγράψετε ή να υπολογίσετε "
-"πολλαπλά κελιά."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6881
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6902
 #, c-format
 msgid ""
 "You have version %s. Current version is %s.\n"
 "\n"
 "Select OK to visit the wxMaxima webpage."
 msgstr ""
-"Έχετε την έκδοση %s. Η νεότερη έκδοση είναι η %s . \n"
-"\n"
-"Επιλέξτε ΟΚ ώστε να μεταβείτε στην ιστοσελίδα του wxMaxima."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6949
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6970
 msgid "Your changes will be lost if you don't save them."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6891
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6912
 msgid "Your version of wxMaxima is up to date."
-msgstr "Η έκδοση του wxMaxima που διαθέτετε ειναι η πιο πρόσφατη."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1487
 msgid "Zeta"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:541
-#, fuzzy
 msgid "Zoom &In\tCtrl++"
-msgstr "Μεγένθυση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:543
-#, fuzzy
 msgid "Zoom Ou&t\tCtrl+-"
-msgstr "Σμίκρυνση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:542
 msgid "Zoom in 10%"
-msgstr "Μεγέθυνση κατά 10%"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:544
 msgid "Zoom out 10%"
-msgstr "Σμίκρυνση κατά 10%"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6710
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6731
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:249
 msgid "[ unsaved ]"
-msgstr "[ δεν έχει αποθηκευθεί ]"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6712
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6733
 msgid "[ unsaved* ]"
-msgstr "[ δεν έχει αποθηκευθεί* ]"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:165
 #, c-format
 msgid "[%i digits]"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:4944
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:4925
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5118
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5099
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr ""
@@ -5375,13 +5129,12 @@ msgid "alpha"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1552
-#, fuzzy
 msgid "and"
-msgstr "Ανάπτυξη"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MatWiz.cpp:185
 msgid "antisymmetric"
-msgstr "αντισυμμετρικός"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1452
 msgid "beta"
@@ -5389,13 +5142,13 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:42
 msgid "both sides"
-msgstr "από τις δύο πλευρές"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1472
 msgid "chi"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:764
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:763
 msgid "choose a lisp maxima was compiled with"
 msgstr ""
 
@@ -5404,7 +5157,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:63
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:377
 msgid "default"
-msgstr "προεπιλογή"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1454
 msgid "delta"
@@ -5412,16 +5165,15 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MatWiz.cpp:183
 msgid "diagonal"
-msgstr "διαγώνιος"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1549
 msgid "empty"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1455
-#, fuzzy
 msgid "epsilon"
-msgstr "Έψιλον:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1557
 msgid "equivalent"
@@ -5449,17 +5201,15 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MatWiz.cpp:182
 msgid "general"
-msgstr "γενικός"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1575
-#, fuzzy
 msgid "greater than or equal"
-msgstr "Κελί υποενότητας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1543
-#, fuzzy
 msgid "in"
-msgstr "Εύρεση "
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:65
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:196
@@ -5470,12 +5220,11 @@ msgstr "Εύρεση "
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:377
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:408
 msgid "inline"
-msgstr "inline"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1561
-#, fuzzy
 msgid "intersection"
-msgstr "Κατεύθυνση:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1459
 msgid "iota"
@@ -5491,23 +5240,22 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:43
 msgid "left"
-msgstr "από αριστερά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1574
-#, fuzzy
 msgid "less or equal"
-msgstr "Κελί υποενότητας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:46
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:56
 msgid "logscale"
-msgstr "λογαριθμική κλίμακα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4438
 msgid "matrix[i,j]:"
-msgstr "Πίνακας[i,j]:"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:784
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:783
 msgid "maxima's pwd is path to document"
 msgstr ""
 
@@ -5516,9 +5264,8 @@ msgid "mu"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1578
-#, fuzzy
 msgid "much greater than"
-msgstr "Κελί υποενότητας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1577
 msgid "much less than"
@@ -5530,17 +5277,15 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5205
 msgid "no"
-msgstr "όχι"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1556
-#, fuzzy
 msgid "nor"
-msgstr "όχι"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1559
-#, fuzzy
 msgid "not"
-msgstr "όχι"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1572
 msgid "not bytewise identical"
@@ -5577,9 +5322,8 @@ msgid ""
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1568
-#, fuzzy
 msgid "partial sign"
-msgstr "Μερικά κλάσματα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1471
 msgid "phi"
@@ -5607,7 +5351,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:44
 msgid "right"
-msgstr "από δεξιά"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1468
 msgid "sigma"
@@ -5618,24 +5362,22 @@ msgid "sqrt (needs parenthesis for its argument to work as a maxima command)"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1563
-#, fuzzy
 msgid "subset"
-msgstr "Υποενότητα"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1562
-#, fuzzy
 msgid "subset or equal"
-msgstr "Κελί υποενότητας"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MatWiz.cpp:184
 msgid "symmetric"
-msgstr "συμμετρικός"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1469
 msgid "tau"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:774
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:773
 msgid "tell sbcl to use <int>Mbytes of heap"
 msgstr ""
 
@@ -5668,50 +5410,46 @@ msgstr ""
 msgid "union"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6930
-#, fuzzy
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6951
 msgid "unsaved"
-msgstr "[ δεν έχει αποθηκευθεί ]"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3129
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3428
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:251
 msgid "untitled"
-msgstr "ανώνυμο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:356
-#, fuzzy, c-format
+#, c-format
 msgid "untitled %d"
-msgstr "ανώνυμο"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1470
-#, fuzzy
 msgid "upsilon"
-msgstr "Έψιλον:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:342
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5221
 msgid "wxMaxima"
-msgstr "wxMaxima"
+msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6710
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6712
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6721
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6724
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6731
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6733
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6742
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6745
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:249
 #, c-format
 msgid "wxMaxima %s "
-msgstr "wxMaxima %s"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:942
-#, fuzzy
 msgid "wxMaxima &Help\tCtrl+?"
-msgstr "Βοήθεια για το Maxima\tF1"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:945
-#, fuzzy
 msgid "wxMaxima &Help\tF1"
-msgstr "Βοήθεια για το Maxima\tF1"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:28
 msgid ""
@@ -5731,7 +5469,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:150
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:200
 msgid "wxMaxima configuration"
-msgstr "Ρυθμίσεις του wxMaxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2452
 msgid ""
@@ -5740,10 +5478,6 @@ msgid ""
 "Please configure wxMaxima with 'Edit->Configure'.\n"
 "Then start Maxima with 'Maxima->Restart Maxima'."
 msgstr ""
-"Το wxMaxima δεν μπόρεσε να βρει το Maxima!\n"
-"\n"
-"Παρακαλώ ρυθμίστε το wxMaxima από το 'Επεξεργασία->Ρυθμίσεις'. \n"
-"Μετά επανεκινήστε το Maxima με το 'Maxima->Επανεκκίνηση Maxima'."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2681
 msgid ""
@@ -5751,9 +5485,6 @@ msgid ""
 "\n"
 "Please check your installation."
 msgstr ""
-"Το wxMaxima δεν μπόρεσε να βρει τα αρχεία βοήθειας.\n"
-"\n"
-"Παρακαλώ ελέγξτε την εγκατάστασή σας."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2514
 msgid ""
@@ -5761,9 +5492,6 @@ msgid ""
 "\n"
 "Please check your installation."
 msgstr ""
-"Το wxMaxima δεν μπόρεσεί να βρει τα αρχεία συμβουλών.\n"
-"\n"
-" Παρακαλώ ελέγξτε την εγκατάστασή σας."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:289
 msgid ""
@@ -5772,10 +5500,6 @@ msgid ""
 "Please check you have network support\n"
 "enabled and try again!"
 msgstr ""
-"Το wxMaxima δεν μπόρεσε να ξεκινήσει τον εξυπηρετητή.\n"
-"\n"
-" Παρακαλώ ελέγξτε αν έχετε ενεργοποιημένη την υποστήριξη δικτύου και "
-"προσπαθήστε ξανά!"
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:20
 msgid ""
@@ -5783,43 +5507,36 @@ msgid ""
 "If you have made a selection in your document, the selection will be used "
 "instead of '%'."
 msgstr ""
-"Οι διάλογοι του wxMaxima καθορίζουν προεπιλεγμένες τιμές σε καταχωρημένες "
-"γραμμές εντολών μία από τις οποίες είναι το '%'. Αν έχετε κάνει μια επιλογή "
-"στο έγγραφό σας, η επιλογή αυτή θα χρησιμοποιηθεί στη θέση του '%'."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2828
 msgid "wxMaxima document"
-msgstr "έγγραφο wxMaxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:386
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
-msgstr "έγγραφο wxMaxima (*.wxm, *.wxmx)|*.wxm;*.wxmx"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1595
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1907
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1918
 msgid "wxMaxima encountered an error loading "
-msgstr "Το wxMaxima αντιμετώπισε ένα πρόβλημα κατά την φόρτωση"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5143
 msgid "wxMaxima icon"
-msgstr "Εικοίδιο wxMaxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5135
 msgid ""
 "wxMaxima is a graphical user interface for the computer algebra system "
 "MAXIMA based on wxWidgets."
 msgstr ""
-"Το wxMaxima είναι μια γραφική διεπαφή χρήστη για το σύστημα υπολογιστικής "
-"άλγεβρας Maxima βασισμένη στα wxWidgets."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5197
 msgid ""
 "wxMaxima is a graphical user interface for the computer algebra system "
 "Maxima based on wxWidgets."
 msgstr ""
-"Το wxMaxima είναι μια γραφική διεπαφή χρήστη για το σύστημα υπολογιστικής "
-"άλγεβρας Maxima βασισμένη στα wxWidgets."
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:32
 msgid ""
@@ -5829,7 +5546,7 @@ msgid ""
 "table_form([1,2,3,4,5]);"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:456
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:455
 msgid "x"
 msgstr ""
 
@@ -5843,284 +5560,13 @@ msgid "xml contained in the file claims not to be a wxMaxima worksheet. "
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1554
-#, fuzzy
 msgid "xor"
-msgstr "Εξαγωγή"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5203
 msgid "yes"
-msgstr "Ναι"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1456
 msgid "zeta"
 msgstr ""
-
-#~ msgid ""
-#~ "There was an error during GIF export!\n"
-#~ "\n"
-#~ "Make sure ImageMagick is installed and wxMaxima can find the convert "
-#~ "program."
-#~ msgstr ""
-#~ "Εμφανίσθηκε σφάλμα κατα την εξαγωγή του αρχέιου GIF!\n"
-#~ "\n"
-#~ "Βεβαιωθείτε οτι υπάρχει εγκατεστημένο το  ImageMagick και πως το wxMaxima "
-#~ "μπορεί να βρει το πρόγραμμα μετατροπής."
-
-#, fuzzy
-#~ msgid "Manually Trigger Evaluation"
-#~ msgstr "Εμφάνιση του χρόνου που απαιτήθηκε για τον υπολογισμό"
-
-#, fuzzy
-#~ msgid "Maxima Error"
-#~ msgstr "Πρόγραμμα Maxima:"
-
-#, fuzzy
-#~ msgid "Maxima Question"
-#~ msgstr "Ερωτήσεις για το Maxima"
-
-#~ msgid " << Expression too long to display! >>"
-#~ msgstr "<<Πολύ μεγάλη έκφραση για να εμφανιστεί!>>"
-
-#~ msgid "&Cell"
-#~ msgstr "Κελί"
-
-#, fuzzy
-#~ msgid "&New\tCtrl-N"
-#~ msgstr "Νέο\tCtrl+N"
-
-#~ msgid "&New Window\tCtrl+N"
-#~ msgstr "Νέο Παράθυρο\tCtrl+N"
-
-#~ msgid "Adjustment for the size of greek font."
-#~ msgstr "Προσαρμογή για το μέγεθος της ελληνικής γραμματοσειράς."
-
-#~ msgid "Adjustment:"
-#~ msgstr "Προσαρμογή:"
-
-#~ msgid "Animation"
-#~ msgstr "Εφέ Κίνησης"
-
-#~ msgid "Basic"
-#~ msgstr "Βασικός(ή)"
-
-#~ msgid "Button panel:"
-#~ msgstr "Πίνακας Κουμπιών:"
-
-#~ msgid "Close document?"
-#~ msgstr "Κλείσιμο αρχείου;"
-
-#~ msgid "Copy As Image"
-#~ msgstr "Αντιγραφή ως εικόνα"
-
-#~ msgid "Copy LaTeX"
-#~ msgstr "Αντιγραφή LaTeX"
-
-#~ msgid "Copy selected cell(s)"
-#~ msgstr "Αντιγραφή επιλεγμένων κελιών"
-
-#~ msgid "Copy selection to clipboard when selection is made in document."
-#~ msgstr "Αντιγραφή επιλογής στο πρόχειρο όταν η επιλογή γίνεται στο έγγραφο."
-
-#~ msgid "Copy to clipboard on select"
-#~ msgstr "Αντιγραφή στο πρόχειρο αφού επιλεγεί"
-
-#~ msgid "Cut Cell(s)\tCtrl+Shift+X"
-#~ msgstr "Αποκοπή κελιού(-ών)\tCtrl+Shift+X"
-
-#~ msgid "Cut selected cell(s)"
-#~ msgstr "Αποκοπή επιλεγμένων κελιών"
-
-#~ msgid "Decrease fontsize in document"
-#~ msgstr "Ελάττωση μεγέθους γραμματοσειράς στο έγγραφο"
-
-#~ msgid "Default port:"
-#~ msgstr "Προεπιλεγμένη θύρα"
-
-#~ msgid "Delete selected cell(s)"
-#~ msgstr "Διαγραφή επιλεγμένου(-ων) κελιού(-ών)"
-
-#~ msgid "Delete selection"
-#~ msgstr "Διαγραφή επιλογής"
-
-#~ msgid "Document "
-#~ msgstr "Έγγραφο"
-
-#~ msgid ""
-#~ "Document not saved!\n"
-#~ "\n"
-#~ "Close current document and lose all changes?"
-#~ msgstr ""
-#~ "Το έγγραφο δεν αποθηκεύτηκε! Κλείσιμο του παρόντος εγγράφου και απώλεια "
-#~ "όλων των αλλαγών;"
-
-#~ msgid ""
-#~ "Document not saved!\n"
-#~ "\n"
-#~ "Quit wxMaxima and lose all changes?"
-#~ msgstr ""
-#~ "Το έγγραφο δεν αποθηκεύτηκε! Έξοδος από το wxMaxima και απώλεια όλων των "
-#~ "αλλαγών;"
-
-#~ msgid "Error %d"
-#~ msgstr "Σφάλμα %d"
-
-#~ msgid "Find..."
-#~ msgstr "Εύρεση..."
-
-#~ msgid "Font used for displaying unicode glyphs in document."
-#~ msgstr ""
-#~ "Γραμματοσειρά που χρησιμοποιείται για την εμφάνιση Unicode γλυφών στο "
-#~ "έγγραφο"
-
-#~ msgid "Full"
-#~ msgstr "Πλήρης"
-
-#~ msgid "Height:"
-#~ msgstr "Ύψος:"
-
-#~ msgid "Increase fontsize in document"
-#~ msgstr "Αύξηση μεγέθους γραμματοσειράς στο έγγραφο"
-
-#~ msgid "Input"
-#~ msgstr "Είσοδος"
-
-#~ msgid "Insert input group"
-#~ msgstr "Προσθήκη ομάδας εντολών"
-
-#~ msgid "Mean"
-#~ msgstr "Μέση τιμή "
-
-#~ msgid "New &Section Cell\tCtrl+F6"
-#~ msgstr "Νέα ενότητα\tCtrl+F6"
-
-#~ msgid "New Input &Cell\tF7"
-#~ msgstr "Νέο κελί εντολών \tF7"
-
-#~ msgid "New T&itle Cell\tCtrl+Shift+F6"
-#~ msgstr "Νέο κελί τίτλου\tCtrl+Shift+F6"
-
-#~ msgid "Off"
-#~ msgstr "Κλειστό"
-
-#~ msgid "Panes"
-#~ msgstr "Παλέτες"
-
-#~ msgid "Paste cell(s) to document"
-#~ msgstr "Επικόλληση κελιού(-ών) σε έγγραφο"
-
-#~ msgid "Product..."
-#~ msgstr "Γινόμενο..."
-
-#~ msgid "Quit?"
-#~ msgstr "Έξοδος;"
-
-#, fuzzy
-#~ msgid "Re-evaluate All until here\tCtrl+Shift+H"
-#~ msgstr "Υπολογισμός όλων των κελιών\tCtrl+R"
-
-#, fuzzy
-#~ msgid "Redo\tCtrl+Shift+Z"
-#~ msgstr "Αναίρεση\tCtrl+Z"
-
-#, fuzzy
-#~ msgid "Save changes?"
-#~ msgstr "Αποθήκευση εικόνας..."
-
-#~ msgid "Save document as ..."
-#~ msgstr "Αποθήκευση εγγράφου ως..."
-
-#~ msgid "Select file to open"
-#~ msgstr "Επιλογή αρχείου προς άνοιγμα"
-
-#~ msgid "Set &Precision..."
-#~ msgstr "Ορισμός ακρίβειας..."
-
-#~ msgid "Show Maxima header"
-#~ msgstr "Εμφάνιση κεφαλίδας του Maxima"
-
-#~ msgid "Show initial header with Maxima system information."
-#~ msgstr ""
-#~ "Εμφάνιση της αρχικής κεφαλίδας με τις πληροφορίες για το σύστημα Maxima"
-
-#~ msgid "Start animation"
-#~ msgstr "Εκκίνηση εφέ κίνησης"
-
-#~ msgid "Stop animation"
-#~ msgstr "Διακοπή του εφέ κίνησης"
-
-#, fuzzy
-#~ msgid "Structure\tAlt+Shift+T"
-#~ msgstr "Στατιστική\tAlt+Shift+S"
-
-#~ msgid "Sum..."
-#~ msgstr "Άθροισμα..."
-
-#, fuzzy
-#~ msgid "Text & Code"
-#~ msgstr "Διαίρεση κελιού"
-
-#~ msgid "To &Float\tCtrl+F"
-#~ msgstr "Σε αριθμό κινητής υποδιαστολής\tCtrl+F"
-
-#~ msgid "Use greek font to display greek characters."
-#~ msgstr ""
-#~ "Χρήση ελληνικής γραμματοσειράς για την εμφάνιση των ελληνικών χαρακτήρων."
-
-#~ msgid "Use greek font:"
-#~ msgstr "Χρήση ελληνικής γραμματοσειράς:"
-
-#~ msgid "Width:"
-#~ msgstr "Πλάτος:"
-
-#~ msgid "Write matching parenthesis in text controls."
-#~ msgstr "Εγγραφή ζεύγους παρενθέσεων στους ελέγχους κειμένου."
-
-#~ msgid ""
-#~ "You can use Maxima's tex(%) command to print the last expression in TeX "
-#~ "form. Then you can copy it to text editor to include it in you paper."
-#~ msgstr ""
-#~ "Μπορείτε να χρησιμοποιήσετε τις εντολές TeX(%) του Maxima για να τυπώσετε "
-#~ "την τελευταία παράσταση σε μορφή TeX. Έπειτα μπορείτε να την αντιγράψετε "
-#~ "στον κειμενογράφο και να την συμπεριλάβετε στο έγγραφό σας."
-
-#, fuzzy
-#~ msgid "Ypsilon"
-#~ msgstr "Έψιλον:"
-
-#~ msgid "Zoom set to "
-#~ msgstr "Ορισμός ζουμ σε"
-
-#, fuzzy
-#~ msgid "implies"
-#~ msgstr "Απλοποίηση"
-
-#~ msgid "lines hidden"
-#~ msgstr "κρυμμένες γραμμές"
-
-#~ msgid "untitled.wxm"
-#~ msgstr "ανώνυμο.wxm"
-
-#~ msgid ""
-#~ "wxMaxima is a graphical user interface for the\n"
-#~ "computer algebra system Maxima based on wxWidgets."
-#~ msgstr ""
-#~ "Το wxMaxima είναι μια γραφική διεπαφή χρήστη για το \n"
-#~ "σύστημα υπολογιστικής άλγεβρας Maxima βασισμένη στα wxWidgets."
-
-#~ msgid "wxMaxima options"
-#~ msgstr "Επιλογές wxMaxima"
-
-#~ msgid "wxMaxima session (*.wxm)|*.wxm"
-#~ msgstr "Συνεδρία wxMaxima (*.wxm)|*.wxm"
-
-#, fuzzy
-#~ msgid ""
-#~ "wxMaxima xml document (*.wxmx)|*.wxmx|wxMaxima document (*.wxm)|*.wxm|"
-#~ "Maxima batch file (*.mac)|*.mac"
-#~ msgstr ""
-#~ "έγγραφο wxMaxima (*.wxm)|*.wxm|έγγραφο wxMaxima xml (*.wxmx)|*.wxmx|"
-#~ "αρχείο Maxima batch (*.mac)|*.mac"
-
-#, fuzzy
-#~ msgid "ypsilon"
-#~ msgstr "Έψιλον:"

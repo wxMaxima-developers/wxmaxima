@@ -174,6 +174,10 @@ private:
   //! Get the width of the images we want to display.
   int GetImageWidth();
 
+  //! The panel that allows to choose which formats to put on the clipboard
+  wxPanel *CreateClipboardPanel();
+
+  wxCheckBox *m_copyBitmap, *m_copyMathML, *m_copyMathMLHTML, *m_copyRTF, *m_copySVG;
   //! The panel that allows to set the editing options
   wxPanel *CreateWorksheetPanel();
 
