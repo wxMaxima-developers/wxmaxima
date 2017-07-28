@@ -12,6 +12,7 @@ apps:
 #   desktop: usr/share/applications/wxMaxima.desktop
     plugs:
      - network
+     - network-bind
      - home
      - removable-media
      - optical-drive
