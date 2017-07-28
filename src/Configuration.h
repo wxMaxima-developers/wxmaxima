@@ -567,6 +567,11 @@ public:
     {
       wxConfig::Get()->Write(wxT("copySVG"), m_copySVG = copySVG );
     }
+  void ShowLength(int length)
+    {
+      wxConfig::Get()->Write(wxT("showLength"), m_showLength = length );
+    }
+  int ShowLength(){return m_showLength;}
 
   //! Sets the default toolTip for new cells
   void SetDefaultMathCellToolTip(wxString defaultToolTip){m_defaultToolTip = defaultToolTip;}
@@ -664,6 +669,7 @@ private:
   bool m_copyBitmap;
   bool m_copyMathML;
   bool m_copyMathMLHTML;
+  int m_showLength;
   bool m_copyRTF;
   bool m_copySVG;
 };

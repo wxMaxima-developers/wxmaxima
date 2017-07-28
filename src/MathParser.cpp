@@ -980,11 +980,9 @@ MathCell *MathParser::ParseLine(wxString s, int style)
   m_highlight = false;
   MathCell *cell = NULL;
 
-  wxConfigBase *config = wxConfig::Get();
-  int showLength = 0;
-  config->Read(wxT("showLength"), &showLength);
-
-  switch (showLength)
+  int showLength;
+  
+  switch ((*m_configuration)->ShowLength())
   {
     case 0:
       showLength = 50000;
@@ -998,6 +996,8 @@ MathCell *MathParser::ParseLine(wxString s, int style)
     case 3:
       showLength = 0;
       break;
+  default:
+      showLength = 50000;    
   }
 
 #if wxUSE_UNICODE

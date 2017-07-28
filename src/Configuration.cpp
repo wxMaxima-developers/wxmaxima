@@ -65,6 +65,7 @@ Configuration::Configuration(wxDC &dc, bool isTopLevel) : m_dc(&dc)
   m_copyMathMLHTML = false;
   m_copyRTF = true;
   m_copySVG = true;
+  m_showLength = 2;
 }
 
 void Configuration::ShowCodeCells(bool show)
@@ -104,6 +105,8 @@ void Configuration::ReadConfig()
   config->Read(wxT("antiAliasLines"), & m_antiAliasLines);
   
   config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
+
+  config->Read(wxT("showLength"), &m_showLength);
 
   config->Read(wxT("copyBitmap"), &m_copyBitmap);
   config->Read(wxT("copyMathML"), &m_copyMathML);
