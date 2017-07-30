@@ -497,6 +497,16 @@ protected:
   //! The stderr of the maxima process
   wxInputStream *m_maximaStderr;
   int m_port;
+  /*! The end of maxima's current uninterpreted output, see m_currentOutput.
+   
+    If we just want to look if maxima's current output contains an ending tag
+    this is the place we can search in fast.
+
+    wxEmptyString means that the current output isn't long enought to make 
+    creating this string worthwile.
+   */
+  wxString m_currentOutputEnd;
+  //! All from maxima's current output we still haven't interpreted
   wxString m_currentOutput;
   //! The marker for the start of a input prompt
   wxString m_promptPrefix;

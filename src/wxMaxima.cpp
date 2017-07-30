@@ -727,6 +727,14 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
           m_xmlInspector->Add(newChars);
         }
 
+        // This way we can avoid searching the whole string for a
+        // ending tag if we have received only a few bytes of the
+        // data between 2 tags
+        if(m_currentOutput != wxEmptyString)
+          m_currentOutputEnd = m_currentOutput.Right(20) + newChars;
+        else
+          m_currentOutputEnd = wxEmptyString;
+        
         m_currentOutput += newChars;
 
         if (!m_dispReadOut &&
@@ -1153,20 +1161,35 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
 
 int wxMaxima::GetMiscTextEnd(const wxString &data)
 {
-  int newlinepos = data.Find("\n");
+  if(data.StartsWith("<mth>"))
+    return 0;
+  if(data.StartsWith("<lbl>"))
+    return 0;
+  if(data.StartsWith("<statusbar>"))
+    return 0;
+  if(data.StartsWith(m_promptPrefix))
+    return 0;
+  if(data.StartsWith(m_symbolsPrefix))
+    return 0;
+  
   int mthpos = data.Find("<mth>");
   int lblpos = data.Find("<lbl>");
   int statpos = data.Find("<statusbar>");
-  int prmptpos = data.Find("<PROMPT-P/>");
-  if ((newlinepos == wxNOT_FOUND) || ((mthpos != wxNOT_FOUND) && (mthpos < newlinepos)))
-    newlinepos = mthpos;
-  if ((newlinepos == wxNOT_FOUND) || ((lblpos != wxNOT_FOUND) && (lblpos < newlinepos)))
-    newlinepos = lblpos;
-  if ((newlinepos == wxNOT_FOUND) || ((statpos != wxNOT_FOUND) && (statpos < newlinepos)))
-    newlinepos = statpos;
-  if ((newlinepos == wxNOT_FOUND) || ((prmptpos != wxNOT_FOUND) && (prmptpos < newlinepos)))
-    newlinepos = prmptpos;
-  return newlinepos;
+  int prmptpos = data.Find(m_promptPrefix);
+  int symbolspos = data.Find(m_symbolsPrefix);
+
+  int tagPos = mthpos;
+  if ((tagPos == wxNOT_FOUND) || ((lblpos != wxNOT_FOUND) && (lblpos < tagPos)))
+    tagPos = lblpos;
+  if ((tagPos == wxNOT_FOUND) || ((statpos != wxNOT_FOUND) && (statpos < tagPos)))
+    tagPos = statpos;
+  if ((tagPos == wxNOT_FOUND) || ((prmptpos != wxNOT_FOUND) && (prmptpos < tagPos)))
+    tagPos = prmptpos;
+  if ((tagPos == wxNOT_FOUND) || ((prmptpos != wxNOT_FOUND) && (prmptpos < tagPos)))
+    tagPos = prmptpos;
+  if ((tagPos == wxNOT_FOUND) || ((symbolspos != wxNOT_FOUND) && (symbolspos < tagPos)))
+    tagPos = symbolspos;
+  return tagPos;
 }
 
 void wxMaxima::ReadMiscText(wxString &data)
@@ -1174,14 +1197,18 @@ void wxMaxima::ReadMiscText(wxString &data)
   if (data.IsEmpty())
     return;
 
-  bool error   = false;
-  bool warning = false;
+  int miscTextLen;
+  wxString miscText = data.Left(miscTextLen = GetMiscTextEnd(data));
+  data = data.Right(data.Length() - miscTextLen);
 
+  if(miscText == wxEmptyString)
+    return;
+  
   // A version of the text where each line begins with non-whitespace and whitespace
   // characters are merged.
   wxString mergedWhitespace = wxT("\n");
   bool whitespace = true;
-  for ( wxString::iterator it=data.begin(); it!=data.end(); ++it)
+  for ( wxString::iterator it=miscText.begin(); it!=miscText.end(); ++it)
   {
     if((*it == wxT(' ')) || (*it == wxT('\t')))
     {
@@ -1197,8 +1224,9 @@ void wxMaxima::ReadMiscText(wxString &data)
     else
       whitespace = false;
   }
-
   
+  bool error   = false;
+  bool warning = false;
   if (
     (mergedWhitespace.Contains(wxT("\n-- an error."))) ||
     (mergedWhitespace.Contains(wxT(":incorrect syntax:"))) ||
@@ -1222,33 +1250,12 @@ void wxMaxima::ReadMiscText(wxString &data)
     )
     warning = true;
   
-  // Add all text lines to the console until we reach a known XML tag.
-  int newLinePos;
-  while ((newLinePos = GetMiscTextEnd(data)) != wxNOT_FOUND)
+  // Add all text lines to the console
+  wxStringTokenizer lines(miscText, wxT("\n"));
+  while (lines.HasMoreTokens())
   {
-    if (data.StartsWith(wxT("<mth")))
-      return;
-    if (data.StartsWith(wxT("<statusbar")))
-      return;
-    if (data.StartsWith(wxT("<PROMPT-P")))
-      return;
-    if (data.StartsWith(m_promptPrefix))
-      return;
-    if (data.StartsWith(m_symbolsPrefix))
-      return;
-
     // extract a string from the Data lines
-    wxString textline;
-    textline = data.Left(newLinePos) + wxT("\n");
-
-    if (data[newLinePos] == wxT('\n'))
-    {
-      data = data.Right(data.Length() - newLinePos - 1);
-    }
-    else
-    {
-      data = data.Right(data.Length() - newLinePos);
-    }
+    wxString textline = lines.GetNextToken();
 
     wxString trimmedLine = textline;
 
