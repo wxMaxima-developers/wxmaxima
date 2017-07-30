@@ -1287,26 +1287,17 @@ int wxMaxima::FindTagEnd(wxString &data, const wxString &tag)
 
 void wxMaxima::ReadStatusBar(wxString &data)
 {
-  if (!data.StartsWith(wxT("<statusbar>")))
+  wxString statusbarStart = wxT("<statusbar>");
+  if (!data.StartsWith(statusbarStart))
     return;
 
   wxString sts = wxT("</statusbar>");
   int end;
   if ((end = FindTagEnd(data,sts)) != wxNOT_FOUND)
   {
-    wxString o = data.Left(end);
-    int start = data.Find("<statusbar>");
-
-    wxASSERT_MSG(start != wxNOT_FOUND, _("Bug: Found a statusbar end marker without any matching start marker."));
-    if (start != wxNOT_FOUND)
-      o = o.SubString(start + sts.Length() - 1, o.Length());
-    else
-      start = 0;
-
+    wxString o = data.SubString(statusbarStart.Length(), end - 1);
     SetStatusText(o, 0);
-
-    data = data.Left(start) +
-           data.SubString(end + sts.Length(), data.Length());
+    data = data.Right(data.Length()-end-sts.Length());
   }
 }
 
@@ -1315,7 +1306,8 @@ void wxMaxima::ReadStatusBar(wxString &data)
  */
 void wxMaxima::ReadMath(wxString &data)
 {
-  if (!data.StartsWith(wxT("<mth>")))
+  wxString mthstart = wxT("<mth>");
+  if (!data.StartsWith(mthstart))
     return;
 
   // Append everything from the "beginning of math" to the "end of math" marker
@@ -1324,15 +1316,7 @@ void wxMaxima::ReadMath(wxString &data)
   int end;
   if ((end = FindTagEnd(data,mth)) != wxNOT_FOUND)
   {
-    wxString o = data.Left(end);
-    int start = data.Find("<mth>");
-
-    wxASSERT_MSG(start != wxNOT_FOUND, _("Bug: Found a math end marker without any start marker."));
-    if (start != wxNOT_FOUND)
-      o = o.SubString(start, o.Length());
-    else
-      start = 0;
-
+    wxString o = data.Left(end + mth.Length());
     o.Trim(true);
     o.Trim(false);
 
@@ -1340,7 +1324,7 @@ void wxMaxima::ReadMath(wxString &data)
     {
       if (m_console->m_configuration->UseUserLabels())
       {
-        ConsoleAppend(o + mth, MC_TYPE_DEFAULT,m_console->m_evaluationQueue.GetUserLabel());
+        ConsoleAppend(o, MC_TYPE_DEFAULT,m_console->m_evaluationQueue.GetUserLabel());
       }
       else
       {
@@ -1348,8 +1332,7 @@ void wxMaxima::ReadMath(wxString &data)
       }
     }
 
-    data = data.Left(start) +
-           data.SubString(end + mth.Length(), data.Length());
+    data = data.Right(data.Length()-end-mth.Length());
   }
 }
 
@@ -1364,14 +1347,14 @@ void wxMaxima::ReadLoadSymbols(wxString &data)
   {
     // Put the symbols into a separate string
     wxString symbols = data.SubString(m_symbolsPrefix.Length(), end - 1);
-    
-    // Remove the symbols from the data string
-    data = data.SubString(end + m_symbolsSuffix.Length(), data.Length());
-    
+
     // Send each symbol to the console
     wxStringTokenizer templates(symbols, wxT("$"));
     while (templates.HasMoreTokens())
       m_console->AddSymbol(templates.GetNextToken());
+    
+    // Remove the symbols from the data string
+    data = data.Right(data.Length()-end-m_symbolsSuffix.Length());
   }
 }
 
@@ -1390,7 +1373,6 @@ void wxMaxima::ReadPrompt(wxString &data)
   m_console->m_questionPrompt = false;
   m_ready = true;
   int end = FindTagEnd(data,m_promptSuffix);
-  int begin = data.Find(m_promptPrefix);
   // Did we find a prompt?
   if (end == wxNOT_FOUND)
     return;
@@ -1400,12 +1382,7 @@ void wxMaxima::ReadPrompt(wxString &data)
   //
   //wxASSERT_MSG(begin != wxNOT_FOUND,_("bug: Input prompt end detected but didn't detect an input prompt begin!"));
 
-  wxString o;
-
-  if (begin == wxNOT_FOUND)
-    o = data.Left(end);
-  else
-    o = data.SubString(begin + m_promptPrefix.Length(), end - 1);
+  wxString o = data.SubString(m_promptPrefix.Length(), end - 1);
 
   // Input prompts have a length > 0 and end in a number followed by a ")".
   // They also begin with a "(". Questions (hopefully)
@@ -1533,8 +1510,7 @@ void wxMaxima::ReadPrompt(wxString &data)
   }
 
   // Remove the prompt we have processed from the string.
-  data = data.Left(begin) +
-         data.SubString(end + m_promptSuffix.Length(), data.Length());
+  data = data.Right(data.Length()-end-m_promptSuffix.Length());
 }
 
 void wxMaxima::SetCWD(wxString file)
