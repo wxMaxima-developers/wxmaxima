@@ -1358,28 +1358,20 @@ void wxMaxima::ReadLoadSymbols(wxString &data)
   if (!data.StartsWith(m_symbolsPrefix))
     return;
 
-  int start;
-  while ((start = data.Find(m_symbolsPrefix)) != wxNOT_FOUND)
+  int end = FindTagEnd(data, m_symbolsSuffix);
+  
+  if (end != wxNOT_FOUND)
   {
-    int end = data.Find(m_symbolsSuffix);
-
-    // If we found an end marker we data contains a whole symbols part we can extract.
-    wxASSERT_MSG(start != wxNOT_FOUND, _("Bug: Found the end of autocompletion symbols but no beginning"));
-    if (end != wxNOT_FOUND)
-    {
-      // Put the symbols into a separate string
-      wxString symbols = data.SubString(start + m_symbolsPrefix.Length(), end - 1);
-
-      // Remove the symbols from the data string
-      data = data.Left(start) + data.SubString(end + m_symbolsSuffix.Length(), data.Length());
-
-      // Send each symbol to the console
-      wxStringTokenizer templates(symbols, wxT("$"));
-      while (templates.HasMoreTokens())
-        m_console->AddSymbol(templates.GetNextToken());
-    }
-    else
-      break;
+    // Put the symbols into a separate string
+    wxString symbols = data.SubString(m_symbolsPrefix.Length(), end - 1);
+    
+    // Remove the symbols from the data string
+    data = data.SubString(end + m_symbolsSuffix.Length(), data.Length());
+    
+    // Send each symbol to the console
+    wxStringTokenizer templates(symbols, wxT("$"));
+    while (templates.HasMoreTokens())
+      m_console->AddSymbol(templates.GetNextToken());
   }
 }
 
@@ -1397,7 +1389,7 @@ void wxMaxima::ReadPrompt(wxString &data)
   // Assume we don't have a question prompt
   m_console->m_questionPrompt = false;
   m_ready = true;
-  int end = data.Find(m_promptSuffix);
+  int end = FindTagEnd(data,m_promptSuffix);
   int begin = data.Find(m_promptPrefix);
   // Did we find a prompt?
   if (end == wxNOT_FOUND)
