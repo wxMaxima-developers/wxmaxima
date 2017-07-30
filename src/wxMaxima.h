@@ -377,6 +377,9 @@ protected:
    */
   int GetMiscTextEnd(const wxString &data);
 
+  //! Find the end of a tag in wxMaxima's output.
+  int FindTagEnd(wxString &data, const wxString &tag);
+
   /*! Reads text that isn't enclosed between xml tags.
 
      Some commands provide status messages before the math output or the command has finished.

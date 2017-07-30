@@ -1277,14 +1277,22 @@ void wxMaxima::ReadMiscText(wxString &data)
   }
 }
 
+int wxMaxima::FindTagEnd(wxString &data, const wxString &tag)
+{
+  if((m_currentOutputEnd == wxEmptyString) || (m_currentOutputEnd.Find(tag) != wxNOT_FOUND))
+    return data.Find(tag);
+  else
+    return wxNOT_FOUND;
+}
+
 void wxMaxima::ReadStatusBar(wxString &data)
 {
-  if (data.IsEmpty())
+  if (!data.StartsWith(wxT("<statusbar>")))
     return;
 
   wxString sts = wxT("</statusbar>");
   int end;
-  if ((end = data.Find(sts)) != wxNOT_FOUND)
+  if ((end = FindTagEnd(data,sts)) != wxNOT_FOUND)
   {
     wxString o = data.Left(end);
     int start = data.Find("<statusbar>");
@@ -1307,14 +1315,14 @@ void wxMaxima::ReadStatusBar(wxString &data)
  */
 void wxMaxima::ReadMath(wxString &data)
 {
-  if (data.IsEmpty())
+  if (!data.StartsWith(wxT("<mth>")))
     return;
 
   // Append everything from the "beginning of math" to the "end of math" marker
   // to the console and remove it from the data we got.
   wxString mth = wxT("</mth>");
   int end;
-  if ((end = data.Find(mth)) != wxNOT_FOUND)
+  if ((end = FindTagEnd(data,mth)) != wxNOT_FOUND)
   {
     wxString o = data.Left(end);
     int start = data.Find("<mth>");
@@ -1347,7 +1355,7 @@ void wxMaxima::ReadMath(wxString &data)
 
 void wxMaxima::ReadLoadSymbols(wxString &data)
 {
-  if (data.IsEmpty())
+  if (!data.StartsWith(m_symbolsPrefix))
     return;
 
   int start;
@@ -1380,7 +1388,7 @@ void wxMaxima::ReadLoadSymbols(wxString &data)
  */
 void wxMaxima::ReadPrompt(wxString &data)
 {
-  if (data.IsEmpty())
+  if (!data.StartsWith(m_promptPrefix))
     return;
 
   // If we got a prompt our connection to maxima was successful.
