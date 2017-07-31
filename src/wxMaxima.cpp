@@ -1328,10 +1328,9 @@ void wxMaxima::ReadMath(wxString &data)
       }
       else
       {
-        ConsoleAppend(o + mth, MC_TYPE_DEFAULT);
+        ConsoleAppend(o, MC_TYPE_DEFAULT);
       }
     }
-
     data = data.Right(data.Length()-end-mth.Length());
   }
 }
