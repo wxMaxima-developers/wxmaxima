@@ -1328,7 +1328,7 @@ void wxMaxima::ReadMath(wxString &data)
       }
       else
       {
-        ConsoleAppend(o + mth, MC_TYPE_DEFAULT);
+        ConsoleAppend(o, MC_TYPE_DEFAULT);
       }
     }
 
@@ -1510,7 +1510,7 @@ void wxMaxima::ReadPrompt(wxString &data)
   }
 
   // Remove the prompt we have processed from the string.
-  data = data.Right(data.Length()-end-m_promptSuffix.Length());
+  data = data.Right(data.Length()-end-m_promptSuffix.Length()-1);
 }
 
 void wxMaxima::SetCWD(wxString file)
