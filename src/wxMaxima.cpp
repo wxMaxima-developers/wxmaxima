@@ -2702,7 +2702,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     event.RequestMore();
     return;
   }
-
+  UpdateStatusMaximaBusy();
   bool screenHasChanged = m_console->RedrawRequested();
   
   // Incremental search is done from the idle task. This means that we don't forcefully

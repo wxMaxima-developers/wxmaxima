@@ -114,14 +114,14 @@ void wxMaximaFrame::EvaluationQueueLength(int length, int numberOfCommands)
   }
 }
 
-
-void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
+void wxMaximaFrame::UpdateStatusMaximaBusy()
 {
-  if ((m_StatusMaximaBusy != status) || (m_forceStatusbarUpdate))
+  if ((m_StatusMaximaBusy != m_StatusMaximaBusy_next) || (m_forceStatusbarUpdate))
   {
+    m_StatusMaximaBusy = m_StatusMaximaBusy_next;
     if (!m_StatusSaving)
     {
-      switch (status)
+      switch (m_StatusMaximaBusy)
       {
         case process_wont_start:
           SetStatusText(_("Cannot start the maxima binary"), 1);
@@ -160,7 +160,6 @@ void wxMaximaFrame::StatusMaximaBusy(ToolbarStatus status)
       }
     }
   }
-  m_StatusMaximaBusy = status;
   m_forceStatusbarUpdate = false;
 }
 

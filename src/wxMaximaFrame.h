@@ -454,10 +454,13 @@ public:
       - true:  Maxima is calculating
       - false: Maxima is waiting for input
    */
-  void StatusMaximaBusy(ToolbarStatus status);
+  void StatusMaximaBusy(ToolbarStatus status){m_StatusMaximaBusy_next = status;}
+  void UpdateStatusMaximaBusy();
 
   //! True=Maxima is currently busy.
   ToolbarStatus m_StatusMaximaBusy;
+
+  ToolbarStatus m_StatusMaximaBusy_next;
 
   //! Set the status to "Maxima is saving"
   void StatusSaveStart();
