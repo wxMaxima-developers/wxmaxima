@@ -82,6 +82,13 @@
 #define MACPREFIX "wxMaxima.app/Contents/Resources/"
 #endif
 
+/*! The size of the socket we get data from
+
+\todo Can we make sure that the data never ends in the middle of a
+unicode char? On wxMaxima's side we don't handle that case, currently.
+*/
+#define SOCKET_SIZE (1024*1024)
+
 enum
 {
   maxima_process_id
@@ -200,6 +207,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_statusBar->GetNetworkStatusElement()->Connect(wxEVT_LEFT_DCLICK,
                                                   wxCommandEventHandler(wxMaxima::NetworkDClick),
                                                   NULL, this);
+  m_inputBuffer = new char[SOCKET_SIZE];
 }
 
 wxMaxima::~wxMaxima()
@@ -215,6 +223,8 @@ wxMaxima::~wxMaxima()
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
 
+  wxDELETE(m_inputBuffer);
+  m_inputBuffer = NULL;
   wxDELETE(m_printData);
   m_printData = NULL;
 }
@@ -689,7 +699,6 @@ void wxMaxima::SanitizeSocketBuffer(char *buffer, int length)
 
 void wxMaxima::ClientEvent(wxSocketEvent &event)
 {
-  char buffer[SOCKET_SIZE + 1];
   switch (event.GetSocketEvent())
   {
 
@@ -706,21 +715,20 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
       if (m_client == NULL)
         return;
 
-      m_client->Read(buffer, SOCKET_SIZE);
+      m_client->Read(m_inputBuffer, SOCKET_SIZE);
 
       if (!m_client->Error())
       {
         int read;
         read = m_client->LastCount();
-        buffer[read] = 0;
-
-        SanitizeSocketBuffer(buffer, read);
+        SanitizeSocketBuffer(m_inputBuffer, read);
+        m_inputBuffer[read] = 0;
 
         wxString newChars;
 #if wxUSE_UNICODE
-        newChars = wxString(buffer, wxConvUTF8);
+        newChars = wxString(m_inputBuffer, wxConvUTF8);
 #else
-        newChars = wxString(buffer, *wxConvCurrent);
+        newChars = wxString(m_inputBuffer, *wxConvCurrent);
 #endif
         if (IsPaneDisplayed(menu_pane_xmlInspector))
           m_xmlInspector->Add(newChars);
@@ -747,9 +755,23 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
 
         while (length_old != m_currentOutput.Length())
         {
-
           length_old = m_currentOutput.Length();
 
+          // Handle the <mth> tag that contains math output and sometimes text.
+          ReadMath(m_currentOutput);
+
+          // The following function calls each extract and remove one type of XML tag
+          // information from the beginning of the data string we got - but only do so
+          // after the closing tag has been transferred, as well.
+          ReadLoadSymbols(m_currentOutput);
+
+          // The prompt that tells us that maxima awaits the next command
+          ReadPrompt(m_currentOutput);
+
+          // Handle the XML tag that contains Status bar updates
+          ReadStatusBar(m_currentOutput);
+
+          // Handle text that isn't wrapped in a known tag
           if (!m_first)
             // Handle text that isn't XML output: Mostly Error messages or warnings.
             ReadMiscText(m_currentOutput);
@@ -757,20 +779,6 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
             // This function determines the port maxima is running on from  the text
             // maxima outputs at startup. This piece of text is afterwards discarded.
             ReadFirstPrompt(m_currentOutput);
-
-          // The next function calls each extract and remove one type of information from
-          // the data string we got - but only do so after the piece of information it
-          // is able to detect has been transferred as a whole.
-          ReadLoadSymbols(m_currentOutput);
-
-          // Handle XML text: Status bar updates
-          ReadStatusBar(m_currentOutput);
-
-          // Handle XML text: All 1D and 2D maths for example.
-          ReadMath(m_currentOutput);
-
-          // The prompt that tells us that maxima awaits the next command
-          ReadPrompt(m_currentOutput);
         }
       }
       break;
@@ -1155,6 +1163,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
 
 int wxMaxima::GetMiscTextEnd(const wxString &data)
 {
+  // These tests are redundant with later tests. But they are faster.
   if(data.StartsWith("<mth>"))
     return 0;
   if(data.StartsWith("<lbl>"))
@@ -1172,7 +1181,9 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
   int prmptpos = data.Find(m_promptPrefix);
   int symbolspos = data.Find(m_symbolsPrefix);
 
-  int tagPos = mthpos;
+  int tagPos = data.Length();
+  if ((mthpos != wxNOT_FOUND) && (mthpos < tagPos))
+    tagPos = mthpos;
   if ((tagPos == wxNOT_FOUND) || ((lblpos != wxNOT_FOUND) && (lblpos < tagPos)))
     tagPos = lblpos;
   if ((tagPos == wxNOT_FOUND) || ((statpos != wxNOT_FOUND) && (statpos < tagPos)))
@@ -1192,10 +1203,11 @@ void wxMaxima::ReadMiscText(wxString &data)
     return;
 
   // Extract all text that isn't a xml tag known to us.
-  int miscTextLen;
-  wxString miscText = data.Left(miscTextLen = GetMiscTextEnd(data));
-  if(miscTextLen == 0)
+  int miscTextLen = GetMiscTextEnd(data);
+  if(miscTextLen <= 0)
     return;
+
+  wxString miscText = data.Left(miscTextLen);
   data = data.Right(data.Length() - miscTextLen);
 
   // A version of the text where each line begins with non-whitespace and whitespace
@@ -1256,17 +1268,20 @@ void wxMaxima::ReadMiscText(wxString &data)
     trimmedLine.Trim(true);
     trimmedLine.Trim(false);
 
-    if(error)
+    if((textline != wxEmptyString)&&(textline != wxT("\n")))
     {
-      ConsoleAppend(textline, MC_TYPE_ERROR);
-      AbortOnError();
-    }
-    else
-    {
-      if(warning)
-        ConsoleAppend(textline, MC_TYPE_WARNING);
+      if(error)
+      {
+        ConsoleAppend(textline, MC_TYPE_ERROR);
+        AbortOnError();
+      }
       else
-        ConsoleAppend(textline, MC_TYPE_DEFAULT);
+      {
+        if(warning)
+          ConsoleAppend(textline, MC_TYPE_WARNING);
+        else
+          ConsoleAppend(textline, MC_TYPE_DEFAULT);
+      }
     }
   }
 }

@@ -48,6 +48,8 @@ StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id)
   SendTimer.SetOwner(this, wxID_ANY);
   m_icon_shows_receive = m_icon_shows_transmit = false;
   m_networkState = offline;
+  // Mark the network state as "to be changed"
+  m_oldNetworkState = receive;
 }
 
 void StatusBar::OnTimerEvent(wxTimerEvent &event)
@@ -72,21 +74,27 @@ void StatusBar::OnTimerEvent(wxTimerEvent &event)
   if (m_icon_shows_receive && !m_icon_shows_transmit)
   {
     m_networkStatus->SetBitmap(m_network_receive);
+    m_oldNetworkState = receive;
   }
   if (!m_icon_shows_receive && m_icon_shows_transmit)
   {
     m_networkStatus->SetBitmap(m_network_transmit);
+    m_oldNetworkState = transmit;
   }
   if (!m_icon_shows_receive && !m_icon_shows_transmit)
   {
     m_networkStatus->SetBitmap(m_network_idle);
+    m_oldNetworkState = idle;
   }
 }
 
 void StatusBar::NetworkStatus(networkState status)
 {
-  switch (status)
+  if(status != m_oldNetworkState)
   {
+    m_oldNetworkState = status;
+    switch (status)
+    {
     case idle:
       m_networkStatus->SetBitmap(m_network_idle);
       m_networkState = status;
@@ -108,14 +116,15 @@ void StatusBar::NetworkStatus(networkState status)
       wxTimerEvent dummy;
       OnTimerEvent(dummy);
     }
-      break;
+    break;
     case transmit:
     {
       SendTimer.StartOnce(200);
       wxTimerEvent dummy;
       OnTimerEvent(dummy);
     }
-      break;
+    break;
+    }
   }
 }
 

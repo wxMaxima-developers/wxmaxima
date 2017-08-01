@@ -67,6 +67,7 @@ protected:
   void OnTimerEvent(wxTimerEvent &event);
 
 private:
+  networkState m_oldNetworkState;
   wxString m_stdToolTip;
   wxString m_networkErrToolTip;
   wxString m_noConnectionToolTip;

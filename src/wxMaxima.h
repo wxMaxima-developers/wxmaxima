@@ -46,7 +46,6 @@
 
 #include <wx/html/helpctrl.h>
 
-#define SOCKET_SIZE 1024
 #define DOCUMENT_VERSION_MAJOR 1
 /*! The part of the .wxmx format version number that appears after the dot.
   
@@ -526,6 +525,7 @@ protected:
   wxString m_lastPath;
   wxPrintData *m_printData;
   bool m_closing;
+  char *m_inputBuffer;
   wxString m_openFile;
   bool m_fileSaved;
   bool m_variablesOK;
