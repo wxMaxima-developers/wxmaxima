@@ -67,7 +67,7 @@ bool Bitmap::Layout(long int maxSize)
   *m_configuration = new Configuration(*m_dc);
   (*m_configuration)->SetScale(m_scale);
   (*m_configuration)->SetZoomFactor(1);
-  (*m_configuration)->SetClientWidth(BM_FULL_WIDTH);
+  (*m_configuration)->SetClientWidth(BM_FULL_WIDTH * m_scale);
 
   if (m_tree->GetType() != MC_TYPE_GROUP)
   {
@@ -156,8 +156,8 @@ void Bitmap::RecalculateWidths()
 
   m_dc->SelectObject(m_bmp);
   m_dc->SetUserScale(m_scale, m_scale);
-  (*m_configuration)->SetClientWidth(BM_FULL_WIDTH);
-  (*m_configuration)->SetClientHeight(BM_FULL_WIDTH);
+  (*m_configuration)->SetClientWidth(BM_FULL_WIDTH * m_scale);
+  (*m_configuration)->SetClientHeight(BM_FULL_WIDTH * m_scale);
 
   while (tmp != NULL)
   {
@@ -168,7 +168,7 @@ void Bitmap::RecalculateWidths()
 
 void Bitmap::BreakLines()
 {
-  int fullWidth = BM_FULL_WIDTH;
+  int fullWidth = BM_FULL_WIDTH * m_scale;
   int currentWidth = 0;
 
   MathCell *tmp = m_tree;
@@ -349,7 +349,7 @@ void Bitmap::BreakUpCells()
 
   while (tmp != NULL)
   {
-    if (tmp->GetWidth() > BM_FULL_WIDTH)
+    if (tmp->GetWidth() > BM_FULL_WIDTH * m_scale)
     {
       if (tmp->BreakUp())
       {
