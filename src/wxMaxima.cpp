@@ -97,13 +97,13 @@ void wxMaxima::ConfigChanged()
   switch (showLength)
   {
     case 0:
-      m_maxOutputCellsPerCommand = 300;
-      break;
-    case 1:
       m_maxOutputCellsPerCommand = 600;
       break;
-    case 2:
+    case 1:
       m_maxOutputCellsPerCommand = 1200;
+      break;
+    case 2:
+      m_maxOutputCellsPerCommand = 5000;
       break;
     case 3:
       m_maxOutputCellsPerCommand = -1;
@@ -723,15 +723,13 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
         newChars = wxString(buffer, *wxConvCurrent);
 #endif
         if (IsPaneDisplayed(menu_pane_xmlInspector))
-        {
           m_xmlInspector->Add(newChars);
-        }
 
         // This way we can avoid searching the whole string for a
         // ending tag if we have received only a few bytes of the
         // data between 2 tags
         if(m_currentOutput != wxEmptyString)
-          m_currentOutputEnd = m_currentOutput.Right(20) + newChars;
+          m_currentOutputEnd = m_currentOutput.Right(MIN(30,m_currentOutput.Length())) + newChars;
         else
           m_currentOutputEnd = wxEmptyString;
         
@@ -745,18 +743,20 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
           m_dispReadOut = true;
         }
 
-        size_t length_old = m_currentOutput.Length() + 1;
+        size_t length_old = -1;
 
         while (length_old != m_currentOutput.Length())
         {
 
           length_old = m_currentOutput.Length();
 
-          // This function determines the port maxima is running uü from  the text
-          // maxima outputs at startup and discards this piece of text afterwards.
-          if (m_first && m_currentOutput.Find(m_firstPrompt) > -1)
+          if (!m_first)
+            // Handle text that isn't XML output: Mostly Error messages or warnings.
+            ReadMiscText(m_currentOutput);
+          else
+            // This function determines the port maxima is running on from  the text
+            // maxima outputs at startup. This piece of text is afterwards discarded.
             ReadFirstPrompt(m_currentOutput);
-
 
           // The next function calls each extract and remove one type of information from
           // the data string we got - but only do so after the piece of information it
@@ -766,18 +766,8 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
           // Handle XML text: Status bar updates
           ReadStatusBar(m_currentOutput);
 
-          // Handle text that isn't XML output: Mostly Error messages or warnings.
-          if (!m_first)
-            ReadMiscText(m_currentOutput);
-
           // Handle XML text: All 1D and 2D maths for example.
           ReadMath(m_currentOutput);
-
-          // Handle eventual error messages
-          if (!m_first)
-          {
-            ReadMiscText(m_currentOutput);
-          }
 
           // The prompt that tells us that maxima awaits the next command
           ReadPrompt(m_currentOutput);
@@ -1116,9 +1106,13 @@ void wxMaxima::CleanUp()
 
 void wxMaxima::ReadFirstPrompt(wxString &data)
 {
+  int end;
+  if((end = m_currentOutput.Find(m_firstPrompt)) == wxNOT_FOUND)
+    return;
+  
 #if defined(__WXMSW__)
   int start = 0;
-  start = data.Find(wxT("Maxima"));
+  start = data.Find(wxT("Maxima "));
   if (start == wxNOT_FOUND)
     start = 0;
   FirstOutput(wxT("wxMaxima ")
@@ -1143,7 +1137,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   StatusMaximaBusy(waiting);
   m_closing = false; // when restarting maxima this is temporarily true
 
-  data = wxEmptyString;
+  data = data.Right(data.Length() - end - m_firstPrompt.Length());
 
   if (m_console->m_evaluationQueue.Empty())
   {
@@ -1197,13 +1191,13 @@ void wxMaxima::ReadMiscText(wxString &data)
   if (data.IsEmpty())
     return;
 
+  // Extract all text that isn't a xml tag known to us.
   int miscTextLen;
   wxString miscText = data.Left(miscTextLen = GetMiscTextEnd(data));
+  if(miscTextLen == 0)
+    return;
   data = data.Right(data.Length() - miscTextLen);
 
-  if(miscText == wxEmptyString)
-    return;
-  
   // A version of the text where each line begins with non-whitespace and whitespace
   // characters are merged.
   wxString mergedWhitespace = wxT("\n");
@@ -1312,11 +1306,12 @@ void wxMaxima::ReadMath(wxString &data)
 
   // Append everything from the "beginning of math" to the "end of math" marker
   // to the console and remove it from the data we got.
-  wxString mth = wxT("</mth>");
+  wxString mthend = wxT("</mth>");
   int end;
-  if ((end = FindTagEnd(data,mth)) != wxNOT_FOUND)
+  if ((end = FindTagEnd(data,mthend)) != wxNOT_FOUND)
   {
-    wxString o = data.Left(end + mth.Length());
+    wxString o = data.Left(end + mthend.Length());
+    data = data.Right(data.Length()-end-mthend.Length());
     o.Trim(true);
     o.Trim(false);
 
@@ -1331,7 +1326,6 @@ void wxMaxima::ReadMath(wxString &data)
         ConsoleAppend(o, MC_TYPE_DEFAULT);
       }
     }
-    data = data.Right(data.Length()-end-mth.Length());
   }
 }
 
@@ -1382,6 +1376,8 @@ void wxMaxima::ReadPrompt(wxString &data)
   //wxASSERT_MSG(begin != wxNOT_FOUND,_("bug: Input prompt end detected but didn't detect an input prompt begin!"));
 
   wxString o = data.SubString(m_promptPrefix.Length(), end - 1);
+  // Remove the prompt we will process from the string.
+  data = data.Right(data.Length()-end-m_promptSuffix.Length());
 
   // Input prompts have a length > 0 and end in a number followed by a ")".
   // They also begin with a "(". Questions (hopefully)
@@ -1507,9 +1503,6 @@ void wxMaxima::ReadPrompt(wxString &data)
         m_maximaStdoutPollTimer.Stop();
     }
   }
-
-  // Remove the prompt we have processed from the string.
-  data = data.Right(data.Length()-end-m_promptSuffix.Length());
 }
 
 void wxMaxima::SetCWD(wxString file)
