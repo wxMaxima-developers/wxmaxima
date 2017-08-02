@@ -29,11 +29,10 @@
 #include <wx/wfstream.h>
 #include "Configuration.h"
 #include "GroupCell.h"
+#define BM_FULL_WIDTH 10000
 
 #include <wx/config.h>
 #include <wx/clipbrd.h>
-
-#define BM_FULL_WIDTH 1000
 
 Svgout::Svgout(Configuration **configuration, wxString filename, int scale)
 {
@@ -65,7 +64,7 @@ bool Svgout::SetData(MathCell *tree, long int maxSize)
 
 bool Svgout::Layout(long int maxSize)
 {
-  m_dc = new wxSVGFileDC(m_filename);
+  m_dc = new wxSVGFileDC(m_filename,3200,2000,720);
 
   *m_configuration = new Configuration(*m_dc);
   (*m_configuration)->SetClientWidth(BM_FULL_WIDTH);
@@ -98,6 +97,10 @@ bool Svgout::Layout(long int maxSize)
   int width, height;
   GetMaxPoint(&width, &height);
 
+  wxDELETE(m_dc);
+  m_dc = new wxSVGFileDC(m_filename, width, height, 720);
+  (*m_configuration)->SetContext(*m_dc);
+  
   Draw();
   wxDELETE(*m_configuration);
   wxDELETE(m_dc);
