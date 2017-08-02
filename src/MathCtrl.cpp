@@ -4386,6 +4386,8 @@ void MathCtrl::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std
  */
 bool MathCtrl::ExportToHTML(wxString file)
 {
+  // Show a busy cursor as long as we export.
+  wxBusyCursor crs;
 
   MathCell::ClipToDrawRegion(false);
   // The path to the image directory as seen from the html directory
@@ -4436,10 +4438,6 @@ bool MathCtrl::ExportToHTML(wxString file)
     MathCell::ClipToDrawRegion(true);
     return false;
   }
-
-
-  // Show a busy cursor as long as we export.
-  wxBusyCursor crs;
 
   wxTextOutputStream css(cssfile);
 
@@ -5482,6 +5480,9 @@ GroupCell *MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
  */
 bool MathCtrl::ExportToTeX(wxString file)
 {
+  // Show a busy cursor as long as we export.
+  wxBusyCursor crs;
+
   wxString imgDir;
   wxString path, filename, ext;
   GroupCell *tmp = m_tree;
@@ -5495,9 +5496,6 @@ bool MathCtrl::ExportToTeX(wxString file)
     return false;
 
   wxTextOutputStream output(outfile);
-
-  // Show a busy cursor as long as we export.
-  wxBusyCursor crs;
 
   wxString documentclass = wxT("article");
   wxConfig::Get()->Read(wxT("documentclass"), &documentclass);
@@ -5688,6 +5686,9 @@ void MathCtrl::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const 
 
 bool MathCtrl::ExportToMAC(wxString file)
 {
+  // Show a busy cursor as long as we export or save.
+  wxBusyCursor crs;
+
   bool wxm;
 
   if (file.Right(4) == wxT(".wxm"))
@@ -5705,9 +5706,6 @@ bool MathCtrl::ExportToMAC(wxString file)
   }
   else if (!backupfile.Create())
     return false;
-
-  // Show a busy cursor as long as we export or save.
-  wxBusyCursor crs;
 
   if (wxm)
   {

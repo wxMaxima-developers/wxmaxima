@@ -35,7 +35,7 @@ class Svgout
 public:
   /*! The constructor.
   */
-  Svgout(Configuration **configuration, wxString filename = wxEmptyString, int scale = 1);
+  Svgout(Configuration **configuration, wxString filename = wxEmptyString, int scale = 10);
 
   ~Svgout();
   

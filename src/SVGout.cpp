@@ -29,8 +29,6 @@
 #include <wx/wfstream.h>
 #include "Configuration.h"
 #include "GroupCell.h"
-#define BM_FULL_WIDTH 10000
-
 #include <wx/config.h>
 #include <wx/clipbrd.h>
 
@@ -64,10 +62,12 @@ bool Svgout::SetData(MathCell *tree, long int maxSize)
 
 bool Svgout::Layout(long int maxSize)
 {
-  m_dc = new wxSVGFileDC(m_filename,3200,2000,720);
+  m_dc = new wxSVGFileDC(m_filename,3200,2000,72*m_scale);
 
   *m_configuration = new Configuration(*m_dc);
-  (*m_configuration)->SetClientWidth(BM_FULL_WIDTH);
+  (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
+  (*m_configuration)->SetClientWidth(500*m_scale);
+  (*m_configuration)->SetScale(m_scale);
   (*m_configuration)->SetZoomFactor(1);
   // The last time I tried it the vertical positioning of the elements
   // of a big unicode parenthesis wasn't accurate enough in svg to be
@@ -98,7 +98,7 @@ bool Svgout::Layout(long int maxSize)
   GetMaxPoint(&width, &height);
 
   wxDELETE(m_dc);
-  m_dc = new wxSVGFileDC(m_filename, width, height, 720);
+  m_dc = new wxSVGFileDC(m_filename, width, height, 72*m_scale);
   (*m_configuration)->SetContext(*m_dc);
   
   Draw();
@@ -141,8 +141,8 @@ void Svgout::RecalculateWidths()
 
   MathCell *tmp = m_tree;
 
-  (*m_configuration)->SetClientWidth(BM_FULL_WIDTH);
-  (*m_configuration)->SetClientHeight(BM_FULL_WIDTH);
+  (*m_configuration)->SetClientWidth(500*m_scale);
+  (*m_configuration)->SetClientHeight(500*m_scale);
 
   while (tmp != NULL)
   {
@@ -153,7 +153,7 @@ void Svgout::RecalculateWidths()
 
 void Svgout::BreakLines()
 {
-  int fullWidth = BM_FULL_WIDTH;
+  int fullWidth = 500*m_scale;
   int currentWidth = 0;
 
   MathCell *tmp = m_tree;
@@ -315,7 +315,7 @@ void Svgout::BreakUpCells()
 
   while (tmp != NULL)
   {
-    if (tmp->GetWidth() > BM_FULL_WIDTH)
+    if (tmp->GetWidth() > 500*m_scale)
     {
       if (tmp->BreakUp())
       {

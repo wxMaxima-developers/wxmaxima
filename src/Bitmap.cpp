@@ -65,6 +65,7 @@ bool Bitmap::Layout(long int maxSize)
   m_dc->SelectObject(m_bmp);
   m_dc->SetUserScale(m_scale, m_scale);
   *m_configuration = new Configuration(*m_dc);
+  (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
   (*m_configuration)->SetScale(m_scale);
   (*m_configuration)->SetZoomFactor(1);
   (*m_configuration)->SetClientWidth(BM_FULL_WIDTH * m_scale);
