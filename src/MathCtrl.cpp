@@ -315,6 +315,7 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
 
   m_configuration->SetContext(dcm);
   wxGCDC antiAliassingDC(dcm);
+  PrepareDC(antiAliassingDC);
   m_configuration->SetAntialiassingDC(antiAliassingDC);
   m_configuration->SetBounds(top, bottom);
   int fontsize = m_configuration->GetDefaultFontSize(); // apply zoomfactor to defaultfontsize
