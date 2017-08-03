@@ -317,6 +317,9 @@ protected:
   //! Is called when the path to the maxima binary was changed.
   void MaximaLocationChanged(wxCommandEvent &unused);
 
+  //! Is called when the path to the maxima binary was changed.
+  void UsepngcairoChanged(wxCommandEvent &event);
+
   //! Is called when the configuration dialog is closed.
   void OnClose(wxCloseEvent &event);
 
