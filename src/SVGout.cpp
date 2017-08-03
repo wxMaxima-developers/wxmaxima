@@ -41,9 +41,8 @@ Svgout::Svgout(Configuration **configuration, wxString filename, int scale)
   m_svgFormat = wxDataFormat(wxT("image/svg+xml"));
 
   if (filename == wxEmptyString)
-  {
     filename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
-  }
+
   m_filename = filename;
 }
 
@@ -62,8 +61,11 @@ bool Svgout::SetData(MathCell *tree, long int maxSize)
 
 bool Svgout::Layout(long int maxSize)
 {
-  m_dc = new wxSVGFileDC(m_filename,3200,2000,72*m_scale);
-
+  wxString tempfilename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
+  m_dc = new wxSVGFileDC(tempfilename,3200,2000,100*m_scale);
+#if wxCHECK_VERSION(3, 1, 0)
+  m_dc->SetBitmapHandler(wxSVGBitmapEmbedHandler());
+#endif
   *m_configuration = new Configuration(*m_dc);
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
   (*m_configuration)->SetClientWidth(500*m_scale);
@@ -97,8 +99,13 @@ bool Svgout::Layout(long int maxSize)
   int width, height;
   GetMaxPoint(&width, &height);
 
+  // Let's switch to a DC of the right size for our object.
   wxDELETE(m_dc);
-  m_dc = new wxSVGFileDC(m_filename, width, height, 72*m_scale);
+  wxRemoveFile(tempfilename);
+  m_dc = new wxSVGFileDC(m_filename, width, height, 100*m_scale);
+#if wxCHECK_VERSION(3, 1, 0)
+  m_dc->SetBitmapHandler(wxSVGBitmapEmbedHandler());
+#endif
   (*m_configuration)->SetContext(*m_dc);
   
   Draw();

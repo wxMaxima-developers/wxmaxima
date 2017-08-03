@@ -2717,7 +2717,32 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     event.RequestMore();
     return;
   }
+
+  // Update the info if maxima is busy
   UpdateStatusMaximaBusy();
+
+  // Update the info how long the evaluation queue is,
+
+  if(m_updateEvaluationQueueLengthDisplay)
+  {
+    if ((m_EvaluationQueueLength > 0) || (m_commandsLeftInCurrentCell >= 1))
+    {
+      wxString statusLine = wxString::Format(_("%i cells in evaluation queue"),
+                                             m_EvaluationQueueLength);
+      if (m_commandsLeftInCurrentCell > 1)
+        statusLine += wxString::Format(_("; %i commands left in the current cell"),
+                                       m_commandsLeftInCurrentCell - 1);
+      SetStatusText(statusLine, 0);
+    }
+    else
+    {
+      if (m_first)
+        SetStatusText(_("Welcome to wxMaxima"), 0);
+      else
+        SetStatusText(_("Maxima is ready for input."), 0);
+    }
+  }
+  
   bool screenHasChanged = m_console->RedrawRequested();
   
   // Incremental search is done from the idle task. This means that we don't forcefully

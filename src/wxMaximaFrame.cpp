@@ -41,6 +41,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                              long style) :
         wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
 {
+  m_updateEvaluationQueueLengthDisplay = true;
   m_recentDocumentsMenu = NULL;
   m_userSymbols = NULL;
   m_EvaluationQueueLength = 0;
@@ -95,22 +96,9 @@ void wxMaximaFrame::EvaluationQueueLength(int length, int numberOfCommands)
 {
   if ((length != m_EvaluationQueueLength) || (m_commandsLeftInCurrentCell != numberOfCommands))
   {
+    m_updateEvaluationQueueLengthDisplay = true;
     m_commandsLeftInCurrentCell = numberOfCommands;
     m_EvaluationQueueLength = length;
-    if ((length > 0) || (numberOfCommands >= 1))
-    {
-      wxString statusLine = wxString::Format(_("%i cells in evaluation queue"), length);
-      if (numberOfCommands > 1)
-        statusLine += wxString::Format(_("; %i commands left in the current cell"), numberOfCommands - 1);
-      SetStatusText(statusLine, 0);
-    }
-    else
-    {
-      if (m_first)
-        SetStatusText(_("Welcome to wxMaxima"), 0);
-      else
-        SetStatusText(_("Maxima is ready for input."), 0);
-    }
   }
 }
 
@@ -252,7 +240,6 @@ void wxMaximaFrame::set_properties()
 
   m_console->SetBackgroundColour(wxColour(wxT("WHITE")));
   m_console->SetMinSize(wxSize(100, 100));
-  SetStatusText(_("Welcome to wxMaxima"), 0);
 }
 
 void wxMaximaFrame::do_layout()

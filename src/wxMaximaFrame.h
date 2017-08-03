@@ -543,13 +543,8 @@ private:
   //! A button per user defined symbol
   std::list<wxPanel *> m_userSymbolButtons;
   wxGridSizer *m_userSymbolsSizer;
-  //! The current length of the evaluation queue of commands we still need to send to maxima
-  int m_EvaluationQueueLength;
-  //! The number of commands left in the current of the evaluation queue item
-  int m_commandsLeftInCurrentCell;
   //! True=We are currently saving.
   bool m_StatusSaving;
-
   void set_properties();
 
   void do_layout();
@@ -594,6 +589,12 @@ private:
 protected:
   //! Update the "user symbols" portion of the symbols pane.
   void UpdateUserSymbols();
+  //! Do we need to update the display showing the evaluation queue length?
+  bool m_updateEvaluationQueueLengthDisplay;
+  //! The current length of the evaluation queue of commands we still need to send to maxima
+  int m_EvaluationQueueLength;
+  //! The number of commands left in the current of the evaluation queue item
+  int m_commandsLeftInCurrentCell;
 
   //! Do we expect the 1st prompt from maxima to appear?
   bool m_first;
