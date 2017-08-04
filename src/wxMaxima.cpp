@@ -2718,11 +2718,10 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     return;
   }
 
-  // Update the info if maxima is busy
+  // Update the info what maxima is currently doing
   UpdateStatusMaximaBusy();
 
-  // Update the info how long the evaluation queue is,
-
+  // Update the info how long the evaluation queue is
   if(m_updateEvaluationQueueLengthDisplay)
   {
     if ((m_EvaluationQueueLength > 0) || (m_commandsLeftInCurrentCell >= 1))
@@ -2741,6 +2740,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       else
         SetStatusText(_("Maxima is ready for input."), 0);
     }
+    m_updateEvaluationQueueLengthDisplay = false;
   }
   
   bool screenHasChanged = m_console->RedrawRequested();
