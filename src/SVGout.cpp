@@ -64,7 +64,7 @@ bool Svgout::Layout(long int maxSize)
   wxString tempfilename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
   m_dc = new wxSVGFileDC(tempfilename,3200,2000,100*m_scale);
 #if wxCHECK_VERSION(3, 1, 0)
-  m_dc->SetBitmapHandler(wxSVGBitmapEmbedHandler());
+  m_dc->SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
   *m_configuration = new Configuration(*m_dc);
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
@@ -104,7 +104,7 @@ bool Svgout::Layout(long int maxSize)
   wxRemoveFile(tempfilename);
   m_dc = new wxSVGFileDC(m_filename, width, height, 100*m_scale);
 #if wxCHECK_VERSION(3, 1, 0)
-  m_dc->SetBitmapHandler(wxSVGBitmapEmbedHandler());
+  m_dc->SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
   (*m_configuration)->SetContext(*m_dc);
   
