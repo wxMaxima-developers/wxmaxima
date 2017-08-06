@@ -2017,7 +2017,7 @@ msgstr "Fataler Fehler"
 #: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2085
 #, c-format
 msgid "Figure %d:"
-msgstr "Figure %d:"
+msgstr "Abbildung %d:"
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:233
 msgid "File"
@@ -2061,7 +2061,7 @@ msgstr "Suchen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:486
 msgid "Find\tCtrl+F"
-msgstr "Suchen und Ersetzen\tCtrl+F"
+msgstr "Suchen\tCtrl+F"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:763
 msgid "Find &Limit..."
@@ -2524,7 +2524,7 @@ msgid ""
 "file isn't saved automatically at all."
 msgstr ""
 "Wenn mehr als diese Anzahl an Minuten seit dem letzen Speichern vergangen "
-"sind, die Datei durch Öffnen oder manuelles Speichern einen Namen bsitzt und "
+"sind, die Datei durch Öffnen oder manuelles Speichern einen Namen besitzt und "
 "die Tastatur seit > 10 Sekunden nicht verwendet wurde, wird die Datei "
 "zwischengespeichert. Ist diese Zahl stattdessen Null, deaktiviert dies das "
 "automatische Speichern."
@@ -2545,7 +2545,7 @@ msgid ""
 msgstr ""
 "Bei Eingabe eines Operators (+, *, /, ^ oder =) als erstes Symbol einer "
 "Zelle\n"
-"wird automatisch ein % eingeführt, so dass sich das Programm wie ein\n"
+"wird automatisch ein % eingefügt, so dass sich das Programm wie ein\n"
 "graphischer Taschenrechner verhält. Diese Funktion kann über die "
 "Konfiguration\n"
 "(erreichbar über 'Bearbeiten->Einstellungen' abgeschaltet werden."
@@ -2869,10 +2869,10 @@ msgid ""
 "that a few special characters like the "
 msgstr ""
 "Es ist möglich, mit wxMaxima wiederverwendbare Bibliotheken zu schreiben, "
-"die über die load()-Funktion in maxima eingelesen werden können. Das "
+"die über die load()-Funktion in Maxima eingelesen werden können. Das "
 "einzige, was hierfür zu tun ist, ist, das Arbeitsblatt als .mac-Datei zu "
-"exportieren oder als .wxm-Date zu schreiben. Es ist allerdings zu beachten, "
-"dass Sonderzeichen wie das \"ungleich\"-Symbol, anstelle dessen maxima ein "
+"exportieren oder als .wxm-Datei zu schreiben. Es ist allerdings zu beachten, "
+"dass Sonderzeichen wie das \"ungleich\"-Symbol, anstelle dessen Maxima ein "
 "\"#\" will, vom load()-Befehl nicht automatisch in Maxima-Befehle "
 "konvertiert werden."
 
@@ -2948,7 +2948,7 @@ msgstr "Laplace &Transformation ..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1570
 msgid "Leads to"
-msgstr "Fürt zu"
+msgstr "Führt zu"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:788
 msgid "Least Common Multiple..."
@@ -2972,9 +2972,9 @@ msgid ""
 "directory it runs in, if they are placed in the user directory. This "
 "directory can be found by typing maxima_userdir"
 msgstr ""
-"Auf Bibliotheken, die im Benutzerverzeichnis von maxima abgelegt sind, kann "
-"man jedem Verzeichnis aus zugreifen. Wo sich das Benutzerverzeichnis liegt, "
-"zeigt maxima, wenn man den Befehl maxima_userdir; eingibt. "
+"Auf Bibliotheken, die im Benutzerverzeichnis von Maxima abgelegt sind, kann "
+"man von jedem Verzeichnis aus zugreifen. Wo das Benutzerverzeichnis liegt, "
+"zeigt Maxima, wenn man den Befehl maxima_userdir; eingibt. "
 
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:68
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4881
@@ -3024,7 +3024,7 @@ msgstr "Langer Pfeil nach rechts"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4138
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5891
 msgid "Lower bound:"
-msgstr "untere Schranke:"
+msgstr "Untere Schranke:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:747
 msgid "Ma&p to Matrix..."
@@ -3064,7 +3064,7 @@ msgstr "Eine Funktion auf Elemente einer Matrix anwenden"
 
 #: /home/gunter/src/wxmaxima/src/FindReplacePane.cpp:113
 msgid "Match Case"
-msgstr "Groß-/ und Kleinschreibung beachten"
+msgstr "Groß-/Kleinschreibung beachten"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:545
 msgid "Match parenthesis in text controls"
@@ -3088,7 +3088,7 @@ msgid ""
 "fonts that don't match the rest of the document."
 msgstr ""
 "MathJaX kann hochqualitative skalierbare Formeln darstellen, erlaubt, diese "
-"in andere Programme zu kopieren und untestützt Barrierefreiheit. Dafür "
+"in andere Programme zu kopieren und unterstützt Barrierefreiheit. Dafür "
 "benötigt es JavaScript und Zeit.\n"
 "MathML ist deutlich schneller, wenn der Browser es unterstützt, bietet aber "
 "in vielen Implementierungen nicht die notwendigen Features.\n"
@@ -3103,11 +3103,11 @@ msgstr "MathML + MathJaX, wo nötig."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:842
 msgid "MathML as HTML"
-msgstr ""
+msgstr "MathML als HTML"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:838
 msgid "MathML description"
-msgstr ""
+msgstr "MathML Beschreibung"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:322
 msgid "Mathematical Symbols"
@@ -3237,7 +3237,7 @@ msgstr ""
 "beispielsweise als 1/10 eingegeben werden), IEEE-Fließkommazahlen (0.2 und "
 "ähnliche) und Fließkommazahlen einer frei wählbaren Länge (1b-1). Da diese "
 "Fließkommazahlen als Binärzahlen abgebildet werden, ist dabei zu beachten, "
-"dass es bei einigen Zahlen (ein Beispiel wäre 0,1 keine Möglichkeit gibt, "
+"dass es bei einigen Zahlen (ein Beispiel wäre 0,1) keine Möglichkeit gibt, "
 "sie exakt in einer Fließkommazahl abzubilden. Falls Maxima Fließkommazahlen "
 "verwenden soll, muss es daher in diesem Fall stattdessen etwas wie "
 "3602879701896397/36028797018963968 statt 0.1 verwenden, was einen "
@@ -3271,7 +3271,7 @@ msgid ""
 "    %[1];\n"
 "    result_b:b=at(b,%);"
 msgstr ""
-"Maxima stellt die \"at\"-Function bereit, die es erlaut, beliebige Variablen "
+"Maxima stellt die \"at\"-Function bereit, die es erlaubt, beliebige Variablen "
 "aus einer Resultatliste zu extrahieren:\n"
 "\n"
 "    g1:a*x+y=0;\n"
@@ -3324,7 +3324,7 @@ msgstr ""
 "das das Arbeitsblatt anzeigt, werden als separate Prozesse gestartet. Falls "
 "Maxima abstürzt bleibt daher das Arbeitsblatt intakt. Die Kommunikation "
 "erfolgt dabei über ein lokales Netzwerk. Dieses Mal konnte kein "
-"Netzwerksockel erstellt werden, was heißen kann, dass die Firewall dieses "
+"Netzwerksocket erstellt werden, was heißen kann, dass die Firewall dieses "
 "Rechners so eingestellt ist, dass sie nicht nur Verbindungen von außerhalb "
 "des Rechners, sondern auch innerhalb des Rechners unterbindet."
 
@@ -3626,7 +3626,7 @@ msgstr "Alter Wert:"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4803
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4821
 msgid "Old variable:"
-msgstr "Variable:"
+msgstr "Alte Variable:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1491
 msgid "Omega"
@@ -3648,8 +3648,8 @@ msgstr ""
 "Maxima kommuniziert mit wxMaxima über ein lokales Netzwerk. Falls etwas "
 "komplett schief geht, kann der Lisp-Interpreter Daten über den stderr-Strom "
 "des Systems senden. Zusätzlich stellt das System einen Datenstrom namens "
-"stderr bereit, über den maxima seine Begrüßung ausgeben kann. Falls das "
-"Häkchen bei dieser Option gesetzt ist, wird sie auf den Bildschirm "
+"stderr bereit, über den Maxima seine Begrüßung ausgeben kann. Falls das "
+"Häkchen bei dieser Option gesetzt ist, wird sie auf dem Bildschirm "
 "ausgegeben."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5483
@@ -3779,7 +3779,7 @@ msgid ""
 "Found unknown XML Tag name "
 msgstr ""
 "Teile des Dokuments werden nicht korrekt geladen:\n"
-"Unbekanntes XML-Tag gefunden mit dem Name "
+"Unbekanntes XML-Tag gefunden mit dem Namen "
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1156
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1175
@@ -3932,9 +3932,9 @@ msgid ""
 "packages and from functions that are defined in the current file."
 msgstr ""
 "Strg+Leertaste oder Strg+Tabulator startet eine Auto-Vervollständigungs-"
-"Funktion, die nicht über in Maxima eingebaute Funktionen und Variablen "
+"Funktion, die nicht nur über in Maxima eingebaute Funktionen und Variablen "
 "informiert ist, sondern auch die von externen Paketen nachgeladenen Befehle "
-"in Erfahrung bringt sowie die im aktuellen Arbeitsblatt definierten."
+"in Erfahrung bringt sowie die im aktuellen Arbeitsblatt definierten Funktionen."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:593
 msgid "Previous Command\tAlt+Up"
@@ -4105,7 +4105,7 @@ msgstr "Russisch"
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:607
 #, fuzzy
 msgid "SVG graphics"
-msgstr " (Bild) "
+msgstr "SVG Grafik"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5496
 msgid "Sample 1:"
@@ -4243,8 +4243,8 @@ msgid ""
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
 "\" in the configuration dialogue should fix it."
 msgstr ""
-"Irgend etwas stimmt mit einem Zeichensatz nicht. Ein Installieren von http://"
-"www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html mit "
+"Irgend etwas stimmt mit einem Zeichensatz nicht. Ein Installieren von "
+"http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html mit "
 "darauffolgendem Anklicken von \"Benutze jsMath-Zeichensätze\" in der "
 "Konfiguration sollte das Problem beheben."
 
@@ -4304,7 +4304,7 @@ msgid ""
 "up a menu with convenient functions that will operate on the selection."
 msgstr ""
 "Markieren Sie im Ausgabebereich der Zelle einen Bereich, dann erhalten mit "
-"einem Rechtsklick ein Kontextmenü, dass Funktionen zeigt, die auf die "
+"einem Rechtsklick ein Kontextmenü, das Funktionen zeigt, die auf die "
 "Auswahl angewendet werden können."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:906
@@ -4653,7 +4653,7 @@ msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
 msgstr ""
-"Startet oder Stoppt die aktuell ausgewählte Animation, die mit einem der "
+"Startet oder stoppt die aktuell ausgewählte Animation, die mit einem der "
 "with_slider-Kommandos erstellt wurde. "
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:283
@@ -4671,7 +4671,7 @@ msgstr "Maxima wird gestartet ..."
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:309
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:915
 msgid "Starting server failed"
-msgstr "Das Starten des Server ist fehlgeschlagen"
+msgstr "Das Starten des Servers ist fehlgeschlagen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:896
 #, c-format
@@ -4781,7 +4781,7 @@ msgstr "Taylorreihe:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:604
 msgid "TeX, interpreted by MathJaX"
-msgstr "TeX, interpretiert vom MathJaX"
+msgstr "TeX, interpretiert von MathJaX"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4637
 msgid "Tellrat"
@@ -4891,6 +4891,9 @@ msgid ""
 "the result of gnuplot not being able to write the image or not being able to "
 "understand what maxima wanted to plot."
 msgstr ""
+"Das Bild konnte nicht angzeigt werden. Es könnte defekt sein, im falschen "
+"Format oder die Ursache könnte auch Gnuplot sein - entweder konnte es das "
+"Bild nicht speichern oder Gnuplot hat nicht verstanden, was Maxima plotten wollte."
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:43
 msgid "The key combination Shift+Space results in a non-breakable space."
@@ -4998,7 +5001,7 @@ msgid ""
 "If you find a way how to reproduce this problem please file a bugreport "
 "against wxMaxima."
 msgstr ""
-"Hier fehlte in der Ausgabe von maxima oder in der .wxmx-Datei ein Element. "
+"Hier fehlte in der Ausgabe von Maxima oder in der .wxmx-Datei ein Element. "
 "Wenn dies reproduzierbar ist, bittet das wxMaxima-Team um einen Bug Report "
 "für wxMaxima."
 
@@ -5096,7 +5099,7 @@ msgid ""
 msgstr ""
 "Um in Polarkoordinaten zu plotten, können Sie im Eingabefeld 'Optionen' des "
 "Dialogs '2D Plotten' die Option 'set polar' auswählen. Entsprechend können "
-"Sie im Dialog '3D Plotten' zylindrische und sperische Koordinaten für den "
+"Sie im Dialog '3D Plotten' zylindrische und sphärische Koordinaten für den "
 "Plot auswählen."
 
 #: /home/gunter/src/wxmaxima/data/tips.txt:21
@@ -5159,7 +5162,7 @@ msgstr "Ganzer Bildschirm ein-/ausschalten"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:910
 msgid "Toggle numeric output"
-msgstr "Numerisches Berechnen ein/aus"
+msgstr "Numerische Ausgabe ein/aus"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:194
 msgid "Toggle the visibility of code cells"
@@ -5211,7 +5214,7 @@ msgstr "Gestalt:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:592
 msgid "URL MathJaX.js lies at:"
-msgstr "URL von MathJaX.js"
+msgstr "URL von MathJaX.js:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:673
 msgid "Ukrainian"
@@ -5401,7 +5404,7 @@ msgstr "Variablen:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1360
 msgid "Variance..."
-msgstr "Varianz"
+msgstr "Varianz..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:545
 msgid "View"
@@ -5439,7 +5442,7 @@ msgid ""
 "(*.wxm)|*.wxm"
 msgstr ""
 "Gesamtes Dokument (*.wxmx)|*.wxmx|Die Eingabezellen, lesbar von load() in "
-"maxima>5.38 (*.wxm)|*.wxm"
+"Maxima > 5.38 (*.wxm)|*.wxm"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:158
 msgid "Worksheet"
@@ -5572,11 +5575,11 @@ msgstr "Verk&leinern\tCtrl+-"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:528
 msgid "Zoom in 10%"
-msgstr "Zoom in Schritten von 10 %"
+msgstr "Hineinzoomen in Schritten von 10 %"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:530
 msgid "Zoom out 10%"
-msgstr "Zoom in Schritten von 10 %"
+msgstr "Herauszoomen in Schritten von 10 %"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6746
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:236
