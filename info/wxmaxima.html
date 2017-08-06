@@ -1036,25 +1036,6 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
       actually use these fonts the according checkbox has to be enabled in the
       Styles tab of <span style="font-style: italic;">wxMaxima</span>’s
       configuration dialogue. </p>
-    <a name="Outputting-animations-doesn_0027t-work"></a>To <a title="To top of document"
-      href="#Top" accesskey="u" rel="up">top</a>
-    <h3 class="section">3.6 Outputting animations doesn’t work</h3>
-    <p><span style="font-style: italic;">wxMaxima</span> relies on a third-party
-      tool (<a href="https://www.imagemagick.org/">ImageMagick</a>) to convert
-      animations to the animated gif format. This process works only if this
-      package is installed and known to the system (on Windows the path to <span
-        style="font-style: italic;">ImageMagick</span>’s <samp>convert.exe</samp>
-      has to be part of the <var>PATH</var> system variable to make the system
-      find it). </p>
-    <p>Another possible reason of not getting an animated gif is that this image
-      would exceed the format’s (or <span style="font-style: italic;">ImageMagick</span>’s)
-      capabilities: </p>
-    <ul>
-      <li> <samp>.gif</samp> files only allow for a maximum of 256 frames </li>
-      <li> <samp>.gif</samp> files can not exceed 65535x65535 pixels </li>
-      <li> ImageMagick has to have access to enough memory to hold all frames in
-        their uncompressed form. </li>
-    </ul>
     <a name="Plotting-only-shows-an-closed-empty-envelope-with-an-error-message"></a>
     <h3 class="section">3.7 Plotting only shows an closed empty envelope with an
       error message</h3>
