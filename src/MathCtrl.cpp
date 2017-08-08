@@ -697,6 +697,7 @@ void MathCtrl::Recalculate(GroupCell *start, bool force)
   }
 
   AdjustSize();
+  m_configuration->SetForceUpdate(false);
   
 }
 
