@@ -695,10 +695,9 @@ void MathCtrl::Recalculate(GroupCell *start, bool force)
     tmp->Recalculate();
     tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }
-
+  
   AdjustSize();
   m_configuration->SetForceUpdate(false);
-  
 }
 
 /***

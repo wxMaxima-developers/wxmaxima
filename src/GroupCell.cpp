@@ -798,102 +798,110 @@ void GroupCell::Draw(wxPoint point, int fontsize)
       return;
     }
 
-    //
-    // Paint background if we have a text cell
-    //
-    if (m_groupType == GC_TYPE_TEXT && !configuration->GetPrinter())
-    {
-      wxRect rect = GetRect(false);
-      int y = rect.GetY();
+    if (configuration->ShowBrackets())
+      DrawBracket();
+    
+    wxRect rect = GetRect(false);
 
-      if (m_height > 0 && m_width > 0 && y >= 0)
+    if(configuration->GetCellBracketWidth() < rect.GetRight())
+    {
+       
+      if(rect.GetLeft() <= configuration->GetCellBracketWidth())
+        rect.SetLeft(configuration->GetCellBracketWidth());
+      
+      //
+      // Paint background if we have a text cell
+      //
+      if (m_groupType == GC_TYPE_TEXT && !configuration->GetPrinter())
       {
-        wxBrush br(configuration->GetColor(TS_TEXT_BACKGROUND));
-        dc.SetBrush(br);
-        wxPen pen(configuration->GetColor(TS_TEXT_BACKGROUND));
-        dc.SetPen(pen);
-        rect.SetWidth((*m_configuration)->GetCanvasSize().GetWidth());
-        if (InUpdateRegion(rect))
-          dc.DrawRectangle(CropToUpdateRegion(rect));
+        int y = rect.GetY();
+
+        if (m_height > 0 && m_width > 0 && y >= 0)
+        {
+          wxBrush br(configuration->GetColor(TS_TEXT_BACKGROUND));
+          dc.SetBrush(br);
+          wxPen pen(configuration->GetColor(TS_TEXT_BACKGROUND));
+          dc.SetPen(pen);
+          rect.SetWidth((*m_configuration)->GetCanvasSize().GetWidth());
+          if (InUpdateRegion(rect))
+            dc.DrawRectangle(CropToUpdateRegion(rect));
+        }
       }
-    }
-    //
-    // Draw input and output
-    //
-    SetPen();
-    wxPoint in(point);
+      //
+      // Draw input and output
+      //
+      SetPen();
+      wxPoint in(point);
 
-    if ((configuration->ShowCodeCells()) ||
-        (m_groupType != GC_TYPE_CODE))
-    {
-      configuration->Outdated(false);
-      m_inputLabel->DrawList(in, fontsize);
-      if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next)
-        configuration->Outdated((dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges());
-    }
-
-    if (m_output != NULL && !m_hide)
-    {
-      MathCell *tmp = m_output;
-      int drop = tmp->GetMaxDrop();
       if ((configuration->ShowCodeCells()) ||
           (m_groupType != GC_TYPE_CODE))
       {
-        in.y += m_inputLabel->GetMaxDrop();
+        configuration->Outdated(false);
+        m_inputLabel->DrawList(in, fontsize);
+        if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next)
+          configuration->Outdated((dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges());
       }
-      in.y += m_output->GetMaxCenter();
-      m_outputRect.y = in.y - m_output->GetMaxCenter();
-      m_outputRect.x = in.x;
 
-      while (tmp != NULL)
+      if (m_output != NULL && !m_hide)
       {
-
-
-        if (tmp->BreakLineHere())
+        MathCell *tmp = m_output;
+        int drop = tmp->GetMaxDrop();
+        if ((configuration->ShowCodeCells()) ||
+            (m_groupType != GC_TYPE_CODE))
         {
-          if (tmp->m_bigSkip)
-            in.y += MC_LINE_SKIP;
-          
-          if (tmp->m_previousToDraw != NULL &&
-              tmp->GetStyle() == TS_LABEL)
-            in.y += configuration->GetInterEquationSkip();
+          in.y += m_inputLabel->GetMaxDrop();
         }
-        
-        tmp->m_currentPoint = in;
-        
-        if (!tmp->m_isBroken)
+        in.y += m_output->GetMaxCenter();
+        m_outputRect.y = in.y - m_output->GetMaxCenter();
+        m_outputRect.x = in.x;
+
+        while (tmp != NULL)
         {
-          if (tmp->DrawThisCell(in))
-            tmp->Draw(in, MAX(tmp->IsMath() ? m_mathFontSize : m_fontSize, MC_MIN_SIZE));
-          if (tmp->m_nextToDraw != NULL)
+
+
+          if (tmp->BreakLineHere())
           {
-            if (tmp->m_nextToDraw->BreakLineHere())
+            if (tmp->m_bigSkip)
+              in.y += MC_LINE_SKIP;
+          
+            if (tmp->m_previousToDraw != NULL &&
+                tmp->GetStyle() == TS_LABEL)
+              in.y += configuration->GetInterEquationSkip();
+          }
+        
+          tmp->m_currentPoint = in;
+        
+          if (!tmp->m_isBroken)
+          {
+            if (tmp->DrawThisCell(in))
+              tmp->Draw(in, MAX(tmp->IsMath() ? m_mathFontSize : m_fontSize, MC_MIN_SIZE));
+            if (tmp->m_nextToDraw != NULL)
+            {
+              if (tmp->m_nextToDraw->BreakLineHere())
+              {
+                in.x = configuration->GetIndent();
+                in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
+                drop = tmp->m_nextToDraw->GetMaxDrop();
+              }
+              else
+                in.x += (tmp->GetWidth() + MC_CELL_SKIP);
+            }
+
+          }
+          else
+          {
+            if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere())
             {
               in.x = configuration->GetIndent();
               in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
               drop = tmp->m_nextToDraw->GetMaxDrop();
             }
-            else
-              in.x += (tmp->GetWidth() + MC_CELL_SKIP);
           }
-
+          tmp = tmp->m_nextToDraw;
         }
-        else
-        {
-          if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere())
-          {
-            in.x = configuration->GetIndent();
-            in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
-            drop = tmp->m_nextToDraw->GetMaxDrop();
-          }
-        }
-        tmp = tmp->m_nextToDraw;
       }
     }
-
-    configuration->Outdated(false);
-    if (configuration->ShowBrackets())
-      DrawBracket();
+    configuration->Outdated(false); 
     UnsetPen();
   }
 }
