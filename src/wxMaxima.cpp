@@ -6315,10 +6315,10 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
 
               if (it != text.end())
               {++it;++index;}
-              lastC = ' ';
               while(it != text.end())
               {
-                lastC = *it;
+                char last;
+                last = *it;
                 ++it;++index;
 
                 // We reached the end of the string without finding a comment end.
@@ -6326,7 +6326,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
                   return (_("Unterminated comment."));
 
                 // A comment end.
-                if((lastC == wxT('*')) && (*it == wxT('/')))
+                if((last == wxT('*')) && (*it == wxT('/')))
                   break;
               }
             }
