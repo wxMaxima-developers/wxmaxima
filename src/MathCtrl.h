@@ -693,8 +693,21 @@ public:
     \param start Which cell do we need to start the redraw in? Subsequent calls to 
     this function with different cells start the redraw at the upmost of the cells
     that were passed to it.
+
+    The actual redraw is done in the idle loop which means that as many redraw
+    actions are merged as is necessary to allow wxMaxima to process things in
+    real time.
    */
   void RequestRedraw(GroupCell *start = NULL);
+  /*! Request a part of the worksheet to be redrawn
+
+    \param rect The rectangle that is to be requested to be redrawn. If this 
+    function is called multiple times the rectangles are automatically merged.
+
+    The actual redraw is done in the idle loop which means that as many redraw
+    actions are merged as is necessary to allow wxMaxima to process things in
+    real time.
+   */
   void RequestRedraw(wxRect rect);
 
   //! Redraw the window now and mark any pending redraw request as "handled".
