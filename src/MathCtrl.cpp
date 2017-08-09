@@ -233,7 +233,10 @@ void MathCtrl::RedrawIfRequested()
   else
   {
     if(m_rectToRefresh.GetLeft() != -1)
+    {
+      CalcScrolledPosition(m_rectToRefresh.x, m_rectToRefresh.y, &m_rectToRefresh.x, &m_rectToRefresh.y);
       RefreshRect(m_rectToRefresh);
+    }
   }
   m_rectToRefresh = wxRect(-1, -1, -1, -1);
 }
