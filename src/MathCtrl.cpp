@@ -1614,7 +1614,6 @@ void MathCtrl::OnMouseWheel(wxMouseEvent &event)
         tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() - 1) % tmp->Length());
 
       wxRect rect = m_cellPointers.m_selectionStart->GetRect();
-      CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
       RequestRedraw(rect);
 
       if ((m_mainToolBar != NULL) && (m_mainToolBar->m_plotSlider != NULL))
@@ -1779,7 +1778,6 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
           GetActiveCell()->SelectRectText(*m_dc, down, up);
           m_blinkDisplayCaret = true;
           wxRect rect = GetActiveCell()->GetRect();
-          CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
           RequestRedraw(rect);
 
           // Remove the marker that we need to refresh
@@ -3272,7 +3270,6 @@ void MathCtrl::OnCharInActive(wxKeyEvent &event)
         rect = GetActiveCell()->GetRect();
         rect.width = GetVirtualSize().x;
       }
-      CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
       rect.x -= m_configuration->GetCursorWidth() / 2;
       RequestRedraw(rect);
     }
@@ -4001,7 +3998,6 @@ void MathCtrl::StepAnimation(int change)
 
   // Refresh the displayed bitmap
   wxRect rect = m_cellPointers.m_selectionStart->GetRect();
-  CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
   RequestRedraw(rect);
 
   // Set the slider to its new value
@@ -4083,7 +4079,6 @@ void MathCtrl::OnTimer(wxTimerEvent &event)
           rect.SetLeft(0);
           rect.SetRight(virtualsize_x);
         }
-        CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
         rect.SetRight(virtualsize_x);
 
         // Make sure we don't refresh part of the screen twice and make sure that

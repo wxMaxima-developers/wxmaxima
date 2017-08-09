@@ -6813,7 +6813,6 @@ void wxMaxima::SliderEvent(wxScrollEvent &ev)
     cell->SetDisplayedIndex(ev.GetPosition());
 
     wxRect rect = cell->GetRect();
-    m_console->CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
     m_console->RequestRedraw(rect);
   }
 }
