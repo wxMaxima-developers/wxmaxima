@@ -76,7 +76,7 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
   m_pointer_x = -1;
   m_pointer_y = -1;
   m_mouseMotionWas = false;
-
+  m_rectToRefresh = wxRect(-1,-1,-1,-1);
   m_notificationMessage = NULL;
   m_dc = new wxClientDC(this);
   m_configuration = new Configuration(*m_dc, true);
@@ -165,7 +165,30 @@ void MathCtrl::RedrawIfRequested()
         m_tree->CellUnderPointer(tmp);
       
       if ((m_configuration->HideBrackets()) && (oldGroupCellUnderPointer != m_cellPointers.m_groupCellUnderPointer))
-        RequestRedraw();
+      {
+        if(oldGroupCellUnderPointer != NULL)
+        {
+          RequestRedraw(
+            wxRect(
+              0,
+              oldGroupCellUnderPointer->GetRect().GetTop(),
+              m_configuration->GetIndent() - 1,
+              oldGroupCellUnderPointer->GetRect().GetBottom()
+              )
+            );
+        }
+        if(m_cellPointers.m_groupCellUnderPointer != NULL)
+        {
+          RequestRedraw(
+            wxRect(
+              0,
+              m_cellPointers.m_groupCellUnderPointer->GetRect().GetTop(),
+              m_configuration->GetIndent() -1,
+              m_cellPointers.m_groupCellUnderPointer->GetRect().GetBottom()
+              )
+            );
+        }
+      }
     }
   
     if (m_cellPointers.m_groupCellUnderPointer != NULL)
@@ -207,6 +230,12 @@ void MathCtrl::RedrawIfRequested()
     m_redrawRequested = false;
     m_redrawStart = NULL;
   }
+  else
+  {
+    if(m_rectToRefresh.GetLeft() != -1)
+      RefreshRect(m_rectToRefresh);
+  }
+  m_rectToRefresh = wxRect(-1, -1, -1, -1);
 }
 
 void MathCtrl::RequestRedraw(GroupCell *start)
@@ -415,7 +444,7 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
 
     wxRect currentGCRect = m_hCaretPosition->GetRect();
     int caretY = ((int) m_configuration->GetGroupSkip()) / 2 + currentGCRect.GetBottom() + 1;
-    dcm.DrawRectangle(xstart + m_configuration->GetCellBracketWidth(),
+    dcm.DrawRectangle(xstart + m_configuration->GetBaseIndent(),
                       caretY - m_configuration->GetCursorWidth() / 2,
                       MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
   }
@@ -1583,7 +1612,7 @@ void MathCtrl::OnMouseWheel(wxMouseEvent &event)
 
       wxRect rect = m_cellPointers.m_selectionStart->GetRect();
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-      RedrawRect(rect);
+      RequestRedraw(rect);
 
       if ((m_mainToolBar != NULL) && (m_mainToolBar->m_plotSlider != NULL))
       {
@@ -1748,7 +1777,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
           m_blinkDisplayCaret = true;
           wxRect rect = GetActiveCell()->GetRect();
           CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-          RedrawRect(rect);
+          RequestRedraw(rect);
 
           // Remove the marker that we need to refresh
           selectionStartOld = m_cellPointers.m_selectionStart;
@@ -3242,7 +3271,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent &event)
       }
       CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
       rect.x -= m_configuration->GetCursorWidth() / 2;
-      RedrawRect(rect);
+      RequestRedraw(rect);
     }
   }
   
@@ -3970,7 +3999,7 @@ void MathCtrl::StepAnimation(int change)
   // Refresh the displayed bitmap
   wxRect rect = m_cellPointers.m_selectionStart->GetRect();
   CalcScrolledPosition(rect.x, rect.y, &rect.x, &rect.y);
-  RedrawRect(rect);
+  RequestRedraw(rect);
 
   // Set the slider to its new value
   if (m_mainToolBar)
@@ -4056,7 +4085,7 @@ void MathCtrl::OnTimer(wxTimerEvent &event)
 
         // Make sure we don't refresh part of the screen twice and make sure that
         // we periodically update the screen even if we are never idle.
-        RedrawRect(rect);
+        RequestRedraw(rect);
       }
 
       // We only blink the cursor if we have the focus => If we loose the focus
@@ -4068,15 +4097,16 @@ void MathCtrl::OnTimer(wxTimerEvent &event)
   }
 }
 
-void MathCtrl::RedrawRect(wxRect rect)
+void MathCtrl::RequestRedraw(wxRect rect)
 {
-  if (m_redrawStart != NULL)
-  {
-    Refresh();
-    m_redrawStart = NULL;
-  }
-  else
-    RefreshRect(rect);
+  if((m_rectToRefresh.GetLeft() > rect.GetLeft()) || (m_rectToRefresh.GetLeft() < 0))
+    m_rectToRefresh.SetLeft(rect.GetLeft());
+  if(m_rectToRefresh.GetRight() < rect.GetRight())
+    m_rectToRefresh.SetRight(rect.GetRight());
+  if((m_rectToRefresh.GetTop() > rect.GetTop()) || (m_rectToRefresh.GetTop() < 0))
+    m_rectToRefresh.SetTop(rect.GetTop());
+  if(m_rectToRefresh.GetBottom() < rect.GetBottom())
+    m_rectToRefresh.SetBottom(rect.GetBottom());
 }
 
 /***

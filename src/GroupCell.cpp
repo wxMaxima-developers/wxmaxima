@@ -803,11 +803,11 @@ void GroupCell::Draw(wxPoint point, int fontsize)
     
     wxRect rect = GetRect(false);
 
-    if(configuration->GetCellBracketWidth() < rect.GetRight())
+    if(configuration->GetIndent() < rect.GetRight())
     {
        
       if(rect.GetLeft() <= configuration->GetCellBracketWidth())
-        rect.SetLeft(configuration->GetCellBracketWidth());
+        rect.SetLeft(configuration->GetIndent());
       
       //
       // Paint background if we have a text cell

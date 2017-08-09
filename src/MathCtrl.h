@@ -80,7 +80,8 @@ class MathCtrl : public wxScrolledCanvas
 private:
   //! Is our window currently active?
   bool m_windowActive;
-
+  //! The rectangle we need to refresh. -1 as "left" coordinate means: No rectangle
+  wxRect m_rectToRefresh;
   /*! The size of a scroll step
     
     Defines the size of a 
@@ -687,9 +688,6 @@ public:
    */
   void RedrawIfRequested();
 
-  //! Redraw the worksheet region merging this action with an eventual RequestRedraw()
-  void RedrawRect(wxRect rect);
-
   /*! Request the worksheet to be redrawn
 
     \param start Which cell do we need to start the redraw in? Subsequent calls to 
@@ -697,6 +695,7 @@ public:
     that were passed to it.
    */
   void RequestRedraw(GroupCell *start = NULL);
+  void RequestRedraw(wxRect rect);
 
   //! Redraw the window now and mark any pending redraw request as "handled".
   void ForceRedraw()
