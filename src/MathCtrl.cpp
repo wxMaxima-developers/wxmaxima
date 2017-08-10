@@ -2152,6 +2152,7 @@ bool MathCtrl::CopyCells()
 
       if (tmp == end)
         break;
+      
       tmp = dynamic_cast<GroupCell *>(tmp->m_next);
     }
 
@@ -6798,123 +6799,123 @@ void MathCtrl::PasteFromClipboard(bool primary)
     wxTheClipboard->UsePrimarySelection(true);
 
   // Check for cell structure
-  if (wxTheClipboard->Open())
+  if (!wxTheClipboard->Open())
+    return;
+  
+  // Check if the clipboard contains text.
+  if ((wxTheClipboard->IsSupported(wxDF_TEXT)) || (wxTheClipboard->IsSupported(m_wxmFormat)))
   {
-    // Check if the clipboard contains text.
-    if ((wxTheClipboard->IsSupported(wxDF_TEXT)) || (wxTheClipboard->IsSupported(m_wxmFormat)))
+    wxString inputs;
+    if (wxTheClipboard->IsSupported(m_wxmFormat))
     {
-      wxString inputs;
-      if (wxTheClipboard->IsSupported(m_wxmFormat))
+      wxmDataObject data;
+      wxTheClipboard->GetData(data);
+      inputs = wxString::FromUTF8((char *) data.GetData()) + wxT("\0");
+    }
+    else
+    {
+      wxTextDataObject data;
+      wxTheClipboard->GetData(data);
+      inputs = data.GetText();
+    }
+    
+    if (inputs.StartsWith(wxT("/* [wxMaxima: ")))
+    {
+      
+      // Convert the text from the clipboard into an array of lines
+      wxStringTokenizer lines(inputs, wxT("\n"));
+      wxArrayString lines_array;
+      while (lines.HasMoreTokens())
+        lines_array.Add(lines.GetNextToken());
+      
+      // Load the array like we would do with a .wxm file
+      GroupCell *contents = CreateTreeFromWXMCode(&lines_array);
+      
+      // Add the result of the last operation to the worksheet.
+      if (contents)
       {
-        wxmDataObject data;
-        wxTheClipboard->GetData(data);
-        inputs = wxString::FromUTF8((char *) data.GetData()) + wxT("\0");
-      }
-      else
-      {
-        wxTextDataObject data;
-        wxTheClipboard->GetData(data);
-        inputs = data.GetText();
-      }
-
-      if (inputs.StartsWith(wxT("/* [wxMaxima: ")))
-      {
-
-        // Convert the text from the clipboard into an array of lines
-        wxStringTokenizer lines(inputs, wxT("\n"));
-        wxArrayString lines_array;
-        while (lines.HasMoreTokens())
-          lines_array.Add(lines.GetNextToken());
-
-        // Load the array like we would do with a .wxm file
-        GroupCell *contents = CreateTreeFromWXMCode(&lines_array);
-
-        // Add the result of the last operation to the worksheet.
-        if (contents)
+        // ! Tell the rest of this function that we have found cells
+        cells = true;
+        
+        // Search for the last cell we want to paste
+        GroupCell *end = contents;
+        while (end->m_next != NULL)
+          end = dynamic_cast<GroupCell *>(end->m_next);
+        
+        // Now paste the cells
+        if (m_tree == NULL)
         {
-          // ! Tell the rest of this function that we have found cells
-          cells = true;
-
-          // Search for the last cell we want to paste
-          GroupCell *end = contents;
-          while (end->m_next != NULL)
-            end = dynamic_cast<GroupCell *>(end->m_next);
-
-          // Now paste the cells
-          if (m_tree == NULL)
+          // Empty work sheet => We paste cells as the new cells
+          m_tree = contents;
+          m_last = end;
+        }
+        else
+        {
+          if (m_hCaretActive)
           {
-            // Empty work sheet => We paste cells as the new cells
-            m_tree = contents;
-            m_last = end;
-          }
-          else
-          {
-            if (m_hCaretActive)
+            if ((m_cellPointers.m_selectionStart != NULL) && (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP))
+              DeleteSelection();
+            
+            if (m_hCaretPosition == NULL)
             {
-              if ((m_cellPointers.m_selectionStart != NULL) && (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP))
-                DeleteSelection();
-
-              if (m_hCaretPosition == NULL)
+              end->m_next = m_tree;
+              end->m_nextToDraw = m_tree;
+              if (m_tree != NULL)
               {
-                end->m_next = m_tree;
-                end->m_nextToDraw = m_tree;
-                if (m_tree != NULL)
-                {
-                  m_tree->m_previous = end;
-                  m_tree->m_previousToDraw = end;
-                }
-                m_tree = contents;
+                m_tree->m_previous = end;
+                m_tree->m_previousToDraw = end;
               }
-              else
-              {
-                MathCell *next = m_hCaretPosition->m_next;
-                if (m_hCaretPosition->m_next)
-                  m_hCaretPosition->m_next->m_previous = end;
-                if (m_hCaretPosition->m_nextToDraw)
-                  m_hCaretPosition->m_next->m_previousToDraw = end;
-
-                m_hCaretPosition->m_next = contents;
-                m_hCaretPosition->m_nextToDraw = contents;
-                contents->m_previous = m_hCaretPosition;
-                contents->m_previousToDraw = m_hCaretPosition;
-                end->m_next = next;
-                end->m_nextToDraw = next;
-              }
+              m_tree = contents;
             }
             else
             {
-              if (GetActiveCell() != NULL)
-              {
-                MathCell *next = GetActiveCell()->GetParent()->m_next;
-                if (GetActiveCell()->GetParent()->m_next)
-                  GetActiveCell()->GetParent()->m_next->m_previous = end;
-                if (GetActiveCell()->GetParent()->m_nextToDraw)
-                  GetActiveCell()->GetParent()->m_next->m_previousToDraw = end;
-
-                GetActiveCell()->GetParent()->m_next = contents;
-                GetActiveCell()->GetParent()->m_nextToDraw = contents;
-                contents->m_previous = GetActiveCell()->GetParent();
-                contents->m_previousToDraw = GetActiveCell()->GetParent();
-                end->m_next = next;
-                end->m_nextToDraw = next;
-              }
-              else
-                m_last->AppendCell(contents);
+              MathCell *next = m_hCaretPosition->m_next;
+              if (m_hCaretPosition->m_next)
+                m_hCaretPosition->m_next->m_previous = end;
+              if (m_hCaretPosition->m_nextToDraw)
+                m_hCaretPosition->m_next->m_previousToDraw = end;
+              
+              m_hCaretPosition->m_next = contents;
+              m_hCaretPosition->m_nextToDraw = contents;
+              contents->m_previous = m_hCaretPosition;
+              contents->m_previousToDraw = m_hCaretPosition;
+              end->m_next = next;
+              end->m_nextToDraw = next;
             }
           }
-          NumberSections();
-          Recalculate();
-          RequestRedraw();
-          SetHCaret(end);
+          else
+          {
+            if (GetActiveCell() != NULL)
+            {
+              MathCell *next = GetActiveCell()->GetParent()->m_next;
+              if (GetActiveCell()->GetParent()->m_next)
+                GetActiveCell()->GetParent()->m_next->m_previous = end;
+              if (GetActiveCell()->GetParent()->m_nextToDraw)
+                GetActiveCell()->GetParent()->m_next->m_previousToDraw = end;
+              
+              GetActiveCell()->GetParent()->m_next = contents;
+              GetActiveCell()->GetParent()->m_nextToDraw = contents;
+              contents->m_previous = GetActiveCell()->GetParent();
+              contents->m_previousToDraw = GetActiveCell()->GetParent();
+              end->m_next = next;
+              end->m_nextToDraw = next;
+            }
+            else
+              m_last->AppendCell(contents);
+          }
         }
+        NumberSections();
+        Recalculate();
+        RequestRedraw();
+        SetHCaret(end);
       }
     }
-      // Check if the clipboard contains an image.
+    // Check if the clipboard contains an image.
     else if (wxTheClipboard->IsSupported(wxDF_BITMAP))
     {
       OpenHCaret(wxEmptyString, GC_TYPE_IMAGE);
       GroupCell *group = dynamic_cast<GroupCell *>(GetActiveCell()->GetParent());
-
+      
       if (group != NULL)
       {
         wxBitmapDataObject bitmap;
@@ -6923,9 +6924,6 @@ void MathCtrl::PasteFromClipboard(bool primary)
         group->AppendOutput(ic);
       }
     }
-
-    // Make sure the clipboard is closed!
-    wxTheClipboard->Close();
   }
 
   // Clipboard does not have the cell structure.
@@ -6940,7 +6938,7 @@ void MathCtrl::PasteFromClipboard(bool primary)
     }
     else
     {
-      if ((m_hCaretActive == true) && (wxTheClipboard->Open()))
+      if (m_hCaretActive == true)
       {
         if (wxTheClipboard->IsSupported(wxDF_TEXT))
         {
@@ -6951,12 +6949,14 @@ void MathCtrl::PasteFromClipboard(bool primary)
           OpenHCaret(txt);
           RequestRedraw();
         }
-        wxTheClipboard->Close();
       }
     }
   }
   if (primary)
     wxTheClipboard->UsePrimarySelection(false);
+
+  // Make sure the clipboard is closed!
+  wxTheClipboard->Close();
 
   // Tell the undo functionality that the current paste action has finished now.
   TreeUndo_MergeSubsequentEdits(false);
