@@ -997,7 +997,7 @@ public:
   //! Add the currently selected cells to the clipboard and delete them.
   bool CutToClipboard();
 
-  void PasteFromClipboard(bool primary = false);
+  void PasteFromClipboard();
 
   /*! Copy the current selection to the clipboard
 

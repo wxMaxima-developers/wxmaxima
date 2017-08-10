@@ -2126,6 +2126,7 @@ bool MathCtrl::CopyText()
 
 bool MathCtrl::CopyCells()
 {
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (m_cellPointers.m_selectionStart == NULL)
     return false;
 
@@ -6788,16 +6789,13 @@ bool MathCtrl::CutToClipboard()
  * If not, then pastes text into activeCell or opens a new cell
  * if hCaretActive == true. If yes, copies the cell structure.
  */
-void MathCtrl::PasteFromClipboard(bool primary)
+void MathCtrl::PasteFromClipboard()
 {
   // Collect all changes of this paste action
   TreeUndo_MergeSubsequentEdits(true);
 
   bool cells = false;
-
-  if (primary)
-    wxTheClipboard->UsePrimarySelection(true);
-
+  
   // Check for cell structure
   if (!wxTheClipboard->Open())
     return;
@@ -6952,8 +6950,6 @@ void MathCtrl::PasteFromClipboard(bool primary)
       }
     }
   }
-  if (primary)
-    wxTheClipboard->UsePrimarySelection(false);
 
   // Make sure the clipboard is closed!
   wxTheClipboard->Close();
@@ -7076,22 +7072,23 @@ void MathCtrl::OnKillFocus(wxFocusEvent &event)
 
 void MathCtrl::CheckUnixCopy()
 {
-#if defined __WXGTK__
-                                                                                                                          if (CanCopy(true))
+  if (CanCopy(true))
   {
     wxTheClipboard->UsePrimarySelection(true);
-    if (wxTheClipboard->Open())
+    if (wxTheClipboard->IsUsingPrimarySelection())
     {
-      wxDataObjectComposite *data = new wxDataObjectComposite;
-      // The \0 seems to prevent data corruption on seleting strings while evaluating.
-      // The wxTextDataObject is a speculative go at the same bug.
-      data->Add(new wxTextDataObject(GetString() + wxT('\0')));
-      wxTheClipboard->SetData(data);
-      wxTheClipboard->Close();
+      if (wxTheClipboard->Open())
+      {
+        wxDataObjectComposite *data = new wxDataObjectComposite;
+        // The \0 seems to prevent data corruption on seleting strings while evaluating.
+        // The wxTextDataObject is a speculative go at the same bug.
+        data->Add(new wxTextDataObject(GetString() + wxT('\0')));
+        wxTheClipboard->SetData(data);
+        wxTheClipboard->Close();
+      }
     }
     wxTheClipboard->UsePrimarySelection(false);
   }
-#endif
 }
 
 //! Is this cell selected?
@@ -7333,15 +7330,18 @@ void MathCtrl::OnMouseMiddleUp(wxMouseEvent &event)
 {
   m_cellPointers.ResetSearchStart();
 
-#if defined __WXGTK__
-                                                                                                                          OnMouseLeftDown(event);
-  m_leftDown = false;
-  if (m_clickType != CLICK_TYPE_NONE)
-    PasteFromClipboard(true);
-  m_clickType = CLICK_TYPE_NONE;
-  if(HasCapture())
-    ReleaseMouse();
-#endif
+  wxTheClipboard->UsePrimarySelection(true);
+  if(wxTheClipboard->IsUsingPrimarySelection())
+  {
+    OnMouseLeftDown(event);
+    m_leftDown = false;
+    if (m_clickType != CLICK_TYPE_NONE)
+      PasteFromClipboard();
+    m_clickType = CLICK_TYPE_NONE;
+    if(HasCapture())
+      ReleaseMouse();
+    wxTheClipboard->UsePrimarySelection(false);
+  }
 }
 
 void MathCtrl::CommentSelection()
