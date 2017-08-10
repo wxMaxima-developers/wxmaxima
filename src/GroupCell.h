@@ -233,13 +233,6 @@ public:
   void RecalculateHeightOutput(int fontsize);
 
   /*! Recalculates the width of this GroupCell and all cells inside it if needed.
-    
-    This command will also assign the GroupCell an x coordinate it is plotted at.
-    The x coordinate of all output cells of this GroupCell is assigned during 
-    GroupCell::Draw() by providing MathCell::Draw() with the cell's coordinates.
-
-    \todo This function is more or less a special case for GroupCell::RecalculateAppended().
-    Perhaps this function could re-use it so there are less places we need to keep in sync.
    */
   void RecalculateWidths(int fontsize);
 

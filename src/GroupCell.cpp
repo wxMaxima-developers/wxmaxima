@@ -642,33 +642,9 @@ void GroupCell::RecalculateHeightInput(int fontsize)
 
 void GroupCell::RecalculateHeightOutput(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
-
-  MathCell *tmp = m_output;
-  if (!m_hide)
-  {
-    while (tmp != NULL)
-    {
-      if (tmp->BreakLineHere() || tmp == m_output)
-      {
-        m_width = MAX(m_width, tmp->GetLineWidth(scale));
-        m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth(scale));
-        m_height += tmp->GetMaxHeight();
-        if (tmp->m_bigSkip)
-          m_height += MC_LINE_SKIP;
-        
-        if (tmp->m_previousToDraw != NULL &&
-            tmp->GetStyle() == TS_LABEL)
-          m_height += configuration->GetInterEquationSkip();
-      }
-      tmp = tmp->m_nextToDraw;
-    }
-  }
-  
-  m_outputWidth = m_width;
-  m_outputHeight = m_height - m_inputHeight;
-  m_outputRect.height = m_inputHeight + m_height + MC_LINE_SKIP;
+  m_appendedCells = m_output;
+  if(m_output != NULL)
+    RecalculateAppended();
 }
 
 void GroupCell::RecalculateHeight(int fontsize)
@@ -745,7 +721,7 @@ void GroupCell::RecalculateAppended()
   tmp = m_appendedCells;
   while (tmp != NULL)
   {
-    if (tmp->BreakLineHere() || tmp == m_appendedCells)
+    if (tmp->BreakLineHere() || tmp == m_appendedCells || tmp->GetStyle() == TS_LABEL || tmp->GetStyle() == TS_USERLABEL)
     {
       m_width = MAX(m_width, tmp->GetLineWidth(scale));
       m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth(scale));
@@ -753,7 +729,7 @@ void GroupCell::RecalculateAppended()
       m_outputRect.height += tmp->GetMaxHeight();
       
       if (tmp->m_previousToDraw != NULL &&
-          tmp->GetStyle() == TS_LABEL)
+          ((tmp->GetStyle() == TS_LABEL) || (tmp->GetStyle() == TS_USERLABEL)))
       {
         m_height            += configuration->GetInterEquationSkip();
         m_outputRect.height += configuration->GetInterEquationSkip();

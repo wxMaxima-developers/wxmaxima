@@ -559,8 +559,6 @@ private:
 #endif
 /*! 
   Create the menus.
-
-  \todo Why do we not offer a "copy as bitmap" menu item on linux?
 */
   void SetupMenu();
 
