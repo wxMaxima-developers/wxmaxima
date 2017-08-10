@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-08-10 12:58+0200\n"
-"PO-Revision-Date: 2017-07-29 00:35+0200\n"
+"PO-Revision-Date: 2017-08-10 13:05+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -375,7 +375,7 @@ msgstr "1/2"
 
 #: ../src/wxMaximaFrame.cpp:530
 msgid "2D equations using ASCII Art"
-msgstr ""
+msgstr "2D-Gleichungen aus Standard-Zeichen"
 
 #: ../src/wxMaxima.cpp:2732
 #, c-format
@@ -549,7 +549,7 @@ msgstr "Eine Integrationskonstante."
 
 #: ../src/ConfigDialogue.cpp:791
 msgid "Antialias lines."
-msgstr ""
+msgstr "Kantenglättung für Linien."
 
 #: ../src/wxMaxima.cpp:4522
 msgid "Apply"
@@ -669,9 +669,8 @@ msgid "Beta"
 msgstr "Beta"
 
 #: ../src/ConfigDialogue.cpp:901
-#, fuzzy
 msgid "Bitmap"
-msgstr "Bild"
+msgstr "Bitmap"
 
 #: ../src/ConfigDialogue.cpp:664
 msgid "Bitmap scale for export:"
@@ -795,7 +794,7 @@ msgstr ""
 
 #: ../src/MathCtrl.cpp:2129
 msgid "Bug: The clipboard is already opened"
-msgstr ""
+msgstr "Interner Fehler: Die Zwischenablage ist bereits geöffnet"
 
 #: ../src/GroupCell.cpp:433
 msgid "Bug: Trying to append NULL to a group cell."
@@ -1011,7 +1010,7 @@ msgstr "Klassen:"
 
 #: ../src/ConfigDialogue.cpp:898
 msgid "Clipboard formats to offer by default:"
-msgstr ""
+msgstr "Formate, die standardmäßig auf die Zwischenablage gelegt werden:"
 
 #: ../src/wxMaximaFrame.cpp:428
 msgid "Close\tCtrl+W"
@@ -1251,9 +1250,8 @@ msgstr "Als RTF kopieren"
 
 #: ../src/MathCtrl.cpp:1096 ../src/MathCtrl.cpp:1156
 #: ../src/wxMaximaFrame.cpp:475
-#, fuzzy
 msgid "Copy as SVG"
-msgstr "Als RTF kopieren"
+msgstr "Als SVG kopieren"
 
 #: ../src/wxMaximaFrame.cpp:463
 msgid "Copy as Text\tCtrl+Shift+C"
@@ -1268,9 +1266,8 @@ msgid "Copy selection"
 msgstr "Auswahl kopieren"
 
 #: ../src/wxMaximaFrame.cpp:476
-#, fuzzy
 msgid "Copy selection from document as an SVG image"
-msgstr "Auswahl als Bild kopieren"
+msgstr "Auswahl als SVG-Bild kopieren"
 
 #: ../src/wxMaximaFrame.cpp:473
 msgid "Copy selection from document as an image"
@@ -1475,9 +1472,8 @@ msgid "Display algorithm"
 msgstr "Darstellungmethode"
 
 #: ../src/wxMaximaFrame.cpp:533
-#, fuzzy
 msgid "Display equations"
-msgstr "Gleichung(en) lösen"
+msgstr "Anzeige von Gleichungen"
 
 #: ../src/wxMaximaFrame.cpp:657
 msgid "Display last result in TeX form"
@@ -2333,7 +2329,7 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:533
 msgid "How to display new equations"
-msgstr ""
+msgstr "Wie sollen neue Gleichungen angezeigt werden?"
 
 #: ../src/ConfigDialogue.cpp:728
 msgid "Hungarian"
@@ -3021,7 +3017,7 @@ msgstr ""
 
 #: ../src/ConfigDialogue.cpp:609
 msgid "Maxima commands that should be executed at startup: "
-msgstr ""
+msgstr "Maxima-Befehle, die beim Hochfahren ausgeführt werden sollen: "
 
 #: ../src/wxMaximaFrame.cpp:119
 msgid "Maxima has a question"
@@ -3335,7 +3331,7 @@ msgstr "Nächster Befehl\tAlt+Down"
 
 #: ../src/wxMaximaFrame.cpp:531
 msgid "Nice Graphical Equations"
-msgstr ""
+msgstr "Schöne graphische Darstellung der Gleichungen"
 
 #: ../src/ConfigDialogue.cpp:495 ../src/ConfigDialogue.cpp:505
 #: ../src/ConfigDialogue.cpp:514
@@ -3904,9 +3900,8 @@ msgid "Russian"
 msgstr "Russisch"
 
 #: ../src/ConfigDialogue.cpp:674
-#, fuzzy
 msgid "SVG graphics"
-msgstr "SVG Grafik"
+msgstr "SVG-Grafik"
 
 #: ../src/wxMaxima.cpp:5506
 msgid "Sample 1:"
@@ -4228,7 +4223,7 @@ msgstr "Zeige die Definition einer Funktion"
 
 #: ../src/wxMaximaFrame.cpp:529
 msgid "Show equations in their linear form"
-msgstr ""
+msgstr "Zeigt Gleichungen in der linearen Form an"
 
 #: ../src/wxMaximaFrame.cpp:578
 msgid "Show function template"
@@ -4461,12 +4456,11 @@ msgstr "Der Server wird auf Port %d gestartet"
 
 #: ../src/ConfigDialogue.cpp:167
 msgid "Startup commands"
-msgstr ""
+msgstr "Startbefehle"
 
 #: ../src/ConfigDialogue.cpp:633
-#, fuzzy
 msgid "Startup file location: "
-msgstr "Starte Animation"
+msgstr "Ort, an dem diese Datei liegt: "
 
 #: ../src/wxMaximaFrame.cpp:290
 msgid "Statistics"
@@ -4733,7 +4727,6 @@ msgid "The offline manual of maxima"
 msgstr "Das in Maxima eingebaute Handbuch"
 
 #: ../src/ConfigDialogue.cpp:265
-#, fuzzy
 msgid ""
 "The pngCairo terminal offers much better graphics quality (antialiassing and "
 "additional line styles). But it will only produce plots if the gnuplot "
@@ -4963,7 +4956,7 @@ msgstr "Eine Matrix transponieren"
 msgid ""
 "Try to antialias lines (which allows to move them by a fraction of a pixel, "
 "but reduces their sharpness)."
-msgstr ""
+msgstr "Nutze eine Bildkantenglättung (Linien, die nicht genau auf Bildpunkte treffen, werden keine Pixeltreppen, sondern unscharf)"
 
 #: ../src/MathCtrl.cpp:6500
 msgid "Trying to undo an action without starting cell."
