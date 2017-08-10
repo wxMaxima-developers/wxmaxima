@@ -35,7 +35,6 @@
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
 #include <wx/fontdlg.h>
-#include <wx/wfstream.h>
 #include <wx/sstream.h>
 #include <wx/colordlg.h>
 #include <wx/settings.h>
@@ -620,7 +619,8 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
       while(input.IsOk() && !input.Eof())
       {
         wxString line = text.ReadLine();
-        contents += line + wxT("\n");
+        if((!input.Eof()) || (line != wxEmptyString))
+          contents += line + wxT("\n");
       }
     }
   }
