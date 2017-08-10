@@ -524,6 +524,15 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->Append(menu_pane_hideall, _("Hide All Toolbars\tAlt+Shift+-"), _("Hide all panes"),
                              wxITEM_NORMAL);
   m_Maxima_Panes_Sub->AppendSeparator();
+  // equation display type submenu
+  wxMenu *equationType = new wxMenu;
+  equationType->Append(menu_math_as_1D_ASCII, wxT("as 1D ASCII"), _("Show equations in their linear form"), wxITEM_NORMAL);
+  equationType->Append(menu_math_as_2D_ASCII, wxT("as ASCII Art"), _("2D equations using ASCII Art"), wxITEM_NORMAL);
+  equationType->Append(menu_math_as_graphics, wxT("in 2D"), _("Nice Graphical Equations"), wxITEM_NORMAL);
+
+  m_Maxima_Panes_Sub->Append(wxNewId(), _("Display equations"), equationType, _("How to display new equations"));
+
+  m_Maxima_Panes_Sub->AppendSeparator();
   APPEND_MENU_ITEM(m_Maxima_Panes_Sub, MathCtrl::menu_zoom_in, _("Zoom &In\tCtrl++"),
                    _("Zoom in 10%"), wxT("gtk-zoom-in"));
   APPEND_MENU_ITEM(m_Maxima_Panes_Sub, MathCtrl::menu_zoom_out, _("Zoom Ou&t\tCtrl+-"),

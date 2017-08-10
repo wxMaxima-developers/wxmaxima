@@ -3806,6 +3806,16 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     case menu_zoom_300:
       m_console->SetZoomFactor(3.0);
       break;
+    case menu_math_as_1D_ASCII:
+      MenuCommand(wxT("set_display('none)$"));
+      break;
+    case menu_math_as_2D_ASCII:
+      MenuCommand(wxT("set_display('ascii)$"));
+      break;
+    case menu_math_as_graphics:
+      MenuCommand(wxT("set_display('xml)$"));
+      break;
+
     case menu_fullscreen:
       ShowFullScreen(!IsFullScreen());
       break;
@@ -7189,6 +7199,9 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(menu_zoom_150, wxMaxima::EditMenu)
                 EVT_MENU(menu_zoom_200, wxMaxima::EditMenu)
                 EVT_MENU(menu_zoom_300, wxMaxima::EditMenu)
+                EVT_MENU(menu_math_as_1D_ASCII, wxMaxima::EditMenu)
+                EVT_MENU(menu_math_as_2D_ASCII, wxMaxima::EditMenu)
+                EVT_MENU(menu_math_as_graphics, wxMaxima::EditMenu)
                 EVT_MENU(menu_fullscreen, wxMaxima::EditMenu)
                 EVT_MENU(ToolBar::tb_hideCode, wxMaxima::EditMenu)
                 EVT_MENU(menu_copy_as_bitmap, wxMaxima::EditMenu)

@@ -192,8 +192,14 @@ private:
 
   //! The panel that allows to change maxima-specific configurations.
   wxPanel *CreateMaximaPanel();
+
+  //! The panel that allows to specify startup commands
+  wxPanel *CreateStartupPanel();
+
   // end wxGlade
 protected:
+  //! The name of maxima's startup file.
+  wxString m_startupFileName;
   //! The text "Maxima Program" that can change color.
   wxStaticText *m_mp;
 
@@ -201,6 +207,7 @@ protected:
   void OnTabChange(wxBookCtrlEvent &event);
 
   // begin wxGlade: ConfigDialogue::attributes
+  wxTextCtrl *m_startupCommands;
   wxTextCtrl *m_maximaProgram;
   wxTextCtrl *m_documentclass;
   wxTextCtrl *m_texPreamble;

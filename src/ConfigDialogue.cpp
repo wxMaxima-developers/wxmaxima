@@ -32,6 +32,8 @@
 #include <wx/config.h>
 #include <wx/fileconf.h>
 #include <wx/font.h>
+#include <wx/wfstream.h>
+#include <wx/txtstrm.h>
 #include <wx/fontdlg.h>
 #include <wx/wfstream.h>
 #include <wx/sstream.h>
@@ -147,6 +149,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   m_imageList->Add(GetImage(wxT("Document-export")));
   m_imageList->Add(GetImage(wxT("options")));
   m_imageList->Add(GetImage(wxT("edit-copy")));
+  m_imageList->Add(GetImage(wxT("media-playback-start")));
 
   Create(parent, wxID_ANY, _("wxMaxima configuration"),
          wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
@@ -161,6 +164,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   m_notebook->AddPage(CreateExportPanel(), _("Export"), false, 3);
   m_notebook->AddPage(CreateOptionsPanel(), _("Options"), false, 4);
   m_notebook->AddPage(CreateClipboardPanel(), _("Copy"), false, 5);
+  m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 5);
 #ifndef __WXMAC__
   CreateButtons(wxOK | wxCANCEL);
 #endif
@@ -567,6 +571,69 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   panel->SetSizer(vsizer);
   vsizer->Fit(panel);
 
+  return panel;
+}
+
+wxPanel *ConfigDialogue::CreateStartupPanel()
+{
+  wxPanel *panel = new wxPanel(m_notebook, -1);
+  wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
+
+  // Determine the name of the startup file.
+  wxGetEnv(wxT("MAXIMA_USERDIR"),&m_startupFileName);
+  if(m_startupFileName == wxEmptyString)
+  {
+    #ifndef __WXMSW__
+    wxGetEnv(wxT("HOME"),&m_startupFileName);
+    #else
+    wxGetEnv(wxT("HOMEPATH"),&m_startupFileName);
+    #endif
+  }
+  m_startupFileName += wxT("/");
+
+  // On windows the startup file's directory name doesn't begin with a ".", while
+  // on all other systems it does.
+  #ifndef __WXMSW__
+  m_startupFileName += wxT(".");
+  #endif
+  
+  m_startupFileName += wxT("maxima/");
+
+  if(!wxDirExists(m_startupFileName))
+    wxMkDir(m_startupFileName, wxS_DIR_DEFAULT);
+
+  m_startupFileName += wxT("wxmaxima-init.mac");
+
+  wxStaticText *startupText =
+    new wxStaticText(panel, wxID_ANY,
+                     _("Maxima commands that should be executed at startup: "));
+  vsizer->Add(startupText, wxSizerFlags().Border(wxALL,5));
+  
+  // Read the startup file's contents
+  wxString contents;
+  if(wxFileExists(m_startupFileName))
+  {
+    wxFileInputStream input(m_startupFileName);
+    if(input.IsOk())
+    {
+      wxTextInputStream text(input);
+      while(input.IsOk() && !input.Eof())
+      {
+        wxString line = text.ReadLine();
+        contents += line + wxT("\n");
+      }
+    }
+  }
+  
+  m_startupCommands = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(200,500),
+                                     wxTE_MULTILINE | wxHSCROLL);
+  m_startupCommands->SetValue(contents);
+  vsizer->Add(m_startupCommands, wxSizerFlags().Expand().Border(wxALL,5));
+  wxStaticText *startupFileLocation = new wxStaticText(panel, wxID_ANY,
+                                                       _("Startup file location: ") +
+                                                       m_startupFileName);
+  vsizer->Add(startupFileLocation, wxSizerFlags().Border(wxALL,5));
+  panel->SetSizerAndFit(vsizer);
   return panel;
 }
 
@@ -1058,6 +1125,14 @@ void ConfigDialogue::WriteSettings()
   
   WriteStyles();
   config->Flush();
+
+  wxFileOutputStream output(m_startupFileName);
+  if(output.IsOk())
+  {
+    wxTextOutputStream text(output);
+    text << m_startupCommands->GetValue();
+  }
+
 }
 
 void ConfigDialogue::OnMpBrowse(wxCommandEvent &event)
