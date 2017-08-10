@@ -335,6 +335,7 @@ bool Bitmap::ToClipboard()
     wxTheClipboard->Close();
     return res;
   }
+  wxTheClipboard->Close();
   return false;
 }
 
