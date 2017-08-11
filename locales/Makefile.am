@@ -3,7 +3,7 @@
 #
 
 WXWIN_LINGUAS =    fr es it de pt_BR ru hu uk pl zh_TW da cs el fi ja ca gl zh_CN tr nb
-WXMAXIMA_LINGUAS = $(WXWIN_LINGUAS) en kab
+WXMAXIMA_LINGUAS = $(WXWIN_LINGUAS) kab
 
 localedir = $(datadir)/locale
 
@@ -130,7 +130,6 @@ transcoded:
 
 EXTRA_DIST = fr.po fr.mo wxwin/fr.mo \
              es.po es.mo wxwin/es.mo  \
-             en.po en.mo\
              it.po it.mo wxwin/it.mo  \
              de.po de.mo wxwin/de.mo  \
 	     pt_BR.po pt_BR.mo wxwin/pt_BR.mo \
