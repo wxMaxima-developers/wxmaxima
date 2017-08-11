@@ -6836,6 +6836,9 @@ void wxMaxima::ShowPane(wxCommandEvent &ev)
   else
     wxMaximaFrame::ShowPane(static_cast<Event>(id),
                             !IsPaneDisplayed(static_cast<Event>(id)));
+
+  if((id == menu_pane_structure) && (IsPaneDisplayed(static_cast<Event>(id))))
+    m_console->UpdateTableOfContents();
 }
 
 void wxMaxima::NetworkDClick(wxCommandEvent &ev)
