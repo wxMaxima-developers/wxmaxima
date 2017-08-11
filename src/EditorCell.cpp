@@ -3047,6 +3047,7 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight)
 
 bool EditorCell::CopyToClipboard()
 {
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (m_selectionStart == -1)
     return false;
   if (wxTheClipboard->Open())
@@ -3123,16 +3124,13 @@ void EditorCell::PasteFromClipboard(bool primary)
 {
   if (primary)
     wxTheClipboard->UsePrimarySelection(true);
-  if (wxTheClipboard->Open())
+  wxASSERT_MSG(wxTheClipboard->IsOpened(),_("Bug: The clipboard isn't open on pasting into an editor cell"));
+  if (wxTheClipboard->IsSupported(wxDF_TEXT))
   {
-    if (wxTheClipboard->IsSupported(wxDF_TEXT))
-    {
-      wxTextDataObject obj;
-      wxTheClipboard->GetData(obj);
-      InsertText(obj.GetText());
-      m_containsChanges = true;
-    }
-    wxTheClipboard->Close();
+    wxTextDataObject obj;
+    wxTheClipboard->GetData(obj);
+    InsertText(obj.GetText());
+    m_containsChanges = true;
   }
   if (primary)
     wxTheClipboard->UsePrimarySelection(false);
