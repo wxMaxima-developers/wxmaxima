@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-11 08:30+0200\n"
+"POT-Creation-Date: 2017-08-11 08:55+0200\n"
 "PO-Revision-Date: 2010-03-10 14:21+0100\n"
 "Last-Translator: Robert Marik <maarik@mendelu.cz>\n"
 "Language-Team:  <cs@li.org>\n"
@@ -74,8 +74,8 @@ msgstr "      -l <name>"
 msgid " (Graphics) "
 msgstr " (Gràfics) "
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3579
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3995
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3577
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3993
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr " ... + %i linies amagades"
@@ -790,8 +790,13 @@ msgstr ""
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3050
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2129
 msgid "Bug: The clipboard is already opened"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3127
+msgid "Bug: The clipboard isn't open on pasting into an editor cell"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/GroupCell.cpp:433

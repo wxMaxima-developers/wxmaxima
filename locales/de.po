@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-11 08:30+0200\n"
+"POT-Creation-Date: 2017-08-11 08:55+0200\n"
 "PO-Revision-Date: 2017-08-11 08:06+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -69,8 +69,8 @@ msgstr "      -l <name>"
 msgid " (Graphics) "
 msgstr " (Bild) "
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3579
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3995
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3577
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3993
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr "... + %i versteckte Zeilen"
@@ -813,8 +813,14 @@ msgstr ""
 "Interner Fehler: Text wurde geändert, aber es ist unbekannt, für welche "
 "Zelle."
 
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3050
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2129
 msgid "Bug: The clipboard is already opened"
+msgstr "Interner Fehler: Die Zwischenablage ist bereits geöffnet"
+
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3127
+#, fuzzy
+msgid "Bug: The clipboard isn't open on pasting into an editor cell"
 msgstr "Interner Fehler: Die Zwischenablage ist bereits geöffnet"
 
 #: /home/gunter/src/wxmaxima/src/GroupCell.cpp:433
