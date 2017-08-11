@@ -633,13 +633,13 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   wxStaticText *startupFileLocation = new wxStaticText(panel, wxID_ANY,
                                                        _("Startup file location: ") +
                                                        m_startupFileName);
-  startupFileLocation->SetToolTip("If wxMaxima's guess where maxima expects the startup file "
-                                  "is wrong the right directory for the startup file is the "
-                                  "one maxima prints out in response to the command\n\n"
-                                  "   maxima-user_dir;\n\n"
-                                  "The file won't be read by maxima if wxMaxima isn't in use. "
-                                  "To add startup commands that are executed in this case, "
-                                  "too, please add them to maxima-init.mac, instead.");
+  startupFileLocation->SetToolTip(_("If wxMaxima's guess where maxima expects the startup file "
+                                    "is wrong the right directory for the startup file is the "
+                                    "one maxima prints out in response to the command\n\n"
+                                    "   maxima-user_dir;\n\n"
+                                    "The file won't be read by maxima if wxMaxima isn't in use. "
+                                    "To add startup commands that are executed in this case, "
+                                    "too, please add them to maxima-init.mac, instead."));
   vsizer->Add(startupFileLocation, wxSizerFlags().Border(wxALL,5));
   panel->SetSizerAndFit(vsizer);
   return panel;
