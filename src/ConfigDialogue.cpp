@@ -579,33 +579,34 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
 
   // Determine the name of the startup file.
-  wxGetEnv(wxT("MAXIMA_USERDIR"),&m_startupFileName);
-  if(m_startupFileName == wxEmptyString)
+  if(!wxGetEnv(wxT("MAXIMA_USERDIR"),&m_startupFileName))
   {
     #ifndef __WXMSW__
     wxGetEnv(wxT("HOME"),&m_startupFileName);
     #else
     wxGetEnv(wxT("HOMEPATH"),&m_startupFileName);
     #endif
+    m_startupFileName += wxT("/");
+    
+    // On windows the startup file's directory name doesn't begin with a ".", while
+    // on all other systems it does.
+#ifndef __WXMSW__
+    m_startupFileName += wxT(".");
+#endif
+    
+    m_startupFileName += wxT("maxima");
+    
+    if(!wxDirExists(m_startupFileName))
+      wxMkDir(m_startupFileName, wxS_DIR_DEFAULT);
   }
-  m_startupFileName += wxT("/");
-
-  // On windows the startup file's directory name doesn't begin with a ".", while
-  // on all other systems it does.
-  #ifndef __WXMSW__
-  m_startupFileName += wxT(".");
-  #endif
-  
-  m_startupFileName += wxT("maxima/");
-
-  if(!wxDirExists(m_startupFileName))
-    wxMkDir(m_startupFileName, wxS_DIR_DEFAULT);
-
-  m_startupFileName += wxT("wxmaxima-init.mac");
+  m_startupFileName += wxT("/wxmaxima-init.mac");
 
   wxStaticText *startupText =
     new wxStaticText(panel, wxID_ANY,
                      _("Maxima commands that should be executed at startup: "));
+  startupText->SetToolTip(_("The part of the output of these commands that isn' declared as "
+                            "\"math\" might be suppressed by wxMaxima; As always maxima "
+                            "commands are required to end in a \";\" or a \"$\""));
   vsizer->Add(startupText, wxSizerFlags().Border(wxALL,5));
   
   // Read the startup file's contents
@@ -632,6 +633,13 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   wxStaticText *startupFileLocation = new wxStaticText(panel, wxID_ANY,
                                                        _("Startup file location: ") +
                                                        m_startupFileName);
+  startupFileLocation->SetToolTip("If wxMaxima's guess where maxima expects the startup file "
+                                  "is wrong the right directory for the startup file is the "
+                                  "one maxima prints out in response to the command\n\n"
+                                  "   maxima-user_dir;\n\n"
+                                  "The file won't be read by maxima if wxMaxima isn't in use. "
+                                  "To add startup commands that are executed in this case, "
+                                  "too, please add them to maxima-init.mac, instead.");
   vsizer->Add(startupFileLocation, wxSizerFlags().Border(wxALL,5));
   panel->SetSizerAndFit(vsizer);
   return panel;
