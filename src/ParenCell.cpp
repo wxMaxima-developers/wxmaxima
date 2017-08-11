@@ -192,11 +192,11 @@ void ParenCell::RecalculateWidths(int fontsize)
       SetFont(fontsize);
       int signWidth1,signWidth2,signWidth3,descent,leading;
       dc.GetTextExtent(wxT(PAREN_OPEN_TOP_UNICODE),    &signWidth1, &m_signTopHeight, &descent, &leading);
-      m_signTopHeight -= 2*descent + Scale_Px(2, configuration->GetScale()) + 1;
+      m_signTopHeight -= 2*descent + Scale_Px(1, configuration->GetScale());
       dc.GetTextExtent(wxT(PAREN_OPEN_EXTEND_UNICODE), &signWidth2, &m_extendHeight, &descent, &leading);
-      m_extendHeight -= 2*descent + Scale_Px(2, configuration->GetScale()) + 1;
+      m_extendHeight -= 2*descent + Scale_Px(1, configuration->GetScale());
       dc.GetTextExtent(wxT(PAREN_OPEN_BOTTOM_UNICODE), &signWidth3, &m_signBotHeight, &descent, &leading);
-      m_signBotHeight -= descent + Scale_Px(2, configuration->GetScale()) + 1;
+      m_signBotHeight -= descent + Scale_Px(1, configuration->GetScale());
 
       m_signWidth = signWidth1;
       if(m_signWidth < signWidth2)
@@ -291,7 +291,8 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     case Configuration::ascii:
       innerCellPos.x += m_open->GetWidth();
       m_open->DrawList(point, fontsize);
-      m_close->DrawList(wxPoint(point.x + m_signWidth + m_innerCell->GetFullWidth(scale),point.y), fontsize);
+      m_close->DrawList(wxPoint(point.x + m_signWidth + m_innerCell->GetFullWidth(scale),point.y),
+                        fontsize);
       break;
     case Configuration::assembled_unicode:
     case Configuration::assembled_unicode_fallbackfont:
