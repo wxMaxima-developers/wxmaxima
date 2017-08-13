@@ -145,6 +145,9 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
           m_MenuBar->Enable(menu_remove_output, false);
           SetStatusText(_("Not connected to maxima"), 1);
           break;
+        case wait_for_start:
+          m_MenuBar->Enable(menu_remove_output, false);
+          SetStatusText(_("Maxima started. Waiting for connection..."), 1);
       }
     }
   }

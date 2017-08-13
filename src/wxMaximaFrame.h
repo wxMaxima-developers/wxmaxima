@@ -437,6 +437,7 @@ public:
 
   enum ToolbarStatus
   {
+    wait_for_start,
     process_wont_start,
     waiting,
     calculating,

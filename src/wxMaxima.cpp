@@ -995,8 +995,7 @@ bool wxMaxima::StartMaxima(bool force)
       m_maximaStdout = m_process->GetInputStream();
       m_maximaStderr = m_process->GetErrorStream();
       m_lastPrompt = wxT("(%i1) ");
-      StatusMaximaBusy(disconnected);
-      SetStatusText(_("Maxima started. Waiting for connection..."), 1);
+      StatusMaximaBusy(wait_for_start);
     }
     else
     {
