@@ -4424,7 +4424,7 @@ bool EditorCell::FindNextTemplate(bool left)
 
 void EditorCell::CaretToEnd()
 {
-  m_positionOfCaret = m_text.Length() - 1;
+  m_positionOfCaret = m_text.Length();
   if (GetType() == MC_TYPE_INPUT)
     FindMatchingParens();
 }

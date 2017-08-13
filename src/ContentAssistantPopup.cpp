@@ -203,7 +203,6 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent &event)
         // Tell MathCtrl to handle this key event the normal way.
         wxKeyEvent *keyEvent = new wxKeyEvent(event);
         GetParent()->GetEventHandler()->QueueEvent(keyEvent);
-
       }
       else
         event.Skip();

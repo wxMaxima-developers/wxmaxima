@@ -3202,7 +3202,31 @@ void MathCtrl::OnCharInActive(wxKeyEvent &event)
   EditorCell *activeCell = GetActiveCell();
   wxString oldValue = activeCell->GetValue();
 
-  GetActiveCell()->ProcessEvent(event);
+  switch(event.GetKeyCode())
+  {
+  case WXK_LEFT:
+    if(GetActiveCell()->CaretAtStart())
+    {
+      GroupCell *newGroup = dynamic_cast<GroupCell *>(GetActiveCell()->GetParent()->m_previous);
+      SetHCaret(newGroup);
+      return;
+    }
+    else
+      GetActiveCell()->ProcessEvent(event);
+    break;
+  case WXK_RIGHT:
+    if(GetActiveCell()->CaretAtEnd())
+    {
+      GroupCell *newGroup = dynamic_cast<GroupCell *>(GetActiveCell()->GetParent());
+      SetHCaret(newGroup);
+      return;
+    }
+    else
+      GetActiveCell()->ProcessEvent(event);
+    break;
+  default:
+    GetActiveCell()->ProcessEvent(event);
+  }
 
   // Update title and toolbar in order to reflect the "unsaved" state of the worksheet.
   if (IsSaved() && activeCell->GetValue() != oldValue)
@@ -3519,14 +3543,6 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
       event.Skip();
       break;
 
-    case WXK_LEFT:
-    case WXK_RIGHT:
-      if ((!CanAnimate()) || AnimationRunning())
-        event.Skip();
-      else
-        StepAnimation(ccode == WXK_LEFT ? -1 : 1);
-      break;
-
     case WXK_HOME:
       // Returning to the beginning of the worksheet on pressing POS1 isn't what one
       // would expect from an ordinary editor so we ignore the key if it is.
@@ -3602,6 +3618,13 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
       break;
 
     case WXK_UP:
+    case WXK_LEFT:
+      if ((CanAnimate()) && !AnimationRunning())
+      {
+        StepAnimation(-1);
+        break;
+      }
+
       ScrolledAwayFromEvaluation(true);
       if (m_hCaretActive)
       {
@@ -3674,6 +3697,12 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
       break;
 
     case WXK_DOWN:
+    case WXK_RIGHT:
+      if ((CanAnimate()) && !AnimationRunning())
+      {
+        StepAnimation(1);
+        break;
+      }
       ScrolledAwayFromEvaluation(true);
       if (m_hCaretActive)
       {
