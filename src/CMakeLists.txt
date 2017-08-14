@@ -25,7 +25,7 @@ else()
     add_executable(wxmaxima ${SOURCE_FILES})
 endif()
 
-target_link_libraries(wxmaxima ${wxWidgets_CXX_FLAGS} ${wxWidgets_LIBRARIES})
+target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Setup.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Setup.h)
 
