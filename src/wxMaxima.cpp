@@ -131,7 +131,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
         wxMaximaFrame(parent, id, title, pos, size)
 {
   m_isActive = true;
-  m_fileNamed = false;
   wxASSERT(m_outputPromptRegEx.Compile(wxT("<lbl>.*</lbl>")));
   wxConfig *config = (wxConfig *) wxConfig::Get();
   m_unsuccessfullConnectionAttempts = 0;
@@ -3097,7 +3096,6 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
     else
       MenuCommand(wxT("load(\"") + unixFilename + wxT("\")$"));
 
-    m_fileNamed = true;
   }
 
   if ((m_autoSaveInterval > 10000) && (m_console->m_currentFile.Length() > 0))
@@ -3227,7 +3225,6 @@ bool wxMaxima::SaveFile(bool forceSave)
       m_autoSaveTimer.StartOnce(m_autoSaveInterval);
     StatusSaveFinished();
     RemoveTempAutosavefile();
-    m_fileNamed = true;
     return true;
   }
 
@@ -6961,7 +6958,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
 int wxMaxima::SaveDocumentP()
 {
   wxString file, ext;
-  if ((m_console->m_currentFile == wxEmptyString) || (!m_fileNamed))
+  if ((m_console->m_currentFile == wxEmptyString) || (m_console->m_currentFile == m_tempfileName))
   {
     // Check if we want to save modified untitled documents on exit
     bool save = true;
