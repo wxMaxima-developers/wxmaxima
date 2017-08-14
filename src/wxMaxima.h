@@ -528,6 +528,8 @@ protected:
   char *m_inputBuffer;
   wxString m_openFile;
   bool m_fileSaved;
+  //! true means: The file has no (or a temporary) file name.
+  bool m_fileNamed;
   bool m_variablesOK;
   wxString m_chmhelpFile;
   bool m_htmlHelpInitialized;

@@ -131,6 +131,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
         wxMaximaFrame(parent, id, title, pos, size)
 {
   m_isActive = true;
+  m_fileNamed = false;
   wxASSERT(m_outputPromptRegEx.Compile(wxT("<lbl>.*</lbl>")));
   wxConfig *config = (wxConfig *) wxConfig::Get();
   m_unsuccessfullConnectionAttempts = 0;
@@ -1846,8 +1847,6 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
       last);
   }
   
-  document->RecalculateForce();
-  
   if (clearDocument)
   {
     m_console->m_currentFile = file.SubString(0,file.Length()-4) + wxT("wxmx");
@@ -2180,11 +2179,9 @@ bool wxMaxima::CheckWXMXVersion(wxString docversion)
       return false;
     }
     if (version_minor > DOCUMENT_VERSION_MINOR)
-    {
       wxMessageBox(
               _("Document was saved using a newer version of wxMaxima so it may not load correctly. Please update your wxMaxima."),
               _("Warning"), wxOK | wxICON_EXCLAMATION);
-    }
   }
   return true;
 }
@@ -3099,6 +3096,8 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 
     else
       MenuCommand(wxT("load(\"") + unixFilename + wxT("\")$"));
+
+    m_fileNamed = true;
   }
 
   if ((m_autoSaveInterval > 10000) && (m_console->m_currentFile.Length() > 0))
@@ -3123,7 +3122,6 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
     m_console->m_scheduleUpdateToc = false;
     m_console->m_tableOfContents->UpdateTableOfContents(m_console->GetTree(), m_console->GetHCaret());
   }
-  m_console->RecalculateForce();
   m_console->RequestRedraw();
 }
 
@@ -3229,6 +3227,7 @@ bool wxMaxima::SaveFile(bool forceSave)
       m_autoSaveTimer.StartOnce(m_autoSaveInterval);
     StatusSaveFinished();
     RemoveTempAutosavefile();
+    m_fileNamed = true;
     return true;
   }
 
@@ -6536,7 +6535,6 @@ void wxMaxima::TryEvaluateNextInQueue()
       cell->SetParent(tmp);
       tmp->SetOutput(cell);
       tmp->GetInput()->SetCaretPosition(index);
-      m_console->RecalculateForce();
       
       if (m_console->FollowEvaluation())
         m_console->SetSelection(NULL);
@@ -6687,7 +6685,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
               new GroupCell(&(m_console->m_configuration), GC_TYPE_PAGEBREAK,
                             &m_console->m_cellPointers),
               m_console->GetHCaret());
-      m_console->RecalculateForce();
+      m_console->Recalculate();
       m_console->SetFocus();
       return;
       break;
@@ -6963,7 +6961,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
 int wxMaxima::SaveDocumentP()
 {
   wxString file, ext;
-  if (m_console->m_currentFile == wxEmptyString)
+  if ((m_console->m_currentFile == wxEmptyString) || (!m_fileNamed))
   {
     // Check if we want to save modified untitled documents on exit
     bool save = true;
