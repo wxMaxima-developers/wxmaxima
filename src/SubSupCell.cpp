@@ -222,7 +222,11 @@ wxString SubSupCell::ToOMML()
 
 wxString SubSupCell::ToXML()
 {
-  return _T("<ie><r>") + m_baseCell->ListToXML()
+  wxString flags;
+  if (m_forceBreakLine)
+    flags += wxT(" breakline=\"true\"");
+
+  return _T("<ie") + flags +wxT("><r>") + m_baseCell->ListToXML()
          + _T("</r><r>") + m_exptCell->ListToXML()
          + _T("</r><r>") + m_indexCell->ListToXML()
          + _T("</r></ie>");

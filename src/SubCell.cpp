@@ -180,13 +180,15 @@ wxString SubCell::ToOMML()
 
 wxString SubCell::ToXML()
 {
-  if (m_altCopyText == wxEmptyString)
-  {
-    return _T("<i><r>") + m_baseCell->ListToXML() + _T("</r><r>") +
-           m_indexCell->ListToXML() + _T("</r></i>");
-  }
-  return _T("<i altCopy=\"" + m_altCopyText + "\"><r>") + m_baseCell->ListToXML() + _T("</r><r>") +
-         m_indexCell->ListToXML() + _T("</r></i>");
+  wxString flags;
+  if (m_forceBreakLine)
+    flags += wxT(" breakline=\"true\"");
+
+  if (m_altCopyText != wxEmptyString)
+    flags += wxT(" altCopy=\"") + XMLescape(m_altCopyText) + wxT("\"");
+  
+  return wxT("<i") + flags + wxT("><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
+           m_indexCell->ListToXML() + wxT("</r></i>");
 }
 
 void SubCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)

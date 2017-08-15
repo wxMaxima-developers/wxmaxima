@@ -167,7 +167,11 @@ wxString AtCell::ToOMML()
 
 wxString AtCell::ToXML()
 {
-  return wxT("<at><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
+  wxString flags;
+  if (m_forceBreakLine)
+    flags += wxT(" breakline=\"true\"");
+  
+  return wxT("<at") + flags + wxT("><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
          m_indexCell->ListToXML() + wxT("</r></at>");
 }
 

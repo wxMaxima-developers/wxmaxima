@@ -372,7 +372,12 @@ wxString SumCell::ToXML()
   else if (m_over->ListToString() == wxEmptyString)
     type = wxT("lsum");
 
-  return _T("<sm type=\"") + type + wxT("\"><r>") + m_under->ListToXML() + _T("</r><r>") +
+
+  wxString flags;
+  if (m_forceBreakLine)
+    flags += wxT(" breakline=\"true\"");
+    
+  return wxT("<sm type=\"") + flags + type + wxT("\"><r>") + m_under->ListToXML() + _T("</r><r>") +
          m_over->ListToXML() + _T("</r><r>") +
          m_base->ListToXML() + _T("</r></sm>");
 }

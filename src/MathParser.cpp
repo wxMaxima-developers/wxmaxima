@@ -921,6 +921,8 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
       {
         if (node->GetAttribute(wxT("breakline"), wxT("false")) == wxT("true"))
           tmp->ForceBreakLine(true);
+        if (node->GetAttribute(wxT("tooltip"), wxEmptyString) != wxEmptyString)
+          tmp->SetToolTip(node->GetAttribute(wxT("tooltip"), wxEmptyString));
         if (cell == NULL)
           cell = tmp;
         else

@@ -321,7 +321,11 @@ wxString SqrtCell::ToXML()
 {
 //  if (m_isBroken)
 //    return wxEmptyString;
-  return _T("<q>") + m_innerCell->ListToXML() + _T("</q>");
+  wxString flags;
+  if (m_forceBreakLine)
+    flags += wxT(" breakline=\"true\"");
+
+  return wxT("<q") + flags + wxT(">") + m_innerCell->ListToXML() + wxT("</q>");
 }
 
 void SqrtCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)

@@ -182,7 +182,11 @@ wxString DiffCell::ToOMML()
 
 wxString DiffCell::ToXML()
 {
-  return _T("<d>") + m_diffCell->ListToXML() + m_baseCell->ListToXML() + _T("</d>");
+  wxString flags;
+  if (m_forceBreakLine)
+    flags += wxT(" breakline=\"true\"");
+
+  return wxT("<d") + flags + wxT(">") + m_diffCell->ListToXML() + m_baseCell->ListToXML() + _T("</d>");
 }
 
 void DiffCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)

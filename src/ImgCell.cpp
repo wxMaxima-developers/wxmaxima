@@ -275,8 +275,16 @@ wxString ImgCell::ToXML()
                                  m_image->GetCompressedImage().GetDataLen()
       );
   }
-  return (m_drawRectangle ? wxT("<img>") : wxT("<img rect=\"false\">")) +
-         basename + m_image->GetExtension() + wxT("</img>");
+
+  wxString flags;
+  if (m_forceBreakLine)
+    flags += wxT(" breakline=\"true\"");
+
+  if(!m_drawRectangle)
+    flags += wxT(" rect=\"false\"");
+  
+  return (wxT("<img") + flags + wxT(">") +
+          basename + m_image->GetExtension() + wxT("</img>"));
 }
 
 wxString ImgCell::WXMXGetNewFileName()

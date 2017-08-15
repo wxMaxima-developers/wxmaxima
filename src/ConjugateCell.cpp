@@ -179,7 +179,11 @@ wxString ConjugateCell::ToOMML()
 
 wxString ConjugateCell::ToXML()
 {
-  return wxT("<cj>") + m_innerCell->ListToXML() + wxT("</cj>");
+  wxString flags;
+  if (m_forceBreakLine)
+    flags += wxT(" breakline=\"true\"");
+
+  return wxT("<cj") + flags + wxT(">") + m_innerCell->ListToXML() + wxT("</cj>");
 }
 
 void ConjugateCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)

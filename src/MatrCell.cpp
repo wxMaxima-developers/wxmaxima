@@ -341,15 +341,19 @@ wxString MatrCell::ToOMML()
 
 wxString MatrCell::ToXML()
 {
+  wxString flags;
+  if (m_forceBreakLine)
+    flags += wxT(" breakline=\"true\"");
+
   wxString s = wxEmptyString;
   if (m_specialMatrix)
     s = wxString::Format(
-            wxT("<tb special=\"true\" inference=\"%s\" rownames=\"%s\" colnames=\"%s\">"),
+      wxT("<tb") + flags + wxT(" special=\"true\" inference=\"%s\" rownames=\"%s\" colnames=\"%s\">"),
             m_inferenceMatrix ? wxT("true") : wxT("false"),
             m_rowNames ? wxT("true") : wxT("false"),
             m_colNames ? wxT("true") : wxT("false"));
   else
-    s = wxT("<tb>");
+    s = wxT("<tb") +flags +wxT(">");
 
   for (int i = 0; i < m_matHeight; i++)
   {

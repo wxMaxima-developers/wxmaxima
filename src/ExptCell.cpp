@@ -235,7 +235,11 @@ wxString ExptCell::ToXML()
 {
 //  if (m_isBroken)
 //    return wxEmptyString;
-  return _T("<e><r>") + m_baseCell->ListToXML() + _T("</r><r>") +
+  wxString flags;
+  if (m_forceBreakLine)
+    flags += wxT(" breakline=\"true\"");
+
+  return wxT("<e") + flags + wxT("><r>") + m_baseCell->ListToXML() + _T("</r><r>") +
          m_powCell->ListToXML() + _T("</r></e>");
 }
 

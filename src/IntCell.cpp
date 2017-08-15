@@ -494,10 +494,14 @@ wxString IntCell::ToXML()
     var = m_var->ListToXML();
   var = wxT("<r>") + var + wxT("</r>");
 
-  if (m_intStyle == INT_DEF)
-    return wxT("<in>") + from + to + base + var + wxT("</in>");
-  else
-    return wxT("<in def=\"false\">") + base + var + wxT("</in>");
+  wxString flags;
+  if (m_forceBreakLine)
+    flags += wxT(" breakline=\"true\"");
+
+  if (m_intStyle != INT_DEF)
+    flags += wxT(" def=\"false\">");
+  
+  return wxT("<in") + flags + wxT(">") + from + to + base + var + wxT("</in>");
 }
 
 void IntCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)

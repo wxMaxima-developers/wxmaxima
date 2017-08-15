@@ -1144,6 +1144,7 @@ void MathCell::UnsetPen()
 void MathCell::CopyData(MathCell *s, MathCell *t)
 {
   t->m_altCopyText = s->m_altCopyText;
+  t->m_toolTip = s->m_toolTip;
   t->m_forceBreakLine = s->m_forceBreakLine;
   t->m_type = s->m_type;
   t->m_textStyle = s->m_textStyle;

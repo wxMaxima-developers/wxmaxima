@@ -209,6 +209,18 @@ void TextCell::SetValue(const wxString &text)
                     "integer.\n"
                     "Floating-point numbers are bound to contain small rounding errors "
                     "and aren't allowed as an array index.");
+    if(text.StartsWith(wxT(": improper argument: ")))
+    {
+      if((m_previous) && (m_previous->ToString() == wxT("at")))
+        m_toolTip = _("The second argument of at() isn't an equation or a list of "
+                      "equations. Most probably it was lacking an \"=\".");
+      else if((m_previous) && (m_previous->ToString() == wxT("subst")))
+        m_toolTip = _("The first argument of subst() isn't an equation or a list of "
+                      "equations. Most probably it was lacking an \"=\".");
+      else
+        m_toolTip = _("The argument of a function was of the wrong type. Most probably "
+                      "an equation was expected but was lacking an \"=\".");
+    }
   }
   m_alt = m_altJs = false;
 }
@@ -1235,7 +1247,10 @@ wxString TextCell::ToXML()
   if(m_userDefinedLabel != wxEmptyString)
     flags += wxT(" userdefinedlabel=\"") + XMLescape(m_userDefinedLabel) + wxT("\"");
 
-  return _T("<") + tag + flags + _T(">") + xmlstring + _T("</") + tag + _T(">");
+  if(m_toolTip != wxEmptyString)
+    flags += wxT(" tooltip=\"") + XMLescape(m_toolTip) + wxT("\"");
+
+  return wxT("<") + tag + flags + wxT(">") + xmlstring + wxT("</") + tag + wxT(">");
 }
 
 wxString TextCell::GetDiffPart()

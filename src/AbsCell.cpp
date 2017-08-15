@@ -184,7 +184,11 @@ wxString AbsCell::ToOMML()
 
 wxString AbsCell::ToXML()
 {
-  return wxT("<a>") + m_innerCell->ListToXML() + wxT("</a>");
+  wxString flags;
+  if (m_forceBreakLine)
+    flags += wxT(" breakline=\"true\"");
+  
+  return wxT("<a") +flags + wxT(">") + m_innerCell->ListToXML() + wxT("</a>");
 }
 
 void AbsCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)

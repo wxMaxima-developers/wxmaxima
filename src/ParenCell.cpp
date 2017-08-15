@@ -437,7 +437,10 @@ wxString ParenCell::ToXML()
 //  if( m_isBroken )
 //    return wxEmptyString;
   wxString s = m_innerCell->ListToXML();
-  return ((m_print) ? _T("<r><p>") + s + _T("</p></r>") : s);
+  wxString flags;
+  if (m_forceBreakLine)
+    flags += wxT(" breakline=\"true\"");
+  return ((m_print) ? _T("<r><") + flags + wxT("p>") + s + _T("</p></r>") : s);
 }
 
 void ParenCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)

@@ -349,6 +349,9 @@ wxString FracCell::ToXML()
   wxString diffStyle;
   if (m_fracStyle == FC_DIFF)
     diffStyle = wxT(" diffstyle=\"yes\"");
+  if (m_forceBreakLine)
+    diffStyle += wxT(" breakline=\"true\"");
+
   return _T("<") + s + diffStyle + _T("><r>") +
          m_num->ListToXML() + _T("</r><r>") +
          m_denom->ListToXML() + _T("</r></f>");

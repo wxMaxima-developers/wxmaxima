@@ -250,10 +250,12 @@ wxString SlideShow::ToXML()
     images += basename + m_images[i]->GetExtension() + wxT(";");
   }
 
+  wxString flags;
+  if (m_forceBreakLine)
+    flags += wxT(" breakline=\"true\"");
   if (m_framerate < 0)
-    return wxT("\n<slide>") + images + wxT("</slide>");
-  else
-    return wxT("\n<slide fr=\"") + wxString::Format(wxT("%i\">"), GetFrameRate()) + images + wxT("</slide>");
+    flags +=  wxString::Format(wxT(" fr=\"%i\">"), GetFrameRate());
+  return wxT("\n<slide") + flags + wxT(">") + images + wxT("</slide>");
 }
 
 wxSize SlideShow::ToImageFile(wxString file)
