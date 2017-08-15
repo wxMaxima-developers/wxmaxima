@@ -320,6 +320,7 @@ MathCell *MathParser::ParseFracTag(wxXmlNode *node)
   frac->SetType(m_ParserStyle);
   frac->SetStyle(TS_VARIABLE);
   frac->SetupBreakUps();
+  ParseCommonAttrs(node, frac);
   return frac;
 }
 
@@ -341,6 +342,7 @@ MathCell *MathParser::ParseDiffTag(wxXmlNode *node)
     diff->SetType(m_ParserStyle);
     diff->SetStyle(TS_VARIABLE);
   }
+  ParseCommonAttrs(node, diff);
   return diff;
 }
 
@@ -360,6 +362,7 @@ MathCell *MathParser::ParseSupTag(wxXmlNode *node)
   expt->SetPower(power);
   expt->SetType(m_ParserStyle);
   expt->SetStyle(TS_VARIABLE);
+  ParseCommonAttrs(node, expt);
   return expt;
 }
 
@@ -379,6 +382,7 @@ MathCell *MathParser::ParseSubSupTag(wxXmlNode *node)
   subsup->SetExponent(power);
   subsup->SetType(m_ParserStyle);
   subsup->SetStyle(TS_VARIABLE);
+  ParseCommonAttrs(node, subsup);
   return subsup;
 }
 
@@ -394,7 +398,7 @@ MathCell *MathParser::ParseSubTag(wxXmlNode *node)
   index->SetExponentFlag();
   sub->SetType(m_ParserStyle);
   sub->SetStyle(TS_VARIABLE);
-
+  ParseCommonAttrs(node, sub);
   return sub;
 }
 
@@ -410,6 +414,7 @@ MathCell *MathParser::ParseAtTag(wxXmlNode *node)
   at->SetIndex(HandleNullPointer(ParseTag(child, false)));
   at->SetType(m_ParserStyle);
   at->SetStyle(TS_VARIABLE);
+  ParseCommonAttrs(node, at);
   return at;
 }
 
@@ -424,6 +429,7 @@ MathCell *MathParser::ParseFunTag(wxXmlNode *node)
   fun->SetType(m_ParserStyle);
   fun->SetStyle(TS_VARIABLE);
   fun->SetArg(HandleNullPointer(ParseTag(child, false)));
+  ParseCommonAttrs(node, fun);
   return fun;
 }
 
@@ -474,18 +480,23 @@ MathCell *MathParser::ParseText(wxXmlNode *node, int style)
   if (retval == NULL)
     retval = new TextCell(NULL, m_configuration, m_cellPointers);
 
-  wxString breaklineattrib;
-  if (node != NULL)
-    breaklineattrib = node->GetAttribute(wxT("breakline"), wxT("false"));
-
-  if (breaklineattrib == wxT("true"))
-  {
-    if (retval)
-    {
-      retval->ForceBreakLine(true);
-    }
-  }
+  ParseCommonAttrs(node, retval);
   return retval;
+}
+
+void MathParser::ParseCommonAttrs(wxXmlNode *node, MathCell *cell)
+{
+  if(cell == NULL)
+    return;
+  if(node == NULL)
+    return;
+
+  if(node->GetAttribute(wxT("breakline"), wxT("false")) == wxT("true"))
+    cell->ForceBreakLine(true);
+  
+  wxString toolTip = node->GetAttribute(wxT("tooltip"), wxEmptyString);
+  if(toolTip != wxEmptyString)
+    cell->SetToolTip(toolTip);
 }
 
 MathCell *MathParser::ParseCharCode(wxXmlNode *node, int style)
@@ -506,6 +517,7 @@ MathCell *MathParser::ParseCharCode(wxXmlNode *node, int style)
     cell->SetStyle(style);
     cell->SetHighlight(m_highlight);
   }
+  ParseCommonAttrs(node, cell);
   return cell;
 }
 
@@ -520,6 +532,7 @@ MathCell *MathParser::ParseSqrtTag(wxXmlNode *node)
   cell->SetType(m_ParserStyle);
   cell->SetStyle(TS_VARIABLE);
   cell->SetHighlight(m_highlight);
+  ParseCommonAttrs(node, cell);
   return cell;
 }
 
@@ -532,6 +545,7 @@ MathCell *MathParser::ParseAbsTag(wxXmlNode *node)
   cell->SetType(m_ParserStyle);
   cell->SetStyle(TS_VARIABLE);
   cell->SetHighlight(m_highlight);
+  ParseCommonAttrs(node, cell);
   return cell;
 }
 
@@ -544,6 +558,7 @@ MathCell *MathParser::ParseConjugateTag(wxXmlNode *node)
   cell->SetType(m_ParserStyle);
   cell->SetStyle(TS_VARIABLE);
   cell->SetHighlight(m_highlight);
+  ParseCommonAttrs(node, cell);
   return cell;
 }
 
@@ -558,6 +573,7 @@ MathCell *MathParser::ParseParenTag(wxXmlNode *node)
   cell->SetStyle(TS_VARIABLE);
   if (node->GetAttributes() != NULL)
     cell->SetPrint(false);
+  ParseCommonAttrs(node, cell);
   return cell;
 }
 
@@ -573,6 +589,7 @@ MathCell *MathParser::ParseLimitTag(wxXmlNode *node)
   limit->SetBase(HandleNullPointer(ParseTag(child, false)));
   limit->SetType(m_ParserStyle);
   limit->SetStyle(TS_VARIABLE);
+  ParseCommonAttrs(node, limit);
   return limit;
 }
 
@@ -594,6 +611,7 @@ MathCell *MathParser::ParseSumTag(wxXmlNode *node)
   sum->SetBase(HandleNullPointer(ParseTag(child, false)));
   sum->SetType(m_ParserStyle);
   sum->SetStyle(TS_VARIABLE);
+  ParseCommonAttrs(node, sum);
   return sum;
 }
 
@@ -626,6 +644,7 @@ MathCell *MathParser::ParseIntTag(wxXmlNode *node)
     in->SetType(m_ParserStyle);
     in->SetStyle(TS_VARIABLE);
   }
+  ParseCommonAttrs(node, in);
   return in;
 }
 
@@ -662,6 +681,7 @@ MathCell *MathParser::ParseTableTag(wxXmlNode *node)
   matrix->SetType(m_ParserStyle);
   matrix->SetStyle(TS_VARIABLE);
   matrix->SetDimension();
+  ParseCommonAttrs(node, matrix);
   return matrix;
 }
 
@@ -919,10 +939,7 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
       // Append the cell we found (tmp) to the list of cells we parsed so far (cell).
       if (tmp != NULL)
       {
-        if (node->GetAttribute(wxT("breakline"), wxT("false")) == wxT("true"))
-          tmp->ForceBreakLine(true);
-        if (node->GetAttribute(wxT("tooltip"), wxEmptyString) != wxEmptyString)
-          tmp->SetToolTip(node->GetAttribute(wxT("tooltip"), wxEmptyString));
+        ParseCommonAttrs(node, tmp);
         if (cell == NULL)
           cell = tmp;
         else

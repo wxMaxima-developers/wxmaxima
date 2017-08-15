@@ -6531,6 +6531,8 @@ void wxMaxima::TryEvaluateNextInQueue()
       cell->SetType(MC_TYPE_ERROR);
       cell->SetParent(tmp);
       tmp->SetOutput(cell);
+      // Todo: The force shouldn't be needed, or should it?
+      m_console->RecalculateForce();
       tmp->GetInput()->SetCaretPosition(index);
       
       if (m_console->FollowEvaluation())
