@@ -254,7 +254,7 @@ wxString SlideShow::ToXML()
   if (m_forceBreakLine)
     flags += wxT(" breakline=\"true\"");
   if (m_framerate < 0)
-    flags +=  wxString::Format(wxT(" fr=\"%i\">"), GetFrameRate());
+    flags +=  wxString::Format(wxT(" fr=\"%i\""), GetFrameRate());
   return wxT("\n<slide") + flags + wxT(">") + images + wxT("</slide>");
 }
 
