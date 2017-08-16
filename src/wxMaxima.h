@@ -88,6 +88,12 @@ DECLARE_EVENT_TABLE()
 class wxMaxima : public wxMaximaFrame
 {
 public:
+
+  wxMaxima(wxWindow *parent, int id, const wxString title, const wxString configFile,
+           const wxPoint pos, const wxSize size = wxDefaultSize);
+  
+  ~wxMaxima();
+
   void CleanUp();                                  //!< shuts down server and client on exit
   //! An enum of individual IDs for all timers this class handles
   enum TimerIDs
@@ -123,11 +129,6 @@ public:
     Values <10000 mean: Auto-save is off.
   */
   long int m_autoSaveInterval;
-
-  wxMaxima(wxWindow *parent, int id, const wxString title,
-           const wxPoint pos, const wxSize size = wxDefaultSize);
-
-  ~wxMaxima();
 
   void ShowTip(bool force);
 
@@ -600,6 +601,8 @@ public:
   virtual void MacNewFile();
 
   virtual void MacOpenFile(const wxString &file);
+private:
+  wxString m_configFileName;
   DECLARE_EVENT_TABLE()
 };
 

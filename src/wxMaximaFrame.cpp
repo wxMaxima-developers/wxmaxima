@@ -37,10 +37,12 @@
 #include <wx/filename.h>
 
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
+                             const wxString configFile,
                              const wxPoint &pos, const wxSize &size,
                              long style) :
         wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
 {
+  m_configFileName = configFile,
   m_updateEvaluationQueueLengthDisplay = true;
   m_recentDocumentsMenu = NULL;
   m_userSymbols = NULL;
@@ -1128,7 +1130,15 @@ void wxMaximaFrame::ReReadConfig()
   wxConfigBase *config = wxConfig::Get();
   config->Flush();
   wxDELETE(config);
-  wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+  if (m_configFileName != wxEmptyString)
+    wxConfig::Set(new wxFileConfig(m_configFileName));
+  // Re-Reading the config isn't necessary on the Mac where all windows share the same
+  // window and on Windows where the registry is re-read every time the configuration
+  // is accessed.
+  #ifdef __WXGTK__
+  else
+    wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+  #endif  
 }    
 
 wxString wxMaximaFrame::GetTempAutosavefileName()
@@ -1174,7 +1184,6 @@ void wxMaximaFrame::RemoveTempAutosavefile()
 
 void wxMaximaFrame::AddRecentDocument(wxString file)
 {
-  #ifdef __WXGTK__
   // wxGTK uses wxFileConf. ...and wxFileConf loads the config file only once
   // on inintialisation => Let's reload the config file before adding recently
   // used documents in order to avoid overwriting documents other wxMaxima
@@ -1184,11 +1193,7 @@ void wxMaximaFrame::AddRecentDocument(wxString file)
   // the registry and is queried every time we request data while on Mac computers
   // all windows share a central wxConfig object and therefore the same recent
   // documents list.
-  wxConfigBase *config = wxConfig::Get();
-  config->Flush();
-  wxDELETE(config);
-  wxConfig::Set(new wxConfig(wxT("wxMaxima")));
-  #endif
+  ReReadConfig();
   
   // Now let's load the recent document list another wxMaxima instance might
   // have updated...

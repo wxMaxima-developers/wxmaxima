@@ -126,9 +126,9 @@ void wxMaxima::ConfigChanged()
 
 wxMaxima *MyApp::m_frame;
 
-wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
+wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxString configFile,
                    const wxPoint pos, const wxSize size) :
-        wxMaximaFrame(parent, id, title, pos, size)
+  wxMaximaFrame(parent, id, title, configFile, pos, size)
 {
   m_isActive = true;
   wxASSERT(m_outputPromptRegEx.Compile(wxT("<lbl>.*</lbl>")));

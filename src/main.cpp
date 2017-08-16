@@ -146,9 +146,7 @@ bool MyApp::OnInit()
                   {wxCMD_LINE_OPTION, "o", "open", "open a file"},
                   {wxCMD_LINE_SWITCH, "b", "batch",
                    "run the file and exit afterwards. Halts on questions and stops on errors."},
-#if defined __WXMSW__
-                  { wxCMD_LINE_OPTION, "f", "ini", "open an input file" },
-#endif
+                  { wxCMD_LINE_OPTION, "f", "ini", "use a specific configuration file" },
                   {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
                   {wxCMD_LINE_NONE}
           };
@@ -156,15 +154,14 @@ bool MyApp::OnInit()
   cmdLineParser.SetDesc(cmdLineDesc);
   cmdLineParser.Parse();
   wxString ini, file;
-#if defined __WXMSW__
+  // Attention: The config file is changed by wxMaximaFrame::wxMaximaFrame::ReReadConfig
   if (cmdLineParser.Found(wxT("f"),&ini))
+  {
     wxConfig::Set(new wxFileConfig(ini));
+    m_configFileName = ini;
+  }
   else
     wxConfig::Set(new wxConfig(wxT("wxMaxima")));
-#else
-  // Attention: The config file is changed by wxMaximaFrame::wxMaximaFrame::AddRecentDocument
-  wxConfig::Set(new wxConfig(wxT("wxMaxima")));
-#endif
 
   wxImage::AddHandler(new wxPNGHandler);
   wxImage::AddHandler(new wxXPMHandler);
@@ -339,7 +336,7 @@ void MyApp::NewWindow(wxString file, bool batchmode)
   x += topLevelWindows.GetCount() * 20;
   y += topLevelWindows.GetCount() * 20;
 
-  m_frame = new wxMaxima((wxFrame *) NULL, -1, _("wxMaxima"),
+  m_frame = new wxMaxima((wxFrame *) NULL, -1, _("wxMaxima"), m_configFileName,
                          wxPoint(x, y), wxSize(w, h));
 
   if (m == 1)

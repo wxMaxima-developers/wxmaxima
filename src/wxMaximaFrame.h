@@ -53,6 +53,14 @@ surrounding the worksheet.
 class wxMaximaFrame : public wxFrame
 {
 public:
+  wxMaximaFrame(wxWindow *parent, int id, const wxString &title, const wxString configFile,
+                const wxPoint &pos = wxDefaultPosition,
+                const wxSize &size = wxDefaultSize,
+                long style = wxDEFAULT_FRAME_STYLE);
+
+  /*! The destructor
+  */
+  ~wxMaximaFrame();
 
   /*! Shows or hides the toolbar
     \param show
@@ -383,18 +391,6 @@ public:
     menu_check_updates
   };
 
-  wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
-                const wxPoint &pos = wxDefaultPosition,
-                const wxSize &size = wxDefaultSize,
-                long style = wxDEFAULT_FRAME_STYLE);
-
-  /*! The destructor
-    
-    \ţodo Do we really need to delete m_history? I assume wxWidgets will do this for us
-    and we want to avoid a double free.
-  */
-  ~wxMaximaFrame();
-
   /*! Update the recent documents list
 
     Copies the string array containing the list of recent documents to the
@@ -589,6 +585,8 @@ private:
 
 #endif
 protected:
+  //! The name of the config file or wxEmptyString if the default is used.
+  wxString m_configFileName;
   //! Update the "user symbols" portion of the symbols pane.
   void UpdateUserSymbols();
   //! Do we need to update the display showing the evaluation queue length?
