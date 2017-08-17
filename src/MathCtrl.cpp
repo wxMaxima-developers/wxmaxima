@@ -4124,8 +4124,7 @@ void MathCtrl::OnTimer(wxTimerEvent &event)
     }
     break;
   default:
-    {
-      
+  {   
       SlideShow *slideshow = NULL;
 
       for(CellPointers::SlideShowTimersList::iterator it = m_cellPointers.m_slideShowTimers.begin();it != m_cellPointers.m_slideShowTimers.end() ; ++it)
@@ -4147,14 +4146,12 @@ void MathCtrl::OnTimer(wxTimerEvent &event)
         // Refresh the displayed bitmap
         wxRect rect = slideshow->GetRect();
         RequestRedraw(rect);
-        
-        // Set the slider to its new value
-        if (m_cellPointers.m_selectionStart == slideshow)
-          if(m_mainToolBar)
-          {
-            if (m_mainToolBar->m_plotSlider)
-              m_mainToolBar->m_plotSlider->SetValue(slideshow->GetDisplayedIndex());
-          }
+
+        if (m_mainToolBar)
+        {
+          if (m_mainToolBar->m_plotSlider)          
+            m_mainToolBar->UpdateSlider(slideshow);
+        }
       }
       break;
     }
