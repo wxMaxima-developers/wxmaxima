@@ -721,6 +721,8 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
       {
         int read;
         read = m_client->LastCount();
+
+        // For some reason our input buffer can actually contain NULL Chars...
         SanitizeSocketBuffer(m_inputBuffer, read);
         m_inputBuffer[read] = 0;
 
@@ -730,6 +732,10 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
 #else
         newChars = wxString(m_inputBuffer, *wxConvCurrent);
 #endif
+        // Stupid DOS and MAC line endings
+        newChars.Replace("\r\n","\n");
+        newChars.Replace("\r","\n");
+        
         if (IsPaneDisplayed(menu_pane_xmlInspector))
           m_xmlInspector->Add(newChars);
 
