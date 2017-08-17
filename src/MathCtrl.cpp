@@ -1608,7 +1608,8 @@ void MathCtrl::OnMouseWheel(wxMouseEvent &event)
       int rot = event.GetWheelRotation();
 
       SlideShow *tmp = dynamic_cast<SlideShow *>(m_cellPointers.m_selectionStart);
-
+      tmp->AnimationRunning(false);
+      
       if (rot > 0)
         tmp->SetDisplayedIndex((tmp->GetDisplayedIndex() + 1) % tmp->Length());
       else
