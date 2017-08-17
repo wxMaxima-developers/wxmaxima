@@ -99,12 +99,6 @@ public:
     return dynamic_cast<GroupCell *>(m_cellPointers->m_lastWorkingGroup);
   }
 
-  //! Mark this cell as being the last cell maxima was working on.
-  void IsLastWorkingGroup()
-  {
-    m_cellPointers->m_lastWorkingGroup = this;
-  }
-
   /*! Marks the cell that is under the mouse pointer.
 
     Is kept in GroupCell so every GroupCell can decide it is no more under the pointer
@@ -125,8 +119,6 @@ public:
   { return m_groupType; }
 
   void SetParent(MathCell *parent); // setting parent for all mathcells in GC
-  void SetWorking(bool working)
-  { m_working = working; }
 
   // selection methods
   void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
@@ -387,7 +379,6 @@ protected:
   MathCell *m_inputLabel;
   MathCell *m_output;
   bool m_hide;
-  bool m_working;
   int m_fontSize;
   int m_fontSize_Old;
   int m_mathFontSize;

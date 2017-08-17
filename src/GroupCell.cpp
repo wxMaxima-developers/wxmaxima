@@ -61,7 +61,6 @@ GroupCell::GroupCell(Configuration **config, int groupType, CellPointers *cellPo
   m_breakLine = true;
   m_type = MC_TYPE_GROUP;
   m_hide = false;
-  m_working = false;
   m_groupType = groupType;
   m_lastInOutput = NULL;
   m_appendedCells = NULL;

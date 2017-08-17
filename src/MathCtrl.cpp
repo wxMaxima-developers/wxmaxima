@@ -7185,16 +7185,10 @@ void MathCtrl::Animate(bool run)
 
 void MathCtrl::SetWorkingGroup(GroupCell *group)
 {
-  if (GetWorkingGroup() != NULL)
-    GetWorkingGroup()->SetWorking(false);
-
+  if(GetWorkingGroup() != NULL)
+    m_cellPointers.m_lastWorkingGroup = GetWorkingGroup();
+  
   m_cellPointers.SetWorkingGroup(group);
-
-  if (group != NULL)
-  {
-    group->SetWorking(true);
-    group->IsLastWorkingGroup();
-  }
 }
 
 bool MathCtrl::IsSelectionInWorking()
