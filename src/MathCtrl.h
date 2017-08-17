@@ -535,6 +535,8 @@ private:
   //! Is called if a action from the autocomplete menu is selected
   void OnComplete(wxCommandEvent &event);
 
+  //! The position the left mouse key was pressed at.
+  wxPoint m_leftDownPosition;
   wxPoint m_down;
   wxPoint m_up;
   wxPoint m_mousePoint;
@@ -988,7 +990,13 @@ public:
            m_cellPointers.m_selectionStart->GetType() == MC_TYPE_SLIDE;
   }
 
-  void Animate(bool run);
+  /*! Animate the current slide show
+
+    \param run 
+      - false: Stop the animation
+      - true: Run the animation
+  */
+  void Animate(bool run = true);
 
   void DivideCell();
 

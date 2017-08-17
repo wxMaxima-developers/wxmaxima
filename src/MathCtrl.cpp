@@ -1420,6 +1420,7 @@ void MathCtrl::OnMouseLeftInGc(wxMouseEvent &event, GroupCell *clickedInGc)
  */
 void MathCtrl::OnMouseLeftDown(wxMouseEvent &event)
 {
+  m_leftDownPosition = wxPoint(event.GetX(),event.GetY());
   ClearNotification();
 
   // During drag-and-drop We want to track the mouse position.
@@ -1571,7 +1572,13 @@ void MathCtrl::OnMouseLeftUp(wxMouseEvent &event)
   if (HasCapture())
     ReleaseMouse();
 
-  AnimationRunning(false);
+  if((GetSelectionStart() != NULL) && (GetSelectionStart() == GetSelectionEnd()) &&
+     (m_leftDownPosition == wxPoint(event.GetX(),event.GetY())) &&
+     (GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
+    Animate(!AnimationRunning());
+  else
+    AnimationRunning(false);
+  
   m_leftDown = false;
   m_mouseDrag = false;
   m_clickInGC = NULL; // pointer to NULL to prevent crashes if the cell is deleted
@@ -4258,7 +4265,7 @@ wxSize MathCtrl::CopyToFile(wxString file, MathCell *start, MathCell *end,
   Bitmap bmp(&m_configuration, scale);
   bmp.SetData(tmp);
 
-  wxSize retval = bmp.ToFile(file);;
+  wxSize retval = bmp.ToFile(file);
 
   return retval;
 }

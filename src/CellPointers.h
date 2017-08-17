@@ -123,13 +123,13 @@ public:
   void ResetKeyboardSelectionStart()
   { m_cellKeyboardSelectionStartedIn = NULL; }
   
-  /*! The first cell of the currently selected range of groupCells.
+  /*! The first cell of the currently selected range of Cells.
     
-    NULL, when no GroupCells are selected and NULL, if only stuff inside a GroupCell
+    NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
     is selected and therefore the selection is handled by EditorCell; This cell is 
     always above m_selectionEnd.
     
-    See also m_hCaretPositionStart
+    See also m_hCaretPositionStart and m_selectionEnd
   */
   MathCell *m_selectionStart;
   /*! The last cell of the currently selected range of groupCells.
@@ -144,8 +144,15 @@ public:
   //! The cell currently under the mouse pointer
   MathCell *m_cellUnderPointer;
   
+  /*! The last cell of the currently selected range of Cells.
+    
+    NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
+    is selected and therefore the selection is handled by EditorCell; This cell is 
+    always above m_selectionEnd.
+    
+    See also m_hCaretPositionStart, m_hCaretPositionEnd and m_selectionStart.
+  */
   MathCell *m_selectionEnd;
-
 };
 
 #endif
