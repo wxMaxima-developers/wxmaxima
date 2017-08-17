@@ -148,11 +148,6 @@ MathCell *SlideShow::Copy()
 
 SlideShow::~SlideShow()
 {
-  // Stop and unregister the timer.
-  m_timer->Stop();
-  m_cellPointers->m_slideShowTimers.erase(this);
-  delete m_timer;
-
   for (int i = 0; i < m_size; i++)
     if (m_images[i] != NULL)
     {
@@ -160,10 +155,15 @@ SlideShow::~SlideShow()
       m_images[i] = NULL;
     }
   MarkAsDeleted();
+  delete m_timer;
 }
 
 void SlideShow::MarkAsDeleted()
 {
+  // Stop and unregister the timer.
+  m_timer->Stop();
+  m_cellPointers->m_slideShowTimers.erase(this);
+
   if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
     m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
   if(this == m_cellPointers->m_cellUnderPointer)
