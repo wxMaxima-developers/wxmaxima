@@ -731,11 +731,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
         newChars = wxString(m_inputBuffer, wxConvUTF8);
 #else
         newChars = wxString(m_inputBuffer, *wxConvCurrent);
-#endif
-        // Stupid DOS and MAC line endings
-        newChars.Replace("\r\n","\n");
-        newChars.Replace("\r","\n");
-        
+#endif        
         if (IsPaneDisplayed(menu_pane_xmlInspector))
           m_xmlInspector->Add(newChars);
 
@@ -1214,6 +1210,12 @@ void wxMaxima::ReadMiscText(wxString &data)
 
   wxString miscText = data.Left(miscTextLen);
   data = data.Right(data.Length() - miscTextLen);
+
+  // Stupid DOS and MAC line endings. The first of these commands won't work
+  // if the "\r" is the last char of a packet containing a part of a very long
+  // string. But running a search-and-replace
+  miscText.Replace("\r\n","\n");
+  miscText.Replace("\r","\n");
 
   // A version of the text where each line begins with non-whitespace and whitespace
   // characters are merged.
