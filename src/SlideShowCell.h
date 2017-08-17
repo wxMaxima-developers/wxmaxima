@@ -32,6 +32,7 @@
 #include "Image.h"
 #include "CellPointers.h"
 #include <wx/image.h>
+#include <wx/timer.h>
 
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
@@ -108,12 +109,17 @@ public:
    */
   int SetFrameRate(int Freq);
 
+  bool AnimationRunning() {return m_animationRunning;}
+  wxTimer *AnimationRunning(bool run);
 protected:
+  wxTimer *m_timer;
   /*! The framerate of this cell.
 
     Can contain a frame rate [in Hz] or a -1, which means: Use the default frame rate.
   */
   int m_framerate;
+
+  bool m_animationRunning;
   int m_size;
   int m_displayed;
   wxFileSystem *m_fileSystem;

@@ -388,8 +388,7 @@ private:
   enum TimerIDs
   {
     TIMER_ID,
-    CARET_TIMER_ID,
-    ANIMATION_TIMER_ID
+    CARET_TIMER_ID
   };
 
   //! Add a line to a file.
@@ -581,10 +580,6 @@ private:
   wxTimer m_timer;
   //! The cursor blink rate. Also the timeout for redrawing the worksheet
   wxTimer m_caretTimer;
-  //! The animation playback timer
-  wxTimer m_animationTimer;
-  //! True only when an animation is running
-  bool m_animate;
   wxBitmap m_memory;
   //! True if no changes have to be saved.
   bool m_saved;
@@ -1171,14 +1166,6 @@ public:
       - <0:  Advance the animation by one step.
    */
   void StepAnimation(int change = 1);
-
-  //! Query if an animation is currently running
-  bool AnimationRunning()
-  { return m_animate; }
-
-  //! Tell if an animation should run running
-  void AnimationRunning(bool state)
-  { m_animate = state; }
 
   //! Is the editor active in the last cell of the worksheet?
   bool IsActiveInLast()

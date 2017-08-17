@@ -46,6 +46,10 @@ SlideShow::SlideShow(MathCell *parent, Configuration **config, CellPointers *cel
         parent, config)
 {
   m_cellPointers = cellPointers;
+  m_timer = new wxTimer(m_cellPointers->GetMathCtrl(), wxNewId());
+  // Tell MathCtrl about our timer.
+  m_cellPointers->m_slideShowTimers[this] = m_timer->GetId();
+  m_animationRunning = true;
   m_size = m_displayed = 0;
   m_type = MC_TYPE_SLIDE;
   m_fileSystem = filesystem; // NULL when not loading from wxmx
@@ -53,7 +57,6 @@ SlideShow::SlideShow(MathCell *parent, Configuration **config, CellPointers *cel
   m_imageBorderWidth = 1;
   m_drawBoundingBox = false;
 }
-
 int SlideShow::GetFrameRate()
 {
   int framerate = 2;
@@ -72,6 +75,19 @@ int SlideShow::GetFrameRate()
     framerate = 0;
   return (framerate);
 }
+
+wxTimer *SlideShow::AnimationRunning(bool run)
+{
+  if(!run)
+    m_timer->Stop();
+  else
+  {
+    if(!m_timer->IsRunning())
+      m_timer->StartOnce(1000 / GetFrameRate());
+  }
+  m_animationRunning = run;
+}
+
 
 int SlideShow::SetFrameRate(int Freq)
 {
@@ -132,6 +148,11 @@ MathCell *SlideShow::Copy()
 
 SlideShow::~SlideShow()
 {
+  // Stop and unregister the timer.
+  m_timer->Stop();
+  m_cellPointers->m_slideShowTimers.erase(this);
+  delete m_timer;
+
   for (int i = 0; i < m_size; i++)
     if (m_images[i] != NULL)
     {
@@ -184,6 +205,15 @@ void SlideShow::Draw(wxPoint point, int fontsize)
 {
   if (DrawThisCell(point) && (m_images[m_displayed] != NULL))
   {
+    // Start the timer once the animation appears on the screen.
+    // But start it only once: Else the animation could be refreshed
+    // more frequent than it can be drawn. Each update of the animation
+    // will trigger this function and will trigger the animation to be
+    // restarted anyway.
+    //
+    // If the animation leaves the screen the timer is stopped automatically.
+    if((!m_timer->IsRunning()) && m_animationRunning)
+      m_timer->StartOnce(1000 / GetFrameRate());
     MathCell::Draw(point, fontsize);
     m_images[m_displayed]->Recalculate();
     
@@ -222,7 +252,7 @@ void SlideShow::Draw(wxPoint point, int fontsize)
 
 wxString SlideShow::ToString()
 {
-  return wxT(" << Graphics >> ");
+  return wxT(" << Animation >> ");
 }
 
 wxString SlideShow::ToTeX()

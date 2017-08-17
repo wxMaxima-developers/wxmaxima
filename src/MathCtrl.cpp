@@ -71,7 +71,7 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
 #if defined __WXMSW__
                 | wxSUNKEN_BORDER
 #endif
-        )
+                  ),m_cellPointers(this)
 {
   m_pointer_x = -1;
   m_pointer_y = -1;
@@ -116,8 +116,6 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
   m_blinkDisplayCaret = true;
   m_timer.SetOwner(this, TIMER_ID);
   m_caretTimer.SetOwner(this, CARET_TIMER_ID);
-  m_animationTimer.SetOwner(this, ANIMATION_TIMER_ID);
-  AnimationRunning(false);
   m_saved = false;
   AdjustSize();
   m_autocompleteTemplates = false;
@@ -818,7 +816,6 @@ void MathCtrl::ClearDocument()
   DestroyTree();
 
   m_blinkDisplayCaret = true;
-  AnimationRunning(false);
   m_saved = false;
   UpdateTableOfContents();
 
@@ -1433,8 +1430,6 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent &event)
 
   m_cellPointers.ResetSearchStart();
 
-  AnimationRunning(false);
-
   CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_down.x, &m_down.y);
 
   if (m_tree == NULL)
@@ -1575,9 +1570,8 @@ void MathCtrl::OnMouseLeftUp(wxMouseEvent &event)
   if((GetSelectionStart() != NULL) && (GetSelectionStart() == GetSelectionEnd()) &&
      (m_leftDownPosition == wxPoint(event.GetX(),event.GetY())) &&
      (GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
-    Animate(!AnimationRunning());
-  else
-    AnimationRunning(false);
+    dynamic_cast<SlideShow *>(GetSelectionStart())->AnimationRunning(
+      !dynamic_cast<SlideShow *>(GetSelectionStart())->AnimationRunning());
   
   m_leftDown = false;
   m_mouseDrag = false;
@@ -3466,7 +3460,8 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
       m_cellPointers.m_selectionStart->GetType() == MC_TYPE_SLIDE &&
       ccode == WXK_SPACE)
   {
-    Animate(!AnimationRunning());
+    dynamic_cast<SlideShow *>(m_cellPointers.m_selectionStart)->AnimationRunning(
+      !dynamic_cast<SlideShow *>(m_cellPointers.m_selectionStart)->AnimationRunning());
     return;
   }
 
@@ -3626,8 +3621,10 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
 
     case WXK_UP:
     case WXK_LEFT:
-      if ((CanAnimate()) && !AnimationRunning())
+      if (CanAnimate())
       {
+        SlideShow *slideShow = dynamic_cast<SlideShow *>(GetSelectionStart());
+        slideShow->AnimationRunning(false);
         StepAnimation(-1);
         break;
       }
@@ -3705,8 +3702,10 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
 
     case WXK_DOWN:
     case WXK_RIGHT:
-      if ((CanAnimate()) && !AnimationRunning())
+      if (CanAnimate())
       {
+        SlideShow *slideShow = dynamic_cast<SlideShow *>(GetSelectionStart());
+        slideShow->AnimationRunning(false);
         StepAnimation(1);
         break;
       }
@@ -4024,28 +4023,31 @@ void MathCtrl::OnMouseEnter(wxMouseEvent &event)
 
 void MathCtrl::StepAnimation(int change)
 {
-  SlideShow *tmp = dynamic_cast<SlideShow *>(m_cellPointers.m_selectionStart);
-
-  int pos = tmp->GetDisplayedIndex() + change;
-  // Change the bitmap
-  if (pos < 0)
-    pos = tmp->Length() - 1;
-  if (pos >= tmp->Length())
-    pos = 0;
-  tmp->SetDisplayedIndex(pos);
-
-  // Refresh the displayed bitmap
-  wxRect rect = m_cellPointers.m_selectionStart->GetRect();
-  RequestRedraw(rect);
-
-  // Set the slider to its new value
-  if (m_mainToolBar)
-    if (m_mainToolBar->m_plotSlider)
-      m_mainToolBar->m_plotSlider->SetValue(tmp->GetDisplayedIndex());
-
-  // Rearm the animation timer if necessary.
-  if (AnimationRunning())
-    m_animationTimer.StartOnce(1000 / tmp->GetFrameRate());
+  if((GetSelectionStart() != NULL) && (GetSelectionStart() == GetSelectionEnd()) &&
+     (GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
+  {
+    SlideShow *tmp = dynamic_cast<SlideShow *>(m_cellPointers.m_selectionStart);
+    int pos = tmp->GetDisplayedIndex() + change;
+    
+    if(change != 0)
+    {
+      // Change the bitmap
+      if (pos < 0)
+        pos = tmp->Length() - 1;
+      if (pos >= tmp->Length())
+        pos = 0;
+      tmp->SetDisplayedIndex(pos);
+      
+      // Refresh the displayed bitmap
+      wxRect rect = m_cellPointers.m_selectionStart->GetRect();
+      RequestRedraw(rect);
+      
+      // Set the slider to its new value
+      if (m_mainToolBar)
+        if (m_mainToolBar->m_plotSlider)
+          m_mainToolBar->m_plotSlider->SetValue(tmp->GetDisplayedIndex());
+    }
+  }
 }
 
 void MathCtrl::OnTimer(wxTimerEvent &event)
@@ -4073,18 +4075,8 @@ void MathCtrl::OnTimer(wxTimerEvent &event)
       Scroll((currX + dx * 2) / m_scrollUnit, (currY + dy * 2) / m_scrollUnit);
       m_timer.Start(50, true);
     }
-      break;
-    case ANIMATION_TIMER_ID:
-    {
-      if (CanAnimate())
-      {
-        StepAnimation();
-      }
-      else
-        AnimationRunning(false);
-    }
-      break;
-    case CARET_TIMER_ID:
+    break;
+  case CARET_TIMER_ID:
     {
       int virtualsize_x;
       int virtualsize_y;
@@ -4129,7 +4121,42 @@ void MathCtrl::OnTimer(wxTimerEvent &event)
       if (!m_hasFocus)
         m_caretTimer.Stop();
     }
+    break;
+  default:
+    {
+      
+      SlideShow *slideshow = NULL;
+
+      for(CellPointers::SlideShowTimersList::iterator it = m_cellPointers.m_slideShowTimers.begin();it != m_cellPointers.m_slideShowTimers.end() ; ++it)
+      {
+        if(it->second == event.GetId())
+        {
+          slideshow = (SlideShow *) it->first;
+          break;
+        }
+      }
+      if(slideshow != NULL)
+      {
+        int pos = slideshow->GetDisplayedIndex() + 1;
+        
+        if (pos >= slideshow->Length())
+          pos = 0;
+        slideshow->SetDisplayedIndex(pos);
+        
+        // Refresh the displayed bitmap
+        wxRect rect = slideshow->GetRect();
+        RequestRedraw(rect);
+        
+        // Set the slider to its new value
+        if (m_cellPointers.m_selectionStart == slideshow)
+          if(m_mainToolBar)
+          {
+            if (m_mainToolBar->m_plotSlider)
+              m_mainToolBar->m_plotSlider->SetValue(slideshow->GetDisplayedIndex());
+          }
+      }
       break;
+    }
   }
 }
 
@@ -7151,23 +7178,8 @@ void MathCtrl::Animate(bool run)
 {
   if (CanAnimate())
   {
-    if (run)
-    {
-      SlideShow *tmp = dynamic_cast<SlideShow *>(m_cellPointers.m_selectionStart);
-      AnimationRunning(true);
-      m_animationTimer.StartOnce(1000 / tmp->GetFrameRate());
-      StepAnimation();
-    }
-    else
-    {
-      AnimationRunning(false);
-      m_animationTimer.Stop();
-    }
-  }
-  else
-  {
-    AnimationRunning(false);
-    m_animationTimer.Stop();
+    SlideShow *slideShow = dynamic_cast<SlideShow *>(GetSelectionStart());
+    slideShow->AnimationRunning(run);
   }
 }
 
@@ -8100,9 +8112,7 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
                 EVT_MOTION(MathCtrl::OnMouseMotion)
                 EVT_ENTER_WINDOW(MathCtrl::OnMouseEnter)
                 EVT_LEAVE_WINDOW(MathCtrl::OnMouseExit)
-                EVT_TIMER(TIMER_ID, MathCtrl::OnTimer)
-                EVT_TIMER(CARET_TIMER_ID, MathCtrl::OnTimer)
-                EVT_TIMER(ANIMATION_TIMER_ID, MathCtrl::OnTimer)
+                EVT_TIMER(wxID_ANY, MathCtrl::OnTimer)
                 EVT_KEY_DOWN(MathCtrl::OnKeyDown)
                 EVT_CHAR(MathCtrl::OnChar)
                 EVT_ERASE_BACKGROUND(MathCtrl::OnEraseBackground)

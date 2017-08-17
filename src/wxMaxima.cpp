@@ -2975,7 +2975,8 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &event)
   // start/stop button instead.
   if (m_console->CanAnimate())
   {
-    if (m_console->AnimationRunning())
+    SlideShow *slideShow = dynamic_cast<SlideShow *>(m_console->GetSelectionStart());
+    if (slideShow->AnimationRunning())
       m_console->m_mainToolBar->AnimationButtonState(ToolBar::Running);
     else
       m_console->m_mainToolBar->AnimationButtonState(ToolBar::Stopped);
@@ -3565,7 +3566,8 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
     case ToolBar::tb_animation_startStop:
       if (m_console->CanAnimate())
       {
-        if (m_console->AnimationRunning())
+        SlideShow *slideShow = dynamic_cast<SlideShow *>(m_console->GetSelectionStart());
+        if (slideShow->AnimationRunning())
           m_console->Animate(false);
         else
           m_console->Animate(true);
@@ -3573,8 +3575,11 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
       break;
 
     case MathCtrl::popid_animation_start:
-      if (m_console->CanAnimate() && !m_console->AnimationRunning())
-        m_console->Animate(true);
+      if (m_console->CanAnimate())
+      {
+        SlideShow *slideShow = dynamic_cast<SlideShow *>(m_console->GetSelectionStart());
+        slideShow->AnimationRunning(true);
+      }
       break;
 
     default:
@@ -6810,15 +6815,14 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
 
 void wxMaxima::SliderEvent(wxScrollEvent &ev)
 {
-  if (m_console->AnimationRunning())
-    m_console->Animate(false);
+  SlideShow *slideShow = dynamic_cast<SlideShow *>(m_console->GetSelectionStart());
+  slideShow->AnimationRunning(false);
 
-  SlideShow *cell = dynamic_cast<SlideShow *>(m_console->GetSelectionStart());
-  if (cell != NULL)
+  if (slideShow != NULL)
   {
-    cell->SetDisplayedIndex(ev.GetPosition());
+    slideShow->SetDisplayedIndex(ev.GetPosition());
 
-    wxRect rect = cell->GetRect();
+    wxRect rect = slideShow->GetRect();
     m_console->RequestRedraw(rect);
   }
 }

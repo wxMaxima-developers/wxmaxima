@@ -22,6 +22,8 @@
 #define CELLPOINTERS_H
 
 #include <wx/wx.h>
+#include <wx/hashmap.h>
+#include <wx/scrolwin.h>
 #include "MathCell.h"
 #include <list>
 
@@ -34,7 +36,7 @@ per-worksheet structure.
 class CellPointers
 {
 public:
-  CellPointers();
+  CellPointers(wxScrolledCanvas *mathCtrl);
   /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
     
     \param resortToLast true = if we already have set the cell maxima works on to NULL
@@ -153,6 +155,14 @@ public:
     See also m_hCaretPositionStart, m_hCaretPositionEnd and m_selectionStart.
   */
   MathCell *m_selectionEnd;
+  WX_DECLARE_VOIDPTR_HASH_MAP( int, SlideShowTimersList);
+  SlideShowTimersList m_slideShowTimers;
+
+  wxScrolledCanvas *GetMathCtrl(){return m_mathCtrl;}
+
+private:
+  //! The function to call if an animation has to be stepped.
+  wxScrolledCanvas *m_mathCtrl;
 };
 
 #endif

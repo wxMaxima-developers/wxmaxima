@@ -27,8 +27,9 @@
 
 #include "CellPointers.h"
 
-CellPointers::CellPointers()
+CellPointers::CellPointers(wxScrolledCanvas *mathCtrl)
 {
+  m_mathCtrl = mathCtrl;
   m_cellMouseSelectionStartedIn = NULL;
   m_cellKeyboardSelectionStartedIn = NULL;
   m_cellUnderPointer = NULL;
