@@ -339,13 +339,15 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
   dcm.SelectObject(m_memory);
   dcm.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
   dcm.Clear();
-  PrepareDC(dcm);
   dcm.SetMapMode(wxMM_TEXT);
   dcm.SetBackgroundMode(wxTRANSPARENT);
 
-  m_configuration->SetContext(dcm);
   wxGCDC antiAliassingDC(dcm);
+  
   PrepareDC(antiAliassingDC);
+  PrepareDC(dcm);
+  
+  m_configuration->SetContext(dcm);
   m_configuration->SetAntialiassingDC(antiAliassingDC);
   m_configuration->SetBounds(top, bottom);
   int fontsize = m_configuration->GetDefaultFontSize(); // apply zoomfactor to defaultfontsize
@@ -6969,19 +6971,19 @@ void MathCtrl::PasteFromClipboard()
         SetHCaret(end);
       }
     }
-    // Check if the clipboard contains an image.
-    else if (wxTheClipboard->IsSupported(wxDF_BITMAP))
+  }
+  // Check if the clipboard contains an image.
+  else if (wxTheClipboard->IsSupported(wxDF_BITMAP))
+  {
+    OpenHCaret(wxEmptyString, GC_TYPE_IMAGE);
+    GroupCell *group = dynamic_cast<GroupCell *>(GetActiveCell()->GetParent());
+    
+    if (group != NULL)
     {
-      OpenHCaret(wxEmptyString, GC_TYPE_IMAGE);
-      GroupCell *group = dynamic_cast<GroupCell *>(GetActiveCell()->GetParent());
-      
-      if (group != NULL)
-      {
-        wxBitmapDataObject bitmap;
-        wxTheClipboard->GetData(bitmap);
-        ImgCell *ic = new ImgCell(group, &m_configuration, &m_cellPointers, bitmap.GetBitmap());
-        group->AppendOutput(ic);
-      }
+      wxBitmapDataObject bitmap;
+      wxTheClipboard->GetData(bitmap);
+      ImgCell *ic = new ImgCell(group, &m_configuration, &m_cellPointers, bitmap.GetBitmap());
+      group->AppendOutput(ic);
     }
   }
 
