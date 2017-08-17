@@ -899,6 +899,8 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
           if (framerate.ToLong(&fr))
             slideShow->SetFrameRate(fr);
         }
+        if (node->GetAttribute(wxT("running"), wxT("true")) == wxT("false"))
+          slideShow->AnimationRunning(false);
         while (tokens.HasMoreTokens())
         {
           wxString token = tokens.GetNextToken();

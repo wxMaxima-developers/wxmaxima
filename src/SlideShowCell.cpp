@@ -283,6 +283,10 @@ wxString SlideShow::ToXML()
   wxString flags;
   if (m_forceBreakLine)
     flags += wxT(" breakline=\"true\"");
+  if (m_animationRunning)
+    flags += wxT(" running=\"true\"");
+  else
+    flags += wxT(" running=\"false\"");
   if (m_framerate < 0)
     flags +=  wxString::Format(wxT(" fr=\"%i\""), GetFrameRate());
   return wxT("\n<slide") + flags + wxT(">") + images + wxT("</slide>");
