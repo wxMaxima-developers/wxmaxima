@@ -6,7 +6,7 @@
 
 ;; wxMaxima xml format (based on David Drysdale MathML printing)
 ;; Andrej Vodopivec,  2004-2014
-;; Gunter Königsmann, 2014-2015
+;; Gunter Königsmann, 2014-2017
 
 ;; MathML-printing
 ;; Created by David Drysdale (DMD), December 2002/January 2003
@@ -32,6 +32,7 @@
 
 (defvar $wxfilename "")
 (defvar $wxdirname "")
+(defvar $wxanimate_autoplay nil)
 
 (defun $wxstatusbar (status)
   (format t "<statusbar>~a</statusbar>~%" status))
@@ -1389,9 +1390,9 @@
 (defvar $wxanimate_framerate *default-framerate*)
 (defun slide-tag (images)
   (if (eql *default-framerate* $wxanimate_framerate)
-      ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide"))
-      ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide"
-                    (format nil "fr=\"~a\"" $wxanimate_framerate)))))
+      ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide" (if (eql $wxanimate_autoplay 't) "running=\"true\"" "running=\"false\"")))
+      ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide" (if (eql $wxanimate_autoplay 't) (format nil "fr=\"~a\" slide running=\"true\"" $wxanimate_framerate)  (format nil "fr=\"~a\" slide running=\"true\"" $wxanimate_framerate))
+                    ))))
 
 (defun wxanimate (scene)
   (let* ((scene (cdr scene))

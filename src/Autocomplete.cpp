@@ -83,6 +83,7 @@ bool AutoComplete::LoadSymbols(wxString file)
 
   /// Add wxMaxima functions
   m_wordList[command].Add(wxT("wxanimate_framerate"));
+  m_wordList[command].Add(wxT("wxanimate_autoplay"));
   m_wordList[command].Add(wxT("wxplot_pngcairo"));
   m_wordList[command].Add(wxT("set_display"));
   m_wordList[command].Add(wxT("wxplot2d"));
