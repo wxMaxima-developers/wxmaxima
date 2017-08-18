@@ -98,6 +98,7 @@ bool AutoComplete::LoadSymbols(wxString file)
   m_wordList[command].Add(wxT("with_slider"));
   m_wordList[tmplte].Add(wxT("with_slider(<a_var>,<a_list>,<expr>,<x_range>)"));
   m_wordList[command].Add(wxT("with_slider_draw"));
+  m_wordList[command].Add(wxT("with_slider_draw2d"));
   m_wordList[command].Add(wxT("with_slider_draw3d"));
   m_wordList[command].Add(wxT("wxdraw"));
   m_wordList[command].Add(wxT("wxdraw2d"));
