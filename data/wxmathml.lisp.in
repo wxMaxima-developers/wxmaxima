@@ -1391,7 +1391,7 @@
 (defun slide-tag (images)
   (if (eql *default-framerate* $wxanimate_framerate)
       ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide" (if (eql $wxanimate_autoplay 't) "running=\"true\"" "running=\"false\"")))
-      ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide" (if (eql $wxanimate_autoplay 't) (format nil "fr=\"~a\" running=\"true\"" $wxanimate_framerate)  (format nil "fr=\"~a\" slide running=\"true\"" $wxanimate_framerate))
+      ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide" (if (eql $wxanimate_autoplay 't) (format nil "fr=\"~a\" running=\"true\"" $wxanimate_framerate)  (format nil "fr=\"~a\" running=\"true\"" $wxanimate_framerate))
                     ))))
 
 (defun wxanimate (scene)
