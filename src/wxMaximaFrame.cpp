@@ -121,7 +121,7 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
           SetStatusText(_("Maxima has a question"), 1);
           break;
         case waiting:
-          m_console->SetWorkingGroup(NULL);
+          m_console->m_cellPointers.SetWorkingGroup(NULL);
           // If we evaluated a cell that produces no output we still want the
           // cell to be unselected after evaluating it.
           if (m_console->FollowEvaluation())
@@ -150,6 +150,7 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
         case wait_for_start:
           m_MenuBar->Enable(menu_remove_output, false);
           SetStatusText(_("Maxima started. Waiting for connection..."), 1);
+          break;
       }
     }
   }

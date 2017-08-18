@@ -1171,9 +1171,6 @@ public:
   bool IsActiveInLast()
   { return m_cellPointers.m_activeCell != NULL && m_cellPointers.m_activeCell->GetParent() == m_last; }
 
-  //! Informs the worksheet which GroupCell maxima is currently working in
-  void SetWorkingGroup(GroupCell *group);
-
   //! Returns the last cell of the worksheet
   GroupCell *GetLastCell()
   {
@@ -1349,13 +1346,6 @@ public:
   void SetActiveCellText(wxString text);
 
   bool InsertText(wxString text);
-
-  /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
-    
-    \param resortToLast true = if we already have set the cell maxima works on to NULL
-    use the last cell maxima was known to work on.
-  */
-  GroupCell *GetWorkingGroup(bool resortToLast = false);
   
   void OpenNextOrCreateCell();
 
@@ -1408,6 +1398,13 @@ public:
     \todo Currently scrolls to the GroupCell the question is in, not to the actual question.
    */
   void OpenQuestionCaret(wxString txt = wxT(""));
+
+  /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
+    
+    \param resortToLast true = if we already have set the cell maxima works on to NULL
+    use the last cell maxima was known to work on.
+  */
+  GroupCell *GetWorkingGroup(bool resortToLast = false);
 
 protected:
   void UpdateConfigurationClientSize();

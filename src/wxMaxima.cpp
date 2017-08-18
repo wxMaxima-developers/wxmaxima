@@ -223,7 +223,8 @@ wxMaxima::~wxMaxima()
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
 
-  wxDELETE(m_inputBuffer);
+  if(m_inputBuffer != NULL)
+    delete [] m_inputBuffer;
   m_inputBuffer = NULL;
   wxDELETE(m_printData);
   m_printData = NULL;
@@ -675,7 +676,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
     ConsoleAppend(_("Refusing to send cell to maxima: ") +
                   parenthesisError + wxT("\n"),
                   MC_TYPE_ERROR);
-    m_console->SetWorkingGroup(NULL);
+    m_console->m_cellPointers.SetWorkingGroup(NULL);
   }
 }
 
@@ -788,7 +789,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     case wxSOCKET_LOST:
       m_statusBar->NetworkStatus(StatusBar::offline);
       SetBatchMode(false);
-      m_console->SetWorkingGroup(NULL);
+      m_console->m_cellPointers.SetWorkingGroup(NULL);
       m_console->SetSelection(NULL);
       m_console->SetActiveCell(NULL);
       m_pid = -1;
@@ -953,7 +954,7 @@ bool wxMaxima::StartMaxima(bool force)
     }
 
     m_console->QuestionAnswered();
-    m_console->SetWorkingGroup(NULL);
+    m_console->m_cellPointers.SetWorkingGroup(NULL);
 
     m_variablesOK = false;
     wxString command = GetCommand();
@@ -1441,7 +1442,7 @@ void wxMaxima::ReadPrompt(wxString &data)
         }
         m_console->ShowHCaret();
       }
-      m_console->SetWorkingGroup(NULL);
+      m_console->m_cellPointers.SetWorkingGroup(NULL);
 
       // If we have selected a cell in order to show we are evaluating it
       // we should now remove this marker.
@@ -6521,7 +6522,7 @@ void wxMaxima::TryEvaluateNextInQueue()
         }
       }
 
-      m_console->SetWorkingGroup(tmp);
+      m_console->m_cellPointers.SetWorkingGroup(tmp);
       tmp->GetPrompt()->SetValue(m_lastPrompt);
       // Clear the monitor that shows the xml representation of the output of the
       // current maxima command.
@@ -6568,7 +6569,7 @@ void wxMaxima::TryEvaluateNextInQueue()
       if (m_console->FollowEvaluation())
         m_console->SetSelection(NULL);
       
-      m_console->SetWorkingGroup(NULL);
+      m_console->m_cellPointers.SetWorkingGroup(NULL);
       m_console->RequestRedraw();
       if(!AbortOnError())
       {

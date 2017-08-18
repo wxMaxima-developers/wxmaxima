@@ -7184,14 +7184,6 @@ void MathCtrl::Animate(bool run)
   }
 }
 
-void MathCtrl::SetWorkingGroup(GroupCell *group)
-{
-  if(GetWorkingGroup() != NULL)
-    m_cellPointers.m_lastWorkingGroup = GetWorkingGroup();
-  
-  m_cellPointers.SetWorkingGroup(group);
-}
-
 bool MathCtrl::IsSelectionInWorking()
 {
   if (m_cellPointers.m_selectionStart == NULL)
