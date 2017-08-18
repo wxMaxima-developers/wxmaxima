@@ -4129,6 +4129,7 @@ void MathCtrl::OnTimer(wxTimerEvent &event)
   {   
       SlideShow *slideshow = NULL;
 
+      // Determine if the timer that has expired belongs to a slide show cell.
       for(CellPointers::SlideShowTimersList::iterator it = m_cellPointers.m_slideShowTimers.begin();it != m_cellPointers.m_slideShowTimers.end() ; ++it)
       {
         if(it->second == event.GetId())
@@ -4149,7 +4150,7 @@ void MathCtrl::OnTimer(wxTimerEvent &event)
         wxRect rect = slideshow->GetRect();
         RequestRedraw(rect);
 
-        if (m_mainToolBar)
+        if ((m_mainToolBar) && (GetSelectionStart() == slideshow))
         {
           if (m_mainToolBar->m_plotSlider)          
             m_mainToolBar->UpdateSlider(slideshow);

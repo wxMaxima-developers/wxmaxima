@@ -4986,6 +4986,23 @@ void wxMaxima::PlotMenu(wxCommandEvent &event)
       wiz->Destroy();
     }
       break;
+    case menu_animationautostart:
+      MenuCommand(wxT("if wxanimate_autoplay#false then wxanimate_autoplay:false else wxanimate_autoplay:true;"));
+      break;                                                     break;
+    case menu_animationframerate:
+    {
+      cmd = GetTextFromUser(_("Enter new animation frame rate [Hz, integer]:"), _("Frame rate"),
+                            m_console->m_configuration,
+                            wxT("2"), this);
+      wxRegEx number("^[0-9][0-9]*$");
+      
+      if (number.Matches(cmd))
+      {
+        cmd = wxT("wxanimate_framerate : ") + cmd + wxT(";");
+        MenuCommand(cmd);
+      }
+    }
+    break;
     case button_plot2:
     case gp_plot2:
     {
@@ -7185,6 +7202,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(menu_logexpand, wxMaxima::SimplifyMenu)
                 EVT_MENU(gp_plot2, wxMaxima::PlotMenu)
                 EVT_MENU(gp_plot3, wxMaxima::PlotMenu)
+                EVT_MENU(menu_animationautostart, wxMaxima::PlotMenu)
+                EVT_MENU(menu_animationframerate, wxMaxima::PlotMenu)
                 EVT_MENU(menu_plot_format, wxMaxima::PlotMenu)
                 EVT_MENU(menu_soft_restart, wxMaxima::MaximaMenu)
                 EVT_MENU(menu_jumptoerror, wxMaxima::MaximaMenu)

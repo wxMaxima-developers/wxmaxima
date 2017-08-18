@@ -916,6 +916,11 @@ void wxMaximaFrame::SetupMenu()
                      _("Plot in 3 dimensions"), wxITEM_NORMAL);
   m_PlotMenu->Append(menu_plot_format, _("Plot &Format..."),
                      _("Set plot format"), wxITEM_NORMAL);
+  m_PlotMenu->AppendSeparator();
+  m_PlotMenu->Append(menu_animationautostart, _("Toggle animation autoplay"),
+                     _("Defines if an animation is automatically started or only by clicking on it."), wxITEM_NORMAL);
+  m_PlotMenu->Append(menu_animationframerate, _("Animation framerate..."),
+                     _("Set the frame rate for animations."));
   m_MenuBar->Append(m_PlotMenu, _("&Plot"));
 
   // Numeric menu

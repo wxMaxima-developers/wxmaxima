@@ -232,6 +232,8 @@ public:
     button_map,
     gp_plot2,
     gp_plot3,
+    menu_animationautostart,
+    menu_animationframerate,
     menu_display,
     menu_soft_restart,
     menu_plot_format,
