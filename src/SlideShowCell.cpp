@@ -46,9 +46,7 @@ SlideShow::SlideShow(MathCell *parent, Configuration **config, CellPointers *cel
         parent, config)
 {
   m_cellPointers = cellPointers;
-  m_timer = new wxTimer(m_cellPointers->GetMathCtrl(), wxNewId());
-  // Tell MathCtrl about our timer.
-  m_cellPointers->m_slideShowTimers[this] = m_timer->GetId();
+  m_timer = NULL;
   m_animationRunning = true;
   m_size = m_displayed = 0;
   m_type = MC_TYPE_SLIDE;
@@ -56,6 +54,8 @@ SlideShow::SlideShow(MathCell *parent, Configuration **config, CellPointers *cel
   m_framerate = framerate;
   m_imageBorderWidth = 1;
   m_drawBoundingBox = false;
+  if(m_animationRunning)
+    ReloadTimer();
 }
 int SlideShow::GetFrameRate()
 {
@@ -76,19 +76,39 @@ int SlideShow::GetFrameRate()
   return (framerate);
 }
 
-wxTimer *SlideShow::AnimationRunning(bool run)
-{
-  if(!run)
-    m_timer->Stop();
-  else
-    ReloadTimer();
-  m_animationRunning = run;
-}
-
 void SlideShow::ReloadTimer()
 {
-  if(!m_timer->IsRunning())
-    m_timer->StartOnce(1000 / GetFrameRate());
+  if(!m_timer)
+  {
+    // Tell MathCtrl about our timer.
+    m_timer = new wxTimer(m_cellPointers->GetMathCtrl(), wxNewId());
+    m_cellPointers->m_slideShowTimers[this] = m_timer->GetId();
+  }
+  
+  if(m_timer)
+  {
+    if(!m_timer->IsRunning())
+      m_timer->StartOnce(1000 / GetFrameRate());
+  }
+}
+
+void SlideShow::StopTimer()
+{
+    if(m_timer)
+    {
+      m_timer->Stop();
+      m_cellPointers->m_slideShowTimers.erase(this);
+      m_timer = NULL;
+    }
+}
+
+wxTimer *SlideShow::AnimationRunning(bool run)
+{
+  if(run)
+    ReloadTimer();
+  else
+    StopTimer();
+  m_animationRunning = run;
 }
 
 int SlideShow::SetFrameRate(int Freq)
@@ -158,15 +178,12 @@ SlideShow::~SlideShow()
       m_images[i] = NULL;
     }
   MarkAsDeleted();
-  delete m_timer;
 }
 
 void SlideShow::MarkAsDeleted()
 {
   // Stop and unregister the timer.
-  m_timer->Stop();
-  m_cellPointers->m_slideShowTimers.erase(this);
-
+  StopTimer();
   if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
     m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
   if(this == m_cellPointers->m_cellUnderPointer)
@@ -206,6 +223,10 @@ void SlideShow::RecalculateHeight(int fontsize)
 
 void SlideShow::Draw(wxPoint point, int fontsize)
 {
+  // If the animation leaves the screen the timer is stopped automatically.
+  if(m_animationRunning)
+    ReloadTimer();
+  
   if (DrawThisCell(point) && (m_images[m_displayed] != NULL))
   {
     // Start the timer once the animation appears on the screen.
@@ -214,9 +235,6 @@ void SlideShow::Draw(wxPoint point, int fontsize)
     // will trigger this function and will trigger the animation to be
     // restarted anyway.
     //
-    // If the animation leaves the screen the timer is stopped automatically.
-    if((!m_timer->IsRunning()) && m_animationRunning)
-      ReloadTimer();
     MathCell::Draw(point, fontsize);
     m_images[m_displayed]->Recalculate();
     

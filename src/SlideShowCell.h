@@ -102,9 +102,18 @@ public:
    */
   int GetFrameRate();
 
-  //! Reload the animation timer
+  /*! Reload the animation timer starting and instantiating and registering it if necessary
+
+    If the timer is already runnning the request to reload it is ignored.
+   */
   void ReloadTimer();
-  
+
+  /*! Stops the timer
+    
+    Also deletes the timer as on MSW there aren't many timers available.
+   */
+  void StopTimer();
+
   /*! Set the frame rate of this SlideShow [in Hz].
     
     \param Freq The requested frequency [in Hz] or -1 for: Use the default value.
