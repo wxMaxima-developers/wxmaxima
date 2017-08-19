@@ -81,13 +81,15 @@ wxTimer *SlideShow::AnimationRunning(bool run)
   if(!run)
     m_timer->Stop();
   else
-  {
-    if(!m_timer->IsRunning())
-      m_timer->StartOnce(1000 / GetFrameRate());
-  }
+    ReloadTimer();
   m_animationRunning = run;
 }
 
+void SlideShow::ReloadTimer()
+{
+  if(!m_timer->IsRunning())
+    m_timer->StartOnce(1000 / GetFrameRate());
+}
 
 int SlideShow::SetFrameRate(int Freq)
 {
@@ -134,6 +136,7 @@ MathCell *SlideShow::Copy()
 {
   SlideShow *tmp = new SlideShow(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
+  tmp->AnimationRunning(false);
 
   for (size_t i = 0; i < m_images.size(); i++)
   {
@@ -213,7 +216,7 @@ void SlideShow::Draw(wxPoint point, int fontsize)
     //
     // If the animation leaves the screen the timer is stopped automatically.
     if((!m_timer->IsRunning()) && m_animationRunning)
-      m_timer->StartOnce(1000 / GetFrameRate());
+      ReloadTimer();
     MathCell::Draw(point, fontsize);
     m_images[m_displayed]->Recalculate();
     

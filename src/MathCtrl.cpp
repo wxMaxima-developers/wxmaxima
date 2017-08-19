@@ -4147,9 +4147,14 @@ void MathCtrl::OnTimer(wxTimerEvent &event)
         slideshow->SetDisplayedIndex(pos);
         
         // Refresh the displayed bitmap
-        wxRect rect = slideshow->GetRect();
-        RequestRedraw(rect);
-
+        if(MathCell::Printing())
+          slideshow->ReloadTimer();
+        else
+        {
+          wxRect rect = slideshow->GetRect();
+          RequestRedraw(rect);
+        }
+        
         if ((m_mainToolBar) && (GetSelectionStart() == slideshow))
         {
           if (m_mainToolBar->m_plotSlider)          

@@ -102,6 +102,9 @@ public:
    */
   int GetFrameRate();
 
+  //! Reload the animation timer
+  void ReloadTimer();
+  
   /*! Set the frame rate of this SlideShow [in Hz].
     
     \param Freq The requested frequency [in Hz] or -1 for: Use the default value.
