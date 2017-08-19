@@ -129,7 +129,7 @@ int SlideShow::SetFrameRate(int Freq)
   return m_framerate;
 }
 
-void SlideShow::LoadImages(wxArrayString images)
+void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
 {
   m_size = images.GetCount();
 
@@ -146,7 +146,7 @@ void SlideShow::LoadImages(wxArrayString images)
     for (int i = 0; i < m_size; i++)
     {
 
-      Image *image = new Image(m_configuration, images[i]);
+      Image *image = new Image(m_configuration, images[i], deleteRead);
       m_images.push_back(image);
     }
   m_displayed = 0;

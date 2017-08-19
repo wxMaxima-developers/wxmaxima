@@ -888,6 +888,7 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
       }
       else if (tagName == wxT("slide"))
       {
+        bool del = node->GetAttribute(wxT("del"), wxT("false")) == wxT("true");
         SlideShow *slideShow = new SlideShow(NULL, m_configuration, m_cellPointers, m_fileSystem);
         wxString str(node->GetChildren()->GetContent());
         wxArrayString images;
@@ -914,7 +915,7 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
           }
         }
         if (slideShow)
-          slideShow->LoadImages(images);
+          slideShow->LoadImages(images, del);
         tmp = slideShow;
       }
       else if (tagName == wxT("editor"))

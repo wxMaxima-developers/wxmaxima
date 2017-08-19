@@ -67,7 +67,7 @@ public:
    */
   virtual void ClearCache();
 
-  void LoadImages(wxArrayString images);
+  void LoadImages(wxArrayString images, bool deleteRead);
 
   MathCell *Copy();
 
