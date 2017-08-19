@@ -133,22 +133,12 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
 {
   m_size = images.GetCount();
 
-  if (m_fileSystem)
+  for (int i = 0; i < m_size; i++)
   {
-    for (int i = 0; i < m_size; i++)
-    {
-      Image *image = new Image(m_configuration, images[i], false, m_fileSystem);
-      m_images.push_back(image);
-    }
-    m_fileSystem = NULL;
+    Image *image = new Image(m_configuration, images[i], deleteRead, m_fileSystem);
+    m_images.push_back(image);
   }
-  else
-    for (int i = 0; i < m_size; i++)
-    {
-
-      Image *image = new Image(m_configuration, images[i], deleteRead);
-      m_images.push_back(image);
-    }
+  m_fileSystem = NULL;
   m_displayed = 0;
 }
 
