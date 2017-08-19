@@ -2849,10 +2849,10 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
         title << wxT(".") << suffix;
       }
 
-      // Redraws during printing might end up on paper => temporarily block all redraw
-      // events for the console
-      m_console->Freeze();
       {
+        // Redraws during printing might end up on paper => temporarily block all redraw
+        // events for the console
+        m_console->Freeze();
         wxEventBlocker blocker(m_console);
         wxBusyCursor crs;
         MathPrintout printout(title, &m_console->m_configuration);
@@ -2863,11 +2863,11 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
           wxDELETE(m_printData);
           m_printData = new wxPrintData(printer.GetPrintDialogData().GetPrintData());
         }
-        break;
+        m_console->Thaw();
       }
       m_console->RecalculateForce();
-      m_console->Thaw();
       m_console->RequestRedraw();
+      break;
     }
   }
 }

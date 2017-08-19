@@ -44,6 +44,7 @@ MathPrintout::MathPrintout(wxString title, Configuration **configuration) : wxPr
 MathPrintout::~MathPrintout()
 {
   DestroyTree();
+  *m_configuration = m_oldconfig;
 }
 
 void MathPrintout::SetData(GroupCell *tree)
@@ -140,11 +141,9 @@ bool MathPrintout::OnPrintPage(int num)
         break;
     }
     MathCell::ClipToDrawRegion(true);
-    *m_configuration = m_oldconfig;
     return true;
   }
   MathCell::ClipToDrawRegion(true);
-  *m_configuration = m_oldconfig;
   return false;
 }
 
@@ -302,9 +301,7 @@ void MathPrintout::Recalculate()
     tmp->Recalculate();
     tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }
-  *m_configuration = m_oldconfig;
   MathCell::ClipToDrawRegion(true);
-  *m_configuration = m_oldconfig;
 }
 
 double MathPrintout::GetPPIScale()
