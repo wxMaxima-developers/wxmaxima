@@ -2834,9 +2834,7 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
   switch (event.GetId())
   {
     case wxID_PRINT:
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
     case ToolBar::tb_print:
-#endif
     {
       wxPrintDialogData printDialogData;
       if (m_printData)
@@ -2867,13 +2865,10 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
         }
         break;
       }
+      m_console->RecalculateForce();
       m_console->Thaw();
-      // The console didn't receive redraw events for quite a long time =>
-      // request it to be redrawn as soon as possible.
       m_console->RequestRedraw();
     }
-      m_console->RecalculateForce();
-      m_console->RequestRedraw();
   }
 }
 
