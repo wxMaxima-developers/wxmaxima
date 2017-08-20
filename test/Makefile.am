@@ -1,4 +1,4 @@
-EXTRA_DIST = testbench_simple.wxmx
+EXTRA_DIST = testbench_simple.wxmx a.png b.png c.png d.png
 DISTCLEANFILES = testbench_simple.html testbench_simple.tex testbench_simple.log\
 	testbench_simple.tex
 

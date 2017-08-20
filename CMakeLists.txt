@@ -44,10 +44,10 @@ add_subdirectory(art)
 
 if(WIN32)
     install(FILES COPYING README README.md DESTINATION wxMaxima/doc)
-    install(FILES test/testbench_simple.wxmx DESTINATION wxMaxima/data)
+    install(FILES test/testbench_simple.wxmx test/a.png test/b.png test/c.png test/d.png DESTINATION wxMaxima/data)
 else()
     install(FILES COPYING README README.md DESTINATION share/wxMaxima)
-    install(FILES test/testbench_simple.wxmx DESTINATION share/wxMaxima)
+    install(FILES test/testbench_simple.wxmx test/a.png test/b.png test/c.png test/d.png DESTINATION share/wxMaxima)
 endif()
 
 

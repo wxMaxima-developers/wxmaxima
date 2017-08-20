@@ -247,7 +247,13 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
   }
   else
   {
-    wxFile file(image);
+    wxFile file;
+    // Support relative and absolute paths.
+    if(wxFileExists((*m_configuration)->GetWorkingDirectory() + wxT("/") + image))
+      file.Open((*m_configuration)->GetWorkingDirectory() + wxT("/") + image);
+    else
+      file.Open(image);
+
     if (file.IsOpened())
     {
       wxFileInputStream strm(file);

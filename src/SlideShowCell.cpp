@@ -195,20 +195,28 @@ void SlideShow::RecalculateWidths(int fontsize)
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
   //    we might have intermittent calculation issues otherwise
-  m_images[m_displayed]->Recalculate();
 
-  m_width = m_images[m_displayed]->m_width + 2 * m_imageBorderWidth;
-  m_height = m_images[m_displayed]->m_height + 2 * m_imageBorderWidth;
+  // Assuming a minimum size maybe isn't that bad.
+  m_height = m_width = 10;
+
+  // Make the cell as big as the biggest image plus its border.
+  for (int i = 0; i < m_size; i++)
+  {
+    if(m_images[i] != NULL)
+    {
+      m_images[i]->Recalculate();
+      if(m_width < m_images[i]->m_width + 2 * m_imageBorderWidth)
+        m_width = m_images[i]->m_width + 2 * m_imageBorderWidth;
+      if(m_height < m_images[i]->m_height + 2 * m_imageBorderWidth)
+        m_height = m_images[i]->m_height + 2 * m_imageBorderWidth;
+    }
+  }       
   m_center = m_height / 2;
 }
 
 void SlideShow::RecalculateHeight(int fontsize)
 {
-  // Here we recalculate the width, as well:
-  //  - This doesn't cost much time and
-  //  - as image cell's sizes might change when the resolution does
-  //    we might have intermittent calculation issues otherwise
-  RecalculateWidths(fontsize);
+  // This is already done on recalculating the width.
 }
 
 void SlideShow::Draw(wxPoint point, int fontsize)
@@ -233,11 +241,6 @@ void SlideShow::Draw(wxPoint point, int fontsize)
     Configuration *configuration = (*m_configuration);
     wxDC &dc = configuration->GetDC();
     wxMemoryDC bitmapDC;
-    m_images[m_displayed]->Recalculate();
-
-    m_height = (m_images[m_displayed]->m_height) + 2 * m_imageBorderWidth;
-    m_width = (m_images[m_displayed]->m_width) + 2 * m_imageBorderWidth;
-    m_center = m_height / 2;
 
     // Slide show cells have a red border except if they are selected
     if (m_drawBoundingBox)
