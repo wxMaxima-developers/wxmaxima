@@ -6780,8 +6780,7 @@ bool MathCtrl::PointVisibleIs(wxPoint point)
 
 void MathCtrl::ShowPoint(wxPoint point)
 {
-  wxASSERT_MSG((point.x >= 0) && (point.y >= 0), wxT("Bug: Trying to scroll to a non-existing position!"));
-  if (point.x == -1 || point.y == -1)
+  if (point.x < 0 || point.y < 0)
     return;
 
   int view_x, view_y;
