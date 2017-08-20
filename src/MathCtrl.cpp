@@ -1928,11 +1928,11 @@ bool MathCtrl::Copy(bool astext)
       
       if(m_configuration->CopyBitmap())
       {
-        // Add a bitmap representation of the selected output to the clipboard - if this
-        // bitmap isn't way too large for this to make sense:
-        wxBitmap bmp;
         // Try to fill bmp with a high-res version of the cells
         {
+          // Add a bitmap representation of the selected output to the clipboard - if this
+          // bitmap isn't way too large for this to make sense:
+          wxBitmap bmp;
           int bitmapScale = 3;
           wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
           Bitmap bmp_scaled(&m_configuration, bitmapScale);
@@ -1942,7 +1942,6 @@ bool MathCtrl::Copy(bool astext)
             bmp = bmp_scaled.GetBitmap();
             data->Add(new wxBitmapDataObject(bmp));
           }
-          wxDELETE(tmp);
         }
       }
       wxTheClipboard->SetData(data);

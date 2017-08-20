@@ -49,6 +49,7 @@ Bitmap::Bitmap(Configuration **configuration, int scale)
 Bitmap::~Bitmap()
 {
   wxDELETE(m_tree);
+  m_tree = NULL;
   *m_configuration = m_oldconfig;
 }
 
@@ -70,6 +71,9 @@ bool Bitmap::Layout(long int maxSize)
   (*m_configuration)->SetZoomFactor(1);
   (*m_configuration)->SetClientWidth(BM_FULL_WIDTH * m_scale);
 
+  if(m_tree == NULL)
+    return false;
+  
   if (m_tree->GetType() != MC_TYPE_GROUP)
   {
     RecalculateWidths();
