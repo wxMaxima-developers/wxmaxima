@@ -4,7 +4,7 @@
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 //            (C) 2011-2011 cw.ahbong <cw.ahbong@gmail.com>
 //            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
-//            (C) 2014-2016 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2014-2017 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
