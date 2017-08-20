@@ -121,6 +121,8 @@ bool AutoComplete::LoadSymbols(wxString file)
   m_wordList[command].Add(wxT("wxsubscripts"));
   m_wordList[command].Add(wxT("wxdeclare_subscripted"));
   m_wordList[tmplte].Add(wxT("wxdeclare_subscripted(<name>,<[false]>)"));
+  m_wordList[command].Add(wxT("wxanimate_from_imgfiles"));
+  m_wordList[tmplte].Add(wxT("wxanimate_from_imgfiles(<filename>,<[filename,...]>)"));
   m_wordList[command].Add(wxT("wxstatusbar"));
   m_wordList[tmplte].Add(wxT("wxstatusbar(<string>)"));
 
