@@ -245,7 +245,7 @@ wxString EditorCell::ToTeX()
   text.Replace(wxT("\\"), wxT("\\ensuremath{\\backslash}"));
   text.Replace(wxT("\r"), wxEmptyString);
   text.Replace(wxT("^"), wxT("\\^{}"));
-  text.Replace("°", wxT("\\ensuremath{^\\circ}"));
+  text.Replace(wxT("°"), wxT("\\ensuremath{^\\circ}"));
   text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
   text.Replace(L"\x03B1", wxT("\\ensuremath{\\alpha}"));
   text.Replace(L"\x00B1", wxT("\\ensuremath{\\pm}"));
