@@ -57,6 +57,8 @@ ToolBar::~ToolBar()
 
 void ToolBar::UpdateSlider(SlideShow *cell)
 {
+  if(cell == NULL)
+    return;
   int slideShowDisplayedIndex = cell->GetDisplayedIndex();
   int slideShowMaxIndex = cell->Length();
 

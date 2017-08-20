@@ -6844,6 +6844,8 @@ void wxMaxima::SliderEvent(wxScrollEvent &ev)
     wxRect rect = slideShow->GetRect();
     m_console->RequestRedraw(rect);
   }
+  if(m_console->m_mainToolBar)
+    m_console->m_mainToolBar->UpdateSlider(slideShow);
 }
 
 void wxMaxima::ShowPane(wxCommandEvent &ev)
