@@ -35,6 +35,7 @@
 #include <wx/config.h>
 #include <wx/image.h>
 #include <wx/filename.h>
+#include <wx/fileconf.h>
 
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                              const wxString configFile,
