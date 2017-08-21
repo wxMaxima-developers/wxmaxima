@@ -102,7 +102,7 @@ void SlideShow::StopTimer()
     }
 }
 
-wxTimer *SlideShow::AnimationRunning(bool run)
+void SlideShow::AnimationRunning(bool run)
 {
   if(run)
     ReloadTimer();

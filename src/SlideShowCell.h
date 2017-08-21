@@ -122,7 +122,7 @@ public:
   int SetFrameRate(int Freq);
 
   bool AnimationRunning() {return m_animationRunning;}
-  wxTimer *AnimationRunning(bool run);
+  void AnimationRunning(bool run);
 protected:
   wxTimer *m_timer;
   /*! The framerate of this cell.

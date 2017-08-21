@@ -1134,17 +1134,24 @@ std::list<wxString> wxMaximaFrame::GetTempAutosaveFiles()
 
 void wxMaximaFrame::ReReadConfig()
 {
-  wxConfigBase *config = wxConfig::Get();
-  config->Flush();
-  wxDELETE(config);
-  if (m_configFileName != wxEmptyString)
-    wxConfig::Set(new wxFileConfig(m_configFileName));
-  // Re-Reading the config isn't necessary on the Mac where all windows share the same
-  // window and on Windows where the registry is re-read every time the configuration
-  // is accessed.
-  #ifdef __WXGTK__
-  else
-    wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+	if (m_configFileName != wxEmptyString)
+	{
+		wxConfig::Set(new wxFileConfig(m_configFileName));
+		wxConfigBase *config = wxConfig::Get();
+		config->Flush();
+		wxDELETE(config);
+	}
+	// Re-Reading the config isn't necessary on the Mac where all windows share the same
+	// window and on Windows where the registry is re-read every time the configuration
+	// is accessed.
+#ifdef __WXGTK__
+	else
+	{
+		wxConfigBase *config = wxConfig::Get();
+		config->Flush();
+		wxDELETE(config);
+		wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+    }
   #endif  
 }    
 
