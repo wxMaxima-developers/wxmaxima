@@ -1398,11 +1398,6 @@ void wxMaxima::ReadPrompt(wxString &data)
   if (end == wxNOT_FOUND)
     return;
 
-  // This assert was automatically triggered after a to_lisp() so I commented
-  // it out.
-  //
-  //wxASSERT_MSG(begin != wxNOT_FOUND,_("bug: Input prompt end detected but didn't detect an input prompt begin!"));
-
   wxString o = data.SubString(m_promptPrefix.Length(), end - 1);
   // Remove the prompt we will process from the string.
   data = data.Right(data.Length()-end-m_promptSuffix.Length());
@@ -1466,6 +1461,7 @@ void wxMaxima::ReadPrompt(wxString &data)
       }
       // Inform the user that the evaluation queue is empty.
       EvaluationQueueLength(0);
+      m_console->m_cellPointers.SetWorkingGroup(NULL);
       m_console->RequestRedraw();
     }
     else
@@ -1473,6 +1469,7 @@ void wxMaxima::ReadPrompt(wxString &data)
       m_ready = false;
       m_console->RequestRedraw();
       StatusMaximaBusy(calculating);
+      m_console->m_cellPointers.SetWorkingGroup(NULL);
       TryEvaluateNextInQueue();
     }
 
