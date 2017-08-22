@@ -1401,7 +1401,9 @@ void wxMaxima::ReadPrompt(wxString &data)
   wxString o = data.SubString(m_promptPrefix.Length(), end - 1);
   // Remove the prompt we will process from the string.
   data = data.Right(data.Length()-end-m_promptSuffix.Length());
-
+  if(data == wxT(" "))
+    data = wxEmptyString;
+  
   // Input prompts have a length > 0 and end in a number followed by a ")".
   // They also begin with a "(". Questions (hopefully)
   // don't do that; Lisp prompts look like question prompts.
