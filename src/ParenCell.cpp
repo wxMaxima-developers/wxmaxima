@@ -155,6 +155,8 @@ void ParenCell::SetFont(int fontsize)
 
   if(m_bigParenType != Configuration::handdrawn)
     dc.SetFont(font);
+
+  SetForeground();
 }
 
 void ParenCell::RecalculateWidths(int fontsize)
@@ -283,7 +285,6 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     wxDC &dc = configuration->GetDC();
     wxPoint innerCellPos(point);
 
-    SetForeground();
     SetFont(configuration->GetMathFontSize());
     
     switch(m_bigParenType)

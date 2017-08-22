@@ -130,7 +130,7 @@ public:
   { return 0.4; }
 
   static double GetMaxZoomFactor()
-  { return 8.0; }
+  { return 32.0; }
 
   /*! Extra space to leave between two equations in output cells.
 

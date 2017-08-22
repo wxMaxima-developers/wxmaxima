@@ -728,11 +728,16 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
         m_inputBuffer[read] = 0;
 
         wxString newChars;
+        {
+          // Don't open a assert window every single time maxima mixes UTF8 and the current
+          // codepage
+          wxLogStderr logStderr;
 #if wxUSE_UNICODE
-        newChars = wxString(m_inputBuffer, wxConvUTF8);
+          newChars = wxString(m_inputBuffer, wxConvUTF8);
 #else
-        newChars = wxString(m_inputBuffer, *wxConvCurrent);
-#endif        
+          newChars = wxString(m_inputBuffer, *wxConvCurrent);
+#endif
+        }
         if (IsPaneDisplayed(menu_pane_xmlInspector))
           m_xmlInspector->Add(newChars);
 
