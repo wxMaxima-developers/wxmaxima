@@ -534,10 +534,24 @@ wxString MathCell::ListToTeX()
   // TODO: Things like {a}_{b} make the LaTeX code harder to read. But things like
   // \sqrt{a} need us to use braces from time to time.
   //
-  // How far I got was:
-  //
-  //  wxRegEx removeUnneededBraces1(wxT("{([a-zA-Z0-9])}([{}_a-zA-Z0-9 \\\\^_])"));
-  //  removeUnneededBraces1.Replace(&retval,wxT(" \\1\\2"),true);
+  // Guglielmo Saggiorato has provided several regExps that help in this case.
+  
+  // Remove braces around a single letter that is at the start of the line
+  wxRegEx bracesAroundSingleLetter(wxT("[^ ]{\\([a-zA-Z0-9]\\)}"));
+  bracesAroundSingleLetter.Replace(&retval,"\\1");
+
+  // intercepts {\a_command^a_char} -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
+  wxRegEx bracesAroundSingleCharExponent(wxT("\\([^}c]\\){\\(\\*[^{]*?\^[a-zA-Z0-9]\\)}"));
+  bracesAroundSingleCharExponent.Replace(&retval,"\\1");
+
+  // intercepts {\left(..\right)} -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
+  wxRegEx bracesAroundParenthesis(wxT("[^}c]{\\(\\left\\(.+?\\right\\)\\)\s*}"));
+  bracesAroundParenthesis.Replace(&retval,"\\1");
+
+  // intercepts {optional_command or words} -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
+  wxRegEx bracesAroundText(wxT("[^}c]{\\(\\\\*\s*\w+?\s*\\)}"));
+  bracesAroundText.Replace(&retval,"\\1");
+  
   return retval;
 }
 
