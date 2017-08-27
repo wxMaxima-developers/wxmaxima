@@ -531,62 +531,6 @@ wxString MathCell::ListToTeX()
     tmp = tmp->m_next;
   }
   return retval;
-
-  // TODO: Things like {a}_{b} make the LaTeX code harder to read. But things like
-  // \sqrt{a} need us to use braces from time to time.
-  //
-  // Guglielmo Saggiorato has provided several regExps that help in this case.
-
-  // Using WxWidgets Regular Expressions -- they have their own tricks
-  // docs at: http://docs.wxwidgets.org/trunk/overview_resyntax.html
-  // missing features: lookbehind/ahead
-
-  // PART 0 --USEFUL regular expressions
-  wxRegEx removeWhiteSpaceAroundBraces(wxT("\\s*([}{^])\\s*"),wxRE_ADVANCED);
-  removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
-
-  // PART A --IMHO useless keywords
-  wxRegEx mathit(wxT("{{0,1}\\\\mathit{(\\w+?)}{1,2}"),wxRE_ADVANCED);
-  mathit.Replace(&retval,"\\1");
-
-  wxRegEx ensuremath(wxT("{{0,1}\\\\ensuremath{(\\w+?)}{1,2}"),wxRE_ADVANCED);
-  ensuremath.Replace(&retval,"\\1");
-  // END PART A
-
-  // PART B --HANDLES CASES Powers {{str}^{str}}
-
-  // intercept braces around single char
-  // --
-  wxRegEx bracesAroundSingleLetter(wxT("([^}ct]){([a-zA-Z0-9])}"));
-  bracesAroundSingleLetter.Replace(&retval,"\\1 \\2");
-  removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
-
-  // {str}^{str}->str^{str}
-  wxRegEx bracesAroundBasePower("{",wxRE_ADVANCED);
-  bracesAroundBasePower.Replace(&retval,"#");
-  removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
-
-  // intercepts {a^b} , but not \sqrt{a^b}, or \frac{a^b}{c}
-  wxRegEx bracesAroundCharPower("([^}ct]{0,1}){(\\w\\^\\w)}",wxRE_ADVANCED);
-  bracesAroundCharPower.Replace(&retval,"\\1 \\2");
-  removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
-
-  // intercepts {a^{str}} , but not \sqrt{a^b}, or \frac{a^b}{c}
-  wxRegEx bracesAroundStrPower("([^}ct]{0,1}){(\\w\\^{\\w+?})}",wxRE_ADVANCED);
-  bracesAroundStrPower.Replace(&retval,"\\1 \\2");
-  removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
-  // END PART B
-
-  // PART C --HANDLES Parenteresis as in \left ..\right..
-  // intercepts {\left(..\right)} -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
-  // wxRegEx bracesAroundParenthesis(wxT("[^}c]{\\(\\left\\(.+?\\right\\)\\)\s*}"));
-  // bracesAroundParenthesis.Replace(&retval,"\\1");
-
-  // intercepts {optional_command or words} -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
-  // wxRegEx bracesAroundText(wxT("[^}c]{\\(\\\\*\s*\w+?\s*\\)}"));
-  // bracesAroundText.Replace(&retval,"\\1");
-
-  return retval;
 }
 
 wxString MathCell::ToXML()

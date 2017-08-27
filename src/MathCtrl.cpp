@@ -42,6 +42,7 @@
 #include "ImgCell.h"
 #include "MarkDown.h"
 #include "ConfigDialogue.h"
+#include "BetterTeX.h"
 
 #include <wx/clipbrd.h>
 #include <wx/caret.h>
@@ -2085,8 +2086,8 @@ bool MathCtrl::CopyTeX()
   if (wxTheClipboard->Open())
   {
     wxDataObjectComposite *data = new wxDataObjectComposite;
+    s = BetterTeX(s);
     data->Add(new wxTextDataObject(s));
-    wxLogMessage(s);
     wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
     return true;
