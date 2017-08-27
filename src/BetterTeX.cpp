@@ -63,9 +63,10 @@ wxString BetterTeX(wxString str){
   removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
   // {str}^{str}->str^{str}
-  // wxRegEx bracesAroundBasePower("{",wxRE_ADVANCED);
-  // bracesAroundBasePower.Replace(&retval,"");
-  // removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
+  wxLogMessage(retval);
+  wxRegEx bracesAroundBasePower("([^}ct]{0,1}){([^}{]+?)}\\^",wxRE_ADVANCED);
+  bracesAroundBasePower.Replace(&retval,"\\1 \\2^");
+  removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
   // intercepts {a^b} , but not \sqrt{a^b}, or \frac{a^b}{c}
   wxRegEx bracesAroundCharPower("([^}ct]{0,1}){(\\w\\^\\w)}",wxRE_ADVANCED);
@@ -73,7 +74,7 @@ wxString BetterTeX(wxString str){
   removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
   // intercepts {a^{str}} , but not \sqrt{a^b}, or \frac{a^b}{c}
-  wxRegEx bracesAroundStrPower("([^}ct]{0,1}){(\\w\\^{\\w+?})}",wxRE_ADVANCED);
+  wxRegEx bracesAroundStrPower("([^}ct]{0,1}){([^}{]+?\\^{[^}{]+?})}",wxRE_ADVANCED);
   bracesAroundStrPower.Replace(&retval,"\\1 \\2");
   removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
   // END PART B
