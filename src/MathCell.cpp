@@ -28,7 +28,6 @@
 #include "MathCell.h"
 #include <wx/regex.h>
 #include <wx/sstream.h>
-#include <tr1/regex>
 
 MathCell::MathCell(MathCell *parent, Configuration **config)
 {
@@ -531,6 +530,8 @@ wxString MathCell::ListToTeX()
     retval += tmp->ToTeX();
     tmp = tmp->m_next;
   }
+  return retval;
+
   // TODO: Things like {a}_{b} make the LaTeX code harder to read. But things like
   // \sqrt{a} need us to use braces from time to time.
   //
@@ -541,12 +542,13 @@ wxString MathCell::ListToTeX()
   // missing features: lookbehind/ahead
 
   // PART 0 --USEFUL regular expressions
-  wxRegEx removeWhiteSpaceAroundBraces(wxT("\\s*([\\}\\{\\^])\\s*"),wxRE_ADVANCED);
+  wxRegEx removeWhiteSpaceAroundBraces(wxT("\\s*([}{^])\\s*"),wxRE_ADVANCED);
   removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
   // PART A --IMHO useless keywords
   wxRegEx mathit(wxT("{{0,1}\\\\mathit{(\\w+?)}{1,2}"),wxRE_ADVANCED);
   mathit.Replace(&retval,"\\1");
+
   wxRegEx ensuremath(wxT("{{0,1}\\\\ensuremath{(\\w+?)}{1,2}"),wxRE_ADVANCED);
   ensuremath.Replace(&retval,"\\1");
   // END PART A
@@ -560,8 +562,8 @@ wxString MathCell::ListToTeX()
   removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
   // {str}^{str}->str^{str}
-  wxRegEx bracesAroundBasePower("([^}ct]{0,1}){(\\w+?)}\\^",wxRE_ADVANCED);
-  bracesAroundBasePower.Replace(&retval,"\\1 \\2^");
+  wxRegEx bracesAroundBasePower("{",wxRE_ADVANCED);
+  bracesAroundBasePower.Replace(&retval,"#");
   removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
   // intercepts {a^b} , but not \sqrt{a^b}, or \frac{a^b}{c}
