@@ -28,6 +28,7 @@
 #include "MathCell.h"
 #include <wx/regex.h>
 #include <wx/sstream.h>
+#include <tr1/regex>
 
 MathCell::MathCell(MathCell *parent, Configuration **config)
 {
@@ -540,7 +541,7 @@ wxString MathCell::ListToTeX()
   // missing features: lookbehind/ahead
 
   // PART 0 --USEFUL regular expressions
-  wxRegEx removeWhiteSpaceAroundBraces(wxT("\\s*([}{^])\\s*"),wxRE_ADVANCED);
+  wxRegEx removeWhiteSpaceAroundBraces(wxT("\\s*([\\}\\{\\^])\\s*"),wxRE_ADVANCED);
   removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
   // PART A --IMHO useless keywords
@@ -558,17 +559,20 @@ wxString MathCell::ListToTeX()
   bracesAroundSingleLetter.Replace(&retval,"\\1 \\2");
   removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
+  // {str}^{str}->str^{str}
+  wxRegEx bracesAroundBasePower("([^}ct]{0,1}){(\\w+?)}\\^",wxRE_ADVANCED);
+  bracesAroundBasePower.Replace(&retval,"\\1 \\2^");
+  removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
+
   // intercepts {a^b} , but not \sqrt{a^b}, or \frac{a^b}{c}
-  // -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
-  // -- protected if prev command ends in t (as \sqrt{..})
-  wxRegEx bracesAroundCharPower(wxT("([^}ct]){(\\w^\\w)}"),wxRE_ADVANCED);
+  wxRegEx bracesAroundCharPower("([^}ct]{0,1}){(\\w\\^\\w)}",wxRE_ADVANCED);
   bracesAroundCharPower.Replace(&retval,"\\1 \\2");
   removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
-  // interecepts ^{a}-> ^a with a=one caracter
-  // wxRegEx bracesAroundSingleLetter(wxT("\\^{([a-zA-Z0-9])}"));
-  // bracesAroundSingleLetter.Replace(&retval,"^\\1");
-
+  // intercepts {a^{str}} , but not \sqrt{a^b}, or \frac{a^b}{c}
+  wxRegEx bracesAroundStrPower("([^}ct]{0,1}){(\\w\\^{\\w+?})}",wxRE_ADVANCED);
+  bracesAroundStrPower.Replace(&retval,"\\1 \\2");
+  removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
   // END PART B
 
   // PART C --HANDLES Parenteresis as in \left ..\right..
