@@ -115,9 +115,14 @@ void Configuration::ReadConfig()
   config->Read(wxT("copySVG"), &m_copySVG );
 
   config->Read(wxT("maxima"), &m_maximaLocation);
-  //Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a
+  // Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a
   if (m_maximaLocation.IsSameAs(wxT("1")))
     m_maximaLocation = dirstruct.MaximaDefaultLocation();
+
+  // Fallback to the default location if the one from the config file isn't found
+  if(!wxFileExists(m_maximaLocation))
+    m_maximaLocation = dirstruct.MaximaDefaultLocation();
+
 
   m_autoIndent = true;
   config->Read(wxT("autoIndent"), &m_autoIndent);
