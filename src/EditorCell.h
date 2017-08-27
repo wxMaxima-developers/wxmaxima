@@ -56,6 +56,7 @@
 class EditorCell : public MathCell
 {
 private:
+  int m_errorIndex;
   CellPointers *m_cellPointers;
   //! The viewport size the linewrap was done for.
   int m_oldViewportWidth;
@@ -495,13 +496,25 @@ public:
   //! Unselect everything
   void ClearSelection();
 
+  //! Sets the index the error is at
+  void SetErrorIndex(int index){m_errorIndex = index;}
+
+  bool ErrorIndexSet(){return m_errorIndex >= 0;}
+
+  void GotoError(){SetCaretPosition(m_errorIndex);ActivateCursor();}
+
   //! Get the cursor's current position inside the cell.
   int GetCaretPosition()
   { return m_positionOfCaret; }
 
   //! Set the cursor's current position inside the cell.
   void SetCaretPosition(int pos)
-  { m_positionOfCaret = pos; }
+    { m_positionOfCaret = pos;
+      if(m_positionOfCaret < -1)
+        m_positionOfCaret = -1;
+      if(m_positionOfCaret > m_text.Length())
+        m_positionOfCaret = m_text.Length();
+    }
 
   bool FindNextTemplate(bool left = false);
 

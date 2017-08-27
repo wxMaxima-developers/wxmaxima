@@ -232,7 +232,7 @@ void EvaluationQueue::AddTokens(GroupCell *cell)
       token.Trim(false);
       token.Trim(true);
       if (token.Length() > 1)
-        m_commands.push_back(token);
+        m_commands.push_back(command(token, index));
       token = wxEmptyString;
     }
   }
@@ -242,7 +242,7 @@ void EvaluationQueue::AddTokens(GroupCell *cell)
   token.Trim(false);
   token.Trim(true);
   if (token.Length() > 1)
-    m_commands.push_back(token);
+    m_commands.push_back(command(token, index));
 }
 
 GroupCell *EvaluationQueue::GetCell()
@@ -259,7 +259,7 @@ wxString EvaluationQueue::GetCommand()
   m_userLabel = wxEmptyString;
   if (!m_commands.empty())
   {
-    retval = m_commands.front();
+    retval = m_commands.front().GetString();
 
     wxString userLabel;
     int colonPos;
@@ -289,3 +289,4 @@ wxString EvaluationQueue::GetCommand()
   }
   return retval;
 }
+

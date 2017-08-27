@@ -584,6 +584,20 @@ void MathCtrl::ScrollToError()
       FoldOccurred();
       Recalculate(true);
     }
+
+    // Try to scroll to a place from which the full error message is visible
+    ScrollToCaret();
+
+    // Set the cursor as close to the error as possible.
+    if(ErrorCell->GetEditable()->ErrorIndexSet())
+    {
+      SetSelection(NULL);
+      m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
+      SetActiveCell(ErrorCell->GetEditable());
+      ErrorCell->GetEditable()->GotoError();
+      ScrollToCaret();
+    }
+    else
       SetHCaret(ErrorCell);
   }
 }
@@ -655,13 +669,9 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
     {
       SetSelection(NULL);
       if (GCContainsCurrentQuestion(tmp))
-      {
         OpenQuestionCaret();
-      }
       else
-      {
-        SetHCaret(tmp);
-      }
+        ScrollToCaret();
     }
     RequestRedraw(tmp);
   }
@@ -6715,9 +6725,12 @@ bool MathCtrl::TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeU
  */
 void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
 {
-  if ((GetActiveCell() != NULL) && (GetActiveCell() != cell))
-    TreeUndo_CellLeft();
+  if(GetActiveCell() == cell)
+    return;
 
+  if (GetActiveCell() != NULL)
+    TreeUndo_CellLeft();
+  
   bool scrollneeded = ((GetActiveCell() != NULL) && (GetActiveCell() != cell));
 
   if (cell != NULL)
@@ -7249,21 +7262,28 @@ void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
     wxASSERT_MSG(
             where->GetType() == MC_TYPE_GROUP,
             _("Bug: Trying to move the horizontally-drawn cursor to a place inside a GroupCell."));
+
+  if(m_hCaretPosition != where)
+  {
+    m_hCaretPosition = where;
+    m_hCaretActive = true;
+    
+    if (callRefresh) // = true default
+      RequestRedraw();
+    if (where != NULL)
+      ScrollToCell(where, false);
+    
+    // Tell the cursor to blink, but to be visible right now.
+    m_blinkDisplayCaret = true;
+    m_hCaretBlinkVisible = true;
+    
+    int blinktime = wxCaret::GetBlinkTime();
+    if (blinktime < 200)
+      blinktime = 200;
+    m_caretTimer.Start(blinktime);
+  }
   m_hCaretPosition = where;
   m_hCaretActive = true;
-
-  if (callRefresh) // = true default
-    RequestRedraw();
-  if (where != NULL)
-    ScrollToCell(where, false);
-
-  // Tell the cursor to blink, but to be visible right now.
-  m_blinkDisplayCaret = true;
-  m_hCaretBlinkVisible = true;
-  int blinktime = wxCaret::GetBlinkTime();
-  if (blinktime < 200)
-    blinktime = 200;
-  m_caretTimer.Start(blinktime);
 }
 
 void MathCtrl::ShowHCaret()

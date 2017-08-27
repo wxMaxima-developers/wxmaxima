@@ -41,6 +41,7 @@ const wxString operators = wxT("+-*/^:=#'!;$");
 EditorCell::EditorCell(MathCell *parent, Configuration **config,
                        CellPointers *cellPointers, wxString text) : MathCell(parent, config)
 {
+  m_errorIndex = -1;
   m_autoAnswer = false;
   m_cellPointers = cellPointers;
   m_oldViewportWidth = -1;

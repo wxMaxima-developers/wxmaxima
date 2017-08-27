@@ -130,6 +130,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, configFile, pos, size)
 {
+  m_commandIndex = -1;
   m_isActive = true;
   wxASSERT(m_outputPromptRegEx.Compile(wxT("<lbl>.*</lbl>")));
   wxConfig *config = (wxConfig *) wxConfig::Get();
@@ -462,7 +463,10 @@ void wxMaxima::ConsoleAppend(wxString s, int type, wxString userLabel)
     }
     
     if(tmp != NULL)
+    {
       m_console->m_cellPointers.m_errorList.Add(tmp);
+      tmp->GetEditable()->SetErrorIndex(m_commandIndex - 1);
+    }
   }
   else if (type == MC_TYPE_WARNING)
   {
@@ -1436,12 +1440,6 @@ void wxMaxima::ReadPrompt(wxString &data)
     if (m_console->m_evaluationQueue.Empty())
     { // queue empty.
       StatusMaximaBusy(waiting);
-      if (m_console->FollowEvaluation())
-      {
-        if (m_console->GetWorkingGroup())
-          m_console->SetHCaret(m_console->GetWorkingGroup());
-        m_console->ShowHCaret();
-      }
       m_console->m_cellPointers.SetWorkingGroup(NULL);
 
       // If we have selected a cell in order to show we are evaluating it
@@ -1451,7 +1449,6 @@ void wxMaxima::ReadPrompt(wxString &data)
         if (m_console->GetActiveCell())
           m_console->GetActiveCell()->SelectNone();
         m_console->SetSelection(NULL, NULL);
-        m_console->SetActiveCell(NULL);
       }
       m_console->FollowEvaluation(false);
       if (m_batchmode)
@@ -6503,6 +6500,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   }
 
   wxString text = m_console->m_evaluationQueue.GetCommand();
+  m_commandIndex = m_console->m_evaluationQueue.GetIndex();
   if ((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
   {
     int index;
@@ -6550,6 +6548,7 @@ void wxMaxima::TryEvaluateNextInQueue()
     {
       // Manually mark the current cell as the one that has caused an error.
       m_console->m_cellPointers.m_errorList.Add(tmp);
+      tmp->GetEditable()->SetErrorIndex(m_commandIndex - 1);
       // Inform the user about the error (which automatically causes the worksheet
       // to the cell we marked as erroneous a few seconds ago.
       TextCell *cell = new TextCell(m_console->GetTree(), &(m_console->m_configuration),
@@ -6562,6 +6561,8 @@ void wxMaxima::TryEvaluateNextInQueue()
       // Todo: The force shouldn't be needed, or should it?
       m_console->RecalculateForce();
       tmp->GetInput()->SetCaretPosition(index);
+      tmp->GetInput()->SetErrorIndex((m_commandIndex = index) - 1);
+
       
       if (m_console->FollowEvaluation())
         m_console->SetSelection(NULL);

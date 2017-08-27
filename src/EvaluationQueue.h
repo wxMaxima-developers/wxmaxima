@@ -39,14 +39,25 @@ that still have to be sent to maxima.
 class EvaluationQueue
 {
 private:
-  /*! A list of all the commands in the current cell
 
+  class command{
+  public:
+    command(wxString string, int index){m_command = string; m_indexStart = index;}
+    wxString GetString(){return m_command;}
+    int GetIndex(){return m_indexStart;}
+  private:
+    int m_indexStart;
+    wxString m_command;
+  };
+    
+  /*! A list of all the commands in the current cell
+    
     We need to track each single command:
-     - If we send more than one command at once maxima will interpret the command
+    - If we send more than one command at once maxima will interpret the command
        as an answer to an eventual question and
-     - we need to know when to switch to the next cell
-   */
-  std::list<wxString> m_commands;
+       - we need to know when to switch to the next cell
+  */
+  std::list<EvaluationQueue::command> m_commands;
   int m_size;
   //! The label the user has assigned to the current command.
   wxString m_userLabel;
@@ -68,6 +79,14 @@ public:
   */
   wxString GetUserLabel()
   { return m_userLabel; }
+
+  int GetIndex()
+    {
+      if (!m_commands.empty())
+        return  m_commands.front().GetIndex();
+      else
+        return -1;
+    }
 
   bool m_workingGroupChanged;
 
