@@ -81,8 +81,8 @@ wxString BetterTeX(wxString str){
 
   // PART C --HANDLES Parenteresis as in \left ..\right..
   // intercepts {\left(..\right)} -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
-  // wxRegEx bracesAroundParenthesis(wxT("[^}c]{\\(\\left\\(.+?\\right\\)\\)\s*}"));
-  // bracesAroundParenthesis.Replace(&retval,"\\1");
+  wxRegEx bracesAroundParenthesis(wxT("([^}c]{0,1}){(\\\\left\\(.+?\\\\right\\))}"),wxRE_ADVANCED);
+  bracesAroundParenthesis.Replace(&retval,"\\1 \\2");
 
   // intercepts {optional_command or words} -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
   // wxRegEx bracesAroundText(wxT("[^}c]{\\(\\\\*\s*\w+?\s*\\)}"));
