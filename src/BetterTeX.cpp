@@ -43,7 +43,7 @@ wxString BetterTeX(wxString str){
   wxString retval = str;
 
   // PART 0 --USEFUL regular expressions
-  wxRegEx removeWhiteSpaceAroundBraces(wxT("\\s*([}{^])\\s*"),wxRE_ADVANCED);
+  wxRegEx removeWhiteSpaceAroundBraces(wxT("\\s*([}{)(^])\\s*"),wxRE_ADVANCED);
   removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
   // PART A --IMHO useless keywords
@@ -63,7 +63,6 @@ wxString BetterTeX(wxString str){
   removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
   // {str}^{str}->str^{str}
-  wxLogMessage(retval);
   wxRegEx bracesAroundBasePower("([^}ct]{0,1}){([^}{]+?)}\\^",wxRE_ADVANCED);
   bracesAroundBasePower.Replace(&retval,"\\1 \\2^");
   removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
@@ -83,10 +82,12 @@ wxString BetterTeX(wxString str){
   // intercepts {\left(..\right)} -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
   wxRegEx bracesAroundParenthesis(wxT("([^}c]{0,1}){(\\\\left\\(.+?\\\\right\\))}"),wxRE_ADVANCED);
   bracesAroundParenthesis.Replace(&retval,"\\1 \\2");
+  removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
-  // intercepts {optional_command or words} -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
-  // wxRegEx bracesAroundText(wxT("[^}c]{\\(\\\\*\s*\w+?\s*\\)}"));
-  // bracesAroundText.Replace(&retval,"\\1");
-  wxLogMessage(retval);
+  // intercepts {\left(..\right)^{str}} -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
+  wxRegEx bracesAroundParenthesisPower(wxT("([^}c]{0,1}){(\\\\left\\(.+?\\\\right\\)\\^{[^}{]+?})}"),wxRE_ADVANCED);
+  bracesAroundParenthesisPower.Replace(&retval,"\\1 \\2");
+  removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
+
   return retval;
 }
