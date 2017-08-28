@@ -39,7 +39,6 @@ wxString BetterTeX(wxString str){
   // for their/this regex.h, there will be some adjustments to use the C++11
   // regex implementation.
 
-  wxLogMessage("Hi, here is BetterTeX for you.");
   wxString retval = str;
 
   // PART 0 --USEFUL regular expressions
@@ -80,14 +79,20 @@ wxString BetterTeX(wxString str){
 
   // PART C --HANDLES Parenteresis as in \left ..\right..
   // intercepts {\left(..\right)} -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
-  wxRegEx bracesAroundParenthesis(wxT("([^}c]{0,1}){(\\\\left\\(.+?\\\\right\\))}"),wxRE_ADVANCED);
-  bracesAroundParenthesis.Replace(&retval,"\\1 \\2");
-  removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
+  wxString tmp;
+  do{
+    tmp=retval;
+    wxRegEx bracesAroundParenthesis(wxT("([^}c]{0,1}){(\\\\left\\(.+?\\\\right\\))}"),wxRE_ADVANCED);
+    bracesAroundParenthesis.Replace(&retval,"\\1 \\2");
+    removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
-  // intercepts {\left(..\right)^{str}} -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
-  wxRegEx bracesAroundParenthesisPower(wxT("([^}c]{0,1}){(\\\\left\\(.+?\\\\right\\)\\^{[^}{]+?})}"),wxRE_ADVANCED);
-  bracesAroundParenthesisPower.Replace(&retval,"\\1 \\2");
-  removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
+    // intercepts {\left(..\right)^{str}} -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
+    wxRegEx bracesAroundParenthesisPower(wxT("([^}c]{0,1}){(\\\\left\\(.+?\\\\right\\)\\^{[^}{]+?})}"),wxRE_ADVANCED);
+    bracesAroundParenthesisPower.Replace(&retval,"\\1 \\2");
+    removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
+  }
+  while (retval!=tmp);
 
+  // TODO: handle \left[ \right], or || etc 
   return retval;
 }

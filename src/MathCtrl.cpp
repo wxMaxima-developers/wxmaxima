@@ -2033,7 +2033,6 @@ bool MathCtrl::CopyMathML()
 
 bool MathCtrl::CopyTeX()
 {
-  wxLogMessage("You called MathCtrl::CopyTeX()");
   if (GetActiveCell() != NULL)
     return false;
 
