@@ -53,7 +53,7 @@ wxString BetterTeX(wxString str){
   ensuremath.Replace(&retval,"{\\1}");
   // END PART A
 
-  // PART B --HANDLES CASES Powers {{str}^{str}}
+  // PART B --HANDLES CASES super  {{str}^{str}} and sub {}_{} scripts
 
   // intercept braces around single char
   // --
@@ -62,17 +62,17 @@ wxString BetterTeX(wxString str){
   removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
   // {str}^{str}->str^{str}
-  wxRegEx bracesAroundBasePower("([^}ct]{0,1}){([^}{]+?)}\\^",wxRE_ADVANCED);
+  wxRegEx bracesAroundBasePower("([^}ct]{0,1}){([^}{]+?)}[\\^_]",wxRE_ADVANCED);
   bracesAroundBasePower.Replace(&retval,"\\1 \\2^");
   removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
   // intercepts {a^b} , but not \sqrt{a^b}, or \frac{a^b}{c}
-  wxRegEx bracesAroundCharPower("([^}ct]{0,1}){(\\w\\^\\w)}",wxRE_ADVANCED);
+  wxRegEx bracesAroundCharPower("([^}ct]{0,1}){(\\w[\\^_]\\w)}",wxRE_ADVANCED);
   bracesAroundCharPower.Replace(&retval,"\\1 \\2");
   removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
   // intercepts {a^{str}} , but not \sqrt{a^b}, or \frac{a^b}{c}
-  wxRegEx bracesAroundStrPower("([^}ct]{0,1}){([^}{]+?\\^{[^}{]+?})}",wxRE_ADVANCED);
+  wxRegEx bracesAroundStrPower("([^}ct]{0,1}){([^}{]+?[\\^_]{[^}{]+?})}",wxRE_ADVANCED);
   bracesAroundStrPower.Replace(&retval,"\\1 \\2");
   removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
   // END PART B
@@ -87,12 +87,12 @@ wxString BetterTeX(wxString str){
     removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
     // intercepts {\left(..\right)^{str}} -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
-    wxRegEx bracesAroundParenthesisPower(wxT("([^}c]{0,1}){(\\\\left\\(.+?\\\\right\\)\\^{[^}{]+?})}"),wxRE_ADVANCED);
+    wxRegEx bracesAroundParenthesisPower(wxT("([^}c]{0,1}){(\\\\left\\(.+?\\\\right\\)[\\^_]{[^}{]+?})}"),wxRE_ADVANCED);
     bracesAroundParenthesisPower.Replace(&retval,"\\1 \\2");
     removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
   }
   while (retval!=tmp);
 
-  // TODO: handle \left[ \right], or || etc 
+  // TODO: handle \left[ \right], or || etc
   return retval;
 }
