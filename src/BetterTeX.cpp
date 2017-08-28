@@ -46,11 +46,11 @@ wxString BetterTeX(wxString str){
   removeWhiteSpaceAroundBraces.Replace(&retval,"\\1");
 
   // PART A --IMHO useless keywords
-  wxRegEx mathit(wxT("{\\\\mathit{(\\w+?)}}"),wxRE_ADVANCED);
-  mathit.Replace(&retval,"{\\1}");
+  wxRegEx mathit(wxT("\\\\mathit{(\\w+?)}"),wxRE_ADVANCED);
+  mathit.Replace(&retval,"\\1");
 
-  wxRegEx ensuremath(wxT("{\\\\ensuremath{(\\w+?)}}"),wxRE_ADVANCED);
-  ensuremath.Replace(&retval,"{\\1}");
+  wxRegEx ensuremath(wxT("\\\\ensuremath{(\\w+?)}"),wxRE_ADVANCED);
+  ensuremath.Replace(&retval,"\\1");
   // END PART A
 
   // PART B --HANDLES CASES super  {{str}^{str}} and sub {}_{} scripts
