@@ -185,8 +185,12 @@ bool MyApp::OnInit()
 #if defined (__WXMSW__)
   wxSetEnv(wxT("LANG"), m_locale.GetName());
   if (!wxGetEnv(wxT("BUILD_DIR"), NULL))
-    wxSetWorkingDirectory(wxPathOnly(wxString(argv[0])));
-
+  {
+    wxString dir = wxPathOnly(wxStandardPaths::GetExecutablePath());
+    if(dir != wxEmptyString)
+      wxSetWorkingDirectory(wxPathOnly(wxStandardPaths::GetExecutablePath()));
+  }
+    
     Dirstructure dirstruct;
     wxString fontPrefix = dirstruct.FontDir() + wxT("/");
 
