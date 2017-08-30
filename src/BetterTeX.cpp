@@ -30,7 +30,10 @@
 
 wxString ProtectedReplace(wxString str, wxString expr, wxString replacement, int filter_on=1)
 {
-    wxString protection = "(\\\\[a-zA-Z0-9]+?|.|\\s*)";
+    // This implements a sort of look behind
+    // to protect some keyword or context from being destroyed
+
+    wxString protection = "(\\\\[a-zA-Z0-9]+?|\\})";
     wxString keywords = "}\\frac\\sqrt";
 
     wxRegEx re(protection+expr,wxRE_ADVANCED);
