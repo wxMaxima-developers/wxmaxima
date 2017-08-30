@@ -39,6 +39,7 @@
 #include <wx/sstream.h>
 #include <wx/colordlg.h>
 #include <wx/settings.h>
+#include <wx/filename.h>
 #include "Dirstructure.h"
 
 #define MAX(a, b) ((a)>(b) ? (a) : (b))
@@ -587,7 +588,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
     #else
     wxGetEnv(wxT("HOMEPATH"),&m_startupFileName);
     #endif
-    m_startupFileName += wxT("/");
+    m_startupFileName += wxString(wxFileName::GetPathSeparator());
     
     // On windows the startup file's directory name doesn't begin with a ".", while
     // on all other systems it does.
@@ -600,7 +601,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
     if(!wxDirExists(m_startupFileName))
       wxMkDir(m_startupFileName, wxS_DIR_DEFAULT);
   }
-  m_startupFileName += wxT("/wxmaxima-init.mac");
+  m_startupFileName += wxString(wxFileName::GetPathSeparator()) + wxT("wxmaxima-init.mac");
 
   wxStaticText *startupText =
     new wxStaticText(panel, wxID_ANY,
