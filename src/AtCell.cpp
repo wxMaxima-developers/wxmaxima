@@ -113,7 +113,7 @@ void AtCell::Draw(wxPoint point, int fontsize)
   if (DrawThisCell(point) && InUpdateRegion())
   {
     MathCell::Draw(point, fontsize);
-    
+
     Configuration *configuration = (*m_configuration);
     double scale = configuration->GetScale();
     wxDC &dc = configuration->GetDC();
@@ -148,7 +148,15 @@ wxString AtCell::ToTeX()
 {
   wxString s = wxT("\\left. ");
   s += m_baseCell->ListToTeX();
-  s += wxT("\\right|_{") + m_indexCell->ListToTeX() + wxT("}");
+  wxString content = m_indexCell->ListToTeX();
+  if (content.Length()==1)
+  {
+      s += wxT("\\right|_") + content;
+  }
+  else
+  {
+      s += wxT("\\right|_{") + content + wxT("}");
+  }
   return s;
 }
 
@@ -170,7 +178,7 @@ wxString AtCell::ToXML()
   wxString flags;
   if (m_forceBreakLine)
     flags += wxT(" breakline=\"true\"");
-  
+
   return wxT("<at") + flags + wxT("><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
          m_indexCell->ListToXML() + wxT("</r></at>");
 }

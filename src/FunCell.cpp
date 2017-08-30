@@ -149,8 +149,8 @@ wxString FunCell::ToTeX()
           (m_nameCell->ToString() == wxT("sec")) ||
           (m_nameCell->ToString() == wxT("csc")) ||
           (m_nameCell->ToString() == wxT("tan"))
-          )
-    s = wxT("\\") + m_nameCell->ToString() + wxT("{") + m_argCell->ListToTeX() + wxT("}");
+      )
+    s = wxT("\\") + m_nameCell->ToString() + m_argCell->ListToTeX();
   else
     s = m_nameCell->ListToTeX() + m_argCell->ListToTeX();
 
