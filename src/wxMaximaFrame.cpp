@@ -1139,7 +1139,7 @@ void wxMaximaFrame::ReReadConfig()
     wxConfigBase *config = wxConfig::Get();
     config->Flush();
     wxDELETE(config);
-    wxConfig::Set(new wxFileConfig(m_configFileName));
+    wxConfig::Set(new wxFileConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName));
   }
   // Re-Reading the config isn't necessary on the Mac where all windows share the same
   // window and on Windows where the registry is re-read every time the configuration

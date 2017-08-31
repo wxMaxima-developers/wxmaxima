@@ -157,7 +157,7 @@ bool MyApp::OnInit()
   // Attention: The config file is changed by wxMaximaFrame::wxMaximaFrame::ReReadConfig
   if (cmdLineParser.Found(wxT("f"),&ini))
   {
-    wxConfig::Set(new wxFileConfig(ini));
+    wxConfig::Set(new wxFileConfig(wxT("wxMaxima"), wxEmptyString, ini));
     m_configFileName = ini;
   }
   else
