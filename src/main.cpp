@@ -186,9 +186,9 @@ bool MyApp::OnInit()
   wxSetEnv(wxT("LANG"), m_locale.GetName());
   if (!wxGetEnv(wxT("BUILD_DIR"), NULL))
   {
-    wxString dir = wxPathOnly(wxStandardPaths::GetExecutablePath());
+    wxString dir = wxPathOnly(wxStandardPaths::Get().GetExecutablePath());
     if(dir != wxEmptyString)
-      wxSetWorkingDirectory(wxPathOnly(wxStandardPaths::GetExecutablePath()));
+      wxSetWorkingDirectory(wxPathOnly(wxStandardPaths::Get().GetExecutablePath()));
   }
     
     Dirstructure dirstruct;
