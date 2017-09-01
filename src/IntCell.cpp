@@ -247,10 +247,10 @@ void IntCell::Draw(wxPoint point, int fontsize)
   {
     MathCell::Draw(point, fontsize);
     Configuration *configuration = (*m_configuration);
-    
+
     wxDC &dc = configuration->GetDC();
     double scale = configuration->GetScale();
-    
+
     wxPoint base(point), under(point), over(point), var(point), sign(point);
 
     if (configuration->CheckTeXFonts())
@@ -321,7 +321,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
       // The line
       pointList[3] = wxPoint(sign.x + m_signWCenter,
                                sign.y);
-      
+
       // Bottom Decoration
       pointList[4] = wxPoint(sign.x + m_signWCenter,
                              sign.y + (m_signSize + 1) / 2 - 2* (m_signWidth / 4));
@@ -411,11 +411,9 @@ wxString IntCell::ToTeX()
   else
     s += wxT(" ");
 
-  s += wxT("{\\left. ");
-  s += m_base->ListToTeX();
-  s += m_var->ListToTeX();
-  s += wxT("\\right.}");
-
+  wxString content = m_base->ListToTeX() + m_var->ListToTeX();
+  s += wxT("\\left. ") + content + wxT("\\right.");
+  if (content.length()>1){s="{"+s+"}";}
   return s;
 }
 
@@ -500,7 +498,7 @@ wxString IntCell::ToXML()
 
   if (m_intStyle != INT_DEF)
     flags += wxT(" def=\"false\">");
-  
+
   return wxT("<in") + flags + wxT(">") + from + to + base + var + wxT("</in>");
 }
 
