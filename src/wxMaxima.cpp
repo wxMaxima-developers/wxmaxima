@@ -4983,7 +4983,7 @@ void wxMaxima::PlotMenu(wxCommandEvent &event)
       break;
     case menu_animationautostart:
       MenuCommand(wxT("if wxanimate_autoplay#false then wxanimate_autoplay:false else wxanimate_autoplay:true;"));
-      break;                                                     break;
+      break;
     case menu_animationframerate:
     {
       cmd = GetTextFromUser(_("Enter new animation frame rate [Hz, integer]:"), _("Frame rate"),
