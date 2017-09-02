@@ -43,7 +43,7 @@ FracCell::FracCell(MathCell *parent, Configuration **config, CellPointers *cellP
   m_horizontalGapLeft = 0;
   m_horizontalGapRight = 0;
   m_protrusion = 0;
-  
+
   m_open1 = NULL;
   m_close1 = NULL;
   m_open2 = NULL;
@@ -151,7 +151,7 @@ void FracCell::RecalculateWidths(int fontsize)
 
     dc.GetTextExtent(wxT("X"), &m_protrusion, &dummy);
     m_protrusion /= 3;
-    
+
     // We want half a space's widh of blank space to separate us from the
     // next minus.
 
@@ -164,7 +164,7 @@ void FracCell::RecalculateWidths(int fontsize)
       m_horizontalGapRight = m_protrusion;
     else
       m_horizontalGapRight = 0;
-    
+
     m_width = MAX(m_num->GetFullWidth(scale), m_denom->GetFullWidth(scale)) +
               2 * m_protrusion + m_horizontalGapLeft + m_horizontalGapRight;
   }
@@ -216,7 +216,7 @@ void FracCell::Draw(wxPoint point, int fontsize)
   {
     MathCell::Draw(point, fontsize);
     Configuration *configuration = (*m_configuration);
-    
+
     wxDC &dc = configuration->GetDC();
     double scale = configuration->GetScale();
     wxPoint num, denom;
@@ -313,6 +313,16 @@ wxString FracCell::ToTeX()
   wxString s;
   if (!m_isBroken)
   {
+    wxString num = m_num->ListToTeX();
+    wxString denom = m_denom->ListToTeX();
+    if (num.StartsWith("{") && num.EndsWith("}"))
+    {
+        num=num.Mid(1,num.length()-2);
+    }
+    if (denom.StartsWith("{") && denom.EndsWith("}"))
+    {
+        denom=denom.Mid(1,denom.length()-2);
+    }
     if (m_fracStyle == FC_CHOOSE)
     {
       s = wxT("\\begin{pmatrix}") + m_num->ListToTeX() + wxT("\\\\\n") +

@@ -278,10 +278,10 @@ int MathCell::GetLineWidth(double scale)
 
     MathCell *tmp = this;
     while(tmp != NULL)
-    {      
+    {
       width += tmp->m_width;
       width += Scale_Px(MC_CELL_SKIP, scale);
-      
+
       if (width > m_lineWidth)
         m_lineWidth = width;
 
@@ -355,11 +355,11 @@ void MathCell::RecalculateHeightList(int fontsize)
   }
 }
 
-/*! Recalculate widths of cells. 
+/*! Recalculate widths of cells.
 
-  (Used for changing font size since in this case all size information has to be 
+  (Used for changing font size since in this case all size information has to be
   recalculated).
-  
+
   Should set: set m_width.
 */
 void MathCell::RecalculateWidthsList(int fontsize)
@@ -384,7 +384,7 @@ bool MathCell::DrawThisCell(wxPoint point)
 {
   if((point.x < 0) || (point.y < 0))
     return false;
-  
+
   Configuration *configuration = (*m_configuration);
   int top = configuration->GetTop();
   int bottom = configuration->GetBottom();
@@ -399,7 +399,7 @@ bool MathCell::DrawThisCell(wxPoint point)
 
   \param all
    - true  return the rectangle around the whole line.
-   - false return the rectangle around this cell. 
+   - false return the rectangle around this cell.
  */
 wxRect MathCell::GetRect(bool all)
 {
@@ -493,7 +493,7 @@ wxString MathCell::ListToString()
       //    (tmp->GetStyle() != TS_USERLABEL) &&
       //    (tmp->GetStyle() != TS_MAIN_PROMPT) &&
       //    (tmp->GetStyle() != TS_OTHER_PROMPT))
-      //   retval += wxT("\t");        
+      //   retval += wxT("\t");
     }
     // if(firstline)
     // {
@@ -501,10 +501,10 @@ wxString MathCell::ListToString()
     //      (tmp->GetStyle() != TS_USERLABEL) &&
     //      (tmp->GetStyle() != TS_MAIN_PROMPT) &&
     //      (tmp->GetStyle() != TS_OTHER_PROMPT))
-    //     retval += wxT("\t");        
+    //     retval += wxT("\t");
     // }
     retval += tmp->ToString();
-    
+
     firstline = false;
     tmp = tmp->m_nextToDraw;
   }
@@ -530,28 +530,6 @@ wxString MathCell::ListToTeX()
     retval += tmp->ToTeX();
     tmp = tmp->m_next;
   }
-
-  // TODO: Things like {a}_{b} make the LaTeX code harder to read. But things like
-  // \sqrt{a} need us to use braces from time to time.
-  //
-  // Guglielmo Saggiorato has provided several regExps that help in this case.
-  
-  // Remove braces around a single letter that is at the start of the line
-  wxRegEx bracesAroundSingleLetter(wxT("[^ ]{\\([a-zA-Z0-9]\\)}"));
-  bracesAroundSingleLetter.Replace(&retval,"\\1");
-
-  // intercepts {\a_command^a_char} -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
-  wxRegEx bracesAroundSingleCharExponent(wxT("\\([^}c]\\){\\(\\*[^{]*?\^[a-zA-Z0-9]\\)}"));
-  bracesAroundSingleCharExponent.Replace(&retval,"\\1");
-
-  // intercepts {\left(..\right)} -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
-  wxRegEx bracesAroundParenthesis(wxT("[^}c]{\\(\\left\\(.+?\\right\\)\\)\s*}"));
-  bracesAroundParenthesis.Replace(&retval,"\\1");
-
-  // intercepts {optional_command or words} -- protected if begins with c{..} or }{} as would be in \frac{..}{..}
-  wxRegEx bracesAroundText(wxT("[^}c]{\\(\\\\*\s*\w+?\s*\\)}"));
-  bracesAroundText.Replace(&retval,"\\1");
-  
   return retval;
 }
 
@@ -1065,7 +1043,7 @@ bool MathCell::ContainsRect(const wxRect &sm, bool all)
 
  Resets cached data like width and the height of the current cell
  as well as the vertical position of the center. Temporarily unbreaks all
- lines until the widths are recalculated if there aren't any hard line 
+ lines until the widths are recalculated if there aren't any hard line
  breaks.
  */
 void MathCell::ResetData()

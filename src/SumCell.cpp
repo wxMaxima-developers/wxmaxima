@@ -22,8 +22,8 @@
 /*! \file
   This file defines the class SumCell
 
-  SumCell is the MathCell type that represents maxima's <code>sum()</code>, 
-  <code>lsum</code> and <code>product()</code> 
+  SumCell is the MathCell type that represents maxima's <code>sum()</code>,
+  <code>lsum</code> and <code>product()</code>
   commands.
 */
 
@@ -327,10 +327,9 @@ wxString SumCell::ToTeX()
   if (to.Length())
     s += wxT("^{") + to + wxT("}");
 
-
-  s += wxT("{\\left. ");
+  s += wxT("\\left. ");
   s += m_base->ListToTeX();
-  s += wxT("\\right.}");
+  s += wxT("\\right.");
   return s;
 }
 
@@ -376,7 +375,7 @@ wxString SumCell::ToXML()
   wxString flags;
   if (m_forceBreakLine)
     flags += wxT(" breakline=\"true\"");
-    
+
   return wxT("<sm type=\"") + flags + type + wxT("\"><r>") + m_under->ListToXML() + _T("</r><r>") +
          m_over->ListToXML() + _T("</r><r>") +
          m_base->ListToXML() + _T("</r></sm>");

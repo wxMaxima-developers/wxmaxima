@@ -165,7 +165,7 @@ void ExptCell::Draw(wxPoint point, int fontsize)
 {
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    
+
     MathCell::Draw(point, fontsize);
     Configuration *configuration = (*m_configuration);
     double scale = configuration->GetScale();
@@ -200,8 +200,18 @@ wxString ExptCell::ToTeX()
 {
   if (m_isBroken)
     return wxEmptyString;
-  wxString s = wxT("{{") + m_baseCell->ListToTeX() + wxT("}^{") +
-               m_powCell->ListToTeX() + wxT("}}");
+  wxString base = m_baseCell->ListToTeX();
+  if (base.Length()!=1)
+  {
+      base = wxT("{") + base + wxT("}");
+  }
+  wxString power = m_powCell->ListToTeX();
+  if (power.Length()!=1)
+  {
+      power = wxT("{") + power + wxT("}");
+  }
+
+  wxString s = base + wxT("^") + power;
   return s;
 }
 

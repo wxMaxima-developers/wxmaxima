@@ -153,11 +153,11 @@ wxString SubCell::ToTeX()
   wxString s;
   wxString base = m_baseCell->ListToTeX();
   wxString index = m_indexCell->ListToTeX();
-  if (base.Length() > 1)
+  if (base.Length() != 1)
     s = wxT("{{") + base + wxT("}_");
   else
     s = wxT("{") + base + wxT("_");
-  if (index.Length() > 1)
+  if (index.Length() != 1)
     s += wxT("{") + index + wxT("}}");
   else
     s += index + wxT("}");
@@ -186,7 +186,7 @@ wxString SubCell::ToXML()
 
   if (m_altCopyText != wxEmptyString)
     flags += wxT(" altCopy=\"") + XMLescape(m_altCopyText) + wxT("\"");
-  
+
   return wxT("<i") + flags + wxT("><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
            m_indexCell->ListToXML() + wxT("</r></i>");
 }

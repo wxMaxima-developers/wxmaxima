@@ -303,7 +303,17 @@ wxString SqrtCell::ToTeX()
   if (m_isBroken)
     return wxEmptyString;
   else
-    return wxT("\\sqrt{") + m_innerCell->ListToTeX() + wxT("}");
+  {
+    wxString content = m_innerCell->ListToTeX();
+    if((content.StartsWith("{") && content.EndsWith("}")) || content.length()==1)
+    {
+        return wxT("\\sqrt ") + content + wxT(" ");
+    }
+    else
+    {
+        return wxT("\\sqrt{") + content + wxT("}");
+    }
+  }
 }
 
 wxString SqrtCell::ToMathML()
