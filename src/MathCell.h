@@ -789,7 +789,11 @@ class MathCell
   //! Set the tooltip of this math cell. wxEmptyString means: no tooltip.
   void SetToolTip(const wxString &tooltip){m_toolTip = tooltip;}
 
+  //! Set the worksheet all cells are drawn on
+  static void SetWorksheet(wxWindow *worksheet){m_worksheet = worksheet;}
 protected:
+  //! The worksheet all cells are drawn on
+  static wxWindow *m_worksheet;
   //! Determines if any of the lists contains a ToolTip for the point given.
   wxString GetToolTipList(const wxPoint &point,
                           MathCell *list1,

@@ -1394,3 +1394,4 @@ wxRect  MathCell::m_updateRegion;
 bool    MathCell::m_clipToDrawRegion = true;
 wxRect  MathCell::m_visibleRegion;
 wxPoint MathCell::m_worksheetPosition;
+wxWindow * MathCell::m_worksheet;
