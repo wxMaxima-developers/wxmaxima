@@ -1218,7 +1218,8 @@ wxAccStatus MathCell::GetDescription(int childId, wxString *description)
     MathCell *cell = NULL;
     if(GetChild(childId,&cell) == wxACC_OK)
     {
-      return cell->GetDescription(0, description);
+      if(cell != NULL)
+        return cell->GetDescription(0, description);
     }
   }
 
@@ -1232,7 +1233,7 @@ wxAccStatus MathCell::GetParent (MathCell  **parent)
     return wxACC_FAIL;
   
   *parent = m_parent;
-  if(*parent != this)
+  if((*parent != this) && (*parent != NULL))
     return  wxACC_OK;
   else
   {
@@ -1252,8 +1253,11 @@ wxAccStatus MathCell::GetValue (int childId, wxString *strValue)
     *strValue = cell->ToString();
     return wxACC_OK;
   }
-  *strValue = wxEmptyString;
-  return wxACC_FAIL;
+  else
+  {
+    *strValue = wxEmptyString;
+    return wxACC_FAIL;
+  }
 }
 
 wxAccStatus MathCell::GetChildCount (int *childCount)
