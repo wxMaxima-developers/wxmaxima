@@ -45,6 +45,7 @@ public:
 
   ~ImgCell();
 
+  std::list<MathCell *> GetInnerCells();
   void MarkAsDeleted();
 
   void LoadImage(wxString image, bool remove = true);

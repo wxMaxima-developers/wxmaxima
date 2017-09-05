@@ -88,6 +88,7 @@ public:
     no more displayed currently.
    */
   void MarkAsDeleted();
+  std::list<MathCell *> GetInnerCells();
 
   /*! Which GroupCell was the last maxima was working on?
 
@@ -118,7 +119,7 @@ public:
   int GetGroupType()
   { return m_groupType; }
 
-  void SetParent(MathCell *parent); // setting parent for all mathcells in GC
+  void SetGroup(MathCell *parent); // setting parent for all mathcells in GC
 
   // selection methods
   void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
@@ -371,6 +372,76 @@ public:
 
   //! A list of answers provided by the user
   std::list<wxString> m_knownAnswers;
+
+#if wxUSE_ACCESSIBILITY
+  wxAccStatus GetDescription(int childId, wxString *description);
+  wxAccStatus GetLocation (wxRect &rect, int elementId);
+
+  class HCaretCell: public wxAccessible
+  {
+  public:
+    HCaretCell::HCaretCell(GroupCell* group) : wxAccessible()
+      {
+        m_group = group;
+      }
+    //! Describe the current cell to a Screen Reader
+    virtual wxAccStatus GetDescription(int childId, wxString *description)
+      {
+        if (description != NULL)
+        {
+          *description = _("A space between GroupCells");
+          return wxACC_OK;
+        }
+        return wxACC_FAIL;
+      }
+  //! Inform the Screen Reader which cell is the parent of this one
+  wxAccStatus GetParent (wxAccessible ** parent)
+      {
+        if (parent != NULL)
+        {
+          *parent = m_group;
+          return wxACC_OK;
+        }
+        return wxACC_FAIL;
+      }
+  //! How many childs of this cell GetChild() can retrieve?
+    wxAccStatus GetChildCount (int *childCount)
+      {
+        if (childCount != NULL)
+        {
+          *childCount = 0;
+          return wxACC_OK;
+        }
+        return wxACC_FAIL;
+      }
+    //! Retrieve a child cell. childId=0 is the current cell
+    wxAccStatus GetChild (int childId, wxAccessible **child)
+      {
+        if((childId != 0) || (child == NULL))
+          return wxACC_FAIL;
+        else
+        {
+          *child = this;
+          return wxACC_OK;
+        }
+      }
+    // //! Does this or a child cell currently own the focus?
+    // wxAccStatus GetFocus (int *childId, wxAccessible **child)
+    //   {
+    //   }
+    // //! Where is this cell to be found?
+    // wxAccStatus GetLocation (wxRect &rect, int elementId)
+    //   {
+    //   }
+    // //! Is pt inside this cell or a child cell?
+    // wxAccStatus HitTest (const wxPoint &pt,
+    //                      int *childId, wxAccessible **childObject);
+    
+  private:
+	GroupCell *m_group;
+  };
+#endif
+ 
 protected:
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold
@@ -392,6 +463,7 @@ private:
   bool m_inEvaluationQueue;
   bool m_lastInEvaluationQueue;
   int m_inputWidth, m_inputHeight, m_outputWidth, m_outputHeight;
+
 };
 
 #endif /* GROUPCELL_H */

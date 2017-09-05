@@ -39,6 +39,8 @@ private:
 public:
   TextCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString);
 
+  std::list<MathCell *> GetInnerCells();
+  
   void MarkAsDeleted();
   
   CellPointers *m_cellPointers;

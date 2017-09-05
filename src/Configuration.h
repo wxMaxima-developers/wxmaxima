@@ -578,9 +578,9 @@ public:
   //! Gets the default toolTip for new cells
   wxString GetDefaultMathCellToolTip(){return m_defaultToolTip;}
   //! Which way do we want to draw parenthesis?
-  void SetParenthesisDrawMode(drawMode mode){m_parenthesisDrawMode = mode;}
+  void SetGrouphesisDrawMode(drawMode mode){m_parenthesisDrawMode = mode;}
 
-  drawMode GetParenthesisDrawMode();
+  drawMode GetGrouphesisDrawMode();
   /*! Get the font for a given text style
 
     \param textStyle The text style to get the font for
@@ -605,7 +605,7 @@ private:
       of this function.
    */
   bool CharsExistInFont(wxFont font, wxString char1, wxString char2, wxString char3);
-  //! Caches the information on how to draw big parenthesis for GetParenthesisDrawMode().
+  //! Caches the information on how to draw big parenthesis for GetGrouphesisDrawMode().
   drawMode m_parenthesisDrawMode;
   wxString m_workingdir;
   wxString m_maximaLocation;

@@ -48,15 +48,15 @@ SumCell::SumCell(MathCell *parent, Configuration **config, CellPointers *cellPoi
   m_sumStyle = SM_SUM;
 }
 
-void SumCell::SetParent(MathCell *parent)
+void SumCell::SetGroup(MathCell *parent)
 {
   m_group = parent;
   if (m_base != NULL)
-    m_base->SetParentList(parent);
+    m_base->SetGroupList(parent);
   if (m_under != NULL)
-    m_under->SetParentList(parent);
+    m_under->SetGroupList(parent);
   if (m_over != NULL)
-    m_over->SetParentList(parent);
+    m_over->SetGroupList(parent);
 }
 
 MathCell *SumCell::Copy()
@@ -91,6 +91,18 @@ void SumCell::MarkAsDeleted()
     m_cellPointers->m_cellUnderPointer = NULL;
 }
 
+
+std::list<MathCell *> SumCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  if(m_base)
+    innerCells.push_back(m_base);
+  if(m_under)
+    innerCells.push_back(m_under);
+  if(m_over)
+    innerCells.push_back(m_over);
+  return innerCells;
+}
 
 void SumCell::SetOver(MathCell *over)
 {

@@ -62,6 +62,13 @@ void TextCell::MarkAsDeleted()
     m_cellPointers->m_cellUnderPointer = NULL;
 }
 
+
+std::list<MathCell *> TextCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  return innerCells;
+}
+
 void TextCell::SetValue(const wxString &text)
 {
   m_toolTip = m_initialToolTip;

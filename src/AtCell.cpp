@@ -34,13 +34,13 @@ AtCell::AtCell(MathCell *parent, Configuration **config, CellPointers *cellPoint
   m_indexCell = NULL;
 }
 
-void AtCell::SetParent(MathCell *parent)
+void AtCell::SetGroup(MathCell *parent)
 {
   m_group = parent;
   if (m_baseCell != NULL)
-    m_baseCell->SetParentList(parent);
+    m_baseCell->SetGroupList(parent);
   if (m_indexCell != NULL)
-    m_indexCell->SetParentList(parent);
+    m_indexCell->SetGroupList(parent);
 }
 
 MathCell *AtCell::Copy()
@@ -68,6 +68,16 @@ void AtCell::MarkAsDeleted()
     m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
   if(this == m_cellPointers->m_cellUnderPointer)
     m_cellPointers->m_cellUnderPointer = NULL;
+}
+
+std::list<MathCell *> AtCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  if(m_baseCell)
+    innerCells.push_back(m_baseCell);
+  if(m_indexCell)
+    innerCells.push_back(m_indexCell);
+  return innerCells;
 }
 
 void AtCell::SetIndex(MathCell *index)

@@ -124,6 +124,12 @@ void ImgCell::MarkAsDeleted()
   ClearCache();
 }
 
+std::list<MathCell *> ImgCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  return innerCells;
+}
+
 wxString ImgCell::GetToolTip(const wxPoint &point)
 {
   if(ContainsPoint(point))

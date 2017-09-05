@@ -29,16 +29,16 @@
 #include <wx/regex.h>
 #include <wx/sstream.h>
 
-MathCell::MathCell(MathCell *parent, Configuration **config)
+MathCell::MathCell(MathCell *group, Configuration **config)
 {
   m_toolTip = wxEmptyString;
-  m_group = parent;
+  m_group = group;
+  m_parent = group;
   m_configuration = config;
   m_next = NULL;
   m_previous = NULL;
   m_nextToDraw = NULL;
   m_previousToDraw = NULL;
-  m_group = NULL;
   m_fullWidth = -1;
   m_lineWidth = -1;
   m_maxCenter = -1;
@@ -152,12 +152,13 @@ void MathCell::ClearCacheList()
   }
 }
 
-void MathCell::SetParentList(MathCell *parent)
+void MathCell::SetGroupList(MathCell *parent)
 {
   MathCell *tmp = this;
   while (tmp != NULL)
   {
-    tmp->SetParent(parent);
+    tmp->SetGroup(parent);
+    tmp->SetParent(this);
     tmp = tmp->m_next;
   }
 }
@@ -191,7 +192,7 @@ void MathCell::AppendCell(MathCell *p_next)
   p_next->m_previousToDraw = LastToDraw;
 }
 
-MathCell *MathCell::GetParent()
+MathCell *MathCell::GetGroup()
 {
   wxASSERT_MSG(m_group != NULL, _("Bug: Math Cell that claims to have no group Cell it belongs to"));
   return m_group;
@@ -304,6 +305,12 @@ int MathCell::GetLineWidth(double scale)
 void MathCell::Draw(wxPoint point, int fontsize)
 {
   m_currentPoint = point;
+
+  // Tell the screen reader that this cell's contents might have changed.
+
+#if wxUSE_ACCESSIBILITY
+//  NotifyEvent(0, this, wxOBJID_WINDOW, 0);
+#endif
 }
 
 void MathCell::DrawList(wxPoint point, int fontsize)
@@ -1191,8 +1198,195 @@ bool MathCell::IsMath()
 {
   return !(m_textStyle == TS_DEFAULT ||
            m_textStyle == TS_LABEL ||
+           m_textStyle == TS_USERLABEL ||
            m_textStyle == TS_INPUT);
 }
 
-wxRect MathCell::m_updateRegion;
-bool   MathCell::m_clipToDrawRegion = true;
+#if wxUSE_ACCESSIBILITY
+wxAccStatus MathCell::GetDescription(int childId, wxString *description)
+{
+  if(description == NULL)
+    return wxACC_FAIL;
+  
+  if (childId == 0)
+  {
+	  *description = _("Math output");
+	  return wxACC_OK;
+  }
+  else
+  {
+    MathCell *cell = NULL;
+    if(GetChild(childId,&cell) == wxACC_OK)
+    {
+      return cell->GetDescription(0, description);
+    }
+  }
+
+  *description = wxEmptyString;
+  return wxACC_FAIL;
+}
+
+wxAccStatus MathCell::GetParent (MathCell  **parent)
+{
+  if(parent == NULL)
+    return wxACC_FAIL;
+  
+  *parent = m_parent;
+  if(*parent != this)
+    return  wxACC_OK;
+  else
+  {
+    *parent = NULL;
+    return wxACC_FAIL;
+  }
+}
+
+wxAccStatus MathCell::GetValue (int childId, wxString *strValue)
+{
+  if(strValue == NULL)
+    return wxACC_FAIL;
+  
+  MathCell *cell;
+  if(GetChild(childId,&cell) == wxACC_OK)
+  {
+    *strValue = cell->ToString();
+    return wxACC_OK;
+  }
+  *strValue = wxEmptyString;
+  return wxACC_FAIL;
+}
+
+wxAccStatus MathCell::GetChildCount (int *childCount)
+{
+  *childCount = GetInnerCells().size();
+  return wxACC_OK;
+}
+
+wxAccStatus MathCell::HitTest(const wxPoint &pt,
+	int *childId, MathCell  **childObject)
+{
+  wxRect rect;
+  GetLocation(rect, 0);
+  // If this cell doesn't contain the point none of the sub-cells does.
+  if (!rect.Contains(pt))
+  {
+    if (childObject != NULL)
+      *childObject = NULL;
+    if (childId != NULL)
+      *childId = NULL;
+    return wxACC_FAIL;
+  }
+  else
+  {
+    int childCount;
+    GetChildCount(&childCount);
+    for (int i = 0; i < childCount; i++)
+    {
+      MathCell *child;
+      GetChild(i, &child);
+      child->GetLocation(rect, 0);
+      if (rect.Contains(pt))
+      {
+        if (childObject != NULL)
+          *childObject = child;
+        if (childId != NULL)
+          *childId = i;
+        return wxACC_OK;
+      }
+    }
+    if (childObject != NULL)
+      *childObject = this;
+    if (childId != NULL)
+      *childId = 0;
+    return wxACC_OK;
+  }
+}
+
+wxAccStatus MathCell::GetChild(int childId, MathCell  **child)
+{
+  if(child == NULL)
+    return wxACC_FAIL;
+  
+  if (childId == 0)
+  {
+    *child = this;
+    return wxACC_OK;
+  }
+  else
+  {
+    if (childId > 0)
+    {
+      std::list<MathCell*> cellList = m_parent->GetInnerCells();
+      int cnt = 1;
+      for (std::list<MathCell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
+        if (cnt++ == childId)
+        {
+          *child = *it;
+          return wxACC_OK;
+        }
+    }
+    return wxACC_FAIL;
+  }
+}
+
+wxAccStatus MathCell::GetFocus (int *childId, MathCell  **child)
+{
+  int childCount;
+  GetChildCount(&childCount);
+  
+  for(int i = 0; i < childCount;i++)
+  {
+    int dummy1; 
+    MathCell *cell = NULL;
+    GetChild(i + 1, &cell);
+    if (cell != NULL)
+      if(cell->GetFocus(&dummy1, &child) == wxACC_OK)
+      {
+        if(childId != NULL)      
+          *childId = i+1;
+        if(child != NULL)
+          *child = cell;
+        return wxACC_OK;
+      }
+  }
+  
+  if(childId != NULL)
+    *childId = 0;
+  if(child != NULL)
+    *child = NULL;
+  return wxACC_FAIL;
+}
+
+wxAccStatus MathCell::GetLocation(wxRect &rect, int elementId)
+{
+  if(elementId == 0)
+  {
+    rect = wxRect(GetRect().GetTopLeft()     + m_visibleRegion.GetTopLeft(),
+                  GetRect().GetBottomRight() + m_visibleRegion.GetTopLeft());
+    if(rect.GetTop() < 0)
+      rect.SetTop(0);
+    if(rect.GetLeft() < 0)
+      rect.SetLeft(0);
+    if(rect.GetBottom() > m_visibleRegion.GetWidth())
+      rect.SetBottom(m_visibleRegion.GetWidth());
+    if(rect.GetRight() > m_visibleRegion.GetHeight())
+      rect.SetRight(m_visibleRegion.GetHeight());
+    rect = wxRect(rect.GetTopLeft()+m_worksheetPosition,rect.GetBottomRight()+m_worksheetPosition);
+    return wxACC_OK;
+  }
+  else
+  {
+    MathCell *cell = NULL;
+	if (GetChild(elementId, &cell) == wxACC_OK)
+		return cell->GetLocation(rect, 0);
+  }
+  return wxACC_FAIL;
+}
+
+#endif
+
+// The variables all MathCells share.
+wxRect  MathCell::m_updateRegion;
+bool    MathCell::m_clipToDrawRegion = true;
+wxRect  MathCell::m_visibleRegion;
+wxPoint MathCell::m_worksheetPosition;

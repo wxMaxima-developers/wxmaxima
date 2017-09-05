@@ -63,7 +63,7 @@ Notification::Notification(const wxString &title,
   #endif
 }
 
-void Notification::SetParent(wxWindow *parent)
+void Notification::SetGroup(wxWindow *parent)
 {
   m_parent = parent;
   wxNotificationMessage::SetParent(parent);
@@ -87,11 +87,11 @@ bool Notification::Close()
 
 void Notification::OnClick(wxCommandEvent &event)
 {
-  if(GetParent() != NULL)
+  if(GetGroup() != NULL)
   {
-    GetParent()->Raise();
-    GetParent()->Show();
-    GetParent()->SetFocus();
+    GetGroup()->Raise();
+    GetGroup()->Show();
+    GetGroup()->SetFocus();
   }
   m_shown = false;
 }

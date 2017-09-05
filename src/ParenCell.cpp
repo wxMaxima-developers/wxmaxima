@@ -50,15 +50,15 @@ ParenCell::ParenCell(MathCell *parent, Configuration **config, CellPointers *cel
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
-void ParenCell::SetParent(MathCell *parent)
+void ParenCell::SetGroup(MathCell *parent)
 {
   m_group = parent;
   if (m_innerCell != NULL)
-    m_innerCell->SetParentList(parent);
+    m_innerCell->SetGroupList(parent);
   if (m_open != NULL)
-    m_open->SetParentList(parent);
+    m_open->SetGroupList(parent);
   if (m_close != NULL)
-    m_close->SetParentList(parent);
+    m_close->SetGroupList(parent);
 }
 
 MathCell *ParenCell::Copy()
@@ -87,6 +87,18 @@ void ParenCell::MarkAsDeleted()
     m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
   if(this == m_cellPointers->m_cellUnderPointer)
     m_cellPointers->m_cellUnderPointer = NULL;
+}
+
+std::list<MathCell *> ParenCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  if(m_innerCell)
+    innerCells.push_back(m_innerCell);
+  if(m_open)
+    innerCells.push_back(m_open);
+  if(m_close)
+    innerCells.push_back(m_close);
+  return innerCells;
 }
 
 void ParenCell::SetInner(MathCell *inner, int type)
@@ -179,7 +191,7 @@ void ParenCell::RecalculateWidths(int fontsize)
   // to bother which exotic method we need to use for drawing nice parenthesis.
   if (fontsize1*3 > size)
   {
-    if(configuration->GetParenthesisDrawMode() != Configuration::handdrawn)
+    if(configuration->GetGrouphesisDrawMode() != Configuration::handdrawn)
       m_bigParenType = Configuration::ascii;
     m_open->RecalculateWidthsList(fontsize);
     m_close->RecalculateWidthsList(fontsize);
@@ -188,7 +200,7 @@ void ParenCell::RecalculateWidths(int fontsize)
   }
   else
   {
-    m_bigParenType = configuration->GetParenthesisDrawMode();
+    m_bigParenType = configuration->GetGrouphesisDrawMode();
     if(m_bigParenType != Configuration::handdrawn)
     {
       SetFont(fontsize);

@@ -181,6 +181,12 @@ void SlideShow::MarkAsDeleted()
   ClearCache();
 }
 
+std::list<MathCell *> SlideShow::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  return innerCells;
+}
+
 void SlideShow::SetDisplayedIndex(int ind)
 {
   if (ind >= 0 && ind < m_size)

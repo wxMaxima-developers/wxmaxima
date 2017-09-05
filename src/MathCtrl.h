@@ -1169,7 +1169,7 @@ public:
 
   //! Is the editor active in the last cell of the worksheet?
   bool IsActiveInLast()
-  { return m_cellPointers.m_activeCell != NULL && m_cellPointers.m_activeCell->GetParent() == m_last; }
+  { return m_cellPointers.m_activeCell != NULL && m_cellPointers.m_activeCell->GetGroup() == m_last; }
 
   //! Returns the last cell of the worksheet
   GroupCell *GetLastCell()
@@ -1407,6 +1407,27 @@ public:
   GroupCell *GetWorkingGroup(bool resortToLast = false);
 
 protected:
+
+#if wxUSE_ACCESSIBILITY
+  class AccessibilityInfo: public wxAccessible
+  {
+  public:
+	AccessibilityInfo(MathCtrl *mathCtrl);
+    wxAccStatus GetDescription(int childId, wxString *description);
+    wxAccStatus GetChildCount (int *childCount);
+	wxAccStatus GetDefaultAction(int childId, wxString *actionName);
+	wxAccStatus GetFocus (int *childId, wxAccessible **child);
+    wxAccStatus GetLocation (wxRect &rect, int elementId);
+    wxAccStatus GetChild (int childId, wxAccessible **child);
+    wxAccStatus HitTest 	(const wxPoint &pt,
+	                         int *childId, wxAccessible **childObject);
+   private:
+    MathCtrl *m_mathCtrl;
+    int m_childCount;
+  };
+  AccessibilityInfo m_accessibilityInfo;
+#endif
+  
   void UpdateConfigurationClientSize();
 
   //! The x position of the mouse pointer

@@ -46,15 +46,15 @@ SqrtCell::SqrtCell(MathCell *parent, Configuration **config, CellPointers *cellP
 }
 
 
-void SqrtCell::SetParent(MathCell *parent)
+void SqrtCell::SetGroup(MathCell *parent)
 {
   m_group = parent;
   if (m_innerCell != NULL)
-    m_innerCell->SetParentList(parent);
+    m_innerCell->SetGroupList(parent);
   if (m_open != NULL)
-    m_open->SetParentList(parent);
+    m_open->SetGroupList(parent);
   if (m_close != NULL)
-    m_close->SetParentList(parent);
+    m_close->SetGroupList(parent);
 }
 
 MathCell *SqrtCell::Copy()
@@ -86,6 +86,18 @@ void SqrtCell::MarkAsDeleted()
     m_cellPointers->m_cellUnderPointer = NULL;
 }
 
+
+std::list<MathCell *> SqrtCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  if(m_innerCell)
+    innerCells.push_back(m_innerCell);
+  if(m_open)
+    innerCells.push_back(m_open);
+  if(m_close)
+    innerCells.push_back(m_close);
+  return innerCells;
+}
 
 void SqrtCell::SetInner(MathCell *inner)
 {

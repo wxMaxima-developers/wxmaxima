@@ -36,6 +36,7 @@ public:
 
   ~MatrCell();
 
+  std::list<MathCell *> GetInnerCells();
   void MarkAsDeleted();
 
   virtual wxString GetToolTip(const wxPoint &point);
@@ -83,7 +84,7 @@ public:
   void SetInferenceFlag(bool inference)
   { m_inferenceMatrix = inference; }
 
-  void SetParent(MathCell *parent);
+  void SetGroup(MathCell *parent);
 
   void RowNames(bool rn)
   { m_rowNames = rn; }

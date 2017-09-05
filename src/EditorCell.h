@@ -56,6 +56,14 @@
 class EditorCell : public MathCell
 {
 private:
+
+  #if wxUSE_ACCESSIBILITY
+  wxAccStatus GetDescription(int childId, wxString *description);
+  wxAccStatus GetFocus (int *childId, EditorCell **child);
+  wxAccStatus GetDefaultAction(int childId, wxString *actionName);
+  wxAccStatus GetValue (int childId, wxString *strValue);
+  #endif
+  
   int m_errorIndex;
   CellPointers *m_cellPointers;
   //! The viewport size the linewrap was done for.
@@ -189,6 +197,7 @@ public:
     no more displayed currently.
    */
   void MarkAsDeleted();
+  std::list<MathCell *> GetInnerCells();
 
   /*! Expand all tabulators.
 

@@ -34,13 +34,13 @@ FunCell::FunCell(MathCell *parent, Configuration **config, CellPointers *cellPoi
   m_argCell = NULL;
 }
 
-void FunCell::SetParent(MathCell *parent)
+void FunCell::SetGroup(MathCell *parent)
 {
   m_group = parent;
   if (m_nameCell != NULL)
-    m_nameCell->SetParentList(parent);
+    m_nameCell->SetGroupList(parent);
   if (m_argCell != NULL)
-    m_argCell->SetParentList(parent);
+    m_argCell->SetGroupList(parent);
 }
 
 MathCell *FunCell::Copy()
@@ -69,6 +69,16 @@ void FunCell::MarkAsDeleted()
     m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
   if(this == m_cellPointers->m_cellUnderPointer)
     m_cellPointers->m_cellUnderPointer = NULL;
+}
+
+std::list<MathCell *> FunCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  if(m_nameCell)
+    innerCells.push_back(m_nameCell);
+  if(m_argCell)
+    innerCells.push_back(m_argCell);
+  return innerCells;
 }
 
 void FunCell::SetName(MathCell *name)

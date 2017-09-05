@@ -38,13 +38,13 @@ MatrCell::MatrCell(MathCell *parent, Configuration **config, CellPointers *cellP
   m_rowNames = m_colNames = false;
 }
 
-void MatrCell::SetParent(MathCell *parent)
+void MatrCell::SetGroup(MathCell *parent)
 {
   m_group = parent;
   for (unsigned int i = 0; i < m_cells.size(); i++)
   {
     if (m_cells[i] != NULL)
-      m_cells[i]->SetParentList(parent);
+      m_cells[i]->SetGroupList(parent);
   }
 }
 
@@ -104,6 +104,17 @@ void MatrCell::MarkAsDeleted()
   if(this == m_cellPointers->m_cellUnderPointer)
     m_cellPointers->m_cellUnderPointer = NULL;
 }
+
+std::list<MathCell *> MatrCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  for (unsigned int i = 0; i < m_cells.size(); i++)
+    if(m_cells[i])
+      innerCells.push_back(m_cells[i]);
+  return innerCells;
+}
+
+
 
 void MatrCell::RecalculateWidths(int fontsize)
 {

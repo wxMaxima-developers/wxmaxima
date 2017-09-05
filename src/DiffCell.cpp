@@ -35,13 +35,13 @@ DiffCell::DiffCell(MathCell *parent, Configuration **config, CellPointers *cellP
   m_cellPointers = cellPointers;
 }
 
-void DiffCell::SetParent(MathCell *parent)
+void DiffCell::SetGroup(MathCell *parent)
 {
   m_group = parent;
   if (m_baseCell != NULL)
-    m_baseCell->SetParentList(parent);
+    m_baseCell->SetGroupList(parent);
   if (m_diffCell != NULL)
-    m_diffCell->SetParentList(parent);
+    m_diffCell->SetGroupList(parent);
 }
 
 MathCell *DiffCell::Copy()
@@ -71,6 +71,17 @@ void DiffCell::MarkAsDeleted()
   if(this == m_cellPointers->m_cellUnderPointer)
     m_cellPointers->m_cellUnderPointer = NULL;
 }
+
+std::list<MathCell *> DiffCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  if(m_baseCell)
+    innerCells.push_back(m_baseCell);
+  if(m_diffCell)
+    innerCells.push_back(m_diffCell);
+  return innerCells;
+}
+
 
 void DiffCell::SetDiff(MathCell *diff)
 {

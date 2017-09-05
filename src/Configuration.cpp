@@ -238,7 +238,7 @@ wxFont Configuration::GetFont(int textStyle, int fontSize)
   return font;
 }
 
-Configuration::drawMode Configuration::GetParenthesisDrawMode()
+Configuration::drawMode Configuration::GetGrouphesisDrawMode()
 {
   if(m_parenthesisDrawMode == unknown)
   {

@@ -75,7 +75,7 @@ bool Svgout::Layout(long int maxSize)
   // of a big unicode parenthesis wasn't accurate enough in svg to be
   // usable. Also the probability was high that the right font wasn't
   // available in inkscape.
-//  (*m_configuration)->SetParenthesisDrawMode(Configuration::handdrawn);
+//  (*m_configuration)->SetGrouphesisDrawMode(Configuration::handdrawn);
   if (m_tree->GetType() != MC_TYPE_GROUP)
   {
     RecalculateWidths();

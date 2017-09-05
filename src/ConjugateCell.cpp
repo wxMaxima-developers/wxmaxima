@@ -38,15 +38,15 @@ ConjugateCell::ConjugateCell(MathCell *parent, Configuration **config, CellPoint
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
-void ConjugateCell::SetParent(MathCell *parent)
+void ConjugateCell::SetGroup(MathCell *parent)
 {
   m_group = parent;
   if (m_innerCell != NULL)
-    m_innerCell->SetParentList(parent);
+    m_innerCell->SetGroupList(parent);
   if (m_open != NULL)
-    m_open->SetParentList(parent);
+    m_open->SetGroupList(parent);
   if (m_close != NULL)
-    m_close->SetParentList(parent);
+    m_close->SetGroupList(parent);
 }
 
 MathCell *ConjugateCell::Copy()
@@ -80,6 +80,18 @@ void ConjugateCell::MarkAsDeleted()
     m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
   if(this == m_cellPointers->m_cellUnderPointer)
     m_cellPointers->m_cellUnderPointer = NULL;
+}
+
+std::list<MathCell *> ConjugateCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  if(m_innerCell)
+    innerCells.push_back(m_innerCell);
+  if(m_open)
+    innerCells.push_back(m_open);
+  if(m_close)
+    innerCells.push_back(m_close);
+  return innerCells;
 }
 
 void ConjugateCell::SetInner(MathCell *inner)

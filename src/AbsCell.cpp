@@ -40,15 +40,15 @@ AbsCell::AbsCell(MathCell *parent, Configuration **config, CellPointers *cellPoi
   m_last = NULL;
 }
 
-void AbsCell::SetParent(MathCell *parent)
+void AbsCell::SetGroup(MathCell *parent)
 {
   m_group = parent;
   if (m_innerCell != NULL)
-    m_innerCell->SetParentList(parent);
+    m_innerCell->SetGroupList(parent);
   if (m_open != NULL)
-    m_open->SetParentList(parent);
+    m_open->SetGroupList(parent);
   if (m_close != NULL)
-    m_close->SetParentList(parent);
+    m_close->SetGroupList(parent);
 }
 
 MathCell *AbsCell::Copy()
@@ -82,6 +82,13 @@ void AbsCell::MarkAsDeleted()
     m_cellPointers->m_cellUnderPointer = NULL;
 }
 
+std::list<MathCell *> AbsCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  if(m_innerCell)
+    innerCells.push_back(m_innerCell);
+  return innerCells;
+}
 
 void AbsCell::SetInner(MathCell *inner)
 {

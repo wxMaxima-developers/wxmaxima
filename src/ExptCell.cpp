@@ -44,17 +44,17 @@ ExptCell::ExptCell(MathCell *parent, Configuration **config, CellPointers *cellP
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
-void ExptCell::SetParent(MathCell *parent)
+void ExptCell::SetGroup(MathCell *parent)
 {
   m_group = parent;
   if (m_baseCell != NULL)
-    m_baseCell->SetParentList(parent);
+    m_baseCell->SetGroupList(parent);
   if (m_powCell != NULL)
-    m_powCell->SetParentList(parent);
+    m_powCell->SetGroupList(parent);
   if (m_open != NULL)
-    m_open->SetParentList(parent);
+    m_open->SetGroupList(parent);
   if (m_close != NULL)
-    m_close->SetParentList(parent);
+    m_close->SetGroupList(parent);
 }
 
 MathCell *ExptCell::Copy()
@@ -88,6 +88,23 @@ void ExptCell::MarkAsDeleted()
   if(this == m_cellPointers->m_cellUnderPointer)
     m_cellPointers->m_cellUnderPointer = NULL;
 }
+
+std::list<MathCell *> ExptCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  if(m_baseCell)
+    innerCells.push_back(m_baseCell);
+  if(m_powCell)
+    innerCells.push_back(m_powCell);
+  if(m_exp)
+    innerCells.push_back(m_exp);
+  if(m_open)
+    innerCells.push_back(m_open);
+  if(m_close)
+    innerCells.push_back(m_close );
+  return innerCells;
+}
+
 
 void ExptCell::SetPower(MathCell *power)
 {

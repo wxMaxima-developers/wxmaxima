@@ -23,15 +23,20 @@
   
   The definition of the base class of all cells the worksheet consists of.
  */
-
+  
 #ifndef MATHCELL_H
 #define MATHCELL_H
 
 #define MAX(a, b) ((a)>(b) ? (a) : (b))
 #define MIN(a, b) ((a)>(b) ? (b) : (a))
 
+#include <list>
+#include <iostream>
 #include <wx/wx.h>
 #include <wx/xml/xml.h>
+#if wxUSE_ACCESSIBILITY
+#include "wx/access.h"
+#endif // wxUSE_ACCESSIBILITY
 #include "Configuration.h"
 #include "TextStyle.h"
 
@@ -85,14 +90,47 @@ enum
 
   \attention Derived classes must test if m_next equals NULL and if it doesn't
   they have to delete() it.
+
+  On systems where wxWidget supports (and is compiled with)
+  accessibility features MathCell is derived from wxAccessible which
+  allows every element in the worksheet to identify itself to an
+  eventual screen reader.
  */
+#if wxUSE_ACCESSIBILITY
+class MathCell: public wxAccessible
+#else
 class MathCell
+#endif
 {
-public:
-  MathCell(MathCell *parent, Configuration **config);
+  public:
+  MathCell(MathCell *group, Configuration **config);
+
+  static void SetVisibleRegion(wxRect visibleRegion){m_visibleRegion = visibleRegion;}
+  static void SetWorksheetPosition(wxPoint worksheetPosition){m_worksheetPosition = worksheetPosition;}
 
   //! Scale font sizes and line widths for displaying/printing
   static int Scale_Px(double px, double scale){return (int)(px*scale + 0.5); }
+#if wxUSE_ACCESSIBILITY
+  //! Accessibility: Describe the current cell to a Screen Reader
+  virtual wxAccStatus GetDescription(int childId, wxString *description);
+  //! Accessibility: Inform the Screen Reader which cell is the parent of this one
+  wxAccStatus GetParent (MathCell ** parent);
+  //! Accessibility: How many childs of this cell GetChild() can retrieve?
+  virtual wxAccStatus GetChildCount (int *childCount);
+  //! Accessibility: Retrieve a child cell. childId=0 is the current cell
+  virtual wxAccStatus GetChild (int childId, MathCell **child);
+  //! Accessibility: Does this or a child cell currently own the focus?
+  virtual wxAccStatus GetFocus (int *childId, MathCell  **child);
+  //! Accessibility: Where is this cell to be found?
+  virtual wxAccStatus GetLocation (wxRect &rect, int elementId);
+  //! Is pt inside this cell or a child cell?
+  wxAccStatus HitTest (const wxPoint &pt,
+                       int *childId, MathCell **childObject);
+  //! Accessibility: What is the contents of this cell?
+  virtual wxAccStatus GetValue (int childId, wxString *strValue);
+#endif
+
+
 
   wxString m_toolTip;
 
@@ -464,7 +502,7 @@ public:
   { return false; }
 
   //! Returns the group cell this cell belongs to
-  MathCell *GetParent();
+  MathCell *GetGroup();
 
   //! For the bitmap export we sometimes want to know how big the result will be...
   struct SizeInMillimeters
@@ -697,14 +735,20 @@ public:
     So this function has to be called on every math cell. Also if a
     derived class defines a cell type that does include sub-cells 
     (One example would be the argument of a sqrt() cell) the derived
-    class has to take care that the subCell's SetParent is called when
-    the cell's SetParent is called.
+    class has to take care that the subCell's SetGroup is called when
+    the cell's SetGroup is called.
    */
+  virtual void SetGroup(MathCell *group)
+    { m_group = group; }
+  
   virtual void SetParent(MathCell *parent)
-  { m_group = parent; };
+    { m_parent = parent; }
 
-  //! Define which GroupCell is the parent of all cells in this list
-  void SetParentList(MathCell *parent);
+  /*! Define which MathCell is the parent of this list of cells
+
+    Also automatically sets this cell as the "parent" of all cells of the list.
+   */
+  void SetGroupList(MathCell *parent);
 
   void SetStyle(int style)
   {
@@ -760,10 +804,15 @@ protected:
 
   /*! The GroupCell this list of cells belongs to.
     
-    Reads NULL, if no parent cell has been set - which is treated as an Error by GetParent():
+    Reads NULL, if no parent cell has been set - which is treated as an Error by GetGroup():
     every math cell has a GroupCell it belongs to.
   */
   MathCell *m_group;
+
+  //! The cell that contains the current cell
+  MathCell *m_parent;
+
+  //! The height of this cell.
   int m_height;
   /*! The width of this cell.
 
@@ -801,8 +850,17 @@ protected:
   */
   wxString m_altCopyText;
   Configuration **m_configuration;
+
+virtual std::list<MathCell *> GetInnerCells() = 0;
+  
 private:
+  //! 0 during printing, 1 prevents from drawing objects that are entirely outside the screen.
   static bool m_clipToDrawRegion;
+public:
+  //! The rectangle of the worksheet that is currently visible.
+  static wxRect m_visibleRegion;
+  //! The position of the worksheet in the wxMaxima window
+  static wxPoint m_worksheetPosition;
 };
 
 #endif // MATHCELL_H

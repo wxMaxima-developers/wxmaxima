@@ -50,17 +50,17 @@ IntCell::IntCell(MathCell *parent, Configuration **config, CellPointers *cellPoi
   m_cellPointers = cellPointers;
 }
 
-void IntCell::SetParent(MathCell *parent)
+void IntCell::SetGroup(MathCell *parent)
 {
   m_group = parent;
   if (m_base != NULL)
-    m_base->SetParentList(parent);
+    m_base->SetGroupList(parent);
   if (m_under != NULL)
-    m_under->SetParentList(parent);
+    m_under->SetGroupList(parent);
   if (m_over != NULL)
-    m_over->SetParentList(parent);
+    m_over->SetGroupList(parent);
   if (m_var != NULL)
-    m_var->SetParentList(parent);
+    m_var->SetGroupList(parent);
 }
 
 MathCell *IntCell::Copy()
@@ -93,6 +93,20 @@ void IntCell::MarkAsDeleted()
     m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
   if(this == m_cellPointers->m_cellUnderPointer)
     m_cellPointers->m_cellUnderPointer = NULL;
+}
+
+std::list<MathCell *> IntCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  if(m_base)
+    innerCells.push_back(m_base);
+  if(m_under)
+    innerCells.push_back(m_under);
+  if(m_over)
+    innerCells.push_back(m_over);
+  if(m_var)
+    innerCells.push_back(m_var);
+  return innerCells;
 }
 
 void IntCell::SetOver(MathCell *over)

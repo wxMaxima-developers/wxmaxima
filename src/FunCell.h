@@ -56,6 +56,7 @@ public:
 
   ~FunCell();
 
+  std::list<MathCell *> GetInnerCells();
   void MarkAsDeleted();
 
   virtual wxString GetToolTip(const wxPoint &point){
@@ -96,7 +97,7 @@ public:
 
   void Unbreak();
 
-  void SetParent(MathCell *parent);
+  void SetGroup(MathCell *parent);
 
 protected:
   MathCell *m_nameCell;

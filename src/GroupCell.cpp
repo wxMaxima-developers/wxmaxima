@@ -138,21 +138,21 @@ GroupCell::GroupCell(Configuration **config, int groupType, CellPointers *cellPo
   }
 
   // The GroupCell this cell belongs to is this GroupCell.
-  SetParent(this);
+  SetGroup(this);
 }
 
 /*! Set the parent of this group cell
 
 */
-void GroupCell::SetParent(MathCell *parent)
+void GroupCell::SetGroup(MathCell *parent)
 {
   //m_group = parent;
   if (m_inputLabel != NULL)
-    m_inputLabel->SetParentList(parent);
+    m_inputLabel->SetGroupList(parent);
 
   MathCell *tmp = m_output;
   if(m_output != NULL)
-    tmp->SetParentList(parent);
+    tmp->SetGroupList(parent);
 }
 
 bool GroupCell::Empty()
@@ -324,7 +324,7 @@ void GroupCell::MarkAsDeleted()
   EditorCell *input = GetInput();
   if (input != NULL)
     input->MarkAsDeleted();
-  if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetParent() == this))
+  if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetGroup() == this))
     m_cellPointers->m_answerCell = NULL;
   m_cellPointers->m_errorList.Remove(this);
   if (this == m_cellPointers->m_workingGroup)
@@ -341,6 +341,19 @@ void GroupCell::MarkAsDeleted()
     m_cellPointers->m_cellUnderPointer = NULL;
 }
 
+std::list<MathCell *> GroupCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  if (m_groupType != GC_TYPE_PAGEBREAK)
+  {
+    if(GetInput())
+      innerCells.push_back(GetInput());
+    if(GetOutput())
+      innerCells.push_back(GetOutput());
+  }
+  return innerCells;
+}
+
 wxString GroupCell::TexEscapeOutputCell(wxString Input)
 {
   wxString retval(Input);
@@ -354,7 +367,7 @@ void GroupCell::SetInput(MathCell *input)
     return;
   wxDELETE(m_inputLabel);
   m_inputLabel = input;
-  m_inputLabel->SetParent(this);
+  m_inputLabel->SetGroup(this);
 }
 
 void GroupCell::AppendInput(MathCell *cell)
@@ -387,13 +400,13 @@ void GroupCell::SetOutput(MathCell *output)
   if (output == NULL)
     return;
   
-  if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetParent() == this))
+  if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetGroup() == this))
     m_cellPointers->m_answerCell = NULL;
   
   wxDELETE(m_output);
 
   m_output = output;
-  m_output->SetParent(this);
+  m_output->SetGroup(this);
 
   m_lastInOutput = m_output;
 
@@ -410,7 +423,7 @@ void GroupCell::RemoveOutput()
   if (m_output == NULL)
     return;
 
-  if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetParent() == this))
+  if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetGroup() == this))
     m_cellPointers->m_answerCell = NULL;
 
   if (!(GetGroupType() == GC_TYPE_IMAGE))
@@ -431,7 +444,7 @@ void GroupCell::AppendOutput(MathCell *cell)
 {
   wxASSERT_MSG(cell != NULL, _("Bug: Trying to append NULL to a group cell."));
   if (cell == NULL) return;
-  cell->SetParentList(this);
+  cell->SetGroupList(this);
   if (m_output == NULL)
   {
     m_output = cell;
@@ -949,7 +962,7 @@ void GroupCell::DrawBracket()
     dc.SetBrush(*wxRED_BRUSH);
     drawBracket = true;
   }
-  else if ((m_cellPointers->m_answerCell) && (m_cellPointers->m_answerCell->GetParent() == this))
+  else if ((m_cellPointers->m_answerCell) && (m_cellPointers->m_answerCell->GetGroup() == this))
   {
 #if defined(__WXMAC__)
     dc.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
@@ -2109,3 +2122,72 @@ bool GroupCell::Contains(GroupCell *cell)
 
   return false;
 }
+
+#if wxUSE_ACCESSIBILITY
+wxAccStatus GroupCell::GetDescription(int childId, wxString *description)
+{
+	if (description == NULL)
+		return wxACC_FAIL;
+
+	if (childId == 0)
+	{
+		if (m_groupType == GC_TYPE_PAGEBREAK)
+		{
+			*description = _("A page break");
+			return wxACC_OK;
+		}
+		else
+		{
+			*description = _("A GroupCell that bundles input with its output");
+			return wxACC_OK;
+		}
+	}
+	else
+	{
+		MathCell *cell = NULL;
+		if (GetChild(childId, &cell) == wxACC_OK)
+		{
+			return cell->GetDescription(0, description);
+		}
+	}
+
+	*description = wxEmptyString;
+	return wxACC_FAIL;
+}
+
+
+wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId)
+{
+  if(elementId == 0)
+  {
+    rect = wxRect(GetRect().GetTopLeft()     + m_visibleRegion.GetTopLeft(),
+                  GetRect().GetBottomRight() + m_visibleRegion.GetTopLeft());
+
+    // Our GroupCell handles the hcaret below the cell, as well as its contents
+    rect.SetBottom(rect.GetBottom()+(*m_configuration)->GetGroupSkip());
+
+    // If we are the 1st groupcell of the worksheet we handle the hcaret above this
+    // cell, too.
+    if(m_previous == NULL)
+      rect.SetTop(rect.GetTop()-(*m_configuration)->GetGroupSkip());
+    
+    if(rect.GetTop() < 0)
+      rect.SetTop(0);
+    if(rect.GetLeft() < 0)
+      rect.SetLeft(0);
+    if(rect.GetBottom() > m_visibleRegion.GetWidth())
+      rect.SetBottom(m_visibleRegion.GetWidth());
+    if(rect.GetRight() > m_visibleRegion.GetHeight())
+      rect.SetRight(m_visibleRegion.GetHeight());
+    rect = wxRect(rect.GetTopLeft()+m_worksheetPosition,rect.GetBottomRight()+m_worksheetPosition);
+    return wxACC_OK;
+  }
+  else
+  {
+    MathCell *child = NULL;
+	if (GetChild(elementId, &child) == wxACC_OK)
+		return child->GetLocation(rect, 0);
+  }
+  return wxACC_FAIL;
+}
+#endif

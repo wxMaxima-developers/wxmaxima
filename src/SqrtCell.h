@@ -52,6 +52,7 @@ public:
 
   ~SqrtCell();
 
+  std::list<MathCell *> GetInnerCells();
   void MarkAsDeleted();
 
   virtual wxString GetToolTip(const wxPoint &point){
@@ -90,7 +91,7 @@ public:
 
   wxString ToXML();
 
-  void SetParent(MathCell *parent);
+  void SetGroup(MathCell *parent);
 
 protected:
   MathCell *m_innerCell;

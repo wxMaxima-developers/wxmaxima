@@ -38,15 +38,15 @@ LimitCell::LimitCell(MathCell *parent, Configuration **config, CellPointers *cel
   m_cellPointers = cellPointers;
 }
 
-void LimitCell::SetParent(MathCell *parent)
+void LimitCell::SetGroup(MathCell *parent)
 {
   m_group = parent;
   if (m_base != NULL)
-    m_base->SetParentList(parent);
+    m_base->SetGroupList(parent);
   if (m_under != NULL)
-    m_under->SetParentList(parent);
+    m_under->SetGroupList(parent);
   if (m_name != NULL)
-    m_name->SetParentList(parent);
+    m_name->SetGroupList(parent);
 }
 
 MathCell *LimitCell::Copy()
@@ -78,6 +78,17 @@ void LimitCell::MarkAsDeleted()
     m_cellPointers->m_cellUnderPointer = NULL;
 }
 
+std::list<MathCell *> LimitCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  if(m_base)
+    innerCells.push_back(m_base);
+  if(m_under)
+    innerCells.push_back(m_under);
+  if(m_name)
+    innerCells.push_back(m_name);
+  return innerCells;
+}
 
 void LimitCell::SetName(MathCell *name)
 {

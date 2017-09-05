@@ -58,6 +58,7 @@ public:
   
   virtual wxString GetToolTip(const wxPoint &point);
 
+  std::list<MathCell *> GetInnerCells();
   void MarkAsDeleted();
 
   /*! Remove all cached scaled images from memory

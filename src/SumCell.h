@@ -46,6 +46,7 @@ public:
 
   ~SumCell();
   
+  std::list<MathCell *> GetInnerCells();
   void MarkAsDeleted();
 
   MathCell *Copy();
@@ -90,7 +91,7 @@ public:
 
   void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
 
-  void SetParent(MathCell *parent);
+  void SetGroup(MathCell *parent);
 
 protected:
   MathCell *m_base;

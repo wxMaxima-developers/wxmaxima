@@ -38,6 +38,7 @@ public:
 
   ~LimitCell();
 
+  std::list<MathCell *> GetInnerCells();
   void MarkAsDeleted();
 
   virtual wxString GetToolTip(const wxPoint &point){
@@ -76,7 +77,7 @@ public:
 
   void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
 
-  void SetParent(MathCell *parent);
+  void SetGroup(MathCell *parent);
 
 protected:
   MathCell *m_base;

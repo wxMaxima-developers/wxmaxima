@@ -59,6 +59,7 @@ public:
 
   ~AbsCell();
   
+  std::list<MathCell *> GetInnerCells();
   void MarkAsDeleted();
 
   void SetInner(MathCell *inner);
@@ -81,7 +82,7 @@ public:
 
   void Unbreak();
 
-  void SetParent(MathCell *parent);
+  void SetGroup(MathCell *parent);
 
 protected:
   //! The contents of the abs() comand

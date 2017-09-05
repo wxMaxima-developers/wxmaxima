@@ -459,7 +459,7 @@ void wxMaxima::ConsoleAppend(wxString s, int type, wxString userLabel)
     if (tmp == NULL)
     {
     if (m_console->GetActiveCell())
-      tmp = dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetParent());
+      tmp = dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetGroup());
     }
     
     if(tmp != NULL)
@@ -2796,7 +2796,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       if ((!m_console->HCaretActive()) && (cursorPos == m_console->GetLastCell()))
       {
         if (m_console->GetActiveCell() != NULL)
-          cursorPos = dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetParent());
+          cursorPos = dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetGroup());
         else
           cursorPos = m_console->FirstVisibleGC();
       }
@@ -2820,7 +2820,7 @@ void wxMaxima::MenuCommand(wxString cmd)
 //  ym_console->SetSelection(NULL);
 //  m_console->SetActiveCell(NULL);
   m_console->OpenHCaret(cmd);
-  m_console->AddCellToEvaluationQueue(dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetParent()));
+  m_console->AddCellToEvaluationQueue(dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetGroup()));
   if (!evaluating)
     TryEvaluateNextInQueue();
   m_console->RequestRedraw();
@@ -5712,7 +5712,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       if (m_console->GetActiveCell())
       {
         // This "if" is pure paranoia. But - since the costs of an "if" are low...
-        GroupCell *group = dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetParent());
+        GroupCell *group = dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetGroup());
         if (group->IsFoldable())
           group->Fold();
         else
@@ -5723,7 +5723,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     }
     case MathCtrl::popid_unfold:
     {
-      GroupCell *group = dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetParent());
+      GroupCell *group = dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetGroup());
       if (group->IsFoldable())
         group->Unfold();
       else
@@ -5806,8 +5806,8 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       if (m_console->GetActiveCell())
       {
         // This "if" is pure paranoia. But - since the costs of an "if" are low...
-        if (m_console->GetActiveCell()->GetParent())
-          group = dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetParent());
+        if (m_console->GetActiveCell()->GetGroup())
+          group = dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetGroup());
       }
       else if (m_console->HCaretActive())
       {
@@ -6179,7 +6179,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &event)
       tmp->AddEnding();
     // if active cell is part of a working group, we have a special
     // case - answering 1a question. Manually send answer to Maxima.
-    GroupCell *cell = dynamic_cast<GroupCell *>(tmp->GetParent());
+    GroupCell *cell = dynamic_cast<GroupCell *>(tmp->GetGroup());
     if (m_console->GCContainsCurrentQuestion(cell))
     {
       wxString answer = tmp->ToString(true);
@@ -6486,12 +6486,12 @@ void wxMaxima::TryEvaluateNextInQueue()
     // selected cells we undo the selection.
     if (m_console->GetSelectionStart())
     {
-      if (m_console->GetSelectionStart()->GetParent() == tmp)
+      if (m_console->GetSelectionStart()->GetGroup() == tmp)
         m_console->SetSelection(NULL, NULL);
     }
     if (m_console->GetSelectionEnd())
     {
-      if (m_console->GetSelectionEnd()->GetParent() == tmp)
+      if (m_console->GetSelectionEnd()->GetGroup() == tmp)
         m_console->SetSelection(NULL, NULL);
     }
     tmp->RemoveOutput();
@@ -6556,7 +6556,7 @@ void wxMaxima::TryEvaluateNextInQueue()
                                     _("Refusing to send cell to maxima: ") +
                                     parenthesisError + wxT("\n"));
       cell->SetType(MC_TYPE_ERROR);
-      cell->SetParent(tmp);
+      cell->SetGroup(tmp);
       tmp->SetOutput(cell);
       // Todo: The force shouldn't be needed, or should it?
       m_console->RecalculateForce();
@@ -6598,8 +6598,8 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
   {
     case MathCtrl::popid_auto_answer:
       if((m_console->GetActiveCell() != NULL) &&
-         (dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetParent())->GetGroupType() == GC_TYPE_CODE))
-        dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetParent())->AutoAnswer(event.IsChecked());
+         (dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetGroup())->GetGroupType() == GC_TYPE_CODE))
+        dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetGroup())->AutoAnswer(event.IsChecked());
       else if((m_console->GetSelectionStart() != NULL)&&
               (m_console->GetSelectionStart()->GetType() == MC_TYPE_GROUP))
       {
@@ -6636,7 +6636,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_code:
       if (m_console->GetActiveCell())
       {
-        m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_CODE);
+        m_console->GetActiveCell()->GetGroup()->SetType(GC_TYPE_CODE);
         m_console->Recalculate(true);
         m_console->RequestRedraw();
       }
@@ -6644,7 +6644,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_comment:
       if (m_console->GetActiveCell())
       {
-        m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_TEXT);
+        m_console->GetActiveCell()->GetGroup()->SetType(GC_TYPE_TEXT);
         m_console->Recalculate(true);
         m_console->RequestRedraw();
       }
@@ -6658,7 +6658,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_title:
       if (m_console->GetActiveCell())
       {
-        m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_TITLE);
+        m_console->GetActiveCell()->GetGroup()->SetType(GC_TYPE_TITLE);
         m_console->Recalculate(true);
         m_console->RequestRedraw();
       }
@@ -6671,7 +6671,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_section:
       if (m_console->GetActiveCell())
       {
-        m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_SECTION);
+        m_console->GetActiveCell()->GetGroup()->SetType(GC_TYPE_SECTION);
         m_console->Recalculate(true);
         m_console->RequestRedraw();
       }
@@ -6684,7 +6684,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_subsection:
       if (m_console->GetActiveCell())
       {
-        m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_SUBSECTION);
+        m_console->GetActiveCell()->GetGroup()->SetType(GC_TYPE_SUBSECTION);
         m_console->Recalculate(true);
         m_console->RequestRedraw();
       }
@@ -6697,7 +6697,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_subsubsection:
       if (m_console->GetActiveCell())
       {
-        m_console->GetActiveCell()->GetParent()->SetType(GC_TYPE_SUBSUBSECTION);
+        m_console->GetActiveCell()->GetGroup()->SetType(GC_TYPE_SUBSUBSECTION);
         m_console->Recalculate(true);
         m_console->RequestRedraw();
       }
@@ -6883,7 +6883,7 @@ void wxMaxima::HistoryDClick(wxCommandEvent &ev)
 
 void wxMaxima::TableOfContentsSelection(wxListEvent &ev)
 {
-  GroupCell *selection = dynamic_cast<GroupCell *>(m_console->m_tableOfContents->GetCell(ev.GetIndex())->GetParent());
+  GroupCell *selection = dynamic_cast<GroupCell *>(m_console->m_tableOfContents->GetCell(ev.GetIndex())->GetGroup());
   
   // We only update the table of contents when there is time => no guarantee that the
   // cell that was clicked at actually still is part of the tree.

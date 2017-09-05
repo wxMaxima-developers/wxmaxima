@@ -51,23 +51,23 @@ FracCell::FracCell(MathCell *parent, Configuration **config, CellPointers *cellP
   m_divide = NULL;
 }
 
-void FracCell::SetParent(MathCell *parent)
+void FracCell::SetGroup(MathCell *parent)
 {
   m_group = parent;
   if (m_num != NULL)
-    m_num->SetParentList(parent);
+    m_num->SetGroupList(parent);
   if (m_denom != NULL)
-    m_denom->SetParentList(parent);
+    m_denom->SetGroupList(parent);
   if (m_open1 != NULL)
-    m_open1->SetParentList(parent);
+    m_open1->SetGroupList(parent);
   if (m_close1 != NULL)
-    m_close2->SetParentList(parent);
+    m_close2->SetGroupList(parent);
   if (m_open2 != NULL)
-    m_open2->SetParentList(parent);
+    m_open2->SetGroupList(parent);
   if (m_close2 != NULL)
-    m_close2->SetParentList(parent);
+    m_close2->SetGroupList(parent);
   if (m_divide != NULL)
-    m_divide->SetParentList(parent);
+    m_divide->SetGroupList(parent);
 }
 
 MathCell *FracCell::Copy()
@@ -104,6 +104,26 @@ void FracCell::MarkAsDeleted()
     m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
   if(this == m_cellPointers->m_cellUnderPointer)
     m_cellPointers->m_cellUnderPointer = NULL;
+}
+
+std::list<MathCell *> FracCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  if(m_divide)
+    innerCells.push_back(m_divide);
+  if(m_denom)
+    innerCells.push_back(m_denom);
+  if(m_num)
+    innerCells.push_back(m_num);
+  if(m_open1)
+    innerCells.push_back(m_open1);
+  if(m_close1)
+    innerCells.push_back(m_close1);
+  if(m_open2)
+    innerCells.push_back(m_open2);
+  if(m_close2)
+    innerCells.push_back(m_close2);
+  return innerCells;
 }
 
 void FracCell::SetNum(MathCell *num)

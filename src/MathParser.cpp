@@ -245,7 +245,7 @@ MathCell *MathParser::ParseCellTag(wxXmlNode *node)
     }
   }
 
-  group->SetParent(group);
+  group->SetGroup(group);
   group->Hide(hide);
   return group;
 }

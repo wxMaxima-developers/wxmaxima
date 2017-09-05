@@ -239,6 +239,12 @@ void EditorCell::MarkAsDeleted()
     m_cellPointers->m_cellUnderPointer = NULL;
 }
 
+std::list<MathCell *> EditorCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  return innerCells;
+}
+
 wxString EditorCell::ToTeX()
 {
   wxString text = m_text;
@@ -584,7 +590,6 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
 {
   if (DrawThisCell(point1) && !m_isHidden)
   {
-    
     MathCell::Draw(point1, fontsize);
     Configuration *configuration = (*m_configuration);
     
@@ -2581,7 +2586,7 @@ void EditorCell::ActivateCursor()
 
   // upon activation unhide the parent groupcell
   m_firstLineOnly = false;
-  dynamic_cast<GroupCell *>(GetParent())->Hide(false);
+  dynamic_cast<GroupCell *>(GetGroup())->Hide(false);
   if (GetType() == MC_TYPE_INPUT)
     FindMatchingParens();
 }
@@ -2912,7 +2917,7 @@ wxString EditorCell::DivideAtCaret()
 
   SetValue(newText);
   ResetSize();
-  GetParent()->ResetSize();
+  GetGroup()->ResetSize();
   wxString retval = original.SubString(m_positionOfCaret, original.Length());
   // Remove an eventual newline from the beginning of a new cell
   // that would appear if the cell is divided at the end of a line.
@@ -4444,3 +4449,87 @@ void EditorCell::CaretToPosition(int pos)
     FindMatchingParens();
 }
 
+
+#if wxUSE_ACCESSIBILITY
+wxAccStatus EditorCell::GetDescription(int childId, wxString *description)
+{
+	if (childId != 0)
+		return wxACC_FAIL;
+
+	if (description == NULL)
+		return wxACC_FAIL;
+
+	switch (GetType())
+	{
+	case MC_TYPE_INPUT:
+		*description = _("Maxima code");
+		break;
+		//  case MC_TYPE_CHAPTER:
+		//    *description = _("A chapter heading");
+		//    break;
+	case MC_TYPE_SECTION:
+		*description = _("A section heading");
+		break;
+	case MC_TYPE_SUBSECTION:
+		*description = _("A subsection heading");
+		break;
+	case MC_TYPE_SUBSUBSECTION:
+		*description = _("A sub-subsection heading");
+		break;
+	case MC_TYPE_TEXT:
+		*description = _("Comment (ordinary worksheet text that isn't fed to maxima)");
+		break;
+	default:
+		*description = _("Bug: Unknown type of text");
+		break;
+	}
+  return wxACC_OK;
+}
+
+wxAccStatus EditorCell::GetDefaultAction (int childId, wxString *actionName)
+{
+  if(actionName != NULL)
+    *actionName = _("Type in text");
+  return wxACC_OK;        
+}
+
+wxAccStatus EditorCell::GetValue (int childId, wxString *strValue)
+{
+  wxString retval = ToString();
+
+  // If the blinking caret is currently visible we hide the char under the caret
+  if((m_displayCaret) && (m_positionOfCaret > 0))
+  {
+    if(m_positionOfCaret < retval.Length())
+    {
+      if(retval[m_positionOfCaret] == wxT(' '))
+        retval[m_positionOfCaret] = wxT('%');
+      else
+        retval[m_positionOfCaret] = wxT(' ');
+    }
+    else
+      retval += wxT("%");
+  }
+}
+
+wxAccStatus EditorCell::GetFocus (int *childId, EditorCell **child)
+{
+  if(IsActive())
+  {
+    if(child != NULL)
+      *child   = this;
+    if(childId != NULL)
+      *childId = 0;
+    return wxACC_OK;
+  }
+  else
+  {
+    if(child != NULL)
+      *child   = NULL;
+    if(childId != NULL)
+      *childId = 0;
+    return wxACC_FAIL;
+  }
+}
+
+#endif

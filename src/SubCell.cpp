@@ -36,13 +36,13 @@ SubCell::SubCell(MathCell *parent, Configuration **config, CellPointers *cellPoi
   m_indexCell = NULL;
 }
 
-void SubCell::SetParent(MathCell *parent)
+void SubCell::SetGroup(MathCell *parent)
 {
   m_group = parent;
   if (m_baseCell != NULL)
-    m_baseCell->SetParentList(parent);
+    m_baseCell->SetGroupList(parent);
   if (m_indexCell != NULL)
-    m_indexCell->SetParentList(parent);
+    m_indexCell->SetGroupList(parent);
 }
 
 MathCell *SubCell::Copy()
@@ -71,6 +71,16 @@ void SubCell::MarkAsDeleted()
     m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
   if(this == m_cellPointers->m_cellUnderPointer)
     m_cellPointers->m_cellUnderPointer = NULL;
+}
+
+std::list<MathCell *> SubCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  if(m_baseCell)
+    innerCells.push_back(m_baseCell);
+  if(m_indexCell)
+    innerCells.push_back(m_indexCell);
+  return innerCells;
 }
 
 

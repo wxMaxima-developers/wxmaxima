@@ -40,15 +40,15 @@ SubSupCell::SubSupCell(MathCell *parent, Configuration **config,CellPointers *ce
   m_exptCell = NULL;
 }
 
-void SubSupCell::SetParent(MathCell *parent)
+void SubSupCell::SetGroup(MathCell *parent)
 {
   m_group = parent;
   if (m_baseCell != NULL)
-    m_baseCell->SetParentList(parent);
+    m_baseCell->SetGroupList(parent);
   if (m_indexCell != NULL)
-    m_indexCell->SetParentList(parent);
+    m_indexCell->SetGroupList(parent);
   if (m_exptCell != NULL)
-    m_exptCell->SetParentList(parent);
+    m_exptCell->SetGroupList(parent);
 }
 
 MathCell *SubSupCell::Copy()
@@ -82,6 +82,17 @@ void SubSupCell::MarkAsDeleted()
     m_cellPointers->m_cellUnderPointer = NULL;
 }
 
+std::list<MathCell *> SubSupCell::GetInnerCells()
+{
+  std::list<MathCell *> innerCells;
+  if(m_baseCell)
+    innerCells.push_back(m_baseCell);
+  if(m_indexCell)
+    innerCells.push_back(m_indexCell);
+  if(m_exptCell)
+    innerCells.push_back(m_exptCell);
+  return innerCells;
+}
 
 void SubSupCell::SetIndex(MathCell *index)
 {
