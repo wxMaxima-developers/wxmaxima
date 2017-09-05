@@ -2420,8 +2420,11 @@ void wxMaxima::SetupVariables()
 
     SetCWD(filename);
   }
-  if (m_batchmode)
+
+  if ((m_batchmode) && (m_console->m_evaluationQueue.Empty()))
     m_console->AddDocumentToEvaluationQueue();
+
+  m_variablesOK = true;
 }
 
 ///--------------------------------------------------------------------------------
@@ -6436,7 +6439,6 @@ void wxMaxima::TryEvaluateNextInQueue()
   // Initialize maxima if necessary.
   if (!m_variablesOK)
   {
-    m_variablesOK = true;
     SetupVariables();
     return;
   }
