@@ -436,6 +436,7 @@ public:
     // //! Is pt inside this cell or a child cell?
     // wxAccStatus HitTest (const wxPoint &pt,
     //                      int *childId, wxAccessible **childObject);
+    wxAccStatus GetRole (int childId, wxAccRole *role);
     
   private:
 	GroupCell *m_group;

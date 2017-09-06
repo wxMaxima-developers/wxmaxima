@@ -309,7 +309,7 @@ void MathCell::Draw(wxPoint point, int fontsize)
   // Tell the screen reader that this cell's contents might have changed.
 
 #if wxUSE_ACCESSIBILITY
-//  NotifyEvent(0, this, wxOBJID_WINDOW, 0);
+  NotifyEvent(0, m_worksheet, wxOBJID_CLIENT, 0);
 #endif
 }
 
@@ -1385,6 +1385,15 @@ wxAccStatus MathCell::GetLocation(wxRect &rect, int elementId)
 		return cell->GetLocation(rect, 0);
   }
   return wxACC_FAIL;
+}
+
+wxAccStatus MathCell::GetRole (int childId, wxAccRole *role)
+{
+  if(role != NULL)
+  {
+    *role =   wxROLE_SYSTEM_STATICTEXT;
+    return wxACC_OK;
+  }
 }
 
 #endif

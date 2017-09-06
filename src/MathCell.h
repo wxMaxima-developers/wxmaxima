@@ -128,6 +128,7 @@ class MathCell
                        int *childId, MathCell **childObject);
   //! Accessibility: What is the contents of this cell?
   virtual wxAccStatus GetValue (int childId, wxString *strValue);
+  virtual wxAccStatus GetRole (int childId, wxAccRole *role);
 #endif
 
 
