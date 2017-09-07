@@ -1426,6 +1426,7 @@ protected:
     int m_childCount;
   };
   AccessibilityInfo m_accessibilityInfo;
+  wxAccStatus GetParent (wxAccessible ** parent);
 #endif
   
   void UpdateConfigurationClientSize();

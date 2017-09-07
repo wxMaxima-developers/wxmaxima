@@ -309,7 +309,7 @@ void MathCell::Draw(wxPoint point, int fontsize)
   // Tell the screen reader that this cell's contents might have changed.
 
 #if wxUSE_ACCESSIBILITY
-  NotifyEvent(0, m_worksheet, wxOBJID_CLIENT, 0);
+  NotifyEvent(0, m_worksheet, wxOBJID_TEXT, wxOBJID_TEXT);
 #endif
 }
 
@@ -1227,13 +1227,15 @@ wxAccStatus MathCell::GetDescription(int childId, wxString *description)
   return wxACC_FAIL;
 }
 
-wxAccStatus MathCell::GetParent (MathCell  **parent)
+wxAccStatus MathCell::GetParent (wxAccessible **parent)
 {
   if(parent == NULL)
     return wxACC_FAIL;
   
+  if(*parent != this)
   *parent = m_parent;
-  if((*parent != this) && (*parent != NULL))
+  else
+    *parent = m_worksheet->GetAccessible();
     return  wxACC_OK;
   else
   {

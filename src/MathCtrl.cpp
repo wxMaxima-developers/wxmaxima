@@ -139,9 +139,6 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
   // to disappear causing a size change... ...which might be an endless loop.
   ShowScrollbars(wxSHOW_SB_ALWAYS, wxSHOW_SB_ALWAYS);
   ClearDocument();
-  #if wxUSE_ACCESSIBILITY
-  SetAccessible(&m_accessibilityInfo);
-  #endif
 }
 
 void MathCtrl::RedrawIfRequested()
@@ -303,7 +300,7 @@ MathCtrl::~MathCtrl()
 void MathCtrl::OnPaint(wxPaintEvent &event)
 {
   #if wxUSE_ACCESSIBILITY
-  m_accessibilityInfo.NotifyEvent(0, this, wxOBJID_CLIENT, 0);
+  m_accessibilityInfo.NotifyEvent(0, this, wxOBJID_TEXT, wxOBJID_TEXT);
   #endif
   // Don't attempt to refresh the screen as long as the result will
   // end up on a printed page instead.
@@ -8136,13 +8133,16 @@ void MathCtrl::OnMouseCaptureLost(wxMouseCaptureLostEvent &event)
 }
 
 #if wxUSE_ACCESSIBILITY
-MathCtrl::AccessibilityInfo::AccessibilityInfo(MathCtrl *mathCtrl): wxAccessible()
+MathCtrl::AccessibilityInfo::AccessibilityInfo(MathCtrl *mathCtrl): wxAccessible(mathCtrl)
 {
   m_mathCtrl = mathCtrl;
 }
 
 wxAccStatus MathCtrl::AccessibilityInfo::GetChildCount (int *childCount)
 {
+  if(childCount == NULL)
+    return wxACC_FAIL;
+  
   GroupCell *cell = m_mathCtrl->m_tree;
   *childCount = 0;
   while(cell != NULL)
@@ -8208,6 +8208,19 @@ wxAccStatus MathCtrl::AccessibilityInfo::GetDefaultAction (int childId, wxString
       return wxACC_FAIL;
   } 
 }
+
+wxAccStatus MathCtrl::GetParent (wxAccessible ** parent)
+{
+  if(parent == NULL)
+    return wxACC_FAIL;
+  
+  *parent = m_parent->GetAccessible();
+  if(*parent != NULL)
+    return wxACC_OK;
+  else
+    return wxACC_FAIL;
+}
+
 
 wxAccStatus MathCtrl::AccessibilityInfo::GetFocus (int *childId, wxAccessible **child)
 {

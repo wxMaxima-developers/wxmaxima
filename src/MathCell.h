@@ -114,7 +114,7 @@ class MathCell
   //! Accessibility: Describe the current cell to a Screen Reader
   virtual wxAccStatus GetDescription(int childId, wxString *description);
   //! Accessibility: Inform the Screen Reader which cell is the parent of this one
-  wxAccStatus GetParent (MathCell ** parent);
+  wxAccStatus GetParent (wxAccessible ** parent);
   //! Accessibility: How many childs of this cell GetChild() can retrieve?
   virtual wxAccStatus GetChildCount (int *childCount);
   //! Accessibility: Retrieve a child cell. childId=0 is the current cell
