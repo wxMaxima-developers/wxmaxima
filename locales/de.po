@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-07 21:03+0200\n"
-"PO-Revision-Date: 2017-08-11 08:06+0200\n"
+"PO-Revision-Date: 2017-09-07 22:05+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -404,7 +404,7 @@ msgstr ""
 
 #: ../src/GroupCell.cpp:2141
 msgid "A GroupCell that bundles input with its output"
-msgstr ""
+msgstr "Eine Gruppe, die eine Eingabe mit einer eventuellen Ausgabe bündelt."
 
 #: ../data/tips.txt:8
 msgid ""
@@ -419,9 +419,8 @@ msgstr ""
 "'wxMaxima-XML-Dokument' auswählen."
 
 #: ../src/GroupCell.cpp:2136
-#, fuzzy
 msgid "A page break"
-msgstr "Seitenumbruch"
+msgstr "Ein Seitenumbruch"
 
 #: ../data/tips.txt:31
 msgid ""
@@ -434,15 +433,13 @@ msgstr ""
 
 #: ../src/EditorCell.cpp:4471
 msgid "A section heading"
-msgstr ""
+msgstr "Ein Kapiteltitel"
 
 #: ../src/EditorCell.cpp:4477
-#, fuzzy
 msgid "A sub-subsection heading"
 msgstr "Unter-Unterkapitelzelle"
 
 #: ../src/EditorCell.cpp:4474
-#, fuzzy
 msgid "A subsection heading"
 msgstr "Unter-Unterkapitelzelle"
 
@@ -571,9 +568,8 @@ msgid "An integration constant."
 msgstr "Eine Integrationskonstante."
 
 #: ../src/wxMaximaFrame.cpp:924
-#, fuzzy
 msgid "Animation framerate..."
-msgstr "Standard-Bildwiederholrate für Animationen:"
+msgstr "Bildwiederholrate für Animationen:"
 
 #: ../src/ConfigDialogue.cpp:801
 msgid "Antialias lines."
@@ -825,9 +821,8 @@ msgid "Bug: The clipboard is already opened"
 msgstr "Interner Fehler: Die Zwischenablage ist bereits geöffnet"
 
 #: ../src/EditorCell.cpp:3133
-#, fuzzy
 msgid "Bug: The clipboard isn't open on pasting into an editor cell"
-msgstr "Interner Fehler: Die Zwischenablage ist bereits geöffnet"
+msgstr "Interner Fehler: Die Zwischenablage ist noch nicht geöffnet, obwohl in eine Textcelle eingefügt werden soll."
 
 #: ../src/GroupCell.cpp:445
 msgid "Bug: Trying to append NULL to a group cell."
@@ -883,7 +878,7 @@ msgstr ""
 
 #: ../src/EditorCell.cpp:4483
 msgid "Bug: Unknown type of text"
-msgstr ""
+msgstr "Interner Fehler: Unbekannte Art von Text"
 
 #: ../src/wxMaximaFrame.cpp:970
 msgid "Build &Info"
@@ -1111,7 +1106,7 @@ msgstr "y-Koordinaten durch Kommata getrennt"
 
 #: ../src/EditorCell.cpp:4480
 msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
-msgstr ""
+msgstr "Kommentar (Text, der nicht an Maxima gesendet wird)"
 
 #: ../src/MathCtrl.cpp:1247
 msgid "Comment Selection"
@@ -1423,7 +1418,7 @@ msgstr ""
 #: ../src/wxMaximaFrame.cpp:923
 msgid ""
 "Defines if an animation is automatically started or only by clicking on it."
-msgstr ""
+msgstr "Bestimmt, ob Animationen automatisch gestartet werden, oder erst beim Anklicken."
 
 #: ../src/wxMaxima.cpp:4064 ../src/wxMaxima.cpp:4074
 msgid "Delete"
@@ -1676,9 +1671,8 @@ msgid "Enter matrix"
 msgstr "Matrix eingeben"
 
 #: ../src/wxMaxima.cpp:4996
-#, fuzzy
 msgid "Enter new animation frame rate [Hz, integer]:"
-msgstr "Standard-Bildwiederholrate für Animationen:"
+msgstr "Neue Bildwiederholrate für Animationen:"
 
 #: ../src/wxMaxima.cpp:5069
 msgid "Enter new precision for bigfloats:"
@@ -2138,7 +2132,7 @@ msgstr "Bild %i von %i"
 
 #: ../src/wxMaxima.cpp:4996
 msgid "Frame rate"
-msgstr ""
+msgstr "Bildwiederholrate"
 
 #: ../src/ConfigDialogue.cpp:734
 msgid "French"
@@ -3009,9 +3003,8 @@ msgid "Math font:"
 msgstr "Math. Schriftart:"
 
 #: ../src/MathCell.cpp:1213
-#, fuzzy
 msgid "Math output"
-msgstr "Math. Schriftart:"
+msgstr "Ausgabe"
 
 #: ../src/ConfigDialogue.cpp:263
 msgid ""
@@ -3100,9 +3093,8 @@ msgstr ""
 "eingeführt."
 
 #: ../src/EditorCell.cpp:4465
-#, fuzzy
 msgid "Maxima code"
-msgstr "wxMaxima Icon"
+msgstr "Maxima-Code"
 
 #: ../src/ConfigDialogue.cpp:608
 msgid "Maxima commands that should be executed at startup: "
@@ -4214,9 +4206,8 @@ msgid "Set plot format"
 msgstr "Das Plot-Format einstellen"
 
 #: ../src/wxMaximaFrame.cpp:925
-#, fuzzy
 msgid "Set the frame rate for animations."
-msgstr "Starte oder Stoppe Animation"
+msgstr "Wähle die Bildwiederholrate für Animationen."
 
 #: ../src/wxMaximaFrame.cpp:942
 msgid ""
@@ -4731,7 +4722,7 @@ msgstr ""
 msgid ""
 "The argument of a function was of the wrong type. Most probably an equation "
 "was expected but was lacking an \"=\"."
-msgstr ""
+msgstr "Der Typ des Arguments einer Funktion stimmte nicht. Geschieht, wenn eine Gleichung benötigt wird, aber das \"=\" fehlt."
 
 #: ../src/ConfigDialogue.cpp:245
 msgid ""
@@ -4761,7 +4752,7 @@ msgstr "Die Dokumentklasse für den Export von LaTeX-Dokumenten "
 msgid ""
 "The first argument of subst() isn't an equation or a list of equations. Most "
 "probably it was lacking an \"=\"."
-msgstr ""
+msgstr "Das erste Argument von subst() ist keine Gleichung oder Liste von Gleichungen. Wahrscheinlich fehlt ihm ein \"=\"."
 
 #: ../src/wxMaximaFrame.cpp:721
 msgid "The half of the equation that is to the left of the \"=\""
@@ -4895,7 +4886,7 @@ msgstr ""
 msgid ""
 "The second argument of at() isn't an equation or a list of equations. Most "
 "probably it was lacking an \"=\"."
-msgstr ""
+msgstr "Das zweite Argument von at() ist keine Gleichung oder Liste von Gleichungen. Wahrscheinlich fehlt ihm ein \"=\"."
 
 #: ../src/MathParser.cpp:258
 msgid ""
@@ -5051,9 +5042,8 @@ msgid "Toggle algebraic flag"
 msgstr "Schalte das Flag algebraic ein oder aus."
 
 #: ../src/wxMaximaFrame.cpp:922
-#, fuzzy
 msgid "Toggle animation autoplay"
-msgstr "Sichere Animation in Datei"
+msgstr "Automatisches Abspielen von Animationen"
 
 #: ../src/wxMaximaFrame.cpp:558
 msgid "Toggle full screen editing"
@@ -5110,14 +5100,12 @@ msgid "Two sample t-test"
 msgstr "Zweistichproben t-Test"
 
 #: ../src/MathCtrl.cpp:8198
-#, fuzzy
 msgid "Type"
-msgstr "Gestalt:"
+msgstr "Art"
 
 #: ../src/EditorCell.cpp:4492
-#, fuzzy
 msgid "Type in text"
-msgstr "Als Text kopieren"
+msgstr "Text eingeben"
 
 #: ../src/MatWiz.cpp:179
 msgid "Type:"
