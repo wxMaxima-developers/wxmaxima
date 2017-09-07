@@ -62,6 +62,7 @@ private:
   wxAccStatus GetFocus (int *childId, EditorCell **child);
   wxAccStatus GetDefaultAction(int childId, wxString *actionName);
   wxAccStatus GetValue (int childId, wxString *strValue);
+  wxAccStatus GetRole (int childId, wxAccRole *role);
   #endif
   
   int m_errorIndex;

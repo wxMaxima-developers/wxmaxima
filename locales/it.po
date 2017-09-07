@@ -7,8 +7,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< HEAD
 "POT-Creation-Date: 2017-09-05 18:10+0200\n"
 "PO-Revision-Date: 2017-08-19 07:48+0200\n"
+=======
+"POT-Creation-Date: 2017-08-22 07:32+0200\n"
+"PO-Revision-Date: 2017-09-03 21:19+0200\n"
+>>>>>>> 90e376a64dd2b431801efffbdba80279f6766a77
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -375,7 +380,7 @@ msgstr "1/2"
 
 #: ../src/wxMaximaFrame.cpp:537
 msgid "2D equations using ASCII Art"
-msgstr ""
+msgstr "Equazioni 2D usando ASCII Art"
 
 #: ../src/wxMaxima.cpp:2735
 #, c-format
@@ -566,14 +571,18 @@ msgstr "Alfa"
 msgid "An integration constant."
 msgstr "Una costante di integrazione."
 
+<<<<<<< HEAD
 #: ../src/wxMaximaFrame.cpp:924
 #, fuzzy
+=======
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:924
+>>>>>>> 90e376a64dd2b431801efffbdba80279f6766a77
 msgid "Animation framerate..."
-msgstr "Framerate predefinito per le animazioni:"
+msgstr "Frequenza di quadro animazioni..."
 
 #: ../src/ConfigDialogue.cpp:801
 msgid "Antialias lines."
-msgstr ""
+msgstr "Righe antialias."
 
 #: ../src/wxMaxima.cpp:4525
 msgid "Apply"
@@ -691,8 +700,12 @@ msgstr ""
 msgid "Beta"
 msgstr "Beta"
 
+<<<<<<< HEAD
 #: ../src/ConfigDialogue.cpp:911
 #, fuzzy
+=======
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:910
+>>>>>>> 90e376a64dd2b431801efffbdba80279f6766a77
 msgid "Bitmap"
 msgstr "Bitmap"
 
@@ -820,11 +833,11 @@ msgstr "Bug: testo cambiato, ma nessuna cella attiva."
 
 #: ../src/EditorCell.cpp:3056 ../src/MathCtrl.cpp:2171
 msgid "Bug: The clipboard is already opened"
-msgstr ""
+msgstr "Bug: gli appunti sono già aperti"
 
 #: ../src/EditorCell.cpp:3133
 msgid "Bug: The clipboard isn't open on pasting into an editor cell"
-msgstr ""
+msgstr "Bug: gli appunti non sono aperti sull'incollamento in una cella dell'editor"
 
 #: ../src/GroupCell.cpp:445
 msgid "Bug: Trying to append NULL to a group cell."
@@ -1040,7 +1053,7 @@ msgstr "Classi:"
 
 #: ../src/ConfigDialogue.cpp:908
 msgid "Clipboard formats to offer by default:"
-msgstr ""
+msgstr "Il formato degli appunti da offrire come preimpostazione:"
 
 #: ../src/wxMaximaFrame.cpp:435
 msgid "Close\tCtrl+W"
@@ -1282,11 +1295,17 @@ msgstr "Copia come MathML (per es. per un programma di videoscrittura)"
 msgid "Copy as RTF"
 msgstr "Copia come RTF"
 
+<<<<<<< HEAD
 #: ../src/MathCtrl.cpp:1134 ../src/MathCtrl.cpp:1194
 #: ../src/wxMaximaFrame.cpp:482
 #, fuzzy
+=======
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1096
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1156
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:482
+>>>>>>> 90e376a64dd2b431801efffbdba80279f6766a77
 msgid "Copy as SVG"
-msgstr "Copia come RTF"
+msgstr "Copia come SVG"
 
 #: ../src/wxMaximaFrame.cpp:470
 msgid "Copy as Text\tCtrl+Shift+C"
@@ -1300,10 +1319,14 @@ msgstr "Copia come immagine"
 msgid "Copy selection"
 msgstr "Copia la selezione"
 
+<<<<<<< HEAD
 #: ../src/wxMaximaFrame.cpp:483
 #, fuzzy
+=======
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:483
+>>>>>>> 90e376a64dd2b431801efffbdba80279f6766a77
 msgid "Copy selection from document as an SVG image"
-msgstr "Copia la selezione dal documento come immagine"
+msgstr "Copia la selezione dal documento come immagine SVG"
 
 #: ../src/wxMaximaFrame.cpp:480
 msgid "Copy selection from document as an image"
@@ -1393,7 +1416,7 @@ msgstr "Predefinito"
 
 #: ../src/ConfigDialogue.cpp:780
 msgid "Default animation framerate:"
-msgstr "Framerate predefinito per le animazioni:"
+msgstr "Frequenza di quadro predefinita animazioni:"
 
 #: ../src/ConfigDialogue.cpp:952
 msgid "Default font:"
@@ -1418,7 +1441,7 @@ msgstr ""
 #: ../src/wxMaximaFrame.cpp:923
 msgid ""
 "Defines if an animation is automatically started or only by clicking on it."
-msgstr ""
+msgstr "Definisce se un'animazione parte automaticamente o solo se si fa clic su di essa."
 
 #: ../src/wxMaxima.cpp:4057 ../src/wxMaxima.cpp:4067
 msgid "Delete"
@@ -1512,10 +1535,14 @@ msgstr "Mostra in Te&X"
 msgid "Display algorithm"
 msgstr "Mostra l'algoritmo"
 
+<<<<<<< HEAD
 #: ../src/wxMaximaFrame.cpp:540
 #, fuzzy
+=======
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:540
+>>>>>>> 90e376a64dd2b431801efffbdba80279f6766a77
 msgid "Display equations"
-msgstr "Risolvi le equazioni"
+msgstr "Mostra le equazioni"
 
 #: ../src/wxMaximaFrame.cpp:664
 msgid "Display last result in TeX form"
@@ -1673,10 +1700,14 @@ msgstr "Invio elabora le celle"
 msgid "Enter matrix"
 msgstr "Inserire la matrice"
 
+<<<<<<< HEAD
 #: ../src/wxMaxima.cpp:4989
 #, fuzzy
+=======
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4988
+>>>>>>> 90e376a64dd2b431801efffbdba80279f6766a77
 msgid "Enter new animation frame rate [Hz, integer]:"
-msgstr "Framerate predefinito per le animazioni:"
+msgstr "Inserire la nuova frequenza di quadro per le animazioni [Hz, intero]:"
 
 #: ../src/wxMaxima.cpp:5062
 msgid "Enter new precision for bigfloats:"
@@ -2134,7 +2165,7 @@ msgstr "Riquadro %i di %i"
 
 #: ../src/wxMaxima.cpp:4989
 msgid "Frame rate"
-msgstr ""
+msgstr "Frequenza di quadro"
 
 #: ../src/ConfigDialogue.cpp:734
 msgid "French"
@@ -2379,7 +2410,7 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:540
 msgid "How to display new equations"
-msgstr ""
+msgstr "Come mostrare le nuove equazioni"
 
 #: ../src/ConfigDialogue.cpp:738
 msgid "Hungarian"
@@ -2464,6 +2495,11 @@ msgid ""
 "commands that are executed in this case, too, please add them to maxima-init."
 "mac, instead."
 msgstr ""
+"Se la stima che wxMaxima fa di dove maxima si aspetta il file di avvio è errata, la giusta cartella per il file di avvio è quella che maxima stampa con il comando\n"
+"\n"
+"   maxima-user_dir;\n"
+"\n"
+"Il file non verrà letto da maxima se non viene usato wxMaxima. Per aggiungere comandi di avvio che vengano eseguiti in questo frangente, inserirli invece nel file maxima-init.mac."
 
 #: ../data/tips.txt:6
 msgid ""
@@ -3024,11 +3060,11 @@ msgstr "MathML + MathJaX come sostituto"
 
 #: ../src/ConfigDialogue.cpp:919
 msgid "MathML as HTML"
-msgstr ""
+msgstr "MathML come HTML"
 
 #: ../src/ConfigDialogue.cpp:915
 msgid "MathML description"
-msgstr ""
+msgstr "Descrizione MathML"
 
 #: ../src/wxMaximaFrame.cpp:329
 msgid "Mathematical Symbols"
@@ -3090,7 +3126,7 @@ msgstr "Icona wxMaxima"
 
 #: ../src/ConfigDialogue.cpp:608
 msgid "Maxima commands that should be executed at startup: "
-msgstr ""
+msgstr "I comandi Maxima che devono essere eseguiti all'avvio: "
 
 #: ../src/wxMaximaFrame.cpp:122
 msgid "Maxima has a question"
@@ -3408,7 +3444,7 @@ msgstr "Comando successivo\tAlt+Down"
 
 #: ../src/wxMaximaFrame.cpp:538
 msgid "Nice Graphical Equations"
-msgstr ""
+msgstr "Belle equazioni grafiche"
 
 #: ../src/ConfigDialogue.cpp:496 ../src/ConfigDialogue.cpp:506
 #: ../src/ConfigDialogue.cpp:515
@@ -3849,7 +3885,7 @@ msgstr "Psi"
 
 #: ../src/ConfigDialogue.cpp:923
 msgid "RTF with OMML maths"
-msgstr ""
+msgstr "RTF con formule OMML"
 
 #: ../src/wxMaximaFrame.cpp:286
 msgid "Raw XML monitor"
@@ -3980,10 +4016,14 @@ msgstr "Righe:"
 msgid "Russian"
 msgstr "Russo"
 
+<<<<<<< HEAD
 #: ../src/ConfigDialogue.cpp:684
 #, fuzzy
+=======
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:683
+>>>>>>> 90e376a64dd2b431801efffbdba80279f6766a77
 msgid "SVG graphics"
-msgstr " (grafiche) "
+msgstr " Grafiche SVG"
 
 #: ../src/wxMaxima.cpp:5526
 msgid "Sample 1:"
@@ -4092,7 +4132,7 @@ msgstr "Salvataggio..."
 
 #: ../src/ConfigDialogue.cpp:927
 msgid "Scalable Vector Graphics (svg)"
-msgstr ""
+msgstr "Scalable Vector Graphics (svg)"
 
 #: ../src/wxMaxima.cpp:5433
 msgid "Scatterplot"
@@ -4206,10 +4246,14 @@ msgstr "Imposta carattere ad ampiezza fissa nei controlli di testo."
 msgid "Set plot format"
 msgstr "Imposta il formato del grafico"
 
+<<<<<<< HEAD
 #: ../src/wxMaximaFrame.cpp:925
 #, fuzzy
+=======
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:925
+>>>>>>> 90e376a64dd2b431801efffbdba80279f6766a77
 msgid "Set the frame rate for animations."
-msgstr "Avvia o blocca l'animazione"
+msgstr "Imposta la frequenza di quadro per le animazioni."
 
 #: ../src/wxMaximaFrame.cpp:942
 msgid ""
@@ -4310,7 +4354,7 @@ msgstr "Mostra la definizione di una funzione"
 
 #: ../src/wxMaximaFrame.cpp:536
 msgid "Show equations in their linear form"
-msgstr ""
+msgstr "Mostra le equazioni nella loro forma lineare"
 
 #: ../src/wxMaximaFrame.cpp:585
 msgid "Show function template"
@@ -4544,12 +4588,16 @@ msgstr "Avvio del server sul port %d"
 
 #: ../src/ConfigDialogue.cpp:168
 msgid "Startup commands"
-msgstr ""
+msgstr "Comandi d'avvio"
 
+<<<<<<< HEAD
 #: ../src/ConfigDialogue.cpp:636
 #, fuzzy
+=======
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:635
+>>>>>>> 90e376a64dd2b431801efffbdba80279f6766a77
 msgid "Startup file location: "
-msgstr "Avvia animazione"
+msgstr "Posizione file di avvio: "
 
 #: ../src/wxMaximaFrame.cpp:297
 msgid "Statistics"
@@ -4727,7 +4775,7 @@ msgstr ""
 msgid ""
 "The argument of a function was of the wrong type. Most probably an equation "
 "was expected but was lacking an \"=\"."
-msgstr ""
+msgstr "L'argomento di una funzione era di tipo sbagliato. Probabilmente si aspettava un'equazione ma manca un \"=\"."
 
 #: ../src/ConfigDialogue.cpp:245
 msgid ""
@@ -4758,7 +4806,7 @@ msgstr ""
 msgid ""
 "The first argument of subst() isn't an equation or a list of equations. Most "
 "probably it was lacking an \"=\"."
-msgstr ""
+msgstr "Il primo argomento di subst() non è un'equazione o un elenco di equazioni. Probabilmente manca un \"=\"."
 
 #: ../src/wxMaximaFrame.cpp:721
 msgid "The half of the equation that is to the left of the \"=\""
@@ -4773,7 +4821,7 @@ msgid ""
 "The image could not be displayed. It may be broken, in a wrong format or be "
 "the result of gnuplot not being able to write the image or not being able to "
 "understand what maxima wanted to plot."
-msgstr ""
+msgstr "L'immagine non può essere visualizzata. Può essere rovinata, o in un formato sbagliato o il risultato di gnuplot che non è stato in grado di scrivere l'immagine o non è stato in grado di capire cosa maxima voleva graficare."
 
 #: ../data/tips.txt:43
 msgid "The key combination Shift+Space results in a non-breakable space."
@@ -4826,19 +4874,20 @@ msgid ""
 "The part of the output of these commands that isn' declared as \"math\" "
 "might be suppressed by wxMaxima; As always maxima commands are required to "
 "end in a \";\" or a \"$\""
-msgstr ""
+msgstr "La parte del risultato di questi comandi che non è stata dichiarata come \"calcolo\" può essere soppressa da wxMaxima; come sempre i comandi di maxima devono terminare con un \";\" o un \"$\""
 
+<<<<<<< HEAD
 #: ../src/ConfigDialogue.cpp:266
 #, fuzzy
+=======
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:265
+>>>>>>> 90e376a64dd2b431801efffbdba80279f6766a77
 msgid ""
 "The pngCairo terminal offers much better graphics quality (antialiassing and "
 "additional line styles). But it will only produce plots if the gnuplot "
 "installed on the current system actually supports it. Requesting cairo on a "
 "system thhat doesn't support it might result in empty plots."
-msgstr ""
-"Il terminale pngCairo offre qualità grafica molto migliore (antialias e "
-"stili di linee aggiuntivi). Esso produrrà grafici però solamente se la "
-"versione correntemente installata nel sistema di gnuplot lo supporta."
+msgstr "Il terminale pngCairo offre qualità grafica molto migliore (antialias e stili di linee aggiuntivi). Ma produrrà grafici solamente se la versione correntemente installata nel sistema di gnuplot lo supporta. Impostare Cairo su un sistema che non lo supporta può produrre grafici vuoti."
 
 #: ../src/TextCell.cpp:105
 msgid "The result was indefinite."
@@ -4880,7 +4929,7 @@ msgstr ""
 msgid ""
 "The second argument of at() isn't an equation or a list of equations. Most "
 "probably it was lacking an \"=\"."
-msgstr ""
+msgstr "Il secondo argomento di at() non è un'equazione o un elenco di equazioni. Molto probabilmente manca un \"=\"."
 
 #: ../src/MathParser.cpp:258
 msgid ""
@@ -5031,10 +5080,14 @@ msgstr "Mostra/nascondi la visualizzazione del &tempo"
 msgid "Toggle algebraic flag"
 msgstr "Mostra/nascondi algebrica"
 
+<<<<<<< HEAD
 #: ../src/wxMaximaFrame.cpp:922
 #, fuzzy
+=======
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:922
+>>>>>>> 90e376a64dd2b431801efffbdba80279f6766a77
 msgid "Toggle animation autoplay"
-msgstr "Salva l'animazione su file"
+msgstr "Commuta l'autoesecuzione animazioni"
 
 #: ../src/wxMaximaFrame.cpp:558
 msgid "Toggle full screen editing"
@@ -5064,7 +5117,7 @@ msgstr "Trasponi una matrice"
 msgid ""
 "Try to antialias lines (which allows to move them by a fraction of a pixel, "
 "but reduces their sharpness)."
-msgstr ""
+msgstr "Provare a fare l'antialias sulle linee (che permette di spostarle di una frazione di un pixel, ma ne riduce la nitidezza)."
 
 #: ../src/MathCtrl.cpp:6607
 msgid "Trying to undo an action without starting cell."
@@ -5938,6 +5991,7 @@ msgstr "sì"
 #: ../src/wxMaximaFrame.cpp:1473
 msgid "zeta"
 msgstr "zeta"
+<<<<<<< HEAD
 
 #~ msgid "Bug: Maximum number of digits that is to be displayed is too low!"
 #~ msgstr "Bug: il numero massimo di cifre da mostrare è troppo basso!"
@@ -5967,3 +6021,5 @@ msgstr "zeta"
 
 #~ msgid "Optimize wxmx files for version control"
 #~ msgstr "Ottimizza i file wxmx per i controlli di versione"
+=======
+>>>>>>> 90e376a64dd2b431801efffbdba80279f6766a77

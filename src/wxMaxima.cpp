@@ -1437,8 +1437,10 @@ void wxMaxima::ReadPrompt(wxString &data)
     // if we remove a command from the evaluation queue the next output line will be the
     // first from the next command.
     m_outputCellsFromCurrentCommand = 0;
+    std::cerr<<"1\n";
     if (m_console->m_evaluationQueue.Empty())
     { // queue empty.
+      std::cerr<<"2\n";
       StatusMaximaBusy(waiting);
       m_console->m_cellPointers.SetWorkingGroup(NULL);
 
@@ -1451,9 +1453,11 @@ void wxMaxima::ReadPrompt(wxString &data)
         m_console->SetSelection(NULL, NULL);
       }
       m_console->FollowEvaluation(false);
+      std::cerr<<"batch?\n";
       if (m_batchmode)
       {
         SaveFile(false);
+        std::cerr<<"close\n";
         wxCloseEvent *closeEvent;
         closeEvent = new wxCloseEvent();
         GetEventHandler()->QueueEvent(closeEvent);
@@ -2420,8 +2424,11 @@ void wxMaxima::SetupVariables()
 
     SetCWD(filename);
   }
-  if (m_batchmode)
+
+  if ((m_batchmode) && (m_console->m_evaluationQueue.Empty()))
     m_console->AddDocumentToEvaluationQueue();
+
+  m_variablesOK = true;
 }
 
 ///--------------------------------------------------------------------------------
@@ -6436,7 +6443,6 @@ void wxMaxima::TryEvaluateNextInQueue()
   // Initialize maxima if necessary.
   if (!m_variablesOK)
   {
-    m_variablesOK = true;
     SetupVariables();
     return;
   }

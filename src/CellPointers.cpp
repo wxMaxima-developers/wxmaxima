@@ -43,7 +43,7 @@ CellPointers::CellPointers(wxScrolledCanvas *mathCtrl)
   m_selectionString = wxEmptyString;
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
-
+  MathCell::SetWorksheet(m_mathCtrl);
 }
 
 bool CellPointers::ErrorList::Contains(MathCell *cell)

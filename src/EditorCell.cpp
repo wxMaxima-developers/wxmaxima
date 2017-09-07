@@ -4532,4 +4532,17 @@ wxAccStatus EditorCell::GetFocus (int *childId, EditorCell **child)
   }
 }
 
+wxAccStatus EditorCell::GetRole (int childId, wxAccRole *role)
+{
+  if((childId == 0) && (role != NULL))
+  {
+    *role = wxROLE_SYSTEM_TEXT;
+    return wxACC_OK;
+  }
+  else
+  {
+    return wxACC_FAIL;
+  }
+}
+
 #endif

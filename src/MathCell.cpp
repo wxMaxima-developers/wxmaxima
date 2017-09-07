@@ -309,7 +309,7 @@ void MathCell::Draw(wxPoint point, int fontsize)
   // Tell the screen reader that this cell's contents might have changed.
 
 #if wxUSE_ACCESSIBILITY
-//  NotifyEvent(0, this, wxOBJID_WINDOW, 0);
+  NotifyEvent(0, m_worksheet, wxOBJID_TEXT, wxOBJID_TEXT);
 #endif
 }
 
@@ -1218,7 +1218,8 @@ wxAccStatus MathCell::GetDescription(int childId, wxString *description)
     MathCell *cell = NULL;
     if(GetChild(childId,&cell) == wxACC_OK)
     {
-      return cell->GetDescription(0, description);
+      if(cell != NULL)
+        return cell->GetDescription(0, description);
     }
   }
 
@@ -1226,13 +1227,15 @@ wxAccStatus MathCell::GetDescription(int childId, wxString *description)
   return wxACC_FAIL;
 }
 
-wxAccStatus MathCell::GetParent (MathCell  **parent)
+wxAccStatus MathCell::GetParent (wxAccessible **parent)
 {
   if(parent == NULL)
     return wxACC_FAIL;
   
-  *parent = m_parent;
   if(*parent != this)
+  *parent = m_parent;
+  else
+    *parent = m_worksheet->GetAccessible();
     return  wxACC_OK;
   else
   {
@@ -1252,8 +1255,11 @@ wxAccStatus MathCell::GetValue (int childId, wxString *strValue)
     *strValue = cell->ToString();
     return wxACC_OK;
   }
-  *strValue = wxEmptyString;
-  return wxACC_FAIL;
+  else
+  {
+    *strValue = wxEmptyString;
+    return wxACC_FAIL;
+  }
 }
 
 wxAccStatus MathCell::GetChildCount (int *childCount)
@@ -1383,6 +1389,15 @@ wxAccStatus MathCell::GetLocation(wxRect &rect, int elementId)
   return wxACC_FAIL;
 }
 
+wxAccStatus MathCell::GetRole (int childId, wxAccRole *role)
+{
+  if(role != NULL)
+  {
+    *role =   wxROLE_SYSTEM_STATICTEXT;
+    return wxACC_OK;
+  }
+}
+
 #endif
 
 // The variables all MathCells share.
@@ -1390,3 +1405,4 @@ wxRect  MathCell::m_updateRegion;
 bool    MathCell::m_clipToDrawRegion = true;
 wxRect  MathCell::m_visibleRegion;
 wxPoint MathCell::m_worksheetPosition;
+wxWindow * MathCell::m_worksheet;

@@ -114,7 +114,7 @@ class MathCell
   //! Accessibility: Describe the current cell to a Screen Reader
   virtual wxAccStatus GetDescription(int childId, wxString *description);
   //! Accessibility: Inform the Screen Reader which cell is the parent of this one
-  wxAccStatus GetParent (MathCell ** parent);
+  wxAccStatus GetParent (wxAccessible ** parent);
   //! Accessibility: How many childs of this cell GetChild() can retrieve?
   virtual wxAccStatus GetChildCount (int *childCount);
   //! Accessibility: Retrieve a child cell. childId=0 is the current cell
@@ -128,6 +128,7 @@ class MathCell
                        int *childId, MathCell **childObject);
   //! Accessibility: What is the contents of this cell?
   virtual wxAccStatus GetValue (int childId, wxString *strValue);
+  virtual wxAccStatus GetRole (int childId, wxAccRole *role);
 #endif
 
 
@@ -789,7 +790,11 @@ class MathCell
   //! Set the tooltip of this math cell. wxEmptyString means: no tooltip.
   void SetToolTip(const wxString &tooltip){m_toolTip = tooltip;}
 
+  //! Set the worksheet all cells are drawn on
+  static void SetWorksheet(wxWindow *worksheet){m_worksheet = worksheet;}
 protected:
+  //! The worksheet all cells are drawn on
+  static wxWindow *m_worksheet;
   //! Determines if any of the lists contains a ToolTip for the point given.
   wxString GetToolTipList(const wxPoint &point,
                           MathCell *list1,
