@@ -136,93 +136,119 @@ void EvaluationQueue::AddTokens(GroupCell *cell)
     return;
   
   wxString commandString = cell->GetEditable()->GetValue();
-  size_t index = 0;
 
   m_knownAnswers = cell->m_knownAnswers;
 
   wxString token;
 
-  while (index < commandString.Length())
+  wxString::iterator it = commandString.begin();
+  int index = 0;
+  
+  while(it != commandString.end())
   {
-    wxChar ch = commandString[index];
 
     // Add strings as a whole
-    if (ch == wxT('\"'))
+    if (*it == wxT('\"'))
     {
-      token += ch;
-      index++;
-      while ((index < commandString.Length()) && ((ch = commandString[index]) != wxT('\"')))
+      token += *it;
+      ++it;++index;
+      while ((it != commandString.end()) && (*it != wxT('\"')))
       {
-        if (commandString[index] == wxT('\\'))
+        if (*it == wxT('\\'))
         {
-          token += commandString[index];
-          index++;
+          token += *it;
+          ++it;++index;
         }
-        token += commandString[index];
-        index++;
+        if(it != commandString.end())
+        {
+          token += *it;
+          ++it;++index;
+        }
       }
-      if (index < commandString.Length())
+        // add the closing quote;
+      if(it != commandString.end())
       {
-        token += commandString[index];
-        index++;
+        token += *it;
+        ++it;++index;
       }
       continue;
     }
 
     // :lisp -commands should be added as a whole
-    if (ch == wxT(':'))
+    if (*it == wxT(':'))
     {
-      if (commandString.find(wxT("lisp"), index + 1) == index + 1)
+      wxString::iterator it2(it);
+      wxString chars;
+      for(int i=0; (i<6) && it2 != commandString.end(); i++)
       {
-        token += commandString.Right(
-                commandString.Length() - index
-        );
-        break;
+        chars += *it2;
+        ++it2;
+      }
+      if (chars.StartsWith(wxT(":lisp")))
+      {
+        while(it != commandString.end())
+        {
+          token += *it;
+          ++it;++index;
+        }
+        continue;
       }
     }
 
     // Handle escaped chars
-    if (ch == wxT('\\'))
+    if (*it == wxT('\\'))
     {
-      if ((index + 1 < commandString.Length()) && (commandString[index + 1] == wxT('\n')))
+      token += *it;
+      ++it;++index;
+      if(it != commandString.end())
       {
-        index += 2;
+        token += *it;
+        ++it;++index;
         continue;
       }
-
-      token += ch;
-      index++;
-      if (index < commandString.Length())
-        token += commandString[index++];
-      continue;
     }
 
-    // Remove comments
-    if ((ch == wxT('/')) &&
-        (index < commandString.Length() - 1) &&
-        (commandString[index + 1] == wxT('*'))
+    // Skip comments
+    if (*it == wxT('/'))
+    {
+      wxString::iterator it2(it);
+      ++it2;
+      if((it2 != commandString.end()) && (*it2 == wxT('*')))
+      {
+        // Skip the comment start
+        ++it;++index;
+        if(it != commandString.end())
+        {
+          ++it;++index;
+        }
+
+        // skip the rest of the comment.
+        if(it != commandString.end())
+        {
+          wxChar lastCh = *it;
+          ++it;++index;
+          while ((it != commandString.end()) &&
+                 (! ((lastCh == wxT('*'))&&(*it == wxT('/'))))
             )
-    {
-      while ((index < commandString.Length()) &&
-             !(
-                     (commandString[index] == wxT('*')) &&
-                     (commandString[index + 1] == wxT('/'))
-             )
-              )
-        index++;
-      index += 2;
+          {
+            lastCh = *it;
+            ++it;++index;
+          }
+        }
+        if(it != commandString.end())
+        {
+          ++it;++index;
+        }
+        continue;
+      }
     }
-    else
-    {
-      // Add the current char to the current token
-      token += ch;
-      index++;
-    }
+    // Add the current char to the current token
+    token += *it;
 
     // If we ended a command we now have to add a new token to the list.
     if (
-            (ch == wxT(';')) ||
-            (ch == wxT('$'))
+            (*it == wxT(';')) ||
+            (*it == wxT('$'))
             )
     {
       // trim() the token to allow MathCtrl::TryEvaluateNextInQueue()
@@ -235,6 +261,7 @@ void EvaluationQueue::AddTokens(GroupCell *cell)
         m_commands.push_back(command(token, index));
       token = wxEmptyString;
     }
+    ++it;++index;
   }
   // There might be a last token in the string we still haven't added.
   // Let's trim() it first: This way MathCtrl::TryEvaluateNextInQueue()
