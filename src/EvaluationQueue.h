@@ -64,7 +64,10 @@ private:
   //! The groupCells in the evaluation Queue.
   std::list<GroupCell *>m_queue;
 
-  //! Adds all commands in commandString as separate tokens to the queue.
+  /*! Adds all commands in commandString as separate tokens to the queue.
+
+    \todo Use iterators for traversing strings.
+   */
   void AddTokens(GroupCell *cell);
 
   //! A list of answers provided by the user
