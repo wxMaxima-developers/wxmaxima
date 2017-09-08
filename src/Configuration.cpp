@@ -31,7 +31,7 @@
 
 Configuration::Configuration(wxDC &dc, bool isTopLevel) : m_dc(&dc) 
 {
-  m_antialiassingDC = m_dc;
+  m_antialiassingDC = NULL;
   m_parenthesisDrawMode = unknown;
   m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML");
   m_scale = 1.0;

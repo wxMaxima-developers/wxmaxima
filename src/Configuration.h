@@ -119,7 +119,7 @@ public:
   { m_dc = &dc; }
 
   void SetAntialiassingDC(wxDC &antialiassingDC)
-    {m_antialiassingDC = &antialiassingDC;}
+    {m_antialiassingDC = &antialiassingDC;std::cerr<<"SetAntialiassing\n";}
 
   void UnsetAntialiassingDC()
     {m_antialiassingDC = NULL;}
@@ -185,7 +185,7 @@ public:
   //! Get a drawing context suitable for size calculations
   wxDC &GetAntialiassingDC()
     {
-      if ((m_antialiassingDC) && (m_antiAliasLines))
+      if (m_antialiassingDC && m_antiAliasLines)
         return *m_antialiassingDC;
       else
         return *m_dc;
@@ -302,7 +302,7 @@ public:
   double GetDefaultLineWidth()
   {
     if (GetScale() * GetZoomFactor() < 1.0)
-      return 1;
+      return 1.0;
     else
       return GetScale() * GetZoomFactor();
   }
