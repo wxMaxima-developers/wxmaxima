@@ -2201,7 +2201,7 @@ wxAccStatus GetRole (int childId, wxAccRole *role)
   else
   {
     MathCell *cell;
-    if(GetChild(childId) == wxACC_OK)
+    if(GetChild(childId, cell) == wxACC_OK)
     {
       if(cell != NULL)
         return cell->GetRole(0, role);
