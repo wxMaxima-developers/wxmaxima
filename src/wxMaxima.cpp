@@ -1407,7 +1407,7 @@ void wxMaxima::ReadPrompt(wxString &data)
   data = data.Right(data.Length()-end-m_promptSuffix.Length());
   if(data == wxT(" "))
     data = wxEmptyString;
-  
+
   // Input prompts have a length > 0 and end in a number followed by a ")".
   // They also begin with a "(". Questions (hopefully)
   // don't do that; Lisp prompts look like question prompts.
@@ -1437,13 +1437,9 @@ void wxMaxima::ReadPrompt(wxString &data)
     // if we remove a command from the evaluation queue the next output line will be the
     // first from the next command.
     m_outputCellsFromCurrentCommand = 0;
-    std::cerr<<"1\n";
     if (m_console->m_evaluationQueue.Empty())
     { // queue empty.
-      std::cerr<<"2\n";
       StatusMaximaBusy(waiting);
-      m_console->m_cellPointers.SetWorkingGroup(NULL);
-
       // If we have selected a cell in order to show we are evaluating it
       // we should now remove this marker.
       if (m_console->FollowEvaluation())
@@ -1453,18 +1449,15 @@ void wxMaxima::ReadPrompt(wxString &data)
         m_console->SetSelection(NULL, NULL);
       }
       m_console->FollowEvaluation(false);
-      std::cerr<<"batch?\n";
       if (m_batchmode)
       {
         SaveFile(false);
-        std::cerr<<"close\n";
-        wxCloseEvent *closeEvent;
-        closeEvent = new wxCloseEvent();
-        GetEventHandler()->QueueEvent(closeEvent);
+        Close();
       }
       // Inform the user that the evaluation queue is empty.
       EvaluationQueueLength(0);
       m_console->m_cellPointers.SetWorkingGroup(NULL);
+      m_console->m_evaluationQueue.RemoveFirst();
       m_console->RequestRedraw();
     }
     else

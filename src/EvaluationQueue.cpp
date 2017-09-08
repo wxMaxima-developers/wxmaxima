@@ -30,7 +30,7 @@
 
 bool EvaluationQueue::Empty()
 {
-  return (m_queue.empty()) && (m_commands.empty());
+  return (m_queue.size() <= 1) && (m_commands.empty());
 }
 
 EvaluationQueue::EvaluationQueue()
@@ -117,16 +117,16 @@ void EvaluationQueue::RemoveFirst()
   }
   else
   {
-    if(m_queue.empty())
-      return;
-
-    m_queue.pop_front();
-    m_size--;
-    if (!Empty())
+    do
     {
+      if(m_queue.empty())
+        return;
+      
+      m_queue.pop_front();
+      m_size--;
       AddTokens(GetCell());
-      m_workingGroupChanged = true;
-    }
+    } while (m_commands.empty() && (!m_queue.empty()));
+    m_workingGroupChanged = true;
   }
 }
 
