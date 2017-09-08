@@ -380,7 +380,7 @@ public:
   class HCaretCell: public wxAccessible
   {
   public:
-    HCaretCell::HCaretCell(GroupCell* group) : wxAccessible()
+    HCaretCell(GroupCell* group) : wxAccessible()
       {
         m_group = group;
       }
