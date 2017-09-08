@@ -61,6 +61,7 @@ bool Svgout::SetData(MathCell *tree, long int maxSize)
 
 bool Svgout::Layout(long int maxSize)
 {
+  MathCell::ClipToDrawRegion(false);
   wxString tempfilename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
   m_dc = new wxSVGFileDC(tempfilename,3200,2000,100*m_scale);
 #if wxCHECK_VERSION(3, 1, 0)
@@ -94,7 +95,10 @@ bool Svgout::Layout(long int maxSize)
   }
 
   if(!m_dc->IsOk())
+  {
+    MathCell::ClipToDrawRegion(true);
     return false;
+  }
 
   int width, height;
   GetMaxPoint(&width, &height);
@@ -111,6 +115,7 @@ bool Svgout::Layout(long int maxSize)
   Draw();
   wxDELETE(*m_configuration);
   wxDELETE(m_dc);
+  MathCell::ClipToDrawRegion(true);
   return true;
 }
 
@@ -282,22 +287,22 @@ wxDataFormat Svgout::m_svgFormat;
 
 Svgout::SVGDataObject *Svgout::GetDataObject()
 {
-    wxMemoryBuffer svgContents;
-    {
-      char *data =(char *) malloc(8192);
-      wxFileInputStream str(m_filename);
-      if(str.IsOk())
-        while (!str.Eof())
-        {
-          str.Read(data,8192);
-          svgContents.AppendData(data,str.LastRead());
-        }
-      free(data);
+  wxMemoryBuffer svgContents;
+  {
+    char *data =(char *) malloc(8192);
+    wxFileInputStream str(m_filename);
+    if(str.IsOk())
+      while (!str.Eof())
+      {
+        str.Read(data,8192);
+        svgContents.AppendData(data,str.LastRead());
+      }
+    free(data);
     }
-    wxRemoveFile(m_filename);
-    m_filename = wxEmptyString;
-
-    return new SVGDataObject(svgContents);
+  wxRemoveFile(m_filename);
+  m_filename = wxEmptyString;
+  
+  return new SVGDataObject(svgContents);
 }
 
 bool Svgout::ToClipboard()

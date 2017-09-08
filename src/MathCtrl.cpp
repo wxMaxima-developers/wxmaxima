@@ -2208,11 +2208,11 @@ bool MathCtrl::CopyCells()
 
     if(m_configuration->CopyBitmap())
     {
-      MathCell *tmp2 = CopySelection();
+      MathCell *tmp = CopySelection();
       int bitmapScale = 3;
       wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
       Bitmap bmp(&m_configuration, bitmapScale);
-      if (bmp.SetData(tmp2, 4000000))
+      if (bmp.SetData(tmp, 4000000))
         data->Add(new wxBitmapDataObject(bmp.GetBitmap()));
     }
 

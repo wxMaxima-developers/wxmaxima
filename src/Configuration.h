@@ -119,7 +119,7 @@ public:
   { m_dc = &dc; }
 
   void SetAntialiassingDC(wxDC &antialiassingDC)
-    {m_antialiassingDC = &antialiassingDC;std::cerr<<"SetAntialiassing\n";}
+    {m_antialiassingDC = &antialiassingDC;}
 
   void UnsetAntialiassingDC()
     {m_antialiassingDC = NULL;}
