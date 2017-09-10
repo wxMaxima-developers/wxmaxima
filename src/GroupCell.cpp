@@ -2191,7 +2191,7 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId)
   return wxACC_FAIL;
 }
 
-wxAccStatus GetRole (int childId, wxAccRole *role)
+wxAccStatus GroupCell::GetRole (int childId, wxAccRole *role)
 {
   if(role == NULL)
     return wxACC_FAIL;
