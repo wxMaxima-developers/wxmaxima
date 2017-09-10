@@ -394,8 +394,6 @@ public:
         }
         return wxACC_FAIL;
       }
-    wxAccStatus GetRole (int childId, wxAccRole *role);
-    
     //! Inform the Screen Reader which cell is the parent of this one
     wxAccStatus GetParent (wxAccessible ** parent)
       {
