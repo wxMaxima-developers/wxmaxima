@@ -309,7 +309,7 @@ void MathCell::Draw(wxPoint point, int fontsize)
   // Tell the screen reader that this cell's contents might have changed.
 
 #if wxUSE_ACCESSIBILITY
-  NotifyEvent(0, m_worksheet, wxOBJID_TEXT, wxOBJID_TEXT);
+  NotifyEvent(0, m_worksheet, wxOBJID_CLIENT, wxOBJID_CLIENT);
 #endif
 }
 

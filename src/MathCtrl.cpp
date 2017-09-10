@@ -300,7 +300,7 @@ MathCtrl::~MathCtrl()
 void MathCtrl::OnPaint(wxPaintEvent &event)
 {
   #if wxUSE_ACCESSIBILITY
-  m_accessibilityInfo.NotifyEvent(0, this, wxOBJID_TEXT, wxOBJID_TEXT);
+  m_accessibilityInfo.NotifyEvent(0, this, wxOBJID_CLIENT, wxOBJID_CLIENT);
   #endif
   // Don't attempt to refresh the screen as long as the result will
   // end up on a printed page instead.
