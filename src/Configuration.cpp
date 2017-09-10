@@ -60,7 +60,9 @@ Configuration::Configuration(wxDC &dc, bool isTopLevel) : m_dc(&dc)
   ReadConfig();
   m_showCodeCells = true;
   m_defaultToolTip = wxEmptyString;
-  m_copyBitmap = true;
+  m_copyBitmap = false; // Otherwise MS Office, OpenOffice and LibreOffice prefer the bitmap
+  // to Mathml and RTF. Also mail programs prefer bitmaps to text - which is counter-productive
+  // for maxima-discuss.
   m_copyMathML = true;
   m_copyMathMLHTML = false;
   m_copyRTF = true;
