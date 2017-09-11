@@ -1427,6 +1427,7 @@ protected:
   };
   AccessibilityInfo m_accessibilityInfo;
   wxAccStatus GetParent (wxAccessible ** parent);
+  wxWindow *GetParent (){return wxWindow::GetParent();}
 #endif
   
   void UpdateConfigurationClientSize();
