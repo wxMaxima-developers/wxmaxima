@@ -1233,15 +1233,10 @@ wxAccStatus MathCell::GetParent (wxAccessible **parent)
     return wxACC_FAIL;
   
   if(*parent != this)
-  *parent = m_parent;
+    *parent = m_parent;
   else
     *parent = m_worksheet->GetAccessible();
-    return  wxACC_OK;
-  else
-  {
-    *parent = NULL;
-    return wxACC_FAIL;
-  }
+  return  wxACC_OK;
 }
 
 wxAccStatus MathCell::GetValue (int childId, wxString *strValue)
@@ -1279,7 +1274,7 @@ wxAccStatus MathCell::HitTest(const wxPoint &pt,
     if (childObject != NULL)
       *childObject = NULL;
     if (childId != NULL)
-      *childId = NULL;
+      *childId = 0;
     return wxACC_FAIL;
   }
   else
@@ -1346,7 +1341,7 @@ wxAccStatus MathCell::GetFocus (int *childId, MathCell  **child)
     MathCell *cell = NULL;
     GetChild(i + 1, &cell);
     if (cell != NULL)
-      if(cell->GetFocus(&dummy1, &child) == wxACC_OK)
+      if(cell->GetFocus(&dummy1, child) == wxACC_OK)
       {
         if(childId != NULL)      
           *childId = i+1;
