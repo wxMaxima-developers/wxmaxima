@@ -8304,7 +8304,7 @@ wxAccStatus MathCtrl::AccessibilityInfo::HitTest (const wxPoint &pt,
       if((cell != NULL) && (cell->HitTest(pt, childId,(MathCell **) childObject) == wxACC_OK))
       {
         if(childId != NULL)
-          *childId = id;
+          *childId = id; 
         if(childObject != NULL)
           *childObject = cell;
         return wxACC_OK;
@@ -8317,6 +8317,30 @@ wxAccStatus MathCtrl::AccessibilityInfo::HitTest (const wxPoint &pt,
     *childObject = this;
   return wxACC_OK;
 }
+
+wxAccStatus MathCtrl::AccessibilityInfo::GetDescription(int childId, wxString *description)
+{
+  if(description == NULL)
+    return wxACC_FAIL;
+  
+  if(childId == 0)
+  {
+    *description = _("The worksheet containing maxima's input and output");
+    return wxACC_OK;
+  }
+  else
+  {
+    wxAccessible *child;
+    if(GetChild (childId, &child) == wxACC_OK)
+      return child->GetDescription(childId, description);
+    else
+    {
+      description = wxEmptyString;
+      return wxACC_FAIL;
+    }
+  }
+}
+
 #endif
 
 
