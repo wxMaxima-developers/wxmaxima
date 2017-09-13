@@ -8209,7 +8209,7 @@ wxAccStatus MathCtrl::AccessibilityInfo::GetDefaultAction (int childId, wxString
   } 
 }
 
-wxAccStatus MathCtrl::GetParent (wxAccessible ** parent)
+wxAccStatus MathCtrl::AccessibilityInfo::GetParent (wxAccessible ** parent)
 {
   if(parent == NULL)
     return wxACC_FAIL;
