@@ -8335,7 +8335,7 @@ wxAccStatus MathCtrl::AccessibilityInfo::GetDescription(int childId, wxString *d
       return child->GetDescription(childId, description);
     else
     {
-      description = wxEmptyString;
+      *description = wxEmptyString;
       return wxACC_FAIL;
     }
   }
