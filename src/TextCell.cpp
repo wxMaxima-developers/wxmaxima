@@ -84,8 +84,7 @@ void TextCell::SetValue(const wxString &text)
   if (m_textStyle == TS_FUNCTION)
   {
     if (m_text == wxT("ilt"))
-      m_toolTip = _("The inverse laplace transform."
-        );
+      m_toolTip = _("The inverse laplace transform.");
   }      
 
   if (m_textStyle == TS_VARIABLE)

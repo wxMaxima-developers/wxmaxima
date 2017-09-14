@@ -8214,7 +8214,7 @@ wxAccStatus MathCtrl::AccessibilityInfo::GetParent (wxAccessible ** parent)
   if(parent == NULL)
     return wxACC_FAIL;
   
-  *parent = m_parent->GetAccessible();
+  *parent = m_mathCtrl->GetAccessible();
   if(*parent != NULL)
     return wxACC_OK;
   else

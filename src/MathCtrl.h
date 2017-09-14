@@ -1427,7 +1427,6 @@ protected:
     int m_childCount;
   };
   AccessibilityInfo m_accessibilityInfo;
-//  wxWindow *GetParent (){return wxWindow::GetParent();}
 #endif
   
   void UpdateConfigurationClientSize();
