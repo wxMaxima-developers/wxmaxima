@@ -1,7 +1,9 @@
 Current:
   * Jump to the char containing the error on encountering unmatched parenthesis.
   * Try to place the cursor near the error in all other cases.
-  * Attempt to mark the whole error message in red.
+  * Attempt to mark the whole error message in red. This is bound to fail in
+    some cases as maxima sometimes only sends part of an error message through
+    the error() command. But it is better than nothing.
   * Detect and mark most warnings.
   * A "evaluate cells below" right-click-menu item.
   * Autosave now even works for unsaved documents adding them to the
@@ -9,14 +11,16 @@ Current:
   * Big parenthesis are now drawn using unicode characters, if available.
   * Nicer integral, Product and Sum signs, optionally including antialiassing
     even if no font provides them.
-  * MouseOver tooltip for some of the most exotic worksheet items.
+  * MouseOver tooltips for some of the more exotic worksheet items.
   * A "Copy as svg" function that is as good as wxSVGFileDc allows us to be.
   * Worksheet objects now can provide their own ToolTips.
   * Config Dialogue: An editor for the startup file.
+  * It is now possible to select which formats "Ctrl+C" should place data on
+    the clipboard in.
   * Now multiple animations can run concurrently and can be told to autostart.
   * A menu entry that allows to select 1D and ASCII Art Maths
   * Recent files that currently don't exist are grayed out now.
-  * Several Bug Fixes and big Performance improvements.
+  * Many Bug Fixes and Performance improvements.
 
 17.05:
   * A config item that allows to disable printing of Cell brackets.
