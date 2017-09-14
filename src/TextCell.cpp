@@ -81,6 +81,13 @@ void TextCell::SetValue(const wxString &text)
   m_text.Replace(wxT("\x2212>"), wxT("\x2192"));
 
   m_displayedText = m_text;
+  if (m_textStyle == TS_FUNCTION)
+  {
+    if (m_text == wxT("ilt"))
+      m_toolTip = _("The inverse laplace transform."
+        );
+  }      
+
   if (m_textStyle == TS_VARIABLE)
   {
     if (m_text == wxT("pnz"))
