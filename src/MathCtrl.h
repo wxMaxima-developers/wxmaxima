@@ -1406,8 +1406,6 @@ public:
   */
   GroupCell *GetWorkingGroup(bool resortToLast = false);
 
-protected:
-
 #if wxUSE_ACCESSIBILITY
   class AccessibilityInfo: public wxAccessible
   {
@@ -1426,9 +1424,10 @@ protected:
     MathCtrl *m_mathCtrl;
     int m_childCount;
   };
-  AccessibilityInfo m_accessibilityInfo;
+  AccessibilityInfo *m_accessibilityInfo;
 #endif
   
+protected:
   void UpdateConfigurationClientSize();
 
   //! The x position of the mouse pointer

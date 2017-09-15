@@ -73,10 +73,10 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
                 | wxSUNKEN_BORDER
 #endif
                   ),m_cellPointers(this)
-#if wxUSE_ACCESSIBILITY
-        ,m_accessibilityInfo(this)
-#endif
 {
+#if wxUSE_ACCESSIBILITY
+  m_accessibilityInfo = NULL;
+#endif
   m_pointer_x = -1;
   m_pointer_y = -1;
   m_mouseMotionWas = false;
@@ -300,7 +300,8 @@ MathCtrl::~MathCtrl()
 void MathCtrl::OnPaint(wxPaintEvent &event)
 {
   #if wxUSE_ACCESSIBILITY
-  m_accessibilityInfo.NotifyEvent(0, this, wxOBJID_CLIENT, wxOBJID_CLIENT);
+  if(m_accessibilityInfo != NULL)
+    m_accessibilityInfo->NotifyEvent(0, this, wxOBJID_CLIENT, wxOBJID_CLIENT);
   #endif
   // Don't attempt to refresh the screen as long as the result will
   // end up on a printed page instead.

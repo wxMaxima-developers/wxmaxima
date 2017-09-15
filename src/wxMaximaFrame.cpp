@@ -53,6 +53,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_manager.SetManagedWindow(this);
   // console
   m_console = new MathCtrl(this, -1, wxDefaultPosition, wxDefaultSize);
+#if wxUSE_ACCESSIBILITY
+  m_console->m_accessibilityInfo = new MathCtrl::AccessibilityInfo(m_console);
+  m_console->SetAccessible(m_console->m_accessibilityInfo);
+#endif
 
   // history
   m_history = new History(this, -1);
