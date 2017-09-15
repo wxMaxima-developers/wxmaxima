@@ -580,6 +580,11 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   wxPanel *panel = new wxPanel(m_notebook, -1);
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
 
+  wxPanel *panel_maximaStartup = new wxPanel(panel, -1);
+  wxPanel *panel_wxMaximaStartup = new wxPanel(panel, -1);
+  wxBoxSizer *vsizer_maximaStartup = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer *vsizer_wxMaximaStartup = new wxBoxSizer(wxVERTICAL);
+
   // Determine the name of the startup file.
   if(!wxGetEnv(wxT("MAXIMA_USERDIR"),&m_startupFileName))
   {
@@ -601,18 +606,62 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
     if(!wxDirExists(m_startupFileName))
       wxMkDir(m_startupFileName, wxS_DIR_DEFAULT);
   }
-  m_startupFileName += wxString(wxFileName::GetPathSeparator()) + wxT("wxmaxima-init.mac");
+  m_startupFileName += wxString(wxFileName::GetPathSeparator());
+  m_wxStartupFileName += m_startupFileName + wxT("wxmaxima-init.mac");
+  m_startupFileName += wxT("maxima-init.mac");
+
+  wxStaticText *wxStartupText =
+    new wxStaticText(panel_wxMaximaStartup, wxID_ANY,
+                     _("Maxima commands to be executed at every start of wxMaxima: "));
+  wxStartupText->SetToolTip(_("The part of the output of these commands that isn' declared as "
+                              "\"math\" might be suppressed by wxMaxima; As always maxima "
+                              "commands are required to end in a \";\" or a \"$\""));
+  vsizer_wxMaximaStartup->Add(wxStartupText, wxSizerFlags().Border(wxALL,5));
+  
+  // Read the contents of wxMaxima's startup file
+  wxString contents;
+  if(wxFileExists(m_startupFileName))
+  {
+    wxFileInputStream input(m_wxStartupFileName);
+    if(input.IsOk())
+    {
+      wxTextInputStream text(input);
+      while(input.IsOk() && !input.Eof())
+      {
+        wxString line = text.ReadLine();
+        if((!input.Eof()) || (line != wxEmptyString))
+          contents += line + wxT("\n");
+      }
+    }
+  }
+  m_wxStartupCommands = new wxTextCtrl(panel_wxMaximaStartup, -1, wxEmptyString, wxDefaultPosition, wxSize(200,250),
+                                     wxTE_MULTILINE | wxHSCROLL);
+  m_wxStartupCommands->SetValue(contents);
+  vsizer_wxMaximaStartup->Add(m_wxStartupCommands, wxSizerFlags().Expand().Border(wxALL,5));
+  wxStaticText *wxStartupFileLocation = new wxStaticText(panel_wxMaximaStartup, wxID_ANY,
+                                                         _("wxMaxima startup file location: ") +
+                                                         m_wxStartupFileName);
+  wxStartupFileLocation->SetToolTip(_("If wxMaxima's guess where maxima expects the startup file "
+                                      "to be is wrong the right directory for the startup file is " 
+                                      "the one maxima prints out in response to the command\n\n"
+                                      "   maxima-user_dir;\n\n"
+                                      "The file won't be read by maxima if wxMaxima isn't in use. "
+                                      "To add startup commands that are executed in this case, "
+                                      "too, please add them to maxima-init.mac, instead."));
+  vsizer_wxMaximaStartup->Add(wxStartupFileLocation, wxSizerFlags().Border(wxALL,5));
+
+  panel_wxMaximaStartup->SetSizerAndFit(vsizer_wxMaximaStartup);
+  vsizer->Add(panel_wxMaximaStartup,wxSizerFlags().Expand().Border(wxBOTTOM, 5));
 
   wxStaticText *startupText =
-    new wxStaticText(panel, wxID_ANY,
-                     _("Maxima commands that should be executed at startup: "));
+    new wxStaticText(panel_maximaStartup, wxID_ANY,
+                     _("Maxima commands to be executed at every start of Maxima: "));
   startupText->SetToolTip(_("The part of the output of these commands that isn' declared as "
-                            "\"math\" might be suppressed by wxMaxima; As always maxima "
-                            "commands are required to end in a \";\" or a \"$\""));
-  vsizer->Add(startupText, wxSizerFlags().Border(wxALL,5));
-  
-  // Read the startup file's contents
-  wxString contents;
+                              "\"math\" might be suppressed by wxMaxima; As always maxima "
+                              "commands are required to end in a \";\" or a \"$\""));
+  vsizer_maximaStartup->Add(startupText, wxSizerFlags().Border(wxALL,5));
+  // Read maxima's startup file's contents
+  contents = wxEmptyString;
   if(wxFileExists(m_startupFileName))
   {
     wxFileInputStream input(m_startupFileName);
@@ -627,13 +676,13 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
       }
     }
   }
-  
-  m_startupCommands = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(200,500),
+  m_startupCommands = new wxTextCtrl(panel_maximaStartup, -1, wxEmptyString, wxDefaultPosition, wxSize(200,250),
                                      wxTE_MULTILINE | wxHSCROLL);
   m_startupCommands->SetValue(contents);
-  vsizer->Add(m_startupCommands, wxSizerFlags().Expand().Border(wxALL,5));
-  wxStaticText *startupFileLocation = new wxStaticText(panel, wxID_ANY,
-                                                       _("Startup file location: ") +
+
+  vsizer_maximaStartup->Add(m_startupCommands, wxSizerFlags().Expand().Border(wxALL,5));
+  wxStaticText *startupFileLocation = new wxStaticText(panel_maximaStartup, wxID_ANY,
+                                                       _("Maxima startup file location: ") +
                                                        m_startupFileName);
   startupFileLocation->SetToolTip(_("If wxMaxima's guess where maxima expects the startup file "
                                     "is wrong the right directory for the startup file is the "
@@ -642,7 +691,9 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
                                     "The file won't be read by maxima if wxMaxima isn't in use. "
                                     "To add startup commands that are executed in this case, "
                                     "too, please add them to maxima-init.mac, instead."));
-  vsizer->Add(startupFileLocation, wxSizerFlags().Border(wxALL,5));
+  vsizer_maximaStartup->Add(startupFileLocation, wxSizerFlags().Border(wxALL,5));
+  panel_maximaStartup->SetSizerAndFit(vsizer_maximaStartup);
+  vsizer->Add(panel_maximaStartup,wxSizerFlags().Expand().Border(wxTOP, 5));
   panel->SetSizerAndFit(vsizer);
   return panel;
 }
@@ -1136,13 +1187,23 @@ void ConfigDialogue::WriteSettings()
   WriteStyles();
   config->Flush();
 
-  wxFileOutputStream output(m_startupFileName);
-  if(output.IsOk())
   {
-    wxTextOutputStream text(output);
-    text << m_startupCommands->GetValue();
+    wxFileOutputStream output(m_startupFileName);
+    if(output.IsOk())
+    {
+      wxTextOutputStream text(output);
+      text << m_startupCommands->GetValue();
+    }
   }
 
+  {
+    wxFileOutputStream output(m_wxStartupFileName);
+    if(output.IsOk())
+    {
+      wxTextOutputStream text(output);
+      text << m_wxStartupCommands->GetValue();
+    }  
+  }
 }
 
 void ConfigDialogue::OnMpBrowse(wxCommandEvent &event)

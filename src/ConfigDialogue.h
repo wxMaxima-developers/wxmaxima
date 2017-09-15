@@ -200,6 +200,8 @@ private:
 protected:
   //! The name of maxima's startup file.
   wxString m_startupFileName;
+  //! The name of wxMaxima's startup file.
+  wxString m_wxStartupFileName;
   //! The text "Maxima Program" that can change color.
   wxStaticText *m_mp;
 
@@ -207,7 +209,10 @@ protected:
   void OnTabChange(wxBookCtrlEvent &event);
 
   // begin wxGlade: ConfigDialogue::attributes
+  //! A textbox containing maxima's startup commands
   wxTextCtrl *m_startupCommands;
+  //! A textbox containing wxMaxima's startup commands
+  wxTextCtrl *m_wxStartupCommands;
   wxTextCtrl *m_maximaProgram;
   wxTextCtrl *m_documentclass;
   wxTextCtrl *m_texPreamble;
