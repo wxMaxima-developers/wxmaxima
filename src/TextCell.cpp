@@ -1092,7 +1092,10 @@ wxString TextCell::ToMathML()
     case TS_FUNCTION:
       if (text == wxT("inf"))
         text = wxT("\x221e");
-      return wxT("<mi>") + text + wxT("</mi>\n");
+      if((text == wxT("+")) || (text == wxT("-")) || (text == wxT("*")) || (text == wxT("/")))
+        return wxT("<mo>") + text + wxT("</mo>\n");
+      else
+        return wxT("<mi>") + text + wxT("</mi>\n");
       break;
     case TS_NUMBER:
       return wxT("<mn>") + text + wxT("</mn>\n");
