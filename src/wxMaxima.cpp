@@ -797,7 +797,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
 
     case wxSOCKET_LOST:
       m_statusBar->NetworkStatus(StatusBar::offline);
-      SetBatchMode(false);
+      ExitAfterEval(false);
       m_console->m_cellPointers.SetWorkingGroup(NULL);
       m_console->SetSelection(NULL);
       m_console->SetActiveCell(NULL);
@@ -875,7 +875,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
     case wxSOCKET_LOST:
       m_statusBar->NetworkStatus(StatusBar::offline);
       StatusMaximaBusy(disconnected);
-      SetBatchMode(false);
+      ExitAfterEval(false);
       ReadStdErr();
       m_pid = -1;
       m_isConnected = false;
@@ -1449,7 +1449,7 @@ void wxMaxima::ReadPrompt(wxString &data)
         m_console->SetSelection(NULL, NULL);
       }
       m_console->FollowEvaluation(false);
-      if (m_batchmode)
+      if (m_exitAfterEval)
       {
         SaveFile(false);
         Close();
@@ -2418,8 +2418,11 @@ void wxMaxima::SetupVariables()
     SetCWD(filename);
   }
 
-  if ((m_batchmode) && (m_console->m_evaluationQueue.Empty()))
+  if ((m_evalOnStartup) && (m_console->m_evaluationQueue.Empty()))
+  {
+    m_evalOnStartup = false;
     m_console->AddDocumentToEvaluationQueue();
+  }
 
   m_variablesOK = true;
 }
@@ -3295,7 +3298,8 @@ bool wxMaxima::AbortOnError()
   // The question is now if we want to try to send it something new to evaluate.
   bool abortOnError = false;
   wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
-  SetBatchMode(false);
+  ExitAfterEval(false);
+  EvalOnStartup(false);
 
   if (m_console->m_notificationMessage != NULL)
   {
@@ -3305,7 +3309,7 @@ bool wxMaxima::AbortOnError()
     m_console->m_notificationMessage->m_errorNotificationCell = m_console->GetWorkingGroup(true);
   }
   
-  if (abortOnError || m_batchmode)
+  if (abortOnError || m_exitAfterEval)
   {
     m_console->m_evaluationQueue.Clear();
     // Inform the user that the evaluation queue is empty.

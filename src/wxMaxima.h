@@ -149,12 +149,19 @@ public:
   {
     m_openFile = file;
   }
-
-  void SetBatchMode(bool batch = false)
-  {
-    m_batchmode = batch;
-  }
-
+  
+  //! Do we want to evaluate the document on statup?
+  void EvalOnStartup(bool eval)
+    {
+      m_evalOnStartup = eval;
+    }
+  
+  //! Do we want to exit the program after evaluation?
+  void ExitAfterEval(bool exitaftereval)
+    {
+      m_exitAfterEval = exitaftereval;
+    }
+  
   void StripComments(wxString &s);
 
   void SendMaxima(wxString s, bool history = false);
@@ -188,8 +195,10 @@ private:
   int m_unsuccessfullConnectionAttempts;
   //! The current working directory maxima's file I/O is relative to.
   wxString m_CWD;
-  //! Are we in batch mode?
-  bool m_batchmode;
+  //! Do we want to evaluate the file after startup?
+  bool m_evalOnStartup;
+  //! Do we want to exit the program after the evaluation was successful?
+  bool m_exitAfterEval;
   //! Can we display the "ready" prompt right now?
   bool m_ready;
 
@@ -586,9 +595,10 @@ public:
     process uses the NewWindow() function only once.
 
     \param file The file name
-    \param batchmode Do we want to execute the file and save it, but halt on error?
+    \param evalInStartup Do we want to execute the file automatically, but halt on error?
+    \param exitAfterEval Do we want to close the window after the file has been evaluated?
    */
-  void NewWindow(wxString file = wxEmptyString, bool batchmode = false);
+  void NewWindow(wxString file = wxEmptyString, bool evalOnStartup = false, bool exitAfterEval = false);
 
   //! Is called by atExit and tries to close down the maxima process if wxMaxima has crashed.
   static void Cleanup_Static();

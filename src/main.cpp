@@ -132,7 +132,8 @@ bool MyApp::OnInit()
 //  atexit(Cleanup_Static);
   int lang = wxLANGUAGE_UNKNOWN;
 
-  bool batchmode = false;
+  bool exitAfterEval = false;
+  bool evalOnStartup = false;
 
   wxCmdLineParser cmdLineParser(argc, argv);
 
@@ -144,9 +145,11 @@ bool MyApp::OnInit()
                    * line option, he expects probably a answer just on the command line... */
                   {wxCMD_LINE_SWITCH, "h", "help", "show this help message", wxCMD_LINE_VAL_NONE},
                   {wxCMD_LINE_OPTION, "o", "open", "open a file"},
+                  {wxCMD_LINE_SWITCH, "e", "eval",
+                   "evaluate the file after opening it."},
                   {wxCMD_LINE_SWITCH, "b", "batch",
                    "run the file and exit afterwards. Halts on questions and stops on errors."},
-                  { wxCMD_LINE_OPTION, "f", "ini", "use a specific configuration file" },
+                  { wxCMD_LINE_OPTION, "f", "ini", "allows to specify a file to store the configuration in" },
                   {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
                   {wxCMD_LINE_NONE}
           };
@@ -255,15 +258,19 @@ bool MyApp::OnInit()
 
   if (cmdLineParser.Found(wxT("b")))
   {
-    batchmode = true;
+    evalOnStartup = true;
+    exitAfterEval = true;
   }
+  
+  if (cmdLineParser.Found(wxT("e")))
+    evalOnStartup = true;
 
   if (cmdLineParser.Found(wxT("o"), &file))
   {
     wxFileName FileName = file;
     FileName.MakeAbsolute();
     wxString CanonicalFilename = FileName.GetFullPath();
-    NewWindow(wxString(CanonicalFilename), batchmode);
+    NewWindow(wxString(CanonicalFilename), evalOnStartup, exitAfterEval);
     return true;
   }
   else
@@ -274,7 +281,7 @@ bool MyApp::OnInit()
       FileName.MakeAbsolute();
 
       wxString CanonicalFilename = FileName.GetFullPath();
-      NewWindow(CanonicalFilename, batchmode);
+      NewWindow(CanonicalFilename, evalOnStartup, exitAfterEval);
     }
     else
       NewWindow();
@@ -309,7 +316,7 @@ int MyApp::OnExit()
 
 int window_counter = 0;
 
-void MyApp::NewWindow(wxString file, bool batchmode)
+void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval)
 {
   int x = 40, y = 40, h = 650, w = 950, m = 0;
   int rs = 0;
@@ -351,7 +358,8 @@ void MyApp::NewWindow(wxString file, bool batchmode)
     m_frame->SetOpenFile(file);
   }
 
-  m_frame->SetBatchMode(batchmode);
+  m_frame->ExitAfterEval(exitAfterEval);
+  m_frame->EvalOnStartup(evalOnStartup);
   topLevelWindows.Append(m_frame);
   if (topLevelWindows.GetCount() > 1)
     m_frame->SetTitle(wxString::Format(_("untitled %d"), ++window_counter));
