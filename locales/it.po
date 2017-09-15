@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-15 16:53+0200\n"
-"PO-Revision-Date: 2017-08-19 07:48+0200\n"
+"PO-Revision-Date: 2017-09-16 01:56+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -405,7 +405,7 @@ msgstr ""
 
 #: ../src/GroupCell.cpp:2141
 msgid "A GroupCell that bundles input with its output"
-msgstr ""
+msgstr "Una cella di gruppo che assiema l'ingresso con la sua uscita"
 
 #: ../data/tips.txt:8
 msgid ""
@@ -420,9 +420,8 @@ msgstr ""
 "XML wxMaxima\" per salvare in questo nuovo formato."
 
 #: ../src/GroupCell.cpp:2136
-#, fuzzy
 msgid "A page break"
-msgstr "Saltopagina"
+msgstr "Un saltopagina"
 
 #: ../data/tips.txt:31
 msgid ""
@@ -435,17 +434,15 @@ msgstr ""
 
 #: ../src/EditorCell.cpp:4471
 msgid "A section heading"
-msgstr ""
+msgstr "Una intestazione di sezione"
 
 #: ../src/EditorCell.cpp:4477
-#, fuzzy
 msgid "A sub-subsection heading"
-msgstr "Cella sottosottosezione"
+msgstr "Una intestazione di sottosottosezione"
 
 #: ../src/EditorCell.cpp:4474
-#, fuzzy
 msgid "A subsection heading"
-msgstr "Cella sottosottosezione"
+msgstr "Una intestazione di sottosezione"
 
 #: ../src/wxMaximaFrame.cpp:1640
 msgid "A symbol from the configuration dialogue"
@@ -567,7 +564,6 @@ msgid "An integration constant."
 msgstr "Una costante di integrazione."
 
 #: ../src/wxMaximaFrame.cpp:924
-#, fuzzy
 msgid "Animation framerate..."
 msgstr "Frequenza di quadro animazioni..."
 
@@ -692,7 +688,6 @@ msgid "Beta"
 msgstr "Beta"
 
 #: ../src/ConfigDialogue.cpp:962
-#, fuzzy
 msgid "Bitmap"
 msgstr "Bitmap"
 
@@ -877,7 +872,7 @@ msgstr "Bug: richiesta annullamento per celle fuori dal foglio di lavoro."
 
 #: ../src/EditorCell.cpp:4483
 msgid "Bug: Unknown type of text"
-msgstr ""
+msgstr "Bug: tipo di testo sconosciuto"
 
 #: ../src/wxMaximaFrame.cpp:970
 msgid "Build &Info"
@@ -1105,7 +1100,7 @@ msgstr "Coordinate y separate da virgole"
 
 #: ../src/EditorCell.cpp:4480
 msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
-msgstr ""
+msgstr "Commento (testo di foglio di lavoro normale che non viene inviato a maxima)"
 
 #: ../src/MathCtrl.cpp:1247
 msgid "Comment Selection"
@@ -1285,7 +1280,6 @@ msgstr "Copia come RTF"
 
 #: ../src/wxMaximaFrame.cpp:482 ../src/MathCtrl.cpp:1131
 #: ../src/MathCtrl.cpp:1191
-#, fuzzy
 msgid "Copy as SVG"
 msgstr "Copia come SVG"
 
@@ -1302,7 +1296,6 @@ msgid "Copy selection"
 msgstr "Copia la selezione"
 
 #: ../src/wxMaximaFrame.cpp:483
-#, fuzzy
 msgid "Copy selection from document as an SVG image"
 msgstr "Copia la selezione dal documento come immagine SVG"
 
@@ -1516,7 +1509,6 @@ msgid "Display algorithm"
 msgstr "Mostra l'algoritmo"
 
 #: ../src/wxMaximaFrame.cpp:540
-#, fuzzy
 msgid "Display equations"
 msgstr "Mostra le equazioni"
 
@@ -1677,9 +1669,8 @@ msgid "Enter matrix"
 msgstr "Inserire la matrice"
 
 #: ../src/wxMaxima.cpp:4993
-#, fuzzy
 msgid "Enter new animation frame rate [Hz, integer]:"
-msgstr "Inserire la nuova frequenza di quadro per le animazioni [Hz, intero]:"
+msgstr "Inserire la nuova frequenza di quadro animazioni [Hz, intero]:"
 
 #: ../src/wxMaxima.cpp:5066
 msgid "Enter new precision for bigfloats:"
@@ -2478,7 +2469,6 @@ msgstr ""
 "inserirli invece nel file maxima-init.mac."
 
 #: ../src/ConfigDialogue.cpp:644
-#, fuzzy
 msgid ""
 "If wxMaxima's guess where maxima expects the startup file to be is wrong the "
 "right directory for the startup file is the one maxima prints out in "
@@ -2490,15 +2480,11 @@ msgid ""
 "commands that are executed in this case, too, please add them to maxima-init."
 "mac, instead."
 msgstr ""
-"Se la stima che wxMaxima fa di dove maxima si aspetta il file di avvio è "
-"errata, la giusta cartella per il file di avvio è quella che maxima stampa "
-"con il comando\n"
+"Se la stima che wxMaxima fa di dove maxima si aspetta il file di avvio è errata, la giusta cartella per il file di avvio è quella che maxima stampa con il comando\n"
 "\n"
 "   maxima-user_dir;\n"
 "\n"
-"Il file non verrà letto da maxima se non viene usato wxMaxima. Per "
-"aggiungere comandi di avvio che vengano eseguiti in questo frangente, "
-"inserirli invece nel file maxima-init.mac."
+"Il file non verrà letto da maxima se wxMaxima non è in uso. Per aggiungere comandi di avvio che vengano eseguiti anche in questo frangente, inserirli invece nel file maxima-init.mac."
 
 #: ../data/tips.txt:6
 msgid ""
@@ -3023,9 +3009,8 @@ msgid "Math font:"
 msgstr "Carattere matematica:"
 
 #: ../src/MathCell.cpp:1213
-#, fuzzy
 msgid "Math output"
-msgstr "Carattere matematica:"
+msgstr "Risultato matematica:"
 
 #: ../src/ConfigDialogue.cpp:263
 msgid ""
@@ -3119,19 +3104,16 @@ msgstr ""
 "continuazione della riga precedente."
 
 #: ../src/EditorCell.cpp:4465
-#, fuzzy
 msgid "Maxima code"
-msgstr "Icona wxMaxima"
+msgstr "Codice Maxima"
 
 #: ../src/ConfigDialogue.cpp:658
-#, fuzzy
 msgid "Maxima commands to be executed at every start of Maxima: "
-msgstr "I comandi Maxima che devono essere eseguiti all'avvio: "
+msgstr "Comandi Maxima che devono essere eseguiti ad ogni avvio di Maxima: "
 
 #: ../src/ConfigDialogue.cpp:615
-#, fuzzy
 msgid "Maxima commands to be executed at every start of wxMaxima: "
-msgstr "I comandi Maxima che devono essere eseguiti all'avvio: "
+msgstr "I comandi Maxima che devono essere eseguiti ad ogni avvio di wxMaxima: "
 
 #: ../src/wxMaximaFrame.cpp:122
 msgid "Maxima has a question"
@@ -3196,9 +3178,8 @@ msgid "Maxima started. Waiting for connection..."
 msgstr "Maxima avviato. In attesa di connessione..."
 
 #: ../src/ConfigDialogue.cpp:685
-#, fuzzy
 msgid "Maxima startup file location: "
-msgstr "Posizione file di avvio: "
+msgstr "Posizione file di avvio di Maxima: "
 
 #: ../data/tips.txt:5
 msgid ""
@@ -4027,9 +4008,8 @@ msgid "Russian"
 msgstr "Russo"
 
 #: ../src/ConfigDialogue.cpp:735
-#, fuzzy
 msgid "SVG graphics"
-msgstr " Grafiche SVG"
+msgstr "Grafiche SVG"
 
 #: ../src/wxMaxima.cpp:5530
 msgid "Sample 1:"
@@ -4253,7 +4233,6 @@ msgid "Set plot format"
 msgstr "Imposta il formato del grafico"
 
 #: ../src/wxMaximaFrame.cpp:925
-#, fuzzy
 msgid "Set the frame rate for animations."
 msgstr "Imposta la frequenza di quadro per le animazioni."
 
@@ -4824,9 +4803,8 @@ msgstr ""
 "l'immagine o non è stato in grado di capire cosa maxima voleva graficare."
 
 #: ../src/TextCell.cpp:87
-#, fuzzy
 msgid "The inverse laplace transform."
-msgstr "T&rasformata inversa di Laplace..."
+msgstr "Trasformata di Laplace inversa."
 
 #: ../data/tips.txt:43
 msgid "The key combination Shift+Space results in a non-breakable space."
@@ -4885,17 +4863,14 @@ msgstr ""
 "maxima devono terminare con un \";\" o un \"$\""
 
 #: ../src/ConfigDialogue.cpp:266
-#, fuzzy
 msgid ""
 "The pngCairo terminal offers much better graphics quality (antialiassing and "
 "additional line styles). But it will only produce plots if the gnuplot "
 "installed on the current system actually supports it. Requesting cairo on a "
 "system thhat doesn't support it might result in empty plots."
 msgstr ""
-"Il terminale pngCairo offre qualità grafica molto migliore (antialias e "
-"stili di linee aggiuntivi). Ma produrrà grafici solamente se la versione "
-"correntemente installata nel sistema di gnuplot lo supporta. Impostare Cairo "
-"su un sistema che non lo supporta può produrre grafici vuoti."
+"Il terminale pngCairo offre q\n"
+"ualità grafica molto migliore (antialias e stili di linee aggiuntivi). Ma produrrà grafici solamente se la versione correntemente installata nel sistema di gnuplot lo supporta. Richiedere Cairo su un sistema che non lo supporta può produrre grafici vuoti."
 
 #: ../src/TextCell.cpp:111
 msgid "The result was indefinite."
@@ -4943,7 +4918,7 @@ msgstr ""
 
 #: ../src/MathCtrl.cpp:8328
 msgid "The worksheet containing maxima's input and output"
-msgstr ""
+msgstr "Il foglio di lavoro contenente l'ingresso e l'uscita di maxima"
 
 #: ../src/MathParser.cpp:258
 msgid ""
@@ -5095,7 +5070,6 @@ msgid "Toggle algebraic flag"
 msgstr "Mostra/nascondi algebrica"
 
 #: ../src/wxMaximaFrame.cpp:922
-#, fuzzy
 msgid "Toggle animation autoplay"
 msgstr "Commuta l'autoesecuzione animazioni"
 
@@ -5152,14 +5126,12 @@ msgid "Two sample t-test"
 msgstr "Test t a due campioni"
 
 #: ../src/MathCtrl.cpp:8198
-#, fuzzy
 msgid "Type"
-msgstr "Tipo:"
+msgstr "Tipo"
 
 #: ../src/EditorCell.cpp:4492
-#, fuzzy
 msgid "Type in text"
-msgstr "Copia come immagine"
+msgstr "Tipo nel testo"
 
 #: ../src/MatWiz.cpp:179
 msgid "Type:"
@@ -5979,9 +5951,8 @@ msgstr ""
 "table_form([1,2,3,4,5]);"
 
 #: ../src/ConfigDialogue.cpp:642
-#, fuzzy
 msgid "wxMaxima startup file location: "
-msgstr "Posizione file di avvio: "
+msgstr "Posizione file di avvio wxMaxima: "
 
 #: ../src/ConfigDialogue.cpp:478
 msgid "x"
@@ -6008,32 +5979,3 @@ msgstr "sì"
 #: ../src/wxMaximaFrame.cpp:1473
 msgid "zeta"
 msgstr "zeta"
-
-#~ msgid "Bug: Maximum number of digits that is to be displayed is too low!"
-#~ msgstr "Bug: il numero massimo di cifre da mostrare è troppo basso!"
-
-#~ msgid "Bug: Found a math end marker without any start marker."
-#~ msgstr ""
-#~ "Bug: trovato un marcatore di fine equazione senza nessun marcatore di "
-#~ "inizio."
-
-#~ msgid "Bug: Found a statusbar end marker without any matching start marker."
-#~ msgstr ""
-#~ "Bug: trovata un marcatore di fine barra di stato senza un corrispondente "
-#~ "marcatore di inizio."
-
-#~ msgid "Bug: Found the end of autocompletion symbols but no beginning"
-#~ msgstr ""
-#~ "Bug: trovato un simbolo di fine autocompletamento senza nessun inizio."
-
-#~ msgid ""
-#~ "Don't compress the maxima input text and compress images individually: "
-#~ "This enables version control systems like git and svn to effectively spot "
-#~ "the differences."
-#~ msgstr ""
-#~ "Non comprimere il testo in ingresso a Maxima e comprimi le immagini "
-#~ "individualmente: ciò permette ai sistemi di controllo di versione come "
-#~ "git e svn di individuare efficacemente le differenze."
-
-#~ msgid "Optimize wxmx files for version control"
-#~ msgstr "Ottimizza i file wxmx per i controlli di versione"
