@@ -165,7 +165,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   m_notebook->AddPage(CreateExportPanel(), _("Export"), false, 3);
   m_notebook->AddPage(CreateOptionsPanel(), _("Options"), false, 4);
   m_notebook->AddPage(CreateClipboardPanel(), _("Copy"), false, 5);
-  m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 5);
+  m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 6);
 #ifndef __WXMAC__
   CreateButtons(wxOK | wxCANCEL);
 #endif
