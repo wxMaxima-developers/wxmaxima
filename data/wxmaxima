@@ -6,7 +6,13 @@ _wxmaxima()
     _init_completion -s || return
 
     case $prev in
-        --help|-h|--version|-v)
+        --help|-h)
+            return
+            ;;
+        --eval|-e)
+            return
+	    ;;
+        --version|-v)
             return
             ;;
         --batch|-b)
@@ -21,7 +27,15 @@ _wxmaxima()
 
     $split && return 0
 
-    _filedir '@(mac|wxm|wxmx|out|xml)'
+    if [[ "$cur" == -* ]]; then
+        local opts="$( _parse_help "$1" )"
+        [[ $opts ]] || opts="$( _parse_usage "$1" )"
+        COMPREPLY=( $( compgen -W "$opts" -- "$cur" ) )
+        [[ $COMPREPLY == *= ]] && compopt -o nospace
+    else
+	_filedir '@(mac|wxm|wxmx|out|xml)'
+    fi
+
 } &&
 complete -F _wxmaxima wxmaxima
 
