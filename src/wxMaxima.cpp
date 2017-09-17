@@ -3285,7 +3285,10 @@ void wxMaxima::ReadStdErr()
       len++;
     }
 
-    DoRawConsoleAppend(o, MC_TYPE_ERROR);
+    if(o != wxT("Message from maxima's stderr stream: End of animation sequence"))
+      DoRawConsoleAppend(o, MC_TYPE_ERROR);
+    else
+      DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
 
     if(!AbortOnError())
       TryEvaluateNextInQueue();
