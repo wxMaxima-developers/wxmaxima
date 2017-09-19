@@ -1853,7 +1853,8 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
   
   if (clearDocument)
   {
-    m_console->m_currentFile = file.SubString(0,file.Length()-4) + wxT("wxmx");
+//    m_console->m_currentFile = file.SubString(0,file.Length()-4) + wxT("wxmx");
+    m_console->m_currentFile = file;
     ResetTitle(true, true);
     document->SetSaved(true);
   }
