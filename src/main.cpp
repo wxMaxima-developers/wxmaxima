@@ -150,7 +150,7 @@ bool MyApp::OnInit()
                   {wxCMD_LINE_SWITCH, "b", "batch",
                    "run the file and exit afterwards. Halts on questions and stops on errors."},
                   { wxCMD_LINE_OPTION, "f", "ini", "allows to specify a file to store the configuration in" },
-                  {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
+                  {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
                   {wxCMD_LINE_NONE}
           };
 
@@ -273,19 +273,21 @@ bool MyApp::OnInit()
     NewWindow(wxString(CanonicalFilename), evalOnStartup, exitAfterEval);
     return true;
   }
-  else
-  {
-    if (cmdLineParser.GetParamCount() > 0)
-    {
-      wxFileName FileName = cmdLineParser.GetParam();
-      FileName.MakeAbsolute();
 
+  if(cmdLineParser.GetParamCount() > 0)
+  {
+    for (int i=0; i < cmdLineParser.GetParamCount(); i++)
+    {
+      wxFileName FileName = cmdLineParser.GetParam(i);
+      FileName.MakeAbsolute();
+      
       wxString CanonicalFilename = FileName.GetFullPath();
       NewWindow(CanonicalFilename, evalOnStartup, exitAfterEval);
     }
-    else
-      NewWindow();
   }
+  else
+    NewWindow();
+
   return true;
 }
 
