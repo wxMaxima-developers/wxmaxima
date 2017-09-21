@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-21 07:43+0200\n"
-"PO-Revision-Date: 2017-09-07 22:05+0200\n"
+"PO-Revision-Date: 2017-09-21 07:46+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -2480,7 +2480,6 @@ msgstr ""
 "geladen.\""
 
 #: ../src/ConfigDialogue.cpp:644
-#, fuzzy
 msgid ""
 "If wxMaxima's guess where maxima expects the startup file to be is wrong the "
 "right directory for the startup file is the one maxima prints out in "
@@ -3126,14 +3125,12 @@ msgid "Maxima code"
 msgstr "Maxima-Code"
 
 #: ../src/ConfigDialogue.cpp:658
-#, fuzzy
 msgid "Maxima commands to be executed at every start of Maxima: "
-msgstr "Maxima-Befehle, die beim Hochfahren ausgeführt werden sollen: "
+msgstr "Maxima-Befehle, die beim Hochfahren von Maxima ausgeführt werden sollen: "
 
 #: ../src/ConfigDialogue.cpp:615
-#, fuzzy
 msgid "Maxima commands to be executed at every start of wxMaxima: "
-msgstr "Maxima-Befehle, die beim Hochfahren ausgeführt werden sollen: "
+msgstr "Maxima-Befehle, die beim Hochfahren von wxMaxima ausgeführt werden sollen: "
 
 #: ../src/wxMaximaFrame.cpp:126
 msgid "Maxima has a question"
@@ -3197,7 +3194,6 @@ msgid "Maxima started. Waiting for connection..."
 msgstr "Maxima gestartet. Warte auf Verbindung ..."
 
 #: ../src/ConfigDialogue.cpp:685
-#, fuzzy
 msgid "Maxima startup file location: "
 msgstr "Ort, an dem diese Datei liegt: "
 
@@ -3308,7 +3304,6 @@ msgstr ""
 "des Rechners, sondern auch innerhalb des Rechners unterbindet."
 
 #: ../src/StatusBar.cpp:38
-#, fuzzy
 msgid ""
 "Maxima, the program that does the actual mathematics and wxMaxima, which "
 "displays the worksheet are kept in separate processes. This means that even "
@@ -3320,15 +3315,7 @@ msgid ""
 "that run on the same computer. Another reason for maxima not starting up "
 "might be that maxima cannot be found (see wxMaxima's Configuration dialogue "
 "for a way to specify maxima's location) or isn't in a working order."
-msgstr ""
-"Maxima, das das eigentliche Rechnen übernimmt und wxMaxima, das Programm, "
-"das das Arbeitsblatt anzeigt, werden als separate Prozesse gestartet. Falls "
-"Maxima abstürzt bleibt daher das Arbeitsblatt intakt. Die Kommunikation "
-"erfolgt dabei über ein lokales Netzwerk. Diese Verbindung ist noch nicht "
-"erfolgt. Dies kann heißen, dass Maxima nicht gestartet werden konnte, noch "
-"am Hochfahren ist, oder, dass die Firewall dieses Rechners nicht nur "
-"Verbindungen von außerhalb, sondern auch zwischen zwei Programmen innerhalb "
-"dieses Computers unterbindet."
+msgstr "Maxima, das das eigentliche Rechnen übernimmt und wxMaxima, das Programm, das das Arbeitsblatt anzeigt, werden als separate Prozesse gestartet. Falls Maxima abstürzt bleibt daher das Arbeitsblatt intakt. Die Kommunikation erfolgt dabei über ein lokales Netzwerk. Diese Verbindung ist noch nicht erfolgt. Dies kann heißen, dass Maxima nicht gestartet werden konnte, noch am Hochfahren ist, oder, dass die Firewall dieses Rechners nicht nur Verbindungen von außerhalb, sondern auch zwischen zwei Programmen innerhalb dieses Computers unterbindet. Alternativ kann in der Konfiguration der falsche Ort angegeben sein, wo Maxima zu suchen ist oder maxima ganz einfach nicht funktionieren."
 
 #: ../src/StatusBar.cpp:34
 msgid ""
@@ -4817,9 +4804,8 @@ msgstr ""
 "wollte."
 
 #: ../src/TextCell.cpp:87
-#, fuzzy
 msgid "The inverse laplace transform."
-msgstr "Inverse Laplacet&ransformation ..."
+msgstr "Die Inverse Laplacetransformation."
 
 #: ../data/tips.txt:43
 msgid "The key combination Shift+Space results in a non-breakable space."
@@ -4940,7 +4926,7 @@ msgstr ""
 
 #: ../src/MathCtrl.cpp:8329
 msgid "The worksheet containing maxima's input and output"
-msgstr ""
+msgstr "Das Arbeitsblatt mit Maxima's Ein- und Ausgabe"
 
 #: ../src/MathParser.cpp:258
 msgid ""
@@ -5986,7 +5972,6 @@ msgstr ""
 "    table_form([1,2,3,4,5]);"
 
 #: ../src/ConfigDialogue.cpp:642
-#, fuzzy
 msgid "wxMaxima startup file location: "
 msgstr "Ort, an dem diese Datei liegt: "
 
