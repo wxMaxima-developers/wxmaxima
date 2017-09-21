@@ -6584,6 +6584,7 @@ void wxMaxima::TryEvaluateNextInQueue()
       }
       if((tmp)&&(tmp->GetEditable()))
         m_console->SetActiveCell(tmp->GetEditable());
+      m_console->m_evaluationQueue.RemoveFirst();
     }
     m_console->Recalculate();
   }
