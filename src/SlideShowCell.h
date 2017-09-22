@@ -103,9 +103,9 @@ public:
    */
   int GetFrameRate();
 
-  /*! Reload the animation timer starting and instantiating and registering it if necessary
+  /*! Reload the animation timer starting and instantiating and registering it if necessary.
 
-    If the timer is already runnning the request to reload it is ignored.
+    If the timer is already running, the request to reload it is ignored.
    */
   void ReloadTimer();
 
