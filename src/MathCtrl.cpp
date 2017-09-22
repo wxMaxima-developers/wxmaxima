@@ -5289,7 +5289,7 @@ bool MathCtrl::ExportToHTML(wxString file)
   output << wxT("\n");
   output << wxT(" <HR>\n");
   output << wxT(" <SMALL> Created with "
-                        "<A HREF=\"http://wxmaxima.sourceforge.net/\">"
+                        "<A HREF=\"https://andrejv.github.io/wxmaxima/\">"
                         "wxMaxima</A>"
                         ".</SMALL>\n");
   output << wxEmptyString;
@@ -5987,7 +5987,7 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
   zip.PutNextEntry(wxT("content.xml"));
   output << wxT("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
   output << wxT("\n<!--   Created by wxMaxima ") << wxT(GITVERSION) << wxT("   -->");
-  output << wxT("\n<!--http://wxmaxima.sourceforge.net-->\n");
+  output << wxT("\n<!--https://andrejv.github.io/wxmaxima/-->\n");
 
   // write document
   output << wxT("\n<wxMaximaDocument version=\"");
