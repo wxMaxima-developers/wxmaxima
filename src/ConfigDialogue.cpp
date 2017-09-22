@@ -717,16 +717,6 @@ wxPanel *ConfigDialogue::CreateExportPanel()
   grid_sizer->Add(m_texPreamble, 0, wxALL, 5);
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
 
-  wxStaticText *mj = new wxStaticText(panel, -1, _("URL MathJaX.js lies at:"));
-  m_mathJaxURL = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350, wxDefaultSize.GetY()));
-  grid_sizer->Add(mj, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  grid_sizer->Add(m_mathJaxURL, 0, wxALL, 5);
-
-  wxStaticText *bs = new wxStaticText(panel, -1, _("Bitmap scale for export:"));
-  m_bitmapScale = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 1, 3);
-  grid_sizer->Add(bs, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  grid_sizer->Add(m_bitmapScale, 0, wxALL, 5);
-
   wxStaticText *mju = new wxStaticText(panel, -1, _("Export equations to HTML as:"));
   wxArrayString mathJaxChoices;
   mathJaxChoices.Add(_("TeX, interpreted by MathJaX"));
@@ -736,6 +726,16 @@ wxPanel *ConfigDialogue::CreateExportPanel()
   m_exportWithMathJAX = new wxChoice(panel, -1, wxDefaultPosition, wxDefaultSize, mathJaxChoices);
   grid_sizer->Add(mju, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_exportWithMathJAX, 0, wxALL, 5);
+
+  wxStaticText *mj = new wxStaticText(panel, -1, _("URL MathJaX.js lies at:"));
+  m_mathJaxURL = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350, wxDefaultSize.GetY()));
+  grid_sizer->Add(mj, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_mathJaxURL, 0, wxALL, 5);
+
+  wxStaticText *bs = new wxStaticText(panel, -1, _("Bitmap scale for export:"));
+  m_bitmapScale = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 1, 3);
+  grid_sizer->Add(bs, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_bitmapScale, 0, wxALL, 5);
 
   m_AnimateLaTeX = new wxCheckBox(panel, -1,
                                   _("Export animations to TeX (Images only move if the PDF viewer supports this)"));
