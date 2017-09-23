@@ -29,6 +29,21 @@
 #include <wx/regex.h>
 #include <wx/sstream.h>
 
+wxString MathCell::GetToolTip(const wxPoint &point)
+{
+  if(!ContainsPoint(point))
+    return wxEmptyString;
+
+  wxString toolTip;  
+  std::list<MathCell *> innerCells = GetInnerCells();
+  for(std::list<MathCell *>::iterator it = innerCells.begin(); it != innerCells.end(); ++it)
+  {
+    if((toolTip = (*it)->GetToolTip(point)) != wxEmptyString)
+      return toolTip;
+  }
+  return m_toolTip;
+}
+
 MathCell::MathCell(MathCell *group, Configuration **config)
 {
   m_toolTip = wxEmptyString;
@@ -951,71 +966,6 @@ void MathCell::MarkAsDeletedList(MathCell *list1,
     list7 = list7->m_next;
   }
 }
-
-wxString MathCell::GetToolTipList(const wxPoint &point,
-                                  MathCell *list1,
-                                  MathCell *list2,
-                                  MathCell *list3,
-                                  MathCell *list4,
-                                  MathCell *list5,
-                                  MathCell *list6,
-                                  MathCell *list7
-  )
-{
-  wxString toolTip;
-
-  while(list1 != NULL)
-  {
-    toolTip = list1->GetToolTip(point);
-    if(toolTip != wxEmptyString)
-      return toolTip;
-    list1 = list1->m_next;
-  }
-  while(list2 != NULL)
-  {
-    toolTip = list2->GetToolTip(point);
-    if(toolTip != wxEmptyString)
-      return toolTip;
-    list2 = list2->m_next;
-  }
-  while(list3 != NULL)
-  {
-    toolTip = list3->GetToolTip(point);
-    if(toolTip != wxEmptyString)
-      return toolTip;
-    list3 = list3->m_next;
-  }
-  while(list4 != NULL)
-  {
-    toolTip = list4->GetToolTip(point);
-    if(toolTip != wxEmptyString)
-      return toolTip;
-    list4 = list4->m_next;
-  }
-  while(list5 != NULL)
-  {
-    toolTip = list5->GetToolTip(point);
-    if(toolTip != wxEmptyString)
-      return toolTip;
-    list5 = list5->m_next;
-  }
-  while(list6 != NULL)
-  {
-    toolTip = list6->GetToolTip(point);
-    if(toolTip != wxEmptyString)
-      return toolTip;
-    list6 = list6->m_next;
-  }
-  while(list7 != NULL)
-  {
-    toolTip = list7->GetToolTip(point);
-    if(toolTip != wxEmptyString)
-      return toolTip;
-    list7 = list7->m_next;
-  }
-  return m_toolTip;
-}
-
 
 /***
  * Find the last cell in rectangle rect in this line.

@@ -54,16 +54,6 @@ public:
   std::list<MathCell *> GetInnerCells();
   void MarkAsDeleted();
 
-  virtual wxString GetToolTip(const wxPoint &point){
-    if(ContainsPoint(point))
-      {
-        // Default assumption: will be overwritten by the next command,
-        // if there is a more accurate solution.
-        m_cellPointers->m_cellUnderPointer = this;
-      }
-    return GetToolTipList(point,m_innerCell);
-  }
-
   MathCell *Copy();
 
   void SetInner(MathCell *inner);

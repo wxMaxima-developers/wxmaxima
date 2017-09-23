@@ -107,7 +107,7 @@ public:
    */
   void CellUnderPointer(GroupCell *cell);
 
-  /*! Returns the tooltip for the element at the position <pos>.
+  /*! Returns the tooltip for the element at the position point.
     
     wxEmptyString means: No toolTip.
    */

@@ -48,26 +48,6 @@ void MatrCell::SetGroup(MathCell *parent)
   }
 }
 
-wxString MatrCell::GetToolTip(const wxPoint &point)
-{
-  wxString toolTip;
-
-  if(ContainsPoint(point))
-      {
-        // Default assumption: will be overwritten by the next command,
-        // if there is a more accurate solution.
-        m_cellPointers->m_cellUnderPointer = this;
-      }
-  
-  for (unsigned int i = 0; i < m_cells.size(); i++)
-  {
-    toolTip = GetToolTipList(point, m_cells[i]);
-    if (toolTip != wxEmptyString)
-      return toolTip;
-  }
-  return m_toolTip;
-}
-
 MathCell *MatrCell::Copy()
 {
   MatrCell *tmp = new MatrCell(m_group, m_configuration, m_cellPointers);

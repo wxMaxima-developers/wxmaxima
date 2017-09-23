@@ -102,17 +102,6 @@ public:
 #endif
 
   bool IsShortNum();
-
-  wxString GetToolTip(const wxPoint &point)
-    {
-      if(ContainsPoint(point))
-      {
-        m_cellPointers->m_cellUnderPointer = this;
-        return m_toolTip;
-      }
-      else
-        return wxEmptyString;
-    }
   
 protected:
   void SetAltText();

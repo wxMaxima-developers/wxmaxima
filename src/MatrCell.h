@@ -38,8 +38,6 @@ public:
   std::list<MathCell *> GetInnerCells();
   void MarkAsDeleted();
 
-  virtual wxString GetToolTip(const wxPoint &point);
-
   MathCell *Copy();
 
   void RecalculateHeight(int fontsize);

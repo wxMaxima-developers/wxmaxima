@@ -140,7 +140,7 @@ class MathCell
 
     wxEmptyString means: No ToolTip
    */
-  virtual wxString GetToolTip(const wxPoint &point) = 0;
+  virtual wxString GetToolTip(const wxPoint &point);
 
   //! Delete this list of cells.
   virtual ~MathCell();
@@ -796,16 +796,6 @@ class MathCell
 protected:
   //! The worksheet all cells are drawn on
   static wxWindow *m_worksheet;
-  //! Determines if any of the lists contains a ToolTip for the point given.
-  wxString GetToolTipList(const wxPoint &point,
-                          MathCell *list1,
-                          MathCell *list2 = NULL,
-                          MathCell *list3 = NULL,
-                          MathCell *list4 = NULL,
-                          MathCell *list5 = NULL,
-                          MathCell *list6 = NULL,
-                          MathCell *list7 = NULL
-    );
   static wxRect m_updateRegion;
 
   /*! The GroupCell this list of cells belongs to.
