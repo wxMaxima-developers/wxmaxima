@@ -1911,7 +1911,6 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
     return false;
   }
-  std::cerr<<"1\n";
   wxmLines = new wxArrayString();
   wxString line;
   for (line = inputFile.GetFirstLine();

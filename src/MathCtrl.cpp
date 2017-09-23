@@ -5348,7 +5348,6 @@ GroupCell *MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
   {
     cell = NULL;
 
-    std::cerr<<wxmLines->Item(0)<<"\n";
     if (wxmLines->Item(0) == wxT("/* [wxMaxima: hide output   ] */"))
       hide = true;
 
