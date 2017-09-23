@@ -76,7 +76,7 @@ wxXmlNode *MathParser::GetNextTag(wxXmlNode *node)
   return SkipWhitespaceNode(node);
 }
 
-MathParser::MathParser(Configuration **cfg, CellPointers *cellPointers, wxString zipfile)
+MathParser::MathParser(Configuration **cfg, MathCell::CellPointers *cellPointers, wxString zipfile)
 {
   wxASSERT(m_graphRegex.Compile(wxT("[[:cntrl:]]")));
   m_configuration = cfg;

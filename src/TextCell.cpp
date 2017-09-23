@@ -29,7 +29,6 @@
 #include "TextCell.h"
 #include "Setup.h"
 #include "wx/config.h"
-#include "CellPointers.h"
 
 TextCell::TextCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxString text) : MathCell(parent, config)
 {

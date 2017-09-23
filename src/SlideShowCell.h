@@ -30,7 +30,6 @@
 
 #include "MathCell.h"
 #include "Image.h"
-#include "CellPointers.h"
 #include <wx/image.h>
 #include <wx/timer.h>
 

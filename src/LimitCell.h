@@ -29,7 +29,6 @@
 #define LIMITCELL_H
 
 #include "MathCell.h"
-#include "CellPointers.h"
 
 class LimitCell : public MathCell
 {

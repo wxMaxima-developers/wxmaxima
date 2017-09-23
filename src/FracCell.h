@@ -29,7 +29,6 @@
 #define FRACCELL_H
 
 #include "MathCell.h"
-#include "CellPointers.h"
 
 /* This class represents fractions.
 

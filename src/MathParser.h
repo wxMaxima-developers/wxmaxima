@@ -32,7 +32,6 @@ The header file for the xml cell parser
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
 
-#include "CellPointers.h"
 #include "MathCell.h"
 #include "TextCell.h"
 
@@ -44,7 +43,7 @@ inside a wxmx file
 class MathParser
 {
 public:
-  MathParser(Configuration **cfg, CellPointers *cellPointers, wxString zipfile = wxEmptyString);
+  MathParser(Configuration **cfg, MathCell::CellPointers *cellPointers, wxString zipfile = wxEmptyString);
 
   ~MathParser();
 
@@ -132,7 +131,7 @@ private:
 
   int m_ParserStyle;
   int m_FracStyle;
-  CellPointers *m_cellPointers;
+  MathCell::CellPointers *m_cellPointers;
   Configuration **m_configuration;
   bool m_highlight;
   wxFileSystem *m_fileSystem; // used for loading pictures in <img> and <slide>

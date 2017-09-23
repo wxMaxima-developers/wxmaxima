@@ -23,7 +23,6 @@
 #define FUNCELL_H
 
 #include "MathCell.h"
-#include "CellPointers.h"
 /*! \file
 
   This file declares the class FunCell() that represents a maxima function.

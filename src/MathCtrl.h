@@ -645,7 +645,7 @@ public:
   }
 
   //! The pointers to cells that can be deleted by these cells on deletion of the cells.
-  CellPointers m_cellPointers;
+  MathCell::CellPointers m_cellPointers;
 
   /*! Update the table of contents
 

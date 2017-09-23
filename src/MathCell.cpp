@@ -1395,6 +1395,35 @@ wxAccStatus MathCell::GetRole (int childId, wxAccRole *role)
 
 #endif
 
+MathCell::CellPointers::CellPointers(wxScrolledCanvas *mathCtrl)
+{
+  m_mathCtrl = mathCtrl;
+  m_cellMouseSelectionStartedIn = NULL;
+  m_cellKeyboardSelectionStartedIn = NULL;
+  m_cellUnderPointer = NULL;
+  m_cellSearchStartedIn = NULL;
+  m_answerCell = NULL;
+  m_indexSearchStartedAt = -1;
+  m_activeCell = NULL;
+  m_groupCellUnderPointer = NULL;
+  m_lastWorkingGroup = NULL;
+  m_workingGroup = NULL;
+  m_selectionString = wxEmptyString;
+  m_selectionStart = NULL;
+  m_selectionEnd = NULL;
+  MathCell::SetWorksheet(m_mathCtrl);
+}
+
+bool MathCell::CellPointers::ErrorList::Contains(MathCell *cell)
+{
+  for(std::list<MathCell *>::iterator it = m_errorList.begin(); it != m_errorList.end();++it)
+  {
+    if((*it)==cell)
+      return true;
+  }
+  return false;
+}
+
 // The variables all MathCells share.
 wxRect  MathCell::m_updateRegion;
 bool    MathCell::m_clipToDrawRegion = true;

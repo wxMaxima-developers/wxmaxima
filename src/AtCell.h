@@ -23,7 +23,6 @@
 #define ATCELL_H
 
 #include "MathCell.h"
-#include "CellPointers.h"
 
 class AtCell : public MathCell
 {

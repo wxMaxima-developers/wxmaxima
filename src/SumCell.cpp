@@ -29,7 +29,6 @@
 
 #include "SumCell.h"
 #include "TextCell.h"
-#include "CellPointers.h"
 
 #define SUM_SIGN "\x58"
 #define PROD_SIGN "\x59"

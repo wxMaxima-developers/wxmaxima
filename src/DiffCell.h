@@ -23,7 +23,6 @@
 #define DIFFCELL_H
 
 #include "MathCell.h"
-#include "CellPointers.h"
 
 class DiffCell : public MathCell
 {

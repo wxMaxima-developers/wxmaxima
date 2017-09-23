@@ -24,7 +24,6 @@
 
 #include "wx/regex.h"
 #include "MathCell.h"
-#include "CellPointers.h"
 
 /*! A Text cell
 

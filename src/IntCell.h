@@ -31,7 +31,6 @@
 
 #include "MathCell.h"
 #include "Setup.h"
-#include "CellPointers.h"
 
 /*! This class represents an integral
 

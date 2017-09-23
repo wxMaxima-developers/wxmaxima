@@ -24,7 +24,6 @@
 #define EDITORCELL_H
 
 #include "MathCell.h"
-#include "CellPointers.h"
 
 #include <vector>
 #include <list>

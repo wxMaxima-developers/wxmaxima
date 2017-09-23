@@ -23,7 +23,6 @@
 #define SUBCELL_H
 
 #include "MathCell.h"
-#include "CellPointers.h"
 
 class SubCell : public MathCell
 {

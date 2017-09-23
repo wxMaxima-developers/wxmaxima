@@ -31,11 +31,12 @@
 #define MIN(a, b) ((a)>(b) ? (b) : (a))
 
 #include <list>
-#include <iostream>
 #include <wx/wx.h>
 #include <wx/xml/xml.h>
 #if wxUSE_ACCESSIBILITY
 #include "wx/access.h"
+#include <wx/hashmap.h>
+#include <wx/scrolwin.h>
 #endif // wxUSE_ACCESSIBILITY
 #include "Configuration.h"
 #include "TextStyle.h"
@@ -866,6 +867,147 @@ public:
   static wxRect m_visibleRegion;
   //! The position of the worksheet in the wxMaxima window
   static wxPoint m_worksheetPosition;
+
+  /*! The storage for pointers to cells.
+    
+    If a cell is deleted it is necessary to remove all pointers that might
+    allow to access the now-defunct cell. These pointers are kept in this 
+    per-worksheet structure.
+  */
+  class CellPointers
+  {
+  public:
+    CellPointers(wxScrolledCanvas *mathCtrl);
+    /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
+      
+      \param resortToLast true = if we already have set the cell maxima works on to NULL
+      use the last cell maxima was known to work on.
+    */
+    MathCell *GetWorkingGroup(bool resortToLast = false)
+      {
+        if ((m_workingGroup != NULL) || (!resortToLast))
+          return m_workingGroup;
+        else
+          return m_lastWorkingGroup;
+      }
+    //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
+    void SetWorkingGroup(MathCell *group)
+      {
+        if(group != NULL)
+          m_lastWorkingGroup = group;
+        m_workingGroup = group;
+      }
+    //! A list of editor cells containing error messages.
+    class ErrorList
+    {
+    public:
+      ErrorList(){};
+      //! Is the list of errors empty?
+      bool Empty(){return m_errorList.empty();}
+      //! Remove one specific GroupCell from the list of errors
+      void Remove(MathCell * cell){m_errorList.remove(cell);}
+      //! Does the list of GroupCell with errors contain cell?
+      bool Contains(MathCell * cell);
+      //! Mark this GroupCell as containing errors
+      void Add(MathCell * cell){m_errorList.push_back(cell);}
+      //! The first GroupCell with error that is still in the list
+      MathCell *FirstError(){if(m_errorList.empty())return NULL; else return m_errorList.front();}
+      //! The last GroupCell with errors in the list
+      MathCell *LastError(){if(m_errorList.empty())return NULL; else return m_errorList.back();}
+      //! Empty the list of GroupCells with errors
+      void Clear(){m_errorList.clear();}
+    private:
+      //! A list of GroupCells that contain errors
+      std::list<MathCell *> m_errorList;
+    };
+
+    //! The list of cells maxima has complained about errors in
+    ErrorList m_errorList;
+    //! The EditorCell the mouse selection has started in
+    MathCell *m_cellMouseSelectionStartedIn;
+    //! The EditorCell the keyboard selection has started in
+    MathCell *m_cellKeyboardSelectionStartedIn;
+    //! The EditorCell the search was started in
+    MathCell *m_cellSearchStartedIn;
+    //! Which cursor position incremental search has started at?
+    int m_indexSearchStartedAt;
+    //! Which cell the blinking cursor is in?
+    MathCell *m_activeCell;
+    //! The GroupCell that is under the mouse pointer 
+    MathCell *m_groupCellUnderPointer;
+    //! The EditorCell that contains the currently active question from maxima 
+    MathCell *m_answerCell;
+    //! The last group cell maxima was working on.
+    MathCell *m_lastWorkingGroup;
+    /*! The group cell maxima is currently working on.
+
+      NULL means that maxima isn't currently evaluating a cell.
+    */
+    MathCell *m_workingGroup;
+    /*! The currently selected string. 
+
+      Since this string is defined here it is available in every editor cell
+      for highlighting other instances of the selected string.
+    */
+    wxString m_selectionString;
+
+    //! Forget where the search was started
+    void ResetSearchStart()
+      {
+        m_cellSearchStartedIn = NULL;
+        m_indexSearchStartedAt = -1;
+      }
+
+    //! Forget where the mouse selection was started
+    void ResetMouseSelectionStart()
+      { m_cellMouseSelectionStartedIn = NULL; }
+
+    //! Forget where the keyboard selection was started
+    void ResetKeyboardSelectionStart()
+      { m_cellKeyboardSelectionStartedIn = NULL; }
+  
+    /*! The first cell of the currently selected range of Cells.
+    
+      NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
+      is selected and therefore the selection is handled by EditorCell; This cell is 
+      always above m_selectionEnd.
+    
+      See also m_hCaretPositionStart and m_selectionEnd
+    */
+    MathCell *m_selectionStart;
+    /*! The last cell of the currently selected range of groupCells.
+    
+      NULL, when no GroupCells are selected and NULL, if only stuff inside a GroupCell
+      is selected and therefore the selection is handled by EditorCell; This cell is 
+      always below m_selectionStart.
+    
+      See also m_hCaretPositionEnd
+    */
+
+    //! The cell currently under the mouse pointer
+    MathCell *m_cellUnderPointer;
+  
+    /*! The last cell of the currently selected range of Cells.
+    
+      NULL, when no Cells are selected and NULL, if only stuff inside a EditorCell
+      is selected and therefore the selection is handled by EditorCell; This cell is 
+      always above m_selectionEnd.
+    
+      See also m_hCaretPositionStart, m_hCaretPositionEnd and m_selectionStart.
+    */
+    MathCell *m_selectionEnd;
+    WX_DECLARE_VOIDPTR_HASH_MAP( int, SlideShowTimersList);
+    SlideShowTimersList m_slideShowTimers;
+
+    wxScrolledCanvas *GetMathCtrl(){return m_mathCtrl;}
+
+  private:
+    wxWindow *m_worksheet;
+    //! The function to call if an animation has to be stepped.
+    wxScrolledCanvas *m_mathCtrl;
+  };
+
+
 };
 
 #endif // MATHCELL_H

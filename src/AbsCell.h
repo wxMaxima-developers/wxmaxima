@@ -31,7 +31,6 @@
 
 #include "MathCell.h"
 #include "TextCell.h"
-#include "CellPointers.h"
 
 /*! \file
   

@@ -23,13 +23,11 @@
 #define IMGCELL_H
 
 #include "MathCell.h"
-#include "CellPointers.h"
 #include <wx/image.h>
 #include "Image.h"
 
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
-#include "CellPointers.h"
 
 class ImgCell : public MathCell
 {
