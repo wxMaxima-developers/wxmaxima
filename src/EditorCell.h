@@ -65,7 +65,6 @@ private:
   #endif
   
   int m_errorIndex;
-  CellPointers *m_cellPointers;
   //! The viewport size the linewrap was done for.
   int m_oldViewportWidth;
   //! The zoom factor the linewrap was done for.

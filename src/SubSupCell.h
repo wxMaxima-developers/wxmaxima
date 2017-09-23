@@ -66,9 +66,6 @@ protected:
   MathCell *m_baseCell;
   MathCell *m_exptCell;
   MathCell *m_indexCell;
-
-private:
-  CellPointers *m_cellPointers;
 };
 
 #endif // SUBSUPCELL_H

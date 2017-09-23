@@ -98,9 +98,6 @@ protected:
   wxString ToXML();
 
   wxString ToOMML();
-
-private:
-  CellPointers *m_cellPointers;
 };
 
 #endif // ABSCELL_H

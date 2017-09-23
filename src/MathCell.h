@@ -997,7 +997,8 @@ public:
     wxScrolledCanvas *m_mathCtrl;
   };
 
-
+protected:
+  CellPointers *m_cellPointers;
 };
 
 #endif // MATHCELL_H

@@ -102,9 +102,6 @@ protected:
   int m_charWidth, m_charHeight;
   int m_charWidth1, m_charHeight1;
   int m_signWidth, m_signHeight, m_signTopHeight, m_signBotHeight, m_extendHeight;
-
-private:
-  CellPointers *m_cellPointers;
 };
 
 #endif // PARENCELL_H

@@ -97,9 +97,6 @@ protected:
   vector<int> m_widths;
   vector<int> m_drops;
   vector<int> m_centers;
-
-private:
-  CellPointers *m_cellPointers;
 };
 
 #endif // MATRCELL_H

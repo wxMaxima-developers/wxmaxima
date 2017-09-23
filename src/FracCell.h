@@ -128,9 +128,6 @@ protected:
     if there is an actual minus.
   */
   int m_horizontalGapRight;
-
-private:
-  CellPointers *m_cellPointers;
 };
 
 #endif // FRACCELL_H

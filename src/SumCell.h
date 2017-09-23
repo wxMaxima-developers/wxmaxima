@@ -49,7 +49,6 @@ public:
   void MarkAsDeleted();
 
   MathCell *Copy();
-  CellPointers *m_cellPointers;
   
   void RecalculateHeight(int fontsize);
 

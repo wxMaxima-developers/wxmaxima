@@ -72,9 +72,6 @@ protected:
   MathCell *m_base;
   MathCell *m_under;
   MathCell *m_name;
-
-private:
-  CellPointers *m_cellPointers;
 };
 
 #endif // LIMITCELL_H

@@ -99,9 +99,6 @@ protected:
   MathCell *m_last2;
   MathCell *m_exp, *m_last1;
   bool m_isMatrix;
-
-private:
-  CellPointers *m_cellPointers;
 };
 
 

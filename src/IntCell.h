@@ -109,8 +109,6 @@ protected:
   //! How far is the integral sign's center from the top of this cell?
   int m_signTop;
   int m_charHeight, m_charWidth;
-private:
-  CellPointers *m_cellPointers;
 };
 
 #endif  // INTCELL_H

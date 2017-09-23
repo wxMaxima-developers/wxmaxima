@@ -456,7 +456,6 @@ protected:
   int m_mathFontSize;
   MathCell *m_lastInOutput;
   MathCell *m_appendedCells;
-  CellPointers *m_cellPointers;
 private:
   //! Does this GroupCell save the answer to a question?
   bool m_autoAnswer;

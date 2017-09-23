@@ -33,13 +33,9 @@ public:
 
   std::list<MathCell *> GetInnerCells();
   void MarkAsDeleted();
-
-  CellPointers *m_cellPointers;
-
   MathCell *Copy();
-
+  
   void SetBase(MathCell *base);
-
   void SetIndex(MathCell *index);
 
   void RecalculateHeight(int fontsize);

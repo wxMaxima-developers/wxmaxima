@@ -91,9 +91,6 @@ public:
 protected:
   MathCell *m_nameCell;
   MathCell *m_argCell;
-
-private:
-  CellPointers *m_cellPointers;
 };
 
 

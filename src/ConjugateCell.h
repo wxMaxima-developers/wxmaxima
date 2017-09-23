@@ -86,9 +86,6 @@ protected:
   wxString ToOMML();
 
   wxString ToXML();
-
-private:
-  CellPointers *m_cellPointers;
 };
 
 #endif // CONJUGATECELL_H

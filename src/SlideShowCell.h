@@ -158,7 +158,6 @@ protected:
 
 private:
   bool m_drawBoundingBox;
-  CellPointers *m_cellPointers;
 };
 
 #endif // SLIDESHOWCELL_H

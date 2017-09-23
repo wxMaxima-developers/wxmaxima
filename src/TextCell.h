@@ -40,9 +40,7 @@ public:
 
   std::list<MathCell *> GetInnerCells();
   
-  void MarkAsDeleted();
-  
-  CellPointers *m_cellPointers;
+  void MarkAsDeleted();  
 
   ~TextCell();
   

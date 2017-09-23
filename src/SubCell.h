@@ -63,9 +63,6 @@ public:
 protected:
   MathCell *m_baseCell;
   MathCell *m_indexCell;
-
-private:
-  CellPointers *m_cellPointers;
 };
 
 #endif // SUBCELL_H

@@ -89,9 +89,6 @@ protected:
   int m_signWidth, m_signSize, m_signTop;
   int m_signType;
   double m_signFontScale;
-
-private:
-  CellPointers *m_cellPointers;
 };
 
 #endif // SQRTCELL_H

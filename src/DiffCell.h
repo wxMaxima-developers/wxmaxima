@@ -63,9 +63,6 @@ public:
 protected:
   MathCell *m_baseCell;
   MathCell *m_diffCell;
-
-private:
-  CellPointers *m_cellPointers;
 };
 
 #endif // DIFFCELL_H
