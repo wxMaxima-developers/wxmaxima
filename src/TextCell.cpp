@@ -53,15 +53,6 @@ TextCell::~TextCell()
   MarkAsDeleted();
 }
 
-void TextCell::MarkAsDeleted()
-{
-  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
-    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
-  if(this == m_cellPointers->m_cellUnderPointer)
-    m_cellPointers->m_cellUnderPointer = NULL;
-}
-
-
 std::list<MathCell *> TextCell::GetInnerCells()
 {
   std::list<MathCell *> innerCells;

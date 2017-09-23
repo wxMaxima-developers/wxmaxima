@@ -38,8 +38,11 @@ wxString MathCell::GetToolTip(const wxPoint &point)
   std::list<MathCell *> innerCells = GetInnerCells();
   for(std::list<MathCell *>::iterator it = innerCells.begin(); it != innerCells.end(); ++it)
   {
-    if((toolTip = (*it)->GetToolTip(point)) != wxEmptyString)
-      return toolTip;
+    if(*it != NULL)
+    {
+      if((toolTip = (*it)->GetToolTip(point)) != wxEmptyString)
+        return toolTip;
+    }
   }
   return m_toolTip;
 }
@@ -920,53 +923,6 @@ void MathCell::SelectFirst(wxRect &rect, MathCell **first)
     *first = NULL;
 }
 
-
-void MathCell::MarkAsDeletedList(MathCell *list1,
-                                 MathCell *list2,
-                                 MathCell *list3,
-                                 MathCell *list4,
-                                 MathCell *list5,
-                                 MathCell *list6,
-                                 MathCell *list7
-  )
-{
-  while(list1 != NULL)
-  {
-    list1->MarkAsDeleted();
-    list1 = list1->m_next;
-  }
-  while(list2 != NULL)
-  {
-    list2->MarkAsDeleted();
-    list2 = list2->m_next;
-  }
-  while(list3 != NULL)
-  {
-    list3->MarkAsDeleted();
-    list3 = list3->m_next;
-  }
-  while(list4 != NULL)
-  {
-    list4->MarkAsDeleted();
-    list4 = list4->m_next;
-  }
-  while(list5 != NULL)
-  {
-    list5->MarkAsDeleted();
-    list5 = list5->m_next;
-  }
-  while(list6 != NULL)
-  {
-    list6->MarkAsDeleted();
-    list6 = list6->m_next;
-  }
-  while(list7 != NULL)
-  {
-    list7->MarkAsDeleted();
-    list7 = list7->m_next;
-  }
-}
-
 /***
  * Find the last cell in rectangle rect in this line.
  */
@@ -1372,6 +1328,30 @@ bool MathCell::CellPointers::ErrorList::Contains(MathCell *cell)
       return true;
   }
   return false;
+}
+
+void MathCell::MarkAsDeleted()
+{
+  // Delete all pointers to this cell
+  if(this == m_cellPointers->m_workingGroup)
+    m_cellPointers->m_workingGroup = NULL;
+  if(this == m_cellPointers->m_lastWorkingGroup)
+    m_cellPointers->m_lastWorkingGroup = NULL;
+  if(this == m_cellPointers->m_activeCell)
+    m_cellPointers->m_activeCell = NULL;
+  
+  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
+    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
+  if(this == m_cellPointers->m_cellUnderPointer)
+    m_cellPointers->m_cellUnderPointer = NULL;
+
+  // Delete all pointers to the cells this cell contains
+  std::list<MathCell *> innerCells = GetInnerCells();
+  for(std::list<MathCell *>::iterator it = innerCells.begin(); it != innerCells.end(); ++it)
+  {
+    if(*it != NULL)
+      (*it)->MarkAsDeleted();
+  }
 }
 
 // The variables all MathCells share.

@@ -59,7 +59,6 @@ public:
   ~AbsCell();
   
   std::list<MathCell *> GetInnerCells();
-  void MarkAsDeleted();
 
   void SetInner(MathCell *inner);
 

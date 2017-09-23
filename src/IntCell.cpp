@@ -86,15 +86,6 @@ IntCell::~IntCell()
   MarkAsDeleted();
 }
 
-void IntCell::MarkAsDeleted()
-{
-  MarkAsDeletedList(m_base, m_under, m_over, m_var);
-  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
-    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
-  if(this == m_cellPointers->m_cellUnderPointer)
-    m_cellPointers->m_cellUnderPointer = NULL;
-}
-
 std::list<MathCell *> IntCell::GetInnerCells()
 {
   std::list<MathCell *> innerCells;

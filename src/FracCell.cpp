@@ -97,15 +97,6 @@ FracCell::~FracCell()
   MarkAsDeleted();
 }
 
-void FracCell::MarkAsDeleted()
-{
-  MarkAsDeletedList(m_open1,m_open2,m_close1,m_close2,m_num,m_denom,m_divide);
-  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
-    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
-  if(this == m_cellPointers->m_cellUnderPointer)
-    m_cellPointers->m_cellUnderPointer = NULL;
-}
-
 std::list<MathCell *> FracCell::GetInnerCells()
 {
   std::list<MathCell *> innerCells;

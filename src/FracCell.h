@@ -45,7 +45,6 @@ public:
   ~FracCell();
   
   std::list<MathCell *> GetInnerCells();
-  void MarkAsDeleted();
 
   //! All types of fractions we supportx
   enum FracType

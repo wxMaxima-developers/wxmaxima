@@ -32,7 +32,6 @@ public:
   ~SubSupCell();
 
   std::list<MathCell *> GetInnerCells();
-  void MarkAsDeleted();
 
   MathCell *Copy();
 

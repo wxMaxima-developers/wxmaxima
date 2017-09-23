@@ -32,7 +32,6 @@ public:
   ~AtCell();
 
   std::list<MathCell *> GetInnerCells();
-  void MarkAsDeleted();
   MathCell *Copy();
   
   void SetBase(MathCell *base);

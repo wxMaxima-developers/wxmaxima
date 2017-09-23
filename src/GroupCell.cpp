@@ -321,9 +321,6 @@ void GroupCell::MarkAsDeleted()
     m_cellPointers->m_selectionStart = NULL;
   if(this == m_cellPointers->m_selectionEnd)
     m_cellPointers->m_selectionEnd = NULL;
-  EditorCell *input = GetInput();
-  if (input != NULL)
-    input->MarkAsDeleted();
   if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetGroup() == this))
     m_cellPointers->m_answerCell = NULL;
   m_cellPointers->m_errorList.Remove(this);
@@ -333,12 +330,8 @@ void GroupCell::MarkAsDeleted()
     m_cellPointers->m_lastWorkingGroup = NULL;
   if (this == m_cellPointers->m_groupCellUnderPointer)
     m_cellPointers->m_groupCellUnderPointer = NULL;
-  if(m_output)
-    m_output->MarkAsDeletedList(m_output);
-  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
-    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
-  if(this == m_cellPointers->m_cellUnderPointer)
-    m_cellPointers->m_cellUnderPointer = NULL;
+
+  MathCell::MarkAsDeleted();
 }
 
 std::list<MathCell *> GroupCell::GetInnerCells()

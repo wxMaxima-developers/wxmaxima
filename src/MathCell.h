@@ -148,18 +148,11 @@ class MathCell
   /*! If the cell is moved to the undo buffer this function drops pointers to it
   
     Examples are the pointer to the start or the end of the selection.
-  */
-  virtual void MarkAsDeleted() = 0;
 
-  //! Runs MarkAsDeleted on a list of cells.
-  void MarkAsDeletedList(MathCell *list1,
-                         MathCell *list2 = NULL,
-                         MathCell *list3 = NULL,
-                         MathCell *list4 = NULL,
-                         MathCell *list5 = NULL,
-                         MathCell *list6 = NULL,
-                         MathCell *list7 = NULL
-    );
+    \attention If this method is overridden the overiding function needs to call
+    this function.
+  */
+  virtual void MarkAsDeleted();
   
   //! Sets the region that is to be updated on Draw()
   static void SetUpdateRegion(wxRect region)

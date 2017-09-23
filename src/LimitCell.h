@@ -38,7 +38,6 @@ public:
   ~LimitCell();
 
   std::list<MathCell *> GetInnerCells();
-  void MarkAsDeleted();
 
   MathCell *Copy();
 

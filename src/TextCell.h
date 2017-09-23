@@ -40,8 +40,6 @@ public:
 
   std::list<MathCell *> GetInnerCells();
   
-  void MarkAsDeleted();  
-
   ~TextCell();
   
   MathCell *Copy();

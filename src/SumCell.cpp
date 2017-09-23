@@ -81,16 +81,6 @@ SumCell::~SumCell()
   MarkAsDeleted();
 }
 
-void SumCell::MarkAsDeleted()
-{
-  MarkAsDeletedList(m_base, m_under, m_over);
-  if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
-    m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
-  if(this == m_cellPointers->m_cellUnderPointer)
-    m_cellPointers->m_cellUnderPointer = NULL;
-}
-
-
 std::list<MathCell *> SumCell::GetInnerCells()
 {
   std::list<MathCell *> innerCells;
