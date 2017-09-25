@@ -113,7 +113,7 @@ void ParenCell::SetInner(MathCell *inner, int type)
 void ParenCell::SetFont(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  wxDC &dc = configuration->GetDC();
+  wxDC *dc = configuration->GetDC();
 
   wxFont font;
   if(m_bigParenType == Configuration::ascii)
@@ -153,11 +153,11 @@ void ParenCell::SetFont(int fontsize)
     font = *wxNORMAL_FONT;
 
   // A fallback if we have been completely unable to set a working font
-  if (!dc.GetFont().IsOk())
+  if (!dc->GetFont().IsOk())
     m_bigParenType = Configuration::handdrawn;
 
   if(m_bigParenType != Configuration::handdrawn)
-    dc.SetFont(font);
+    dc->SetFont(font);
 
   SetForeground();
 }
@@ -174,7 +174,7 @@ void ParenCell::RecalculateWidths(int fontsize)
   m_innerCell->RecalculateWidthsList(fontsize);
   m_innerCell->RecalculateHeightList(fontsize);
   
-  wxDC &dc = configuration->GetDC();
+  wxDC *dc = configuration->GetDC();
   int size = m_innerCell->GetMaxHeight();
   if (fontsize < 4) fontsize = 4;
   int fontsize1 = Scale_Px(fontsize, scale);
@@ -196,11 +196,11 @@ void ParenCell::RecalculateWidths(int fontsize)
     {
       SetFont(fontsize);
       int signWidth1,signWidth2,signWidth3,descent,leading;
-      dc.GetTextExtent(wxT(PAREN_OPEN_TOP_UNICODE),    &signWidth1, &m_signTopHeight, &descent, &leading);
+      dc->GetTextExtent(wxT(PAREN_OPEN_TOP_UNICODE),    &signWidth1, &m_signTopHeight, &descent, &leading);
       m_signTopHeight -= 2*descent + Scale_Px(1, configuration->GetScale());
-      dc.GetTextExtent(wxT(PAREN_OPEN_EXTEND_UNICODE), &signWidth2, &m_extendHeight, &descent, &leading);
+      dc->GetTextExtent(wxT(PAREN_OPEN_EXTEND_UNICODE), &signWidth2, &m_extendHeight, &descent, &leading);
       m_extendHeight -= 2*descent + Scale_Px(1, configuration->GetScale());
-      dc.GetTextExtent(wxT(PAREN_OPEN_BOTTOM_UNICODE), &signWidth3, &m_signBotHeight, &descent, &leading);
+      dc->GetTextExtent(wxT(PAREN_OPEN_BOTTOM_UNICODE), &signWidth3, &m_signBotHeight, &descent, &leading);
       m_signBotHeight -= descent + Scale_Px(1, configuration->GetScale());
 
       m_signWidth = signWidth1;
@@ -233,8 +233,8 @@ void ParenCell::RecalculateHeight(int fontsize)
   m_center = m_height / 2;
 
   SetFont(fontsize);
-  wxDC& dc = configuration->GetDC();
-  dc.GetTextExtent(wxT("("), &m_charWidth1, &m_charHeight1);
+  wxDC *dc = configuration->GetDC();
+  dc->GetTextExtent(wxT("("), &m_charWidth1, &m_charHeight1);
   if(m_charHeight1 < 2)
     m_charHeight1 = 2;
 
@@ -285,7 +285,7 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     Configuration *configuration = (*m_configuration);
     MathCell::Draw(point, fontsize);
     double scale = configuration->GetScale();
-    wxDC &dc = configuration->GetDC();
+    wxDC *dc = configuration->GetDC();
     wxPoint innerCellPos(point);
 
     SetFont(configuration->GetMathFontSize());
@@ -308,25 +308,25 @@ void ParenCell::Draw(wxPoint point, int fontsize)
 
       int top = point.y - m_center + Scale_Px (1,scale);
       int bottom = top + m_signHeight - m_signBotHeight - Scale_Px (2,scale);
-      dc.DrawText(wxT(PAREN_OPEN_TOP_UNICODE),
+      dc->DrawText(wxT(PAREN_OPEN_TOP_UNICODE),
                     point.x,
                   top);
-      dc.DrawText(wxT(PAREN_CLOSE_TOP_UNICODE),
+      dc->DrawText(wxT(PAREN_CLOSE_TOP_UNICODE),
                   point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
                   top);
-      dc.DrawText(wxT(PAREN_OPEN_BOTTOM_UNICODE),
+      dc->DrawText(wxT(PAREN_OPEN_BOTTOM_UNICODE),
                   point.x,
                   bottom);
-      dc.DrawText(wxT(PAREN_CLOSE_BOTTOM_UNICODE),
+      dc->DrawText(wxT(PAREN_CLOSE_BOTTOM_UNICODE),
                   point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
                   bottom);
       
       for (int i = 0;i < m_numberOfExtensions;i++)
       {
-        dc.DrawText(wxT(PAREN_OPEN_EXTEND_UNICODE),
+        dc->DrawText(wxT(PAREN_OPEN_EXTEND_UNICODE),
                     point.x,
                     top + m_signTopHeight + i*m_extendHeight);
-        dc.DrawText(wxT(PAREN_CLOSE_EXTEND_UNICODE),
+        dc->DrawText(wxT(PAREN_CLOSE_EXTEND_UNICODE),
                     point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
                     top + m_signTopHeight + i*m_extendHeight);
       }
@@ -334,33 +334,33 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     break;
     default:
     {
-      wxDC &adc = configuration->GetAntialiassingDC();
+      wxDC *adc = configuration->GetAntialiassingDC();
       innerCellPos.x = point.x + Scale_Px(6, scale) + (*m_configuration)->GetDefaultLineWidth();
       innerCellPos.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
       SetPen();
       // left
-      adc.DrawLine(point.x + Scale_Px(5, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
+      adc->DrawLine(point.x + Scale_Px(5, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
                    point.y - m_innerCell->GetMaxCenter() + Scale_Px(1, scale),
                    point.x + Scale_Px(2, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
                    point.y - m_innerCell->GetMaxCenter() + Scale_Px(7, scale));
-      adc.DrawLine(point.x + Scale_Px(2, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
+      adc->DrawLine(point.x + Scale_Px(2, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
                    point.y - m_innerCell->GetMaxCenter() + Scale_Px(7, scale),
                    point.x + Scale_Px(2, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
                    point.y + m_innerCell->GetMaxDrop() - Scale_Px(7, scale));
-      adc.DrawLine(point.x + Scale_Px(2, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
+      adc->DrawLine(point.x + Scale_Px(2, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
                    point.y + m_innerCell->GetMaxDrop() - Scale_Px(7, scale),
                    point.x + Scale_Px(5, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
                    point.y + m_innerCell->GetMaxDrop() - Scale_Px(1, scale));
       // right
-      adc.DrawLine(point.x + m_width - Scale_Px(5, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
+      adc->DrawLine(point.x + m_width - Scale_Px(5, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
                    point.y - m_innerCell->GetMaxCenter() + Scale_Px(1, scale),
                    point.x + m_width - Scale_Px(2, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
                    point.y - m_innerCell->GetMaxCenter() + Scale_Px(7, scale));
-      adc.DrawLine(point.x + m_width - Scale_Px(2, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
+      adc->DrawLine(point.x + m_width - Scale_Px(2, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
                    point.y - m_innerCell->GetMaxCenter() + Scale_Px(7, scale),
                    point.x + m_width - Scale_Px(2, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
                    point.y + m_innerCell->GetMaxDrop() - Scale_Px(7, scale));
-      adc.DrawLine(point.x + m_width - Scale_Px(2, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
+      adc->DrawLine(point.x + m_width - Scale_Px(2, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
                    point.y + m_innerCell->GetMaxDrop() - Scale_Px(7, scale),
                    point.x + m_width - Scale_Px(5, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
                    point.y + m_innerCell->GetMaxDrop() - Scale_Px(1, scale));

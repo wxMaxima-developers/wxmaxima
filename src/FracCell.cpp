@@ -147,20 +147,20 @@ void FracCell::RecalculateWidths(int fontsize)
     m_num->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
     m_denom->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
   }
-  wxDC &dc = configuration->GetDC();
-  dc.SetFont(configuration->GetFont(TS_VARIABLE,fontsize));
+  wxDC *dc = configuration->GetDC();
+  dc->SetFont(configuration->GetFont(TS_VARIABLE,fontsize));
   if (m_exponent && !m_isBroken)
   {
     m_protrusion = 0;
     int height;
-    dc.GetTextExtent(wxT("/"), &m_expDivideWidth, &height);
+    dc->GetTextExtent(wxT("/"), &m_expDivideWidth, &height);
     m_width = m_num->GetFullWidth(scale) + m_denom->GetFullWidth(scale) + m_expDivideWidth;
   }
   else
   {
     int dummy;
 
-    dc.GetTextExtent(wxT("X"), &m_protrusion, &dummy);
+    dc->GetTextExtent(wxT("X"), &m_protrusion, &dummy);
     m_protrusion /= 3;
     
     // We want half a space's widh of blank space to separate us from the
@@ -228,7 +228,7 @@ void FracCell::Draw(wxPoint point, int fontsize)
     MathCell::Draw(point, fontsize);
     Configuration *configuration = (*m_configuration);
     
-    wxDC &dc = configuration->GetDC();
+    wxDC *dc = configuration->GetDC();
     double scale = configuration->GetScale();
     wxPoint num, denom;
 
@@ -245,10 +245,10 @@ void FracCell::Draw(wxPoint point, int fontsize)
       m_denom->DrawList(denom, fontsize);
 
       int fontsize1 = Scale_Px(fontsize, scale);
-      dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
+      dc->SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                         wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                         configuration->GetFontName(TS_VARIABLE)));
-      dc.DrawText(wxT("/"),
+      dc->DrawText(wxT("/"),
                   point.x + m_num->GetFullWidth(scale),
                   point.y - m_num->GetMaxCenter() + Scale_Px(MC_TEXT_PADDING, scale));
     }
@@ -266,7 +266,7 @@ void FracCell::Draw(wxPoint point, int fontsize)
       m_denom->DrawList(denom, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
       SetPen();
       if (m_fracStyle != FC_CHOOSE)
-        dc.DrawLine(point.x + m_horizontalGapLeft + (*m_configuration)->GetDefaultLineWidth() / 2,
+        dc->DrawLine(point.x + m_horizontalGapLeft + (*m_configuration)->GetDefaultLineWidth() / 2,
                     point.y,
                     point.x + m_width - m_horizontalGapRight - (*m_configuration)->GetDefaultLineWidth() / 2,
                     point.y

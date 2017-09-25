@@ -1019,23 +1019,23 @@ void MathCell::UnbreakList()
 void MathCell::SetPen(double lineWidth)
 {
   Configuration *configuration = (*m_configuration);
-  wxDC &dc = configuration->GetDC();
+  wxDC *dc = configuration->GetDC();
 
   if (m_highlight)
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_HIGHLIGHT),
+    dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_HIGHLIGHT),
                                               lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
   else if (m_type == MC_TYPE_PROMPT)
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_OTHER_PROMPT),
+    dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_OTHER_PROMPT),
                                               lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
   else if (m_type == MC_TYPE_INPUT)
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_INPUT),
+    dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_INPUT),
                                               lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
   else
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_DEFAULT),
+    dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_DEFAULT),
                                               lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
 
-  if(&configuration->GetAntialiassingDC() != &dc)
-    configuration->GetAntialiassingDC().SetPen(dc.GetPen());
+  if(configuration->GetAntialiassingDC() != dc)
+    configuration->GetAntialiassingDC()->SetPen(dc->GetPen());
 
 }
 
@@ -1045,9 +1045,9 @@ void MathCell::SetPen(double lineWidth)
 void MathCell::UnsetPen()
 {
   Configuration *configuration = (*m_configuration);
-  wxDC &dc = configuration->GetDC();
+  wxDC *dc = configuration->GetDC();
   if (m_type == MC_TYPE_PROMPT || m_type == MC_TYPE_INPUT || m_highlight)
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_DEFAULT),
+    dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_DEFAULT),
                                               1, wxPENSTYLE_SOLID)));
 }
 
@@ -1067,7 +1067,7 @@ void MathCell::SetForeground()
 {
   Configuration *configuration = (*m_configuration);
   wxColour color;
-  wxDC &dc = configuration->GetDC();
+  wxDC *dc = configuration->GetDC();
   if (m_highlight)
   {
     color = configuration->GetColor(TS_HIGHLIGHT);
@@ -1097,7 +1097,7 @@ void MathCell::SetForeground()
     }
   }
 
-  dc.SetTextForeground(color);
+  dc->SetTextForeground(color);
 }
 
 bool MathCell::IsMath()

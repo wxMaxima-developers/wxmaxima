@@ -117,7 +117,7 @@ void AtCell::Draw(wxPoint point, int fontsize)
     
     Configuration *configuration = (*m_configuration);
     double scale = configuration->GetScale();
-    wxDC &dc = configuration->GetDC();
+    wxDC *dc = configuration->GetDC();
     wxPoint bs, in;
 
     bs.x = point.x;
@@ -129,7 +129,7 @@ void AtCell::Draw(wxPoint point, int fontsize)
            +m_indexCell->GetMaxCenter() - Scale_Px(7, scale);
     m_indexCell->DrawList(in, MAX(MC_MIN_SIZE, fontsize - 3));
     SetPen();
-    dc.DrawLine(in.x - Scale_Px(2, scale),
+    dc->DrawLine(in.x - Scale_Px(2, scale),
                 bs.y - m_baseCell->GetMaxCenter(),
                 in.x - Scale_Px(2, scale),
                 in.y);

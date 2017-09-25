@@ -134,7 +134,7 @@ void SumCell::RecalculateWidths(int fontsize)
 
   if (configuration->CheckTeXFonts())
   {
-    wxDC &dc = configuration->GetDC();
+    wxDC *dc = configuration->GetDC();
     int fontsize1 = Scale_Px(configuration->GetMathFontSize(), scale);
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
@@ -142,8 +142,8 @@ void SumCell::RecalculateWidths(int fontsize)
     if (!font.IsOk())
       font = *wxNORMAL_FONT;
     font.SetPointSize(fontsize1);
-    dc.SetFont(font);
-    dc.GetTextExtent(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN), &m_signWidth, &m_signSize);
+    dc->SetFont(font);
+    dc->GetTextExtent(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN), &m_signWidth, &m_signSize);
     m_signWCenter = m_signWidth / 2;
     m_signTop = (2 * m_signSize) / 5;
     m_signSize = (2 * m_signSize) / 5;
@@ -176,7 +176,7 @@ void SumCell::Draw(wxPoint point, int fontsize)
   if (DrawThisCell(point))
   {
     Configuration *configuration = (*m_configuration);
-    wxDC &dc = configuration->GetDC();
+    wxDC *dc = configuration->GetDC();
     double scale = configuration->GetScale();
 
     wxPoint base(point), under(point), over(point), sign(point);
@@ -199,8 +199,8 @@ void SumCell::Draw(wxPoint point, int fontsize)
       if (!font.IsOk())
         font = *wxNORMAL_FONT;
       font.SetPointSize(fontsize1);
-      dc.SetFont(font);
-      dc.DrawText(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN),
+      dc->SetFont(font);
+      dc->DrawText(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN),
                   sign.x + m_signWCenter - m_signWidth / 2,
                   sign.y - m_signTop);
     }
@@ -209,39 +209,39 @@ void SumCell::Draw(wxPoint point, int fontsize)
       SetPen(1.5);
       if (m_sumStyle == SM_SUM)
       {
-        wxDC &adc = configuration->GetAntialiassingDC();
+        wxDC *adc = configuration->GetAntialiassingDC();
         //DRAW SUM SIGN
         // Upper part
-        adc.DrawLine(point.x + m_signWCenter + m_signWidth / 6,
+        adc->DrawLine(point.x + m_signWCenter + m_signWidth / 6,
                      point.y,
                      point.x + m_signWCenter - m_signWidth / 2,
                      point.y - m_signSize / 2 + 1);
-        adc.DrawLine(point.x + m_signWCenter - m_signWidth / 2,
+        adc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
                      point.y - m_signSize / 2,
                      point.x + m_signWCenter + m_signWidth / 2,
                      point.y - m_signSize / 2);
-        adc.DrawLine(point.x + m_signWCenter - m_signWidth / 2,
+        adc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
                      point.y - m_signSize / 2 + 1,
                      point.x + m_signWCenter + m_signWidth / 2,
                      point.y - m_signSize / 2 + 1);
-        adc.DrawLine(point.x + m_signWCenter + m_signWidth / 2,
+        adc->DrawLine(point.x + m_signWCenter + m_signWidth / 2,
                      point.y - m_signSize / 2,
                      point.x + m_signWCenter + m_signWidth / 2,
                      point.y - m_signSize / 2 + Scale_Px(5, scale));
         // Lower part
-        adc.DrawLine(point.x + m_signWCenter + m_signWidth / 6,
+        adc->DrawLine(point.x + m_signWCenter + m_signWidth / 6,
                      point.y,
                      point.x + m_signWCenter - m_signWidth / 2,
                      point.y + m_signSize / 2 - 1);
-        adc.DrawLine(point.x + m_signWCenter - m_signWidth / 2,
+        adc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
                      point.y + m_signSize / 2,
                      point.x + m_signWCenter + m_signWidth / 2,
                      point.y + m_signSize / 2);
-        adc.DrawLine(point.x + m_signWCenter - m_signWidth / 2,
+        adc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
                      point.y + m_signSize / 2 - 1,
                      point.x + m_signWCenter + m_signWidth / 2,
                      point.y + m_signSize / 2 - 1);
-        adc.DrawLine(point.x + m_signWCenter + m_signWidth / 2,
+        adc->DrawLine(point.x + m_signWCenter + m_signWidth / 2,
                      point.y + m_signSize / 2,
                      point.x + m_signWCenter + m_signWidth / 2,
                      point.y + m_signSize / 2 - Scale_Px(5, scale));
@@ -250,29 +250,29 @@ void SumCell::Draw(wxPoint point, int fontsize)
       {
         // DRAW PRODUCT SIGN
         // Vertical lines
-        dc.DrawLine(point.x + m_signWCenter + m_signWidth / 6,
+        dc->DrawLine(point.x + m_signWCenter + m_signWidth / 6,
                     point.y + m_signSize / 2,
                     point.x + m_signWCenter + m_signWidth / 6,
                     point.y - m_signSize / 2 + Scale_Px(4, scale));
-        dc.DrawLine(point.x + m_signWCenter - m_signWidth / 6,
+        dc->DrawLine(point.x + m_signWCenter - m_signWidth / 6,
                     point.y + m_signSize / 2,
                     point.x + m_signWCenter - m_signWidth / 6,
                     point.y - m_signSize / 2 + Scale_Px(4, scale));
         // Horizonral line (double)
-        dc.DrawLine(point.x + m_signWCenter - m_signWidth / 2,
+        dc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
                     point.y - m_signSize / 2,
                     point.x + m_signWCenter + m_signWidth / 2,
                     point.y - m_signSize / 2);
-        dc.DrawLine(point.x + m_signWCenter - m_signWidth / 2,
+        dc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
                     point.y - m_signSize / 2 + 1,
                     point.x + m_signWCenter + m_signWidth / 2,
                     point.y - m_signSize / 2 + 1);
         // Ticks on horizontal line
-        dc.DrawLine(point.x + m_signWCenter - m_signWidth / 2,
+        dc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
                     point.y - m_signSize / 2,
                     point.x + m_signWCenter - m_signWidth / 2,
                     point.y - m_signSize / 2 + Scale_Px(5, scale));
-        dc.DrawLine(point.x + m_signWCenter + m_signWidth / 2,
+        dc->DrawLine(point.x + m_signWCenter + m_signWidth / 2,
                     point.y - m_signSize / 2,
                     point.x + m_signWCenter + m_signWidth / 2,
                     point.y - m_signSize / 2 + Scale_Px(5, scale));

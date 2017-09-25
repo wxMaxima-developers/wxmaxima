@@ -242,24 +242,24 @@ void SlideShow::Draw(wxPoint point, int fontsize)
     if (!InUpdateRegion()) return;
     
     Configuration *configuration = (*m_configuration);
-    wxDC &dc = configuration->GetDC();
+    wxDC *dc = configuration->GetDC();
     wxMemoryDC bitmapDC;
 
     // Slide show cells have a red border except if they are selected
     if (m_drawBoundingBox)
-      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))));
+      dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))));
     else
-      dc.SetPen(*wxRED_PEN);
+      dc->SetPen(*wxRED_PEN);
 
     // If we need a selection border on another redraw we will be informed by OnPaint() again.
     m_drawBoundingBox = false;
 
-    dc.DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
+    dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
     wxBitmap bitmap = m_images[m_displayed]->GetBitmap();
     bitmapDC.SelectObject(bitmap);
 
-    dc.Blit(point.x + m_imageBorderWidth, point.y - m_center + m_imageBorderWidth, m_width - 2 * m_imageBorderWidth,
+    dc->Blit(point.x + m_imageBorderWidth, point.y - m_center + m_imageBorderWidth, m_width - 2 * m_imageBorderWidth,
             m_height - 2 * m_imageBorderWidth, &bitmapDC, 0, 0);
   }
   else

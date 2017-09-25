@@ -2710,7 +2710,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   // The draw context is created on displaying the worksheet for the 1st time
   // and after drawing the worksheet onIdle is called => we won't miss this
   // event when we wait for it here.
-  if ((m_console != NULL) && (&m_console->m_configuration->GetDC() != NULL) &&
+  if ((m_console != NULL) && (m_console->m_configuration->GetDC() != NULL) &&
       (m_openFile.Length()))
   {
     wxString file = m_openFile;

@@ -109,7 +109,7 @@ void SqrtCell::RecalculateWidths(int fontsize)
   m_innerCell->RecalculateWidthsList(fontsize);
   if (configuration->CheckTeXFonts())
   {
-    wxDC &dc = configuration->GetDC();
+    wxDC *dc = configuration->GetDC();
     double scale = configuration->GetScale();
     m_innerCell->RecalculateHeightList(fontsize);
 
@@ -119,8 +119,8 @@ void SqrtCell::RecalculateWidths(int fontsize)
     wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                 configuration->GetTeXCMEX());
     font.SetPointSize(fontsize1);
-    dc.SetFont(font);
-    dc.GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
+    dc->SetFont(font);
+    dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
     m_width = m_innerCell->GetFullWidth(scale) + m_signWidth;
 
@@ -156,8 +156,8 @@ void SqrtCell::RecalculateWidths(int fontsize)
     font = wxFont(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
     font.SetPointSize(fontsize1);
-    dc.SetFont(font);
-    dc.GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
+    dc->SetFont(font);
+    dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
     m_width = m_innerCell->GetFullWidth(scale) + m_signWidth;
   }
@@ -194,7 +194,7 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
   {
     MathCell::Draw(point, fontsize);
     Configuration *configuration = (*m_configuration);
-    wxDC &dc = configuration->GetDC();
+    wxDC *dc = configuration->GetDC();
     double scale = configuration->GetScale();
 
     wxPoint in(point);
@@ -211,11 +211,11 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
       wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
       font.SetPointSize(fontsize1);
-      dc.SetFont(font);
+      dc->SetFont(font);
       SetForeground();
       if (m_signType < 4)
       {
-        dc.DrawText(
+        dc->DrawText(
                 m_signType == 1 ? wxT("p") :
                 m_signType == 2 ? wxT("q") :
                 m_signType == 3 ? wxT("r") : wxT("s"),
@@ -232,23 +232,23 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
                      _("Font issue: The sqrt() sign has the size 0! Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should be a workaround."));
         if (dy <= 0)
           dy = 1;
-        dc.DrawText(wxT("t"),
+        dc->DrawText(wxT("t"),
                     point.x,
                     yBottom);
-        dc.DrawText(wxT("v"),
+        dc->DrawText(wxT("v"),
                     point.x,
                     yTop);
         while (yTop < yBottom)
         {
           yTop += dy;
-          dc.DrawText(wxT("u"),
+          dc->DrawText(wxT("u"),
                       point.x,
                       yTop);
         }
       }
 
-      wxDC &adc = configuration->GetAntialiassingDC();
-      adc.DrawLine(point.x + m_signWidth,
+      wxDC *adc = configuration->GetAntialiassingDC();
+      adc->DrawLine(point.x + m_signWidth,
                   point.y - m_innerCell->GetMaxCenter(),
                   point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
                   point.y - m_innerCell->GetMaxCenter());
@@ -258,30 +258,30 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
     else
     {
       int zoomFactor = configuration->GetZoomFactor();
-      wxDC &adc = configuration->GetAntialiassingDC();
+      wxDC *adc = configuration->GetAntialiassingDC();
       in.x += Scale_Px(10, scale*zoomFactor) + Scale_Px(1, scale*zoomFactor) + 1;
       SetPen();
-      adc.DrawLine(point.x,
+      adc->DrawLine(point.x,
                   point.y,
                   point.x + Scale_Px(3, scale*zoomFactor),
                   point.y - Scale_Px(1, scale*zoomFactor));
-      adc.DrawLine(point.x + Scale_Px(3, scale*zoomFactor),
+      adc->DrawLine(point.x + Scale_Px(3, scale*zoomFactor),
                   point.y - Scale_Px(1, scale*zoomFactor),
                   point.x + Scale_Px(7, scale*zoomFactor),
                   point.y + m_height - m_center - Scale_Px(4, scale*zoomFactor));
-      adc.DrawLine(point.x + Scale_Px(3, scale*zoomFactor) + 1,
+      adc->DrawLine(point.x + Scale_Px(3, scale*zoomFactor) + 1,
                   point.y - Scale_Px(1, scale*zoomFactor),
                   point.x + Scale_Px(7, scale*zoomFactor) + 1,
                   point.y + m_height - m_center - Scale_Px(4, scale*zoomFactor));
-      adc.DrawLine(point.x + Scale_Px(7, scale*zoomFactor) + 1,
+      adc->DrawLine(point.x + Scale_Px(7, scale*zoomFactor) + 1,
                   point.y + m_height - m_center - Scale_Px(4, scale*zoomFactor),
                   point.x + Scale_Px(10, scale*zoomFactor),
                   point.y - m_center + Scale_Px(2, scale*zoomFactor));
-      adc.DrawLine(point.x + Scale_Px(10, scale*zoomFactor),
+      adc->DrawLine(point.x + Scale_Px(10, scale*zoomFactor),
                   point.y - m_center + Scale_Px(2, scale*zoomFactor),
                   point.x + m_width - Scale_Px(1, scale*zoomFactor),
                   point.y - m_center + Scale_Px(2, scale*zoomFactor));
-      adc.DrawLine(point.x + m_width - Scale_Px(1, scale*zoomFactor),
+      adc->DrawLine(point.x + m_width - Scale_Px(1, scale*zoomFactor),
                   point.y - m_center + Scale_Px(2, scale*zoomFactor),
                   point.x + m_width - Scale_Px(1, scale*zoomFactor),
                   point.y - m_center + Scale_Px(6, scale*zoomFactor));

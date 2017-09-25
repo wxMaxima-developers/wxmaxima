@@ -315,15 +315,15 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
 {
   // Letters with width or height = 0 don't exist in the current font
   int width1,height1,descent1;
-  GetDC().GetTextExtent(char1,&width1,&height1,&descent1);
+  GetDC()->GetTextExtent(char1,&width1,&height1,&descent1);
   if((width1 < 1) || (height1-descent1 < 1))
     return false;
   int width2,height2,descent2;
-  GetDC().GetTextExtent(char2,&width2,&height2,&descent2);
+  GetDC()->GetTextExtent(char2,&width2,&height2,&descent2);
   if((width2 < 1) || (height2-descent2 < 1))
     return false;
   int width3,height3,descent3;
-  GetDC().GetTextExtent(char3,&width3,&height3,&descent3);
+  GetDC()->GetTextExtent(char3,&width3,&height3,&descent3);
   if((width3 < 1) || (height3-descent3 < 1))
     return false;
 

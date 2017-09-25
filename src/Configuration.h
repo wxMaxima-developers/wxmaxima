@@ -179,16 +179,16 @@ public:
   { return m_scale; }
 
   //! Get a drawing context suitable for size calculations
-  wxDC &GetDC()
-  { return *m_dc; }
+  wxDC *GetDC()
+  { return m_dc; }
 
   //! Get a drawing context suitable for size calculations
-  wxDC &GetAntialiassingDC()
+  wxDC *GetAntialiassingDC()
     {
-      if (m_antialiassingDC && m_antiAliasLines)
-        return *m_antialiassingDC;
+      if ((m_antialiassingDC != NULL) && m_antiAliasLines)
+        return m_antialiassingDC;
       else
-        return *m_dc;
+        return m_dc;
     }
 
   void SetBounds(int top, int bottom)

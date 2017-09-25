@@ -153,7 +153,7 @@ void IntCell::RecalculateWidths(int fontsize)
 
   if (configuration->CheckTeXFonts())
   {
-    wxDC &dc = configuration->GetDC();
+    wxDC *dc = configuration->GetDC();
     int fontsize1 = Scale_Px(fontsize * 1.5, scale);
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
@@ -161,8 +161,8 @@ void IntCell::RecalculateWidths(int fontsize)
     if (!font.IsOk())
       font = *wxNORMAL_FONT;
     font.SetPointSize(fontsize1);
-    dc.SetFont(font);
-    dc.GetTextExtent(wxT("\x5A"), &m_signWidth, &m_signSize);
+    dc->SetFont(font);
+    dc->GetTextExtent(wxT("\x5A"), &m_signWidth, &m_signSize);
 
 #if defined __WXMSW__
     m_signWidth = m_signWidth / 2;
@@ -188,8 +188,8 @@ void IntCell::RecalculateWidths(int fontsize)
     if(!font.IsOk())
       font = *wxNORMAL_FONT;
     font.SetPointSize(fontsize1);
-    dc.SetFont(font);
-    dc.GetTextExtent(INTEGRAL_TOP, &m_charWidth, &m_charHeight);
+    dc->SetFont(font);
+    dc->GetTextExtent(INTEGRAL_TOP, &m_charWidth, &m_charHeight);
 
     m_width = m_signWidth +
               m_base->GetFullWidth(scale) +
@@ -253,7 +253,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
     MathCell::Draw(point, fontsize);
     Configuration *configuration = (*m_configuration);
     
-    wxDC &dc = configuration->GetDC();
+    wxDC *dc = configuration->GetDC();
     double scale = configuration->GetScale();
     
     wxPoint base(point), under(point), over(point), var(point), sign(point);
@@ -268,8 +268,8 @@ void IntCell::Draw(wxPoint point, int fontsize)
       if (!font.IsOk())
         font = *wxNORMAL_FONT;
       font.SetPointSize(fontsize1);
-      dc.SetFont(font);
-      dc.DrawText(wxT("\x5A"),
+      dc->SetFont(font);
+      dc->DrawText(wxT("\x5A"),
                   sign.x,
                   sign.y - m_signTop);
     }
@@ -280,14 +280,14 @@ void IntCell::Draw(wxPoint point, int fontsize)
       int fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE, scale);
       int m_signWCenter = m_signWidth / 2;
 
-      dc.SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
+      dc->SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
       wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
       false,
                         configuration->GetSymbolFontName()));
-      dc.DrawText(INTEGRAL_TOP,
+      dc->DrawText(INTEGRAL_TOP,
                   sign.x + m_signWCenter - m_charWidth / 2,
                   sign.y - (m_signSize + 1) / 2);
-      dc.DrawText(INTEGRAL_BOTTOM,
+      dc->DrawText(INTEGRAL_BOTTOM,
                   sign.x + m_signWCenter - m_charWidth / 2,
                   sign.y + (m_signSize + 1) / 2 - m_charHeight);
 
@@ -302,12 +302,12 @@ void IntCell::Draw(wxPoint point, int fontsize)
 
         while (top < bottom)
         {
-          dc.DrawText(INTEGRAL_EXTEND,
+          dc->DrawText(INTEGRAL_EXTEND,
           point.x + m_signWCenter - m_charWidth / 2,
           top);
           top += (2*m_charHeight)/3;
         }
-        dc.DrawText(INTEGRAL_EXTEND,
+        dc->DrawText(INTEGRAL_EXTEND,
         point.x + m_signWCenter - m_charWidth / 2,
         sign.y + (m_signSize + 1) / 2 - (3 * m_charHeight) / 2);
       }
@@ -335,7 +335,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
       pointList[6] = wxPoint(sign.x + m_signWCenter - 2 * (m_signWidth / 4),
                              sign.y + (m_signSize + 1) / 2 - m_signWidth / 4);
 
-      configuration->GetAntialiassingDC().DrawSpline(7,pointList);
+      configuration->GetAntialiassingDC()->DrawSpline(7,pointList);
       // line
       UnsetPen();
 #endif

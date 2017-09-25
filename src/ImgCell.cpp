@@ -176,25 +176,25 @@ void ImgCell::Draw(wxPoint point, int fontsize)
     if (!InUpdateRegion()) return;
     
     Configuration *configuration = (*m_configuration);
-    wxDC &dc = configuration->GetDC();
+    wxDC *dc = configuration->GetDC();
     wxMemoryDC bitmapDC;
 
     if (m_drawBoundingBox)
-      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))));
+      dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))));
     else
       SetPen();
 
     if (m_drawRectangle || m_drawBoundingBox)
-      dc.DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
+      dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
     wxBitmap bitmap = m_image->GetBitmap();
     bitmapDC.SelectObject(bitmap);
 
     if ((m_drawBoundingBox == false) || (m_imageBorderWidth > 0))
-      dc.Blit(point.x + m_imageBorderWidth, point.y - m_center + m_imageBorderWidth, m_width - 2 * m_imageBorderWidth,
+      dc->Blit(point.x + m_imageBorderWidth, point.y - m_center + m_imageBorderWidth, m_width - 2 * m_imageBorderWidth,
               m_height - 2 * m_imageBorderWidth, &bitmapDC, 0, 0);
     else
-      dc.StretchBlit(point.x + 5, point.y - m_center + 5, m_width - 2 * 5, m_height - 2 * 5, &bitmapDC, 0, 0, m_width,
+      dc->StretchBlit(point.x + 5, point.y - m_center + 5, m_width - 2 * 5, m_height - 2 * 5, &bitmapDC, 0, 0, m_width,
                      m_height);
   }
   else

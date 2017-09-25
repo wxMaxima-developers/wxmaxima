@@ -134,18 +134,18 @@ void ConjugateCell::Draw(wxPoint point, int fontsize)
     MathCell::Draw(point, fontsize);
     
     double scale = configuration->GetScale();
-    wxDC &dc = configuration->GetDC();
+    wxDC *dc = configuration->GetDC();
     SetPen();
     wxPoint in;
     in.x = point.x + Scale_Px(4, scale);
     in.y = point.y;
     m_innerCell->DrawList(in, fontsize);
 
-    dc.DrawLine(point.x + Scale_Px(2, scale),
-                point.y - m_center + Scale_Px(2, scale),
-                point.x + m_width - Scale_Px(2, scale) - 1,
-                point.y - m_center + Scale_Px(2, scale)
-    );
+    dc->DrawLine(point.x + Scale_Px(2, scale),
+                 point.y - m_center + Scale_Px(2, scale),
+                 point.x + m_width - Scale_Px(2, scale) - 1,
+                 point.y - m_center + Scale_Px(2, scale)
+      );
     //                point.y - m_center + m_height - Scale_Px(2, scale));
     UnsetPen();
   }

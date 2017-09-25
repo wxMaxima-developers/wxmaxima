@@ -131,18 +131,18 @@ void AbsCell::Draw(wxPoint point, int fontsize)
     
     Configuration *configuration = (*m_configuration);
     double scale = configuration->GetScale();
-    wxDC &dc = configuration->GetDC();
+    wxDC *dc = configuration->GetDC();
     SetPen();
     wxPoint in;
     in.x = point.x + Scale_Px(4, scale) + (*m_configuration)->GetDefaultLineWidth();
     in.y = point.y;
     m_innerCell->DrawList(in, fontsize);
 
-    dc.DrawLine(point.x + Scale_Px(2, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
+    dc->DrawLine(point.x + Scale_Px(2, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
                 point.y - m_center + Scale_Px(2, scale),
                 point.x + Scale_Px(2, scale) + (*m_configuration)->GetDefaultLineWidth() / 2,
                 point.y - m_center + m_height - Scale_Px(2, scale));
-    dc.DrawLine(point.x + m_width - Scale_Px(2, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
+    dc->DrawLine(point.x + m_width - Scale_Px(2, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
                 point.y - m_center + Scale_Px(2, scale),
                 point.x + m_width - Scale_Px(2, scale) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
                 point.y - m_center + m_height - Scale_Px(2, scale));

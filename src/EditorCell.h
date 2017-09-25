@@ -80,7 +80,7 @@ private:
   wxArrayString m_wordList;
 
   //! Draw a box that marks the current selection
-  void MarkSelection(long start, long end, double scale, wxDC &dc, TextStyle style, int fontsize);
+  void MarkSelection(long start, long end, double scale, wxDC *dc, TextStyle style, int fontsize);
 
   /*! The start of the current selection.
 
@@ -313,16 +313,16 @@ public:
   wxPoint PositionToPoint(int fontsize, int pos = -1);
 
   //! Sets the cursor to the screen coordinate point
-  void SelectPointText(wxDC &dc, wxPoint &point);
+  void SelectPointText(wxDC *dc, wxPoint &point);
 
   //! Selects the text between the screen coordinates one and two
-  void SelectRectText(wxDC &dc, wxPoint &one, wxPoint &two);
+  void SelectRectText(wxDC *dc, wxPoint &one, wxPoint &two);
 
   //! Selects the word the cursor is currently at.
   wxString SelectWordUnderCaret(bool selectParens = true, bool toRight = true);
 
   //! Is the point point inside the currently selected text?
-  bool IsPointInSelection(wxDC &dc, wxPoint point);
+  bool IsPointInSelection(wxDC *dc, wxPoint point);
 
   bool CopyToClipboard();
 
@@ -372,7 +372,7 @@ public:
 
   void FindMatchingParens();
 
-  int GetLineWidth(wxDC &dc, unsigned int line, int end);
+  int GetLineWidth(wxDC *dc, unsigned int line, int end);
 
   //! true, if this cell's width has to be recalculated.
   bool IsDirty()
