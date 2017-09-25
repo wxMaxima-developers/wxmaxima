@@ -590,6 +590,9 @@ void wxMaxima::StripComments(wxString &s)
 
 void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 {
+  if (m_xmlInspector)
+    m_xmlInspector->Add_ToMaxima(s);
+
   // Normally we catch parenthesis errors before adding cells to the
   // evaluation queue. But if the error is introduced only after the
   // cell is placed in the evaluation queue we need to catch it here.
@@ -743,7 +746,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
 #endif
         }
         if (IsPaneDisplayed(menu_pane_xmlInspector))
-          m_xmlInspector->Add(newChars);
+          m_xmlInspector->Add_FromMaxima(newChars);
 
         // This way we can avoid searching the whole string for a
         // ending tag if we have received only a few bytes of the
@@ -2394,23 +2397,18 @@ void wxMaxima::SetupVariables()
   SendMaxima(wxString::Format(wxT(":lisp-quiet (defparameter $wxplot_size '((mlist simp) %i %i))"), defaultPlotWidth,
                               defaultPlotHeight));
 
-#if defined (__WXMSW__)
-  wxString cwd = wxGetCwd();
-  cwd.Replace(wxT("\\"), wxT("/"));
-  SendMaxima(wxT(":lisp-quiet ($load \"") + cwd + wxT("/data/wxmathml\")"));
-#elif defined (__WXMAC__)
-  wxString cwd = wxGetCwd();
-  cwd = cwd + wxT("/") + wxT(MACPREFIX);
-  SendMaxima(wxT(":lisp-quiet ($load \"") + cwd + wxT("wxmathml\")"));
-  // check for Gnuplot.app - use it if it exists
+  wxString cmd;
+  Dirstructure dirstruct;
+
+  cmd = wxT(":lisp-quiet ($load \"") + dirstruct.DataDir() + wxT("/wxmathml.lisp\")");
+    
+    
+#if defined (__WXMAC__)
   wxString gnuplotbin(wxT("/Applications/Gnuplot.app/Contents/Resources/bin/gnuplot"));
   if (wxFileExists(gnuplotbin))
-    SendMaxima(wxT(":lisp-quiet (setf $gnuplot_command \"") + gnuplotbin + wxT("\")"));
-#else
-  wxString prefix = wxT(PREFIX);
-  SendMaxima(wxT(":lisp-quiet ($load \"") + prefix +
-             wxT("/share/wxMaxima/wxmathml\")"));
+    cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + gnuplotbin + wxT("\")");
 #endif
+  SendMaxima(cmd);
 
   if (m_console->m_currentFile != wxEmptyString)
   {
@@ -6531,12 +6529,7 @@ void wxMaxima::TryEvaluateNextInQueue()
       // Clear the monitor that shows the xml representation of the output of the
       // current maxima command.
       if (m_xmlInspector)
-      {
         m_xmlInspector->Clear();
-        m_xmlInspector->Add(wxT("SENT TO MAXIMA:\n\n"));
-        m_xmlInspector->Add(text);
-        m_xmlInspector->Add(wxT("\n\n\nMAXIMA RESPONSE:\n\n"));
-      }
 
       SendMaxima(text, true);
       EvaluationQueueLength(m_console->m_evaluationQueue.Size(),

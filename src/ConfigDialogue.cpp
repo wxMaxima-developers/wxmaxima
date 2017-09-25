@@ -591,7 +591,10 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
     #ifndef __WXMSW__
     wxGetEnv(wxT("HOME"),&m_startupFileName);
     #else
+    wxString homedrive;
+    wxGetEnv(wxT("HOMEDRIVE"),&homedrive);
     wxGetEnv(wxT("HOMEPATH"),&m_startupFileName);
+    m_startupFileName = homedrive + m_startupFileName;
     #endif
     m_startupFileName += wxString(wxFileName::GetPathSeparator());
     

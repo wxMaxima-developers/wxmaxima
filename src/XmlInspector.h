@@ -30,12 +30,6 @@
 #ifndef XMLINSPECTOR_H
 #define XMLINSPECTOR_H
 
-enum
-{
-  XmlInspector_ctrl_id = 4,
-  XmlInspector_regex_id
-};
-
 /*! This class generates a pane containing the table of contents.
 
  */
@@ -51,10 +45,25 @@ public:
   //! Remove all text from the editor.
   virtual void Clear();
 
-  //! Add some text.
-  void Add(wxString text);
+  //! Add some text we sent to maxima.
+  void Add_ToMaxima(wxString text);
+  //! Add some text we have received from maxima.
+  void Add_FromMaxima(wxString text);
 
 private:
+  enum xmlInspectorIDs
+  {
+    XmlInspector_ctrl_id = 4,
+    XmlInspector_regex_id
+  };
+  enum monitorState
+  {
+    clear,
+    fromMaxima,
+    toMaxima
+  };
+  monitorState m_state;
+
   wxChar m_lastChar;
   int m_indentLevel;
 
