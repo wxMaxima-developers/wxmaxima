@@ -828,6 +828,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
                                     "Trying to restart Maxima.\n"),
                         MC_TYPE_ERROR);
           m_unsuccessfullConnectionAttempts++;
+          m_console->m_evaluationQueue.Clear();
           StartMaxima(true);
         }
         m_console->m_evaluationQueue.Clear();
@@ -3311,8 +3312,9 @@ bool wxMaxima::AbortOnError()
       m_console->SetNotification(_("Maxima has issued an error!"),wxICON_ERROR);
     m_console->m_notificationMessage->m_errorNotificationCell = m_console->GetWorkingGroup(true);
   }
-  
-  if (abortOnError || m_exitAfterEval)
+
+  m_exitAfterEval = false;
+  if (abortOnError)
   {
     m_console->m_evaluationQueue.Clear();
     // Inform the user that the evaluation queue is empty.
