@@ -179,7 +179,7 @@ void IntCell::RecalculateWidths(int fontsize)
   else
   {
 #if defined __WXMSW__
-    wxDC& dc = configuration->GetDC();
+    wxDC *dc = configuration->GetDC();
     int fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE, scale);
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
