@@ -176,9 +176,27 @@ wxString LimitCell::ToString()
 wxString LimitCell::ToTeX()
 {
   wxString under = m_under->ListToTeX();
+  std::cerr<<under<<"\n";
   wxString base = m_base->ListToTeX();
-  wxString var = under.SubString(0, under.Find(wxT("->")) - 1);
-  wxString to = under.SubString(under.Find(wxT("->")) + 2,
+  int varEnd = under.Find(wxT("->"));
+  int toStart = 0;
+  if(varEnd == wxNOT_FOUND)
+  {
+    varEnd = under.Find(wxT("\mbox{\rightarrow }"));
+    if(varEnd != wxNOT_FOUND)
+    {
+      toStart = varEnd + 19;
+      varEnd -= 1;
+    }
+  }
+  else
+  {
+    toStart = varEnd + 2;
+    varEnd -= 1;
+  }
+                          
+  wxString var = under.SubString(0, varEnd);
+  wxString to = under.SubString(toStart,
                                 under.Length() - 1);
   wxString s = wxT("\\lim_{") + var + wxT("\\to ") + to + wxT("}{") + base + wxT("}");
   return s;
