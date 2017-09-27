@@ -24,6 +24,7 @@
   table of contents pane.
  */
 #include <wx/wx.h>
+#include <wx/richtext/richtextctrl.h>
 #include <vector>
 #include "GroupCell.h"
 
@@ -33,7 +34,7 @@
 /*! This class generates a pane containing the table of contents.
 
  */
-class XmlInspector : public wxTextCtrl
+class XmlInspector : public wxRichTextCtrl
 {
 public:
   XmlInspector(wxWindow *parent, int id);

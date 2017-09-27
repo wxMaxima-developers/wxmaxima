@@ -30,7 +30,7 @@
 #include <wx/sizer.h>
 #include <wx/regex.h>
 
-XmlInspector::XmlInspector(wxWindow *parent, int id) : wxTextCtrl(parent, id, wxEmptyString, wxDefaultPosition,
+XmlInspector::XmlInspector(wxWindow *parent, int id) : wxRichTextCtrl(parent, id, wxEmptyString, wxDefaultPosition,
                                                                   wxDefaultSize, wxTE_READONLY | wxTE_RICH | wxHSCROLL |
                                                                                  wxTE_MULTILINE)
 {
@@ -43,7 +43,7 @@ XmlInspector::~XmlInspector()
 
 void XmlInspector::Clear()
 {
-  wxTextCtrl::Clear();
+  wxRichTextCtrl::Clear();
   m_lastChar = wxChar(0);
   m_indentLevel = 0;
   m_state = clear;
@@ -62,13 +62,18 @@ void XmlInspector::Add_ToMaxima(wxString text)
   if(m_state != toMaxima)
   {
     if(GetValue() != wxEmptyString)
-      AppendText("\n\n");
-    AppendText(_("SENT TO MAXIMA:\n\n"));
+      WriteText("\n\n");
+    BeginTextColour(wxColour(0,0,0));
+    WriteText(_("SENT TO MAXIMA:\n\n"));
+    EndTextColour();
     m_state = toMaxima;
   }
   else
-    AppendText("\n");
-  AppendText(text);
+    WriteText("\n");
+  
+  BeginTextColour(wxColour(128,0,0));
+  WriteText(text);
+  EndTextColour();
 }
 
 void XmlInspector::Add_FromMaxima(wxString text)
@@ -76,8 +81,10 @@ void XmlInspector::Add_FromMaxima(wxString text)
   if(m_state != fromMaxima)
   {
     if(GetValue() != wxEmptyString)
-      AppendText("\n\n");
-    AppendText(_("MAXIMA RESPONSE:\n\n"));
+      WriteText("\n\n");
+    BeginTextColour(wxColour(0,0,0));
+    WriteText(_("MAXIMA RESPONSE:\n\n"));
+    EndTextColour();
     m_state = fromMaxima;
   }
   size_t index = 0;
@@ -113,5 +120,7 @@ void XmlInspector::Add_FromMaxima(wxString text)
     index++;
     m_lastChar = ch;
   }
-  AppendText(text);
+  BeginTextColour(wxColour(0,128,0));
+  WriteText(text);
+  EndTextColour();
 }

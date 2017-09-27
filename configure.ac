@@ -113,7 +113,7 @@ AC_ARG_ENABLE(static-wx,
      	 esac],
 	[static_wx=false])
 
-AM_PATH_WXCONFIG([3.0.0], [wxWin=1], [wxWin=0], [std,xml,html,adv,aui,core,net,base])
+AM_PATH_WXCONFIG([3.0.0], [wxWin=1], [wxWin=0], [std,xml,html,adv,aui,core,net,base,richtext])
 
 if test "$wxWin" != 1; then
    AC_MSG_ERROR([
