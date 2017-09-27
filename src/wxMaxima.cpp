@@ -2399,7 +2399,7 @@ void wxMaxima::SetupVariables()
 
   wxString cmd;
   Dirstructure dirstruct;
-
+  
   cmd = wxT(":lisp-quiet ($load \"") + dirstruct.DataDir() + wxT("/wxmathml.lisp\")");
     
     
@@ -2408,6 +2408,7 @@ void wxMaxima::SetupVariables()
   if (wxFileExists(gnuplotbin))
     cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + gnuplotbin + wxT("\")");
 #endif
+  cmd.Replace(wxT("\""),wxT("/"));
   SendMaxima(cmd);
 
   if (m_console->m_currentFile != wxEmptyString)
