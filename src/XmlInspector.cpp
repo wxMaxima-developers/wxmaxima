@@ -63,9 +63,12 @@ void XmlInspector::Add_ToMaxima(wxString text)
   if(m_state != toMaxima)
   {
     if(GetValue() != wxEmptyString)
-      WriteText("\n\n");
+    {
+      Newline();Newline();
+    }
     BeginTextColour(wxColour(0,0,0));
-    WriteText(_("SENT TO MAXIMA:\n\n"));
+    WriteText(_("SENT TO MAXIMA:"));
+    Newline();Newline();
     EndTextColour();
     m_state = toMaxima;
   }
@@ -82,9 +85,12 @@ void XmlInspector::Add_FromMaxima(wxString text)
   if(m_state != fromMaxima)
   {
     if(GetValue() != wxEmptyString)
-      WriteText("\n\n");
+    {
+      Newline();Newline();
+    }
     BeginTextColour(wxColour(0,0,0));
-    WriteText(_("MAXIMA RESPONSE:\n\n"));
+    WriteText(_("MAXIMA RESPONSE:"));
+    Newline();Newline();    
     EndTextColour();
     m_state = fromMaxima;
   }
