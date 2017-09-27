@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2017 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -182,7 +182,7 @@ wxString LimitCell::ToTeX()
   int toStart = 0;
   if(varEnd == wxNOT_FOUND)
   {
-    varEnd = under.Find(wxT("\mbox{\rightarrow }"));
+    varEnd = under.Find(wxT("\\mbox{\\rightarrow }"));
     if(varEnd != wxNOT_FOUND)
     {
       toStart = varEnd + 19;
