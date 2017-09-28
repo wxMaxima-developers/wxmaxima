@@ -647,9 +647,12 @@ void GroupCell::RecalculateHeightInput(int fontsize)
 
 void GroupCell::RecalculateHeightOutput(int fontsize)
 {
-  m_appendedCells = m_output;
-  if(m_output != NULL)
-    RecalculateAppended();
+  if(!m_hide)
+  {
+    m_appendedCells = m_output;
+    if(m_output != NULL)
+      RecalculateAppended();
+  }
 }
 
 void GroupCell::RecalculateHeight(int fontsize)
@@ -694,6 +697,8 @@ void GroupCell::RecalculateHeight(int fontsize)
 // We assume that appended cells will be in a new line!
 void GroupCell::RecalculateAppended()
 {
+  if(m_hide)
+    return;
   Configuration *configuration = (*m_configuration);
   if (m_appendedCells == NULL)
     return;
