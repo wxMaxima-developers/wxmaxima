@@ -3956,6 +3956,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
       break;
     case ToolBar::menu_restart_id:
       m_closing = true;
+      m_console->m_cellPointers.SetWorkingGroup(NULL);
       m_console->m_evaluationQueue.Clear();
       m_console->ResetInputPrompts();
       StartMaxima(true);
