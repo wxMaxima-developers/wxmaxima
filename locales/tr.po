@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-27 10:51+0200\n"
+"POT-Creation-Date: 2017-09-29 21:13+0200\n"
 "PO-Revision-Date: 2017-07-06 06:38+0200\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -413,7 +413,7 @@ msgstr ""
 "bir çizgiye benzemektedir.Yazdığınızda yada bir yazıyı yapıştırdığınızda "
 "yada  bir komutu çalıştırdığınız yerde görülür."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2134
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2139
 msgid "A GroupCell that bundles input with its output"
 msgstr ""
 
@@ -429,7 +429,7 @@ msgstr ""
 "değil aynı zamanda hesaplamalarınızın sonuçlarını da saklar.Belgenizi "
 "kaydederken 'wxMaxima XML document format' ı 'seçin "
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2129
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2134
 #, fuzzy
 msgid "A page break"
 msgstr "Sayfa sonu"
@@ -748,7 +748,7 @@ msgstr "Hata: Bilinmeyen bir öge için otomatik tamamlama isteği."
 msgid "Bug: Cell left but not entered."
 msgstr "Hata: Hücre geride bırakıldı ancak (değerlendirmeye) girmedi."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6438
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6442
 msgid "Bug: Cell with negative y position!"
 msgstr "Hata: Negatif y değerli bir hücre"
 
@@ -756,7 +756,7 @@ msgstr "Hata: Negatif y değerli bir hücre"
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Hata: Bir soru alındı ama yanıtı içeren bir hücre yok"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6609
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6613
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
@@ -764,13 +764,13 @@ msgstr ""
 "Hata: Çalışma yaprağının başladığı noktanın üstünde bir hücrenin içeriğini "
 "değiştirme istemi."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6684
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6688
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Hata: Çalışma yaprağının başlangıcının üstünde bir hücreyi silme isteği. "
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6652
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6656
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -791,8 +791,8 @@ msgstr "Hata : Gösterimi çok uzun sürecek öok basamaklı bir sayı"
 msgid "Bug: Missing contents"
 msgstr "Hata: Eksik içerik"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1195
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1370
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1200
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1375
 msgid "Bug: No image counter to write to!"
 msgstr "Hata : Yazılacak görüntü sayacı yok"
 
@@ -867,7 +867,7 @@ msgstr ""
 "Hata: Geri al arabelleğinin bir bölgesinde ayrı ayrı hücreleri birleştirmeye "
 "çalışıyor Ancak ikisi arasında başka hücreler var."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7288
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7292
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -883,15 +883,15 @@ msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 "Hata: Geçerli bir hücresi olmayan bir hücrenin içinde seçim yapmaya çalışıyor"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6653
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6657
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Hata: Hücre içeriği değişiklikleri ve hücre ekleme durumlarının her ikisi "
 "için Geri Al eylemi."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6614
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6689
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6724
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6618
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6693
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6728
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr "Hata: Geri al isteği çalışma yaprağı dışındaki bir hücreye ait."
 
@@ -2082,7 +2082,7 @@ msgstr "Faktöriyeller ve &Gamma "
 msgid "Fatal error"
 msgstr "Ölümcül Hata"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2074
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2079
 #, c-format
 msgid "Figure %d:"
 msgstr "Şekil %d:"
@@ -2413,7 +2413,7 @@ msgstr "KarmaşıkSayı bir ifadenin sanal kısmını hesapla "
 msgid "Get the real part of complex expression"
 msgstr "KarmaşıkSayı bir ifadenin gerçek kısmını hesapla"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6704
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6708
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2663,7 +2663,7 @@ msgstr ""
 "Mkomut menüsünden Maxima-> Interrupt (Yarıda Kes) yada Maxima-> Restart "
 "Maxima (Maximayı Yeninden Başlat) yapın"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5179
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5183
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1667
 msgid "Image"
 msgstr "Resim"
@@ -3127,10 +3127,8 @@ msgstr "Uzun sağ ok"
 msgid "Lower bound:"
 msgstr "Alt Sınır:"
 
-#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:85
-msgid ""
-"MAXIMA RESPONSE:\n"
-"\n"
+#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:92
+msgid "MAXIMA RESPONSE:"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:767
@@ -4135,8 +4133,8 @@ msgstr "Maxima'yı Yeniden Başlat"
 msgid "Restart maxima"
 msgstr "Maxima'yı Yeniden Başlat"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5118
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5145
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5122
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5149
 msgid "Result"
 msgstr "Sonuç"
 
@@ -4178,10 +4176,8 @@ msgstr "Sıralar:"
 msgid "Russian"
 msgstr "Rusça"
 
-#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:67
-msgid ""
-"SENT TO MAXIMA:\n"
-"\n"
+#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:70
+msgid "SENT TO MAXIMA:"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:728
@@ -5100,7 +5096,7 @@ msgid ""
 "probably it was lacking an \"=\"."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8327
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8331
 msgid "The worksheet containing maxima's input and output"
 msgstr ""
 
@@ -5291,12 +5287,12 @@ msgid ""
 "but reduces their sharpness)."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6603
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6607
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 "Hücre (değerlendirlmesi) başlatılmadan bir eylemi geri almaya çalışıyor."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6671
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6675
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Birşeyi geri almaya çalışıyor ancak geri alacak bir şey yok."
 
@@ -5312,7 +5308,7 @@ msgstr "Ders Notları"
 msgid "Two sample t-test"
 msgstr "İki Örnek t-testi"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8197
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8201
 #, fuzzy
 msgid "Type"
 msgstr "Tip:"
@@ -5575,7 +5571,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7585
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7589
 msgid "Wrapped search"
 msgstr "Kaydırlılan arama"
 
@@ -5710,14 +5706,14 @@ msgstr "[Kaydedilmemiş*]"
 msgid "[%i digits]"
 msgstr "[%i basamaklar]"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5088
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5092
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr ""
 "_%d.gif\"  alt=\"Hareketli çizim (Animasyon)\" style=\"maks-genişlik:90%%;\" "
 ">\n"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5262
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5266
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr ""

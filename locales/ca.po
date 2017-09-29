@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-27 10:51+0200\n"
+"POT-Creation-Date: 2017-09-29 21:13+0200\n"
 "PO-Revision-Date: 2016-11-10 19:22+0100\n"
 "Last-Translator: Innocent De Marchi <tangram.peces@gmail.com>\n"
 "Language-Team: Innocent De Marchi <tangram.peces@gmail.com>\n"
@@ -410,7 +410,7 @@ msgstr ""
 "el d'una línia horitzontal entre cel·les, indicant on apareixerà una nova "
 "cel·la en escriure o copiar una nova instrucció."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2134
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2139
 msgid "A GroupCell that bundles input with its output"
 msgstr ""
 
@@ -425,7 +425,7 @@ msgstr ""
 "les instruccions i comentaris de l'usuari i també els resultats. En desar el "
 "document, seleccioneu el format «Document xml wxMaxima» "
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2129
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2134
 #, fuzzy
 msgid "A page break"
 msgstr "﻿Salt de pàgina"
@@ -730,7 +730,7 @@ msgstr "Error: es requereix l'auto completat per un tipus d'ítem desconegut."
 msgid "Bug: Cell left but not entered."
 msgstr "Error: cel·la esquerra sense entrada."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6438
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6442
 msgid "Bug: Cell with negative y position!"
 msgstr ""
 
@@ -738,7 +738,7 @@ msgstr ""
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Error: hi ha una pregunta però no hi ha cap cel·la per contestar-la"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6609
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6613
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
@@ -746,14 +746,14 @@ msgstr ""
 "Error: hi ha una petició de canviar el contingut d'una cel·la situada abans "
 "de l'inici del full de càlcul."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6684
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6688
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Error: hi ha una petició d'eliminar una cel·la situada abans de l'inici del "
 "full de càlcul."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6652
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6656
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -777,8 +777,8 @@ msgstr ""
 msgid "Bug: Missing contents"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1195
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1370
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1200
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1375
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -853,7 +853,7 @@ msgstr ""
 "Error: s'està intentant combinar addicions de cel·les individuals a una "
 "regió a la coa de desfer accions però hi ha altres cel·les entre elles."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7288
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7292
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -873,15 +873,15 @@ msgstr ""
 "Error: s'està intentant seleccionar a l'interior d'una cel·la sense que hi "
 "hagi una cel·la actual"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6653
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6657
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Error: desfer acció amb canvi del contingut de la cel·la i addició de la "
 "cel·la."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6614
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6689
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6724
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6618
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6693
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6728
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Error: s'està intentant desfer una acció a una cel·la situada fora del full "
@@ -2061,7 +2061,7 @@ msgstr "Factorials i &gamma"
 msgid "Fatal error"
 msgstr "Error fatal"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2074
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2079
 #, c-format
 msgid "Figure %d:"
 msgstr "Figura %d:"
@@ -2391,7 +2391,7 @@ msgstr "Calcula la part imaginària d'una expressió complexa"
 msgid "Get the real part of complex expression"
 msgstr "Calcula la part real d'una expressió complexa"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6704
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6708
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2639,7 +2639,7 @@ msgstr ""
 "Si es torba molt a realitzar-se un càlcul, és possible aturar-ho "
 "seleccionant 'Maxima->atura' o 'Maxima->Reinicia Maxima' en el menú."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5179
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5183
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1667
 msgid "Image"
 msgstr "Imatge"
@@ -3081,10 +3081,8 @@ msgstr "Fletxa dreta llarga"
 msgid "Lower bound:"
 msgstr "Cota inferior:"
 
-#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:85
-msgid ""
-"MAXIMA RESPONSE:\n"
-"\n"
+#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:92
+msgid "MAXIMA RESPONSE:"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:767
@@ -4075,8 +4073,8 @@ msgstr "Reinicia Maxima"
 msgid "Restart maxima"
 msgstr "Reinicia Maxima"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5118
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5145
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5122
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5149
 msgid "Result"
 msgstr "Resultat"
 
@@ -4118,10 +4116,8 @@ msgstr "Files:"
 msgid "Russian"
 msgstr "Russ"
 
-#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:67
-msgid ""
-"SENT TO MAXIMA:\n"
-"\n"
+#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:70
+msgid "SENT TO MAXIMA:"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:728
@@ -5028,7 +5024,7 @@ msgid ""
 "probably it was lacking an \"=\"."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8327
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8331
 msgid "The worksheet containing maxima's input and output"
 msgstr ""
 
@@ -5219,11 +5215,11 @@ msgid ""
 "but reduces their sharpness)."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6603
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6607
 msgid "Trying to undo an action without starting cell."
 msgstr "Intentant desfer una acció sense cel·la inicial."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6671
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6675
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Intentant desfer alguna acció sense que hi hagi accions per desfer."
 
@@ -5239,7 +5235,7 @@ msgstr "&Tutorials"
 msgid "Two sample t-test"
 msgstr "Test t amb dues mostres"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8197
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8201
 #, fuzzy
 msgid "Type"
 msgstr "Tipus:"
@@ -5501,7 +5497,7 @@ msgstr ""
 "Emboliqui les equacions exportades per la funció «copia a LaTeX» amb \\[ i "
 "\\] com a marcadors d'equació"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7585
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7589
 msgid "Wrapped search"
 msgstr "Cerca embolicada"
 
@@ -5639,12 +5635,12 @@ msgstr "[sense desar*]"
 msgid "[%i digits]"
 msgstr "[%i dígits]"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5088
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5092
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Diagrama animat\" style=\"max-width:90%%;\" >\n"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5262
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5266
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Diagrama animat\" style=\"max-width:90%%;\" >"

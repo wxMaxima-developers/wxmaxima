@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Greek translation of wxMaxima GUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-27 10:51+0200\n"
+"POT-Creation-Date: 2017-09-29 21:13+0200\n"
 "PO-Revision-Date: 2010-06-04 19:46+0200\n"
 "Last-Translator: aga <akritas@uth.gr>\n"
 "Language-Team: uth <aakritas@uth.gr>\n"
@@ -411,7 +411,7 @@ msgstr ""
 "μία οριζόντια γραμμή μεταξύ των κελιών. Υποδεικνύει που θα εμφανιστεί ένα "
 "νέο κελί αν γράψετε ή επικολλήσετε κείμενο ή εκτελέσετε μια εντολή."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2134
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2139
 msgid "A GroupCell that bundles input with its output"
 msgstr ""
 
@@ -427,7 +427,7 @@ msgstr ""
 "των υπολογισμών. Όταν αποθηκεύετε το αρχείο, επέλεξτε τον τύπο 'wxMaxima XML "
 "document' ."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2129
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2134
 #, fuzzy
 msgid "A page break"
 msgstr "Αλλαγή σελίδας"
@@ -722,7 +722,7 @@ msgstr ""
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6438
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6442
 msgid "Bug: Cell with negative y position!"
 msgstr ""
 
@@ -730,18 +730,18 @@ msgstr ""
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6609
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6613
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6684
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6688
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6652
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6656
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -761,8 +761,8 @@ msgstr ""
 msgid "Bug: Missing contents"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1195
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1370
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1200
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1375
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -831,7 +831,7 @@ msgid ""
 "there are other cells between them."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7288
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7292
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -845,13 +845,13 @@ msgstr ""
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6653
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6657
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6614
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6689
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6724
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6618
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6693
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6728
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
@@ -2047,7 +2047,7 @@ msgstr "Παραγοντικά και Γάμμα"
 msgid "Fatal error"
 msgstr "Ολέθριο σφάλμα"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2074
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2079
 #, fuzzy, c-format
 msgid "Figure %d:"
 msgstr "Σχέδιο"
@@ -2373,7 +2373,7 @@ msgstr "Υπολογισμός φανταστικού μέρους μιας μι
 msgid "Get the real part of complex expression"
 msgstr "Υπολογισμός πραγματικού μέρους μιας μιγαδικής παράστασης"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6704
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6708
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2604,7 +2604,7 @@ msgstr ""
 "Αν ο υπολογισμός σας καθυστερεί πολύ, μπορείτε να δοκιμάσετε τις εντολές του "
 "μενού 'Maxima->Διακοπή' ή 'Maxima->Επανεκκίνηση Maxima'."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5179
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5183
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1667
 msgid "Image"
 msgstr "Εικόνα"
@@ -3049,10 +3049,8 @@ msgstr ""
 msgid "Lower bound:"
 msgstr "Κάτω φράγμα:"
 
-#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:85
-msgid ""
-"MAXIMA RESPONSE:\n"
-"\n"
+#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:92
+msgid "MAXIMA RESPONSE:"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:767
@@ -4038,8 +4036,8 @@ msgstr "Επανεκίνηση του Maxima"
 msgid "Restart maxima"
 msgstr "Επανεκίνηση του Maxima"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5118
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5145
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5122
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5149
 msgid "Result"
 msgstr ""
 
@@ -4081,10 +4079,8 @@ msgstr "Γραμμές:"
 msgid "Russian"
 msgstr "Ρωσικά"
 
-#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:67
-msgid ""
-"SENT TO MAXIMA:\n"
-"\n"
+#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:70
+msgid "SENT TO MAXIMA:"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:728
@@ -4969,7 +4965,7 @@ msgid ""
 "probably it was lacking an \"=\"."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8327
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8331
 msgid "The worksheet containing maxima's input and output"
 msgstr ""
 
@@ -5162,11 +5158,11 @@ msgid ""
 "but reduces their sharpness)."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6603
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6607
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6671
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6675
 msgid "Trying to undo something but the undo action is empty."
 msgstr ""
 
@@ -5182,7 +5178,7 @@ msgstr "Διδακτικές παρουσιάσεις"
 msgid "Two sample t-test"
 msgstr "t-τεστ δυο δειγμάτων"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8197
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8201
 #, fuzzy
 msgid "Type"
 msgstr "Τύπος:"
@@ -5439,7 +5435,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7585
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7589
 msgid "Wrapped search"
 msgstr ""
 
@@ -5585,12 +5581,12 @@ msgstr "[ δεν έχει αποθηκευθεί* ]"
 msgid "[%i digits]"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5088
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5092
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5262
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5266
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr ""

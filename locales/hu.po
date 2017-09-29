@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-27 10:51+0200\n"
+"POT-Creation-Date: 2017-09-29 21:13+0200\n"
 "PO-Revision-Date: 2017-08-01 07:53+0200\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
@@ -410,7 +410,7 @@ msgstr ""
 "begépelésével, beillesztésével vagy egy menü parancs végrehajtásával egy új "
 "cella keletkezik."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2134
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2139
 msgid "A GroupCell that bundles input with its output"
 msgstr ""
 
@@ -426,7 +426,7 @@ msgstr ""
 "kimenetét is. Használatához a dokumentum mentésénél válasszuk a 'wxMaxima "
 "XML dokumentum' formátumot."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2129
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2134
 #, fuzzy
 msgid "A page break"
 msgstr "Laptörés"
@@ -741,7 +741,7 @@ msgstr "Hiba: Automatikus kiegészítési kérés ismeretlen típusú elemhez."
 msgid "Bug: Cell left but not entered."
 msgstr "Hiba: Cella elhagyása belépés nélkül."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6438
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6442
 msgid "Bug: Cell with negative y position!"
 msgstr "Hiba: Cella negatív y pozícióval!"
 
@@ -749,19 +749,19 @@ msgstr "Hiba: Cella negatív y pozícióval!"
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Hiba: Kérdés merült fel, de nincs cella a válaszhoz"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6609
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6613
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Hiba: Kérés egy munkalap kezdete előtti cella tartalmának megváltoztatására."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6684
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6688
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr "Hiba: Kérés egy munkalap kezdete előtti cella törlésére."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6652
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6656
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -785,8 +785,8 @@ msgstr ""
 msgid "Bug: Missing contents"
 msgstr "Hiba: Hiányzó tartalmak"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1195
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1370
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1200
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1375
 msgid "Bug: No image counter to write to!"
 msgstr "Hiba: A kép számlálója hiányzik!"
 
@@ -860,7 +860,7 @@ msgstr ""
 "Hiba: Kísérlet különálló cellák összevonására, melyek között további cellák "
 "vannak."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7288
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7292
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -875,15 +875,15 @@ msgstr ""
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr "Hiba: Kijelölést kísérelt meg egy cellában, annak kijelölése nélkül"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6653
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6657
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Hiba: Visszavonási esemény cella tartalmának változásához és cella "
 "hozzáadásához."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6614
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6689
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6724
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6618
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6693
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6728
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr "Hiba: Munkalapon kívüli cella visszaállítási kérelme."
 
@@ -2055,7 +2055,7 @@ msgstr "&Faktoriális- és gamma-függvény"
 msgid "Fatal error"
 msgstr "Végzetes hiba"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2074
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2079
 #, c-format
 msgid "Figure %d:"
 msgstr "%d. ábra:"
@@ -2387,7 +2387,7 @@ msgstr "Komplex kifejezés képzetes része"
 msgid "Get the real part of complex expression"
 msgstr "Komplex kifejezés valós része"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6704
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6708
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2626,7 +2626,7 @@ msgstr ""
 ">Megszakítás' vagy a 'Maxima->A Maxima újraindítása' menüparancsok "
 "használatát."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5179
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5183
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1667
 msgid "Image"
 msgstr "Kép"
@@ -3089,10 +3089,8 @@ msgstr "Hosszú jobbra nyíl"
 msgid "Lower bound:"
 msgstr "Alsó végpont:"
 
-#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:85
-msgid ""
-"MAXIMA RESPONSE:\n"
-"\n"
+#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:92
+msgid "MAXIMA RESPONSE:"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:767
@@ -4158,8 +4156,8 @@ msgstr "A Maxima újraindítása"
 msgid "Restart maxima"
 msgstr "A Maxima újraindítása"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5118
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5145
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5122
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5149
 msgid "Result"
 msgstr "Eredmény"
 
@@ -4201,10 +4199,8 @@ msgstr "Sorok:"
 msgid "Russian"
 msgstr "Orosz"
 
-#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:67
-msgid ""
-"SENT TO MAXIMA:\n"
-"\n"
+#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:70
+msgid "SENT TO MAXIMA:"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:728
@@ -5144,7 +5140,7 @@ msgid ""
 "probably it was lacking an \"=\"."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8327
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8331
 msgid "The worksheet containing maxima's input and output"
 msgstr ""
 
@@ -5343,11 +5339,11 @@ msgstr ""
 "Élsimított vonalak használata (amely lehetővé teszi, hogy egy pixel "
 "töredékével mozogjanak, de ez csökkenti az élességüket)."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6603
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6607
 msgid "Trying to undo an action without starting cell."
 msgstr "Kísérlet egy esemény visszavonására cella nélkül."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6671
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6675
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Kísérlet valaminek a visszavonására, de a visszavonandó ismeretlen."
 
@@ -5363,7 +5359,7 @@ msgstr "&Ismertetők"
 msgid "Two sample t-test"
 msgstr "Kétmintás t-próba"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8197
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8201
 #, fuzzy
 msgid "Type"
 msgstr "Típus:"
@@ -5619,7 +5615,7 @@ msgid ""
 "as equation markers"
 msgstr "A \"LaTeX másolás\" \\[ és \\] jelek közé rakja a kifejezéseket"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7585
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7589
 msgid "Wrapped search"
 msgstr "Csomagolt keresés"
 
@@ -5758,12 +5754,12 @@ msgstr "[ mentetlen* ]"
 msgid "[%i digits]"
 msgstr "[%i számjegy]"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5088
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5092
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Animált diagram\" style=\"max-width:90%%;\" >\n"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5262
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5266
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Animált diagram\" style=\"max-width:90%%;\" >"

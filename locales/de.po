@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-27 10:51+0200\n"
+"POT-Creation-Date: 2017-09-29 21:13+0200\n"
 "PO-Revision-Date: 2017-09-21 07:46+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -408,7 +408,7 @@ msgstr ""
 "zwischen den Zellen als eine horizontale Linie erscheint. Der horizontale "
 "Cursor zeigt an, wo z. B. die nächste neue Zelle eingefügt wird."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2134
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2139
 msgid "A GroupCell that bundles input with its output"
 msgstr "Eine Gruppe, die eine Eingabe mit einer eventuellen Ausgabe bündelt."
 
@@ -424,7 +424,7 @@ msgstr ""
 "Berechnungen. Wenn Sie Ihr Dokument speichern, können Sie dazu das Format "
 "'wxMaxima-XML-Dokument' auswählen."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2129
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2134
 msgid "A page break"
 msgstr "Ein Seitenumbruch"
 
@@ -746,7 +746,7 @@ msgstr ""
 msgid "Bug: Cell left but not entered."
 msgstr "Interner Fehler: Zelle wurde verlassen, aber zuvor nie besucht."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6438
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6442
 msgid "Bug: Cell with negative y position!"
 msgstr "Interner Fehler: Zelle mit negativer y-Position"
 
@@ -754,20 +754,20 @@ msgstr "Interner Fehler: Zelle mit negativer y-Position"
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Interner Fehler: Habe eine Frage, aber weiß nicht, in welcher Zelle"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6609
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6613
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Interner Fehler: Soll die Zelle vor dem Beginn des Arbeitsblattes ändern."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6684
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6688
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Interner Fehler: Soll die Zelle vor dem Beginn des Arbeitsblattes löschen."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6652
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6656
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -789,8 +789,8 @@ msgstr ""
 msgid "Bug: Missing contents"
 msgstr "Interner Fehler: Fehlender Inhalt"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1195
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1370
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1200
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1375
 msgid "Bug: No image counter to write to!"
 msgstr "Interner Fehler: Habe keinen Bildzähler, den ich beschreiben könnte."
 
@@ -872,7 +872,7 @@ msgstr ""
 "Interner Fehler: Versuche, die Hinzufügung von Einzelzellen zu einer Region "
 "zusammenbauen - in der es eine Lücke gibt."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7288
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7292
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -892,15 +892,15 @@ msgstr ""
 "Interner Fehler: Versuche, innerhalb einer Zelle Text auszuwählen, ohne zu "
 "wissen, in welcher Zelle"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6653
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6657
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Interner Fehler: Rückgängig will Zellen ändern und gleichzeitig Zellen "
 "hinzufügen."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6614
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6689
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6724
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6618
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6693
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6728
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Interner Fehler: Rückgängigmachen setzt an Zellen außerhalb des "
@@ -2077,7 +2077,7 @@ msgstr "Fakultät und &Gamma"
 msgid "Fatal error"
 msgstr "Fataler Fehler"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2074
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2079
 #, c-format
 msgid "Figure %d:"
 msgstr "Abbildung %d:"
@@ -2409,7 +2409,7 @@ msgstr "Imaginärteil eines komplexen Ausdrucks bestimmen"
 msgid "Get the real part of complex expression"
 msgstr "Realteil eines komplexen Ausdrucks bestimmen"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6704
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6708
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -2678,7 +2678,7 @@ msgstr ""
 "können Sie mit dem Menübefehl 'Maxima->Unterbrechen' oder 'Maxima->Maxima "
 "neustarten' die Berechnung abbrechen."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5179
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5183
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1667
 msgid "Image"
 msgstr "Bild"
@@ -3145,10 +3145,8 @@ msgstr "Langer Pfeil nach rechts"
 msgid "Lower bound:"
 msgstr "Untere Schranke:"
 
-#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:85
-msgid ""
-"MAXIMA RESPONSE:\n"
-"\n"
+#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:92
+msgid "MAXIMA RESPONSE:"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:767
@@ -4215,8 +4213,8 @@ msgstr "Maxima wird neu gestartet"
 msgid "Restart maxima"
 msgstr "Neustart von Maxima"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5118
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5145
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5122
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5149
 msgid "Result"
 msgstr "Resultat"
 
@@ -4258,10 +4256,8 @@ msgstr "Zeilen:"
 msgid "Russian"
 msgstr "Russisch"
 
-#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:67
-msgid ""
-"SENT TO MAXIMA:\n"
-"\n"
+#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:70
+msgid "SENT TO MAXIMA:"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:728
@@ -5207,7 +5203,7 @@ msgstr ""
 "Das zweite Argument von at() ist keine Gleichung oder Liste von Gleichungen. "
 "Wahrscheinlich fehlt ihm ein \"=\"."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8327
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8331
 msgid "The worksheet containing maxima's input and output"
 msgstr "Das Arbeitsblatt mit Maxima's Ein- und Ausgabe"
 
@@ -5408,13 +5404,13 @@ msgstr ""
 "Nutze eine Bildkantenglättung (Linien, die nicht genau auf Bildpunkte "
 "treffen, werden keine Pixeltreppen, sondern unscharf)"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6603
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6607
 msgid "Trying to undo an action without starting cell."
 msgstr ""
 "Versuche, eine Aktion rückgängig zu machen, ohne zu wissen, wo im "
 "Arbeitsblatt."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6671
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6675
 msgid "Trying to undo something but the undo action is empty."
 msgstr "Soll etwas rückgängig machen, aber die Spezifikation dafür ist leer."
 
@@ -5430,7 +5426,7 @@ msgstr "Tutorials"
 msgid "Two sample t-test"
 msgstr "Zweistichproben t-Test"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8197
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8201
 msgid "Type"
 msgstr "Art"
 
@@ -5687,7 +5683,7 @@ msgstr ""
 "abgelegt wurden, zwischen \\[ und \\], um TeX in den Mathematik-Modus zu "
 "versetzen."
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7585
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:7589
 msgid "Wrapped search"
 msgstr "Suche wurde über das Ende des Dokuments hinweg fortgesetzt"
 
@@ -5825,12 +5821,12 @@ msgstr "[ nicht gespeichert* ]"
 msgid "[%i digits]"
 msgstr "[%i Ziffern]"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5088
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5092
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Animiertes Diagramm\" style=\"max-width:90%%;\" >\n"
 
-#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5262
+#: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5266
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Animiertes Diagramm\" style=\"max-width:90%%;\" >"
