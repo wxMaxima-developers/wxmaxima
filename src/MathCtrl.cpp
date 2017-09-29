@@ -2653,6 +2653,10 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
 {
   wxASSERT_MSG(GetWorkingGroup() != NULL, _("Bug: Got a question but no cell to answer it in"));
 
+  GroupCell *group = GetWorkingGroup(true);
+  if(group == NULL)
+    return;
+  
   // We are leaving the input part of the current cell in this step.
   TreeUndo_CellLeft();
 
@@ -2660,17 +2664,17 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
   TreeUndo_ActiveCell = NULL;
 
   // Make sure that the cell containing the question is visible
-  if (GetWorkingGroup()->RevealHidden())
+  if (group->RevealHidden())
   {
     FoldOccurred();
-    Recalculate(GetWorkingGroup(), true);
+    Recalculate(group, true);
   }
 
   // If we still haven't a cell to put the answer in we now create one.
   if (m_cellPointers.m_answerCell == NULL)
   {
     m_cellPointers.m_answerCell = new EditorCell(
-      GetWorkingGroup(),
+      group,
       &m_configuration,
       &m_cellPointers);
     m_cellPointers.m_answerCell->SetType(MC_TYPE_INPUT);
@@ -2682,13 +2686,13 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
       {
         txt = m_evaluationQueue.GetAnswer();
         m_evaluationQueue.RemoveFirstAnswer();
-        autoEvaluate = GetWorkingGroup()->AutoAnswer();
+        autoEvaluate = group->AutoAnswer();
       }
     }
     m_cellPointers.m_answerCell->SetValue(txt);
     dynamic_cast<EditorCell *>(m_cellPointers.m_answerCell)->CaretToEnd();
 
-    GetWorkingGroup()->AppendOutput(m_cellPointers.m_answerCell);
+    group->AppendOutput(m_cellPointers.m_answerCell);
 
     // If we filled in an answer and "AutoAnswer" is true we issue an evaluation event here.
     if(autoEvaluate)
