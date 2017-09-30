@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(wxmaxima)
 
-set(VERSION 17.07.0)
+set(VERSION 17.10.x-unofficial)
 set(PACKAGE_VERSION ${VERSION})
 set(GITVERSION ${VERSION})
 set(PACKAGE wxMaxima)
