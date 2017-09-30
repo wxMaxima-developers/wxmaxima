@@ -313,6 +313,11 @@ Configuration::~Configuration()
 
 bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2, wxString char3)
 {
+  // Seems like Apple didn't hold to their high standards as the maths part of this font
+  // don't form nice big mathematical symbols => Blacklisting this font.
+  if (font.GetFaceName() == wxT("Monaco"))
+    return false;
+  
   // Letters with width or height = 0 don't exist in the current font
   int width1,height1,descent1;
   GetDC()->GetTextExtent(char1,&width1,&height1,&descent1);
