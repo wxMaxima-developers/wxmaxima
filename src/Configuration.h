@@ -580,6 +580,12 @@ public:
   //! Which way do we want to draw parenthesis?
   void SetGrouphesisDrawMode(drawMode mode){m_parenthesisDrawMode = mode;}
 
+  void UseUnicodeMaths(bool useunicodemaths)
+    {
+      wxConfig::Get()->Write(wxT("useUnicodeMaths"), (m_useUnicodeMaths = useunicodemaths));
+    }
+  bool UseUnicodeMaths(){return m_useUnicodeMaths;}
+
   drawMode GetGrouphesisDrawMode();
   /*! Get the font for a given text style
 
@@ -672,6 +678,7 @@ private:
   int m_showLength;
   bool m_copyRTF;
   bool m_copySVG;
+  bool m_useUnicodeMaths;
 };
 
 #endif // CONFIGURATION_H

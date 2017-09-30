@@ -68,6 +68,7 @@ Configuration::Configuration(wxDC &dc, bool isTopLevel) : m_dc(&dc)
   m_copyRTF = true;
   m_copySVG = true;
   m_showLength = 2;
+  m_useUnicodeMaths = true;
 }
 
 void Configuration::ShowCodeCells(bool show)
@@ -101,7 +102,7 @@ void Configuration::ReadConfig()
   wxConfig *config = (wxConfig *) wxConfig::Get();
   m_autoWrap = 3;
   config->Read(wxT("autoWrapMode"), &m_autoWrap);
-
+  config->Read(wxT("useUnicodeMaths"), &m_useUnicodeMaths);
   config->Read(wxT("mathJaxURL"), &m_mathJaxURL);
 
   config->Read(wxT("antiAliasLines"), & m_antiAliasLines);
@@ -313,9 +314,14 @@ Configuration::~Configuration()
 
 bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2, wxString char3)
 {
+  if(!font.IsOk())
+    return false;
   // Seems like Apple didn't hold to their high standards as the maths part of this font
   // don't form nice big mathematical symbols => Blacklisting this font.
   if (font.GetFaceName() == wxT("Monaco"))
+    return false;
+
+  if(!m_useUnicodeMaths)
     return false;
   
   // Letters with width or height = 0 don't exist in the current font

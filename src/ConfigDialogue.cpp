@@ -236,6 +236,8 @@ void ConfigDialogue::SetProperties()
   m_mathJaxURL->SetToolTip(_("The URL MathJaX.js should be downloaded from by our HTML export."));
   m_saveSize->SetToolTip(_("Save wxMaxima window size/position between sessions."));
   m_texPreamble->SetToolTip(_("Additional commands to be added to the preamble of LaTeX output for pdftex."));
+  m_useJSMath->SetToolTip(_("Use nice js math symbols in order to get nice integral, sum, product and sqrt signs\nWoll only work if the corresponding js math fonts can be found by wxMaxima."));
+  m_useUnicodeMaths->SetToolTip(_("If the font provides big parenthesis symbols: Use them when big parenthesis are needed for maths display."));
   m_autoSaveInterval->SetToolTip(
           _("If this number of minutes has elapsed after the last save of the file, the file has been given a name (by opening or saving it) and the keyboard has been inactive for > 10 seconds the file is saved. If this number is zero the file isn't saved automatically at all."));
   m_defaultFramerate->SetToolTip(_("Define the default speed (in frames per second) animations are played back with."));
@@ -989,13 +991,14 @@ wxPanel *ConfigDialogue::CreateClipboardPanel()
 
 wxPanel *ConfigDialogue::CreateStylePanel()
 {
+  Configuration *configuration = m_configuration;
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
   wxStaticBox *fonts = new wxStaticBox(panel, -1, _("Fonts"));
   wxStaticBox *styles = new wxStaticBox(panel, -1, _("Styles"));
 
-  wxFlexGridSizer *vsizer = new wxFlexGridSizer(3, 1, 5, 5);
-  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(3, 2, 2, 2);
+  wxFlexGridSizer *vsizer = new wxFlexGridSizer(4, 1, 5, 5);
+  wxFlexGridSizer *grid_sizer_1 = new wxFlexGridSizer(4, 2, 2, 2);
   wxStaticBoxSizer *sb_sizer_1 = new wxStaticBoxSizer(fonts, wxVERTICAL);
   wxStaticBoxSizer *sb_sizer_2 = new wxStaticBoxSizer(styles, wxVERTICAL);
   wxBoxSizer *hbox_sizer_1 = new wxBoxSizer(wxHORIZONTAL);
@@ -1068,6 +1071,10 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   grid_sizer_1->Add(m_getMathFont, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_1->Add(10, 10);
   grid_sizer_1->Add(m_useJSMath, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  m_useUnicodeMaths = new wxCheckBox(panel, -1, _("Use unicode Math Symbols, if available"));
+  m_useUnicodeMaths->SetValue(configuration->UseUnicodeMaths());
+  grid_sizer_1->Add(10, 10);
+  grid_sizer_1->Add(m_useUnicodeMaths, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
   sb_sizer_1->Add(grid_sizer_1, 1, wxALL | wxEXPAND, 0);
   vsizer->Add(sb_sizer_1, 1, wxALL | wxEXPAND, 3);
@@ -1164,6 +1171,7 @@ void ConfigDialogue::WriteSettings()
   configuration->PrintBrackets(m_printBrackets->GetValue());
   config->Write(wxT("HTMLequationFormat"), m_exportWithMathJAX->GetSelection());
   config->Write(wxT("usejsmath"), m_useJSMath->GetValue());
+  configuration->UseUnicodeMaths(m_useUnicodeMaths->GetValue());
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
   config->Write(wxT("texPreamble"), m_texPreamble->GetValue());
   config->Write(wxT("autoSaveInterval"), m_autoSaveInterval->GetValue());
