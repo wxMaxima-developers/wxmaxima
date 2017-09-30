@@ -513,7 +513,9 @@ void TextCell::SetFont(int fontsize)
   
   if (!font.IsOk())
     font = *wxNORMAL_FONT;
-  
+
+  font.SetPointSize(m_fontSize);
+
   wxASSERT_MSG(font.IsOk(),
                _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
   dc->SetFont(font);
