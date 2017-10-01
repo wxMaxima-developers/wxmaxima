@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
@@ -5283,7 +5283,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.AddDeveloper(wxT("Doug Ilijev <doug.ilijev@gmail.com>"));
       info.AddDeveloper(wxT("Gunter Königsmann <wxMaxima@physikbuch.de>"));
 
-      info.AddTranslator(wxT("Innocent de Marchi (ca)"));
+      info.AddTranslator(wxT("Innocent De Marchi (ca)"));
       info.AddTranslator(wxT("Josef Barak (cs)"));
       info.AddTranslator(wxT("Robert Marik (cs)"));
       info.AddTranslator(wxT("Jens Thostrup (da)"));
