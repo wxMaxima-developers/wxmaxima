@@ -183,21 +183,6 @@ wxString FunCell::ToOMML()
          m_argCell->ListToOMML();
 }
 
-void FunCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
-{
-  *first = NULL;
-  *last = NULL;
-  if (m_nameCell->ContainsRect(rect))
-    m_nameCell->SelectRect(rect, first, last);
-  else if (m_argCell->ContainsRect(rect))
-    m_argCell->SelectRect(rect, first, last);
-  if (*first == NULL || *last == NULL)
-  {
-    *first = this;
-    *last = this;
-  }
-}
-
 bool FunCell::BreakUp()
 {
   if (!m_isBroken)

@@ -71,11 +71,6 @@ public:
 
   MathCell *Copy();
 
-  void SelectInner(wxRect &rect, MathCell **first, MathCell **last)
-  {
-    *first = *last = this;
-  }
-
   int GetDisplayedIndex()
   { return m_displayed; }
 

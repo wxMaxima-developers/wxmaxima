@@ -189,22 +189,6 @@ wxString AbsCell::ToXML()
   return wxT("<a") +flags + wxT(">") + m_innerCell->ListToXML() + wxT("</a>");
 }
 
-void AbsCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
-{
-  *first = NULL;
-  *last = NULL;
-
-  if (m_innerCell->ContainsRect(rect))
-    m_innerCell->SelectRect(rect, first, last);
-
-  if (*first == NULL || *last == NULL)
-  {
-    *first = this;
-    *last = this;
-  }
-}
-
-
 bool AbsCell::BreakUp()
 {
   if (!m_isBroken)

@@ -482,10 +482,7 @@ class MathCell
 
   void SelectLast(wxRect &rect, MathCell **last);
 
-  /*! Select a rectangle that is created by a cell inside this cell.
-
-    \attention This method has to be overridden by children of the 
-    MathCell class.
+  /*! Select the cells described by the rectangle rect.
   */
   virtual void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
 

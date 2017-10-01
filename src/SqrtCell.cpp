@@ -330,21 +330,6 @@ wxString SqrtCell::ToXML()
   return wxT("<q") + flags + wxT(">") + m_innerCell->ListToXML() + wxT("</q>");
 }
 
-void SqrtCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
-{
-  *first = NULL;
-  *last = NULL;
-
-  if (m_innerCell->ContainsRect(rect))
-    m_innerCell->SelectRect(rect, first, last);
-
-  if (*first == NULL || *last == NULL)
-  {
-    *first = this;
-    *last = this;
-  }
-}
-
 bool SqrtCell::BreakUp()
 {
   if (!m_isBroken)

@@ -64,8 +64,6 @@ public:
 
   MathCell *Copy();
 
-  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
-
   bool BreakUp();
 
   void Unbreak();

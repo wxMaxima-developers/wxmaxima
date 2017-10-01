@@ -508,20 +508,3 @@ wxString IntCell::ToXML()
   
   return wxT("<in") + flags + wxT(">") + from + to + base + var + wxT("</in>");
 }
-
-void IntCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
-{
-  *first = NULL;
-  *last = NULL;
-  if (m_over->ContainsRect(rect))
-    m_over->SelectRect(rect, first, last);
-  else if (m_under->ContainsRect(rect))
-    m_under->SelectRect(rect, first, last);
-  else if (m_base->ContainsRect(rect))
-    m_base->SelectRect(rect, first, last);
-  if (*first == NULL || *last == NULL)
-  {
-    *first = this;
-    *last = this;
-  }
-}

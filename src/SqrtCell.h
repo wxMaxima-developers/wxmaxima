@@ -57,8 +57,6 @@ public:
 
   void SetInner(MathCell *inner);
 
-  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
-
   void RecalculateHeight(int fontsize);
 
   void RecalculateWidths(int fontsize);

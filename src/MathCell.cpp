@@ -939,8 +939,22 @@ void MathCell::SelectLast(wxRect &rect, MathCell **last)
  */
 void MathCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
 {
-  *first = this;
-  *last = this;
+  *first = NULL;
+  *last = NULL;
+
+  std::list<MathCell*> cellList = GetInnerCells();
+  for (std::list<MathCell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
+    if(*it != NULL)
+    {
+      if ((*it)->ContainsRect(rect))
+        (*it)->SelectRect(rect, first, last);
+    }
+  
+  if (*first == NULL || *last == NULL)
+  {
+    *first = this;
+    *last = this;
+  }
 }
 
 bool MathCell::BreakLineHere()

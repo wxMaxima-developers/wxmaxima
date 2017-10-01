@@ -55,8 +55,6 @@ public:
 
   wxString ToXML();
 
-  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
-
   void SetGroup(MathCell *parent);
 
 protected:

@@ -237,16 +237,3 @@ wxString LimitCell::ToOMML()
          under + _T("</m:lim></m:limLow></m:fName><m:e>") +
          m_base->ListToOMML() + _T("</m:e></m:func>");
 }
-
-void LimitCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
-{
-  *first = NULL;
-  *last = NULL;
-  if (m_base->ContainsRect(rect))
-    m_base->SelectRect(rect, first, last);
-  if (*first == NULL || *last == NULL)
-  {
-    *first = this;
-    *last = this;
-  }
-}

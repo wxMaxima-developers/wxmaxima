@@ -79,8 +79,6 @@ public:
 
   wxString GetDiffPart();
 
-  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
-
   void IsMatrix(bool isMatrix)
   {
     m_isMatrix = isMatrix;

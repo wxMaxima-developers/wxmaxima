@@ -175,18 +175,3 @@ wxString AtCell::ToXML()
   return wxT("<at") + flags + wxT("><r>") + m_baseCell->ListToXML() + wxT("</r><r>") +
          m_indexCell->ListToXML() + wxT("</r></at>");
 }
-
-void AtCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
-{
-  *first = NULL;
-  *last = NULL;
-  if (m_baseCell->ContainsRect(rect))
-    m_baseCell->SelectRect(rect, first, last);
-  else if (m_indexCell->ContainsRect(rect))
-    m_indexCell->SelectRect(rect, first, last);
-  if (*first == NULL || *last == NULL)
-  {
-    *first = this;
-    *last = this;
-  }
-}

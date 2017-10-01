@@ -368,21 +368,6 @@ wxString FracCell::ToXML()
          m_denom->ListToXML() + _T("</r></f>");
 }
 
-void FracCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
-{
-  *first = NULL;
-  *last = NULL;
-  if (m_num->ContainsRect(rect))
-    m_num->SelectRect(rect, first, last);
-  else if (m_denom->ContainsRect(rect))
-    m_denom->SelectRect(rect, first, last);
-  if (*first == NULL || *last == NULL)
-  {
-    *first = this;
-    *last = this;
-  }
-}
-
 void FracCell::SetExponentFlag()
 {
   if (m_num->IsShortNum() && m_denom->IsShortNum())

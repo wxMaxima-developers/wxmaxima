@@ -50,11 +50,6 @@ public:
 
   MathCell *Copy();
 
-  void SelectInner(wxRect &rect, MathCell **first, MathCell **last)
-  {
-    *first = *last = this;
-  }
-
   friend class SlideShow;
 
   /*! Writes the image to a file

@@ -62,8 +62,6 @@ public:
 
   void SetDimension();
 
-  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
-
   wxString ToString();
 
   wxString ToTeX();

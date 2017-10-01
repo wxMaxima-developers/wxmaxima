@@ -251,21 +251,6 @@ wxString ExptCell::ToXML()
          m_powCell->ListToXML() + _T("</r></e>");
 }
 
-void ExptCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
-{
-  *first = NULL;
-  *last = NULL;
-  if (m_powCell->ContainsRect(rect))
-    m_powCell->SelectRect(rect, first, last);
-  else if (m_baseCell->ContainsRect(rect))
-    m_baseCell->SelectRect(rect, first, last);
-  if (*first == NULL || *last == NULL)
-  {
-    *first = this;
-    *last = this;
-  }
-}
-
 bool ExptCell::BreakUp()
 {
   if (!m_isBroken)

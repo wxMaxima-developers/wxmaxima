@@ -352,22 +352,3 @@ void MatrCell::SetDimension()
   if (m_matHeight != 0)
     m_matWidth = m_matWidth / m_matHeight;
 }
-
-void MatrCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
-{
-  *first = NULL;
-  *last = NULL;
-  for (int i = 0; i < m_matHeight; i++)
-  {
-    for (int j = 0; j < m_matWidth; j++)
-    {
-      if (m_cells[i * m_matWidth + j]->ContainsRect(rect))
-        m_cells[i * m_matWidth + j]->SelectRect(rect, first, last);
-    }
-  }
-  if (*first == NULL || *last == NULL)
-  {
-    *first = this;
-    *last = this;
-  }
-}

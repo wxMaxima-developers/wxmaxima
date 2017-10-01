@@ -45,8 +45,6 @@ public:
 
   void Draw(wxPoint point, int fontsize);
 
-  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
-
   wxString ToString();
 
   wxString ToTeX();

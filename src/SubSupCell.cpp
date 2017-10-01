@@ -233,20 +233,3 @@ wxString SubSupCell::ToXML()
          + _T("</r><r>") + m_indexCell->ListToXML()
          + _T("</r></ie>");
 }
-
-void SubSupCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
-{
-  *first = NULL;
-  *last = NULL;
-  if (m_indexCell->ContainsRect(rect))
-    m_indexCell->SelectRect(rect, first, last);
-  else if (m_baseCell->ContainsRect(rect))
-    m_baseCell->SelectRect(rect, first, last);
-  else if (m_exptCell->ContainsRect(rect))
-    m_exptCell->SelectRect(rect, first, last);
-  if (*first == NULL || *last == NULL)
-  {
-    *first = this;
-    *last = this;
-  }
-}

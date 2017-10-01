@@ -79,8 +79,6 @@ public:
 
   wxString ToOMML();
 
-  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
-
   bool BreakUp();
 
   void Unbreak();
