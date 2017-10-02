@@ -1102,8 +1102,7 @@ void MathCell::SetForeground()
 
 bool MathCell::IsMath()
 {
-  return !(m_textStyle == TS_DEFAULT ||
-           m_textStyle == TS_LABEL ||
+  return !(m_textStyle == TS_LABEL ||
            m_textStyle == TS_USERLABEL ||
            m_textStyle == TS_INPUT);
 }
