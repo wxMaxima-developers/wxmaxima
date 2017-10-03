@@ -20,6 +20,7 @@ EXTRA_DIST = README.md bootstrap wxmaxima.spec.in     \
 	     art/toolbar/weather-clear.png                   \
 	     art/toolbar/weather-few-clouds.png              \
 	     art/toolbar/software-update-urgent.png          \
+	     art/config/media-playback-start.png	     \
 	     art/config/options.png                          \
 	     art/config/maxima.png                           \
 	     art/config/styles.png                           \
