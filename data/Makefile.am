@@ -6,7 +6,7 @@ bashcompletion_DATA = wxmaxima
 
 EXTRA_DIST = wxmaxima tips.txt wxmathml.lisp wxmaxima.png wxmaxima.svg Info.plist.in PkgInfo autocomplete.txt winrc/wxmaxima.manifest dylibs.sed winrc/wxmac-doc.ico winrc/maximaicon.ico
 
-appdatadir = $(datarootdir)/appdata
+appdatadir = $(datarootdir)/metainfo
 dist_appdata_DATA = wxMaxima.appdata.xml
 
 appicondir = $(datarootdir)/pixmaps
