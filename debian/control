@@ -2,17 +2,17 @@ Source: wxmaxima
 Section: math
 Priority: optional
 Maintainer: Gunter Königsmann <wxmaxima@physikbuch.de>
-Build-Depends: debhelper (>= 9), cmake, libwxgtk3.0-dev, perl, texinfo, gettext
+Build-Depends: debhelper (>= 10), cmake, libwxgtk3.0-dev, gettext
 Vcs-Browser: https://github.com/andrejv/wxmaxima
-Standards-Version: 3.9.8
+Standards-Version: 4.1.1
 Vcs-Git: https://github.com/andrejv/wxmaxima.git -b DebianPackaging
 Homepage: http://andrejv.github.com/wxmaxima/
 
 Package: wxmaxima
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, maxima (>= 5.18), ibus-gtk3,
- maxima-doc (>= 5.10.0), imagemagick
-Recommends: fonts-jsmath, texlive-latex-extra
+Depends: ${shlibs:Depends}, ${misc:Depends}, ibus-gtk3
+Recommends: maxima-doc
+Suggests: fonts-jsmath, texlive-latex-extra
 Description: GUI for the computer algebra system Maxima
  wxMaxima is a graphical user interface for the computer algebra system
  Maxima. It eases the use of Maxima by making most of its commands available

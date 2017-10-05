@@ -1,14 +1,24 @@
-wxmaxima (17.05.0-1) unstable; urgency=medium
+wxmaxima (17.10.0-1) unstable; urgency=medium
 
   * New upstream release with many new features, bugfixes and performance
-    improvements
+    improvements.
   * Switched the build system to cmake replacing the dependency to dh-autoreconf
-    by the dependency to cmake
+    by the dependency to cmake.
+  * Bumped the standards version to 3.9.8
+  * Added a Patch that updates the location of appdata.xml
   * debian/rules: Cleaned up override_dh_auto_build and override_dh_auto_install
-  * Dropped the patch that repairs chdir for gcl as it was upstreamed.
-  * Added lintian overrides for two tango icons (public domain) whose svg source
-    erroneously marked them as proprietary.
- -- Gunter Königsmann <wxmaxima@physikbuch.de>  Wed, 24 May 2017 09:15:36 +0100
+  * debian/control: wxMaxima doesn't depend on a specific version of maxima and
+    maxima-doc.
+  * debian/control: There is a good fallback for a missing fonts-jsmath.
+    maxima-doc isn't necessary for running wxMaxima and the type of pdf
+    animations texlive-latex-extra was needed for are no more
+    supported by any major pdf viewer => Changed these packages to "suggested".
+  * debian/control: Dropped the dependency to ImageMagick, perl and texinfo
+    which are no more used.
+  * debian/copyright: wxmathml.lisp has been replaced by wxmathml.lisp.in
+  * Dropped all patches as they were upstreamed.
+  * Changed the watch file to look at github, which is the new project location.
+ -- Gunter Königsmann <wxmaxima@physikbuch.de>  Sun, 1 Oct 2017 21:12:36 +0100
 
 wxmaxima (16.12.2-2) unstable; urgency=medium
 
