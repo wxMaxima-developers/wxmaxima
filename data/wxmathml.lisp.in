@@ -1918,8 +1918,3 @@
        (simplify (mfunction-call $printf t '"~a;" $i)))
      (simplify (mfunction-call $printf t '"</slide></mth>")))
     ))
-
-;; Work around a bug in :lisp
-;; (If the first is a :lisp command it doesn't create an input prompt and thus doesn't
-;; cause wxMaxima to continue evaluation).
-(setq *mread-prompt* "<PROMPT-P/>(%i1) <PROMPT-S/>")
