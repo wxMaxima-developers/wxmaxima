@@ -16,6 +16,7 @@ wxmaxima (17.10.0-1) unstable; urgency=medium
   * debian/control: Dropped the dependency to ImageMagick, perl and texinfo
     which are no more used.
   * debian/copyright: wxmathml.lisp has been replaced by wxmathml.lisp.in
+  * debian/watch: Tried to make the watch file work again.
   * Dropped all patches as they were upstreamed.
   * Changed the watch file to look at github, which is the new project location.
  -- Gunter Königsmann <wxmaxima@physikbuch.de>  Sun, 1 Oct 2017 21:12:36 +0100
