@@ -35,4 +35,4 @@ notification:
 git:
   depth: 15
 
-script: mkdir build && cd build && CXXFLAGS=-Wall cmake .. && cmake --build . && cmake --build . -- html && cmake --build . -- install DESTDIR=$(pwd)/installtest && cmake --build . package
+script: mkdir build && cd build && CXXFLAGS="-Wall -Wextra" cmake .. && cmake --build . && cmake --build . -- html && cmake --build . -- install DESTDIR=$(pwd)/installtest && cmake --build . -- package
