@@ -202,12 +202,15 @@ void MathCtrl::RedrawIfRequested()
       
         if(toolTip != wxEmptyString)
         {
-          if(toolTip != GetToolTip()->GetTip())
+          if(GetToolTip() != NULL)
           {
-            // Disabling and re-enabling tooltips resets the tooltip poput delay timer.
-            wxToolTip::Enable(false);
-            wxToolTip::Enable(true);
-            SetToolTip(toolTip);
+            if(toolTip != GetToolTip()->GetTip())
+            {
+              // Disabling and re-enabling tooltips resets the tooltip poput delay timer.
+              wxToolTip::Enable(false);
+              wxToolTip::Enable(true);
+              SetToolTip(toolTip);
+            }
           }
         }
         else
