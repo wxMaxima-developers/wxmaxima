@@ -52,7 +52,10 @@ endif()
 
 
 # Build Packages
-set(CPACK_GENERATOR "TGZ;TBZ2;DEB")
+set(CPACK_GENERATOR "TGZ;TBZ2")
+if(UNIX AND NOT APPLE)
+    list(APPEND CPACK_GENERATOR "DEB") # Don't build DEB packages on MacOS
+endif()
 
 # build RPMs only if rpmbuild is installed
 find_program(RPMBUILD_EXECUTABLE rpmbuild)
