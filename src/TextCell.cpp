@@ -175,6 +175,8 @@ void TextCell::SetValue(const wxString &text)
     if(text.StartsWith(wxT("part: fell off the end.")))
        m_toolTip = _("part() or the [] operator was used in order to extract the nth element "
                      "of something that was less than n elements long.");
+    if(text.StartsWith(wxT("assignment: cannot assign to")))
+       m_toolTip = _("The value of few special variables is assigned by maxima and cannot be changed by the user.");
     if(text.StartsWith(wxT("rat: replaced ")))
       m_toolTip = _("Normally computers use floating-point numbers that can be handled "
                     "incredibly fast while being accurate to dozends of digits. "
