@@ -1,0 +1,40 @@
+From de432b205a3d53ae5c235c4fc08dd1d628b247ef Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Gunter=20K=C3=B6nigsmann?= <gunter@peterpall.de>
+Date: Thu, 5 Oct 2017 08:17:32 +0200
+Subject: [PATCH 1/2] The standard appdata dir has changed in the
+ freedesktop.org spec.
+
+---
+ data/CMakeLists.txt | 2 +-
+ data/Makefile.am    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/data/CMakeLists.txt b/data/CMakeLists.txt
+index 55c58b2b..5ce5b248 100644
+--- a/data/CMakeLists.txt
++++ b/data/CMakeLists.txt
+@@ -27,7 +27,7 @@ else()
+     install(FILES ${PIXMAPS}                                       DESTINATION share/pixmaps)
+     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima             DESTINATION share/bash-completion/completions)
+     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.1           DESTINATION share/man/man1)
+-    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxMaxima.appdata.xml DESTINATION share/appdata)
++    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxMaxima.appdata.xml DESTINATION share/metainfo)
+     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxMaxima.desktop     DESTINATION share/applications)
+     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/x-wxmathml.xml       DESTINATION share/mime/packages)
+     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/x-wxmaxima-batch.xml DESTINATION share/mime/packages)
+diff --git a/data/Makefile.am b/data/Makefile.am
+index 9138d406..f604f036 100644
+--- a/data/Makefile.am
++++ b/data/Makefile.am
+@@ -6,7 +6,7 @@ bashcompletion_DATA = wxmaxima
+ 
+ EXTRA_DIST = wxmaxima tips.txt wxmathml.lisp wxmaxima.png wxmaxima.svg Info.plist.in PkgInfo autocomplete.txt winrc/wxmaxima.manifest dylibs.sed winrc/wxmac-doc.ico winrc/maximaicon.ico
+ 
+-appdatadir = $(datarootdir)/appdata
++appdatadir = $(datarootdir)/metainfo
+ dist_appdata_DATA = wxMaxima.appdata.xml
+ 
+ appicondir = $(datarootdir)/pixmaps
+-- 
+2.14.1
+
