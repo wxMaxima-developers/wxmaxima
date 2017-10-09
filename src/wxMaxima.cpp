@@ -1549,9 +1549,9 @@ void wxMaxima::SetCWD(wxString file)
 
   // Escape all backslashes in the filename if needed by the OS.
   wxString filenamestring = filename.GetFullPath();
-#if defined __WXMSW__
+  wxString dirname = filename.GetPath();
   filenamestring.Replace(wxT("\\"),wxT("/"));
-#endif
+  dirname.Replace(wxT("\\"),wxT("/"));
 
   wxString workingDirectory = filename.GetPath();
 
@@ -1568,7 +1568,7 @@ void wxMaxima::SetCWD(wxString file)
                filenamestring +
                wxT("\")"));
     SendMaxima(wxT(":lisp-quiet (setf $wxdirname \"") +
-               filename.GetPath() +
+               dirname +
                wxT("\")"));
 
     SendMaxima(wxT(":lisp-quiet (wx-cd \"") + filenamestring + wxT("\")"));
