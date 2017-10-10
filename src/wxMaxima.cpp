@@ -1550,9 +1550,13 @@ void wxMaxima::SetCWD(wxString file)
   // Escape all backslashes in the filename if needed by the OS.
   wxString filenamestring = filename.GetFullPath();
   wxString dirname = filename.GetPath();
+
+#if defined (__WXMSW__)
+  // On MSW filenames with a "\" are widely used - but only partially supported.
   filenamestring.Replace(wxT("\\"),wxT("/"));
   dirname.Replace(wxT("\\"),wxT("/"));
-
+#endif
+  
   wxString workingDirectory = filename.GetPath();
 
   bool wxcd = true;
