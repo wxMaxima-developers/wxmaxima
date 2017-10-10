@@ -212,6 +212,8 @@ void MathCtrl::RedrawIfRequested()
               SetToolTip(toolTip);
             }
           }
+          else
+              SetToolTip(toolTip);
         }
         else
           UnsetToolTip();
