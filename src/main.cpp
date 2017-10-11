@@ -178,12 +178,10 @@ bool MyApp::OnInit()
   lang = wxLocale::GetSystemLanguage();
   config->Read(wxT("language"), &lang);
 
-  // If wxWidgets or wxMaxima doesn't provide a translation for the current language
-  // we don't want this to throw an error => Mute errors for the next command.
-  {
-    wxLogNull disableErrors;
+  if(wxLocale::IsAvailable(lang))
     m_locale.Init(lang);
-  }
+  else
+    m_locale.Init(wxLANGUAGE_ENGLISH);
 
 #if defined (__WXMSW__)
   wxSetEnv(wxT("LANG"), m_locale.GetName());
@@ -193,12 +191,12 @@ bool MyApp::OnInit()
     if(dir != wxEmptyString)
       wxSetWorkingDirectory(wxPathOnly(wxStandardPaths::Get().GetExecutablePath()));
   }
-    
-    Dirstructure dirstruct;
-    wxString fontPrefix = dirstruct.FontDir() + wxT("/");
-
+  
+  Dirstructure dirstruct;
+  wxString fontPrefix = dirstruct.FontDir() + wxT("/");
+  
   /* Add private jsMath fonts, if they exist */ 
-    if (wxFileExists(fontPrefix + wxT(CMEX10) + wxT(".ttf"))) AddFontResource(fontPrefix + wxT(CMEX10) + wxT(".ttf"));
+  if (wxFileExists(fontPrefix + wxT(CMEX10) + wxT(".ttf"))) AddFontResource(fontPrefix + wxT(CMEX10) + wxT(".ttf"));
   if (wxFileExists(fontPrefix + wxT(CMSY10) + wxT(".ttf"))) AddFontResource(fontPrefix + wxT(CMSY10) + wxT(".ttf"));
   if (wxFileExists(fontPrefix + wxT(CMR10) + wxT(".ttf")))  AddFontResource(fontPrefix + wxT(CMR10) + wxT(".ttf"));
   if (wxFileExists(fontPrefix + wxT(CMMI10) + wxT(".ttf"))) AddFontResource(fontPrefix + wxT(CMMI10) + wxT(".ttf"));

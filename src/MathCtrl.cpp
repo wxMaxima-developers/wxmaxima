@@ -139,6 +139,9 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
   // to disappear causing a size change... ...which might be an endless loop.
   ShowScrollbars(wxSHOW_SB_ALWAYS, wxSHOW_SB_ALWAYS);
   ClearDocument();
+  #if wxUSE_ACCESSIBILITY
+  m_accessibilityInfo = new AccessibilityInfo(this);
+  #endif
 }
 
 void MathCtrl::RedrawIfRequested()

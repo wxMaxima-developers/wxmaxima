@@ -1424,10 +1424,11 @@ public:
     MathCtrl *m_mathCtrl;
     int m_childCount;
   };
+#endif
+protected:
+#if wxUSE_ACCESSIBILITY
   AccessibilityInfo *m_accessibilityInfo;
 #endif
-  
-protected:
   void UpdateConfigurationClientSize();
 
   //! The x position of the mouse pointer
