@@ -1,13 +1,8 @@
-file(GLOB IMAGE_FILES *.jpg *.png)
+file(GLOB WXMAXIMA_HELP_FILES *.jpg *.png *.html)
 
 #find_program(MAKEINFO makeinfo)
 #if(NOT MAKEINFO)
 #    message(WARNING "Makeinfo not found. Old wxmaxima.html will be installed.")
-if(WIN32)
-    install(FILES wxmaxima.html DESTINATION wxMaxima/help)
-else()
-    install(FILES wxmaxima.html DESTINATION share/doc/wxmaxima)
-endif()
 #else()
 #    message(STATUS "Makeinfo found at ${MAKEINFO}")
 #    add_custom_command(OUTPUT "wxmaxima.info"
@@ -29,12 +24,12 @@ endif()
 #endif()
 
 if(WIN32)
-    install(FILES ${IMAGE_FILES} DESTINATION wxMaxima/help)
+    install(FILES ${WXMAXIMA_HELP_FILES} DESTINATION wxMaxima/help)
 else()
-    install(FILES ${IMAGE_FILES} DESTINATION share/doc/wxmaxima)
+    install(FILES ${WXMAXIMA_HELP_FILES} DESTINATION share/doc/wxmaxima)
 endif()
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
 if(UNIX)
-    file(COPY ${IMAGE_FILES} wxmaxima.html DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+    file(COPY ${WXMAXIMA_HELP_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 endif()  
