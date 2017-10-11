@@ -322,6 +322,10 @@ void TextCell::RecalculateWidths(int fontsize)
         text = wxT("(") + m_userDefinedLabel + wxT(")");
         m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
       }
+
+      wxFont font = dc->GetFont();
+      font.SetPointSize(Scale_Px(configuration->GetDefaultFontSize(),configuration->GetScale()));
+      dc->SetFont(font);
       
       // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
       if (text.Right(2) != wxT("/ "))
@@ -330,21 +334,21 @@ void TextCell::RecalculateWidths(int fontsize)
         dc->GetTextExtent(wxT("(%o") + LabelWidthText() + wxT(")/R/"), &m_width, &m_height);
 
       // We will decrease it before use
-      m_fontSizeLabel = m_fontSize;
+      m_fontSizeLabel = m_fontSize + 1;
       wxASSERT_MSG((m_width > 0) || (text == wxEmptyString),
                    _("The letter \"X\" is of width zero. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
       if (m_width < 1) m_width = 10;
       dc->GetTextExtent(text, &m_labelWidth, &m_labelHeight);
       wxASSERT_MSG((m_labelWidth > 0) || (m_displayedText == wxEmptyString),
                    _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
-      wxFont font(dc->GetFont());
-      while ((m_labelWidth >= m_width) && (m_fontSizeLabel > 2))
+      font = dc->GetFont();
+      do
       {
         int fontsize1 = Scale_Px(--m_fontSizeLabel, scale);
         font.SetPointSize(fontsize1);
         dc->SetFont(font);
         dc->GetTextExtent(text, &m_labelWidth, &m_labelHeight);
-      }
+      } while ((m_labelWidth >= m_width) && (m_fontSizeLabel > 2));
     }
 
       /// Check if we are using jsMath and have jsMath character
@@ -488,6 +492,7 @@ void TextCell::SetFont(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
+  m_fontSize = configuration->GetDefaultFontSize();
 
   if ((m_textStyle == TS_TITLE) ||
       (m_textStyle == TS_SECTION) ||
@@ -501,7 +506,8 @@ void TextCell::SetFont(int fontsize)
   {
     // Font within maths has a dynamic font size that might be reduced for example
     // within fractions, subscripts or superscripts.
-    m_fontSize = fontsize;
+    if ((m_textStyle != TS_MAIN_PROMPT) && (m_textStyle != TS_OTHER_PROMPT))
+      m_fontSize = fontsize;
   }
 
   wxFont font = configuration->GetFont(m_textStyle,fontsize);
