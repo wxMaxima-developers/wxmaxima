@@ -33,3 +33,8 @@ if(WIN32)
 else()
     install(FILES ${IMAGE_FILES} DESTINATION share/doc/wxmaxima)
 endif()
+
+# allow local execution (./wxmaxima-local) from the build directory without installation
+if(UNIX)
+    file(COPY ${IMAGE_FILES} wxmaxima.html DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+endif()  
