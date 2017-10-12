@@ -51,6 +51,11 @@ else()
 endif()
 
 
+# allow local execution (./wxmaxima-local) from the build directory without installation
+if(UNIX)
+    file(WRITE "${CMAKE_BINARY_DIR}/wxmaxima-local" "#!/bin/sh\n${CMAKE_BINARY_DIR}/src/wxmaxima $*\n")
+    execute_process(COMMAND chmod +x "${CMAKE_BINARY_DIR}/wxmaxima-local")
+endif()  
 # Build Packages
 set(CPACK_GENERATOR "TGZ;TBZ2")
 if(UNIX AND NOT APPLE)
