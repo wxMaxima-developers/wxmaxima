@@ -261,7 +261,6 @@ void wxMaximaFrame::do_layout()
 
   m_manager.AddPane(m_history,
                     wxAuiPaneInfo().Name(wxT("history")).
-                            Caption(_("History")).
                             Show(false).
                             TopDockable(true).
                             BottomDockable(true).
@@ -272,7 +271,6 @@ void wxMaximaFrame::do_layout()
 
   m_manager.AddPane(m_console->m_tableOfContents,
                     wxAuiPaneInfo().Name(wxT("structure")).
-                            Caption(_("Table of Contents")).
                             Show(true).
                             TopDockable(true).
                             BottomDockable(true).
@@ -283,7 +281,6 @@ void wxMaximaFrame::do_layout()
 
   m_manager.AddPane(m_xmlInspector,
                     wxAuiPaneInfo().Name(wxT("XmlInspector")).
-                            Caption(_("Raw XML monitor")).
                             Show(false).
                             TopDockable(true).
                             BottomDockable(true).
@@ -294,7 +291,6 @@ void wxMaximaFrame::do_layout()
 
   m_manager.AddPane(CreateStatPane(),
                     wxAuiPaneInfo().Name(wxT("stats")).
-                            Caption(_("Statistics")).
                             Show(false).
                             TopDockable(true).
                             BottomDockable(true).
@@ -308,7 +304,6 @@ void wxMaximaFrame::do_layout()
 #ifdef wxUSE_UNICODE
   m_manager.AddPane(greekPane,
                     wxAuiPaneInfo().Name(wxT("greek")).
-                            Caption(_("Greek Letters")).
                             Show(false).
                             DockFixed(false).
                             Gripper(true).
@@ -326,7 +321,6 @@ void wxMaximaFrame::do_layout()
   wxPanel *symbolsPane = CreateSymbolsPane();
   m_manager.AddPane(symbolsPane,
                     wxAuiPaneInfo().Name(wxT("symbols")).
-                            Caption(_("Mathematical Symbols")).
                             Show(false).
                             DockFixed(false).
                             Gripper(true).
@@ -343,7 +337,6 @@ void wxMaximaFrame::do_layout()
 #endif
   m_manager.AddPane(CreateMathPane(),
                     wxAuiPaneInfo().Name(wxT("math")).
-                            Caption(_("General Math")).
                             Show(false).
                             TopDockable(true).
                             BottomDockable(true).
@@ -355,7 +348,6 @@ void wxMaximaFrame::do_layout()
 
   m_manager.AddPane(CreateFormatPane(),
                     wxAuiPaneInfo().Name(wxT("format")).
-                            Caption(_("Insert")).
                             Show(false).
                             TopDockable(true).
                             BottomDockable(true).
@@ -366,14 +358,12 @@ void wxMaximaFrame::do_layout()
                             Left());
 
   m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).
-            Caption(_("Greek Letters")).
             MinSize(greekPane->GetEffectiveMinSize()).
             BestSize(greekPane->GetEffectiveMinSize()).
             Show(true).
             MaxSize(greekPane->GetEffectiveMinSize());
   
   m_manager.GetPane(wxT("symbols")) = m_manager.GetPane(wxT("symbols")).
-            Caption(_("Symbols")).
             MinSize(symbolsPane->GetEffectiveMinSize()).
             BestSize(symbolsPane->GetEffectiveMinSize()).
             Show(true).
@@ -391,10 +381,23 @@ void wxMaximaFrame::do_layout()
   // eventually adding the toolbar.
   if(perspective != wxEmptyString)
     m_manager.LoadPerspective(perspective,false);
-  
-  if(!m_manager.GetPane(wxT("console")).IsShown())
-    m_manager.GetPane(wxT("console")).Show(true);
-  
+
+  // It somehow is possible to hide the maxima worksheet - which renders wxMaxima
+  // basically useless => force it to be enabled.
+  m_manager.GetPane(wxT("console")).Show(true);
+
+  // LoadPerspective overwrites the pane names with the saved ones -which can
+  // belong to a translation different to the one selected currently =>
+  // let's overwrite the names here.
+  m_manager.GetPane(wxT("symbols")).Caption(_("Mathematical Symbols"));
+  m_manager.GetPane(wxT("format")).Caption(_("Insert"));
+  m_manager.GetPane(wxT("greek")).Caption(_("Greek Letters"));
+  m_manager.GetPane(wxT("math")).Caption(_("General Math"));
+  m_manager.GetPane(wxT("stats")).Caption(_("Statistics"));
+  m_manager.GetPane(wxT("XmlInspector")).Caption(_("Raw XML monitor"));
+  m_manager.GetPane(wxT("structure")).Caption(_("Table of Contents"));
+  m_manager.GetPane(wxT("history")).Caption(_("History"));
+ 
   bool toolbar = true;
   config->Read(wxT("AUI/toolbar"), &toolbar);
   ShowToolBar(toolbar);
