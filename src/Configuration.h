@@ -166,6 +166,7 @@ public:
   //! Sets the zoom factor without storing the new value in the config file/registry.
   void SetZoomFactor_temporarily(double newzoom){m_zoomFactor = newzoom;}
 
+  //! Scales a distance [in pixels] according to the zoom factor
   int Scale_Px(double px){return (int)(px * GetZoomFactor() + 0.5); }
 
   //! Determines the zoom factor the worksheet is displayed at

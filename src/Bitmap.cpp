@@ -44,7 +44,8 @@ Bitmap::Bitmap(Configuration **configuration, int scale)
   m_bmp.CreateScaled(m_width = 10, m_height= 10, 24, scale);
   m_dc->SelectObject(m_bmp);
   m_dc->SetUserScale(m_scale, m_scale);
-
+  m_dc->SetPen(wxNullPen);
+  
   *m_configuration = new Configuration(*m_dc);
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
   (*m_configuration)->SetZoomFactor_temporarily(1);
@@ -108,10 +109,27 @@ bool Bitmap::Layout(long int maxSize)
     wxDELETE(m_dc);
     m_dc = new wxMemoryDC();
     m_bmp.CreateScaled(m_width, m_height, 24, m_scale);
-    m_dc->SelectObject(m_bmp);
-    m_dc->SetUserScale(m_scale, m_scale);
-    Draw();
-    return true;
+    if(!m_bmp.IsOk())
+    {
+      m_bmp = wxNullBitmap;
+      return false;
+    }
+    else
+    {
+      m_dc->SelectObject(m_bmp);
+      m_dc->SetUserScale(m_scale, m_scale);
+      if(m_dc->IsOk())
+      {
+        m_dc->SetPen(wxNullPen);
+        Draw();
+        return true;
+      }
+      else
+      {
+        m_bmp = wxNullBitmap;
+        return false;
+      }
+    }
   }
   else
   {
