@@ -266,7 +266,7 @@ int MathCell::GetMaxHeight()
 
 /*! Get full width of this group.
  */
-int MathCell::GetFullWidth(double scale)
+int MathCell::GetFullWidth()
 {
   // Recalculate the with of this list of cells only if this has been marked as necessary.
   if (m_fullWidth < 0)
@@ -276,11 +276,11 @@ int MathCell::GetFullWidth(double scale)
     // We begin this calculation with a negative offset since the full width of only a single
     // cell doesn't contain the space that separates two cells - that is automatically added
     // to every cell in the next step.
-    m_fullWidth = -Scale_Px(MC_CELL_SKIP, scale);
+    m_fullWidth = -Scale_Px(MC_CELL_SKIP);
     while (tmp != NULL)
     {
       m_fullWidth += tmp->m_width;
-      tmp = tmp->m_next + Scale_Px(MC_CELL_SKIP, scale);
+      tmp = tmp->m_next + Scale_Px(MC_CELL_SKIP);
     }
   }
   return m_fullWidth;
@@ -288,7 +288,7 @@ int MathCell::GetFullWidth(double scale)
 
 /*! Get the width of this line.
  */
-int MathCell::GetLineWidth(double scale)
+int MathCell::GetLineWidth()
 {
   if (m_lineWidth < 0)
   {
@@ -299,7 +299,7 @@ int MathCell::GetLineWidth(double scale)
     while(tmp != NULL)
     {      
       width += tmp->m_width;
-      width += Scale_Px(MC_CELL_SKIP, scale);
+      width += Scale_Px(MC_CELL_SKIP);
       
       if (width > m_lineWidth)
         m_lineWidth = width;
@@ -338,8 +338,7 @@ void MathCell::DrawList(wxPoint point, int fontsize)
   while (tmp != NULL)
   {
     tmp->Draw(point, fontsize);
-    double scale = configuration->GetScale();
-    point.x += tmp->m_width + Scale_Px(MC_CELL_SKIP, scale);
+    point.x += tmp->m_width + Scale_Px(MC_CELL_SKIP);
     wxASSERT(tmp != tmp->m_nextToDraw);
     tmp = tmp->m_nextToDraw;
   }
@@ -432,7 +431,7 @@ wxRect MathCell::GetRect(bool all)
     return wxRect(-1, -1, 0, 0);
   if (all)
     return wxRect(m_currentPoint.x, m_currentPoint.y - GetMaxCenter(),
-                  GetLineWidth(1.0), GetMaxHeight());
+                  GetLineWidth(), GetMaxHeight());
   return wxRect(m_currentPoint.x, m_currentPoint.y - m_center,
                 m_width, m_height);
 }

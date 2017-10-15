@@ -134,11 +134,11 @@ void IntCell::SetVar(MathCell *var)
 
 void IntCell::RecalculateWidths(int fontsize)
 {
+  wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
 
-  m_signSize = Scale_Px(50, scale * configuration->GetZoomFactor());
-  m_signWidth = Scale_Px(18, scale * configuration->GetZoomFactor());
+  m_signSize = Scale_Px(50 * configuration->GetZoomFactor());
+  m_signWidth = Scale_Px(18 * configuration->GetZoomFactor());
   if(m_signWidth < 4)
     m_signWidth = 4;
 
@@ -154,13 +154,14 @@ void IntCell::RecalculateWidths(int fontsize)
   if (configuration->CheckTeXFonts())
   {
     wxDC *dc = configuration->GetDC();
-    int fontsize1 = Scale_Px(fontsize * 1.5, scale);
+    int fontsize1 = Scale_Px(fontsize * 1.5);
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                 configuration->GetTeXCMEX());
     if (!font.IsOk())
       font = *wxNORMAL_FONT;
     font.SetPointSize(fontsize1);
+    wxASSERT(fontsize1 > 0);
     dc->SetFont(font);
     dc->GetTextExtent(wxT("\x5A"), &m_signWidth, &m_signSize);
 
@@ -171,16 +172,16 @@ void IntCell::RecalculateWidths(int fontsize)
     m_signSize = (85 * m_signSize) / 100;
 
     m_width = m_signWidth +
-              MAX(m_over->GetFullWidth(scale) + m_signWidth, m_under->GetFullWidth(scale)) +
-              m_base->GetFullWidth(scale) +
-              m_var->GetFullWidth(scale) +
-              Scale_Px(4, scale);
+              MAX(m_over->GetFullWidth() + m_signWidth, m_under->GetFullWidth()) +
+              m_base->GetFullWidth() +
+              m_var->GetFullWidth() +
+              Scale_Px(4);
   }
   else
   {
 #if defined __WXMSW__
     wxDC *dc = configuration->GetDC();
-    int fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE, scale);
+    int fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
                 false,
@@ -188,20 +189,21 @@ void IntCell::RecalculateWidths(int fontsize)
     if(!font.IsOk())
       font = *wxNORMAL_FONT;
     font.SetPointSize(fontsize1);
+    wxASSERT(fontsize1 > 0);
     dc->SetFont(font);
     dc->GetTextExtent(INTEGRAL_TOP, &m_charWidth, &m_charHeight);
 
     m_width = m_signWidth +
-              m_base->GetFullWidth(scale) +
-              MAX(m_over->GetFullWidth(scale), m_under->GetFullWidth(scale)) +
-              m_var->GetFullWidth(scale) +
-              Scale_Px(4, scale);
+              m_base->GetFullWidth() +
+              MAX(m_over->GetFullWidth(), m_under->GetFullWidth()) +
+              m_var->GetFullWidth() +
+              Scale_Px(4);
 #else
     m_width = m_signWidth +
-              m_base->GetFullWidth(scale) +
-              MAX(m_over->GetFullWidth(scale), m_under->GetFullWidth(scale)) +
-              m_var->GetFullWidth(scale) +
-              Scale_Px(4, scale);
+              m_base->GetFullWidth() +
+              MAX(m_over->GetFullWidth(), m_under->GetFullWidth()) +
+              m_var->GetFullWidth() +
+              Scale_Px(4);
     if(m_signSize < 40)
       m_signSize = 40;
 #endif
@@ -212,7 +214,6 @@ void IntCell::RecalculateWidths(int fontsize)
 void IntCell::RecalculateHeight(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
 
   m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 5));
   m_over->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 5));
@@ -223,18 +224,18 @@ void IntCell::RecalculateHeight(int fontsize)
   {
     if (configuration->CheckTeXFonts())
     {
-      m_center = MAX(m_over->GetMaxHeight() + Scale_Px(4, scale) + m_signSize / 2 - m_signSize / 3,
+      m_center = MAX(m_over->GetMaxHeight() + Scale_Px(4) + m_signSize / 2 - m_signSize / 3,
                      m_base->GetMaxCenter());
       m_height = m_center +
-                 MAX(m_under->GetMaxHeight() + Scale_Px(4, scale) + m_signSize / 2 - m_signSize / 3,
+                 MAX(m_under->GetMaxHeight() + Scale_Px(4) + m_signSize / 2 - m_signSize / 3,
                      m_base->GetMaxDrop());
     }
     else
     {
-      m_center = MAX(m_over->GetMaxHeight() + Scale_Px(4, scale) + m_signSize / 2 - m_signSize / 3,
+      m_center = MAX(m_over->GetMaxHeight() + Scale_Px(4) + m_signSize / 2 - m_signSize / 3,
                      m_base->GetMaxCenter());
       m_height = m_center +
-                 MAX(m_under->GetMaxHeight() + Scale_Px(4, scale) + m_signSize / 2 - m_signSize / 3,
+                 MAX(m_under->GetMaxHeight() + Scale_Px(4) + m_signSize / 2 - m_signSize / 3,
                      m_base->GetMaxDrop());
     }
   }
@@ -254,19 +255,19 @@ void IntCell::Draw(wxPoint point, int fontsize)
     Configuration *configuration = (*m_configuration);
     
     wxDC *dc = configuration->GetDC();
-    double scale = configuration->GetScale();
     
     wxPoint base(point), under(point), over(point), var(point), sign(point);
 
     if (configuration->CheckTeXFonts())
     {
       SetForeground();
-      int fontsize1 = Scale_Px(fontsize * 1.5, scale);
+      int fontsize1 = Scale_Px(fontsize * 1.5);
       wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
       if (!font.IsOk())
         font = *wxNORMAL_FONT;
+      wxASSERT(fontsize1 > 0);
       font.SetPointSize(fontsize1);
       dc->SetFont(font);
       dc->DrawText(wxT("\x5A"),
@@ -277,9 +278,10 @@ void IntCell::Draw(wxPoint point, int fontsize)
     {
 #if defined __WXMSW__
       SetForeground();
-      int fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE, scale);
+      int fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
       int m_signWCenter = m_signWidth / 2;
 
+      wxASSERT(fontsize1 > 0);
       dc->SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
       wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
       false,
@@ -344,7 +346,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
     if (m_intStyle == INT_DEF)
     {
       under.x += m_signWidth;
-      under.y = point.y + m_signSize / 2 + m_under->GetMaxCenter() + Scale_Px(2, scale) -
+      under.y = point.y + m_signSize / 2 + m_under->GetMaxCenter() + Scale_Px(2) -
                 m_signSize / 3;
       m_under->DrawList(under, MAX(MC_MIN_SIZE, fontsize - 5));
 
@@ -353,18 +355,18 @@ void IntCell::Draw(wxPoint point, int fontsize)
       else
         over.x += m_signWidth;
 
-      over.y = point.y - m_signSize / 2 - m_over->GetMaxDrop() - Scale_Px(2, scale) +
+      over.y = point.y - m_signSize / 2 - m_over->GetMaxDrop() - Scale_Px(2) +
                m_signSize / 3;
       m_over->DrawList(over, MAX(MC_MIN_SIZE, fontsize - 5));
 
       if (configuration->CheckTeXFonts())
       {
         base.x += m_signWidth +
-                  MAX(m_over->GetFullWidth(scale) + m_signWidth, m_under->GetFullWidth(scale));
+                  MAX(m_over->GetFullWidth() + m_signWidth, m_under->GetFullWidth());
       }
       else
         base.x += m_signWidth +
-                  MAX(m_over->GetFullWidth(scale), m_under->GetFullWidth(scale));
+                  MAX(m_over->GetFullWidth(), m_under->GetFullWidth());
     }
 
     else if (configuration->CheckTeXFonts())
@@ -374,7 +376,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
 
     m_base->DrawList(base, fontsize);
 
-    var.x = base.x + m_base->GetFullWidth(scale);
+    var.x = base.x + m_base->GetFullWidth();
     m_var->DrawList(var, fontsize);
   }
 }

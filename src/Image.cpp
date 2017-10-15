@@ -304,7 +304,7 @@ void Image::Recalculate()
 
   // We want the image to get bigger if the user zooms in - and
   // if a high printing resolution requires us to scale everything up.
-  scale = configuration->GetZoomFactor() * configuration->GetScale();
+  scale = 1;
 
   // Ensure a minimum size for images.
   if (scale < 0.01) scale = 0.01;

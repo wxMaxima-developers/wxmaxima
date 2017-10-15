@@ -143,12 +143,12 @@ public:
     if (ShowAutomaticLabels())
       return 0;
     else
-      return GetZoomFactor() * GetScale() * m_mathFontSize / 2;
+      return GetZoomFactor() * m_mathFontSize / 2;
   }
 
   int GetCellBracketWidth()
   {
-    return (int) (GetZoomFactor() * GetScale() * 16);
+    return (int) (GetZoomFactor() * 16);
   }
 
   //! Hide brackets that are not under the pointer?
@@ -163,20 +163,14 @@ public:
   //! Sets the zoom factor the worksheet is displayed at
   void SetZoomFactor(double newzoom);
 
+  //! Sets the zoom factor without storing the new value in the config file/registry.
+  void SetZoomFactor_temporarily(double newzoom){m_zoomFactor = newzoom;}
+
+  int Scale_Px(double px){return (int)(px * GetZoomFactor() + 0.5); }
+
   //! Determines the zoom factor the worksheet is displayed at
   double GetZoomFactor()
   { return m_zoomFactor; }
-
-  //! Sets a fixed scale for printing
-  void SetScale(double scale)
-  {
-    m_scale = scale;
-    m_zoomFactor = 1.0;
-  }
-
-  //! Gets the fixed scale that is used (e.G. during printing)
-  double GetScale()
-  { return m_scale; }
 
   //! Get a drawing context suitable for size calculations
   wxDC *GetDC()
@@ -301,10 +295,10 @@ public:
   //! Calculates the default line width for the worksheet
   double GetDefaultLineWidth()
   {
-    if (GetScale() * GetZoomFactor() < 1.0)
+    if (GetZoomFactor() < 1.0)
       return 1.0;
     else
-      return GetScale() * GetZoomFactor();
+      return GetZoomFactor();
   }
 
   //! The minimum sensible line width in withs of a letter.
@@ -320,10 +314,10 @@ public:
   // But text blocks that are 1 meter wide and 2 cm high feel - weird.
   int GetLineWidth()
   {
-    if (m_clientWidth <= m_zoomFactor * double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor * m_scale)
+    if (m_clientWidth <= m_zoomFactor * double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor)
       return m_clientWidth;
     else
-      return (const int) (double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor * m_scale);
+      return (const int) (double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor);
   }
 
   int GetDefaultFontSize()
@@ -647,7 +641,6 @@ private:
   int m_labelWidth;
   int m_indent;
   bool m_antiAliasLines;
-  double m_scale;
   double m_zoomFactor;
   wxDC *m_dc;
   wxDC *m_antialiassingDC;

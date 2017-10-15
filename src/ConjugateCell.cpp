@@ -101,9 +101,8 @@ void ConjugateCell::SetInner(MathCell *inner)
 void ConjugateCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
   m_innerCell->RecalculateWidthsList(fontsize);
-  m_width = m_innerCell->GetFullWidth(scale) + Scale_Px(8, scale);
+  m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
   ResetData();
@@ -112,10 +111,9 @@ void ConjugateCell::RecalculateWidths(int fontsize)
 void ConjugateCell::RecalculateHeight(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
   m_innerCell->RecalculateHeightList(fontsize);
-  m_height = m_innerCell->GetMaxHeight() + Scale_Px(4, scale);
-  m_center = m_innerCell->GetMaxCenter() + Scale_Px(2, scale);
+  m_height = m_innerCell->GetMaxHeight() + Scale_Px(4);
+  m_center = m_innerCell->GetMaxCenter() + Scale_Px(2);
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
 
@@ -133,20 +131,19 @@ void ConjugateCell::Draw(wxPoint point, int fontsize)
     Configuration *configuration = (*m_configuration);
     MathCell::Draw(point, fontsize);
     
-    double scale = configuration->GetScale();
     wxDC *dc = configuration->GetDC();
     SetPen();
     wxPoint in;
-    in.x = point.x + Scale_Px(4, scale);
+    in.x = point.x + Scale_Px(4);
     in.y = point.y;
     m_innerCell->DrawList(in, fontsize);
 
-    dc->DrawLine(point.x + Scale_Px(2, scale),
-                 point.y - m_center + Scale_Px(2, scale),
-                 point.x + m_width - Scale_Px(2, scale) - 1,
-                 point.y - m_center + Scale_Px(2, scale)
+    dc->DrawLine(point.x + Scale_Px(2),
+                 point.y - m_center + Scale_Px(2),
+                 point.x + m_width - Scale_Px(2) - 1,
+                 point.y - m_center + Scale_Px(2)
       );
-    //                point.y - m_center + m_height - Scale_Px(2, scale));
+    //                point.y - m_center + m_height - Scale_Px(2));
     UnsetPen();
   }
 }

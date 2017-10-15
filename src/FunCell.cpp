@@ -91,11 +91,10 @@ void FunCell::SetArg(MathCell *arg)
 void FunCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
   m_argCell->RecalculateWidthsList(fontsize);
   m_nameCell->RecalculateWidthsList(fontsize);
-  m_width = m_nameCell->GetFullWidth(scale) + m_argCell->GetFullWidth(scale) -
-            Scale_Px(1, scale);
+  m_width = m_nameCell->GetFullWidth() + m_argCell->GetFullWidth() -
+            Scale_Px(1);
   ResetData();
 }
 
@@ -113,12 +112,11 @@ void FunCell::Draw(wxPoint point, int fontsize)
   {
     MathCell::Draw(point, fontsize);
     Configuration *configuration = (*m_configuration);
-    double scale = configuration->GetScale();
 
     wxPoint name(point), arg(point);
     m_nameCell->DrawList(name, fontsize);
 
-    arg.x += m_nameCell->GetFullWidth(scale) - Scale_Px(1, scale);
+    arg.x += m_nameCell->GetFullWidth() - Scale_Px(1);
     m_argCell->DrawList(arg, fontsize);
   }
 }

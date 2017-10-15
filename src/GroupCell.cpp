@@ -499,8 +499,6 @@ void GroupCell::RecalculateWidths(int fontsize)
 
     UnBreakUpCells();
 
-    double scale = configuration->GetScale();
-
     m_inputLabel->RecalculateWidthsList(fontsize);
 
     // recalculate the position of input in ReEvaluateSelection!
@@ -514,7 +512,7 @@ void GroupCell::RecalculateWidths(int fontsize)
       if ((configuration->ShowCodeCells()) ||
           (m_groupType != GC_TYPE_CODE))
       {
-        m_width = m_inputLabel->GetFullWidth(scale);
+        m_width = m_inputLabel->GetFullWidth();
       }
       else
         m_width = 0;
@@ -531,7 +529,7 @@ void GroupCell::RecalculateWidths(int fontsize)
       if ((configuration->ShowCodeCells()) ||
           (m_groupType != GC_TYPE_CODE))
       {
-        m_width = m_inputLabel->GetFullWidth(scale);
+        m_width = m_inputLabel->GetFullWidth();
       }
     }
 
@@ -579,8 +577,7 @@ void GroupCell::OnSize()
 void GroupCell::RecalculateHeightInput(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
-
+  
   // special case
   if (m_groupType == GC_TYPE_PAGEBREAK)
   {
@@ -633,7 +630,7 @@ void GroupCell::RecalculateHeightInput(int fontsize)
       (m_groupType != GC_TYPE_CODE))
   {
     m_height = m_inputLabel->GetMaxHeight();
-    m_width = m_inputLabel->GetFullWidth(scale);
+    m_width = m_inputLabel->GetFullWidth();
   }
   else
   {
@@ -705,7 +702,6 @@ void GroupCell::RecalculateAppended()
 
   MathCell *tmp = m_appendedCells;
   m_fontSize = configuration->GetFontSize(TS_TEXT);
-  double scale = configuration->GetScale();
   m_mathFontSize = configuration->GetMathFontSize();
 
   // Recalculate widths of cells
@@ -733,8 +729,8 @@ void GroupCell::RecalculateAppended()
   {
     if (tmp->BreakLineHere() || tmp == m_appendedCells || tmp->GetStyle() == TS_LABEL || tmp->GetStyle() == TS_USERLABEL)
     {
-      m_width = MAX(m_width, tmp->GetLineWidth(scale));
-      m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth(scale));
+      m_width = MAX(m_width, tmp->GetLineWidth());
+      m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth());
       m_height            += tmp->GetMaxHeight();
       m_outputRect.height += tmp->GetMaxHeight();
       

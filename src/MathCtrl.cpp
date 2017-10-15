@@ -5789,6 +5789,9 @@ wxString MathCtrl::UnicodeToMaxima(wxString s)
 void MathCtrl::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const std::vector<int> &cellMap,
                            bool fixReorderedIndices)
 {
+  // Show a busy cursor as long as we open a file.
+  wxBusyCursor crs;
+
   GroupCell *tmp = tree;
 
   //
@@ -5920,6 +5923,9 @@ wxString ConvertToUnicode(wxString str)
 */
 bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
 {
+  // Show a busy cursor as long as we open a file.
+  wxBusyCursor crs;
+
   // delete temp file if it already exists
   wxString backupfile = file + wxT("~");
   if (wxFileExists(backupfile))
@@ -5933,9 +5939,6 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
     return false;
   wxZipOutputStream zip(out);
   wxTextOutputStream output(zip);
-
-  // Show a busy cursor as long as we save.
-  wxBusyCursor crs;
 
   /* The first zip entry is a file named "mimetype": This makes sure that the mimetype
      is always stored at the same position in the file. This is common practice. One
@@ -6852,7 +6855,7 @@ void MathCtrl::ShowPoint(wxPoint point)
   width -= wxSystemSettings::GetMetric(wxSYS_HTHUMB_X);
 
   Configuration *configuration = m_configuration;
-  int fontsize_px = configuration->GetZoomFactor() * configuration->GetScale() * configuration->GetDefaultFontSize();
+  int fontsize_px = configuration->GetZoomFactor() * configuration->GetDefaultFontSize();
   if (
           (point.y - fontsize_px < view_y) ||
           (point.y + fontsize_px > view_y + height - 20)

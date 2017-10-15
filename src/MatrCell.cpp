@@ -88,7 +88,6 @@ std::list<MathCell *> MatrCell::GetInnerCells()
 void MatrCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
   for (int i = 0; i < m_matWidth * m_matHeight; i++)
   {
     m_cells[i]->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 2));
@@ -99,23 +98,22 @@ void MatrCell::RecalculateWidths(int fontsize)
     m_widths.push_back(0);
     for (int j = 0; j < m_matHeight; j++)
     {
-      m_widths[i] = MAX(m_widths[i], m_cells[m_matWidth * j + i]->GetFullWidth(scale));
+      m_widths[i] = MAX(m_widths[i], m_cells[m_matWidth * j + i]->GetFullWidth());
     }
   }
   m_width = 0;
   for (int i = 0; i < m_matWidth; i++)
   {
-    m_width += (m_widths[i] + Scale_Px(10, scale));
+    m_width += (m_widths[i] + Scale_Px(10));
   }
-  if (m_width < Scale_Px(14, scale))
-    m_width = Scale_Px(14, scale);
+  if (m_width < Scale_Px(14))
+    m_width = Scale_Px(14);
   ResetData();
 }
 
 void MatrCell::RecalculateHeight(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
 
   for (int i = 0; i < m_matWidth * m_matHeight; i++)
   {
@@ -136,10 +134,10 @@ void MatrCell::RecalculateHeight(int fontsize)
   m_height = 0;
   for (int i = 0; i < m_matHeight; i++)
   {
-    m_height += (m_centers[i] + m_drops[i] + Scale_Px(10, scale));
+    m_height += (m_centers[i] + m_drops[i] + Scale_Px(10));
   }
   if (m_height == 0)
-    m_height = fontsize + Scale_Px(10, scale);
+    m_height = fontsize + Scale_Px(10);
   m_center = m_height / 2;
 }
 
@@ -150,43 +148,42 @@ void MatrCell::Draw(wxPoint point, int fontsize)
     MathCell::Draw(point, fontsize);
     Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();
-    double scale = configuration->GetScale();
     wxPoint mp;
-    mp.x = point.x + Scale_Px(5, scale);
+    mp.x = point.x + Scale_Px(5);
     mp.y = point.y - m_center;
     for (int i = 0; i < m_matWidth; i++)
     {
-      mp.y = point.y - m_center + Scale_Px(5, scale);
+      mp.y = point.y - m_center + Scale_Px(5);
       for (int j = 0; j < m_matHeight; j++)
       {
         mp.y += m_centers[j];
         wxPoint mp1(mp);
-        mp1.x = mp.x + (m_widths[i] - m_cells[j * m_matWidth + i]->GetFullWidth(scale)) / 2;
+        mp1.x = mp.x + (m_widths[i] - m_cells[j * m_matWidth + i]->GetFullWidth()) / 2;
         m_cells[j * m_matWidth + i]->DrawList(mp1, MAX(MC_MIN_SIZE, fontsize - 2));
-        mp.y += (m_drops[j] + Scale_Px(10, scale));
+        mp.y += (m_drops[j] + Scale_Px(10));
       }
-      mp.x += (m_widths[i] + Scale_Px(10, scale));
+      mp.x += (m_widths[i] + Scale_Px(10));
     }
     SetPen(1.5);
     if (m_specialMatrix)
     {
       if (m_inferenceMatrix)
-        dc->DrawLine(point.x + Scale_Px(1, scale),
-                    point.y - m_center + Scale_Px(2, scale),
-                    point.x + Scale_Px(1, scale),
-                    point.y + m_center - Scale_Px(2, scale));
+        dc->DrawLine(point.x + Scale_Px(1),
+                    point.y - m_center + Scale_Px(2),
+                    point.x + Scale_Px(1),
+                    point.y + m_center - Scale_Px(2));
       else
       {
         if (m_rowNames)
-          dc->DrawLine(point.x + m_widths[0] + 2 * Scale_Px(5, scale),
-                      point.y - m_center + Scale_Px(2, scale),
-                      point.x + m_widths[0] + 2 * Scale_Px(5, scale),
-                      point.y + m_center - Scale_Px(2, scale));
+          dc->DrawLine(point.x + m_widths[0] + 2 * Scale_Px(5),
+                      point.y - m_center + Scale_Px(2),
+                      point.x + m_widths[0] + 2 * Scale_Px(5),
+                      point.y + m_center - Scale_Px(2));
         if (m_colNames)
-          dc->DrawLine(point.x + Scale_Px(1, scale),
-                      point.y - m_center + m_centers[0] + m_drops[0] + 2 * Scale_Px(5, scale),
-                      point.x + Scale_Px(1, scale) + m_width,
-                      point.y - m_center + m_centers[0] + m_drops[0] + 2 * Scale_Px(5, scale));
+          dc->DrawLine(point.x + Scale_Px(1),
+                      point.y - m_center + m_centers[0] + m_drops[0] + 2 * Scale_Px(5),
+                      point.x + Scale_Px(1) + m_width,
+                      point.y - m_center + m_centers[0] + m_drops[0] + 2 * Scale_Px(5));
       }
     }
     else
@@ -194,31 +191,31 @@ void MatrCell::Draw(wxPoint point, int fontsize)
       
       // left bracket
       wxDC *adc = configuration->GetAntialiassingDC();
-      adc->DrawLine(point.x + Scale_Px(5, scale),
-                   point.y - m_center + Scale_Px(2, scale),
-                   point.x + Scale_Px(1, scale),
-                   point.y - m_center + Scale_Px(2, scale));
-      adc->DrawLine(point.x + Scale_Px(1, scale),
-                   point.y - m_center + Scale_Px(2, scale),
-                   point.x + Scale_Px(1, scale),
-                   point.y + m_center - Scale_Px(2, scale));
-      adc->DrawLine(point.x + Scale_Px(1, scale),
-                   point.y + m_center - Scale_Px(2, scale),
-                   point.x + Scale_Px(5, scale),
-                   point.y + m_center - Scale_Px(2, scale));
+      adc->DrawLine(point.x + Scale_Px(5),
+                   point.y - m_center + Scale_Px(2),
+                   point.x + Scale_Px(1),
+                   point.y - m_center + Scale_Px(2));
+      adc->DrawLine(point.x + Scale_Px(1),
+                   point.y - m_center + Scale_Px(2),
+                   point.x + Scale_Px(1),
+                   point.y + m_center - Scale_Px(2));
+      adc->DrawLine(point.x + Scale_Px(1),
+                   point.y + m_center - Scale_Px(2),
+                   point.x + Scale_Px(5),
+                   point.y + m_center - Scale_Px(2));
       // right bracket
-      adc->DrawLine(point.x + m_width - Scale_Px(5, scale) - 1,
-                   point.y - m_center + Scale_Px(2, scale),
-                   point.x + m_width - Scale_Px(1, scale) - 1,
-                   point.y - m_center + Scale_Px(2, scale));
-      adc->DrawLine(point.x + m_width - Scale_Px(1, scale) - 1,
-                   point.y - m_center + Scale_Px(2, scale),
-                   point.x + m_width - Scale_Px(1, scale) - 1,
-                   point.y + m_center - Scale_Px(2, scale));
-      adc->DrawLine(point.x + m_width - Scale_Px(1, scale) - 1,
-                   point.y + m_center - Scale_Px(2, scale),
-                   point.x + m_width - Scale_Px(5, scale) - 1,
-                   point.y + m_center - Scale_Px(2, scale));
+      adc->DrawLine(point.x + m_width - Scale_Px(5) - 1,
+                   point.y - m_center + Scale_Px(2),
+                   point.x + m_width - Scale_Px(1) - 1,
+                   point.y - m_center + Scale_Px(2));
+      adc->DrawLine(point.x + m_width - Scale_Px(1) - 1,
+                   point.y - m_center + Scale_Px(2),
+                   point.x + m_width - Scale_Px(1) - 1,
+                   point.y + m_center - Scale_Px(2));
+      adc->DrawLine(point.x + m_width - Scale_Px(1) - 1,
+                   point.y + m_center - Scale_Px(2),
+                   point.x + m_width - Scale_Px(5) - 1,
+                   point.y + m_center - Scale_Px(2));
     }
     UnsetPen();
   }

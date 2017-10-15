@@ -135,8 +135,8 @@ void FracCell::SetDenom(MathCell *denom)
 
 void FracCell::RecalculateWidths(int fontsize)
 {
+  wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
   if (m_isBroken || m_exponent)
   {
     m_num->RecalculateWidthsList(fontsize);
@@ -154,7 +154,7 @@ void FracCell::RecalculateWidths(int fontsize)
     m_protrusion = 0;
     int height;
     dc->GetTextExtent(wxT("/"), &m_expDivideWidth, &height);
-    m_width = m_num->GetFullWidth(scale) + m_denom->GetFullWidth(scale) + m_expDivideWidth;
+    m_width = m_num->GetFullWidth() + m_denom->GetFullWidth() + m_expDivideWidth;
   }
   else
   {
@@ -176,7 +176,7 @@ void FracCell::RecalculateWidths(int fontsize)
     else
       m_horizontalGapRight = 0;
     
-    m_width = MAX(m_num->GetFullWidth(scale), m_denom->GetFullWidth(scale)) +
+    m_width = MAX(m_num->GetFullWidth(), m_denom->GetFullWidth()) +
               2 * m_protrusion + m_horizontalGapLeft + m_horizontalGapRight;
   }
   m_open1->RecalculateWidths(fontsize);
@@ -190,7 +190,6 @@ void FracCell::RecalculateWidths(int fontsize)
 void FracCell::RecalculateHeight(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
   if (m_isBroken || m_exponent)
   {
     m_num->RecalculateHeightList(fontsize);
@@ -204,8 +203,8 @@ void FracCell::RecalculateHeight(int fontsize)
   if (!m_exponent)
   {
     m_height = m_num->GetMaxHeight() + m_denom->GetMaxHeight() +
-               Scale_Px(4, scale);
-    m_center = m_num->GetMaxHeight() + Scale_Px(2, scale);
+               Scale_Px(4);
+    m_center = m_num->GetMaxHeight() + Scale_Px(2);
   }
   else
   {
@@ -229,40 +228,38 @@ void FracCell::Draw(wxPoint point, int fontsize)
     Configuration *configuration = (*m_configuration);
     
     wxDC *dc = configuration->GetDC();
-    double scale = configuration->GetScale();
     wxPoint num, denom;
 
     if (m_exponent && !m_isBroken)
     {
-      double scale = configuration->GetScale();
-
       num.x = point.x;
       num.y = point.y;
-      denom.x = point.x + m_num->GetFullWidth(scale) + m_expDivideWidth;
+      denom.x = point.x + m_num->GetFullWidth() + m_expDivideWidth;
       denom.y = num.y;
 
       m_num->DrawList(num, fontsize);
       m_denom->DrawList(denom, fontsize);
 
-      int fontsize1 = Scale_Px(fontsize, scale);
+      int fontsize1 = Scale_Px(fontsize);
+      wxASSERT(fontsize1 > 0);
       dc->SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                         wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                         configuration->GetFontName(TS_VARIABLE)));
       dc->DrawText(wxT("/"),
-                  point.x + m_num->GetFullWidth(scale),
-                  point.y - m_num->GetMaxCenter() + Scale_Px(MC_TEXT_PADDING, scale));
+                  point.x + m_num->GetFullWidth(),
+                  point.y - m_num->GetMaxCenter() + Scale_Px(MC_TEXT_PADDING));
     }
     else
     {
       num.x = point.x + m_horizontalGapLeft +
-              (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_num->GetFullWidth(scale)) / 2;
+              (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_num->GetFullWidth()) / 2;
       num.y = point.y - m_num->GetMaxHeight() + m_num->GetMaxCenter() -
-              Scale_Px(2, scale);
+              Scale_Px(2);
       m_num->DrawList(num, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
 
       denom.x = point.x + m_horizontalGapLeft +
-                (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_denom->GetFullWidth(scale)) / 2;
-      denom.y = point.y + m_denom->GetMaxCenter() + Scale_Px(2, scale);
+                (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_denom->GetFullWidth()) / 2;
+      denom.y = point.y + m_denom->GetMaxCenter() + Scale_Px(2);
       m_denom->DrawList(denom, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
       SetPen();
       if (m_fracStyle != FC_CHOOSE)

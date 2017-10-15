@@ -103,7 +103,7 @@ protected:
   void SetAltText();
   
   //! Resets the font size to label size
-  void SetFontSizeForLabel(wxDC *dc, double scale);
+  void SetFontSizeForLabel(wxDC *dc);
 
   wxRegEx m_unescapeRegEx;
 

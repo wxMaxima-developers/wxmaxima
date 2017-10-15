@@ -46,7 +46,6 @@ EditorCell::EditorCell(MathCell *parent, Configuration **config,
   m_cellPointers = cellPointers;
   m_oldViewportWidth = -1;
   m_oldZoomFactor = -1;
-  m_oldScaleFactor = -1;
   m_oldDefaultFontSize = -1;
   m_numberOfLines = 1;
   m_charHeight = 12;
@@ -403,7 +402,6 @@ wxString EditorCell::ToXML()
 void EditorCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
 
   // Redo the line wrapping if the viewport width has changed.
   // Redoing the line wrapping will mark the cell height and width
@@ -411,7 +409,6 @@ void EditorCell::RecalculateWidths(int fontsize)
   if (
           (configuration->GetClientWidth() != m_oldViewportWidth) ||
           (configuration->GetZoomFactor() != m_oldZoomFactor) ||
-          (configuration->GetScale() != m_oldScaleFactor) ||
           (configuration->GetDefaultFontSize() != m_oldDefaultFontSize)
           )
     StyleText();
@@ -419,12 +416,11 @@ void EditorCell::RecalculateWidths(int fontsize)
   int charWidth;
 
   m_isDirty = false;
-  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() || fontsize * scale + 0.5 != m_fontSize_Last)
+  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() || Scale_Px(fontsize) != m_fontSize_Last)
   {
     ResetData();
-    m_fontSize_Last = Scale_Px(fontsize,scale);
+    m_fontSize_Last = Scale_Px(fontsize);
     wxDC *dc = configuration->GetDC();
-    double scale = configuration->GetScale();
     SetFont();
 
     // Measure the text hight using characters that might extend below or above the region
@@ -432,7 +428,7 @@ void EditorCell::RecalculateWidths(int fontsize)
     dc->GetTextExtent(wxT("äXÄgy"), &charWidth, &m_charHeight);
 
     // We want a little bit of vertical space between two text lines (and between two labels).
-    m_charHeight += 2 * Scale_Px(MC_TEXT_PADDING, scale);
+    m_charHeight += 2 * Scale_Px(MC_TEXT_PADDING);
     int width = 0, tokenwidth, tokenheight, linewidth = 0;
 
     m_numberOfLines = 1;
@@ -467,10 +463,10 @@ void EditorCell::RecalculateWidths(int fontsize)
       width = charWidth;
 
     // Add a line border
-    m_width = width + 2 * Scale_Px(2, scale);
+    m_width = width + 2 * Scale_Px(2);
 
     // Calculate the cell height
-    m_height = m_numberOfLines * (m_charHeight) + 2 * Scale_Px(2, scale);
+    m_height = m_numberOfLines * (m_charHeight) + 2 * Scale_Px(2);
 
     // The center lies in the middle of the 1st line
     m_center = m_charHeight / 2;
@@ -528,7 +524,7 @@ wxString EditorCell::ToHTML()
   return retval;
 }
 
-void EditorCell::MarkSelection(long start, long end, double scale, wxDC *dc, TextStyle style, int fontsize)
+void EditorCell::MarkSelection(long start, long end, wxDC *dc, TextStyle style, int fontsize)
 {
   Configuration *configuration = (*m_configuration);
   if ((start < 0) || (end < 0)) return;
@@ -556,11 +552,11 @@ void EditorCell::MarkSelection(long start, long end, double scale, wxDC *dc, Tex
 #if defined(__WXMAC__)
     rect = GetRect(); // rectangle representing the cell
     if (pos1 != end) // we have a \n, draw selection to the right border (mac behaviour)
-      selectionWidth = rect.GetRight() - point.x - Scale_Px(2, scale);
+      selectionWidth = rect.GetRight() - point.x - Scale_Px(2);
 #endif
 
-    rect = wxRect(point.x + Scale_Px(2, scale),
-                  point.y + Scale_Px(1, scale) - m_center,
+    rect = wxRect(point.x + Scale_Px(2),
+                  point.y + Scale_Px(1) - m_center,
                   selectionWidth,
                   m_charHeight);
     // draw the rectangle if it is in the region that is to be updated.
@@ -591,7 +587,6 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
     Configuration *configuration = (*m_configuration);
     
     m_selectionChanged = false;
-    double scale = configuration->GetScale();
     wxDC *dc = configuration->GetDC();
     wxPoint point(point1);
     if (m_width == -1 || m_height == -1 || configuration->ForceUpdate())
@@ -619,7 +614,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
         // This would not only be unnecessary but also could cause
         // selections to flicker in very long texts
         if ((!IsActive()) || (start != MIN(m_selectionStart, m_selectionEnd)))
-          MarkSelection(start, end, scale, dc, TS_EQUALSSELECTION, fontsize);
+          MarkSelection(start, end, dc, TS_EQUALSSELECTION, fontsize);
         if(m_cellPointers->m_selectionString.Length() == 0)
           end++;
         start = end;
@@ -634,7 +629,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
       if (m_selectionStart >= 0)
         MarkSelection(MIN(m_selectionStart, m_selectionEnd),
                       MAX(m_selectionStart, m_selectionEnd),
-                      scale, dc, TS_SELECTION, fontsize);
+                      dc, TS_SELECTION, fontsize);
 
         //
         // Matching parens - draw only if we don't have selection
@@ -651,15 +646,15 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
         wxPoint point = PositionToPoint(fontsize, m_paren1);
         int width, height;
         dc->GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
-        wxRect rect(point.x + Scale_Px(2, scale) + 1,
-                    point.y + Scale_Px(2, scale) - m_center + 1,
+        wxRect rect(point.x + Scale_Px(2) + 1,
+                    point.y + Scale_Px(2) - m_center + 1,
                     width - 1, height - 1);
         if (InUpdateRegion(rect))
           dc->DrawRectangle(CropToUpdateRegion(rect));
         point = PositionToPoint(fontsize, m_paren2);
         dc->GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
-        rect = wxRect(point.x + Scale_Px(2, scale) + 1,
-                      point.y + Scale_Px(2, scale) - m_center + 1,
+        rect = wxRect(point.x + Scale_Px(2) + 1,
+                      point.y + Scale_Px(2) - m_center + 1,
                       width - 1, height - 1);
         if (InUpdateRegion(rect))
           dc->DrawRectangle(CropToUpdateRegion(rect));
@@ -673,8 +668,8 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
     SetFont();
 
     wxPoint TextStartingpoint = point;
-    // TextStartingpoint.x -= Scale_Px(MC_TEXT_PADDING, scale);
-    TextStartingpoint.x += Scale_Px(2, scale);
+    // TextStartingpoint.x -= Scale_Px(MC_TEXT_PADDING);
+    TextStartingpoint.x += Scale_Px(2);
     wxPoint TextCurrentPoint = TextStartingpoint;
     int lastStyle = -1;
     int lastIndent = 0;
@@ -736,9 +731,9 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
                     TextCurrentPoint.x,
                     TextCurrentPoint.y - m_center);
         /*
-        dc->DrawLine(TextCurrentPoint.x + Scale_Px(2, scale),
+        dc->DrawLine(TextCurrentPoint.x + Scale_Px(2),
                     TextCurrentPoint.y - m_center,
-                    TextCurrentPoint.x + Scale_Px(2, scale),
+                    TextCurrentPoint.x + Scale_Px(2),
                     TextCurrentPoint.y); */
 
         dc->GetTextExtent(TextToDraw, &width, &height);
@@ -762,15 +757,15 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
       dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 #if defined(__WXMAC__)
       // draw 1 pixel shorter caret than on windows
-      dc->DrawRectangle(point.x + Scale_Px(2, scale) + lineWidth - (*m_configuration)->GetCursorWidth(),
-                       point.y + Scale_Px(3, scale) - m_center + caretInLine * m_charHeight,
+      dc->DrawRectangle(point.x + Scale_Px(2) + lineWidth - (*m_configuration)->GetCursorWidth(),
+                       point.y + Scale_Px(3) - m_center + caretInLine * m_charHeight,
                        (*m_configuration)->GetCursorWidth(),
-                       m_charHeight - Scale_Px(5, scale));
+                       m_charHeight - Scale_Px(5));
 #else
-      dc->DrawRectangle(point.x + Scale_Px(2, scale) + lineWidth-(*m_configuration)->GetCursorWidth()/2,
-                       point.y + Scale_Px(2, scale) - m_center + caretInLine * m_charHeight,
+      dc->DrawRectangle(point.x + Scale_Px(2) + lineWidth-(*m_configuration)->GetCursorWidth()/2,
+                       point.y + Scale_Px(2) - m_center + caretInLine * m_charHeight,
                        (*m_configuration)->GetCursorWidth(),
-                       m_charHeight- Scale_Px(3, scale));
+                       m_charHeight- Scale_Px(3));
 #endif
     }
 
@@ -788,8 +783,7 @@ void EditorCell::SetFont()
   if (m_fontSize < 1)
     m_fontSize = configuration->GetDefaultFontSize();
 
-  double scale = configuration->GetScale();
-  m_fontSize = Scale_Px(m_fontSize, scale);
+  m_fontSize = Scale_Px(m_fontSize);
 
   m_fontName = configuration->GetFontName(m_textStyle);
   // Cells that save answers are displayed differently to
@@ -827,6 +821,7 @@ void EditorCell::SetFont()
   if (!font.IsOk())
     font = *wxNORMAL_FONT;
 
+  wxASSERT(m_fontSize >= 0);
   font.SetPointSize(m_fontSize);
   wxASSERT_MSG(font.IsOk(),
                _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
@@ -3530,7 +3525,7 @@ void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidt
 
   // Normally the cell begins at the x position m_currentPoint.x - but sometimes
   // m_currentPoint is 0 so we need to determine our own value for the x position.
-  int xmargin = (configuration->GetLabelWidth() + 1) * configuration->GetDefaultFontSize() * configuration->GetScale() *
+  int xmargin = (configuration->GetLabelWidth() + 1) * configuration->GetDefaultFontSize() *
                 configuration->GetZoomFactor() +
                 configuration->GetCellBracketWidth() + 2 * MC_CELL_SKIP;
 
@@ -3834,8 +3829,7 @@ void EditorCell::StyleTextTexts()
   // Normally the cell begins at the x position m_currentPoint.x - but sometimes
   // m_currentPoint is 0 so we need to determine our own value for the x position.
   int xmargin =
-  (configuration->GetLabelWidth() + 1) * configuration->GetDefaultFontSize() * configuration->GetScale() *
-  configuration->GetZoomFactor() +
+  (configuration->GetLabelWidth() + 1) * configuration->GetDefaultFontSize() * configuration->GetZoomFactor() +
   configuration->GetCellBracketWidth() + 2 * MC_CELL_SKIP;
   
   // Remove all bullets of item lists as we will introduce them again in the next
@@ -4120,7 +4114,6 @@ void EditorCell::StyleText()
   // Remember what settings we did linebreaks with
   m_oldViewportWidth = configuration->GetClientWidth();
   m_oldZoomFactor = configuration->GetZoomFactor();
-  m_oldScaleFactor = configuration->GetScale();
   m_oldDefaultFontSize = configuration->GetDefaultFontSize();
 
   m_wordList.Clear();

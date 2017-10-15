@@ -69,8 +69,6 @@ private:
   int m_oldViewportWidth;
   //! The zoom factor the linewrap was done for.
   int m_oldZoomFactor;
-  //! The scale factor the linewrap was done for.
-  int m_oldScaleFactor;
   //! The font size the linewrap was done for.
   int m_oldDefaultFontSize;
 
@@ -80,7 +78,7 @@ private:
   wxArrayString m_wordList;
 
   //! Draw a box that marks the current selection
-  void MarkSelection(long start, long end, double scale, wxDC *dc, TextStyle style, int fontsize);
+  void MarkSelection(long start, long end, wxDC *dc, TextStyle style, int fontsize);
 
   /*! The start of the current selection.
 

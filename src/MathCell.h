@@ -110,7 +110,7 @@ class MathCell
   static void SetWorksheetPosition(wxPoint worksheetPosition){m_worksheetPosition = worksheetPosition;}
 
   //! Scale font sizes and line widths for displaying/printing
-  static int Scale_Px(double px, double scale){return (int)(px*scale + 0.5); }
+  int Scale_Px(double px){return (*m_configuration)->Scale_Px(px); }
 #if wxUSE_ACCESSIBILITY
   //! Accessibility: Describe the current cell to a Screen Reader
   virtual wxAccStatus GetDescription(int childId, wxString *description);
@@ -360,14 +360,14 @@ class MathCell
   int GetMaxHeight();
 
   //! How many pixels is this list of cells wide?
-  int GetFullWidth(double scale);
+  int GetFullWidth();
 
   /*! How many pixels is the current line of this list of cells wide?
 
     This command returns the real line width when all line breaks are really performed. 
     See GetFullWidth().
    */
-  int GetLineWidth(double scale);
+  int GetLineWidth();
 
   /*! Get the x position of the top left of this cell
 

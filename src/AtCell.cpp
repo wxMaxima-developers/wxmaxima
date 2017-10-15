@@ -90,22 +90,20 @@ void AtCell::SetBase(MathCell *base)
 void AtCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
   m_baseCell->RecalculateWidthsList(fontsize);
   m_indexCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 4));
-  m_width = m_baseCell->GetFullWidth(scale) + m_indexCell->GetFullWidth(scale) +
-            Scale_Px(4, scale);
+  m_width = m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() +
+            Scale_Px(4);
   ResetData();
 }
 
 void AtCell::RecalculateHeight(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
   m_baseCell->RecalculateHeightList(fontsize);
   m_indexCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 3));
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
-             Scale_Px(7, scale);
+             Scale_Px(7);
   m_center = m_baseCell->GetCenter();
 }
 
@@ -116,7 +114,6 @@ void AtCell::Draw(wxPoint point, int fontsize)
     MathCell::Draw(point, fontsize);
     
     Configuration *configuration = (*m_configuration);
-    double scale = configuration->GetScale();
     wxDC *dc = configuration->GetDC();
     wxPoint bs, in;
 
@@ -124,14 +121,14 @@ void AtCell::Draw(wxPoint point, int fontsize)
     bs.y = point.y;
     m_baseCell->DrawList(bs, fontsize);
 
-    in.x = point.x + m_baseCell->GetFullWidth(scale) + Scale_Px(4, scale);
+    in.x = point.x + m_baseCell->GetFullWidth() + Scale_Px(4);
     in.y = point.y + m_baseCell->GetMaxDrop() +
-           +m_indexCell->GetMaxCenter() - Scale_Px(7, scale);
+           +m_indexCell->GetMaxCenter() - Scale_Px(7);
     m_indexCell->DrawList(in, MAX(MC_MIN_SIZE, fontsize - 3));
     SetPen();
-    dc->DrawLine(in.x - Scale_Px(2, scale),
+    dc->DrawLine(in.x - Scale_Px(2),
                 bs.y - m_baseCell->GetMaxCenter(),
-                in.x - Scale_Px(2, scale),
+                in.x - Scale_Px(2),
                 in.y);
     UnsetPen();
   }

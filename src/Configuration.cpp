@@ -34,7 +34,6 @@ Configuration::Configuration(wxDC &dc, bool isTopLevel) : m_dc(&dc)
   m_antialiassingDC = NULL;
   m_parenthesisDrawMode = unknown;
   m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML");
-  m_scale = 1.0;
   m_zoomFactor = 1.0; // affects returned fontsizes
   m_top = -1;
   m_bottom = -1;
@@ -200,16 +199,16 @@ wxFont Configuration::GetFont(int textStyle, int fontSize)
 
     // Besides that these items have a fixed font size.
     fontSize = GetFontSize(textStyle);
-  }
-
-  // Ensure a sane minimum font size
-  if (fontSize < 4)
-    fontSize = 4;
-  
+  }  
   
   // The font size scales with the worksheet
-  int fontSize1 = MathCell::Scale_Px(fontSize,GetScale());
-  
+  int fontSize1 = Scale_Px(fontSize);
+
+  wxASSERT(fontSize > 0);
+  // Ensure a sane minimum font size
+  if (fontSize1 < 4)
+    fontSize = 4;
+
   fontName = GetFontName(textStyle);
   fontStyle = IsItalic(textStyle);
   fontWeight = IsBold(textStyle);

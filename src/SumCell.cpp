@@ -120,11 +120,10 @@ void SumCell::SetUnder(MathCell *under)
 void SumCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
 
-  m_signSize = Scale_Px(50, scale) * configuration->GetZoomFactor();
-  m_signWidth = Scale_Px(30, scale) * configuration->GetZoomFactor();
-  m_signWCenter = Scale_Px(15, scale) * configuration->GetZoomFactor();
+  m_signSize = Scale_Px(50) * configuration->GetZoomFactor();
+  m_signWidth = Scale_Px(30) * configuration->GetZoomFactor();
+  m_signWCenter = Scale_Px(15) * configuration->GetZoomFactor();
 
   m_base->RecalculateWidthsList(fontsize);
   m_under->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
@@ -135,12 +134,13 @@ void SumCell::RecalculateWidths(int fontsize)
   if (configuration->CheckTeXFonts())
   {
     wxDC *dc = configuration->GetDC();
-    int fontsize1 = Scale_Px(configuration->GetMathFontSize(), scale);
+    int fontsize1 = Scale_Px(configuration->GetMathFontSize());
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                 configuration->GetTeXCMEX());
     if (!font.IsOk())
       font = *wxNORMAL_FONT;
+    wxASSERT(fontsize1 > 0);
     font.SetPointSize(fontsize1);
     dc->SetFont(font);
     dc->GetTextExtent(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN), &m_signWidth, &m_signSize);
@@ -148,9 +148,9 @@ void SumCell::RecalculateWidths(int fontsize)
     m_signTop = (2 * m_signSize) / 5;
     m_signSize = (2 * m_signSize) / 5;
   }
-  m_signWCenter = MAX(m_signWCenter, m_under->GetFullWidth(scale) / 2);
-  m_signWCenter = MAX(m_signWCenter, m_over->GetFullWidth(scale) / 2);
-  m_width = 2 * m_signWCenter + m_base->GetFullWidth(scale) + Scale_Px(4, scale);
+  m_signWCenter = MAX(m_signWCenter, m_under->GetFullWidth() / 2);
+  m_signWCenter = MAX(m_signWCenter, m_over->GetFullWidth() / 2);
+  m_width = 2 * m_signWCenter + m_base->GetFullWidth() + Scale_Px(4);
 
   ResetData();
 }
@@ -158,16 +158,15 @@ void SumCell::RecalculateWidths(int fontsize)
 void SumCell::RecalculateHeight(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
 
   m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
   m_over->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
   m_base->RecalculateHeightList(fontsize);
 
-  m_center = MAX(m_over->GetMaxHeight() + Scale_Px(4, scale) + m_signSize / 2,
+  m_center = MAX(m_over->GetMaxHeight() + Scale_Px(4) + m_signSize / 2,
                  m_base->GetMaxCenter());
   m_height = m_center +
-             MAX(m_under->GetMaxHeight() + Scale_Px(4, scale) + m_signSize / 2,
+             MAX(m_under->GetMaxHeight() + Scale_Px(4) + m_signSize / 2,
                  m_base->GetMaxDrop());
 }
 
@@ -177,27 +176,27 @@ void SumCell::Draw(wxPoint point, int fontsize)
   {
     Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();
-    double scale = configuration->GetScale();
 
     wxPoint base(point), under(point), over(point), sign(point);
 
-    under.x += m_signWCenter - m_under->GetFullWidth(scale) / 2;
-    under.y = point.y + m_signSize / 2 + m_under->GetMaxCenter() + Scale_Px(2, scale);
+    under.x += m_signWCenter - m_under->GetFullWidth() / 2;
+    under.y = point.y + m_signSize / 2 + m_under->GetMaxCenter() + Scale_Px(2);
     m_under->DrawList(under, MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
 
-    over.x += m_signWCenter - m_over->GetFullWidth(scale) / 2;
-    over.y = point.y - m_signSize / 2 - m_over->GetMaxDrop() - Scale_Px(2, scale);
+    over.x += m_signWCenter - m_over->GetFullWidth() / 2;
+    over.y = point.y - m_signSize / 2 - m_over->GetMaxDrop() - Scale_Px(2);
     m_over->DrawList(over, MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
 
     if (configuration->CheckTeXFonts())
     {
       SetForeground();
-      int fontsize1 = Scale_Px(configuration->GetMathFontSize(), scale);
+      int fontsize1 = Scale_Px(configuration->GetMathFontSize());
       wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
       if (!font.IsOk())
         font = *wxNORMAL_FONT;
+      wxASSERT(fontsize1 > 0);
       font.SetPointSize(fontsize1);
       dc->SetFont(font);
       dc->DrawText(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN),
@@ -227,7 +226,7 @@ void SumCell::Draw(wxPoint point, int fontsize)
         adc->DrawLine(point.x + m_signWCenter + m_signWidth / 2,
                      point.y - m_signSize / 2,
                      point.x + m_signWCenter + m_signWidth / 2,
-                     point.y - m_signSize / 2 + Scale_Px(5, scale));
+                     point.y - m_signSize / 2 + Scale_Px(5));
         // Lower part
         adc->DrawLine(point.x + m_signWCenter + m_signWidth / 6,
                      point.y,
@@ -244,7 +243,7 @@ void SumCell::Draw(wxPoint point, int fontsize)
         adc->DrawLine(point.x + m_signWCenter + m_signWidth / 2,
                      point.y + m_signSize / 2,
                      point.x + m_signWCenter + m_signWidth / 2,
-                     point.y + m_signSize / 2 - Scale_Px(5, scale));
+                     point.y + m_signSize / 2 - Scale_Px(5));
       }
       else
       {
@@ -253,11 +252,11 @@ void SumCell::Draw(wxPoint point, int fontsize)
         dc->DrawLine(point.x + m_signWCenter + m_signWidth / 6,
                     point.y + m_signSize / 2,
                     point.x + m_signWCenter + m_signWidth / 6,
-                    point.y - m_signSize / 2 + Scale_Px(4, scale));
+                    point.y - m_signSize / 2 + Scale_Px(4));
         dc->DrawLine(point.x + m_signWCenter - m_signWidth / 6,
                     point.y + m_signSize / 2,
                     point.x + m_signWCenter - m_signWidth / 6,
-                    point.y - m_signSize / 2 + Scale_Px(4, scale));
+                    point.y - m_signSize / 2 + Scale_Px(4));
         // Horizonral line (double)
         dc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
                     point.y - m_signSize / 2,
@@ -271,15 +270,15 @@ void SumCell::Draw(wxPoint point, int fontsize)
         dc->DrawLine(point.x + m_signWCenter - m_signWidth / 2,
                     point.y - m_signSize / 2,
                     point.x + m_signWCenter - m_signWidth / 2,
-                    point.y - m_signSize / 2 + Scale_Px(5, scale));
+                    point.y - m_signSize / 2 + Scale_Px(5));
         dc->DrawLine(point.x + m_signWCenter + m_signWidth / 2,
                     point.y - m_signSize / 2,
                     point.x + m_signWCenter + m_signWidth / 2,
-                    point.y - m_signSize / 2 + Scale_Px(5, scale));
+                    point.y - m_signSize / 2 + Scale_Px(5));
       }
       UnsetPen();
     }
-    base.x += (2 * m_signWCenter + Scale_Px(4, scale));
+    base.x += (2 * m_signWCenter + Scale_Px(4));
     m_base->DrawList(base, fontsize);
   }
 

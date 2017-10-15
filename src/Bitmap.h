@@ -94,9 +94,9 @@ private:
   int m_scale;
   wxBitmap m_bmp;
   //! The width of the current bitmap;
-  long m_width;
+  int m_width;
   //! The height of the current bitmap;
-  long m_height;
+  int m_height;
   //! The resolution of the bitmap.
   wxSize m_ppi;
 

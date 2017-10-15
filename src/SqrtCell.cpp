@@ -105,24 +105,22 @@ void SqrtCell::SetInner(MathCell *inner)
 void SqrtCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
   m_innerCell->RecalculateWidthsList(fontsize);
   if (configuration->CheckTeXFonts())
   {
     wxDC *dc = configuration->GetDC();
-    double scale = configuration->GetScale();
     m_innerCell->RecalculateHeightList(fontsize);
 
     m_signFontScale = 1.0;
-    int fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale,scale);
-
+    int fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
+    wxASSERT(fontsize1 > 0);
     wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                 configuration->GetTeXCMEX());
     font.SetPointSize(fontsize1);
     dc->SetFont(font);
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
-    m_width = m_innerCell->GetFullWidth(scale) + m_signWidth;
+    m_width = m_innerCell->GetFullWidth() + m_signWidth;
 
     int size = m_innerCell->GetMaxHeight();
 
@@ -152,19 +150,20 @@ void SqrtCell::RecalculateWidths(int fontsize)
       m_signFontScale = 1.0;
     }
 
-    fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale,scale);
+    fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
     font = wxFont(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
+    wxASSERT(fontsize1 > 0);
     font.SetPointSize(fontsize1);
     dc->SetFont(font);
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
-    m_width = m_innerCell->GetFullWidth(scale) + m_signWidth;
+    m_width = m_innerCell->GetFullWidth() + m_signWidth;
   }
   else
   {
     int zoomFactor = configuration->GetZoomFactor();
-    m_width = m_innerCell->GetFullWidth(scale) + Scale_Px(13, scale * zoomFactor) + 1;
+    m_width = m_innerCell->GetFullWidth() + Scale_Px(13 * zoomFactor) + 1;
   }
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
@@ -174,10 +173,9 @@ void SqrtCell::RecalculateWidths(int fontsize)
 void SqrtCell::RecalculateHeight(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
   m_innerCell->RecalculateHeightList(fontsize);
-  m_height = m_innerCell->GetMaxHeight() + Scale_Px(3, scale);
-  m_center = m_innerCell->GetMaxCenter() + Scale_Px(3, scale);
+  m_height = m_innerCell->GetMaxHeight() + Scale_Px(3);
+  m_center = m_innerCell->GetMaxCenter() + Scale_Px(3);
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
   if (m_isBroken)
@@ -195,7 +193,6 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
     MathCell::Draw(point, fontsize);
     Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();
-    double scale = configuration->GetScale();
 
     wxPoint in(point);
 
@@ -204,12 +201,12 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
       SetPen();
 
       in.x += m_signWidth;
-      double scale = configuration->GetScale();
 
-      int fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale, scale);
+      int fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
 
       wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
+      wxASSERT(fontsize1 > 0);
       font.SetPointSize(fontsize1);
       dc->SetFont(font);
       SetForeground();
@@ -250,7 +247,7 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
       wxDC *adc = configuration->GetAntialiassingDC();
       adc->DrawLine(point.x + m_signWidth,
                   point.y - m_innerCell->GetMaxCenter(),
-                  point.x + m_signWidth + m_innerCell->GetFullWidth(scale),
+                  point.x + m_signWidth + m_innerCell->GetFullWidth(),
                   point.y - m_innerCell->GetMaxCenter());
 
       UnsetPen();
@@ -259,32 +256,32 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
     {
       int zoomFactor = configuration->GetZoomFactor();
       wxDC *adc = configuration->GetAntialiassingDC();
-      in.x += Scale_Px(10, scale*zoomFactor) + Scale_Px(1, scale*zoomFactor) + 1;
+      in.x += Scale_Px(11) + 1;
       SetPen();
       adc->DrawLine(point.x,
                   point.y,
-                  point.x + Scale_Px(3, scale*zoomFactor),
-                  point.y - Scale_Px(1, scale*zoomFactor));
-      adc->DrawLine(point.x + Scale_Px(3, scale*zoomFactor),
-                  point.y - Scale_Px(1, scale*zoomFactor),
-                  point.x + Scale_Px(7, scale*zoomFactor),
-                  point.y + m_height - m_center - Scale_Px(4, scale*zoomFactor));
-      adc->DrawLine(point.x + Scale_Px(3, scale*zoomFactor) + 1,
-                  point.y - Scale_Px(1, scale*zoomFactor),
-                  point.x + Scale_Px(7, scale*zoomFactor) + 1,
-                  point.y + m_height - m_center - Scale_Px(4, scale*zoomFactor));
-      adc->DrawLine(point.x + Scale_Px(7, scale*zoomFactor) + 1,
-                  point.y + m_height - m_center - Scale_Px(4, scale*zoomFactor),
-                  point.x + Scale_Px(10, scale*zoomFactor),
-                  point.y - m_center + Scale_Px(2, scale*zoomFactor));
-      adc->DrawLine(point.x + Scale_Px(10, scale*zoomFactor),
-                  point.y - m_center + Scale_Px(2, scale*zoomFactor),
-                  point.x + m_width - Scale_Px(1, scale*zoomFactor),
-                  point.y - m_center + Scale_Px(2, scale*zoomFactor));
-      adc->DrawLine(point.x + m_width - Scale_Px(1, scale*zoomFactor),
-                  point.y - m_center + Scale_Px(2, scale*zoomFactor),
-                  point.x + m_width - Scale_Px(1, scale*zoomFactor),
-                  point.y - m_center + Scale_Px(6, scale*zoomFactor));
+                  point.x + Scale_Px(3),
+                  point.y - Scale_Px(1));
+      adc->DrawLine(point.x + Scale_Px(3),
+                  point.y - Scale_Px(1),
+                  point.x + Scale_Px(7),
+                  point.y + m_height - m_center - Scale_Px(4));
+      adc->DrawLine(point.x + Scale_Px(3) + 1,
+                  point.y - Scale_Px(1),
+                  point.x + Scale_Px(7) + 1,
+                  point.y + m_height - m_center - Scale_Px(4));
+      adc->DrawLine(point.x + Scale_Px(7) + 1,
+                  point.y + m_height - m_center - Scale_Px(4),
+                  point.x + Scale_Px(10),
+                  point.y - m_center + Scale_Px(2));
+      adc->DrawLine(point.x + Scale_Px(10),
+                  point.y - m_center + Scale_Px(2),
+                  point.x + m_width - Scale_Px(1),
+                  point.y - m_center + Scale_Px(2));
+      adc->DrawLine(point.x + m_width - Scale_Px(1),
+                  point.y - m_center + Scale_Px(2),
+                  point.x + m_width - Scale_Px(1),
+                  point.y - m_center + Scale_Px(6));
       UnsetPen();
     }
 

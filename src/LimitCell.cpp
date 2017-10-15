@@ -108,14 +108,13 @@ void LimitCell::SetUnder(MathCell *under)
 void LimitCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  double scale = configuration->GetScale();
 
   m_base->RecalculateWidthsList(fontsize);
   m_under->RecalculateWidthsList(MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
   m_name->RecalculateWidthsList(fontsize);
 
-  m_width = MAX(m_name->GetFullWidth(scale), m_under->GetFullWidth(scale))
-            + m_base->GetFullWidth(scale);
+  m_width = MAX(m_name->GetFullWidth(), m_under->GetFullWidth())
+            + m_base->GetFullWidth();
   ResetData();
 }
 
@@ -136,22 +135,21 @@ void LimitCell::Draw(wxPoint point, int fontsize)
   {   
     MathCell::Draw(point, fontsize);
     Configuration *configuration = (*m_configuration);
-    double scale = configuration->GetScale();
     wxPoint base(point), under(point), name(point);
 
-    name.x = point.x + MAX(m_name->GetFullWidth(scale),
-                           m_under->GetFullWidth(scale)) / 2 -
-             m_name->GetFullWidth(scale) / 2;
+    name.x = point.x + MAX(m_name->GetFullWidth(),
+                           m_under->GetFullWidth()) / 2 -
+             m_name->GetFullWidth() / 2;
     m_name->DrawList(name, fontsize);
 
-    under.x = point.x + MAX(m_name->GetFullWidth(scale),
-                            m_under->GetFullWidth(scale)) / 2 -
-              m_under->GetFullWidth(scale) / 2;
+    under.x = point.x + MAX(m_name->GetFullWidth(),
+                            m_under->GetFullWidth()) / 2 -
+              m_under->GetFullWidth() / 2;
     under.y = point.y + m_name->GetMaxDrop() + m_under->GetMaxCenter();
     m_under->DrawList(under, MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
 
-    base.x += MAX(m_name->GetFullWidth(scale),
-                  m_under->GetFullWidth(scale));
+    base.x += MAX(m_name->GetFullWidth(),
+                  m_under->GetFullWidth());
     m_base->DrawList(base, fontsize);
   }
 }
@@ -176,7 +174,6 @@ wxString LimitCell::ToString()
 wxString LimitCell::ToTeX()
 {
   wxString under = m_under->ListToTeX();
-  std::cerr<<under<<"\n";
   wxString base = m_base->ListToTeX();
   int varEnd = under.Find(wxT("->"));
   int toStart = 0;

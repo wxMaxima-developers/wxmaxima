@@ -73,9 +73,7 @@ public:
 
   int GetHeaderHeight();
 
-  void PrintHeader(int pageNum, wxDC *dc, double scale);
-
-  double GetPPIScale();
+  void PrintHeader(int pageNum, wxDC *dc);
 
   void GetScreenScale(double *scaleX, double *scaleY);
 

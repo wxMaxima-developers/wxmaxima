@@ -70,8 +70,7 @@ bool Svgout::Layout(long int maxSize)
   *m_configuration = new Configuration(*m_dc);
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
   (*m_configuration)->SetClientWidth(500*m_scale);
-  (*m_configuration)->SetScale(m_scale);
-  (*m_configuration)->SetZoomFactor(1);
+  (*m_configuration)->SetZoomFactor(m_scale);
   // The last time I tried it the vertical positioning of the elements
   // of a big unicode parenthesis wasn't accurate enough in svg to be
   // usable. Also the probability was high that the right font wasn't
