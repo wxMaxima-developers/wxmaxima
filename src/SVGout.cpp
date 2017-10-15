@@ -67,8 +67,8 @@ Svgout::~Svgout()
   wxDELETE(m_tree);
   wxDELETE(*m_configuration);
   wxDELETE(m_dc);
-//  if(wxFileExists(m_tempFileName))
-  wxRemoveFile(m_tempFileName);
+  if((m_tempFileName != wxEmptyString) && (wxFileExists(m_tempFileName)))
+    wxRemoveFile(m_tempFileName);
   *m_configuration = m_oldconfig;
   MathCell::ClipToDrawRegion(true);
   (*m_configuration)->SetForceUpdate(false);
@@ -304,7 +304,7 @@ Svgout::SVGDataObject *Svgout::GetDataObject()
       }
     free(data);
     }
-  if(wxFileExists(m_filename))
+  if((m_filename != wxEmptyString) && (wxFileExists(m_filename)))
     wxRemoveFile(m_filename);
   m_filename = wxEmptyString;
   
