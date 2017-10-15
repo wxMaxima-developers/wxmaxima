@@ -51,6 +51,7 @@ Bitmap::Bitmap(Configuration **configuration, int scale)
   (*m_configuration)->SetZoomFactor_temporarily(1);
   (*m_configuration)->SetClientWidth(BM_FULL_WIDTH);
   (*m_configuration)->SetClientHeight(BM_FULL_WIDTH);
+  (*m_configuration)->SetForceUpdate(true);
 }
 
 Bitmap::~Bitmap()
@@ -59,6 +60,7 @@ Bitmap::~Bitmap()
   wxDELETE(m_dc);
   wxDELETE(*m_configuration);
   *m_configuration = m_oldconfig;
+  (*m_configuration)->SetForceUpdate(false);
 }
 
 bool Bitmap::SetData(MathCell *tree, long int maxSize)

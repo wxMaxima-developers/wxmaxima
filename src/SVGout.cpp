@@ -59,6 +59,7 @@ Svgout::Svgout(Configuration **configuration, wxString filename, double scale)
   // available in inkscape.
   (*m_configuration)->SetGrouphesisDrawMode(Configuration::handdrawn);
   MathCell::ClipToDrawRegion(false);
+  (*m_configuration)->SetForceUpdate(true);
 }
 
 Svgout::~Svgout()
@@ -68,6 +69,7 @@ Svgout::~Svgout()
   wxDELETE(m_dc);
   *m_configuration = m_oldconfig;
   MathCell::ClipToDrawRegion(true);
+  (*m_configuration)->SetForceUpdate(false);
 }
 
 wxSize Svgout::SetData(MathCell *tree, long int maxSize)

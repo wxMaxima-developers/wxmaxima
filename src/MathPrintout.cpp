@@ -39,6 +39,7 @@ MathPrintout::MathPrintout(wxString title, Configuration **configuration) : wxPr
   m_oldconfig = *m_configuration;
   m_numberOfPages = 0;
   m_tree = NULL;
+  (*m_configuration)->SetForceUpdate(true);
 }
 
 MathPrintout::~MathPrintout()
@@ -47,6 +48,7 @@ MathPrintout::~MathPrintout()
   wxDELETE(*m_configuration);
   *m_configuration = m_oldconfig;
   MathCell::ClipToDrawRegion(true);
+  (*m_configuration)->SetForceUpdate(false);
 }
 
 void MathPrintout::SetData(GroupCell *tree)
