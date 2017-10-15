@@ -130,7 +130,7 @@ public:
   ~Configuration();
 
   static double GetMinZoomFactor()
-  { return 0.4; }
+  { return 0.1; }
 
   static double GetMaxZoomFactor()
   { return 32.0; }
