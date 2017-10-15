@@ -44,8 +44,8 @@ Svgout::Svgout(Configuration **configuration, wxString filename, double scale)
     m_filename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
   else
     m_filename = filename;
-
-  m_dc = new wxSVGFileDC(m_filename,10000*m_scale,50000*m_scale,20*m_scale);
+  wxString m_tempFileName = wxFileName::CreateTempFileName(wxT("wxmaxima_size_"));
+  m_dc = new wxSVGFileDC(m_tempFileName,10000*m_scale,50000*m_scale,20*m_scale);
 #if wxCHECK_VERSION(3, 1, 0)
   m_dc->SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
@@ -67,19 +67,22 @@ Svgout::~Svgout()
   wxDELETE(m_tree);
   wxDELETE(*m_configuration);
   wxDELETE(m_dc);
+//  if(wxFileExists(m_tempFileName))
+  wxRemoveFile(m_tempFileName);
   *m_configuration = m_oldconfig;
   MathCell::ClipToDrawRegion(true);
   (*m_configuration)->SetForceUpdate(false);
 }
 
-wxSize Svgout::SetData(MathCell *tree, long int maxSize)
+wxSize Svgout::SetData(MathCell *tree)
 {
   wxDELETE(m_tree);
+  m_tree = tree;
   if(m_tree != NULL)
   {
     m_tree = tree;
     m_tree->ResetSize();
-    if(Layout(maxSize))
+    if(Layout())
       return wxSize(m_width / m_scale, m_height / m_scale);  
     else
       return wxSize(-1,-1);
@@ -88,7 +91,7 @@ wxSize Svgout::SetData(MathCell *tree, long int maxSize)
     return wxSize(-1,-1);
 }
 
-bool Svgout::Layout(long int maxSize)
+bool Svgout::Layout()
 {
   if (m_tree->GetType() != MC_TYPE_GROUP)
   {
@@ -301,7 +304,8 @@ Svgout::SVGDataObject *Svgout::GetDataObject()
       }
     free(data);
     }
-  wxRemoveFile(m_filename);
+  if(wxFileExists(m_filename))
+    wxRemoveFile(m_filename);
   m_filename = wxEmptyString;
   
   return new SVGDataObject(svgContents);
