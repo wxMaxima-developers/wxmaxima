@@ -338,7 +338,7 @@ void ParenCell::Draw(wxPoint point, int fontsize)
       wxDC *adc = configuration->GetAntialiassingDC();
       innerCellPos.x = point.x + Scale_Px(6) + (*m_configuration)->GetDefaultLineWidth();
       innerCellPos.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
-      SetPen();
+      SetPen(2.0);
       // left
       adc->DrawLine(point.x + Scale_Px(5) + (*m_configuration)->GetDefaultLineWidth() / 2,
                    point.y - m_innerCell->GetMaxCenter() + Scale_Px(1),

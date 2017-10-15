@@ -314,7 +314,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
         sign.y + (m_signSize + 1) / 2 - (3 * m_charHeight) / 2);
       }
 #else
-      SetPen(1.5);
+      SetPen(2.0);
       // top decoration
       int m_signWCenter = m_signWidth / 2;
       wxPoint pointList[10];

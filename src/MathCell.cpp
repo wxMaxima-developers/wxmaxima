@@ -1034,22 +1034,24 @@ void MathCell::SetPen(double lineWidth)
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
 
+  wxPen pen;
+  
   if (m_highlight)
-    dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_HIGHLIGHT),
-                                              lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
+    pen = *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_HIGHLIGHT),
+                                          lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID));
   else if (m_type == MC_TYPE_PROMPT)
-    dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_OTHER_PROMPT),
-                                              lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
+    pen = *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_OTHER_PROMPT),
+                                              lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID));
   else if (m_type == MC_TYPE_INPUT)
-    dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_INPUT),
-                                              lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
+    pen = *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_INPUT),
+                                          lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID));
   else
-    dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_DEFAULT),
-                                              lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID)));
+    pen = *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_DEFAULT),
+                                          lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID));
 
+  dc->SetPen(pen);
   if(configuration->GetAntialiassingDC() != dc)
-    configuration->GetAntialiassingDC()->SetPen(dc->GetPen());
-
+    configuration->GetAntialiassingDC()->SetPen(pen);
 }
 
 /***

@@ -47,7 +47,7 @@ public:
 
     \return true, if the svgout could be created.
    */
-  bool SetData(MathCell *tree, long int maxSize = -1);
+  wxSize SetData(MathCell *tree, long int maxSize = -1);
   
   //! Copies the svg representation of the list of cells that was passed to SetData()
   bool ToClipboard();
@@ -98,9 +98,9 @@ private:
   //! How many times the natural resolution do we want this svgout to be?
   int m_scale;
   //! The width of the current svgout;
-  long m_width;
+  int m_width;
   //! The height of the current svgout;
-  long m_height;
+  int m_height;
   //! The resolution of the svgout.
   wxSize m_ppi;
 

@@ -5131,11 +5131,11 @@ bool MathCtrl::ExportToHTML(wxString file)
               alttext = chunk->ListToString();
               alttext = EditorCell::EscapeHTMLChars(alttext);
               Svgout svgout(&m_configuration, imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.svg"), count));
-              svgout.SetData(chunk);                            
+              wxSize size = svgout.SetData(chunk);                            
               wxString line = wxT("  <img src=\"") +
                 filename + wxT("_htmlimg/") + filename +
-                wxString::Format(wxT("_%d.svg\" style=\"max-width:90%%;\" alt=\""),
-                                 count) +
+                wxString::Format(wxT("_%d.svg\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
+                                 count, size.x) +
                 alttext +
                 wxT("\" ><BR/>\n");
               

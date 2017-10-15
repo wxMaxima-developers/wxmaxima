@@ -52,11 +52,14 @@ Svgout::~Svgout()
   *m_configuration = m_oldconfig;
 }
 
-bool Svgout::SetData(MathCell *tree, long int maxSize)
+wxSize Svgout::SetData(MathCell *tree, long int maxSize)
 {
   wxDELETE(m_tree);
   m_tree = tree;
-  return Layout(maxSize);
+  if(Layout(maxSize))
+    return wxSize(m_width / m_scale, m_height / m_scale);  
+  else
+    return wxSize(-1,-1);
 }
 
 bool Svgout::Layout(long int maxSize)
@@ -75,7 +78,7 @@ bool Svgout::Layout(long int maxSize)
   // of a big unicode parenthesis wasn't accurate enough in svg to be
   // usable. Also the probability was high that the right font wasn't
   // available in inkscape.
-//  (*m_configuration)->SetGrouphesisDrawMode(Configuration::handdrawn);
+  (*m_configuration)->SetGrouphesisDrawMode(Configuration::handdrawn);
   if (m_tree->GetType() != MC_TYPE_GROUP)
   {
     RecalculateWidths();
@@ -99,13 +102,12 @@ bool Svgout::Layout(long int maxSize)
     return false;
   }
 
-  int width, height;
-  GetMaxPoint(&width, &height);
+  GetMaxPoint(&m_width, &m_height);
 
   // Let's switch to a DC of the right size for our object.
   wxDELETE(m_dc);
   wxRemoveFile(tempfilename);
-  m_dc = new wxSVGFileDC(m_filename, width, height, 20*m_scale);
+  m_dc = new wxSVGFileDC(m_filename, m_width, m_height, 20*m_scale);
 #if wxCHECK_VERSION(3, 1, 0)
   m_dc->SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
