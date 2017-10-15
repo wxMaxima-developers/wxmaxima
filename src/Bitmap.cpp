@@ -143,12 +143,12 @@ bool Bitmap::Layout(long int maxSize)
 
 double Bitmap::GetRealWidth()
 {
-  return m_width / m_scale;
+  return m_width * m_scale;
 }
 
 double Bitmap::GetRealHeight()
 {
-  return m_height / m_scale;
+  return m_height * m_scale;
 }
 
 void Bitmap::RecalculateHeight()
