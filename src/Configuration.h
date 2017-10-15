@@ -116,7 +116,10 @@ public:
 
   //! Set the drawing context that is currently active
   void SetContext(wxDC &dc)
-  { m_dc = &dc; }
+  {
+    m_dc = &dc;
+    m_antialiassingDC = NULL;
+  }
 
   void SetAntialiassingDC(wxDC &antialiassingDC)
     {m_antialiassingDC = &antialiassingDC;}

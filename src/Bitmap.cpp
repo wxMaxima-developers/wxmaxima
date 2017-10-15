@@ -107,7 +107,6 @@ bool Bitmap::Layout(long int maxSize)
     // the clipboards and therefore render them all-transparent.
     std::cerr<<m_width<<"x"<<m_height<<"\n";
     wxDELETE(m_dc);
-    m_dc = new wxMemoryDC();
     m_bmp.CreateScaled(m_width, m_height, 24, m_scale);
     if(!m_bmp.IsOk())
     {
@@ -116,10 +115,12 @@ bool Bitmap::Layout(long int maxSize)
     }
     else
     {
+      m_dc = new wxMemoryDC();
       m_dc->SelectObject(m_bmp);
-      m_dc->SetUserScale(m_scale, m_scale);
       if(m_dc->IsOk())
       {
+        m_dc->SetUserScale(m_scale, m_scale);
+        (*m_configuration)->SetContext(*m_dc);
         m_dc->SetPen(wxNullPen);
         Draw();
         return true;
