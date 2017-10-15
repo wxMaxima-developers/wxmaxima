@@ -41,32 +41,11 @@ Svgout::Svgout(Configuration **configuration, wxString filename, double scale)
   m_svgFormat = wxDataFormat(wxT("image/svg+xml"));
 
   if (filename == wxEmptyString)
-    filename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
-
-  m_filename = filename;
-}
-
-Svgout::~Svgout()
-{
-  wxDELETE(m_tree);
-  *m_configuration = m_oldconfig;
-}
-
-wxSize Svgout::SetData(MathCell *tree, long int maxSize)
-{
-  wxDELETE(m_tree);
-  m_tree = tree;
-  if(Layout(maxSize))
-    return wxSize(m_width / m_scale, m_height / m_scale);  
+    m_filename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
   else
-    return wxSize(-1,-1);
-}
+    m_filename = filename;
 
-bool Svgout::Layout(long int maxSize)
-{
-  MathCell::ClipToDrawRegion(false);
-  wxString tempfilename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
-  m_dc = new wxSVGFileDC(tempfilename,10000*m_scale,50000*m_scale,20*m_scale);
+  m_dc = new wxSVGFileDC(m_filename,10000*m_scale,50000*m_scale,20*m_scale);
 #if wxCHECK_VERSION(3, 1, 0)
   m_dc->SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
@@ -79,6 +58,35 @@ bool Svgout::Layout(long int maxSize)
   // usable. Also the probability was high that the right font wasn't
   // available in inkscape.
   (*m_configuration)->SetGrouphesisDrawMode(Configuration::handdrawn);
+  MathCell::ClipToDrawRegion(false);
+}
+
+Svgout::~Svgout()
+{
+  wxDELETE(m_tree);
+  wxDELETE(*m_configuration);
+  wxDELETE(m_dc);
+  *m_configuration = m_oldconfig;
+  MathCell::ClipToDrawRegion(true);
+}
+
+wxSize Svgout::SetData(MathCell *tree, long int maxSize)
+{
+  wxDELETE(m_tree);
+  if(m_tree != NULL)
+  {
+    m_tree = tree;
+    if(Layout(maxSize))
+      return wxSize(m_width / m_scale, m_height / m_scale);  
+    else
+      return wxSize(-1,-1);
+  }
+  else
+    return wxSize(-1,-1);
+}
+
+bool Svgout::Layout(long int maxSize)
+{
   if (m_tree->GetType() != MC_TYPE_GROUP)
   {
     RecalculateWidths();
@@ -98,15 +106,13 @@ bool Svgout::Layout(long int maxSize)
 
   if(!m_dc->IsOk())
   {
-    MathCell::ClipToDrawRegion(true);
     return false;
   }
 
   GetMaxPoint(&m_width, &m_height);
 
-  // Let's switch to a DC of the right size for our object.
   wxDELETE(m_dc);
-  wxRemoveFile(tempfilename);
+  // Let's switch to a DC of the right size for our object.
   m_dc = new wxSVGFileDC(m_filename, m_width, m_height, 20*m_scale);
 #if wxCHECK_VERSION(3, 1, 0)
   m_dc->SetBitmapHandler(new wxSVGBitmapEmbedHandler());
@@ -114,9 +120,6 @@ bool Svgout::Layout(long int maxSize)
   (*m_configuration)->SetContext(*m_dc);
   
   Draw();
-  wxDELETE(*m_configuration);
-  wxDELETE(m_dc);
-  MathCell::ClipToDrawRegion(true);
   return true;
 }
 
@@ -223,7 +226,6 @@ void Svgout::GetMaxPoint(int *width, int *height)
 
 void Svgout::Draw()
 {
-  MathCell::ClipToDrawRegion(false);
   MathCell *tmp = m_tree;
 
   if (tmp != NULL)
@@ -268,7 +270,6 @@ void Svgout::Draw()
       tmp = tmp->m_nextToDraw;
     }
   }
-  MathCell::ClipToDrawRegion(true);
 }
 
 Svgout::SVGDataObject::SVGDataObject() : wxCustomDataObject(m_svgFormat)
