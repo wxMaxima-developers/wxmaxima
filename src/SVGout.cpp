@@ -63,13 +63,13 @@ bool Svgout::Layout(long int maxSize)
 {
   MathCell::ClipToDrawRegion(false);
   wxString tempfilename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
-  m_dc = new wxSVGFileDC(tempfilename,3200,2000,100*m_scale);
+  m_dc = new wxSVGFileDC(tempfilename,10000*m_scale,50000*m_scale,100*m_scale);
 #if wxCHECK_VERSION(3, 1, 0)
   m_dc->SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
   *m_configuration = new Configuration(*m_dc);
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
-  (*m_configuration)->SetClientWidth(500*m_scale);
+  (*m_configuration)->SetClientWidth(10000*m_scale);
   (*m_configuration)->SetZoomFactor(m_scale);
   // The last time I tried it the vertical positioning of the elements
   // of a big unicode parenthesis wasn't accurate enough in svg to be
