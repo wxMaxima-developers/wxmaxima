@@ -42,6 +42,7 @@ TextCell::TextCell(MathCell *parent, Configuration **config, CellPointers *cellP
   m_lastCalculationFontSize = -1;
   m_fontSize = -1;
   m_fontSizeLabel = -1;
+  m_lastZoomFactor = -1;
   SetValue(text);
   m_highlight = false;
   m_dontEscapeOpeningParenthesis = false;
@@ -266,6 +267,12 @@ void TextCell::RecalculateWidths(int fontsize)
   Configuration *configuration = (*m_configuration);
 
   bool recalculateNeeded = false;
+
+  if(m_lastZoomFactor != configuration->GetZoomFactor())
+  {
+    m_lastZoomFactor = configuration->GetZoomFactor();
+    recalculateNeeded = true;
+  }
   
   // If the setting has changed and we want to show a user-defined label
   // instead of an automatic one or vice versa we decide that here.
