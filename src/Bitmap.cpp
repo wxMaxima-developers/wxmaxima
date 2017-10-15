@@ -67,6 +67,7 @@ bool Bitmap::SetData(MathCell *tree, long int maxSize)
 {
   wxDELETE(m_tree);
   m_tree = tree;
+  m_tree->ResetSize();
   return Layout(maxSize);
 }
 

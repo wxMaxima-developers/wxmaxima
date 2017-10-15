@@ -78,6 +78,7 @@ wxSize Svgout::SetData(MathCell *tree, long int maxSize)
   if(m_tree != NULL)
   {
     m_tree = tree;
+    m_tree->ResetSize();
     if(Layout(maxSize))
       return wxSize(m_width / m_scale, m_height / m_scale);  
     else
