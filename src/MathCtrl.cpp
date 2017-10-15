@@ -5923,7 +5923,7 @@ wxString ConvertToUnicode(wxString str)
 */
 bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
 {
-  // Show a busy cursor as long as we open a file.
+  // Show a busy cursor as long as we export a file.
   wxBusyCursor crs;
 
   // delete temp file if it already exists

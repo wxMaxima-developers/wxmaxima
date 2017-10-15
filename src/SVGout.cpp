@@ -63,7 +63,7 @@ bool Svgout::Layout(long int maxSize)
 {
   MathCell::ClipToDrawRegion(false);
   wxString tempfilename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
-  m_dc = new wxSVGFileDC(tempfilename,10000*m_scale,50000*m_scale,100*m_scale);
+  m_dc = new wxSVGFileDC(tempfilename,10000*m_scale,50000*m_scale,20*m_scale);
 #if wxCHECK_VERSION(3, 1, 0)
   m_dc->SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
@@ -105,7 +105,7 @@ bool Svgout::Layout(long int maxSize)
   // Let's switch to a DC of the right size for our object.
   wxDELETE(m_dc);
   wxRemoveFile(tempfilename);
-  m_dc = new wxSVGFileDC(m_filename, width, height, 100*m_scale);
+  m_dc = new wxSVGFileDC(m_filename, width, height, 20*m_scale);
 #if wxCHECK_VERSION(3, 1, 0)
   m_dc->SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
@@ -151,9 +151,6 @@ void Svgout::RecalculateWidths()
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
 
   MathCell *tmp = m_tree;
-
-  (*m_configuration)->SetClientWidth(500*m_scale);
-  (*m_configuration)->SetClientHeight(500*m_scale);
 
   while (tmp != NULL)
   {

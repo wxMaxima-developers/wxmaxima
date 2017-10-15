@@ -3137,6 +3137,9 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 
 bool wxMaxima::SaveFile(bool forceSave)
 {
+  // Show a busy cursor as long as we export a file.
+  wxBusyCursor crs;
+
   wxString file = m_console->m_currentFile;
   wxString fileExt = wxT("wxmx");
   int ext = 0;
@@ -3507,6 +3510,8 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
             StatusExportStart();
 
             fileExt = wxT("tex");
+            // Show a busy cursor as long as we export a file.
+            wxBusyCursor crs;
             if (!m_console->ExportToTeX(file))
             {
               wxMessageBox(_("Exporting to TeX failed!"), _("Error!"),
@@ -3520,6 +3525,8 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
           {
             StatusExportStart();
 
+            // Show a busy cursor as long as we export a file.
+            wxBusyCursor crs;
             fileExt = wxT("mac");
             if (!m_console->ExportToMAC(file))
             {
@@ -3534,6 +3541,8 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
           {
             StatusExportStart();
 
+            // Show a busy cursor as long as we export a file.
+            wxBusyCursor crs;
             fileExt = wxT("html");
             if (!m_console->ExportToHTML(file))
             {
