@@ -105,7 +105,6 @@ bool Bitmap::Layout(long int maxSize)
     // The depth 24 hinders wxWidgets from creating rgb0 bitmaps that some
     // windows applications will interpret as rgba if they appear on
     // the clipboards and therefore render them all-transparent.
-    std::cerr<<m_width<<"x"<<m_height<<"\n";
     wxDELETE(m_dc);
     m_bmp.CreateScaled(m_width, m_height, 24, m_scale);
     if(!m_bmp.IsOk())

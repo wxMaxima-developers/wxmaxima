@@ -3083,9 +3083,7 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 #endif
 
     if (cmd.Length() > 0)
-    {
       MenuCommand(cmd + wxT("(\"") + unixFilename + wxT("\")$"));
-    }
 
     else if (file.Right(4).Lower() == wxT(".wxm"))
       OpenWXMFile(file, m_console);

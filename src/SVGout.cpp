@@ -32,7 +32,7 @@
 #include <wx/config.h>
 #include <wx/clipbrd.h>
 
-Svgout::Svgout(Configuration **configuration, wxString filename, int scale)
+Svgout::Svgout(Configuration **configuration, wxString filename, double scale)
 {
   m_configuration = configuration;
   m_oldconfig = *m_configuration;

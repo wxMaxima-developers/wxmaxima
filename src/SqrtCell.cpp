@@ -121,7 +121,7 @@ void SqrtCell::RecalculateWidths(int fontsize)
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
     m_width = m_innerCell->GetFullWidth() + m_signWidth;
-
+    
     int size = m_innerCell->GetMaxHeight();
 
     if (size <= (m_signSize) / 5)
@@ -163,7 +163,7 @@ void SqrtCell::RecalculateWidths(int fontsize)
   else
   {
     int zoomFactor = configuration->GetZoomFactor();
-    m_width = m_innerCell->GetFullWidth() + Scale_Px(13 * zoomFactor) + 1;
+    m_width = m_innerCell->GetFullWidth() + Scale_Px(13) + 1;
   }
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
@@ -183,7 +183,6 @@ void SqrtCell::RecalculateHeight(int fontsize)
     m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
   }
-
 }
 
 void SqrtCell::Draw(wxPoint point, int fontsize)

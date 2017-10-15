@@ -35,7 +35,7 @@ class Svgout
 public:
   /*! The constructor.
   */
-  Svgout(Configuration **configuration, wxString filename = wxEmptyString, int scale = 10);
+  Svgout(Configuration **configuration, wxString filename = wxEmptyString, double scale = 1.0);
 
   ~Svgout();
   
@@ -96,7 +96,7 @@ private:
   wxString m_filename;
   Configuration **m_configuration, *m_oldconfig;
   //! How many times the natural resolution do we want this svgout to be?
-  int m_scale;
+  double m_scale;
   //! The width of the current svgout;
   int m_width;
   //! The height of the current svgout;
