@@ -70,8 +70,13 @@ Svgout::~Svgout()
   wxDELETE(*m_configuration);
   wxDELETE(m_dc);
   wxDELETE(m_recalculationDc);
-  if((m_tempFileName != wxEmptyString) && (wxFileExists(m_tempFileName)))
+  if(wxFileExists(m_tempFileName))
+  {
+    // We don't want a braindead virus scanner that disallows us to delete our temp
+    // files to trigger asserts.
+    wxLogNull logNull;
     wxRemoveFile(m_tempFileName);
+  }
   *m_configuration = m_oldconfig;
   MathCell::ClipToDrawRegion(true);
   (*m_configuration)->SetForceUpdate(false);
@@ -312,7 +317,10 @@ Svgout::SVGDataObject *Svgout::GetDataObject()
     free(data);
   }
   if((m_filename != wxEmptyString) && (wxFileExists(m_filename)))
+  {
+    wxLogNull logNull;
     wxRemoveFile(m_filename);
+  }
   m_filename = wxEmptyString;
   
   return new SVGDataObject(svgContents);
