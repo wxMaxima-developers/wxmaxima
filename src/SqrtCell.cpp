@@ -261,15 +261,29 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
                   point.y,
                   point.x + Scale_Px(3),
                   point.y - Scale_Px(1));
+      //  A wider line
       adc->DrawLine(point.x + Scale_Px(3),
                   point.y - Scale_Px(1),
                   point.x + Scale_Px(7),
                   point.y + m_height - m_center - Scale_Px(4));
-      adc->DrawLine(point.x + Scale_Px(3) + 1,
+      adc->DrawLine(point.x + Scale_Px(3+1),
                   point.y - Scale_Px(1),
-                  point.x + Scale_Px(7) + 1,
+                  point.x + Scale_Px(7+1),
                   point.y + m_height - m_center - Scale_Px(4));
-      adc->DrawLine(point.x + Scale_Px(7) + 1,
+      adc->DrawLine(point.x + Scale_Px(3+.5),
+                  point.y - Scale_Px(1),
+                  point.x + Scale_Px(7+.5),
+                  point.y + m_height - m_center - Scale_Px(4));
+      adc->DrawLine(point.x + Scale_Px(3),
+                  point.y - Scale_Px(1),
+                  point.x + Scale_Px(3+1),
+                  point.y - Scale_Px(1));
+      adc->DrawLine(point.x + Scale_Px(7),
+                    point.y + m_height - m_center - Scale_Px(4),
+                    point.x + Scale_Px(7+1),
+                    point.y + m_height - m_center - Scale_Px(4));
+
+      adc->DrawLine(point.x + Scale_Px(7+1),
                   point.y + m_height - m_center - Scale_Px(4),
                   point.x + Scale_Px(10),
                   point.y - m_center + Scale_Px(2));
