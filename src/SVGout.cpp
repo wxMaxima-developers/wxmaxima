@@ -43,13 +43,15 @@ Svgout::Svgout(Configuration **configuration, wxString filename, double scale)
   m_filename = filename;
   if (m_filename == wxEmptyString)
     m_filename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
+
+  m_dc = NULL;
   
   wxString m_tempFileName = wxFileName::CreateTempFileName(wxT("wxmaxima_size_"));
-  m_dc = new wxSVGFileDC(m_tempFileName,700*m_scale,50000*m_scale,20*m_scale);
+  m_recalculationDc = new wxSVGFileDC(m_tempFileName,700*m_scale,50000*m_scale,20*m_scale);
 #if wxCHECK_VERSION(3, 1, 0)
-  m_dc->SetBitmapHandler(new wxSVGBitmapEmbedHandler());
+  m_recalculationDc->SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
-  *m_configuration = new Configuration(*m_dc);
+  *m_configuration = new Configuration(*m_recalculationDc);
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
   (*m_configuration)->SetClientWidth(700*m_scale);
   (*m_configuration)->SetZoomFactor_temporarily(1);
@@ -67,6 +69,7 @@ Svgout::~Svgout()
   wxDELETE(m_tree);
   wxDELETE(*m_configuration);
   wxDELETE(m_dc);
+  wxDELETE(m_recalculationDc);
   if((m_tempFileName != wxEmptyString) && (wxFileExists(m_tempFileName)))
     wxRemoveFile(m_tempFileName);
   *m_configuration = m_oldconfig;
@@ -93,6 +96,8 @@ wxSize Svgout::SetData(MathCell *tree)
 
 bool Svgout::Layout()
 {
+  (*m_configuration)->SetContext(*m_recalculationDc);
+  
   if (m_tree->GetType() != MC_TYPE_GROUP)
   {
     RecalculateWidths();
@@ -110,7 +115,7 @@ bool Svgout::Layout()
     }
   }
 
-  if(!m_dc->IsOk())
+  if(!m_recalculationDc->IsOk())
   {
     return false;
   }
@@ -126,6 +131,8 @@ bool Svgout::Layout()
   (*m_configuration)->SetContext(*m_dc);
   
   Draw();
+  wxDELETE(m_dc);
+  m_dc = NULL;
   return true;
 }
 
@@ -303,7 +310,7 @@ Svgout::SVGDataObject *Svgout::GetDataObject()
         svgContents.AppendData(data,str.LastRead());
       }
     free(data);
-    }
+  }
   if((m_filename != wxEmptyString) && (wxFileExists(m_filename)))
     wxRemoveFile(m_filename);
   m_filename = wxEmptyString;

@@ -93,6 +93,8 @@ protected:
 private:
   //! The name of a temp file we create while calculating the svg size.
   wxString m_tempFileName;
+  //! The draw context we draw to during recalculation.
+  wxSVGFileDC *m_recalculationDc;
   //! The draw context we draw to.
   wxSVGFileDC *m_dc;
   static wxDataFormat m_svgFormat;
