@@ -256,7 +256,7 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
       int zoomFactor = configuration->GetZoomFactor();
       wxDC *adc = configuration->GetAntialiassingDC();
       in.x += Scale_Px(11) + 1;
-      SetPen(2.0);
+      SetPen(1.2);
       adc->DrawLine(point.x,
                   point.y,
                   point.x + Scale_Px(3),

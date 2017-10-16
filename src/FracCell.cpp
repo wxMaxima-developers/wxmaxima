@@ -261,7 +261,7 @@ void FracCell::Draw(wxPoint point, int fontsize)
                 (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_denom->GetFullWidth()) / 2;
       denom.y = point.y + m_denom->GetMaxCenter() + Scale_Px(2);
       m_denom->DrawList(denom, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
-      SetPen(2.0);
+      SetPen(1.2);
       if (m_fracStyle != FC_CHOOSE)
         dc->DrawLine(point.x + m_horizontalGapLeft + (*m_configuration)->GetDefaultLineWidth() / 2,
                     point.y,
