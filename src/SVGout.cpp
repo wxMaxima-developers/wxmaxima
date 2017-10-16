@@ -40,19 +40,19 @@ Svgout::Svgout(Configuration **configuration, wxString filename, double scale)
   m_scale = scale;
   m_svgFormat = wxDataFormat(wxT("image/svg+xml"));
 
-  if (filename == wxEmptyString)
+  m_filename = filename;
+  if (m_filename == wxEmptyString)
     m_filename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
-  else
-    m_filename = filename;
+  
   wxString m_tempFileName = wxFileName::CreateTempFileName(wxT("wxmaxima_size_"));
-  m_dc = new wxSVGFileDC(m_tempFileName,1000*m_scale,50000*m_scale,20*m_scale);
+  m_dc = new wxSVGFileDC(m_tempFileName,700*m_scale,50000*m_scale,20*m_scale);
 #if wxCHECK_VERSION(3, 1, 0)
   m_dc->SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
   *m_configuration = new Configuration(*m_dc);
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
-  (*m_configuration)->SetClientWidth(1000*m_scale);
-  (*m_configuration)->SetZoomFactor_temporarily(m_scale);
+  (*m_configuration)->SetClientWidth(700*m_scale);
+  (*m_configuration)->SetZoomFactor_temporarily(1);
   // The last time I tried it the vertical positioning of the elements
   // of a big unicode parenthesis wasn't accurate enough in svg to be
   // usable. Also the probability was high that the right font wasn't
