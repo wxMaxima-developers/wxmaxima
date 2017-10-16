@@ -5088,7 +5088,7 @@ bool MathCtrl::ExportToHTML(wxString file)
             }
 
           // Create a list containing only our chunk.
-          MathCell *chunk = CopySelection(chunkStart, chunkEnd, true);
+          MathCell *chunk = CopySelection(chunkStart, chunkEnd);
 
           // Export the chunk.
           if (chunk->GetType() == MC_TYPE_SLIDE)
