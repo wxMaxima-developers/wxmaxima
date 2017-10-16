@@ -326,6 +326,7 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
   
   // Letters with width or height = 0 don't exist in the current font
   int width1,height1,descent1;
+  GetDC()->SetFont(font);
   GetDC()->GetTextExtent(char1,&width1,&height1,&descent1);
   if((width1 < 1) || (height1-descent1 < 1))
     return false;
