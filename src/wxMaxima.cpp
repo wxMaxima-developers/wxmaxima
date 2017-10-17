@@ -2487,34 +2487,14 @@ void wxMaxima::ShowTip(bool force)
   config->Read(wxT("tipNum"), &tipNum);
   if (!ShowTips && !force)
     return;
-  wxString tips = wxT("tips.txt");
-#if defined (__WXMSW__)
-  wxString prefix = wxGetCwd() + wxT("\\data\\");
-#elif defined (__WXMAC__)
-  wxString prefix = wxT(MACPREFIX);
-  prefix += wxT("/");
-#else
-  wxString prefix = wxT(PREFIX);
-  prefix += wxT("/share/wxMaxima/");
-#endif
 
-  tips = prefix + tips;
-  if (wxFileExists(tips))
-  {
-    TipOfTheDay *t = new TipOfTheDay(tipNum);
-    ShowTips = wxShowTip(this, t, ShowTips);
-    config->Write(wxT("ShowTips"), ShowTips);
-    tipNum = t->GetCurrentTip();
-    config->Write(wxT("tipNum"), tipNum);
-    config->Flush();
-    wxDELETE(t);
-  }
-  else
-  {
-    wxMessageBox(_("wxMaxima could not find tip files."
-                           "\n\nPlease check your installation."),
-                 _("Error"), wxICON_ERROR | wxOK);
-  }
+  TipOfTheDay *t = new TipOfTheDay(tipNum);
+  ShowTips = wxShowTip(this, t, ShowTips);
+  config->Write(wxT("ShowTips"), ShowTips);
+  tipNum = t->GetCurrentTip();
+  config->Write(wxT("tipNum"), tipNum);
+  config->Flush();
+  wxDELETE(t);
 }
 
 wxString wxMaxima::GetHelpFile()
