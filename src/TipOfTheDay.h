@@ -18,18 +18,19 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
-#ifndef MYTIPPROVIDER_H
-#define MYTIPPROVIDER_H
+#ifndef TIPOFTHEDAY_H
+#define TIPOFTHEDAY_H
 
 #include <wx/wx.h>
 #include <wx/tipdlg.h>
+#include <wx/arrstr.h>
 
-class MyTipProvider : public wxTipProvider
+class TipOfTheDay : public wxTipProvider
 {
 public:
-  MyTipProvider(const wxString &filename, int n);
+  TipOfTheDay(int n);
 
-  ~MyTipProvider();
+  ~TipOfTheDay();
 
   wxString GetTip();
 
@@ -40,7 +41,7 @@ public:
 
 private:
   int m_current;
-  wxTextFile m_file;
+  wxArrayString m_tips;
 };
 
-#endif // MYTIPPROVIDER_H
+#endif // TIPOFTHEDAY_H

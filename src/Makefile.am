@@ -47,12 +47,12 @@ wxmaxima_SOURCES = \
 	DiffCell.cpp       DiffCell.h       \
 	FunCell.cpp        FunCell.h        \
 	MathCtrl.cpp       MathCtrl.h       \
-	Configuration.cpp     Configuration.h     \
+	Configuration.cpp  Configuration.h  \
 	MathParser.cpp     MathParser.h     \
 	MathPrintout.cpp   MathPrintout.h   \
 	Notification.cpp   Notification.h   \
 	Bitmap.cpp         Bitmap.h         \
-	MyTipProvider.cpp  MyTipProvider.h  \
+	TipOfTheDay.cpp    TipOfTheDay.h    \
 	EditorCell.cpp     EditorCell.h     \
 	ImgCell.cpp        ImgCell.h        \
 	Image.cpp          Image.h          \

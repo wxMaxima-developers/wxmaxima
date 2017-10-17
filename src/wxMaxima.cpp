@@ -47,7 +47,7 @@
 #include "MatWiz.h"
 #include "SystemWiz.h"
 #include "MathPrintout.h"
-#include "MyTipProvider.h"
+#include "TipOfTheDay.h"
 #include "EditorCell.h"
 #include "SlideShowCell.h"
 #include "PlotFormatWiz.h"
@@ -2501,7 +2501,7 @@ void wxMaxima::ShowTip(bool force)
   tips = prefix + tips;
   if (wxFileExists(tips))
   {
-    MyTipProvider *t = new MyTipProvider(tips, tipNum);
+    TipOfTheDay *t = new TipOfTheDay(tipNum);
     ShowTips = wxShowTip(this, t, ShowTips);
     config->Write(wxT("ShowTips"), ShowTips);
     tipNum = t->GetCurrentTip();

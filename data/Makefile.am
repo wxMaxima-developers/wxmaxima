@@ -1,10 +1,10 @@
 wxmaximadatadir = ${datadir}/wxMaxima
-wxmaximadata_DATA = tips.txt wxmathml.lisp wxmaxima.png wxmaxima.svg autocomplete.txt
+wxmaximadata_DATA = wxmathml.lisp wxmaxima.png wxmaxima.svg autocomplete.txt
 
 bashcompletiondir = ${datarootdir}/bash-completion/completions
 bashcompletion_DATA = wxmaxima
 
-EXTRA_DIST = wxmaxima tips.txt wxmathml.lisp wxmaxima.png wxmaxima.svg Info.plist.in PkgInfo autocomplete.txt winrc/wxmaxima.manifest dylibs.sed winrc/wxmac-doc.ico winrc/maximaicon.ico
+EXTRA_DIST = wxmaxima wxmathml.lisp wxmaxima.png wxmaxima.svg Info.plist.in PkgInfo autocomplete.txt winrc/wxmaxima.manifest dylibs.sed winrc/wxmac-doc.ico winrc/maximaicon.ico
 
 appdatadir = $(datarootdir)/metainfo
 dist_appdata_DATA = wxMaxima.appdata.xml

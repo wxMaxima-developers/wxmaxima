@@ -53,7 +53,7 @@ XGETTEXT_ARGS=-C -k_ -s -j
 $(srcdir)/wxMaxima.pot:
 	touch $@
 	(cd $(srcdir) ; find ../src -name "*.cpp" | $(XARGS) $(XGETTEXT) $(XGETTEXT_ARGS) -o wxMaxima.pot)
-	$(XGETTEXT) $(XGETTEXT_ARGS) ../data/tips.txt -o wxMaxima.pot
+	$(XGETTEXT) $(XGETTEXT_ARGS) -o wxMaxima.pot
 
 # The PO file must be updated by to include new translations by running this make target
 # every time a new string is introduced.
