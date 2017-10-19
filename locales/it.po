@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-10-17 06:53+0200\n"
-"PO-Revision-Date: 2017-10-03 09:33+0200\n"
+"PO-Revision-Date: 2017-10-19 11:05+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -419,6 +419,8 @@ msgid ""
 "\".\n"
 "Most probable cause: A missing comma between two list items."
 msgstr ""
+"Un comando o numero non era preceduto da un \":\", un \"$\", un \";\" o un \",\".\n"
+"Causa molto probabile: una virgola mancante tra due elementi lista."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:55
 msgid ""
@@ -2977,7 +2979,6 @@ msgstr ""
 "configurazione."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:112
-#, fuzzy
 msgid ""
 "It is possible to define reusable Maxima libraries with wxMaxima that can be "
 "later loaded by using the load() function. All that has to be done is to "
@@ -2985,11 +2986,7 @@ msgid ""
 "that a few special characters like the \"not equal\" symbol for \"#\" are "
 "handled by wxMaxima, not by maxima and therefore cannot be recognized on "
 "load()."
-msgstr ""
-"È possibile definire librerie Maxima riutilizzabili con wxMaxima che possono "
-"essere in seguito caricate usando la funzione load(). Non si deve fare altro "
-"che esportare un file nel .mac o salvarlo nel formato .wxm . Si noti però "
-"che, qualche carattere speciale come il "
+msgstr "È possibile definire librerie Maxima riutilizzabili con wxMaxima che possono essere in seguito caricate usando la funzione load(). Non si deve fare altro che esportare un file nel .mac o salvarlo nel formato .wxm . Si noti però che, qualche carattere speciale come il simbolo di \"non uguale\" per \"#\" sono gestiti da wxMaxima, non da maxima e perciò non possono essere riconosciuti da load()."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:795
 msgid "Italian"
@@ -5214,7 +5211,7 @@ msgid ""
 "The value of few special variables is assigned by Maxima and cannot be "
 "changed by the user. Also a few constructs aren't variable names and "
 "therefore cannot be written to."
-msgstr ""
+msgstr "Il valore di alcune variabili speciali viene assegnato da Maxima e non può essere cambiato dall'utente. Inoltre alcuni costrutti non sono nomi di variabili e perciò non vi si può scrivere sopra."
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8342
 msgid "The worksheet containing maxima's input and output"
@@ -6339,9 +6336,3 @@ msgstr "sì"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1476
 msgid "zeta"
 msgstr "zeta"
-
-#~ msgid "Symbols"
-#~ msgstr "Simboli"
-
-#~ msgid "Tips not available, sorry!"
-#~ msgstr "Spiacente, suggerimenti non disponibili!"
