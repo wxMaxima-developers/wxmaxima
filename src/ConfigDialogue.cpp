@@ -630,7 +630,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
     wxFileInputStream input(m_wxStartupFileName);
     if(input.IsOk())
     {
-      wxTextInputStream text(input);
+      wxTextInputStream text(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
       while(input.IsOk() && !input.Eof())
       {
         wxString line = text.ReadLine();
@@ -672,7 +672,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
     wxFileInputStream input(m_startupFileName);
     if(input.IsOk())
     {
-      wxTextInputStream text(input);
+      wxTextInputStream text(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
       while(input.IsOk() && !input.Eof())
       {
         wxString line = text.ReadLine();

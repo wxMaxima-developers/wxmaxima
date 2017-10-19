@@ -701,7 +701,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
 
     {
       wxSocketInputStream istrm(*m_client);
-      wxTextInputStream tstrm(istrm,wxT('\t'),wxConvAuto(wxFONTENCODING_UTF8));
+      wxTextInputStream tstrm(istrm, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
       wxString newChars;
       while ((m_client->IsData()) && (!istrm.Eof()))
       {
@@ -2018,7 +2018,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
       {
         // Read the file into a string
         wxString s;
-        wxTextInputStream istream1(*fsfile->GetStream(),wxT('\t'),wxConvAuto(wxFONTENCODING_UTF8));
+        wxTextInputStream istream1(*fsfile->GetStream(), wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
         while (!fsfile->GetStream()->Eof())
           s += istream1.ReadLine() + wxT("\n");
 
@@ -3210,7 +3210,7 @@ void wxMaxima::ReadStdErr()
   if (m_process->IsInputAvailable())
   {
     wxASSERT_MSG(m_maximaStdout != NULL, wxT("Bug: Trying to read from maxima but don't have a input stream"));
-    wxTextInputStream istrm(*m_maximaStdout,wxT('\t'),wxConvAuto(wxFONTENCODING_UTF8));
+    wxTextInputStream istrm(*m_maximaStdout, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
     wxString o = _("Message from the stdout of Maxima: ");
     wxChar ch;
     int len = 0;
@@ -3230,7 +3230,7 @@ void wxMaxima::ReadStdErr()
   if (m_process->IsErrorAvailable())
   {
     wxASSERT_MSG(m_maximaStderr != NULL, wxT("Bug: Trying to read from maxima but don't have a error input stream"));
-    wxTextInputStream istrm(*m_maximaStderr,wxT('\t'),wxConvAuto(wxFONTENCODING_UTF8));
+    wxTextInputStream istrm(*m_maximaStderr, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
     wxString o = wxT("Message from maxima's stderr stream: ");
     wxChar ch;
     int len = 0;
