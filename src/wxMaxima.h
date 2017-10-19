@@ -299,7 +299,6 @@ protected:
   //! Is triggered when the "Replace All" button in the search dialog is pressed
   void OnReplaceAll(wxFindDialogEvent &event);
 
-  void SanitizeSocketBuffer(char *buffer, int length);  //!< fix early nulls
   void ServerEvent(wxSocketEvent &event);          //!< server event: maxima connection
   /*! Is triggered on Input or disconnect from maxima
 
@@ -535,7 +534,6 @@ protected:
   wxString m_lastPath;
   wxPrintData *m_printData;
   bool m_closing;
-  char *m_inputBuffer;
   wxString m_openFile;
   bool m_fileSaved;
   bool m_variablesOK;

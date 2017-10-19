@@ -72,6 +72,7 @@
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
+#include <wx/sckstrm.h>
 #include <wx/fs_mem.h>
 
 #include <wx/url.h>
@@ -81,13 +82,6 @@
 #if defined __WXMAC__
 #define MACPREFIX "wxMaxima.app/Contents/Resources/"
 #endif
-
-/*! The size of the socket we get data from
-
-\todo Can we make sure that the data never ends in the middle of a
-unicode char? On wxMaxima's side we don't handle that case, currently.
-*/
-#define SOCKET_SIZE (1024*1024)
 
 enum
 {
@@ -208,7 +202,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   m_statusBar->GetNetworkStatusElement()->Connect(wxEVT_LEFT_DCLICK,
                                                   wxCommandEventHandler(wxMaxima::NetworkDClick),
                                                   NULL, this);
-  m_inputBuffer = new char[SOCKET_SIZE];
 }
 
 wxMaxima::~wxMaxima()
@@ -224,9 +217,6 @@ wxMaxima::~wxMaxima()
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
 
-  if(m_inputBuffer != NULL)
-    delete [] m_inputBuffer;
-  m_inputBuffer = NULL;
   wxDELETE(m_printData);
   m_printData = NULL;
 }
@@ -691,63 +681,41 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 ///  Socket stuff
 ///--------------------------------------------------------------------------------
 
-/*! Convert problematic characters into something same
- *
- * This makes sure that special character codes are not encountered unexpectedly
- * (i.e. early).
- */
-void wxMaxima::SanitizeSocketBuffer(char *buffer, int length)
-{
-  for (int i = 0; i < length; i++)
-  {
-    if (buffer[i] == 0)
-      buffer[i] = ' ';  // convert input null (0) to space (0x20)
-  }
-}
-
 void wxMaxima::ClientEvent(wxSocketEvent &event)
 {
   switch (event.GetSocketEvent())
   {
 
-    case wxSOCKET_INPUT:
-      m_statusBar->NetworkStatus(StatusBar::receive);
+  case wxSOCKET_INPUT:
+    m_statusBar->NetworkStatus(StatusBar::receive);
 
-      // Read out stderr: We will do that in the background on a regular basis, anyway.
-      // But if we do it manually now, too, the probability that things are presented
-      // to the user in chronological order increases a bit.
-      ReadStdErr();
+    // Read out stderr: We will do that in the background on a regular basis, anyway.
+    // But if we do it manually now, too, the probability that things are presented
+    // to the user in chronological order increases a bit.
+    ReadStdErr();
 
-      // It is theoretically possible that the client has exited after sending us
-      // data and before we had been able to process it.
-      if (m_client == NULL)
-        return;
+    // It is theoretically possible that the client has exited after sending us
+    // data and before we had been able to process it.
+    if (m_client == NULL)
+      return;
 
-      m_client->Read(m_inputBuffer, SOCKET_SIZE);
-
-      if (!m_client->Error())
+    {
+      wxSocketInputStream istrm(*m_client);
+      wxTextInputStream tstrm(istrm,wxT('\t'),wxConvAuto(wxFONTENCODING_UTF8));
+      wxString newChars;
+      while ((m_client->IsData()) && (!istrm.Eof()))
       {
-        int read;
-        read = m_client->LastCount();
+        wxChar ch = tstrm.GetChar();
+        if(ch != wxT('\0'))
+          newChars += ch;
+      }
 
-        // For some reason our input buffer can actually contain NULL Chars...
-        SanitizeSocketBuffer(m_inputBuffer, read);
-        m_inputBuffer[read] = 0;
-
-        wxString newChars;
-        {
-          // Don't open a assert window every single time maxima mixes UTF8 and the current
-          // codepage
-          wxLogStderr logStderr;
-#if wxUSE_UNICODE
-          newChars = wxString(m_inputBuffer, wxConvUTF8);
-#else
-          newChars = wxString(m_inputBuffer, *wxConvCurrent);
-#endif
-        }
+      if(newChars != wxEmptyString)
+      {
         if (IsPaneDisplayed(menu_pane_xmlInspector))
           m_xmlInspector->Add_FromMaxima(newChars);
 
+        // Save the last few characters we have read.
         // This way we can avoid searching the whole string for a
         // ending tag if we have received only a few bytes of the
         // data between 2 tags
@@ -796,52 +764,53 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
             ReadFirstPrompt(m_currentOutput);
         }
       }
-      break;
-
-    case wxSOCKET_LOST:
-      m_statusBar->NetworkStatus(StatusBar::offline);
-      ExitAfterEval(false);
-      m_console->m_cellPointers.SetWorkingGroup(NULL);
-      m_console->SetSelection(NULL);
-      m_console->SetActiveCell(NULL);
-      m_pid = -1;
-      if (m_client != NULL)
-        m_client->Destroy();
-      m_client = NULL;
-      // If we did close maxima by hand we already might have a new process
-      // and therefore invalidate the wrong process in this step
-      if (!m_closing)
+    }
+    break;
+ 
+  case wxSOCKET_LOST:
+    m_statusBar->NetworkStatus(StatusBar::offline);
+    ExitAfterEval(false);
+    m_console->m_cellPointers.SetWorkingGroup(NULL);
+    m_console->SetSelection(NULL);
+    m_console->SetActiveCell(NULL);
+    m_pid = -1;
+    if (m_client != NULL)
+      m_client->Destroy();
+    m_client = NULL;
+    // If we did close maxima by hand we already might have a new process
+    // and therefore invalidate the wrong process in this step
+    if (!m_closing)
+    {
+      m_process = NULL;
+      m_maximaStdout = NULL;
+      m_maximaStderr = NULL;
+    }
+    m_isConnected = false;
+    m_currentOutput = wxEmptyString;
+    m_console->QuestionAnswered();
+    if (!m_closing)
+    {
+      if (m_unsuccessfullConnectionAttempts > 0)
+        ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
+                          "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
+                      MC_TYPE_ERROR);
+      else
       {
-        m_process = NULL;
-        m_maximaStdout = NULL;
-        m_maximaStderr = NULL;
-      }
-      m_isConnected = false;
-      m_currentOutput = wxEmptyString;
-      m_console->QuestionAnswered();
-      if (!m_closing)
-      {
-        if (m_unsuccessfullConnectionAttempts > 0)
-          ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
-                                    "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
-                        MC_TYPE_ERROR);
-        else
-        {
-          ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
-                                    "Trying to restart Maxima.\n"),
-                        MC_TYPE_ERROR);
-          m_unsuccessfullConnectionAttempts++;
-          m_console->m_evaluationQueue.Clear();
-          StartMaxima(true);
-        }
+        ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
+                          "Trying to restart Maxima.\n"),
+                      MC_TYPE_ERROR);
+        m_unsuccessfullConnectionAttempts++;
         m_console->m_evaluationQueue.Clear();
-        // Inform the user that the evaluation queue is empty.
-        EvaluationQueueLength(0);
+        StartMaxima(true);
       }
-      break;
+      m_console->m_evaluationQueue.Clear();
+      // Inform the user that the evaluation queue is empty.
+      EvaluationQueueLength(0);
+    }
+    break;
 
-    default:
-      break;
+  default:
+    break;
   }
 }
 
@@ -2049,7 +2018,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
       {
         // Read the file into a string
         wxString s;
-        wxTextInputStream istream1(*fsfile->GetStream());
+        wxTextInputStream istream1(*fsfile->GetStream(),wxT('\t'),wxConvAuto(wxFONTENCODING_UTF8));
         while (!fsfile->GetStream()->Eof())
           s += istream1.ReadLine() + wxT("\n");
 
@@ -3241,7 +3210,7 @@ void wxMaxima::ReadStdErr()
   if (m_process->IsInputAvailable())
   {
     wxASSERT_MSG(m_maximaStdout != NULL, wxT("Bug: Trying to read from maxima but don't have a input stream"));
-    wxTextInputStream istrm(*m_maximaStdout);
+    wxTextInputStream istrm(*m_maximaStdout,wxT('\t'),wxConvAuto(wxFONTENCODING_UTF8));
     wxString o = _("Message from the stdout of Maxima: ");
     wxChar ch;
     int len = 0;
@@ -3261,7 +3230,7 @@ void wxMaxima::ReadStdErr()
   if (m_process->IsErrorAvailable())
   {
     wxASSERT_MSG(m_maximaStderr != NULL, wxT("Bug: Trying to read from maxima but don't have a error input stream"));
-    wxTextInputStream istrm(*m_maximaStderr);
+    wxTextInputStream istrm(*m_maximaStderr,wxT('\t'),wxConvAuto(wxFONTENCODING_UTF8));
     wxString o = wxT("Message from maxima's stderr stream: ");
     wxChar ch;
     int len = 0;
