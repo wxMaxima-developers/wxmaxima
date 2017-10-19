@@ -205,10 +205,7 @@ private:
   /*! A human-readable presentation of eventual unmatched-parenthesis type errors
 
     If text doesn't contain any error this function returns wxEmptyString
-
-    \todo: Use iterators for traversing the string as they are *way* faster than
-    the current method.
-   */
+  */
   wxString GetUnmatchedParenthesisState(wxString text,int &index);
 
 protected:

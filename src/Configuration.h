@@ -158,6 +158,7 @@ public:
   bool HideBrackets()
   { return m_hideBrackets; }
 
+  //! Define if we want to hide brackets that are not under the pointer.
   void HideBrackets(bool hide)
   {
     wxConfig::Get()->Write(wxT("hideBrackets"), m_hideBrackets = hide);
@@ -169,7 +170,11 @@ public:
   //! Sets the zoom factor without storing the new value in the config file/registry.
   void SetZoomFactor_temporarily(double newzoom){m_zoomFactor = newzoom;}
 
-  //! Scales a distance [in pixels] according to the zoom factor
+  /*! Scales a distance [in pixels] according to the zoom factor
+
+    Is used for displaying/printing/exporting of text/maths and is just an alias 
+    for Configuration::Scale_Px
+   */
   int Scale_Px(double px){return (int)(px * GetZoomFactor() + 0.5); }
 
   //! Determines the zoom factor the worksheet is displayed at

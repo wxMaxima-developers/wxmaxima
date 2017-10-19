@@ -109,9 +109,10 @@ class MathCell
   static void SetVisibleRegion(wxRect visibleRegion){m_visibleRegion = visibleRegion;}
   static void SetWorksheetPosition(wxPoint worksheetPosition){m_worksheetPosition = worksheetPosition;}
 
-  /*! Scale font sizes and line widths for displaying/printing
-    
-    Is just an alias for Configuration::Scale_Px
+  /*! Scale font sizes and line widths according to the zoom factor.
+
+    Is used for displaying/printing/exporting of text/maths and is just an alias 
+    for Configuration::Scale_Px
    */
   int Scale_Px(double px){return (*m_configuration)->Scale_Px(px); }
 #if wxUSE_ACCESSIBILITY
