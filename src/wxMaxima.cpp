@@ -6317,7 +6317,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
               {++it;++index;}
               while(it != text.end())
               {
-                char last;
+                wxChar last;
                 last = *it;
                 ++it;++index;
 
