@@ -102,6 +102,7 @@ public:
     tb_interrupt,
     tb_follow,
     tb_evaltillhere,
+    tb_evaluate_rest,
     tb_help,
     tb_animation_startStop,
     tb_animation_start,

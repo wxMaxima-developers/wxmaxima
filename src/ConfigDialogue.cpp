@@ -961,7 +961,7 @@ wxPanel *ConfigDialogue::CreateClipboardPanel()
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   Configuration *configuration = m_configuration;
 
-  wxStaticText *descr = new wxStaticText(panel, -1, _("Clipboard formats to offer by default:"));
+  wxStaticText *descr = new wxStaticText(panel, -1, _("Additional clipboard formats to put on the clipboard on ordinary copy:"));
   vbox->Add(descr, 0, wxALL);
 
   m_copyBitmap = new wxCheckBox(panel, -1, _("Bitmap"));

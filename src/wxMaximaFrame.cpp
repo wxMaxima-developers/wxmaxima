@@ -574,6 +574,8 @@ void wxMaximaFrame::SetupMenu()
                      _("Evaluate all cells in the document"), wxITEM_NORMAL);
   m_CellMenu->Append(ToolBar::tb_evaltillhere, _("Evaluate Cells Above\tCtrl+Shift+P"),
                      _("Re-evaluate all cells above the one the cursor is in"), wxITEM_NORMAL);
+  m_CellMenu->Append(ToolBar::tb_evaluate_rest, _("Evaluate Cells Below"),
+                     _("Re-evaluate all cells below the one the cursor is in"), wxITEM_NORMAL);
 
   m_CellMenu->Append(menu_remove_output, _("Remove All Output"),
                      _("Remove output from input cells"), wxITEM_NORMAL);

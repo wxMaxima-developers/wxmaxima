@@ -1147,7 +1147,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
         popupMenu->AppendSeparator();
         popupMenu->Append(popid_evaluate, _("Evaluate Cell(s)"), wxEmptyString, wxITEM_NORMAL);
         if(m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd)
-          popupMenu->Append(popid_evaluate_rest, _("Evaluate Cells Below"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(ToolBar::tb_evaluate_rest, _("Evaluate Cells Below"), wxEmptyString, wxITEM_NORMAL);
 
         if (CanMergeSelection())
           popupMenu->Append(popid_merge_cells, _("Merge Cells"), wxEmptyString, wxITEM_NORMAL);
@@ -1238,8 +1238,8 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
       popupMenu->Append(popid_insert_subsection, _("Insert Subsection Cell"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_insert_subsubsection, _("Insert Subsubsection Cell"), wxEmptyString, wxITEM_NORMAL);
         popupMenu->AppendSeparator();
-        popupMenu->Append(popid_evaluate_till_here, _("Evaluate Cells Above"), wxEmptyString, wxITEM_NORMAL);
-        popupMenu->Append(popid_evaluate_rest, _("Evaluate Cells Below"), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(ToolBar::tb_evaltillhere, _("Evaluate Cells Above"), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(ToolBar::tb_evaluate_rest, _("Evaluate Cells Below"), wxEmptyString, wxITEM_NORMAL);
     }
   }
 

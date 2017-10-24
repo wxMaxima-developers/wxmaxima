@@ -5804,12 +5804,12 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
         EvaluateEvent(*dummy);
       }
       break;
-    case MathCtrl::popid_evaluate_rest:
+    case ToolBar::tb_evaluate_rest:
       m_console->AddRestToEvaluationQueue();
       EvaluationQueueLength(m_console->m_evaluationQueue.Size(), m_console->m_evaluationQueue.CommandsLeftInCell());
       TryEvaluateNextInQueue();
       break;
-    case MathCtrl::popid_evaluate_till_here:
+    case ToolBar::tb_evaltillhere:
       m_console->m_evaluationQueue.Clear();
       m_console->ResetInputPrompts();
       EvaluationQueueLength(0);
@@ -7296,8 +7296,8 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_MENU(MathCtrl::popid_divide_cell, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_evaluate, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_evaluate_section, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_evaluate_rest, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_evaluate_till_here, wxMaxima::PopupMenu)
+                EVT_MENU(ToolBar::tb_evaluate_rest, wxMaxima::PopupMenu)
+                EVT_MENU(ToolBar::tb_evaltillhere, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_merge_cells, wxMaxima::PopupMenu)
                 EVT_MENU(TableOfContents::popid_Fold, wxMaxima::PopupMenu)
                 EVT_MENU(TableOfContents::popid_Unfold, wxMaxima::PopupMenu)

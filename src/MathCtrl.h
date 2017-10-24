@@ -824,8 +824,6 @@ public:
     popid_animation_start,
     popid_evaluate,
     popid_evaluate_section,
-    popid_evaluate_rest,
-    popid_evaluate_till_here,
     popid_merge_cells,
     popid_insert_text,
     popid_insert_title,
