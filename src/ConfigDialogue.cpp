@@ -617,7 +617,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
 
   wxStaticText *wxStartupText =
     new wxStaticText(panel_wxMaximaStartup, wxID_ANY,
-                     _("Maxima commands to be executed at every start of wxMaxima: "));
+                     _("Maxima commands to be executed every time wxMaxima starts Maxima: "));
   wxStartupText->SetToolTip(_("The part of the output of these commands that isn' declared as "
                               "\"math\" might be suppressed by wxMaxima; As always maxima "
                               "commands are required to end in a \";\" or a \"$\""));

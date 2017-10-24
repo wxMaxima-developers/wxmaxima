@@ -530,7 +530,6 @@ msgid "Add to &Path..."
 msgstr "Zum &Pfad hinzufügen ..."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:964
-#, fuzzy
 msgid "Additional clipboard formats to put on the clipboard on ordinary copy:"
 msgstr "Zusätzliche Standard-Formate für \"Kopieren\":"
 
@@ -3317,9 +3316,9 @@ msgstr ""
 "Maxima-Befehle, die beim Hochfahren von Maxima ausgeführt werden sollen: "
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:620
-msgid "Maxima commands to be executed at every start of wxMaxima: "
+msgid "Maxima commands to be executed every time wxMaxima starts Maxima: "
 msgstr ""
-"Maxima-Befehle, die beim Hochfahren von wxMaxima ausgeführt werden sollen: "
+"Maxima-Befehle, die wxMaxima jeden neuen Maxima-Prozess ausführen lassen soll: "
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:122
 msgid "Maxima has a question"
@@ -4151,9 +4150,8 @@ msgid "Re-evaluate all cells above the one the cursor is in"
 msgstr "Alle Zellen des Dokuments auswerten, die über dem Cursor stehen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:578
-#, fuzzy
 msgid "Re-evaluate all cells below the one the cursor is in"
-msgstr "Alle Zellen des Dokuments auswerten, die über dem Cursor stehen"
+msgstr "Alle Zellen des Dokuments auswerten, die unter dem Cursor stehen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1417
 msgid "Read Matrix..."
