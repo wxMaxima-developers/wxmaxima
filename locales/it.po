@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-24 08:51+0200\n"
+"POT-Creation-Date: 2017-10-27 04:58+0200\n"
 "PO-Revision-Date: 2017-10-19 11:05+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -3305,9 +3305,9 @@ msgid "Maxima commands to be executed at every start of Maxima: "
 msgstr "Comandi Maxima che devono essere eseguiti ad ogni avvio di Maxima: "
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:620
-msgid "Maxima commands to be executed at every start of wxMaxima: "
-msgstr ""
-"I comandi Maxima che devono essere eseguiti ad ogni avvio di wxMaxima: "
+#, fuzzy
+msgid "Maxima commands to be executed every time wxMaxima starts Maxima: "
+msgstr "Comandi Maxima che devono essere eseguiti ad ogni avvio di Maxima: "
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:122
 msgid "Maxima has a question"
@@ -6342,6 +6342,10 @@ msgstr "sì"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1478
 msgid "zeta"
 msgstr "zeta"
+
+#~ msgid "Maxima commands to be executed at every start of wxMaxima: "
+#~ msgstr ""
+#~ "I comandi Maxima che devono essere eseguiti ad ogni avvio di wxMaxima: "
 
 #~ msgid ""
 #~ "wxMaxima could not find tip files.\n"
