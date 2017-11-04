@@ -944,24 +944,12 @@ bool wxMaxima::StartMaxima(bool force)
     if (command.Length() > 0)
     {
 
-#if defined(__WXMSW__)
-      wxString clisp = command.SubString(1, command.Length() - 3);
-      clisp.Replace("\\bin\\maxima.bat", "\\clisp-*.*");
-      if (wxFindFirstFile(clisp, wxDIR).empty())
-        command.Append(wxString::Format(wxT(" -s %d "), m_port));
-      else
-        command.Append(wxString::Format(wxT(" -r \":lisp (setup-client %d)\""), m_port));
-      wxSetEnv(wxT("home"), wxGetHomeDir());
-      wxSetEnv(wxT("maxima_signals_thread"), wxT("1"));
-#else
-      command.Append(wxString::Format(wxT(" -r \":lisp (setup-client %d)\""),
-                                      m_port));
-#endif
-
+      command.Append(wxString::Format(wxT(" -s %d "), m_port));
+      
 #if defined __WXMAC__
       wxSetEnv(wxT("DISPLAY"), wxT(":0.0"));
 #endif
-
+      
       m_process = new wxProcess(this, maxima_process_id);
       m_process->Redirect();
       m_first = true;
