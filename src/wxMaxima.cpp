@@ -2414,7 +2414,8 @@ wxString wxMaxima::GetCommand(bool params)
     SetStatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
     command = wxT("maxima");
   }
-
+  command.Replace(wxT(" "),wxT("\\ "));
+  
   if (params)
 	  return wxT("\"") + command + wxT("\"") + parameters;
   else
