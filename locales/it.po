@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-10-27 04:58+0200\n"
-"PO-Revision-Date: 2017-10-19 11:05+0200\n"
+"PO-Revision-Date: 2017-11-06 16:48+0100\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -529,9 +529,8 @@ msgid "Add to &Path..."
 msgstr "Aggiungi al &percorso..."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:964
-#, fuzzy
 msgid "Additional clipboard formats to put on the clipboard on ordinary copy:"
-msgstr "Il formato degli appunti da offrire come preimpostazione:"
+msgstr "Formati appunti aggiuntivi da metter sugli appunti con una normale copia:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:238
 msgid ""
@@ -3305,9 +3304,8 @@ msgid "Maxima commands to be executed at every start of Maxima: "
 msgstr "Comandi Maxima che devono essere eseguiti ad ogni avvio di Maxima: "
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:620
-#, fuzzy
 msgid "Maxima commands to be executed every time wxMaxima starts Maxima: "
-msgstr "Comandi Maxima che devono essere eseguiti ad ogni avvio di Maxima: "
+msgstr "Comandi Maxima da eseguire ogni volta che wxMaxima avvia Maxima: "
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:122
 msgid "Maxima has a question"
@@ -4149,7 +4147,6 @@ msgid "Re-evaluate all cells above the one the cursor is in"
 msgstr "Ri-elabora tutte le celle sopra quella dove si trova il cursore"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:578
-#, fuzzy
 msgid "Re-evaluate all cells below the one the cursor is in"
 msgstr "Ri-elabora tutte le celle sopra quella dove si trova il cursore"
 
@@ -6342,16 +6339,3 @@ msgstr "sì"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1478
 msgid "zeta"
 msgstr "zeta"
-
-#~ msgid "Maxima commands to be executed at every start of wxMaxima: "
-#~ msgstr ""
-#~ "I comandi Maxima che devono essere eseguiti ad ogni avvio di wxMaxima: "
-
-#~ msgid ""
-#~ "wxMaxima could not find tip files.\n"
-#~ "\n"
-#~ "Please check your installation."
-#~ msgstr ""
-#~ "wxMaxima non riesce a trovare i file dei suggerimenti.\n"
-#~ "\n"
-#~ "Controllare l'installazione."
