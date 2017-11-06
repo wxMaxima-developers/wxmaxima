@@ -2403,6 +2403,8 @@ wxString wxMaxima::GetCommand(bool params)
   else
     parameters = wxT(" ") + parameters;
 
+  command.Replace(wxT(" "),wxT("\\ "));
+
 #if defined (__WXMSW__)
   if (!wxFileExists(command))
   {
@@ -2414,22 +2416,14 @@ wxString wxMaxima::GetCommand(bool params)
     SetStatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
     command = wxT("maxima");
   }
-  command.Replace(wxT(" "),wxT("\\ "));
-  
-  if (params)
-	  return wxT("\"") + command + wxT("\"") + parameters;
-  else
-	  return command;
 #else
 
 #if defined (__WXMAC__)
   if (command.Right(4) == wxT(".app")) // if pointing to a Maxima.app
     command.Append(wxT("/Contents/Resources/maxima.sh") + parameters);
 #endif
-
-  command = wxT("\"") + command + wxT("\"") + parameters;
-  return command;
 #endif
+  return command + parameters;
 }
 
 ///--------------------------------------------------------------------------------
