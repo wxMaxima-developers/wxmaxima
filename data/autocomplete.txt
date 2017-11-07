@@ -2092,6 +2092,8 @@ TEMPLATE: set_tex_environment(<op>, <before>, <after>)
 FUNCTION: get_tex_environment_default
 TEMPLATE: get_tex_environment_default()
 TEMPLATE: set_tex_environment_default(<before>, <after>)
+FUNCTION: getcurrentdirectory
+TEMPLATE: getcurrentdirectory()
 FUNCTION: system
 TEMPLATE: system(<command>)
 OPTION  : ttyoff
