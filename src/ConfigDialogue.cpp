@@ -1105,13 +1105,13 @@ wxPanel *ConfigDialogue::CreateStylePanel()
 
 void ConfigDialogue::OnClose(wxCloseEvent &event)
 {
+  wxConfigBase *config = wxConfig::Get();
+  config->Write(wxT("ConfigDialogTab"), m_notebook->GetSelection());
 #if defined __WXMAC__
   EndModal(wxID_OK);
 #else
   EndModal(wxID_CANCEL);
 #endif
-  wxConfigBase *config = wxConfig::Get();
-  config->Write(wxT("ConfigDialogTab"), m_notebook->GetSelection());
 }
 
 void ConfigDialogue::WriteSettings()
@@ -1215,6 +1215,7 @@ void ConfigDialogue::WriteSettings()
       text << m_wxStartupCommands->GetValue();
     }  
   }
+  config->Write(wxT("ConfigDialogTab"), m_notebook->GetSelection());
 }
 
 void ConfigDialogue::OnMpBrowse(wxCommandEvent &event)
