@@ -1051,6 +1051,13 @@ wxPanel *ConfigDialogue::CreateStylePanel()
 
   m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(250, -1), 33, m_styleFor_choices,
                              wxLB_SINGLE);
+  wxConfigBase *config = wxConfig::Get();
+  int styleToEditNum = 0;
+  config->Read(wxT("StyleToEdit"),&styleToEditNum);
+  m_styleFor->SetSelection(styleToEditNum);
+  m_styleFor->Connect(wxEVT_LISTBOX,
+                         wxCommandEventHandler(ConfigDialogue::OnStyleToEditChanged),
+                         NULL, this);
   m_getStyleFont = new wxButton(panel, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150, -1));
 #ifndef __WXMSW__
   m_styleColor = new ColorPanel(this, panel, color_id, wxDefaultPosition, wxSize(150, 30),
@@ -1101,6 +1108,12 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   vsizer->Fit(panel);
 
   return panel;
+}
+
+void ConfigDialogue::OnStyleToEditChanged(wxCommandEvent &event)
+{
+  wxConfigBase *config = wxConfig::Get();
+  config->Write(wxT("StyleToEdit"), event.GetSelection());  
 }
 
 void ConfigDialogue::OnClose(wxCloseEvent &event)
@@ -1629,7 +1642,6 @@ void ConfigDialogue::ReadStyles(wxString file)
 #undef READ_STYLE
 
   // Set values in dialog
-  m_styleFor->SetSelection(0);
   m_styleColor->SetBackgroundColour(m_styleDefault.color); // color the panel, after the styles are loaded
   m_boldCB->SetValue(m_styleDefault.bold);
   m_italicCB->SetValue(m_styleDefault.italic);

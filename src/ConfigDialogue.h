@@ -208,6 +208,9 @@ protected:
   //! Called if the currently active dialogue sheet is changed.
   void OnTabChange(wxBookCtrlEvent &event);
 
+  //! Called if the user changes the style that is to be edited.
+  void OnStyleToEditChanged(wxCommandEvent &event);
+  
   // begin wxGlade: ConfigDialogue::attributes
   //! A textbox containing maxima's startup commands
   wxTextCtrl *m_startupCommands;
