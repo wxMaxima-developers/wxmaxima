@@ -6788,17 +6788,17 @@ void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
 void wxMaxima::SliderEvent(wxScrollEvent &ev)
 {
   SlideShow *slideShow = dynamic_cast<SlideShow *>(m_console->GetSelectionStart());
-  slideShow->AnimationRunning(false);
 
   if (slideShow != NULL)
   {
+    slideShow->AnimationRunning(false);
     slideShow->SetDisplayedIndex(ev.GetPosition());
 
     wxRect rect = slideShow->GetRect();
     m_console->RequestRedraw(rect);
+    if(m_console->m_mainToolBar)
+      m_console->m_mainToolBar->UpdateSlider(slideShow);
   }
-  if(m_console->m_mainToolBar)
-    m_console->m_mainToolBar->UpdateSlider(slideShow);
 }
 
 void wxMaxima::ShowPane(wxCommandEvent &ev)
