@@ -701,9 +701,9 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
 
     {
       wxSocketInputStream istrm(*m_client);
-      wxTextInputStream tstrm(istrm, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+      wxTextInputStream tstrm(istrm, wxT(' '), wxConvAuto(wxFONTENCODING_UTF8));
       wxString newChars;
-      while ((m_client->IsData()) && (!istrm.Eof()))
+      while ((m_client->IsOk()) && (m_client->IsData()) && (!istrm.Eof()))
       {
         wxChar ch = tstrm.GetChar();
         if(ch != wxT('\0'))
