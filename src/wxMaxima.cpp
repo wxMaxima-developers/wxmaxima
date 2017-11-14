@@ -71,8 +71,6 @@
 
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
-#include <wx/txtstrm.h>
-#include <wx/sckstrm.h>
 #include <wx/fs_mem.h>
 
 #include <wx/url.h>
@@ -124,6 +122,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, configFile, pos, size)
 {
+  m_instream = NULL;
+  m_txtinstream = NULL;
   m_commandIndex = -1;
   m_isActive = true;
   wxASSERT(m_outputPromptRegEx.Compile(wxT("<lbl>.*</lbl>")));
@@ -700,14 +700,15 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
       return;
 
     {
-      wxSocketInputStream istrm(*m_client);
-      wxTextInputStream tstrm(istrm, wxT(' '), wxConvAuto(wxFONTENCODING_UTF8));
       wxString newChars;
-      while ((m_client->IsOk()) && (m_client->IsData()) && (!istrm.Eof()))
-      {
-        wxChar ch = tstrm.GetChar();
-        if(ch != wxT('\0'))
-          newChars += ch;
+
+      wxChar ch;
+      if((m_instream != NULL) && (m_txtinstream != NULL))
+        while ((!m_instream->Eof()) && (m_client->IsData()))
+        {
+          ch = m_txtinstream->GetChar();
+          if(ch != wxT('\0'))
+            newChars += ch;
       }
 
       if(newChars != wxEmptyString)
@@ -838,6 +839,11 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_client->SetEventHandler(*this, socket_client_id);
       m_client->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
       m_client->Notify(true);
+      wxDELETE(m_instream);
+      wxDELETE(m_txtinstream);
+      m_instream = new wxSocketInputStream(*m_client);
+      m_txtinstream = new wxTextInputStream(*m_instream, wxT(' '), wxConvAuto(wxFONTENCODING_UTF8));
+
 #ifndef __WXMSW__
       ReadProcessOutput();
 #endif

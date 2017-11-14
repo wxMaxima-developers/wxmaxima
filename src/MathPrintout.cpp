@@ -196,7 +196,7 @@ void MathPrintout::SetupData()
   GetPageSizePixels(&pageWidth, &pageHeight);
   GetPageMargins(&marginX, &marginY);
   GetScreenScale(&screenScaleX, &screenScaleY);
-  (*m_configuration)->SetZoomFactor_temporarily(1.0/screenScaleX);
+  (*m_configuration)->SetZoomFactor_temporarily(1.5);
 
   (*m_configuration)->SetClientWidth(pageWidth - 2 * marginX
                                - (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent()));

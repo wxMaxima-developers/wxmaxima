@@ -39,6 +39,8 @@
 #include <wx/regex.h>
 #include <wx/html/htmlwin.h>
 #include <wx/dnd.h>
+#include <wx/txtstrm.h>
+#include <wx/sckstrm.h>
 
 #if defined (__WXMSW__)
 #include <wx/msw/helpchm.h>
@@ -209,6 +211,8 @@ private:
   wxString GetUnmatchedParenthesisState(wxString text,int &index);
 
 protected:
+  wxSocketInputStream *m_instream;
+  wxTextInputStream *m_txtinstream;
   //! Is this window active?
   bool m_isActive;
   //! Called when this window is activated or deactivated.
