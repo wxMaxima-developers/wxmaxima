@@ -206,6 +206,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
 
 wxMaxima::~wxMaxima()
 {
+  wxDELETE(m_instream);m_instream = NULL;
+  wxDELETE(m_txtinstream); m_txtinstream = NULL;
   if (m_client != NULL)
     m_client->Destroy();
   m_client = NULL;
@@ -775,6 +777,8 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     m_console->SetSelection(NULL);
     m_console->SetActiveCell(NULL);
     m_pid = -1;
+    wxDELETE(m_instream);m_instream = NULL;
+    wxDELETE(m_txtinstream); m_txtinstream = NULL;
     if (m_client != NULL)
       m_client->Destroy();
     m_client = NULL;
@@ -839,8 +843,8 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_client->SetEventHandler(*this, socket_client_id);
       m_client->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
       m_client->Notify(true);
-      wxDELETE(m_instream);
-      wxDELETE(m_txtinstream);
+      wxDELETE(m_instream);m_instream = NULL;
+      wxDELETE(m_txtinstream); m_txtinstream = NULL;
       m_instream = new wxSocketInputStream(*m_client);
       m_txtinstream = new wxTextInputStream(*m_instream, wxT(' '), wxConvAuto(wxFONTENCODING_UTF8));
 
@@ -1028,6 +1032,8 @@ void wxMaxima::KillMaxima()
   else
     wxProcess::Kill(m_pid, wxSIGKILL);
 
+  wxDELETE(m_instream);m_instream = NULL;
+  wxDELETE(m_txtinstream); m_txtinstream = NULL;
   if (m_client)
     m_client->Close();
   m_client = NULL;
@@ -1071,6 +1077,8 @@ void wxMaxima::CleanUp()
     KillMaxima();
   if (m_client)
   {
+    wxDELETE(m_instream);m_instream = NULL;
+    wxDELETE(m_txtinstream); m_txtinstream = NULL;
     m_client->Notify(false);
     m_client->Destroy();
     m_client = NULL;
