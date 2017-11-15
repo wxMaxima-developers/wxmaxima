@@ -683,6 +683,71 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 ///  Socket stuff
 ///--------------------------------------------------------------------------------
 
+void wxMaxima::OnNewChars()
+{
+  wxString newChars;
+  if((m_instream != NULL) && (m_txtinstream != NULL))
+  {
+    while((!m_instream->Eof())&&(m_instream->CanRead())&&(m_client->IsData()))
+    {
+      wxChar ch = m_txtinstream->GetChar();
+      newChars += ch;
+    }
+
+    if (IsPaneDisplayed(menu_pane_xmlInspector))
+      m_xmlInspector->Add_FromMaxima(newChars);
+        
+    // Save the last few characters we have read.
+    // This way we can avoid searching the whole string for a
+    // ending tag if we have received only a few bytes of the
+    // data between 2 tags
+    if(m_currentOutput != wxEmptyString)
+      m_currentOutputEnd = m_currentOutput.Right(MIN(30,m_currentOutput.Length())) + newChars;
+    else
+      m_currentOutputEnd = wxEmptyString;
+        
+    m_currentOutput += newChars;
+        
+    if (!m_dispReadOut &&
+        (m_currentOutput != wxT("\n")) &&
+        (m_currentOutput != wxT("<wxxml-symbols></wxxml-symbols>")))
+    {
+      StatusMaximaBusy(transferring);
+      m_dispReadOut = true;
+    }
+        
+    size_t length_old = -1;
+        
+    while (length_old != m_currentOutput.Length())
+    {
+      length_old = m_currentOutput.Length();
+          
+      // Handle the <mth> tag that contains math output and sometimes text.
+      ReadMath(m_currentOutput);
+          
+      // The following function calls each extract and remove one type of XML tag
+      // information from the beginning of the data string we got - but only do so
+      // after the closing tag has been transferred, as well.
+      ReadLoadSymbols(m_currentOutput);
+          
+      // The prompt that tells us that maxima awaits the next command
+      ReadPrompt(m_currentOutput);
+          
+      // Handle the XML tag that contains Status bar updates
+      ReadStatusBar(m_currentOutput);
+          
+      // Handle text that isn't wrapped in a known tag
+      if (!m_first)
+        // Handle text that isn't XML output: Mostly Error messages or warnings.
+        ReadMiscText(m_currentOutput);
+      else
+        // This function determines the port maxima is running on from  the text
+        // maxima outputs at startup. This piece of text is afterwards discarded.
+        ReadFirstPrompt(m_currentOutput);
+    }
+  }
+}
+
 void wxMaxima::ClientEvent(wxSocketEvent &event)
 {
   switch (event.GetSocketEvent())
@@ -701,73 +766,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     if (m_client == NULL)
       return;
 
-    {
-      wxString newChars;
-
-      wxChar ch;
-      if((m_instream != NULL) && (m_txtinstream != NULL))
-        while ((!m_instream->Eof()) && (m_client->IsData()))
-        {
-          ch = m_txtinstream->GetChar();
-          if(ch != wxT('\0'))
-            newChars += ch;
-      }
-
-      if(newChars != wxEmptyString)
-      {
-        if (IsPaneDisplayed(menu_pane_xmlInspector))
-          m_xmlInspector->Add_FromMaxima(newChars);
-
-        // Save the last few characters we have read.
-        // This way we can avoid searching the whole string for a
-        // ending tag if we have received only a few bytes of the
-        // data between 2 tags
-        if(m_currentOutput != wxEmptyString)
-          m_currentOutputEnd = m_currentOutput.Right(MIN(30,m_currentOutput.Length())) + newChars;
-        else
-          m_currentOutputEnd = wxEmptyString;
-        
-        m_currentOutput += newChars;
-
-        if (!m_dispReadOut &&
-            (m_currentOutput != wxT("\n")) &&
-            (m_currentOutput != wxT("<wxxml-symbols></wxxml-symbols>")))
-        {
-          StatusMaximaBusy(transferring);
-          m_dispReadOut = true;
-        }
-
-        size_t length_old = -1;
-
-        while (length_old != m_currentOutput.Length())
-        {
-          length_old = m_currentOutput.Length();
-
-          // Handle the <mth> tag that contains math output and sometimes text.
-          ReadMath(m_currentOutput);
-
-          // The following function calls each extract and remove one type of XML tag
-          // information from the beginning of the data string we got - but only do so
-          // after the closing tag has been transferred, as well.
-          ReadLoadSymbols(m_currentOutput);
-
-          // The prompt that tells us that maxima awaits the next command
-          ReadPrompt(m_currentOutput);
-
-          // Handle the XML tag that contains Status bar updates
-          ReadStatusBar(m_currentOutput);
-
-          // Handle text that isn't wrapped in a known tag
-          if (!m_first)
-            // Handle text that isn't XML output: Mostly Error messages or warnings.
-            ReadMiscText(m_currentOutput);
-          else
-            // This function determines the port maxima is running on from  the text
-            // maxima outputs at startup. This piece of text is afterwards discarded.
-            ReadFirstPrompt(m_currentOutput);
-        }
-      }
-    }
+    OnNewChars();
     break;
  
   case wxSOCKET_LOST:
@@ -846,7 +845,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       wxDELETE(m_instream);m_instream = NULL;
       wxDELETE(m_txtinstream); m_txtinstream = NULL;
       m_instream = new wxSocketInputStream(*m_client);
-      m_txtinstream = new wxTextInputStream(*m_instream, wxT(' '), wxConvAuto(wxFONTENCODING_UTF8));
+      m_txtinstream = new wxTextInputStream(*m_instream, wxT('\n'), wxConvAuto(wxFONTENCODING_UTF8));
 
 #ifndef __WXMSW__
       ReadProcessOutput();

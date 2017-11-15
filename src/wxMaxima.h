@@ -307,6 +307,8 @@ protected:
     until we got a full line we can display.
    */
   void ClientEvent(wxSocketEvent &event);
+  //! Triggered when we get new chars from maxima.
+  void OnNewChars();
 
   void ConsoleAppend(wxString s, int type, wxString userLabel = wxEmptyString);        //!< append maxima output to console
   void DoConsoleAppend(wxString s, int type,       //
