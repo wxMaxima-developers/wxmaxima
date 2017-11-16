@@ -4744,7 +4744,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
     wiz->Centre(wxBOTH);    if (wiz->ShowModal() == wxID_OK)
     {
       wxString val = wxT("for ") + wiz->GetValue2() + wxT(" in ") +
-        wiz->GetValue1() + wxT(" do ") + wiz->GetValue3() + wxT(")");
+        wiz->GetValue1() + wxT(" do ") + wiz->GetValue3();
       MenuCommand(val);
     }
     wiz->Destroy();
