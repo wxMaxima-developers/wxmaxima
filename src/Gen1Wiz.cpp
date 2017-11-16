@@ -22,6 +22,7 @@
 
 Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &title,
                  const wxString &label1,
+                 const wxString &warning,
                  const wxPoint &pos, const wxSize &size, long style) :
         wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
@@ -37,6 +38,11 @@ Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &t
   button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_2 = new wxButton(this, wxID_OK, _("OK"));
 #endif
+
+  if(warning != wxEmptyString)    
+    m_warning = new wxStaticText(this, -1, warning);
+  else
+    m_warning = NULL;
 
   set_properties();
   do_layout();
@@ -62,6 +68,10 @@ void Gen1Wiz::do_layout()
   grid_sizer_1->Add(label_2, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
   grid_sizer_1->Add(text_ctrl_1, 0, wxALL | wxEXPAND, 5);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
+
+  if(m_warning != NULL)
+    grid_sizer_1->Add(m_warning, 0, wxALL, 5);
+
   sizer_1->Add(button_1, 0, wxALL, 5);
   sizer_1->Add(button_2, 0, wxALL, 5);
   grid_sizer_1->Add(sizer_1, 1, wxALIGN_RIGHT, 0);

@@ -272,6 +272,7 @@ protected:
   void CalculusMenu(wxCommandEvent &event);        //!< event handling for menus
   void SimplifyMenu(wxCommandEvent &event);        //!< Processes "Simplify menu" clicks
   void PlotMenu(wxCommandEvent &event);            //!< Processes "Plot menu" cloicks
+  void ListMenu(wxCommandEvent &event);            //!< Processes "list menu" clicks
   void NumericalMenu(wxCommandEvent &event);       //!< Processes "Numerical menu" clicks
   void HelpMenu(wxCommandEvent &event);            //!< Processes "Help menu" clicks
   void EditMenu(wxCommandEvent &event);            //!< Processes "Edit menu" clicks

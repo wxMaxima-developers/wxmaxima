@@ -3,7 +3,7 @@ find_package(wxWidgets REQUIRED std xml html adv aui core net base richtext)
 include(${wxWidgets_USE_FILE})
 
 file(GLOB SOURCE_FILES *.cpp *.h)
-
+ 
 
 if(WIN32)
     include_directories(${CMAKE_SOURCE_DIR}/data/winrc)

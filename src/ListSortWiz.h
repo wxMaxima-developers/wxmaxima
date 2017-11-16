@@ -18,51 +18,45 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
-#ifndef GEN1WIZ_H
-#define GEN1WIZ_H
+#ifndef LISTSORTWIZ_H
+#define LISTSORTWIZ_H
 
 #include <wx/wx.h>
+#include <wx/grid.h>
 #include <wx/statline.h>
+#include <wx/radiobut.h>
+#include <wx/textctrl.h>
 
 #include "BTextCtrl.h"
 
-class Gen1Wiz : public wxDialog
+class ListSortWiz : public wxDialog
 {
 public:
-  Gen1Wiz(wxWindow *parent, int id,
-          Configuration *cfg,
-          const wxString &title,
-          const wxString &label,
-          const wxString &warning = wxEmptyString,
-          const wxPoint &pos = wxDefaultPosition,
-          const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
-
-  wxString GetValue()
-  {
-    return text_ctrl_1->GetValue();
-  }
-
-  void SetValue(const wxString &v)
-  {
-    text_ctrl_1->SetValue(v);
-    text_ctrl_1->SetSelection(-1, -1);
-  }
+  ListSortWiz(
+    Configuration *cfg,
+    wxWindow *parent, int id, const wxString &title,
+    wxString list,
+    bool eq = false,
+    const wxPoint &pos = wxDefaultPosition,
+    const wxSize &size = wxDefaultSize,
+    long style = wxDEFAULT_DIALOG_STYLE);
+  wxString GetValue();
 
 private:
-  
   void set_properties();
 
-  void do_layout();
-
-  wxStaticText *label_2;
-  BTextCtrl *text_ctrl_1;
-  wxStaticLine *static_line_1;
+protected:
+  wxChoice *m_choice;
+  wxRadioButton *m_sortTraditional;
+  wxRadioButton *m_sortFunction;
+  wxRadioButton *m_sortLambda;
+  wxTextCtrl *m_list;
+  wxTextCtrl *m_CriterionFunc;
+  wxTextCtrl *m_Criterion;
   wxButton *button_1;
   wxButton *button_2;
-  wxStaticText *m_warning;
+  void OnFunctionChange(wxGridEvent &unused){m_sortFunction->SetValue(true);}
+  void OnLambdaChange(wxGridEvent &unused){m_sortLambda->SetValue(true);}
 };
 
-wxString GetTextFromUser(wxString label, wxString title, Configuration *cfg, wxString value,
-                         wxWindow *parent);
-
-#endif // GEN1WIZ_H
+#endif // LISTSORTWIZ_H

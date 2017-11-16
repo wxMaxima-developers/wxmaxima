@@ -6764,6 +6764,9 @@ bool MathCtrl::TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeU
  */
 void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
 {
+  if(cell == NULL)
+    return;
+
   if(GetActiveCell() == cell)
     return;
 

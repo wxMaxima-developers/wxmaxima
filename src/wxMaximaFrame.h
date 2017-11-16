@@ -297,6 +297,28 @@ public:
     mac_newId,
     mac_openId,
     mac_closeId,
+    menu_list_create_from_elements,
+    menu_list_create_from_rule,
+    menu_list_create_from_list,
+    menu_list_actual_values_storage,
+    menu_list_sort,
+    menu_list_remove_duplicates,
+    menu_list_length,
+    menu_list_push,
+    menu_list_pop,
+    menu_list_reverse,
+    menu_list_first,
+    menu_list_last,
+    menu_list_nth,
+    menu_list_map,
+    menu_list_use_actual_values,
+    menu_list_extract_value,
+    menu_list_as_function_arguments,
+    menu_list_do_for_each_element,
+    menu_list_remove_element,
+    menu_list_append_item,
+    menu_list_append_list,
+    menu_list_interleave,
     menu_recent_documents,
     menu_recent_document_0,
     menu_recent_document_1,
@@ -521,6 +543,8 @@ protected:
   wxMenu *m_CalculusMenu;
   //! The plot menu
   wxMenu *m_PlotMenu;
+  //! The list menu
+  wxMenu *m_listMenu;
   //! The numeric menu
   wxMenu *m_NumericMenu;
   //! The help menu
@@ -547,6 +571,7 @@ private:
   wxGridSizer *m_userSymbolsSizer;
   //! True=We are currently saving.
   bool m_StatusSaving;
+
   void set_properties();
 
   void do_layout();
@@ -587,14 +612,14 @@ private:
 
 #endif
 protected:
+  //! The current length of the evaluation queue of commands we still need to send to maxima
+  int m_EvaluationQueueLength;
   //! The name of the config file or wxEmptyString if the default is used.
   wxString m_configFileName;
   //! Update the "user symbols" portion of the symbols pane.
   void UpdateUserSymbols();
   //! Do we need to update the display showing the evaluation queue length?
   bool m_updateEvaluationQueueLengthDisplay;
-  //! The current length of the evaluation queue of commands we still need to send to maxima
-  int m_EvaluationQueueLength;
   //! The number of commands left in the current of the evaluation queue item
   int m_commandsLeftInCurrentCell;
 
