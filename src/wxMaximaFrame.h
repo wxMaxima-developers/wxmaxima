@@ -309,6 +309,8 @@ public:
     menu_list_reverse,
     menu_list_first,
     menu_list_last,
+    menu_list_lastn,
+    menu_list_rest,
     menu_list_nth,
     menu_list_map,
     menu_list_use_actual_values,

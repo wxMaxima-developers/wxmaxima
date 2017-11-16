@@ -4628,6 +4628,25 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
   case menu_list_last:
     MenuCommand(wxT("last(") + expr + wxT(")"));
     break;
+  case menu_list_rest:
+    MenuCommand(wxT("rest(") + expr + wxT(")"));
+    break;
+  case menu_list_lastn:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("List"), _("Number of elements"),
+                                 wxEmptyString, wxEmptyString,
+                                 m_console->m_configuration,
+                                 this, -1, _("Extract the last n elements from a list"),
+                                 true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("rest(") + wiz->GetValue1() + wxT(",")
+          + wiz->GetValue2() + wxT(")");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
   case menu_list_nth:
     {
       Gen2Wiz *wiz = new Gen2Wiz(_("List"), _("element number n"),
@@ -7620,6 +7639,8 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_MENU(menu_list_reverse,wxMaxima::ListMenu)
                 EVT_MENU(menu_list_first,wxMaxima::ListMenu)
                 EVT_MENU(menu_list_last,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_rest,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_lastn,wxMaxima::ListMenu)
                 EVT_MENU(menu_list_nth,wxMaxima::ListMenu)
                 EVT_MENU(menu_list_map,wxMaxima::ListMenu)
                 EVT_MENU(menu_list_use_actual_values,wxMaxima::ListMenu)

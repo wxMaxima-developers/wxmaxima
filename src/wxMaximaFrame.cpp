@@ -941,6 +941,8 @@ void wxMaximaFrame::SetupMenu()
   m_listMenu->Append(menu_list_reverse, _("Reverse"), _("Reverse the order of the list items"));
   m_listMenu->Append(menu_list_first, _("First"), _("Returns the first item of the list"));
   m_listMenu->Append(menu_list_last, _("Last"), _("Returns the last item of the list"));
+  m_listMenu->Append(menu_list_lastn, _("Last n"), _("Returns the last n items of the list"));
+  m_listMenu->Append(menu_list_rest, _("Without 1st element"), _("Returns the list without its first element"));
   m_listMenu->Append(menu_list_nth, _("nth"), _("Returns the last item of the list"));
   wxMenu *listuseSub = new wxMenu;
   listuseSub->Append(menu_list_map, _("apply function to each element"),
