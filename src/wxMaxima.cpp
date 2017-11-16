@@ -842,6 +842,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_client->SetEventHandler(*this, socket_client_id);
       m_client->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
       m_client->Notify(true);
+      m_client->SetFlags(wxSOCKET_NOWAIT);
       wxDELETE(m_instream);m_instream = NULL;
       wxDELETE(m_txtinstream); m_txtinstream = NULL;
       m_instream = new wxSocketInputStream(*m_client);
