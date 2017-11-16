@@ -933,17 +933,6 @@ void wxMaximaFrame::SetupMenu()
   m_listMenu->Append(wxNewId(), _("Create list"),
                      listcreateSub,
                      _("Create a list"));
-  m_listMenu->Append(menu_list_sort, _("Sort"));
-  m_listMenu->Append(menu_list_remove_duplicates, _("Remove duplicates"),_("Remove all list elements that appear twice in a row"));
-  m_listMenu->Append(menu_list_length, _("Length"), _("Returns the length of the list"));
-  m_listMenu->Append(menu_list_push, _("Push"), _("Add a new item to the beginning of the list") );
-  m_listMenu->Append(menu_list_pop, _("Pop"), _("Return the first item of the list and remove it from the list"));
-  m_listMenu->Append(menu_list_reverse, _("Reverse"), _("Reverse the order of the list items"));
-  m_listMenu->Append(menu_list_first, _("First"), _("Returns the first item of the list"));
-  m_listMenu->Append(menu_list_last, _("Last"), _("Returns the last item of the list"));
-  m_listMenu->Append(menu_list_lastn, _("Last n"), _("Returns the last n items of the list"));
-  m_listMenu->Append(menu_list_rest, _("Without 1st element"), _("Returns the list without its first element"));
-  m_listMenu->Append(menu_list_nth, _("nth"), _("Returns the last item of the list"));
   wxMenu *listuseSub = new wxMenu;
   listuseSub->Append(menu_list_map, _("apply function to each element"),
                         _("Runs each element through a function"),
@@ -964,7 +953,13 @@ void wxMaximaFrame::SetupMenu()
   m_listMenu->Append(wxNewId(), _("Use list"),
                      listuseSub,
                      _("Use a list"));
-
+  m_listMenu->Append(menu_list_length, _("Length"), _("Returns the length of the list"));
+  m_listMenu->Append(menu_list_reverse, _("Reverse"), _("Reverse the order of the list items"));
+  m_listMenu->Append(menu_list_first, _("First"), _("Returns the first item of the list"));
+  m_listMenu->Append(menu_list_last, _("Last"), _("Returns the last item of the list"));
+  m_listMenu->Append(menu_list_lastn, _("Last n"), _("Returns the last n items of the list"));
+  m_listMenu->Append(menu_list_rest, _("Without 1st element"), _("Returns the list without its first element"));
+  m_listMenu->Append(menu_list_nth, _("nth"), _("Returns the last item of the list"));
   wxMenu *listappendSub = new wxMenu;
   listappendSub->Append(menu_list_append_item, _("Append an element"),
                         _("Append an element to an existing list"),
@@ -978,7 +973,13 @@ void wxMaximaFrame::SetupMenu()
   m_listMenu->Append(wxNewId(), _("Append"),
                      listappendSub,
                      _("Use a list"));
-  
+  m_listMenu->AppendSeparator();
+  m_listMenu->Append(menu_list_sort, _("Sort"));
+  m_listMenu->Append(menu_list_remove_duplicates, _("Remove duplicates"),_("Remove all list elements that appear twice in a row"));
+m_listMenu->AppendSeparator();
+  m_listMenu->Append(menu_list_push, _("Push"), _("Add a new item to the beginning of the list") );
+  m_listMenu->Append(menu_list_pop, _("Pop"), _("Return the first item of the list and remove it from the list"));
+
   m_MenuBar->Append(m_listMenu, _("&List"));
   // Plot menu
   m_PlotMenu = new wxMenu;
