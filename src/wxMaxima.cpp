@@ -4751,7 +4751,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
   }
     break;
   case menu_list_remove_duplicates:
-    MenuCommand(wxT("uniq(") + expr + wxT(")"));
+    MenuCommand(wxT("unique(") + expr + wxT(")"));
     break;
   case menu_list_remove_element:
     {
