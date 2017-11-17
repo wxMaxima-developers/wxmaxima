@@ -2849,7 +2849,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &event)
 #endif
   menubar->Enable(menu_copy_as_rtf, m_console->CanCopy());
   menubar->Enable(menu_copy_to_file, m_console->CanCopy());
-  menubar->Enable(menu_copy_text_from_console, m_console->CanCopy());
+  menubar->Enable(menu_copy_text_from_console, m_console->CanCopy(true));
   menubar->Enable(menu_select_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_undo, m_console->CanUndo());
   menubar->Enable(menu_redo, m_console->CanRedo());
@@ -6177,7 +6177,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
         m_console->CopySVG();
       break;
     case MathCtrl::popid_copy_rtf:
-      if (m_console->CanCopy())
+      if (m_console->CanCopy(true))
         m_console->CopyRTF();
       break;
     case MathCtrl::popid_simplify:

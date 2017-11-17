@@ -1187,7 +1187,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
 
       else
       {
-        if (CanCopy())
+        if (CanCopy(true))
         {
           popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_tex, _("Copy as LaTeX"), wxEmptyString, wxITEM_NORMAL);
@@ -1627,6 +1627,9 @@ void MathCtrl::OnMouseLeftUp(wxMouseEvent &event)
   CheckUnixCopy();
   SetFocus();
   m_cellPointers.ResetMouseSelectionStart();
+  // Here we actually only want the toolbars and menus to redrawn (and therefore the "copy")
+  // hotkey to be enabled: The rest already is in place.
+  RequestRedraw();
 }
 
 void MathCtrl::OnMouseWheel(wxMouseEvent &event)

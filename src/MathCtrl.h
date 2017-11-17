@@ -904,8 +904,8 @@ public:
 
   bool CanCopy(bool fromActive = false)
   {
-    return m_cellPointers.m_selectionStart != NULL ||
-           (fromActive && m_cellPointers.m_activeCell != NULL &&
+    return (m_cellPointers.m_selectionStart != NULL) ||
+           (fromActive && (m_cellPointers.m_activeCell != NULL) &&
             dynamic_cast<EditorCell *>(m_cellPointers.m_activeCell)->CanCopy());
   }
 
