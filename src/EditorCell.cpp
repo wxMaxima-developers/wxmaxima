@@ -2153,11 +2153,25 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event)
         case '=':
         case ',':
           size_t len = m_text.Length();
-          if ((*m_configuration)->GetInsertAns() && len == 1 && m_positionOfCaret == 1)
+          if ((*m_configuration)->GetInsertAns())
           {
-            m_text = m_text.SubString(0, m_positionOfCaret - 2) + wxT("%") +
-                     m_text.SubString(m_positionOfCaret - 1, m_text.Length());
-            m_positionOfCaret += 1;
+            // Insert an "%" before an operator that begins this cell
+            if(len == 1 && m_positionOfCaret == 1)
+            {
+              m_text = m_text.SubString(0, m_positionOfCaret - 2) + wxT("%") +
+                m_text.SubString(m_positionOfCaret - 1, m_text.Length());
+              m_positionOfCaret += 1;
+            }
+
+            // If this operator happens to be the first letter of an comment start sign
+            // we remove the "%" again as the unability to begin a code cell with a
+            // comment in the obvious way tends to surprise users.
+            if((len == 3) && (m_positionOfCaret == 3) && (m_text.StartsWith(wxT("%/*"))))
+            {
+              m_text = m_text.SubString(m_positionOfCaret - 2, m_text.Length());
+              m_positionOfCaret -= 1;
+            }
+
           }
           break;
       }
