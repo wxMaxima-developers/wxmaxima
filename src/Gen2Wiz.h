@@ -35,6 +35,7 @@ public:
           wxWindow *parent, int id, const wxString &title,
           bool eq = false,
           const wxString &warning = wxEmptyString,
+          const wxString &warningToolTip = wxEmptyString,
           const wxPoint &pos = wxDefaultPosition,
           const wxSize &size = wxDefaultSize,
           long style = wxDEFAULT_DIALOG_STYLE);

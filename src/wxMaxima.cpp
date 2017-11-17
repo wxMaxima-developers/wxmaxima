@@ -4654,7 +4654,20 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                  m_console->m_configuration,
                                  this, -1, _("Extract the nth element from a list. Slow for n>>0"),
                                  true,
-                                 _("For efficiently iterating through large lists see \"Create list from list\" instead."));
+                                 _("For efficiently iterating through large lists see \"Create list from list\" instead."),
+                                 _("Other than declared arrays in lists there is no way to jump to"
+                                   "determine the address of the nth element other than iterating"
+                                   "from one element to the other until the nth element is reached."
+                                   "Which isn't a maxima-specific phenomenon but the price one has"
+                                   "to pay for lists being way easier to resize than declared "
+                                   "arrays. If the address of the current element is known"
+                                   "iterating to the next one is trivial, though, so\n\n"
+                                   "   for i in list do <something>\n\n"
+                                   "or\n\n"
+                                   "   makelist(expression,i,list)\n\n"
+                                   "provide highly efficient ways to do something on every list"
+                                   "element.")
+        );
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
