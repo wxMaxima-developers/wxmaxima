@@ -66,6 +66,7 @@ protected:
   wxButton *button_1;
   wxButton *button_2;
   wxStaticText *m_warning;
+  wxString m_warningText;
 };
 
 

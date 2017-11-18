@@ -48,10 +48,11 @@ Gen2Wiz::Gen2Wiz(wxString lab1, wxString lab2,
   button_1 = new wxButton(this, wxID_CANCEL, _("Cancel"));
   button_2 = new wxButton(this, wxID_OK, _("OK"));
 #endif
-
+  
   if(warning != wxEmptyString)    
   {
-    m_warning = new wxStaticText(this, -1, warning);
+    m_warningText = warning;
+    m_warning = new wxStaticText(this, -1, wxEmptyString);
     m_warning->SetToolTip(warningToolTip);
   }
   else
@@ -72,7 +73,6 @@ void Gen2Wiz::set_properties()
 
   text_ctrl_1->SetFocus();
 }
-
 
 void Gen2Wiz::do_layout()
 {
@@ -95,4 +95,12 @@ void Gen2Wiz::do_layout()
   grid_sizer_1->Fit(this);
   grid_sizer_1->SetSizeHints(this);
   Layout();
+  if(m_warning != NULL)
+  {
+    m_warning->SetLabel(m_warningText);
+    m_warning->Wrap(GetClientSize().GetWidth());
+    Fit();
+    Layout();
+    SetMinSize(GetSize());
+  }
 }

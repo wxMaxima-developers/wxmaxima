@@ -940,9 +940,6 @@ void wxMaximaFrame::SetupMenu()
   listuseSub->Append(menu_list_use_actual_values, _("use the actual values stored"),
                         _("Introduce the actual values for variables stored in the list"),
                         wxITEM_NORMAL);
-  listuseSub->Append(menu_list_extract_value, _("extract a stored actual value"),
-                        _("Extract the value for one variable assigned in a list"),
-                        wxITEM_NORMAL);
   listuseSub->Append(menu_list_as_function_arguments, _("use as function arguments"),
                         _("Use list as the arguments of a function"),
                         wxITEM_NORMAL);
@@ -953,13 +950,18 @@ void wxMaximaFrame::SetupMenu()
   m_listMenu->Append(wxNewId(), _("Use list"),
                      listuseSub,
                      _("Use a list"));
-  m_listMenu->Append(menu_list_length, _("Length"), _("Returns the length of the list"));
-  m_listMenu->Append(menu_list_reverse, _("Reverse"), _("Reverse the order of the list items"));
-  m_listMenu->Append(menu_list_first, _("First"), _("Returns the first item of the list"));
-  m_listMenu->Append(menu_list_last, _("Last"), _("Returns the last item of the list"));
-  m_listMenu->Append(menu_list_lastn, _("Last n"), _("Returns the last n items of the list"));
-  m_listMenu->Append(menu_list_rest, _("Without 1st element"), _("Returns the list without its first element"));
-  m_listMenu->Append(menu_list_nth, _("nth"), _("Returns the last item of the list"));
+  wxMenu *listextractmenu = new wxMenu;
+  listextractmenu->Append(menu_list_nth, _("nth"), _("Returns an arbitrary list item"));
+  listextractmenu->Append(menu_list_first, _("First"), _("Returns the first item of the list"));
+  listextractmenu->Append(menu_list_rest, _("All but the 1st element"), _("Returns the list without its first element"));
+  listextractmenu->Append(menu_list_last, _("Last"), _("Returns the last item of the list"));
+  listextractmenu->Append(menu_list_lastn, _("Last n"), _("Returns the last n items of the list"));
+  listextractmenu->Append(menu_list_extract_value, _("Extract a actual value for a variable"),
+                        _("Extract the value for one variable assigned in a list"),
+                        wxITEM_NORMAL);
+  m_listMenu->Append(wxNewId(), _("Extract Elements"),
+                     listextractmenu,
+                     _("Extract list Elements"));
   wxMenu *listappendSub = new wxMenu;
   listappendSub->Append(menu_list_append_item, _("Append an element"),
                         _("Append an element to an existing list"),
@@ -973,9 +975,12 @@ void wxMaximaFrame::SetupMenu()
   m_listMenu->Append(wxNewId(), _("Append"),
                      listappendSub,
                      _("Use a list"));
+
+  m_listMenu->Append(menu_list_length, _("Length"), _("Returns the length of the list"));
+  m_listMenu->Append(menu_list_reverse, _("Reverse"), _("Reverse the order of the list items"));
   m_listMenu->AppendSeparator();
   m_listMenu->Append(menu_list_sort, _("Sort"));
-  m_listMenu->Append(menu_list_remove_duplicates, _("Remove duplicates"),_("Remove all list elements that appear twice in a row"));
+  m_listMenu->Append(menu_list_remove_duplicates, _("Remove duplicates"),_("Remove all list elements that appear twice in a row. Normally used in conjunction with sort."));
 m_listMenu->AppendSeparator();
   m_listMenu->Append(menu_list_push, _("Push"), _("Add a new item to the beginning of the list") );
   m_listMenu->Append(menu_list_pop, _("Pop"), _("Return the first item of the list and remove it from the list"));

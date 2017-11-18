@@ -4668,7 +4668,8 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                  m_console->m_configuration,
                                  this, -1, _("Extract the nth element from a list. Slow for n>>0"),
                                  true,
-                                 _("For efficiently iterating through large lists see \"Create list from list\" instead."),
+                                 _("This function is slow for large n.\n"
+                                   "For efficiently iterating through every element of a large list see \"Create list from list\" instead, which uses the makelist command."),
                                  _("Other than declared arrays in lists there is no way to jump to"
                                    "determine the address of the nth element other than iterating"
                                    "from one element to the other until the nth element is reached."
