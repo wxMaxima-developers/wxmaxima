@@ -60,7 +60,7 @@
        ;;; shipped with debian and ubuntu (at least in Feb 2017) doesn't.
        #+gcl (xchdir dir)
        #+gcl (setf *default-pathname-defaults* dir)
-       
+
        (namestring dir))))
 
 #+ccl (setf *print-circle* nil)
@@ -244,21 +244,23 @@
 		       (if (and (boundp '$stringdisp) $stringdisp)
 			   (setq tmp-x (format nil "\"~a\"" tmp-x)))
 		       (concatenate 'string "<st>" tmp-x "</st>"))
-		      ((arrayp x)
-		       (format nil "<v>Lisp array [~{~a~^,~}]</v>"
-			       (array-dimensions x)))
-		      ((streamp x)
-		       (format nil "<v>Stream [~A]</v>"
-			       (stream-element-type x)))
-		      ((member (type-of x) '(GRAPH DIGRAPH))
-		       (format nil "<v>~a</v>" x))
-                      ((typep x 'structure-object)
-                       (let ((tmp-string (format nil "~s" x)))
-                         (format nil "<st>~a</st>" (wxxml-fix-string tmp-string))))
-                      ((hash-table-p x)
-		       (format nil "<v>HashTable</v>"))
-                      ((and $wxsubscripts (subscriptp x)))
-                      (t (wxxml-stripdollar x))))
+           ((arrayp x)
+            (format nil "<v>#{Lisp array [~{~a~^,~}]}</v>"
+		    (array-dimensions x)))
+           ((functionp x)
+	    (format nil "<v>#{Lisp function}</v>"))
+           ((streamp x)
+            (format nil "<v>#{Stream [~A]</v>}"
+		    (stream-element-type x)))
+           ((member (type-of x) '(GRAPH DIGRAPH))
+            (format nil "<v>~a</v>" x))
+	   ((typep x 'structure-object)
+	    (let ((tmp-string (format nil "~s" x)))
+	      (format nil "<st>~a</st>" (wxxml-fix-string tmp-string))))
+	   ((hash-table-p x)
+            (format nil "<v>#{HashTable}</v>"))
+	   ((and $wxsubscripts (subscriptp x)))
+	   (t (wxxml-stripdollar x))))
 	  r))
 
 (defun wxxmlnumformat (atom)
@@ -1368,7 +1370,7 @@
 ;; The "solid" has to be changed to "dashed" as soon as plot() starts
 ;; supporting other line styles than "solid" or "dots".
 (defun $wxplot_preamble ()
-  (let ((frmt 
+  (let ((frmt
          (cond
            ($wxplot_old_gnuplot "set terminal png picsize ~d ~d; set zeroaxis;")
            ($wxplot_pngcairo "set terminal pngcairo solid background \"white\" enhanced font \"arial,10\" fontscale 1.0 size ~d,~d; set zeroaxis;")
@@ -1665,14 +1667,14 @@
 
   (when (stringp e)
     (setf e (define-symbol e)))
-  
+
   (cond (($listp s)
 	 (setq s (margs s)))
         ((stringp s)
          (setq s (list s)))
 	((atom s)
 	 (setq s (list (wxxml-stripdollar ($sconcat s))))))
-  
+
   (when (or (null lbp) (not (integerp lbp)))
     (setq lbp 180))
   (when (or (null rbp) (not (integerp rbp)))
