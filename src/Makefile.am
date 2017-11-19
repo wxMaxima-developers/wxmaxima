@@ -25,6 +25,7 @@ wxmaxima_SOURCES = \
 	Gen2Wiz.cpp        Gen2Wiz.h        \
 	Gen3Wiz.cpp        Gen3Wiz.h        \
 	Gen4Wiz.cpp        Gen4Wiz.h        \
+	Gen5Wiz.cpp        Gen5Wiz.h        \
 	BC2Wiz.cpp         BC2Wiz.h         \
 	SystemWiz.cpp      SystemWiz.h      \
 	BTextCtrl.cpp      BTextCtrl.h      \
@@ -52,6 +53,8 @@ wxmaxima_SOURCES = \
 	MathPrintout.cpp   MathPrintout.h   \
 	Notification.cpp   Notification.h   \
 	Bitmap.cpp         Bitmap.h         \
+	ActualValuesStorageWiz.cpp         ActualValuesStorageWiz.h         \
+	ListSortWiz.cpp         ListSortWiz.h         \
 	TipOfTheDay.cpp    TipOfTheDay.h    \
 	EditorCell.cpp     EditorCell.h     \
 	ImgCell.cpp        ImgCell.h        \

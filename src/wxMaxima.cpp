@@ -43,6 +43,7 @@
 #include "Gen2Wiz.h"
 #include "Gen3Wiz.h"
 #include "Gen4Wiz.h"
+#include "Gen5Wiz.h"
 #include "BC2Wiz.h"
 #include "MatWiz.h"
 #include "SystemWiz.h"
@@ -52,6 +53,8 @@
 #include "SlideShowCell.h"
 #include "PlotFormatWiz.h"
 #include "Dirstructure.h"
+#include "ActualValuesStorageWiz.h"
+#include "ListSortWiz.h"
 
 #include <wx/clipbrd.h>
 #include <wx/filedlg.h>
@@ -82,6 +85,13 @@
 #if defined __WXMAC__
 #define MACPREFIX "wxMaxima.app/Contents/Resources/"
 #endif
+
+/*! The size of the socket we get data from
+
+\todo Can we make sure that the data never ends in the middle of a
+unicode char? On wxMaxima's side we don't handle that case, currently.
+*/
+#define SOCKET_SIZE (1024*1024)
 
 enum
 {
@@ -202,6 +212,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   m_statusBar->GetNetworkStatusElement()->Connect(wxEVT_LEFT_DCLICK,
                                                   wxCommandEventHandler(wxMaxima::NetworkDClick),
                                                   NULL, this);
+  m_inputBuffer = new char[SOCKET_SIZE];
 }
 
 wxMaxima::~wxMaxima()
@@ -217,6 +228,9 @@ wxMaxima::~wxMaxima()
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
 
+  if(m_inputBuffer != NULL)
+    delete [] m_inputBuffer;
+  m_inputBuffer = NULL;
   wxDELETE(m_printData);
   m_printData = NULL;
 }
@@ -681,6 +695,15 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 ///  Socket stuff
 ///--------------------------------------------------------------------------------
 
+void wxMaxima::SanitizeSocketBuffer(char *buffer, int length)
+{
+  for (int i = 0; i < length; i++)
+  {
+    if (buffer[i] == 0)
+      buffer[i] = ' ';  // convert input null (0) to space (0x20)
+  }
+}
+
 void wxMaxima::ClientEvent(wxSocketEvent &event)
 {
   switch (event.GetSocketEvent())
@@ -699,23 +722,31 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     if (m_client == NULL)
       return;
 
-    {
-      wxSocketInputStream istrm(*m_client);
-      wxTextInputStream tstrm(istrm, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
-      wxString newChars;
-      while ((m_client->IsData()) && (!istrm.Eof()))
-      {
-        wxChar ch = tstrm.GetChar();
-        if(ch != wxT('\0'))
-          newChars += ch;
-      }
+      m_client->Read(m_inputBuffer, SOCKET_SIZE);
 
-      if(newChars != wxEmptyString)
+      if (!m_client->Error())
       {
+        int read;
+        read = m_client->LastCount();
+
+        // For some reason our input buffer can actually contain NULL Chars...
+        SanitizeSocketBuffer(m_inputBuffer, read);
+        m_inputBuffer[read] = 0;
+
+        wxString newChars;
+        {
+          // Don't open a assert window every single time maxima mixes UTF8 and the current
+          // codepage
+          wxLogStderr logStderr;
+#if wxUSE_UNICODE
+          newChars = wxString(m_inputBuffer, wxConvUTF8);
+#else
+          newChars = wxString(m_inputBuffer, *wxConvCurrent);
+#endif
+        }
         if (IsPaneDisplayed(menu_pane_xmlInspector))
           m_xmlInspector->Add_FromMaxima(newChars);
 
-        // Save the last few characters we have read.
         // This way we can avoid searching the whole string for a
         // ending tag if we have received only a few bytes of the
         // data between 2 tags
@@ -764,51 +795,53 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
             ReadFirstPrompt(m_currentOutput);
         }
       }
-    }
-    break;
- 
-  case wxSOCKET_LOST:
-    m_statusBar->NetworkStatus(StatusBar::offline);
-    ExitAfterEval(false);
-    m_console->m_cellPointers.SetWorkingGroup(NULL);
-    m_console->SetSelection(NULL);
-    m_console->SetActiveCell(NULL);
-    m_pid = -1;
-    if (m_client != NULL)
-      m_client->Destroy();
-    m_client = NULL;
-    // If we did close maxima by hand we already might have a new process
-    // and therefore invalidate the wrong process in this step
-    if (!m_closing)
+      break;
+  
+    case wxSOCKET_LOST:
     {
-      m_process = NULL;
-      m_maximaStdout = NULL;
-      m_maximaStderr = NULL;
-    }
-    m_isConnected = false;
-    m_currentOutput = wxEmptyString;
-    m_console->QuestionAnswered();
-    if (!m_closing)
-    {
-      if (m_unsuccessfullConnectionAttempts > 0)
-        ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
-                          "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
-                      MC_TYPE_ERROR);
-      else
+      m_statusBar->NetworkStatus(StatusBar::offline);
+      ExitAfterEval(false);
+      m_console->m_cellPointers.SetWorkingGroup(NULL);
+      m_console->SetSelection(NULL);
+      m_console->SetActiveCell(NULL);
+      m_pid = -1;
+      if (m_client != NULL)
+        m_client->Destroy();
+      m_client = NULL;
+      // If we did close maxima by hand we already might have a new process
+      // and therefore invalidate the wrong process in this step
+      if (!m_closing)
       {
-        ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
-                          "Trying to restart Maxima.\n"),
-                      MC_TYPE_ERROR);
-        m_unsuccessfullConnectionAttempts++;
+        m_process = NULL;
+        m_maximaStdout = NULL;
+        m_maximaStderr = NULL;
+      }
+      m_isConnected = false;
+      m_currentOutput = wxEmptyString;
+      m_console->QuestionAnswered();
+      if (!m_closing)
+      {
+        if (m_unsuccessfullConnectionAttempts > 0)
+          ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
+                                    "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
+                        MC_TYPE_ERROR);
+        else
+        {
+          ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
+                                    "Trying to restart Maxima.\n"),
+                        MC_TYPE_ERROR);
+          m_unsuccessfullConnectionAttempts++;
+          m_console->m_evaluationQueue.Clear();
+          StartMaxima(true);
+        }
         m_console->m_evaluationQueue.Clear();
         StartMaxima(true);
       }
       m_console->m_evaluationQueue.Clear();
       // Inform the user that the evaluation queue is empty.
       EvaluationQueueLength(0);
-    }
     break;
-
+    }
   default:
     break;
   }
@@ -2830,7 +2863,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &event)
 #endif
   menubar->Enable(menu_copy_as_rtf, m_console->CanCopy());
   menubar->Enable(menu_copy_to_file, m_console->CanCopy());
-  menubar->Enable(menu_copy_text_from_console, m_console->CanCopy());
+  menubar->Enable(menu_copy_text_from_console, m_console->CanCopy(true));
   menubar->Enable(menu_select_all, m_console->GetTree() != NULL);
   menubar->Enable(menu_undo, m_console->CanUndo());
   menubar->Enable(menu_redo, m_console->CanRedo());
@@ -4491,6 +4524,338 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
   }
 }
 
+void wxMaxima::ListMenu(wxCommandEvent &event)
+{
+  wxString expr = GetDefaultEntry();
+  wxString cmd;
+  switch (event.GetId())
+  {
+  case menu_list_create_from_elements:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_console->m_configuration,
+                               _("Create list from comma-separated elements"),
+                               _("Comma-separated elements"));
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wxT("[") + wiz->GetValue() + wxT("]");
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+  }
+  break;
+  case menu_list_create_from_rule:
+  {
+    Gen5Wiz *wiz = new Gen5Wiz(_("Rule:"), _("Index variable:"),
+                               _("Index Start:"), _("Index End:"), _("Index Step:"),
+                               expr, wxT("i"), wxT("1"), wxT("100"), wxT("1"),
+                               m_console->m_configuration,
+                               this, -1, _("Create a list from a rule"), true);
+    wiz->SetValue(expr);
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      wxString val = wxT("makelist(") + wiz->GetValue1() + wxT(", ") +
+        wiz->GetValue2() + wxT(", ") + wiz->GetValue3() + wxT(", ") +
+        wiz->GetValue4();
+      wxString tst = wiz->GetValue5();
+      tst.Trim(true);
+      tst.Trim(false);
+      if(tst != wxT("1"))
+      val += wxT(",") + wiz->GetValue5();        
+      val += wxT(")");
+      MenuCommand(val);
+    }
+    wiz->Destroy();
+  }
+  break;
+    break;
+  case menu_list_create_from_list:
+  {
+    Gen3Wiz *wiz = new Gen3Wiz(_("Rule:"), _("Iterator:"),
+                               _("Source list:"),
+                               expr, wxT("i"), wxT("list"),
+                               m_console->m_configuration,
+                               this, -1, _("Create a list from another list"), true);
+    wiz->SetValue(expr);
+    wiz->Centre(wxBOTH);    if (wiz->ShowModal() == wxID_OK)
+    {
+      wxString val = wxT("makelist(") + wiz->GetValue1() + wxT(", ") +
+        wiz->GetValue2() + wxT(", ") + wiz->GetValue3() + wxT(")");
+      MenuCommand(val);
+    }
+    wiz->Destroy();
+  }
+    break;
+  case menu_list_actual_values_storage:
+  {
+    ActualValuesStorageWiz *wiz = new ActualValuesStorageWiz(m_console->m_configuration,
+                               this, -1, _("Create a list as a storage for the values of variables"));
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      MenuCommand(wiz->GetValue());
+    }
+    wiz->Destroy();
+  }    
+    break;
+  case menu_list_sort:
+  {
+    ListSortWiz *wiz = new ListSortWiz(m_console->m_configuration,
+                                       this, -1, _("Create a list as a storage for the values of variables"), expr);
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      MenuCommand(wiz->GetValue());
+    }
+    wiz->Destroy();
+  }
+    break;
+  case menu_list_length:
+    MenuCommand(wxT("length(") + expr + wxT(")"));
+    break;
+  case menu_list_push:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("List:"), _("Element:"),
+                                 expr, wxT("1"),
+                                 m_console->m_configuration,
+                                 this, -1, _("LCM"), true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("pop(") + wiz->GetValue1() + wxT(", ")
+              + wiz->GetValue2() + wxT(");");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }    
+    break;
+  case menu_list_pop:
+    MenuCommand(wxT("pop(") + expr + wxT(")"));
+    break;
+  case menu_list_reverse:
+    MenuCommand(wxT("reverse(") + expr + wxT(")"));
+    break;
+  case menu_list_first:
+    MenuCommand(wxT("first(") + expr + wxT(")"));
+    break;
+  case menu_list_last:
+    MenuCommand(wxT("last(") + expr + wxT(")"));
+    break;
+  case menu_list_rest:
+    MenuCommand(wxT("rest(") + expr + wxT(")"));
+    break;
+  case menu_list_lastn:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("List"), _("Number of elements"),
+                                 wxEmptyString, wxEmptyString,
+                                 m_console->m_configuration,
+                                 this, -1, _("Extract the last n elements from a list"),
+                                 true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("rest(") + wiz->GetValue1() + wxT(",")
+          + wiz->GetValue2() + wxT(")");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+  case menu_list_nth:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("List"), _("element number n"),
+                                 wxEmptyString, wxEmptyString,
+                                 m_console->m_configuration,
+                                 this, -1, _("Extract the nth element from a list. Slow for n>>0"),
+                                 true,
+                                 _("This function is slow for large n.\n"
+                                   "For efficiently iterating through every element of a large list see \"Create list from list\" instead, which uses the makelist command."),
+                                 _("Other than declared arrays in lists there is no way to jump to"
+                                   "determine the address of the nth element other than iterating"
+                                   "from one element to the other until the nth element is reached."
+                                   "Which isn't a maxima-specific phenomenon but the price one has"
+                                   "to pay for lists being way easier to resize than declared "
+                                   "arrays. If the address of the current element is known"
+                                   "iterating to the next one is trivial, though, so\n\n"
+                                   "   for i in list do <something>\n\n"
+                                   "or\n\n"
+                                   "   makelist(expression,i,list)\n\n"
+                                   "provide highly efficient ways to do something on every list"
+                                   "element.")
+        );
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wiz->GetValue1() + wxT("[")
+          + wiz->GetValue2() + wxT("]");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+  break;
+  case menu_list_map:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("List"), _("Function"),
+                                 wxEmptyString, wxEmptyString,
+                                 m_console->m_configuration,
+                                 this, -1, _("Apply a function to each list element"), true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("map(") + wiz->GetValue1() + wxT(",")
+          + wiz->GetValue2() + wxT(")");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+  case menu_list_use_actual_values:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Equation"), _("List with values"),
+                                 wxEmptyString, wxEmptyString,
+                                 m_console->m_configuration,
+                                 this, -1, _("Introduce a list of actual values into an equation"), true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("subst(") + wiz->GetValue2() + wxT(",")
+          + wiz->GetValue1() + wxT(")");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+  case menu_list_extract_value:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("List"), _("Variable name"),
+                                 wxEmptyString, wxEmptyString,
+                                 m_console->m_configuration,
+                                 this, -1,
+                                 _("Extract a variable's value from a list of variable values"),
+                                 true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("subst(") + wiz->GetValue1() + wxT(",")
+          + wiz->GetValue2() + wxT(")");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+  case menu_list_as_function_arguments:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Function name"), _("List"),
+                                 wxEmptyString, wxEmptyString,
+                                 m_console->m_configuration,
+                                 this, -1,
+                                 _("Use a list as parameter list for a function"),
+                                 true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("apply(") + wiz->GetValue1() + wxT(",")
+          + wiz->GetValue2() + wxT(")");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+  case menu_list_do_for_each_element:
+  {
+    Gen3Wiz *wiz = new Gen3Wiz(_("List:"), _("Iterator:"),
+                               _("What to do:"),
+                               expr, wxT("i"), wxT("disp(i)"),
+                               m_console->m_configuration,
+                               this, -1, _("Do for each lisp element"), true);
+    wiz->SetValue(expr);
+    wiz->Centre(wxBOTH);    if (wiz->ShowModal() == wxID_OK)
+    {
+      wxString val = wxT("for ") + wiz->GetValue2() + wxT(" in ") +
+        wiz->GetValue1() + wxT(" do ") + wiz->GetValue3();
+      MenuCommand(val);
+    }
+    wiz->Destroy();
+  }
+    break;
+  case menu_list_remove_duplicates:
+    MenuCommand(wxT("unique(") + expr + wxT(")"));
+    break;
+  case menu_list_remove_element:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("Element"), _("List"),
+                                 wxT("1"), expr,
+                                 m_console->m_configuration,
+                                 this, -1,
+                                 _("Remove an element from a list"),
+                                 true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("delete(") + wiz->GetValue1() + wxT(",")
+          + wiz->GetValue2() + wxT(")");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+  case menu_list_append_item:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("List"), _("Item"),
+                                 expr, wxT("1"),
+                                 m_console->m_configuration,
+                                 this, -1,
+                                 _("Add an element to a list"),
+                                 true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("append(") + wiz->GetValue1() + wxT(",[")
+          + wiz->GetValue2() + wxT("])");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+  case menu_list_append_list:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("List1"), _("List2"),
+                                 expr, wxT("[1]"),
+                                 m_console->m_configuration,
+                                 this, -1,
+                                 _("Append a list to a list"),
+                                 true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("append(") + wiz->GetValue1() + wxT(",")
+          + wiz->GetValue2() + wxT(")");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+  case menu_list_interleave:
+    {
+      Gen2Wiz *wiz = new Gen2Wiz(_("List1"), _("List2"),
+                                 expr, wxT("[1]"),
+                                 m_console->m_configuration,
+                                 this, -1,
+                                 _("Interleave two lists"),
+                                 true);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("join(") + wiz->GetValue1() + wxT(",")
+          + wiz->GetValue2() + wxT(")");
+        MenuCommand(cmd);
+      }
+      wiz->Destroy();
+    }
+    break;
+  }
+}
+
 void wxMaxima::SimplifyMenu(wxCommandEvent &event)
 {
   wxString expr = GetDefaultEntry();
@@ -5840,7 +6205,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
         m_console->CopySVG();
       break;
     case MathCtrl::popid_copy_rtf:
-      if (m_console->CanCopy())
+      if (m_console->CanCopy(true))
         m_console->CopyRTF();
       break;
     case MathCtrl::popid_simplify:
@@ -7291,6 +7656,29 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_MENU(menu_evaluate_all_visible, wxMaxima::MaximaMenu)
                 EVT_MENU(menu_evaluate_all, wxMaxima::MaximaMenu)
                 EVT_MENU(ToolBar::tb_evaltillhere, wxMaxima::MaximaMenu)
+                EVT_MENU(menu_list_create_from_elements,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_create_from_rule,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_create_from_list,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_actual_values_storage,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_sort,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_length,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_push,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_pop,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_reverse,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_first,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_last,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_rest,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_lastn,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_nth,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_map,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_use_actual_values,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_as_function_arguments,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_do_for_each_element,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_remove_duplicates,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_remove_element,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_append_item,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_append_list,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_interleave,wxMaxima::ListMenu)
                 EVT_IDLE(wxMaxima::OnIdle)
                 EVT_MENU(menu_remove_output, wxMaxima::EditMenu)
                 EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_29, wxMaxima::OnRecentDocument)

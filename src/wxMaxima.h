@@ -39,6 +39,8 @@
 #include <wx/regex.h>
 #include <wx/html/htmlwin.h>
 #include <wx/dnd.h>
+#include <wx/txtstrm.h>
+#include <wx/sckstrm.h>
 
 #if defined (__WXMSW__)
 #include <wx/msw/helpchm.h>
@@ -207,8 +209,18 @@ private:
     If text doesn't contain any error this function returns wxEmptyString
   */
   wxString GetUnmatchedParenthesisState(wxString text,int &index);
+  //! The buffer all text from maxima is stored in before converting it to a wxString.
+  char *m_inputBuffer;
+  /*! Convert problematic characters into something sane
+   *
+   * This makes sure that special character codes are not encountered unexpectedly
+   * (i.e. early).
+   */
+  void SanitizeSocketBuffer(char *buffer, int length);
 
 protected:
+  wxSocketInputStream *m_instream;
+  wxTextInputStream *m_txtinstream;
   //! Is this window active?
   bool m_isActive;
   //! Called when this window is activated or deactivated.
@@ -268,6 +280,7 @@ protected:
   void CalculusMenu(wxCommandEvent &event);        //!< event handling for menus
   void SimplifyMenu(wxCommandEvent &event);        //!< Processes "Simplify menu" clicks
   void PlotMenu(wxCommandEvent &event);            //!< Processes "Plot menu" cloicks
+  void ListMenu(wxCommandEvent &event);            //!< Processes "list menu" clicks
   void NumericalMenu(wxCommandEvent &event);       //!< Processes "Numerical menu" clicks
   void HelpMenu(wxCommandEvent &event);            //!< Processes "Help menu" clicks
   void EditMenu(wxCommandEvent &event);            //!< Processes "Edit menu" clicks
@@ -296,13 +309,20 @@ protected:
   //! Is triggered when the "Replace All" button in the search dialog is pressed
   void OnReplaceAll(wxFindDialogEvent &event);
 
-  void ServerEvent(wxSocketEvent &event);          //!< server event: maxima connection
+  //!< server event: maxima connection
+  void ServerEvent(wxSocketEvent &event);
   /*! Is triggered on Input or disconnect from maxima
 
     The data we get from maxima is split into small packets we append to m_currentOutput 
     until we got a full line we can display.
+
+    \todo If a packet maxima sends us ends in the middle of an 
+    unicode-multibyte-character we currently get an error message to stdout instead of
+    a character.
    */
   void ClientEvent(wxSocketEvent &event);
+  //! Triggered when we get new chars from maxima.
+  void OnNewChars();
 
   void ConsoleAppend(wxString s, int type, wxString userLabel = wxEmptyString);        //!< append maxima output to console
   void DoConsoleAppend(wxString s, int type,       //

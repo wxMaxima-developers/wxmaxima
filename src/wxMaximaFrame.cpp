@@ -915,6 +915,77 @@ void wxMaximaFrame::SetupMenu()
                          _("Setup modulus computation"), wxITEM_NORMAL);
   m_MenuBar->Append(m_SimplifyMenu, _("&Simplify"));
 
+  // List menu
+  m_listMenu = new wxMenu;
+  wxMenu *listcreateSub = new wxMenu;
+  listcreateSub->Append(menu_list_create_from_elements, _("from individual elements"),
+                        _("Create a list from comma-separated elements"),
+                        wxITEM_NORMAL);
+  listcreateSub->Append(menu_list_create_from_rule, _("from a rule"),
+                        _("Generate list elements using a rule"),
+                        wxITEM_NORMAL);
+  listcreateSub->Append(menu_list_create_from_list, _("from a list"),
+                        _("Generate a new list using a lists' elements"),
+                        wxITEM_NORMAL);
+  listcreateSub->Append(menu_list_actual_values_storage, _("as storage for actual values for variables"),
+                        _("Generate a storage for variable values that can be introduced into equations at any time"),
+                        wxITEM_NORMAL);
+  m_listMenu->Append(wxNewId(), _("Create list"),
+                     listcreateSub,
+                     _("Create a list"));
+  wxMenu *listuseSub = new wxMenu;
+  listuseSub->Append(menu_list_map, _("apply function to each element"),
+                        _("Runs each element through a function"),
+                        wxITEM_NORMAL);
+  listuseSub->Append(menu_list_use_actual_values, _("use the actual values stored"),
+                        _("Introduce the actual values for variables stored in the list"),
+                        wxITEM_NORMAL);
+  listuseSub->Append(menu_list_as_function_arguments, _("use as function arguments"),
+                        _("Use list as the arguments of a function"),
+                        wxITEM_NORMAL);
+  listuseSub->Append(menu_list_do_for_each_element, _("do for each element"),
+                        _("Execute a command for each element fo the list"),
+                        wxITEM_NORMAL);
+  
+  m_listMenu->Append(wxNewId(), _("Use list"),
+                     listuseSub,
+                     _("Use a list"));
+  wxMenu *listextractmenu = new wxMenu;
+  listextractmenu->Append(menu_list_nth, _("nth"), _("Returns an arbitrary list item"));
+  listextractmenu->Append(menu_list_first, _("First"), _("Returns the first item of the list"));
+  listextractmenu->Append(menu_list_rest, _("All but the 1st element"), _("Returns the list without its first element"));
+  listextractmenu->Append(menu_list_last, _("Last"), _("Returns the last item of the list"));
+  listextractmenu->Append(menu_list_lastn, _("Last n"), _("Returns the last n items of the list"));
+  listextractmenu->Append(menu_list_extract_value, _("Extract a actual value for a variable"),
+                        _("Extract the value for one variable assigned in a list"),
+                        wxITEM_NORMAL);
+  m_listMenu->Append(wxNewId(), _("Extract Elements"),
+                     listextractmenu,
+                     _("Extract list Elements"));
+  wxMenu *listappendSub = new wxMenu;
+  listappendSub->Append(menu_list_append_item, _("Append an element"),
+                        _("Append an element to an existing list"),
+                        wxITEM_NORMAL);
+  listappendSub->Append(menu_list_append_list, _("Append a list"),
+                        _("Append a list to an existing list"),
+                        wxITEM_NORMAL);
+  listappendSub->Append(menu_list_interleave, _("Interleave"),
+                        _("Interleae the values of two lists"),
+                        wxITEM_NORMAL);
+  m_listMenu->Append(wxNewId(), _("Append"),
+                     listappendSub,
+                     _("Use a list"));
+
+  m_listMenu->Append(menu_list_length, _("Length"), _("Returns the length of the list"));
+  m_listMenu->Append(menu_list_reverse, _("Reverse"), _("Reverse the order of the list items"));
+  m_listMenu->AppendSeparator();
+  m_listMenu->Append(menu_list_sort, _("Sort"));
+  m_listMenu->Append(menu_list_remove_duplicates, _("Remove duplicates"),_("Remove all list elements that appear twice in a row. Normally used in conjunction with sort."));
+m_listMenu->AppendSeparator();
+  m_listMenu->Append(menu_list_push, _("Push"), _("Add a new item to the beginning of the list. Useful for creating stacks.") );
+  m_listMenu->Append(menu_list_pop, _("Pop"), _("Return the first item of the list and remove it from the list. Useful for creating stacks."));
+
+  m_MenuBar->Append(m_listMenu, _("&List"));
   // Plot menu
   m_PlotMenu = new wxMenu;
   m_PlotMenu->Append(gp_plot2, _("Plot &2d..."),

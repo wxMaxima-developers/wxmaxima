@@ -148,7 +148,7 @@ void Configuration::ReadConfig()
   m_matchParens = true;
   config->Read(wxT("matchParens"), &m_matchParens);
 
-  m_insertAns = true;
+  m_insertAns = false;
   config->Read(wxT("insertAns"), &m_insertAns);
 
   m_openHCaret = false;

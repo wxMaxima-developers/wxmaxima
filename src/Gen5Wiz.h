@@ -18,51 +18,75 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
-#ifndef GEN1WIZ_H
-#define GEN1WIZ_H
+#ifndef GEN5WIZ_H
+#define GEN5WIZ_H
 
 #include <wx/wx.h>
 #include <wx/statline.h>
 
 #include "BTextCtrl.h"
 
-class Gen1Wiz : public wxDialog
+class Gen5Wiz : public wxDialog
 {
 public:
-  Gen1Wiz(wxWindow *parent, int id,
+  Gen5Wiz(wxString lab1, wxString lab2, wxString lab3, wxString lab4, wxString lab5,
+          wxString val1, wxString val2, wxString val3, wxString val4, wxString val5,
           Configuration *cfg,
-          const wxString &title,
-          const wxString &label,
-          const wxString &warning = wxEmptyString,
+          wxWindow *parent, int id, const wxString &title,
+          bool eq = false,
           const wxPoint &pos = wxDefaultPosition,
-          const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+          const wxSize &size = wxDefaultSize,
+          long style = wxDEFAULT_DIALOG_STYLE);
 
-  wxString GetValue()
+  void SetValue(const wxString &s)
   {
-    return text_ctrl_1->GetValue();
-  }
-
-  void SetValue(const wxString &v)
-  {
-    text_ctrl_1->SetValue(v);
+    text_ctrl_1->SetValue(s);
     text_ctrl_1->SetSelection(-1, -1);
   }
 
+  wxString GetValue1()
+  {
+    return text_ctrl_1->GetValue();
+  };
+
+  wxString GetValue2()
+  {
+    return text_ctrl_2->GetValue();
+  };
+
+  wxString GetValue3()
+  {
+    return text_ctrl_3->GetValue();
+  };
+
+  wxString GetValue4()
+  {
+    return text_ctrl_4->GetValue();
+  };
+
+  wxString GetValue5()
+  {
+    return text_ctrl_5->GetValue();
+  };
 private:
-  
   void set_properties();
 
   void do_layout();
 
+protected:
   wxStaticText *label_2;
   BTextCtrl *text_ctrl_1;
+  wxStaticText *label_3;
+  BTextCtrl *text_ctrl_2;
+  wxStaticText *label_4;
+  BTextCtrl *text_ctrl_3;
+  wxStaticText *label_5;
+  BTextCtrl *text_ctrl_4;
+  wxStaticText *label_6;
+  BTextCtrl *text_ctrl_5;
   wxStaticLine *static_line_1;
   wxButton *button_1;
   wxButton *button_2;
-  wxStaticText *m_warning;
 };
 
-wxString GetTextFromUser(wxString label, wxString title, Configuration *cfg, wxString value,
-                         wxWindow *parent);
-
-#endif // GEN1WIZ_H
+#endif // GEN5WIZ_H
