@@ -24,6 +24,8 @@ Gen5Wiz::Gen5Wiz(wxString lab1, wxString lab2, wxString lab3, wxString lab4, wxS
                  wxString val1, wxString val2, wxString val3, wxString val4, wxString val5,
                  Configuration *cfg,
                  wxWindow *parent, int id, const wxString &title, bool eq,
+                 const wxString &warning,
+                 const wxString &warningToolTip,
                  const wxPoint &pos, const wxSize &size, long style) :
         wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
@@ -68,6 +70,14 @@ static_line_1 = new wxStaticLine(this, -1);
   button_2 = new wxButton(this, wxID_OK, _("OK"));
 #endif
 
+  if(warning != wxEmptyString)    
+  {
+    m_warningText = warning;
+    m_warning = new wxStaticText(this, -1, wxEmptyString);
+    m_warning->SetToolTip(warningToolTip);
+  }
+  else
+    m_warning = NULL;
   set_properties();
   do_layout();
 }
@@ -87,6 +97,8 @@ void Gen5Wiz::do_layout()
   grid_sizer_2->Add(text_ctrl_4, 0, wxALL, 5);
   grid_sizer_2->Add(label_6, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
   grid_sizer_2->Add(text_ctrl_5, 0, wxALL, 5);
+  if(m_warning != NULL)
+    grid_sizer_1->Add(m_warning, 0, wxALL, 5);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
   sizer_1->Add(button_1, 0, wxALL, 5);
@@ -97,6 +109,14 @@ void Gen5Wiz::do_layout()
   grid_sizer_1->Fit(this);
   grid_sizer_1->SetSizeHints(this);
   Layout();
+  if(m_warning != NULL)
+  {
+    m_warning->SetLabel(m_warningText);
+    m_warning->Wrap(GetClientSize().GetWidth());
+    Fit();
+    Layout();
+    SetMinSize(GetSize());
+  }
 }
 
 void Gen5Wiz::set_properties()

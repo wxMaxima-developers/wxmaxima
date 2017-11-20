@@ -25,6 +25,8 @@ Gen3Wiz::Gen3Wiz(wxString lab1, wxString lab2, wxString lab3,
                  Configuration *cfg,
                  wxWindow *parent, int id, const wxString &title,
                  bool eq,
+                 const wxString &warning,
+                 const wxString &warningToolTip,
                  const wxPoint &pos, const wxSize &size, long style) :
         wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
@@ -55,6 +57,15 @@ Gen3Wiz::Gen3Wiz(wxString lab1, wxString lab2, wxString lab3,
   button_2 = new wxButton(this, wxID_OK, _("OK"));
 #endif
 
+  if(warning != wxEmptyString)    
+  {
+    m_warningText = warning;
+    m_warning = new wxStaticText(this, -1, wxEmptyString);
+    m_warning->SetToolTip(warningToolTip);
+  }
+  else
+    m_warning = NULL;
+
   set_properties();
   do_layout();
 }
@@ -70,6 +81,8 @@ void Gen3Wiz::do_layout()
   grid_sizer_2->Add(text_ctrl_2, 0, wxALL, 5);
   grid_sizer_2->Add(label_4, 0, wxALL | wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer_2->Add(text_ctrl_3, 0, wxALL, 5);
+  if(m_warning != NULL)
+    grid_sizer_1->Add(m_warning, 0, wxALL, 5);
   grid_sizer_1->Add(grid_sizer_2, 1, wxEXPAND, 0);
   grid_sizer_1->Add(static_line_1, 0, wxEXPAND | wxLEFT | wxRIGHT, 2);
   sizer_1->Add(button_1, 0, wxALL, 5);
@@ -80,6 +93,14 @@ void Gen3Wiz::do_layout()
   grid_sizer_1->Fit(this);
   grid_sizer_1->SetSizeHints(this);
   Layout();
+  if(m_warning != NULL)
+  {
+    m_warning->SetLabel(m_warningText);
+    m_warning->Wrap(GetClientSize().GetWidth());
+    Fit();
+    Layout();
+    SetMinSize(GetSize());
+  }
 }
 
 void Gen3Wiz::set_properties()

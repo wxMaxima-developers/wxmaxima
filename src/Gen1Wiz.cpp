@@ -23,6 +23,7 @@
 Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &title,
                  const wxString &label1,
                  const wxString &warning,
+                 const wxString &warningToolTip,
                  const wxPoint &pos, const wxSize &size, long style) :
         wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
 {
@@ -40,7 +41,11 @@ Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &t
 #endif
 
   if(warning != wxEmptyString)    
-    m_warning = new wxStaticText(this, -1, warning);
+  {
+    m_warningText = warning;
+    m_warning = new wxStaticText(this, -1, wxEmptyString);
+    m_warning->SetToolTip(warningToolTip);
+  }
   else
     m_warning = NULL;
 

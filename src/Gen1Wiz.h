@@ -34,6 +34,7 @@ public:
           const wxString &title,
           const wxString &label,
           const wxString &warning = wxEmptyString,
+          const wxString &warningToolTip = wxEmptyString,
           const wxPoint &pos = wxDefaultPosition,
           const wxSize &size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
 
@@ -60,6 +61,7 @@ private:
   wxButton *button_1;
   wxButton *button_2;
   wxStaticText *m_warning;
+  wxString m_warningText;
 };
 
 wxString GetTextFromUser(wxString label, wxString title, Configuration *cfg, wxString value,

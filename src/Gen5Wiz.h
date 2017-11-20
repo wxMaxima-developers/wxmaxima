@@ -34,6 +34,8 @@ public:
           Configuration *cfg,
           wxWindow *parent, int id, const wxString &title,
           bool eq = false,
+          const wxString &warning = wxEmptyString,
+          const wxString &warningToolTip = wxEmptyString,
           const wxPoint &pos = wxDefaultPosition,
           const wxSize &size = wxDefaultSize,
           long style = wxDEFAULT_DIALOG_STYLE);
@@ -87,6 +89,8 @@ protected:
   wxStaticLine *static_line_1;
   wxButton *button_1;
   wxButton *button_2;
+  wxStaticText *m_warning;
+  wxString m_warningText;
 };
 
 #endif // GEN5WIZ_H
