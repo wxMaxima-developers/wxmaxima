@@ -4102,8 +4102,17 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
       Gen2Wiz *wiz = new Gen2Wiz(_("Equation(s):"), _("Variable(s):"),
                                  expr, wxT("x"),
                                  m_console->m_configuration,
-                                 this, -1, _("Solve"), true);
+                                 this, -1, _("Solve"), true,
+                                 _("solve() will solve a list of equations only if for n "
+                                   "independent equations there are n variables to solve to.\n"
+                                   "If only one result variable is of interest the other result "
+                                   "variables solve needs to do its work can be used to tell "
+                                   "solve() which variables to eleminate in the solution "
+                                   "for the interesting variable.")
+        );
       wiz->Centre(wxBOTH);
+      wiz->SetLabel1ToolTip(_("Comma-separated equations"));
+      wiz->SetLabel2ToolTip(_("Comma-separated variables"));
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("solve([") + wiz->GetValue1() + wxT("], [") +
@@ -6234,8 +6243,17 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       Gen2Wiz *wiz = new Gen2Wiz(_("Equation(s):"), _("Variable(s):"),
                                  selection, wxT("x"),
                                  m_console->m_configuration,
-                                 this, -1, _("Solve"), true);
+                                 this, -1, _("Solve"), true,
+                                 _("solve() will solve a list of equations only if for n "
+                                   "independent equations there are n variables to solve to.\n"
+                                   "If only one result variable is of interest the other result "
+                                   "variables solve needs to do its work can be used to tell "
+                                   "solve() which variables to eleminate in the solution "
+                                   "for the interesting variable.")
+        );
       wiz->Centre(wxBOTH);
+      wiz->SetLabel1ToolTip(_("Comma-separated equations"));
+      wiz->SetLabel2ToolTip(_("Comma-separated variables"));
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString cmd = wxT("solve([") + wiz->GetValue1() + wxT("], [") +
