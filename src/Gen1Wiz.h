@@ -49,6 +49,7 @@ public:
     text_ctrl_1->SetSelection(-1, -1);
   }
 
+  void SetLabel1ToolTip(wxString toolTip){label_2->SetToolTip(toolTip);}
 private:
   
   void set_properties();

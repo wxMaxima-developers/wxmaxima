@@ -50,6 +50,9 @@ public:
     return text_ctrl_2->GetValue();
   }
 
+  void SetLabel1ToolTip(wxString toolTip){label_2->SetToolTip(toolTip);}
+  void SetLabel2ToolTip(wxString toolTip){label_3->SetToolTip(toolTip);}
+
 private:
   bool equal;
 

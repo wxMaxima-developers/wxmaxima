@@ -60,6 +60,10 @@ public:
   {
     return text_ctrl_3->GetValue();
   };
+  void SetLabel1ToolTip(wxString toolTip){label_2->SetToolTip(toolTip);}
+  void SetLabel2ToolTip(wxString toolTip){label_3->SetToolTip(toolTip);}
+  void SetLabel3ToolTip(wxString toolTip){label_4->SetToolTip(toolTip);}
+
 private:
   void set_properties();
 
