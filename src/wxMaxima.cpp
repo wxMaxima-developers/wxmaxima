@@ -4638,7 +4638,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
-        cmd = wxT("pop(") + wiz->GetValue1() + wxT(", ")
+        cmd = wxT("push(") + wiz->GetValue1() + wxT(", ")
               + wiz->GetValue2() + wxT(");");
         MenuCommand(cmd);
       }
@@ -4676,6 +4676,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
       }
       wiz->Destroy();
     }
+    break;
   case menu_list_nth:
     {
       Gen2Wiz *wiz = new Gen2Wiz(_("List"), _("element number n"),
@@ -4710,7 +4711,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
   break;
   case menu_list_map:
     {
-      Gen2Wiz *wiz = new Gen2Wiz(_("List"), _("Function"),
+      Gen2Wiz *wiz = new Gen2Wiz(_("Function"), _("List"),
                                  wxEmptyString, wxEmptyString,
                                  m_console->m_configuration,
                                  this, -1, _("Apply a function to each list element"), true);
@@ -7703,6 +7704,7 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_MENU(menu_list_map,wxMaxima::ListMenu)
                 EVT_MENU(menu_list_use_actual_values,wxMaxima::ListMenu)
                 EVT_MENU(menu_list_as_function_arguments,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_extract_value,wxMaxima::ListMenu)
                 EVT_MENU(menu_list_do_for_each_element,wxMaxima::ListMenu)
                 EVT_MENU(menu_list_remove_duplicates,wxMaxima::ListMenu)
                 EVT_MENU(menu_list_remove_element,wxMaxima::ListMenu)
