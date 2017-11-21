@@ -195,10 +195,8 @@ void MathPrintout::SetupData()
   (*m_configuration)->LineWidth_em(400);
   int pageWidth, pageHeight;
   int marginX, marginY;
-  double screenScaleX, screenScaleY;
   GetPageSizePixels(&pageWidth, &pageHeight);
   GetPageMargins(&marginX, &marginY);
-  GetScreenScale(&screenScaleX, &screenScaleY);
   (*m_configuration)->SetZoomFactor_temporarily(1.5);
 
   (*m_configuration)->SetClientWidth(pageWidth - 2 * marginX
@@ -210,7 +208,6 @@ void MathPrintout::SetupData()
   (*m_configuration)->SetPrinter(true);
   // Make sure that during print nothing is outside the crop rectangle
   marginX += (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent());
-  dc->SetUserScale(screenScaleX, screenScaleY);
   MathCell::ClipToDrawRegion(false);
 
   Recalculate();
