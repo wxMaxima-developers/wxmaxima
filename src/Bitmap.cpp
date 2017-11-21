@@ -48,7 +48,7 @@ Bitmap::Bitmap(Configuration **configuration, int scale)
   
   *m_configuration = new Configuration(*m_dc);
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
-  (*m_configuration)->SetZoomFactor_temporarily(1);
+  (*m_configuration)->SetZoomFactor_temporarily(1.0);
   (*m_configuration)->SetClientWidth(BM_FULL_WIDTH);
   (*m_configuration)->SetClientHeight(BM_FULL_WIDTH);
   (*m_configuration)->SetForceUpdate(true);
