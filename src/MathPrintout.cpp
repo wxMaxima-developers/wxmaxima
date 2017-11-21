@@ -39,13 +39,15 @@ MathPrintout::MathPrintout(wxString title, Configuration **configuration) : wxPr
   m_oldconfig = *m_configuration;
   m_numberOfPages = 0;
   m_tree = NULL;
+  m_printConfigCreated = false;
   (*m_configuration)->SetForceUpdate(true);
 }
 
 MathPrintout::~MathPrintout()
 {
   DestroyTree();
-  wxDELETE(*m_configuration);
+  if(m_printConfigCreated)
+    wxDELETE(*m_configuration);
   *m_configuration = m_oldconfig;
   MathCell::ClipToDrawRegion(true);
   (*m_configuration)->SetForceUpdate(false);
@@ -187,6 +189,7 @@ void MathPrintout::SetupData()
   wxDC *dc = GetDC();
   
   *m_configuration = new Configuration(*dc);
+  m_printConfigCreated = true;
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
   (*m_configuration)->ShowBrackets((*m_configuration)->PrintBrackets());
   (*m_configuration)->LineWidth_em(400);

@@ -80,6 +80,7 @@ public:
 private:
   Configuration **m_configuration, *m_oldconfig;
   int m_numberOfPages;
+  bool m_printConfigCreated;
   wxString m_title;
   GroupCell *m_tree;
   vector<GroupCell *> m_pages;
