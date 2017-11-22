@@ -37,4 +37,4 @@ git:
 
 script:
   - mkdir build && cd build && CXXFLAGS="-Wall -Wextra" cmake .. && cmake --build . && cmake --build . -- html && cmake --build . -- install DESTDIR=$(pwd)/installtest && cmake --build . -- package
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mkdir build2 && cd build2 && CFLAGS="--analyze" CXXFLAGS="--analyze" CC=clang CXX=clang++ cmake .. && cmake --build . ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then rm -rf * && CFLAGS="--analyze" CXXFLAGS="--analyze" CC=clang CXX=clang++ cmake .. && cmake --build . ; fi
