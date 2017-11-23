@@ -2716,6 +2716,11 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
         SetStatusText(_("Maxima is ready for input."), 0);
     }
     m_updateEvaluationQueueLengthDisplay = false;
+
+    // We have shown that we are still alive => If maxima already offers new data
+    // we process this data first and then continue with the idle task.
+    event.RequestMore();
+    return;    
   }
   
   bool screenHasChanged = m_console->RedrawRequested();
@@ -2743,7 +2748,14 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       }
     }
   }
-  m_console->RedrawIfRequested();
+
+  if(m_console->RedrawIfRequested())
+  {
+    // This was a lengthy task => Return from the idle task so we can give
+    // maxima a chance to deliver new data.
+    event.RequestMore();
+    return;    
+  }
 
   // If nothing which is visible has changed nothing that would cause us to need
   // update the menus and toolbars has.
@@ -2754,6 +2766,10 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     ResetTitle(m_console->IsSaved());
     UpdateToolBar(dummy);
     UpdateSlider(dummy);
+    // This was a half-way lengthy task => Return from the idle task so we can give
+    // maxima a chance to deliver new data.
+    event.RequestMore();
+    return;    
   }
 
   // If we have set the flag that tells us we should update the table of

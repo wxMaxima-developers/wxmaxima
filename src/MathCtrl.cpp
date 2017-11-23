@@ -144,8 +144,10 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
   #endif
 }
 
-void MathCtrl::RedrawIfRequested()
+bool MathCtrl::RedrawIfRequested()
 {
+  bool redrawIssued = false;
+  
   if(m_mouseMotionWas)
   {
     if ((m_cellPointers.m_groupCellUnderPointer == NULL) ||
@@ -239,6 +241,7 @@ void MathCtrl::RedrawIfRequested()
     Refresh();
     m_redrawRequested = false;
     m_redrawStart = NULL;
+    redrawIssued = true;
   }
   else
   {
@@ -246,9 +249,12 @@ void MathCtrl::RedrawIfRequested()
     {
       CalcScrolledPosition(m_rectToRefresh.x, m_rectToRefresh.y, &m_rectToRefresh.x, &m_rectToRefresh.y);
       RefreshRect(m_rectToRefresh);
+      redrawIssued = true;
     }
   }
   m_rectToRefresh = wxRect(-1, -1, -1, -1);
+
+  return redrawIssued;
 }
 
 void MathCtrl::RequestRedraw(GroupCell *start)

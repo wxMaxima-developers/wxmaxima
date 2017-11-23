@@ -683,7 +683,7 @@ public:
 
     Also handles setting tooltips and redrawing the brackets on mouse movements.
    */
-  void RedrawIfRequested();
+  bool RedrawIfRequested();
 
   /*! Request the worksheet to be redrawn
 
@@ -694,6 +694,8 @@ public:
     The actual redraw is done in the idle loop which means that as many redraw
     actions are merged as is necessary to allow wxMaxima to process things in
     real time.
+
+    \return true, if we did redraw a workscreet portion.
    */
   void RequestRedraw(GroupCell *start = NULL);
   /*! Request a part of the worksheet to be redrawn
