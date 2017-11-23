@@ -4539,6 +4539,29 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
   wxString cmd;
   switch (event.GetId())
   {
+  case menu_list_create_from_args:
+  {
+    wxString arg;
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_console->m_configuration,
+                               _("Extract function arguments"),
+                               _("The function call whose arguments to extract"),
+                               expr);
+    wiz->SetLabel1ToolTip(_("Something like f(x_1,x_2)"));
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wxT("args(") + wiz->GetValue() + wxT(")");
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+  }
+    break;
+  case menu_list_list2matrix:
+    MenuCommand(wxT("apply('matrix,") + expr + wxT(")"));
+    break;
+  case menu_list_matrix2list:
+    MenuCommand(wxT("args(") + expr + wxT(")"));
+    break;
   case menu_list_create_from_elements:
   {
     Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_console->m_configuration,
@@ -7711,6 +7734,9 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_MENU(menu_list_append_item,wxMaxima::ListMenu)
                 EVT_MENU(menu_list_append_list,wxMaxima::ListMenu)
                 EVT_MENU(menu_list_interleave,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_list2matrix,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_matrix2list,wxMaxima::ListMenu)
+                EVT_MENU(menu_list_create_from_args,wxMaxima::ListMenu)
                 EVT_IDLE(wxMaxima::OnIdle)
                 EVT_MENU(menu_remove_output, wxMaxima::EditMenu)
                 EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_29, wxMaxima::OnRecentDocument)

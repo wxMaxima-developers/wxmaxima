@@ -23,6 +23,7 @@
 
 Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &title,
                  const wxString &label1,
+                 const wxString &val1,
                  const wxString &warning,
                  const wxString &warningToolTip,
                  const wxPoint &pos, const wxSize &size, long style) :
@@ -31,6 +32,7 @@ Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &t
   label_2 = new wxStaticText(this, -1, label1);
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
                               wxSize(300, -1));
+  text_ctrl_1 -> SetValue(val1);
   static_line_1 = new wxStaticLine(this, -1);
 
 #if defined __WXMSW__

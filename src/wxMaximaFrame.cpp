@@ -930,6 +930,9 @@ void wxMaximaFrame::SetupMenu()
   listcreateSub->Append(menu_list_actual_values_storage, _("as storage for actual values for variables"),
                         _("Generate a storage for variable values that can be introduced into equations at any time"),
                         wxITEM_NORMAL);
+  listcreateSub->Append(menu_list_create_from_args, _("from function arguments"),
+                        _("Extract the argument list from a function call"),
+                        wxITEM_NORMAL);
   m_listMenu->Append(wxNewId(), _("Create list"),
                      listcreateSub,
                      _("Create a list"));
@@ -984,7 +987,9 @@ void wxMaximaFrame::SetupMenu()
 m_listMenu->AppendSeparator();
   m_listMenu->Append(menu_list_push, _("Push"), _("Add a new item to the beginning of the list. Useful for creating stacks.") );
   m_listMenu->Append(menu_list_pop, _("Pop"), _("Return the first item of the list and remove it from the list. Useful for creating stacks."));
-
+  m_listMenu->AppendSeparator();
+  m_listMenu->Append(menu_list_list2matrix, _("Nested list to Matrix"));
+  m_listMenu->Append(menu_list_matrix2list, _("Matrix to nested List"));
   m_MenuBar->Append(m_listMenu, _("&List"));
   // Plot menu
   m_PlotMenu = new wxMenu;
