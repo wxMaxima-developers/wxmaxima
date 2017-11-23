@@ -989,8 +989,8 @@ m_listMenu->AppendSeparator();
   m_listMenu->Append(menu_list_push, _("Push"), _("Add a new item to the beginning of the list. Useful for creating stacks.") );
   m_listMenu->Append(menu_list_pop, _("Pop"), _("Return the first item of the list and remove it from the list. Useful for creating stacks."));
   m_listMenu->AppendSeparator();
-  m_listMenu->Append(menu_list_list2matrix, _("Nested list to Matrix"));
-  m_listMenu->Append(menu_list_matrix2list, _("Matrix to nested List"));
+  m_listMenu->Append(menu_list_list2matrix, _("Nested list to Matrix"), _("Converts a nested list like [[1,2],[3,4]] to a matrix"));
+  m_listMenu->Append(menu_list_matrix2list, _("Matrix to nested List"), _("Converts a matrix to a list of lists"));
   m_MenuBar->Append(m_listMenu, _("&List"));
   // Plot menu
   m_PlotMenu = new wxMenu;
