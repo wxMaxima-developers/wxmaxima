@@ -157,8 +157,6 @@ void SumCell::RecalculateWidths(int fontsize)
 
 void SumCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
-
   m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
   m_over->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
   m_base->RecalculateHeightList(fontsize);
