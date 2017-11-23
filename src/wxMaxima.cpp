@@ -771,6 +771,18 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
         {
           length_old = m_currentOutput.Length();
 
+
+          // First read the prompt that tells us that maxima awaits the next command:
+          // If that is the case ReadPrompt() sends the next command to maxima and
+          // maxima can work while we interpret its output.
+          GroupCell *oldActiveCell = m_console->GetWorkingGroup();
+          ReadPrompt(m_currentOutput);
+          GroupCell *newActiveCell = m_console->GetWorkingGroup();
+
+          // Temporarily switch to the WorkingGroup the output we don't have interpreted yet
+          // was for
+          if(newActiveCell != oldActiveCell)
+            m_console->m_cellPointers.SetWorkingGroup(oldActiveCell);
           // Handle the <mth> tag that contains math output and sometimes text.
           ReadMath(m_currentOutput);
 
@@ -778,9 +790,6 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
           // information from the beginning of the data string we got - but only do so
           // after the closing tag has been transferred, as well.
           ReadLoadSymbols(m_currentOutput);
-
-          // The prompt that tells us that maxima awaits the next command
-          ReadPrompt(m_currentOutput);
 
           // Handle the XML tag that contains Status bar updates
           ReadStatusBar(m_currentOutput);
@@ -793,6 +802,10 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
             // This function determines the port maxima is running on from  the text
             // maxima outputs at startup. This piece of text is afterwards discarded.
             ReadFirstPrompt(m_currentOutput);
+
+          // Switch to the WorkingGroup the next bunch of data is for.
+          if(newActiveCell != oldActiveCell)
+            m_console->m_cellPointers.SetWorkingGroup(newActiveCell);
         }
       }
       break;
