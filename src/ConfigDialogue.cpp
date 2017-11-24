@@ -202,7 +202,7 @@ void ConfigDialogue::UsepngcairoChanged(wxCommandEvent &event)
   #endif
 }
 
-void ConfigDialogue::MaximaLocationChanged(wxCommandEvent &unused)
+void ConfigDialogue::MaximaLocationChanged(wxCommandEvent& WXUNUSED(unused))
 {
   if (m_configuration->MaximaFound(m_maximaProgram->GetValue()))
   {
@@ -1116,7 +1116,7 @@ void ConfigDialogue::OnStyleToEditChanged(wxCommandEvent &event)
   config->Write(wxT("StyleToEdit"), event.GetSelection());  
 }
 
-void ConfigDialogue::OnClose(wxCloseEvent &event)
+void ConfigDialogue::OnClose(wxCloseEvent&  WXUNUSED(event))
 {
   wxConfigBase *config = wxConfig::Get();
   config->Write(wxT("ConfigDialogTab"), m_notebook->GetSelection());
@@ -1231,7 +1231,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("ConfigDialogTab"), m_notebook->GetSelection());
 }
 
-void ConfigDialogue::OnMpBrowse(wxCommandEvent &event)
+void ConfigDialogue::OnMpBrowse(wxCommandEvent&  WXUNUSED(event))
 {
   wxConfig *config = (wxConfig *) wxConfig::Get();
   wxString dd;
@@ -1259,7 +1259,7 @@ void ConfigDialogue::OnMpBrowse(wxCommandEvent &event)
   }
 }
 
-void ConfigDialogue::OnMathBrowse(wxCommandEvent &event)
+void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
 {
     wxFont font;
 #ifdef __WXMSW__
@@ -1788,7 +1788,7 @@ void ConfigDialogue::OnChangeColor()
   }
 }
 
-void ConfigDialogue::OnChangeStyle(wxCommandEvent &event)
+void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
 {
   style *tmp = GetStylePointer();
   int st = m_styleFor->GetSelection();
@@ -1830,7 +1830,7 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent &event)
   UpdateExample();
 }
 
-void ConfigDialogue::OnCheckbox(wxCommandEvent &event)
+void ConfigDialogue::OnCheckbox(wxCommandEvent&  WXUNUSED(event))
 {
   style *tmp = GetStylePointer();
 
@@ -1841,7 +1841,7 @@ void ConfigDialogue::OnCheckbox(wxCommandEvent &event)
   UpdateExample();
 }
 
-void ConfigDialogue::OnChangeWarning(wxCommandEvent &event)
+void ConfigDialogue::OnChangeWarning(wxCommandEvent&  WXUNUSED(event))
 {
   wxMessageBox(_("Please restart wxMaxima for changes to take effect!"),
                _("Configuration warning"),
@@ -2037,7 +2037,7 @@ void ConfigDialogue::LoadSave(wxCommandEvent &event)
 }
 
 #if defined __WXMSW__
-void ConfigDialogue::OnColorButton(wxCommandEvent &event)
+void ConfigDialogue::OnColorButton(wxCommandEvent&  WXUNUSED(event))
 {
   OnChangeColor();
 }
