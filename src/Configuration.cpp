@@ -200,14 +200,15 @@ wxFont Configuration::GetFont(int textStyle, int fontSize)
     // Besides that these items have a fixed font size.
     fontSize = GetFontSize(textStyle);
   }  
-  
+
+  // Ensure a sane minimum font size
+  if (fontSize1 < 4)
+    fontSize = 4;
+
   // The font size scales with the worksheet
   int fontSize1 = Scale_Px(fontSize);
 
   wxASSERT(fontSize > 0);
-  // Ensure a sane minimum font size
-  if (fontSize1 < 4)
-    fontSize = 4;
 
   fontName = GetFontName(textStyle);
   fontStyle = IsItalic(textStyle);
