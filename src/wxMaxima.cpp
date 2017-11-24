@@ -674,11 +674,8 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 
     if (m_client)
     {
-#if wxUSE_UNICODE
-      m_client->Write(s.utf8_str(), strlen(s.utf8_str()));
-#else
-      m_client->Write(s.c_str(), s.Length());
-#endif
+      wxScopedCharBuffer const data_raw = s.utf8_str();
+      m_client->Write(data_raw.data(), data_raw.length());
       m_statusBar->NetworkStatus(StatusBar::transmit);
     }
   }
