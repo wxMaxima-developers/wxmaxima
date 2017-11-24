@@ -132,7 +132,6 @@ void LimitCell::Draw(wxPoint point, int fontsize)
   if (DrawThisCell(point) && InUpdateRegion())
   {   
     MathCell::Draw(point, fontsize);
-    Configuration *configuration = (*m_configuration);
     wxPoint base(point), under(point), name(point);
 
     name.x = point.x + MAX(m_name->GetFullWidth(),

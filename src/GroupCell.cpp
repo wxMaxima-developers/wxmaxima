@@ -1981,7 +1981,7 @@ GroupCell *GroupCell::FoldAll()
       result = tmp;
     }
     if (tmp->m_hiddenTree != NULL)
-      m_hiddenTree->FoldAll();
+      tmp->m_hiddenTree->FoldAll();
     tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }
   return result;

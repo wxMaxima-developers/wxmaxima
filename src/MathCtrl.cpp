@@ -786,7 +786,7 @@ void MathCtrl::Recalculate(GroupCell *start, bool force)
 /***
  * Resize the control
  */
-void MathCtrl::OnSize(wxSizeEvent &event)
+void MathCtrl::OnSize(wxSizeEvent& WXUNUSED(event))
 {
   Freeze();
   // Determine if we have a sane thing we can scroll to.

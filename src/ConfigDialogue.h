@@ -403,7 +403,7 @@ public:
     SetBackgroundColour(wxColour(0, 0, 0));
   };
 
-  void OnClick(wxMouseEvent &event)
+  void OnClick(wxMouseEvent& WXUNUSED(event))
   {
     m_configDialogue->OnChangeColor();
   }

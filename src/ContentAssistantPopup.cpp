@@ -235,7 +235,7 @@ void ContentAssistantPopup::OnDismiss()
   *m_doneptr = NULL;
 }
 
-void ContentAssistantPopup::OnClose(wxCloseEvent &event)
+void ContentAssistantPopup::OnClose(wxCloseEvent& WXUNUSED(event))
 {
   *m_doneptr = NULL;
 }
