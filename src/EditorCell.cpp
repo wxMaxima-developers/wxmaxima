@@ -3186,7 +3186,7 @@ int EditorCell::GetLineWidth(wxDC *dc, unsigned int line, int pos)
 
   int width = 0;
   wxString text;
-  int textWidth, textHeight;
+  int textWidth = 0, textHeight = 0;
   pos--;
   for (; (textSnippet < m_styledText.end()) && (pos >= 0); ++textSnippet)
   {
