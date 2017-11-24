@@ -2700,6 +2700,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     // a new one to be issued once the computer has time for doing real
     // background stuff.
     event.RequestMore();
+    event.Skip();
     return;
   }
 
@@ -2730,6 +2731,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     // We have shown that we are still alive => If maxima already offers new data
     // we process this data first and then continue with the idle task.
     event.RequestMore();
+    event.Skip();
     return;    
   }
   
@@ -2764,6 +2766,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     // This was a lengthy task => Return from the idle task so we can give
     // maxima a chance to deliver new data.
     event.RequestMore();
+    event.Skip();
     return;    
   }
 
@@ -2779,6 +2782,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     // This was a half-way lengthy task => Return from the idle task so we can give
     // maxima a chance to deliver new data.
     event.RequestMore();
+    event.Skip();
     return;    
   }
 
@@ -2875,10 +2879,11 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &event)
 {
   wxMenuBar *menubar = GetMenuBar();
 
-  if (m_console)
-    wxASSERT_MSG((!m_console->HCaretActive()) || (m_console->GetActiveCell() == NULL),
-                 _("Both horizontal and vertical cursor active at the same time"));
-
+  if (!m_console)
+    return;
+  wxASSERT_MSG((!m_console->HCaretActive()) || (m_console->GetActiveCell() == NULL),
+               _("Both horizontal and vertical cursor active at the same time"));
+  
   menubar->Enable(menu_copy_from_console, m_console->CanCopy(true));
   menubar->Enable(menu_cut, m_console->CanCut());
   menubar->Enable(menu_copy_tex_from_console, m_console->CanCopy());
@@ -2897,10 +2902,10 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &event)
   menubar->Enable(MathCtrl::popid_comment_selection,
                   (m_console->GetActiveCell() != NULL) && (m_console->GetActiveCell()->SelectionActive()));
   menubar->Enable(menu_evaluate, (
-                          (m_console->GetActiveCell() != NULL) ||
+                    (m_console->GetActiveCell() != NULL) ||
                           (m_console->CellsSelected())
-                  )
-  );
+                    )
+    );
 
   menubar->Enable(menu_evaluate_all_visible, m_console->GetTree() != NULL);
   menubar->Enable(ToolBar::tb_evaltillhere,
@@ -3116,7 +3121,7 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
       SetCWD(filename);
     }
   }
-  if (m_console->m_tableOfContents)
+  if (m_console->m_tableOfContents != NULL)
   {
     m_console->m_scheduleUpdateToc = false;
     m_console->m_tableOfContents->UpdateTableOfContents(m_console->GetTree(), m_console->GetHCaret());

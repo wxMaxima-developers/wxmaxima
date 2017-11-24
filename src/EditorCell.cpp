@@ -1113,9 +1113,7 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
         int lst = indentChars.back();
         indentChars.pop_back();
         if (!indentChars.empty())
-        {
           lst = indentChars.back() + 4;
-        }
         else
           lst = 0;
         indentChars.push_back(lst);
@@ -3667,7 +3665,6 @@ void EditorCell::StyleTextCode()
         lastSpace = NULL;
         lineWidth = 0;
         m_styledText.push_back(StyledText(token));
-        spaceIsIndentation = true;
         int charWidth, height;
         configuration->GetDC()->GetTextExtent(wxT(" "), &charWidth, &height);
         indentationPixels = charWidth * GetIndentDepth(m_text, pos);
@@ -3919,7 +3916,6 @@ void EditorCell::StyleTextTexts()
           
           lastLineStart = i + 1;
           lastSpacePos = -1;
-          indentation = 0;
           break;
         }
         else
@@ -4048,9 +4044,6 @@ void EditorCell::StyleTextTexts()
           if (line_trimmed.StartsWith(wxT("\xB7 ")))
             line[line.find("\xB7")] = wxT('\x2022');
           
-          // We don't need additional indentation as this line is already indented by
-          // the spaces and the indent marker at it's beginning.
-          indentation = 0;
           // Remember what a continuation for this indenting object would begin with
           prefixes.push_back(wxT("  ") + line.Left(line.Length() - line_trimmed.Length()));
           indentPixels.push_back(width);
@@ -4071,7 +4064,6 @@ void EditorCell::StyleTextTexts()
           }
           // We don't need indentation as this line was indented
           // by spaces already.
-          indentation = 0;
         }
       }
       

@@ -333,7 +333,6 @@ void MathCell::Draw(wxPoint point, int fontsize)
 
 void MathCell::DrawList(wxPoint point, int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   MathCell *tmp = this;
   while (tmp != NULL)
   {

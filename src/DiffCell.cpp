@@ -118,7 +118,6 @@ void DiffCell::Draw(wxPoint point, int fontsize)
     df.y = point.y;
     m_diffCell->DrawList(df, fontsize);
 
-    Configuration *configuration = (*m_configuration);
     bs.x = point.x + m_diffCell->GetFullWidth() + 2 * MC_CELL_SKIP;
     bs.y = point.y;
     m_baseCell->DrawList(bs, fontsize);
