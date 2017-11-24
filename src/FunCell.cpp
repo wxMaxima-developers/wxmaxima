@@ -90,7 +90,6 @@ void FunCell::SetArg(MathCell *arg)
 
 void FunCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   m_argCell->RecalculateWidthsList(fontsize);
   m_nameCell->RecalculateWidthsList(fontsize);
   m_width = m_nameCell->GetFullWidth() + m_argCell->GetFullWidth() -

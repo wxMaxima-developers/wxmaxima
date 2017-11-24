@@ -89,7 +89,6 @@ void AtCell::SetBase(MathCell *base)
 
 void AtCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   m_baseCell->RecalculateWidthsList(fontsize);
   m_indexCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 4));
   m_width = m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() +
@@ -99,7 +98,6 @@ void AtCell::RecalculateWidths(int fontsize)
 
 void AtCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   m_baseCell->RecalculateHeightList(fontsize);
   m_indexCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 3));
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -

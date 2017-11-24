@@ -2975,7 +2975,7 @@ void EditorCell::CommentSelection()
   SetValue(m_text.SubString(0, m_selectionStart - 1) + wxT("/*")
            + m_text.SubString(m_selectionStart, m_selectionEnd - 1) + wxT("*/")
            + m_text.SubString(m_selectionEnd, m_text.Length()));
-  m_positionOfCaret = MIN(m_selectionEnd + 4, (signed) m_text.Length());
+  m_positionOfCaret = MIN(m_selectionEnd + 4, (signed long) m_text.Length());
   ClearSelection();
 }
 

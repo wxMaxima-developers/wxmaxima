@@ -100,7 +100,6 @@ void ConjugateCell::SetInner(MathCell *inner)
 
 void ConjugateCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   m_innerCell->RecalculateWidthsList(fontsize);
   m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
   m_open->RecalculateWidthsList(fontsize);
@@ -110,7 +109,6 @@ void ConjugateCell::RecalculateWidths(int fontsize)
 
 void ConjugateCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   m_innerCell->RecalculateHeightList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + Scale_Px(4);
   m_center = m_innerCell->GetMaxCenter() + Scale_Px(2);

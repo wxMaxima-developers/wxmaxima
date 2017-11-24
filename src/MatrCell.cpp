@@ -87,7 +87,6 @@ std::list<MathCell *> MatrCell::GetInnerCells()
 
 void MatrCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   for (int i = 0; i < m_matWidth * m_matHeight; i++)
   {
     m_cells[i]->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 2));
@@ -113,8 +112,6 @@ void MatrCell::RecalculateWidths(int fontsize)
 
 void MatrCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
-
   for (int i = 0; i < m_matWidth * m_matHeight; i++)
   {
     m_cells[i]->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 2));

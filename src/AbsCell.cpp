@@ -96,7 +96,6 @@ void AbsCell::SetInner(MathCell *inner)
 
 void AbsCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   m_innerCell->RecalculateWidthsList(fontsize);
   m_width = m_innerCell->GetFullWidth() + Scale_Px(8) + 2 * (*m_configuration)->GetDefaultLineWidth();
   m_open->RecalculateWidthsList(fontsize);
@@ -106,7 +105,6 @@ void AbsCell::RecalculateWidths(int fontsize)
 
 void AbsCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   m_innerCell->RecalculateHeightList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + Scale_Px(4);
   m_center = m_innerCell->GetMaxCenter() + Scale_Px(2);

@@ -131,7 +131,6 @@ void ExptCell::SetBase(MathCell *base)
 
 void ExptCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   m_baseCell->RecalculateWidthsList(fontsize);
   if (m_isBroken)
     m_powCell->RecalculateWidthsList(fontsize);
@@ -147,7 +146,6 @@ void ExptCell::RecalculateWidths(int fontsize)
 
 void ExptCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   m_baseCell->RecalculateHeightList(fontsize);
   if (m_isBroken)
     m_powCell->RecalculateHeightList(fontsize);

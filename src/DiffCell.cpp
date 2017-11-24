@@ -94,7 +94,6 @@ void DiffCell::SetBase(MathCell *base)
 
 void DiffCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   m_baseCell->RecalculateWidthsList(fontsize);
   m_diffCell->RecalculateWidthsList(fontsize);
   m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth() + 2 * MC_CELL_SKIP;

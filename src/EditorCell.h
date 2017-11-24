@@ -518,7 +518,7 @@ public:
     { m_positionOfCaret = pos;
       if(m_positionOfCaret < -1)
         m_positionOfCaret = -1;
-      if(m_positionOfCaret > m_text.Length())
+      if(m_positionOfCaret > (signed long)m_text.Length())
         m_positionOfCaret = m_text.Length();
     }
 

@@ -107,8 +107,6 @@ void LimitCell::SetUnder(MathCell *under)
 
 void LimitCell::RecalculateWidths(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
-
   m_base->RecalculateWidthsList(fontsize);
   m_under->RecalculateWidthsList(MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
   m_name->RecalculateWidthsList(fontsize);
