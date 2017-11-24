@@ -24,10 +24,6 @@
   The definition of the base class of all cells the worksheet consists of.
  */
 
-// We don't use all parameters of all functions in this file. But we will
-// (hopefully) use them in the derived classes.
-#pragma clang diagnostic ignored "-Wunused-parameter"
-
 #ifndef MATHCELL_H
 #define MATHCELL_H
 
