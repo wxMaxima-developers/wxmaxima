@@ -235,6 +235,7 @@ bool MathCtrl::RedrawIfRequested()
       }
     }
     m_mouseMotionWas = false;
+    redrawIssued = true;
   }
   if (m_redrawRequested)
   {
