@@ -71,8 +71,8 @@ int SlideShow::GetFrameRate()
   }
   if (framerate > 30)
     framerate = 30;
-  if (framerate < 0)
-    framerate = 0;
+  if (framerate < 1)
+    framerate = 1;
   return (framerate);
 }
 

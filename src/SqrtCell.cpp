@@ -161,10 +161,7 @@ void SqrtCell::RecalculateWidths(int fontsize)
     m_width = m_innerCell->GetFullWidth() + m_signWidth;
   }
   else
-  {
-    int zoomFactor = configuration->GetZoomFactor();
     m_width = m_innerCell->GetFullWidth() + Scale_Px(13) + 1;
-  }
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
   ResetData();
@@ -253,7 +250,6 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
     }
     else
     {
-      int zoomFactor = configuration->GetZoomFactor();
       wxDC *adc = configuration->GetAntialiassingDC();
       in.x += Scale_Px(11) + 1;
       SetPen(1.2);

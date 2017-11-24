@@ -201,12 +201,12 @@ wxFont Configuration::GetFont(int textStyle, int fontSize)
     fontSize = GetFontSize(textStyle);
   }  
 
-  // Ensure a sane minimum font size
-  if (fontSize1 < 4)
-    fontSize = 4;
-
   // The font size scales with the worksheet
   int fontSize1 = Scale_Px(fontSize);
+
+  // Ensure a sane minimum font size
+  if (fontSize1 < 4)
+    fontSize1 = 4;
 
   wxASSERT(fontSize > 0);
 
