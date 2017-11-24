@@ -169,7 +169,6 @@ void SqrtCell::RecalculateWidths(int fontsize)
 
 void SqrtCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   m_innerCell->RecalculateHeightList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + Scale_Px(3);
   m_center = m_innerCell->GetMaxCenter() + Scale_Px(3);

@@ -462,8 +462,9 @@ void GroupCell::AppendOutput(MathCell *cell)
 
     tmp->AppendCell(cell);
 
-    while (m_lastInOutput->m_next != NULL)
-      m_lastInOutput = m_lastInOutput->m_next;
+    if(m_lastInOutput != NULL)
+      while (m_lastInOutput->m_next != NULL)
+        m_lastInOutput = m_lastInOutput->m_next;
   }
 
   if (m_appendedCells == NULL)
@@ -1925,11 +1926,14 @@ GroupCell *GroupCell::Fold()
 
   // cell(s) to fold are between start and end (including these two)
 
-  MathCell *next = end->m_next;
-  m_next = m_nextToDraw = next; // may be NULL, it's ok
-  if (next)
-    next->m_previous = next->m_previousToDraw = this;
-
+  if(end->m_next != NULL)
+  {
+    m_next = m_nextToDraw = end->m_next;
+    end->m_next->m_previous = end->m_next->m_previousToDraw = this;
+  }
+  else
+    m_next = m_nextToDraw = NULL;
+  
   start->m_previous = start->m_previousToDraw = NULL;
   end->m_next = end->m_nextToDraw = NULL;
   m_hiddenTree = start; // save the torn out tree into m_hiddenTree
@@ -1976,7 +1980,7 @@ GroupCell *GroupCell::FoldAll()
       tmp->Fold();
       result = tmp;
     }
-    if (tmp->m_hiddenTree)
+    if (tmp->m_hiddenTree != NULL)
       m_hiddenTree->FoldAll();
     tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }
@@ -1993,12 +1997,12 @@ GroupCell *GroupCell::UnfoldAll()
 
   while (tmp != NULL)
   {
-    if (tmp->IsFoldable() && tmp->m_hiddenTree)
+    if (tmp->IsFoldable() && (tmp->m_hiddenTree != NULL))
     {
       tmp->Unfold();
       result = tmp;
     }
-    if (tmp->m_hiddenTree)
+    if (tmp->m_hiddenTree != NULL)
       m_hiddenTree->UnfoldAll();
     tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }
