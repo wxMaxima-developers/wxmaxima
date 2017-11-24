@@ -719,7 +719,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     if (m_client == NULL)
       return;
 
-      m_client->Read(m_inputBuffer, SOCKET_SIZE);
+      m_client->Read(m_inputBuffer, SOCKET_SIZE - 1);
 
       if (!m_client->Error())
       {
