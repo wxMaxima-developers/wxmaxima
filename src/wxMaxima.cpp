@@ -7517,6 +7517,7 @@ void wxMaxima::ChangeCellStyle(wxCommandEvent& WXUNUSED(event))
     case GC_TYPE_SUBSECTION:
     case GC_TYPE_SUBSUBSECTION:
       group->SetCellStyle(m_console->m_mainToolBar->GetCellStyle());
+      m_console->SetSaved(false);
       m_console->Recalculate(true);
       m_console->RequestRedraw();
       break;
