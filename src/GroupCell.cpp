@@ -141,6 +141,72 @@ GroupCell::GroupCell(Configuration **config, int groupType, CellPointers *cellPo
   SetGroup(this);
 }
 
+void GroupCell::SetCellStyle(int style)
+{
+  if(GetEditable() == NULL)
+    return;
+  
+  switch (style)
+  {
+  case GC_TYPE_CODE:
+    m_groupType = GC_TYPE_CODE;
+    if(m_inputLabel != NULL)
+      m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
+    if(GetEditable() != NULL)
+      GetEditable()->SetType(MC_TYPE_INPUT);
+    m_inputLabel -> SetValue(EMPTY_INPUT_LABEL);
+    break;
+
+  case GC_TYPE_TEXT:
+    m_inputLabel -> SetValue(wxEmptyString);
+    m_groupType = GC_TYPE_TEXT;
+    if(m_inputLabel != NULL)
+      m_inputLabel->SetType(MC_TYPE_TEXT);
+    if(GetEditable() != NULL)
+      GetEditable()->SetType(MC_TYPE_TEXT);
+    RemoveOutput();
+   break;
+  case GC_TYPE_TITLE:
+    m_inputLabel -> SetValue(wxEmptyString);
+    m_groupType = GC_TYPE_TITLE;
+    if(m_inputLabel != NULL)
+      m_inputLabel->SetType(MC_TYPE_TITLE);
+    if(GetEditable() != NULL)
+      GetEditable()->SetType(MC_TYPE_TITLE);
+    RemoveOutput();
+    break;
+  case GC_TYPE_SECTION:
+    m_inputLabel -> SetValue(wxEmptyString);
+    m_groupType = GC_TYPE_SECTION;
+    if(m_inputLabel != NULL)
+      m_inputLabel->SetType(MC_TYPE_SECTION);
+    if(GetEditable() != NULL)
+      GetEditable()->SetType(MC_TYPE_SECTION);
+    RemoveOutput();
+    break;
+  case GC_TYPE_SUBSECTION:
+    m_inputLabel -> SetValue(wxEmptyString);
+    m_groupType = GC_TYPE_SUBSECTION;
+    if(m_inputLabel != NULL)
+      m_inputLabel->SetType(MC_TYPE_SUBSECTION);
+    if(GetEditable() != NULL)
+      GetEditable()->SetType(MC_TYPE_SUBSECTION);
+    RemoveOutput();
+    break;
+  case GC_TYPE_SUBSUBSECTION:
+    m_inputLabel -> SetValue(wxEmptyString);
+    m_groupType = GC_TYPE_SUBSUBSECTION;
+    if(m_inputLabel != NULL)
+      m_inputLabel->SetType(MC_TYPE_SUBSUBSECTION);
+    if(GetEditable() != NULL)
+      GetEditable()->SetType(MC_TYPE_SUBSUBSECTION);
+    RemoveOutput();
+    break;
+  }
+  if(GetEditable() != NULL)
+    GetEditable()->StyleText();
+}
+
 /*! Set the parent of this group cell
 
 */

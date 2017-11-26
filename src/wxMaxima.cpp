@@ -7479,6 +7479,36 @@ void wxMaxima::OnMinimize(wxIconizeEvent &event)
   event.Skip();
 }
 
+void wxMaxima::ChangeCellStyle(wxCommandEvent& WXUNUSED(event))
+{
+  if ((m_console == NULL) || (m_console->m_mainToolBar == NULL))
+    return;
+  
+  if(m_console->GetActiveCell())
+  {
+    GroupCell *group = dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetGroup());
+    switch(group->GetStyle())
+    {
+    case GC_TYPE_CODE:
+    case GC_TYPE_TEXT:
+    case GC_TYPE_TITLE:
+    case GC_TYPE_SECTION:
+    case GC_TYPE_SUBSECTION:
+    case GC_TYPE_SUBSUBSECTION:
+      group->SetCellStyle(m_console->m_mainToolBar->GetCellStyle());
+      m_console->Recalculate(true);
+      m_console->RequestRedraw();
+      break;
+    default:
+    {}
+    }
+    m_console->NumberSections();
+    m_console->SetFocus();
+  }
+  else
+    m_console->m_mainToolBar->SetDefaultCellStyle();
+}
+
 BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
 
                 EVT_MENU(mac_closeId, wxMaxima::FileMenu)
@@ -7844,6 +7874,7 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_BUTTON(menu_format_section, wxMaxima::InsertMenu)
                 EVT_BUTTON(menu_format_pagebreak, wxMaxima::InsertMenu)
                 EVT_BUTTON(menu_format_image, wxMaxima::InsertMenu)
+                EVT_CHOICE(ToolBar::tb_changeStyle, wxMaxima::ChangeCellStyle)
                 EVT_MENU(menu_edit_find, wxMaxima::EditMenu)
                 EVT_FIND(wxID_ANY, wxMaxima::OnFind)
                 EVT_FIND_NEXT(wxID_ANY, wxMaxima::OnFind)

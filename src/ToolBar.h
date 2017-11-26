@@ -27,6 +27,7 @@
 
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
+#include <wx/choice.h>
 #include "SlideShowCell.h"
 
 #define MAX(a, b) ((a)>(b) ? (a) : (b))
@@ -109,6 +110,7 @@ public:
     tb_animation_stop,
     tb_find,
     tb_hideCode,
+    tb_changeStyle,
     menu_restart_id
   };
 
@@ -164,7 +166,7 @@ public:
   }
 
   void CanEvalTillHere(bool value)
-  {
+    {
     if (value != m_canEvalTillHere_old)
     {
       EnableTool(tb_evaltillhere, value);
@@ -175,7 +177,25 @@ public:
   //! Updates the slider to match the Slide Show cell.
   void UpdateSlider(SlideShow *cell);
 
+  //! Get the cell style for new cells
+  int GetCellStyle();
+  //! Set the cell style to show for the current cell
+  void SetCellStyle(int style);
+  //! Called if there is no cell to show the style for
+  void UnsetCellStyle(){SetCellStyle(-1);}
+  //! Set the default cell style for new cells
+  void SetDefaultCellStyle(int style)
+    {
+      m_defaultCellStyle = style;
+    }
+  //! The current style is the new style for new cells
+  void SetDefaultCellStyle();
+  
 private:
+  //! The default style for new cells.
+  int m_defaultCellStyle;
+  //! The drop-down-box for text styles
+  wxChoice *m_textStyle;
   //! The position in the current slideshow at the last call of UpdateSlider()
   int m_slideShowDisplayedIndex;
   //! The length of the current slideshow at the last call of UpdateSlider()

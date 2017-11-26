@@ -521,8 +521,6 @@ private:
 
   void OnMouseMiddleUp(wxMouseEvent &event);
 
-  void NumberSections();
-
   bool IsLesserGCType(int type, int comparedTo);
 
   //! Finds the start of the current chapter/section/...
@@ -589,6 +587,9 @@ private:
 
 
 public:
+  //! Renumber all sections
+  void NumberSections();
+
   //! A error notification message
   Notification *m_notificationMessage;
   //! Is this window active?
@@ -1101,19 +1102,7 @@ public:
   { SetSelection(sel, sel); }
 
   //! Select the cell range start-end
-  void SetSelection(MathCell *start, MathCell *end)
-  {
-    if((m_cellPointers.m_selectionStart != start) || (m_cellPointers.m_selectionEnd != end))
-      RequestRedraw();
-    m_cellPointers.m_selectionStart = start;
-    m_cellPointers.m_selectionEnd = end;
-
-    if (m_cellPointers.m_selectionStart == NULL)
-    {
-      m_hCaretPositionStart = NULL;
-      m_hCaretPositionEnd = NULL;
-    }
-  }
+  void SetSelection(MathCell *start, MathCell *end);
 
   ContentAssistantPopup *m_autocompletePopup;
 
@@ -1188,7 +1177,16 @@ public:
   GroupCell *GetHCaret();
 
   //! Place the cursor into a new cell where the horizontal cursor is
-  void OpenHCaret(wxString txt = wxEmptyString, int type = GC_TYPE_CODE);
+  void OpenHCaret(wxString txt = wxEmptyString)
+    {
+      if(m_mainToolBar == NULL)
+        OpenHCaret(txt, GC_TYPE_CODE);
+      else
+        OpenHCaret(txt, m_mainToolBar->GetCellStyle());
+    }
+
+  //! Place the cursor into a new cell where the horizontal cursor is
+  void OpenHCaret(wxString txt, int type);
 
   void ShowHCaret();
 

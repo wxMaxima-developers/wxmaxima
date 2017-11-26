@@ -297,6 +297,9 @@ protected:
   void PopupMenu(wxCommandEvent &event);           //
   void StatsMenu(wxCommandEvent &event);           //
 
+  //! Is triggered when the textstyle drop-down box's value is changed.
+  void ChangeCellStyle(wxCommandEvent &event);
+  
   //! Is triggered when the "Find" button in the search dialog is pressed
   void OnFind(wxFindDialogEvent &event);
 

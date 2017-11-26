@@ -27,6 +27,7 @@
 
 #include "ToolBar.h"
 #include "Dirstructure.h"
+#include "GroupCell.h"
 #include <wx/artprov.h>
 #include <wx/filename.h>
 
@@ -77,6 +78,7 @@ void ToolBar::UpdateSlider(SlideShow *cell)
 
 ToolBar::ToolBar(wxToolBar *tbar)
 {
+  m_defaultCellStyle = GC_TYPE_CODE;
   m_canCopy_old = true;
   m_canCut_old = true;
   m_canSave_old = true;
@@ -157,7 +159,19 @@ ToolBar::ToolBar(wxToolBar *tbar)
 #ifndef __WXMAC__
   m_toolBar->AddSeparator();
 #endif
-
+  wxArrayString textStyle;
+  textStyle.Add(_("Maths"));
+  textStyle.Add(_("Text"));
+  textStyle.Add(_("Title"));
+  textStyle.Add(_("Section"));
+  textStyle.Add(_("Subsection"));
+  textStyle.Add(_("Subsubsection"));
+  m_textStyle = new wxChoice(m_toolBar, tb_changeStyle, wxDefaultPosition, wxDefaultSize, textStyle);
+  m_toolBar->AddControl(m_textStyle);
+#ifndef __WXMAC__
+  m_toolBar->AddSeparator();
+#endif
+  
   // Seems like on MSW changing the image of this button has strange side-effects
   // so we combine both images into one for this OS.
 #if defined __WXMSW__
@@ -199,6 +213,103 @@ ToolBar::ToolBar(wxToolBar *tbar)
                      _("Show Maxima help"));
   m_toolBar->Realize();
 }
+
+void ToolBar::SetDefaultCellStyle()
+{
+  switch(m_textStyle->GetSelection())
+  {
+  case 0:
+    m_defaultCellStyle = GC_TYPE_CODE;
+    break;
+  case 1:
+    m_defaultCellStyle = GC_TYPE_TEXT;
+    break;
+  case 2:
+    m_defaultCellStyle = GC_TYPE_TITLE;
+    break;
+  case 3:
+    m_defaultCellStyle = GC_TYPE_SECTION;
+    break;    
+  case 4:
+    m_defaultCellStyle = GC_TYPE_SUBSECTION;
+    break;
+  case 5:
+    m_defaultCellStyle = GC_TYPE_SUBSUBSECTION;
+    break;
+  default:
+  {}
+  }
+}
+
+int ToolBar::GetCellStyle()
+{
+  switch(m_textStyle->GetSelection())
+  {
+  case 1:
+    return GC_TYPE_TEXT;
+    break;
+  case 2:
+    return GC_TYPE_TITLE;
+    break;
+  case 3:
+    return GC_TYPE_SECTION;
+    break;    
+  case 4:
+    return GC_TYPE_SUBSECTION;
+    break;
+  case 5:
+    return GC_TYPE_SUBSUBSECTION;
+    break;
+  case 6:
+    return GC_TYPE_IMAGE;
+    break;
+  case 7:
+    return GC_TYPE_PAGEBREAK;
+    break;
+  default:
+    return GC_TYPE_CODE;
+  }
+}
+
+void ToolBar::SetCellStyle(int style)
+{
+
+  switch(style)
+  {
+  case GC_TYPE_CODE:
+  case GC_TYPE_TEXT:
+  case GC_TYPE_TITLE:
+  case GC_TYPE_SECTION:
+  case GC_TYPE_SUBSECTION:
+  case GC_TYPE_SUBSUBSECTION:
+    break;
+  default:
+    style = m_defaultCellStyle;
+  }
+
+  switch(style)
+  {
+  case GC_TYPE_CODE:
+    m_textStyle->SetSelection(0);
+    break;
+  case GC_TYPE_TEXT:
+    m_textStyle->SetSelection(1);
+    break;
+  case GC_TYPE_TITLE:
+    m_textStyle->SetSelection(2);
+    break;
+  case GC_TYPE_SECTION:
+    m_textStyle->SetSelection(3);
+    break;
+  case GC_TYPE_SUBSECTION:
+    m_textStyle->SetSelection(4);
+    break;
+  case GC_TYPE_SUBSUBSECTION:
+    m_textStyle->SetSelection(5);
+    break;
+  }
+}
+
 
 void ToolBar::AnimationButtonState(AnimationStartStopState state)
 {

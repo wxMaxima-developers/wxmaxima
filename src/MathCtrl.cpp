@@ -6773,12 +6773,22 @@ bool MathCtrl::TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeU
 
  */
 void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
-{
+{ 
   if(GetActiveCell() == cell)
     return;
 
   if (GetActiveCell() != NULL)
     TreeUndo_CellLeft();
+
+  if(m_mainToolBar != NULL)
+  {
+    if(cell == NULL)
+    {
+      m_mainToolBar -> UnsetCellStyle();
+    }
+    else
+      m_mainToolBar -> SetCellStyle(dynamic_cast<GroupCell *>(cell->GetGroup())->GetGroupType());
+  }
   
   bool scrollneeded = ((GetActiveCell() != NULL) && (GetActiveCell() != cell));
 
@@ -6818,6 +6828,39 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
   }
   if (scrollneeded && (cell != NULL))
     ScrollToCaret();
+}
+
+
+void MathCtrl::SetSelection(MathCell *start, MathCell *end)
+{
+  if((m_cellPointers.m_selectionStart != start) || (m_cellPointers.m_selectionEnd != end))
+    RequestRedraw();
+  m_cellPointers.m_selectionStart = start;
+  m_cellPointers.m_selectionEnd = end;
+
+  if (m_cellPointers.m_selectionStart == NULL)
+  {
+    m_hCaretPositionStart = NULL;
+    m_hCaretPositionEnd = NULL;
+  }
+
+  if(m_mainToolBar != NULL)
+  {
+    if (end == NULL)
+    {
+      if(GetActiveCell() == NULL)
+        m_mainToolBar->UnsetCellStyle();
+    }
+    else
+    {
+      if((start != end) && (GetActiveCell() != NULL))
+      {
+        m_mainToolBar->UnsetCellStyle();
+      }
+      else
+        m_mainToolBar -> SetCellStyle(dynamic_cast<GroupCell *>(start)->GetGroupType());
+    }
+  }
 }
 
 bool MathCtrl::PointVisibleIs(wxPoint point)
@@ -7305,6 +7348,11 @@ void MathCtrl::OnActivate(wxActivateEvent &event)
 void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
 {
   SetSelection(NULL);
+  if(m_mainToolBar != NULL)
+  {
+    m_mainToolBar->UnsetCellStyle();
+  }
+
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
   SetActiveCell(NULL, false);
   if (where != NULL)

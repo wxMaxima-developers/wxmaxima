@@ -119,6 +119,8 @@ public:
   int GetGroupType()
   { return m_groupType; }
 
+  void SetCellStyle(int style);
+
   void SetGroup(MathCell *parent); // setting parent for all mathcells in GC
 
   // selection methods
