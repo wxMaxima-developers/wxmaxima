@@ -6599,7 +6599,7 @@ bool wxMaxima::SaveNecessary()
     return false;
     
   
-  return (!m_fileSaved) || (!m_isNamed);
+  return ((!m_fileSaved) || (!m_isNamed));
 }
 
 void wxMaxima::EditInputMenu(wxCommandEvent &event)
@@ -7223,6 +7223,8 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
 
 void wxMaxima::ResetTitle(bool saved, bool force)
 {
+  if(!m_isNamed)
+    saved = false;
   if ((saved != m_fileSaved) || (force))
   {
     m_fileSaved = saved;
