@@ -589,7 +589,7 @@ void wxMaximaFrame::SetupMenu()
   m_CellMenu->Append(menu_autocomplete_templates, _("Show Template\tCtrl+Shift+K"),
                      _("Show function template"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
-  m_CellMenu->Append(menu_insert_input, _("Insert Input &Cell"),
+  m_CellMenu->Append(menu_insert_input, _("Insert Input &Cell\tCtrl+0"),
                      _("Insert a new input cell"));
   m_CellMenu->Append(menu_add_comment, _("Insert &Text Cell\tCtrl+1"),
                      _("Insert a new text cell"));
