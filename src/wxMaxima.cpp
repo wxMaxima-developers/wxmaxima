@@ -3105,6 +3105,7 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
     else
       MenuCommand(wxT("load(\"") + unixFilename + wxT("\")$"));
 
+    m_isNamed = true;
   }
 
   if ((m_autoSaveInterval > 10000) && (m_console->m_currentFile.Length() > 0))
@@ -3215,6 +3216,8 @@ bool wxMaxima::SaveFile(bool forceSave)
           m_autoSaveTimer.StartOnce(m_autoSaveInterval);
         return false;
       }
+      else
+        m_isNamed = true;
 
     }
     else
@@ -3228,6 +3231,8 @@ bool wxMaxima::SaveFile(bool forceSave)
           m_autoSaveTimer.StartOnce(m_autoSaveInterval);
         return false;
       }
+      else
+        m_isNamed = true;
     }
 
     AddRecentDocument(file);
@@ -6585,11 +6590,16 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event)
 
 bool wxMaxima::SaveNecessary()
 {
-  return !m_fileSaved && (m_console->GetTree() != NULL) &&
-         // No data in the document
-         (m_console->GetTree() != NULL) &&
-         // Only one math cell that consists only of a prompt
-         !(dynamic_cast<GroupCell *>(m_console->GetTree())->Empty());
+  // No need to save an empty document
+  if(m_console->GetTree() == NULL)
+    return false;
+
+  // No need to save a document only consisting of an prompt
+  if(m_console->GetTree()->Empty())
+    return false;
+    
+  
+  return (!m_fileSaved) || (!m_isNamed);
 }
 
 void wxMaxima::EditInputMenu(wxCommandEvent &event)
@@ -7432,7 +7442,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
 int wxMaxima::SaveDocumentP()
 {
   wxString file, ext;
-  if ((m_console->m_currentFile == wxEmptyString) || (m_console->m_currentFile == m_tempfileName))
+  if ((m_console->m_currentFile == wxEmptyString) || (!m_isNamed))
   {
     // Check if we want to save modified untitled documents on exit
     bool save = true;

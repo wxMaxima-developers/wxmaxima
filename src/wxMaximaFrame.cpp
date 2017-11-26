@@ -43,6 +43,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                              long style) :
         wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
 {
+  m_isNamed = false;
   m_configFileName = configFile,
   m_updateEvaluationQueueLengthDisplay = true;
   m_recentDocumentsMenu = NULL;

@@ -513,6 +513,8 @@ public:
 protected:
   //! The process id of maxima. Is determined by ReadFirstPrompt.
   long m_pid;
+  //! Did the user ever give this file a name?
+  bool m_isNamed;
   //! The last name GetTempAutosavefileName() has returned.
   wxString m_tempfileName;
   //! Issued if a notification is closed.
