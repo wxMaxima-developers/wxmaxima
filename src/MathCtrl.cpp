@@ -1726,8 +1726,8 @@ void MathCtrl::SelectGroupCells(wxPoint down, wxPoint up)
   // Calculate the rectangle that has been selected
   int ytop = MIN(down.y, up.y);
   int ybottom = MAX(down.y, up.y);
-  SetSelection(NULL);
-
+  m_cellPointers.m_selectionStart = m_cellPointers.m_selectionEnd = NULL;
+    
   wxRect rect;
 
   // find out the group cell the selection begins in
@@ -1786,6 +1786,7 @@ void MathCtrl::SelectGroupCells(wxPoint down, wxPoint up)
     m_hCaretPositionStart = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd);
     m_hCaretPositionEnd = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart);
   }
+  SetSelection(m_cellPointers.m_selectionStart,m_cellPointers.m_selectionEnd);
 }
 
 void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
@@ -6846,14 +6847,16 @@ void MathCtrl::SetSelection(MathCell *start, MathCell *end)
 
   if(m_mainToolBar != NULL)
   {
-    if (end == NULL)
+    if ((start == NULL) && (end == NULL))
     {
       if(GetActiveCell() == NULL)
+      {
         m_mainToolBar->UnsetCellStyle();
+      }
     }
     else
     {
-      if((start != end) && (GetActiveCell() != NULL))
+      if((start != end) && (GetActiveCell() == NULL))
       {
         m_mainToolBar->UnsetCellStyle();
       }
