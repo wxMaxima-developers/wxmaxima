@@ -167,7 +167,7 @@ ToolBar::ToolBar(wxToolBar *tbar)
   textStyle.Add(_("Subsection"));
   textStyle.Add(_("Subsubsection"));
   m_textStyle = new wxChoice(m_toolBar, tb_changeStyle, wxDefaultPosition, wxDefaultSize, textStyle);
-  m_textStyle->SetToolTip(_("For faster creation of cells the following shortcuts exist:\nņ"
+  m_textStyle->SetToolTip(_("For faster creation of cells the following shortcuts exist:\n\ņ"
                             "   Ctrl+0: Math cell\n"
                             "   Ctrl+1: Text cell\n"
                             "   Ctrl+2: Title cell\n"
