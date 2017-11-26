@@ -3093,6 +3093,9 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
     else if (file.Right(5).Lower() == wxT(".wxmx"))
       OpenWXMXFile(file, m_console); // clearDocument = true
 
+    else if (file.Right(4).Lower() == wxT(".zip"))
+      OpenWXMXFile(file, m_console); // clearDocument = true
+
     else if (file.Right(4).Lower() == wxT(".dem"))
       MenuCommand(wxT("demo(\"") + unixFilename + wxT("\")$"));
 
