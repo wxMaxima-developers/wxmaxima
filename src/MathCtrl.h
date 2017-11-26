@@ -719,7 +719,7 @@ public:
 
   //! Is a Redraw requested?
   bool RedrawRequested()
-  { return m_redrawRequested; }
+    { return (m_redrawRequested || (m_rectToRefresh.GetLeft() != -1)); }
   //! @}
 
   //! To be called after enabling or disabling the visibility of code cells

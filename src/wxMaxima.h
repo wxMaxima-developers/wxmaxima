@@ -177,6 +177,8 @@ public:
   { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 
 private:
+  //! Do we need to update the menus + toolbars?
+  bool m_updateControls;
   //! A RegEx that matches gnuplot errors.
   wxRegEx m_gnuplotErrorRegex;
   //! Clear the evaluation queue and return true if "Abort on Error" is set. 

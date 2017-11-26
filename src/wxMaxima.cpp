@@ -134,6 +134,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, configFile, pos, size)
 {
+  m_updateControls = true;
   m_commandIndex = -1;
   m_isActive = true;
   wxASSERT(m_outputPromptRegEx.Compile(wxT("<lbl>.*</lbl>")));
@@ -2735,8 +2736,6 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     return;    
   }
   
-  bool screenHasChanged = m_console->RedrawRequested();
-  
   // Incremental search is done from the idle task. This means that we don't forcefully
   // need to do a new search on every character that is entered into the search box.
   if (m_console->m_findDialog != NULL)
@@ -2763,6 +2762,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
 
   if(m_console->RedrawIfRequested())
   {
+    m_updateControls = true;
+
     // This was a lengthy task => Return from the idle task so we can give
     // maxima a chance to deliver new data.
     event.RequestMore();
@@ -2772,13 +2773,18 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
 
   // If nothing which is visible has changed nothing that would cause us to need
   // update the menus and toolbars has.
-  if (screenHasChanged)
+  if (m_updateControls)
   {
+    m_updateControls = false;
     wxUpdateUIEvent dummy;
     UpdateMenus(dummy);
-    ResetTitle(m_console->IsSaved());
     UpdateToolBar(dummy);
     UpdateSlider(dummy);
+    if(m_isNamed)
+      ResetTitle(m_console->IsSaved());
+    else
+      ResetTitle(false);
+      
     // This was a half-way lengthy task => Return from the idle task so we can give
     // maxima a chance to deliver new data.
     event.RequestMore();
