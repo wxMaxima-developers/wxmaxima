@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-26 11:47+0100\n"
+"POT-Creation-Date: 2017-11-26 12:41+0100\n"
 "PO-Revision-Date: 2007-08-02 17:05+0200\n"
 "Last-Translator: Mario Rodriguez <mario@edu.xunta.es>\n"
 "Language-Team:  <gl@li.org>\n"
@@ -572,8 +572,8 @@ msgstr "Parámetros adicionaispara maxima"
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "Liñas adicionais para o preámbulo de TeX"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:200
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:344
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:207
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:351
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -2443,6 +2443,18 @@ msgid ""
 "tells if this bracket is to be printed, as well."
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:170
+msgid ""
+"For faster creation of cells the following shortcuts exist:\n"
+"\n"
+"   Ctrl+0: Math cell\n"
+"   Ctrl+1: Text cell\n"
+"   Ctrl+2: Title cell\n"
+"   Ctrl+3: Section cell\n"
+"   Ctrl+4: Subsection cell\n"
+"   Ctrl+5: Sub-Subsection cell"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:61
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:60
 msgid "Format:"
@@ -2643,7 +2655,7 @@ msgstr ""
 "Arquivo HTML (*.html)|*.html|Arquivo por lotes (*.mac)|*.mac|Arquivo "
 "pdfLaTeX (*.tex)|*.tex"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:211
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:218
 msgid "Help"
 msgstr "A&xuda"
 
@@ -2656,7 +2668,7 @@ msgstr "Divide cela"
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "Oculta todas as barras de ferramentas\tAlt+Shift+-"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:208
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:215
 #, fuzzy
 msgid "Hide Code"
 msgstr "Divide cela"
@@ -2990,7 +3002,8 @@ msgid "Insert Image..."
 msgstr "I&nserta imaxe"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:592
-msgid "Insert Input &Cell"
+#, fuzzy
+msgid "Insert Input &Cell\tCtrl+0"
 msgstr "Nova cela de &entrada"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:604
@@ -4872,7 +4885,7 @@ msgstr "Amosa &suxerencias"
 msgid "Show &Variables"
 msgstr "Amosa &variables"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:213
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:220
 msgid "Show Maxima help"
 msgstr "Amosa a axuda de Maxima"
 
@@ -5146,11 +5159,11 @@ msgstr "Comeza animación"
 msgid "Start a new maxima for each re-evaluation"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:187
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:194
 msgid "Start or Stop animation"
 msgstr "Comezar ou rematar animación"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:189
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:196
 msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
@@ -5699,7 +5712,7 @@ msgstr "Conmuta edición de pantalla completa"
 msgid "Toggle numeric output"
 msgstr "Conmuta saída numérica"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:210
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:217
 msgid "Toggle the visibility of code cells"
 msgstr ""
 

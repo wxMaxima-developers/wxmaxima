@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxmaxima0.87\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-26 11:47+0100\n"
+"POT-Creation-Date: 2017-11-26 12:41+0100\n"
 "PO-Revision-Date: 2016-10-18 22:57+0900\n"
 "Last-Translator: ARATA Mizuki <minorinoki@gmail.com>\n"
 "Language-Team: Japanese <maxima-discuss@lists.sourceforge.net>\n"
@@ -571,8 +571,8 @@ msgstr "追加パラメーター："
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "「記号」サイドバーへの追加の記号："
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:200
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:344
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:207
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:351
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -2412,6 +2412,18 @@ msgid ""
 "tells if this bracket is to be printed, as well."
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:170
+msgid ""
+"For faster creation of cells the following shortcuts exist:\n"
+"\n"
+"   Ctrl+0: Math cell\n"
+"   Ctrl+1: Text cell\n"
+"   Ctrl+2: Title cell\n"
+"   Ctrl+3: Section cell\n"
+"   Ctrl+4: Subsection cell\n"
+"   Ctrl+5: Sub-Subsection cell"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:61
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:60
 msgid "Format:"
@@ -2609,7 +2621,7 @@ msgstr ""
 "HTML ドキュメント (*.html)|*.html|maxima バッチファイル (*.mac)|*.mac|"
 "pdfLaTeX ファイル (*.tex)|*.tex"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:211
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:218
 msgid "Help"
 msgstr "ヘルプ"
 
@@ -2622,7 +2634,7 @@ msgstr "セルの分割"
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "全て隠す\tAlt+Shift+-"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:208
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:215
 #, fuzzy
 msgid "Hide Code"
 msgstr "セルの分割"
@@ -2945,7 +2957,8 @@ msgid "Insert Image..."
 msgstr "画像の挿入..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:592
-msgid "Insert Input &Cell"
+#, fuzzy
+msgid "Insert Input &Cell\tCtrl+0"
 msgstr "入力セルの挿入(&C)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:604
@@ -4784,7 +4797,7 @@ msgstr "ヒントを表示(&T)..."
 msgid "Show &Variables"
 msgstr "ユーザー定義変数をリスト表示(&V)"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:213
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:220
 msgid "Show Maxima help"
 msgstr "ヘルプ"
 
@@ -5055,11 +5068,11 @@ msgstr "アニメーションの開始"
 msgid "Start a new maxima for each re-evaluation"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:187
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:194
 msgid "Start or Stop animation"
 msgstr "アニメーションの開始・停止"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:189
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:196
 msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
@@ -5600,7 +5613,7 @@ msgstr "全画面表示の切り替え"
 msgid "Toggle numeric output"
 msgstr "平方根やπといった数を自動的に数値で出力"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:210
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:217
 msgid "Toggle the visibility of code cells"
 msgstr ""
 

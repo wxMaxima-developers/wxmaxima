@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-26 11:47+0100\n"
+"POT-Creation-Date: 2017-11-26 12:41+0100\n"
 "PO-Revision-Date: 2017-08-01 07:53+0200\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
@@ -577,8 +577,8 @@ msgstr "További Maxima-paraméterek"
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "További szimbólumok a \"Szimbólumok\" oldalpanelra:"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:200
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:344
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:207
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:351
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -2457,6 +2457,18 @@ msgstr ""
 "elrejtheti. Ez a beállítás azt jelzi, hogy ezt a zárójelet is ki szeretné-e "
 "nyomtatni."
 
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:170
+msgid ""
+"For faster creation of cells the following shortcuts exist:\n"
+"\n"
+"   Ctrl+0: Math cell\n"
+"   Ctrl+1: Text cell\n"
+"   Ctrl+2: Title cell\n"
+"   Ctrl+3: Section cell\n"
+"   Ctrl+4: Subsection cell\n"
+"   Ctrl+5: Sub-Subsection cell"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:61
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:60
 msgid "Format:"
@@ -2655,7 +2667,7 @@ msgstr ""
 "HTML fájl (*.html)|*.html|maxima batch fájl (*.mac)|*.mac|pdfLaTeX fájl (*."
 "tex)|*.tex"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:211
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:218
 msgid "Help"
 msgstr "Súgó"
 
@@ -2667,7 +2679,7 @@ msgstr "Elrejtés"
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "Összes eszköztár elrejtése\tAlt+Shift+-"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:208
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:215
 msgid "Hide Code"
 msgstr "Kód elrejtése"
 
@@ -3014,7 +3026,8 @@ msgid "Insert Image..."
 msgstr "Kép beszú&rása..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:592
-msgid "Insert Input &Cell"
+#, fuzzy
+msgid "Insert Input &Cell\tCtrl+0"
 msgstr "&Bemeneti cella beszúrása"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:604
@@ -4980,7 +4993,7 @@ msgstr "&Tippek..."
 msgid "Show &Variables"
 msgstr "&Változók"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:213
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:220
 msgid "Show Maxima help"
 msgstr "Maxima súgó"
 
@@ -5259,11 +5272,11 @@ msgstr "Animáció indítása"
 msgid "Start a new maxima for each re-evaluation"
 msgstr "Új Maxima indítása minden újraértékeléshez"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:187
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:194
 msgid "Start or Stop animation"
 msgstr "Animáció indítása vagy leállítása"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:189
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:196
 msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
@@ -5853,7 +5866,7 @@ msgstr "Teljes képernyős üzemmód"
 msgid "Toggle numeric output"
 msgstr "Numerikus kimenet kapcsoló"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:210
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:217
 msgid "Toggle the visibility of code cells"
 msgstr "Kódcellák láthatóságának állítása"
 

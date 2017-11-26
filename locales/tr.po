@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-26 11:47+0100\n"
+"POT-Creation-Date: 2017-11-26 12:41+0100\n"
 "PO-Revision-Date: 2017-07-06 06:38+0200\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -580,8 +580,8 @@ msgstr "Ek parametreler:"
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "TeX önsözü için ek satırlar:"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:200
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:344
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:207
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:351
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -2482,6 +2482,18 @@ msgstr ""
 "wxMaxima her metni köşeli parantez içine alır. Belge yazdırılırken "
 "parantezleringösterilip gösterilmemesini buradan seçebilirsiniz "
 
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:170
+msgid ""
+"For faster creation of cells the following shortcuts exist:\n"
+"\n"
+"   Ctrl+0: Math cell\n"
+"   Ctrl+1: Text cell\n"
+"   Ctrl+2: Title cell\n"
+"   Ctrl+3: Section cell\n"
+"   Ctrl+4: Subsection cell\n"
+"   Ctrl+5: Sub-Subsection cell"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:61
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:60
 msgid "Format:"
@@ -2682,7 +2694,7 @@ msgstr ""
 "HTML Dosyası (*.html)|*.html|Kütük Dosyası (*mac.).*mac |pdfLaTeX dosyası (*."
 "tex)|*.tex)"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:211
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:218
 msgid "Help"
 msgstr "Yardım"
 
@@ -2695,7 +2707,7 @@ msgstr "Gizle"
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "Araç çubuklarının hepsini gizle\tAlt+Shift+-"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:208
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:215
 #, fuzzy
 msgid "Hide Code"
 msgstr "Kodları gizle"
@@ -3049,7 +3061,8 @@ msgid "Insert Image..."
 msgstr "Resim Yerleştir..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:592
-msgid "Insert Input &Cell"
+#, fuzzy
+msgid "Insert Input &Cell\tCtrl+0"
 msgstr "GİRDİ Hücresi Yerleştir"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:604
@@ -4959,7 +4972,7 @@ msgstr "Göster &Yararlı Öneriler..."
 msgid "Show &Variables"
 msgstr "Göster &Değişken"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:213
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:220
 msgid "Show Maxima help"
 msgstr "Maxima Yardımını Göster"
 
@@ -5233,11 +5246,11 @@ msgstr "Animasyonu Başlat"
 msgid "Start a new maxima for each re-evaluation"
 msgstr "Her tekrar değerlendirme için yeni bir maxima başlat"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:187
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:194
 msgid "Start or Stop animation"
 msgstr "Animasyonu Başlat yada Durdur"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:189
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:196
 msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
@@ -5803,7 +5816,7 @@ msgstr "Tam Ekran Düzenlemesini Çalıştır"
 msgid "Toggle numeric output"
 msgstr "Numerik Çıktıyı Çalıştır"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:210
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:217
 msgid "Toggle the visibility of code cells"
 msgstr "Kod hücrelerinin görünürlüğünü değiştirme"
 

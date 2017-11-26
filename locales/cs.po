@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-26 11:47+0100\n"
+"POT-Creation-Date: 2017-11-26 12:41+0100\n"
 "PO-Revision-Date: 2010-03-10 14:21+0100\n"
 "Last-Translator: Robert Marik <maarik@mendelu.cz>\n"
 "Language-Team:  <cs@li.org>\n"
@@ -579,8 +579,8 @@ msgstr "Doplňkové parametry:"
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr "Símbols addicionals per a la barra lateral «símbols»"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:200
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:344
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:207
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:351
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -2447,6 +2447,18 @@ msgid ""
 "tells if this bracket is to be printed, as well."
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:170
+msgid ""
+"For faster creation of cells the following shortcuts exist:\n"
+"\n"
+"   Ctrl+0: Math cell\n"
+"   Ctrl+1: Text cell\n"
+"   Ctrl+2: Title cell\n"
+"   Ctrl+3: Section cell\n"
+"   Ctrl+4: Subsection cell\n"
+"   Ctrl+5: Sub-Subsection cell"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:61
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:60
 msgid "Format:"
@@ -2644,7 +2656,7 @@ msgid ""
 "tex)|*.tex"
 msgstr "Soubory HTML (*.html)|*.html|soubory pdfLaTeX (*.tex)|*.tex|All|*"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:211
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:218
 msgid "Help"
 msgstr "Nápověda"
 
@@ -2658,7 +2670,7 @@ msgstr "Rozdělit pole"
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "Skrýt vše\tAlt+Shift+-"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:208
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:215
 #, fuzzy
 msgid "Hide Code"
 msgstr "Rozdělit pole"
@@ -2980,7 +2992,7 @@ msgstr "Vložit obrázek..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:592
 #, fuzzy
-msgid "Insert Input &Cell"
+msgid "Insert Input &Cell\tCtrl+0"
 msgstr "Vložit vstupní pole\tF5"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:604
@@ -4862,7 +4874,7 @@ msgstr "Ukázat &tipy"
 msgid "Show &Variables"
 msgstr "Zobrazit &proměnné"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:213
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:220
 msgid "Show Maxima help"
 msgstr "Zobrazit nápovědu programu Maxima"
 
@@ -5135,12 +5147,12 @@ msgstr "Spustit animaci"
 msgid "Start a new maxima for each re-evaluation"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:187
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:194
 #, fuzzy
 msgid "Start or Stop animation"
 msgstr "Spustit animaci"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:189
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:196
 msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
@@ -5679,7 +5691,7 @@ msgstr "Zapnutí celoobrazovkového editačního režimu"
 msgid "Toggle numeric output"
 msgstr "Přepnout numerický výstup"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:210
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:217
 msgid "Toggle the visibility of code cells"
 msgstr ""
 

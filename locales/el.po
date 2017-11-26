@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Greek translation of wxMaxima GUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-26 11:47+0100\n"
+"POT-Creation-Date: 2017-11-26 12:41+0100\n"
 "PO-Revision-Date: 2010-06-04 19:46+0200\n"
 "Last-Translator: aga <akritas@uth.gr>\n"
 "Language-Team: uth <aakritas@uth.gr>\n"
@@ -571,8 +571,8 @@ msgstr "Επιπρόσθετοι παράμετροι:"
 msgid "Additional symbols for the \"symbols\" sidebar:"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:200
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:344
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:207
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:351
 msgid ""
 "After clicking on animations created with with_slider_draw() or similar this "
 "slider allows to change the current frame."
@@ -2439,6 +2439,18 @@ msgid ""
 "tells if this bracket is to be printed, as well."
 msgstr ""
 
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:170
+msgid ""
+"For faster creation of cells the following shortcuts exist:\n"
+"\n"
+"   Ctrl+0: Math cell\n"
+"   Ctrl+1: Text cell\n"
+"   Ctrl+2: Title cell\n"
+"   Ctrl+3: Section cell\n"
+"   Ctrl+4: Subsection cell\n"
+"   Ctrl+5: Sub-Subsection cell"
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:61
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:60
 msgid "Format:"
@@ -2636,7 +2648,7 @@ msgid ""
 "tex)|*.tex"
 msgstr "Αρχείο HTML (*.html)|*.html|pdfLaTeX file (*.tex)|*.tex|All|*"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:211
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:218
 msgid "Help"
 msgstr "Βοήθεια"
 
@@ -2650,7 +2662,7 @@ msgstr "Διαίρεση κελιού"
 msgid "Hide All Toolbars\tAlt+Shift+-"
 msgstr "Απόκρυψη Όλων\tAlt+Shift+-"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:208
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:215
 #, fuzzy
 msgid "Hide Code"
 msgstr "Διαίρεση κελιού"
@@ -2972,7 +2984,7 @@ msgstr "Προσθήκη εικόνας..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:592
 #, fuzzy
-msgid "Insert Input &Cell"
+msgid "Insert Input &Cell\tCtrl+0"
 msgstr "Προσθήκη κελιού εντολών"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:604
@@ -4847,7 +4859,7 @@ msgstr "Εμφάνιση συμβουλών..."
 msgid "Show &Variables"
 msgstr "Εμφάνιση  μεταβλητών"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:213
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:220
 msgid "Show Maxima help"
 msgstr "Εμφάνιση βοήθειας για το Maxima"
 
@@ -5120,12 +5132,12 @@ msgstr "Εκκίνηση εφέ κίνησης"
 msgid "Start a new maxima for each re-evaluation"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:187
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:194
 #, fuzzy
 msgid "Start or Stop animation"
 msgstr "Εκκίνηση εφέ κίνησης"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:189
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:196
 msgid ""
 "Start or stop the currently selected animation that has been created with "
 "the with_slider class of commands"
@@ -5668,7 +5680,7 @@ msgstr "Εναλλαγή επεξεργασίας πλήρης οθόνης"
 msgid "Toggle numeric output"
 msgstr "Εναλλαγή αριθμητικού αποτελέσματος"
 
-#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:210
+#: /home/gunter/src/wxmaxima/src/ToolBar.cpp:217
 msgid "Toggle the visibility of code cells"
 msgstr ""
 
