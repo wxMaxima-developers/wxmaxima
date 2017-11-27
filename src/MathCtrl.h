@@ -587,6 +587,9 @@ private:
 
 
 public:
+  //! Change the style of an cell
+  void SetCellStyle(GroupCell *group, int style);
+
   //! Renumber all sections
   void NumberSections();
 

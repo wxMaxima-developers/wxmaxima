@@ -42,6 +42,7 @@
 GroupCell::GroupCell(Configuration **config, int groupType, CellPointers *cellPointers, wxString initString) : MathCell(
         this, config)
 {
+  m_next = m_previous = m_nextToDraw = m_previousToDraw = NULL;
   m_autoAnswer = false;
   m_cellPointers = cellPointers;
   m_inEvaluationQueue = false;

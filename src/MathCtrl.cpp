@@ -2428,6 +2428,27 @@ void MathCtrl::TreeUndo_CellEntered()
   }
 }
 
+void MathCtrl::SetCellStyle(GroupCell *group, int style)
+{
+  if(group == NULL)
+    return;
+      
+  wxString cellContents;
+  if(group->GetInput())
+    cellContents = group->GetInput()->GetValue();
+  GroupCell *newGroupCell = new GroupCell(&m_configuration, style,
+                                          &m_cellPointers);
+  newGroupCell->GetInput()->SetValue(cellContents);
+  TreeUndo_MergeSubsequentEdits(true);
+  GroupCell *prev = dynamic_cast<GroupCell *>(group->m_previous);
+  DeleteRegion(group,group);
+  InsertGroupCells(newGroupCell,prev);
+  TreeUndo_MergeSubsequentEdits(false);
+  SetSaved(false);
+  Recalculate(true);
+  RequestRedraw();
+}
+
 void MathCtrl::TreeUndo_MergeSubsequentEdits(bool mergeRequest)
 {
   TreeUndo_MergeSubsequentEdits(mergeRequest, &treeUndoActions);
@@ -6628,7 +6649,9 @@ bool MathCtrl::TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeU
   TreeUndoAction *action = sourcelist->front();
   wxASSERT_MSG(action != NULL, _("Trying to undo an action without starting cell."));
 
+  // ******************************************************************************************
   // Do we have to undo a cell contents change?
+  // ******************************************************************************************  
   if (action->m_oldText != wxEmptyString)
   {
     wxASSERT_MSG(action->m_start != NULL,
@@ -6681,8 +6704,10 @@ bool MathCtrl::TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeU
     }
   }
 
-  // We have to change the structure of the tree.
-
+  // ******************************************************************************************
+  // * We have to change the structure of the tree.
+  // ******************************************************************************************
+  
   // If the starting cell for this action isn't the beginning of an potentially
   // empty worksheet we make this cell visible.
   if (action->m_start)
@@ -6703,7 +6728,10 @@ bool MathCtrl::TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeU
 
 
   GroupCell *parentOfInsert = action->m_start;
-  // un-add new cells
+
+  // ******************************************************************************************
+  // * Remove cells we want to un-add.
+  // ******************************************************************************************
   if (action->m_newCellsEnd)
   {
     wxASSERT_MSG(action->m_start != NULL,
@@ -6741,8 +6769,10 @@ bool MathCtrl::TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeU
     }
   }
 
-  // Add cells we want to undo a delete for.
-  if (action->m_oldCells)
+  // ******************************************************************************************
+  // * Add cells we want to undo a delete for.
+  // ******************************************************************************************
+  if (action->m_oldCells != NULL)
   {
     if (parentOfInsert)
       if (!parentOfInsert->Contains(action->m_start))
