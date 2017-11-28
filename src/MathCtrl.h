@@ -211,6 +211,7 @@ private:
       m_newCellsEnd = NULL;
       wxDELETE(m_oldCells);
       m_oldCells = NULL;
+      m_partOfAtomicAction = false;
     }
 
     TreeUndoAction()
@@ -219,8 +220,11 @@ private:
       m_oldText = wxEmptyString;
       m_newCellsEnd = NULL;
       m_oldCells = NULL;
+      m_partOfAtomicAction = false;
     }
 
+    //! True = This undo action is only part of an atomic undo action.
+    bool m_partOfAtomicAction;
 
     /*! The position this action started at.
 
@@ -259,9 +263,9 @@ private:
   //! The list of tree actions that can be redone
   std::list<TreeUndoAction *> treeRedoActions;
 
-  //! The current undo action.
-  TreeUndoAction m_currentUndoAction;
-
+  //! The text the TreeUndo_ActiveCell contained when we entered it
+  wxString m_treeUndo_ActiveCellOldText;
+  
   //! Clear the list of actions for which an undo can be undone
   void TreeUndo_ClearRedoActionList();
 
@@ -270,6 +274,13 @@ private:
 
   //! Remove one action ftom the action list
   void TreeUndo_DiscardAction(std::list<TreeUndoAction *> *actionList);
+
+  //! Add another action to this undo action
+  void TreeUndo_AddAction(std::list<TreeUndoAction *> *actionList)
+    {actionList->back()->m_partOfAtomicAction;}
+
+  //! Add another action to this undo action
+  void TreeUndo_AddAction(){TreeUndo_AddAction(&treeUndoActions);}
 
   /*! The last cell we have entered. 
 
@@ -286,6 +297,19 @@ private:
     \param undoForThisOperation The list to write the information to how on to undo this undo op
   */
   bool TreeUndo(std::list<TreeUndoAction *> *actionlist, std::list<TreeUndoAction *> *undoForThisOperation);
+
+  /*! Undo a text change
+
+    Called from TreeUndo().*/
+  bool TreeUndoTextChange(std::list<TreeUndoAction *> *actionlist, std::list<TreeUndoAction *> *undoForThisOperation);
+  /*! Undo a call deletion
+
+    Called from TreeUndo().*/
+  bool TreeUndoCellDeletion(std::list<TreeUndoAction *> *actionlist, std::list<TreeUndoAction *> *undoForThisOperation);
+  /*! Undo adding cells
+
+    Called from TreeUndo().*/  
+  bool TreeUndoCellAddition(std::list<TreeUndoAction *> *actionlist, std::list<TreeUndoAction *> *undoForThisOperation);
 
   //! Undo a tree operation.
   bool TreeUndo()
@@ -326,40 +350,6 @@ private:
     \param end        The last cell that has been added
   */
   void TreeUndo_MarkCellsAsAdded(GroupCell *parentOfStart, GroupCell *end);
-
-  /*! True collectes requests until the end of a whole cell paste action
-
-    A replace or action can consist of a cell delete and many consecutive adds of
-    individual cells that at the end form a region.
-
-    As long as mergeRequest is true these actions are merged to a long undo action.
-    
-    \parameter mergeRequest 
-     - true=Start collecting data for one big undo action
-     - false=Stop collecting data and write the undo action to the undo buffer.
-   \parameter undoList This normally is
-      - treeUedoActions for the normal undo buffer or
-      - treeRedoActions for the buffer that allows reverting undos
-   */
-  void TreeUndo_MergeSubsequentEdits(bool mergeRequest, std::list<TreeUndoAction *> *undoList);
-
-  /*! True collectes requests until the end of a whole cell paste action
-
-    A replace or action can consist of a cell delete and many consecutive adds of
-    individual cells that at the end form a region.
-
-    As long as mergeRequest is true these actions are merged to a long undo action.
-    
-    \parameter mergeRequest 
-     - true=Start collecting data for one big undo action
-     - false=Stop collecting data and write the undo action to the undo buffer.
-  */
-  void TreeUndo_MergeSubsequentEdits(bool mergeRequest);
-
-  bool m_TreeUndoMergeSubsequentEdits;
-  //! true if m_start of m_currentUndoAction already marks the beginning of the action.
-  bool m_TreeUndoMergeStartIsSet;
-  //!@}
 
   bool m_scrolledAwayFromEvaluation;
 
