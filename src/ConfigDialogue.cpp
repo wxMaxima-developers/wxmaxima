@@ -327,7 +327,7 @@ void ConfigDialogue::SetProperties()
   wxString symbolPaneAdditionalChars = wxT("üØ");
   m_symbolPaneAdditionalChars->SetValue(symbolPaneAdditionalChars);
 #endif
-  int autoSaveInterval = 0;
+  int autoSaveInterval = 3;
 
 #if defined (__WXMAC__)
   bool usepngCairo = false;
