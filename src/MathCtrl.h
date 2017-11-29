@@ -276,11 +276,14 @@ private:
   void TreeUndo_DiscardAction(std::list<TreeUndoAction *> *actionList);
 
   //! Add another action to this undo action
-  void TreeUndo_AddAction(std::list<TreeUndoAction *> *actionList)
-    {actionList->back()->m_partOfAtomicAction;}
+  void TreeUndo_AppendAction(std::list<TreeUndoAction *> *actionList)
+    {
+      if(!actionList->empty())
+        actionList->front()->m_partOfAtomicAction;
+    }
 
   //! Add another action to this undo action
-  void TreeUndo_AddAction(){TreeUndo_AddAction(&treeUndoActions);}
+  void TreeUndo_AppendAction(){TreeUndo_AppendAction(&treeUndoActions);}
 
   /*! The last cell we have entered. 
 

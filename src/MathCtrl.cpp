@@ -2417,7 +2417,7 @@ void MathCtrl::SetCellStyle(GroupCell *group, int style)
   newGroupCell->GetInput()->SetValue(cellContents);
   GroupCell *prev = dynamic_cast<GroupCell *>(group->m_previous);
   DeleteRegion(group,group);
-  TreeUndo_AddAction();
+  TreeUndo_AppendAction();
   InsertGroupCells(newGroupCell,prev);
   SetSaved(false);
   Recalculate(true);
@@ -2448,10 +2448,7 @@ void MathCtrl::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUndo
   //! Set the cursor to a sane place
   SetActiveCell(NULL, false);
   SetSelection(NULL);
-  if(end->m_next != NULL)
-    SetHCaret(dynamic_cast<GroupCell *>(end->m_next), false);
-  else
-    SetHCaret(dynamic_cast<GroupCell *>(start->m_previous), false);
+  SetHCaret(dynamic_cast<GroupCell *>(start->m_previous), false);
   
   // check if chapters or sections need to be renumbered
   bool renumber = false;
@@ -6624,11 +6621,10 @@ bool MathCtrl::TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeU
       else
         TreeUndoTextChange(sourcelist, undoForThisOperation);
     }
-    if(!undoForThisOperation->empty())
-      undoForThisOperation->front()->m_partOfAtomicAction = true;
-    sourcelist->pop_front();
+    TreeUndo_AppendAction(undoForThisOperation);
     if(!sourcelist->empty())
       actionContinues = sourcelist->front()->m_partOfAtomicAction;
+    sourcelist->pop_front();
   } while (actionContinues && (!sourcelist->empty()));
   if(!undoForThisOperation->empty())
     undoForThisOperation->front()->m_partOfAtomicAction = false;
@@ -6892,56 +6888,14 @@ void MathCtrl::PasteFromClipboard()
           if (m_hCaretActive)
           {
             if ((m_cellPointers.m_selectionStart != NULL) && (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP))
+            {
               DeleteSelection();
-              TreeUndo_AddAction();
-
-            if (m_hCaretPosition == NULL)
-            {
-              end->m_next = m_tree;
-              end->m_nextToDraw = m_tree;
-              if (m_tree != NULL)
-              {
-                m_tree->m_previous = end;
-                m_tree->m_previousToDraw = end;
-              }
-              m_tree = contents;
+              TreeUndo_AppendAction();
             }
-            else
-            {
-              MathCell *next = m_hCaretPosition->m_next;
-              if (m_hCaretPosition->m_next)
-                m_hCaretPosition->m_next->m_previous = end;
-              if (m_hCaretPosition->m_nextToDraw)
-                m_hCaretPosition->m_next->m_previousToDraw = end;
-              
-              m_hCaretPosition->m_next = contents;
-              m_hCaretPosition->m_nextToDraw = contents;
-              contents->m_previous = m_hCaretPosition;
-              contents->m_previousToDraw = m_hCaretPosition;
-              end->m_next = next;
-              end->m_nextToDraw = next;
-            }
+            InsertGroupCells(contents,GetHCaret());
           }
           else
-          {
-            if (GetActiveCell() != NULL)
-            {
-              MathCell *next = GetActiveCell()->GetGroup()->m_next;
-              if (GetActiveCell()->GetGroup()->m_next)
-                GetActiveCell()->GetGroup()->m_next->m_previous = end;
-              if (GetActiveCell()->GetGroup()->m_nextToDraw)
-                GetActiveCell()->GetGroup()->m_next->m_previousToDraw = end;
-              
-              GetActiveCell()->GetGroup()->m_next = contents;
-              GetActiveCell()->GetGroup()->m_nextToDraw = contents;
-              contents->m_previous = GetActiveCell()->GetGroup();
-              contents->m_previousToDraw = GetActiveCell()->GetGroup();
-              end->m_next = next;
-              end->m_nextToDraw = next;
-            }
-            else
-              m_last->AppendCell(contents);
-          }
+            InsertGroupCells(contents,dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
         }
         NumberSections();
         Recalculate();
