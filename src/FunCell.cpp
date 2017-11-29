@@ -110,7 +110,6 @@ void FunCell::Draw(wxPoint point, int fontsize)
   if (DrawThisCell(point) && InUpdateRegion())
   {
     MathCell::Draw(point, fontsize);
-    Configuration *configuration = (*m_configuration);
 
     wxPoint name(point), arg(point);
     m_nameCell->DrawList(name, fontsize);

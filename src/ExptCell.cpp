@@ -171,7 +171,6 @@ void ExptCell::Draw(wxPoint point, int fontsize)
   {
     
     MathCell::Draw(point, fontsize);
-    Configuration *configuration = (*m_configuration);
     wxPoint bs, pw;
     bs.x = point.x;
     bs.y = point.y;

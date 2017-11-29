@@ -2492,7 +2492,6 @@ void MathCtrl::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUndo
   {
     if(start->m_previous != NULL)
       start->m_previous->m_next = start->m_previous->m_nextToDraw =NULL;
-       NULL;
   }
 
   // Add an "end of tree" marker to both ends of the list of deleted cells
@@ -6501,18 +6500,14 @@ bool MathCtrl::TreeUndoCellDeletion(std::list<TreeUndoAction *> *sourcelist, std
 {
   TreeUndoAction *action = sourcelist->front();
   InsertGroupCells(action->m_oldCells, action->m_start, undoForThisOperation);
+  return true;
 }
 
 bool MathCtrl::TreeUndoCellAddition(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation)
 {
   TreeUndoAction *action = sourcelist->front();
-  GroupCell *parentOfInsert = action->m_start;
   wxASSERT_MSG(action->m_start != NULL,
                _("Bug: Got a request to delete the cell above the beginning of the worksheet."));
-  // If we delete the start cell of this undo action we need to set a pointer
-  // that tells where to add cells later if this request  is part of the
-  // current undo action, too.
-  parentOfInsert = dynamic_cast<GroupCell *>(action->m_start->GetGroup());
   
   // We make the cell we want to end the deletion with visible.
   if (action->m_newCellsEnd->RevealHidden())
@@ -6529,6 +6524,7 @@ bool MathCtrl::TreeUndoCellAddition(std::list<TreeUndoAction *> *sourcelist, std
   
   // Actually delete the cells we want to remove.
   DeleteRegion(action->m_start, action->m_newCellsEnd, undoForThisOperation);
+  return true;
 }
 
 bool MathCtrl::TreeUndoTextChange(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation)
@@ -6582,6 +6578,7 @@ bool MathCtrl::TreeUndoTextChange(std::list<TreeUndoAction *> *sourcelist, std::
     wxASSERT_MSG(action->m_oldCells == NULL, _("Bug: Undo action with both cell contents change and cell addition."));
     return true;
   }
+  return false;
 }
 
 bool MathCtrl::TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation)

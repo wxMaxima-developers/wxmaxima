@@ -114,7 +114,6 @@ void SubCell::Draw(wxPoint point, int fontsize)
   if (DrawThisCell(point) && InUpdateRegion())
   {
     MathCell::Draw(point, fontsize);
-    Configuration *configuration = (*m_configuration);
     wxPoint bs, in;
 
     bs.x = point.x;

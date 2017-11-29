@@ -189,7 +189,6 @@ void FracCell::RecalculateWidths(int fontsize)
 
 void FracCell::RecalculateHeight(int fontsize)
 {
-  Configuration *configuration = (*m_configuration);
   if (m_isBroken || m_exponent)
   {
     m_num->RecalculateHeightList(fontsize);

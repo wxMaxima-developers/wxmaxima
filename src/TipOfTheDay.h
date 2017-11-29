@@ -28,19 +28,19 @@
 class TipOfTheDay : public wxTipProvider
 {
 public:
-  TipOfTheDay(int n);
+  TipOfTheDay(unsigned int n);
 
   ~TipOfTheDay();
 
   wxString GetTip();
 
-  int GetCurrentTip()
+  unsigned int GetCurrentTip()
   {
     return m_current;
   }
 
 private:
-  int m_current;
+  unsigned int m_current;
   wxArrayString m_tips;
 };
 

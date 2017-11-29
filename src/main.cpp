@@ -274,7 +274,7 @@ bool MyApp::OnInit()
 
   if(cmdLineParser.GetParamCount() > 0)
   {
-    for (int i=0; i < cmdLineParser.GetParamCount(); i++)
+    for (unsigned int i=0; i < cmdLineParser.GetParamCount(); i++)
     {
       wxFileName FileName = cmdLineParser.GetParam(i);
       FileName.MakeAbsolute();

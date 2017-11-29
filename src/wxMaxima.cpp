@@ -719,140 +719,140 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     // data and before we had been able to process it.
     if (m_client == NULL)
       return;
-
-      m_client->Read(m_inputBuffer, SOCKET_SIZE - 1);
-
-      if (!m_client->Error())
-      {
-        int read;
-        read = m_client->LastCount();
-
-        // For some reason our input buffer can actually contain NULL Chars...
-        SanitizeSocketBuffer(m_inputBuffer, read);
-        m_inputBuffer[read] = 0;
-
-        wxString newChars;
-        {
-          // Don't open a assert window every single time maxima mixes UTF8 and the current
-          // codepage
-          wxLogStderr logStderr;
-#if wxUSE_UNICODE
-          newChars = wxString(m_inputBuffer, wxConvUTF8);
-#else
-          newChars = wxString(m_inputBuffer, *wxConvCurrent);
-#endif
-        }
-        if (IsPaneDisplayed(menu_pane_xmlInspector))
-          m_xmlInspector->Add_FromMaxima(newChars);
-
-        // This way we can avoid searching the whole string for a
-        // ending tag if we have received only a few bytes of the
-        // data between 2 tags
-        if(m_currentOutput != wxEmptyString)
-          m_currentOutputEnd = m_currentOutput.Right(MIN(30,m_currentOutput.Length())) + newChars;
-        else
-          m_currentOutputEnd = wxEmptyString;
-        
-        m_currentOutput += newChars;
-
-        if (!m_dispReadOut &&
-            (m_currentOutput != wxT("\n")) &&
-            (m_currentOutput != wxT("<wxxml-symbols></wxxml-symbols>")))
-        {
-          StatusMaximaBusy(transferring);
-          m_dispReadOut = true;
-        }
-
-        size_t length_old = -1;
-
-        while (length_old != m_currentOutput.Length())
-        {
-          length_old = m_currentOutput.Length();
-
-
-          // First read the prompt that tells us that maxima awaits the next command:
-          // If that is the case ReadPrompt() sends the next command to maxima and
-          // maxima can work while we interpret its output.
-          GroupCell *oldActiveCell = m_console->GetWorkingGroup();
-          ReadPrompt(m_currentOutput);
-          GroupCell *newActiveCell = m_console->GetWorkingGroup();
-
-          // Temporarily switch to the WorkingGroup the output we don't have interpreted yet
-          // was for
-          if(newActiveCell != oldActiveCell)
-            m_console->m_cellPointers.SetWorkingGroup(oldActiveCell);
-          // Handle the <mth> tag that contains math output and sometimes text.
-          ReadMath(m_currentOutput);
-
-          // The following function calls each extract and remove one type of XML tag
-          // information from the beginning of the data string we got - but only do so
-          // after the closing tag has been transferred, as well.
-          ReadLoadSymbols(m_currentOutput);
-
-          // Handle the XML tag that contains Status bar updates
-          ReadStatusBar(m_currentOutput);
-
-          // Handle text that isn't wrapped in a known tag
-          if (!m_first)
-            // Handle text that isn't XML output: Mostly Error messages or warnings.
-            ReadMiscText(m_currentOutput);
-          else
-            // This function determines the port maxima is running on from  the text
-            // maxima outputs at startup. This piece of text is afterwards discarded.
-            ReadFirstPrompt(m_currentOutput);
-
-          // Switch to the WorkingGroup the next bunch of data is for.
-          if(newActiveCell != oldActiveCell)
-            m_console->m_cellPointers.SetWorkingGroup(newActiveCell);
-        }
-      }
-      break;
-  
-    case wxSOCKET_LOST:
+    
+    m_client->Read(m_inputBuffer, SOCKET_SIZE - 1);
+    
+    if (!m_client->Error())
     {
-      m_statusBar->NetworkStatus(StatusBar::offline);
-      ExitAfterEval(false);
-      m_console->m_cellPointers.SetWorkingGroup(NULL);
-      m_console->SetSelection(NULL);
-      m_console->SetActiveCell(NULL);
-      m_pid = -1;
-      if (m_client != NULL)
-        m_client->Destroy();
-      m_client = NULL;
-      // If we did close maxima by hand we already might have a new process
-      // and therefore invalidate the wrong process in this step
-      if (!m_closing)
+      int read;
+      read = m_client->LastCount();
+
+      // For some reason our input buffer can actually contain NULL Chars...
+      SanitizeSocketBuffer(m_inputBuffer, read);
+      m_inputBuffer[read] = 0;
+
+      wxString newChars;
       {
-        m_process = NULL;
-        m_maximaStdout = NULL;
-        m_maximaStderr = NULL;
+        // Don't open a assert window every single time maxima mixes UTF8 and the current
+        // codepage
+        wxLogStderr logStderr;
+#if wxUSE_UNICODE
+        newChars = wxString(m_inputBuffer, wxConvUTF8);
+#else
+        newChars = wxString(m_inputBuffer, *wxConvCurrent);
+#endif
       }
-      m_isConnected = false;
-      m_currentOutput = wxEmptyString;
-      m_console->QuestionAnswered();
-      if (!m_closing)
+      if (IsPaneDisplayed(menu_pane_xmlInspector))
+        m_xmlInspector->Add_FromMaxima(newChars);
+
+      // This way we can avoid searching the whole string for a
+      // ending tag if we have received only a few bytes of the
+      // data between 2 tags
+      if(m_currentOutput != wxEmptyString)
+        m_currentOutputEnd = m_currentOutput.Right(MIN(30,m_currentOutput.Length())) + newChars;
+      else
+        m_currentOutputEnd = wxEmptyString;
+        
+      m_currentOutput += newChars;
+
+      if (!m_dispReadOut &&
+          (m_currentOutput != wxT("\n")) &&
+          (m_currentOutput != wxT("<wxxml-symbols></wxxml-symbols>")))
       {
-        if (m_unsuccessfullConnectionAttempts > 0)
-          ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
-                                    "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
-                        MC_TYPE_ERROR);
+        StatusMaximaBusy(transferring);
+        m_dispReadOut = true;
+      }
+
+      size_t length_old = -1;
+
+      while (length_old != m_currentOutput.Length())
+      {
+        length_old = m_currentOutput.Length();
+
+
+        // First read the prompt that tells us that maxima awaits the next command:
+        // If that is the case ReadPrompt() sends the next command to maxima and
+        // maxima can work while we interpret its output.
+        GroupCell *oldActiveCell = m_console->GetWorkingGroup();
+        ReadPrompt(m_currentOutput);
+        GroupCell *newActiveCell = m_console->GetWorkingGroup();
+
+        // Temporarily switch to the WorkingGroup the output we don't have interpreted yet
+        // was for
+        if(newActiveCell != oldActiveCell)
+          m_console->m_cellPointers.SetWorkingGroup(oldActiveCell);
+        // Handle the <mth> tag that contains math output and sometimes text.
+        ReadMath(m_currentOutput);
+
+        // The following function calls each extract and remove one type of XML tag
+        // information from the beginning of the data string we got - but only do so
+        // after the closing tag has been transferred, as well.
+        ReadLoadSymbols(m_currentOutput);
+
+        // Handle the XML tag that contains Status bar updates
+        ReadStatusBar(m_currentOutput);
+
+        // Handle text that isn't wrapped in a known tag
+        if (!m_first)
+          // Handle text that isn't XML output: Mostly Error messages or warnings.
+          ReadMiscText(m_currentOutput);
         else
-        {
-          ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
-                                    "Trying to restart Maxima.\n"),
-                        MC_TYPE_ERROR);
-          m_unsuccessfullConnectionAttempts++;
-          m_console->m_evaluationQueue.Clear();
-          StartMaxima(true);
-        }
+          // This function determines the port maxima is running on from  the text
+          // maxima outputs at startup. This piece of text is afterwards discarded.
+          ReadFirstPrompt(m_currentOutput);
+
+        // Switch to the WorkingGroup the next bunch of data is for.
+        if(newActiveCell != oldActiveCell)
+          m_console->m_cellPointers.SetWorkingGroup(newActiveCell);
+      }
+    }
+    break;
+  
+  case wxSOCKET_LOST:
+  {
+    m_statusBar->NetworkStatus(StatusBar::offline);
+    ExitAfterEval(false);
+    m_console->m_cellPointers.SetWorkingGroup(NULL);
+    m_console->SetSelection(NULL);
+    m_console->SetActiveCell(NULL);
+    m_pid = -1;
+    if (m_client != NULL)
+      m_client->Destroy();
+    m_client = NULL;
+    // If we did close maxima by hand we already might have a new process
+    // and therefore invalidate the wrong process in this step
+    if (!m_closing)
+    {
+      m_process = NULL;
+      m_maximaStdout = NULL;
+      m_maximaStderr = NULL;
+    }
+    m_isConnected = false;
+    m_currentOutput = wxEmptyString;
+    m_console->QuestionAnswered();
+    if (!m_closing)
+    {
+      if (m_unsuccessfullConnectionAttempts > 0)
+        ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
+                          "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
+                      MC_TYPE_ERROR);
+      else
+      {
+        ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
+                          "Trying to restart Maxima.\n"),
+                      MC_TYPE_ERROR);
+        m_unsuccessfullConnectionAttempts++;
         m_console->m_evaluationQueue.Clear();
         StartMaxima(true);
       }
       m_console->m_evaluationQueue.Clear();
-      // Inform the user that the evaluation queue is empty.
-      EvaluationQueueLength(0);
-    break;
+      StartMaxima(true);
     }
+    m_console->m_evaluationQueue.Clear();
+    // Inform the user that the evaluation queue is empty.
+    EvaluationQueueLength(0);
+    break;
+  }
   default:
     break;
   }

@@ -26,7 +26,7 @@
 
 #include "TipOfTheDay.h"
 
-TipOfTheDay::TipOfTheDay(int n)
+TipOfTheDay::TipOfTheDay(unsigned int n)
         : wxTipProvider(n), m_current(n)
 {
 
