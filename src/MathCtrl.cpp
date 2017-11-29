@@ -459,7 +459,8 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
       {
         point.x = m_configuration->GetIndent();
         point.y += drop + tmp->m_next->GetMaxCenter();
-        point.y += m_configuration->GetGroupSkip();
+        if(tmp->GetMaxDrop() > 0)
+          point.y += m_configuration->GetGroupSkip();
         drop = tmp->m_next->GetMaxDrop();
       }
       tmp = dynamic_cast<GroupCell *>(tmp->m_next);

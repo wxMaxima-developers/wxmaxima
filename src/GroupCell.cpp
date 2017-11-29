@@ -733,25 +733,30 @@ void GroupCell::RecalculateHeight(int fontsize)
     
     RecalculateHeightOutput(fontsize);
   }
+
+  if (((m_height != 0) || (m_next == NULL)) && (m_height < configuration->GetCellBracketWidth()))
+    m_height = configuration->GetCellBracketWidth();
+  
+  configuration= (*m_configuration);
+  if (m_previous == NULL)
+  {
+    m_currentPoint.x = configuration->GetIndent();
+    m_currentPoint.y = (*m_configuration)->GetBaseIndent() + GetMaxCenter();
+  }
   else
   {
-    configuration= (*m_configuration);
-    if (m_previous == NULL)
-    {
-      m_currentPoint.x = configuration->GetIndent();
-      m_currentPoint.y = (*m_configuration)->GetBaseIndent() + GetMaxCenter();
-    }
-    else
-    {
-      m_currentPoint.x = configuration->GetIndent();
+    m_currentPoint.x = configuration->GetIndent();
+    if(dynamic_cast<GroupCell *>(m_previous)->m_height > 0)
       m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y +
-                         dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetMaxCenter() +
-                         (*m_configuration)->GetGroupSkip();
-    }
+        dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetMaxCenter() +
+        (*m_configuration)->GetGroupSkip();
+    else
+      m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y;
   }
-  if (m_height < configuration->GetCellBracketWidth())
-    m_height = configuration->GetCellBracketWidth();
-  m_appendedCells = NULL;
+
+  // If code is hidden and there is no output a cell can have the height
+  // 0. If it is higher than that we make our cell high enough to fit the 
+  // bracket in.  m_appendedCells = NULL;
 
   if (m_inputLabel)
     m_inputLabel->m_currentPoint = m_currentPoint;
