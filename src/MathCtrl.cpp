@@ -6500,7 +6500,12 @@ bool MathCtrl::CanMergeSelection()
 bool MathCtrl::TreeUndoCellDeletion(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation)
 {
   TreeUndoAction *action = sourcelist->front();
+  GroupCell *newCursorPos = action->m_oldCells;
+  if(newCursorPos != NULL)
+    while(newCursorPos->m_next != NULL)
+      newCursorPos = dynamic_cast<GroupCell *>(newCursorPos->m_next);
   InsertGroupCells(action->m_oldCells, action->m_start, undoForThisOperation);
+  SetHCaret(newCursorPos);
   return true;
 }
 
