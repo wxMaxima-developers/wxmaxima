@@ -2381,7 +2381,7 @@ void MathCtrl::TreeUndo_CellLeft()
   if (
     (m_treeUndo_ActiveCellOldText            != activeCell->GetEditable()->GetValue()) &&
     (m_treeUndo_ActiveCellOldText + wxT(";") != activeCell->GetEditable()->GetValue()) &&
-    (m_treeUndo_ActiveCellOldText != wxEmptyString)
+    (m_treeUndo_ActiveCellOldText.Length() > 1)
     )
   {
     TreeUndoAction *undoAction = new TreeUndoAction;
