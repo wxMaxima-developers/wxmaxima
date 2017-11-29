@@ -2379,7 +2379,8 @@ void MathCtrl::TreeUndo_CellLeft()
   // We only can undo a text change if the text has actually changed.
   if (
     (m_treeUndo_ActiveCellOldText            != activeCell->GetEditable()->GetValue()) &&
-    (m_treeUndo_ActiveCellOldText + wxT(";") != activeCell->GetEditable()->GetValue())
+    (m_treeUndo_ActiveCellOldText + wxT(";") != activeCell->GetEditable()->GetValue()) &&
+    (m_treeUndo_ActiveCellOldText != wxEmptyString)
     )
   {
     TreeUndoAction *undoAction = new TreeUndoAction;
@@ -6622,9 +6623,9 @@ bool MathCtrl::TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeU
         TreeUndoTextChange(sourcelist, undoForThisOperation);
     }
     TreeUndo_AppendAction(undoForThisOperation);
+    sourcelist->pop_front();
     if(!sourcelist->empty())
       actionContinues = sourcelist->front()->m_partOfAtomicAction;
-    sourcelist->pop_front();
   } while (actionContinues && (!sourcelist->empty()));
   if(!undoForThisOperation->empty())
     undoForThisOperation->front()->m_partOfAtomicAction = false;

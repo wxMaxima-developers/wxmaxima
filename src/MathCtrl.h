@@ -279,7 +279,7 @@ private:
   void TreeUndo_AppendAction(std::list<TreeUndoAction *> *actionList)
     {
       if(!actionList->empty())
-        actionList->front()->m_partOfAtomicAction;
+        actionList->front()->m_partOfAtomicAction = true;
     }
 
   //! Add another action to this undo action
