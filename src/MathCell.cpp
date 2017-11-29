@@ -468,7 +468,9 @@ void MathCell::DrawBoundingBox(wxDC &dc, bool all)
 {
   wxRect rect = GetRect(all);
   if (InUpdateRegion())
+  {
     dc.DrawRectangle(CropToUpdateRegion(rect));
+  }
 }
 
 /***

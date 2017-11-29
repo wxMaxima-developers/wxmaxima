@@ -123,7 +123,7 @@ wxString SumWiz::GetValue()
   return s;
 }
 
-void SumWiz::OnCheckbox(wxCommandEvent &event)
+void SumWiz::OnCheckbox(wxCommandEvent& WXUNUSED(event))
 {
   checkbox_1->Enable(!checkbox_2->GetValue());
 }

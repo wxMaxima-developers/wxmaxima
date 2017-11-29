@@ -507,7 +507,7 @@ private:
 
   void AdjustSize();
 
-  void OnEraseBackground(wxEraseEvent &event)
+  void OnEraseBackground(wxEraseEvent& WXUNUSED(event))
   {}
 
   void CheckUnixCopy();

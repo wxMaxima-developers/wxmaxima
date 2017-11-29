@@ -234,7 +234,7 @@ GroupCell *TableOfContents::GetCell(int index)
   return NULL;
 }
 
-void TableOfContents::OnRegExEvent(wxCommandEvent &ev)
+void TableOfContents::OnRegExEvent(wxCommandEvent& WXUNUSED(ev))
 {
   UpdateDisplay();
 }

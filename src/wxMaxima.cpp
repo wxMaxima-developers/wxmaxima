@@ -1025,7 +1025,7 @@ bool wxMaxima::StartMaxima(bool force)
 }
 
 
-void wxMaxima::Interrupt(wxCommandEvent &event)
+void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 {
   if (m_pid < 0)
   {
@@ -1077,7 +1077,7 @@ void wxMaxima::KillMaxima()
   m_console->QuestionAnswered();
 }
 
-void wxMaxima::OnProcessEvent(wxProcessEvent &event)
+void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
 {
   m_statusBar->NetworkStatus(StatusBar::offline);
   if (!m_closing)

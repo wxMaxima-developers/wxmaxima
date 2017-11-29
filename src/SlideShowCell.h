@@ -146,7 +146,7 @@ protected:
 
   wxString ToXML();
 
-  virtual void DrawBoundingBox(wxDC &dc, bool all = false)
+  virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool all = false)
   {
     m_drawBoundingBox = true;
   }

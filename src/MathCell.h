@@ -288,7 +288,7 @@ class MathCell
      - false: Draw the bounding box around this cell only
      \param dc Where to draw the box.
   */
-  virtual void DrawBoundingBox(wxDC &dc, bool all = false);
+  virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool all = false);
 
   bool DrawThisCell(wxPoint point);
 
