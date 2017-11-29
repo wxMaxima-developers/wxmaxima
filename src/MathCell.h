@@ -404,7 +404,7 @@ class MathCell
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
   */
-  virtual void RecalculateHeight(int fontsize)
+  virtual void RecalculateHeight(int WXUNUSED(fontsize))
   {};
 
   /*! Recalculate the height of this list of cells
@@ -468,7 +468,7 @@ class MathCell
   virtual void SetExponentFlag()
   {}
 
-  virtual void SetValue(const wxString &text)
+  virtual void SetValue(const wxString &WXUNUSED(text))
   {}
 
   virtual wxString GetValue()
@@ -678,19 +678,19 @@ class MathCell
            || (!input && IsComment());
   }
 
-  virtual void ProcessEvent(wxKeyEvent &event)
+  virtual void ProcessEvent(wxKeyEvent &WXUNUSED(event))
   {}
 
   virtual bool AddEnding()
   { return false; }
 
-  virtual void SelectPointText(wxDC *dc, wxPoint &point)
+  virtual void SelectPointText(wxDC *WXUNUSED(dc), wxPoint &WXUNUSED(point))
   {}
+      
+  virtual void SelectRectText(wxDC *WXUNUSED(dc), wxPoint &WXUNUSED(one), wxPoint &WXUNUSED(two))
+    {}
 
-  virtual void SelectRectText(wxDC *dc, wxPoint &one, wxPoint &two)
-  {}
-
-  virtual void PasteFromClipboard(bool primary = false)
+  virtual void PasteFromClipboard(bool WXUNUSED(primary) = false)
   {}
 
   virtual bool CopyToClipboard()
@@ -705,10 +705,10 @@ class MathCell
   virtual bool CanCopy()
   { return false; }
 
-  virtual void SetMatchParens(bool match)
+  virtual void SetMatchParens(bool WXUNUSED(match))
   {}
 
-  virtual wxPoint PositionToPoint(int fontsize, int pos = -1)
+  virtual wxPoint PositionToPoint(int WXUNUSED(fontsize), int WXUNUSED(pos) = -1)
   { return wxPoint(-1, -1); }
 
   virtual bool IsDirty()
@@ -717,7 +717,7 @@ class MathCell
   virtual void SwitchCaretDisplay()
   {}
 
-  virtual void SetFocus(bool focus)
+  virtual void SetFocus(bool WXUNUSED(focus))
   {}
 
   void SetForeground();
