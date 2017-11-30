@@ -41,7 +41,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                              const wxString configFile,
                              const wxPoint &pos, const wxSize &size,
                              long style) :
-        wxFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE)
+        wxFrame(parent, id, title, pos, size, style)
 {
   m_isNamed = false;
   m_configFileName = configFile,
@@ -1252,7 +1252,7 @@ wxString wxMaximaFrame::GetTempAutosavefileName()
   return m_tempfileName;
 }
 
-void wxMaximaFrame::RegisterAutoSaveFile(wxString name)
+void wxMaximaFrame::RegisterAutoSaveFile()
 {
   wxString autoSaveFiles;
   ReReadConfig();
@@ -1515,7 +1515,7 @@ void wxMaximaFrame::CharacterButtonPressed(wxMouseEvent &event)
   m_console->InsertText(ch_string);
 }
 
-wxPanel *wxMaximaFrame::CharButton(wxPanel *parent, wxChar ch, wxString description, bool matchesMaximaCommand)
+wxPanel *wxMaximaFrame::CharButton(wxPanel *parent, wxChar ch, wxString description, bool WXUNUSED(matchesMaximaCommand))
 {
   wxPanel *panel = new wxPanel(parent, ch);
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);

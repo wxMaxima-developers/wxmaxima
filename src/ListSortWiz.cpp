@@ -20,14 +20,14 @@
 
 #include "ListSortWiz.h"
 
-ListSortWiz::ListSortWiz(Configuration *cfg,
+ListSortWiz::ListSortWiz(Configuration *WXUNUSED(cfg),
                          wxWindow *parent, int id, const wxString &title,
                          wxString list,
-                         bool eq,
+                         bool WXUNUSED(eq),
                          const wxPoint &pos,
                          const wxSize &size,
                          long style) :
-  wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+  wxDialog(parent, id, title, pos, size, style)
 {
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
   wxPanel *choicePanel  = new wxPanel(this,-1);

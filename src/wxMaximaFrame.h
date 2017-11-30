@@ -568,7 +568,7 @@ protected:
   */  
   wxString GetTempAutosavefileName();
   //! Remember an temporary autosave file name.
-  void RegisterAutoSaveFile(wxString name);
+  void RegisterAutoSaveFile();
   //! Generates a list of all temporary autosave files we didn't open yet.
   std::list<wxString> GetTempAutosaveFiles();
 private:
@@ -609,8 +609,7 @@ private:
                                 translated into a maxima command/operator
 
    */
-  wxPanel *CharButton(wxPanel *parent, wxChar ch, wxString description = wxEmptyString,
-                      bool matchesMaximaCommand = false);
+  wxPanel *CharButton(wxPanel *parent, wxChar ch, wxString description = wxEmptyString, bool matchesMaximaCommand = false);
 
 #ifdef wxUSE_UNICODE
 

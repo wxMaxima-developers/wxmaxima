@@ -151,7 +151,7 @@ bool MyApp::OnInit()
                    "run the file and exit afterwards. Halts on questions and stops on errors.",  wxCMD_LINE_VAL_NONE, 0},
                   { wxCMD_LINE_OPTION, "f", "ini", "allows to specify a file to store the configuration in", wxCMD_LINE_VAL_STRING , 0},
                   {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
-                  {wxCMD_LINE_NONE}
+            {wxCMD_LINE_NONE, "", "", "", wxCMD_LINE_VAL_NONE, 0}
           };
 
   cmdLineParser.SetDesc(cmdLineDesc);

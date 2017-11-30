@@ -785,11 +785,8 @@ class MathCell
   //! Set the tooltip of this math cell. wxEmptyString means: no tooltip.
   void SetToolTip(const wxString &tooltip){m_toolTip = tooltip;}
 
-  //! Set the worksheet all cells are drawn on
-  static void SetWorksheet(wxWindow *worksheet){m_worksheet = worksheet;}
 protected:
   //! The worksheet all cells are drawn on
-  static wxWindow *m_worksheet;
   static wxRect m_updateRegion;
 
   /*! The GroupCell this list of cells belongs to.

@@ -320,7 +320,7 @@ int MathCell::GetLineWidth()
  To make this work each derived class must draw the content of the cell
  and then call MathCall::Draw(...).
  */
-void MathCell::Draw(wxPoint point, int fontsize)
+void MathCell::Draw(wxPoint point, int WXUNUSED(fontsize))
 {
   m_currentPoint = point;
 
@@ -396,7 +396,7 @@ void MathCell::RecalculateWidthsList(int fontsize)
   }
 }
 
-void MathCell::RecalculateWidths(int fontsize)
+void MathCell::RecalculateWidths(int WXUNUSED(fontsize))
 {
   ResetData();
 }
@@ -756,7 +756,7 @@ wxString MathCell::RTFescape(wxString input, bool MarkDown)
   return (output);
 }
 
-wxString MathCell::ListToOMML(bool startofline)
+wxString MathCell::ListToOMML(bool WXUNUSED(startofline))
 {
   bool multiCell = (m_next != NULL);
 
@@ -1332,7 +1332,6 @@ MathCell::CellPointers::CellPointers(wxScrolledCanvas *mathCtrl)
   m_selectionString = wxEmptyString;
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
-  MathCell::SetWorksheet(m_mathCtrl);
 }
 
 bool MathCell::CellPointers::ErrorList::Contains(MathCell *cell)
@@ -1374,4 +1373,3 @@ wxRect  MathCell::m_updateRegion;
 bool    MathCell::m_clipToDrawRegion = true;
 wxRect  MathCell::m_visibleRegion;
 wxPoint MathCell::m_worksheetPosition;
-wxWindow * MathCell::m_worksheet;

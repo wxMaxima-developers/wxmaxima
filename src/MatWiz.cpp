@@ -25,7 +25,7 @@ MatWiz::MatWiz(wxWindow *parent, int id,
                const wxString &title,
                int type, int w, int h,
                const wxPoint &pos, const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+        wxDialog(parent, id, title, pos, size, style)
 {
   m_height = h;
   m_width = w;
@@ -168,7 +168,7 @@ MatDim::MatDim(wxWindow *parent, int id,
                Configuration *cfg,
                const wxString &title,
                const wxPoint &pos, const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+        wxDialog(parent, id, title, pos, size, style)
 {
   label_2 = new wxStaticText(this, -1, _("Rows:"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxT("3"), wxDefaultPosition,

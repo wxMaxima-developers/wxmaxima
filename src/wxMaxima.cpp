@@ -2881,7 +2881,7 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
   }
 }
 
-void wxMaxima::UpdateMenus(wxUpdateUIEvent &event)
+void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
 {
   wxMenuBar *menubar = GetMenuBar();
 
@@ -2965,7 +2965,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &event)
 
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined(__WXMAC__)
 
-void wxMaxima::UpdateToolBar(wxUpdateUIEvent &event)
+void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
 {
   if (!m_console->m_mainToolBar)
     return;
@@ -3385,7 +3385,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
               // Save the file and remember the file name.
               wxString name = GetTempAutosavefileName();
               m_console->ExportToWXMX(name);
-              RegisterAutoSaveFile(name);
+              RegisterAutoSaveFile();
               m_fileSaved = false;
             }
           }
@@ -3922,7 +3922,7 @@ void wxMaxima::OnFind(wxFindDialogEvent &event)
     wxMessageBox(_("No matches found!"));
 }
 
-void wxMaxima::OnFindClose(wxFindDialogEvent &event)
+void wxMaxima::OnFindClose(wxFindDialogEvent &WXUNUSED(event))
 {
   if (m_console->m_findDialog != NULL)
     m_console->m_findDialog->Destroy();
@@ -7327,7 +7327,7 @@ void wxMaxima::ShowPane(wxCommandEvent &ev)
     m_console->UpdateTableOfContents();
 }
 
-void wxMaxima::NetworkDClick(wxCommandEvent &ev)
+void wxMaxima::NetworkDClick(wxCommandEvent &WXUNUSED(ev))
 {
   m_manager.GetPane(wxT("XmlInspector")).Show(
           !m_manager.GetPane(wxT("XmlInspector")).IsShown()
@@ -7355,7 +7355,7 @@ void wxMaxima::TableOfContentsSelection(wxListEvent &ev)
   }
 }
 
-void wxMaxima::OnFollow(wxCommandEvent &event)
+void wxMaxima::OnFollow(wxCommandEvent &WXUNUSED(event))
 {
   m_console->OnFollow();
 }

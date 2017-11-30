@@ -24,7 +24,7 @@ LimitWiz::LimitWiz(wxWindow *parent, int id,
                    Configuration *cfg,
                    const wxString &title,
                    const wxPoint &pos, const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+        wxDialog(parent, id, title, pos, size, style)
 {
   label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
@@ -132,7 +132,7 @@ wxString LimitWiz::GetValue()
   return s;
 }
 
-void LimitWiz::OnButton(wxCommandEvent &event)
+void LimitWiz::OnButton(wxCommandEvent &WXUNUSED(event))
 {
   wxString choices[] = {wxT("Pi"), wxT("E"), _("Infinity"),
                         _("- Infinity")};
@@ -151,7 +151,7 @@ void LimitWiz::OnButton(wxCommandEvent &event)
   }
 }
 
-void LimitWiz::OnIdle(wxIdleEvent &ev)
+void LimitWiz::OnIdle(wxIdleEvent &WXUNUSED(ev))
 {
   wxString point = text_ctrl_3->GetValue();
 

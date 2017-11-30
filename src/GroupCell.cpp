@@ -710,7 +710,7 @@ void GroupCell::RecalculateHeightInput(int fontsize)
   m_inputWidth = m_width;
 }
 
-void GroupCell::RecalculateHeightOutput(int fontsize)
+void GroupCell::RecalculateHeightOutput(int WXUNUSED(fontsize))
 {
   if(!m_hide)
   {
@@ -1852,7 +1852,7 @@ void GroupCell::BreakUpCells(int fontsize, int clientWidth)
   BreakUpCells(m_output, fontsize, clientWidth);
 }
 
-void GroupCell::BreakUpCells(MathCell *cell, int fontsize, int clientWidth)
+void GroupCell::BreakUpCells(MathCell *cell, int WXUNUSED(fontsize), int clientWidth)
 {
   MathCell *tmp = cell;
 

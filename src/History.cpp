@@ -100,7 +100,7 @@ void History::UpdateDisplay()
   m_history->Set(display);
 }
 
-void History::OnRegExEvent(wxCommandEvent &ev)
+void History::OnRegExEvent(wxCommandEvent &WXUNUSED(ev))
 {
   UpdateDisplay();
 }
