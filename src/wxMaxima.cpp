@@ -239,7 +239,7 @@ wxMaxima::~wxMaxima()
 
 #if wxUSE_DRAG_AND_DROP
 
-bool MyDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &files)
+bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y), const wxArrayString &files)
 {
 
   if (files.GetCount() != 1)
@@ -2199,7 +2199,7 @@ bool wxMaxima::CheckWXMXVersion(wxString docversion)
   return true;
 }
 
-bool wxMaxima::OpenXML(wxString file, MathCtrl *document, bool clearDocument)
+bool wxMaxima::OpenXML(wxString file, MathCtrl *document)
 {
   // Show a busy cursor as long as we open a file.
   wxBusyCursor crs;

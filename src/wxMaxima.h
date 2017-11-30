@@ -481,7 +481,7 @@ protected:
 
   /*! Opens a content.xml file that has been extracted from a broken .wxmx file
    */
-  bool OpenXML(wxString file, MathCtrl *document, bool clearDocument = true);
+  bool OpenXML(wxString file, MathCtrl *document);
 
   //! Complains if the version string from the XML file indicates too low a maxima version
   bool CheckWXMXVersion(wxString docversion);
