@@ -181,10 +181,12 @@ private:
   long m_lastTop;
   //! The last ending for the area being drawn
   long m_lastBottom;
-  /*! \defgroup UndoBufferFill
+  /*! \defgroup UndoBufferFill Undo methods for cell additions/deletions:
 
-    These methods and classes contain the undo functionality for tree changes:
-     - Cells aren't deleted. They are moved into an undo buffer instead.
+    Each EditorCell has its own private undo buffer Additionally wxMaxima 
+    maintains a undo buffer for worksheet changes. It works the following way:
+
+     - Cells normally aren't deleted. They are moved into an undo buffer instead.
      - The undo buffer is also notified when Cells that are added
      - If the cursor enters a cell the contents of this cell is saved
      - And if the cell is left and the contents has changed this information
@@ -353,6 +355,7 @@ private:
     \param end        The last cell that has been added
   */
   void TreeUndo_MarkCellsAsAdded(GroupCell *parentOfStart, GroupCell *end);
+  //! @}
 
   bool m_scrolledAwayFromEvaluation;
 
@@ -394,7 +397,7 @@ private:
 
     \param start The cell to start copying at
     \param end   The cell the copy has to end with
-    \param asdata 
+    \param asData 
       - true:  The cells are copied in the order they are stored. m_next and m_previous
                therefore point to the right places. But m_nextToDraw and m_previousToDraw
                will be treated as aliasses of m_next and m_previous.
@@ -716,7 +719,6 @@ public:
   //! Is a Redraw requested?
   bool RedrawRequested()
     { return (m_redrawRequested || (m_rectToRefresh.GetLeft() != -1)); }
-  //! @}
 
   //! To be called after enabling or disabling the visibility of code cells
   void CodeCellVisibilityChanged();
@@ -1146,7 +1148,7 @@ public:
 
   /*! Set the slide of the currently selected slideshow or advance it by one step
 
-    \param pos
+    \param change
       - >=0: The slide the animation has to be set to
       - <0:  Advance the animation by one step.
    */

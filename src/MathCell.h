@@ -983,7 +983,6 @@ public:
     wxScrolledCanvas *GetMathCtrl(){return m_mathCtrl;}
 
   private:
-    wxWindow *m_worksheet;
     //! The function to call if an animation has to be stepped.
     wxScrolledCanvas *m_mathCtrl;
   };

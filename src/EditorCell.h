@@ -665,7 +665,7 @@ private:
     the indentation algorithm scans the text again) which is unfortunate.
    */
   void HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidth, const wxString &token, unsigned int charInCell,
-                                 wxString &text, size_t &lastSpacePos, bool spaceIsIndentation, int &indentationPixels);
+                                 wxString &text, size_t &lastSpacePos, int &indentationPixels);
 
   /*! How many chars do we need to indent text at the position the caret is currently at?
 

@@ -3517,7 +3517,7 @@ wxArrayString EditorCell::StringToTokens(wxString text)
 
 void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidth, const wxString &token,
                                            unsigned int charInCell, wxString &text, size_t &lastSpacePos,
-                                           bool spaceIsIndentation, int &indentationPixels)
+                                           int &indentationPixels)
 {
   // If we don't want to autowrap code we don't do nothing here.
   if (!(*m_configuration)->GetAutoWrapCode())
@@ -3567,7 +3567,6 @@ void EditorCell::StyleTextCode()
   // not eligible for soft line breaks: It would add a soft line break that causes
   // the same indentation to be introduced in the new line again and therefore would not
   // help at all.
-  bool spaceIsIndentation = true;
   int indentationPixels = 0;
   wxString textToStyle = m_text;
   if (configuration->GetChangeAsterisk())
@@ -3656,9 +3655,7 @@ void EditorCell::StyleTextCode()
         
         continue;
       }
-      else
-        spaceIsIndentation = false;
-      
+      else      
       // Handle Newlines
       if (Ch == wxT('\n'))
       {
@@ -3686,7 +3683,7 @@ void EditorCell::StyleTextCode()
         // Handle the last line of a multi-line string
         if(token != wxEmptyString)
           m_styledText.push_back(StyledText(TS_CODE_STRING, token));
-        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
                                   indentationPixels);
         continue;
       }
@@ -3721,7 +3718,7 @@ void EditorCell::StyleTextCode()
         else
           m_styledText.push_back(StyledText(TS_CODE_OPERATOR, token));
       
-        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
                                   indentationPixels);
         continue;
       }
@@ -3737,7 +3734,7 @@ void EditorCell::StyleTextCode()
           m_styledText.push_back(StyledText(TS_CODE_COMMENT, token));
         }
       
-        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
                                   indentationPixels);
         continue;
       }
@@ -3750,7 +3747,7 @@ void EditorCell::StyleTextCode()
         else
           m_styledText.push_back(StyledText(TS_CODE_OPERATOR, token));
       
-        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
                                   indentationPixels);
         continue;
       }
@@ -3759,7 +3756,7 @@ void EditorCell::StyleTextCode()
       if (isdigit(token[0]) || ((token[0] == wxT('.')) && (nextChar >= wxT('0')) && (nextChar <= wxT('9'))))
       {
         m_styledText.push_back(StyledText(TS_CODE_NUMBER, token));
-        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
                                   indentationPixels);
         continue;
       }
@@ -3812,7 +3809,7 @@ void EditorCell::StyleTextCode()
             m_styledText.push_back(StyledText(TS_CODE_VARIABLE, token));
             m_wordList.Add(token);
           }
-          HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+          HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
                                     indentationPixels);
           continue;
         }
@@ -3821,14 +3818,14 @@ void EditorCell::StyleTextCode()
           m_styledText.push_back(StyledText(TS_CODE_VARIABLE, token));
           m_wordList.Add(token);
         
-          HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos, spaceIsIndentation,
+          HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
                                     indentationPixels);
           continue;
         }
       }
     
       m_styledText.push_back(StyledText(token));
-      //      HandleSoftLineBreaks_Code(lastSpace,lineWidth,token,pos,m_text,lastSpacePos,spaceIsIndentation);
+      //      HandleSoftLineBreaks_Code(lastSpace,lineWidth,token,pos,m_text,lastSpacePos);
     }
   m_wordList.Sort();
 }
