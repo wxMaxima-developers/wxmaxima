@@ -51,7 +51,7 @@ void FindReplaceDialog::OnKeyDown(wxKeyEvent &event)
     event.Skip();
 }
 
-void FindReplaceDialog::OnClose(wxCloseEvent &event)
+void FindReplaceDialog::OnClose(wxCloseEvent &WXUNUSED(event))
 {
   wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_CLOSE);
   GetParent()->GetEventHandler()->QueueEvent(findEvent);

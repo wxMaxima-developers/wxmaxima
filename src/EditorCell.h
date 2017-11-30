@@ -42,7 +42,7 @@
     - The handling of key presses when this cell is active
   
   Since Unicode doesn't provide us with a "soft linebreak" letter we 
-  use <code>\r</code> as a marker that this line has to be broken here if we
+  use <code>\\r</code> as a marker that this line has to be broken here if we
   don't want it to extend beyond the right margin of the screen.
 
   In a few places we use wxString::iterator instead of accessing individual 
@@ -265,7 +265,7 @@ public:
     This function also generates a wordlist for this EditorCell so Autocompletion can learn
     about variable names contained in lists or cells that still haven't been evaluated.
 
-    For cells containing text instead of code this function adds a <code>\r</code> as a marker
+    For cells containing text instead of code this function adds a <code>\\r</code> as a marker
     that this line is to be broken here until the window's width changes.
    */
   void StyleText();
@@ -292,7 +292,7 @@ public:
   //! Deactivate the blinking cursor in the EditorCell it is in.
   void DeactivateCursor();
 
-  //! Return the index of the 1st char of the line containing the letter #pos.
+  //! Return the index of the 1st char of the line containing the letter pos.
   size_t BeginningOfLine(long pos);
 
   //! Return the index of the last char of the line containing the letter #pos,
@@ -575,7 +575,7 @@ private:
      - a command, parenthesis, number, line ending
      - '\n'
      - whitespace
-     - '\r' indicating a soft line break optionally equipped with indentation
+     - '\\r' indicating a soft line break optionally equipped with indentation
        and a character that marks a continued quote or similar 
    */
   class StyledText
