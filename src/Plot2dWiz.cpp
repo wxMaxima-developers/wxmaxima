@@ -27,7 +27,7 @@ Plot2DWiz::Plot2DWiz(wxWindow *parent, int id,
                      Configuration *cfg,
                      const wxString &title,
                      const wxPoint &pos, const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+        wxDialog(parent, id, title, pos, size, style)
 {
   m_configuration = cfg;
   label_2 = new wxStaticText(this, -1, _("Expression(s):"));
@@ -430,7 +430,7 @@ wxString Plot2DWiz::GetValue()
   return s;
 }
 
-void Plot2DWiz::OnButton(wxCommandEvent &event)
+void Plot2DWiz::OnButton(wxCommandEvent &WXUNUSED(event))
 {
   wxMenu *popupMenu = new wxMenu();
 
@@ -478,7 +478,7 @@ void Plot2DWiz::OnPopupMenu(wxCommandEvent &event)
   }
 }
 
-void Plot2DWiz::OnCombobox(wxCommandEvent &event)
+void Plot2DWiz::OnCombobox(wxCommandEvent &WXUNUSED(event))
 {
   wxString selection = combo_box_2->GetStringSelection();
   if (selection.StartsWith(wxT("set polar")))
@@ -498,7 +498,7 @@ void Plot2DWiz::OnCombobox(wxCommandEvent &event)
   }
 }
 
-void Plot2DWiz::OnFileBrowse(wxCommandEvent &event)
+void Plot2DWiz::OnFileBrowse(wxCommandEvent &WXUNUSED(event))
 {
   wxString file = wxFileSelector(_("Save plot to file"), wxEmptyString,
                                  wxT("plot2d.eps"), wxT("eps"),
@@ -524,7 +524,7 @@ END_EVENT_TABLE()
 
 Plot2DPar::Plot2DPar(wxWindow *parent, int id, Configuration *cfg, const wxString &title,
                      const wxPoint &pos, const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+        wxDialog(parent, id, title, pos, size, style)
 {
   label_2 = new wxStaticText(this, -1, wxT("x = "));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
@@ -633,7 +633,7 @@ Plot2DDiscrete::Plot2DDiscrete(wxWindow *parent, int id,
                                Configuration *cfg,
                                const wxString &title,
                                const wxPoint &pos, const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+        wxDialog(parent, id, title, pos, size, style)
 {
   label_2 = new wxStaticText(this, -1, wxT("x = "));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,

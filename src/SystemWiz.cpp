@@ -22,7 +22,7 @@
 
 SysWiz::SysWiz(wxWindow *parent, int id, Configuration *cfg, const wxString &title, int numEq,
                const wxPoint &pos, const wxSize &sz, long style) :
-        wxDialog(parent, id, title, pos, sz, wxDEFAULT_DIALOG_STYLE)
+        wxDialog(parent, id, title, pos, sz, style)
 {
   m_size = numEq;
   for (int i = 0; i < m_size; i++)

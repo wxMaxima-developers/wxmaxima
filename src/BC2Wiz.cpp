@@ -1,6 +1,7 @@
 ﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
+//  Copyright (C)      2017 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,7 +23,7 @@
 
 BC2Wiz::BC2Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &title,
                const wxPoint &pos, const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+        wxDialog(parent, id, title, pos, size, style)
 {
   label_2 = new wxStaticText(this, -1, _("Solution:"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,

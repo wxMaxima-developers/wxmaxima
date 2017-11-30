@@ -2061,7 +2061,7 @@ BEGIN_EVENT_TABLE(ConfigDialogue, wxPropertySheetDialog)
                 EVT_CLOSE(ConfigDialogue::OnClose)
 END_EVENT_TABLE()
 
-void ExamplePanel::OnPaint(wxPaintEvent &event)
+void ExamplePanel::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
   wxString example(_("Example text"));
   wxPaintDC dc(this);

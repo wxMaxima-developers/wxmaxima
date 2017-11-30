@@ -52,7 +52,7 @@ StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id)
   m_oldNetworkState = receive;
 }
 
-void StatusBar::OnTimerEvent(wxTimerEvent &event)
+void StatusBar::OnTimerEvent(wxTimerEvent &WXUNUSED(event))
 {
   // don't do anything if the network status didn't change.
   if ((m_icon_shows_receive == (ReceiveTimer.IsRunning())) &&

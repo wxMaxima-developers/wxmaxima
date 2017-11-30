@@ -139,17 +139,17 @@ bool MyApp::OnInit()
 
   static const wxCmdLineEntryDesc cmdLineDesc[] =
           {
-                  {wxCMD_LINE_SWITCH, "v", "version", "Output the version info"},
+            {wxCMD_LINE_SWITCH, "v", "version", "Output the version info", wxCMD_LINE_VAL_NONE , 0},
                   /* Usually wxCMD_LINE_OPTION_HELP is used with the following option, but that displays a message
                    * using a own window and we want the message on the command line. If a user enters a command
                    * line option, he expects probably a answer just on the command line... */
-                  {wxCMD_LINE_SWITCH, "h", "help", "show this help message", wxCMD_LINE_VAL_NONE},
-                  {wxCMD_LINE_OPTION, "o", "open", "open a file"},
+                  {wxCMD_LINE_SWITCH, "h", "help", "show this help message", wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP},
+                  {wxCMD_LINE_OPTION, "o", "open", "open a file", wxCMD_LINE_VAL_STRING , 0},
                   {wxCMD_LINE_SWITCH, "e", "eval",
-                   "evaluate the file after opening it."},
+                   "evaluate the file after opening it.", wxCMD_LINE_VAL_NONE , 0},
                   {wxCMD_LINE_SWITCH, "b", "batch",
-                   "run the file and exit afterwards. Halts on questions and stops on errors."},
-                  { wxCMD_LINE_OPTION, "f", "ini", "allows to specify a file to store the configuration in" },
+                   "run the file and exit afterwards. Halts on questions and stops on errors.",  wxCMD_LINE_VAL_NONE, 0},
+                  { wxCMD_LINE_OPTION, "f", "ini", "allows to specify a file to store the configuration in", wxCMD_LINE_VAL_STRING , 0},
                   {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
                   {wxCMD_LINE_NONE}
           };

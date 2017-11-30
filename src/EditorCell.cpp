@@ -2726,7 +2726,7 @@ int EditorCell::XYToPosition(int x, int y)
   return pos;
 }
 
-wxPoint EditorCell::PositionToPoint(int fontsize, int pos)
+wxPoint EditorCell::PositionToPoint(int WXUNUSED(fontsize), int pos)
 {
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();

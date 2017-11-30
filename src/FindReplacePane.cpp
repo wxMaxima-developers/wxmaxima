@@ -131,7 +131,7 @@ void FindReplacePane::SetFindString(wxString string)
   m_searchText->SetValue(string);
 }
 
-void FindReplacePane::OnSearch(wxCommandEvent &event)
+void FindReplacePane::OnSearch(wxCommandEvent &WXUNUSED(event))
 {
   wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_NEXT);
   findEvent->SetFindString(m_findReplaceData->GetFindString());
@@ -139,7 +139,7 @@ void FindReplacePane::OnSearch(wxCommandEvent &event)
   GetParent()->GetParent()->GetEventHandler()->QueueEvent(findEvent);
 }
 
-void FindReplacePane::OnReplace(wxCommandEvent &event)
+void FindReplacePane::OnReplace(wxCommandEvent &WXUNUSED(event))
 {
   wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_REPLACE);
   findEvent->SetFindString(m_findReplaceData->GetFindString());
@@ -148,7 +148,7 @@ void FindReplacePane::OnReplace(wxCommandEvent &event)
   GetParent()->GetParent()->GetEventHandler()->QueueEvent(findEvent);
 }
 
-void FindReplacePane::OnReplaceAll(wxCommandEvent &event)
+void FindReplacePane::OnReplaceAll(wxCommandEvent &WXUNUSED(event))
 {
   wxFindDialogEvent *findEvent = new wxFindDialogEvent(wxEVT_FIND_REPLACE_ALL);
   findEvent->SetFindString(m_findReplaceData->GetFindString());
@@ -157,7 +157,7 @@ void FindReplacePane::OnReplaceAll(wxCommandEvent &event)
   GetParent()->GetParent()->GetEventHandler()->QueueEvent(findEvent);
 }
 
-void FindReplacePane::OnDirectionChange(wxCommandEvent &event)
+void FindReplacePane::OnDirectionChange(wxCommandEvent &WXUNUSED(event))
 {
   m_findReplaceData->SetFlags(
           !((m_findReplaceData->GetFlags() & (!wxFR_DOWN)) | (m_forward->GetValue() * wxFR_DOWN)));
@@ -179,12 +179,12 @@ void FindReplacePane::OnActivate(wxActivateEvent &event)
   m_active = true;
 }
 
-void FindReplacePane::OnFindStringChange(wxCommandEvent &event)
+void FindReplacePane::OnFindStringChange(wxCommandEvent &WXUNUSED(event))
 {
   m_findReplaceData->SetFindString(m_searchText->GetValue());
 }
 
-void FindReplacePane::OnReplaceStringChange(wxCommandEvent &event)
+void FindReplacePane::OnReplaceStringChange(wxCommandEvent &WXUNUSED(event))
 {
   m_findReplaceData->SetReplaceString(m_replaceText->GetValue());
 }

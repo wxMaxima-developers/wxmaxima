@@ -27,7 +27,7 @@ Plot3DWiz::Plot3DWiz(wxWindow *parent, int id,
                      Configuration *cfg,
                      const wxString &title, const wxPoint &pos,
                      const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+        wxDialog(parent, id, title, pos, size, style)
 {
   label_2 = new wxStaticText(this, -1, _("Expression"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition);
@@ -415,7 +415,7 @@ wxString Plot3DWiz::GetValue()
   return s;
 }
 
-void Plot3DWiz::OnCombobox(wxCommandEvent &event)
+void Plot3DWiz::OnCombobox(wxCommandEvent &WXUNUSED(event))
 {
   wxString selection = combo_box_2->GetStringSelection();
   if (selection.StartsWith(wxT("set mapping cylindrical")))
@@ -443,7 +443,7 @@ void Plot3DWiz::OnCombobox(wxCommandEvent &event)
 }
 
 
-void Plot3DWiz::OnFileBrowse(wxCommandEvent &event)
+void Plot3DWiz::OnFileBrowse(wxCommandEvent &WXUNUSED(event))
 {
   wxString file = wxFileSelector(_("Save plot to file"), wxEmptyString,
                                  wxT("plot3d.eps"), wxT("eps"),

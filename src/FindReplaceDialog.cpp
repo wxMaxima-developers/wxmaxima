@@ -29,7 +29,7 @@
 #include "EditorCell.h"
 
 FindReplaceDialog::FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data, const wxString &title, int style) :
-        wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
+        wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, style)
 {
   m_contents = new FindReplacePane(this, data);
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);

@@ -29,7 +29,7 @@
 #include <wx/config.h>
 #include "MathCell.h"
 
-Configuration::Configuration(wxDC &dc, bool isTopLevel) : m_dc(&dc) 
+Configuration::Configuration(wxDC &dc) : m_dc(&dc) 
 {
   m_antialiassingDC = NULL;
   m_parenthesisDrawMode = unknown;

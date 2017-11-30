@@ -143,7 +143,7 @@ wxString ImgCell::GetToolTip(const wxPoint &point)
     return wxEmptyString;
 }
 
-void ImgCell::RecalculateWidths(int fontsize)
+void ImgCell::RecalculateWidths(int WXUNUSED(fontsize))
 {
   // Here we recalculate the height, as well:
   //  - This doesn't cost much time and

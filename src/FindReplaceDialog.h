@@ -38,7 +38,8 @@
 class FindReplaceDialog : public wxDialog
 {
 public:
-  FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data, const wxString &title, int style = 0);
+  FindReplaceDialog(wxWindow *parent, wxFindReplaceData *data, const wxString &title,
+                    int style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
   //! Returns the standard wxFindReplaceData data structure
   wxFindReplaceData *GetData()
@@ -50,17 +51,17 @@ public:
 
 protected:
   //! Is called if this element looses or gets the focus
-  void OnActivate(wxActivateEvent &event);
+  void OnActivate(wxActivateEvent &WXUNUSED(event));
 
   //! We catch a few hot keys here as we don't provide a menu that could declare them
-  void OnKeyDown(wxKeyEvent &event);
+  void OnKeyDown(wxKeyEvent &WXUNUSED(event));
 
   /*! Called on closing the dialogue.
 
     Informs our parent that it can stop highlighting search results and saves
     the window geometry for the next time the window is opened.
   */
-  void OnClose(wxCloseEvent &event);
+  void OnClose(wxCloseEvent& WXUNUSED(event));
 
   /*! The contents of the dialog.
 

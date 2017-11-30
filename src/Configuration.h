@@ -112,7 +112,7 @@ public:
     \param isTopLevel Is this the first configuration instantiated for this
            worksheet?
    */
-  Configuration(wxDC &dc, bool isTopLevel = false);
+  Configuration(wxDC &dc);
 
   //! Set the drawing context that is currently active
   void SetContext(wxDC &dc)

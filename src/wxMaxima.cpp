@@ -6608,7 +6608,7 @@ bool wxMaxima::SaveNecessary()
   return ((!m_fileSaved) || (!m_isNamed));
 }
 
-void wxMaxima::EditInputMenu(wxCommandEvent &event)
+void wxMaxima::EditInputMenu(wxCommandEvent &WXUNUSED(event))
 {
   if (!m_console->CanEdit())
     return;
@@ -6627,7 +6627,7 @@ void wxMaxima::EditInputMenu(wxCommandEvent &event)
 // Normally just add the respective groupcells to evaluationqueue
 // If there is a special case - eg sending from output section
 // of the working group, handle it carefully.
-void wxMaxima::EvaluateEvent(wxCommandEvent &event)
+void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event))
 {
   bool evaluating = !m_console->m_evaluationQueue.Empty();
   if (!evaluating)
@@ -7281,7 +7281,7 @@ void wxMaxima::ResetTitle(bool saved, bool force)
 ///  Plot Slider
 ///--------------------------------------------------------------------------------
 
-void wxMaxima::UpdateSlider(wxUpdateUIEvent &ev)
+void wxMaxima::UpdateSlider(wxUpdateUIEvent &WXUNUSED(ev))
 {
   if (m_console->m_mainToolBar)
   {

@@ -83,7 +83,7 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
   m_rectToRefresh = wxRect(-1,-1,-1,-1);
   m_notificationMessage = NULL;
   m_dc = new wxClientDC(this);
-  m_configuration = new Configuration(*m_dc, true);
+  m_configuration = new Configuration(*m_dc);
   m_configuration->ReadConfig();
   m_redrawStart = NULL;
   m_redrawRequested = false;
@@ -311,7 +311,7 @@ MathCtrl::~MathCtrl()
 /***
  * Redraw the control
  */
-void MathCtrl::OnPaint(wxPaintEvent &event)
+void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
 {
   #if wxUSE_ACCESSIBILITY
   if(m_accessibilityInfo != NULL)
@@ -349,7 +349,7 @@ void MathCtrl::OnPaint(wxPaintEvent &event)
   if (sz.x == 0) sz.x = 1;
   if (sz.y == 0) sz.y = 1;
 
-  // Test if m_memory is NULL (resize event)
+  // Test if m_memory is NULL (resize even)
   if ((!m_memory.IsOk()) || (m_memory.GetSize() != sz))
     m_memory = wxBitmap(sz);
 
@@ -1391,7 +1391,7 @@ void MathCtrl::OnMouseLeftInGcLeft(wxMouseEvent &event, GroupCell *clickedInGC)
 /***
  * We have a mouse click in the GroupCell.
  */
-void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent &event, GroupCell *clickedInGC)
+void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event), GroupCell *clickedInGC)
 {
   if (GCContainsCurrentQuestion(clickedInGC))
   {
@@ -3967,7 +3967,7 @@ void MathCtrl::OnMagnify(wxMouseEvent& event)
 }
 #endif
 
-void MathCtrl::OnMouseEnter(wxMouseEvent &event)
+void MathCtrl::OnMouseEnter(wxMouseEvent &WXUNUSED(event))
 {
   m_mouseOutside = false;
 }
@@ -6058,7 +6058,7 @@ bool MathCtrl::CanEdit()
 }
 
 //! Is called on double click on a cell.
-void MathCtrl::OnDoubleClick(wxMouseEvent &event)
+void MathCtrl::OnDoubleClick(wxMouseEvent &WXUNUSED(event))
 {
 
   // No more track the mouse when it is outside the worksheet
@@ -7157,7 +7157,7 @@ void MathCtrl::SetDefaultHCaret()
   SetHCaret(m_last);
 }
 
-void MathCtrl::OnActivate(wxActivateEvent &event)
+void MathCtrl::OnActivate(wxActivateEvent &WXUNUSED(event))
 {
   // If the focus changes we might want to refresh the menu.
   RequestRedraw();
@@ -7336,7 +7336,7 @@ void MathCtrl::CommentSelection()
   }
 }
 
-void MathCtrl::OnScrollChanged(wxScrollEvent &ev)
+void MathCtrl::OnScrollChanged(wxScrollEvent &WXUNUSED(ev))
 {
   // Did we scroll away from the cell that is being currently evaluated?
   // If yes we want to no more follow the evaluation with the scroll and
@@ -8023,7 +8023,7 @@ wxString MathCtrl::RTFEnd()
   return document;
 }
 
-void MathCtrl::OnMouseCaptureLost(wxMouseCaptureLostEvent &event)
+void MathCtrl::OnMouseCaptureLost(wxMouseCaptureLostEvent &WXUNUSED(event))
 {
   m_leftDown = false;
 }

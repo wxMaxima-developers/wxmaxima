@@ -119,7 +119,7 @@ protected:
   static int s_counter;
   bool m_drawRectangle;
 
-  virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool all = false)
+  virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool WXUNUSED(all) = false)
   {
     m_drawBoundingBox = true;
   }

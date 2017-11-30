@@ -459,7 +459,7 @@ public:
 
   /*! Replaces all occurrences of a given string
 
-    TODO: Implement the IgnoreCase case.
+    \todo Implement the IgnoreCase case.
    */
   int ReplaceAll(wxString oldString, wxString newString, bool IgnoreCase);
 

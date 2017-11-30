@@ -31,7 +31,7 @@ SeriesWiz::SeriesWiz(wxWindow *parent, int id,
                      Configuration *cfg,
                      const wxString &title,
                      const wxPoint &pos, const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+        wxDialog(parent, id, title, pos, size, style)
 {
   label_2 = new wxStaticText(this, -1, _("Expression:"));
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, wxEmptyString, wxDefaultPosition,
@@ -103,7 +103,7 @@ void SeriesWiz::do_layout()
   Layout();
 }
 
-void SeriesWiz::OnButton(wxCommandEvent &event)
+void SeriesWiz::OnButton(wxCommandEvent &WXUNUSED(event))
 {
   wxString choices[] =
           {
@@ -144,7 +144,7 @@ wxString SeriesWiz::GetValue()
   return s;
 }
 
-void SeriesWiz::OnCheckbox(wxCommandEvent &event)
+void SeriesWiz::OnCheckbox(wxCommandEvent &WXUNUSED(event))
 {
   spin_ctrl_1->Enable(!checkbox_1->GetValue());
 }

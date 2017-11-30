@@ -85,7 +85,7 @@ bool Notification::Close()
     return false;
 }
 
-void Notification::OnClick(wxCommandEvent &event)
+void Notification::OnClick(wxCommandEvent &WXUNUSED(event))
 {
   if(GetGroup() != NULL)
   {
@@ -96,7 +96,7 @@ void Notification::OnClick(wxCommandEvent &event)
   m_shown = false;
 }
 
-void Notification::OnDismissed(wxCommandEvent &event)
+void Notification::OnDismissed(wxCommandEvent &WXUNUSED(event))
 {
   m_shown = false;
 }

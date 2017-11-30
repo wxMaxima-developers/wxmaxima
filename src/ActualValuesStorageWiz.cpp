@@ -20,13 +20,13 @@
 
 #include "ActualValuesStorageWiz.h"
 
-ActualValuesStorageWiz::ActualValuesStorageWiz(Configuration *cfg,
+ActualValuesStorageWiz::ActualValuesStorageWiz(Configuration *WXUNUSED(cfg),
           wxWindow *parent, int id, const wxString &title,
-          bool eq,
+          bool WXUNUSED(eq),
           const wxPoint &pos,
           const wxSize &size,
           long style) :
-        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE)
+        wxDialog(parent, id, title, pos, size, style)
 {
   wxBoxSizer *vsizer = new wxBoxSizer(wxVERTICAL);
   wxStaticText *txt1 = new wxStaticText(this,-1,_("Maxima's power lies in symbolic operations."));

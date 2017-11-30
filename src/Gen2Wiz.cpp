@@ -29,7 +29,7 @@ Gen2Wiz::Gen2Wiz(wxString lab1, wxString lab2,
                  const wxString &warning,
                  const wxString &warningToolTip,
                  const wxPoint &pos, const wxSize &size, long style) :
-        wxDialog(parent, id, title, pos, size, wxDEFAULT_DIALOG_STYLE), equal(eq)
+        wxDialog(parent, id, title, pos, size, style), equal(eq)
 {
   label_2 = new wxStaticText(this, -1, lab1);
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, val1, wxDefaultPosition,

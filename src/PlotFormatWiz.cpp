@@ -22,7 +22,7 @@
 #include "PlotFormatWiz.h"
 
 PlotFormatWiz::PlotFormatWiz(wxWindow *parent, int id,
-                             Configuration *cfg,
+                             Configuration *WXUNUSED(cfg),
                              const wxString &title,
                              const wxPoint &pos, const wxSize &size, long style) :
         wxDialog(parent, id, title, pos, size, style)
