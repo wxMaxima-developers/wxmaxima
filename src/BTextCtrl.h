@@ -26,7 +26,6 @@
 
 /*! A wxTextCtrl with parenthesis matching 
 
-\def WXUNUSED(x) x
 */
 class BTextCtrl : public wxTextCtrl
 {

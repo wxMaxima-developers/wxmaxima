@@ -58,7 +58,7 @@ public:
 
     \param parent The parent window
     \param editor The cell that contains the text that is to be completed
-    \param AutoComplete The autocompletion data
+    \param autocomplete The autocompletion data
     \param type The type of completion needed
     \param doneptr A pointer that will be set to NULL when the pop-up is destroyed.
    */

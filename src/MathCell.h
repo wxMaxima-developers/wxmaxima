@@ -97,7 +97,6 @@ enum
   allows every element in the worksheet to identify itself to an
   eventual screen reader.
 
-\def WXUNUSED(x) x
  */
 #if wxUSE_ACCESSIBILITY
 class MathCell: public wxAccessible
