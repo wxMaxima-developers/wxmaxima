@@ -75,8 +75,6 @@ public:
 
   void PrintHeader(int pageNum, wxDC *dc);
 
-  void GetScreenScale(double *scaleX, double *scaleY);
-
 private:
   Configuration **m_configuration, *m_oldconfig;
   int m_numberOfPages;

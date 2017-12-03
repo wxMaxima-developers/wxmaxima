@@ -25,6 +25,9 @@
   MathPrintOut is the class that handles printing.
 */
 
+//! Bitmaps are scaled down if the resolution of the DC is too low.
+#define DCSCALE 1.0
+
 #include "MathPrintout.h"
 #include "GroupCell.h"
 
@@ -76,10 +79,8 @@ bool MathPrintout::OnPrintPage(int num)
   
   int pageWidth, pageHeight;
   int marginX, marginY;
-  double screenScaleX, screenScaleY;
   GetPageSizePixels(&pageWidth, &pageHeight);
   GetPageMargins(&marginX, &marginY);
-  GetScreenScale(&screenScaleX, &screenScaleY);
   
   // Make sure that during print nothing is outside the crop rectangle
 
@@ -186,9 +187,9 @@ void MathPrintout::BreakPages()
 
 void MathPrintout::SetupData()
 {
-  wxDC *dc = GetDC();
-  
+  wxDC *dc = GetDC();  
   *m_configuration = new Configuration(*dc);
+  
   m_printConfigCreated = true;
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
   (*m_configuration)->ShowBrackets((*m_configuration)->PrintBrackets());
@@ -197,7 +198,9 @@ void MathPrintout::SetupData()
   int marginX, marginY;
   GetPageSizePixels(&pageWidth, &pageHeight);
   GetPageMargins(&marginX, &marginY);
-  (*m_configuration)->SetZoomFactor_temporarily(1.5);
+
+  dc->SetUserScale(1.0/DCSCALE,1.0/DCSCALE);
+  (*m_configuration)->SetZoomFactor_temporarily(DCSCALE);
 
   (*m_configuration)->SetClientWidth(pageWidth - 2 * marginX
                                - (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent()));
@@ -289,23 +292,6 @@ void MathPrintout::Recalculate()
     tmp->Recalculate();
     tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }
-}
-
-
-void MathPrintout::GetScreenScale(double *scaleX, double *scaleY)
-{
-  int pageSizeX, pageSizeY;
-  int previewSizeX, previewSizeY;
-  wxDC *dc = GetDC();
-
-  GetPageSizePixels(&pageSizeX, &pageSizeY);
-  int marginX, marginY;
-  GetPageMargins(&marginX, &marginY);
-  (*m_configuration)->SetCanvasSize(wxSize(pageSizeX - marginX, pageSizeY - marginX));
-  dc->GetSize(&previewSizeX, &previewSizeY);
-
-  *scaleX = ((double) previewSizeX) / ((double) pageSizeX);
-  *scaleY = ((double) previewSizeY) / ((double) pageSizeY);
 }
 
 void MathPrintout::DestroyTree()
