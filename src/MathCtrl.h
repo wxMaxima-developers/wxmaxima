@@ -351,7 +351,7 @@ private:
 
   /*! Remember that these cells were just added so this addition can be undone.
 
-    \param start      The first cell that has been added
+    \param parentOfStart The cell after the first cell that has been added
     \param end        The last cell that has been added
   */
   void TreeUndo_MarkCellsAsAdded(GroupCell *parentOfStart, GroupCell *end);
