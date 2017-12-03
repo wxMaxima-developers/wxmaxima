@@ -35,7 +35,9 @@ public:
   /*! The constructor.
 
     \param scale By which factor the resolution should be increased in respect
-                 to the default 755 DPI?
+           to the default 755 DPI?
+    \param configuration A pointer to the pointer to this worksheet's configuration
+           storage
   */
   Bitmap(Configuration **configuration, int scale = 1);
 

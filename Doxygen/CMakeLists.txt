@@ -4,8 +4,9 @@ if(DOXYGEN_FOUND)
     # maybe these string commands may be changed to configure_file
     file(READ ${CMAKE_SOURCE_DIR}/Doxygen/Doxyfile DOXYFILE)
     file(COPY ${CMAKE_SOURCE_DIR}/Doxygen/wxMaxima.gif DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/html/)
-    string(REPLACE "INPUT                  = ../src .." "INPUT = ${CMAKE_SOURCE_DIR}/src" DOXYFILE "${DOXYFILE}")
-    string(REPLACE "PROJECT_LOGO           = ../data/wxmaxima.png" "PROJECT_LOGO ${CMAKE_SOURCE_DIR}/Doxygen/wxMaxima.gif" DOXYFILE "${DOXYFILE}")
+    string(REPLACE "@HAVE_GRAPHVIZ@" "${DOXYGEN_DOT_FOUND}" DOXYFILE "${DOXYFILE}")
+    string(REPLACE "../src .." "${CMAKE_SOURCE_DIR}/src" DOXYFILE "${DOXYFILE}")
+    string(REPLACE "../data/wxmaxima.png" "\"${CMAKE_SOURCE_DIR}/Doxygen/wxMaxima.gif\"" DOXYFILE "${DOXYFILE}")
     file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.real "${DOXYFILE}")
     message(STATUS "Copied and patched ${CMAKE_SOURCE_DIR}/Doxygen/Doxyfile to ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.real")
     # html should probably be renamed to 'doxygen', 'sourcedocumentation' or something like that

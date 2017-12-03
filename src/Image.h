@@ -76,10 +76,9 @@ public:
 
   /*! A constructor that loads an image
 
+    \param config The pointer to the current configuration storage for the worksheet
     \param image The name of the file
     \param filesystem The filesystem to load it from
-    \param viewport_xsize The width of the viewport the image is to be displayed in
-    \param viewport_ysize The height of the viewport the image is to be displayed in
     \param remove true = Delete the file after loading it
    */
   Image(Configuration **config, wxString image, bool remove = true, wxFileSystem *filesystem = NULL);

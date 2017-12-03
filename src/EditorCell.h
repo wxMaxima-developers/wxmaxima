@@ -295,7 +295,7 @@ public:
   //! Return the index of the 1st char of the line containing the letter pos.
   size_t BeginningOfLine(long pos);
 
-  //! Return the index of the last char of the line containing the letter #pos,
+  //! Return the index of the last char of the line containing the letter \#pos,
   size_t EndOfLine(long pos);
 
   //! Adds a ";" to the end of the last command in this cell in case that it doesn't end in $ or ;

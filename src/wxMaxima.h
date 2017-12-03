@@ -246,6 +246,7 @@ protected:
                          This parameter contains the filename of the manual we aren't
                          using currently so the help browser can open a tab containing
                          this file.
+    \param keyword The keyword to show help for
   */
   void ShowHTMLHelp(wxString helpfile, wxString otherhelpfile, wxString keyword);
 
@@ -368,9 +369,10 @@ protected:
   wxString ExtractFirstExpression(wxString entry);
 
   wxString GetDefaultEntry();
-
-  bool StartServer();                              //!< starts the server
-  /*!< starts maxima (uses getCommand) or restarts it if needed
+  
+  //! starts the server
+  bool StartServer();
+  /*! starts maxima (uses getCommand) or restarts it if needed
 
     Normally a restart is only needed if
       - maxima isn't currently in the process of starting up or
@@ -402,7 +404,7 @@ protected:
   /*! Determine where the text for ReadMiscText ends
 
     Every error message or other line maxima outputs should end in a newline character. 
-    But sometimes it doesn't and a <code><mth></code> tag comes first \f$ =>\f$ This 
+    But sometimes it doesn't and a <code>\<mth\></code> tag comes first \f$ =>\f$ This 
     function determines where the miscellaneous text ends.
    */
   int GetMiscTextEnd(const wxString &data);
@@ -458,7 +460,8 @@ protected:
   //!< Does this file contain anything worth saving?
   bool SaveNecessary();
 
-  /*!
+  /*!Setup maxima's variables
+
     This method is called once when maxima starts. It loads wxmathml.lisp
     and sets some option variables.
 

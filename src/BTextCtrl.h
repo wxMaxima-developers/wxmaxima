@@ -24,6 +24,10 @@
 #include <wx/wx.h>
 #include "Configuration.h"
 
+/*! A wxTextCtrl with parenthesis matching 
+
+\def WXUNUSED(x) x
+*/
 class BTextCtrl : public wxTextCtrl
 {
 public:

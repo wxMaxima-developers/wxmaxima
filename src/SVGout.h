@@ -42,9 +42,6 @@ public:
   /*! Renders tree as svg
     
     \param tree The list of cells that is to be rendered
-    \param maxSize maxSize tells the maximum size [in square pixels] that will be rendered. 
-           -1 means: No limit.
-
     \return true, if the svgout could be created.
    */
   wxSize SetData(MathCell *tree);

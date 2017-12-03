@@ -96,6 +96,8 @@ enum
   accessibility features MathCell is derived from wxAccessible which
   allows every element in the worksheet to identify itself to an
   eventual screen reader.
+
+\def WXUNUSED(x) x
  */
 #if wxUSE_ACCESSIBILITY
 class MathCell: public wxAccessible
@@ -265,9 +267,6 @@ class MathCell
 
     \param point The x and y position this cell is drawn at
     \param fontsize The font size that is to be used
-    \param all
-     - true: the whole list of cells has to be drawn starting with this one
-     - false: only this cell has to be drawn
    */
   virtual void Draw(wxPoint point, int fontsize);
 

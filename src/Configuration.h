@@ -109,8 +109,6 @@ public:
   /*! The constructor
     
     \param dc The drawing context that is to be used for drawing objects
-    \param isTopLevel Is this the first configuration instantiated for this
-           worksheet?
    */
   Configuration(wxDC &dc);
 
