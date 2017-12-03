@@ -175,7 +175,7 @@ public:
     Is used for displaying/printing/exporting of text/maths and is just an alias 
     for Configuration::Scale_Px
    */
-  int Scale_Px(double px){return (int)(px * GetZoomFactor() + 0.5); }
+  int Scale_Px(double px){return (int) round(px * GetZoomFactor()); }
 
   //! Determines the zoom factor the worksheet is displayed at
   double GetZoomFactor()
