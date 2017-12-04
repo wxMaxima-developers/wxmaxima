@@ -200,7 +200,20 @@ void MathPrintout::SetupData()
   GetPageMargins(&marginX, &marginY);
 
   dc->SetUserScale(1.0/DCSCALE,1.0/DCSCALE);
+  #ifdef __WXMSW__
+  // on MSW according to https://groups.google.com/forum/#!topic/wx-users/QF_W4g3Oe98
+  // the wxFont::SetPointSize is scaled relative to the screen DPI rate in order to
+  // get the right font size in pixels. Unfortunately this is true for printing, too,
+  // which might employ an entirely different font size...
+  int screendpi_x, screendpi_y;
+  int printdpi_x,  printdpi_y;
+  m_oldconfig->GetDC()->GetDPI(&screendpi_x,&screendpi_y);
+  (*m_configuration)->GetDC()->GetDPI(&printdpi_x,&printdpi_y);
+
+  (*m_configuration)->SetZoomFactor_temporarily(DCSCALE * printdpi_x / screendpi_x);
+  #else
   (*m_configuration)->SetZoomFactor_temporarily(DCSCALE);
+  #endif
 
   (*m_configuration)->SetClientWidth(pageWidth - 2 * marginX
                                - (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent()));
