@@ -84,6 +84,7 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
   m_notificationMessage = NULL;
   m_dc = new wxClientDC(this);
   m_configuration = new Configuration(*m_dc);
+  m_configuration->SetWorksheet(this);
   m_configuration->ReadConfig();
   m_redrawStart = NULL;
   m_redrawRequested = false;

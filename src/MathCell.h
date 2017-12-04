@@ -117,6 +117,7 @@ class MathCell
    */
   int Scale_Px(double px){return (*m_configuration)->Scale_Px(px); }
 #if wxUSE_ACCESSIBILITY
+  void SetWorkSheet(wxWindow *worksheet){m_worksheet = worksheet;}
   //! Accessibility: Describe the current cell to a Screen Reader
   virtual wxAccStatus GetDescription(int childId, wxString *description);
   //! Accessibility: Inform the Screen Reader which cell is the parent of this one

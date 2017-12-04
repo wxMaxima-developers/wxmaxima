@@ -596,7 +596,13 @@ public:
    */
   wxFont GetFont(int textStyle, int fontSize);
 
+  //! Get the worksheet this configuration storage is valid for
+  wxWindow *GetWorkSheet(){return m_workSheet;}
+  //! Set the worksheet this configuration storage is valid for
+  void SetWorkSheet(wxWindow *workSheet){m_workSheet = workSheet;}
 private:
+  //! The worksheet this configuration storage is valid for
+  wxWindow *m_workSheet;
   //! A replacement for the non-existing "==" operator for wxBitmaps.
   bool IsEqual(wxBitmap bitmap1, wxBitmap bitmap2);
   /*! Do these chars exist in the given font?

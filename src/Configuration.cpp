@@ -38,6 +38,7 @@ Configuration::Configuration(wxDC &dc) : m_dc(&dc)
   m_top = -1;
   m_bottom = -1;
   m_changeAsterisk = true;
+  m_workSheet = NULL;
   m_forceUpdate = false;
   m_outdated = false;
   m_printer = false;
