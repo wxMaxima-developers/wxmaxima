@@ -1157,7 +1157,10 @@ wxAccStatus MathCell::GetParent (wxAccessible **parent)
   if(*parent != this)
     *parent = m_parent;
   else
-    *parent = m_worksheet->GetAccessible();
+  {
+    if((*m_configuration)->GetWorkSheet() != NULL)
+      *parent = (*m_configuration)->GetWorkSheet()->GetAccessible();
+  }
   return  wxACC_OK;
 }
 
