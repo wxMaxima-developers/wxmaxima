@@ -22,7 +22,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update        ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ccache; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH"; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxwidgets gettext texinfo doxygen graphviz ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxwidgets gettext texinfo ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=/usr/local/opt/texinfo/bin:$PATH:/usr/local/opt/gettext/bin ; fi
 
 notification:
@@ -35,4 +35,10 @@ notification:
 git:
   depth: 15
 
-script: mkdir build && cd build && CXXFLAGS="-Wall -Wextra" cmake .. && cmake --build . && cmake --build . -- html && cmake --build . -- install DESTDIR=$(pwd)/installtest && cmake --build . -- package
+script:
+	- mkdir build
+	- cd build && CXXFLAGS="-Wall -Wextra" cmake ..
+	- cd build && cmake --build .
+	- cd build && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake --build . -- html; fi
+	- cd build && cmake --build . -- install DESTDIR=$(pwd)/installtest
+	- cd build && cmake --build . -- package
