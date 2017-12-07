@@ -211,7 +211,7 @@ void MathPrintout::SetupData()
 
   (*m_configuration)->SetZoomFactor_temporarily(DCSCALE * printPPI.x / screenPPI.x);
   #else
-  (*m_configuration)->SetZoomFactor_temporarily(DCSCALE);
+  (*m_configuration)->SetZoomFactor_temporarily(DCSCALE * 1.5);
   #endif
 
   (*m_configuration)->SetClientWidth(pageWidth - 2 * marginX
