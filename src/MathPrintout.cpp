@@ -205,12 +205,11 @@ void MathPrintout::SetupData()
   // the wxFont::SetPointSize is scaled relative to the screen DPI rate in order to
   // get the right font size in pixels. Unfortunately this is true for printing, too,
   // which might employ an entirely different font size...
-  int screendpi_x, screendpi_y;
-  int printdpi_x,  printdpi_y;
-  m_oldconfig->GetDC()->GetDPI(&screendpi_x,&screendpi_y);
-  (*m_configuration)->GetDC()->GetDPI(&printdpi_x,&printdpi_y);
+  wxSize screenPPI, printPPI;
+  screenPPI = m_oldconfig->GetDC()->GetPPI();
+  printPPI = (*m_configuration)->GetDC()->GetPPI();
 
-  (*m_configuration)->SetZoomFactor_temporarily(DCSCALE * printdpi_x / screendpi_x);
+  (*m_configuration)->SetZoomFactor_temporarily(DCSCALE * printPPI.x / screenPPI.x);
   #else
   (*m_configuration)->SetZoomFactor_temporarily(DCSCALE);
   #endif
