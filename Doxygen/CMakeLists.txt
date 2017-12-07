@@ -13,5 +13,5 @@ if(DOXYGEN_FOUND)
     add_custom_target(html
         COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile.real)
 else()
-    message(STATUS "Doxygen not found. Source documentation will not be build.")
+    message(STATUS "Doxygen not found. Source documentation will not be build." )
 endif()

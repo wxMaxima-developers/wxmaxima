@@ -1,12 +1,49 @@
-About the doxygen documentation                         {#mainpage}
-===============================
+wxMaxima                         {#mainpage}
+============================================
 
+What is this file about?
+------------------------
 This is the documentation for the C++ code of wxMaxima. If you are looking
 on information how to use the program instead you might want to consult
 the online manual instead that is shipped with the program and
 (after compilation of the program) can be found at
 [info/wxmaxima.html](../../info/wxmaxima.html) in the directory the
 contents of the tarball or the git repo the code is in.
+
+What is wxMaxima?
+-----------------
+wxMaxima is a full-featured graphical frontend for maxima, a full-featured
+computer algebra system that will do numeric calculations, if one wants to.
+But it is specialized in manipulating and solving symbolic equations.
+
+\image html wxMaxima.gif "A random screenshot of wxMaxima"
+
+How does wxMaxima work?
+-----------------------
+The main things that are important to know are:
+ - Maxima is a command-line program that can use a network connection in order
+   to communicate with a frontend.
+ - In data/wxmathml.lisp wxMaxima teaches maxima to talk in a XML dialect:
+   Maxima's normal output format is human-readable. But it can be tricked into 
+   containing strings that look like input or output labels and it doesn't 
+   guarantee that there is a way to transform output from maxima into a valid input
+   again that has exactly the same meaning.
+ - The worksheet is defined in the class MathCtrl.
+ - It is organized in GroupCells that each can contain a cell containing a list of
+   cells containing a label and the user input and a list of cells containing the
+   output label and 2d math from maxima.
+ - All cells contain pointers so they can be used as a part of an double-linked list
+   for the logical order they appear in and a second double-linked list that tells 
+   which cell to draw next. The latter is needed for handling the fact that some
+   things (like fractions) can be displayed as 2D maths and in a more linear way.
+ - For every mathematical function, image or piece of text a Cell there is a specialized 
+   MathCell type that "knows" how to draw it, how to convert it to a string or how to 
+   convert it to Mathml, OOML, RTF or any other data format wxMaxima supports.
+   There is, for example, an AbsCell for the <code>abs()</code> command, an IntCell 
+   representing <code>integrate</code>, a ParenCell for parenthesis and a FunCell for 
+   all the functions no special handling is needed for.
+ - Configuration is something like a central object keeping the configuration needed for 
+   displaying cells.
 
 How to get documentation for the code?
 --------------------------------------
@@ -71,7 +108,6 @@ Things you have to know
 
 Naming rules
 ------------
-
 Keeping the code more or less homogenous increases the readability. In
 order to archieve that wxMaxima uses a few naming rules:
  - The names of member variables are prefixed with "m_" for "member".

@@ -618,7 +618,7 @@ public:
     process uses the NewWindow() function only once.
 
     \param file The file name
-    \param evalInStartup Do we want to execute the file automatically, but halt on error?
+    \param evalOnStartup Do we want to execute the file automatically, but halt on error?
     \param exitAfterEval Do we want to close the window after the file has been evaluated?
    */
   void NewWindow(wxString file = wxEmptyString, bool evalOnStartup = false, bool exitAfterEval = false);

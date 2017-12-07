@@ -48,6 +48,13 @@ public:
     \param framerate The individual frame rate that has to be set for this cell only. 
     If the default frame rate from the config is to be used instead this parameter 
     has to be set to -1.
+    \param config A pointer to the pointer to the configuration storage of the 
+                  worksheet this cell belongs to.
+    \param filesystem The filesystem the contents of this slideshow can be found in.
+                      NULL = the operating system's filesystem
+    \param parent     The parent GroupCell this cell belongs to.
+    \param cellPointers All pointers that might point to this cell and that need to
+                        be set to NULL if this cell is deleted.
    */
   SlideShow(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxFileSystem *filesystem = NULL, int framerate = -1);
 
