@@ -36,9 +36,9 @@ git:
   depth: 15
 
 script:
-	- mkdir build
-	- cd build && CXXFLAGS="-Wall -Wextra" cmake ..
-	- cd build && cmake --build .
-	- cd build && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake --build . -- html; fi
-	- cd build && cmake --build . -- install DESTDIR=$(pwd)/installtest
-	- cd build && cmake --build . -- package
+ - mkdir build
+ - cd build && CXXFLAGS="-Wall -Wextra" cmake ..
+ - cd build && cmake --build .
+ - cd build && if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake --build . -- html; fi
+ - cd build && cmake --build . -- install DESTDIR=$(pwd)/installtest
+ - cd build && cmake --build . -- package
