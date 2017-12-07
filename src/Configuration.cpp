@@ -746,6 +746,14 @@ wxColour Configuration::GetColor(int st)
   return m_styles[st].color;
 }
 
+int Configuration::Scale_Px(double px)
+{
+  int retval = round(px * GetZoomFactor());
+  if (retval < 1)
+    retval = 1;
+  return retval;
+}
+
 /*
 wxFontEncoding Configuration::GetGreekFontEncoding()
 {

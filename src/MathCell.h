@@ -112,10 +112,9 @@ class MathCell
 
   /*! Scale font sizes and line widths according to the zoom factor.
 
-    Is used for displaying/printing/exporting of text/maths and is just an alias 
-    for Configuration::Scale_Px
+    Is used for displaying/printing/exporting of text/maths
    */
-  int Scale_Px(double px){return (*m_configuration)->Scale_Px(px); }
+  int Scale_Px(double px){ return (*m_configuration)->Scale_Px(px);}
 #if wxUSE_ACCESSIBILITY
   //! Accessibility: Describe the current cell to a Screen Reader
   virtual wxAccStatus GetDescription(int childId, wxString *description);

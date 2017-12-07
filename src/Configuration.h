@@ -170,10 +170,9 @@ public:
 
   /*! Scales a distance [in pixels] according to the zoom factor
 
-    Is used for displaying/printing/exporting of text/maths and is just an alias 
-    for Configuration::Scale_Px
+    Is used for displaying/printing/exporting of text/maths.
    */
-  int Scale_Px(double px){return (int) round(px * GetZoomFactor()); }
+  int Scale_Px(double px);
 
   //! Determines the zoom factor the worksheet is displayed at
   double GetZoomFactor()
