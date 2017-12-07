@@ -17,13 +17,12 @@ cache:
 
 before_install: 
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update                                             ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y libwxgtk3.0-dev libwxgtk3.0 gettext doxygen graphviz rpm ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget -c https://cmake.org/files/v3.9/cmake-3.9.6-Linux-x86_64.tar.gz ; tar xzf cmake-3.9.6-Linux-x86_64.tar.gz ; export PATH=$(pwd)/cmake-3.9.6-Linux-x86_64/bin:$PATH ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update        ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ccache; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH"; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxwidgets gettext texinfo ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq install -y libwxgtk3.0-dev libwxgtk3.0 gettext doxygen graphviz rpm ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --no-verbose -c https://cmake.org/files/v3.9/cmake-3.9.6-Linux-x86_64.tar.gz ; tar xzf cmake-3.9.6-Linux-x86_64.tar.gz ; export PATH=$(pwd)/cmake-3.9.6-Linux-x86_64/bin:$PATH ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";brew install ccache; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=/usr/local/opt/texinfo/bin:$PATH:/usr/local/opt/gettext/bin ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxwidgets gettext texinfo ; fi
 
 notification:
   email:
