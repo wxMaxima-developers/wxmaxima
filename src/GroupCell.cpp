@@ -567,44 +567,52 @@ void GroupCell::RecalculateWidths(int fontsize)
 
     UnBreakUpCells();
 
-    m_inputLabel->RecalculateWidthsList(fontsize);
-
-    // recalculate the position of input in ReEvaluateSelection!
-    if (m_inputLabel->m_next != NULL)
-    {
-      m_inputLabel->m_next->m_currentPoint.x = m_currentPoint.x + m_inputLabel->GetWidth() + MC_CELL_SKIP;
-    }
-
-    if (m_output == NULL || m_hide)
-    {
-      if ((configuration->ShowCodeCells()) ||
-          (m_groupType != GC_TYPE_CODE))
-      {
-        m_width = m_inputLabel->GetFullWidth();
-      }
-      else
-        m_width = 0;
-    }
+    if(m_inputLabel == NULL)
+      m_width = 100;
     else
     {
-      MathCell *tmp = m_output;
-      while (tmp != NULL)
+      m_inputLabel->RecalculateWidthsList(fontsize);
+      
+      // recalculate the position of input in ReEvaluateSelection!
+      if (m_inputLabel->m_next != NULL)
       {
-        tmp->RecalculateWidths(tmp->IsMath() ? m_mathFontSize : m_fontSize);
-        tmp = tmp->m_next;
+        m_inputLabel->m_next->m_currentPoint.x = m_currentPoint.x + m_inputLabel->GetWidth() + MC_CELL_SKIP;
       }
-      // This is not correct, m_width will be computed correctly in RecalculateHeight!
-      if ((configuration->ShowCodeCells()) ||
-          (m_groupType != GC_TYPE_CODE))
+      
+      if (m_output == NULL || m_hide)
       {
-        m_width = m_inputLabel->GetFullWidth();
+        if ((configuration->ShowCodeCells()) ||
+            (m_groupType != GC_TYPE_CODE))
+        {
+          if(m_inputLabel != NULL)
+            m_width = m_inputLabel->GetFullWidth();
+          else
+            m_width = 0;
+        }
+        else
+          m_width = 0;
       }
+      else
+      {
+        MathCell *tmp = m_output;
+        while (tmp != NULL)
+        {
+          tmp->RecalculateWidths(tmp->IsMath() ? m_mathFontSize : m_fontSize);
+          tmp = tmp->m_next;
+        }
+        // This is not correct, m_width will be computed correctly in RecalculateHeight!
+        if ((configuration->ShowCodeCells()) ||
+            (m_groupType != GC_TYPE_CODE))
+        {
+          m_width = m_inputLabel->GetFullWidth();
+        }
+      }
+      
+      BreakUpCells(m_fontSize, configuration->GetClientWidth());
+      BreakLines(configuration->GetClientWidth());
     }
-
-    BreakUpCells(m_fontSize, configuration->GetClientWidth());
-    BreakLines(configuration->GetClientWidth());
+    ResetData();
   }
-  ResetData();
 }
 
 void GroupCell::InputHeightChanged()

@@ -279,8 +279,8 @@ int MathCell::GetFullWidth()
     m_fullWidth = -Scale_Px(MC_CELL_SKIP);
     while (tmp != NULL)
     {
-      m_fullWidth += tmp->m_width;
-      tmp = tmp->m_next + Scale_Px(MC_CELL_SKIP);
+      m_fullWidth += tmp->m_width + Scale_Px(MC_CELL_SKIP);
+      tmp = tmp->m_next;
     }
   }
   return m_fullWidth;
