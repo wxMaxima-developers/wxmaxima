@@ -567,52 +567,44 @@ void GroupCell::RecalculateWidths(int fontsize)
 
     UnBreakUpCells();
 
-    if(m_inputLabel == NULL)
-      m_width = 100;
-    else
+    m_inputLabel->RecalculateWidthsList(fontsize);
+
+    // recalculate the position of input in ReEvaluateSelection!
+    if (m_inputLabel->m_next != NULL)
     {
-      m_inputLabel->RecalculateWidthsList(fontsize);
-      
-      // recalculate the position of input in ReEvaluateSelection!
-      if (m_inputLabel->m_next != NULL)
+      m_inputLabel->m_next->m_currentPoint.x = m_currentPoint.x + m_inputLabel->GetWidth() + MC_CELL_SKIP;
+    }
+
+    if (m_output == NULL || m_hide)
+    {
+      if ((configuration->ShowCodeCells()) ||
+          (m_groupType != GC_TYPE_CODE))
       {
-        m_inputLabel->m_next->m_currentPoint.x = m_currentPoint.x + m_inputLabel->GetWidth() + MC_CELL_SKIP;
-      }
-      
-      if (m_output == NULL || m_hide)
-      {
-        if ((configuration->ShowCodeCells()) ||
-            (m_groupType != GC_TYPE_CODE))
-        {
-          if(m_inputLabel != NULL)
-            m_width = m_inputLabel->GetFullWidth();
-          else
-            m_width = 0;
-        }
-        else
-          m_width = 0;
+        m_width = m_inputLabel->GetFullWidth();
       }
       else
-      {
-        MathCell *tmp = m_output;
-        while (tmp != NULL)
-        {
-          tmp->RecalculateWidths(tmp->IsMath() ? m_mathFontSize : m_fontSize);
-          tmp = tmp->m_next;
-        }
-        // This is not correct, m_width will be computed correctly in RecalculateHeight!
-        if ((configuration->ShowCodeCells()) ||
-            (m_groupType != GC_TYPE_CODE))
-        {
-          m_width = m_inputLabel->GetFullWidth();
-        }
-      }
-      
-      BreakUpCells(m_fontSize, configuration->GetClientWidth());
-      BreakLines(configuration->GetClientWidth());
+        m_width = 0;
     }
-    ResetData();
+    else
+    {
+      MathCell *tmp = m_output;
+      while (tmp != NULL)
+      {
+        tmp->RecalculateWidths(tmp->IsMath() ? m_mathFontSize : m_fontSize);
+        tmp = tmp->m_next;
+      }
+      // This is not correct, m_width will be computed correctly in RecalculateHeight!
+      if ((configuration->ShowCodeCells()) ||
+          (m_groupType != GC_TYPE_CODE))
+      {
+        m_width = m_inputLabel->GetFullWidth();
+      }
+    }
+
+    BreakUpCells(m_fontSize, configuration->GetClientWidth());
+    BreakLines(configuration->GetClientWidth());
   }
+  ResetData();
 }
 
 void GroupCell::InputHeightChanged()

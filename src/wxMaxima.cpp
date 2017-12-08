@@ -514,7 +514,7 @@ void wxMaxima::DoRawConsoleAppend(wxString s, int type)
   // that can contain it we need to create such a cell.
   if (m_console->GetTree() == NULL)
     m_console->InsertGroupCells(
-            new GroupCell(&(m_console->m_configuration), GC_TYPE_TEXT, &m_console->m_cellPointers, wxEmptyString));
+            new GroupCell(&(m_console->m_configuration), GC_TYPE_CODE, &m_console->m_cellPointers, wxEmptyString));
 
   if (s.IsEmpty())
     return;

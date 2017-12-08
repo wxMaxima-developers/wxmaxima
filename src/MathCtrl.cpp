@@ -527,7 +527,7 @@ GroupCell *MathCtrl::InsertGroupCells(
         std::list<TreeUndoAction *> *undoBuffer
 )
 {
-  if (cells == NULL)
+  if (!cells)
     return NULL; // nothing to insert
 
   bool renumbersections = false; // only renumber when true
@@ -548,7 +548,7 @@ GroupCell *MathCtrl::InsertGroupCells(
   if (m_tree == NULL)
     where = NULL;
 
-  if (where != NULL)
+  if (where)
     next = dynamic_cast<GroupCell *>(where->m_next);
   else
   {
@@ -565,17 +565,13 @@ GroupCell *MathCtrl::InsertGroupCells(
   if (next)
     next->m_previous = next->m_previousToDraw = lastOfCellsToInsert;
   // make sure m_last still points to the last cell of the worksheet!!
-  if (next == NULL) // if there were no further cells
+  if (!next) // if there were no further cells
     m_last = lastOfCellsToInsert;
 
   m_configuration->SetCanvasSize(GetClientSize());
   if (renumbersections)
     NumberSections();
-  if(where != NULL)
-      Recalculate(where, false);
-  else
-      Recalculate(cells, false);
-    
+  Recalculate(where, false);
   m_saved = false; // document has been modified
 
   if (undoBuffer)
@@ -650,7 +646,7 @@ GroupCell *MathCtrl::GetWorkingGroup(bool resortToLast)
   {
     if (m_hCaretActive)
       tmp = m_hCaretPosition;
-  } 
+  }
 
   // No such cursor? Perhaps there is a vertically drawn one.
   if (tmp == NULL)
@@ -762,6 +758,8 @@ void MathCtrl::Recalculate(GroupCell *start, bool force)
     tmp = m_tree;
   else
     tmp = start;
+
+  m_configuration->SetCanvasSize(GetClientSize());
 
   m_configuration->SetForceUpdate(force);
   UpdateConfigurationClientSize();
