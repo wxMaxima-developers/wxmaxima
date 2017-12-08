@@ -567,14 +567,17 @@ void GroupCell::RecalculateWidths(int fontsize)
 
     UnBreakUpCells();
 
-    m_inputLabel->RecalculateWidthsList(fontsize);
-
-    // recalculate the position of input in ReEvaluateSelection!
-    if (m_inputLabel->m_next != NULL)
+    if(m_inputLabel != NULL)
     {
-      m_inputLabel->m_next->m_currentPoint.x = m_currentPoint.x + m_inputLabel->GetWidth() + MC_CELL_SKIP;
+      m_inputLabel->RecalculateWidthsList(fontsize);
+      
+      // recalculate the position of input in ReEvaluateSelection!
+      if (m_inputLabel->m_next != NULL)
+      {
+        m_inputLabel->m_next->m_currentPoint.x = m_currentPoint.x + m_inputLabel->GetWidth() + MC_CELL_SKIP;
+      }
     }
-
+    
     if (m_output == NULL || m_hide)
     {
       if ((configuration->ShowCodeCells()) ||
@@ -597,7 +600,10 @@ void GroupCell::RecalculateWidths(int fontsize)
       if ((configuration->ShowCodeCells()) ||
           (m_groupType != GC_TYPE_CODE))
       {
-        m_width = m_inputLabel->GetFullWidth();
+        if(m_inputLabel != NULL)
+          m_width = m_inputLabel->GetFullWidth();
+        else
+          m_width = 100;
       }
     }
 
@@ -659,9 +665,12 @@ void GroupCell::RecalculateHeightInput(int fontsize)
   if ((configuration->ShowCodeCells()) ||
       (m_groupType != GC_TYPE_CODE))
   {
-    m_inputLabel->RecalculateHeightList(fontsize);
-    m_center = m_inputLabel->GetMaxCenter();
-    m_height = m_inputLabel->GetMaxHeight();
+    if(m_inputLabel)
+    {
+      m_inputLabel->RecalculateHeightList(fontsize);
+      m_center = m_inputLabel->GetMaxCenter();
+      m_height = m_inputLabel->GetMaxHeight();
+    }
   }
   else
   {
