@@ -22,6 +22,33 @@ Building wxMaxima from source
 To build wxMaxima from sources you need to have a C++ compiler and the
 wxWidgets library installed.
 
+### Compiling wxMaxima on Linux and Linux-like systems (Cygwin, MacPorts, Homebrew,...)
+
+wxMaxima is built using the CMake build system.
+The following steps will build and install wxMaxima using CMake:
+
+    mkdir build
+    cd build
+    cmake ..
+    cmake --build .
+    sudo cmake --build . -- install
+
+If you want to create binary packages (tar.gz, tar.bz2, DEB & RPM), you can
+create them with:
+
+    cmake --build . -- package
+
+
+On Ubuntu or Debian the build prerequisites can be installed by doing
+a
+
+    sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev autoconf ibus-gtk ibus-gtk3 checkinstall gettext cmake
+
+beforehand or (if apt-get is configured to load the source package
+repositories and not only the binary packages) by the simpler
+
+    sudo apt-get build-dep wxmaxima
+
 
 ### Compiling on Mac OS X
 
@@ -69,37 +96,6 @@ configure script. To build a portable binary configure wxWidgets with
 With these options the build process will take a little longer, but
 the resulting binary will have less library dependencides.
 
-### Compiling wxMaxima with autotools
-
-If you are not building an official tarball but using the git version it
-is necessary to execute `./bootstrap` first in order to get the file
-./configure
-
-To build wxMaxima on Linux execute
-
-    ./configure
-    make
-    make allmo
-    sudo make install
-
-You can also try to create a .deb package instead of installing the
-program by doing a
-
-    ./configure
-    make
-    make allmo
-    checkinstall -D make install
-
-On Ubuntu or Debian the build prerequisites can be installed by doing
-a
-
-    sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev autoconf ibus-gtk ibus-gtk3 checkinstall gettext
-
-beforehand or (if apt-get is configured to load the source package
-repositories and not only the binary packages) by the simpler
-
-    sudo apt-get build-dep wxmaxima
-
 #### Mac OS X specific instructions
 
 To build an application bundle of wxMaxima on Mac OS X
@@ -141,23 +137,6 @@ contents is a self-contained wxMaxima installation that can be placed in the fol
 maxima was installed in, again with the caveat of the .dll files:
 
     make wxMaxima.win.zip
-
-
-### Compiling wxMaxima with CMake
-
-wxMaxima can also be build using the CMake build system.
-The following steps will build and install wxMaxima using CMake:
-
-    mkdir build
-    cd build
-    cmake ..
-    cmake --build .
-    sudo cmake --build . -- install
-
-If you want to create binary packages (tar.gz, tar.bz2, DEB & RPM), you can
-create them with:
-
-    cmake --build . -- package
 
 Additional information about installing and configuring wxMaxima
 ----------------------------------------------------------------

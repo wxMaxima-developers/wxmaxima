@@ -1,6 +1,0 @@
-#! /bin/sh
-
-aclocal \
-&& autoheader \
-&& automake --gnu --add-missing 2>&1 | sed -e "s/:[0-9]*: installing/ installs/g" \
-&& autoconf
