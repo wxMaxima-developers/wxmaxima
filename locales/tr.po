@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-07 07:33+0100\n"
+"POT-Creation-Date: 2017-12-10 11:00+0100\n"
 "PO-Revision-Date: 2017-07-06 06:38+0200\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -264,7 +264,7 @@ msgstr "&Maxima Yardımı"
 msgid "&Modulus Computation..."
 msgstr "&Modüler Hesaplama"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:233
+#: /home/gunter/src/wxmaxima/src/main.cpp:164
 #, fuzzy
 msgid "&New\tCtrl+N"
 msgstr "&Yeni\tCtrl+N"
@@ -281,7 +281,7 @@ msgstr "&Numerik İntegral"
 msgid "&Nusum"
 msgstr "&Nusum"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:234
+#: /home/gunter/src/wxmaxima/src/main.cpp:165
 #, fuzzy
 msgid "&Open\tCtrl+O"
 msgstr "&Aç\tCtrl+O"
@@ -418,7 +418,7 @@ msgstr ""
 "bir çizgiye benzemektedir.Yazdığınızda yada bir yazıyı yapıştırdığınızda "
 "yada  bir komutu çalıştırdığınız yerde görülür."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2211
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2220
 msgid "A GroupCell that bundles input with its output"
 msgstr ""
 
@@ -446,7 +446,7 @@ msgstr ""
 "değil aynı zamanda hesaplamalarınızın sonuçlarını da saklar.Belgenizi "
 "kaydederken 'wxMaxima XML document format' ı 'seçin "
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2206
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2215
 #, fuzzy
 msgid "A page break"
 msgstr "Sayfa sonu"
@@ -864,8 +864,8 @@ msgstr "Hata : Gösterimi çok uzun sürecek öok basamaklı bir sayı"
 msgid "Bug: Missing contents"
 msgstr "Hata: Eksik içerik"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1269
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1444
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1278
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1453
 msgid "Bug: No image counter to write to!"
 msgstr "Hata : Yazılacak görüntü sayacı yok"
 
@@ -2272,12 +2272,12 @@ msgstr "Faktöriyeller ve &Gamma "
 msgid "Fatal error"
 msgstr "Ölümcül Hata"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2151
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2160
 #, c-format
 msgid "Figure %d:"
 msgstr "Şekil %d:"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:235
+#: /home/gunter/src/wxmaxima/src/main.cpp:166
 msgid "File"
 msgstr "Dosya"
 
@@ -4104,7 +4104,7 @@ msgstr "Kullanıcı tanımlı etiketler"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:889
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:104
-#: /home/gunter/src/wxmaxima/src/main.cpp:393
+#: /home/gunter/src/wxmaxima/src/main.cpp:324
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3433
 msgid "Open"
 msgstr "Aç"
@@ -6652,7 +6652,7 @@ msgstr "kaydedilmemiş"
 msgid "untitled"
 msgstr "Başlıksız"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:365
+#: /home/gunter/src/wxmaxima/src/main.cpp:296
 #, c-format
 msgid "untitled %d"
 msgstr "Başlıksız %d"
@@ -6671,7 +6671,7 @@ msgstr "Fonksiyon isimleri"
 msgid "use the actual values stored"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:350
+#: /home/gunter/src/wxmaxima/src/main.cpp:281
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5715
 msgid "wxMaxima"
 msgstr "wxMaxima"
@@ -6764,7 +6764,7 @@ msgstr ""
 msgid "wxMaxima document"
 msgstr "wxMaxima Belgesi"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:395
+#: /home/gunter/src/wxmaxima/src/main.cpp:326
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgstr "wxMaxima Belgesi (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 

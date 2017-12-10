@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: da\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-07 07:33+0100\n"
+"POT-Creation-Date: 2017-12-10 11:00+0100\n"
 "PO-Revision-Date: 2009-06-08 20:39-0300\n"
 "Last-Translator: Jens Thostrup <jt@gu-nuuk.gl>\n"
 "Language-Team: danish <matematik@gu_nuuk.gl>\n"
@@ -258,7 +258,7 @@ msgstr "Vis Maxima Hjælp"
 msgid "&Modulus Computation..."
 msgstr "&Modulus-beregning..."
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:233
+#: /home/gunter/src/wxmaxima/src/main.cpp:164
 #, fuzzy
 msgid "&New\tCtrl+N"
 msgstr "&Ny\tCtrl+N"
@@ -277,7 +277,7 @@ msgstr "Anvend &nusum"
 
 # Jeg har valgt Å her. Det er det samme i word, og man må formode at man vælger den dankse oversættelse, hvis man har et dansk tastatur, og b- var optaget af Batchfil
 # TJA! I Word 2003 er ny b - måske fordi Å er et specialtegn i den store verden.
-#: /home/gunter/src/wxmaxima/src/main.cpp:234
+#: /home/gunter/src/wxmaxima/src/main.cpp:165
 #, fuzzy
 msgid "&Open\tCtrl+O"
 msgstr "&Åbn\tCtrl+O"
@@ -413,7 +413,7 @@ msgstr ""
 "vandret linje mellem celler. Den indikerer hvor en ny celle vil blive "
 "indsat, hvis du begynder at skrive, indsætter tekst eller udføre en kommando."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2211
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2220
 msgid "A GroupCell that bundles input with its output"
 msgstr ""
 
@@ -442,7 +442,7 @@ msgstr ""
 "dine beregninger. Vælg 'wxMaxima XML document' som filtype, når du gemmer "
 "dit dokument. "
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2206
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2215
 #, fuzzy
 msgid "A page break"
 msgstr "Indsæt billede"
@@ -833,8 +833,8 @@ msgstr ""
 msgid "Bug: Missing contents"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1269
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1444
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1278
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1453
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -2252,12 +2252,12 @@ msgstr "Fakultet og &Gamma-funktion"
 msgid "Fatal error"
 msgstr "Alvorlig fejl"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2151
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2160
 #, fuzzy, c-format
 msgid "Figure %d:"
 msgstr "&Indstillinger..."
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:235
+#: /home/gunter/src/wxmaxima/src/main.cpp:166
 msgid "File"
 msgstr "Fil"
 
@@ -4034,7 +4034,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:889
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:104
-#: /home/gunter/src/wxmaxima/src/main.cpp:393
+#: /home/gunter/src/wxmaxima/src/main.cpp:324
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3433
 msgid "Open"
 msgstr "Åbn"
@@ -6577,7 +6577,7 @@ msgstr "[ ikke gemt ]"
 msgid "untitled"
 msgstr "unavngivet"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:365
+#: /home/gunter/src/wxmaxima/src/main.cpp:296
 #, fuzzy, c-format
 msgid "untitled %d"
 msgstr "unavngivet"
@@ -6596,7 +6596,7 @@ msgstr "Navne på funktioner"
 msgid "use the actual values stored"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:350
+#: /home/gunter/src/wxmaxima/src/main.cpp:281
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5715
 msgid "wxMaxima"
 msgstr "wxMaxima"
@@ -6688,7 +6688,7 @@ msgstr ""
 msgid "wxMaxima document"
 msgstr "wxMaxima-dokument"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:395
+#: /home/gunter/src/wxmaxima/src/main.cpp:326
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgstr "wxMaxima-dokument (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 

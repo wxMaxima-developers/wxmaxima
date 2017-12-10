@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-07 07:33+0100\n"
+"POT-Creation-Date: 2017-12-10 11:00+0100\n"
 "PO-Revision-Date: 2010-03-10 14:21+0100\n"
 "Last-Translator: Robert Marik <maarik@mendelu.cz>\n"
 "Language-Team:  <cs@li.org>\n"
@@ -268,7 +268,7 @@ msgstr "Zobrazit nápovědu programu Maxima"
 msgid "&Modulus Computation..."
 msgstr "Výpočet &modulo..."
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:233
+#: /home/gunter/src/wxmaxima/src/main.cpp:164
 #, fuzzy
 msgid "&New\tCtrl+N"
 msgstr "&Nový\tCtrl+N"
@@ -285,7 +285,7 @@ msgstr "&Numerické integrování"
 msgid "&Nusum"
 msgstr "&Numerické sčítání (nusum)"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:234
+#: /home/gunter/src/wxmaxima/src/main.cpp:165
 #, fuzzy
 msgid "&Open\tCtrl+O"
 msgstr "&Otevřít\tCtrl+O"
@@ -423,7 +423,7 @@ msgstr ""
 "vodorovná čára mezi kolonkami. Indikuje novou buňku při psaní nebo vkládání "
 "textu nebo provedení příkazu menu."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2211
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2220
 msgid "A GroupCell that bundles input with its output"
 msgstr ""
 
@@ -450,7 +450,7 @@ msgstr ""
 "a komentáře, ale také výsledky výpočtů. Při ukládání dokumentu zvolte "
 "'wxMaxima XML document' formát."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2206
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2215
 #, fuzzy
 msgid "A page break"
 msgstr "Zlom stránky"
@@ -848,8 +848,8 @@ msgstr ""
 msgid "Bug: Missing contents"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1269
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1444
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1278
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1453
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -2247,12 +2247,12 @@ msgstr "Faktoriály a &gamma funkce"
 msgid "Fatal error"
 msgstr "Závažná chyba"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2151
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2160
 #, fuzzy, c-format
 msgid "Figure %d:"
 msgstr "Obrázek"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:235
+#: /home/gunter/src/wxmaxima/src/main.cpp:166
 msgid "File"
 msgstr "Soubor"
 
@@ -4019,7 +4019,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:889
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:104
-#: /home/gunter/src/wxmaxima/src/main.cpp:393
+#: /home/gunter/src/wxmaxima/src/main.cpp:324
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3433
 msgid "Open"
 msgstr "Otevřít"
@@ -6530,7 +6530,7 @@ msgstr "[ neuloženo ]"
 msgid "untitled"
 msgstr "untitled"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:365
+#: /home/gunter/src/wxmaxima/src/main.cpp:296
 #, fuzzy, c-format
 msgid "untitled %d"
 msgstr "untitled"
@@ -6549,7 +6549,7 @@ msgstr "Názvy funkcí"
 msgid "use the actual values stored"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:350
+#: /home/gunter/src/wxmaxima/src/main.cpp:281
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5715
 msgid "wxMaxima"
 msgstr "wxMaxima"
@@ -6640,7 +6640,7 @@ msgstr ""
 msgid "wxMaxima document"
 msgstr "wxMaxima dokument"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:395
+#: /home/gunter/src/wxmaxima/src/main.cpp:326
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgstr "wxMaxima dokument (*.wxm)|*.wxm"
 

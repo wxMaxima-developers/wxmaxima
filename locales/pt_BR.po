@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-07 07:33+0100\n"
+"POT-Creation-Date: 2017-12-10 11:00+0100\n"
 "PO-Revision-Date: 2012-11-15 15:29-0200\n"
 "Last-Translator: Eduardo M Kalinowski <eduardo@kalinowski.com.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -265,7 +265,7 @@ msgstr "Mostrar ajuda do Maxima"
 msgid "&Modulus Computation..."
 msgstr "Cálculo com &módulo..."
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:233
+#: /home/gunter/src/wxmaxima/src/main.cpp:164
 #, fuzzy
 msgid "&New\tCtrl+N"
 msgstr "Novo\tCtrl+N"
@@ -282,7 +282,7 @@ msgstr "Integração &numérica"
 msgid "&Nusum"
 msgstr "&Nusum"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:234
+#: /home/gunter/src/wxmaxima/src/main.cpp:165
 #, fuzzy
 msgid "&Open\tCtrl+O"
 msgstr "&Abrir\tCtrl+O"
@@ -415,7 +415,7 @@ msgstr ""
 "como uma linha horizontal entre células. Ele mostra onde uma nova célula vai "
 "aparecer se você digitar ou colar texto, ou se executar um comando do menu."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2211
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2220
 msgid "A GroupCell that bundles input with its output"
 msgstr ""
 
@@ -442,7 +442,7 @@ msgstr ""
 "só a entrada e os comentários textuais, mas também as saídas dos cálculos. "
 "Quando salvar o documento, selecione o formato 'Documento XML do wxMaxima'."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2206
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2215
 #, fuzzy
 msgid "A page break"
 msgstr "Quebra de página"
@@ -830,8 +830,8 @@ msgstr ""
 msgid "Bug: Missing contents"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1269
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1444
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1278
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1453
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -2218,12 +2218,12 @@ msgstr "Fatoriais e &gama"
 msgid "Fatal error"
 msgstr "Erro fatal"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2151
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2160
 #, c-format
 msgid "Figure %d:"
 msgstr "Figura %d:"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:235
+#: /home/gunter/src/wxmaxima/src/main.cpp:166
 msgid "File"
 msgstr "Arquivo"
 
@@ -3964,7 +3964,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:889
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:104
-#: /home/gunter/src/wxmaxima/src/main.cpp:393
+#: /home/gunter/src/wxmaxima/src/main.cpp:324
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3433
 msgid "Open"
 msgstr "Abrir"
@@ -6472,7 +6472,7 @@ msgstr "não salvo"
 msgid "untitled"
 msgstr "sem título"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:365
+#: /home/gunter/src/wxmaxima/src/main.cpp:296
 #, c-format
 msgid "untitled %d"
 msgstr "sem título %d"
@@ -6491,7 +6491,7 @@ msgstr "Nomes de funções"
 msgid "use the actual values stored"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:350
+#: /home/gunter/src/wxmaxima/src/main.cpp:281
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5715
 msgid "wxMaxima"
 msgstr "wxMaxima"
@@ -6583,7 +6583,7 @@ msgstr ""
 msgid "wxMaxima document"
 msgstr "Documento do wxMaxima"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:395
+#: /home/gunter/src/wxmaxima/src/main.cpp:326
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgstr "Documento do wxMaxima (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxmaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-07 07:33+0100\n"
+"POT-Creation-Date: 2017-12-10 11:00+0100\n"
 "PO-Revision-Date: 2016-02-22 16:12-0500\n"
 "Last-Translator: kahkonen <mika.m.kahkonen@gmail.com>\n"
 "Language-Team: Finnish\n"
@@ -265,7 +265,7 @@ msgstr "&Maximan ohje"
 msgid "&Modulus Computation..."
 msgstr "&Modulo-laskenta..."
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:233
+#: /home/gunter/src/wxmaxima/src/main.cpp:164
 #, fuzzy
 msgid "&New\tCtrl+N"
 msgstr "Uusi\tCtrl+N"
@@ -282,7 +282,7 @@ msgstr "&Numeerinen integrointi"
 msgid "&Nusum"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:234
+#: /home/gunter/src/wxmaxima/src/main.cpp:165
 #, fuzzy
 msgid "&Open\tCtrl+O"
 msgstr "&Avaa\tCtrl+O"
@@ -418,7 +418,7 @@ msgstr ""
 "näyttää minne uusi solu muodostetaan kirjoittaessasi tai liitttäessäsi "
 "tekstiä tai suorittaessasi valikkokomennon."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2211
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2220
 msgid "A GroupCell that bundles input with its output"
 msgstr ""
 
@@ -445,7 +445,7 @@ msgstr ""
 "ja kommenttien lisäksi laskutoimituksiesi tulokset. Kun tallennat "
 "asiakirjaasi, valitse muodoksi  'wxMaxima XML-asiakirja'. "
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2206
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2215
 #, fuzzy
 msgid "A page break"
 msgstr "Sivunvaihto"
@@ -831,8 +831,8 @@ msgstr ""
 msgid "Bug: Missing contents"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1269
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1444
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1278
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1453
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -2201,12 +2201,12 @@ msgstr ""
 msgid "Fatal error"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2151
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2160
 #, c-format
 msgid "Figure %d:"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:235
+#: /home/gunter/src/wxmaxima/src/main.cpp:166
 msgid "File"
 msgstr "Tiedosto"
 
@@ -3930,7 +3930,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:889
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:104
-#: /home/gunter/src/wxmaxima/src/main.cpp:393
+#: /home/gunter/src/wxmaxima/src/main.cpp:324
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3433
 msgid "Open"
 msgstr "Avaa"
@@ -6381,7 +6381,7 @@ msgstr "tallentamaton"
 msgid "untitled"
 msgstr "nimetön"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:365
+#: /home/gunter/src/wxmaxima/src/main.cpp:296
 #, c-format
 msgid "untitled %d"
 msgstr "nimetön %d"
@@ -6400,7 +6400,7 @@ msgstr "Funktioiden nimet"
 msgid "use the actual values stored"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:350
+#: /home/gunter/src/wxmaxima/src/main.cpp:281
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5715
 msgid "wxMaxima"
 msgstr "wxMaxima"
@@ -6494,7 +6494,7 @@ msgstr ""
 msgid "wxMaxima document"
 msgstr "wxMaxima asiakirja"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:395
+#: /home/gunter/src/wxmaxima/src/main.cpp:326
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgstr "wxMaxima asiakirja (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 

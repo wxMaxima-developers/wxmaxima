@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-07 07:33+0100\n"
+"POT-Creation-Date: 2017-12-10 11:00+0100\n"
 "PO-Revision-Date: 2017-06-17 16:30+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -266,7 +266,7 @@ msgstr "Дов&ідка з Maxima"
 msgid "&Modulus Computation..."
 msgstr "Обчислення за &модулем…"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:233
+#: /home/gunter/src/wxmaxima/src/main.cpp:164
 msgid "&New\tCtrl+N"
 msgstr "С&творити\tCtrl+N"
 
@@ -282,7 +282,7 @@ msgstr "&Числове інтегрування"
 msgid "&Nusum"
 msgstr "&Підсумовування (nusum)"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:234
+#: /home/gunter/src/wxmaxima/src/main.cpp:165
 msgid "&Open\tCtrl+O"
 msgstr "&Відкрити\tCtrl+O"
 
@@ -417,7 +417,7 @@ msgstr ""
 "нова комірка, якщо ви введете або вставите текст чи скористаєтеся якимось "
 "пунктом меню."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2211
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2220
 msgid "A GroupCell that bundles input with its output"
 msgstr ""
 
@@ -445,7 +445,7 @@ msgstr ""
 "результатів обчислень. Під час збереження вашого документа виберіть формат "
 "«XML-документ wxMaxima»."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2206
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2215
 #, fuzzy
 msgid "A page break"
 msgstr "Розрив сторінки"
@@ -860,8 +860,8 @@ msgstr ""
 msgid "Bug: Missing contents"
 msgstr "Вада: немає вмісту"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1269
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1444
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1278
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1453
 msgid "Bug: No image counter to write to!"
 msgstr "Вада: немає лічильника зображень для запису даних!"
 
@@ -2249,12 +2249,12 @@ msgstr "Факторіали і &гамма-функція"
 msgid "Fatal error"
 msgstr "Критична помилка"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2151
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2160
 #, c-format
 msgid "Figure %d:"
 msgstr "Рисунок %d:"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:235
+#: /home/gunter/src/wxmaxima/src/main.cpp:166
 msgid "File"
 msgstr "Файл"
 
@@ -4128,7 +4128,7 @@ msgstr "Лише визначені користувачем мітки"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:889
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:104
-#: /home/gunter/src/wxmaxima/src/main.cpp:393
+#: /home/gunter/src/wxmaxima/src/main.cpp:324
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3433
 msgid "Open"
 msgstr "Відкрити"
@@ -6681,7 +6681,7 @@ msgstr "не збережено"
 msgid "untitled"
 msgstr "без назви"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:365
+#: /home/gunter/src/wxmaxima/src/main.cpp:296
 #, c-format
 msgid "untitled %d"
 msgstr "без назви %d"
@@ -6699,7 +6699,7 @@ msgstr "Назви функцій"
 msgid "use the actual values stored"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:350
+#: /home/gunter/src/wxmaxima/src/main.cpp:281
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5715
 msgid "wxMaxima"
 msgstr "wxMaxima"
@@ -6794,7 +6794,7 @@ msgstr ""
 msgid "wxMaxima document"
 msgstr "Документ wxMaxima"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:395
+#: /home/gunter/src/wxmaxima/src/main.cpp:326
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgstr "документ wxMaxima (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 
