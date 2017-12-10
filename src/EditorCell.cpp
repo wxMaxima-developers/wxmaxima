@@ -4220,10 +4220,40 @@ bool EditorCell::CheckChanges()
 
 int EditorCell::ReplaceAll(wxString oldString, wxString newString, bool IgnoreCase)
 {
+  if (oldString == wxEmptyString)
+    return 0;
+  
   SaveValue();
-  wxString newText = m_text;
-  newText.Replace(wxT("\r"), wxT(" "));
-  int count = newText.Replace(oldString, newString);
+  wxString newText;
+  int count = 0;
+  if(!IgnoreCase)
+  {
+    newText = m_text;
+    newText.Replace(wxT("\r"), wxT(" "));
+    count = newText.Replace(oldString, newString);
+  }
+  else
+  {
+    int pos;
+    wxString src = m_text;
+    src.Replace(wxT("\r"), wxT(" "));
+    wxString src_LowerCase = src;
+    src_LowerCase.MakeLower();    
+    oldString.MakeLower();
+    do{
+      pos = src_LowerCase.Find(oldString);
+      if(pos == wxNOT_FOUND)
+        newText += src;
+      else
+      {
+        newText += src.Left(pos);        
+        newText += newString;
+        src_LowerCase = src_LowerCase.Right(src_LowerCase.Length()-pos-newString.Length());
+        src = src.Right(src.Length()-pos-newString.Length());
+        count ++;
+      }
+    } while((pos != wxNOT_FOUND) && (src != wxEmptyString));
+  }
   if (count > 0)
   {
     m_text = newText;

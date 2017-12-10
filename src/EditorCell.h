@@ -458,8 +458,6 @@ public:
   bool CheckChanges();
 
   /*! Replaces all occurrences of a given string
-
-    \todo Implement the IgnoreCase case.
    */
   int ReplaceAll(wxString oldString, wxString newString, bool IgnoreCase);
 
