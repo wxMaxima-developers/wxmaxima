@@ -7579,7 +7579,7 @@ void MathCtrl::Replace(wxString oldString, wxString newString, bool ignoreCase)
 
   if (GetActiveCell() != NULL)
   {
-    if (GetActiveCell()->ReplaceSelection(oldString, newString))
+    if (GetActiveCell()->ReplaceSelection(oldString, newString, false, ignoreCase))
     {
       m_saved = false;
       GroupCell *group = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());

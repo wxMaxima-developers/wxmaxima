@@ -3874,9 +3874,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
         m_console->m_findDialog = new FindReplaceDialog(
                 this,
                 &m_findData,
-                _("Find and Replace"),
-                wxFR_REPLACEDIALOG |
-                wxFR_NOWHOLEWORD);
+                _("Find and Replace"));
 
       if (m_console->GetActiveCell() != NULL)
       {
