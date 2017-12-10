@@ -187,7 +187,13 @@ ConfigDialogue::~ConfigDialogue()
 }
 
 
-void ConfigDialogue::UsepngcairoChanged(wxCommandEvent &event)
+void ConfigDialogue::UsepngcairoChanged(
+  #ifdef __WXMAC__
+  wxCommandEvent &event
+  #else
+  wxCommandEvent &WXUNUSED(event)
+  #endif
+  )
 {
   #ifdef __WXMAC__
   if(event.IsChecked())
