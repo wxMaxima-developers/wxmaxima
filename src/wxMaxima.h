@@ -177,6 +177,10 @@ public:
   { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 
 private:
+  //! The number of Jiffies Maxima had used the last time we asked
+  long m_maximaJiffies_old;
+  //! The number of Jiffies the CPU had made the last time
+  long m_cpuTotalJiffies_old;
   //! Do we need to update the menus + toolbars?
   bool m_updateControls;
   //! A RegEx that matches gnuplot errors.
@@ -452,12 +456,15 @@ protected:
 
 #ifndef __WXMSW__
 
-  //!< reads the output the maxima command sends to stdout
+  //! reads the output the maxima command sends to stdout
   void ReadProcessOutput();
 
 #endif
 
-  //!< Does this file contain anything worth saving?
+  //! How much CPU horsepower is maxima using
+  double GetMaximaCPUPercentage();
+
+  //! Does this file contain anything worth saving?
   bool SaveNecessary();
 
   /*!Setup maxima's variables

@@ -134,6 +134,9 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, configFile, pos, size)
 {
+  m_maximaJiffies_old = 0;
+  m_cpuTotalJiffies_old = 0;
+
   m_updateControls = true;
   m_commandIndex = -1;
   m_isActive = true;
@@ -970,6 +973,7 @@ bool wxMaxima::StartMaxima(bool force)
     m_hasEvaluatedCells = false;
 
     // We start checking for maximas output again as soon as we send some data to the program.
+    m_statusBar->SetMaximaCPUPercentage(0);
     m_maximaStdoutPollTimer.Stop();
     m_CWD = wxEmptyString;
     if (m_isConnected)
@@ -1021,6 +1025,9 @@ bool wxMaxima::StartMaxima(bool force)
     }
   }
   m_console->m_cellPointers.m_errorList.Clear();
+
+  // Initialize the performance counter.
+  GetMaximaCPUPercentage();
   return true;
 }
 
@@ -1524,7 +1531,10 @@ void wxMaxima::ReadPrompt(wxString &data)
     if (!m_console->QuestionPending())
     {
       if (m_console->m_evaluationQueue.Empty())
+      {
+        m_statusBar->SetMaximaCPUPercentage(0);
         m_maximaStdoutPollTimer.Stop();
+      }
     }
   }
 }
@@ -3341,6 +3351,85 @@ bool wxMaxima::AbortOnError()
     return false;
 }
 
+double wxMaxima::GetMaximaCPUPercentage()
+{
+  int CpuJiffies = 0;
+  if(wxFileExists("/proc/stat"))
+  {
+    wxFileInputStream input("/proc/stat");
+    if(input.IsOk())
+    {
+      wxTextInputStream text(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+      wxString line;
+      while((!input.Eof()) && (!line.StartsWith("cpu ")))
+        line = text.ReadLine();
+      
+      // Strip the "cpu" from the line
+      line = line.Right(line.Length() - 4);
+      line.Trim(false);
+      wxStringTokenizer tokens(line,wxT(" "));
+      for(int i = 0; i < 3; i++)
+      {
+        if(tokens.HasMoreTokens())
+        {
+          long additionalJiffies;
+          if(!tokens.GetNextToken().ToLong(&additionalJiffies))
+            return -1;
+          CpuJiffies += additionalJiffies;
+        }
+        else
+          return -1;
+      }
+    }
+  }
+
+  int maximaJiffies = 0;
+  wxString statFileName = wxString::Format("/proc/%li/stat",m_pid);
+  if(wxFileExists(statFileName))
+  {
+    wxFileInputStream input(statFileName);
+    if(input.IsOk())
+    {
+      wxTextInputStream text(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+      wxString line = text.ReadLine();
+      
+      wxStringTokenizer tokens(line,wxT(" "));
+      for(int i = 0; i < 13; i++)
+      {
+        if(tokens.HasMoreTokens())
+          tokens.GetNextToken();
+        else return -1;
+      }
+
+      for(int i = 0; i < 4; i++)
+      {
+        {
+          if(tokens.HasMoreTokens())
+          {
+            long additionalJiffies;
+            if(!tokens.GetNextToken().ToLong(&additionalJiffies))
+            {
+              maximaJiffies = -1;
+              break;
+            }
+            maximaJiffies += additionalJiffies;
+          }
+          else return -1;
+        }
+      }
+    }
+  }
+  if(CpuJiffies == m_cpuTotalJiffies_old)
+    return -1;
+  
+  double retval =
+    (double)(maximaJiffies - m_maximaJiffies_old)/(CpuJiffies - m_cpuTotalJiffies_old);
+
+  m_maximaJiffies_old = maximaJiffies;
+  m_cpuTotalJiffies_old = CpuJiffies;
+  return retval;
+}
+
 void wxMaxima::OnTimerEvent(wxTimerEvent &event)
 {
   switch (event.GetId())
@@ -3358,6 +3447,8 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
           processEvent = new wxProcessEvent();
           GetEventHandler()->QueueEvent(processEvent);
         }
+
+        m_statusBar->SetMaximaCPUPercentage(GetMaximaCPUPercentage());
       }
       break;
     case KEYBOARD_INACTIVITY_TIMER_ID:
@@ -6909,7 +7000,10 @@ void wxMaxima::TryEvaluateNextInQueue()
     StatusMaximaBusy(waiting);
     // If maxima isn't doing anything there is no need to poll for input from
     // maxima's stdout.
-    m_maximaStdoutPollTimer.Stop();
+    {
+      m_maximaStdoutPollTimer.Stop();
+      m_statusBar->SetMaximaCPUPercentage(0);
+    }     
     // Inform the user that the evaluation queue length now is 0.
     EvaluationQueueLength(0);
     // The cell from the last evaluation might still be shown in it's "evaluating" state

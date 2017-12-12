@@ -29,6 +29,8 @@
 StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id)
 {
   int widths[] = {-1, 300, GetSize().GetHeight()};
+  m_maximaPercentage = -1;
+  m_oldmaximaPercentage = -1;
   SetFieldsCount(3, widths);
   m_stdToolTip = _(
           "Maxima, the program that does the actual mathematics is started as a separate process. This has the advantage that an eventual crash of maxima cannot harm wxMaxima, which displays the worksheet.\nThis icon indicates if data is transferred between maxima and wxMaxima.");
@@ -40,6 +42,7 @@ StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id)
   m_network_offline = GetImage("network-offline");
   m_network_transmit = GetImage("network-transmit");
   m_network_idle = GetImage("network-idle");
+  m_network_idle_inactive = wxBitmap(m_network_idle.ConvertToImage().ConvertToDisabled());
   m_network_receive = GetImage("network-receive");
   m_network_transmit_receive = GetImage("network-transmit-receive");
   m_networkStatus = new wxStaticBitmap(this, wxID_ANY, m_network_offline);
@@ -90,16 +93,30 @@ void StatusBar::OnTimerEvent(wxTimerEvent &WXUNUSED(event))
 
 void StatusBar::NetworkStatus(networkState status)
 {
-  if(status != m_oldNetworkState)
+  if((status != m_oldNetworkState) || (m_maximaPercentage !=
+                                       m_oldmaximaPercentage))
   {
-    m_oldNetworkState = status;
     switch (status)
     {
     case idle:
-      m_networkStatus->SetBitmap(m_network_idle);
+    {
+      if(status != m_oldNetworkState)
+        m_maximaPercentage = m_oldmaximaPercentage = -1;
+      if(m_maximaPercentage != 0)
+        m_networkStatus->SetBitmap(m_network_idle);
+      else
+        m_networkStatus->SetBitmap(m_network_idle_inactive);
+      
       m_networkState = status;
-      m_networkStatus->SetToolTip(m_stdToolTip);
-      break;
+      wxString toolTip = m_stdToolTip;
+      if(m_maximaPercentage >= 0)
+        toolTip +=wxString::Format(
+          _("\n\nMaxima is currently using %3.3f%% of the available CPU power."),
+          100.0*m_maximaPercentage
+          );
+      m_networkStatus->SetToolTip(toolTip);
+    }
+    break;
     case error:
       m_networkStatus->SetBitmap(m_network_error);
       m_networkState = status;
@@ -125,6 +142,8 @@ void StatusBar::NetworkStatus(networkState status)
     }
     break;
     }
+    m_oldNetworkState = status;
+    m_oldmaximaPercentage = m_maximaPercentage;
   }
 }
 

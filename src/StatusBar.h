@@ -61,12 +61,28 @@ public:
   wxStaticBitmap *GetNetworkStatusElement()
   { return m_networkStatus; }
 
+  //! Inform the status bar how many percents of the available CPU power maxima uses
+  void SetMaximaCPUPercentage(float percentage)
+    {
+      m_maximaPercentage = percentage;
+      NetworkStatus(m_oldNetworkState);
+    }
 protected:
   void OnSize(wxSizeEvent &event);
 
   void OnTimerEvent(wxTimerEvent &event);
 
 private:
+  /*! How many percents of the available CPU power does maxima use?
+
+    See m_maximaPercentage and SetMaximaCPUPercentage()
+   */
+  float m_maximaPercentage;
+  /*! How many percents of the available CPU power did maxima use when updating the network icon last?
+
+    See m_maximaPercentage and SetMaximaCPUPercentage()
+   */
+  float m_oldmaximaPercentage;
   networkState m_oldNetworkState;
   wxString m_stdToolTip;
   wxString m_networkErrToolTip;
@@ -90,6 +106,8 @@ private:
   wxBitmap m_network_transmit;
   //! The bitmap shown while not transmitting or receiving data
   wxBitmap m_network_idle;
+  //! The bitmap shown while not transmitting or receiving data and maxima not using CPU power
+  wxBitmap m_network_idle_inactive;
   //! The bitmap shown while receiving data
   wxBitmap m_network_receive;
   //! The bitmap shown while simultaneously receiving and transmitting data
