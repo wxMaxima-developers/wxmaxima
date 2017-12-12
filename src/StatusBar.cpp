@@ -87,6 +87,10 @@ void StatusBar::OnTimerEvent(wxTimerEvent &WXUNUSED(event))
   if (!m_icon_shows_receive && !m_icon_shows_transmit)
   {
     m_networkStatus->SetBitmap(m_network_idle);
+      if(m_maximaPercentage != 0)
+        m_networkStatus->SetBitmap(m_network_idle);
+      else
+        m_networkStatus->SetBitmap(m_network_idle_inactive);
     m_oldNetworkState = idle;
   }
 }

@@ -690,6 +690,8 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
                   MC_TYPE_ERROR);
     m_console->m_cellPointers.SetWorkingGroup(NULL);
   }
+  m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
+  m_statusBar->SetMaximaCPUPercentage(-1);
 }
 
 ///--------------------------------------------------------------------------------
