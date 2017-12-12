@@ -461,7 +461,10 @@ protected:
 
 #endif
 
-  //! How much CPU horsepower is maxima using
+  /*! How much CPU horsepower is maxima using currently?
+
+    \todo Implement this function for non-linux-like systems, too.
+   */
   double GetMaximaCPUPercentage();
 
   //! Does this file contain anything worth saving?
