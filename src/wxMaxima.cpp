@@ -974,7 +974,7 @@ bool wxMaxima::StartMaxima(bool force)
 
     // We start checking for maximas output again as soon as we send some data to the program.
     m_statusBar->SetMaximaCPUPercentage(0);
-    m_maximaStdoutPollTimer.StartOnce(1000);
+    m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
     m_CWD = wxEmptyString;
     if (m_isConnected)
     {
@@ -3438,7 +3438,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
 
         if((m_process != NULL) && (m_pid > 0) &&
            ((cpuPercentage > 0) || (m_StatusMaximaBusy_next != waiting)))
-          m_maximaStdoutPollTimer.StartOnce(1000);
+          m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
       }
       break;
     case KEYBOARD_INACTIVITY_TIMER_ID:
@@ -7016,7 +7016,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   // maxima: Is maxima is working correctly the stdout and stderr descriptors we
   // poll don't offer any data.
   ReadStdErr();
-  m_maximaStdoutPollTimer.StartOnce(1000);
+  m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
 
   if (m_console->m_evaluationQueue.m_workingGroupChanged)
   {

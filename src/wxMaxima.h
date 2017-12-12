@@ -66,6 +66,8 @@
  */
 #define DOCUMENT_VERSION_MINOR 5
 
+//! How many miliseconds should we wait between polling for stdout+cpu power?
+#define MAXIMAPOLLMSECS 1000
 
 #ifndef __WXGTK__
 
