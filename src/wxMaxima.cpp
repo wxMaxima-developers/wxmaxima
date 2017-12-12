@@ -974,7 +974,7 @@ bool wxMaxima::StartMaxima(bool force)
 
     // We start checking for maximas output again as soon as we send some data to the program.
     m_statusBar->SetMaximaCPUPercentage(0);
-    m_maximaStdoutPollTimer.Stop();
+    m_maximaStdoutPollTimer.StartOnce(1000);
     m_CWD = wxEmptyString;
     if (m_isConnected)
     {
@@ -1522,21 +1522,6 @@ void wxMaxima::ReadPrompt(wxString &data)
     m_inLispMode = true;
   else
     m_inLispMode = false;
-
-
-  // If maxima isn't running we stop polling its stderr for messages.
-  // Always reduce the number of CPU wakeups if you can.
-  if (m_ready)
-  {
-    if (!m_console->QuestionPending())
-    {
-      if (m_console->m_evaluationQueue.Empty())
-      {
-        m_statusBar->SetMaximaCPUPercentage(0);
-        m_maximaStdoutPollTimer.Stop();
-      }
-    }
-  }
 }
 
 void wxMaxima::SetCWD(wxString file)
@@ -3448,7 +3433,12 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
           GetEventHandler()->QueueEvent(processEvent);
         }
 
-        m_statusBar->SetMaximaCPUPercentage(GetMaximaCPUPercentage());
+        double cpuPercentage = GetMaximaCPUPercentage();
+        m_statusBar->SetMaximaCPUPercentage(cpuPercentage);
+
+        if((m_process != NULL) && (m_pid > 0) &&
+           ((cpuPercentage > 0) || (m_StatusMaximaBusy_next != waiting)))
+          m_maximaStdoutPollTimer.StartOnce(1000);
       }
       break;
     case KEYBOARD_INACTIVITY_TIMER_ID:
@@ -6998,12 +6988,6 @@ void wxMaxima::TryEvaluateNextInQueue()
   {
     // Maxima is no more busy.
     StatusMaximaBusy(waiting);
-    // If maxima isn't doing anything there is no need to poll for input from
-    // maxima's stdout.
-    {
-      m_maximaStdoutPollTimer.Stop();
-      m_statusBar->SetMaximaCPUPercentage(0);
-    }     
     // Inform the user that the evaluation queue length now is 0.
     EvaluationQueueLength(0);
     // The cell from the last evaluation might still be shown in it's "evaluating" state
@@ -7032,7 +7016,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   // maxima: Is maxima is working correctly the stdout and stderr descriptors we
   // poll don't offer any data.
   ReadStdErr();
-  m_maximaStdoutPollTimer.Start(1000);
+  m_maximaStdoutPollTimer.StartOnce(1000);
 
   if (m_console->m_evaluationQueue.m_workingGroupChanged)
   {
