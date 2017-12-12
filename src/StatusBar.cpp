@@ -136,6 +136,8 @@ void StatusBar::NetworkStatus(networkState status)
       ReceiveTimer.StartOnce(200);
       wxTimerEvent dummy;
       OnTimerEvent(dummy);
+      if((m_oldmaximaPercentage >= 0) &&(m_maximaPercentage < 0))
+        m_networkStatus->SetToolTip(m_stdToolTip);
     }
     break;
     case transmit:
@@ -143,6 +145,8 @@ void StatusBar::NetworkStatus(networkState status)
       SendTimer.StartOnce(200);
       wxTimerEvent dummy;
       OnTimerEvent(dummy);
+      if((m_oldmaximaPercentage >= 0) &&(m_maximaPercentage < 0))
+        m_networkStatus->SetToolTip(m_stdToolTip);
     }
     break;
     }
