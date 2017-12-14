@@ -948,7 +948,7 @@ void wxMaximaFrame::SetupMenu()
                         _("Use list as the arguments of a function"),
                         wxITEM_NORMAL);
   listuseSub->Append(menu_list_do_for_each_element, _("do for each element"),
-                        _("Execute a command for each element fo the list"),
+                        _("Execute a command for each element of the list"),
                         wxITEM_NORMAL);
   
   m_listMenu->Append(wxNewId(), _("Use list"),
