@@ -469,13 +469,13 @@ protected:
   //! How much CPU time has been used by the system until now? Used by GetMaximaCPUPercentage.
   long long GetTotalCpuTime();
 
-  //! How much CPU time has maxima used till now? Used by GetMaximaCPUPercentage.
+  /*! How much CPU time has maxima used till now? Used by GetMaximaCPUPercentage.
+
+    \todo Implement for MS Windows
+   */
   long long GetMaximaCpuTime();
 
-  /*! How much CPU horsepower is maxima using currently?
-
-    \todo Implement this function for non-linux-like systems, too.
-   */
+  //! How much CPU horsepower is maxima using currently?
   double GetMaximaCPUPercentage();
 
   //! Does this file contain anything worth saving?
