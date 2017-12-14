@@ -36,7 +36,7 @@ git:
 
 script:
  - mkdir build && cd build
- - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics"; else export CXXFLAGS="-Wall -Wextra" ; fi
+ - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics"; else export CXXFLAGS="-Wall -Wextra"; export CXX=color-g++; fi
  - cmake ..
  - cmake --build .
  # OSX builds are slow even without building the documentation and doxygen should
