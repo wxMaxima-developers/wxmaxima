@@ -5004,7 +5004,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                _("What to do:"),
                                expr, wxT("i"), wxT("disp(i)"),
                                m_console->m_configuration,
-                               this, -1, _("Do for each lisp element"), true);
+                               this, -1, _("Do for each list element"), true);
     wiz->SetValue(expr);
     wiz->SetLabel2ToolTip(_("The variable the value of the current source item is stored in."));
     wiz->SetLabel3ToolTip(_("Either a single expression or a comma-separated list of expressions "

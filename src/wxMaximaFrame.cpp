@@ -975,7 +975,7 @@ void wxMaximaFrame::SetupMenu()
                         _("Append a list to an existing list"),
                         wxITEM_NORMAL);
   listappendSub->Append(menu_list_interleave, _("Interleave"),
-                        _("Interleae the values of two lists"),
+                        _("Interleave the values of two lists"),
                         wxITEM_NORMAL);
   m_listMenu->Append(wxNewId(), _("Append"),
                      listappendSub,

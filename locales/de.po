@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-12-14 12:33+0100\n"
-"PO-Revision-Date: 2017-11-26 11:50+0100\n"
+"PO-Revision-Date: 2017-12-14 13:23+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -21,7 +21,7 @@ msgid ""
 "\n"
 "\n"
 "Maxima is currently using %3.3f%% of all available CPUs."
-msgstr ""
+msgstr "\n\nMaxima verwendet derzeit %3.3f%% der verfügbaren CPU-Last."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5804
 #, c-format
@@ -470,7 +470,7 @@ msgstr "Ein Kapiteltitel"
 
 #: /home/gunter/src/wxmaxima/src/GroupCell.h:394
 msgid "A space between GroupCells"
-msgstr ""
+msgstr "Ein Abstand zwischen Gruppenzellen"
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4500
 msgid "A sub-subsection heading"
@@ -532,7 +532,7 @@ msgstr "Ein Verzeichnis zum Suchpfad hinzufügen"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:990
 msgid ""
 "Add a new item to the beginning of the list. Useful for creating stacks."
-msgstr ""
+msgstr "Füge ein neues Element zum Anfang der Liste hinzu. Praktisch zur Generierung von Stapelspeichern."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5049
 msgid "Add an element to a list"
@@ -638,11 +638,11 @@ msgstr "Kantenglättung für Linien."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:980
 msgid "Append"
-msgstr ""
+msgstr "Anfügen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:974
 msgid "Append a list"
-msgstr ""
+msgstr "Aneinanderfügen von Listen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5067
 msgid "Append a list to a list"
@@ -658,7 +658,7 @@ msgstr "Anhängen eines Elements"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:972
 msgid "Append an element to an existing list"
-msgstr ""
+msgstr "Füge ein Element zu einer Liste hinzu"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4675
 msgid "Apply"
@@ -941,7 +941,6 @@ msgstr ""
 "platzieren."
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2391
-#, fuzzy
 msgid "Bug: Trying to record a cell contents change for undo without a cell."
 msgstr ""
 "Interner Fehler: Versuche, die Änderung des Inhalts einer Zelle zu "
@@ -1387,11 +1386,11 @@ msgstr "Ersetze Winkelfunktionen durch Exponentialfunktionen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:994
 msgid "Converts a matrix to a list of lists"
-msgstr ""
+msgstr "Konvertiert eine Matrix zu einer Liste von Listen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:993
 msgid "Converts a nested list like [[1,2],[3,4]] to a matrix"
-msgstr ""
+msgstr "Konvertiert verschachtelte Listen wie [[1,2],[3,4]] zu einer Matrix"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:167
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1124
@@ -1494,7 +1493,7 @@ msgstr "Eine Liste erzeugen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4786
 msgid "Create a list as a storage for the values of variables"
-msgstr ""
+msgstr "Erzeuge eine Liste als Speicher für die konkreten Werte von Variablen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4740
 msgid "Create a list from a rule"
@@ -1506,7 +1505,7 @@ msgstr "Liste von einer anderen Liste erzeugen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:923
 msgid "Create a list from comma-separated elements"
-msgstr ""
+msgstr "Erzeuge eine Liste von Komma-separierten Elementen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:585
 msgid "Create a new cell with previous input"
@@ -1518,7 +1517,7 @@ msgstr "Neue Zelle mit letzter Ausgabe erzeugen."
 
 #: /home/gunter/src/wxmaxima/src/ListSortWiz.cpp:59
 msgid "Create f(a,b) on-the-fly, contents:"
-msgstr ""
+msgstr "Erzeuge ein temporäres f(a,b) mit dem folgenden Inhalt:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:937
 msgid "Create list"
@@ -1526,7 +1525,7 @@ msgstr "Eine Liste erzeugen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4723
 msgid "Create list from comma-separated elements"
-msgstr ""
+msgstr "Erzeuge eine Liste aus komma-getrennten Elementen"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1045
 msgid "Cursor"
@@ -1755,7 +1754,7 @@ msgstr "Division durch 0."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5007
 msgid "Do for each lisp element"
-msgstr ""
+msgstr "Tue dies für jedes Listenelement"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7586
 #, c-format
@@ -1816,7 +1815,7 @@ msgid ""
 "Either a single expression or a comma-separated list of expressions between "
 "parenthesis. In the latter case the result of the last expression in the "
 "parenthesis is used."
-msgstr ""
+msgstr "Entweder ein einfacher Ausdruck oder eine Liste von komma-getrennten Ausdrücken, die in runde Klammern verpackt wurde. Im letzten Fall wird das Ergebnis des letzen Ausdrucks aus der Klammer verwendet."
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:94
 msgid ""
@@ -2087,7 +2086,7 @@ msgstr "Beispiele:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:951
 msgid "Execute a command for each element of the list"
-msgstr ""
+msgstr "Führt einen Befehl für jedes Element der Liste aus."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:458
 msgid "Exit wxMaxima"
@@ -2197,11 +2196,11 @@ msgstr "Extrahiere Elemente"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:964
 msgid "Extract a actual value for a variable"
-msgstr ""
+msgstr "Extrahiere den Wert für eine Variable"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4971
 msgid "Extract a variable's value from a list of variable values"
-msgstr ""
+msgstr "Extrahiert einen Variablenwert aus einer Liste mit Werten für Variablen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4701
 msgid "Extract function arguments"
@@ -2221,11 +2220,11 @@ msgstr "Extrahiere die letzten n Elemente einer Liste"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4904
 msgid "Extract the nth element from a list. Slow for n>>0"
-msgstr ""
+msgstr "Extrahiert das n-te Element einer Liste. Langsam für große n."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:965
 msgid "Extract the value for one variable assigned in a list"
-msgstr ""
+msgstr "Extrahiert den Wert, der einer Variable in einer Liste zugewiesen wird"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1430
 msgid "Factor"
@@ -2377,7 +2376,7 @@ msgstr "Finnisch"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:959
 msgid "First"
-msgstr ""
+msgstr "Erstes"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:869
 #, c-format
@@ -2460,6 +2459,14 @@ msgid ""
 "   Ctrl+4: Subsection cell\n"
 "   Ctrl+5: Sub-Subsection cell"
 msgstr ""
+"Um Zellen schneller zu generieren wird, gibt es die folgenden Kurzbefehle:\n"
+"\n"
+"  Strg+0: Mathematik\n"
+"  Strg+1: Text\n"
+"  Strg+2: Titel\n"
+"  Strg+3: Kapitel\n"
+"  Strg+4: Unterkapitel\n"
+"  Strg+5: Unter-Unterkapitel"
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:61
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:60
@@ -2574,17 +2581,17 @@ msgstr "Matrix aus lambda-Ausdruck erzeugen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:929
 msgid "Generate a new list using a lists' elements"
-msgstr ""
+msgstr "Erzeuge eine Liste aus den Elementen einer bereits bestehenden Liste."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:932
 msgid ""
 "Generate a storage for variable values that can be introduced into equations "
 "at any time"
-msgstr ""
+msgstr "Generiert einen Speicher für Variablenwerte, die dann später in Gleichungen eingesetzt werden können."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:926
 msgid "Generate list elements using a rule"
-msgstr ""
+msgstr "Erzeuge Listenelemente anhand einer Regel"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:798
 msgid "German"
@@ -2803,7 +2810,7 @@ msgstr ""
 msgid ""
 "If the font provides big parenthesis symbols: Use them when big parenthesis "
 "are needed for maths display."
-msgstr ""
+msgstr "Falls der Zeichensatz große Klammern enthält: Nutze diese, wo eine Formel eine große Klammer erfordert."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:248
 msgid ""
@@ -2967,15 +2974,15 @@ msgstr "Suche während des Tippens"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4737
 msgid "Index End:"
-msgstr ""
+msgstr "Endindex:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4737
 msgid "Index Start:"
-msgstr ""
+msgstr "Startindex:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4737
 msgid "Index Step:"
-msgstr ""
+msgstr "Schrittweite:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4736
 msgid "Index variable:"
@@ -3048,9 +3055,8 @@ msgid "Insert Image..."
 msgstr "Bild einfügen ..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:593
-#, fuzzy
 msgid "Insert Input &Cell\tCtrl+0"
-msgstr "Neue &Eingabezelle"
+msgstr "Neue &Eingabezelle\\tCtrl+0"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:605
 msgid "Insert Page Break"
@@ -3161,7 +3167,7 @@ msgstr "Intelligentes Verstecken der Zellklammer"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:978
 msgid "Interleae the values of two lists"
-msgstr ""
+msgstr "Nimm Elemente abwechselnd von zwei Listen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:977
 msgid "Interleave"
@@ -3190,11 +3196,11 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4952
 msgid "Introduce a list of actual values into an equation"
-msgstr ""
+msgstr "Einsetzen konkreter Variablenwerte in eine Gleichung"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:945
 msgid "Introduce the actual values for variables stored in the list"
-msgstr ""
+msgstr "Einsetzen der konkreten Zahlenwerte für Variablen, die in einer Liste gespeichert sind, in eine Formel."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1260
 msgid ""
@@ -3256,7 +3262,7 @@ msgstr ""
 msgid ""
 "It therefore makes sense to apply the known values for variables as late as "
 "possible."
-msgstr ""
+msgstr "Es macht daher Sinn, den Variablen erst so spät wie möglich konkrete Zahlenwerte zuzuweisen."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:801
 msgid "Italian"
@@ -3268,12 +3274,12 @@ msgstr "Kursiv"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5045
 msgid "Item"
-msgstr ""
+msgstr "Element"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4765
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5003
 msgid "Iterator:"
-msgstr ""
+msgstr "Laufvariable:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:802
 msgid "Japanese"
@@ -3340,7 +3346,7 @@ msgstr "Laplace &Transformation ..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:962
 msgid "Last"
-msgstr ""
+msgstr "Letztes"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:963
 msgid "Last n"
@@ -3368,7 +3374,7 @@ msgstr "Die Seite links vom \"=\""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:984
 msgid "Length"
-msgstr ""
+msgstr "Länge"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:118
 msgid ""
@@ -3411,7 +3417,7 @@ msgstr "Name der Liste:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4949
 msgid "List with values"
-msgstr ""
+msgstr "Liste mit Variablenwerten"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4637
 msgid "List(s):"
@@ -3464,7 +3470,7 @@ msgstr "Untere Schranke:"
 
 #: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:92
 msgid "MAXIMA RESPONSE:"
-msgstr ""
+msgstr "ANTWORT VON MAXIMA:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:769
 msgid "Ma&p to Matrix..."
@@ -3559,7 +3565,7 @@ msgstr "Mathematische Symbole"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:163
 msgid "Maths"
-msgstr ""
+msgstr "Mathematik"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4547
 msgid "Matrix"
@@ -3575,7 +3581,7 @@ msgstr "Matrix Name:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:994
 msgid "Matrix to nested List"
-msgstr ""
+msgstr "Matrix zu verschachtelter Liste"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4528
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4580
@@ -3753,7 +3759,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ActualValuesStorageWiz.cpp:32
 msgid "Maxima's power lies in symbolic operations."
-msgstr ""
+msgstr "Die stärke von Maxima liegt im symbolischen Rechnen."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:139
 msgid ""
@@ -3923,7 +3929,7 @@ msgstr "Name:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:993
 msgid "Nested list to Matrix"
-msgstr ""
+msgstr "Verschachtelte Liste zu Matrix"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:540
 msgid "Never"
@@ -4227,6 +4233,13 @@ msgid ""
 "\n"
 "provide highly efficient ways to do something on every list element."
 msgstr ""
+"In allen Programmiersprachen teilen Listen einen Nachteil: Es ist nicht möglich, das n-te Element zu finden, ohne sich von einem Element zum anderen durchzuhangeln. Dafür kann sehr schnell die Länge einer Liste geändert werden, was bei einem festen Array nur mit einigem Aufwand möglich ist. Auch ist es einfach, Elemente zu löschen, anzuhängen oder umzusortieren. Alle Elemente einer Liste schnell hintereinander durchzuarbeiten ist aber einfach und vom Rechenaufwand des Rechners her effizient:\n"
+"\n"
+"  for i in list do <irgendwas>\n"
+"\n"
+"oder\n"
+"\n"
+"   makelist(Regel,i,Liste)"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1048
 msgid "Outdated cells"
@@ -4424,7 +4437,7 @@ msgstr "Polynom 2:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:991
 msgid "Pop"
-msgstr ""
+msgstr "Pop"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:808
 msgid "Portuguese (Brazilian)"
@@ -4487,7 +4500,7 @@ msgstr "Psi"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:990
 msgid "Push"
-msgstr ""
+msgstr "Push"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:985
 msgid "RTF with OMML maths"
@@ -4562,7 +4575,7 @@ msgstr "Lösche alle Ausgaben"
 msgid ""
 "Remove all list elements that appear twice in a row. Normally used in "
 "conjunction with sort."
-msgstr ""
+msgstr "Lösche alle Elemente, die zweimal direkt hintereinander in der Liste sind. Praktisch nach einem sort()."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5031
 msgid "Remove an element from a list"
@@ -4570,7 +4583,7 @@ msgstr "Entferne ein Listenelement"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:988
 msgid "Remove duplicates"
-msgstr ""
+msgstr "Entferne doppelte Elemente"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:582
 msgid "Remove output from input cells"
@@ -4610,15 +4623,15 @@ msgstr "Resultat"
 msgid ""
 "Return the first item of the list and remove it from the list. Useful for "
 "creating stacks."
-msgstr ""
+msgstr "Liefert das erste Element einer Liste und entfernt dieses von der Liste. Praktisch für die Generierung von Stapelspeichern."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4867
 msgid "Return the list without its first n elements"
-msgstr ""
+msgstr "Die Liste ohne ihre ersten n Elemente"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4843
 msgid "Return the list without its last n elements"
-msgstr ""
+msgstr "Die Liste ohne ihre letzten n Elemente"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:152
 msgid "Return to the cell that is currently being evaluated"
@@ -4626,31 +4639,31 @@ msgstr "Zurückscrollen zu der Zelle, die derzeit evaluiert wird"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:958
 msgid "Returns an arbitrary list item"
-msgstr ""
+msgstr "Gibt ein beliebiges Listenelement zurück"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:959
 msgid "Returns the first item of the list"
-msgstr ""
+msgstr "Gibt das erste Element einer Liste zurück"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:962
 msgid "Returns the last item of the list"
-msgstr ""
+msgstr "Gibt das letzte Element einer Liste zurück"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:963
 msgid "Returns the last n items of the list"
-msgstr ""
+msgstr "Gibt die letzten n Elemente einer Liste zurück"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:984
 msgid "Returns the length of the list"
-msgstr ""
+msgstr "Ermittelt die Länge einer Liste"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:960
 msgid "Returns the list without its first n elements"
-msgstr ""
+msgstr "Gibt die Liste ohne ihre ersten n Elemente zurück"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:961
 msgid "Returns the list without its last n elements"
-msgstr ""
+msgstr "Gibt die Liste ohne ihre letzten n Elemente zurück"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:985
 msgid "Reverse"
@@ -4658,7 +4671,7 @@ msgstr "Umkehren"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:985
 msgid "Reverse the order of the list items"
-msgstr ""
+msgstr "Kehre die Reihenfolge der Listenelemente um."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1598
 msgid "Rho"
@@ -4693,11 +4706,11 @@ msgstr "Zeilen:"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4736
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4765
 msgid "Rule:"
-msgstr ""
+msgstr "Regel:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:942
 msgid "Runs each element through a function"
-msgstr ""
+msgstr "Lässt jedes Element durch eine Funktion"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:809
 msgid "Russian"
@@ -4705,7 +4718,7 @@ msgstr "Russisch"
 
 #: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:70
 msgid "SENT TO MAXIMA:"
-msgstr ""
+msgstr "AN MAXIMA GESENDET:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:736
 msgid "SVG graphics"
@@ -5236,15 +5249,15 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4704
 msgid "Something like f(x_1,x_2)"
-msgstr ""
+msgstr "Etwas wie f(x_1,x_2)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:987
 msgid "Sort"
-msgstr ""
+msgstr "Sortiere"
 
 #: /home/gunter/src/wxmaxima/src/ListSortWiz.cpp:41
 msgid "Sort Criterion:"
-msgstr ""
+msgstr "Sortierkriterium"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4798
 msgid "Sort a list"
@@ -5530,7 +5543,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4702
 msgid "The function call whose arguments to extract"
-msgstr ""
+msgstr "Die funktion, deren Argumente extrahiert werden sollen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:727
 msgid "The half of the equation that is to the left of the \"=\""
@@ -5577,7 +5590,7 @@ msgstr ""
 msgid ""
 "The list with values can be generated by \"solve()\" or using \"Create list/"
 "As storage for actual variables\"."
-msgstr ""
+msgstr "Eine Liste mit Variablenwerten kann von solve() oder über \"Eine Liste erteugen/als Speicher für die konkreten Inhalte von Variablen\" generiert werden."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:121
 msgid ""
@@ -5596,7 +5609,6 @@ msgstr ""
 "werden."
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:1054
-#, fuzzy
 msgid ""
 "The maximum size of a expression wxMaxima is allowed to be displayed can be "
 "changed in the configuration dialogue."
@@ -5613,7 +5625,7 @@ msgstr ""
 msgid ""
 "The number of the item which is stepped from \"Index Start\" to \"Index End"
 "\"."
-msgstr ""
+msgstr "Die Zal des Elements wird von Startindex bis Endeindex durchgezählt."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1039
 msgid "The offline manual of maxima"
@@ -5685,6 +5697,8 @@ msgid ""
 "The rule that explains how to generate the value of an list item.\n"
 "Might be something like \"i\", \"i^2\" or \"sin(i)\""
 msgstr ""
+"Die Regel, die beschreibt, welchen Wert ein Listenelement zu haben hat.\n"
+"Kann etwas wie \"i\" sein, \"i^2\" oder sin(i)."
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:224
 msgid ""
@@ -5699,19 +5713,18 @@ msgid ""
 "The value of few special variables is assigned by Maxima and cannot be "
 "changed by the user. Also a few constructs aren't variable names and "
 "therefore cannot be written to."
-msgstr ""
+msgstr "Eine Handvoll Variablen enthalten Informationen von Maxima und können vom Benutzer nicht überschrieben werden."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4772
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5009
 msgid "The variable the value of the current source item is stored in."
-msgstr ""
+msgstr "Die Variable, die das aktuelle Element der Quellliste enthält."
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:8225
 msgid "The worksheet containing maxima's input and output"
 msgstr "Das Arbeitsblatt mit Maxima's Ein- und Ausgabe"
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:258
-#, fuzzy
 msgid ""
 "The xml data from maxima or from the .wxmx file was missing data here.\n"
 "If you find a way how to reproduce this problem please file a bug report "
@@ -5763,6 +5776,8 @@ msgid ""
 "For efficiently iterating through every element of a large list see \"Create "
 "list from list\" instead, which uses the makelist command."
 msgstr ""
+"Diese Funktion ist für hohe n langsam.\n"
+"Um sich effizient durch eine Liste zu arbeiten ist \"Liste von einer anderen Liste erzeugen\" der bessere Weg, das makelist() verwendet. "
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:57
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:544
@@ -6026,7 +6041,7 @@ msgstr "Fehlendes schließendes Anführungszeichen"
 
 #: /home/gunter/src/wxmaxima/src/ActualValuesStorageWiz.cpp:36
 msgid "Until then the actual values for all variables can be kept in a list."
-msgstr ""
+msgstr "Bis dahin können die konkreten Variablenwerte in einer Liste gespeichert werden."
 
 #: /home/gunter/src/wxmaxima/src/FindReplacePane.cpp:83
 msgid "Up"
@@ -6058,7 +6073,7 @@ msgstr "Verwenden"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4989
 msgid "Use a list as parameter list for a function"
-msgstr ""
+msgstr "Use eine Liste als Parameterliste für eine Funktion"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:856
 msgid "Use cairo to improve plot quality."
@@ -6082,7 +6097,7 @@ msgstr "Verwenden der Liste"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:948
 msgid "Use list as the arguments of a function"
-msgstr ""
+msgstr "Benutze die Listenelemente als Argumente einer Funktion"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:245
 msgid ""
@@ -6090,6 +6105,8 @@ msgid ""
 "sqrt signs\n"
 "Woll only work if the corresponding js math fonts can be found by wxMaxima."
 msgstr ""
+"Verwende schöne Symbole aus dem jsMaths-Zeichensatz für Integral-, Produkt- und Summenzeichen.\n"
+"Funktioniert nur, wenn die entsprechenden Zeichensätze im System gefunden werden können."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:261
 msgid ""
@@ -6192,7 +6209,7 @@ msgstr "Willkommen bei wxMaxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5004
 msgid "What to do:"
-msgstr ""
+msgstr "Was ist zu tun?"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:97
 msgid ""
@@ -6376,7 +6393,7 @@ msgstr "_%d.gif\" alt=\"Animiertes Diagramm\" style=\"max-width:90%%;\" >"
 
 #: /home/gunter/src/wxmaxima/src/ListSortWiz.cpp:45
 msgid "a>b"
-msgstr ""
+msgstr "a>b"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1551
 msgid "alpha"
@@ -6396,7 +6413,7 @@ msgstr "Funktion auf jedes Element der Liste anwenden"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:931
 msgid "as storage for actual values for variables"
-msgstr ""
+msgstr "als Speicher für die konkreten Inhalte von Variablen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1552
 msgid "beta"
@@ -6431,11 +6448,11 @@ msgstr "diagonal"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:950
 msgid "do for each element"
-msgstr ""
+msgstr "Tue das folgende für jedes Element:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4901
 msgid "element number n"
-msgstr ""
+msgstr "Element Nummer n"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1649
 msgid "empty"
@@ -6476,7 +6493,7 @@ msgstr "von einer Liste"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:925
 msgid "from a rule"
-msgstr ""
+msgstr "anhand einer Regel"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:934
 msgid "from function arguments"
@@ -6484,7 +6501,7 @@ msgstr "von den Argumenten einer Funktion"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:922
 msgid "from individual elements"
-msgstr ""
+msgstr "Von einzelnen Elementen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1553
 msgid "gamma"
@@ -6668,6 +6685,8 @@ msgid ""
 "needs to do its work can be used to tell solve() which variables to "
 "eleminate in the solution for the interesting variable."
 msgstr ""
+"solve() findet für eine Liste aus n voneinander unabhängigen Gleichungen nur Lösugnen, wenn es auch n Variablen gibt, nach denen die Gleichungen aufzulösen sind.\n"
+"Falls nur eine Variable interessiert, können solve() als die anderen benötigten Variablen jene, die im Ergebnis eliminiert werden sollen, übergeben werden."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1638
 msgid "sqrt (needs parenthesis for its argument to work as a maxima command)"
@@ -6755,7 +6774,7 @@ msgstr "Nutze als Parameterliste einer Funktion"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:944
 msgid "use the actual values stored"
-msgstr ""
+msgstr "verwende die konkreten in der Liste gespeicherten Variablenwerte"
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:281
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5825
