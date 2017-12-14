@@ -217,6 +217,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
                                                   wxCommandEventHandler(wxMaxima::NetworkDClick),
                                                   NULL, this);
   m_inputBuffer = new char[SOCKET_SIZE];
+
+  #ifdef __WXMSW__
+  cpuProcessorTime = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+  #endif
 }
 
 wxMaxima::~wxMaxima()
@@ -3338,8 +3342,11 @@ bool wxMaxima::AbortOnError()
     return false;
 }
 
-double wxMaxima::GetMaximaCPUPercentage()
+long long wxMaxima::GetTotalCpuTime()
 {
+#ifdef __WXMSW__
+ return cpuProcessorTime.NextValue();
+#else
   int CpuJiffies = 0;
   if(wxFileExists("/proc/stat"))
   {
@@ -3369,7 +3376,12 @@ double wxMaxima::GetMaximaCPUPercentage()
       }
     }
   }
+  return CpuJiffies;
+#endif
+}
 
+long long wxMaxima::GetMaximaCpuTime()
+{
   int maximaJiffies = 0;
   wxString statFileName = wxString::Format("/proc/%li/stat",m_pid);
   if(wxFileExists(statFileName))
@@ -3406,7 +3418,24 @@ double wxMaxima::GetMaximaCPUPercentage()
       }
     }
   }
+  return maximaJiffies;
+}
+
+double wxMaxima::GetMaximaCPUPercentage()
+{
+
+  int CpuJiffies = GetTotalCpuTime();
+  if(CpuJiffies < 0)
+    return -1;
+
+  // If no time has passed since the last call to this function the number of CPU cycles
+  // per timespan is infinite - and this function will cause an error if we don't abort
+  // it now.
   if(CpuJiffies == m_cpuTotalJiffies_old)
+    return -1;
+
+  int maximaJiffies = GetMaximaCpuTime();
+  if(maximaJiffies < 0)
     return -1;
   
   double retval =

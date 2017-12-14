@@ -41,6 +41,9 @@
 #include <wx/dnd.h>
 #include <wx/txtstrm.h>
 #include <wx/sckstrm.h>
+#ifdef __WXMSW__
+#include <Windows.h>
+#endif
 
 #if defined (__WXMSW__)
 #include <wx/msw/helpchm.h>
@@ -180,9 +183,9 @@ public:
 
 private:
   //! The number of Jiffies Maxima had used the last time we asked
-  long m_maximaJiffies_old;
+  long long m_maximaJiffies_old;
   //! The number of Jiffies the CPU had made the last time
-  long m_cpuTotalJiffies_old;
+  long long m_cpuTotalJiffies_old;
   //! Do we need to update the menus + toolbars?
   bool m_updateControls;
   //! A RegEx that matches gnuplot errors.
@@ -463,6 +466,12 @@ protected:
 
 #endif
 
+  //! How much CPU time has been used by the system until now? Used by GetMaximaCPUPercentage.
+  long long GetTotalCpuTime();
+
+  //! How much CPU time has maxima used till now? Used by GetMaximaCPUPercentage.
+  long long GetMaximaCpuTime();
+
   /*! How much CPU horsepower is maxima using currently?
 
     \todo Implement this function for non-linux-like systems, too.
@@ -593,7 +602,12 @@ protected:
   friend class MyDropTarget;
 
 #endif
-DECLARE_EVENT_TABLE()
+
+#ifdef __WXMSW__
+private:
+  PerformanceCounter cpuProcessorTime;
+#endif
+  DECLARE_EVENT_TABLE()
 };
 
 #if wxUSE_DRAG_AND_DROP
