@@ -41,6 +41,9 @@
 #include <wx/dnd.h>
 #include <wx/txtstrm.h>
 #include <wx/sckstrm.h>
+#ifdef __WXMSW__
+#include <windows.h>
+#endif
 
 #if defined (__WXMSW__)
 #include <wx/msw/helpchm.h>
@@ -598,6 +601,11 @@ protected:
 
   friend class MyDropTarget;
 
+#endif
+
+#ifdef __WXMSW__
+private:
+  PerformanceCounter cpuProcessorTime;
 #endif
   DECLARE_EVENT_TABLE()
 };
