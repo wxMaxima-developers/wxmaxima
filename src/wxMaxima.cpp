@@ -132,7 +132,10 @@ wxMaxima *MyApp::m_frame;
 
 wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxString configFile,
                    const wxPoint pos, const wxSize size) :
-  wxMaximaFrame(parent, id, title, configFile, pos, size)
+  wxMaximaFrame(parent, id, title, configFile, pos, size),
+#ifdef __WXMSW__
+  cpuProcessorTime("Processor", "% Processor Time", "_Total");
+#endif
 {
   m_maximaJiffies_old = 0;
   m_cpuTotalJiffies_old = 0;
@@ -218,9 +221,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
                                                   NULL, this);
   m_inputBuffer = new char[SOCKET_SIZE];
 
-  #ifdef __WXMSW__
-  cpuProcessorTime = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-  #endif
 }
 
 wxMaxima::~wxMaxima()
