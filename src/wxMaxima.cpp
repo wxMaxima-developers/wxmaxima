@@ -133,9 +133,6 @@ wxMaxima *MyApp::m_frame;
 wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxString configFile,
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, configFile, pos, size)
-#ifdef __WXMSW__
-  ,cpuProcessorTime("Processor", "% Processor Time", "_Total")
-#endif
 {
   m_maximaJiffies_old = 0;
   m_cpuTotalJiffies_old = 0;
@@ -3344,9 +3341,6 @@ bool wxMaxima::AbortOnError()
 
 long long wxMaxima::GetTotalCpuTime()
 {
-#ifdef __WXMSW__
- return cpuProcessorTime.NextValue();
-#else
   int CpuJiffies = 0;
   if(wxFileExists("/proc/stat"))
   {
@@ -3377,7 +3371,6 @@ long long wxMaxima::GetTotalCpuTime()
     }
   }
   return CpuJiffies;
-#endif
 }
 
 long long wxMaxima::GetMaximaCpuTime()
