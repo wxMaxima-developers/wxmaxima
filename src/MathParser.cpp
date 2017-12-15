@@ -887,14 +887,14 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
         wxString sizeString;
         if ((sizeString = node->GetAttribute(wxT("maxWidth"), wxT("-1"))) != wxT("-1"))
         {
-          long width;
-          if(sizeString.ToLong(&width))
+          double width;
+          if(sizeString.ToDouble(&width))
             imageCell->SetMaxWidth(width);
         }
         if ((sizeString = node->GetAttribute(wxT("maxHeight"), wxT("-1"))) != wxT("-1"))
         {
-          long height;
-          if(sizeString.ToLong(&height))
+          double height;
+          if(sizeString.ToDouble(&height))
             imageCell->SetMaxWidth(height);
         }
 

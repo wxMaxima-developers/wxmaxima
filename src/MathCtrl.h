@@ -835,7 +835,8 @@ public:
     menu_zoom_in,
     menu_zoom_out,
     popid_fold,
-    popid_unfold
+    popid_unfold,
+    popid_maxsizechooser
   };
 
   //! The constructor

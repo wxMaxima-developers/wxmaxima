@@ -29,6 +29,7 @@
 
 
 #include "wxMaxima.h"
+#include "MaxSizeChooser.h"
 #include "SVGout.h"
 #include <wx/richtext/richtextbuffer.h>
 #include <wx/tooltip.h>
@@ -1128,6 +1129,14 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
         popupMenu->Append(popid_animation_save, _("Save Animation..."), wxEmptyString, wxITEM_NORMAL);
         popupMenu->Append(popid_animation_start, _("Start Animation"), wxEmptyString, wxITEM_NORMAL);
       }
+      else
+      {
+        if(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup())->GetGroupType() == GC_TYPE_IMAGE)
+        {
+          popupMenu->AppendSeparator();
+          popupMenu->Append(popid_maxsizechooser, _("Restrict Maximum size"), wxEmptyString, wxITEM_NORMAL);
+        }
+      }
     }
 
     else if (m_cellPointers.m_selectionStart != NULL)
@@ -1189,8 +1198,13 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
           popupMenu->Append(popid_evaluate_section, _("Evaluate Sub-Subsection\tShift+Ctrl+Enter"), wxEmptyString,
                             wxITEM_NORMAL);
         }
-          popupMenu->AppendCheckItem(popid_auto_answer, _("Automatically answer questions"),
-                                     _("Automatically fill in answers known from the last run"));
+        popupMenu->AppendCheckItem(popid_auto_answer, _("Automatically answer questions"),
+                                   _("Automatically fill in answers known from the last run"));
+        if(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart)->GetGroupType() == GC_TYPE_IMAGE)
+        {
+          popupMenu->AppendSeparator();
+          popupMenu->Append(popid_maxsizechooser, _("Restict Maximum size"), wxEmptyString, wxITEM_NORMAL);
+        }
       }
 
       else
@@ -1341,7 +1355,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
           else
             popupMenu->Append(popid_fold,
                               _("Hide Subsubsection"), wxEmptyString, wxITEM_NORMAL);
-          break;
+          break;        
         default:
           if (group->GetHiddenTree() != NULL)
             popupMenu->Append(popid_unfold,

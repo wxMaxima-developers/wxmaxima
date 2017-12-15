@@ -99,10 +99,10 @@ public:
   wxMemoryBuffer GetCompressedImage()
   { return m_image->m_compressedImage; }
 
-  double GetMaxWidth(){if(m_image != NULL) return m_image->GetMaxWidth();}
-  double GetMaxHeight(){if(m_image != NULL) return m_image->GetMaxHeight();}
+  double GetMaxWidth(){if(m_image != NULL) return m_image->GetMaxWidth(); else return -1;}
+  double GetMaxHeight(){if(m_image != NULL) return m_image->GetMaxHeight();else return -1;}
   void SetMaxWidth(double width){if(m_image != NULL) return m_image->SetMaxWidth(width);}
-  void SetMaxHeight(double height){if(m_image != NULL) return m_image->SetMaxWidth(height);}
+  void SetMaxHeight(double height){if(m_image != NULL) return m_image->SetMaxHeight(height);}
 
 protected:
   Image *m_image;

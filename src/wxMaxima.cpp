@@ -31,6 +31,7 @@
 
 #include <wx/notifmsg.h>
 #include "wxMaxima.h"
+#include "ImgCell.h"
 #include "SubstituteWiz.h"
 #include "IntegrateWiz.h"
 #include "LimitWiz.h"
@@ -54,6 +55,7 @@
 #include "PlotFormatWiz.h"
 #include "Dirstructure.h"
 #include "ActualValuesStorageWiz.h"
+#include "MaxSizeChooser.h"
 #include "ListSortWiz.h"
 
 #include <wx/clipbrd.h>
@@ -6334,6 +6336,36 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       }
       break;
     }
+    case MathCtrl::popid_maxsizechooser:
+      if(m_console->m_cellPointers.m_selectionStart != NULL)
+      {
+        if(m_console->m_cellPointers.m_selectionStart == NULL)
+          return;
+        MathCell *output = dynamic_cast<GroupCell *>(m_console->m_cellPointers.m_selectionStart->GetGroup())->GetLabel();
+        if (output == NULL)
+          return;
+        if(output->GetType() != MC_TYPE_IMAGE)
+          return;
+
+        MaxSizeChooser *chooser = new MaxSizeChooser(this, -1,
+                                                     dynamic_cast<ImgCell *>(output)->GetMaxWidth(),
+                                                     dynamic_cast<ImgCell *>(output)->GetMaxHeight()
+        );
+        chooser->Centre(wxBOTH);
+        if (chooser->ShowModal() == wxID_OK)
+        {
+          if(dynamic_cast<ImgCell *>(output)->GetMaxWidth() != chooser->GetMaxWidth())
+            m_fileSaved = false;
+          if(dynamic_cast<ImgCell *>(output)->GetMaxHeight() != chooser->GetMaxHeight())
+            m_fileSaved = false;
+          
+          dynamic_cast<ImgCell *>(output)->SetMaxWidth(chooser->GetMaxWidth());
+          dynamic_cast<ImgCell *>(output)->SetMaxHeight(chooser->GetMaxHeight());
+        }
+      }
+      m_console->RecalculateForce();
+      m_console->RequestRedraw();
+      break;
     case MathCtrl::popid_unfold:
     {
       GroupCell *group = dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetGroup());
@@ -7983,6 +8015,7 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_MENU(ToolBar::tb_evaluate_rest, wxMaxima::PopupMenu)
                 EVT_MENU(ToolBar::tb_evaltillhere, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_merge_cells, wxMaxima::PopupMenu)
+                EVT_MENU(MathCtrl::popid_maxsizechooser, wxMaxima::PopupMenu)
                 EVT_MENU(TableOfContents::popid_Fold, wxMaxima::PopupMenu)
                 EVT_MENU(TableOfContents::popid_Unfold, wxMaxima::PopupMenu)
                 EVT_MENU(TableOfContents::popid_SelectTocChapter, wxMaxima::PopupMenu)
