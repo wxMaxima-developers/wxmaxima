@@ -173,11 +173,15 @@ public:
 
   void SendMaxima(wxString s, bool history = false);
 
+  //! Open a file
   void OpenFile(wxString file,
-                wxString command = wxEmptyString); //!< Open a file
+                wxString command = wxEmptyString);
+
+  //! Does this document need saving?
   bool DocumentSaved()
   { return m_fileSaved; }
 
+  //! Load an image from a file into the worksheet.
   void LoadImage(wxString file)
   { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 
@@ -230,8 +234,6 @@ private:
   void SanitizeSocketBuffer(char *buffer, int length);
 
 protected:
-  wxSocketInputStream *m_instream;
-  wxTextInputStream *m_txtinstream;
   //! Is this window active?
   bool m_isActive;
   //! Called when this window is activated or deactivated.
@@ -466,22 +468,30 @@ protected:
 
 #endif
 
-  //! How much CPU time has been used by the system until now? Used by GetMaximaCPUPercentage.
+  /*! How much CPU time has been used by the system until now? Used by GetMaximaCPUPercentage.
+
+    \return The CPU time elapsed in the same unit as GetMaximaCpuTime(); -1 means: Unable to determine this value.
+
+   */
   long long GetTotalCpuTime();
 
   /*! How much CPU time has maxima used till now? Used by GetMaximaCPUPercentage.
 
-    \todo Implement for MS Windows
+    \return The CPU time maxima has used in the same unit as GetTotalCpuTime(); -1 means: Unable to determine this value.
+
    */
   long long GetMaximaCpuTime();
 
-  //! How much CPU horsepower is maxima using currently?
+  /*! How much CPU horsepower is maxima using currently?
+
+    \return The percentage of the CPU horsepower maxima is using or -1, if this value is unknown.
+   */
   double GetMaximaCPUPercentage();
 
   //! Does this file contain anything worth saving?
   bool SaveNecessary();
 
-  /*!Setup maxima's variables
+  /*! Setup maxima's variables
 
     This method is called once when maxima starts. It loads wxmathml.lisp
     and sets some option variables.
@@ -605,7 +615,7 @@ protected:
 
 #ifdef __WXMSW__
 private:
-  PerformanceCounter cpuProcessorTime;
+  HANDLE m_maximaHandle;
 #endif
   DECLARE_EVENT_TABLE()
 };

@@ -133,9 +133,6 @@ wxMaxima *MyApp::m_frame;
 wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxString configFile,
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, configFile, pos, size)
-#ifdef __WXMSW__
-  ,cpuProcessorTime("Processor", "% Processor Time", "_Total")
-#endif
 {
   m_maximaJiffies_old = 0;
   m_cpuTotalJiffies_old = 0;
@@ -207,6 +204,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   m_console->SetDropTarget(new MyDropTarget(this));
 #endif
 
+#ifdef __WXMSW__
+  m_maximaHandle = NULL;
+#endif
+  
   StatusMaximaBusy(disconnected);
 
   /// RegEx for function definitions
@@ -1135,6 +1136,11 @@ void wxMaxima::CleanUp()
   if(m_process)
     m_process->Detach();
   m_process = NULL;
+
+#ifdef __WXMSW__
+  wxDELETE(m_maximaHandle);
+  m_maximaHandle = NULL;
+#endif
 }
 
 ///--------------------------------------------------------------------------------
@@ -1167,8 +1173,14 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
     data.SubString(s, t).ToLong(&m_pid);
 
   if (m_pid > 0)
+  {
     GetMenuBar()->Enable(menu_interrupt_id, true);
-
+    #ifdef __WXMSW__
+    wxDELETE(m_maximaHandle);
+    m_maximaHandle = OpenProcess(PROCESS_QUERY_INFORMATION, false, m_pid);
+    #endif
+  }
+  
   m_first = false;
   m_inLispMode = false;
   StatusMaximaBusy(waiting);
@@ -3345,7 +3357,7 @@ bool wxMaxima::AbortOnError()
 long long wxMaxima::GetTotalCpuTime()
 {
 #ifdef __WXMSW__
- return cpuProcessorTime.NextValue();
+  return GetTickCount64() * 10000;
 #else
   int CpuJiffies = 0;
   if(wxFileExists("/proc/stat"))
@@ -3382,6 +3394,16 @@ long long wxMaxima::GetTotalCpuTime()
 
 long long wxMaxima::GetMaximaCpuTime()
 {
+  #ifdef __WXMSW__
+  if(m_maximaHandle != NULL)
+  {
+    LPFILETIME creationTime, exitTime, kernelTime, userTime;
+    if(GetProcessTimes(m_maximaHandle, &creationTime, &exitTime, &kernelTime, &userTime))
+    {
+      return kernelTime.dwLowDateTime + kernelTime.dwLowDateTime +
+        2^32*(kernelTime.dwHighDateTime + kernelTime.dwHighDateTime);
+    }
+  #endif
   int maximaJiffies = 0;
   wxString statFileName = wxString::Format("/proc/%li/stat",m_pid);
   if(wxFileExists(statFileName))
@@ -3439,7 +3461,7 @@ double wxMaxima::GetMaximaCPUPercentage()
     return -1;
   
   double retval =
-    (double)(maximaJiffies - m_maximaJiffies_old)/(CpuJiffies - m_cpuTotalJiffies_old);
+    (double)(maximaJiffies - m_maximaJiffies_old)/(CpuJiffies - m_cpuTotalJiffies_old) * 100;
 
   m_maximaJiffies_old = maximaJiffies;
   m_cpuTotalJiffies_old = CpuJiffies;

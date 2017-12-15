@@ -116,7 +116,7 @@ void StatusBar::NetworkStatus(networkState status)
       if(m_maximaPercentage >= 0)
         toolTip +=wxString::Format(
           _("\n\nMaxima is currently using %3.3f%% of all available CPUs."),
-          100.0*m_maximaPercentage
+          m_maximaPercentage
           );
       m_networkStatus->SetToolTip(toolTip);
     }
