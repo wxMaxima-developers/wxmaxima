@@ -1177,7 +1177,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
     GetMenuBar()->Enable(menu_interrupt_id, true);
     #ifdef __WXMSW__
     wxDELETE(m_maximaHandle);
-    m_maximaHandle = OpenProcess(PROCESS_QUERY_INFORMATION, false, m_pid);
+    m_maximaHandle = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, m_pid);
     #endif
   }
   
