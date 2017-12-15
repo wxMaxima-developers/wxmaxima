@@ -511,6 +511,8 @@ public:
   void StatusExportFailed();
 
 protected:
+  //! != wxEmptyString means: set the status text to this value.
+  wxString m_newStatusText;
   //! The process id of maxima. Is determined by ReadFirstPrompt.
   long m_pid;
   //! Did the user ever give this file a name?

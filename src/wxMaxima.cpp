@@ -323,7 +323,7 @@ void wxMaxima::InitSession()
   if (!server)
     SetStatusText(_("Starting server failed"));
   else if (!StartMaxima())
-    SetStatusText(_("Starting Maxima process failed"), 1);
+    SetStatusText(_("Starting Maxima process failed"));
 
   Refresh();
   ConfigChanged();
@@ -932,7 +932,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
 
 bool wxMaxima::StartServer()
 {
-  SetStatusText(wxString::Format(_("Starting server on port %d"), m_port), 1);
+  m_newStatusText = wxString::Format(_("Starting server on port %d"), m_port);
 
   wxIPV4address addr;
 
@@ -951,11 +951,11 @@ bool wxMaxima::StartServer()
     m_server = NULL;
     m_isRunning = false;
     m_isConnected = false;
-    SetStatusText(_("Starting server failed"), 1);
+    m_newStatusText = _("Starting server failed");
     m_statusBar->NetworkStatus(StatusBar::error);
     return false;
   }
-  SetStatusText(_("Server started"), 1);
+  m_newStatusText = _("Server started");
   m_server->SetEventHandler(*this, socket_server_id);
   m_server->SetNotify(wxSOCKET_CONNECTION_FLAG);
   m_server->Notify(true);
@@ -1009,11 +1009,11 @@ bool wxMaxima::StartMaxima(bool force)
       m_process->Redirect();
       m_first = true;
       m_pid = -1;
-      SetStatusText(_("Starting Maxima..."), 1);
+      m_newStatusText = _("Starting Maxima...");
       if (wxExecute(command, wxEXEC_ASYNC, m_process) < 0)
       {
         StatusMaximaBusy(process_wont_start);
-        SetStatusText(_("Cannot start the maxima binary"), 1);
+        m_newStatusText = _("Cannot start the maxima binary");
         m_process = NULL;
         m_maximaStdout = NULL;
         m_maximaStderr = NULL;
@@ -1096,7 +1096,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
   m_statusBar->NetworkStatus(StatusBar::offline);
   if (!m_closing)
   {
-    SetStatusText(_("Maxima process terminated."), 1);
+    m_newStatusText = _("Maxima process terminated.");
 
     // Let's see if maxima has told us why this did happen.
     ReadStdErr();
@@ -1610,7 +1610,7 @@ wxString wxMaxima::ReadMacContents(wxString file)
   {
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
-    SetStatusText(_("File could not be opened"), 1);
+    m_newStatusText = _("File could not be opened");
     return wxEmptyString;
   }
 
@@ -1654,7 +1654,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
   // Show a busy cursor while we open the file.
   wxBusyCursor crs;
 
-  SetStatusText(_("Opening file"), 1);
+  m_newStatusText = _("Opening file");
   document->Freeze();
 
   wxString macContents = ReadMacContents(file);
@@ -1895,7 +1895,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
   SetCWD(file);
 
   StatusMaximaBusy(waiting);
-  SetStatusText(_("File opened"), 1);
+  m_newStatusText = _("File opened");
 
   m_console->SetHCaret(NULL);
   m_console->ScrollToCaret();
@@ -1909,7 +1909,7 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
   // Show a busy cursor while we open the file.
   wxBusyCursor crs;
 
-  SetStatusText(_("Opening file"), 1);
+  m_newStatusText = _("Opening file");
   document->Freeze();
 
   // open wxm file
@@ -1921,7 +1921,7 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
     document->Thaw();
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
-    SetStatusText(_("File could not be opened"), 1);
+    m_newStatusText = _("File could not be opened");
     return false;
   }
 
@@ -1973,7 +1973,7 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
   SetCWD(file);
 
   StatusMaximaBusy(waiting);
-  SetStatusText(_("File opened"), 1);
+  m_newStatusText = _("File opened");
 
   m_console->SetHCaret(NULL);
   m_console->ScrollToCaret();
@@ -1986,7 +1986,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   // Show a busy cursor while we open a file.
   wxBusyCursor crs;
 
-  SetStatusText(_("Opening file"), 1);
+  m_newStatusText = _("Opening file");
 
   document->Freeze();
 
@@ -2090,7 +2090,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
                  wxT(", URI=") + filename, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
-    SetStatusText(_("File could not be opened"), 1);
+    m_newStatusText = _("File could not be opened");
     return false;
   }
 
@@ -2103,7 +2103,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
     wxMessageBox(_("wxMaxima cannot read the xml contents of ") + file, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
-    SetStatusText(_("File could not be opened"), 1);
+    m_newStatusText = _("File could not be opened");
     return false;
   }
 
@@ -2114,7 +2114,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
     wxMessageBox(_("xml contained in the file claims not to be a wxMaxima worksheet. ") + file, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
-    SetStatusText(_("File could not be opened"), 1);
+    m_newStatusText = _("File could not be opened");
     return false;
   }
 
@@ -2184,7 +2184,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
       m_console->SetHCaret(pos);
   }
   StatusMaximaBusy(waiting);
-  SetStatusText(_("File opened"), 1);
+  m_newStatusText = _("File opened");
   RemoveTempAutosavefile();
   return true;
 }
@@ -2201,7 +2201,7 @@ bool wxMaxima::CheckWXMXVersion(wxString docversion)
     {
       wxMessageBox(_("Document was saved using a newer version of wxMaxima. Please update your wxMaxima."),
                    _("Error"), wxOK | wxICON_EXCLAMATION);
-      SetStatusText(_("File could not be opened"), 1);
+      m_newStatusText = _("File could not be opened");
       return false;
     }
     if (version_minor > DOCUMENT_VERSION_MINOR)
@@ -2217,7 +2217,7 @@ bool wxMaxima::OpenXML(wxString file, MathCtrl *document)
   // Show a busy cursor as long as we open a file.
   wxBusyCursor crs;
 
-  SetStatusText(_("Opening file"), 1);
+  m_newStatusText = _("Opening file");
 
   document->Freeze();
 
@@ -2234,7 +2234,7 @@ bool wxMaxima::OpenXML(wxString file, MathCtrl *document)
             _("Error"),
             wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
-    SetStatusText(_("File could not be opened"), 1);
+    m_newStatusText = _("File could not be opened");
     return false;
   }
 
@@ -2245,7 +2245,7 @@ bool wxMaxima::OpenXML(wxString file, MathCtrl *document)
     wxMessageBox(_("xml contained in the file claims not to be a wxMaxima worksheet. ") + file, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
-    SetStatusText(_("File could not be opened"), 1);
+    m_newStatusText = _("File could not be opened");
     return false;
   }
 
@@ -2273,7 +2273,7 @@ bool wxMaxima::OpenXML(wxString file, MathCtrl *document)
   SetCWD(file);
 
   StatusMaximaBusy(waiting);
-  SetStatusText(_("File opened"), 1);
+  m_newStatusText = _("File opened");
   return true;
 }
 
@@ -2752,7 +2752,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
            (m_oldFindString != m_console->m_findDialog->GetData()->GetFindString()) ||
            (m_oldFindFlags != m_console->m_findDialog->GetData()->GetFlags())
            )
-        )
+        ) ||
+      (m_newStatusText != wxEmptyString)
       )
       event.RequestMore();
     else
@@ -2814,6 +2815,20 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       
     // This was a half-way lengthy task => Return from the idle task so we can give
     // maxima a chance to deliver new data.
+    if((m_console->m_scheduleUpdateToc) ||
+       (m_newStatusText != wxEmptyString))
+      event.RequestMore();
+    else
+      event.Skip();
+
+    return;    
+  }
+
+  if(m_newStatusText != wxEmptyString)
+  {
+    SetStatusText(m_newStatusText, 1);
+    m_newStatusText = wxEmptyString;
+
     if(m_console->m_scheduleUpdateToc)
       event.RequestMore();
     else
