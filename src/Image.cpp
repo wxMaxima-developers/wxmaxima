@@ -62,7 +62,9 @@ Image::Image(Configuration **config)
   m_originalWidth = 1;
   m_originalHeight = 1;
   m_scaledBitmap.Create(1, 1);
-  m_isOk = false;  
+  m_isOk = false;
+  m_maxWidth = -1;
+  m_maxHeight = -1;
 }
 
 Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
@@ -85,12 +87,16 @@ Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
     m_originalWidth = Image.GetWidth();
     m_originalHeight = Image.GetHeight();
   }
+  m_maxWidth = -1;
+  m_maxHeight = -1;
 }
 
 Image::Image(Configuration **config, const wxBitmap &bitmap)
 {
   m_configuration = config;
   LoadImage(bitmap);
+  m_maxWidth = -1;
+  m_maxHeight = -1;
 }
 
 // constructor which loads an image
@@ -99,6 +105,8 @@ Image::Image(Configuration **config, wxString image, bool remove, wxFileSystem *
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
   LoadImage(image, remove, filesystem);
+  m_maxWidth = -1;
+  m_maxHeight = -1;
 }
 
 wxSize Image::ToImageFile(wxString filename)
@@ -326,15 +334,20 @@ void Image::Recalculate()
 
   // Shrink to .9* the canvas size, if needed
   if (scale * width > .9 * viewPortWidth)
-  {
     scale = .9 * viewPortWidth / width;
-  }
+
   if (scale * height > .9 * viewPortHeight)
   {
     if (scale > .9 * viewPortHeight / height)
       scale = .9 * viewPortHeight / height;
   }
 
+  // Shrink to be smaller than the maximum size.
+  if ((m_maxWidth > 0) && (scale * width > m_maxWidth * (*m_configuration)->GetDC()->GetPPI().x))
+    scale = m_maxWidth * (*m_configuration)->GetDC()->GetPPI().x / width;
+  if ((m_maxHeight > 0) && (scale * height > m_maxHeight * (*m_configuration)->GetDC()->GetPPI().y))
+    scale = m_maxHeight * (*m_configuration)->GetDC()->GetPPI().y / height;
+  
   // Set the width of the scaled image
   m_height = (int) (scale * height);
   m_width = (int) (scale * width);

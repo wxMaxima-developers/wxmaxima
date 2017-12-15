@@ -884,6 +884,20 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
         if (node->GetAttribute(wxT("rect"), wxT("true")) == wxT("false"))
           imageCell->DrawRectangle(false);
 
+        wxString sizeString;
+        if ((sizeString = node->GetAttribute(wxT("maxWidth"), wxT("-1"))) != wxT("-1"))
+        {
+          long width;
+          if(sizeString.ToLong(&width))
+            imageCell->SetMaxWidth(width);
+        }
+        if ((sizeString = node->GetAttribute(wxT("maxHeight"), wxT("-1"))) != wxT("-1"))
+        {
+          long height;
+          if(sizeString.ToLong(&height))
+            imageCell->SetMaxWidth(height);
+        }
+
         tmp = imageCell;
       }
       else if (tagName == wxT("slide"))

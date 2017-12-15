@@ -100,6 +100,11 @@ public:
   //! Loads an image from a file
   void LoadImage(wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
 
+  double GetMaxWidth(){return m_maxWidth;}
+  double GetMaxHeight(){return m_maxHeight;}
+  void   SetMaxWidth(double width){m_maxWidth = width;}
+  void   SetMaxHeight(double height){m_maxHeight = height;}
+  
   //! "Loads" an image from a bitmap
   void LoadImage(const wxBitmap &bitmap);
 
@@ -151,6 +156,8 @@ protected:
   bool m_isOk;
 private:
   Configuration **m_configuration;
+  double m_maxWidth;
+  double m_maxHeight;
 };
 
 #endif // IMAGE_H

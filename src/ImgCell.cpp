@@ -285,7 +285,13 @@ wxString ImgCell::ToXML()
 
   if(!m_drawRectangle)
     flags += wxT(" rect=\"false\"");
-  
+
+  if(m_image->GetMaxWidth() > 0)
+    flags += wxString::Format(wxT(" maxWidth=\"%f\""), m_image->GetMaxWidth());
+
+  if(m_image->GetMaxHeight() > 0)
+    flags += wxString::Format(wxT(" maxHeight=\"%f\""), m_image->GetMaxHeight());
+
   return (wxT("<img") + flags + wxT(">") +
           basename + m_image->GetExtension() + wxT("</img>"));
 }
