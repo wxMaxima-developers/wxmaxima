@@ -2744,43 +2744,57 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
 
     // We have shown that we are still alive => If maxima already offers new data
     // we process this data first and then continue with the idle task.
-    event.RequestMore();
-    event.Skip();
+    if(
+      (m_console->m_scheduleUpdateToc) || (m_updateControls) || (m_console->RedrawRequested()) ||
+      (
+         (m_console->m_findDialog != NULL) &&
+         (
+           (m_oldFindString != m_console->m_findDialog->GetData()->GetFindString()) ||
+           (m_oldFindFlags != m_console->m_findDialog->GetData()->GetFlags())
+           )
+        )
+      )
+      event.RequestMore();
+    else
+      event.Skip();
     return;    
   }
-  
+
   // Incremental search is done from the idle task. This means that we don't forcefully
   // need to do a new search on every character that is entered into the search box.
   if (m_console->m_findDialog != NULL)
   {
     if (
-            (m_oldFindString != m_console->m_findDialog->GetData()->GetFindString()) ||
-            (m_oldFindFlags != m_console->m_findDialog->GetData()->GetFlags())
-            )
+      (m_oldFindString != m_console->m_findDialog->GetData()->GetFindString()) ||
+      (m_oldFindFlags != m_console->m_findDialog->GetData()->GetFlags())
+      )
     {
-
+      
       m_oldFindFlags = m_console->m_findDialog->GetData()->GetFlags();
       m_oldFindString = m_console->m_findDialog->GetData()->GetFindString();
-
+      
       bool incrementalSearch = true;
-      wxConfig::Get()->Read("incrementalSearch", &incrementalSearch);
-      if ((incrementalSearch) && (m_console->m_findDialog != NULL))
-      {
-        m_console->FindIncremental(m_findData.GetFindString(),
-                                   m_findData.GetFlags() & wxFR_DOWN,
-                                   !(m_findData.GetFlags() & wxFR_MATCHCASE));
-      }
+        wxConfig::Get()->Read("incrementalSearch", &incrementalSearch);
+        if ((incrementalSearch) && (m_console->m_findDialog != NULL))
+        {
+          m_console->FindIncremental(m_findData.GetFindString(),
+                                     m_findData.GetFlags() & wxFR_DOWN,
+                                     !(m_findData.GetFlags() & wxFR_MATCHCASE));
+        }
+        
+        m_console->RequestRedraw();
+        event.RequestMore();
+        return;
     }
   }
 
+  
   if(m_console->RedrawIfRequested())
   {
     m_updateControls = true;
-
-    // This was a lengthy task => Return from the idle task so we can give
-    // maxima a chance to deliver new data.
+    
+    m_console->RedrawIfRequested();
     event.RequestMore();
-    event.Skip();
     return;    
   }
 
@@ -2800,8 +2814,11 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       
     // This was a half-way lengthy task => Return from the idle task so we can give
     // maxima a chance to deliver new data.
-    event.RequestMore();
-    event.Skip();
+    if(m_console->m_scheduleUpdateToc)
+      event.RequestMore();
+    else
+      event.Skip();
+
     return;    
   }
 
