@@ -3391,7 +3391,7 @@ bool wxMaxima::AbortOnError()
 long long wxMaxima::GetTotalCpuTime()
 {
 #ifdef __WXMSW__
-  return GetTickCount64() * 10000;
+  return GetTickCount() * 10000;
 #else
   int CpuJiffies = 0;
   if(wxFileExists("/proc/stat"))
@@ -3431,7 +3431,7 @@ long long wxMaxima::GetMaximaCpuTime()
   #ifdef __WXMSW__
   if(m_maximaHandle != NULL)
   {
-    LPFILETIME creationTime, exitTime, kernelTime, userTime;
+    FILETIME creationTime, exitTime, kernelTime, userTime;
     if(GetProcessTimes(m_maximaHandle, &creationTime, &exitTime, &kernelTime, &userTime))
     {
       return kernelTime.dwLowDateTime + kernelTime.dwLowDateTime +
@@ -3490,6 +3490,15 @@ double wxMaxima::GetMaximaCPUPercentage()
   if(CpuJiffies == m_cpuTotalJiffies_old)
     return -1;
 
+  // GetTickCount() might wrap around once every (month? few days? longer?) -
+  // but at least is supported on XP that isn't supported anymore in 2017 but
+  // still is in use.
+  if(CpuJiffies <= m_cpuTotalJiffies_old)
+  {
+    m_cpuTotalJiffies_old = CpuJiffies;
+    return -1;
+  }
+  
   int maximaJiffies = GetMaximaCpuTime();
   if(maximaJiffies < 0)
     return -1;

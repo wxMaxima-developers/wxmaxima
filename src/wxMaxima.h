@@ -472,6 +472,7 @@ protected:
 
     \return The CPU time elapsed in the same unit as GetMaximaCpuTime(); -1 means: Unable to determine this value.
 
+    \todo MSW: Is GetTickCount() * 10000 really milliseconds on all systems?
    */
   long long GetTotalCpuTime();
 
