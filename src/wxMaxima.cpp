@@ -3437,6 +3437,7 @@ long long wxMaxima::GetMaximaCpuTime()
       return kernelTime.dwLowDateTime + kernelTime.dwLowDateTime +
         2^32*(kernelTime.dwHighDateTime + kernelTime.dwHighDateTime);
     }
+  }
   #endif
   int maximaJiffies = 0;
   wxString statFileName = wxString::Format("/proc/%li/stat",m_pid);
