@@ -580,6 +580,13 @@ public:
   //! Which way do we want to draw parenthesis?
   void SetGrouphesisDrawMode(drawMode mode){m_parenthesisDrawMode = mode;}
 
+  void TocShowsSectionNumbers(bool showSectionNumbers)
+    {
+      wxConfig::Get()->Write(wxT("TOCshowsSectionNumbers"), (m_TOCshowsSectionNumbers = showSectionNumbers));
+    }
+
+  bool TocShowsSectionNumbers(){return m_TOCshowsSectionNumbers;}
+
   void UseUnicodeMaths(bool useunicodemaths)
     {
       wxConfig::Get()->Write(wxT("useUnicodeMaths"), (m_useUnicodeMaths = useunicodemaths));
@@ -683,6 +690,7 @@ private:
   int m_showLength;
   bool m_copyRTF;
   bool m_copySVG;
+  bool m_TOCshowsSectionNumbers;
   bool m_useUnicodeMaths;
 };
 

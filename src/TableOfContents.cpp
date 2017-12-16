@@ -30,8 +30,9 @@
 #include <wx/sizer.h>
 #include <wx/regex.h>
 
-TableOfContents::TableOfContents(wxWindow *parent, int id) : wxPanel(parent, id)
+TableOfContents::TableOfContents(wxWindow *parent, int id, Configuration **config) : wxPanel(parent, id)
 {
+  m_configuration = config;
   m_displayedItems = new wxListCtrl(
           this, structure_ctrl_id,
           wxDefaultPosition, wxDefaultSize,
@@ -132,21 +133,30 @@ void TableOfContents::UpdateDisplay()
     // sparingly. But we should perhaps add at least a little bit of it to make
     // the list more readable.
     wxString curr;
-    switch (dynamic_cast<GroupCell *>(m_structure[i])->GetGroupType())
+
+    if ((*m_configuration)->TocShowsSectionNumbers())
     {
+      if(m_structure[i]->GetPrompt() != NULL)
+        curr = m_structure[i]->GetPrompt() -> ToString() + wxT(" ");
+      curr.Trim(false);
+    }
+    else
+      switch (dynamic_cast<GroupCell *>(m_structure[i])->GetGroupType())
+      {
       case GC_TYPE_TITLE:
-        curr = m_structure[i]->GetEditable()->ToString(true);
         break;
       case GC_TYPE_SECTION:
-        curr = wxT("  ") + m_structure[i]->GetEditable()->ToString(true);
+        curr = wxT("  ");
         break;
       case GC_TYPE_SUBSECTION:
-        curr = wxT("    ") + m_structure[i]->GetEditable()->ToString(true);
+        curr = wxT("    ");
         break;
       case GC_TYPE_SUBSUBSECTION:
-        curr = wxT("      ") + m_structure[i]->GetEditable()->ToString(true);
+        curr = wxT("      ");
         break;
     }
+    
+    curr += m_structure[i]->GetEditable()->ToString(true);
 
     // Respecting linebreaks doesn't make much sense here.
     curr.Replace(wxT("\n"), wxT(" "));
@@ -196,23 +206,31 @@ GroupCell *TableOfContents::GetCell(int index)
 
   for (unsigned int i = 0; i < m_structure.size(); i++)
   {
-
     wxString curr;
-    switch ((m_structure[i])->GetGroupType())
+    
+    if ((*m_configuration)->TocShowsSectionNumbers())
     {
+      if(m_structure[i]->GetPrompt() != NULL)
+        curr = m_structure[i]->GetPrompt()->ToString() + wxT(" ");
+      curr.Trim(false);
+    }
+    else
+      switch (dynamic_cast<GroupCell *>(m_structure[i])->GetGroupType())
+      {
       case GC_TYPE_TITLE:
-        curr = m_structure[i]->GetEditable()->ToString(true);
         break;
       case GC_TYPE_SECTION:
-        curr = wxT("  ") + m_structure[i]->GetEditable()->ToString(true);
+        curr = wxT("  ");
         break;
       case GC_TYPE_SUBSECTION:
-        curr = wxT("    ") + m_structure[i]->GetEditable()->ToString(true);
+        curr = wxT("    ");
         break;
       case GC_TYPE_SUBSUBSECTION:
-        curr = wxT("      ") + m_structure[i]->GetEditable()->ToString(true);
+        curr = wxT("      ");
         break;
     }
+    
+    curr += m_structure[i]->GetEditable()->ToString(true);
 
     // Respecting linebreaks doesn't make much sense here.
     curr.Replace(wxT("\n"), wxT(" "));
@@ -259,6 +277,12 @@ void TableOfContents::OnMouseRightDown(wxListEvent &event)
       popupMenu->Append(popid_EvalTocChapter, _("Evaluate"), wxEmptyString, wxITEM_NORMAL);
     }
   }
+
+  if (popupMenu->GetMenuItemCount() > 0)
+    popupMenu->AppendSeparator();
+  popupMenu->AppendCheckItem(popid_ToggleTOCshowsSectionNumbers, _("Show section numbers"));
+  popupMenu->Check(popid_ToggleTOCshowsSectionNumbers,
+                   (*m_configuration)->TocShowsSectionNumbers());
 
   // create menu if we have any items
   if (popupMenu->GetMenuItemCount() > 0)

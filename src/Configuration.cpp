@@ -31,6 +31,7 @@
 
 Configuration::Configuration(wxDC &dc) : m_dc(&dc) 
 {
+  m_TOCshowsSectionNumbers = false;
   m_antialiassingDC = NULL;
   m_parenthesisDrawMode = unknown;
   m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML");
@@ -101,6 +102,8 @@ void Configuration::ReadConfig()
   Dirstructure dirstruct;
   wxConfig *config = (wxConfig *) wxConfig::Get();
   m_autoWrap = 3;
+
+  config->Read(wxT("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
   config->Read(wxT("autoWrapMode"), &m_autoWrap);
   config->Read(wxT("useUnicodeMaths"), &m_useUnicodeMaths);
   config->Read(wxT("mathJaxURL"), &m_mathJaxURL);

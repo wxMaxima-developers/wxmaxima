@@ -6453,6 +6453,12 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       }
       break;
     }
+    case TableOfContents::popid_ToggleTOCshowsSectionNumbers:
+    {
+      m_console->m_configuration->TocShowsSectionNumbers(event.IsChecked());
+      m_console->UpdateTableOfContents();
+      break;
+    }
     case MathCtrl::popid_evaluate_section:
     {
       bool evaluating = !m_console->m_evaluationQueue.Empty();
@@ -8029,6 +8035,7 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_MENU(TableOfContents::popid_Unfold, wxMaxima::PopupMenu)
                 EVT_MENU(TableOfContents::popid_SelectTocChapter, wxMaxima::PopupMenu)
                 EVT_MENU(TableOfContents::popid_EvalTocChapter, wxMaxima::PopupMenu)
+                EVT_MENU(TableOfContents::popid_ToggleTOCshowsSectionNumbers, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_fold, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_unfold, wxMaxima::PopupMenu)
                 EVT_MENU(menu_evaluate_all_visible, wxMaxima::MaximaMenu)

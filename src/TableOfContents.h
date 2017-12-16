@@ -1,7 +1,7 @@
 ﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//            (C) 2014-2015 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2014-2017 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
   This file contains the definition of the class TableOfContents that handles the 
   table of contents pane.
  */
+#include "Configuration.h"
 #include <wx/wx.h>
 #include <wx/listctrl.h>
 #include <vector>
@@ -47,18 +48,14 @@ class TableOfContents : public wxPanel
 public:
   enum PopIds
   {
-    /*! The "copy" popup menu item was clicked
-
-      This item is the first of the enum and is assigned a high enough number
-      that it won't collide with the numbers to be found in wxFrame::Event
-     */
-            popid_Fold = wxID_HIGHEST + 500,
-    popid_Unfold = wxID_HIGHEST + 501,
-    popid_SelectTocChapter = wxID_HIGHEST + 502,
-    popid_EvalTocChapter = wxID_HIGHEST + 503
+    popid_Fold = wxID_HIGHEST + 1500,
+    popid_Unfold = wxID_HIGHEST + 1501,
+    popid_SelectTocChapter = wxID_HIGHEST + 1502,
+    popid_EvalTocChapter = wxID_HIGHEST + 1503,
+    popid_ToggleTOCshowsSectionNumbers = wxID_HIGHEST + 1504
   };
 
-  TableOfContents(wxWindow *parent, int id);
+  TableOfContents(wxWindow *parent, int id, Configuration **config);
 
   /* The destructor
    */
@@ -103,6 +100,7 @@ private:
   wxTextCtrl *m_regex;
   //! The items we displayed the last time update() was called
   wxArrayString m_items_old;
+  Configuration **m_configuration;
 
   std::vector<GroupCell *> m_structure;
 DECLARE_EVENT_TABLE()

@@ -59,7 +59,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_history = new History(this, -1);
 
   // The table of contents
-  m_console->m_tableOfContents = new TableOfContents(this, -1);
+  m_console->m_tableOfContents = new TableOfContents(this, -1, &m_console->m_configuration);
 
   m_xmlInspector = new XmlInspector(this, -1);
   SetupMenu();
