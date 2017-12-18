@@ -238,6 +238,8 @@ wxMaxima::~wxMaxima()
   m_process = NULL;
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
+  wxDELETE(m_maximaHandle);
+  m_maximaHandle = NULL;
 
   if(m_inputBuffer != NULL)
     delete [] m_inputBuffer;
@@ -838,6 +840,8 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
       m_process = NULL;
       m_maximaStdout = NULL;
       m_maximaStderr = NULL;
+      wxDELETE(m_maximaHandle);
+      m_maximaHandle = NULL;
     }
     m_isConnected = false;
     m_currentOutput = wxEmptyString;
@@ -1019,6 +1023,8 @@ bool wxMaxima::StartMaxima(bool force)
         m_process = NULL;
         m_maximaStdout = NULL;
         m_maximaStderr = NULL;
+        wxDELETE(m_maximaHandle);
+        m_maximaHandle = NULL;
         m_statusBar->NetworkStatus(StatusBar::offline);
         return false;
       }
@@ -1068,6 +1074,8 @@ void wxMaxima::KillMaxima()
     m_process->Detach();
     m_maximaStdout = NULL;
     m_maximaStderr = NULL;
+    wxDELETE(m_maximaHandle);
+    m_maximaHandle = NULL;
     m_process = NULL;
   }
 
@@ -1089,6 +1097,8 @@ void wxMaxima::KillMaxima()
   m_process = NULL;
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
+  wxDELETE(m_maximaHandle);
+  m_maximaHandle = NULL;
   m_currentOutput = wxEmptyString;
   m_console->QuestionAnswered();
 }
@@ -1107,6 +1117,8 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
     // and therefore the following lines would probably mark
     // the wrong process as "deleted".
     m_process = NULL;
+    wxDELETE(m_maximaHandle);
+    m_maximaHandle = NULL;
     m_maximaStdout = NULL;
     m_maximaStderr = NULL;
   }
@@ -6314,6 +6326,8 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   CleanUp();
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
+  wxDELETE(m_maximaHandle);
+  m_maximaHandle = NULL;
 #if defined __WXMAC__
   wxGetApp().topLevelWindows.Erase(wxGetApp().topLevelWindows.Find(this));
 #endif
