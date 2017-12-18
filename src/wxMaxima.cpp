@@ -3403,6 +3403,17 @@ bool wxMaxima::AbortOnError()
 long long wxMaxima::GetTotalCpuTime()
 {
 #ifdef __WXMSW__
+  LPSYSTEMTIME systemtime;
+  if(GetSystemTime(&systemtime))
+  {
+    FILETIME filetime;
+    if(SystemTimeToFileTime(systemtime,&filetime))
+    {
+      return filetime.dwLowDateTime +
+        2^32*(filetime.dwHighDateTime);
+    }
+  }
+
   return GetTickCount() * 10000;
 #else
   int CpuJiffies = 0;
@@ -3446,8 +3457,8 @@ long long wxMaxima::GetMaximaCpuTime()
     FILETIME creationTime, exitTime, kernelTime, userTime;
     if(GetProcessTimes(m_maximaHandle, &creationTime, &exitTime, &kernelTime, &userTime))
     {
-      return kernelTime.dwLowDateTime + kernelTime.dwLowDateTime +
-        2^32*(kernelTime.dwHighDateTime + kernelTime.dwHighDateTime);
+      return kernelTime.dwLowDateTime + kernelTime.dwLowDateTime + userTime.dwLowDateTime +
+        2^32*(kernelTime.dwHighDateTime + kernelTime.dwHighDateTime + userTime.dwHighDateTime);
     }
   }
   #endif
