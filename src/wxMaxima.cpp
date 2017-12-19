@@ -3433,8 +3433,8 @@ long long wxMaxima::GetMaximaCpuTime()
     if(GetProcessTimes(maximaHandle, &creationTime, &exitTime, &kernelTime, &userTime))
     {
       long long retval =
-        kernelTime.dwLowDateTime + userTime.dwLowDateTime +
-        2^32*(kernelTime.dwHighDateTime + userTime.dwHighDateTime);
+        (long long)kernelTime.dwLowDateTime + userTime.dwLowDateTime +
+        2^32*((long long)kernelTime.dwHighDateTime + userTime.dwHighDateTime);
       CloseHandle(maximaHandle);
       
       return retval;
