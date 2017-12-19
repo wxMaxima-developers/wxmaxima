@@ -205,10 +205,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
 #if wxUSE_DRAG_AND_DROP
   m_console->SetDropTarget(new MyDropTarget(this));
 #endif
-
-#ifdef __WXMSW__
-  m_maximaHandle = NULL;
-#endif
   
   StatusMaximaBusy(disconnected);
 
@@ -238,8 +234,6 @@ wxMaxima::~wxMaxima()
   m_process = NULL;
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
-  wxDELETE(m_maximaHandle);
-  m_maximaHandle = NULL;
 
   if(m_inputBuffer != NULL)
     delete [] m_inputBuffer;
@@ -840,8 +834,6 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
       m_process = NULL;
       m_maximaStdout = NULL;
       m_maximaStderr = NULL;
-      wxDELETE(m_maximaHandle);
-      m_maximaHandle = NULL;
     }
     m_isConnected = false;
     m_currentOutput = wxEmptyString;
@@ -1023,8 +1015,6 @@ bool wxMaxima::StartMaxima(bool force)
         m_process = NULL;
         m_maximaStdout = NULL;
         m_maximaStderr = NULL;
-        wxDELETE(m_maximaHandle);
-        m_maximaHandle = NULL;
         m_statusBar->NetworkStatus(StatusBar::offline);
         return false;
       }
@@ -1074,8 +1064,6 @@ void wxMaxima::KillMaxima()
     m_process->Detach();
     m_maximaStdout = NULL;
     m_maximaStderr = NULL;
-    wxDELETE(m_maximaHandle);
-    m_maximaHandle = NULL;
     m_process = NULL;
   }
 
@@ -1097,8 +1085,6 @@ void wxMaxima::KillMaxima()
   m_process = NULL;
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
-  wxDELETE(m_maximaHandle);
-  m_maximaHandle = NULL;
   m_currentOutput = wxEmptyString;
   m_console->QuestionAnswered();
 }
@@ -1117,8 +1103,6 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
     // and therefore the following lines would probably mark
     // the wrong process as "deleted".
     m_process = NULL;
-    wxDELETE(m_maximaHandle);
-    m_maximaHandle = NULL;
     m_maximaStdout = NULL;
     m_maximaStderr = NULL;
   }
@@ -1151,10 +1135,6 @@ void wxMaxima::CleanUp()
     m_process->Detach();
   m_process = NULL;
 
-#ifdef __WXMSW__
-  wxDELETE(m_maximaHandle);
-  m_maximaHandle = NULL;
-#endif
 }
 
 ///--------------------------------------------------------------------------------
@@ -1187,13 +1167,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
     data.SubString(s, t).ToLong(&m_pid);
 
   if (m_pid > 0)
-  {
     GetMenuBar()->Enable(menu_interrupt_id, true);
-    #ifdef __WXMSW__
-    wxDELETE(m_maximaHandle);
-    m_maximaHandle = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, m_pid);
-    #endif
-  }
   
   m_first = false;
   m_inLispMode = false;
@@ -3403,7 +3377,7 @@ bool wxMaxima::AbortOnError()
 long long wxMaxima::GetTotalCpuTime()
 {
 #ifdef __WXMSW__
-  LPSYSTEMTIME systemtime;
+  SYSTEMTIME systemtime;
   if(GetSystemTime(&systemtime))
   {
     FILETIME filetime;
@@ -3452,13 +3426,18 @@ long long wxMaxima::GetTotalCpuTime()
 long long wxMaxima::GetMaximaCpuTime()
 {
   #ifdef __WXMSW__
-  if(m_maximaHandle != NULL)
+  HANDLE maximaHandle = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, m_pid);
+  if(maximaHandle != NULL)
   {
     FILETIME creationTime, exitTime, kernelTime, userTime;
-    if(GetProcessTimes(m_maximaHandle, &creationTime, &exitTime, &kernelTime, &userTime))
+    if(GetProcessTimes(maximaHandle, &creationTime, &exitTime, &kernelTime, &userTime))
     {
-      return kernelTime.dwLowDateTime + kernelTime.dwLowDateTime + userTime.dwLowDateTime +
-        2^32*(kernelTime.dwHighDateTime + kernelTime.dwHighDateTime + userTime.dwHighDateTime);
+      long long retval =
+        kernelTime.dwLowDateTime + userTime.dwLowDateTime +
+        2^32*(kernelTime.dwHighDateTime + userTime.dwHighDateTime);
+      CloseHandle(maximaHandle);
+      
+      return retval;
     }
   }
   #endif
@@ -6337,8 +6316,6 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   CleanUp();
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
-  wxDELETE(m_maximaHandle);
-  m_maximaHandle = NULL;
 #if defined __WXMAC__
   wxGetApp().topLevelWindows.Erase(wxGetApp().topLevelWindows.Find(this));
 #endif

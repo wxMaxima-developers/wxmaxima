@@ -613,11 +613,6 @@ protected:
   friend class MyDropTarget;
 
 #endif
-
-#ifdef __WXMSW__
-private:
-  HANDLE m_maximaHandle;
-#endif
   DECLARE_EVENT_TABLE()
 };
 
