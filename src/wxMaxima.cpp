@@ -3381,7 +3381,7 @@ long long wxMaxima::GetTotalCpuTime()
   if(GetSystemTime(&systemtime))
   {
     FILETIME filetime;
-    if(SystemTimeToFileTime(systemtime,&filetime))
+    if(SystemTimeToFileTime(&systemtime,&filetime))
     {
       return filetime.dwLowDateTime +
         2^32*(filetime.dwHighDateTime);
