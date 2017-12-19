@@ -3383,8 +3383,8 @@ long long wxMaxima::GetTotalCpuTime()
     FILETIME filetime;
     if(SystemTimeToFileTime(&systemtime,&filetime))
     {
-      return filetime.dwLowDateTime +
-        2^32*(filetime.dwHighDateTime);
+      return (long long) filetime.dwLowDateTime +
+        2^32*((long long) filetime.dwHighDateTime);
     }
   }
 
