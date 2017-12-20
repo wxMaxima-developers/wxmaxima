@@ -3064,7 +3064,11 @@ void MathCtrl::OnCharInActive(wxKeyEvent &event)
 #endif
         ) && GetActiveCell()->CaretAtStart())
   {
+    // Get the first previous cell that isn't hidden
     GroupCell *previous = dynamic_cast<GroupCell *>((GetActiveCell()->GetGroup())->m_previous);
+    while ((previous != NULL) && (previous->GetMaxDrop() == 0))
+      previous = dynamic_cast<GroupCell *>(previous->m_previous);
+
     if (event.ShiftDown())
     {
       SetSelection(previous, dynamic_cast<GroupCell *>((GetActiveCell()->GetGroup())));
@@ -3111,7 +3115,11 @@ void MathCtrl::OnCharInActive(wxKeyEvent &event)
 #endif
       ) && GetActiveCell()->CaretAtEnd())
   {
+    // Get the first next cell that isn't hidden
     GroupCell *start = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+    while ((start != NULL) && (start->m_next != NULL) && (start->m_next->GetMaxDrop() == 0))
+      start = dynamic_cast<GroupCell *>(start->m_next);
+
     if (event.ShiftDown())
     {
       GroupCell *end = start;
@@ -3176,6 +3184,8 @@ void MathCtrl::OnCharInActive(wxKeyEvent &event)
     if(GetActiveCell()->CaretAtStart())
     {
       GroupCell *newGroup = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()->m_previous);
+      while ((newGroup != NULL) && (newGroup->GetMaxDrop() == 0))
+        newGroup = dynamic_cast<GroupCell *>(newGroup->m_previous);
       SetHCaret(newGroup);
       return;
     }
@@ -3186,6 +3196,9 @@ void MathCtrl::OnCharInActive(wxKeyEvent &event)
     if(GetActiveCell()->CaretAtEnd())
     {
       GroupCell *newGroup = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
+      while ((newGroup != NULL) && (newGroup->m_next != NULL) &&
+             (newGroup->m_next->GetMaxDrop() == 0))
+        newGroup = dynamic_cast<GroupCell *>(newGroup->m_next);
       SetHCaret(newGroup);
       return;
     }
@@ -3294,7 +3307,13 @@ void MathCtrl::SelectWithChar(int ccode)
       return;
 
     if (ccode == WXK_DOWN && m_hCaretPosition != NULL && m_hCaretPositionStart->m_next != NULL)
+    {
       m_hCaretPositionStart = m_hCaretPositionEnd = dynamic_cast<GroupCell *>(m_hCaretPositionStart->m_next);
+      while((m_hCaretPositionStart != NULL) && (m_hCaretPositionStart->GetMaxDrop() == 0) &&
+            (m_hCaretPositionStart->m_next != 0))
+        m_hCaretPositionStart = m_hCaretPositionEnd =
+          dynamic_cast<GroupCell *>(m_hCaretPositionStart->m_next);
+    }
   }
   else if (ccode == WXK_UP)
   {
@@ -3309,13 +3328,17 @@ void MathCtrl::SelectWithChar(int ccode)
     }
     else
     {
-      // extend/shorten up selection
-      if (m_hCaretPositionEnd->m_previous != NULL)
+      // extend / shorten up selection
+      GroupCell *prev = dynamic_cast<GroupCell *>(m_hCaretPositionEnd->m_previous);
+      while((prev != NULL) && (prev->GetMaxDrop() == 0))
+        prev = dynamic_cast<GroupCell *>(prev->m_previous);
+      
+      if (prev != NULL)
       {
         if (m_hCaretPosition != NULL && m_hCaretPosition->m_next == m_hCaretPositionEnd)
-          m_hCaretPositionStart = dynamic_cast<GroupCell *>(m_hCaretPositionStart->m_previous);
+          m_hCaretPositionStart = prev;
         if (m_hCaretPositionEnd != NULL)
-          m_hCaretPositionEnd = dynamic_cast<GroupCell *>(m_hCaretPositionEnd->m_previous);
+          m_hCaretPositionEnd = prev;
       }
       if (m_hCaretPositionEnd != NULL)
         ScrollToCell(m_hCaretPositionEnd, false);
@@ -3325,9 +3348,9 @@ void MathCtrl::SelectWithChar(int ccode)
   {
     // We arrive here if the down key was pressed.
     if (
-            (KeyboardSelectionStart() != NULL) &&
-            (m_hCaretPositionEnd == dynamic_cast<GroupCell *>(KeyboardSelectionStart()->GetGroup()->m_previous))
-            )
+      (KeyboardSelectionStart() != NULL) &&
+      (m_hCaretPositionEnd == dynamic_cast<GroupCell *>(KeyboardSelectionStart()->GetGroup()->m_previous))
+      )
     {
       // We are in the cell the selection started in
       SetActiveCell(KeyboardSelectionStart());
@@ -3337,13 +3360,17 @@ void MathCtrl::SelectWithChar(int ccode)
     }
     else
     {
-      // extend/shorten selection down
-      if (m_hCaretPositionEnd->m_next != NULL)
+      // extend/shorten down selection
+      GroupCell *nxt = dynamic_cast<GroupCell *>(m_hCaretPositionEnd->m_next);
+      while((nxt != NULL) && (nxt->GetMaxDrop() == 0))
+        nxt = dynamic_cast<GroupCell *>(nxt->m_next);
+
+      if (nxt != NULL)
       {
         if (m_hCaretPosition == m_hCaretPositionEnd)
-          m_hCaretPositionStart = dynamic_cast<GroupCell *>(m_hCaretPositionStart->m_next);
+          m_hCaretPositionStart = nxt;
         if (m_hCaretPositionEnd != NULL)
-          m_hCaretPositionEnd = dynamic_cast<GroupCell *>(m_hCaretPositionEnd->m_next);
+          m_hCaretPositionEnd = nxt;
       }
       if (m_hCaretPositionEnd != NULL)
         ScrollToCell(m_hCaretPositionEnd, false);
@@ -3688,12 +3715,15 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
             {
               do tmp = dynamic_cast<GroupCell *>(tmp->m_next);
               while (
-                      (tmp->m_next) && (
-                              (dynamic_cast<GroupCell *>(tmp)->GetGroupType() != GC_TYPE_TITLE) &&
-                              (dynamic_cast<GroupCell *>(tmp)->GetGroupType() != GC_TYPE_SECTION) &&
-                              (dynamic_cast<GroupCell *>(tmp)->GetGroupType() != GC_TYPE_SUBSECTION)
-                      )
-                      );
+                (tmp->m_next) && (
+                  (
+                    (dynamic_cast<GroupCell *>(tmp)->GetGroupType() != GC_TYPE_TITLE) &&
+                    (dynamic_cast<GroupCell *>(tmp)->GetGroupType() != GC_TYPE_SECTION) &&
+                    (dynamic_cast<GroupCell *>(tmp)->GetGroupType() != GC_TYPE_SUBSECTION)
+                    ) ||
+                  (dynamic_cast<GroupCell *>(tmp->m_next)->GetMaxDrop() == 0)
+                  )
+                );
               SetHCaret(dynamic_cast<GroupCell *>(tmp));
             }
             else
