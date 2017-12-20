@@ -3346,7 +3346,7 @@ void MathCtrl::SelectWithChar(int ccode)
   }
   else
   {
-    // We arrive here if the down key was pressed.
+    // We arrive here on WXK_DOWN.
     if (
       (KeyboardSelectionStart() != NULL) &&
       (m_hCaretPositionEnd == dynamic_cast<GroupCell *>(KeyboardSelectionStart()->GetGroup()->m_previous))
@@ -6147,6 +6147,9 @@ bool MathCtrl::ActivatePrevInput()
   if (tmp == NULL)
     return false;
 
+  while ((tmp != NULL) && (tmp->m_previous != NULL) && (tmp->m_previous->GetMaxDrop() == 0))
+    tmp = dynamic_cast<GroupCell *>(tmp->m_previous);
+  
   EditorCell *inpt = NULL;
   while (tmp != NULL && inpt == NULL)
   {
@@ -6186,6 +6189,10 @@ bool MathCtrl::ActivateNextInput(bool input)
   tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   if (tmp == NULL)
     return false;
+
+  while ((tmp != NULL) && (tmp->m_next != NULL) && (tmp->m_next->GetMaxDrop() == 0))
+    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+        
 
   EditorCell *inpt = NULL;
   while (tmp != NULL && inpt == NULL)
