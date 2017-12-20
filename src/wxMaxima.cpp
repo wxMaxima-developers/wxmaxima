@@ -3377,18 +3377,10 @@ bool wxMaxima::AbortOnError()
 long long wxMaxima::GetTotalCpuTime()
 {
 #ifdef __WXMSW__
-  SYSTEMTIME systemtime;
-  if(GetSystemTime(&systemtime))
-  {
-    FILETIME filetime;
-    if(SystemTimeToFileTime(&systemtime,&filetime))
-    {
-      return (long long) filetime.dwLowDateTime +
-        2^32*((long long) filetime.dwHighDateTime);
-    }
-  }
-
-  return GetTickCount() * 10000;
+  FILETIME systemtime;
+  GetSystemTimeAsFileTime(&systemtime);
+  return (long long) systemtime.dwLowDateTime +
+        2^32*((long long) systemtime.dwHighDateTime);
 #else
   int CpuJiffies = 0;
   if(wxFileExists("/proc/stat"))
