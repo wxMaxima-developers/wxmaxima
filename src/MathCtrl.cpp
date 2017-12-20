@@ -3685,8 +3685,11 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
               SelectEditable(dynamic_cast<GroupCell *>(m_hCaretPosition)->GetEditable(), false);
           }
         }
-        else
-          event.Skip();
+//      This allows to use WXK_UP in order to move the cursorup from the worksheet to the toolbar.
+//      But a down key doesn't go back from the toolbar to the worksheet this
+//      is more a nuisance than a feature.
+//        else
+//          event.Skip();
       }
       else if (m_cellPointers.m_selectionStart != NULL)
         SetHCaret(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup()->m_previous));
