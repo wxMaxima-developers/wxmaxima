@@ -218,7 +218,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   m_statusBar->GetNetworkStatusElement()->Connect(wxEVT_LEFT_DCLICK,
                                                   wxCommandEventHandler(wxMaxima::NetworkDClick),
                                                   NULL, this);
-  m_inputBuffer = new char[SOCKET_SIZE];
+  m_packetFromMaxima = new char[SOCKET_SIZE];
 
 }
 
@@ -235,9 +235,9 @@ wxMaxima::~wxMaxima()
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
 
-  if(m_inputBuffer != NULL)
-    delete [] m_inputBuffer;
-  m_inputBuffer = NULL;
+  if(m_packetFromMaxima != NULL)
+    delete [] m_packetFromMaxima;
+  m_packetFromMaxima = NULL;
   wxDELETE(m_printData);
   m_printData = NULL;
 }
@@ -701,21 +701,13 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 ///  Socket stuff
 ///--------------------------------------------------------------------------------
 
-void wxMaxima::SanitizeSocketBuffer(char *buffer, int length)
-{
-  for (int i = 0; i < length; i++)
-  {
-    if (buffer[i] == 0)
-      buffer[i] = ' ';  // convert input null (0) to space (0x20)
-  }
-}
-
 void wxMaxima::ClientEvent(wxSocketEvent &event)
 {
   switch (event.GetSocketEvent())
   {
 
   case wxSOCKET_INPUT:
+  {
     m_statusBar->NetworkStatus(StatusBar::receive);
 
     // Read out stderr: We will do that in the background on a regular basis, anyway.
@@ -727,95 +719,131 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     // data and before we had been able to process it.
     if (m_client == NULL)
       return;
-    
-    m_client->Read(m_inputBuffer, SOCKET_SIZE - 1);
-    
-    if (!m_client->Error())
-    {
-      int read;
-      read = m_client->LastCount();
 
-      // For some reason our input buffer can actually contain NULL Chars...
-      SanitizeSocketBuffer(m_inputBuffer, read);
-      m_inputBuffer[read] = 0;
-
-      wxString newChars;
+    // Read all data we can get from maxima
+    int charsRead = 1;
+    // The memory we store new chars we receive from maxima in
+    wxString newChars;
+    while((m_client != NULL) && (m_client->IsOk()) &&
+          (m_client->IsData()) &&
+          (!m_client->Error()) && (charsRead > 0))
       {
+        // Read a data packet from maxima
+        m_client->Read(&(m_packetFromMaxima[m_uncompletedChars.GetDataLen()]),
+                       SOCKET_SIZE - m_uncompletedChars.GetDataLen());
+        for(unsigned int i = 0;i<m_uncompletedChars.GetDataLen();i++)
+          m_packetFromMaxima[i] = ((char *)m_uncompletedChars.GetData())[i];
+        charsRead = m_client->LastCount() + m_uncompletedChars.GetDataLen();
+        m_uncompletedChars.Clear();
+        
+        // Does the string we got from maxima end somewhere inside an unicode char?
+        if(m_packetFromMaxima[charsRead-1] >= 128)
+        {
+          // It did => Find the start of the unicode character m_inputBuffer ends with/in.
+          unsigned int bytesForLastChar = 0;
+          while(
+            (bytesForLastChar < 4) &&
+            (m_packetFromMaxima[charsRead-1] >= 128) &&
+            (m_packetFromMaxima[charsRead-1] <  192) &&
+            (charsRead > 0))
+          {
+            bytesForLastChar++;
+            charsRead--;
+          }
+          
+          // If the char m_inputBuffer ends with is unicode its first byte tells
+          // us how many bytes this char is long.
+          unsigned int lastCharSize = 0;
+          unsigned int firstbyte = m_packetFromMaxima[charsRead-1];
+          bytesForLastChar++;
+          if(firstbyte > 16*(8+4+2+1))
+            lastCharSize = 4;
+          else
+          {
+            if(firstbyte > 16*(8+4+2))
+              lastCharSize = 3;
+            else
+              lastCharSize = 2;
+          }
+          if(lastCharSize == bytesForLastChar)
+          {
+            charsRead += lastCharSize;
+            lastCharSize = 0;
+          }
+          m_uncompletedChars.AppendData(&(m_uncompletedChars[charsRead]),bytesForLastChar - 1);
+        }
+
         // Don't open a assert window every single time maxima mixes UTF8 and the current
         // codepage
         wxLogStderr logStderr;
-#if wxUSE_UNICODE
-        newChars = wxString(m_inputBuffer, wxConvUTF8);
-#else
-        newChars = wxString(m_inputBuffer, *wxConvCurrent);
-#endif
+        newChars += wxString::FromUTF8(m_packetFromMaxima, charsRead);
       }
-      if (IsPaneDisplayed(menu_pane_xmlInspector))
-        m_xmlInspector->Add_FromMaxima(newChars);
-
-      // This way we can avoid searching the whole string for a
-      // ending tag if we have received only a few bytes of the
-      // data between 2 tags
-      if(m_currentOutput != wxEmptyString)
-        m_currentOutputEnd = m_currentOutput.Right(MIN(30,m_currentOutput.Length())) + newChars;
+    
+    if (IsPaneDisplayed(menu_pane_xmlInspector))
+      m_xmlInspector->Add_FromMaxima(newChars);
+    
+    // This way we can avoid searching the whole string for a
+    // ending tag if we have received only a few bytes of the
+    // data between 2 tags
+    if(m_currentOutput != wxEmptyString)
+      m_currentOutputEnd = m_currentOutput.Right(MIN(30,m_currentOutput.Length())) + newChars;
+    else
+      m_currentOutputEnd = wxEmptyString;
+    
+    m_currentOutput += newChars;
+    
+    if (!m_dispReadOut &&
+        (m_currentOutput != wxT("\n")) &&
+        (m_currentOutput != wxT("<wxxml-symbols></wxxml-symbols>")))
+    {
+      StatusMaximaBusy(transferring);
+      m_dispReadOut = true;
+    }
+    
+    size_t length_old = -1;
+    
+    while (length_old != m_currentOutput.Length())
+    {
+      length_old = m_currentOutput.Length();
+      
+      
+      // First read the prompt that tells us that maxima awaits the next command:
+      // If that is the case ReadPrompt() sends the next command to maxima and
+      // maxima can work while we interpret its output.
+      GroupCell *oldActiveCell = m_console->GetWorkingGroup();
+      ReadPrompt(m_currentOutput);
+      GroupCell *newActiveCell = m_console->GetWorkingGroup();
+      
+      // Temporarily switch to the WorkingGroup the output we don't have interpreted yet
+      // was for
+      if(newActiveCell != oldActiveCell)
+        m_console->m_cellPointers.SetWorkingGroup(oldActiveCell);
+      // Handle the <mth> tag that contains math output and sometimes text.
+      ReadMath(m_currentOutput);
+      
+      // The following function calls each extract and remove one type of XML tag
+      // information from the beginning of the data string we got - but only do so
+      // after the closing tag has been transferred, as well.
+      ReadLoadSymbols(m_currentOutput);
+      
+      // Handle the XML tag that contains Status bar updates
+      ReadStatusBar(m_currentOutput);
+      
+      // Handle text that isn't wrapped in a known tag
+      if (!m_first)
+        // Handle text that isn't XML output: Mostly Error messages or warnings.
+        ReadMiscText(m_currentOutput);
       else
-        m_currentOutputEnd = wxEmptyString;
-        
-      m_currentOutput += newChars;
-
-      if (!m_dispReadOut &&
-          (m_currentOutput != wxT("\n")) &&
-          (m_currentOutput != wxT("<wxxml-symbols></wxxml-symbols>")))
-      {
-        StatusMaximaBusy(transferring);
-        m_dispReadOut = true;
-      }
-
-      size_t length_old = -1;
-
-      while (length_old != m_currentOutput.Length())
-      {
-        length_old = m_currentOutput.Length();
-
-
-        // First read the prompt that tells us that maxima awaits the next command:
-        // If that is the case ReadPrompt() sends the next command to maxima and
-        // maxima can work while we interpret its output.
-        GroupCell *oldActiveCell = m_console->GetWorkingGroup();
-        ReadPrompt(m_currentOutput);
-        GroupCell *newActiveCell = m_console->GetWorkingGroup();
-
-        // Temporarily switch to the WorkingGroup the output we don't have interpreted yet
-        // was for
-        if(newActiveCell != oldActiveCell)
-          m_console->m_cellPointers.SetWorkingGroup(oldActiveCell);
-        // Handle the <mth> tag that contains math output and sometimes text.
-        ReadMath(m_currentOutput);
-
-        // The following function calls each extract and remove one type of XML tag
-        // information from the beginning of the data string we got - but only do so
-        // after the closing tag has been transferred, as well.
-        ReadLoadSymbols(m_currentOutput);
-
-        // Handle the XML tag that contains Status bar updates
-        ReadStatusBar(m_currentOutput);
-
-        // Handle text that isn't wrapped in a known tag
-        if (!m_first)
-          // Handle text that isn't XML output: Mostly Error messages or warnings.
-          ReadMiscText(m_currentOutput);
-        else
-          // This function determines the port maxima is running on from  the text
-          // maxima outputs at startup. This piece of text is afterwards discarded.
-          ReadFirstPrompt(m_currentOutput);
-
-        // Switch to the WorkingGroup the next bunch of data is for.
-        if(newActiveCell != oldActiveCell)
-          m_console->m_cellPointers.SetWorkingGroup(newActiveCell);
-      }
+        // This function determines the port maxima is running on from  the text
+        // maxima outputs at startup. This piece of text is afterwards discarded.
+        ReadFirstPrompt(m_currentOutput);
+      
+      // Switch to the WorkingGroup the next bunch of data is for.
+      if(newActiveCell != oldActiveCell)
+        m_console->m_cellPointers.SetWorkingGroup(newActiveCell);
     }
     break;
-  
+  }
   case wxSOCKET_LOST:
   {
     m_statusBar->NetworkStatus(StatusBar::offline);
