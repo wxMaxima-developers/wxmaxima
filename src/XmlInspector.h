@@ -56,7 +56,7 @@ public:
   //! Actually draw the updates
   void Update();
   //! Do we need to update the XmlInspector's display?
-  bool UpdateNeeded();
+  bool UpdateNeeded(){return m_updateNeeded;}
 private:
   bool m_updateNeeded;
   wxString m_fromMaxima;
