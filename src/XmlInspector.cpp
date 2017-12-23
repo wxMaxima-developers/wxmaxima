@@ -44,10 +44,101 @@ XmlInspector::~XmlInspector()
 
 void XmlInspector::Clear()
 {
-  wxRichTextCtrl::Clear();
-  m_lastChar = wxChar(0);
-  m_indentLevel = 0;
-  m_state = clear;
+  m_clear = true;
+  m_fromMaxima = wxEmptyString;
+  m_toMaxima = wxEmptyString;
+  m_updateNeeded = true;
+}
+
+void XmlInspector::Update()
+{
+  if(!m_updateNeeded)
+    return;
+
+  m_updateNeeded = false;
+  
+  if(m_clear)
+  {
+    wxRichTextCtrl::Clear();
+    m_lastChar = wxChar(0);
+    m_indentLevel = 0;
+    m_state = clear;
+  }
+  if(m_fromMaxima != wxEmptyString)
+  {
+    if(m_state != toMaxima)
+    {
+      if(GetValue() != wxEmptyString)
+      {
+        Newline();Newline();
+      }
+      BeginTextColour(wxColour(0,0,0));
+      WriteText(_("SENT TO MAXIMA:"));
+      Newline();Newline();
+      EndTextColour();
+      m_state = toMaxima;
+    }
+    else
+      WriteText("\n");
+    
+    BeginTextColour(wxColour(128,0,0));
+    WriteText(m_fromMaxima);
+    EndTextColour();
+    m_fromMaxima = wxEmptyString;
+  }
+
+  if(m_toMaxima != wxEmptyString)
+  {
+    if(m_state != fromMaxima)
+    {
+      if(GetValue() != wxEmptyString)
+      {
+        Newline();Newline();
+      }
+      BeginTextColour(wxColour(0,0,0));
+      WriteText(_("MAXIMA RESPONSE:"));
+      Newline();Newline();    
+      EndTextColour();
+      m_state = fromMaxima;
+    }
+    size_t index = 0;
+    m_toMaxima.Replace(wxT("$FUNCTION:"), wxT("\n$FUNCTION:"));
+    while (index < m_toMaxima.Length())
+    {
+      wxChar ch = m_toMaxima[index];
+    
+      // Assume that all tags add indentation
+      if (ch == wxT('>'))
+      {
+        m_indentLevel++;
+        if (m_toMaxima.Left(index + 1).EndsWith(wxT("</wxxml-symbols>")))
+          m_indentLevel = 0;
+      }
+    
+      // A closing tag needs to remove the indentation of the opening tag 
+      // plus the indentation of the closing tag
+      if ((m_lastChar == wxT('<')) && (ch == wxT('/')))
+        m_indentLevel -= 2;
+    
+      // Self-closing Tags remove their own indentation
+      if ((m_lastChar == wxT('/')) && (ch == wxT('>')))
+        m_indentLevel -= 1;
+    
+      // Add a linebreak and indent if we are at the space between 2 tags
+      if ((m_lastChar == wxT('>')) && (ch == wxT('<')))
+      {
+        m_toMaxima = m_toMaxima.Left(index) + wxT ("\n") + IndentString(m_indentLevel) + m_toMaxima.Right(m_toMaxima.Length() - index);
+        index += 1 + m_indentLevel;
+      }
+    
+      index++;
+      m_lastChar = ch;
+    }
+    BeginTextColour(wxColour(0,128,0));
+    WriteText(m_toMaxima);
+    EndTextColour();
+    m_toMaxima = wxEmptyString;
+  }
 }
 
 wxString XmlInspector::IndentString(int level)
@@ -60,74 +151,12 @@ wxString XmlInspector::IndentString(int level)
 
 void XmlInspector::Add_ToMaxima(wxString text)
 {
-  if(m_state != toMaxima)
-  {
-    if(GetValue() != wxEmptyString)
-    {
-      Newline();Newline();
-    }
-    BeginTextColour(wxColour(0,0,0));
-    WriteText(_("SENT TO MAXIMA:"));
-    Newline();Newline();
-    EndTextColour();
-    m_state = toMaxima;
-  }
-  else
-    WriteText("\n");
-  
-  BeginTextColour(wxColour(128,0,0));
-  WriteText(text);
-  EndTextColour();
+  m_fromMaxima += text;
+  m_updateNeeded = true;
 }
 
 void XmlInspector::Add_FromMaxima(wxString text)
 {
-  if(m_state != fromMaxima)
-  {
-    if(GetValue() != wxEmptyString)
-    {
-      Newline();Newline();
-    }
-    BeginTextColour(wxColour(0,0,0));
-    WriteText(_("MAXIMA RESPONSE:"));
-    Newline();Newline();    
-    EndTextColour();
-    m_state = fromMaxima;
-  }
-  size_t index = 0;
-  text.Replace(wxT("$FUNCTION:"), wxT("\n$FUNCTION:"));
-  while (index < text.Length())
-  {
-    wxChar ch = text[index];
-    
-    // Assume that all tags add indentation
-    if (ch == wxT('>'))
-    {
-      m_indentLevel++;
-      if (text.Left(index + 1).EndsWith(wxT("</wxxml-symbols>")))
-        m_indentLevel = 0;
-    }
-    
-    // A closing tag needs to remove the indentation of the opening tag 
-    // plus the indentation of the closing tag
-    if ((m_lastChar == wxT('<')) && (ch == wxT('/')))
-      m_indentLevel -= 2;
-    
-    // Self-closing Tags remove their own indentation
-    if ((m_lastChar == wxT('/')) && (ch == wxT('>')))
-      m_indentLevel -= 1;
-    
-    // Add a linebreak and indent if we are at the space between 2 tags
-    if ((m_lastChar == wxT('>')) && (ch == wxT('<')))
-    {
-      text = text.Left(index) + wxT ("\n") + IndentString(m_indentLevel) + text.Right(text.Length() - index);
-      index += 1 + m_indentLevel;
-    }
-    
-    index++;
-    m_lastChar = ch;
-  }
-  BeginTextColour(wxColour(0,128,0));
-  WriteText(text);
-  EndTextColour();
+  m_toMaxima += text;
+  m_updateNeeded = true;
 }

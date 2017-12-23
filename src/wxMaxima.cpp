@@ -805,10 +805,10 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
         wxLogStderr logStderr;
         newChars += wxString::FromUTF8(m_packetFromMaxima, charsRead);
       }
-    
+
     if (IsPaneDisplayed(menu_pane_xmlInspector))
       m_xmlInspector->Add_FromMaxima(newChars);
-    
+      
     // This way we can avoid searching the whole string for a
     // ending tag if we have received only a few bytes of the
     // data between 2 tags
@@ -828,7 +828,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     }
     
     size_t length_old = -1;
-    
+
     while (length_old != m_currentOutput.Length())
     {
       length_old = m_currentOutput.Length();
@@ -1304,7 +1304,7 @@ void wxMaxima::ReadMiscText(wxString &data)
   // characters are merged.
   wxString mergedWhitespace = wxT("\n");
   bool whitespace = true;
-  for ( wxString::iterator it=miscText.begin(); it!=miscText.end(); ++it)
+  for ( wxString::iterator it = miscText.begin(); it!=miscText.end(); ++it)
   {
     if((*it == wxT(' ')) || (*it == wxT('\t')))
     {
@@ -2796,7 +2796,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
            (m_oldFindFlags != m_console->m_findDialog->GetData()->GetFlags())
            )
         ) ||
-      (m_newStatusText != wxEmptyString)
+      (m_newStatusText != wxEmptyString) ||
+      ((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded()))
       )
       event.RequestMore();
     else
@@ -2859,7 +2860,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     // This was a half-way lengthy task => Return from the idle task so we can give
     // maxima a chance to deliver new data.
     if((m_console->m_scheduleUpdateToc) ||
-       (m_newStatusText != wxEmptyString))
+       (m_newStatusText != wxEmptyString) ||
+       ((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded())))
       event.RequestMore();
     else
       event.Skip();
@@ -2872,7 +2874,9 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     SetStatusText(m_newStatusText, 1);
     m_newStatusText = wxEmptyString;
 
-    if(m_console->m_scheduleUpdateToc)
+    if((m_console->m_scheduleUpdateToc) ||
+       ((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded()))
+      )
       event.RequestMore();
     else
       event.Skip();
@@ -2898,8 +2902,18 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       }
       m_console->m_tableOfContents->UpdateTableOfContents(m_console->GetTree(), cursorPos);
     }
+    m_console->m_scheduleUpdateToc = false;
+    
+    if((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded()))
+      event.RequestMore();
+    else
+      event.Skip();
+    return;
   }
 
+  if((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded()))
+    m_xmlInspector->Update()
+  
   // Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();
 }

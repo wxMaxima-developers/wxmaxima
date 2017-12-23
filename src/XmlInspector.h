@@ -31,8 +31,11 @@
 #ifndef XMLINSPECTOR_H
 #define XMLINSPECTOR_H
 
-/*! This class generates a pane containing the table of contents.
+/*! This class generates a pane displaying the communication between maxima and wxMaxima.
+  
+  The display of this data is only actually updated on calling XmlInspector::Update().
 
+  \todo Use iterators for string traversal: This would be a major speedUp.
  */
 class XmlInspector : public wxRichTextCtrl
 {
@@ -50,8 +53,15 @@ public:
   void Add_ToMaxima(wxString text);
   //! Add some text we have received from maxima.
   void Add_FromMaxima(wxString text);
-
+  //! Actually draw the updates
+  void Update();
+  //! Do we need to update the XmlInspector's display?
+  bool UpdateNeeded();
 private:
+  bool m_updateNeeded;
+  wxString m_fromMaxima;
+  wxString m_toMaxima;
+  bool m_clear;
   enum xmlInspectorIDs
   {
     XmlInspector_ctrl_id = 4,
