@@ -327,12 +327,8 @@ protected:
   void ServerEvent(wxSocketEvent &event);
   /*! Is triggered on Input or disconnect from maxima
 
-    The data we get from maxima is split into small packets we append to m_currentOutput 
-    until we got a full line we can display.
-
-    \todo If a packet maxima sends us ends in the middle of an 
-    unicode-multibyte-character we currently get an error message to stdout instead of
-    a character.
+    The data we get from maxima is typically split into small packets we append to 
+    m_currentOutput until we got a full line we can display.
    */
   void ClientEvent(wxSocketEvent &event);
   //! Triggered when we get new chars from maxima.
