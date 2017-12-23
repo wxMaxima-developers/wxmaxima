@@ -34,8 +34,6 @@
 /*! This class generates a pane displaying the communication between maxima and wxMaxima.
   
   The display of this data is only actually updated on calling XmlInspector::Update().
-
-  \todo Use iterators for string traversal: This would be a major speedUp.
  */
 class XmlInspector : public wxRichTextCtrl
 {
