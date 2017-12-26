@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-12-23 01:48+0100\n"
-"PO-Revision-Date: 2017-12-14 12:44+0100\n"
+"PO-Revision-Date: 2017-12-23 23:10+0100\n"
 "Last-Translator: Marco Ciampa <ciampix@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -1750,9 +1750,8 @@ msgid "Division by 0."
 msgstr "Divisione per 0."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5095
-#, fuzzy
 msgid "Do for each list element"
-msgstr "Fa per ogni elemento lisp"
+msgstr "Fa per ogni elemento della lista"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7710
 #, c-format
@@ -3166,7 +3165,6 @@ msgid "Interleave"
 msgstr "Alterna"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:978
-#, fuzzy
 msgid "Interleave the values of two lists"
 msgstr "Alterna i valori di due liste"
 
@@ -3596,9 +3594,8 @@ msgid "Maxima"
 msgstr "Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:123
-#, fuzzy
 msgid "Maxima asks a question"
-msgstr "Maxima ha una domanda!"
+msgstr "Maxima ha una domanda"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1531
 msgid "Maxima asks a question!"
@@ -4636,14 +4633,12 @@ msgid "Restart maxima"
 msgstr "Riavvia maxima"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1207
-#, fuzzy
 msgid "Restict Maximum size"
-msgstr "Riavvia maxima"
+msgstr "Limita la dimensione massima"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1137
-#, fuzzy
 msgid "Restrict Maximum size"
-msgstr "Riavvia maxima"
+msgstr "Limita la dimensione massima"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5079
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5106
@@ -4989,7 +4984,7 @@ msgstr "Imposta carattere ad ampiezza fissa nei controlli di testo."
 
 #: /home/gunter/src/wxmaxima/src/MaxSizeChooser.cpp:29
 msgid "Set maximum image size [in mm]"
-msgstr ""
+msgstr "Imposta la dimensione massima dell'immagine [in mm]"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1003
 msgid "Set plot format"
@@ -5117,9 +5112,8 @@ msgid "Show long expressions:"
 msgstr "Mostra espressioni lunghe:"
 
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:283
-#, fuzzy
 msgid "Show section numbers"
-msgstr "Mostra le &funzioni"
+msgstr "Mostra i numeri delle sezioni"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4221
 msgid "Show the definition of function:"
@@ -5653,7 +5647,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MaxSizeChooser.cpp:54
 msgid "The maximum size for this image. Values <= 0 mean: Unspecified."
-msgstr ""
+msgstr "La dimensione massima per questa immagine. Valori <= 0 significano: non specificata."
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:1068
 msgid ""
@@ -6152,14 +6146,12 @@ msgid "Use list as the arguments of a function"
 msgstr "Usa una lista per gli argomenti di una funzione"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:245
-#, fuzzy
 msgid ""
 "Use nice js math symbols in order to get nice integral, sum, product and "
 "sqrt signs\n"
 "Will only work if the corresponding js math fonts can be found by wxMaxima."
 msgstr ""
-"Usa i gradevoli simboli js math in modo da ottenere graziosi simboli di "
-"integrali, somme, prodotti e radici quadrate\n"
+"Usa i gradevoli simboli js math in modo da ottenere graziosi simboli di integrali, somme, prodotti e radici quadrate.\n"
 "Funzionerà solo se i font js math corrispondenti vengono trovati da wxMaxima."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:261
@@ -6994,9 +6986,3 @@ msgstr "sì"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1556
 msgid "zeta"
 msgstr "zeta"
-
-#~ msgid "Maxima has a question"
-#~ msgstr "Maxima ha una domanda"
-
-#~ msgid "Parsing output"
-#~ msgstr "Analisi risultato"
