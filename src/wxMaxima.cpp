@@ -218,7 +218,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   m_statusBar->GetNetworkStatusElement()->Connect(wxEVT_LEFT_DCLICK,
                                                   wxCommandEventHandler(wxMaxima::NetworkDClick),
                                                   NULL, this);
-  m_packetFromMaxima = new char[SOCKET_SIZE];
+  m_packetFromMaxima = new unsigned char[SOCKET_SIZE];
 
 }
 
@@ -803,7 +803,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
         // Don't open an assert window every single time maxima mixes UTF8 and the current
         // codepage. 
         wxLogStderr logStderr;
-        newChars += wxString::FromUTF8(m_packetFromMaxima, charsRead);
+        newChars += wxString::FromUTF8((char *)m_packetFromMaxima, charsRead);
       }
 
     if (IsPaneDisplayed(menu_pane_xmlInspector))

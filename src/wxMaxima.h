@@ -226,7 +226,7 @@ private:
   */
   wxString GetUnmatchedParenthesisState(wxString text,int &index);
   //! The buffer all data from maxima is temporarily stored in.
-  char *m_packetFromMaxima;
+  unsigned char *m_packetFromMaxima;
   //! The buffer all text from maxima is stored in before converting it to a wxString.
   wxMemoryBuffer m_uncompletedChars;
 
