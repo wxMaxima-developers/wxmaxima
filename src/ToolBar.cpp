@@ -30,6 +30,7 @@
 #include "GroupCell.h"
 #include <wx/artprov.h>
 #include <wx/filename.h>
+#include "invalidImage.h"
 
 wxImage ToolBar::GetImage(wxString name)
 {
@@ -44,9 +45,12 @@ wxImage ToolBar::GetImage(wxString name)
     Dirstructure dirstructure;
     img = wxImage(dirstructure.ConfigToolbarDir() + wxT("/") + name + wxT(".png"));
   }
+  if(!img.IsOk())
+    img = wxImage(invalidImage_xpm);
+    
   double imgWidth = wxGetDisplayPPI().x*24/72;
   double scaleFactor = imgWidth / img.GetWidth();
-  img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
+  img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH);
   return img;
 }
 

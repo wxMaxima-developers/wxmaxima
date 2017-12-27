@@ -29,7 +29,7 @@
 #include "ConfigDialogue.h"
 #include "MathCell.h"
 #include "Configuration.h"
-
+#include "invalidImage.h"
 #include <wx/config.h>
 #include <wx/fileconf.h>
 #include <wx/font.h>
@@ -111,6 +111,9 @@ wxImage ConfigDialogue::GetImage(wxString name)
     Dirstructure dirstruct;
     img = wxImage(dirstruct.ConfigArtDir() + wxT("/") + name + wxT(".png"));
   }
+
+  if(!img.IsOk())
+    img = wxImage(invalidImage_xpm);
 
   // We want to scale the images according to the display's resolution.
   // But we want to do so in discrete steps as scaling bitmaps by odd

@@ -25,6 +25,7 @@
 */
 #include "StatusBar.h"
 #include <wx/artprov.h>
+#include "invalidImage.h"
 
 StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id)
 {
@@ -174,8 +175,11 @@ wxBitmap StatusBar::GetImage(wxString name)
   Dirstructure dirstructure;
   wxString imagePath(dirstructure.ConfigStatusbarDir() + wxT("/") + name + wxT(".png"));
   wxImage img = wxImage(imagePath);
-  wxRect rect;
+  if(!img.IsOk())
+    img = wxImage(invalidImage_xpm);
 
+  // Scale the image.
+  wxRect rect;  
   GetFieldRect(2, rect);
   int imgWidth = rect.GetHeight();
   double scaleFactor = (double) imgWidth / img.GetWidth();
@@ -195,6 +199,10 @@ wxBitmap StatusBar::GetImage(wxString name)
     Dirstructure dirstructure;
     img = wxImage(dirstructure.ConfigStatusbarDir() + wxT("/") + name + wxT(".png"));
   }
+  
+  if(!img.IsOk())
+    img = wxImage(invalidImage_xpm);
+
   double imgWidth = GetSize().GetHeight();
   double scaleFactor = imgWidth / img.GetWidth();
   img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
