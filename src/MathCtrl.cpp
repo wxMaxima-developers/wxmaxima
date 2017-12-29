@@ -7735,13 +7735,18 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     if (inEzUnit)
       type = AutoComplete::unit;
 
-    // If we don't have an unit to complete we perhaps want to autocomplete a package name.
+    // If we don't have an unit to complete we perhaps want to autocomplete a package name
+    // or the name of a demo file
     if(!inEzUnit)
     {
       wxString currentCommand = editor->GetCurrentCommand();
-      if((currentCommand == wxT("load")) || (currentCommand == wxT("batchload"))
-         || (currentCommand == wxT("batch")))
+      if((currentCommand == wxT("load")) ||
+         (currentCommand == wxT("batchload")) ||
+         (currentCommand == wxT("batch")))
         type = AutoComplete::loadfile;
+
+      if(currentCommand == wxT("demo"))
+        type = AutoComplete::demofile;      
     }
   }
 

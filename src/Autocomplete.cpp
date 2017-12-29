@@ -152,7 +152,7 @@ bool AutoComplete::LoadSymbols(wxString file)
     priv.Close();
   }
   
-  // 
+  // Prepare a list of all built-in loadable files of maxima.
   {
     GetMacFiles_includingSubdirs maximaLispIterator (m_wordList[loadfile]);
     wxDir maximadir(dirstruct.MaximaLispLocation());
@@ -164,10 +164,25 @@ bool AutoComplete::LoadSymbols(wxString file)
       maximauserdir.Traverse(userLispIterator);
   }
   
+
+  // Prepare a list of all built-in demos of maxima.
+  {
+    GetDemoFiles_includingSubdirs maximaLispIterator (m_wordList[demofile]);
+    wxDir maximadir(dirstruct.MaximaLispLocation());
+    if(maximadir.IsOpened())
+      maximadir.Traverse(maximaLispIterator);
+    GetDemoFiles userLispIterator (m_wordList[demofile]);
+    wxDir maximauserdir(dirstruct.UserConfDir());
+    if(maximauserdir.IsOpened())
+      maximauserdir.Traverse(userLispIterator);
+  }
+  
+
   m_wordList[command].Sort();
   m_wordList[tmplte].Sort();
   m_wordList[unit].Sort();
   m_wordList[loadfile].Sort();
+  m_wordList[demofile].Sort();
 
   return false;
 }

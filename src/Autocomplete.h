@@ -47,6 +47,7 @@ public:
     command, //! Command names. \attention Must be the first entry in this enum
     tmplte,  //! Function templates
     loadfile,//! loadable files
+    demofile,//! loadable files
     unit    //! Unit names. \attention Must be the last entry in this enum
   };
 
@@ -106,7 +107,41 @@ private:
       }
   };
   
-  wxArrayString m_wordList[4];
+  class GetDemoFiles_includingSubdirs : public wxDirTraverser
+  {
+  public:
+    GetDemoFiles_includingSubdirs(wxArrayString& files) : m_files(files) { }
+    virtual wxDirTraverseResult OnFile(const wxString& filename)
+      {
+        if(filename.EndsWith(".dem"))
+        {
+          wxFileName newItemName(filename);
+          wxString newItem = "\"" + newItemName.GetName() + "\"";
+          if(m_files.Index(newItem) == wxNOT_FOUND)
+            m_files.Add(newItem);
+        }
+        return wxDIR_CONTINUE;
+      }
+    virtual wxDirTraverseResult OnDir(const wxString& WXUNUSED(dirname))
+      {
+        return wxDIR_CONTINUE;
+      }
+    wxArrayString& GetResult(){return m_files;}
+  private:
+    wxArrayString& m_files;
+  };
+  
+  class GetDemoFiles : public GetDemoFiles_includingSubdirs
+  {
+  public:
+    GetDemoFiles(wxArrayString& files) : GetDemoFiles_includingSubdirs(files){ }
+    virtual wxDirTraverseResult OnDir(const wxString& WXUNUSED(dirname))
+      {
+        return wxDIR_IGNORE;
+      }
+  };
+
+  wxArrayString m_wordList[5];
   wxRegEx m_args;
   WorksheetWords m_worksheetWords;
 };
