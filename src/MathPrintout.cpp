@@ -209,7 +209,7 @@ void MathPrintout::SetupData()
   screenPPI = m_oldconfig->GetDC()->GetPPI();
   printPPI = (*m_configuration)->GetDC()->GetPPI();
 
-  (*m_configuration)->SetZoomFactor_temporarily(DCSCALE * printPPI.x / screenPPI.x);
+  (*m_configuration)->SetZoomFactor_temporarily(DCSCALE * screenPPI.x / printPPI.x);
   #else
   (*m_configuration)->SetZoomFactor_temporarily(DCSCALE * 1.5);
   #endif
