@@ -7689,15 +7689,17 @@ int MathCtrl::ReplaceAll(wxString oldString, wxString newString, bool ignoreCase
 
 bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
 {
-  if (GetActiveCell() == NULL)
-    return false;
-
   EditorCell *editor = GetActiveCell();
 
+  if (editor == NULL)
+    return false;
+  
   editor->SelectWordUnderCaret(false, false, true);
+  wxString partial = editor->GetSelectionString();
 
   if (type == AutoComplete::command)
   {
+
     // Let's look if we want to complete a unit instead of a command.
     bool inEzUnit = true;
     wxString frontOfSelection = editor->TextInFrontOfSelection();
@@ -7734,7 +7736,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
       inEzUnit = false;
     if (inEzUnit)
       type = AutoComplete::unit;
-
+    
     // If we don't have an unit to complete we perhaps want to autocomplete a package name
     // or the name of a demo file
     if(!inEzUnit)
@@ -7743,14 +7745,28 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
       if((currentCommand == wxT("load")) ||
          (currentCommand == wxT("batchload")) ||
          (currentCommand == wxT("batch")))
+      {
         type = AutoComplete::loadfile;
+        if(partial[0] != wxT('\"'))
+        {
+          partial = wxT("\"") + partial;
+          std::cerr<< "partial="<<partial<<"\n";
+          editor->ReplaceSelection(editor->GetSelectionString(), partial, true);
+        }
+      }
 
       if(currentCommand == wxT("demo"))
-        type = AutoComplete::demofile;      
+      {
+        type = AutoComplete::demofile;
+        if(partial[0] != wxT('\"'))
+        {
+          partial = wxT("\"") + partial;
+          std::cerr<< "partial="<<partial<<"\n";
+          editor->ReplaceSelection(editor->GetSelectionString(), partial, true);
+        }
+      }
     }
   }
-
-  wxString partial = editor->GetSelectionString();
 
   if (type == AutoComplete::command)
   {
