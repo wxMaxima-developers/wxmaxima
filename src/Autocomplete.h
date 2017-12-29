@@ -30,8 +30,11 @@
 #define AUTOCOMPLETE_H
 
 #include <wx/wx.h>
+#include <wx/dir.h>
 #include <wx/arrstr.h>
 #include <wx/regex.h>
+#include <wx/filename.h>
+#include "Dirstructure.h"
 
 class AutoComplete
 {
@@ -43,7 +46,8 @@ public:
   {
     command, //! Command names. \attention Must be the first entry in this enum
     tmplte,  //! Function templates
-    unit     //! Unit names. \attention Must be the last entry in this enum 
+    loadfile,//! loadable files
+    unit    //! Unit names. \attention Must be the last entry in this enum
   };
 
   AutoComplete();
@@ -63,7 +67,46 @@ public:
   wxString FixTemplate(wxString templ);
 
 private:
-  wxArrayString m_wordList[3];
+
+  class GetMacFiles_includingSubdirs : public wxDirTraverser
+  {
+  public:
+    GetMacFiles_includingSubdirs(wxArrayString& files) : m_files(files) { }
+    virtual wxDirTraverseResult OnFile(const wxString& filename)
+      {
+        if(
+          (filename.EndsWith(".mac"))||
+          (filename.EndsWith(".lisp"))||
+          (filename.EndsWith(".wxm"))
+          )
+        {
+          wxFileName newItemName(filename);
+          wxString newItem = "\"" + newItemName.GetName() + "\"";
+          if(m_files.Index(newItem) == wxNOT_FOUND)
+            m_files.Add(newItem);
+        }
+        return wxDIR_CONTINUE;
+      }
+    virtual wxDirTraverseResult OnDir(const wxString& WXUNUSED(dirname))
+      {
+        return wxDIR_CONTINUE;
+      }
+    wxArrayString& GetResult(){return m_files;}
+  private:
+    wxArrayString& m_files;
+  };
+  
+  class GetMacFiles : public GetMacFiles_includingSubdirs
+  {
+  public:
+    GetMacFiles(wxArrayString& files) : GetMacFiles_includingSubdirs(files){ }
+    virtual wxDirTraverseResult OnDir(const wxString& WXUNUSED(dirname))
+      {
+        return wxDIR_IGNORE;
+      }
+  };
+  
+  wxArrayString m_wordList[4];
   wxRegEx m_args;
   WorksheetWords m_worksheetWords;
 };

@@ -880,6 +880,41 @@ int EditorCell::ChangeNumpadToChar(int c)
 
 #endif
 
+wxString EditorCell::GetCurrentCommand()
+{
+  // Discard all chars behind the cursor.
+  wxString lineTillCursor = m_text.Left(m_positionOfCaret);
+
+  wxString command;
+  wxString possibleCommand;
+  wxString::iterator it = lineTillCursor.begin();
+  while(it != lineTillCursor.end())
+  {
+    if(wxIsalpha(*it))
+    {
+      possibleCommand += *it;++it;
+      while((it != lineTillCursor.end()) && (wxIsalnum(*it)))
+      {
+        possibleCommand += *it;++it;
+      }
+    }
+    else
+    {
+      if((*it == ' ') || (*it == '\t') || (*it == '\n') || (*it == '\r'))
+        ++it;
+      else
+      {
+        if((*it == '(') && (possibleCommand != wxEmptyString))
+          command = possibleCommand;
+        else
+          possibleCommand = wxEmptyString;
+        ++it;
+      }
+    }
+  }
+  return command;
+}
+
 wxString EditorCell::TabExpand(wxString input, long posInLine)
 {
   if (posInLine < 0) posInLine = 0;
@@ -2986,7 +3021,7 @@ void EditorCell::CommentSelection()
  * MathCtrl::Autocomplete.
  */
 
-wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight)
+wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight, bool includeDoubleQuotes)
 {
   if (selectParens && (m_paren1 != -1) && (m_paren2 != -1))
   {
@@ -2998,7 +3033,8 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight)
   long left = m_positionOfCaret, right = m_positionOfCaret;
   while (left > 0)
   {
-    if (!IsAlphaNum(m_text.GetChar(left - 1)))
+    if (!IsAlphaNum(m_text.GetChar(left - 1)) &&
+        !((includeDoubleQuotes) && (m_text.GetChar(left - 1) == wxT('\"'))))
     {
       if (left >= 2)
       {
@@ -3041,7 +3077,8 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight)
           break;
         }
       }
-      if (!IsAlphaNum(m_text.GetChar(right)))
+      if (!IsAlphaNum(m_text.GetChar(right)) &&
+          !((includeDoubleQuotes) && (m_text.GetChar(right) == wxT('\"'))))
         break;
       right++;
     }

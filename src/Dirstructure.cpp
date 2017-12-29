@@ -31,6 +31,7 @@
 
 #include "Dirstructure.h"
 #include <wx/filename.h>
+#include <wx/dir.h>
 
 wxString Dirstructure::ResourcesDir()
 {
@@ -160,6 +161,42 @@ wxString Dirstructure::ConfigStatusbarDir()
     dir += wxT("/statusbar");
 
   return dir;
+}
+
+wxString Dirstructure::MaximaLispLocation()
+{
+  wxString result;
+  wxString basedir = "/usr/local/share/maxima/";
+  wxDir dir (basedir);
+  if(!dir.IsOpened())
+  {
+    basedir = "/usr/share/maxima/";
+    dir.Open(basedir);
+  }
+  
+  if(dir.IsOpened())
+  {
+    bool more = dir.GetFirst(&result);
+    while(more)
+      more = dir.GetNext(&result);
+  }
+
+  result = basedir + result;
+  if(result != wxEmptyString)
+    return result;
+
+  result = MaximaDefaultLocation();
+  if(result.EndsWith(".app"))
+  {
+    result += "/";
+    return result;
+  }
+  else
+  {
+    wxFileName maximaName(result);
+    maximaName.RemoveLastDir();
+    return maximaName.GetPath();
+  }
 }
 
 wxString Dirstructure::MaximaDefaultLocation()

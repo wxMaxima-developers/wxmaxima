@@ -171,7 +171,7 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent &event)
     }
     default:
     {
-      if ((wxIsalpha(key)) || (key == wxT('_')))
+      if ((wxIsalpha(key)) || (key == wxT('_')) || (key == wxT('\"')))
       {
         wxString oldString = m_editor->GetSelectionString();
         m_editor->ReplaceSelection(

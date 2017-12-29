@@ -45,13 +45,12 @@
 class Dirstructure
 {
 private:
-  //! The directory the user stores its data in.
-  wxString UserConfDir();
-
   //! The directory all data is stored relative to.
   wxString ResourcesDir();
 
 public:
+  //! The directory the user stores its data in.
+  wxString UserConfDir();
 
   //! The directory the application icon is stored in
   wxString AppIconDir();
@@ -103,6 +102,9 @@ public:
 
   //! The path we pass to the operating system if we want it to locate maxima instead
   static wxString MaximaDefaultLocation();
+
+  //!
+  static wxString MaximaLispLocation();
 
   /*! The contents of the PREFIX macro as a wxString
 

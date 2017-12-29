@@ -151,10 +151,23 @@ bool AutoComplete::LoadSymbols(wxString file)
 
     priv.Close();
   }
-
+  
+  // 
+  {
+    GetMacFiles_includingSubdirs maximaLispIterator (m_wordList[loadfile]);
+    wxDir maximadir(dirstruct.MaximaLispLocation());
+    if(maximadir.IsOpened())
+      maximadir.Traverse(maximaLispIterator);
+    GetMacFiles userLispIterator (m_wordList[loadfile]);
+    wxDir maximauserdir(dirstruct.UserConfDir());
+    if(maximauserdir.IsOpened())
+      maximauserdir.Traverse(userLispIterator);
+  }
+  
   m_wordList[command].Sort();
   m_wordList[tmplte].Sort();
   m_wordList[unit].Sort();
+  m_wordList[loadfile].Sort();
 
   return false;
 }

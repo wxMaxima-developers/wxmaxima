@@ -7694,7 +7694,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
 
   EditorCell *editor = GetActiveCell();
 
-  editor->SelectWordUnderCaret(false, false);
+  editor->SelectWordUnderCaret(false, false, true);
 
   if (type == AutoComplete::command)
   {
@@ -7729,14 +7729,19 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
             inEzUnit = false;
         }
       }
-
     }
     else
       inEzUnit = false;
-
     if (inEzUnit)
-    {
       type = AutoComplete::unit;
+
+    // If we don't have an unit to complete we perhaps want to autocomplete a package name.
+    if(!inEzUnit)
+    {
+      wxString currentCommand = editor->GetCurrentCommand();
+      if((currentCommand == wxT("load")) || (currentCommand == wxT("batchload"))
+         || (currentCommand == wxT("batch")))
+        type = AutoComplete::loadfile;
     }
   }
 

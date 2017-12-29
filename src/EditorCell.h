@@ -317,7 +317,8 @@ public:
   void SelectRectText(wxDC *dc, wxPoint &one, wxPoint &two);
 
   //! Selects the word the cursor is currently at.
-  wxString SelectWordUnderCaret(bool selectParens = true, bool toRight = true);
+  wxString SelectWordUnderCaret(bool selectParens = true, bool toRight = true,
+                                bool includeDoubleQuotes = false);
 
   //! Is the point point inside the currently selected text?
   bool IsPointInSelection(wxDC *dc, wxPoint point);
@@ -497,6 +498,9 @@ public:
   //! Convert the current selection to a string
   wxString GetSelectionString();
 
+  //! Get the command the cursor is in the arguments for.
+  wxString GetCurrentCommand();
+  
   //! Unselect everything
   void ClearSelection();
 
