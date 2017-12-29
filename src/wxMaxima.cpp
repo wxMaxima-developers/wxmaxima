@@ -1627,12 +1627,12 @@ void wxMaxima::SetCWD(wxString file)
 
     SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
                filenamestring +
-               wxT("\")"));
+               wxT("\")\n"));
     SendMaxima(wxT(":lisp-quiet (setf $wxdirname \"") +
                dirname +
-               wxT("\")"));
+               wxT("\")\n"));
 
-    SendMaxima(wxT(":lisp-quiet (wx-cd \"") + filenamestring + wxT("\")"));
+    SendMaxima(wxT(":lisp-quiet (wx-cd \"") + filenamestring + wxT("\")\n"));
     if (m_ready)
     {
       if (m_console->m_evaluationQueue.Empty())
@@ -2399,12 +2399,12 @@ void wxMaxima::SetupVariables()
 {
   SendMaxima(wxT(":lisp-quiet (setf *prompt-suffix* \"") +
              m_promptSuffix +
-             wxT("\")"));
+             wxT("\")\n"));
   SendMaxima(wxT(":lisp-quiet (setf *prompt-prefix* \"") +
              m_promptPrefix +
-             wxT("\")"));
-  SendMaxima(wxT(":lisp-quiet (setf $in_netmath nil)"));
-  SendMaxima(wxT(":lisp-quiet (setf $show_openplot t)"));
+             wxT("\")\n"));
+  SendMaxima(wxT(":lisp-quiet (setf $in_netmath nil)\n"));
+  SendMaxima(wxT(":lisp-quiet (setf $show_openplot t)\n"));
 
   wxConfigBase *config = wxConfig::Get();
 
@@ -2416,11 +2416,11 @@ void wxMaxima::SetupVariables()
 
   if (wxcd)
   {
-    SendMaxima(wxT(":lisp-quiet (defparameter $wxchangedir t)"));
+    SendMaxima(wxT(":lisp-quiet (defparameter $wxchangedir t)\n"));
   }
   else
   {
-    SendMaxima(wxT(":lisp-quiet (defparameter $wxchangedir nil)"));
+    SendMaxima(wxT(":lisp-quiet (defparameter $wxchangedir nil)\n"));
   }
 
 #if defined (__WXMAC__)
@@ -2430,9 +2430,9 @@ void wxMaxima::SetupVariables()
 #endif
   config->Read(wxT("usepngCairo"), &usepngCairo);
   if (usepngCairo)
-    SendMaxima(wxT(":lisp-quiet (defparameter $wxplot_pngcairo t)"));
+    SendMaxima(wxT(":lisp-quiet (defparameter $wxplot_pngcairo t)\n"));
   else
-    SendMaxima(wxT(":lisp-quiet (defparameter $wxplot_pngcairo nil)"));
+    SendMaxima(wxT(":lisp-quiet (defparameter $wxplot_pngcairo nil)\n"));
 
   int autosubscript = 1;
   config->Read(wxT("autosubscript"), &autosubscript);
@@ -2449,25 +2449,25 @@ void wxMaxima::SetupVariables()
       subscriptval = "'all";
       break;
   }
-  SendMaxima(wxT(":lisp-quiet (defparameter $wxsubscripts ") + subscriptval + wxT(")"));
+  SendMaxima(wxT(":lisp-quiet (defparameter $wxsubscripts ") + subscriptval + wxT(")\n"));
 
   int defaultPlotWidth = 600;
   config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
   int defaultPlotHeight = 400;
   config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
-  SendMaxima(wxString::Format(wxT(":lisp-quiet (defparameter $wxplot_size '((mlist simp) %i %i))"), defaultPlotWidth,
+  SendMaxima(wxString::Format(wxT(":lisp-quiet (defparameter $wxplot_size '((mlist simp) %i %i))\n"), defaultPlotWidth,
                               defaultPlotHeight));
 
   wxString cmd;
   Dirstructure dirstruct;
   
-  cmd = wxT(":lisp-quiet ($load \"") + dirstruct.DataDir() + wxT("/wxmathml.lisp\")");
+  cmd = wxT(":lisp-quiet ($load \"") + dirstruct.DataDir() + wxT("/wxmathml.lisp\")\n");
     
     
 #if defined (__WXMAC__)
   wxString gnuplotbin(wxT("/Applications/Gnuplot.app/Contents/Resources/bin/gnuplot"));
   if (wxFileExists(gnuplotbin))
-    cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + gnuplotbin + wxT("\")");
+    cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + gnuplotbin + wxT("\")\n");
 #endif
   cmd.Replace(wxT("\\"),wxT("/"));
   SendMaxima(cmd);
@@ -3226,7 +3226,7 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
   config->Read(wxT("wxcd"), &wxcd);
   if (wxcd)
   {
-    SendMaxima(wxT(":lisp-quiet (setq $wxchangedir t)"));
+    SendMaxima(wxT(":lisp-quiet (setq $wxchangedir t)\n"));
     if (m_console->m_currentFile != wxEmptyString)
     {
       wxString filename(m_console->m_currentFile);
@@ -3909,7 +3909,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       config->Read(wxT("wxcd"),&wxcd);
       if(wxcd)
       {
-        SendMaxima(wxT(":lisp-quiet (setq $wxchangedir t)"));
+        SendMaxima(wxT(":lisp-quiet (setq $wxchangedir t)\n"));
         if (m_console->m_currentFile != wxEmptyString)
         {
           wxString filename(m_console->m_currentFile);
@@ -3919,7 +3919,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       else
       {
         SetCWD(wxStandardPaths::Get().GetExecutablePath());
-        SendMaxima(wxT(":lisp-quiet (setq $wxchangedir nil)"));
+        SendMaxima(wxT(":lisp-quiet (setq $wxchangedir nil)\n"));
       }
 #endif
 
@@ -3932,9 +3932,9 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       if (usepngCairo != pngcairo_old)
       {
         if (usepngCairo)
-          SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo t)"));
+          SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n"));
         else
-          SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo nil)"));
+          SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n"));
       }
 
       int autosubscript = 1;
@@ -3952,7 +3952,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
           subscriptval = "'all";
           break;
       }
-      SendMaxima(wxT(":lisp-quiet (setq $wxsubscripts ") + subscriptval + wxT(")"));
+      SendMaxima(wxT(":lisp-quiet (setq $wxsubscripts ") + subscriptval + wxT(")\n"));
 
       m_autoSaveInterval = 3;
       config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
