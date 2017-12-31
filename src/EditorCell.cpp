@@ -3023,6 +3023,9 @@ void EditorCell::CommentSelection()
 
 wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight, bool includeDoubleQuotes)
 {
+  if(m_positionOfCaret < 0)
+    return wxEmptyString;
+  
   if (selectParens && (m_paren1 != -1) && (m_paren2 != -1))
   {
     SetSelection(MIN(m_paren1, m_paren2) + 1, MAX(m_paren1, m_paren2));
@@ -3033,15 +3036,16 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight, bool 
   long left = m_positionOfCaret, right = m_positionOfCaret;
   while (left > 0)
   {
-    if (!IsAlphaNum(m_text.GetChar(left - 1)) &&
-        !((includeDoubleQuotes) && (m_text.GetChar(left - 1) == wxT('\"'))))
+    wxChar leftChar = m_text.GetChar(left - 1);
+    if (!IsAlphaNum(leftChar) &&
+        !((includeDoubleQuotes) && (leftChar == wxT('\"'))))
     {
       if (left >= 2)
       {
         // An escaped non-alphanumeric character and a dot inside a number are part of a word.
         if ((m_text.GetChar(left - 2) != wxT('\\')) &&
             !(
-              (m_text.GetChar(left - 1) == wxT('.')) &&
+              (leftChar == wxT('.')) &&
               ((IsNum(m_text.GetChar(left - 2)) || (IsNum(m_text.GetChar(left)))))
               )
           )
@@ -3055,8 +3059,9 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight, bool 
   {
     while (right < (signed) m_text.length())
     {
+      wxChar rightChar = m_text.GetChar(right);
       // A dot inside a number is part of a word.
-      if (m_text.GetChar(right) == wxT('.'))
+      if (rightChar == wxT('.'))
       {
         if (
                 ((right > 0) && (IsNum(m_text.GetChar(right - 1)))) ||
@@ -3068,7 +3073,7 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight, bool 
         }
       }
       // An escaped non-alphanumeric character is part of a word.
-      if (m_text.GetChar(right) == wxT('\\'))
+      if (rightChar == wxT('\\'))
       {
         right += 2;
         if (right >= (signed) m_text.length())
@@ -3077,11 +3082,18 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight, bool 
           break;
         }
       }
-      if (!IsAlphaNum(m_text.GetChar(right)) &&
-          !((includeDoubleQuotes) && (m_text.GetChar(right) == wxT('\"'))))
+      if (!IsAlphaNum(rightChar) &&
+          !(includeDoubleQuotes && (rightChar == wxT('\"'))))
         break;
       right++;
     }
+  }
+  else
+  {
+    // The editor automatically adds a closing quote which prevents auto-
+    // completing a partial filename if we don't add it to the autocompletion text.
+    if(includeDoubleQuotes && (m_text.GetChar(right) == wxT('\"')))
+      right++;
   }
 
   SetSelection(left, right);

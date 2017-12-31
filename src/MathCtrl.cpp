@@ -7751,23 +7751,22 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
       if((currentCommand == wxT("load")) ||
          (currentCommand == wxT("batchload")) ||
          (currentCommand == wxT("batch")))
-      {
         type = AutoComplete::loadfile;
+      
+      if(currentCommand == wxT("demo"))
+        type = AutoComplete::demofile;
+
+      if((type == AutoComplete::demofile) || (type == AutoComplete::loadfile))
+      {
         if(partial[0] != wxT('\"'))
         {
           partial = wxT("\"") + partial;
-          std::cerr<< "partial="<<partial<<"\n";
+          // If the editor auto-adds a closing quote this causes auto-completion to fail
           editor->ReplaceSelection(editor->GetSelectionString(), partial, true);
         }
-      }
-
-      if(currentCommand == wxT("demo"))
-      {
-        type = AutoComplete::demofile;
-        if(partial[0] != wxT('\"'))
+        if((partial.EndsWith("\"") && (!(partial.EndsWith("\\\"")))))
         {
-          partial = wxT("\"") + partial;
-          std::cerr<< "partial="<<partial<<"\n";
+          partial = partial.Left(partial.Length() - 1);
           editor->ReplaceSelection(editor->GetSelectionString(), partial, true);
         }
       }

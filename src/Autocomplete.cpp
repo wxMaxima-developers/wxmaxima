@@ -192,9 +192,15 @@ wxArrayString AutoComplete::CompleteSymbol(wxString partial, autoCompletionType 
 {
   wxArrayString completions;
   wxArrayString perfectCompletions;
-
+  
+  if(
+    ((type == AutoComplete::demofile) || (type == AutoComplete::loadfile)) &&
+    (partial.EndsWith("\""))
+    )
+    partial = partial.Left(partial.Length() - 1);
+  
   wxASSERT_MSG((type >= command) && (type <= unit), _("Bug: Autocompletion requested for unknown type of item."));
-
+  
   if (type != tmplte)
   {
     for (size_t i = 0; i < m_wordList[type].GetCount(); i++)
