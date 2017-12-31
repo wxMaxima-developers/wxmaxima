@@ -210,8 +210,11 @@ void MathPrintout::SetupData()
   printPPI = (*m_configuration)->GetDC()->GetPPI();
 
   (*m_configuration)->SetZoomFactor_temporarily(DCSCALE * screenPPI.x / printPPI.x);
-  wxMessageBox(wxString::Format("screenPPI.x=%i,\nprintPPI.x=%i",screenPPI.x,printPPI.x), wxOK | wxICON_EXCLAMATION);
-
+  wxMessageDialog dialog(NULL,
+                         wxString::Format(wxT("screenPPI.x=%i,\nprintPPI.x=%i"),
+                                          screenPPI.x,printPPI.x),
+                         wxString("Printer Parameters"));
+  dialog.ShowModal();
   #else
   (*m_configuration)->SetZoomFactor_temporarily(DCSCALE * 1.5);
   #endif
