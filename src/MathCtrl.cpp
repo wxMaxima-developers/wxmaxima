@@ -7852,7 +7852,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     wxPoint pos = editor->PositionToPoint(m_configuration->GetDefaultFontSize());
     CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
 
-#ifdef __WXGTK__
+    //#ifdef __WXGTK__
     // On wxGtk a popup window gets informed on keypresses and if somebody
     // clicks a control that is inside it => we can create a content assistant.
     ClientToScreen(&pos.x, &pos.y);
@@ -7860,16 +7860,16 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     m_autocompletePopup -> Position(pos, wxDefaultSize);
     m_autocompletePopup -> Popup();
     m_autocompletePopup -> SetFocus();
-#else
+//#else
     // On Win and Mac a popup window doesn't accept clicks and keypresses.
     // a popup menu at least accepts clicks => we stick to the traditional
     // autocomplete function.
-    AutocompletePopup *autocompletePopup = new AutocompletePopup(editor, &m_autocomplete, type);
-    // Show the popup menu
-    PopupMenu(autocompletePopup, pos.x, pos.y);
-    wxDELETE(m_autocompletePopup);
-    m_autocompletePopup = NULL;
-#endif
+//    AutocompletePopup *autocompletePopup = new AutocompletePopup(editor, &m_autocomplete, type);
+//    // Show the popup menu
+//    PopupMenu(autocompletePopup, pos.x, pos.y);
+//    wxDELETE(m_autocompletePopup);
+//    m_autocompletePopup = NULL;
+//#endif
   }
 
   return true;

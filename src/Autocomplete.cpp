@@ -155,7 +155,7 @@ bool AutoComplete::LoadSymbols(wxString file)
   // Prepare a list of all built-in loadable files of maxima.
   {
     GetMacFiles_includingSubdirs maximaLispIterator (m_wordList[loadfile]);
-    wxDir maximadir(dirstruct.MaximaLispLocation());
+    wxDir maximadir(dirstruct.MaximaLispLocation()+ "/share/");
     if(maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
     GetMacFiles userLispIterator (m_wordList[loadfile]);
