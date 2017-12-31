@@ -2719,6 +2719,12 @@ void MathCtrl::Evaluate()
  */
 void MathCtrl::OnKeyDown(wxKeyEvent &event)
 {
+  if(m_autocompletePopup != NULL)
+  {
+    m_autocompletePopup->OnKeyPress(event);
+    return;
+  }
+  
   ClearNotification();
 
   // Track the activity of the keyboard. Setting the keyboard
@@ -7847,7 +7853,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
 
 #ifdef __WXGTK__
-                                                                                                                            // On wxGtk a popup window gets informed on keypresses and if somebody
+    // On wxGtk a popup window gets informed on keypresses and if somebody
     // clicks a control that is inside it => we can create a content assistant.
     ClientToScreen(&pos.x, &pos.y);
     m_autocompletePopup = new ContentAssistantPopup(this,editor,&m_autocomplete,type,&m_autocompletePopup);
@@ -7862,6 +7868,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     // Show the popup menu
     PopupMenu(autocompletePopup, pos.x, pos.y);
     wxDELETE(m_autocompletePopup);
+    m_autocompletePopup = NULL;
 #endif
   }
 

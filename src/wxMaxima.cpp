@@ -7719,6 +7719,12 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
   connection.Close();
 }
 
+void wxMaxima::OnKeyDown(wxKeyEvent &event)
+{
+  if(m_console != NULL)
+    m_console->OnKeyDown(event);
+}
+
 int wxMaxima::SaveDocumentP()
 {
   wxString file, ext;
@@ -8176,7 +8182,9 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_FIND_CLOSE(wxID_ANY, wxMaxima::OnFindClose)
                 EVT_ACTIVATE(wxMaxima::OnActivate)
                 EVT_ICONIZE(wxMaxima::OnMinimize)
+                EVT_CHAR(wxMaxima::OnKeyDown)
 END_EVENT_TABLE()
+
 
 /* Local Variables:       */
 /* mode: text             */
