@@ -59,14 +59,8 @@ void ContentAssistantPopup::UpdateResults()
   }
 }
 
-void ContentAssistantPopup::OnKeyPress(wxKeyEvent &event)
+void ContentAssistantPopup::OnKeyDown(wxKeyEvent &event)
 {
-#if wxUSE_UNICODE
-  wxChar key = event.GetUnicodeKey();
-#else
-  wxChar key = wxString::Format(wxT("%c"), ChangeNumpadToChar(event.GetKeyCode()));
-#endif
-
   switch (event.GetKeyCode())
   {
     case WXK_TAB:
@@ -170,43 +164,7 @@ void ContentAssistantPopup::OnKeyPress(wxKeyEvent &event)
       break;
     }
     default:
-    {
-      if ((wxIsalpha(key)) || (key == wxT('_')) || (key == wxT('\"')))
-      {
-        wxString oldString = m_editor->GetSelectionString();
-        m_editor->ReplaceSelection(
-                oldString,
-                oldString + wxString(key),
-                true
-        );
-        UpdateResults();
-      }
-      else if (wxIsprint(key))
-      {
-        // The current key is no more part of the current command
-        //
-        // => Add the current selection to the worksheet and handle this keypress normally.
-        int selection = m_autocompletions->GetSelection();
-        if (selection < 0)
-          selection = 0;
-
-        m_editor->ReplaceSelection(
-                m_editor->GetSelectionString(),
-                m_completions[selection]
-        );
-        this->GetParent()->GetParent()->Refresh();
-        if (!m_editor->IsActive())
-          m_editor->ActivateCursor();
-        Dismiss();
-        *m_doneptr = NULL;
-
-        // Tell MathCtrl to handle this key event the normal way.
-        wxKeyEvent *keyEvent = new wxKeyEvent(event);
-        GetParent()->GetEventHandler()->QueueEvent(keyEvent);
-      }
-      else
-        event.Skip();
-    }
+      event.Skip();
   }
   this->GetParent()->GetParent()->Refresh();
 }
@@ -259,7 +217,7 @@ ContentAssistantPopup::ContentAssistantPopup(
   m_type = type;
   m_length = 0;
   m_autocompletions = new wxListBox(this, -1);
-
+  
   m_autocompletions->Connect(wxEVT_LISTBOX,
                              wxCommandEventHandler(ContentAssistantPopup::OnClick),
                              NULL, this);
@@ -267,8 +225,17 @@ ContentAssistantPopup::ContentAssistantPopup(
                              wxCommandEventHandler(ContentAssistantPopup::OnClick),
                              NULL, this);
   m_autocompletions->Connect(wxEVT_CHAR,
-                             wxKeyEventHandler(ContentAssistantPopup::OnKeyPress),
-                             NULL, this);
+                wxKeyEventHandler(ContentAssistantPopup::OnChar),
+                NULL, this);
+  m_autocompletions->Connect(wxEVT_KEY_DOWN,
+                wxKeyEventHandler(ContentAssistantPopup::OnKeyDown),
+                NULL, this);
+  this->Connect(wxEVT_CHAR,
+                wxKeyEventHandler(ContentAssistantPopup::OnChar),
+                NULL, this);
+  this->Connect(wxEVT_KEY_DOWN,
+                wxKeyEventHandler(ContentAssistantPopup::OnKeyDown),
+                NULL, this);
   wxFlexGridSizer *box = new wxFlexGridSizer(1);
   UpdateResults();
   box->AddGrowableCol(0);
@@ -277,6 +244,60 @@ ContentAssistantPopup::ContentAssistantPopup(
   SetSizerAndFit(box);
 }
 
+void ContentAssistantPopup::OnChar(wxKeyEvent &event)
+{
+  wxChar key = event.GetUnicodeKey();
+  if ((wxIsalpha(key)) || (key == wxT('_')) || (key == wxT('\"')))
+  {
+    wxString oldString = m_editor->GetSelectionString();
+    m_editor->ReplaceSelection(
+      oldString,
+      oldString + wxString(key),
+      true
+      );
+    UpdateResults();
+    return;
+  }
+  else if (wxIsprint(key))
+  {
+    // The current key is no more part of the current command
+    //
+    // => Add the current selection to the worksheet and handle this keypress normally.
+    int selection = m_autocompletions->GetSelection();
+        if (selection < 0)
+          selection = 0;
+        
+        m_editor->ReplaceSelection(
+          m_editor->GetSelectionString(),
+          m_completions[selection]
+          );
+        this->GetParent()->GetParent()->Refresh();
+        if (!m_editor->IsActive())
+          m_editor->ActivateCursor();
+        Dismiss();
+        *m_doneptr = NULL;
+        
+        // Tell MathCtrl to handle this key event the normal way.
+        wxKeyEvent *keyEvent = new wxKeyEvent(event);
+        m_autocompletions->GetEventHandler()->QueueEvent(keyEvent);
+        return;
+      }
+}
+
+void ContentAssistantPopup::OnMouseLeftUp(wxMouseEvent &event)
+{
+  wxMouseEvent *mouseEvent = new wxMouseEvent(event);
+  m_autocompletions->GetEventHandler()->QueueEvent(mouseEvent);
+}
+
+void ContentAssistantPopup::OnMouseLeftDown(wxMouseEvent &event)
+{
+  wxMouseEvent *mouseEvent = new wxMouseEvent(event);
+  m_autocompletions->GetEventHandler()->QueueEvent(mouseEvent);
+}
+
 BEGIN_EVENT_TABLE(ContentAssistantPopup, wxPopupTransientWindow)
-                EVT_CLOSE(ContentAssistantPopup::OnClose)
+EVT_CLOSE(ContentAssistantPopup::OnClose)
+EVT_LEFT_UP(ContentAssistantPopup::OnMouseLeftUp)
+EVT_LEFT_DOWN(ContentAssistantPopup::OnMouseLeftDown)
 END_EVENT_TABLE()

@@ -2719,12 +2719,6 @@ void MathCtrl::Evaluate()
  */
 void MathCtrl::OnKeyDown(wxKeyEvent &event)
 {
-  if(m_autocompletePopup != NULL)
-  {
-    m_autocompletePopup->OnKeyPress(event);
-    return;
-  }
-  
   ClearNotification();
 
   // Track the activity of the keyboard. Setting the keyboard
@@ -2744,6 +2738,12 @@ void MathCtrl::OnKeyDown(wxKeyEvent &event)
       event.Skip();
       return;
     }
+  }
+
+  if (m_autocompletePopup != NULL)
+  {
+    m_autocompletePopup->OnKeyDown(event);
+    return;
   }
 
   // Alt+Up and Alt+Down are hotkeys, too.
@@ -3874,7 +3874,7 @@ void MathCtrl::OnChar(wxKeyEvent &event)
   
   if (m_autocompletePopup != NULL)
   {
-    m_autocompletePopup->OnKeyPress(event);
+    m_autocompletePopup->OnChar(event);
     return;
   }
   

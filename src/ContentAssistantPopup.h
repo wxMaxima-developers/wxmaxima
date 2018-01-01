@@ -48,11 +48,16 @@ private:
   ContentAssistantPopup **m_doneptr;
 protected:
   void OnDismiss();
-
   void OnClose(wxCloseEvent &event);
+  void OnMouseLeftUp(wxMouseEvent &event);
+  void OnMouseLeftDown(wxMouseEvent &event);
 
 public:
   ~ContentAssistantPopup();
+  //! Gets the info which keycode the current keypress results in
+  void OnChar(wxKeyEvent &event);
+  //! Gets the info which key has been pressed with which modifier
+  void OnKeyDown(wxKeyEvent &event);
 
   /*! The constructor of the autocompletion window
 
@@ -66,8 +71,6 @@ public:
                         AutoComplete::autoCompletionType type, ContentAssistantPopup **doneptr);
 
   void UpdateResults();
-
-  void OnKeyPress(wxKeyEvent &event);
 
   void OnClick(wxCommandEvent &event);
 

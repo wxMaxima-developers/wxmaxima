@@ -7599,6 +7599,20 @@ void wxMaxima::ShowPane(wxCommandEvent &ev)
     m_console->UpdateTableOfContents();
 }
 
+void wxMaxima::OnChar(wxKeyEvent &event)
+{
+  if(m_console != NULL)
+    m_console->OnChar(event);
+  event.Skip();
+}
+
+void wxMaxima::OnKeyDown(wxKeyEvent &event)
+{
+  if(m_console != NULL)
+    m_console->OnKeyDown(event);
+  event.Skip();
+}
+
 void wxMaxima::NetworkDClick(wxCommandEvent &WXUNUSED(ev))
 {
   m_manager.GetPane(wxT("XmlInspector")).Show(
@@ -7717,12 +7731,6 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
 
   wxDELETE(inputStream);
   connection.Close();
-}
-
-void wxMaxima::OnKeyDown(wxKeyEvent &event)
-{
-  if(m_console != NULL)
-    m_console->OnKeyDown(event);
 }
 
 int wxMaxima::SaveDocumentP()
@@ -8173,6 +8181,8 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_BUTTON(menu_format_section, wxMaxima::InsertMenu)
                 EVT_BUTTON(menu_format_pagebreak, wxMaxima::InsertMenu)
                 EVT_BUTTON(menu_format_image, wxMaxima::InsertMenu)
+                EVT_CHAR(wxMaxima::OnChar)
+                EVT_KEY_DOWN(wxMaxima::OnKeyDown)
                 EVT_CHOICE(ToolBar::tb_changeStyle, wxMaxima::ChangeCellStyle)
                 EVT_MENU(menu_edit_find, wxMaxima::EditMenu)
                 EVT_FIND(wxID_ANY, wxMaxima::OnFind)
@@ -8182,7 +8192,6 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_FIND_CLOSE(wxID_ANY, wxMaxima::OnFindClose)
                 EVT_ACTIVATE(wxMaxima::OnActivate)
                 EVT_ICONIZE(wxMaxima::OnMinimize)
-                EVT_CHAR(wxMaxima::OnKeyDown)
 END_EVENT_TABLE()
 
 

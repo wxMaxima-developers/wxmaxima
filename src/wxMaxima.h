@@ -225,8 +225,6 @@ private:
     If text doesn't contain any error this function returns wxEmptyString
   */
   wxString GetUnmatchedParenthesisState(wxString text,int &index);
-  //! Forwards keys that are pressed to the worksheet.
-  void OnKeyDown(wxKeyEvent &event);
   //! The buffer all data from maxima is temporarily stored in.
   unsigned char *m_packetFromMaxima;
   //! The buffer all text from maxima is stored in before converting it to a wxString.
@@ -264,6 +262,9 @@ protected:
 
   void OnRecentDocument(wxCommandEvent &event);
   void OnUnsavedDocument(wxCommandEvent &event);
+
+  void OnChar(wxKeyEvent &event);
+  void OnKeyDown(wxKeyEvent &event);
 
   /*! The idle task that refreshes the gui (worksheet, menus, title line,...)
 

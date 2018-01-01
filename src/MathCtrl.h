@@ -465,13 +465,6 @@ private:
   //! Key pressed and no cell was active
   void OnCharNoActive(wxKeyEvent &event);
 
-  /*! Key for a printable character pressed.
-
-    Can call OnCharInActive or OnCharNoActive, if appropriate. See OnKeyDown for 
-    non-printable characters like "up" or "right".
-   */
-  void OnChar(wxKeyEvent &event);
-
   //! Is called when a hCursor is active and we have a WXK_UP/WXK_DOWN event
   void SelectEditable(EditorCell *editor, bool up);
 
@@ -577,6 +570,13 @@ private:
 
 
 public:
+  /*! Key for a printable character pressed.
+
+    Can call OnCharInActive or OnCharNoActive, if appropriate. See OnKeyDown for 
+    non-printable characters like "up" or "right".
+   */
+  void OnChar(wxKeyEvent &event);
+
   /*! A special key has been pressed
 
     Printable characters are handled by OnChar instead.
