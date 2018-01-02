@@ -84,11 +84,13 @@ private:
   class GetGeneralFiles : public wxDirTraverser
   {
   public:
-    GetGeneralFiles(wxArrayString& files) : m_files(files) { }
+    GetGeneralFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
+      m_files(files) { m_prefix = prefix; }
     virtual wxDirTraverseResult OnFile(const wxString& filename)
       {
         wxFileName newItemName(filename);
-        wxString newItem = "\"" + newItemName.GetFullName() + "\"";
+        wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "\"";
+        newItem.Replace(wxFileName::GetPathSeparator(),"/");
         if(m_files.Index(newItem) == wxNOT_FOUND)
           m_files.Add(newItem);
         return wxDIR_CONTINUE;
@@ -96,7 +98,8 @@ private:
     virtual wxDirTraverseResult OnDir(const wxString& dirname)
       {
         wxFileName newItemName(dirname);
-        wxString newItem = "\"" + newItemName.GetFullName() + "\"";
+        wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "\"";
+        newItem.Replace(wxFileName::GetPathSeparator(),"/");
         if(m_files.Index(newItem) == wxNOT_FOUND)
           m_files.Add(newItem);
         return wxDIR_IGNORE;
@@ -104,12 +107,14 @@ private:
     wxArrayString& GetResult(){return m_files;}
   private:
     wxArrayString& m_files;
+    wxString m_prefix;
   };
 
   class GetMacFiles_includingSubdirs : public wxDirTraverser
   {
   public:
-    GetMacFiles_includingSubdirs(wxArrayString& files) : m_files(files) { }
+    GetMacFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
+      m_files(files) { m_prefix = prefix; }
     virtual wxDirTraverseResult OnFile(const wxString& filename)
       {
         if(
@@ -119,7 +124,8 @@ private:
           )
         {
           wxFileName newItemName(filename);
-          wxString newItem = "\"" + newItemName.GetName() + "\"";
+          wxString newItem = "\"" + m_prefix + newItemName.GetName() + "\"";
+          newItem.Replace(wxFileName::GetPathSeparator(),"/");
           if(m_files.Index(newItem) == wxNOT_FOUND)
             m_files.Add(newItem);
         }
@@ -132,12 +138,14 @@ private:
     wxArrayString& GetResult(){return m_files;}
   private:
     wxArrayString& m_files;
+    wxString m_prefix;
   };
   
   class GetMacFiles : public GetMacFiles_includingSubdirs
   {
   public:
-    GetMacFiles(wxArrayString& files) : GetMacFiles_includingSubdirs(files){ }
+    GetMacFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
+      GetMacFiles_includingSubdirs(files, prefix){ }
     virtual wxDirTraverseResult OnDir(const wxString& WXUNUSED(dirname))
       {
         return wxDIR_IGNORE;
@@ -147,13 +155,15 @@ private:
   class GetDemoFiles_includingSubdirs : public wxDirTraverser
   {
   public:
-    GetDemoFiles_includingSubdirs(wxArrayString& files) : m_files(files) { }
+    GetDemoFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
+      m_files(files) { m_prefix = prefix; }
     virtual wxDirTraverseResult OnFile(const wxString& filename)
       {
         if(filename.EndsWith(".dem"))
         {
           wxFileName newItemName(filename);
-          wxString newItem = "\"" + newItemName.GetName() + "\"";
+          wxString newItem = "\"" + m_prefix + newItemName.GetName() + "\"";
+          newItem.Replace(wxFileName::GetPathSeparator(),"/");
           if(m_files.Index(newItem) == wxNOT_FOUND)
             m_files.Add(newItem);
         }
@@ -166,12 +176,14 @@ private:
     wxArrayString& GetResult(){return m_files;}
   private:
     wxArrayString& m_files;
+    wxString m_prefix;
   };
   
   class GetDemoFiles : public GetDemoFiles_includingSubdirs
   {
   public:
-    GetDemoFiles(wxArrayString& files) : GetDemoFiles_includingSubdirs(files){ }
+    GetDemoFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
+      GetDemoFiles_includingSubdirs(files, prefix){ }
     virtual wxDirTraverseResult OnDir(const wxString& WXUNUSED(dirname))
       {
         return wxDIR_IGNORE;
