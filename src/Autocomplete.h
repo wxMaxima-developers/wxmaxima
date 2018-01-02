@@ -48,6 +48,7 @@ public:
     tmplte,  //! Function templates
     loadfile,//! loadable files
     demofile,//! loadable files
+    generalfile,//! general files
     unit    //! Unit names. \attention Must be the last entry in this enum
   };
 
@@ -57,17 +58,53 @@ public:
 
   void AddSymbol(wxString fun, autoCompletionType type = command);
 
+  //! Replace the list of files in the directory the worksheet file is in to the demo files list
+  void UpdateDemoFiles(wxString partial, wxString maximaDir);
+  //! Replace the list of files in the directory the worksheet file is in to the load files list
+  void UpdateLoadFiles(wxString partial, wxString maximaDir);
+  //! Assemble a list of files
+  void UpdateGeneralFiles(wxString partial, wxString maximaDir);
+  
   //! Add words to the list of words that appear in the workSheet's code cells
   void AddWorksheetWords(wxArrayString wordlist);
 
   //! Clear the list of words that appear in the workSheet's code cells
   void ClearWorksheetWords();
-
+  void ClearLoadfileList(){m_wordList[loadfile] = m_builtInLoadFiles;}
+  void ClearDemofileList(){m_wordList[demofile] = m_builtInDemoFiles;}
+  
   wxArrayString CompleteSymbol(wxString partial, autoCompletionType type = command);
-
   wxString FixTemplate(wxString templ);
 
 private:
+
+  wxArrayString m_builtInLoadFiles;
+  wxArrayString m_builtInDemoFiles;
+
+  class GetGeneralFiles : public wxDirTraverser
+  {
+  public:
+    GetGeneralFiles(wxArrayString& files) : m_files(files) { }
+    virtual wxDirTraverseResult OnFile(const wxString& filename)
+      {
+        wxFileName newItemName(filename);
+        wxString newItem = "\"" + newItemName.GetFullName() + "\"";
+        if(m_files.Index(newItem) == wxNOT_FOUND)
+          m_files.Add(newItem);
+        return wxDIR_CONTINUE;
+      }
+    virtual wxDirTraverseResult OnDir(const wxString& dirname)
+      {
+        wxFileName newItemName(dirname);
+        wxString newItem = "\"" + newItemName.GetFullName() + "\"";
+        if(m_files.Index(newItem) == wxNOT_FOUND)
+          m_files.Add(newItem);
+        return wxDIR_IGNORE;
+      }
+    wxArrayString& GetResult(){return m_files;}
+  private:
+    wxArrayString& m_files;
+  };
 
   class GetMacFiles_includingSubdirs : public wxDirTraverser
   {
@@ -141,7 +178,7 @@ private:
       }
   };
 
-  wxArrayString m_wordList[5];
+  wxArrayString m_wordList[6];
   wxRegEx m_args;
   WorksheetWords m_worksheetWords;
 };

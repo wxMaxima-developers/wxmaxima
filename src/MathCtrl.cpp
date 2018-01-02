@@ -7770,6 +7770,21 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
           editor->ReplaceSelection(editor->GetSelectionString(), partial, true);
         }
       }
+
+      if((type == AutoComplete::command) && (partial[0] == wxT('\"')))
+        type = AutoComplete::generalfile;
+      
+      if(type == AutoComplete::demofile)
+        m_autocomplete.UpdateDemoFiles(partial,
+                                       wxFileName(m_currentFile).GetPath(wxPATH_GET_VOLUME));
+      
+      if(type == AutoComplete::loadfile)
+        m_autocomplete.UpdateLoadFiles(partial,
+                                       wxFileName(m_currentFile).GetPath(wxPATH_GET_VOLUME));
+
+      if(type == AutoComplete::generalfile)
+        m_autocomplete.UpdateGeneralFiles(partial,
+                                          wxFileName(m_currentFile).GetPath(wxPATH_GET_VOLUME));
     }
   }
 
@@ -7787,7 +7802,6 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
         // Only collect words from Code Cells.
         if ((tmp->GetGroupType() == GC_TYPE_CODE) && (tmp->GetEditable() != NULL))
           m_autocomplete.AddWorksheetWords(tmp->GetEditable()->GetWordList());
-
       }
       else
       {

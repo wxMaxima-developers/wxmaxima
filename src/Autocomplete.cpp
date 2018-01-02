@@ -30,6 +30,7 @@
 #include "Dirstructure.h"
 
 #include <wx/textfile.h>
+#include <wx/filename.h>
 
 AutoComplete::AutoComplete()
 {
@@ -154,11 +155,11 @@ bool AutoComplete::LoadSymbols(wxString file)
   
   // Prepare a list of all built-in loadable files of maxima.
   {
-    GetMacFiles_includingSubdirs maximaLispIterator (m_wordList[loadfile]);
+    GetMacFiles_includingSubdirs maximaLispIterator (m_builtInLoadFiles);
     wxDir maximadir(dirstruct.MaximaLispLocation()+ "/share/");
     if(maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
-    GetMacFiles userLispIterator (m_wordList[loadfile]);
+    GetMacFiles userLispIterator (m_builtInLoadFiles);
     wxDir maximauserfilesdir(dirstruct.MaximaUserFilesDir());
     if(maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
@@ -167,11 +168,11 @@ bool AutoComplete::LoadSymbols(wxString file)
 
   // Prepare a list of all built-in demos of maxima.
   {
-    GetDemoFiles_includingSubdirs maximaLispIterator (m_wordList[demofile]);
+    GetDemoFiles_includingSubdirs maximaLispIterator (m_builtInDemoFiles);
     wxDir maximadir(dirstruct.MaximaLispLocation());
     if(maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
-    GetDemoFiles userLispIterator (m_wordList[demofile]);
+    GetDemoFiles userLispIterator (m_builtInDemoFiles);
     wxDir maximauserfilesdir(dirstruct.MaximaUserFilesDir());
     if(maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
@@ -181,10 +182,79 @@ bool AutoComplete::LoadSymbols(wxString file)
   m_wordList[command].Sort();
   m_wordList[tmplte].Sort();
   m_wordList[unit].Sort();
-  m_wordList[loadfile].Sort();
-  m_wordList[demofile].Sort();
+  m_builtInLoadFiles.Sort();
+  m_builtInDemoFiles.Sort();
 
   return false;
+}
+
+void AutoComplete::UpdateDemoFiles(wxString partial, wxString maximaDir)
+{
+  // Remove the opening quote from the partial.
+  if(partial[0] == wxT('\"'))
+    partial = partial.Right(partial.Length()-1);
+  
+  // Determine if we need to add the path to maxima's current dir to the path in partial
+  if(!wxFileName(partial).IsAbsolute())
+    partial = maximaDir + wxFileName::GetPathSeparator() + partial;
+
+  // Determine the name of the directory
+  if(!(partial == wxEmptyString) && !wxDirExists(partial))
+    partial = wxFileName(partial).GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);
+
+  // Remove all files from the maxima directory from the demo file list
+  ClearDemofileList();
+
+  // Add all files from the maxima directory to the demo file list
+  GetDemoFiles userLispIterator(m_wordList[demofile]);
+  wxDir demofilesdir(partial);
+  if(demofilesdir.IsOpened())
+    demofilesdir.Traverse(userLispIterator);
+}
+
+void AutoComplete::UpdateGeneralFiles(wxString partial, wxString maximaDir)
+{
+  // Remove the opening quote from the partial.
+  if(partial[0] == wxT('\"'))
+    partial = partial.Right(partial.Length()-1);
+  
+  // Determine if we need to add the path to maxima's current dir to the path in partial
+  if(!wxFileName(partial).IsAbsolute())
+    partial = maximaDir + wxFileName::GetPathSeparator() + partial;
+
+  // Determine the name of the directory
+  if(!(partial == wxEmptyString) && !wxDirExists(partial))
+    partial = wxFileName(partial).GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);
+
+  // Add all files from the maxima directory to the demo file list
+  GetGeneralFiles fileIterator(m_wordList[generalfile]);
+  wxDir generalfilesdir(partial);
+  if(generalfilesdir.IsOpened())
+    generalfilesdir.Traverse(fileIterator);
+}
+
+void AutoComplete::UpdateLoadFiles(wxString partial, wxString maximaDir)
+{
+  // Remove the opening quote from the partial.
+  if(partial[0] == wxT('\"'))
+    partial = partial.Right(partial.Length()-1);
+  
+  // Determine if we need to add the path to maxima's current dir to the path in partial
+  if(!wxFileName(partial).IsAbsolute())
+    partial = maximaDir + wxFileName::GetPathSeparator() + partial;
+
+  // Determine the name of the directory
+  if(!(partial == wxEmptyString) && !wxDirExists(partial))
+    partial = wxFileName(partial).GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);
+
+  // Remove all files from the maxima directory from the load file list
+  ClearLoadfileList();
+
+  // Add all files from the maxima directory to the load file list
+  GetMacFiles userLispIterator(m_wordList[loadfile]);
+  wxDir loadfilesdir(partial);
+  if(loadfilesdir.IsOpened())
+    loadfilesdir.Traverse(userLispIterator);
 }
 
 /// Returns a string array with functions which start with partial.
