@@ -77,8 +77,28 @@ wxString Dirstructure::ResourcesDir()
 
 wxString Dirstructure::UserConfDir()
 {
-  return wxGetHomeDir() + wxT("/");
+  wxString retval;
+  if(!wxGetEnv(wxT("MAXIMA_USERDIR"),&retval))
+    retval = wxGetHomeDir();
+  return retval + wxString(wxFileName::GetPathSeparator());
 }
+
+wxString Dirstructure::MaximaUserFilesDir()
+{
+  wxString retval = UserConfDir();
+  
+#ifndef __WXMSW__
+  retval += wxT(".");
+#endif
+  
+  retval += wxT("maxima");
+  
+  if(!wxDirExists(retval))
+    wxMkDir(retval, wxS_DIR_DEFAULT);
+  
+  return retval += wxString(wxFileName::GetPathSeparator());
+}
+
 
 wxString Dirstructure::DataDir()
 {

@@ -52,6 +52,9 @@ public:
   //! The directory the user stores its data in.
   wxString UserConfDir();
 
+  //! The directory maxima searches for user-specific data in.
+  wxString MaximaUserFilesDir();
+
   //! The directory the application icon is stored in
   wxString AppIconDir();
 

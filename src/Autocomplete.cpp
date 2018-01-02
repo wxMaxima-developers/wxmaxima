@@ -159,9 +159,9 @@ bool AutoComplete::LoadSymbols(wxString file)
     if(maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
     GetMacFiles userLispIterator (m_wordList[loadfile]);
-    wxDir maximauserdir(dirstruct.UserConfDir());
-    if(maximauserdir.IsOpened())
-      maximauserdir.Traverse(userLispIterator);
+    wxDir maximauserfilesdir(dirstruct.MaximaUserFilesDir());
+    if(maximauserfilesdir.IsOpened())
+      maximauserfilesdir.Traverse(userLispIterator);
   }
   
 
@@ -172,9 +172,9 @@ bool AutoComplete::LoadSymbols(wxString file)
     if(maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
     GetDemoFiles userLispIterator (m_wordList[demofile]);
-    wxDir maximauserdir(dirstruct.UserConfDir());
-    if(maximauserdir.IsOpened())
-      maximauserdir.Traverse(userLispIterator);
+    wxDir maximauserfilesdir(dirstruct.MaximaUserFilesDir());
+    if(maximauserfilesdir.IsOpened())
+      maximauserfilesdir.Traverse(userLispIterator);
   }
   
 

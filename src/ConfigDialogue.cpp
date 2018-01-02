@@ -596,31 +596,9 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   wxBoxSizer *vsizer_maximaStartup = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *vsizer_wxMaximaStartup = new wxBoxSizer(wxVERTICAL);
 
-  // Determine the name of the startup file.
-  if(!wxGetEnv(wxT("MAXIMA_USERDIR"),&m_startupFileName))
-  {
-    #ifndef __WXMSW__
-    wxGetEnv(wxT("HOME"),&m_startupFileName);
-    #else
-    wxString homedrive;
-    wxGetEnv(wxT("HOMEDRIVE"),&homedrive);
-    wxGetEnv(wxT("HOMEPATH"),&m_startupFileName);
-    m_startupFileName = homedrive + m_startupFileName;
-    #endif
-    m_startupFileName += wxString(wxFileName::GetPathSeparator());
-    
-    // On windows the startup file's directory name doesn't begin with a ".", while
-    // on all other systems it does.
-#ifndef __WXMSW__
-    m_startupFileName += wxT(".");
-#endif
-    
-    m_startupFileName += wxT("maxima");
-    
-    if(!wxDirExists(m_startupFileName))
-      wxMkDir(m_startupFileName, wxS_DIR_DEFAULT);
-  }
-  m_startupFileName += wxString(wxFileName::GetPathSeparator());
+  Dirstructure dirstruct;
+  
+  m_startupFileName = dirstruct.MaximaUserFilesDir();
   m_wxStartupFileName += m_startupFileName + wxT("wxmaxima-init.mac");
   m_startupFileName += wxT("maxima-init.mac");
 
