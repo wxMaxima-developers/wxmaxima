@@ -206,11 +206,11 @@ void MathPrintout::SetupData()
   // which might employ an entirely different font size...
   wxSize screenPPI;
   screenPPI = m_oldconfig->GetDC()->GetPPI();
-//  wxSize printPPI;
-  // printPPI = (*m_configuration)->GetDC()->GetPPI();
   
   (*m_configuration)->SetZoomFactor_temporarily(DCSCALE * screenPPI.x / 75.0);
   #ifdef __WXMSW__
+  wxSize printPPI;
+  printPPI = (*m_configuration)->GetDC()->GetPPI();
   wxMessageDialog dialog(NULL,
                          wxString::Format(wxT("screenPPI.x=%i,\nprintPPI.x=%i"),
                                           screenPPI.x,printPPI.x),
