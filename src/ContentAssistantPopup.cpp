@@ -236,10 +236,8 @@ ContentAssistantPopup::ContentAssistantPopup(
   this->Connect(wxEVT_KEY_DOWN,
                 wxKeyEventHandler(ContentAssistantPopup::OnKeyDown),
                 NULL, this);
-  wxFlexGridSizer *box = new wxFlexGridSizer(1);
+  wxBoxSizer *box = new wxBoxSizer(wxVERTICAL);
   UpdateResults();
-  box->AddGrowableCol(0);
-  box->AddGrowableRow(0);
   box->Add(m_autocompletions, 0, wxEXPAND | wxALL, 0);
   SetSizerAndFit(box);
 }
@@ -247,7 +245,16 @@ ContentAssistantPopup::ContentAssistantPopup(
 void ContentAssistantPopup::OnChar(wxKeyEvent &event)
 {
   wxChar key = event.GetUnicodeKey();
-  if ((wxIsalpha(key)) || (key == wxT('_')) || (key == wxT('\"')))
+  if ((wxIsalpha(key)) || (key == wxT('_')) || (key == wxT('\"')) ||
+      (
+        (
+          (m_type == AutoComplete::generalfile) ||
+          (m_type == AutoComplete::loadfile) ||
+          (m_type == AutoComplete::demofile)
+          ) &&
+        (key == wxT('/'))
+        )
+    )
   {
     wxString oldString = m_editor->GetSelectionString();
     m_editor->ReplaceSelection(
@@ -288,12 +295,14 @@ void ContentAssistantPopup::OnMouseLeftUp(wxMouseEvent &event)
 {
   wxMouseEvent *mouseEvent = new wxMouseEvent(event);
   m_autocompletions->GetEventHandler()->QueueEvent(mouseEvent);
+  event.Skip();
 }
 
 void ContentAssistantPopup::OnMouseLeftDown(wxMouseEvent &event)
 {
   wxMouseEvent *mouseEvent = new wxMouseEvent(event);
   m_autocompletions->GetEventHandler()->QueueEvent(mouseEvent);
+  event.Skip();
 }
 
 BEGIN_EVENT_TABLE(ContentAssistantPopup, wxPopupTransientWindow)

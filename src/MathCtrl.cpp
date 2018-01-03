@@ -1369,7 +1369,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
   }
   // create menu if we have any items
   if (popupMenu->GetMenuItemCount() > 0)
-    PopupMenu(popupMenu);
+    popupMenu->Show();
   wxDELETE(popupMenu);
 }
 

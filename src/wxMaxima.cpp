@@ -2757,7 +2757,6 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     // a new one to be issued once the computer has time for doing real
     // background stuff.
     event.RequestMore();
-    event.Skip();
     return;
   }
 
@@ -2880,7 +2879,6 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       event.RequestMore();
     else
       event.Skip();
-
     return;    
   }
 
