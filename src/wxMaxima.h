@@ -332,6 +332,9 @@ protected:
 
     The data we get from maxima is typically split into small packets we append to 
     m_currentOutput until we got a full line we can display.
+
+    \todo Currently we use an ugly woraround for maxima sometimes sending only half 
+    a line of text.
    */
   void ClientEvent(wxSocketEvent &event);
   //! Triggered when we get new chars from maxima.
