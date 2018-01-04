@@ -4428,14 +4428,19 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSel
 
   {
     // We cannot use SetValue() here, since SetValue() tends to move the cursor.
-    m_text = text.SubString(0, start - 1) +
+    wxString text_left = text.SubString(0, start - 1);
+    wxString text_right = text.SubString(end, text.Length());
+    m_text = text_left+
              newStr +
-             text.SubString(end, text.Length());
+             text_right;
     StyleText();
 
     m_containsChanges = true;
     m_positionOfCaret = start + newStr.Length();
-
+    std::cerr<<"newStr=\""<<newStr<<"\"\n";
+    std::cerr<<"text_right=\""<<text_right<<"\"\n";
+    if((newStr.EndsWith("\"") || (text_right.StartsWith("\""))))
+      m_positionOfCaret--;
     if (keepSelected)
     {
       SetSelection(start, m_positionOfCaret);

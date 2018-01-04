@@ -3874,6 +3874,9 @@ void MathCtrl::OnChar(wxKeyEvent &event)
   
   if (m_autocompletePopup != NULL)
   {
+    // We don't want autocompletion to be able to trigger another autocompletion:
+    // On keypress Autocompletion processes the keypress and issues another autocompletion
+    // that otherwise would result in an endless loop.
     if(
       !((event.GetKeyCode() == WXK_TAB) && (event.AltDown())) &&
       !((event.GetKeyCode() == 'k') && (event.AltDown())) &&

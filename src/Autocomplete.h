@@ -98,14 +98,14 @@ private:
     virtual wxDirTraverseResult OnDir(const wxString& dirname)
       {
         wxFileName newItemName(dirname);
-        wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "\"";
+        wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
         newItem.Replace(wxFileName::GetPathSeparator(),"/");
         if(m_files.Index(newItem) == wxNOT_FOUND)
           m_files.Add(newItem);
         return wxDIR_IGNORE;
       }
     wxArrayString& GetResult(){return m_files;}
-  private:
+  protected: 
     wxArrayString& m_files;
     wxString m_prefix;
   };
@@ -136,7 +136,7 @@ private:
         return wxDIR_CONTINUE;
       }
     wxArrayString& GetResult(){return m_files;}
-  private:
+  protected: 
     wxArrayString& m_files;
     wxString m_prefix;
   };
@@ -146,8 +146,13 @@ private:
   public:
     GetMacFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
       GetMacFiles_includingSubdirs(files, prefix){ }
-    virtual wxDirTraverseResult OnDir(const wxString& WXUNUSED(dirname))
+    virtual wxDirTraverseResult OnDir(const wxString& dirname)
       {
+        wxFileName newItemName(dirname);
+        wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
+        newItem.Replace(wxFileName::GetPathSeparator(),"/");
+        if(m_files.Index(newItem) == wxNOT_FOUND)
+          m_files.Add(newItem);
         return wxDIR_IGNORE;
       }
   };
@@ -174,7 +179,7 @@ private:
         return wxDIR_CONTINUE;
       }
     wxArrayString& GetResult(){return m_files;}
-  private:
+  protected: 
     wxArrayString& m_files;
     wxString m_prefix;
   };
@@ -184,8 +189,13 @@ private:
   public:
     GetDemoFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
       GetDemoFiles_includingSubdirs(files, prefix){ }
-    virtual wxDirTraverseResult OnDir(const wxString& WXUNUSED(dirname))
+    virtual wxDirTraverseResult OnDir(const wxString& dirname)
       {
+        wxFileName newItemName(dirname);
+        wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";
+        newItem.Replace(wxFileName::GetPathSeparator(),"/");
+        if(m_files.Index(newItem) == wxNOT_FOUND)
+          m_files.Add(newItem);
         return wxDIR_IGNORE;
       }
   };
