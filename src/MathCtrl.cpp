@@ -3874,6 +3874,11 @@ void MathCtrl::OnChar(wxKeyEvent &event)
   
   if (m_autocompletePopup != NULL)
   {
+    if(
+      !((event.GetKeyCode() == WXK_TAB) && (event.AltDown())) &&
+      !((event.GetKeyCode() == 'k') && (event.AltDown())) &&
+      !((event.GetKeyCode() == 'K') && (event.AltDown()))
+      )
     m_autocompletePopup->OnChar(event);
     return;
   }

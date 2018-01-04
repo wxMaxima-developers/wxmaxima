@@ -291,22 +291,6 @@ void ContentAssistantPopup::OnChar(wxKeyEvent &event)
       }
 }
 
-void ContentAssistantPopup::OnMouseLeftUp(wxMouseEvent &event)
-{
-  wxMouseEvent *mouseEvent = new wxMouseEvent(event);
-  m_autocompletions->GetEventHandler()->QueueEvent(mouseEvent);
-  event.Skip();
-}
-
-void ContentAssistantPopup::OnMouseLeftDown(wxMouseEvent &event)
-{
-  wxMouseEvent *mouseEvent = new wxMouseEvent(event);
-  m_autocompletions->GetEventHandler()->QueueEvent(mouseEvent);
-  event.Skip();
-}
-
 BEGIN_EVENT_TABLE(ContentAssistantPopup, wxPopupTransientWindow)
 EVT_CLOSE(ContentAssistantPopup::OnClose)
-EVT_LEFT_UP(ContentAssistantPopup::OnMouseLeftUp)
-EVT_LEFT_DOWN(ContentAssistantPopup::OnMouseLeftDown)
 END_EVENT_TABLE()

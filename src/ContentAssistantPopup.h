@@ -49,8 +49,6 @@ private:
 protected:
   void OnDismiss();
   void OnClose(wxCloseEvent &event);
-  void OnMouseLeftUp(wxMouseEvent &event);
-  void OnMouseLeftDown(wxMouseEvent &event);
 
 public:
   ~ContentAssistantPopup();
