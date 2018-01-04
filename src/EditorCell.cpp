@@ -3025,6 +3025,16 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight, bool 
 {
   if(m_positionOfCaret < 0)
     return wxEmptyString;
+
+  // if((unsigned long)m_positionOfCaret < m_text.Length())
+  // {
+  //   std::cerr<< wxString(m_text[m_positionOfCaret])<<"\n";
+  //   if(m_text[m_positionOfCaret] == wxT('\"'))
+  //     m_positionOfCaret--;
+  // }
+
+  // if(m_positionOfCaret < 0)
+  //   return wxEmptyString;
   
   if (selectParens && (m_paren1 != -1) && (m_paren2 != -1))
   {
