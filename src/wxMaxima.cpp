@@ -724,96 +724,82 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     int charsRead = 1;
     // The memory we store new chars we receive from maxima in
     wxString newChars;
-    while((m_client != NULL) && (m_client->IsOk()) &&
-          (m_client->IsData()) &&
-          (!m_client->Error()) && (charsRead > 0))
-      {
-        // Add all the last uncompleted unicode char from the last data packet
-        // to the data buffer.
-        for(unsigned int i = 0;i<m_uncompletedChars.GetDataLen();i++)
-          m_packetFromMaxima[i] = ((char *)m_uncompletedChars.GetData())[i];
-        m_uncompletedChars.Clear();
+    // Add all the last uncompleted unicode char from the last data packet
+    // to the data buffer.
+    for(unsigned int i = 0;i<m_uncompletedChars.GetDataLen();i++)
+      m_packetFromMaxima[i] = ((char *)m_uncompletedChars.GetData())[i];
+    m_uncompletedChars.Clear();
 
-        // Read a data packet from maxima
-        m_client->Read(&(m_packetFromMaxima[m_uncompletedChars.GetDataLen()]),
-                       SOCKET_SIZE - m_uncompletedChars.GetDataLen());
-        charsRead = m_client->LastCount() + m_uncompletedChars.GetDataLen();
+    // Read a data packet from maxima
+    m_client->Read(&(m_packetFromMaxima[m_uncompletedChars.GetDataLen()]),
+                   SOCKET_SIZE - m_uncompletedChars.GetDataLen());
+    charsRead = m_client->LastCount() + m_uncompletedChars.GetDataLen();
         
-        // Does datapacked end with something that looks like being somewhere
-        // inside an unicode char? (all bytes of a multibyte unicode char have
-        // their MSB set.
-        if(m_packetFromMaxima[charsRead-1] >= 128)
-        {
-          // It did => Find the start of the unicode character m_inputBuffer ends with/in.
-          // Only the first byte of a multibyte unicode char has its two most significant
-          // bits set.
-          unsigned int bytesForLastChar = 0;
-          while(
-            (bytesForLastChar < 4) &&
-            (m_packetFromMaxima[charsRead-1] >= 16*(8)  ) &&
-            (m_packetFromMaxima[charsRead-1] <  16*(8+4)) &&
-            (charsRead > 0))
-            {
-              bytesForLastChar++;
-              charsRead--;
-            }
-
-          // Remove the 1st byte of our unicode byte from the input buffer, as
-          // well.
-          if(charsRead > 0)
-          {
-            bytesForLastChar++;
-            charsRead--;
-          }
-          
-          // If the char m_inputBuffer ends with is unicode its first byte tells
-          // us how many bytes this char is long:
-          //  - If the 1st 2 bits are set it is a two-byte UTF8 character
-          //  - If the 1st 3 bits are set it is a three-byte UTF8 character
-          //  - If the 1st 4 bits are set it is a four-byte UTF8 character
-          unsigned int lastCharSize = 0;
-          unsigned int firstbyte = m_packetFromMaxima[charsRead];
-          if(firstbyte > 16*(8+4+2+1))
-            lastCharSize = 4;
-          else
-          {
-            if(firstbyte > 16*(8+4+2))
-              lastCharSize = 3;
-            else
-              if(firstbyte > 16*(8+4))
-                lastCharSize = 2;
-          }
-
-          // If the unicode char the buffer ended with was complete we re- add it to the
-          // input buffer.
-          if(lastCharSize == bytesForLastChar)
-          {
-            charsRead += lastCharSize;
-            lastCharSize = 0;
-            bytesForLastChar = 0;
-          }
-
-          // If the unicode char the buffer ended with wasn't complete we add it to the
-          // buffer of uncomplete chars so this char is processed when the next package
-          // provides us with the remaining bits.
-          if (bytesForLastChar > 0)
-            m_uncompletedChars.AppendData(&(m_uncompletedChars[charsRead]),bytesForLastChar);
-        }
-
-        // Don't open an assert window every single time maxima mixes UTF8 and the current
-        // codepage. 
-        wxLogStderr logStderr;
-        newChars += wxString::FromUTF8((char *)m_packetFromMaxima, charsRead);
-
-        // An ugly workaround to Maxima sometimes sending text one char at a time. At least
-        // it feels like maxima is doing this. If this is correct we need a better idea on
-        // what to do in this case.
-        if((m_packetFromMaxima[charsRead-1] != '\n') && (m_packetFromMaxima[charsRead-1] != '>'))
-        {
-          std::cerr<<"Debug!\n";
-          wxMilliSleep(100);
-        }
+    // Does datapacked end with something that looks like being somewhere
+    // inside an unicode char? (all bytes of a multibyte unicode char have
+    // their MSB set.
+    if(m_packetFromMaxima[charsRead-1] >= 128)
+    {
+      // It did => Find the start of the unicode character m_inputBuffer ends with/in.
+      // Only the first byte of a multibyte unicode char has its two most significant
+      // bits set.
+      unsigned int bytesForLastChar = 0;
+      while(
+        (bytesForLastChar < 4) &&
+        (m_packetFromMaxima[charsRead-1] >= 16*(8)  ) &&
+        (m_packetFromMaxima[charsRead-1] <  16*(8+4)) &&
+        (charsRead > 0))
+      {
+        bytesForLastChar++;
+        charsRead--;
       }
+
+      // Remove the 1st byte of our unicode byte from the input buffer, as
+      // well.
+      if(charsRead > 0)
+      {
+        bytesForLastChar++;
+        charsRead--;
+      }
+          
+      // If the char m_inputBuffer ends with is unicode its first byte tells
+      // us how many bytes this char is long:
+      //  - If the 1st 2 bits are set it is a two-byte UTF8 character
+      //  - If the 1st 3 bits are set it is a three-byte UTF8 character
+      //  - If the 1st 4 bits are set it is a four-byte UTF8 character
+      unsigned int lastCharSize = 0;
+      unsigned int firstbyte = m_packetFromMaxima[charsRead];
+      if(firstbyte > 16*(8+4+2+1))
+        lastCharSize = 4;
+      else
+      {
+        if(firstbyte > 16*(8+4+2))
+          lastCharSize = 3;
+        else
+          if(firstbyte > 16*(8+4))
+            lastCharSize = 2;
+      }
+
+      // If the unicode char the buffer ended with was complete we re- add it to the
+      // input buffer.
+      if(lastCharSize == bytesForLastChar)
+      {
+        charsRead += lastCharSize;
+        lastCharSize = 0;
+        bytesForLastChar = 0;
+      }
+
+      // If the unicode char the buffer ended with wasn't complete we add it to the
+      // buffer of uncomplete chars so this char is processed when the next package
+      // provides us with the remaining bits.
+      if (bytesForLastChar > 0)
+        m_uncompletedChars.AppendData(&(m_uncompletedChars[charsRead]),bytesForLastChar);
+    }
+
+    // Don't open an assert window every single time maxima mixes UTF8 and the current
+    // codepage. 
+    wxLogStderr logStderr;
+    newChars += wxString::FromUTF8((char *)m_packetFromMaxima, charsRead);
 
     if (IsPaneDisplayed(menu_pane_xmlInspector))
       m_xmlInspector->Add_FromMaxima(newChars);
