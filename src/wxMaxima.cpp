@@ -811,7 +811,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
         if((m_packetFromMaxima[charsRead-1] != '\n') && (m_packetFromMaxima[charsRead-1] != '>'))
         {
           std::cerr<<"Debug!\n";
-          wxMilliSleep(100);
+          wxMilliSleep(500);
         }
       }
 
