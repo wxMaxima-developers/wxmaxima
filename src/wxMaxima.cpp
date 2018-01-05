@@ -805,14 +805,10 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
         wxLogStderr logStderr;
         newChars += wxString::FromUTF8((char *)m_packetFromMaxima, charsRead);
 
-        // An ugly workaround to Maxima sometimes sending text one char at a time. At least
-        // it feels like maxima is doing this. If this is correct we need a better idea on
-        // what to do in this case.
-        if((m_packetFromMaxima[charsRead-1] != '\n') && (m_packetFromMaxima[charsRead-1] != '>'))
-        {
-          std::cerr<<"Debug!\n";
-          wxMilliSleep(500);
-        }
+        // Maxima sometimes seems to end a packet in the middle of a text line.
+        // Let's output the lines that are affected.
+        if((m_packetFromMaxima[charsRead-1] != '\n') && (!newChars.Contains(">")) &&(!m_first))
+          std::cerr<<"PartialTextLine=\""<<newChars<<"\"\n";
       }
 
     if (IsPaneDisplayed(menu_pane_xmlInspector))
