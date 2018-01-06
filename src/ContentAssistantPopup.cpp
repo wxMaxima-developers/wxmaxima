@@ -286,7 +286,7 @@ void ContentAssistantPopup::OnChar(wxKeyEvent &event)
         
         // Tell MathCtrl to handle this key event the normal way.
         wxKeyEvent *keyEvent = new wxKeyEvent(event);
-        m_autocompletions->GetEventHandler()->QueueEvent(keyEvent);
+        GetParent()->GetEventHandler()->QueueEvent(keyEvent);
         return;
       }
 }
