@@ -724,9 +724,9 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     int charsRead = 1;
     // The memory we store new chars we receive from maxima in
     wxString newChars;
-    while((m_client != NULL) && (m_client->IsOk()) &&
-          (m_client->IsData()) && (charsRead > 0))
-      {
+    // while((m_client != NULL) && (m_client->IsOk()) &&
+    //       (m_client->IsData()) && (charsRead > 0))
+    //   {
         // Add all the last uncompleted unicode char from the last data packet
         // to the data buffer.
 //        for(unsigned int i = 0;i<m_uncompletedChars.GetDataLen();i++)
@@ -884,7 +884,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
           // Switch to the WorkingGroup the next bunch of data is for.
           if(newActiveCell != oldActiveCell)
             m_console->m_cellPointers.SetWorkingGroup(newActiveCell);
-        }
+//        }
       }
     break;
   }

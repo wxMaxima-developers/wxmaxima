@@ -1487,6 +1487,8 @@ void MathCtrl::OnMouseLeftInGc(wxMouseEvent &event, GroupCell *clickedInGc)
  */
 void MathCtrl::OnMouseLeftDown(wxMouseEvent &event)
 {
+  if(m_autocompletePopup)
+    m_autocompletePopup->Destroy();
   m_leftDownPosition = wxPoint(event.GetX(),event.GetY());
   ClearNotification();
 
@@ -7876,11 +7878,13 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     //#ifdef __WXGTK__
     // On wxGtk a popup window gets informed on keypresses and if somebody
     // clicks a control that is inside it => we can create a content assistant.
-    ClientToScreen(&pos.x, &pos.y);
-    m_autocompletePopup = new ContentAssistantPopup(this,editor,&m_autocomplete,type,&m_autocompletePopup);
-    m_autocompletePopup -> Position(pos, wxDefaultSize);
-    m_autocompletePopup -> Popup();
-    m_autocompletePopup -> SetFocus();
+//    ClientToScreen(&pos.x, &pos.y);
+    m_autocompletePopup = new AutocompletePopup(this,editor,&m_autocomplete,type,&m_autocompletePopup);
+    m_autocompletePopup -> SetPosition(pos);
+//    m_autocompletePopup -> Popup();
+//    m_autocompletePopup -> SetFocus();
+    m_autocompletePopup -> Create(this);
+    m_autocompletePopup -> UpdateResults();
 //#else
     // On Win and Mac a popup window doesn't accept clicks and keypresses.
     // a popup menu at least accepts clicks => we stick to the traditional

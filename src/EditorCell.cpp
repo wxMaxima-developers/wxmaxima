@@ -4447,8 +4447,6 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSel
 
     m_containsChanges = true;
     m_positionOfCaret = start + newStr.Length();
-    std::cerr<<"newStr=\""<<newStr<<"\"\n";
-    std::cerr<<"text_right=\""<<text_right<<"\"\n";
     if((newStr.EndsWith("\"") || (text_right.StartsWith("\""))))
       m_positionOfCaret--;
     if (keepSelected)

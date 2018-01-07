@@ -34,7 +34,6 @@
 #include <wx/textfile.h>
 #include <wx/fdrepdlg.h>
 #include <list>
-#include "ContentAssistantPopup.h"
 
 #include "Notification.h"
 #include "MathCell.h"
@@ -567,7 +566,7 @@ private:
   AutoComplete m_autocomplete;
   wxArrayString m_completions;
   bool m_autocompleteTemplates;
-
+  AutocompletePopup *m_autocompletePopup;
 
 public:
   /*! Key for a printable character pressed.
@@ -1101,8 +1100,6 @@ public:
 
   //! Select the cell range start-end
   void SetSelection(MathCell *start, MathCell *end);
-
-  ContentAssistantPopup *m_autocompletePopup;
 
   bool CanEdit();
 

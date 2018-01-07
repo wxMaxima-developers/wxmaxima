@@ -30,7 +30,7 @@ target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
 INCLUDE (CheckIncludeFiles)
 CHECK_INCLUDE_FILES (proc/procps.h HAVE_PROCPS_H)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Setup.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Setup.h)
- 
+  
 if(WIN32)
     install(TARGETS wxmaxima RUNTIME DESTINATION wxMaxima)
 else()
