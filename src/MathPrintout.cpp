@@ -203,11 +203,19 @@ void MathPrintout::SetupData()
   // on MSW according to https://groups.google.com/forum/#!topic/wx-users/QF_W4g3Oe98
   // the wxFont::SetPointSize is scaled relative to the screen DPI rate in order to
   // get the right font size in pixels. Unfortunately this is true for printing, too,
-  // which might employ an entirely different font size...
+  // which might employ an entirely different DPI rate.
+  //
+  // Also it could be shown that on a 600dpi printer the font is only half the size
+  // one would get on an 300dpi printer => we need to correct the scale factor for
+  // the DPI rate, too. It seems that for a 75dpi and a 300dpi printer the scaling
+  // factor is 1.0.
   wxSize screenPPI;
   screenPPI = m_oldconfig->GetDC()->GetPPI();
+  wxSize printPPI;
+  printPPI = GetDC()->GetPPI();
+
   
-  (*m_configuration)->SetZoomFactor_temporarily(DCSCALE * screenPPI.x / 75.0);
+  (*m_configuration)->SetZoomFactor_temporarily(DCSCALE * screenPPI.x / 75.0 * printPPI.x / 300);
   #ifdef __WXMSW__
   wxSize printPPI;
   printPPI = (*m_configuration)->GetDC()->GetPPI();
