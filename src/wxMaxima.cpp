@@ -1111,6 +1111,9 @@ bool wxMaxima::StartMaxima(bool force)
 
 void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   if (m_pid < 0)
   {
     GetMenuBar()->Enable(menu_interrupt_id, false);
@@ -2957,6 +2960,9 @@ void wxMaxima::MenuCommand(wxString cmd)
 
 void wxMaxima::PrintMenu(wxCommandEvent &event)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   switch (event.GetId())
   {
     case wxID_PRINT:
@@ -3655,6 +3661,9 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
 
 void wxMaxima::FileMenu(wxCommandEvent &event)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   wxString expr = GetDefaultEntry();
   wxString cmd;
   bool forceSave = false;
@@ -3879,6 +3888,9 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
 
 void wxMaxima::EditMenu(wxCommandEvent &event)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   //if (m_console->m_findDialog != NULL) {
   //  event.Skip();
   //  return;
@@ -4216,6 +4228,9 @@ void wxMaxima::OnReplaceAll(wxFindDialogEvent &event)
 
 void wxMaxima::MaximaMenu(wxCommandEvent &event)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   wxString expr = GetDefaultEntry();
   wxString cmd;
   wxString b = wxT("\\");
@@ -4379,6 +4394,9 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
 
 void wxMaxima::EquationsMenu(wxCommandEvent &event)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -4639,6 +4657,9 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
 
 void wxMaxima::AlgebraMenu(wxCommandEvent &event)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -4834,6 +4855,9 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
 
 void wxMaxima::ListMenu(wxCommandEvent &event)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -5243,6 +5267,9 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
 
 void wxMaxima::SimplifyMenu(wxCommandEvent &event)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -5377,6 +5404,9 @@ void wxMaxima::SimplifyMenu(wxCommandEvent &event)
 
 void wxMaxima::CalculusMenu(wxCommandEvent &event)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -5666,6 +5696,9 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
 
 void wxMaxima::PlotMenu(wxCommandEvent &event)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -5741,6 +5774,9 @@ void wxMaxima::PlotMenu(wxCommandEvent &event)
 
 void wxMaxima::NumericalMenu(wxCommandEvent &event)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   wxString expr = GetDefaultEntry();
   wxString cmd;
   switch (event.GetId())
@@ -5922,6 +5958,9 @@ END_EVENT_TABLE()
 
 void wxMaxima::HelpMenu(wxCommandEvent &event)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   wxString expr = GetDefaultEntry();
   wxString cmd;
   wxString helpSearchString = wxT("%");
@@ -6108,6 +6147,9 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
 
 void wxMaxima::StatsMenu(wxCommandEvent &ev)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   wxString expr = GetDefaultEntry();
 
   switch (ev.GetId())
@@ -6407,6 +6449,9 @@ void wxMaxima::OnClose(wxCloseEvent &event)
 
 void wxMaxima::PopupMenu(wxCommandEvent &event)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   wxString selection = m_console->GetString();
   switch (event.GetId())
   {
@@ -6805,6 +6850,9 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
 
 void wxMaxima::OnRecentDocument(wxCommandEvent &event)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   wxString file = GetRecentDocument(event.GetId() - menu_recent_document_0);
 
   if (SaveNecessary() &&
@@ -6837,6 +6885,9 @@ void wxMaxima::OnRecentDocument(wxCommandEvent &event)
 
 void wxMaxima::OnUnsavedDocument(wxCommandEvent &event)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
 
   wxString file;
   
@@ -6900,6 +6951,9 @@ bool wxMaxima::SaveNecessary()
 
 void wxMaxima::EditInputMenu(wxCommandEvent &WXUNUSED(event))
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   if (!m_console->CanEdit())
     return;
 
@@ -6919,6 +6973,9 @@ void wxMaxima::EditInputMenu(wxCommandEvent &WXUNUSED(event))
 // of the working group, handle it carefully.
 void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event))
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   bool evaluating = !m_console->m_evaluationQueue.Empty();
   if (!evaluating)
     m_console->FollowEvaluation(true);
@@ -7337,6 +7394,9 @@ void wxMaxima::TryEvaluateNextInQueue()
 
 void wxMaxima::InsertMenu(wxCommandEvent &event)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   int type = 0;
   bool output = false;
   switch (event.GetId())
@@ -7602,6 +7662,9 @@ void wxMaxima::SliderEvent(wxScrollEvent &ev)
 
 void wxMaxima::ShowPane(wxCommandEvent &ev)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   int id = ev.GetId();
 
   if (id == menu_pane_hideall)
@@ -7638,6 +7701,9 @@ void wxMaxima::NetworkDClick(wxCommandEvent &WXUNUSED(ev))
 
 void wxMaxima::HistoryDClick(wxCommandEvent &ev)
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   m_console->OpenHCaret(ev.GetString(), GC_TYPE_CODE);
   m_console->SetFocus();
 }
@@ -7658,6 +7724,9 @@ void wxMaxima::TableOfContentsSelection(wxListEvent &ev)
 
 void wxMaxima::OnFollow(wxCommandEvent &WXUNUSED(event))
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   m_console->OnFollow();
 }
 
@@ -7803,6 +7872,9 @@ void wxMaxima::OnMinimize(wxIconizeEvent &event)
 
 void wxMaxima::ChangeCellStyle(wxCommandEvent& WXUNUSED(event))
 {
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
   if ((m_console == NULL) || (m_console->m_mainToolBar == NULL))
     return;
   

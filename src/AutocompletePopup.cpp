@@ -246,7 +246,7 @@ bool AutocompletePopup::Create(wxWindow* parent)
   return retval;
 }
 
-void AutocompletePopup::OnClick(wxMouseEvent &event)
+void AutocompletePopup::OnClick(wxMouseEvent& WXUNUSED(event))
 {
   if (GetItemCount() <= 0)
     return;

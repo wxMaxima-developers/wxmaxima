@@ -569,6 +569,13 @@ private:
   AutocompletePopup *m_autocompletePopup;
 
 public:
+  //! Close the autocompletion pop-up if it is currently open.
+  void CloseAutoCompletePopup()
+    {
+      if(m_autocompletePopup != NULL)
+        m_autocompletePopup->Destroy();
+    }
+
   /*! Key for a printable character pressed.
 
     Can call OnCharInActive or OnCharNoActive, if appropriate. See OnKeyDown for 

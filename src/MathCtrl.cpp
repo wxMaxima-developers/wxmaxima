@@ -859,8 +859,7 @@ void MathCtrl::OnSize(wxSizeEvent& WXUNUSED(event))
  */
 void MathCtrl::ClearDocument()
 {
-  if(m_autocompletePopup)
-    m_autocompletePopup->Destroy();
+  CloseAutoCompletePopup();
   SetSelection(NULL);
   SetActiveCell(NULL, false);
   m_clickType = CLICK_TYPE_NONE;
@@ -1489,8 +1488,7 @@ void MathCtrl::OnMouseLeftInGc(wxMouseEvent &event, GroupCell *clickedInGc)
  */
 void MathCtrl::OnMouseLeftDown(wxMouseEvent &event)
 {
-  if(m_autocompletePopup)
-    m_autocompletePopup->Destroy();
+  CloseAutoCompletePopup();
   m_leftDownPosition = wxPoint(event.GetX(),event.GetY());
   ClearNotification();
 
@@ -2640,8 +2638,7 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
 
 void MathCtrl::OpenHCaret(wxString txt, int type)
 {
-  if(m_autocompletePopup)
-    m_autocompletePopup->Destroy();
+  CloseAutoCompletePopup();
   
   // if we are inside cell maxima is currently evaluating
   // bypass normal behaviour and insert an EditorCell into
@@ -7966,8 +7963,7 @@ void MathCtrl::SetActiveCellText(wxString text)
 
 bool MathCtrl::InsertText(wxString text)
 {
-  if(m_autocompletePopup)
-    m_autocompletePopup->Destroy();
+  CloseAutoCompletePopup();
 
   if (GetActiveCell())
   {
