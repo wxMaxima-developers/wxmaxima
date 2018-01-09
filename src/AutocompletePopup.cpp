@@ -294,9 +294,9 @@ AutocompletePopup::AutocompletePopup(
   m_type = type;
   m_length = 0;
   
-//  Connect(wxEVT_COMMAND_COMBOBOX_SELECTED,
-//          wxCommandEventHandler(AutocompletePopup::OnClick),
-//          NULL, this);
+  Connect(wxEVT_CHAR,
+          wxKeyEventHandler(AutocompletePopup::OnChar),
+          NULL, this);
 }
 
 void AutocompletePopup::OnChar(wxKeyEvent &event)
