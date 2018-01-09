@@ -859,6 +859,8 @@ void MathCtrl::OnSize(wxSizeEvent& WXUNUSED(event))
  */
 void MathCtrl::ClearDocument()
 {
+  if(m_autocompletePopup)
+    m_autocompletePopup->Destroy();
   SetSelection(NULL);
   SetActiveCell(NULL, false);
   m_clickType = CLICK_TYPE_NONE;
@@ -2638,6 +2640,9 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
 
 void MathCtrl::OpenHCaret(wxString txt, int type)
 {
+  if(m_autocompletePopup)
+    m_autocompletePopup->Destroy();
+  
   // if we are inside cell maxima is currently evaluating
   // bypass normal behaviour and insert an EditorCell into
   // the output of the working group.
@@ -7886,6 +7891,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     m_autocompletePopup -> SetPosition(pos);
     m_autocompletePopup -> Create(this);
     m_autocompletePopup -> UpdateResults();
+    m_autocompletePopup -> SetFocus();
     wxRect popupRect = m_autocompletePopup -> GetRect();
     wxRect screenRect = wxRect(topleft, topleft+wxPoint(width,height));
     if(screenRect.GetRight() < popupRect.GetRight())
@@ -7960,6 +7966,9 @@ void MathCtrl::SetActiveCellText(wxString text)
 
 bool MathCtrl::InsertText(wxString text)
 {
+  if(m_autocompletePopup)
+    m_autocompletePopup->Destroy();
+
   if (GetActiveCell())
   {
     if (GCContainsCurrentQuestion(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup())))

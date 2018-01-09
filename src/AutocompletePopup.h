@@ -67,11 +67,6 @@ class AutocompletePopup : public wxListView, public wxComboPopup
         return wxListView::GetItemText(m_value);
       return wxEmptyString;
     }
-  // Do mouse hot-tracking (which is typical in list popups)
-  void OnMouseMove(wxMouseEvent& event)
-    {
-      // TODO: Move selection to cursor
-    }
 protected:
   int m_value; // current item index
 private:

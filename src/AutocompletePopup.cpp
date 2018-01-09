@@ -351,7 +351,6 @@ void AutocompletePopup::OnChar(wxKeyEvent &event)
 }
 
 wxBEGIN_EVENT_TABLE(AutocompletePopup, wxListView)
-EVT_MOTION(AutocompletePopup::OnMouseMove)
 EVT_LEFT_UP(AutocompletePopup::OnClick)
 EVT_CLOSE(AutocompletePopup::OnClose)
 wxEND_EVENT_TABLE()
