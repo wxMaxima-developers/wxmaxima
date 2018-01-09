@@ -142,6 +142,36 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
     }
     break;
   }
+  case WXK_PAGEUP:
+  {
+    int selection = GetNextItem(0,wxLIST_NEXT_ALL,
+                                wxLIST_STATE_SELECTED);
+    selection -= 8;
+    if (selection < 0)
+      selection = 0;
+    
+    if (m_completions.GetCount() > 0)
+    {
+      Select(selection);Focus(selection);
+    }
+    
+    break;
+  }
+  case WXK_PAGEDOWN:
+  {
+    int selection = GetNextItem(0,wxLIST_NEXT_ALL,
+                                wxLIST_STATE_SELECTED);
+    selection += 8;
+    if ((unsigned) selection >= m_completions.GetCount())
+      selection = m_completions.GetCount() - 1;
+
+    if (m_completions.GetCount() > 0)
+    {
+      Select(selection);
+      Focus(selection);
+    }
+    break;
+  }
   case WXK_DOWN:
   {
     long selection = GetNextItem(0,wxLIST_NEXT_ALL,
@@ -195,11 +225,9 @@ bool AutocompletePopup::Create(wxWindow* parent)
   SetColumnWidth(0, wxLIST_AUTOSIZE);
 
   wxSize minSize;
-  wxSize itemSpacing = GetItemSpacing();
-  wxSize optimumSize = wxSize(-1,itemSpacing.y);
+  wxSize optimumSize = wxSize(-1,0);
   for (size_t i = 0; i < m_completions.GetCount(); i++)
   {
-    optimumSize.y += itemSpacing.y;
     wxRect itemRect;
     if(GetItemRect(i, itemRect))
     {
