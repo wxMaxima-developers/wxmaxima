@@ -279,6 +279,7 @@ void AutocompletePopup::OnClose(wxCloseEvent& WXUNUSED(event))
 
 AutocompletePopup::~AutocompletePopup()
 {
+  GetParent()->SetFocus();
   *m_doneptr = NULL;
 }
 
@@ -296,6 +297,9 @@ AutocompletePopup::AutocompletePopup(
   
   Connect(wxEVT_CHAR,
           wxKeyEventHandler(AutocompletePopup::OnChar),
+          NULL, this);
+  Connect(wxEVT_KEY_DOWN,
+          wxKeyEventHandler(AutocompletePopup::OnKeyDown),
           NULL, this);
 }
 
