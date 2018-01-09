@@ -85,7 +85,10 @@ private:
 protected:
   void OnDismiss();
   void OnClose(wxCloseEvent &event);
+  //! The position of our pop-up
   wxPoint m_position;
+  //! The visible rectangle of the screen
+  wxRect m_screenRect;
 public:
   //! Define where the popup will appear on Create()
   void SetPosition(wxPoint pos){m_position = pos;}

@@ -7875,28 +7875,29 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     wxPoint pos = editor->PositionToPoint(m_configuration->GetDefaultFontSize());
     CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
 
-    //#ifdef __WXGTK__
-    // On wxGtk a popup window gets informed on keypresses and if somebody
-    // clicks a control that is inside it => we can create a content assistant.
-//    ClientToScreen(&pos.x, &pos.y);
     m_autocompletePopup = new AutocompletePopup(this,editor,&m_autocomplete,type,&m_autocompletePopup);
+
+    // If necessary: Scroll right or down so that the pop-up is visible as a whole.
+    wxPoint topleft;
+    CalcUnscrolledPosition(0, 0, &topleft.x, &topleft.y);
+    int width;
+    int height;
+    GetClientSize(&width, &height);
     m_autocompletePopup -> SetPosition(pos);
-//    m_autocompletePopup -> Popup();
-//    m_autocompletePopup -> SetFocus();
     m_autocompletePopup -> Create(this);
     m_autocompletePopup -> UpdateResults();
-//#else
-    // On Win and Mac a popup window doesn't accept clicks and keypresses.
-    // a popup menu at least accepts clicks => we stick to the traditional
-    // autocomplete function.
-//    AutocompletePopup *autocompletePopup = new AutocompletePopup(editor, &m_autocomplete, type);
-//    // Show the popup menu
-//    PopupMenu(autocompletePopup, pos.x, pos.y);
-//    wxDELETE(m_autocompletePopup);
-//    m_autocompletePopup = NULL;
-//#endif
+    wxRect popupRect = m_autocompletePopup -> GetRect();
+    wxRect screenRect = wxRect(topleft, topleft+wxPoint(width,height));
+    if(screenRect.GetRight() < popupRect.GetRight())
+      screenRect.SetLeft(screenRect.GetLeft()+popupRect.GetRight()-screenRect.GetRight());
+    if(screenRect.GetBottom() < popupRect.GetBottom())
+      screenRect.SetTop(screenRect.GetTop()+popupRect.GetBottom()-screenRect.GetBottom());
+    if(screenRect.GetTopLeft() != topleft)
+    {
+      Scroll(screenRect.GetTopLeft());
+      RequestRedraw();
+    }
   }
-
   return true;
 }
 

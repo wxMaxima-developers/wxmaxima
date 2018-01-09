@@ -210,8 +210,9 @@ bool AutocompletePopup::Create(wxWindow* parent)
     }
   }
   minSize = optimumSize;
-  if (minSize.y > 400) minSize.y = 400;
+  if (minSize.y > 300) minSize.y = 300;
   SetMinSize(minSize);
+  SetClientSize(minSize);
   Layout();
   //SetOptimumSize(optimumSize);
   return retval;
