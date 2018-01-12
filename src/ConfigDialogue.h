@@ -347,6 +347,8 @@ protected:
   void OnColorButton(wxCommandEvent& event);
 #endif
 
+  void OnIdle(wxIdleEvent &event);
+
   //! Starts the font selector dialog for the math font
   void OnMathBrowse(wxCommandEvent &event);
 

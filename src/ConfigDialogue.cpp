@@ -180,7 +180,6 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   LayoutDialog();
 
   SetProperties();
-  UpdateExample();
 }
 
 ConfigDialogue::~ConfigDialogue()
@@ -1100,7 +1099,8 @@ wxPanel *ConfigDialogue::CreateStylePanel()
 void ConfigDialogue::OnStyleToEditChanged(wxCommandEvent &event)
 {
   wxConfigBase *config = wxConfig::Get();
-  config->Write(wxT("StyleToEdit"), event.GetSelection());  
+  config->Write(wxT("StyleToEdit"), event.GetSelection());
+  OnChangeStyle(event);
 }
 
 void ConfigDialogue::OnClose(wxCloseEvent&  WXUNUSED(event))
@@ -1268,7 +1268,6 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
     m_mathFontSize = math.GetPointSize();
     math.SetPointSize(m_mathFontSize);
     m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_mathFontSize));
-    UpdateExample();
   }
 }
 
@@ -1296,12 +1295,16 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
   }
   else
     fontName = m_styleDefault.font;
+  font = wxFont(fontsize,
+                wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
+                wxFONTWEIGHT_NORMAL,
+                false, fontName,
+                m_fontEncoding);
+  if(!font.IsOk())
+    *wxNORMAL_FONT;
 
-  font = wxGetFontFromUser(this, wxFont(fontsize,
-                                        wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
-                                        wxFONTWEIGHT_NORMAL,
-                                        false, fontName,
-                                        m_fontEncoding));
+  font.SetPointSize(fontsize);
+  font = wxGetFontFromUser(this, font);
 
   if (font.Ok())
   {
@@ -1320,8 +1323,12 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
       tmp->fontSize = font.GetPointSize();
       tmp->fontSize = MAX(tmp->fontSize, MC_MIN_SIZE);
     }
-    UpdateExample();
   }
+}
+
+void ConfigDialogue::OnIdle(wxIdleEvent &event)
+{
+  UpdateExample();
 }
 
 void ConfigDialogue::ReadStyles(wxString file)
@@ -1770,7 +1777,6 @@ void ConfigDialogue::OnChangeColor()
   if (col.IsOk())
   {
     tmp->color = col.GetAsString(wxC2S_CSS_SYNTAX);
-    UpdateExample();
     m_styleColor->SetBackgroundColour(tmp->color);
   }
 }
@@ -1814,7 +1820,6 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
       m_underlinedCB->SetValue(tmp->underlined);
     }
   }
-  UpdateExample();
 }
 
 void ConfigDialogue::OnCheckbox(wxCommandEvent&  WXUNUSED(event))
@@ -1824,8 +1829,6 @@ void ConfigDialogue::OnCheckbox(wxCommandEvent&  WXUNUSED(event))
   tmp->bold = m_boldCB->GetValue();
   tmp->italic = m_italicCB->GetValue();
   tmp->underlined = m_underlinedCB->GetValue();
-
-  UpdateExample();
 }
 
 void ConfigDialogue::OnChangeWarning(wxCommandEvent&  WXUNUSED(event))
@@ -1956,12 +1959,12 @@ void ConfigDialogue::UpdateExample()
     color = m_styleInput.color;
 
   int fontsize = m_fontSize;
-  if (tmp == &m_styleText || tmp == &m_styleSubsubsection || tmp == &m_styleSubsection || tmp == &m_styleSection ||
-      tmp == &m_styleTitle)
+  if (tmp == &m_styleText || tmp == &m_styleSubsubsection || tmp == &m_styleSubsection
+      || tmp == &m_styleSection || tmp == &m_styleTitle)
   {
     fontsize = tmp->fontSize;
     font = tmp->font;
-    if (fontsize == 0)
+    if (fontsize <= 0)
       fontsize = m_fontSize;
   }
   else if (tmp == &m_styleVariable || tmp == &m_styleNumber || tmp == &m_styleFunction ||
@@ -2016,10 +2019,7 @@ void ConfigDialogue::LoadSave(wxCommandEvent &event)
                                    _("Config file (*.ini)|*.ini"),
                                    wxFD_OPEN);
     if (file != wxEmptyString)
-    {
       ReadStyles(file);
-      UpdateExample();
-    }
   }
 }
 
@@ -2046,6 +2046,7 @@ BEGIN_EVENT_TABLE(ConfigDialogue, wxPropertySheetDialog)
                 EVT_BUTTON(load_id, ConfigDialogue::LoadSave)
                 EVT_BUTTON(style_font_family, ConfigDialogue::OnChangeFontFamily)
                 EVT_CLOSE(ConfigDialogue::OnClose)
+                EVT_IDLE(ConfigDialogue::OnIdle)
 END_EVENT_TABLE()
 
 void ExamplePanel::OnPaint(wxPaintEvent& WXUNUSED(event))
@@ -2069,6 +2070,9 @@ void ExamplePanel::OnPaint(wxPaintEvent& WXUNUSED(event))
   if (m_underlined)
     underlined = true;
   wxFont font = wxFont(m_size, wxFONTFAMILY_MODERN, italic, bold, underlined, m_font);
+  if(!font.IsOk())
+    font = *wxNORMAL_FONT;
+  
   font.SetPointSize(m_size);
   dc.SetFont(font);
 
