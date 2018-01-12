@@ -1336,6 +1336,7 @@ MathCell::CellPointers::CellPointers(wxScrolledCanvas *mathCtrl)
   m_selectionString = wxEmptyString;
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
+  m_currentTextCell = NULL;
 }
 
 bool MathCell::CellPointers::ErrorList::Contains(MathCell *cell)
@@ -1357,6 +1358,8 @@ void MathCell::MarkAsDeleted()
     m_cellPointers->m_lastWorkingGroup = NULL;
   if(this == m_cellPointers->m_activeCell)
     m_cellPointers->m_activeCell = NULL;
+  if(this == m_cellPointers->m_currentTextCell)
+    m_cellPointers->m_currentTextCell = NULL;
   
   if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
     m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;

@@ -7878,7 +7878,6 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
     // The popup menu appears half a character too high.
     pos.y += m_configuration->Scale_Px(m_configuration->GetFontSize(TS_TEXT));
-    std::cerr<<m_configuration->Scale_Px(m_configuration->GetFontSize(TS_TEXT))<<"\n";
     m_autocompletePopup = new AutocompletePopup(this,editor,&m_autocomplete,type,&m_autocompletePopup);
 
     // If necessary: Scroll right or down so that the pop-up is visible as a whole.

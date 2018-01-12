@@ -340,11 +340,21 @@ protected:
   //! Triggered when we get new chars from maxima.
   void OnNewChars();
 
-  void ConsoleAppend(wxString s, int type, wxString userLabel = wxEmptyString);        //!< append maxima output to console
-  void DoConsoleAppend(wxString s, int type,       //
+  /* Append something to the console. Might be Text or XML maths.
+
+    \return A pointer to the last line of Unicode text that was appended or 
+    NULL, if there is no such line (for example if the appended object is 
+    maths instead).
+   */
+  TextCell *ConsoleAppend(wxString s, int type, wxString userLabel = wxEmptyString);        //!< append maxima output to console
+  void DoConsoleAppend(wxString s, int type, 
                        bool newLine = true, bool bigSkip = true, wxString userLabel = wxEmptyString);
 
-  void DoRawConsoleAppend(wxString s, int type);   //
+  /*!Append one or more lines of ordinary unicode text to the console
+
+    \return A pointer to the last line that was appended or NULL, if there is no such line
+   */
+  TextCell *DoRawConsoleAppend(wxString s, int type); 
 
   /*! Spawn the "configure" menu.
 

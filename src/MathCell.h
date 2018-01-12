@@ -914,6 +914,8 @@ public:
     MathCell *m_answerCell;
     //! The last group cell maxima was working on.
     MathCell *m_lastWorkingGroup;
+    //! The textcell the text maxima is sending us was ending in.
+    MathCell *m_currentTextCell;
     /*! The group cell maxima is currently working on.
 
       NULL means that maxima isn't currently evaluating a cell.
