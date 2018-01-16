@@ -1250,7 +1250,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   if((end = m_currentOutput.Find(m_firstPrompt)) == wxNOT_FOUND)
     return;
 
-  m_console->m_cellPointers.m_currentTextCell = NULL;
+//  m_console->m_cellPointers.m_currentTextCell = NULL;
 
 #if defined(__WXMSW__)
   int start = 0;
