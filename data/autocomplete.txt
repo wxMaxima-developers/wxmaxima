@@ -3255,6 +3255,7 @@ TEMPLATE: ratnump(<expr>)
 FUNCTION: ratp
 TEMPLATE: ratp(<expr>)
 OPTION  : ratprint
+OPTION  : float_approx_equal_tolerance
 FUNCTION: ratsimp
 TEMPLATE: ratsimp(<expr>)
 TEMPLATE: ratsimp(<expr>, <x_1>, <...>, <x_n>)
