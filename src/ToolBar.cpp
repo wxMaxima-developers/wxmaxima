@@ -219,6 +219,7 @@ ToolBar::ToolBar(wxToolBar *tbar)
   m_toolBar->AddTool(tb_hideCode, _("Hide Code"),
                      GetImage(wxT("weather-few-clouds")),
                      _("Toggle the visibility of code cells"));
+  m_toolBar->AddStretchableSpace();
   m_toolBar->AddTool(tb_help, _("Help"),
                      GetImage(wxT("gtk-help")),
                      _("Show Maxima help"));
