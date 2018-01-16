@@ -123,7 +123,7 @@ void wxMaxima::ConfigChanged()
       break;
   }
 
-  m_autoSaveInterval = 0;
+  m_autoSaveInterval = 3;
   config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
   m_autoSaveInterval *= 60000;
   m_console->UpdateConfig();
