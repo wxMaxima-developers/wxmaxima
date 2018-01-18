@@ -1280,6 +1280,7 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
     math.SetPointSize(m_mathFontSize);
     m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_mathFontSize));
   }
+  UpdateExample();
 }
 
 void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
@@ -1335,10 +1336,6 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
       tmp->fontSize = MAX(tmp->fontSize, MC_MIN_SIZE);
     }
   }
-}
-
-void ConfigDialogue::OnIdle(wxIdleEvent &event)
-{
   UpdateExample();
 }
 
@@ -1654,6 +1651,7 @@ void ConfigDialogue::ReadStyles(wxString file)
 
   if (file != wxEmptyString)
     wxDELETE(config);
+  UpdateExample();
 }
 
 void ConfigDialogue::WriteStyles(wxString file)
@@ -1790,6 +1788,7 @@ void ConfigDialogue::OnChangeColor()
     tmp->color = col.GetAsString(wxC2S_CSS_SYNTAX);
     m_styleColor->SetBackgroundColour(tmp->color);
   }
+  UpdateExample();
 }
 
 void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
@@ -1801,7 +1800,7 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
 
   // MAGIC NUMBERS:
   // the positions of TEXT and TITLE style in the list.
-  if (st >= 13 && st <= 17)
+  if (st >= 15 && st <= 18)
     m_getStyleFont->Enable(true);
   else
     m_getStyleFont->Enable(false);
@@ -1831,6 +1830,7 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
       m_underlinedCB->SetValue(tmp->underlined);
     }
   }
+  UpdateExample();
 }
 
 void ConfigDialogue::OnCheckbox(wxCommandEvent&  WXUNUSED(event))
@@ -1840,6 +1840,7 @@ void ConfigDialogue::OnCheckbox(wxCommandEvent&  WXUNUSED(event))
   tmp->bold = m_boldCB->GetValue();
   tmp->italic = m_italicCB->GetValue();
   tmp->underlined = m_underlinedCB->GetValue();
+  UpdateExample();
 }
 
 void ConfigDialogue::OnChangeWarning(wxCommandEvent&  WXUNUSED(event))
@@ -1847,6 +1848,7 @@ void ConfigDialogue::OnChangeWarning(wxCommandEvent&  WXUNUSED(event))
   wxMessageBox(_("Please restart wxMaxima for changes to take effect!"),
                _("Configuration warning"),
                wxOK | wxICON_WARNING);
+  UpdateExample();
 }
 
 style *ConfigDialogue::GetStylePointer()
@@ -1999,9 +2001,15 @@ void ConfigDialogue::UpdateExample()
 
   if (tmp == &m_styleTextBackground ||
       tmp == &m_styleText)
-    m_examplePanel->SetBackgroundColour(m_styleTextBackground.color);
+  {
+    if(m_examplePanel->GetBackgroundColour() != m_styleTextBackground.color)
+      m_examplePanel->SetBackgroundColour(m_styleTextBackground.color);
+  }
   else
+  {
+    if(m_examplePanel->GetBackgroundColour() != m_styleBackground.color)
     m_examplePanel->SetBackgroundColour(m_styleBackground.color);
+  }
 
   m_examplePanel->Refresh();
 }
@@ -2010,6 +2018,7 @@ void ConfigDialogue::OnTabChange(wxBookCtrlEvent &event)
 {
   wxConfigBase *config = wxConfig::Get();
   config->Write(wxT("ConfigDialogTab"), event.GetSelection());
+  UpdateExample();
 }
 
 void ConfigDialogue::LoadSave(wxCommandEvent &event)
@@ -2057,7 +2066,6 @@ BEGIN_EVENT_TABLE(ConfigDialogue, wxPropertySheetDialog)
                 EVT_BUTTON(load_id, ConfigDialogue::LoadSave)
                 EVT_BUTTON(style_font_family, ConfigDialogue::OnChangeFontFamily)
                 EVT_CLOSE(ConfigDialogue::OnClose)
-                EVT_IDLE(ConfigDialogue::OnIdle)
 END_EVENT_TABLE()
 
 void ExamplePanel::OnPaint(wxPaintEvent& WXUNUSED(event))
