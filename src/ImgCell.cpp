@@ -174,9 +174,13 @@ void ImgCell::Draw(wxPoint point, int fontsize)
 {
   if (DrawThisCell(point) && (m_image != NULL))
   {
-    RecalculateWidths(fontsize);
-
     Configuration *configuration = (*m_configuration);
+    if (configuration->GetPrinter()) {
+      m_image->Recalculate(configuration->PrintScale());
+    } else {
+      m_image->Recalculate();
+    }
+
     MathCell::Draw(point, fontsize);
     
     if (!InUpdateRegion()) return;

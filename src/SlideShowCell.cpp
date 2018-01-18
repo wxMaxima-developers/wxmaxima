@@ -199,6 +199,8 @@ void SlideShow::RecalculateWidths(int WXUNUSED(fontsize))
   //  - as image cell's sizes might change when the resolution does
   //    we might have intermittent calculation issues otherwise
 
+  Configuration *configuration = *m_configuration;
+
   // Assuming a minimum size maybe isn't that bad.
   m_height = m_width = 10;
 
@@ -207,7 +209,11 @@ void SlideShow::RecalculateWidths(int WXUNUSED(fontsize))
   {
     if(m_images[i] != NULL)
     {
-      m_images[i]->Recalculate();
+      if(configuration->GetPrinter()) {
+        m_images[i]->Recalculate(configuration->PrintScale());
+      } else {
+        m_images[i]->Recalculate();
+      }
       if(m_width < m_images[i]->m_width + 2 * m_imageBorderWidth)
         m_width = m_images[i]->m_width + 2 * m_imageBorderWidth;
       if(m_height < m_images[i]->m_height + 2 * m_imageBorderWidth)
@@ -236,12 +242,17 @@ void SlideShow::Draw(wxPoint point, int fontsize)
     // will trigger this function and will trigger the animation to be
     // restarted anyway.
     //
+    Configuration *configuration = (*m_configuration);
+    if(configuration->GetPrinter()) {
+      m_images[m_displayed]->Recalculate(configuration->PrintScale());
+    } else {
+      m_images[m_displayed]->Recalculate();
+    }
+
     MathCell::Draw(point, fontsize);
-    m_images[m_displayed]->Recalculate();
     
     if (!InUpdateRegion()) return;
     
-    Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();
     wxMemoryDC bitmapDC;
 
@@ -256,7 +267,7 @@ void SlideShow::Draw(wxPoint point, int fontsize)
 
     dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
-    wxBitmap bitmap = m_images[m_displayed]->GetBitmap();
+    wxBitmap bitmap = (configuration->GetPrinter() ? m_images[m_displayed]->GetBitmap(configuration->PrintScale()) : m_images[m_displayed]->GetBitmap());
     bitmapDC.SelectObject(bitmap);
 
     dc->Blit(point.x + m_imageBorderWidth, point.y - m_center + m_imageBorderWidth, m_width - 2 * m_imageBorderWidth,
