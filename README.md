@@ -42,7 +42,7 @@ create them with:
 On Ubuntu or Debian the build prerequisites can be installed by doing
 a
 
-    sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev autoconf ibus-gtk ibus-gtk3 checkinstall gettext cmake
+    sudo apt-get install build-essential libwxbase3.0-dev libwxgtk3.0-dev ibus-gtk ibus-gtk3 checkinstall gettext cmake
 
 beforehand or (if apt-get is configured to load the source package
 repositories and not only the binary packages) by the simpler
@@ -53,8 +53,8 @@ repositories and not only the binary packages) by the simpler
 ### Compiling on Mac OS X
 
 On Mac OS X you should install XCode. To build wxMaxima open the
-Terminal application and follow the instructions for building with GNU
-autotools.  It is recommended that you compile your own version of
+Terminal application and follow the instructions for building with cmake.
+It is recommended that you compile your own version of
 wxMac. See the section about compiling wxWidgets.
 
 
@@ -64,7 +64,7 @@ On Windows install MinGW (https://sourceforge.net/projects/mingw/). In
 the installation process make sure you select `g++`, `MSYS Basic
 System` and `MinGW Developer ToolKit` in the `Select components` page
 of the installer.  Then run the MinGW Shell and follow the
-instructions for compiling wxWidgets and wxMaxima with autotools.
+instructions for compiling wxWidgets and wxMaxima with cmake.
 
 
 ### Compiling wxWidgets on Mac OS X and Windows
@@ -75,7 +75,7 @@ unarchive and in the source directory execute
 
     mkdir build
     cd build
-    ../configure
+    cmake ..
     make
 
 You do not need to install the library with `make install`. You will
