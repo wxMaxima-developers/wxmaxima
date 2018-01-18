@@ -221,11 +221,13 @@ void MathPrintout::SetupData()
 
   #ifdef __WXGTK__
   (*m_configuration)->SetZoomFactor_temporarily(
-    DCSCALE * printPPI.x * oldZoomFactor * 75.0 / 300.0 / screenPPI.x;
+    DCSCALE * printPPI.x * oldZoomFactor * 75.0 / 300.0 / screenPPI.x *
+    m_oldconfig->PrintScale()
     );
   #else
   (*m_configuration)->SetZoomFactor_temporarily(
-    DCSCALE * printPPI.x * 75.0 / 300.0 / screenPPI.x;
+    DCSCALE * printPPI.x * 75.0 / 300.0 / screenPPI.x *
+    m_oldconfig->PrintScale()
     );
   #endif
   

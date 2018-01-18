@@ -162,6 +162,16 @@ public:
     wxConfig::Get()->Write(wxT("hideBrackets"), m_hideBrackets = hide);
   }
 
+  //! Hide brackets that are not under the pointer?
+  double PrintScale()
+  { return m_printScale; }
+
+  //! Define if we want to hide brackets that are not under the pointer.
+  void PrintScale(double scale)
+  {
+    wxConfig::Get()->Write(wxT("printScale"), m_printScale = scale);
+  }
+
   //! Sets the zoom factor the worksheet is displayed at
   void SetZoomFactor(double newzoom);
 
@@ -630,6 +640,8 @@ private:
   wxString m_maximaLocation;
   //! Hide brackets that are not under the pointer
   bool m_hideBrackets;
+  //! The scale for printing
+  double m_printScale;
   //! The size of the canvas our cells have to be drawn on
   wxSize m_canvasSize;
   //! Show the cell brackets [displayed left to each group cell showing its extend]?

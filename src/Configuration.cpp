@@ -40,6 +40,7 @@ Configuration::Configuration(wxDC &dc) : m_dc(&dc)
   m_bottom = -1;
   m_changeAsterisk = true;
   m_workSheet = NULL;
+  m_printScale = 1.0;
   m_forceUpdate = false;
   m_outdated = false;
   m_printer = false;
@@ -113,6 +114,7 @@ void Configuration::ReadConfig()
   config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
 
   config->Read(wxT("showLength"), &m_showLength);
+  config->Read(wxT("printScale"), &m_printScale);
 
   config->Read(wxT("copyBitmap"), &m_copyBitmap);
   config->Read(wxT("copyMathML"), &m_copyMathML);

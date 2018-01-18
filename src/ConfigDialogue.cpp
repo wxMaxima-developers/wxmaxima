@@ -265,6 +265,8 @@ void ConfigDialogue::SetProperties()
           _("Wrap equations exported by the \"copy as LaTeX\" feature between \\[ and \\] as equation markers"));
   m_bitmapScale->SetToolTip(
           _("Normally html expects images to be rather low-res but space saving. These images tend to look rather blurry when viewed on modern screens. Therefore this setting was introduces that selects the factor by which the HTML export increases the resolution in respect to the default value."));
+  m_printScale->SetToolTip(
+          _("A scale factor for the printout. Helpful for printing big equations on small pdf pages."));
   m_exportContainsWXMX->SetToolTip(
           _("If this option is set the .wxmx source of the current file is copied to a place a link to is put into the result of an export."));
   m_printBrackets->SetToolTip(
@@ -444,6 +446,7 @@ void ConfigDialogue::SetProperties()
   m_undoLimit->SetValue(undoLimit);
   m_recentItems->SetValue(recentItems);
   m_bitmapScale->SetValue(bitmapScale);
+  m_printScale->SetValue(configuration->PrintScale());
   m_fixReorderedIndices->SetValue(configuration->FixReorderedIndices());
   m_incrementalSearch->SetValue(incrementalSearch);
   m_notifyIfIdle->SetValue(configuration->NotifyIfIdle());
@@ -693,7 +696,7 @@ wxPanel *ConfigDialogue::CreateExportPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(6, 2, 5, 5);
+  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(7, 2, 5, 5);
   wxFlexGridSizer *vsizer = new wxFlexGridSizer(17, 1, 5, 5);
 
   wxStaticText *dc = new wxStaticText(panel, -1, _("Documentclass for TeX export:"));
@@ -728,6 +731,13 @@ wxPanel *ConfigDialogue::CreateExportPanel()
   grid_sizer->Add(bs, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_bitmapScale, 0, wxALL, 5);
 
+  wxStaticText *ps = new wxStaticText(panel, -1, _("Print scale:"));
+  m_printScale = new wxSpinCtrlDouble(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, .1, 4, .1);
+  m_printScale->SetDigits(2);
+  m_printScale->SetIncrement(.1);
+  grid_sizer->Add(ps, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_printScale, 0, wxALL, 5);
+  
   m_AnimateLaTeX = new wxCheckBox(panel, -1,
                                   _("Export animations to TeX (Images only move if the PDF viewer supports this)"));
   vsizer->Add(m_AnimateLaTeX, 0, wxALL, 5);
@@ -1148,6 +1158,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("undoLimit"), m_undoLimit->GetValue());
   config->Write(wxT("recentItems"), m_recentItems->GetValue());
   config->Write(wxT("bitmapScale"), m_bitmapScale->GetValue());
+  configuration->PrintScale(m_printScale->GetValue());
   configuration->FixReorderedIndices(m_fixReorderedIndices->GetValue());
   config->Write(wxT("incrementalSearch"), m_incrementalSearch->GetValue());
   configuration->NotifyIfIdle(m_notifyIfIdle->GetValue());

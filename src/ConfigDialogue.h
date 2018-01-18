@@ -262,6 +262,7 @@ protected:
   wxSpinCtrl *m_undoLimit;
   wxSpinCtrl *m_recentItems;
   wxSpinCtrl *m_bitmapScale;
+  wxSpinCtrlDouble *m_printScale;
   wxCheckBox *m_fixReorderedIndices;
   wxCheckBox *m_incrementalSearch;
   wxCheckBox *m_notifyIfIdle;
