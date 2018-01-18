@@ -25,6 +25,8 @@
   SlideShowCell is the MathCell type that represents animations.
 */
 
+#define PRINT_SIZE_MULTIPLIER 1.2
+
 #include "SlideShowCell.h"
 #include "ImgCell.h"
 
@@ -210,7 +212,7 @@ void SlideShow::RecalculateWidths(int WXUNUSED(fontsize))
     if(m_images[i] != NULL)
     {
       if(configuration->GetPrinter()) {
-        m_images[i]->Recalculate(configuration->PrintScale());
+        m_images[i]->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
       } else {
         m_images[i]->Recalculate();
       }
@@ -244,7 +246,7 @@ void SlideShow::Draw(wxPoint point, int fontsize)
     //
     Configuration *configuration = (*m_configuration);
     if(configuration->GetPrinter()) {
-      m_images[m_displayed]->Recalculate(configuration->PrintScale());
+        m_images[m_displayed]->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
     } else {
       m_images[m_displayed]->Recalculate();
     }
@@ -267,7 +269,7 @@ void SlideShow::Draw(wxPoint point, int fontsize)
 
     dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
-    wxBitmap bitmap = (configuration->GetPrinter() ? m_images[m_displayed]->GetBitmap(configuration->PrintScale()) : m_images[m_displayed]->GetBitmap());
+    wxBitmap bitmap = (configuration->GetPrinter() ? m_images[m_displayed]->GetBitmap(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER) : m_images[m_displayed]->GetBitmap());
     bitmapDC.SelectObject(bitmap);
 
     dc->Blit(point.x + m_imageBorderWidth, point.y - m_center + m_imageBorderWidth, m_width - 2 * m_imageBorderWidth,
