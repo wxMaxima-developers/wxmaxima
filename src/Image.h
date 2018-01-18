@@ -113,6 +113,8 @@ public:
 
   //! Returns the bitmap being displayed
   wxBitmap GetBitmap();
+  //! Returns the bitmap being displayed with custom scale
+  wxBitmap GetBitmap(double scale);
 
   //! Does the image show an actual image or an "broken image" symbol?
   bool IsOk() {return m_isOk;}
@@ -122,6 +124,8 @@ public:
 
   //! Needs to be called on changing the viewport size
   void Recalculate();
+  //! Can be called to specify a specific scale
+  void Recalculate(double scale);
 
   //! The width of the scaled image
   long m_width;
