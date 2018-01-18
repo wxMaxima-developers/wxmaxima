@@ -1057,6 +1057,8 @@ wxString TextCell::ToTeX()
 
 wxString TextCell::ToMathML()
 {
+  if(m_displayedText == wxEmptyString)
+    return wxEmptyString;
   wxString text = XMLescape(m_displayedText);
 
   if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
@@ -1213,6 +1215,9 @@ wxString TextCell::ToRTF()
   wxString retval;
   wxString text = m_displayedText;
 
+  if (m_displayedText == wxEmptyString)
+    return(wxT(" "));
+  
   if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
     text = wxT("(") + m_userDefinedLabel + wxT(")");
   
