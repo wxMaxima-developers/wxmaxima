@@ -47,10 +47,10 @@ wxImage ToolBar::GetImage(wxString name)
   }
   if(!img.IsOk())
     img = wxImage(invalidImage_xpm);
-    
-  //double imgWidth = wxGetDisplayPPI().x*24/72;
-  //double scaleFactor = imgWidth / img.GetWidth();
-  //img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH);
+
+  double imgWidth = wxGetDisplayPPI().x*24/72;
+  double scaleFactor = imgWidth / img.GetWidth();
+  img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH);
   return img;
 }
 
