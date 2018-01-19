@@ -48,11 +48,12 @@ wxImage ToolBar::GetImage(wxString name)
   if(!img.IsOk()) {
     Dirstructure dirstructure;
     img = wxImage(dirstructure.ConfigToolbarDir() + wxT("/") + name + wxT(".png"));
-    img.Rescale(targetWidth, targetHeight, wxIMAGE_QUALITY_HIGH);
   }
   if(!img.IsOk()) {
     img = wxImage(invalidImage_xpm);
   }
+
+  img.Rescale(targetWidth, targetHeight, wxIMAGE_QUALITY_HIGH);
 
   return img;
 }
