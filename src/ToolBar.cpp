@@ -25,6 +25,8 @@
   This file defines the class ToolBar that represents wxMaxima's main tool bar.
  */
 
+#define ICON_SCALE_FACTOR (0.3)
+
 #include "ToolBar.h"
 #include "Dirstructure.h"
 #include "GroupCell.h"
@@ -34,23 +36,24 @@
 
 wxImage ToolBar::GetImage(wxString name)
 {
-  wxBitmap bmp = wxArtProvider::GetBitmap(name,wxART_TOOLBAR);
-  
-  wxImage img;
-  if(bmp.IsOk())
-    img = wxArtProvider::GetBitmap(name,wxART_TOOLBAR).ConvertToImage();
+  double targetWidth = wxGetDisplayPPI().x * ICON_SCALE_FACTOR;
+  double targetHeight = wxGetDisplayPPI().y * ICON_SCALE_FACTOR;
 
-  if(!img.IsOk())
-  {
+  wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR, wxSize(targetWidth, targetHeight));
+  wxImage img;
+
+  if(bmp.IsOk()) {
+    img = bmp.ConvertToImage();
+  }
+  if(!img.IsOk()) {
     Dirstructure dirstructure;
     img = wxImage(dirstructure.ConfigToolbarDir() + wxT("/") + name + wxT(".png"));
+    img.Rescale(targetWidth, targetHeight, wxIMAGE_QUALITY_HIGH);
   }
-  if(!img.IsOk())
+  if(!img.IsOk()) {
     img = wxImage(invalidImage_xpm);
-    
-  double imgWidth = wxGetDisplayPPI().x*24/72;
-  double scaleFactor = imgWidth / img.GetWidth();
-  img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH);
+  }
+
   return img;
 }
 
