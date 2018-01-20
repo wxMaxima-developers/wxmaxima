@@ -182,7 +182,7 @@ wxBitmap StatusBar::GetImage(wxString name)
   }
   if(!img.IsOk()) {
     Dirstructure dirstructure;
-    img = wxImage(dirstructure.ConfigStatusbarDir() + wxT("/") + name + wxT(".png"));
+    img = wxImage(wxString::Format(wxT("%s/%s.png"), dirstructure.ConfigStatusbarDir(), name));
   }
   if(!img.IsOk()) {
     img = wxImage(invalidImage_xpm);

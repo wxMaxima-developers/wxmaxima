@@ -25,7 +25,7 @@
   This file defines the class ToolBar that represents wxMaxima's main tool bar.
  */
 
-#define ICON_SCALE_FACTOR (0.3)
+#define ICON_SCALE_FACTOR (0.35)
 
 #include "ToolBar.h"
 #include "Dirstructure.h"
@@ -36,10 +36,28 @@
 
 wxImage ToolBar::GetImage(wxString name)
 {
-  double targetWidth = wxGetDisplayPPI().x * ICON_SCALE_FACTOR;
-  double targetHeight = wxGetDisplayPPI().y * ICON_SCALE_FACTOR;
+  double targetSize = wxGetDisplayPPI().x * ICON_SCALE_FACTOR;
+  int prescale;
 
-  wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR, wxSize(targetWidth, targetHeight));
+  int sizeA = 128 << 4;
+  while(sizeA * 3 / 2 > targetSize && sizeA >= 32) {
+    sizeA >>= 1;
+  };
+
+  int sizeB = 192 << 4;
+  while(sizeB * 4 / 3 > targetSize && sizeB >= 32) {
+    sizeB >>= 1;
+  }
+
+  if(abs(targetSize - sizeA) < abs(targetSize - sizeB)) {
+    targetSize = sizeA;
+    prescale = 128;
+  } else {
+    targetSize = sizeB;
+    prescale = 192;
+  }
+
+  wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR, wxSize(targetSize, targetSize));
   wxImage img;
 
   if(bmp.IsOk()) {
@@ -47,13 +65,13 @@ wxImage ToolBar::GetImage(wxString name)
   }
   if(!img.IsOk()) {
     Dirstructure dirstructure;
-    img = wxImage(dirstructure.ConfigToolbarDir() + wxT("/") + name + wxT(".png"));
+    img = wxImage(wxString::Format(wxT("%s/%s.%d.png"), dirstructure.ConfigToolbarDir(), name, prescale));
   }
   if(!img.IsOk()) {
     img = wxImage(invalidImage_xpm);
   }
 
-  img.Rescale(targetWidth, targetHeight, wxIMAGE_QUALITY_HIGH);
+  img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
 
   return img;
 }
