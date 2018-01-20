@@ -2129,7 +2129,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
         section++;
         subsection = subsubsection = 0;
         {
-          wxString num = wxT(" ");
+          wxString num = wxT("  ");
           num << section << wxT(" ");
           tmp->m_inputLabel->SetValue(num);
           tmp->m_inputLabel->SetStyle(TS_SECTION);
