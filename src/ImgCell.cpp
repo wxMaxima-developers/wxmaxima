@@ -26,7 +26,8 @@
   or in user-provided images.
  */
 
-#define PRINT_SIZE_MULTIPLIER 1.2
+// 96 pixels per inch / 72 points per inch
+#define PRINT_SIZE_MULTIPLIER ((96.0 / 72.0) / 2)
 
 #include "ImgCell.h"
 

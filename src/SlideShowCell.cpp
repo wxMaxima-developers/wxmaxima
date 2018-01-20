@@ -25,7 +25,8 @@
   SlideShowCell is the MathCell type that represents animations.
 */
 
-#define PRINT_SIZE_MULTIPLIER 1.2
+// 96 pixels per inch / 72 points per inch
+#define PRINT_SIZE_MULTIPLIER ((96.0 / 72.0) / 2)
 
 #include "SlideShowCell.h"
 #include "ImgCell.h"
