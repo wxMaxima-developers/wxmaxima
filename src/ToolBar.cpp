@@ -25,8 +25,6 @@
   This file defines the class ToolBar that represents wxMaxima's main tool bar.
  */
 
-#define ICON_SCALE_FACTOR (0.35)
-
 #include "ToolBar.h"
 #include "Dirstructure.h"
 #include "GroupCell.h"
@@ -34,9 +32,15 @@
 #include <wx/filename.h>
 #include "invalidImage.h"
 
+#define TOOLBAR_ICON_SCALE (0.35)
+
+#define ABS(val) ((val) >= 0 ? (val) : -(val))
+#define MAX(a, b) ((a)>(b) ? (a) : (b))
+#define MIN(a, b) ((a)>(b) ? (b) : (a))
+
 wxImage ToolBar::GetImage(wxString name)
 {
-  double targetSize = wxGetDisplayPPI().x * ICON_SCALE_FACTOR;
+  double targetSize = wxGetDisplayPPI().x * TOOLBAR_ICON_SCALE;
   int prescale;
 
   int sizeA = 128 << 4;
@@ -49,7 +53,7 @@ wxImage ToolBar::GetImage(wxString name)
     sizeB >>= 1;
   }
 
-  if(abs(targetSize - sizeA) < abs(targetSize - sizeB)) {
+  if(ABS(targetSize - sizeA) < ABS(targetSize - sizeB)) {
     targetSize = sizeA;
     prescale = 128;
   } else {

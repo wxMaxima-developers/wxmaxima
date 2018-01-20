@@ -26,8 +26,6 @@
   The C code for ConfigDialogue, the preferences dialog.
 */
 
-#define ICON_SCALE_FACTOR (0.6)
-
 #include "ConfigDialogue.h"
 #include "MathCell.h"
 #include "Configuration.h"
@@ -44,6 +42,9 @@
 #include <wx/filename.h>
 #include "Dirstructure.h"
 
+#define CONFIG_ICON_SCALE (0.6)
+
+#define ABS(val) ((val) >= 0 ? (val) : -(val))
 #define MAX(a, b) ((a)>(b) ? (a) : (b))
 #define MIN(a, b) ((a)>(b) ? (b) : (a))
 
@@ -85,7 +86,7 @@ const int langs[] =
 
 int ConfigDialogue::GetImageSize()
 {
-  double targetSize = wxGetDisplayPPI().x * ICON_SCALE_FACTOR;
+  double targetSize = wxGetDisplayPPI().x * CONFIG_ICON_SCALE;
   int prescale;
 
   int sizeA = 128 << 4;
@@ -98,7 +99,7 @@ int ConfigDialogue::GetImageSize()
     sizeB >>= 1;
   }
 
-  if(abs(targetSize - sizeA) < abs(targetSize - sizeB)) {
+  if(ABS(targetSize - sizeA) < ABS(targetSize - sizeB)) {
     return sizeA;
   } else {
     return sizeB;
@@ -107,7 +108,7 @@ int ConfigDialogue::GetImageSize()
 
 wxImage ConfigDialogue::GetImage(wxString name)
 {
-  double targetSize = wxGetDisplayPPI().x * ICON_SCALE_FACTOR;
+  double targetSize = wxGetDisplayPPI().x * CONFIG_ICON_SCALE;
   int prescale;
 
   int sizeA = 128 << 4;
@@ -120,7 +121,7 @@ wxImage ConfigDialogue::GetImage(wxString name)
     sizeB >>= 1;
   }
 
-  if(abs(targetSize - sizeA) < abs(targetSize - sizeB)) {
+  if(ABS(targetSize - sizeA) < ABS(targetSize - sizeB)) {
     targetSize = sizeA;
     prescale = 128;
   } else {
