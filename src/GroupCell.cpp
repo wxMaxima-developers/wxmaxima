@@ -943,7 +943,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
             {
               if (tmp->m_nextToDraw->BreakLineHere())
               {
-                in.x = configuration->GetIndent();
+                in.x = point.x;
                 in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
                 drop = tmp->m_nextToDraw->GetMaxDrop();
               }
@@ -956,7 +956,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
           {
             if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere())
             {
-              in.x = configuration->GetIndent();
+              in.x = point.x;
               in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
               drop = tmp->m_nextToDraw->GetMaxDrop();
             }
