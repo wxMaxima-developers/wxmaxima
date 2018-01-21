@@ -42,6 +42,9 @@
 #include <wx/filename.h>
 #include "Dirstructure.h"
 
+#define CONFIG_ICON_SCALE (0.6)
+
+#define ABS(val) ((val) >= 0 ? (val) : -(val))
 #define MAX(a, b) ((a)>(b) ? (a) : (b))
 #define MIN(a, b) ((a)>(b) ? (b) : (a))
 
@@ -81,50 +84,66 @@ const int langs[] =
 
 #define LANGUAGE_NUMBER (long)(sizeof(langs)/(signed)sizeof(langs[1]))
 
-int ConfigDialogue::GetImageWidth()
+int ConfigDialogue::GetImageSize()
 {
-  // We want to scale the images according to the display's resolution.
-  // But we want to do so in discrete steps as scaling bitmaps by odd
-  // factors will add visible antialiassing to things that are clearly
-  // meant to be sharp lines.
-  int resolutionMultiplier = wxGetDisplayPPI().x / 72;
-  int imgWidth = 32 * resolutionMultiplier;
-  int width, height;
-  wxDisplaySize(&width, &height);
-  if (width <= 800)
-    imgWidth = 32;
-  if (imgWidth < 32)
-    imgWidth = 32;
-  return (imgWidth);
+  double targetSize = wxGetDisplayPPI().x * CONFIG_ICON_SCALE;
+  int prescale;
+
+  int sizeA = 128 << 4;
+  while(sizeA * 3 / 2 > targetSize && sizeA >= 32) {
+    sizeA >>= 1;
+  };
+
+  int sizeB = 192 << 4;
+  while(sizeB * 4 / 3 > targetSize && sizeB >= 32) {
+    sizeB >>= 1;
+  }
+
+  if(ABS(targetSize - sizeA) < ABS(targetSize - sizeB)) {
+    return sizeA;
+  } else {
+    return sizeB;
+  }
 }
 
 wxImage ConfigDialogue::GetImage(wxString name)
 {
-  wxBitmap bmp = wxArtProvider::GetBitmap(name,wxART_TOOLBAR);
+  double targetSize = wxGetDisplayPPI().x * CONFIG_ICON_SCALE;
+  int prescale;
 
-  wxImage img;
-  if(bmp.IsOk())
-    img = bmp.ConvertToImage();
-  
-  if(!img.IsOk())
-  {
-    Dirstructure dirstruct;
-    img = wxImage(dirstruct.ConfigArtDir() + wxT("/") + name + wxT(".png"));
+  int sizeA = 128 << 4;
+  while(sizeA * 3 / 2 > targetSize && sizeA >= 32) {
+    sizeA >>= 1;
+  };
+
+  int sizeB = 192 << 4;
+  while(sizeB * 4 / 3 > targetSize && sizeB >= 32) {
+    sizeB >>= 1;
   }
 
-  if(!img.IsOk())
+  if(ABS(targetSize - sizeA) < ABS(targetSize - sizeB)) {
+    targetSize = sizeA;
+    prescale = 128;
+  } else {
+    targetSize = sizeB;
+    prescale = 192;
+  }
+
+  wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_MENU, wxSize(targetSize, targetSize));
+  wxImage img;
+
+  if(bmp.IsOk()) {
+    img = bmp.ConvertToImage();
+  }
+  if(!img.IsOk()) {
+    Dirstructure dirstructure;
+    img = wxImage(wxString::Format(wxT("%s/%s.%d.png"), dirstructure.ConfigArtDir(), name, prescale));
+  }
+  if(!img.IsOk()) {
     img = wxImage(invalidImage_xpm);
+  }
 
-  // We want to scale the images according to the display's resolution.
-  // But we want to do so in discrete steps as scaling bitmaps by odd
-  // factors will add visible antialiassing to things that are clearly
-  // meant to be sharp lines.
-  int imgWidth = GetImageWidth();
-  if (imgWidth < 32)
-    imgWidth = 32;
-
-  double scaleFactor = (double) imgWidth / img.GetWidth();
-  img.Rescale(imgWidth, img.GetHeight() * scaleFactor, wxIMAGE_QUALITY_HIGH);
+  img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
 
   return img;
 }
@@ -144,13 +163,12 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   // on the screen.
   SetLayoutAdaptationMode(wxDIALOG_ADAPTATION_MODE_ENABLED);
 
-  int imgWidth = GetImageWidth();
-  wxSize imageSize(imgWidth, imgWidth);
-  m_imageList = new wxImageList(imgWidth, imgWidth);
+  int imgSize = GetImageSize();
+  m_imageList = new wxImageList(imgSize, imgSize);
   m_imageList->Add(GetImage(wxT("editing")));
   m_imageList->Add(GetImage(wxT("maxima")));
   m_imageList->Add(GetImage(wxT("styles")));
-  m_imageList->Add(GetImage(wxT("Document-export")));
+  m_imageList->Add(GetImage(wxT("document-export")));
   m_imageList->Add(GetImage(wxT("options")));
   m_imageList->Add(GetImage(wxT("edit-copy")));
   m_imageList->Add(GetImage(wxT("media-playback-start")));

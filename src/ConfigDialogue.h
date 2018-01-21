@@ -168,11 +168,11 @@ private:
    */
   void SetProperties();
 
+  //! Calculates the size of the images for a configuration tab
+  int GetImageSize();
+
   //! Loads the image for a configuration tab
   wxImage GetImage(wxString name);
-
-  //! Get the width of the images we want to display.
-  int GetImageWidth();
 
   //! The panel that allows to choose which formats to put on the clipboard
   wxPanel *CreateClipboardPanel();

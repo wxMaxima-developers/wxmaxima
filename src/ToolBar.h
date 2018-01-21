@@ -30,9 +30,6 @@
 #include <wx/choice.h>
 #include "SlideShowCell.h"
 
-#define MAX(a, b) ((a)>(b) ? (a) : (b))
-#define MIN(a, b) ((a)>(b) ? (b) : (a))
-
 #ifndef _WXMAXIMA_TOOLBAR_H
 #define _WXMAXIMA_TOOLBAR_H
 
