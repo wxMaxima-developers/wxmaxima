@@ -201,8 +201,8 @@ wxString SubSupCell::ToMathML()
 {
   return wxT("<msubsup>") +
          m_baseCell->ListToMathML() +
-         m_exptCell->ListToMathML() +
          m_indexCell->ListToMathML() +
+         m_exptCell->ListToMathML() +
          wxT("</msubsup>\n");
 }
 
