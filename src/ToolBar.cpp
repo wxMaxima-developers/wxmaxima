@@ -32,25 +32,50 @@
 #include <wx/filename.h>
 #include "invalidImage.h"
 
+#define TOOLBAR_ICON_SCALE (0.35)
+
+#define ABS(val) ((val) >= 0 ? (val) : -(val))
+#define MAX(a, b) ((a)>(b) ? (a) : (b))
+#define MIN(a, b) ((a)>(b) ? (b) : (a))
+
 wxImage ToolBar::GetImage(wxString name)
 {
-  wxBitmap bmp = wxArtProvider::GetBitmap(name,wxART_TOOLBAR);
-  
-  wxImage img;
-  if(bmp.IsOk())
-    img = wxArtProvider::GetBitmap(name,wxART_TOOLBAR).ConvertToImage();
+  double targetSize = wxGetDisplayPPI().x * TOOLBAR_ICON_SCALE;
+  int prescale;
 
-  if(!img.IsOk())
-  {
-    Dirstructure dirstructure;
-    img = wxImage(dirstructure.ConfigToolbarDir() + wxT("/") + name + wxT(".png"));
+  int sizeA = 128 << 4;
+  while(sizeA * 3 / 2 > targetSize && sizeA >= 32) {
+    sizeA >>= 1;
+  };
+
+  int sizeB = 192 << 4;
+  while(sizeB * 4 / 3 > targetSize && sizeB >= 32) {
+    sizeB >>= 1;
   }
-  if(!img.IsOk())
+
+  if(ABS(targetSize - sizeA) < ABS(targetSize - sizeB)) {
+    targetSize = sizeA;
+    prescale = 128;
+  } else {
+    targetSize = sizeB;
+    prescale = 192;
+  }
+
+  wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR, wxSize(targetSize, targetSize));
+  wxImage img;
+
+  if(bmp.IsOk()) {
+    img = bmp.ConvertToImage();
+  }
+  if(!img.IsOk()) {
+    Dirstructure dirstructure;
+    img = wxImage(wxString::Format(wxT("%s/%s.%d.png"), dirstructure.ConfigToolbarDir(), name, prescale));
+  }
+  if(!img.IsOk()) {
     img = wxImage(invalidImage_xpm);
-    
-  double imgWidth = wxGetDisplayPPI().x*24/72;
-  double scaleFactor = imgWidth / img.GetWidth();
-  img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH);
+  }
+
+  img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
   return img;
 }
 

@@ -943,7 +943,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
             {
               if (tmp->m_nextToDraw->BreakLineHere())
               {
-                in.x = configuration->GetIndent();
+                in.x = point.x;
                 in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
                 drop = tmp->m_nextToDraw->GetMaxDrop();
               }
@@ -956,7 +956,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
           {
             if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere())
             {
-              in.x = configuration->GetIndent();
+              in.x = point.x;
               in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
               drop = tmp->m_nextToDraw->GetMaxDrop();
             }
@@ -2129,7 +2129,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
         section++;
         subsection = subsubsection = 0;
         {
-          wxString num = wxT(" ");
+          wxString num = wxT("  ");
           num << section << wxT(" ");
           tmp->m_inputLabel->SetValue(num);
           tmp->m_inputLabel->SetStyle(TS_SECTION);

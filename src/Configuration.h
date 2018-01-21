@@ -337,10 +337,10 @@ public:
   }
 
   int GetDefaultFontSize()
-  { return int(m_zoomFactor * double(m_defaultFontSize)); }
+  { return m_defaultFontSize; }
 
   int GetMathFontSize()
-  { return int(m_zoomFactor * double(m_mathFontSize)); }
+  { return m_mathFontSize; }
 
   //! Do we want to have automatic line breaks for text cells?
   bool GetAutoWrap()
@@ -373,7 +373,7 @@ public:
   int GetFontSize(int st)
   {
     if (st == TS_TEXT || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
-      return int(m_zoomFactor * double(m_styles[st].fontSize));
+      return m_styles[st].fontSize;
     return 0;
   }
 

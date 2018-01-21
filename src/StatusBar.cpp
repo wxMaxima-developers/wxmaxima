@@ -170,45 +170,28 @@ void StatusBar::OnSize(wxSizeEvent &event)
 }
 
 wxBitmap StatusBar::GetImage(wxString name)
-#if defined (__WXMSW__) || defined (__WXMAC__)
 {
-  Dirstructure dirstructure;
-  wxString imagePath(dirstructure.ConfigStatusbarDir() + wxT("/") + name + wxT(".png"));
-  wxImage img = wxImage(imagePath);
-  if(!img.IsOk())
-    img = wxImage(invalidImage_xpm);
+  double targetWidth = static_cast<double>(GetSize().GetHeight()) / wxGetDisplayPPI().y * wxGetDisplayPPI().x;
+  double targetHeight = static_cast<double>(GetSize().GetHeight());
 
-  // Scale the image.
-  wxRect rect;  
-  GetFieldRect(2, rect);
-  int imgWidth = rect.GetHeight();
-  double scaleFactor = (double) imgWidth / img.GetWidth();
-  img.Rescale(imgWidth, img.GetHeight() * scaleFactor, wxIMAGE_QUALITY_HIGH);
-  return wxBitmap(img);
-}
-#else
-{
+  wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR, wxSize(targetWidth, targetHeight));
   wxImage img;
-  wxBitmap bitmap = wxArtProvider::GetBitmap(name,wxART_TOOLBAR);
 
-  if (bitmap.IsOk())
-    img = bitmap.ConvertToImage();
-  
-  if(!img.IsOk())
-  {
-    Dirstructure dirstructure;
-    img = wxImage(dirstructure.ConfigStatusbarDir() + wxT("/") + name + wxT(".png"));
+  if(bmp.IsOk()) {
+    img = bmp.ConvertToImage();
   }
-  
-  if(!img.IsOk())
+  if(!img.IsOk()) {
+    Dirstructure dirstructure;
+    img = wxImage(wxString::Format(wxT("%s/%s.png"), dirstructure.ConfigStatusbarDir(), name));
+  }
+  if(!img.IsOk()) {
     img = wxImage(invalidImage_xpm);
+  }
 
-  double imgWidth = GetSize().GetHeight();
-  double scaleFactor = imgWidth / img.GetWidth();
-  img.Rescale(img.GetWidth()*scaleFactor,img.GetHeight()*scaleFactor,wxIMAGE_QUALITY_HIGH );
-  return wxBitmap(img);
+  img.Rescale(targetWidth, targetHeight, wxIMAGE_QUALITY_HIGH);
+
+  return img;
 }
-#endif
 
 
 wxBEGIN_EVENT_TABLE(StatusBar, wxStatusBar)
