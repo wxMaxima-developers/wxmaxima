@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2007-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2014-2017 Gunter Königsmann <wxMaxima@physikbuch.de>
@@ -222,7 +222,7 @@ wxString SubSupCell::ToXML()
     flags += wxT(" breakline=\"true\"");
 
   return _T("<ie") + flags +wxT("><r>") + m_baseCell->ListToXML()
-         + _T("</r><r>") + m_exptCell->ListToXML()
          + _T("</r><r>") + m_indexCell->ListToXML()
+         + _T("</r><r>") + m_exptCell->ListToXML()
          + _T("</r></ie>");
 }
