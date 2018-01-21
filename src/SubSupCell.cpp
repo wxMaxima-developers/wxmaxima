@@ -222,7 +222,7 @@ wxString SubSupCell::ToXML()
     flags += wxT(" breakline=\"true\"");
 
   return _T("<ie") + flags +wxT("><r>") + m_baseCell->ListToXML()
-         + _T("</r><r>") + m_exptCell->ListToXML()
          + _T("</r><r>") + m_indexCell->ListToXML()
+         + _T("</r><r>") + m_exptCell->ListToXML()
          + _T("</r></ie>");
 }
