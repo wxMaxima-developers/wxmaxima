@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2009      Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 //            (C) 2012      Doug Ilijev <doug.ilijev@gmail.com>
@@ -59,15 +59,15 @@ bool EvaluationQueue::IsInQueue(GroupCell *gr)
 
 void EvaluationQueue::Remove(GroupCell *gr)
 {
-  bool removeFirst = (gr == m_queue.front());
+  bool removeFirst = m_queue.size() > 0 && gr == m_queue.front();
   m_queue.remove(gr);
+  m_size = m_queue.size();
   if(removeFirst)
   {
     m_commands.clear();
     if(!m_queue.empty())
       AddTokens(gr);
   }
-  m_size = m_queue.size();
 }
 
 void EvaluationQueue::AddToQueue(GroupCell *gr)

@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
@@ -123,8 +123,10 @@ ToolBar::ToolBar(wxToolBar *tbar)
 #if defined __WXMSW__
   // If there are packaging issues we want to have a detailed error message.
   Dirstructure dirstructure;
-  wxFileName test(dirstructure.ConfigToolbarDir()  + wxT("/") + wxT("gtk-new.png"));  
-  wxASSERT_MSG(test.IsFileReadable(),_("Expected the icon files to be found at")+dirstructure.ConfigToolbarDir());
+  wxFileName test128(dirstructure.ConfigToolbarDir() + wxT("/") + wxT("gtk-new.128.png"));
+  wxFileName test192(dirstructure.ConfigToolbarDir() + wxT("/") + wxT("gtk-new.192.png"));
+  wxASSERT_MSG(test128.IsFileReadable(), _("Expected the icon files to be found at") + dirstructure.ConfigToolbarDir());
+  wxASSERT_MSG(test192.IsFileReadable(), _("Expected the icon files to be found at") + dirstructure.ConfigToolbarDir());
                
   m_toolBar->AddTool(tb_new, _("New"),
                      GetImage(wxT("gtk-new")),

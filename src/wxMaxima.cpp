@@ -2574,7 +2574,7 @@ wxString wxMaxima::GetCommand(bool params)
   else
     parameters = wxT(" ") + parameters;
 
-  command.Replace(wxT(" "),wxT("\\ "));
+  command.Replace(wxT(" "), wxT("\ "));
 
 #if defined (__WXMSW__)
   if (!wxFileExists(command))

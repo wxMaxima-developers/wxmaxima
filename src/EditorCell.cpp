@@ -1,4 +1,4 @@
-﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
+// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2006-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
 //            (C) 2012 Doug Ilijev <doug.ilijev@gmail.com>
@@ -3580,7 +3580,9 @@ wxArrayString EditorCell::StringToTokens(wxString text)
               )
       {
         token += Ch;
-        it++;Ch = *it;
+        if (++it < text.end()) {
+          Ch = *it;
+        }
       }
 
       retval.Add(token);
@@ -3594,7 +3596,9 @@ wxArrayString EditorCell::StringToTokens(wxString text)
               )
       {
         token += Ch;
-        ++it;Ch = *it;
+        if (++it < text.end()) {
+          Ch = *it;
+        }
       }
 
       retval.Add(token);
