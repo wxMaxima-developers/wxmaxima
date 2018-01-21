@@ -76,7 +76,6 @@ wxImage ToolBar::GetImage(wxString name)
   }
 
   img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
-
   return img;
 }
 

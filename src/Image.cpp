@@ -157,7 +157,12 @@ wxSize Image::ToImageFile(wxString filename)
 
 wxBitmap Image::GetBitmap()
 {
-  Recalculate();
+  return GetBitmap(1.0);
+}
+
+wxBitmap Image::GetBitmap(double scale)
+{
+  Recalculate(scale);
 
   // Let's see if we have cached the scaled bitmap with the right size
   if (m_scaledBitmap.GetWidth() == m_width)
@@ -305,14 +310,20 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
 
 void Image::Recalculate()
 {
+  // Don't scale the image by default.
+  Recalculate(1.0);
+}
+
+void Image::Recalculate(double scale)
+{
   int width = m_originalWidth;
   int height = m_originalHeight;
-  double scale;
   Configuration *configuration = (*m_configuration);
 
   // We want the image to get bigger if the user zooms in - and
   // if a high printing resolution requires us to scale everything up.
-  scale = 1;
+  // To also take care of the user's printing-scale,
+  // the scale is passed by a parameter.
 
   // Ensure a minimum size for images.
   if (scale < 0.01) scale = 0.01;

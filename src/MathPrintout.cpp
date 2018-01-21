@@ -26,7 +26,7 @@
 */
 
 //! Bitmaps are scaled down if the resolution of the DC is too low.
-#define DCSCALE 1.0
+#define DPI_REFERENCE 96.0
 
 #include "MathPrintout.h"
 #include "GroupCell.h"
@@ -221,14 +221,13 @@ void MathPrintout::SetupData()
 
   #ifdef __WXGTK__
   (*m_configuration)->SetZoomFactor_temporarily(
-    DCSCALE * printPPI.x * oldZoomFactor * 75.0 / 300.0 / screenPPI.x *
-    m_oldconfig->PrintScale()
-    );
+    printPPI.x / DPI_REFERENCE * m_oldconfig->PrintScale()
+    //* oldZoomFactor // uncomment to make the printout size dependent of the zoom
+  );
   #else
   (*m_configuration)->SetZoomFactor_temporarily(
-    DCSCALE * printPPI.x * 75.0 / 300.0 / screenPPI.x *
-    m_oldconfig->PrintScale()
-    );
+    printPPI.x / DPI_REFERENCE * m_oldconfig->PrintScale()
+  );
   #endif
   
   wxMessageDialog dialog(NULL,

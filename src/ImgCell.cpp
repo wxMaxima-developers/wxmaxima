@@ -26,6 +26,9 @@
   or in user-provided images.
  */
 
+// 72 points per inch / 96 pixels per inch
+#define PRINT_SIZE_MULTIPLIER (72.0 / 96.0)
+
 #include "ImgCell.h"
 
 #include <wx/file.h>
@@ -149,7 +152,12 @@ void ImgCell::RecalculateWidths(int WXUNUSED(fontsize))
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
   //    we might have intermittent calculation issues otherwise
-  m_image->Recalculate();
+  Configuration *configuration = (*m_configuration);
+  if (configuration->GetPrinter()) {
+    m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
+  } else {
+    m_image->Recalculate();
+  }
 
   m_width = m_image->m_width + 2 * m_imageBorderWidth;
   m_height = m_image->m_height + 2 * m_imageBorderWidth;
@@ -169,13 +177,17 @@ void ImgCell::Draw(wxPoint point, int fontsize)
 {
   if (DrawThisCell(point) && (m_image != NULL))
   {
-    
+    Configuration *configuration = (*m_configuration);
+    if (configuration->GetPrinter()) {
+      m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
+    } else {
+      m_image->Recalculate();
+    }
+
     MathCell::Draw(point, fontsize);
-    m_image->Recalculate();
     
     if (!InUpdateRegion()) return;
     
-    Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();
     wxMemoryDC bitmapDC;
 
@@ -187,7 +199,8 @@ void ImgCell::Draw(wxPoint point, int fontsize)
     if (m_drawRectangle || m_drawBoundingBox)
       dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
-    wxBitmap bitmap = m_image->GetBitmap();
+    // Use printing-scale while in printing-mode.
+    wxBitmap bitmap = (configuration->GetPrinter() ? m_image->GetBitmap(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER) : m_image->GetBitmap());
     bitmapDC.SelectObject(bitmap);
 
     if ((m_drawBoundingBox == false) || (m_imageBorderWidth > 0))
