@@ -3,7 +3,7 @@ if(WIN32)
 else()
     cmake_minimum_required(VERSION 2.8)
 endif()
-
+ 
 project(wxmaxima)
 
 set(VERSION 17.10.x.unofficial)
