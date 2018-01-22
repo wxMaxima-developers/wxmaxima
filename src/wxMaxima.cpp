@@ -1150,8 +1150,8 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 #if defined (__WXMSW__)
   wxString path, maxima = GetCommand(false);
   wxArrayString out;
-  maxima = maxima.SubString(2, maxima.Length() - 3);
   wxFileName::SplitPath(maxima, &path, NULL, NULL);
+  path.Replace(wxT("\""), wxT("\\\""));
   wxString command = wxT("\"") + path + wxT("\\winkill.exe\"");
   command += wxString::Format(wxT(" -INT %ld"), m_pid);
   wxExecute(command, out);
@@ -2569,16 +2569,8 @@ wxString wxMaxima::GetCommand(bool params)
   wxString parameters, command = configuration->MaximaLocation();
   wxConfig::Get()->Read(wxT("parameters"), &parameters);
 
-  if (!params)
-    parameters = wxEmptyString;
-  else
-    parameters = wxT(" ") + parameters;
-
-  command.Replace(wxT(" "), wxT("\\ "));
-
 #if defined (__WXMSW__)
-  if (!wxFileExists(command))
-  {
+  if (!wxFileExists(command)) {
     wxMessageBox(_("wxMaxima could not find Maxima!\n\n"
                    "Please configure wxMaxima with 'Edit->Configure'.\n"
                    "Then start Maxima with 'Maxima->Restart Maxima'."),
@@ -2587,14 +2579,21 @@ wxString wxMaxima::GetCommand(bool params)
     SetStatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
     command = wxT("maxima");
   }
-#else
-
+#endif
 #if defined (__WXMAC__)
   if (command.Right(4) == wxT(".app")) // if pointing to a Maxima.app
-    command.Append(wxT("/Contents/Resources/maxima.sh") + parameters);
+    command.Append(wxT("/Contents/Resources/maxima.sh"));
 #endif
-#endif
-  return command + parameters;
+
+  if (params) {
+    // escape quotes
+    command.Replace(wxT("\""), wxT("\\\""));
+    // surround with quotes
+    return wxT("\"") + command + wxT("\" ") + parameters;
+  }
+  else {
+    return command;
+  }
 }
 
 ///--------------------------------------------------------------------------------
