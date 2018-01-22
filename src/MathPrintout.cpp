@@ -239,7 +239,8 @@ void MathPrintout::SetupData()
   GetPageMargins(&marginX, &marginY);
 
   (*m_configuration)->SetClientWidth(pageWidth - 2 * marginX
-                               - (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent()));
+    - (*m_configuration)->Scale_Px(72) // Some additional margin to compensate for title and section indent
+    - (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent()));
   (*m_configuration)->SetClientHeight(pageHeight - 2 * marginY);
 
   (*m_configuration)->SetIndent(marginX);
