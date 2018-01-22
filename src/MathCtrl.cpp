@@ -5842,8 +5842,8 @@ bool MathCtrl::ExportToMAC(wxString file)
   AddLineToFile(backupfile, wxEmptyString, false);
   if (wxm)
   {
-    AddLineToFile(backupfile, wxT("/* Maxima can't load/batch files which end with a comment! */"), false);
-    AddLineToFile(backupfile, wxT("\"Created with wxMaxima\"$"), false);
+    AddLineToFile(backupfile, wxT("/* Old versions of Maxima abort on loading files that end in a comment. */"), false);
+    AddLineToFile(backupfile, wxT("\"Created with wxMaxima " GITVERSION "\"$"), false);
   }
 
   // Try to save the file.
