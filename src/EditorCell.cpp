@@ -1669,7 +1669,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
         if ((!cursorJump) || ((cursorAtStartOfLine) && (!autoIndent)))
           m_positionOfCaret = BeginningOfLine(m_positionOfCaret);
       }
-      //StyleText();
+      StyleText();
       break;
 
     case WXK_DELETE:
@@ -1733,7 +1733,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
                    m_text.SubString(m_positionOfCaret + 1, m_text.Length());
         }
       }
-      //StyleText();
+      StyleText();
       break;
 
     case WXK_BACK:
@@ -1750,7 +1750,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
                  m_text.SubString(end, m_text.Length());
         m_positionOfCaret = start;
         ClearSelection();
-        //StyleText();
+        StyleText();
         break;
       }
       else
@@ -1819,7 +1819,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
           }
         }
       }
-      //StyleText();
+      StyleText();
       break;
 
     case WXK_TAB:
@@ -1887,7 +1887,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
               ClearSelection();
             }
             m_positionOfCaret = start;
-            //StyleText();
+            StyleText();
             break;
           }
           else
@@ -1929,7 +1929,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
           }
         }
       }
-      //StyleText();
+      StyleText();
       break;
 /*
   case WXK_SPACE:
@@ -1983,7 +1983,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
         }
       }
 #endif
-      //StyleText();
+      StyleText();
       break;
 
       /* Ignored keys */
@@ -2109,7 +2109,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event)
         break;
     }
     ClearSelection();
-    //StyleText();
+    StyleText();
   } // end if (m_selectionStart > -1)
 
   // insert letter if we didn't insert brackets around selection
@@ -2211,7 +2211,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event)
     }
   } // end if (insertLetter)
 
-  //StyleText();
+  StyleText();
   return true;
 }
 
@@ -2701,7 +2701,7 @@ bool EditorCell::AddEnding()
   {
     m_text += wxT(";");
     m_paren1 = m_paren2 = m_width = -1;
-    //StyleText();
+    StyleText();
     return true;
   }
   return false;
@@ -3196,7 +3196,7 @@ bool EditorCell::CutToClipboard()
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
   m_text = m_text.SubString(0, start - 1) +
            m_text.SubString(end, m_text.Length());
-  //StyleText();
+  StyleText();
 
   ClearSelection();
   m_paren1 = m_paren2 = -1;
@@ -3329,7 +3329,7 @@ void EditorCell::Undo()
 
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
   m_text = m_textHistory.Item(m_historyPosition);
-  //StyleText();
+  StyleText();
 
   m_positionOfCaret = m_positionHistory[m_historyPosition];
   SetSelection(m_startHistory[m_historyPosition], m_endHistory[m_historyPosition]);
@@ -3359,7 +3359,7 @@ void EditorCell::Redo()
 
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
   m_text = m_textHistory.Item(m_historyPosition);
-  //StyleText();
+  StyleText();
 
   m_positionOfCaret = m_positionHistory[m_historyPosition];
   SetSelection(m_startHistory[m_historyPosition], m_endHistory[m_historyPosition]);
@@ -4303,7 +4303,7 @@ void EditorCell::SetValue(const wxString &text)
   m_containsChanges = true;
 
   // Style the text.
-  //StyleText();
+  StyleText();
   if (m_group != NULL)
     m_group->ResetSize();
   ResetData();
@@ -4361,7 +4361,7 @@ int EditorCell::ReplaceAll(wxString oldString, wxString newString, bool IgnoreCa
     m_text = newText;
     m_containsChanges = true;
     ClearSelection();
-    //StyleText();
+    StyleText();
   }
 
   // If text is selected setting the selection again updates m_selectionString
@@ -4446,7 +4446,7 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSel
     m_text = text_left+
              newStr +
              text_right;
-    //StyleText();
+    StyleText();
 
     m_containsChanges = true;
     m_positionOfCaret = start + newStr.Length();
@@ -4464,7 +4464,7 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSel
     if (GetType() == MC_TYPE_INPUT)
       FindMatchingParens();
 
-    //StyleText();
+    StyleText();
     return true;
   }
   return false;
