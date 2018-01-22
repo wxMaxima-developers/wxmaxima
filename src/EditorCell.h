@@ -398,7 +398,7 @@ public:
       m_firstLineOnly = show;
     }
     // Style the text anew.
-    //StyleText();
+    StyleText();
   }
 
   bool IsActive()
