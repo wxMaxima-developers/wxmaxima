@@ -2792,7 +2792,11 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   else {
     Dirstructure dirstructure;
     wxString htmldir = dirstructure.HelpDir();
-    wxString wxMaximaHelpFile = htmldir + wxT("/wxmaxima.hhp");
+    wxString wxMaximaHelpFile = htmldir;
+    if(wxFileExists(htmldir + wxLocale()->GetName()+ wxT("/wxmaxima.hhp")))
+      wxMaximaHelpFile = htmldir + wxLocale()->GetName() + wxT("/wxmaxima.hhp");
+    else
+      wxMaximaHelpFile = htmldir + wxT("/wxmaxima.hhp");
     ShowHTMLHelp(MaximaHelpFile,wxMaximaHelpFile,keyword);
   }
 #else
