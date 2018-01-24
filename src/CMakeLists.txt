@@ -56,7 +56,7 @@ if(APPLE)
             ${CMAKE_SOURCE_DIR}/info/*.html
             ${CMAKE_SOURCE_DIR}/info/*.jpg
             ${CMAKE_SOURCE_DIR}/info/*.png
-            ${CMAKE_SOURCE_DIR}/info/wxmaxima.hhp)
+            ${CMAKE_SOURCE_DIR}/info/*.hhp)
     file(GLOB CONTENT_FILES
             ${CMAKE_BINARY_DIR}/data/Info.plist
             ${CMAKE_SOURCE_DIR}/data/PkgInfo)

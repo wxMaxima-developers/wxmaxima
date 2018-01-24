@@ -518,7 +518,7 @@ void TextCell::SetFont(int fontsize)
   }
 
   wxFont font = configuration->GetFont(m_textStyle,fontsize);
-  
+
   // Use jsMath
   if (m_altJs && configuration->CheckTeXFonts())
     font.SetFaceName(m_texFontname);
@@ -534,6 +534,23 @@ void TextCell::SetFont(int fontsize)
 
   if(m_fontSize < 4)
     m_fontSize = 4;
+  
+  // Mark special variables that are printed as ordinary letters as being special.
+  if ((!(*m_configuration)->CheckKeepPercent()) &&
+      ((m_text == wxT("%e")) || (m_text == wxT("%i"))))
+  {
+    std::cerr<<"special!\n";
+    if((*m_configuration)->IsItalic(m_textStyle) )
+    {
+      std::cerr<<"Slant=>Normal\n";
+      font.SetStyle(wxFONTSTYLE_NORMAL);
+    }
+    else
+    {
+      std::cerr<<"Normal=>Italic\n";
+      font.SetStyle(wxFONTSTYLE_ITALIC);
+    }
+  }
 
   wxASSERT(Scale_Px(m_fontSize) > 0);
   font.SetPointSize(Scale_Px(m_fontSize));
@@ -1084,8 +1101,7 @@ wxString TextCell::ToMathML()
       // support this currently => Commenting it out.
       // if((GetStyle() == TS_SPECIAL_CONSTANT) && (text == wxT("d")))
       //   text = wxT("&#2146;");
-      bool keepPercent = true;
-      wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
+      bool keepPercent = (*m_configuration)->CheckKeepPercent();
       if (!keepPercent)
       {
         if (text == wxT("%e"))
@@ -1096,8 +1112,7 @@ wxString TextCell::ToMathML()
     }
     case TS_VARIABLE:
     {
-      bool keepPercent = true;
-      wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
+      bool keepPercent = (*m_configuration)->CheckKeepPercent();
 
       if (!keepPercent)
       {
@@ -1168,8 +1183,7 @@ wxString TextCell::ToOMML()
       // support this currently => Commenting it out.
       // if((GetStyle() == TS_SPECIAL_CONSTANT) && (text == wxT("d")))
       //   text = wxT("&#2146;");
-      bool keepPercent = true;
-      wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
+      bool keepPercent = (*m_configuration)->CheckKeepPercent();
       if (!keepPercent)
       {
         if (text == wxT("%e"))
@@ -1180,8 +1194,7 @@ wxString TextCell::ToOMML()
     }
     case TS_VARIABLE:
     {
-      bool keepPercent = true;
-      wxConfig::Get()->Read(wxT("keepPercent"), &keepPercent);
+      bool keepPercent = (*m_configuration)->CheckKeepPercent();
 
       if (!keepPercent)
       {
