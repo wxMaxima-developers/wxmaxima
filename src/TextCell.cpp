@@ -60,6 +60,15 @@ std::list<MathCell *> TextCell::GetInnerCells()
   return innerCells;
 }
 
+void TextCell::SetStyle(int style)
+{
+  MathCell::SetStyle(style);
+  if ((m_text == wxT("gamma")) && (m_textStyle == TS_FUNCTION))
+    m_displayedText = wxT("\x0393");
+  if ((m_text == wxT("psi")) && (m_textStyle == TS_FUNCTION))
+    m_displayedText = wxT("\x03A8");
+}
+
 void TextCell::SetValue(const wxString &text)
 {
   m_toolTip = m_initialToolTip;
@@ -76,6 +85,11 @@ void TextCell::SetValue(const wxString &text)
   {
     if (m_text == wxT("ilt"))
       m_toolTip = _("The inverse laplace transform.");
+    
+    if (m_text == wxT("gamma"))
+      m_displayedText = wxT("\x0393");
+    if (m_text == wxT("psi"))
+      m_displayedText = wxT("\x03A8");
   }      
 
   if (m_textStyle == TS_VARIABLE)
@@ -1118,6 +1132,7 @@ wxString TextCell::ToMathML()
       }
     }
     case TS_FUNCTION:
+      text = GetGreekStringUnicode();
       if (text == wxT("inf"))
         text = wxT("\x221e");
       if((text == wxT("+")) || (text == wxT("-")) || (text == wxT("*")) || (text == wxT("/")))
@@ -1173,7 +1188,6 @@ wxString TextCell::ToOMML()
   switch (GetStyle())
   {
     case TS_GREEK_CONSTANT:
-      text = GetGreekStringUnicode();
     case TS_SPECIAL_CONSTANT:
     {
       // The "d" from d/dt can be written as a special unicode symbol. But firefox doesn't
@@ -1200,6 +1214,7 @@ wxString TextCell::ToOMML()
       }
     }
     case TS_FUNCTION:
+      text = GetGreekStringUnicode();
       if (text == wxT("inf"))
         text = wxT("\x221e");
       break;
@@ -1369,21 +1384,6 @@ void TextCell::SetAltText()
 wxString TextCell::GetGreekStringUnicode()
 {
   wxString txt(m_text);
-
-  if (txt == wxT("gamma"))
-  {
-    if(m_textStyle == TS_FUNCTION)
-      return wxT("\x0393");
-    else
-      return wxT("\x03B3");
-  }
-  else if (txt == wxT("psi"))
-  {
-    if(m_textStyle == TS_FUNCTION)
-      return wxT("\x03A8");
-    else
-      return wxT("\x03C8");
-  }      
 
   if (txt[0] != '%')
     txt = wxT("%") + txt;

@@ -78,6 +78,7 @@ void FunCell::SetName(MathCell *name)
     return;
   wxDELETE(m_nameCell);
   m_nameCell = name;
+  name->SetStyle(TS_FUNCTION);
 }
 
 void FunCell::SetArg(MathCell *arg)

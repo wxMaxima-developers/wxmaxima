@@ -44,6 +44,8 @@ public:
   
   MathCell *Copy();
 
+  virtual void SetStyle(int style);
+  
   //! Set the text contained in this cell
   void SetValue(const wxString &text);
 

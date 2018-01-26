@@ -740,7 +740,7 @@ class MathCell
    */
   void SetGroupList(MathCell *parent);
 
-  void SetStyle(int style)
+  virtual void SetStyle(int style)
   {
     m_textStyle = style;
     ResetData();
