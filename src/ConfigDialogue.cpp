@@ -87,7 +87,6 @@ const int langs[] =
 int ConfigDialogue::GetImageSize()
 {
   double targetSize = wxGetDisplayPPI().x * CONFIG_ICON_SCALE;
-  int prescale;
 
   int sizeA = 128 << 4;
   while(sizeA * 3 / 2 > targetSize && sizeA >= 32) {
@@ -1333,7 +1332,7 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
                 false, fontName,
                 m_fontEncoding);
   if(!font.IsOk())
-    *wxNORMAL_FONT;
+    font = *wxNORMAL_FONT;
 
   font.SetPointSize(fontsize);
   font = wxGetFontFromUser(this, font);
