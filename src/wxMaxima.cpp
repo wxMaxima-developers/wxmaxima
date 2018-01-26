@@ -2789,23 +2789,18 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
 #if defined (__WXMSW__)
   if(wxFileName(MaximaHelpFile).GetFullPath().Right(4)==wxT(".chm"))
     ShowCHMHelp(MaximaHelpFile,keyword);
-  else {
+  else
+#endif
+  {
     Dirstructure dirstructure;
     wxString htmldir = dirstructure.HelpDir();
     wxString wxMaximaHelpFile = htmldir;
-    if(wxFileExists(htmldir + wxLocale()->GetName()+ wxT("/wxmaxima.hhp")))
-      wxMaximaHelpFile = htmldir + wxLocale()->GetName() + wxT("/wxmaxima.hhp");
+    if(wxFileExists(htmldir + wxGetApp().m_locale.GetName()+ wxT("/wxmaxima.hhp")))
+      wxMaximaHelpFile = htmldir + wxGetApp().m_locale.GetName() + wxT("/wxmaxima.hhp");
     else
       wxMaximaHelpFile = htmldir + wxT("/wxmaxima.hhp");
     ShowHTMLHelp(MaximaHelpFile,wxMaximaHelpFile,keyword);
   }
-#else
-  Dirstructure dirstructure;
-  wxString htmldir = dirstructure.HelpDir();
-  wxString wxMaximaHelpFile = htmldir + wxT("/wxmaxima.hhp");
-  ShowHTMLHelp(MaximaHelpFile, wxMaximaHelpFile, keyword);
-#endif
-
 }
 
 ///--------------------------------------------------------------------------------
