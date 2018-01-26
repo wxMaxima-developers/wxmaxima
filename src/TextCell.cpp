@@ -1375,7 +1375,7 @@ wxString TextCell::GetGreekStringUnicode()
     if(m_textStyle == TS_FUNCTION)
       return wxT("\x0393");
     else
-      return(wxT("\x03B3");
+      return wxT("\x03B3");
   }
   else if (txt == wxT("psi"))
   {
