@@ -1371,9 +1371,19 @@ wxString TextCell::GetGreekStringUnicode()
   wxString txt(m_text);
 
   if (txt == wxT("gamma"))
-    return wxT("\x0393");
+  {
+    if(m_textStyle == TS_FUNCTION)
+      return wxT("\x0393");
+    else
+      return(wxT("\x03B3");
+  }
   else if (txt == wxT("psi"))
-    return wxT("\x03A8");
+  {
+    if(m_textStyle == TS_FUNCTION)
+      return wxT("\x03A8");
+    else
+      return wxT("\x03C8");
+  }      
 
   if (txt[0] != '%')
     txt = wxT("%") + txt;
