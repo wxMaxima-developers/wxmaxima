@@ -427,7 +427,7 @@ MathCell *MathParser::ParseFunTag(wxXmlNode *node)
   fun->SetName(HandleNullPointer(ParseTag(child, false)));
   child = GetNextTag(child);
   fun->SetType(m_ParserStyle);
-  fun->SetStyle(TS_VARIABLE);
+  fun->SetStyle(TS_FUNCTION);
   fun->SetArg(HandleNullPointer(ParseTag(child, false)));
   ParseCommonAttrs(node, fun);
   return fun;

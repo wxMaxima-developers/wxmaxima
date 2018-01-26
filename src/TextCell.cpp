@@ -539,15 +539,12 @@ void TextCell::SetFont(int fontsize)
   if ((!(*m_configuration)->CheckKeepPercent()) &&
       ((m_text == wxT("%e")) || (m_text == wxT("%i"))))
   {
-    std::cerr<<"special!\n";
-    if((*m_configuration)->IsItalic(m_textStyle) )
+    if((*m_configuration)->IsItalic(TS_VARIABLE) != wxFONTSTYLE_NORMAL)
     {
-      std::cerr<<"Slant=>Normal\n";
       font.SetStyle(wxFONTSTYLE_NORMAL);
     }
     else
     {
-      std::cerr<<"Normal=>Italic\n";
       font.SetStyle(wxFONTSTYLE_ITALIC);
     }
   }

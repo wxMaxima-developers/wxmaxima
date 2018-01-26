@@ -176,6 +176,8 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   Create(parent, wxID_ANY, _("wxMaxima configuration"),
          wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
 
+  ReadStyles();
+
   m_notebook = GetBookCtrl();
 
   m_notebook->SetImageList(m_imageList);
@@ -489,8 +491,6 @@ void ConfigDialogue::SetProperties()
       !wxFontEnumerator::IsValidFacename(CMMI10) ||
       !wxFontEnumerator::IsValidFacename(CMTI10))
     m_useJSMath->Enable(false);
-
-  ReadStyles();
 }
 
 wxPanel *ConfigDialogue::CreateWorksheetPanel()
@@ -1065,10 +1065,6 @@ wxPanel *ConfigDialogue::CreateStylePanel()
 
   m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(250, -1), 33, m_styleFor_choices,
                              wxLB_SINGLE);
-  wxConfigBase *config = wxConfig::Get();
-  int styleToEditNum = 0;
-  config->Read(wxT("StyleToEdit"),&styleToEditNum);
-  m_styleFor->SetSelection(styleToEditNum);
   m_styleFor->Connect(wxEVT_LISTBOX,
                          wxCommandEventHandler(ConfigDialogue::OnStyleToEditChanged),
                          NULL, this);
@@ -1120,7 +1116,13 @@ wxPanel *ConfigDialogue::CreateStylePanel()
 
   panel->SetSizer(vsizer);
   vsizer->Fit(panel);
-
+  wxConfigBase *config = wxConfig::Get();
+  int styleToEditNum = 0;
+  config->Read(wxT("StyleToEdit"),&styleToEditNum);
+  m_styleFor->SetSelection(styleToEditNum);
+  wxCommandEvent dummy;
+  dummy.SetInt(m_styleFor->GetSelection());
+  OnChangeStyle(dummy);
   return panel;
 }
 
@@ -1662,14 +1664,8 @@ void ConfigDialogue::ReadStyles(wxString file)
 #undef READ_STYLE
 
   // Set values in dialog
-  m_styleColor->SetBackgroundColour(m_styleDefault.color); // color the panel, after the styles are loaded
-  m_boldCB->SetValue(m_styleDefault.bold);
-  m_italicCB->SetValue(m_styleDefault.italic);
-  m_underlinedCB->SetValue(m_styleDefault.underlined);
-
   if (file != wxEmptyString)
     wxDELETE(config);
-  UpdateExample();
 }
 
 void ConfigDialogue::WriteStyles(wxString file)
@@ -2057,7 +2053,12 @@ void ConfigDialogue::LoadSave(wxCommandEvent &event)
                                    _("Config file (*.ini)|*.ini"),
                                    wxFD_OPEN);
     if (file != wxEmptyString)
+    {
       ReadStyles(file);
+      wxCommandEvent dummy;
+      dummy.SetInt(m_styleFor->GetSelection());
+      OnChangeStyle(dummy);
+    }
   }
 }
 
