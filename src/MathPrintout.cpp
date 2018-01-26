@@ -207,31 +207,24 @@ void MathPrintout::SetupData()
   // one would get on an 300dpi printer => we need to correct the scale factor for
   // the DPI rate, too. It seems that for a 75dpi and a 300dpi printer the scaling
   // factor is 1.0.
-  wxSize screenPPI;
-  screenPPI = m_oldconfig->GetDC()->GetPPI();
   wxSize printPPI;
   printPPI = (*m_configuration)->GetDC()->GetPPI();
 
   double userScale_x, userScale_y;
   m_oldconfig->GetDC()->GetUserScale(&userScale_x, &userScale_y);
-  double oldZoomFactor = m_oldconfig->GetZoomFactor();
 
-  #ifdef __WXGTK__
-  (*m_configuration)->SetZoomFactor_temporarily(
-    printPPI.x / DPI_REFERENCE * m_oldconfig->PrintScale()
-    //* oldZoomFactor // uncomment to make the printout size dependent of the zoom
-  );
-  #else
   (*m_configuration)->SetZoomFactor_temporarily(
     printPPI.x / DPI_REFERENCE * m_oldconfig->PrintScale()
   );
-  #endif
 
-  wxMessageDialog dialog(NULL,
-    wxString::Format(wxT("screenPPI.x=%i,\nprintPPI.x=%i\nzoomFactor=%f\nUserScale.x=%f"),
-      screenPPI.x, printPPI.x, oldZoomFactor, userScale_x),
-    wxString("Printer Parameters"));
-  dialog.ShowModal();
+  // wxSize screenPPI;
+  // screenPPI = m_oldconfig->GetDC()->GetPPI();
+  // double oldZoomFactor = m_oldconfig->GetZoomFactor();
+  // wxMessageDialog dialog(NULL,
+  //   wxString::Format(wxT("screenPPI.x=%i,\nprintPPI.x=%i\nzoomFactor=%f\nUserScale.x=%f"),
+  //     screenPPI.x, printPPI.x, oldZoomFactor, userScale_x),
+  //   wxString("Printer Parameters"));
+  // dialog.ShowModal();
 
   int pageWidth, pageHeight;
   int marginX, marginY;
