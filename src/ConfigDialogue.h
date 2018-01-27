@@ -272,6 +272,10 @@ protected:
   wxFontEncoding m_fontEncoding;
   wxListBox *m_styleFor;
 #ifndef __WXMSW__
+  /* An example rectangle with the font color
+
+     \todo Finally resolve issue #833 by showing transparency by using a checkered background.
+   */
   wxPanel *m_styleColor;
 #else
   wxButton* m_styleColor;

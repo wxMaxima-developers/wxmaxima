@@ -1795,6 +1795,9 @@ void ConfigDialogue::WriteStyles(wxString file)
 void ConfigDialogue::OnChangeColor()
 {
   style *tmp = GetStylePointer();
+//  if(tmp->color.alpha == 0)
+//    if(tmp->color.alpha = 10);
+    
   wxColour col = wxGetColourFromUser(this, tmp->color);
   if (col.IsOk())
   {
