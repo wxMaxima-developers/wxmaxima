@@ -62,64 +62,6 @@ enum
   load_id
 };
 
-/*! TheSample text that is shown by the style selector.
-
-This is a piece of text that shows the user how the selected style will look.
-*/
-class ExamplePanel : public wxPanel
-{
-public:
-  //! The constructor
-  ExamplePanel(wxWindow *parent, int id, wxPoint pos, wxSize size) : wxPanel(parent, id, pos, size)
-  {
-#if defined (__WXGTK12__) && !defined (__WXGTK20__)
-    m_size = 12;
-#elif defined (__WXMAC__)
-    m_size = 12;
-#else
-    m_size = 10;
-#endif
-    m_italic = false;
-    m_bold = false;
-    m_underlined = false;
-  };
-
-  //! Sets all user-changable elements of style of the example at once.
-  void SetStyle(wxColour fg_color, bool italic, bool bold, bool underlined, wxString font)
-  {
-    m_fgColor = fg_color;
-    m_italic = italic;
-    m_bold = bold;
-    m_underlined = underlined;
-    m_font = font;
-  }
-
-  //! Sets the font size of the example
-  void SetFontSize(int size)
-  { m_size = size; }
-
-private:
-  /*! Actually updates the formatting example
-
-    This function is called after ConfigDialogue::UpdateExample() changes the example's style.
- */
-  void OnPaint(wxPaintEvent &event);
-
-private:
-  //! The foreground color of the currently selected item type
-  wxColour m_fgColor;
-  //! Is the currently selected item type displayed in italic?
-  bool m_italic;
-  //! Is the currently selected item type displayed in bold?
-  bool m_bold;
-  //! Is the currently selected item type displayed underlined?
-  bool m_underlined;
-  //! The font the currently selected item type is displayed with
-  wxString m_font;
-  //! The size of the characters of the currently selected item type
-  int m_size;
-DECLARE_EVENT_TABLE()
-};
 
 /*! The configuration dialog
 
@@ -161,6 +103,128 @@ public:
 
 private:
   Configuration *m_configuration;
+  /*! TheSample text that is shown by the style selector.
+
+    This is a piece of text that shows the user how the selected style will look.
+  */
+  class ExamplePanel : public wxPanel
+  {
+  public:
+    //! The constructor
+    ExamplePanel(wxWindow *parent, int id, wxPoint pos, wxSize size) : wxPanel(parent, id, pos, size)
+      {
+#if defined (__WXGTK12__) && !defined (__WXGTK20__)
+        m_size = 12;
+#elif defined (__WXMAC__)
+        m_size = 12;
+#else
+        m_size = 10;
+#endif
+        m_italic = false;
+        m_bold = false;
+        m_underlined = false;
+      };
+
+    //! Sets all user-changable elements of style of the example at once.
+    void SetStyle(wxColour fg_color, bool italic, bool bold, bool underlined, wxString font)
+      {
+        m_fgColor = fg_color;
+        m_italic = italic;
+        m_bold = bold;
+        m_underlined = underlined;
+        m_font = font;
+      }
+
+    //! Sets the font size of the example
+    void SetFontSize(int size)
+      { m_size = size; }
+  
+  private:
+    /*! Actually updates the formatting example
+
+      This function is called after ConfigDialogue::UpdateExample() changes the example's style.
+    */
+    void OnPaint(wxPaintEvent &event);
+
+  private:
+    //! The foreground color of the currently selected item type
+    wxColour m_fgColor;
+    //! Is the currently selected item type displayed in italic?
+    bool m_italic;
+    //! Is the currently selected item type displayed in bold?
+    bool m_bold;
+    //! Is the currently selected item type displayed underlined?
+    bool m_underlined;
+    //! The font the currently selected item type is displayed with
+    wxString m_font;
+    //! The size of the characters of the currently selected item type
+    int m_size;
+    DECLARE_EVENT_TABLE()
+  };
+
+  /*! A rectangle showing the color of an item
+
+    If the color contains transparency the rectangle is checkered accordingly.
+   */
+  class ColorPanel : public wxPanel
+  {
+  public:
+    ColorPanel(ConfigDialogue *conf, wxWindow *parent, int id, wxPoint pos, wxSize size, long style) : wxPanel(parent, id,
+                                                                                                               pos, size,
+                                                                                                               style)
+      {
+        m_color = wxColour(0, 0, 0);
+        m_configDialogue = conf;
+        SetBackgroundColour(m_color);
+      };
+
+    void OnPaint(wxPaintEvent &WXUNUSED(event))
+      {
+        wxPaintDC dc(this);
+        wxColor col
+        (
+          m_color.Red()   * m_color.Alpha() / wxALPHA_OPAQUE + (wxALPHA_OPAQUE - m_color.Alpha()),
+          m_color.Green() * m_color.Alpha() / wxALPHA_OPAQUE + (wxALPHA_OPAQUE - m_color.Alpha()),
+          m_color.Blue()  * m_color.Alpha() / wxALPHA_OPAQUE + (wxALPHA_OPAQUE - m_color.Alpha())
+          );
+        dc.SetPen(*(wxThePenList->FindOrCreatePen(col, 1, wxPENSTYLE_SOLID)));
+        dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(col)));
+
+        int width;
+        int height;
+        GetClientSize(&width, &height);
+
+        int columns = (width+11)  / 12;
+        int rows    = (height+11) / 12;
+
+        for(int x=0;x<columns;x++)
+          for(int  y=0;y<rows;y++)
+          {
+            if((x+y)&1 == 1)
+              dc.DrawRectangle(x*12,y*12,12,12);
+          }
+      }
+
+    void OnClick(wxMouseEvent& WXUNUSED(event))
+      {
+        m_configDialogue->OnChangeColor();
+      }
+  
+    void SetColor(wxColor color){
+      m_color = color;
+      wxColor backgroundColor(
+        m_color.Red() * m_color.Alpha() / wxALPHA_OPAQUE,
+        m_color.Green() * m_color.Alpha() / wxALPHA_OPAQUE,
+        m_color.Blue() * m_color.Alpha() / wxALPHA_OPAQUE
+        );
+      SetBackgroundColour(color);
+    };
+  private:
+    ConfigDialogue *m_configDialogue;
+    wxColor m_color;
+    DECLARE_EVENT_TABLE()
+  };
+
 
   /*! begin wxGlade: ConfigDialogue::methods
 
@@ -272,11 +336,8 @@ protected:
   wxFontEncoding m_fontEncoding;
   wxListBox *m_styleFor;
 #ifndef __WXMSW__
-  /* An example rectangle with the font color
-
-     \todo Finally resolve issue #833 by showing transparency by using a checkered background.
-   */
-  wxPanel *m_styleColor;
+  //! An example rectangle with the font color
+  ColorPanel *m_styleColor;
 #else
   wxButton* m_styleColor;
 #endif
@@ -398,27 +459,6 @@ DECLARE_EVENT_TABLE()
 };
 
 #ifndef __WXMSW__
-
-class ColorPanel : public wxPanel
-{
-public:
-  ColorPanel(ConfigDialogue *conf, wxWindow *parent, int id, wxPoint pos, wxSize size, long style) : wxPanel(parent, id,
-                                                                                                             pos, size,
-                                                                                                             style)
-  {
-    m_configDialogue = conf;
-    SetBackgroundColour(wxColour(0, 0, 0));
-  };
-
-  void OnClick(wxMouseEvent& WXUNUSED(event))
-  {
-    m_configDialogue->OnChangeColor();
-  }
-
-private:
-  ConfigDialogue *m_configDialogue;
-DECLARE_EVENT_TABLE()
-};
 
 #endif // __WXMSW__
 

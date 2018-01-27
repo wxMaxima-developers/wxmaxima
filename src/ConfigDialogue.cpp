@@ -1802,7 +1802,7 @@ void ConfigDialogue::OnChangeColor()
   if (col.IsOk())
   {
     tmp->color = col.GetAsString(wxC2S_CSS_SYNTAX);
-    m_styleColor->SetBackgroundColour(tmp->color);
+    m_styleColor->SetColor(tmp->color);
   }
   UpdateExample();
 }
@@ -1812,7 +1812,7 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
   style *tmp = GetStylePointer();
   int st = m_styleFor->GetSelection();
 
-  m_styleColor->SetBackgroundColour(tmp->color);
+  m_styleColor->SetColor(tmp->color);
 
   // MAGIC NUMBERS:
   // the positions of TEXT and TITLE style in the list.
@@ -2089,7 +2089,7 @@ BEGIN_EVENT_TABLE(ConfigDialogue, wxPropertySheetDialog)
                 EVT_CLOSE(ConfigDialogue::OnClose)
 END_EVENT_TABLE()
 
-void ExamplePanel::OnPaint(wxPaintEvent& WXUNUSED(event))
+void ConfigDialogue::ExamplePanel::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
   wxString example(_("Example text"));
   wxPaintDC dc(this);
@@ -2122,12 +2122,13 @@ void ExamplePanel::OnPaint(wxPaintEvent& WXUNUSED(event))
               (panel_height - text_height) / 2);
 }
 
-BEGIN_EVENT_TABLE(ExamplePanel, wxPanel)
-                EVT_PAINT(ExamplePanel::OnPaint)
+BEGIN_EVENT_TABLE(ConfigDialogue::ExamplePanel, wxPanel)
+                EVT_PAINT(ConfigDialogue::ExamplePanel::OnPaint)
 END_EVENT_TABLE()
 
 #ifndef __WXMSW__
-BEGIN_EVENT_TABLE(ColorPanel, wxPanel)
-                EVT_LEFT_UP(ColorPanel::OnClick)
+BEGIN_EVENT_TABLE(ConfigDialogue::ColorPanel, wxPanel)
+                EVT_LEFT_UP(ConfigDialogue::ColorPanel::OnClick)
+                EVT_PAINT(ConfigDialogue::ColorPanel::OnPaint)
 END_EVENT_TABLE()
 #endif
