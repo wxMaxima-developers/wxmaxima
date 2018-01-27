@@ -569,6 +569,11 @@ private:
   AutocompletePopup *m_autocompletePopup;
 
 public:
+  bool IsEmpty()
+    {
+      return ( (m_tree == NULL) ||
+               ((m_tree->m_next == NULL) && m_tree->GetEditable()->GetValue().Length()<=1));
+    }
   //! Close the autocompletion pop-up if it is currently open.
   void CloseAutoCompletePopup()
     {

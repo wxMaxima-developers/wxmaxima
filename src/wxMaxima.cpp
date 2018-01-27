@@ -3753,7 +3753,16 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
                                       "xml from broken .wxmx (*.xml)|*.xml"),
                                      wxFD_OPEN);
 
+      // On the mac the "File/New" menu item by default opens a new window instead od
+      // reusing the old one.
+      #ifdef __WXMAC__
+      if(m_console->IsEmpty())
+        OpenFile(file,wxEmptyString);
+      else
+        wxGetApp().NewWindow(file);
+      #else
       OpenFile(file,wxEmptyString);
+      #endif
     }
       break;
 
