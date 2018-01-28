@@ -195,6 +195,8 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   wxConfigBase *config = wxConfig::Get();
   int notebookTab = 0;
   config->Read(wxT("ConfigDialogTab"), &notebookTab);
+  if((notebookTab < 0) || (notebookTab > m_notebook->GetPageCount()))
+     notebookTab = 0;
   m_notebook->SetSelection(notebookTab);
   LayoutDialog();
 
@@ -1118,6 +1120,8 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   wxConfigBase *config = wxConfig::Get();
   int styleToEditNum = 0;
   config->Read(wxT("StyleToEdit"),&styleToEditNum);
+  if((styleToEditNum >= m_styleFor->GetCount()) || (styleToEditNum < 0))
+    styleToEditNum = 0;
   m_styleFor->SetSelection(styleToEditNum);
   wxCommandEvent dummy;
   dummy.SetInt(m_styleFor->GetSelection());
@@ -1289,6 +1293,9 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
                   false, m_mathFontName);
   
+  if(!font.IsOk())
+    font = *wxNORMAL_FONT;
+
   wxFont math;
   math = wxGetFontFromUser(this, font);
 
@@ -1299,6 +1306,7 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
     math.SetPointSize(m_mathFontSize);
     m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_mathFontSize));
   }
+
   UpdateExample();
 }
 
@@ -1316,6 +1324,8 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
   if(font.IsOk())
     fontName = wxT("Linux Libertine O");
 #endif
+  if(!font.IsOk())
+    font = *wxNORMAL_FONT;
 
   if (tmp == &m_styleText || tmp == &m_styleTitle || tmp == &m_styleSubsubsection || tmp == &m_styleSubsection ||
       tmp == &m_styleSection)
