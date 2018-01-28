@@ -146,7 +146,6 @@ private:
     */
     void OnPaint(wxPaintEvent &event);
 
-  private:
     //! The foreground color of the currently selected item type
     wxColour m_fgColor;
     //! Is the currently selected item type displayed in italic?

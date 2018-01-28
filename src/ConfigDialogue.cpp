@@ -1990,6 +1990,9 @@ style *ConfigDialogue::GetStylePointer()
 void ConfigDialogue::UpdateExample()
 {
   style *tmp = GetStylePointer();
+  if(tmp == NULL)
+    return;
+  
   wxString example = _("Example text");
   wxColour color(tmp->color);
   wxString font(m_styleDefault.font);
