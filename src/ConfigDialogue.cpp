@@ -1347,7 +1347,7 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
   font.SetPointSize(fontsize);
   font = wxGetFontFromUser(this, font);
 
-  if (font.Ok())
+  if (font.IsOk())
   {
     if (event.GetId() == font_family)
     {
@@ -2127,7 +2127,8 @@ void ConfigDialogue::ExamplePanel::OnPaint(wxPaintEvent& WXUNUSED(event))
     font = *wxNORMAL_FONT;
   
   font.SetPointSize(m_size);
-  dc.SetFont(font);
+  if(font.IsOk())
+    dc.SetFont(font);
 
   dc.GetTextExtent(example, &text_width, &text_height);
 
