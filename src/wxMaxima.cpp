@@ -89,9 +89,6 @@
 #endif
 
 /*! The size of the socket we get data from
-
-\todo Can we make sure that the data never ends in the middle of a
-unicode char? On wxMaxima's side we don't handle that case, currently.
 */
 #define SOCKET_SIZE (1024*1024)
 
@@ -7414,8 +7411,8 @@ void wxMaxima::TryEvaluateNextInQueue()
       cell->SetType(MC_TYPE_ERROR);
       cell->SetGroup(tmp);
       tmp->SetOutput(cell);
-      // Todo: The force shouldn't be needed, or should it?
-      m_console->RecalculateForce();
+      m_console->Recalculate();
+      //m_console->RecalculateForce();
       tmp->GetInput()->SetCaretPosition(index);
       tmp->GetInput()->SetErrorIndex((m_commandIndex = index) - 1);
 
