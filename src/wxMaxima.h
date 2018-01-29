@@ -332,9 +332,6 @@ protected:
 
     The data we get from maxima is typically split into small packets we append to 
     m_currentOutput until we got a full line we can display.
-
-    \todo Currently we use an ugly woraround for maxima sometimes sending only half 
-    a line of text.
    */
   void ClientEvent(wxSocketEvent &event);
   //! Triggered when we get new chars from maxima.
@@ -480,8 +477,6 @@ protected:
   /*! How much CPU time has been used by the system until now? Used by GetMaximaCPUPercentage.
 
     \return The CPU time elapsed in the same unit as GetMaximaCpuTime(); -1 means: Unable to determine this value.
-
-    \todo MSW: Is GetTickCount() * 10000 really milliseconds on all systems?
    */
   long long GetTotalCpuTime();
 

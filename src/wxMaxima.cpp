@@ -3624,9 +3624,6 @@ double wxMaxima::GetMaximaCPUPercentage()
   if(CpuJiffies == m_cpuTotalJiffies_old)
     return -1;
 
-  // GetTickCount() might wrap around once every (month? few days? longer?) -
-  // but at least is supported on XP that isn't supported anymore in 2017 but
-  // still is in use.
   if(CpuJiffies <= m_cpuTotalJiffies_old)
   {
     m_cpuTotalJiffies_old = CpuJiffies;

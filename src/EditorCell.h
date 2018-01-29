@@ -662,7 +662,7 @@ private:
 
   /*! Adds soft line breaks to code cells, if needed.
 
-    \todo: We could do an incremental indenation calculation that starts at the last word: 
+    \todo: We could do an incremental indentation calculation that starts at the last word: 
     The current behavior is O(n^2) (scanning the text needs linear time and for each word 
     the indentation algorithm scans the text again) which is unfortunate.
    */

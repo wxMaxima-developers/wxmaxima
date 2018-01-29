@@ -308,8 +308,6 @@ public:
   /*! Unfold all cells
 
     \return the last unfolded cell's address if unfolding was successful, else NULL
-    \todo This function is still recursive and therefore can provoke stack overflows
-    -> Convert to a while loop.
   */
   GroupCell *UnfoldAll();
 
