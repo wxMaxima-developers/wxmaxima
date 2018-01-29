@@ -195,7 +195,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   wxConfigBase *config = wxConfig::Get();
   int notebookTab = 0;
   config->Read(wxT("ConfigDialogTab"), &notebookTab);
-  if((notebookTab < 0) || (notebookTab > m_notebook->GetPageCount()))
+  if((notebookTab < 0) || ((unsigned int)notebookTab > m_notebook->GetPageCount()))
      notebookTab = 0;
   m_notebook->SetSelection(notebookTab);
   LayoutDialog();
@@ -2108,7 +2108,7 @@ void ConfigDialogue::ColorPanel::OnPaint(wxPaintEvent &WXUNUSED(event))
   for(int x=0;x<columns;x++)
     for(int  y=0;y<rows;y++)
     {
-      //    if((x+y)&1 == 1)
+      if(((x+y)&1) == 1)
         dc.DrawRectangle(x*12,y*12,12,12);
     }
         
@@ -2125,7 +2125,7 @@ void ConfigDialogue::ColorPanel::OnPaint(wxPaintEvent &WXUNUSED(event))
   for(int x=0;x<columns;x++)
     for(int  y=0;y<rows;y++)
     {
-      if((x+y)&1 != 0)
+      if(((x+y)&1) == 0)
         dc.DrawRectangle(x*12,y*12,12,12);
     }
 }
