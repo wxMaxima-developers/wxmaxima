@@ -1070,12 +1070,8 @@ wxPanel *ConfigDialogue::CreateStylePanel()
                          wxCommandEventHandler(ConfigDialogue::OnStyleToEditChanged),
                          NULL, this);
   m_getStyleFont = new wxButton(panel, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150, -1));
-#ifndef __WXMSW__
   m_styleColor = new ColorPanel(this, panel, color_id, wxDefaultPosition, wxSize(150, 30),
                                 wxSUNKEN_BORDER | wxFULL_REPAINT_ON_RESIZE);
-#else
-  m_styleColor = new wxButton(panel, color_id, wxEmptyString, wxDefaultPosition, wxSize(150, -1));
-#endif
   m_boldCB = new wxCheckBox(panel, checkbox_bold, _("Bold"));
   m_italicCB = new wxCheckBox(panel, checkbox_italic, _("Italic"));
   m_underlinedCB = new wxCheckBox(panel, checkbox_underlined, _("Underlined"));
@@ -2077,20 +2073,10 @@ void ConfigDialogue::LoadSave(wxCommandEvent &event)
   }
 }
 
-#if defined __WXMSW__
-void ConfigDialogue::OnColorButton(wxCommandEvent&  WXUNUSED(event))
-{
-  OnChangeColor();
-}
-#endif
-
 BEGIN_EVENT_TABLE(ConfigDialogue, wxPropertySheetDialog)
                 EVT_BUTTON(wxID_OPEN, ConfigDialogue::OnMpBrowse)
                 EVT_BUTTON(button_mathFont, ConfigDialogue::OnMathBrowse)
                 EVT_BUTTON(font_family, ConfigDialogue::OnChangeFontFamily)
-#if defined __WXMSW__
-                EVT_BUTTON(color_id, ConfigDialogue::OnColorButton)
-#endif
                 EVT_LISTBOX(listbox_styleFor, ConfigDialogue::OnChangeStyle)
                 EVT_COMBOBOX(language_id, ConfigDialogue::OnChangeWarning)
                 EVT_CHECKBOX(checkbox_bold, ConfigDialogue::OnCheckbox)
@@ -2101,6 +2087,48 @@ BEGIN_EVENT_TABLE(ConfigDialogue, wxPropertySheetDialog)
                 EVT_BUTTON(style_font_family, ConfigDialogue::OnChangeFontFamily)
                 EVT_CLOSE(ConfigDialogue::OnClose)
 END_EVENT_TABLE()
+
+void ConfigDialogue::ColorPanel::OnPaint(wxPaintEvent &WXUNUSED(event))
+{
+  wxPaintDC dc(this);
+  wxColor backgroundColor(
+    m_color.Red() * m_color.Alpha() / wxALPHA_OPAQUE,
+    m_color.Green() * m_color.Alpha() / wxALPHA_OPAQUE,
+    m_color.Blue() * m_color.Alpha() / wxALPHA_OPAQUE
+    );
+  dc.SetPen(*(wxThePenList->FindOrCreatePen(backgroundColor, 1, wxPENSTYLE_SOLID)));
+  dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(backgroundColor)));
+  int width;
+  int height;
+  GetClientSize(&width, &height);
+
+  int columns = (width+11)  / 12;
+  int rows    = (height+11) / 12;
+
+  for(int x=0;x<columns;x++)
+    for(int  y=0;y<rows;y++)
+    {
+      //    if((x+y)&1 == 1)
+        dc.DrawRectangle(x*12,y*12,12,12);
+    }
+        
+  wxColor foregroundColor
+    (
+      m_color.Red()   * m_color.Alpha() / wxALPHA_OPAQUE + (wxALPHA_OPAQUE - m_color.Alpha()),
+      m_color.Green() * m_color.Alpha() / wxALPHA_OPAQUE + (wxALPHA_OPAQUE - m_color.Alpha()),
+      m_color.Blue()  * m_color.Alpha() / wxALPHA_OPAQUE + (wxALPHA_OPAQUE - m_color.Alpha())
+      );
+  dc.SetPen(*(wxThePenList->FindOrCreatePen(foregroundColor, 1, wxPENSTYLE_SOLID)));
+  dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(foregroundColor)));
+  GetClientSize(&width, &height);
+
+  for(int x=0;x<columns;x++)
+    for(int  y=0;y<rows;y++)
+    {
+      if((x+y)&1 != 0)
+        dc.DrawRectangle(x*12,y*12,12,12);
+    }
+}
 
 void ConfigDialogue::ExamplePanel::OnPaint(wxPaintEvent& WXUNUSED(event))
 {

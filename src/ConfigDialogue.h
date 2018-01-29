@@ -168,42 +168,19 @@ private:
   class ColorPanel : public wxPanel
   {
   public:
-    ColorPanel(ConfigDialogue *conf, wxWindow *parent, int id, wxPoint pos, wxSize size, long style) : wxPanel(parent, id,
-                                                                                                               pos, size,
-                                                                                                               style)
+    ColorPanel(ConfigDialogue *conf, wxWindow *parent,
+               int id, wxPoint pos, wxSize size, long style) :
+      wxPanel(parent, id,
+              pos, size,
+              style)
       {
         m_color = wxColour(0, 0, 0);
         m_configDialogue = conf;
         SetBackgroundColour(m_color);
       };
 
-    void OnPaint(wxPaintEvent &WXUNUSED(event))
-      {
-        wxPaintDC dc(this);
-        wxColor col
-        (
-          m_color.Red()   * m_color.Alpha() / wxALPHA_OPAQUE + (wxALPHA_OPAQUE - m_color.Alpha()),
-          m_color.Green() * m_color.Alpha() / wxALPHA_OPAQUE + (wxALPHA_OPAQUE - m_color.Alpha()),
-          m_color.Blue()  * m_color.Alpha() / wxALPHA_OPAQUE + (wxALPHA_OPAQUE - m_color.Alpha())
-          );
-        dc.SetPen(*(wxThePenList->FindOrCreatePen(col, 1, wxPENSTYLE_SOLID)));
-        dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(col)));
-
-        int width;
-        int height;
-        GetClientSize(&width, &height);
-
-        int columns = (width+11)  / 12;
-        int rows    = (height+11) / 12;
-
-        for(int x=0;x<columns;x++)
-          for(int  y=0;y<rows;y++)
-          {
-            if((x+y)&1 == 1)
-              dc.DrawRectangle(x*12,y*12,12,12);
-          }
-      }
-
+    void OnPaint(wxPaintEvent &WXUNUSED(event));
+    
     void OnClick(wxMouseEvent& WXUNUSED(event))
       {
         m_configDialogue->OnChangeColor();
@@ -211,12 +188,7 @@ private:
   
     void SetColor(wxColor color){
       m_color = color;
-      wxColor backgroundColor(
-        m_color.Red() * m_color.Alpha() / wxALPHA_OPAQUE,
-        m_color.Green() * m_color.Alpha() / wxALPHA_OPAQUE,
-        m_color.Blue() * m_color.Alpha() / wxALPHA_OPAQUE
-        );
-      SetBackgroundColour(color);
+      Refresh();
     };
   private:
     ConfigDialogue *m_configDialogue;
@@ -334,12 +306,8 @@ protected:
   wxButton *m_getStyleFont;
   wxFontEncoding m_fontEncoding;
   wxListBox *m_styleFor;
-#ifndef __WXMSW__
   //! An example rectangle with the font color
   ColorPanel *m_styleColor;
-#else
-  wxButton* m_styleColor;
-#endif
   wxCheckBox *m_boldCB;
   wxCheckBox *m_italicCB;
   wxCheckBox *m_underlinedCB;
@@ -406,11 +374,6 @@ protected:
 
   //! Starts the file chooser that allows selecting where the maxima binary lies
   void OnMpBrowse(wxCommandEvent &event);
-
-#if defined __WXMSW__
-  //! Is called when the color button is pressed.
-  void OnColorButton(wxCommandEvent& event);
-#endif
 
   void OnIdle(wxIdleEvent &event);
 
