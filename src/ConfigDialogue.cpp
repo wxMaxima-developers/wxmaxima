@@ -1253,17 +1253,15 @@ void ConfigDialogue::OnMpBrowse(wxCommandEvent&  WXUNUSED(event))
   wxConfig *config = (wxConfig *) wxConfig::Get();
   wxString dd;
   config->Read(wxT("maxima"), &dd);
+  wxString file = wxFileSelector(_("Select Maxima program"),
+                                 wxPathOnly(dd), wxFileNameFromPath(dd),
+                                 wxEmptyString,
 #if defined __WXMSW__
-  wxString file = wxFileSelector(_("Select Maxima program"),
-                                 wxPathOnly(dd), wxFileNameFromPath(dd),
-                                 wxEmptyString, _("Bat files (*.bat)|*.bat|All|*"),
-                                 wxFD_OPEN);
+                                 _("Bat files (*.bat)|*.bat|All|*"),
 #else
-  wxString file = wxFileSelector(_("Select Maxima program"),
-                                 wxPathOnly(dd), wxFileNameFromPath(dd),
-                                 wxEmptyString, _("All|*"),
-                                 wxFD_OPEN);
+                                 _("All|*"),
 #endif
+                                 wxFD_OPEN);
 
   if (file.Length())
   {
@@ -1319,8 +1317,8 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
   font.SetStyle(wxFONTSTYLE_NORMAL );
   if(font.IsOk())
     fontName = wxT("Linux Libertine O");
-#endif
   if(!font.IsOk())
+#endif
     font = *wxNORMAL_FONT;
 
   if (tmp == &m_styleText || tmp == &m_styleTitle || tmp == &m_styleSubsubsection || tmp == &m_styleSubsection ||
@@ -2088,6 +2086,22 @@ BEGIN_EVENT_TABLE(ConfigDialogue, wxPropertySheetDialog)
                 EVT_CLOSE(ConfigDialogue::OnClose)
 END_EVENT_TABLE()
 
+ConfigDialogue::ColorPanel::ColorPanel(ConfigDialogue *conf, wxWindow *parent,
+                                       int id, wxPoint pos, wxSize size, long style) :
+wxPanel(parent, id,
+        pos, size,
+        style)
+{
+  m_color = wxColour(0, 0, 0);
+  m_configDialogue = conf;
+  SetBackgroundColour(m_color);
+};
+
+void ConfigDialogue::ColorPanel::OnClick(wxMouseEvent& WXUNUSED(event))
+{
+  m_configDialogue->OnChangeColor();
+}
+
 void ConfigDialogue::ColorPanel::OnPaint(wxPaintEvent &WXUNUSED(event))
 {
   wxPaintDC dc(this);
@@ -2168,9 +2182,7 @@ BEGIN_EVENT_TABLE(ConfigDialogue::ExamplePanel, wxPanel)
                 EVT_PAINT(ConfigDialogue::ExamplePanel::OnPaint)
 END_EVENT_TABLE()
 
-#ifndef __WXMSW__
 BEGIN_EVENT_TABLE(ConfigDialogue::ColorPanel, wxPanel)
-                EVT_LEFT_UP(ConfigDialogue::ColorPanel::OnClick)
-                EVT_PAINT(ConfigDialogue::ColorPanel::OnPaint)
+EVT_LEFT_UP(ConfigDialogue::ColorPanel::OnClick)
+EVT_PAINT(ConfigDialogue::ColorPanel::OnPaint)
 END_EVENT_TABLE()
-#endif

@@ -169,27 +169,17 @@ private:
   {
   public:
     ColorPanel(ConfigDialogue *conf, wxWindow *parent,
-               int id, wxPoint pos, wxSize size, long style) :
-      wxPanel(parent, id,
-              pos, size,
-              style)
-      {
-        m_color = wxColour(0, 0, 0);
-        m_configDialogue = conf;
-        SetBackgroundColour(m_color);
-      };
+               int id, wxPoint pos, wxSize size, long style);
 
     void OnPaint(wxPaintEvent &WXUNUSED(event));
     
-    void OnClick(wxMouseEvent& WXUNUSED(event))
-      {
-        m_configDialogue->OnChangeColor();
-      }
+    void OnClick(wxMouseEvent& WXUNUSED(event));
   
-    void SetColor(wxColor color){
-      m_color = color;
-      Refresh();
-    };
+    void SetColor(wxColor color)
+      {
+        m_color = color;
+        Refresh();
+      };
   private:
     ConfigDialogue *m_configDialogue;
     wxColor m_color;
