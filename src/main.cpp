@@ -175,6 +175,9 @@ bool MyApp::OnInit()
   {
     std::cout << "wxMaxima ";
     std::cout << GITVERSION;
+#if defined(WXMAXIMA_GIT_VERSION)
+    std::cout << " (Git version: " << WXMAXIMA_GIT_VERSION << ")";
+#endif
     std::cout << "\n";
     wxExit();
   }

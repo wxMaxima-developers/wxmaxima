@@ -6034,6 +6034,9 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
 
       description = _("wxMaxima is a graphical user interface for the computer algebra system Maxima based on wxWidgets.");
 
+#if defined(WXMAXIMA_GIT_VERSION)
+      description += wxString::Format("\n(Build from Git version: " WXMAXIMA_GIT_VERSION ")");
+#endif
       description += wxString::Format(
         _("\n\nwxWidgets: %d.%d.%d\nUnicode support: %s"),
         wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER,

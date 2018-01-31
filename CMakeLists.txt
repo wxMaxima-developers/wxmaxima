@@ -40,6 +40,20 @@ if(MACOSX_VERSION_MIN)
     set(CMAKE_EXE_LINKER_FLAGS -mmacosx-version-min=${MACOSX_VERSION_MIN})
 endif()
 
+
+# Get the git version, if available.
+find_package(Git)
+if(Git_FOUND)
+    if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
+        execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
+                        OUTPUT_VARIABLE WXMAXIMA_GIT_VERSION
+                        OUTPUT_STRIP_TRAILING_WHITESPACE)
+        message(STATUS "Building from git development tree, revision: ${WXMAXIMA_GIT_VERSION}")
+        add_definitions("-DWXMAXIMA_GIT_VERSION=\"${WXMAXIMA_GIT_VERSION}\"")
+    endif()
+endif()
+
+
 add_subdirectory(locales)
 add_subdirectory(src)
 add_subdirectory(Doxygen)
