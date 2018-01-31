@@ -35,7 +35,7 @@ The following steps will build and install wxMaxima using CMake:
 
 If you want to install into a special prefix (not /usr/local), use
 
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=/your/installation/prefix
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/your/installation/prefix ..
 
 in the cmake call above.
 
