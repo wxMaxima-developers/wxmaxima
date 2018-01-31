@@ -4978,7 +4978,6 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
     }
     wiz->Destroy();
   }
-  break;
     break;
   case menu_list_create_from_list:
   {
