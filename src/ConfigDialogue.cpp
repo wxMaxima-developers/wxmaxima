@@ -1023,7 +1023,13 @@ wxPanel *ConfigDialogue::CreateStylePanel()
 
   wxStaticText *df = new wxStaticText(panel, -1, _("Default font:"));
   m_getFont = new wxButton(panel, font_family, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
+  if (m_styleDefault.font.Length())
+    m_getFont->SetLabel(m_styleDefault.font + wxString::Format(wxT(" (%d)"), m_fontSize));
+
   m_mathFont = new wxStaticText(panel, -1, _("Math font:"));
+  if (m_mathFontName.Length() > 0)
+    m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_mathFontSize));
+
   m_getMathFont = new wxButton(panel, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   m_useJSMath = new wxCheckBox(panel, -1, _("Use jsMath fonts"));
   const wxString m_styleFor_choices[] =
@@ -1377,8 +1383,6 @@ void ConfigDialogue::ReadStyles(wxString file)
   config->Read(wxT("fontsize"), &m_fontSize);
   config->Read(wxT("mathfontsize"), &m_mathFontSize);
   config->Read(wxT("Style/fontname"), &m_styleDefault.font);
-  if (m_styleDefault.font.Length())
-    m_getFont->SetLabel(m_styleDefault.font + wxString::Format(wxT(" (%d)"), m_fontSize));
 
   int encoding = wxFONTENCODING_DEFAULT;
   config->Read(wxT("fontEncoding"), &encoding);
@@ -1386,8 +1390,6 @@ void ConfigDialogue::ReadStyles(wxString file)
 
   m_mathFontName = wxEmptyString;
   config->Read(wxT("Style/Math/fontname"), &m_mathFontName);
-  if (m_mathFontName.Length() > 0)
-    m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_mathFontSize));
 
   wxString tmp;
   // Document background color
