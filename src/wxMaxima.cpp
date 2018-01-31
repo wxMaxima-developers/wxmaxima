@@ -4,7 +4,7 @@
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 //            (C) 2011-2011 cw.ahbong <cw.ahbong@gmail.com>
 //            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
-//            (C) 2014-2017 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -4978,7 +4978,6 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
     }
     wiz->Destroy();
   }
-  break;
     break;
   case menu_list_create_from_list:
   {
@@ -5897,7 +5896,7 @@ MyAboutDialog::MyAboutDialog(wxWindow *parent, int id, const wxString title, wxS
                       "</p>"
                       "<h1>wxMaxima</h1>"
                       "<p>%s</p>"
-                      "<p><small>(C) 2004 - 2017 Andrej Vodopivec</small><br></p>"
+                      "<p><small>(C) 2004 - 2018 Andrej Vodopivec</small><br></p>"
                       "</center>"
                       "</body>"
                       "</html>"),
@@ -6059,7 +6058,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.SetDescription(description);
       info.SetName(_("wxMaxima"));
       info.SetVersion(wxT(GITVERSION));
-      info.SetCopyright(wxT("(C) 2004-2017 Andrej Vodopivec"));
+      info.SetCopyright(wxT("(C) 2004-2018 Andrej Vodopivec"));
       info.SetWebSite(wxT("http://andrejv.github.io/wxmaxima/"));
 
       info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
@@ -6524,8 +6523,6 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     case MathCtrl::popid_maxsizechooser:
       if(m_console->m_cellPointers.m_selectionStart != NULL)
       {
-        if(m_console->m_cellPointers.m_selectionStart == NULL)
-          return;
         MathCell *output = dynamic_cast<GroupCell *>(m_console->m_cellPointers.m_selectionStart->GetGroup())->GetLabel();
         if (output == NULL)
           return;

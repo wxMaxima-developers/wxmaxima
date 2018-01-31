@@ -1,7 +1,7 @@
 // -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//  Copyright (C) 2014-2017 Gunter Königsmann <wxMaxima@physikbuch.de>
+//  Copyright (C) 2014-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
