@@ -6523,8 +6523,6 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     case MathCtrl::popid_maxsizechooser:
       if(m_console->m_cellPointers.m_selectionStart != NULL)
       {
-        if(m_console->m_cellPointers.m_selectionStart == NULL)
-          return;
         MathCell *output = dynamic_cast<GroupCell *>(m_console->m_cellPointers.m_selectionStart->GetGroup())->GetLabel();
         if (output == NULL)
           return;
