@@ -1,6 +1,6 @@
 ﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //  Copyright (C) 2004-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//            (C) 2015-2017 Gunter Königsmann <wxMaxima@physikbuch.de>
+//            (C) 2015-2018 Gunter Königsmann <wxMaxima@physikbuch.de>
 //            (C) 2008-2009 Ziga Lenarcic <zigalenarcic@users.sourceforge.net>
 //            (C) 2011-2011 cw.ahbong <cw.ahbong@gmail.com>
 //            (C) 2012-2013 Doug Ilijev <doug.ilijev@gmail.com>
