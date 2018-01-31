@@ -1027,10 +1027,10 @@ wxPanel *ConfigDialogue::CreateStylePanel()
     m_getFont->SetLabel(m_styleDefault.font + wxString::Format(wxT(" (%d)"), m_fontSize));
 
   m_mathFont = new wxStaticText(panel, -1, _("Math font:"));
+  m_getMathFont = new wxButton(panel, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   if (m_mathFontName.Length() > 0)
     m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_mathFontSize));
 
-  m_getMathFont = new wxButton(panel, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   m_useJSMath = new wxCheckBox(panel, -1, _("Use jsMath fonts"));
   const wxString m_styleFor_choices[] =
           {
