@@ -6706,6 +6706,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       m_console->PasteFromClipboard();
       break;
     case MathCtrl::popid_select_all:
+    case ToolBar::tb_select_all:
       m_console->SelectAll();
       break;
     case MathCtrl::popid_comment_selection:
@@ -8158,7 +8159,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_TOOL(ToolBar::tb_save, wxMaxima::FileMenu)
                 EVT_TOOL(ToolBar::tb_copy, wxMaxima::EditMenu)
                 EVT_TOOL(ToolBar::tb_paste, wxMaxima::EditMenu)
-                EVT_TOOL(ToolBar::tb_select_all, wxMaxima::EditMenu)
+                EVT_TOOL(ToolBar::tb_select_all, wxMaxima::PopupMenu)
                 EVT_TOOL(ToolBar::tb_cut, wxMaxima::EditMenu)
                 EVT_TOOL(ToolBar::tb_pref, wxMaxima::EditMenu)
                 EVT_TOOL(ToolBar::tb_interrupt, wxMaxima::Interrupt)
