@@ -199,14 +199,34 @@ wxString Dirstructure::MaximaLispLocation()
     wxFileName maximaLocation(MaximaDefaultLocation());
     basedir = maximaLocation.GetPath();
     if(wxDirExists(basedir + "/../maxima/share/maxima"))
+    {
       basedir = basedir + "/../maxima/share/maxima";
-
-    if(wxDirExists(basedir + "/../share/maxima"))
-      basedir = basedir + "/../share/maxima";
-    
-    dir.Open(basedir);
+      dir.Open(basedir);
+    }
   }
 
+  if(!dir.IsOpened())
+  {
+    wxFileName maximaLocation(MaximaDefaultLocation());
+    basedir = maximaLocation.GetPath();
+    if(wxDirExists(basedir + "/../share/maxima"))
+    {
+      basedir = basedir + "/../share/maxima";
+      dir.Open(basedir);
+    }
+  }
+
+  if(!dir.IsOpened())
+  {
+    wxFileName maximaLocation(MaximaDefaultLocation());
+    basedir = maximaLocation.GetPath();
+    if(wxDirExists(basedir + "/../maxima"))
+    {
+      basedir = basedir + "/../maxima";
+      dir.Open(basedir);
+    }
+  }
+    
   if(dir.IsOpened())
   {
     bool more = dir.GetFirst(&result);
