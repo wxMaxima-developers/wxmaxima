@@ -1122,7 +1122,7 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   wxConfigBase *config = wxConfig::Get();
   int styleToEditNum = 0;
   config->Read(wxT("StyleToEdit"),&styleToEditNum);
-  if((styleToEditNum >= m_styleFor->GetCount()) || (styleToEditNum < 0))
+  if(((unsigned) styleToEditNum >= m_styleFor->GetCount()) || (styleToEditNum < 0))
     styleToEditNum = 0;
   m_styleFor->SetSelection(styleToEditNum);
   wxCommandEvent dummy;
