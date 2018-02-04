@@ -7763,10 +7763,18 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
       if((currentCommand == wxT("load")) ||
          (currentCommand == wxT("batchload")) ||
          (currentCommand == wxT("batch")))
+      {
         type = AutoComplete::loadfile;
+        if(partial == wxEmptyString)
+          partial = wxString("\"");
+      }
       
       if(currentCommand == wxT("demo"))
+      {
         type = AutoComplete::demofile;
+        if(partial == wxEmptyString)
+          partial = wxString("\"");
+      }
 
       if((type == AutoComplete::demofile) || (type == AutoComplete::loadfile))
       {

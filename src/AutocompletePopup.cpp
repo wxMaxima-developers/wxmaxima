@@ -221,11 +221,16 @@ bool AutocompletePopup::Create(wxWindow* parent)
                                    wxLC_NO_HEADER |
                                    wxLC_SINGLE_SEL);
   InsertColumn(0,wxEmptyString);
+  // Work around a wild bug in wxWidgets that crashes auto-size when there is no row.
+  if(m_completions.GetCount() < 1)
+    return false;
   UpdateResults();
+
+  
   SetColumnWidth(0, wxLIST_AUTOSIZE);
 
   wxSize minSize;
-  wxSize optimumSize = wxSize(-1,0);
+  wxSize optimumSize = wxSize(12,12);
   for (size_t i = 0; i < m_completions.GetCount(); i++)
   {
     wxRect itemRect;
