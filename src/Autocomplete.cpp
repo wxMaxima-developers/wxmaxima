@@ -157,6 +157,8 @@ bool AutoComplete::LoadSymbols(wxString file)
   {
     GetMacFiles_includingSubdirs maximaLispIterator (m_builtInLoadFiles);
     wxDir maximadir(dirstruct.MaximaLispLocation()+ "/share/");
+    if(!maximadir.IsOpened())
+      maximadir.Open(dirstruct.MaximaLispLocation());
     if(maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
     GetMacFiles userLispIterator (m_builtInLoadFiles);
