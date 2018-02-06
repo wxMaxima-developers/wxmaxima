@@ -54,9 +54,6 @@ void AutoComplete::AddWorksheetWords(wxArrayString wordlist)
 
 bool AutoComplete::LoadSymbols(wxString file)
 {
-  if (!wxFileExists(file))
-    return false;
-
   for (int i = command; i <= unit; i++)
   {
     if (m_wordList[i].GetCount() != 0)
@@ -64,24 +61,27 @@ bool AutoComplete::LoadSymbols(wxString file)
   }
 
   wxString line;
-  wxString rest, function;
-  wxTextFile index(file);
-
-  index.Open();
-
-  for (line = index.GetFirstLine(); !index.Eof(); line = index.GetNextLine())
+  if (wxFileExists(file))
   {
-    if (line.StartsWith(wxT("FUNCTION: ")) ||
-        line.StartsWith(wxT("OPTION  : ")))
-      m_wordList[command].Add(line.Mid(10));
-    else if (line.StartsWith(wxT("TEMPLATE: ")))
-      m_wordList[tmplte].Add(FixTemplate(line.Mid(10)));
-    else if (line.StartsWith(wxT("UNIT: ")))
-      m_wordList[unit].Add(FixTemplate(line.Mid(6)));
+    wxString rest, function;
+    wxTextFile index(file);
+    
+    index.Open();
+    
+    for (line = index.GetFirstLine(); !index.Eof(); line = index.GetNextLine())
+    {
+      if (line.StartsWith(wxT("FUNCTION: ")) ||
+          line.StartsWith(wxT("OPTION  : ")))
+        m_wordList[command].Add(line.Mid(10));
+      else if (line.StartsWith(wxT("TEMPLATE: ")))
+        m_wordList[tmplte].Add(FixTemplate(line.Mid(10)));
+      else if (line.StartsWith(wxT("UNIT: ")))
+        m_wordList[unit].Add(FixTemplate(line.Mid(6)));
+    }
+    
+    index.Close();
   }
-
-  index.Close();
-
+  
   /// Add wxMaxima functions
   m_wordList[command].Add(wxT("wxanimate_framerate"));
   m_wordList[command].Add(wxT("wxanimate_autoplay"));
