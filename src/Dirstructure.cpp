@@ -234,9 +234,11 @@ wxString Dirstructure::MaximaLispLocation()
       more = dir.GetNext(&result);
   }
 
-  result = basedir + result;
   if(result != wxEmptyString)
+  {
+    result = basedir + wxT("/") + result;
     return result;
+  }
 
   result = MaximaDefaultLocation();
   if(result.EndsWith(".app"))
