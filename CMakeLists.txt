@@ -3,7 +3,7 @@ if(WIN32)
 else()
     cmake_minimum_required(VERSION 2.8)
 endif()
- 
+
 project(wxmaxima)
 
 set(VERSION 17.10.x.unofficial)
@@ -74,7 +74,7 @@ endif()
 if(UNIX)
     file(WRITE "${CMAKE_BINARY_DIR}/wxmaxima-local" "#!/bin/sh\n\"${CMAKE_BINARY_DIR}/src/wxmaxima\" \"$@\"\n")
     execute_process(COMMAND chmod +x "${CMAKE_BINARY_DIR}/wxmaxima-local")
-endif()  
+endif()
 # Build Packages
 set(CPACK_GENERATOR "TGZ;TBZ2")
 if(UNIX AND NOT APPLE)
