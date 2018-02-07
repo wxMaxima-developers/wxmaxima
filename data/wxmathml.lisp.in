@@ -111,7 +111,7 @@
     (format t "System type: ~a ~a ~a~%" (software-type) (software-version) (machine-type))
     (format t "Lisp implementation type: ~a~%" (lisp-implementation-type))
     (format t "Lisp implementation version: ~a~%" (lisp-implementation-version))
-    (format t "Icon dir: ~a~%" wxArtDir)
+    (format t "~%~%wxMaxima's idea of the directory layout is:~%Icon dir: ~a~%" wxArtDir)
     (format t "User configuration dir: ~a~%" wxUserConfDir)
     (format t "Help dir: ~a~%" wxHelpDir)
     (format t "Maxima lisp dir: ~a~%" wxMaximaLispLocation))
