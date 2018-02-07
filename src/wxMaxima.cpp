@@ -2463,6 +2463,13 @@ void wxMaxima::ReadProcessOutput()
 
 #endif
 
+wxString wxMaxima::EscapeForLisp(wxString str)
+{
+  str.Replace(wxT("\\"), wxT("\\\\"));
+  str.Replace(wxT("\""), wxT("\\\""));
+  return(str);
+}
+
 void wxMaxima::SetupVariables()
 {
   SendMaxima(wxT(":lisp-quiet (setf *prompt-suffix* \"") +
@@ -2490,7 +2497,7 @@ void wxMaxima::SetupVariables()
   {
     SendMaxima(wxT(":lisp-quiet (defparameter $wxchangedir nil)\n"));
   }
-
+    
 #if defined (__WXMAC__)
   bool usepngCairo = false;
 #else
@@ -2518,19 +2525,10 @@ void wxMaxima::SetupVariables()
       break;
   }
   SendMaxima(wxT(":lisp-quiet (defparameter $wxsubscripts ") + subscriptval + wxT(")\n"));
-
-  int defaultPlotWidth = 600;
-  config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
-  int defaultPlotHeight = 400;
-  config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
-  SendMaxima(wxString::Format(wxT(":lisp-quiet (defparameter $wxplot_size '((mlist simp) %i %i))\n"), defaultPlotWidth,
-                              defaultPlotHeight));
-
+  
   wxString cmd;
   Dirstructure dirstruct;
-  
   cmd = wxT(":lisp-quiet ($load \"") + dirstruct.DataDir() + wxT("/wxmathml.lisp\")\n");
-    
     
 #if defined (__WXMAC__)
   wxString gnuplotbin(wxT("/Applications/Gnuplot.app/Contents/Resources/bin/gnuplot"));
@@ -2539,6 +2537,25 @@ void wxMaxima::SetupVariables()
 #endif
   cmd.Replace(wxT("\\"),wxT("/"));
   SendMaxima(cmd);
+
+
+  // A few variables for additional debug info in wxbuild_info();
+  SendMaxima(wxString::Format(wxT(":lisp-quiet (setq wxArtDir \"%s\")\n"),
+                              EscapeForLisp(dirstruct.ArtDir())));
+  SendMaxima(wxString::Format(wxT(":lisp-quiet (setq wxUserConfDir \"%s\")\n"),
+                              EscapeForLisp(dirstruct.UserConfDir())));
+  SendMaxima(wxString::Format(wxT(":lisp-quiet (setq wxHelpDir \"%s\")\n"),
+                              EscapeForLisp(dirstruct.HelpDir())));
+  SendMaxima(wxString::Format(wxT(":lisp-quiet (setq wxMaximaLispLocation \"%s\")\n"),
+                              EscapeForLisp(dirstruct.MaximaLispLocation())));
+
+  int defaultPlotWidth = 600;
+  config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
+  int defaultPlotHeight = 400;
+  config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
+  SendMaxima(wxString::Format(wxT(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
+                              defaultPlotWidth,
+                              defaultPlotHeight));
 
   if (m_console->m_currentFile != wxEmptyString)
   {
@@ -4046,6 +4063,10 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
       int defaultPlotHeight = 600;
       config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
+      SendMaxima(wxString::Format(wxT(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
+                                  defaultPlotWidth,
+                                  defaultPlotHeight));
+
       m_console->RecalculateForce();
       m_console->RequestRedraw();
     }

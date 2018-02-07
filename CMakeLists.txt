@@ -102,7 +102,7 @@ set(CPACK_PACKAGE_VERSION "${VERSION}")
 
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "maxima, maxima-doc")
-
+ 
 # Build a tarball
 set(CPACK_SOURCE_IGNORE_FILES
   "build/"
