@@ -26,6 +26,9 @@
 #include "StatusBar.h"
 #include <wx/artprov.h>
 #include "invalidImage.h"
+#include "../art/statusbar/images.h"
+#include <wx/mstream.h>
+#include <wx/wfstream.h>
 
 StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id)
 {
@@ -39,13 +42,31 @@ StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id)
           "Maxima, the program that does the actual mathematics and wxMaxima, which displays the worksheet are kept in separate processes. This means that even if maxima crashes wxMaxima (and therefore the worksheet) stays intact. Both programs communicate over a local network socket. This time this socket could not be created which might be caused by a firewall that it setup to not only intercepts connections from the outside, but also to intercept connections between two programs that run on the same computer.");
   m_noConnectionToolTip = _(
           "Maxima, the program that does the actual mathematics and wxMaxima, which displays the worksheet are kept in separate processes. This means that even if maxima crashes wxMaxima (and therefore the worksheet) stays intact. Currently the two programs aren't connected to each other which might mean that maxima is still starting up or couldn't be started. Alternatively it can be caused by a firewall that it setup to not only intercepts connections from the outside, but also to intercept connections between two programs that run on the same computer. Another reason for maxima not starting up might be that maxima cannot be found (see wxMaxima's Configuration dialogue for a way to specify maxima's location) or isn't in a working order.");
-  m_network_error = GetImage("network-error");
-  m_network_offline = GetImage("network-offline");
-  m_network_transmit = GetImage("network-transmit");
-  m_network_idle = GetImage("network-idle");
+  m_network_error = GetImage("network-error",
+                             network_error_128_png,network_error_128_png_len,
+                             network_error_192_png,network_error_192_png_len
+    );
+  m_network_offline = GetImage("network-offline",
+                               network_offline_128_png,network_offline_128_png_len,
+                               network_offline_192_png,network_offline_192_png_len
+    );
+  m_network_transmit = GetImage("network-transmit",
+                              network_transmit_128_png,network_transmit_128_png_len,
+                              network_transmit_192_png,network_transmit_192_png_len
+    );
+  m_network_idle = GetImage("network-idle",
+                              network_idle_128_png,network_idle_128_png_len,
+                              network_idle_192_png,network_idle_192_png_len
+    );
   m_network_idle_inactive = wxBitmap(m_network_idle.ConvertToImage().ConvertToDisabled());
-  m_network_receive = GetImage("network-receive");
-  m_network_transmit_receive = GetImage("network-transmit-receive");
+  m_network_receive = GetImage("network-receive",
+                              network_receive_128_png,network_receive_128_png_len,
+                              network_receive_192_png,network_receive_192_png_len
+    );
+  m_network_transmit_receive = GetImage("network-transmit-receive",
+                              network_transmit_receive_128_png,network_transmit_receive_128_png_len,
+                              network_transmit_receive_192_png,network_transmit_receive_192_png_len
+    );
   m_networkStatus = new wxStaticBitmap(this, wxID_ANY, m_network_offline);
   m_networkStatus->SetToolTip(m_stdToolTip);
   ReceiveTimer.SetOwner(this, wxID_ANY);
@@ -169,7 +190,11 @@ void StatusBar::OnSize(wxSizeEvent &event)
   event.Skip();
 }
 
-wxBitmap StatusBar::GetImage(wxString name)
+#define ABS(val) ((val) >= 0 ? (val) : -(val))
+
+wxBitmap StatusBar::GetImage(wxString name,
+                          unsigned char *data_128, size_t len_128,
+                          unsigned char *data_192, size_t len_192)
 {
   double targetWidth = static_cast<double>(GetSize().GetHeight()) / wxGetDisplayPPI().y * wxGetDisplayPPI().x;
   double targetHeight = static_cast<double>(GetSize().GetHeight());
@@ -180,13 +205,49 @@ wxBitmap StatusBar::GetImage(wxString name)
   if(bmp.IsOk()) {
     img = bmp.ConvertToImage();
   }
+
+    int prescale;
+
+  int sizeA = 128 << 4;
+  while(sizeA * 3 / 2 > targetWidth && sizeA >= 32) {
+    sizeA >>= 1;
+  };
+
+  int sizeB = 192 << 4;
+  while(sizeB * 4 / 3 > targetWidth && sizeB >= 32) {
+    sizeB >>= 1;
+  }
+
+  if(ABS(targetWidth - sizeA) < ABS(targetWidth - sizeB)) {
+    targetWidth = sizeA;
+    prescale = 128;
+  } else {
+    targetWidth = sizeB;
+    prescale = 192;
+  }
+
   if(!img.IsOk()) {
-    Dirstructure dirstructure;
-    img = wxImage(wxString::Format(wxT("%s/%s.png"), dirstructure.ConfigStatusbarDir(), name));
+    void *data;
+    size_t len;
+    if(prescale == 128)
+    {
+      data = (void *)data_128;
+      len  = len_128;
+    }
+    else
+    {
+      data = (void *)data_192;
+      len  = len_192;
+    }
+    wxMemoryInputStream istream(data,len);
+    img.LoadFile(istream);
   }
   if(!img.IsOk()) {
     img = wxImage(invalidImage_xpm);
   }
+
+  targetWidth = static_cast<double>(GetSize().GetHeight()) / wxGetDisplayPPI().y * wxGetDisplayPPI().x;
+  targetHeight = static_cast<double>(GetSize().GetHeight());
 
   img.Rescale(targetWidth, targetHeight, wxIMAGE_QUALITY_HIGH);
 

@@ -41,6 +41,9 @@
 #include <wx/settings.h>
 #include <wx/filename.h>
 #include "Dirstructure.h"
+#include "../art/config/images.h"
+#include <wx/mstream.h>
+#include <wx/wfstream.h>
 
 #define CONFIG_ICON_SCALE (0.6)
 
@@ -105,7 +108,9 @@ int ConfigDialogue::GetImageSize()
   }
 }
 
-wxImage ConfigDialogue::GetImage(wxString name)
+wxImage ConfigDialogue::GetImage(wxString name,
+                          unsigned char *data_128, size_t len_128,
+                          unsigned char *data_192, size_t len_192)
 {
   double targetSize = wxGetDisplayPPI().x * CONFIG_ICON_SCALE;
   int prescale;
@@ -135,8 +140,20 @@ wxImage ConfigDialogue::GetImage(wxString name)
     img = bmp.ConvertToImage();
   }
   if(!img.IsOk()) {
-    Dirstructure dirstructure;
-    img = wxImage(wxString::Format(wxT("%s/%s.%d.png"), dirstructure.ConfigArtDir(), name, prescale));
+    void *data;
+    size_t len;
+    if(prescale == 128)
+    {
+      data = (void *)data_128;
+      len  = len_128;
+    }
+    else
+    {
+      data = (void *)data_192;
+      len  = len_192;
+    }
+    wxMemoryInputStream istream(data,len);
+    img.LoadFile(istream);
   }
   if(!img.IsOk()) {
     img = wxImage(invalidImage_xpm);
@@ -164,13 +181,34 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 
   int imgSize = GetImageSize();
   m_imageList = new wxImageList(imgSize, imgSize);
-  m_imageList->Add(GetImage(wxT("editing")));
-  m_imageList->Add(GetImage(wxT("maxima")));
-  m_imageList->Add(GetImage(wxT("styles")));
-  m_imageList->Add(GetImage(wxT("document-export")));
-  m_imageList->Add(GetImage(wxT("options")));
-  m_imageList->Add(GetImage(wxT("edit-copy")));
-  m_imageList->Add(GetImage(wxT("media-playback-start")));
+  m_imageList->Add(GetImage(wxT("editing"),
+                            editing_128_png,editing_128_png_len,
+                            editing_192_png,editing_192_png_len
+                     ));
+  m_imageList->Add(GetImage(wxT("maxima"),
+                            maxima_128_png,maxima_128_png_len,
+                            maxima_192_png,maxima_192_png_len
+                     ));
+  m_imageList->Add(GetImage(wxT("styles"),
+                            styles_128_png,styles_128_png_len,
+                            styles_192_png,styles_192_png_len
+                     ));
+  m_imageList->Add(GetImage(wxT("document-export"),
+                            document_export_128_png,document_export_128_png_len,
+                            document_export_192_png,document_export_192_png_len
+                     ));
+  m_imageList->Add(GetImage(wxT("options"),
+                            options_128_png,options_128_png_len,
+                            options_192_png,options_192_png_len
+                     ));
+  m_imageList->Add(GetImage(wxT("edit-copy"),
+                            edit_copy_confdialogue_128_png,edit_copy_confdialogue_128_png_len,
+                            edit_copy_confdialogue_192_png,edit_copy_confdialogue_192_png_len
+                     ));
+  m_imageList->Add(GetImage(wxT("media-playback-start"),
+                            media_playback_start_confdialogue_128_png,media_playback_start_confdialogue_128_png_len,
+                            media_playback_start_confdialogue_192_png,media_playback_start_confdialogue_192_png_len
+                     ));
 
   Create(parent, wxID_ANY, _("wxMaxima configuration"),
          wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);

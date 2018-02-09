@@ -26,6 +26,9 @@
  */
 
 #include "ToolBar.h"
+#include "../art/toolbar/images.h"
+#include <wx/mstream.h>
+#include <wx/wfstream.h>
 #include "Dirstructure.h"
 #include "GroupCell.h"
 #include <wx/artprov.h>
@@ -38,7 +41,9 @@
 #define MAX(a, b) ((a)>(b) ? (a) : (b))
 #define MIN(a, b) ((a)>(b) ? (b) : (a))
 
-wxImage ToolBar::GetImage(wxString name)
+wxImage ToolBar::GetImage(wxString name,
+                          unsigned char *data_128, size_t len_128,
+                          unsigned char *data_192, size_t len_192)
 {
   double targetSize = wxGetDisplayPPI().x * TOOLBAR_ICON_SCALE;
   int prescale;
@@ -68,8 +73,20 @@ wxImage ToolBar::GetImage(wxString name)
     img = bmp.ConvertToImage();
   }
   if(!img.IsOk()) {
-    Dirstructure dirstructure;
-    img = wxImage(wxString::Format(wxT("%s/%s.%d.png"), dirstructure.ConfigToolbarDir(), name, prescale));
+    void *data;
+    size_t len;
+    if(prescale == 128)
+    {
+      data = (void *)data_128;
+      len  = len_128;
+    }
+    else
+    {
+      data = (void *)data_192;
+      len  = len_192;
+    }
+    wxMemoryInputStream istream(data,len);
+    img.LoadFile(istream);
   }
   if(!img.IsOk()) {
     img = wxImage(invalidImage_xpm);
@@ -129,62 +146,107 @@ ToolBar::ToolBar(wxToolBar *tbar)
   wxASSERT_MSG(test192.IsFileReadable(), _("Expected the icon files to be found at") + dirstructure.ConfigToolbarDir());
                
   m_toolBar->AddTool(tb_new, _("New"),
-                     GetImage(wxT("gtk-new")),
+                     GetImage(wxT("gtk-new"),
+                              gtk_new_128_png,gtk_new_128_png_len,
+                              gtk_new_192_png,gtk_new_192_png_len
+                       ),
                      _("New document"));
 #endif
   m_toolBar->AddTool(tb_open, _("Open"),
-                     GetImage(wxT("gtk-open")),
+                     GetImage(wxT("gtk-open"),
+                              gtk_open_128_png,gtk_open_128_png_len,
+                              gtk_open_192_png,gtk_open_192_png_len
+                       ),
                      _("Open document"));
   m_toolBar->AddTool(tb_save, _("Save"),
-                     GetImage(wxT("gtk-save")),
+                     GetImage(wxT("gtk-save"),
+                              gtk_save_128_png,gtk_save_128_png_len,
+                              gtk_save_192_png,gtk_save_192_png_len
+                       ),
                      _("Save document"));
 #ifndef __WXMAC__
   m_toolBar->AddSeparator();
 #endif
   m_toolBar->AddTool(tb_print, _("Print"),
-                     GetImage(wxT("gtk-print")),
+                     GetImage(wxT("gtk-print"),
+                              gtk_print_128_png,gtk_print_128_png_len,
+                              gtk_print_192_png,gtk_print_192_png_len
+                       ),
                      _("Print document"));
   m_toolBar->AddTool(tb_pref, _("Options"),
-                     GetImage(wxT("gtk-preferences")),
+                     GetImage(wxT("gtk-preferences"),
+                              gtk_preferences_128_png,gtk_preferences_128_png_len,
+                              gtk_preferences_192_png,gtk_preferences_192_png_len
+                       ),
                      _("Configure wxMaxima"));
 #ifndef __WXMAC__
   m_toolBar->AddSeparator();
 #endif
   m_toolBar->AddTool(tb_cut, _("Cut"),
-                     GetImage(wxT("gtk-cut")),
+                     GetImage(wxT("gtk-cut"),
+                              gtk_cut_128_png,gtk_cut_128_png_len,
+                              gtk_cut_192_png,gtk_cut_192_png_len
+                       ),
                      _("Cut selection"));
   m_toolBar->AddTool(tb_copy, _("Copy"),
-                     GetImage(wxT("gtk-copy")),
+                     GetImage(wxT("gtk-copy"),
+                              gtk_copy_128_png,gtk_copy_128_png_len,
+                              gtk_copy_192_png,gtk_copy_192_png_len
+                       ),
                      _("Copy selection"));
   m_toolBar->AddTool(tb_paste, _("Paste"),
-                     GetImage(wxT("gtk-paste")),
+                     GetImage(wxT("gtk-paste"),
+                              gtk_paste_128_png,gtk_paste_128_png_len,
+                              gtk_paste_192_png,gtk_paste_192_png_len
+                       ),
                      _("Paste from clipboard"));
   m_toolBar->AddTool(tb_select_all, _("Select all"),
-                     GetImage(wxT("gtk-select-all")),
+                     GetImage(wxT("gtk-select-all"),
+                              gtk_select_all_128_png,gtk_select_all_128_png_len,
+                              gtk_select_all_192_png,gtk_select_all_192_png_len
+                       ),
                      _("Select all"));
 #ifndef __WXMAC__
   m_toolBar->AddSeparator();
 #endif
   m_toolBar->AddTool(tb_find, _("Find"),
-                     GetImage(wxT("gtk-find")),
+                     GetImage(wxT("gtk-find"),
+                              gtk_find_128_png,gtk_find_128_png_len,
+                              gtk_find_192_png,gtk_find_192_png_len
+                       ),
                      _("Find and replace"));
 #ifndef __WXMAC__
   m_toolBar->AddSeparator();
 #endif
   m_toolBar->AddTool(menu_restart_id, _("Restart maxima"),
-                     GetImage(wxT("view-refresh")),
+                     GetImage(wxT("view-refresh"),
+                              view_refresh_128_png,view_refresh_128_png_len,
+                              view_refresh_192_png,view_refresh_192_png_len
+                       ),
                      _("Completely stop maxima and restart it"));
   m_toolBar->AddTool(tb_interrupt, _("Interrupt"),
-                     GetImage(wxT("gtk-stop")),
+                     GetImage(wxT("gtk-stop"),
+                              gtk_stop_128_png,gtk_stop_128_png_len,
+                              gtk_stop_192_png,gtk_stop_192_png_len
+                       ),
                      _("Interrupt current computation. To completely restart maxima press the button left to this one."));
-  m_followIcon = GetImage(wxT("weather-clear"));
-  m_needsInformationIcon = GetImage(wxT("software-update-urgent"));
+  m_followIcon = GetImage(wxT("weather-clear"),
+                              weather_clear_128_png,weather_clear_128_png_len,
+                              weather_clear_192_png,weather_clear_192_png_len
+    );
+  m_needsInformationIcon = GetImage(wxT("software-update-urgent"),
+                              software_update_urgent_128_png,software_update_urgent_128_png_len,
+                              software_update_urgent_192_png,software_update_urgent_192_png_len
+    );
   m_toolBar->AddTool(tb_follow, _("Follow"), m_followIcon,
                      _("Return to the cell that is currently being evaluated"));
   m_toolBar->EnableTool(tb_follow, false);
 
   m_toolBar->AddTool(tb_evaltillhere, _("Evaluate to point"),
-                     GetImage(wxT("go-bottom")),
+                     GetImage(wxT("go-bottom"),
+                              go_bottom_128_png,go_bottom_128_png_len,
+                              go_bottom_192_png,go_bottom_192_png_len
+                       ),
                      _("Evaluate the file from its beginning to the cell above the cursor"));
 
 #ifndef __WXMAC__
@@ -213,11 +275,20 @@ ToolBar::ToolBar(wxToolBar *tbar)
   // Seems like on MSW changing the image of this button has strange side-effects
   // so we combine both images into one for this OS.
 #if defined __WXMSW__
-  m_PlayButton = GetImage(wxT("media-playback-startstop"));
+  m_PlayButton = GetImage(wxT("media-playback-startstop"),
+                              media_playback_startstop_128_png,media_playback_startstop_128_png_len,
+                              media_playback_startstop_192_png,media_playback_startstop_192_png_len
+    );
 #else
-  m_PlayButton = GetImage(wxT("media-playback-start"));
+  m_PlayButton = GetImage(wxT("media-playback-start"),
+                              media_playback_start_128_png,media_playback_start_128_png_len,
+                              media_playback_start_192_png,media_playback_start_192_png_len
+    );
 #endif
-  m_StopButton = GetImage(wxT("media-playback-stop"));
+  m_StopButton = GetImage(wxT("media-playback-stop"),
+                              media_playback_stop_128_png,media_playback_stop_128_png_len,
+                              media_playback_stop_192_png,media_playback_stop_192_png_len
+    );
 
   // It felt like a good idea to combine the play and the stop button.
   // On windows changing a button seems to somehow stop the animation, though, so
@@ -244,11 +315,17 @@ ToolBar::ToolBar(wxToolBar *tbar)
   m_toolBar->AddSeparator();
 #endif
   m_toolBar->AddTool(tb_hideCode, _("Hide Code"),
-                     GetImage(wxT("weather-few-clouds")),
+                     GetImage(wxT("weather-few-clouds"),
+                              weather_few_clouds_128_png,weather_few_clouds_128_png_len,
+                              weather_few_clouds_192_png,weather_few_clouds_192_png_len
+                       ),
                      _("Toggle the visibility of code cells"));
   m_toolBar->AddStretchableSpace();
   m_toolBar->AddTool(tb_help, _("Help"),
-                     GetImage(wxT("gtk-help")),
+                     GetImage(wxT("gtk-help"),
+                              gtk_help_128_png,gtk_help_128_png_len,
+                              gtk_help_192_png,gtk_help_192_png_len
+                       ),
                      _("Show Maxima help"));
   m_toolBar->Realize();
 }
