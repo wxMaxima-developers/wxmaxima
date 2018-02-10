@@ -45,7 +45,9 @@ public:
     Inactive //!< No animation is currently running
   };
   
-  wxImage GetImage(wxString img);
+  wxImage GetImage(wxString name,
+                   unsigned char *data_128, size_t len_128,
+                   unsigned char *data_192, size_t len_192);
 
   ToolBar(wxToolBar *tbar);
 

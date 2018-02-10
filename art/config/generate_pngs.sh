@@ -6,3 +6,8 @@ for i in *.svg; do
     optipng -o 9 `basename $i .svg`.$j.png
   done
 done
+
+rm -f images.h
+for i in *.png; do
+    xxd -i $i>> images.h
+done

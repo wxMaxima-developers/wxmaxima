@@ -59,7 +59,6 @@ add_subdirectory(src)
 add_subdirectory(Doxygen)
 add_subdirectory(data)
 add_subdirectory(info)
-add_subdirectory(art)
 
 if(WIN32)
     install(FILES COPYING README README.md DESTINATION wxMaxima/doc)
@@ -102,7 +101,7 @@ set(CPACK_PACKAGE_VERSION "${VERSION}")
 
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "maxima, maxima-doc")
-
+ 
 # Build a tarball
 set(CPACK_SOURCE_IGNORE_FILES
   "build/"

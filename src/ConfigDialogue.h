@@ -197,7 +197,9 @@ private:
   int GetImageSize();
 
   //! Loads the image for a configuration tab
-  wxImage GetImage(wxString name);
+  wxImage GetImage(wxString name,
+                   unsigned char *data_128, size_t len_128,
+                   unsigned char *data_192, size_t len_192);
 
   //! The panel that allows to choose which formats to put on the clipboard
   wxPanel *CreateClipboardPanel();

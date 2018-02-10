@@ -187,6 +187,8 @@ public:
   { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 
 private:
+  //! Escape strings into a format lisp accepts
+  wxString EscapeForLisp(wxString str);
   //! The number of Jiffies Maxima had used the last time we asked
   long long m_maximaJiffies_old;
   //! The number of Jiffies the CPU had made the last time

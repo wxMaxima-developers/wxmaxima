@@ -7,8 +7,7 @@ endif()
 set(DATAFILES
         ${CMAKE_CURRENT_BINARY_DIR}/wxmathml.lisp
         ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.png
-        ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.svg
-        ${CMAKE_CURRENT_SOURCE_DIR}/autocomplete.txt)
+        ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.svg)
 
 set(PIXMAPS
         ${CMAKE_CURRENT_SOURCE_DIR}/text-x-wxmathml.svg
