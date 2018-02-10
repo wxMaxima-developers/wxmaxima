@@ -54,7 +54,7 @@ public:
 
   AutoComplete();
 
-  bool LoadSymbols(wxString file);
+  bool LoadSymbols();
 
   void AddSymbol(wxString fun, autoCompletionType type = command);
 

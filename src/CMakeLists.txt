@@ -45,7 +45,6 @@ if(APPLE)
             ${CMAKE_SOURCE_DIR}/test/testbench_simple.wxmx
             ${CMAKE_SOURCE_DIR}/data/wxmaxima.png
             ${CMAKE_SOURCE_DIR}/data/wxmaxima.svg
-            ${CMAKE_SOURCE_DIR}/data/autocomplete.txt
             ${CMAKE_SOURCE_DIR}/data/tips*.txt)
     file(GLOB RESOURCES_FILES_OSX
             ${CMAKE_SOURCE_DIR}/art/wxmac.icns

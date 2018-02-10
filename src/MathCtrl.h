@@ -1340,8 +1340,8 @@ public:
 
   wxString GetOutputAboveCaret();
 
-  bool LoadSymbols(wxString file)
-  { return m_autocomplete.LoadSymbols(file); }
+  bool LoadSymbols()
+  { return m_autocomplete.LoadSymbols(); }
 
   bool Autocomplete(AutoComplete::autoCompletionType type = AutoComplete::command);
 

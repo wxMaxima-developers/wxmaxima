@@ -342,7 +342,7 @@ void wxMaxima::FirstOutput(wxString s)
   m_lastPrompt = wxT("(%i1) ");
 
   /// READ FUNCTIONS FOR AUTOCOMPLETION
-  m_console->LoadSymbols(dirstructure.AutocompleteFile());
+  m_console->LoadSymbols();
 
   m_console->SetFocus();
 }
