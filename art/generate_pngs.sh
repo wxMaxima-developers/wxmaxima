@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# convert SVG images to PNG and than to C Sourcecode (using xxd -i)
+# convert SVG images to PNG and then to C Sourcecode (using xxd -i)
 
 for d in config statusbar toolbar ; do
     cd "$d" || exit
