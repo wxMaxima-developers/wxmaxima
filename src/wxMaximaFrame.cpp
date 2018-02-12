@@ -36,6 +36,7 @@
 #include <wx/image.h>
 #include <wx/filename.h>
 #include <wx/fileconf.h>
+#include "wxMaximaIcon.h"
 
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                              const wxString configFile,
@@ -234,11 +235,7 @@ void wxMaximaFrame::set_properties()
 #if defined (__WXMSW__)
   SetIcon(wxICON(icon0));
 #elif defined (__WXGTK__)
-  Dirstructure dirstruct;
-  
-  wxString icon(dirstruct.AppIconDir());
-  icon += wxT("/wxmaxima.png");
-  SetIcon(wxIcon(icon, wxBITMAP_TYPE_PNG));
+  SetIcon(wxMaximaIcon());
 #endif
 #ifndef __WXMAC__
   SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) + _("[ unsaved ]"));

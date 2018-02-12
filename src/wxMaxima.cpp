@@ -57,6 +57,7 @@
 #include "ActualValuesStorageWiz.h"
 #include "MaxSizeChooser.h"
 #include "ListSortWiz.h"
+#include "wxMaximaIcon.h"
 
 #include <wx/clipbrd.h>
 #include <wx/filedlg.h>
@@ -6074,11 +6075,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       if (m_lispVersion != wxEmptyString)
         description += _("\nLisp: ") + m_lispVersion;
 
-      Dirstructure dirstruct;
-      
-      wxString iconName = dirstruct.AppIconDir();
-      iconName += wxT("/wxmaxima.png");
-      info.SetIcon(wxIcon(iconName,wxBITMAP_TYPE_PNG));
+      info.SetIcon(wxMaximaIcon());
       info.SetDescription(description);
       info.SetName(_("wxMaxima"));
       info.SetVersion(wxT(GITVERSION));
