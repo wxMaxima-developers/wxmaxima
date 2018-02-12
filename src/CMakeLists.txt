@@ -61,45 +61,43 @@ if(APPLE)
     file(GLOB FONT_FILES
             ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf)
 
-    if(APPLE)
-        # DEFINE DIRECTORIES
-        set(APP_DIR ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents)
-        set(APP_MACOSX_DIR ${APP_DIR}/MacOS)
-        set(APP_RESOURCES_DIR ${APP_DIR}/Resources)
-        set(APP_HELP_DIR ${APP_RESOURCES_DIR}/help)
-        set(APP_FONTS_DIR ${APP_RESOURCES_DIR}/fonts)
-        # CUSTOM TARGET
-        add_custom_target(wxMaxima.app)
-        add_custom_command(TARGET wxMaxima.app PRE_BUILD
-                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_MACOSX_DIR})
-        add_custom_command(TARGET wxMaxima.app PRE_BUILD
-                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_HELP_DIR})
-        add_custom_command(TARGET wxMaxima.app
-                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_FONTS_DIR})
-        foreach(f ${RESOURCE_FILES})
-            add_custom_command(TARGET wxMaxima.app
-                COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
-        endforeach()
-        foreach(f ${RESOURCES_FILES_OSX})
-            add_custom_command(TARGET wxMaxima.app
-                COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
-        endforeach()
-        foreach(f ${CONTENT_FILES})
-            add_custom_command(TARGET wxMaxima.app
-                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_DIR})
-        endforeach()
-        foreach(f ${RESOURCES_FILES})
-            add_custom_command(TARGET wxMaxima.app
-                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
-        endforeach()
-        foreach(f ${HELP_FILES})
-            add_custom_command(TARGET wxMaxima.app
-                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_HELP_DIR})
-        endforeach()
-        foreach(f ${FONT_FILES})
-            add_custom_command(TARGET wxMaxima.app
-                    COMMAND ${CMAKE_COMMAND} -E copy ${f} ${APP_FONTS_DIR})
-        endforeach()
-    endif()
+    # DEFINE DIRECTORIES
+    set(APP_DIR ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents)
+    set(APP_MACOSX_DIR ${APP_DIR}/MacOS)
+    set(APP_RESOURCES_DIR ${APP_DIR}/Resources)
+    set(APP_HELP_DIR ${APP_RESOURCES_DIR}/help)
+    set(APP_FONTS_DIR ${APP_RESOURCES_DIR}/fonts)
+    # CUSTOM TARGET
+    add_custom_target(wxMaxima.app)
+    add_custom_command(TARGET wxMaxima.app PRE_BUILD
+      COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_MACOSX_DIR})
+    add_custom_command(TARGET wxMaxima.app PRE_BUILD
+      COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_HELP_DIR})
+    add_custom_command(TARGET wxMaxima.app
+      COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_FONTS_DIR})
+    foreach(f ${RESOURCE_FILES})
+      add_custom_command(TARGET wxMaxima.app
+        COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
+    endforeach()
+    foreach(f ${RESOURCES_FILES_OSX})
+      add_custom_command(TARGET wxMaxima.app
+        COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
+    endforeach()
+    foreach(f ${CONTENT_FILES})
+      add_custom_command(TARGET wxMaxima.app
+        COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_DIR})
+    endforeach()
+    foreach(f ${RESOURCES_FILES})
+      add_custom_command(TARGET wxMaxima.app
+        COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
+    endforeach()
+    foreach(f ${HELP_FILES})
+      add_custom_command(TARGET wxMaxima.app
+        COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_HELP_DIR})
+    endforeach()
+    foreach(f ${FONT_FILES})
+      add_custom_command(TARGET wxMaxima.app
+        COMMAND ${CMAKE_COMMAND} -E copy ${f} ${APP_FONTS_DIR})
+    endforeach()
 endif()
 
