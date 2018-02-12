@@ -44,8 +44,7 @@ if(APPLE)
             ${CMAKE_BINARY_DIR}/data/wxmathml.lisp
             ${CMAKE_SOURCE_DIR}/test/testbench_simple.wxmx
             ${CMAKE_SOURCE_DIR}/data/wxmaxima.png
-            ${CMAKE_SOURCE_DIR}/data/wxmaxima.svg
-            ${CMAKE_SOURCE_DIR}/data/tips*.txt)
+            ${CMAKE_SOURCE_DIR}/data/wxmaxima.svg)
     file(GLOB RESOURCES_FILES_OSX
             ${CMAKE_SOURCE_DIR}/art/wxmac.icns
             ${CMAKE_SOURCE_DIR}/art/wxmac-doc.icns
@@ -59,12 +58,6 @@ if(APPLE)
     file(GLOB CONTENT_FILES
             ${CMAKE_BINARY_DIR}/data/Info.plist
             ${CMAKE_SOURCE_DIR}/data/PkgInfo)
-    file(GLOB TOOLBAR_FILES
-            ${CMAKE_SOURCE_DIR}/art/toolbar/*.png)
-    file(GLOB STATUSBAR_FILES
-            ${CMAKE_SOURCE_DIR}/art/statusbar/*.png)
-    file(GLOB CONFIG_FILES
-            ${CMAKE_SOURCE_DIR}/art/config/*.png)
     file(GLOB FONT_FILES
             ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf)
 
@@ -81,12 +74,6 @@ if(APPLE)
                 COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_MACOSX_DIR})
         add_custom_command(TARGET wxMaxima.app PRE_BUILD
                 COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_HELP_DIR})
-        add_custom_command(TARGET wxMaxima.app PRE_BUILD
-                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_RESOURCES_DIR}/toolbar)
-        add_custom_command(TARGET wxMaxima.app PRE_BUILD
-                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_RESOURCES_DIR}/statusbar)
-        add_custom_command(TARGET wxMaxima.app PRE_BUILD
-                COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_RESOURCES_DIR}/config)
         add_custom_command(TARGET wxMaxima.app
                 COMMAND ${CMAKE_COMMAND} -E make_directory ${APP_FONTS_DIR})
         foreach(f ${RESOURCE_FILES})
@@ -100,18 +87,6 @@ if(APPLE)
         foreach(f ${CONTENT_FILES})
             add_custom_command(TARGET wxMaxima.app
                     COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_DIR})
-        endforeach()
-        foreach(f ${STATUSBAR_FILES})
-            add_custom_command(TARGET wxMaxima.app
-                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR}/statusbar)
-        endforeach()
-        foreach(f ${TOOLBAR_FILES})
-            add_custom_command(TARGET wxMaxima.app
-                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR}/toolbar)
-        endforeach()
-        foreach(f ${CONFIG_FILES})
-            add_custom_command(TARGET wxMaxima.app
-                    COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR}/config)
         endforeach()
         foreach(f ${RESOURCES_FILES})
             add_custom_command(TARGET wxMaxima.app
