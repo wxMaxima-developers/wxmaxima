@@ -13,30 +13,6 @@ endif()
 # We put Setup.h into binary dir
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
-if(WIN32)
-    add_executable(wxmaxima WIN32 ${SOURCE_FILES})
-elseif(APPLE)
-    add_executable(wxmaxima ${SOURCE_FILES})
-    set_target_properties(wxmaxima PROPERTIES
-              RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
-              RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS)
-    add_dependencies(wxmaxima wxMaxima.app)
-else()
-    add_executable(wxmaxima ${SOURCE_FILES})
-endif()
-
-target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
-
-INCLUDE (CheckIncludeFiles)
-CHECK_INCLUDE_FILES (proc/procps.h HAVE_PROCPS_H)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Setup.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Setup.h)
-  
-if(WIN32)
-    install(TARGETS wxmaxima RUNTIME DESTINATION wxMaxima)
-else()
-    install(TARGETS wxmaxima RUNTIME DESTINATION bin)
-endif()
-
 # OSX binary folders
 if(APPLE)
     # DEFINE FILES
@@ -101,3 +77,30 @@ if(APPLE)
     endforeach()
 endif()
 
+if(WIN32)
+    add_executable(wxmaxima WIN32 ${SOURCE_FILES})
+elseif(APPLE)
+    add_executable(wxmaxima ${SOURCE_FILES})
+    set_target_properties(wxmaxima PROPERTIES
+              RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
+              RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
+	      MACOSX_BUNDLE_INFO_PLIST ${CMAKE_BINARY_DIR}/data/Info.plist
+	      RESOURCE ${RESOURCE_FILES})
+    # make wxmathml.lisp ship with the Mac App
+
+    add_dependencies(wxmaxima wxMaxima.app)
+else()
+    add_executable(wxmaxima ${SOURCE_FILES})
+endif()
+
+target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
+
+INCLUDE (CheckIncludeFiles)
+CHECK_INCLUDE_FILES (proc/procps.h HAVE_PROCPS_H)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Setup.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Setup.h)
+  
+if(WIN32)
+    install(TARGETS wxmaxima RUNTIME DESTINATION wxMaxima)
+else()
+    install(TARGETS wxmaxima RUNTIME DESTINATION bin)
+endif()

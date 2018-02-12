@@ -2,9 +2,6 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmathml.lisp.in ${CMAKE_CURRENT_BINA
 
 if(APPLE)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in ${CMAKE_CURRENT_BINARY_DIR}/Info.plist)
-    # Make Info.plist ship with the Mac App
-    set_target_properties(wxmaxima PROPERTIES MACOSX_BUNDLE_INFO_PLIST)
-    # make wxmathml.lisp ship with the Mac App
 endif()
 
 set(DATAFILES
