@@ -94,7 +94,7 @@ elseif(APPLE)
     set_target_properties(wxmaxima PROPERTIES
               RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
               RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
-	      RESOURCE "${RESOURCES_FILES} ${RESOURCES_FILES_OSX}"
+	      RESOURCE "${RESOURCES_FILES}"
 	      )
     add_dependencies(wxmaxima wxMaxima.app)
 else()
