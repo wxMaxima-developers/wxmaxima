@@ -77,6 +77,8 @@ if(APPLE)
     endforeach()
 endif()
 
+set(ALLRESOURCES ${RESOURCE_FILES} ${RESOURCES_FILES_OSX})
+
 if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
 elseif(APPLE)
@@ -85,7 +87,7 @@ elseif(APPLE)
               RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
               RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents/MacOS
 	      MACOSX_BUNDLE_INFO_PLIST ${CMAKE_BINARY_DIR}/data/Info.plist
-	      RESOURCE ${RESOURCE_FILES})
+	      RESOURCE ${ALLRESOURCES})
     # make wxmathml.lisp ship with the Mac App
 
     add_dependencies(wxmaxima wxMaxima.app)
