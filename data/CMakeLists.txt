@@ -5,7 +5,6 @@ if(APPLE)
     # Make Info.plist ship with the Mac App
     set_target_properties(wxmaxima PROPERTIES MACOSX_BUNDLE_INFO_PLIST)
     # make wxmathml.lisp ship with the Mac App
-    add_executable(wxmaxima MACOSX_BUNDLE wxmathml.lisp Resources)
 endif()
 
 set(DATAFILES
