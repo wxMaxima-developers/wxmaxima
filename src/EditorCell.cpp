@@ -4451,7 +4451,11 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSel
     m_containsChanges = true;
     m_positionOfCaret = start + newStr.Length();
     if((newStr.EndsWith("\"") || (text_right.StartsWith("\""))))
+    {
+      if(!((newStr.EndsWith("\"") && (text_right.StartsWith("\"")))))
       m_positionOfCaret--;
+    }
+    
     if (keepSelected)
     {
       SetSelection(start, m_positionOfCaret);
