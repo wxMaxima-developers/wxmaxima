@@ -31,7 +31,7 @@ END
              PNGIMAGENAME=$(basename "$i" .svg).$j.png
              echo "Converting image $d/$i to $d/$PNGIMAGENAME"
              inkscape "--export-png=$PNGIMAGENAME" --export-width=$j "$i"
-             which optipng >/dev/null && optipng -o 7 "$PNGIMAGENAME"  # optimize image, if optipng is avaliable
+             which optipng >/dev/null && optipng -o 7 "$PNGIMAGENAME"  # optimize image, if optipng is available
              xxd -i "$PNGIMAGENAME" >> images.h
              rm -f "$PNGIMAGENAME"
         done
