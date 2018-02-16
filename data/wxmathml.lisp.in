@@ -40,10 +40,10 @@
 (defvar wxMaximaLispLocation "" "The location wxMaxima searches for lisp files in")
 (defvar $wxplot_size '((mlist simp) 800 600) "The size of new plots")
 (defvar $wxchangedir t "Change the PWD of maxima to the current document's path?")
-(defvar $wxsubscripts nil
+(defvar $wxsubscripts t
   "Recognize TeX-style subscripts")
-(defvar $wxplot_pngcairo t "Use gnuplot's pngcairo terminal for new plots?")
-(defmvar $wxplot_old_gnuplot nil)
+(defvar $wxplot_pngcairo nil "Use gnuplot's pngcairo terminal for new plots?")
+(defmvar $wxplot_old_gnuplot t)
 
 (defun $wxstatusbar (status)
   (format t "<statusbar>~a</statusbar>~%" status))
@@ -145,33 +145,18 @@
 (defun wxxml-get (x p)
   (if (symbolp x) (get x p)))
 
-(defun wxxml (x l r lop rop)
-  ;; x is the expression of interest; l is the list of strings to its
-  ;; left, r to its right. lop and rop are the operators on the left
-  ;; and right of x in the tree, and will determine if parens must
-  ;; be inserted
-  (setq x (nformat x))
-  (cond ((atom x) (wxxml-atom x l r))
-        ((not (listp (car x)))
-         (wxxml (cons '(mlist simp) x) l r lop rop))
-        ((or (<= (wxxml-lbp (caar x)) (wxxml-rbp lop))
-             (> (wxxml-lbp rop) (wxxml-rbp (caar x))))
-         (wxxml-paren x l r))
-        ;; special check needed because macsyma notates arrays peculiarly
-        ((member 'array (cdar x) :test #'eq) (wxxml-array x l r))
-        ;; dispatch for object-oriented wxxml-ifiying
-        ((wxxml-get (caar x) 'wxxml) (funcall (get (caar x) 'wxxml) x l r))
-        ((equal (wxxml-get (caar x) 'dimension) 'dimension-infix)
-         (wxxml-infix x l r))
-	((equal (wxxml-get (caar x) 'dimension) 'dimension-match)
-         (wxxml-matchfix-dim x l r))
-	((equal (wxxml-get (caar x) 'dimension) 'dimension-nary)
-	 (wxxml-nary x l r))
-        ((equal (wxxml-get (caar x) 'dimension) 'dimension-postfix)
-         (wxxml-postfix x l r))
-        ((wxxml-get (caar x) 'defstruct-template)
-         (wxxml-defstruct x l r))
-        (t (wxxml-function x l r))))
+(defun wxxml-array (x l r &aux f)
+  (if (eq 'mqapply (caar x))
+      (setq f (cadr x)
+	    x (cdr x)
+	    l (wxxml f (append l (list "<i><p>")) (list "</p>")
+		     'mparen 'mparen))
+      (setq f (caar x)
+	    l (wxxml f (append l '("<i><r>"))
+		     (list "</r>") lop 'mfunction)))
+  (setq r (nconc (wxxml-list (cdr x) (list "<r>")
+			     (list "</r></i>") "<v>,</v>") r))
+  (nconc l r))
 
 (defmacro make-tag (val tag)
   ``((wxxmltag simp) ,,val ,,tag))
@@ -244,36 +229,6 @@
                       (format nil "<n>~a</n>" sub-int)
                       (format nil "<v>~a</v>" sub))))))))
 
-(defun wxxml-atom (x l r &aux tmp-x)
-  (append l
-          (list (cond ((numberp x) (wxxmlnumformat x))
-                      ((and (symbolp x) (get x 'wxxmlword)))
-                      ((and (symbolp x) (get x 'reversealias))
-                       (wxxml-stripdollar (get x 'reversealias)))
-		      ((stringp x)
-		       (setq tmp-x (wxxml-fix-string x))
-		       (if (and (boundp '$stringdisp) $stringdisp)
-			   (setq tmp-x (format nil "\"~a\"" tmp-x)))
-		       (concatenate 'string "<st>" tmp-x "</st>"))
-           ((arrayp x)
-            (format nil "<v>#{Lisp array [~{~a~^,~}]}</v>"
-		    (array-dimensions x)))
-           ((functionp x)
-	    (format nil "<v>#{Lisp function}</v>"))
-           ((streamp x)
-            (format nil "<v>#{Stream [~A]</v>}"
-		    (stream-element-type x)))
-           ((member (type-of x) '(GRAPH DIGRAPH))
-            (format nil "<v>~a</v>" x))
-	   ((typep x 'structure-object)
-	    (let ((tmp-string (format nil "~s" x)))
-	      (format nil "<st>~a</st>" (wxxml-fix-string tmp-string))))
-	   ((hash-table-p x)
-            (format nil "<v>#{HashTable}</v>"))
-	   ((and $wxsubscripts (subscriptp x)))
-	   (t (wxxml-stripdollar x))))
-	  r))
-
 (defun wxxmlnumformat (atom)
   (let (r firstpart exponent)
     (cond ((integerp atom)
@@ -314,41 +269,35 @@
   (setq pname (wxxml-fix-string pname))
   (concatenate 'string (car *var-tag*) pname (cadr *var-tag*)))
 
-(defun wxxml-paren (x l r)
-  (wxxml x (append l '("<r><p>")) (cons "</p></r>" r) 'mparen 'mparen))
-
-(defun wxxml-array (x l r &aux f)
-  (if (eq 'mqapply (caar x))
-      (setq f (cadr x)
-	    x (cdr x)
-	    l (wxxml f (append l (list "<i><p>")) (list "</p>")
-		     'mparen 'mparen))
-      (setq f (caar x)
-	    l (wxxml f (append l '("<i><r>"))
-		     (list "</r>") lop 'mfunction)))
-  (setq r (nconc (wxxml-list (cdr x) (list "<r>")
-			     (list "</r></i>") "<v>,</v>") r))
-  (nconc l r))
-
-;; set up a list , separated by symbols (, * ...)  and then tack on the
-;; ending item (e.g. "]" or perhaps ")"
-(defun wxxml-list (x l r sym)
-  (if (null x) r
-      (do ((nl))
-	  ((null (cdr x))
-	   (setq nl (nconc nl (wxxml (car x)  l r 'mparen 'mparen)))
-	   nl)
-        (setq nl (nconc nl (wxxml (car x)  l (list sym) 'mparen 'mparen))
-              x (cdr x)
-              l nil))))
-
-(defun wxxml-defstruct (x l r)
-  (let ((L1 (cdr (get (caar x) 'defstruct-template)))
-        (L2 (cdr x)))
-    (wxxml-function
-     (cons (car x)
-           (mapcar #'(lambda (e1 e2) (if (eq e1 e2) e1 `((mequal) ,e1 ,e2))) L1 L2))
-     l r)))
+(defun wxxml-atom (x l r &aux tmp-x)
+  (append l
+          (list (cond ((numberp x) (wxxmlnumformat x))
+                      ((and (symbolp x) (get x 'wxxmlword)))
+                      ((and (symbolp x) (get x 'reversealias))
+                       (wxxml-stripdollar (get x 'reversealias)))
+		      ((stringp x)
+		       (setq tmp-x (wxxml-fix-string x))
+		       (if (and (boundp '$stringdisp) $stringdisp)
+			   (setq tmp-x (format nil "\"~a\"" tmp-x)))
+		       (concatenate 'string "<st>" tmp-x "</st>"))
+           ((arrayp x)
+            (format nil "<v>#{Lisp array [~{~a~^,~}]}</v>"
+		    (array-dimensions x)))
+           ((functionp x)
+	    (format nil "<v>#{Lisp function}</v>"))
+           ((streamp x)
+            (format nil "<v>#{Stream [~A]</v>}"
+		    (stream-element-type x)))
+           ((member (type-of x) '(GRAPH DIGRAPH))
+            (format nil "<v>~a</v>" x))
+	   ((typep x 'structure-object)
+	    (let ((tmp-string (format nil "~s" x)))
+	      (format nil "<st>~a</st>" (wxxml-fix-string tmp-string))))
+	   ((hash-table-p x)
+            (format nil "<v>#{HashTable}</v>"))
+	   ((and $wxsubscripts (subscriptp x)))
+	   (t (wxxml-stripdollar x))))
+	  r))
 
 ;; we could patch this so sin x rather than sin(x), but instead we made
 ;; sin a prefix operator
@@ -361,19 +310,21 @@
 		 'mparen 'mparen))
   (append l r))
 
-;;; Now we have functions which are called via property lists
+(defun wxxml-defstruct (x l r)
+  (let ((L1 (cdr (get (caar x) 'defstruct-template)))
+        (L2 (cdr x)))
+    (wxxml-function
+     (cons (car x)
+           (mapcar #'(lambda (e1 e2) (if (eq e1 e2) e1 `((mequal) ,e1 ,e2))) L1 L2))
+     l r)))
 
-(defun wxxml-prefix (x l r)
-  (wxxml (cadr x) (append l (wxxmlsym (caar x))) r (caar x) rop))
-
-(defun wxxml-infix (x l r)
-  ;; check for 2 args
-  (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
-  (setq l (wxxml (cadr x) l nil lop (caar x)))
-  (wxxml (caddr x) (append l (wxxmlsym (caar x))) r (caar x) rop))
-
-(defun wxxml-postfix (x l r)
-  (wxxml (cadr x) l (append (wxxmlsym (caar x)) r) lop (caar x)))
+(defun wxxml-matchfix-dim (x l r)
+  (setq l (append l
+		  (list (wxxml-dissym-to-string (car (get (caar x) 'dissym)))))
+	r (append (list (wxxml-dissym-to-string (cdr (get (caar x) 'dissym))))
+		  r)
+	x (wxxml-list (cdr x) nil r "<t>,</t>"))
+  (append l x))
 
 (defun wxxml-nary (x l r)
   (let* ((op (caar x))
@@ -399,6 +350,63 @@
 		     y (cdr y)
 		     l nil))))))
 
+(defun wxxml (x l r lop rop)
+  ;; x is the expression of interest; l is the list of strings to its
+  ;; left, r to its right. lop and rop are the operators on the left
+  ;; and right of x in the tree, and will determine if parens must
+  ;; be inserted
+  (setq x (nformat x))
+  (cond ((atom x) (wxxml-atom x l r))
+        ((not (listp (car x)))
+         (wxxml (cons '(mlist simp) x) l r lop rop))
+        ((or (<= (wxxml-lbp (caar x)) (wxxml-rbp lop))
+             (> (wxxml-lbp rop) (wxxml-rbp (caar x))))
+         (wxxml-paren x l r))
+        ;; special check needed because macsyma notates arrays peculiarly
+        ((member 'array (cdar x) :test #'eq) (wxxml-array x l r))
+        ;; dispatch for object-oriented wxxml-ifiying
+        ((wxxml-get (caar x) 'wxxml) (funcall (get (caar x) 'wxxml) x l r))
+        ((equal (wxxml-get (caar x) 'dimension) 'dimension-infix)
+         (wxxml-infix x l r))
+	((equal (wxxml-get (caar x) 'dimension) 'dimension-match)
+         (wxxml-matchfix-dim x l r))
+	((equal (wxxml-get (caar x) 'dimension) 'dimension-nary)
+	 (wxxml-nary x l r))
+        ((equal (wxxml-get (caar x) 'dimension) 'dimension-postfix)
+         (wxxml-postfix x l r))
+        ((wxxml-get (caar x) 'defstruct-template)
+         (wxxml-defstruct x l r))
+        (t (wxxml-function x l r))))
+
+(defun wxxml-paren (x l r)
+  (wxxml x (append l '("<r><p>")) (cons "</p></r>" r) 'mparen 'mparen))
+
+;; set up a list , separated by symbols (, * ...)  and then tack on the
+;; ending item (e.g. "]" or perhaps ")"
+(defun wxxml-list (x l r sym)
+  (if (null x) r
+      (do ((nl))
+	  ((null (cdr x))
+	   (setq nl (nconc nl (wxxml (car x)  l r 'mparen 'mparen)))
+	   nl)
+        (setq nl (nconc nl (wxxml (car x)  l (list sym) 'mparen 'mparen))
+              x (cdr x)
+              l nil))))
+
+;;; Now we have functions which are called via property lists
+
+(defun wxxml-prefix (x l r)
+  (wxxml (cadr x) (append l (wxxmlsym (caar x))) r (caar x) rop))
+
+(defun wxxml-infix (x l r)
+  ;; check for 2 args
+  (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
+  (setq l (wxxml (cadr x) l nil lop (caar x)))
+  (wxxml (caddr x) (append l (wxxmlsym (caar x))) r (caar x) rop))
+
+(defun wxxml-postfix (x l r)
+  (wxxml (cadr x) l (append (wxxmlsym (caar x)) r) lop (caar x)))
+
 (defun wxxml-nofix (x l r) (wxxml (caar x) l r (caar x) rop))
 
 (defun wxxml-matchfix (x l r)
@@ -409,13 +417,6 @@
 	x (wxxml-list (cdr x) nil r "<t>,</t>"))
   (append l x))
 
-(defun wxxml-matchfix-dim (x l r)
-  (setq l (append l
-		  (list (wxxml-dissym-to-string (car (get (caar x) 'dissym)))))
-	r (append (list (wxxml-dissym-to-string (cdr (get (caar x) 'dissym))))
-		  r)
-	x (wxxml-list (cdr x) nil r "<t>,</t>"))
-  (append l x))
 
 (defun wxxml-dissym-to-string (lst &aux pname)
   (setq pname
