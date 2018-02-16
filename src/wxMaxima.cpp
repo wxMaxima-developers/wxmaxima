@@ -2492,11 +2492,11 @@ void wxMaxima::SetupVariables()
 
   if (wxcd)
   {
-    SendMaxima(wxT(":lisp-quiet (defparameter $wxchangedir t)\n"));
+    SendMaxima(wxT(":lisp-quiet (setq $wxchangedir t)\n"));
   }
   else
   {
-    SendMaxima(wxT(":lisp-quiet (defparameter $wxchangedir nil)\n"));
+    SendMaxima(wxT(":lisp-quiet (setq $wxchangedir nil)\n"));
   }
     
 #if defined (__WXMAC__)
@@ -2506,9 +2506,9 @@ void wxMaxima::SetupVariables()
 #endif
   config->Read(wxT("usepngCairo"), &usepngCairo);
   if (usepngCairo)
-    SendMaxima(wxT(":lisp-quiet (defparameter $wxplot_pngcairo t)\n"));
+    SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n"));
   else
-    SendMaxima(wxT(":lisp-quiet (defparameter $wxplot_pngcairo nil)\n"));
+    SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n"));
 
   int autosubscript = 1;
   config->Read(wxT("autosubscript"), &autosubscript);

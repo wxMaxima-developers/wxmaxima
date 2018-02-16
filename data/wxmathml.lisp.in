@@ -26,19 +26,24 @@
 
 (in-package :maxima)
 
-
 (declare-top
  (special lop rop $inchar)
  (*expr wxxml-lbp wxxml-rbp))
 
-(defvar $wxfilename "")
-(defvar $wxdirname "")
-(defvar $wxanimate_autoplay nil)
-(defvar wxArtDir "")
-(defvar wxUserConfDir "")
-(defvar wxHelpDir "")
-(defvar wxMaximaLispLocation "")
-(defvar $wxplot_size '((mlist simp) 800 600))
+;; A few variables whose value can be configured from wxMaxima
+(defvar $wxfilename "" "The filename of the current wxMaxima worksheet")
+(defvar $wxdirname "" "The directory the current wxMaxima worksheet lies in")
+(defvar $wxanimate_autoplay nil "Automatically playback new animations?")
+(defvar wxArtDir "" "The location wxMaxima looks for icons and images in")
+(defvar wxUserConfDir "" "The location wxMaxima looks for maxima's config files in")
+(defvar wxHelpDir "" "The location wxMaxima searches for help files in")
+(defvar wxMaximaLispLocation "" "The location wxMaxima searches for lisp files in")
+(defvar $wxplot_size '((mlist simp) 800 600) "The size of new plots")
+(defvar $wxchangedir t "Change the PWD of maxima to the current document's path?")
+(defvar $wxsubscripts nil
+  "Recognize TeX-style subscripts")
+(defvar $wxplot_pngcairo t "Use gnuplot's pngcairo terminal for new plots?")
+(defmvar $wxplot_old_gnuplot nil)
 
 (defun $wxstatusbar (status)
   (format t "<statusbar>~a</statusbar>~%" status))
@@ -196,10 +201,6 @@
 
 ;;; First we have the functions which are called directly by wxxml and its
 ;;; descendants
-
-(defvar $wxsubscripts nil
-  "Recognize TeX-style subscripts")
-
 (defun $wxdeclare_subscript (x &optional (opt t))
   (unless (listp x)
     (setq x (list '(mlist simp) x)))
@@ -1362,8 +1363,6 @@
 	(append l (list (format nil "<~a ~a>~a</~a>" tag prop name tag)) r)
 	(append l (list (format nil "<~a>~a</~a>" tag name tag)) r))))
 
-
-(defmvar $wxplot_old_gnuplot nil)
 
 (defvar *image-counter* 0)
 (defvar $gnuplot_file_name)

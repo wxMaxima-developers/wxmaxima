@@ -34,4 +34,4 @@ endif()
 # allow local execution (./wxmaxima-local) from the build directory without installation
 if(UNIX)
     file(COPY ${DATAFILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-endif()  
+endif() 
