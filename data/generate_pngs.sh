@@ -28,6 +28,6 @@ for i in wxmaxima.svg; do
     PNGIMAGENAME=$(basename "$i" .svg).png
     echo "Converting image $i to $$PNGIMAGENAME"
     inkscape "--export-png=$PNGIMAGENAME" --export-width=128 "$i"
-    which optipng >/dev/null && optipng -o 9 "$PNGIMAGENAME"  # optimize image, if optipng is avaliable
+    which optipng >/dev/null && optipng -o 9 "$PNGIMAGENAME"  # optimize image, if optipng is available
     xxd -i "$PNGIMAGENAME" >> icon.h
 done
