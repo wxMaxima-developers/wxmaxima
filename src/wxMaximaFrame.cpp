@@ -233,8 +233,15 @@ wxMaximaFrame::~wxMaximaFrame()
 void wxMaximaFrame::set_properties()
 {
 #if defined (__WXMSW__)
+  // On Windows the taskbar icon needs to reside in the Ressources file the linker
+  // includes. Also it needs to be in Microsoft's own .ico format =>
+  // This file we don't ship with the source, but take it from the Resources
+  // file instead.
   SetIcon(wxICON(icon0));
 #elif defined (__WXGTK__)
+  // This icon we include in the executable [in its compressed form] so we avoid
+  // the questions "Was the icon file packaged with wxMaxima?" and "Can we
+  // find it?".
   SetIcon(wxMaximaIcon());
 #endif
 #ifndef __WXMAC__

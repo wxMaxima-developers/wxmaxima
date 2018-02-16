@@ -1,12 +1,6 @@
-;; This is necessary to make file and directory names that contain special characters
-;; work under windows.
-#+sbcl (setf sb-impl::*default-external-format* :UTF-8)
-
-(in-package :maxima)
-
 ;; wxMaxima xml format (based on David Drysdale MathML printing)
 ;; Andrej Vodopivec,  2004-2014
-;; Gunter Königsmann, 2014-2017
+;; Gunter Königsmann, 2014-2018
 
 ;; MathML-printing
 ;; Created by David Drysdale (DMD), December 2002/January 2003
@@ -25,6 +19,13 @@
 ;; with appropriate substitutions and recognition of the
 ;; infix / prefix / postfix / matchfix relations on symbols. Various
 ;; changes are made to this so that MathML will like the results.
+
+;; This is necessary to make file and directory names that contain special characters
+;; work under windows.
+#+sbcl (setf sb-impl::*default-external-format* :UTF-8)
+
+(in-package :maxima)
+
 
 (declare-top
  (special lop rop $inchar)
