@@ -12,6 +12,9 @@ Current:
   * A drop-down box for changing cell styles
   * If an input cell is hidden and has no output it now is no more displayed
     as a blank vertical space.
+  * wxMaxima no more requires the icon files, tooltips and autocompletion files to be
+    shipped as separate files, which makes creating a ready-to-install package of wxMaxima
+    easier and less error-prone.
   * Autosave is now enabled by default on new installs.
   * Big code cleanups.
   * Many bugfixes

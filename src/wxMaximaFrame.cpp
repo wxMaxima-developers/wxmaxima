@@ -36,6 +36,7 @@
 #include <wx/image.h>
 #include <wx/filename.h>
 #include <wx/fileconf.h>
+#include "wxMaximaIcon.h"
 
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                              const wxString configFile,
@@ -232,13 +233,16 @@ wxMaximaFrame::~wxMaximaFrame()
 void wxMaximaFrame::set_properties()
 {
 #if defined (__WXMSW__)
+  // On Windows the taskbar icon needs to reside in the Ressources file the linker
+  // includes. Also it needs to be in Microsoft's own .ico format =>
+  // This file we don't ship with the source, but take it from the Resources
+  // file instead.
   SetIcon(wxICON(icon0));
 #elif defined (__WXGTK__)
-  Dirstructure dirstruct;
-  
-  wxString icon(dirstruct.AppIconDir());
-  icon += wxT("/wxmaxima.png");
-  SetIcon(wxIcon(icon, wxBITMAP_TYPE_PNG));
+  // This icon we include in the executable [in its compressed form] so we avoid
+  // the questions "Was the icon file packaged with wxMaxima?" and "Can we
+  // find it?".
+  SetIcon(wxMaximaIcon());
 #endif
 #ifndef __WXMAC__
   SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) + _("[ unsaved ]"));

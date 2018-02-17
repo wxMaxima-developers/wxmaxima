@@ -57,6 +57,7 @@
 #include "ActualValuesStorageWiz.h"
 #include "MaxSizeChooser.h"
 #include "ListSortWiz.h"
+#include "wxMaximaIcon.h"
 
 #include <wx/clipbrd.h>
 #include <wx/filedlg.h>
@@ -2481,6 +2482,18 @@ void wxMaxima::SetupVariables()
   SendMaxima(wxT(":lisp-quiet (setf $in_netmath nil)\n"));
   SendMaxima(wxT(":lisp-quiet (setf $show_openplot t)\n"));
 
+    wxString cmd;
+  Dirstructure dirstruct;
+  cmd = wxT(":lisp-quiet ($load \"") + dirstruct.DataDir() + wxT("/wxmathml.lisp\")\n");
+    
+#if defined (__WXMAC__)
+  wxString gnuplotbin(wxT("/Applications/Gnuplot.app/Contents/Resources/bin/gnuplot"));
+  if (wxFileExists(gnuplotbin))
+    cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + gnuplotbin + wxT("\")\n");
+#endif
+  cmd.Replace(wxT("\\"),wxT("/"));
+  SendMaxima(cmd);
+
   wxConfigBase *config = wxConfig::Get();
 
   bool wxcd = true;
@@ -2491,11 +2504,11 @@ void wxMaxima::SetupVariables()
 
   if (wxcd)
   {
-    SendMaxima(wxT(":lisp-quiet (defparameter $wxchangedir t)\n"));
+    SendMaxima(wxT(":lisp-quiet (setq $wxchangedir t)\n"));
   }
   else
   {
-    SendMaxima(wxT(":lisp-quiet (defparameter $wxchangedir nil)\n"));
+    SendMaxima(wxT(":lisp-quiet (setq $wxchangedir nil)\n"));
   }
     
 #if defined (__WXMAC__)
@@ -2505,9 +2518,9 @@ void wxMaxima::SetupVariables()
 #endif
   config->Read(wxT("usepngCairo"), &usepngCairo);
   if (usepngCairo)
-    SendMaxima(wxT(":lisp-quiet (defparameter $wxplot_pngcairo t)\n"));
+    SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n"));
   else
-    SendMaxima(wxT(":lisp-quiet (defparameter $wxplot_pngcairo nil)\n"));
+    SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n"));
 
   int autosubscript = 1;
   config->Read(wxT("autosubscript"), &autosubscript);
@@ -2525,19 +2538,6 @@ void wxMaxima::SetupVariables()
       break;
   }
   SendMaxima(wxT(":lisp-quiet (defparameter $wxsubscripts ") + subscriptval + wxT(")\n"));
-  
-  wxString cmd;
-  Dirstructure dirstruct;
-  cmd = wxT(":lisp-quiet ($load \"") + dirstruct.DataDir() + wxT("/wxmathml.lisp\")\n");
-    
-#if defined (__WXMAC__)
-  wxString gnuplotbin(wxT("/Applications/Gnuplot.app/Contents/Resources/bin/gnuplot"));
-  if (wxFileExists(gnuplotbin))
-    cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + gnuplotbin + wxT("\")\n");
-#endif
-  cmd.Replace(wxT("\\"),wxT("/"));
-  SendMaxima(cmd);
-
 
   // A few variables for additional debug info in wxbuild_info();
   SendMaxima(wxString::Format(wxT(":lisp-quiet (setq wxArtDir \"%s\")\n"),
@@ -6074,11 +6074,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       if (m_lispVersion != wxEmptyString)
         description += _("\nLisp: ") + m_lispVersion;
 
-      Dirstructure dirstruct;
-      
-      wxString iconName = dirstruct.AppIconDir();
-      iconName += wxT("/wxmaxima.png");
-      info.SetIcon(wxIcon(iconName,wxBITMAP_TYPE_PNG));
+      info.SetIcon(wxMaximaIcon());
       info.SetDescription(description);
       info.SetName(_("wxMaxima"));
       info.SetVersion(wxT(GITVERSION));
