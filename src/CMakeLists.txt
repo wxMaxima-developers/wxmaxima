@@ -58,6 +58,10 @@ if(APPLE)
       add_custom_command(TARGET wxMaxima.app
         COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
     endforeach()
+    foreach(f ${RESOURCES_FILES_OSX})
+      add_custom_command(TARGET wxMaxima.app
+        COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_RESOURCES_DIR})
+    endforeach()
     foreach(f ${HELP_FILES})
       add_custom_command(TARGET wxMaxima.app
         COMMAND ${CMAKE_COMMAND} -E copy ${f}  ${APP_HELP_DIR})
@@ -67,8 +71,6 @@ if(APPLE)
         COMMAND ${CMAKE_COMMAND} -E copy ${f} ${APP_FONTS_DIR})
     endforeach()
 endif()
-
-set(ALLRESOURCES ${RESOURCE_FILES} ${RESOURCES_FILES_OSX})
 
 if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
