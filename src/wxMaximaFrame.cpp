@@ -546,6 +546,13 @@ void wxMaximaFrame::SetupMenu()
   equationType->Append(menu_math_as_graphics, wxT("in 2D"), _("Nice Graphical Equations"), wxITEM_NORMAL);
 
   m_Maxima_Panes_Sub->Append(wxNewId(), _("Display equations"), equationType, _("How to display new equations"));
+  
+  wxMenu *autoSubscript = new wxMenu;
+  autoSubscript->Append(menu_noAutosubscript, wxT("Never"), _("Don't autosubscript after an underscore"), wxITEM_NORMAL);
+  autoSubscript->Append(menu_defaultAutosubscript, wxT("Integers and single letters"), _("Autosubscript numbers and text following single letters"), wxITEM_NORMAL);
+  autoSubscript->Append(menu_alwaysAutosubscript, wxT("Always"), _("Always autosubscript after an underscore"), wxITEM_NORMAL);
+
+  m_Maxima_Panes_Sub->Append(wxNewId(), _("Autosubscript"), autoSubscript, _("Autosubscript chars after an underscore"));
 
   m_Maxima_Panes_Sub->AppendSeparator();
   APPEND_MENU_ITEM(m_Maxima_Panes_Sub, MathCtrl::menu_zoom_in, _("Zoom &In\tCtrl++"),

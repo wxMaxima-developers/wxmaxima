@@ -580,7 +580,7 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   wxStaticText *as = new wxStaticText(panel, -1, _("Underscore converts to subscripts:"));
   grid_sizer->Add(as, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   wxArrayString autosubscripts;
-  autosubscripts.Add(_("No"));
+  autosubscripts.Add(_("Never"));
   autosubscripts.Add(_("Integers and single letters"));
   autosubscripts.Add(_("All variable names"));
   m_autosubscript = new wxChoice(panel, -1, wxDefaultPosition, wxDefaultSize, autosubscripts);

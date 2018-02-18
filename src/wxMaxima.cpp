@@ -3961,12 +3961,6 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
 #endif
   {
     wxConfigBase *config = wxConfig::Get();
-#if defined (__WXMAC__)
-    bool pngcairo_old = false;
-#else
-    bool pngcairo_old=true;
-#endif
-    config->Read(wxT("usepngCairo"), &pngcairo_old);
     // wxGTK uses wxFileConf. ...and wxFileConf loads the config file only once
     // on inintialisation => Let's reload the config file before entering the
     // config dialogue.
@@ -4013,13 +4007,10 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     bool usepngCairo=true;
 #endif
     config->Read(wxT("usepngCairo"), &usepngCairo);
-    if (usepngCairo != pngcairo_old)
-    {
-      if (usepngCairo)
-        m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n");
-      else
-        m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n");
-    }
+    if (usepngCairo)
+      m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n");
+    else
+      m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n");
 
     m_configCommands += wxT(":lisp-quiet (setq $wxsubscripts ") +
       m_console->m_configuration->GetAutosubscript_string() +
@@ -4169,7 +4160,15 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     case menu_math_as_graphics:
       MenuCommand(wxT("set_display('xml)$"));
       break;
-
+    case menu_noAutosubscript:
+      MenuCommand(wxT("wxsubscripts: false$"));
+      break;
+    case menu_defaultAutosubscript:
+      MenuCommand(wxT("wxsubscripts: true"));
+      break;
+    case menu_alwaysAutosubscript:
+      MenuCommand(wxT("wxsubscripts: 'always$"));
+      break;
     case menu_fullscreen:
       ShowFullScreen(!IsFullScreen());
       break;
@@ -8150,6 +8149,9 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(menu_math_as_1D_ASCII, wxMaxima::EditMenu)
                 EVT_MENU(menu_math_as_2D_ASCII, wxMaxima::EditMenu)
                 EVT_MENU(menu_math_as_graphics, wxMaxima::EditMenu)
+                EVT_MENU(menu_noAutosubscript, wxMaxima::EditMenu)
+                EVT_MENU(menu_defaultAutosubscript, wxMaxima::EditMenu)
+                EVT_MENU(menu_alwaysAutosubscript, wxMaxima::EditMenu)
                 EVT_MENU(menu_fullscreen, wxMaxima::EditMenu)
                 EVT_MENU(ToolBar::tb_hideCode, wxMaxima::EditMenu)
                 EVT_MENU(menu_copy_as_bitmap, wxMaxima::EditMenu)

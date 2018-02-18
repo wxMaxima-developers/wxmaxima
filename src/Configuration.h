@@ -621,20 +621,7 @@ public:
   int GetAutosubscript_Num(){return m_autoSubscript;}
   void SetAutosubscript_Num(int autosubscriptnum)
     {wxConfig::Get()->Write("autosubscript",m_autoSubscript = autosubscriptnum);}
-  wxString GetAutosubscript_string(){
-      switch (m_autoSubscript)
-      {
-      case 0:
-        return "nil";
-        break;
-      case 1:
-        return "t";
-        break;
-      default:
-        return "'all";
-        break;
-      }
-  }
+  wxString GetAutosubscript_string();
 private:
   //! Which objects do we want to convert into subscripts if they occur after an underscore?
   int m_autoSubscript;

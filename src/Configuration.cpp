@@ -74,6 +74,21 @@ Configuration::Configuration(wxDC &dc) : m_dc(&dc)
   m_useUnicodeMaths = true;
 }
 
+wxString Configuration::GetAutosubscript_string(){
+  switch (m_autoSubscript)
+  {
+  case 0:
+    return "nil";
+    break;
+  case 1:
+    return "t";
+    break;
+  default:
+    return "'all";
+    break;
+  }
+}
+
 void Configuration::ShowCodeCells(bool show)
 {
   m_showCodeCells = show;
