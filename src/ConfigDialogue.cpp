@@ -386,7 +386,6 @@ void ConfigDialogue::SetProperties()
   int labelWidth = 4;
   int undoLimit = 0;
   int recentItems = 10;
-  int autosubscript = 1;
   int bitmapScale = 3;
   bool incrementalSearch = true;
   int defaultFramerate = 2;
@@ -426,7 +425,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
   config->Read(wxT("HTMLequationFormat"), &exportWithMathJAX);
   config->Read(wxT("pos-restore"), &rs);
-  config->Read(wxT("autosubscript"), &autosubscript);
   config->Read(wxT("language"), &lang);
   config->Read(wxT("documentclass"), &documentclass);
   config->Read(wxT("texPreamble"), &texPreamble);
@@ -488,7 +486,7 @@ void ConfigDialogue::SetProperties()
   m_exportWithMathJAX->SetSelection(exportWithMathJAX);
   m_matchParens->SetValue(configuration->GetMatchParens());
   m_showLength->SetSelection(configuration->ShowLength());
-  m_autosubscript->SetSelection(autosubscript);
+  m_autosubscript->SetSelection(configuration->GetAutosubscript_Num());
   m_changeAsterisk->SetValue(configuration->GetChangeAsterisk());
   m_enterEvaluates->SetValue(enterEvaluates);
   m_saveUntitled->SetValue(saveUntitled);
@@ -1206,7 +1204,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("mathFontsize"), m_mathFontSize);
   config->Write(wxT("matchParens"), m_matchParens->GetValue());
   configuration->ShowLength(m_showLength->GetSelection());
-  config->Write(wxT("autosubscript"), m_autosubscript->GetSelection());
+  configuration->SetAutosubscript_Num(m_autosubscript->GetSelection());
   config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());
   configuration->SetChangeAsterisk(m_changeAsterisk->GetValue());
   config->Write(wxT("enterEvaluates"), m_enterEvaluates->GetValue());

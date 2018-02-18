@@ -1072,6 +1072,7 @@ bool wxMaxima::StartMaxima(bool force)
   // order.
   if ((m_process == NULL) || (m_hasEvaluatedCells) || force)
   {
+    m_configCommands = wxEmptyString;
     // The new maxima process will be in its initial condition => mark it as such.
     m_hasEvaluatedCells = false;
 
@@ -2522,22 +2523,9 @@ void wxMaxima::SetupVariables()
   else
     SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n"));
 
-  int autosubscript = 1;
-  config->Read(wxT("autosubscript"), &autosubscript);
-  wxString subscriptval;
-  switch (autosubscript)
-  {
-    case 0:
-      subscriptval = "nil";
-      break;
-    case 1:
-      subscriptval = "t";
-      break;
-    case 2:
-      subscriptval = "'all";
-      break;
-  }
-  SendMaxima(wxT(":lisp-quiet (defparameter $wxsubscripts ") + subscriptval + wxT(")\n"));
+  SendMaxima(wxT(":lisp-quiet (setq $wxsubscripts ") +
+             m_console->m_configuration->GetAutosubscript_string() +
+             wxT(")\n"));
 
   // A few variables for additional debug info in wxbuild_info();
   SendMaxima(wxString::Format(wxT(":lisp-quiet (setq wxArtDir \"%s\")\n"),
@@ -3967,179 +3955,171 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
 
   switch (event.GetId())
   {
-    case wxID_PREFERENCES:
+  case wxID_PREFERENCES:
 #if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-    case ToolBar::tb_pref:
+  case ToolBar::tb_pref:
 #endif
-    {
-      wxConfigBase *config = wxConfig::Get();
+  {
+    wxConfigBase *config = wxConfig::Get();
 #if defined (__WXMAC__)
-      bool pngcairo_old = false;
+    bool pngcairo_old = false;
 #else
-      bool pngcairo_old=true;
+    bool pngcairo_old=true;
 #endif
-      config->Read(wxT("usepngCairo"), &pngcairo_old);
-      // wxGTK uses wxFileConf. ...and wxFileConf loads the config file only once
-      // on inintialisation => Let's reload the config file before entering the
-      // config dialogue.
-      ReReadConfig();
-      config = wxConfig::Get();
+    config->Read(wxT("usepngCairo"), &pngcairo_old);
+    // wxGTK uses wxFileConf. ...and wxFileConf loads the config file only once
+    // on inintialisation => Let's reload the config file before entering the
+    // config dialogue.
+    ReReadConfig();
+    config = wxConfig::Get();
       
-      ConfigDialogue *configW = new ConfigDialogue(this, m_console->m_configuration);
-      configW->Centre(wxBOTH);
-      if (configW->ShowModal() == wxID_OK)
-      {
-        configW->WriteSettings();
-        // Write the changes in the configuration to the disk.
-        config->Flush();
-        // Refresh the display as the settings that affect it might have changed.
-        m_console->RecalculateForce();
-        m_console->RequestRedraw();
-        ConfigChanged();
-      }
-
-      configW->Destroy();
-
-#if defined (__WXMSW__)
-      bool wxcd = true;
-      config->Read(wxT("wxcd"),&wxcd);
-      if(wxcd)
-      {
-        SendMaxima(wxT(":lisp-quiet (setq $wxchangedir t)\n"));
-        if (m_console->m_currentFile != wxEmptyString)
-        {
-          wxString filename(m_console->m_currentFile);
-          SetCWD(filename);
-        }
-      }
-      else
-      {
-        SetCWD(wxStandardPaths::Get().GetExecutablePath());
-        SendMaxima(wxT(":lisp-quiet (setq $wxchangedir nil)\n"));
-      }
-#endif
-
-#if defined (__WXMAC__)
-      bool usepngCairo = false;
-#else
-      bool usepngCairo=true;
-#endif
-      config->Read(wxT("usepngCairo"), &usepngCairo);
-      if (usepngCairo != pngcairo_old)
-      {
-        if (usepngCairo)
-          SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n"));
-        else
-          SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n"));
-      }
-
-      int autosubscript = 1;
-      config->Read(wxT("autosubscript"), &autosubscript);
-      wxString subscriptval;
-      switch (autosubscript)
-      {
-        case 0:
-          subscriptval = "nil";
-          break;
-        case 1:
-          subscriptval = "t";
-          break;
-        case 2:
-          subscriptval = "'all";
-          break;
-      }
-      SendMaxima(wxT(":lisp-quiet (setq $wxsubscripts ") + subscriptval + wxT(")\n"));
-
-      m_autoSaveInterval = 3;
-      config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
-      m_autoSaveInterval *= 60000;
-
-      if (m_autoSaveInterval > 10000)
-        m_autoSaveTimer.StartOnce(m_autoSaveInterval);
-      else
-        m_autoSaveTimer.Stop();
-
-      int defaultPlotWidth = 800;
-      config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
-      int defaultPlotHeight = 600;
-      config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
-      SendMaxima(wxString::Format(wxT(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
-                                  defaultPlotWidth,
-                                  defaultPlotHeight));
-
+    ConfigDialogue *configW = new ConfigDialogue(this, m_console->m_configuration);
+    configW->Centre(wxBOTH);
+    if (configW->ShowModal() == wxID_OK)
+    {
+      configW->WriteSettings();
+      // Write the changes in the configuration to the disk.
+      config->Flush();
+      // Refresh the display as the settings that affect it might have changed.
       m_console->RecalculateForce();
       m_console->RequestRedraw();
+      ConfigChanged();
     }
-      break;
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-    case ToolBar::tb_copy:
-#endif
-    case menu_copy_from_console:
-      if (m_console->CanCopy(true))
-        m_console->Copy();
-      break;
-    case menu_copy_text_from_console:
-      if (m_console->CanCopy(true))
-        m_console->Copy(true);
-      break;
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-    case ToolBar::tb_cut:
-#endif
-    case menu_cut:
-      if (m_console->CanCut())
-        m_console->CutToClipboard();
-      break;
-    case menu_select_all:
-    case ToolBar::tb_select_all:
-      m_console->SelectAll();
-      break;
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-    case ToolBar::tb_paste:
-#endif
-    case menu_paste:
-      if (m_console->CanPaste())
-        m_console->PasteFromClipboard();
-      break;
-    case menu_undo:
-      if (m_console->CanUndo())
-        m_console->Undo();
-      break;
-    case menu_redo:
-      if (m_console->CanRedo())
-        m_console->Redo();
-      break;
-    case menu_copy_tex_from_console:
-      if (m_console->CanCopy())
-        m_console->CopyTeX();
-      break;
-    case MathCtrl::popid_copy_mathml:
-      if (m_console->CanCopy())
-        m_console->CopyMathML();
-      break;
-    case menu_copy_as_bitmap:
-      if (m_console->CanCopy())
-        m_console->CopyBitmap();
-      break;
-    case menu_copy_as_svg:
-      if (m_console->CanCopy())
-        m_console->CopySVG();
-      break;
-    case menu_copy_as_rtf:
-      if (m_console->CanCopy())
-        m_console->CopyRTF();
-      break;
-    case menu_copy_to_file:
+
+    configW->Destroy();
+      
+#if defined (__WXMSW__)
+    bool wxcd = true;
+    config->Read(wxT("wxcd"),&wxcd);
+    if(wxcd)
     {
-      wxString file = wxFileSelector(_("Save Selection to Image"), m_lastPath,
-                                     wxT("image.png"), wxT("png"),
-                                     _("PNG image (*.png)|*.png|"
-                                               "JPEG image (*.jpg)|*.jpg|"
-                                               "Windows bitmap (*.bmp)|*.bmp|"
-                                               "Portable animap (*.pnm)|*.pnm|"
-                                               "Tagged image file format (*.tif)|*.tif|"
-                                               "X pixmap (*.xpm)|*.xpm"
+      m_configCommands += wxT(":lisp-quiet (setq $wxchangedir t)\n");
+      if (m_console->m_currentFile != wxEmptyString)
+      {
+        wxString filename(m_console->m_currentFile);
+        SetCWD(filename);
+      }
+    }
+    else
+    {
+      SetCWD(wxStandardPaths::Get().GetExecutablePath());
+      m_configCommands += wxT(":lisp-quiet (setq $wxchangedir nil)\n");
+    }
+#endif
+      
+#if defined (__WXMAC__)
+    bool usepngCairo = false;
+#else
+    bool usepngCairo=true;
+#endif
+    config->Read(wxT("usepngCairo"), &usepngCairo);
+    if (usepngCairo != pngcairo_old)
+    {
+      if (usepngCairo)
+        m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n");
+      else
+        m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n");
+    }
+
+    m_configCommands += wxT(":lisp-quiet (setq $wxsubscripts ") +
+      m_console->m_configuration->GetAutosubscript_string() +
+      wxT(")\n");
+      
+    m_autoSaveInterval = 3;
+    config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
+    m_autoSaveInterval *= 60000;
+
+    if (m_autoSaveInterval > 10000)
+      m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+    else
+      m_autoSaveTimer.Stop();
+
+    int defaultPlotWidth = 800;
+    config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
+    int defaultPlotHeight = 600;
+    config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
+    m_configCommands += wxString::Format(wxT(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
+                                         defaultPlotWidth,
+                                         defaultPlotHeight);
+
+    m_console->RecalculateForce();
+    m_console->RequestRedraw();
+    if((!m_console->QuestionPending()) && (m_console->m_evaluationQueue.Empty()))
+    {
+      SendMaxima(m_configCommands);
+      m_configCommands = wxEmptyString;
+    }
+    break;
+  }
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
+  case ToolBar::tb_copy:
+#endif
+  case menu_copy_from_console:
+    if (m_console->CanCopy(true))
+      m_console->Copy();
+    break;
+  case menu_copy_text_from_console:
+    if (m_console->CanCopy(true))
+      m_console->Copy(true);
+    break;
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
+  case ToolBar::tb_cut:
+#endif
+  case menu_cut:
+    if (m_console->CanCut())
+      m_console->CutToClipboard();
+    break;
+  case menu_select_all:
+  case ToolBar::tb_select_all:
+    m_console->SelectAll();
+    break;
+#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
+  case ToolBar::tb_paste:
+#endif
+  case menu_paste:
+    if (m_console->CanPaste())
+      m_console->PasteFromClipboard();
+    break;
+  case menu_undo:
+    if (m_console->CanUndo())
+      m_console->Undo();
+    break;
+  case menu_redo:
+    if (m_console->CanRedo())
+      m_console->Redo();
+    break;
+  case menu_copy_tex_from_console:
+    if (m_console->CanCopy())
+      m_console->CopyTeX();
+    break;
+  case MathCtrl::popid_copy_mathml:
+    if (m_console->CanCopy())
+      m_console->CopyMathML();
+    break;
+  case menu_copy_as_bitmap:
+    if (m_console->CanCopy())
+      m_console->CopyBitmap();
+    break;
+  case menu_copy_as_svg:
+    if (m_console->CanCopy())
+      m_console->CopySVG();
+    break;
+  case menu_copy_as_rtf:
+    if (m_console->CanCopy())
+      m_console->CopyRTF();
+    break;
+  case menu_copy_to_file:
+  {
+    wxString file = wxFileSelector(_("Save Selection to Image"), m_lastPath,
+                                   wxT("image.png"), wxT("png"),
+                                   _("PNG image (*.png)|*.png|"
+                                     "JPEG image (*.jpg)|*.jpg|"
+                                     "Windows bitmap (*.bmp)|*.bmp|"
+                                     "Portable animap (*.pnm)|*.pnm|"
+                                     "Tagged image file format (*.tif)|*.tif|"
+                                     "X pixmap (*.xpm)|*.xpm"
                                      ),
-                                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+                                   wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       if (file.Length())
       {
         m_console->CopyToFile(file);
@@ -7375,6 +7355,12 @@ void wxMaxima::TryEvaluateNextInQueue()
     m_console->RequestRedraw();
   }
 
+  if(m_configCommands != wxEmptyString)
+  {
+    SendMaxima(m_configCommands);
+    m_configCommands = wxEmptyString;
+  }
+    
   wxString text = m_console->m_evaluationQueue.GetCommand();
   m_commandIndex = m_console->m_evaluationQueue.GetIndex();
   if ((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))

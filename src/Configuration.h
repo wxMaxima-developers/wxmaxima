@@ -616,7 +616,28 @@ public:
   wxWindow *GetWorkSheet(){return m_workSheet;}
   //! Set the worksheet this configuration storage is valid for
   void SetWorkSheet(wxWindow *workSheet){m_workSheet = workSheet;}
+
+  //! Get the worksheet this configuration storage is valid for
+  int GetAutosubscript_Num(){return m_autoSubscript;}
+  void SetAutosubscript_Num(int autosubscriptnum)
+    {wxConfig::Get()->Write("autosubscript",m_autoSubscript = autosubscriptnum);}
+  wxString GetAutosubscript_string(){
+      switch (m_autoSubscript)
+      {
+      case 0:
+        return "nil";
+        break;
+      case 1:
+        return "t";
+        break;
+      default:
+        return "'all";
+        break;
+      }
+  }
 private:
+  //! Which objects do we want to convert into subscripts if they occur after an underscore?
+  int m_autoSubscript;
   //! The worksheet this configuration storage is valid for
   wxWindow *m_workSheet;
   //! A replacement for the non-existing "==" operator for wxBitmaps.

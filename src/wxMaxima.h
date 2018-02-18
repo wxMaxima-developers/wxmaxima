@@ -195,6 +195,8 @@ private:
   long long m_cpuTotalJiffies_old;
   //! Do we need to update the menus + toolbars?
   bool m_updateControls;
+  //! All configuration commands we still have to send to maxima
+  wxString m_configCommands;
   //! A RegEx that matches gnuplot errors.
   wxRegEx m_gnuplotErrorRegex;
   //! Clear the evaluation queue and return true if "Abort on Error" is set. 
