@@ -43,7 +43,7 @@
 (defvar $wxsubscripts t
   "Recognize TeX-style subscripts")
 (defvar $wxplot_pngcairo nil "Use gnuplot's pngcairo terminal for new plots?")
-(defmvar $wxplot_old_gnuplot t)
+(defmvar $wxplot_old_gnuplot nil)
 
 (defun $wxstatusbar (status)
   (format t "<statusbar>~a</statusbar>~%" status))
