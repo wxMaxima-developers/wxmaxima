@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-02-12 07:45+0100\n"
-"PO-Revision-Date: 2018-02-02 07:13+0100\n"
+"PO-Revision-Date: 2018-02-18 16:32+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -471,7 +471,7 @@ msgstr ""
 msgid ""
 "A scale factor for the printout. Helpful for printing big equations on small "
 "pdf pages."
-msgstr ""
+msgstr "Ein Skalierungsfaktor für den Druck. Erlaubt es, große Gleichungen auf Papiergröße zu bringen."
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4599
 msgid "A section heading"
@@ -1766,7 +1766,6 @@ msgid "Division by 0."
 msgstr "Division durch 0."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5248
-#, fuzzy
 msgid "Do for each list element"
 msgstr "Tue dies für jedes Listenelement"
 
@@ -3188,7 +3187,6 @@ msgid "Interleave"
 msgstr "Zusammenfügen nach dem Reissverschlussprinzip"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:975
-#, fuzzy
 msgid "Interleave the values of two lists"
 msgstr "Nimm Elemente abwechselnd von zwei Listen"
 
@@ -3616,7 +3614,6 @@ msgid "Maxima"
 msgstr "Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:124
-#, fuzzy
 msgid "Maxima asks a question"
 msgstr "Maxima hat eine Frage."
 
@@ -4513,7 +4510,7 @@ msgstr "Dokument drucken"
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:791
 #, fuzzy
 msgid "Print scale:"
-msgstr "Dokument drucken"
+msgstr "Dokumentskalierung:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:815
 msgid "Print the cell brackets [drawn to their left]"
@@ -5002,7 +4999,7 @@ msgstr "In Eingabefeldern eine Schrift mit fester Breite verwenden."
 
 #: /home/gunter/src/wxmaxima/src/MaxSizeChooser.cpp:29
 msgid "Set maximum image size [in mm]"
-msgstr ""
+msgstr "Setze die maximale Größe eines Bildes [in mm]"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1000
 msgid "Set plot format"
@@ -5668,7 +5665,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MaxSizeChooser.cpp:54
 msgid "The maximum size for this image. Values <= 0 mean: Unspecified."
-msgstr ""
+msgstr "Die maximale Größe für dieses Bild. <0 heißt: Unspezifiziert."
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:1068
 msgid ""
@@ -6167,7 +6164,6 @@ msgid "Use list as the arguments of a function"
 msgstr "Benutze die Listenelemente als Argumente einer Funktion"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:306
-#, fuzzy
 msgid ""
 "Use nice js math symbols in order to get nice integral, sum, product and "
 "sqrt signs\n"
