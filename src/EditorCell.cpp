@@ -4351,7 +4351,7 @@ int EditorCell::ReplaceAll(wxString oldString, wxString newString, bool IgnoreCa
         newText += src.Left(pos);        
         newText += newString;
         src_LowerCase = src_LowerCase.Right(src_LowerCase.Length()-pos-newString.Length());
-        src = src.Right(src.Length()-pos-newString.Length());
+        src = src.Right(src.Length()-pos-oldString.Length());
         count ++;
       }
     } while((pos != wxNOT_FOUND) && (src != wxEmptyString));
