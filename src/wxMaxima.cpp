@@ -192,8 +192,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   m_oldFindString = wxEmptyString;
   m_oldFindFlags = 0;
   m_console->m_currentFile = wxEmptyString;
-  m_findData.SetFlags(wxFR_DOWN);
-
+  m_findData.SetFlags(wxFR_DOWN | wxFR_MATCHCASE);
   m_console->SetFocus();
   m_console->m_keyboardInactiveTimer.SetOwner(this, KEYBOARD_INACTIVITY_TIMER_ID);
   m_maximaStdoutPollTimer.SetOwner(this, MAXIMA_STDOUT_POLL_ID);
