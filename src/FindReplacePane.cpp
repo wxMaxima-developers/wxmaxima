@@ -161,6 +161,7 @@ void FindReplacePane::OnDirectionChange(wxCommandEvent &WXUNUSED(event))
 {
   m_findReplaceData->SetFlags(
           !((m_findReplaceData->GetFlags() & (!wxFR_DOWN)) | (m_forward->GetValue() * wxFR_DOWN)));
+  wxConfig::Get()->Write(wxT("findFlags"), m_findReplaceData->GetFlags());  
 }
 
 
@@ -168,6 +169,7 @@ void FindReplacePane::OnMatchCase(wxCommandEvent &event)
 {
   m_findReplaceData->SetFlags(
           (m_findReplaceData->GetFlags() & (~wxFR_MATCHCASE)) | (event.IsChecked() * wxFR_MATCHCASE));
+  wxConfig::Get()->Write(wxT("findFlags"), m_findReplaceData->GetFlags());  
 }
 
 void FindReplacePane::OnActivate(wxActivateEvent &event)
