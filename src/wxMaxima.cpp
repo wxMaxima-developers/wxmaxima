@@ -5859,8 +5859,42 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
         MenuCommand(cmd);
       }
       break;
-    default:
+    case menu_set_displayprecision:
+      cmd = GetTextFromUser(_("How many digits to show:"), _("Displayed Precision"),
+                            m_console->m_configuration,
+                            wxT("0"), this);
+      if (cmd.Length())
+      {
+        cmd = wxT("fpprintprec : ") + cmd + wxT(";");
+        MenuCommand(cmd);
+      }
       break;
+  case menu_engineeringFormat:
+    MenuCommand(wxT("load(\"engineering-format\")$"));
+    break;
+  case menu_engineeringFormatSetup:
+  {
+    Gen4Wiz *wiz = new Gen4Wiz(_("Enable:"),
+                               _("Minimum absolute value printed without exponent:"),
+                               _("Maximum absolute value printed without exponent:"),
+                               _("Maximum number of digits to be displayed:"),
+                               wxT("true"), wxT(".01"), wxT("1000"), wxT("6"),
+                               m_console->m_configuration,
+                               this, -1, _("Engineering format setup"));
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wxT("engineering_format_floats: ") + wiz->GetValue1() + wxT("$\n") +
+        wxT("engineering_format_min: ") + wiz->GetValue2() + wxT("$\n") +
+        wxT("engineering_format_max: ") + wiz->GetValue3() + wxT("$\n") +
+        wxT("fpprintprec: ") + wiz->GetValue4() + wxT("$\n");
+      MenuCommand(cmd);
+    }
+    wiz->Destroy();
+  }
+  break;
+  default:
+    break;
   }
 }
 
@@ -8056,6 +8090,9 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(menu_adjoint_mat, wxMaxima::AlgebraMenu)
                 EVT_MENU(menu_transpose, wxMaxima::AlgebraMenu)
                 EVT_MENU(menu_set_precision, wxMaxima::NumericalMenu)
+                EVT_MENU(menu_set_displayprecision, wxMaxima::NumericalMenu)
+                EVT_MENU(menu_engineeringFormat, wxMaxima::NumericalMenu)
+                EVT_MENU(menu_engineeringFormatSetup, wxMaxima::NumericalMenu)
                 EVT_MENU(menu_talg, wxMaxima::SimplifyMenu)
                 EVT_MENU(menu_tellrat, wxMaxima::SimplifyMenu)
                 EVT_MENU(menu_modulus, wxMaxima::SimplifyMenu)
