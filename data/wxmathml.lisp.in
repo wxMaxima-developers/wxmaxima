@@ -1787,6 +1787,9 @@
 (defun symbol-to-string (s)
   (maybe-invert-string-case (symbol-name (stripdollar s))))
 
+(defun unit-to-string (s)
+  (format nil "<unit>~a</unit>\~" (symbol-to-string s)))
+
 (defun $print_function (fun)
   (let ((fun-name (symbol-to-string (caar fun)))
 	(*print-circle* nil)

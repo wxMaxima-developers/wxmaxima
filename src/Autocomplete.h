@@ -36,6 +36,15 @@
 #include <wx/filename.h>
 #include "Dirstructure.h"
 
+/* The autocompletion logic
+
+   The wordlists for autocompletion for keywords come from several sources:
+
+     - wxMaxima::ReadLoadSymbols receive the contents of maxima's variables
+       "values" and "functions" after a package is loaded.
+     - all words that appear in the worksheet
+     - and a list of maxima's builtin commands.
+ */
 class AutoComplete
 {
   WX_DECLARE_STRING_HASH_MAP(int, WorksheetWords);
