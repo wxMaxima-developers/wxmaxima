@@ -26,11 +26,13 @@
   dynamically appending maxima commands to this list as soon as they are defined.
 */
 
+#include <wx/sstream.h>
 #include "Autocomplete.h"
 #include "Dirstructure.h"
 
 #include <wx/textfile.h>
 #include <wx/filename.h>
+#include <wx/xml/xml.h>
 
 AutoComplete::AutoComplete()
 {
@@ -42,6 +44,52 @@ void AutoComplete::ClearWorksheetWords()
   m_worksheetWords.clear();
 }
 
+void AutoComplete::AddSymbols(wxString xml)
+{
+  wxXmlDocument xmldoc;
+  wxStringInputStream xmlStream(xml);
+  xmldoc.Load(xmlStream, wxT("UTF-8"));
+  wxXmlNode *node = xmldoc.GetRoot();
+  if(node != NULL)
+  {
+    wxXmlNode *children = node->GetChildren();
+    while (children != NULL)
+    {
+      if(children->GetType() == wxXML_ELEMENT_NODE)
+      { 
+        if (children->GetName() == wxT("function"))
+        {
+          wxXmlNode *val = children->GetChildren();
+          if(val)
+          {
+            wxString name = val->GetContent();
+            AddSymbol(name, command);
+          }
+        }
+        if (children->GetName() == wxT("template"))
+        {
+          wxXmlNode *val = children->GetChildren();
+          if(val)
+          {
+            wxString name = val->GetContent();
+            AddSymbol(name, tmplte);
+          }
+        }
+      
+        if (children->GetName() == wxT("value"))
+        {
+          wxXmlNode *val = children->GetChildren();
+          if(val)
+          {
+            wxString name = val->GetContent();
+            AddSymbol(name, command);
+          }
+        }
+      }
+      children = children->GetNext();
+    }
+  }
+}
 void AutoComplete::AddWorksheetWords(wxArrayString wordlist)
 {
   wxArrayString::iterator it;

@@ -1784,23 +1784,26 @@
 ;; used for autocompletion.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun symbol-to-string (s)
-  (maybe-invert-string-case (symbol-name (stripdollar s))))
+(defun symbol-to-xml (s)
+  (wxxml-fix-string (format nil "~a" (maybe-invert-string-case (symbol-name (stripdollar s))))))
 
-(defun unit-to-string (s)
-  (format nil "<unit>~a</unit>\~" (symbol-to-string s)))
+(defun print_units (s)
+  (format nil "<unit>~a</unit>" (symbol-to-xml s)))
 
 (defun $print_function (fun)
-  (let ((fun-name (symbol-to-string (caar fun)))
+  (let ((fun-name (symbol-to-xml (caar fun)))
 	(*print-circle* nil)
 	(args (mapcar (lambda (u)
-			(cond ((atom u) (symbol-to-string u))
+			(cond ((atom u) (symbol-to-xml u))
 			      ((eq (caar u) 'mlist)
-			       ($concat "[" (symbol-to-string
+			       ($concat "[" (symbol-to-xml
                                              (if (atom (cadr u)) (cadr u) (cadadr u))) "]"))
-			      (t (symbol-to-string (cadr u)))))
+			      (t (symbol-to-xml (cadr u)))))
 		      (cdr fun))))
-    (format nil "FUNCTION: ~a$TEMPLATE: ~a(~{<~a>~^, ~})" fun-name fun-name args)))
+    (format nil "<function>~a</function><template>~a(~{&lt;~a&gt;~^, ~})</template>" fun-name fun-name args)))
+
+(defun print_value (val)
+    (format nil "<value>~a</value>" (symbol-to-xml val)))
 
 (defun $add_function_template (&rest functs)
   (let ((*print-circle* nil))
@@ -1824,7 +1827,7 @@
 	($batchload searched-for)
 	(format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>"
 		(append (mapcar #'$print_function (cdr ($append $functions $macros)))
-			(mapcar #'symbol-to-string (cdr ($append $values $myoptions $rules))))))
+			(mapcar #'print_value (cdr ($append $values $myoptions $rules))))))
        (($lisp $object)
 	;; do something about handling errors
 	;; during loading. Foobar fail act errors.

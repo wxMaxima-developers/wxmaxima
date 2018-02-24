@@ -66,6 +66,7 @@ public:
   bool LoadSymbols();
 
   void AddSymbol(wxString fun, autoCompletionType type = command);
+  void AddSymbols(wxString xml);
 
   //! Replace the list of files in the directory the worksheet file is in to the demo files list
   void UpdateDemoFiles(wxString partial, wxString maximaDir);

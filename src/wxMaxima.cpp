@@ -1513,12 +1513,8 @@ void wxMaxima::ReadLoadSymbols(wxString &data)
   if (end != wxNOT_FOUND)
   {
     // Put the symbols into a separate string
-    wxString symbols = data.SubString(m_symbolsPrefix.Length(), end - 1);
-
-    // Send each symbol to the console
-    wxStringTokenizer templates(symbols, wxT("$"));
-    while (templates.HasMoreTokens())
-      m_console->AddSymbol(templates.GetNextToken());
+    wxString symbols = data.Left( end + m_symbolsSuffix.Length());
+      m_console->AddSymbols(symbols);
     
     // Remove the symbols from the data string
     data = data.Right(data.Length()-end-m_symbolsSuffix.Length());

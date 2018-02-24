@@ -1345,8 +1345,13 @@ public:
 
   bool Autocomplete(AutoComplete::autoCompletionType type = AutoComplete::command);
 
+  //! Add a symbol to the autocompletion list
   void AddSymbol(wxString fun, AutoComplete::autoCompletionType type = AutoComplete::command)
   { m_autocomplete.AddSymbol(fun, type); }
+
+  //! Add a xml-encoded list of symbols to the autocompletion list
+  void AddSymbols(wxString xml)
+  { m_autocomplete.AddSymbols(xml); }
 
   void SetActiveCellText(wxString text);
 
