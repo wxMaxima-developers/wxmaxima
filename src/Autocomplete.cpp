@@ -66,6 +66,7 @@ void AutoComplete::AddSymbols(wxString xml)
             AddSymbol(name, command);
           }
         }
+
         if (children->GetName() == wxT("template"))
         {
           wxXmlNode *val = children->GetChildren();
@@ -75,7 +76,17 @@ void AutoComplete::AddSymbols(wxString xml)
             AddSymbol(name, tmplte);
           }
         }
-      
+
+        if (children->GetName() == wxT("unit"))
+        {
+          wxXmlNode *val = children->GetChildren();
+          if(val)
+          {
+            wxString name = val->GetContent();
+            AddSymbol(name, unit);
+          }
+        }
+
         if (children->GetName() == wxT("value"))
         {
           wxXmlNode *val = children->GetChildren();

@@ -1787,8 +1787,8 @@
 (defun symbol-to-xml (s)
   (wxxml-fix-string (format nil "~a" (maybe-invert-string-case (symbol-name (stripdollar s))))))
 
-(defun print_units (s)
-  (format nil "<unit>~a</unit>" (symbol-to-xml s)))
+(defun print_unit (unit)
+  (format nil "<unit>~a</unit>" (symbol-to-xml unit)))
 
 (defun $print_function (fun)
   (let ((fun-name (symbol-to-xml (caar fun)))
@@ -1826,8 +1826,15 @@
 		   (if (eq (char (format nil "~a" key) 0) #\$ )
 		       (format t "~a" (print_value key))))
 		 *variable-initial-values*)
-	(format t "</wxxml-symbols>")
-  )
+
+	;; ezunits publishes all known units in a function.
+	;; Currently the following lines produce a warning, though, that
+	;; $known_units is undefined.
+;;	(if (boundp '$known_units)
+;;	    (no-warning
+;;	     (format t "~{~a~^$~}"
+;;		     (mapcar #'print_unit (cdr ($known_units))))))
+	(format t "</wxxml-symbols>"))
 
 ;;;
 ;;; Rewrite of the function load (maxima/src/mload.lisp)
@@ -1957,3 +1964,7 @@
        (simplify (mfunction-call $printf t '"~a;" $i)))
      (simplify (mfunction-call $printf t '"</slide></mth>")))
     ))
+
+;; Publish all new global variables maxima might contain to wxMaxima's
+;; autocompletion feature.
+(print_autocompletesymbols)

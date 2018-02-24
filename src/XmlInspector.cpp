@@ -30,9 +30,14 @@
 #include <wx/sizer.h>
 #include <wx/regex.h>
 
-XmlInspector::XmlInspector(wxWindow *parent, int id) : wxRichTextCtrl(parent, id, wxEmptyString, wxDefaultPosition,
-                                                                  wxDefaultSize, wxTE_READONLY | wxTE_RICH | wxHSCROLL |
-                                                                                 wxTE_MULTILINE)
+XmlInspector::XmlInspector(wxWindow *parent, int id) : wxRichTextCtrl(parent, id,
+                                                                      wxEmptyString,
+                                                                      wxDefaultPosition,
+                                                                      wxDefaultSize,
+                                                                      wxTE_READONLY |
+                                                                      wxTE_RICH |
+                                                                      wxHSCROLL |
+                                                                      wxTE_MULTILINE)
 {
   BeginSuppressUndo();
   Clear();
