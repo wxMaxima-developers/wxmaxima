@@ -1810,6 +1810,25 @@
     (format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>" (mapcar #'$print_function functs))
     (cons '(mlist simp) functs)))
 
+
+;; A function that determines all symbols for autocompletion
+(defun print_autocompletesymbols ()
+	(format t "<wxxml-symbols>")
+	;; Function names and rules
+	(format t "~{~a~^$~}"
+		(append (mapcar #'$print_function (cdr ($append $functions $macros)))
+			(mapcar #'print_value (cdr ($append $values $rules)))))
+	;; Idea from Robert Dodier:
+	;; Variables defined with mdef don't appear in $values nor do they in $myoptions
+	;; but they appear in *variable-initial-values*
+	(maphash (lambda (key val)
+		   (declare (ignore val))
+		   (if (eq (char (format nil "~a" key) 0) #\$ )
+		       (format t "~a" (print_value key))))
+		 *variable-initial-values*)
+	(format t "</wxxml-symbols>")
+  )
+
 ;;;
 ;;; Rewrite of the function load (maxima/src/mload.lisp)
 ;;; (displays functions and variable names after loading a Maxima package so the
@@ -1825,14 +1844,15 @@
      (case type
        (($maxima)
 	($batchload searched-for)
-	(format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>"
-		(append (mapcar #'$print_function (cdr ($append $functions $macros)))
-			(mapcar #'print_value (cdr ($append $values $myoptions $rules))))))
+	(print_autocompletesymbols)
+	)
        (($lisp $object)
 	;; do something about handling errors
 	;; during loading. Foobar fail act errors.
         (no-warning
-         (load-and-tell searched-for)))
+         (load-and-tell searched-for))
+	(print_autocompletesymbols)
+	)
        (t
 	(merror "Maxima bug: Unknown file type ~M" type)))
      searched-for)))
