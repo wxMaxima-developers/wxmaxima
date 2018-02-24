@@ -1787,6 +1787,9 @@
 (defun symbol-to-string (s)
   (maybe-invert-string-case (symbol-name (stripdollar s))))
 
+(defun unit-to-string (s)
+  (format nil "<unit>~a</unit>\~" (symbol-to-string s)))
+
 (defun $print_function (fun)
   (let ((fun-name (symbol-to-string (caar fun)))
 	(*print-circle* nil)
@@ -1821,7 +1824,9 @@
 	($batchload searched-for)
 	(format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>"
 		(append (mapcar #'$print_function (cdr ($append $functions $macros)))
-			(mapcar #'symbol-to-string (cdr $values)))))
+			(mapcar #'symbol-to-string (cdr (append $values $myoptions $rules)))
+			(if (boundp $known_units) ((mapcar #'unit-to-string (cdr ($known_units))))
+			)))
        (($lisp $object)
 	;; do something about handling errors
 	;; during loading. Foobar fail act errors.
