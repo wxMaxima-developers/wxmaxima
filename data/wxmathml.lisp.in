@@ -1821,7 +1821,7 @@
 	($batchload searched-for)
 	(format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>"
 		(append (mapcar #'$print_function (cdr ($append $functions $macros)))
-			(mapcar #'symbol-to-string (cdr $values)))))
+			(mapcar #'symbol-to-string (cdr ($append $values $myoptions $rules))))))
        (($lisp $object)
 	;; do something about handling errors
 	;; during loading. Foobar fail act errors.
