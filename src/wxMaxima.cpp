@@ -176,8 +176,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   m_fileSaved = true;
   m_printData = NULL;
 
-  m_variablesOK = false;
-
   m_htmlHelpInitialized = false;
   m_chmhelpFile = wxEmptyString;
 
@@ -641,13 +639,6 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
   wxString parenthesisError = GetUnmatchedParenthesisState(s,index);
   if (parenthesisError == wxEmptyString)
   {
-
-    if (!m_variablesOK)
-    {
-      m_variablesOK = true;
-      SetupVariables();
-    }
-
     s = m_console->UnicodeToMaxima(s);
 
     // If there is no working group and we still are trying to send something
@@ -754,167 +745,91 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     int charsRead = 1;
     // The memory we store new chars we receive from maxima in
     wxString newChars;
-    // while((m_client != NULL) && (m_client->IsOk()) &&
-    //       (m_client->IsData()) && (charsRead > 0))
-    //   {
-        // Add all the last uncompleted unicode char from the last data packet
-        // to the data buffer.
-//        for(unsigned int i = 0;i<m_uncompletedChars.GetDataLen();i++)
-//          m_packetFromMaxima[i] = ((char *)m_uncompletedChars.GetData())[i];
-//        m_uncompletedChars.Clear();
+    m_client->Read(m_packetFromMaxima, SOCKET_SIZE - 1);
 
-        // Read a data packet from maxima
-//        m_client->Read(&(m_packetFromMaxima[m_uncompletedChars.GetDataLen()]),
-//                       SOCKET_SIZE - m_uncompletedChars.GetDataLen());
-        m_client->Read(m_packetFromMaxima, SOCKET_SIZE - 1);
-
-        charsRead = m_client->LastCount();
+    charsRead = m_client->LastCount();
           
-        for(long int i = 0;i < charsRead; i++)
-        {
-          if (m_packetFromMaxima[i] == '\0')
-            m_packetFromMaxima[i] = ' ';
-        }
+    for(long int i = 0;i < charsRead; i++)
+    {
+      if (m_packetFromMaxima[i] == '\0')
+        m_packetFromMaxima[i] = ' ';
+    }
         
-        //         + m_uncompletedChars.GetDataLen();
+    // Don't open an assert window every single time maxima mixes UTF8 and the current
+    // codepage. 
+    wxLogStderr logStderr;
+    wxString packet = wxString::FromUTF8((char *)m_packetFromMaxima, charsRead);
+    newChars += packet;
+
+    if (IsPaneDisplayed(menu_pane_xmlInspector))
+      m_xmlInspector->Add_FromMaxima(newChars);
         
-        // // Does datapacked end with something that looks like being somewhere
-        // // inside an unicode char? (all bytes of a multibyte unicode char have
-        // // their MSB set.
-        // if(m_packetFromMaxima[charsRead-1] >= 128)
-        // {
-        //   // It did => Find the start of the unicode character m_inputBuffer ends with/in.
-        //   // Only the first byte of a multibyte unicode char has its two most significant
-        //   // bits set.
-        //   unsigned int bytesForLastChar = 0;
-        //   while(
-        //     (bytesForLastChar < 4) &&
-        //     (m_packetFromMaxima[charsRead-1] >= 16*(8)  ) &&
-        //     (m_packetFromMaxima[charsRead-1] <  16*(8+4)) &&
-        //     (charsRead > 0))
-        //     {
-        //       bytesForLastChar++;
-        //       charsRead--;
-        //     }
-
-        //   // Remove the 1st byte of our unicode byte from the input buffer, as
-        //   // well.
-        //   if(charsRead > 0)
-        //   {
-        //     bytesForLastChar++;
-        //     charsRead--;
-        //   }
-          
-        //   // If the char m_inputBuffer ends with is unicode its first byte tells
-        //   // us how many bytes this char is long:
-        //   //  - If the 1st 2 bits are set it is a two-byte UTF8 character
-        //   //  - If the 1st 3 bits are set it is a three-byte UTF8 character
-        //   //  - If the 1st 4 bits are set it is a four-byte UTF8 character
-        //   unsigned int lastCharSize = 0;
-        //   unsigned int firstbyte = m_packetFromMaxima[charsRead];
-        //   if(firstbyte > 16*(8+4+2+1))
-        //     lastCharSize = 4;
-        //   else
-        //   {
-        //     if(firstbyte > 16*(8+4+2))
-        //       lastCharSize = 3;
-        //     else
-        //       if(firstbyte > 16*(8+4))
-        //         lastCharSize = 2;
-        //   }
-
-        //   // If the unicode char the buffer ended with was complete we re- add it to the
-        //   // input buffer.
-        //   if(lastCharSize == bytesForLastChar)
-        //   {
-        //     charsRead += lastCharSize;
-        //     lastCharSize = 0;
-        //     bytesForLastChar = 0;
-        //   }
-
-        //   // If the unicode char the buffer ended with wasn't complete we add it to the
-        //   // buffer of uncomplete chars so this char is processed when the next package
-        //   // provides us with the remaining bits.
-        //   if (bytesForLastChar > 0)
-        //     m_uncompletedChars.AppendData(&(m_uncompletedChars[charsRead]),bytesForLastChar);
-        // }
-
-        // Don't open an assert window every single time maxima mixes UTF8 and the current
-        // codepage. 
-        wxLogStderr logStderr;
-        wxString packet = wxString::FromUTF8((char *)m_packetFromMaxima, charsRead);
-        newChars += packet;
-
-        if (IsPaneDisplayed(menu_pane_xmlInspector))
-          m_xmlInspector->Add_FromMaxima(newChars);
+    // This way we can avoid searching the whole string for a
+    // ending tag if we have received only a few bytes of the
+    // data between 2 tags
+    if(m_currentOutput != wxEmptyString)
+      m_currentOutputEnd = m_currentOutput.Right(MIN(30,m_currentOutput.Length())) + newChars;
+    else
+      m_currentOutputEnd = wxEmptyString;
         
-        // This way we can avoid searching the whole string for a
-        // ending tag if we have received only a few bytes of the
-        // data between 2 tags
-        if(m_currentOutput != wxEmptyString)
-          m_currentOutputEnd = m_currentOutput.Right(MIN(30,m_currentOutput.Length())) + newChars;
-        else
-          m_currentOutputEnd = wxEmptyString;
+    m_currentOutput += newChars;
         
-        m_currentOutput += newChars;
+    if (!m_dispReadOut &&
+        (m_currentOutput != wxT("\n")) &&
+        (m_currentOutput != wxT("<wxxml-symbols></wxxml-symbols>")))
+    {
+      StatusMaximaBusy(transferring);
+      m_dispReadOut = true;
+    }
         
-        if (!m_dispReadOut &&
-            (m_currentOutput != wxT("\n")) &&
-            (m_currentOutput != wxT("<wxxml-symbols></wxxml-symbols>")))
-        {
-          StatusMaximaBusy(transferring);
-          m_dispReadOut = true;
-        }
+    size_t length_old = -1;
         
-        size_t length_old = -1;
-        
-        while (length_old != m_currentOutput.Length())
-        {
-          if (m_currentOutput.StartsWith("\n<"))
-            m_currentOutput = m_currentOutput.Right(m_currentOutput.Length() - 1);
+    while (length_old != m_currentOutput.Length())
+    {
+      if (m_currentOutput.StartsWith("\n<"))
+        m_currentOutput = m_currentOutput.Right(m_currentOutput.Length() - 1);
           
-          length_old = m_currentOutput.Length();
+      length_old = m_currentOutput.Length();
           
           
-          // First read the prompt that tells us that maxima awaits the next command:
-          // If that is the case ReadPrompt() sends the next command to maxima and
-          // maxima can work while we interpret its output.
-          GroupCell *oldActiveCell = m_console->GetWorkingGroup();
-          ReadPrompt(m_currentOutput);
-          GroupCell *newActiveCell = m_console->GetWorkingGroup();
+      // First read the prompt that tells us that maxima awaits the next command:
+      // If that is the case ReadPrompt() sends the next command to maxima and
+      // maxima can work while we interpret its output.
+      GroupCell *oldActiveCell = m_console->GetWorkingGroup();
+      ReadPrompt(m_currentOutput);
+      GroupCell *newActiveCell = m_console->GetWorkingGroup();
           
-          // Temporarily switch to the WorkingGroup the output we don't have interpreted yet
-          // was for
-          if(newActiveCell != oldActiveCell)
-            m_console->m_cellPointers.SetWorkingGroup(oldActiveCell);
-          // Handle the <mth> tag that contains math output and sometimes text.
-          ReadMath(m_currentOutput);
+      // Temporarily switch to the WorkingGroup the output we don't have interpreted yet
+      // was for
+      if(newActiveCell != oldActiveCell)
+        m_console->m_cellPointers.SetWorkingGroup(oldActiveCell);
+      // Handle the <mth> tag that contains math output and sometimes text.
+      ReadMath(m_currentOutput);
           
-          // The following function calls each extract and remove one type of XML tag
-          // information from the beginning of the data string we got - but only do so
-          // after the closing tag has been transferred, as well.
-          ReadLoadSymbols(m_currentOutput);
+      // The following function calls each extract and remove one type of XML tag
+      // information from the beginning of the data string we got - but only do so
+      // after the closing tag has been transferred, as well.
+      ReadLoadSymbols(m_currentOutput);
 
-          // Let's see if maxima informs us about the values of variables
-          ReadVariables(m_currentOutput);
+      // Let's see if maxima informs us about the values of variables
+      ReadVariables(m_currentOutput);
 
-          // Handle the XML tag that contains Status bar updates
-          ReadStatusBar(m_currentOutput);
+      // Handle the XML tag that contains Status bar updates
+      ReadStatusBar(m_currentOutput);
           
-          // Handle text that isn't wrapped in a known tag
-          if (!m_first)
-            // Handle text that isn't XML output: Mostly Error messages or warnings.
-            ReadMiscText(m_currentOutput);
-          else
-            // This function determines the port maxima is running on from  the text
-            // maxima outputs at startup. This piece of text is afterwards discarded.
-            ReadFirstPrompt(m_currentOutput);
+      // Handle text that isn't wrapped in a known tag
+      if (!m_first)
+        // Handle text that isn't XML output: Mostly Error messages or warnings.
+        ReadMiscText(m_currentOutput);
+      else
+        // This function determines the port maxima is running on from  the text
+        // maxima outputs at startup. This piece of text is afterwards discarded.
+        ReadFirstPrompt(m_currentOutput);
           
-          // Switch to the WorkingGroup the next bunch of data is for.
-          if(newActiveCell != oldActiveCell)
-            m_console->m_cellPointers.SetWorkingGroup(newActiveCell);
-//        }
-      }
+      // Switch to the WorkingGroup the next bunch of data is for.
+      if(newActiveCell != oldActiveCell)
+        m_console->m_cellPointers.SetWorkingGroup(newActiveCell);
+    }
     break;
   }
   case wxSOCKET_LOST:
@@ -1093,7 +1008,6 @@ bool wxMaxima::StartMaxima(bool force)
     m_console->QuestionAnswered();
     m_console->m_cellPointers.SetWorkingGroup(NULL);
 
-    m_variablesOK = false;
     wxString command = GetCommand();
 
     if (command.Length() > 0)
@@ -1293,7 +1207,8 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   else
   {
     // Needed in order to make batch mode start
-    TryEvaluateNextInQueue();
+    if(m_evalOnStartup)
+      TryEvaluateNextInQueue();
   }
 }
 
@@ -2639,8 +2554,6 @@ void wxMaxima::SetupVariables()
     m_evalOnStartup = false;
     m_console->AddDocumentToEvaluationQueue();
   }
-
-  m_variablesOK = true;
 }
 
 ///--------------------------------------------------------------------------------
@@ -7402,13 +7315,6 @@ void wxMaxima::TryEvaluateNextInQueue()
       m_console->RequestRedraw();
       EvaluationQueueLength(0);
     }
-    return;
-  }
-
-  // Initialize maxima if necessary.
-  if (!m_variablesOK)
-  {
-    SetupVariables();
     return;
   }
 

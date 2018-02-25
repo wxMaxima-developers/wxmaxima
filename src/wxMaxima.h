@@ -609,7 +609,6 @@ protected:
   bool m_closing;
   wxString m_openFile;
   bool m_fileSaved;
-  bool m_variablesOK;
   wxString m_chmhelpFile;
   bool m_htmlHelpInitialized;
   wxString m_maximaVersion;
