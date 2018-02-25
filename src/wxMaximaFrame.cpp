@@ -1040,7 +1040,7 @@ m_listMenu->AppendSeparator();
                         _("Shows how many digits of a numbers are displayed"),
                         wxITEM_NORMAL);
   m_NumericMenu->AppendSeparator();
-  m_NumericMenu->Append(menu_engineeringFormat, _("Engineering format (12.1e6)"),
+  m_NumericMenu->Append(menu_engineeringFormat, _("Engineering format (12.1e6 etc.)"),
                         _("Print floating-point numbers with exponents dividable by 2"),
                         wxITEM_NORMAL);
   m_NumericMenu->Append(menu_engineeringFormatSetup, _("Setup the engineering format..."),

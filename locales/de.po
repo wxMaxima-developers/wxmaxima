@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-24 11:03+0100\n"
-"PO-Revision-Date: 2018-02-18 16:32+0100\n"
+"POT-Creation-Date: 2018-02-25 09:07+0100\n"
+"PO-Revision-Date: 2018-02-25 09:07+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -842,7 +842,7 @@ msgstr "Kursdiagramm"
 msgid "Browse"
 msgstr "Ordner Anzeigen"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:4834
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:4845
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 "Fehler: Textvervollständigung für eine unbekannte Kategorie aufgerufen."
@@ -1760,9 +1760,8 @@ msgid "Display time used for evaluation"
 msgstr "Zeige Zeit für die Auswertung an"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5859
-#, fuzzy
 msgid "Displayed Precision"
-msgstr "Anzeige von Gleichungen"
+msgstr "Zahl angezeigter Stellen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5538
 msgid "Divide"
@@ -1899,16 +1898,15 @@ msgid "Eliminate a variable from a system of equations"
 msgstr "Eliminiere eine Variable aus einem Gleichungssystem"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5873
-#, fuzzy
 msgid "Enable:"
-msgstr "Variable:"
+msgstr "Aktiviert:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1709
 msgid "End of proof"
 msgstr "q.e.d. (Beweisende)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1043
-msgid "Engineering format (12.1e6)"
+msgid "Engineering format (12.1e6 etc.)"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5879
@@ -3537,7 +3535,7 @@ msgstr "Langer Pfeil nach rechts"
 msgid "Lower bound:"
 msgstr "Untere Schranke:"
 
-#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:102
+#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:107
 msgid "MAXIMA RESPONSE:"
 msgstr "ANTWORT VON MAXIMA:"
 
@@ -3923,11 +3921,8 @@ msgid "Maximum displayed number of digits:"
 msgstr "Maximale angezeigte Zahl an Stellen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5876
-#, fuzzy
 msgid "Maximum number of digits to be displayed:"
-msgstr ""
-"Interner Fehler: Die Anzahl der Ziffern, die angezeigt werden soll, ist zu "
-"niedrig!"
+msgstr "Maximale Anzahl an anzuzeigenden Ziffern:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1502
 msgid "Mean Difference Test..."
@@ -4575,9 +4570,8 @@ msgid "Print floating-point numbers with exponents dividable by 2"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:789
-#, fuzzy
 msgid "Print scale:"
-msgstr "Dokumentskalierung:"
+msgstr "Skalierung für den Druck:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:813
 msgid "Print the cell brackets [drawn to their left]"
@@ -4714,14 +4708,12 @@ msgid "Restart maxima"
 msgstr "Neustart von Maxima"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1208
-#, fuzzy
 msgid "Restict Maximum size"
-msgstr "Maxima wird neu gestartet"
+msgstr "Begrenze maximale Größe"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1138
-#, fuzzy
 msgid "Restrict Maximum size"
-msgstr "Maxima wird neu gestartet"
+msgstr "Begrenze maximale Größe"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5097
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5124
@@ -4827,7 +4819,7 @@ msgstr "Lässt jedes Element durch eine Funktion"
 msgid "Russian"
 msgstr "Russisch"
 
-#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:78
+#: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:83
 msgid "SENT TO MAXIMA:"
 msgstr "AN MAXIMA GESENDET:"
 
@@ -5053,9 +5045,8 @@ msgid "Server started"
 msgstr "Server gestartet"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1039
-#, fuzzy
 msgid "Set &displayed Precision..."
-msgstr "Genauigkeit für als bigfloat deklarierte Fließkommazahlen setzen ..."
+msgstr "Anzahl &der angezeigten Stellen..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:571
 msgid "Set Zoom"
@@ -5203,9 +5194,8 @@ msgid "Show long expressions:"
 msgstr "Auch sehr lange Ausdrücke anzeigen:"
 
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:283
-#, fuzzy
 msgid "Show section numbers"
-msgstr "Zeige &Funktionen"
+msgstr "Zeige Kapitelnummern"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4341
 msgid "Show the definition of function:"
