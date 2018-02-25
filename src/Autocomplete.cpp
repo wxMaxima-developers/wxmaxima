@@ -4690,7 +4690,7 @@ bool AutoComplete::LoadSymbols()
     if(maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
     GetMacFiles userLispIterator (m_builtInLoadFiles);
-    wxDir maximauserfilesdir(m_configuration->m_dirStructure.MaximaUserFilesDir());
+    wxDir maximauserfilesdir(m_configuration->m_dirStructure.UserConfDir());
     if(maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
   }
@@ -4703,7 +4703,7 @@ bool AutoComplete::LoadSymbols()
     if(maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
     GetDemoFiles userLispIterator (m_builtInDemoFiles);
-    wxDir maximauserfilesdir(m_configuration->m_dirStructure.MaximaUserFilesDir());
+    wxDir maximauserfilesdir(m_configuration->m_dirStructure.UserConfDir());
     if(maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
   }

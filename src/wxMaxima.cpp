@@ -1579,6 +1579,12 @@ void wxMaxima::ReadVariables(wxString &data)
               value = valnode->GetContent();
             }
           }
+
+          if(bound)
+          {
+            if(name == "maxima_userdir")
+              m_console->m_configuration->m_dirStructure.UserConfDir(value);
+          }
           var = var->GetNext();
         }
         std::cerr<<name<<"="<<value<<"\n";

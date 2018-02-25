@@ -44,16 +44,19 @@
 */
 class Dirstructure
 {
+public:
+  //! The constructor
+  Dirstructure();
+  
 private:
   //! The directory all data is stored relative to.
   wxString ResourcesDir();
 
 public:
   //! The directory the user stores its data in.
-  wxString UserConfDir();
-
-  //! The directory maxima searches for user-specific data in.
-  wxString MaximaUserFilesDir();
+  wxString UserConfDir(){return m_userConfDir;}
+  //! Set the directory the user stores its data in.
+  void UserConfDir(wxString userConfDir){m_userConfDir = userConfDir + wxT("/");}
 
   //! The directory the application icon is stored in
   wxString AppIconDir();
@@ -65,7 +68,9 @@ public:
   wxString FontDir(){return DataDir()+wxT("/../fonts");}
 
   //! The directory the help file is stored in
-  wxString HelpDir();
+  wxString HelpDir(){return m_helpDir;}
+  //! Set the directory the help file is stored in
+  void HelpDir(wxString helpDir){m_helpDir = helpDir;}
 
   /*! The file private accellerator key information is stored in
 
@@ -115,6 +120,10 @@ public:
     To avoid triggering this bug we store the prefix here.
   */
   wxString Prefix();
+
+private:
+  wxString m_helpDir;
+  wxString m_userConfDir;
 };
 
 #endif // DIRSTRUCTURE_H

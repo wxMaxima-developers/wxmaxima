@@ -33,6 +33,36 @@
 #include <wx/filename.h>
 #include <wx/dir.h>
 
+Dirstructure::Dirstructure()
+{
+  m_helpDir = ResourcesDir();
+  if(wxDirExists(m_helpDir + wxT("/doc/wxmaxima")))
+    m_helpDir += wxT("/doc/wxmaxima");
+  
+  if(wxDirExists(m_helpDir + wxT("/help")))
+    m_helpDir += wxT("/help");
+  
+  if(wxDirExists(m_helpDir + wxT("/info")))
+    m_helpDir += wxT("/info");
+  
+  if(!wxGetEnv(wxT("MAXIMA_USERDIR"),&m_userConfDir))
+    m_userConfDir = wxGetHomeDir();
+  m_userConfDir += "/";
+  
+  
+#ifndef __WXMSW__
+  m_userConfDir += wxT(".");
+#endif
+  
+  m_userConfDir += wxT("maxima");
+  
+  if(!wxDirExists(m_userConfDir))
+    wxMkDir(m_userConfDir, wxS_DIR_DEFAULT);
+  
+  m_userConfDir += "/";
+
+}
+
 wxString Dirstructure::ResourcesDir()
 {
   // Our ressources dir is somewhere near to the dir the binary can be found.
@@ -75,31 +105,6 @@ wxString Dirstructure::ResourcesDir()
   return exe.GetPath();
 }
 
-wxString Dirstructure::UserConfDir()
-{
-  wxString retval;
-  if(!wxGetEnv(wxT("MAXIMA_USERDIR"),&retval))
-    retval = wxGetHomeDir();
-  return retval + wxString(wxFileName::GetPathSeparator());
-}
-
-wxString Dirstructure::MaximaUserFilesDir()
-{
-  wxString retval = UserConfDir();
-  
-#ifndef __WXMSW__
-  retval += wxT(".");
-#endif
-  
-  retval += wxT("maxima");
-  
-  if(!wxDirExists(retval))
-    wxMkDir(retval, wxS_DIR_DEFAULT);
-  
-  return retval += wxString(wxFileName::GetPathSeparator());
-}
-
-
 wxString Dirstructure::DataDir()
 {
   wxString dir = ResourcesDir();
@@ -107,21 +112,6 @@ wxString Dirstructure::DataDir()
     dir += wxT("/data");
   if(wxDirExists(dir + wxT("/wxMaxima")))
     dir += wxT("/wxMaxima");
-
-  return dir;
-}
-
-wxString Dirstructure::HelpDir()
-{
-  wxString dir = ResourcesDir();
-  if(wxDirExists(dir + wxT("/doc/wxmaxima")))
-    dir += wxT("/doc/wxmaxima");
-
-  if(wxDirExists(dir + wxT("/help")))
-    dir += wxT("/help");
-  
-  if(wxDirExists(dir + wxT("/info")))
-    dir += wxT("/info");
 
   return dir;
 }
