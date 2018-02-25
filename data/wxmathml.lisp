@@ -64,59 +64,6 @@
 (defun $wxstatusbar (status)
   (format t "<statusbar>~a</statusbar>~%" (wxxml-fix-string status)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; Communicate the contents of variables to wxMaxima
-(defun wx-print-variable (var)
-  (format t "<variable>")
-  (if (eq (char (format nil "~a" var) 0) #\$ )
-      (format t "<name>~a</name>" (symbol-to-xml var))
-      (format t "<name>~a</name>" (wxxml-fix-string (maybe-invert-string-case var))))
-  (format t "<value>~a</value>" (wxxml-fix-string(eval var)))
-  (format t "</variable>"))
-
-(defun wx-print-variables ()
-  (format t "<variables>")
-  (wx-print-variable '$maxima_userdir)
-;  (wx-print-variable '$maxima_tempdir)
-  (wx-print-variable *maxima-htmldir*)
-;  (wx-print-variable *maxima-topdir*)
-;  (wx-print-variable *maxima-demodir*)
-;  (wx-print-variable *maxima-sharedir*)
-  (format t "</variables>")
-)
-
-;; A function that allows to change maxima's current directory to the one
-;; the worksheet is in.
-(defun wx-cd (dir)
-  (when $wxchangedir
-    (let ((dir (cond ((pathnamep dir) dir)
-                     ((stringp dir)
-                      (make-pathname :directory (pathname-directory dir)
-				     :host (pathname-host dir)
-                                     :device (pathname-device dir)))
-                     (t (error "cd(dir): dir must be a string or pathname.")))))
-       #+allegro (excl:chdir dir)
-       #+clisp (ext:cd dir)
-       #+cmu (setf (ext:default-directory) dir)
-       #+cormanlisp (ccl:set-current-directory dir)
-       #+gcl (si::chdir dir)
-       #+lispworks (hcl:change-directory dir)
-       #+lucid (lcl:working-directory dir)
-       #+sbcl (sb-posix:chdir dir)
-       #+sbcl (setf *default-pathname-defaults* (sb-ext:native-pathname (format nil "~A~A" (sb-posix:getcwd) "/")))
-       #+ccl (ccl:cwd dir)
-       #+ecl (si::chdir dir)
-       ;;; Officially gcl supports (si:chdir dir), too. But the version
-       ;;; shipped with debian and ubuntu (at least in Feb 2017) doesn't.
-       #+gcl (xchdir dir)
-       #+gcl (setf *default-pathname-defaults* dir)
-
-       (namestring dir)
-       (wx-print-variables))))
-
-#+ccl (setf *print-circle* nil)
-
 
 ;;; Without this command encountering unicode characters might cause
 ;;; Maxima to stop responding on windows.
@@ -1897,26 +1844,30 @@
 ;;; Communication between wxMaxima and wxMaxima about variables and directories
 ;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Communicate the contents of variables to wxMaxima
 (defun wx-print-variable (var)
   (format t "<variable>")
-  (if (eq (char (format nil "~a" var) 0) #\$ )
-      (format t "<name>~a</name>" (symbol-to-xml var))
-      (format t "<name>~a</name>" (wxxml-fix-string (maybe-invert-string-case var))))
-  (format t "<value>~a</value>" (wxxml-fix-string(eval var)))
+  (format t "<name>~a</name>" (symbol-to-xml var))
+  (if (boundp var)
+      (format t "<value>~a</value>" (wxxml-fix-string(eval var))))
   (format t "</variable>"))
 
 (defun wx-print-variables ()
   (format t "<variables>")
-;  (wx-print-variable '$maxima_objdir)
-;  (wx-print-variable '$maxima_userdir)
-;  (wx-print-variable '$maxima_tempdir)
-;  (wx-print-variable *maxima-htmldir*)
-;  (wx-print-variable *maxima-topdir*)
-;  (wx-print-variable *maxima-demodir*)
-;  (wx-print-variable *maxima-sharedir*)
+  (wx-print-variable '$maxima_userdir)
+  (wx-print-variable '$maxima_tempdir)
+  (wx-print-variable '*maxima-htmldir*)
+;  (wx-print-variable '*maxima-topdir*)
+  (wx-print-variable '*maxima-demodir*)
+  (wx-print-variable '*maxima-sharedir*)
   (format t "</variables>")
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; A function that allows wxMaxima to set maxima's current directory to that
+;; of the worksheet.
 (defun wx-cd (dir)
   (when $wxchangedir
     (let ((dir (cond ((pathnamep dir) dir)
