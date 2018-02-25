@@ -40,7 +40,6 @@
 #include <wx/colordlg.h>
 #include <wx/settings.h>
 #include <wx/filename.h>
-#include "Dirstructure.h"
 #include "../art/config/images.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
@@ -653,9 +652,8 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   wxBoxSizer *vsizer_maximaStartup = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *vsizer_wxMaximaStartup = new wxBoxSizer(wxVERTICAL);
 
-  Dirstructure dirstruct;
   
-  m_startupFileName = dirstruct.MaximaUserFilesDir();
+  m_startupFileName = m_configuration->m_dirStructure.MaximaUserFilesDir();
   m_wxStartupFileName += m_startupFileName + wxT("wxmaxima-init.mac");
   m_startupFileName += wxT("maxima-init.mac");
 

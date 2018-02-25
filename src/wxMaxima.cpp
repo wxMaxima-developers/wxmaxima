@@ -53,7 +53,6 @@
 #include "EditorCell.h"
 #include "SlideShowCell.h"
 #include "PlotFormatWiz.h"
-#include "Dirstructure.h"
 #include "ActualValuesStorageWiz.h"
 #include "MaxSizeChooser.h"
 #include "ListSortWiz.h"
@@ -333,8 +332,6 @@ void wxMaxima::InitSession()
 
 void wxMaxima::FirstOutput(wxString s)
 {
-  Dirstructure dirstructure;
-
   int startMaxima = s.find(wxT("Maxima"), 5); // The first in s is wxMaxima version - skip it
   int startHTTP = s.find(wxT("http"), startMaxima);
   m_maximaVersion = s.SubString(startMaxima + 7, startHTTP - 1);
@@ -1469,10 +1466,20 @@ void wxMaxima::ReadStatusBar(wxString &data)
   int end;
   if ((end = FindTagEnd(data,sts)) != wxNOT_FOUND)
   {
-    wxString o = data.SubString(statusbarStart.Length(), end - 1);
-    SetStatusText(o, 0);
-    data = data.Right(data.Length()-end-sts.Length());
+    wxXmlDocument xmldoc;
+    wxString xml = data.Left( end + sts.Length());
+    wxStringInputStream xmlStream(xml);
+    xmldoc.Load(xmlStream, wxT("UTF-8"));
+    wxXmlNode *node = xmldoc.GetRoot();
+    if(node != NULL)
+    {
+      wxXmlNode *contents = node->GetChildren();
+      if(contents)
+        SetStatusText(contents->GetContent());
+    }
   }
+  // Remove the status bar info from the data string
+  data = data.Right(data.Length()-end-sts.Length());
 }
 
 /***
@@ -2544,8 +2551,8 @@ void wxMaxima::SetupVariables()
   SendMaxima(wxT(":lisp-quiet (setf $show_openplot t)\n"));
 
     wxString cmd;
-  Dirstructure dirstruct;
-  cmd = wxT(":lisp-quiet ($load \"") + dirstruct.DataDir() + wxT("/wxmathml.lisp\")\n");
+  cmd = wxT(":lisp-quiet ($load \"") + m_console->m_configuration->m_dirStructure.DataDir() +
+    wxT("/wxmathml.lisp\")\n");
     
 #if defined (__WXMAC__)
   wxString gnuplotbin(wxT("/Applications/Gnuplot.app/Contents/Resources/bin/gnuplot"));
@@ -2589,13 +2596,13 @@ void wxMaxima::SetupVariables()
 
   // A few variables for additional debug info in wxbuild_info();
   SendMaxima(wxString::Format(wxT(":lisp-quiet (setq wxArtDir \"%s\")\n"),
-                              EscapeForLisp(dirstruct.ArtDir())));
+                              EscapeForLisp(m_console->m_configuration->m_dirStructure.ArtDir())));
   SendMaxima(wxString::Format(wxT(":lisp-quiet (setq wxUserConfDir \"%s\")\n"),
-                              EscapeForLisp(dirstruct.UserConfDir())));
+                              EscapeForLisp(m_console->m_configuration->m_dirStructure.UserConfDir())));
   SendMaxima(wxString::Format(wxT(":lisp-quiet (setq wxHelpDir \"%s\")\n"),
-                              EscapeForLisp(dirstruct.HelpDir())));
+                              EscapeForLisp(m_console->m_configuration->m_dirStructure.HelpDir())));
   SendMaxima(wxString::Format(wxT(":lisp-quiet (setq wxMaximaLispLocation \"%s\")\n"),
-                              EscapeForLisp(dirstruct.MaximaLispLocation())));
+                              EscapeForLisp(m_console->m_configuration->m_dirStructure.MaximaLispLocation())));
 
   int defaultPlotWidth = 600;
   config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
@@ -2813,9 +2820,7 @@ void wxMaxima::ShowCHMHelp(wxString helpfile,wxString keyword)
 
 void wxMaxima::ShowWxMaximaHelp()
 {
-  Dirstructure dirstructure;
-
-  wxString htmldir = dirstructure.HelpDir();
+  wxString htmldir = m_console->m_configuration->m_dirStructure.HelpDir();
 
 #if CHM == true
   wxString helpfile = htmldir + wxT("/wxmaxima.chm");
@@ -2854,8 +2859,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   else
 #endif
   {
-    Dirstructure dirstructure;
-    wxString htmldir = dirstructure.HelpDir();
+    wxString htmldir = m_console->m_configuration->m_dirStructure.HelpDir();
     wxString wxMaximaHelpFile = htmldir;
     if(wxFileExists(htmldir + wxGetApp().m_locale.GetName()+ wxT("/wxmaxima.hhp")))
       wxMaximaHelpFile = htmldir + wxGetApp().m_locale.GetName() + wxT("/wxmaxima.hhp");

@@ -87,6 +87,7 @@
 class Configuration
 {
 public:
+  Dirstructure m_dirStructure;
   enum drawMode
   {
     ascii,              //!< Use ascii characters only

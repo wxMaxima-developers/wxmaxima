@@ -29,7 +29,6 @@
 #include "../art/toolbar/images.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
-#include "Dirstructure.h"
 #include "GroupCell.h"
 #include <wx/artprov.h>
 #include <wx/filename.h>

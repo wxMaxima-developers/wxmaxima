@@ -45,9 +45,27 @@
 (defvar $wxplot_pngcairo nil "Use gnuplot's pngcairo terminal for new plots?")
 (defmvar $wxplot_old_gnuplot nil)
 
-(defun $wxstatusbar (status)
-  (format t "<statusbar>~a</statusbar>~%" status))
 
+;; Escape all chars that need escaping in XML
+(defun wxxml-fix-string (x)
+  (if (stringp x)
+      (let* ((tmp-x (string-substitute "&amp;" #\& x))
+	     (tmp-x (string-substitute "&lt;" #\< tmp-x))
+	     (tmp-x (string-substitute "&gt;" #\> tmp-x))
+	     (tmp-x (string-substitute "&#13;" #\Return tmp-x))
+	     (tmp-x (string-substitute "&#13;" #\Linefeed tmp-x))
+	     (tmp-x (string-substitute "&#13;" #\Newline tmp-x)))
+	tmp-x)
+      x))
+
+;; Allow the user to communicate what to display in the statusbar whilst
+;; the current program is running
+(defun $wxstatusbar (status)
+  (format t "<statusbar>~a</statusbar>~%" (wxxml-fix-string status)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Communicate the contents of variables to wxMaxima
 (defun wx-print-variable (var)
   (format t "<variable><name>~a</name><value>~a</value></variable"
 	  var (eval var)))
@@ -58,6 +76,8 @@
   (format t "</variables>")
 )
 
+;; A function that allows to change maxima's current directory to the one
+;; the worksheet is in.
 (defun wx-cd (dir)
   (when $wxchangedir
     (let ((dir (cond ((pathnamep dir) dir)
@@ -183,17 +203,6 @@
 		   newstring
 		   (string-substitute newstring oldchar
 				      (subseq x (1+ matchpos))))))
-
-(defun wxxml-fix-string (x)
-  (if (stringp x)
-      (let* ((tmp-x (string-substitute "&amp;" #\& x))
-	     (tmp-x (string-substitute "&lt;" #\< tmp-x))
-	     (tmp-x (string-substitute "&gt;" #\> tmp-x))
-	     (tmp-x (string-substitute "&#13;" #\Return tmp-x))
-	     (tmp-x (string-substitute "&#13;" #\Linefeed tmp-x))
-	     (tmp-x (string-substitute "&#13;" #\Newline tmp-x)))
-	tmp-x)
-      x))
 
 ;;; First we have the functions which are called directly by wxxml and its
 ;;; descendants

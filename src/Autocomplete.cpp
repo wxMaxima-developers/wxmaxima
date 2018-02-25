@@ -34,9 +34,10 @@
 #include <wx/filename.h>
 #include <wx/xml/xml.h>
 
-AutoComplete::AutoComplete()
+AutoComplete::AutoComplete(Configuration *configuration)
 {
   wxASSERT(m_args.Compile(wxT("[[]<([^>]*)>[]]")));
+  m_configuration = configuration;
 }
 
 void AutoComplete::ClearWorksheetWords()
@@ -4658,9 +4659,7 @@ bool AutoComplete::LoadSymbols()
 
   /// Load private symbol list (do something different on Windows).
   wxString privateList;
-  Dirstructure dirstruct;
-
-  privateList = dirstruct.UserAutocompleteFile();
+  privateList = m_configuration->m_dirStructure.UserAutocompleteFile();
 
   if (wxFileExists(privateList))
   {
@@ -4685,13 +4684,13 @@ bool AutoComplete::LoadSymbols()
   // Prepare a list of all built-in loadable files of maxima.
   {
     GetMacFiles_includingSubdirs maximaLispIterator (m_builtInLoadFiles);
-    wxDir maximadir(dirstruct.MaximaLispLocation()+ "/share/");
+    wxDir maximadir(m_configuration->m_dirStructure.MaximaLispLocation()+ "/share/");
     if(!maximadir.IsOpened())
-      maximadir.Open(dirstruct.MaximaLispLocation());
+      maximadir.Open(m_configuration->m_dirStructure.MaximaLispLocation());
     if(maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
     GetMacFiles userLispIterator (m_builtInLoadFiles);
-    wxDir maximauserfilesdir(dirstruct.MaximaUserFilesDir());
+    wxDir maximauserfilesdir(m_configuration->m_dirStructure.MaximaUserFilesDir());
     if(maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
   }
@@ -4700,11 +4699,11 @@ bool AutoComplete::LoadSymbols()
   // Prepare a list of all built-in demos of maxima.
   {
     GetDemoFiles_includingSubdirs maximaLispIterator (m_builtInDemoFiles);
-    wxDir maximadir(dirstruct.MaximaLispLocation());
+    wxDir maximadir(m_configuration->m_dirStructure.MaximaLispLocation());
     if(maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
     GetDemoFiles userLispIterator (m_builtInDemoFiles);
-    wxDir maximauserfilesdir(dirstruct.MaximaUserFilesDir());
+    wxDir maximauserfilesdir(m_configuration->m_dirStructure.MaximaUserFilesDir());
     if(maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
   }

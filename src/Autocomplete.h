@@ -34,7 +34,7 @@
 #include <wx/arrstr.h>
 #include <wx/regex.h>
 #include <wx/filename.h>
-#include "Dirstructure.h"
+#include "Configuration.h"
 
 /* The autocompletion logic
 
@@ -61,8 +61,10 @@ public:
     unit    //! Unit names. \attention Must be the last entry in this enum
   };
 
-  AutoComplete();
+  AutoComplete(Configuration *configuration);
 
+  Configuration *m_configuration;
+  
   bool LoadSymbols();
 
   void AddSymbol(wxString fun, autoCompletionType type = command);

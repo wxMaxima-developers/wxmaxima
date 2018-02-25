@@ -563,7 +563,7 @@ private:
   wxBitmap m_memory;
   //! True if no changes have to be saved.
   bool m_saved;
-  AutoComplete m_autocomplete;
+  AutoComplete *m_autocomplete;
   wxArrayString m_completions;
   bool m_autocompleteTemplates;
   AutocompletePopup *m_autocompletePopup;
@@ -1341,17 +1341,17 @@ public:
   wxString GetOutputAboveCaret();
 
   bool LoadSymbols()
-  { return m_autocomplete.LoadSymbols(); }
+  { return m_autocomplete->LoadSymbols(); }
 
   bool Autocomplete(AutoComplete::autoCompletionType type = AutoComplete::command);
 
   //! Add a symbol to the autocompletion list
   void AddSymbol(wxString fun, AutoComplete::autoCompletionType type = AutoComplete::command)
-  { m_autocomplete.AddSymbol(fun, type); }
+  { m_autocomplete->AddSymbol(fun, type); }
 
   //! Add a xml-encoded list of symbols to the autocompletion list
   void AddSymbols(wxString xml)
-  { m_autocomplete.AddSymbols(xml); }
+  { m_autocomplete->AddSymbols(xml); }
 
   void SetActiveCellText(wxString text);
 
