@@ -1587,7 +1587,6 @@ void wxMaxima::ReadVariables(wxString &data)
           }
           var = var->GetNext();
         }
-        std::cerr<<name<<"="<<value<<"\n";
         vars = vars->GetNext();
       }
     }
