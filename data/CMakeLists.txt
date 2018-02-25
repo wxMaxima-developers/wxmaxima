@@ -1,5 +1,3 @@
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmathml.lisp.in ${CMAKE_CURRENT_BINARY_DIR}/wxmathml.lisp)
-
 if(APPLE)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in ${CMAKE_CURRENT_BINARY_DIR}/Info.plist)
 endif()

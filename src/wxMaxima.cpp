@@ -1531,7 +1531,7 @@ void wxMaxima::ReadLoadSymbols(wxString &data)
   {
     // Put the symbols into a separate string
     wxString symbols = data.Left( end + m_symbolsSuffix.Length());
-      m_console->AddSymbols(symbols);
+    m_console->AddSymbols(symbols);
     
     // Remove the symbols from the data string
     data = data.Right(data.Length()-end-m_symbolsSuffix.Length());
@@ -2559,7 +2559,7 @@ void wxMaxima::SetupVariables()
     wxString cmd;
   cmd = wxT(":lisp-quiet ($load \"") + m_console->m_configuration->m_dirStructure.DataDir() +
     wxT("/wxmathml.lisp\")\n");
-    
+  
 #if defined (__WXMAC__)
   wxString gnuplotbin(wxT("/Applications/Gnuplot.app/Contents/Resources/bin/gnuplot"));
   if (wxFileExists(gnuplotbin))
@@ -2567,6 +2567,16 @@ void wxMaxima::SetupVariables()
 #endif
   cmd.Replace(wxT("\\"),wxT("/"));
   SendMaxima(cmd);
+
+  wxString maximaversion_lisp(wxT(VERSION));
+  maximaversion_lisp.Replace("\\","\\\\");
+  maximaversion_lisp.Replace("\"","\\\"");
+
+  SendMaxima(wxString(wxT(":lisp-quiet (setq $wxmaximaversion \"")) + 
+             maximaversion_lisp + "\")\n");  
+  SendMaxima(wxString(wxT(":lisp-quiet ($put \'$wxmaxima (read-wxmaxima-version \"")) +
+             maximaversion_lisp +
+             wxT("\") '$version)\n"));
 
   wxConfigBase *config = wxConfig::Get();
 

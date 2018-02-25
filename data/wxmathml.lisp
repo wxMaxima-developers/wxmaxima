@@ -40,6 +40,7 @@
 (defvar wxMaximaLispLocation "" "The location wxMaxima searches for lisp files in")
 (defvar $wxplot_size '((mlist simp) 800 600) "The size of new plots")
 (defvar $wxchangedir t "Change the PWD of maxima to the current document's path?")
+(defvar $wxmaximaversion t "The wxMaxima version")
 (defvar $wxsubscripts t
   "Recognize TeX-style subscripts")
 (defvar $wxplot_pngcairo nil "Use gnuplot's pngcairo terminal for new plots?")
@@ -67,12 +68,21 @@
 ;;;
 ;;; Communicate the contents of variables to wxMaxima
 (defun wx-print-variable (var)
-  (format t "<variable><name>~a</name><value>~a</value></variable"
-	  var (eval var)))
+  (format t "<variable>")
+  (if (eq (char (format nil "~a" var) 0) #\$ )
+      (format t "<name>~a</name>" (symbol-to-xml var))
+      (format t "<name>~a</name>" (wxxml-fix-string (maybe-invert-string-case var))))
+  (format t "<value>~a</value>" (wxxml-fix-string(eval var)))
+  (format t "</variable>"))
 
 (defun wx-print-variables ()
   (format t "<variables>")
-  (wx-print-variable 'wxMaximaLispLocation)
+  (wx-print-variable '$maxima_userdir)
+;  (wx-print-variable '$maxima_tempdir)
+  (wx-print-variable *maxima-htmldir*)
+;  (wx-print-variable *maxima-topdir*)
+;  (wx-print-variable *maxima-demodir*)
+;  (wx-print-variable *maxima-sharedir*)
   (format t "</variables>")
 )
 
@@ -131,8 +141,6 @@
          (rest (subseq v (1+ d2))))
     (list '(mlist simp) (parse-integer year) (parse-integer month) rest)))
 
-($put '$wxmaxima (read-wxmaxima-version "@PACKAGE_VERSION@") '$version)
-
 (defun $wxbuild_info ()
   (let ((year (sixth cl-user:*maxima-build-time*))
         (month (fifth cl-user:*maxima-build-time*))
@@ -140,7 +148,7 @@
         (hour (third cl-user:*maxima-build-time*))
         (minute (second cl-user:*maxima-build-time*))
         (seconds (first cl-user:*maxima-build-time*)))
-    (format t "wxMaxima version: ~a~%" "@VERSION@")
+    (format t "wxMaxima version: ~a~%" $wxmaximaversion)
     (format t "Maxima version: ~a~%" *autoconf-version*)
     (format t "Maxima build date: ~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d~%"
             year month day hour minute seconds)
@@ -1890,15 +1898,22 @@
 ;;;
 
 (defun wx-print-variable (var)
-  (format t "<variable><name>~a</name>" (symbol-to-xml var))
+  (format t "<variable>")
+  (if (eq (char (format nil "~a" var) 0) #\$ )
+      (format t "<name>~a</name>" (symbol-to-xml var))
+      (format t "<name>~a</name>" (wxxml-fix-string (maybe-invert-string-case var))))
   (format t "<value>~a</value>" (wxxml-fix-string(eval var)))
   (format t "</variable>"))
 
 (defun wx-print-variables ()
   (format t "<variables>")
-  (wx-print-variable '$maxima_objdir)
-  (wx-print-variable '$maxima_userdir)
-  (wx-print-variable '$maxima_tempdir)
+;  (wx-print-variable '$maxima_objdir)
+;  (wx-print-variable '$maxima_userdir)
+;  (wx-print-variable '$maxima_tempdir)
+;  (wx-print-variable *maxima-htmldir*)
+;  (wx-print-variable *maxima-topdir*)
+;  (wx-print-variable *maxima-demodir*)
+;  (wx-print-variable *maxima-sharedir*)
   (format t "</variables>")
 )
 
