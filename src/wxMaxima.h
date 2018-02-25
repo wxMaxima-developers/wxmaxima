@@ -471,6 +471,10 @@ protected:
    */
   void ReadLoadSymbols(wxString &data);
 
+    /*! Reads the variable values maxima advertises to us
+   */
+  void ReadVariables(wxString &data);
+
 #ifndef __WXMSW__
 
   //! reads the output the maxima command sends to stdout
@@ -588,6 +592,10 @@ protected:
   wxString m_promptPrefix;
   //! The marker for the end of a input prompt
   wxString m_promptSuffix;
+  //! The marker for the start of a variables section
+  wxString m_variablesPrefix;
+  //! The marker for the end of a variables section
+  wxString m_variablesSuffix;
   //! The marker for the start of a list of autocompletion templates
   wxString m_symbolsPrefix;
   //! The marker for the end of a list of autocompletion templates

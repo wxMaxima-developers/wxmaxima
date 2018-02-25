@@ -162,6 +162,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
 
   m_symbolsPrefix = wxT("<wxxml-symbols>");
   m_symbolsSuffix = wxT("</wxxml-symbols>");
+  m_variablesPrefix = wxT("<variables>");
+  m_variablesSuffix = wxT("</variables>");
   m_firstPrompt = wxT("(%i1) ");
 
   m_client = NULL;
@@ -895,7 +897,10 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
           // information from the beginning of the data string we got - but only do so
           // after the closing tag has been transferred, as well.
           ReadLoadSymbols(m_currentOutput);
-          
+
+          // Let's see if maxima informs us about the values of variables
+          ReadVariables(m_currentOutput);
+
           // Handle the XML tag that contains Status bar updates
           ReadStatusBar(m_currentOutput);
           
@@ -1308,12 +1313,15 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
     return 0;
   if(data.StartsWith(m_symbolsPrefix))
     return 0;
+  if(data.StartsWith(m_variablesPrefix))
+    return 0;
   
   int mthpos = data.Find("<mth>");
   int lblpos = data.Find("<lbl>");
   int statpos = data.Find("<statusbar>");
   int prmptpos = data.Find(m_promptPrefix);
   int symbolspos = data.Find(m_symbolsPrefix);
+  int variablespos = data.Find(m_variablesPrefix);
 
   int tagPos = data.Length();
   if ((mthpos != wxNOT_FOUND) && (mthpos < tagPos))
@@ -1328,6 +1336,8 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
     tagPos = prmptpos;
   if ((tagPos == wxNOT_FOUND) || ((symbolspos != wxNOT_FOUND) && (symbolspos < tagPos)))
     tagPos = symbolspos;
+  if ((tagPos == wxNOT_FOUND) || ((variablespos != wxNOT_FOUND) && (variablespos < tagPos)))
+    tagPos = variablespos;
   return tagPos;
 }
 
@@ -1518,6 +1528,59 @@ void wxMaxima::ReadLoadSymbols(wxString &data)
     
     // Remove the symbols from the data string
     data = data.Right(data.Length()-end-m_symbolsSuffix.Length());
+  }
+}
+
+void wxMaxima::ReadVariables(wxString &data)
+{
+  if (!data.StartsWith(m_variablesPrefix))
+    return;
+
+  int end = FindTagEnd(data, m_variablesSuffix);
+
+  if (end != wxNOT_FOUND)
+  {
+    wxXmlDocument xmldoc;
+    wxString xml = data.Left( end + m_variablesSuffix.Length());
+    wxStringInputStream xmlStream(xml);
+    xmldoc.Load(xmlStream, wxT("UTF-8"));
+    wxXmlNode *node = xmldoc.GetRoot();
+    if(node != NULL)
+    {
+      wxXmlNode *vars = node->GetChildren();
+      while (vars != NULL)
+      {
+        wxXmlNode *var = vars->GetChildren();
+
+        wxString name;
+        wxString value;
+        bool bound = false;
+        while(var != NULL)
+        {
+          if(var->GetName() == wxT("name"))
+          {
+            wxXmlNode *namenode = var->GetChildren();
+            if(namenode)
+              name = namenode->GetContent();
+          }
+          if(var->GetName() == wxT("value"))
+          {
+            wxXmlNode *valnode = var->GetChildren();
+            if(valnode)
+            {
+              bound = true;
+              value = valnode->GetContent();
+            }
+          }
+          var = var->GetNext();
+        }
+        std::cerr<<name<<"="<<value<<"\n";
+        vars = vars->GetNext();
+      }
+    }
+    
+    // Remove the symbols from the data string
+    data = data.Right(data.Length()-end-m_variablesSuffix.Length());
   }
 }
 
