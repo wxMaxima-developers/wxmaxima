@@ -123,6 +123,7 @@ bool AutoComplete::LoadSymbols()
   wxString line;
 
   // Add maxima functions
+  m_wordList[command].Add("pathname_name"); // FUNCTION
   m_wordList[command].Add("fast_linsolve"); // FUNCTION
   m_wordList[tmplte ].Add("fast_linsolve([<expr_1>, ..., <expr_m>], [<x_1>, ..., <x_n>])"); // OPTION
   m_wordList[command].Add("grobner_basis"); // FUNCTION
