@@ -330,14 +330,6 @@ void wxMaxima::InitSession()
 
 void wxMaxima::FirstOutput(wxString s)
 {
-  int startMaxima = s.find(wxT("Maxima"), 5); // The first in s is wxMaxima version - skip it
-  int startHTTP = s.find(wxT("http"), startMaxima);
-  m_maximaVersion = s.SubString(startMaxima + 7, startHTTP - 1);
-
-  wxRegEx lisp(wxT("[u|U]sing Lisp ([^\n]*)\n"));
-  if (lisp.Matches(s))
-    m_lispVersion = lisp.GetMatch(s, 1);
-
   m_lastPrompt = wxT("(%i1) ");
 
   /// READ FUNCTIONS FOR AUTOCOMPLETION
@@ -1492,9 +1484,18 @@ void wxMaxima::ReadVariables(wxString &data)
 
           if(bound)
           {
+            std::cerr<<"Name="<<name<<", Value=" <<value<<"\n";
             if(name == "maxima_userdir")
               m_console->m_configuration->m_dirStructure.UserConfDir(value);
-          }
+            if(name == "*autoconf-version*")
+              m_maximaVersion = value;
+            if(name == "*autoconf-host*")
+              m_maximaArch = value;
+            if(name == "*lisp-name*")
+              m_lispType = value;
+            if(name == "*lisp-version*")
+              m_lispVersion = value;
+         }
           var = var->GetNext();
         }
         vars = vars->GetNext();
@@ -2448,14 +2449,14 @@ void wxMaxima::SetupVariables()
   cmd.Replace(wxT("\\"),wxT("/"));
   SendMaxima(cmd);
 
-  wxString maximaversion_lisp(wxT(VERSION));
-  maximaversion_lisp.Replace("\\","\\\\");
-  maximaversion_lisp.Replace("\"","\\\"");
+  wxString wxmaximaversion_lisp(wxT(VERSION));
+  wxmaximaversion_lisp.Replace("\\","\\\\");
+  wxmaximaversion_lisp.Replace("\"","\\\"");
 
   SendMaxima(wxString(wxT(":lisp-quiet (setq $wxmaximaversion \"")) + 
-             maximaversion_lisp + "\")\n");  
+             wxmaximaversion_lisp + "\")\n");  
   SendMaxima(wxString(wxT(":lisp-quiet ($put \'$wxmaxima (read-wxmaxima-version \"")) +
-             maximaversion_lisp +
+             wxmaximaversion_lisp +
              wxT("\") '$version)\n"));
 
   wxConfigBase *config = wxConfig::Get();
@@ -6038,12 +6039,13 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
         _("no")
   #endif
         );
+
       if (m_maximaVersion != wxEmptyString)
-        description += _("\nMaxima version: ") + m_maximaVersion;
+        description += _("\nMaxima version: ") + m_maximaVersion + " ("+m_maximaArch+")";
       else
         description += _("\nNot connected.");
       if (m_lispVersion != wxEmptyString)
-        description += _("\nLisp: ") + m_lispVersion;
+        description += _("\nLisp: ") + m_lispType + " " + m_lispVersion;
 
       info.SetIcon(wxMaximaIcon());
       info.SetDescription(description);
@@ -6106,11 +6108,11 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       wxString description;
 
       if (m_maximaVersion != wxEmptyString)
-        description += _("Maxima version: ") + m_maximaVersion;
+        description += _("Maxima version: ") + m_maximaVersion + " ("+m_maximaArch+")";
       else
         description += _("Not connected.");
       if (m_lispVersion != wxEmptyString)
-        description += _("<br>Lisp: ") + m_lispVersion;
+        description += _("<br>Lisp: ") + m_lispType + " " + m_lispVersion;
 
       MyAboutDialog dlg(this, wxID_ANY, wxString(_("About")), description);
       dlg.Center();
