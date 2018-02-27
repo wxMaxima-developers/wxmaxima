@@ -906,9 +906,6 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_client->SetEventHandler(*this, socket_client_id);
       m_client->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
       m_client->Notify(true);
-#ifndef __WXMSW__
-      ReadProcessOutput();
-#endif
       SetupVariables();
     }
       break;
@@ -1168,7 +1165,6 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
 
 //  m_console->m_cellPointers.m_currentTextCell = NULL;
 
-#if defined(__WXMSW__)
   int start = 0;
   start = data.Find(wxT("Maxima "));
   if (start == wxNOT_FOUND)
@@ -1177,7 +1173,6 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
               wxT(GITVERSION)
               wxT(" http://andrejv.github.io/wxmaxima/\n") +
               data.SubString(start, data.Length() - 1));
-#endif // __WXMSW__
 
   // Wait for a line maxima informs us about it's process id in.
   int s = data.Find(wxT("pid=")) + 4;
@@ -2422,35 +2417,6 @@ GroupCell *wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfil
   }
   return tree;
 }
-
-#ifndef __WXMSW__
-
-void wxMaxima::ReadProcessOutput()
-{
-  // If there is no process we can already return from this function.
-  if (m_process == NULL)
-    return;
-
-  // If there is no stdin from maxima we can return from this function, too.
-  if (m_maximaStdout == NULL)
-    return;
-
-  wxString o;
-
-  while (m_process->IsInputAvailable())
-    o += m_maximaStdout->GetC();
-
-  int st = o.Find(wxT("Maxima"));
-  if (st == -1)
-    st = 0;
-
-  FirstOutput(wxT("wxMaxima ")
-                      wxT(GITVERSION)
-                      wxT(" http://andrejv.github.io/wxmaxima/\n") +
-              o.SubString(st, o.Length() - 1));
-}
-
-#endif
 
 wxString wxMaxima::EscapeForLisp(wxString str)
 {
