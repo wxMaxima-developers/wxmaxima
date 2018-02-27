@@ -7429,6 +7429,8 @@ void wxMaxima::TryEvaluateNextInQueue()
       cell->SetType(MC_TYPE_ERROR);
       cell->SetGroup(tmp);
       tmp->SetOutput(cell);
+      tmp->ResetSize();
+      tmp->Recalculate();
       m_console->Recalculate();
       //m_console->RecalculateForce();
       tmp->GetInput()->SetCaretPosition(index);
