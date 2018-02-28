@@ -835,13 +835,11 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
                           "Trying to restart Maxima.\n"),
                       MC_TYPE_ERROR);
         m_unsuccessfullConnectionAttempts++;
-        m_console->m_evaluationQueue.Clear();
         StartMaxima(true);
       }
       m_console->m_evaluationQueue.Clear();
       StartMaxima(true);
     }
-    m_console->m_evaluationQueue.Clear();
     // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
     break;
@@ -1033,12 +1031,15 @@ void wxMaxima::KillMaxima()
   m_configCommands = wxEmptyString;
   // The new maxima process will be in its initial condition => mark it as such.
   m_hasEvaluatedCells = false;
+
+  m_console->m_cellPointers.SetWorkingGroup(NULL);
+  m_console->m_evaluationQueue.Clear();
+  EvaluationQueueLength(0);
   
   // We start checking for maximas output again as soon as we send some data to the program.
   m_statusBar->SetMaximaCPUPercentage(0);
   m_CWD = wxEmptyString;
   m_console->QuestionAnswered();
-  m_console->m_cellPointers.SetWorkingGroup(NULL);
   m_currentOutput = wxEmptyString;
   // If we did close maxima by hand we already might have a new process
   // and therefore invalidate the wrong process in this step
@@ -1449,7 +1450,6 @@ void wxMaxima::ReadVariables(wxString &data)
 
           if(bound)
           {
-            std::cerr<<"Name="<<name<<", Value=" <<value<<"\n";
             if(name == "maxima_userdir")
               m_console->m_configuration->m_dirStructure.UserConfDir(value);
             if(name == "*autoconf-version*")
