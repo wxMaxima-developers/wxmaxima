@@ -222,16 +222,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
 
 wxMaxima::~wxMaxima()
 {
-  if (m_client != NULL)
-    m_client->Destroy();
-  m_client = NULL;
-
-  if (m_process)
-    m_process->Detach();
-
-  m_process = NULL;
-  m_maximaStdout = NULL;
-  m_maximaStderr = NULL;
+  KillMaxima();
 
   if(m_packetFromMaxima != NULL)
     delete [] m_packetFromMaxima;
@@ -831,21 +822,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     m_console->m_cellPointers.SetWorkingGroup(NULL);
     m_console->SetSelection(NULL);
     m_console->SetActiveCell(NULL);
-    m_pid = -1;
-    if (m_client != NULL)
-      m_client->Destroy();
-    m_client = NULL;
-    // If we did close maxima by hand we already might have a new process
-    // and therefore invalidate the wrong process in this step
-    if (!m_closing)
-    {
-      m_process = NULL;
-      m_maximaStdout = NULL;
-      m_maximaStderr = NULL;
-    }
-    m_isConnected = false;
-    m_currentOutput = wxEmptyString;
-    m_console->QuestionAnswered();
+    KillMaxima();
     if (!m_closing)
     {
       if (m_unsuccessfullConnectionAttempts > 0)
@@ -979,23 +956,9 @@ bool wxMaxima::StartMaxima(bool force)
   // order.
   if ((m_process == NULL) || (m_hasEvaluatedCells) || force)
   {
-    m_configCommands = wxEmptyString;
-    // The new maxima process will be in its initial condition => mark it as such.
-    m_hasEvaluatedCells = false;
-
-    // We start checking for maximas output again as soon as we send some data to the program.
-    m_statusBar->SetMaximaCPUPercentage(0);
+    m_closing = true;
+    KillMaxima();
     m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
-    m_CWD = wxEmptyString;
-    if (m_isConnected)
-    {
-      KillMaxima();
-      m_closing = true;
-      m_currentOutput = wxEmptyString;
-    }
-
-    m_console->QuestionAnswered();
-    m_console->m_cellPointers.SetWorkingGroup(NULL);
 
     wxString command = GetCommand();
 
@@ -1067,21 +1030,34 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 
 void wxMaxima::KillMaxima()
 {
+  m_configCommands = wxEmptyString;
+  // The new maxima process will be in its initial condition => mark it as such.
+  m_hasEvaluatedCells = false;
+  
+  // We start checking for maximas output again as soon as we send some data to the program.
+  m_statusBar->SetMaximaCPUPercentage(0);
+  m_CWD = wxEmptyString;
+  m_console->QuestionAnswered();
+  m_console->m_cellPointers.SetWorkingGroup(NULL);
+  m_currentOutput = wxEmptyString;
+  // If we did close maxima by hand we already might have a new process
+  // and therefore invalidate the wrong process in this step
   if (m_process)
-  {
     m_process->Detach();
-    m_maximaStdout = NULL;
-    m_maximaStderr = NULL;
-    m_process = NULL;
-  }
-
+  m_process = NULL;
+  m_maximaStdout = NULL;
+  m_maximaStderr = NULL;
+  
   if (m_pid <= 0)
   {
-    if (m_inLispMode)
-      SendMaxima(wxT("($quit)"));
-    else
-      SendMaxima(wxT("quit();"));
-    return;
+    if(m_client)
+    {
+      if (m_inLispMode)
+        SendMaxima(wxT("($quit)"));
+      else
+        SendMaxima(wxT("quit();"));
+      return;
+    }
   }
   else
     wxProcess::Kill(m_pid, wxSIGKILL);
@@ -1090,11 +1066,7 @@ void wxMaxima::KillMaxima()
     m_client->Close();
   m_client = NULL;
   m_isConnected = false;
-  m_process = NULL;
-  m_maximaStdout = NULL;
-  m_maximaStderr = NULL;
-  m_currentOutput = wxEmptyString;
-  m_console->QuestionAnswered();
+  m_pid = -1;
 }
 
 void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
@@ -1123,16 +1095,9 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
 
 void wxMaxima::CleanUp()
 {
-  m_console->QuestionAnswered();
-  m_currentOutput = wxEmptyString;
   if (m_isConnected)
     KillMaxima();
-  if (m_client)
-  {
-    m_client->Notify(false);
-    m_client->Destroy();
-    m_client = NULL;
-  }
+
   if (m_isRunning)
   {
     if (m_server)
