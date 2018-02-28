@@ -728,22 +728,26 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     int charsRead = 1;
     // The memory we store new chars we receive from maxima in
     wxString newChars;
-    m_client->Read(m_packetFromMaxima, SOCKET_SIZE - 1);
 
-    charsRead = m_client->LastCount();
-          
-    for(long int i = 0;i < charsRead; i++)
+    do
     {
-      if (m_packetFromMaxima[i] == '\0')
-        m_packetFromMaxima[i] = ' ';
-    }
-        
-    // Don't open an assert window every single time maxima mixes UTF8 and the current
-    // codepage. 
-    wxLogStderr logStderr;
-    wxString packet = wxString::FromUTF8((char *)m_packetFromMaxima, charsRead);
-    newChars += packet;
-
+      if(m_client->IsData())
+        m_client->Read(m_packetFromMaxima, SOCKET_SIZE - 1);
+      
+      charsRead = m_client->LastCount();
+      
+      for(long int i = 0;i < charsRead; i++)
+      {
+        if (m_packetFromMaxima[i] == '\0')
+          m_packetFromMaxima[i] = ' ';
+      }
+      
+      // Don't open an assert window every single time maxima mixes UTF8 and the current
+      // codepage. 
+      wxLogStderr logStderr;
+      wxString packet = wxString::FromUTF8((char *)m_packetFromMaxima, charsRead);
+      newChars += packet;
+    } while ((charsRead > 0) && (m_client->IsData()));
     if (IsPaneDisplayed(menu_pane_xmlInspector))
       m_xmlInspector->Add_FromMaxima(newChars);
         
@@ -756,7 +760,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
       m_currentOutputEnd = wxEmptyString;
         
     m_currentOutput += newChars;
-        
+
     if (!m_dispReadOut &&
         (m_currentOutput != wxT("\n")) &&
         (m_currentOutput != wxT("<wxxml-symbols></wxxml-symbols>")))
@@ -814,7 +818,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
         m_console->m_cellPointers.SetWorkingGroup(newActiveCell);
     }
     break;
-  }
+    }
   case wxSOCKET_LOST:
   {
     m_statusBar->NetworkStatus(StatusBar::offline);
@@ -870,10 +874,14 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_currentOutput = wxEmptyString;
       m_isConnected = true;
       m_client = m_server->Accept(false);
+      m_client->SetFlags(wxSOCKET_NOWAIT);
       m_client->SetEventHandler(*this, socket_client_id);
       m_client->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
       m_client->Notify(true);
       SetupVariables();
+
+      // Start the evaluation. If the evaluation queue isn't empty, that is.
+      TryEvaluateNextInQueue();
     }
       break;
 
@@ -3592,6 +3600,12 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
         if((m_process != NULL) && (m_pid > 0) &&
            ((cpuPercentage > 0) || (m_StatusMaximaBusy_next != waiting)))
           m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
+      }
+
+      {
+        // Just in case we don't get a socket event on getting data...
+        wxSocketEvent event(wxSOCKET_INPUT);
+        ClientEvent(event);
       }
       break;
     case KEYBOARD_INACTIVITY_TIMER_ID:
@@ -7237,19 +7251,10 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
 // Calling this function should not do anything dangerous
 void wxMaxima::TryEvaluateNextInQueue()
 {
+  // If we aren't connected yet this function will be triggered as soon as maxima
+  // connects to wxMaxima
   if (!m_isConnected)
-  {
-    if (!StartMaxima())
-    {
-      wxMessageBox(_("\nNot connected to Maxima!\n"), _("Error"), wxOK | wxICON_ERROR);
-
-      // Clear the evaluation queue.
-      m_console->m_evaluationQueue.Clear();
-      m_console->RequestRedraw();
-      EvaluationQueueLength(0);
-    }
     return;
-  }
 
   // Maxima is connected. Let's test if the evaluation queue is empty.
   GroupCell *tmp = dynamic_cast<GroupCell *>(m_console->m_evaluationQueue.GetCell());
