@@ -88,10 +88,6 @@
 #define MACPREFIX "wxMaxima.app/Contents/Resources/"
 #endif
 
-/*! The size of the socket we get data from
-*/
-#define SOCKET_SIZE (1024*1024)
-
 enum
 {
   maxima_process_id
@@ -216,17 +212,12 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   m_statusBar->GetNetworkStatusElement()->Connect(wxEVT_LEFT_DCLICK,
                                                   wxCommandEventHandler(wxMaxima::NetworkDClick),
                                                   NULL, this);
-  m_packetFromMaxima = new unsigned char[SOCKET_SIZE];
 
 }
 
 wxMaxima::~wxMaxima()
 {
   KillMaxima();
-
-  if(m_packetFromMaxima != NULL)
-    delete [] m_packetFromMaxima;
-  m_packetFromMaxima = NULL;
   wxDELETE(m_printData);
   m_printData = NULL;
 }
@@ -729,25 +720,12 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     // The memory we store new chars we receive from maxima in
     wxString newChars;
 
-    do
-    {
-      if(m_client->IsData())
-        m_client->Read(m_packetFromMaxima, SOCKET_SIZE - 1);
-      
-      charsRead = m_client->LastCount();
-      
-      for(long int i = 0;i < charsRead; i++)
-      {
-        if (m_packetFromMaxima[i] == '\0')
-          m_packetFromMaxima[i] = ' ';
-      }
-      
-      // Don't open an assert window every single time maxima mixes UTF8 and the current
-      // codepage. 
-      wxLogStderr logStderr;
-      wxString packet = wxString::FromUTF8((char *)m_packetFromMaxima, charsRead);
-      newChars += packet;
-    } while ((charsRead > 0) && (m_client->IsData()));
+    // Don't warn if an error message from the lisp isn't exactly unicode.
+    wxLogStderr noCodepageWarnings;
+
+    while(m_client->IsData())
+      newChars += m_clientTextStream->GetChar();
+
     if (IsPaneDisplayed(menu_pane_xmlInspector))
       m_xmlInspector->Add_FromMaxima(newChars);
         
@@ -874,10 +852,12 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_currentOutput = wxEmptyString;
       m_isConnected = true;
       m_client = m_server->Accept(false);
-      m_client->SetFlags(wxSOCKET_NOWAIT);
       m_client->SetEventHandler(*this, socket_client_id);
       m_client->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
       m_client->Notify(true);
+      m_clientStream = new wxSocketInputStream(*m_client);
+      m_clientTextStream = new wxTextInputStream(*m_clientStream, wxT('\n'),
+                                                 wxConvAuto(wxFONTENCODING_UTF8));
       SetupVariables();
 
       // Start the evaluation. If the evaluation queue isn't empty, that is.
@@ -1070,6 +1050,9 @@ void wxMaxima::KillMaxima()
   }
   else
     wxProcess::Kill(m_pid, wxSIGKILL);
+
+  wxDELETE(m_clientTextStream);m_clientTextStream = NULL;
+  wxDELETE(m_clientStream); m_clientStream = NULL;
 
   if (m_client)
     m_client->Close();

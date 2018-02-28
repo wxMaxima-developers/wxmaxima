@@ -229,8 +229,6 @@ private:
     If text doesn't contain any error this function returns wxEmptyString
   */
   wxString GetUnmatchedParenthesisState(wxString text,int &index);
-  //! The buffer all data from maxima is temporarily stored in.
-  unsigned char *m_packetFromMaxima;
   //! The buffer all text from maxima is stored in before converting it to a wxString.
   wxMemoryBuffer m_uncompletedChars;
 
@@ -566,6 +564,8 @@ protected:
   }
 
   wxSocketBase *m_client;
+  wxSocketInputStream *m_clientStream;
+  wxTextInputStream *m_clientTextStream;
   wxSocketServer *m_server;
   //! Is the network connection to maxima working?
   bool m_isConnected;

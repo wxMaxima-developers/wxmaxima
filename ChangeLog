@@ -2,6 +2,10 @@ Current:
   * Defer any try to change maxima's configuration until all questions are answered.
   * A menu item that sets the autosubscript feature for the current worksheet.
   * A menu allowing to switch floats to engineering format.
+  * Maxima now tells us all variables we need autocompletion for.
+  * We now have autocompletion for functions from lisp-only packages, too.
+  * Maxima can now pass variables to wxMaxima
+  * We now allow a packet from maxima to end in the middle of an unicode codepoint.
 
 18.02:
   * More tooltips
