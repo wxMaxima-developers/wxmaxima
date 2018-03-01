@@ -212,6 +212,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   m_statusBar->GetNetworkStatusElement()->Connect(wxEVT_LEFT_DCLICK,
                                                   wxCommandEventHandler(wxMaxima::NetworkDClick),
                                                   NULL, this);
+  m_clientStream = NULL;
+  m_clientTextStream = NULL;
 
 }
 
