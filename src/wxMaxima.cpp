@@ -722,12 +722,17 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     // The memory we store new chars we receive from maxima in
     wxString newChars;
 
-    // Don't warn if an error message from the lisp isn't exactly unicode.
-    wxLogStderr noCodepageWarnings;
-
-    while(m_client->IsData())
-      newChars += m_clientTextStream->GetChar();
-
+    {
+      // Don't warn if an error message from the lisp isn't exactly unicode.
+      wxLogStderr noCodepageWarnings;
+      
+      do
+      {
+        newChars += m_clientTextStream->GetChar();
+      }
+      while(m_client->IsData());
+    }
+    
     if (IsPaneDisplayed(menu_pane_xmlInspector))
       m_xmlInspector->Add_FromMaxima(newChars);
         
@@ -3589,8 +3594,8 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
 
       {
         // Just in case we don't get a socket event on getting data...
-        wxSocketEvent event(wxSOCKET_INPUT);
-        ClientEvent(event);
+        //      wxSocketEvent event(wxSOCKET_INPUT);
+        //      ClientEvent(event);
       }
       break;
     case KEYBOARD_INACTIVITY_TIMER_ID:
