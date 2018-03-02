@@ -726,11 +726,10 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
       // Don't warn if an error message from the lisp isn't exactly unicode.
       wxLogStderr noCodepageWarnings;
       
-      do
+      while(m_client->IsData())
       {
         newChars += m_clientTextStream->GetChar();
       }
-      while(m_client->IsData());
     }
     
     if (IsPaneDisplayed(menu_pane_xmlInspector))
@@ -2733,6 +2732,13 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
 
 void wxMaxima::OnIdle(wxIdleEvent &event)
 {
+  // On msw sometimes the communication stalls even if there is new data.
+  // Let's see if communication can be resumed manually by manually triggering
+  // listening to socket events from time to time, see
+  // https://groups.google.com/forum/m/#!topic/wx-users/fdMyu3AKFRQ
+  wxSocketEvent dummyEvent(wxSOCKET_INPUT);
+  ClientEvent(dummyEvent)
+
   // If wxMaxima has to open a file on startup we wait for that until we have
   // a valid draw context for size calculations.
   //
