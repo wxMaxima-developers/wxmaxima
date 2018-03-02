@@ -522,7 +522,7 @@ protected:
    */
   void ResetTitle(bool saved, bool force = false);
 
-  void FirstOutput(wxString s);
+  void FirstOutput();
 
   /*! Opens a content.xml file that has been extracted from a broken .wxmx file
    */

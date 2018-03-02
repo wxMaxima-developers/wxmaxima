@@ -312,7 +312,7 @@ void wxMaxima::InitSession()
     m_autoSaveTimer.StartOnce(m_autoSaveInterval);
 }
 
-void wxMaxima::FirstOutput(wxString s)
+void wxMaxima::FirstOutput()
 {
   m_lastPrompt = wxT("(%i1) ");
 
@@ -717,8 +717,6 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     if (m_client == NULL)
       return;
 
-    // Read all data we can get from maxima
-    int charsRead = 1;
     // The memory we store new chars we receive from maxima in
     wxString newChars;
 
@@ -1124,10 +1122,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   start = data.Find(wxT("Maxima "));
   if (start == wxNOT_FOUND)
     start = 0;
-  FirstOutput(wxT("wxMaxima ")
-              wxT(GITVERSION)
-              wxT(" http://andrejv.github.io/wxmaxima/\n") +
-              data.SubString(start, data.Length() - 1));
+  FirstOutput();
 
   // Wait for a line maxima informs us about it's process id in.
   int s = data.Find(wxT("pid=")) + 4;
@@ -2737,7 +2732,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   // listening to socket events from time to time, see
   // https://groups.google.com/forum/m/#!topic/wx-users/fdMyu3AKFRQ
   wxSocketEvent dummyEvent(wxSOCKET_INPUT);
-  ClientEvent(dummyEvent)
+  ClientEvent(dummyEvent);
 
   // If wxMaxima has to open a file on startup we wait for that until we have
   // a valid draw context for size calculations.
