@@ -2449,8 +2449,6 @@ void wxMaxima::SetupVariables()
              wxT(")\n"));
 
   // A few variables for additional debug info in wxbuild_info();
-  SendMaxima(wxString::Format(wxT(":lisp-quiet (setq wxArtDir \"%s\")\n"),
-                              EscapeForLisp(m_console->m_configuration->m_dirStructure.ArtDir())));
   SendMaxima(wxString::Format(wxT(":lisp-quiet (setq wxUserConfDir \"%s\")\n"),
                               EscapeForLisp(m_console->m_configuration->m_dirStructure.UserConfDir())));
   SendMaxima(wxString::Format(wxT(":lisp-quiet (setq wxHelpDir \"%s\")\n"),
