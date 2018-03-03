@@ -2008,3 +2008,4 @@
 ;; autocompletion feature.
 (wxPrint_autoompletesymbols)
 (wx-print-variables)
+(force-output)
