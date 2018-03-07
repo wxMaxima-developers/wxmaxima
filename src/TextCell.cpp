@@ -190,6 +190,8 @@ void TextCell::SetValue(const wxString &text)
     if(text.StartsWith(wxT("incorrect syntax")) && (text.Contains(wxT("is not an infix operator"))))
       m_toolTip = _("A command or number wasn't preceded by a \":\", a \"$\", a \";\" or a \",\".\n"
         "Most probable cause: A missing comma between two list items.");
+    if(text.StartsWith(wxT("incorrect syntax")) && (text.Contains(wxT("Found LOGICAL expression where ALGEBRAIC expression expected"))))
+      m_toolTip = _("Most probable cause: A dot instead a comma between two list items containing assignments.");
     if(text.StartsWith(wxT("part: fell off the end.")))
        m_toolTip = _("part() or the [] operator was used in order to extract the nth element "
                      "of something that was less than n elements long.");
