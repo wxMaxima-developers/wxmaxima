@@ -108,6 +108,10 @@ protected:
   void SetFontSizeForLabel(wxDC *dc);
 
   wxRegEx m_unescapeRegEx;
+  wxRegEx m_roundingErrorRegEx1;
+  wxRegEx m_roundingErrorRegEx2;
+  wxRegEx m_roundingErrorRegEx3;
+  wxRegEx m_roundingErrorRegEx4;
 
   //! The text we keep inside this cell
   wxString m_text;

@@ -36,6 +36,11 @@ TextCell::TextCell(MathCell *parent, Configuration **config, CellPointers *cellP
   m_displayedDigits_old = -1;
   m_height = -1;
   wxASSERT(m_unescapeRegEx.Compile(wxT("\\\\(.)")));
+  wxASSERT(m_roundingErrorRegEx1.Compile(wxT("\\.000000000000[0-9]+$")));
+  wxASSERT(m_roundingErrorRegEx2.Compile(wxT("\\.999999999999[0-9]+$")));
+  wxASSERT(m_roundingErrorRegEx3.Compile(wxT("\\.000000000000[0-9]+e")));
+  wxASSERT(m_roundingErrorRegEx4.Compile(wxT("\\.999999999999[0-9]+e")));
+  wxASSERT(m_unescapeRegEx.Compile(wxT("\\\\(.)")));
   m_labelWidth = -1;
   m_labelHeight = -1;
   m_realCenter = m_center = -1;
@@ -183,6 +188,22 @@ void TextCell::SetValue(const wxString &text)
                         wxString::Format(_("[%i digits]"), (int) m_displayedText.Length() - 2 * left) +
                         m_displayedText.Right(left);
       m_toolTip = _("The maximum number of displayed digits can be changed in the configuration dialogue");
+    }
+    else
+    {
+      if(
+        (m_roundingErrorRegEx1.Matches(m_displayedText)) ||
+        (m_roundingErrorRegEx2.Matches(m_displayedText)) ||
+        (m_roundingErrorRegEx3.Matches(m_displayedText)) ||
+        (m_roundingErrorRegEx4.Matches(m_displayedText))
+        )
+        m_toolTip = _("As calculating 0.1^12 demonstrates maxima by default doesn't tend to "
+                      "hide what looks like being the small error using floating-point "
+                      "numbers introduces.\n"
+                      "If this seems to be the case here the error can be avoided by using "
+                      "exact numbers like 1/10, 1*10^-1 or rat(.1).\n"
+                      "It also can be hidden by setting fpprintprec to an appropriate value. "
+                      "But be aware in this case that even small errors can add up.");
     }
   }
   else
