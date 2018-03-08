@@ -394,14 +394,19 @@ void wxMaximaFrame::do_layout()
   // LoadPerspective overwrites the pane names with the saved ones -which can
   // belong to a translation different to the one selected currently =>
   // let's overwrite the names here.
-  m_manager.GetPane(wxT("symbols")).Caption(_("Mathematical Symbols"));
-  m_manager.GetPane(wxT("format")).Caption(_("Insert"));
-  m_manager.GetPane(wxT("greek")).Caption(_("Greek Letters"));
-  m_manager.GetPane(wxT("math")).Caption(_("General Math"));
-  m_manager.GetPane(wxT("stats")).Caption(_("Statistics"));
-  m_manager.GetPane(wxT("XmlInspector")).Caption(_("Raw XML monitor"));
-  m_manager.GetPane(wxT("structure")).Caption(_("Table of Contents"));
-  m_manager.GetPane(wxT("history")).Caption(_("History"));
+  m_manager.GetPane(wxT("symbols")) =
+    m_manager.GetPane(wxT("symbols")).Caption(_("Mathematical Symbols"));
+  m_manager.GetPane(wxT("format")) =
+    m_manager.GetPane(wxT("format")).Caption(_("Insert"));
+  m_manager.GetPane(wxT("greek")) =
+    m_manager.GetPane(wxT("greek")).Caption(_("Greek Letters"));
+  m_manager.GetPane(wxT("math")) = m_manager.GetPane(wxT("math")).Caption(_("General Math"));
+  m_manager.GetPane(wxT("stats")) = m_manager.GetPane(wxT("stats")).Caption(_("Statistics"));
+  m_manager.GetPane(wxT("XmlInspector")) =
+    m_manager.GetPane(wxT("XmlInspector")).Caption(_("Raw XML monitor"));
+  m_manager.GetPane(wxT("structure")) =
+    m_manager.GetPane(wxT("structure")).Caption(_("Table of Contents"));
+  m_manager.GetPane(wxT("history")) = m_manager.GetPane(wxT("history")).Caption(_("History"));
  
   bool toolbar = true;
   config->Read(wxT("AUI/toolbar"), &toolbar);
