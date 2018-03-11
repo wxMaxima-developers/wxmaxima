@@ -1,6 +1,7 @@
 ;; wxMaxima xml format (based on David Drysdale MathML printing)
 ;; Andrej Vodopivec,  2004-2014
 ;; Gunter Königsmann, 2014-2018
+;;  SPDX-License-Identifier: GPL-2.0+
 
 ;; MathML-printing
 ;; Created by David Drysdale (DMD), December 2002/January 2003

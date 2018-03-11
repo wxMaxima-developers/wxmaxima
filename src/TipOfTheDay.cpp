@@ -23,6 +23,7 @@
 // This is a bug in wxWidgets. This class can be removed after this bug is fixed
 // and is common in wxWidgets libraries distributed all over.
 //
+//  SPDX-License-Identifier: GPL-2.0+
 
 #include "TipOfTheDay.h"
 
