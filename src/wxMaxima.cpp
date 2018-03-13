@@ -706,8 +706,6 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
 
   case wxSOCKET_INPUT:
   {
-    m_statusBar->NetworkStatus(StatusBar::receive);
-
     // Read out stderr: We will do that in the background on a regular basis, anyway.
     // But if we do it manually now, too, the probability that things are presented
     // to the user in chronological order increases a bit.
@@ -718,13 +716,19 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     if (m_client == NULL)
       return;
 
+    if(!m_client->IsData())
+      return;
+
+    m_statusBar->NetworkStatus(StatusBar::receive);
+
     // The memory we store new chars we receive from maxima in
     wxString newChars;
 
     {
       // Don't warn if an error message from the lisp isn't exactly unicode.
       wxLogStderr noCodepageWarnings;
-      
+
+      // Read all data we can get.
       while(m_client->IsData())
       {
         newChars += m_clientTextStream->GetChar();
