@@ -236,6 +236,12 @@ void TextCell::SetValue(const wxString &text)
                     "by setting ratprint to false.");
     if(text.StartsWith(wxT("expt: undefined: 0 to a negative exponent.")))
       m_toolTip = _("Division by 0.");
+    if(text.Contains(wxT("arithmetic error DIVISION-BY-ZERO signalled")))
+      m_toolTip = _("Besides a division by 0 the reason for this error message can be a "
+                    "calculation that returns +/-infinity.");
+    if(text.Contains(wxT("isn't in the domain of")))
+      m_toolTip = _("Most probable cause: A function was called with a parameter that causes "
+                    "it to return infinity and/or -infinity.");
     if(text.StartsWith(wxT("Only symbols can be bound")))
       m_toolTip = _("This error message is most probably caused by a try to assign "
                     "a value to a number instead of a variable name.\n"
