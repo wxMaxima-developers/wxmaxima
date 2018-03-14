@@ -209,6 +209,15 @@ void TextCell::SetValue(const wxString &text)
   }
   else
   {
+    if((text == wxT(" LINE SEARCH FAILED. SEE"))||
+       text.Contains(wxT(" DOCUMENTATION OF ROUTINE MCSRCH")) ||
+       text.Contains(wxT(" POSSIBLE CAUSES: FUNCTION OR GRADIENT ARE INCORRECT")))
+      m_toolTip = _("This message can appear when trying to numerically find an optimum."
+                    "In this case it might indicate that a starting point lies in a local "
+                    "optimum that fits the data best if one parameter is increased to "
+                    "infinity or decreased to -infinity. It also can indicate that an "
+                    "attempt was made to fit data to an equation that actually matches "
+		    "the data best if one parameter is set to +/- infinity.");
     if(text.StartsWith(wxT("incorrect syntax")) && (text.Contains(wxT("is not an infix operator"))))
       m_toolTip = _("A command or number wasn't preceded by a \":\", a \"$\", a \";\" or a \",\".\n"
         "Most probable cause: A missing comma between two list items.");
