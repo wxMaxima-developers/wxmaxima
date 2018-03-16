@@ -29,10 +29,6 @@ endif()
 # should the PDF doku be build from the texinfo source? (requires a TeX installation)
 option(BUILD_PDF_DOCUMENTATION "Build the PDF documentation." NO)
 
-# PREFIX should be defined, since it is used in the sourcecode and
-# defined by the automake build system, but not defined by CMake by default.
-add_definitions(-DPREFIX=\"${CMAKE_INSTALL_PREFIX}\")
-
 # MacOSX version-min compiler settings
 if(MACOSX_VERSION_MIN)
     message(STATUS "Compiling with min macosx version ${MACOSX_VERSION_MIN}")
