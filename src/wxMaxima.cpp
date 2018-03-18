@@ -1259,8 +1259,7 @@ void wxMaxima::ReadMiscText(wxString &data)
     (mergedWhitespace.Contains(wxT("\nMaxima encountered a Lisp error"))) ||
     (mergedWhitespace.Contains(wxT("\nkillcontext: no such context"))) ||
     (mergedWhitespace.Contains(wxT("\ndbl:MAXIMA>>"))) ||  // a gcl error message
-    (mergedWhitespace.Contains(wxT("\nTo enable the Lisp debugger set *debugger-hook* to nil."))) || // a scbl error message
-    (m_gnuplotErrorRegex.Matches(mergedWhitespace))
+    (mergedWhitespace.Contains(wxT("\nTo enable the Lisp debugger set *debugger-hook* to nil."))) // a scbl error message 
     )
     error = true;
 
@@ -1274,6 +1273,12 @@ void wxMaxima::ReadMiscText(wxString &data)
       (mergedWhitespace.Contains(wxT(": warning:")))
     )
     warning = true;
+  else
+  {
+    // Gnuplot errors differ from gnuplot warnings by not containing a "warning:"
+    if (m_gnuplotErrorRegex.Matches(mergedWhitespace))
+      error = true;
+  }
   
   // Add all text lines to the console
   wxStringTokenizer lines(miscText, wxT("\n"));
