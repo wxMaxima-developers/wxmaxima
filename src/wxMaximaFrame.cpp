@@ -978,7 +978,7 @@ void wxMaximaFrame::SetupMenu()
   listextractmenu->Append(menu_list_restN, _("All but the last n elements"), _("Returns the list without its last n elements"));
   listextractmenu->Append(menu_list_last, _("Last"), _("Returns the last item of the list"));
   listextractmenu->Append(menu_list_lastn, _("Last n"), _("Returns the last n items of the list"));
-  listextractmenu->Append(menu_list_extract_value, _("Extract a actual value for a variable"),
+  listextractmenu->Append(menu_list_extract_value, _("Extract an actual value for a variable"),
                         _("Extract the value for one variable assigned in a list"),
                         wxITEM_NORMAL);
   m_listMenu->Append(wxNewId(), _("Extract Elements"),

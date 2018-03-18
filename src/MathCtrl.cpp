@@ -1207,7 +1207,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
         if(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart)->GetGroupType() == GC_TYPE_IMAGE)
         {
           popupMenu->AppendSeparator();
-          popupMenu->Append(popid_maxsizechooser, _("Restict Maximum size"), wxEmptyString, wxITEM_NORMAL);
+          popupMenu->Append(popid_maxsizechooser, _("Restrict Maximum size"), wxEmptyString, wxITEM_NORMAL);
         }
       }
 

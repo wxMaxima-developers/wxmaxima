@@ -212,7 +212,7 @@ void TextCell::SetValue(const wxString &text)
     if((text == wxT(" LINE SEARCH FAILED. SEE"))||
        text.Contains(wxT(" DOCUMENTATION OF ROUTINE MCSRCH")) ||
        text.Contains(wxT(" POSSIBLE CAUSES: FUNCTION OR GRADIENT ARE INCORRECT")))
-      m_toolTip = _("This message can appear when trying to numerically find an optimum."
+      m_toolTip = _("This message can appear when trying to numerically find an optimum. "
                     "In this case it might indicate that a starting point lies in a local "
                     "optimum that fits the data best if one parameter is increased to "
                     "infinity or decreased to -infinity. It also can indicate that an "
@@ -230,10 +230,10 @@ void TextCell::SetValue(const wxString &text)
        m_toolTip = _("The value of few special variables is assigned by Maxima and cannot be changed by the user. Also a few constructs aren't variable names and therefore cannot be written to.");
     if(text.StartsWith(wxT("rat: replaced ")))
       m_toolTip = _("Normally computers use floating-point numbers that can be handled "
-                    "incredibly fast while being accurate to dozends of digits. "
+                    "incredibly fast while being accurate to dozens of digits. "
                     "They will, though, introduce a small error into some common numbers. "
                     "For example 0.1 is represented as 3602879701896397/36028797018963968.\n"
-                    "As mathemathics is based on the fact that numbers that are exactly "
+                    "As mathematics is based on the fact that numbers that are exactly "
                     "equal cancel each other out small errors can quickly add up to big errors "
                     "(see Wilkinson's Polynomials or Rump's Polynomials). Some maxima "
                     "commands therefore use rat() in order to automatically convert floats to "

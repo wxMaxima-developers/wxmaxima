@@ -661,8 +661,8 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   wxStaticText *wxStartupText =
     new wxStaticText(panel_wxMaximaStartup, wxID_ANY,
                      _("Maxima commands to be executed every time wxMaxima starts Maxima: "));
-  wxStartupText->SetToolTip(_("The part of the output of these commands that isn' declared as "
-                              "\"math\" might be suppressed by wxMaxima; As always maxima "
+  wxStartupText->SetToolTip(_("The part of the output of these commands that isn't declared as "
+                              "\"math\" might be suppressed by wxMaxima. As always maxima "
                               "commands are required to end in a \";\" or a \"$\""));
   vsizer_wxMaximaStartup->Add(wxStartupText, wxSizerFlags().Border(wxALL,5));
   
@@ -690,7 +690,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
                                                          _("wxMaxima startup file location: ") +
                                                          m_wxStartupFileName);
   wxStartupFileLocation->SetToolTip(_("This file won't be read by maxima if maxima is used "
-                                      "without  wxMaxima. In order to add startup commands "
+                                      "without wxMaxima. In order to add startup commands "
                                       "that are executed in this case, "
                                       "too, please add them to maxima-init.mac, instead."));
   vsizer_wxMaximaStartup->Add(wxStartupFileLocation, wxSizerFlags().Border(wxALL,5));
@@ -701,8 +701,8 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   wxStaticText *startupText =
     new wxStaticText(panel_maximaStartup, wxID_ANY,
                      _("Maxima commands to be executed at every start of Maxima: "));
-  startupText->SetToolTip(_("The part of the output of these commands that isn' declared as "
-                              "\"math\" might be suppressed by wxMaxima; As always maxima "
+  startupText->SetToolTip(_("The part of the output of these commands that isn't declared as "
+                              "\"math\" might be suppressed by wxMaxima. As always maxima "
                               "commands are required to end in a \";\" or a \"$\""));
   vsizer_maximaStartup->Add(startupText, wxSizerFlags().Border(wxALL,5));
   // Read maxima's startup file's contents
