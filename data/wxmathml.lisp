@@ -43,6 +43,7 @@
 (defvar $wxplot_size '((mlist simp) 800 600) "The size of new plots")
 (defvar $wxchangedir t "Change the PWD of maxima to the current document's path?")
 (defvar $wxmaximaversion t "The wxMaxima version")
+(defvar $wxwidgetsversion t "The wxWidgets version wxMaxima is using.")
 (defvar $wxsubscripts t
   "Recognize TeX-style subscripts")
 (defvar $wxplot_pngcairo nil "Use gnuplot's pngcairo terminal for new plots?")
@@ -98,6 +99,7 @@
         (minute (second cl-user:*maxima-build-time*))
         (seconds (first cl-user:*maxima-build-time*)))
     (format t "wxMaxima version: ~a~%" $wxmaximaversion)
+    (format t "using wxWidgets version: ~a~%" $wxwidgetsversion)
     (format t "Maxima version: ~a~%" *autoconf-version*)
     (format t "Maxima build date: ~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d~%"
             year month day hour minute seconds)

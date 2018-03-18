@@ -2420,6 +2420,7 @@ void wxMaxima::SetupVariables()
   SendMaxima(wxString(wxT(":lisp-quiet ($put \'$wxmaxima (read-wxmaxima-version \"")) +
              wxmaximaversion_lisp +
              wxT("\") '$version)\n"));
+  SendMaxima(wxString(wxT(":lisp-quiet (setq $wxwidgetsversion \"")) + wxVERSION_STRING + "\")\n");
 
   wxConfigBase *config = wxConfig::Get();
 
