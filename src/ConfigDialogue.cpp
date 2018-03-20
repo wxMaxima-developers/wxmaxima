@@ -395,7 +395,6 @@ void ConfigDialogue::SetProperties()
   wxString symbolPaneAdditionalChars = wxT("üØ");
   m_symbolPaneAdditionalChars->SetValue(symbolPaneAdditionalChars);
 #endif
-  int autoSaveInterval = 3;
 
 #if defined (__WXMAC__)
   bool usepngCairo = false;
@@ -428,7 +427,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("language"), &lang);
   config->Read(wxT("documentclass"), &documentclass);
   config->Read(wxT("texPreamble"), &texPreamble);
-  config->Read(wxT("autoSaveInterval"), &autoSaveInterval);
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
   config->Read(wxT("enterEvaluates"), &enterEvaluates);
@@ -459,7 +457,7 @@ void ConfigDialogue::SetProperties()
   m_documentclass->SetValue(documentclass);
   m_mathJaxURL->SetValue(configuration->MathJaXURL());
   m_texPreamble->SetValue(texPreamble);
-  m_autoSaveInterval->SetValue(autoSaveInterval);
+  m_autoSaveInterval->SetValue(configuration->AutoSaveInterval() /  60 / 1000);
 
   m_maximaProgram->SetValue(configuration->MaximaLocation());
   wxCommandEvent dummy;
@@ -1236,7 +1234,7 @@ void ConfigDialogue::WriteSettings()
   configuration->UseUnicodeMaths(m_useUnicodeMaths->GetValue());
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
   config->Write(wxT("texPreamble"), m_texPreamble->GetValue());
-  config->Write(wxT("autoSaveInterval"), m_autoSaveInterval->GetValue());
+  configuration->AutoSaveInterval(m_autoSaveInterval->GetValue() * 60 * 1000);
   config->Write(wxT("documentclass"), m_documentclass->GetValue());
   configuration->MathJaXURL(m_mathJaxURL->GetValue());
   if (m_saveSize->GetValue())

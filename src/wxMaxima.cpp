@@ -117,9 +117,6 @@ void wxMaxima::ConfigChanged()
       break;
   }
 
-  m_autoSaveInterval = 3;
-  config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
-  m_autoSaveInterval *= 60000;
   m_console->UpdateConfig();
   // UpdateUserSymbols();
 }
@@ -309,8 +306,8 @@ void wxMaxima::InitSession()
   Refresh();
   ConfigChanged();
   m_console->SetFocus();
-  if (m_autoSaveInterval > 10000)
-    m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+  if (m_console->m_configuration->AutoSaveInterval() > 0)
+    m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval());
 }
 
 void wxMaxima::FirstOutput()
@@ -3220,8 +3217,8 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
     m_isNamed = true;
   }
 
-  if ((m_autoSaveInterval > 10000) && (m_console->m_currentFile.Length() > 0))
-    m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+  if ((m_console->m_configuration->AutoSaveInterval() > 0) && (m_console->m_currentFile.Length() > 0))
+    m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval());
 
   if (m_console)m_console->TreeUndo_ClearBuffers();
 
@@ -3289,8 +3286,8 @@ bool wxMaxima::SaveFile(bool forceSave)
     }
     else
     {
-      if ((m_autoSaveInterval > 10000) && (m_console->m_currentFile.Length() > 0))
-        m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+      if ((m_console->m_configuration->AutoSaveInterval() > 0) && (m_console->m_currentFile.Length() > 0))
+        m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval());
       return false;
     }
   }
@@ -3324,8 +3321,8 @@ bool wxMaxima::SaveFile(bool forceSave)
       if (!m_console->ExportToWXMX(file))
       {
         StatusSaveFailed();
-        if (m_autoSaveInterval > 10000)
-          m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+        if (m_console->m_configuration->AutoSaveInterval() > 0)
+          m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval());
         return false;
       }
       else
@@ -3339,8 +3336,8 @@ bool wxMaxima::SaveFile(bool forceSave)
         config->Write(wxT("defaultExt"), wxT("wxm"));
 
         StatusSaveFailed();
-        if (m_autoSaveInterval > 10000)
-          m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+        if (m_console->m_configuration->AutoSaveInterval() > 0)
+          m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval() > 0);
         return false;
       }
       else
@@ -3350,15 +3347,15 @@ bool wxMaxima::SaveFile(bool forceSave)
     AddRecentDocument(file);
     SetCWD(file);
 
-    if (m_autoSaveInterval > 10000)
-      m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+    if (m_console->m_configuration->AutoSaveInterval() > 0)
+      m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval() > 0);
     StatusSaveFinished();
     RemoveTempAutosavefile();
     return true;
   }
 
-  if (m_autoSaveInterval > 10000)
-    m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+  if (m_console->m_configuration->AutoSaveInterval() > 0)
+    m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval() > 0);
 
   return false;
 }
@@ -3612,7 +3609,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
     case AUTO_SAVE_TIMER_ID:
       if ((!m_console->m_keyboardInactiveTimer.IsRunning()) && (!m_autoSaveTimer.IsRunning()))
       {
-        if (m_autoSaveInterval > 10000)
+        if (m_console->m_configuration->AutoSaveInterval() > 0)
         {
           if(SaveNecessary())
           {
@@ -3638,7 +3635,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
             }
           }
           
-          m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+          m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval());
         }
       }
       break;
@@ -3821,8 +3818,8 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
             else
               StatusExportFinished();
           }
-          if (m_autoSaveInterval > 10000)
-            m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+          if (m_console->m_configuration->AutoSaveInterval() > 0)
+            m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval());
 
           wxFileName::SplitPath(file, NULL, NULL, NULL, &fileExt);
           wxConfig::Get()->Write(wxT("defaultExportExt"), fileExt);
@@ -3954,12 +3951,8 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       m_console->m_configuration->GetAutosubscript_string() +
       wxT(")\n");
       
-    m_autoSaveInterval = 3;
-    config->Read(wxT("autoSaveInterval"), &m_autoSaveInterval);
-    m_autoSaveInterval *= 60000;
-
-    if (m_autoSaveInterval > 10000)
-      m_autoSaveTimer.StartOnce(m_autoSaveInterval);
+    if (m_console->m_configuration->AutoSaveInterval() > 0)
+      m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval());
     else
       m_autoSaveTimer.Stop();
 
@@ -7850,7 +7843,7 @@ int wxMaxima::SaveDocumentP()
   }
   else
   {
-    if (m_autoSaveInterval > 10000)
+    if (m_console->m_configuration->AutoSaveInterval() > 0)
       if (SaveFile())
         return wxID_NO;
 

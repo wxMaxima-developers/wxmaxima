@@ -133,12 +133,6 @@ public:
   //! A timer that polls for output from the maxima process.
   wxTimer m_maximaStdoutPollTimer;
 
-  /*! The interval between auto-saves (in milliseconds). 
-
-    Values <10000 mean: Auto-save is off.
-  */
-  long int m_autoSaveInterval;
-
   void ShowTip(bool force);
 
   /*! Get the name of the help file

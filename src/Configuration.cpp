@@ -54,6 +54,7 @@ Configuration::Configuration(wxDC &dc) : m_dc(&dc)
   m_hideBrackets = true;
   m_lineWidth_em = 88;
   m_showLabelChoice = 1;
+  m_autoSaveInterval = 3 * 60 * 1000;
   m_clientWidth = 1024;
   m_clientHeight = 768;
   Dirstructure dirstruct;
@@ -121,6 +122,8 @@ void Configuration::ReadConfig()
   wxConfig *config = (wxConfig *) wxConfig::Get();
   m_autoWrap = 3;
 
+  if(config->Read(wxT("autoSaveInterval"),&m_autoSaveInterval))
+    m_autoSaveInterval *= 1000 * 60;
   config->Read(wxT("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
   config->Read(wxT("autoWrapMode"), &m_autoWrap);
   config->Read(wxT("useUnicodeMaths"), &m_useUnicodeMaths);
