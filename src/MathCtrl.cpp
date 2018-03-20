@@ -7784,7 +7784,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
         {
           partial = wxT("\"") + partial;
           // If the editor auto-adds a closing quote this causes auto-completion to fail
-          editor->ReplaceSelection(editor->GetSelectionString(), partial, true);
+          editor->ReplaceSelection(editor->GetSelectionString(), partial, true, false, true);
         }
         if((partial.EndsWith("\"") && (!(partial.EndsWith("\\\"")))))
         {
@@ -7865,7 +7865,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
     int start, end;
     editor->GetSelection(&start, &end);
 
-    editor->ReplaceSelection(editor->GetSelectionString(), m_completions[0]);
+    editor->ReplaceSelection(editor->GetSelectionString(), m_completions[0], true, false, true);
     editor->ClearSelection();
     editor->CaretToPosition(start);
 
@@ -7925,7 +7925,7 @@ void MathCtrl::OnComplete(wxCommandEvent &event)
 
   if (editor->GetSelectionString() != wxEmptyString)
     editor->ReplaceSelection(editor->GetSelectionString(),
-                             m_completions[event.GetId() - popid_complete_00]);
+                             m_completions[event.GetId() - popid_complete_00], true, false, true);
   else
     editor->InsertText(m_completions[event.GetId() - popid_complete_00]);
 

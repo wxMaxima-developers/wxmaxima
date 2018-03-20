@@ -4412,7 +4412,7 @@ bool EditorCell::FindNext(wxString str, bool down, bool ignoreCase)
   return false;
 }
 
-bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSelected, bool IgnoreCase)
+bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSelected, bool IgnoreCase, bool replaceMaximaString)
 {
   wxString text(m_text);
   text.Replace(wxT("\r"), wxT(" "));
@@ -4451,10 +4451,14 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSel
 
     m_containsChanges = true;
     m_positionOfCaret = start + newStr.Length();
-    if((newStr.EndsWith("\"") || (text_right.StartsWith("\""))))
+
+    if(replaceMaximaString)
     {
-      if(!((newStr.EndsWith("\"") && (text_right.StartsWith("\"")))))
-      m_positionOfCaret--;
+      if((newStr.EndsWith("\"") || (text_right.StartsWith("\""))))
+      {
+        if(!((newStr.EndsWith("\"") && (text_right.StartsWith("\"")))))
+          m_positionOfCaret--;
+      }
     }
     
     if (keepSelected)

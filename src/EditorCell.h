@@ -494,7 +494,7 @@ public:
         and moving the cursor to its end.
     \param ignoreCase
    */
-  bool ReplaceSelection(wxString oldStr, wxString newString, bool keepSelected = false, bool ignoreCase = false);
+  bool ReplaceSelection(wxString oldStr, wxString newString, bool keepSelected = false, bool ignoreCase = false, bool replaceMaximaString = false);
 
   //! Convert the current selection to a string
   wxString GetSelectionString();
