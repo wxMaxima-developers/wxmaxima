@@ -36,12 +36,6 @@ TextCell::TextCell(MathCell *parent, Configuration **config, CellPointers *cellP
   m_cellPointers = cellPointers;
   m_displayedDigits_old = -1;
   m_height = -1;
-  wxASSERT(m_unescapeRegEx.Compile(wxT("\\\\(.)")));
-  wxASSERT(m_roundingErrorRegEx1.Compile(wxT("\\.000000000000[0-9]+$")));
-  wxASSERT(m_roundingErrorRegEx2.Compile(wxT("\\.999999999999[0-9]+$")));
-  wxASSERT(m_roundingErrorRegEx3.Compile(wxT("\\.000000000000[0-9]+e")));
-  wxASSERT(m_roundingErrorRegEx4.Compile(wxT("\\.999999999999[0-9]+e")));
-  wxASSERT(m_unescapeRegEx.Compile(wxT("\\\\(.)")));
   m_labelWidth = -1;
   m_labelHeight = -1;
   m_realCenter = m_center = -1;
@@ -1890,3 +1884,11 @@ wxString TextCell::GetSymbolTeX()
 
   return wxEmptyString;
 }
+
+
+// RegExes all TextCells share.
+wxRegEx TextCell::m_unescapeRegEx(wxT("\\\\(.)"));
+wxRegEx TextCell::m_roundingErrorRegEx1(wxT("\\.000000000000[0-9]+$"));
+wxRegEx TextCell::m_roundingErrorRegEx2(wxT("\\.999999999999[0-9]+$"));
+wxRegEx TextCell::m_roundingErrorRegEx3(wxT("\\.000000000000[0-9]+e"));
+wxRegEx TextCell::m_roundingErrorRegEx4(wxT("\\.999999999999[0-9]+e"));
