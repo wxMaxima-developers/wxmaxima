@@ -2931,6 +2931,8 @@ void wxMaxima::UpdateDrawPane()
       int dimensions = 0;
       if(command.Contains(wxT("gr2d")))
         dimensions = 2;
+      if(command.Contains(wxT("with_slider_draw")))
+        dimensions = 2;
       if(command.Contains(wxT("gr3d")))
         dimensions = 3;
       if(command.Contains(wxT("draw2d")))
