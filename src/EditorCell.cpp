@@ -176,6 +176,8 @@ void EditorCell::AddDrawParameter(wxString param)
   
   StyleText();
   ResetSize();
+  if (m_group != NULL)
+    m_group->ResetSize();
 }
 
 wxString EditorCell::GetFullCommandUnderCursor()

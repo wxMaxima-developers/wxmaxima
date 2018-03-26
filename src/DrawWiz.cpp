@@ -25,6 +25,7 @@
  */
 
 #include "DrawWiz.h"
+#include <wx/statbox.h>
 
 ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions) :
   wxDialog(parent, -1, _("Plot an explicit expression"))
@@ -372,10 +373,68 @@ wxString AxisWiz::GetValue()
   return retval;
 }
 
-Draw2dWiz::Draw2dWiz(wxWindow *parent, Configuration *config) :
-  wxDialog(parent, -1, _("Setup a 2d plot"))
+DrawWiz::DrawWiz(wxWindow *parent, Configuration *config, int dimensions) :
+  wxDialog(parent, -1, wxString::Format(_("Setup a %iD scene"),dimensions))
 {
+  m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+
+  m_singleFrame = new wxRadioButton(this, -1, _("Single frame"), wxDefaultPosition,
+                                    wxDefaultSize, wxRB_GROUP);
+  vbox->Add(m_singleFrame, wxSizerFlags().Expand().Border(wxALL,5));
+
+  m_multipleFrames = new wxRadioButton(this, -1, _("Multiple frames"));
+  vbox->Add(m_multipleFrames, wxSizerFlags().Expand().Border(wxALL,5));
+  wxPanel *animPanel = new wxPanel(this,-1);
+  wxBoxSizer *animPanelVbox = new wxBoxSizer(wxVERTICAL);
+  animPanelVbox->Add(new wxStaticText(animPanel,-1, _("Frame counter")), wxSizerFlags());
+  m_frameVar = new BTextCtrl(animPanel, -1, config, "t");
+  animPanelVbox->Add(m_frameVar, wxSizerFlags().Expand().Border(wxALL,5));
+  animPanelVbox->Add(new wxStaticText(animPanel,-1, _("Frame counter start")), wxSizerFlags());
+  m_varStart = new BTextCtrl(animPanel,-1, config, "1");
+  animPanelVbox->Add(m_varStart, wxSizerFlags().Expand().Border(wxALL,5));
+  animPanelVbox->Add(new wxStaticText(animPanel,-1, _("Frame counter end")), wxSizerFlags());
+  m_varEnd = new BTextCtrl(animPanel,-1, config, "10");
+  animPanelVbox->Add(m_varEnd, wxSizerFlags().Expand().Border(wxALL,5));
+  animPanel->SetSizerAndFit(animPanelVbox);
+  vbox->Add(animPanel, wxSizerFlags().Expand().Border(wxALL,5));
+  
+  wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
+  wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
+  wxButton *cancelButton = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  #if defined __WXMSW__
+  buttonSizer->Add(okButton);
+  buttonSizer->Add(cancelButton);
+#else
+  buttonSizer->Add(cancelButton);
+  buttonSizer->Add(okButton);
+#endif
+  okButton->SetDefault(); 
+  vbox->Add(buttonSizer, wxSizerFlags().Right());
   
   SetSizerAndFit(vbox);
+}
+
+wxString DrawWiz::GetValue()
+{
+  if(m_dimensions < 3)
+  {
+    if(m_singleFrame->GetValue())
+      return wxT("wxdraw2d(\n)$");
+    else
+    {
+      return wxString("with_slider_draw(\n    ") + m_frameVar->GetValue() + ",makelist(i,i," +
+        m_varStart->GetValue() + "," + m_varEnd->GetValue() + ")\n)$";
+    }
+  }
+  else
+  {
+    if(m_singleFrame->GetValue())
+      return wxT("wxdraw3d(\n)$");
+    else
+    {
+      return wxString("with_slider_draw3d(\n    ") + m_frameVar->GetValue() + ",makelist(i,i," +
+        m_varStart->GetValue() + "," + m_varEnd->GetValue() + ")\n)$";
+    }
+  }
 }

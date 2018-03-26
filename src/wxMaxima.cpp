@@ -4914,17 +4914,35 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
   switch (event.GetId())
   {
   case menu_draw_2d:
-    m_console->SetFocus();
-    m_console->OpenHCaret(wxT("wxdraw2d(\n)$"));
-    m_console->GetActiveCell()->SetCaretPosition(
-      m_console->GetActiveCell()->GetCaretPosition() - 3);
-    break;
-  case menu_draw_3d:
-    m_console->SetFocus();
-    m_console->OpenHCaret(wxT("wxdraw3d(\n)$"));
+  {
+    DrawWiz *wiz = new DrawWiz(this, m_console->m_configuration, 2);
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      m_console->SetFocus();
+      
+      m_console->OpenHCaret(wiz->GetValue());
       m_console->GetActiveCell()->SetCaretPosition(
         m_console->GetActiveCell()->GetCaretPosition() - 3);
+    }
+    wiz->Destroy();
     break;
+  }
+  case menu_draw_3d:
+  {
+    DrawWiz *wiz = new DrawWiz(this, m_console->m_configuration, 3);
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      m_console->SetFocus();
+      
+      m_console->OpenHCaret(wiz->GetValue());
+      m_console->GetActiveCell()->SetCaretPosition(
+        m_console->GetActiveCell()->GetCaretPosition() - 3);
+    }
+    wiz->Destroy();
+    break;
+  }
   case menu_draw_fgcolor:
   {
     wxColour col = wxGetColourFromUser(this);

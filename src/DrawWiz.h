@@ -104,12 +104,13 @@ private:
 
 
 //! A wizard for explicit plots using draw
-class Draw2dWiz : public wxDialog
+class DrawWiz : public wxDialog
 {
 public:
-  Draw2dWiz(wxWindow *parent, Configuration *config);
+  DrawWiz(wxWindow *parent, Configuration *config, int dimensions);
   wxString GetValue();
 private:
+  int m_dimensions;
   wxRadioButton *m_singleFrame;
   wxRadioButton *m_multipleFrames;
   BTextCtrl *m_frameVar;
