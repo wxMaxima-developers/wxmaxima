@@ -29,6 +29,7 @@
 
 #include <wx/wx.h>
 #include <wx/statline.h>
+#include <wx/radiobut.h>
 
 #include "BTextCtrl.h"
 #include "Configuration.h"
@@ -101,5 +102,19 @@ private:
   BTextCtrl *m_z2End;
 };
 
+
+//! A wizard for explicit plots using draw
+class Draw2dWiz : public wxDialog
+{
+public:
+  Draw2dWiz(wxWindow *parent, Configuration *config);
+  wxString GetValue();
+private:
+  wxRadioButton *m_singleFrame;
+  wxRadioButton *m_multipleFrames;
+  BTextCtrl *m_frameVar;
+  BTextCtrl *m_varStart;
+  BTextCtrl *m_varEnd;
+};
 
 #endif // DRAWWIZ_H

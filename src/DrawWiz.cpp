@@ -187,7 +187,6 @@ AxisWiz::AxisWiz(wxWindow *parent, Configuration *config, int dimensions) :
   wxDialog(parent, -1, _("Plot an explicit expression"))
 {
   m_dimensions = dimensions;
-  int m_dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   
   vbox->Add(new wxStaticText(this,-1, _("x axis label")), wxSizerFlags());
@@ -282,7 +281,6 @@ AxisWiz::AxisWiz(wxWindow *parent, Configuration *config, int dimensions) :
 wxString AxisWiz::GetValue()
 {
   wxString retval;
-
   if(m_xLabel->GetValue() != wxEmptyString)
   {
     retval = "xlabel=\"" + m_xLabel->GetValue() + "\"";
@@ -374,3 +372,10 @@ wxString AxisWiz::GetValue()
   return retval;
 }
 
+Draw2dWiz::Draw2dWiz(wxWindow *parent, Configuration *config) :
+  wxDialog(parent, -1, _("Setup a 2d plot"))
+{
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  
+  SetSizerAndFit(vbox);
+}
