@@ -498,7 +498,8 @@ public:
       - true = we want the new string to be selected afterwards
       - false = the selection is cleared after replacing the string
         and moving the cursor to its end.
-    \param ignoreCase
+    \param ignoreCase true = ignore the case of the string to replace
+    \param replaceMaximaString true = replace strings including the double quotes.
    */
   bool ReplaceSelection(wxString oldStr, wxString newString, bool keepSelected = false, bool ignoreCase = false, bool replaceMaximaString = false);
 
