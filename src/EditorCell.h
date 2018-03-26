@@ -106,6 +106,12 @@ public:
 
   ~EditorCell();
 
+  //! Get the whole maxima command that is currently under the cursor (including all arguments)
+  wxString GetFullCommandUnderCursor();
+
+  //! Add a new parameter to a draw- or similar command including the comma, if needed.
+  void AddDrawParameter(wxString param);
+
   //! May this Editor Cell contain the answer to a question?
   void AutoAnswer(bool autoAnswer){m_autoAnswer = autoAnswer;}
 
@@ -570,7 +576,7 @@ private:
   bool IsNum(wxChar c);
 
   bool IsAlphaNum(wxChar c);
-  
+
   /*! A piece of styled text for syntax highlighting
 
     A piece of styled text may be

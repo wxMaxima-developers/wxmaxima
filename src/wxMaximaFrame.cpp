@@ -50,6 +50,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_updateEvaluationQueueLengthDisplay = true;
   m_recentDocumentsMenu = NULL;
   m_userSymbols = NULL;
+  m_drawPane = NULL;
   m_EvaluationQueueLength = 0;
   m_commandsLeftInCurrentCell = 0;
   m_forceStatusbarUpdate = false;
@@ -363,7 +364,18 @@ void wxMaximaFrame::do_layout()
                             Fixed().
                             Left());
 
-  m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).
+  m_manager.AddPane(m_drawPane = new DrawPane(this, -1),
+                    wxAuiPaneInfo().Name(wxT("draw")).
+                    Show(false).
+                    TopDockable(true).
+                    BottomDockable(true).
+                    LeftDockable(true).
+                    RightDockable(true).
+                    PaneBorder(true).
+                    Fixed().
+                    Left());
+
+m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).
             MinSize(greekPane->GetEffectiveMinSize()).
             BestSize(greekPane->GetEffectiveMinSize()).
             Show(true).
@@ -374,6 +386,12 @@ void wxMaximaFrame::do_layout()
             BestSize(symbolsPane->GetEffectiveMinSize()).
             Show(true).
             MaxSize(symbolsPane->GetEffectiveMinSize());
+
+  m_manager.GetPane(wxT("draw")) = m_manager.GetPane(wxT("draw")).
+    MinSize(symbolsPane->GetEffectiveMinSize()).
+    BestSize(symbolsPane->GetEffectiveMinSize()).
+    Show(true).
+    MaxSize(symbolsPane->GetEffectiveMinSize());
 
   
   wxConfigBase *config = wxConfig::Get();
@@ -399,6 +417,8 @@ void wxMaximaFrame::do_layout()
     m_manager.GetPane(wxT("symbols")).Caption(_("Mathematical Symbols"));
   m_manager.GetPane(wxT("format")) =
     m_manager.GetPane(wxT("format")).Caption(_("Insert"));
+  m_manager.GetPane(wxT("draw")) =
+    m_manager.GetPane(wxT("draw")).Caption(_("Plot using Draw"));
   m_manager.GetPane(wxT("greek")) =
     m_manager.GetPane(wxT("greek")).Caption(_("Greek Letters"));
   m_manager.GetPane(wxT("math")) = m_manager.GetPane(wxT("math")).Caption(_("General Math"));
@@ -540,6 +560,7 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_structure, _("Table of Contents\tAlt+Shift+T"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector, _("XML Inspector"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt+Shift+C"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_draw, _("Plot using Draw"));
   m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->AppendCheckItem(ToolBar::tb_hideCode, _("Hide Code Cells\tAlt+Ctrl+H"));
   m_Maxima_Panes_Sub->Append(menu_pane_hideall, _("Hide All Toolbars\tAlt+Shift+-"), _("Hide all panes"),
@@ -1381,6 +1402,9 @@ bool wxMaximaFrame::IsPaneDisplayed(Event id)
     case menu_pane_format:
       displayed = m_manager.GetPane(wxT("format")).IsShown();
       break;
+    case menu_pane_draw:
+      displayed = m_manager.GetPane(wxT("draw")).IsShown();
+      break;
     default:
       wxASSERT(false);
       break;
@@ -1419,6 +1443,9 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
 #endif
     case menu_pane_format:
       m_manager.GetPane(wxT("format")).Show(show);
+      break;
+    case menu_pane_draw:
+      m_manager.GetPane(wxT("draw")).Show(show);
       break;
     case menu_pane_hideall:
       m_manager.GetPane(wxT("math")).Show(false);
@@ -1779,6 +1806,80 @@ wxPanel *wxMaximaFrame::CreateFormatPane()
   grid->SetSizeHints(panel);
 
   return panel;
+}
+
+void wxMaximaFrame::DrawPane::SetDimensions(int dimensions)
+{
+  if(dimensions == m_dimensions)
+    return;
+  
+  if(dimensions > 0)
+  {
+    m_draw_explicit->Enable(true);
+    m_draw_implicit->Enable(true);
+    m_draw_title->Enable(true);
+    m_draw_key->Enable(true);
+    m_draw_fgcolor->Enable(true);
+    m_draw_fillcolor->Enable(true);
+    m_draw_setup2d->Enable(false);
+    m_draw_setup3d->Enable(false);
+  }
+  else
+  {
+    m_draw_explicit->Enable(true);
+    m_draw_implicit->Enable(true);
+    m_draw_title->Enable(true);
+    m_draw_key->Enable(true);
+    m_draw_fgcolor->Enable(true);
+    m_draw_fillcolor->Enable(true);
+    m_draw_setup2d->Enable(true);
+    m_draw_setup3d->Enable(true);
+  }
+  m_dimensions = dimensions;
+}
+
+wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxPanel(parent, id)
+{
+  wxBoxSizer  *vbox = new wxBoxSizer(wxVERTICAL);
+  wxGridSizer *grid2d3d = new wxGridSizer(2);
+  wxGridSizer *grid = new wxGridSizer(2);
+  m_dimensions = -1;
+  int style = wxALL | wxEXPAND;
+#if defined __WXMSW__
+  int border = 1;
+#else
+  int border = 0;
+#endif
+
+  grid2d3d->Add(m_draw_setup2d = new wxButton(this, menu_draw_2d, _("2D")),
+                0, style, border);
+  m_draw_setup2d->SetToolTip(_("Setup a 2D plot"));
+  grid2d3d->Add(m_draw_setup3d = new wxButton(this, menu_draw_3d, _("3D")),
+                0, style, border);
+  m_draw_setup3d->SetToolTip(_("Setup a 3D plot"));
+  vbox->Add(grid2d3d, wxSizerFlags().Expand());
+  grid->Add(m_draw_explicit = new wxButton(this, menu_draw_explicit, _("Expression")),
+            0, style, border);
+  m_draw_explicit->SetToolTip(_("The standard plot command: Plot an equation as a curve"));
+  grid->Add(m_draw_implicit = new wxButton(this, menu_draw_implicit, _("Implicit Plot")),
+            0, style, border);
+  m_draw_implicit->SetToolTip(_("Draw all points an equation is true at"));
+  grid->Add(m_draw_title = new wxButton(this, menu_draw_title, _("Diagram title")),
+            0, style, border);
+  m_draw_title->SetToolTip(_("The diagram title"));
+  grid->Add(m_draw_key = new wxButton(this, menu_draw_key, _("Plot name")),
+            0, style, border);
+  m_draw_key->SetToolTip(_("The next plot's title"));
+  grid->Add(m_draw_fgcolor = new wxButton(this, menu_draw_fgcolor, _("Line color")),
+            0, style, border);
+  m_draw_fgcolor->SetToolTip(_("The color of the next line to draw"));
+  grid->Add(m_draw_fillcolor = new wxButton(this, menu_draw_fillcolor, _("Fill color")),
+            0, style, border);
+  m_draw_fillcolor->SetToolTip(_("The fill color for the next objects"));
+  vbox->Add(grid, wxSizerFlags().Expand());
+  SetSizerAndFit(vbox);
+  vbox->SetSizeHints(this);
+  SetDimensions(0);
 }
 
 void wxMaximaFrame::ShowToolBar(bool show)

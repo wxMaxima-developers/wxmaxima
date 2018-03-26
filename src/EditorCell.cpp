@@ -89,6 +89,130 @@ wxString EditorCell::EscapeHTMLChars(wxString input)
   return input;
 }
 
+void EditorCell::AddDrawParameter(wxString param)
+{
+  if(m_positionOfCaret < 0)
+    return;
+
+  int pos = 1;
+  int commaPos = 1;
+
+  // Insert a comma in front of the parameter, if necessary
+  wxString::iterator ch = m_text.begin();
+  bool commaNeededBefore = false;
+  bool commaNeededAfter = false;
+  while (ch < m_text.end())
+  {
+    if(
+      (*ch == wxT('(')) ||
+      (*ch == wxT('[')) ||
+      (*ch == wxT(','))
+      )
+      commaNeededBefore = false;
+    else
+    {
+      if(!(
+           (*ch == wxT(' ')) ||
+           (*ch == wxT('\n')) ||
+           (*ch == wxT('\r')) ||
+           (*ch == wxT('\t'))
+           )
+        )
+      {
+        commaNeededBefore = true;
+        commaPos = pos;
+      }
+    }
+    
+    if(pos == m_positionOfCaret)
+      break;
+    
+      ++ch;++pos;
+  }
+
+  while (ch < m_text.end())
+  {
+    if(
+      (*ch == wxT(')')) ||
+      (*ch == wxT(']')) ||
+      (*ch == wxT(','))
+      )
+      commaNeededAfter = false;
+    else
+    {
+      if(!(
+           (*ch == wxT(' ')) ||
+           (*ch == wxT('\n')) ||
+           (*ch == wxT('\r')) ||
+           (*ch == wxT('\t'))
+           )
+        )
+      {
+        commaNeededAfter = true;
+        commaPos = pos;
+      }
+    }
+    
+    if(pos == m_positionOfCaret)
+      break;
+    
+    ++ch;++pos;
+  }
+
+  if(commaNeededAfter)
+    param += ",";
+
+  if(commaNeededBefore)
+  {
+    m_text = m_text.Left(commaPos) + wxT(",") + m_text.Right(m_text.Length() - commaPos);
+    m_positionOfCaret ++;
+  }
+  m_text = m_text.Left(m_positionOfCaret) +
+    param +
+    m_text.Right(m_text.Length() - m_positionOfCaret);
+  m_positionOfCaret += param.Length();
+  
+  StyleText();
+  ResetSize();
+}
+
+wxString EditorCell::GetFullCommandUnderCursor()
+{
+  if(!IsActive())
+    return wxEmptyString;
+    
+  if(m_text == wxEmptyString)
+    return wxEmptyString;
+
+  wxString result;
+  int pos = 1;
+  
+  wxString::iterator ch = m_text.begin();
+  while (ch < m_text.end())
+  {
+    result += *ch;
+    if(*ch == wxT('\\'))
+    {
+      ++ch;++pos;
+      if(ch < m_text.end())
+        result += *ch;
+    }
+    else
+    {
+      if((*ch == ';') || (*ch == '$'))
+      {
+        if(m_positionOfCaret < pos)
+          return result;
+        result = wxEmptyString;
+      }
+    }
+    
+    if(ch < m_text.end())
+      ++ch;++pos;
+  }
+  return result;
+}
+
 wxString EditorCell::PrependNBSP(wxString input)
 {
   bool firstSpace = true;;

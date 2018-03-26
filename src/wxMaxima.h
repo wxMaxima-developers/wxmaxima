@@ -292,6 +292,7 @@ protected:
   void SimplifyMenu(wxCommandEvent &event);        //!< Processes "Simplify menu" clicks
   void PlotMenu(wxCommandEvent &event);            //!< Processes "Plot menu" cloicks
   void ListMenu(wxCommandEvent &event);            //!< Processes "list menu" clicks
+  void DrawMenu(wxCommandEvent &event);            //!< Processes "draw menu" clicks
   void NumericalMenu(wxCommandEvent &event);       //!< Processes "Numerical menu" clicks
   void HelpMenu(wxCommandEvent &event);            //!< Processes "Help menu" clicks
   void EditMenu(wxCommandEvent &event);            //!< Processes "Edit menu" clicks
@@ -333,6 +334,9 @@ protected:
   void ClientEvent(wxSocketEvent &event);
   //! Triggered when we get new chars from maxima.
   void OnNewChars();
+
+  //! Add a parameter to an draw command
+  void AddDrawParameter(wxString cmd);
 
   /* Append something to the console. Might be Text or XML maths.
 
@@ -380,6 +384,8 @@ protected:
 
   void TryUpdateInspector();
 
+  void UpdateDrawPane();
+  
   wxString ExtractFirstExpression(wxString entry);
 
   wxString GetDefaultEntry();

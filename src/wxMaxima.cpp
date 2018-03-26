@@ -33,6 +33,7 @@
 #include <wx/notifmsg.h>
 #include "wxMaxima.h"
 #include "ImgCell.h"
+#include "DrawWiz.h"
 #include "SubstituteWiz.h"
 #include "IntegrateWiz.h"
 #include "LimitWiz.h"
@@ -59,6 +60,7 @@
 #include "ListSortWiz.h"
 #include "wxMaximaIcon.h"
 
+#include <wx/colordlg.h>
 #include <wx/clipbrd.h>
 #include <wx/filedlg.h>
 #include <wx/utils.h>
@@ -2911,9 +2913,39 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
 
   if((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded()))
     m_xmlInspector->Update();
+
+  UpdateDrawPane();
   
   // Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();
+}
+
+void wxMaxima::UpdateDrawPane()
+{
+  if(m_drawPane)
+  {
+    EditorCell *editor = m_console->GetActiveCell();
+    if(editor)
+    {
+      wxString command = m_console->GetActiveCell()->GetFullCommandUnderCursor();
+      int dimensions = 0;
+      if(command.Contains(wxT("gr2d")))
+        dimensions = 2;
+      if(command.Contains(wxT("gr3d")))
+        dimensions = 3;
+      if(command.Contains(wxT("draw2d")))
+        dimensions = 2;
+      if(command.Contains(wxT("draw3d")))
+        dimensions = 3;
+      m_drawPane->SetDimensions(dimensions);
+    }
+    else
+      m_drawPane->SetDimensions(0);
+  }
+  else
+  {
+    m_drawPane->SetDimensions(0);
+  }
 }
 
 ///--------------------------------------------------------------------------------
@@ -2925,8 +2957,6 @@ void wxMaxima::MenuCommand(wxString cmd)
   bool evaluating = (!m_console->m_evaluationQueue.Empty()) && (m_StatusMaximaBusy == waiting);
 
   m_console->SetFocus();
-//  ym_console->SetSelection(NULL);
-//  m_console->SetActiveCell(NULL);
   m_console->OpenHCaret(cmd);
   m_console->AddCellToEvaluationQueue(dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetGroup()));
   if (!evaluating)
@@ -4833,6 +4863,135 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
       break;
     default:
       break;
+  }
+}
+
+void wxMaxima::AddDrawParameter(wxString cmd)
+{
+  int dimensions = 0;
+  if(m_drawPane)
+    dimensions = m_drawPane->GetDimensions();
+
+  if(dimensions < 2)
+  {
+    cmd = wxT("wxdraw2d(\n    ") + cmd + wxT("\n)$");
+    m_console->OpenHCaret(cmd);
+    m_console->GetActiveCell()->SetCaretPosition(
+      m_console->GetActiveCell()->GetCaretPosition() - 3);
+  }
+  else
+  {
+    if(m_console->GetActiveCell())
+    {
+      cmd = wxT("\n    ") + cmd;
+      m_console->GetActiveCell()->AddDrawParameter(cmd);
+      m_console->RequestRedraw();
+    }
+  }
+  m_console->SetFocus();
+}
+
+void wxMaxima::DrawMenu(wxCommandEvent &event)  
+{
+  if(!m_drawPane)
+    return;
+
+  UpdateDrawPane();
+  int dimensions = m_drawPane->GetDimensions();
+    
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
+  wxString expr;
+  if(dimensions < 2)
+    expr = GetDefaultEntry();
+  else
+    expr = "%";
+  
+  wxString cmd;
+  switch (event.GetId())
+  {
+  case menu_draw_2d:
+    m_console->SetFocus();
+    m_console->OpenHCaret(wxT("wxdraw2d(\n)$"));
+    m_console->GetActiveCell()->SetCaretPosition(
+      m_console->GetActiveCell()->GetCaretPosition() - 3);
+    break;
+  case menu_draw_3d:
+    m_console->SetFocus();
+    m_console->OpenHCaret(wxT("wxdraw3d(\n)$"));
+      m_console->GetActiveCell()->SetCaretPosition(
+        m_console->GetActiveCell()->GetCaretPosition() - 3);
+    break;
+  case menu_draw_fgcolor:
+  {
+    wxColour col = wxGetColourFromUser(this);
+    if (col.IsOk())
+      AddDrawParameter(
+        wxString::Format("color=\"#%02x%02x%02x\"",
+                         col.Red(),col.Green(),col.Blue()));
+    break;
+  }
+  case menu_draw_fillcolor:
+  {
+    wxColour col = wxGetColourFromUser(this);
+    if (col.IsOk())
+      AddDrawParameter(
+        wxString::Format("fill_color=\"#%02x%02x%02x\"",
+                         col.Red(),col.Green(),col.Blue()));
+  break;
+  }
+  case menu_draw_title:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_console->m_configuration,
+                               _("Set the diagram title"),
+                               _("Title (Sub- and superscripts as x_{10} or x^{10})"),expr);
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wxT("title=\"") + wiz->GetValue() + wxT("\"");
+      AddDrawParameter(cmd);
+    }
+    wiz->Destroy();
+    break;
+  }
+  case menu_draw_key:
+  {
+    Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_console->m_configuration,
+                               _("Set the next plot's title"),
+                               _("Title (Sub- and superscripts as x_{10} or x^{10})"),expr);
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wxT("key=\"") + wiz->GetValue() + wxT("\"");
+      AddDrawParameter(cmd);
+    }
+    wiz->Destroy();
+    break;
+  }
+  case menu_draw_explicit:
+  {
+    ExplicitWiz *wiz = new ExplicitWiz(this, m_console->m_configuration, expr, dimensions);
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      AddDrawParameter(wiz->GetValue());
+    }
+    wiz->Destroy();
+    break;
+  }
+    
+  case menu_draw_implicit:
+  {
+    ImplicitWiz *wiz = new ImplicitWiz(this, m_console->m_configuration, expr, dimensions);
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      AddDrawParameter(wiz->GetValue());
+    }
+    wiz->Destroy();
+    break;
+  }
   }
 }
 
@@ -8247,6 +8406,22 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_MENU(menu_list_list2matrix,wxMaxima::ListMenu)
                 EVT_MENU(menu_list_matrix2list,wxMaxima::ListMenu)
                 EVT_MENU(menu_list_create_from_args,wxMaxima::ListMenu)
+                EVT_MENU(menu_draw_2d,wxMaxima::DrawMenu)
+                EVT_BUTTON(menu_draw_2d,wxMaxima::DrawMenu)
+                EVT_MENU(menu_draw_3d,wxMaxima::DrawMenu)
+                EVT_BUTTON(menu_draw_3d,wxMaxima::DrawMenu)
+                EVT_MENU(menu_draw_fgcolor,wxMaxima::DrawMenu)
+                EVT_BUTTON(menu_draw_fgcolor,wxMaxima::DrawMenu)
+                EVT_MENU(menu_draw_fillcolor,wxMaxima::DrawMenu)
+                EVT_BUTTON(menu_draw_fillcolor,wxMaxima::DrawMenu)
+                EVT_MENU(menu_draw_title,wxMaxima::DrawMenu)
+                EVT_BUTTON(menu_draw_title,wxMaxima::DrawMenu)
+                EVT_MENU(menu_draw_key,wxMaxima::DrawMenu)
+                EVT_BUTTON(menu_draw_key,wxMaxima::DrawMenu)
+                EVT_MENU(menu_draw_explicit,wxMaxima::DrawMenu)
+                EVT_BUTTON(menu_draw_explicit,wxMaxima::DrawMenu)
+                EVT_MENU(menu_draw_implicit,wxMaxima::DrawMenu)
+                EVT_BUTTON(menu_draw_implicit,wxMaxima::DrawMenu)
                 EVT_IDLE(wxMaxima::OnIdle)
                 EVT_MENU(menu_remove_output, wxMaxima::EditMenu)
                 EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_29, wxMaxima::OnRecentDocument)

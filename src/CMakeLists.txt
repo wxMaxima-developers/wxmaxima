@@ -83,7 +83,7 @@ elseif(APPLE)
 	      RESOURCE "${ALLRERESOURCES}"
 	      )
     # make wxmathml.lisp ship with the Mac App
-
+ 
     add_dependencies(wxmaxima wxMaxima.app)
 else()
     add_executable(wxmaxima ${SOURCE_FILES})
