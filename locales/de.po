@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-26 19:57+0200\n"
-"PO-Revision-Date: 2018-02-25 09:07+0100\n"
+"PO-Revision-Date: 2018-03-26 20:21+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -371,7 +371,7 @@ msgstr "(Standardsprache verwenden)"
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:235
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:247
 msgid "-"
-msgstr ""
+msgstr "-"
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:213
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:224
@@ -396,7 +396,7 @@ msgstr "1/2"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1856
 msgid "2D"
-msgstr ""
+msgstr "2D"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:572
 msgid "2D equations using ASCII Art"
@@ -404,7 +404,7 @@ msgstr "2D-Gleichungen aus Standard-Zeichen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1859
 msgid "3D"
-msgstr ""
+msgstr "3D"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2776
 #, c-format
@@ -647,7 +647,7 @@ msgstr "Alpha"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:580
 msgid "Always autosubscript after an underscore"
-msgstr ""
+msgstr "Mache alles nach einem Unterstrich tiefgestellt"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:170
 msgid "An integration constant."
@@ -719,6 +719,8 @@ msgid ""
 "It also can be hidden by setting fpprintprec to an appropriate value. But be "
 "aware in this case that even small errors can add up."
 msgstr ""
+"Der Versuch, 0.1^12 zu errechnen demonstriert, dass Maxima normalerweise den Fehler, den die Verwendung von Fliesskommazahlen bedeutet, nicht versteckt. Falls dies hier der Fall ist, kann der Fehler vermieden werden, indem exakte Zahlen wie 1/10, 1*10^-1 oder rat(.1) verwendet werden.\n"
+"Stattdessen kann der Fehler versteckt werden, indem fpprintprec auf einen geeigneten Wert gesetzt wird. Allerdings können sich dann selbst kleine Fehler unbemerkt aufaddieren."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:899
 msgid "Ask to save untitled documents"
@@ -782,15 +784,15 @@ msgstr "Minuten zwischen automatischem Speichern (0 = aus):"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:582
 msgid "Autosubscript"
-msgstr ""
+msgstr "Automatisches Tiefstellen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:582
 msgid "Autosubscript chars after an underscore"
-msgstr ""
+msgstr "Automatisches Tiefstellen von Zeichen nach einem Unterstrich"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:579
 msgid "Autosubscript numbers and text following single letters"
-msgstr ""
+msgstr "Stelle Zahlen und Text, der einzelnen Buchstaben folgt, tief"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:569
 msgid "Autowrap long lines:"
@@ -798,7 +800,7 @@ msgstr "Automatischer Zeilenumbruch:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1884
 msgid "Axis"
-msgstr ""
+msgstr "Achsen"
 
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:60
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4546
@@ -821,7 +823,7 @@ msgstr "Batch-Datei laden"
 msgid ""
 "Besides a division by 0 the reason for this error message can be a "
 "calculation that returns +/-infinity."
-msgstr ""
+msgstr "Außer dem Versuch, durch 0 zu teilen, kann diese Fehlermeldung durch eine Berechnung verursacht werden, die +/- unendlich ergibt."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:107
 msgid ""
@@ -1301,10 +1303,8 @@ msgid "Comma-separated variables"
 msgstr "Variablen (durch Kommata getrennt)"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:730
-#, fuzzy
 msgid "Commands that are executed at every start of maxima."
-msgstr ""
-"Maxima-Befehle, die beim Hochfahren von Maxima ausgeführt werden sollen: "
+msgstr "Maxima-Befehle, die beim Hochfahren von Maxima ausgeführt werden sollen."
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4743
 msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
@@ -1752,7 +1752,7 @@ msgstr "Polynome di&vidieren ..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1869
 msgid "Diagram title"
-msgstr ""
+msgstr "Diagrammtitel"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1495
 msgid "Diff..."
@@ -1865,7 +1865,7 @@ msgstr "Dokumentklasse für TeX-Export:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:578
 msgid "Don't autosubscript after an underscore"
-msgstr ""
+msgstr "Kein automatisches Tiefstellen."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8051
 msgid "Don't save"
@@ -1877,7 +1877,7 @@ msgstr "Nach unten"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1868
 msgid "Draw all points an equation is true at"
-msgstr ""
+msgstr "Zeichne alle Punkte, an denen eine Gleichung gilt"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:770
 msgid "E&quations"
@@ -1954,24 +1954,24 @@ msgstr "q.e.d. (Beweisende)"
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:42
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:119
 msgid "End of the x value"
-msgstr ""
+msgstr "Ende des x-Bereichs"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:56
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:131
 msgid "End of the y value"
-msgstr ""
+msgstr "Ende des y-Bereichs"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:145
 msgid "End of the z value"
-msgstr ""
+msgstr "Ende des z-Bereichs"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1070
 msgid "Engineering format (12.1e6 etc.)"
-msgstr ""
+msgstr "Zahlenformat für Ingenieure"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6003
 msgid "Engineering format setup"
-msgstr ""
+msgstr "Einstellungen für das Ingenieursformat"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:827
 msgid "English"
@@ -2280,9 +2280,8 @@ msgstr "Ausdruck:"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:30
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:107
-#, fuzzy
 msgid "Expression to plot"
-msgstr "Ausdruck:"
+msgstr "Darzustellender Ausdruck"
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:34
 msgid "Expression(s):"
@@ -2316,7 +2315,6 @@ msgstr ""
 "Extrahiert einen Variablenwert aus einer Liste mit Werten für Variablen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1002
-#, fuzzy
 msgid "Extract an actual value for a variable"
 msgstr "Extrahiere den Wert für eine Variable"
 
@@ -2415,7 +2413,7 @@ msgstr "Datei:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1878
 msgid "Fill color"
-msgstr ""
+msgstr "Füllfarbe"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:205
 msgid "Find"
@@ -2494,7 +2492,7 @@ msgstr "Suchen:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1074
 msgid "Fine-tune the display of engineering-format numbers"
-msgstr ""
+msgstr "Feineinstellung des Zahlenformats für Ingenieure"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:828
 msgid "Finnish"
@@ -2527,11 +2525,11 @@ msgstr "Folge"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:252
 msgid "Following plots use secondary x axis"
-msgstr ""
+msgstr "Die folgenden Kurven verwenden die 2. x-Achse"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:257
 msgid "Following plots use secondary y axis"
-msgstr ""
+msgstr "Die folgenden Kurven verwenden die 2. y-Achse"
 
 #: /home/gunter/src/wxmaxima/src/IntCell.cpp:302
 msgid ""
@@ -2790,9 +2788,8 @@ msgid "Greek constants"
 msgstr "Griechische Konstanten"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1881
-#, fuzzy
 msgid "Grid"
-msgstr "Gitter:"
+msgstr "Gitter"
 
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:53
 msgid "Grid:"
@@ -2895,7 +2892,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5983
 msgid "How many digits to show:"
-msgstr ""
+msgstr "Zahl der angezeigten Stellen:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:575
 msgid "How to display new equations"
@@ -3013,7 +3010,7 @@ msgstr "Bild-Dateien (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1866
 msgid "Implicit Plot"
-msgstr ""
+msgstr "Implizit"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:131
 msgid ""
@@ -3504,7 +3501,7 @@ msgstr "Grenzwert ..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1875
 msgid "Line color"
-msgstr ""
+msgstr "Linienfarbe"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1537
 msgid "Linear Regression..."
@@ -3958,7 +3955,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5999
 msgid "Maximum absolute value printed without exponent:"
-msgstr ""
+msgstr "Betrag der höchsten Zahl, die ohne Exponent dargestellt werden soll:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:553
 msgid "Maximum displayed number of digits:"
@@ -4010,7 +4007,7 @@ msgstr "Methode:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5998
 msgid "Minimum absolute value printed without exponent:"
-msgstr ""
+msgstr "Betrag der kleinsten Zahl, die ohne Exponent dargestellt werden soll:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7269
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7270
@@ -4025,13 +4022,13 @@ msgstr "Modulo"
 msgid ""
 "Most probable cause: A dot instead a comma between two list items containing "
 "assignments."
-msgstr ""
+msgstr "Wahrscheinlichster Grund: Ein Punkt statt einem Komma zwischen zwei Listenelementen mit Gleichungen"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:246
 msgid ""
 "Most probable cause: A function was called with a parameter that causes it "
 "to return infinity and/or -infinity."
-msgstr ""
+msgstr "Wahrscheinlichster Grund: Eine Funktion wurde mit einem Parameter aufgerufen, der sie +/- unendlich ausgeben lässt."
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:254
 msgid ""
@@ -4125,7 +4122,6 @@ msgid "Normality Test..."
 msgstr "Test Normalverteilung"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:226
-#, fuzzy
 msgid ""
 "Normally computers use floating-point numbers that can be handled incredibly "
 "fast while being accurate to dozens of digits. They will, though, introduce "
@@ -4349,7 +4345,7 @@ msgstr "Öffne Datei"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:62
 msgid "Optional: A 2nd expression that defines a region to fill"
-msgstr ""
+msgstr "Optional: Ein 2. Ausdruck, der einen zu füllenden Bereich begrenzt"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:226
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:169
@@ -4543,9 +4539,8 @@ msgstr "3D Plotten ..."
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:26
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:103
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:183
-#, fuzzy
 msgid "Plot an explicit expression"
-msgstr "Grenzwert eines Ausdrucks suchen"
+msgstr "Darstellung eines explizit angegebenen Ausdrucks"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5925
 msgid "Plot format"
@@ -4560,9 +4555,8 @@ msgid "Plot in 3 dimensions"
 msgstr "In drei Dimensionen plotten"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1872
-#, fuzzy
 msgid "Plot name"
-msgstr "Name der Liste:"
+msgstr "Name der Kurve:"
 
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:86
 msgid "Plot to file:"
@@ -4571,7 +4565,7 @@ msgstr "Plot in Datei:"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:421
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:563
 msgid "Plot using Draw"
-msgstr ""
+msgstr "Plotte mittels Draw"
 
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:32
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:38
@@ -4648,7 +4642,7 @@ msgstr "Dokument drucken"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1071
 msgid "Print floating-point numbers with exponents dividable by 2"
-msgstr ""
+msgstr "Gebe Fließkommazahlen mit durch 3 teilbaren Exponenten aus"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:777
 msgid "Print scale:"
@@ -5148,7 +5142,7 @@ msgstr "Das Plot-Format einstellen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4947
 msgid "Set the diagram title"
-msgstr ""
+msgstr "Setze den Titel des Diagramms"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1046
 msgid "Set the frame rate for animations."
@@ -5156,11 +5150,11 @@ msgstr "Wähle die Bildwiederholrate für Animationen."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5003
 msgid "Set the grid density."
-msgstr ""
+msgstr "Setze die Linienfrequenz des Gitters."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4961
 msgid "Set the next plot's title. Empty = no title."
-msgstr ""
+msgstr "Der Titel der nächsten Kurve. Leer = kein Titel."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1064
 msgid ""
@@ -5197,11 +5191,11 @@ msgstr "Setze Vergrößerung auf 80 %"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1858
 msgid "Setup a 2D plot"
-msgstr ""
+msgstr "Einstellungen für 2D-Diagramme"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1861
 msgid "Setup a 3D plot"
-msgstr ""
+msgstr "Einstellungen für 3D-Diagramme"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:761
 msgid "Setup atvalues for solving ODE with Laplace transformation"
@@ -5213,11 +5207,11 @@ msgstr "Die aktuelle Restklasse angeben"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1886
 msgid "Setup the axis"
-msgstr ""
+msgstr "Einstellungen für die Achsen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1073
 msgid "Setup the engineering format..."
-msgstr ""
+msgstr "Einstellungen für das Ingenieursformat..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:690
 msgid "Show &Definition..."
@@ -5310,7 +5304,7 @@ msgstr "Zeige die Hilfe von wxMaxima an"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1067
 msgid "Shows how many digits of a numbers are displayed"
-msgstr ""
+msgstr "Zeigt, wie viele Stellen einer Zahl angezeigt werden"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1654
 msgid "Sigma"
@@ -5517,16 +5511,16 @@ msgstr "Erneute Auswertung startet ein neues Maxima"
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:38
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:115
 msgid "Start of the x value"
-msgstr ""
+msgstr "Beginn des x-Werts"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:52
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:127
 msgid "Start of the y value"
-msgstr ""
+msgstr "Beginn des y-Werts"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:141
 msgid "Start of the z value"
-msgstr ""
+msgstr "Beginn des z-Werts"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:289
 msgid "Start or Stop animation"
@@ -5749,7 +5743,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1877
 msgid "The color of the next line to draw"
-msgstr ""
+msgstr "Die Farbe der nächsten Kurve"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:314
 msgid ""
@@ -5773,7 +5767,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1871
 msgid "The diagram title"
-msgstr ""
+msgstr "Der Titel des Diagramms"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:350
 msgid "The document class LaTeX is instructed to use for our documents."
@@ -5781,7 +5775,7 @@ msgstr "Die Dokumentklasse für den Export von LaTeX-Dokumenten "
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1880
 msgid "The fill color for the next objects"
-msgstr ""
+msgstr "Die Füllfarbe für die nächsten Objekte"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:274
 msgid ""
@@ -5797,7 +5791,7 @@ msgstr "Die funktion, deren Argumente extrahiert werden sollen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1883
 msgid "The grid in the background of the diagram"
-msgstr ""
+msgstr "Das Gitter im Hintergrund der Zeichnung"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:765
 msgid "The half of the equation that is to the left of the \"=\""
@@ -5841,14 +5835,10 @@ msgstr ""
 "das Problem beheben."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5293
-#, fuzzy
 msgid ""
 "The list with values can be generated by \"solve()\" or using \"Create list/"
 "as storage for actual values for variables\"."
-msgstr ""
-"Eine Liste mit Variablenwerten kann von solve() oder über \"Eine Liste "
-"erteugen/als Speicher für die konkreten Inhalte von Variablen\" generiert "
-"werden."
+msgstr "Eine Liste mit Variablenwerten kann von solve() oder über \"Eine Liste erzeugen/als Speicher für die konkreten Inhalte von Variablen\" generiert werden."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:122
 msgid ""
@@ -5880,7 +5870,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1874
 msgid "The next plot's title"
-msgstr ""
+msgstr "Der Titel der nächsten Kurve"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:358
 msgid "The number of recently opened files that is to be remembered."
@@ -5899,7 +5889,6 @@ msgstr "Das in Maxima eingebaute Handbuch"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:662
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:702
-#, fuzzy
 msgid ""
 "The part of the output of these commands that isn't declared as \"math\" "
 "might be suppressed by wxMaxima. As always maxima commands are required to "
@@ -5977,7 +5966,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1865
 msgid "The standard plot command: Plot an equation as a curve"
-msgstr ""
+msgstr "Zeichne eine Kurve"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:224
 msgid ""
@@ -6044,23 +6033,11 @@ msgstr ""
 "deren Wert bereits bekannt ist, als Schleifenzähler zu verwenden."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:690
-#, fuzzy
 msgid ""
 "This file won't be read by maxima if maxima is used without wxMaxima. In "
 "order to add startup commands that are executed in this case, too, please "
 "add them to maxima-init.mac, instead."
-msgstr ""
-"Falls wxMaxima beim Versuch, das passende Verzeichnis für diese Datei zu "
-"finden, daneben liegt, kann das richtige Verzeichnis dadurch gefunden "
-"werden, dass Maxima der folgende Befehl gegeben wird:\n"
-"\n"
-"\n"
-"   maxima-user_dir;\n"
-"\n"
-"\n"
-"Diese Datei wird nicht geladen, wenn wxMaxima nicht verwendet wird. Die "
-"Datei maxima-init.mac im selben Verzeichnis wird stattdessen in jedem Fall "
-"geladen.\""
+msgstr "Diese Datei wird nur von Maxima gelesen, wenn Maxima von wxMaxima geladen wird."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5246
 msgid ""
@@ -6080,7 +6057,7 @@ msgid ""
 "-infinity. It also can indicate that an attempt was made to fit data to an "
 "equation that actually matches the data best if one parameter is set to +/- "
 "infinity."
-msgstr ""
+msgstr "Oft geschieht dies, wenn ein Optimum gesucht wird, vom Startpunkt aus aber die Gleichung bis ins unendliche langsam optimaler wird, ohne dabei das  eigentliche Optimum zu treffen. Kann ebenso bedeuten, dass Daten auf eine Gleichung gefittet werden, bei der ein Parameter auf unendlich zu setzen ist, um ein befriedigendes Ergebnis zu erhalten."
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:58
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:545
@@ -6100,7 +6077,7 @@ msgstr "Titel"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4948
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4962
 msgid "Title (Sub- and superscripts as x_{10} or x^{10})"
-msgstr ""
+msgstr "Title (Hoch- und Tiefstellen als x_{10} oder x^{10})"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1079
 msgid "Title cell"
@@ -6455,16 +6432,16 @@ msgstr "Wert:"
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:34
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:111
 msgid "Variable for the x value"
-msgstr ""
+msgstr "Variable für den x-Wert"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:48
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:123
 msgid "Variable for the y value"
-msgstr ""
+msgstr "Variable für den y-Wert"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:137
 msgid "Variable for the z value"
-msgstr ""
+msgstr "Variable für den z-Wert"
 
 #: /home/gunter/src/wxmaxima/src/ActualValuesStorageWiz.cpp:41
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5307
@@ -7000,19 +6977,19 @@ msgstr "rechts"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:228
 msgid "secondary x axis label"
-msgstr ""
+msgstr "Der Titel der 2. x-Achse"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:231
 msgid "secondary x range (automatic if incomplete)"
-msgstr ""
+msgstr "Der Bereich für die 2. x-Achse (automatisch, wenn leer)"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:240
 msgid "secondary y axis label"
-msgstr ""
+msgstr "Der Titel der 2. y-Achse"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:243
 msgid "secondary y range (automatic if incomplete)"
-msgstr ""
+msgstr "Der Bereich für die 2. y-Achse (automatisch, wenn leer)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1623
 msgid "sigma"
@@ -7020,7 +6997,6 @@ msgstr "sigma"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4436
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6897
-#, fuzzy
 msgid ""
 "solve() will solve a list of equations only if for n independent equations "
 "there are n variables to solve to.\n"
@@ -7271,15 +7247,15 @@ msgstr "x"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:189
 msgid "x axis label"
-msgstr ""
+msgstr "Der Titel der x-Achse"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4999
 msgid "x direction [in multiples of the tick frequency]"
-msgstr ""
+msgstr "In x-Richtung [Vielfache der Anzahl der Zahlen]"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:192
 msgid "x range (automatic if incomplete)"
-msgstr ""
+msgstr "Der Bereich für die x-Achse (automatisch, wenn leer)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1619
 msgid "xi"
@@ -7297,15 +7273,15 @@ msgstr "Exklusiv Oder"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:201
 msgid "y axis label"
-msgstr ""
+msgstr "Der Titel der y-Achse"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5000
 msgid "y direction [in multiples of the tick frequency]"
-msgstr ""
+msgstr "in y-Richtung [in vielfachen der Anzahl der Zahlen]"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:204
 msgid "y range (automatic if incomplete)"
-msgstr ""
+msgstr "Der Bereich für die y-Achse (automatisch, wenn leer)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6199
 msgid "yes"
@@ -7313,11 +7289,11 @@ msgstr "ja"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:215
 msgid "z axis label"
-msgstr ""
+msgstr "Der Titel der z-Achse"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:218
 msgid "z range (automatic if incomplete)"
-msgstr ""
+msgstr "Der Bereich für die z-Achse (automatisch, wenn leer)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1611
 msgid "zeta"
