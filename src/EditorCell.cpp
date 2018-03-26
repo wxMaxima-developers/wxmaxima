@@ -124,12 +124,15 @@ void EditorCell::AddDrawParameter(wxString param)
       }
     }
     
-    if(pos == m_positionOfCaret)
+    if(pos > m_positionOfCaret)
       break;
     
       ++ch;++pos;
   }
 
+  // if(ch < m_text.end())
+  //  ++ch;
+  
   while (ch < m_text.end())
   {
     if(
@@ -137,28 +140,24 @@ void EditorCell::AddDrawParameter(wxString param)
       (*ch == wxT(']')) ||
       (*ch == wxT(','))
       )
-      commaNeededAfter = false;
-    else
     {
-      if(!(
-           (*ch == wxT(' ')) ||
-           (*ch == wxT('\n')) ||
-           (*ch == wxT('\r')) ||
-           (*ch == wxT('\t'))
-           )
-        )
-      {
-        commaNeededAfter = true;
-        commaPos = pos;
-      }
-    }
-    
-    if(pos == m_positionOfCaret)
+      commaNeededAfter = false;
       break;
+    }
+    if(
+      (*ch != wxT(' ' )) &&
+      (*ch != wxT('\n')) &&
+      (*ch != wxT('\r')) &&
+      (*ch != wxT('\t'))
+      )
+    {
+      commaNeededAfter = true;
+      break;
+    }
     
     ++ch;++pos;
   }
-
+  
   if(commaNeededAfter)
     param += ",";
 
