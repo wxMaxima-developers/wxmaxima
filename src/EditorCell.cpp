@@ -94,6 +94,9 @@ void EditorCell::AddDrawParameter(wxString param)
   if(m_positionOfCaret < 0)
     return;
 
+  if(param == wxEmptyString)
+    return;
+  
   int pos = 1;
   int commaPos = 1;
 
