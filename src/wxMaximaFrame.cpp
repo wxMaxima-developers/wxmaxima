@@ -1881,6 +1881,9 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxPanel(parent, id
   grid->Add(m_draw_grid = new wxButton(this, menu_draw_grid, _("Grid")),
             0, style, border);
   m_draw_grid->SetToolTip(_("The grid in the background of the diagram"));
+  grid->Add(m_draw_axis = new wxButton(this, menu_draw_axis, _("Axis")),
+            0, style, border);
+  m_draw_axis->SetToolTip(_("Setup the axis"));
   vbox->Add(grid, wxSizerFlags().Expand());
   SetSizerAndFit(vbox);
   vbox->SetSizeHints(this);

@@ -65,5 +65,34 @@ private:
   BTextCtrl *m_zEnd;
 };
 
+class AxisWiz : public wxDialog
+{
+public:
+  AxisWiz(wxWindow *parent, Configuration *config, int Dimensions = 2);
+  wxString GetValue();
+private:
+  int m_dimensions;
+  BTextCtrl *m_xLabel;
+  BTextCtrl *m_xStart;
+  BTextCtrl *m_xEnd;
+  BTextCtrl *m_yLabel;
+  BTextCtrl *m_yStart;
+  BTextCtrl *m_yEnd;
+  BTextCtrl *m_zLabel;
+  BTextCtrl *m_zStart;
+  BTextCtrl *m_zEnd;
+  wxCheckBox *m_useSecondaryX;
+  wxCheckBox *m_useSecondaryY;
+  BTextCtrl *m_x2Label;
+  BTextCtrl *m_x2Start;
+  BTextCtrl *m_x2End;
+  BTextCtrl *m_y2Label;
+  BTextCtrl *m_y2Start;
+  BTextCtrl *m_y2End;
+  BTextCtrl *m_z2Label;
+  BTextCtrl *m_z2Start;
+  BTextCtrl *m_z2End;
+};
+
 
 #endif // DRAWWIZ_H

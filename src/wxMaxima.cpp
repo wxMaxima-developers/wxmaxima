@@ -4999,7 +4999,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
                                _("x direction [in multiples of the tick frequency]"),
                                _("y direction [in multiples of the tick frequency]"),
                                "1","1",
-                               m_console->m_configuration, this, -2,
+                               m_console->m_configuration, this, -1,
                                _("Set the grid density.")
       );
     wiz->Centre(wxBOTH);
@@ -5007,6 +5007,18 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     {
       cmd = wxT("grid=[") + wiz->GetValue1() + "," + wiz->GetValue2() + wxT("]");
       AddDrawParameter(cmd);
+    }
+    wiz->Destroy();
+    break;
+  }
+  
+  case menu_draw_axis:
+  {
+    AxisWiz *wiz = new AxisWiz(this, m_console->m_configuration, dimensions);
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      AddDrawParameter(wiz->GetValue());
     }
     wiz->Destroy();
     break;
