@@ -1823,6 +1823,7 @@ void wxMaximaFrame::DrawPane::SetDimensions(int dimensions)
     m_draw_fillcolor->Enable(true);
     m_draw_setup2d->Enable(false);
     m_draw_setup3d->Enable(false);
+    m_draw_grid->Enable(true);
   }
   else
   {
@@ -1834,6 +1835,7 @@ void wxMaximaFrame::DrawPane::SetDimensions(int dimensions)
     m_draw_fillcolor->Enable(true);
     m_draw_setup2d->Enable(true);
     m_draw_setup3d->Enable(true);
+    m_draw_grid->Enable(true);
   }
   m_dimensions = dimensions;
 }
@@ -1876,6 +1878,10 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxPanel(parent, id
   grid->Add(m_draw_fillcolor = new wxButton(this, menu_draw_fillcolor, _("Fill color")),
             0, style, border);
   m_draw_fillcolor->SetToolTip(_("The fill color for the next objects"));
+  vbox->Add(grid, wxSizerFlags().Expand());
+  grid->Add(m_draw_grid = new wxButton(this, menu_draw_grid, _("Grid")),
+            0, style, border);
+  m_draw_grid->SetToolTip(_("The grid in the background of the diagram"));
   vbox->Add(grid, wxSizerFlags().Expand());
   SetSizerAndFit(vbox);
   vbox->SetSizeHints(this);

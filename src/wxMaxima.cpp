@@ -4958,7 +4958,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
   case menu_draw_key:
   {
     Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_console->m_configuration,
-                               _("Set the next plot's title"),
+                               _("Set the next plot's title. Empty = no title."),
                                _("Title (Sub- and superscripts as x_{10} or x^{10})"),expr);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
@@ -4988,6 +4988,25 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     if (wiz->ShowModal() == wxID_OK)
     {
       AddDrawParameter(wiz->GetValue());
+    }
+    wiz->Destroy();
+    break;
+  }
+
+  case menu_draw_grid:
+  {
+    Gen2Wiz *wiz = new Gen2Wiz(
+                               _("x direction [in multiples of the tick frequency]"),
+                               _("y direction [in multiples of the tick frequency]"),
+                               "1","1",
+                               m_console->m_configuration, this, -2,
+                               _("Set the grid density.")
+      );
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      cmd = wxT("grid=[") + wiz->GetValue1() + "," + wiz->GetValue2() + wxT("]");
+      AddDrawParameter(cmd);
     }
     wiz->Destroy();
     break;
@@ -8422,6 +8441,10 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_BUTTON(menu_draw_explicit,wxMaxima::DrawMenu)
                 EVT_MENU(menu_draw_implicit,wxMaxima::DrawMenu)
                 EVT_BUTTON(menu_draw_implicit,wxMaxima::DrawMenu)
+                EVT_MENU(menu_draw_axis,wxMaxima::DrawMenu)
+                EVT_BUTTON(menu_draw_axis,wxMaxima::DrawMenu)
+                EVT_MENU(menu_draw_grid,wxMaxima::DrawMenu)
+                EVT_BUTTON(menu_draw_grid,wxMaxima::DrawMenu)
                 EVT_IDLE(wxMaxima::OnIdle)
                 EVT_MENU(menu_remove_output, wxMaxima::EditMenu)
                 EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_29, wxMaxima::OnRecentDocument)
