@@ -20,6 +20,10 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
+/*! \file
+  This file declares all the wizards the draw sidepane needs.
+ */
+
 #ifndef DRAWWIZ_H
 #define DRAWWIZ_H
 
@@ -29,6 +33,7 @@
 #include "BTextCtrl.h"
 #include "Configuration.h"
 
+//! A wizard for explicit plots using draw
 class ExplicitWiz : public wxDialog
 {
 public:
@@ -46,6 +51,7 @@ private:
   BTextCtrl *m_yEnd;
 };
 
+//! A wizard for implicit plots using draw
 class ImplicitWiz : public wxDialog
 {
 public:
@@ -65,6 +71,7 @@ private:
   BTextCtrl *m_zEnd;
 };
 
+//! A wizard for axis setup for draw
 class AxisWiz : public wxDialog
 {
 public:

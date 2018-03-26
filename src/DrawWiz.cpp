@@ -20,6 +20,10 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
+/*! \file
+  This file contains all the wizards the draw sidepane needs.
+ */
+
 #include "DrawWiz.h"
 
 ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions) :
