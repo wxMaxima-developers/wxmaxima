@@ -4,14 +4,14 @@ find_package(Gettext)
 file(GLOB TRANSLATION_FILES *.po)
 
 # which sourcecode and data files can contain translatable text?
-file(GLOB POT_SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*.cpp ${CMAKE_SOURCE_DIR}/src/*.h ${CMAKE_SOURCE_DIR}/data/tips.txt)
+file(GLOB POT_SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*.cpp ${CMAKE_SOURCE_DIR}/src/*.h)
 
 if(GETTEXT_FOUND)
     find_program(XGETTEXT xgettext)
     # generate a wxMaxima.pot in the build dir - don't touch the existing source (for now)
     # if that is okay, one may copy it to the source dir.
     # Currently the full source paths are used in the comments.
-    message(STATUS "Create POT-file from current sourcecode and tips file")
+    message(STATUS "Create POT-file from current sourcecode")
     execute_process(
         COMMAND ${XGETTEXT} -C -k_ -s -o "wxMaxima.pot" ${POT_SOURCE_FILES})
 
