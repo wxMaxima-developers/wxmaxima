@@ -4954,10 +4954,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
       Wiz3D *wiz = new Wiz3D(this, m_console->m_configuration);
       wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
-      {
-        cmd = wxT("title=\"") + wiz->GetValue() + wxT("\"");
-        AddDrawParameter(cmd);
-      }
+        AddDrawParameter(wiz->GetValue());
       wiz->Destroy();
       break;
     }
@@ -5012,9 +5009,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     ExplicitWiz *wiz = new ExplicitWiz(this, m_console->m_configuration, expr, dimensions);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
-    {
       AddDrawParameter(wiz->GetValue());
-    }
     wiz->Destroy();
     break;
   }
@@ -5024,9 +5019,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     ImplicitWiz *wiz = new ImplicitWiz(this, m_console->m_configuration, expr, dimensions);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
-    {
       AddDrawParameter(wiz->GetValue());
-    }
     wiz->Destroy();
     break;
   }
@@ -5067,9 +5060,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     WizContour *wiz = new WizContour(this, m_console->m_configuration);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
-    {
       AddDrawParameter(wiz->GetValue(), 3);
-    }
     wiz->Destroy();
     break;
   }
