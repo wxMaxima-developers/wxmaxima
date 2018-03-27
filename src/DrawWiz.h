@@ -118,4 +118,31 @@ private:
   BTextCtrl *m_varEnd;
 };
 
+//! A wizard for axis setup for draw
+class Wiz3D : public wxDialog
+{
+public:
+  Wiz3D(wxWindow *parent, Configuration *config);
+  wxString GetValue();
+private:
+  wxCheckBox *m_hidden3d;
+  wxCheckBox *m_enhanced3d;
+};
+
+//! A wizard for axis setup for draw
+class WizContour : public wxDialog
+{
+public:
+  WizContour(wxWindow *parent, Configuration *config);
+  wxString GetValue();
+private:
+  wxRadioButton *m_contourNone; 
+  wxRadioButton *m_contourSurface; 
+  wxRadioButton *m_contourBase;
+  wxRadioButton *m_contourBoth;
+  wxRadioButton *m_contourOnly; 
+};
+
+
+
 #endif // DRAWWIZ_H

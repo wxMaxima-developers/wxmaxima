@@ -335,8 +335,13 @@ protected:
   //! Triggered when we get new chars from maxima.
   void OnNewChars();
 
-  //! Add a parameter to an draw command
-  void AddDrawParameter(wxString cmd);
+  /*! Add a parameter to an draw command
+
+    \param cmd The parameter to  add to the draw command
+    \param dimensionsOfNewDrawCommand The number of dimensions the new draw command needs to 
+                                      have if we need to create one..
+   */
+  void AddDrawParameter(wxString cmd, int dimensionsOfNewDrawCommand = 2);
 
   /* Append something to the console. Might be Text or XML maths.
 

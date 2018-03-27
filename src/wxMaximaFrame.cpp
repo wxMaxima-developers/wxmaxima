@@ -1822,8 +1822,18 @@ void wxMaximaFrame::DrawPane::SetDimensions(int dimensions)
     m_draw_fgcolor->Enable(true);
     m_draw_fillcolor->Enable(true);
     m_draw_setup2d->Enable(false);
-    m_draw_setup3d->Enable(false);
     m_draw_grid->Enable(true);
+    m_draw_axis->Enable(true);
+    if(dimensions > 2)
+    {
+      m_draw_contour->Enable(true);
+      m_draw_setup3d->Enable(true);
+    }
+    else
+    {
+      m_draw_contour->Enable(false);
+      m_draw_setup3d->Enable(false);
+    }
   }
   else
   {
@@ -1836,6 +1846,7 @@ void wxMaximaFrame::DrawPane::SetDimensions(int dimensions)
     m_draw_setup2d->Enable(true);
     m_draw_setup3d->Enable(true);
     m_draw_grid->Enable(true);
+    m_draw_axis->Enable(true);
   }
   m_dimensions = dimensions;
 }
@@ -1884,6 +1895,9 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxPanel(parent, id
   grid->Add(m_draw_axis = new wxButton(this, menu_draw_axis, _("Axis")),
             0, style, border);
   m_draw_axis->SetToolTip(_("Setup the axis"));
+  grid->Add(m_draw_contour = new wxButton(this, menu_draw_contour, _("Contour")),
+            0, style, border);
+  m_draw_contour->SetToolTip(_("Contour lines for 3d plots"));
   vbox->Add(grid, wxSizerFlags().Expand());
   SetSizerAndFit(vbox);
   vbox->SetSizeHints(this);

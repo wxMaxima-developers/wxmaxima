@@ -438,3 +438,134 @@ wxString DrawWiz::GetValue()
     }
   }
 }
+
+
+Wiz3D::Wiz3D(wxWindow *parent, Configuration *config) :
+  wxDialog(parent, -1, _("Settings for the following 3d plots"))
+{
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+
+  m_hidden3d = new wxCheckBox(this, -1, _("Hide objects behind the surface"),
+                          wxDefaultPosition, wxDefaultSize, wxCHK_3STATE);
+  m_hidden3d -> Set3StateValue(wxCHK_UNDETERMINED);
+  vbox->Add(m_hidden3d, wxSizerFlags().Expand()); 
+
+  m_enhanced3d = new wxCheckBox(this, -1, _("Take surface color from steepness"),
+                          wxDefaultPosition, wxDefaultSize, wxCHK_3STATE);
+  m_enhanced3d -> Set3StateValue(wxCHK_UNDETERMINED);
+  vbox->Add(m_enhanced3d, wxSizerFlags().Expand()); 
+  
+  wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
+  wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
+  wxButton *cancelButton = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  #if defined __WXMSW__
+  buttonSizer->Add(okButton);
+  buttonSizer->Add(cancelButton);
+#else
+  buttonSizer->Add(cancelButton);
+  buttonSizer->Add(okButton);
+#endif
+  okButton->SetDefault(); 
+  vbox->Add(buttonSizer, wxSizerFlags().Right());
+
+  SetSizerAndFit(vbox);
+};
+
+wxString Wiz3D::GetValue()
+{
+  wxString retval;
+  if(m_hidden3d->Get3StateValue() == wxCHK_CHECKED)
+  {
+    if(retval != wxEmptyString)
+      retval += ",\n    ";
+    retval += "surface_hide=true";
+  }
+  if(m_hidden3d->Get3StateValue() == wxCHK_UNCHECKED)
+  {
+    if(retval != wxEmptyString)
+      retval += ",\n    ";
+    retval += "surface_hide=false";
+  }
+  if(m_enhanced3d->Get3StateValue() == wxCHK_CHECKED)
+  {
+    if(retval != wxEmptyString)
+      retval += ",\n    ";
+    retval += "enhanced3d=true";
+  }
+  if(m_enhanced3d->Get3StateValue() == wxCHK_UNCHECKED)
+  {
+    if(retval != wxEmptyString)
+      retval += ",\n    ";
+    retval += "enhanced3d=false";
+  }
+  return retval;
+}
+
+WizContour::WizContour(wxWindow *parent, Configuration *config) :
+  wxDialog(parent, -1, _("Contour lines settings for the following 3d plots"))
+{
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+
+  m_contourNone = new wxRadioButton(this, -1, _("No contour lines"), wxDefaultPosition,
+                                    wxDefaultSize, wxRB_GROUP);
+  vbox->Add(m_contourNone, wxSizerFlags().Expand()); 
+  m_contourSurface = new wxRadioButton(this, -1, _("Contour lines on the Surface"));
+  vbox->Add(m_contourSurface, wxSizerFlags().Expand()); 
+  m_contourBase = new wxRadioButton(this, -1, _("Contour lines on the Bottom"));
+  vbox->Add(m_contourBase, wxSizerFlags().Expand()); 
+  m_contourBoth = new wxRadioButton(this, -1, _("Contour lines on surface and Bottom"));
+  vbox->Add(m_contourBoth, wxSizerFlags().Expand()); 
+  m_contourOnly = new wxRadioButton(this, -1, _("No plot, only contour lines"));
+  vbox->Add(m_contourOnly, wxSizerFlags().Expand()); 
+  
+  wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
+  wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
+  wxButton *cancelButton = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  #if defined __WXMSW__
+  buttonSizer->Add(okButton);
+  buttonSizer->Add(cancelButton);
+#else
+  buttonSizer->Add(cancelButton);
+  buttonSizer->Add(okButton);
+#endif
+  okButton->SetDefault(); 
+  vbox->Add(buttonSizer, wxSizerFlags().Right());
+
+  SetSizerAndFit(vbox);
+};
+
+wxString WizContour::GetValue()
+{
+  wxString retval;
+  if(m_contourNone->GetValue())
+  {
+    if(retval != wxEmptyString)
+      retval += ",\n    ";
+    retval += "contour='none";
+  }
+  if(m_contourBase->GetValue())
+  {
+    if(retval != wxEmptyString)
+      retval += ",\n    ";
+    retval += "contour='base";
+  }
+  if(m_contourBoth->GetValue())
+  {
+    if(retval != wxEmptyString)
+      retval += ",\n    ";
+    retval += "contour='both";
+  }
+  if(m_contourSurface->GetValue())
+  {
+    if(retval != wxEmptyString)
+      retval += ",\n    ";
+    retval += "contour='surface";
+  }
+  if(m_contourOnly->GetValue())
+  {
+    if(retval != wxEmptyString)
+      retval += ",\n    ";
+    retval += "contour='map";
+  }
+  return retval;
+}

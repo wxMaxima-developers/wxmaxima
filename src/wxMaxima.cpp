@@ -4868,15 +4868,20 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
   }
 }
 
-void wxMaxima::AddDrawParameter(wxString cmd)
+void wxMaxima::AddDrawParameter(wxString cmd, int dimensionsOfNewDrawCommand)
 {
+  if(!m_drawPane)
+    return;
+  
   int dimensions = 0;
-  if(m_drawPane)
-    dimensions = m_drawPane->GetDimensions();
-
+  dimensions = m_drawPane->GetDimensions();
+  
   if(dimensions < 2)
   {
-    cmd = wxT("wxdraw2d(\n    ") + cmd + wxT("\n)$");
+    if(dimensionsOfNewDrawCommand < 3)
+      cmd = wxT("wxdraw2d(\n    ") + cmd + wxT("\n)$");
+    else
+      cmd = wxT("wxdraw3d(\n    ") + cmd + wxT("\n)$");
     m_console->OpenHCaret(cmd);
     m_console->GetActiveCell()->SetCaretPosition(
       m_console->GetActiveCell()->GetCaretPosition() - 3);
@@ -4929,20 +4934,33 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     break;
   }
   case menu_draw_3d:
-  {
-    DrawWiz *wiz = new DrawWiz(this, m_console->m_configuration, 3);
-    wiz->Centre(wxBOTH);
-    if (wiz->ShowModal() == wxID_OK)
+    if(dimensions < 2)
     {
-      m_console->SetFocus();
+      DrawWiz *wiz = new DrawWiz(this, m_console->m_configuration, 3);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        m_console->SetFocus();
       
-      m_console->OpenHCaret(wiz->GetValue());
-      m_console->GetActiveCell()->SetCaretPosition(
+        m_console->OpenHCaret(wiz->GetValue());
+        m_console->GetActiveCell()->SetCaretPosition(
         m_console->GetActiveCell()->GetCaretPosition() - 3);
+      }
+      wiz->Destroy();
+      break;
     }
-    wiz->Destroy();
-    break;
-  }
+    else
+    {
+      Wiz3D *wiz = new Wiz3D(this, m_console->m_configuration);
+      wiz->Centre(wxBOTH);
+      if (wiz->ShowModal() == wxID_OK)
+      {
+        cmd = wxT("title=\"") + wiz->GetValue() + wxT("\"");
+        AddDrawParameter(cmd);
+      }
+      wiz->Destroy();
+      break;
+    }
   case menu_draw_fgcolor:
   {
     wxColour col = wxGetColourFromUser(this);
@@ -5043,6 +5061,19 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     wiz->Destroy();
     break;
   }
+  
+  case menu_draw_contour:
+  {
+    WizContour *wiz = new WizContour(this, m_console->m_configuration);
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+    {
+      AddDrawParameter(wiz->GetValue(), 3);
+    }
+    wiz->Destroy();
+    break;
+  }
+  
   }
 }
 
@@ -8475,6 +8506,8 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_BUTTON(menu_draw_implicit,wxMaxima::DrawMenu)
                 EVT_MENU(menu_draw_axis,wxMaxima::DrawMenu)
                 EVT_BUTTON(menu_draw_axis,wxMaxima::DrawMenu)
+                EVT_MENU(menu_draw_contour,wxMaxima::DrawMenu)
+                EVT_BUTTON(menu_draw_contour,wxMaxima::DrawMenu)
                 EVT_MENU(menu_draw_grid,wxMaxima::DrawMenu)
                 EVT_BUTTON(menu_draw_grid,wxMaxima::DrawMenu)
                 EVT_IDLE(wxMaxima::OnIdle)
