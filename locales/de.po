@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-27 07:51+0200\n"
-"PO-Revision-Date: 2018-03-26 20:23+0200\n"
+"PO-Revision-Date: 2018-03-27 08:11+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1406,7 +1406,7 @@ msgstr "Konstante"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1898
 msgid "Contour"
-msgstr ""
+msgstr "Höhenlinien"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1900
 msgid "Contour lines for 3d plots"
@@ -2646,19 +2646,16 @@ msgid "Frame %i of %i"
 msgstr "Bild %i von %i"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:390
-#, fuzzy
 msgid "Frame counter"
-msgstr "Bildwiederholrate"
+msgstr "Zähler für die Bilder"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:396
-#, fuzzy
 msgid "Frame counter end"
-msgstr "Datei kann nicht geöffnet werden"
+msgstr "Zahl des letzten Bildes"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:393
-#, fuzzy
 msgid "Frame counter start"
-msgstr "Bildwiederholrate"
+msgstr "Zahl des ersten Bildes"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5939
 msgid "Frame rate"
@@ -2899,7 +2896,7 @@ msgstr "Verstecke den Inhalt"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:448
 msgid "Hide objects behind the surface"
-msgstr ""
+msgstr "Verstecke Objekte hinter der Oberfläche"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:363
 msgid ""
@@ -4113,7 +4110,7 @@ msgstr "My"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:386
 msgid "Multiple frames"
-msgstr ""
+msgstr "Animation"
 
 #: /home/gunter/src/wxmaxima/src/MatWiz.cpp:190
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4776
@@ -4172,7 +4169,7 @@ msgstr "Nein"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:509
 msgid "No contour lines"
-msgstr ""
+msgstr "Keine Höhenlinien"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7469
 msgid "No dollar ($) or semicolon (;) at the end of command"
@@ -4185,7 +4182,7 @@ msgstr "Keine Übereinstimmung gefunden!"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:518
 msgid "No plot, only contour lines"
-msgstr ""
+msgstr "Kein Diagramm, nur Höhenlinien"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1536
 msgid "Normality Test..."
@@ -5264,12 +5261,12 @@ msgstr "Setze Vergrößerung auf 80 %"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:444
 msgid "Settings for the following 3d plots"
-msgstr ""
+msgstr "Einstellungen für die nun folgenden 3d-Graphiken"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:377
-#, fuzzy, c-format
+#, c-format
 msgid "Setup a %iD scene"
-msgstr "Einstellungen für 2D-Diagramme"
+msgstr "Einstellungen für %iD-Diagramme"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1869
 msgid "Setup a 2D plot"
@@ -5446,7 +5443,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:382
 msgid "Single frame"
-msgstr ""
+msgstr "Einzelbild"
 
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:29
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4514
@@ -5739,7 +5736,7 @@ msgstr "Inhaltsverzeichnis\tAlt+Shift+T"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:453
 msgid "Take surface color from steepness"
-msgstr ""
+msgstr "Errechnung der Farbe aus der Steilheit"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1655
 msgid "Tau"
