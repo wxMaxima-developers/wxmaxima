@@ -41,11 +41,11 @@ ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config, wxString expre
   vbox->Add(m_x, wxSizerFlags().Expand()); 
 
   vbox->Add(new wxStaticText(this,-1, _("Start of the x value")), wxSizerFlags());
-  m_xStart = new BTextCtrl(this,-1, config, "-10");
+  m_xStart = new BTextCtrl(this,-1, config, "-2");
   vbox->Add(m_xStart, wxSizerFlags().Expand()); 
 
   vbox->Add(new wxStaticText(this,-1, _("End of the x value")), wxSizerFlags());
-  m_xEnd = new BTextCtrl(this,-1, config, "10");
+  m_xEnd = new BTextCtrl(this,-1, config, "2");
   vbox->Add(m_xEnd, wxSizerFlags().Expand());
 
   if(m_dimensions > 2)
@@ -55,11 +55,11 @@ ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config, wxString expre
     vbox->Add(m_y, wxSizerFlags().Expand()); 
 
     vbox->Add(new wxStaticText(this,-1, _("Start of the y value")), wxSizerFlags());
-    m_yStart = new BTextCtrl(this,-1, config, "-10");
+    m_yStart = new BTextCtrl(this,-1, config, "-2");
     vbox->Add(m_yStart, wxSizerFlags().Expand()); 
     
     vbox->Add(new wxStaticText(this,-1, _("End of the y value")), wxSizerFlags());
-    m_yEnd = new BTextCtrl(this,-1, config, "10");
+    m_yEnd = new BTextCtrl(this,-1, config, "2");
     vbox->Add(m_yEnd, wxSizerFlags().Expand());
   }
   else
@@ -118,11 +118,11 @@ ImplicitWiz::ImplicitWiz(wxWindow *parent, Configuration *config, wxString expre
   vbox->Add(m_x, wxSizerFlags().Expand()); 
 
   vbox->Add(new wxStaticText(this,-1, _("Start of the x value")), wxSizerFlags());
-  m_xStart = new BTextCtrl(this,-1, config, "-10");
+  m_xStart = new BTextCtrl(this,-1, config, "-2");
   vbox->Add(m_xStart, wxSizerFlags().Expand()); 
 
   vbox->Add(new wxStaticText(this,-1, _("End of the x value")), wxSizerFlags());
-  m_xEnd = new BTextCtrl(this,-1, config, "10");
+  m_xEnd = new BTextCtrl(this,-1, config, "2");
   vbox->Add(m_xEnd, wxSizerFlags().Expand());
 
   vbox->Add(new wxStaticText(this,-1, _("Variable for the y value")), wxSizerFlags());
@@ -130,11 +130,11 @@ ImplicitWiz::ImplicitWiz(wxWindow *parent, Configuration *config, wxString expre
   vbox->Add(m_y, wxSizerFlags().Expand()); 
   
   vbox->Add(new wxStaticText(this,-1, _("Start of the y value")), wxSizerFlags());
-  m_yStart = new BTextCtrl(this,-1, config, "-10");
+  m_yStart = new BTextCtrl(this,-1, config, "-2");
   vbox->Add(m_yStart, wxSizerFlags().Expand()); 
   
   vbox->Add(new wxStaticText(this,-1, _("End of the y value")), wxSizerFlags());
-  m_yEnd = new BTextCtrl(this,-1, config, "10");
+  m_yEnd = new BTextCtrl(this,-1, config, "2");
   vbox->Add(m_yEnd, wxSizerFlags().Expand());
   
   if(m_dimensions > 2)
@@ -144,11 +144,11 @@ ImplicitWiz::ImplicitWiz(wxWindow *parent, Configuration *config, wxString expre
     vbox->Add(m_z, wxSizerFlags().Expand()); 
 
     vbox->Add(new wxStaticText(this,-1, _("Start of the z value")), wxSizerFlags());
-    m_zStart = new BTextCtrl(this,-1, config, "-10");
+    m_zStart = new BTextCtrl(this,-1, config, "-2");
     vbox->Add(m_zStart, wxSizerFlags().Expand()); 
     
     vbox->Add(new wxStaticText(this,-1, _("End of the z value")), wxSizerFlags());
-    m_zEnd = new BTextCtrl(this,-1, config, "10");
+    m_zEnd = new BTextCtrl(this,-1, config, "2");
     vbox->Add(m_zEnd, wxSizerFlags().Expand());
   }
 
