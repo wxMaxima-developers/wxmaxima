@@ -159,6 +159,21 @@ private:
   wxRadioButton *m_contourOnly; 
 };
 
-
+//! A wizard for axis setup for draw
+class WizPoints : public wxDialog
+{
+public:
+  WizPoints(wxWindow *parent, Configuration *config, int dimensions);
+  wxString GetValue();
+private:
+  BTextCtrl *m_data;  
+  wxRadioButton *m_formatStd; 
+  wxRadioButton *m_formatListOfLists; 
+  wxRadioButton *m_TransposedMatrix;
+  wxRadioButton *m_TransposedListOfLists; 
+  wxCheckBox *m_pointsJoined;
+  wxChoice *m_pointStyle;
+  int m_dimensions;
+};
 
 #endif // DRAWWIZ_H
