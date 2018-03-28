@@ -163,7 +163,7 @@ private:
 class WizPoints : public wxDialog
 {
 public:
-  WizPoints(wxWindow *parent, Configuration *config, int dimensions);
+  WizPoints(wxWindow *parent, Configuration *config, int dimensions, wxString expr);
   wxString GetValue();
 private:
   BTextCtrl *m_data;  

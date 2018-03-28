@@ -624,3 +624,55 @@ wxString ParametricWiz::GetValue()
   retval += m_parameterEnd->GetValue() + "\n)";
   return retval;
 }
+
+
+
+WizPoints::WizPoints(wxWindow *parent, Configuration *config, int dimensions, wxString expr) :
+  wxDialog(parent,-1, _("Draw points"))
+{
+  m_dimensions = dimensions;
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  vbox->Add(new wxStaticText(this,-1, _("Expression that calculates the x value")), wxSizerFlags());
+  vbox->Add(m_data = new BTextCtrl(this,-1, config, expr), wxSizerFlags().Expand());
+
+  wxStaticBox *formatBox = new wxStaticBox(this,-1,_("Data format"));
+  wxStaticBoxSizer *formatSizer = new wxStaticBoxSizer(formatBox, wxVERTICAL);
+  m_formatStd = new wxRadioButton(formatBox, -1,
+                                  _("[x_1, x_2,...] or [x_1, x_2,...],[y_1, y_2,...] or matrix([x_1,y_1],...)"), wxDefaultPosition,
+                                    wxDefaultSize, wxRB_GROUP);
+  vbox->Add(m_formatStd, wxSizerFlags().Expand()); 
+  m_formatListOfLists = new wxRadioButton(formatBox, -1,
+                                          _("[[x_1,x_2,...],[y_1,y_2,...]]")); 
+  vbox->Add(m_formatListOfLists, wxSizerFlags().Expand()); 
+  m_TransposedMatrix = new wxRadioButton(formatBox, -1,
+                                         _("matrix([x_1,x_2,...],[y_1,y_2,...])"));
+  vbox->Add(m_TransposedMatrix, wxSizerFlags().Expand()); 
+  m_TransposedListOfLists = new wxRadioButton(formatBox, -1,
+                                              _("[[x_1,x_2,...],[y_1,y_2,...]]"));
+  vbox->Add(formatBox, wxSizerFlags().Expand()); 
+  m_pointsJoined = new wxCheckBox(this, -1, _("Connect the dots"),
+                          wxDefaultPosition, wxDefaultSize, wxCHK_3STATE);
+  m_pointsJoined -> Set3StateValue(wxCHK_UNDETERMINED);
+  vbox->Add(m_pointsJoined, wxSizerFlags().Expand()); 
+  wxArrayString pointTypes;
+  pointTypes.Add(_("Reuse last"));
+  pointTypes.Add(_("No points"));
+  for (int i=0; i<15;i++)
+    pointTypes.Add(wxString::Format("%i",i));  
+  m_pointStyle = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, pointTypes);
+  vbox->Add(m_pointStyle , wxSizerFlags().Expand()); 
+
+  wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
+  wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
+  wxButton *cancelButton = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  #if defined __WXMSW__
+  buttonSizer->Add(okButton);
+  buttonSizer->Add(cancelButton);
+#else
+  buttonSizer->Add(cancelButton);
+  buttonSizer->Add(okButton);
+#endif
+  okButton->SetDefault(); 
+  vbox->Add(buttonSizer, wxSizerFlags().Right());
+  SetSizerAndFit(vbox);
+};
