@@ -52,6 +52,22 @@ private:
   BTextCtrl *m_yEnd;
 };
 
+//! A wizard for parametric plots using draw
+class ParametricWiz : public wxDialog
+{
+public:
+  ParametricWiz(wxWindow *parent, Configuration *config, int Dimensions = 2);
+  wxString GetValue();
+private:
+  int m_dimensions;
+  BTextCtrl *m_expression_x;
+  BTextCtrl *m_expression_y;
+  BTextCtrl *m_expression_z;
+  BTextCtrl *m_parameter;
+  BTextCtrl *m_parameterStart;
+  BTextCtrl *m_parameterEnd;
+};
+
 //! A wizard for implicit plots using draw
 class ImplicitWiz : public wxDialog
 {

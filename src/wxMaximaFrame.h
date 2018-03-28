@@ -219,6 +219,7 @@ public:
     menu_draw_3d,
     menu_draw_explicit,
     menu_draw_implicit,
+    menu_draw_parametric,
     menu_draw_fgcolor,
     menu_draw_fillcolor,
     menu_draw_title,
@@ -640,6 +641,7 @@ private:
       wxButton *m_draw_setup3d;
       wxButton *m_draw_explicit;
       wxButton *m_draw_implicit;
+      wxButton *m_draw_parametric;
       wxButton *m_draw_fgcolor;
       wxButton *m_draw_fillcolor;
       wxButton *m_draw_title;

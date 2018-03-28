@@ -1817,6 +1817,7 @@ void wxMaximaFrame::DrawPane::SetDimensions(int dimensions)
   {
     m_draw_explicit->Enable(true);
     m_draw_implicit->Enable(true);
+    m_draw_parametric->Enable(true);
     m_draw_title->Enable(true);
     m_draw_key->Enable(true);
     m_draw_fgcolor->Enable(true);
@@ -1839,6 +1840,7 @@ void wxMaximaFrame::DrawPane::SetDimensions(int dimensions)
   {
     m_draw_explicit->Enable(true);
     m_draw_implicit->Enable(true);
+    m_draw_parametric->Enable(true);
     m_draw_title->Enable(true);
     m_draw_key->Enable(true);
     m_draw_fgcolor->Enable(true);
@@ -1876,7 +1878,8 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxPanel(parent, id
   m_draw_explicit->SetToolTip(_("The standard plot command: Plot an equation as a curve"));
   grid->Add(m_draw_implicit = new wxButton(this, menu_draw_implicit, _("Implicit Plot")),
             0, style, border);
-  m_draw_implicit->SetToolTip(_("Draw all points an equation is true at"));
+  grid->Add(m_draw_parametric = new wxButton(this, menu_draw_parametric, _("Parametric Plot")),
+            0, style, border);
   grid->Add(m_draw_title = new wxButton(this, menu_draw_title, _("Diagram title")),
             0, style, border);
   m_draw_title->SetToolTip(_("The diagram title"));

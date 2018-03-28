@@ -386,7 +386,9 @@ wxString SlideShow::GetToolTip(const wxPoint &point)
     if(!IsOk())
       return(_("The image could not be displayed. It may be broken, in a wrong format or "
                "be the result of gnuplot not being able to write the image or not being "
-               "able to understand what maxima wanted to plot."));
+               "able to understand what maxima wanted to plot.\n"
+               "One example of the latter would be: Gnuplot refuses to plot entirely "
+               "empty images"));
     else
       return m_toolTip;
   }

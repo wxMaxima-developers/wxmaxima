@@ -299,17 +299,17 @@ wxString AxisWiz::GetValue()
     retval += "zlabel=\"" + m_zLabel->GetValue() + "\"";
   }
 
-  if(m_xLabel->GetValue() != wxEmptyString)
+  if(m_x2Label->GetValue() != wxEmptyString)
   {
     if(retval != wxEmptyString)
       retval += ",\n    ";
-    retval += "xlabel_secondary=\"" + m_xLabel->GetValue() + "\"";
+    retval += "xlabel_secondary=\"" + m_x2Label->GetValue() + "\"";
   }
-  if(m_yLabel->GetValue() != wxEmptyString)
+  if(m_y2Label->GetValue() != wxEmptyString)
   {
     if(retval != wxEmptyString)
       retval += ",\n    ";
-    retval += "ylabel_secondary=\"" + m_yLabel->GetValue() + "\"";
+    retval += "ylabel_secondary=\"" + m_y2Label->GetValue() + "\"";
   }
 
   if((m_xStart->GetValue() != wxEmptyString) && (m_xEnd->GetValue() != wxEmptyString))
@@ -567,5 +567,60 @@ wxString WizContour::GetValue()
       retval += ",\n    ";
     retval += "contour='map";
   }
+  return retval;
+}
+
+ParametricWiz::ParametricWiz(wxWindow *parent, Configuration *config, int dimensions) :
+  wxDialog(parent, -1, _("Plot an parametric curve"))
+{
+  m_dimensions = dimensions;
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  vbox->Add(new wxStaticText(this,-1, _("Expression that calculates the x value")), wxSizerFlags());
+  m_expression_x = new BTextCtrl(this,-1, config, "");
+  vbox->Add(m_expression_x, wxSizerFlags().Expand()); 
+  vbox->Add(new wxStaticText(this,-1, _("Expression that calculates the y value")), wxSizerFlags());
+  m_expression_y = new BTextCtrl(this,-1, config, "");
+  vbox->Add(m_expression_y, wxSizerFlags().Expand());
+  if(dimensions > 2)
+  {
+    vbox->Add(new wxStaticText(this,-1, _("Expression that calculates the z value")), wxSizerFlags());
+    m_expression_z = new BTextCtrl(this,-1, config, "");
+    vbox->Add(m_expression_z, wxSizerFlags().Expand()); 
+  }
+  
+  vbox->Add(new wxStaticText(this,-1, _("Name of the parameter")), wxSizerFlags());
+  vbox->Add(m_parameter = new BTextCtrl(this,-1, config, "t"), wxSizerFlags().Expand()); 
+
+  vbox->Add(new wxStaticText(this,-1, _("Start value of the parameter")), wxSizerFlags());
+  vbox->Add(m_parameterStart = new BTextCtrl(this,-1, config, "-2"), wxSizerFlags().Expand()); 
+
+  vbox->Add(new wxStaticText(this,-1, _("End value of the parameter")), wxSizerFlags());
+  vbox->Add(m_parameterEnd = new BTextCtrl(this,-1, config, "2"), wxSizerFlags().Expand());
+
+  wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
+  wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
+  wxButton *cancelButton = new wxButton(this, wxID_CANCEL, _("Cancel"));
+  #if defined __WXMSW__
+  buttonSizer->Add(okButton);
+  buttonSizer->Add(cancelButton);
+#else
+  buttonSizer->Add(cancelButton);
+  buttonSizer->Add(okButton);
+#endif
+  okButton->SetDefault(); 
+  vbox->Add(buttonSizer, wxSizerFlags().Right());
+  SetSizerAndFit(vbox);
+}
+
+wxString ParametricWiz::GetValue()
+{
+  wxString retval;
+  retval += wxT("parametric(\n        ") + m_expression_x->GetValue() + ",\n        ";
+  retval += m_expression_y->GetValue() + ",\n        ";
+  if(m_dimensions > 2)
+    retval += m_expression_z->GetValue() + ",\n        ";
+  retval += m_parameter->GetValue() + ",";
+  retval += m_parameterStart->GetValue() + ",";
+  retval += m_parameterEnd->GetValue() + "\n)";
   return retval;
 }
