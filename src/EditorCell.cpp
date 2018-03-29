@@ -96,6 +96,10 @@ void EditorCell::AddDrawParameter(wxString param)
 
   if(param == wxEmptyString)
     return;
+
+  wxString paramTrimmed = param;
+  paramTrimmed.Trim();
+  if(paramTrimmed == wxEmptyString)
   
   int pos = 1;
   int commaPos = 1;
