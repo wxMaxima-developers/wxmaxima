@@ -227,6 +227,7 @@ public:
     menu_draw_key,
     menu_draw_grid,
     menu_draw_axis,
+    menu_draw_accuracy,
     menu_draw_contour,
     button_factor_id,
     button_solve,
@@ -651,6 +652,7 @@ private:
       wxButton *m_draw_grid;
       wxButton *m_draw_axis;
       wxButton *m_draw_contour;
+      wxButton *m_draw_accuracy;
       int m_dimensions;
     };
 protected:

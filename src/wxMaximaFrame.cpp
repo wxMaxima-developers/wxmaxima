@@ -1826,6 +1826,7 @@ void wxMaximaFrame::DrawPane::SetDimensions(int dimensions)
     m_draw_setup2d->Enable(false);
     m_draw_grid->Enable(true);
     m_draw_axis->Enable(true);
+    m_draw_accuracy->Enable(true);
     if(dimensions > 2)
     {
       m_draw_contour->Enable(true);
@@ -1839,6 +1840,7 @@ void wxMaximaFrame::DrawPane::SetDimensions(int dimensions)
   }
   else
   {
+    m_draw_accuracy->Enable(true);
     m_draw_explicit->Enable(true);
     m_draw_implicit->Enable(true);
     m_draw_parametric->Enable(true);
@@ -1905,6 +1907,9 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxPanel(parent, id
   grid->Add(m_draw_contour = new wxButton(this, menu_draw_contour, _("Contour")),
             0, style, border);
   m_draw_contour->SetToolTip(_("Contour lines for 3d plots"));
+  grid->Add(m_draw_accuracy = new wxButton(this, menu_draw_accuracy, _("Accuracy")),
+            0, style, border);
+  m_draw_accuracy->SetToolTip(_("The Accuracy versus speed tradeoff"));
   vbox->Add(grid, wxSizerFlags().Expand());
   SetSizerAndFit(vbox);
   vbox->SetSizeHints(this);

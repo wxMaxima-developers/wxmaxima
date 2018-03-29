@@ -5085,6 +5085,16 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     break;
   }
   
+  case menu_draw_accuracy:
+  {
+    WizDrawAccuracy *wiz = new WizDrawAccuracy(this, m_console->m_configuration, dimensions);
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      AddDrawParameter(wiz->GetValue(), 3);
+    wiz->Destroy();
+    break;
+  }
+
   }
 }
 
@@ -8523,6 +8533,8 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_BUTTON(menu_draw_axis,wxMaxima::DrawMenu)
                 EVT_MENU(menu_draw_contour,wxMaxima::DrawMenu)
                 EVT_BUTTON(menu_draw_contour,wxMaxima::DrawMenu)
+                EVT_MENU(menu_draw_accuracy,wxMaxima::DrawMenu)
+                EVT_BUTTON(menu_draw_accuracy,wxMaxima::DrawMenu)
                 EVT_MENU(menu_draw_grid,wxMaxima::DrawMenu)
                 EVT_BUTTON(menu_draw_grid,wxMaxima::DrawMenu)
                 EVT_IDLE(wxMaxima::OnIdle)

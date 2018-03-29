@@ -738,7 +738,136 @@ wxString WizPoints::GetValue()
     {
       if(retval != wxEmptyString)
         retval += ",\n    ";
-      retval += "points(transpose(apply('matrix," + data +")));";
+      retval += "points(transpose(apply('matrix," + data +")))";
+    }
+  }
+  return retval;
+}
+
+
+//! A wizard that sets the draw accuracy
+WizDrawAccuracy::WizDrawAccuracy(wxWindow *parent, Configuration *config, int dimensions) :
+  wxDialog(parent,-1, _("Speed versus accuracy"))
+{
+  m_dimensions = dimensions;
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  vbox->Add(new wxStaticText(this,-1, _("Samples on a line:")), wxSizerFlags());
+  wxBoxSizer *nticksBox = new wxBoxSizer(wxHORIZONTAL);
+  nticksBox->Add(m_nticks = new BTextCtrl(this, -1, config, wxT("")), wxSizerFlags().Expand());
+  nticksBox->Add(new wxStaticText(this,-1, _(" samples, on demand split ")), wxSizerFlags());
+  nticksBox->Add(m_adapt_depth = new BTextCtrl(this, -1, config, wxT("")), wxSizerFlags().Expand());
+  nticksBox->Add(new wxStaticText(this,-1, _("times")), wxSizerFlags());
+  vbox->Add(nticksBox, wxSizerFlags().Expand());
+
+  if(dimensions < 3)
+  {
+    vbox->Add(new wxStaticText(this,-1, _("Samples for implicit plots:")), wxSizerFlags());
+    wxBoxSizer *ipGridBox = new wxBoxSizer(wxHORIZONTAL);
+    ipGridBox->Add(m_ip_grid_x = new BTextCtrl(this,-1, config, wxT("")), wxSizerFlags().Expand());
+    ipGridBox->Add(new wxStaticText(this,-1, _("X")), wxSizerFlags());
+    ipGridBox->Add(m_ip_grid_y = new BTextCtrl(this,-1, config, wxT("")), wxSizerFlags().Expand());
+    ipGridBox->Add(new wxStaticText(this,-1, _(" samples, on demand split ")), wxSizerFlags());
+    ipGridBox->Add(m_ip_grid_in_x = new BTextCtrl(this,-1, config, wxT("")), wxSizerFlags().Expand());
+    ipGridBox->Add(new wxStaticText(this,-1, _("X")), wxSizerFlags());
+    ipGridBox->Add(m_ip_grid_in_y = new BTextCtrl(this,-1, config, wxT("")), wxSizerFlags().Expand());
+    ipGridBox->Add(new wxStaticText(this,-1, _("times")), wxSizerFlags());
+    vbox->Add(ipGridBox, wxSizerFlags().Expand());
+  }
+  else
+  {
+    vbox->Add(new wxStaticText(this,-1, _("Samples for explicit and parametric plots:")), wxSizerFlags());
+    wxBoxSizer *exp3dGridBox = new wxBoxSizer(wxHORIZONTAL);
+    exp3dGridBox->Add(m_xu_grid = new BTextCtrl(this,-1, config, wxT("")), wxSizerFlags().Expand());
+    exp3dGridBox->Add(new wxStaticText(this,-1, _("X")), wxSizerFlags());
+    exp3dGridBox->Add(m_yv_grid = new BTextCtrl(this,-1, config, wxT("")), wxSizerFlags().Expand());
+    exp3dGridBox->Add(new wxStaticText(this,-1, _("samples")), wxSizerFlags());
+    vbox->Add(exp3dGridBox, wxSizerFlags().Expand());
+
+    vbox->Add(new wxStaticText(this,-1, _("Samples for implicit plots and regions:")), wxSizerFlags());
+    wxBoxSizer *regionGridBox = new wxBoxSizer(wxHORIZONTAL);
+    regionGridBox->Add(m_x_voxel = new BTextCtrl(this,-1, config, wxT("")), wxSizerFlags().Expand());
+    regionGridBox->Add(new wxStaticText(this,-1, _("X")), wxSizerFlags());
+    regionGridBox->Add(m_y_voxel = new BTextCtrl(this,-1, config, wxT("")), wxSizerFlags().Expand());
+    regionGridBox->Add(new wxStaticText(this,-1, _("X")), wxSizerFlags());
+    regionGridBox->Add(m_z_voxel = new BTextCtrl(this,-1, config, wxT("")), wxSizerFlags().Expand());
+    regionGridBox->Add(new wxStaticText(this,-1, _("samples")), wxSizerFlags());
+    vbox->Add(regionGridBox, wxSizerFlags().Expand());
+  }
+  
+  wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
+  wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
+  wxButton *cancelButton = new wxButton(this, wxID_CANCEL, _("Cancel"));
+
+#if defined __WXMSW__
+  buttonSizer->Add(okButton);
+  buttonSizer->Add(cancelButton);
+#else
+  buttonSizer->Add(cancelButton);
+  buttonSizer->Add(okButton);
+#endif
+  okButton->SetDefault(); 
+  vbox->Add(buttonSizer, wxSizerFlags().Right());
+  SetSizerAndFit(vbox);
+};
+
+wxString WizDrawAccuracy::GetValue()
+{
+  wxString retval;
+  if(m_nticks->GetValue() != wxEmptyString)
+  {
+    if(retval != wxEmptyString)
+      retval += ",\n    ";
+    retval += "nticks=" + m_nticks->GetValue();
+  }
+
+  if(m_adapt_depth->GetValue() != wxEmptyString)
+  {
+    if(retval != wxEmptyString)
+      retval += ",\n    ";
+    retval += "adapt_depth=" + m_adapt_depth->GetValue();
+  }
+  
+  if(m_dimensions < 3)
+  {
+    if((m_ip_grid_x->GetValue() != wxEmptyString) && (m_ip_grid_y->GetValue() != wxEmptyString))
+    {
+      if(retval != wxEmptyString)
+        retval += ",\n    ";
+      retval += "ip_grid=[" + m_ip_grid_x->GetValue() + "," + m_ip_grid_y->GetValue()+"]";
+    }
+  }
+  else
+  {
+    if(m_xu_grid->GetValue() != wxEmptyString)
+    {
+      if(retval != wxEmptyString)
+        retval += ",\n    ";
+      retval += "xu_grid=" + m_xu_grid->GetValue();
+    }
+    if(m_yv_grid->GetValue() != wxEmptyString)
+    {
+      if(retval != wxEmptyString)
+        retval += ",\n    ";
+      retval += "yv_grid=" + m_yv_grid->GetValue();
+    }
+      
+    if(m_x_voxel->GetValue() != wxEmptyString)
+    {
+      if(retval != wxEmptyString)
+        retval += ",\n    ";
+      retval += "x_voxel=" + m_x_voxel->GetValue();
+    }
+    if(m_y_voxel->GetValue() != wxEmptyString)
+    {
+      if(retval != wxEmptyString)
+        retval += ",\n    ";
+      retval += "y_voxel=" + m_y_voxel->GetValue();
+    }
+    if(m_z_voxel->GetValue() != wxEmptyString)
+    {
+      if(retval != wxEmptyString)
+        retval += ",\n    ";
+      retval += "z_voxel=" + m_z_voxel->GetValue();
     }
   }
   return retval;

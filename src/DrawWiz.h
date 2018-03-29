@@ -145,7 +145,7 @@ private:
   wxCheckBox *m_enhanced3d;
 };
 
-//! A wizard for axis setup for draw
+//! A wizard for contour plots
 class WizContour : public wxDialog
 {
 public:
@@ -159,7 +159,7 @@ private:
   wxRadioButton *m_contourOnly; 
 };
 
-//! A wizard for axis setup for draw
+//! A wizard for the points object for draw
 class WizPoints : public wxDialog
 {
 public:
@@ -174,6 +174,27 @@ private:
   wxCheckBox *m_pointsJoined;
   wxChoice *m_pointStyle;
   int m_dimensions;
+};
+
+//! A wizard that sets the draw accuracy
+class WizDrawAccuracy : public wxDialog
+{
+public:
+  WizDrawAccuracy(wxWindow *parent, Configuration *config, int dimensions);
+  wxString GetValue();
+private:
+  int m_dimensions;
+  BTextCtrl *m_nticks;  
+  BTextCtrl *m_adapt_depth;  
+  BTextCtrl *m_xu_grid;  
+  BTextCtrl *m_yv_grid;
+  BTextCtrl *m_ip_grid_x;
+  BTextCtrl *m_ip_grid_y;
+  BTextCtrl *m_ip_grid_in_x;
+  BTextCtrl *m_ip_grid_in_y;
+  BTextCtrl *m_x_voxel;
+  BTextCtrl *m_y_voxel;
+  BTextCtrl *m_z_voxel;
 };
 
 #endif // DRAWWIZ_H
