@@ -756,7 +756,7 @@ WizDrawAccuracy::WizDrawAccuracy(wxWindow *parent, Configuration *config, int di
   nticksBox->Add(m_nticks = new BTextCtrl(this, -1, config, wxT("")), wxSizerFlags().Expand());
   nticksBox->Add(new wxStaticText(this,-1, _(" samples, on demand split ")), wxSizerFlags());
   nticksBox->Add(m_adapt_depth = new BTextCtrl(this, -1, config, wxT("")), wxSizerFlags().Expand());
-  nticksBox->Add(new wxStaticText(this,-1, _("times")), wxSizerFlags());
+  nticksBox->Add(new wxStaticText(this,-1, _(" times")), wxSizerFlags());
   vbox->Add(nticksBox, wxSizerFlags().Expand());
 
   if(dimensions < 3)
@@ -770,7 +770,7 @@ WizDrawAccuracy::WizDrawAccuracy(wxWindow *parent, Configuration *config, int di
     ipGridBox->Add(m_ip_grid_in_x = new BTextCtrl(this,-1, config, wxT("")), wxSizerFlags().Expand());
     ipGridBox->Add(new wxStaticText(this,-1, _("X")), wxSizerFlags());
     ipGridBox->Add(m_ip_grid_in_y = new BTextCtrl(this,-1, config, wxT("")), wxSizerFlags().Expand());
-    ipGridBox->Add(new wxStaticText(this,-1, _("times")), wxSizerFlags());
+    ipGridBox->Add(new wxStaticText(this,-1, _(" times")), wxSizerFlags());
     vbox->Add(ipGridBox, wxSizerFlags().Expand());
   }
   else
@@ -780,7 +780,7 @@ WizDrawAccuracy::WizDrawAccuracy(wxWindow *parent, Configuration *config, int di
     exp3dGridBox->Add(m_xu_grid = new BTextCtrl(this,-1, config, wxT("")), wxSizerFlags().Expand());
     exp3dGridBox->Add(new wxStaticText(this,-1, _("X")), wxSizerFlags());
     exp3dGridBox->Add(m_yv_grid = new BTextCtrl(this,-1, config, wxT("")), wxSizerFlags().Expand());
-    exp3dGridBox->Add(new wxStaticText(this,-1, _("samples")), wxSizerFlags());
+    exp3dGridBox->Add(new wxStaticText(this,-1, _(" samples")), wxSizerFlags());
     vbox->Add(exp3dGridBox, wxSizerFlags().Expand());
 
     vbox->Add(new wxStaticText(this,-1, _("Samples for implicit plots and regions:")), wxSizerFlags());
@@ -790,7 +790,7 @@ WizDrawAccuracy::WizDrawAccuracy(wxWindow *parent, Configuration *config, int di
     regionGridBox->Add(m_y_voxel = new BTextCtrl(this,-1, config, wxT("")), wxSizerFlags().Expand());
     regionGridBox->Add(new wxStaticText(this,-1, _("X")), wxSizerFlags());
     regionGridBox->Add(m_z_voxel = new BTextCtrl(this,-1, config, wxT("")), wxSizerFlags().Expand());
-    regionGridBox->Add(new wxStaticText(this,-1, _("samples")), wxSizerFlags());
+    regionGridBox->Add(new wxStaticText(this,-1, _(" samples")), wxSizerFlags());
     vbox->Add(regionGridBox, wxSizerFlags().Expand());
   }
   
