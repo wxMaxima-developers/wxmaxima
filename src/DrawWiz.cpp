@@ -638,34 +638,39 @@ WizPoints::WizPoints(wxWindow *parent, Configuration *config, int dimensions, wx
   wxStaticBox *formatBox = new wxStaticBox(this,-1,_("Data format"));
   wxStaticBoxSizer *formatSizer = new wxStaticBoxSizer(formatBox, wxVERTICAL);
   m_formatStd = new wxRadioButton(formatBox, -1,
-                                  _("[x_1, x_2,...] or [x_1, x_2,...],[y_1, y_2,...] or matrix([x_1,y_1],...)"), wxDefaultPosition,
+                                  _("[x_1, x_2,...] or [x_1, x_2,...],[y_1, y_2,...] or matrix([x_1,y_1],[x_2,y_2],...)"), wxDefaultPosition,
                                     wxDefaultSize, wxRB_GROUP);
-  vbox->Add(m_formatStd, wxSizerFlags().Expand()); 
+  formatSizer->Add(m_formatStd, wxSizerFlags().Expand()); 
   m_formatListOfLists = new wxRadioButton(formatBox, -1,
                                           _("[[x_1,x_2,...],[y_1,y_2,...]]")); 
-  vbox->Add(m_formatListOfLists, wxSizerFlags().Expand()); 
-  m_TransposedMatrix = new wxRadioButton(formatBox, -1,
+  formatSizer->Add(m_formatListOfLists, wxSizerFlags().Expand()); 
+  m_transposedMatrix = new wxRadioButton(formatBox, -1,
                                          _("matrix([x_1,x_2,...],[y_1,y_2,...])"));
-  vbox->Add(m_TransposedMatrix, wxSizerFlags().Expand()); 
-  m_TransposedListOfLists = new wxRadioButton(formatBox, -1,
+  formatSizer->Add(m_transposedMatrix, wxSizerFlags().Expand()); 
+  m_transposedListOfLists = new wxRadioButton(formatBox, -1,
                                               _("[[x_1,x_2,...],[y_1,y_2,...]]"));
-  vbox->Add(formatBox, wxSizerFlags().Expand()); 
+  formatSizer->Add(m_transposedListOfLists, wxSizerFlags().Expand()); 
+  vbox->Add(formatSizer, wxSizerFlags().Expand()); 
   m_pointsJoined = new wxCheckBox(this, -1, _("Connect the dots"),
-                          wxDefaultPosition, wxDefaultSize, wxCHK_3STATE);
+                                  wxDefaultPosition, wxDefaultSize, wxCHK_3STATE);
   m_pointsJoined -> Set3StateValue(wxCHK_UNDETERMINED);
   vbox->Add(m_pointsJoined, wxSizerFlags().Expand()); 
+  
+  wxBoxSizer *pointTypeSizer = new wxBoxSizer(wxHORIZONTAL);
   wxArrayString pointTypes;
   pointTypes.Add(_("Reuse last"));
   pointTypes.Add(_("No points"));
   for (int i=0; i<15;i++)
     pointTypes.Add(wxString::Format("%i",i));  
   m_pointStyle = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize, pointTypes);
-  vbox->Add(m_pointStyle , wxSizerFlags().Expand()); 
-
+  pointTypeSizer->Add(new wxStaticText(this,-1,_("Point type:")), wxSizerFlags().Expand()); 
+  pointTypeSizer->Add(m_pointStyle, wxSizerFlags().Expand()); 
+  vbox->Add(pointTypeSizer, wxSizerFlags().Expand()); 
+  
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
   wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
   wxButton *cancelButton = new wxButton(this, wxID_CANCEL, _("Cancel"));
-  #if defined __WXMSW__
+#if defined __WXMSW__
   buttonSizer->Add(okButton);
   buttonSizer->Add(cancelButton);
 #else
@@ -676,3 +681,65 @@ WizPoints::WizPoints(wxWindow *parent, Configuration *config, int dimensions, wx
   vbox->Add(buttonSizer, wxSizerFlags().Right());
   SetSizerAndFit(vbox);
 };
+
+wxString WizPoints::GetValue()
+{
+  wxString retval;
+  if(m_pointStyle->GetSelection() > 0)
+  {
+    if(m_pointStyle->GetSelection() == 1)
+    {
+      if(retval != wxEmptyString)
+        retval += ",\n    ";
+      retval += "point_type='none";
+    }
+    else
+    {
+      if(retval != wxEmptyString)
+        retval += ",\n    ";
+      retval += "point_type=" + m_pointStyle->GetStringSelection();
+    }
+  }
+  if(m_pointsJoined->Get3StateValue() == wxCHK_UNCHECKED)
+  {
+    if(retval != wxEmptyString)
+      retval += ",\n    ";
+    retval += "points_joined=false";
+  }
+  if(m_pointsJoined->Get3StateValue() == wxCHK_CHECKED)
+  {
+    if(retval != wxEmptyString)
+      retval += ",\n    ";
+    retval += "points_joined=true";
+  }
+
+  wxString data = m_data->GetValue();
+  if(data != wxEmptyString)
+  {
+    if(m_formatStd->GetValue())
+    {
+      if(retval != wxEmptyString)
+        retval += ",\n    ";
+      retval += "points(" + data +");";
+    }
+    if(m_formatListOfLists->GetValue())
+    {
+      if(retval != wxEmptyString)
+        retval += ",\n    ";
+      retval += "apply('points," + data +");";
+    }
+    if(m_transposedMatrix->GetValue())
+    {
+      if(retval != wxEmptyString)
+        retval += ",\n    ";
+      retval += "points(transpose(" + data +"));";
+    }
+    if(m_transposedListOfLists->GetValue())
+    {
+      if(retval != wxEmptyString)
+        retval += ",\n    ";
+      retval += "points(transpose(apply('matrix," + data +")));";
+    }
+  }
+  return retval;
+}

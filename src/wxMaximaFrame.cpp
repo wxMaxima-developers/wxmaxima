@@ -1818,6 +1818,7 @@ void wxMaximaFrame::DrawPane::SetDimensions(int dimensions)
     m_draw_explicit->Enable(true);
     m_draw_implicit->Enable(true);
     m_draw_parametric->Enable(true);
+    m_draw_points->Enable(true);
     m_draw_title->Enable(true);
     m_draw_key->Enable(true);
     m_draw_fgcolor->Enable(true);
@@ -1841,6 +1842,7 @@ void wxMaximaFrame::DrawPane::SetDimensions(int dimensions)
     m_draw_explicit->Enable(true);
     m_draw_implicit->Enable(true);
     m_draw_parametric->Enable(true);
+    m_draw_points->Enable(true);
     m_draw_title->Enable(true);
     m_draw_key->Enable(true);
     m_draw_fgcolor->Enable(true);
@@ -1879,6 +1881,8 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxPanel(parent, id
   grid->Add(m_draw_implicit = new wxButton(this, menu_draw_implicit, _("Implicit Plot")),
             0, style, border);
   grid->Add(m_draw_parametric = new wxButton(this, menu_draw_parametric, _("Parametric Plot")),
+            0, style, border);
+  grid->Add(m_draw_points = new wxButton(this, menu_draw_points, _("Points")),
             0, style, border);
   grid->Add(m_draw_title = new wxButton(this, menu_draw_title, _("Diagram title")),
             0, style, border);

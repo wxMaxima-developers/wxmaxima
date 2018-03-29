@@ -169,8 +169,8 @@ private:
   BTextCtrl *m_data;  
   wxRadioButton *m_formatStd; 
   wxRadioButton *m_formatListOfLists; 
-  wxRadioButton *m_TransposedMatrix;
-  wxRadioButton *m_TransposedListOfLists; 
+  wxRadioButton *m_transposedMatrix;
+  wxRadioButton *m_transposedListOfLists; 
   wxCheckBox *m_pointsJoined;
   wxChoice *m_pointStyle;
   int m_dimensions;

@@ -5034,6 +5034,16 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     break;
   }
 
+  case menu_draw_points:
+  {
+    WizPoints *wiz = new WizPoints(this, m_console->m_configuration, dimensions, expr);
+    wiz->Centre(wxBOTH);
+    if (wiz->ShowModal() == wxID_OK)
+      AddDrawParameter(wiz->GetValue());
+    wiz->Destroy();
+    break;
+  }
+
   case menu_draw_grid:
   {
     Gen2Wiz *wiz = new Gen2Wiz(
@@ -8507,6 +8517,8 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_BUTTON(menu_draw_implicit,wxMaxima::DrawMenu)
                 EVT_MENU(menu_draw_parametric,wxMaxima::DrawMenu)
                 EVT_BUTTON(menu_draw_parametric,wxMaxima::DrawMenu)
+                EVT_MENU(menu_draw_points,wxMaxima::DrawMenu)
+                EVT_BUTTON(menu_draw_points,wxMaxima::DrawMenu)
                 EVT_MENU(menu_draw_axis,wxMaxima::DrawMenu)
                 EVT_BUTTON(menu_draw_axis,wxMaxima::DrawMenu)
                 EVT_MENU(menu_draw_contour,wxMaxima::DrawMenu)
