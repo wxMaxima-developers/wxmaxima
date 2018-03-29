@@ -5090,7 +5090,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     WizDrawAccuracy *wiz = new WizDrawAccuracy(this, m_console->m_configuration, dimensions);
     wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
-      AddDrawParameter(wiz->GetValue(), 3);
+      AddDrawParameter(wiz->GetValue(), dimensions);
     wiz->Destroy();
     break;
   }
