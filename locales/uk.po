@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-29 20:00+0200\n"
+"POT-Creation-Date: 2018-03-29 20:03+0200\n"
 "PO-Revision-Date: 2018-03-18 17:04+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -87,10 +87,22 @@ msgstr " ... + %i прихованих рядків"
 msgid " << Expression longer than allowed by the configuration setting! >>"
 msgstr " << Вираз є довшим за розмір, визначений у налаштуваннях! >>"
 
+#: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:783
+#: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:793
+#, fuzzy
+msgid " samples"
+msgstr "Приклади:"
+
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:757
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:769
 msgid " samples, on demand split "
 msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:759
+#: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:773
+#, fuzzy
+msgid " times"
+msgstr "Порядок:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:795
 msgid "\"Copy LaTeX\" adds equation markers"
@@ -7199,12 +7211,6 @@ msgstr "ρ"
 msgid "right"
 msgstr "праворуч"
 
-#: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:783
-#: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:793
-#, fuzzy
-msgid "samples"
-msgstr "Приклади:"
-
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:232
 msgid "secondary x axis label"
 msgstr ""
@@ -7285,12 +7291,6 @@ msgstr "немає"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1613
 msgid "theta"
 msgstr "θ"
-
-#: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:759
-#: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:773
-#, fuzzy
-msgid "times"
-msgstr "Порядок:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1688
 msgid "to the power of 2"
