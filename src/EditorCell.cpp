@@ -181,7 +181,8 @@ void EditorCell::AddDrawParameter(wxString param)
   wxStringTokenizer lines(param, wxT("\n"), wxTOKEN_RET_EMPTY_ALL);
   while(lines.HasMoreTokens())
   {
-    ProcessNewline();
+    // Todo: Don't insert a newline if we are at the beginning of a line.
+    ProcessNewline(false);
     wxString line = lines.GetNextToken();
     line.Trim(false);
     m_text += line;
