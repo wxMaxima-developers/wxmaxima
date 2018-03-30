@@ -172,6 +172,7 @@ void EditorCell::AddDrawParameter(wxString param)
 
   wxString textAfterParameter = m_text.Right(m_text.Length() - m_positionOfCaret);
   m_text = m_text.Left(m_positionOfCaret);
+  m_text.Trim();
   if(commaNeededBefore)
   {
     m_text += wxT(",");
