@@ -4890,7 +4890,6 @@ void wxMaxima::AddDrawParameter(wxString cmd, int dimensionsOfNewDrawCommand)
   {
     if(m_console->GetActiveCell())
     {
-      cmd = wxT("\n    ") + cmd;
       m_console->GetActiveCell()->AddDrawParameter(cmd);
       m_console->RequestRedraw();
     }

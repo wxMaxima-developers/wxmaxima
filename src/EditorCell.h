@@ -519,6 +519,9 @@ public:
 
   void GotoError(){SetCaretPosition(m_errorIndex);ActivateCursor();}
 
+  //! Start a new line and optionally auto-indent it.
+  void ProcessNewline(bool keepCursorAtStartOfLine = true);
+
   //! Get the cursor's current position inside the cell.
   int GetCaretPosition()
   { return m_positionOfCaret; }

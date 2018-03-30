@@ -91,6 +91,7 @@ wxString EditorCell::EscapeHTMLChars(wxString input)
 
 void EditorCell::AddDrawParameter(wxString param)
 {
+  SaveValue();
   if(m_positionOfCaret < 0)
     return;
 
@@ -169,16 +170,24 @@ void EditorCell::AddDrawParameter(wxString param)
   if(commaNeededAfter)
     param += ",";
 
+  wxString textAfterParameter = m_text.Right(m_text.Length() - m_positionOfCaret);
+  m_text = m_text.Left(m_positionOfCaret);
   if(commaNeededBefore)
   {
-    m_text = m_text.Left(commaPos) + wxT(",") + m_text.Right(m_text.Length() - commaPos);
+    m_text += wxT(",");
     m_positionOfCaret ++;
   }
-  m_text = m_text.Left(m_positionOfCaret) +
-    param +
-    m_text.Right(m_text.Length() - m_positionOfCaret);
-  m_positionOfCaret += param.Length();
   
+  wxStringTokenizer lines(param, wxT("\n"), wxTOKEN_RET_EMPTY_ALL);
+  while(lines.HasMoreTokens())
+  {
+    ProcessNewline();
+    wxString line = lines.GetNextToken();
+    line.Trim(false);
+    m_text += line;
+    m_positionOfCaret += line.Length();
+  }
+  m_text += textAfterParameter;
   StyleText();
   ResetSize();
   if (m_group != NULL)
@@ -1395,6 +1404,65 @@ int EditorCell::GetIndentDepth(wxString text, int positionOfCaret)
   return retval;
 }
 
+void EditorCell::ProcessNewline(bool keepCursorAtStartOfLine)
+{
+        if (m_selectionStart != -1) // we have a selection, delete it, then proceed
+      {
+        SaveValue();
+        long start = MIN(m_selectionEnd, m_selectionStart);
+        long end = MAX(m_selectionEnd, m_selectionStart);
+        m_text = m_text.SubString(0, start - 1) +
+                 m_text.SubString(end, m_text.Length());
+        m_positionOfCaret = start;
+        ClearSelection();
+      }
+
+      {
+        bool autoIndent = (*m_configuration)->GetAutoIndent();
+        // If the cursor is at the beginning of a line we will move it there again after
+        // indenting.
+        bool cursorAtStartOfLine = keepCursorAtStartOfLine &&
+          (m_positionOfCaret == (long) BeginningOfLine(m_positionOfCaret));
+
+        // If the cursor is part of the whitespace at the beginning of the line
+        // we move it to its end if this makes sense.
+        if (autoIndent)
+        {
+          int i = BeginningOfLine(m_positionOfCaret);
+          while ((m_text[i] == wxT(' ')) && (i < m_positionOfCaret))
+            i++;
+          if (i == m_positionOfCaret)
+            while ((m_text[m_positionOfCaret] == wxT(' ')) && (m_positionOfCaret < (long) m_text.Length() - 1))
+              m_positionOfCaret++;
+        }
+
+        int indentChars = GetIndentDepth(m_text, m_positionOfCaret);
+
+        // The string we indent with.
+        wxString indentString;
+        if (autoIndent && (indentChars > 0))
+          for (int i = 0; i < indentChars; i++)
+            indentString += wxT(" ");
+
+        m_text = m_text.SubString(0, m_positionOfCaret - 1) +
+                 wxT("\n") + indentString +
+                 m_text.SubString(m_positionOfCaret, m_text.Length());
+        m_positionOfCaret++;
+        if ((indentChars > 0) && (autoIndent))
+        {
+          m_positionOfCaret = BeginningOfLine(m_positionOfCaret);
+          m_positionOfCaret += indentChars;
+        }
+        m_isDirty = true;
+        m_containsChanges = true;
+        bool cursorJump = true;
+        wxConfig::Get()->Read(wxT("cursorJump"), &cursorJump);
+
+        if ((!cursorJump) || ((cursorAtStartOfLine) && (!autoIndent)))
+          m_positionOfCaret = BeginningOfLine(m_positionOfCaret);
+      }
+}
+
 bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
 {
   bool done = true;
@@ -1749,60 +1817,7 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
 
     case WXK_RETURN:
       SaveValue();
-      if (m_selectionStart != -1) // we have a selection, delete it, then proceed
-      {
-        SaveValue();
-        long start = MIN(m_selectionEnd, m_selectionStart);
-        long end = MAX(m_selectionEnd, m_selectionStart);
-        m_text = m_text.SubString(0, start - 1) +
-                 m_text.SubString(end, m_text.Length());
-        m_positionOfCaret = start;
-        ClearSelection();
-      }
-
-      {
-        bool autoIndent = (*m_configuration)->GetAutoIndent();
-        // If the cursor is at the beginning of a line we will move it there again after
-        // indenting.
-        bool cursorAtStartOfLine = (m_positionOfCaret == (long) BeginningOfLine(m_positionOfCaret));
-
-        // If the cursor is part of the whitespace at the beginning of the line
-        // we move it to its end if this makes sense.
-        if (autoIndent)
-        {
-          int i = BeginningOfLine(m_positionOfCaret);
-          while ((m_text[i] == wxT(' ')) && (i < m_positionOfCaret))
-            i++;
-          if (i == m_positionOfCaret)
-            while ((m_text[m_positionOfCaret] == wxT(' ')) && (m_positionOfCaret < (long) m_text.Length() - 1))
-              m_positionOfCaret++;
-        }
-
-        int indentChars = GetIndentDepth(m_text, m_positionOfCaret);
-
-        // The string we indent with.
-        wxString indentString;
-        if (autoIndent && (indentChars > 0))
-          for (int i = 0; i < indentChars; i++)
-            indentString += wxT(" ");
-
-        m_text = m_text.SubString(0, m_positionOfCaret - 1) +
-                 wxT("\n") + indentString +
-                 m_text.SubString(m_positionOfCaret, m_text.Length());
-        m_positionOfCaret++;
-        if ((indentChars > 0) && (autoIndent))
-        {
-          m_positionOfCaret = BeginningOfLine(m_positionOfCaret);
-          m_positionOfCaret += indentChars;
-        }
-        m_isDirty = true;
-        m_containsChanges = true;
-        bool cursorJump = true;
-        wxConfig::Get()->Read(wxT("cursorJump"), &cursorJump);
-
-        if ((!cursorJump) || ((cursorAtStartOfLine) && (!autoIndent)))
-          m_positionOfCaret = BeginningOfLine(m_positionOfCaret);
-      }
+      ProcessNewline();
       StyleText();
       break;
 
