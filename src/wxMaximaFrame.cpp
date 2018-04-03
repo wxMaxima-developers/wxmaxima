@@ -1860,7 +1860,6 @@ void wxMaximaFrame::DrawPane::SetDimensions(int dimensions)
 wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxPanel(parent, id)
 {
   wxBoxSizer  *vbox = new wxBoxSizer(wxVERTICAL);
-  wxGridSizer *grid2d3d = new wxGridSizer(2);
   wxGridSizer *grid = new wxGridSizer(2);
   m_dimensions = -1;
   int style = wxALL | wxEXPAND;
@@ -1870,13 +1869,14 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxPanel(parent, id
   int border = 0;
 #endif
 
-  grid2d3d->Add(m_draw_setup2d = new wxButton(this, menu_draw_2d, _("2D")),
+  grid->Add(m_draw_setup2d = new wxButton(this, menu_draw_2d, _("2D")),
                 0, style, border);
   m_draw_setup2d->SetToolTip(_("Setup a 2D plot"));
-  grid2d3d->Add(m_draw_setup3d = new wxButton(this, menu_draw_3d, _("3D")),
+  grid->Add(m_draw_setup3d = new wxButton(this, menu_draw_3d, _("3D")),
                 0, style, border);
   m_draw_setup3d->SetToolTip(_("Setup a 3D plot"));
-  vbox->Add(grid2d3d, wxSizerFlags().Expand());
+//  grid->AddSpacer(1);
+//  grid->AddSpacer(1);
   grid->Add(m_draw_explicit = new wxButton(this, menu_draw_explicit, _("Expression")),
             0, style, border);
   m_draw_explicit->SetToolTip(_("The standard plot command: Plot an equation as a curve"));
@@ -1886,9 +1886,16 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxPanel(parent, id
             0, style, border);
   grid->Add(m_draw_points = new wxButton(this, menu_draw_points, _("Points")),
             0, style, border);
+//  grid->AddSpacer(1);
+//  grid->AddSpacer(1);
   grid->Add(m_draw_title = new wxButton(this, menu_draw_title, _("Diagram title")),
             0, style, border);
   m_draw_title->SetToolTip(_("The diagram title"));
+  grid->Add(m_draw_axis = new wxButton(this, menu_draw_axis, _("Axis")),
+            0, style, border);
+  m_draw_axis->SetToolTip(_("Setup the axis"));
+  grid->Add(m_draw_contour = new wxButton(this, menu_draw_contour, _("Contour")),
+            0, style, border);
   grid->Add(m_draw_key = new wxButton(this, menu_draw_key, _("Plot name")),
             0, style, border);
   m_draw_key->SetToolTip(_("The next plot's title"));
@@ -1901,11 +1908,6 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxPanel(parent, id
   grid->Add(m_draw_grid = new wxButton(this, menu_draw_grid, _("Grid")),
             0, style, border);
   m_draw_grid->SetToolTip(_("The grid in the background of the diagram"));
-  grid->Add(m_draw_axis = new wxButton(this, menu_draw_axis, _("Axis")),
-            0, style, border);
-  m_draw_axis->SetToolTip(_("Setup the axis"));
-  grid->Add(m_draw_contour = new wxButton(this, menu_draw_contour, _("Contour")),
-            0, style, border);
   m_draw_contour->SetToolTip(_("Contour lines for 3d plots"));
   grid->Add(m_draw_accuracy = new wxButton(this, menu_draw_accuracy, _("Accuracy")),
             0, style, border);
