@@ -2746,6 +2746,9 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
 
 void wxMaxima::OnIdle(wxIdleEvent &event)
 {
+  if(m_console != NULL)
+    m_console->RecalculateIfNeeded();
+  
   // On msw sometimes the communication stalls even if there is new data.
   // Let's see if communication can be resumed manually by manually triggering
   // listening to socket events from time to time, see

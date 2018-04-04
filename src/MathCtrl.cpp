@@ -749,22 +749,27 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
     ScrollToCell(CellToScrollTo, false);
 }
 
-void MathCtrl::Recalculate(GroupCell *start, bool force)
+bool MathCtrl::RecalculateIfNeeded()
 {
+  if((m_recalculateStart == NULL) || (m_tree == NULL))
+    return false;
+  
   if(m_dc == NULL)
-    return;
-
+    return false;
+  
+  if(!m_tree->Contains(m_recalculateStart))
+    m_recalculateStart = m_tree;
+  
   GroupCell *tmp;
   m_configuration->SetCanvasSize(GetClientSize());
 
-  if (start == NULL)
+  if (m_recalculateStart == NULL)
     tmp = m_tree;
   else
-    tmp = start;
+    tmp = m_recalculateStart;
 
   m_configuration->SetCanvasSize(GetClientSize());
 
-  m_configuration->SetForceUpdate(force);
   UpdateConfigurationClientSize();
   
   int width;
@@ -786,6 +791,30 @@ void MathCtrl::Recalculate(GroupCell *start, bool force)
   
   AdjustSize();
   m_configuration->SetForceUpdate(false);
+
+  m_recalculateStart = NULL;
+  return true;
+}
+
+void MathCtrl::Recalculate(GroupCell *start, bool force)
+{
+  m_configuration->SetForceUpdate(force);
+
+  GroupCell *tmp = m_tree;
+  if(m_recalculateStart == NULL)
+    m_recalculateStart = start;
+  else
+    // Move m_recalculateStart backwards to start, if start comes before m_recalculateStart.
+    while(tmp != NULL)
+    {
+      if (tmp == start)
+        m_recalculateStart = start;
+      
+      if (tmp == m_recalculateStart)
+        return;
+      
+      tmp = dynamic_cast<GroupCell *>(tmp -> m_next);
+    }
 }
 
 /***

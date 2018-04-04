@@ -895,13 +895,16 @@ public:
   */
   void InsertLine(MathCell *newLine, bool forceNewLine = false);
 
-  //! Recalculate the worksheet starting with the cell start.
+  // Actually recalculate the worksheet.
+  bool RecalculateIfNeeded();
+
+  //! Schedule a recalculation of the worksheet starting with the cell start.
   void Recalculate(GroupCell *start, bool force = false);
 
   void Recalculate(bool force = false)
   { Recalculate(m_tree, force); }
 
-  //! Force a full recalculation of the worksheet
+  //! Schedule a full recalculation of the worksheet
   void RecalculateForce()
   {
     Recalculate(true);
@@ -1441,7 +1444,8 @@ protected:
   AccessibilityInfo *m_accessibilityInfo;
 #endif
   void UpdateConfigurationClientSize();
-
+  //! Where to start recalculation. NULL = No recalculation needed.
+  GroupCell *m_recalculateStart;
   //! The x position of the mouse pointer
   int m_pointer_x;
   //! The y position of the mouse pointer
