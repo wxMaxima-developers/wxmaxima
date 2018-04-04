@@ -81,6 +81,7 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
 #endif
   m_pointer_x = -1;
   m_pointer_y = -1;
+  m_recalculateStart = NULL;
   m_mouseMotionWas = false;
   m_rectToRefresh = wxRect(-1,-1,-1,-1);
   m_notificationMessage = NULL;
@@ -150,6 +151,8 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
 bool MathCtrl::RedrawIfRequested()
 {
   bool redrawIssued = false;
+
+  RecalculateIfNeeded();
   
   if(m_mouseMotionWas)
   {
@@ -808,13 +811,21 @@ void MathCtrl::Recalculate(GroupCell *start, bool force)
     while(tmp != NULL)
     {
       if (tmp == start)
+      {
         m_recalculateStart = start;
+        return;
+      }
       
       if (tmp == m_recalculateStart)
         return;
       
       tmp = dynamic_cast<GroupCell *>(tmp -> m_next);
     }
+
+  // If the cells to recalculate neither contain the start nor the tree we should
+  // better recalculate all.
+  m_recalculateStart = m_tree;
+
 }
 
 /***
@@ -898,7 +909,7 @@ void MathCtrl::ClearDocument()
   m_hCaretActive = false;
   SetHCaret(NULL); // horizontal caret at the top of document
   m_hCaretPositionStart = m_hCaretPositionEnd = NULL;
-
+  m_recalculateStart = NULL;
   m_evaluationQueue.Clear();
   TreeUndo_ClearBuffers();
   DestroyTree();
@@ -6430,6 +6441,7 @@ void MathCtrl::FollowEvaluation(bool followEvaluation)
 
 void MathCtrl::ScrollToCell(MathCell *cell, bool scrollToTop)
 {
+  RecalculateIfNeeded();
   if (cell == NULL)
   {
     int view_x, view_y;
@@ -7653,6 +7665,7 @@ bool MathCtrl::CaretVisibleIs()
 
 void MathCtrl::ScrollToCaret()
 {
+  RecalculateIfNeeded();
   if (m_hCaretActive)
   {
     ScrollToCell(m_hCaretPosition, false);

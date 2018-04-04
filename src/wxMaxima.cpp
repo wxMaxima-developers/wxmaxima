@@ -2015,7 +2015,7 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
   if (clearDocument)
     document->ClearDocument();
 
-  document->InsertGroupCells(tree); // this also recalculates
+  document->InsertGroupCells(tree); // this also requests a recalculate
 
   if (clearDocument)
   {
@@ -2212,8 +2212,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
     document->SetZoomFactor(double(zoom) / 100.0, false); // Set zoom if opening, don't recalculate
   }
 
-  document->InsertGroupCells(tree); // this also recalculates
-
+  document->InsertGroupCells(tree); // this also requests a recalculate
   if (clearDocument)
   {
     m_console->m_currentFile = file;
@@ -2325,7 +2324,7 @@ bool wxMaxima::OpenXML(wxString file, MathCtrl *document)
   GroupCell *tree = CreateTreeFromXMLNode(xmlcells, file);
 
   document->ClearDocument();
-  document->InsertGroupCells(tree); // this also recalculates
+  document->InsertGroupCells(tree); // this also requests a redcalculate
   m_console->m_currentFile = file;
   ResetTitle(true, true);
   document->Thaw();
@@ -3280,6 +3279,7 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
       SetCWD(filename);
     }
   }
+  m_console->RecalculateIfNeeded();
   if (m_console->m_tableOfContents != NULL)
   {
     m_console->m_scheduleUpdateToc = false;
