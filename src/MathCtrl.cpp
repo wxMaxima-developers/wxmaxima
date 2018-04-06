@@ -801,7 +801,8 @@ bool MathCtrl::RecalculateIfNeeded()
 
 void MathCtrl::Recalculate(GroupCell *start, bool force)
 {
-  m_configuration->SetForceUpdate(force);
+  if(force)
+    m_configuration->SetForceUpdate(force);
 
   GroupCell *tmp = m_tree;
   if(m_recalculateStart == NULL)
