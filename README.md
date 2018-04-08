@@ -7,13 +7,12 @@ wxMaxima is a document based interface for the computer algebra system
 Maxima.  For more information about Maxima, visit
 http://maxima.sourceforge.net/.  wxMaxima uses wxWidgets and runs
 natively on Windows, X11 and Mac OS X.  wxMaxima provides menus and
-dialogs for many common maxima commands, autocompletion, inline plots
+dialogs for many common Maxima commands, autocompletion, inline plots
 and simple animations. wxMaxima is distributed under the GPL license.
 
-wxMaxima is included with the Windows and the macintosh installer for
+wxMaxima is included with the Windows and the Macintosh installer for
 Maxima. Packages are also available for many Linux distributions. Screenshots
-and documentation can be found at http://andrejv.github.io/wxmaxima/;
-If you wish to compile wxMaxima from source, please read the instructions below.
+and documentation can be found at http://andrejv.github.io/wxmaxima/
 
 
 Building wxMaxima from source
@@ -27,13 +26,13 @@ wxWidgets library installed.
 wxMaxima is built using the CMake build system.
 The following steps will build and install wxMaxima using CMake:
 
-    mkdir build
+    mkdir -p build
     cd build
     cmake ..
     cmake --build .
     sudo cmake --build . -- install
 
-If you want to install into a special prefix (not /usr/local), use
+If you want to install into a special prefix (not `/usr/local`), use
 
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/your/installation/prefix ..
 

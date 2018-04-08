@@ -85,9 +85,25 @@ else()
     list(APPEND  CPACK_GENERATOR "RPM")
 endif()
 
+# Remove install instructions and travis icon from README for binary RPM packages
+file(STRINGS "${CMAKE_SOURCE_DIR}/README.md" READMETEXT)
+list(FIND READMETEXT "Building wxMaxima from source" LSTART)
+list(LENGTH READMETEXT LEND)
+math(EXPR LEND "${LEND} - 1")
+foreach(loop_var RANGE ${LSTART} ${LEND})
+   list(REMOVE_AT READMETEXT ${LSTART})
+endforeach()
+list(REMOVE_AT READMETEXT 0)
+foreach(line IN LISTS READMETEXT)
+    string(APPEND multiline "${line}\n")
+endforeach() 
+file(WRITE "${CMAKE_BINARY_DIR}/README.md" ${multiline})
+
+
+
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "wxMaxima is a GUI for the CAS Maxima")
 set(CPACK_PACKAGE_VENDOR "The wxMaxima Team")
-set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/README.md")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_BINARY_DIR}/README.md")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
 set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${VERSION}")
 set(CPACK_PACKAGE_CONTACT "The wxMaxima Team <wxmaxima-devel@lists.sourceforge.net>")
