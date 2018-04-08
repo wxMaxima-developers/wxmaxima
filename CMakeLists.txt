@@ -106,6 +106,8 @@ set(CPACK_RPM_PACKAGE_SUGGESTS "jsmath-fonts")
 set(CPACK_SOURCE_IGNORE_FILES
   "build/"
   ".git/"
+  ".gitignore"
+  ".gitattributes"
   "Doxygen/html/"
   "\\\\.gmo$"
   "\\\\.mo$"
