@@ -1344,10 +1344,6 @@
 
 
 (defvar *image-counter* 0)
-(defvar $gnuplot_file_name)
-(defvar $data_file_name)
-(setq $gnuplot_file_name (format nil "maxout_~d.gnuplot" (getpid)))
-(setq $data_file_name (format nil "maxout_~d.dat" (getpid)))
 
 (defun wxplot-filename (&optional (suff t))
   (incf *image-counter*)
