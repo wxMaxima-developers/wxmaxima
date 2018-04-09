@@ -1464,8 +1464,6 @@
             ($apply '$draw
                     (append
                      `((mlist simp)
-                       ((mequal simp) $gnuplot_file_name ,$gnuplot_file_name)
-                       ((mequal simp) $data_file_name ,$data_file_name)
                        ((mequal simp) $terminal $animated_gif)
                        ((mequal simp) $file_name ,file-name))
                      (get-pic-size-opt)
@@ -1484,8 +1482,6 @@
                 ($apply '$draw
                         (append
                          `((mlist simp)
-			   ((mequal simp) $gnuplot_file_name ,$gnuplot_file_name)
-			   ((mequal simp) $data_file_name ,$data_file_name)
                            ((mequal simp) $terminal ,(if $wxplot_pngcairo '$pngcairo '$png))
                            ((mequal simp) $file_name ,filename))
                          (get-pic-size-opt)
@@ -1575,9 +1571,7 @@
                       (append
                        '((mlist simp))
                        args
-                       `(((mequal simp) $gnuplot_file_name ,$gnuplot_file_name)
-			 ((mequal simp) $data_file_name ,$data_file_name)
-                         ((mequal simp) $terminal ,(if $wxplot_pngcairo '$pngcairo '$png))
+                       `(((mequal simp) $terminal ,(if $wxplot_pngcairo '$pngcairo '$png))
                          ((mequal simp) $file_name ,filename))
                        (cond
                          ((eq ($get '$draw '$version) 1)
