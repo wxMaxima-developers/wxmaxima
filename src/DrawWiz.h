@@ -113,9 +113,6 @@ private:
   BTextCtrl *m_y2Label;
   BTextCtrl *m_y2Start;
   BTextCtrl *m_y2End;
-  BTextCtrl *m_z2Label;
-  BTextCtrl *m_z2Start;
-  BTextCtrl *m_z2End;
 };
 
 

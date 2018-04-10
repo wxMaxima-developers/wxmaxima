@@ -440,7 +440,7 @@ wxString DrawWiz::GetValue()
 }
 
 
-Wiz3D::Wiz3D(wxWindow *parent, Configuration *config) :
+Wiz3D::Wiz3D(wxWindow *parent, Configuration *WXUNUSED(config)) :
   wxDialog(parent, -1, _("Settings for the following 3d plots"))
 {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
@@ -501,7 +501,7 @@ wxString Wiz3D::GetValue()
   return retval;
 }
 
-WizContour::WizContour(wxWindow *parent, Configuration *config) :
+WizContour::WizContour(wxWindow *parent, Configuration *WXUNUSED(config)) :
   wxDialog(parent, -1, _("Contour lines settings for the following 3d plots"))
 {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
