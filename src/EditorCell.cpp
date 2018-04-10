@@ -104,8 +104,7 @@ void EditorCell::AddDrawParameter(wxString param)
     return;
   
   int pos = 1;
-  int commaPos = 1;
-
+  
   // Insert a comma in front of the parameter, if necessary
   wxString::iterator ch = m_text.begin();
   bool commaNeededBefore = false;
@@ -127,10 +126,7 @@ void EditorCell::AddDrawParameter(wxString param)
            (*ch == wxT('\t'))
            )
         )
-      {
         commaNeededBefore = true;
-        commaPos = pos;
-      }
     }
     
     if(pos > m_positionOfCaret)
