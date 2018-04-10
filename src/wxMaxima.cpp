@@ -1073,12 +1073,12 @@ void wxMaxima::KillMaxima()
   if(m_maximaTempDir != wxEmptyString)
   {
     wxLogNull logNull;
-    wxRemoveFile(m_maximaTempDir + wxT("/maxout") + wxString::Format("%i.gnuplot",m_pid));
-    wxRemoveFile(m_maximaTempDir + wxT("/data") + wxString::Format("%i.gnuplot",m_pid));
-    wxRemoveFile(m_maximaTempDir + wxT("/maxout") + wxString::Format("%i.xmaxima",m_pid));
-    wxRemoveFile(m_maximaTempDir + wxT("/maxout_") + wxString::Format("%i.gnuplot",m_pid));
-    wxRemoveFile(m_maximaTempDir + wxT("/data_") + wxString::Format("%i.gnuplot",m_pid));
-    wxRemoveFile(m_maximaTempDir + wxT("/maxout_") + wxString::Format("%i.xmaxima",m_pid));
+    wxRemoveFile(m_maximaTempDir + wxT("/maxout") + wxString::Format("%li.gnuplot",m_pid));
+    wxRemoveFile(m_maximaTempDir + wxT("/data") + wxString::Format("%li.gnuplot",m_pid));
+    wxRemoveFile(m_maximaTempDir + wxT("/maxout") + wxString::Format("%li.xmaxima",m_pid));
+    wxRemoveFile(m_maximaTempDir + wxT("/maxout_") + wxString::Format("%li.gnuplot",m_pid));
+    wxRemoveFile(m_maximaTempDir + wxT("/data_") + wxString::Format("%li.gnuplot",m_pid));
+    wxRemoveFile(m_maximaTempDir + wxT("/maxout_") + wxString::Format("%li.xmaxima",m_pid));
   }
   m_pid = -1;
 }
@@ -1467,11 +1467,8 @@ void wxMaxima::ReadVariables(wxString &data)
           {
             if(name == "maxima_userdir")
               m_console->m_configuration->m_dirStructure.UserConfDir(value);
-            if(name == "$maxima_tempdir")
-            {              
+            if(name == "maxima_tempdir")
               m_maximaTempDir = value;
-              std::cerr << value<<"\n";
-            }
             if(name == "*autoconf-version*")
               m_maximaVersion = value;
             if(name == "*autoconf-host*")
