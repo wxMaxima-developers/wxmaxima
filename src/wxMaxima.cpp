@@ -1045,13 +1045,16 @@ void wxMaxima::KillMaxima()
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
   
-  if ((m_pid <= 0) && (m_client))
+  if (m_pid <= 0)
   {
-    if (m_inLispMode)
-      SendMaxima(wxT("($quit)"));
-    else
-      SendMaxima(wxT("quit();"));
-    return;
+    if(m_client)
+    {
+      if (m_inLispMode)
+        SendMaxima(wxT("($quit)"));
+      else
+        SendMaxima(wxT("quit();"));
+      return;
+    }
   }
   else
     wxProcess::Kill(m_pid, wxSIGKILL);
