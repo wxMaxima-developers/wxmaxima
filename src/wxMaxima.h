@@ -614,6 +614,7 @@ protected:
   wxPrintData *m_printData;
   bool m_closing;
   wxString m_openFile;
+  wxString m_maximaTempDir;
   bool m_fileSaved;
   wxString m_chmhelpFile;
   bool m_htmlHelpInitialized;

@@ -1045,16 +1045,13 @@ void wxMaxima::KillMaxima()
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
   
-  if (m_pid <= 0)
+  if ((m_pid <= 0) && (m_client))
   {
-    if(m_client)
-    {
-      if (m_inLispMode)
-        SendMaxima(wxT("($quit)"));
-      else
-        SendMaxima(wxT("quit();"));
-      return;
-    }
+    if (m_inLispMode)
+      SendMaxima(wxT("($quit)"));
+    else
+      SendMaxima(wxT("quit();"));
+    return;
   }
   else
     wxProcess::Kill(m_pid, wxSIGKILL);
@@ -1066,6 +1063,20 @@ void wxMaxima::KillMaxima()
     m_client->Close();
   m_client = NULL;
   m_isConnected = false;
+
+  // As we might have killed maxima before it was able to clean up its
+  // temp files
+  // we try to do so manually now:
+  if(m_maximaTempDir != wxEmptyString)
+  {
+    wxLogNull logNull;
+    wxRemoveFile(m_maximaTempDir + wxT("/maxout") + wxString::Format("%i.gnuplot",m_pid));
+    wxRemoveFile(m_maximaTempDir + wxT("/data") + wxString::Format("%i.gnuplot",m_pid));
+    wxRemoveFile(m_maximaTempDir + wxT("/maxout") + wxString::Format("%i.xmaxima",m_pid));
+    wxRemoveFile(m_maximaTempDir + wxT("/maxout_") + wxString::Format("%i.gnuplot",m_pid));
+    wxRemoveFile(m_maximaTempDir + wxT("/data_") + wxString::Format("%i.gnuplot",m_pid));
+    wxRemoveFile(m_maximaTempDir + wxT("/maxout_") + wxString::Format("%i.xmaxima",m_pid));
+  }
   m_pid = -1;
 }
 
@@ -1453,6 +1464,11 @@ void wxMaxima::ReadVariables(wxString &data)
           {
             if(name == "maxima_userdir")
               m_console->m_configuration->m_dirStructure.UserConfDir(value);
+            if(name == "$maxima_tempdir")
+            {              
+              m_maximaTempDir = value;
+              std::cerr << value<<"\n";
+            }
             if(name == "*autoconf-version*")
               m_maximaVersion = value;
             if(name == "*autoconf-host*")
