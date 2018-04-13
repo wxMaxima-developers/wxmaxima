@@ -269,12 +269,15 @@ class MathCell
    */
   virtual void Draw(wxPoint point, int fontsize);
 
+  virtual void Draw(int fontsize){Draw(m_currentPoint, fontsize);}
+
   /*! Draw this list of cells
 
     \param point The x and y position this cell is drawn at
     \param fontsize The font size that is to be used
    */
   void DrawList(wxPoint point, int fontsize);
+  void DrawList(int fontsize){DrawList(m_currentPoint, fontsize);}
 
   /*! Draw a rectangle that marks this cell or this list of cells as selected
 
