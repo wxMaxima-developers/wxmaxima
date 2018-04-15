@@ -1872,8 +1872,8 @@ void GroupCell::BreakUpCells(MathCell *cell, int WXUNUSED(fontsize), int clientW
     {
       if (tmp->BreakUp())
       {
-        tmp->RecalculateWidths(tmp->IsMath() ? m_mathFontSize : m_fontSize);
-        tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
+        //       tmp->RecalculateWidths(tmp->IsMath() ? m_mathFontSize : m_fontSize);
+        //       tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
       }
     }
     tmp = tmp->m_nextToDraw;
