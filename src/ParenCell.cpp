@@ -170,7 +170,8 @@ void ParenCell::SetFont(int fontsize)
 void ParenCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  
+
+  std::cerr<<"Widths\n";
   // Add a dummy contents to empty parenthesis
   if (m_innerCell == NULL)
     m_innerCell = new TextCell(m_group, m_configuration, m_cellPointers);
@@ -230,6 +231,7 @@ void ParenCell::RecalculateWidths(int fontsize)
 
 void ParenCell::RecalculateHeight(int fontsize)
 {
+  std::cerr<<"Height\n";
   Configuration *configuration = (*m_configuration);
   m_innerCell->RecalculateHeightList(fontsize);
   m_height = MAX(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(2);
@@ -256,18 +258,15 @@ void ParenCell::RecalculateHeight(int fontsize)
       switch(m_bigParenType)
       {
       case Configuration::ascii:
-        m_signWidth = m_open->GetWidth();
         m_signHeight = m_charHeight1;
         break;
       case Configuration::assembled_unicode:
       case Configuration::assembled_unicode_fallbackfont:
       case Configuration::assembled_unicode_fallbackfont2:
-        m_innerCell->m_currentPoint.x += m_signWidth;
         // Center the contents of the parenthesis vertically.
         //  m_innerCell->m_currentPoint.y += m_center - m_signHeight / 2;
         break;
-      default:
-        m_signWidth = Scale_Px(6) + (*m_configuration)->GetDefaultLineWidth();
+      default:{}
       }
       m_innerCell->m_currentPoint.x = m_currentPoint.x + m_signWidth;
       m_innerCell->m_currentPoint.y = m_currentPoint.y;
