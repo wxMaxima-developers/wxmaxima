@@ -171,7 +171,6 @@ void ParenCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
 
-  std::cerr<<"Widths\n";
   // Add a dummy contents to empty parenthesis
   if (m_innerCell == NULL)
     m_innerCell = new TextCell(m_group, m_configuration, m_cellPointers);
@@ -231,7 +230,6 @@ void ParenCell::RecalculateWidths(int fontsize)
 
 void ParenCell::RecalculateHeight(int fontsize)
 {
-  std::cerr<<"Height\n";
   Configuration *configuration = (*m_configuration);
   m_innerCell->RecalculateHeightList(fontsize);
   m_height = MAX(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(2);
