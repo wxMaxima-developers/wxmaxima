@@ -2715,7 +2715,7 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
   else if (txt == wxT("nexists"))
     return L"\x2204";
   else if (txt == wxT("parallel"))
-    return L"\2225";
+    return L"\x2225";
   else if (txt == wxT("perp"))
     return L"\x27C2";
   else if (txt == wxT("perpendicular"))
