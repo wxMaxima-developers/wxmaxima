@@ -626,7 +626,9 @@ void GroupCell::InputHeightChanged()
   if (m_inputLabel != NULL) {
     m_inputLabel->ResetData();
   }
-  RecalculateHeight(m_fontSize);
+  RecalculateHeightInput(m_fontSize);
+  if(m_output)
+    m_height += m_output->GetMaxHeight();
 }
 
 // Called on resize events
