@@ -82,6 +82,7 @@
 #include <wx/txtstrm.h>
 #include <wx/sckstrm.h>
 #include <wx/fs_mem.h>
+#include <wx/persist/toplevel.h>
 
 #include <wx/url.h>
 #include <wx/sstream.h>
@@ -6102,7 +6103,8 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
                                wxT("true"), wxT(".01"), wxT("1000"), wxT("6"),
                                m_console->m_configuration,
                                this, -1, _("Engineering format setup"));
-    wiz->Centre(wxBOTH);
+    wxPersistenceManager::Get().RegisterAndRestore(wiz);
+    wiz->Centre(wxBOTH);    
     if (wiz->ShowModal() == wxID_OK)
     {
       cmd = wxT("engineering_format_floats: ") + wiz->GetValue1() + wxT("$\n") +

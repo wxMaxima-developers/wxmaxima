@@ -31,6 +31,7 @@ Gen5Wiz::Gen5Wiz(wxString lab1, wxString lab2, wxString lab3, wxString lab4, wxS
                  const wxPoint &pos, const wxSize &size, long style) :
         wxDialog(parent, id, title, pos, size, style)
 {
+  SetName(title);
   label_2 = new wxStaticText(this, -1, lab1);
   text_ctrl_1 = new BTextCtrl(this, -1, cfg, val1, wxDefaultPosition,
                               wxSize(230, -1));
