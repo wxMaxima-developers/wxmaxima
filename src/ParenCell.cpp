@@ -231,7 +231,6 @@ void ParenCell::RecalculateWidths(int fontsize)
 void ParenCell::RecalculateHeight(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  m_innerCell->RecalculateHeightList(fontsize);
   m_height = MAX(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(2);
   m_center = m_height / 2;
 
