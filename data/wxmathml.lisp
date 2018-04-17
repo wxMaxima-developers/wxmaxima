@@ -43,6 +43,7 @@
 (defvar $wxplot_size '((mlist simp) 800 600) "The size of new plots")
 (defvar $wxchangedir t "Change the PWD of maxima to the current document's path?")
 (defvar $wxmaximaversion t "The wxMaxima version")
+(defprop $wxmaximaversion read-only-assign assign)
 (defvar $wxwidgetsversion t "The wxWidgets version wxMaxima is using.")
 (defvar $wxsubscripts t
   "Recognize TeX-style subscripts")
