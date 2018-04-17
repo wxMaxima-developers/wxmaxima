@@ -65,8 +65,9 @@
 
 ;; Allow the user to communicate what to display in the statusbar whilst
 ;; the current program is running
-(defun $wxstatusbar (status)
-  (format t "<statusbar>~a</statusbar>~%" (wxxml-fix-string status)))
+(defun $wxstatusbar (&rest status)
+  (format t "<statusbar>~a</statusbar>~%" (wxxml-fix-string
+					   (apply '$sconcat status))))
 
 
 ;;; Without this command encountering unicode characters might cause
