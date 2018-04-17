@@ -4658,6 +4658,7 @@ bool AutoComplete::LoadSymbols()
   m_wordList[tmplte].Add(wxT("wxanimate_from_imgfiles(<filename>,<[filename,...]>)"));
   m_wordList[command].Add(wxT("wxstatusbar"));
   m_wordList[tmplte].Add(wxT("wxstatusbar(<string>)"));
+  m_wordList[command].Add(wxT("wxmaximaversion"));
 
   /// Load private symbol list (do something different on Windows).
   wxString privateList;
