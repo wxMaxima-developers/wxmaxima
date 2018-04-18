@@ -418,11 +418,6 @@ bool FracCell::BreakUp()
     m_open1->m_previousToDraw = this;
     m_open1->m_nextToDraw = m_num;
     m_num->m_previousToDraw = m_open1;
-    m_num->m_nextToDraw = m_divide;
-    m_divide->m_nextToDraw = m_denom;
-    m_denom->m_previousToDraw = m_divide;
-    m_divide->m_nextToDraw = m_num;
-    
     wxASSERT_MSG(m_last1 != NULL, _("Bug: No last cell in an numerator!"));
     if (m_last1 != NULL)
     {
