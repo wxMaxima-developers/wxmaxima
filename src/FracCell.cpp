@@ -50,6 +50,7 @@ FracCell::FracCell(MathCell *parent, Configuration **config, CellPointers *cellP
   m_open2 = NULL;
   m_close2 = NULL;
   m_divide = NULL;
+  m_divSign = new TextCell(this, config, cellPointers, wxT("/"));
 }
 
 void FracCell::SetGroup(MathCell *parent)
@@ -231,24 +232,7 @@ void FracCell::Draw(wxPoint point, int fontsize)
     wxPoint num, denom;
 
     if (m_exponent && !m_isBroken)
-    {
-      num.x = point.x;
-      num.y = point.y;
-      denom.x = point.x + m_num->GetFullWidth() + m_expDivideWidth;
-      denom.y = num.y;
-
       m_num->DrawList(num, fontsize);
-      m_denom->DrawList(denom, fontsize);
-
-      int fontsize1 = Scale_Px(fontsize);
-      wxASSERT(fontsize1 > 0);
-      dc->SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
-                        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
-                        configuration->GetFontName(TS_VARIABLE)));
-      dc->DrawText(wxT("/"),
-                  point.x + m_num->GetFullWidth(),
-                  point.y - m_num->GetMaxCenter() + Scale_Px(MC_TEXT_PADDING));
-    }
     else
     {
       num.x = point.x + m_horizontalGapLeft +
@@ -434,6 +418,11 @@ bool FracCell::BreakUp()
     m_open1->m_previousToDraw = this;
     m_open1->m_nextToDraw = m_num;
     m_num->m_previousToDraw = m_open1;
+    m_num->m_nextToDraw = m_divide;
+    m_divide->m_nextToDraw = m_denom;
+    m_denom->m_previousToDraw = m_divide;
+    m_divide->m_nextToDraw = m_num;
+    
     wxASSERT_MSG(m_last1 != NULL, _("Bug: No last cell in an numerator!"));
     if (m_last1 != NULL)
     {

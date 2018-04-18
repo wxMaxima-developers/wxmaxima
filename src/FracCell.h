@@ -30,6 +30,7 @@
 #define FRACCELL_H
 
 #include "MathCell.h"
+#include "TextCell.h"
 
 /* This class represents fractions.
 
@@ -101,6 +102,8 @@ public:
   void SetGroup(MathCell *parent);
 
 protected:
+  //! The "/".
+  TextCell *m_divSign;
   //! The nummerator
   MathCell *m_num;
   //! The denominator
