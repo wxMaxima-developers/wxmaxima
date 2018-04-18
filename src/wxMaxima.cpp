@@ -3296,6 +3296,7 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
       SetCWD(filename);
     }
   }
+  m_console->RecalculateForce();
   m_console->RecalculateIfNeeded();
   if (m_console->m_tableOfContents != NULL)
   {
