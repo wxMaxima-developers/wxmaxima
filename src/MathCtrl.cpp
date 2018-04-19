@@ -762,7 +762,7 @@ bool MathCtrl::RecalculateIfNeeded()
   
   if(!m_tree->Contains(m_recalculateStart))
     m_recalculateStart = m_tree;
-  
+    
   GroupCell *tmp;
   m_configuration->SetCanvasSize(GetClientSize());
 
@@ -858,6 +858,8 @@ void MathCtrl::OnSize(wxSizeEvent& WXUNUSED(event))
     }
   }
 
+  RecalculateForce();
+  
   MathCell *tmp = m_tree;
   MathCell *prev = NULL;
   if (tmp != NULL)
