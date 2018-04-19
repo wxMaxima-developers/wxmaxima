@@ -367,7 +367,8 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     }
     
     UnsetPen();
-    m_innerCell->DrawList(innerCellPos, fontsize);
+    if(!m_isBroken)
+      m_innerCell->DrawList(innerCellPos, fontsize);
   }
 }
 
