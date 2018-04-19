@@ -7864,8 +7864,16 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     if (input != wxEmptyString)
       m_console->OpenHCaret(input, type);
   }
-  else if (event.GetId() == menu_unfold_all_cells ||
-           event.GetId() == menu_fold_all_cells)
+  else if (
+    (event.GetId() == menu_unfold_all_cells) ||
+    (event.GetId() == menu_fold_all_cells) ||
+    (event.GetId() == menu_convert_to_subsubsection) ||
+    (event.GetId() == menu_convert_to_subsection) ||
+    (event.GetId() == menu_convert_to_section) ||
+    (event.GetId() == menu_convert_to_comment) ||
+    (event.GetId() == menu_convert_to_title) ||
+    (event.GetId() == menu_convert_to_code)
+    )  
   {
     // don't do anything else
   }

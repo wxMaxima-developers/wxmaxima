@@ -2484,6 +2484,7 @@ void MathCtrl::SetCellStyle(GroupCell *group, int style)
   DeleteRegion(group,group);
   TreeUndo_AppendAction();
   InsertGroupCells(newGroupCell,prev);
+  SetActiveCell(newGroupCell->GetEditable(), false);
   SetSaved(false);
   Recalculate(true);
   RequestRedraw();
