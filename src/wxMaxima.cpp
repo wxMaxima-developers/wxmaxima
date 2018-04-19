@@ -2761,10 +2761,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
 ///--------------------------------------------------------------------------------
 
 void wxMaxima::OnIdle(wxIdleEvent &event)
-{
-  if(m_console != NULL)
-    m_console->RecalculateIfNeeded();
-  
+{  
   // On msw sometimes the communication stalls even if there is new data.
   // Let's see if communication can be resumed manually by manually triggering
   // listening to socket events from time to time, see
@@ -2835,6 +2832,9 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       event.Skip();
     return;    
   }
+
+  if(m_console != NULL)
+    m_console->RecalculateIfNeeded();
 
   // Incremental search is done from the idle task. This means that we don't forcefully
   // need to do a new search on every character that is entered into the search box.
