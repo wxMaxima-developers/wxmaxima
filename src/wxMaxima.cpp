@@ -2730,17 +2730,17 @@ void wxMaxima::ShowWxMaximaHelp()
 
 void wxMaxima::ShowMaximaHelp(wxString keyword)
 {
-  if(keyword == wxT("wxdraw")
+  if(keyword == wxT("wxdraw"))
      keyword = wxT("draw");
-  if(keyword == wxT("wxdraw2d")
+  if(keyword == wxT("wxdraw2d"))
      keyword = wxT("draw2d");
-  if(keyword == wxT("wxdraw3d")
+  if(keyword == wxT("wxdraw3d"))
      keyword = wxT("draw3d");
-  if(keyword == wxT("with_slider_draw")
+  if(keyword == wxT("with_slider_draw"))
      keyword = wxT("draw");
-  if(keyword == wxT("with_slider_draw2d")
+  if(keyword == wxT("with_slider_draw2d"))
      keyword = wxT("draw2d");
-  if(keyword == wxT("with_slider_draw3d")
+  if(keyword == wxT("with_slider_draw3d"))
      keyword = wxT("draw3d");
   wxLogNull disableWarnings;
   wxString MaximaHelpFile = GetHelpFile();
