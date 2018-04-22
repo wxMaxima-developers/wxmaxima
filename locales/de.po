@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-04-22 09:34+0200\n"
-"PO-Revision-Date: 2018-03-29 07:59+0200\n"
+"PO-Revision-Date: 2018-04-22 10:38+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -84,20 +84,18 @@ msgstr " << Ausdruck länger, als im Konfigurationsdialog erlaubt >>"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:825
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:835
-#, fuzzy
 msgid " samples"
-msgstr "Beispiele:"
+msgstr " Stützstellen"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:799
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:811
 msgid " samples, on demand split "
-msgstr ""
+msgstr " Stützstellen, bei Bedarf "
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:801
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:815
-#, fuzzy
 msgid " times"
-msgstr "wie oft:"
+msgstr "-mal verdoppelt."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:795
 msgid "\"Copy LaTeX\" adds equation markers"
@@ -509,9 +507,8 @@ msgid "A space between GroupCells"
 msgstr "Ein Abstand zwischen Gruppenzellen"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:400
-#, fuzzy
 msgid "A static plot"
-msgstr "Parametrischer Plot"
+msgstr "Ein statisches Bild"
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4760
 msgid "A sub-subsection heading"
@@ -556,7 +553,7 @@ msgstr "Information über wxMaxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1912
 msgid "Accuracy"
-msgstr ""
+msgstr "Genauigkeit"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1083
 msgid "Active cell bracket"
@@ -677,7 +674,7 @@ msgstr "Mache alles nach einem Unterstrich tiefgestellt"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:404
 msgid "An animation with multiple frames"
-msgstr ""
+msgstr "Eine Animation mit mehreren Einzelbildern"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:170
 msgid "An integration constant."
@@ -4144,11 +4141,10 @@ msgstr ""
 "aufgerufen, der sie +/- unendlich ausgeben lässt."
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:221
-#, fuzzy
 msgid ""
 "Most probable cause: an operator was directly followed by a closing "
 "parenthesis."
-msgstr "Komma wird von einer schließenden Klammer gefolgt"
+msgstr "Wahrscheinlicher Grund: Ein Komma wird von einer schließenden Klammer gefolgt"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:257
 msgid ""
@@ -5075,19 +5071,19 @@ msgstr "Probe:"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:820
 msgid "Samples for explicit and parametric plots:"
-msgstr ""
+msgstr "Stützstellen für explizite und parametrische Kurven."
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:828
 msgid "Samples for implicit plots and regions:"
-msgstr ""
+msgstr "Stützstellen für implizite Kurven und Regionen:"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:806
 msgid "Samples for implicit plots:"
-msgstr ""
+msgstr "Stützstellen für implizite Kurven:"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:796
 msgid "Samples on a line:"
-msgstr ""
+msgstr "Stützstellen auf einer Linie:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1110
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:154
@@ -5689,7 +5685,7 @@ msgstr "Besondere Konstanten"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:792
 msgid "Speed versus accuracy"
-msgstr ""
+msgstr "Geschwindigkeit versus Genauigkeit"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1176
 msgid "Start Animation"
@@ -5921,7 +5917,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1914
 msgid "The Accuracy versus speed tradeoff"
-msgstr ""
+msgstr "Abwägung der Genauigkeit gegenüber der Geschwindigkeit"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:303
 msgid "The URL MathJaX.js should be downloaded from by our HTML export."
@@ -6775,9 +6771,8 @@ msgstr "Geschrieben von"
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:823
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:831
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:833
-#, fuzzy
 msgid "X"
-msgstr "Xi"
+msgstr "X"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:561
 msgid "XML Inspector"
