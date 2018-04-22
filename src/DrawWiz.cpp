@@ -386,28 +386,43 @@ wxString AxisWiz::GetValue()
   return retval;
 }
 
+void DrawWiz::OnParametricFocus(wxFocusEvent &event)
+{
+  m_multipleFrames->SetValue(true);
+}
+
 DrawWiz::DrawWiz(wxWindow *parent, Configuration *config, int dimensions) :
   wxDialog(parent, -1, wxString::Format(_("Setup a %iD scene"),dimensions))
 {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
-  m_singleFrame = new wxRadioButton(this, -1, _("Single frame"), wxDefaultPosition,
+  m_singleFrame = new wxRadioButton(this, -1, _("A static plot"), wxDefaultPosition,
                                     wxDefaultSize, wxRB_GROUP);
   vbox->Add(m_singleFrame, wxSizerFlags().Expand().Border(wxALL,5));
 
-  m_multipleFrames = new wxRadioButton(this, -1, _("Multiple frames"));
+  m_multipleFrames = new wxRadioButton(this, -1, _("An animation with multiple frames"));
   vbox->Add(m_multipleFrames, wxSizerFlags().Expand().Border(wxALL,5));
   wxPanel *animPanel = new wxPanel(this,-1);
   wxBoxSizer *animPanelVbox = new wxBoxSizer(wxVERTICAL);
   animPanelVbox->Add(new wxStaticText(animPanel,-1, _("Frame counter")), wxSizerFlags());
   m_frameVar = new BTextCtrl(animPanel, -1, config, "t");
+  m_frameVar->Connect(wxEVT_SET_FOCUS,
+                      wxFocusEventHandler(DrawWiz::OnParametricFocus),
+                      NULL, this);
+
   animPanelVbox->Add(m_frameVar, wxSizerFlags().Expand().Border(wxALL,5));
   animPanelVbox->Add(new wxStaticText(animPanel,-1, _("Frame counter start")), wxSizerFlags());
   m_varStart = new BTextCtrl(animPanel,-1, config, "1");
+  m_varStart->Connect(wxEVT_SET_FOCUS,
+                      wxFocusEventHandler(DrawWiz::OnParametricFocus),
+                      NULL, this);
   animPanelVbox->Add(m_varStart, wxSizerFlags().Expand().Border(wxALL,5));
   animPanelVbox->Add(new wxStaticText(animPanel,-1, _("Frame counter end")), wxSizerFlags());
   m_varEnd = new BTextCtrl(animPanel,-1, config, "10");
+  m_varEnd->Connect(wxEVT_SET_FOCUS,
+                    wxFocusEventHandler(DrawWiz::OnParametricFocus),
+                    NULL, this);
   animPanelVbox->Add(m_varEnd, wxSizerFlags().Expand().Border(wxALL,5));
   animPanel->SetSizerAndFit(animPanelVbox);
   vbox->Add(animPanel, wxSizerFlags().Expand().Border(wxALL,5));

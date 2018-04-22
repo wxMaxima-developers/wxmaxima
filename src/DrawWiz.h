@@ -122,6 +122,8 @@ class DrawWiz : public wxDialog
 public:
   DrawWiz(wxWindow *parent, Configuration *config, int dimensions);
   wxString GetValue();
+protected:
+  void OnParametricFocus(wxFocusEvent &event);
 private:
   int m_dimensions;
   wxRadioButton *m_singleFrame;
