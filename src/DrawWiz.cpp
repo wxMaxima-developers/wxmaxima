@@ -397,6 +397,12 @@ DrawWiz::DrawWiz(wxWindow *parent, Configuration *config, int dimensions) :
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
+  vbox->Add(new wxStaticText(this, -1,
+                             wxString::Format(
+                               _("This wizard generates the code for a %iD scene that (in order to work) needs to be filled with objects to draw afterwards."),
+                               dimensions
+                               )
+              ),wxSizerFlags().Expand());
   m_singleFrame = new wxRadioButton(this, -1, _("A static plot"), wxDefaultPosition,
                                     wxDefaultSize, wxRB_GROUP);
   vbox->Add(m_singleFrame, wxSizerFlags().Expand().Border(wxALL,5));
