@@ -5229,7 +5229,7 @@ bool MathCtrl::ExportToHTML(wxString file)
       {
         case GC_TYPE_TEXT:
           output << wxT("\n\n<!-- Text cell -->\n\n\n");
-          output << wxT("<P CLASS=\"comment\">\n");
+          output << wxT("<P CLASS=\"comment\" style=\"page-break-after: always;\">&nbsp;\n");
           output << EditorCell::PrependNBSP(
                   MarkDown.MarkDown(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString()))) << wxT("\n");
           output << wxT("</P>\n");

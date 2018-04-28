@@ -33,6 +33,10 @@ ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config, wxString expre
 {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  vbox->Add(new wxStaticText(this, -1,
+                             _("Plot an expression, for example sin(x) or (x+1)^2.")),
+            wxSizerFlags().Expand().Border(wxBOTTOM,16));
+  
   vbox->Add(new wxStaticText(this,-1, _("Expression to plot")), wxSizerFlags());
   m_expression = new BTextCtrl(this,-1, config, expression);
   vbox->Add(m_expression, wxSizerFlags().Expand()); 
@@ -114,10 +118,18 @@ ImplicitWiz::ImplicitWiz(wxWindow *parent, Configuration *config, wxString expre
 {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  vbox->Add(new wxStaticText(this,-1, _("Expression to plot")), wxSizerFlags());
+  vbox->Add(new wxStaticText(this, -1,
+                             _("Draw all points where an equation is true.")),
+            wxSizerFlags().Expand().Border(wxBOTTOM,16));
+  vbox->Add(new wxStaticText(this, -1,
+                             _("See also the speed <-> accuracy button.")),
+            wxSizerFlags().Expand().Border(wxBOTTOM,16));
+  
+  vbox->Add(new wxStaticText(this,-1, _("Equation")), wxSizerFlags());
   m_expression = new BTextCtrl(this,-1, config, expression);
   vbox->Add(m_expression, wxSizerFlags().Expand()); 
-
+  m_expression->SetToolTip(_("A good example equation would be x^2+y^2=1"));
+  
   vbox->Add(new wxStaticText(this,-1, _("Variable for the x value")), wxSizerFlags());
   m_x = new BTextCtrl(this,-1, config, "x");
   vbox->Add(m_x, wxSizerFlags().Expand()); 
@@ -199,6 +211,10 @@ AxisWiz::AxisWiz(wxWindow *parent, Configuration *config, int dimensions) :
 {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+
+  vbox->Add(new wxStaticText(this, -1,
+                             _("Setup the axis for the current plot.")),
+            wxSizerFlags().Expand().Border(wxBOTTOM,16));
   
   vbox->Add(new wxStaticText(this,-1, _("x axis label")), wxSizerFlags());
   m_xLabel = new BTextCtrl(this,-1, config, "");
@@ -399,10 +415,12 @@ DrawWiz::DrawWiz(wxWindow *parent, Configuration *config, int dimensions) :
 
   vbox->Add(new wxStaticText(this, -1,
                              wxString::Format(
-                               _("This wizard generates the code for a %iD scene that (in order to work) needs to be filled with objects to draw afterwards."),
-                               dimensions
-                               )
-              ),wxSizerFlags().Expand());
+                               _("This wizard setups a %iD scene."), dimensions)));
+
+  vbox->Add(new wxStaticText(this, -1,
+                             wxString::Format(
+                               _("It needs to be filled with objects to draw afterwards."))),
+            wxSizerFlags().Border(wxBOTTOM,16));
   m_singleFrame = new wxRadioButton(this, -1, _("A static plot"), wxDefaultPosition,
                                     wxDefaultSize, wxRB_GROUP);
   vbox->Add(m_singleFrame, wxSizerFlags().Expand().Border(wxALL,5));
@@ -482,6 +500,10 @@ Wiz3D::Wiz3D(wxWindow *parent, Configuration *WXUNUSED(config)) :
 {
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
+  vbox->Add(new wxStaticText(this, -1,
+                             _("Enhanced 3D settings:")),
+            wxSizerFlags().Expand().Border(wxBOTTOM,16));
+  
   m_hidden3d = new wxCheckBox(this, -1, _("Hide objects behind the surface"),
                           wxDefaultPosition, wxDefaultSize, wxCHK_3STATE);
   m_hidden3d -> Set3StateValue(wxCHK_UNDETERMINED);
@@ -615,9 +637,22 @@ wxString WizContour::GetValue()
 
 ParametricWiz::ParametricWiz(wxWindow *parent, Configuration *config, int dimensions) :
   wxDialog(parent, -1, _("Plot an parametric curve"))
-{
+{  
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+
+  vbox->Add(new wxStaticText(this, -1,
+                             _("Allows to provide separate expressins for calculating")),
+            wxSizerFlags().Expand());
+  if(dimensions < 3)
+    vbox->Add(new wxStaticText(this, -1,
+                               _("the x and the y coordinate.")),
+              wxSizerFlags().Expand().Border(wxBOTTOM,16));
+  else
+    vbox->Add(new wxStaticText(this, -1,
+                               _("the x, the y and the z coordinate.")),
+              wxSizerFlags().Expand().Border(wxBOTTOM,16));
+
   vbox->Add(new wxStaticText(this,-1, _("Expression that calculates the x value")), wxSizerFlags());
   m_expression_x = new BTextCtrl(this,-1, config, "");
   vbox->Add(m_expression_x, wxSizerFlags().Expand()); 
@@ -677,7 +712,6 @@ WizPoints::WizPoints(wxWindow *parent, Configuration *config, int dimensions, wx
 {
   m_dimensions = dimensions;
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
-  vbox->Add(new wxStaticText(this,-1, _("Expression that calculates the x value")), wxSizerFlags());
   vbox->Add(m_data = new BTextCtrl(this,-1, config, expr), wxSizerFlags().Expand());
 
   wxStaticBox *formatBox = new wxStaticBox(this,-1,_("Data format"));
