@@ -167,6 +167,8 @@ wxImage ConfigDialogue::GetImage(wxString name,
 
 ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 {
+  SetLayoutAdaptationMode(wxDIALOG_ADAPTATION_MODE_ENABLED);
+  
   m_configuration = cfg;
 #if defined __WXMAC__
   SetSheetStyle(wxPROPSHEET_BUTTONTOOLBOOK | wxPROPSHEET_SHRINKTOFIT);
@@ -177,8 +179,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   SetSheetOuterBorder(3);
   // Allow the property dialogue sheets to scroll, if they don't fit
   // on the screen.
-  SetLayoutAdaptationMode(wxDIALOG_ADAPTATION_MODE_ENABLED);
-
+ 
   int imgSize = GetImageSize();
   m_imageList = new wxImageList(imgSize, imgSize);
   m_imageList->Add(GetImage(wxT("editing"),
