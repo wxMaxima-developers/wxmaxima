@@ -242,6 +242,13 @@ ToolBar::ToolBar(wxToolBar *tbar)
                        ),
                      _("Evaluate the file from its beginning to the cell above the cursor"));
 
+    m_toolBar->AddTool(tb_evaluate_rest, _("Evaluate the rest"),
+                     GetImage(wxT("go-last"),
+                              go_last_128_png,go_last_128_png_len,
+                              go_last_192_png,go_last_192_png_len
+                       ),
+                     _("Evaluate the file from the cursor to its end"));
+
 #ifndef __WXMAC__
   m_toolBar->AddSeparator();
 #endif

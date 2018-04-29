@@ -6348,6 +6348,10 @@ void MathCtrl::AddRestToEvaluationQueue()
     start = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup());
   }
 
+  if(GetActiveCell() != NULL)
+    start = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()->m_previous);
+    
+    
   if(start == NULL)
     start = GetHCaret();
 

@@ -170,6 +170,7 @@ public:
     if (value != m_canEvalTillHere_old)
     {
       EnableTool(tb_evaltillhere, value);
+      EnableTool(tb_evaluate_rest, value);
       m_canEvalTillHere_old = value;
     }
   }
