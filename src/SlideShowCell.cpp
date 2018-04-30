@@ -411,7 +411,7 @@ wxSize SlideShow::ToGif(wxString file)
   {
     wxImage frame;
     // Reduce the frame to at most 256 colors
-    wxQuantize::Quantize(m_images[m_displayed]->GetUnscaledBitmap().ConvertToImage(),frame);
+    wxQuantize::Quantize(m_images[i]->GetUnscaledBitmap().ConvertToImage(),frame);
     // Gif supports only fully transparent or not transparent at all.
     frame.ConvertAlphaToMask();
     gifFrames.Add(frame);
@@ -425,7 +425,7 @@ wxSize SlideShow::ToGif(wxString file)
     {
       wxGIFHandler gif;
       
-      if(gif.SaveAnimation(gifFrames, &outStream, false, 1000 / GetFrameRate()))
+      if(gif.SaveAnimation(gifFrames, &outStream, true, 1000 / GetFrameRate()))
         return wxSize(m_images[1]->GetOriginalWidth(), m_images[1]->GetOriginalHeight());
     }
   }
