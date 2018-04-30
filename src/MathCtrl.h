@@ -810,6 +810,7 @@ public:
     popid_comment_selection,
     popid_divide_cell,
     popid_copy_image,
+    popid_copy_animation,
     popid_copy_svg,
     popid_copy_rtf,
     popid_delete,
@@ -1044,6 +1045,9 @@ public:
 
   //! Copy a bitmap of the current selection to the clipboard
   bool CopyBitmap();
+  
+  //! Copy the current animation to the clipboard
+  bool CopyAnimation();
 
     //! Copy a svg of the current selection to the clipboard
   bool CopySVG();

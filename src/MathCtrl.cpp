@@ -1200,6 +1200,10 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
                               wxITEM_NORMAL);
           popupMenu->Append(popid_copy_image, _("Copy as Image"),
                             wxEmptyString, wxITEM_NORMAL);
+          if((GetSelectionStart() != NULL) && (GetSelectionStart() == GetSelectionEnd()) &&
+             (GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
+            popupMenu->Append(popid_copy_animation, _("Copy Animation"),
+                              wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_svg, _("Copy as SVG"),
                             wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_rtf, _("Copy as RTF"),
@@ -1266,6 +1270,10 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
 
           popupMenu->Append(popid_copy_image, _("Copy as Image"),
                             wxEmptyString, wxITEM_NORMAL);
+          if((GetSelectionStart() != NULL) && (GetSelectionStart() == GetSelectionEnd()) &&
+             (GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
+            popupMenu->Append(popid_copy_animation, _("Copy Animation"),
+                              wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_svg, _("Copy as SVG"),
                             wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_rtf, _("Copy as RTF"),
@@ -4279,6 +4287,13 @@ bool MathCtrl::CopyBitmap()
   bool retval = bmp.ToClipboard();
 
   return retval;
+}
+
+bool MathCtrl::CopyAnimation()
+{  
+  if((GetSelectionStart() != NULL) && (GetSelectionStart() == GetSelectionEnd()) &&
+     (GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
+    return dynamic_cast<SlideShow *>(GetSelectionStart())->CopyAnimationToClipboard();
 }
 
 bool MathCtrl::CopySVG()

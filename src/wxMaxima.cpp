@@ -6985,7 +6985,11 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       if (m_console->CanCopy())
         m_console->CopyBitmap();
       break;
-    case MathCtrl::popid_copy_svg:
+    case MathCtrl::popid_copy_animation:
+      if (m_console->CanCopy())
+        m_console->CopyAnimation();
+      break;
+  case MathCtrl::popid_copy_svg:
       if (m_console->CanCopy())
         m_console->CopySVG();
       break;
@@ -8231,6 +8235,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_COMMAND_SCROLL(ToolBar::plot_slider_id, wxMaxima::SliderEvent)
                 EVT_MENU(MathCtrl::popid_copy, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_copy_image, wxMaxima::PopupMenu)
+                EVT_MENU(MathCtrl::popid_copy_animation, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_copy_svg, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_copy_rtf, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_insert_text, wxMaxima::InsertMenu)
