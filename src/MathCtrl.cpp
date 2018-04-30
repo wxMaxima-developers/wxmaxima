@@ -1173,6 +1173,8 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
       if (IsSelected(MC_TYPE_SLIDE))
       {
         popupMenu->Append(popid_animation_save, _("Save Animation..."), wxEmptyString, wxITEM_NORMAL);
+        popupMenu->Append(popid_copy_animation, _("Copy Animation"),
+                          wxEmptyString, wxITEM_NORMAL);
         popupMenu->Append(popid_animation_start, _("Start Animation"), wxEmptyString, wxITEM_NORMAL);
       }
       else
