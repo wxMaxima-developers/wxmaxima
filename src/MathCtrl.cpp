@@ -3914,7 +3914,6 @@ void MathCtrl::OnChar(wxKeyEvent &event)
 {
   ClearNotification();
   
-    event.Skip();
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to realize
   // them they need to be passed to it using the event's Skip() function.
   if(event.AltDown() && ((event.GetKeyCode()==WXK_UP)||(event.GetKeyCode()==WXK_DOWN)))
