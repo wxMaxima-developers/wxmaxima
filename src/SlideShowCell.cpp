@@ -396,14 +396,11 @@ wxString SlideShow::GetToolTip(const wxPoint &point)
     return wxEmptyString;
 }
 
-
 wxSize SlideShow::ToGif(wxString file)
 {
   // Show a busy cursor as long as we export a .gif file (which might be a lengthy
   // action).
   wxBusyCursor crs;
-
-  wxArrayString which;
 
   wxImageArray gifFrames;
 
@@ -439,6 +436,12 @@ void SlideShow::ClearCache()
       m_images[i]->ClearCache();
 }
 
+SlideShow::GifDataObject::GifDataObject(const wxMemoryOutputStream &str) : wxCustomDataObject(m_gifFormat)
+{
+  SetData(str.GetOutputStreamBuffer()->GetBufferSize(),
+          str.GetOutputStreamBuffer()->GetBufferStart());
+}
+
 bool SlideShow::CopyToClipboard()
 {
   if (wxTheClipboard->Open())
@@ -450,3 +453,38 @@ bool SlideShow::CopyToClipboard()
   return false;
 }
 
+bool SlideShow::CopyAnimationToClipboard()
+{
+  if (wxTheClipboard->Open())
+  {
+    // Show a busy cursor as long as we export a .gif file (which might be a lengthy
+    // action).
+    wxBusyCursor crs;
+    
+    wxImageArray gifFrames;
+    
+    for (int i = 0; i < m_size; i++)
+    {
+      wxImage frame;
+      // Reduce the frame to at most 256 colors
+      wxQuantize::Quantize(m_images[i]->GetUnscaledBitmap().ConvertToImage(),frame);
+      // Gif supports only fully transparent or not transparent at all.
+      frame.ConvertAlphaToMask();
+      gifFrames.Add(frame);
+    }
+
+    wxMemoryOutputStream stream;
+    wxGIFHandler gif;
+    if(!gif.SaveAnimation(gifFrames, &stream, true, 1000 / GetFrameRate()))
+      return false;
+
+    GifDataObject *clpbrdObj = new GifDataObject(stream);
+    bool res = wxTheClipboard->SetData(clpbrdObj);
+    wxTheClipboard->Close();
+
+    return res;
+  }
+  return false;
+}
+
+wxDataFormat SlideShow::m_gifFormat(wxT("image/gif"));

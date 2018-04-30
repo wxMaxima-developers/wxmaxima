@@ -36,6 +36,8 @@
 
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
+#include <wx/mstream.h>
+#include <wx/wfstream.h>
 
 #include <vector>
 
@@ -60,6 +62,21 @@ public:
   SlideShow(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxFileSystem *filesystem = NULL, int framerate = -1);
 
   ~SlideShow();
+
+  //! A class that publishes wxm data to the clipboard
+  static wxDataFormat m_gifFormat;
+
+  //! A Gif object for the clipboard
+  class GifDataObject : public wxCustomDataObject
+  {
+  public:
+    GifDataObject(const wxMemoryOutputStream &str);
+
+    GifDataObject();
+
+  private:
+    wxCharBuffer m_databuf;
+  };
 
   bool IsOk(){return (m_size>0) && (m_images[m_displayed]->IsOk());}
   
@@ -97,6 +114,9 @@ public:
   wxSize ToGif(wxString filename);
 
   bool CopyToClipboard();
+  
+  //! Put the animation on the clipboard.
+  bool CopyAnimationToClipboard();
 
   /*! Get the frame rate of this SlideShow [in Hz].
 
