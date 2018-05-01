@@ -402,7 +402,7 @@ wxString AxisWiz::GetValue()
   return retval;
 }
 
-void DrawWiz::OnParametricFocus(wxFocusEvent &event)
+void DrawWiz::OnParametricFocus(wxFocusEvent &WXUNUSED(event))
 {
   m_multipleFrames->SetValue(true);
 }
