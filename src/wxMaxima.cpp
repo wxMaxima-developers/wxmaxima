@@ -1011,13 +1011,69 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     return;
   }
 #if defined (__WXMSW__)
-  wxString path, maxima = GetCommand(false);
-  wxArrayString out;
-  wxFileName::SplitPath(maxima, &path, NULL, NULL);
-  path.Replace(wxT("\""), wxT("\\\""));
-  wxString command = wxT("\"") + path + wxT("\\winkill.exe\"");
-  command += wxString::Format(wxT(" -INT %ld"), m_pid);
-  wxExecute(command, out);
+  if(m_pid > 0)
+  {
+    // The following lines are adapted from maxima's winkill which David Billinghurst and
+    // Andrej Vodopivec have written.
+
+    HANDLE SharedMemoryHandle = 0;
+    LPVOID SharedMemoryAddress = 0;
+    DWORD SharedMemoryLength = 0x10000;
+    char SharedMemoryName[20];
+
+    /* First try to send the signal to gcl. */    
+    wxString sharedMemoryName1 = wxString::Format("gcl-%d", m_pid);
+    strncpy(sharedMemoryName, (const char*)sharedMemoryName1.mb_str(wxConvUTF8), 20);
+    sharedMemoryHandle = OpenFileMapping(FILE_MAP_WRITE,     /*  Read/write permission.   */
+                                         FALSE,              /*  Do not inherit the name  */
+                                         sharedMemoryName); /*  of the mapping object.   */
+    
+    /* If gcl is not running, send to maxima. */
+    if (sharedMemory.handle == NULL) {
+      wxString sharedMemoryName2 = wxString::Format("maxima-%d", m_pid);
+      strncpy(sharedMemoryName, (const char*)sharedMemoryName2.mb_str(wxConvUTF8), 20);
+      sharedMemoryHandle = OpenFileMapping(FILE_MAP_WRITE,     /*  Read/write permission.   */
+                                           FALSE,              /*  Do not inherit the name  */
+                                           sharedMemoryName); /*  of the mapping object.   */
+    }
+
+    if (sharedMemoryHandle == NULL) { 
+      wxMessageBox(wxString::Format(_("Error opening the file-mapping object needed in order to "
+                                      "send an interrupt signal to maxima.\n"
+                                      "Tried with %s and %s."),
+                                    sharedMemoryName1.mb_str(wxConvUTF8),
+                                    sharedMemoryName2.mb_str(wxConvUTF8)
+                     ),
+                   _("Error"), wxICON_ERROR | wxOK);
+      return;
+    } 
+ 
+    sharedMemoryAddress = MapViewOfFile(sharedMemoryHandle, /* Handle to mapping object.  */
+                                        FILE_MAP_WRITE,      /* Read/write permission.  */
+                                        0,                   /* Max.  object size.  */
+                                        0,                   /* Size of hFile.  */
+                                        0);                  /* Map entire file.  */
+    
+    if (sharedMemoryAddress == NULL)
+    { 
+      wxMessageBox(_("Could not map view of the file needed in order to "
+                     "send an interrupt signal to maxima."),
+                   _("Error"), wxICON_ERROR | wxOK);
+      return;
+    }
+
+    // Set the bit for the SIGINT handler
+    int value = (1 << (wxSIGINT));
+    at = (int *)(sharedMemoryAddress);
+    *at |= value;
+    
+    if (sharedMemoryHandle)
+      CloseHandle(sharedMemoryHandle);
+    sharedMemoryHandle = NULL;
+    if (sharedMemoryAddress)
+      UnmapViewOfFile(sharedMemoryAddress);
+    sharedMemoryAddress = NULL;
+  } 
 #else
   wxProcess::Kill(m_pid, wxSIGINT);
 #endif
