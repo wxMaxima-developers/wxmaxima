@@ -1015,7 +1015,13 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
   {
     // The following lines are adapted from maxima's winkill which David Billinghurst and
     // Andrej Vodopivec have written.
-
+    //
+    // Winkill tries to find a shared memory region maxima provides we can set signals
+    // in that maxima can listen to.
+    //
+    // For maxima's end of this means of communication see
+    // interfaces/xmaxima/win32/win_signals.lisp
+    // and interfaces/xmaxima/win32/winkill_lib.c in maxima's tree.
     HANDLE SharedMemoryHandle = 0;
     LPVOID SharedMemoryAddress = 0;
     DWORD SharedMemoryLength = 0x10000;
@@ -1040,7 +1046,10 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     if (sharedMemoryHandle == NULL) { 
       wxMessageBox(wxString::Format(_("Error opening the file-mapping object needed in order to "
                                       "send an interrupt signal to maxima.\n"
-                                      "Tried with %s and %s."),
+                                      "Tried with %s and %s.\n"
+                                      "Probably the maxima version currently in use doesn't "
+                                      "provide a shared memory region signals can be placed "
+                                      "in."),
                                     sharedMemoryName1.mb_str(wxConvUTF8),
                                     sharedMemoryName2.mb_str(wxConvUTF8)
                      ),
