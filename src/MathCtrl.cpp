@@ -4296,6 +4296,8 @@ bool MathCtrl::CopyAnimation()
   if((GetSelectionStart() != NULL) && (GetSelectionStart() == GetSelectionEnd()) &&
      (GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
     return dynamic_cast<SlideShow *>(GetSelectionStart())->CopyAnimationToClipboard();
+  else
+    return false;
 }
 
 bool MathCtrl::CopySVG()
