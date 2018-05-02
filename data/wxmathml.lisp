@@ -264,7 +264,10 @@
             (format nil "<v>#{Lisp array [~{~a~^,~}]}</v>"
 		    (array-dimensions x)))
            ((functionp x)
-	    (format nil "<v>#{Lisp function}</v>"))
+	    (format nil "<v>~a</v>"
+		    (wxxml-fix-string
+		     (stripdollar
+		      (maybe-invert-string-case (format nil "~A" x))))))
            ((streamp x)
             (format nil "<v>#{Stream [~A]</v>}"
 		    (stream-element-type x)))
