@@ -1017,8 +1017,9 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 #if defined (__WXMSW__)
   if(m_pid > 0)
   {
-    // The following lines are adapted from maxima's winkill which David Billinghurst and
-    // Andrej Vodopivec have written.
+    // The following lines are adapted from maxima's winkill which William Schelter has
+    // written and which has been improved by David Billinghurst and
+    // Andrej Vodopivec.
     //
     // Winkill tries to find a shared memory region maxima provides we can set signals
     // in that maxima can listen to.
