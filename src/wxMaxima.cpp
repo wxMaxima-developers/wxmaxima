@@ -1022,10 +1022,10 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     // For maxima's end of this means of communication see
     // interfaces/xmaxima/win32/win_signals.lisp
     // and interfaces/xmaxima/win32/winkill_lib.c in maxima's tree.
-    HANDLE SharedMemoryHandle = 0;
-    LPVOID SharedMemoryAddress = 0;
-    DWORD SharedMemoryLength = 0x10000;
-    char SharedMemoryName[20];
+    HANDLE sharedMemoryHandle = 0;
+    LPVOID sharedMemoryAddress = 0;
+    DWORD sharedMemoryLength = 0x10000;
+    char sharedMemoryName[20];
 
     /* First try to send the signal to gcl. */    
     wxString sharedMemoryName1 = wxString::Format("gcl-%d", m_pid);
@@ -1073,8 +1073,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 
     // Set the bit for the SIGINT handler
     int value = (1 << (wxSIGINT));
-    at = (int *)(sharedMemoryAddress);
-    *at |= value;
+    (int *)(sharedMemoryAddress) |= value;
     
     if (sharedMemoryHandle)
       CloseHandle(sharedMemoryHandle);
