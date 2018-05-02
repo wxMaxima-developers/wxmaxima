@@ -642,7 +642,7 @@ ParametricWiz::ParametricWiz(wxWindow *parent, Configuration *config, int dimens
   wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
 
   vbox->Add(new wxStaticText(this, -1,
-                             _("Allows to provide separate expressins for calculating")),
+                             _("Allows to provide separate expressions for calculating")),
             wxSizerFlags().Expand());
   if(dimensions < 3)
     vbox->Add(new wxStaticText(this, -1,

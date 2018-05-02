@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-01 14:08+0200\n"
-"PO-Revision-Date: 2018-04-22 10:38+0200\n"
+"PO-Revision-Date: 2018-05-02 08:10+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -467,7 +467,7 @@ msgstr "Eine Funktion f(a,b) des Namens"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:131
 msgid "A good example equation would be x^2+y^2=1"
-msgstr ""
+msgstr "Eine gute Beispielgleichung wäre x^2+y^2=1"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:56
 msgid ""
@@ -666,7 +666,7 @@ msgstr "Alle Variablennamen"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:645
 msgid "Allows to provide separate expressins for calculating"
-msgstr ""
+msgstr "Erlaubt es, getrennte Ausdrücke anzugeben, um"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1293
 msgid "All|*"
@@ -1550,9 +1550,8 @@ msgstr "Kopieren"
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1176
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1207
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1277
-#, fuzzy
 msgid "Copy Animation"
-msgstr "Starte Animation"
+msgstr "Kopiere Animation"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:622
 msgid "Copy Previous Input\tCtrl+I"
@@ -1644,7 +1643,7 @@ msgstr ""
 msgid ""
 "Could not map view of the file needed in order to send an interrupt signal "
 "to maxima."
-msgstr ""
+msgstr "Konnte die virtuelle Datei, über die ich ein \"Unterbrechen\"-Signal senden will, nicht in den Speicher einblenden."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:977
 msgid "Create a list"
@@ -1970,7 +1969,6 @@ msgid "Down"
 msgstr "Nach unten"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:122
-#, fuzzy
 msgid "Draw all points where an equation is true."
 msgstr "Zeichne alle Punkte, an denen eine Gleichung gilt"
 
@@ -2082,7 +2080,7 @@ msgstr "Englisch"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:504
 msgid "Enhanced 3D settings:"
-msgstr ""
+msgstr "Erweiterte 3D-Einstellungen:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6576
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6585
@@ -2208,6 +2206,9 @@ msgid ""
 "Probably the maxima version currently in use doesn't provide a shared memory "
 "region signals can be placed in."
 msgstr ""
+"Ein Fehler beim Öffnen des Objekts, über das \"Unterbrechen\"-Signal an Maxima gesendet wird.\n"
+"Sowohl %s, als auch %s waren erfolglos.\n"
+"Unter Umständen unterstützt das Verwendete Maxima dieses Signal nicht."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3921
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3937
@@ -2301,14 +2302,12 @@ msgstr ""
 "Evaluiert diese Datei von ihrem Beginn an bis zu der Zelle über dem Cursor"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:250
-#, fuzzy
 msgid "Evaluate the file from the cursor to its end"
 msgstr "Alle Zellen des Dokuments auswerten, die unter dem Cursor stehen"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:245
-#, fuzzy
 msgid "Evaluate the rest"
-msgstr "&Zellen bis hier evaluieren"
+msgstr "&Den Rest evaluieren"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:238
 msgid "Evaluate to point"
@@ -3519,7 +3518,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:422
 msgid "It needs to be filled with objects to draw afterwards."
-msgstr ""
+msgstr "Muss mit Objekten gefüllt werden, die dargestellt werden sollen."
 
 #: /home/gunter/src/wxmaxima/src/ActualValuesStorageWiz.cpp:35
 msgid ""
@@ -4742,7 +4741,7 @@ msgstr "Darstellung eines explizit angegebenen Ausdrucks"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:37
 msgid "Plot an expression, for example sin(x) or (x+1)^2."
-msgstr ""
+msgstr "Zeichnet einen Ausdruck, wie sin(x) oder (x+1)^2."
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:639
 msgid "Plot an parametric curve"
@@ -5264,7 +5263,7 @@ msgstr "Kapitelzelle"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:125
 msgid "See also the speed <-> accuracy button."
-msgstr ""
+msgstr "Siehe auch den Geschwindigkeit <-> Genauigkeit-Knopf."
 
 #: /home/gunter/src/wxmaxima/src/BTextCtrl.cpp:50
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:968
@@ -5458,7 +5457,7 @@ msgstr "Einstellungen für die Achsen"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:216
 msgid "Setup the axis for the current plot."
-msgstr ""
+msgstr "Einstellungen für die Axen für das aktuelle Diagramm."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1073
 msgid "Setup the engineering format..."
@@ -6340,7 +6339,7 @@ msgstr ""
 "ist, um ein befriedigendes Ergebnis zu erhalten."
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:418
-#, fuzzy, c-format
+#, c-format
 msgid "This wizard setups a %iD scene."
 msgstr "Einstellungen für %iD-Diagramme"
 
@@ -7364,13 +7363,12 @@ msgstr ""
 "Elementnummer zugelassen."
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:649
-#, fuzzy
 msgid "the x and the y coordinate."
-msgstr "y-Koordinaten durch Kommata getrennt"
+msgstr "die x- und die y-Koordinate zu berechnen."
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:653
 msgid "the x, the y and the z coordinate."
-msgstr ""
+msgstr "die x-, y- und z-Koordinate zu berechnen."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1700
 msgid "there is no"
