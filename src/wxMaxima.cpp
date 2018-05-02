@@ -965,7 +965,11 @@ bool wxMaxima::StartMaxima(bool force)
 #if defined __WXMAC__
       wxSetEnv(wxT("DISPLAY"), wxT(":0.0"));
 #endif
-      
+
+#if defined __WXMSW__
+      // Tell maxima we want to be able to kill it on Ctrl+G by sending it a signal
+      wxSetEnv(wxT("MAXIMA_SIGNALS_THREAD"), wxT("1"));
+#endif
       m_process = new wxProcess(this, maxima_process_id);
       m_process->Redirect();
       m_first = true;
