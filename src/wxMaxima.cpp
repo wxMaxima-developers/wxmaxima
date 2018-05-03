@@ -1030,11 +1030,11 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     HANDLE sharedMemoryHandle = 0;
     LPVOID sharedMemoryAddress = 0;
     DWORD sharedMemoryLength = 0x10000;
-    char sharedMemoryName[20];
+    wchar_t sharedMemoryName[20];
 
     /* First try to send the signal to gcl. */    
     wxString sharedMemoryName1 = wxString::Format("gcl-%d", m_pid);
-    strncpy(sharedMemoryName, (const char*)sharedMemoryName1.mb_str(wxConvUTF8), 20);
+    strncpy(sharedMemoryName, (const wchar_t*)sharedMemoryName1.mb_str(wxConvUTF8), 20);
     sharedMemoryHandle = OpenFileMapping(FILE_MAP_WRITE,     /*  Read/write permission.   */
                                          FALSE,              /*  Do not inherit the name  */
                                          sharedMemoryName); /*  of the mapping object.   */
@@ -1042,7 +1042,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     /* If gcl is not running, send to maxima. */
     if (sharedMemory.handle == NULL) {
       wxString sharedMemoryName2 = wxString::Format("maxima-%d", m_pid);
-      strncpy(sharedMemoryName, (const char*)sharedMemoryName2.mb_str(wxConvUTF8), 20);
+      strncpy(sharedMemoryName, (const wchar_t*)sharedMemoryName2.mb_str(wxConvUTF8), 20);
       sharedMemoryHandle = OpenFileMapping(FILE_MAP_WRITE,     /*  Read/write permission.   */
                                            FALSE,              /*  Do not inherit the name  */
                                            sharedMemoryName); /*  of the mapping object.   */
@@ -1078,7 +1078,8 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 
     // Set the bit for the SIGINT handler
     int value = (1 << (wxSIGINT));
-    (int *)(sharedMemoryAddress) |= value;
+    int *sharedMemoryContents = (int *)(sharedMemoryAddress);
+    sharedMemoryContents = sharedMemoryContents | value;
     
     if (sharedMemoryHandle)
       CloseHandle(sharedMemoryHandle);
