@@ -1034,15 +1034,15 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 
     /* First try to send the signal to gcl. */    
     wxString sharedMemoryName1 = wxString::Format("gcl-%d", m_pid);
-    strncpy(sharedMemoryName, (const wchar_t*)sharedMemoryName1.mb_str(wxConvUTF8), 20);
+    strncpy(sharedMemoryName, sharedMemoryName1.wc_str(), 20);
     sharedMemoryHandle = OpenFileMapping(FILE_MAP_WRITE,     /*  Read/write permission.   */
                                          FALSE,              /*  Do not inherit the name  */
                                          sharedMemoryName); /*  of the mapping object.   */
     
     /* If gcl is not running, send to maxima. */
-    if (sharedMemory.handle == NULL) {
-      wxString sharedMemoryName2 = wxString::Format("maxima-%d", m_pid);
-      strncpy(sharedMemoryName, (const wchar_t*)sharedMemoryName2.mb_str(wxConvUTF8), 20);
+    wxString sharedMemoryName2 = wxString::Format("maxima-%d", m_pid);
+    if (sharedMemoryHandle == NULL) {
+      strncpy(sharedMemoryName, sharedMemoryName2.wc_str(), 20);
       sharedMemoryHandle = OpenFileMapping(FILE_MAP_WRITE,     /*  Read/write permission.   */
                                            FALSE,              /*  Do not inherit the name  */
                                            sharedMemoryName); /*  of the mapping object.   */
