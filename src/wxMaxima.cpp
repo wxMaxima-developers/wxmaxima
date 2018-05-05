@@ -1006,7 +1006,7 @@ bool wxMaxima::StartMaxima(bool force)
 
 void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 {
-  if(m_console != NULL)
+    if(m_console != NULL)
     m_console->CloseAutoCompletePopup();
 
   if (m_pid < 0)
@@ -1031,8 +1031,11 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     LPVOID sharedMemoryAddress = 0;
     DWORD sharedMemoryLength = 0x10000;
     wchar_t sharedMemoryName[51];
-    memset(sharedMemoryName, '\0', 51);
+    sharedMemoryName[50] = 0;
 
+    // wxMaxima doesn't want to get interrupt signals.
+    // SetConsoleCtrlHandler(NULL, true);
+    
     /* First try to send the signal to gcl. */    
     wxString sharedMemoryName1 = wxString::Format("gcl-%d", m_pid);
     strncpy(sharedMemoryName, sharedMemoryName1.mb_str(), 50);
