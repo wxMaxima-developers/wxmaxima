@@ -1030,11 +1030,12 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     HANDLE sharedMemoryHandle = 0;
     LPVOID sharedMemoryAddress = 0;
     DWORD sharedMemoryLength = 0x10000;
-    wchar_t sharedMemoryName[20];
+    wchar_t sharedMemoryName[51];
+    memset(sharedMemoryName, '\0', 51);
 
     /* First try to send the signal to gcl. */    
     wxString sharedMemoryName1 = wxString::Format("gcl-%d", m_pid);
-    strncpy(sharedMemoryName, sharedMemoryName1.wc_str(), 20);
+    strncpy(sharedMemoryName, sharedMemoryName1.mb_str(), 50);
     sharedMemoryHandle = OpenFileMapping(FILE_MAP_WRITE,     /*  Read/write permission.   */
                                          FALSE,              /*  Do not inherit the name  */
                                          sharedMemoryName); /*  of the mapping object.   */
@@ -1042,52 +1043,55 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     /* If gcl is not running, send to maxima. */
     wxString sharedMemoryName2 = wxString::Format("maxima-%d", m_pid);
     if (sharedMemoryHandle == NULL) {
-      strncpy(sharedMemoryName, sharedMemoryName2.wc_str(), 20);
+      strncpy(sharedMemoryName, sharedMemoryName2.mb_str(), 50);
       sharedMemoryHandle = OpenFileMapping(FILE_MAP_WRITE,     /*  Read/write permission.   */
                                            FALSE,              /*  Do not inherit the name  */
                                            sharedMemoryName); /*  of the mapping object.   */
     }
 
-    if (sharedMemoryHandle == NULL) { 
-      wxMessageBox(wxString::Format(_("Error opening the file-mapping object needed in order to "
-                                      "send an interrupt signal to maxima.\n"
-                                      "Tried with %s and %s.\n"
-                                      "Probably the maxima version currently in use doesn't "
-                                      "provide a shared memory region signals can be placed "
-                                      "in."),
-                                    sharedMemoryName1.mb_str(wxConvUTF8),
-                                    sharedMemoryName2.mb_str(wxConvUTF8)
-                     ),
-                   _("Error"), wxICON_ERROR | wxOK);
-      return;
-    } 
- 
-    sharedMemoryAddress = MapViewOfFile(sharedMemoryHandle, /* Handle to mapping object.  */
-                                        FILE_MAP_WRITE,      /* Read/write permission.  */
-                                        0,                   /* Max.  object size.  */
-                                        0,                   /* Size of hFile.  */
-                                        0);                  /* Map entire file.  */
-    
-    if (sharedMemoryAddress == NULL)
-    { 
-      wxMessageBox(_("Could not map view of the file needed in order to "
-                     "send an interrupt signal to maxima."),
-                   _("Error"), wxICON_ERROR | wxOK);
-      return;
-    }
+    if (sharedMemoryHandle == NULL)
+    {
+      // No shared memory location we can send break signals to => send a
+      // console interrupt.
 
-    // Set the bit for the SIGINT handler
-    int value = (1 << (wxSIGINT));
-    int *sharedMemoryContents = (int *)(sharedMemoryAddress);
-    sharedMemoryContents = sharedMemoryContents | value;
-    
-    if (sharedMemoryHandle)
-      CloseHandle(sharedMemoryHandle);
-    sharedMemoryHandle = NULL;
-    if (sharedMemoryAddress)
-      UnmapViewOfFile(sharedMemoryAddress);
-    sharedMemoryAddress = NULL;
-  } 
+      //  We could send a CTRL_BREAK_EVENT instead, theoretically...
+      // ...but CTRL_BREAK_EVENT seems to crash clisp.
+      if (!GenerateConsoleCtrlEvent(CTRL_C_EVENT, m_pid))
+      {
+        wxMessageBox(_("Could not send an interrupt signal to maxima."),
+                     _("Error"), wxICON_ERROR | wxOK);
+        return;
+      }
+    }
+    else
+    {
+      sharedMemoryAddress = MapViewOfFile(sharedMemoryHandle, /* Handle to mapping object.  */
+                                          FILE_MAP_WRITE,      /* Read/write permission.  */
+                                          0,                   /* Max.  object size.  */
+                                          0,                   /* Size of hFile.  */
+                                          0);                  /* Map entire file.  */
+      
+      if (sharedMemoryAddress == NULL)
+      { 
+        wxMessageBox(_("Could not map view of the file needed in order to "
+                       "send an interrupt signal to maxima."),
+                     _("Error"), wxICON_ERROR | wxOK);
+        return;
+      }
+      
+      // Set the bit for the SIGINT handler
+      int value = (1 << (wxSIGINT));
+      int *sharedMemoryContents = (int *)(sharedMemoryAddress);
+      *sharedMemoryContents = sharedMemoryContents | value;
+      
+      if (sharedMemoryHandle)
+        CloseHandle(sharedMemoryHandle);
+      sharedMemoryHandle = NULL;
+      if (sharedMemoryAddress)
+        UnmapViewOfFile(sharedMemoryAddress);
+      sharedMemoryAddress = NULL;
+    }
+  }
 #else
   wxProcess::Kill(m_pid, wxSIGINT);
 #endif
