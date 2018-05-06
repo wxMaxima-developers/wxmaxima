@@ -31,6 +31,10 @@
  */
 
 #include <wx/notifmsg.h>
+
+#if defined __WXMSW__
+#include <wchar.h>
+#endif
 #include "wxMaxima.h"
 #include "ImgCell.h"
 #include "DrawWiz.h"
@@ -1038,7 +1042,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     
     /* First try to send the signal to gcl. */    
     wxString sharedMemoryName1 = wxString::Format("gcl-%d", m_pid);
-    strncpy(sharedMemoryName, sharedMemoryName1.mb_str(), 50);
+    wcsncpy(sharedMemoryName, sharedMemoryName1.mb_str(), 50);
     sharedMemoryHandle = OpenFileMapping(FILE_MAP_WRITE,     /*  Read/write permission.   */
                                          FALSE,              /*  Do not inherit the name  */
                                          sharedMemoryName); /*  of the mapping object.   */
@@ -1046,7 +1050,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     /* If gcl is not running, send to maxima. */
     wxString sharedMemoryName2 = wxString::Format("maxima-%d", m_pid);
     if (sharedMemoryHandle == NULL) {
-      strncpy(sharedMemoryName, sharedMemoryName2.mb_str(), 50);
+      wcsncpy(sharedMemoryName, sharedMemoryName2.mb_str(), 50);
       sharedMemoryHandle = OpenFileMapping(FILE_MAP_WRITE,     /*  Read/write permission.   */
                                            FALSE,              /*  Do not inherit the name  */
                                            sharedMemoryName); /*  of the mapping object.   */
@@ -1085,7 +1089,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
       // Set the bit for the SIGINT handler
       int value = (1 << (wxSIGINT));
       int *sharedMemoryContents = (int *)(sharedMemoryAddress);
-      *sharedMemoryContents = sharedMemoryContents | value;
+      *sharedMemoryContents = *sharedMemoryContents | value;
       
       if (sharedMemoryHandle)
         CloseHandle(sharedMemoryHandle);
