@@ -1018,6 +1018,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     GetMenuBar()->Enable(menu_interrupt_id, false);
     return;
   }
+
 #if defined (__WXMSW__)
   if(m_pid > 0)
   {
@@ -1042,7 +1043,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     
     /* First try to send the signal to gcl. */    
     wxString sharedMemoryName1 = wxString::Format("gcl-%d", m_pid);
-    wcsncpy(sharedMemoryName, sharedMemoryName1.mb_str(), 50);
+    wcsncpy(sharedMemoryName, sharedMemoryName1.wchar_str(), 50);
     sharedMemoryHandle = OpenFileMapping(FILE_MAP_WRITE,     /*  Read/write permission.   */
                                          FALSE,              /*  Do not inherit the name  */
                                          sharedMemoryName); /*  of the mapping object.   */
@@ -1050,7 +1051,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     /* If gcl is not running, send to maxima. */
     wxString sharedMemoryName2 = wxString::Format("maxima-%d", m_pid);
     if (sharedMemoryHandle == NULL) {
-      wcsncpy(sharedMemoryName, sharedMemoryName2.mb_str(), 50);
+      wcsncpy(sharedMemoryName, sharedMemoryName2.wchar_str(), 50);
       sharedMemoryHandle = OpenFileMapping(FILE_MAP_WRITE,     /*  Read/write permission.   */
                                            FALSE,              /*  Do not inherit the name  */
                                            sharedMemoryName); /*  of the mapping object.   */
