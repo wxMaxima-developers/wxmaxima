@@ -979,7 +979,7 @@ bool wxMaxima::StartMaxima(bool force)
       m_first = true;
       m_pid = -1;
       m_newStatusText = _("Starting Maxima...");
-      if (wxExecute(command, wxEXEC_ASYNC, m_process) < 0)
+      if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_process) < 0)
       {
         StatusMaximaBusy(process_wont_start);
         m_newStatusText = _("Cannot start the maxima binary");
@@ -1064,11 +1064,18 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 
       //  We could send a CTRL_BREAK_EVENT instead, theoretically...
       // ...but CTRL_BREAK_EVENT seems to crash clisp.
-      if (!GenerateConsoleCtrlEvent(CTRL_C_EVENT, m_pid))
+
+      if(m_process)
       {
-        wxMessageBox(_("Could not send an interrupt signal to maxima."),
-                     _("Error"), wxICON_ERROR | wxOK);
-        return;
+        // We need to send the CTRL_BREAK_EVENT to the process group, not
+        // to the lisp.
+        long pid = m_process->GetPid();
+        if (!GenerateConsoleCtrlEvent(CTRL_C_EVENT, pid))
+        {
+          wxMessageBox(_("Could not send an interrupt signal to maxima."),
+                       _("Error"), wxICON_ERROR | wxOK);
+          return;
+        }
       }
     }
     else
@@ -1098,6 +1105,21 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
       if (sharedMemoryAddress)
         UnmapViewOfFile(sharedMemoryAddress);
       sharedMemoryAddress = NULL;
+    }
+  }
+  else
+  {
+    if(m_process)
+    {
+      // We need to send the CTRL_BREAK_EVENT to the process group, not
+      // to the lisp.
+      long pid = m_process->GetPid();
+      if (!GenerateConsoleCtrlEvent(CTRL_C_EVENT, pid))
+      {
+        wxMessageBox(_("Could not send an interrupt signal to maxima."),
+                       _("Error"), wxICON_ERROR | wxOK);
+        return;
+      }
     }
   }
 #else
@@ -1140,7 +1162,7 @@ void wxMaxima::KillMaxima()
     }
   }
   else
-    wxProcess::Kill(m_pid, wxSIGKILL);
+    wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN);
 
   wxDELETE(m_clientTextStream);m_clientTextStream = NULL;
   wxDELETE(m_clientStream); m_clientStream = NULL;
