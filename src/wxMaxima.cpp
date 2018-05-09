@@ -1072,7 +1072,27 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
         long pid = m_process->GetPid();
         if (!GenerateConsoleCtrlEvent(CTRL_C_EVENT, pid))
         {
-          wxMessageBox(_("Could not send an interrupt signal to maxima."),
+          LPTSTR errorText = NULL;
+
+          FormatMessage(
+            FORMAT_MESSAGE_FROM_SYSTEM
+            |FORMAT_MESSAGE_ALLOCATE_BUFFER
+            |FORMAT_MESSAGE_IGNORE_INSERTS,  
+            NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+            &errorText,0,NULL);
+          
+          wxString errorMessage;
+          if (!errorText)
+            errorMessage = _("Could not send an interrupt signal to maxima.");
+          else
+          {
+            errorMessage = wxString::Format(_("Could not send an interrupt signal to maxima: %s"),
+                                            errorText);
+                        LocalFree(errorText);
+            errorText = NULL;
+          }
+          
+          wxMessageBox(errorMessage,
                        _("Error"), wxICON_ERROR | wxOK);
           return;
         }
