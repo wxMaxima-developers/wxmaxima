@@ -7383,13 +7383,6 @@ void wxMaxima::OnRecentPackage(wxCommandEvent &event)
 
   wxString file = m_recentPackages.Get(event.GetId() - menu_recent_package_0);
   MenuCommand(wxT("load(\"") + file + wxT("\")$"));
-
-  if (wxFileExists(file))
-    OpenFile(file);
-  else
-  {
-    wxMessageBox(_("File you tried to open does not exist."), _("File not found"), wxOK);
-  }
 }
 
 void wxMaxima::OnUnsavedDocument(wxCommandEvent &event)
