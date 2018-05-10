@@ -53,6 +53,8 @@ public:
   //! Save the recent documents list.
   void Save();
   std::list<wxString> Get(){return m_listOfFiles;}
+  wxString Get(int num);
+  ~RecentDocuments(){Save();}
  private:
   std::list<wxString> m_listOfFiles;
   wxString m_documentType;

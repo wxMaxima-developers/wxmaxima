@@ -43,12 +43,16 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                              const wxString configFile,
                              const wxPoint &pos, const wxSize &size,
                              long style) :
-        wxFrame(parent, id, title, pos, size, style)
+  wxFrame(parent, id, title, pos, size, style),
+  m_recentDocuments(wxT("document")),
+  m_unsavedDocuments(wxT("unsaved")),
+  m_recentPackages(wxT("packages"))
 {
   m_isNamed = false;
   m_configFileName = configFile,
   m_updateEvaluationQueueLengthDisplay = true;
   m_recentDocumentsMenu = NULL;
+  m_recentPackagesMenu = NULL;
   m_userSymbols = NULL;
   m_drawPane = NULL;
   m_EvaluationQueueLength = 0;
@@ -475,6 +479,8 @@ void wxMaximaFrame::SetupMenu()
                    _("Save document as"), wxT("gtk-save"));
   m_FileMenu->Append(menu_load_id, _("&Load Package...\tCtrl+L"),
                      _("Load a Maxima package file"), wxITEM_NORMAL);
+  m_recentPackagesMenu = new wxMenu();
+  m_FileMenu->Append(menu_recent_packages, _("Load Recent Package"), m_recentPackagesMenu);
   m_FileMenu->Append(menu_batch_id, _("&Batch File...\tCtrl+B"),
                      _("Load a Maxima file using the batch command"), wxITEM_NORMAL);
   m_FileMenu->Append(menu_export_html, _("&Export..."),
@@ -1128,76 +1134,38 @@ m_listMenu->AppendSeparator();
 
 }
 
-void wxMaximaFrame::LoadRecentDocuments()
-{
-  wxConfigBase *config = wxConfig::Get();
-  m_recentDocuments.Clear();
-
-  long recentItems = 10;
-  wxConfig::Get()->Read(wxT("recentItems"), &recentItems);
-
-  if (recentItems < 5) recentItems = 5;
-  if (recentItems > 30) recentItems = 30;
-
-  for (int i = 0; i < recentItems; i++)
-  {
-    wxString recent = wxString::Format(wxT("RecentDocuments/document_%d"), i);
-    wxString file;
-    if (config->Read(recent, &file))
-      m_recentDocuments.Add(file);
-  }
-}
-
-void wxMaximaFrame::SaveRecentDocuments()
-{
-  wxConfigBase *config = wxConfig::Get();
-
-  long recentItems = 10;
-  wxConfig::Get()->Read(wxT("recentItems"), &recentItems);
-
-  if (recentItems < 5) recentItems = 5;
-  if (recentItems > 30) recentItems = 30;
-
-  // Delete previous recent documents
-  for (int i = 0; i < recentItems; i++)
-  {
-    wxString recent = wxString::Format(wxT("RecentDocuments/document_%d"), i);
-    config->DeleteEntry(recent);
-  }
-
-  // Save new recent documents
-  for (unsigned int i = 0; i < m_recentDocuments.Count(); i++)
-  {
-    wxString recent = wxString::Format(wxT("RecentDocuments/document_%d"), i);
-    config->Write(recent, m_recentDocuments[i]);
-  }
-}
-
 void wxMaximaFrame::UpdateRecentDocuments()
 {
   
   if(m_recentDocumentsMenu == NULL)
     m_recentDocumentsMenu = new wxMenu();
-
-  int itemNumber = m_recentDocumentsMenu->GetMenuItemCount();
-
-  for(int i=0;i<itemNumber;i++)
+  while(m_recentDocumentsMenu->GetMenuItemCount() > 0)
     m_recentDocumentsMenu->Destroy(m_recentDocumentsMenu->FindItemByPosition(0));
-  
+
+  if(m_recentPackagesMenu == NULL)
+    m_recentPackagesMenu = new wxMenu();
+  while(m_recentPackagesMenu->GetMenuItemCount() > 0)
+    m_recentPackagesMenu->Destroy(m_recentPackagesMenu->FindItemByPosition(0));
+    
   long recentItems = 10;
   wxConfig::Get()->Read(wxT("recentItems"), &recentItems);
 
   if (recentItems < 5) recentItems = 5;
   if (recentItems > 30) recentItems = 30;
 
-  // Iterate through all the entries to the recent documents menu.
+  std::list<wxString> recentDocuments = m_recentDocuments.Get();
+  std::list<wxString> unsavedDocuments = m_unsavedDocuments.Get();
+  std::list<wxString> recentPackages = m_recentPackages.Get();
+  
+  // Populate the recent documents menu
   for (int i = menu_recent_document_0; i <= menu_recent_document_0 + recentItems; i++)
   {
-    if (i - menu_recent_document_0 < (signed) m_recentDocuments.Count())
+    if (!recentDocuments.empty())
     {
-      wxFileName filename(m_recentDocuments[i - menu_recent_document_0]);
+      wxFileName filename(recentDocuments.front());
       wxString path(filename.GetPath()), fullname(filename.GetFullName());
       wxString label(fullname + wxT("   [ ") + path + wxT(" ]"));
+      recentDocuments.pop_front();
 
       m_recentDocumentsMenu->Append(i, label);
       if(wxFileExists(filename.GetFullPath()))
@@ -1206,62 +1174,43 @@ void wxMaximaFrame::UpdateRecentDocuments()
         m_recentDocumentsMenu->Enable(i, false);
     }
   }
-
-  std::list<wxString> autoSaveFileList = GetTempAutosaveFiles();
-  if(!autoSaveFileList.empty())
-  {
+  
+  if (!unsavedDocuments.empty())
     m_recentDocumentsMenu->Append(menu_recent_document_separator,
                                   wxEmptyString, wxEmptyString, wxITEM_SEPARATOR);
-    
-    int index =  menu_unsaved_document_0;
-    for(std::list<wxString>::iterator it = autoSaveFileList.begin();
-        it != autoSaveFileList.end();++it)
+
+  // Populate the unsaved documents menu
+  for (int i = menu_unsaved_document_0; i <= menu_unsaved_document_0 + recentItems; i++)
+  {
+    if (!unsavedDocuments.empty())
     {
+      wxString filename = unsavedDocuments.front();
+      if(!wxFileExists(filename))
+        continue;
       wxStructStat stat;
-      wxStat(*it,&stat);
+      wxStat(filename,&stat);
       wxDateTime modified(stat.st_mtime);
-      m_recentDocumentsMenu->Append(index, *it + wxT(" (") +
-                                    modified.FormatDate() + wxT(" ") +
-                                    modified.FormatTime() + wxT(")"));
-      index++;
+      wxString label= filename + wxT(" (") +
+        modified.FormatDate() + wxT(" ") +
+        modified.FormatTime() + wxT(")");
+    
+      m_recentDocumentsMenu->Append(i, label);
     }
   }
-}
 
-std::list<wxString> wxMaximaFrame::GetTempAutosaveFiles()
-{
-  wxConfigBase *config = wxConfig::Get();
-  wxString autoSaveFiles;
-  wxString autoSaveFiles_new;
-  config->Read("AutoSaveFiles",&autoSaveFiles);
-  wxStringTokenizer files(autoSaveFiles, wxT(";"));
-
-  std::list<wxString> autoSaveFileList;
-  while(files.HasMoreTokens())
+  // Populate the recent packages menu
+  for (int i = menu_recent_package_0; i <= menu_recent_package_0 + recentItems; i++)
   {
-    wxString filename = files.GetNextToken();
-    if(filename != wxEmptyString)
+    if (!recentPackages.empty())
     {
-      if(wxFileExists(filename))
-      {
-        autoSaveFileList.push_back(filename);
-      }
+      wxFileName filename = recentPackages.front();
+      wxString path(filename.GetPath()), fullname(filename.GetFullName());
+      wxString label(fullname + wxT("   [ ") + path + wxT(" ]"));
+      recentPackages.pop_front();
+
+      m_recentPackagesMenu->Append(i, label);
     }
   }
-  autoSaveFileList.unique();
-
-  for(std::list<wxString>::iterator it = autoSaveFileList.begin(); it != autoSaveFileList.end();++it)
-  {
-    autoSaveFiles_new += *it + wxString(wxT(";"));
-  }
-  config->Write("AutoSaveFiles",autoSaveFiles_new);
-
-  if(!autoSaveFileList.empty())
-  {
-    if(autoSaveFileList.front() == m_tempfileName)
-      autoSaveFileList.pop_front();
-  }
-  return autoSaveFileList;
 }
 
 void wxMaximaFrame::ReReadConfig()
@@ -1307,13 +1256,8 @@ void wxMaximaFrame::RegisterAutoSaveFile()
   ReReadConfig();
   wxConfigBase *config = wxConfig::Get();
   config->Read("AutoSaveFiles",&autoSaveFiles);
-  if(autoSaveFiles.Find(m_tempfileName) == wxNOT_FOUND)
-  {
-    autoSaveFiles = m_tempfileName + wxT(";") + autoSaveFiles;
-    config->Write("AutoSaveFiles", autoSaveFiles);
-    config->Flush();
-    GetTempAutosaveFiles();
-  }
+  m_unsavedDocuments.AddDocument(m_tempfileName);
+  ReReadConfig(); 
 }
 
 void wxMaximaFrame::RemoveTempAutosavefile()
@@ -1326,48 +1270,6 @@ void wxMaximaFrame::RemoveTempAutosavefile()
       wxRemoveFile(m_tempfileName);
   }
   m_tempfileName = wxEmptyString;
-}
-
-void wxMaximaFrame::AddRecentDocument(wxString file)
-{
-  // wxGTK uses wxFileConf. ...and wxFileConf loads the config file only once
-  // on inintialisation => Let's reload the config file before adding recently
-  // used documents in order to avoid overwriting documents other wxMaxima
-  // instances have written.
-  //
-  // On MSW this normally isn't necessary as wxMaxima will save the config in
-  // the registry and is queried every time we request data while on Mac computers
-  // all windows share a central wxConfig object and therefore the same recent
-  // documents list.
-  ReReadConfig();
-  
-  // Now let's load the recent document list another wxMaxima instance might
-  // have updated...
-  LoadRecentDocuments();
-  
-  wxFileName FileName = file;
-  FileName.MakeAbsolute();
-  wxString CanonicalFilename = FileName.GetFullPath();
-
-  // Append the current document to the list of recent documents
-  // or move it to the top, if it is already there.
-  if (m_recentDocuments.Index(CanonicalFilename) != wxNOT_FOUND)
-    m_recentDocuments.Remove(CanonicalFilename);
-  m_recentDocuments.Insert(CanonicalFilename, 0);
-
-  UpdateRecentDocuments();
-
-  // Save the updated "recent documents" list so that another wxMaxima process can
-  // read it before adding other documents.
-  SaveRecentDocuments();
-  wxConfig::Get()->Flush();
-}
-
-void wxMaximaFrame::RemoveRecentDocument(wxString file)
-{
-  m_recentDocuments.Remove(file);
-
-  UpdateRecentDocuments();
 }
 
 bool wxMaximaFrame::IsPaneDisplayed(Event id)

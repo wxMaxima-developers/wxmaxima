@@ -185,7 +185,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
 
   wxFileSystem::AddHandler(new wxMemoryFSHandler); // for saving wxmx
 
-  LoadRecentDocuments();
   UpdateRecentDocuments();
 
   m_console->m_findDialog = NULL;
@@ -3377,7 +3376,7 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 {
   if (file.Length() && wxFileExists(file))
   {
-    AddRecentDocument(file);
+    m_recentDocuments.AddDocument(file);
 
     m_lastPath = wxPathOnly(file);
     wxString unixFilename(file);
@@ -3410,10 +3409,15 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
       OpenXML(file, m_console); // clearDocument = true
 
     else
+    {
       MenuCommand(wxT("load(\"") + unixFilename + wxT("\")$"));
+      m_recentPackages.AddDocument(unixFilename);
+    }
 
     m_isNamed = true;
   }
+
+  UpdateRecentDocuments();
 
   if ((m_console->m_configuration->AutoSaveInterval() > 0) && (m_console->m_currentFile.Length() > 0))
     m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval());
@@ -3542,13 +3546,14 @@ bool wxMaxima::SaveFile(bool forceSave)
         m_isNamed = true;
     }
 
-    AddRecentDocument(file);
+    m_recentDocuments.AddDocument(file);
     SetCWD(file);
 
     if (m_console->m_configuration->AutoSaveInterval() > 0)
       m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval() > 0);
     StatusSaveFinished();
     RemoveTempAutosavefile();
+    UpdateRecentDocuments();
     return true;
   }
 
@@ -7300,7 +7305,7 @@ void wxMaxima::OnRecentDocument(wxCommandEvent &event)
   if(m_console != NULL)
     m_console->CloseAutoCompletePopup();
 
-  wxString file = GetRecentDocument(event.GetId() - menu_recent_document_0);
+  wxString file = m_recentDocuments.Get(event.GetId() - menu_recent_document_0);
 
   if (SaveNecessary() &&
       (
@@ -7326,7 +7331,22 @@ void wxMaxima::OnRecentDocument(wxCommandEvent &event)
   else
   {
     wxMessageBox(_("File you tried to open does not exist."), _("File not found"), wxOK);
-    RemoveRecentDocument(file);
+  }
+}
+
+void wxMaxima::OnRecentPackage(wxCommandEvent &event)
+{
+  if(m_console != NULL)
+    m_console->CloseAutoCompletePopup();
+
+  wxString file = m_recentPackages.Get(event.GetId() - menu_recent_package_0);
+  MenuCommand(wxT("load(\"") + file + wxT("\")$"));
+
+  if (wxFileExists(file))
+    OpenFile(file);
+  else
+  {
+    wxMessageBox(_("File you tried to open does not exist."), _("File not found"), wxOK);
   }
 }
 
@@ -7336,17 +7356,7 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event)
     m_console->CloseAutoCompletePopup();
 
 
-  wxString file;
-  
-  int index =  menu_unsaved_document_0;
-  std::list<wxString> autoSaveFileList = GetTempAutosaveFiles();
-  for(std::list<wxString>::iterator it = autoSaveFileList.begin();
-      it != autoSaveFileList.end();++it)
-  {
-    if(index == event.GetId())
-      file = *it;
-    index++;
-  }
+  wxString file = m_recentDocuments.Get(event.GetId() - menu_unsaved_document_0);
 
   if(file == wxEmptyString)
     return;
@@ -7378,7 +7388,6 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event)
   else
   {
     wxMessageBox(_("File you tried to open does not exist."), _("File not found"), wxOK);
-    RemoveRecentDocument(file);
   }
 }
 
@@ -8719,6 +8728,7 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_IDLE(wxMaxima::OnIdle)
                 EVT_MENU(menu_remove_output, wxMaxima::EditMenu)
                 EVT_MENU_RANGE(menu_recent_document_0, menu_recent_document_29, wxMaxima::OnRecentDocument)
+                EVT_MENU_RANGE(menu_recent_package_0, menu_recent_package_29, wxMaxima::OnRecentPackage)
                 EVT_MENU_RANGE(menu_unsaved_document_0, menu_unsaved_document_29, wxMaxima::OnUnsavedDocument)
                 EVT_MENU(menu_insert_image, wxMaxima::InsertMenu)
                 EVT_MENU_RANGE(menu_pane_hideall, menu_pane_stats, wxMaxima::ShowPane)

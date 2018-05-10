@@ -41,6 +41,7 @@ surrounding the worksheet.
 #include <wx/notifmsg.h>
 
 #include "MathCtrl.h"
+#include "RecentDocuments.h"
 #include "Setup.h"
 #include "History.h"
 #include "ToolBar.h"
@@ -480,20 +481,7 @@ public:
     recent documents menu.
    */
   void UpdateRecentDocuments();
-
-  //! Add an entry to the "Recent Documents" list.
-  void AddRecentDocument(wxString file);
-
-  /*! Remove a file from the "Recent Documents" list.
-
-    Removing and re-adding a file will move it to the top of the list.
-   */
-  void RemoveRecentDocument(wxString file);
-
-  //! Read the nth entry in the list of recent documents.
-  wxString GetRecentDocument(int i)
-  { return m_recentDocuments[i]; }
-
+  
   /*! true, if a Pane is currently enabled
 
     \param id The event that toggles the visibility of the pane that is
@@ -624,8 +612,6 @@ protected:
   wxString GetTempAutosavefileName();
   //! Remember an temporary autosave file name.
   void RegisterAutoSaveFile();
-  //! Generates a list of all temporary autosave files we didn't open yet.
-  std::list<wxString> GetTempAutosaveFiles();
 private:
   //! A panel that shows all user-defined symbols on the symbols pane.
   wxPanel *m_userSymbols;
@@ -725,10 +711,6 @@ protected:
 
   void CharacterButtonPressed(wxMouseEvent &event);
 
-  void LoadRecentDocuments();
-
-  void SaveRecentDocuments();
-
   wxAuiManager m_manager;
   //! A XmlInspector-like xml monitor
   XmlInspector *m_xmlInspector;
@@ -738,8 +720,11 @@ protected:
   MathCtrl *m_console;
   //! The history pane
   History *m_history;
-  wxArrayString m_recentDocuments;
+  RecentDocuments m_recentDocuments;
+  RecentDocuments m_unsavedDocuments;
+  RecentDocuments m_recentPackages;
   wxMenu *m_recentDocumentsMenu;
+  wxMenu *m_recentPackagesMenu;
 };
 
 #endif // WXMAXIMAFRAME_H

@@ -259,6 +259,7 @@ protected:
   void CheckForUpdates(bool reportUpToDate = false);
 
   void OnRecentDocument(wxCommandEvent &event);
+  void OnRecentPackage (wxCommandEvent &event);
   void OnUnsavedDocument(wxCommandEvent &event);
 
   void OnChar(wxKeyEvent &event);
