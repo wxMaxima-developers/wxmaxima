@@ -3386,54 +3386,74 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
     {
       MenuCommand(cmd + wxT("(\"") + unixFilename + wxT("\")$"));
       if(cmd == wxT("load"))
+      {
+        ReReadConfig();
         m_recentPackages.AddDocument(unixFilename);
+        ReReadConfig();
+      }
     }
     else if (file.Right(4).Lower() == wxT(".wxm"))
     {
       OpenWXMFile(file, m_console);
+      ReReadConfig();
       m_recentDocuments.AddDocument(file);
+      ReReadConfig();
     }
 
     else if (file.Right(4).Lower() == wxT(".mac"))
     {
       OpenMACFile(file, m_console);
+      ReReadConfig();
       m_recentDocuments.AddDocument(file);
+      ReReadConfig();
     }
 
     else if (file.Right(4).Lower() == wxT(".out"))
     {
       OpenMACFile(file, m_console);
+      ReReadConfig();
       m_recentDocuments.AddDocument(file);
+      ReReadConfig();
     }
 
     else if (file.Right(5).Lower() == wxT(".wxmx"))
     {
       OpenWXMXFile(file, m_console); // clearDocument = true
+      ReReadConfig();
       m_recentDocuments.AddDocument(file);
+      ReReadConfig();
     }
 
     else if (file.Right(4).Lower() == wxT(".zip"))
     {
       OpenWXMXFile(file, m_console); // clearDocument = true
+      ReReadConfig();
       m_recentDocuments.AddDocument(file);
+      ReReadConfig();
     }
 
     else if (file.Right(4).Lower() == wxT(".dem"))
     {
       MenuCommand(wxT("demo(\"") + unixFilename + wxT("\")$"));
+      ReReadConfig();
       m_recentDocuments.AddDocument(file);
+      ReReadConfig();
     }
 
     else if (file.Right(4).Lower() == wxT(".xml"))
     {
       OpenXML(file, m_console); // clearDocument = true
+      ReReadConfig();
       m_recentDocuments.AddDocument(file);
+      ReReadConfig();
     }
 
     else
     {
       MenuCommand(wxT("load(\"") + unixFilename + wxT("\")$"));
+      ReReadConfig();
       m_recentPackages.AddDocument(unixFilename);
+      ReReadConfig();
     }
 
     m_isNamed = true;

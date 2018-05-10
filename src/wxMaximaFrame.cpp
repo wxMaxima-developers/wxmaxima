@@ -1136,7 +1136,6 @@ m_listMenu->AppendSeparator();
 
 void wxMaximaFrame::UpdateRecentDocuments()
 {
-  
   if(m_recentDocumentsMenu == NULL)
     m_recentDocumentsMenu = new wxMenu();
   while(m_recentDocumentsMenu->GetMenuItemCount() > 0)
