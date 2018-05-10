@@ -62,12 +62,14 @@ void RecentDocuments::AddDocument(wxString filename)
 {
   wxFileName fle(filename);
   fle.MakeAbsolute();
+  if(fle.GetFullPath() != wxEmptyString)
+    filename = fle.GetFullPath();
 
   for(std::list<wxString>::iterator it = m_listOfFiles.begin(); it != m_listOfFiles.end();++it)
-    if (*it == fle.GetFullPath())
+    if (*it == filename)
       return;
   
-  m_listOfFiles.push_front(fle.GetFullPath());
+  m_listOfFiles.push_front(filename);
   m_listOfFiles.unique();
   long recentItems;
   wxConfig::Get()->Read(wxT("recentItems"), &recentItems);

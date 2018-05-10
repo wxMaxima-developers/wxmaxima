@@ -3376,8 +3376,6 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 {
   if (file.Length() && wxFileExists(file))
   {
-    m_recentDocuments.AddDocument(file);
-
     m_lastPath = wxPathOnly(file);
     wxString unixFilename(file);
 #if defined __WXMSW__
@@ -3385,28 +3383,52 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 #endif
 
     if (cmd.Length() > 0)
+    {
       MenuCommand(cmd + wxT("(\"") + unixFilename + wxT("\")$"));
-
+      if(cmd == wxT("load"))
+        m_recentPackages.AddDocument(unixFilename);
+    }
     else if (file.Right(4).Lower() == wxT(".wxm"))
+    {
       OpenWXMFile(file, m_console);
+      m_recentDocuments.AddDocument(file);
+    }
 
     else if (file.Right(4).Lower() == wxT(".mac"))
+    {
       OpenMACFile(file, m_console);
+      m_recentDocuments.AddDocument(file);
+    }
 
     else if (file.Right(4).Lower() == wxT(".out"))
+    {
       OpenMACFile(file, m_console);
+      m_recentDocuments.AddDocument(file);
+    }
 
     else if (file.Right(5).Lower() == wxT(".wxmx"))
+    {
       OpenWXMXFile(file, m_console); // clearDocument = true
+      m_recentDocuments.AddDocument(file);
+    }
 
     else if (file.Right(4).Lower() == wxT(".zip"))
+    {
       OpenWXMXFile(file, m_console); // clearDocument = true
+      m_recentDocuments.AddDocument(file);
+    }
 
     else if (file.Right(4).Lower() == wxT(".dem"))
+    {
       MenuCommand(wxT("demo(\"") + unixFilename + wxT("\")$"));
+      m_recentDocuments.AddDocument(file);
+    }
 
     else if (file.Right(4).Lower() == wxT(".xml"))
+    {
       OpenXML(file, m_console); // clearDocument = true
+      m_recentDocuments.AddDocument(file);
+    }
 
     else
     {
