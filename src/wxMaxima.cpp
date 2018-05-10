@@ -1070,7 +1070,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
         // We need to send the CTRL_BREAK_EVENT to the process group, not
         // to the lisp.
         long pid = m_process->GetPid();
-        if (!GenerateConsoleCtrlEvent(CTRL_C_EVENT, pid))
+        if (GenerateConsoleCtrlEvent(CTRL_C_EVENT, pid) == 0)
         {
           LPTSTR errorText = NULL;
 
@@ -1079,7 +1079,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
             |FORMAT_MESSAGE_ALLOCATE_BUFFER
             |FORMAT_MESSAGE_IGNORE_INSERTS,  
             NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-            &errorText,0,NULL);
+            errorText,0,NULL);
           
           wxString errorMessage;
           if (!errorText)
