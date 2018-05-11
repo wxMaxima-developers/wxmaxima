@@ -1173,10 +1173,8 @@ void wxMaximaFrame::UpdateRecentDocuments()
         m_recentDocumentsMenu->Enable(i, false);
     }
   }
-  
-  if (!unsavedDocuments.empty())
-    m_recentDocumentsMenu->Append(menu_recent_document_separator,
-                                  wxEmptyString, wxEmptyString, wxITEM_SEPARATOR);
+
+  bool separatorAdded = false;
 
   // Populate the unsaved documents menu
   for (int i = menu_unsaved_document_0; i <= menu_unsaved_document_0 + recentItems; i++)
@@ -1192,7 +1190,11 @@ void wxMaximaFrame::UpdateRecentDocuments()
       wxString label= filename + wxT(" (") +
         modified.FormatDate() + wxT(" ") +
         modified.FormatTime() + wxT(")");
-    
+
+      if (!separatorAdded)
+        m_recentDocumentsMenu->Append(menu_recent_document_separator,
+                                      wxEmptyString, wxEmptyString, wxITEM_SEPARATOR);
+      
       m_recentDocumentsMenu->Append(i, label);
     }
   }
