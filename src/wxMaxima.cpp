@@ -1087,14 +1087,12 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
             errorMessage = _("Could not send an interrupt signal to maxima.");
           else
           {
-            errorMessage = wxString::Format(_("Could not send an interrupt signal to maxima: %s"),
+            errorMessage = wxString::Format(_("Interrupting maxima: %s"),
                                             errorText);
-                        LocalFree(errorText);
-            errorText = NULL;
+            LocalFree(errorText);
           }
-          
-          wxMessageBox(errorMessage,
-                       _("Error"), wxICON_ERROR | wxOK);
+
+          SetStatusText(errorMessage, 0)
           return;
         }
       }
