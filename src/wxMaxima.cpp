@@ -134,6 +134,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, configFile, pos, size)
 {
+  m_nestedLoadCommands = 0;
   m_maximaJiffies_old = 0;
   m_cpuTotalJiffies_old = 0;
 
@@ -949,6 +950,7 @@ bool wxMaxima::StartServer()
 
 bool wxMaxima::StartMaxima(bool force)
 {
+  m_nestedLoadCommands = 0;
   // We only need to start or restart maxima if we aren't connected to a maxima
   // that till now never has done anything and therefore is in perfect working
   // order.
@@ -1148,6 +1150,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 
 void wxMaxima::KillMaxima()
 {
+  m_nestedLoadCommands = 0;
   m_configCommands = wxEmptyString;
   // The new maxima process will be in its initial condition => mark it as such.
   m_hasEvaluatedCells = false;
@@ -1601,6 +1604,22 @@ void wxMaxima::ReadVariables(wxString &data)
               m_lispType = value;
             if(name == "*lisp-version*")
               m_lispVersion = value;
+            if(name == "*wx-load-file-name*")
+            {
+              if(m_nestedLoadCommands == 0)
+                m_recentPackages.AddDocument(value);
+            }
+            if(name == "*wx-load-file-start*")
+            {
+              if(value == "0")
+                m_nestedLoadCommands -= 1;
+              if(value == "1")
+                m_nestedLoadCommands += 1;
+              if(m_nestedLoadCommands < 0)
+                m_nestedLoadCommands = 0;
+              if((value == "0") && (m_nestedLoadCommands == 0))
+                UpdateRecentDocuments();
+            }
          }
           var = var->GetNext();
         }

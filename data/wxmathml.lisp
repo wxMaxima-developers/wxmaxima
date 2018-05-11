@@ -1809,34 +1809,6 @@
 ;;		     (mapcar #'print_unit (cdr ($known_units))))))
 	(format t "</wxxml-symbols>"))
 
-;;;
-;;; Rewrite of the function load (maxima/src/mload.lisp)
-;;; (displays functions and variable names after loading a Maxima package so the
-;;; autocomplete functionality knows which function and variable names exist
-;;;
-(no-warning
- (defun $load (filename)
-   (let ((searched-for
-	  ($file_search1 filename
-			 '((mlist) $file_search_maxima $file_search_lisp  )))
-	 type)
-     (setq type ($file_type searched-for))
-     (case type
-       (($maxima)
-	($batchload searched-for)
-	(wxPrint_autoompletesymbols)
-	)
-       (($lisp $object)
-	;; do something about handling errors
-	;; during loading. Foobar fail act errors.
-        (no-warning
-         (load-and-tell searched-for))
-	(wxPrint_autoompletesymbols)
-	)
-       (t
-	(merror "Maxima bug: Unknown file type ~M" type)))
-     searched-for)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Communication between wxMaxima and wxMaxima about variables and directories
@@ -1968,6 +1940,52 @@
 
 (when ($file_search "wxmaxima-init")
   ($load "wxmaxima-init"))
+
+;;;
+;;; Now that we have loaded the init file we can rewrite of the function load
+;;; (maxima/src/mload.lisp) to displays functions and variable names after
+;;; loading a Maxima package so the autocomplete functionality knows which
+;;; function and variable names exists.
+;;;
+;;; We also inform wxMaxima about the name of the package and about the fact
+;;; if it was loaded by another package.
+;;;
+(no-warning
+ (defun $load (filename)
+   (let ((searched-for
+	  ($file_search1 filename
+			 '((mlist) $file_search_maxima $file_search_lisp  )))
+	 type)
+     (setq type ($file_type searched-for))
+     (case type
+       (($maxima)
+	(format t "<variables>")
+	(format t "<variable><name>*wx-load-file-name*</name><value>~a</value></variable>"
+		(wxxml-fix-string filename))
+	(format t "<variable><name>*wx-load-file-start*</name><value>1</value></variable>")
+	(format t "</variables>")
+	($batchload searched-for)
+	(format t "<variables>")
+	(format t "<variable><name>*wx-load-file-start*</name><value>0</value></variable>")
+	(format t "</variables>")
+	(wxPrint_autoompletesymbols))
+       (($lisp $object)
+	;; do something about handling errors
+	;; during loading. Foobar fail act errors.
+	(format t "<variables>")
+	(format t "<variable><name>*wx-load-file-name*</name><value>~a</value></variable>"
+		(wxxml-fix-string filename))
+	(format t "<variable><name>*wx-load-file-start*</name><value>1</value></variable>")
+	(format t "</variables>")
+        (no-warning
+         (load-and-tell searched-for))
+	(format t "<variables>")
+	(format t "<variable><name>*wx-load-file-start*</name><value>0</value></variable>")
+	(format t "</variables>")
+	(wxPrint_autoompletesymbols))
+       (t
+	(merror "Maxima bug: Unknown file type ~M" type)))
+     searched-for)))
 
 ;;; A function that loads bitmaps from files as a slideshow.
 ;;; Todo: Replace this function by at least half-way-optimized LISP code.

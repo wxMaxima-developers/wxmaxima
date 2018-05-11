@@ -1204,7 +1204,11 @@ void wxMaximaFrame::UpdateRecentDocuments()
     {
       wxFileName filename = recentPackages.front();
       wxString path(filename.GetPath()), fullname(filename.GetFullName());
-      wxString label(fullname + wxT("   [ ") + path + wxT(" ]"));
+      wxString label;
+      if(path != wxEmptyString)
+        label = fullname + wxT("   [ ") + path + wxT(" ]");
+      else
+        label = fullname;
       recentPackages.pop_front();
 
       m_recentPackagesMenu->Append(i, label);
