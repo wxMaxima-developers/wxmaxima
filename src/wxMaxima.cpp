@@ -1092,7 +1092,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
             LocalFree(errorText);
           }
 
-          SetStatusText(errorMessage, 0)
+          SetStatusText(errorMessage, 0);
           return;
         }
       }
