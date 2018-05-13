@@ -76,7 +76,7 @@ void RecentDocuments::AddDocument(wxString filename)
   wxConfig::Get()->Read(wxT("recentItems"), &recentItems);
   if (recentItems < 5) recentItems = 5;
   if (recentItems > 30) recentItems = 30;
-  while(m_listOfFiles.size() > recentItems)
+  while(m_listOfFiles.size() > (unsigned long) recentItems)
     m_listOfFiles.pop_back();
   Save();
 }
