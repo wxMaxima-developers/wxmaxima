@@ -980,7 +980,7 @@ bool wxMaxima::StartMaxima(bool force)
       m_first = true;
       m_pid = -1;
       m_newStatusText = _("Starting Maxima...");
-      if (wxExecute(command, wxEXEC_ASYNC | wxEXEC_MAKE_GROUP_LEADER, m_process) < 0)
+      if (wxExecute(command, wxEXEC_ASYNC, m_process) < 0)
       {
         StatusMaximaBusy(process_wont_start);
         m_newStatusText = _("Cannot start the maxima binary");
@@ -1068,10 +1068,11 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 
       if(m_process)
       {
-        // We need to send the CTRL_BREAK_EVENT to the process group, not
-        // to the lisp.
+        // We need to send the CTRL_BREAK_EVENT to our own console, which
+        // has the group ID 0, see
+        // https://docs.microsoft.com/en-us/windows/console/generateconsolectrlevent
         long pid = m_process->GetPid();
-        if (GenerateConsoleCtrlEvent(CTRL_C_EVENT, pid) == 0)
+        if (GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0) == 0)
         {
           LPTSTR errorText = NULL;
 
