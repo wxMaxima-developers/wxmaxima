@@ -1062,40 +1062,42 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     {
       // No shared memory location we can send break signals to => send a
       // console interrupt.
+      // Before we do that we stop our program from closing on receiving a Ctrl+C
+      // from the console.
+      SetConsoleCtrlHandler(NULL,TRUE);
 
-      //  We could send a CTRL_BREAK_EVENT instead, theoretically...
-      // ...but CTRL_BREAK_EVENT seems to crash clisp.
-
-      if(m_process)
+      // We could send a CTRL_BREAK_EVENT instead of a CTRL_C_EVENT that
+      // isn't handled in the 2010 clisp release (see: 
+      // https://sourceforge.net/p/clisp/bugs/735/)
+      // ...but CTRL_BREAK_EVENT seems to crash clisp, see
+      // https://sourceforge.net/p/clisp/bugs/736/
+      // 
+      // And we need to send the CTRL_BREAK_EVENT to our own console, which
+      // has the group ID 0, see
+      // https://docs.microsoft.com/en-us/windows/console/generateconsolectrlevent
+      if (GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0) == 0)
       {
-        // We need to send the CTRL_BREAK_EVENT to our own console, which
-        // has the group ID 0, see
-        // https://docs.microsoft.com/en-us/windows/console/generateconsolectrlevent
-        long pid = m_process->GetPid();
-        if (GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0) == 0)
+        LPTSTR errorText = NULL;
+        
+        FormatMessage(
+          FORMAT_MESSAGE_FROM_SYSTEM
+          |FORMAT_MESSAGE_ALLOCATE_BUFFER
+          |FORMAT_MESSAGE_IGNORE_INSERTS,  
+          NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+          errorText,0,NULL);
+        
+        wxString errorMessage;
+        if (!errorText)
+          errorMessage = _("Could not send an interrupt signal to maxima.");
+        else
         {
-          LPTSTR errorText = NULL;
-
-          FormatMessage(
-            FORMAT_MESSAGE_FROM_SYSTEM
-            |FORMAT_MESSAGE_ALLOCATE_BUFFER
-            |FORMAT_MESSAGE_IGNORE_INSERTS,  
-            NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-            errorText,0,NULL);
-          
-          wxString errorMessage;
-          if (!errorText)
-            errorMessage = _("Could not send an interrupt signal to maxima.");
-          else
-          {
-            errorMessage = wxString::Format(_("Interrupting maxima: %s"),
-                                            errorText);
-            LocalFree(errorText);
-          }
-
-          SetStatusText(errorMessage, 0);
-          return;
+          errorMessage = wxString::Format(_("Interrupting maxima: %s"),
+                                          errorText);
+          LocalFree(errorText);
         }
+        
+        SetStatusText(errorMessage, 0);
+        return;
       }
     }
     else
