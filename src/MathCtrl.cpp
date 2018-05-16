@@ -826,7 +826,6 @@ void MathCtrl::Recalculate(GroupCell *start, bool force)
   // If the cells to recalculate neither contain the start nor the tree we should
   // better recalculate all.
   m_recalculateStart = m_tree;
-
 }
 
 /***

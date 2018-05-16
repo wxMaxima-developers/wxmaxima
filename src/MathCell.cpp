@@ -222,7 +222,7 @@ MathCell *MathCell::GetGroup()
  */
 int MathCell::GetMaxCenter()
 {
-  if (m_maxCenter < 0)
+  if ((m_maxCenter < 0) || ((*m_configuration)->ForceUpdate()))
   {
     MathCell *tmp = this;
     while (tmp != NULL)
@@ -243,7 +243,7 @@ int MathCell::GetMaxCenter()
  */
 int MathCell::GetMaxDrop()
 {
-  if (m_maxDrop < 0)
+  if ((m_maxDrop < 0) || ((*m_configuration)->ForceUpdate()))
   {
     MathCell *tmp = this;
     while (tmp != NULL)
@@ -270,7 +270,7 @@ int MathCell::GetMaxHeight()
 int MathCell::GetFullWidth()
 {
   // Recalculate the with of this list of cells only if this has been marked as necessary.
-  if (m_fullWidth < 0)
+  if ((m_fullWidth < 0) || ((*m_configuration)->ForceUpdate()))
   {
     MathCell *tmp = this;
 
@@ -988,8 +988,18 @@ void MathCell::ResetData()
   m_fullWidth = -1;
   m_lineWidth = -1;
   m_maxCenter = -1;
-  m_maxDrop = -1;
+  m_maxDrop   = -1; 
   m_breakLine = m_forceBreakLine;
+}
+
+void MathCell::ResetLineHeightAndWidth()
+{
+  MathCell *tmp = this;
+  while(tmp != NULL)
+  {
+    tmp->ResetData();
+    tmp = tmp->m_nextToDraw;
+  }
 }
 
 MathCell *MathCell::first()

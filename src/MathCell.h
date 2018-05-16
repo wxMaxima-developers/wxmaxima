@@ -225,9 +225,12 @@ class MathCell
   bool BreakPageHere()
   { return m_breakPage; }
 
+  //! Try to split this command into several lines to make it fit on the screen
   virtual bool BreakUp()
   { return false; }
 
+  void ResetLineHeightAndWidth();
+  
   /*! Is a part of this cell inside a certain rectangle?
 
     \param big The rectangle to test for collision with this cell
@@ -442,7 +445,7 @@ class MathCell
 
   //! Mark the cached height information as "to be calculated".
   void ResetSize()
-  { m_width = m_height = m_center = -1; }
+  { m_width = m_height = m_center = m_maxCenter = m_maxDrop = m_fullWidth = m_lineWidth = -1; }
 
   //! Mark the cached height information of the whole list of cells as "to be calculated".
   void ResetSizeList();
@@ -736,7 +739,7 @@ class MathCell
     the cell's SetGroup is called.
    */
   virtual void SetGroup(MathCell *group)
-    { m_group = group; }
+    { m_group = group; wxASSERT (group != NULL); }
   
   virtual void SetParent(MathCell *parent)
     { m_parent = parent; }

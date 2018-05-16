@@ -192,6 +192,7 @@ bool ConjugateCell::BreakUp()
     m_isBroken = true;
     m_open->m_nextToDraw = m_innerCell;
     m_innerCell->m_previousToDraw = m_open;
+    m_innerCell->ResetLineHeightAndWidth();
     wxASSERT_MSG(m_last != NULL, _("Bug: No last cell in an conjugateCell!"));
     if (m_last != NULL)
     {

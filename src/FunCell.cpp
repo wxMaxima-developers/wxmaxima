@@ -190,6 +190,7 @@ bool FunCell::BreakUp()
     m_nameCell->m_nextToDraw = m_argCell;
     m_argCell->m_previousToDraw = m_nameCell;
     m_argCell->m_nextToDraw = m_nextToDraw;
+    m_argCell->ResetLineHeightAndWidth();
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = m_argCell;
     m_nextToDraw = m_nameCell;

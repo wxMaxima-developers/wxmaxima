@@ -430,6 +430,8 @@ bool FracCell::BreakUp()
     m_open2->m_previousToDraw = m_divide;
     m_open2->m_nextToDraw = m_denom;
     m_denom->m_previousToDraw = m_open2;
+    m_divide->ResetLineHeightAndWidth();
+    m_denom ->ResetLineHeightAndWidth();
     wxASSERT_MSG(m_last2 != NULL, _("Bug: No last cell in an denominator!"));
     if (m_last2 != NULL)
     {

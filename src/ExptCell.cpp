@@ -252,6 +252,7 @@ bool ExptCell::BreakUp()
   {
     m_isBroken = true;
     m_baseCell->m_previousToDraw = this;
+    m_baseCell->ResetLineHeightAndWidth();
     wxASSERT_MSG(m_last1 != NULL, _("Bug: No last cell in the base of an exptCell!"));
     if (m_last1 != NULL)
     {
