@@ -7402,6 +7402,9 @@ void wxMaxima::OnRecentPackage(wxCommandEvent &event)
     m_console->CloseAutoCompletePopup();
 
   wxString file = m_recentPackages.Get(event.GetId() - menu_recent_package_0);
+  #ifdef __WXMSW__
+  file.Replace(wxT("\\"),wxT("/"));
+  #endif
   MenuCommand(wxT("load(\"") + file + wxT("\")$"));
 }
 
