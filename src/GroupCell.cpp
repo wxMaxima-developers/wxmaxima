@@ -1870,19 +1870,25 @@ void GroupCell::BreakUpCells(MathCell *cell, int WXUNUSED(fontsize), int clientW
     return;
 
   MathCell *tmp = cell;
-  tmp->ResetLineHeightAndWidth();
-  
+
+  bool lineHeightsChanged = false;
+    
   while (tmp != NULL && !m_hide)
   {
     if (tmp->GetWidth() > clientWidth)
     {
       if (tmp->BreakUp())
-      {
-        tmp->RecalculateWidths(tmp->IsMath() ? m_mathFontSize : m_fontSize);
-        tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
-      }
+        lineHeightsChanged = true;
     }
     tmp = tmp->m_nextToDraw;
+  }
+
+  if(lineHeightsChanged)
+  {
+    // We need to recalculate the whole output as breaking a big 2d command into lines
+    // can change the height of the line starting before this command.
+    dynamic_cast<GroupCell *>(cell->GetGroup())->GetOutput()->ResetLineHeightAndWidth();
+    RecalculateHeightOutput(0);
   }
 }
 
