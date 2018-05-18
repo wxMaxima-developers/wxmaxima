@@ -240,7 +240,24 @@ void FracCell::Draw(wxPoint point, int fontsize)
     wxPoint num, denom;
 
     if (m_exponent && !m_isBroken)
+    {
+      num.x = point.x;
+      num.y = point.y;
+      denom.x = point.x + m_num->GetFullWidth() + m_expDivideWidth;
+      denom.y = num.y;
+
       m_num->DrawList(num, fontsize);
+      m_denom->DrawList(denom, fontsize);
+
+      int fontsize1 = Scale_Px(fontsize);
+      wxASSERT(fontsize1 > 0);
+      dc->SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
+                        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
+                        configuration->GetFontName(TS_VARIABLE)));
+      dc->DrawText(wxT("/"),
+                  point.x + m_num->GetFullWidth(),
+                  point.y - m_num->GetMaxCenter() + Scale_Px(MC_TEXT_PADDING));
+    }
     else
     {
       num.x = point.x + m_horizontalGapLeft +
