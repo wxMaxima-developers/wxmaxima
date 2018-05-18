@@ -1885,7 +1885,7 @@ void GroupCell::BreakUpCells(MathCell *cell, int WXUNUSED(fontsize), int clientW
 
   if(lineHeightsChanged)
   {
-    // RecalculateHeightOutput(0);
+//    ResetData();
   }
 }
 

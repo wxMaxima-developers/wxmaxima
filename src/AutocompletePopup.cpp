@@ -127,6 +127,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
     Destroy();
     break;
   case WXK_UP:
+  case WXK_NUMPAD_UP:
   {
     int selection = GetNextItem(0,wxLIST_NEXT_ALL,
                                 wxLIST_STATE_SELECTED);
@@ -144,6 +145,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
     break;
   }
   case WXK_PAGEUP:
+  case WXK_NUMPAD_PAGEUP:
   {
     int selection = GetNextItem(0,wxLIST_NEXT_ALL,
                                 wxLIST_STATE_SELECTED);
@@ -159,6 +161,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
     break;
   }
   case WXK_PAGEDOWN:
+  case WXK_NUMPAD_PAGEDOWN:
   {
     int selection = GetNextItem(0,wxLIST_NEXT_ALL,
                                 wxLIST_STATE_SELECTED);
@@ -174,6 +177,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
     break;
   }
   case WXK_DOWN:
+  case WXK_NUMPAD_DOWN:
   {
     long selection = GetNextItem(0,wxLIST_NEXT_ALL,
                                  wxLIST_STATE_SELECTED);
@@ -188,6 +192,7 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
     break;
   }
   case WXK_BACK:
+  case WXK_NUMPAD_DELETE:
   {
     wxString oldString = m_editor->GetSelectionString();
     if (oldString != wxEmptyString)
