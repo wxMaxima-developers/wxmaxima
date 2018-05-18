@@ -80,6 +80,7 @@ void XmlInspector::Update()
       {
         Newline();Newline();
       }
+      SetInsertionPointEnd();
       BeginTextColour(wxColour(0,0,0));
       WriteText(_("SENT TO MAXIMA:"));
       Newline();Newline();
@@ -87,8 +88,12 @@ void XmlInspector::Update()
       m_state = toMaxima;
     }
     else
+    {
+      SetInsertionPointEnd();
       WriteText("\n");
+    }
     
+    SetInsertionPointEnd();
     BeginTextColour(wxColour(128,0,0));
     WriteText(m_toMaxima);
     EndTextColour();
@@ -104,6 +109,7 @@ void XmlInspector::Update()
       {
         Newline();Newline();
       }
+      SetInsertionPointEnd();
       BeginTextColour(wxColour(0,0,0));
       WriteText(_("MAXIMA RESPONSE:"));
       Newline();Newline();    
@@ -136,6 +142,7 @@ void XmlInspector::Update()
       textWithIndention += *it;
       m_lastChar = *it;
     }
+    SetInsertionPointEnd();
     BeginTextColour(wxColour(0,128,0));
     WriteText(textWithIndention);
     EndTextColour();
