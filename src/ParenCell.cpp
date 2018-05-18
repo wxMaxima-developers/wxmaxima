@@ -453,7 +453,6 @@ bool ParenCell::BreakUp()
     m_isBroken = true;
     m_open->m_nextToDraw = m_innerCell;
     m_innerCell->m_previousToDraw = m_open;
-    m_innerCell->ResetLineHeightAndWidth();
     wxASSERT_MSG(m_last1 != NULL, _("Bug: No last cell inside a parenthesis!"));
     if (m_last1 != NULL)
     {

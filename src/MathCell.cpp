@@ -992,21 +992,6 @@ void MathCell::ResetData()
   m_breakLine = m_forceBreakLine;
 }
 
-void MathCell::ResetLineHeightAndWidth()
-{
-  MathCell *tmp = this;
-  while(tmp != NULL)
-  {
-    tmp->m_fullWidth = -1;
-    tmp->m_lineWidth = -1;
-    tmp->m_maxCenter = -1;
-    tmp->m_maxDrop   = -1;
-    tmp->m_height   = -1;
-    tmp->m_width   = -1;
-    tmp = tmp->m_nextToDraw;
-  }
-}
-
 MathCell *MathCell::first()
 {
   MathCell *tmp = this;

@@ -229,8 +229,6 @@ class MathCell
   virtual bool BreakUp()
   { return false; }
 
-  void ResetLineHeightAndWidth();
-  
   /*! Is a part of this cell inside a certain rectangle?
 
     \param big The rectangle to test for collision with this cell
