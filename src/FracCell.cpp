@@ -201,16 +201,24 @@ void FracCell::RecalculateHeight(int fontsize)
     m_num->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
     m_denom->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
   }
-  if (!m_exponent)
+  if(m_isBroken)
   {
-    m_height = m_num->GetMaxHeight() + m_denom->GetMaxHeight() +
-               Scale_Px(4);
-    m_center = m_num->GetMaxHeight() + Scale_Px(2);
+    m_height = m_num->GetMaxHeight();
+    m_center = m_num->GetMaxCenter();
   }
   else
   {
-    m_height = m_num->GetMaxHeight();
-    m_center = m_height / 2;
+    if (!m_exponent)
+    {
+      m_height = m_num->GetMaxHeight() + m_denom->GetMaxHeight() +
+        Scale_Px(4);
+      m_center = m_num->GetMaxHeight() + Scale_Px(2);
+    }
+    else
+    {
+      m_height = m_num->GetMaxHeight();
+      m_center = m_height / 2;
+    }
   }
 
   m_open1->RecalculateHeight(fontsize);
