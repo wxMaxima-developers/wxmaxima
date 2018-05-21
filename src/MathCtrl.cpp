@@ -2074,8 +2074,10 @@ bool MathCtrl::Copy(bool astext)
       }
       wxTheClipboard->SetData(data);
       wxTheClipboard->Close();
+      Recalculate();
       return true;
     }
+    Recalculate();
     return false;
   }
 }
@@ -2128,6 +2130,7 @@ wxString MathCtrl::ConvertSelectionToMathML()
       s = s.SubString(s.Find("\n") + 1, s.Length());
     }
   }
+  Recalculate();
   return s;
 }
 
@@ -2151,6 +2154,7 @@ bool MathCtrl::CopyMathML()
     data->Add(new wxHTMLDataObject(s + wxT('\0')));
     wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
+    Recalculate();
     return true;
   }
 
@@ -2319,9 +2323,11 @@ bool MathCtrl::CopyCells()
     
     wxTheClipboard->SetData(data);
     wxTheClipboard->Close();
+    Recalculate();
     return true;
   }
 
+  Recalculate();
   return false;
 }
 
@@ -4286,7 +4292,8 @@ bool MathCtrl::CopyBitmap()
   bmp.SetData(tmp);
 
   bool retval = bmp.ToClipboard();
-
+  Recalculate();
+  
   return retval;
 }
 
@@ -4307,6 +4314,7 @@ bool MathCtrl::CopySVG()
   svg.SetData(tmp);
 
   bool retval = svg.ToClipboard();
+  Recalculate();
 
   return retval;
 }
