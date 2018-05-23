@@ -812,7 +812,9 @@ void GroupCell::RecalculateAppended()
   tmp = m_appendedCells;
   while (tmp != NULL)
   {
-    if (tmp->BreakLineHere() || tmp == m_appendedCells || tmp->GetStyle() == TS_LABEL || tmp->GetStyle() == TS_USERLABEL)
+    if ((tmp->BreakLineHere()) ||
+        ((tmp->m_previousToDraw == NULL) && (tmp->m_nextToDraw == NULL)) ||
+        (tmp->GetStyle() == TS_LABEL) || (tmp->GetStyle() == TS_USERLABEL))
     {
       m_width = MAX(m_width, tmp->GetLineWidth());
       m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth());
