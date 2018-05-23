@@ -7551,7 +7551,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
   wxChar lastnonWhitespace = wxT(',');
 
   wxString::const_iterator it = text.begin();
-  while (it != text.end())
+  while (it < text.end())
   {
     wxChar c = *it;
 
@@ -7600,7 +7600,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
         if(it != text.end())
         {++it;++index;}
       }
-      if ((it != text.end()) && (*it != wxT('\"'))) return (_("Unterminated string."));
+      if ((it == text.end()) || (*it != wxT('\"'))) return (_("Unterminated string."));
       lastC = c;
       break;
         
@@ -7702,7 +7702,10 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
       )
       lastnonWhitespace = c;
 
-    ++it;++index;
+    if(it < text.end())
+    {
+      ++it;++index;
+    }
     }
     if (!delimiters.empty())
     {
