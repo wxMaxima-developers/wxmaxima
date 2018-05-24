@@ -1,12 +1,12 @@
 Current:
-  * Defer any try to change maxima's configuration until all questions are answered.
+  * Defer any try to change Maxima's configuration until all questions are answered.
   * A menu item that sets the autosubscript feature for the current worksheet.
   * A menu allowing to switch floats to engineering format.
   * Maxima can now pass variables to wxMaxima.
   * Maxima now can tell wxMaxima about the contents of variables.
   * Autocompletion for functions from lisp-only packages.
   * A context-sensitive "draw" sidepane.
-  * We now allow a packet from maxima to end in the middle of an unicode codepoint.
+  * We now allow a packet from Maxima to end in the middle of an unicode codepoint.
   * If the name of a lisp function is known it now is displayed.
   * A right-click menu that copies an animation to the clipboard.
   * A new default value for the current MathJaX release.
@@ -22,7 +22,7 @@ Current:
   * TableOfContents: A right-click menu item that allows to toggle display of section numbers
   * The size of images can now be restricted to any amount of centimeters.
   * On a few operating systems: The network indicator icon now knows how much CPU
-    power maxima uses.
+    power Maxima uses.
   * Autocompletion now suggests the names of built-in packages for load(), batch()
     and batchload().
   * Autocompletion now suggests the names of built-in demos for demo().
@@ -43,7 +43,7 @@ Current:
   * Jump to the char containing the error on encountering unmatched parenthesis.
   * Try to place the cursor near the error in all other cases.
   * Attempt to mark the whole error message in red. This is bound to fail in
-    some cases as maxima sometimes only sends part of an error message through
+    some cases as Maxima sometimes only sends part of an error message through
     the error() command. But it is better than nothing.
   * Detect and mark most warnings.
   * A "evaluate cells below" right-click-menu item.
@@ -72,21 +72,21 @@ Current:
   * Table of Contents: Folded items are now grayed out.
   * Table of Contents: A right-click menu.
   * Copy-and-paste now includes hidden cells and folded items.
-  * Eye Candy: An indicator that shows when maxima and wxMaxima exchange data.
+  * Eye Candy: An indicator that shows when Maxima and wxMaxima exchange data.
     Double-clicking this indicator opens up the network monitor.
   * Autocompletion now collects words from the current code cell, too.
   * Better indentation of if clauses and loops.
   * If the number is too long to display it now is still possible to copy it.
-  * Documented that box() highlights text in maxima's output.
+  * Documented that box() highlights text in Maxima's output.
   * the with_slider type of commands now uses wxstatusbar() in order to provide
   * progress information for the user.
   * Several scrolling fixes, again.
   * Two concurrent wxMaxima instances now no more overwrite each other's "Recent files"
     list.
-  * If a error message or question arises or maxima finishes calculating and the window
+  * If a error message or question arises or Maxima finishes calculating and the window
     currently isn't active the operating system is asked to notify the user in a
     non-disrupting way. For the case of the end of a calculation this can be turned off.
-  * The notification can be activated for the case that the window isn't active and maxima
+  * The notification can be activated for the case that the window isn't active and Maxima
     finishes calculating, too.
   * Invalid XML tags are now handled more gracefully
   * Deduplicated the code for saving .wxm files
@@ -100,8 +100,8 @@ Current:
     again somewhere in the future.
   * Maximum number of digits and if we use user-defined labels now are no more
     hardcoded into the worksheet at evaluation time.
-  * Anwers to maxima's questions are now remembered across sessions.
-  * cmake is now our main build system: It is supported under MSVC, XCode,
+  * Anwers to Maxima's questions are now remembered across sessions.
+  * CMake is now our main build system: It is supported under MSVC, XCode,
     Code::Blocks, its output looks much nicer than the one from the autotools
     and setting it up uses much more straightforward constructs.
     The recipe to build a debian package using cmake can be found at
@@ -111,11 +111,11 @@ Current:
   * Many additional bug fixes and stability enhancements.
 
 16.12:
-  * Not a change in wxMaxima, but useful: In maxima >5.38 the load() command can
+  * Not a change in wxMaxima, but useful: In Maxima >5.38 the load() command can
     load .wxm files like it would load .mac files.
-  * Better detection and diagnosis for maxima process that terminate unexpectedly
+  * Better detection and diagnosis for Maxima process that terminate unexpectedly
     even if the OS fails to notify us that the network connection with
-    maxima has dropped.
+    Maxima has dropped.
   * Incremental search
   * Automatic line wrap
   * Bullet lists now use real bullets.
@@ -144,7 +144,7 @@ Current:
   * Even if we scrolled away from evaluation wxMaxima now scrolls back to the
     cell if an error occurs.
   * Integrals should now always be saved correctly.
-  * Errors in xml from maxima or in the output cells of .wxmx files now result in error
+  * Errors in xml from Maxima or in the output cells of .wxmx files now result in error
     messages, not in silently discarded math elements.
   * Many additional bug fixes and performance improvements.
 
@@ -154,15 +154,15 @@ Current:
   * High-quality icons for high-dpi screens.
   * Some broken .wxmx files generated with wxMaxima 13.04 and older will now
     automatically be repaired
-  * Tried to make communication with maxima more stable
-  * Debug: A monitor for the xml communication between maxima and wxMaxima
+  * Tried to make communication with Maxima more stable
+  * Debug: A monitor for the xml communication between Maxima and wxMaxima
   * Leading White-space in front of a character that has to be escaped in
     XML is no more ignored.
   * jpeg-encoded images are now no more converted to much larger png files
     on saving .wxmx files and on exporting.
   * Images will now actually be converted to the target format.
   * Bumped the minor version of the .wxmx format: Some old versions of
-    wxmaxima will replace .jpg files embedded in .wxmx files by a
+    wxMaxima will replace .jpg files embedded in .wxmx files by a
     placeholder on load
   * Increased both speed and memory-efficiency of image handling
   * Save the zoom factor at exit and reload it on opening a new file
@@ -171,7 +171,7 @@ Current:
     "export code cells" config item.
   * A separate text style for user-defined labels.
   * The "evaluate all cells" and "evaluate till here" now start with a fresh
-    instance of maxima
+    instance of Maxima
   * TeX export now should work with most unicode chars we have ESC sequences
     for.
   * An auto-repair functionality that repairs most .wxmx files wxMaxima 13.04
@@ -180,7 +180,7 @@ Current:
   * "#" now is shown as a "not equal" sign as a "not equal" sign already would
     be interpreted as "#".
   * Teach CCL on Windows how to deal with unicode variable names like
-    ü and α. For SBCL the necessary change has been done on the maxima side.
+    ü and α. For SBCL the necessary change has been done on the Maxima side.
   * Sidebars for symbols
   * Printing text cells now works again
   * The <ESC> key now works as a shortcut that closes the search dialogue.
@@ -189,15 +189,15 @@ Current:
   * Most importantly: If it is a cursor it now blinks.
 
 15.08:
-  * Compatibility with maxima 5.37.0
+  * Compatibility with Maxima 5.37.0
   * MathJAX now provides scaleable equations and extended drag-and-drop for the html export.
   * The table-of-contents-sidebar now shows the current cursor position
   * Fixed a few instances of cursors jumping out of the screen
   * Fixed a few instances of cursors jumping to the beginning or end of the worksheet
-  * Better detection which cell maxima is processing and if it still is doing so
+  * Better detection which cell Maxima is processing and if it still is doing so
   * Regression: Hiding the toolbar didn't work on some systems
   * Markdown support for <=, >=, <=>, <-, ->, <->, => and +/- symbols.
-  * An option to not export maxima's input as well as the output.
+  * An option to not export Maxima's input as well as the output.
   * An option to use High-resolution bitmaps for the HTML export.
   * Images that are too big for the window now are displayed in a scaled-down version.
   * Fixed the support for out-of-tree-bulds that was broken in 15.04
@@ -211,16 +211,16 @@ Current:
 	unicode symbols
   * Syntax highlighting in code cells
   * Automatic highlighting of text equal to the currrently selected one.
-  * A batch mode that pauses evaluation if maxima asks a question.
+  * A batch mode that pauses evaluation if Maxima asks a question.
   * A "halt on error" feature
   * Now evaluation of a new command is only triggered if evaluation of the last
-	command has finished. This means that output from maxima is always appended
+	command has finished. This means that output from Maxima is always appended
 	to the right cell.
   * Un-broke error and question handling for multiple commands per cell. Sincewe now send
-	maxima's input command-per-command this means a cell with multiple commands is no
+	Maxima's input command-per-command this means a cell with multiple commands is no
 	more evaluated faster than multiple cells with single commands each.
   * If ever a end-of-evaluation marker gets lost there is a new "trigger evaluation"
-	menu entry in the maxima menu.
+	menu entry in the Maxima menu.
   * On wxGtk autocompletion was replaced by a content assistant that is based on the
 	surprisingly powerful autocompletion feature.
   * Ctrl+Tab now launches the autocompletion (or content assistant, if available)
@@ -238,7 +238,7 @@ Current:
   * A mimetype marker at the beginning of wxmx files
   * Better desktop integration
   * An offline manual
-  * Autodetection of maxima's working directory on Mac and Windows
+  * Autodetection of Maxima's working directory on Mac and Windows
   * Use gnuplot_postamble instead of gnuplot_preamble
   * Dropped the hard dependency of TeXinfo
   * Translation updates
@@ -251,7 +251,7 @@ Current:
   * bumped the minor version number of .wxmx: overstrike text is
     a new feature and therefore a file containing it cannot be read by
     old wxMaxima versions.
-  * An autosave functionality that makes maxima work more like a mobile
+  * An autosave functionality that makes Maxima work more like a mobile
     app whose documents are always saved.
   * A table-of-contents pane for faster navigation
   * It is now possible to scroll away from a running evaluation for
