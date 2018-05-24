@@ -1031,28 +1031,69 @@ wxString EditorCell::GetCurrentCommand()
   wxString::iterator it = lineTillCursor.begin();
   while(it != lineTillCursor.end())
   {
-    if(wxIsalpha(*it))
+    if(wxIsalpha(*it) || (*it == wxT('_')) || (*it == wxT('\\')))
     {
-      possibleCommand += *it;++it;
-      while((it != lineTillCursor.end()) && (wxIsalnum(*it)))
+      if(*it == '\\')
       {
-        possibleCommand += *it;++it;
+        *it;++it;
+      }
+      if(it != lineTillCursor.end())
+      {
+        possibleCommand += *it;
+        ++it;
+      }
+      while((it != lineTillCursor.end()) && ((wxIsalnum(*it) ||
+                                              (*it == wxT('_')) ||
+                                              (*it == wxT('\\')))))
+      {
+        if(*it == '\\')
+        {
+          *it;++it;
+        }
+        if(it != lineTillCursor.end())
+        {
+          possibleCommand += *it;++it;
+        }
       }
     }
     else
-    {
-      if((*it == ' ') || (*it == '\t') || (*it == '\n') || (*it == '\r'))
-        ++it;
-      else
+      switch(wxChar(*it))
       {
-        if((*it == '(') && (possibleCommand != wxEmptyString))
+      case ' ':
+      case '\t':
+      case '\n':
+      case '\r':
+        while((it != lineTillCursor.end()) && ((*it == wxT(' ')) ||
+                                               (*it == wxT('\t')) ||
+                                               (*it == wxT('\n')) ||
+                                               (*it == wxT('\r'))))
+          ++it;
+        if ((it != lineTillCursor.end()) && (*it == wxT('(')))
+        {
           command = possibleCommand;
-        else
           possibleCommand = wxEmptyString;
+          ++it;
+        }
+        break;
+      case '(':
+        if((possibleCommand != wxEmptyString))
+          command = possibleCommand;
         ++it;
+        break;
+      case '$':
+      case ';':
+      {
+        command = wxEmptyString;
+        possibleCommand = wxEmptyString;
+        ++it;
+      } 
+      default:
+        possibleCommand = wxEmptyString;
+        ++it;
+        break;
       }
-    }
   }
+  std::cerr<<command;
   return command;
 }
 
