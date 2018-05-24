@@ -68,7 +68,9 @@ public:
   
   bool LoadSymbols();
 
+  //! Manually add a autocompletable symbol to our symbols lists
   void AddSymbol(wxString fun, autoCompletionType type = command);
+  //! Interprets the XML autocompletable symbol list maxima can send us
   void AddSymbols(wxString xml);
 
   //! Replace the list of files in the directory the worksheet file is in to the demo files list
@@ -83,9 +85,12 @@ public:
 
   //! Clear the list of words that appear in the workSheet's code cells
   void ClearWorksheetWords();
+  //! Clear the list of files load() can be applied on
   void ClearLoadfileList(){m_wordList[loadfile] = m_builtInLoadFiles;}
+  //! Clear the list of files demo() can be applied on
   void ClearDemofileList(){m_wordList[demofile] = m_builtInDemoFiles;}
   
+  //! Returns a list of possible autocompletions for the string "partial"
   wxArrayString CompleteSymbol(wxString partial, autoCompletionType type = command);
   wxString FixTemplate(wxString templ);
 

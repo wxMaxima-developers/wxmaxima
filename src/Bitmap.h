@@ -25,7 +25,7 @@
 
 #include "MathCell.h"
 
-/* Renders portions of the work sheet (including 2D maths) as bitmap.
+/*! Renders portions of the work sheet (including 2D maths) as bitmap.
 
    This is used for exporting HTML with embedded maths as bitmap
    and for putting bitmaps for the clipboard
