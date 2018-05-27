@@ -833,6 +833,10 @@ void MathCtrl::Recalculate(GroupCell *start, bool force)
 void MathCtrl::OnSize(wxSizeEvent& WXUNUSED(event))
 {
   Freeze();
+
+  // Inform all cells how wide our display is now
+  m_configuration->SetCanvasSize(GetClientSize());
+
   // Determine if we have a sane thing we can scroll to.
   MathCell *CellToScrollTo = NULL;
   if (CaretVisibleIs())
