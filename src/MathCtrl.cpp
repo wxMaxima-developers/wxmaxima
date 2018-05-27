@@ -370,11 +370,10 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
   dcm.Clear();
   dcm.SetMapMode(wxMM_TEXT);
   dcm.SetBackgroundMode(wxTRANSPARENT);
-
-  wxGCDC antiAliassingDC(dcm);
-  
-  PrepareDC(antiAliassingDC);
   PrepareDC(dcm);
+  
+  wxGCDC antiAliassingDC(dcm);
+//  PrepareDC(antiAliassingDC);
   
   m_configuration->SetContext(dcm);
   m_configuration->SetAntialiassingDC(antiAliassingDC);
@@ -481,7 +480,7 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
       (m_hCaretPosition != NULL))
   {
     dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
-    dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
+    dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 
     wxRect currentGCRect = m_hCaretPosition->GetRect();
     int caretY = ((int) m_configuration->GetGroupSkip()) / 2 + currentGCRect.GetBottom() + 1;
@@ -500,7 +499,7 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
     else
     {
       dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
-      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
+      dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
     }
 
     wxRect cursor = wxRect(xstart + m_configuration->GetCellBracketWidth(),
