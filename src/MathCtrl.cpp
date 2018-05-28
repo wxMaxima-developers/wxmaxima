@@ -356,7 +356,7 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
   if (sz.x == 0) sz.x = 1;
   if (sz.y == 0) sz.y = 1;
 
-  // Test if m_memory is NULL (resize even)
+  // Test if m_memory is NULL or of the wrong size
   if ((!m_memory.IsOk()) || (m_memory.GetSize() != sz))
     m_memory = wxBitmap(sz);
 

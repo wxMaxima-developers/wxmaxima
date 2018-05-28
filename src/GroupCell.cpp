@@ -981,10 +981,6 @@ void GroupCell::CellUnderPointer(GroupCell *cell)
   {
     GroupCell *tmp = dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer);
     m_cellPointers->m_groupCellUnderPointer = cell;
-    if (tmp != NULL)
-      tmp->DrawBracket();
-    if (m_cellPointers->m_groupCellUnderPointer != NULL)
-      dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer)->DrawBracket();
   }
 }
 
