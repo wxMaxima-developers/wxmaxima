@@ -92,6 +92,14 @@ wxImage ToolBar::GetImage(wxString name,
     img = wxImage(invalidImage_xpm);
   }
 
+  // MSW is notorious for having problems with transparent black pixels.
+  // Let's see if we can avoid these problems by converting the alpha
+  // channel to a mask even if that means we cannot antialias a transparent 
+  // and a colored pixel to a half-transparent one any more.
+#if defined __WXMSW__
+  img.ConvertAlphaToMask();
+#endif
+  
   img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
   return img;
 }
