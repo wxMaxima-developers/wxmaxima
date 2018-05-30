@@ -1489,9 +1489,9 @@ void wxMaxima::ReadStatusBar(wxString &data)
       if(contents)
         SetStatusText(contents->GetContent());
     }
+    // Remove the status bar info from the data string
+    data = data.Right(data.Length()-end-sts.Length());
   }
-  // Remove the status bar info from the data string
-  data = data.Right(data.Length()-end-sts.Length());
 }
 
 /***
