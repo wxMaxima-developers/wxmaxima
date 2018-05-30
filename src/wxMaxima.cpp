@@ -867,6 +867,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_client = m_server->Accept(false);
       m_client->SetEventHandler(*this, socket_client_id);
       m_client->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
+      m_client->SetTimeout(120);
       m_client->Notify(true);
       m_clientStream = new wxSocketInputStream(*m_client);
       m_clientTextStream = new wxTextInputStream(*m_clientStream, wxT('\n'),
