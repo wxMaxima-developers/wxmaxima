@@ -3671,12 +3671,14 @@ void wxMaxima::ReadStdErr()
     }
 
     if(o != wxT("Message from maxima's stderr stream: End of animation sequence"))
+    {
       DoRawConsoleAppend(o, MC_TYPE_ERROR);
+      if(!AbortOnError())
+        TryEvaluateNextInQueue();
+      m_console->m_cellPointers.m_errorList.Add(m_console->GetWorkingGroup(true));
+    }
     else
       DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
-
-    if(!AbortOnError())
-      TryEvaluateNextInQueue();
   }
 }
 
