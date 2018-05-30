@@ -3670,7 +3670,8 @@ void wxMaxima::ReadStdErr()
       len++;
     }
 
-    if(o != wxT("Message from maxima's stderr stream: End of animation sequence"))
+    if((o != wxT("Message from maxima's stderr stream: End of animation sequence")) &&
+       !o.Contains("frames in animation sequence"))
     {
       DoRawConsoleAppend(o, MC_TYPE_ERROR);
       if(!AbortOnError())
