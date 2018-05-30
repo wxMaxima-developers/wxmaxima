@@ -1842,7 +1842,7 @@ void wxMaximaFrame::ShowToolBar(bool show)
 #else
   if (show) {
     if (m_console->m_mainToolBar == NULL) {
-      wxToolBar *tbar = CreateToolBar();
+      wxToolBar *tbar = CreateToolBar(wxTB_HORIZONTAL | wxTB_FLAT);
       m_console->m_mainToolBar=new ToolBar(tbar);
     }
     SetToolBar(m_console->m_mainToolBar->GetToolBar());
