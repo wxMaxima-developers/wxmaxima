@@ -29,6 +29,14 @@ if(GETTEXT_FOUND)
             install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo"
                     DESTINATION "share/locale/${LANG}/LC_MESSAGES/"
                     RENAME "wxMaxima.mo")
+
+            # 'install' message files in the directory "${CMAKE_BINARY_DIR}/locale/..."
+            # too (at build time, not at install time), so that running ./wxmaxima-local
+            # (without installing it) can find the message files and i18n works.
+            file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/locale/${LANG}")
+            add_custom_target(build-locale-${LANG} ALL
+                DEPENDS pofiles
+                COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo" "${CMAKE_BINARY_DIR}/locale/${LANG}/LC_MESSAGES/wxMaxima.mo")
         endif()
         # Call msgmerge for each language and create a merged language file
         message(STATUS "Create PO-file for language ${LANG}")
@@ -43,12 +51,11 @@ if(GETTEXT_FOUND)
 
 
     file(GLOB NEW_PO_FILES "${CMAKE_BINARY_DIR}/locales/*.po")
+
     add_custom_target(update-locale
-        COMMAND ${CMAKE_COMMAND} -E copy
-                "${CMAKE_BINARY_DIR}/wxMaxima.pot"
-                "${CMAKE_SOURCE_DIR}/locales/wxMaxima.pot"
-        COMMAND sh -c "cp *.po ${CMAKE_SOURCE_DIR}/locales/" # FIXME: Convert to a CMake copy command...
-        COMMENT "Installing wxMaxima.pot and po-files in the source directory ${CMAKE_SOURCE_DIR}")
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/wxMaxima.pot" "${CMAKE_SOURCE_DIR}/locales/wxMaxima.pot"
+        COMMAND ${CMAKE_COMMAND} -E copy "*.po" "${CMAKE_SOURCE_DIR}/locales/"
+        COMMENT "Installing wxMaxima.pot and po-files in the source directory ${CMAKE_SOURCE_DIR}/locales")
 else()
     message(STATUS "Gettext not found - translations will be disabled")
 endif()
