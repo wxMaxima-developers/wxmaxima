@@ -2099,6 +2099,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
   if (clearDocument)
   {
 //    m_console->m_currentFile = file.SubString(0,file.Length()-4) + wxT("wxmx");
+    StartMaxima();
     m_console->m_currentFile = file;
     ResetTitle(true, true);
     document->SetSaved(true);
@@ -2174,7 +2175,10 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
 
   // from here on code is identical for wxm and wxmx
   if (clearDocument)
+  {
     document->ClearDocument();
+    StartMaxima();
+  }
 
   document->InsertGroupCells(tree); // this also requests a recalculate
 
@@ -2227,6 +2231,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   if (wxFile(file, wxFile::read).Eof())
   {
     document->ClearDocument();
+    StartMaxima();
 
     m_console->m_currentFile = file;
     ResetTitle(true, true);
@@ -2367,6 +2372,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocumen
   if (clearDocument)
   {
     document->ClearDocument();
+    StartMaxima();
     long int zoom = 100;
     if (!(doczoom.ToLong(&zoom)))
       zoom = 100;
@@ -2485,7 +2491,8 @@ bool wxMaxima::OpenXML(wxString file, MathCtrl *document)
   GroupCell *tree = CreateTreeFromXMLNode(xmlcells, file);
 
   document->ClearDocument();
-  document->InsertGroupCells(tree); // this also requests a redcalculate
+  StartMaxima();
+  document->InsertGroupCells(tree); // this also requests a recalculate
   m_console->m_currentFile = file;
   ResetTitle(true, true);
   document->Thaw();
