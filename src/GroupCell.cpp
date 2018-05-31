@@ -979,7 +979,6 @@ void GroupCell::CellUnderPointer(GroupCell *cell)
 {
   if (m_cellPointers->m_groupCellUnderPointer != cell)
   {
-    GroupCell *tmp = dynamic_cast<GroupCell *>(m_cellPointers->m_groupCellUnderPointer);
     m_cellPointers->m_groupCellUnderPointer = cell;
   }
 }
