@@ -317,7 +317,7 @@ void wxMaximaFrame::do_layout()
                     wxAuiPaneInfo().Name(wxT("greek")).
                             Show(false).
                             DockFixed(false).
-                            Gripper(true).
+                            Gripper(false).
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
@@ -334,7 +334,7 @@ void wxMaximaFrame::do_layout()
                     wxAuiPaneInfo().Name(wxT("symbols")).
                             Show(false).
                             DockFixed(false).
-                            Gripper(true).
+                            Gripper(false).
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
@@ -378,18 +378,18 @@ void wxMaximaFrame::do_layout()
                     PaneBorder(true).
                     Fixed().
                     Left());
-
-m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).
-            MinSize(greekPane->GetEffectiveMinSize()).
-            BestSize(greekPane->GetEffectiveMinSize()).
-            Show(true).
-            MaxSize(greekPane->GetEffectiveMinSize());
+  
+  m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).
+    MinSize(greekPane->GetEffectiveMinSize()).
+    BestSize(greekPane->GetEffectiveMinSize()).
+    Show(true).Gripper(false).
+    MaxSize(greekPane->GetEffectiveMinSize());
   
   m_manager.GetPane(wxT("symbols")) = m_manager.GetPane(wxT("symbols")).
-            MinSize(symbolsPane->GetEffectiveMinSize()).
-            BestSize(symbolsPane->GetEffectiveMinSize()).
-            Show(true).
-            MaxSize(symbolsPane->GetEffectiveMinSize());
+    MinSize(symbolsPane->GetEffectiveMinSize()).
+    BestSize(symbolsPane->GetEffectiveMinSize()).
+    Show(true).Gripper(false).
+    MaxSize(symbolsPane->GetEffectiveMinSize());
 
   m_manager.GetPane(wxT("draw")) = m_manager.GetPane(wxT("draw")).
     MinSize(symbolsPane->GetEffectiveMinSize()).
@@ -418,20 +418,23 @@ m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).
   // belong to a translation different to the one selected currently =>
   // let's overwrite the names here.
   m_manager.GetPane(wxT("symbols")) =
-    m_manager.GetPane(wxT("symbols")).Caption(_("Mathematical Symbols"));
+    m_manager.GetPane(wxT("symbols")).Caption(_("Mathematical Symbols")).CloseButton().PinButton().Resizable().Gripper(false);
   m_manager.GetPane(wxT("format")) =
-    m_manager.GetPane(wxT("format")).Caption(_("Insert"));
+    m_manager.GetPane(wxT("format")).Caption(_("Insert")).CloseButton().PinButton().Resizable();
   m_manager.GetPane(wxT("draw")) =
-    m_manager.GetPane(wxT("draw")).Caption(_("Plot using Draw"));
+    m_manager.GetPane(wxT("draw")).Caption(_("Plot using Draw")).CloseButton().PinButton().Resizable();
   m_manager.GetPane(wxT("greek")) =
-    m_manager.GetPane(wxT("greek")).Caption(_("Greek Letters"));
-  m_manager.GetPane(wxT("math")) = m_manager.GetPane(wxT("math")).Caption(_("General Math"));
-  m_manager.GetPane(wxT("stats")) = m_manager.GetPane(wxT("stats")).Caption(_("Statistics"));
+    m_manager.GetPane(wxT("greek")).Caption(_("Greek Letters")).CloseButton().PinButton().Resizable().Gripper(false);
+  m_manager.GetPane(wxT("math")) = m_manager.GetPane(wxT("math")).Caption(_("General Math")).
+    CloseButton().PinButton().Resizable();
+  m_manager.GetPane(wxT("stats")) = m_manager.GetPane(wxT("stats")).Caption(_("Statistics")).
+    CloseButton().PinButton().Resizable();
   m_manager.GetPane(wxT("XmlInspector")) =
-    m_manager.GetPane(wxT("XmlInspector")).Caption(_("Raw XML monitor"));
+    m_manager.GetPane(wxT("XmlInspector")).Caption(_("Raw XML monitor")).CloseButton().PinButton().Resizable();
   m_manager.GetPane(wxT("structure")) =
-    m_manager.GetPane(wxT("structure")).Caption(_("Table of Contents"));
-  m_manager.GetPane(wxT("history")) = m_manager.GetPane(wxT("history")).Caption(_("History"));
+    m_manager.GetPane(wxT("structure")).Caption(_("Table of Contents")).CloseButton().PinButton().Resizable();
+  m_manager.GetPane(wxT("history")) = m_manager.GetPane(wxT("history")).Caption(_("History"))
+    .CloseButton().PinButton().Resizable();
  
   bool toolbar = true;
   config->Read(wxT("AUI/toolbar"), &toolbar);
