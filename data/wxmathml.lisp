@@ -1164,7 +1164,7 @@
   (let ((*print-circle* nil)
         (*wxxml-mratp* (format nil "~{~a~}" (cdr (checkrat x)))))
     (mapc #'princ
-          (wxxml x '("<mth>") '("</mth>") 'mparen 'mparen))))
+          (wxxml x '("<mth>") '("</mth>~%") 'mparen 'mparen))))
 
 (setf *alt-display2d* 'mydispla)
 
@@ -1786,7 +1786,7 @@
 
 (defun $add_function_template (&rest functs)
   (let ((*print-circle* nil))
-    (format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>" (mapcar #'$print_function functs))
+    (format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>~%" (mapcar #'$print_function functs))
     (cons '(mlist simp) functs)))
 
 
@@ -1813,7 +1813,7 @@
 ;;	    (no-warning
 ;;	     (format t "~{~a~^$~}"
 ;;		     (mapcar #'print_unit (cdr ($known_units))))))
-	(format t "</wxxml-symbols>"))
+	(format t "</wxxml-symbols>~%"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -1849,7 +1849,7 @@
   (format t "<variable><name>*lisp-version*</name><value>~a</value></variable>"
 	  #+sbcl (ensure-readably-printable-string (lisp-implementation-version))
 	  #-sbcl (lisp-implementation-version))
-  (format t "</variables>")
+  (format t "</variables>~%")
   ;; Flush stdout as this might hinder clisp on MSW from failing to send
   ;; network packets in the wrong order
   (finish-output)
@@ -1942,7 +1942,7 @@
 
 ;; Load the initial functions (from mac-init.mac)
 (let ((*print-circle* nil))
-  (format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>"
+  (format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>~%"
 	  (mapcar #'$print_function (cdr ($append $functions $macros)))))
 
 (no-warning
@@ -1979,7 +1979,7 @@
 	($batchload searched-for)
 	(format t "<variables>")
 	(format t "<variable><name>*wx-load-file-start*</name><value>0</value></variable>")
-	(format t "</variables>")
+	(format t "</variables>~%")
 	(wxPrint_autoompletesymbols))
        (($lisp $object)
 	;; do something about handling errors
@@ -1988,12 +1988,12 @@
 	(format t "<variable><name>*wx-load-file-name*</name><value>~a</value></variable>"
 		(wxxml-fix-string filename))
 	(format t "<variable><name>*wx-load-file-start*</name><value>1</value></variable>")
-	(format t "</variables>")
+	(format t "</variables>~%")
         (no-warning
          (load-and-tell searched-for))
 	(format t "<variables>")
 	(format t "<variable><name>*wx-load-file-start*</name><value>0</value></variable>")
-	(format t "</variables>")
+	(format t "</variables>~%")
 	(wxPrint_autoompletesymbols))
        (t
 	(merror "Maxima bug: Unknown file type ~M" type)))
@@ -2029,7 +2029,7 @@
        (declare (special $i))
        (setq $i (car mdo))
        (simplify (mfunction-call $printf t '"~a;" $i)))
-     (simplify (mfunction-call $printf t '"</slide></mth>")))
+     (simplify (mfunction-call $printf t '"</slide></mth>~%")))
     ))
 
 ;; Publish all new global variables maxima might contain to wxMaxima's
