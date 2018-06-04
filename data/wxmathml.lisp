@@ -1825,6 +1825,9 @@
   (format t "</variable>"))
 
 (defun wx-print-variables ()
+  ;; Flush stdout as this might hinder clisp on MSW from failing to send
+  ;; network packets in the wrong order
+  (finish-output)
   (format t "<variables>")
   (wx-print-variable '$maxima_userdir)
   (wx-print-variable '$maxima_tempdir)
@@ -1841,6 +1844,9 @@
 	  #+sbcl (ensure-readably-printable-string (lisp-implementation-version))
 	  #-sbcl (lisp-implementation-version))
   (format t "</variables>")
+  ;; Flush stdout as this might hinder clisp on MSW from failing to send
+  ;; network packets in the wrong order
+  (finish-output)
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
