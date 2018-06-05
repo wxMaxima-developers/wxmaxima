@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-02 13:09+0200\n"
+"POT-Creation-Date: 2018-06-05 09:55+0200\n"
 "PO-Revision-Date: 2017-08-01 07:53+0200\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
@@ -26,7 +26,7 @@ msgid ""
 "Maxima is currently using %3.3f%% of all available CPUs."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6512
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6518
 #, c-format
 msgid ""
 "\n"
@@ -39,7 +39,7 @@ msgstr ""
 "wxWidgets: %d.%d.%d\n"
 "Unicode támogatás: %s"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6526
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6532
 msgid ""
 "\n"
 "Lisp: "
@@ -47,7 +47,7 @@ msgstr ""
 "\n"
 "Lisp: "
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6522
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6528
 msgid ""
 "\n"
 "Maxima version: "
@@ -55,7 +55,7 @@ msgstr ""
 "\n"
 "Maxima verzió: "
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6524
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6530
 msgid ""
 "\n"
 "Not connected."
@@ -78,7 +78,7 @@ msgstr " (Grafika) "
 msgid " ... + %i hidden lines"
 msgstr " ... + %i rejtett sorok"
 
-#: /home/gunter/src/wxmaxima/src/MathParser.cpp:1068
+#: /home/gunter/src/wxmaxima/src/MathParser.cpp:1075
 msgid " << Expression longer than allowed by the configuration setting! >>"
 msgstr " <<A kifejezés hosszabb a beállításokban megengedettnél! >>"
 
@@ -103,7 +103,7 @@ msgstr "Ennyiszer:"
 msgid "\"Copy LaTeX\" adds equation markers"
 msgstr "A \"LaTeX másolás\" hozzáadja a kiemelt matematikai mód jeleit"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1630
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1635
 msgid "\"implies\" symbol"
 msgstr "\"következik\" jel"
 
@@ -112,15 +112,15 @@ msgstr "\"következik\" jel"
 msgid "%i cells in evaluation queue"
 msgstr "%i cella a végrehajtási sorban"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:818
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:823
 msgid "&Algebra"
 msgstr "&Algebra"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:812
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:817
 msgid "&Apply to List..."
 msgstr "&Alkalmazás listán..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1102
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1107
 msgid "&Apropos..."
 msgstr "&Apropó..."
 
@@ -128,39 +128,39 @@ msgstr "&Apropó..."
 msgid "&Batch File...\tCtrl+B"
 msgstr "&Batch fájl...\tCtrl+B"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:762
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:767
 msgid "&Boundary Value Problem..."
 msgstr "Pe&remérték probléma..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1113
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1118
 msgid "&Bug Report"
 msgstr "&Hibabejelentés"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:870
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:875
 msgid "&Calculus"
 msgstr "Ana&lízis"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:921
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:926
 msgid "&Canonical Form"
 msgstr "&Kanonikus alak"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:794
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:799
 msgid "&Characteristic Polynomial..."
 msgstr "&Karakterisztikus polinom..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:691
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:696
 msgid "&Clear Memory"
 msgstr "M&emória törlése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:904
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:909
 msgid "&Combine Factorials"
 msgstr "&Számolás faktoriálisokkal"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:947
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:952
 msgid "&Complex Simplification"
 msgstr "Kom&plex átalakítás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:867
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:872
 msgid "&Continued Fraction"
 msgstr "Lán&ctörtté alakítás"
 
@@ -172,15 +172,15 @@ msgstr "&Másolás\tCtrl+C"
 msgid "&Definite integration"
 msgstr "&Határozott integrál"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:941
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:946
 msgid "&Demoivre"
 msgstr "&Demoivre"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:797
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:802
 msgid "&Determinant"
 msgstr "&Determináns"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:830
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:835
 msgid "&Differentiate..."
 msgstr "&Differenciálás..."
 
@@ -188,27 +188,27 @@ msgstr "&Differenciálás..."
 msgid "&Edit"
 msgstr "S&zerkesztés"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:747
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:752
 msgid "&Eliminate Variable..."
 msgstr "&Változó kiküszöbölése..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:789
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:794
 msgid "&Enter Matrix..."
 msgstr "Má&trix bevitele..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1099
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1104
 msgid "&Example..."
 msgstr "&Példa..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:884
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:889
 msgid "&Expand Expression"
 msgstr "Kifejezé&s felbontása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:918
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:923
 msgid "&Expand Trigonometric"
 msgstr "Tr&igonometrikus felbontás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:944
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:949
 msgid "&Exponentialize"
 msgstr "E&xponenciálissá alakítás"
 
@@ -216,7 +216,7 @@ msgstr "E&xponenciálissá alakítás"
 msgid "&Export..."
 msgstr "E&xportálás..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:879
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:884
 msgid "&Factor Expression"
 msgstr "Kife&jezés faktorizálása"
 
@@ -224,39 +224,39 @@ msgstr "Kife&jezés faktorizálása"
 msgid "&File"
 msgstr "&Fájl"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:730
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:735
 msgid "&Find Root..."
 msgstr "M&egoldás numerikusan..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:783
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:788
 msgid "&Generate Matrix..."
 msgstr "&Mátrix generálása sorozatból..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:854
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:859
 msgid "&Greatest Common Divisor..."
 msgstr "&Legnagyobb közös osztó..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1132
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1137
 msgid "&Help"
 msgstr "&Súgó"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:822
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:827
 msgid "&Integrate..."
 msgstr "&Integrálás..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:682
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:687
 msgid "&Interrupt\tCtrl+."
 msgstr "&Megszakítás\tCtrl+."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:686
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:691
 msgid "&Interrupt\tCtrl+G"
 msgstr "&Megszakítás\tCtrl+G"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:791
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:796
 msgid "&Invert Matrix"
 msgstr "Mát&rix invertálás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1042
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1047
 #, fuzzy
 msgid "&List"
 msgstr "Erre a listára:"
@@ -265,19 +265,19 @@ msgstr "Erre a listára:"
 msgid "&Load Package...\tCtrl+L"
 msgstr "&Csomag betöltése...\tCtrl+L"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:814
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:819
 msgid "&Map to List(s)..."
 msgstr "Leké&pezés listá(k)ba..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:722
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:727
 msgid "&Maxima"
 msgstr "&Maxima"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1096
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1101
 msgid "&Maxima help"
 msgstr "&Maxima súgó"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:962
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:967
 msgid "&Modulus Computation..."
 msgstr "&Modulus beállítása..."
 
@@ -285,7 +285,7 @@ msgstr "&Modulus beállítása..."
 msgid "&New\tCtrl+N"
 msgstr "Ú&j\tCtrl+N"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1085
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1090
 msgid "&Numeric"
 msgstr "&Numerikus"
 
@@ -305,7 +305,7 @@ msgstr "&Megnyitás\tCtrl+O"
 msgid "&Open...\tCtrl+O"
 msgstr "&Megnyitás...\tCtrl+O"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1056
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1061
 msgid "&Plot"
 msgstr "Á&brázolás"
 
@@ -321,15 +321,15 @@ msgstr "&Nyomtatás...\tCtrl+P"
 msgid "&Rational"
 msgstr "&Értelemszerűen (nem formálisan)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:915
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:920
 msgid "&Reduce Trigonometric"
 msgstr "T&rigonometrikus redukálás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:690
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:695
 msgid "&Restart Maxima"
 msgstr "&A Maxima újraindítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:738
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:743
 msgid "&Roots of Polynomial (Real)"
 msgstr "Poli&nom valós gyökei"
 
@@ -338,23 +338,23 @@ msgid "&Save\tCtrl+S"
 msgstr "M&entés\tCtrl+S"
 
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:40
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:964
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:969
 msgid "&Simplify"
 msgstr "E&gyszerűsítés"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:874
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:879
 msgid "&Simplify Expression"
 msgstr "&Kifejezés egyszerűsítése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:901
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:906
 msgid "&Simplify Factorials"
 msgstr "F&aktoriális egyszerűsítése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:912
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:917
 msgid "&Simplify Trigonometric"
 msgstr "&Trigonometrikus egyszerűsítés"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:726
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:731
 msgid "&Solve..."
 msgstr "&Megoldás..."
 
@@ -366,11 +366,11 @@ msgstr "&Különleges"
 msgid "&Taylor series"
 msgstr "Taylor-sor használatával"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:807
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:812
 msgid "&Transpose Matrix"
 msgstr "Mátri&x transzponálás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:924
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:929
 msgid "&Trigonometric Simplification"
 msgstr "&Trigonometrikus átalakítás"
 
@@ -407,11 +407,11 @@ msgstr ""
 "... [a további sorok elhagyása, mivel a kimenet hosszabb a beállításokban "
 "megengedettnél] "
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1616
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1621
 msgid "1/2"
 msgstr "1/2"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1800
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1805
 msgid "2D"
 msgstr ""
 
@@ -419,7 +419,7 @@ msgstr ""
 msgid "2D equations using ASCII Art"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1804
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1809
 msgid "3D"
 msgstr ""
 
@@ -428,11 +428,11 @@ msgstr ""
 msgid "; %i commands left in the current cell"
 msgstr "; %i parancsok maradtak az aktuális cellában"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6593
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6599
 msgid "<br>Lisp: "
 msgstr "<br>Lisp: "
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7860
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7866
 msgid ""
 "A \":lisp\" as the first command might fail to send a \"finished\" signal."
 msgstr "Egy \":lisp\", mint első parancs lehet, hogy nem küld \"kész\" jelet."
@@ -523,7 +523,7 @@ msgstr "Al-alfejezetcella"
 msgid "A subsection heading"
 msgstr "Al-alfejezetcella"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1707
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1712
 msgid "A symbol from the configuration dialogue"
 msgstr "Egy szimbólum a beállításokból"
 
@@ -538,7 +538,7 @@ msgstr ""
 "Gyakran használja a solve () és az algsys () függvény, ha végtelen számú "
 "eredmény van."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:769
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:774
 msgid "A&t Value..."
 msgstr "Ér&tékadás..."
 
@@ -546,18 +546,18 @@ msgstr "Ér&tékadás..."
 msgid "Abort evaluation on error"
 msgstr "Kiértékelés megszakítása hiba esetén"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6595
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1124
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6601
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1129
 msgid "About"
 msgstr "Névjegy"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1125
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1128
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1129
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1130
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1133
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1134
 msgid "About wxMaxima"
 msgstr "Névjegy: wxMaxima"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1853
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1858
 msgid "Accuracy"
 msgstr ""
 
@@ -565,33 +565,33 @@ msgstr ""
 msgid "Active cell bracket"
 msgstr "Aktív cella zárójele"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:805
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:810
 msgid "Ad&joint Matrix"
 msgstr "Mátr&ix adjungálás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:959
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:964
 msgid "Add Algebraic E&quality..."
 msgstr "Alg&ebrai egyenlet hozzáadása..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:694
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:699
 msgid "Add a directory to search path"
 msgstr "Könyvtár hozzáadása a keresési úthoz"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1037
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1042
 msgid ""
 "Add a new item to the beginning of the list. Useful for creating stacks."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5704
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5710
 #, fuzzy
 msgid "Add an element to a list"
 msgstr "Dokumentum megnyitása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4563
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4569
 msgid "Add dir to path:"
 msgstr "Könyvtár hozzáadása az elérési úthoz:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:960
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:965
 msgid "Add equality to the rational simplifier"
 msgstr "Egyenlőség hozzáadása racionális egyszerűsítéshez"
 
@@ -599,7 +599,7 @@ msgstr "Egyenlőség hozzáadása racionális egyszerűsítéshez"
 msgid "Add the .wxmx file to the HTML export"
 msgstr "wxmx fájl HTML exportja"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:693
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:698
 msgid "Add to &Path..."
 msgstr "&Hozzáadás az elérési úthoz..."
 
@@ -638,12 +638,12 @@ msgstr ""
 "A with_slider_draw() paranccsal készített animációra kattintva az aktuális "
 "kép megváltoztatható."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1007
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1012
 #, fuzzy
 msgid "All but the 1st n elements"
 msgstr "Függvény alkalmazása a listára"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1008
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1013
 #, fuzzy
 msgid "All but the last n elements"
 msgstr "Függvény alkalmazása a listára"
@@ -671,7 +671,7 @@ msgstr ""
 msgid "All|*"
 msgstr "Minden fájl|*"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1570
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1575
 msgid "Alpha"
 msgstr "Alfa"
 
@@ -687,7 +687,7 @@ msgstr ""
 msgid "An integration constant."
 msgstr "Integrációs állandó."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1054
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1059
 #, fuzzy
 msgid "Animation framerate..."
 msgstr "Az animáció alapértelmezett framerátája:"
@@ -696,55 +696,55 @@ msgstr "Az animáció alapértelmezett framerátája:"
 msgid "Antialias lines."
 msgstr "Élsimított vonalak."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1027
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1032
 msgid "Append"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1021
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1026
 msgid "Append a list"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5722
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5728
 #, fuzzy
 msgid "Append a list to a list"
 msgstr "Kifejezés határértékének számolása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1022
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1027
 #, fuzzy
 msgid "Append a list to an existing list"
 msgstr "Kifejezés határértékének számolása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1018
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1023
 #, fuzzy
 msgid "Append an element"
 msgstr "Dokumentum megnyitása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1019
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1024
 msgid "Append an element to an existing list"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5099
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5105
 msgid "Apply"
 msgstr "Alkalmaz"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5591
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5597
 #, fuzzy
 msgid "Apply a function to each list element"
 msgstr "Függvény alkalmazása a listára"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:813
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:818
 msgid "Apply function to a list"
 msgstr "Függvény alkalmazása a listára"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6633
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6639
 msgid "Apropos"
 msgstr "Apropó"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5020
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5026
 msgid "Array:"
 msgstr "Sorozat:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6448
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6454
 msgid "Artwork by"
 msgstr "Grafika"
 
@@ -763,7 +763,7 @@ msgstr ""
 msgid "Ask to save untitled documents"
 msgstr "Rákérdez név nélküli dokumentum mentésére"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4891
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4897
 msgid "At value"
 msgstr "Értékadás"
 
@@ -778,7 +778,7 @@ msgstr "Automatikus címkék (%i1, %o1,...)"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1255
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1378
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:672
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:677
 msgid "Automatically answer questions"
 msgstr "Automatikusan megválaszolt kérdések"
 
@@ -797,7 +797,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1256
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1379
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:673
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:678
 msgid "Automatically fill in answers known from the last run"
 msgstr "Automatikusan kitöltött válaszok a legutóbbi futási eredmények alapján"
 
@@ -814,11 +814,11 @@ msgstr ""
 msgid "Autosave interval (minutes, 0 means: off):"
 msgstr "Automatikus mentés (percben, 0: ki):"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:591
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:590
 msgid "Autosubscript"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:591
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:590
 msgid "Autosubscript chars after an underscore"
 msgstr ""
 
@@ -830,16 +830,16 @@ msgstr ""
 msgid "Autowrap long lines:"
 msgstr "Hosszú szövegek automatikus sortörése:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1829
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1834
 msgid "Axis"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:60
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4792
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4798
 msgid "BC2"
 msgstr "Peremérték probléma"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1475
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1480
 msgid "Barsplot..."
 msgstr "Oszlopdiagram..."
 
@@ -871,7 +871,7 @@ msgstr ""
 "cellán belül van és Ctrl+Z-t nyomunk, egy olyan visszavonást kapunk, mely "
 "nem aktív a cellán kívül."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1571
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1576
 msgid "Beta"
 msgstr "Béta"
 
@@ -895,7 +895,7 @@ msgstr "Félkövér"
 msgid "Both horizontal and vertical cursor active at the same time"
 msgstr "A vízszintes és a függőleges kurzor is aktív legyen egy időben"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1479
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1484
 msgid "Boxplot..."
 msgstr "Doboz ábra..."
 
@@ -973,7 +973,7 @@ msgstr "Hiba: Nincs utolsó cella egy conjugateCell-ben!"
 msgid "Bug: No last cell in an denominator!"
 msgstr "Hiba: Nincs utolsó cella egy nevezőben!"
 
-#: /home/gunter/src/wxmaxima/src/ExptCell.cpp:265
+#: /home/gunter/src/wxmaxima/src/ExptCell.cpp:267
 msgid "Bug: No last cell in an exponent of an exptCell!"
 msgstr "Hiba: Nincs utolsó cella egy exptCell kitevőjében!"
 
@@ -981,7 +981,7 @@ msgstr "Hiba: Nincs utolsó cella egy exptCell kitevőjében!"
 msgid "Bug: No last cell in an numerator!"
 msgstr "Hiba: Nincs utolsó cella egy számlálóban!"
 
-#: /home/gunter/src/wxmaxima/src/ExptCell.cpp:255
+#: /home/gunter/src/wxmaxima/src/ExptCell.cpp:257
 msgid "Bug: No last cell in the base of an exptCell!"
 msgstr "Hiba: Nincs utolsó cella egy exptCell alapjában!"
 
@@ -1046,7 +1046,7 @@ msgstr "Hiba: Munkalapon kívüli cella visszaállítási kérelme."
 msgid "Bug: Unknown type of text"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1111
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1116
 msgid "Build &Info"
 msgstr "&Verzióinformációk"
 
@@ -1063,7 +1063,7 @@ msgstr ""
 "parancsok az Enter lenyomására hajtódnak végre' tulajdonságot, amely "
 "felcseréli a két billentyűparancs hatását."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:827
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:832
 msgid "C&hange Variable..."
 msgstr "&Változócsere..."
 
@@ -1071,43 +1071,43 @@ msgstr "&Változócsere..."
 msgid "C&onfigure"
 msgstr "B&eállítás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:846
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:851
 msgid "Calculate &Product..."
 msgstr "&Szorzat számítása..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:844
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:849
 msgid "Calculate Su&m..."
 msgstr "Öss&zeg számítása..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1066
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1071
 msgid "Calculate bigfloat value of the last result"
 msgstr "Szám hosszú tizedes tört alakja"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1063
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1068
 msgid "Calculate float value of the last result"
 msgstr "Szám tizedes tört alakja"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5877
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5883
 msgid "Calculate modulus:"
 msgstr "Modulus értékének beállítása:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1069
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1074
 msgid "Calculate numeric value of the last result"
 msgstr "Az utolsó eredmény tizedes tört alakjának kiszámolása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:847
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:852
 msgid "Calculate products"
 msgstr "Szorzat számítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:845
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:850
 msgid "Calculate sums"
 msgstr "Összeg számítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8285
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8291
 msgid "Can not connect to the web server."
 msgstr "Nem lehet a webszerverhez kapcsolódni."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8340
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8346
 msgid "Can not download version info."
 msgstr "A verzióinformáció nem elérhető."
 
@@ -1164,7 +1164,7 @@ msgstr "A verzióinformáció nem elérhető."
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:47
 #: /home/gunter/src/wxmaxima/src/SystemWiz.cpp:39
 #: /home/gunter/src/wxmaxima/src/SystemWiz.cpp:41
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8382
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8388
 msgid "Cancel"
 msgstr "Mégsem"
 
@@ -1173,7 +1173,7 @@ msgstr "Mégsem"
 msgid "Cannot start the maxima binary"
 msgstr "A Maxima bináris nem tudott elindulni"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1401
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1406
 msgid "Canonical (tr)"
 msgstr "Kanonikus (tr)"
 
@@ -1181,7 +1181,7 @@ msgstr "Kanonikus (tr)"
 msgid "Catalan"
 msgstr "Katalán"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:675
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:680
 msgid "Ce&ll"
 msgstr "Ce&lla"
 
@@ -1189,39 +1189,39 @@ msgstr "Ce&lla"
 msgid "Cell bracket"
 msgstr "Cella zárójel"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7556
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7562
 msgid "Cell ends in a backslash"
 msgstr "A cella visszaperre (backslash-re) végződik"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:713
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:718
 msgid "Change &2d Display"
 msgstr "&2d-s megjelenítés változtatása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:714
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:719
 msgid "Change the 2d display algorithm used to display math output"
 msgstr "Matematikai jelek 2d-s megjelenítési algoritmusának megváltoztatása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5907
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5913
 msgid "Change variable"
 msgstr "Változócsere"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:828
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:833
 msgid "Change variable in integral or sum"
 msgstr "Változócsere integrálban vagy összegben"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5007
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5013
 msgid "Char poly"
 msgstr "Karakterisztikus polinom"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1116
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1121
 msgid "Check for Updates"
 msgstr "&Frissítések keresése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1117
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1122
 msgid "Check if a newer version of wxMaxima/Maxima exist."
 msgstr "A wxMaxima/Maxima újabb verziójának keresése."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1591
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1596
 msgid "Chi"
 msgstr "Khí"
 
@@ -1243,8 +1243,12 @@ msgstr "Betűtípus választás"
 msgid "Choose new plot format:"
 msgstr "Új ábrázolási mód választása:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6681
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6697
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:595
+msgid "Choose the parenthesis type for Matrices"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6687
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6703
 msgid "Classes:"
 msgstr "Osztályok:"
 
@@ -1284,21 +1288,21 @@ msgstr "Kód kiemelése: Szövegek"
 msgid "Code highlighting: Variables"
 msgstr "Kód kiemelése: Változók"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6829
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6835
 msgid "Col. names:"
 msgstr "Oszlopok nevei:"
 
 #: /home/gunter/src/wxmaxima/src/MatWiz.cpp:177
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5020
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5040
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5026
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5046
 msgid "Columns:"
 msgstr "Oszlopok:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:905
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:910
 msgid "Combine factorials in an expression"
 msgstr "Faktoriálisokkal számol egy kifejezésben"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7594
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7600
 msgid "Comma directly followed by a closing parenthesis"
 msgstr "A vesszőt közvetlenül egy bezáró zárójel követi"
 
@@ -1310,19 +1314,19 @@ msgstr "Vesszővel válassza el az x koordinátákat"
 msgid "Comma separated y coordinates"
 msgstr "Vesszővel válassza el az y koordinátákat"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5380
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5386
 #, fuzzy
 msgid "Comma-separated elements"
 msgstr "Vesszővel válassza el az x koordinátákat"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4690
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7225
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4696
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7231
 #, fuzzy
 msgid "Comma-separated equations"
 msgstr "Vesszővel válassza el az x koordinátákat"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4691
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7226
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4697
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7232
 #, fuzzy
 msgid "Comma-separated variables"
 msgstr "Vesszővel válassza el az x koordinátákat"
@@ -1347,11 +1351,11 @@ msgstr "A megjegyzés a kiválasztott szövegen kívül van"
 msgid "Comment selection\tCtrl+/"
 msgstr "Megjegyzés kiválasztása\tCtrl+/"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:635
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:640
 msgid "Complete Word\tCtrl+K"
 msgstr "Szó &kiegészítése\tCtrl+K"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:636
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:641
 msgid "Complete word"
 msgstr "Szó automatikus kiegészítése"
 
@@ -1363,37 +1367,37 @@ msgstr "A Maxima teljes leállítása és újraindítása"
 msgid "Complex infinity."
 msgstr "Komplex végtelen."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:868
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:873
 msgid "Compute continued fraction of a value"
 msgstr "Egy lista lánctörtté alakítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:806
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:811
 msgid "Compute the adjoint matrix"
 msgstr "Mátrix adjungáltjának kiszámolása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:795
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:800
 msgid "Compute the characteristic polynomial of a matrix"
 msgstr "Mátrix karakterisztikus polinomjának kiszámolása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:798
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:803
 msgid "Compute the determinant of a matrix"
 msgstr "Mátrix determinánsának kiszámolása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:855
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:860
 msgid "Compute the greatest common divisor"
 msgstr "Legnagyobb közös osztó kiszámolása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:792
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:797
 msgid "Compute the inverse of a matrix"
 msgstr "Mátrix inverzének kiszámolása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:858
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:863
 msgid "Compute the least common multiple (do load(functs) before using)"
 msgstr ""
 "Legkisebb közös többszörös kiszámolása (használata előtt hajtsd végre a "
 "load(functs) parancsot)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6881
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6887
 msgid "Condition:"
 msgstr "Feltétel:"
 
@@ -1423,11 +1427,11 @@ msgstr ""
 msgid "Constant"
 msgstr "Állandó"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1833
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1838
 msgid "Contour"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1852
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1857
 msgid "Contour lines for 3d plots"
 msgstr ""
 
@@ -1447,68 +1451,68 @@ msgstr ""
 msgid "Contour lines settings for the following 3d plots"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:889
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:894
 msgid "Contract Logarithms"
 msgstr "Loga&ritmikus összevonás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:896
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:901
 msgid "Convert binomials, beta and gamma function to factorials"
 msgstr "Binomiális-, béta- és gamma-függvények faktoriálissá alakítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:899
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:904
 msgid "Convert binomials, factorials and beta function to gamma function"
 msgstr "Binomiális-, faktoriális- és béta-függvényeket gamma-függvénnyé alakít"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:933
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:938
 msgid "Convert complex expression to polar form"
 msgstr "Komplex kifejezés exponenciálissá alakítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:930
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:935
 msgid "Convert complex expression to rect form"
 msgstr "Komplex kifejezés algebraivá alakítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:942
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:947
 msgid ""
 "Convert exponential function of imaginary argument to trigonometric form"
 msgstr "Komplex exponenciális függvény alakítása trigonometrikus formává"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:887
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:892
 msgid "Convert logarithm of product to sum of logarithms"
 msgstr "Szorzat logaritmusának logaritmusok összegévé való alakítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:890
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:895
 msgid "Convert sum of logarithms to logarithm of product"
 msgstr "Logaritmusok összegének szorzat logaritmusává való alakítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:895
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:900
 msgid "Convert to &Factorials"
 msgstr "&Faktoriálisokká alakítás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:898
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:903
 msgid "Convert to &Gamma"
 msgstr "&Gamma-függvénnyé alakítás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:932
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:937
 msgid "Convert to &Polarform"
 msgstr "Polárformává alakítás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:929
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:934
 msgid "Convert to &Rectform"
 msgstr "&Algebraivá alakítás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:922
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:927
 msgid "Convert trigonometric expression to canonical quasilinear form"
 msgstr "Trigonometrikus kifejezés kanonikus kvázilineáris formává alakítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:945
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:950
 msgid "Convert trigonometric functions to exponential form"
 msgstr "Trigonometrikus függvény exponenciális formává alakítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1041
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1046
 msgid "Converts a matrix to a list of lists"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1040
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1045
 msgid "Converts a nested list like [[1,2],[3,4]] to a matrix"
 msgstr ""
 
@@ -1528,11 +1532,11 @@ msgstr "Másolás"
 msgid "Copy Animation"
 msgstr "Animáció indítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:631
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:636
 msgid "Copy Previous Input\tCtrl+I"
 msgstr "E&lőző bemenet másolása\tCtrl+I"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:633
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:638
 msgid "Copy Previous Output\tCtrl+U"
 msgstr "E&lőző kimenet másolása\tCtrl+U"
 
@@ -1624,34 +1628,34 @@ msgstr ""
 msgid "Could not send an interrupt signal to maxima."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:986
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:991
 #, fuzzy
 msgid "Create a list"
 msgstr "Lista készítése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5441
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5447
 msgid "Create a list as a storage for the values of variables"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5396
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5402
 #, fuzzy
 msgid "Create a list from a rule"
 msgstr "Lista készítése kifejezésből"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5424
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5430
 #, fuzzy
 msgid "Create a list from another list"
 msgstr "Lista készítése kifejezésből"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:970
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:975
 msgid "Create a list from comma-separated elements"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:632
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:637
 msgid "Create a new cell with previous input"
 msgstr "Létrehoz egy új cellát az előző bemenet tartalmával"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:634
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:639
 msgid "Create a new cell with previous output"
 msgstr "Létrehoz egy új cellát az előző kimenet tartalmával"
 
@@ -1659,12 +1663,12 @@ msgstr "Létrehoz egy új cellát az előző kimenet tartalmával"
 msgid "Create f(a,b) on-the-fly, contents:"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:984
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:989
 #, fuzzy
 msgid "Create list"
 msgstr "Lista készítése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5379
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5385
 msgid "Create list from comma-separated elements"
 msgstr ""
 
@@ -1694,13 +1698,13 @@ msgstr "Cseh"
 msgid "Danish"
 msgstr "Dán"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6820
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6829
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6881
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6826
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6835
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6887
 msgid "Data Matrix:"
 msgstr "Adat mátrix:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6850
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6856
 msgid "Data file (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgstr "Adat fájlok (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 
@@ -1709,16 +1713,16 @@ msgstr "Adat fájlok (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgid "Data format"
 msgstr "Ábrázolási mód"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6681
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6697
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6713
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6722
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6731
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6741
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6750
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6759
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6768
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6810
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6687
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6703
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6719
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6728
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6737
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6747
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6756
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6765
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6774
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6816
 msgid "Data:"
 msgstr "Adat:"
 
@@ -1726,7 +1730,7 @@ msgstr "Adat:"
 msgid "Debug: watch maxima's stdout stream"
 msgstr "Hibakeresés: figyelje a Maxima kimenetét"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:865
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:870
 msgid "Decompose rational function to partial fractions"
 msgstr "Racionális törtfüggvény parciális törtekre bontása"
 
@@ -1760,17 +1764,17 @@ msgstr ""
 "Az animációk lejátszásának alapértelmezett sebessége (képkocka per "
 "másodperc)."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1053
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1058
 msgid ""
 "Defines if an animation is automatically started or only by clicking on it."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4616
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4626
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4622
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4632
 msgid "Delete"
 msgstr "Törlés"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:704
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:709
 msgid "Delete F&unction..."
 msgstr "Fü&ggvény törlése..."
 
@@ -1779,35 +1783,35 @@ msgstr "Fü&ggvény törlése..."
 msgid "Delete Selection"
 msgstr "Kijelölt rész törlése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:706
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:711
 msgid "Delete V&ariable..."
 msgstr "Vá&ltozó törlése..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:705
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:710
 msgid "Delete a function"
 msgstr "Függvény törlése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:707
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:712
 msgid "Delete a variable"
 msgstr "Változó törlése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:692
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:697
 msgid "Delete all values from memory"
 msgstr "Minden tartalom törlése a memóriából"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4626
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4632
 msgid "Delete function(s):"
 msgstr "Függvény(ek) törlése:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4616
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4622
 msgid "Delete variable(s):"
 msgstr "Változó(k) törlése:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1573
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1578
 msgid "Delta"
 msgstr "Delta"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5923
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5929
 msgid "Denom. deg:"
 msgstr "Nevező foka:"
 
@@ -1815,32 +1819,32 @@ msgstr "Nevező foka:"
 msgid "Depth:"
 msgstr "Fokszám:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4775
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4781
 msgid "Derivative:"
 msgstr "Derivált:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1453
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1458
 msgid "Deviation..."
 msgstr "Szórás..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:861
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:866
 msgid "Di&vide Polynomials..."
 msgstr "P&olinomok osztása..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1825
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1830
 msgid "Diagram title"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1413
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1418
 msgid "Diff..."
 msgstr "Differenciál..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6075
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7273
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6081
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7279
 msgid "Differentiate"
 msgstr "Differenciálás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:831
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:836
 msgid "Differentiate expression"
 msgstr "Kifejezés differenciálása"
 
@@ -1858,11 +1862,11 @@ msgstr "Irány:"
 msgid "Discrete plot"
 msgstr "Diszkrét pontok"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:716
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:721
 msgid "Display Te&X Form"
 msgstr "Meg&jelenítés TeX formátumban"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4530
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4536
 msgid "Display algorithm"
 msgstr "Megjelenítő algoritmus"
 
@@ -1871,20 +1875,20 @@ msgstr "Megjelenítő algoritmus"
 msgid "Display equations"
 msgstr "Egyenletet(rendszer) megoldása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:717
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:722
 msgid "Display last result in TeX form"
 msgstr "Kifejezés megjelenítése TeX formátumban"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:711
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:716
 msgid "Display time used for evaluation"
 msgstr "Megjeleníti mennyi idő alatt fut le az eljárás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6298
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6304
 #, fuzzy
 msgid "Displayed Precision"
 msgstr "Egyenletet(rendszer) megoldása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5977
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5983
 msgid "Divide"
 msgstr "Osztás"
 
@@ -1892,15 +1896,15 @@ msgstr "Osztás"
 msgid "Divide Cell"
 msgstr "Cella kettéosztása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:669
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:674
 msgid "Divide Cell\tCtrl+D"
 msgstr "Cella kettéosztása\tCtrl+D"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:862
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:867
 msgid "Divide numbers or polynomials"
 msgstr "Számok vagy polinomok osztása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:670
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:675
 msgid "Divide this input cell into two cells"
 msgstr "Bemeneti cella kettéosztása"
 
@@ -1908,12 +1912,12 @@ msgstr "Bemeneti cella kettéosztása"
 msgid "Division by 0."
 msgstr "Nullával való osztás."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5662
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5668
 #, fuzzy
 msgid "Do for each list element"
 msgstr "Függvény alkalmazása a listára"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8377
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8383
 #, c-format
 msgid "Do you want to save the changes you made in the document \"%s\"?"
 msgstr "Akarja menteni a változásokat az alábbi dokumentumban \"%s\"?"
@@ -1946,7 +1950,7 @@ msgstr "Dokumentum osztály TeX exportálásra:"
 msgid "Don't autosubscript after an underscore"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8382
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8388
 msgid "Don't save"
 msgstr "Nem ment"
 
@@ -1962,7 +1966,7 @@ msgstr ""
 msgid "Draw points"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:779
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:784
 msgid "E&quations"
 msgstr "&Egyenletek"
 
@@ -1970,15 +1974,15 @@ msgstr "&Egyenletek"
 msgid "E&xit\tCtrl+Q"
 msgstr "&Kilépés\tCtrl+Q"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:802
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:807
 msgid "Eige&nvectors"
 msgstr "Saját&vektorok"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:800
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:805
 msgid "Eigen&values"
 msgstr "&Sajátértékek"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5665
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5671
 msgid ""
 "Either a single expression or a comma-separated list of expressions between "
 "parenthesis. In the latter case the result of the last expression in the "
@@ -2009,30 +2013,30 @@ msgstr ""
 "Vagy pozitív, negatív vagy nulla.\n"
 "Általában a sign () jel eredményei, ha az előjel nem határozható meg."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5682
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5688
 #, fuzzy
 msgid "Element"
 msgstr "Csere:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5467
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5473
 #, fuzzy
 msgid "Element:"
 msgstr "Csere:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4809
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4815
 msgid "Eliminate"
 msgstr "Kiküszöbölés"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:748
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:753
 msgid "Eliminate a variable from a system of equations"
 msgstr "Változó kiküszöbölése egyenletrendszerből"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6312
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6318
 #, fuzzy
 msgid "Enable:"
 msgstr "Változó:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1671
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1676
 msgid "End of proof"
 msgstr "Bizonyítás vége"
 
@@ -2054,11 +2058,11 @@ msgstr ""
 msgid "End value of the parameter"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1079
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1084
 msgid "Engineering format (12.1e6 etc.)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6318
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6324
 msgid "Engineering format setup"
 msgstr ""
 
@@ -2070,27 +2074,27 @@ msgstr "Angol"
 msgid "Enhanced 3D settings:"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6713
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6722
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6731
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6741
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6750
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6759
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6768
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6810
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6820
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6719
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6728
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6737
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6747
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6756
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6765
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6774
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6816
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6826
 msgid "Enter Data"
 msgstr "Adatbevitel"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1486
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1491
 msgid "Enter Matrix..."
 msgstr "Mátrix bevitele..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:790
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:795
 msgid "Enter a matrix"
 msgstr "Mátrix bevitele"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5866
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5872
 msgid "Enter an equation for rational simplification:"
 msgstr "Írja be a listába felvenni kívánt algebrai egyenletet:"
 
@@ -2102,16 +2106,16 @@ msgstr "A változókat vesszővel válassza el egymástól."
 msgid "Enter evaluates cells"
 msgstr "A parancsok az Enter lenyomására hajtódnak végre"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4989
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4995
 msgid "Enter matrix"
 msgstr "Mátrix bevitele"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6212
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6218
 #, fuzzy
 msgid "Enter new animation frame rate [Hz, integer]:"
 msgstr "Az animáció alapértelmezett framerátája:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6288
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6294
 msgid "Enter new precision for bigfloats:"
 msgstr "Új pontosság bevitele:"
 
@@ -2119,16 +2123,16 @@ msgstr "Új pontosság bevitele:"
 msgid "Enter the path to the Maxima executable."
 msgstr "A Maxima elérési útjának beírása."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1574
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1579
 msgid "Epsilon"
 msgstr "Epszilon"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6130
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6136
 msgid "Epsilon:"
 msgstr "Epszilon:"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:128
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5604
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5610
 #, fuzzy
 msgid "Equation"
 msgstr "Egyenlet:"
@@ -2138,18 +2142,18 @@ msgstr "Egyenlet:"
 msgid "Equation %d:"
 msgstr "Egyenlet %d:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4678
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4703
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4872
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7213
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4684
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4709
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4878
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7219
 msgid "Equation(s):"
 msgstr "Egyenlet(ek):"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4721
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4741
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5904
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6830
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7238
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4727
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4747
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5910
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6836
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7244
 msgid "Equation:"
 msgstr "Egyenlet:"
 
@@ -2164,7 +2168,7 @@ msgstr ""
 "behelyettesíthetőek egymásba, kirajzoltathatóak kétdimenziós matematikai "
 "alakzatokként."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4805
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4811
 msgid "Equations:"
 msgstr "Egyenletek:"
 
@@ -2182,21 +2186,21 @@ msgstr "Egyenletek:"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2462
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2473
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2902
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8285
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8340
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8291
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8346
 msgid "Error"
 msgstr "Hiba"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4058
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4074
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4090
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4831
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4856
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4983
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4837
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4862
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4989
 msgid "Error!"
 msgstr "Hiba!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1576
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1581
 msgid "Eta"
 msgstr "Éta"
 
@@ -2204,20 +2208,20 @@ msgstr "Éta"
 msgid "Evaluate"
 msgstr "Kiértékelés"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:954
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:959
 msgid "Evaluate &Noun Forms"
 msgstr "K&iértékeletlen formák kiértékelése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:621
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:626
 msgid "Evaluate All Cells\tCtrl+Shift+R"
 msgstr "&Minden cella újraszámolása\tCtrl+Shift+R"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:619
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:624
 msgid "Evaluate All Visible Cells\tCtrl+R"
 msgstr "&Minden látható cella újraszámolása\tCtrl+R"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1219
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:617
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:622
 msgid "Evaluate Cell(s)"
 msgstr "C&ellák újraszámolása"
 
@@ -2225,13 +2229,13 @@ msgstr "C&ellák újraszámolása"
 msgid "Evaluate Cells Above"
 msgstr "Az aktuális hely feletti cellák újraszámolása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:623
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:628
 msgid "Evaluate Cells Above\tCtrl+Shift+P"
 msgstr "Az aktuális hely feletti cellák újraszámolása\tCtrl+Shift+P"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1221
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1323
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:625
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:630
 msgid "Evaluate Cells Below"
 msgstr "Az aktuális hely alatti cellák újraszámolása"
 
@@ -2257,19 +2261,19 @@ msgstr "Al-alfejezet kiértékelése\tShift+Ctrl+Enter"
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr "Alfejezet kiértékelése\tShift+Ctrl+Enter"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:618
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:623
 msgid "Evaluate active or selected cell(s)"
 msgstr "Kijelölt cellák újraszámolása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:622
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:627
 msgid "Evaluate all cells in the document"
 msgstr "A dokumentum összes cellájának újraszámolása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:955
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:960
 msgid "Evaluate all noun forms in expression"
 msgstr "Nem kiértékelésre szánt formákat is kiértékel"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:620
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:625
 msgid "Evaluate all visible cells in the document"
 msgstr "A dokumentum összes látható cellájának újraszámolása"
 
@@ -2291,7 +2295,7 @@ msgstr "Kiértékelés eddig"
 msgid "Evaluate to point"
 msgstr "Kiértékelés eddig"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6619
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6625
 msgid "Example"
 msgstr "Példa"
 
@@ -2304,7 +2308,7 @@ msgstr "Példaszöveg"
 msgid "Examples:"
 msgstr "Példák:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:998
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1003
 msgid "Execute a command for each element of the list"
 msgstr ""
 
@@ -2312,11 +2316,11 @@ msgstr ""
 msgid "Exit wxMaxima"
 msgstr "Kilépés a wxMaximából"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1395
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1400
 msgid "Expand"
 msgstr "Felbont"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1405
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1410
 msgid "Expand (tr)"
 msgstr "Felbont (tr)"
 
@@ -2324,15 +2328,15 @@ msgstr "Felbont (tr)"
 msgid "Expand Expression"
 msgstr "Kifejezés felbontása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:886
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:891
 msgid "Expand Logarithms"
 msgstr "&Logaritmikus felbontás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:885
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:890
 msgid "Expand an expression"
 msgstr "Egy kifejezés felbontása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:919
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:924
 msgid "Expand trigonometric expression"
 msgstr "Trigonometrikus kifejezés felbontása"
 
@@ -2381,7 +2385,7 @@ msgid "Exporting..."
 msgstr "Exportálás..."
 
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:33
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1810
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1815
 msgid "Expression"
 msgstr "Kifejezés"
 
@@ -2411,65 +2415,65 @@ msgstr "Függvény(ek):"
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:37
 #: /home/gunter/src/wxmaxima/src/SubstituteWiz.cpp:31
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:28
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4888
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5077
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5990
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6006
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6036
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6054
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6072
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6127
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6163
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7270
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4894
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5083
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5996
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6012
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6042
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6060
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6078
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6133
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6169
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7276
 msgid "Expression:"
 msgstr "Kifejezés:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1014
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1019
 #, fuzzy
 msgid "Extract Elements"
 msgstr "Csere:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5626
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5632
 msgid "Extract a variable's value from a list of variable values"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1011
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1016
 msgid "Extract an actual value for a variable"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5357
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5363
 #, fuzzy
 msgid "Extract function arguments"
 msgstr "Függvénynevek"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1016
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1021
 #, fuzzy
 msgid "Extract list Elements"
 msgstr "Lista készítése kifejezésből"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:982
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:987
 #, fuzzy
 msgid "Extract the argument list from a function call"
 msgstr "Lista készítése kifejezésből"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5542
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5548
 #, fuzzy
 msgid "Extract the last n elements from a list"
 msgstr "Lista készítése kifejezésből"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5559
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5565
 msgid "Extract the nth element from a list. Slow for n>>0"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1012
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1017
 msgid "Extract the value for one variable assigned in a list"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1393
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1398
 msgid "Factor"
 msgstr "Faktorizál"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:881
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:886
 msgid "Factor Complex"
 msgstr "K&omplex faktorizáció"
 
@@ -2477,15 +2481,15 @@ msgstr "K&omplex faktorizáció"
 msgid "Factor Expression"
 msgstr "Kifejezés faktorizálása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:880
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:885
 msgid "Factor an expression"
 msgstr "Egy kifejezés faktorizálása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:882
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:887
 msgid "Factor an expression in Gaussian numbers"
 msgstr "Kifejezés faktorizálása Gauss-egészekre"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:907
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:912
 msgid "Factorials and &Gamma"
 msgstr "&Faktoriális- és gamma-függvény"
 
@@ -2513,8 +2517,8 @@ msgstr "Fájl"
 msgid "File could not be opened"
 msgstr "A fájlt nem lehetett megnyitni"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7406
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7459
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7412
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7465
 msgid "File not found"
 msgstr "A fájl nem található"
 
@@ -2525,8 +2529,8 @@ msgstr "A fájl nem található"
 msgid "File opened"
 msgstr "Fájl megnyitva"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7406
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7459
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7412
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7465
 msgid "File you tried to open does not exist."
 msgstr "A megnyitni próbált fájl nem található."
 
@@ -2534,7 +2538,7 @@ msgstr "A megnyitni próbált fájl nem található."
 msgid "File:"
 msgstr "Fájl:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1844
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1849
 msgid "Fill color"
 msgstr ""
 
@@ -2546,11 +2550,11 @@ msgstr "Keresés..."
 msgid "Find\tCtrl+F"
 msgstr "Ke&resés...\tCtrl+F"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:832
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:837
 msgid "Find &Limit..."
 msgstr "&Határérték számolása..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:835
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:840
 msgid "Find Minimum..."
 msgstr "&Minimum keresése..."
 
@@ -2558,27 +2562,27 @@ msgstr "&Minimum keresése..."
 msgid "Find Root..."
 msgstr "Megoldás numerikusan..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:836
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:841
 msgid "Find a (unconstrained) minimum of an expression"
 msgstr "Kifejezés minimumának meghatározása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:833
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:838
 msgid "Find a limit of an expression"
 msgstr "Kifejezés határértékének számolása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:731
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:736
 msgid "Find a root of an equation on an interval"
 msgstr "Egyenlet adott intervallumba eső gyökének meghatározása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:733
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:738
 msgid "Find all roots of a polynomial"
 msgstr "Polinom összes gyökének meghatározása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:736
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:741
 msgid "Find all roots of a polynomial (bfloat)"
 msgstr "Polinom összes gyökének meghatározása (bfloat)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4404
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4410
 msgid "Find and Replace"
 msgstr "Keresés és csere"
 
@@ -2587,24 +2591,24 @@ msgstr "Keresés és csere"
 msgid "Find and replace"
 msgstr "Keresés és csere"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:801
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:806
 msgid "Find eigenvalues of a matrix"
 msgstr "Mátrix sajátértékeinek kiszámolása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:803
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:808
 msgid "Find eigenvectors of a matrix"
 msgstr "Mátrix sajátvektorainak kiszámolása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6133
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6139
 msgid "Find minimum"
 msgstr "Minimum keresése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:739
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:744
 msgid "Find real roots of a polynomial"
 msgstr "Polinom valós gyökeinek meghatározása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4725
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7242
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4731
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7248
 msgid "Find root"
 msgstr "Megoldás numerikusan"
 
@@ -2612,7 +2616,7 @@ msgstr "Megoldás numerikusan"
 msgid "Find:"
 msgstr "Keresés:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1083
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1088
 msgid "Fine-tune the display of engineering-format numbers"
 msgstr ""
 
@@ -2620,7 +2624,7 @@ msgstr ""
 msgid "Finnish"
 msgstr "Finn"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1006
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1011
 msgid "First"
 msgstr ""
 
@@ -2633,11 +2637,11 @@ msgstr "Mentés előtt rögzíti a (%i, %o) indexek hivatkozását"
 msgid "Fixed font in text controls"
 msgstr "Rögzített szélességű betűtípus a bemeneti sorban"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:657
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:662
 msgid "Fold All\tCtrl+Alt+["
 msgstr "&Minden kiválasztása\tCtrl+Alt+["
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:658
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:663
 msgid "Fold all sections"
 msgstr "Minden fejezet elrejtése"
 
@@ -2738,7 +2742,7 @@ msgstr "A fájlt nem lehetett megnyitni"
 msgid "Frame counter start"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6212
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6218
 msgid "Frame rate"
 msgstr ""
 
@@ -2753,21 +2757,21 @@ msgstr "Francia"
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:38
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:47
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:34
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5078
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6163
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5084
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6169
 msgid "From:"
 msgstr "Mettől:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:608
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:613
 msgid "Full Screen\tAlt+Enter"
 msgstr "&Teljes képernyő\tAlt+Enter"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4552
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5588
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4558
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5594
 msgid "Function"
 msgstr "Függvény"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5640
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5646
 #, fuzzy
 msgid "Function name"
 msgstr "Függvénynevek"
@@ -2776,34 +2780,34 @@ msgstr "Függvénynevek"
 msgid "Function names"
 msgstr "Függvénynevek"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4872
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4878
 msgid "Function(s):"
 msgstr "Függvény(ek):"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4741
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4952
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5061
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5096
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4747
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4958
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5067
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5102
 msgid "Function:"
 msgstr "Függvény:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:949
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:954
 msgid "Functions for complex simplification"
 msgstr "Eljárások komplex átalakításokra"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:909
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:914
 msgid "Functions for simplifying factorials and gamma function"
 msgstr "Eljárások faktoriális- és gamma-függvény átalakításokra"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:926
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:931
 msgid "Functions for simplifying trigonometric expressions"
 msgstr "Eljárások trigonometrikus átalakításokra"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5961
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5967
 msgid "GCD"
 msgstr "Legnagyobb közös osztó"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7360
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7366
 msgid "GIF image (*.gif)|*.gif"
 msgstr "GIF képfájl (*.gif)|*.gif"
 
@@ -2811,7 +2815,7 @@ msgstr "GIF képfájl (*.gif)|*.gif"
 msgid "Galician"
 msgstr "Galíciai"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1572
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1577
 msgid "Gamma"
 msgstr "Gamma"
 
@@ -2823,34 +2827,34 @@ msgstr "Általános matematika"
 msgid "General Math\tAlt+Shift+M"
 msgstr "Általános matematika\tAlt+Shift+M"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5023
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5043
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5029
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5049
 msgid "Generate Matrix"
 msgstr "Mátrix generálása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:786
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:791
 msgid "Generate Matrix from Expression..."
 msgstr "Mátrix &generálása kifejezésből..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:784
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:789
 msgid "Generate a matrix from a 2-dimensional array"
 msgstr "Mátrix generálása kétdimenziós sorozatból"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:787
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:792
 msgid "Generate a matrix from a lambda expression"
 msgstr "Mátrix generálása kétdimenziós kifejezésből"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:976
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:981
 msgid "Generate a new list using a lists' elements"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:979
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:984
 msgid ""
 "Generate a storage for variable values that can be introduced into equations "
 "at any time"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:973
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:978
 msgid "Generate list elements using a rule"
 msgstr ""
 
@@ -2858,35 +2862,35 @@ msgstr ""
 msgid "German"
 msgstr "Német"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:938
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:943
 msgid "Get &Imaginary Part"
 msgstr "&Képzetes rész"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:838
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:843
 msgid "Get &Series..."
 msgstr "&Taylor- és hatványsor..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:849
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:854
 msgid "Get Laplace transformation of an expression"
 msgstr "Kifejezés Laplace-transzformáltja"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:935
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:940
 msgid "Get Real P&art"
 msgstr "&Valós rész"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:852
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:857
 msgid "Get inverse Laplace transformation of an expression"
 msgstr "Kifejezés inverz Laplace-transzformáltja"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:839
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:844
 msgid "Get the Taylor or power series of expression"
 msgstr "Függvény Taylor- és hatványsora"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:939
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:944
 msgid "Get the imaginary part of complex expression"
 msgstr "Komplex kifejezés képzetes része"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:936
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:941
 msgid "Get the real part of complex expression"
 msgstr "Komplex kifejezés valós része"
 
@@ -2914,7 +2918,7 @@ msgstr "Görög betűk\tAlt+Shift+G"
 msgid "Greek constants"
 msgstr "Görög betűk"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1848
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1853
 #, fuzzy
 msgid "Grid"
 msgstr "Háló:"
@@ -2993,11 +2997,11 @@ msgstr ""
 msgid "Highlight (dpart)"
 msgstr "Kiemelés"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6684
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6690
 msgid "Histogram"
 msgstr "Hisztogram"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1471
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1476
 msgid "Histogram..."
 msgstr "Hisztogram..."
 
@@ -3020,7 +3024,7 @@ msgstr ""
 "jelentkezik: nyomjuk meg a fel vagy le nyilat mozgatásához. Ha mindeközben a "
 "Shift gombot lenyomva tartjuk, kijelöljük az érintett részeket."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6298
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6304
 msgid "How many digits to show:"
 msgstr ""
 
@@ -3032,15 +3036,15 @@ msgstr ""
 msgid "Hungarian"
 msgstr "Magyar"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4761
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4767
 msgid "IC1"
 msgstr "Kezdetiérték-probléma (1)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4778
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4784
 msgid "IC2"
 msgstr "Kezdetiérték-probléma (2)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1663
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1668
 msgid "Identical to"
 msgstr "Azonos"
 
@@ -3122,15 +3126,15 @@ msgstr ""
 "használatát."
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:5233
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1731
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1736
 msgid "Image"
 msgstr "Kép"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8050
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8056
 msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgstr "Kép fájlok (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1814
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1819
 msgid "Implicit Plot"
 msgstr ""
 
@@ -3184,7 +3188,7 @@ msgstr ""
 "hogy a kifejezés fölé tenné. Ez javíthatja az olvashatóságot egyes "
 "betűtípusok és rövid indexek esetén."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6882
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6888
 msgid "Include columns:"
 msgstr "Tartalmazott oszlopok:"
 
@@ -3192,19 +3196,19 @@ msgstr "Tartalmazott oszlopok:"
 msgid "Incremental Search"
 msgstr "Azonnali keresés"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5393
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5399
 msgid "Index End:"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5393
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5399
 msgid "Index Start:"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5393
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5399
 msgid "Index Step:"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5392
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5398
 #, fuzzy
 msgid "Index variable:"
 msgstr "Új változó:"
@@ -3223,23 +3227,23 @@ msgstr "Kicsivel nulla alatt."
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:241
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:138
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:148
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1632
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1637
 msgid "Infinity"
 msgstr "Végtelen"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1112
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1117
 msgid "Info about Maxima build"
 msgstr "Információ a Maxima fordításáról"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6129
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6135
 msgid "Initial Estimates:"
 msgstr "Kezdeti becslések:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:756
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:761
 msgid "Initial Value Problem (&1)..."
 msgstr "Kezdetiérték-probléma (&1)..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:759
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:764
 msgid "Initial Value Problem (&2)..."
 msgstr "Kezdetiérték-probléma (&2)..."
 
@@ -3255,11 +3259,11 @@ msgstr "Beszúrás"
 msgid "Insert % before an operator at the beginning of a cell"
 msgstr "Beszúr egy %-jelet a cella elején található műveleti jel elé"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:646
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:651
 msgid "Insert &Section Cell\tCtrl+3"
 msgstr "&Fejezetcella beszúrása\tCtrl+3"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:642
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:647
 msgid "Insert &Text Cell\tCtrl+1"
 msgstr "&Szövegcella beszúrása\tCtrl+1"
 
@@ -3267,28 +3271,28 @@ msgstr "&Szövegcella beszúrása\tCtrl+1"
 msgid "Insert Cell\tAlt+Shift+C"
 msgstr "Cella beillesztése\tAlt+Shift+C"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8048
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8054
 msgid "Insert Image"
 msgstr "Kép beszúrása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:654
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:659
 msgid "Insert Image..."
 msgstr "Kép beszú&rása..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:640
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:645
 #, fuzzy
 msgid "Insert Input &Cell\tCtrl+0"
 msgstr "&Bemeneti cella beszúrása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:652
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:657
 msgid "Insert Page Break"
 msgstr "La&ptörés beszúrása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:648
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:653
 msgid "Insert S&ubsection Cell\tCtrl+4"
 msgstr "&Alfejezetcella beszúrása\tCtrl+4"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:650
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:655
 msgid "Insert S&ubsubsection Cell\tCtrl+5"
 msgstr "&Al-alfejezetcella beszúrása\tCtrl+5"
 
@@ -3304,7 +3308,7 @@ msgstr "&Alfejezetcella beszúrása"
 msgid "Insert Subsubsection Cell"
 msgstr "&Al-alfejezetcella beszúrása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:644
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:649
 msgid "Insert T&itle Cell\tCtrl+2"
 msgstr "&Címcella beszúrása\tCtrl+2"
 
@@ -3316,35 +3320,35 @@ msgstr "&Szövegcella beszúrása"
 msgid "Insert Title Cell"
 msgstr "&Címcella beszúrása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:641
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:646
 msgid "Insert a new input cell"
 msgstr "Új bemeneti cella beszúrása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:647
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:652
 msgid "Insert a new section cell"
 msgstr "Új fejezetcella beszúrása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:649
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:654
 msgid "Insert a new subsection cell"
 msgstr "Új alfejezetcella beszúrása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:651
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:656
 msgid "Insert a new subsubsection cell"
 msgstr "Új al-alfejezetcella beszúrása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:643
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:648
 msgid "Insert a new text cell"
 msgstr "Új szövegcella beszúrása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:645
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:650
 msgid "Insert a new title cell"
 msgstr "Új címcella beszúrása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:653
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:658
 msgid "Insert a page break"
 msgstr "Laptörés beszúrása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:655
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:660
 msgid "Insert image"
 msgstr "Kép beszúrása"
 
@@ -3352,34 +3356,34 @@ msgstr "Kép beszúrása"
 msgid "Integers and single letters"
 msgstr "Egészek és egyedi betűk"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1653
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1658
 msgid "Integral sign"
 msgstr "Integráljel"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5903
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5909
 msgid "Integral/Sum:"
 msgstr "Integrál/összeg:"
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:68
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6023
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7257
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6029
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7263
 msgid "Integrate"
 msgstr "Integrál"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6009
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6015
 msgid "Integrate (risch)"
 msgstr "Integrál (Risch)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:823
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:828
 msgid "Integrate expression"
 msgstr "Függvény integrálása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:825
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:830
 msgid "Integrate expression with Risch algorithm"
 msgstr "Függvény integrálása Risch-algoritmussal"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1302
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1415
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1420
 msgid "Integrate..."
 msgstr "Integrál..."
 
@@ -3387,17 +3391,17 @@ msgstr "Integrál..."
 msgid "Intelligently hide cell brackets"
 msgstr "A cella-zárójelek intelligens elrejtése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1024
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1029
 #, fuzzy
 msgid "Interleave"
 msgstr "Integrál"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1025
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1030
 #, fuzzy
 msgid "Interleave the values of two lists"
 msgstr "Integrál"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5740
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5746
 #, fuzzy
 msgid "Interleave two lists"
 msgstr "Integrál"
@@ -3406,8 +3410,8 @@ msgstr "Integrál"
 msgid "Interrupt"
 msgstr "Megszakítás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:683
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:687
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:688
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:692
 msgid "Interrupt current computation"
 msgstr "Jelenlegi számítás megszakítása"
 
@@ -3424,11 +3428,11 @@ msgstr ""
 msgid "Interrupting maxima: %s"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5607
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5613
 msgid "Introduce a list of actual values into an equation"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:992
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:997
 msgid "Introduce the actual values for variables stored in the list"
 msgstr ""
 
@@ -3442,15 +3446,15 @@ msgstr ""
 "\n"
 "Írja be a Maxima futtatható fájl elérési útját újra."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6057
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6063
 msgid "Inverse Laplace"
 msgstr "Inverz Laplace"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:851
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:856
 msgid "Inverse Laplace T&ransform..."
 msgstr "I&nverz Laplace-transzformáció..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1578
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1583
 msgid "Iota"
 msgstr "Ióta"
 
@@ -3503,12 +3507,12 @@ msgstr "Olasz"
 msgid "Italic"
 msgstr "Dőlt"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5700
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5706
 msgid "Item"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5420
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5658
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5426
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5664
 msgid "Iterator:"
 msgstr ""
 
@@ -3516,11 +3520,11 @@ msgstr ""
 msgid "Japanese"
 msgstr "Japán"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:719
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:724
 msgid "Jump to first error"
 msgstr "Ugrás az első hibára"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:720
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:725
 msgid "Jump to the first cell maxima has reported an error in."
 msgstr "Ugrás a Maxima által jelzett első hibás cellára."
 
@@ -3528,7 +3532,7 @@ msgstr "Ugrás a Maxima által jelzett első hibás cellára."
 msgid "Kabyle"
 msgstr "Kabil"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1579
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1584
 msgid "Kappa"
 msgstr "Kappa"
 
@@ -3537,8 +3541,8 @@ msgstr "Kappa"
 msgid "Keep percent sign with special symbols: %e, %i, etc."
 msgstr "Százalékjel használata speciális , mint például %e, %i, stb."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5470
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5945
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5476
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5951
 msgid "LCM"
 msgstr "Legkisebb közös többszörös"
 
@@ -3556,7 +3560,7 @@ msgstr ""
 msgid "Label width:"
 msgstr "Címke szélesség:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1580
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1585
 msgid "Lambda"
 msgstr "Lambda"
 
@@ -3568,44 +3572,44 @@ msgstr "A wxMaxima grafikus felület nyelve."
 msgid "Language:"
 msgstr "Nyelv:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6039
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6045
 msgid "Laplace"
 msgstr "Laplace"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:848
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:853
 msgid "Laplace &Transform..."
 msgstr "L&aplace-transzformáció..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1009
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1014
 msgid "Last"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1010
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1015
 #, fuzzy
 msgid "Last n"
 msgstr "Erre a listára:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1668
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1673
 msgid "Leads to"
 msgstr "Vezet"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:857
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:862
 msgid "Least Common Multiple..."
 msgstr "L&egkisebb közös többszörös..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6833
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6839
 msgid "Least Squares Fit"
 msgstr "Legkisebb négyzetes közelítés"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1466
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1471
 msgid "Least Squares Fit..."
 msgstr "Legkisebb négyzetes közelítés..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:773
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:778
 msgid "Left side to the \"=\""
 msgstr "A \"=\" bal oldala."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1031
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1036
 msgid "Length"
 msgstr ""
 
@@ -3621,31 +3625,31 @@ msgstr ""
 "elérési útját a maxima_userdir parancs végrehajtásával tudhatjuk meg"
 
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:69
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6114
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6120
 msgid "Limit"
 msgstr "Határérték"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1417
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1422
 msgid "Limit..."
 msgstr "Határérték..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1840
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1845
 msgid "Line color"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1464
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1469
 msgid "Linear Regression..."
 msgstr "Lineáris regresszió..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5495
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5519
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5539
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5556
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5588
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5622
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5640
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5682
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5700
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5501
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5525
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5545
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5562
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5594
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5628
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5646
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5688
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5706
 #, fuzzy
 msgid "List"
 msgstr "Erre a listára:"
@@ -3655,29 +3659,29 @@ msgstr "Erre a listára:"
 msgid "List name:"
 msgstr "Erre a listára:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5604
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5610
 msgid "List with values"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5061
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5067
 msgid "List(s):"
 msgstr "Listák:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5718
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5736
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5724
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5742
 #, fuzzy
 msgid "List1"
 msgstr "Erre a listára:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5718
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5736
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5724
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5742
 #, fuzzy
 msgid "List2"
 msgstr "Erre a listára:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5096
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5467
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5658
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5102
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5473
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5664
 msgid "List:"
 msgstr "Erre a listára:"
 
@@ -3706,12 +3710,12 @@ msgstr "Maxima csomagfájl betöltése"
 msgid "Load style from file"
 msgstr "Stílusfájl betöltése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1670
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1675
 msgid "Long Right arrow"
 msgstr "Hosszú jobbra nyíl"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4722
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7239
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4728
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7245
 msgid "Lower bound:"
 msgstr "Alsó végpont:"
 
@@ -3719,7 +3723,7 @@ msgstr "Alsó végpont:"
 msgid "MAXIMA RESPONSE:"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:816
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:821
 msgid "Ma&p to Matrix..."
 msgstr "Mátrix leképe&zése..."
 
@@ -3727,31 +3731,31 @@ msgstr "Mátrix leképe&zése..."
 msgid "Main Toolbar\tAlt+Shift+B"
 msgstr "Fő eszköztár\tAlt+Shift+B"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:810
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:815
 msgid "Make &List..."
 msgstr "&Lista készítése..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5081
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5087
 msgid "Make list"
 msgstr "Lista készítése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:811
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:816
 msgid "Make list from expression"
 msgstr "Lista készítése kifejezésből"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:952
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:957
 msgid "Make substitution in expression"
 msgstr "Behelyettesítés kifejezésbe"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5064
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5070
 msgid "Map"
 msgstr "Leképezés"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:815
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:820
 msgid "Map function to a list"
 msgstr "Lista leképezése listába"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:817
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:822
 msgid "Map function to a matrix"
 msgstr "Mátrix leképezése mátrixba"
 
@@ -3818,24 +3822,29 @@ msgstr "Matematikai szimbólumok"
 msgid "Maths"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4971
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4977
 msgid "Matrix"
 msgstr "Mátrix"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4955
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4961
 msgid "Matrix map"
 msgstr "Mátrix leképezés"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6882
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6888
 msgid "Matrix name:"
 msgstr "Mátrix neve:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1041
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:595
+#, fuzzy
+msgid "Matrix parenthesis"
+msgstr "Hiányzó zárójel"
+
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1046
 msgid "Matrix to nested List"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4952
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5004
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4958
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5010
 msgid "Matrix:"
 msgstr "Mátrix:"
 
@@ -3890,7 +3899,7 @@ msgstr ""
 msgid "Maxima commands to be executed every time wxMaxima starts Maxima: "
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7780
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7786
 msgid "Maxima has finished calculating."
 msgstr "A Maxima befejezte a számolást."
 
@@ -3979,7 +3988,7 @@ msgstr ""
 "A Maxima a ':' jelet használja változó értékadására ('a : 3;') és a ':=' "
 "jelet függvény definiálására ('f(x) := x^2;')."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6589
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6595
 msgid "Maxima version: "
 msgstr "Maxima verzió: "
 
@@ -4094,7 +4103,7 @@ msgstr ""
 "nincs hatással a wxMaximára, mely a munkalapot megjeleníti.\n"
 "Ez az ikon jelzi az adatforgalmat a Maxima és a wxMaxima között."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6314
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6320
 msgid "Maximum absolute value printed without exponent:"
 msgstr ""
 
@@ -4102,28 +4111,28 @@ msgstr ""
 msgid "Maximum displayed number of digits:"
 msgstr "Maximálisan megjelenített számjegyek száma:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6315
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6321
 #, fuzzy
 msgid "Maximum number of digits to be displayed:"
 msgstr "Maximálisan megjelenített számjegyek száma:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1460
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1465
 msgid "Mean Difference Test..."
 msgstr "Kétmintás t-próba..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1458
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1463
 msgid "Mean Test..."
 msgstr "Egymintás t-próba..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1447
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1452
 msgid "Mean..."
 msgstr "Átlag..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6777
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6783
 msgid "Mean:"
 msgstr "Átlag:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1449
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1454
 msgid "Median..."
 msgstr "Medián..."
 
@@ -4131,11 +4140,11 @@ msgstr "Medián..."
 msgid "Merge Cells"
 msgstr "Cellák egyesítése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:667
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:672
 msgid "Merge Cells\tCtrl+M"
 msgstr "Cellák egyesítése\tCtrl+M"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:668
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:673
 msgid "Merge the text from two input cells into one"
 msgstr "Két bemeneti cella tartalmának összefűzése"
 
@@ -4147,16 +4156,16 @@ msgstr "Üzenet a Maxima kimenetéről: "
 msgid "Method:"
 msgstr "Eljárás:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6313
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6319
 msgid "Minimum absolute value printed without exponent:"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7589
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7590
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7595
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7596
 msgid "Mismatched parenthesis"
 msgstr "Hiányzó zárójel"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5878
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5884
 msgid "Modulus"
 msgstr "Modulus"
 
@@ -4196,7 +4205,7 @@ msgid ""
 msgstr ""
 "A legtöbb kérdés elkerülhető az assume() és a declare() parancs használatával"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1581
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1586
 msgid "Mu"
 msgstr "Mű"
 
@@ -4205,12 +4214,12 @@ msgid "Name of the parameter"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MatWiz.cpp:190
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5020
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5040
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5026
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5046
 msgid "Name:"
 msgstr "Név:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1040
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1045
 msgid "Nested list to Matrix"
 msgstr ""
 
@@ -4240,13 +4249,13 @@ msgstr "Új sorok: Ugrás a szövegre"
 msgid "New value:"
 msgstr "Új érték:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5904
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6037
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6055
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5910
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6043
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6061
 msgid "New variable:"
 msgstr "Új változó:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:664
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:669
 msgid "Next Command\tAlt+Down"
 msgstr "Kö&vetkező parancs\tAlt+Down"
 
@@ -4263,12 +4272,12 @@ msgstr "Nincs"
 msgid "No contour lines"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7750
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7756
 msgid "No dollar ($) or semicolon (;) at the end of command"
 msgstr "Nincs dollár ($) vagy pontosvessző (;) a parancsok végén"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4447
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4470
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4453
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4476
 msgid "No matches found!"
 msgstr "A kifejezés nem található!"
 
@@ -4280,7 +4289,7 @@ msgstr ""
 msgid "No points"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1462
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1467
 msgid "Normality Test..."
 msgstr "Normalitás vizsgálat..."
 
@@ -4335,12 +4344,12 @@ msgstr ""
 msgid "Norwegian"
 msgstr "Norvég"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4983
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4989
 msgid "Not a valid matrix dimension!"
 msgstr "Hibás mátrixdimenzió!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4831
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4856
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4837
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4862
 msgid "Not a valid number of equations!"
 msgstr "Az egyenletek száma hibás!"
 
@@ -4348,25 +4357,25 @@ msgstr "Az egyenletek száma hibás!"
 msgid "Not connected to maxima"
 msgstr "Nem csatlakozott a Maximához!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6591
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6597
 msgid "Not connected."
 msgstr "Nem csatlakozott."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1582
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1587
 msgid "Nu"
 msgstr "Nű"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5922
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5928
 msgid "Num. deg:"
 msgstr "Számláló foka:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5539
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5545
 #, fuzzy
 msgid "Number of elements"
 msgstr "Egyenletek száma:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4822
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4847
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4828
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4853
 msgid "Number of equations:"
 msgstr "Egyenletek száma:"
 
@@ -4434,17 +4443,17 @@ msgstr "OK"
 msgid "Old value:"
 msgstr "Régi érték:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5903
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6036
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6054
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5909
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6042
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6060
 msgid "Old variable:"
 msgstr "Régi változó:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1593
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1598
 msgid "Omega"
 msgstr "Ómega"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1584
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1589
 msgid "Omicron"
 msgstr "Omikron"
 
@@ -4463,11 +4472,11 @@ msgstr ""
 "hibacsatornáján fogja küldeni. Ha ez a opció be van állítva, mindenképpen "
 "figyelni fogjuk a Maxima rendszerkimeneti csatornáját."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6780
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6786
 msgid "One sample t-test"
 msgstr "Egymintás t-próba"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1109
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1114
 msgid "Online tutorials"
 msgstr "Online ismertetők"
 
@@ -4503,7 +4512,7 @@ msgstr "Új ablak"
 msgid "Open document"
 msgstr "Dokumentum megnyitása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6848
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6854
 msgid "Open matrix"
 msgstr "Mátrix megnyitása"
 
@@ -4528,7 +4537,7 @@ msgstr "Beállítások"
 msgid "Options:"
 msgstr "Beállítások:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5563
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5569
 msgid ""
 "Other than declared arrays in lists there is no way to jump to determine the "
 "address of the nth element other than iterating from one element to the "
@@ -4554,12 +4563,12 @@ msgstr "Elavult cellák"
 msgid "Output labels"
 msgstr "Kimeneti címkék"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:841
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:846
 msgid "P&ade Approximation..."
 msgstr "Padé-appro&ximáció..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4313
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7341
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7347
 msgid ""
 "PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*."
 "bmp|Portable animap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X "
@@ -4569,23 +4578,23 @@ msgstr ""
 "*.bmp|Hordozható animap (*.pnm)|*.pnm|Címkézett kép fájlformátum (*.tif)|*."
 "tif|X pixmap (*.xpm)|*.xpm"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5925
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5931
 msgid "Pade approximation"
 msgstr "Padé-approximáció"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:842
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:847
 msgid "Pade approximation of a Taylor series"
 msgstr "Taylor-sor Padé-approximációja"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1733
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1738
 msgid "Pagebreak"
 msgstr "Laptörés"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1666
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1671
 msgid "Parallel to"
 msgstr "Párhuzamos"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1817
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1822
 #, fuzzy
 msgid "Parametric Plot"
 msgstr "Paraméteres ábrázolás"
@@ -4595,11 +4604,11 @@ msgstr "Paraméteres ábrázolás"
 msgid "Parametric plot"
 msgstr "Paraméteres ábrázolás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:864
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:869
 msgid "Partial &Fractions..."
 msgstr "&Parciális törtek..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5993
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5999
 msgid "Partial fractions"
 msgstr "Parciális törtek"
 
@@ -4607,7 +4616,7 @@ msgstr "Parciális törtek"
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "A dokumentum egyes részei nem töltődtek be!"
 
-#: /home/gunter/src/wxmaxima/src/MathParser.cpp:993
+#: /home/gunter/src/wxmaxima/src/MathParser.cpp:1000
 msgid ""
 "Parts of the document will not be loaded correctly:\n"
 "Found unknown XML Tag name "
@@ -4633,19 +4642,19 @@ msgstr "Szöveg beillesztése vágólapról"
 msgid "Paste text from clipboard"
 msgstr "Szöveg beillesztése vágólapról"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1667
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1672
 msgid "Perpendicular to"
 msgstr "Merőleges"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1590
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1595
 msgid "Phi"
 msgstr "Fí"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1585
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1590
 msgid "Pi"
 msgstr "Pí"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1477
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1482
 msgid "Piechart..."
 msgstr "Tortadiagram..."
 
@@ -4657,27 +4666,27 @@ msgstr "Kérem állítsa be a wxMaximát a 'Szerkesztés->Beállítás' menüpon
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "A változások életbe lépéséhez indítsa újra a wxMaximát!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1045
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1050
 msgid "Plot &2d..."
 msgstr "&2d-s ábrázolás..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1047
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1052
 msgid "Plot &3d..."
 msgstr "&3d-s ábrázolás..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1049
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1054
 msgid "Plot &Format..."
 msgstr "Á&brázolási mód..."
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:108
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:453
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:467
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6227
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7310
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6233
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7316
 msgid "Plot 2D"
 msgstr "Kétdimenziós ábrázolás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1421
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1426
 msgid "Plot 2D..."
 msgstr "2D..."
 
@@ -4686,12 +4695,12 @@ msgid "Plot 2d..."
 msgstr "2d-s ábrázolás..."
 
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:110
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6196
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7323
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6202
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7329
 msgid "Plot 3D"
 msgstr "Háromdimenziós ábrázolás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1423
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1428
 msgid "Plot 3D..."
 msgstr "3D..."
 
@@ -4714,19 +4723,19 @@ msgstr ""
 msgid "Plot an parametric curve"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6240
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6246
 msgid "Plot format"
 msgstr "Ábrázolási mód"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1046
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1051
 msgid "Plot in 2 dimensions"
 msgstr "Ábrázolás két dimenzióban"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1048
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1053
 msgid "Plot in 3 dimensions"
 msgstr "Ábrázolás három dimenzióban"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1836
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1841
 #, fuzzy
 msgid "Plot name"
 msgstr "Erre a listára:"
@@ -4749,13 +4758,13 @@ msgstr "Hely:"
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:38
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:36
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:43
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4758
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4774
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4888
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4764
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4780
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4894
 msgid "Point:"
 msgstr "Hely:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1820
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1825
 #, fuzzy
 msgid "Points"
 msgstr "Hely:"
@@ -4764,19 +4773,19 @@ msgstr "Hely:"
 msgid "Polish"
 msgstr "Lengyel"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5942
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5958
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5974
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5948
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5964
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5980
 msgid "Polynomial 1:"
 msgstr "1. polinom:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5942
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5958
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5974
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5948
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5964
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5980
 msgid "Polynomial 2:"
 msgstr "2. polinom:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1038
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1043
 msgid "Pop"
 msgstr ""
 
@@ -4789,7 +4798,7 @@ msgstr "Portugál (Brazil)"
 msgid "Postscript file (*.eps)|*.eps|All|*"
 msgstr "Postscript fájl (*.eps)|*.eps|Minden fájl|*"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6288
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6294
 msgid "Precision"
 msgstr "Pontosság"
 
@@ -4809,7 +4818,7 @@ msgstr ""
 "paramétereit ismeri, hanem a betöltött csomagokéit és az aktuális fájlon "
 "belül definiáltakéit is."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:662
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:667
 msgid "Previous Command\tAlt+Up"
 msgstr "Előző parancs\tAlt+Up"
 
@@ -4822,7 +4831,7 @@ msgstr "Nyomtatás"
 msgid "Print document"
 msgstr "Dokumentum nyomtatása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1080
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1085
 msgid "Print floating-point numbers with exponents dividable by 2"
 msgstr ""
 
@@ -4835,19 +4844,19 @@ msgstr "Dokumentum nyomtatása"
 msgid "Print the cell brackets [drawn to their left]"
 msgstr "Cellazárójelek nyomtatása [balra helyezve]"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6166
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6172
 msgid "Product"
 msgstr "Szorzat"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1665
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1670
 msgid "Product sign"
 msgstr "Szorzás jele"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1592
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1597
 msgid "Psi"
 msgstr "Pszí"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1037
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1042
 msgid "Push"
 msgstr ""
 
@@ -4859,16 +4868,16 @@ msgstr "RTF OMML matematikával"
 msgid "Raw XML monitor"
 msgstr "Nyers XML monitor"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:624
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:629
 msgid "Re-evaluate all cells above the one the cursor is in"
 msgstr "A kurzor feletti cellák újraszámolása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:626
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:631
 #, fuzzy
 msgid "Re-evaluate all cells below the one the cursor is in"
 msgstr "A kurzor feletti cellák újraszámolása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1484
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1489
 msgid "Read Matrix..."
 msgstr "Mátrix beolvasása..."
 
@@ -4880,11 +4889,11 @@ msgstr "Maxima kimenetelének olvasása"
 msgid "Ready for user input"
 msgstr "Bemeneti adatok fogadása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:665
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:670
 msgid "Recall next command from history"
 msgstr "A következő parancs előhozása az előzmények közül"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:663
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:668
 msgid "Recall previous command from history"
 msgstr "Az előző parancs előhozása az előzmények közül"
 
@@ -4892,7 +4901,7 @@ msgstr "Az előző parancs előhozása az előzmények közül"
 msgid "Recent files list length:"
 msgstr "Jelenlegi fájllista hossza:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1397
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1402
 msgid "Rectform"
 msgstr "Alg.-i alak"
 
@@ -4904,39 +4913,39 @@ msgstr "Ismételt végrehajtás\tCtrl+Y"
 msgid "Redo last change"
 msgstr "Utolsó változtatás visszavonása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1407
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1412
 msgid "Reduce (tr)"
 msgstr "Redukál (tr)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:916
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:921
 msgid "Reduce trigonometric expression"
 msgstr "Trigonometrikus kifejezés redukált alakra hozása"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:693
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7875
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7881
 msgid "Refusing to send cell to maxima: "
 msgstr "A cella Maximához küldésének megtagadása: "
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:628
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:633
 msgid "Remove All Output"
 msgstr "A&z összes kimenet eltávolítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1035
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1040
 msgid ""
 "Remove all list elements that appear twice in a row. Normally used in "
 "conjunction with sort."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5686
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5692
 #, fuzzy
 msgid "Remove an element from a list"
 msgstr "Lista készítése kifejezésből"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1035
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1040
 msgid "Remove duplicates"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:629
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:634
 msgid "Remove output from input cells"
 msgstr "A kimenet eltávolítása a bemeneti cellákból"
 
@@ -4944,7 +4953,7 @@ msgstr "A kimenet eltávolítása a bemeneti cellákból"
 msgid "Replace All"
 msgstr "Mindet cseréli"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4483
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4489
 #, c-format
 msgid "Replaced %d occurrences."
 msgstr "%d egyezés kicserélve."
@@ -4953,11 +4962,11 @@ msgstr "%d egyezés kicserélve."
 msgid "Replacement:"
 msgstr "Csere:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1114
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1119
 msgid "Report bug"
 msgstr "Rendszerinformációk hiba bejelentéséhez"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:690
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:695
 msgid "Restart Maxima"
 msgstr "A Maxima újraindítása"
 
@@ -4976,17 +4985,17 @@ msgstr "A Maxima újraindítása"
 msgid "Result"
 msgstr "Eredmény"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1038
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1043
 msgid ""
 "Return the first item of the list and remove it from the list. Useful for "
 "creating stacks."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5522
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5528
 msgid "Return the list without its first n elements"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5498
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5504
 msgid "Return the list without its last n elements"
 msgstr ""
 
@@ -4994,31 +5003,31 @@ msgstr ""
 msgid "Return to the cell that is currently being evaluated"
 msgstr "Visszatérés a most kiértékelt cellára"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1005
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1010
 msgid "Returns an arbitrary list item"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1006
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1011
 msgid "Returns the first item of the list"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1009
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1014
 msgid "Returns the last item of the list"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1010
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1015
 msgid "Returns the last n items of the list"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1031
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1036
 msgid "Returns the length of the list"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1007
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1012
 msgid "Returns the list without its first n elements"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1008
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1013
 msgid "Returns the list without its last n elements"
 msgstr ""
 
@@ -5027,51 +5036,51 @@ msgstr ""
 msgid "Reuse last"
 msgstr "Lista készítése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1032
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1037
 #, fuzzy
 msgid "Reverse"
 msgstr "Soha"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1032
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1037
 msgid "Reverse the order of the list items"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1586
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1591
 msgid "Rho"
 msgstr "Ró"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1669
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1674
 msgid "Right arrow"
 msgstr "Jobbra nyíl"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:776
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:781
 msgid "Right side to the \"=\""
 msgstr "A \"=\" jobb oldala"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:824
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:829
 msgid "Risch Integration..."
 msgstr "&Risch-integrálás..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:732
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:737
 msgid "Roots of &Polynomial"
 msgstr "&Polinom gyökei"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:735
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:740
 msgid "Roots of Polynomial (bfloat)"
 msgstr "P&olinom gyökei (bfloat)"
 
 #: /home/gunter/src/wxmaxima/src/MatWiz.cpp:174
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5020
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5040
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5026
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5046
 msgid "Rows:"
 msgstr "Sorok:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5392
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5420
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5398
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5426
 msgid "Rule:"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:989
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:994
 msgid "Runs each element through a function"
 msgstr ""
 
@@ -5087,15 +5096,15 @@ msgstr ""
 msgid "SVG graphics"
 msgstr "SVG grafika"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6793
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6799
 msgid "Sample 1:"
 msgstr "1. minta:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6793
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6799
 msgid "Sample 2:"
 msgstr "2. minta:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6777
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6783
 msgid "Sample:"
 msgstr "Minta:"
 
@@ -5117,7 +5126,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1111
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:164
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8382
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8388
 msgid "Save"
 msgstr "Mentés"
 
@@ -5145,7 +5154,7 @@ msgstr "Kijelölés mentése képbe"
 msgid "Save Selection to Image..."
 msgstr "Ki&jelölés mentése képbe..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7358
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7364
 msgid "Save animation to file"
 msgstr "Animáció mentése fájlba"
 
@@ -5183,7 +5192,7 @@ msgstr "Kép mentése fájlba"
 msgid "Save selection from document to an image file"
 msgstr "Kijelölt rész fájlba másolása a dokumentumból"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7339
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7345
 msgid "Save selection to file"
 msgstr "Kijelölt rész mentése fájlba"
 
@@ -5215,16 +5224,16 @@ msgstr "Mentés..."
 msgid "Scalable Vector Graphics (svg)"
 msgstr "Skálázható Vektor Grafika (svg)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6700
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6706
 msgid "Scatterplot"
 msgstr "Szóródási pont"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1473
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1478
 msgid "Scatterplot..."
 msgstr "Szóródási pont..."
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:269
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1729
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1734
 msgid "Section"
 msgstr "Fejezet"
 
@@ -5277,7 +5286,7 @@ msgstr "&Minden kiválasztása\tCtrl+A"
 msgid "Select Maxima program"
 msgstr "A Maxima program kiválasztása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6886
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6892
 msgid "Select Subsample"
 msgstr "Részminta kiválasztása"
 
@@ -5294,7 +5303,7 @@ msgstr "Állandó kiválasztása"
 msgid "Select all"
 msgstr "Minden kiválasztása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4529
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4535
 msgid "Select math display algorithm"
 msgstr "Matematikai megjelenítés algoritmusának kiválasztása"
 
@@ -5311,11 +5320,11 @@ msgid "Selection"
 msgstr "Kijelölés"
 
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:66
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6100
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6106
 msgid "Series"
 msgstr "Taylor- és hatványsor"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1419
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1424
 msgid "Series..."
 msgstr "Hatv.sor..."
 
@@ -5323,16 +5332,16 @@ msgstr "Hatv.sor..."
 msgid "Server started"
 msgstr "A kiszolgáló elindult"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1075
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1080
 #, fuzzy
 msgid "Set &displayed Precision..."
 msgstr "Hosszú lebegőpontos műveletek &pontosságának állítása..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:607
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:612
 msgid "Set Zoom"
 msgstr "Nagyítás beállítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1072
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1077
 msgid "Set bigfloat &Precision..."
 msgstr "Hosszú lebegőpontos műveletek &pontosságának állítása..."
 
@@ -5344,28 +5353,28 @@ msgstr "Rögzített szélességű betűtípus beállítása a bemeneti sorban."
 msgid "Set maximum image size [in mm]"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1050
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1055
 msgid "Set plot format"
 msgstr "Ábrázolás módjának állítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5225
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5231
 msgid "Set the diagram title"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1055
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1060
 #, fuzzy
 msgid "Set the frame rate for animations."
 msgstr "Animáció indítása vagy leállítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5297
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5303
 msgid "Set the grid density."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5239
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5245
 msgid "Set the next plot's title. Empty = no title."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1073
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1078
 msgid ""
 "Set the precision for numbers that are defined as bigfloat. Such numbers can "
 "be generated by entering 1.5b12 or as bfloat(1.234)"
@@ -5373,27 +5382,27 @@ msgstr ""
 "A bigfloat eljárással definiált számok pontosságának állítása. Ilyen "
 "számokat például 1.5b12 vagy bfloat(1.234) beírásával generálhatunk."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:601
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:606
 msgid "Set zoom to 100%"
 msgstr "Nagyítás beállítása 100%-ra"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:602
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:607
 msgid "Set zoom to 120%"
 msgstr "Nagyítás beállítása 120%-ra"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:603
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:608
 msgid "Set zoom to 150%"
 msgstr "Nagyítás beállítása 150%-ra"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:604
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:609
 msgid "Set zoom to 200%"
 msgstr "Nagyítás beállítása 200%-ra"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:605
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:610
 msgid "Set zoom to 300%"
 msgstr "Nagyítás beállítása 300%-ra"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:600
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:605
 msgid "Set zoom to 80%"
 msgstr "Nagyítás beállítása 80%-ra"
 
@@ -5406,25 +5415,25 @@ msgstr ""
 msgid "Setup a %iD scene"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1803
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1808
 msgid "Setup a 2D plot"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1807
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1812
 msgid "Setup a 3D plot"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:770
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:775
 msgid "Setup atvalues for solving ODE with Laplace transformation"
 msgstr ""
 "Laplace-transzformációval megoldani próbált kezdetiérték-probléma kezdeti "
 "helyének és értékének beállítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:963
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:968
 msgid "Setup modulus computation"
 msgstr "Modulus értékének beállítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1832
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1837
 msgid "Setup the axis"
 msgstr ""
 
@@ -5432,23 +5441,23 @@ msgstr ""
 msgid "Setup the axis for the current plot."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1082
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1087
 msgid "Setup the engineering format..."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:699
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:704
 msgid "Show &Definition..."
 msgstr "&Definíció..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:697
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:702
 msgid "Show &Functions"
 msgstr "&Függvények"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1105
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1110
 msgid "Show &Tips..."
 msgstr "&Tippek..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:702
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:707
 msgid "Show &Variables"
 msgstr "&Változók"
 
@@ -5456,39 +5465,39 @@ msgstr "&Változók"
 msgid "Show Maxima help"
 msgstr "Maxima súgó"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:637
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:642
 msgid "Show Template\tCtrl+Shift+K"
 msgstr "K&iegészítés sablonnal\tCtrl+Shift+K"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1106
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1111
 msgid "Show a tip"
 msgstr "Tippet mutat"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6633
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6639
 msgid "Show all commands similar to:"
 msgstr "Megmutat minden parancsot, ami hasonlít erre:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6619
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6625
 msgid "Show an example for the command:"
 msgstr "Példa az alábbi parancsra:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1100
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1105
 msgid "Show an example of usage"
 msgstr "Példa a parancs használatára"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1103
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1108
 msgid "Show commands similar to"
 msgstr "Megmutat minden parancsot, ami hasonlít erre"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:698
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:703
 msgid "Show defined functions"
 msgstr "Megmutatja a definiált függvényeket"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:703
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:708
 msgid "Show defined variables"
 msgstr "Megmutatja a definiált változókat"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:700
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:705
 msgid "Show definition of a function"
 msgstr "Megmutatja a függvény definícióját"
 
@@ -5496,7 +5505,7 @@ msgstr "Megmutatja a függvény definícióját"
 msgid "Show equations in their linear form"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:638
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:643
 msgid "Show function template"
 msgstr "Függvény automatikus kiegészítése sablonnal"
 
@@ -5517,36 +5526,36 @@ msgstr "Hosszú kifejezések megjelenítése:"
 msgid "Show section numbers"
 msgstr "&Függvények"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4551
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4557
 msgid "Show the definition of function:"
 msgstr "Megmutatja a függvény definícióját:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1091
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1094
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1096
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1099
 msgid "Show wxMaxima help"
 msgstr "Maxima súgó"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1076
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1081
 msgid "Shows how many digits of a numbers are displayed"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1587
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1592
 msgid "Sigma"
 msgstr "Szigma"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1389
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1394
 msgid "Simplify"
 msgstr "Egyszerűsít"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:876
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:881
 msgid "Simplify &Radicals"
 msgstr "&Gyökös egyszerűsítés"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1391
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1396
 msgid "Simplify (r)"
 msgstr "Egysz. (r)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1403
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1408
 msgid "Simplify (tr)"
 msgstr "Egysz. (tr)"
 
@@ -5554,15 +5563,15 @@ msgstr "Egysz. (tr)"
 msgid "Simplify Expression"
 msgstr "Kifejezés egyszerűsítése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:902
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:907
 msgid "Simplify an expression containing factorials"
 msgstr "Faktoriálisokat tartalmazó kifejezések egyszerűsítése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:877
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:882
 msgid "Simplify expression containing radicals"
 msgstr "Gyököket tartalmazó kifejezések egyszerűsítése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:875
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:880
 msgid "Simplify rational expression"
 msgstr "Racionális kifejezések egyszerűsítése"
 
@@ -5570,7 +5579,7 @@ msgstr "Racionális kifejezések egyszerűsítése"
 msgid "Simplify the sum"
 msgstr "Egyszerűsíti az összeget"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:913
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:918
 msgid "Simplify trigonometric expression"
 msgstr "Trigonometrikus kifejezést egyszerűbb alakra hoz"
 
@@ -5587,101 +5596,101 @@ msgstr ""
 "'wxMaxima XML dokumentum' formátumban kell menteni."
 
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:29
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4758
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4774
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4764
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4780
 msgid "Solution:"
 msgstr "Megoldás:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4681
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4706
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7216
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4687
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4712
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7222
 msgid "Solve"
 msgstr "Megoldás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:744
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:749
 msgid "Solve &Algebraic System..."
 msgstr "&Algebrai egyenletrendszer megoldása..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:741
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:746
 msgid "Solve &Linear System..."
 msgstr "&Lineáris egyenletrendszer megoldása..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:752
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:757
 msgid "Solve &ODE..."
 msgstr "&Differenciálegyenlet megoldása..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:728
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:733
 msgid "Solve (to_poly)..."
 msgstr "Me&goldás (to_poly)..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4744
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4875
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4750
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4881
 msgid "Solve ODE"
 msgstr "Differenciálegyenlet megoldása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:766
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:771
 msgid "Solve ODE with Lapla&ce..."
 msgstr "D&ifferenciálegyenlet megoldása (Laplace)..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1411
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1416
 msgid "Solve ODE..."
 msgstr "Differenciálegyenletek megoldása...."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4823
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4835
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4829
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4841
 msgid "Solve algebraic system"
 msgstr "Algebrai egyenletrendszer"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:745
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:750
 msgid "Solve algebraic system of equations"
 msgstr "Algebrai egyenletrendszer megoldása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:763
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:768
 msgid "Solve boundary value problem for second degree ODE"
 msgstr ""
 "Peremérték probléma megoldása másodrendű közönséges differenciálegyenlet "
 "esetén"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:727
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:732
 msgid "Solve equation(s)"
 msgstr "Egyenletet(rendszer) megoldása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:729
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:734
 msgid "Solve equation(s) with to_poly_solve"
 msgstr "Egyenletet(rendszer)ek megoldása a to_poly_solve eljárással"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:757
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:762
 msgid "Solve initial value problem for first degree ODE"
 msgstr ""
 "Kezdetiérték-probléma megoldása elsőrendű közönséges differenciálegyenlet "
 "esetén"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:760
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:765
 msgid "Solve initial value problem for second degree ODE"
 msgstr ""
 "Kezdetiérték-probléma megoldása másodrendű közönséges differenciálegyenlet "
 "esetén"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4848
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4860
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4854
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4866
 msgid "Solve linear system"
 msgstr "Lineáris egyenletrendszer"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:742
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:747
 msgid "Solve linear system of equations"
 msgstr "Lineáris egyenletrendszer megoldása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:753
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:758
 msgid "Solve ordinary differential equation of maximum degree 2"
 msgstr "Legfeljebb másodrendű közönséges differenciálegyenlet megoldása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:767
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:772
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr ""
 "Közönséges differenciálegyenlet megoldása Laplace-transzformáció segítségével"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1294
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1409
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1414
 msgid "Solve..."
 msgstr "Megold..."
 
@@ -5695,11 +5704,11 @@ msgstr ""
 "előállítani ilyeneket. Ha ezt a lehetőséget választja, további LaTeX "
 "csomagok telepítésére lehet szükség ennek érdekében."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5360
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5366
 msgid "Something like f(x_1,x_2)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1034
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1039
 msgid "Sort"
 msgstr ""
 
@@ -5707,12 +5716,12 @@ msgstr ""
 msgid "Sort Criterion:"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5453
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5459
 #, fuzzy
 msgid "Sort a list"
 msgstr "Lista készítése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5421
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5427
 #, fuzzy
 msgid "Source list:"
 msgstr "Lista készítése"
@@ -5821,12 +5830,12 @@ msgstr "Stílus"
 msgid "Styles"
 msgstr "Stílusok"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1491
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1496
 msgid "Subsample..."
 msgstr "Részminta..."
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:270
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1725
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1730
 msgid "Subsection"
 msgstr "Alfejezet"
 
@@ -5834,23 +5843,23 @@ msgstr "Alfejezet"
 msgid "Subsection cell"
 msgstr "Alfejezetcella"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1399
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1404
 msgid "Subst..."
 msgstr "Behelyet...."
 
 #: /home/gunter/src/wxmaxima/src/SubstituteWiz.cpp:57
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4638
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7297
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4644
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7303
 msgid "Substitute"
 msgstr "Behelyettesítés"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1300
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:951
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:956
 msgid "Substitute..."
 msgstr "&Behelyettesítés..."
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:271
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1727
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1732
 msgid "Subsubsection"
 msgstr "Al-alfejezet"
 
@@ -5859,11 +5868,11 @@ msgid "Subsubsection cell"
 msgstr "Al-alfejezetcella"
 
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:59
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6149
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6155
 msgid "Sum"
 msgstr "Összeg"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1664
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1669
 msgid "Sum sign"
 msgstr "Szummajel"
 
@@ -5879,7 +5888,7 @@ msgstr ""
 "Az ide másolt vagy gépelt szimbólumok meg fognak jelenni a szimbólumok "
 "oldalpanelen, így azokat könnyen beilleszthetjük a munkalapokba."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6442
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6448
 msgid "System info"
 msgstr "Rendszerinformáció"
 
@@ -5895,11 +5904,11 @@ msgstr "Tartalomjegyzék\tAlt+Shift+T"
 msgid "Take surface color from steepness"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1588
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1593
 msgid "Tau"
 msgstr "Tau"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5922
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5928
 msgid "Taylor series:"
 msgstr "Taylor-sor:"
 
@@ -5907,12 +5916,12 @@ msgstr "Taylor-sor:"
 msgid "TeX, interpreted by MathJaX"
 msgstr "TeX, MathJaX-szal értelmezve"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5867
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5873
 msgid "Tellrat"
 msgstr "'tellrat' eljárás"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:267
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1721
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1726
 msgid "Text"
 msgstr "Szöveg"
 
@@ -5964,7 +5973,7 @@ msgstr ""
 "Az xml fájl nem tűnik szabványos xml-nek, esetleg a content.xml nem egy ."
 "wxmx tömörített archívumból származik"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1856
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1861
 msgid "The Accuracy versus speed tradeoff"
 msgstr ""
 
@@ -5986,7 +5995,7 @@ msgid ""
 "was expected but was lacking an \"=\"."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1843
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1848
 msgid "The color of the next line to draw"
 msgstr ""
 
@@ -6012,7 +6021,7 @@ msgstr ""
 "A beágyazott pontok alapértelmezett szélessége. A Maxima wxplot_size nevű "
 "változója olvashatja vagy átírhatja"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1828
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1833
 msgid "The diagram title"
 msgstr ""
 
@@ -6020,7 +6029,7 @@ msgstr ""
 msgid "The document class LaTeX is instructed to use for our documents."
 msgstr "Dokumentumjainkhoz a LaTeX dokumentum osztályt használjuk."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1847
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1852
 msgid "The fill color for the next objects"
 msgstr ""
 
@@ -6030,19 +6039,19 @@ msgid ""
 "probably it was lacking an \"=\"."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5358
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5364
 msgid "The function call whose arguments to extract"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1851
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1856
 msgid "The grid in the background of the diagram"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:774
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:779
 msgid "The half of the equation that is to the left of the \"=\""
 msgstr "Az egyenlőség \"=\"-től balra eső fele"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:777
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:782
 msgid "The half of the equation that is to the right of the \"=\""
 msgstr "Az egyenlőség \"=\"-től jobbra eső fele"
 
@@ -6080,7 +6089,7 @@ msgstr ""
 "\"jsMath karakterek használata\" bejelölése a beállításoknál megoldást "
 "jelenthet."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5608
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5614
 msgid ""
 "The list with values can be generated by \"solve()\" or using \"Create list/"
 "as storage for actual values for variables\"."
@@ -6106,7 +6115,7 @@ msgstr ""
 msgid "The maximum size for this image. Values <= 0 mean: Unspecified."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/MathParser.cpp:1069
+#: /home/gunter/src/wxmaxima/src/MathParser.cpp:1076
 #, fuzzy
 msgid ""
 "The maximum size of a expression wxMaxima is allowed to be displayed can be "
@@ -6115,7 +6124,7 @@ msgstr ""
 "A megjelenített számjegyek maximális száma a konfigurációs párbeszédablakban "
 "módosítható."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1839
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1844
 msgid "The next plot's title"
 msgstr ""
 
@@ -6123,13 +6132,13 @@ msgstr ""
 msgid "The number of recently opened files that is to be remembered."
 msgstr "A jelenleg megnyitott fájlok száma lesz megjegyezve."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5399
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5405
 msgid ""
 "The number of the item which is stepped from \"Index Start\" to \"Index End"
 "\"."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1097
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1102
 msgid "The offline manual of maxima"
 msgstr "A Maxima offline kézikönyve"
 
@@ -6189,8 +6198,8 @@ msgstr ""
 "    at(Energia,Értékek);\n"
 "    Szám:rhs(%);"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5397
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5425
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5403
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5431
 msgid ""
 "The rule that explains how to generate the value of an list item.\n"
 "Might be something like \"i\", \"i^2\" or \"sin(i)\""
@@ -6202,7 +6211,7 @@ msgid ""
 "probably it was lacking an \"=\"."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1813
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1818
 msgid "The standard plot command: Plot an equation as a curve"
 msgstr ""
 
@@ -6213,8 +6222,8 @@ msgid ""
 "therefore cannot be written to."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5427
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5664
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5433
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5670
 msgid "The variable the value of the current source item is stored in."
 msgstr ""
 
@@ -6253,7 +6262,7 @@ msgstr ""
 " \n"
 " Kérem jelentse a hibát."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1577
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1582
 msgid "Theta"
 msgstr "Théta"
 
@@ -6276,7 +6285,7 @@ msgid ""
 "add them to maxima-init.mac, instead."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5561
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5567
 msgid ""
 "This function is slow for large n.\n"
 "For efficiently iterating through every element of a large list see \"Create "
@@ -6303,18 +6312,18 @@ msgstr ""
 msgid "Ticks:"
 msgstr "Törésvonalak:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6073
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7271
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6079
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7277
 msgid "Times:"
 msgstr "Ennyiszer:"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:268
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1723
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1728
 msgid "Title"
 msgstr "Cím"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5226
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5240
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5232
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5246
 msgid "Title (Sub- and superscripts as x_{10} or x^{10})"
 msgstr ""
 
@@ -6332,11 +6341,11 @@ msgstr ""
 "rákattint a sor elején látható négyzetre. A Shift+kattintás kombinációval az "
 "adott cella alatti összes tartalom láthatóvá válik."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1065
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1070
 msgid "To &Bigfloat"
 msgstr "&Hosszú tizedestört"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1062
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1067
 msgid "To &Float"
 msgstr "&Tizedestört"
 
@@ -6344,7 +6353,7 @@ msgstr "&Tizedestört"
 msgid "To Float"
 msgstr "Tizedestört"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1068
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1073
 msgid "To Numeri&c\tCtrl+Shift+N"
 msgstr "Numeri&kus\tCtrl+Shift+N"
 
@@ -6391,37 +6400,37 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:41
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:50
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:37
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5078
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6164
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5084
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6170
 msgid "To:"
 msgstr "Meddig:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:957
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:962
 msgid "Toggle &Algebraic Flag"
 msgstr "&Az 'algebrai' kapcsoló állítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1060
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1065
 msgid "Toggle &Numeric Output"
 msgstr "&Numerikus kimenet kapcsoló"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:710
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:715
 msgid "Toggle &Time Display"
 msgstr "&Időkapcsoló"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:958
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:963
 msgid "Toggle algebraic flag"
 msgstr "Az 'algebrai' kapcsoló állítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1052
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1057
 #, fuzzy
 msgid "Toggle animation autoplay"
 msgstr "Animáció mentése fájlba"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:609
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:614
 msgid "Toggle full screen editing"
 msgstr "Teljes képernyős üzemmód"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1061
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1066
 msgid "Toggle numeric output"
 msgstr "Numerikus kimenet kapcsoló"
 
@@ -6429,15 +6438,15 @@ msgstr "Numerikus kimenet kapcsoló"
 msgid "Toggle the visibility of code cells"
 msgstr "Kódcellák láthatóságának állítása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6450
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6456
 msgid "Toolbar icons"
 msgstr "Eszköztár ikonok"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6451
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6457
 msgid "Translated by"
 msgstr "Fordították"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:808
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:813
 msgid "Transpose a matrix"
 msgstr "Mátrix transzponálás"
 
@@ -6453,11 +6462,11 @@ msgstr ""
 msgid "Turkish"
 msgstr "Török"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1108
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1113
 msgid "Tutorials"
 msgstr "&Ismertetők"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6797
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6803
 msgid "Two sample t-test"
 msgstr "Kétmintás t-próba"
 
@@ -6483,15 +6492,15 @@ msgstr "MathJaX.js URL helye:"
 msgid "Ukrainian"
 msgstr "Ukrán"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7723
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7729
 msgid "Un-closed parenthesis"
 msgstr "Bezáratlan zárójel"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7666
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7672
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr "Bezáratlan zárójel"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8332
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8338
 msgid ""
 "Unable to interpret the version info I got from http://andrejv.github.io//"
 "wxmaxima/version.txt: "
@@ -6519,11 +6528,11 @@ msgstr "Utolsó változtatás visszavonása"
 msgid "Undo limit (0 for none):"
 msgstr "A visszaállítás mélysége (0: nincs visszaállítás):"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:659
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:664
 msgid "Unfold All\tCtrl+Alt+]"
 msgstr "&Minden megjelenítése\tCtrl+Alt+]"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:660
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:665
 msgid "Unfold all folded sections"
 msgstr "Minden fejezet megjelenítése"
 
@@ -6551,15 +6560,15 @@ msgstr "Al-alfejezet mutatása"
 msgid "Unhide contents"
 msgstr "Tartalmak mutatása"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6444
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6450
 msgid "Unicode Support"
 msgstr "Unicode támogatás"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7691
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7697
 msgid "Unterminated comment."
 msgstr "Befejezetlen megjegyzés."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7614
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7620
 msgid "Unterminated string."
 msgstr "Befejezetlen szöveg."
 
@@ -6571,18 +6580,18 @@ msgstr ""
 msgid "Up"
 msgstr "Fel"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8316
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8323
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8333
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8322
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8329
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8339
 msgid "Upgrade"
 msgstr "Frissítés"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4722
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7239
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4728
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7245
 msgid "Upper bound:"
 msgstr "Felső végpont:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1589
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1594
 msgid "Upsilon"
 msgstr "Üpszilon"
 
@@ -6590,13 +6599,13 @@ msgstr "Üpszilon"
 msgid "Use Gosper algorithm"
 msgstr "Gosper algoritmus használata"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1003
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1029
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1008
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1034
 #, fuzzy
 msgid "Use a list"
 msgstr "Lista készítése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5644
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5650
 msgid "Use a list as parameter list for a function"
 msgstr ""
 
@@ -6617,12 +6626,12 @@ msgstr "Középre helyezett pont használata szorzásjelként"
 msgid "Use jsMath fonts"
 msgstr "jsMath karakterek használata"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1001
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1006
 #, fuzzy
 msgid "Use list"
 msgstr "Lista készítése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:995
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1000
 msgid "Use list as the arguments of a function"
 msgstr ""
 
@@ -6631,6 +6640,14 @@ msgid ""
 "Use nice js math symbols in order to get nice integral, sum, product and "
 "sqrt signs\n"
 "Will only work if the corresponding js math fonts can be found by wxMaxima."
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:593
+msgid "Use rounded parenthesis for matrices"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:594
+msgid "Use square parenthesis for matrices"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:323
@@ -6661,9 +6678,9 @@ msgstr "Érték:"
 
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:35
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:41
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4758
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4775
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4889
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4764
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4781
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4895
 msgid "Value:"
 msgstr "Érték:"
 
@@ -6682,16 +6699,16 @@ msgid "Variable for the z value"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ActualValuesStorageWiz.cpp:41
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5622
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5628
 #, fuzzy
 msgid "Variable name"
 msgstr "Összes változónév"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4678
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4703
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6072
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7213
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7270
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4684
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4709
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6078
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7219
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7276
 msgid "Variable(s):"
 msgstr "Változó(k):"
 
@@ -6704,14 +6721,14 @@ msgstr "Változó(k):"
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:44
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:40
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:31
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4721
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4741
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5004
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5077
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5990
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6006
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6163
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7238
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4727
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4747
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5010
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5083
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5996
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6012
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6169
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7244
 msgid "Variable:"
 msgstr "Változó:"
 
@@ -6720,17 +6737,17 @@ msgid "Variables"
 msgstr "Változók"
 
 #: /home/gunter/src/wxmaxima/src/SystemWiz.cpp:74
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4806
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6128
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6830
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4812
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6134
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6836
 msgid "Variables:"
 msgstr "Változók:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1451
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1456
 msgid "Variance..."
 msgstr "Szórásnégyzet..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:612
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:617
 msgid "View"
 msgstr "Nézet"
 
@@ -6738,7 +6755,7 @@ msgstr "Nézet"
 msgid "Warn if an inactive window is idle"
 msgstr "Figyelmeztetés, ha egy inaktív ablak tétlen"
 
-#: /home/gunter/src/wxmaxima/src/MathParser.cpp:994
+#: /home/gunter/src/wxmaxima/src/MathParser.cpp:1001
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2438
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2545
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2673
@@ -6749,7 +6766,7 @@ msgstr "Figyelmeztetés"
 msgid "Welcome to wxMaxima"
 msgstr "A wxMaxima üdvözli Önt!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5659
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5665
 msgid "What to do:"
 msgstr ""
 
@@ -6785,7 +6802,7 @@ msgstr "A \"LaTeX másolás\" \\[ és \\] jelek közé rakja a kifejezéseket"
 msgid "Wrapped search"
 msgstr "Csomagolt keresés"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6447
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6453
 msgid "Written by"
 msgstr "Írta"
 
@@ -6802,7 +6819,7 @@ msgstr "Kszí"
 msgid "XML Inspector"
 msgstr "XML ellenőrző"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1583
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1588
 msgid "Xi"
 msgstr "Kszí"
 
@@ -6875,7 +6892,7 @@ msgstr ""
 "hasznos, ha többsoros cellák parancsait akarjuk végrehajtani vagy "
 "tartalmukat törölni."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8313
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8319
 #, c-format
 msgid ""
 "You have version %s. Current version is %s.\n"
@@ -6887,40 +6904,40 @@ msgstr ""
 "Az OK gomb megnyomására az alapértelmezett böngésző megnyitja a wxMaxima "
 "honlapját."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8381
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8387
 msgid "Your changes will be lost if you don't save them."
 msgstr "Ha nem ment, változásai elvesznek."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8323
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8329
 msgid "Your version of wxMaxima is up to date."
 msgstr "A wxMaxima verzió a lehető legfrissebb."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1575
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1580
 msgid "Zeta"
 msgstr "Dzéta"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:594
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:599
 msgid "Zoom &In\tCtrl++"
 msgstr "&Nagyítás\tCtrl++"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:596
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:601
 msgid "Zoom Ou&t\tCtrl+-"
 msgstr "K&icsinyítés\tCtrl+-"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:595
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:600
 msgid "Zoom in 10%"
 msgstr "Nagyítás 10%-kal"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:597
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:602
 msgid "Zoom out 10%"
 msgstr "Kicsinyítés 10%-kal"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8116
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8122
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:254
 msgid "[ unsaved ]"
 msgstr "[ mentetlen ]"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8118
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8124
 msgid "[ unsaved* ]"
 msgstr "[ mentetlen* ]"
 
@@ -6954,11 +6971,11 @@ msgstr "_%d.gif\" alt=\"Animált diagram\" style=\"max-width:90%%;\" >"
 msgid "a>b"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1539
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1544
 msgid "alpha"
 msgstr "alfa"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1636
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1641
 msgid "and"
 msgstr "és"
 
@@ -6966,16 +6983,16 @@ msgstr "és"
 msgid "antisymmetric"
 msgstr "antiszimmetrikus"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:988
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:993
 #, fuzzy
 msgid "apply function to each element"
 msgstr "Függvény alkalmazása a listára"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:978
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:983
 msgid "as storage for actual values for variables"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1540
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1545
 msgid "beta"
 msgstr "béta"
 
@@ -6983,7 +7000,7 @@ msgstr "béta"
 msgid "both sides"
 msgstr "két oldalról"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1560
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1565
 msgid "chi"
 msgstr "khí"
 
@@ -6998,7 +7015,7 @@ msgstr "válassza ki, a Maxima melyik lisp fordítóval lett buildelve"
 msgid "default"
 msgstr "alapértelmezett"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1542
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1547
 msgid "delta"
 msgstr "delta"
 
@@ -7006,31 +7023,31 @@ msgstr "delta"
 msgid "diagonal"
 msgstr "átlós"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:997
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1002
 msgid "do for each element"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5556
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5562
 msgid "element number n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1633
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1638
 msgid "empty"
 msgstr "üres"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1543
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1548
 msgid "epsilon"
 msgstr "epszilon"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1641
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1646
 msgid "equivalent"
 msgstr "ekvivalens"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1545
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1550
 msgid "eta"
 msgstr "éta"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1628
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1633
 msgid "exists"
 msgstr "létezik"
 
@@ -7046,25 +7063,25 @@ msgstr ""
 "indexekké konvertálja\n"
 "mind=_ jelek indexek."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:975
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:980
 #, fuzzy
 msgid "from a list"
 msgstr "Lista készítése"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:972
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:977
 msgid "from a rule"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:981
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:986
 #, fuzzy
 msgid "from function arguments"
 msgstr "Függvénynevek"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:969
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:974
 msgid "from individual elements"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1541
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1546
 msgid "gamma"
 msgstr "gamma"
 
@@ -7072,11 +7089,11 @@ msgstr "gamma"
 msgid "general"
 msgstr "általános"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1659
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1664
 msgid "greater than or equal"
 msgstr "nagyobb vagy egyenlő"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1627
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1632
 msgid "in"
 msgstr "ban"
 
@@ -7091,19 +7108,19 @@ msgstr "ban"
 msgid "inline"
 msgstr "sorok között"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1645
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1650
 msgid "intersection"
 msgstr "metszet"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1547
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1552
 msgid "iota"
 msgstr "ióta"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1548
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1553
 msgid "kappa"
 msgstr "kappa"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1549
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1554
 msgid "lambda"
 msgstr "lambda"
 
@@ -7111,7 +7128,7 @@ msgstr "lambda"
 msgid "left"
 msgstr "balról"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1658
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1663
 msgid "less or equal"
 msgstr "kisebb vagy egyenlő"
 
@@ -7124,7 +7141,7 @@ msgstr "logaritmikus skála"
 msgid "matrix([x_1,x_2,...],[y_1,y_2,...])"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5040
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5046
 msgid "matrix[i,j]:"
 msgstr "matrix[i,j]:"
 
@@ -7132,70 +7149,70 @@ msgstr "matrix[i,j]:"
 msgid "maxima's pwd is path to document"
 msgstr "A Maxima pwd-je a dokumentum elérési útvonala"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1550
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1555
 msgid "mu"
 msgstr "mű"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1662
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1667
 msgid "much greater than"
 msgstr "sokkal nagyobb"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1661
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1666
 msgid "much less than"
 msgstr "sokkal kevesebb"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5495
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5519
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5501
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5525
 #, fuzzy
 msgid "n"
 msgstr "ban"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1639
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1644
 msgid "nand"
 msgstr "negált és"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6517
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6523
 msgid "no"
 msgstr "nem"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1640
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1645
 msgid "nor"
 msgstr "negált vagy"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1643
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1648
 msgid "not"
 msgstr "nem"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1656
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1661
 msgid "not bytewise identical"
 msgstr "nem bájtonként azonos"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1649
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1654
 msgid "not subset"
 msgstr "nem részhalmaza"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1648
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1653
 msgid "not subset or equal"
 msgstr "nem részhalmaza vagy egyenlő"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1005
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1010
 #, fuzzy
 msgid "nth"
 msgstr "nem"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1551
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1556
 msgid "nu"
 msgstr "nű"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1562
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1567
 msgid "omega"
 msgstr "ómega"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1553
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1558
 msgid "omicron"
 msgstr "omikron"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1637
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1642
 msgid "or"
 msgstr "vagy"
 
@@ -7207,31 +7224,31 @@ msgstr ""
 "A part() vagy a [] operátort egy olyan objektum n-edik elemének lekérésére "
 "használtuk, amelynek n-nél kevesebb eleme van."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1652
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1657
 msgid "partial sign"
 msgstr "parciális jele"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1559
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1564
 msgid "phi"
 msgstr "fí"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1554
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1559
 msgid "pi"
 msgstr "pí"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1642
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1647
 msgid "plus or minus"
 msgstr "plusz vagy mínusz"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1655
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1660
 msgid "proportional to"
 msgstr "aránylik"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1561
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1566
 msgid "psi"
 msgstr "pszí"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1555
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1560
 msgid "rho"
 msgstr "ró"
 
@@ -7255,12 +7272,12 @@ msgstr ""
 msgid "secondary y range (automatic if incomplete)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1556
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1561
 msgid "sigma"
 msgstr "szigma"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4682
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7217
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4688
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7223
 msgid ""
 "solve() will solve a list of equations only if for n independent equations "
 "there are n variables to solve to.\n"
@@ -7269,16 +7286,16 @@ msgid ""
 "eliminate in the solution for the interesting variable."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1622
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1627
 msgid "sqrt (needs parenthesis for its argument to work as a maxima command)"
 msgstr ""
 "sqrt (hogy Maxima parancsként működjön, az argumentumát zárójelbe kell rakni)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1647
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1652
 msgid "subset"
 msgstr "részhalmaz"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1646
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1651
 msgid "subset or equal"
 msgstr "részhalmaz vagy egyenlő"
 
@@ -7286,7 +7303,7 @@ msgstr "részhalmaz vagy egyenlő"
 msgid "symmetric"
 msgstr "szimmetrikus"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1557
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1562
 msgid "tau"
 msgstr "tau"
 
@@ -7317,27 +7334,27 @@ msgstr "Vesszővel válassza el az y koordinátákat"
 msgid "the x, the y and the z coordinate."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1629
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1634
 msgid "there is no"
 msgstr "nincs"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1546
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1551
 msgid "theta"
 msgstr "théta"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1617
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1622
 msgid "to the power of 2"
 msgstr "négyzetre emel"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1619
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1624
 msgid "to the power of 3"
 msgstr "köbre emel"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1644
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1649
 msgid "union"
 msgstr "unió"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8362
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8368
 msgid "unsaved"
 msgstr "mentetlen"
 
@@ -7352,38 +7369,38 @@ msgstr "névtelen"
 msgid "untitled %d"
 msgstr "névtelen %d"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1558
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1563
 msgid "upsilon"
 msgstr "üpszilon"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:994
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:999
 #, fuzzy
 msgid "use as function arguments"
 msgstr "Függvénynevek"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:991
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:996
 msgid "use the actual values stored"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:284
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6530
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6536
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8116
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8118
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8127
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8130
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8122
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8124
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8133
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8136
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:254
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1090
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1095
 msgid "wxMaxima &Help\tCtrl+?"
 msgstr "&wxMaxima Súgó\tCtrl+?"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1093
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1098
 msgid "wxMaxima &Help\tF1"
 msgstr "&wxMaxima súgó\tF1"
 
@@ -7471,11 +7488,11 @@ msgstr "wxMaxima dokumentum (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgid "wxMaxima encountered an error loading "
 msgstr "A wxMaxima nem tudta betölteni a következő fájlt: "
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6449
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6455
 msgid "wxMaxima icon"
 msgstr "wxMaxima ikon"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6441
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6447
 msgid ""
 "wxMaxima is a graphical user interface for the computer algebra system "
 "MAXIMA based on wxWidgets."
@@ -7483,7 +7500,7 @@ msgstr ""
 "A wxMaxima egy wxWidgets-en alapuló grafikus felhasználói felület a Maxima "
 "komputeralgebrai rendszer számára."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6506
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6512
 msgid ""
 "wxMaxima is a graphical user interface for the computer algebra system "
 "Maxima based on wxWidgets."
@@ -7516,7 +7533,7 @@ msgstr "x"
 msgid "x axis label"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5293
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5299
 msgid "x direction [in multiples of the tick frequency]"
 msgstr ""
 
@@ -7524,7 +7541,7 @@ msgstr ""
 msgid "x range (automatic if incomplete)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1552
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1557
 msgid "xi"
 msgstr "kszí"
 
@@ -7533,7 +7550,7 @@ msgstr "kszí"
 msgid "xml contained in the file claims not to be a wxMaxima worksheet. "
 msgstr "A fájlban található xml nem wxMaxima munkalapot ír le. "
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1638
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1643
 msgid "xor"
 msgstr "kizáró vagy"
 
@@ -7541,7 +7558,7 @@ msgstr "kizáró vagy"
 msgid "y axis label"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5294
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5300
 msgid "y direction [in multiples of the tick frequency]"
 msgstr ""
 
@@ -7549,7 +7566,7 @@ msgstr ""
 msgid "y range (automatic if incomplete)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6515
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6521
 msgid "yes"
 msgstr "igen"
 
@@ -7561,7 +7578,7 @@ msgstr ""
 msgid "z range (automatic if incomplete)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1544
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1549
 msgid "zeta"
 msgstr "dzéta"
 
