@@ -284,7 +284,12 @@ wxString MatrCell::ToTeX()
   wxString s;
 
   if (!m_specialMatrix)
-    s = wxT("\\begin{pmatrix}");
+  {
+    if(m_roundedParens)
+      s = wxT("\\begin{pmatrix}");
+    else
+      s = wxT("\\begin{bmatrix}");
+  }
   else
   {
     s = wxT("\\begin{array}{");
@@ -304,7 +309,12 @@ wxString MatrCell::ToTeX()
       s += wxT("\\\\\n");
   }
   if (!m_specialMatrix)
-    s += wxT("\\end{pmatrix}");
+  {
+    if(m_roundedParens)
+      s += wxT("\\end{pmatrix}");
+    else
+      s += wxT("\\end{bmatrix}");
+  }
   else
     s += wxT("\\end{array}");
   return s;
@@ -336,8 +346,13 @@ wxString MatrCell::ToOMML()
 
   retval = wxT("<m:d>");
   if (!m_specialMatrix)
-    retval += wxT("<m:dPr><m:begChr>(</m:begChr><m:endChr>)</m:endChr> <m:grow>\"1\"</m:grow></m:dPr>");
-
+  {
+    if(m_roundedParens)
+      retval += wxT("<m:dPr><m:begChr>(</m:begChr><m:endChr>)</m:endChr> <m:grow>\"1\"</m:grow></m:dPr>");
+    else
+      retval += wxT("<m:dPr><m:begChr>[</m:begChr><m:endChr>]</m:endChr> <m:grow>\"1\"</m:grow></m:dPr>");
+  }
+  
   retval += wxT("<m:e><m:m>");
 
   for (int i = 0; i < m_matHeight; i++)
