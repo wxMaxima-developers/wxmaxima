@@ -167,8 +167,6 @@ wxImage ConfigDialogue::GetImage(wxString name,
 
 ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 {
-  SetLayoutAdaptationMode(wxDIALOG_ADAPTATION_MODE_ENABLED);
-  
   m_configuration = cfg;
 #if defined __WXMAC__
   SetSheetStyle(wxPROPSHEET_BUTTONTOOLBOOK | wxPROPSHEET_SHRINKTOFIT);
@@ -177,9 +175,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 #endif
   SetSheetInnerBorder(3);
   SetSheetOuterBorder(3);
-  // Allow the property dialogue sheets to scroll, if they don't fit
-  // on the screen.
- 
+
   int imgSize = GetImageSize();
   m_imageList = new wxImageList(imgSize, imgSize);
   m_imageList->Add(GetImage(wxT("editing"),
@@ -237,6 +233,11 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   if((notebookTab < 0) || ((unsigned int)notebookTab > m_notebook->GetPageCount()))
      notebookTab = 0;
   m_notebook->SetSelection(notebookTab);
+
+  // Allow the property dialogue sheets to scroll, if they don't fit
+  // on the screen.
+  SetLayoutAdaptationMode(wxDIALOG_ADAPTATION_MODE_ENABLED);
+
   LayoutDialog();
 
   SetProperties();
@@ -535,7 +536,7 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(10, 2, 5, 5);
-  wxFlexGridSizer *vsizer = new wxFlexGridSizer(19, 1, 5, 5);
+  wxFlexGridSizer *vsizer = new wxFlexGridSizer(29, 1, 5, 5);
 
   wxStaticText *pw = new wxStaticText(panel, -1, _("Default plot size for new maxima sessions:"));
   wxBoxSizer *PlotWidthHbox = new wxBoxSizer(wxHORIZONTAL);
@@ -603,7 +604,6 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   grid_sizer->Add(m_showUserDefinedLabels, 0, wxALL, 5);
 
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
-
 
   m_hideBrackets = new wxCheckBox(panel, -1, _("Intelligently hide cell brackets"));
   vsizer->Add(m_hideBrackets, 0, wxALL, 5);

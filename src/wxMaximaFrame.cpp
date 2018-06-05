@@ -59,6 +59,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_commandsLeftInCurrentCell = 0;
   m_forceStatusbarUpdate = false;
   m_manager.SetManagedWindow(this);
+
+  // Better support for low-resolution netbook screens.
+  wxDialog::EnableLayoutAdaptation(wxDIALOG_ADAPTATION_MODE_ENABLED);
+
   // console
   m_console = new MathCtrl(this, -1, wxDefaultPosition, wxDefaultSize);
 
