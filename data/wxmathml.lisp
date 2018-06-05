@@ -33,6 +33,10 @@
  (special lop rop $inchar)
  (*expr wxxml-lbp wxxml-rbp))
 
+;; Use rounded parenthesis for matrices by default
+(setq $lmxchar #\()
+(setq $rmxchar #\()
+
 ;; A few variables whose value can be configured from wxMaxima
 (defvar $wxfilename "" "The filename of the current wxMaxima worksheet")
 (defvar $wxdirname "" "The directory the current wxMaxima worksheet lies in")

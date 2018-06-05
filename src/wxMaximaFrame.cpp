@@ -587,8 +587,13 @@ void wxMaximaFrame::SetupMenu()
   autoSubscript->Append(menu_noAutosubscript, wxT("Never"), _("Don't autosubscript after an underscore"), wxITEM_NORMAL);
   autoSubscript->Append(menu_defaultAutosubscript, wxT("Integers and single letters"), _("Autosubscript numbers and text following single letters"), wxITEM_NORMAL);
   autoSubscript->Append(menu_alwaysAutosubscript, wxT("Always"), _("Always autosubscript after an underscore"), wxITEM_NORMAL);
-
   m_Maxima_Panes_Sub->Append(wxNewId(), _("Autosubscript"), autoSubscript, _("Autosubscript chars after an underscore"));
+
+  wxMenu *roundedMatrixParens = new wxMenu;
+  roundedMatrixParens->Append(menu_roundedMatrixParensYes, wxT("Rounded"), _("Use rounded parenthesis for matrices"), wxITEM_NORMAL);
+  roundedMatrixParens->Append(menu_roundedMatrixParensNo, wxT("Square"), _("Use square parenthesis for matrices"), wxITEM_NORMAL);
+  m_Maxima_Panes_Sub->Append(wxNewId(), _("Matrix parenthesis"), roundedMatrixParens, _("Choose the parenthesis type for Matrices"));
+
 
   m_Maxima_Panes_Sub->AppendSeparator();
   APPEND_MENU_ITEM(m_Maxima_Panes_Sub, MathCtrl::menu_zoom_in, _("Zoom &In\tCtrl++"),

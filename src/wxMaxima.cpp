@@ -4376,6 +4376,12 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     case menu_alwaysAutosubscript:
       MenuCommand(wxT("wxsubscripts: 'always$"));
       break;
+    case menu_roundedMatrixParensYes:
+      MenuCommand(wxT("lmxchar:\"(\"$rmxchar:\")\"$"));
+      break;
+    case menu_roundedMatrixParensNo:
+      MenuCommand(wxT("lmxchar:\"[\"$rmxchar:\"]\"$"));
+      break;
     case menu_fullscreen:
       ShowFullScreen(!IsFullScreen());
       break;
@@ -8629,6 +8635,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(menu_noAutosubscript, wxMaxima::EditMenu)
                 EVT_MENU(menu_defaultAutosubscript, wxMaxima::EditMenu)
                 EVT_MENU(menu_alwaysAutosubscript, wxMaxima::EditMenu)
+                EVT_MENU(menu_roundedMatrixParensNo, wxMaxima::EditMenu)
+                EVT_MENU(menu_roundedMatrixParensYes, wxMaxima::EditMenu)
                 EVT_MENU(menu_fullscreen, wxMaxima::EditMenu)
                 EVT_MENU(ToolBar::tb_hideCode, wxMaxima::EditMenu)
                 EVT_MENU(menu_copy_as_bitmap, wxMaxima::EditMenu)
