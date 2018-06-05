@@ -170,7 +170,7 @@ public:
   void SendMaxima(wxString s, bool history = false);
 
   //! Open a file
-  void OpenFile(wxString file,
+  bool OpenFile(wxString file,
                 wxString command = wxEmptyString);
 
   //! Does this document need saving?

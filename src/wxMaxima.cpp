@@ -3400,7 +3400,7 @@ wxString wxMaxima::GetDefaultEntry()
   return wxT("%");
 }
 
-void wxMaxima::OpenFile(wxString file, wxString cmd)
+bool wxMaxima::OpenFile(wxString file, wxString cmd)
 {
   if (file.Length() && wxFileExists(file))
   {
@@ -3422,7 +3422,8 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
     }
     else if (file.Right(4).Lower() == wxT(".wxm"))
     {
-      OpenWXMFile(file, m_console);
+      if(!OpenWXMFile(file, m_console))
+        return false;
       ReReadConfig();
       m_recentDocuments.AddDocument(file);
       ReReadConfig();
@@ -3430,7 +3431,8 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 
     else if (file.Right(4).Lower() == wxT(".mac"))
     {
-      OpenMACFile(file, m_console);
+      if(!OpenMACFile(file, m_console))
+        return false;
       ReReadConfig();
       m_recentDocuments.AddDocument(file);
       ReReadConfig();
@@ -3438,7 +3440,8 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 
     else if (file.Right(4).Lower() == wxT(".out"))
     {
-      OpenMACFile(file, m_console);
+      if(!OpenMACFile(file, m_console))
+        return false;
       ReReadConfig();
       m_recentDocuments.AddDocument(file);
       ReReadConfig();
@@ -3446,7 +3449,8 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 
     else if (file.Right(5).Lower() == wxT(".wxmx"))
     {
-      OpenWXMXFile(file, m_console); // clearDocument = true
+      if(!OpenWXMXFile(file, m_console))
+        return false;; // clearDocument = true
       ReReadConfig();
       m_recentDocuments.AddDocument(file);
       ReReadConfig();
@@ -3454,7 +3458,8 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
 
     else if (file.Right(4).Lower() == wxT(".zip"))
     {
-      OpenWXMXFile(file, m_console); // clearDocument = true
+      if(!OpenWXMXFile(file, m_console))
+        return false; // clearDocument = true
       ReReadConfig();
       m_recentDocuments.AddDocument(file);
       ReReadConfig();
@@ -3469,13 +3474,8 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
     }
 
     else if (file.Right(4).Lower() == wxT(".xml"))
-    {
       OpenXML(file, m_console); // clearDocument = true
-      ReReadConfig();
-      m_recentDocuments.AddDocument(file);
-      ReReadConfig();
-    }
-
+    
     else
     {
       MenuCommand(wxT("load(\"") + unixFilename + wxT("\")$"));
@@ -3512,6 +3512,7 @@ void wxMaxima::OpenFile(wxString file, wxString cmd)
     m_console->m_tableOfContents->UpdateTableOfContents(m_console->GetTree(), m_console->GetHCaret());
   }
   m_console->RequestRedraw();
+  return true;
 }
 
 bool wxMaxima::SaveFile(bool forceSave)
