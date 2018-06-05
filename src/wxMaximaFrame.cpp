@@ -276,7 +276,7 @@ void wxMaximaFrame::do_layout()
 
   m_manager.AddPane(m_history,
                     wxAuiPaneInfo().Name(wxT("history")).
-                            Show(false).
+                            Show(false).CloseButton().PinButton().
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
@@ -286,7 +286,7 @@ void wxMaximaFrame::do_layout()
 
   m_manager.AddPane(m_console->m_tableOfContents,
                     wxAuiPaneInfo().Name(wxT("structure")).
-                            Show(true).
+                            Show(true).CloseButton().PinButton().
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
@@ -296,7 +296,7 @@ void wxMaximaFrame::do_layout()
 
   m_manager.AddPane(m_xmlInspector,
                     wxAuiPaneInfo().Name(wxT("XmlInspector")).
-                            Show(false).
+                            Show(false).CloseButton().PinButton().
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
@@ -306,20 +306,19 @@ void wxMaximaFrame::do_layout()
 
   m_manager.AddPane(CreateStatPane(),
                     wxAuiPaneInfo().Name(wxT("stats")).
-                            Show(false).
+                            Show(false).CloseButton().PinButton().
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
                             RightDockable(true).
                             PaneBorder(true).
-                            Fixed().
                             Left());
 
   wxPanel *greekPane = CreateGreekPane();
 #ifdef wxUSE_UNICODE
   m_manager.AddPane(greekPane,
                     wxAuiPaneInfo().Name(wxT("greek")).
-                            Show(false).
+                            Show(false).CloseButton().PinButton().
                             DockFixed(false).
                             Gripper(false).
                             TopDockable(true).
@@ -337,7 +336,7 @@ void wxMaximaFrame::do_layout()
   m_manager.AddPane(symbolsPane,
                     wxAuiPaneInfo().Name(wxT("symbols")).
                             Show(false).
-                            DockFixed(false).
+                            DockFixed(false).CloseButton().PinButton().
                             Gripper(false).
                             TopDockable(true).
                             BottomDockable(true).
@@ -352,53 +351,50 @@ void wxMaximaFrame::do_layout()
 #endif
   m_manager.AddPane(CreateMathPane(),
                     wxAuiPaneInfo().Name(wxT("math")).
-                            Show(false).
+                            Show(false).CloseButton().PinButton().
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
                             RightDockable(true).
                             PaneBorder(true).
-                            Fixed().
                             Left());
 
   m_manager.AddPane(CreateFormatPane(),
                     wxAuiPaneInfo().Name(wxT("format")).
-                            Show(false).
+                            Show(false).CloseButton().PinButton().
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
                             RightDockable(true).
                             PaneBorder(true).
-                            Fixed().
                             Left());
 
   m_manager.AddPane(m_drawPane = new DrawPane(this, -1),
                     wxAuiPaneInfo().Name(wxT("draw")).
-                    Show(false).
+                    Show(false).CloseButton().PinButton().
                     TopDockable(true).
                     BottomDockable(true).
                     LeftDockable(true).
                     RightDockable(true).
                     PaneBorder(true).
-                    Fixed().
                     Left());
   
   m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).
     MinSize(greekPane->GetEffectiveMinSize()).
     BestSize(greekPane->GetEffectiveMinSize()).
-    Show(true).Gripper(false).
+    Show(true).Gripper(false).CloseButton().PinButton().
     MaxSize(greekPane->GetEffectiveMinSize());
   
   m_manager.GetPane(wxT("symbols")) = m_manager.GetPane(wxT("symbols")).
     MinSize(symbolsPane->GetEffectiveMinSize()).
     BestSize(symbolsPane->GetEffectiveMinSize()).
-    Show(true).Gripper(false).
+    Show(true).Gripper(false).CloseButton().PinButton().
     MaxSize(symbolsPane->GetEffectiveMinSize());
 
   m_manager.GetPane(wxT("draw")) = m_manager.GetPane(wxT("draw")).
     MinSize(symbolsPane->GetEffectiveMinSize()).
     BestSize(symbolsPane->GetEffectiveMinSize()).
-    Show(true).
+    Show(true).CloseButton().PinButton().
     MaxSize(symbolsPane->GetEffectiveMinSize());
 
   
