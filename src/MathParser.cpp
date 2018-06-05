@@ -670,6 +670,8 @@ MathCell *MathParser::ParseTableTag(wxXmlNode *node)
     matrix->ColNames(true);
   if (node->GetAttribute(wxT("rownames"), wxT("false")) == wxT("true"))
     matrix->RowNames(true);
+  if (node->GetAttribute(wxT("roundedParens"), wxT("false")) == wxT("true"))
+    matrix->RoundedParens(true);
 
   wxXmlNode *rows = SkipWhitespaceNode(node->GetChildren());
   while (rows)

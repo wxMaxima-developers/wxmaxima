@@ -745,6 +745,8 @@
 		      (list (format nil "<tb special=\"true\" rownames=~s colnames=~s>"
 				    (if (find 'rownames (car x)) "true" "false")
 				    (if (find 'colnames (car x)) "true" "false"))))
+		     ((string= $lmxchar #\()
+		      (list "<tb roundedParens=\"true\">"))
 		     (t
 		       (list "<tb>")))
                  (mapcan #'(lambda (y)

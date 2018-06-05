@@ -35,6 +35,7 @@ MatrCell::MatrCell(MathCell *parent, Configuration **config, CellPointers *cellP
   m_matWidth = 0;
   m_matHeight = 0;
   m_specialMatrix = false;
+  m_roundedParens = false;
   m_inferenceMatrix = false;
   m_rowNames = m_colNames = false;
 }
@@ -55,6 +56,7 @@ MathCell *MatrCell::Copy()
   CopyData(this, tmp);
   tmp->m_specialMatrix = m_specialMatrix;
   tmp->m_inferenceMatrix = m_inferenceMatrix;
+  tmp->m_roundedParens = m_roundedParens;
   tmp->m_rowNames = m_rowNames;
   tmp->m_colNames = m_colNames;
   tmp->m_matWidth = m_matWidth;
@@ -186,34 +188,70 @@ void MatrCell::Draw(wxPoint point, int fontsize)
     }
     else
     {
-      
-      // left bracket
-      wxDC *adc = configuration->GetAntialiassingDC();
-      adc->DrawLine(point.x + Scale_Px(5),
-                   point.y - m_center + Scale_Px(2),
-                   point.x + Scale_Px(1),
-                   point.y - m_center + Scale_Px(2));
-      adc->DrawLine(point.x + Scale_Px(1),
-                   point.y - m_center + Scale_Px(2),
-                   point.x + Scale_Px(1),
-                   point.y + m_center - Scale_Px(2));
-      adc->DrawLine(point.x + Scale_Px(1),
-                   point.y + m_center - Scale_Px(2),
-                   point.x + Scale_Px(5),
-                   point.y + m_center - Scale_Px(2));
-      // right bracket
-      adc->DrawLine(point.x + m_width - Scale_Px(5) - 1,
-                   point.y - m_center + Scale_Px(2),
-                   point.x + m_width - Scale_Px(1) - 1,
-                   point.y - m_center + Scale_Px(2));
-      adc->DrawLine(point.x + m_width - Scale_Px(1) - 1,
-                   point.y - m_center + Scale_Px(2),
-                   point.x + m_width - Scale_Px(1) - 1,
-                   point.y + m_center - Scale_Px(2));
-      adc->DrawLine(point.x + m_width - Scale_Px(1) - 1,
-                   point.y + m_center - Scale_Px(2),
-                   point.x + m_width - Scale_Px(5) - 1,
-                   point.y + m_center - Scale_Px(2));
+
+      if(m_roundedParens)
+      {
+        int signWidth = Scale_Px(4);
+        if (m_height <= signWidth / 3)
+          signWidth = m_height / 3;
+        
+        wxPoint pointList[5];
+        // Left bracket
+        pointList[0] = wxPoint(point.x + Scale_Px(1) + signWidth,
+                               point.y - m_center);
+        pointList[1] = wxPoint(point.x + Scale_Px(1) + signWidth / 2,
+                               point.y - m_center + signWidth / 2);
+        pointList[2] = wxPoint(point.x + Scale_Px(1),
+                               point.y);
+        pointList[3] = wxPoint(point.x + Scale_Px(1) + signWidth / 2,
+                               point.y + m_center - signWidth / 2);
+        pointList[4] = wxPoint(point.x + Scale_Px(1) + signWidth,
+                               point.y + m_center);
+        configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
+
+        // Right bracket
+        pointList[0] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
+                               point.y - m_center);
+        pointList[1] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
+                               point.y - m_center + signWidth / 2);
+        pointList[2] = wxPoint(point.x + m_width - Scale_Px(1),
+                               point.y);
+        pointList[3] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
+                               point.y + m_center - signWidth / 2);
+        pointList[4] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
+                               point.y + m_center);
+        configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
+      }
+      else
+      {
+        // left bracket
+        wxDC *adc = configuration->GetAntialiassingDC();
+        adc->DrawLine(point.x + Scale_Px(5),
+                      point.y - m_center + Scale_Px(2),
+                      point.x + Scale_Px(1),
+                      point.y - m_center + Scale_Px(2));
+        adc->DrawLine(point.x + Scale_Px(1),
+                      point.y - m_center + Scale_Px(2),
+                      point.x + Scale_Px(1),
+                      point.y + m_center - Scale_Px(2));
+        adc->DrawLine(point.x + Scale_Px(1),
+                      point.y + m_center - Scale_Px(2),
+                      point.x + Scale_Px(5),
+                      point.y + m_center - Scale_Px(2));
+        // right bracket
+        adc->DrawLine(point.x + m_width - Scale_Px(5) - 1,
+                      point.y - m_center + Scale_Px(2),
+                      point.x + m_width - Scale_Px(1) - 1,
+                      point.y - m_center + Scale_Px(2));
+        adc->DrawLine(point.x + m_width - Scale_Px(1) - 1,
+                      point.y - m_center + Scale_Px(2),
+                      point.x + m_width - Scale_Px(1) - 1,
+                      point.y + m_center - Scale_Px(2));
+        adc->DrawLine(point.x + m_width - Scale_Px(1) - 1,
+                      point.y + m_center - Scale_Px(2),
+                      point.x + m_width - Scale_Px(5) - 1,
+                      point.y + m_center - Scale_Px(2));
+      }
     }
     UnsetPen();
   }
@@ -319,6 +357,8 @@ wxString MatrCell::ToXML()
   wxString flags;
   if (m_forceBreakLine)
     flags += wxT(" breakline=\"true\"");
+  if (m_roundedParens)
+    flags += wxT(" roundedParens=\"true\"");
 
   wxString s = wxEmptyString;
   if (m_specialMatrix)

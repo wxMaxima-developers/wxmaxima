@@ -87,8 +87,11 @@ public:
   void ColNames(bool cn)
   { m_colNames = cn; }
 
+  void RoundedParens(bool rounded)
+  { m_roundedParens = rounded;}
 protected:
   int m_matWidth;
+  int m_roundedParens;
   int m_matHeight;
   bool m_specialMatrix, m_inferenceMatrix, m_rowNames, m_colNames;
   vector<MathCell *> m_cells;
