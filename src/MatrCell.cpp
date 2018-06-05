@@ -191,6 +191,7 @@ void MatrCell::Draw(wxPoint point, int fontsize)
 
       if(m_roundedParens)
       {
+        SetPen(1);
         int signWidth = Scale_Px(4);
         if (m_height <= signWidth / 3)
           signWidth = m_height / 3;
@@ -208,18 +209,24 @@ void MatrCell::Draw(wxPoint point, int fontsize)
         pointList[4] = wxPoint(point.x + Scale_Px(1) + signWidth,
                                point.y + m_center);
         configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
+        pointList[2] = wxPoint(point.x + Scale_Px(1.5),
+                               point.y);
+        configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
 
         // Right bracket
         pointList[0] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
                                point.y - m_center);
         pointList[1] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
                                point.y - m_center + signWidth / 2);
-        pointList[2] = wxPoint(point.x + m_width - Scale_Px(1),
+        pointList[2] = wxPoint(point.x + m_width - Scale_Px(1.5),
                                point.y);
         pointList[3] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
                                point.y + m_center - signWidth / 2);
         pointList[4] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
                                point.y + m_center);
+        configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
+        pointList[2] = wxPoint(point.x + m_width - Scale_Px(1),
+                               point.y);
         configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
       }
       else
