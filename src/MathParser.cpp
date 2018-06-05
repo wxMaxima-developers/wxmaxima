@@ -355,7 +355,8 @@ MathCell *MathParser::ParseSupTag(wxXmlNode *node)
   wxXmlNode *child = node->GetChildren();
   child = SkipWhitespaceNode(child);
 
-  expt->SetBase(HandleNullPointer(ParseTag(child, false)));
+  MathCell *baseCell;
+    expt->SetBase(baseCell = HandleNullPointer(ParseTag(child, false)));
   child = GetNextTag(child);
 
   MathCell *power = HandleNullPointer(ParseTag(child, false));
@@ -363,7 +364,11 @@ MathCell *MathParser::ParseSupTag(wxXmlNode *node)
   expt->SetPower(power);
   expt->SetType(m_ParserStyle);
   expt->SetStyle(TS_VARIABLE);
+
   ParseCommonAttrs(node, expt);
+  if(node->GetAttribute(wxT("mat"), wxT("false")) == wxT("true"))
+    expt->SetAltCopyText(baseCell->ToString()+wxT("^^")+power->ToString());
+
   return expt;
 }
 

@@ -187,6 +187,8 @@ void ExptCell::Draw(wxPoint point, int fontsize)
 
 wxString ExptCell::ToString()
 {
+  if (m_altCopyText != wxEmptyString)
+    return m_altCopyText;
   if (m_isBroken)
     return wxEmptyString;
   wxString s = m_baseCell->ListToString() + wxT("^");
