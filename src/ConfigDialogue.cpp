@@ -1352,8 +1352,12 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
 #endif
     font = *wxNORMAL_FONT;
 
-  if (tmp == &m_styleText || tmp == &m_styleTitle || tmp == &m_styleSubsubsection || tmp == &m_styleSubsection || tmp == &m_styleTitle ||
-      tmp == &m_styleSection)
+  if (
+    (tmp == &m_styleText)          ||
+    (tmp == &m_styleTitle)         ||
+    (tmp == &m_styleSubsubsection) ||
+    (tmp == &m_styleSubsection)    ||
+    (tmp == &m_styleSection))
   {
     if (tmp->fontSize != 0)
       fontsize = tmp->fontSize;

@@ -1086,6 +1086,7 @@ wxString EditorCell::GetCurrentCommand()
         command = wxEmptyString;
         possibleCommand = wxEmptyString;
         ++it;
+        break;
       } 
       default:
         possibleCommand = wxEmptyString;
