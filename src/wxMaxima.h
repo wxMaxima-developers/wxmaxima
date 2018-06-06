@@ -182,7 +182,8 @@ public:
   { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
 
 private:
-  
+  //! Is true if opening the file from the command line failed before updating the statusbar.
+  bool m_openInitialFileError;
   //! Escape strings into a format lisp accepts
   wxString EscapeForLisp(wxString str);
   //! The number of Jiffies Maxima had used the last time we asked

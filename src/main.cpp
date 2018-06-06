@@ -287,7 +287,7 @@ void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval)
   if (m == 1)
     m_frame->Maximize(true);
 
-  if (file.Length() > 0 && wxFileExists(file))
+  if (file.Length() > 0)
   {
     m_frame->SetOpenFile(file);
   }

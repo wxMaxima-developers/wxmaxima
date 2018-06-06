@@ -134,6 +134,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, configFile, pos, size)
 {
+  m_openInitialFileError = false;
   m_nestedLoadCommands = 0;
   m_maximaJiffies_old = 0;
   m_cpuTotalJiffies_old = 0;
@@ -2943,7 +2944,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   {
     wxString file = m_openFile;
     m_openFile = wxEmptyString;
-    OpenFile(file);
+      m_openInitialFileError = !OpenFile(file);
 
     // After doing such big a thing we should end our idle event and request
     // a new one to be issued once the computer has time for doing real
@@ -2970,9 +2971,13 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     else
     {
       if (m_first)
-        SetStatusText(_("Welcome to wxMaxima"), 0);
+      {
+        if(!m_openInitialFileError)
+          SetStatusText(_("Welcome to wxMaxima"), 0);
+      }
       else
         SetStatusText(_("Maxima is ready for input."), 0);
+      m_openInitialFileError = false;
     }
     m_updateEvaluationQueueLengthDisplay = false;
 
@@ -3103,7 +3108,6 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       event.Skip();
     return;
   }
-
   if((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded()))
     m_xmlInspector->Update();
 
@@ -3402,6 +3406,7 @@ wxString wxMaxima::GetDefaultEntry()
 
 bool wxMaxima::OpenFile(wxString file, wxString cmd)
 {
+  bool retval = true;
   if (file.Length() && wxFileExists(file))
   {
     m_lastPath = wxPathOnly(file);
@@ -3422,59 +3427,68 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
     }
     else if (file.Right(4).Lower() == wxT(".wxm"))
     {
-      if(!OpenWXMFile(file, m_console))
-        return false;
-      ReReadConfig();
-      m_recentDocuments.AddDocument(file);
-      ReReadConfig();
+      retval = OpenWXMFile(file, m_console);
+      if(retval)
+      {
+        ReReadConfig();
+        m_recentDocuments.AddDocument(file);
+        ReReadConfig();
+      }
     }
 
     else if (file.Right(4).Lower() == wxT(".mac"))
     {
-      if(!OpenMACFile(file, m_console))
-        return false;
-      ReReadConfig();
-      m_recentDocuments.AddDocument(file);
-      ReReadConfig();
+      retval = OpenMACFile(file, m_console);
+      if(retval)
+      {
+        ReReadConfig();
+        m_recentDocuments.AddDocument(file);
+        ReReadConfig();
+      }
     }
-
     else if (file.Right(4).Lower() == wxT(".out"))
     {
-      if(!OpenMACFile(file, m_console))
-        return false;
-      ReReadConfig();
-      m_recentDocuments.AddDocument(file);
-      ReReadConfig();
+      retval = OpenMACFile(file, m_console);
+      if(retval)
+      {
+        ReReadConfig();
+        m_recentDocuments.AddDocument(file);
+        ReReadConfig();
+      }
     }
 
     else if (file.Right(5).Lower() == wxT(".wxmx"))
     {
-      if(!OpenWXMXFile(file, m_console))
-        return false;; // clearDocument = true
-      ReReadConfig();
-      m_recentDocuments.AddDocument(file);
-      ReReadConfig();
+      retval = OpenWXMXFile(file, m_console);
+      if(retval)
+      {
+        ReReadConfig();
+        m_recentDocuments.AddDocument(file);
+        ReReadConfig();
+      }
     }
 
     else if (file.Right(4).Lower() == wxT(".zip"))
     {
-      if(!OpenWXMXFile(file, m_console))
-        return false; // clearDocument = true
-      ReReadConfig();
-      m_recentDocuments.AddDocument(file);
-      ReReadConfig();
+      retval = OpenWXMXFile(file, m_console);
+      if(retval)
+      {
+        ReReadConfig();
+        m_recentDocuments.AddDocument(file);
+        ReReadConfig();
+      }
     }
 
     else if (file.Right(4).Lower() == wxT(".dem"))
     {
       MenuCommand(wxT("demo(\"") + unixFilename + wxT("\")$"));
       ReReadConfig();
-      m_recentDocuments.AddDocument(file);
+      m_recentPackages.AddDocument(file);
       ReReadConfig();
     }
 
     else if (file.Right(4).Lower() == wxT(".xml"))
-      OpenXML(file, m_console); // clearDocument = true
+      retval = OpenXML(file, m_console); // clearDocument = true
     
     else
     {
@@ -3486,6 +3500,8 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
 
     m_isNamed = true;
   }
+  else
+    retval = false;
 
   UpdateRecentDocuments();
 
@@ -3512,7 +3528,11 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
     m_console->m_tableOfContents->UpdateTableOfContents(m_console->GetTree(), m_console->GetHCaret());
   }
   m_console->RequestRedraw();
-  return true;
+
+  if(!retval)
+    SetStatusText(wxString::Format("Errors trying to open the file %s.", file),0);
+
+  return retval;
 }
 
 bool wxMaxima::SaveFile(bool forceSave)
