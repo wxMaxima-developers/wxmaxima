@@ -2769,6 +2769,8 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
     return L"\x2192";
   else if (txt == wxT("-->"))
     return L"\x27F6";
+  else if (txt == wxT(" --> "))
+    return L"\x27F6";
 
     /////////////////////////
   else if (txt.ToLong(&unicodeval, 16))

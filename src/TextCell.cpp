@@ -77,6 +77,8 @@ void TextCell::SetValue(const wxString &text)
   ResetSize();
   m_text.Replace(wxT("\n"), wxEmptyString);
   m_text.Replace(wxT("-->"), wxT("\x2794"));
+  m_text.Replace(wxT(" -->"), wxT("\x2794"));
+  m_text.Replace(wxT(" \x2212\x2192 "), wxT("\x2794"));
   m_text.Replace(wxT("->"), wxT("\x2192"));
   m_text.Replace(wxT("\x2212>"), wxT("\x2192"));
 
@@ -1283,6 +1285,8 @@ wxString TextCell::ToRTF()
     text = wxT("(") + m_userDefinedLabel + wxT(")");
   
   text.Replace(wxT("-->"), wxT("\x2192"));
+  // Needed for the output of let(a/b,a+1);
+  text.Replace(wxT(" --> "), wxT("\x2192"));
   if ((GetStyle() == TS_LABEL) || (GetStyle() == TS_USERLABEL))
   {
     retval += wxString::Format(wxT("\\cf%i{"), (int) GetStyle());
@@ -1526,6 +1530,7 @@ wxString TextCell::GetGreekStringUnicode()
 
 wxString TextCell::GetSymbolUnicode(bool keepPercent)
 {
+  std::cerr<<m_text<<"\n";
   if (m_text == wxT("+"))
     return wxT("+");
   else if (m_text == wxT("="))
@@ -1538,7 +1543,6 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent)
     return wxT("\x2264");
   else if (m_text == wxT(">="))
     return wxT("\x2265");
-#ifndef __WXMSW__
   else if (m_text == wxT(" and "))
     return wxT(" \x22C0 ");
   else if (m_text == wxT(" or "))
@@ -1559,7 +1563,11 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent)
     return wxT("\x2192");
   else if (m_text == wxT("-->"))
     return wxT("\x2794");
-#endif
+  // The next two ones are needed for the output of let(a/b,a+1);
+  else if (m_text == wxT(" --> "))
+    return wxT("\x2794");
+  else if (m_text == wxT(" \x2212\x2192 "))
+    return wxT("\x2794");
   /*
    else if (GetStyle() == TS_SPECIAL_CONSTANT && m_text == wxT("d"))
      return wxT("\x2202");
@@ -1723,8 +1731,6 @@ wxString TextCell::GetSymbolSymbol(bool keepPercent)
     return "\xC5";
   else if (m_text == wxT("~>"))
     return "\x219D";
-
-      
   if (!keepPercent) {
     if (m_text == wxT("%e"))
       return wxT("e");
