@@ -1857,8 +1857,11 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
     m_getStyleFont->Enable(false);
 
   // Background color only
-  if (st >= TS_SECTION)
+  if (st > TS_TITLE)
   {
+    m_boldCB->SetValue(false);
+    m_italicCB->SetValue(false);
+    m_underlinedCB->SetValue(false);
     m_boldCB->Enable(false);
     m_italicCB->Enable(false);
     m_underlinedCB->Enable(false);
