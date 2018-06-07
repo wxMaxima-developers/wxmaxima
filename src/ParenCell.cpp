@@ -466,7 +466,6 @@ bool ParenCell::BreakUp()
 
     m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
-    m_innerCell->ResetData();
     return true;
   }
   return false;
