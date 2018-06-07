@@ -1736,7 +1736,10 @@ void wxMaxima::ReadPrompt(wxString &data)
     // If the user answers a question additional output might be required even
     // if the question has been preceded by many lines.
     m_outputCellsFromCurrentCommand = 0;
-    m_console->SetNotification(_("Maxima asks a question!"),wxICON_INFORMATION);
+    if((m_console->GetWorkingGroup() == NULL) ||
+       ((m_console->GetWorkingGroup()->m_knownAnswers.empty()) &&
+        m_console->GetWorkingGroup()->AutoAnswer()))
+       m_console->SetNotification(_("Maxima asks a question!"),wxICON_INFORMATION);
     if (!o.IsEmpty())
     {
       m_console->m_configuration->SetDefaultMathCellToolTip(
