@@ -1882,7 +1882,16 @@ void GroupCell::BreakUpCells(MathCell *cell, int WXUNUSED(fontsize), int clientW
 
   if(lineHeightsChanged)
   {
-//    ResetData();
+    if(m_inputLabel != NULL)
+    {
+      m_inputLabel->RecalculateList((*m_configuration)->GetDefaultFontSize());
+    }
+    if(m_output != NULL)
+    {
+      m_output->ResetSizeList();
+      m_output->RecalculateList(m_output->IsMath() ? m_mathFontSize : m_fontSize);
+    }
+    ResetData();
   }
 }
 
