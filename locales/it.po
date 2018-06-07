@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-05 09:55+0200\n"
+"POT-Creation-Date: 2018-06-07 07:31+0200\n"
 "PO-Revision-Date: 2018-05-18 19:05+0200\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -27,7 +27,7 @@ msgstr ""
 "\n"
 "Maxima sta usando attualmente il %3.3f%% di tutte le CPU disponibili."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6518
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6540
 #, c-format
 msgid ""
 "\n"
@@ -40,7 +40,7 @@ msgstr ""
 "wxWidgets: %d.%d.%d\n"
 "Supporto Unicode: %s"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6532
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6554
 msgid ""
 "\n"
 "Lisp: "
@@ -48,7 +48,7 @@ msgstr ""
 "\n"
 "Lisp: "
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6528
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6550
 msgid ""
 "\n"
 "Maxima version: "
@@ -56,7 +56,7 @@ msgstr ""
 "\n"
 "Versione di Maxima: "
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6530
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6552
 msgid ""
 "\n"
 "Not connected."
@@ -73,8 +73,8 @@ msgstr "      -l <nome>"
 msgid " (Graphics) "
 msgstr " (grafiche) "
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3876
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4287
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3877
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4288
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr " ... + %i righe nascoste"
@@ -106,7 +106,7 @@ msgstr "\"Copia LaTeX\" aggiunge marcatori di equazione"
 msgid "\"implies\" symbol"
 msgstr "\"implica\" simbolo"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2963
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2964
 #, c-format
 msgid "%i cells in evaluation queue"
 msgstr "%i celle nella coda di elaborazione"
@@ -397,7 +397,7 @@ msgstr "-"
 msgid "- Infinity"
 msgstr "- infinito"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:367
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:368
 msgid ""
 "... [suppressed additional lines since the output is longer than allowed in "
 "the configuration] "
@@ -421,16 +421,16 @@ msgstr "Equazioni 2D usando ASCII Art"
 msgid "3D"
 msgstr "3D"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2966
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2967
 #, c-format
 msgid "; %i commands left in the current cell"
 msgstr "; %i comandi lasciati nella cella corrente"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6599
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6621
 msgid "<br>Lisp: "
 msgstr "<br>Lisp: "
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7866
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7888
 msgid ""
 "A \":lisp\" as the first command might fail to send a \"finished\" signal."
 msgstr ""
@@ -494,7 +494,7 @@ msgstr ""
 "con un \"wx\". \"draw\" può essere rimpiazzato da \"wxdraw\", plot da "
 "\"wxplot\" ecc."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:329
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:330
 msgid ""
 "A scale factor for the printout. Helpful for printing big equations on small "
 "pdf pages."
@@ -502,7 +502,7 @@ msgstr ""
 "Un fattore di scala per la stampa. Utile per la stampa di grandi equazioni "
 "su piccole pagine pdf."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4795
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4796
 msgid "A section heading"
 msgstr "Una intestazione di sezione"
 
@@ -514,11 +514,11 @@ msgstr "Uno spazio tra celle di gruppo"
 msgid "A static plot"
 msgstr "Un grafico statico"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4801
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4802
 msgid "A sub-subsection heading"
 msgstr "Una intestazione di sottosottosezione"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4798
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4799
 msgid "A subsection heading"
 msgstr "Una intestazione di sottosezione"
 
@@ -543,7 +543,7 @@ msgstr "A&l valore..."
 msgid "Abort evaluation on error"
 msgstr "Interrompi elaborazione in caso di errore"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6601
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6623
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1129
 msgid "About"
 msgstr "Informazioni"
@@ -580,11 +580,11 @@ msgid ""
 msgstr ""
 "Aggiungi un nuovo elemento all'inizio della lista. Utile per creare pile."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5710
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5732
 msgid "Add an element to a list"
 msgstr "Aggiungi un elemento ad una lista"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4569
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4590
 msgid "Add dir to path:"
 msgstr "Aggiungi una directory al percorso:"
 
@@ -605,7 +605,7 @@ msgid "Additional clipboard formats to put on the clipboard on ordinary copy:"
 msgstr ""
 "Formati appunti aggiuntivi da metter sugli appunti con una normale copia:"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:306
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:307
 msgid ""
 "Additional commands to be added to the preamble of LaTeX output for pdftex."
 msgstr ""
@@ -615,7 +615,7 @@ msgstr ""
 msgid "Additional lines for the TeX preamble:"
 msgstr "Righe aggiuntive per il preambolo TeX:"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:302
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:303
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
 msgstr "Parametri aggiuntivi per maxima (per es. -l clisp)."
 
@@ -644,7 +644,7 @@ msgstr "Tutti a parte i primi n elementi"
 msgid "All but the last n elements"
 msgstr "Tutti a parte gli ultimi n elementi"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3959
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3980
 msgid ""
 "All openable types (*.wxm, *.wxmx, *.mac, *.out, *.xml)|*.wxm;*.wxmx;*.mac;*."
 "out;*.xml|wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx|Maxima session (*."
@@ -655,7 +655,7 @@ msgstr ""
 "Maxima (*.mac)|*.mac|Sessioni Xmaxima (*.out)|*.out|xml da spezzoni di .wxmx "
 "(*.xml)|*.xml"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:584
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:585
 msgid "All variable names"
 msgstr "Tutti nomi di variabile"
 
@@ -699,7 +699,7 @@ msgstr "Accoda"
 msgid "Append a list"
 msgstr "Accoda una lista"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5728
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5750
 msgid "Append a list to a list"
 msgstr "Accoda una lista ad una lista"
 
@@ -715,11 +715,11 @@ msgstr "Accoda un elemento"
 msgid "Append an element to an existing list"
 msgstr "Accoda un elemento ad una lista esistente"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5105
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5126
 msgid "Apply"
 msgstr "Applica"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5597
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5619
 msgid "Apply a function to each list element"
 msgstr "Applica una funzione ad ogni elemento lista"
 
@@ -727,15 +727,15 @@ msgstr "Applica una funzione ad ogni elemento lista"
 msgid "Apply function to a list"
 msgstr "Applica funzione ad una lista"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6639
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6661
 msgid "Apropos"
 msgstr "Aproposito"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5026
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5047
 msgid "Array:"
 msgstr "Array:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6454
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6476
 msgid "Artwork by"
 msgstr "Design grafico di"
 
@@ -762,7 +762,7 @@ msgstr ""
 msgid "Ask to save untitled documents"
 msgstr "Richiedi il salvataggio dei documenti senza nome"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4897
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4918
 msgid "At value"
 msgstr "Al valore"
 
@@ -770,7 +770,7 @@ msgstr "Al valore"
 msgid "Auto-indent new lines"
 msgstr "Auto indenta a capo"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:596
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:597
 #, c-format
 msgid "Automatic labels (%i1, %o1,...)"
 msgstr "Etichette automatiche (%i1, %o1,...)"
@@ -781,7 +781,7 @@ msgstr "Etichette automatiche (%i1, %o1,...)"
 msgid "Automatically answer questions"
 msgstr "Rispondi automaticamente alle domande"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:367
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:368
 msgid ""
 "Automatically change maxima's working directory to the one the current "
 "document is in: This is necessary if the document uses File I/O relative to "
@@ -803,7 +803,7 @@ msgid "Automatically fill in answers known from the last run"
 msgstr ""
 "Rispondi automaticamente alle domande conosciute dall'ultima esecuzione"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:342
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:343
 msgid ""
 "Automatically insert matching parenthesis in text controls. Automatic "
 "highlighting of matching parenthesis can be suppressed by setting the "
@@ -830,7 +830,7 @@ msgid "Autosubscript numbers and text following single letters"
 msgstr ""
 "Passa automaticamente al pedice i numeri e il testo seguenti singole lettere"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:570
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:571
 msgid "Autowrap long lines:"
 msgstr "Auto a capo righe lunghe:"
 
@@ -839,7 +839,7 @@ msgid "Axis"
 msgstr "Asse"
 
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:60
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4798
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4819
 msgid "BC2"
 msgstr "BC2"
 
@@ -851,7 +851,7 @@ msgstr "Grafico a barre..."
 msgid "Bat files (*.bat)|*.bat|All|*"
 msgstr "File bat (*.bat)|*.bat|Tutti|*"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4120
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4141
 msgid "Batch File"
 msgstr "File batch"
 
@@ -898,7 +898,7 @@ msgstr "Bitmap"
 msgid "Bold"
 msgstr "Grassetto"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3219
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3223
 msgid "Both horizontal and vertical cursor active at the same time"
 msgstr "Cursore sia orizzontale che verticale attivo allo stesso tempo"
 
@@ -1007,12 +1007,12 @@ msgstr "Bug: nessuna ultima cella dentro una radice quadrata!"
 msgid "Bug: Text changed, but no active cell."
 msgstr "Bug: testo cambiato, ma nessuna cella attiva."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3346
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3347
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2267
 msgid "Bug: The clipboard is already opened"
 msgstr "Bug: gli appunti sono già aperti"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3423
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3424
 msgid "Bug: The clipboard isn't open on pasting into an editor cell"
 msgstr ""
 "Bug: gli appunti non sono aperti sull'incollamento in una cella dell'editor"
@@ -1057,7 +1057,7 @@ msgstr ""
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr "Bug: richiesta annullamento per celle fuori dal foglio di lavoro."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4807
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4808
 msgid "Bug: Unknown type of text"
 msgstr "Bug: tipo di testo sconosciuto"
 
@@ -1103,7 +1103,7 @@ msgstr "Calcola il valore dell'ultimo risultato in virgola mobile precisa"
 msgid "Calculate float value of the last result"
 msgstr "Calcola il valore dell'ultimo risultato in virgola mobile"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5883
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5905
 msgid "Calculate modulus:"
 msgstr "Calcola il modulo:"
 
@@ -1119,11 +1119,11 @@ msgstr "Calcola i prodotti"
 msgid "Calculate sums"
 msgstr "Calcola le somme"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8291
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8313
 msgid "Can not connect to the web server."
 msgstr "Impossibile connettersi al server web."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8346
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8368
 msgid "Can not download version info."
 msgstr "Impossibile scaricare le informazioni di versione."
 
@@ -1180,12 +1180,12 @@ msgstr "Impossibile scaricare le informazioni di versione."
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:47
 #: /home/gunter/src/wxmaxima/src/SystemWiz.cpp:39
 #: /home/gunter/src/wxmaxima/src/SystemWiz.cpp:41
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8388
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8410
 msgid "Cancel"
 msgstr "Annulla"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:987
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:126
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:988
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:130
 msgid "Cannot start the maxima binary"
 msgstr "Impossibile avviare maxima"
 
@@ -1205,7 +1205,7 @@ msgstr "Ce&lla"
 msgid "Cell bracket"
 msgstr "Parentesi cella"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7562
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7584
 msgid "Cell ends in a backslash"
 msgstr "La cella finisce con un backslash"
 
@@ -1218,7 +1218,7 @@ msgid "Change the 2d display algorithm used to display math output"
 msgstr ""
 "Cambia l'algoritmo della finestra 2d usato per visualizzare il risultato."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5913
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5935
 msgid "Change variable"
 msgstr "Cambia la variabile"
 
@@ -1226,7 +1226,7 @@ msgstr "Cambia la variabile"
 msgid "Change variable in integral or sum"
 msgstr "Cambia variabile nell'integrale o nella somma"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5013
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5034
 msgid "Char poly"
 msgstr "Polin. caratt."
 
@@ -1264,8 +1264,8 @@ msgstr "Scegliere un nuovo formato per il grafico:"
 msgid "Choose the parenthesis type for Matrices"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6687
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6703
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6709
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6725
 msgid "Classes:"
 msgstr "Classi:"
 
@@ -1305,13 +1305,13 @@ msgstr "Evidenziazione codice: stringhe"
 msgid "Code highlighting: Variables"
 msgstr "Evidenziazione codice: variabili"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6835
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6857
 msgid "Col. names:"
 msgstr "Nomi colonne:"
 
 #: /home/gunter/src/wxmaxima/src/MatWiz.cpp:177
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5026
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5046
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5047
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5067
 msgid "Columns:"
 msgstr "Colonne:"
 
@@ -1319,7 +1319,7 @@ msgstr "Colonne:"
 msgid "Combine factorials in an expression"
 msgstr "Combina i fattoriali in un'espressione"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7600
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7622
 msgid "Comma directly followed by a closing parenthesis"
 msgstr "Virgola direttamente seguita da una parentesi chiusa"
 
@@ -1331,17 +1331,17 @@ msgstr "Coordinate x separate da virgole"
 msgid "Comma separated y coordinates"
 msgstr "Coordinate y separate da virgole"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5386
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5408
 msgid "Comma-separated elements"
 msgstr "Elementi separati da virgole"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4696
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7231
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4717
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7253
 msgid "Comma-separated equations"
 msgstr "Equazioni separate da virgole"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4697
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7232
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4718
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7254
 msgid "Comma-separated variables"
 msgstr "Variabili separate da virgole"
 
@@ -1349,7 +1349,7 @@ msgstr "Variabili separate da virgole"
 msgid "Commands that are executed at every start of maxima."
 msgstr "Comandi che vengono eseguiti ad ogni avvio di maxima."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4804
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4805
 msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
 msgstr ""
 "Commento (testo di foglio di lavoro normale che non viene inviato a maxima)"
@@ -1411,16 +1411,16 @@ msgid "Compute the least common multiple (do load(functs) before using)"
 msgstr ""
 "Calcola il minimo comune multiplo (esegui load(functs) prima di usarlo)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6887
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6909
 msgid "Condition:"
 msgstr "Condizione:"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:2080
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:2089
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:2084
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:2093
 msgid "Config file (*.ini)|*.ini"
 msgstr "File di configurazione (*.ini)|*.ini"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1896
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1900
 msgid "Configuration warning"
 msgstr "Avvertenze di configurazione"
 
@@ -1533,7 +1533,7 @@ msgstr "Converte una matrice in una lista di liste"
 msgid "Converts a nested list like [[1,2],[3,4]] to a matrix"
 msgstr "Converte una lista annidata come [[1,2],[3,4]] in una matrice"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:228
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:224
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1173
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1199
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1269
@@ -1634,7 +1634,7 @@ msgstr ""
 "Copia la selezione dal documento in formato MathML che molti programmi di "
 "videoscrittura possono mostrare come equazioni in forma grafica 2d"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1114
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1115
 msgid ""
 "Could not map view of the file needed in order to send an interrupt signal "
 "to maxima."
@@ -1642,8 +1642,8 @@ msgstr ""
 "Impossibile mappare la vista del file necessaria per spedire un segnale di "
 "interrupt a maxima."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1092
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1142
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1093
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1143
 msgid "Could not send an interrupt signal to maxima."
 msgstr "Impossibile inviare un segnale di interrupt a maxima."
 
@@ -1651,15 +1651,15 @@ msgstr "Impossibile inviare un segnale di interrupt a maxima."
 msgid "Create a list"
 msgstr "Crea una lista"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5447
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5469
 msgid "Create a list as a storage for the values of variables"
 msgstr "Crea una lista come contenitore per i valori di variabili"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5402
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5424
 msgid "Create a list from a rule"
 msgstr "Crea una lista da una regola"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5430
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5452
 msgid "Create a list from another list"
 msgstr "Crea una lista da un'altra lista"
 
@@ -1683,7 +1683,7 @@ msgstr "Crea f(a,b) al volo, contenuti:"
 msgid "Create list"
 msgstr "Crea lista"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5385
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5407
 msgid "Create list from comma-separated elements"
 msgstr "Crea una lista da elementi separati da virgole"
 
@@ -1713,13 +1713,13 @@ msgstr "Ceco"
 msgid "Danish"
 msgstr "Danese"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6826
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6835
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6887
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6848
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6857
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6909
 msgid "Data Matrix:"
 msgstr "Matrice dati:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6856
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6878
 msgid "Data file (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgstr "File dati (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 
@@ -1727,16 +1727,16 @@ msgstr "File dati (*.csv, *.tab, *.txt)|*.csv;*.tab;*.txt"
 msgid "Data format"
 msgstr "Formato dati"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6687
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6703
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6719
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6728
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6737
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6747
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6756
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6765
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6774
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6816
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6709
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6725
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6741
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6750
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6759
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6769
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6778
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6787
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6796
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6838
 msgid "Data:"
 msgstr "Dati:"
 
@@ -1760,7 +1760,7 @@ msgstr "Frequenza di quadro predefinita animazioni:"
 msgid "Default font:"
 msgstr "Carattere predefinito:"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:540
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:541
 msgid "Default plot size for new maxima sessions:"
 msgstr "Dimensioni grafici predefinita per la nuova sessione maxima:"
 
@@ -1768,7 +1768,7 @@ msgstr "Dimensioni grafici predefinita per la nuova sessione maxima:"
 msgid "Default port for communication with wxMaxima:"
 msgstr "La porta predefinita per la comunicazione con wxMaxima:"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:311
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:312
 msgid ""
 "Define the default speed (in frames per second) animations are played back "
 "with."
@@ -1783,8 +1783,8 @@ msgstr ""
 "Definisce se un'animazione parte automaticamente o solo se si fa clic su di "
 "essa."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4622
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4632
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4643
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4653
 msgid "Delete"
 msgstr "Elimina"
 
@@ -1813,11 +1813,11 @@ msgstr "Elimina una variabile"
 msgid "Delete all values from memory"
 msgstr "Cancella tutti i valori dalla memoria"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4632
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4653
 msgid "Delete function(s):"
 msgstr "Elimina le funzioni:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4622
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4643
 msgid "Delete variable(s):"
 msgstr "Elimina le variabili:"
 
@@ -1825,7 +1825,7 @@ msgstr "Elimina le variabili:"
 msgid "Delta"
 msgstr "Delta"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5929
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5951
 msgid "Denom. deg:"
 msgstr "Denom. deg:"
 
@@ -1833,7 +1833,7 @@ msgstr "Denom. deg:"
 msgid "Depth:"
 msgstr "profondità:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4781
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4802
 msgid "Derivative:"
 msgstr "Derivata:"
 
@@ -1853,8 +1853,8 @@ msgstr "Titolo diagramma"
 msgid "Diff..."
 msgstr "Diff..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6081
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7279
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6103
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7301
 msgid "Differentiate"
 msgstr "Differenzia"
 
@@ -1880,7 +1880,7 @@ msgstr "Grafico discreto"
 msgid "Display Te&X Form"
 msgstr "Mostra in Te&X"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4536
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4557
 msgid "Display algorithm"
 msgstr "Mostra l'algoritmo"
 
@@ -1896,11 +1896,11 @@ msgstr "Mostra l'espressione precedente in TeX"
 msgid "Display time used for evaluation"
 msgstr "Mostra il tempo impiegato per l'esecuzione"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6304
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6326
 msgid "Displayed Precision"
 msgstr "Precisione visualizzata"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5983
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6005
 msgid "Divide"
 msgstr "Dividi"
 
@@ -1924,11 +1924,11 @@ msgstr "Dividi la cella d'ingresso in due celle"
 msgid "Division by 0."
 msgstr "Divisione per 0."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5668
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5690
 msgid "Do for each list element"
 msgstr "Fa per ogni elemento della lista"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8383
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8405
 #, c-format
 msgid "Do you want to save the changes you made in the document \"%s\"?"
 msgstr "Salvare i cambiamenti effettuati nel documento \"%s\"?\""
@@ -1937,7 +1937,7 @@ msgstr "Salvare i cambiamenti effettuati nel documento \"%s\"?\""
 msgid "Document background"
 msgstr "Sfondo del documento"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2437
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2438
 msgid ""
 "Document was saved using a newer version of wxMaxima so it may not load "
 "correctly. Please update your wxMaxima."
@@ -1946,7 +1946,7 @@ msgstr ""
 "perciò potrebbe non caricarsi correttamente. Si consiglia di aggiornare "
 "wxMaxima."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2430
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2431
 msgid ""
 "Document was saved using a newer version of wxMaxima. Please update your "
 "wxMaxima."
@@ -1962,7 +1962,7 @@ msgstr "Documentclass per l'esportazione TeX:"
 msgid "Don't autosubscript after an underscore"
 msgstr "Non passare al pedice dopo un carattere di sottolineato"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8388
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8410
 msgid "Don't save"
 msgstr "Non salvare"
 
@@ -1994,7 +1994,7 @@ msgstr "&Autovettori"
 msgid "Eigen&values"
 msgstr "Auto&valori"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5671
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5693
 msgid ""
 "Either a single expression or a comma-separated list of expressions between "
 "parenthesis. In the latter case the result of the last expression in the "
@@ -2028,15 +2028,15 @@ msgstr ""
 "Positive, negativo o zero.\n"
 "Normalmente il risultato di sign() se il segno non può essere determinato."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5688
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5710
 msgid "Element"
 msgstr "Elemento"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5473
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5495
 msgid "Element:"
 msgstr "Elemento:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4815
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4836
 msgid "Eliminate"
 msgstr "Elimina"
 
@@ -2044,7 +2044,7 @@ msgstr "Elimina"
 msgid "Eliminate a variable from a system of equations"
 msgstr "Elimina una variabile da un sistema di equazioni"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6318
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6340
 msgid "Enable:"
 msgstr "Abilita:"
 
@@ -2074,7 +2074,7 @@ msgstr "Fine del valore del parametro"
 msgid "Engineering format (12.1e6 etc.)"
 msgstr "Formato ingegneristico (12.1e6 ecc.)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6324
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6346
 msgid "Engineering format setup"
 msgstr "Impostazione del formato ingegneristico"
 
@@ -2086,15 +2086,15 @@ msgstr "Inglese"
 msgid "Enhanced 3D settings:"
 msgstr "Impostazioni del 3D avanzato:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6719
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6728
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6737
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6747
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6756
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6765
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6774
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6816
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6826
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6741
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6750
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6759
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6769
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6778
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6787
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6796
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6838
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6848
 msgid "Enter Data"
 msgstr "Inserire i dati"
 
@@ -2106,7 +2106,7 @@ msgstr "Inserire la matrice..."
 msgid "Enter a matrix"
 msgstr "Inserisci una matrice"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5872
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5894
 msgid "Enter an equation for rational simplification:"
 msgstr "Inserire un'equazione per la semplificazione razionale:"
 
@@ -2118,19 +2118,19 @@ msgstr "Inserire la lista di variabili separate dalla virgola."
 msgid "Enter evaluates cells"
 msgstr "Invio elabora le celle"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4995
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5016
 msgid "Enter matrix"
 msgstr "Inserire la matrice"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6218
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6240
 msgid "Enter new animation frame rate [Hz, integer]:"
 msgstr "Inserire la nuova frequenza di quadro animazioni [Hz, intero]:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6294
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6316
 msgid "Enter new precision for bigfloats:"
 msgstr "Inserire la nuova precisione per i bigfloat:"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:301
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:302
 msgid "Enter the path to the Maxima executable."
 msgstr "Inserire il percorso dell'eseguibile Maxima."
 
@@ -2138,12 +2138,12 @@ msgstr "Inserire il percorso dell'eseguibile Maxima."
 msgid "Epsilon"
 msgstr "Epsilon"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6136
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6158
 msgid "Epsilon:"
 msgstr "Epsilon:"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:128
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5610
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5632
 msgid "Equation"
 msgstr "Equazione"
 
@@ -2152,18 +2152,18 @@ msgstr "Equazione"
 msgid "Equation %d:"
 msgstr "Equazione %d:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4684
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4709
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4878
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7219
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4705
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4730
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4899
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7241
 msgid "Equation(s):"
 msgstr "Equazione(i):"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4727
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4747
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5910
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6836
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7244
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4748
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4768
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5932
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6858
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7266
 msgid "Equation:"
 msgstr "Equazione:"
 
@@ -2178,35 +2178,35 @@ msgstr ""
 "facilmente essere inserite una nell'altra. Inoltre sono sempre stampate come "
 "grafici 2D."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4811
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4832
 msgid "Equations:"
 msgstr "Equazioni:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1301
 #: /home/gunter/src/wxmaxima/src/Image.cpp:193
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1116
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1143
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1834
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2146
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2157
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2318
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2331
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2342
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2431
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2462
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2473
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2902
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8291
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8346
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1117
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1144
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1835
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2147
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2158
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2319
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2332
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2343
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2432
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2463
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2474
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2903
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8313
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8368
 msgid "Error"
 msgstr "Errore"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4058
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4074
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4090
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4837
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4862
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4989
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4079
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4095
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4111
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4858
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4883
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5010
 msgid "Error!"
 msgstr "Errore!"
 
@@ -2303,12 +2303,12 @@ msgstr "Elabora il resto"
 msgid "Evaluate to point"
 msgstr "Elabora fino al punto"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6625
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6647
 msgid "Example"
 msgstr "Esempio"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:2017
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:2176
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:2021
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:2180
 msgid "Example text"
 msgstr "Esempio di testo"
 
@@ -2348,8 +2348,8 @@ msgstr "Espandi un'espressione"
 msgid "Expand trigonometric expression"
 msgstr "Espandi l'espressione trigonometrica"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:226
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4007
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:222
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4028
 msgid "Export"
 msgstr "Esporta"
 
@@ -2368,27 +2368,27 @@ msgstr "Esporta il documento in un file HTML o pdfLaTeX"
 msgid "Export equations to HTML as:"
 msgstr "Esporta le equazioni su HTML come:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:214
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:218
 msgid "Export failed."
 msgstr "Esportazione fallita."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:200
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:204
 msgid "Export successful."
 msgstr "Esportazione effettuata."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4090
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4111
 msgid "Exporting to HTML failed!"
 msgstr "Esportazione su HTML fallita!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4058
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4079
 msgid "Exporting to TeX failed!"
 msgstr "Esportazione in TeX fallita!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4074
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4095
 msgid "Exporting to maxima batch file failed!"
 msgstr "Esportazione su file batch maxima fallita!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:190
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:194
 msgid "Exporting..."
 msgstr "Esportazione..."
 
@@ -2422,16 +2422,16 @@ msgstr "Espressioni:"
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:37
 #: /home/gunter/src/wxmaxima/src/SubstituteWiz.cpp:31
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:28
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4894
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5083
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5996
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6012
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6042
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6060
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6078
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6133
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6169
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7276
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4915
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5104
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6018
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6034
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6064
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6082
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6100
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6155
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6191
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7298
 msgid "Expression:"
 msgstr "Espressione:"
 
@@ -2439,7 +2439,7 @@ msgstr "Espressione:"
 msgid "Extract Elements"
 msgstr "Estrai elementi"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5632
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5654
 msgid "Extract a variable's value from a list of variable values"
 msgstr "Estrai il valore di una variabile da una lista di valori di variabili"
 
@@ -2447,7 +2447,7 @@ msgstr "Estrai il valore di una variabile da una lista di valori di variabili"
 msgid "Extract an actual value for a variable"
 msgstr "Estrai il valore corrente di una variabile"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5363
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5385
 msgid "Extract function arguments"
 msgstr "Estrai gli argomenti funzione"
 
@@ -2459,11 +2459,11 @@ msgstr "Estrai elementi lista"
 msgid "Extract the argument list from a function call"
 msgstr "Estrai la lista degli argomenti da una chiamata a funzione"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5548
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5570
 msgid "Extract the last n elements from a list"
 msgstr "Estrai gli ultimi n elementi da una lista"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5565
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5587
 msgid "Extract the nth element from a list. Slow for n>>0"
 msgstr "Estrai l'n-esimo elemento da una lista. Lento per n>>0"
 
@@ -2495,7 +2495,7 @@ msgstr "Fattorizza un'espressione di numeri Gaussiani"
 msgid "Factorials and &Gamma"
 msgstr "Fattoriali e &gamma"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:302
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:303
 msgid "Fatal error"
 msgstr "Errore fatale"
 
@@ -2508,31 +2508,31 @@ msgstr "Figura %d:"
 msgid "File"
 msgstr "File"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1836
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2148
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2321
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2334
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2345
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2432
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2465
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2476
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1837
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2149
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2322
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2335
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2346
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2433
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2466
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2477
 msgid "File could not be opened"
 msgstr "File non può essere aperto"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7412
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7465
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7434
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7487
 msgid "File not found"
 msgstr "File non trovato"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2122
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2203
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2415
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2505
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2123
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2204
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2416
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2506
 msgid "File opened"
 msgstr "File aperto"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7412
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7465
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7434
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7487
 msgid "File you tried to open does not exist."
 msgstr "Il file che si sta provando ad aprire non esiste."
 
@@ -2584,7 +2584,7 @@ msgstr "Trova tutte le radici di una polinomiale"
 msgid "Find all roots of a polynomial (bfloat)"
 msgstr "Trova tutte le radici di una polinomiale (alta precisione)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4410
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4431
 msgid "Find and Replace"
 msgstr "Cerca e sostituisci"
 
@@ -2601,7 +2601,7 @@ msgstr "Trova gli autovalori di una matrice"
 msgid "Find eigenvectors of a matrix"
 msgstr "Trova gli autovettori di una matrice"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6139
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6161
 msgid "Find minimum"
 msgstr "Trova il minimo"
 
@@ -2609,8 +2609,8 @@ msgstr "Trova il minimo"
 msgid "Find real roots of a polynomial"
 msgstr "Trova le radici reali di una polinomiale"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4731
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7248
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4752
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7270
 msgid "Find root"
 msgstr "Trova la radice"
 
@@ -2687,11 +2687,11 @@ msgstr ""
 msgid "Font issue? The contents of a sqrt() has the size 0."
 msgstr "Problema di font? I contenuti di una sqrt() hanno dimensione 0."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:353
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:354
 msgid "Font used for display in document."
 msgstr "Carattere usato per mostrare il documento."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:354
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:355
 msgid "Font used for displaying math characters in document."
 msgstr "Font usato per mostrare i caratteri matematici nel documento."
 
@@ -2699,7 +2699,7 @@ msgstr "Font usato per mostrare i caratteri matematici nel documento."
 msgid "Fonts"
 msgstr "Font"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:333
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:334
 msgid ""
 "For each Text-, Sectioning or code cell wxMaxima can display a bracket "
 "showing the extend of the cell and allowing to fold it. This setting now "
@@ -2751,7 +2751,7 @@ msgstr "Fine contatore di quadro"
 msgid "Frame counter start"
 msgstr "Inizio contatore di quadro"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6218
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6240
 msgid "Frame rate"
 msgstr "Frequenza di quadro"
 
@@ -2766,8 +2766,8 @@ msgstr "Francese"
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:38
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:47
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:34
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5084
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6169
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5105
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6191
 msgid "From:"
 msgstr "Da:"
 
@@ -2775,12 +2775,12 @@ msgstr "Da:"
 msgid "Full Screen\tAlt+Enter"
 msgstr "Pieno schermo\tAlt+Enter"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4558
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5594
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4579
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5616
 msgid "Function"
 msgstr "Funzione"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5646
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5668
 msgid "Function name"
 msgstr "Nome funzione"
 
@@ -2788,14 +2788,14 @@ msgstr "Nome funzione"
 msgid "Function names"
 msgstr "Nomi funzione"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4878
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4899
 msgid "Function(s):"
 msgstr "Funzione(i):"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4747
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4958
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5067
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5102
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4768
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4979
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5088
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5123
 msgid "Function:"
 msgstr "Funzione:"
 
@@ -2811,11 +2811,11 @@ msgstr "Funzioni per semplificare fattoriali e funzione gamma"
 msgid "Functions for simplifying trigonometric expressions"
 msgstr "Funzioni per semplificare le espressioni trigonometriche"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5967
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5989
 msgid "GCD"
 msgstr "MCD"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7366
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7388
 msgid "GIF image (*.gif)|*.gif"
 msgstr "Immagine GIF (*.gif)|*.gif"
 
@@ -2835,8 +2835,8 @@ msgstr "Matematica generale"
 msgid "General Math\tAlt+Shift+M"
 msgstr "Matematica generale\tAlt+Shift+M"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5029
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5049
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5050
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5070
 msgid "Generate Matrix"
 msgstr "Genera matrice"
 
@@ -2936,7 +2936,7 @@ msgstr "Griglia"
 msgid "Grid:"
 msgstr "Griglia:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4009
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4030
 msgid ""
 "HTML file (*.html)|*.html|maxima batch file (*.mac)|*.mac|pdfLaTeX file (*."
 "tex)|*.tex"
@@ -2992,7 +2992,7 @@ msgstr "Nascondi i contenuti"
 msgid "Hide objects behind the surface"
 msgstr "Nascondi gli oggetti dietro la superficie"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:364
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:365
 msgid ""
 "Hide the brackets that mark the extend of the worksheet cells at the "
 "worksheet's right side and that contain the \"hide\" button of the cell if "
@@ -3006,7 +3006,7 @@ msgstr ""
 msgid "Highlight (dpart)"
 msgstr "Evidenzia (dpart)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6690
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6712
 msgid "Histogram"
 msgstr "Istogramma"
 
@@ -3034,7 +3034,7 @@ msgstr ""
 "tasto Maiusc durante questo movimento selezionerà le celle, premendo "
 "backspace o Canc due volte si cancellerà la cella vicina ad esso."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6304
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6326
 msgid "How many digits to show:"
 msgstr "Quante cifre mostrare:"
 
@@ -3046,11 +3046,11 @@ msgstr "Come mostrare le nuove equazioni"
 msgid "Hungarian"
 msgstr "Ungherese"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4767
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4788
 msgid "IC1"
 msgstr "IC1"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4784
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4805
 msgid "IC2"
 msgstr "IC2"
 
@@ -3058,7 +3058,7 @@ msgstr "IC2"
 msgid "Identical to"
 msgstr "Identico a"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:295
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:296
 msgid ""
 "If multiple cells are evaluated in one go: Abort evaluation if wxMaxima "
 "detects that maxima has encountered any error."
@@ -3066,15 +3066,15 @@ msgstr ""
 "Se più celle vengono elaborate in una volta: blocca l'elaborazione se "
 "wxMaxima rileva che maxima ha incontrato qualche errore."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:565
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:566
 msgid "If not extremely long"
 msgstr "Se non estremamente lunga"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:564
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:565
 msgid "If not very long"
 msgstr "Se non molto lunga"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:317
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:318
 msgid ""
 "If numbers are getting longer than this number of digits they will be "
 "displayed abbreviated by an ellipsis."
@@ -3092,7 +3092,7 @@ msgstr ""
 "wxMaxima agisce come le applicazioni per cellulari che fanno il salvataggio "
 "del file ogni pochi minuti e lo salvano alla chiusura."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:308
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:309
 msgid ""
 "If the font provides big parenthesis symbols: Use them when big parenthesis "
 "are needed for maths display."
@@ -3100,7 +3100,7 @@ msgstr ""
 "Se il font fornisce simboli di grandi parentesi: usali se servono per "
 "visualualizzare le formule matematiche."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:310
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:311
 msgid ""
 "If this number of minutes has elapsed after the last save of the file, the "
 "file has been given a name (by opening or saving it) and the keyboard has "
@@ -3112,7 +3112,7 @@ msgstr ""
 "stata inattiva per più di 10 secondi, il file viene salvato. Se questo "
 "numero è zero il file non viene salvato automaticamente."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:331
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:332
 msgid ""
 "If this option is set the .wxmx source of the current file is copied to a "
 "place a link to is put into the result of an export."
@@ -3145,7 +3145,7 @@ msgstr ""
 msgid "Image"
 msgstr "Immagine"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8056
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8078
 msgid "Image files (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 msgstr "File immagine (*.png, *.jpg, *.bmp, *.xpm)|*.png;*.jpg;*.bmp;*.xpm"
 
@@ -3195,7 +3195,7 @@ msgstr ""
 "di indenzazione; l'indentazione può continuare nella riga seguente "
 "indentando la linea usando gli spazi."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:321
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:322
 msgid ""
 "In the LaTeX output: Put exponents after an eventual subscript instead of "
 "above it. Might increase readability for some fonts and short subscripts."
@@ -3204,7 +3204,7 @@ msgstr ""
 "metterli sopra di esso. Può migliorare la leggibilità con alcuni font e con "
 "alcuni pedici corti."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6888
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6910
 msgid "Include columns:"
 msgstr "Includi colonne:"
 
@@ -3212,19 +3212,19 @@ msgstr "Includi colonne:"
 msgid "Incremental Search"
 msgstr "Ricerca incrementale"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5399
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5421
 msgid "Index End:"
 msgstr "Fine indice:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5399
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5421
 msgid "Index Start:"
 msgstr "Inizio indice:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5399
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5421
 msgid "Index Step:"
 msgstr "Passo indice:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5398
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5420
 msgid "Index variable:"
 msgstr "Variabile indice:"
 
@@ -3250,7 +3250,7 @@ msgstr "Infinito"
 msgid "Info about Maxima build"
 msgstr "Informazioni sulla compilazione di Maxima"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6135
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6157
 msgid "Initial Estimates:"
 msgstr "Stime iniziali:"
 
@@ -3286,7 +3286,7 @@ msgstr "Inserisci cella &testo\tCtrl+1"
 msgid "Insert Cell\tAlt+Shift+C"
 msgstr "Inserisci cella\tAlt+Shift+C"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8054
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8076
 msgid "Insert Image"
 msgstr "Inserisci immagine"
 
@@ -3366,7 +3366,7 @@ msgstr "Inserisci un'interruzione di pagina"
 msgid "Insert image"
 msgstr "Inserisci immagine"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:583
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:584
 msgid "Integers and single letters"
 msgstr "Interi e lettere singole"
 
@@ -3374,17 +3374,17 @@ msgstr "Interi e lettere singole"
 msgid "Integral sign"
 msgstr "Segno integrale"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5909
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5931
 msgid "Integral/Sum:"
 msgstr "Integrale/somma:"
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:68
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6029
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7263
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6051
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7285
 msgid "Integrate"
 msgstr "Integra"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6015
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6037
 msgid "Integrate (risch)"
 msgstr "Integra (Risch)"
 
@@ -3413,7 +3413,7 @@ msgstr "Alterna"
 msgid "Interleave the values of two lists"
 msgstr "Alterna i valori di due liste"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5746
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5768
 msgid "Interleave two lists"
 msgstr "Alterna due liste"
 
@@ -3434,12 +3434,12 @@ msgstr ""
 "Interrompi elaborazione corrente. Per riavviare completamente maxima premere "
 "il pulsante a sinistra di questo."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1095
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1096
 #, c-format
 msgid "Interrupting maxima: %s"
 msgstr "Interruzione di maxima: %s"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5613
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5635
 msgid "Introduce a list of actual values into an equation"
 msgstr "Inserisce una lista di valori correnti in una equazione"
 
@@ -3457,7 +3457,7 @@ msgstr ""
 "\n"
 "Inserire nuovamente il percorso per il programma Maxima."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6063
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6085
 msgid "Inverse Laplace"
 msgstr "Inversa di Laplace"
 
@@ -3469,7 +3469,7 @@ msgstr "T&rasformata inversa di Laplace..."
 msgid "Iota"
 msgstr "Iota"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:361
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:362
 msgid ""
 "Issue a notification if maxima finishes calculating while the wxMaxima "
 "window isn't in focus."
@@ -3522,12 +3522,12 @@ msgstr "Italiano"
 msgid "Italic"
 msgstr "Corsivo"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5706
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5728
 msgid "Item"
 msgstr "Elemento"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5426
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5664
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5448
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5686
 msgid "Iterator:"
 msgstr "Iteratore:"
 
@@ -3557,8 +3557,8 @@ msgid "Keep percent sign with special symbols: %e, %i, etc."
 msgstr ""
 "Mantieni il simbolo di percentuale con i simboli speciali: %e, %i, ecc."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5476
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5951
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5498
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5973
 msgid "LCM"
 msgstr "mcm"
 
@@ -3571,7 +3571,7 @@ msgid "LaTeX: Use the \"partial derivative\" symbol to represent diff()"
 msgstr ""
 "LaTeX: Usa il simbolo di \"derivata parziale\" per rappresentare diff()"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:588
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:589
 msgid "Label width:"
 msgstr "Larghezza etichetta:"
 
@@ -3579,7 +3579,7 @@ msgstr "Larghezza etichetta:"
 msgid "Lambda"
 msgstr "Lambda"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:346
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:347
 msgid "Language used for wxMaxima GUI."
 msgstr "Lingua usata per wxMaxima."
 
@@ -3587,7 +3587,7 @@ msgstr "Lingua usata per wxMaxima."
 msgid "Language:"
 msgstr "Lingua:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6045
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6067
 msgid "Laplace"
 msgstr "Laplace"
 
@@ -3611,7 +3611,7 @@ msgstr "Porta a"
 msgid "Least Common Multiple..."
 msgstr "Minimo comune multiplo..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6839
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6861
 msgid "Least Squares Fit"
 msgstr "Metodo dei minimi quadrati"
 
@@ -3639,7 +3639,7 @@ msgstr ""
 "battendo il comando maxima_userdir."
 
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:69
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6120
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6142
 msgid "Limit"
 msgstr "Limite"
 
@@ -3655,15 +3655,15 @@ msgstr "Colore linea"
 msgid "Linear Regression..."
 msgstr "Regressione lineare..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5501
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5525
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5545
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5562
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5594
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5628
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5646
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5688
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5706
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5523
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5547
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5567
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5584
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5616
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5650
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5668
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5710
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5728
 msgid "List"
 msgstr "Lista"
 
@@ -3671,27 +3671,27 @@ msgstr "Lista"
 msgid "List name:"
 msgstr "Nome lista:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5610
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5632
 msgid "List with values"
 msgstr "Lista con valori"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5067
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5088
 msgid "List(s):"
 msgstr "Lista(e):"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5724
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5742
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5746
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5764
 msgid "List1"
 msgstr "Lista1"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5724
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5742
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5746
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5764
 msgid "List2"
 msgstr "Lista2"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5102
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5473
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5664
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5123
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5495
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5686
 msgid "List:"
 msgstr "Lista:"
 
@@ -3699,7 +3699,7 @@ msgstr "Lista:"
 msgid "Load"
 msgstr "Carica"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4109
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4130
 msgid "Load Package"
 msgstr "Carica il pacchetto"
 
@@ -3715,7 +3715,7 @@ msgstr "Carica un file Maxima usando un comando batch"
 msgid "Load a Maxima package file"
 msgstr "Carica un file pacchetto Maxima"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:2087
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:2091
 msgid "Load style from file"
 msgstr "Carica lo stile da file"
 
@@ -3723,8 +3723,8 @@ msgstr "Carica lo stile da file"
 msgid "Long Right arrow"
 msgstr "Freccia destra lunga"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4728
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7245
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4749
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7267
 msgid "Lower bound:"
 msgstr "Intorno basso:"
 
@@ -3744,7 +3744,7 @@ msgstr "Barra strumenti principale\tAlt+Shift+B"
 msgid "Make &List..."
 msgstr "Crea la &lista..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5087
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5108
 msgid "Make list"
 msgstr "Crea la lista"
 
@@ -3756,7 +3756,7 @@ msgstr "Crea una lista da un'espressione"
 msgid "Make substitution in expression"
 msgstr "Sostituisci in un'espressione"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5070
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5091
 msgid "Map"
 msgstr "Mappa"
 
@@ -3784,7 +3784,7 @@ msgstr "Carattere matematica:"
 msgid "Math output"
 msgstr "Risultato matematica:"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:335
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:336
 msgid ""
 "MathJAX creates scalable High-Quality representations of 2D Maths that can "
 "be used for Drag-And-Drop and provides accessability options. The "
@@ -3830,15 +3830,15 @@ msgstr "Simboli matematici"
 msgid "Maths"
 msgstr "Matematici"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4977
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4998
 msgid "Matrix"
 msgstr "Matrice"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4961
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4982
 msgid "Matrix map"
 msgstr "Mappa matrice"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6888
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6910
 msgid "Matrix name:"
 msgstr "Nome matrice:"
 
@@ -3851,24 +3851,24 @@ msgstr "Parentesi sbilanciate"
 msgid "Matrix to nested List"
 msgstr "Matrice a lista nidificata"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4958
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5010
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4979
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5031
 msgid "Matrix:"
 msgstr "Matrice:"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:224
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:220
 msgid "Maxima"
 msgstr "Maxima"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:130
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:134
 msgid "Maxima asks a question"
 msgstr "Maxima ha una domanda"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1738
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1739
 msgid "Maxima asks a question!"
 msgstr "Maxima ha una domanda!"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:293
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:294
 #, c-format
 msgid ""
 "Maxima assigns each command/equation an automatic label (which looks like "
@@ -3893,7 +3893,7 @@ msgstr ""
 "righe nelle quali comincia una nuova equazione e quelle che sono la "
 "continuazione della riga precedente."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4789
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4790
 msgid "Maxima code"
 msgstr "Codice Maxima"
 
@@ -3905,11 +3905,11 @@ msgstr "Comandi Maxima che devono essere eseguiti ad ogni avvio di Maxima: "
 msgid "Maxima commands to be executed every time wxMaxima starts Maxima: "
 msgstr "Comandi Maxima da eseguire ogni volta che wxMaxima avvia Maxima: "
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7786
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7808
 msgid "Maxima has finished calculating."
 msgstr "Maxima ha finito di calcolare."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3706
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3727
 msgid "Maxima has issued an error!"
 msgstr "Maxima ha prodotto un errore!"
 
@@ -3917,23 +3917,23 @@ msgstr "Maxima ha prodotto un errore!"
 msgid "Maxima input"
 msgstr "Ingresso di Maxima"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:145
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:149
 msgid "Maxima is calculating"
 msgstr "Maxima sta calcolando"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2975
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2979
 msgid "Maxima is ready for input."
 msgstr "Maxima è pronto per l'inserimento"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4122
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4143
 msgid "Maxima package (*.mac)|*.mac"
 msgstr "Pacchetto Maxima (*.mac)|*.mac"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4111
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4132
 msgid "Maxima package (*.mac)|*.mac|Lisp package (*.lisp)|*.lisp|All|*"
 msgstr "Pacchetto Maxima (*.mac)|*.mac|Pacchetto Lisp (*.lisp)|*.lisp|Tutti|*"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1220
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1221
 msgid "Maxima process terminated."
 msgstr "Processo Maxima terminato."
 
@@ -3941,7 +3941,7 @@ msgstr "Processo Maxima terminato."
 msgid "Maxima program:"
 msgstr "Programma maxima:"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:300
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:301
 msgid ""
 "Maxima provides no \"forget all\" command that flushes all settings a maxima "
 "session could make. wxMaxima therefore normally defaults to starting a fresh "
@@ -3959,7 +3959,7 @@ msgstr ""
 msgid "Maxima questions"
 msgstr "Domande di Maxima"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:161
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:165
 msgid "Maxima started. Waiting for connection..."
 msgstr "Maxima avviato. In attesa di connessione..."
 
@@ -3996,7 +3996,7 @@ msgstr ""
 "Maxima usa \":\" per impostare i valori (\"a : 3;\") e \":=\" per definire "
 "le funzioni (\"f(x) := x^2;\")."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6595
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6617
 msgid "Maxima version: "
 msgstr "Versione di Maxima: "
 
@@ -4119,15 +4119,15 @@ msgstr ""
 "lavoro indisturbato.\n"
 "Questa icona indica se i dati sono stati trasferiti tra maxima e wxMaxima."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6320
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6342
 msgid "Maximum absolute value printed without exponent:"
 msgstr "Valore massimo assoluto stampato senza esponente:"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:554
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:555
 msgid "Maximum displayed number of digits:"
 msgstr "Numero massimo di cifre mostrate:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6321
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6343
 msgid "Maximum number of digits to be displayed:"
 msgstr "Numero massimo di cifre da visualizzare:"
 
@@ -4143,7 +4143,7 @@ msgstr "Test della media..."
 msgid "Mean..."
 msgstr "Media..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6783
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6805
 msgid "Mean:"
 msgstr "Media:"
 
@@ -4163,7 +4163,7 @@ msgstr "Fondi celle\tCtrl+M"
 msgid "Merge the text from two input cells into one"
 msgstr "Fondi il testo preso due celle di inserimento in una"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3651
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3672
 msgid "Message from the stdout of Maxima: "
 msgstr "Messaggio dallo stdout di Maxima: "
 
@@ -4171,16 +4171,16 @@ msgstr "Messaggio dallo stdout di Maxima: "
 msgid "Method:"
 msgstr "Metodo:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6319
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6341
 msgid "Minimum absolute value printed without exponent:"
 msgstr "Valore assoluto minimo stampato senza esponente:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7595
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7596
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7617
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7618
 msgid "Mismatched parenthesis"
 msgstr "Parentesi sbilanciate"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5884
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5906
 msgid "Modulus"
 msgstr "Modulo"
 
@@ -4219,7 +4219,7 @@ msgstr ""
 "Raccogliendo il nuovo elemento per la lista in parentesi ([]) lo converte in "
 "una lista e lo rende accodabile."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1742
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1743
 msgid ""
 "Most questions can be avoided using the assume() and the declare() command"
 msgstr ""
@@ -4234,8 +4234,8 @@ msgid "Name of the parameter"
 msgstr "Nome del parametro"
 
 #: /home/gunter/src/wxmaxima/src/MatWiz.cpp:190
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5026
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5046
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5047
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5067
 msgid "Name:"
 msgstr "Nome:"
 
@@ -4243,8 +4243,8 @@ msgstr "Nome:"
 msgid "Nested list to Matrix"
 msgstr "Lista annidata a matrice"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:582
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:599
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:583
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:600
 msgid "Never"
 msgstr "Mai"
 
@@ -4269,9 +4269,9 @@ msgstr "Nuove righe: salta al testo"
 msgid "New value:"
 msgstr "Nuovo valore:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5910
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6043
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6061
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5932
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6065
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6083
 msgid "New variable:"
 msgstr "Nuova variabile:"
 
@@ -4283,8 +4283,8 @@ msgstr "Comando successivo\tAlt+Down"
 msgid "Nice Graphical Equations"
 msgstr "Belle equazioni grafiche"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:563
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:573
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:564
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:574
 msgid "No"
 msgstr "No"
 
@@ -4292,12 +4292,12 @@ msgstr "No"
 msgid "No contour lines"
 msgstr "No linee di bordo"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7756
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7778
 msgid "No dollar ($) or semicolon (;) at the end of command"
 msgstr "Dollaro ($) o punto e virgola (;) alla fine del comando"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4453
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4476
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4474
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4497
 msgid "No matches found!"
 msgstr "Nessuna corrispondenza trovata!"
 
@@ -4348,7 +4348,7 @@ msgstr ""
 "L'informazione che i numeri sono stati automaticamente convertiti può essere "
 "soppressa impostando ratprint a falso."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:327
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:328
 msgid ""
 "Normally html expects images to be rather low-res but space saving. These "
 "images tend to look rather blurry when viewed on modern screens. Therefore "
@@ -4365,20 +4365,20 @@ msgstr ""
 msgid "Norwegian"
 msgstr "Norvegese"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4989
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5010
 msgid "Not a valid matrix dimension!"
 msgstr "Dimensione matrice non valida!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4837
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4862
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4858
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4883
 msgid "Not a valid number of equations!"
 msgstr "Numero di equazioni non valido!"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:157
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:161
 msgid "Not connected to maxima"
 msgstr "Non connesso a Maxima"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6597
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6619
 msgid "Not connected."
 msgstr "Non connesso."
 
@@ -4386,16 +4386,16 @@ msgstr "Non connesso."
 msgid "Nu"
 msgstr "Nu"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5928
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5950
 msgid "Num. deg:"
 msgstr "Num. deg:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5545
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5567
 msgid "Number of elements"
 msgstr "Numero di elementi"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4828
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4853
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4849
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4874
 msgid "Number of equations:"
 msgstr "Numero di equazioni:"
 
@@ -4463,9 +4463,9 @@ msgstr "OK"
 msgid "Old value:"
 msgstr "Vecchio valore:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5909
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6042
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6060
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5931
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6064
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6082
 msgid "Old variable:"
 msgstr "Vecchia variabile:"
 
@@ -4477,7 +4477,7 @@ msgstr "Omega"
 msgid "Omicron"
 msgstr "Omicron"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:298
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:299
 msgid ""
 "Once the local network link between maxima and wxMaxima has been established "
 "maxima has no reason to send any messages using the system's stdout stream "
@@ -4495,7 +4495,7 @@ msgstr ""
 "controllato comunque anche lo stream stdout di maxima per l'eventuale "
 "presenza di messaggi."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6786
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6808
 msgid "One sample t-test"
 msgstr "Test t a un campione"
 
@@ -4503,14 +4503,14 @@ msgstr "Test t a un campione"
 msgid "Online tutorials"
 msgstr "Guide online"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:598
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:599
 msgid "Only user-defined labels"
 msgstr "Solo etichette definite dall'utente"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:929
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:158
 #: /home/gunter/src/wxmaxima/src/main.cpp:327
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3957
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3978
 msgid "Open"
 msgstr "Apri"
 
@@ -4535,14 +4535,14 @@ msgstr "Apri una nuova finestra"
 msgid "Open document"
 msgstr "Apri documento"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6854
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6876
 msgid "Open matrix"
 msgstr "Apri matrice"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1880
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2136
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2216
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2448
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1881
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2137
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2217
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2449
 msgid "Opening file"
 msgstr "Durante l'apertura del file"
 
@@ -4551,7 +4551,7 @@ msgid "Optional: A 2nd expression that defines a region to fill"
 msgstr ""
 "Opzionale: una seconda espressione che definisce una regione da riempire"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:227
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:223
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:179
 msgid "Options"
 msgstr "Opzioni"
@@ -4561,7 +4561,7 @@ msgstr "Opzioni"
 msgid "Options:"
 msgstr "Opzioni:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5569
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5591
 msgid ""
 "Other than declared arrays in lists there is no way to jump to determine the "
 "address of the nth element other than iterating from one element to the "
@@ -4606,8 +4606,8 @@ msgstr "Etichette risultati"
 msgid "P&ade Approximation..."
 msgstr "Approssimazione di P&ade..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4313
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7347
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4334
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7369
 msgid ""
 "PNG image (*.png)|*.png|JPEG image (*.jpg)|*.jpg|Windows bitmap (*.bmp)|*."
 "bmp|Portable animap (*.pnm)|*.pnm|Tagged image file format (*.tif)|*.tif|X "
@@ -4617,7 +4617,7 @@ msgstr ""
 "bmp)|*.bmp|Animap portabile (*.pnm)|*.pnm|Tagged image file format (*.tif)|*."
 "tif|X pixmap (*.xpm)|*.xpm"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5931
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5953
 msgid "Pade approximation"
 msgstr "Approssimazione di Pade"
 
@@ -4646,11 +4646,11 @@ msgstr "Grafico parametrico"
 msgid "Partial &Fractions..."
 msgstr "&Frazioni parziali..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5999
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6021
 msgid "Partial fractions"
 msgstr "Frazioni parziali"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2545
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2546
 msgid "Parts of the document will not be loaded correctly!"
 msgstr "Parti del documento non saranno caricate correttamente!"
 
@@ -4696,11 +4696,11 @@ msgstr "Pi"
 msgid "Piechart..."
 msgstr "Diagramma a torta..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2675
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2676
 msgid "Please configure wxMaxima with 'Edit->Configure'."
 msgstr "Configurare wxMaxima con \"Modifica->Configura\"."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1895
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1899
 msgid "Please restart wxMaxima for changes to take effect!"
 msgstr "Riavviare wxMaxima perché i cambiamenti abbiano effetto!"
 
@@ -4719,8 +4719,8 @@ msgstr "&Formato grafico..."
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:108
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:453
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:467
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6233
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7316
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6255
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7338
 msgid "Plot 2D"
 msgstr "Grafico 2D"
 
@@ -4733,8 +4733,8 @@ msgid "Plot 2d..."
 msgstr "Grafico 2d..."
 
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:110
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6202
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7329
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6224
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7351
 msgid "Plot 3D"
 msgstr "Grafico 3D"
 
@@ -4760,7 +4760,7 @@ msgstr "Fa il grafico di una espressione, per esempio sin(x) o (x+1)^2."
 msgid "Plot an parametric curve"
 msgstr "Grafico di una curva parametrica"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6246
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6268
 msgid "Plot format"
 msgstr "Formato grafico"
 
@@ -4793,9 +4793,9 @@ msgstr "Tipo di punto:"
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:38
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:36
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:43
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4764
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4780
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4894
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4785
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4801
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4915
 msgid "Point:"
 msgstr "Punto:"
 
@@ -4807,15 +4807,15 @@ msgstr "Punti"
 msgid "Polish"
 msgstr "Polacco"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5948
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5964
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5980
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5970
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5986
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6002
 msgid "Polynomial 1:"
 msgstr "Polinomiale 1:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5948
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5964
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5980
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5970
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5986
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6002
 msgid "Polynomial 2:"
 msgstr "Polinomiale 2:"
 
@@ -4832,7 +4832,7 @@ msgstr "Portoghese (Brasiliano)"
 msgid "Postscript file (*.eps)|*.eps|All|*"
 msgstr "File postscript (*.eps)|*.eps|Tutti|"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6294
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6316
 msgid "Precision"
 msgstr "Precisione"
 
@@ -4877,7 +4877,7 @@ msgstr "Scala stampa:"
 msgid "Print the cell brackets [drawn to their left]"
 msgstr "Stampa le parentesi delle celle [disegna alla loro sinistra]"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6172
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6194
 msgid "Product"
 msgstr "Prodotto"
 
@@ -4913,11 +4913,11 @@ msgstr "Ri-elabora tutte le celle sopra quella dove si trova il cursore"
 msgid "Read Matrix..."
 msgstr "Leggi la matrice..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:149
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:153
 msgid "Reading Maxima output"
 msgstr "Lettura risultati maxima"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:140
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:144
 msgid "Ready for user input"
 msgstr "In attesa di dati dall'utente"
 
@@ -4953,8 +4953,8 @@ msgstr "Riduci (tr)"
 msgid "Reduce trigonometric expression"
 msgstr "Riduci l'espressione trigonometrica"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:693
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7881
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:694
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7903
 msgid "Refusing to send cell to maxima: "
 msgstr "Rifiuto di spedire la cella a maxima:"
 
@@ -4970,7 +4970,7 @@ msgstr ""
 "Rimuove tutti gli elementi doppi in una riga della lista. Usata normalmente "
 "assieme a ordina."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5692
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5714
 msgid "Remove an element from a list"
 msgstr "Rimuovi un elemento da una lista"
 
@@ -4986,7 +4986,7 @@ msgstr "Elimina tutti i risultati dalla celle d'ingresso"
 msgid "Replace All"
 msgstr "Rimpiazza tutto"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4489
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4510
 #, c-format
 msgid "Replaced %d occurrences."
 msgstr "Rimpiazzate %d corrispondenze."
@@ -5025,11 +5025,11 @@ msgstr ""
 "Restituisce il primo elemento della lista e lo rimuove dalla lista. Utile "
 "per creare pile."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5528
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5550
 msgid "Return the list without its first n elements"
 msgstr "Restituisce la lista senza i primi n elementi"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5504
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5526
 msgid "Return the list without its last n elements"
 msgstr "Restituisce la lista senza gli ultimi n elementi"
 
@@ -5102,13 +5102,13 @@ msgid "Roots of Polynomial (bfloat)"
 msgstr "Radici di polinomiale (bfloat)"
 
 #: /home/gunter/src/wxmaxima/src/MatWiz.cpp:174
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5026
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5046
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5047
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5067
 msgid "Rows:"
 msgstr "Righe:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5398
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5426
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5420
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5448
 msgid "Rule:"
 msgstr "Regola:"
 
@@ -5128,15 +5128,15 @@ msgstr "INVIATO A MAXIMA:"
 msgid "SVG graphics"
 msgstr "Grafiche SVG"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6799
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6821
 msgid "Sample 1:"
 msgstr "Esempio 1:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6799
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6821
 msgid "Sample 2:"
 msgstr "Esempio 2:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6783
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6805
 msgid "Sample:"
 msgstr "Esempio:"
 
@@ -5158,7 +5158,7 @@ msgstr "Campioni su una linea:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1111
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:164
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8388
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8410
 msgid "Save"
 msgstr "Salva"
 
@@ -5166,7 +5166,7 @@ msgstr "Salva"
 msgid "Save Animation..."
 msgstr "Salva animazione..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3539
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3560
 msgid "Save As"
 msgstr "Salva come"
 
@@ -5178,7 +5178,7 @@ msgstr "Salva come...\tShift+Ctrl+S"
 msgid "Save Image..."
 msgstr "Salva immagine..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4311
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4332
 msgid "Save Selection to Image"
 msgstr "Salva la selezione su immagine"
 
@@ -5186,7 +5186,7 @@ msgstr "Salva la selezione su immagine"
 msgid "Save Selection to Image..."
 msgstr "Salva la selezione su immagine..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7364
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7386
 msgid "Save animation to file"
 msgstr "Salva l'animazione su file"
 
@@ -5199,7 +5199,7 @@ msgstr "Salva documento"
 msgid "Save document as"
 msgstr "Salva documento come"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:358
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:359
 msgid ""
 "Save only this number of actions in the undo buffer. 0 means: save an "
 "infinite number of actions."
@@ -5211,7 +5211,7 @@ msgstr ""
 msgid "Save panes layout"
 msgstr "Salva la disposizione pannelli"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:336
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:337
 msgid "Save panes layout between sessions."
 msgstr "Salva la disposizione dei pannelli tra le sessioni."
 
@@ -5224,11 +5224,11 @@ msgstr "Salva il grafico su file"
 msgid "Save selection from document to an image file"
 msgstr "Salva la selezione del documento su di un file immagine"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7345
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7367
 msgid "Save selection to file"
 msgstr "Salva la selezione su file"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:2078
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:2082
 msgid "Save style to file"
 msgstr "Salva lo stile su file"
 
@@ -5236,19 +5236,19 @@ msgstr "Salva lo stile su file"
 msgid "Save wxMaxima window size/position"
 msgstr "Salva l'ampiezza/posizione della finestra di wxMaxima"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:305
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:306
 msgid "Save wxMaxima window size/position between sessions."
 msgstr "Salva l'ampiezza/posizione della finestra di wxMaxima tra le sessioni"
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:207
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:211
 msgid "Saving failed."
 msgstr "Salvataggio fallito."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:183
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:187
 msgid "Saving successful."
 msgstr "Salvataggio effettuato."
 
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:173
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:177
 msgid "Saving..."
 msgstr "Salvataggio..."
 
@@ -5256,7 +5256,7 @@ msgstr "Salvataggio..."
 msgid "Scalable Vector Graphics (svg)"
 msgstr "Scalable Vector Graphics (svg)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6706
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6728
 msgid "Scatterplot"
 msgstr "Grafico a dispersione"
 
@@ -5318,7 +5318,7 @@ msgstr "Seleziona tutto\tCtrl+A"
 msgid "Select Maxima program"
 msgstr "Seleziona il programma maxima"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6892
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6914
 msgid "Select Subsample"
 msgstr "Seleziona il sottocampione"
 
@@ -5335,7 +5335,7 @@ msgstr "Seleziona una costante"
 msgid "Select all"
 msgstr "Seleziona tutto"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4535
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4556
 msgid "Select math display algorithm"
 msgstr "Seleziona l'algoritmo di visualizzazione matematica"
 
@@ -5353,7 +5353,7 @@ msgid "Selection"
 msgstr "Selezione"
 
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:66
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6106
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6128
 msgid "Series"
 msgstr "Serie"
 
@@ -5361,7 +5361,7 @@ msgstr "Serie"
 msgid "Series..."
 msgstr "Serie..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:938
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:939
 msgid "Server started"
 msgstr "Server avviato"
 
@@ -5377,7 +5377,7 @@ msgstr "Imposta lo zoom"
 msgid "Set bigfloat &Precision..."
 msgstr "Imposta la &precisione bigfloat..."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:352
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:353
 msgid "Set fixed font in text controls."
 msgstr "Imposta carattere ad ampiezza fissa nei controlli di testo."
 
@@ -5389,7 +5389,7 @@ msgstr "Imposta la dimensione massima dell'immagine [in mm]"
 msgid "Set plot format"
 msgstr "Imposta il formato del grafico"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5231
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5253
 msgid "Set the diagram title"
 msgstr "Imposta il titolo del diagramma"
 
@@ -5397,11 +5397,11 @@ msgstr "Imposta il titolo del diagramma"
 msgid "Set the frame rate for animations."
 msgstr "Imposta la frequenza di quadro per le animazioni."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5303
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5325
 msgid "Set the grid density."
 msgstr "Imposta la densità della griglia."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5245
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5267
 msgid "Set the next plot's title. Empty = no title."
 msgstr "Imposta il titolo del prossimo grafico. Vuoto = nessun titolo."
 
@@ -5503,11 +5503,11 @@ msgstr "Mostra il modello\tCtrl+Shift+K"
 msgid "Show a tip"
 msgstr "Mostra un suggerimento"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6639
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6661
 msgid "Show all commands similar to:"
 msgstr "Mostra tutti i comandi simili a:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6625
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6647
 msgid "Show an example for the command:"
 msgstr "Mostra un esempio per il comando:"
 
@@ -5539,15 +5539,15 @@ msgstr "Mostra le equazioni nella loro forma lineare"
 msgid "Show function template"
 msgstr "Mostra un modello di funzione"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:593
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:594
 msgid "Show labels:"
 msgstr "Mostra etichette:"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:343
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:344
 msgid "Show long expressions in wxMaxima document."
 msgstr "Mostra le espressione lunghe nei documenti di wxMaxima."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:560
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:561
 msgid "Show long expressions:"
 msgstr "Mostra espressioni lunghe:"
 
@@ -5555,7 +5555,7 @@ msgstr "Mostra espressioni lunghe:"
 msgid "Show section numbers"
 msgstr "Mostra i numeri delle sezioni"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4557
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4578
 msgid "Show the definition of function:"
 msgstr "Mostra la definizione della funzione:"
 
@@ -5626,14 +5626,14 @@ msgstr ""
 "wxMaxima\" se si desidera che l'immagine venga salvata assieme al documento."
 
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:29
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4764
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4780
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4785
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4801
 msgid "Solution:"
 msgstr "Soluzione:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4687
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4712
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7222
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4708
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4733
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7244
 msgid "Solve"
 msgstr "Risolvi"
 
@@ -5653,8 +5653,8 @@ msgstr "Risolvi &ODE..."
 msgid "Solve (to_poly)..."
 msgstr "Risolvi (to_poly)..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4750
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4881
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4771
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4902
 msgid "Solve ODE"
 msgstr "Risolvi ODE"
 
@@ -5666,8 +5666,8 @@ msgstr "Risolvi ODE con Lapla&ce..."
 msgid "Solve ODE..."
 msgstr "Risolvi ODE..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4829
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4841
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4850
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4862
 msgid "Solve algebraic system"
 msgstr "Risolvi il sistema algebrico"
 
@@ -5695,8 +5695,8 @@ msgstr "Risolvi problema del valore iniziale per un'ODE di primo grado"
 msgid "Solve initial value problem for second degree ODE"
 msgstr "Risolvi problema del valore iniziale per un'ODE di secondo grado"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4854
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4866
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4875
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4887
 msgid "Solve linear system"
 msgstr "Risolvi sistema lineare"
 
@@ -5718,7 +5718,7 @@ msgstr ""
 msgid "Solve..."
 msgstr "Risolvi..."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:319
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:320
 msgid ""
 "Some PDF viewers are able to display moving images and wxMaxima is able to "
 "output them. If this option is selected additional LaTeX packages might be "
@@ -5729,7 +5729,7 @@ msgstr ""
 "potrebbero però essere necessari ulteriori pacchetti LaTeX per poter "
 "compilare i risultati."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5366
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5388
 msgid "Something like f(x_1,x_2)"
 msgstr "Qualcosa come f(x_1,x_2)"
 
@@ -5741,11 +5741,11 @@ msgstr "Ordina"
 msgid "Sort Criterion:"
 msgstr "Criterio di ordinamento:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5459
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5481
 msgid "Sort a list"
 msgstr "Ordina una lista"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5427
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5449
 msgid "Source list:"
 msgstr "Lista sorgente:"
 
@@ -5802,7 +5802,7 @@ msgstr ""
 "Avvia o blocca l'animazione attualmente selezionata creata con la classe di "
 "comandi with_slider."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:360
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:361
 msgid "Start searching while the phrase to search for is still being typed."
 msgstr "Comincia la ricerca mentre la frase da cercare viene battuta."
 
@@ -5810,25 +5810,25 @@ msgstr "Comincia la ricerca mentre la frase da cercare viene battuta."
 msgid "Start value of the parameter"
 msgstr "Valore iniziale del parametro"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:311
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:312
 msgid "Starting Maxima process failed"
 msgstr "Avvio del processo Maxima fallito"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:983
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:984
 msgid "Starting Maxima..."
 msgstr "Avvio di maxima..."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:309
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:934
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:310
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:935
 msgid "Starting server failed"
 msgstr "Avvio del server fallito"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:915
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:916
 #, c-format
 msgid "Starting server on port %d"
 msgstr "Avvio del server sul port %d"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:229
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:225
 msgid "Startup commands"
 msgstr "Comandi d'avvio"
 
@@ -5844,7 +5844,7 @@ msgstr "Statistiche\tAlt+Shift+S"
 msgid "Strings"
 msgstr "Stringhe"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:225
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:221
 msgid "Style"
 msgstr "Stile"
 
@@ -5870,8 +5870,8 @@ msgid "Subst..."
 msgstr "Sostit..."
 
 #: /home/gunter/src/wxmaxima/src/SubstituteWiz.cpp:57
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4644
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7303
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4665
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7325
 msgid "Substitute"
 msgstr "Sostituisci"
 
@@ -5890,7 +5890,7 @@ msgid "Subsubsection cell"
 msgstr "Cella sottosottosezione"
 
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:59
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6155
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6177
 msgid "Sum"
 msgstr "Somma"
 
@@ -5902,7 +5902,7 @@ msgstr "Segno somma"
 msgid "Symbols\tAlt+Shift+Y"
 msgstr "Simboli\tAlt+Shift+Y"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:349
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:350
 msgid ""
 "Symbols that are entered or copied here will appear in the symbols sidebar "
 "so they can be entered into the worksheet easily."
@@ -5910,7 +5910,7 @@ msgstr ""
 "I simboli immessi o copiati qui appariranno nella barra simboli laterale in "
 "modo che possano essere inseriti facilmente nel foglio di lavoro."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6448
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6470
 msgid "System info"
 msgstr "Informazioni sul sistema"
 
@@ -5930,7 +5930,7 @@ msgstr "Prendi il colore della superficie dalla pendenza"
 msgid "Tau"
 msgstr "Tau"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5928
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5950
 msgid "Taylor series:"
 msgstr "Serie di Taylor:"
 
@@ -5938,7 +5938,7 @@ msgstr "Serie di Taylor:"
 msgid "TeX, interpreted by MathJaX"
 msgstr "TeX, interpretato da MathJaX"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5873
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5895
 msgid "Tellrat"
 msgstr "Sempraz"
 
@@ -5947,7 +5947,7 @@ msgstr "Sempraz"
 msgid "Text"
 msgstr "Testo"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:574
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:575
 msgid "Text Only"
 msgstr "Solo testo"
 
@@ -5988,7 +5988,7 @@ msgstr ""
 "    r_parallel:R=R_1*R_2/(R_1+R_2);\n"
 "    result:at(ohm,r_parallel);"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2461
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2462
 msgid ""
 "The .xml file doesn't seem to be valid xml or isn't a content.xml extracted "
 "from a .wxmx zip archive"
@@ -6000,7 +6000,7 @@ msgstr ""
 msgid "The Accuracy versus speed tradeoff"
 msgstr "Compromesso tra velocità e accuratezza"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:304
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:305
 msgid "The URL MathJaX.js should be downloaded from by our HTML export."
 msgstr ""
 "L'URL da cui dovrebbe essere scaricato MathJaX.js dalla nostra esportazione "
@@ -6026,7 +6026,7 @@ msgstr ""
 msgid "The color of the next line to draw"
 msgstr "Il colore della prossima linea da disegnare"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:315
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:316
 msgid ""
 "The default height for embedded plots. Can be read out or overridden by the "
 "maxima variable wxplot_size."
@@ -6034,11 +6034,11 @@ msgstr ""
 "Altezza predefinita per grafici incorporati. Può essere letta o sovrascritta "
 "dalla variabile maxima wxplot_size."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:356
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:357
 msgid "The default port used for communication between Maxima and wxMaxima."
 msgstr "La porta predefinita usata per la comunicazione tra Maxima e wxMaxima."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:313
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:314
 msgid ""
 "The default width for embedded plots. Can be read out or overridden by the "
 "maxima variable wxplot_size"
@@ -6050,7 +6050,7 @@ msgstr ""
 msgid "The diagram title"
 msgstr "Il titolo del diagramma"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:351
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:352
 msgid "The document class LaTeX is instructed to use for our documents."
 msgstr ""
 "La classe di documento LaTeX è impostata per l'uso dei nostri documenti."
@@ -6067,7 +6067,7 @@ msgstr ""
 "Il primo argomento di subst() non è un'equazione o un elenco di equazioni. "
 "Probabilmente manca un \"=\"."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5364
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5386
 msgid "The function call whose arguments to extract"
 msgstr "La chiamata a funzione i cui argomenti sono da estrarre"
 
@@ -6117,7 +6117,7 @@ msgstr ""
 "union.edu/~dpvc/jsmath/download/jsMath-fonts.html impostando \"Usa font "
 "JSmath\" nella finestra di configurazione dovrebbe risolvere il problema."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5614
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5636
 msgid ""
 "The list with values can be generated by \"solve()\" or using \"Create list/"
 "as storage for actual values for variables\"."
@@ -6159,11 +6159,11 @@ msgstr ""
 msgid "The next plot's title"
 msgstr "Il titolo del prossimo grafico"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:359
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:360
 msgid "The number of recently opened files that is to be remembered."
 msgstr "Il numero di file aperti recentemente che è necessario ricordare."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5405
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5427
 msgid ""
 "The number of the item which is stepped from \"Index Start\" to \"Index End"
 "\"."
@@ -6185,7 +6185,7 @@ msgstr ""
 "\"calcoli\" può essere soppressa da wxMaxima. Come sempre i comandi di "
 "maxima devono terminare con un \";\" o un \"$\""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:338
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:339
 msgid ""
 "The pngCairo terminal offers much better graphics quality (antialiassing and "
 "additional line styles). But it will only produce plots if the gnuplot "
@@ -6234,8 +6234,8 @@ msgstr ""
 "    at(Energy,Values);\n"
 "    W_mech:rhs(%);"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5403
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5431
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5425
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5453
 msgid ""
 "The rule that explains how to generate the value of an list item.\n"
 "Might be something like \"i\", \"i^2\" or \"sin(i)\""
@@ -6265,8 +6265,8 @@ msgstr ""
 "essere cambiato dall'utente. Inoltre alcuni costrutti non sono nomi di "
 "variabili e perciò non vi si può scrivere sopra."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5433
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5670
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5455
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5692
 msgid "The variable the value of the current source item is stored in."
 msgstr ""
 "La variabile in cui il valore dell'elemento sorgente corrente viene "
@@ -6296,7 +6296,7 @@ msgstr ""
 "andrejv.github.com/wxmaxima/help.html per ottenere ulteriori informazioni e "
 "per trovare tutorial sull'uso di wxMaxima e Maxima."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:484
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:485
 msgid ""
 "There was an error in generated XML!\n"
 "\n"
@@ -6332,7 +6332,7 @@ msgstr ""
 "aggiungere comandi di avvio che vengano eseguiti in questo frangente, "
 "inserirli invece nel file maxima-init.mac."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5567
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5589
 msgid ""
 "This function is slow for large n.\n"
 "For efficiently iterating through every element of a large list see \"Create "
@@ -6370,8 +6370,8 @@ msgstr "Questo assistente imposta una scena %iD."
 msgid "Ticks:"
 msgstr "Tacche:"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6079
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7277
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6101
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7299
 msgid "Times:"
 msgstr "Volte:"
 
@@ -6380,8 +6380,8 @@ msgstr "Volte:"
 msgid "Title"
 msgstr "Titolo"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5232
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5246
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5254
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5268
 msgid "Title (Sub- and superscripts as x_{10} or x^{10})"
 msgstr "Titolo (pedici e apici come x_{10} o x^{10})"
 
@@ -6457,8 +6457,8 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:41
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:50
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:37
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5084
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6170
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5105
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6192
 msgid "To:"
 msgstr "A:"
 
@@ -6494,11 +6494,11 @@ msgstr "Mostra/nascondi i risultati numerici"
 msgid "Toggle the visibility of code cells"
 msgstr "Commuta la visibilità delle celle di codice"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6456
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6478
 msgid "Toolbar icons"
 msgstr "Icone della barra degli strumenti"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6457
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6479
 msgid "Translated by"
 msgstr "Tradotto da"
 
@@ -6506,7 +6506,7 @@ msgstr "Tradotto da"
 msgid "Transpose a matrix"
 msgstr "Trasponi una matrice"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:340
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:341
 msgid ""
 "Try to antialias lines (which allows to move them by a fraction of a pixel, "
 "but reduces their sharpness)."
@@ -6522,7 +6522,7 @@ msgstr "Turco"
 msgid "Tutorials"
 msgstr "Tutorial"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6803
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6825
 msgid "Two sample t-test"
 msgstr "Test t a due campioni"
 
@@ -6530,7 +6530,7 @@ msgstr "Test t a due campioni"
 msgid "Type"
 msgstr "Tipo"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4816
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4817
 msgid "Type in text"
 msgstr "Tipo nel testo"
 
@@ -6546,15 +6546,15 @@ msgstr "URL dove risiede MathJaX.js:"
 msgid "Ukrainian"
 msgstr "Ucraino"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7729
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7751
 msgid "Un-closed parenthesis"
 msgstr "Parentesi non chiusa"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7672
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7694
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr "Parentesi non chiusa in corrispondenza di un ; o un $"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8338
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8360
 msgid ""
 "Unable to interpret the version info I got from http://andrejv.github.io//"
 "wxmaxima/version.txt: "
@@ -6566,7 +6566,7 @@ msgstr ""
 msgid "Underlined"
 msgstr "Sottolineato"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:579
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:580
 msgid "Underscore converts to subscripts:"
 msgstr "Il sottolineato converte in pedice:"
 
@@ -6614,15 +6614,15 @@ msgstr "Rivela sottosottosezione"
 msgid "Unhide contents"
 msgstr "Rivela i contenuti"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6450
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6472
 msgid "Unicode Support"
 msgstr "Supporto caratteri unicode"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7697
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7719
 msgid "Unterminated comment."
 msgstr "Commento non terminato."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7620
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7642
 msgid "Unterminated string."
 msgstr "Stringa non terminata."
 
@@ -6636,14 +6636,14 @@ msgstr ""
 msgid "Up"
 msgstr "Su"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8322
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8329
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8339
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8344
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8351
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8361
 msgid "Upgrade"
 msgstr "Aggiorna"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4728
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7245
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4749
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7267
 msgid "Upper bound:"
 msgstr "Intorno alto:"
 
@@ -6660,7 +6660,7 @@ msgstr "Usa l'algoritmo di Gosper"
 msgid "Use a list"
 msgstr "Usa una lista"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5650
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5672
 msgid "Use a list as parameter list for a function"
 msgstr "Usa una lista come lista parametri per una funzione"
 
@@ -6668,7 +6668,7 @@ msgstr "Usa una lista come lista parametri per una funzione"
 msgid "Use cairo to improve plot quality."
 msgstr "Usa cairo per migliorare la qualità dei grafici."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:355
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:356
 msgid "Use centered dot and Minus, not Star and Hyphen"
 msgstr "Usa il punto centrato e il segno meno, non l'asterisco e il trattino"
 
@@ -6688,7 +6688,7 @@ msgstr "Usa una lista"
 msgid "Use list as the arguments of a function"
 msgstr "Usa una lista per gli argomenti di una funzione"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:307
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:308
 msgid ""
 "Use nice js math symbols in order to get nice integral, sum, product and "
 "sqrt signs\n"
@@ -6706,7 +6706,7 @@ msgstr ""
 msgid "Use square parenthesis for matrices"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:323
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:324
 msgid ""
 "Use the \"partial derivative\" symbol to represent the fraction that "
 "represents a diff() when exporting LaTeX"
@@ -6722,7 +6722,7 @@ msgstr "Usa simboli matematici unicode se disponibili"
 msgid "User-defined labels"
 msgstr "Etichette definite dall'utente"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:597
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:598
 msgid "User-defined labels if available"
 msgstr "Etichette definite dall'utente se disponibili"
 
@@ -6732,9 +6732,9 @@ msgstr "Valore"
 
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:35
 #: /home/gunter/src/wxmaxima/src/BC2Wiz.cpp:41
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4764
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4781
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4895
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4785
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4802
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4916
 msgid "Value:"
 msgstr "Valore:"
 
@@ -6753,15 +6753,15 @@ msgid "Variable for the z value"
 msgstr "Variabile per il valore z"
 
 #: /home/gunter/src/wxmaxima/src/ActualValuesStorageWiz.cpp:41
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5628
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5650
 msgid "Variable name"
 msgstr "Nome variabile"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4684
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4709
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6078
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7219
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7276
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4705
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4730
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6100
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7241
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7298
 msgid "Variable(s):"
 msgstr "Variabile(i):"
 
@@ -6774,14 +6774,14 @@ msgstr "Variabile(i):"
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:44
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:40
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:31
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4727
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4747
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5010
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5083
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5996
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6012
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6169
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7244
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4748
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4768
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5031
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5104
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6018
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6034
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6191
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7266
 msgid "Variable:"
 msgstr "Variabile:"
 
@@ -6790,9 +6790,9 @@ msgid "Variables"
 msgstr "Variabili"
 
 #: /home/gunter/src/wxmaxima/src/SystemWiz.cpp:74
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4812
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6134
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6836
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4833
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6156
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6858
 msgid "Variables:"
 msgstr "Variabili:"
 
@@ -6809,17 +6809,17 @@ msgid "Warn if an inactive window is idle"
 msgstr "Avverti se una finestra inattiva è in attesa"
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:1001
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2438
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2545
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2673
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2439
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2546
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2674
 msgid "Warning"
 msgstr "Attenzione"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2973
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2976
 msgid "Welcome to wxMaxima"
 msgstr "Benvenuti in wxMaxima"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5665
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5687
 msgid "What to do:"
 msgstr "Cosa fare:"
 
@@ -6833,7 +6833,7 @@ msgstr ""
 "predefinito è \"%\". Per applicare la funzione a qualche altro valore, "
 "selezionarlo nel documento prima di eseguirlo."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3541
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3562
 msgid ""
 "Whole document (*.wxmx)|*.wxmx|The input, readable by load() (maxima > 5.38) "
 "(*.wxm)|*.wxm"
@@ -6841,11 +6841,11 @@ msgstr ""
 "Intero documento (*.wxmx)|*.wxmx|L'ingresso, leggibile da load() (maxima > "
 "5.38) (*.wxm)|*.wxm"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:223
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:219
 msgid "Worksheet"
 msgstr "Foglio di lavoro"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:325
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:326
 msgid ""
 "Wrap equations exported by the \"copy as LaTeX\" feature between \\[ and \\] "
 "as equation markers"
@@ -6857,7 +6857,7 @@ msgstr ""
 msgid "Wrapped search"
 msgstr "Ricerca in tutto il documento"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6453
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6475
 msgid "Written by"
 msgstr "Scritto da"
 
@@ -6877,7 +6877,7 @@ msgstr "Analizzatore XML"
 msgid "Xi"
 msgstr "Xi"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:566
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:567
 msgid "Yes"
 msgstr "Sì"
 
@@ -6945,7 +6945,7 @@ msgstr ""
 "cursore orizzontale, per poi operare su di esse tramite la selezione. Ciò "
 "torna comodo quando si vuole cancellare o valutare celle multiple."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8319
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8341
 #, c-format
 msgid ""
 "You have version %s. Current version is %s.\n"
@@ -6956,11 +6956,11 @@ msgstr ""
 "\n"
 "Selezionare OK per visitare il sito web di wxMaxima."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8387
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8409
 msgid "Your changes will be lost if you don't save them."
 msgstr "I cambiamenti andranno persi se non vengono salvati."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8329
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8351
 msgid "Your version of wxMaxima is up to date."
 msgstr "L'attuale versione di wxMaxima è aggiornata."
 
@@ -6984,12 +6984,12 @@ msgstr "Ingrandisci del 10%"
 msgid "Zoom out 10%"
 msgstr "Rimpicciolisci del 10%"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8122
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:254
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8144
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:258
 msgid "[ unsaved ]"
 msgstr "[ non salvato ]"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8124
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8146
 msgid "[ unsaved* ]"
 msgstr "[ non salvato* ]"
 
@@ -7080,7 +7080,7 @@ msgstr "diagonale"
 msgid "do for each element"
 msgstr "fai per ogni elemento"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5562
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5584
 msgid "element number n"
 msgstr "elemento numero n"
 
@@ -7104,7 +7104,7 @@ msgstr "eta"
 msgid "exists"
 msgstr "esiste"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:345
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:346
 msgid ""
 "false=Don't generate subscripts\n"
 "true=Automatically convert underscores to subscript markers if the would-be "
@@ -7192,7 +7192,7 @@ msgstr "scala logaritmica"
 msgid "matrix([x_1,x_2,...],[y_1,y_2,...])"
 msgstr "matrice([x_1,x_2,...],[y_1,y_2,...])"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5046
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5067
 msgid "matrix[i,j]:"
 msgstr "matrice[i,j]:"
 
@@ -7212,8 +7212,8 @@ msgstr "molto maggiore di"
 msgid "much less than"
 msgstr "molto minore di"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5501
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5525
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5523
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5547
 msgid "n"
 msgstr "n"
 
@@ -7221,7 +7221,7 @@ msgstr "n"
 msgid "nand"
 msgstr "nand"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6523
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6545
 msgid "no"
 msgstr "no"
 
@@ -7325,8 +7325,8 @@ msgstr "campo y secondario (automatico se incompleto)"
 msgid "sigma"
 msgstr "sigma"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4688
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7223
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4709
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7245
 msgid ""
 "solve() will solve a list of equations only if for n independent equations "
 "there are n variables to solve to.\n"
@@ -7408,13 +7408,13 @@ msgstr "alla potenza di 3"
 msgid "union"
 msgstr "unione"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8368
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8390
 msgid "unsaved"
 msgstr "non salvato"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3533
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3999
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:256
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3554
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4020
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:260
 msgid "untitled"
 msgstr "senzanome"
 
@@ -7436,15 +7436,15 @@ msgid "use the actual values stored"
 msgstr "usa i valori correnti memorizzati"
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:284
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6536
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6558
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8122
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8124
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8133
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8136
-#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:254
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8144
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8146
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8155
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8158
+#: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:258
 #, c-format
 msgid "wxMaxima %s "
 msgstr "wxMaxima %s "
@@ -7468,20 +7468,20 @@ msgstr ""
 "posizione di questa cartella può essere verificata battendo il comando "
 "maxima_userdir."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2317
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2318
 msgid "wxMaxima cannot open content.xml in the .wxmx zip archive "
 msgstr "wxMaxima non può aprire content.xml nell'archivio zip .wxmx "
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2331
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2332
 msgid "wxMaxima cannot read the xml contents of "
 msgstr "wxMaxima non può leggere il contenuto xml di "
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:214
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:290
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:210
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:291
 msgid "wxMaxima configuration"
 msgstr "Configurazione di wxMaxima"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2670
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2671
 msgid ""
 "wxMaxima could not find Maxima!\n"
 "\n"
@@ -7493,7 +7493,7 @@ msgstr ""
 "Configurare wxMaxima con \"Modifica->Configura\".\n"
 "Successivamente avviare maxima con \"Maxima->Riavvia maxima\"."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2900
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2901
 msgid ""
 "wxMaxima could not find help files.\n"
 "\n"
@@ -7503,7 +7503,7 @@ msgstr ""
 "\n"
 "Controllare l'installazione."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:299
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:300
 msgid ""
 "wxMaxima could not start the server.\n"
 "\n"
@@ -7525,7 +7525,7 @@ msgstr ""
 "di ingresso, uno dei quali è \"%\". Se si è effettuata una selezione nel "
 "documento corrente, questa verrà utilizzata al posto di \"%\"."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3180
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3184
 msgid "wxMaxima document"
 msgstr "Documento wxMaxima"
 
@@ -7533,17 +7533,17 @@ msgstr "Documento wxMaxima"
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgstr "Documento wxMaxima (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1834
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2146
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2157
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1835
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2147
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2158
 msgid "wxMaxima encountered an error loading "
 msgstr "wxMaxima ha riscontrato un errore durante il caricamento "
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6455
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6477
 msgid "wxMaxima icon"
 msgstr "Icona wxMaxima"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6447
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6469
 msgid ""
 "wxMaxima is a graphical user interface for the computer algebra system "
 "MAXIMA based on wxWidgets."
@@ -7551,7 +7551,7 @@ msgstr ""
 "wxMaxima è un'interfaccia utente grafica basata sui wxWidgets per il sistema "
 "algebrico computerizzato Maxima."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6512
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6534
 msgid ""
 "wxMaxima is a graphical user interface for the computer algebra system "
 "Maxima based on wxWidgets."
@@ -7575,7 +7575,7 @@ msgstr ""
 msgid "wxMaxima startup file location: "
 msgstr "Posizione file di avvio wxMaxima: "
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:545
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:546
 msgid "x"
 msgstr "x"
 
@@ -7583,7 +7583,7 @@ msgstr "x"
 msgid "x axis label"
 msgstr "etichetta asse x"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5299
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5321
 msgid "x direction [in multiples of the tick frequency]"
 msgstr "direzione x [in multipli della frequenza delle tacche]"
 
@@ -7595,8 +7595,8 @@ msgstr "campo x (automatico se incompleto)"
 msgid "xi"
 msgstr "xi"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2342
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2473
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2343
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2474
 msgid "xml contained in the file claims not to be a wxMaxima worksheet. "
 msgstr ""
 "l'xml contenuto nel file dichiara di non essere un foglio di lavoro "
@@ -7610,7 +7610,7 @@ msgstr "xor"
 msgid "y axis label"
 msgstr "etichetta asse y"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5300
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5322
 msgid "y direction [in multiples of the tick frequency]"
 msgstr "direzione y [in multipli della frequenza delle tacche]"
 
@@ -7618,7 +7618,7 @@ msgstr "direzione y [in multipli della frequenza delle tacche]"
 msgid "y range (automatic if incomplete)"
 msgstr "campo y (automatico se incompleto)"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6521
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6543
 msgid "yes"
 msgstr "sì"
 
