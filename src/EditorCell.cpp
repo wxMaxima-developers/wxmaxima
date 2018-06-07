@@ -1094,7 +1094,6 @@ wxString EditorCell::GetCurrentCommand()
         break;
       }
   }
-  std::cerr<<command;
   return command;
 }
 
