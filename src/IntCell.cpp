@@ -233,12 +233,11 @@ void IntCell::RecalculateHeight(int fontsize)
     }
     else
     {
-      m_center = MAX(m_over->GetMaxHeight() + Scale_Px(4) + m_signSize / 2 - m_signSize / 3,
-                     m_base->GetMaxCenter());
       m_height = m_center +
-                 MAX(m_under->GetMaxHeight() + Scale_Px(4) + m_signSize / 2 - m_signSize / 3,
+                 MAX(m_under->GetMaxHeight() + Scale_Px(4) + m_signSize / 2,
                      m_base->GetMaxDrop());
-    }
+      m_center = m_height / 2;
+     }
   }
   else
   {
@@ -315,29 +314,40 @@ void IntCell::Draw(wxPoint point, int fontsize)
         sign.y + (m_signSize + 1) / 2 - (3 * m_charHeight) / 2);
       }
 #else
-      SetPen(2.0);
+      SetPen(1.5);
       // top decoration
       int m_signWCenter = m_signWidth / 2;
       wxPoint pointList[10];
       pointList[0] = wxPoint(sign.x + m_signWCenter + 2 * (m_signWidth / 4),
-                             sign.y - (m_signSize + 1) / 2 + m_signWidth / 4);
+                             sign.y - (m_signSize - Scale_Px(1)) / 2 + m_signWidth / 4);
       pointList[1] = wxPoint(sign.x + m_signWCenter + m_signWidth / 4,
-                             sign.y - (m_signSize + 1) / 2);
+                             sign.y - (m_signSize - Scale_Px(1)) / 2);
       pointList[2] = wxPoint(sign.x + m_signWCenter,
-                             sign.y - (m_signSize + 1) / 2 + 2* (m_signWidth / 4));
+                             sign.y - (m_signSize - Scale_Px(1)) / 2 + 2* (m_signWidth / 4)
+                             + Scale_Px(.25));
 
       // The line
-      pointList[3] = wxPoint(sign.x + m_signWCenter,
+      pointList[3] = wxPoint(sign.x + m_signWCenter + Scale_Px(.5),
                                sign.y);
       
       // Bottom Decoration
       pointList[4] = wxPoint(sign.x + m_signWCenter,
-                             sign.y + (m_signSize + 1) / 2 - 2* (m_signWidth / 4));
+                             sign.y + (m_signSize - Scale_Px(1)) / 2 - 2* (m_signWidth / 4)
+                             + Scale_Px(.5));
       pointList[5] = wxPoint(sign.x + m_signWCenter - m_signWidth / 4,
-                             sign.y + (m_signSize + 1) / 2);
+                             sign.y + (m_signSize - Scale_Px(1)) / 2);
       pointList[6] = wxPoint(sign.x + m_signWCenter - 2 * (m_signWidth / 4),
-                             sign.y + (m_signSize + 1) / 2 - m_signWidth / 4);
+                             sign.y + (m_signSize - Scale_Px(1)) / 2 - m_signWidth / 4);
 
+      configuration->GetAntialiassingDC()->DrawSpline(7,pointList);
+      pointList[2] = wxPoint(sign.x + m_signWCenter,
+                             sign.y - (m_signSize - Scale_Px(1)) / 2 + 2* (m_signWidth / 4)
+                             - Scale_Px(.25));
+      pointList[3] = wxPoint(sign.x + m_signWCenter - Scale_Px(.5),
+                               sign.y);
+      pointList[4] = wxPoint(sign.x + m_signWCenter,
+                             sign.y + (m_signSize - Scale_Px(1)) / 2 - 2* (m_signWidth / 4)
+                             + Scale_Px(.25));
       configuration->GetAntialiassingDC()->DrawSpline(7,pointList);
       // line
       UnsetPen();
