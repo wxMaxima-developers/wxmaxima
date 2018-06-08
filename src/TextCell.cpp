@@ -1530,6 +1530,7 @@ wxString TextCell::GetGreekStringUnicode()
 
 wxString TextCell::GetSymbolUnicode(bool keepPercent)
 {
+  std::cerr<<"\""<<m_text<<"\"\n";
   if (m_text == wxT("+"))
     return wxT("+");
   else if (m_text == wxT("="))
@@ -1542,6 +1543,7 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent)
     return wxT("\x2264");
   else if (m_text == wxT(">="))
     return wxT("\x2265");
+  #ifndef __WXMSW__
   else if (m_text == wxT(" and "))
     return wxT(" \x22C0 ");
   else if (m_text == wxT(" or "))
@@ -1558,6 +1560,7 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent)
     return wxT(" \x21D4 ");
   else if (m_text == wxT("not"))
     return wxT("\x00AC");
+  #endif
   else if (m_text == wxT("->"))
     return wxT("\x2192");
   else if (m_text == wxT("-->"))
