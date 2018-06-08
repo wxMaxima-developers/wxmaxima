@@ -336,35 +336,44 @@ void ParenCell::Draw(wxPoint point, int fontsize)
       wxDC *adc = configuration->GetAntialiassingDC();
       innerCellPos.x = point.x + Scale_Px(6) + (*m_configuration)->GetDefaultLineWidth();
       innerCellPos.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
-      SetPen(2.0);
-      // left
-      adc->DrawLine(point.x + Scale_Px(5) + (*m_configuration)->GetDefaultLineWidth() / 2,
-                   point.y - m_innerCell->GetMaxCenter() + Scale_Px(1),
-                   point.x + Scale_Px(2) + (*m_configuration)->GetDefaultLineWidth() / 2,
-                   point.y - m_innerCell->GetMaxCenter() + Scale_Px(7));
-      adc->DrawLine(point.x + Scale_Px(2) + (*m_configuration)->GetDefaultLineWidth() / 2,
-                   point.y - m_innerCell->GetMaxCenter() + Scale_Px(7),
-                   point.x + Scale_Px(2) + (*m_configuration)->GetDefaultLineWidth() / 2,
-                   point.y + m_innerCell->GetMaxDrop() - Scale_Px(7));
-      adc->DrawLine(point.x + Scale_Px(2) + (*m_configuration)->GetDefaultLineWidth() / 2,
-                   point.y + m_innerCell->GetMaxDrop() - Scale_Px(7),
-                   point.x + Scale_Px(5) + (*m_configuration)->GetDefaultLineWidth() / 2,
-                   point.y + m_innerCell->GetMaxDrop() - Scale_Px(1));
-      // right
-      adc->DrawLine(point.x + m_width - Scale_Px(5) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
-                   point.y - m_innerCell->GetMaxCenter() + Scale_Px(1),
-                   point.x + m_width - Scale_Px(2) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
-                   point.y - m_innerCell->GetMaxCenter() + Scale_Px(7));
-      adc->DrawLine(point.x + m_width - Scale_Px(2) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
-                   point.y - m_innerCell->GetMaxCenter() + Scale_Px(7),
-                   point.x + m_width - Scale_Px(2) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
-                   point.y + m_innerCell->GetMaxDrop() - Scale_Px(7));
-      adc->DrawLine(point.x + m_width - Scale_Px(2) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
-                   point.y + m_innerCell->GetMaxDrop() - Scale_Px(7),
-                   point.x + m_width - Scale_Px(5) - 1 - (*m_configuration)->GetDefaultLineWidth() / 2,
-                   point.y + m_innerCell->GetMaxDrop() - Scale_Px(1));
-      break;
+      SetPen(1.0);
+
+      int signWidth = 4;
+      
+      wxPoint pointList[5];
+      // Left bracket
+      pointList[0] = wxPoint(point.x + Scale_Px(1) + signWidth,
+                             point.y - m_center);
+      pointList[1] = wxPoint(point.x + Scale_Px(1) + signWidth / 2,
+                             point.y - m_center + signWidth / 2);
+      pointList[2] = wxPoint(point.x + Scale_Px(1),
+                             point.y);
+      pointList[3] = wxPoint(point.x + Scale_Px(1) + signWidth / 2,
+                             point.y + m_center - signWidth / 2);
+      pointList[4] = wxPoint(point.x + Scale_Px(1) + signWidth,
+                             point.y + m_center);
+      configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
+      pointList[2] = wxPoint(point.x + Scale_Px(1.5),
+                             point.y);
+      configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
+      
+      // Right bracket
+      pointList[0] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
+                             point.y - m_center);
+      pointList[1] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
+                             point.y - m_center + signWidth / 2);
+      pointList[2] = wxPoint(point.x + m_width - Scale_Px(1.5),
+                             point.y);
+      pointList[3] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth / 2,
+                             point.y + m_center - signWidth / 2);
+      pointList[4] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
+                             point.y + m_center);
+      configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
+      pointList[2] = wxPoint(point.x + m_width - Scale_Px(1),
+                             point.y);
+      configuration->GetAntialiassingDC()->DrawSpline(5,pointList);      
     }
+      break;
     }
     
     UnsetPen();
