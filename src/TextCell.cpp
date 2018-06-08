@@ -1370,7 +1370,7 @@ bool TextCell::IsShortNum()
 void TextCell::SetAltText()
 {
   m_altJs = m_alt = false;
-  if (GetStyle() == TS_DEFAULT)
+  if ((GetStyle() == TS_DEFAULT) && m_text.StartsWith("\""))
     return;
 
   /// Greek characters are defined in jsMath, Windows and Unicode
@@ -1404,18 +1404,17 @@ void TextCell::SetAltText()
         m_texFontname = CMSY10;
       m_altJs = true;
     }
-#if wxUSE_UNICODE
     m_altText = GetSymbolUnicode((*m_configuration)->CheckKeepPercent());
     if (m_altText != wxEmptyString)
       m_alt = true;
-#elif defined __WXMSW__
-    m_altText = GetSymbolSymbol(configuration->CheckKeepPercent());
-    if (m_altText != wxEmptyString)
-    {
-      m_alt = true;
-      m_fontname = wxT("Symbol");
-    }
-#endif
+// #if defined __WXMSW__
+//     m_altText = GetSymbolSymbol(configuration->CheckKeepPercent());
+//     if (m_altText != wxEmptyString)
+//     {
+//       m_alt = true;
+//       m_fontname = wxT("Symbol");
+//     }
+// #endif
   }
 }
 
@@ -1530,7 +1529,6 @@ wxString TextCell::GetGreekStringUnicode()
 
 wxString TextCell::GetSymbolUnicode(bool keepPercent)
 {
-  std::cerr<<"\""<<m_text<<"\"\n";
   if (m_text == wxT("+"))
     return wxT("+");
   else if (m_text == wxT("="))
