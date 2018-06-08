@@ -51,6 +51,7 @@ wxString MathCell::GetToolTip(const wxPoint &point)
 MathCell::MathCell(MathCell *group, Configuration **config)
 {
   m_toolTip = wxEmptyString;
+  m_cellPointers = NULL;
   m_group = group;
   m_parent = group;
   m_configuration = config;

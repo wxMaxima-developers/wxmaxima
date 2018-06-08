@@ -59,9 +59,6 @@ public:
   //! Set the directory the user stores its data in.
   void UserConfDir(wxString userConfDir){m_userConfDir = userConfDir + wxT("/");}
 
-  //! The directory the application icon is stored in
-  wxString AppIconDir();
-
   //! The directory general data is stored in
   wxString DataDir();
 
@@ -92,15 +89,6 @@ public:
 
   //! The directory art is stored relative to
   wxString ArtDir();
-
-  //! The directory art for the config dialogue is stored relative to
-  wxString ConfigArtDir();
-
-  //! The directory art for the toolbar is stored relative to
-  wxString ConfigToolbarDir();
-  
-  //! The directory art for the status bar is stored relative to
-  wxString ConfigStatusbarDir();
 
   /*! The directory the locale data is to be found in
 

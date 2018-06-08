@@ -129,51 +129,6 @@ wxString Dirstructure::ArtDir()
   return dir;
 }
 
-wxString Dirstructure::AppIconDir()
-{
-  wxString dir = ResourcesDir();
-
-  if(wxFileExists(ResourcesDir() + wxT("/wxmaxima.png")))
-    return ResourcesDir();
-  else
-  {
-    if(wxDirExists(dir + wxT("/wxMaxima")))
-      dir += wxT("/wxMaxima");
-    
-    if(wxDirExists(dir + wxT("/data")))
-      dir += wxT("/data");
-    
-    return dir;
-  }
-}
-
-wxString Dirstructure::ConfigArtDir()
-{
-  wxString dir = ArtDir();
-  if(wxDirExists(dir + wxT("/config")))
-    dir += wxT("/config");
-
-  return dir;
-}
-
-wxString Dirstructure::ConfigToolbarDir()
-{
-  wxString dir = ArtDir();
-  if(wxDirExists(dir + wxT("/toolbar")))
-    dir += wxT("/toolbar");
-
-  return dir;
-}
-
-wxString Dirstructure::ConfigStatusbarDir()
-{
-  wxString dir = ArtDir();
-  if(wxDirExists(dir + wxT("/statusbar")))
-    dir += wxT("/statusbar");
-
-  return dir;
-}
-
 wxString Dirstructure::MaximaLispLocation()
 {
   wxString result;

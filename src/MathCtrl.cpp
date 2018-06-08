@@ -8402,7 +8402,7 @@ wxAccStatus MathCtrl::AccessibilityInfo::HitTest (const wxPoint &pt,
 	int id = 0;
     GroupCell *cell = m_mathCtrl->m_tree;
     
-    unsigned int childCount = 0;
+    unsigned int childCount;
     while(cell != NULL)
     {
       id++;

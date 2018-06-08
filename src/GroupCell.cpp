@@ -2023,16 +2023,19 @@ GroupCell *GroupCell::Fold()
 
   // cell(s) to fold are between start and end (including these two)
 
-  if(end->m_next != NULL)
+  if(end != NULL)
   {
-    m_next = m_nextToDraw = end->m_next;
-    end->m_next->m_previous = end->m_next->m_previousToDraw = this;
+    if(end->m_next != NULL)
+    {
+      m_next = m_nextToDraw = end->m_next;
+      end->m_next->m_previous = end->m_next->m_previousToDraw = this;
+    }
+    else
+      m_next = m_nextToDraw = NULL;
+    end->m_next = end->m_nextToDraw = NULL;
   }
-  else
-    m_next = m_nextToDraw = NULL;
   
   start->m_previous = start->m_previousToDraw = NULL;
-  end->m_next = end->m_nextToDraw = NULL;
   m_hiddenTree = start; // save the torn out tree into m_hiddenTree
   m_hiddenTree->SetHiddenTreeParent(this);
   return this;

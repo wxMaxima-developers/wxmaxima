@@ -98,10 +98,9 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *cursorPo
       cell = dynamic_cast<GroupCell *>(cell->m_next);
     }
 
-    long item = -1;
-    item = m_displayedItems->GetNextItem(-1,
-                                         wxLIST_NEXT_ALL,
-                                         wxLIST_STATE_SELECTED);
+    long item = m_displayedItems->GetNextItem(-1,
+                                              wxLIST_NEXT_ALL,
+                                              wxLIST_STATE_SELECTED);
 
     if ((selection >= 0) && (item != selection))
     {

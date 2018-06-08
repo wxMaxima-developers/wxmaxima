@@ -115,7 +115,7 @@ void Plot3DWiz::set_properties()
 
   button_3->SetToolTip(_("Browse"));
 
-  bool pm3dValue = false;
+  bool pm3dValue;
 #if defined __WXMSW__
   button_1->SetDefault();
   pm3dValue = true;

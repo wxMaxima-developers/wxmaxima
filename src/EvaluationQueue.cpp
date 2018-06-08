@@ -60,7 +60,7 @@ bool EvaluationQueue::IsInQueue(GroupCell *gr)
 
 void EvaluationQueue::Remove(GroupCell *gr)
 {
-  bool removeFirst = m_queue.size() > 0 && gr == m_queue.front();
+  bool removeFirst = !(m_queue.empty()) && gr == m_queue.front();
   m_queue.remove(gr);
   m_size = m_queue.size();
   if(removeFirst)

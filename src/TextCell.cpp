@@ -1701,45 +1701,45 @@ wxString TextCell::GetGreekStringSymbol()
   return wxEmptyString;
 }
 
-wxString TextCell::GetSymbolSymbol(bool keepPercent)
-{
-  if (m_text == wxT("inf"))
-    return "\xA5";
-  else if (m_text == wxT("%pi"))
-    return "\x70";
-  else if (m_text == wxT("->"))
-    return "\xAE";
-  else if (m_text == wxT(">="))
-    return "\xB3";
-  else if (m_text == wxT("<="))
-    return "\xA3";
-  else if (m_text == wxT(" and "))
-    return "\xD9";
-  else if (m_text == wxT(" or "))
-    return "\xDA";
-  else if (m_text == wxT("not"))
-    return "\xD8";
-  else if (m_text == wxT(" nand "))
-    return "\xAD";
-  else if (m_text == wxT(" nor "))
-    return "\xAF";
-  else if (m_text == wxT(" implies "))
-    return "\xDE";
-  else if (m_text == wxT(" equiv "))
-    return "\xDB";
-  else if (m_text == wxT(" xor "))
-    return "\xC5";
-  else if (m_text == wxT("~>"))
-    return "\x219D";
-  if (!keepPercent) {
-    if (m_text == wxT("%e"))
-      return wxT("e");
-    else if (m_text == wxT("%i"))
-      return wxT("i");
-  }
+// wxString TextCell::GetSymbolSymbol(bool keepPercent)
+// {
+//   if (m_text == wxT("inf"))
+//     return "\xA5";
+//   else if (m_text == wxT("%pi"))
+//     return "\x70";
+//   else if (m_text == wxT("->"))
+//     return "\xAE";
+//   else if (m_text == wxT(">="))
+//     return "\xB3";
+//   else if (m_text == wxT("<="))
+//     return "\xA3";
+//   else if (m_text == wxT(" and "))
+//     return "\xD9";
+//   else if (m_text == wxT(" or "))
+//     return "\xDA";
+//   else if (m_text == wxT("not"))
+//     return "\xD8";
+//   else if (m_text == wxT(" nand "))
+//     return "\xAD";
+//   else if (m_text == wxT(" nor "))
+//     return "\xAF";
+//   else if (m_text == wxT(" implies "))
+//     return "\xDE";
+//   else if (m_text == wxT(" equiv "))
+//     return "\xDB";
+//   else if (m_text == wxT(" xor "))
+//     return "\xC5";
+//   else if (m_text == wxT("~>"))
+//     return "\x219D";
+//   if (!keepPercent) {
+//     if (m_text == wxT("%e"))
+//       return wxT("e");
+//     else if (m_text == wxT("%i"))
+//       return wxT("i");
+//   }
 
-  return wxEmptyString;
-}
+//   return wxEmptyString;
+// }
 
 #endif
 

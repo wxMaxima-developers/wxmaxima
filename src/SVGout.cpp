@@ -35,6 +35,7 @@
 
 Svgout::Svgout(Configuration **configuration, wxString filename, double scale)
 {
+  m_width = m_height = -1;
   m_configuration = configuration;
   m_oldconfig = *m_configuration;
   m_tree = NULL;

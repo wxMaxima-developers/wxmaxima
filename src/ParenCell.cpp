@@ -34,6 +34,7 @@ ParenCell::ParenCell(MathCell *parent, Configuration **config, CellPointers *cel
 {
   m_cellPointers = cellPointers;
   m_numberOfExtensions = 0;
+  m_extendHeight = 12;
   m_charWidth = 12;
   m_charWidth1 = 12;
   m_charHeight = 12;

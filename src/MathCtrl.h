@@ -1440,7 +1440,6 @@ public:
     wxAccStatus GetDescription(int childId, wxString *description);
    private:
     MathCtrl *m_mathCtrl;
-    int m_childCount;
   };
 #endif
 protected:

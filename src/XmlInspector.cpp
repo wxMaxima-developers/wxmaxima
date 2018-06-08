@@ -40,6 +40,8 @@ XmlInspector::XmlInspector(wxWindow *parent, int id) : wxRichTextCtrl(parent, id
                                                                       wxHSCROLL |
                                                                       wxTE_MULTILINE)
 {
+  m_state = clear;
+  m_indentLevel = 0;
   BeginSuppressUndo();
   Clear();
 }

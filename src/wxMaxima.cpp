@@ -1121,14 +1121,16 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
       // Set the bit for the SIGINT handler
       int value = (1 << (wxSIGINT));
       int *sharedMemoryContents = (int *)(sharedMemoryAddress);
-      *sharedMemoryContents = *sharedMemoryContents | value;
-      
+      if (sharedMemoryAddress)
+      {
+        *sharedMemoryContents = *sharedMemoryContents | value;
+        
+        UnmapViewOfFile(sharedMemoryAddress);
+      }
       if (sharedMemoryHandle)
         CloseHandle(sharedMemoryHandle);
-      sharedMemoryHandle = NULL;
-      if (sharedMemoryAddress)
-        UnmapViewOfFile(sharedMemoryAddress);
       sharedMemoryAddress = NULL;
+      sharedMemoryHandle = NULL;
     }
   }
   else

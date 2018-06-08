@@ -35,7 +35,7 @@ struct style
   {};
   wxColour color;
   wxString font;
-  int fontSize;
+  int fontSize = 10;
   bool bold;
   bool italic;
   bool underlined;

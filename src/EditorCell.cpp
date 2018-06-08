@@ -1239,14 +1239,13 @@ bool EditorCell::HandleCtrlCommand(wxKeyEvent &ev)
 
 void EditorCell::ProcessEvent(wxKeyEvent &event)
 {
-  bool done = false;
+  bool done;
 
 #if defined __WXMAC__
   done = HandleCtrlCommand(event);
 #endif
 
-  if (!done)
-    done = HandleSpecialKey(event);
+  done = HandleSpecialKey(event);
 
   if (!done)
     HandleOrdinaryKey(event);
@@ -1469,10 +1468,10 @@ void EditorCell::ProcessNewline(bool keepCursorAtStartOfLine)
         {
           int i = BeginningOfLine(m_positionOfCaret);
           while ((m_text[i] == wxT(' ')) && (i < m_positionOfCaret))
-            i++;
+            ++i;
           if (i == m_positionOfCaret)
             while ((m_text[m_positionOfCaret] == wxT(' ')) && (m_positionOfCaret < (long) m_text.Length() - 1))
-              m_positionOfCaret++;
+              ++m_positionOfCaret;
         }
 
         int indentChars = GetIndentDepth(m_text, m_positionOfCaret);
@@ -3644,7 +3643,7 @@ wxArrayString EditorCell::StringToTokens(wxString text)
         token = wxEmptyString;
       }
       retval.Add(wxT("\n"));
-      it++;
+      ++it;
     }
     // A minus and a plus are special tokens as they can be both
     // operators or part of a number.
@@ -3658,7 +3657,7 @@ wxArrayString EditorCell::StringToTokens(wxString text)
         retval.Add(token);
       token = wxString(Ch);
       retval.Add(token);
-      it++;
+      ++it;
       token = wxEmptyString;
     }
     // Check for "comment start" or "comment end" markers
@@ -3797,7 +3796,7 @@ wxArrayString EditorCell::StringToTokens(wxString text)
     else
     {
       token = token + Ch;
-      it++;
+      ++it;
     }
   }
 
