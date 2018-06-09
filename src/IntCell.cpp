@@ -324,7 +324,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
                              sign.y - (m_signSize - Scale_Px(1)) / 2);
       pointList[2] = wxPoint(sign.x + m_signWCenter,
                              sign.y - (m_signSize - Scale_Px(1)) / 2 + 2* (m_signWidth / 4)
-                             + Scale_Px(.25));
+                             + Scale_Px(.35));
 
       // The line
       pointList[3] = wxPoint(sign.x + m_signWCenter + Scale_Px(.5),
@@ -333,21 +333,25 @@ void IntCell::Draw(wxPoint point, int fontsize)
       // Bottom Decoration
       pointList[4] = wxPoint(sign.x + m_signWCenter,
                              sign.y + (m_signSize - Scale_Px(1)) / 2 - 2* (m_signWidth / 4)
-                             + Scale_Px(.5));
+                             + Scale_Px(.35));
       pointList[5] = wxPoint(sign.x + m_signWCenter - m_signWidth / 4,
                              sign.y + (m_signSize - Scale_Px(1)) / 2);
       pointList[6] = wxPoint(sign.x + m_signWCenter - 2 * (m_signWidth / 4),
                              sign.y + (m_signSize - Scale_Px(1)) / 2 - m_signWidth / 4);
 
       configuration->GetAntialiassingDC()->DrawSpline(7,pointList);
+      pointList[1] = wxPoint(sign.x + m_signWCenter + m_signWidth / 4,
+                             sign.y - (m_signSize - Scale_Px(1.25)) / 2);
       pointList[2] = wxPoint(sign.x + m_signWCenter,
                              sign.y - (m_signSize - Scale_Px(1)) / 2 + 2* (m_signWidth / 4)
-                             - Scale_Px(.25));
+                             - Scale_Px(.35));
       pointList[3] = wxPoint(sign.x + m_signWCenter - Scale_Px(.5),
                                sign.y);
       pointList[4] = wxPoint(sign.x + m_signWCenter,
                              sign.y + (m_signSize - Scale_Px(1)) / 2 - 2* (m_signWidth / 4)
-                             + Scale_Px(.25));
+                             + Scale_Px(.35));
+      pointList[5] = wxPoint(sign.x + m_signWCenter - m_signWidth / 4,
+                             sign.y + (m_signSize - Scale_Px(1.25)) / 2);
       configuration->GetAntialiassingDC()->DrawSpline(7,pointList);
       // line
       UnsetPen();

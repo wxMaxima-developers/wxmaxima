@@ -56,7 +56,7 @@ public:
 
   std::list<MathCell *> GetInnerCells();
 
-  MathCell *Copy();
+  virtual MathCell *Copy();
 
   void SetInner(MathCell *inner, int style);
 

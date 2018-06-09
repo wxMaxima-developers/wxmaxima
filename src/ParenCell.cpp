@@ -223,7 +223,11 @@ void ParenCell::RecalculateWidths(int fontsize)
       m_signHeight = m_signTopHeight + m_signBotHeight + m_extendHeight * m_numberOfExtensions;
     }
     else
+    {
       m_signWidth = Scale_Px(6) + (*m_configuration)->GetDefaultLineWidth();
+      if(m_signWidth < size / 15)
+        m_signWidth = size / 15;
+    }
   }
   m_width = m_innerCell->GetFullWidth() + m_signWidth * 2;
   ResetData();
@@ -338,7 +342,7 @@ void ParenCell::Draw(wxPoint point, int fontsize)
       innerCellPos.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
       SetPen(1.0);
 
-      int signWidth = 4;
+      int signWidth = m_signWidth - Scale_Px(2);
       
       wxPoint pointList[5];
       // Left bracket
