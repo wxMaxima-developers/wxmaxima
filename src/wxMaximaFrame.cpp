@@ -1200,6 +1200,7 @@ void wxMaximaFrame::UpdateRecentDocuments()
                                       wxEmptyString, wxEmptyString, wxITEM_SEPARATOR);
       
       m_recentDocumentsMenu->Append(i, label);
+      unsavedDocuments.pop_front();
     }
   }
 
