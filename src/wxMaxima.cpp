@@ -7442,7 +7442,7 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event)
     m_console->CloseAutoCompletePopup();
 
 
-  wxString file = m_recentDocuments.Get(event.GetId() - menu_unsaved_document_0);
+  wxString file = m_unsavedDocuments.Get(event.GetId() - menu_unsaved_document_0);
 
   if(file == wxEmptyString)
     return;
@@ -7469,6 +7469,8 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event)
   if (wxFileExists(file))
   {
     OpenFile(file);
+    m_fileSaved = false;
+    m_isNamed   = false;
     m_tempfileName = file;
   }
   else
