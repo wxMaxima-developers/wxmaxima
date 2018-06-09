@@ -852,7 +852,6 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
           SetForeground();
         }
 
-#if defined __WXMSW__ || wxUSE_UNICODE
         // replace "*" with centerdot and "-" by a Minus if requested
         if (configuration->GetChangeAsterisk())
         {
@@ -860,7 +859,6 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
           if (m_type == MC_TYPE_INPUT)
             TextToDraw.Replace(wxT("-"), wxT("\x2212"));
         }
-#endif
 
         // Draw a char that shows we continue an indentation - if this is needed.
         if (textSnippet->GetIndentChar() != wxEmptyString)
@@ -975,51 +973,6 @@ void EditorCell::SetForeground()
   wxDC *dc = configuration->GetDC();
   dc->SetTextForeground(configuration->GetColor(m_textStyle));
 }
-
-#ifndef WX_USE_UNICODE
-
-int EditorCell::ChangeNumpadToChar(int c)
-{
-  switch (c)
-  {
-    case WXK_NUMPAD0:
-      return '0';
-      break;
-    case WXK_NUMPAD1:
-      return '1';
-      break;
-    case WXK_NUMPAD2:
-      return '2';
-      break;
-    case WXK_NUMPAD3:
-      return '3';
-      break;
-    case WXK_NUMPAD4:
-      return '4';
-      break;
-    case WXK_NUMPAD5:
-      return '5';
-      break;
-    case WXK_NUMPAD6:
-      return '6';
-      break;
-    case WXK_NUMPAD7:
-      return '7';
-      break;
-    case WXK_NUMPAD8:
-      return '8';
-      break;
-    case WXK_NUMPAD9:
-      return '9';
-      break;
-    case WXK_NUMPAD_DECIMAL:
-      return '.';
-      break;
-  }
-  return c;
-}
-
-#endif
 
 wxString EditorCell::GetCurrentCommand()
 {
@@ -2137,7 +2090,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
         m_positionOfCaret = m_selectionEnd;
         ClearSelection();
       }
-#if wxUSE_UNICODE
       else
       {
         // TODO: search only a few positions back for an escchar (10? and not over newlines)
@@ -2169,7 +2121,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
           m_positionOfCaret++;
         }
       }
-#endif
       StyleText();
       break;
 
@@ -2206,11 +2157,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event)
 
 
   wxChar keyCode;
-#if wxUSE_UNICODE
   keyCode = event.GetUnicodeKey();
-#else
-  keyCode=event.GetKeyCode();
-#endif
 
   // If we got passed a non-printable character we have to send it back to the
   // hotkey management.
@@ -2304,11 +2251,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event)
   {
     wxString chr;
 
-#if wxUSE_UNICODE
     chr = event.GetUnicodeKey();
-#else
-    chr = wxString::Format(wxT("%c"), ChangeNumpadToChar(event.GetKeyCode()));
-#endif
 
     if (event.ShiftDown())
       chr.Replace(wxT(" "), wxT("\xa0"));
@@ -2542,8 +2485,6 @@ void EditorCell::FindMatchingParens()
   if (m_paren1 < 0 || m_paren1 >= (int) m_text.Length())
     m_paren1 = m_paren2 = -1;
 }
-
-#if wxUSE_UNICODE
 
 wxString EditorCell::InterpretEscapeString(wxString txt)
 {
@@ -2786,7 +2727,6 @@ wxString EditorCell::InterpretEscapeString(wxString txt)
     return wxEmptyString;
 }
 
-#endif
 
 void EditorCell::DeactivateCursor()
 {

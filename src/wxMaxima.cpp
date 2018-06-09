@@ -6544,11 +6544,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       description += wxString::Format(
         _("\n\nwxWidgets: %d.%d.%d\nUnicode support: %s"),
         wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER,
-  #if wxUSE_UNICODE
         _("yes")
-  #else
-        _("no")
-  #endif
         );
 
       if (m_maximaVersion != wxEmptyString)
@@ -6584,26 +6580,14 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.AddTranslator(wxT("Antonio Ullan (es)"));
       info.AddTranslator(wxT("Eric Delevaux (fr)"));
       info.AddTranslator(wxT("Michele Gosse (fr)"));
-  #if wxUSE_UNICODE
       info.AddTranslator(wxT("Blahota István (hu)"));
-  #else
-      info.AddTranslator(wxT("Blahota Istvan (hu)"));
-  #endif
       info.AddTranslator(wxT("Marco Ciampa (it)"));
-  #if wxUSE_UNICODE
       info.AddTranslator(wxT("Asbjørn Apeland (nb)"));
-  #else
-      info.AddTranslator(wxT("Asbjorn Apeland (nb)"));
-  #endif
       info.AddTranslator(wxT("Rafal Topolnicki (pl)"));
       info.AddTranslator(wxT("Eduardo M. Kalinowski (pt_br)"));
       info.AddTranslator(wxT("Alexey Beshenov (ru)"));
       info.AddTranslator(wxT("Vadim V. Zhytnikov (ru)"));
-  #if wxUSE_UNICODE
       info.AddTranslator(wxT("Tufan Şirin (tr)"));
-  #else
-      info.AddTranslator(wxT("Tufan Sirin (tr)"));
-  #endif
       info.AddTranslator(wxT("Sergey Semerikov (uk)"));
       info.AddTranslator(wxT("Frank Weng (zh_TW)"));
       info.AddTranslator(wxT("cw.ahbong (zh_TW)"));

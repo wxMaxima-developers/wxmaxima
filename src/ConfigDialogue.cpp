@@ -345,10 +345,8 @@ void ConfigDialogue::SetProperties()
   m_autosubscript->SetToolTip(
           _("false=Don't generate subscripts\ntrue=Automatically convert underscores to subscript markers if the would-be subscript is a number or a single letter\nall=_ marks subscripts."));
   m_language->SetToolTip(_("Language used for wxMaxima GUI."));
-#ifdef wxUSE_UNICODE
   m_symbolPaneAdditionalChars->SetToolTip(
           _("Symbols that are entered or copied here will appear in the symbols sidebar so they can be entered into the worksheet easily."));
-#endif
   m_documentclass->SetToolTip(_("The document class LaTeX is instructed to use for our documents."));
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   m_getFont->SetToolTip(_("Font used for display in document."));
@@ -393,10 +391,8 @@ void ConfigDialogue::SetProperties()
   int defaultFramerate = 2;
   wxString texPreamble = wxEmptyString;
   wxString documentclass = wxT("article");
-#ifdef wxUSE_UNICODE
   wxString symbolPaneAdditionalChars = wxT("üØ");
   m_symbolPaneAdditionalChars->SetValue(symbolPaneAdditionalChars);
-#endif
 
 #if defined (__WXMAC__)
   bool usepngCairo = false;
@@ -452,9 +448,7 @@ void ConfigDialogue::SetProperties()
   else
     m_language->SetSelection(0);
 
-#ifdef wxUSE_UNICODE
   config->Read(wxT("symbolPaneAdditionalChars"), &symbolPaneAdditionalChars);
-#endif
 
   m_documentclass->SetValue(documentclass);
   m_mathJaxURL->SetValue(configuration->MathJaXURL());
@@ -517,9 +511,7 @@ void ConfigDialogue::SetProperties()
   m_defaultPlotWidth->SetValue(defaultPlotWidth);
   m_defaultPlotHeight->SetValue(defaultPlotHeight);
   m_displayedDigits->SetValue(configuration->GetDisplayedDigits());
-#ifdef wxUSE_UNICODE
   m_symbolPaneAdditionalChars->SetValue(symbolPaneAdditionalChars);
-#endif
   m_getStyleFont->Enable(false);
 
   if (!wxFontEnumerator::IsValidFacename(CMEX10) ||
@@ -850,12 +842,10 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   grid_sizer->Add(lang, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-#ifdef wxUSE_UNICODE
   wxStaticText *additionalSymbols = new wxStaticText(panel, -1, _("Additional symbols for the \"symbols\" sidebar:"));
   m_symbolPaneAdditionalChars = new wxTextCtrl(panel, -1);
   grid_sizer->Add(additionalSymbols, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_symbolPaneAdditionalChars, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-#endif
 
   wxStaticText *as = new wxStaticText(panel, -1, _("Autosave interval (minutes, 0 means: off):"));
   m_autoSaveInterval = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 0,
@@ -1246,9 +1236,7 @@ void ConfigDialogue::WriteSettings()
   i = m_language->GetSelection();
   if (i > -1 && i < LANGUAGE_NUMBER)
     config->Write(wxT("language"), langs[i]);
-#ifdef wxUSE_UNICODE
   config->Write(wxT("symbolPaneAdditionalChars"), m_symbolPaneAdditionalChars->GetValue());
-#endif
 
   configuration->CopyBitmap(m_copyBitmap->GetValue());
   configuration->CopyMathML(m_copyMathML->GetValue());

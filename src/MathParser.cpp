@@ -289,13 +289,7 @@ MathCell *MathParser::ParseEditorTag(wxXmlNode *node)
     {
       if (!text.IsEmpty())
         text += wxT("\n");
-#if wxUSE_UNICODE
       text += line->GetNodeContent();
-#else
-      wxString str = line->GetNodeContent();
-      wxString str1(str.wc_str(wxConvUTF8), *wxConvCurrent);
-      text += str1;
-#endif
     }
     line = line->GetNext();
   } // end while
@@ -445,13 +439,7 @@ MathCell *MathParser::ParseText(wxXmlNode *node, int style)
   TextCell *retval = NULL;
   if ((node != NULL) && ((str = node->GetContent()) != wxEmptyString))
   {
-#if !wxUSE_UNICODE
-    wxString str1(str.wc_str(wxConvUTF8), *wxConvCurrent);
-    str = str1;
-#endif
-#if wxUSE_UNICODE
     str.Replace(wxT("-"), wxT("\x2212")); // unicode minus sign
-#endif
 
     wxStringTokenizer lines(str, wxT('\n'));
     while (lines.HasMoreTokens())
@@ -514,10 +502,6 @@ MathCell *MathParser::ParseCharCode(wxXmlNode *node, int style)
     long code;
     if (str.ToLong(&code))
       str = wxString::Format(wxT("%c"), code);
-#if !wxUSE_UNICODE
-    wxString str1(str.wc_str(wxConvUTF8), *wxConvCurrent);
-    str = str1;
-#endif
     cell->SetValue(str);
     cell->SetType(m_ParserStyle);
     cell->SetStyle(style);
@@ -863,10 +847,6 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
       {
         ImgCell *imageCell;
         wxString filename(node->GetChildren()->GetContent());
-#if !wxUSE_UNICODE
-        wxString filename1(filename.wc_str(wxConvUTF8), *wxConvCurrent);
-        filename = filename1;
-#endif
 
         if (m_fileSystem) // loading from zip
           imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, false, m_fileSystem);
@@ -929,10 +909,6 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
           wxString token = tokens.GetNextToken();
           if (token.Length())
           {
-#if !wxUSE_UNICODE
-            wxString token1(token.wc_str(wxConvUTF8), *wxConvCurrent);
-            token = token1;
-#endif
             images.Add(token);
           }
         }
@@ -1044,23 +1020,14 @@ MathCell *MathParser::ParseLine(wxString s, int style)
       showLength = 50000;    
   }
 
-#if wxUSE_UNICODE
   m_graphRegex.Replace(&s, wxT("\xFFFD"));
-#else
-  m_graphRegex.Replace(&s, wxT("?"));
-#endif
 
   if (((long) s.Length() < showLength) || (showLength == 0))
   {
 
     wxXmlDocument xml;
 
-#if wxUSE_UNICODE
     wxStringInputStream xmlStream(s);
-#else
-    wxString su(s.wc_str(*wxConvCurrent), wxConvUTF8);
-    wxStringInputStream xmlStream(su);
-#endif
 
     xml.Load(xmlStream, wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
 

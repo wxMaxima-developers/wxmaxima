@@ -3035,16 +3035,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent &event)
       break;
 
     case WXK_ESCAPE:
-#ifndef wxUSE_UNICODE
-      if (GetActiveCell() == NULL) {
-        SetSelection(NULL);
-        RequestRedraw();
-      }
-      else
-        SetHCaret(GetActiveCell()->GetGroup()); // also refreshes
-#else
       event.Skip();
-#endif
       break;
 
     default:
@@ -3856,22 +3847,16 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
         OpenHCaret(GetString());
       break;
 
-#if wxUSE_UNICODE
       // ESCAPE is handled by the new cell
     case WXK_ESCAPE:
       OpenHCaret(wxEmptyString);
       if (GetActiveCell() != NULL)
         GetActiveCell()->ProcessEvent(event);
       break;
-#endif
 
       // keycodes which open hCaret with initial content
     default:
-#if wxUSE_UNICODE
       wxChar txt(event.GetUnicodeKey());
-#else
-      wxChar txt = wxString::Format(wxT("%c"), event.GetKeyCode());
-#endif
       if (!wxIsprint(txt))
       {
         event.Skip();
@@ -5782,7 +5767,6 @@ bool MathCtrl::ExportToTeX(wxString file)
 
 wxString MathCtrl::UnicodeToMaxima(wxString s)
 {
-#if wxUSE_UNICODE
   s.Replace(wxT("\x00B2"), wxT("^2"));
   s.Replace(wxT("\x00B3"), wxT("^3"));
   s.Replace(wxT("\x00BD"), wxT("(1/2)"));
@@ -5804,7 +5788,6 @@ wxString MathCtrl::UnicodeToMaxima(wxString s)
   s.Replace(wxT("\x2265"), wxT(" >= "));
   s.Replace(wxT("\x2212"), wxT("-")); // An unicode minus sign
   s.Replace(wxT("\xDCB6"), wxT(" ")); // A non-breakable space
-#endif
 
   // Convert \x03C0 to %pi if it isn't part of a synbol name
   wxString retval;
@@ -5945,14 +5928,6 @@ bool MathCtrl::ExportToMAC(wxString file)
   if (wxm)
     m_saved = true;
   return true;
-}
-
-wxString ConvertToUnicode(wxString str)
-{
-#ifndef wxUSE_UNICODE
-  str=str.wc_str(*wxConvCurrent), wxConvUTF8;
-#endif
-  return str;
 }
 
 /*
@@ -6102,7 +6077,7 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
 
   wxString xmlText;
   if (m_tree)
-    xmlText = ConvertToUnicode(m_tree->ListToXML());
+    xmlText = m_tree->ListToXML();
   size_t xmlLen = xmlText.Length();
 
   // Delete all but one control character from the string: there should be

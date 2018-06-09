@@ -778,17 +778,3 @@ int Configuration::Scale_Px(double px)
     retval = 1;
   return retval;
 }
-
-/*
-wxFontEncoding Configuration::GetGreekFontEncoding()
-{
-#if wxUSE_UNICODE || defined (__WXGTK20__) || defined (__WXMAC__)
-  return wxFONTENCODING_DEFAULT;
-#elif defined __WXMSW__
-  return wxFONTENCODING_CP1253;
-#else
-  return wxFONTENCODING_ISO8859_7;
-#endif
-}
-*/
-

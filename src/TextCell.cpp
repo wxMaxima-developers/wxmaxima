@@ -510,12 +510,10 @@ void TextCell::Draw(wxPoint point, int fontsize)
                     point.x + Scale_Px(MC_TEXT_PADDING),
                     point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
 
-#if wxUSE_UNICODE
       else if (m_displayedText == wxT("#"))
         dc->DrawText(wxT("\x2260"),
                     point.x + Scale_Px(MC_TEXT_PADDING),
                     point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
-#endif
         /// This is the default.
       else
       {
@@ -619,10 +617,8 @@ bool TextCell::IsOperator()
 {
   if (wxString(wxT("+*/-")).Find(m_text) >= 0)
     return true;
-#if wxUSE_UNICODE
   if (m_text == wxT("\x2212"))
     return true;
-#endif
   return false;
 }
 
@@ -636,11 +632,9 @@ wxString TextCell::ToString()
     text = m_text;
     if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
       text = wxT("(") + m_userDefinedLabel + wxT(")");
-#if wxUSE_UNICODE
     text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
     text.Replace(wxT("\x2794"), wxT("-->"));
     text.Replace(wxT("\x2192"), wxT("->"));
-#endif
   }
   switch (m_textStyle)
   {
@@ -762,7 +756,6 @@ wxString TextCell::ToTeX()
 
   text.Replace(wxT("<"), mathModeStart + wxT("<") + mathModeEnd);
   text.Replace(wxT(">"), mathModeStart + wxT(">") + mathModeEnd);
-#if wxUSE_UNICODE
   text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
   text.Replace(L"\x00B1", mathModeStart + wxT("\\pm") + mathModeEnd);
   text.Replace(L"\x03B1", mathModeStart + wxT("\\alpha") + mathModeEnd);
@@ -867,8 +860,6 @@ wxString TextCell::ToTeX()
   text.Replace(wxT("\x219D"), mathModeStart + wxT("\\leadsto") + mathModeEnd);
   text.Replace(wxT("\x2192"), mathModeStart + wxT("\\rightarrow") + mathModeEnd);
   text.Replace(wxT("\x2794"), mathModeStart + wxT("\\longrightarrow") + mathModeEnd);
-#endif
-
 
   // m_IsHidden is set for multiplication signs and parenthesis that
   // don't need to be shown
@@ -1380,14 +1371,8 @@ void TextCell::SetAltText()
     m_altJsText = GetGreekStringTeX();
     m_texFontname = CMMI10;
 
-#if wxUSE_UNICODE
     m_alt = true;
     m_altText = GetGreekStringUnicode();
-#elif defined __WXMSW__
-    m_alt = true;
-    m_altText = GetGreekStringSymbol();
-    m_fontname = wxT("Symbol");
-#endif
   }
 
     /// Check for other symbols
@@ -1417,8 +1402,6 @@ void TextCell::SetAltText()
 // #endif
   }
 }
-
-#if wxUSE_UNICODE
 
 wxString TextCell::GetGreekStringUnicode()
 {
@@ -1585,163 +1568,6 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent)
 
   return wxEmptyString;
 }
-
-#elif defined __WXMSW__
-
-wxString TextCell::GetGreekStringSymbol()
-{
-  if (m_text == wxT("gamma"))
-    return wxT("\x47");
-  else if (m_text == wxT("zeta"))
-    return wxT("\x7A");
-  else if (m_text == wxT("psi"))
-    return wxT("\x59");
-
-  wxString txt(m_text);
-  if (txt[0] != '%')
-    txt = wxT("%") + txt;
-
-  if (txt == wxT("%alpha"))
-    return wxT("\x61");
-  else if (txt == wxT("%beta"))
-    return wxT("\x62");
-  else if (txt == wxT("%gamma"))
-    return wxT("\x67");
-  else if (txt == wxT("%delta"))
-    return wxT("\x64");
-  else if (txt == wxT("%epsilon"))
-    return wxT("\x65");
-  else if (txt == wxT("%zeta"))
-    return wxT("\x7A");
-  else if (txt == wxT("%eta"))
-    return wxT("\x68");
-  else if (txt == wxT("%theta"))
-    return wxT("\x71");
-  else if (txt == wxT("%iota"))
-    return wxT("\x69");
-  else if (txt == wxT("%kappa"))
-    return wxT("\x6B");
-  else if (txt == wxT("%lambda"))
-    return wxT("\x6C");
-  else if (txt == wxT("%mu"))
-    return wxT("\x6D");
-  else if (txt == wxT("%nu"))
-    return wxT("\x6E");
-  else if (txt == wxT("%xi"))
-    return wxT("\x78");
-  else if (txt == wxT("%omicron"))
-    return wxT("\x6F");
-  else if (txt == wxT("%pi"))
-    return wxT("\x70");
-  else if (txt == wxT("%rho"))
-    return wxT("\x72");
-  else if (txt == wxT("%sigma"))
-    return wxT("\x73");
-  else if (txt == wxT("%tau"))
-    return wxT("\x74");
-  else if (txt == wxT("%upsilon"))
-    return wxT("\x75");
-  else if (txt == wxT("%phi"))
-    return wxT("\x66");
-  else if (txt == wxT("%chi"))
-    return wxT("\x63");
-  else if (txt == wxT("%psi"))
-    return wxT("\x79");
-  else if (txt == wxT("%omega"))
-    return wxT("\x77");
-  else if (txt == wxT("%Alpha"))
-    return wxT("\x41");
-  else if (txt == wxT("%Beta"))
-    return wxT("\x42");
-  else if (txt == wxT("%Gamma"))
-    return wxT("\x47");
-  else if (txt == wxT("%Delta"))
-    return wxT("\x44");
-  else if (txt == wxT("%Epsilon"))
-    return wxT("\x45");
-  else if (txt == wxT("%Zeta"))
-    return wxT("\x5A");
-  else if (txt == wxT("%Eta"))
-    return wxT("\x48");
-  else if (txt == wxT("%Theta"))
-    return wxT("\x51");
-  else if (txt == wxT("%Iota"))
-    return wxT("\x49");
-  else if (txt == wxT("%Kappa"))
-    return wxT("\x4B");
-  else if (txt == wxT("%Lambda"))
-    return wxT("\x4C");
-  else if (txt == wxT("%Mu"))
-    return wxT("\x4D");
-  else if (txt == wxT("%Nu"))
-    return wxT("\x4E");
-  else if (txt == wxT("%Xi"))
-    return wxT("\x58");
-  else if (txt == wxT("%Omicron"))
-    return wxT("\x4F");
-  else if (txt == wxT("%Pi"))
-    return wxT("\x50");
-  else if (txt == wxT("%Rho"))
-    return wxT("\x52");
-  else if (txt == wxT("%Sigma"))
-    return wxT("\x53");
-  else if (txt == wxT("%Tau"))
-    return wxT("\x54");
-  else if (txt == wxT("%Upsilon"))
-    return wxT("\x55");
-  else if (txt == wxT("%Phi"))
-    return wxT("\x46");
-  else if (txt == wxT("%Chi"))
-    return wxT("\x43");
-  else if (txt == wxT("%Psi"))
-    return wxT("\x59");
-  else if (txt == wxT("%Omega"))
-    return wxT("\x57");
-
-  return wxEmptyString;
-}
-
-// wxString TextCell::GetSymbolSymbol(bool keepPercent)
-// {
-//   if (m_text == wxT("inf"))
-//     return "\xA5";
-//   else if (m_text == wxT("%pi"))
-//     return "\x70";
-//   else if (m_text == wxT("->"))
-//     return "\xAE";
-//   else if (m_text == wxT(">="))
-//     return "\xB3";
-//   else if (m_text == wxT("<="))
-//     return "\xA3";
-//   else if (m_text == wxT(" and "))
-//     return "\xD9";
-//   else if (m_text == wxT(" or "))
-//     return "\xDA";
-//   else if (m_text == wxT("not"))
-//     return "\xD8";
-//   else if (m_text == wxT(" nand "))
-//     return "\xAD";
-//   else if (m_text == wxT(" nor "))
-//     return "\xAF";
-//   else if (m_text == wxT(" implies "))
-//     return "\xDE";
-//   else if (m_text == wxT(" equiv "))
-//     return "\xDB";
-//   else if (m_text == wxT(" xor "))
-//     return "\xC5";
-//   else if (m_text == wxT("~>"))
-//     return "\x219D";
-//   if (!keepPercent) {
-//     if (m_text == wxT("%e"))
-//       return wxT("e");
-//     else if (m_text == wxT("%i"))
-//       return wxT("i");
-//   }
-
-//   return wxEmptyString;
-// }
-
-#endif
 
 wxString TextCell::GetGreekStringTeX()
 {

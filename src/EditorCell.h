@@ -73,8 +73,6 @@ private:
   //! The font size the linewrap was done for.
   int m_oldDefaultFontSize;
 
-  int ChangeNumpadToChar(int c);
-
   //! A list of all potential autoComplete targets within this cell
   wxArrayString m_wordList;
 
@@ -687,8 +685,6 @@ private:
    */
   int GetIndentDepth(wxString text, int positionOfCaret);
 
-#if wxUSE_UNICODE
-
   /*! Handle ESC shortcuts for special characters
 
     These characters can be tought to LaTeX and the html browser if necessary in
@@ -697,7 +693,6 @@ private:
    */
   wxString InterpretEscapeString(wxString txt);
 
-#endif
   wxString m_text;
   wxArrayString m_textHistory;
   std::vector<int> m_positionHistory;

@@ -58,13 +58,8 @@ BTextCtrl::~BTextCtrl()
 
 void BTextCtrl::OnChar(wxKeyEvent &event)
 {
-#if wxUSE_UNICODE
   if (!m_config->GetMatchParens() || MatchParenthesis(event.GetUnicodeKey()))
     event.Skip();
-#else
-  if (!m_config->GetMatchParens() || MatchParenthesis(event.GetKeyCode()))
-    event.Skip();
-#endif
 }
 
 bool BTextCtrl::MatchParenthesis(int code)

@@ -315,7 +315,6 @@ void wxMaximaFrame::do_layout()
                             Left());
 
   wxPanel *greekPane = CreateGreekPane();
-#ifdef wxUSE_UNICODE
   m_manager.AddPane(greekPane,
                     wxAuiPaneInfo().Name(wxT("greek")).
                             Show(false).CloseButton().PinButton().
@@ -348,7 +347,6 @@ void wxMaximaFrame::do_layout()
                             MaxSize(symbolsPane->GetEffectiveMinSize()).
                             FloatingSize(symbolsPane->GetEffectiveMinSize()).
                             Left());
-#endif
   m_manager.AddPane(CreateMathPane(),
                     wxAuiPaneInfo().Name(wxT("math")).
                             Show(false).CloseButton().PinButton().
@@ -561,10 +559,8 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_math, _("General Math\tAlt+Shift+M"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_stats, _("Statistics\tAlt+Shift+S"));
-#ifdef wxUSE_UNICODE
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_greek, _("Greek Letters\tAlt+Shift+G"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_symbols, _("Symbols\tAlt+Shift+Y"));
-#endif
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_history, _("History\tAlt+Shift+I"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_structure, _("Table of Contents\tAlt+Shift+T"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector, _("XML Inspector"));
@@ -1306,14 +1302,12 @@ bool wxMaximaFrame::IsPaneDisplayed(Event id)
     case menu_pane_stats:
       displayed = m_manager.GetPane(wxT("stats")).IsShown();
       break;
-#ifdef wxUSE_UNICODE
     case menu_pane_greek:
       displayed = m_manager.GetPane(wxT("greek")).IsShown();
       break;
     case menu_pane_symbols:
       displayed = m_manager.GetPane(wxT("symbols")).IsShown();
       break;
-#endif
     case menu_pane_format:
       displayed = m_manager.GetPane(wxT("format")).IsShown();
       break;
@@ -1348,14 +1342,12 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
     case menu_pane_stats:
       m_manager.GetPane(wxT("stats")).Show(show);
       break;
-#ifdef wxUSE_UNICODE
     case menu_pane_greek:
       m_manager.GetPane(wxT("greek")).Show(show);
       break;
     case menu_pane_symbols:
       m_manager.GetPane(wxT("symbols")).Show(show);
       break;
-#endif
     case menu_pane_format:
       m_manager.GetPane(wxT("format")).Show(show);
       break;
@@ -1368,10 +1360,8 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
       m_manager.GetPane(wxT("structure")).Show(false);
       m_manager.GetPane(wxT("XmlInspector")).Show(false);
       m_manager.GetPane(wxT("stats")).Show(false);
-#ifdef wxUSE_UNICODE
       m_manager.GetPane(wxT("greek")).Show(false);
       m_manager.GetPane(wxT("symbols")).Show(false);
-#endif
       m_manager.GetPane(wxT("format")).Show(false);
       ShowToolBar(false);
       break;
@@ -1526,8 +1516,6 @@ wxPanel *wxMaximaFrame::CharButton(wxPanel *parent, wxChar ch, wxString descript
   panel->SetSizerAndFit(vbox);
   return panel;
 }
-
-#ifdef wxUSE_UNICODE
 
 wxPanel *wxMaximaFrame::CreateGreekPane()
 {
@@ -1686,8 +1674,6 @@ wxPanel *wxMaximaFrame::CreateSymbolsPane()
   vbox->SetSizeHints(panel);
   return panel;
 }
-
-#endif
 
 void wxMaximaFrame::UpdateUserSymbols()
 {

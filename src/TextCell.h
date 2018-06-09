@@ -89,16 +89,9 @@ public:
 
   wxString GetSymbolTeX();
 
-#if wxUSE_UNICODE
-
   wxString GetGreekStringUnicode();
 
   wxString GetSymbolUnicode(bool keepPercent);
-
-#elif defined __WXMSW__
-  wxString GetGreekStringSymbol();
-  wxString GetSymbolSymbol(bool keepPercent);
-#endif
 
   bool IsShortNum();
   
