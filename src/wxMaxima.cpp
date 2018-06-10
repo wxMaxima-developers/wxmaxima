@@ -126,6 +126,61 @@ void wxMaxima::ConfigChanged()
 
   m_console->UpdateConfig();
   // UpdateUserSymbols();
+
+//   #if defined (__WXMSW__)
+//     bool wxcd = true;
+//     config->Read(wxT("wxcd"),&wxcd);
+//     if(wxcd)
+//     {
+//       m_configCommands += wxT(":lisp-quiet (setq $wxchangedir t)\n");
+//       if (m_console->m_currentFile != wxEmptyString)
+//       {
+//         wxString filename(m_console->m_currentFile);
+//         SetCWD(filename);
+//       }
+//     }
+//     else
+//     {
+//       SetCWD(wxStandardPaths::Get().GetExecutablePath());
+//       m_configCommands += wxT(":lisp-quiet (setq $wxchangedir nil)\n");
+//     }
+// #endif
+      
+// #if defined (__WXMAC__)
+//     bool usepngCairo = false;
+// #else
+//     bool usepngCairo=true;
+// #endif
+//     config->Read(wxT("usepngCairo"), &usepngCairo);
+//     if (usepngCairo)
+//       m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n");
+//     else
+//       m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n");
+
+//     m_configCommands += wxT(":lisp-quiet (setq $wxsubscripts ") +
+//       m_console->m_configuration->GetAutosubscript_string() +
+//       wxT(")\n");
+      
+//     if (m_console->m_configuration->AutoSaveInterval() > 0)
+//       m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval());
+//     else
+//       m_autoSaveTimer.Stop();
+
+//     int defaultPlotWidth = 800;
+//     config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
+//     int defaultPlotHeight = 600;
+//     config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
+//     m_configCommands += wxString::Format(wxT(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
+//                                          defaultPlotWidth,
+//                                          defaultPlotHeight);
+
+//     m_console->RecalculateForce();
+//     m_console->RequestRedraw();
+//     if((!m_console->QuestionPending()) && (m_console->m_evaluationQueue.Empty()))
+//     {
+//       SendMaxima(m_configCommands);
+//       m_configCommands = wxEmptyString;
+//     }
 }
 
 wxMaxima *MyApp::m_frame;
@@ -4219,65 +4274,9 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
 
     configW->Destroy();
       
-#if defined (__WXMSW__)
-    bool wxcd = true;
-    config->Read(wxT("wxcd"),&wxcd);
-    if(wxcd)
-    {
-      m_configCommands += wxT(":lisp-quiet (setq $wxchangedir t)\n");
-      if (m_console->m_currentFile != wxEmptyString)
-      {
-        wxString filename(m_console->m_currentFile);
-        SetCWD(filename);
-      }
-    }
-    else
-    {
-      SetCWD(wxStandardPaths::Get().GetExecutablePath());
-      m_configCommands += wxT(":lisp-quiet (setq $wxchangedir nil)\n");
-    }
-#endif
-      
-#if defined (__WXMAC__)
-    bool usepngCairo = false;
-#else
-    bool usepngCairo=true;
-#endif
-    config->Read(wxT("usepngCairo"), &usepngCairo);
-    if (usepngCairo)
-      m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n");
-    else
-      m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n");
-
-    m_configCommands += wxT(":lisp-quiet (setq $wxsubscripts ") +
-      m_console->m_configuration->GetAutosubscript_string() +
-      wxT(")\n");
-      
-    if (m_console->m_configuration->AutoSaveInterval() > 0)
-      m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval());
-    else
-      m_autoSaveTimer.Stop();
-
-    int defaultPlotWidth = 800;
-    config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
-    int defaultPlotHeight = 600;
-    config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
-    m_configCommands += wxString::Format(wxT(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
-                                         defaultPlotWidth,
-                                         defaultPlotHeight);
-
-    m_console->RecalculateForce();
-    m_console->RequestRedraw();
-    if((!m_console->QuestionPending()) && (m_console->m_evaluationQueue.Empty()))
-    {
-      SendMaxima(m_configCommands);
-      m_configCommands = wxEmptyString;
-    }
     break;
   }
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case ToolBar::tb_copy:
-#endif
   case menu_copy_from_console:
     if (m_console->CanCopy(true))
       m_console->Copy();
@@ -4286,9 +4285,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     if (m_console->CanCopy(true))
       m_console->Copy(true);
     break;
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case ToolBar::tb_cut:
-#endif
   case menu_cut:
     if (m_console->CanCut())
       m_console->CutToClipboard();
@@ -4297,9 +4294,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
   case ToolBar::tb_select_all:
     m_console->SelectAll();
     break;
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case ToolBar::tb_paste:
-#endif
   case menu_paste:
     if (m_console->CanPaste())
       m_console->PasteFromClipboard();
