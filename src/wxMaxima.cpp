@@ -123,64 +123,60 @@ void wxMaxima::ConfigChanged()
       m_maxOutputCellsPerCommand = -1;
       break;
   }
+  m_console->RecalculateForce();
+  m_console->RequestRedraw();
 
-  m_console->UpdateConfig();
-  // UpdateUserSymbols();
+    bool wxcd = true;
+#if defined (__WXMSW__)
+  config->Read(wxT("wxcd"),&wxcd);
+#endif
 
-//   #if defined (__WXMSW__)
-//     bool wxcd = true;
-//     config->Read(wxT("wxcd"),&wxcd);
-//     if(wxcd)
-//     {
-//       m_configCommands += wxT(":lisp-quiet (setq $wxchangedir t)\n");
-//       if (m_console->m_currentFile != wxEmptyString)
-//       {
-//         wxString filename(m_console->m_currentFile);
-//         SetCWD(filename);
-//       }
-//     }
-//     else
-//     {
-//       SetCWD(wxStandardPaths::Get().GetExecutablePath());
-//       m_configCommands += wxT(":lisp-quiet (setq $wxchangedir nil)\n");
-//     }
-// #endif
-      
-// #if defined (__WXMAC__)
-//     bool usepngCairo = false;
-// #else
-//     bool usepngCairo=true;
-// #endif
-//     config->Read(wxT("usepngCairo"), &usepngCairo);
-//     if (usepngCairo)
-//       m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n");
-//     else
-//       m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n");
+  if (wxcd)
+  {
+    SendMaxima(wxT(":lisp-quiet (setq $wxchangedir t)\n"));
+  }
+  else
+  {
+    SendMaxima(wxT(":lisp-quiet (setq $wxchangedir nil)\n"));
+  }
+    
+#if defined (__WXMAC__)
+  bool usepngCairo = false;
+#else
+  bool usepngCairo=true;
+#endif
+  config->Read(wxT("usepngCairo"), &usepngCairo);
+  if (usepngCairo)
+    m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n");
+  else
+    m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n");
 
-//     m_configCommands += wxT(":lisp-quiet (setq $wxsubscripts ") +
-//       m_console->m_configuration->GetAutosubscript_string() +
-//       wxT(")\n");
-      
-//     if (m_console->m_configuration->AutoSaveInterval() > 0)
-//       m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval());
-//     else
-//       m_autoSaveTimer.Stop();
+  m_configCommands += wxT(":lisp-quiet (setq $wxsubscripts ") +
+             m_console->m_configuration->GetAutosubscript_string() +
+             wxT(")\n");
 
-//     int defaultPlotWidth = 800;
-//     config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
-//     int defaultPlotHeight = 600;
-//     config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
-//     m_configCommands += wxString::Format(wxT(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
-//                                          defaultPlotWidth,
-//                                          defaultPlotHeight);
+  // A few variables for additional debug info in wxbuild_info();
+  m_configCommands += wxString::Format(wxT(":lisp-quiet (setq wxUserConfDir \"%s\")\n"),
+                                       EscapeForLisp(m_console->m_configuration->m_dirStructure.UserConfDir()));
+  m_configCommands += wxString::Format(wxT(":lisp-quiet (setq wxHelpDir \"%s\")\n"),
+                              EscapeForLisp(m_console->m_configuration->m_dirStructure.HelpDir()));
+  m_configCommands += wxString::Format(wxT(":lisp-quiet (setq wxMaximaLispLocation \"%s\")\n"),
+                              EscapeForLisp(m_console->m_configuration->m_dirStructure.MaximaLispLocation()));
 
-//     m_console->RecalculateForce();
-//     m_console->RequestRedraw();
-//     if((!m_console->QuestionPending()) && (m_console->m_evaluationQueue.Empty()))
-//     {
-//       SendMaxima(m_configCommands);
-//       m_configCommands = wxEmptyString;
-//     }
+  int defaultPlotWidth = 600;
+  config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
+  int defaultPlotHeight = 400;
+  config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
+  m_configCommands += wxString::Format(wxT(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
+                              defaultPlotWidth,
+                              defaultPlotHeight);
+
+  if (m_console->m_currentFile != wxEmptyString)
+  {
+    wxString filename(m_console->m_currentFile);
+
+    SetCWD(filename);
+  }
 }
 
 wxMaxima *MyApp::m_frame;
@@ -1060,6 +1056,8 @@ bool wxMaxima::StartMaxima(bool force)
   }
   m_console->m_cellPointers.m_errorList.Clear();
 
+  ConfigChanged();
+  
   // Initialize the performance counter.
   GetMaximaCPUPercentage();
   return true;
@@ -1865,15 +1863,14 @@ void wxMaxima::SetCWD(wxString file)
 
   if (wxcd && (workingDirectory != GetCWD()))
   {
+    m_configCommands += wxT(":lisp-quiet (setf $wxfilename \"") +
+      filenamestring +
+      wxT("\")\n");
+    m_configCommands += wxT(":lisp-quiet (setf $wxdirname \"") +
+      dirname +
+      wxT("\")\n");
 
-    SendMaxima(wxT(":lisp-quiet (setf $wxfilename \"") +
-               filenamestring +
-               wxT("\")\n"));
-    SendMaxima(wxT(":lisp-quiet (setf $wxdirname \"") +
-               dirname +
-               wxT("\")\n"));
-
-    SendMaxima(wxT(":lisp-quiet (wx-cd \"") + filenamestring + wxT("\")\n"));
+    m_configCommands += wxT(":lisp-quiet (wx-cd \"") + filenamestring + wxT("\")\n");
     if (m_ready)
     {
       if (m_console->m_evaluationQueue.Empty())
@@ -2654,61 +2651,8 @@ void wxMaxima::SetupVariables()
              wxT("\") '$version)\n"));
   SendMaxima(wxString(wxT(":lisp-quiet (setq $wxwidgetsversion \"")) + wxVERSION_STRING + "\")\n");
 
-  wxConfigBase *config = wxConfig::Get();
-
-  bool wxcd = true;
-
-#if defined (__WXMSW__)
-  config->Read(wxT("wxcd"),&wxcd);
-#endif
-
-  if (wxcd)
-  {
-    SendMaxima(wxT(":lisp-quiet (setq $wxchangedir t)\n"));
-  }
-  else
-  {
-    SendMaxima(wxT(":lisp-quiet (setq $wxchangedir nil)\n"));
-  }
-    
-#if defined (__WXMAC__)
-  bool usepngCairo = false;
-#else
-  bool usepngCairo=true;
-#endif
-  config->Read(wxT("usepngCairo"), &usepngCairo);
-  if (usepngCairo)
-    SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n"));
-  else
-    SendMaxima(wxT(":lisp-quiet (setq $wxplot_pngcairo nil)\n"));
-
-  SendMaxima(wxT(":lisp-quiet (setq $wxsubscripts ") +
-             m_console->m_configuration->GetAutosubscript_string() +
-             wxT(")\n"));
-
-  // A few variables for additional debug info in wxbuild_info();
-  SendMaxima(wxString::Format(wxT(":lisp-quiet (setq wxUserConfDir \"%s\")\n"),
-                              EscapeForLisp(m_console->m_configuration->m_dirStructure.UserConfDir())));
-  SendMaxima(wxString::Format(wxT(":lisp-quiet (setq wxHelpDir \"%s\")\n"),
-                              EscapeForLisp(m_console->m_configuration->m_dirStructure.HelpDir())));
-  SendMaxima(wxString::Format(wxT(":lisp-quiet (setq wxMaximaLispLocation \"%s\")\n"),
-                              EscapeForLisp(m_console->m_configuration->m_dirStructure.MaximaLispLocation())));
-
-  int defaultPlotWidth = 600;
-  config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
-  int defaultPlotHeight = 400;
-  config->Read(wxT("defaultPlotHeight"), &defaultPlotHeight);
-  SendMaxima(wxString::Format(wxT(":lisp-quiet (setq $wxplot_size '((mlist simp) %i %i))\n"),
-                              defaultPlotWidth,
-                              defaultPlotHeight));
-
-  if (m_console->m_currentFile != wxEmptyString)
-  {
-    wxString filename(m_console->m_currentFile);
-
-    SetCWD(filename);
-  }
-
+  ConfigChanged();
+  
   if ((m_evalOnStartup) && (m_console->m_evaluationQueue.Empty()))
   {
     m_evalOnStartup = false;
@@ -3575,7 +3519,7 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
   config->Read(wxT("wxcd"), &wxcd);
   if (wxcd)
   {
-    SendMaxima(wxT(":lisp-quiet (setq $wxchangedir t)\n"));
+    m_configCommands += wxT(":lisp-quiet (setq $wxchangedir t)\n");
     if (m_console->m_currentFile != wxEmptyString)
     {
       wxString filename(m_console->m_currentFile);
@@ -7831,12 +7775,6 @@ void wxMaxima::TryEvaluateNextInQueue()
     m_console->RequestRedraw();
   }
 
-  if(m_configCommands != wxEmptyString)
-  {
-    SendMaxima(m_configCommands);
-    m_configCommands = wxEmptyString;
-  }
-    
   wxString text = m_console->m_evaluationQueue.GetCommand();
   m_commandIndex = m_console->m_evaluationQueue.GetIndex();
   if ((text != wxEmptyString) && (text != wxT(";")) && (text != wxT("$")))
@@ -7862,6 +7800,12 @@ void wxMaxima::TryEvaluateNextInQueue()
       if (m_xmlInspector)
         m_xmlInspector->Clear();
 
+      if(m_configCommands != wxEmptyString)
+      {
+        SendMaxima(m_configCommands, false);
+        m_configCommands = wxEmptyString;
+      }
+    
       SendMaxima(text, true);
       EvaluationQueueLength(m_console->m_evaluationQueue.Size(),
                             m_console->m_evaluationQueue.CommandsLeftInCell()
