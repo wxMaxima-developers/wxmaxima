@@ -56,8 +56,8 @@ StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id)
                               network_transmit_192_png,network_transmit_192_png_len
     );
   m_network_idle = GetImage("network-idle",
-                              network_idle_128_png,network_idle_128_png_len,
-                              network_idle_192_png,network_idle_192_png_len
+                            network_idle_128_png,network_idle_128_png_len,
+                            network_idle_192_png,network_idle_192_png_len
     );
   m_network_idle_inactive = wxBitmap(m_network_idle.ConvertToImage().ConvertToDisabled());
   m_network_receive = GetImage("network-receive",
@@ -96,16 +96,22 @@ void StatusBar::OnTimerEvent(wxTimerEvent &WXUNUSED(event))
   if (m_icon_shows_receive && m_icon_shows_transmit)
   {
     m_networkStatus->SetBitmap(m_network_transmit_receive);
+    if(m_maximaPercentage == 0)
+      m_maximaPercentage = -1;
   }
   if (m_icon_shows_receive && !m_icon_shows_transmit)
   {
     m_networkStatus->SetBitmap(m_network_receive);
     m_oldNetworkState = receive;
+    if(m_maximaPercentage == 0)
+      m_maximaPercentage = -1;
   }
   if (!m_icon_shows_receive && m_icon_shows_transmit)
   {
     m_networkStatus->SetBitmap(m_network_transmit);
     m_oldNetworkState = transmit;
+    if(m_maximaPercentage == 0)
+      m_maximaPercentage = -1;
   }
   if (!m_icon_shows_receive && !m_icon_shows_transmit)
   {
@@ -127,8 +133,8 @@ void StatusBar::NetworkStatus(networkState status)
     {
     case idle:
     {
-      if(status != m_oldNetworkState)
-        m_maximaPercentage = m_oldmaximaPercentage = -1;
+//      if(status != m_oldNetworkState)
+//        m_maximaPercentage = m_oldmaximaPercentage = -1;
       if(m_maximaPercentage != 0)
         m_networkStatus->SetBitmap(m_network_idle);
       else
