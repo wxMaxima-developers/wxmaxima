@@ -2921,18 +2921,18 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   }
 }
 
-///--------------------------------------------------------------------------------
+///-------o-------------------------------------------------------------------------
 ///  Idle event
 ///--------------------------------------------------------------------------------
 
 void wxMaxima::OnIdle(wxIdleEvent &event)
-{  
+{
   // On msw sometimes the communication stalls even if there is new data.
   // Let's see if communication can be resumed manually by manually triggering
   // listening to socket events from time to time, see
   // https://groups.google.com/forum/m/#!topic/wx-users/fdMyu3AKFRQ
-  wxSocketEvent dummyEvent(wxSOCKET_INPUT);
-  ClientEvent(dummyEvent);
+  // wxSocketEvent dummyEvent(wxSOCKET_INPUT);
+  // ClientEvent(dummyEvent);
 
   // If wxMaxima has to open a file on startup we wait for that until we have
   // a valid draw context for size calculations.
@@ -3037,8 +3037,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   if(m_console->RedrawIfRequested())
   {
     m_updateControls = true;
-    
-    m_console->RedrawIfRequested();
+
     event.RequestMore();
     return;    
   }
