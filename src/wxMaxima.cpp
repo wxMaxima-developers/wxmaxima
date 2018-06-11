@@ -363,7 +363,6 @@ void wxMaxima::InitSession()
     SetStatusText(_("Starting Maxima process failed"));
 
   Refresh();
-  ConfigChanged();
   m_console->SetFocus();
   if (m_console->m_configuration->AutoSaveInterval() > 0)
     m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval());
@@ -1056,8 +1055,6 @@ bool wxMaxima::StartMaxima(bool force)
   }
   m_console->m_cellPointers.m_errorList.Clear();
 
-  ConfigChanged();
-  
   // Initialize the performance counter.
   GetMaximaCPUPercentage();
   return true;
@@ -7787,13 +7784,9 @@ void wxMaxima::TryEvaluateNextInQueue()
       if (m_xmlInspector)
         m_xmlInspector->Clear();
 
-      if(m_configCommands != wxEmptyString)
-      {
-        SendMaxima(m_configCommands, false);
-        m_configCommands = wxEmptyString;
-      }
-    
-      SendMaxima(text, true);
+      SendMaxima(m_configCommands + text, true);
+      m_configCommands = wxEmptyString;
+
       EvaluationQueueLength(m_console->m_evaluationQueue.Size(),
                             m_console->m_evaluationQueue.CommandsLeftInCell()
       );
