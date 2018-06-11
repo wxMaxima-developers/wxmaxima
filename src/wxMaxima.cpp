@@ -195,7 +195,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   m_isActive = true;
   wxASSERT(m_outputPromptRegEx.Compile(wxT("<lbl>.*</lbl>")));
   wxConfig *config = (wxConfig *) wxConfig::Get();
-  m_unsuccessfullConnectionAttempts = 0;
+  m_unsuccessfulConnectionAttempts = 0;
   m_outputCellsFromCurrentCommand = 0;
   m_CWD = wxEmptyString;
   m_port = 4010;
@@ -746,8 +746,9 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
                   MC_TYPE_ERROR);
     m_console->m_cellPointers.SetWorkingGroup(NULL);
   }
+  if(!m_maximaStdoutPollTimer.IsRunning())
+      m_statusBar->SetMaximaCPUPercentage(-1);
   m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
-  m_statusBar->SetMaximaCPUPercentage(-1);
 }
 
 ///--------------------------------------------------------------------------------
@@ -786,7 +787,11 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
       // Read all data we can get.
       while(m_client->IsData())
       {
-        newChars += m_clientTextStream->GetChar();
+        wxChar ch = m_clientTextStream->GetChar();
+        if (ch != '\0')
+          newChars += ch;
+        else
+          break;
       }
     }
     
@@ -869,9 +874,11 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     m_console->SetSelection(NULL);
     m_console->SetActiveCell(NULL);
     KillMaxima();
+    m_unsuccessfulConnectionAttempts += 2;
+
     if (!m_closing)
     {
-      if (m_unsuccessfullConnectionAttempts > 0)
+      if (m_unsuccessfulConnectionAttempts > 10)
         ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
                           "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
                       MC_TYPE_ERROR);
@@ -880,11 +887,12 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
         ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
                           "Trying to restart Maxima.\n"),
                       MC_TYPE_ERROR);
-        m_unsuccessfullConnectionAttempts++;
+        // Perhaps we shouldn't restart maxima again if it outputs a prompt and
+        // crashes immediately after => Each prompt is deemed as but one hint
+        // for a working maxima while each crash counts twice.
         StartMaxima(true);
       }
       m_console->m_evaluationQueue.Clear();
-      StartMaxima(true);
     }
     // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
@@ -937,9 +945,10 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       ReadStdErr();
       m_pid = -1;
       m_isConnected = false;
+      m_unsuccessfulConnectionAttempts += 2;
       if (!m_closing)
       {
-        if (m_unsuccessfullConnectionAttempts > 0)
+        if (m_unsuccessfulConnectionAttempts > 10)
           ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
                                     "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
                         MC_TYPE_ERROR);
@@ -948,11 +957,13 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
           ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
                                     "Trying to restart Maxima.\n"),
                         MC_TYPE_ERROR);
-          m_unsuccessfullConnectionAttempts++;
+          // Perhaps we shouldn't restart maxima again if it outputs a prompt and
+          // crashes immediately after => Each prompt is deemed as but one hint
+          // for a working maxima while each crash counts twice.
           StartMaxima();
         }
         m_console->m_evaluationQueue.Clear();
-        // Inform the user that the evaluation queue is empty.
+        // Inform the user that the evaluation queue is empty. 
         EvaluationQueueLength(0);
       }
 
@@ -1696,10 +1707,7 @@ void wxMaxima::ReadPrompt(wxString &data)
     return;
 
   m_console->m_cellPointers.m_currentTextCell = NULL;
-
-  // If we got a prompt our connection to maxima was successful.
-  m_unsuccessfullConnectionAttempts = 0;
-
+  
   // Assume we don't have a question prompt
   m_console->m_questionPrompt = false;
   m_ready = true;
@@ -1713,6 +1721,10 @@ void wxMaxima::ReadPrompt(wxString &data)
   data = data.Right(data.Length()-end-m_promptSuffix.Length());
   if(data == wxT(" "))
     data = wxEmptyString;
+
+  // If we got a prompt our connection to maxima was successful.
+  if(m_unsuccessfulConnectionAttempts > 0)
+    m_unsuccessfulConnectionAttempts--;
 
   // Input prompts have a length > 0 and end in a number followed by a ")".
   // They also begin with a "(". Questions (hopefully)
@@ -3674,7 +3686,8 @@ void wxMaxima::ReadStdErr()
       len++;
     }
 
-    DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
+    if ((!o.StartsWith("Connecting Maxima to server on port")) && (!m_first))
+      DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
   }
   if (m_process->IsErrorAvailable())
   {
@@ -4459,6 +4472,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
       m_console->m_cellPointers.SetWorkingGroup(NULL);
       m_console->m_evaluationQueue.Clear();
       m_console->ResetInputPrompts();
+      m_unsuccessfulConnectionAttempts = 0;
       StartMaxima(true);
       break;
     case menu_soft_restart:

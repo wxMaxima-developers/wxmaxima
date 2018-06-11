@@ -210,8 +210,13 @@ private:
   int m_outputCellsFromCurrentCommand;
   //! The maximum number of lines per command we will display 
   int m_maxOutputCellsPerCommand;
-  //! The number of consecutive unsuccessful attempts to connect to the maxima server
-  int m_unsuccessfullConnectionAttempts;
+  /*! Double the number of consecutive unsuccessful attempts to connect to the maxima server
+
+    Each prompt is deemed as but one hint for a working maxima while each crash counts twice
+    which hinders us from endlessly restarting in case maxima crashes, outputs something 
+    seemingly sensible and crashes again.
+   */
+  int m_unsuccessfulConnectionAttempts;
   //! The current working directory maxima's file I/O is relative to.
   wxString m_CWD;
   //! Do we want to evaluate the file after startup?
