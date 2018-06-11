@@ -3299,8 +3299,6 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
 
 }
 
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined(__WXMAC__)
-
 void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
 {
   if (!m_console->m_mainToolBar)
@@ -3376,8 +3374,6 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
       break;
   }
 }
-
-#endif
 
 wxString wxMaxima::ExtractFirstExpression(wxString entry)
 {
@@ -4005,9 +4001,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
       forceSave = true;
       m_fileSaved = false;
 
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
     case ToolBar::tb_save:
-#endif
     case menu_save_id:
       SaveFile(forceSave);
       // Seems like resetting the title on "file/save as" is a little bit
@@ -4192,9 +4186,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
   switch (event.GetId())
   {
   case wxID_PREFERENCES:
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
   case ToolBar::tb_pref:
-#endif
   {
     wxConfigBase *config = wxConfig::Get();
     // wxGTK uses wxFileConf. ...and wxFileConf loads the config file only once
@@ -4217,7 +4209,6 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     }
 
     configW->Destroy();
-      
     break;
   }
   case ToolBar::tb_copy:
@@ -4365,9 +4356,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
 #endif
       break;
     case menu_edit_find:
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
     case ToolBar::tb_find:
-#endif
       if (m_console->m_findDialog == NULL)
         m_console->m_findDialog = new FindReplaceDialog(
                 this,
@@ -6557,9 +6546,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       break;
 
     case wxID_HELP:
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
     case ToolBar::tb_help:
-#endif
       if (helpSearchString == wxT("%"))
         ShowWxMaximaHelp();
       else
@@ -8642,7 +8629,6 @@ EVT_UPDATE_UI(menu_pane_history, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_pane_structure, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_pane_format, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_remove_output, wxMaxima::UpdateMenus)
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
 EVT_UPDATE_UI(ToolBar::tb_print, wxMaxima::UpdateToolBar)
 EVT_UPDATE_UI(ToolBar::tb_follow, wxMaxima::UpdateToolBar)
 EVT_UPDATE_UI(ToolBar::tb_copy, wxMaxima::UpdateToolBar)
@@ -8652,7 +8638,6 @@ EVT_UPDATE_UI(ToolBar::tb_save, wxMaxima::UpdateToolBar)
 EVT_UPDATE_UI(ToolBar::tb_animation_startStop, wxMaxima::UpdateToolBar)
 EVT_UPDATE_UI(ToolBar::tb_animation_start, wxMaxima::UpdateToolBar)
 EVT_UPDATE_UI(ToolBar::tb_animation_stop, wxMaxima::UpdateToolBar)
-#endif
 EVT_UPDATE_UI(menu_save_id, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
 */

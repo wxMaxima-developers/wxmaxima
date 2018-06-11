@@ -445,16 +445,8 @@ void wxMaximaFrame::SetupMenu()
 {
   m_MenuBar = new wxMenuBar();
 
-#if defined __WXGTK20__
-  wxMenuItem *tmp_menu_item;
-#define APPEND_MENU_ITEM(menu, id, label, help, stock)                  \
-  tmp_menu_item = new wxMenuItem((menu), (id), (label), (help), wxITEM_NORMAL); \
-  tmp_menu_item->SetBitmap(wxArtProvider::GetBitmap((stock), wxART_MENU)); \
-  (menu)->Append(tmp_menu_item);
-#else
 #define APPEND_MENU_ITEM(menu, id, label, help, stock)  \
   (menu)->Append((id), (label), (help), wxITEM_NORMAL);
-#endif
 
   // File menu
   m_FileMenu = new wxMenu;

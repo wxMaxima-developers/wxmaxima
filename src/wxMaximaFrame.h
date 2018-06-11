@@ -626,11 +626,8 @@ private:
 
   void do_layout();
 
-#if defined (__WXMSW__) || defined (__WXGTK20__) || defined (__WXMAC__)
-
   void SetupToolBar();
 
-#endif
 /*! 
   Create the menus.
 */

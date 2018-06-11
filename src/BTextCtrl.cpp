@@ -39,9 +39,7 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
   if (fixedFont)
   {
     wxFont font;
-#if defined (__WXGTK12__) && !defined (__WXGTK20__)
-    font = wxFont(12, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, 0, wxEmptyString);
-#elif defined (__WXMAC__)
+#if defined (__WXMAC__)
     font = wxFont(12, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, 0, wxEmptyString);
 #else
     font = wxFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, 0, wxEmptyString);
