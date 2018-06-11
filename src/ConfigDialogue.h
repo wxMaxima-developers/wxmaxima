@@ -253,7 +253,6 @@ protected:
   wxTextCtrl *m_symbolPaneAdditionalChars;
   wxCheckBox *m_saveSize;
   wxCheckBox *m_abortOnError;
-  wxCheckBox *m_pollStdOut;
   wxCheckBox *m_restartOnReEvaluation;
   wxCheckBox *m_wrapLatexMath;
   wxCheckBox *m_savePanes;

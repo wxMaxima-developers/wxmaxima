@@ -3674,12 +3674,7 @@ void wxMaxima::ReadStdErr()
       len++;
     }
 
-    bool pollStdOut = false;
-    wxConfig *config = (wxConfig *) wxConfig::Get();
-    config->Read(wxT("pollStdOut"), &pollStdOut);
-
-    if (pollStdOut)
-      DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
+    DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
   }
   if (m_process->IsErrorAvailable())
   {
@@ -3902,7 +3897,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
     case AUTO_SAVE_TIMER_ID:
       if ((!m_console->m_keyboardInactiveTimer.IsRunning()) && (!m_autoSaveTimer.IsRunning()))
       {
-        if (m_console->m_configuration->AutoSaveInterval() > 0)
+        if (m_console->m_configuration->AutoSaveInterval() > 10000)
         {
           if(SaveNecessary())
           {
@@ -4109,7 +4104,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
             else
               StatusExportFinished();
           }
-          if (m_console->m_configuration->AutoSaveInterval() > 0)
+          if (m_console->m_configuration->AutoSaveInterval() > 10000)
             m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval());
 
           wxFileName::SplitPath(file, NULL, NULL, NULL, &fileExt);
@@ -8301,7 +8296,7 @@ int wxMaxima::SaveDocumentP()
   }
   else
   {
-    if (m_console->m_configuration->AutoSaveInterval() > 0)
+    if (m_console->m_configuration->AutoSaveInterval() > 10000)
       if (SaveFile())
         return wxID_NO;
 

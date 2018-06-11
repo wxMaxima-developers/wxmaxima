@@ -295,8 +295,6 @@ void ConfigDialogue::SetProperties()
   m_abortOnError->SetToolTip(
           _("If multiple cells are evaluated in one go: Abort evaluation if wxMaxima detects that maxima has encountered any error."));
   m_openHCaret->SetToolTip("If this checkbox is set a new code cell is opened as soon as maxima requests data. If it isn't set a new code cell is opened in this case as soon as the user starts typing in code.");
-  m_pollStdOut->SetToolTip(
-          _("Once the local network link between maxima and wxMaxima has been established maxima has no reason to send any messages using the system's stdout stream so all this stream transport should be a greeting message; The lisp running maxima will send eventual error messages using the system's stderr stream instead. If this box is checked we will nonetheless watch maxima's stdout stream for messages."));
   m_restartOnReEvaluation->SetToolTip(
           _("Maxima provides no \"forget all\" command that flushes all settings a maxima session could make. wxMaxima therefore normally defaults to starting a fresh maxima process every time the worksheet is to be re-evaluated. As this needs a little bit of time this switch allows to disable this behavior."));
   m_maximaProgram->SetToolTip(_("Enter the path to the Maxima executable."));
@@ -374,7 +372,7 @@ void ConfigDialogue::SetProperties()
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
   bool savePanes = true;
-  bool fixedFontTC = true, usejsmath = true, keepPercent = true, abortOnError = true, pollStdOut = false;
+  bool fixedFontTC = true, usejsmath = true, keepPercent = true, abortOnError = true;
   bool enterEvaluates = false, saveUntitled = true,
           AnimateLaTeX = true, TeXExponentsAfterSubscript = false,
           usePartialForDiff = false,
@@ -438,7 +436,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("usejsmath"), &usejsmath);
   config->Read(wxT("keepPercent"), &keepPercent);
   config->Read(wxT("abortOnError"), &abortOnError);
-  config->Read(wxT("pollStdOut"), &pollStdOut);
   unsigned int i = 0;
   for (i = 0; i < LANGUAGE_NUMBER; i++)
     if (langs[i] == lang)
@@ -505,7 +502,6 @@ void ConfigDialogue::SetProperties()
   m_useJSMath->SetValue(usejsmath);
   m_keepPercentWithSpecials->SetValue(keepPercent);
   m_abortOnError->SetValue(abortOnError);
-  m_pollStdOut->SetValue(pollStdOut);
   m_restartOnReEvaluation->SetValue(configuration->RestartOnReEvaluation());
   m_defaultFramerate->SetValue(defaultFramerate);
   m_defaultPlotWidth->SetValue(defaultPlotWidth);
@@ -974,8 +970,6 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   m_abortOnError = new wxCheckBox(panel, -1, _("Abort evaluation on error"));
   vsizer->Add(m_abortOnError, 0, wxALL, 5);
 
-  m_pollStdOut = new wxCheckBox(panel, -1, _("Debug: watch maxima's stdout stream"));
-  vsizer->Add(m_pollStdOut, 0, wxALL, 5);
   panel->SetSizerAndFit(vsizer);
 
   m_restartOnReEvaluation = new wxCheckBox(panel, -1, _("Start a new maxima for each re-evaluation"));
@@ -1171,7 +1165,6 @@ void ConfigDialogue::WriteSettings()
   wxConfig *config = (wxConfig *) wxConfig::Get();
   Configuration *configuration = m_configuration;
   config->Write(wxT("abortOnError"), m_abortOnError->GetValue());
-  config->Write(wxT("pollStdOut"), m_pollStdOut->GetValue());
   configuration->RestartOnReEvaluation(m_restartOnReEvaluation->GetValue());
   if (
           (configuration->MaximaFound()) ||
