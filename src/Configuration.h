@@ -620,7 +620,7 @@ public:
   void SetWorkSheet(wxWindow *workSheet){m_workSheet = workSheet;}
 
   //! Get the autosave interval [in milliseconds]; 0 = no autosave
-  int AutoSaveInterval(){if (m_autoSaveInterval > 10000) return m_autoSaveInterval; else return -1;}
+  int AutoSaveInterval(){if (m_autoSaveInterval > 1) return m_autoSaveInterval; else return 0;}
   //! Set the autosave interval [in milliseconds]; 0 = noautosave
   void AutoSaveInterval(int miliseconds){wxConfig::Get()->Write(wxT("autoSaveInterval"),
                                                   (m_autoSaveInterval = miliseconds / 1000 / 60)
