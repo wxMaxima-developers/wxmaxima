@@ -794,6 +794,9 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
           break;
       }
     }
+
+    if(newChars == wxEmptyString)
+      return;
     
     if (IsPaneDisplayed(menu_pane_xmlInspector))
       m_xmlInspector->Add_FromMaxima(newChars);
@@ -2943,8 +2946,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   // Let's see if communication can be resumed manually by manually triggering
   // listening to socket events from time to time, see
   // https://groups.google.com/forum/m/#!topic/wx-users/fdMyu3AKFRQ
-  // wxSocketEvent dummyEvent(wxSOCKET_INPUT);
-  // ClientEvent(dummyEvent);
+  wxSocketEvent dummyEvent(wxSOCKET_INPUT);
+  ClientEvent(dummyEvent);
 
   // If wxMaxima has to open a file on startup we wait for that until we have
   // a valid draw context for size calculations.
