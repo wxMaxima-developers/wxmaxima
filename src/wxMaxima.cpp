@@ -133,11 +133,11 @@ void wxMaxima::ConfigChanged()
 
   if (wxcd)
   {
-    SendMaxima(wxT(":lisp-quiet (setq $wxchangedir t)\n"));
+    m_configCommands += wxT(":lisp-quiet (setq $wxchangedir t)\n");
   }
   else
   {
-    SendMaxima(wxT(":lisp-quiet (setq $wxchangedir nil)\n"));
+    m_configCommands += wxT(":lisp-quiet (setq $wxchangedir nil)\n");
   }
     
 #if defined (__WXMAC__)
