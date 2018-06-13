@@ -99,7 +99,7 @@ protected:
   //! The integration variable
   MathCell *m_var;
   //! The height of the integral sign
-  int m_signSize;
+  int m_signHeight;
   //! The width of the integral sign
   int m_signWidth;
   //! Is this integral definitive?
