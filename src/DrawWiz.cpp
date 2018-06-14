@@ -29,7 +29,7 @@
 #include <wx/persist/toplevel.h>
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
-#include <../art/draw/images.h>
+#include "../art/draw/images.h"
 
 ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions) :
   wxDialog(parent, -1, _("Plot an explicit expression"))
