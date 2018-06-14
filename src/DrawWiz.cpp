@@ -29,6 +29,7 @@
 #include <wx/persist/toplevel.h>
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
+#include <../art/draw/images.h>
 
 ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config, wxString expression, int dimensions) :
   wxDialog(parent, -1, _("Plot an explicit expression"))
@@ -78,6 +79,13 @@ ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config, wxString expre
     vbox->Add(m_filledfunc, wxSizerFlags().Expand());
   }
 
+  vbox->Add(
+    new wxImagePanel(
+      this,
+      Draw_Explicit_png,Draw_Explicit_png_len),
+    wxSizerFlags().Shaped().Border(wxALL,5).Center()
+    );
+  
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 
   wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
@@ -173,6 +181,13 @@ ImplicitWiz::ImplicitWiz(wxWindow *parent, Configuration *config, wxString expre
   }
   else
     SetName("DrawImplicitWiz2D");
+
+  vbox->Add(
+    new wxImagePanel(
+      this,
+      Draw_Implicit_png,Draw_Implicit_png_len),
+    wxSizerFlags().Shaped().Border(wxALL,5).Center()
+    );
 
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
   wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
@@ -565,6 +580,31 @@ wxString Wiz3D::GetValue()
   return retval;
 }
 
+void WizContour::OnRadioButton(wxCommandEvent& WXUNUSED(dummy))
+{
+  return;
+  if(m_contourNone->GetValue())
+  {
+    m_image->Load(Draw_ContourNone_png, Draw_ContourNone_png_len);
+  }
+  if(m_contourBase->GetValue())
+  {
+    m_image->Load(Draw_ContourBase_png, Draw_ContourBase_png_len);
+  }
+  if(m_contourBoth->GetValue())
+  {
+    m_image->Load(Draw_ContourBoth_png, Draw_ContourBoth_png_len);
+  }
+  if(m_contourSurface->GetValue())
+  {
+    m_image->Load(Draw_ContourSurface_png, Draw_ContourSurface_png_len);
+  }
+  if(m_contourOnly->GetValue())
+  {
+    m_image->Load(Draw_ContourMap_png, Draw_ContourMap_png_len);
+  }
+}
+
 WizContour::WizContour(wxWindow *parent, Configuration *WXUNUSED(config)) :
   wxDialog(parent, -1, _("Contour lines settings for the following 3d plots"))
 {
@@ -572,16 +612,49 @@ WizContour::WizContour(wxWindow *parent, Configuration *WXUNUSED(config)) :
 
   m_contourNone = new wxRadioButton(this, -1, _("No contour lines"), wxDefaultPosition,
                                     wxDefaultSize, wxRB_GROUP);
+  m_contourNone->Connect(
+          wxEVT_RADIOBUTTON,
+          wxCommandEventHandler(WizContour::OnRadioButton),
+          NULL, this
+  );
   vbox->Add(m_contourNone, wxSizerFlags().Expand()); 
   m_contourSurface = new wxRadioButton(this, -1, _("Contour lines on the Surface"));
+  m_contourSurface->Connect(
+          wxEVT_RADIOBUTTON,
+          wxCommandEventHandler(WizContour::OnRadioButton),
+          NULL, this
+  );
   vbox->Add(m_contourSurface, wxSizerFlags().Expand()); 
   m_contourBase = new wxRadioButton(this, -1, _("Contour lines on the Bottom"));
+  m_contourBase->Connect(
+          wxEVT_RADIOBUTTON,
+          wxCommandEventHandler(WizContour::OnRadioButton),
+          NULL, this
+  );
   vbox->Add(m_contourBase, wxSizerFlags().Expand()); 
   m_contourBoth = new wxRadioButton(this, -1, _("Contour lines on surface and Bottom"));
+  m_contourBoth->Connect(
+          wxEVT_RADIOBUTTON,
+          wxCommandEventHandler(WizContour::OnRadioButton),
+          NULL, this
+  );
   vbox->Add(m_contourBoth, wxSizerFlags().Expand()); 
   m_contourOnly = new wxRadioButton(this, -1, _("No plot, only contour lines"));
+  m_contourOnly->Connect(
+          wxEVT_RADIOBUTTON,
+          wxCommandEventHandler(WizContour::OnRadioButton),
+          NULL, this
+  );
   vbox->Add(m_contourOnly, wxSizerFlags().Expand()); 
+
+  m_contourBoth->SetValue(true);
   
+  vbox->Add(
+    new wxImagePanel(
+      this,
+      Draw_ContourBoth_png,Draw_ContourBoth_png_len),
+    wxSizerFlags().Shaped().Border(wxALL,5).Center()
+    );
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
   wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
   wxButton *cancelButton = new wxButton(this, wxID_CANCEL, _("Cancel"));
@@ -677,6 +750,13 @@ ParametricWiz::ParametricWiz(wxWindow *parent, Configuration *config, int dimens
   vbox->Add(new wxStaticText(this,-1, _("End value of the parameter")), wxSizerFlags());
   vbox->Add(m_parameterEnd = new BTextCtrl(this,-1, config, "2"), wxSizerFlags().Expand());
 
+  vbox->Add(
+    new wxImagePanel(
+      this,
+      Draw_Parametric_png,Draw_Parametric_png_len),
+    wxSizerFlags().Shaped().Border(wxALL,5).Center()
+    );
+  
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
   wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
   wxButton *cancelButton = new wxButton(this, wxID_CANCEL, _("Cancel"));
@@ -706,8 +786,6 @@ wxString ParametricWiz::GetValue()
   retval += m_parameterEnd->GetValue() + "\n)";
   return retval;
 }
-
-
 
 WizPoints::WizPoints(wxWindow *parent, Configuration *config, int dimensions, wxString expr) :
   wxDialog(parent,-1, _("Draw points"))
@@ -959,15 +1037,23 @@ wxString WizDrawAccuracy::GetValue()
   return retval;
 }
  
-wxImagePanel::wxImagePanel(wxFrame* parent, unsigned char *data, size_t len) :
+wxImagePanel::wxImagePanel(wxWindow* parent, unsigned char *data, size_t len) :
 wxPanel(parent)
+{  
+  Load(data,len);
+  wxSize ppi = wxGetDisplayPPI();
+  SetMinSize(wxSize(ppi.x*5,m_image.GetHeight()*ppi.x*5/m_image.GetWidth()));
+}
+
+void wxImagePanel::Load(unsigned char *data, size_t len)
 {
     wxMemoryInputStream istream(data,len);
+    if(m_image.IsOk())m_image.Clear();
     m_image.LoadFile(istream);
-    m_w = -1;
-    m_h = -1;
+    m_w = m_h = -1;
+    Refresh(true);
 }
- 
+
 /*
  * Called by the system of by wxWidgets when the panel needs
  * to be redrawn. You can also trigger this call by

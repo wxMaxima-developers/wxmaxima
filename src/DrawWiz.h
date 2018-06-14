@@ -35,6 +35,41 @@
 #include "BTextCtrl.h"
 #include "Configuration.h"
 
+
+/*! A panel that shows an example image
+
+  From https://forums.wxwidgets.org/viewtopic.php?t=21664 with a few modifications.
+ */
+class wxImagePanel : public wxPanel
+{
+    wxImage m_image;
+    wxBitmap m_resized;
+    int m_w, m_h;
+ 
+public:
+    wxImagePanel(wxWindow* parent, unsigned char *data, size_t len);
+    void Load(unsigned char *data, size_t len);
+ 
+    void paintEvent(wxPaintEvent & evt);
+    void paintNow();
+    void OnSize(wxSizeEvent& event);
+    void render(wxDC& dc);
+ 
+    // some useful events
+    /*
+     void mouseMoved(wxMouseEvent& event);
+     void mouseDown(wxMouseEvent& event);
+     void mouseWheelMoved(wxMouseEvent& event);
+     void mouseReleased(wxMouseEvent& event);
+     void rightClick(wxMouseEvent& event);
+     void mouseLeftWindow(wxMouseEvent& event);
+     void keyPressed(wxKeyEvent& event);
+     void keyReleased(wxKeyEvent& event);
+     */
+ 
+    DECLARE_EVENT_TABLE()
+};
+
 //! A wizard for explicit plots using draw
 class ExplicitWiz : public wxDialog
 {
@@ -151,7 +186,10 @@ class WizContour : public wxDialog
 public:
   WizContour(wxWindow *parent, Configuration *config);
   wxString GetValue();
+protected:
+  void OnRadioButton(wxCommandEvent &dummy);
 private:
+  wxImagePanel *m_image;
   wxRadioButton *m_contourNone; 
   wxRadioButton *m_contourSurface; 
   wxRadioButton *m_contourBase;
@@ -198,36 +236,3 @@ private:
 };
 
 #endif // DRAWWIZ_H
-
-/*! A panel that shows an example image
-
-  From https://forums.wxwidgets.org/viewtopic.php?t=21664 with a few modifications.
- */
-class wxImagePanel : public wxPanel
-{
-    wxImage m_image;
-    wxBitmap m_resized;
-    int m_w, m_h;
- 
-public:
-    wxImagePanel(wxFrame* parent, unsigned char *data, size_t len);
- 
-    void paintEvent(wxPaintEvent & evt);
-    void paintNow();
-    void OnSize(wxSizeEvent& event);
-    void render(wxDC& dc);
- 
-    // some useful events
-    /*
-     void mouseMoved(wxMouseEvent& event);
-     void mouseDown(wxMouseEvent& event);
-     void mouseWheelMoved(wxMouseEvent& event);
-     void mouseReleased(wxMouseEvent& event);
-     void rightClick(wxMouseEvent& event);
-     void mouseLeftWindow(wxMouseEvent& event);
-     void keyPressed(wxKeyEvent& event);
-     void keyReleased(wxKeyEvent& event);
-     */
- 
-    DECLARE_EVENT_TABLE()
-};
