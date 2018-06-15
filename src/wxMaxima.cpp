@@ -871,6 +871,9 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     }
   case wxSOCKET_LOST:
   {
+    if(m_process == NULL)
+      return;
+    
     m_statusBar->NetworkStatus(StatusBar::offline);
     ExitAfterEval(false);
     m_console->m_cellPointers.SetWorkingGroup(NULL);
