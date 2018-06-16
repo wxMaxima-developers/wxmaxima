@@ -918,16 +918,13 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
   {
 
     case wxSOCKET_CONNECTION :
-    {      
+    {
       if (m_isConnected)
       {
         wxSocketBase *tmp = m_server->Accept(false);
         tmp->Close();
         return;
       }
-      if(m_process == NULL)
-        return;
-
       m_statusBar->NetworkStatus(StatusBar::idle);
       m_console->QuestionAnswered();
       m_currentOutput = wxEmptyString;
@@ -948,8 +945,6 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       break;
 
     case wxSOCKET_LOST:
-      if(m_process == NULL)
-        return;
       m_statusBar->NetworkStatus(StatusBar::offline);
       StatusMaximaBusy(disconnected);
       ExitAfterEval(false);
