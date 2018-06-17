@@ -871,32 +871,39 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     }
   case wxSOCKET_LOST:
   {
+    wxLogDebug(_("Connection lost."));
     m_statusBar->NetworkStatus(StatusBar::offline);
     ExitAfterEval(false);
     m_console->m_cellPointers.SetWorkingGroup(NULL);
     m_console->SetSelection(NULL);
     m_console->SetActiveCell(NULL);
-    KillMaxima();
     m_unsuccessfulConnectionAttempts += 2;
 
     if (!m_closing)
+      ConsoleAppend(wxT("\nSERVER: Lost socket connection. ...\n"),
+        MC_TYPE_ERROR);
+  
+    if(m_process != NULL)
+      KillMaxima();
+    else
     {
-      if (m_unsuccessfulConnectionAttempts > 10)
-        ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
-                          "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
-                      MC_TYPE_ERROR);
-      else
+      if (!m_closing)
       {
-        ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
-                          "Trying to restart Maxima.\n"),
-                      MC_TYPE_ERROR);
-        // Perhaps we shouldn't restart maxima again if it outputs a prompt and
-        // crashes immediately after => Each prompt is deemed as but one hint
-        // for a working maxima while each crash counts twice.
-        StartMaxima(true);
+        if(m_unsuccessfulConnectionAttempts > 10)      
+          ConsoleAppend(wxT("Restart Maxima with 'Maxima->Restart Maxima'.\n"),
+                        MC_TYPE_ERROR);
+        else
+        {
+          ConsoleAppend(wxT("Trying to restart Maxima.\n"),
+                        MC_TYPE_ERROR);
+          // Perhaps we shouldn't restart maxima again if it outputs a prompt and
+          // crashes immediately after => Each prompt is deemed as but one hint
+          // for a working maxima while each crash counts twice.
+          StartMaxima(true);
+        }
       }
-      m_console->m_evaluationQueue.Clear();
     }
+    m_console->m_evaluationQueue.Clear();
     // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
     break;
@@ -916,12 +923,16 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
 
     case wxSOCKET_CONNECTION :
     {
+      wxLogDebug(_("Connected."));
       if (m_isConnected)
       {
         wxSocketBase *tmp = m_server->Accept(false);
         tmp->Close();
         return;
       }
+      if(m_process == NULL)
+        return;
+
       m_statusBar->NetworkStatus(StatusBar::idle);
       m_console->QuestionAnswered();
       m_currentOutput = wxEmptyString;
@@ -942,35 +953,41 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       break;
 
     case wxSOCKET_LOST:
+      wxLogDebug(_("Connection lost."));
       m_statusBar->NetworkStatus(StatusBar::offline);
       StatusMaximaBusy(disconnected);
       ExitAfterEval(false);
       ReadStdErr();
-      m_pid = -1;
       m_isConnected = false;
-      m_unsuccessfulConnectionAttempts += 2;
       if (!m_closing)
+        ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"),MC_TYPE_ERROR);
+      
+      if (m_process == NULL)
       {
-        if (m_unsuccessfulConnectionAttempts > 10)
-          ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
-                                    "Restart Maxima with 'Maxima->Restart Maxima'.\n"),
-                        MC_TYPE_ERROR);
-        else
+        // Perhaps we shouldn't restart maxima again if it outputs a prompt and
+        // crashes immediately after => Each prompt is deemed as but one hint
+        // for a working maxima while each crash counts twice.
+        m_unsuccessfulConnectionAttempts += 2;
+        if ((!m_closing) && (m_process != NULL))
         {
-          ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"
-                                    "Trying to restart Maxima.\n"),
-                        MC_TYPE_ERROR);
-          // Perhaps we shouldn't restart maxima again if it outputs a prompt and
-          // crashes immediately after => Each prompt is deemed as but one hint
-          // for a working maxima while each crash counts twice.
-          StartMaxima();
+          if (m_unsuccessfulConnectionAttempts > 10)
+            ConsoleAppend(wxT("Restart Maxima with 'Maxima->Restart Maxima'.\n"),
+                          MC_TYPE_ERROR);
+          else
+          {
+            ConsoleAppend(wxT("Trying to restart Maxima.\n"),
+                          MC_TYPE_ERROR);
+            StartMaxima();
+          }
+          m_console->m_evaluationQueue.Clear();
+          // Inform the user that the evaluation queue is empty. 
+          EvaluationQueueLength(0);
         }
-        m_console->m_evaluationQueue.Clear();
-        // Inform the user that the evaluation queue is empty. 
-        EvaluationQueueLength(0);
       }
+      else
+        KillMaxima();
 
-    default:
+  default:
       break;
   }
 }
@@ -1016,6 +1033,7 @@ bool wxMaxima::StartServer()
 
 bool wxMaxima::StartMaxima(bool force)
 {
+  wxLogDebug(_("Started Maxima."));
   m_nestedLoadCommands = 0;
   // We only need to start or restart maxima if we aren't connected to a maxima
   // that till now never has done anything and therefore is in perfect working
@@ -1219,6 +1237,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 
 void wxMaxima::KillMaxima()
 {
+  wxLogDebug(_("Killing Maxima."));
   m_nestedLoadCommands = 0;
   m_configCommands = wxEmptyString;
   // The new maxima process will be in its initial condition => mark it as such.
@@ -1281,6 +1300,7 @@ void wxMaxima::KillMaxima()
 
 void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
 {
+  wxLogDebug(_("Maxima has terminated."));
   m_statusBar->NetworkStatus(StatusBar::offline);
   if (!m_closing)
   {
@@ -1295,11 +1315,30 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
     m_process = NULL;
     m_maximaStdout = NULL;
     m_maximaStderr = NULL;
+    m_maximaVersion = wxEmptyString;
+    m_lispVersion = wxEmptyString;
+
+    if(!m_closing)
+      ConsoleAppend(wxT("\nMaxima exited...\n"),
+                    MC_TYPE_ERROR);
+
+    if(!m_isConnected)
+    {
+      if (m_unsuccessfulConnectionAttempts > 10)
+        ConsoleAppend(wxT("Restart Maxima with 'Maxima->Restart Maxima'.\n"),
+                      MC_TYPE_ERROR);
+      else
+      {
+        ConsoleAppend(wxT("Trying to restart Maxima.\n"),
+                      MC_TYPE_ERROR);
+        // Perhaps we shouldn't restart maxima again if it outputs a prompt and
+        // crashes immediately after => Each prompt is deemed as but one hint
+        // for a working maxima while each crash counts twice.
+        StartMaxima(true);
+      }
+      m_console->m_evaluationQueue.Clear();
+    }
   }
-
-  m_maximaVersion = wxEmptyString;
-  m_lispVersion = wxEmptyString;
-
   StatusMaximaBusy(disconnected);
 }
 
@@ -3680,7 +3719,7 @@ void wxMaxima::ReadStdErr()
   {
     wxASSERT_MSG(m_maximaStdout != NULL, wxT("Bug: Trying to read from maxima but don't have a input stream"));
     wxTextInputStream istrm(*m_maximaStdout, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
-    wxString o = _("Message from the stdout of Maxima: ");
+    wxString o;
     wxChar ch;
     int len = 0;
     while (((ch = istrm.GetChar()) != wxT('\0')) && (m_maximaStdout->CanRead()) && (len < 65535))
@@ -3689,14 +3728,19 @@ void wxMaxima::ReadStdErr()
       len++;
     }
 
-    if ((!o.StartsWith("Connecting Maxima to server on port")) && (!m_first))
+    wxString o_trimmed = o;
+    o_trimmed.Trim();
+    
+    o = _("Message from the stdout of Maxima: ") + o; 
+    if ((o_trimmed != wxEmptyString) && (!o.StartsWith("Connecting Maxima to server on port")) &&
+        (!m_first))
       DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
   }
   if (m_process->IsErrorAvailable())
   {
     wxASSERT_MSG(m_maximaStderr != NULL, wxT("Bug: Trying to read from maxima but don't have a error input stream"));
     wxTextInputStream istrm(*m_maximaStderr, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
-    wxString o = wxT("Message from maxima's stderr stream: ");
+    wxString o;
     wxChar ch;
     int len = 0;
     while (((ch = istrm.GetChar()) != wxT('\0')) && (m_maximaStderr->CanRead()) && (len < 65535))
@@ -3705,8 +3749,13 @@ void wxMaxima::ReadStdErr()
       len++;
     }
 
+    wxString o_trimmed = o;
+    o_trimmed.Trim();
+
+    o = wxT("Message from maxima's stderr stream: ") + o;
+    
     if((o != wxT("Message from maxima's stderr stream: End of animation sequence")) &&
-       !o.Contains("frames in animation sequence"))
+       !o.Contains("frames in animation sequence") && (o_trimmed != wxEmptyString))
     {
       DoRawConsoleAppend(o, MC_TYPE_ERROR);
       if(!AbortOnError())
