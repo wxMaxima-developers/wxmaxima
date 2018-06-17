@@ -1036,7 +1036,6 @@ bool wxMaxima::StartServer()
 
 bool wxMaxima::StartMaxima(bool force)
 {
-  wxLogMessage(_("Started Maxima."));
   m_nestedLoadCommands = 0;
   // We only need to start or restart maxima if we aren't connected to a maxima
   // that till now never has done anything and therefore is in perfect working
@@ -1044,7 +1043,8 @@ bool wxMaxima::StartMaxima(bool force)
   if ((m_process == NULL) || (m_hasEvaluatedCells) || force)
   {
     m_closing = true;
-    KillMaxima();
+    if(m_process != NULL)
+      KillMaxima();
     m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
 
     wxString command = GetCommand();
@@ -1066,11 +1066,12 @@ bool wxMaxima::StartMaxima(bool force)
       m_process->Redirect();
       m_first = true;
       m_pid = -1;
-      m_newStatusText = _("Starting Maxima...");
+      wxLogMessage(wxString::Format(_("Running maxima as: %s"), command));
       if (wxExecute(command, wxEXEC_ASYNC, m_process) < 0)
       {
         StatusMaximaBusy(process_wont_start);
         m_newStatusText = _("Cannot start the maxima binary");
+        wxLogMessage(m_newStatusText);
         m_process = NULL;
         m_maximaStdout = NULL;
         m_maximaStderr = NULL;
@@ -1085,6 +1086,7 @@ bool wxMaxima::StartMaxima(bool force)
     else
     {
       m_statusBar->NetworkStatus(StatusBar::offline);
+      wxLogMessage(_("Cannot find a maxima binary and no binary chosen in the config dialogue."));
       return false;
     }
   }
@@ -1240,6 +1242,9 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 
 void wxMaxima::KillMaxima()
 {
+  if((m_pid > 0) && (m_client == NULL))
+    return;
+  
   wxLogMessage(_("Killing Maxima."));
   m_nestedLoadCommands = 0;
   m_configCommands = wxEmptyString;
