@@ -343,8 +343,6 @@ void wxMaximaFrame::do_layout()
                             RightDockable(true).
                             PaneBorder(true).
                             MinSize(logPane->GetEffectiveMinSize()).
-                            BestSize(logPane->GetEffectiveMinSize()).
-                            MaxSize(logPane->GetEffectiveMinSize()).
                             FloatingSize(logPane->GetEffectiveMinSize()).
                             Left());
 
@@ -401,10 +399,7 @@ void wxMaximaFrame::do_layout()
     MaxSize(greekPane->GetEffectiveMinSize());
   
   m_manager.GetPane(wxT("log")) = m_manager.GetPane(wxT("log")).
-    MinSize(logPane->GetEffectiveMinSize()).
-    BestSize(logPane->GetEffectiveMinSize()).
-    Show(false).Gripper(false).CloseButton().PinButton().
-    MaxSize(logPane->GetEffectiveMinSize());
+    Show(false).Gripper(false).CloseButton().PinButton();
   
   m_manager.GetPane(wxT("symbols")) = m_manager.GetPane(wxT("symbols")).
     MinSize(symbolsPane->GetEffectiveMinSize()).
@@ -1621,20 +1616,17 @@ wxPanel *wxMaximaFrame::CreateGreekPane()
 
 wxPanel *wxMaximaFrame::CreateLogPane()
 {
-  wxBoxSizer *vbox  = new wxBoxSizer(wxVERTICAL);
   wxPanel    *panel = new wxPanel(this, -1);
-
-  int style = wxALL | wxEXPAND;
-  int border = 0;
+  wxBoxSizer *vbox  = new wxBoxSizer(wxVERTICAL);
 
   wxTextCtrl *textCtrl = new wxTextCtrl(
     panel, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
-    wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL);
-  wxLog::SetActiveTarget(new wxLogTextCtrl(textCtrl));
-
-  vbox->Add(textCtrl, 0, style, border);
+    wxTE_MULTILINE | wxTE_READONLY);
   
+  vbox->Add(textCtrl, wxSizerFlags().Expand().Proportion(10));
+
   panel->SetSizerAndFit(vbox);
+  wxLog::SetActiveTarget(new wxLogTextCtrl(textCtrl));
   return panel;
 }
 
