@@ -76,8 +76,6 @@ void History::AddToHistory(wxString cmd)
 
 void History::UpdateDisplay()
 {
-  wxLogNull disableWarnings;
-
   wxString regex = m_regex->GetValue();
   wxArrayString display;
   wxRegEx matcher;

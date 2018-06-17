@@ -331,6 +331,23 @@ void wxMaximaFrame::do_layout()
                             FloatingSize(greekPane->GetEffectiveMinSize()).
                             Left());
 
+  wxPanel *logPane = CreateLogPane();
+  m_manager.AddPane(logPane,
+                    wxAuiPaneInfo().Name(wxT("log")).
+                            Show(false).CloseButton().PinButton().
+                            DockFixed(false).
+                            Gripper(false).
+                            TopDockable(true).
+                            BottomDockable(true).
+                            LeftDockable(true).
+                            RightDockable(true).
+                            PaneBorder(true).
+                            MinSize(logPane->GetEffectiveMinSize()).
+                            BestSize(logPane->GetEffectiveMinSize()).
+                            MaxSize(logPane->GetEffectiveMinSize()).
+                            FloatingSize(logPane->GetEffectiveMinSize()).
+                            Left());
+
   wxPanel *symbolsPane = CreateSymbolsPane();
   m_manager.AddPane(symbolsPane,
                     wxAuiPaneInfo().Name(wxT("symbols")).
@@ -383,6 +400,12 @@ void wxMaximaFrame::do_layout()
     Show(true).Gripper(false).CloseButton().PinButton().
     MaxSize(greekPane->GetEffectiveMinSize());
   
+  m_manager.GetPane(wxT("log")) = m_manager.GetPane(wxT("log")).
+    MinSize(logPane->GetEffectiveMinSize()).
+    BestSize(logPane->GetEffectiveMinSize()).
+    Show(false).Gripper(false).CloseButton().PinButton().
+    MaxSize(logPane->GetEffectiveMinSize());
+  
   m_manager.GetPane(wxT("symbols")) = m_manager.GetPane(wxT("symbols")).
     MinSize(symbolsPane->GetEffectiveMinSize()).
     BestSize(symbolsPane->GetEffectiveMinSize()).
@@ -423,6 +446,8 @@ void wxMaximaFrame::do_layout()
     m_manager.GetPane(wxT("draw")).Caption(_("Plot using Draw")).CloseButton().PinButton().Resizable();
   m_manager.GetPane(wxT("greek")) =
     m_manager.GetPane(wxT("greek")).Caption(_("Greek Letters")).CloseButton().PinButton().Resizable().Gripper(false);
+  m_manager.GetPane(wxT("log")) =
+    m_manager.GetPane(wxT("log")).Caption(_("Debug Messages")).CloseButton().PinButton().Resizable().Gripper(false);
   m_manager.GetPane(wxT("math")) = m_manager.GetPane(wxT("math")).Caption(_("General Math")).
     CloseButton().PinButton().Resizable();
   m_manager.GetPane(wxT("stats")) = m_manager.GetPane(wxT("stats")).Caption(_("Statistics")).
@@ -555,9 +580,10 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_symbols, _("Symbols\tAlt+Shift+Y"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_history, _("History\tAlt+Shift+I"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_structure, _("Table of Contents\tAlt+Shift+T"));
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector, _("XML Inspector"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt+Shift+C"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_draw, _("Plot using Draw"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_log,   _("Debug messages"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector, _("XML Inspector"));
   m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->AppendCheckItem(ToolBar::tb_hideCode, _("Hide Code Cells\tAlt+Ctrl+H"));
   m_Maxima_Panes_Sub->Append(menu_pane_hideall, _("Hide All Toolbars\tAlt+Shift+-"), _("Hide all panes"),
@@ -1298,6 +1324,9 @@ bool wxMaximaFrame::IsPaneDisplayed(Event id)
     case menu_pane_greek:
       displayed = m_manager.GetPane(wxT("greek")).IsShown();
       break;
+    case menu_pane_log:
+      displayed = m_manager.GetPane(wxT("log")).IsShown();
+      break;
     case menu_pane_symbols:
       displayed = m_manager.GetPane(wxT("symbols")).IsShown();
       break;
@@ -1338,6 +1367,9 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
     case menu_pane_greek:
       m_manager.GetPane(wxT("greek")).Show(show);
       break;
+    case menu_pane_log:
+      m_manager.GetPane(wxT("log")).Show(show);
+      break;
     case menu_pane_symbols:
       m_manager.GetPane(wxT("symbols")).Show(show);
       break;
@@ -1354,6 +1386,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
       m_manager.GetPane(wxT("XmlInspector")).Show(false);
       m_manager.GetPane(wxT("stats")).Show(false);
       m_manager.GetPane(wxT("greek")).Show(false);
+      m_manager.GetPane(wxT("log")).Show(false);
       m_manager.GetPane(wxT("symbols")).Show(false);
       m_manager.GetPane(wxT("format")).Show(false);
       ShowToolBar(false);
@@ -1583,6 +1616,25 @@ wxPanel *wxMaximaFrame::CreateGreekPane()
   panel->SetSizerAndFit(vbox);
   vbox->SetSizeHints(panel);
 
+  return panel;
+}
+
+wxPanel *wxMaximaFrame::CreateLogPane()
+{
+  wxBoxSizer *vbox  = new wxBoxSizer(wxVERTICAL);
+  wxPanel    *panel = new wxPanel(this, -1);
+
+  int style = wxALL | wxEXPAND;
+  int border = 0;
+
+  wxTextCtrl *textCtrl = new wxTextCtrl(
+    panel, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
+    wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL);
+  wxLog::SetActiveTarget(new wxLogTextCtrl(textCtrl));
+
+  vbox->Add(textCtrl, 0, style, border);
+  
+  panel->SetSizerAndFit(vbox);
   return panel;
 }
 

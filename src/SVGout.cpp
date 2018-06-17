@@ -76,7 +76,6 @@ Svgout::~Svgout()
   {
     // We don't want a braindead virus scanner that disallows us to delete our temp
     // files to trigger asserts.
-    wxLogNull logNull;
     wxRemoveFile(m_tempFileName);
   }
   *m_configuration = m_oldconfig;
@@ -320,7 +319,6 @@ Svgout::SVGDataObject *Svgout::GetDataObject()
   }
   if((m_filename != wxEmptyString) && (wxFileExists(m_filename)))
   {
-    wxLogNull logNull;
     wxRemoveFile(m_filename);
   }
   m_filename = wxEmptyString;

@@ -781,9 +781,6 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     wxString newChars;
 
     {
-      // Don't warn if an error message from the lisp isn't exactly unicode.
-      wxLogStderr noCodepageWarnings;
-
       // Read all data we can get.
       while(m_client->IsData())
       {
@@ -871,7 +868,10 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     }
   case wxSOCKET_LOST:
   {
-    wxLogDebug(_("Connection lost."));
+    if(m_isConnected)        
+      wxLogMessage(_("Connection lost."));
+    else
+        wxLogMessage(_("Connection lost without being connected ?!?."));
     m_statusBar->NetworkStatus(StatusBar::offline);
     ExitAfterEval(false);
     m_console->m_cellPointers.SetWorkingGroup(NULL);
@@ -923,7 +923,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
 
     case wxSOCKET_CONNECTION :
     {
-      wxLogDebug(_("Connected."));
+      wxLogMessage(_("Connected."));
       if (m_isConnected)
       {
         wxSocketBase *tmp = m_server->Accept(false);
@@ -953,7 +953,10 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       break;
 
     case wxSOCKET_LOST:
-      wxLogDebug(_("Connection lost."));
+      if(m_isConnected)        
+        wxLogMessage(_("Connection lost."));
+      else
+        wxLogMessage(_("Connection lost without being connected ?!?."));
       m_statusBar->NetworkStatus(StatusBar::offline);
       StatusMaximaBusy(disconnected);
       ExitAfterEval(false);
@@ -1033,7 +1036,7 @@ bool wxMaxima::StartServer()
 
 bool wxMaxima::StartMaxima(bool force)
 {
-  wxLogDebug(_("Started Maxima."));
+  wxLogMessage(_("Started Maxima."));
   m_nestedLoadCommands = 0;
   // We only need to start or restart maxima if we aren't connected to a maxima
   // that till now never has done anything and therefore is in perfect working
@@ -1237,7 +1240,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 
 void wxMaxima::KillMaxima()
 {
-  wxLogDebug(_("Killing Maxima."));
+  wxLogMessage(_("Killing Maxima."));
   m_nestedLoadCommands = 0;
   m_configCommands = wxEmptyString;
   // The new maxima process will be in its initial condition => mark it as such.
@@ -1300,7 +1303,7 @@ void wxMaxima::KillMaxima()
 
 void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
 {
-  wxLogDebug(_("Maxima has terminated."));
+  wxLogMessage(_("Maxima has terminated."));
   m_statusBar->NetworkStatus(StatusBar::offline);
   if (!m_closing)
   {
@@ -2949,7 +2952,6 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
      keyword = wxT("draw2d");
   if(keyword == wxT("with_slider_draw3d"))
      keyword = wxT("draw3d");
-  wxLogNull disableWarnings;
   wxString MaximaHelpFile = GetHelpFile();
   if (MaximaHelpFile.Length() == 0)
   {
@@ -3975,11 +3977,6 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
             else
             {
               // The file hasn't been given a name yet.
-              // The temporary backup file that is only used if the file still hasn't
-              // been given a name by the user isn't important enough to produce
-              // asserts.
-              wxLogNull noWarningDuringBackup;
-
               // Save the file and remember the file name.
               wxString name = GetTempAutosavefileName();
               m_console->ExportToWXMX(name);

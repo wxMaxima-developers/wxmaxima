@@ -319,7 +319,8 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
 #if defined __WXMAC__
       NewWindow();
 #else
-      wxExecute(wxT("\"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\""));
+      NewWindow();
+//      wxExecute(wxT("\"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\""));
 #endif
       break;
     case wxMaxima::mac_openId:

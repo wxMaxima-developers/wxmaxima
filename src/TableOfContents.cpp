@@ -116,8 +116,6 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *cursorPo
 
 void TableOfContents::UpdateDisplay()
 {
-  wxLogNull disableWarnings;
-
   wxString regex = m_regex->GetValue();
   wxArrayString items;
   wxRegEx matcher;

@@ -96,13 +96,14 @@ public:
       that this entry stays that of the first pane in this enum.
     */
     menu_pane_math,
-    menu_pane_history,    //!< Both the "toggle the history pane" command and the history pane
-    menu_pane_structure,        //!< Both the "toggle the structure pane" command and the structure
-    menu_pane_xmlInspector,        //!< Both the "toggle the xml monitor" command and the monitor pane
+    menu_pane_history,      //!< Both the "toggle the history pane" command and the history pane
+    menu_pane_structure,    //!< Both the "toggle the structure pane" command and the structure
+    menu_pane_xmlInspector, //!< Both the "toggle the xml monitor" command and the monitor pane
     menu_pane_format,    //!< Both the "toggle the format pane" command and the format pane
-    menu_pane_greek,            //!< Both the "toggle the format pane" command for the "greek" pane
-    menu_pane_draw,             //!< Both the "toggle the format pane" command for the "draw" pane
-    menu_pane_symbols,          //!< Both the "toggle the format pane" command for the "symbols" pane
+    menu_pane_greek,     //!< Both the "toggle the format pane" command for the "greek" pane
+    menu_pane_log,       //!< Both the "toggle the format pane" command for the "debug" pane
+    menu_pane_draw,      //!< Both the "toggle the format pane" command for the "draw" pane
+    menu_pane_symbols,   //!< Both the "toggle the format pane" command for the "symbols" pane
     /*! Both used as the "toggle the stats pane" command and as the ID of the stats pane
 
       Since this enum is also used for iterating over the panes it is vital 
@@ -674,7 +675,7 @@ protected:
   //! The sidebar with the draw commands
   DrawPane *m_drawPane;
 private:
-  /*! A button for the greek pane
+  /*! A flat, compact button for the greek and the symbols pane
     
     \param parent The parent panel/window
     \param ch The unicode symbol
@@ -684,6 +685,8 @@ private:
 
    */
   wxPanel *CharButton(wxPanel *parent, wxChar ch, wxString description = wxEmptyString, bool matchesMaximaCommand = false);
+
+  wxPanel *CreateLogPane();
 
   wxPanel *CreateGreekPane();
 
