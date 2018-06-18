@@ -1400,9 +1400,13 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   m_inLispMode = false;
   StatusMaximaBusy(waiting);
   m_closing = false; // when restarting maxima this is temporarily true
-  
-  wxLogMessage(_("Received maxima's first prompt:\n") +
-                 data.Left(start + end - m_firstPrompt.Length() + 1));
+
+  wxString prompt_compact = data.Left(start + end + m_firstPrompt.Length() - 1);
+  prompt_compact.Replace(wxT("\n"),wxT("\x21b2"));
+
+ 
+  wxLogMessage(wxString::Format(_("Received maxima's first prompt: %s"),
+                                prompt_compact));
   
   // Remove the first prompt from Maxima's answer.
   data = data.Right(data.Length() - end - m_firstPrompt.Length());

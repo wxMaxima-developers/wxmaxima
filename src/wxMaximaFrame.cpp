@@ -1621,7 +1621,7 @@ wxPanel *wxMaximaFrame::CreateLogPane()
 
   wxTextCtrl *textCtrl = new wxTextCtrl(
     panel, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
-    wxTE_MULTILINE | wxTE_READONLY);
+    wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL);
   
   vbox->Add(textCtrl, wxSizerFlags().Expand().Proportion(10));
 
