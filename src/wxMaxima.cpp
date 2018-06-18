@@ -1400,9 +1400,13 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   m_inLispMode = false;
   StatusMaximaBusy(waiting);
   m_closing = false; // when restarting maxima this is temporarily true
-
+  
+  wxLogMessage(_("Received maxima's first prompt:\n") +
+                 data.Left(start + end - m_firstPrompt.Length() + 1));
+  
+  // Remove the first prompt from Maxima's answer.
   data = data.Right(data.Length() - end - m_firstPrompt.Length());
-
+  
   if (m_console->m_evaluationQueue.Empty())
   {
     // Inform the user that the evaluation queue is empty.
@@ -1673,6 +1677,7 @@ void wxMaxima::ReadVariables(wxString &data)
 
   if (end != wxNOT_FOUND)
   {
+    wxLogMessage(_("Maxima sends a new set of auto-completible symbols."));
     wxXmlDocument xmldoc;
     wxString xml = data.Left( end + m_variablesSuffix.Length());
     wxStringInputStream xmlStream(xml);
@@ -1723,7 +1728,10 @@ void wxMaxima::ReadVariables(wxString &data)
             if(name == "*wx-load-file-name*")
             {
               if(m_nestedLoadCommands == 0)
+              {
                 m_recentPackages.AddDocument(value);
+                wxLogMessage(wxString::Format(_("Maxima loads the file %s."),value));
+              }
             }
             if(name == "*wx-load-file-start*")
             {
