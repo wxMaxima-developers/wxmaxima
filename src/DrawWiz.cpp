@@ -1047,11 +1047,10 @@ wxPanel(parent)
 
 void wxImagePanel::Load(unsigned char *data, size_t len)
 {
-    wxMemoryInputStream istream(data,len);
-    if(m_image.IsOk())m_image.Clear();
-    m_image.LoadFile(istream);
-    m_w = m_h = -1;
-    Refresh(true);
+  wxMemoryInputStream istream(data,len);
+  m_image.LoadFile(istream);
+  m_w = m_h = -1;
+  Refresh(true);
 }
 
 /*
