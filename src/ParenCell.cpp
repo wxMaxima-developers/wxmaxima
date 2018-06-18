@@ -359,7 +359,7 @@ void ParenCell::Draw(wxPoint point, int fontsize)
       configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
       pointList[2] = wxPoint(point.x + Scale_Px(1.5),
                              point.y);
-      configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
+      adc->DrawSpline(5,pointList);
       
       // Right bracket
       pointList[0] = wxPoint(point.x + m_width - Scale_Px(1) - signWidth,
@@ -375,7 +375,7 @@ void ParenCell::Draw(wxPoint point, int fontsize)
       configuration->GetAntialiassingDC()->DrawSpline(5,pointList);
       pointList[2] = wxPoint(point.x + m_width - Scale_Px(1),
                              point.y);
-      configuration->GetAntialiassingDC()->DrawSpline(5,pointList);      
+      adc->DrawSpline(5,pointList);      
     }
       break;
     }

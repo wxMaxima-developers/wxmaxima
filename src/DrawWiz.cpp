@@ -1060,7 +1060,7 @@ void wxImagePanel::Load(unsigned char *data, size_t len)
  * calling Refresh()/Update().
  */
  
-void wxImagePanel::paintEvent(wxPaintEvent & evt)
+void wxImagePanel::paintEvent(wxPaintEvent& WXUNUSED(evt))
 {
     // depending on your system you may need to look at double-buffered dcs
     wxPaintDC dc(this);
