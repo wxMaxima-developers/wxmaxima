@@ -108,6 +108,9 @@ bool Configuration::MaximaFound(wxString location)
   if (wxFileExists(location + wxT("/Contents/Resources/maxima.sh")))
     maximaFound = true;
 
+  // Don't complain if PATH doesn't yield a result.
+  wxLogNull logNull;
+  
   wxPathList pathlist;
   pathlist.AddEnvList(wxT("PATH"));
   wxString path = pathlist.FindAbsoluteValidPath(location);
