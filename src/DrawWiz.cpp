@@ -582,7 +582,7 @@ wxString Wiz3D::GetValue()
 
 void WizContour::OnRadioButton(wxCommandEvent& WXUNUSED(dummy))
 {
-//  return;
+  return;
   if(m_contourNone->GetValue())
   {
     m_image->Load(Draw_ContourNone_png, Draw_ContourNone_png_len);
