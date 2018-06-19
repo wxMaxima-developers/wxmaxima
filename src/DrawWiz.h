@@ -53,7 +53,6 @@ public:
     void paintEvent(wxPaintEvent & evt);
     void paintNow();
     void OnSize(wxSizeEvent& event);
-    void render(wxDC& dc);
  
     // some useful events
     /*
