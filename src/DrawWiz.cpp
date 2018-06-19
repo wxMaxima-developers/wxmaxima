@@ -1043,6 +1043,12 @@ wxPanel(parent)
   Load(data,len);
   wxSize ppi = wxGetDisplayPPI();
   SetMinSize(wxSize(ppi.x*5,m_image.GetHeight()*ppi.x*5/m_image.GetWidth()));
+  Connect(wxEVT_PAINT,
+          wxPaintEventHandler(wxImagePanel::paintEvent),
+          NULL, this);
+  Connect(wxEVT_SIZE,
+          wxSizeEventHandler(wxImagePanel::OnSize),
+          NULL, this);
 }
 
 void wxImagePanel::Load(unsigned char *data, size_t len)
@@ -1084,10 +1090,3 @@ void wxImagePanel::OnSize(wxSizeEvent& event){
     Refresh();
     event.Skip();
 }
-
-BEGIN_EVENT_TABLE(wxImagePanel, wxPanel) 
-// catch paint events
-EVT_PAINT(wxImagePanel::paintEvent)
-//Size event
-EVT_SIZE(wxImagePanel::OnSize)
-END_EVENT_TABLE()
