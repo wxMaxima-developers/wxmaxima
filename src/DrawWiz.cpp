@@ -582,7 +582,6 @@ wxString Wiz3D::GetValue()
 
 void WizContour::OnRadioButton(wxCommandEvent& WXUNUSED(dummy))
 {
-  return;
   if(m_contourNone->GetValue())
   {
     m_image->Load(Draw_ContourNone_png, Draw_ContourNone_png_len);
@@ -650,7 +649,7 @@ WizContour::WizContour(wxWindow *parent, Configuration *WXUNUSED(config)) :
   m_contourBoth->SetValue(true);
   
   vbox->Add(
-    new wxImagePanel(
+    m_image = new wxImagePanel(
       this,
       Draw_ContourBoth_png,Draw_ContourBoth_png_len),
     wxSizerFlags().Shaped().Border(wxALL,5).Center()
