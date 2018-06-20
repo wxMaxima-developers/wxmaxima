@@ -1149,6 +1149,8 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 
     if (sharedMemoryHandle == NULL)
     {
+      wxLogMessage(_("The Maxima process doesn't offer a shared memory segment we can send an interrupt signal to."));
+
       // No shared memory location we can send break signals to => send a
       // console interrupt.
       // Before we do that we stop our program from closing on receiving a Ctrl+C
@@ -1186,6 +1188,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
         }
         
         SetStatusText(errorMessage, 0);
+        wxLogMessage(errorMessage);
         return;
       }
     }
@@ -1199,9 +1202,8 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
       
       if (sharedMemoryAddress == NULL)
       { 
-        wxMessageBox(_("Could not map view of the file needed in order to "
-                       "send an interrupt signal to maxima."),
-                     _("Error"), wxICON_ERROR | wxOK);
+        wxLogMessage(_("Could not map view of the file needed in order to "
+                       "send an interrupt signal to maxima."));
         return;
       }
       
@@ -1211,7 +1213,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
       if (sharedMemoryAddress)
       {
         *sharedMemoryContents = *sharedMemoryContents | value;
-        
+        wxLogMessage(_("Sending Maxima a signal that interrupts the current command."));
         UnmapViewOfFile(sharedMemoryAddress);
       }
       if (sharedMemoryHandle)
@@ -1229,13 +1231,15 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
       long pid = m_process->GetPid();
       if (!GenerateConsoleCtrlEvent(CTRL_C_EVENT, pid))
       {
-        wxMessageBox(_("Could not send an interrupt signal to maxima."),
-                       _("Error"), wxICON_ERROR | wxOK);
+        wxLogMessage(_("Could not send an interrupt signal to maxima."));
         return;
       }
+      else
+        wxLogMessage(_("Sending Maxima a signal that interrupts the current command."));
     }
   }
 #else
+  wxLogMessage(_("Sending Maxima a signal that interrupts the current command."));
   wxProcess::Kill(m_pid, wxSIGINT);
 #endif
 }
