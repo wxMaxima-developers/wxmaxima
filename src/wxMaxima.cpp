@@ -780,18 +780,25 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     // The memory we store new chars we receive from maxima in
     wxString newChars;
 
+    // Read all data we can get. A '\0' normally marks the end of the data stream.
+    // But there might be a buggy lisp out here that produces an occasional '\0'
+    // which means we ignore the 1st '\0' chars.
+    wxChar ch;
+    int nulBytes = 0;
+    while((m_client->IsData()) && (nulBytes < 3))
     {
-      // Read all data we can get.
-      while(m_client->IsData())
+      ch = m_clientTextStream->GetChar();
+      if(ch != '\0')
       {
-        wxChar ch = m_clientTextStream->GetChar();
-        if (ch != '\0')
-          newChars += ch;
-        else
-          break;
+        nulBytes = 0;
+        if(nulBytes > 0)
+          wxLogMessage(_("Encountered a NULL byte in maxima's data stream."));
+        newChars += ch;
       }
+      else
+        nulBytes++;         
     }
-
+    
     if(newChars == wxEmptyString)
       return;
     
@@ -1213,7 +1220,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
       if (sharedMemoryAddress)
       {
         *sharedMemoryContents = *sharedMemoryContents | value;
-        wxLogMessage(_("Sending Maxima a signal that interrupts the current command."));
+        wxLogMessage(_("Sending an interrupt signal to Maxima."));
         UnmapViewOfFile(sharedMemoryAddress);
       }
       if (sharedMemoryHandle)
@@ -1235,11 +1242,11 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
         return;
       }
       else
-        wxLogMessage(_("Sending Maxima a signal that interrupts the current command."));
+        wxLogMessage(_("Sending an interactive Interrupt signal (Ctrl+C) to Maxima."));
     }
   }
 #else
-  wxLogMessage(_("Sending Maxima a signal that interrupts the current command."));
+  wxLogMessage(_("Sending Maxima an SIGINT signal."));
   wxProcess::Kill(m_pid, wxSIGINT);
 #endif
 }
@@ -3745,7 +3752,7 @@ void wxMaxima::ReadStdErr()
     wxString o;
     wxChar ch;
     int len = 0;
-    while (((ch = istrm.GetChar()) != wxT('\0')) && (m_maximaStdout->CanRead()) && (len < 65535))
+    while (((ch = istrm.GetChar()) != wxT('\0')) && (m_maximaStdout->CanRead()))
     {
       o += ch;
       len++;
@@ -3766,7 +3773,7 @@ void wxMaxima::ReadStdErr()
     wxString o;
     wxChar ch;
     int len = 0;
-    while (((ch = istrm.GetChar()) != wxT('\0')) && (m_maximaStderr->CanRead()) && (len < 65535))
+    while (((ch = istrm.GetChar()) != wxT('\0')) && (m_maximaStderr->CanRead()))
     {
       o += ch;
       len++;
