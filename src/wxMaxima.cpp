@@ -873,48 +873,6 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     }
     break;
     }
-  case wxSOCKET_LOST:
-  {
-    if(m_isConnected)        
-      wxLogMessage(_("Connection lost."));
-    else
-        wxLogMessage(_("Connection lost without being connected ?!?."));
-    m_statusBar->NetworkStatus(StatusBar::offline);
-    ExitAfterEval(false);
-    m_console->m_cellPointers.SetWorkingGroup(NULL);
-    m_console->SetSelection(NULL);
-    m_console->SetActiveCell(NULL);
-    m_unsuccessfulConnectionAttempts += 2;
-
-    if (!m_closing)
-      ConsoleAppend(wxT("\nSERVER: Lost socket connection. ...\n"),
-        MC_TYPE_ERROR);
-  
-    if(m_process != NULL)
-      KillMaxima();
-    else
-    {
-      if (!m_closing)
-      {
-        if(m_unsuccessfulConnectionAttempts > 10)      
-          ConsoleAppend(wxT("Restart Maxima with 'Maxima->Restart Maxima'.\n"),
-                        MC_TYPE_ERROR);
-        else
-        {
-          ConsoleAppend(wxT("Trying to restart Maxima.\n"),
-                        MC_TYPE_ERROR);
-          // Perhaps we shouldn't restart maxima again if it outputs a prompt and
-          // crashes immediately after => Each prompt is deemed as but one hint
-          // for a working maxima while each crash counts twice.
-          StartMaxima(true);
-        }
-      }
-    }
-    m_console->m_evaluationQueue.Clear();
-    // Inform the user that the evaluation queue is empty.
-    EvaluationQueueLength(0);
-    break;
-  }
   default:
     break;
   }
@@ -957,8 +915,8 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       // Start the evaluation. If the evaluation queue isn't empty, that is.
       TryEvaluateNextInQueue();
     }
-      break;
-
+    break;
+    
     case wxSOCKET_LOST:
       if(m_isConnected)        
         wxLogMessage(_("Connection lost."));
@@ -3982,11 +3940,6 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
           m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
       }
 
-      {
-        // Just in case we don't get a socket event on getting data...
-        //      wxSocketEvent event(wxSOCKET_INPUT);
-        //      ClientEvent(event);
-      }
       break;
     case KEYBOARD_INACTIVITY_TIMER_ID:
     case AUTO_SAVE_TIMER_ID:

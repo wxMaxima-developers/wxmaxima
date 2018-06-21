@@ -89,7 +89,7 @@ public:
       This event is assigned an ID higher than the highest ID wxWidgets assigns to 
       its internal events in order to avoid ID clashes.
     */
-    menu_pane_hideall = wxID_HIGHEST + 1,
+    menu_pane_hideall = wxID_HIGHEST + 2500,
     /*! Both used as the "toggle the math pane" command and as the ID of the math pane
 
       Since this enum is also used for iterating over the panes it is vital 
@@ -111,8 +111,6 @@ public:
     */
     menu_pane_stats,
 
-    socket_client_id,
-    socket_server_id,
     input_line_id,
     refresh_id,
     menu_new_id,
@@ -474,7 +472,9 @@ public:
     menu_edit_find,
     menu_history_previous,
     menu_history_next,
-    menu_check_updates
+    menu_check_updates,
+    socket_client_id,
+    socket_server_id
   };
 
   /*! Update the recent documents list
