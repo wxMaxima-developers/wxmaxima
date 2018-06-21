@@ -1246,7 +1246,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     }
   }
 #else
-  wxLogMessage(_("Sending Maxima an SIGINT signal."));
+  wxLogMessage(_("Sending Maxima a SIGINT signal."));
   wxProcess::Kill(m_pid, wxSIGINT);
 #endif
 }
