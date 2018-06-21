@@ -904,7 +904,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_isConnected = true;
       m_client = m_server->Accept(false);
       m_client->SetEventHandler(*this, socket_client_id);
-      m_client->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_LOST_FLAG);
+      m_client->SetNotify(wxSOCKET_INPUT_FLAG);
       m_client->SetTimeout(120);
       m_client->Notify(true);
       m_clientStream = new wxSocketInputStream(*m_client);
@@ -915,45 +915,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       // Start the evaluation. If the evaluation queue isn't empty, that is.
       TryEvaluateNextInQueue();
     }
-    break;
-    
-    case wxSOCKET_LOST:
-      if(m_isConnected)        
-        wxLogMessage(_("Connection lost."));
-      else
-        wxLogMessage(_("Connection lost without being connected ?!?."));
-      m_statusBar->NetworkStatus(StatusBar::offline);
-      StatusMaximaBusy(disconnected);
-      ExitAfterEval(false);
-      ReadStdErr();
-      m_isConnected = false;
-      if (!m_closing)
-        ConsoleAppend(wxT("\nSERVER: Lost socket connection ...\n"),MC_TYPE_ERROR);
-      
-      if (m_process == NULL)
-      {
-        // Perhaps we shouldn't restart maxima again if it outputs a prompt and
-        // crashes immediately after => Each prompt is deemed as but one hint
-        // for a working maxima while each crash counts twice.
-        m_unsuccessfulConnectionAttempts += 2;
-        if ((!m_closing) && (m_process != NULL))
-        {
-          if (m_unsuccessfulConnectionAttempts > 10)
-            ConsoleAppend(wxT("Restart Maxima with 'Maxima->Restart Maxima'.\n"),
-                          MC_TYPE_ERROR);
-          else
-          {
-            ConsoleAppend(wxT("Trying to restart Maxima.\n"),
-                          MC_TYPE_ERROR);
-            StartMaxima();
-          }
-          m_console->m_evaluationQueue.Clear();
-          // Inform the user that the evaluation queue is empty. 
-          EvaluationQueueLength(0);
-        }
-      }
-      else
-        KillMaxima();
+    break;    
 
   default:
       break;
@@ -1295,26 +1257,24 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
     m_maximaVersion = wxEmptyString;
     m_lispVersion = wxEmptyString;
 
-    if(!m_closing)
-      ConsoleAppend(wxT("\nMaxima exited...\n"),
-                    MC_TYPE_ERROR);
+    ConsoleAppend(wxT("\nMaxima exited...\n"),
+                  MC_TYPE_ERROR);
 
-    if(!m_isConnected)
+    m_isConnected = false;
+    if (m_unsuccessfulConnectionAttempts > 10)
+      ConsoleAppend(wxT("Restart Maxima with 'Maxima->Restart Maxima'.\n"),
+                    MC_TYPE_ERROR);
+    else
     {
-      if (m_unsuccessfulConnectionAttempts > 10)
-        ConsoleAppend(wxT("Restart Maxima with 'Maxima->Restart Maxima'.\n"),
-                      MC_TYPE_ERROR);
-      else
-      {
-        ConsoleAppend(wxT("Trying to restart Maxima.\n"),
-                      MC_TYPE_ERROR);
-        // Perhaps we shouldn't restart maxima again if it outputs a prompt and
-        // crashes immediately after => Each prompt is deemed as but one hint
-        // for a working maxima while each crash counts twice.
-        StartMaxima(true);
-      }
-      m_console->m_evaluationQueue.Clear();
+      ConsoleAppend(wxT("Trying to restart Maxima.\n"),
+                    MC_TYPE_ERROR);
+      // Perhaps we shouldn't restart maxima again if it outputs a prompt and
+      // crashes immediately after => Each prompt is deemed as but one hint
+      // for a working maxima while each crash counts twice.
+      m_unsuccessfulConnectionAttempts += 2;
+      StartMaxima(true);
     }
+    m_console->m_evaluationQueue.Clear();
   }
   StatusMaximaBusy(disconnected);
 }
@@ -3740,10 +3700,12 @@ void wxMaxima::ReadStdErr()
     wxString o_trimmed = o;
     o_trimmed.Trim();
 
+    std::cerr<<"Stderr=\""<<o<<"\"\n";
     o = wxT("Message from maxima's stderr stream: ") + o;
-    
+
     if((o != wxT("Message from maxima's stderr stream: End of animation sequence")) &&
-       !o.Contains("frames in animation sequence") && (o_trimmed != wxEmptyString))
+       !o.Contains("frames in animation sequence") && (o_trimmed != wxEmptyString) &&
+       (o.Length() > 1))
     {
       DoRawConsoleAppend(o, MC_TYPE_ERROR);
       if(!AbortOnError())
