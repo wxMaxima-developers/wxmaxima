@@ -3700,7 +3700,6 @@ void wxMaxima::ReadStdErr()
     wxString o_trimmed = o;
     o_trimmed.Trim();
 
-    std::cerr<<"Stderr=\""<<o<<"\"\n";
     o = wxT("Message from maxima's stderr stream: ") + o;
 
     if((o != wxT("Message from maxima's stderr stream: End of animation sequence")) &&
