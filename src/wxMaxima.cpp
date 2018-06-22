@@ -780,24 +780,16 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     // The memory we store new chars we receive from maxima in
     wxString newChars;
 
-    // Read all data we can get. A '\0' normally marks the end of the data stream.
-    // But there might be a buggy lisp out here that produces an occasional '\0'
-    // which means we ignore the 1st '\0' chars.
-    wxChar ch;
-    int nulBytes = 0;
-    while((m_client->IsData()) && (nulBytes < 3))
-    {
-      ch = m_clientTextStream->GetChar();
-      if(ch != '\0')
+    // Read all new lines of text we received.
+    wxString line;
+    bool eof = false;
+    while((!eof) && (m_client->IsData()))
       {
-        nulBytes = 0;
-        if(nulBytes > 0)
-          wxLogMessage(_("Encountered a NULL byte in maxima's data stream."));
-        newChars += ch;
+        line = m_clientTextStream->ReadLine();
+        newChars += line;
+        if (!(eof = m_clientStream->Eof()))
+          newChars += wxT("\n");
       }
-      else
-        nulBytes++;         
-    }
     
     if(newChars == wxEmptyString)
       return;
@@ -905,7 +897,8 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_client = m_server->Accept(false);
       m_client->SetEventHandler(*this, socket_client_id);
       m_client->SetNotify(wxSOCKET_INPUT_FLAG);
-      m_client->SetTimeout(120);
+       m_client->SetFlags(wxSOCKET_NOWAIT);
+      m_client->SetTimeout(15);
       m_client->Notify(true);
       m_clientStream = new wxSocketInputStream(*m_client);
       m_clientTextStream = new wxTextInputStream(*m_clientStream, wxT('\n'),
