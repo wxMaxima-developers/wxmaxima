@@ -2926,8 +2926,11 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   // Communication can be resumed manually by manually triggering
   // listening to socket events from time to time, see
   // https://groups.google.com/forum/m/#!topic/wx-users/fdMyu3AKFRQ
-  wxSocketEvent dummyEvent(wxSOCKET_INPUT);
-  ClientEvent(dummyEvent);
+  //
+  // Should no more be necessary after switching the communication from GetChar()
+  // to ReadLine().
+  //  wxSocketEvent dummyEvent(wxSOCKET_INPUT);
+  //  ClientEvent(dummyEvent);
 
   // If wxMaxima has to open a file on startup we wait for that until we have
   // a valid draw context for size calculations.
