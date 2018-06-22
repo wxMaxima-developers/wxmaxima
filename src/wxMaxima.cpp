@@ -783,11 +783,11 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     // Read all new lines of text we received.
     wxString line;
     bool eof = false;
-    while((!eof) && (m_client->IsData()))
+    while(m_client->IsData())
       {
         line = m_clientTextStream->ReadLine();
         newChars += line;
-        if (!(eof = m_clientStream->Eof()))
+        if ((m_client->IsData()) && (!(eof = m_clientStream->Eof())))
           newChars += wxT("\n");
       }
     
