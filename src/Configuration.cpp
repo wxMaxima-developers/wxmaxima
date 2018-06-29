@@ -74,6 +74,7 @@ Configuration::Configuration(wxDC &dc) : m_dc(&dc)
   m_copySVG = true;
   m_showLength = 2;
   m_useUnicodeMaths = true;
+  m_defaultBackgroundColor = *wxWHITE;
 }
 
 wxString Configuration::GetAutosubscript_string(){
@@ -125,6 +126,10 @@ void Configuration::ReadConfig()
   wxConfig *config = (wxConfig *) wxConfig::Get();
   m_autoWrap = 3;
 
+  wxString bgColStr = wxT("white");
+  config->Read(wxT("Style/Background/color"), &bgColStr);
+  m_defaultBackgroundColor = wxColour(bgColStr);
+    
   if(config->Read(wxT("autoSaveInterval"),&m_autoSaveInterval))
     m_autoSaveInterval *= 1000 * 60;
   config->Read(wxT("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);

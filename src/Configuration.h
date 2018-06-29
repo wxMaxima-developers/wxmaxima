@@ -632,6 +632,8 @@ public:
   void SetAutosubscript_Num(int autosubscriptnum)
     {wxConfig::Get()->Write("autosubscript",m_autoSubscript = autosubscriptnum);}
   wxString GetAutosubscript_string();
+  //! Determine the default background color of the worksheet
+  wxColor DefaultBackgroundColor(){return m_defaultBackgroundColor;}
 private:
   /*! The interval between auto-saves (in milliseconds). 
 
@@ -727,6 +729,7 @@ private:
   bool m_copySVG;
   bool m_TOCshowsSectionNumbers;
   bool m_useUnicodeMaths;
+  wxColour m_defaultBackgroundColor;
 };
 
 #endif // CONFIGURATION_H
