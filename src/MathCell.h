@@ -210,6 +210,10 @@ class MathCell
   void BreakLine(bool breakLine)
   { m_breakLine = breakLine; }
 
+  //! Does this cell to start with a linebreak?
+  bool BreakLine()
+  { return m_breakLine; }
+
   //! Do we want this cell to start with a pagebreak?
   void BreakPage(bool breakPage)
   { m_breakPage = breakPage; }

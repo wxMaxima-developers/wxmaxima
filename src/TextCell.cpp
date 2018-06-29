@@ -689,7 +689,9 @@ wxString TextCell::ToString()
         break;
       }
   }
-
+  if((m_next != NULL) && (m_next->BreakLine()))
+    text += "\n";
+  
   return text;
 }
 
