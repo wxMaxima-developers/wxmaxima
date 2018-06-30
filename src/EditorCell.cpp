@@ -17,7 +17,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//  Foundation, Inc., 59 Temple Placet, Suite 330, Boston, MA  02111-1307  USA
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
@@ -726,6 +726,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
   {
     MathCell::Draw(point1, fontsize);
     Configuration *configuration = (*m_configuration);
+    SetFont();
     
     m_selectionChanged = false;
     wxDC *dc = configuration->GetDC();
@@ -806,7 +807,6 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
     // Draw the text
     //
     SetPen();
-    SetFont();
 
     wxPoint TextStartingpoint = point;
     // TextStartingpoint.x -= Scale_Px(MC_TEXT_PADDING);
@@ -3375,8 +3375,6 @@ void EditorCell::PasteFromClipboard(bool primary)
 
 int EditorCell::GetLineWidth(wxDC *dc, unsigned int line, int pos)
 {
-  SetFont();
-
   // Find the text snippet the line we search for begins with for determining
   // the indentation needed.
   unsigned int currentLine = 1;
@@ -3409,6 +3407,7 @@ int EditorCell::GetLineWidth(wxDC *dc, unsigned int line, int pos)
   if (i < line)
     return 0;
 
+  SetFont();
   int width = 0;
   wxString text;
   int textWidth = 0, textHeight = 0;
@@ -3759,6 +3758,8 @@ void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidt
   if ((charInCell + 1 < text.Length()) && (token.StartsWith(wxT(" "))) && (text[charInCell + 1] == ' '))
     return;
 
+  SetFont();
+
   int width, height;
   //  Does the line extend too much to the right to fit on the screen /
   //   // to be easy to read?
@@ -3800,6 +3801,7 @@ void EditorCell::StyleTextCode()
   // help at all.
   int indentationPixels = 0;
   wxString textToStyle = m_text;
+  SetFont();
   if (configuration->GetChangeAsterisk())
   {
     textToStyle.Replace(wxT("*"), wxT("\xB7"));
