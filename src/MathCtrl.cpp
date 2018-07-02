@@ -1145,7 +1145,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
     // SELECTION IN EDITORCELL
   else if (GetActiveCell() != NULL)
   {
-    if (GetActiveCell()->IsPointInSelection(m_dc, wxPoint(downx, downy)))
+    if (GetActiveCell()->IsPointInSelection(wxPoint(downx, downy)))
       clickInSelection = true;
   }
 
@@ -1487,7 +1487,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event), GroupCell *cli
       {
         editor->MouseSelectionStartedHere();
         SetActiveCell(editor, false); // do not refresh as we will do so later
-        GetActiveCell()->SelectPointText(m_dc, m_down);
+        GetActiveCell()->SelectPointText(m_down);
         m_blinkDisplayCaret = true;
         m_clickType = CLICK_TYPE_INPUT_SELECTION;
         if (editor->GetWidth() == -1)
@@ -1907,10 +1907,9 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
           SetSelection(NULL);
           SetActiveCell(dynamic_cast<EditorCell *>(m_cellPointers.m_cellMouseSelectionStartedIn));
           // We are still inside the cell => select inside the current cell.
-          GetActiveCell()->SelectRectText(m_dc, down, up);
+          GetActiveCell()->SelectRectText(down, up);
           m_blinkDisplayCaret = true;
-          wxRect rect = GetActiveCell()->GetRect();
-          RequestRedraw(rect);
+          RequestRedraw();
 
           // Remove the marker that we need to refresh
           selectionStartOld = m_cellPointers.m_selectionStart;

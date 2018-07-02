@@ -665,7 +665,7 @@ wxString EditorCell::ToHTML()
   return retval;
 }
 
-void EditorCell::MarkSelection(long start, long end, wxDC *dc, TextStyle style, int fontsize)
+void EditorCell::MarkSelection(long start, long end, TextStyle style, int fontsize)
 {
   Configuration *configuration = (*m_configuration);
   if ((start < 0) || (end < 0)) return;
@@ -675,10 +675,10 @@ void EditorCell::MarkSelection(long start, long end, wxDC *dc, TextStyle style, 
 #if defined(__WXMAC__)
   dc->SetPen(wxNullPen); // no border on rectangles
 #else
-  dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(style), 1, wxPENSTYLE_SOLID)) );
+      configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(style), 1, wxPENSTYLE_SOLID)) );
 // window linux, set a pen
 #endif
-  dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(style)))); //highlight c.
+      configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(style)))); //highlight c.
 
 
   while (pos1 < end) // go through selection, draw a rect for each line of selection
@@ -702,7 +702,7 @@ void EditorCell::MarkSelection(long start, long end, wxDC *dc, TextStyle style, 
                   m_charHeight);
     // draw the rectangle if it is in the region that is to be updated.
     if (InUpdateRegion(rect))
-      dc->DrawRectangle(CropToUpdateRegion(rect));
+      (*m_configuration)->GetDC()->DrawRectangle(CropToUpdateRegion(rect));
     pos1++;
     pos2 = pos1;
   }
@@ -756,7 +756,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
         // This would not only be unnecessary but also could cause
         // selections to flicker in very long texts
         if ((!IsActive()) || (start != MIN(m_selectionStart, m_selectionEnd)))
-          MarkSelection(start, end, dc, TS_EQUALSSELECTION, fontsize);
+          MarkSelection(start, end, TS_EQUALSSELECTION, fontsize);
         if(m_cellPointers->m_selectionString.Length() == 0)
           end++;
         start = end;
@@ -771,7 +771,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
       if (m_selectionStart >= 0)
         MarkSelection(MIN(m_selectionStart, m_selectionEnd),
                       MAX(m_selectionStart, m_selectionEnd),
-                      dc, TS_SELECTION, fontsize);
+                      TS_SELECTION, fontsize);
 
         //
         // Matching parens - draw only if we don't have selection
@@ -890,7 +890,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
 
       PositionToXY(m_positionOfCaret, &caretInColumn, &caretInLine);
 
-      int lineWidth = GetLineWidth(dc, caretInLine, caretInColumn);
+      int lineWidth = GetLineWidth(caretInLine, caretInColumn);
 
       dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
       dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
@@ -1207,9 +1207,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     FindMatchingParens();
 
   if (m_isDirty)
-  {
-    m_width = m_maxDrop = -1;
-  }
+    ResetData();
   m_displayCaret = true;
 }
 
@@ -2908,7 +2906,7 @@ wxPoint EditorCell::PositionToPoint(int WXUNUSED(fontsize), int pos)
 
   PositionToXY(pos, &cX, &cY);
 
-  width = GetLineWidth(dc, cY, cX);
+  width = GetLineWidth(cY, cX);
 
   x += width;
   y += m_charHeight * cY;
@@ -2916,7 +2914,7 @@ wxPoint EditorCell::PositionToPoint(int WXUNUSED(fontsize), int pos)
   return wxPoint(x, y);
 }
 
-void EditorCell::SelectPointText(wxDC *dc, wxPoint &point)
+void EditorCell::SelectPointText(wxPoint &point)
 {
   wxString s;
   SetFont();
@@ -2924,8 +2922,10 @@ void EditorCell::SelectPointText(wxDC *dc, wxPoint &point)
   ClearSelection();
   wxPoint posInCell(point);
 
-  posInCell.x -= m_currentPoint.x - 2;
-  posInCell.y -= m_currentPoint.y - 2 - m_center;
+  wxASSERT_MSG(m_currentPoint.x >= 0, _("Bug: x position of cell is unknown!"));
+  wxASSERT_MSG(m_currentPoint.y >= 0, _("Bug: y position of cell is unknown!"));
+  posInCell.x -= m_currentPoint.x - Scale_Px(2);
+  posInCell.y -= m_currentPoint.y - Scale_Px(2) - m_center;
 
   unsigned int lin = posInCell.y / m_charHeight;
   int width, height;
@@ -2963,7 +2963,7 @@ void EditorCell::SelectPointText(wxDC *dc, wxPoint &point)
          text.GetChar(m_positionOfCaret) != '\r')
   {
     s = text.SubString(lineStart, m_positionOfCaret);
-    dc->GetTextExtent(text.SubString(lineStart, m_positionOfCaret),
+    (*m_configuration)->GetDC()->GetTextExtent(text.SubString(lineStart, m_positionOfCaret),
                      &width, &height);
     if (width > posInCell.x)
       break;
@@ -2979,11 +2979,11 @@ void EditorCell::SelectPointText(wxDC *dc, wxPoint &point)
     FindMatchingParens();
 }
 
-void EditorCell::SelectRectText(wxDC *dc, wxPoint &one, wxPoint &two)
+void EditorCell::SelectRectText(wxPoint &one, wxPoint &two)
 {
-  SelectPointText(dc, one);
+  SelectPointText(one);
   long start = m_positionOfCaret;
-  SelectPointText(dc, two);
+  SelectPointText(two);
   SetSelection(start, m_positionOfCaret);
   m_paren2 = m_paren1 = -1;
   m_caretColumn = -1;
@@ -2996,7 +2996,7 @@ void EditorCell::SelectRectText(wxDC *dc, wxPoint &one, wxPoint &two)
 // IsPointInSelection
 // Return true if coordinates "point" fall into selection
 // If they don't or there is no selection it returns false
-bool EditorCell::IsPointInSelection(wxDC *dc, wxPoint point)
+bool EditorCell::IsPointInSelection(wxPoint point)
 {
   if ((m_selectionStart == -1) || (m_selectionEnd == -1) || !IsActive())
     return false;
@@ -3014,7 +3014,6 @@ bool EditorCell::IsPointInSelection(wxDC *dc, wxPoint point)
       text.Replace(wxT("-"), wxT("\x2212"));
   }
   SetFont();
-
   // Determine the line the point would be in
   wxPoint posInCell(point);
   posInCell.x -= m_currentPoint.x - 2;
@@ -3047,8 +3046,8 @@ bool EditorCell::IsPointInSelection(wxDC *dc, wxPoint point)
          text.GetChar(positionOfCaret) != '\r')
   {
     s = text.SubString(lineStart, positionOfCaret);
-    dc->GetTextExtent(text.SubString(lineStart, positionOfCaret),
-                     &width, &height);
+    (*m_configuration)->GetDC()->GetTextExtent(text.SubString(lineStart, positionOfCaret),
+                                               &width, &height);
     if (width > posInCell.x)
       break;
     positionOfCaret++;
@@ -3373,7 +3372,7 @@ void EditorCell::PasteFromClipboard(bool primary)
     wxTheClipboard->UsePrimarySelection(false);
 }
 
-int EditorCell::GetLineWidth(wxDC *dc, unsigned int line, int pos)
+int EditorCell::GetLineWidth(unsigned int line, int pos)
 {
   // Find the text snippet the line we search for begins with for determining
   // the indentation needed.
@@ -3415,7 +3414,7 @@ int EditorCell::GetLineWidth(wxDC *dc, unsigned int line, int pos)
   for (; (textSnippet < m_styledText.end()) && (pos >= 0); ++textSnippet)
   {
     text = textSnippet->GetText();
-    dc->GetTextExtent(text, &textWidth, &textHeight);
+    (*m_configuration)->GetDC()->GetTextExtent(text, &textWidth, &textHeight);
     width += textWidth;
     pos -= text.Length();
   }
@@ -3423,7 +3422,7 @@ int EditorCell::GetLineWidth(wxDC *dc, unsigned int line, int pos)
   if (pos < 0)
   {
     width -= textWidth;
-    dc->GetTextExtent(text.SubString(0, text.Length() + pos), &textWidth, &textHeight);
+    (*m_configuration)->GetDC()->GetTextExtent(text.SubString(0, text.Length() + pos), &textWidth, &textHeight);
     width += textWidth;
   }
 
@@ -4257,12 +4256,11 @@ void EditorCell::StyleTextTexts()
           // begin with
           int width, height;
           Configuration *configuration = (*m_configuration);
-          wxDC *dc = configuration->GetDC();
           
           indentChar = line.Left(line.Length() - line_trimmed.Length() + 2);
           
           // Remember how far to indent subsequent lines
-          dc->GetTextExtent(indentChar, &width, &height);
+          (*m_configuration)->GetDC()->GetTextExtent(indentChar, &width, &height);
           
           // Every line of a Quote begins with a ">":
           if (!line_trimmed.StartsWith(wxT("> ")))
