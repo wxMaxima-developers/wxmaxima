@@ -673,7 +673,7 @@ void EditorCell::MarkSelection(long start, long end, TextStyle style, int fontsi
   long pos1 = start, pos2 = start;
 
 #if defined(__WXMAC__)
-  dc->SetPen(wxNullPen); // no border on rectangles
+  configuration->GetDC()->SetPen(wxNullPen); // no border on rectangles
 #else
       configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(style), 1, wxPENSTYLE_SOLID)) );
 // window linux, set a pen
@@ -779,7 +779,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
       else if (m_paren1 != -1 && m_paren2 != -1)
       {
 #if defined(__WXMAC__)
-        dc->SetPen(wxNullPen); // no border on rectangles
+        configuration->GetDC()->SetPen(wxNullPen); // no border on rectangles
 #else
         dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID))); // window linux, set a pen
 #endif

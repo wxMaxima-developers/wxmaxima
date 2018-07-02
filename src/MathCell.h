@@ -690,12 +690,12 @@ class MathCell
   virtual bool AddEnding()
   { return false; }
 
-  virtual void SelectPointText(wxDC *WXUNUSED(dc), wxPoint &WXUNUSED(point))
+  virtual void SelectPointText(wxPoint &WXUNUSED(point))
   {}
       
-  virtual void SelectRectText(wxDC *WXUNUSED(dc), wxPoint &WXUNUSED(one), wxPoint &WXUNUSED(two))
-    {}
-
+  virtual void SelectRectText(wxPoint &WXUNUSED(one), wxPoint &WXUNUSED(two))
+  {}
+  
   virtual void PasteFromClipboard(bool WXUNUSED(primary) = false)
   {}
 
