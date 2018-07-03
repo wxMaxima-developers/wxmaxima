@@ -589,8 +589,7 @@ void GroupCell::RecalculateWidths(int fontsize)
       else
         m_width = 0;
     }
-    else
-    {
+    else    {
       MathCell *tmp = m_output;
       while (tmp != NULL)
       {
@@ -692,15 +691,15 @@ void GroupCell::RecalculateHeightInput(int fontsize)
     }
   }
   
+  m_currentPoint.x = configuration->GetIndent();
   if (m_previous == NULL)
   {
-    m_currentPoint.x = configuration->GetIndent();
     m_currentPoint.y = (*m_configuration)->GetBaseIndent() + GetMaxCenter();
   }
   else
     m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y +
-    dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetMaxCenter() +
-    (*m_configuration)->GetGroupSkip();
+      dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetMaxCenter() +
+      (*m_configuration)->GetGroupSkip();
   
   m_outputRect.x = m_currentPoint.x;
   m_outputRect.y = m_currentPoint.y;
