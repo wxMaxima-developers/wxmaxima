@@ -734,12 +734,6 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
     if (m_width == -1 || m_height == -1 || configuration->ForceUpdate())
       RecalculateWidths(fontsize);
     
-//    dc->SetLogicalFunction(wxCOPY); // opaque (for everything except the caret)
-
-    // Need correct m_currentPoint before we call MathCell::Draw!
-    //  m_currentPoint.x = point.x;
-    //  m_currentPoint.y = point.y;
-
     //
     // Mark text that coincides with the selection
     //
@@ -853,12 +847,12 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
         }
 
         // replace "*" with centerdot and "-" by a Minus if requested
-        if (configuration->GetChangeAsterisk())
-        {
-          TextToDraw.Replace(wxT("*"), wxT("\xB7"));
-          if (m_type == MC_TYPE_INPUT)
-            TextToDraw.Replace(wxT("-"), wxT("\x2212"));
-        }
+//        if (configuration->GetChangeAsterisk())
+//        {
+//          TextToDraw.Replace(wxT("*"), wxT("\xB7"));
+//          if (m_type == MC_TYPE_INPUT)
+//            TextToDraw.Replace(wxT("-"), wxT("\x2212"));
+//        }
 
         // Draw a char that shows we continue an indentation - if this is needed.
         if (textSnippet->GetIndentChar() != wxEmptyString)
@@ -919,7 +913,7 @@ void EditorCell::SetFont()
   wxDC *dc = configuration->GetDC();
 
   m_fontSize = configuration->GetFontSize(m_textStyle);
-  if (m_fontSize < 1)
+  if (m_fontSize < 4)
     m_fontSize = configuration->GetDefaultFontSize();
 
   m_fontSize = Scale_Px(m_fontSize);
@@ -2927,59 +2921,117 @@ void EditorCell::SelectPointText(wxPoint &point)
 
   wxASSERT_MSG(m_currentPoint.x >= 0, _("Bug: x position of cell is unknown!"));
   wxASSERT_MSG(m_currentPoint.y >= 0, _("Bug: y position of cell is unknown!"));
-  posInCell.x -= m_currentPoint.x - Scale_Px(2);
-  posInCell.y -= m_currentPoint.y - Scale_Px(2) - m_center;
+  posInCell -= m_currentPoint;
+  posInCell -= wxPoint(Scale_Px(2),Scale_Px(2));
+  posInCell.y -= m_center;
 
   unsigned int lin = posInCell.y / m_charHeight;
   int width, height;
   int lineStart = XYToPosition(0, lin);
   m_positionOfCaret = lineStart;
-
-
-  // Find the text snippet the line we search for begins with for determining
-  // the indentation needed.
+  
+  // Find the text snippet the line we search for begins with
   unsigned int currentLine = 1;
   int indentPixels = 0;
   std::vector<StyledText>::iterator textSnippet;
   for (textSnippet = m_styledText.begin();
-       ((textSnippet < m_styledText.end()) && (currentLine <= lin)); ++textSnippet)
+       ((textSnippet != m_styledText.end()) && (currentLine <= lin)); ++textSnippet)
   {
-    if ((textSnippet->GetText() == '\n') || (textSnippet->GetText() == '\r'))
-    {
-      indentPixels = textSnippet->GetIndentPixels();
-      currentLine++;
-    }
+      if ((textSnippet->GetText() == '\n') || (textSnippet->GetText() == '\r'))
+      {
+        indentPixels = textSnippet->GetIndentPixels();
+        currentLine++;
+      }
   }
-
-  wxString text = m_text;
-  if ((*m_configuration)->GetChangeAsterisk())
-  {
-    text.Replace(wxT("*"), wxT("\xB7"));
-    if (m_type == MC_TYPE_INPUT)
-      text.Replace(wxT("-"), wxT("\x2212"));
-  }
-
-  // Handle indentation.
-  posInCell.x -= indentPixels;
-
-  while (m_positionOfCaret < (signed) text.Length() && text.GetChar(m_positionOfCaret) != '\n' &&
-         text.GetChar(m_positionOfCaret) != '\r')
-  {
-    s = text.SubString(lineStart, m_positionOfCaret);
-    (*m_configuration)->GetDC()->GetTextExtent(text.SubString(lineStart, m_positionOfCaret),
-                     &width, &height);
-    if (width > posInCell.x)
-      break;
-
-    m_positionOfCaret++;
-  }
-
-  m_positionOfCaret = MIN(m_positionOfCaret, (signed) text.Length());
-
-  m_displayCaret = true;
-  m_caretColumn = -1;
+  
   if (GetType() == MC_TYPE_INPUT)
+  {
+    // Code cell
+
+    int xpos = 0;
+    // Find the text snippet the cursor is in
+    while ((textSnippet != m_styledText.end()) && (xpos < posInCell.x))
+    {
+      wxString txt = textSnippet->GetText();
+
+       if((txt == wxT("\n")) || (txt == wxT("\r")))
+         break;
+
+       wxCoord width = 0, height = 0;
+       (*m_configuration)->GetDC()->GetTextExtent(txt, &width, &height);
+      if(xpos + width < posInCell.x)
+      {
+        xpos += width;
+        m_positionOfCaret += txt.Length();
+      }
+      else
+        break;
+      
+      ++textSnippet;
+    } 
+
+    wxString msg;
+
+    wxString snippet;
+    if(textSnippet != m_styledText.end())
+      snippet = textSnippet->GetText();
+    
+    msg += wxT("Click, Text Snippet=\"")+snippet+wxT("\"");
+    // Now determine which char inside this text snippet the cursor is at
+    if(
+      (snippet != wxT("\r")) &&
+      (snippet != wxT("\n")))
+    {
+      for (int i = 0; i < snippet.Length(); i++)
+      {
+        (*m_configuration)->GetDC()->GetTextExtent(snippet.Left(i), &width, &height);
+        if(xpos + width < posInCell.x)
+          m_positionOfCaret++;
+        else
+          break;
+      }
+      msg += "inc";
+    }
+    m_displayCaret = true;
+    m_caretColumn = -1;
     FindMatchingParens();
+    // The line that now follows is pure paranoia.
+    m_positionOfCaret = MIN(m_positionOfCaret, (signed) m_text.Length());
+     msg += wxString::Format(", Char=%i",m_positionOfCaret);
+    wxLogMessage(msg);
+  }
+  else
+  {
+    // Text cell
+    
+    wxString text = m_text;
+    if ((*m_configuration)->GetChangeAsterisk())
+    {
+      text.Replace(wxT("*"), wxT("\xB7"));
+      if (m_type == MC_TYPE_INPUT)
+        text.Replace(wxT("-"), wxT("\x2212"));
+    }
+    
+    // Handle indentation.
+    posInCell.x -= indentPixels;
+    
+    while (m_positionOfCaret < (signed) text.Length() && text.GetChar(m_positionOfCaret) != '\n' &&
+           text.GetChar(m_positionOfCaret) != '\r')
+    {
+      s = text.SubString(lineStart, m_positionOfCaret);
+      (*m_configuration)->GetDC()->GetTextExtent(text.SubString(lineStart, m_positionOfCaret),
+                                                 &width, &height);
+      if (width > posInCell.x)
+        break;
+      
+      m_positionOfCaret++;
+    }
+    m_positionOfCaret = MIN(m_positionOfCaret, (signed) text.Length());
+    
+    
+    m_displayCaret = true;
+    m_caretColumn = -1;
+  }
 }
 
 void EditorCell::SelectRectText(wxPoint &one, wxPoint &two)
