@@ -119,9 +119,28 @@
 
 
     <h4>Mac OS X</h4>
-
+    
     <div>
-      Maxima and wxMaxima can be installed with the <a href="http://brew.sh">brew package manager</a>.
+      <p>On macOS, the current version of Maxima is now supported by MacPorts, <a href="https://www.macports.org/">https://www.macports.org/</a>.
+	After installing macports the latest release og Maxima can be installed using the following command:</p>
+      <pre>sudo port install maxima</pre>
+      <p>
+	The development version of Maxima can be installed using the following command instead:
+      </p>
+      <pre>sudo port install maxima-devel</pre>
+      <p>Note: If you have already installed maxima-5.41.0, you must deactivate it with the next command before installing the development version:</p>
+      <pre>sudo port deactivate maxima</pre>
+      <p>
+	wxMaxima can then be installed using the command
+      </p>
+      <pre>sudo port install wxmaxima</pre>
+      <p>
+	or
+      </p>
+      <pre>sudo port install wxmaxima-devel</pre>
+    </div>
+    <div>
+      Maxima and wxMaxima can also be installed using the <a href="http://brew.sh">brew package manager</a>.
       <pre>brew tap homebrew/science
 brew install maxima
 brew install wxmaxima</pre>
