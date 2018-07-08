@@ -8035,7 +8035,17 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
 void wxMaxima::ResetTitle(bool saved, bool force)
 {
   if(!m_isNamed)
+  {
+    SetRepresentedFilename(wxEmptyString);
+    OSXSetModified(true);
     saved = false;
+  }
+  else
+  {
+    SetRepresentedFilename(m_console->m_currentFile);
+    OSXSetModified((saved != m_fileSaved) || (force));
+  }
+  
   if ((saved != m_fileSaved) || (force))
   {
     m_fileSaved = saved;
