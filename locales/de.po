@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-05 18:29+0200\n"
+"POT-Creation-Date: 2018-07-09 20:33+0200\n"
 "PO-Revision-Date: 2018-06-05 09:56+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -72,8 +72,8 @@ msgstr "      -l <name>"
 msgid " (Graphics) "
 msgstr " (Bild) "
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3873
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4284
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3877
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4288
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr "... + %i versteckte Zeilen"
@@ -502,7 +502,7 @@ msgstr ""
 "Ein Skalierungsfaktor für den Druck. Erlaubt es, große Gleichungen auf "
 "Papiergröße zu bringen."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4791
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4795
 msgid "A section heading"
 msgstr "Ein Kapiteltitel"
 
@@ -514,11 +514,11 @@ msgstr "Ein Abstand zwischen Gruppenzellen"
 msgid "A static plot"
 msgstr "Ein statisches Bild"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4797
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4801
 msgid "A sub-subsection heading"
 msgstr "Unter-Unterkapitelzelle"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4794
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4798
 msgid "A subsection heading"
 msgstr "Unter-Unterkapitelzelle"
 
@@ -1011,12 +1011,12 @@ msgstr ""
 "Interner Fehler: Text wurde geändert, aber es ist unbekannt, für welche "
 "Zelle."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3341
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3345
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2263
 msgid "Bug: The clipboard is already opened"
 msgstr "Interner Fehler: Die Zwischenablage ist bereits geöffnet"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3418
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3422
 msgid "Bug: The clipboard isn't open on pasting into an editor cell"
 msgstr ""
 "Interner Fehler: Die Zwischenablage ist noch nicht geöffnet, obwohl in eine "
@@ -1066,7 +1066,7 @@ msgstr ""
 "Interner Fehler: Rückgängigmachen setzt an Zellen außerhalb des "
 "Arbeitsblattes an."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4803
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4807
 msgid "Bug: Unknown type of text"
 msgstr "Interner Fehler: Unbekannte Art von Text"
 
@@ -1135,11 +1135,11 @@ msgstr "Produkte berechnen"
 msgid "Calculate sums"
 msgstr "Summen berechnen"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8215
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8225
 msgid "Can not connect to the web server."
 msgstr "Keine Verbindung mit dem Webserver."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8270
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8280
 msgid "Can not download version info."
 msgstr "Kann Information zur Version nicht laden."
 
@@ -1196,7 +1196,7 @@ msgstr "Kann Information zur Version nicht laden."
 #: /home/gunter/src/wxmaxima/src/SumWiz.cpp:47
 #: /home/gunter/src/wxmaxima/src/SystemWiz.cpp:39
 #: /home/gunter/src/wxmaxima/src/SystemWiz.cpp:41
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8312
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8322
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -1372,7 +1372,7 @@ msgid "Commands that are executed at every start of maxima."
 msgstr ""
 "Maxima-Befehle, die beim Hochfahren von Maxima ausgeführt werden sollen."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4800
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4804
 msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
 msgstr "Kommentar (Text, der nicht an Maxima gesendet wird)"
 
@@ -1959,7 +1959,7 @@ msgstr "Division durch 0."
 msgid "Do for each list element"
 msgstr "Tue dies für jedes Listenelement"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8307
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8317
 #, c-format
 msgid "Do you want to save the changes you made in the document \"%s\"?"
 msgstr "Wollen Sie Änderungen im Dokument \"%s\" speichern?"
@@ -1993,7 +1993,7 @@ msgstr "Dokumentklasse für TeX-Export:"
 msgid "Don't autosubscript after an underscore"
 msgstr "Kein automatisches Tiefstellen."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8312
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8322
 msgid "Don't save"
 msgstr "Nicht speichern"
 
@@ -2223,8 +2223,8 @@ msgstr "Gleichungen:"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2513
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2524
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2899
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8215
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8270
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8225
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8280
 msgid "Error"
 msgstr "Fehler"
 
@@ -3927,7 +3927,7 @@ msgstr ""
 "fortgesetzt wird, wird ein kleiner vertikaler Abstand zwischen den Zeilen "
 "eingeführt."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4785
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4789
 msgid "Maxima code"
 msgstr "Maxima-Code"
 
@@ -5190,7 +5190,7 @@ msgstr "Stützstellen auf einer Linie:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1095
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:164
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8312
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8322
 msgid "Save"
 msgstr "Speichern"
 
@@ -6572,7 +6572,7 @@ msgstr "Zweistichproben t-Test"
 msgid "Type"
 msgstr "Art"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4812
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4816
 msgid "Type in text"
 msgstr "Text eingeben"
 
@@ -6596,7 +6596,7 @@ msgstr "Nicht geschlossene Klammer"
 msgid "Un-closed parenthesis on encountering ; or $"
 msgstr "; oder $, bei dem nicht alle Klammern geschlossen waren"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8262
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8272
 msgid ""
 "Unable to interpret the version info I got from http://andrejv.github.io//"
 "wxmaxima/version.txt: "
@@ -6678,9 +6678,9 @@ msgstr ""
 msgid "Up"
 msgstr "Nach oben"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8246
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8253
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8256
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8263
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8273
 msgid "Upgrade"
 msgstr "Aktualisierung"
 
@@ -6991,7 +6991,7 @@ msgstr ""
 "auszuwählenden Zellen. Dies ist nützlich, wenn Sie mehrere Zellen auf einmal "
 "löschen oder auswerten wollen."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8243
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8253
 #, c-format
 msgid ""
 "You have version %s. Current version is %s.\n"
@@ -7002,11 +7002,11 @@ msgstr ""
 "\n"
 "Wählen Sie OK, um die wxMaxima Homepage zu besuchen."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8311
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8321
 msgid "Your changes will be lost if you don't save them."
 msgstr "Nicht gespeicherte Änderungen gehen verloren."
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8253
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8263
 msgid "Your version of wxMaxima is up to date."
 msgstr "Ihre wxMaxima Version ist aktuell."
 
@@ -7030,12 +7030,12 @@ msgstr "Hineinzoomen in Schritten von 10 %"
 msgid "Zoom out 10%"
 msgstr "Herauszoomen in Schritten von 10 %"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8046
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8056
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:258
 msgid "[ unsaved ]"
 msgstr "[ nicht gespeichert ]"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8048
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8058
 msgid "[ unsaved* ]"
 msgstr "[ nicht gespeichert* ]"
 
@@ -7454,7 +7454,7 @@ msgstr "Hoch 3"
 msgid "union"
 msgstr "Vereinigung"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8292
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8302
 msgid "unsaved"
 msgstr "nicht gespeichert"
 
@@ -7486,10 +7486,10 @@ msgstr "verwende die konkreten in der Liste gespeicherten Variablenwerte"
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8046
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8048
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8057
-#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8060
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8056
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8058
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8067
+#: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8070
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:258
 #, c-format
 msgid "wxMaxima %s "

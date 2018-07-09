@@ -2922,16 +2922,17 @@ void EditorCell::SelectPointText(wxPoint &point)
   wxASSERT_MSG(m_currentPoint.x >= 0, _("Bug: x position of cell is unknown!"));
   wxASSERT_MSG(m_currentPoint.y >= 0, _("Bug: y position of cell is unknown!"));
   posInCell -= m_currentPoint;
-  posInCell -= wxPoint(Scale_Px(2),Scale_Px(2));
+//  posInCell -= wxPoint(Scale_Px(m_fontSize), 2);
   posInCell.y -= m_center;
 
-  unsigned int lin = posInCell.y / m_charHeight;
+  int lin = posInCell.y / m_charHeight + 1;
+  if (posInCell.y < 0)
+    lin = 0;
   int width, height;
   int lineStart = XYToPosition(0, lin);
   m_positionOfCaret = lineStart;
-  
   // Find the text snippet the line we search for begins with
-  unsigned int currentLine = 1;
+  int currentLine = 1;
   int indentPixels = 0;
   std::vector<StyledText>::iterator textSnippet;
   for (textSnippet = m_styledText.begin();
@@ -2953,28 +2954,34 @@ void EditorCell::SelectPointText(wxPoint &point)
     while ((textSnippet != m_styledText.end()) && (xpos < posInCell.x))
     {
       wxString txt = textSnippet->GetText();
+      int firstCharWidth;
+      (*m_configuration)->GetDC()->GetTextExtent(txt.Left(1), &firstCharWidth, &height);
 
        if((txt == wxT("\n")) || (txt == wxT("\r")))
          break;
 
        wxCoord width = 0, height = 0;
-       (*m_configuration)->GetDC()->GetTextExtent(txt, &width, &height);
-      if(xpos + width < posInCell.x)
-      {
-        xpos += width;
-        m_positionOfCaret += txt.Length();
-      }
-      else
-        break;
-      
-      ++textSnippet;
+       (*m_configuration)->GetDC()->GetTextExtent(txt, &width, &height);       
+       if(xpos + width + firstCharWidth / 2 < posInCell.x)
+       {
+         xpos += width;
+         m_positionOfCaret += txt.Length();
+       }
+       else
+         break;
+       
+       ++textSnippet;
     } 
 
     wxString msg;
 
+    int lastwidth = 0;
     wxString snippet;
     if(textSnippet != m_styledText.end())
       snippet = textSnippet->GetText();
+
+    (*m_configuration)->GetDC()->GetTextExtent(snippet.Left(1), &lastwidth, &height);       
+    lastwidth = -lastwidth;
     
     msg += wxT("Click, Text Snippet=\"")+snippet+wxT("\"");
     // Now determine which char inside this text snippet the cursor is at
@@ -2985,12 +2992,15 @@ void EditorCell::SelectPointText(wxPoint &point)
       for (int i = 0; i < snippet.Length(); i++)
       {
         (*m_configuration)->GetDC()->GetTextExtent(snippet.Left(i), &width, &height);
-        if(xpos + width < posInCell.x)
+        if(xpos + width
+           + (width - lastwidth)/2
+           < posInCell.x)
           m_positionOfCaret++;
         else
           break;
+        lastwidth = width;
       }
-      msg += "inc";
+      msg += " ";
     }
     m_displayCaret = true;
     m_caretColumn = -1;
