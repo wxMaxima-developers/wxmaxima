@@ -63,6 +63,7 @@ bool MyApp::OnInit()
 
   // Migrate an eventual old config file to the location XDG wants it to be.
   #ifndef __WXMSW__
+  #if wxCHECK_VERSION(3, 1, 1)
   wxStandardPaths::Get().SetFileLayout(wxStandardPaths::FileLayout_Classic);
   wxString configFileOld = wxStandardPaths::Get().GetUserConfigDir() + wxT("/") +
     wxStandardPaths::Get().MakeConfigFileName(
@@ -83,6 +84,7 @@ bool MyApp::OnInit()
     if(wxFileExists(configFileOld))
       wxCopyFile(configFileOld,configFileXDG);
   }
+  #endif
   #endif
   
   m_frame = NULL;
