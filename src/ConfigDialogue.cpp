@@ -1246,6 +1246,7 @@ void ConfigDialogue::WriteSettings()
     {
       wxTextOutputStream text(output);
       text << m_startupCommands->GetValue();
+      text.Flush();
     }
   }
 
@@ -1255,7 +1256,8 @@ void ConfigDialogue::WriteSettings()
     {
       wxTextOutputStream text(output);
       text << m_wxStartupCommands->GetValue();
-    }  
+      text.Flush();
+    }
   }
   config->Write(wxT("ConfigDialogTab"), m_notebook->GetSelection());
 }

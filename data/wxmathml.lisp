@@ -38,6 +38,7 @@
 (setq $rmxchar #\()
 
 ;; A few variables whose value can be configured from wxMaxima
+(defvar *wx-plot-num* 0 "The serial number of the current plot")
 (defvar $wxfilename "" "The filename of the current wxMaxima worksheet")
 (defvar $wxdirname "" "The directory the current wxMaxima worksheet lies in")
 (defvar $wxanimate_autoplay nil "Automatically playback new animations?")
@@ -1356,6 +1357,16 @@
 
 (defvar *image-counter* 0)
 
+;; A suitable name for a .gnuplot file
+(defun wxplot-gnuplotfilename ()
+  (incf *wx-plot-num*)
+  (format nil "maxout_~d_~d.gnuplot" (getpid) *wx-plot-num*))
+
+;; A suitable name for a .data file
+(defun wxplot-datafilename ()
+  (incf *wx-plot-num*)
+  (format nil "maxout_~d_~d.data" (getpid) *wx-plot-num*))
+
 (defun wxplot-filename (&optional (suff t))
   (incf *image-counter*)
   (plot-temp-file (if suff
@@ -1575,6 +1586,8 @@
   (let* ((file_name_spec ($assoc '$file_name
                                  (option-sublist (append (cdar args)
                                                          (cdr args)))))
+	 (gnuplotfilename (wxplot-gnuplotfilename))
+	 (datafilename (wxplot-datafilename))
          (filename (or file_name_spec (wxplot-filename nil)))
 	 (*windows-OS* t)
 	 res)
@@ -1583,6 +1596,8 @@
                        '((mlist simp))
                        args
                        `(((mequal simp) $terminal ,(if $wxplot_pngcairo '$pngcairo '$png))
+			 ((mequal simp) $gnuplot_file_name ,gnuplotfilename)
+			 ((mequal simp) $data_file_name ,datafilename)
                          ((mequal simp) $file_name ,filename))
                        (cond
                          ((eq ($get '$draw '$version) 1)
@@ -1593,8 +1608,11 @@
     (if $display_graphics
 	(progn
           ($ldisp `((wxxmltag simp) ,(format nil "~a.png" filename) "img"
-                    ,(when file_name_spec
-                           "del=\"no\"")))
+                    ,(if file_name_spec
+			 (format nil "del=\"no\" gnuplotsource=\"~a/~a\" " $maxima_tempdir gnuplotfilename)
+			 (format nil "del=\"yes\" gnuplotsource=\"~a/~a\" " $maxima_tempdir gnuplotfilename)
+		       )
+		    ))
           (setq res ""))
 	(setf res `((wxxmltag simp) ,(format nil "~a.png" filename) "img")))
     res))
@@ -1839,6 +1857,7 @@
   (wx-print-variable '$maxima_tempdir)
   (wx-print-variable '*maxima-htmldir*)
 ;  (wx-print-variable '*maxima-topdir*)
+  (wx-print-variable '$gnuplot_command)
   (wx-print-variable '*maxima-demodir*)
   (wx-print-variable '*maxima-sharedir*)
   (wx-print-variable '*autoconf-version*)

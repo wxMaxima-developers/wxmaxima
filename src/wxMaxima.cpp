@@ -4173,6 +4173,58 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
 
   switch (event.GetId())
   {
+  case MathCtrl::popid_popup_gnuplot:
+  {
+    if(m_console->m_cellPointers.m_selectionStart == NULL)
+      return;
+    if(m_console->m_cellPointers.m_selectionStart->GetType() != MC_TYPE_IMAGE)
+      return;
+    if(m_console->m_cellPointers.m_selectionStart != m_console->m_cellPointers.m_selectionEnd)
+      return;
+
+    wxString gnuplotSource =
+      dynamic_cast<ImgCell *>(m_console->m_cellPointers.m_selectionStart)->GnuplotSource();
+    if(gnuplotSource == wxEmptyString)
+      return;
+
+    if(!wxFileExists(gnuplotSource))
+      return;
+
+    // Create a gnuplot file that doesn't select a terminal and output file
+    {
+      wxFileInputStream input(gnuplotSource);
+      if(!input.IsOk())
+        return;
+      wxTextInputStream textIn(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+
+      wxFileOutputStream output(gnuplotSource + wxT(".popout"));
+      if(!output.IsOk())
+        return;
+      wxTextOutputStream textOut(output);
+      
+      textIn.ReadLine();textIn.ReadLine();
+      
+      wxString line;
+      while(!input.Eof())
+      {
+        line = textIn.ReadLine();
+        textOut << line + wxT("\n");
+      }
+      textOut.Flush();
+    }
+
+    // Find gnuplot
+    wxPathList pathlist;
+    pathlist.AddEnvList(wxT("PATH"));
+    pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath());
+    pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../gnuplot");
+    pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../gnuplot/bin");
+    wxString gnuplot_binary = pathlist.FindAbsoluteValidPath(wxT("gnuplot"));
+
+    // Execute gnuplot
+    wxExecute(wxT("gnuplot -p " + gnuplotSource + wxT(".popout")));
+    break;
+  }
   case wxID_PREFERENCES:
   case ToolBar::tb_pref:
   {
@@ -8388,6 +8440,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(MathCtrl::popid_insert_section, wxMaxima::InsertMenu)
                 EVT_MENU(MathCtrl::popid_insert_subsection, wxMaxima::InsertMenu)
                 EVT_MENU(MathCtrl::popid_insert_subsubsection, wxMaxima::InsertMenu)
+                EVT_MENU(MathCtrl::popid_popup_gnuplot, wxMaxima::EditMenu)
                 EVT_MENU(MathCtrl::popid_delete, wxMaxima::EditMenu)
                 EVT_MENU(MathCtrl::popid_simplify, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_factor, wxMaxima::PopupMenu)

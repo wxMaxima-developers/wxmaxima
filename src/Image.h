@@ -84,6 +84,12 @@ public:
    */
   Image(Configuration **config, wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
 
+  ~Image();
+  
+  void GnuplotSource(wxString file){m_gnuplotSource = file;}
+  wxString GnuplotSource(){return m_gnuplotSource;}
+
+  
   /*! Temporarily forget the scaled image in order to save memory
 
     Will recreate the scaled image as soon as needed.
@@ -159,6 +165,8 @@ protected:
   wxString m_extension;
   //! Does this image contain an actual image?
   bool m_isOk;
+  //! The gnuplot source file for this image, if any.
+  wxString m_gnuplotSource;
 private:
   Configuration **m_configuration;
   double m_maxWidth;

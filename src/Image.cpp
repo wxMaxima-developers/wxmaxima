@@ -110,6 +110,20 @@ Image::Image(Configuration **config, wxString image, bool remove, wxFileSystem *
   m_maxHeight = -1;
 }
 
+Image::~Image()
+{
+  if(m_gnuplotSource != wxEmptyString)
+  {
+    if(wxFileExists(m_gnuplotSource))
+      wxRemoveFile(m_gnuplotSource);
+
+    wxString popoutname = m_gnuplotSource + wxT(".popout");
+    if(wxFileExists(popoutname))
+      wxRemoveFile(popoutname);
+    
+  }
+}
+
 wxSize Image::ToImageFile(wxString filename)
 {
   wxFileName fn(filename);

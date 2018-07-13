@@ -1184,8 +1184,15 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
           popupMenu->Append(popid_maxsizechooser, _("Restrict Maximum size"), wxEmptyString, wxITEM_NORMAL);
         }
       }
+      if (IsSelected(MC_TYPE_IMAGE))
+      {
+        if(dynamic_cast<ImgCell *>(m_cellPointers.m_selectionStart)->GnuplotSource() != wxEmptyString)
+        {
+          popupMenu->AppendSeparator();
+          popupMenu->Append(popid_popup_gnuplot, _("Popout image"), wxEmptyString, wxITEM_NORMAL);
+        }
+      }
     }
-
     else if (m_cellPointers.m_selectionStart != NULL)
     {
       if (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_GROUP)
