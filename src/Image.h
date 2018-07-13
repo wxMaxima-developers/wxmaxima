@@ -88,6 +88,8 @@ public:
   
   void GnuplotSource(wxString file){m_gnuplotSource = file;}
   wxString GnuplotSource(){return m_gnuplotSource;}
+  void GnuplotData(wxString file){m_gnuplotData = file;}
+  wxString GnuplotData(){return m_gnuplotData;}
 
   
   /*! Temporarily forget the scaled image in order to save memory
@@ -167,6 +169,8 @@ protected:
   bool m_isOk;
   //! The gnuplot source file for this image, if any.
   wxString m_gnuplotSource;
+  //! The gnuplot data file for this image, if any.
+  wxString m_gnuplotData;
 private:
   Configuration **m_configuration;
   double m_maxWidth;

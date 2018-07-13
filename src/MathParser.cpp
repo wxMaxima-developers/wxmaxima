@@ -874,6 +874,13 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
             if(imageCell != NULL)
               imageCell->GnuplotSource(gnuplotSource);
           }
+          wxString gnuplotData;
+          if ((gnuplotData = node->GetAttribute(wxT("gnuplotdata"), wxEmptyString)) !=
+              wxEmptyString)
+          {
+            if(imageCell != NULL)
+              imageCell->GnuplotData(gnuplotData);
+          }
         }
 
         if (node->GetAttribute(wxT("rect"), wxT("true")) == wxT("false"))

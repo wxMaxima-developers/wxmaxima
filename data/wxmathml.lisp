@@ -1609,8 +1609,8 @@
 	(progn
           ($ldisp `((wxxmltag simp) ,(format nil "~a.png" filename) "img"
                     ,(if file_name_spec
-			 (format nil "del=\"no\" gnuplotsource=\"~a/~a\" " $maxima_tempdir gnuplotfilename)
-			 (format nil "del=\"yes\" gnuplotsource=\"~a/~a\" " $maxima_tempdir gnuplotfilename)
+			 (format nil "del=\"no\" gnuplotsource=\"~a/~a\" gnuplotdata=\"~a/~a\"" $maxima_tempdir gnuplotfilename $maxima_tempdir datafilename)
+			 (format nil "del=\"yes\" gnuplotsource=\"~a/~a\" gnuplotdata=\"~a/~a\"" $maxima_tempdir gnuplotfilename $maxima_tempdir datafilename)
 		       )
 		    ))
           (setq res ""))

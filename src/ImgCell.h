@@ -55,6 +55,17 @@ public:
       return m_image->GnuplotSource();
   }
 
+  void GnuplotData(wxString file){
+    if(m_image != NULL)
+      m_image->GnuplotData(file);
+  }
+  wxString GnuplotData(){
+    if(m_image == NULL)
+      return wxEmptyString;
+    else
+      return m_image->GnuplotData();
+  }
+
   std::list<MathCell *> GetInnerCells();
   void MarkAsDeleted();
 

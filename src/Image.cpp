@@ -117,6 +117,9 @@ Image::~Image()
     if(wxFileExists(m_gnuplotSource))
       wxRemoveFile(m_gnuplotSource);
 
+    if(wxFileExists(m_gnuplotData))
+      wxRemoveFile(m_gnuplotData);
+
     wxString popoutname = m_gnuplotSource + wxT(".popout");
     if(wxFileExists(popoutname))
       wxRemoveFile(popoutname);
