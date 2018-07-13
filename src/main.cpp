@@ -60,6 +60,31 @@ void MyApp::Cleanup_Static()
 
 bool MyApp::OnInit()
 {
+
+  // Migrate an eventual old config file to the location XDG wants it to be.
+  #ifndef __WXMSW__
+  wxStandardPaths::Get().SetFileLayout(wxStandardPaths::FileLayout_Classic);
+  wxString configFileOld = wxStandardPaths::Get().GetUserConfigDir() + wxT("/") +
+    wxStandardPaths::Get().MakeConfigFileName(
+      wxString(wxT("wxMaxima")),
+      wxStandardPaths::ConfigFileConv_Dot);
+  wxStandardPaths::Get().SetFileLayout(wxStandardPaths::FileLayout_XDG);
+  wxString configFileXDG = wxStandardPaths::Get().GetUserConfigDir() + wxT("/") +
+    wxStandardPaths::Get().MakeConfigFileName(
+      wxString(wxT("wxMaxima")),
+      wxStandardPaths::ConfigFileConv_Ext);
+
+  if(!wxFileExists(configFileXDG))
+  {
+    wxFileName xdgDir(configFileXDG);
+    wxString dirName(xdgDir.GetPath());
+    if(!wxDirExists(dirName))
+      wxMkDir(dirName,0x700);
+    if(wxFileExists(configFileOld))
+      wxCopyFile(configFileOld,configFileXDG);
+  }
+  #endif
+  
   m_frame = NULL;
 //  atexit(Cleanup_Static);
   int lang = wxLANGUAGE_UNKNOWN;
