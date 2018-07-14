@@ -4222,7 +4222,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     wxString gnuplot_binary = pathlist.FindAbsoluteValidPath(wxT("gnuplot"));
 
     // Execute gnuplot
-    wxString cmdline = wxT("gnuplot -p " + gnuplotSource + wxT(".popout"));
+    wxString cmdline = wxT("gnuplot " + gnuplotSource + wxT(".popout -p"));
     wxLogMessage(_("Running gnuplot as: " + cmdline));
     wxExecute(cmdline);
     break;
