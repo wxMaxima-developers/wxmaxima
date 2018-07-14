@@ -199,8 +199,6 @@ wxString Image::GnuplotData()
     return m_gnuplotData;
 
   wxLogMessage(_("Restoring gnuplot data file from cache."));
-  wxFileName tmpnam(m_gnuplotData);
-  m_gnuplotData = wxStandardPaths::Get().GetTempDir() + wxT("/") + tmpnam.GetFullName();    
   wxFileOutputStream output(m_gnuplotData);
   wxTextOutputStream textOut(output);
   if(!output.IsOk())
@@ -229,8 +227,6 @@ wxString Image::GnuplotSource()
   if((m_gnuplotSource == wxEmptyString) || (wxFileExists(m_gnuplotSource)))
     return m_gnuplotSource;
 
-  wxFileName tmpnam(m_gnuplotSource);
-  m_gnuplotSource = wxStandardPaths::Get().GetTempDir() + wxT("/") + tmpnam.GetFullName();    
   wxFileOutputStream output(m_gnuplotSource);
   wxTextOutputStream textOut(output);
   if(!output.IsOk())
