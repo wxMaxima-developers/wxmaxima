@@ -86,10 +86,9 @@ public:
 
   ~Image();
   
-  void GnuplotSource(wxString file){m_gnuplotSource = file;}
-  wxString GnuplotSource(){return m_gnuplotSource;}
-  void GnuplotData(wxString file){m_gnuplotData = file;}
-  wxString GnuplotData(){return m_gnuplotData;}
+  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename);
+  wxString GnuplotSource();
+  wxString GnuplotData();
 
   
   /*! Temporarily forget the scaled image in order to save memory
@@ -157,6 +156,8 @@ public:
   wxMemoryBuffer m_compressedImage;
 
 protected:
+  wxMemoryBuffer m_gnuplotSource_Compressed;
+  wxMemoryBuffer m_gnuplotData_Compressed;
   //! The width of the unscaled image
   size_t m_originalWidth;
   //! The height of the unscaled image

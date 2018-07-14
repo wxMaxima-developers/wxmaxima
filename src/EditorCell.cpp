@@ -2973,8 +2973,6 @@ void EditorCell::SelectPointText(wxPoint &point)
        ++textSnippet;
     } 
 
-    wxString msg;
-
     int lastwidth = 0;
     wxString snippet;
     if(textSnippet != m_styledText.end())
@@ -2983,7 +2981,6 @@ void EditorCell::SelectPointText(wxPoint &point)
     (*m_configuration)->GetDC()->GetTextExtent(snippet.Left(1), &lastwidth, &height);       
     lastwidth = -lastwidth;
     
-    msg += wxT("Click, Text Snippet=\"")+snippet+wxT("\"");
     // Now determine which char inside this text snippet the cursor is at
     if(
       (snippet != wxT("\r")) &&
@@ -3000,15 +2997,12 @@ void EditorCell::SelectPointText(wxPoint &point)
           break;
         lastwidth = width;
       }
-      msg += " ";
     }
     m_displayCaret = true;
     m_caretColumn = -1;
     FindMatchingParens();
     // The line that now follows is pure paranoia.
     m_positionOfCaret = MIN(m_positionOfCaret, (signed) m_text.Length());
-     msg += wxString::Format(", Char=%i",m_positionOfCaret);
-    wxLogMessage(msg);
   }
   else
   {

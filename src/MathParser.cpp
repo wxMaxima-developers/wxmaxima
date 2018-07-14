@@ -867,20 +867,10 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
 
             imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, false, NULL);
           }
-          wxString gnuplotSource;
-          if ((gnuplotSource = node->GetAttribute(wxT("gnuplotsource"), wxEmptyString)) !=
-              wxEmptyString)
-          {
-            if(imageCell != NULL)
-              imageCell->GnuplotSource(gnuplotSource);
-          }
-          wxString gnuplotData;
-          if ((gnuplotData = node->GetAttribute(wxT("gnuplotdata"), wxEmptyString)) !=
-              wxEmptyString)
-          {
-            if(imageCell != NULL)
-              imageCell->GnuplotData(gnuplotData);
-          }
+          wxString gnuplotSource = node->GetAttribute(wxT("gnuplotsource"), wxEmptyString);
+          wxString gnuplotData = node->GetAttribute(wxT("gnuplotdata"), wxEmptyString);
+          if((imageCell != NULL) && (gnuplotSource != wxEmptyString))
+            imageCell->GnuplotSource(gnuplotSource, gnuplotData);
         }
 
         if (node->GetAttribute(wxT("rect"), wxT("true")) == wxT("false"))
