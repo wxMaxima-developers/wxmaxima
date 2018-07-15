@@ -4243,7 +4243,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       if(gnuplotin != NULL)
       {
         wxTextOutputStream gnuplotin_txt(*gnuplotin);
-        gnuplotin_txt.Write(wxT("\n"));
+        gnuplotin_txt << wxT("\n");
         gnuplotin_txt.Flush();
       }
       else
