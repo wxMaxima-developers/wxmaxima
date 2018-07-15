@@ -474,7 +474,9 @@ public:
     menu_history_next,
     menu_check_updates,
     socket_client_id,
-    socket_server_id
+    socket_server_id,
+    maxima_process_id,
+    gnuplot_process_id
   };
 
   /*! Update the recent documents list

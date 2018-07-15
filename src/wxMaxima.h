@@ -242,6 +242,8 @@ private:
   int m_nestedLoadCommands;
 
 protected:
+  //! The gnuplot process info
+  wxProcess *m_gnuplotProcess;
   //! Is this window active?
   bool m_isActive;
   //! Called when this window is activated or deactivated.
@@ -321,6 +323,7 @@ protected:
    */
   void ShowPane(wxCommandEvent &event);            //<! Makes a sidebar visible
   void OnProcessEvent(wxProcessEvent &event);      //
+  void OnGnuplotClose(wxProcessEvent &event);      //
   void PopupMenu(wxCommandEvent &event);           //
   void StatsMenu(wxCommandEvent &event);           //
 

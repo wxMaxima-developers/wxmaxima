@@ -96,11 +96,6 @@
 #define MACPREFIX "wxMaxima.app/Contents/Resources/"
 #endif
 
-enum
-{
-  maxima_process_id
-};
-
 void wxMaxima::ConfigChanged()
 {
   wxConfig *config = (wxConfig *) wxConfig::Get();
@@ -185,6 +180,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, configFile, pos, size)
 {
+  m_gnuplotProcess = NULL;
   m_openInitialFileError = false;
   m_nestedLoadCommands = 0;
   m_maximaJiffies_old = 0;
@@ -1228,6 +1224,12 @@ void wxMaxima::KillMaxima()
     wxRemoveFile(m_maximaTempDir + wxT("/maxout_") + wxString::Format("%li.xmaxima",m_pid));
   }
   m_pid = -1;
+}
+
+void wxMaxima::OnGnuplotClose(wxProcessEvent& WXUNUSED(event))
+{
+  m_gnuplotProcess = NULL;
+  wxLogMessage(_("Gnuplot has closed."));
 }
 
 void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
@@ -4210,6 +4212,9 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
         line = textIn.ReadLine();
         textOut << line + wxT("\n");
       }
+      // tell gnuplot to wait for the window to close - or for 10 minutex
+      // if gnuplot is too old to understand that.
+      textOut<<"if(GPVAL_VERSION >= 5.0) pause mouse close; else pause 600\n";
       textOut.Flush();
     }
 
@@ -4217,14 +4222,21 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     wxPathList pathlist;
     pathlist.AddEnvList(wxT("PATH"));
     pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath());
+    pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../");
     pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../gnuplot");
     pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../gnuplot/bin");
     wxString gnuplot_binary = pathlist.FindAbsoluteValidPath(wxT("gnuplot"));
 
     // Execute gnuplot
-    wxString cmdline = wxT("gnuplot " + gnuplotSource + wxT(".popout -p"));
+    wxString cmdline = wxT("gnuplot " + gnuplotSource + wxT(".popout"));
     wxLogMessage(_("Running gnuplot as: " + cmdline));
-    wxExecute(cmdline);
+
+    m_gnuplotProcess = new wxProcess(this, gnuplot_process_id);
+    if (wxExecute(cmdline, wxEXEC_ASYNC, m_process) < 0)
+    {
+      m_newStatusText = _("Cannot start gnuplot");
+      wxLogMessage(m_newStatusText);
+    }
     break;
   }
   case wxID_PREFERENCES:
@@ -8693,6 +8705,7 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
 */
                 EVT_CLOSE(wxMaxima::OnClose)
                 EVT_END_PROCESS(maxima_process_id, wxMaxima::OnProcessEvent)
+                EVT_END_PROCESS(gnuplot_process_id, wxMaxima::OnGnuplotClose)
                 EVT_MENU(MathCtrl::popid_edit, wxMaxima::EditInputMenu)
                 EVT_MENU(menu_evaluate, wxMaxima::EvaluateEvent)
                 EVT_MENU(menu_add_comment, wxMaxima::InsertMenu)
