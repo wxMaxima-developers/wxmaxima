@@ -4232,14 +4232,23 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     wxLogMessage(_("Running gnuplot as: " + cmdline));
 
     m_gnuplotProcess = new wxProcess(this, gnuplot_process_id);
-    if (wxExecute(cmdline, wxEXEC_ASYNC, m_process) < 0)
-      wxLogMessage(_("Cannot start gnuplot"));
-
-    // Work around a bug in gnuplot that makes it only exit on closing the plot
-    // windo if it has ever received a newline on stdin.
     m_gnuplotProcess->Redirect();
-    wxTextOutputStream gnuplotin(*m_gnuplotProcess->GetOutputStream());
-    gnuplotin << wxT("\n");
+    if (wxExecute(cmdline, wxEXEC_ASYNC, m_gnuplotProcess) < 0)
+      wxLogMessage(_("Cannot start gnuplot"));
+    else
+    {
+      // Work around a bug in gnuplot that makes it only exit on closing the plot
+      // windo if it has ever received a newline on stdin.
+      wxOutputStream *gnuplotin = m_gnuplotProcess->GetOutputStream();
+      if(gnuplotin != NULL)
+      {
+        wxTextOutputStream gnuplotin_txt(*gnuplotin);
+        gnuplotin_txt.Write(wxT("\n"));
+        gnuplotin_txt.Flush();
+      }
+      else
+        wxLogMessage(_("Cannot get gnuplot's stdin"));
+    }
     break;
   }
   case wxID_PREFERENCES:
