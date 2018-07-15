@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-07-15 16:07+0200\n"
-"PO-Revision-Date: 2018-06-05 09:56+0200\n"
+"PO-Revision-Date: 2018-07-15 16:21+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1072,11 +1072,11 @@ msgstr "Interner Fehler: Unbekannte Art von Text"
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2922
 msgid "Bug: x position of cell is unknown!"
-msgstr ""
+msgstr "Interner Fehler: Die x-Position der Zelle ist unbekannt!"
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2923
 msgid "Bug: y position of cell is unknown!"
-msgstr ""
+msgstr "Interner Fehler: Die y-Position der Zelle ist unbekannt!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1125
 msgid "Build &Info"
@@ -1105,7 +1105,7 @@ msgstr "&Einstellungen ..."
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:146
 msgid "Caching the gnuplot source of an image."
-msgstr ""
+msgstr "Merke mir die Arbeitsanweisung für Gnuplot."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:860
 msgid "Calculate &Product..."
@@ -1207,16 +1207,15 @@ msgstr "Abbrechen"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1005
 msgid ""
 "Cannot find a maxima binary and no binary chosen in the config dialogue."
-msgstr ""
+msgstr "Kann maxima nicht dort finden, wo im Konfigurationsdialog angegeben."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4250
 msgid "Cannot get gnuplot's stdin"
-msgstr ""
+msgstr "Kann Gnuplot's Dateneingang nicht finden."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4237
-#, fuzzy
 msgid "Cannot start gnuplot"
-msgstr "Ein statisches Bild"
+msgstr "Konnte Gnuplot nicht starten"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:989
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:130
@@ -1297,7 +1296,7 @@ msgstr "Neues Plot-Format eingeben:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:604
 msgid "Choose the parenthesis type for Matrices"
-msgstr ""
+msgstr "Darstellung der Klammern von Matritzen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6691
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6707
@@ -1470,9 +1469,8 @@ msgid "Connect the dots"
 msgstr "Verbinde die Punkte"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:879
-#, fuzzy
 msgid "Connected."
-msgstr "Nicht verbunden."
+msgstr "Verbunden."
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:215
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:234
@@ -1782,11 +1780,11 @@ msgstr "Daten:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:445
 msgid "Debug Messages"
-msgstr ""
+msgstr "Debug-Nachrichten"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:580
 msgid "Debug messages"
-msgstr ""
+msgstr "Debug-Nachrichten"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:879
 msgid "Decompose rational function to partial fractions"
@@ -2948,7 +2946,7 @@ msgstr "Realteil eines komplexen Ausdrucks bestimmen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1232
 msgid "Gnuplot has closed."
-msgstr ""
+msgstr "Gnuplot wurde beendet."
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:6655
 msgid ""
@@ -3611,9 +3609,8 @@ msgid "Keep percent sign with special symbols: %e, %i, etc."
 msgstr "Zeige Prozentzeichen für spezielle Symbole: %e, %i, usw."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1168
-#, fuzzy
 msgid "Killing Maxima."
-msgstr "Maxima wird gestartet ..."
+msgstr "Maxima wird beendet ..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5498
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5973
@@ -3968,7 +3965,6 @@ msgid "Maxima has issued an error!"
 msgstr "Maxima hat eine Fehlermeldung ausgegeben!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1237
-#, fuzzy
 msgid "Maxima has terminated."
 msgstr "Maxima wurde beendet."
 
@@ -3987,7 +3983,7 @@ msgstr "Maxima ist bereit."
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1661
 #, c-format
 msgid "Maxima loads the file %s."
-msgstr ""
+msgstr "Maxima ldt die Datei %s."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4131
 msgid "Maxima package (*.mac)|*.mac"
@@ -4024,7 +4020,7 @@ msgstr "Maxima Fragen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1608
 msgid "Maxima sends a new set of auto-completible symbols."
-msgstr ""
+msgstr "Maxima sendet einen neuen Satz von Symbolen für die Auto-Vervollständigung."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:165
 msgid "Maxima started. Waiting for connection..."
@@ -4863,7 +4859,7 @@ msgstr "Pop"
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1192
 msgid "Popout image"
-msgstr ""
+msgstr "In interaktivem Fenster"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:830
 msgid "Portuguese (Brazilian)"
@@ -4975,7 +4971,7 @@ msgstr "Wiederhole vorherigen Befehl der Historie."
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1332
 #, c-format
 msgid "Received maxima's first prompt: %s"
-msgstr ""
+msgstr "Empfang der Startmeldung von Maxima: %s"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:857
 msgid "Recent files list length:"
@@ -5057,11 +5053,11 @@ msgstr "Neustart von Maxima"
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:201
 msgid "Restoring gnuplot data file from cache."
-msgstr ""
+msgstr "Stelle die Daten für Gnuplot wieder her."
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:235
 msgid "Restoring gnuplot source file from cache."
-msgstr ""
+msgstr "Stelle die Arbeitsanweisung für Gnuplot wieder her."
 
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1184
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:1265
@@ -5169,14 +5165,13 @@ msgid "Rule:"
 msgstr "Regel:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4232
-#, fuzzy
 msgid "Running gnuplot as: "
-msgstr "Unterbrechen von Maxima: %s"
+msgstr "Starte gnuplot als: "
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:985
-#, fuzzy, c-format
+#, c-format
 msgid "Running maxima as: %s"
-msgstr "Unterbrechen von Maxima: %s"
+msgstr "Starte Maxima als: %s"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1003
 msgid "Runs each element through a function"
@@ -5420,17 +5415,15 @@ msgstr "Auswahl"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1158
 msgid "Sending Maxima a SIGINT signal."
-msgstr ""
+msgstr "Sende Maxima ein SIGINT-Signal."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1154
-#, fuzzy
 msgid "Sending an interactive Interrupt signal (Ctrl+C) to Maxima."
-msgstr "Konnte kein \"Unterbrechen\"-Signal an Maxima senden."
+msgstr "Sende ein interaktives \"Unterbrechen\"-Signal an Maxima."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1132
-#, fuzzy
 msgid "Sending an interrupt signal to Maxima."
-msgstr "Konnte kein \"Unterbrechen\"-Signal an Maxima senden."
+msgstr "Sende ein \"Unterbrechen\"-Signal an Maxima."
 
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:66
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6128
@@ -6078,7 +6071,7 @@ msgstr "Abwägung der Genauigkeit gegenüber der Geschwindigkeit"
 msgid ""
 "The Maxima process doesn't offer a shared memory segment we can send an "
 "interrupt signal to."
-msgstr ""
+msgstr "Maxima bietet keinen geteilten Speicher an, in dem ein \"Unterbrechen\"-Signal hinterlegt werden kann."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:303
 msgid "The URL MathJaX.js should be downloaded from by our HTML export."
