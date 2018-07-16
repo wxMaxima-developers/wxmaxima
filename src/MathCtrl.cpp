@@ -6081,7 +6081,7 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
   output << ">\n";
 
   // Reset image counter
-  ImgCell::WXMXResetCounter();
+  m_cellPointers.WXMXResetCounter();
 
   wxString xmlText;
   if (m_tree)

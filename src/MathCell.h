@@ -877,6 +877,7 @@ public:
         else
           return m_lastWorkingGroup;
       }
+
     //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
     void SetWorkingGroup(MathCell *group)
       {
@@ -884,6 +885,15 @@ public:
           m_lastWorkingGroup = group;
         m_workingGroup = group;
       }
+    
+    void WXMXResetCounter()
+      { m_wxmxImgCounter = 0; }
+    
+    wxString WXMXGetNewFileName();
+    
+    int WXMXImageCount()
+      { return m_wxmxImgCounter; }
+
     //! A list of editor cells containing error messages.
     class ErrorList
     {
@@ -993,6 +1003,8 @@ public:
   private:
     //! The function to call if an animation has to be stepped.
     wxScrolledCanvas *m_mathCtrl;
+    //! The image counter for saving .wxmx files
+    int m_wxmxImgCounter;
   };
 
 protected:

@@ -283,7 +283,7 @@ wxString ImgCell::ToRTF()
 
 wxString ImgCell::ToXML()
 {
-  wxString basename = ImgCell::WXMXGetNewFileName();
+  wxString basename = m_cellPointers->WXMXGetNewFileName();
 
   // add the file to memory
   if (m_image)
@@ -360,13 +360,6 @@ wxString ImgCell::ToXML()
   
   return (wxT("<img") + flags + wxT(">") +
           basename + m_image->GetExtension() + wxT("</img>"));
-}
-
-wxString ImgCell::WXMXGetNewFileName()
-{
-  wxString file(wxT("image"));
-  file << (++s_counter) << wxT(".");
-  return file;
 }
 
 bool ImgCell::CopyToClipboard()

@@ -298,7 +298,7 @@ wxString SlideShow::ToXML()
 
   for (int i = 0; i < m_size; i++)
   {
-    wxString basename = ImgCell::WXMXGetNewFileName();
+    wxString basename = m_cellPointers->WXMXGetNewFileName();
     // add the file to memory
     if (m_images[i])
     {

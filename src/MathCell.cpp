@@ -1324,6 +1324,7 @@ wxAccStatus MathCell::GetRole (int childId, wxAccRole *role)
 
 MathCell::CellPointers::CellPointers(wxScrolledCanvas *mathCtrl)
 {
+  m_wxmxImgCounter = 0;
   m_mathCtrl = mathCtrl;
   m_cellMouseSelectionStartedIn = NULL;
   m_cellKeyboardSelectionStartedIn = NULL;
@@ -1339,6 +1340,13 @@ MathCell::CellPointers::CellPointers(wxScrolledCanvas *mathCtrl)
   m_selectionStart = NULL;
   m_selectionEnd = NULL;
   m_currentTextCell = NULL;
+}
+
+wxString MathCell::CellPointers::WXMXGetNewFileName()
+{
+  wxString file(wxT("image"));
+  file << (++m_wxmxImgCounter) << wxT(".");
+  return file;
 }
 
 bool MathCell::CellPointers::ErrorList::Contains(MathCell *cell)

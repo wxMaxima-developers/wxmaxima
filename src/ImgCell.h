@@ -98,16 +98,6 @@ public:
   //! Copies the cell to the system's clipboard
   bool CopyToClipboard();
 
-  // These methods should only be used for saving wxmx files
-  // and are shared with SlideShowCell.
-  static void WXMXResetCounter()
-  { s_counter = 0; }
-
-  static wxString WXMXGetNewFileName();
-
-  static int WXMXImageCount()
-  { return s_counter; }
-
   void DrawRectangle(bool draw)
   { m_drawRectangle = draw; }
 
