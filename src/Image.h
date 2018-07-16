@@ -85,11 +85,18 @@ public:
   Image(Configuration **config, wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
 
   ~Image();
-  
-  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename);
+
+  //! Sets the name of the gnuplot source and data file of this image
+  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFileSystem *filesystem = NULL);
+  //! Returns the gnuplot source file name of this image
   wxString GnuplotSource();
+  //! Returns the gnuplot data file name of this image
   wxString GnuplotData();
 
+  //! Returns the gnuplot source of this image
+  wxMemoryBuffer GetGnuplotSource();
+  //! Returns the gnuplot data of this image
+  wxMemoryBuffer GetGnuplotData();
   
   /*! Temporarily forget the scaled image in order to save memory
 

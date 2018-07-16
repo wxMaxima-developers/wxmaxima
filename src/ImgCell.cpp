@@ -308,6 +308,56 @@ wxString ImgCell::ToXML()
   if(m_image->GetMaxHeight() > 0)
     flags += wxString::Format(wxT(" maxHeight=\"%f\""), m_image->GetMaxHeight());
 
+  if (m_image)
+  {
+    // Anonymize the name of our temp directory for saving
+    wxString gnuplotSource;
+    wxString gnuplotData;
+    if(m_image->GnuplotData() != wxEmptyString)
+    {
+      wxFileName gnuplotDataFile(m_image->GnuplotData());
+      gnuplotData = gnuplotDataFile.GetFullName();
+    }
+    std::cerr<<"gnuplotData="<<gnuplotData<<"\n";
+    if(m_image->GnuplotSource() != wxEmptyString)
+    {
+      wxFileName gnuplotSourceFile(m_image->GnuplotSource());
+      gnuplotSource = gnuplotSourceFile.GetFullName();
+    }
+    std::cerr<<"gnuplotSource="<<gnuplotSource<<"\n";
+
+    // Save the gnuplot source, if necessary.
+    if(gnuplotSource != wxEmptyString)
+    {
+      std::cerr<<"1\n";
+      flags += " gnuplotsource=\"" + gnuplotSource + "\"";
+      std::cerr<<"2\n";
+      wxMemoryBuffer data = m_image->GetGnuplotSource();
+      if(data.GetDataLen() > 0)
+      {
+        wxMemoryFSHandler::AddFile(gnuplotSource,
+                                   data.GetData(),
+                                   data.GetDataLen()
+          );
+        std::cerr<<"3\n";
+      }
+    }
+    if(gnuplotData != wxEmptyString)
+    {
+      std::cerr<<"5\n";
+      flags += " gnuplotdata=\"" + gnuplotData + "\"";
+      wxMemoryBuffer data = m_image->GetGnuplotData();
+      if(data.GetDataLen() > 0)
+      {
+        std::cerr<<"6\n";
+        wxMemoryFSHandler::AddFile(gnuplotData,
+                                   data.GetData(),
+                                   data.GetDataLen()
+          );
+      }
+    }
+  }
+  
   return (wxT("<img") + flags + wxT(">") +
           basename + m_image->GetExtension() + wxT("</img>"));
 }

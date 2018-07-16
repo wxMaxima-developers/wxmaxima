@@ -867,11 +867,11 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
 
             imageCell = new ImgCell(NULL, m_configuration, m_cellPointers, filename, false, NULL);
           }
-          wxString gnuplotSource = node->GetAttribute(wxT("gnuplotsource"), wxEmptyString);
-          wxString gnuplotData = node->GetAttribute(wxT("gnuplotdata"), wxEmptyString);
-          if((imageCell != NULL) && (gnuplotSource != wxEmptyString))
-            imageCell->GnuplotSource(gnuplotSource, gnuplotData);
         }
+        wxString gnuplotSource = node->GetAttribute(wxT("gnuplotsource"), wxEmptyString);
+        wxString gnuplotData = node->GetAttribute(wxT("gnuplotdata"), wxEmptyString);
+        if((imageCell != NULL) && (gnuplotSource != wxEmptyString))
+          imageCell->GnuplotSource(gnuplotSource, gnuplotData, m_fileSystem);
 
         if (node->GetAttribute(wxT("rect"), wxT("true")) == wxT("false"))
           imageCell->DrawRectangle(false);

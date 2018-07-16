@@ -6112,28 +6112,25 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
   fsystem->AddHandler(new wxMemoryFSHandler);
   fsystem->ChangePathTo(wxT("memory:"), true);
 
-  for (int i = 1; i <= ImgCell::WXMXImageCount(); i++)
+  wxString memFsName = fsystem->FindFirst("*");
+  while(memFsName != wxEmptyString)
   {
-    wxString name = wxT("image");
-    name << i << wxT(".*");
-    name = fsystem->FindFirst(name);
+    wxFSFile *fsfile = fsystem->OpenFile(memFsName);
 
-    // TODO: This file remains as memory leak. But calling delete on it
-    // causes already-freed memory to be overwritten.
-    wxFSFile *fsfile = fsystem->OpenFile(name);
-
-    name = name.Right(name.Length() - 7);
     if (fsfile)
     {
+      wxString name = memFsName.Right(memFsName.Length()-7);
       zip.PutNextEntry(name);
       wxInputStream *imagefile = fsfile->GetStream();
-
+      
       while (!(imagefile->Eof()))
         imagefile->Read(zip);
-
+      
       wxDELETE(imagefile);
       wxMemoryFSHandler::RemoveFile(name);
+      std::cerr<<"name=\""<<name<<"\"\n";
     }
+    memFsName = fsystem->FindNext();
   }
 
   wxDELETE(fsystem);

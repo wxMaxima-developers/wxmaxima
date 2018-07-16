@@ -44,10 +44,10 @@ public:
 
   ~ImgCell();
 
-  void GnuplotSource(wxString sourcefile, wxString datafile)
+  void GnuplotSource(wxString sourcefile, wxString datafile, wxFileSystem *filesystem = NULL)
     {
       if(m_image != NULL)
-        m_image->GnuplotSource(sourcefile,datafile);
+        m_image->GnuplotSource(sourcefile,datafile, filesystem);
     }
   wxString GnuplotSource(){
     if(m_image == NULL)
