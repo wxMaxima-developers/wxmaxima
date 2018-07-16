@@ -4214,8 +4214,9 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       }
       // tell gnuplot to wait for the window to close - or for 10 minutex
       // if gnuplot is too old to understand that.
+      textOut<<"if(GPVAL_VERSION >= 5.0) bind \"Close\" \"exit gnuplot\"\n";
       textOut<<"if(GPVAL_VERSION >= 5.0) pause mouse close; else pause 600\n";
-      textOut.Flush();
+   textOut.Flush();
     }
 
     // Find gnuplot
@@ -4237,23 +4238,10 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     wxLogMessage(_("Running gnuplot as: " + cmdline));
 
     m_gnuplotProcess = new wxProcess(this, gnuplot_process_id);
-    m_gnuplotProcess->Redirect();
-    if (wxExecute(cmdline, wxEXEC_ASYNC, m_gnuplotProcess) < 0)
+    if (wxExecute(cmdline,
+                  wxEXEC_ASYNC|wxEXEC_MAKE_GROUP_LEADER|wxEXEC_HIDE_CONSOLE,
+                  m_gnuplotProcess) < 0)
       wxLogMessage(_("Cannot start gnuplot"));
-    else
-    {
-      // Work around a bug in gnuplot that makes it only exit on closing the plot
-      // windo if it has ever received a newline on stdin.
-      wxOutputStream *gnuplotin = m_gnuplotProcess->GetOutputStream();
-      if(gnuplotin != NULL)
-      {
-        wxTextOutputStream gnuplotin_txt(*gnuplotin);
-        gnuplotin_txt << wxT("\n");
-        gnuplotin_txt.Flush();
-      }
-      else
-        wxLogMessage(_("Cannot get gnuplot's stdin"));
-    }
     break;
   }
   case wxID_PREFERENCES:
