@@ -4239,7 +4239,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
 
     m_gnuplotProcess = new wxProcess(this, gnuplot_process_id);
     if (wxExecute(cmdline,
-                  wxEXEC_ASYNC|wxEXEC_MAKE_GROUP_LEADER|wxEXEC_HIDE_CONSOLE,
+                  wxEXEC_ASYNC|wxEXEC_SHOW_CONSOLE,
                   m_gnuplotProcess) < 0)
       wxLogMessage(_("Cannot start gnuplot"));
     break;

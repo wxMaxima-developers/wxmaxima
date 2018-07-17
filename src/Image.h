@@ -115,9 +115,13 @@ public:
   //! Loads an image from a file
   void LoadImage(wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
 
+  //! The maximum width this image shall be displayed with
   double GetMaxWidth(){return m_maxWidth;}
+  //! The maximum height this image shall be displayed with
   double GetMaxHeight(){return m_maxHeight;}
+  //! Set the maximum width this image shall be displayed with
   void   SetMaxWidth(double width){m_maxWidth = width;}
+  //! Set the maximum height this image shall be displayed with
   void   SetMaxHeight(double height){m_maxHeight = height;}
   
   //! "Loads" an image from a bitmap
@@ -163,7 +167,9 @@ public:
   wxMemoryBuffer m_compressedImage;
 
 protected:
+  //! A zipped version of the gnuplot commands that produced this image.
   wxMemoryBuffer m_gnuplotSource_Compressed;
+  //! A zipped version of the gnuplot data needed in order to create this image.
   wxMemoryBuffer m_gnuplotData_Compressed;
   //! The width of the unscaled image
   size_t m_originalWidth;
@@ -181,7 +187,9 @@ protected:
   wxString m_gnuplotData;
 private:
   Configuration **m_configuration;
+  //! The upper width limit for displaying this image
   double m_maxWidth;
+  //! The upper height limit for displaying this image
   double m_maxHeight;
 };
 

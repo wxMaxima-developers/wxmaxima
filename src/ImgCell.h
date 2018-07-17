@@ -44,18 +44,20 @@ public:
 
   ~ImgCell();
 
+  //! Tell the image which gnuplot files it was made from
   void GnuplotSource(wxString sourcefile, wxString datafile, wxFileSystem *filesystem = NULL)
     {
       if(m_image != NULL)
         m_image->GnuplotSource(sourcefile,datafile, filesystem);
     }
+  //! The name of the file with gnuplot commands that created this file
   wxString GnuplotSource(){
     if(m_image == NULL)
       return wxEmptyString;
     else
       return m_image->GnuplotSource();
   }
-  
+  //! The name of the file with gnuplot data needed for creating this file
   wxString GnuplotData(){
     if(m_image == NULL)
       return wxEmptyString;
