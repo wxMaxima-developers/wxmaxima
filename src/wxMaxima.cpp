@@ -980,6 +980,7 @@ bool wxMaxima::StartMaxima(bool force)
 #endif
       m_process = new wxProcess(this, maxima_process_id);
       m_process->Redirect();
+      m_process->SetPriority(wxPRIORITY_MAX);
       m_first = true;
       m_pid = -1;
       wxLogMessage(wxString::Format(_("Running maxima as: %s"), command));

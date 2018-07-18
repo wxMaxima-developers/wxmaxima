@@ -6136,7 +6136,6 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
       
       wxDELETE(imagefile);
       wxMemoryFSHandler::RemoveFile(name);
-      std::cerr<<"name=\""<<name<<"\"\n";
     }
     memFsName = fsystem->FindNext();
   }

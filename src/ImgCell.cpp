@@ -318,20 +318,16 @@ wxString ImgCell::ToXML()
       wxFileName gnuplotDataFile(m_image->GnuplotData());
       gnuplotData = gnuplotDataFile.GetFullName();
     }
-    std::cerr<<"gnuplotData="<<gnuplotData<<"\n";
     if(m_image->GnuplotSource() != wxEmptyString)
     {
       wxFileName gnuplotSourceFile(m_image->GnuplotSource());
       gnuplotSource = gnuplotSourceFile.GetFullName();
     }
-    std::cerr<<"gnuplotSource="<<gnuplotSource<<"\n";
 
     // Save the gnuplot source, if necessary.
     if(gnuplotSource != wxEmptyString)
     {
-      std::cerr<<"1\n";
       flags += " gnuplotsource=\"" + gnuplotSource + "\"";
-      std::cerr<<"2\n";
       wxMemoryBuffer data = m_image->GetGnuplotSource();
       if(data.GetDataLen() > 0)
       {
@@ -339,17 +335,14 @@ wxString ImgCell::ToXML()
                                    data.GetData(),
                                    data.GetDataLen()
           );
-        std::cerr<<"3\n";
       }
     }
     if(gnuplotData != wxEmptyString)
     {
-      std::cerr<<"5\n";
       flags += " gnuplotdata=\"" + gnuplotData + "\"";
       wxMemoryBuffer data = m_image->GetGnuplotData();
       if(data.GetDataLen() > 0)
       {
-        std::cerr<<"6\n";
         wxMemoryFSHandler::AddFile(gnuplotData,
                                    data.GetData(),
                                    data.GetDataLen()
