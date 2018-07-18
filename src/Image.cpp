@@ -163,7 +163,7 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFil
         zlib_flags = wxZLIB_GZIP;
       else
         zlib_flags = wxZLIB_ZLIB;
-      wxZlibOutputStream zstream(mstream,9,zlib_flags);
+      wxZlibOutputStream zstream(mstream,wxZ_BEST_COMPRESSION,zlib_flags);
       wxTextOutputStream textOut(zstream);
       wxString line;
       
@@ -204,7 +204,7 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFil
         zlib_flags = wxZLIB_GZIP;
       else
         zlib_flags = wxZLIB_ZLIB;
-      wxZlibOutputStream zstream(mstream,9,zlib_flags);
+      wxZlibOutputStream zstream(mstream,wxZ_BEST_COMPRESSION,zlib_flags);
       wxTextOutputStream textOut(zstream);
       wxString line;
       
@@ -239,7 +239,7 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFil
               zlib_flags = wxZLIB_GZIP;
             else
               zlib_flags = wxZLIB_ZLIB;
-            wxZlibOutputStream zstream(mstream,9,zlib_flags);
+            wxZlibOutputStream zstream(mstream,wxZ_BEST_COMPRESSION,zlib_flags);
             wxTextOutputStream textOut(zstream);
             wxString line;
             
@@ -284,7 +284,7 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFil
             zlib_flags = wxZLIB_GZIP;
           else
             zlib_flags = wxZLIB_ZLIB;
-          wxZlibOutputStream zstream(mstream,9,zlib_flags);
+          wxZlibOutputStream zstream(mstream,wxZ_BEST_COMPRESSION,zlib_flags);
           wxTextOutputStream textOut(zstream);
           wxString line;
             
