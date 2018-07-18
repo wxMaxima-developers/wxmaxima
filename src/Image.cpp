@@ -170,7 +170,7 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFil
       // A RegEx that matches the name of the data file (needed if we ever want to
       // move a data file into the temp directory of a new computer that locates its
       // temp data somewhere strange).
-      wxRegEx replaceDataFileName("'[^']*maxout_[^']*_[0-9*]\\.data'");
+      wxRegEx replaceDataFileName("'[^']*maxout_[^']*_[0-9]*\\.data'");
       while(!input.Eof())
       {
         line = textIn.ReadLine();
