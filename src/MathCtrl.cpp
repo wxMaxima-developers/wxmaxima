@@ -5988,7 +5988,7 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
   //  - and if anything crashes in a bad way chances are high that the uncompressed
   //    contents of the .wxmx file can be rescued using a text editor.
   //  Who would - under these circumstances - care about a kilobyte?
-  zip.SetLevel(wxZ_NO_COMPRESSION);
+  zip.SetLevel(0);
   zip.PutNextEntry(wxT("mimetype"));
   output << wxT("text/x-wxmathml");
   zip.PutNextEntry(wxT("format.txt"));
@@ -6124,9 +6124,9 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
       // The data for gnuplot is likely to change in its entirety if it
       // ever changes => We can store it in a compressed form.
       if(name.EndsWith(wxT(".data")))
-        zip.SetLevel(wxZ_BEST_COMPRESSION);
+        zip.SetLevel(9);
       else
-        zip.SetLevel(wxZ_NO_COMPRESSION);
+        zip.SetLevel(0);
       
       zip.PutNextEntry(name);
       wxInputStream *imagefile = fsfile->GetStream();
