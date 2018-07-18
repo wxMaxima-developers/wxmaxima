@@ -86,11 +86,32 @@ public:
 
   ~Image();
 
-  //! Sets the name of the gnuplot source and data file of this image
+  /*! Sets the name of the gnuplot source and data file of this image
+
+    Causes the files to be cached if they are not way too long; As the files
+    are text-only they profit from being compressed and are stored in the 
+    memory in their compressed form.
+   */
   void GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFileSystem *filesystem = NULL);
-  //! Returns the gnuplot source file name of this image
+  /*! Returns the gnuplot source file name of this image
+
+    If maxima has deleted the temporary file in the meantime or if it comes from 
+    a .wxmx file and has never been created from maxima the file is created by this 
+    function.
+
+    If the file cannot be created (for example if no gnuplot source exists/ 
+    is known) this function returns wxEmptyString.
+   */
   wxString GnuplotSource();
-  //! Returns the gnuplot data file name of this image
+  /*! Returns the gnuplot data file name of this image
+
+    If maxima has deleted the temporary file in the meantime or if it comes from 
+    a .wxmx file and has never been created from maxima the file is created by this 
+    function.
+
+    If the file cannot be created (for example if no gnuplot source exists/ 
+    is known) this function returns wxEmptyString.
+   */
   wxString GnuplotData();
 
   //! Returns the gnuplot source of this image

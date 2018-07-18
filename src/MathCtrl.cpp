@@ -6107,7 +6107,7 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
   if (m_tree != NULL)output << xmlText;
   output << wxT("\n</wxMaximaDocument>");
 
-  // save images from memory to zip file
+  // Move all files we have stored in memory during saving to zip file
   wxFileSystem *fsystem = new wxFileSystem();
   fsystem->AddHandler(new wxMemoryFSHandler);
   fsystem->ChangePathTo(wxT("memory:"), true);
@@ -6120,6 +6120,14 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
     if (fsfile)
     {
       wxString name = memFsName.Right(memFsName.Length()-7);
+
+      // The data for gnuplot is likely to change in its entirety if it
+      // ever changes => We can store it in a compressed form.
+      if(name.EndsWith(wxT(".data")))
+        zip.SetLevel(9);
+      else
+        zip.SetLevel(0);
+      
       zip.PutNextEntry(name);
       wxInputStream *imagefile = fsfile->GetStream();
       

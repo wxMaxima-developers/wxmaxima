@@ -145,8 +145,12 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFil
     wxStat(dataFilename, &strucStat);
     if (strucStat.st_size > 25*1000*1000)
       return;
-    
+
     wxLogMessage(_("Caching the gnuplot source of an image."));
+    // The gnuplot source of the image is cached in a compressed form:
+    //
+    // as it is text-only and contains many redundancies it will get way
+    // smaller this way.
     {
       wxFileInputStream input(m_gnuplotSource);
       if(!input.IsOk())
@@ -154,7 +158,12 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFil
       wxTextInputStream textIn(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
       
       wxMemoryOutputStream mstream;
-      wxZlibOutputStream zstream(mstream);
+      int zlib_flags;
+      if(wxZlibOutputStream::CanHandleGZip())
+        zlib_flags = wxZLIB_GZIP;
+      else
+        zlib_flags = wxZLIB_ZLIB;
+      wxZlibOutputStream zstream(mstream,9,zlib_flags);
       wxTextOutputStream textOut(zstream);
       wxString line;
       
@@ -190,7 +199,12 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFil
       wxTextInputStream textIn(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
       
       wxMemoryOutputStream mstream;
-      wxZlibOutputStream zstream(mstream);
+      int zlib_flags;
+      if(wxZlibOutputStream::CanHandleGZip())
+        zlib_flags = wxZLIB_GZIP;
+      else
+        zlib_flags = wxZLIB_ZLIB;
+      wxZlibOutputStream zstream(mstream,9,zlib_flags);
       wxTextOutputStream textOut(zstream);
       wxString line;
       
@@ -218,9 +232,14 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFil
           {
             wxLogMessage(_("Reading the gnuplot source of an image."));
             wxTextInputStream textIn(*input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
-            
+
             wxMemoryOutputStream mstream;
-            wxZlibOutputStream zstream(mstream);
+            int zlib_flags;
+            if(wxZlibOutputStream::CanHandleGZip())
+              zlib_flags = wxZLIB_GZIP;
+            else
+              zlib_flags = wxZLIB_ZLIB;
+            wxZlibOutputStream zstream(mstream,9,zlib_flags);
             wxTextOutputStream textOut(zstream);
             wxString line;
             
@@ -260,7 +279,12 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFil
           wxTextInputStream textIn(*input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
             
           wxMemoryOutputStream mstream;
-          wxZlibOutputStream zstream(mstream);
+          int zlib_flags;
+          if(wxZlibOutputStream::CanHandleGZip())
+            zlib_flags = wxZLIB_GZIP;
+          else
+            zlib_flags = wxZLIB_ZLIB;
+          wxZlibOutputStream zstream(mstream,9,zlib_flags);
           wxTextOutputStream textOut(zstream);
           wxString line;
             
