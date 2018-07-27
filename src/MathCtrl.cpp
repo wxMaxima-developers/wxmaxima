@@ -364,13 +364,16 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
   dcm.SelectObject(m_memory);
   dcm.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
+  PrepareDC(dcm);
+  
   dcm.Clear();
   dcm.SetMapMode(wxMM_TEXT);
   dcm.SetBackgroundMode(wxTRANSPARENT);
-  PrepareDC(dcm);
-  
+
   wxGCDC antiAliassingDC(dcm);
-//  PrepareDC(antiAliassingDC);
+  #ifdef __WXGTK__
+  PrepareDC(antiAliassingDC);
+  #endif
   
   m_configuration->SetContext(dcm);
   m_configuration->SetAntialiassingDC(antiAliassingDC);
