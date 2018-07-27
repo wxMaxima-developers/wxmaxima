@@ -21,6 +21,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "Gen5Wiz.h"
+#include <wx/persist/toplevel.h>
 
 Gen5Wiz::Gen5Wiz(wxString lab1, wxString lab2, wxString lab3, wxString lab4, wxString lab5,
                  wxString val1, wxString val2, wxString val3, wxString val4, wxString val5,
@@ -83,6 +84,8 @@ static_line_1 = new wxStaticLine(this, -1);
     m_warning = NULL;
   set_properties();
   do_layout();
+  SetName(title);
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 }
 
 void Gen5Wiz::do_layout()

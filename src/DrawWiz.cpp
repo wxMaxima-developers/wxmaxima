@@ -99,9 +99,9 @@ ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config, wxString expre
 #endif
   okButton->SetDefault(); 
   vbox->Add(buttonSizer, wxSizerFlags().Right());
-  wxPersistenceManager::Get().RegisterAndRestore(this);
   m_expression ->SetValue(expression);
   SetSizerAndFit(vbox);
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 }
 
 wxString ExplicitWiz::GetValue()
@@ -201,9 +201,9 @@ ImplicitWiz::ImplicitWiz(wxWindow *parent, Configuration *config, wxString expre
 #endif
   okButton->SetDefault(); 
   vbox->Add(buttonSizer, wxSizerFlags().Right());
-  wxPersistenceManager::Get().RegisterAndRestore(this);
   m_expression ->SetValue(expression);
   SetSizerAndFit(vbox);
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 }
 
 wxString ImplicitWiz::GetValue()
@@ -321,8 +321,8 @@ AxisWiz::AxisWiz(wxWindow *parent, Configuration *config, int dimensions) :
 #endif
   okButton->SetDefault(); 
   vbox->Add(buttonSizer, wxSizerFlags().Right());
-  wxPersistenceManager::Get().RegisterAndRestore(this);
   SetSizerAndFit(vbox);
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 };
 
 wxString AxisWiz::GetValue()
@@ -481,10 +481,9 @@ DrawWiz::DrawWiz(wxWindow *parent, Configuration *config, int dimensions) :
   okButton->SetDefault(); 
   vbox->Add(buttonSizer, wxSizerFlags().Right());
 
-  SetName(wxString::Format("Draw_%idWiz", dimensions));
-  wxPersistenceManager::Get().RegisterAndRestore(this);
-  
+  SetName(wxString::Format("Draw_%idWiz", dimensions));  
   SetSizerAndFit(vbox);
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 }
 
 wxString DrawWiz::GetValue()
@@ -545,9 +544,8 @@ Wiz3D::Wiz3D(wxWindow *parent, Configuration *WXUNUSED(config)) :
   vbox->Add(buttonSizer, wxSizerFlags().Right());
 
   SetName("Draw_Wiz3D");
-  wxPersistenceManager::Get().RegisterAndRestore(this);
-
   SetSizerAndFit(vbox);
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 };
 
 wxString Wiz3D::GetValue()
@@ -668,9 +666,8 @@ WizContour::WizContour(wxWindow *parent, Configuration *WXUNUSED(config)) :
   vbox->Add(buttonSizer, wxSizerFlags().Right());
 
   SetName("Draw_ContourWiz");
-  wxPersistenceManager::Get().RegisterAndRestore(this);
-
   SetSizerAndFit(vbox);
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 };
 
 wxString WizContour::GetValue()
@@ -769,8 +766,8 @@ ParametricWiz::ParametricWiz(wxWindow *parent, Configuration *config, int dimens
   okButton->SetDefault(); 
   vbox->Add(buttonSizer, wxSizerFlags().Right());
   SetName("Draw_%idParametricWiz");
-  wxPersistenceManager::Get().RegisterAndRestore(this);
   SetSizerAndFit(vbox);
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 }
 
 wxString ParametricWiz::GetValue()
@@ -838,9 +835,9 @@ WizPoints::WizPoints(wxWindow *parent, Configuration *config, int dimensions, wx
   okButton->SetDefault(); 
   vbox->Add(buttonSizer, wxSizerFlags().Right());
   SetName(wxString::Format("Draw_%idPointWiz", dimensions));
-  wxPersistenceManager::Get().RegisterAndRestore(this);
   m_data->SetValue(expr);
   SetSizerAndFit(vbox);
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 };
 
 wxString WizPoints::GetValue()
@@ -969,8 +966,8 @@ WizDrawAccuracy::WizDrawAccuracy(wxWindow *parent, Configuration *config, int di
   okButton->SetDefault(); 
   vbox->Add(buttonSizer, wxSizerFlags().Right());
   SetName(wxString::Format("Draw_Accuracy%idWiz", dimensions));
-  wxPersistenceManager::Get().RegisterAndRestore(this);
   SetSizerAndFit(vbox);
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 };
 
 wxString WizDrawAccuracy::GetValue()

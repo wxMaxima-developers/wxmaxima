@@ -4659,7 +4659,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
     {
       SubstituteWiz *wiz = new SubstituteWiz(this, -1, m_console->m_configuration, _("Substitute"));
       wiz->SetValue(expr);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wiz->GetValue();
@@ -4708,7 +4708,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
                                    "solve() which variables to eliminate in the solution "
                                    "for the interesting variable.")
         );
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       wiz->SetLabel1ToolTip(_("Comma-separated equations"));
       wiz->SetLabel2ToolTip(_("Comma-separated variables"));
       if (wiz->ShowModal() == wxID_OK)
@@ -4726,7 +4726,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
                                  expr, wxT("x"),
                                  m_console->m_configuration,
                                  this, -1, _("Solve"), true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("to_poly_solve([") + wiz->GetValue1() + wxT("], [") +
@@ -4745,7 +4745,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
                                  expr, wxT("x"), wxT("-1"), wxT("1"),
                                  m_console->m_configuration,
                                  this, -1, _("Find root"), true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("find_root(") + wiz->GetValue1() + wxT(", ") +
@@ -4765,7 +4765,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
                                  m_console->m_configuration,
                                  this, -1, _("Solve ODE"));
       wiz->SetValue(expr);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wxT("ode2(") + wiz->GetValue1() + wxT(", ") +
@@ -4781,7 +4781,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
                                  expr, wxT("x="), wxT("y="),
                                  m_console->m_configuration,
                                  this, -1, _("IC1"), true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wxT("ic1(") + wiz->GetValue1() + wxT(", ") +
@@ -4798,7 +4798,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
                                  expr, wxT("x="), wxT("y="), wxT("'diff(y,x)="),
                                  m_console->m_configuration,
                                  this, -1, _("IC2"), true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wxT("ic2(") + wiz->GetValue1() + wxT(", ") +
@@ -4813,7 +4813,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
     {
       BC2Wiz *wiz = new BC2Wiz(this, -1, m_console->m_configuration, _("BC2"));
       wiz->SetValue(expr);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wiz->GetValue();
@@ -4829,7 +4829,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
                                  expr, wxEmptyString,
                                  m_console->m_configuration,
                                  this, -1, _("Eliminate"), true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("eliminate([") + wiz->GetValue1() + wxT("],[")
@@ -4855,7 +4855,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
         return;
       }
       SysWiz *wiz = new SysWiz(this, -1, m_console->m_configuration, _("Solve algebraic system"), isz);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("algsys") + wiz->GetValue();
@@ -4880,7 +4880,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
         return;
       }
       SysWiz *wiz = new SysWiz(this, -1, m_console->m_configuration, _("Solve linear system"), isz);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("linsolve") + wiz->GetValue();
@@ -4895,7 +4895,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
                                  expr, wxT("y(x)"),
                                  m_console->m_configuration,
                                  this, -1, _("Solve ODE"));
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("desolve([") + wiz->GetValue1() + wxT("],[")
@@ -4912,7 +4912,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
                                  m_console->m_configuration,
                                  this, -1, _("At value"));
       wiz->SetValue(expr);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wxT("atvalue(") + wiz->GetValue1() + wxT(", ")
@@ -4975,7 +4975,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
                                  wxEmptyString, expr,
                                  m_console->m_configuration,
                                  this, -1, _("Matrix map"));
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("matrixmap(") + wiz->GetValue1() + wxT(", ")
@@ -4991,7 +4991,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
       MatDim *wiz = new MatDim(this, -1,
                                m_console->m_configuration,
                                _("Matrix"));
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         if (wiz->GetValue0() != wxEmptyString)
@@ -5010,7 +5010,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
           type = MatWiz::MATRIX_GENERAL;
         MatWiz *mwiz = new MatWiz(this, -1, m_console->m_configuration, _("Enter matrix"),
                                   type, w, h);
-        mwiz->Centre(wxBOTH);
+        //wiz->Centre(wxBOTH);
         if (mwiz->ShowModal() == wxID_OK)
         {
           cmd += mwiz->GetValue();
@@ -5027,7 +5027,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
                                  expr, wxT("x"),
                                  m_console->m_configuration,
                                  this, -1, _("Char poly"));
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("charpoly(") + wiz->GetValue1() + wxT(", ")
@@ -5044,7 +5044,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
                                  m_console->m_configuration,
                                  this, -1, _("Generate Matrix"));
       wiz->SetValue(expr);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wxT("genmatrix(") + wiz->GetValue1() +
@@ -5064,7 +5064,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
                                  m_console->m_configuration,
                                  this, -1, _("Generate Matrix"));
       wiz->SetValue(expr);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wxT("genmatrix(lambda([i,j], ") + wiz->GetValue1() +
@@ -5084,7 +5084,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
                                  wxEmptyString, expr,
                                  m_console->m_configuration,
                                  this, -1, _("Map"));
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("map(") + wiz->GetValue1() + wxT(", ") + wiz->GetValue2() +
@@ -5101,7 +5101,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
                                  expr, wxT("k"), wxT("1"), wxT("10"),
                                  m_console->m_configuration,
                                  this, -1, _("Make list"));
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("makelist(") + wiz->GetValue1() + wxT(", ") +
@@ -5119,7 +5119,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
                                  wxT("\"+\""), expr,
                                  m_console->m_configuration,
                                  this, -1, _("Apply"), true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("apply(") + wiz->GetValue1() + wxT(", ")
@@ -5187,7 +5187,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
   case menu_draw_2d:
   {
     DrawWiz *wiz = new DrawWiz(this, m_console->m_configuration, 2);
-    wiz->Centre(wxBOTH);
+    //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
       m_console->SetFocus();
@@ -5203,7 +5203,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     if(dimensions < 2)
     {
       DrawWiz *wiz = new DrawWiz(this, m_console->m_configuration, 3);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         m_console->SetFocus();
@@ -5218,7 +5218,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     else
     {
       Wiz3D *wiz = new Wiz3D(this, m_console->m_configuration);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
         AddDrawParameter(wiz->GetValue());
       wiz->Destroy();
@@ -5247,7 +5247,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_console->m_configuration,
                                _("Set the diagram title"),
                                _("Title (Sub- and superscripts as x_{10} or x^{10})"),expr);
-    wiz->Centre(wxBOTH);
+    //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
       cmd = wxT("title=\"") + wiz->GetValue() + wxT("\"");
@@ -5261,7 +5261,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_console->m_configuration,
                                _("Set the next plot's title. Empty = no title."),
                                _("Title (Sub- and superscripts as x_{10} or x^{10})"),expr);
-    wiz->Centre(wxBOTH);
+    //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
       cmd = wxT("key=\"") + wiz->GetValue() + wxT("\"");
@@ -5273,7 +5273,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
   case menu_draw_explicit:
   {
     ExplicitWiz *wiz = new ExplicitWiz(this, m_console->m_configuration, expr, dimensions);
-    wiz->Centre(wxBOTH);
+    //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
       AddDrawParameter(wiz->GetValue());
     wiz->Destroy();
@@ -5283,7 +5283,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
   case menu_draw_implicit:
   {
     ImplicitWiz *wiz = new ImplicitWiz(this, m_console->m_configuration, expr, dimensions);
-    wiz->Centre(wxBOTH);
+    //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
       AddDrawParameter(wiz->GetValue());
     wiz->Destroy();
@@ -5293,7 +5293,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
   case menu_draw_parametric:
   {
     ParametricWiz *wiz = new ParametricWiz(this, m_console->m_configuration, dimensions);
-    wiz->Centre(wxBOTH);
+    //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
       AddDrawParameter(wiz->GetValue());
     wiz->Destroy();
@@ -5303,7 +5303,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
   case menu_draw_points:
   {
     WizPoints *wiz = new WizPoints(this, m_console->m_configuration, dimensions, expr);
-    wiz->Centre(wxBOTH);
+    //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
       AddDrawParameter(wiz->GetValue());
     wiz->Destroy();
@@ -5319,7 +5319,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
                                m_console->m_configuration, this, -1,
                                _("Set the grid density.")
       );
-    wiz->Centre(wxBOTH);
+    //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
       cmd = wxT("grid=[") + wiz->GetValue1() + "," + wiz->GetValue2() + wxT("]");
@@ -5332,7 +5332,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
   case menu_draw_axis:
   {
     AxisWiz *wiz = new AxisWiz(this, m_console->m_configuration, dimensions);
-    wiz->Centre(wxBOTH);
+    //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
       AddDrawParameter(wiz->GetValue());
@@ -5344,7 +5344,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
   case menu_draw_contour:
   {
     WizContour *wiz = new WizContour(this, m_console->m_configuration);
-    wiz->Centre(wxBOTH);
+    //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
       AddDrawParameter(wiz->GetValue(), 3);
     wiz->Destroy();
@@ -5354,7 +5354,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
   case menu_draw_accuracy:
   {
     WizDrawAccuracy *wiz = new WizDrawAccuracy(this, m_console->m_configuration, dimensions);
-    wiz->Centre(wxBOTH);
+    //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
       AddDrawParameter(wiz->GetValue(), dimensions);
     wiz->Destroy();
@@ -5381,7 +5381,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                _("The function call whose arguments to extract"),
                                expr);
     wiz->SetLabel1ToolTip(_("Something like f(x_1,x_2)"));
-    wiz->Centre(wxBOTH);
+    //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
       cmd = wxT("args(") + wiz->GetValue() + wxT(")");
@@ -5401,7 +5401,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
     Gen1Wiz *wiz = new Gen1Wiz(this, -1, m_console->m_configuration,
                                _("Create list from comma-separated elements"),
                                _("Comma-separated elements"),expr);
-    wiz->Centre(wxBOTH);
+    //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
       cmd = wxT("[") + wiz->GetValue() + wxT("]");
@@ -5421,7 +5421,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                             "Might be something like \"i\", \"i^2\" or \"sin(i)\""));
     wiz->SetLabel2ToolTip(_("The number of the item which is stepped from \"Index Start\" to \"Index End\"."));
     wiz->SetValue(expr);
-    wiz->Centre(wxBOTH);
+    //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
       wxString val = wxT("makelist(") + wiz->GetValue1() + wxT(", ") +
@@ -5449,7 +5449,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                             "Might be something like \"i\", \"i^2\" or \"sin(i)\""));
     wiz->SetLabel2ToolTip(_("The variable the value of the current source item is stored in."));
     wiz->SetValue(expr);
-    wiz->Centre(wxBOTH);    if (wiz->ShowModal() == wxID_OK)
+    //wiz->Centre(wxBOTH);    if (wiz->ShowModal() == wxID_OK)
     {
       wxString val = wxT("makelist(") + wiz->GetValue1() + wxT(", ") +
         wiz->GetValue2() + wxT(", ") + wiz->GetValue3() + wxT(")");
@@ -5462,7 +5462,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
   {
     ActualValuesStorageWiz *wiz = new ActualValuesStorageWiz(m_console->m_configuration,
                                this, -1, _("Create a list as a storage for the values of variables"));
-    wiz->Centre(wxBOTH);
+    //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
       MenuCommand(wiz->GetValue());
@@ -5474,7 +5474,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
   {
     ListSortWiz *wiz = new ListSortWiz(m_console->m_configuration,
                                        this, -1, _("Sort a list"), expr);
-    wiz->Centre(wxBOTH);
+    //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
       MenuCommand(wiz->GetValue());
@@ -5491,7 +5491,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                  expr, wxT("1"),
                                  m_console->m_configuration,
                                  this, -1, _("LCM"), true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("push(") + wiz->GetValue1() + wxT(", ")
@@ -5520,7 +5520,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                  m_console->m_configuration,
                                  this, -1, _("Return the list without its last n elements"),
                                  true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("rest(") + wiz->GetValue1();
@@ -5544,7 +5544,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                  m_console->m_configuration,
                                  this, -1, _("Return the list without its first n elements"),
                                  true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("rest(") + wiz->GetValue1();
@@ -5564,7 +5564,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                  m_console->m_configuration,
                                  this, -1, _("Extract the last n elements from a list"),
                                  true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("rest(") + wiz->GetValue1() + wxT(",")
@@ -5596,7 +5596,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                    "provide highly efficient ways to do something on every list "
                                    "element.")
         );
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wiz->GetValue1() + wxT("[")
@@ -5612,7 +5612,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                  expr, wxEmptyString,
                                  m_console->m_configuration,
                                  this, -1, _("Apply a function to each list element"), true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("map(") + wiz->GetValue1() + wxT(",")
@@ -5630,7 +5630,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                  this, -1, _("Introduce a list of actual values into an equation"), true);
       wiz->SetLabel2ToolTip(_("The list with values can be generated by \"solve()\" or using "
                               "\"Create list/as storage for actual values for variables\"."));
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("subst(") + wiz->GetValue2() + wxT(",")
@@ -5648,7 +5648,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                  this, -1,
                                  _("Extract a variable's value from a list of variable values"),
                                  true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("subst(") + wiz->GetValue1() + wxT(",")
@@ -5666,7 +5666,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                  this, -1,
                                  _("Use a list as parameter list for a function"),
                                  true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("apply(") + wiz->GetValue1() + wxT(",")
@@ -5688,7 +5688,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
     wiz->SetLabel3ToolTip(_("Either a single expression or a comma-separated list of expressions "
                             "between parenthesis. In the latter case the result of the last "
                             "expression in the parenthesis is used."));
-    wiz->Centre(wxBOTH);    if (wiz->ShowModal() == wxID_OK)
+    //wiz->Centre(wxBOTH);    if (wiz->ShowModal() == wxID_OK)
     {
       wxString val = wxT("for ") + wiz->GetValue2() + wxT(" in ") +
         wiz->GetValue1() + wxT(" do ") + wiz->GetValue3();
@@ -5708,7 +5708,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                  this, -1,
                                  _("Remove an element from a list"),
                                  true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("delete(") + wiz->GetValue1() + wxT(",")
@@ -5726,7 +5726,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                  this, -1,
                                  _("Add an element to a list"),
                                  true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("append(") + wiz->GetValue1() + wxT(",[")
@@ -5744,7 +5744,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                  this, -1,
                                  _("Append a list to a list"),
                                  true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("append(") + wiz->GetValue1() + wxT(",")
@@ -5762,7 +5762,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
                                  this, -1,
                                  _("Interleave two lists"),
                                  true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("join(") + wiz->GetValue1() + wxT(",")
@@ -5929,7 +5929,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
                                  m_console->m_configuration,
                                  this, -1, _("Change variable"), true);
       wiz->SetValue(expr);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wxT("changevar(") + wiz->GetValue1() + wxT(", ") +
@@ -5946,7 +5946,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
                                  _("Denom. deg:"), expr, wxT("4"), wxT("4"),
                                  m_console->m_configuration,
                                  this, -1, _("Pade approximation"));
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wxT("pade(") + wiz->GetValue1() + wxT(", ") +
@@ -5966,7 +5966,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
                                  wxEmptyString, wxEmptyString,
                                  m_console->m_configuration,
                                  this, -1, _("LCM"), true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("lcm(") + wiz->GetValue1() + wxT(", ")
@@ -5982,7 +5982,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
                                  wxEmptyString, wxEmptyString,
                                  m_console->m_configuration,
                                  this, -1, _("GCD"), true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("gcd(") + wiz->GetValue1() + wxT(", ")
@@ -5998,7 +5998,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
                                  expr, wxEmptyString,
                                  m_console->m_configuration,
                                  this, -1, _("Divide"), true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("divide(") + wiz->GetValue1() + wxT(", ") +
@@ -6014,7 +6014,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
                                  expr, wxT("n"),
                                  m_console->m_configuration,
                                  this, -1, _("Partial fractions"));
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("partfrac(") + wiz->GetValue1() + wxT(", ")
@@ -6030,7 +6030,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
                                  expr, wxT("x"),
                                  m_console->m_configuration,
                                  this, -1, _("Integrate (risch)"));
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("risch(") + wiz->GetValue1() + wxT(", ")
@@ -6045,7 +6045,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
     {
       IntegrateWiz *wiz = new IntegrateWiz(this, -1, m_console->m_configuration, _("Integrate"));
       wiz->SetValue(expr);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wiz->GetValue();
@@ -6061,7 +6061,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
                                  m_console->m_configuration,
                                  this, -1, _("Laplace"));
       wiz->SetValue(expr);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wxT("laplace(") + wiz->GetValue1() + wxT(", ")
@@ -6079,7 +6079,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
                                  m_console->m_configuration,
                                  this, -1, _("Inverse Laplace"));
       wiz->SetValue(expr);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wxT("ilt(") + wiz->GetValue1() + wxT(", ") +
@@ -6097,7 +6097,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
                                  m_console->m_configuration,
                                  this, -1, _("Differentiate"));
       wiz->SetValue(expr);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxStringTokenizer vars(wiz->GetValue2(), wxT(","));
@@ -6122,7 +6122,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
     {
       SeriesWiz *wiz = new SeriesWiz(this, -1, m_console->m_configuration, _("Series"));
       wiz->SetValue(expr);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wiz->GetValue();
@@ -6136,7 +6136,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
     {
       LimitWiz *wiz = new LimitWiz(this, -1, m_console->m_configuration, _("Limit"));
       wiz->SetValue(expr);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wiz->GetValue();
@@ -6154,7 +6154,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
                                  expr, wxT("x"), wxT("1.0"), wxT("1e-4"),
                                  m_console->m_configuration,
                                  this, -1, _("Find minimum"));
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("lbfgs(") + wiz->GetValue1() + wxT(", [") +
@@ -6171,7 +6171,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
     {
       SumWiz *wiz = new SumWiz(this, -1, m_console->m_configuration, _("Sum"));
       wiz->SetValue(expr);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wiz->GetValue();
@@ -6187,7 +6187,7 @@ void wxMaxima::CalculusMenu(wxCommandEvent &event)
                                  _("To:"), expr, wxT("k"), wxT("1"), wxT("n"),
                                  m_console->m_configuration,
                                  this, -1, _("Product"));
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         cmd = wxT("product(") + wiz->GetValue1() + wxT(", ") +
@@ -6218,7 +6218,7 @@ void wxMaxima::PlotMenu(wxCommandEvent &event)
     {
       Plot3DWiz *wiz = new Plot3DWiz(this, -1, m_console->m_configuration, _("Plot 3D"));
       wiz->SetValue(expr);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wiz->GetValue();
@@ -6249,7 +6249,7 @@ void wxMaxima::PlotMenu(wxCommandEvent &event)
     {
       Plot2DWiz *wiz = new Plot2DWiz(this, -1, m_console->m_configuration, _("Plot 2D"));
       wiz->SetValue(expr);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wiz->GetValue();
@@ -6340,7 +6340,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
                                m_console->m_configuration,
                                this, -1, _("Engineering format setup"));
     wxPersistenceManager::Get().RegisterAndRestore(wiz);
-    wiz->Centre(wxBOTH);    
+    //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
       cmd = wxT("engineering_format_floats: ") + wiz->GetValue1() + wxT("$\n") +
@@ -6687,7 +6687,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
                                  expr, wxT("10"),
                                  m_console->m_configuration,
                                  this, -1, _("Histogram"), false);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString cmd = wxT("wxhistogram(") + wiz->GetValue1() + wxT(", nclasses=") +
@@ -6703,7 +6703,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
                                  expr, wxT("10"),
                                  m_console->m_configuration,
                                  this, -1, _("Scatterplot"), false);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString cmd = wxT("wxscatterplot(") + wiz->GetValue1() + wxT(", nclasses=") +
@@ -6783,7 +6783,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
                                  expr, wxT("0"),
                                  m_console->m_configuration,
                                  this, -1, _("One sample t-test"), false);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString cmd = wxT("test_mean(") + wiz->GetValue1() + wxT(", mean=") +
@@ -6800,7 +6800,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
                                  m_console->m_configuration,
                                  this, -1,
                                  _("Two sample t-test"), true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString cmd = wxT("test_means_difference(") + wiz->GetValue1() + wxT(", ") +
@@ -6836,7 +6836,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
                                  expr, wxT("x,y"), wxT("y=A*x+B"), wxT("A,B"),
                                  m_console->m_configuration,
                                  this, -1, _("Least Squares Fit"), true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString cmd = wxT("lsquares_estimates(") + wiz->GetValue1() + wxT(", [") +
@@ -6889,7 +6889,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
                                  wxEmptyString, wxEmptyString,
                                  m_console->m_configuration,
                                  this, -1, _("Select Subsample"), true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString name = wiz->GetValue4();
@@ -7226,7 +7226,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
                                    "solve() which variables to eliminate in the solution "
                                    "for the interesting variable.")
         );
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       wiz->SetLabel1ToolTip(_("Comma-separated equations"));
       wiz->SetLabel2ToolTip(_("Comma-separated variables"));
       if (wiz->ShowModal() == wxID_OK)
@@ -7245,7 +7245,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
                                  selection, wxT("x"), wxT("-1"), wxT("1"),
                                  m_console->m_configuration,
                                  this, -1, _("Find root"), true);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString cmd = wxT("find_root(") + wiz->GetValue1() + wxT(", ") +
@@ -7261,7 +7261,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     {
       IntegrateWiz *wiz = new IntegrateWiz(this, -1, m_console->m_configuration, _("Integrate"));
       wiz->SetValue(selection);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wiz->GetValue();
@@ -7277,7 +7277,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
                                  m_console->m_configuration,
                                  this, -1, _("Differentiate"));
       wiz->SetValue(selection);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxStringTokenizer vars(wiz->GetValue2(), wxT(","));
@@ -7301,7 +7301,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     {
       SubstituteWiz *wiz = new SubstituteWiz(this, -1, m_console->m_configuration, _("Substitute"));
       wiz->SetValue(selection);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wiz->GetValue();
@@ -7314,7 +7314,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     {
       Plot2DWiz *wiz = new Plot2DWiz(this, -1, m_console->m_configuration, _("Plot 2D"));
       wiz->SetValue(selection);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wiz->GetValue();
@@ -7327,7 +7327,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     {
       Plot3DWiz *wiz = new Plot3DWiz(this, -1, m_console->m_configuration, _("Plot 3D"));
       wiz->SetValue(selection);
-      wiz->Centre(wxBOTH);
+      //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
         wxString val = wiz->GetValue();

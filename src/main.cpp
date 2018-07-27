@@ -124,7 +124,7 @@ bool MyApp::OnInit()
   }
   else
     wxConfig::Set(new wxConfig(wxT("wxMaxima")));
-
+  
   wxImage::AddHandler(new wxPNGHandler);
   wxImage::AddHandler(new wxXPMHandler);
   wxImage::AddHandler(new wxJPEGHandler);
