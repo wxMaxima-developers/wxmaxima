@@ -6339,7 +6339,6 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
                                wxT("true"), wxT(".01"), wxT("1000"), wxT("6"),
                                m_console->m_configuration,
                                this, -1, _("Engineering format setup"));
-    wxPersistenceManager::Get().RegisterAndRestore(wiz);
     //wiz->Centre(wxBOTH);
     if (wiz->ShowModal() == wxID_OK)
     {
