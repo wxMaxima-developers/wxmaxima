@@ -371,7 +371,13 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
   dcm.SetBackgroundMode(wxTRANSPARENT);
 
   wxGCDC antiAliassingDC(dcm);
+
+
   #ifdef __WXGTK__
+  // Seems like depending on the wxGTK version the antialiassing DC doesn't inherit the
+  // scrolling info from the normal DC.
+  //
+  // On wxMAC it does, though, and preparing it, too, scrolls it twice.
   PrepareDC(antiAliassingDC);
   #endif
   
