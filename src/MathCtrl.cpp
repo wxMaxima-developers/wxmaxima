@@ -6142,8 +6142,10 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
       
       while (!(imagefile->Eof()))
         imagefile->Read(zip);
-      
-      wxDELETE(imagefile);
+
+      // TODO: I am convinced I need to delete the memory occupied by the imagefile handler.
+      // But I am not completely sure.
+      //      wxDELETE(imagefile);
       wxMemoryFSHandler::RemoveFile(name);
     }
     memFsName = fsystem->FindNext();
@@ -8061,8 +8063,8 @@ bool MathCtrl::InsertText(wxString text)
     else
     {
       GetActiveCell()->InsertText(text);
-      Recalculate(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()), false);
-      RequestRedraw();
+      Recalculate(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
+      RequestRedraw(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
     }
   }
   else
