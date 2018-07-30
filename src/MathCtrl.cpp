@@ -6138,7 +6138,8 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
   wxString memFsName = fsystem->FindFirst("*", wxFILE);
   while(memFsName != wxEmptyString)
   {
-    if(memFsName != wxT("memory:dummyfile"))
+    wxString name = memFsName.Right(memFsName.Length()-7);
+    if(name != wxT("dummyfile"))
     {
       zip.CloseEntry();
       
@@ -6146,7 +6147,6 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
       
       if (fsfile)
       {
-        wxString name = memFsName.Right(memFsName.Length()-7);
         wxLogMessage(wxString::Format(_("wxmx: Writing the contents of the embedded file %s"),name));
         
         // The data for gnuplot is likely to change in its entirety if it
@@ -6163,9 +6163,10 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
           imagefile->Read(zip);
         
         wxDELETE(imagefile);
-        wxMemoryFSHandler::RemoveFile(name);
       }
     }
+
+    wxMemoryFSHandler::RemoveFile(name);
     memFsName = fsystem->FindNext();
   }
 
