@@ -5998,8 +5998,11 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
   //    contents of the .wxmx file can be rescued using a text editor.
   //  Who would - under these circumstances - care about a kilobyte?
   zip.SetLevel(0);
+  wxLogMessage(_("wxmx: Writing the Mimetype"));
   zip.PutNextEntry(wxT("mimetype"));
   output << wxT("text/x-wxmathml");
+  zip.CloseEntry();
+  wxLogMessage(_("wxmx: Writing the format description"));
   zip.PutNextEntry(wxT("format.txt"));
   output << wxT(
           "\n\nThis file contains a wxMaxima session in the .wxmx format.\n"
@@ -6028,7 +6031,9 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
                   "chances are high that wxMaxima will be able to recover all code and text\n"
                   "from the XML file.\n\n"
   );
+  zip.CloseEntry();
 
+  wxLogMessage(_("wxmx: Writing the contents"));
   // next zip entry is "content.xml", xml of m_tree
 
   zip.PutNextEntry(wxT("content.xml"));
@@ -6116,43 +6121,57 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
   if (m_tree != NULL)output << xmlText;
   output << wxT("\n</wxMaximaDocument>");
 
+
+  // In wxWidgets 3.1.1 fsystem->FindFirst crashes if we don't have a file
+  // in the memory filesystem => Let's create a file just to make sure
+  // one exists.
+  wxMemoryBuffer dummyBuf;
+  wxMemoryFSHandler::AddFile("dummyfile",
+                             dummyBuf.GetData(),
+                             dummyBuf.GetDataLen());
+  
   // Move all files we have stored in memory during saving to zip file
   wxFileSystem *fsystem = new wxFileSystem();
   fsystem->AddHandler(new wxMemoryFSHandler);
   fsystem->ChangePathTo(wxT("memory:"), true);
-
-  wxString memFsName = fsystem->FindFirst("*");
+  
+  wxString memFsName = fsystem->FindFirst("*", wxFILE);
   while(memFsName != wxEmptyString)
   {
-    wxFSFile *fsfile = fsystem->OpenFile(memFsName);
-
-    if (fsfile)
+    if(memFsName != wxT("memory:dummyfile"))
     {
-      wxString name = memFsName.Right(memFsName.Length()-7);
-
-      // The data for gnuplot is likely to change in its entirety if it
-      // ever changes => We can store it in a compressed form.
-      if(name.EndsWith(wxT(".data")))
-        zip.SetLevel(9);
-      else
-        zip.SetLevel(0);
+      zip.CloseEntry();
       
-      zip.PutNextEntry(name);
-      wxInputStream *imagefile = fsfile->GetStream();
+      wxFSFile *fsfile = fsystem->OpenFile(memFsName);
       
-      while (!(imagefile->Eof()))
-        imagefile->Read(zip);
-
-      // TODO: I am convinced I need to delete the memory occupied by the imagefile handler.
-      // But I am not completely sure.
-      //      wxDELETE(imagefile);
-      wxMemoryFSHandler::RemoveFile(name);
+      if (fsfile)
+      {
+        wxString name = memFsName.Right(memFsName.Length()-7);
+        wxLogMessage(wxString::Format(_("wxmx: Writing the contents of the embedded file %s"),name));
+        
+        // The data for gnuplot is likely to change in its entirety if it
+        // ever changes => We can store it in a compressed form.
+        if(name.EndsWith(wxT(".data")))
+          zip.SetLevel(9);
+        else
+          zip.SetLevel(0);
+        
+        zip.PutNextEntry(name);
+        wxInputStream *imagefile = fsfile->GetStream();
+        
+        while (!(imagefile->Eof()))
+          imagefile->Read(zip);
+        
+        wxDELETE(imagefile);
+        wxMemoryFSHandler::RemoveFile(name);
+      }
     }
     memFsName = fsystem->FindNext();
   }
 
   wxDELETE(fsystem);
 
+  wxLogMessage(_("wxmx: Closing the zip archive"));
   if (!zip.Close())
     return false;
   if (!out.Close())
