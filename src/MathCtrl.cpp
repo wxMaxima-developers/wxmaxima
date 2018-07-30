@@ -6177,9 +6177,6 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
   return true;
 }
 
-/**!
- * CanEdit: we can edit the input if the we have the whole input in selection!
- */
 bool MathCtrl::CanEdit()
 {
   if (m_cellPointers.m_selectionStart == NULL || m_cellPointers.m_selectionEnd != m_cellPointers.m_selectionStart)
@@ -6197,7 +6194,6 @@ bool MathCtrl::CanEdit()
   return true;
 }
 
-//! Is called on double click on a cell.
 void MathCtrl::OnDoubleClick(wxMouseEvent &WXUNUSED(event))
 {
 

@@ -409,6 +409,7 @@ private:
   */
   MathCell *CopySelection(MathCell *start, MathCell *end, bool asData = false);
 
+  //! Get the cordinates of the bottom right point of the worksheet.
   void GetMaxPoint(int *width, int *height);
 
   //! Is executed if a timer associated with MathCtrl has expired.
@@ -429,10 +430,10 @@ private:
 
   void OnMouseEnter(wxMouseEvent &event);
 
-  /*! Is called by wxWidgets when it wants to redraw the console.
+  /*! Is called by wxWidgets when it wants to redraw the worksheet or a part of it.
 
-    The canonical way to trigger this function is calling the Refresh() function
-    of this class.
+    The canonical way to schedule triggering this function is calling the Refresh() 
+    function of this class.
    */
   void OnPaint(wxPaintEvent &event);
 
@@ -442,7 +443,7 @@ private:
 
   void OnMouseLeftUp(wxMouseEvent &event);
 
-  //! We lost the mouse connection during drag-and-drop
+  //! Is called if we loose the mouse connection whilst selecting text/cells
   void OnMouseCaptureLost(wxMouseCaptureLostEvent &event);
 
   void OnMouseLeftDown(wxMouseEvent &event);
@@ -457,6 +458,7 @@ private:
 
   void OnMouseWheel(wxMouseEvent &event);
 
+  //! Is called on double click on a cell.
   void OnDoubleClick(wxMouseEvent &event);
 
   //! Key pressed inside a cell
@@ -1122,6 +1124,8 @@ public:
   //! Select the cell range start-end
   void SetSelection(MathCell *start, MathCell *end);
 
+  /*! We can edit the input if the we have the whole input in selection!
+   */
   bool CanEdit();
 
   bool ActivatePrevInput();
