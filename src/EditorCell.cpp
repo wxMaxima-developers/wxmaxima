@@ -955,6 +955,8 @@ void EditorCell::SetFont()
     font = *wxNORMAL_FONT;
 
   wxASSERT(m_fontSize >= 0);
+  if(m_fontSize < 4)
+    m_fontSize = 4;    
   font.SetPointSize(m_fontSize);
   wxASSERT_MSG(font.IsOk(),
                _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
