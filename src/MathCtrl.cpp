@@ -6163,8 +6163,7 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
         while (!(imagefile->Eof()))
           imagefile->Read(zip);
 
-        // TODO: Do we need to close this stream manually?
-        // wxDELETE(imagefile);
+        wxDELETE(imagefile);
       }
     }
     wxMemoryFSHandler::RemoveFile(name);
