@@ -508,7 +508,10 @@ void ConfigDialogue::SetProperties()
   m_defaultPlotHeight->SetValue(defaultPlotHeight);
   m_displayedDigits->SetValue(configuration->GetDisplayedDigits());
   m_symbolPaneAdditionalChars->SetValue(symbolPaneAdditionalChars);
-  m_getStyleFont->Enable(false);
+  if (m_styleFor->GetSelection() >= 14 && m_styleFor->GetSelection() <= 18)
+    m_getStyleFont->Enable(true);
+  else
+    m_getStyleFont->Enable(false);
 
   if (!wxFontEnumerator::IsValidFacename(CMEX10) ||
       !wxFontEnumerator::IsValidFacename(CMSY10) ||
@@ -1084,6 +1087,7 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   m_styleFor->Connect(wxEVT_LISTBOX,
                          wxCommandEventHandler(ConfigDialogue::OnStyleToEditChanged),
                          NULL, this);
+
   m_getStyleFont = new wxButton(panel, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150, -1));
   m_styleColor = new ColorPanel(this, panel, color_id, wxDefaultPosition, wxSize(150, 30),
                                 wxSUNKEN_BORDER | wxFULL_REPAINT_ON_RESIZE);
