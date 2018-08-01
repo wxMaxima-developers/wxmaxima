@@ -4263,7 +4263,8 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       configW->WriteSettings();
       // Write the changes in the configuration to the disk.
       config->Flush();
-      // Refresh the display as the settings that affect it might have changed.
+  // Refresh the display as the settings that affect it might have changed.
+      m_console->m_configuration->ReadStyle();
       m_console->RecalculateForce();
       m_console->RequestRedraw();
       ConfigChanged();
