@@ -1834,7 +1834,7 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
 
   // MAGIC NUMBERS:
   // the positions of TEXT and TITLE style in the list.
-  if (st >= 15 && st <= 18)
+  if (st >= 14 && st <= 18)
     m_getStyleFont->Enable(true);
   else
     m_getStyleFont->Enable(false);

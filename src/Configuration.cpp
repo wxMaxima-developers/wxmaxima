@@ -410,12 +410,16 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
 
 wxString Configuration::GetFontName(int type)
 {
+  wxString retval = m_fontName;
   if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION || type == TS_SECTION || type == TS_TEXT)
-    return m_styles[type].font;
-  else if (type == TS_NUMBER || type == TS_VARIABLE || type == TS_FUNCTION ||
-           type == TS_SPECIAL_CONSTANT || type == TS_STRING)
-    return m_mathFontName;
-  return m_fontName;
+    retval = m_styles[type].font;
+  if(retval == wxEmptyString)
+    retval = m_fontName;
+  
+  if (type == TS_NUMBER || type == TS_VARIABLE || type == TS_FUNCTION ||
+      type == TS_SPECIAL_CONSTANT || type == TS_STRING)
+    retval = m_mathFontName;
+  return retval;
 }
 
 void Configuration::ReadStyle()
