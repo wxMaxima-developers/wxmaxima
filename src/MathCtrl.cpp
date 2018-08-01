@@ -6033,7 +6033,7 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
   );
   zip.CloseEntry();
 
-  wxLogMessage(_("wxmx: Writing the contents"));
+  wxLogMessage(_("wxmx: Writing the worksheet contents"));
   // next zip entry is "content.xml", xml of m_tree
 
   zip.PutNextEntry(wxT("content.xml"));
@@ -6147,7 +6147,8 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
       
       if (fsfile)
       {
-        wxLogMessage(wxString::Format(_("wxmx: Writing the contents of the embedded file %s"),name));
+        wxLogMessage(
+          wxString::Format(_("wxmx: Writing the contents of the embedded file %s"),name));
         
         // The data for gnuplot is likely to change in its entirety if it
         // ever changes => We can store it in a compressed form.
@@ -6161,11 +6162,11 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
         
         while (!(imagefile->Eof()))
           imagefile->Read(zip);
-        
-        wxDELETE(imagefile);
+
+        // TODO: Do we need to close this stream manually?
+        // wxDELETE(imagefile);
       }
     }
-
     wxMemoryFSHandler::RemoveFile(name);
     memFsName = fsystem->FindNext();
   }
