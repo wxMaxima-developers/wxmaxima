@@ -915,7 +915,7 @@ void EditorCell::SetFont()
   m_fontSize = configuration->GetFontSize(m_textStyle);
   if (m_fontSize < 4)
     m_fontSize = configuration->GetDefaultFontSize();
-
+  
   m_fontSize = Scale_Px(m_fontSize);
 
   m_fontName = configuration->GetFontName(m_textStyle);
@@ -944,6 +944,7 @@ void EditorCell::SetFont()
   font.SetEncoding(m_fontEncoding);
   if (!font.IsOk())
   {
+    wxLogMessage(_("EditorCell Ignoring the font name as the selected font didn't work"));
     font.SetFamily(wxFONTFAMILY_MODERN);
     font.SetEncoding(m_fontEncoding);
     font.SetStyle(m_fontStyle);
