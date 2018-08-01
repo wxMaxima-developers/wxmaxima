@@ -4397,6 +4397,18 @@ void EditorCell::StyleTextTexts()
       ++it;
     } // The loop that loops over all lines
   } // Do we want to autowrap lines?
+  else
+  {
+    m_text.Replace(wxT("\r"),wxT("\n"));
+    wxStringTokenizer lines(m_text, wxT("\n"), wxTOKEN_RET_EMPTY_ALL);
+    while(lines.HasMoreTokens())
+    {
+      wxString line = lines.GetNextToken();
+      m_styledText.push_back(StyledText(line, 0, wxEmptyString));
+      if((lines.HasMoreTokens()))
+        m_styledText.push_back(StyledText(wxT("\n"), 0, wxEmptyString));
+    }
+  }
   ResetSize();
 } // Style text, not code?
 
