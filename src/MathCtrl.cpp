@@ -1273,7 +1273,9 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
           popupMenu->AppendSeparator();
           popupMenu->Append(popid_maxsizechooser, _("Restrict Maximum size"), wxEmptyString, wxITEM_NORMAL);
         }
-        if(dynamic_cast<ImgCell *>(m_cellPointers.m_selectionStart)->GnuplotSource() != wxEmptyString)
+        if((m_cellPointers.m_selectionStart != NULL) &&
+           (m_cellPointers.m_selectionStart->GetType() != MC_TYPE_IMAGE) &&
+           (dynamic_cast<ImgCell *>(m_cellPointers.m_selectionStart)->GnuplotSource() != wxEmptyString))
         {
           popupMenu->AppendSeparator();
           popupMenu->Append(popid_popup_gnuplot, _("Popout interactively"), wxEmptyString, wxITEM_NORMAL);

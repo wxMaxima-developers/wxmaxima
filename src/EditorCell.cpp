@@ -4404,6 +4404,17 @@ void EditorCell::StyleTextTexts()
     while(lines.HasMoreTokens())
     {
       wxString line = lines.GetNextToken();
+      if (m_firstLineOnly)
+      {
+        m_styledText.push_back(
+          StyledText(
+            line +
+            wxString::Format(
+              _(" ... + %i hidden lines"), m_text.Freq(wxT('\n'))),0,wxEmptyString)
+          );
+        break;
+      }
+      
       m_styledText.push_back(StyledText(line, 0, wxEmptyString));
       if((lines.HasMoreTokens()))
         m_styledText.push_back(StyledText(wxT("\n"), 0, wxEmptyString));
