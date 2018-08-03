@@ -387,6 +387,7 @@ wxString EditorCell::ToTeX()
   wxString text = m_text;
   text.Replace(wxT("\xa0"), wxT("~"));
   text.Replace(wxT("\\"), wxT("\\ensuremath{\\backslash}"));
+  text.Replace(wxT("\n"), wxT("\\\\}"));
   text.Replace(wxT("\r"), wxEmptyString);
   text.Replace(wxT("^"), wxT("\\^{}"));
   text.Replace(wxT("°"), wxT("\\ensuremath{^\\circ}"));
