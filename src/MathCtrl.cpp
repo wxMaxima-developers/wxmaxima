@@ -1274,7 +1274,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
           popupMenu->Append(popid_maxsizechooser, _("Restrict Maximum size"), wxEmptyString, wxITEM_NORMAL);
         }
         if((m_cellPointers.m_selectionStart != NULL) &&
-           (m_cellPointers.m_selectionStart->GetType() != MC_TYPE_IMAGE) &&
+           (m_cellPointers.m_selectionStart->GetType() == MC_TYPE_IMAGE) &&
            (dynamic_cast<ImgCell *>(m_cellPointers.m_selectionStart)->GnuplotSource() != wxEmptyString))
         {
           popupMenu->AppendSeparator();
