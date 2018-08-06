@@ -32,6 +32,7 @@
 
 #include "EditorCell.h"
 #include "wxMaxima.h"
+#include "MarkDown.h"
 #include "wxMaximaFrame.h"
 #include <wx/tokenzr.h>
 
@@ -387,7 +388,6 @@ wxString EditorCell::ToTeX()
   wxString text = m_text;
   text.Replace(wxT("\xa0"), wxT("~"));
   text.Replace(wxT("\\"), wxT("\\ensuremath{\\backslash}"));
-  text.Replace(wxT("\n"), wxT("\\\\}"));
   text.Replace(wxT("\r"), wxEmptyString);
   text.Replace(wxT("^"), wxT("\\^{}"));
   text.Replace(wxT("°"), wxT("\\ensuremath{^\\circ}"));
@@ -495,6 +495,9 @@ wxString EditorCell::ToTeX()
   text.Replace(wxT("\x219D"), wxT("\\ensuremath{\\leadsto}"));
   text.Replace(wxT("\x2192"), wxT("\\ensuremath{\\rightarrow}"));
   text.Replace(wxT("\x27F6"), wxT("\\ensuremath{\\longrightarrow}"));
+  // Now we might want to introduce some markdown:
+  MarkDownTeX MarkDown(*m_configuration);
+  text = MarkDown.MarkDown(text);
   return text;
 }
 

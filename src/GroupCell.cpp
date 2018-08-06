@@ -1277,9 +1277,6 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
   wxASSERT_MSG((imgCounter != NULL), _("Bug: No image counter to write to!"));
   if (imgCounter == NULL) return wxEmptyString;
   wxString str;
-  // Now we might want to introduce some markdown:
-  MarkDownTeX MarkDown(*m_configuration);
-
   switch (m_groupType)
   {
     case GC_TYPE_PAGEBREAK:
@@ -1341,10 +1338,6 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
             {
               str = GetEditable()->ToString();
               str = str.Mid(5, str.Length());
-            }
-            else
-            {
-              str = MarkDown.MarkDown(str);
             }
             break;
         }

@@ -74,9 +74,6 @@ wxString MarkDownParser::MarkDown(wxString str)
     // Determine the amount of indentation and the contents of the rest
     // of the line.
 
-    // We will add our own newline characters when needed.
-    line.Replace(NewLine(), wxT(" "));
-
     // Trailing whitespace doesn't help much.
     line = line.Trim();
 
@@ -184,8 +181,7 @@ wxString MarkDownParser::MarkDown(wxString str)
         {
           if (indentationLevels.back() > index)
           {
-            if (NewLineBreaksLine() && !m_configuration->GetAutoWrap())
-
+            if (!m_configuration->GetAutoWrap())
               result += itemizeEndItem();
             while ((!indentationLevels.empty()) &&
                    (indentationLevels.back() > index))
@@ -203,9 +199,9 @@ wxString MarkDownParser::MarkDown(wxString str)
         }
 
         // Add the text to the output.        
-        if (!m_configuration->GetAutoWrap())
-          result += line + "\n";
-        else
+//        if (!m_configuration->GetAutoWrap())
+//          result += line + "\n";
+//        else
           result += line + NewLine();
 
       }
