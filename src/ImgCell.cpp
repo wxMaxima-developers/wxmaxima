@@ -29,6 +29,7 @@
 
 // 72 points per inch / 96 pixels per inch
 #define PRINT_SIZE_MULTIPLIER (72.0 / 96.0)
+#define SELECTION_BORDER_WDTH Scale_Px(3)
 
 #include "ImgCell.h"
 
@@ -207,11 +208,16 @@ void ImgCell::Draw(wxPoint point, int fontsize)
     bitmapDC.SelectObject(bitmap);
 
     if ((m_drawBoundingBox == false) || (m_imageBorderWidth > 0))
-      dc->Blit(point.x + m_imageBorderWidth, point.y - m_center + m_imageBorderWidth, m_width - 2 * m_imageBorderWidth,
-              m_height - 2 * m_imageBorderWidth, &bitmapDC, 0, 0);
+      dc->Blit(point.x + m_imageBorderWidth, point.y - m_center + m_imageBorderWidth,
+               m_width - 2 * m_imageBorderWidth, m_height - 2 * m_imageBorderWidth,
+               &bitmapDC,
+               0, 0);
     else
-      dc->StretchBlit(point.x + 5, point.y - m_center + 5, m_width - 2 * 5, m_height - 2 * 5, &bitmapDC, 0, 0, m_width,
-                     m_height);
+      dc->Blit(point.x + m_imageBorderWidth + SELECTION_BORDER_WDTH, point.y - m_center + m_imageBorderWidth + SELECTION_BORDER_WDTH,
+               m_width - 2 * m_imageBorderWidth - 2*SELECTION_BORDER_WDTH,
+               m_height - 2 * m_imageBorderWidth - 2*SELECTION_BORDER_WDTH,
+               &bitmapDC,
+               SELECTION_BORDER_WDTH, SELECTION_BORDER_WDTH);
   }
   else
     // The cell isn't drawn => No need to keep it's image cache for now.
