@@ -56,7 +56,7 @@ SlideShow::SlideShow(MathCell *parent, Configuration **config, CellPointers *cel
   m_type = MC_TYPE_SLIDE;
   m_fileSystem = filesystem; // NULL when not loading from wxmx
   m_framerate = framerate;
-  m_imageBorderWidth = 1;
+  m_imageBorderWidth = Scale_Px(1);
   m_drawBoundingBox = false;
   if(m_animationRunning)
     ReloadTimer();
@@ -262,7 +262,7 @@ void SlideShow::Draw(wxPoint point, int fontsize)
 
     // Slide show cells have a red border except if they are selected
     if (m_drawBoundingBox)
-      dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))));
+      dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_SELECTION))));
     else
       dc->SetPen(*wxRED_PEN);
 
@@ -274,8 +274,18 @@ void SlideShow::Draw(wxPoint point, int fontsize)
     wxBitmap bitmap = (configuration->GetPrinter() ? m_images[m_displayed]->GetBitmap(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER) : m_images[m_displayed]->GetBitmap());
     bitmapDC.SelectObject(bitmap);
 
-    dc->Blit(point.x + m_imageBorderWidth, point.y - m_center + m_imageBorderWidth, m_width - 2 * m_imageBorderWidth,
-            m_height - 2 * m_imageBorderWidth, &bitmapDC, 0, 0);
+    int imageBorderWidth = m_imageBorderWidth;
+    if (m_drawBoundingBox == true)
+    {
+      imageBorderWidth = Scale_Px(3);
+      dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))));
+      dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
+    }
+
+    dc->Blit(point.x + imageBorderWidth, point.y - m_center + imageBorderWidth,
+             m_width - 2 * imageBorderWidth, m_height - 2 * imageBorderWidth,
+             &bitmapDC,
+             m_imageBorderWidth-imageBorderWidth, m_imageBorderWidth-imageBorderWidth);
   }
   else
     // The cell isn't drawn => No need to keep it's image cache for now.
