@@ -266,16 +266,13 @@ void SlideShow::Draw(wxPoint point, int fontsize)
     else
       dc->SetPen(*wxRED_PEN);
 
-    // If we need a selection border on another redraw we will be informed by OnPaint() again.
-    m_drawBoundingBox = false;
-
     dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
     wxBitmap bitmap = (configuration->GetPrinter() ? m_images[m_displayed]->GetBitmap(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER) : m_images[m_displayed]->GetBitmap());
     bitmapDC.SelectObject(bitmap);
 
     int imageBorderWidth = m_imageBorderWidth;
-    if (m_drawBoundingBox == true)
+    if (m_drawBoundingBox)
     {
       imageBorderWidth = Scale_Px(3);
       dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))));
@@ -285,11 +282,15 @@ void SlideShow::Draw(wxPoint point, int fontsize)
     dc->Blit(point.x + imageBorderWidth, point.y - m_center + imageBorderWidth,
              m_width - 2 * imageBorderWidth, m_height - 2 * imageBorderWidth,
              &bitmapDC,
-             m_imageBorderWidth-imageBorderWidth, m_imageBorderWidth-imageBorderWidth);
+             imageBorderWidth - m_imageBorderWidth, imageBorderWidth - m_imageBorderWidth);
+
   }
   else
     // The cell isn't drawn => No need to keep it's image cache for now.
     ClearCache();
+
+  // If we need a selection border on another redraw we will be informed by OnPaint() again.
+  m_drawBoundingBox = false;
 }
 
 wxString SlideShow::ToString()
