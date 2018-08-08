@@ -1,10 +1,8 @@
-wxmaxima (17.10.0-2) unstable; urgency=medium
+wxmaxima (18.08.0-pre) unstable; urgency=medium
 
-  * Patch: One of the bugfixes in wxMaxima could cause a race condition that could
-    cause maxima's output to be attached to the wrong input cell => Reverted that
-    bugfix as attaching the output at the right place is more important than
-    supporting :lisp commands in the very first cell of the worksheet.
- -- Gunter Königsmann <wxmaxima@physikbuch.de>  Fri, 6 Oct 2017 9:25:36 +0100
+  * Tried to make the nightly build work
+ -- Gunter Königsmann <wxmaxima@physikbuch.de>  Wed, 8 Aug 2018 9:25:36 +0100
+
 wxmaxima (17.10.0-1) unstable; urgency=medium
 
   * New upstream release with many new features, bugfixes and performance
