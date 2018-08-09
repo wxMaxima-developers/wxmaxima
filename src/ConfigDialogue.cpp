@@ -1011,6 +1011,12 @@ wxPanel *ConfigDialogue::CreateClipboardPanel()
   m_copySVG->SetValue(configuration->CopySVG());
   vbox->Add(m_copySVG, 0, wxALL, 5);
 
+  #if wxUSE_ENH_METAFILE==1
+  m_copyEMF = new wxCheckBox(panel, -1, _("Enhanced meta file (emf)"));
+  m_copyEMF->SetValue(configuration->CopyEMF());
+  vbox->Add(m_copyEMF, 0, wxALL, 5);
+  #endif
+
   panel->SetSizerAndFit(vbox);
 
   return panel;
@@ -1240,6 +1246,9 @@ void ConfigDialogue::WriteSettings()
   configuration->CopyMathMLHTML(m_copyMathMLHTML->GetValue());
   configuration->CopyRTF(m_copyRTF->GetValue());
   configuration->CopySVG(m_copySVG->GetValue());
+  #if wxUSE_ENH_METAFILE==1
+  configuration->CopyEMF(m_copyEMF->GetValue());
+  #endif
   
   WriteStyles();
   config->Flush();

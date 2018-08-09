@@ -814,6 +814,7 @@ public:
     popid_copy_image,
     popid_copy_animation,
     popid_copy_svg,
+    popid_copy_emf,
     popid_copy_rtf,
     popid_delete,
     popid_simplify,
@@ -835,6 +836,7 @@ public:
     popid_copy_mathml,
     popid_image,
     popid_svg,
+    popid_emf,
     popid_animation_save,
     popid_animation_start,
     popid_evaluate,
@@ -1055,6 +1057,11 @@ public:
     //! Copy a svg of the current selection to the clipboard
   bool CopySVG();
 
+#if wxUSE_ENH_METAFILE==1
+  //! Copy a svg of the current selection to the clipboard
+  bool CopyEMF();
+#endif
+  
   //! Copy a rtf version of the current selection to the clipboard
   bool CopyRTF();
 

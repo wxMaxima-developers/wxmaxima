@@ -3224,10 +3224,11 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
   menubar->Enable(menu_cut, m_console->CanCut());
   menubar->Enable(menu_copy_tex_from_console, m_console->CanCopy());
   menubar->Enable(MathCtrl::popid_copy_mathml, m_console->CanCopy());
-#if defined __WXMSW__ || defined __WXMAC__
   menubar->Enable(menu_copy_as_bitmap, m_console->CanCopy());
   menubar->Enable(menu_copy_as_svg, m_console->CanCopy());
-#endif
+  #if wxUSE_ENH_METAFILE==1
+  menubar->Enable(menu_copy_as_emf, m_console->CanCopy());
+  #endif
   menubar->Enable(menu_copy_as_rtf, m_console->CanCopy());
   menubar->Enable(menu_copy_to_file, m_console->CanCopy());
   menubar->Enable(menu_copy_text_from_console, m_console->CanCopy(true));
@@ -4320,6 +4321,12 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     if (m_console->CanCopy())
       m_console->CopySVG();
     break;
+#if wxUSE_ENH_METAFILE==1
+  case menu_copy_as_emf:
+    if (m_console->CanCopy())
+      m_console->CopyEMF();
+    break;
+#endif
   case menu_copy_as_rtf:
     if (m_console->CanCopy())
       m_console->CopyRTF();
@@ -7196,10 +7203,16 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       if (m_console->CanCopy())
         m_console->CopyAnimation();
       break;
-  case MathCtrl::popid_copy_svg:
+    case MathCtrl::popid_copy_svg:
       if (m_console->CanCopy())
         m_console->CopySVG();
       break;
+#if wxUSE_ENH_METAFILE==1
+    case MathCtrl::popid_copy_emf:
+      if (m_console->CanCopy())
+        m_console->CopyEMF();
+      break;
+#endif
     case MathCtrl::popid_copy_rtf:
       if (m_console->CanCopy(true))
         m_console->CopyRTF();
@@ -8455,6 +8468,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(MathCtrl::popid_copy_image, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_copy_animation, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_copy_svg, wxMaxima::PopupMenu)
+                EVT_MENU(MathCtrl::popid_copy_emf, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_copy_rtf, wxMaxima::PopupMenu)
                 EVT_MENU(MathCtrl::popid_insert_text, wxMaxima::InsertMenu)
                 EVT_MENU(MathCtrl::popid_insert_title, wxMaxima::InsertMenu)
@@ -8649,6 +8663,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(ToolBar::tb_hideCode, wxMaxima::EditMenu)
                 EVT_MENU(menu_copy_as_bitmap, wxMaxima::EditMenu)
                 EVT_MENU(menu_copy_as_svg, wxMaxima::EditMenu)
+                EVT_MENU(menu_copy_as_emf, wxMaxima::EditMenu)
                 EVT_MENU(menu_copy_as_rtf, wxMaxima::EditMenu)
                 EVT_MENU(menu_copy_to_file, wxMaxima::EditMenu)
                 EVT_MENU(menu_select_all, wxMaxima::EditMenu)

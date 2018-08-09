@@ -287,6 +287,8 @@ public:
     menu_copy_as_bitmap,
     menu_copy_as_svg,
     menu_save_as_svg,
+    menu_copy_as_emf,
+    menu_save_as_emf,
     menu_copy_as_rtf,
     menu_copy_to_file,
     menu_export_html,

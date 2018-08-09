@@ -32,6 +32,7 @@
 #include "wxMaxima.h"
 #include "MaxSizeChooser.h"
 #include "SVGout.h"
+#include "EMFout.h"
 #include <wx/richtext/richtextbuffer.h>
 #include <wx/tooltip.h>
 #include "wxMaximaFrame.h"
@@ -1223,6 +1224,10 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
                               wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_svg, _("Copy as SVG"),
                             wxEmptyString, wxITEM_NORMAL);
+#if wxUSE_ENH_METAFILE==1
+          popupMenu->Append(popid_copy_emf, _("Copy as EMF"),
+                            wxEmptyString, wxITEM_NORMAL);
+#endif
           popupMenu->Append(popid_copy_rtf, _("Copy as RTF"),
                             wxEmptyString, wxITEM_NORMAL);
           if (CanDeleteSelection())
@@ -1300,6 +1305,10 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
                               wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_svg, _("Copy as SVG"),
                             wxEmptyString, wxITEM_NORMAL);
+  #if wxUSE_ENH_METAFILE==1
+          popupMenu->Append(popid_copy_emf, _("Copy as EMF"),
+                            wxEmptyString, wxITEM_NORMAL);
+#endif
           popupMenu->Append(popid_copy_rtf, _("Copy as RTF"),
                             wxEmptyString, wxITEM_NORMAL);
           if (CanDeleteSelection())
@@ -2334,6 +2343,16 @@ bool MathCtrl::CopyCells()
         data->Add(new wxBitmapDataObject(bmp.GetBitmap()));
     }
 
+#if wxUSE_ENH_METAFILE==1
+    if(m_configuration->CopyEMF())
+    {    
+      MathCell *tmp = CopySelection();
+      
+      Emfout emf(&m_configuration);
+      emf.SetData(tmp);
+      data->Add(emf.GetDataObject());
+    }
+#endif
     if(m_configuration->CopySVG())
     {    
       MathCell *tmp = CopySelection();
@@ -4325,6 +4344,20 @@ bool MathCtrl::CopySVG()
 
   return retval;
 }
+#if wxUSE_ENH_METAFILE==1
+bool MathCtrl::CopyEMF()
+{
+  MathCell *tmp = CopySelection();
+
+  Emfout emf(&m_configuration);
+  emf.SetData(tmp);
+
+  bool retval = emf.ToClipboard();
+  Recalculate();
+
+  return retval;
+}
+#endif
 
 bool MathCtrl::CopyRTF()
 {

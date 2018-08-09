@@ -72,6 +72,7 @@ Configuration::Configuration(wxDC &dc) : m_dc(&dc)
   m_copyMathMLHTML = false;
   m_copyRTF = true;
   m_copySVG = true;
+  m_copyEMF = false;
   m_showLength = 2;
   m_useUnicodeMaths = true;
   m_defaultBackgroundColor = *wxWHITE;
@@ -149,6 +150,7 @@ void Configuration::ReadConfig()
   config->Read(wxT("copyMathMLHTML"), &m_copyMathMLHTML);
   config->Read(wxT("copyRTF"), &m_copyRTF);
   config->Read(wxT("copySVG"), &m_copySVG );
+  config->Read(wxT("copyEMF"), &m_copyEMF );
 
   config->Read(wxT("maxima"), &m_maximaLocation);
   // Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a

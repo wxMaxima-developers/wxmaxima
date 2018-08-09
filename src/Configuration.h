@@ -579,6 +579,11 @@ public:
     {
       wxConfig::Get()->Write(wxT("copySVG"), m_copySVG = copySVG );
     }
+  bool CopyEMF(){return m_copyEMF;}
+  void CopyEMF(bool copyEMF)
+    {
+      wxConfig::Get()->Write(wxT("copyEMF"), m_copyEMF = copyEMF );
+    }
   void ShowLength(int length)
     {
       wxConfig::Get()->Write(wxT("showLength"), m_showLength = length );
@@ -727,6 +732,7 @@ private:
   int m_showLength;
   bool m_copyRTF;
   bool m_copySVG;
+  bool m_copyEMF;
   bool m_TOCshowsSectionNumbers;
   bool m_useUnicodeMaths;
   wxColour m_defaultBackgroundColor;
