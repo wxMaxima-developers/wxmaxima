@@ -1428,8 +1428,6 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
 
       tmp = tmp->m_nextToDraw;
     }
-    else
-      str+=wxT("\n\n\noindent%\n");
 
     if (mathMode)
     {
@@ -1438,6 +1436,8 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
       str += wxT("\\mbox{}\n\\]\n%%%%%%%%%%%%%%%");
     }
   }
+  else
+    str+=wxT("\n\n\noindent%\n");
 
   return str;
 }
