@@ -880,7 +880,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
       //
       // Paint background if we have a text cell
       //
-      if (m_groupType == GC_TYPE_TEXT && !configuration->GetPrinter())
+      if (m_groupType == GC_TYPE_TEXT )
       {
         int y = rect.GetY();
 
@@ -1357,7 +1357,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
   {
     str = wxT("\n\n\\noindent\n%%%%%%%%%%%%%%%\n")
                   wxT("%%% INPUT:\n")
-                  wxT("\\begin{minipage}[t]{8ex}\\color{red}\\bf\n") +
+                  wxT("\\begin{minipage}[t]{10em}\\color{red}\\bf\n") +
           m_inputLabel->ToTeX() +
           wxT("\n\\end{minipage}");
     if (m_inputLabel->m_next != NULL)
