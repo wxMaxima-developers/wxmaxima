@@ -51,12 +51,12 @@ enum
 Items where a list of groupcells can be folded include
  - sections
  - chapters
- - The prompt (if maxima outputs one) with the input cell, the output label maxima might 
+ - The prompt (if maxima outputs one) with the input cell, the output label maxima might
    generate and the output cell (if there is any output)
  - A combination of image and title
  - A combination of image and input cell
 
- This GroupCell stores the currently hidden cells in the GroupCell m_hiddenTree. This tree 
+ This GroupCell stores the currently hidden cells in the GroupCell m_hiddenTree. This tree
  has the parent m_hiddenTreeParent.
  */
 class GroupCell : public MathCell
@@ -85,7 +85,7 @@ public:
     the cell the selection was started at, the cell that was the last cell maxima
     appended output to...
 
-    Running this command tells the cell to remove these pointers as the cell is 
+    Running this command tells the cell to remove these pointers as the cell is
     no more displayed currently.
    */
   void MarkAsDeleted();
@@ -93,7 +93,7 @@ public:
 
   /*! Which GroupCell was the last maxima was working on?
 
-    Must be kept in GroupCell as on deletion a GroupCell will unlink itself from 
+    Must be kept in GroupCell as on deletion a GroupCell will unlink itself from
     this pointer.
    */
   GroupCell *GetLastWorkingGroup()
@@ -109,7 +109,7 @@ public:
   void CellUnderPointer(GroupCell *cell);
 
   /*! Returns the tooltip for the element at the position point.
-    
+
     wxEmptyString means: No toolTip.
    */
   wxString GetToolTip(const wxPoint &point);
@@ -213,9 +213,9 @@ public:
   { return m_outputRect; }
 
   /*! Recalculates the height of this GroupCell and all cells inside it if needed.
-    
+
     This command will also assign the GroupCell an y coordinate it is plotted at.
-    The y coordinate of all output cells of this GroupCell is assigned during 
+    The y coordinate of all output cells of this GroupCell is assigned during
     GroupCell::Draw() by providing MathCell::Draw() with the cell's coordinates.
    */
   void RecalculateHeight(int fontsize);
@@ -338,9 +338,9 @@ public:
      Also assigns all output cells contained in this GroupCell an y coordinate.
 
     \attention The height the output has needs to be in sync with the height
-    calculation done during RecalculateAppended() and during 
-    RecalculateHeightOutput(). 
-    \attention The y position used here must be in sync with the one calculated 
+    calculation done during RecalculateAppended() and during
+    RecalculateHeightOutput().
+    \attention The y position used here must be in sync with the one calculated
     by RecalculateHeightOutput().
 
    */
@@ -367,7 +367,7 @@ public:
 
   //! Called on MathCtrl resize
   void OnSize();
-  
+
   //! Reset the data when the input size changes
   void InputHeightChanged();
 
@@ -386,7 +386,7 @@ public:
         m_group = group;
       }
     //! Describe the current cell to a Screen Reader
-    virtual wxAccStatus GetDescription(int childId, wxString *description)
+    virtual wxAccStatus GetDescription(int wxUNUSED(childId), wxString *description)
       {
         if (description != NULL)
         {
@@ -438,12 +438,12 @@ public:
     // wxAccStatus HitTest (const wxPoint &pt,
     //                      int *childId, wxAccessible **childObject);
     wxAccStatus GetRole (int childId, wxAccRole *role);
-    
+
   private:
 	GroupCell *m_group;
   };
 #endif
- 
+
 protected:
   GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold

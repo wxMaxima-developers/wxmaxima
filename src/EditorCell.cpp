@@ -704,10 +704,10 @@ void EditorCell::MarkSelection(long start, long end, TextStyle style, int fontsi
 #if defined(__WXMAC__)
     rect = GetRect(); // rectangle representing the cell
     if (pos1 != end) // we have a \n, draw selection to the right border (mac behaviour)
-      selectionWidth = rect.GetRight() - point.x - Scale_Px(2);
+      selectionWidth = rect.GetRight() - point.x;
 #endif
 
-    rect = wxRect(point.x + Scale_Px(2),
+    rect = wxRect(point.x,
                   point.y + Scale_Px(1) - m_center,
                   selectionWidth,
                   m_charHeight);
@@ -793,14 +793,14 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
         wxPoint point = PositionToPoint(fontsize, m_paren1);
         int width, height;
         dc->GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
-        wxRect rect(point.x + Scale_Px(2) + 1,
+        wxRect rect(point.x + 1,
                     point.y + Scale_Px(2) - m_center + 1,
                     width - 1, height - 1);
         if (InUpdateRegion(rect))
           dc->DrawRectangle(CropToUpdateRegion(rect));
         point = PositionToPoint(fontsize, m_paren2);
         dc->GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
-        rect = wxRect(point.x + Scale_Px(2) + 1,
+        rect = wxRect(point.x + 1,
                       point.y + Scale_Px(2) - m_center + 1,
                       width - 1, height - 1);
         if (InUpdateRegion(rect))
@@ -814,8 +814,8 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
     SetPen();
 
     wxPoint TextStartingpoint = point;
-    // TextStartingpoint.x -= Scale_Px(MC_TEXT_PADDING);
-    TextStartingpoint.x += Scale_Px(2);
+//    TextStartingpoint.x -= Scale_Px(MC_TEXT_PADDING);
+//    TextStartingpoint.x += Scale_Px(2);
     wxPoint TextCurrentPoint = TextStartingpoint;
     int lastStyle = -1;
     int lastIndent = 0;
@@ -901,12 +901,12 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
       dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 #if defined(__WXMAC__)
       // draw 1 pixel shorter caret than on windows
-      dc->DrawRectangle(point.x + Scale_Px(2) + lineWidth - (*m_configuration)->GetCursorWidth(),
-                       point.y + Scale_Px(3) - m_center + caretInLine * m_charHeight,
+      dc->DrawRectangle(point.x  + lineWidth - (*m_configuration)->GetCursorWidth(),
+                       point.y + Scale_Px(1) - m_center + caretInLine * m_charHeight,
                        (*m_configuration)->GetCursorWidth(),
                        m_charHeight - Scale_Px(5));
 #else
-      dc->DrawRectangle(point.x + Scale_Px(2) + lineWidth-(*m_configuration)->GetCursorWidth()/2,
+      dc->DrawRectangle(point.x + + lineWidth-(*m_configuration)->GetCursorWidth()/2,
                        point.y + Scale_Px(2) - m_center + caretInLine * m_charHeight,
                        (*m_configuration)->GetCursorWidth(),
                        m_charHeight- Scale_Px(3));
@@ -4814,36 +4814,36 @@ void EditorCell::CaretToPosition(int pos)
 #if wxUSE_ACCESSIBILITY
 wxAccStatus EditorCell::GetDescription(int childId, wxString *description)
 {
-	if (childId != 0)
-		return wxACC_FAIL;
-
-	if (description == NULL)
-		return wxACC_FAIL;
-
-	switch (GetType())
-	{
-	case MC_TYPE_INPUT:
-		*description = _("Maxima code");
-		break;
-		//  case MC_TYPE_CHAPTER:
-		//    *description = _("A chapter heading");
-		//    break;
-	case MC_TYPE_SECTION:
-		*description = _("A section heading");
-		break;
-	case MC_TYPE_SUBSECTION:
-		*description = _("A subsection heading");
-		break;
-	case MC_TYPE_SUBSUBSECTION:
-		*description = _("A sub-subsection heading");
-		break;
-	case MC_TYPE_TEXT:
-		*description = _("Comment (ordinary worksheet text that isn't fed to maxima)");
-		break;
-	default:
-		*description = _("Bug: Unknown type of text");
-		break;
-	}
+  if (childId != 0)
+    return wxACC_FAIL;
+  
+  if (description == NULL)
+    return wxACC_FAIL;
+  
+  switch (GetType())
+  {
+  case MC_TYPE_INPUT:
+    *description = _("Maxima code");
+    break;
+    //  case MC_TYPE_CHAPTER:
+    //    *description = _("A chapter heading");
+    //    break;
+  case MC_TYPE_SECTION:
+    *description = _("A section heading");
+    break;
+  case MC_TYPE_SUBSECTION:
+    *description = _("A subsection heading");
+    break;
+  case MC_TYPE_SUBSUBSECTION:
+    *description = _("A sub-subsection heading");
+    break;
+  case MC_TYPE_TEXT:
+    *description = _("Comment (ordinary worksheet text that isn't fed to maxima)");
+    break;
+  default:
+    *description = _("Bug: Unknown type of text");
+    break;
+  }
   return wxACC_OK;
 }
 

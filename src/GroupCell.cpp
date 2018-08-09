@@ -73,7 +73,7 @@ GroupCell::GroupCell(Configuration **config, int groupType, CellPointers *cellPo
     if (groupType == GC_TYPE_CODE)
       m_inputLabel = new TextCell(this, m_configuration, m_cellPointers, EMPTY_INPUT_LABEL);
     else
-      m_inputLabel = new TextCell(this, m_configuration, m_cellPointers, wxT(" "));
+      m_inputLabel = new TextCell(this, m_configuration, m_cellPointers, wxT(""));
 
     m_inputLabel->SetType(MC_TYPE_MAIN_PROMPT);
   }
@@ -2216,33 +2216,33 @@ bool GroupCell::Contains(GroupCell *cell)
 #if wxUSE_ACCESSIBILITY
 wxAccStatus GroupCell::GetDescription(int childId, wxString *description)
 {
-	if (description == NULL)
-		return wxACC_FAIL;
-
-	if (childId == 0)
-	{
-		if (m_groupType == GC_TYPE_PAGEBREAK)
-		{
-			*description = _("A page break");
-			return wxACC_OK;
-		}
-		else
-		{
-			*description = _("A GroupCell that bundles input with its output");
-			return wxACC_OK;
-		}
-	}
-	else
-	{
-		MathCell *cell = NULL;
-		if (GetChild(childId, &cell) == wxACC_OK)
-		{
-			return cell->GetDescription(0, description);
-		}
-	}
-
-	*description = wxEmptyString;
-	return wxACC_FAIL;
+  if (description == NULL)
+    return wxACC_FAIL;
+  
+  if (childId == 0)
+  {
+    if (m_groupType == GC_TYPE_PAGEBREAK)
+    {
+      *description = _("A page break");
+      return wxACC_OK;
+    }
+    else
+    {
+      *description = _("A GroupCell that bundles input with its output");
+      return wxACC_OK;
+    }
+  }
+  else
+  {
+    MathCell *cell = NULL;
+    if (GetChild(childId, &cell) == wxACC_OK)
+    {
+      return cell->GetDescription(0, description);
+    }
+  }
+  
+  *description = wxEmptyString;
+  return wxACC_FAIL;
 }
 
 
@@ -2252,10 +2252,10 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId)
   {
     rect = wxRect(GetRect().GetTopLeft()     + m_visibleRegion.GetTopLeft(),
                   GetRect().GetBottomRight() + m_visibleRegion.GetTopLeft());
-
+    
     // Our GroupCell handles the hcaret below the cell, as well as its contents
     rect.SetBottom(rect.GetBottom()+(*m_configuration)->GetGroupSkip());
-
+    
     // If we are the 1st groupcell of the worksheet we handle the hcaret above this
     // cell, too.
     if(m_previous == NULL)

@@ -1318,6 +1318,7 @@ wxAccStatus MathCell::GetRole (int childId, wxAccRole *role)
     *role =   wxROLE_SYSTEM_STATICTEXT;
     return wxACC_OK;
   }
+  else return wxACC_FAIL;
 }
 
 #endif

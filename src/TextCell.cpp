@@ -447,8 +447,7 @@ void TextCell::RecalculateWidths(int fontsize)
       m_width = m_width / 4;
     }
   }
-  if(m_width < 4) m_width = 4;
-  if(m_height < 4) m_height = 4;
+  if(m_height < Scale_Px(4)) m_height = Scale_Px(4);
   m_realCenter = m_center = m_height / 2;
   ResetData();
 }
