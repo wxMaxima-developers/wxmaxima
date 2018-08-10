@@ -132,6 +132,8 @@ bool Emfout::Layout()
   (*m_configuration)->SetContext(*m_dc);
 
   Draw();
+  // Closing the DC seems to trigger the actual output of the file.
+  m_dc->Close();
   wxDELETE(m_dc);
   m_dc = NULL;
   return true;
