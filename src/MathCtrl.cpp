@@ -1221,7 +1221,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
                               wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_svg, _("Copy as SVG"),
                             wxEmptyString, wxITEM_NORMAL);
-#if wxUSE_ENH_METAFILE==1
+#if wxUSE_ENH_METAFILE
           popupMenu->Append(popid_copy_emf, _("Copy as EMF"),
                             wxEmptyString, wxITEM_NORMAL);
 #endif
@@ -1302,7 +1302,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
                               wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_svg, _("Copy as SVG"),
                             wxEmptyString, wxITEM_NORMAL);
-  #if wxUSE_ENH_METAFILE==1
+  #if wxUSE_ENH_METAFILE
           popupMenu->Append(popid_copy_emf, _("Copy as EMF"),
                             wxEmptyString, wxITEM_NORMAL);
 #endif
@@ -2340,7 +2340,7 @@ bool MathCtrl::CopyCells()
         data->Add(new wxBitmapDataObject(bmp.GetBitmap()));
     }
 
-#if wxUSE_ENH_METAFILE==1
+#if wxUSE_ENH_METAFILE
     if(m_configuration->CopyEMF())
     {
       MathCell *tmp = CopySelection();
@@ -4341,7 +4341,7 @@ bool MathCtrl::CopySVG()
 
   return retval;
 }
-#if wxUSE_ENH_METAFILE==1
+#if wxUSE_ENH_METAFILE
 bool MathCtrl::CopyEMF()
 {
   MathCell *tmp = CopySelection();

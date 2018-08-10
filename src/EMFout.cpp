@@ -24,16 +24,16 @@
   This file defines the class Emfout that renders math as scalable emf graphics.
  */
 
-#if wxUSE_ENH_METAFILE==1
-
 #include "EMFout.h"
-#include <wx/txtstrm.h> 
-#include <wx/filename.h> 
+#include <wx/txtstrm.h>
+#include <wx/filename.h>
 #include <wx/wfstream.h>
 #include "Configuration.h"
 #include "GroupCell.h"
 #include <wx/config.h>
 #include <wx/clipbrd.h>
+
+#if wxUSE_ENH_METAFILE
 
 Emfout::Emfout(Configuration **configuration, wxString filename)
 {
@@ -48,12 +48,9 @@ Emfout::Emfout(Configuration **configuration, wxString filename)
     m_filename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
 
   m_dc = NULL;
-  
+
   wxString m_tempFileName = wxFileName::CreateTempFileName(wxT("wxmaxima_size_"));
   m_recalculationDc = new wxEnhMetaFileDC(m_tempFileName,700,50000);
-#if wxCHECK_VERSION(3, 1, 0)
-  m_recalculationDc->SetBitmapHandler(new wxEMFBitmapEmbedHandler());
-#endif
   *m_configuration = new Configuration(*m_recalculationDc);
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
   (*m_configuration)->SetClientWidth(700);
@@ -93,7 +90,7 @@ wxSize Emfout::SetData(MathCell *tree)
     m_tree = tree;
     m_tree->ResetSize();
     if(Layout())
-      return wxSize(m_width, m_height);  
+      return wxSize(m_width, m_height);
     else
       return wxSize(-1,-1);
   }
@@ -104,7 +101,7 @@ wxSize Emfout::SetData(MathCell *tree)
 bool Emfout::Layout()
 {
   (*m_configuration)->SetContext(*m_recalculationDc);
-  
+
   if (m_tree->GetType() != MC_TYPE_GROUP)
   {
     RecalculateWidths();
@@ -132,11 +129,8 @@ bool Emfout::Layout()
   wxDELETE(m_dc);
   // Let's switch to a DC of the right size for our object.
   m_dc = new wxEnhMetaFileDC(m_filename, m_width, m_height);
-#if wxCHECK_VERSION(3, 1, 0)
-  m_dc->SetBitmapHandler(new wxEMFBitmapEmbedHandler());
-#endif
   (*m_configuration)->SetContext(*m_dc);
-  
+
   Draw();
   wxDELETE(m_dc);
   m_dc = NULL;
@@ -323,7 +317,7 @@ Emfout::EMFDataObject *Emfout::GetDataObject()
     wxRemoveFile(m_filename);
   }
   m_filename = wxEmptyString;
-  
+
   return new EMFDataObject(emfContents);
 }
 

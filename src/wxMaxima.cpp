@@ -24,9 +24,9 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*!\file
-  This file defines the contents of the class wxMaxima that contains most of the program's logic. 
+  This file defines the contents of the class wxMaxima that contains most of the program's logic.
 
-  The worksheet is defined in the class MathCtrl instead and 
+  The worksheet is defined in the class MathCtrl instead and
   everything surrounding it in wxMaximaFrame.
  */
 
@@ -134,7 +134,7 @@ void wxMaxima::ConfigChanged()
   {
     m_configCommands += wxT(":lisp-quiet (setq $wxchangedir nil)\n");
   }
-    
+
 #if defined (__WXMAC__)
   bool usepngCairo = false;
 #else
@@ -241,7 +241,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   m_oldFindFlags = 0;
   m_console->m_currentFile = wxEmptyString;
   int findFlags = wxFR_DOWN | wxFR_MATCHCASE;
-  wxConfig::Get()->Read(wxT("findFlags"), &findFlags);  
+  wxConfig::Get()->Read(wxT("findFlags"), &findFlags);
   m_findData.SetFlags(findFlags);
   m_console->SetFocus();
   m_console->m_keyboardInactiveTimer.SetOwner(this, KEYBOARD_INACTIVITY_TIMER_ID);
@@ -252,7 +252,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
 #if wxUSE_DRAG_AND_DROP
   m_console->SetDropTarget(new MyDropTarget(this));
 #endif
-  
+
   StatusMaximaBusy(disconnected);
 
   /// RegEx for function definitions
@@ -491,13 +491,13 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, int type, wxString userLabel)
   {
     lastLine = DoRawConsoleAppend(s, MC_TYPE_ERROR);
     GroupCell *tmp = m_console->GetWorkingGroup(true);
-    
+
     if (tmp == NULL)
     {
     if (m_console->GetActiveCell())
       tmp = dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetGroup());
     }
-    
+
     if(tmp != NULL)
     {
       m_console->m_cellPointers.m_errorList.Add(tmp);
@@ -541,7 +541,7 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
 
 TextCell *wxMaxima::DoRawConsoleAppend(wxString s, int type)
 {
-  
+
   TextCell *cell = NULL;
   // If we want to append an error message to the worksheet and there is no cell
   // that can contain it we need to create such a cell.
@@ -569,7 +569,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, int type)
 
     if(incompleteTextCell != NULL)
     {
-      int pos = s.Find("\n");      
+      int pos = s.Find("\n");
       wxString newVal = incompleteTextCell->GetValue();
       if(pos != wxNOT_FOUND)
       {
@@ -580,7 +580,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, int type)
       {
         newVal += s;
         s = wxEmptyString;
-      }   
+      }
 
       incompleteTextCell->SetValue(newVal);
       if(s == wxEmptyString)
@@ -599,7 +599,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, int type)
       cell = new TextCell(m_console->GetTree(), &(m_console->m_configuration),
                            &m_console->m_cellPointers,
                            tokens.GetNextToken());
-      
+
       cell->SetType(type);
 
       if (tokens.HasMoreTokens())
@@ -613,7 +613,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, int type)
         cell->ForceBreakLine(true);
         lst = cell;
       }
-      
+
       count++;
     }
     m_console->InsertLine(tmp, true);
@@ -786,13 +786,13 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
         if ((m_client->IsData()) && (!(eof = m_clientStream->Eof())))
           newChars += wxT("\n");
       }
-    
+
     if(newChars == wxEmptyString)
       return;
-    
+
     if (IsPaneDisplayed(menu_pane_xmlInspector))
       m_xmlInspector->Add_FromMaxima(newChars);
-        
+
     // This way we can avoid searching the whole string for a
     // ending tag if we have received only a few bytes of the
     // data between 2 tags
@@ -800,7 +800,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
       m_currentOutputEnd = m_currentOutput.Right(MIN(30,m_currentOutput.Length())) + newChars;
     else
       m_currentOutputEnd = wxEmptyString;
-        
+
     m_currentOutput += newChars;
 
     if (!m_dispReadOut &&
@@ -810,31 +810,31 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
       StatusMaximaBusy(transferring);
       m_dispReadOut = true;
     }
-        
+
     size_t length_old = -1;
-        
+
     while (length_old != m_currentOutput.Length())
     {
       if (m_currentOutput.StartsWith("\n<"))
         m_currentOutput = m_currentOutput.Right(m_currentOutput.Length() - 1);
-          
+
       length_old = m_currentOutput.Length();
-          
-          
+
+
       // First read the prompt that tells us that maxima awaits the next command:
       // If that is the case ReadPrompt() sends the next command to maxima and
       // maxima can work while we interpret its output.
       GroupCell *oldActiveCell = m_console->GetWorkingGroup();
       ReadPrompt(m_currentOutput);
       GroupCell *newActiveCell = m_console->GetWorkingGroup();
-          
+
       // Temporarily switch to the WorkingGroup the output we don't have interpreted yet
       // was for
       if(newActiveCell != oldActiveCell)
         m_console->m_cellPointers.SetWorkingGroup(oldActiveCell);
       // Handle the <mth> tag that contains math output and sometimes text.
       ReadMath(m_currentOutput);
-          
+
       // The following function calls each extract and remove one type of XML tag
       // information from the beginning of the data string we got - but only do so
       // after the closing tag has been transferred, as well.
@@ -845,7 +845,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
 
       // Handle the XML tag that contains Status bar updates
       ReadStatusBar(m_currentOutput);
-          
+
       // Handle text that isn't wrapped in a known tag
       if (!m_first)
         // Handle text that isn't XML output: Mostly Error messages or warnings.
@@ -854,7 +854,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
         // This function determines the port maxima is running on from  the text
         // maxima outputs at startup. This piece of text is afterwards discarded.
         ReadFirstPrompt(m_currentOutput);
-          
+
       // Switch to the WorkingGroup the next bunch of data is for.
       if(newActiveCell != oldActiveCell)
         m_console->m_cellPointers.SetWorkingGroup(newActiveCell);
@@ -904,7 +904,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       // Start the evaluation. If the evaluation queue isn't empty, that is.
       TryEvaluateNextInQueue();
     }
-    break;    
+    break;
 
   default:
       break;
@@ -969,7 +969,7 @@ bool wxMaxima::StartMaxima(bool force)
     {
 
       command.Append(wxString::Format(wxT(" -s %d "), m_port));
-      
+
 #if defined __WXMAC__
       wxSetEnv(wxT("DISPLAY"), wxT(":0.0"));
 #endif
@@ -1041,20 +1041,19 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
     // and interfaces/xmaxima/win32/winkill_lib.c in maxima's tree.
     HANDLE sharedMemoryHandle = 0;
     LPVOID sharedMemoryAddress = 0;
-    DWORD sharedMemoryLength = 0x10000;
     wchar_t sharedMemoryName[51];
     sharedMemoryName[50] = 0;
 
     // wxMaxima doesn't want to get interrupt signals.
     // SetConsoleCtrlHandler(NULL, true);
-    
-    /* First try to send the signal to gcl. */    
+
+    /* First try to send the signal to gcl. */
     wxString sharedMemoryName1 = wxString::Format("gcl-%d", m_pid);
     wcsncpy(sharedMemoryName, sharedMemoryName1.wchar_str(), 50);
     sharedMemoryHandle = OpenFileMapping(FILE_MAP_WRITE,     /*  Read/write permission.   */
                                          FALSE,              /*  Do not inherit the name  */
                                          sharedMemoryName); /*  of the mapping object.   */
-    
+
     /* If gcl is not running, send to maxima. */
     wxString sharedMemoryName2 = wxString::Format("maxima-%d", m_pid);
     if (sharedMemoryHandle == NULL) {
@@ -1075,25 +1074,25 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
       SetConsoleCtrlHandler(NULL,TRUE);
 
       // We could send a CTRL_BREAK_EVENT instead of a CTRL_C_EVENT that
-      // isn't handled in the 2010 clisp release (see: 
+      // isn't handled in the 2010 clisp release (see:
       // https://sourceforge.net/p/clisp/bugs/735/)
       // ...but CTRL_BREAK_EVENT seems to crash clisp, see
       // https://sourceforge.net/p/clisp/bugs/736/
-      // 
+      //
       // And we need to send the CTRL_BREAK_EVENT to our own console, which
       // has the group ID 0, see
       // https://docs.microsoft.com/en-us/windows/console/generateconsolectrlevent
       if (GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0) == 0)
       {
         LPTSTR errorText = NULL;
-        
+
         FormatMessage(
           FORMAT_MESSAGE_FROM_SYSTEM
           |FORMAT_MESSAGE_ALLOCATE_BUFFER
-          |FORMAT_MESSAGE_IGNORE_INSERTS,  
+          |FORMAT_MESSAGE_IGNORE_INSERTS,
           NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
           errorText,0,NULL);
-        
+
         wxString errorMessage;
         if (!errorText)
           errorMessage = _("Could not send an interrupt signal to maxima.");
@@ -1103,7 +1102,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
                                           errorText);
           LocalFree(errorText);
         }
-        
+
         SetStatusText(errorMessage, 0);
         wxLogMessage(errorMessage);
         return;
@@ -1116,14 +1115,14 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
                                           0,                   /* Max.  object size.  */
                                           0,                   /* Size of hFile.  */
                                           0);                  /* Map entire file.  */
-      
+
       if (sharedMemoryAddress == NULL)
-      { 
+      {
         wxLogMessage(_("Could not map view of the file needed in order to "
                        "send an interrupt signal to maxima."));
         return;
       }
-      
+
       // Set the bit for the SIGINT handler
       int value = (1 << (wxSIGINT));
       int *sharedMemoryContents = (int *)(sharedMemoryAddress);
@@ -1165,7 +1164,7 @@ void wxMaxima::KillMaxima()
 {
   if((m_pid > 0) && (m_client == NULL))
     return;
-  
+
   wxLogMessage(_("Killing Maxima."));
   m_nestedLoadCommands = 0;
   m_configCommands = wxEmptyString;
@@ -1175,7 +1174,7 @@ void wxMaxima::KillMaxima()
   m_console->m_cellPointers.SetWorkingGroup(NULL);
   m_console->m_evaluationQueue.Clear();
   EvaluationQueueLength(0);
-  
+
   // We start checking for maximas output again as soon as we send some data to the program.
   m_statusBar->SetMaximaCPUPercentage(0);
   m_CWD = wxEmptyString;
@@ -1188,7 +1187,7 @@ void wxMaxima::KillMaxima()
   m_process = NULL;
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
-  
+
   if (m_pid <= 0)
   {
     if(m_client)
@@ -1320,7 +1319,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
 
   if (m_pid > 0)
     GetMenuBar()->Enable(menu_interrupt_id, true);
-  
+
   m_first = false;
   m_inLispMode = false;
   StatusMaximaBusy(waiting);
@@ -1329,13 +1328,13 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   wxString prompt_compact = data.Left(start + end + m_firstPrompt.Length() - 1);
   prompt_compact.Replace(wxT("\n"),wxT("\x21b2"));
 
- 
+
   wxLogMessage(wxString::Format(_("Received maxima's first prompt: %s"),
                                 prompt_compact));
-  
+
   // Remove the first prompt from Maxima's answer.
   data = data.Right(data.Length() - end - m_firstPrompt.Length());
-  
+
   if (m_console->m_evaluationQueue.Empty())
   {
     // Inform the user that the evaluation queue is empty.
@@ -1366,7 +1365,7 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
     return 0;
   if(data.StartsWith(m_variablesPrefix))
     return 0;
-  
+
   int mthpos = data.Find("<mth>");
   int lblpos = data.Find("<lbl>");
   int statpos = data.Find("<statusbar>");
@@ -1401,11 +1400,11 @@ void wxMaxima::ReadMiscText(wxString &data)
   int miscTextLen = GetMiscTextEnd(data);
   if(miscTextLen <= 0)
   {
-    if(data != wxEmptyString) 
+    if(data != wxEmptyString)
       m_console->m_cellPointers.m_currentTextCell = NULL;
     return;
   }
-  
+
   wxString miscText = data.Left(miscTextLen);
   data = data.Right(data.Length() - miscTextLen);
 
@@ -1432,13 +1431,13 @@ void wxMaxima::ReadMiscText(wxString &data)
     }
     else
       mergedWhitespace += *it;
-        
+
     if((*it == wxT(' ')) || (*it == wxT('\t')) || (*it == wxT('\n')))
       whitespace = true;
     else
       whitespace = false;
   }
-  
+
   bool error   = false;
   bool warning = false;
   if (
@@ -1448,7 +1447,7 @@ void wxMaxima::ReadMiscText(wxString &data)
     (mergedWhitespace.Contains(wxT("\nMaxima encountered a Lisp error"))) ||
     (mergedWhitespace.Contains(wxT("\nkillcontext: no such context"))) ||
     (mergedWhitespace.Contains(wxT("\ndbl:MAXIMA>>"))) ||  // a gcl error message
-    (mergedWhitespace.Contains(wxT("\nTo enable the Lisp debugger set *debugger-hook* to nil."))) // a scbl error message 
+    (mergedWhitespace.Contains(wxT("\nTo enable the Lisp debugger set *debugger-hook* to nil."))) // a scbl error message
     )
     error = true;
 
@@ -1468,7 +1467,7 @@ void wxMaxima::ReadMiscText(wxString &data)
     if (m_gnuplotErrorRegex.Matches(mergedWhitespace))
       error = true;
   }
-  
+
   // Add all text lines to the console
   wxStringTokenizer lines(miscText, wxT("\n"));
   while (lines.HasMoreTokens())
@@ -1496,12 +1495,12 @@ void wxMaxima::ReadMiscText(wxString &data)
       }
     }
     if(lines.HasMoreTokens())
-      m_console->m_cellPointers.m_currentTextCell = NULL;      
+      m_console->m_cellPointers.m_currentTextCell = NULL;
   }
   if(miscText.EndsWith("\n"))
     m_console->m_cellPointers.m_currentTextCell = NULL;
 
-  if(data != wxEmptyString) 
+  if(data != wxEmptyString)
     m_console->m_cellPointers.m_currentTextCell = NULL;
 }
 
@@ -1518,7 +1517,7 @@ void wxMaxima::ReadStatusBar(wxString &data)
   wxString statusbarStart = wxT("<statusbar>");
   if (!data.StartsWith(statusbarStart))
     return;
-  
+
   m_console->m_cellPointers.m_currentTextCell = NULL;
 
   wxString sts = wxT("</statusbar>");
@@ -1585,13 +1584,13 @@ void wxMaxima::ReadLoadSymbols(wxString &data)
   m_console->m_cellPointers.m_currentTextCell = NULL;
 
   int end = FindTagEnd(data, m_symbolsSuffix);
-  
+
   if (end != wxNOT_FOUND)
   {
     // Put the symbols into a separate string
     wxString symbols = data.Left( end + m_symbolsSuffix.Length());
     m_console->AddSymbols(symbols);
-    
+
     // Remove the symbols from the data string
     data = data.Right(data.Length()-end-m_symbolsSuffix.Length());
   }
@@ -1679,7 +1678,7 @@ void wxMaxima::ReadVariables(wxString &data)
         vars = vars->GetNext();
       }
     }
-    
+
     // Remove the symbols from the data string
     data = data.Right(data.Length()-end-m_variablesSuffix.Length());
   }
@@ -1694,7 +1693,7 @@ void wxMaxima::ReadPrompt(wxString &data)
     return;
 
   m_console->m_cellPointers.m_currentTextCell = NULL;
-  
+
   // Assume we don't have a question prompt
   m_console->m_questionPrompt = false;
   m_ready = true;
@@ -1848,7 +1847,7 @@ void wxMaxima::SetCWD(wxString file)
   filenamestring.Replace(wxT("\\"),wxT("/"));
   dirname.Replace(wxT("\\"),wxT("/"));
 #endif
-  
+
   wxString workingDirectory = filename.GetPath();
 
   bool wxcd = true;
@@ -1901,7 +1900,7 @@ wxString wxMaxima::ReadMacContents(wxString file)
       // Detect output cells.
       if(line.StartsWith(wxT("(%o")))
         input = false;
-      
+
       if(line.StartsWith(wxT("(%i")))
       {
         int end = line.Find(wxT(")"));
@@ -1919,7 +1918,7 @@ wxString wxMaxima::ReadMacContents(wxString file)
 
     if(!inputFile.Eof())
       line = inputFile.GetNextLine();
-    
+
   } while (!inputFile.Eof());
   inputFile.Close();
 
@@ -1941,7 +1940,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
     document->Thaw();
     return false;
   }
-  
+
   if (clearDocument)
     document->ClearDocument();
 
@@ -1951,7 +1950,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
   wxString::iterator ch = macContents.begin();
   while (ch != macContents.end())
   {
-    
+
     // Handle comments
     if((*ch == '*') && (lastChar == '/'))
     {
@@ -1969,7 +1968,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
       while (ch != macContents.end())
       {
         line += *ch;
-          
+
         if ((lastChar == wxT('*')) && (*ch == wxT('/')))
         {
           lastChar = *ch;
@@ -1977,12 +1976,12 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
             ++ch;
           break;
         }
-        
+
         lastChar = *ch;
         if(ch != macContents.end())
           ++ch;
       }
-      
+
       if(isCommentLine)
       {
         line.Trim(true);
@@ -1995,7 +1994,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
           // Add the rest of this comment block to the "line".
           while(
             (
-              !(              
+              !(
                   (line.EndsWith(" end   ] */")) ||
                   (line.EndsWith(" end   ] */\n"))
                   )
@@ -2032,7 +2031,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
             }
             while(
               (
-                !(              
+                !(
                   (line.EndsWith(" end   ] */")) ||
                   (line.EndsWith(" end   ] */\n"))
                   )
@@ -2050,7 +2049,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
               }
             }
           }
-          
+
           //  Convert the comment block to an array of lines
           wxStringTokenizer tokenizer(line, "\n");
           wxArrayString commentLines;
@@ -2063,7 +2062,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
             cell = m_console->CreateTreeFromWXMCode(&commentLines),
             last);
           last = cell;
-          
+
         }
           else
         {
@@ -2078,7 +2077,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
             line = line.SubString(0,line.length()-4);
           else
             line = line.SubString(0,line.length()-3);
-          
+
           document->InsertGroupCells(
             cell = new GroupCell(&(document->m_configuration),
                                  GC_TYPE_TEXT, &document->m_cellPointers,
@@ -2097,7 +2096,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
       while (ch != macContents.end())
       {
         line += *ch;
-          
+
         if ((*ch == wxT('\"')))
         {
           lastChar = *ch;
@@ -2149,7 +2148,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
                     GC_TYPE_CODE, &document->m_cellPointers, line),
       last);
   }
-  
+
   if (clearDocument)
   {
 //    m_console->m_currentFile = file.SubString(0,file.Length()-4) + wxT("wxmx");
@@ -2627,7 +2626,7 @@ void wxMaxima::SetupVariables()
     wxString cmd;
   cmd = wxT(":lisp-quiet ($load \"") + m_console->m_configuration->m_dirStructure.DataDir() +
     wxT("/wxmathml.lisp\")\n");
-  
+
 #if defined (__WXMAC__)
   wxString gnuplotbin(wxT("/Applications/Gnuplot.app/Contents/Resources/bin/gnuplot"));
   if (wxFileExists(gnuplotbin))
@@ -2636,19 +2635,19 @@ void wxMaxima::SetupVariables()
   cmd.Replace(wxT("\\"),wxT("/"));
   SendMaxima(cmd);
 
-  wxString wxmaximaversion_lisp(wxT(VERSION));
+  wxString wxmaximaversion_lisp(wxT(GITVERSION));
   wxmaximaversion_lisp.Replace("\\","\\\\");
   wxmaximaversion_lisp.Replace("\"","\\\"");
 
-  SendMaxima(wxString(wxT(":lisp-quiet (setq $wxmaximaversion \"")) + 
-             wxmaximaversion_lisp + "\")\n");  
+  SendMaxima(wxString(wxT(":lisp-quiet (setq $wxmaximaversion \"")) +
+             wxmaximaversion_lisp + "\")\n");
   SendMaxima(wxString(wxT(":lisp-quiet ($put \'$wxmaxima (read-wxmaxima-version \"")) +
              wxmaximaversion_lisp +
              wxT("\") '$version)\n"));
   SendMaxima(wxString(wxT(":lisp-quiet (setq $wxwidgetsversion \"")) + wxVERSION_STRING + "\")\n");
 
   ConfigChanged();
-  
+
   if ((m_evalOnStartup) && (m_console->m_evaluationQueue.Empty()))
   {
     m_evalOnStartup = false;
@@ -2716,7 +2715,7 @@ void wxMaxima::ShowTip(bool force)
   ShowTips = wxShowTip(this, t, ShowTips);
 
   // A block with a local config variable:
-  // The config can change between before showing the tooltip and afterwards.  
+  // The config can change between before showing the tooltip and afterwards.
   {
     wxConfig *config = (wxConfig *) wxConfig::Get();
     config->Write(wxT("ShowTips"), ShowTips);
@@ -2997,7 +2996,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       event.RequestMore();
     else
       event.Skip();
-    return;    
+    return;
   }
 
   if(m_console != NULL)
@@ -3012,10 +3011,10 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       (m_oldFindFlags != m_console->m_findDialog->GetData()->GetFlags())
       )
     {
-      
+
       m_oldFindFlags = m_console->m_findDialog->GetData()->GetFlags();
       m_oldFindString = m_console->m_findDialog->GetData()->GetFindString();
-      
+
       bool incrementalSearch = true;
         wxConfig::Get()->Read("incrementalSearch", &incrementalSearch);
         if ((incrementalSearch) && (m_console->m_findDialog != NULL))
@@ -3024,20 +3023,20 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
                                      m_findData.GetFlags() & wxFR_DOWN,
                                      !(m_findData.GetFlags() & wxFR_MATCHCASE));
         }
-        
+
         m_console->RequestRedraw();
         event.RequestMore();
         return;
     }
   }
 
-  
+
   if(m_console->RedrawIfRequested())
   {
     m_updateControls = true;
 
     event.RequestMore();
-    return;    
+    return;
   }
 
   // If nothing which is visible has changed nothing that would cause us to need
@@ -3053,7 +3052,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       ResetTitle(m_console->IsSaved());
     else
       ResetTitle(false);
-      
+
     // This was a half-way lengthy task => Return from the idle task so we can give
     // maxima a chance to deliver new data.
     if((m_console->m_scheduleUpdateToc) ||
@@ -3063,7 +3062,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     else
       event.Skip();
 
-    return;    
+    return;
   }
 
   if(m_newStatusText != wxEmptyString)
@@ -3077,7 +3076,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       event.RequestMore();
     else
       event.Skip();
-    return;    
+    return;
   }
 
   // If we have set the flag that tells us we should update the table of
@@ -3099,7 +3098,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       m_console->m_tableOfContents->UpdateTableOfContents(m_console->GetTree(), cursorPos);
     }
     m_console->m_scheduleUpdateToc = false;
-    
+
     if((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded()))
       event.RequestMore();
     else
@@ -3110,7 +3109,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     m_xmlInspector->Update();
 
   UpdateDrawPane();
-  
+
   // Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();
 }
@@ -3219,14 +3218,14 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
     return;
   wxASSERT_MSG((!m_console->HCaretActive()) || (m_console->GetActiveCell() == NULL),
                _("Both horizontal and vertical cursor active at the same time"));
-  
+
   menubar->Enable(menu_copy_from_console, m_console->CanCopy(true));
   menubar->Enable(menu_cut, m_console->CanCut());
   menubar->Enable(menu_copy_tex_from_console, m_console->CanCopy());
   menubar->Enable(MathCtrl::popid_copy_mathml, m_console->CanCopy());
   menubar->Enable(menu_copy_as_bitmap, m_console->CanCopy());
   menubar->Enable(menu_copy_as_svg, m_console->CanCopy());
-  #if wxUSE_ENH_METAFILE==1
+  #if wxUSE_ENH_METAFILE
   menubar->Enable(menu_copy_as_emf, m_console->CanCopy());
   #endif
   menubar->Enable(menu_copy_as_rtf, m_console->CanCopy());
@@ -3484,7 +3483,7 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
 
     else if (file.Right(4).Lower() == wxT(".xml"))
       retval = OpenXML(file, m_console); // clearDocument = true
-    
+
     else
     {
       MenuCommand(wxT("load(\"") + unixFilename + wxT("\")$"));
@@ -3675,8 +3674,8 @@ void wxMaxima::ReadStdErr()
 
     wxString o_trimmed = o;
     o_trimmed.Trim();
-    
-    o = _("Message from the stdout of Maxima: ") + o; 
+
+    o = _("Message from the stdout of Maxima: ") + o;
     if ((o_trimmed != wxEmptyString) && (!o.StartsWith("Connecting Maxima to server on port")) &&
         (!m_first))
       DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
@@ -3749,7 +3748,7 @@ long long wxMaxima::GetTotalCpuTime()
   FILETIME systemtime;
   GetSystemTimeAsFileTime(&systemtime);
   return (long long) systemtime.dwLowDateTime +
-        2^32*((long long) systemtime.dwHighDateTime);
+        (2^32)*((long long) systemtime.dwHighDateTime);
 #else
   int CpuJiffies = 0;
   if(wxFileExists("/proc/stat"))
@@ -3761,7 +3760,7 @@ long long wxMaxima::GetTotalCpuTime()
       wxString line;
       while((!input.Eof()) && (!line.StartsWith("cpu ")))
         line = text.ReadLine();
-      
+
       // Strip the "cpu" from the line
       line = line.Right(line.Length() - 4);
       line.Trim(false);
@@ -3795,9 +3794,9 @@ long long wxMaxima::GetMaximaCpuTime()
     {
       long long retval =
         (long long)kernelTime.dwLowDateTime + userTime.dwLowDateTime +
-        2^32*((long long)kernelTime.dwHighDateTime + userTime.dwHighDateTime);
+        (2^32)*((long long)kernelTime.dwHighDateTime + userTime.dwHighDateTime);
       CloseHandle(maximaHandle);
-      
+
       return retval;
     }
   }
@@ -3811,7 +3810,7 @@ long long wxMaxima::GetMaximaCpuTime()
     {
       wxTextInputStream text(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
       wxString line = text.ReadLine();
-      
+
       wxStringTokenizer tokens(line,wxT(" "));
       for(int i = 0; i < 13; i++)
       {
@@ -3859,11 +3858,11 @@ double wxMaxima::GetMaximaCPUPercentage()
     m_cpuTotalJiffies_old = CpuJiffies;
     return -1;
   }
-  
+
   int maximaJiffies = GetMaximaCpuTime();
   if(maximaJiffies < 0)
     return -1;
-  
+
   double retval =
     (double)(maximaJiffies - m_maximaJiffies_old)/(CpuJiffies - m_cpuTotalJiffies_old) * 100;
 
@@ -3910,7 +3909,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
             if ((m_console->m_currentFile.Length() > 0))
             {
               // Automatically safe the file for the user making it seem like the file
-              // is always saved - 
+              // is always saved -
               SaveFile(false);
             }
             else
@@ -3923,7 +3922,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
               m_fileSaved = false;
             }
           }
-          
+
           m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval());
         }
       }
@@ -4205,9 +4204,9 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       if(!output.IsOk())
         return;
       wxTextOutputStream textOut(output);
-      
+
       textIn.ReadLine();textIn.ReadLine();
-      
+
       wxString line;
       while(!input.Eof())
       {
@@ -4256,7 +4255,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     // config dialogue.
     ReReadConfig();
     config = wxConfig::Get();
-      
+
     ConfigDialogue *configW = new ConfigDialogue(this, m_console->m_configuration);
     configW->Centre(wxBOTH);
     if (configW->ShowModal() == wxID_OK)
@@ -4321,7 +4320,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     if (m_console->CanCopy())
       m_console->CopySVG();
     break;
-#if wxUSE_ENH_METAFILE==1
+#if wxUSE_ENH_METAFILE
   case menu_copy_as_emf:
     if (m_console->CanCopy())
       m_console->CopyEMF();
@@ -5146,10 +5145,10 @@ void wxMaxima::AddDrawParameter(wxString cmd, int dimensionsOfNewDrawCommand)
 {
   if(!m_drawPane)
     return;
-  
+
   int dimensions = 0;
   dimensions = m_drawPane->GetDimensions();
-  
+
   if(dimensions < 2)
   {
     if(dimensionsOfNewDrawCommand < 3)
@@ -5172,14 +5171,14 @@ void wxMaxima::AddDrawParameter(wxString cmd, int dimensionsOfNewDrawCommand)
   m_console->SetFocus();
 }
 
-void wxMaxima::DrawMenu(wxCommandEvent &event)  
+void wxMaxima::DrawMenu(wxCommandEvent &event)
 {
   if(!m_drawPane)
     return;
 
   UpdateDrawPane();
   int dimensions = m_drawPane->GetDimensions();
-    
+
   if(m_console != NULL)
     m_console->CloseAutoCompletePopup();
 
@@ -5188,7 +5187,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     expr = GetDefaultEntry();
   else
     expr = "%";
-  
+
   wxString cmd;
   switch (event.GetId())
   {
@@ -5199,7 +5198,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     if (wiz->ShowModal() == wxID_OK)
     {
       m_console->SetFocus();
-      
+
       m_console->OpenHCaret(wiz->GetValue());
       m_console->GetActiveCell()->SetCaretPosition(
         m_console->GetActiveCell()->GetCaretPosition() - 3);
@@ -5215,7 +5214,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
       if (wiz->ShowModal() == wxID_OK)
       {
         m_console->SetFocus();
-      
+
         m_console->OpenHCaret(wiz->GetValue());
         m_console->GetActiveCell()->SetCaretPosition(
         m_console->GetActiveCell()->GetCaretPosition() - 3);
@@ -5287,7 +5286,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     wiz->Destroy();
     break;
   }
-    
+
   case menu_draw_implicit:
   {
     ImplicitWiz *wiz = new ImplicitWiz(this, m_console->m_configuration, expr, dimensions);
@@ -5336,7 +5335,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     wiz->Destroy();
     break;
   }
-  
+
   case menu_draw_axis:
   {
     AxisWiz *wiz = new AxisWiz(this, m_console->m_configuration, dimensions);
@@ -5348,7 +5347,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     wiz->Destroy();
     break;
   }
-  
+
   case menu_draw_contour:
   {
     WizContour *wiz = new WizContour(this, m_console->m_configuration);
@@ -5358,7 +5357,7 @@ void wxMaxima::DrawMenu(wxCommandEvent &event)
     wiz->Destroy();
     break;
   }
-  
+
   case menu_draw_accuracy:
   {
     WizDrawAccuracy *wiz = new WizDrawAccuracy(this, m_console->m_configuration, dimensions);
@@ -5439,7 +5438,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
       tst.Trim(true);
       tst.Trim(false);
       if(tst != wxT("1"))
-      val += wxT(",") + wiz->GetValue5();        
+      val += wxT(",") + wiz->GetValue5();
       val += wxT(")");
       MenuCommand(val);
     }
@@ -5476,7 +5475,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
       MenuCommand(wiz->GetValue());
     }
     wiz->Destroy();
-  }    
+  }
     break;
   case menu_list_sort:
   {
@@ -5507,7 +5506,7 @@ void wxMaxima::ListMenu(wxCommandEvent &event)
         MenuCommand(cmd);
       }
       wiz->Destroy();
-    }    
+    }
     break;
   case menu_list_pop:
     MenuCommand(wxT("pop(") + expr + wxT(")"));
@@ -6244,7 +6243,7 @@ void wxMaxima::PlotMenu(wxCommandEvent &event)
                             m_console->m_configuration,
                             wxT("2"), this);
       wxRegEx number("^[0-9][0-9]*$");
-      
+
       if (number.Matches(cmd))
       {
         cmd = wxT("wxanimate_framerate : ") + cmd + wxT(";");
@@ -7023,7 +7022,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
             m_fileSaved = false;
           if(dynamic_cast<ImgCell *>(output)->GetMaxHeight() != chooser->GetMaxHeight())
             m_fileSaved = false;
-          
+
           dynamic_cast<ImgCell *>(output)->SetMaxWidth(chooser->GetMaxWidth());
           dynamic_cast<ImgCell *>(output)->SetMaxHeight(chooser->GetMaxHeight());
         }
@@ -7146,7 +7145,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       break;
     case MathCtrl::popid_evaluate:
       {
-        wxCommandEvent *dummy = new wxCommandEvent;          
+        wxCommandEvent *dummy = new wxCommandEvent;
         EvaluateEvent(*dummy);
       }
       break;
@@ -7207,7 +7206,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       if (m_console->CanCopy())
         m_console->CopySVG();
       break;
-#if wxUSE_ENH_METAFILE==1
+#if wxUSE_ENH_METAFILE
     case MathCtrl::popid_copy_emf:
       if (m_console->CanCopy())
         m_console->CopyEMF();
@@ -7447,7 +7446,7 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event)
 
   if(file == wxEmptyString)
     return;
-      
+
   if (SaveNecessary() &&
       (
               (file.EndsWith(wxT(".wxmx"))) ||
@@ -7489,8 +7488,8 @@ bool wxMaxima::SaveNecessary()
   // No need to save a document only consisting of an prompt
   if(m_console->GetTree()->Empty())
     return false;
-    
-  
+
+
   return ((!m_fileSaved) || (!m_isNamed));
 }
 
@@ -7567,7 +7566,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event))
 wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
 {
   index = 0;
-  
+
   std::list<wxChar> delimiters;
 
   if (text.Right(1) == wxT("\\"))
@@ -7601,7 +7600,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
       delimiters.push_back(wxT('}'));
       lastC = c;
       break;
-        
+
       // Closing parenthesis
     case wxT(')'):
     case wxT(']'):
@@ -7627,14 +7626,14 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
       {
         if (c == wxT('\\'))
         {++it;++index;}
-          
+
         if(it != text.end())
         {++it;++index;}
       }
       if ((it == text.end()) || (*it != wxT('\"'))) return (_("Unterminated string."));
       lastC = c;
       break;
-        
+
     // a to_lisp command
     case wxT('t'):
     {
@@ -7643,7 +7642,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
       wxString::const_iterator it2(it);
       if(it2 != text.end())
       {
-        command += wxString(*it2);          
+        command += wxString(*it2);
         ++it2;
       }
       while((it2 != text.end()) && (wxIsalpha(*it2)))
@@ -7664,7 +7663,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
       wxString::const_iterator it2(it);
       if(it2 != text.end())
       {
-        command += wxString(*it2);          
+        command += wxString(*it2);
         ++it2;
       }
       while((it2 != text.end()) && (wxIsalpha(*it2)))
@@ -7672,7 +7671,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
         command += wxString(*it2);
         ++it2;
       }
-      
+
       // Let's see if this is a :lisp-quiet or a :lisp
       if ((command == wxT(":lisp")) || (command == wxT(":lisp-quiet")))
         lisp = true;
@@ -7687,7 +7686,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
       }
         lastC = c;
         break;
-        
+
         // Comments
     case wxT('/'):
           if (it != text.end())
@@ -7719,7 +7718,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
           }
           else lastC = c;
           break;
-        
+
           default:
             if ((c != wxT('\n')) && (c != wxT(' ')) && (c != wxT('\t')))
               lastC = c;
@@ -7749,13 +7748,13 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
       bool endingNeeded = true;
       text.Trim(true);
       text.Trim(false);
-    
+
       // Cells ending in ";" or in "$" don't require us to add an ending.
       if (lastC == wxT(';'))
         endingNeeded = false;
       if (lastC == wxT('$'))
         endingNeeded = false;
-    
+
       // Cells ending in "(to-maxima)" (with optional spaces around the "to-maxima")
       // don't require us to add an ending, neither.
       if(text.EndsWith(wxT(")")))
@@ -7900,10 +7899,10 @@ void wxMaxima::TryEvaluateNextInQueue()
       tmp->GetInput()->SetCaretPosition(index);
       tmp->GetInput()->SetErrorIndex((m_commandIndex = index) - 1);
 
-      
+
       if (m_console->FollowEvaluation())
         m_console->SetSelection(NULL);
-      
+
       m_console->m_cellPointers.SetWorkingGroup(NULL);
       m_console->RequestRedraw();
       if(!AbortOnError())
@@ -8110,7 +8109,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     (event.GetId() == menu_convert_to_comment) ||
     (event.GetId() == menu_convert_to_title) ||
     (event.GetId() == menu_convert_to_code)
-    )  
+    )
   {
     // don't do anything else
   }
@@ -8131,7 +8130,7 @@ void wxMaxima::ResetTitle(bool saved, bool force)
     SetRepresentedFilename(m_console->m_currentFile);
     OSXSetModified((saved != m_fileSaved) || (force));
   }
-  
+
   if ((saved != m_fileSaved) || (force))
   {
     m_fileSaved = saved;
@@ -8265,7 +8264,7 @@ void wxMaxima::HistoryDClick(wxCommandEvent &ev)
 void wxMaxima::TableOfContentsSelection(wxListEvent &ev)
 {
   GroupCell *selection = dynamic_cast<GroupCell *>(m_console->m_tableOfContents->GetCell(ev.GetIndex())->GetGroup());
-  
+
   // We only update the table of contents when there is time => no guarantee that the
   // cell that was clicked at actually still is part of the tree.
   if ((m_console->GetTree()) && (m_console->GetTree()->Contains(selection)))
@@ -8403,7 +8402,7 @@ int wxMaxima::SaveDocumentP()
                          wxString::Format(_("Do you want to save the changes you made in the document \"%s\"?"),
                                           file),
                          "wxMaxima", wxCENTER | wxYES_NO | wxCANCEL);
-  
+
   dialog.SetExtendedMessage(_("Your changes will be lost if you don't save them."));
   dialog.SetYesNoCancelLabels(_("Save"), _("Don't save"), _("Cancel"));
 
@@ -8431,7 +8430,7 @@ void wxMaxima::ChangeCellStyle(wxCommandEvent& WXUNUSED(event))
 
   if ((m_console == NULL) || (m_console->m_mainToolBar == NULL))
     return;
-  
+
   if(m_console->GetActiveCell())
   {
     GroupCell *group = dynamic_cast<GroupCell *>(m_console->GetActiveCell()->GetGroup());

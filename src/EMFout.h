@@ -20,12 +20,12 @@
 //
 //  SPDX-License-Identifier: GPL-2.0+
 
+#include "MathCell.h"
 #ifndef EMFOUT_H
 #define EMFOUT_H
 
-#if wxUSE_ENH_METAFILE==1
-#include "MathCell.h"
-#include <wx/dcgraph.h>
+#if wxUSE_ENH_METAFILE
+#include <wx/msw/enhmeta.h>
 /* Renders portions of the work sheet (including 2D maths) as emf.
 
    This is used for exporting HTML with embedded maths as a scalable vector
@@ -39,14 +39,14 @@ public:
   Emfout(Configuration **configuration, wxString filename = wxEmptyString);
 
   ~Emfout();
-  
+
   /*! Renders tree as emf
-    
+
     \param tree The list of cells that is to be rendered
     \return true, if the emfout could be created.
    */
   wxSize SetData(MathCell *tree);
-  
+
   //! Copies the emf representation of the list of cells that was passed to SetData()
   bool ToClipboard();
 
@@ -73,7 +73,7 @@ protected:
 
   double GetRealWidth();
 
-  
+
   /*! An object that can be filled with EMF data for the clipboard
    */
   class EMFDataObject : public wxCustomDataObject

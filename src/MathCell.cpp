@@ -35,7 +35,7 @@ wxString MathCell::GetToolTip(const wxPoint &point)
   if(!ContainsPoint(point))
     return wxEmptyString;
 
-  wxString toolTip;  
+  wxString toolTip;
   std::list<MathCell *> innerCells = GetInnerCells();
   for(std::list<MathCell *>::iterator it = innerCells.begin(); it != innerCells.end(); ++it)
   {
@@ -299,10 +299,10 @@ int MathCell::GetLineWidth()
 
     MathCell *tmp = this;
     while(tmp != NULL)
-    {      
+    {
       width += tmp->m_width;
       width += Scale_Px(MC_CELL_SKIP);
-      
+
       if (width > m_lineWidth)
         m_lineWidth = width;
 
@@ -381,11 +381,11 @@ void MathCell::RecalculateHeightList(int fontsize)
   }
 }
 
-/*! Recalculate widths of cells. 
+/*! Recalculate widths of cells.
 
-  (Used for changing font size since in this case all size information has to be 
+  (Used for changing font size since in this case all size information has to be
   recalculated).
-  
+
   Should set: set m_width.
 */
 void MathCell::RecalculateWidthsList(int fontsize)
@@ -410,7 +410,7 @@ bool MathCell::DrawThisCell(wxPoint point)
 {
   if((point.x < 0) || (point.y < 0))
     return false;
-  
+
   Configuration *configuration = (*m_configuration);
   int top = configuration->GetTop();
   int bottom = configuration->GetBottom();
@@ -425,7 +425,7 @@ bool MathCell::DrawThisCell(wxPoint point)
 
   \param all
    - true  return the rectangle around the whole line.
-   - false return the rectangle around this cell. 
+   - false return the rectangle around this cell.
  */
 wxRect MathCell::GetRect(bool all)
 {
@@ -521,7 +521,7 @@ wxString MathCell::ListToString()
       //    (tmp->GetStyle() != TS_USERLABEL) &&
       //    (tmp->GetStyle() != TS_MAIN_PROMPT) &&
       //    (tmp->GetStyle() != TS_OTHER_PROMPT))
-      //   retval += wxT("\t");        
+      //   retval += wxT("\t");
     }
     // if(firstline)
     // {
@@ -529,10 +529,10 @@ wxString MathCell::ListToString()
     //      (tmp->GetStyle() != TS_USERLABEL) &&
     //      (tmp->GetStyle() != TS_MAIN_PROMPT) &&
     //      (tmp->GetStyle() != TS_OTHER_PROMPT))
-    //     retval += wxT("\t");        
+    //     retval += wxT("\t");
     // }
     retval += tmp->ToString();
-    
+
     firstline = false;
     tmp = tmp->m_nextToDraw;
   }
@@ -952,7 +952,7 @@ void MathCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
       if ((*it)->ContainsRect(rect))
         (*it)->SelectRect(rect, first, last);
     }
-  
+
   if (*first == NULL || *last == NULL)
   {
     *first = this;
@@ -981,7 +981,7 @@ bool MathCell::ContainsRect(const wxRect &sm, bool all)
 
  Resets cached data like width and the height of the current cell
  as well as the vertical position of the center. Temporarily unbreaks all
- lines until the widths are recalculated if there aren't any hard line 
+ lines until the widths are recalculated if there aren't any hard line
  breaks.
  */
 void MathCell::ResetData()
@@ -989,7 +989,7 @@ void MathCell::ResetData()
   m_fullWidth = -1;
   m_lineWidth = -1;
   m_maxCenter = -1;
-  m_maxDrop   = -1; 
+  m_maxDrop   = -1;
   m_breakLine = m_forceBreakLine;
 }
 
@@ -1039,7 +1039,7 @@ void MathCell::SetPen(double lineWidth)
   wxDC *dc = configuration->GetDC();
 
   wxPen pen;
-  
+
   if (m_highlight)
     pen = *(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_HIGHLIGHT),
                                           lineWidth * configuration->GetDefaultLineWidth(), wxPENSTYLE_SOLID));
@@ -1131,7 +1131,7 @@ wxAccStatus MathCell::GetDescription(int childId, wxString *description)
 {
   if(description == NULL)
     return wxACC_FAIL;
-  
+
   if (childId == 0)
   {
 	  *description = _("Math output");
@@ -1155,7 +1155,7 @@ wxAccStatus MathCell::GetParent (wxAccessible **parent)
 {
   if(parent == NULL)
     return wxACC_FAIL;
-  
+
   if(*parent != this)
     *parent = m_parent;
   else
@@ -1170,7 +1170,7 @@ wxAccStatus MathCell::GetValue (int childId, wxString *strValue)
 {
   if(strValue == NULL)
     return wxACC_FAIL;
-  
+
   MathCell *cell;
   if(GetChild(childId,&cell) == wxACC_OK)
   {
@@ -1234,7 +1234,7 @@ wxAccStatus MathCell::GetChild(int childId, MathCell  **child)
 {
   if(child == NULL)
     return wxACC_FAIL;
-  
+
   if (childId == 0)
   {
     *child = this;
@@ -1261,23 +1261,23 @@ wxAccStatus MathCell::GetFocus (int *childId, MathCell  **child)
 {
   int childCount;
   GetChildCount(&childCount);
-  
+
   for(int i = 0; i < childCount;i++)
   {
-    int dummy1; 
+    int dummy1;
     MathCell *cell = NULL;
     GetChild(i + 1, &cell);
     if (cell != NULL)
       if(cell->GetFocus(&dummy1, child) == wxACC_OK)
       {
-        if(childId != NULL)      
+        if(childId != NULL)
           *childId = i+1;
         if(child != NULL)
           *child = cell;
         return wxACC_OK;
       }
   }
-  
+
   if(childId != NULL)
     *childId = 0;
   if(child != NULL)
@@ -1311,7 +1311,7 @@ wxAccStatus MathCell::GetLocation(wxRect &rect, int elementId)
   return wxACC_FAIL;
 }
 
-wxAccStatus MathCell::GetRole (int childId, wxAccRole *role)
+wxAccStatus MathCell::GetRole (int WXUNUSED(childId), wxAccRole *role)
 {
   if(role != NULL)
   {
@@ -1371,7 +1371,7 @@ void MathCell::MarkAsDeleted()
     m_cellPointers->m_activeCell = NULL;
   if(this == m_cellPointers->m_currentTextCell)
     m_cellPointers->m_currentTextCell = NULL;
-  
+
   if((this == m_cellPointers->m_selectionStart) || (this == m_cellPointers->m_selectionEnd))
     m_cellPointers->m_selectionStart = m_cellPointers->m_selectionEnd = NULL;
   if(this == m_cellPointers->m_cellUnderPointer)

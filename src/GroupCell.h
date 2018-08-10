@@ -386,7 +386,7 @@ public:
         m_group = group;
       }
     //! Describe the current cell to a Screen Reader
-    virtual wxAccStatus GetDescription(int wxUNUSED(childId), wxString *description)
+    virtual wxAccStatus GetDescription(int WXUNUSED(childId), wxString *description)
       {
         if (description != NULL)
         {

@@ -51,7 +51,7 @@
 #define MAX(a, b) ((a)>(b) ? (a) : (b))
 #define MIN(a, b) ((a)>(b) ? (b) : (a))
 
-/*! The enum that chooses the language in the language drop-down menu. 
+/*! The enum that chooses the language in the language drop-down menu.
 
   \attention
   - Should match whatever is put in the m_language.
@@ -643,7 +643,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   wxBoxSizer *vsizer_maximaStartup = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *vsizer_wxMaximaStartup = new wxBoxSizer(wxVERTICAL);
 
-  
+
   m_startupFileName = m_configuration->m_dirStructure.UserConfDir();
   m_wxStartupFileName += m_startupFileName + wxT("wxmaxima-init.mac");
   m_startupFileName += wxT("maxima-init.mac");
@@ -655,7 +655,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
                               "\"math\" might be suppressed by wxMaxima. As always maxima "
                               "commands are required to end in a \";\" or a \"$\""));
   vsizer_wxMaximaStartup->Add(wxStartupText, wxSizerFlags().Border(wxALL,5));
-  
+
   // Read the contents of wxMaxima's startup file
   wxString contents;
   if(wxFileExists(m_wxStartupFileName))
@@ -772,7 +772,7 @@ wxPanel *ConfigDialogue::CreateExportPanel()
   m_printScale->SetIncrement(.1);
   grid_sizer->Add(ps, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_printScale, 0, wxALL, 5);
-  
+
   m_AnimateLaTeX = new wxCheckBox(panel, -1,
                                   _("Export animations to TeX (Images only move if the PDF viewer supports this)"));
   vsizer->Add(m_AnimateLaTeX, 0, wxALL, 5);
@@ -880,7 +880,7 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   m_usepngCairo->Connect(wxEVT_CHECKBOX,
                          wxCommandEventHandler(ConfigDialogue::UsepngcairoChanged),
                          NULL, this);
-  
+
   vsizer->Add(m_usepngCairo, 0, wxALL, 5);
 
   m_antialiasLines = new wxCheckBox(panel, -1, _("Antialias lines."));
@@ -897,7 +897,7 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   m_notifyIfIdle = new wxCheckBox(panel, -1, _("Warn if an inactive window is idle"));
   vsizer->Add(m_notifyIfIdle, 0, wxALL, 5);
 
-  
+
   vsizer->AddGrowableRow(10);
   panel->SetSizer(vsizer);
   vsizer->Fit(panel);
@@ -1011,7 +1011,7 @@ wxPanel *ConfigDialogue::CreateClipboardPanel()
   m_copySVG->SetValue(configuration->CopySVG());
   vbox->Add(m_copySVG, 0, wxALL, 5);
 
-  #if wxUSE_ENH_METAFILE==1
+  #if wxUSE_ENH_METAFILE
   m_copyEMF = new wxCheckBox(panel, -1, _("Enhanced meta file (emf)"));
   m_copyEMF->SetValue(configuration->CopyEMF());
   vbox->Add(m_copyEMF, 0, wxALL, 5);
@@ -1246,10 +1246,10 @@ void ConfigDialogue::WriteSettings()
   configuration->CopyMathMLHTML(m_copyMathMLHTML->GetValue());
   configuration->CopyRTF(m_copyRTF->GetValue());
   configuration->CopySVG(m_copySVG->GetValue());
-  #if wxUSE_ENH_METAFILE==1
+  #if wxUSE_ENH_METAFILE
   configuration->CopyEMF(m_copyEMF->GetValue());
   #endif
-  
+
   WriteStyles();
   config->Flush();
 
@@ -1313,7 +1313,7 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
     font = wxFont(m_mathFontSize, wxFONTFAMILY_DEFAULT,
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
                   false, m_mathFontName);
-  
+
   if(!font.IsOk())
     font = *wxNORMAL_FONT;
 
@@ -1461,7 +1461,7 @@ void ConfigDialogue::ReadStyles(wxString file)
 
   wxSystemSettings settings;
   m_styleSelection.color = settings.GetColour(wxSYS_COLOUR_HIGHLIGHT);
-  
+
   if (config->Read(wxT("Style/Selection/color"),
                    &tmp))
     m_styleSelection.color.Set(tmp);
@@ -1828,7 +1828,7 @@ void ConfigDialogue::OnChangeColor()
   style *tmp = GetStylePointer();
 //  if(tmp->color.alpha == 0)
 //    if(tmp->color.alpha = 10);
-    
+
   wxColour col = wxGetColourFromUser(this, tmp->color);
   if (col.IsOk())
   {
@@ -2016,7 +2016,7 @@ void ConfigDialogue::UpdateExample()
   style *tmp = GetStylePointer();
   if(tmp == NULL)
     return;
-  
+
   wxString example = _("Example text");
   wxColour color(tmp->color);
   wxString font(m_styleDefault.font);
@@ -2155,7 +2155,7 @@ void ConfigDialogue::ColorPanel::OnPaint(wxPaintEvent &WXUNUSED(event))
       if(((x+y)&1) == 1)
         dc.DrawRectangle(x*12,y*12,12,12);
     }
-        
+
   wxColor foregroundColor
     (
       m_color.Red()   * m_color.Alpha() / wxALPHA_OPAQUE + (wxALPHA_OPAQUE - m_color.Alpha()),
@@ -2197,7 +2197,7 @@ void ConfigDialogue::ExamplePanel::OnPaint(wxPaintEvent& WXUNUSED(event))
   wxFont font = wxFont(m_size, wxFONTFAMILY_MODERN, italic, bold, underlined, m_font);
   if(!font.IsOk())
     font = *wxNORMAL_FONT;
-  
+
   font.SetPointSize(m_size);
   if(font.IsOk())
     dc.SetFont(font);
