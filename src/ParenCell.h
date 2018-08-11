@@ -31,7 +31,6 @@
 #define PARENCELL_H
 
 #include "MathCell.h"
-#include "Version.h"
 
 /*! The class that represents parenthesis that are wrapped around text
 

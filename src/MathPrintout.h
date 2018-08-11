@@ -29,8 +29,6 @@
 #ifndef MATHPRINTOUT_H
 #define MATHPRINTOUT_H
 
-#include "Version.h"
-
 #include <wx/wx.h>
 #include <wx/print.h>
 

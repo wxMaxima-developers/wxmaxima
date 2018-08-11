@@ -46,7 +46,6 @@ dialog. The preferences themself will be read directly using
 
 #include "TextStyle.h"
 #include "Configuration.h"
-#include "Version.h"
 
 enum
 {

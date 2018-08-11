@@ -38,7 +38,6 @@
 #include "wxMaximaFrame.h"
 #include "MathCtrl.h"
 #include "Bitmap.h"
-#include "Version.h"
 #include "EditorCell.h"
 #include "GroupCell.h"
 #include "SlideShowCell.h"

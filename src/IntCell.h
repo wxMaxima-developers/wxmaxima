@@ -31,7 +31,6 @@
 #define INTCELL_H
 
 #include "MathCell.h"
-#include "Version.h"
 
 /*! This class represents an integral
 
