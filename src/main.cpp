@@ -37,7 +37,7 @@
 #include <iostream>
 
 #include "wxMaxima.h"
-#include "Setup.h"
+#include "Version.h"
 
 // On wxGTK2 we support printing only if wxWidgets is compiled with gnome_print.
 // We have to force gnome_print support to be linked in static builds of wxMaxima.

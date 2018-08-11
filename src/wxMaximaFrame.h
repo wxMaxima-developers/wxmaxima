@@ -42,7 +42,7 @@ surrounding the worksheet.
 
 #include "MathCtrl.h"
 #include "RecentDocuments.h"
-#include "Setup.h"
+#include "Version.h"
 #include "History.h"
 #include "ToolBar.h"
 #include "XmlInspector.h"

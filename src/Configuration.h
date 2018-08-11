@@ -28,7 +28,7 @@
 
 #include "TextStyle.h"
 #include "Dirstructure.h"
-#include "Setup.h"
+#include "Version.h"
 
 
 #define MC_CELL_SKIP 0

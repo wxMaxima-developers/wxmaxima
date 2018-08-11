@@ -10,7 +10,7 @@ if(WIN32)
     set(SOURCE_FILES Resources.rc ../data/winrc/wxmaxima.manifest ${SOURCE_FILES})
 endif()
 
-# We put Setup.h into binary dir
+# We put Version.h into binary dir
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 # OSX binary folders
@@ -92,7 +92,7 @@ endif()
 target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
 
 INCLUDE (CheckIncludeFiles)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Setup.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Setup.h)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cin ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
 
 if(WIN32)
     install(TARGETS wxmaxima RUNTIME DESTINATION wxMaxima)
