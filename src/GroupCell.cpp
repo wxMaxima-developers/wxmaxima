@@ -772,7 +772,11 @@ void GroupCell::RecalculateHeight(int fontsize)
   if (m_inputLabel)
     m_inputLabel->m_currentPoint = m_currentPoint;
   if (GetEditable())
+  {
     GetEditable()->m_currentPoint = m_currentPoint;
+    if(m_inputLabel != NULL)
+      GetEditable()->m_currentPoint.x += m_inputLabel->GetWidth() + MC_CELL_SKIP;
+  }
 }
 
 // We assume that appended cells will be in a new line!
