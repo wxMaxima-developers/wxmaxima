@@ -6412,7 +6412,7 @@ MyAboutDialog::MyAboutDialog(wxWindow *parent, int id, const wxString title, wxS
                       "<p>"
                       "%s"
                       "</p>"
-                      "<p><a href=\"http://andrejv.github.io/wxmaxima/\">wxMaxima</a><br>"
+                      "<p><a href=\"https://andrejv.github.io/wxmaxima/\">wxMaxima</a><br>"
                       "   <a href=\"http://maxima.sourceforge.net/\">Maxima</a></p>"
                       "<h4>%s</h4>"
                       "<p>"
@@ -6555,7 +6555,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.SetName(_("wxMaxima"));
       info.SetVersion(wxT(GITVERSION));
       info.SetCopyright(wxT("(C) 2004-2018 Andrej Vodopivec"));
-      info.SetWebSite(wxT("http://andrejv.github.io/wxmaxima/"));
+      info.SetWebSite(wxT("https://andrejv.github.io/wxmaxima/"));
 
       info.AddDeveloper(wxT("Andrej Vodopivec <andrej.vodopivec@gmail.com>"));
       info.AddDeveloper(wxT("Ziga Lenarcic <ziga.lenarcic@gmail.com>"));
@@ -6666,7 +6666,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       break;
 
     case menu_help_tutorials:
-      wxLaunchDefaultBrowser(wxT("http://andrejv.github.io/wxmaxima/help.html"));
+      wxLaunchDefaultBrowser(wxT("https://andrejv.github.io/wxmaxima/help.html"));
       break;
 
     case menu_check_updates:
@@ -8342,7 +8342,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
                                   wxOK | wxCANCEL | wxICON_INFORMATION) == wxOK;
 
         if (visit)
-          wxLaunchDefaultBrowser(wxT("http://andrejv.github.io/wxmaxima"));
+          wxLaunchDefaultBrowser(wxT("https://andrejv.github.io/wxmaxima"));
       }
       else if (reportUpToDate)
         wxMessageBox(_("Your version of wxMaxima is up to date."), _("Upgrade"),

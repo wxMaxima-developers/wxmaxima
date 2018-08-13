@@ -62,7 +62,7 @@ TipOfTheDay::TipOfTheDay(unsigned int n)
     _("You can hide output part of cells by clicking in the triangle on the left side of cells. This works on text cells also.")
     );
   m_tips.Add(
-    _("There are many resources about Maxima and wxMaxima on the internet. Visit http://andrejv.github.com/wxmaxima/help.html for more information and to find tutorials on using wxMaxima and Maxima.")
+    _("There are many resources about Maxima and wxMaxima on the internet. Visit https://andrejv.github.io/wxmaxima/help.html for more information and to find tutorials on using wxMaxima and Maxima.")
     );
   m_tips.Add(
     _("You can get help on a Maxima function by selecting or clicking on the function name and pressing F1. wxMaxima will search help index for the selection or the word under the cursor.")
