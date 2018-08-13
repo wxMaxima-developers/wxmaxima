@@ -3839,8 +3839,7 @@ void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidt
 
   // Normally the cell begins at the x position m_currentPoint.x - but sometimes
   // m_currentPoint is 0 so we need to determine our own value for the x position.
-  int xmargin = (configuration->GetLabelWidth() + 1) * configuration->GetDefaultFontSize() *
-                configuration->GetZoomFactor() +
+  int xmargin = Scale_Px(configuration->GetLabelWidth()) +
                 configuration->GetCellBracketWidth() + 2 * MC_CELL_SKIP;
 
   if (
@@ -4140,7 +4139,7 @@ void EditorCell::StyleTextTexts()
   // Normally the cell begins at the x position m_currentPoint.x - but sometimes
   // m_currentPoint is 0 so we need to determine our own value for the x position.
   int xmargin =
-  (configuration->GetLabelWidth() + 1) * configuration->GetDefaultFontSize() * configuration->GetZoomFactor() +
+  Scale_Px(configuration->GetLabelWidth()) +
   configuration->GetCellBracketWidth() + 2 * MC_CELL_SKIP;
 
   // Remove all bullets of item lists as we will introduce them again in the next

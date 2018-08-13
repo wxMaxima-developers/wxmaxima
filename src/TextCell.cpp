@@ -35,8 +35,6 @@ TextCell::TextCell(MathCell *parent, Configuration **config, CellPointers *cellP
   m_cellPointers = cellPointers;
   m_displayedDigits_old = -1;
   m_height = -1;
-  m_labelWidth = -1;
-  m_labelHeight = -1;
   m_realCenter = m_center = -1;
   m_lastCalculationFontSize = -1;
   m_fontSize = -1;
@@ -302,17 +300,6 @@ MathCell *TextCell::Copy()
   return retval;
 }
 
-wxString TextCell::LabelWidthText()
-{
-  Configuration *configuration = (*m_configuration);
-  wxString result;
-
-  for (int i = 0; i < configuration->GetLabelWidth(); i++)
-    result += wxT("X");
-
-  return result;
-}
-
 void TextCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
@@ -386,31 +373,30 @@ void TextCell::RecalculateWidths(int fontsize)
         fontsize1 = 4;
       font.SetPointSize(fontsize1);
       dc->SetFont(font);
-      
-      // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
-      if (text.Right(2) != wxT("/ "))
-        dc->GetTextExtent(wxT("(%o") + LabelWidthText() + wxT(")"), &m_width, &m_height);
-      else
-        dc->GetTextExtent(wxT("(%o") + LabelWidthText() + wxT(")/R/"), &m_width, &m_height);
 
+      
+      m_width = Scale_Px(configuration->GetLabelWidth());
       // We will decrease it before use
       m_fontSizeLabel = m_fontSize + 1;
       wxASSERT_MSG((m_width > 0) || (text == wxEmptyString),
                    _("The letter \"X\" is of width zero. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
+      int labelWidth,labelHeight;
       if (m_width < 1) m_width = 10;
-      dc->GetTextExtent(text, &m_labelWidth, &m_labelHeight);
-      wxASSERT_MSG((m_labelWidth > 0) || (m_displayedText == wxEmptyString),
+      dc->GetTextExtent(text, &labelWidth, &labelHeight);
+      wxASSERT_MSG((labelWidth > 0) || (m_displayedText == wxEmptyString),
                    _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
       font = dc->GetFont();
       do
       {
         font.SetPointSize(Scale_Px(--m_fontSizeLabel));
         dc->SetFont(font);
-        dc->GetTextExtent(text, &m_labelWidth, &m_labelHeight);
-      } while ((m_labelWidth >= m_width) && (m_fontSizeLabel > 2));
+        dc->GetTextExtent(text, &labelWidth, &labelHeight);
+      } while ((labelWidth >= m_width) && (m_fontSizeLabel > 2));
+      m_height = labelHeight;
+      m_center = m_height / 2;
+      std::cerr<<m_height<<"\n";
     }
-
-      /// Check if we are using jsMath and have jsMath character
+    // Check if we are using jsMath and have jsMath character
     else if (m_altJs && configuration->CheckTeXFonts())
     {
       dc->GetTextExtent(m_altJsText, &m_width, &m_height);
@@ -480,13 +466,13 @@ void TextCell::Draw(wxPoint point, int fontsize)
             wxString text = m_userDefinedLabel;
             m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
             dc->DrawText(wxT("(") + text + wxT(")"),
-                        point.x + Scale_Px(MC_TEXT_PADDING),
-                        point.y - m_realCenter + (m_height - m_labelHeight) / 2);
+                         point.x + Scale_Px(MC_TEXT_PADDING),
+                         point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
           }
           else
             dc->DrawText(m_displayedText,
-                        point.x + Scale_Px(MC_TEXT_PADDING),
-                        point.y - m_realCenter + (m_height - m_labelHeight) / 2);            
+                         point.x + Scale_Px(MC_TEXT_PADDING),
+                         point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
         }
       }
 

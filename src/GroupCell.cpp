@@ -1351,15 +1351,19 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter)
 {
   wxString str;
+  Configuration *configuration = (*m_configuration);
 
   // Input cells
-  if ((*m_configuration)->ShowCodeCells())
+  if (configuration->ShowCodeCells())
   {
     str = wxT("\n\n\\noindent\n%%%%%%%%%%%%%%%\n")
-                  wxT("%%% INPUT:\n")
-                  wxT("\\begin{minipage}[t]{10em}\\color{red}\\bf\n") +
-          m_inputLabel->ToTeX() +
-          wxT("\n\\end{minipage}");
+      wxT("%%% INPUT:\n") +
+      wxString::Format(
+        wxT("\\begin{minipage}[t]{%ipt}\\color{red}\\bf\n"),
+        configuration->GetLabelWidth()
+        ) +
+      m_inputLabel->ToTeX() +
+      wxT("\n\\end{minipage}");
     if (m_inputLabel->m_next != NULL)
     {
 

@@ -248,7 +248,7 @@ public:
   }
 
   int GetLabelWidth()
-  { return m_labelWidth; }
+  { return m_labelWidth * 14; }
 
   //! Get the indentation of GroupCells.
   int GetIndent()

@@ -132,10 +132,8 @@ protected:
   //! The actual font size for labels (that have a fixed width)
   int m_fontSizeLabel;
   double m_lastZoomFactor;
-  int m_labelWidth, m_labelHeight;
 private:
   //! Produces a text sample that determines the label width
-  wxString LabelWidthText();
   wxString m_initialToolTip;
 };
 
