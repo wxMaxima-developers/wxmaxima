@@ -31,6 +31,8 @@
 #include <wx/statline.h>
 #include <wx/image.h>
 #include <wx/radiobut.h>
+#include <wx/persist.h>
+#include <wx/persist/toplevel.h>
 
 #include "BTextCtrl.h"
 #include "Configuration.h"

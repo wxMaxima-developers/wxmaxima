@@ -2706,24 +2706,12 @@ void wxMaxima::ShowTip(bool force)
   {
     wxConfig *config = (wxConfig *) wxConfig::Get();
     config->Read(wxT("ShowTips"), &ShowTips);
-    config->Read(wxT("tipNum"), &tipNum);
     if (!ShowTips && !force)
       return;
   }
 
-  TipOfTheDay *t = new TipOfTheDay(tipNum);
-  ShowTips = wxShowTip(this, t, ShowTips);
-
-  // A block with a local config variable:
-  // The config can change between before showing the tooltip and afterwards.
-  {
-    wxConfig *config = (wxConfig *) wxConfig::Get();
-    config->Write(wxT("ShowTips"), ShowTips);
-    tipNum = t->GetCurrentTip();
-    config->Write(wxT("tipNum"), tipNum);
-    config->Flush();
-    wxDELETE(t);
-  }
+  TipOfTheDay *tip = new TipOfTheDay(this);
+  tip->Show();
 }
 
 wxString wxMaxima::GetHelpFile()

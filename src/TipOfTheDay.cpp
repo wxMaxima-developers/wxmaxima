@@ -26,11 +26,20 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "TipOfTheDay.h"
+#include <wx/config.h>
+#include <wx/mstream.h>
+#include <wx/wfstream.h>
+#include <wx/persist.h>
+#include <wx/persist/toplevel.h>
 
-TipOfTheDay::TipOfTheDay(unsigned int n)
-        : wxTipProvider(n), m_current(n)
+#define ICON_SCALE (0.35)
+#define ABS(val) ((val) >= 0 ? (val) : -(val))
+#define MAX(a, b) ((a)>(b) ? (a) : (b))
+#define MIN(a, b) ((a)>(b) ? (b) : (a))
+
+TipOfTheDay::TipOfTheDay(wxWindow *parent)
+  : wxDialog(parent,-1,_("Tip of the Day"))
 {
-
   m_tips.Add(
     _("To start using wxMaxima right away, start typing your command. An input cell should appear. Then press Shift-Enter to evaluate your command.")
     );
@@ -160,16 +169,162 @@ TipOfTheDay::TipOfTheDay(unsigned int n)
   m_tips.Add(
     _("The key combination Shift+Space results in a non-breakable space.")
     );
+
+  int m_num = 0;
+  wxConfig *config = (wxConfig *) wxConfig::Get();
+  config->Read(wxT("tipNum"), &m_num);
+  if(m_num < 0)
+    m_num = m_tips.GetCount()-1;
+  if(m_num >=m_tips.GetCount())
+    m_num = 0;
+  
+  SetName("TipOfTheDay");
+  SetTitle(_("Tip of the day"));
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
+  wxButton *backButton = new wxButton(this,-1);
+  backButton->SetBitmap(
+    GetImage(
+      media_playback_start_reverse_128_png,media_playback_start_reverse_128_png_len,
+      media_playback_start_reverse_192_png,media_playback_start_reverse_192_png_len
+      )
+    );
+  backButton->Connect(
+    wxEVT_BUTTON,
+    wxCommandEventHandler(TipOfTheDay::OnPreviousButton),
+    NULL, this
+    );
+  hbox->Add(backButton,wxSizerFlags().Expand());
+  hbox->Add(new wxStaticText(this, -1,_("Did you know?"),
+                             wxDefaultPosition,wxDefaultSize,
+                             wxALIGN_CENTRE_HORIZONTAL),
+            wxSizerFlags().Expand().Proportion(10).Center());
+  wxButton *forwardButton = new wxButton(this,-1);
+  forwardButton->SetBitmap(
+    GetImage(
+      media_playback_start_128_png,media_playback_start_128_png_len,
+      media_playback_start_192_png,media_playback_start_192_png_len
+      )
+    );
+  forwardButton->Connect(
+    wxEVT_BUTTON,
+    wxCommandEventHandler(TipOfTheDay::OnNextButton),
+    NULL, this
+    );
+  hbox->Add(forwardButton,wxSizerFlags().Expand());
+  vbox->Add(hbox, wxSizerFlags().Expand());
+  
+  m_tip = new wxTextCtrl(this,-1,m_tips[m_num],
+                         wxDefaultPosition,wxDefaultSize,
+                         wxTE_READONLY | wxTE_MULTILINE
+    );
+  vbox->Add(m_tip, wxSizerFlags().Expand().Proportion(10));
+
+  m_showAtStartup = new wxCheckBox(this, -1, _("Show tooltips at Startup"));
+  bool showTip = true;
+  config->Read(wxT("ShowTips"), &showTip);
+  m_showAtStartup->SetValue(showTip);
+  vbox->Add(m_showAtStartup, wxSizerFlags().Expand());
+
+  
+  wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
+
+  wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
+  okButton->Connect(
+    wxEVT_BUTTON,
+    wxCommandEventHandler(TipOfTheDay::OnOkButton),
+    NULL, this
+    );
+
+  buttonSizer->Add(okButton);
+  okButton->SetDefault(); 
+  vbox->Add(buttonSizer, wxSizerFlags().Right());
+  
+  SetSizerAndFit(vbox);
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 }
 
 TipOfTheDay::~TipOfTheDay()
 {
+  wxConfig *config = (wxConfig *) wxConfig::Get();
+  config->Write(wxT("ShowTips"), m_showAtStartup->GetValue());
+  config->Write(wxT("tipNum"), m_num + 1);
 }
 
-wxString TipOfTheDay::GetTip()
-{
-  if (m_current >= m_tips.GetCount())
-    m_current = 0;
 
-  return m_tips[m_current++];
+wxImage TipOfTheDay::GetImage(unsigned char *data_128, size_t len_128,
+                              unsigned char *data_192, size_t len_192)
+{
+  double targetSize = wxGetDisplayPPI().x * ICON_SCALE;
+  int prescale;
+
+  int sizeA = 128 << 4;
+  while(sizeA * 3 / 2 > targetSize && sizeA >= 32) {
+    sizeA >>= 1;
+  };
+
+  int sizeB = 192 << 4;
+  while(sizeB * 4 / 3 > targetSize && sizeB >= 32) {
+    sizeB >>= 1;
+  }
+
+  if(ABS(targetSize - sizeA) < ABS(targetSize - sizeB)) {
+    targetSize = sizeA;
+    prescale = 128;
+  } else {
+    targetSize = sizeB;
+    prescale = 192;
+  }
+
+  wxBitmap bmp;
+  wxImage img;
+
+  void *data;
+  size_t len;
+  if(prescale == 128)
+  {
+    data = (void *)data_128;
+    len  = len_128;
+  }
+  else
+  {
+    data = (void *)data_192;
+    len  = len_192;
+  }
+  wxMemoryInputStream istream(data,len);
+  img.LoadFile(istream);
+  
+#if defined __WXMSW__
+#if wxCHECK_VERSION(3, 1, 1)
+  // MSW is notorious for having problems with transparent black pixels.
+  // Let's see if we can avoid these problems by converting the alpha
+  // channel to a mask even if that means we cannot antialias a transparent 
+  // and a colored pixel to a half-transparent one any more.
+  img.ConvertAlphaToMask();
+#endif
+#endif
+  
+  img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
+  return img;
+}
+
+void TipOfTheDay::OnNextButton(wxCommandEvent &WXUNUSED(dummy))
+{
+  m_num++;
+  if(m_num >=m_tips.GetCount())
+    m_num = 0;
+  m_tip->SetValue(m_tips[m_num]);
+}
+
+void TipOfTheDay::OnPreviousButton(wxCommandEvent &WXUNUSED(dummy))
+{
+  m_num--;
+  if(m_num < 0)
+    m_num = m_tips.GetCount()-1;
+  m_tip->SetValue(m_tips[m_num]);
+}
+
+void TipOfTheDay::OnOkButton(wxCommandEvent &WXUNUSED(dummy))
+{
+  Destroy();
 }

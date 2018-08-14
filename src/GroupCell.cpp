@@ -954,7 +954,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
                    (tmp->m_nextToDraw->GetStyle() != TS_USERLABEL) &&
                    (tmp->m_nextToDraw->GetStyle() != TS_MAIN_PROMPT) &&
                    (tmp->m_nextToDraw->GetStyle() != TS_OTHER_PROMPT))
-                  in.x += Scale_Px(configuration->GetLabelWidth());
+                  in.x += Scale_Px(configuration->GetLabelWidth()) + MC_CELL_SKIP;
                 in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
                 drop = tmp->m_nextToDraw->GetMaxDrop();
               }
@@ -972,7 +972,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
                  (tmp->m_nextToDraw->GetStyle() != TS_USERLABEL) &&
                  (tmp->m_nextToDraw->GetStyle() != TS_MAIN_PROMPT) &&
                  (tmp->m_nextToDraw->GetStyle() != TS_OTHER_PROMPT))
-                in.x += Scale_Px(configuration->GetLabelWidth());
+                in.x += Scale_Px(configuration->GetLabelWidth()) + MC_CELL_SKIP;
               in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
               drop = tmp->m_nextToDraw->GetMaxDrop();
             }

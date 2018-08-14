@@ -394,7 +394,6 @@ void TextCell::RecalculateWidths(int fontsize)
       } while ((labelWidth >= m_width) && (m_fontSizeLabel > 2));
       m_height = labelHeight;
       m_center = m_height / 2;
-      std::cerr<<m_height<<"\n";
     }
     // Check if we are using jsMath and have jsMath character
     else if (m_altJs && configuration->CheckTeXFonts())

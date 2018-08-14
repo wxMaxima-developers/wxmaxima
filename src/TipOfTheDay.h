@@ -25,23 +25,39 @@
 #include <wx/wx.h>
 #include <wx/tipdlg.h>
 #include <wx/arrstr.h>
+#include <wx/image.h>
+#include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/stattext.h>
 
-class TipOfTheDay : public wxTipProvider
+extern unsigned char media_playback_start_128_png[];
+extern unsigned int  media_playback_start_128_png_len;
+extern unsigned char media_playback_start_192_png[];
+extern unsigned int  media_playback_start_192_png_len;
+extern unsigned char media_playback_start_reverse_128_png[];
+extern unsigned int  media_playback_start_reverse_128_png_len;
+extern unsigned char media_playback_start_reverse_192_png[];
+extern unsigned int  media_playback_start_reverse_192_png_len;
+extern const char * invalidImage_xpm[];
+
+class TipOfTheDay : public wxDialog
 {
 public:
-  TipOfTheDay(unsigned int n);
-
+  TipOfTheDay(wxWindow *parent);
   ~TipOfTheDay();
-
-  wxString GetTip();
-
-  unsigned int GetCurrentTip()
-  {
-    return m_current;
-  }
+protected:
+  void OnNextButton(wxCommandEvent &dummy);
+  void OnPreviousButton(wxCommandEvent &dummy);
+  void OnOkButton(wxCommandEvent &dummy);
 
 private:
-  unsigned int m_current;
+  wxString GetTip(unsigned int n);
+  int m_num;
+  wxTextCtrl *m_tip;
+  wxString GetTip();
+  wxCheckBox *m_showAtStartup;
+  wxImage GetImage(unsigned char *data_128, size_t len_128,
+                   unsigned char *data_192, size_t len_192);
   wxArrayString m_tips;
 };
 
