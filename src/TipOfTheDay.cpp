@@ -170,13 +170,14 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     _("The key combination Shift+Space results in a non-breakable space.")
     );
 
-  int m_num = 0;
+  m_num = 0;
   wxConfig *config = (wxConfig *) wxConfig::Get();
   config->Read(wxT("tipNum"), &m_num);
   if(m_num < 0)
     m_num = m_tips.GetCount()-1;
   if(m_num >=m_tips.GetCount())
     m_num = 0;
+  std::cerr << m_num<<"\n";
   
   SetName("TipOfTheDay");
   SetTitle(_("Tip of the day"));
@@ -239,9 +240,10 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   buttonSizer->Add(okButton);
   okButton->SetDefault(); 
   vbox->Add(buttonSizer, wxSizerFlags().Right());
-  
+
   SetSizerAndFit(vbox);
   wxPersistenceManager::Get().RegisterAndRestore(this);
+  config->Write(wxT("tipNum"), m_num + 1);
 }
 
 TipOfTheDay::~TipOfTheDay()
@@ -326,5 +328,8 @@ void TipOfTheDay::OnPreviousButton(wxCommandEvent &WXUNUSED(dummy))
 
 void TipOfTheDay::OnOkButton(wxCommandEvent &WXUNUSED(dummy))
 {
+  wxConfig *config = (wxConfig *) wxConfig::Get();
+  config->Write(wxT("ShowTips"), m_showAtStartup->GetValue());
+  config->Write(wxT("tipNum"), m_num + 1);
   Destroy();
 }
