@@ -6421,7 +6421,7 @@ MyAboutDialog::MyAboutDialog(wxWindow *parent, int id, const wxString title, wxS
                       "</p>"
                       "<h4>%s</h4>"
                       "<p>"
-                      "%s: <a href=\"http://4pple.de/index.php/maxima-ein-opensource-computer-algebra-system-cas/\">Sven Hodapp</a><br>"
+                      "%s: Sven Hodapp<br>"
                       "%s: <a href=\"http://tango.freedesktop.org/Tango_Desktop_Project\">TANGO project</a>"
                       "</p>"
                       "<h4>%s</h4>"
