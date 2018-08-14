@@ -135,7 +135,7 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
 
   DisableKeyboardScrolling();
 
-  // hack to workaround problems in RtL locales, http://bugzilla.redhat.com/455863
+  // hack to workaround problems in RtL locales, https://bugzilla.redhat.com/show_bug.cgi?id=455863
   SetLayoutDirection(wxLayout_LeftToRight);
 
   // If the following option is missing a size change might cause the scrollbar
@@ -3930,7 +3930,7 @@ void MathCtrl::SetNotification(wxString message, int flags)
     m_notificationMessage->Show();
 
     // In wxGTK 3.1.0 Leaving the notification message object alive until the message
-    // hits its timeout causes a crash (http://trac.wxwidgets.org/ticket/17876).
+    // hits its timeout causes a crash (https://trac.wxwidgets.org/ticket/17876).
     // Let's work around this crash by deleting the object as fast as we can.
     // The crash is fixed in version 3.1.1.
 #if wxCHECK_VERSION(3, 1, 2)
