@@ -40,6 +40,15 @@ extern unsigned char media_playback_start_reverse_192_png[];
 extern unsigned int  media_playback_start_reverse_192_png_len;
 extern const char * invalidImage_xpm[];
 
+/*! A minimalistic Tip of the day dialogue
+
+  We roll our own dialogue here as the one from wxWidgets is modal (which
+  means it blocks the application until it is closed) and Ubuntu's Focus 
+  Stealing Prevention makes it pop up below wxMaxima (which means the user
+  has no means of finding out it needs closing).
+
+  For details see https://trac.wxwidgets.org/ticket/17974.
+ */
 class TipOfTheDay : public wxDialog
 {
 public:

@@ -331,7 +331,10 @@ public:
   // But text blocks that are 1 meter wide and 2 cm high feel - weird.
   int GetLineWidth()
   {
-    if (m_clientWidth <= m_zoomFactor * double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor)
+    if (
+      (m_clientWidth <= m_zoomFactor * double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor) ||
+      (m_printer)
+      )
       return m_clientWidth;
     else
       return (const int) (double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor);
