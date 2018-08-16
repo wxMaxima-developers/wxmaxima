@@ -4,7 +4,8 @@ Building wxMaxima from source
 To build wxMaxima from sources you need to have a C++ compiler and the
 wxWidgets library installed.
 
-### Compiling wxMaxima on Linux and Linux-like systems (Cygwin, MacPorts, Homebrew,...)
+### Compiling wxMaxima on Linux and Linux-like systems (Cygwin, MacPorts, Fink,
+Homebrew,...)
 
 wxMaxima is built using the CMake build system.
 The following steps will build and install wxMaxima using CMake:
@@ -37,6 +38,10 @@ repositories and not only the binary packages) by the simpler
 
     sudo apt-get build-dep wxmaxima
 
+
+If in wxMaxima a few key combinations like <TAB>, <Strg>+"+", <Strg>+"-" aren't working
+this often means that the keyboard driver, a window manager or a similar entity
+suppresses them. In this case installing ibus normally resolves the problem.
 
 ### Compiling on Mac OS X
 
