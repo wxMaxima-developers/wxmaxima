@@ -199,7 +199,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   hbox->Add(new wxStaticText(this, -1,_("Did you know?"),
                              wxDefaultPosition,wxDefaultSize,
                              wxALIGN_CENTRE_HORIZONTAL),
-            wxSizerFlags().Expand().Proportion(10).Center());
+            wxSizerFlags().Proportion(10).Center());
   wxButton *forwardButton = new wxButton(this,-1);
   forwardButton->SetBitmap(
     GetImage(
@@ -220,15 +220,15 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
                          wxTE_READONLY | wxTE_MULTILINE
     );
   vbox->Add(m_tip, wxSizerFlags().Expand().Proportion(10));
+  
+  wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 
   m_showAtStartup = new wxCheckBox(this, -1, _("Show tooltips at Startup"));
   bool showTip = true;
   config->Read(wxT("ShowTips"), &showTip);
   m_showAtStartup->SetValue(showTip);
-  vbox->Add(m_showAtStartup, wxSizerFlags().Expand());
-
-  
-  wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
+  buttonSizer->Add(m_showAtStartup, wxSizerFlags().Expand());
+  buttonSizer->AddStretchSpacer(5);
 
   wxButton *okButton = new wxButton(this, wxID_OK, _("OK"));
   okButton->Connect(
@@ -239,7 +239,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
 
   buttonSizer->Add(okButton);
   okButton->SetDefault(); 
-  vbox->Add(buttonSizer, wxSizerFlags().Right());
+  vbox->Add(buttonSizer, wxSizerFlags().Expand().Proportion(1));
 
   SetSizerAndFit(vbox);
   wxPersistenceManager::Get().RegisterAndRestore(this);
