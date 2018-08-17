@@ -1456,7 +1456,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
     }
   }
   else
-    str+=wxT("\n\n\noindent%\n");
+    str+=wxT("\n\n\\noindent%\n");
 
   return str;
 }
