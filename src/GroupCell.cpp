@@ -1323,6 +1323,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
 
     case GC_TYPE_CODE:
       str = ToTeXCodeCell(imgDir, filename, imgCounter);
+      str.Replace(wxT("\\[\\displaystyle \\]"),wxT(""));
       break;
 
     default:
@@ -1412,17 +1413,19 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
 
           case TS_LABEL:
           case TS_USERLABEL:
+            std::cerr<<"label\n";
             if (mathMode)
-              str += wxT("\\mbox{}\\]\n\\[\\displaystyle\n");
+              str += wxT("\\mbox{}\\]\n\\[\\displaystyle ");
             else
             {
-              str += wxT("\\[\\displaystyle\n");
+              str += wxT("\\[\\displaystyle ");
               mathMode = true;
             }
             str += tmp->ToTeX() + wxT("\n");
             break;
 
           case TS_STRING:
+            std::cerr<<"String\n";
             if (mathMode)
             {
               str += wxT("\\mbox{}\n\\]");
@@ -1434,7 +1437,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
           default:
             if (!mathMode)
             {
-              str += wxT("\\[\\displaystyle\n");
+              str += wxT("\\[\\displaystyle ");
               mathMode = true;
             }
             str += tmp->ToTeX();
