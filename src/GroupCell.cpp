@@ -1372,8 +1372,8 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
     str = wxT("\n\n\\noindent\n%%%%%%%%%%%%%%%\n")
       wxT("%%% INPUT:\n") +
       wxString::Format(
-        wxT("\\begin{minipage}[t]{%ipt}\\color{red}\\bf\n"),
-        configuration->GetLabelWidth()
+        wxT("\\begin{minipage}[t]{%iem}\\color{red}\\bf\n"),
+        configuration->GetLabelWidth()/14
         ) +
       m_inputLabel->ToTeX() +
       wxT("\n\\end{minipage}");
