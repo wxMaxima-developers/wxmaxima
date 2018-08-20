@@ -3,7 +3,6 @@ if(APPLE)
 endif()
 
 set(DATAFILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/wxmathml.lisp
         ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.png
         ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.svg)
 

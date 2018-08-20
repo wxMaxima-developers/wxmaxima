@@ -493,6 +493,9 @@ protected:
    */
   void ReadLoadSymbols(wxString &data);
 
+  //! Read (and discard) suppressed output
+  void ReadSuppressedOutput(wxString &data);
+
     /*! Reads the variable values maxima advertises to us
    */
   void ReadVariables(wxString &data);
@@ -624,6 +627,10 @@ protected:
   wxString m_symbolsPrefix;
   //! The marker for the end of a list of autocompletion templates
   wxString m_symbolsSuffix;
+  //! The marker that tells to start suppressing any output from maxima
+  wxString m_suppressOutputPrefix;
+  //! The marker that tells to stop to suppress any output from maxima
+  wxString m_suppressOutputSuffix;
   wxString m_firstPrompt;
   bool m_dispReadOut;               //!< what is displayed in statusbar
   bool m_inLispMode;                //!< don't add ; in lisp mode

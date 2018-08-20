@@ -36,6 +36,7 @@
 #include <wchar.h>
 #endif
 #include "wxMaxima.h"
+#include "wxMathml.h"
 #include "ImgCell.h"
 #include "DrawWiz.h"
 #include "SubstituteWiz.h"
@@ -208,7 +209,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   m_dispReadOut = false;
   m_promptPrefix = wxT("<PROMPT-P/>");
   m_promptSuffix = wxT("<PROMPT-S/>");
-
+  m_suppressOutputPrefix = wxT("<suppressOutput>");
+  m_suppressOutputSuffix = wxT("</suppressOutput>");
   m_symbolsPrefix = wxT("<wxxml-symbols>");
   m_symbolsSuffix = wxT("</wxxml-symbols>");
   m_variablesPrefix = wxT("<variables>");
@@ -840,6 +842,9 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
       // after the closing tag has been transferred, as well.
       ReadLoadSymbols(m_currentOutput);
 
+      // Discard startup warnings
+      ReadSuppressedOutput(m_currentOutput);
+
       // Let's see if maxima informs us about the values of variables
       ReadVariables(m_currentOutput);
 
@@ -1365,12 +1370,15 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
     return 0;
   if(data.StartsWith(m_variablesPrefix))
     return 0;
+  if(data.StartsWith(m_suppressOutputPrefix))
+    return 0;
 
   int mthpos = data.Find("<mth>");
   int lblpos = data.Find("<lbl>");
   int statpos = data.Find("<statusbar>");
   int prmptpos = data.Find(m_promptPrefix);
   int symbolspos = data.Find(m_symbolsPrefix);
+  int suppressOutputPos = data.Find(m_suppressOutputPrefix);
   int variablespos = data.Find(m_variablesPrefix);
 
   int tagPos = data.Length();
@@ -1388,6 +1396,8 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
     tagPos = symbolspos;
   if ((tagPos == wxNOT_FOUND) || ((variablespos != wxNOT_FOUND) && (variablespos < tagPos)))
     tagPos = variablespos;
+  if ((tagPos == wxNOT_FOUND) || ((suppressOutputPos != wxNOT_FOUND) && (suppressOutputPos < tagPos)))
+    tagPos = suppressOutputPos;
   return tagPos;
 }
 
@@ -1576,6 +1586,17 @@ void wxMaxima::ReadMath(wxString &data)
   }
 }
 
+void wxMaxima::ReadSuppressedOutput(wxString &data)
+{
+  if (!data.StartsWith(m_suppressOutputPrefix))
+    return;
+  int end = FindTagEnd(data, m_suppressOutputSuffix);
+  if (end != wxNOT_FOUND) 
+  {
+    data = data.Right(data.Length()-end-m_suppressOutputSuffix.Length());
+  }  
+}
+
 void wxMaxima::ReadLoadSymbols(wxString &data)
 {
   if (!data.StartsWith(m_symbolsPrefix))
@@ -1585,7 +1606,7 @@ void wxMaxima::ReadLoadSymbols(wxString &data)
 
   int end = FindTagEnd(data, m_symbolsSuffix);
 
-  if (end != wxNOT_FOUND)
+  if (end != wxNOT_FOUND) 
   {
     // Put the symbols into a separate string
     wxString symbols = data.Left( end + m_symbolsSuffix.Length());
@@ -2623,9 +2644,9 @@ void wxMaxima::SetupVariables()
   SendMaxima(wxT(":lisp-quiet (setf $in_netmath nil)\n"));
   SendMaxima(wxT(":lisp-quiet (setf $show_openplot t)\n"));
 
-    wxString cmd;
-  cmd = wxT(":lisp-quiet ($load \"") + m_console->m_configuration->m_dirStructure.DataDir() +
-    wxT("/wxmathml.lisp\")\n");
+  wxMathML wxmathml;
+  SendMaxima(wxmathml.GetCmd());
+  wxString cmd;
 
 #if defined (__WXMAC__)
   wxString gnuplotbin(wxT("/Applications/Gnuplot.app/Contents/Resources/bin/gnuplot"));
