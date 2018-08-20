@@ -950,10 +950,13 @@ void GroupCell::Draw(wxPoint point, int fontsize)
               if (tmp->m_nextToDraw->BreakLineHere())
               {
                 in.x = point.x;
-                if((tmp->m_nextToDraw->GetStyle() != TS_LABEL) &&
-                   (tmp->m_nextToDraw->GetStyle() != TS_USERLABEL) &&
-                   (tmp->m_nextToDraw->GetStyle() != TS_MAIN_PROMPT) &&
-                   (tmp->m_nextToDraw->GetStyle() != TS_OTHER_PROMPT))
+                if((
+                     (tmp->m_nextToDraw->GetStyle() != TS_LABEL) &&
+                     (tmp->m_nextToDraw->GetStyle() != TS_USERLABEL) &&
+                     (tmp->m_nextToDraw->GetStyle() != TS_MAIN_PROMPT) &&
+                     (tmp->m_nextToDraw->GetStyle() != TS_OTHER_PROMPT)) ||
+                   (tmp->m_previous == NULL)
+                  )
                   in.x += Scale_Px(configuration->GetLabelWidth()) + MC_CELL_SKIP;
                 in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
                 drop = tmp->m_nextToDraw->GetMaxDrop();
@@ -968,10 +971,11 @@ void GroupCell::Draw(wxPoint point, int fontsize)
             if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere())
             {
               in.x = point.x;
-              if((tmp->m_nextToDraw->GetStyle() != TS_LABEL) &&
-                 (tmp->m_nextToDraw->GetStyle() != TS_USERLABEL) &&
-                 (tmp->m_nextToDraw->GetStyle() != TS_MAIN_PROMPT) &&
-                 (tmp->m_nextToDraw->GetStyle() != TS_OTHER_PROMPT))
+              if(((tmp->m_nextToDraw->GetStyle() != TS_LABEL) &&
+                  (tmp->m_nextToDraw->GetStyle() != TS_USERLABEL) &&
+                  (tmp->m_nextToDraw->GetStyle() != TS_MAIN_PROMPT) &&
+                  (tmp->m_nextToDraw->GetStyle() != TS_OTHER_PROMPT)) ||
+                 (tmp->m_previous == NULL))
                 in.x += Scale_Px(configuration->GetLabelWidth()) + MC_CELL_SKIP;
               in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
               drop = tmp->m_nextToDraw->GetMaxDrop();
