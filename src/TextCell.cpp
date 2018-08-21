@@ -378,8 +378,6 @@ void TextCell::RecalculateWidths(int fontsize)
       m_width = Scale_Px(configuration->GetLabelWidth());
       // We will decrease it before use
       m_fontSizeLabel = m_fontSize + 1;
-      wxASSERT_MSG((m_width > 0) || (text == wxEmptyString),
-                   _("The letter \"X\" is of width zero. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
       int labelWidth,labelHeight;
       if (m_width < 1) m_width = 10;
       dc->GetTextExtent(text, &labelWidth, &labelHeight);
@@ -421,8 +419,8 @@ void TextCell::RecalculateWidths(int fontsize)
     else
       dc->GetTextExtent(m_displayedText, &m_width, &m_height);
 
-    m_width = m_width + 2 * Scale_Px(MC_TEXT_PADDING);
-    m_height = m_height + 2 * Scale_Px(MC_TEXT_PADDING);
+    m_width = m_width + 2 * MC_TEXT_PADDING;
+    m_height = m_height + 2 * MC_TEXT_PADDING;
 
     /// Hidden cells (multiplication * is not displayed)
     if (m_isHidden)
@@ -465,38 +463,38 @@ void TextCell::Draw(wxPoint point, int fontsize)
             wxString text = m_userDefinedLabel;
             m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
             dc->DrawText(wxT("(") + text + wxT(")"),
-                         point.x + Scale_Px(MC_TEXT_PADDING),
-                         point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
+                         point.x + MC_TEXT_PADDING,
+                         point.y - m_realCenter + MC_TEXT_PADDING);
           }
           else
             dc->DrawText(m_displayedText,
-                         point.x + Scale_Px(MC_TEXT_PADDING),
-                         point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
+                         point.x + MC_TEXT_PADDING,
+                         point.y - m_realCenter + MC_TEXT_PADDING);
         }
       }
 
         /// Check if we are using jsMath and have jsMath character
       else if (m_altJs && configuration->CheckTeXFonts())
         dc->DrawText(m_altJsText,
-                    point.x + Scale_Px(MC_TEXT_PADDING),
-                    point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
+                    point.x + MC_TEXT_PADDING,
+                    point.y - m_realCenter + MC_TEXT_PADDING);
 
         /// We are using a special symbol
       else if (m_alt)
         dc->DrawText(m_altText,
-                    point.x + Scale_Px(MC_TEXT_PADDING),
-                    point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
+                    point.x + MC_TEXT_PADDING,
+                    point.y - m_realCenter + MC_TEXT_PADDING);
 
         /// Change asterisk
       else if (configuration->GetChangeAsterisk() && m_displayedText == wxT("*"))
         dc->DrawText(wxT("\xB7"),
-                    point.x + Scale_Px(MC_TEXT_PADDING),
-                    point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
+                    point.x + MC_TEXT_PADDING,
+                    point.y - m_realCenter + MC_TEXT_PADDING);
 
       else if (m_displayedText == wxT("#"))
         dc->DrawText(wxT("\x2260"),
-                    point.x + Scale_Px(MC_TEXT_PADDING),
-                    point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
+                    point.x + MC_TEXT_PADDING,
+                    point.y - m_realCenter + MC_TEXT_PADDING);
         /// This is the default.
       else
       {
@@ -505,16 +503,16 @@ void TextCell::Draw(wxPoint point, int fontsize)
           case MC_TYPE_TEXT:
             // TODO: Add markdown formatting for bold, italic and underlined here.
             dc->DrawText(m_displayedText,
-                        point.x + Scale_Px(MC_TEXT_PADDING),
-                        point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
+                        point.x + MC_TEXT_PADDING,
+                        point.y - m_realCenter + MC_TEXT_PADDING);
             break;
           case MC_TYPE_INPUT:
             // This cell has already been drawn as an EditorCell => we don't repeat this action here.
             break;
           default:
             dc->DrawText(m_displayedText,
-                        point.x + Scale_Px(MC_TEXT_PADDING),
-                        point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
+                        point.x + MC_TEXT_PADDING,
+                        point.y - m_realCenter + MC_TEXT_PADDING);
         }
       }
     }

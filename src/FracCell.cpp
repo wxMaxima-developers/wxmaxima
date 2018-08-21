@@ -259,7 +259,7 @@ void FracCell::Draw(wxPoint point, int fontsize)
                         configuration->GetFontName(TS_VARIABLE)));
       dc->DrawText(wxT("/"),
                   point.x + m_num->GetFullWidth(),
-                  point.y - m_num->GetMaxCenter() + Scale_Px(MC_TEXT_PADDING));
+                  point.y - m_num->GetMaxCenter() + MC_TEXT_PADDING);
     }
     else
     {

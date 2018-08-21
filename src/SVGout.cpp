@@ -203,7 +203,7 @@ void Svgout::BreakLines()
         tmp->BreakLine(true);
       }
       else
-        currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
+        currentWidth += (tmp->GetWidth());
     }
     tmp = tmp->m_nextToDraw;
   }
@@ -234,8 +234,8 @@ void Svgout::GetMaxPoint(int *width, int *height)
       }
       else
       {
-        currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
-        *width = MAX(currentWidth - MC_CELL_SKIP, *width);
+        currentWidth += (tmp->GetWidth());
+        *width = MAX(currentWidth, *width);
       }
       bigSkip = tmp->m_bigSkip;
     }
@@ -273,7 +273,7 @@ void Svgout::Draw()
           drop = tmp->m_next->GetMaxDrop();
         }
         else
-          point.x += (tmp->GetWidth() + MC_CELL_SKIP);
+          point.x += (tmp->GetWidth());
       }
       else
       {

@@ -97,7 +97,7 @@ void DiffCell::RecalculateWidths(int fontsize)
 {
   m_baseCell->RecalculateWidthsList(fontsize);
   m_diffCell->RecalculateWidthsList(fontsize);
-  m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth() + 2 * MC_CELL_SKIP;
+  m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
   ResetData();
 }
 
@@ -119,7 +119,7 @@ void DiffCell::Draw(wxPoint point, int fontsize)
     df.y = point.y;
     m_diffCell->DrawList(df, fontsize);
 
-    bs.x = point.x + m_diffCell->GetFullWidth() + 2 * MC_CELL_SKIP;
+    bs.x = point.x + m_diffCell->GetFullWidth();
     bs.y = point.y;
     m_baseCell->DrawList(bs, fontsize);
   }

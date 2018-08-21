@@ -30,9 +30,8 @@
 #include "Dirstructure.h"
 
 
-#define MC_CELL_SKIP 0
-#define MC_LINE_SKIP 2
-#define MC_TEXT_PADDING 1
+#define MC_LINE_SKIP Scale_Px(2)
+#define MC_TEXT_PADDING Scale_Px(1)
 
 #define PAREN_OPEN_TOP_UNICODE     "\x239b"
 #define PAREN_OPEN_EXTEND_UNICODE  "\x239c"

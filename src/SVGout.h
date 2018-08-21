@@ -89,6 +89,7 @@ protected:
   };
 
 private:
+  int Scale_Px(double px){ return (*m_configuration)->Scale_Px(px);}
   //! The name of a temp file we create while calculating the svg size.
   wxString m_tempFileName;
   //! The draw context we draw to during recalculation.

@@ -575,7 +575,7 @@ void GroupCell::RecalculateWidths(int fontsize)
       // recalculate the position of input in ReEvaluateSelection!
       if (m_inputLabel->m_next != NULL)
       {
-        m_inputLabel->m_next->m_currentPoint.x = m_currentPoint.x + m_inputLabel->GetWidth() + MC_CELL_SKIP;
+        m_inputLabel->m_next->m_currentPoint.x = m_currentPoint.x + m_inputLabel->GetWidth();
       }
     }
     
@@ -775,7 +775,7 @@ void GroupCell::RecalculateHeight(int fontsize)
   {
     GetEditable()->m_currentPoint = m_currentPoint;
     if(m_inputLabel != NULL)
-      GetEditable()->m_currentPoint.x += m_inputLabel->GetWidth() + MC_CELL_SKIP;
+      GetEditable()->m_currentPoint.x += m_inputLabel->GetWidth();
   }
 }
 
@@ -940,7 +940,16 @@ void GroupCell::Draw(wxPoint point, int fontsize)
           }
         
           tmp->m_currentPoint = in;
-        
+
+          if(
+              (tmp->GetStyle() != TS_LABEL) &&
+              (tmp->GetStyle() != TS_USERLABEL) &&
+              (tmp->GetStyle() != TS_MAIN_PROMPT) &&
+              (tmp->GetStyle() != TS_OTHER_PROMPT) &&
+              (tmp->m_previousToDraw == NULL)
+            )
+            in.x += Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING;
+          
           if (!tmp->m_isBroken)
           {
             if (tmp->DrawThisCell(in))
@@ -950,19 +959,18 @@ void GroupCell::Draw(wxPoint point, int fontsize)
               if (tmp->m_nextToDraw->BreakLineHere())
               {
                 in.x = point.x;
-                if((
-                     (tmp->m_nextToDraw->GetStyle() != TS_LABEL) &&
-                     (tmp->m_nextToDraw->GetStyle() != TS_USERLABEL) &&
-                     (tmp->m_nextToDraw->GetStyle() != TS_MAIN_PROMPT) &&
-                     (tmp->m_nextToDraw->GetStyle() != TS_OTHER_PROMPT)) ||
-                   (tmp->m_previous == NULL)
+                if(
+                  (tmp->m_nextToDraw->GetStyle() != TS_LABEL) &&
+                  (tmp->m_nextToDraw->GetStyle() != TS_USERLABEL) &&
+                  (tmp->m_nextToDraw->GetStyle() != TS_MAIN_PROMPT) &&
+                  (tmp->m_nextToDraw->GetStyle() != TS_OTHER_PROMPT)
                   )
-                  in.x += Scale_Px(configuration->GetLabelWidth()) + MC_CELL_SKIP;
+                  in.x += Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING;
                 in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
                 drop = tmp->m_nextToDraw->GetMaxDrop();
               }
               else
-                in.x += (tmp->GetWidth() + MC_CELL_SKIP);
+                in.x += (tmp->GetWidth());
             }
 
           }
@@ -971,12 +979,13 @@ void GroupCell::Draw(wxPoint point, int fontsize)
             if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere())
             {
               in.x = point.x;
-              if(((tmp->m_nextToDraw->GetStyle() != TS_LABEL) &&
-                  (tmp->m_nextToDraw->GetStyle() != TS_USERLABEL) &&
-                  (tmp->m_nextToDraw->GetStyle() != TS_MAIN_PROMPT) &&
-                  (tmp->m_nextToDraw->GetStyle() != TS_OTHER_PROMPT)) ||
-                 (tmp->m_previous == NULL))
-                in.x += Scale_Px(configuration->GetLabelWidth()) + MC_CELL_SKIP;
+              if(
+                (tmp->m_nextToDraw->GetStyle() != TS_LABEL) &&
+                (tmp->m_nextToDraw->GetStyle() != TS_USERLABEL) &&
+                (tmp->m_nextToDraw->GetStyle() != TS_MAIN_PROMPT) &&
+                (tmp->m_nextToDraw->GetStyle() != TS_OTHER_PROMPT)
+                )
+                in.x += Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING;
               in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
               drop = tmp->m_nextToDraw->GetMaxDrop();
             }

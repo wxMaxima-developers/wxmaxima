@@ -138,7 +138,7 @@ void ExptCell::RecalculateWidths(int fontsize)
   else
     m_powCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - EXPT_DEC));
   m_width = m_baseCell->GetFullWidth() + m_powCell->GetFullWidth() -
-            Scale_Px(MC_TEXT_PADDING);
+            MC_TEXT_PADDING;
   m_exp->RecalculateWidthsList(fontsize);
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
@@ -177,7 +177,7 @@ void ExptCell::Draw(wxPoint point, int fontsize)
     bs.y = point.y;
     m_baseCell->DrawList(bs, fontsize);
 
-    pw.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(MC_TEXT_PADDING);
+    pw.x = point.x + m_baseCell->GetFullWidth() - MC_TEXT_PADDING;
     pw.y = point.y - m_baseCell->GetMaxCenter() - m_powCell->GetMaxHeight()
            + m_powCell->GetMaxCenter() +
            Scale_Px((8 * fontsize) / 10 + MC_EXP_INDENT);

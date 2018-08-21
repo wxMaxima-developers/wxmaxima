@@ -203,7 +203,7 @@ void Bitmap::BreakLines()
         tmp->BreakLine(true);
       }
       else
-        currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
+        currentWidth += (tmp->GetWidth());
     }
     tmp = tmp->m_nextToDraw;
   }
@@ -216,7 +216,6 @@ void Bitmap::GetMaxPoint(int *width, int *height)
   int currentWidth = 0;
   *width = 0;
   *height = 0;
-  bool bigSkip = false;
   bool firstCell = true;
   while (tmp != NULL)
   {
@@ -226,18 +225,15 @@ void Bitmap::GetMaxPoint(int *width, int *height)
       {
         firstCell = false;
         currentHeight += tmp->GetMaxHeight();
-        if (bigSkip)
-          currentHeight += MC_LINE_SKIP;
         *height = currentHeight;
         currentWidth = tmp->GetWidth();
         *width = MAX(currentWidth, *width);
       }
       else
       {
-        currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
-        *width = MAX(currentWidth - MC_CELL_SKIP, *width);
+        currentWidth += (tmp->GetWidth());
+        *width = MAX(currentWidth, *width);
       }
-      bigSkip = tmp->m_bigSkip;
     }
     tmp = tmp->m_nextToDraw;
   }
@@ -274,12 +270,10 @@ void Bitmap::Draw()
         {
           point.x = 0;
           point.y += drop + tmp->m_next->GetMaxCenter();
-          if (tmp->m_bigSkip)
-            point.y += MC_LINE_SKIP;
           drop = tmp->m_next->GetMaxDrop();
         }
         else
-          point.x += (tmp->GetWidth() + MC_CELL_SKIP);
+          point.x += (tmp->GetWidth());
       }
       else
       {
@@ -287,8 +281,6 @@ void Bitmap::Draw()
         {
           point.x = 0;
           point.y += drop + tmp->m_next->GetMaxCenter();
-          if (tmp->m_bigSkip)
-            point.y += MC_LINE_SKIP;
           drop = tmp->m_next->GetMaxDrop();
         }
       }

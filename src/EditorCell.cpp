@@ -580,7 +580,7 @@ void EditorCell::RecalculateWidths(int fontsize)
     dc->GetTextExtent(wxT("äXÄgy"), &charWidth, &m_charHeight);
 
     // We want a little bit of vertical space between two text lines (and between two labels).
-    m_charHeight += 2 * Scale_Px(MC_TEXT_PADDING);
+    m_charHeight += 2 * MC_TEXT_PADDING;
     int width = 0, tokenwidth, tokenheight, linewidth = 0;
 
     m_numberOfLines = 1;
@@ -814,8 +814,6 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
     SetPen();
 
     wxPoint TextStartingpoint = point;
-//    TextStartingpoint.x -= Scale_Px(MC_TEXT_PADDING);
-//    TextStartingpoint.x += Scale_Px(2);
     wxPoint TextCurrentPoint = TextStartingpoint;
     int lastStyle = -1;
     int lastIndent = 0;
@@ -3840,7 +3838,7 @@ void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidt
   // Normally the cell begins at the x position m_currentPoint.x - but sometimes
   // m_currentPoint is 0 so we need to determine our own value for the x position.
   int xmargin = Scale_Px(configuration->GetLabelWidth()) +
-                configuration->GetCellBracketWidth() + 2 * MC_CELL_SKIP;
+                configuration->GetCellBracketWidth();
 
   if (
           (lineWidth + xmargin + indentationPixels >= configuration->GetLineWidth()) &&
@@ -4140,7 +4138,7 @@ void EditorCell::StyleTextTexts()
   // m_currentPoint is 0 so we need to determine our own value for the x position.
   int xmargin =
   Scale_Px(configuration->GetLabelWidth()) +
-  configuration->GetCellBracketWidth() + 2 * MC_CELL_SKIP;
+  configuration->GetCellBracketWidth();
 
   // Remove all bullets of item lists as we will introduce them again in the next
   // step, as well.
