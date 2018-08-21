@@ -14,3 +14,9 @@ Maxima. Packages are also available for many Linux distributions. Screenshots
 and documentation can be found at http://andrejv.github.io/wxmaxima/
 
 
+
+Instrictions on where to get a complete wxMaxima package from
+can be found at http://maxima.sourceforge.net/download.html.
+
+Information on how to compile wxMaxima from source instead can be
+found at https://github.com/andrejv/wxmaxima/blob/master/Compiling.md
