@@ -134,4 +134,17 @@ maxima was installed in, again with the caveat of the .dll files:
 Additional information about installing and configuring wxMaxima
 ----------------------------------------------------------------
  - Mac OS X: https://themaximalist.org/about/my-mac-os-installation/
- 
+
+### Documentation of the source
+
+An html version of wxMaxima's documentation can be found at 
+https://www.peterpall.de/wxMaxima/html/index.xhtml
+
+A local version of the documentation of wxMaxima's source can be
+generated using doxygen and the
+
+    make html
+
+target. 
+
+
