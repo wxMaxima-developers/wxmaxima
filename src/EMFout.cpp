@@ -125,7 +125,7 @@ bool Emfout::Layout()
   }
 
   GetMaxPoint(&m_width, &m_height);
-
+  m_dc->Close();
   wxDELETE(m_dc);
   // Let's switch to a DC of the right size for our object.
   m_dc = new wxEnhMetaFileDC(m_filename, m_width, m_height);

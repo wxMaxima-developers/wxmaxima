@@ -26,10 +26,9 @@
 
 #if wxUSE_ENH_METAFILE
 #include <wx/msw/enhmeta.h>
-/* Renders portions of the work sheet (including 2D maths) as emf.
+/* Renders portions of the work sheet (including 2D maths) as extended Metafile.
 
-   This is used for exporting HTML with embedded maths as a scalable vector
-   graphics and for them on the clipboard
+   Let's hope it provides as useful.
  */
 class Emfout
 {
@@ -39,6 +38,8 @@ public:
   Emfout(Configuration **configuration, wxString filename = wxEmptyString);
 
   ~Emfout();
+
+  int Scale_Px(double px){ return (*m_configuration)->Scale_Px(px);}
 
   /*! Renders tree as emf
 
