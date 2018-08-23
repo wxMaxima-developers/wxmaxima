@@ -223,7 +223,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   
   wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 
-  m_showAtStartup = new wxCheckBox(this, -1, _("Show tooltips at Startup"));
+  m_showAtStartup = new wxCheckBox(this, -1, _("Show tips at Startup"));
   bool showTip = true;
   config->Read(wxT("ShowTips"), &showTip);
   m_showAtStartup->SetValue(showTip);
