@@ -373,6 +373,9 @@ public:
     wxConfig::Get()->Write(wxT("autoIndent"), m_autoIndent = autoIndent);
   }
 
+  //! Do we want to indent all maths?
+  bool IndentMaths(){return m_indentMaths;}
+  void IndentMaths(bool indent){wxConfig::Get()->Write(wxT("indentMaths"), m_indentMaths=indent);}
   int GetFontSize(int st)
   {
     if (st == TS_TEXT || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
@@ -736,6 +739,7 @@ private:
   bool m_copyEMF;
   bool m_TOCshowsSectionNumbers;
   bool m_useUnicodeMaths;
+  bool m_indentMaths;
   wxColour m_defaultBackgroundColor;
 };
 

@@ -946,7 +946,8 @@ void GroupCell::Draw(wxPoint point, int fontsize)
               (tmp->GetStyle() != TS_USERLABEL) &&
               (tmp->GetStyle() != TS_MAIN_PROMPT) &&
               (tmp->GetStyle() != TS_OTHER_PROMPT) &&
-              (tmp->m_previousToDraw == NULL)
+              (tmp->m_previousToDraw == NULL) &&
+              configuration->IndentMaths()
             )
             in.x += Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING;
           
@@ -963,7 +964,8 @@ void GroupCell::Draw(wxPoint point, int fontsize)
                   (tmp->m_nextToDraw->GetStyle() != TS_LABEL) &&
                   (tmp->m_nextToDraw->GetStyle() != TS_USERLABEL) &&
                   (tmp->m_nextToDraw->GetStyle() != TS_MAIN_PROMPT) &&
-                  (tmp->m_nextToDraw->GetStyle() != TS_OTHER_PROMPT)
+                  (tmp->m_nextToDraw->GetStyle() != TS_OTHER_PROMPT) &&
+                  configuration->IndentMaths()
                   )
                   in.x += Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING;
                 in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
@@ -983,7 +985,8 @@ void GroupCell::Draw(wxPoint point, int fontsize)
                 (tmp->m_nextToDraw->GetStyle() != TS_LABEL) &&
                 (tmp->m_nextToDraw->GetStyle() != TS_USERLABEL) &&
                 (tmp->m_nextToDraw->GetStyle() != TS_MAIN_PROMPT) &&
-                (tmp->m_nextToDraw->GetStyle() != TS_OTHER_PROMPT)
+                (tmp->m_nextToDraw->GetStyle() != TS_OTHER_PROMPT) &&
+                configuration->IndentMaths()
                 )
                 in.x += Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING;
               in.y += drop + tmp->m_nextToDraw->GetMaxCenter();

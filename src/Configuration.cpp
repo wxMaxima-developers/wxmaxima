@@ -58,6 +58,7 @@ Configuration::Configuration(wxDC &dc) : m_dc(&dc)
   m_clientWidth = 1024;
   m_clientHeight = 768;
   Dirstructure dirstruct;
+  m_indentMaths=true;
   m_maximaLocation = dirstruct.MaximaDefaultLocation();
   m_indent = -1;
   m_autoSubscript = 1;
@@ -138,8 +139,9 @@ void Configuration::ReadConfig()
   config->Read(wxT("useUnicodeMaths"), &m_useUnicodeMaths);
   config->Read(wxT("mathJaxURL"), &m_mathJaxURL);
   config->Read(wxT("autosubscript"), &m_autoSubscript);
-  config->Read(wxT("antiAliasLines"), & m_antiAliasLines);
-  
+  config->Read(wxT("antiAliasLines"), &m_antiAliasLines);
+  config->Read(wxT("indentMaths"), &m_indentMaths);
+
   config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
 
   config->Read(wxT("showLength"), &m_showLength);

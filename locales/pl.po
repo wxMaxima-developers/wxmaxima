@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-21 07:13+0200\n"
+"POT-Creation-Date: 2018-08-22 07:37+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ihor Rokach <rokach@tu.kielce.pl>\n"
 "Language-Team: \n"
@@ -71,9 +71,9 @@ msgstr ""
 msgid " (Graphics) "
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3888
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4299
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4420
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3886
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4297
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4418
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr ""
@@ -451,7 +451,7 @@ msgstr ""
 "komorkę poprzez zwykły początek wprowadzania nowego polecenia, wklejanie "
 "skopiowanej koorki lub uruchomienie polecenia z menu."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2256
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2265
 msgid "A GroupCell that bundles input with its output"
 msgstr ""
 
@@ -483,7 +483,7 @@ msgstr ""
 "obliczeń. Żeby zapisać plik w tym formacie użyj opcji 'XML dokument "
 "wxMaxima'."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2251
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2260
 #, fuzzy
 msgid "A page break"
 msgstr "Podział strony"
@@ -500,11 +500,11 @@ msgid ""
 "pdf pages."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4828
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4826
 msgid "A section heading"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.h:393
+#: /home/gunter/src/wxmaxima/src/GroupCell.h:412
 msgid "A space between GroupCells"
 msgstr ""
 
@@ -513,12 +513,12 @@ msgstr ""
 msgid "A static plot"
 msgstr "Wykres parametryczny"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4834
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4832
 #, fuzzy
 msgid "A sub-subsection heading"
 msgstr "Komórka podrozdziału"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4831
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4829
 #, fuzzy
 msgid "A subsection heading"
 msgstr "Komórka podrozdziału"
@@ -921,7 +921,7 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Configuration.h:448
+#: /home/gunter/src/wxmaxima/src/Configuration.h:447
 msgid "Bug: Maximum number of digits that is to be displayed is too low!"
 msgstr ""
 
@@ -931,8 +931,8 @@ msgstr ""
 msgid "Bug: Missing contents"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1293
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1470
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1302
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1479
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -972,12 +972,12 @@ msgstr ""
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3357
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3355
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2291
 msgid "Bug: The clipboard is already opened"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3434
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3432
 msgid "Bug: The clipboard isn't open on pasting into an editor cell"
 msgstr ""
 
@@ -1011,15 +1011,15 @@ msgstr ""
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4840
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4838
 msgid "Bug: Unknown type of text"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2934
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2932
 msgid "Bug: x position of cell is unknown!"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2935
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2933
 msgid "Bug: y position of cell is unknown!"
 msgstr ""
 
@@ -1325,7 +1325,7 @@ msgstr "Przecinek oddziela kolejne współrzędne na osi OX"
 msgid "Commands that are executed at every start of maxima."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4837
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4835
 msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
 msgstr ""
 
@@ -1994,7 +1994,7 @@ msgstr "&Równania"
 msgid "E&xit\tCtrl+Q"
 msgstr "Wyjście\tCtrl+Q"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:958
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:956
 msgid "EditorCell Ignoring the font name as the selected font didn't work"
 msgstr ""
 
@@ -2522,7 +2522,7 @@ msgstr "Silnie i funkcja &gamma"
 msgid "Fatal error"
 msgstr "Krytyczny błąd"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2196
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2205
 #, c-format
 msgid "Figure %d:"
 msgstr "Obrazek %d:"
@@ -3766,7 +3766,7 @@ msgstr ""
 msgid "Math font:"
 msgstr "Czcionka matematyczna:"
 
-#: /home/gunter/src/wxmaxima/src/MathCell.cpp:1137
+#: /home/gunter/src/wxmaxima/src/MathCell.cpp:1136
 #, fuzzy
 msgid "Math output"
 msgstr "Czcionka matematyczna:"
@@ -3859,7 +3859,7 @@ msgid ""
 "continues the one from the last line."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4822
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4820
 #, fuzzy
 msgid "Maxima code"
 msgstr "Ikona wxMaxima"
@@ -5179,15 +5179,15 @@ msgid "See also the speed <-> accuracy button."
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/BTextCtrl.cpp:48
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:974
-#: /home/gunter/src/wxmaxima/src/TextCell.cpp:589
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:972
+#: /home/gunter/src/wxmaxima/src/TextCell.cpp:587
 msgid ""
 "Seems like something is broken with a font. Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
 "\" in the configuration dialogue should fix it."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/TextCell.cpp:387
+#: /home/gunter/src/wxmaxima/src/TextCell.cpp:385
 msgid ""
 "Seems like something is broken with the maths font. Installing http://www."
 "math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use "
@@ -5996,13 +5996,6 @@ msgstr "Odwrotna Transformata &Laplace'a"
 msgid "The key combination Shift+Space results in a non-breakable space."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/TextCell.cpp:382
-msgid ""
-"The letter \"X\" is of width zero. Installing http://www.math.union.edu/"
-"~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in "
-"the configuration dialogue should fix it."
-msgstr ""
-
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5647
 msgid ""
 "The list with values can be generated by \"solve()\" or using \"Create list/"
@@ -6363,7 +6356,7 @@ msgstr ""
 msgid "Type"
 msgstr "Typ:"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4850
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4848
 #, fuzzy
 msgid "Type in text"
 msgstr "Kopiuj jako obrazek"

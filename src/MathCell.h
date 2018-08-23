@@ -486,16 +486,33 @@ class MathCell
   //! Get the last cell in this list of cells
   MathCell *last();
 
+  /*! Select a rectangle using the mouse
+
+    \param rect The rectangle to select
+    \param first Returns the first cell of the rectangle
+    \param last Returns the last cell of the rectangle
+   */
   void SelectRect(wxRect &rect, MathCell **first, MathCell **last);
 
+  /*! The top left of the rectangle the mouse has selected
+
+    \param rect The rectangle the mouse selected
+    \param first Returns the first cell of the rectangle
+   */
   void SelectFirst(wxRect &rect, MathCell **first);
 
+  /*! The bottom right of the rectangle the mouse has selected
+
+    \param rect The rectangle the mouse selected
+    \param last Returns the last cell of the rectangle
+   */
   void SelectLast(wxRect &rect, MathCell **last);
 
-  /*! Select the cells described by the rectangle rect.
+  /*! Select the cells inside this cell described by the rectangle rect.
   */
   virtual void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
 
+  //! Is this cell an operator?
   virtual bool IsOperator();
 
   bool IsCompound();
@@ -577,7 +594,7 @@ class MathCell
 
   void UnsetPen();
 
-  /*! Unbreak this cell
+  /*! Undo breaking this cell into multiple lines
 
     Some cells have different representations when they contain a line break.
     Examples for this are fractions or a set of parenthesis.

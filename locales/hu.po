@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-21 07:13+0200\n"
+"POT-Creation-Date: 2018-08-22 07:37+0200\n"
 "PO-Revision-Date: 2018-07-05 14:35+0200\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
@@ -75,9 +75,9 @@ msgstr "      -l <név>"
 msgid " (Graphics) "
 msgstr " (Grafika) "
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3888
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4299
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4420
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3886
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4297
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4418
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr " ... + %i rejtett sorok"
@@ -449,7 +449,7 @@ msgstr ""
 "begépelésével, beillesztésével vagy egy menü parancs végrehajtásával egy új "
 "cella keletkezik."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2256
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2265
 msgid "A GroupCell that bundles input with its output"
 msgstr "Csoportcella, amely a bemeneti adatokat a kimenetével tölti fel"
 
@@ -483,7 +483,7 @@ msgstr ""
 "kimenetét is. Használatához a dokumentum mentésénél válasszuk a 'wxMaxima "
 "XML dokumentum' formátumot."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2251
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2260
 msgid "A page break"
 msgstr "Laptörés"
 
@@ -504,11 +504,11 @@ msgstr ""
 "Nyomtatásra szolgáló skála. Hasznos nagy egyenletek kinyomtatására kis pdf "
 "oldalakon."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4828
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4826
 msgid "A section heading"
 msgstr "Fejezetcím"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.h:393
+#: /home/gunter/src/wxmaxima/src/GroupCell.h:412
 msgid "A space between GroupCells"
 msgstr "Szóköz a csoportcellák között"
 
@@ -516,11 +516,11 @@ msgstr "Szóköz a csoportcellák között"
 msgid "A static plot"
 msgstr "Statikus ábrázolás"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4834
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4832
 msgid "A sub-subsection heading"
 msgstr "Al-alfejezetcím"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4831
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4829
 msgid "A subsection heading"
 msgstr "Alfejezetcím"
 
@@ -947,7 +947,7 @@ msgstr ""
 "Hiba: A matematika cella azt állítja, hogy nem tartozik egyetlen "
 "cellacsoporthoz sem"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.h:448
+#: /home/gunter/src/wxmaxima/src/Configuration.h:447
 msgid "Bug: Maximum number of digits that is to be displayed is too low!"
 msgstr "Hiba: A megjelenítendő számjegyek maximális száma túl alacsony!"
 
@@ -957,8 +957,8 @@ msgstr "Hiba: A megjelenítendő számjegyek maximális száma túl alacsony!"
 msgid "Bug: Missing contents"
 msgstr "Hiba: Hiányzó tartalmak"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1293
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1470
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1302
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1479
 msgid "Bug: No image counter to write to!"
 msgstr "Hiba: A kép számlálója hiányzik!"
 
@@ -998,12 +998,12 @@ msgstr "Hiba: Nincs utolsó cella egy négyzetgyökön belül!"
 msgid "Bug: Text changed, but no active cell."
 msgstr "Hiba: A szöveg megváltozott, de nincs aktív cella."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3357
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3355
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2291
 msgid "Bug: The clipboard is already opened"
 msgstr "Hiba: A vágólap már meg van nyitva"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3434
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3432
 msgid "Bug: The clipboard isn't open on pasting into an editor cell"
 msgstr ""
 "Hiba: A vágólapot nem lehet megnyitni a szerkesztő cellába történő "
@@ -1044,15 +1044,15 @@ msgstr ""
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr "Hiba: Munkalapon kívüli cella visszaállítási kérelme."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4840
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4838
 msgid "Bug: Unknown type of text"
 msgstr "Hiba: Ismeretlen szövegtípus"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2934
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2932
 msgid "Bug: x position of cell is unknown!"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2935
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2933
 msgid "Bug: y position of cell is unknown!"
 msgstr ""
 
@@ -1356,7 +1356,7 @@ msgstr "Vesszővel elválasztott változók"
 msgid "Commands that are executed at every start of maxima."
 msgstr "Maxima parancsok végrehajtása a Maxima minden egyes indulásakor."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4837
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4835
 msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
 msgstr "Megjegyzés (szokásos munkalap-szöveg, amely a Maxima nem futtat)"
 
@@ -2013,7 +2013,7 @@ msgstr "&Egyenletek"
 msgid "E&xit\tCtrl+Q"
 msgstr "&Kilépés\tCtrl+Q"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:958
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:956
 msgid "EditorCell Ignoring the font name as the selected font didn't work"
 msgstr ""
 
@@ -2532,7 +2532,7 @@ msgstr "&Faktoriális- és gamma-függvény"
 msgid "Fatal error"
 msgstr "Végzetes hiba"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2196
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2205
 #, c-format
 msgid "Figure %d:"
 msgstr "%d. ábra:"
@@ -3822,7 +3822,7 @@ msgstr "Nyitó zárójelek párjának automatikus beírása"
 msgid "Math font:"
 msgstr "Matematika betűtípus:"
 
-#: /home/gunter/src/wxmaxima/src/MathCell.cpp:1137
+#: /home/gunter/src/wxmaxima/src/MathCell.cpp:1136
 msgid "Math output"
 msgstr "Matematika kimenet"
 
@@ -3934,7 +3934,7 @@ msgstr ""
 "könnyebben észrevegyük, hogy melyik sorban kezdődik egy új egyenlet, és "
 "melyben csak az előző sor tartalma folytatatódik."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4822
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4820
 msgid "Maxima code"
 msgstr "Maxima kód"
 
@@ -5335,8 +5335,8 @@ msgid "See also the speed <-> accuracy button."
 msgstr "Lásd még a sebesség <-> pontosság gombot."
 
 #: /home/gunter/src/wxmaxima/src/BTextCtrl.cpp:48
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:974
-#: /home/gunter/src/wxmaxima/src/TextCell.cpp:589
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:972
+#: /home/gunter/src/wxmaxima/src/TextCell.cpp:587
 msgid ""
 "Seems like something is broken with a font. Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
@@ -5347,7 +5347,7 @@ msgstr ""
 "és a \"jsMath karakterek használata\" bejelölése a beállításoknál megoldást "
 "jelenthet."
 
-#: /home/gunter/src/wxmaxima/src/TextCell.cpp:387
+#: /home/gunter/src/wxmaxima/src/TextCell.cpp:385
 msgid ""
 "Seems like something is broken with the maths font. Installing http://www."
 "math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use "
@@ -6185,17 +6185,6 @@ msgstr "Inverz Laplace-transzformáció."
 msgid "The key combination Shift+Space results in a non-breakable space."
 msgstr "A Shift+Space billentyűkombináció eredménye egy el nem törhető szóköz."
 
-#: /home/gunter/src/wxmaxima/src/TextCell.cpp:382
-msgid ""
-"The letter \"X\" is of width zero. Installing http://www.math.union.edu/"
-"~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in "
-"the configuration dialogue should fix it."
-msgstr ""
-"Az \"X\" betű szélessége nulla. A jsMath karakterek telepítése a http://www."
-"math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html oldalról és a "
-"\"jsMath karakterek használata\" bejelölése a beállításoknál megoldást "
-"jelenthet."
-
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5647
 msgid ""
 "The list with values can be generated by \"solve()\" or using \"Create list/"
@@ -6609,7 +6598,7 @@ msgstr "Kétmintás t-próba"
 msgid "Type"
 msgstr "Típus"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4850
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4848
 msgid "Type in text"
 msgstr "Gépelés szövegbe"
 
@@ -7729,6 +7718,16 @@ msgstr "z tartomány (automatikus, ha nem teljes)"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1563
 msgid "zeta"
 msgstr "dzéta"
+
+#~ msgid ""
+#~ "The letter \"X\" is of width zero. Installing http://www.math.union.edu/"
+#~ "~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" "
+#~ "in the configuration dialogue should fix it."
+#~ msgstr ""
+#~ "Az \"X\" betű szélessége nulla. A jsMath karakterek telepítése a http://"
+#~ "www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html oldalról és a "
+#~ "\"jsMath karakterek használata\" bejelölése a beállításoknál megoldást "
+#~ "jelenthet."
 
 #~ msgid ""
 #~ "There are many resources about Maxima and wxMaxima on the internet. Visit "

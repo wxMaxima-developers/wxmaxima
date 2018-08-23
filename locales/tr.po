@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-21 07:13+0200\n"
+"POT-Creation-Date: 2018-08-22 07:37+0200\n"
 "PO-Revision-Date: 2018-01-14 22:09+0200\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -73,9 +73,9 @@ msgstr " -I <isim>"
 msgid " (Graphics) "
 msgstr " (Grafikler) "
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3888
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4299
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4420
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3886
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4297
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4418
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr " ... + %i gizlenmiş satırlar"
@@ -450,7 +450,7 @@ msgstr ""
 "bir çizgiye benzemektedir. Yazdığınızda yada bir yazıyı yapıştırdığınızda "
 "yada  bir komutu çalıştırdığınız yerde görülür."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2256
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2265
 msgid "A GroupCell that bundles input with its output"
 msgstr "Girdi ile çıktıyı bir arada veren bir Grup hücresi"
 
@@ -483,7 +483,7 @@ msgstr ""
 "değil aynı zamanda hesaplamalarınızın sonuçlarını da saklar.Belgenizi "
 "kaydederken 'wxMaxima XML document format' ı 'seçin."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2251
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2260
 msgid "A page break"
 msgstr "Bir sayfa kesmesi"
 
@@ -502,11 +502,11 @@ msgid ""
 "pdf pages."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4828
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4826
 msgid "A section heading"
 msgstr "Bir Kısım başlığı"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.h:393
+#: /home/gunter/src/wxmaxima/src/GroupCell.h:412
 msgid "A space between GroupCells"
 msgstr "Grup hücreler arası bir boşluk"
 
@@ -515,11 +515,11 @@ msgstr "Grup hücreler arası bir boşluk"
 msgid "A static plot"
 msgstr "Parametrik Çizim"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4834
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4832
 msgid "A sub-subsection heading"
 msgstr "Alt-alt kısım başlığı"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4831
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4829
 msgid "A subsection heading"
 msgstr "Alt-Kısım Hücresi"
 
@@ -937,7 +937,7 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr "Hata: Math hücresi ait olduğu bir Grup hücresi olmadığını düşünüyor"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.h:448
+#: /home/gunter/src/wxmaxima/src/Configuration.h:447
 msgid "Bug: Maximum number of digits that is to be displayed is too low!"
 msgstr "Hata : Gösterimi çok uzun sürecek öok basamaklı bir sayı"
 
@@ -947,8 +947,8 @@ msgstr "Hata : Gösterimi çok uzun sürecek öok basamaklı bir sayı"
 msgid "Bug: Missing contents"
 msgstr "Hata: Eksik içerik"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1293
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1470
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1302
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1479
 msgid "Bug: No image counter to write to!"
 msgstr "Hata : Yazılacak görüntü sayacı yok!"
 
@@ -988,12 +988,12 @@ msgstr "Hata: Bir karekök ün içinde son hücre yok!"
 msgid "Bug: Text changed, but no active cell."
 msgstr "Hata: Metin değişti, ancak aktif hücre yok."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3357
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3355
 #: /home/gunter/src/wxmaxima/src/MathCtrl.cpp:2291
 msgid "Bug: The clipboard is already opened"
 msgstr "Hata:Pano zaten açılmış"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3434
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3432
 msgid "Bug: The clipboard isn't open on pasting into an editor cell"
 msgstr "Hata:Pano, bir düzenleyici hücresine yapıştırmaya açık değil"
 
@@ -1035,15 +1035,15 @@ msgstr ""
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr "Hata: Geri al isteği çalışma yaprağı dışındaki bir hücreye ait."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4840
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4838
 msgid "Bug: Unknown type of text"
 msgstr "Hata: Bilinmeyen metin türü"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2934
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2932
 msgid "Bug: x position of cell is unknown!"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2935
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:2933
 msgid "Bug: y position of cell is unknown!"
 msgstr ""
 
@@ -1351,7 +1351,7 @@ msgstr "Virgülle ayrılmış değişkenler"
 msgid "Commands that are executed at every start of maxima."
 msgstr "Her yeni başlamada gerçekleştirilecek Maxima komutları: "
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4837
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4835
 msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
 msgstr "Yorum(maximayla uyumlu olmayan çalışma sayfası metni)"
 
@@ -2007,7 +2007,7 @@ msgstr "&Denklemler"
 msgid "E&xit\tCtrl+Q"
 msgstr "&Çık\tCtrl+Q"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:958
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:956
 msgid "EditorCell Ignoring the font name as the selected font didn't work"
 msgstr ""
 
@@ -2531,7 +2531,7 @@ msgstr "Faktöriyeller ve &Gamma "
 msgid "Fatal error"
 msgstr "Ölümcül Hata"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2196
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2205
 #, c-format
 msgid "Figure %d:"
 msgstr "Şekil %d:"
@@ -3816,7 +3816,7 @@ msgstr "Metin kontrolünde parantezi eşleştir"
 msgid "Math font:"
 msgstr "Mat. yazı tipi:"
 
-#: /home/gunter/src/wxmaxima/src/MathCell.cpp:1137
+#: /home/gunter/src/wxmaxima/src/MathCell.cpp:1136
 msgid "Math output"
 msgstr "Matematik çıktısı"
 
@@ -3927,7 +3927,7 @@ msgstr ""
 "yalnızca son satıra devam ettiğini ayırt etmeyi kolaylaştırmak için "
 "denklemler arasında ekstra dikey boşluk eklenir."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4822
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4820
 msgid "Maxima code"
 msgstr "Maxima kodu"
 
@@ -5329,8 +5329,8 @@ msgid "See also the speed <-> accuracy button."
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/BTextCtrl.cpp:48
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:974
-#: /home/gunter/src/wxmaxima/src/TextCell.cpp:589
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:972
+#: /home/gunter/src/wxmaxima/src/TextCell.cpp:587
 msgid ""
 "Seems like something is broken with a font. Installing http://www.math.union."
 "edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts"
@@ -5341,7 +5341,7 @@ msgstr ""
 "bölümünden \"Use JSmath fonts\"= JSmath fontlarını kullan ı seçmek sorunu "
 "çözebilir."
 
-#: /home/gunter/src/wxmaxima/src/TextCell.cpp:387
+#: /home/gunter/src/wxmaxima/src/TextCell.cpp:385
 msgid ""
 "Seems like something is broken with the maths font. Installing http://www."
 "math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use "
@@ -6167,16 +6167,6 @@ msgstr "Ters Laplace Dönüşümü."
 msgid "The key combination Shift+Space results in a non-breakable space."
 msgstr "Shift+ boşluk a basıldığında bölünemeyen boşluk elde edilir."
 
-#: /home/gunter/src/wxmaxima/src/TextCell.cpp:382
-msgid ""
-"The letter \"X\" is of width zero. Installing http://www.math.union.edu/"
-"~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in "
-"the configuration dialogue should fix it."
-msgstr ""
-"\"X\" harfinin genişliği sıfır. http://www.math.union.edu/~dpvc/jsmath/"
-"download/jsMath-fonts.html ' in kurulkması ve yapılandırma bölümünde \"Use "
-"JSmath fonts\" ' ın seçili olması problemi çözecektir."
-
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5647
 #, fuzzy
 msgid ""
@@ -6588,7 +6578,7 @@ msgstr "İki Örnek t-testi"
 msgid "Type"
 msgstr "Tip"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4850
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4848
 msgid "Type in text"
 msgstr "Metin içine yaz"
 
@@ -7710,6 +7700,15 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1563
 msgid "zeta"
 msgstr "zeta"
+
+#~ msgid ""
+#~ "The letter \"X\" is of width zero. Installing http://www.math.union.edu/"
+#~ "~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" "
+#~ "in the configuration dialogue should fix it."
+#~ msgstr ""
+#~ "\"X\" harfinin genişliği sıfır. http://www.math.union.edu/~dpvc/jsmath/"
+#~ "download/jsMath-fonts.html ' in kurulkması ve yapılandırma bölümünde "
+#~ "\"Use JSmath fonts\" ' ın seçili olması problemi çözecektir."
 
 #~ msgid ""
 #~ "There are many resources about Maxima and wxMaxima on the internet. Visit "

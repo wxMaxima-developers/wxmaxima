@@ -285,6 +285,7 @@ protected:
   wxCheckBox *m_autoIndent;
   wxCheckBox *m_cursorJump;
   wxCheckBox *m_hideBrackets;
+  wxCheckBox *m_indentMaths;
   wxChoice *m_autoWrap;
   wxSpinCtrl *m_labelWidth;
   wxSpinCtrl *m_undoLimit;

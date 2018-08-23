@@ -202,13 +202,21 @@ public:
       return NULL;
   }
 
+  /*! Returns the list of cells the output consists of, starting with the label.
+
+    See also GetOutput();
+  */
   MathCell *GetLabel()
   { return m_output; }
 
+  /*! Returns the list of cells the output consists of, starting after the label.
+
+    See also GetLabel()
+  */
   MathCell *GetOutput()
   { if (m_output == NULL) return NULL; else return m_output->m_next; }
 
-  //
+  //! Determine which rectangle is occupied by this GroupCell
   wxRect GetOutputRect()
   { return m_outputRect; }
 
@@ -232,16 +240,25 @@ public:
    */
   void RecalculateWidths(int fontsize);
 
+  /*! Recalculate the size of this GroupCell.
+
+    Calls RecalculateHeight() and RecalculateWidths()
+  */
   void Recalculate();
 
+  //! Attempt to split Math Cells inside this cell into separate lines, if they are too wide to fit on the screen.
   void BreakUpCells(int fontsize, int clientWidth);
 
+  //! Attempt to split Math Cells inside this cell into separate lines, if they are too wide to fit on the screen.
   void BreakUpCells(MathCell *cell, int fontsize, int clientWidth);
 
+  //! Undo a BreakUpCells
   void UnBreakUpCells();
 
+  //! Break this cell into lines
   void BreakLines(int fullWidth);
 
+  //! Break this cell into lines
   void BreakLines(MathCell *cell, int fullWidth);
 
   /*! Reset the input label of the current cell.
@@ -251,6 +268,7 @@ public:
    */
   void ResetInputLabel();
 
+  //! Call ResetInputLabel() on all cells in the list of cells this GroupCell starts with.
   void ResetInputLabelList();
   //! @{ folding and unfolding
 
@@ -362,6 +380,7 @@ public:
   void InEvaluationQueue(bool inQueue)
   { m_inEvaluationQueue = inQueue; }
 
+  //! Is this cell the last cell in the evaluation Queue?
   void LastInEvaluationQueue(bool last)
   { m_lastInEvaluationQueue = last; }
 
@@ -445,12 +464,15 @@ public:
 #endif
 
 protected:
-  GroupCell *m_hiddenTree; // here hidden (folded) tree of GCs is stored
-  GroupCell *m_hiddenTreeParent; // store linkage to the parent of the fold
+  GroupCell *m_hiddenTree; //!< here hidden (folded) tree of GCs is stored
+  GroupCell *m_hiddenTreeParent; //!< store linkage to the parent of the fold
+  //! Which type this cell is of?
   int m_groupType;
-  // The input label of this cell. Is followed by the input of the cell.
+  //! The input label of this cell. Is followed by the input of the cell.
   MathCell *m_inputLabel;
+  //! The maxima output this cell contains
   MathCell *m_output;
+  //! Is this cell folded (which hides its contents)?
   bool m_hide;
   int m_fontSize;
   int m_fontSize_Old;
@@ -458,7 +480,7 @@ protected:
   MathCell *m_lastInOutput;
   MathCell *m_appendedCells;
 private:
-  //! Does this GroupCell save the answer to a question?
+  //! Does this GroupCell automatically fill in the answer to questions?
   bool m_autoAnswer;
   wxRect m_outputRect;
   bool m_inEvaluationQueue;

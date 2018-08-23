@@ -359,6 +359,8 @@ void ConfigDialogue::SetProperties()
 
   m_hideBrackets->SetToolTip(
           _("Hide the brackets that mark the extend of the worksheet cells at the worksheet's right side and that contain the \"hide\" button of the cell if the cells aren't active."));
+  m_indentMaths->SetToolTip(
+          _("Indent maths so all lines are in par with the first line that starts after the label."));
 
 #ifdef __WXMSW__
   m_wxcd->SetToolTip(_("Automatically change maxima's working directory to the one the current document is in: "
@@ -486,6 +488,7 @@ void ConfigDialogue::SetProperties()
   m_autoIndent->SetValue(configuration->GetAutoIndent());
   m_cursorJump->SetValue(cursorJump);
   m_hideBrackets->SetValue(configuration->HideBrackets());
+  m_indentMaths->SetValue(configuration->IndentMaths());
   int val = 0;
   if (configuration->GetAutoWrap()) val = 1;
 //  if(configuration->GetAutoWrapCode()) val = 2;
@@ -598,6 +601,9 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
 
   m_hideBrackets = new wxCheckBox(panel, -1, _("Intelligently hide cell brackets"));
   vsizer->Add(m_hideBrackets, 0, wxALL, 5);
+
+  m_indentMaths = new wxCheckBox(panel, -1, _("Indent equations by the label width"));
+  vsizer->Add(m_indentMaths, 0, wxALL, 5);
 
   m_enterEvaluates = new wxCheckBox(panel, -1, _("Enter evaluates cells"));
   vsizer->Add(m_enterEvaluates, 0, wxALL, 5);
@@ -1196,6 +1202,7 @@ void ConfigDialogue::WriteSettings()
   configuration->SetAutoIndent(m_autoIndent->GetValue());
   config->Write(wxT("cursorJump"), m_cursorJump->GetValue());
   configuration->HideBrackets(m_hideBrackets->GetValue());
+  configuration->IndentMaths(m_indentMaths->GetValue());
   configuration->SetAutoWrap(m_autoWrap->GetSelection());
   config->Write(wxT("labelWidth"), m_labelWidth->GetValue());
   config->Write(wxT("undoLimit"), m_undoLimit->GetValue());
