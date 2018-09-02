@@ -355,7 +355,7 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
 
   // Test if m_memory is NULL or of the wrong size
   if ((!m_memory.IsOk()) || (m_memory.GetSize() != sz))
-    m_memory = wxBitmap(sz);
+    m_memory = wxBitmap(sz*wxWindow::GetContentScaleFactor());
 
   // Prepare memory DC
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
