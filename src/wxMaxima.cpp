@@ -943,6 +943,32 @@ bool wxMaxima::StartServer()
 
 bool wxMaxima::StartMaxima(bool force)
 {
+
+  // If we have an open file tell maxima to start in the directory the file is in
+  wxUnsetEnv(wxT("MAXIMA_PWD"));
+  wxString filename = m_console->m_currentFile;
+  if(filename == wxEmptyString)
+    filename = m_openFile;
+  if(filename != wxEmptyString)
+  {
+    wxFileName dir(filename);
+    dir.MakeAbsolute();
+    wxString dirname = dir.GetPath();
+    if(wxDirExists(dirname))
+    {
+      wxSetEnv(wxT("MAXIMA_PWD"),dirname);
+      wxLogMessage(wxString::Format(
+                     wxT("Telling maxima to start in the directory %s."),
+                     dirname)
+        );
+    }
+    else
+      wxLogWarning(wxString::Format(
+                     wxT("Directory %s doesn't exist. Maxima might complain about that."),
+                     dirname)
+        );
+  }
+  
   m_nestedLoadCommands = 0;
   // We only need to start or restart maxima if we aren't connected to a maxima
   // that till now never has done anything and therefore is in perfect working
