@@ -1908,6 +1908,8 @@ wxMathML::wxMathML()
 	"	  #+gcl (xchdir dir)\n"
 	"	  #+gcl (setf *default-pathname-defaults* dir)\n"
 	"\n"
+        "	  #-(or allegro clisp cmu cormanlisp gcl lispworks lucid sbcl ccl ecl) (format t\n"
+        "           \"Info: wxMathml.cpp: Changing the working dir during a maxima session isn\'t implemented for this lisp.\")\n"
 	"  	  (namestring dir)\n"
 	"	  (wx-print-variables)))\n"
 	"      (error (c)"

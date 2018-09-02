@@ -41,11 +41,11 @@
 #define MAX(a, b) ((a)>(b) ? (a) : (b))
 #define MIN(a, b) ((a)>(b) ? (b) : (a))
 
-wxImage ToolBar::GetImage(wxString name,
+wxBitmap ToolBar::GetImage(wxString name,
                           unsigned char *data_128, size_t len_128,
                           unsigned char *data_192, size_t len_192)
 {
-  double targetSize = wxGetDisplayPPI().x * TOOLBAR_ICON_SCALE;
+  double targetSize = wxGetDisplayPPI().x * TOOLBAR_ICON_SCALE * GetToolBar()->GetParent()->GetContentScaleFactor();
   int prescale;
 
   int sizeA = 128 << 4;
@@ -103,7 +103,11 @@ wxImage ToolBar::GetImage(wxString name,
 #endif
   
   img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
-  return img;
+#if defined __WXMAC__
+  return wxBitmap(img,wxBITMAP_SCREEN_DEPTH,GetToolBar()->GetParent()->GetContentScaleFactor());
+#else
+  return wxBitmap(img,wxBITMAP_SCREEN_DEPTH);
+#endif
 }
 
 ToolBar::~ToolBar()
