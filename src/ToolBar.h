@@ -123,10 +123,10 @@ public:
   wxBitmap  m_PlayButton;
   wxBitmap  m_StopButton;
 #else
-  wxImage m_followIcon;
-  wxImage m_needsInformationIcon;
-  wxImage m_PlayButton;
-  wxImage m_StopButton;
+  wxBitmap m_followIcon;
+  wxBitmap m_needsInformationIcon;
+  wxBitmap m_PlayButton;
+  wxBitmap m_StopButton;
 #endif
 
   void CanCopy(bool value)
