@@ -195,7 +195,7 @@ private:
   int GetImageSize();
 
   //! Loads the image for a configuration tab
-  wxImage GetImage(wxString name,
+  wxBitmap GetImage(wxString name,
                    unsigned char *data_128, size_t len_128,
                    unsigned char *data_192, size_t len_192);
 

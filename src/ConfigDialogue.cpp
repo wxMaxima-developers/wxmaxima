@@ -108,11 +108,11 @@ int ConfigDialogue::GetImageSize()
   }
 }
 
-wxImage ConfigDialogue::GetImage(wxString name,
+wxBitmap ConfigDialogue::GetImage(wxString name,
                           unsigned char *data_128, size_t len_128,
                           unsigned char *data_192, size_t len_192)
 {
-  double targetSize = wxGetDisplayPPI().x * CONFIG_ICON_SCALE;
+  double targetSize = wxGetDisplayPPI().x * CONFIG_ICON_SCALE * GetContentScaleFactor();
   int prescale;
 
   int sizeA = 128 << 4;
@@ -161,7 +161,11 @@ wxImage ConfigDialogue::GetImage(wxString name,
 
   img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
 
-  return img;
+#if defined __WXMAC__
+  return wxBitmap(img,wxBITMAP_SCREEN_DEPTH,GetContentScaleFactor());
+#else
+  return wxBitmap(img,wxBITMAP_SCREEN_DEPTH);
+#endif
 }
 
 
