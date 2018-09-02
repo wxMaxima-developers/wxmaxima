@@ -317,9 +317,6 @@ protected:
   wxString m_mathFontName;
   wxButton *m_saveStyle, *m_loadStyle;
   wxSpinCtrl *m_defaultPort;
-#ifdef __WXMSW__
-  wxCheckBox* m_wxcd;
-#endif
   ExamplePanel *m_examplePanel;
   // end wxGlade
   style m_styleDefault,

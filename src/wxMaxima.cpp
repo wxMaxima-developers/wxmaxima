@@ -122,20 +122,6 @@ void wxMaxima::ConfigChanged()
   m_console->RecalculateForce();
   m_console->RequestRedraw();
 
-    bool wxcd = true;
-#if defined (__WXMSW__)
-  config->Read(wxT("wxcd"),&wxcd);
-#endif
-
-  if (wxcd)
-  {
-    m_configCommands += wxT(":lisp-quiet (setq $wxchangedir t)\n");
-  }
-  else
-  {
-    m_configCommands += wxT(":lisp-quiet (setq $wxchangedir nil)\n");
-  }
-
 #if defined (__WXMAC__)
   bool usepngCairo = false;
 #else
@@ -1871,13 +1857,7 @@ void wxMaxima::SetCWD(wxString file)
 
   wxString workingDirectory = filename.GetPath();
 
-  bool wxcd = true;
-
-#if defined (__WXMSW__)
-  wxConfig::Get()->Read(wxT("wxcd"),&wxcd);
-#endif
-
-  if (wxcd && (workingDirectory != GetCWD()))
+  if (workingDirectory != GetCWD())
   {
     m_configCommands += wxT(":lisp-quiet (setf $wxfilename \"") +
       filenamestring +
@@ -3514,16 +3494,10 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
   if (m_console)m_console->TreeUndo_ClearBuffers();
 
   wxConfig *config = (wxConfig *) wxConfig::Get();
-  bool wxcd = true;
-  config->Read(wxT("wxcd"), &wxcd);
-  if (wxcd)
+  if (m_console->m_currentFile != wxEmptyString)
   {
-    m_configCommands += wxT(":lisp-quiet (setq $wxchangedir t)\n");
-    if (m_console->m_currentFile != wxEmptyString)
-    {
-      wxString filename(m_console->m_currentFile);
-      SetCWD(filename);
-    }
+    wxString filename(m_console->m_currentFile);
+    SetCWD(filename);
   }
   if (m_console->m_tableOfContents != NULL)
   {

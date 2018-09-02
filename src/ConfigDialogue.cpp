@@ -362,12 +362,6 @@ void ConfigDialogue::SetProperties()
   m_indentMaths->SetToolTip(
           _("Indent maths so all lines are in par with the first line that starts after the label."));
 
-#ifdef __WXMSW__
-  m_wxcd->SetToolTip(_("Automatically change maxima's working directory to the one the current document is in: "
-                       "This is necessary if the document uses File I/O relative to the current directory "
-                       "but will make maxima 5.35 fail to find its own installation path when the current "
-                       "document resides on a different drive than the maxima installation."));
-#endif
   wxConfig *config = (wxConfig *) wxConfig::Get();
   wxString mp, mc, ib, mf;
 
@@ -967,14 +961,6 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   vsizer->Add(m_additionalParameters, 0, wxALL, 0);
 
   vsizer->Add(10, 10);
-#ifdef __WXMSW__
-  bool wxcd = true;
-  wxConfig::Get()->Read(wxT("wxcd"), &wxcd);
-  m_wxcd = new wxCheckBox(panel, -1, _("maxima's pwd is path to document"));
-  m_wxcd-> SetValue(wxcd);
-  vsizer->Add(m_wxcd, 0, wxALL, 5);
-  vsizer->Add(10, 10);
-#endif
 
   m_abortOnError = new wxCheckBox(panel, -1, _("Abort evaluation on error"));
   vsizer->Add(m_abortOnError, 0, wxALL, 5);
@@ -1214,9 +1200,6 @@ void ConfigDialogue::WriteSettings()
   configuration->NotifyIfIdle(m_notifyIfIdle->GetValue());
   configuration->SetLabelChoice(m_showUserDefinedLabels->GetSelection());
   config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
-#ifdef __WXMSW__
-  config->Write(wxT("wxcd"), m_wxcd->GetValue());
-#endif
   config->Write(wxT("AUI/savePanes"), m_savePanes->GetValue());
   config->Write(wxT("usepngCairo"), m_usepngCairo->GetValue());
   configuration->AntiAliasLines(m_antialiasLines->GetValue());
