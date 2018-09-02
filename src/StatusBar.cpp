@@ -203,8 +203,8 @@ wxBitmap StatusBar::GetImage(wxString name,
                           unsigned char *data_128, size_t len_128,
                           unsigned char *data_192, size_t len_192)
 {
-  double targetWidth = static_cast<double>(GetSize().GetHeight()) / wxGetDisplayPPI().y * wxGetDisplayPPI().x;
-  double targetHeight = static_cast<double>(GetSize().GetHeight());
+  double targetWidth = static_cast<double>(GetSize().GetHeight()) / wxGetDisplayPPI().y * wxGetDisplayPPI().x*GetContentScaleFactor();
+  double targetHeight = static_cast<double>(GetSize().GetHeight())*GetContentScaleFactor();
 
   wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR, wxSize(targetWidth, targetHeight));
   wxImage img;
@@ -258,7 +258,11 @@ wxBitmap StatusBar::GetImage(wxString name,
 
   img.Rescale(targetWidth, targetHeight, wxIMAGE_QUALITY_HIGH);
 
-  return img;
+#if defined __WXMAC__
+  return wxBitmap(img,wxBITMAP_SCREEN_DEPTH,GetContentScaleFactor());
+#else
+  return wxBitmap(img,wxBITMAP_SCREEN_DEPTH);
+#endif
 }
 
 
