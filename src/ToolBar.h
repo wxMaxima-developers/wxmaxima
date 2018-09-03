@@ -117,17 +117,10 @@ public:
   //! The slider for animations
   wxSlider *m_plotSlider;
 
-#if defined __WXGTK__
   wxBitmap  m_followIcon;
   wxBitmap  m_needsInformationIcon;
   wxBitmap  m_PlayButton;
   wxBitmap  m_StopButton;
-#else
-  wxBitmap m_followIcon;
-  wxBitmap m_needsInformationIcon;
-  wxBitmap m_PlayButton;
-  wxBitmap m_StopButton;
-#endif
 
   void CanCopy(bool value)
   {
