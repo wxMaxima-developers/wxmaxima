@@ -354,9 +354,15 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
   if (sz.y == 0) sz.y = 1;
 
   // Test if m_memory is NULL or of the wrong size
+  #ifdef __WXMAC__
   if ((!m_memory.IsOk()) || (m_memory.GetSize() != sz))
-    m_memory = wxBitmap(sz*wxWindow::GetContentScaleFactor());
-
+    m_memory = wxBitmap(sz*wxWindow::GetContentScaleFactor(),
+                        wxBITMAP_SCREEN_DEPTH,
+                        wxWindow::GetContentScaleFactor());
+  #else
+  if ((!m_memory.IsOk()) || (m_memory.GetSize() != sz))
+    m_memory = wxBitmap(sz*wxWindow::GetContentScaleFactor(), wxBITMAP_SCREEN_DEPTH);
+  #endif
   // Prepare memory DC
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
   dcm.SetUserScale(wxWindow::GetContentScaleFactor(),wxWindow::GetContentScaleFactor());
