@@ -6938,6 +6938,13 @@ void wxMaxima::OnClose(wxCloseEvent &event)
 {
   if (SaveNecessary())
   {
+    // If autosave is on we automatically save the file on closing.
+    if(m_isNamed && (m_console->m_configuration->AutoSaveInterval() > 0))
+    {
+      if (SaveFile())
+        return;
+    }
+    
     int close = SaveDocumentP();
 
     if (close == wxID_CANCEL)
