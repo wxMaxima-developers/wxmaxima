@@ -359,6 +359,7 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
 
   // Prepare memory DC
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
+  dcm.SetUserScale(wxWindow::GetContentScaleFactor(),wxWindow::GetContentScaleFactor());
   dcm.SelectObject(m_memory);
   dcm.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
   PrepareDC(dcm);
