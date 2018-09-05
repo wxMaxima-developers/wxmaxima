@@ -112,7 +112,7 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
                           unsigned char *data_128, size_t len_128,
                           unsigned char *data_192, size_t len_192)
 {
-  double targetSize = wxGetDisplayPPI().x * CONFIG_ICON_SCALE * GetContentScaleFactor();
+  double targetSize = wxGetDisplayPPI().x * CONFIG_ICON_SCALE * m_parent->GetContentScaleFactor();
   int prescale;
 
   int sizeA = 128 << 4;
@@ -162,7 +162,7 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
   img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
 
 #if defined __WXMAC__
-  return wxBitmap(img,wxBITMAP_SCREEN_DEPTH,GetContentScaleFactor());
+  return wxBitmap(img,wxBITMAP_SCREEN_DEPTH,m_parent->GetContentScaleFactor());
 #else
   return wxBitmap(img,wxBITMAP_SCREEN_DEPTH);
 #endif
