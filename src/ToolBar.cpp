@@ -152,14 +152,12 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
   SetToolBitmapSize(wxSize(24, 24));
   SetGripperVisible(false);
   
-#if defined __WXMSW__
   AddTool(tb_new, _("New"),
                      GetImage(wxT("gtk-new"),
                               gtk_new_128_png,gtk_new_128_png_len,
                               gtk_new_192_png,gtk_new_192_png_len
                        ),
                      _("New document"));
-#endif
   AddTool(tb_open, _("Open"),
                      GetImage(wxT("gtk-open"),
                               gtk_open_128_png,gtk_open_128_png_len,
