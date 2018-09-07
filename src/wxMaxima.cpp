@@ -3269,16 +3269,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
 
   for (int id = menu_pane_math; id <= menu_pane_stats; id++)
     menubar->Check(id, IsPaneDisplayed(static_cast<Event>(id)));
-  if (GetToolBar() != NULL)
-  {
-#if defined __WXMAC__ || defined __WXMSW__
-    menubar->Check(menu_show_toolbar, GetToolBar()->IsShown());
-#else
-    menubar->Check(menu_show_toolbar, true);
-#endif
-  }
-  else
-    menubar->Check(menu_show_toolbar, false);
+  menubar->Check(menu_show_toolbar, ToolbarIsShown());
 
   bool hidecode = !(m_console->m_configuration->ShowCodeCells());
   menubar->Check(ToolBar::tb_hideCode, hidecode);
@@ -4423,7 +4414,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       m_console->RemoveAllOutput();
       break;
     case menu_show_toolbar:
-      ShowToolBar(!GetToolBar()->IsShown());
+      ShowToolBar(!ToolbarIsShown());
       break;
     case menu_edit_find:
     case ToolBar::tb_find:

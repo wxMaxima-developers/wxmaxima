@@ -390,11 +390,11 @@ void wxMaximaFrame::do_layout()
   
   m_manager.AddPane(m_console->m_mainToolBar,
                     wxAuiPaneInfo().Name(wxT("toolbar")).
-                    ToolbarPane().Top().
+                    ToolbarPane().Top().Resizable(true).
                     TopDockable(true).
                     BottomDockable(true).
                     LeftDockable(false).
-                    RightDockable(false)
+                    RightDockable(false).Gripper(false)
     );
 
   m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).

@@ -272,10 +272,6 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
               ),
             _("Toggle the visibility of code cells"));
 #ifndef __WXMAC__
-    AddSeparator();
-#endif
-
-#ifndef __WXMAC__
   AddSeparator();
 #endif
   wxArrayString textStyle;
@@ -338,6 +334,8 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
   Connect(wxEVT_SIZE,
           wxSizeEventHandler(ToolBar::OnSize),
           NULL, this);
+  Realize();
+  SetInitialSize(wxSize(GetBestSize().x,100000));
   Realize();
 }
 
@@ -480,6 +478,7 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
 
 void ToolBar::OnSize(wxSizeEvent &event)
 {
+  wxLogMessage("ToolBar resizes");
   Refresh();
   event.Skip();
 }
