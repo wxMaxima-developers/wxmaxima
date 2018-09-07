@@ -2726,7 +2726,6 @@ wxString wxMaxima::GetCommand(bool params)
 void wxMaxima::ShowTip(bool force)
 {
   bool ShowTips = true;
-  int tipNum = 0;
 
   // A block with a local config variable:
   // The config can change between before showing the tooltip and afterwards.
@@ -3518,8 +3517,6 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
     m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval());
 
   if (m_console)m_console->TreeUndo_ClearBuffers();
-
-  wxConfig *config = (wxConfig *) wxConfig::Get();
   if (m_console->m_currentFile != wxEmptyString)
   {
     wxString filename(m_console->m_currentFile);
