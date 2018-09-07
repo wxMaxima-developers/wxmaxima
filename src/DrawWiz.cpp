@@ -323,7 +323,7 @@ AxisWiz::AxisWiz(wxWindow *parent, Configuration *config, int dimensions) :
   vbox->Add(buttonSizer, wxSizerFlags().Right());
   SetSizerAndFit(vbox);
   wxPersistenceManager::Get().RegisterAndRestore(this);
-};
+}
 
 wxString AxisWiz::GetValue()
 {
@@ -546,7 +546,7 @@ Wiz3D::Wiz3D(wxWindow *parent, Configuration *WXUNUSED(config)) :
   SetName("Draw_Wiz3D");
   SetSizerAndFit(vbox);
   wxPersistenceManager::Get().RegisterAndRestore(this);
-};
+}
 
 wxString Wiz3D::GetValue()
 {
@@ -668,7 +668,7 @@ WizContour::WizContour(wxWindow *parent, Configuration *WXUNUSED(config)) :
   SetName("Draw_ContourWiz");
   SetSizerAndFit(vbox);
   wxPersistenceManager::Get().RegisterAndRestore(this);
-};
+}
 
 wxString WizContour::GetValue()
 {
@@ -838,7 +838,7 @@ WizPoints::WizPoints(wxWindow *parent, Configuration *config, int dimensions, wx
   m_data->SetValue(expr);
   SetSizerAndFit(vbox);
   wxPersistenceManager::Get().RegisterAndRestore(this);
-};
+}
 
 wxString WizPoints::GetValue()
 {
@@ -968,7 +968,7 @@ WizDrawAccuracy::WizDrawAccuracy(wxWindow *parent, Configuration *config, int di
   SetName(wxString::Format("Draw_Accuracy%idWiz", dimensions));
   SetSizerAndFit(vbox);
   wxPersistenceManager::Get().RegisterAndRestore(this);
-};
+}
 
 wxString WizDrawAccuracy::GetValue()
 {

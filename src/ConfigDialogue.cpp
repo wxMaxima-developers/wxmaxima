@@ -2115,7 +2115,7 @@ wxPanel(parent, id,
   m_color = wxColour(0, 0, 0);
   m_configDialogue = conf;
   SetBackgroundColour(m_color);
-};
+}
 
 void ConfigDialogue::ColorPanel::OnClick(wxMouseEvent& WXUNUSED(event))
 {
