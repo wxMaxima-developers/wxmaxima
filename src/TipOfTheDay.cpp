@@ -175,7 +175,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   config->Read(wxT("tipNum"), &m_num);
   if(m_num < 0)
     m_num = m_tips.GetCount()-1;
-  if(m_num >=m_tips.GetCount())
+  if((unsigned)m_num >=m_tips.GetCount())
     m_num = 0;
   std::cerr << m_num<<"\n";
   
@@ -313,7 +313,7 @@ wxImage TipOfTheDay::GetImage(unsigned char *data_128, size_t len_128,
 void TipOfTheDay::OnNextButton(wxCommandEvent &WXUNUSED(dummy))
 {
   m_num++;
-  if(m_num >=m_tips.GetCount())
+  if((unsigned)m_num >=m_tips.GetCount())
     m_num = 0;
   m_tip->SetValue(m_tips[m_num]);
 }

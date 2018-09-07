@@ -61,7 +61,7 @@ protected:
 
 private:
   wxString GetTip(unsigned int n);
-  unsigned int m_num;
+  int m_num;
   wxTextCtrl *m_tip;
   wxString GetTip();
   wxCheckBox *m_showAtStartup;
