@@ -104,7 +104,7 @@ wxBitmap ToolBar::GetImage(wxString name,
   
   img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
 #if defined __WXMAC__
-  return wxBitmap(img,wxBITMAP_SCREEN_DEPTH,GetToolBar()->GetParent()->GetContentScaleFactor());
+  return wxBitmap(img,wxBITMAP_SCREEN_DEPTH,GetContentScaleFactor());
 #else
   return wxBitmap(img,wxBITMAP_SCREEN_DEPTH);
 #endif
