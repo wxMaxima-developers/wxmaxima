@@ -34,9 +34,10 @@
 #ifndef _WXMAXIMA_TOOLBAR_H
 #define _WXMAXIMA_TOOLBAR_H
 
-class ToolBar
+class ToolBar : public wxAuiToolBar
 {
 public:
+  ToolBar(wxWindow *parent);
   /*! All states the "start/stop animation" toolbar button can be in
    */
   enum AnimationStartStopState
@@ -50,8 +51,6 @@ public:
                     unsigned char *data_128, size_t len_128,
                     unsigned char *data_192, size_t len_192);
 
-  ToolBar(wxToolBar *tbar);
-
   virtual ~ToolBar();
 
   //! Show that user input is needed for maxima to continue
@@ -59,7 +58,7 @@ public:
   {
     if (!m_needsInformation)
     {
-      m_toolBar->SetToolNormalBitmap(tb_follow, m_needsInformationIcon);
+      SetToolBitmap(tb_follow, m_needsInformationIcon);
       m_needsInformation = true;
     }
   }
@@ -69,19 +68,9 @@ public:
   {
     if (m_needsInformation)
     {
-      m_toolBar->SetToolNormalBitmap(tb_follow, m_followIcon);
+      SetToolBitmap(tb_follow, m_followIcon);
       m_needsInformation = false;
     }
-  }
-
-  void EnableTool(int id, bool enable)
-  {
-    m_toolBar->EnableTool(id, enable);
-  }
-
-  wxToolBar *GetToolBar()
-  {
-    return m_toolBar;
   }
 
   void AnimationButtonState(AnimationStartStopState state);
@@ -184,7 +173,9 @@ public:
     }
   //! The current style is the new style for new cells
   void SetDefaultCellStyle();
-  
+
+protected:
+    void OnSize(wxSizeEvent &event);
 private:
   //! The default style for new cells.
   int m_defaultCellStyle;
@@ -199,11 +190,9 @@ private:
   bool m_canSave_old;
   bool m_canPrint_old;
   bool m_canEvalTillHere_old;
-  wxToolBar *m_toolBar;
   AnimationStartStopState m_AnimationStartStopState;
   //! True if we show the "needs information" button.
   bool m_needsInformation;
-
 };
 
 #endif

@@ -223,12 +223,6 @@ wxMaximaFrame::~wxMaximaFrame()
   wxString perspective = m_manager.SavePerspective();
 
   wxConfig::Get()->Write(wxT("AUI/perspective"), perspective);
-#if defined __WXMAC__ || defined __WXMSW__
-  wxConfig::Get()->Write(wxT("AUI/toolbar"),
-                         GetToolBar() != NULL && GetToolBar()->IsShown());
-#else
-  wxConfig::Get()->Write(wxT("AUI/toolbar"), (m_console->m_mainToolBar!=NULL));
-#endif
   m_manager.UnInit();
 
   // We cannot call delete here as we don't know if there are still timer-
@@ -392,6 +386,13 @@ void wxMaximaFrame::do_layout()
                     PaneBorder(true).
                     Left());
 
+  m_console->m_mainToolBar = new ToolBar(this);
+  
+  m_manager.AddPane(m_console->m_mainToolBar,
+                    wxAuiPaneInfo().Name(wxT("toolbar")).
+                    ToolbarPane().Top().Gripper(false).Resizable(true).
+                    Floatable(false));
+
   m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).
     MinSize(greekPane->GetEffectiveMinSize()).
     BestSize(greekPane->GetEffectiveMinSize()).
@@ -453,10 +454,6 @@ void wxMaximaFrame::do_layout()
     m_manager.GetPane(wxT("structure")).Caption(_("Table of Contents")).CloseButton().PinButton().Resizable();
   m_manager.GetPane(wxT("history")) = m_manager.GetPane(wxT("history")).Caption(_("History"))
     .CloseButton().PinButton().Resizable();
-
-  bool toolbar = true;
-  config->Read(wxT("AUI/toolbar"), &toolbar);
-  ShowToolBar(toolbar);
 
   m_manager.Update();
 }
@@ -1154,6 +1151,11 @@ m_listMenu->AppendSeparator();
 
 #undef APPEND_MENU_ITEM
 
+}
+
+bool wxMaximaFrame::ToolbarIsShown()
+{
+  return m_manager.GetPane(wxT("toolbar")).IsShown();
 }
 
 void wxMaximaFrame::UpdateRecentDocuments()
@@ -1895,34 +1897,6 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxPanel(parent, id
 
 void wxMaximaFrame::ShowToolBar(bool show)
 {
-#if defined __WXMAC__ || defined __WXMSW__
-  wxToolBar *tbar = GetToolBar();
-  if (tbar == NULL)
-  {
-    tbar = CreateToolBar();
-    m_console->m_mainToolBar = new ToolBar(tbar);
-    SetToolBar(m_console->m_mainToolBar->GetToolBar());
-  }
-  tbar->Show(show);
-#if defined __WXMSW__
-  PostSizeEvent();
-#endif
-#else
-  if (show) {
-    if (m_console->m_mainToolBar == NULL) {
-      wxToolBar *tbar = CreateToolBar(wxTB_HORIZONTAL | wxTB_FLAT | wxTB_NODIVIDER);
-      m_console->m_mainToolBar=new ToolBar(tbar);
-    }
-    SetToolBar(m_console->m_mainToolBar->GetToolBar());
-  }
-  else
-  {
-    if(m_console->m_mainToolBar)
-    {
-      SetToolBar(NULL);
-      wxDELETE(m_console->m_mainToolBar);
-      m_console->m_mainToolBar = NULL;
-    }
-  }
-#endif
+  m_manager.GetPane(wxT("toolbar")).Show(show);
+  m_manager.Update();
 }

@@ -713,6 +713,8 @@ protected:
 
   void CharacterButtonPressed(wxMouseEvent &event);
 
+  bool ToolbarIsShown();
+
   wxAuiManager m_manager;
   //! A XmlInspector-like xml monitor
   XmlInspector *m_xmlInspector;
