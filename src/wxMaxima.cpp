@@ -3711,10 +3711,9 @@ void wxMaxima::ReadStdErr()
 
 bool wxMaxima::AbortOnError()
 {
-  // If maxima did output something it defintively has stopped.
+  // Maxima encountered an error.
   // The question is now if we want to try to send it something new to evaluate.
-  bool abortOnError = false;
-  wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
+
   ExitAfterEval(false);
   EvalOnStartup(false);
 
@@ -3725,9 +3724,9 @@ bool wxMaxima::AbortOnError()
       m_console->SetNotification(_("Maxima has issued an error!"),wxICON_ERROR);
     m_console->m_notificationMessage->m_errorNotificationCell = m_console->GetWorkingGroup(true);
   }
-
+  
   m_exitAfterEval = false;
-  if (abortOnError)
+  if (m_console->m_configuration->GetAbortOnError())
   {
     m_console->m_evaluationQueue.Clear();
     // Inform the user that the evaluation queue is empty.
