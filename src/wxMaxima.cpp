@@ -945,7 +945,7 @@ bool wxMaxima::StartMaxima(bool force)
 {
 
   // If we have an open file tell maxima to start in the directory the file is in
-  wxUnsetEnv(wxT("MAXIMA_PWD"));
+  wxUnsetEnv(wxT("MAXIMA_INITIAL_FOLDER"));
   wxString filename = m_console->m_currentFile;
   if(filename == wxEmptyString)
     filename = m_openFile;
@@ -956,7 +956,7 @@ bool wxMaxima::StartMaxima(bool force)
     wxString dirname = dir.GetPath();
     if(wxDirExists(dirname))
     {
-      wxSetEnv(wxT("MAXIMA_PWD"),dirname);
+      wxSetEnv(wxT("MAXIMA_INITIAL_FOLDER"),dirname);
       wxLogMessage(wxString::Format(
                      wxT("Telling maxima to start in the directory %s."),
                      dirname)
