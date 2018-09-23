@@ -945,7 +945,7 @@ bool wxMaxima::StartMaxima(bool force)
 {
 
   // If we have an open file tell maxima to start in the directory the file is in
-  wxUnsetEnv(wxT("MAXIMA_PWD"));
+  wxUnsetEnv(wxT("MAXIMA_INITIAL_FOLDER"));
   wxString filename = m_console->m_currentFile;
   if(filename == wxEmptyString)
     filename = m_openFile;
@@ -956,7 +956,7 @@ bool wxMaxima::StartMaxima(bool force)
     wxString dirname = dir.GetPath();
     if(wxDirExists(dirname))
     {
-      wxSetEnv(wxT("MAXIMA_PWD"),dirname);
+      wxSetEnv(wxT("MAXIMA_INITIAL_FOLDER"),dirname);
       wxLogMessage(wxString::Format(
                      wxT("Telling maxima to start in the directory %s."),
                      dirname)
@@ -3711,10 +3711,9 @@ void wxMaxima::ReadStdErr()
 
 bool wxMaxima::AbortOnError()
 {
-  // If maxima did output something it defintively has stopped.
+  // Maxima encountered an error.
   // The question is now if we want to try to send it something new to evaluate.
-  bool abortOnError = false;
-  wxConfig::Get()->Read(wxT("abortOnError"), &abortOnError);
+
   ExitAfterEval(false);
   EvalOnStartup(false);
 
@@ -3725,9 +3724,9 @@ bool wxMaxima::AbortOnError()
       m_console->SetNotification(_("Maxima has issued an error!"),wxICON_ERROR);
     m_console->m_notificationMessage->m_errorNotificationCell = m_console->GetWorkingGroup(true);
   }
-
+  
   m_exitAfterEval = false;
-  if (abortOnError)
+  if (m_console->m_configuration->GetAbortOnError())
   {
     m_console->m_evaluationQueue.Clear();
     // Inform the user that the evaluation queue is empty.

@@ -1429,7 +1429,6 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
 
           case TS_LABEL:
           case TS_USERLABEL:
-            std::cerr<<"label\n";
             if (mathMode)
               str += wxT("\\mbox{}\\]\n\\[\\displaystyle ");
             else
@@ -1441,7 +1440,6 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
             break;
 
           case TS_STRING:
-            std::cerr<<"String\n";
             if (mathMode)
             {
               str += wxT("\\mbox{}\n\\]");

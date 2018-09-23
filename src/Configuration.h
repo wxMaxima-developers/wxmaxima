@@ -636,6 +636,10 @@ public:
       );
   }
   
+  int GetAbortOnError(){return m_abortOnError;}
+  void SetAbortOnError(bool abortOnError)
+    {wxConfig::Get()->Write("abortOnError",m_abortOnError = abortOnError);}
+  
   //! Get the worksheet this configuration storage is valid for
   int GetAutosubscript_Num(){return m_autoSubscript;}
   void SetAutosubscript_Num(int autosubscriptnum)
@@ -740,6 +744,7 @@ private:
   bool m_TOCshowsSectionNumbers;
   bool m_useUnicodeMaths;
   bool m_indentMaths;
+  bool m_abortOnError;
   wxColour m_defaultBackgroundColor;
 };
 

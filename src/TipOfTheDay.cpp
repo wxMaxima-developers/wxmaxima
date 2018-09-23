@@ -177,7 +177,6 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     m_num = m_tips.GetCount()-1;
   if((unsigned)m_num >=m_tips.GetCount())
     m_num = 0;
-  std::cerr << m_num<<"\n";
   
   SetName("TipOfTheDay");
   SetTitle(_("Tip of the day"));

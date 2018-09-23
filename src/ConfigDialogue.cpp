@@ -368,7 +368,7 @@ void ConfigDialogue::SetProperties()
   // The default values for all config items that will be used if there is no saved
   // configuration data for this item.
   bool savePanes = true;
-  bool fixedFontTC = true, usejsmath = true, keepPercent = true, abortOnError = true;
+  bool fixedFontTC = true, usejsmath = true, keepPercent = true;
   bool enterEvaluates = false, saveUntitled = true,
           AnimateLaTeX = true, TeXExponentsAfterSubscript = false,
           usePartialForDiff = false,
@@ -431,7 +431,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("incrementalSearch"), &incrementalSearch);
   config->Read(wxT("usejsmath"), &usejsmath);
   config->Read(wxT("keepPercent"), &keepPercent);
-  config->Read(wxT("abortOnError"), &abortOnError);
   unsigned int i = 0;
   for (i = 0; i < LANGUAGE_NUMBER; i++)
     if (langs[i] == lang)
@@ -498,7 +497,7 @@ void ConfigDialogue::SetProperties()
   m_fixedFontInTC->SetValue(fixedFontTC);
   m_useJSMath->SetValue(usejsmath);
   m_keepPercentWithSpecials->SetValue(keepPercent);
-  m_abortOnError->SetValue(abortOnError);
+  m_abortOnError->SetValue(configuration->GetAbortOnError());
   m_restartOnReEvaluation->SetValue(configuration->RestartOnReEvaluation());
   m_defaultFramerate->SetValue(defaultFramerate);
   m_defaultPlotWidth->SetValue(defaultPlotWidth);
@@ -1166,7 +1165,7 @@ void ConfigDialogue::WriteSettings()
   wxArrayString out;
   wxConfig *config = (wxConfig *) wxConfig::Get();
   Configuration *configuration = m_configuration;
-  config->Write(wxT("abortOnError"), m_abortOnError->GetValue());
+  configuration->SetAbortOnError(m_abortOnError->GetValue());
   configuration->RestartOnReEvaluation(m_restartOnReEvaluation->GetValue());
   if (
           (configuration->MaximaFound()) ||

@@ -33,6 +33,7 @@
 
 #include <wx/cmdline.h>
 #include <wx/fileconf.h>
+#include <wx/sysopt.h>
 #include "Dirstructure.h"
 #include <iostream>
 
@@ -60,7 +61,11 @@ void MyApp::Cleanup_Static()
 
 bool MyApp::OnInit()
 {
-
+  // MSW: Perhaps that is faster.
+  wxSystemOptions::SetOption("msw.display.directdraw","1");
+  // No spell checking in our dialog's input portions on the mac.
+  wxSystemOptions::SetOption("mac.textcontrol-use-spell-checker","0");
+  
   // Migrate an eventual old config file to the location XDG wants it to be.
   #ifndef __WXMSW__
   #if wxCHECK_VERSION(3, 1, 1)

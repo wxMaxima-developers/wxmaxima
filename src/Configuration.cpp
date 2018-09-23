@@ -54,6 +54,7 @@ Configuration::Configuration(wxDC &dc) : m_dc(&dc)
   m_hideBrackets = true;
   m_lineWidth_em = 88;
   m_showLabelChoice = 1;
+  m_abortOnError = true;
   m_autoSaveInterval = 3 * 60 * 1000;
   m_clientWidth = 1024;
   m_clientHeight = 768;
@@ -141,6 +142,7 @@ void Configuration::ReadConfig()
   config->Read(wxT("autosubscript"), &m_autoSubscript);
   config->Read(wxT("antiAliasLines"), &m_antiAliasLines);
   config->Read(wxT("indentMaths"), &m_indentMaths);
+  config->Read(wxT("abortOnError"),&m_abortOnError);
 
   config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
 
