@@ -391,7 +391,7 @@ void wxMaximaFrame::do_layout()
   m_manager.AddPane(m_console->m_mainToolBar,
                     wxAuiPaneInfo().Name(wxT("toolbar")).
                     ToolbarPane().Top().Resizable(true).
-                    TopDockable(true).
+                    TopDockable(true).Show(true).
                     BottomDockable(true).
                     LeftDockable(false).
                     RightDockable(false).Gripper(false)
