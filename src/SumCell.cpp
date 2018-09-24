@@ -135,14 +135,18 @@ void SumCell::RecalculateWidths(int fontsize)
   if (configuration->CheckTeXFonts())
   {
     wxDC *dc = configuration->GetDC();
-    int fontsize1 = Scale_Px(configuration->GetMathFontSize());
+    double fontsize1 = Scale_Px(configuration->GetMathFontSize());
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                 configuration->GetTeXCMEX());
     if (!font.IsOk())
       font = *wxNORMAL_FONT;
     wxASSERT(fontsize1 > 0);
+#if wxCHECK_VERSION(3, 1, 2)
+    font.SetFractionalPointSize(fontsize1);
+#else
     font.SetPointSize(fontsize1);
+#endif
     dc->SetFont(font);
     dc->GetTextExtent(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN), &m_signWidth, &m_signSize);
     m_signWCenter = m_signWidth / 2;
@@ -189,14 +193,18 @@ void SumCell::Draw(wxPoint point, int fontsize)
     if (configuration->CheckTeXFonts())
     {
       SetForeground();
-      int fontsize1 = Scale_Px(configuration->GetMathFontSize());
+      double fontsize1 = Scale_Px(configuration->GetMathFontSize());
       wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
       if (!font.IsOk())
         font = *wxNORMAL_FONT;
       wxASSERT(fontsize1 > 0);
+#if wxCHECK_VERSION(3, 1, 2)
+      font.SetFractionalPointSize(fontsize1);
+#else
       font.SetPointSize(fontsize1);
+#endif
       dc->SetFont(font);
       dc->DrawText(m_sumStyle == SM_SUM ? wxT(SUM_SIGN) : wxT(PROD_SIGN),
                   sign.x + m_signWCenter - m_signWidth / 2,

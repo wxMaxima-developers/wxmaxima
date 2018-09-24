@@ -126,11 +126,11 @@ protected:
     \f$ a/b\f$. \f$ \Longrightarrow\f$ we need a mechanism that tells us that the font 
     size has changed and we need to re-calculate the text width.
    */
-  int m_lastCalculationFontSize;
+  double m_lastCalculationFontSize;
   //! The line height
-  int m_fontSize;
+  double m_fontSize;
   //! The actual font size for labels (that have a fixed width)
-  int m_fontSizeLabel;
+  double m_fontSizeLabel;
   double m_lastZoomFactor;
 private:
   //! Produces a text sample that determines the label width

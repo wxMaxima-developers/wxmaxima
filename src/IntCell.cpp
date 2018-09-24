@@ -155,13 +155,17 @@ void IntCell::RecalculateWidths(int fontsize)
   if (configuration->CheckTeXFonts())
   {
     wxDC *dc = configuration->GetDC();
-    int fontsize1 = Scale_Px(fontsize * 1.5);
+    double fontsize1 = Scale_Px(fontsize * 1.5);
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                 configuration->GetTeXCMEX());
     if (!font.IsOk())
       font = *wxNORMAL_FONT;
+#if wxCHECK_VERSION(3, 1, 2)
+    font.SetFractionalPointSize(fontsize1);
+#else
     font.SetPointSize(fontsize1);
+#endif
     wxASSERT(fontsize1 > 0);
     dc->SetFont(font);
     dc->GetTextExtent(wxT("\x5A"), &m_signWidth, &m_signHeight);
@@ -182,14 +186,18 @@ void IntCell::RecalculateWidths(int fontsize)
   {
 #if defined __WXMSW__
     wxDC *dc = configuration->GetDC();
-    int fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
+    double fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
                 false,
                 configuration->GetSymbolFontName());
     if(!font.IsOk())
       font = *wxNORMAL_FONT;
+#if wxCHECK_VERSION(3, 1, 2)
+    font.SetFractionalPointSize(fontsize1);
+#else
     font.SetPointSize(fontsize1);
+#endif
     wxASSERT(fontsize1 > 0);
     dc->SetFont(font);
     dc->GetTextExtent(INTEGRAL_TOP, &m_charWidth, &m_charHeight);
@@ -261,14 +269,18 @@ void IntCell::Draw(wxPoint point, int fontsize)
     if (configuration->CheckTeXFonts())
     {
       SetForeground();
-      int fontsize1 = Scale_Px(fontsize * 1.5);
+      double fontsize1 = Scale_Px(fontsize * 1.5);
       wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
       if (!font.IsOk())
         font = *wxNORMAL_FONT;
       wxASSERT(fontsize1 > 0);
+#if wxCHECK_VERSION(3, 1, 2)
+      font.SetFractionalPointSize(fontsize1);
+#else
       font.SetPointSize(fontsize1);
+#endif
       dc->SetFont(font);
       dc->DrawText(wxT("\x5A"),
                   sign.x,
@@ -278,7 +290,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
     {
 #if defined __WXMSW__
       SetForeground();
-      int fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
+      double fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
       int m_signWCenter = m_signWidth / 2;
 
       wxASSERT(fontsize1 > 0);
@@ -286,6 +298,11 @@ void IntCell::Draw(wxPoint point, int fontsize)
       wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
       false,
                         configuration->GetSymbolFontName()));
+#if wxCHECK_VERSION(3, 1, 2)
+      font.SetFractionalPointSize(fontsize1);
+#else
+      font.SetPointSize(fontsize1);
+#endif
       dc->DrawText(INTEGRAL_TOP,
                   sign.x + m_signWCenter - m_charWidth / 2,
                   sign.y - (m_signHeight + 1) / 2);

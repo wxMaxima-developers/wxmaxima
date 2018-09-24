@@ -967,7 +967,11 @@ void EditorCell::SetFont()
   wxASSERT(m_fontSize >= 0);
   if(m_fontSize < 4)
     m_fontSize = 4;
+#if wxCHECK_VERSION(3, 1, 2)
+  font.SetFractionalPointSize(m_fontSize);
+#else
   font.SetPointSize(m_fontSize);
+#endif
   wxASSERT_MSG(font.IsOk(),
                _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
   dc->SetFont(font);

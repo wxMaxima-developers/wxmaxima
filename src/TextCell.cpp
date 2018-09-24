@@ -368,10 +368,14 @@ void TextCell::RecalculateWidths(int fontsize)
       }
 
       wxFont font = dc->GetFont();
-      int fontsize1 = Scale_Px(configuration->GetDefaultFontSize());
+      double fontsize1 = Scale_Px(configuration->GetDefaultFontSize());
       if(fontsize1 < 4)
         fontsize1 = 4;
+#if wxCHECK_VERSION(3, 1, 2)
+      font.SetFractionalPointSize(fontsize1);
+#else
       font.SetPointSize(fontsize1);
+#endif
       dc->SetFont(font);
 
       
@@ -386,7 +390,11 @@ void TextCell::RecalculateWidths(int fontsize)
       font = dc->GetFont();
       do
       {
-        font.SetPointSize(Scale_Px(--m_fontSizeLabel));
+#if wxCHECK_VERSION(3, 1, 2)
+        font.SetFractionalPointSize(--m_fontSizeLabel);
+#else
+        font.SetPointSize(--m_fontSizeLabel);
+#endif
         dc->SetFont(font);
         dc->GetTextExtent(text, &labelWidth, &labelHeight);
       } while ((labelWidth >= m_width) && (m_fontSizeLabel > 2));
@@ -522,7 +530,11 @@ void TextCell::Draw(wxPoint point, int fontsize)
 void TextCell::SetFontSizeForLabel(wxDC *dc)
 {
   wxFont font(dc->GetFont());
-  font.SetPointSize(Scale_Px(m_fontSizeLabel));
+#if wxCHECK_VERSION(3, 1, 2)
+  font.SetFractionalPointSize(m_fontSizeLabel);
+#else
+  font.SetPointSize(m_fontSizeLabel);
+#endif
   dc->SetFont(font);
 }
 
@@ -581,7 +593,11 @@ void TextCell::SetFont(int fontsize)
   }
 
   wxASSERT(Scale_Px(m_fontSize) > 0);
-  font.SetPointSize(Scale_Px(m_fontSize));
+#if wxCHECK_VERSION(3, 1, 2)
+  font.SetFractionalPointSize(m_fontSize);
+#else
+  font.SetPointSize(m_fontSize);
+#endif
 
   wxASSERT_MSG(font.IsOk(),
                _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));

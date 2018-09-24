@@ -113,11 +113,15 @@ void SqrtCell::RecalculateWidths(int fontsize)
     m_innerCell->RecalculateHeightList(fontsize);
 
     m_signFontScale = 1.0;
-    int fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
+    double fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
     wxASSERT(fontsize1 > 0);
     wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                 configuration->GetTeXCMEX());
+#if wxCHECK_VERSION(3, 1, 2)
+    font.SetFractionalPointSize(fontsize1);
+#else
     font.SetPointSize(fontsize1);
+#endif
     dc->SetFont(font);
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
@@ -155,7 +159,11 @@ void SqrtCell::RecalculateWidths(int fontsize)
     font = wxFont(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
     wxASSERT(fontsize1 > 0);
+#if wxCHECK_VERSION(3, 1, 2)
+    font.SetFractionalPointSize(fontsize1);
+#else
     font.SetPointSize(fontsize1);
+#endif
     dc->SetFont(font);
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
@@ -198,12 +206,16 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
 
       in.x += m_signWidth;
 
-      int fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
+      double fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
 
       wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
       wxASSERT(fontsize1 > 0);
+#if wxCHECK_VERSION(3, 1, 2)
+      font.SetFractionalPointSize(fontsize1);
+#else
       font.SetPointSize(fontsize1);
+#endif
       dc->SetFont(font);
       SetForeground();
       if (m_signType < 4)
