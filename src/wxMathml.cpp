@@ -134,7 +134,7 @@ wxMathML::wxMathML()
 	"    (format t \"To report a Maxima bug, you must have a Sourceforge account.~%~%\")\n"
 	"    (format t \"A problem in the graphical user interface is probably a wxMaxima bug.~%\")\n"
 	"    (format t \"The wxMaxima bug database is available at~%\")\n"
-	"    (format t \"    https://github.com/andrejv/wxmaxima/issues?direction=desc&sort=created&state=open~%\")\n"
+	"    (format t \"    https://github.com/wxMaxima-developers/wxmaxima/issues?direction=desc&sort=created&state=open~%\")\n"
 	"    (format t \"Submit bug reports by following the \'New issue\' link on that page.~%~%\")\n"
 	"    (format t \"Please check before submitting, if your bug was already reported.~%~%\")\n"
 	"    (format t \"Please include the following information with your bug report:~%\")\n"

@@ -5383,7 +5383,7 @@ bool MathCtrl::ExportToHTML(wxString file)
   output << wxT("\n");
   output << wxT(" <HR>\n");
   output << wxT(" <SMALL> Created with "
-                        "<A HREF=\"https://andrejv.github.io/wxmaxima/\">"
+                        "<A HREF=\"https://wxMaxima-developers.github.io/wxmaxima/\">"
                         "wxMaxima</A>"
                         ".</SMALL>\n");
   output << wxEmptyString;
@@ -6057,7 +6057,7 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
                   "that were ever made to a file can handle binary files compression would\n"
                   "make the changed part of the file bigger and therefore seriously reduce\n"
                   "the efficiency of version control\n\n"
-                  "wxMaxima can be downloaded from https://github.com/andrejv/wxmaxima.\n"
+                  "wxMaxima can be downloaded from https://github.com/wxMaxima-developers/wxmaxima.\n"
                   "It also is part of the windows installer for maxima\n"
                   "(http://maxima.sourceforge.net).\n\n"
                   "If a .wxmx file is broken but the content.xml portion of the file can still be\n"
@@ -6077,7 +6077,7 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
   zip.PutNextEntry(wxT("content.xml"));
   output << wxT("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
   output << wxT("\n<!--   Created by wxMaxima ") << wxT(GITVERSION) << wxT("   -->");
-  output << wxT("\n<!--https://andrejv.github.io/wxmaxima/-->\n");
+  output << wxT("\n<!--https://wxMaxima-developers.github.io/wxmaxima/-->\n");
 
   // write document
   output << wxT("\n<wxMaximaDocument version=\"");
