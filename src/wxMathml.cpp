@@ -3,6 +3,7 @@
 wxMathML::wxMathML()
     { 
       m_wxMathML =
+	wxString(
 	"(format t \"<suppressOutput>\")\n"
 	";; wxMaxima xml format (based on David Drysdale MathML printing)\n"
 	";; Andrej Vodopivec,  2004-2014\n"
@@ -73,7 +74,8 @@ wxMathML::wxMathML()
   "	       (tmp-x (string-substitute \"&#13;\" #\\Newline tmp-x)))\n"
   "	  tmp-x)\n"
   "      x))\n"
-  "\n"
+	"\n") +
+	wxString(
   "  ;; Allow the user to communicate what to display in the statusbar whilst\n"
   "  ;; the current program is running\n"
   "  (defun $wxstatusbar (&rest status)\n"
@@ -343,7 +345,7 @@ wxMathML::wxMathML()
   "		   (setq nl (nconc nl (wxxml (car y) l (list sym) lop rop))\n"
   "			 y (cdr y)\n"
   "			 l nil))))))\n"
-  "\n"
+  "\n") + wxString(
   "  (defun wxxml (x l r lop rop)\n"
   "    ;; x is the expression of interest; l is the list of strings to its\n"
   "    ;; left, r to its right. lop and rop are the operators on the left\n"
@@ -741,7 +743,7 @@ wxMathML::wxMathML()
 	"    (if (every #\'$listp (cdr x))\n"
 	"	(wxxml-matrix x l r)\n"
 	"      (wxxml-function x l r)))\n"
-	"\n"
+  "\n") + wxString(
 	"  (defun wxxml-matrix(x l r) ;;matrix looks like ((mmatrix)((mlist) a b) ...)\n"
 	"    (cond ((null (cdr x))\n"
 	"	   (append l `(\"<fn><fnm>matrix</fnm><p/></fn>\") r))\n"
@@ -1080,7 +1082,7 @@ wxMathML::wxMathML()
 	"				 \'mparen \'mparen))))\n"
 	"	      (setq args (cddr args)))\n"
 	"	(append l res r))))\n"
-	"\n"
+	"\n") + wxString(
 	"  (defprop mdo wxxml-mdo wxxml)\n"
 	"  (defprop mdo 30. wxxml-lbp)\n"
 	"  (defprop mdo 30. wxxml-rbp)\n"
@@ -1263,7 +1265,7 @@ wxMathML::wxMathML()
 	"	      (wxxml-list (mapcar (lambda (i) (nth i args)) (nth 4 disp-name)) nil nil \",\")\n"
 	"	      (list \"</p></fn>\")\n"
 	"	      r)))\n"
-	"\n"
+	"\n") + wxString(
 	"  (dolist (ortho-pair\n"
 	"	   \'(($laguerre \"L\" 0 nil nil (1))\n"
 	"	     (%laguerre \"L\" 0 nil nil (1))\n"
@@ -1460,7 +1462,7 @@ wxMathML::wxMathML()
 	"		(setq filename (caddr opt))\n"
 	"	      (setq opts (cons opt opts))))\n"
 	"      (values (reverse opts) filename)))\n"
-	"\n"
+	"\n") + wxString(
 	"  (defun get-pic-size-opt ()\n"
 	"    (cond\n"
 	"     ((eq ($get \'$draw \'$version) 1)\n"
@@ -1628,7 +1630,7 @@ wxMathML::wxMathML()
 	"    (let (($display_graphics nil))\n"
 	"      ($ldisp (cons \'(mlist simp) (mapcar #\'meval (cdr args)))))\n"
 	"    \'$done)\n"
-	"\n"
+	"\n") + wxString(
 	"  (defun $wximplicit_plot (&rest args)\n"
 	"    (let ((preamble ($wxplot_preamble))\n"
 	"	  (system-preamble (get-plot-option-string \'$gnuplot_preamble 2))\n"
@@ -1780,7 +1782,7 @@ wxMathML::wxMathML()
 	"  (setf (get \'$lsquares_estimates \'autoload) \"lsquares\")\n"
 	"\n"
 	"  (setf (get \'$to_poly_solve \'autoload) \"to_poly_solve\")\n"
-	"\n"
+	"\n") + wxString(
 	";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n"
 	"  ;;\n"
 	"  ;; Redefine load so that it prints the list of functions\n"
@@ -1923,7 +1925,7 @@ wxMathML::wxMathML()
 	"    (cons \'(mlist simp) (loop for i from 1 to n collect \"\")))\n"
 	"  (defun take-first (l n)\n"
 	"    (if (= n 0) nil (cons (first l) (take-first (rest l) (- n 1)))))\n"
-	"\n"
+	"\n") + wxString(
 	"  (defun $table_form (mat &rest opts)\n"
 	"    (when (mapatom mat)\n"
 	"      ($error \"table_form: the argument should not be an atom.\"))\n"
@@ -2070,7 +2072,7 @@ wxMathML::wxMathML()
 	"  (wxPrint_autoompletesymbols)\n"
 	"  (wx-print-variables)\n"
 	"  (force-output)\n"
-        ")\n\0";
+        ")\n\0");
     }
 
 wxString wxMathML::GetCmd()
