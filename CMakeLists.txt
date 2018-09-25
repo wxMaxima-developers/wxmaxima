@@ -7,6 +7,10 @@ set(PACKAGE_VERSION ${VERSION})
 set(GITVERSION ${VERSION})
 set(PACKAGE wxMaxima)
 
+# Turn off many warnings wxWidgets triggers on MSVC
+if(MSVC)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+endif()
 
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
