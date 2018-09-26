@@ -21,7 +21,7 @@ clone_folder: c:\projects\wxMaxima
 
 # cache the build results in order to speed up the build
 cache:
-  - c:\projects\wxMaxima\src\CMakeFiles
+  - build\CMakeFiles
 
 # branches to build
 branches:
@@ -78,9 +78,5 @@ after_build:
   - msbuild "PACKAGE.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build  /p:Configuration=%configuration% /p:Platform=%platform% /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 artifacts:
-  - path: 'build\*.exe'
-    name: wxMaxima-win64-install
-  - path: 'build\*.zip'
-    name: wxMaxima-win64-standalone
   - path: 'build\CMakeFiles\CMakeOutput.log'
     name: cmake_output_log
