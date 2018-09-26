@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.4)
 
 project(wxmaxima)
 
-set(VERSION 18.02.0.unofficial)
+set(VERSION 18.10.1)
 set(PACKAGE_VERSION ${VERSION})
 set(GITVERSION ${VERSION})
 set(PACKAGE wxMaxima)
