@@ -734,8 +734,7 @@ void Configuration::ReadStyle()
                    &tmp))
     m_styles[TS_CURSOR].color.Set(tmp);
 
-  wxSystemSettings settings;
-  m_styles[TS_SELECTION].color = settings.GetColour(wxSYS_COLOUR_HIGHLIGHT);
+   m_styles[TS_SELECTION].color = wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT);
 
   if (config->Read(wxT("Style/Selection/color"),
                    &tmp))

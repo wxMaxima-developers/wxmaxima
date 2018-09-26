@@ -1448,8 +1448,7 @@ void ConfigDialogue::ReadStyles(wxString file)
                    &tmp))
     m_styleOutdated.color.Set(tmp);
 
-  wxSystemSettings settings;
-  m_styleSelection.color = settings.GetColour(wxSYS_COLOUR_HIGHLIGHT);
+  m_styleSelection.color = wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT);
 
   if (config->Read(wxT("Style/Selection/color"),
                    &tmp))
