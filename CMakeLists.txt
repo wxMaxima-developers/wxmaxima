@@ -34,6 +34,8 @@ if(MACOSX_VERSION_MIN)
     message(STATUS "Compiling with min macosx version ${MACOSX_VERSION_MIN}")
     set(CMAKE_CXX_FLAGS -mmacosx-version-min=${MACOSX_VERSION_MIN})
     set(CMAKE_EXE_LINKER_FLAGS -mmacosx-version-min=${MACOSX_VERSION_MIN})
+    set(CMAKE_CXX_FLAGS_DEBUG -mmacosx-version-min=${MACOSX_VERSION_MIN})
+    set(CMAKE_EXE_LINKER_FLAGS_DEBUG -mmacosx-version-min=${MACOSX_VERSION_MIN})
 endif()
 
 
