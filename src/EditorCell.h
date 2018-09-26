@@ -705,7 +705,7 @@ private:
   long m_lastSelectionStart;
 //  long m_oldStart, m_oldEnd;
   unsigned int m_numberOfLines;
-  int m_fontSize;
+  double m_fontSize;
   /*! The font size we were called with  the last time
 
     We need to know this in order to be able to detect we need a full recalculation.
