@@ -80,3 +80,7 @@ after_build:
 artifacts:
   - path: 'build\CMakeFiles\CMakeOutput.log'
     name: cmake_output_log
+  - path: 'build\*.tar.gz'
+    name: tarball
+  - path: '\build\src\Release\wxmaxima.exe'
+    name: wxMaxima
