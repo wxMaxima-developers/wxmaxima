@@ -1058,6 +1058,8 @@ wxPanel *ConfigDialogue::CreateStylePanel()
                   _("Highlight (dpart)"),
                   _("Maxima warnings"),
                   _("Text cell"),
+                  _("Heading 6"),
+                  _("Heading 5"),
                   _("Subsubsection cell"),
                   _("Subsection cell"),
                   _("Section cell"),
@@ -1340,6 +1342,8 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
   if (
     (tmp == &m_styleText)          ||
     (tmp == &m_styleTitle)         ||
+    (tmp == &m_styleHeading6)      ||
+    (tmp == &m_styleHeading5)      ||
     (tmp == &m_styleSubsubsection) ||
     (tmp == &m_styleSubsection)    ||
     (tmp == &m_styleSection))
@@ -1628,6 +1632,31 @@ void ConfigDialogue::ReadStyles(wxString file)
   m_styleCodeHighlightingEndOfLine.underlined = false;
   READ_STYLE(m_styleCodeHighlightingEndOfLine, "Style/CodeHighlighting/EndOfLine/")
 
+  // Heading 6
+  m_styleHeading6.color = wxT("black");
+  m_styleHeading6.bold = true;
+  m_styleHeading6.italic = false;
+  m_styleHeading6.underlined = false;
+  m_styleHeading6.font = m_styleDefault.font;
+  m_styleHeading6.fontSize = 14;
+  config->Read(wxT("Style/Heading6/fontsize"),
+               &m_styleHeading6.fontSize);
+  config->Read(wxT("Style/Heading6/fontname"),
+               &m_styleHeading6.font);
+  READ_STYLE(m_styleHeading6, "Style/Heading6/")
+
+  // Heading 5
+  m_styleHeading5.color = wxT("black");
+  m_styleHeading5.bold = true;
+  m_styleHeading5.italic = false;
+  m_styleHeading5.underlined = false;
+  m_styleHeading5.font = m_styleDefault.font;
+  m_styleHeading5.fontSize = 15;
+  config->Read(wxT("Style/Heading5/fontsize"),
+               &m_styleHeading5.fontSize);
+  config->Read(wxT("Style/Heading5/fontname"),
+               &m_styleHeading5.font);
+  READ_STYLE(m_styleHeading5, "Style/Heading5/")
   // Subsubsection
   m_styleSubsubsection.color = wxT("black");
   m_styleSubsubsection.bold = true;
@@ -1776,6 +1805,16 @@ void ConfigDialogue::WriteStyles(wxString file)
   WRITE_STYLE(m_styleCodeHighlightingString, "Style/CodeHighlighting/String/")
   WRITE_STYLE(m_styleCodeHighlightingOperator, "Style/CodeHighlighting/Operator/")
   WRITE_STYLE(m_styleCodeHighlightingEndOfLine, "Style/CodeHighlighting/EndOfLine/")
+
+  // Heading6
+  config->Write(wxT("Style/Heading6/fontname"), m_styleHeading6.font);
+  config->Write(wxT("Style/Heading6/fontsize"), m_styleHeading6.fontSize);
+  WRITE_STYLE(m_styleHeading6, "Style/Heading6/")
+
+  // Heading5
+  config->Write(wxT("Style/Heading5/fontname"), m_styleHeading5.font);
+  config->Write(wxT("Style/Heading5/fontsize"), m_styleHeading5.fontSize);
+  WRITE_STYLE(m_styleHeading5, "Style/Heading5/")
 
   // Subsubsection
   config->Write(wxT("Style/Subsubsection/fontname"), m_styleSubsubsection.font);
@@ -1937,60 +1976,66 @@ style *ConfigDialogue::GetStylePointer()
       tmp = &m_styleText;
       break;
     case 15:
-      tmp = &m_styleSubsubsection;
+      tmp = &m_styleHeading6;
       break;
     case 16:
-      tmp = &m_styleSubsection;
+      tmp = &m_styleHeading5;
       break;
     case 17:
-      tmp = &m_styleSection;
+      tmp = &m_styleSubsubsection;
       break;
     case 18:
-      tmp = &m_styleTitle;
+      tmp = &m_styleSubsection;
       break;
     case 19:
-      tmp = &m_styleTextBackground;
+      tmp = &m_styleSection;
       break;
     case 20:
-      tmp = &m_styleBackground;
+      tmp = &m_styleTitle;
       break;
     case 21:
-      tmp = &m_styleCellBracket;
+      tmp = &m_styleTextBackground;
       break;
     case 22:
-      tmp = &m_styleActiveCellBracket;
+      tmp = &m_styleBackground;
       break;
     case 23:
-      tmp = &m_styleCursor;
+      tmp = &m_styleCellBracket;
       break;
     case 24:
-      tmp = &m_styleSelection;
+      tmp = &m_styleActiveCellBracket;
       break;
     case 25:
-      tmp = &m_styleEqualsSelection;
+      tmp = &m_styleCursor;
       break;
     case 26:
-      tmp = &m_styleOutdated;
+      tmp = &m_styleSelection;
       break;
     case 27:
-      tmp = &m_styleCodeHighlightingVariable;
+      tmp = &m_styleEqualsSelection;
       break;
     case 28:
-      tmp = &m_styleCodeHighlightingFunction;
+      tmp = &m_styleOutdated;
       break;
     case 29:
-      tmp = &m_styleCodeHighlightingComment;
+      tmp = &m_styleCodeHighlightingVariable;
       break;
     case 30:
-      tmp = &m_styleCodeHighlightingNumber;
+      tmp = &m_styleCodeHighlightingFunction;
       break;
     case 31:
-      tmp = &m_styleCodeHighlightingString;
+      tmp = &m_styleCodeHighlightingComment;
       break;
     case 32:
-      tmp = &m_styleCodeHighlightingOperator;
+      tmp = &m_styleCodeHighlightingNumber;
       break;
     case 33:
+      tmp = &m_styleCodeHighlightingString;
+      break;
+    case 34:
+      tmp = &m_styleCodeHighlightingOperator;
+      break;
+    case 35:
       tmp = &m_styleCodeHighlightingEndOfLine;
       break;
     default:
@@ -2013,8 +2058,9 @@ void ConfigDialogue::UpdateExample()
     color = m_styleInput.color;
 
   int fontsize = m_fontSize;
-  if (tmp == &m_styleText || tmp == &m_styleSubsubsection || tmp == &m_styleSubsection
-      || tmp == &m_styleSection || tmp == &m_styleTitle)
+  if (tmp == &m_styleText || tmp == &m_styleHeading5 || tmp == &m_styleHeading6 ||
+      tmp == &m_styleSubsubsection || tmp == &m_styleSubsection ||
+      tmp == &m_styleSection || tmp == &m_styleTitle)
   {
     fontsize = tmp->fontSize;
     font = tmp->font;

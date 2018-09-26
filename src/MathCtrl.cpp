@@ -951,10 +951,10 @@ void MathCtrl::ResetInputPrompts()
 //
 void MathCtrl::NumberSections()
 {
-  int s, sub, subsub, i;
-  s = sub = subsub = i = 0;
+  int s, sub, subsub, h5, h6, i;
+  s = sub = subsub = i = h5 = h6 = 0;
   if (m_tree)
-    m_tree->Number(s, sub, subsub, i);
+    m_tree->Number(s, sub, subsub, h5, h6, i);
 }
 
 bool MathCtrl::IsLesserGCType(int type, int comparedTo)
@@ -964,6 +964,20 @@ bool MathCtrl::IsLesserGCType(int type, int comparedTo)
     case GC_TYPE_CODE:
     case GC_TYPE_TEXT:
     case GC_TYPE_IMAGE:
+      if ((comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION) ||
+          (comparedTo == GC_TYPE_SUBSECTION) || (comparedTo == GC_TYPE_SUBSUBSECTION) ||
+          (comparedTo == GC_TYPE_HEADING5) || (comparedTo == GC_TYPE_HEADING6))
+        return true;
+      else
+        return false;
+    case GC_TYPE_HEADING6:
+      if ((comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION) ||
+          (comparedTo == GC_TYPE_SUBSECTION) || (comparedTo == GC_TYPE_HEADING5)
+          || (comparedTo == GC_TYPE_SUBSUBSECTION))
+        return true;
+      else
+        return false;
+    case GC_TYPE_HEADING5:
       if ((comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION) ||
           (comparedTo == GC_TYPE_SUBSECTION) || (comparedTo == GC_TYPE_SUBSUBSECTION))
         return true;
@@ -1273,6 +1287,18 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
           popupMenu->Append(popid_evaluate_section, _("Evaluate Sub-Subsection\tShift+Ctrl+Enter"), wxEmptyString,
                             wxITEM_NORMAL);
         }
+        if (StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_HEADING5)
+        {
+          popupMenu->AppendSeparator();
+          popupMenu->Append(popid_evaluate_section, _("Evaluate Heading 5\tShift+Ctrl+Enter"), wxEmptyString,
+                            wxITEM_NORMAL);
+        }
+        if (StartOfSectioningUnit(group)->GetGroupType() == GC_TYPE_HEADING6)
+        {
+          popupMenu->AppendSeparator();
+          popupMenu->Append(popid_evaluate_section, _("Evaluate Heading 6\tShift+Ctrl+Enter"), wxEmptyString,
+                            wxITEM_NORMAL);
+        }
         popupMenu->AppendCheckItem(popid_auto_answer, _("Automatically answer questions"),
                                    _("Automatically fill in answers known from the last run"));
         // TODO: Do we need to check or uncheck this item sometimes?
@@ -1350,6 +1376,8 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
       popupMenu->Append(popid_insert_section, _("Insert Section Cell"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_insert_subsection, _("Insert Subsection Cell"), wxEmptyString, wxITEM_NORMAL);
       popupMenu->Append(popid_insert_subsubsection, _("Insert Subsubsection Cell"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_insert_heading5, _("Insert Heading5 Cell"), wxEmptyString, wxITEM_NORMAL);
+      popupMenu->Append(popid_insert_heading6, _("Insert Heading6 Cell"), wxEmptyString, wxITEM_NORMAL);
         popupMenu->AppendSeparator();
         popupMenu->Append(ToolBar::tb_evaltillhere, _("Evaluate Cells Above"), wxEmptyString, wxITEM_NORMAL);
         popupMenu->Append(ToolBar::tb_evaluate_rest, _("Evaluate Cells Below"), wxEmptyString, wxITEM_NORMAL);
@@ -1401,6 +1429,12 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
         case GC_TYPE_SUBSUBSECTION:
           popupMenu->Append(popid_evaluate_section, _("Evaluate Sub-Subsection\tShift+Ctrl+Enter"), wxEmptyString,
                             wxITEM_NORMAL);
+        case GC_TYPE_HEADING5:
+          popupMenu->Append(popid_evaluate_section, _("Evaluate Heading 5\tShift+Ctrl+Enter"), wxEmptyString,
+                            wxITEM_NORMAL);
+        case GC_TYPE_HEADING6:
+          popupMenu->Append(popid_evaluate_section, _("Evaluate Heading 6\tShift+Ctrl+Enter"), wxEmptyString,
+                            wxITEM_NORMAL);
           break;
       }
       switch (group->GetGroupType())
@@ -1446,6 +1480,26 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
           else
             popupMenu->Append(popid_fold,
                               _("Hide Subsubsection"), wxEmptyString, wxITEM_NORMAL);
+          break;
+        case GC_TYPE_HEADING5:
+          popupMenu->Append(popid_evaluate_section, _("Evaluate Heading 5\tShift+Ctrl+Enter"), wxEmptyString,
+                            wxITEM_NORMAL);
+          if (group->GetHiddenTree() != NULL)
+            popupMenu->Append(popid_unfold,
+                              _("Unhide Heading 5"), wxEmptyString, wxITEM_NORMAL);
+          else
+            popupMenu->Append(popid_fold,
+                              _("Hide Heading 5"), wxEmptyString, wxITEM_NORMAL);
+          break;
+        case GC_TYPE_HEADING6:
+          popupMenu->Append(popid_evaluate_section, _("Evaluate Heading 6\tShift+Ctrl+Enter"), wxEmptyString,
+                            wxITEM_NORMAL);
+          if (group->GetHiddenTree() != NULL)
+            popupMenu->Append(popid_unfold,
+                              _("Unhide Heading 6"), wxEmptyString, wxITEM_NORMAL);
+          else
+            popupMenu->Append(popid_fold,
+                              _("Hide Heading 6"), wxEmptyString, wxITEM_NORMAL);
           break;
         default:
           if (group->GetHiddenTree() != NULL)
@@ -3857,7 +3911,9 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
                               (dynamic_cast<GroupCell *>(tmp)->GetGroupType() != GC_TYPE_TITLE) &&
                               (dynamic_cast<GroupCell *>(tmp)->GetGroupType() != GC_TYPE_SECTION) &&
                               (dynamic_cast<GroupCell *>(tmp)->GetGroupType() != GC_TYPE_SUBSECTION) &&
-                              (dynamic_cast<GroupCell *>(tmp)->GetGroupType() != GC_TYPE_SUBSUBSECTION)
+                              (dynamic_cast<GroupCell *>(tmp)->GetGroupType() != GC_TYPE_SUBSUBSECTION) &&
+                              (dynamic_cast<GroupCell *>(tmp)->GetGroupType() != GC_TYPE_HEADING5) &&
+                              (dynamic_cast<GroupCell *>(tmp)->GetGroupType() != GC_TYPE_HEADING6)
                       )
                       );
               SetHCaret(tmp);
@@ -4697,11 +4753,11 @@ bool MathCtrl::ExportToHTML(wxString file)
     output << wxT("</script>") << endl;
   }
 
-  wxString font, fontTitle, fontSection, fontSubsection, fontSubsubsection, fontText;
+  wxString font, fontTitle, fontSection, fontSubsection, fontSubsubsection, fontHeading5, fontHeading6, fontText;
   wxString colorInput(wxT("blue"));
   wxString colorPrompt(wxT("red"));
   wxString colorText(wxT("black")), colorTitle(wxT("black")), colorSection(wxT("black")),
-          colorSubSec(wxT("black")), colorSubsubSec(wxT("black"));
+    colorSubSec(wxT("black")), colorSubsubSec(wxT("black")), colorHeading5(wxT("black")),colorHeading6(wxT("black"));
   wxString colorCodeVariable = wxT("rgb(0,128,0)");
   wxString colorCodeFunction = wxT("rgb(128,0,0)");
   wxString colorCodeComment = wxT("rgb(64,64,64)");
@@ -4730,10 +4786,16 @@ bool MathCtrl::ExportToHTML(wxString file)
   bool underSection = false;
   bool boldSubsection = false;
   bool boldSubsubsection = false;
+  bool boldHeading5 = false;
+  bool boldHeading6 = false;
   bool italicSubsection = false;
   bool italicSubsubsection = false;
+  bool italicHeading5 = false;
+  bool italicHeading6 = false;
   bool underSubsection = false;
   bool underSubsubsection = false;
+  bool underHeading5 = false;
+  bool underHeading6 = false;
 
   int fontSize = 12;
   // main fontsize
@@ -4745,6 +4807,8 @@ bool MathCtrl::ExportToHTML(wxString file)
   config->Read(wxT("Style/Section/fontname"), &fontSection);
   config->Read(wxT("Style/Subsection/fontname"), &fontSubsection);
   config->Read(wxT("Style/Subsubsection/fontname"), &fontSubsubsection);
+  config->Read(wxT("Style/Heading5/fontname"), &fontHeading5);
+  config->Read(wxT("Style/Heading6/fontname"), &fontHeading6);
   config->Read(wxT("Style/Text/fontname"), &fontText);
 
   // read colors
@@ -4754,6 +4818,8 @@ bool MathCtrl::ExportToHTML(wxString file)
   config->Read(wxT("Style/Section/color"), &colorSection);
   config->Read(wxT("Style/Subsection/color"), &colorSubSec);
   config->Read(wxT("Style/Subsubsection/color"), &colorSubsubSec);
+  config->Read(wxT("Style/Heading5/color"), &colorHeading5);
+  config->Read(wxT("Style/Heading6/color"), &colorHeading6);
   config->Read(wxT("Style/Title/color"), &colorTitle);
   config->Read(wxT("Style/TextBackground/color"), &colorTextBg);
   config->Read(wxT("Style/Background/color"), &colorBg);
@@ -4785,6 +4851,12 @@ bool MathCtrl::ExportToHTML(wxString file)
   config->Read(wxT("Style/Subsubsection/bold"), &boldSubsubsection);
   config->Read(wxT("Style/Subsubsection/italic"), &italicSubsubsection);
   config->Read(wxT("Style/Subsubsection/underlined"), &underSubsubsection);
+  config->Read(wxT("Style/Heading5/bold"), &boldHeading5);
+  config->Read(wxT("Style/Heading5/italic"), &italicHeading5);
+  config->Read(wxT("Style/Heading5/underlined"), &underHeading5);
+  config->Read(wxT("Style/Heading6/bold"), &boldHeading6);
+  config->Read(wxT("Style/Heading6/italic"), &italicHeading6);
+  config->Read(wxT("Style/Heading6/underlined"), &underHeading6);
 
   output << wxT("  <link rel=\"stylesheet\" type=\"text/css\" href=\"") + cssfileName_rel + wxT("\"/>\n");
 
@@ -5008,7 +5080,7 @@ bool MathCtrl::ExportToHTML(wxString file)
   css << wxT("  padding: 2mm;\n");
   css << wxT("}\n");
 
-  // SUBSECTION STYLE
+  // SUBSUBSECTION STYLE
   css << wxT(".subsubsect {\n");
   if (fontSubsubsection.Length())
   {
@@ -5029,6 +5101,50 @@ bool MathCtrl::ExportToHTML(wxString file)
   css << wxT("  padding: 2mm;\n");
   css << wxT("}\n");
 
+  // HEADING5 STYLE
+  css << wxT(".heading5 {\n");
+  if (fontHeading5.Length())
+  {
+    css << wxT("  font-family: ") +
+           fontHeading5 + wxT(";\n");
+  }
+  if (colorHeading5.Length())
+  {
+    wxColour color(colorHeading5);
+    css << wxT("  color: ") +
+           wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+           wxT(";\n");
+  }
+  if (boldHeading5) css << wxT("  font-weight: bold;\n");
+  if (underHeading5) css << wxT("  text-decoration: underline;\n");
+  if (italicHeading5) css << wxT("  font-style: italic;\n");
+  css << wxT("  font-size: 1.2em;\n");
+  css << wxT("  padding: 2mm;\n");
+  css << wxT("}\n");
+
+  // HEADING6 STYLE
+  css << wxT(".heading6 {\n");
+  if (fontHeading6.Length())
+  {
+    css << wxT("  font-family: ") +
+           fontHeading6 + wxT(";\n");
+  }
+  if (colorHeading6.Length())
+  {
+    wxColour color(colorHeading6);
+    css << wxT("  color: ") +
+           wxString::Format(wxT("rgb(%d,%d,%d)"), color.Red(), color.Green(), color.Blue()) +
+           wxT(";\n");
+  }
+  if (boldHeading6) css << wxT("  font-weight: bold;\n");
+  if (underHeading6) css << wxT("  text-decoration: underline;\n");
+  if (italicHeading6) css << wxT("  font-style: italic;\n");
+  css << wxT("  font-size: 1.2em;\n");
+  css << wxT("  padding: 2mm;\n");
+  css << wxT("}\n");
+
+
+  
   // TITLE STYLE
   css << wxT(".title {\n");
   if (fontTitle.Length())
@@ -5327,6 +5443,22 @@ bool MathCtrl::ExportToHTML(wxString file)
                  << wxT("\n");
           output << wxT("</P>\n");
           break;
+        case GC_TYPE_HEADING5:
+          output << wxT("\n\n<!-- Heading5 cell -->\n\n\n");
+          output << wxT("<P CLASS=\"heading5\">\n");
+          output << EditorCell::PrependNBSP(
+                  EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))
+                 << wxT("\n");
+          output << wxT("</P>\n");
+          break;
+        case GC_TYPE_HEADING6:
+          output << wxT("\n\n<!-- Heading6 cell -->\n\n\n");
+          output << wxT("<P CLASS=\"heading6\">\n");
+          output << EditorCell::PrependNBSP(
+                  EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))
+                 << wxT("\n");
+          output << wxT("</P>\n");
+          break;
         case GC_TYPE_TITLE:
           output << wxT("\n\n<!-- Title cell -->\n\n\n");
           output << wxT("<P CLASS=\"title\">\n");
@@ -5517,7 +5649,7 @@ GroupCell *MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
       }
     }
 
-      // print subsubsection
+    // print subsubsection
     else if (wxmLines->Item(0) == wxT("/* [wxMaxima: subsubsect start ]"))
     {
       wxmLines->RemoveAt(0);
@@ -5534,6 +5666,54 @@ GroupCell *MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
       }
 
       cell = new GroupCell(&m_configuration, GC_TYPE_SUBSUBSECTION, &m_cellPointers, line);
+      if (hide)
+      {
+        cell->Hide(true);
+        hide = false;
+      }
+    }
+
+    // print heading5
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: heading5 start ]"))
+    {
+      wxmLines->RemoveAt(0);
+
+      wxString line;
+      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: heading5 end   ] */")))
+      {
+        if (line.Length() == 0)
+          line += wxmLines->Item(0);
+        else
+          line += wxT("\n") + wxmLines->Item(0);
+
+        wxmLines->RemoveAt(0);
+      }
+
+      cell = new GroupCell(&m_configuration, GC_TYPE_HEADING5, &m_cellPointers, line);
+      if (hide)
+      {
+        cell->Hide(true);
+        hide = false;
+      }
+    }
+
+    // print heading6
+    else if (wxmLines->Item(0) == wxT("/* [wxMaxima: heading6 start ]"))
+    {
+      wxmLines->RemoveAt(0);
+
+      wxString line;
+      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("   [wxMaxima: heading6 end   ] */")))
+      {
+        if (line.Length() == 0)
+          line += wxmLines->Item(0);
+        else
+          line += wxT("\n") + wxmLines->Item(0);
+
+        wxmLines->RemoveAt(0);
+      }
+
+      cell = new GroupCell(&m_configuration, GC_TYPE_HEADING6, &m_cellPointers, line);
       if (hide)
       {
         cell->Hide(true);
@@ -8269,6 +8449,8 @@ wxString MathCtrl::RTFStart()
   document += wxT("{\\s1\\outlinelevel0\\keepn\\b\\f0\\fs40\\sbasedon16\\snext0 Section Cell;}\n");
   document += wxT("{\\s2\\outlinelevel1\\keepn\\b\\f0\\fs36\\sbasedon1\\snext0 Subsection Cell;}\n");
   document += wxT("{\\s3\\outlinelevel2\\keepn\\b\\f0\\fs32\\sbasedon2\\snext0 SubSubsection Cell;}\n");
+  document += wxT("{\\s4\\outlinelevel3\\keepn\\b\\f0\\fs30\\sbasedon2\\snext0 Heading5 Cell;}\n");
+  document += wxT("{\\s5\\outlinelevel4\\keepn\\b\\f0\\fs28\\sbasedon2\\snext0 Heading6 Cell;}\n");
   document += wxT("{\\s16\\keepn\\b\\f0\\fs56\\snext0 Title Cell;}\n");
   document += wxT("{\\s21\\li1105\\lin1105\\f0\\fs24\\sbasedon0 Math;}\n");
   document += wxT("{\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24\\sbasedon0\\snext21 Math+Label;}\n");

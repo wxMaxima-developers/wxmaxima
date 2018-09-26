@@ -535,7 +535,9 @@ void TextCell::SetFont(int fontsize)
   if ((m_textStyle == TS_TITLE) ||
       (m_textStyle == TS_SECTION) ||
       (m_textStyle == TS_SUBSECTION) ||
-      (m_textStyle == TS_SUBSUBSECTION))
+      (m_textStyle == TS_SUBSUBSECTION) ||
+      (m_textStyle == TS_HEADING5) || 
+      (m_textStyle == TS_HEADING6))
   {
     // Titles have a fixed font size 
     m_fontSize = configuration->GetFontSize(m_textStyle);

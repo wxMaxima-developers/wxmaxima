@@ -847,6 +847,8 @@ public:
     popid_insert_section,
     popid_insert_subsection,
     popid_insert_subsubsection,
+    popid_insert_heading5,
+    popid_insert_heading6,
     popid_auto_answer,
     popid_popup_gnuplot,
     menu_zoom_in,

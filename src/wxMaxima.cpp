@@ -8041,10 +8041,36 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
         m_console->RequestRedraw();
       }
       break;
+    case menu_convert_to_heading5:
+      if (m_console->GetActiveCell())
+      {
+        m_console->GetActiveCell()->GetGroup()->SetType(GC_TYPE_HEADING5);
+        m_console->Recalculate(true);
+        m_console->RequestRedraw();
+      }
+      break;
+    case menu_convert_to_heading6:
+      if (m_console->GetActiveCell())
+      {
+        m_console->GetActiveCell()->GetGroup()->SetType(GC_TYPE_HEADING6);
+        m_console->Recalculate(true);
+        m_console->RequestRedraw();
+      }
+      break;
     case menu_add_subsubsection:
     case menu_format_subsubsection:
     case MathCtrl::popid_insert_subsubsection:
       type = GC_TYPE_SUBSUBSECTION;
+      break;
+    case menu_add_heading5:
+    case menu_format_heading5:
+    case MathCtrl::popid_insert_heading5:
+      type = GC_TYPE_HEADING5;
+      break;
+    case menu_add_heading6:
+    case menu_format_heading6:
+    case MathCtrl::popid_insert_heading6:
+      type = GC_TYPE_HEADING6;
       break;
     case menu_add_pagebreak:
     case menu_format_pagebreak:
@@ -8102,6 +8128,8 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
   else if (
     (event.GetId() == menu_unfold_all_cells) ||
     (event.GetId() == menu_fold_all_cells) ||
+    (event.GetId() == menu_convert_to_heading6) ||
+    (event.GetId() == menu_convert_to_heading5) ||
     (event.GetId() == menu_convert_to_subsubsection) ||
     (event.GetId() == menu_convert_to_subsection) ||
     (event.GetId() == menu_convert_to_section) ||
@@ -8441,6 +8469,8 @@ void wxMaxima::ChangeCellStyle(wxCommandEvent& WXUNUSED(event))
     case GC_TYPE_SECTION:
     case GC_TYPE_SUBSECTION:
     case GC_TYPE_SUBSUBSECTION:
+    case GC_TYPE_HEADING5:
+    case GC_TYPE_HEADING6:
       m_console->SetCellStyle(group, m_console->m_mainToolBar->GetCellStyle());
       break;
     default:
@@ -8473,6 +8503,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(MathCtrl::popid_insert_section, wxMaxima::InsertMenu)
                 EVT_MENU(MathCtrl::popid_insert_subsection, wxMaxima::InsertMenu)
                 EVT_MENU(MathCtrl::popid_insert_subsubsection, wxMaxima::InsertMenu)
+                EVT_MENU(MathCtrl::popid_insert_heading5, wxMaxima::InsertMenu)
+                EVT_MENU(MathCtrl::popid_insert_heading6, wxMaxima::InsertMenu)
                 EVT_MENU(MathCtrl::popid_popup_gnuplot, wxMaxima::EditMenu)
                 EVT_MENU(MathCtrl::popid_delete, wxMaxima::EditMenu)
                 EVT_MENU(MathCtrl::popid_simplify, wxMaxima::PopupMenu)
@@ -8732,6 +8764,8 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_MENU(menu_add_section, wxMaxima::InsertMenu)
                 EVT_MENU(menu_add_subsection, wxMaxima::InsertMenu)
                 EVT_MENU(menu_add_subsubsection, wxMaxima::InsertMenu)
+                EVT_MENU(menu_add_heading5, wxMaxima::InsertMenu)
+                EVT_MENU(menu_add_heading6, wxMaxima::InsertMenu)
                 EVT_MENU(menu_add_title, wxMaxima::InsertMenu)
                 EVT_MENU(menu_add_pagebreak, wxMaxima::InsertMenu)
                 EVT_MENU(menu_fold_all_cells, wxMaxima::InsertMenu)
@@ -8855,6 +8889,8 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_BUTTON(menu_stats_subsample, wxMaxima::StatsMenu)
                 EVT_BUTTON(menu_format_title, wxMaxima::InsertMenu)
                 EVT_BUTTON(menu_format_text, wxMaxima::InsertMenu)
+                EVT_BUTTON(menu_format_heading6, wxMaxima::InsertMenu)
+                EVT_BUTTON(menu_format_heading5, wxMaxima::InsertMenu)
                 EVT_BUTTON(menu_format_subsubsection, wxMaxima::InsertMenu)
                 EVT_BUTTON(menu_format_subsection, wxMaxima::InsertMenu)
                 EVT_BUTTON(menu_format_section, wxMaxima::InsertMenu)

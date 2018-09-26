@@ -230,7 +230,9 @@ wxFont Configuration::GetFont(int textStyle, int fontSize)
   if ((textStyle == TS_TITLE) ||
       (textStyle == TS_SECTION) ||
       (textStyle == TS_SUBSECTION) ||
-      (textStyle == TS_SUBSUBSECTION))
+      (textStyle == TS_SUBSUBSECTION) ||
+      (textStyle == TS_HEADING5) ||
+      (textStyle == TS_HEADING6))
   {
     // While titles and section names may be underlined the section number
     // isn't. Else the space between section number and section title
@@ -417,7 +419,8 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
 wxString Configuration::GetFontName(int type)
 {
   wxString retval = m_fontName;
-  if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION || type == TS_SECTION || type == TS_TEXT)
+  if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION ||
+      type == TS_HEADING5 || type == TS_HEADING6 || type == TS_SECTION || type == TS_TEXT)
     retval = m_styles[type].font;
   if(retval == wxEmptyString)
     retval = m_fontName;
@@ -558,12 +561,42 @@ void Configuration::ReadStyle()
   m_styles[TS_CODE_ENDOFLINE].underlined = false;
   READ_STYLES(TS_CODE_ENDOFLINE, "Style/CodeHighlighting/EndOfLine/")
 
+  // Heading6
+  m_styles[TS_HEADING6].color = wxT("black");
+  m_styles[TS_HEADING6].bold = true;
+  m_styles[TS_HEADING6].italic = false;
+  m_styles[TS_HEADING6].underlined = false;
+  m_styles[TS_HEADING6].fontSize = 14;
+#ifdef __WXOSX_MAC__
+  m_styles[TS_HEADING6].font = "Monaco";
+#endif
+  config->Read(wxT("Style/Heading6/fontsize"),
+               &m_styles[TS_HEADING6].fontSize);
+  config->Read(wxT("Style/Heading6/fontname"),
+               &m_styles[TS_HEADING6].font);
+  READ_STYLES(TS_HEADING6, "Style/Heading6/")
+
+  // Heading5
+  m_styles[TS_HEADING5].color = wxT("black");
+  m_styles[TS_HEADING5].bold = true;
+  m_styles[TS_HEADING5].italic = false;
+  m_styles[TS_HEADING5].underlined = false;
+  m_styles[TS_HEADING5].fontSize = 15;
+#ifdef __WXOSX_MAC__
+  m_styles[TS_HEADING5].font = "Monaco";
+#endif
+  config->Read(wxT("Style/Heading5/fontsize"),
+               &m_styles[TS_HEADING5].fontSize);
+  config->Read(wxT("Style/Heading5/fontname"),
+               &m_styles[TS_HEADING5].font);
+  READ_STYLES(TS_HEADING5, "Style/Heading5/")
+
   // Subsubsection
   m_styles[TS_SUBSUBSECTION].color = wxT("black");
   m_styles[TS_SUBSUBSECTION].bold = true;
   m_styles[TS_SUBSUBSECTION].italic = false;
   m_styles[TS_SUBSUBSECTION].underlined = false;
-  m_styles[TS_SUBSUBSECTION].fontSize = 14;
+  m_styles[TS_SUBSUBSECTION].fontSize = 16;
 #ifdef __WXOSX_MAC__
   m_styles[TS_SUBSUBSECTION].font = "Monaco";
 #endif

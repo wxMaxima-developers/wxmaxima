@@ -56,6 +56,8 @@ enum
   MC_TYPE_TEXT,        //!< Text that isn't passed to maxima
   MC_TYPE_SUBSECTION,  //!< A subsection name
   MC_TYPE_SUBSUBSECTION,  //!< A subsubsection name
+  MC_TYPE_HEADING5,  //!< A subsubsection name
+  MC_TYPE_HEADING6,  //!< A subsubsection name
   MC_TYPE_SECTION,     //!< A section name
   MC_TYPE_TITLE,       //!< The title of the document
   MC_TYPE_IMAGE,       //!< An image
@@ -685,13 +687,13 @@ class MathCell
 
   /*! Determine if this cell contains text that isn't code
 
-    \return true, if this is a text cell, a title cell, a section, a subsection or a subsubsection cell.
+    \return true, if this is a text cell, a title cell, a section, a subsection or a sub(n)section cell.
    */
   bool IsComment()
   {
     return m_type == MC_TYPE_TEXT || m_type == MC_TYPE_SECTION ||
            m_type == MC_TYPE_SUBSECTION || m_type == MC_TYPE_SUBSUBSECTION ||
-           m_type == MC_TYPE_TITLE;
+           m_type == MC_TYPE_HEADING5 || m_type == MC_TYPE_HEADING6 || m_type == MC_TYPE_TITLE;
   }
 
   bool IsEditable(bool input = false)

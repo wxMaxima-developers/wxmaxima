@@ -281,6 +281,8 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
   textStyle.Add(_("Section"));
   textStyle.Add(_("Subsection"));
   textStyle.Add(_("Subsubsection"));
+  textStyle.Add(_("Heading5"));
+  textStyle.Add(_("Heading6"));
   m_textStyle = new wxChoice(this, tb_changeStyle, wxDefaultPosition, wxDefaultSize, textStyle);
   m_textStyle->SetToolTip(_("For faster creation of cells the following shortcuts exist:\n\n"
                             "   Ctrl+0: Math cell\n"
@@ -361,6 +363,12 @@ void ToolBar::SetDefaultCellStyle()
   case 5:
     m_defaultCellStyle = GC_TYPE_SUBSUBSECTION;
     break;
+  case 6:
+    m_defaultCellStyle = GC_TYPE_HEADING5;
+    break;
+  case 7:
+    m_defaultCellStyle = GC_TYPE_HEADING6;
+    break;
   default:
   {}
   }
@@ -386,9 +394,15 @@ int ToolBar::GetCellStyle()
     return GC_TYPE_SUBSUBSECTION;
     break;
   case 6:
-    return GC_TYPE_IMAGE;
+    return GC_TYPE_HEADING5;
     break;
   case 7:
+    return GC_TYPE_HEADING6;
+    break;
+  case 8:
+    return GC_TYPE_IMAGE;
+    break;
+  case 9:
     return GC_TYPE_PAGEBREAK;
     break;
   default:
@@ -407,6 +421,8 @@ void ToolBar::SetCellStyle(int style)
   case GC_TYPE_SECTION:
   case GC_TYPE_SUBSECTION:
   case GC_TYPE_SUBSUBSECTION:
+  case GC_TYPE_HEADING5:
+  case GC_TYPE_HEADING6:
     break;
   default:
     style = m_defaultCellStyle;
@@ -431,6 +447,12 @@ void ToolBar::SetCellStyle(int style)
     break;
   case GC_TYPE_SUBSUBSECTION:
     m_textStyle->SetSelection(5);
+    break;
+  case GC_TYPE_HEADING5:
+    m_textStyle->SetSelection(6);
+    break;
+  case GC_TYPE_HEADING6:
+    m_textStyle->SetSelection(7);
     break;
   }
 }

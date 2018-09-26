@@ -334,6 +334,8 @@ protected:
           m_styleHighlight,
           m_styleWarning,
           m_styleText,
+          m_styleHeading6,
+          m_styleHeading5,
           m_styleSubsubsection,
           m_styleSubsection,
           m_styleSection,

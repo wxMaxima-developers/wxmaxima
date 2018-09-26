@@ -117,6 +117,18 @@ GroupCell::GroupCell(Configuration **config, int groupType, CellPointers *cellPo
       editor->SetType(MC_TYPE_SUBSUBSECTION);
       AppendInput(editor);
       break;
+    case GC_TYPE_HEADING5:
+      m_inputLabel->SetType(MC_TYPE_HEADING5);
+      editor = new EditorCell(this, m_configuration, m_cellPointers);
+      editor->SetType(MC_TYPE_HEADING5);
+      AppendInput(editor);
+      break;
+    case GC_TYPE_HEADING6:
+      m_inputLabel->SetType(MC_TYPE_HEADING6);
+      editor = new EditorCell(this, m_configuration, m_cellPointers);
+      editor->SetType(MC_TYPE_HEADING6);
+      AppendInput(editor);
+      break;
     case GC_TYPE_IMAGE:
       m_inputLabel->SetType(MC_TYPE_TEXT);
       editor = new EditorCell(this, m_configuration, m_cellPointers);
@@ -202,6 +214,24 @@ void GroupCell::SetCellStyle(int style)
       m_inputLabel->SetType(MC_TYPE_SUBSUBSECTION);
     if(GetEditable() != NULL)
       GetEditable()->SetType(MC_TYPE_SUBSUBSECTION);
+    RemoveOutput();
+    break;
+  case GC_TYPE_HEADING5:
+    m_inputLabel -> SetValue(wxEmptyString);
+    m_groupType = GC_TYPE_HEADING5;
+    if(m_inputLabel != NULL)
+      m_inputLabel->SetType(MC_TYPE_HEADING5);
+    if(GetEditable() != NULL)
+      GetEditable()->SetType(MC_TYPE_HEADING5);
+    RemoveOutput();
+    break;
+  case GC_TYPE_HEADING6:
+    m_inputLabel -> SetValue(wxEmptyString);
+    m_groupType = GC_TYPE_HEADING6;
+    if(m_inputLabel != NULL)
+      m_inputLabel->SetType(MC_TYPE_HEADING6);
+    if(GetEditable() != NULL)
+      GetEditable()->SetType(MC_TYPE_HEADING6);
     RemoveOutput();
     break;
   }
@@ -329,6 +359,16 @@ wxString GroupCell::ToWXM(bool wxm)
       retval += wxT("/* [wxMaxima: subsubsect start ]\n");
       retval += GetEditable()->ToString() + wxT("\n");
       retval += wxT("   [wxMaxima: subsubsect end   ] */\n");
+      break;
+    case GC_TYPE_HEADING5:
+      retval += wxT("/* [wxMaxima: heading5 start ]\n");
+      retval += GetEditable()->ToString() + wxT("\n");
+      retval += wxT("   [wxMaxima: heading5 end   ] */\n");
+      break;
+    case GC_TYPE_HEADING6:
+      retval += wxT("/* [wxMaxima: heading6 start ]\n");
+      retval += GetEditable()->ToString() + wxT("\n");
+      retval += wxT("   [wxMaxima: heading6 end   ] */\n");
       break;
     case GC_TYPE_TITLE:
       retval += wxT("/* [wxMaxima: title   start ]\n");
@@ -1362,6 +1402,12 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
           case TS_SUBSUBSECTION:
             str = wxT("\n\\subsubsection{") + str + wxT("}\n");
             break;
+          case TS_HEADING5:
+            str = wxT("\n\\paragraph{") + str + wxT("}\n");
+            break;
+          case TS_HEADING6:
+            str = wxT("\n\\subparagraph{") + str + wxT("}\n");
+            break;
           default:
             if (str.StartsWith(wxT("TeX:")))
             {
@@ -1571,6 +1617,12 @@ wxString GroupCell::ToXML()
       // as subsections on old wxMaxima installations.
       str += wxT(" type=\"subsection\" sectioning_level=\"4\"");
       break;
+    case GC_TYPE_HEADING5:
+      str += wxT(" type=\"subsection\" sectioning_level=\"5\"");
+      break;
+    case GC_TYPE_HEADING6:
+      str += wxT(" type=\"subsection\" sectioning_level=\"6\"");
+      break;
     case GC_TYPE_PAGEBREAK:
     {
       str += wxT(" type=\"pagebreak\"/>");
@@ -1621,6 +1673,8 @@ wxString GroupCell::ToXML()
     case GC_TYPE_SECTION:
     case GC_TYPE_SUBSECTION:
     case GC_TYPE_SUBSUBSECTION:
+    case GC_TYPE_HEADING5:
+    case GC_TYPE_HEADING6:
       if (input)
         str += input->ListToXML();
       if (m_hiddenTree)
@@ -1824,6 +1878,8 @@ EditorCell *GroupCell::GetEditable()
     case GC_TYPE_SECTION:
     case GC_TYPE_SUBSECTION:
     case GC_TYPE_SUBSUBSECTION:
+    case GC_TYPE_HEADING5:
+    case GC_TYPE_HEADING6:
     default:
       return GetInput();
   }
@@ -2145,7 +2201,15 @@ bool GroupCell::IsLesserGCType(int comparedTo)
     case GC_TYPE_PAGEBREAK:
     case GC_TYPE_IMAGE:
       return (comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION) ||
-             (comparedTo == GC_TYPE_SUBSECTION) || (comparedTo == GC_TYPE_SUBSUBSECTION);
+             (comparedTo == GC_TYPE_SUBSECTION) || (comparedTo == GC_TYPE_SUBSUBSECTION) ||
+        (comparedTo == GC_TYPE_HEADING5) || (comparedTo == GC_TYPE_HEADING6);
+    case GC_TYPE_HEADING6:
+      return (comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION)
+             || (comparedTo == GC_TYPE_SUBSECTION) || (comparedTo == GC_TYPE_SUBSUBSECTION) ||
+        (comparedTo == GC_TYPE_HEADING5);
+    case GC_TYPE_HEADING5:
+      return (comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION)
+             || (comparedTo == GC_TYPE_SUBSECTION)|| (comparedTo == GC_TYPE_SUBSUBSECTION);
     case GC_TYPE_SUBSUBSECTION:
       return (comparedTo == GC_TYPE_TITLE) || (comparedTo == GC_TYPE_SECTION)
              || (comparedTo == GC_TYPE_SUBSECTION);
@@ -2160,7 +2224,7 @@ bool GroupCell::IsLesserGCType(int comparedTo)
   }
 }
 
-void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &image)
+void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image)
 {
   GroupCell *tmp = this;
 
@@ -2169,11 +2233,11 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
     switch (tmp->m_groupType)
     {
       case GC_TYPE_TITLE:
-        section = subsection = subsubsection = 0;
+        section = subsection = subsubsection = heading5 = heading6 = 0;
         break;
       case GC_TYPE_SECTION:
         section++;
-        subsection = subsubsection = 0;
+        subsection = subsubsection = heading5 = heading6 = 0;
         {
           wxString num = wxT("  ");
           num << section << wxT(" ");
@@ -2182,7 +2246,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
         }
         break;
       case GC_TYPE_SUBSECTION:
-        subsubsection = 0;
+        subsubsection = heading5 = heading6 = 0;
         subsection++;
         {
           wxString num = wxT("  ");
@@ -2192,12 +2256,34 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
         }
         break;
       case GC_TYPE_SUBSUBSECTION:
+        heading5 = heading6 = 0;
         subsubsection++;
         {
           wxString num = wxT("  ");
           num << section << wxT(".") << subsection << wxT(".") << subsubsection << wxT(" ");
           tmp->m_inputLabel->SetValue(num);
           tmp->m_inputLabel->SetStyle(TS_SUBSUBSECTION);
+        }
+        break;
+      case GC_TYPE_HEADING5:
+        heading5++;
+        heading6 = 0;
+        {
+          wxString num = wxT("  ");
+          num << section << wxT(".") << subsection << wxT(".") << subsubsection << wxT(".")
+              << heading5 << wxT(" ");
+          tmp->m_inputLabel->SetValue(num);
+          tmp->m_inputLabel->SetStyle(TS_HEADING5);
+        }
+        break;
+      case GC_TYPE_HEADING6:
+        heading6++;
+        {
+          wxString num = wxT("  ");
+          num << section << wxT(".") << subsection << wxT(".") << subsubsection << wxT(".")
+              << heading5 << wxT(".") << heading6 << wxT(" ");
+          tmp->m_inputLabel->SetValue(num);
+          tmp->m_inputLabel->SetStyle(TS_HEADING6);
         }
         break;
       case GC_TYPE_IMAGE:
@@ -2212,7 +2298,7 @@ void GroupCell::Number(int &section, int &subsection, int &subsubsection, int &i
     }
 
     if (IsFoldable() && tmp->m_hiddenTree)
-      tmp->m_hiddenTree->Number(section, subsection, subsubsection, image);
+      tmp->m_hiddenTree->Number(section, subsection, subsubsection, heading5, heading6, image);
 
     tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }

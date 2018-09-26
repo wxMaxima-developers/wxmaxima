@@ -187,19 +187,32 @@ MathCell *MathParser::ParseCellTag(wxXmlNode *node)
       group = new GroupCell(m_configuration, GC_TYPE_SECTION, m_cellPointers);
     else if (type == wxT("subsection"))
     {
+      group = NULL;
       // We save subsubsections as subsections with a higher sectioning level:
       // This makes them backwards-compatible in the way that they are displayed
       // as subsections on old wxMaxima installations.
       // A sectioning level of the value 0 means that the file is too old to
       // provide a sectioning level.
-      if (sectioning_level != wxT("4"))
+      if ((sectioning_level == wxT("0")) || (sectioning_level == wxT("3")))
         group = new GroupCell(m_configuration, GC_TYPE_SUBSECTION, m_cellPointers);
-      else
+      if (sectioning_level == wxT("4"))
         group = new GroupCell(m_configuration, GC_TYPE_SUBSUBSECTION, m_cellPointers);
+      if (sectioning_level == wxT("5"))
+        group = new GroupCell(m_configuration, GC_TYPE_HEADING5, m_cellPointers);
+      if (group == NULL)
+        group = new GroupCell(m_configuration, GC_TYPE_HEADING6, m_cellPointers);
     }
     else if (type == wxT("subsubsection"))
     {
       group = new GroupCell(m_configuration, GC_TYPE_SUBSUBSECTION, m_cellPointers);
+    }
+    else if (type == wxT("heading5"))
+    {
+      group = new GroupCell(m_configuration, GC_TYPE_HEADING5, m_cellPointers);
+    }
+    else if (type == wxT("heading6"))
+    {
+      group = new GroupCell(m_configuration, GC_TYPE_HEADING6, m_cellPointers);
     }
     else
       return NULL;
@@ -280,6 +293,10 @@ MathCell *MathParser::ParseEditorTag(wxXmlNode *node)
     editor->SetType(MC_TYPE_SUBSECTION);
   else if (type == wxT("subsubsection"))
     editor->SetType(MC_TYPE_SUBSUBSECTION);
+  else if (type == wxT("heading5"))
+    editor->SetType(MC_TYPE_HEADING5);
+  else if (type == wxT("heading6"))
+    editor->SetType(MC_TYPE_HEADING6);
 
   wxString text = wxEmptyString;
   wxXmlNode *line = node->GetChildren();

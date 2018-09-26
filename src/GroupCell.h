@@ -41,6 +41,8 @@ enum
   GC_TYPE_SECTION,
   GC_TYPE_SUBSECTION,
   GC_TYPE_SUBSUBSECTION,
+  GC_TYPE_HEADING5,
+  GC_TYPE_HEADING6,
   GC_TYPE_TEXT,
   GC_TYPE_IMAGE,
   GC_TYPE_PAGEBREAK
@@ -278,7 +280,9 @@ public:
     return ((m_groupType == GC_TYPE_SECTION) ||
             (m_groupType == GC_TYPE_TITLE) ||
             (m_groupType == GC_TYPE_SUBSECTION) ||
-            (m_groupType == GC_TYPE_SUBSUBSECTION)
+            (m_groupType == GC_TYPE_SUBSUBSECTION) || 
+            (m_groupType == GC_TYPE_HEADING5) || 
+            (m_groupType == GC_TYPE_HEADING6)
     );
   }
 
@@ -341,7 +345,7 @@ public:
   bool IsMainInput(MathCell *active);
 
   //!  Return this cell's section- or image number.
-  void Number(int &section, int &subsection, int &subsubsection, int &image);
+  void Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image);
 
   /*! Recalculate the cell dimensions after appending new lines.
 

@@ -84,7 +84,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   StatusMaximaBusy(waiting);
 
   // Add some shortcuts that aren't automatically set by menu entries.
-  wxAcceleratorEntry entries[11];
+  wxAcceleratorEntry entries[13];
   entries[0].Set(wxACCEL_CTRL, WXK_TAB, menu_autocomplete);
   entries[1].Set(wxACCEL_CTRL, WXK_SPACE, menu_autocomplete);
   entries[2].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_TAB, menu_autocomplete_templates);
@@ -97,7 +97,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   entries[8].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('3'), menu_convert_to_section);
   entries[9].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('4'), menu_convert_to_subsection);
   entries[10].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('5'), menu_convert_to_subsubsection);
-  wxAcceleratorTable accel(11, entries);
+  entries[10].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('6'), menu_convert_to_subsubsection);
+  entries[10].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('7'), menu_convert_to_subsubsection);
+  wxAcceleratorTable accel(13, entries);
   SetAcceleratorTable(accel);
 
   Move(pos);
@@ -669,6 +671,10 @@ void wxMaximaFrame::SetupMenu()
                      _("Insert a new subsection cell"));
   m_CellMenu->Append(menu_add_subsubsection, _("Insert S&ubsubsection Cell\tCtrl+5"),
                      _("Insert a new subsubsection cell"));
+  m_CellMenu->Append(menu_add_heading5, _("Insert heading5 Cell\tCtrl+6"),
+                     _("Insert a new heading5 cell"));
+  m_CellMenu->Append(menu_add_heading6, _("Insert heading6 Cell\tCtrl+7"),
+                     _("Insert a new heading7 cell"));
   m_CellMenu->Append(menu_add_pagebreak, _("Insert Page Break"),
                      _("Insert a page break"));
   m_CellMenu->Append(menu_insert_image, _("Insert Image..."),
@@ -1761,11 +1767,15 @@ wxPanel *wxMaximaFrame::CreateFormatPane()
                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_title, _("Title"),
                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);
+  grid->Add(new wxButton(panel, menu_format_section, _("Section"),
+                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_subsection, _("Subsection"),
                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_subsubsection, _("Subsubsection"),
                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);
-  grid->Add(new wxButton(panel, menu_format_section, _("Section"),
+  grid->Add(new wxButton(panel, menu_format_heading5, _("Heading 5"),
+                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);
+  grid->Add(new wxButton(panel, menu_format_heading6, _("Heading 6"),
                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_image, _("Image"),
                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);

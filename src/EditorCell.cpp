@@ -317,6 +317,12 @@ wxString EditorCell::ToRTF()
     case MC_TYPE_SUBSUBSECTION:
       retval += wxT("\\pard\\s3\\b\\f0\\fs32 ") + RTFescape(m_text) + wxT("\n");
       break;
+    case MC_TYPE_HEADING5:
+      retval += wxT("\\pard\\s4\\b\\f0\\fs32 ") + RTFescape(m_text) + wxT("\n");
+      break;
+    case MC_TYPE_HEADING6:
+      retval += wxT("\\pard\\s5\\b\\f0\\fs32 ") + RTFescape(m_text) + wxT("\n");
+      break;
     case MC_TYPE_PROMPT:
       retval += wxString::Format(wxT("\\cf%i"), GetStyle()) +
                 wxT("\\pard\\s22\\li1105\\lin1105\\fi-1105\\f0\\fs24 ") + RTFescape(m_text) + wxT("\n");
@@ -540,6 +546,12 @@ wxString EditorCell::ToXML()
       // This makes them backwards-compatible in the way that they are displayed
       // as subsections on old wxMaxima installations.
       head += wxT(" type=\"subsection\" sectioning_level=\"4\"");
+      break;
+    case MC_TYPE_HEADING5:
+      head += wxT(" type=\"subsection\" sectioning_level=\"5\"");
+      break;
+    case MC_TYPE_HEADING6:
+      head += wxT(" type=\"subsection\" sectioning_level=\"6\"");
       break;
     case MC_TYPE_INPUT:
     default:
@@ -4830,6 +4842,12 @@ wxAccStatus EditorCell::GetDescription(int childId, wxString *description)
     break;
   case MC_TYPE_SUBSUBSECTION:
     *description = _("A sub-subsection heading");
+    break;
+  case MC_TYPE_HEADING5:
+    *description = _("A sub-sub-subsection heading");
+    break;
+  case MC_TYPE_HEADING6:
+    *description = _("A sub-sub-sub-subsection heading");
     break;
   case MC_TYPE_TEXT:
     *description = _("Comment (ordinary worksheet text that isn't fed to maxima)");
