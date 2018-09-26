@@ -636,7 +636,7 @@ public:
       );
   }
   
-  int GetAbortOnError(){return m_abortOnError;}
+  bool GetAbortOnError(){return m_abortOnError;}
   void SetAbortOnError(bool abortOnError)
     {wxConfig::Get()->Write("abortOnError",m_abortOnError = abortOnError);}
   
