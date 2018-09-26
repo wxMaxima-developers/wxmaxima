@@ -19,6 +19,10 @@ environment:
 # clone directory
 clone_folder: c:\projects\wxMaxima
 
+# cache the build results in order to speed up the build
+cache:
+  - c:\projects\wxMaxima\src\CMakeFiles
+
 # branches to build
 branches:
   # whitelist
