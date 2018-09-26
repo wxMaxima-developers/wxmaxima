@@ -294,15 +294,17 @@ void IntCell::Draw(wxPoint point, int fontsize)
       int m_signWCenter = m_signWidth / 2;
 
       wxASSERT(fontsize1 > 0);
-      dc->SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
+      wxFont font (fontsize1, wxFONTFAMILY_MODERN,
       wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
       false,
-                        configuration->GetSymbolFontName()));
+                   configuration->GetSymbolFontName());
+
 #if wxCHECK_VERSION(3, 1, 2)
       font.SetFractionalPointSize(fontsize1);
 #else
       font.SetPointSize(fontsize1);
 #endif
+      dc->SetFont(font);
       dc->DrawText(INTEGRAL_TOP,
                   sign.x + m_signWCenter - m_charWidth / 2,
                   sign.y - (m_signHeight + 1) / 2);
