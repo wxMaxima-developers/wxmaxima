@@ -6239,7 +6239,7 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
                   "the efficiency of version control\n\n"
                   "wxMaxima can be downloaded from https://github.com/wxMaxima-developers/wxmaxima.\n"
                   "It also is part of the windows installer for maxima\n"
-                  "(http://maxima.sourceforge.net).\n\n"
+                  "(https://wxmaxima-developers.github.io/wxmaxima/).\n\n"
                   "If a .wxmx file is broken but the content.xml portion of the file can still be\n"
                   "viewed using an text editor just save the xml's text as \"content.xml\"\n"
                   "and try to open it using a recent version of wxMaxima.\n"
@@ -6256,7 +6256,7 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
 
   zip.PutNextEntry(wxT("content.xml"));
   output << wxT("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-  output << wxT("\n<!--   Created by wxMaxima ") << wxT(GITVERSION) << wxT("   -->");
+  output << wxT("\n<!--   Created using wxMaxima ") << wxT(GITVERSION) << wxT("   -->");
   output << wxT("\n<!--https://wxMaxima-developers.github.io/wxmaxima/-->\n");
 
   // write document
