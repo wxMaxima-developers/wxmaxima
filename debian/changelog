@@ -1,3 +1,37 @@
+wxmaxima (18.10.1-1) unstable; urgency=medium
+
+  * A new upstream version that comes with many bugfixes, features and
+    performance improvements.
+  * Updated the Homepage and the main upstream contact of the program.
+  * Dropped all the patches as they are incorporated in the new upstream
+    release.
+ -- Gunter Königsmann <wxmaxima@physikbuch.de>  Wed, 26 Oct 2018 23:33:36 +0100
+
+wxmaxima (18.02.0-2) unstable; urgency=medium
+
+  * Added a patch that repairs "Replace all" when not matching the case.
+ -- Gunter Königsmann <wxmaxima@physikbuch.de>  Sat, 21 Feb 2018 03:25:36 +0100
+
+wxmaxima (18.02.0-1) unstable; urgency=medium
+
+  * New upstream release (closes: bug#890637, #890212)
+  * Added a patch that makes the new version use the correct gnuplot parameters.
+ -- Gunter Königsmann <wxmaxima@physikbuch.de>  Sat, 17 Feb 2018 19:07:36 +0100
+
+wxmaxima (17.10.1-1) unstable; urgency=medium
+
+  * New upstream release incorporating all the patches and enabling
+    tooltips for the more exotic worksheet items
+  * Dropped all the patches.
+ -- Gunter Königsmann <wxmaxima@physikbuch.de>  Sun, 22 Oct 2017 06:40:36 +0100
+
+wxmaxima (17.10.0-3) unstable; urgency=medium
+
+  * debian/control: Instead of dropping the dependency to a specific maxima
+    I accidentally dropped the dependency to maxima entirely.
+    (closes: bug#877891)
+ -- Gunter Königsmann <wxmaxima@physikbuch.de>  Fri, 6 Oct 2017 21:52:36 +0100
+
 wxmaxima (17.10.0-2) unstable; urgency=medium
 
   * Patch: One of the bugfixes in wxMaxima could cause a race condition that could
@@ -5,6 +39,7 @@ wxmaxima (17.10.0-2) unstable; urgency=medium
     bugfix as attaching the output at the right place is more important than
     supporting :lisp commands in the very first cell of the worksheet.
  -- Gunter Königsmann <wxmaxima@physikbuch.de>  Fri, 6 Oct 2017 9:25:36 +0100
+
 wxmaxima (17.10.0-1) unstable; urgency=medium
 
   * New upstream release with many new features, bugfixes and performance
