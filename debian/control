@@ -2,11 +2,10 @@ Source: wxmaxima
 Section: math
 Priority: optional
 Maintainer: Gunter Königsmann <wxmaxima@physikbuch.de>
-Build-Depends: debhelper (>= 10), cmake, libwxgtk3.0-dev, gettext
-Vcs-Browser: https://github.com/wxMaxima-developers/wxmaxima
-Standards-Version: 3.9.8
+Build-Depends: debhelper (>= 11), cmake, libwxgtk3.0-dev, gettext
+Standards-Version: 4.2.1
 Vcs-Git: https://github.com/wxMaxima-developers/wxmaxima.git -b DebianPackaging
-Homepage: http://wxMaxima-developers.github.com/wxmaxima/
+Homepage: https://wxMaxima-developers.github.com/wxmaxima/
 
 Package: wxmaxima
 Architecture: any

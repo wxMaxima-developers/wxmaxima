@@ -1,0 +1,300 @@
+From 6677e1379af623aea26867051d15a8bc03cf33e0 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Gunter=20K=C3=B6nigsmann?= <gunter@peterpall.de>
+Date: Fri, 28 Sep 2018 18:26:05 +0200
+Subject: [PATCH 1/2] Which text editor has added dos line endings in the
+ desktop integration files? (I bet it was one I used, though.)
+
+---
+ data/wxMaxima.appdata.xml | 86 +++++++++++++++++++--------------------
+ data/wxMaxima.desktop     | 48 +++++++++++-----------
+ data/wxmaxima             | 80 ++++++++++++++++++------------------
+ data/x-wxmathml.xml       | 20 ++++-----
+ data/x-wxmaxima-batch.xml | 24 +++++------
+ 5 files changed, 129 insertions(+), 129 deletions(-)
+
+diff --git a/data/wxMaxima.appdata.xml b/data/wxMaxima.appdata.xml
+index a044915e..5d41d418 100644
+--- a/data/wxMaxima.appdata.xml
++++ b/data/wxMaxima.appdata.xml
+@@ -1,43 +1,43 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<component type="desktop">
+- <id>wxMaxima.desktop</id>
+- <metadata_license>CC0-1.0</metadata_license>
+- <project_license>GPL-2.0+</project_license>
+- <name>wxMaxima</name>
+- <summary>A graphical user interface for maxima being a powerful computer algebra system </summary>
+- <description>
+-   <p>
+-     wxMaxima is a graphical user interface for the computer algebra system Maxima:
+-     a program that solves mathematical problems by manipulating
+-     equations (and outputting the resulting formula), instead of just
+-     calculating a number. wxMaxima eases the use of Maxima by making
+-     most of its commands available through a menu system and by
+-     providing input dialogs for commands that require more than one
+-     argument. It also implements its own display engine that outputs
+-     mathematical symbols directly instead of depicting them with
+-     ASCII characters. 
+-  </p>
+-  <p>
+-    wxMaxima also features 2D and 3D inline plots, simple animations,
+-    mixing of text and mathematical calculations to create documents,
+-    exporting of input and output to TeX, document structuring and a
+-    browser for Maxima's manual including command index and full text
+-    searching.
+-  </p>
+- </description>
+- <screenshots>
+-  <screenshot type="default">
+-   <image>http://wxMaxima-developers.github.io/wxmaxima/images/linux_1.jpg</image>
+-   <caption>An example of a plot embedded in a work sheet</caption>
+-  </screenshot>
+-  <screenshot type="default">
+-   <image>http://wxMaxima-developers.github.io/wxmaxima/images/linux_2.jpg</image>
+-   <caption>Another example of a plot embedded in a work sheet</caption>
+-  </screenshot>
+-  <screenshot type="default">
+-   <image>http://wxMaxima-developers.github.io/wxmaxima/images/linux_3.jpg</image>
+-   <caption>wxMaxima provides wizards for the most important functions if maxima</caption>
+-  </screenshot>
+- </screenshots>
+- <url type="homepage">http://wxMaxima-developers.github.io/wxmaxima/</url>
+-</component>
++<?xml version="1.0" encoding="UTF-8"?>
++<component type="desktop">
++ <id>wxMaxima.desktop</id>
++ <metadata_license>CC0-1.0</metadata_license>
++ <project_license>GPL-2.0+</project_license>
++ <name>wxMaxima</name>
++ <summary>A graphical user interface for maxima being a powerful computer algebra system </summary>
++ <description>
++   <p>
++     wxMaxima is a graphical user interface for the computer algebra system Maxima:
++     a program that solves mathematical problems by manipulating
++     equations (and outputting the resulting formula), instead of just
++     calculating a number. wxMaxima eases the use of Maxima by making
++     most of its commands available through a menu system and by
++     providing input dialogs for commands that require more than one
++     argument. It also implements its own display engine that outputs
++     mathematical symbols directly instead of depicting them with
++     ASCII characters. 
++  </p>
++  <p>
++    wxMaxima also features 2D and 3D inline plots, simple animations,
++    mixing of text and mathematical calculations to create documents,
++    exporting of input and output to TeX, document structuring and a
++    browser for Maxima's manual including command index and full text
++    searching.
++  </p>
++ </description>
++ <screenshots>
++  <screenshot type="default">
++   <image>http://wxMaxima-developers.github.io/wxmaxima/images/linux_1.jpg</image>
++   <caption>An example of a plot embedded in a work sheet</caption>
++  </screenshot>
++  <screenshot type="default">
++   <image>http://wxMaxima-developers.github.io/wxmaxima/images/linux_2.jpg</image>
++   <caption>Another example of a plot embedded in a work sheet</caption>
++  </screenshot>
++  <screenshot type="default">
++   <image>http://wxMaxima-developers.github.io/wxmaxima/images/linux_3.jpg</image>
++   <caption>wxMaxima provides wizards for the most important functions if maxima</caption>
++  </screenshot>
++ </screenshots>
++ <url type="homepage">http://wxMaxima-developers.github.io/wxmaxima/</url>
++</component>
+diff --git a/data/wxMaxima.desktop b/data/wxMaxima.desktop
+index c29dea2a..52893c5b 100644
+--- a/data/wxMaxima.desktop
++++ b/data/wxMaxima.desktop
+@@ -1,24 +1,24 @@
+-[Desktop Entry]
+-Encoding=UTF-8
+-Name=wxMaxima
+-GenericName=GUI for Maxima
+-GenericName[de]=Eine grafische Oberfläche für Maxima
+-GenericName[it]=Un'interfaccia grafica per Maxima
+-GenericName[ru]=Графический интерфейс для Maxima
+-GenericName[uk]=Графічний інтерфейс до Maxima
+-Comment=A graphical user interface that allows symbolic and numeric calculations using Maxima
+-Comment[de]=Eine grafische Oberfläche für Maxima, einem Programm für symbolische und numerische Berechnungen
+-Comment[it]=Un'interfaccia grafica che permette all'utente di effettuare calcoli numerici e simbolici usando Maxima
+-Comment[ru]=Графический интерфейс для символьных и числовых вычислений с помощью Maxima
+-Comment[uk]=Графічний інтерфейс для символічних та числових обчислень за допомогою Maxima
+-X-GNOME-FullName=wxMaxima - GUI for Maxima
+-X-GNOME-FullName[it]=wxMaxima - un'interfaccia grafica per Maxima
+-X-GNOME-FullName[de]=wxMaxima - GUI für Maxima
+-X-GNOME-FullName[ru]=wxMaxima - графический интерфейс для Maxima
+-X-GNOME-FullName[uk]=wxMaxima — графічний інтерфейс до Maxima
+-Exec=wxmaxima %f
+-Icon=wxmaxima
+-Type=Application
+-Categories=Education;Math;Science;
+-MimeType=text/x-wxmaxima-batch;text/x-wxmathml;text/x-maximasession;text/x-maxima-out;
+-Keywords=maths;cas;algebra;education;engineering;physics;
++[Desktop Entry]
++Encoding=UTF-8
++Name=wxMaxima
++GenericName=GUI for Maxima
++GenericName[de]=Eine grafische Oberfläche für Maxima
++GenericName[it]=Un'interfaccia grafica per Maxima
++GenericName[ru]=Графический интерфейс для Maxima
++GenericName[uk]=Графічний інтерфейс до Maxima
++Comment=A graphical user interface that allows symbolic and numeric calculations using Maxima
++Comment[de]=Eine grafische Oberfläche für Maxima, einem Programm für symbolische und numerische Berechnungen
++Comment[it]=Un'interfaccia grafica che permette all'utente di effettuare calcoli numerici e simbolici usando Maxima
++Comment[ru]=Графический интерфейс для символьных и числовых вычислений с помощью Maxima
++Comment[uk]=Графічний інтерфейс для символічних та числових обчислень за допомогою Maxima
++X-GNOME-FullName=wxMaxima - GUI for Maxima
++X-GNOME-FullName[it]=wxMaxima - un'interfaccia grafica per Maxima
++X-GNOME-FullName[de]=wxMaxima - GUI für Maxima
++X-GNOME-FullName[ru]=wxMaxima - графический интерфейс для Maxima
++X-GNOME-FullName[uk]=wxMaxima — графічний інтерфейс до Maxima
++Exec=wxmaxima %f
++Icon=wxmaxima
++Type=Application
++Categories=Education;Math;Science;
++MimeType=text/x-wxmaxima-batch;text/x-wxmathml;text/x-maximasession;text/x-maxima-out;
++Keywords=maths;cas;algebra;education;engineering;physics;
+diff --git a/data/wxmaxima b/data/wxmaxima
+index 27ee0678..4e8f368d 100644
+--- a/data/wxmaxima
++++ b/data/wxmaxima
+@@ -1,40 +1,40 @@
+-# wxmaxima(1) completion                                     -*- shell-script -*-
+-
+-_wxmaxima()
+-{
+-    local cur prev words cword split
+-    _init_completion -s || return
+-
+-    case $prev in
+-        --help|-h)
+-            return
+-            ;;
+-        --eval|-e)
+-            return
+-	    ;;
+-        --version|-v)
+-            return
+-            ;;
+-        --batch|-b)
+-            _filedir
+-            return
+-            ;;
+-        --open|-o)
+-            _filedir '@(mac|wxm|wxmx|out|xml)'
+-            return
+-            ;;
+-    esac
+-
+-    $split && return 0
+-
+-    if [[ "$cur" == -* ]]; then
+-        local opts="$( _parse_help "$1" )"
+-        [[ $opts ]] || opts="$( _parse_usage "$1" )"
+-        COMPREPLY=( $( compgen -W "$opts" -- "$cur" ) )
+-        [[ $COMPREPLY == *= ]] && compopt -o nospace
+-    else
+-	_filedir '@(mac|wxm|wxmx|out|xml)'
+-    fi
+-
+-} &&
+-complete -F _wxmaxima wxmaxima
++# wxmaxima(1) completion                                     -*- shell-script -*-
++
++_wxmaxima()
++{
++    local cur prev words cword split
++    _init_completion -s || return
++
++    case $prev in
++        --help|-h)
++            return
++            ;;
++        --eval|-e)
++            return
++	    ;;
++        --version|-v)
++            return
++            ;;
++        --batch|-b)
++            _filedir
++            return
++            ;;
++        --open|-o)
++            _filedir '@(mac|wxm|wxmx|out|xml)'
++            return
++            ;;
++    esac
++
++    $split && return 0
++
++    if [[ "$cur" == -* ]]; then
++        local opts="$( _parse_help "$1" )"
++        [[ $opts ]] || opts="$( _parse_usage "$1" )"
++        COMPREPLY=( $( compgen -W "$opts" -- "$cur" ) )
++        [[ $COMPREPLY == *= ]] && compopt -o nospace
++    else
++	_filedir '@(mac|wxm|wxmx|out|xml)'
++    fi
++
++} &&
++complete -F _wxmaxima wxmaxima
+diff --git a/data/x-wxmathml.xml b/data/x-wxmathml.xml
+index a730875b..e01a9c29 100644
+--- a/data/x-wxmathml.xml
++++ b/data/x-wxmathml.xml
+@@ -1,10 +1,10 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+-  <mime-type type="text/x-wxmathml">
+-    <comment>wxMaxima document</comment>
+-    <comment xml:lang="de">wxMaxima Dokument</comment>
+-    <sub-class-of type="application/zip"/>
+-    <glob pattern="*.wxmx"/>
+-    <generic-icon name="text-x-wxmathml"/>
+-  </mime-type>
+-</mime-info>
++<?xml version="1.0" encoding="utf-8"?>
++<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
++  <mime-type type="text/x-wxmathml">
++    <comment>wxMaxima document</comment>
++    <comment xml:lang="de">wxMaxima Dokument</comment>
++    <sub-class-of type="application/zip"/>
++    <glob pattern="*.wxmx"/>
++    <generic-icon name="text-x-wxmathml"/>
++  </mime-type>
++</mime-info>
+diff --git a/data/x-wxmaxima-batch.xml b/data/x-wxmaxima-batch.xml
+index c9cca663..71b284fb 100644
+--- a/data/x-wxmaxima-batch.xml
++++ b/data/x-wxmaxima-batch.xml
+@@ -1,12 +1,12 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+-  <mime-type type="text/x-wxmaxima-batch">
+-    <comment>wxMaxima document</comment>
+-    <comment xml:lang="de">wxMaxima Dokument</comment>
+-    <glob pattern="*.wxm"/>
+-    <magic>
+-      <match type="string" offset="0" value="/* [wxMaxima batch file"/>
+-    </magic>
+-    <generic-icon name="text-x-wxmaxima-batch"/>
+-  </mime-type>
+-</mime-info>
++<?xml version="1.0" encoding="utf-8"?>
++<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
++  <mime-type type="text/x-wxmaxima-batch">
++    <comment>wxMaxima document</comment>
++    <comment xml:lang="de">wxMaxima Dokument</comment>
++    <glob pattern="*.wxm"/>
++    <magic>
++      <match type="string" offset="0" value="/* [wxMaxima batch file"/>
++    </magic>
++    <generic-icon name="text-x-wxmaxima-batch"/>
++  </mime-type>
++</mime-info>
+-- 
+2.17.1
+

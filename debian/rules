@@ -17,7 +17,4 @@ override_dh_auto_install:
 	dh_auto_install
 	rm debian/wxmaxima/usr/share/wxMaxima/COPYING
 
-get-orig-source:
-	uscan --force-download --repack --rename --destdir .
-
 .PHONY: get-orig-source
