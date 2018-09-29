@@ -44,8 +44,9 @@ before_build:
 
 build_script:
   - cd c:\projects\wxMaxima\build
-  - 'CALL "C:\Program Files (x86)\Microsoft Visual Studio %VisualStudioVersion%\VC\vcvarsall.bat'
-  - msbuild "INSTALL.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+#  - 'CALL "C:\Program Files (x86)\Microsoft Visual Studio %VisualStudioVersion%\VC\vcvarsall.bat'
+#  - 'CALL vcvarsall.bat'
+  - msbuild "INSTALL.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /p:Platform=%platform% /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 artifacts:
   - path: 'build\CMakeFiles\CMakeOutput.log'
