@@ -48,7 +48,7 @@ before_build:
   - cmd: echo wxWidgets_ROOT_DIR:PATH=%wxWidgets_ROOT_DIR% >> CMakeCache.txt
   - cmd: echo WX_LIB_DIR:INTERNAL=%wxWidgets_LIBRARIES% >> CMakeCache.txt
   - cmd: echo WX_ROOT_DIR:INTERNAL=%wxWidgets_ROOT_DIR% >> CMakeCache.txt
-  - cmake -D CMAKE_CXX_FLAGS="/MTd /EHsc" --debug-output -G "Visual Studio 14 2015 Win64" c:\projects\wxMaxima 
+  - cmake -D CMAKE_CXX_FLAGS="/MTd /EHsc" -G "Visual Studio 14 2015 Win64" c:\projects\wxMaxima 
 
 build_script:
   - cd c:\projects\wxMaxima\build
