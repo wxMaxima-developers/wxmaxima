@@ -7,9 +7,6 @@ environment:
     - VisualStudioVersion: 14.0
       platform: x64
       configuration: Release
-    - VisualStudioVersion: 14.0
-      platform: x86
-      configuration: Release
   global:
     MSVC_DEFAULT_OPTIONS: ON
     WXWIN: C:\wxWidgets-3.1.1\
@@ -25,7 +22,7 @@ clone_folder: c:\projects\wxMaxima
 before_build:
   - set WXWIN=C:\wxWidgets-3.1.1\
   - set wxWidgets_ROOT_DIR=%WXWIN%
-  - set wxWidgets_LIB_DIR=%WXWIN%\lib\vc_dll
+  - set wxWidgets_LIB_DIR=%WXWIN%\lib\vc_lib
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.1/wxWidgets-3.1.1.7z'
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.1/wxMSW-3.1.1_vc140_x64_Dev.7z'
   - cmd: 7z x wxWidgets-3.1.1.7z -oC:\wxWidgets-3.1.1
@@ -44,9 +41,8 @@ before_build:
 
 build_script:
   - cd c:\projects\wxMaxima\build
-#  - 'CALL "C:\Program Files (x86)\Microsoft Visual Studio %VisualStudioVersion%\VC\vcvarsall.bat'
-#  - 'CALL vcvarsall.bat'
-  - msbuild "INSTALL.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /p:Platform=%platform% /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - 'CALL "C:\Program Files (x86)\Microsoft Visual Studio %VisualStudioVersion%\VC\vcvarsall.bat'
+  - msbuild "INSTALL.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /p:Platform=x64 /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 artifacts:
   - path: 'build\CMakeFiles\CMakeOutput.log'
