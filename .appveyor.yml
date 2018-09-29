@@ -9,9 +9,9 @@ environment:
       configuration: Release
       vcvarsall_platform: "x64"
     - VisualStudioVersion: 14.0
-      platform: x32
+      platform: x86
       configuration: Release
-      vcvarsall_platform: "x32"
+      vcvarsall_platform: "x86"
   global:
     MSVC_DEFAULT_OPTIONS: ON
     WXWIN: C:\wxWidgets-3.1.1\
@@ -50,7 +50,7 @@ before_build:
   - cmd: echo wxWidgets_ROOT_DIR:PATH=%wxWidgets_ROOT_DIR% >> CMakeCache.txt
   - cmd: echo WX_LIB_DIR:INTERNAL=%wxWidgets_LIBRARIES% >> CMakeCache.txt
   - cmd: echo WX_ROOT_DIR:INTERNAL=%wxWidgets_ROOT_DIR% >> CMakeCache.txt
-  - cmake -D CMAKE_CXX_FLAGS="/MTd /EHsc" -G "Visual Studio 14 2015 Win64" c:\projects\wxMaxima 
+  - cmake -D CMAKE_CXX_FLAGS="/MTd /EHsc" c:\projects\wxMaxima 
 
 build_script:
   - cd c:\projects\wxMaxima\build
