@@ -14,19 +14,12 @@ environment:
     MSVC_DEFAULT_OPTIONS: ON
     WXWIN: C:\wxWidgets-3.1.1\
     wxWidgets_ROOT_DIR: C:\wxWidgets-3.1.1\
-    wxWidgets_INCLUDE_DIRS: C:\wxWidgets-3.1.1\include
-    wxWidgets_LIBRARIES: C:\wxWidgets-3.1.1\lib\vc140_x64_dll
+    wxWidgets_INCLUDE_DIRS: C:\wxWidgets-3.1.1\include\
+    wxWidgets_LIBRARIES: C:\wxWidgets-3.1.1\lib\vc140_x64_dll\
 
 
 # clone directory
 clone_folder: c:\projects\wxMaxima
-
-# Operating system (build VM template)
-# os: Visual Studio 2015
-
-#platform: x64
-#configuration: Release
-
 
 # scripts to run before build
 before_build:
@@ -37,7 +30,6 @@ before_build:
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.1/wxMSW-3.1.1_vc140_x64_Dev.7z'
   - cmd: 7z x wxWidgets-3.1.1.7z -oC:\wxWidgets-3.1.1
   - cmd: 7z x wxMSW-3.1.1_vc140_x64_Dev.7z -oC:\wxWidgets-3.1.1
-  - cmd: dir %wxWidgets_LIBRARIES%
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.1/wxMSW-3.1.1_vc140_x64_ReleaseDLL.7z' -Timeout 15000
   - cmd: 7z x wxMSW-3.1.1_vc140_x64_ReleaseDLL.7z -oC:\wxWidgets-3.1.1
   - echo Running cmake...
@@ -52,13 +44,8 @@ before_build:
 
 build_script:
   - cd c:\projects\wxMaxima\build
-  - 'CALL "C:\Program Files (x86)\Microsoft Visual Studio %VisualStudioVersion%\VC\vcvarsall.bat"
+  - 'CALL "C:\Program Files (x86)\Microsoft Visual Studio %VisualStudioVersion%\VC\vcvarsall.bat'
   - msbuild "INSTALL.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build  /p:Configuration=%configuration% /p:Platform=%platform% /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-
-after_build:
-  - cd c:\projects\wxMaxima\build
-  - CALL "C:\Program Files (x86)\Microsoft Visual Studio %VisualStudioVersion%\VC\vcvarsall.bat"
-  - msbuild "PACKAGE.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build  /p:Configuration=%configuration% /p:Platform=%platform% /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 artifacts:
   - path: 'build\CMakeFiles\CMakeOutput.log'
