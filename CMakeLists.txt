@@ -7,6 +7,12 @@ set(PACKAGE_VERSION ${VERSION})
 set(GITVERSION ${VERSION})
 set(PACKAGE wxMaxima)
 
+# Avoid a warning by deciding which version of this policy we use in case we can
+# decide this.
+if(POLICY CMP0066)
+  cmake_policy(CMP0066 NEW)
+endif()
+
 # Turn off many warnings wxWidgets triggers on MSVC
 if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
