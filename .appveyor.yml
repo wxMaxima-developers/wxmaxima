@@ -6,11 +6,11 @@ environment:
   matrix:
     - VisualStudioVersion: 14.0
       platform: x64
-      configuration: Release
+      configuration: Debug
       vcvarsall_platform: "x64"
     - VisualStudioVersion: 14.0
-      platform: x64
-      configuration: Release
+      platform: x86
+      configuration: Debug
       vcvarsall_platform: "x86"
   global:
     MSVC_DEFAULT_OPTIONS: ON
