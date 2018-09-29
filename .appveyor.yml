@@ -3,7 +3,6 @@
 
 # specify custom environment variables
 environment:
-  - VisualStudioVersion: 14.0
   global:
     MSVC_DEFAULT_OPTIONS: ON
     WXWIN: C:\wxWidgets-3.1.1\
@@ -17,6 +16,7 @@ clone_folder: c:\projects\wxMaxima
 
 platform: x64
 configuration: Release
+VisualStudioVersion: 14.0
 
 # scripts to run before build
 before_build:
