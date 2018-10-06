@@ -1,3 +1,9 @@
+project(wxmaxima)
+set(VERSION 18.10.0.unofficial)
+set(PACKAGE_VERSION ${VERSION})
+set(GITVERSION ${VERSION})
+set(PACKAGE wxMaxima)
+
 # Avoid a warning by deciding which version of this policy we use in case we can
 # decide this.
 if(POLICY CMP0066)
@@ -5,14 +11,6 @@ if(POLICY CMP0066)
 endif()
 
 cmake_minimum_required(VERSION 3.4)
-
-project(wxmaxima)
-
-set(VERSION 18.10.0.unofficial)
-set(PACKAGE_VERSION ${VERSION})
-set(GITVERSION ${VERSION})
-set(PACKAGE wxMaxima)
-
 
 # Turn off many warnings wxWidgets triggers on MSVC
 if(MSVC)

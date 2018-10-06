@@ -10,10 +10,10 @@ branches:
   - gh_pages
   - DebianPackaging
 
-#cache:
-#  ccache: true
-#  directories:
-#    - $HOME/Library/Caches/Homebrew
+cache:
+  ccache: true
+  directories:
+    - $HOME/Library/Caches/Homebrew
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq install -y libwxgtk3.0-dev libwxgtk3.0 gettext doxygen graphviz rpm ; fi
