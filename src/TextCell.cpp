@@ -531,9 +531,9 @@ void TextCell::SetFontSizeForLabel(wxDC *dc)
 {
   wxFont font(dc->GetFont());
 #if wxCHECK_VERSION(3, 1, 2)
-  font.SetFractionalPointSize(m_fontSizeLabel);
+  font.SetFractionalPointSize(Scale_Px(m_fontSizeLabel));
 #else
-  font.SetPointSize(m_fontSizeLabel);
+  font.SetPointSize(Scale_Px(m_fontSizeLabel));
 #endif
   dc->SetFont(font);
 }
@@ -596,9 +596,9 @@ void TextCell::SetFont(int fontsize)
 
   wxASSERT(Scale_Px(m_fontSize) > 0);
 #if wxCHECK_VERSION(3, 1, 2)
-  font.SetFractionalPointSize(m_fontSize);
+  font.SetFractionalPointSize(Scale_Px(m_fontSize));
 #else
-  font.SetPointSize(m_fontSize);
+  font.SetPointSize(Scale_Px(m_fontSize));
 #endif
 
   wxASSERT_MSG(font.IsOk(),
