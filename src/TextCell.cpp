@@ -391,9 +391,9 @@ void TextCell::RecalculateWidths(int fontsize)
       do
       {
 #if wxCHECK_VERSION(3, 1, 2)
-        font.SetFractionalPointSize(--m_fontSizeLabel);
+        font.SetFractionalPointSize(Scale_Px(--m_fontSizeLabel));
 #else
-        font.SetPointSize(--m_fontSizeLabel);
+        font.SetPointSize(Scale_Px(--m_fontSizeLabel));
 #endif
         dc->SetFont(font);
         dc->GetTextExtent(text, &labelWidth, &labelHeight);
