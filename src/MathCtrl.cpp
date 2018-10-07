@@ -79,6 +79,7 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
 #if wxUSE_ACCESSIBILITY
   m_accessibilityInfo = NULL;
 #endif
+  m_scrollToTopOfCell = false;
   m_pointer_x = -1;
   m_pointer_y = -1;
   m_recalculateStart = NULL;
@@ -731,24 +732,24 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
 {
   m_configuration->SetZoomFactor(newzoom);
   // Determine if we have a sane thing we can scroll to.
-  MathCell *CellToScrollTo = NULL;
+  MathCell *cellToScrollTo = NULL;
   if (CaretVisibleIs())
   {
-    CellToScrollTo = GetHCaret();
-    CellToScrollTo = GetActiveCell();
+    cellToScrollTo = GetHCaret();
+    cellToScrollTo = GetActiveCell();
   }
-  if (!CellToScrollTo) CellToScrollTo = GetWorkingGroup(true);
-  if (!CellToScrollTo)
+  if (!cellToScrollTo) cellToScrollTo = GetWorkingGroup(true);
+  if (!cellToScrollTo)
   {
     wxPoint topleft;
     CalcUnscrolledPosition(0, 0, &topleft.x, &topleft.y);
-    CellToScrollTo = GetTree();
-    while (CellToScrollTo != NULL)
+    cellToScrollTo = GetTree();
+    while (cellToScrollTo != NULL)
     {
-      wxRect rect = CellToScrollTo->GetRect();
+      wxRect rect = cellToScrollTo->GetRect();
       if (rect.GetBottom() > topleft.y)
         break;
-      CellToScrollTo = CellToScrollTo->m_next;
+      cellToScrollTo = cellToScrollTo->m_next;
     }
   }
   if (recalc)
@@ -756,9 +757,7 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
     RecalculateForce();
     RequestRedraw();
   }
-
-  if (CellToScrollTo)
-    ScrollToCell(CellToScrollTo, false);
+  ScheduleScrollToCell(cellToScrollTo);
 }
 
 bool MathCtrl::RecalculateIfNeeded()
@@ -904,8 +903,7 @@ void MathCtrl::OnSize(wxSizeEvent& WXUNUSED(event))
   Thaw();
   RequestRedraw();
   if (CellToScrollTo)
-    ScrollToCell(CellToScrollTo, false);
-  //wxScrolledCanvas::OnSize(event);
+    ScheduleScrollToCell(CellToScrollTo, false);
 }
 
 /***
@@ -3501,7 +3499,7 @@ void MathCtrl::SelectWithChar(int ccode)
           m_hCaretPositionEnd = prev;
       }
       if (m_hCaretPositionEnd != NULL)
-        ScrollToCell(m_hCaretPositionEnd, false);
+        ScheduleScrollToCell(m_hCaretPositionEnd, false);
     }
   }
   else
@@ -3533,7 +3531,7 @@ void MathCtrl::SelectWithChar(int ccode)
           m_hCaretPositionEnd = nxt;
       }
       if (m_hCaretPositionEnd != NULL)
-        ScrollToCell(m_hCaretPositionEnd, false);
+        ScheduleScrollToCell(m_hCaretPositionEnd, false);
     }
   }
 
@@ -3710,7 +3708,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
         GroupCell *oldCell = GetHCaret();
         SetHCaret(NULL);
         if (m_tree != NULL)
-          ScrollToCell(m_tree, true);
+          ScheduleScrollToCell(m_tree, true);
         if (event.ShiftDown())
         {
           SetSelection(m_tree, oldCell);
@@ -6708,9 +6706,16 @@ void MathCtrl::FollowEvaluation(bool followEvaluation)
     ScrolledAwayFromEvaluation(false);
 }
 
-void MathCtrl::ScrollToCell(MathCell *cell, bool scrollToTop)
+void MathCtrl::ScrollToCellIfNeeded()
 {
+  if(!m_cellPointers.m_scrollToCell)
+    return;
+  m_cellPointers.m_scrollToCell = false;
+  
   RecalculateIfNeeded();
+
+  MathCell *cell = m_cellPointers.CellToScrollTo();
+  
   if (cell == NULL)
   {
     int view_x, view_y;
@@ -6755,7 +6760,7 @@ void MathCtrl::ScrollToCell(MathCell *cell, bool scrollToTop)
   int cellTop = cellY - cellCenter;
   int cellBottom = cellY + cellDrop;
 
-  if (scrollToTop)
+  if (m_scrollToTopOfCell)
   {
 
     // Scroll upwards if the top of the thing we want to scroll to is less than 1/2
@@ -7578,7 +7583,7 @@ void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
     if (callRefresh) // = true default
       RequestRedraw();
     if (where != NULL)
-      ScrollToCell(where, false);
+      ScheduleScrollToCell(where, false);
 
     // Tell the cursor to blink, but to be visible right now.
     m_blinkDisplayCaret = true;
@@ -7937,7 +7942,7 @@ void MathCtrl::ScrollToCaret()
   RecalculateIfNeeded();
   if (m_hCaretActive)
   {
-    ScrollToCell(m_hCaretPosition, false);
+    ScheduleScrollToCell(m_hCaretPosition, false);
   }
   else
   {
@@ -8344,7 +8349,7 @@ void MathCtrl::OnFollow()
     if (GCContainsCurrentQuestion(GetWorkingGroup()))
     {
       OpenQuestionCaret();
-      ScrollToCell(GetWorkingGroup(), false);
+      ScheduleScrollToCell(GetWorkingGroup(), false);
     }
     else
     {
@@ -8355,7 +8360,7 @@ void MathCtrl::OnFollow()
       }
       SetSelection(GetWorkingGroup());
       SetHCaret(GetWorkingGroup());
-      ScrollToCell(GetWorkingGroup(), false);
+      ScheduleScrollToCell(GetWorkingGroup(), false);
     }
   }
 }

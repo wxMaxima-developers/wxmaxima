@@ -883,6 +883,8 @@ public:
   class CellPointers
   {
   public:
+    void ScrollToCell(MathCell *cell){m_cellToScrollTo = cell;}
+    MathCell *CellToScrollTo(){return m_cellToScrollTo;}
     CellPointers(wxScrolledCanvas *mathCtrl);
     /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
       
@@ -1019,7 +1021,11 @@ public:
 
     wxScrolledCanvas *GetMathCtrl(){return m_mathCtrl;}
 
+    //! Is scrolling to a cell scheduled?
+    bool m_scrollToCell;
   private:
+    //! If m_scrollToCell = true: Which cell do we need to scroll to?
+    MathCell *m_cellToScrollTo;
     //! The function to call if an animation has to be stepped.
     wxScrolledCanvas *m_mathCtrl;
     //! The image counter for saving .wxmx files

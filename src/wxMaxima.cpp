@@ -3014,8 +3014,11 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   }
 
   if(m_console != NULL)
+  {
     m_console->RecalculateIfNeeded();
-
+    m_console->ScrollToCellIfNeeded();
+  }
+  
   // Incremental search is done from the idle task. This means that we don't forcefully
   // need to do a new search on every character that is entered into the search box.
   if (m_console->m_findDialog != NULL)

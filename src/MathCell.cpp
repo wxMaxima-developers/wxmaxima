@@ -1330,6 +1330,7 @@ wxAccStatus MathCell::GetRole (int WXUNUSED(childId), wxAccRole *role)
 
 MathCell::CellPointers::CellPointers(wxScrolledCanvas *mathCtrl)
 {
+  m_cellToScrollTo = NULL;
   m_wxmxImgCounter = 0;
   m_mathCtrl = mathCtrl;
   m_cellMouseSelectionStartedIn = NULL;
@@ -1368,6 +1369,10 @@ bool MathCell::CellPointers::ErrorList::Contains(MathCell *cell)
 void MathCell::MarkAsDeleted()
 {
   // Delete all pointers to this cell
+  if(this == m_cellPointers->CellToScrollTo())
+  {
+      m_cellPointers->m_scrollToCell = false;
+  }
   if(this == m_cellPointers->m_workingGroup)
     m_cellPointers->m_workingGroup = NULL;
   if(this == m_cellPointers->m_lastWorkingGroup)

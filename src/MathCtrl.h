@@ -78,6 +78,8 @@ wxMaxima can display it.
 class MathCtrl : public wxScrolledCanvas
 {
 private:
+  //! If m_cellPointers.m_scrollToCell = true: Do we want to scroll to the top of this cell?
+  bool m_scrollToTopOfCell;
   //! Is our window currently active?
   bool m_windowActive;
   //! The rectangle we need to refresh. -1 as "left" coordinate means: No rectangle
@@ -572,6 +574,7 @@ private:
   AutocompletePopup *m_autocompletePopup;
 
 public:
+  //! Is this worksheet empty?
   bool IsEmpty()
     {
       return ( (m_tree == NULL) ||
@@ -1144,8 +1147,16 @@ public:
   //! Scrolls to the cursor
   void ScrollToCaret();
 
-  //! Scrolls to a given cell
-  void ScrollToCell(MathCell *cell, bool scrollToTop = true);
+  //! Scrolls to the cell given by ScheduleScrollToCell; Is called once we have time to do so.
+  void ScrollToCellIfNeeded();
+  
+  //! Schedules scrolling to a given cell
+  void ScheduleScrollToCell(MathCell *cell, bool scrollToTop = true)
+    {
+      m_cellPointers.ScrollToCell(cell);
+      m_scrollToTopOfCell = scrollToTop;
+      m_cellPointers.m_scrollToCell = true;
+    }
 
   //! Is the point currently visible on the worksheet?
   bool PointVisibleIs(wxPoint point);
