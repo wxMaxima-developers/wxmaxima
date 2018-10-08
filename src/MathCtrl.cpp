@@ -740,6 +740,20 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
 
 void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
 {
+  // Restrict zoom factors to tenths
+  newzoom = ((int)(newzoom * 10)) / 10.0;
+
+  if(newzoom < m_configuration->GetMinZoomFactor())
+    newzoom = m_configuration->GetMinZoomFactor();
+  if(newzoom > m_configuration->GetMaxZoomFactor())
+    newzoom = m_configuration->GetMaxZoomFactor();
+
+  // If the zoom factor hasn't changed return. We don't test for equality with zero
+  // since in this case that might probably work. But testing floats for equality
+  // is a bad habit.
+  if(cabs(m_configuration->GetZoomFactor  - newzoom) < .05)
+    return;
+  
   m_configuration->SetZoomFactor(newzoom);
   // Determine if we have a sane thing we can scroll to.
   MathCell *cellToScrollTo = NULL;
