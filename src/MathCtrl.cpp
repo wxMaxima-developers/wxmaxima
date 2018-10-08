@@ -4183,6 +4183,11 @@ void MathCtrl::OnMouseExit(wxMouseEvent &event)
 #if wxCHECK_VERSION(3,1,1)
 void MathCtrl::OnZoom(wxZoomGestureEvent &event)
 {
+  // Never compare two floates for equality. But don't zoom if we didn't change
+  // the zoom factor or if the gesture is still in course.
+  if((event.IsGestureEnd ()) && (fabs(event.GetZoomFactor() - 1.0) > .001))
+    return;
+  
   SetZoomFactor(m_configuration->GetZoomFactor()*event.GetZoomFactor());
 }
 #endif
