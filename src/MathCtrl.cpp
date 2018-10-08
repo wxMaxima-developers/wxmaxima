@@ -79,6 +79,9 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
 #if wxUSE_ACCESSIBILITY
   m_accessibilityInfo = NULL;
 #endif
+#if wxCHECK_VERSION(3,1,1)
+  EnableTouchEvents(wxTOUCH_ZOOM_GESTURE);
+#endif  
   m_scrollToTopOfCell = false;
   m_pointer_x = -1;
   m_pointer_y = -1;
