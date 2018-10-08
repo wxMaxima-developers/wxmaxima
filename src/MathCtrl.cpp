@@ -150,6 +150,12 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
   #if wxUSE_ACCESSIBILITY
   m_accessibilityInfo = new AccessibilityInfo(this);
   #endif
+
+  #if wxCHECK_VERSION(3,1,1)
+  m_grid->Connect(wxEVT_GESTURE_ZOOM,
+                  wxZoomGestureHandler(MathCtrl::OnZoom),
+                  NULL, this);
+  #endif
 }
 
 bool MathCtrl::RedrawIfRequested()
@@ -4174,15 +4180,8 @@ void MathCtrl::OnMouseExit(wxMouseEvent &event)
   }
 }
 
-#if wxCHECK_VERSION(3,1,0)
-void MathCtrl::OnMagnify(wxMouseEvent& event)
-{
-  SetZoomFactor(m_configuration->GetZoomFactor() + event.GetMagnification());
-}
-#endif
-
 #if wxCHECK_VERSION(3,1,1)
-void MathCtrl::OnZoom(wxZoomGestureEvent& event)
+void MathCtrl::OnZoom(wxZoomGestureEvent &event)
 {
   SetZoomFactor(m_configuration->GetZoomFactor()*event.GetZoomFactor());
 }
@@ -8701,12 +8700,6 @@ wxAccStatus MathCtrl::AccessibilityInfo::GetDescription(int childId, wxString *d
 
 BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
                 EVT_MENU_RANGE(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, MathCtrl::OnComplete)
-#if wxCHECK_VERSION(3,1,0)
-                EVT_MAGNIFY(MathCtrl::OnMagnify)
-#endif
-#if wxCHECK_VERSION(3,1,1)
-                EVT_GESTURE_ZOOM(MathCtrl::OnZoom)
-#endif
                 EVT_SIZE(MathCtrl::OnSize)
                 EVT_PAINT(MathCtrl::OnPaint)
                 EVT_MOUSE_CAPTURE_LOST(MathCtrl::OnMouseCaptureLost)
