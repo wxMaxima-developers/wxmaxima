@@ -153,7 +153,7 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
 
   #if wxCHECK_VERSION(3,1,1)
   Connect(wxEVT_GESTURE_ZOOM,
-          wxGestureHandler(MathCtrl::OnZoom),
+          wxZoomGestureEventHandler(MathCtrl::OnZoom),
           NULL, this);
   #endif
 }
