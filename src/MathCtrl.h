@@ -428,6 +428,11 @@ private:
   void OnMagnify(wxMouseEvent &event);
 #endif
 
+  #if wxCHECK_VERSION(3,1,1)
+  //! Handle pinch-to-zoom-events using the gesture interfact
+  void OnZoomm(wxGestureEvent &event);
+  #endif
+
   void OnMouseExit(wxMouseEvent &event);
 
   void OnMouseEnter(wxMouseEvent &event);

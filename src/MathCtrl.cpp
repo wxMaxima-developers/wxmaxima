@@ -4178,6 +4178,13 @@ void MathCtrl::OnMagnify(wxMouseEvent& event)
 }
 #endif
 
+#if wxCHECK_VERSION(3,1,1)
+void MathCtrl::OnZoom(wxGestureEvent& event)
+{
+  SetZoomFactor(m_configuration->GetZoomFactor()*event.GetZoomFactor());
+}
+#endif
+
 void MathCtrl::OnMouseEnter(wxMouseEvent &WXUNUSED(event))
 {
   m_mouseOutside = false;
@@ -8693,6 +8700,9 @@ BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
                 EVT_MENU_RANGE(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, MathCtrl::OnComplete)
 #if wxCHECK_VERSION(3,1,0)
                 EVT_MAGNIFY(MathCtrl::OnMagnify)
+#endif
+#if wxCHECK_VERSION(3,1,1)
+                EVT_GESTURE_ZOOM(MathCtrl::OnZoom)
 #endif
                 EVT_SIZE(MathCtrl::OnSize)
                 EVT_PAINT(MathCtrl::OnPaint)
