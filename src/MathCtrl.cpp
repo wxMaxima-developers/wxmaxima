@@ -152,9 +152,9 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
   #endif
 
   #if wxCHECK_VERSION(3,1,1)
-  m_grid->Connect(wxEVT_GESTURE_ZOOM,
-                  wxZoomGestureHandler(MathCtrl::OnZoom),
-                  NULL, this);
+  Connect(wxEVT_GESTURE_ZOOM,
+          wxGestureHandler(MathCtrl::OnZoom),
+          NULL, this);
   #endif
 }
 
