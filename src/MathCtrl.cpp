@@ -82,6 +82,7 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
 #if wxCHECK_VERSION(3,1,1)
   EnableTouchEvents(wxTOUCH_ZOOM_GESTURE);
 #endif  
+  m_zoomAtGestureStart = 1.0;
   m_scrollToTopOfCell = false;
   m_pointer_x = -1;
   m_pointer_y = -1;
@@ -4183,12 +4184,10 @@ void MathCtrl::OnMouseExit(wxMouseEvent &event)
 #if wxCHECK_VERSION(3,1,1)
 void MathCtrl::OnZoom(wxZoomGestureEvent &event)
 {
-  // Never compare two floates for equality. But don't zoom if we didn't change
-  // the zoom factor or if the gesture is still in course.
-  if((event.IsGestureEnd ()) && (fabs(event.GetZoomFactor() - 1.0) > .001))
-    return;
+  if(event.IsGestureStart())
+    m_zoomAtGestureStart = m_configuration->GetZoomFactor();
   
-  SetZoomFactor(m_configuration->GetZoomFactor()*event.GetZoomFactor());
+  SetZoomFactor(m_zoomAtGestureStart*event.GetZoomFactor());
 }
 #endif
 

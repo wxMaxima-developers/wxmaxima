@@ -78,6 +78,8 @@ wxMaxima can display it.
 class MathCtrl : public wxScrolledCanvas
 {
 private:
+  //! Which zoom level were we at when we started the zoom gesture?
+  double m_zoomAtGestureStart;
   //! If m_cellPointers.m_scrollToCell = true: Do we want to scroll to the top of this cell?
   bool m_scrollToTopOfCell;
   //! Is our window currently active?
