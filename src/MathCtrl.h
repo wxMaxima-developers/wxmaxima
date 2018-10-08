@@ -430,7 +430,7 @@ private:
 
   #if wxCHECK_VERSION(3,1,1)
   //! Handle pinch-to-zoom-events using the gesture interfact
-  void OnZoom(wxGestureEvent &event);
+  void OnZoom(wxZoomGestureEvent &event);
   #endif
 
   void OnMouseExit(wxMouseEvent &event);

@@ -4182,7 +4182,7 @@ void MathCtrl::OnMagnify(wxMouseEvent& event)
 #endif
 
 #if wxCHECK_VERSION(3,1,1)
-void MathCtrl::OnZoom(wxGestureEvent& event)
+void MathCtrl::OnZoom(wxZoomGestureEvent& event)
 {
   SetZoomFactor(m_configuration->GetZoomFactor()*event.GetZoomFactor());
 }
