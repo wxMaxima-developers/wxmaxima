@@ -171,7 +171,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
     );
 
   m_num = 0;
-  wxConfig *config = (wxConfig *) wxConfig::Get();
+  wxConfigBase *config = wxConfig::Get();
   config->Read(wxT("tipNum"), &m_num);
   if(m_num < 0)
     m_num = m_tips.GetCount()-1;
@@ -247,7 +247,7 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
 
 TipOfTheDay::~TipOfTheDay()
 {
-  wxConfig *config = (wxConfig *) wxConfig::Get();
+  wxConfigBase *config = wxConfig::Get();
   config->Write(wxT("ShowTips"), m_showAtStartup->GetValue());
   config->Write(wxT("tipNum"), m_num + 1);
 }
@@ -327,7 +327,7 @@ void TipOfTheDay::OnPreviousButton(wxCommandEvent &WXUNUSED(dummy))
 
 void TipOfTheDay::OnOkButton(wxCommandEvent &WXUNUSED(dummy))
 {
-  wxConfig *config = (wxConfig *) wxConfig::Get();
+  wxConfigBase *config = wxConfig::Get();
   config->Write(wxT("ShowTips"), m_showAtStartup->GetValue());
   config->Write(wxT("tipNum"), m_num + 1);
   Destroy();

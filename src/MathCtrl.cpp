@@ -2285,7 +2285,7 @@ bool MathCtrl::CopyTeX()
   bool inMath = false;
   wxString label;
 
-  wxConfig *config = (wxConfig *) wxConfig::Get();
+  wxConfigBase *config = wxConfig::Get();
   bool wrapLatexMath = true;
   config->Read(wxT("wrapLatexMath"), &wrapLatexMath);
 

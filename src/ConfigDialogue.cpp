@@ -362,7 +362,7 @@ void ConfigDialogue::SetProperties()
   m_indentMaths->SetToolTip(
           _("Indent maths so all lines are in par with the first line that starts after the label."));
 
-  wxConfig *config = (wxConfig *) wxConfig::Get();
+  wxConfigBase *config = wxConfig::Get();
   wxString mp, mc, ib, mf;
 
   // The default values for all config items that will be used if there is no saved
@@ -1165,7 +1165,7 @@ void ConfigDialogue::WriteSettings()
 {
   wxString search = wxT("maxima-htmldir");
   wxArrayString out;
-  wxConfig *config = (wxConfig *) wxConfig::Get();
+  wxConfigBase *config = wxConfig::Get();
   Configuration *configuration = m_configuration;
   configuration->SetAbortOnError(m_abortOnError->GetValue());
   configuration->RestartOnReEvaluation(m_restartOnReEvaluation->GetValue());
@@ -1268,7 +1268,7 @@ void ConfigDialogue::WriteSettings()
 
 void ConfigDialogue::OnMpBrowse(wxCommandEvent&  WXUNUSED(event))
 {
-  wxConfig *config = (wxConfig *) wxConfig::Get();
+  wxConfigBase *config = wxConfig::Get();
   wxString dd;
   config->Read(wxT("maxima"), &dd);
   wxString file = wxFileSelector(_("Select Maxima program"),

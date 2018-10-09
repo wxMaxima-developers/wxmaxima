@@ -126,7 +126,7 @@ bool Configuration::MaximaFound(wxString location)
 void Configuration::ReadConfig()
 {
   Dirstructure dirstruct;
-  wxConfig *config = (wxConfig *) wxConfig::Get();
+  wxConfigBase *config = wxConfig::Get();
   m_autoWrap = 3;
 
   wxString bgColStr = wxT("white");

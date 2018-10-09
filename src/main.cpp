@@ -289,7 +289,7 @@ void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval)
   int display_width = 1024, display_height = 768;
   bool have_pos;
 
-  wxConfig *config = (wxConfig *) wxConfig::Get();
+  wxConfigBase *config = wxConfig::Get();
 
   wxDisplaySize(&display_width, &display_height);
 

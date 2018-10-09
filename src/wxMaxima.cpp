@@ -99,7 +99,7 @@
 
 void wxMaxima::ConfigChanged()
 {
-  wxConfig *config = (wxConfig *) wxConfig::Get();
+  wxConfigBase *config = wxConfig::Get();
   int showLength = 0;
 
   config->Read(wxT("showLength"), &showLength);
@@ -177,7 +177,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   m_commandIndex = -1;
   m_isActive = true;
   wxASSERT(m_outputPromptRegEx.Compile(wxT("<lbl>.*</lbl>")));
-  wxConfig *config = (wxConfig *) wxConfig::Get();
+  wxConfigBase *config = wxConfig::Get();
   m_unsuccessfulConnectionAttempts = 0;
   m_outputCellsFromCurrentCommand = 0;
   m_CWD = wxEmptyString;
@@ -2730,7 +2730,7 @@ void wxMaxima::ShowTip(bool force)
   // A block with a local config variable:
   // The config can change between before showing the tooltip and afterwards.
   {
-    wxConfig *config = (wxConfig *) wxConfig::Get();
+    wxConfigBase *config = wxConfig::Get();
     config->Read(wxT("ShowTips"), &ShowTips);
     if (!ShowTips && !force)
       return;
@@ -3538,7 +3538,7 @@ bool wxMaxima::SaveFile(bool forceSave)
   wxString fileExt = wxT("wxmx");
   int ext = 0;
 
-  wxConfig *config = (wxConfig *) wxConfig::Get();
+  wxConfigBase *config = wxConfig::Get();
 
   if (file.Length() == 0 || forceSave)
   {
@@ -6951,7 +6951,7 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   // We have saved the file now => No need to have the timer around any longer.
   m_autoSaveTimer.Stop();
 
-  wxConfig *config = (wxConfig *) wxConfig::Get();
+  wxConfigBase *config = wxConfig::Get();
   wxSize size = GetSize();
   wxPoint pos = GetPosition();
   bool maximized = IsMaximized();
