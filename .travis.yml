@@ -45,7 +45,7 @@ script:
  - export COVERITY_SCAN_NOTIFICATION_EMAIL="gunter@peterpall.de"
  - export COVERITY_SCAN_BRANCH_PATTERN="master"
  - export COVERITY_SCAN_BUILD_COMMAND_PREPEND=""
- - export COVERITY_SCAN_BUILD_COMMAND="mkdir build && cd build && cmake .. && make"
+ - export COVERITY_SCAN_BUILD_COMMAND="mkdir build ; cd build ; cmake .. ; make"
  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics"; else export CXXFLAGS="-Wall -Wextra"; fi
  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake ..; cmake --build .; else bash travisci_build_coverity_scan.sh; fi
  # OSX builds are slow even without building the documentation and doxygen should
