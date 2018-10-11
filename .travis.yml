@@ -34,7 +34,7 @@ git:
   depth: 15
 script:
 - curl "https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh">travisci_build_coverity_scan.sh
-- export COVERITY_SCAN_PROJECT_NAME="wxMaxima-developers/wxmaxima"
+- export COVERITY_SCAN_PROJECT_NAME="wxmaxima-developers/wxmaxima"
 - export COVERITY_SCAN_NOTIFICATION_EMAIL="gunter@peterpall.de"
 - export COVERITY_SCAN_BRANCH_PATTERN="master"
 - export COVERITY_SCAN_BUILD_COMMAND_PREPEND="cmake ."
