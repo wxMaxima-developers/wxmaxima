@@ -22,7 +22,7 @@ env:
    - secure: "YMDC7qNngh//ILqo3Y7A5/Zbz5PPBi07yiLg7V336tch/pLX/SVAPY37+82SsNdZGAueXoacw3wluYItDDjDb16s5ArluXWcrOFKQvW95q3udn4m1h48dYzS7UphnDSTaibN4G1n6tB47uVCAVQGJ/oIhdtFmHrqUarfsAflr9GPhfnJkVvFqUYy27UJE/UW9fSdJeVip6LwgAMWbZj7+HOsP+x6kJvnmgNU9r4TWkTGtc69As3ILTrj1E5ypgwFAMKm10dIBLfKn1S5ex9x0FzN8UNSfDXpgRwZ8Yoy7WyMryJwIHPXrG462kzswbiaj4nTKPp6QlMiFfVyahOZ85d7W5eyjUJRqIYAbEaDVpq4YUuP+A+LMgtwkIJqJXzI0ITRCt1CFcRq9PO44Swc1r/Vf/rd0sbnQI69yC2otgzBTkTNAJyA/5W5ZNBYTeq/F0YNfTRjchK4JYxrrK2udKDg3Y4oYqRzOQnQc+KSRGBfz9HGigFvEDBFT1N7piC0kX/BqVxMbQYu9yCLA5YMb0DPWTMVl/G1VEqHdzxD7E+9lrtuV0E1s9mv32xO3H4OLdENSyJH+uFKnnhqjT7AH/cl9vwBfDDFUm403WGtsoM8yra8TOnFdfSgZu/jZIs27bmC6OFXVQWT62RgsnJ7YzycFbAnZOLA+eEg7Qpoujc="
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-; fi
+  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq install -y libwxgtk3.0-dev libwxgtk3.0 gettext doxygen graphviz rpm ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --no-verbose -c https://cmake.org/files/v3.12/cmake-3.12.2-Linux-x86_64.tar.gz ; tar xzf cmake-3.12.2-Linux-x86_64.tar.gz ; export PATH=$(pwd)/cmake-3.12.2-Linux-x86_64/bin:$PATH ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";brew install ccache; fi
@@ -40,10 +40,10 @@ git:
   depth: 15
 
 script:
- - mkdir build && cd build
+ - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then mkdir build && cd build; fi
  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics"; else export CXXFLAGS="-Wall -Wextra"; fi
- - cmake ..
- - cmake --build .
+ - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake ..; fi
+ - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake --build .; fix
  # OSX builds are slow even without building the documentation and doxygen should
  # do the same on all operatings systems, anyway as it is based on wxWidgets ;-)
  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake --build . -- html ; fi
@@ -56,11 +56,6 @@ addons:
       name: "wxMaxima-developers/wxmaxima"
       description: "A feature-full gui for maxima, a free computer algebra system"
     notification_email: gunter@peterpall.de
-    build_command_prepend: "cmake ."
-    build_command: "make"
+    build_command_prepend: "mkdir build && cd build && cmake .."
+    build_command: "cd build && make"
     branch_pattern: master
-  apt_packages:
-    - cmake
-    - libwxbase3.0-dev
-    - libwxgtk3.0-dev
-    - wx3.0-headers
