@@ -41,8 +41,8 @@ script:
 - export COVERITY_SCAN_BUILD_COMMAND="make"
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
   else export CXXFLAGS="-Wall -Wextra"; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake .; cmake --build .; else ls /usr/bin/g++*;cov-configure --comptype gcc --compiler /usr/bin/g++-4;bash travisci_build_coverity_scan.sh;
-  fi
+#- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake .; cmake --build .; else bash travisci_build_coverity_scan.sh; fi
+- cmake .; cmake --build .
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake --build . -- html ; fi
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
