@@ -40,22 +40,18 @@ git:
   depth: 15
 
 script:
- - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then mkdir build && cd build; fi
+ - export COVERITY_SCAN_PROJECT_NAME="${TRAVIS_REPO_SLUG}"
+ - export COVERITY_SCAN_NOTIFICATION_EMAIL="gunter@peterpall.de"
+ - export COVERITY_SCAN_BUILD_COMMAND="make"
+ - export COVERITY_SCAN_BRANCH_PATTERN="master"
+ - export COVERITY_SCAN_BUILD_COMMAND_PREPEND="git clean -q -x -d -f; git checkout -f; mkdir build;cd build;cmake ..;make"
+ - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl -s "https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh" | bash || : ; fi
+ - mkdir build && cd build
  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics"; else export CXXFLAGS="-Wall -Wextra"; fi
  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake ..; fi
- - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake --build .; fix
+ - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake --build .; fi
  # OSX builds are slow even without building the documentation and doxygen should
  # do the same on all operatings systems, anyway as it is based on wxWidgets ;-)
  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake --build . -- html ; fi
  - cmake --build . -- install DESTDIR=$(pwd)/installtest
  - cmake --build . -- package
-
-addons:
-  coverity_scan:
-    project:
-      name: "wxMaxima-developers/wxmaxima"
-      description: "A feature-full gui for maxima, a free computer algebra system"
-    notification_email: gunter@peterpall.de
-    build_command_prepend: "mkdir build && cd build && cmake .."
-    build_command: "cd build && make"
-    branch_pattern: master
