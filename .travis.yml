@@ -1,55 +1,51 @@
 language: cpp
 sudo: required
-
 os:
-  - linux
-  - osx
-
+- linux
+- osx
 branches:
   except:
   - gh_pages
   - DebianPackaging
-
 cache:
   directories:
-    - $HOME/Library/Caches/Homebrew
-#  ccache: true
-
-env:
-  global:
-   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-   #   via the "travis encrypt" command using the project repo's public key
-   - secure: "YMDC7qNngh//ILqo3Y7A5/Zbz5PPBi07yiLg7V336tch/pLX/SVAPY37+82SsNdZGAueXoacw3wluYItDDjDb16s5ArluXWcrOFKQvW95q3udn4m1h48dYzS7UphnDSTaibN4G1n6tB47uVCAVQGJ/oIhdtFmHrqUarfsAflr9GPhfnJkVvFqUYy27UJE/UW9fSdJeVip6LwgAMWbZj7+HOsP+x6kJvnmgNU9r4TWkTGtc69As3ILTrj1E5ypgwFAMKm10dIBLfKn1S5ex9x0FzN8UNSfDXpgRwZ8Yoy7WyMryJwIHPXrG462kzswbiaj4nTKPp6QlMiFfVyahOZ85d7W5eyjUJRqIYAbEaDVpq4YUuP+A+LMgtwkIJqJXzI0ITRCt1CFcRq9PO44Swc1r/Vf/rd0sbnQI69yC2otgzBTkTNAJyA/5W5ZNBYTeq/F0YNfTRjchK4JYxrrK2udKDg3Y4oYqRzOQnQc+KSRGBfz9HGigFvEDBFT1N7piC0kX/BqVxMbQYu9yCLA5YMb0DPWTMVl/G1VEqHdzxD7E+9lrtuV0E1s9mv32xO3H4OLdENSyJH+uFKnnhqjT7AH/cl9vwBfDDFUm403WGtsoM8yra8TOnFdfSgZu/jZIs27bmC6OFXVQWT62RgsnJ7YzycFbAnZOLA+eEg7Qpoujc="
-
+  - "$HOME/Library/Caches/Homebrew"
 before_install:
-  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq install -y libwxgtk3.0-dev libwxgtk3.0 gettext doxygen graphviz rpm ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --no-verbose -c https://cmake.org/files/v3.12/cmake-3.12.2-Linux-x86_64.tar.gz ; tar xzf cmake-3.12.2-Linux-x86_64.tar.gz ; export PATH=$(pwd)/cmake-3.12.2-Linux-x86_64/bin:$PATH ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";brew install ccache; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=/usr/local/opt/texinfo/bin:$PATH:/usr/local/opt/gettext/bin ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxwidgets gettext texinfo ; fi
-
+- echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN
+  CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq install -y libwxgtk3.0-dev
+  libwxgtk3.0 gettext doxygen graphviz rpm ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --no-verbose -c https://cmake.org/files/v3.12/cmake-3.12.2-Linux-x86_64.tar.gz
+  ; tar xzf cmake-3.12.2-Linux-x86_64.tar.gz ; export PATH=$(pwd)/cmake-3.12.2-Linux-x86_64/bin:$PATH
+  ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";brew
+  install ccache; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=/usr/local/opt/texinfo/bin:$PATH:/usr/local/opt/gettext/bin
+  ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxwidgets gettext texinfo
+  ; fi
 notification:
   email:
     recipients:
-      - andrej.vodopivec@gmail.com
+    - andrej.vodopivec@gmail.com
     on_success: change
     on_failure: change
-
 git:
   depth: 15
-
 script:
- - curl "https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh">travisci_build_coverity_scan.sh
- - export COVERITY_SCAN_PROJECT_NAME="wxMaxima-developers/wxmaxima"
- - export COVERITY_SCAN_NOTIFICATION_EMAIL="gunter@peterpall.de"
- - export COVERITY_SCAN_BRANCH_PATTERN="master"
- - export COVERITY_SCAN_BUILD_COMMAND_PREPEND="cmake ."
- - export COVERITY_SCAN_BUILD_COMMAND="make"
- - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics"; else export CXXFLAGS="-Wall -Wextra"; fi
- - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake .; cmake --build .; else bash travisci_build_coverity_scan.sh; fi
- # OSX builds are slow even without building the documentation and doxygen should
- # do the same on all operatings systems, anyway as it is based on wxWidgets ;-)
- - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake --build . -- html ; fi
- - cmake --build . -- install DESTDIR=$(pwd)/installtest
- - cmake --build . -- package
+- curl "https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh">travisci_build_coverity_scan.sh
+- export COVERITY_SCAN_PROJECT_NAME="wxMaxima-developers/wxmaxima"
+- export COVERITY_SCAN_NOTIFICATION_EMAIL="gunter@peterpall.de"
+- export COVERITY_SCAN_BRANCH_PATTERN="master"
+- export COVERITY_SCAN_BUILD_COMMAND_PREPEND="cmake ."
+- export COVERITY_SCAN_BUILD_COMMAND="make"
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
+  else export CXXFLAGS="-Wall -Wextra"; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake .; cmake --build .; else bash travisci_build_coverity_scan.sh;
+  fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake --build . -- html ; fi
+- cmake --build . -- install DESTDIR=$(pwd)/installtest
+- cmake --build . -- package
+env:
+  global:
+    secure: RGJ+5ay90dj7kAWAcHYpzjshBPmd7NyceUrH1PpsqPM0hq45EUoEt/4U7JSlUn+CialIClod5jsgnZHtdiEaOW0LRbf7FHApauiUhgDOZxj6WVWbVoouDVkm0mb53CODXlQJcb7jWhsaY4BY8z8Johc1DRDv8aCsVtk2y4V95Ff5ku8whgNq2lem2BthxozxQIcIhPguDkn6m4SkkOMjVeaZ8kaJY/S9riLas9FVtoF72jBYivaGPjKl39EfAIPFoCJe8ljXs/XB5ya2NzmKRXN4GvP7qq/8Kx5k2LwRBonN+UIwnvXF2J/36SfkO9IvrJ52Vx88FT6xY3vIUtnOrzIIB8+p06HetjDb2URCOsAmV9OR+QzrhfniNlpPIo9EH7R4tR0TsQjfbcJV9Ql83rhwnDfqIrpeC22HWZG5QJD5nUeNCxm1BZj+3R+ryGfZh1L6ScNAmFlKEp8bIqpJlzqJWtoevnZesxXcuQSPogNw0C3B4lS6Hk7R6RItSNtv5Wi02NjyUJcg8yXDPVLI/IHKFvqwujAIw9D2tthQsGd+B7sB7liVsqmTdj7KrrvVKESO8439MEl7pPNpRG7X3AqyQvRJ5C0zFXUl4OFaEYukp+3AxW2B2rGEZ12LCmgeNG2X+1NXPwFIJ3K5bn+wGsTNPj4JEKMzOPlrqC4B0ug=
