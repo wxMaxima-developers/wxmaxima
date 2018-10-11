@@ -40,12 +40,12 @@ git:
   depth: 15
 
 script:
- - export COVERITY_SCAN_PROJECT_NAME="${TRAVIS_REPO_SLUG}"
+ - export COVERITY_SCAN_PROJECT_NAME="wxMaxima-developers/wxmaxima"
  - export COVERITY_SCAN_NOTIFICATION_EMAIL="gunter@peterpall.de"
- - export COVERITY_SCAN_BUILD_COMMAND="make"
  - export COVERITY_SCAN_BRANCH_PATTERN="master"
- - export COVERITY_SCAN_BUILD_COMMAND_PREPEND="git clean -q -x -d -f; git checkout -f; mkdir build;cd build;cmake ..;cmake --build ."
- - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl -s "https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh" | bash || : ; fi
+ - export COVERITY_SCAN_BUILD_COMMAND_PREPEND="mkdir build && cd build && cmake .."
+ - export COVERITY_SCAN_BUILD_COMMAND="cd build&&make"
+ - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget "https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh" && sh travisci_build_coverity_scan.sh; fi
  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics"; else export CXXFLAGS="-Wall -Wextra"; fi
  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake ..; fi
  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake --build .; fi
