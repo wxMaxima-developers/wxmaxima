@@ -11,9 +11,9 @@ branches:
   - DebianPackaging
 
 cache:
-  ccache: true
   directories:
     - $HOME/Library/Caches/Homebrew
+#  ccache: true
 
 env:
   global:
