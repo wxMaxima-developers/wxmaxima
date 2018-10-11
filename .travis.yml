@@ -34,14 +34,14 @@ git:
   depth: 15
 script:
 - curl "https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh">travisci_build_coverity_scan.sh
-- export COVERITY_SCAN_PROJECT_NAME="wxmaxima-developers/wxmaxima"
+- export COVERITY_SCAN_PROJECT_NAME="wxMaxima-developers/wxmaxima"
 - export COVERITY_SCAN_NOTIFICATION_EMAIL="gunter@peterpall.de"
 - export COVERITY_SCAN_BRANCH_PATTERN="master"
 - export COVERITY_SCAN_BUILD_COMMAND_PREPEND="cmake ."
 - export COVERITY_SCAN_BUILD_COMMAND="make"
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
   else export CXXFLAGS="-Wall -Wextra"; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake .; cmake --build .; else bash travisci_build_coverity_scan.sh;
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake .; cmake --build .; else ls /usr/bin/g++*;cov-configure --comptype gcc --compiler /usr/bin/g++-4;bash travisci_build_coverity_scan.sh;
   fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake --build . -- html ; fi
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
