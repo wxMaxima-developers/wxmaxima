@@ -50,10 +50,10 @@ Emfout::Emfout(Configuration **configuration, wxString filename)
   m_dc = NULL;
 
   wxString m_tempFileName = wxFileName::CreateTempFileName(wxT("wxmaxima_size_"));
-  m_recalculationDc = new wxEnhMetaFileDC(m_tempFileName,700,50000);
+  m_recalculationDc = new wxEnhMetaFileDC(m_tempFileName,3000,50000);
   *m_configuration = new Configuration(*m_recalculationDc);
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
-  (*m_configuration)->SetClientWidth(700);
+  (*m_configuration)->SetClientWidth(3000);
   (*m_configuration)->SetZoomFactor_temporarily(1);
   // The last time I tried it the vertical positioning of the elements
   // of a big unicode parenthesis wasn't accurate enough in emf to be
@@ -67,9 +67,13 @@ Emfout::Emfout(Configuration **configuration, wxString filename)
 Emfout::~Emfout()
 {
   wxDELETE(m_tree);
+  m_tree = NULL;
   wxDELETE(*m_configuration);
+  m_configuration = NULL;
   wxDELETE(m_dc);
+  m_dc = NULL;
   wxDELETE(m_recalculationDc);
+  m_recalculationDc = NULL;
   if(wxFileExists(m_tempFileName))
   {
     // We don't want a braindead virus scanner that disallows us to delete our temp
@@ -100,6 +104,9 @@ wxSize Emfout::SetData(MathCell *tree)
 
 bool Emfout::Layout()
 {
+  if(m_recalculationDc == NULL)
+    return;
+  
   (*m_configuration)->SetContext(*m_recalculationDc);
 
   if (m_tree->GetType() != MC_TYPE_GROUP)
@@ -125,17 +132,23 @@ bool Emfout::Layout()
   }
 
   GetMaxPoint(&m_width, &m_height);
-  m_dc->Close();
-  wxDELETE(m_dc);
+  if(m_dc != NULL)
+  {
+    m_dc->Close();
+    wxDELETE(m_dc);
+  }
   // Let's switch to a DC of the right size for our object.
   m_dc = new wxEnhMetaFileDC(m_filename, m_width, m_height);
-  (*m_configuration)->SetContext(*m_dc);
-
-  Draw();
-  // Closing the DC seems to trigger the actual output of the file.
-  m_dc->Close();
-  wxDELETE(m_dc);
-  m_dc = NULL;
+  if(m_dc != NULL)
+  {
+    (*m_configuration)->SetContext(*m_dc);
+    
+    Draw();
+    // Closing the DC seems to trigger the actual output of the file.
+    m_dc->Close();
+    wxDELETE(m_dc);
+    m_dc = NULL;
+  }
   return true;
 }
 
@@ -170,7 +183,6 @@ void Emfout::RecalculateWidths()
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
-
   MathCell *tmp = m_tree;
 
   while (tmp != NULL)
