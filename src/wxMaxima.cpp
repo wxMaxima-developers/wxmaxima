@@ -1205,6 +1205,9 @@ void wxMaxima::KillMaxima()
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
 
+  wxDELETE(m_clientTextStream);m_clientTextStream = NULL;
+  wxDELETE(m_clientStream); m_clientStream = NULL;
+
   if (m_pid <= 0)
   {
     if(m_client)
@@ -1213,17 +1216,16 @@ void wxMaxima::KillMaxima()
         SendMaxima(wxT("($quit)"));
       else
         SendMaxima(wxT("quit();"));
-      return;
+      m_client->Close();
     }
   }
   else
+  {
+    if (m_client)
+      m_client->Close();
     wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN);
+  }
 
-  wxDELETE(m_clientTextStream);m_clientTextStream = NULL;
-  wxDELETE(m_clientStream); m_clientStream = NULL;
-
-  if (m_client)
-    m_client->Close();
   m_client = NULL;
   m_isConnected = false;
 
