@@ -42,8 +42,7 @@ script:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
   else export CXXFLAGS="-Wall -Wextra"; fi
 #- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then mkdir build && cd build && cmake ..; cmake --build .; else bash travisci_build_coverity_scan.sh; fi
-- cmake ..; cmake --build .
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake --build . -- html ; fi
+- mkdir build && cd build && cmake .. ; cmake --build . -- html
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
 env:
