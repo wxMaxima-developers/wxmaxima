@@ -105,7 +105,7 @@ wxSize Emfout::SetData(MathCell *tree)
 bool Emfout::Layout()
 {
   if(m_recalculationDc == NULL)
-    return;
+    return false;
   
   (*m_configuration)->SetContext(*m_recalculationDc);
 
