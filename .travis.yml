@@ -41,7 +41,7 @@ script:
 - export COVERITY_SCAN_BUILD_COMMAND="make"
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
   else export CXXFLAGS="-Wall -Wextra -ansi"; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then mkdir build && cd build && cmake ..; cmake --build .; else bash travisci_build_coverity_scan.sh; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then mkdir build && cd build && cmake ..; cmake --build .; else bash travisci_build_coverity_scan.sh; cat /home/travis/build/wxMaxima-developers/wxmaxima/build/cov-int/build-log.txt;fi
 # - mkdir build && cd build && cmake .. ; cmake --build .
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake --build . -- html ; fi
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
