@@ -46,7 +46,7 @@ script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake --build . -- html; fi
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
--  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ..; git clean -dfx;curl "https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh"|grep -v "^COV_BUILD_OPTIONS=">travisci_build_coverity_scan.sh;bash travisci_build_coverity_scan.sh || true;fi
+-  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ..; git clean -dfx;curl "https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh"|grep -v "^COV_BUILD_OPTIONS=">travisci_build_coverity_scan.sh;bash travisci_build_coverity_scan.sh || cat cov-int/scm_log.txt||true;fi
 env:
   global:
     secure: RGJ+5ay90dj7kAWAcHYpzjshBPmd7NyceUrH1PpsqPM0hq45EUoEt/4U7JSlUn+CialIClod5jsgnZHtdiEaOW0LRbf7FHApauiUhgDOZxj6WVWbVoouDVkm0mb53CODXlQJcb7jWhsaY4BY8z8Johc1DRDv8aCsVtk2y4V95Ff5ku8whgNq2lem2BthxozxQIcIhPguDkn6m4SkkOMjVeaZ8kaJY/S9riLas9FVtoF72jBYivaGPjKl39EfAIPFoCJe8ljXs/XB5ya2NzmKRXN4GvP7qq/8Kx5k2LwRBonN+UIwnvXF2J/36SfkO9IvrJ52Vx88FT6xY3vIUtnOrzIIB8+p06HetjDb2URCOsAmV9OR+QzrhfniNlpPIo9EH7R4tR0TsQjfbcJV9Ql83rhwnDfqIrpeC22HWZG5QJD5nUeNCxm1BZj+3R+ryGfZh1L6ScNAmFlKEp8bIqpJlzqJWtoevnZesxXcuQSPogNw0C3B4lS6Hk7R6RItSNtv5Wi02NjyUJcg8yXDPVLI/IHKFvqwujAIw9D2tthQsGd+B7sB7liVsqmTdj7KrrvVKESO8439MEl7pPNpRG7X3AqyQvRJ5C0zFXUl4OFaEYukp+3AxW2B2rGEZ12LCmgeNG2X+1NXPwFIJ3K5bn+wGsTNPj4JEKMzOPlrqC4B0ug=
