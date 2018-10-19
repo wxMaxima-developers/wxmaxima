@@ -33,7 +33,8 @@ notification:
 git:
   depth: 15
 script:
-- curl "https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh">travisci_build_coverity_scan.sh
+- curl "https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh"|grep -v "^COV_BUILD_OPTIONS=">travisci_build_coverity_scan.sh
+- export COV_BUILD_OPTIONS="--return-emit-failures 8 --parse-error-threshold 5"
 - export COVERITY_SCAN_PROJECT_NAME="wxMaxima-developers/wxmaxima"
 - export COVERITY_SCAN_NOTIFICATION_EMAIL="gunter@peterpall.de"
 - export COVERITY_SCAN_BRANCH_PATTERN="master"
