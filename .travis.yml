@@ -38,7 +38,7 @@ script:
 - export COVERITY_SCAN_PROJECT_NAME="wxMaxima-developers/wxmaxima"
 - export COVERITY_SCAN_NOTIFICATION_EMAIL="gunter@peterpall.de"
 - export COVERITY_SCAN_BRANCH_PATTERN="master"
-- export COVERITY_SCAN_BUILD_COMMAND_PREPEND="mkdir build&&cd build&&cmake .."
+- export COVERITY_SCAN_BUILD_COMMAND_PREPEND="cmake ."
 - export COVERITY_SCAN_BUILD_COMMAND="make"
 # The "-ansi -std=c++11" is necessary for coverity.
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
