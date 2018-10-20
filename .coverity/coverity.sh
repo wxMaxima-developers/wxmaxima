@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # This is an adapted version of
-# "https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh
+# https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh
 # that doesn't try to import stuff from git.
 
 set -e
@@ -92,7 +92,7 @@ response=$(curl \
 status_code=$(echo "$response" | sed -n '$p')
 if [ "$status_code" != "201" ]; then
   TEXT=$(echo "$response" | sed '$d')
-  echo -e "\033[33;1mCoverity Scan upload failed: $TEXT.\033[0m"
+  echo -e "\033[33;1mCoverity Scan upload result: $status_code $TEXT.\033[0m"
   exit 0
 fi
 exit 0
