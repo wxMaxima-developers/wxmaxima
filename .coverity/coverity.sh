@@ -7,7 +7,7 @@
 set -e
 
 # Environment check
-echo -e "\033[33;1mNote: COVERITY_SCAN_PROJECT_NAME and COVERITY_SCAN_TOKEN are available on Project Settings page on scan.coverity.com\033[0m"
+# COVERITY_SCAN_PROJECT_NAME and COVERITY_SCAN_TOKEN are available on Project Settings page on scan.coverity.com
 [ -z "$COVERITY_SCAN_PROJECT_NAME" ] && echo "ERROR: COVERITY_SCAN_PROJECT_NAME must be set" && exit 1
 [ -z "$COVERITY_SCAN_NOTIFICATION_EMAIL" ] && echo "ERROR: COVERITY_SCAN_NOTIFICATION_EMAIL must be set" && exit 1
 [ -z "$COVERITY_SCAN_BRANCH_PATTERN" ] && echo "ERROR: COVERITY_SCAN_BRANCH_PATTERN must be set" && exit 1
@@ -66,7 +66,7 @@ export PATH=$TOOL_DIR/bin:$PATH
 
 # Build
 echo -e "\033[33;1mRunning Coverity Scan Analysis Tool...\033[0m"
-COV_BUILD_OPTIONS="--return-emit-failures 8 --parse-error-threshold 85"
+COV_BUILD_OPTIONS="--return-emit-failures --parse-error-threshold 85"
 cmake .
 COVERITY_UNSUPPORTED=1 cov-build --dir cov-int $COV_BUILD_OPTIONS make
 
