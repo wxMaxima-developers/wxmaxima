@@ -53,14 +53,12 @@ else
 fi
 
 # Download Coverity Scan Analysis Tool
-if [ ! -e $TOOL_ARCHIVE ]; then
-  echo -e "\033[33;1mDownloading Coverity Scan Analysis Tool...\033[0m"
-  wget -nv -O coverity_tool.tgz $TOOL_URL --post-data "project=$COVERITY_SCAN_PROJECT_NAME&token=$COVERITY_SCAN_TOKEN"
-fi
+echo -e "\033[33;1mDownloading Coverity Scan Analysis Tool...\033[0m"
+wget -nv -O coverity_tool.tgz $TOOL_URL --post-data "project=$COVERITY_SCAN_PROJECT_NAME&token=$COVERITY_SCAN_TOKEN"
 
 # Extract Coverity Scan Analysis Tool
 echo -e "\033[33;1mExtracting Coverity Scan Analysis Tool...\033[0m"
-tar xzf $TOOL_ARCHIVE
+tar xzf coverity_tool.tgz
 
 
 TOOL_DIR=`find -type d -name 'cov-analysis*'`
