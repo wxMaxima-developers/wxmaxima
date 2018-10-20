@@ -21,6 +21,9 @@ TOOL_BASE=/tmp/coverity-scan-analysis
 UPLOAD_URL="https://scan.coverity.com/builds"
 SCAN_URL="https://scan.coverity.com"
 
+# If the cache is enabled coverity won't get any data from the compiler run.
+export CCACHE_DISABLE=1
+
 # Do not run on pull requests
 if [ "${TRAVIS_PULL_REQUEST}" = "true" ]; then
   echo -e "\033[33;1mINFO: Skipping Coverity Analysis: branch is a pull request.\033[0m"

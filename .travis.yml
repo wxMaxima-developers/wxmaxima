@@ -8,6 +8,7 @@ branches:
   - gh_pages
   - DebianPackaging
 cache:
+  ccache: true
   directories:
   - "$HOME/Library/Caches/Homebrew"
 before_install:
