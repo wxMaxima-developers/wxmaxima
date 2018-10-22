@@ -1,12 +1,15 @@
-wxmaxima (18.10.1-1) unstable; urgency=medium
+wxmaxima (18.10.2-1) unstable; urgency=medium
 
   * A new upstream version that comes with many bugfixes, features and
     performance improvements.
   * Updated the Homepage and the main upstream contact of the program.
   * Dropped all the patches as they are incorporated in the new upstream
   * release.
-  * Added a new patch that corrects some DOS line endings.
- -- Gunter Königsmann <wxmaxima@physikbuch.de>  Fri, 28 Sep 2018 18:31:36 +0100
+  * Raised the debhelper compatibility level (and min version) to 11
+  * debian info: Promoted several URLs from http to https
+  * debian packaging: Removed the unneeded get-orig-source target.
+  * debian packaging: Added an vcs-browser field.
+ -- Gunter Königsmann <wxmaxima@physikbuch.de>  Mon, 22 Oct 2018 08:12:36 +0100
 
 wxmaxima (18.02.0-2) unstable; urgency=medium
 
