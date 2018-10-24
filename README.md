@@ -22,5 +22,4 @@ Information on how to compile wxMaxima from source instead can be
 found at https://github.com/wxMaxima-developers/wxmaxima/blob/master/Compiling.md
 
 
-![Coverity Scan Build Status](https://scan.coverity.com/projects/16902/badge.svg)
 ![Travis CI Build Status](https://travis-ci.org/wxMaxima-developers/wxmaxima.svg?branch=master)
