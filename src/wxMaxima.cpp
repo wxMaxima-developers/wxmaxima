@@ -888,8 +888,8 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_client->SetTimeout(2);
       m_client->Notify(true);
       m_clientStream = new wxSocketInputStream(*m_client);
-      m_clientTextStream = new wxTextInputStream(*m_clientStream, wxT('\n'),
-                                                 wxConvAuto(wxFONTENCODING_UTF8));
+      m_clientTextStream = new wxTextInputStream(*m_clientStream, wxT('\t'),
+                                                 wxConvUTF8);
       SetupVariables();
 
       // Start the evaluation. If the evaluation queue isn't empty, that is.
