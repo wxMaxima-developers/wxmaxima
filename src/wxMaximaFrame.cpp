@@ -1645,6 +1645,7 @@ wxPanel *wxMaximaFrame::CreateLogPane()
 
   panel->SetSizerAndFit(vbox);
   wxLog::SetActiveTarget(m_logPanelTarget = new wxLogTextCtrl(textCtrl));
+  m_logPanelTarget->SetRepetitionCounting();
   return panel;
 }
 
