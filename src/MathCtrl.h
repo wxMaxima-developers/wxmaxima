@@ -1150,7 +1150,7 @@ public:
   void ScrollToCaret();
 
   //! Scrolls to the cell given by ScheduleScrollToCell; Is called once we have time to do so.
-  void ScrollToCellIfNeeded();
+  bool ScrollToCellIfNeeded();
   
   //! Schedules scrolling to a given cell
   void ScheduleScrollToCell(MathCell *cell, bool scrollToTop = true)
