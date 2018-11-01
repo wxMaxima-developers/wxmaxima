@@ -189,7 +189,6 @@ bool FunCell::BreakUp()
   {
     m_isBroken = true;
     m_nameCell->m_previousToDraw = this;
-    m_nameCell->RecalculateWidths();
     m_nameCell->m_nextToDraw = m_argCell;
     m_argCell->m_previousToDraw = m_nameCell;
     m_argCell->m_nextToDraw = m_nextToDraw;

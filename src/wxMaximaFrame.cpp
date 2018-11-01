@@ -223,6 +223,9 @@ void wxMaximaFrame::StatusExportFailed()
 
 wxMaximaFrame::~wxMaximaFrame()
 {
+  // We are about to delete the panel all log messages are output to =>
+  // create a new log target.
+  wxLog::SetActiveTarget(new wxLogGui());
   wxString perspective = m_manager.SavePerspective();
 
   wxConfig::Get()->Write(wxT("AUI/perspective"), perspective);

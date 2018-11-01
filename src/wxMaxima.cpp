@@ -3411,8 +3411,6 @@ wxString wxMaxima::GetDefaultEntry()
 
 bool wxMaxima::OpenFile(wxString file, wxString cmd)
 {
-  wxLogGui log;
-  if(m_logPanelTarget) wxLog::SetActiveTarget(&log);
   bool retval = true;
   if (file.Length() && wxFileExists(file))
   {
@@ -3531,14 +3529,11 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
   if(!retval)
     SetStatusText(wxString::Format("Errors trying to open the file %s.", file),0);
 
-  if(m_logPanelTarget)  wxLog::SetActiveTarget(m_logPanelTarget);
   return retval;
 }
 
 bool wxMaxima::SaveFile(bool forceSave)
 {
-  wxLogGui log;
-  if(m_logPanelTarget) wxLog::SetActiveTarget(&log);
   // Show a busy cursor as long as we export a file.
   wxBusyCursor crs;
 
@@ -3583,7 +3578,6 @@ bool wxMaxima::SaveFile(bool forceSave)
     {
       if ((m_console->m_configuration->AutoSaveInterval() > 0) && (m_console->m_currentFile.Length() > 0))
         m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval());
-      if(m_logPanelTarget) wxLog::SetActiveTarget(m_logPanelTarget);
       return false;
     }
   }
@@ -3619,7 +3613,6 @@ bool wxMaxima::SaveFile(bool forceSave)
         StatusSaveFailed();
         if (m_console->m_configuration->AutoSaveInterval() > 0)
           m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval());
-        if(m_logPanelTarget) wxLog::SetActiveTarget(m_logPanelTarget);
         return false;
       }
       else
@@ -3635,7 +3628,6 @@ bool wxMaxima::SaveFile(bool forceSave)
         StatusSaveFailed();
         if (m_console->m_configuration->AutoSaveInterval() > 0)
           m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval() > 0);
-        if(m_logPanelTarget) wxLog::SetActiveTarget(m_logPanelTarget);
         return false;
       }
       else
@@ -3650,14 +3642,12 @@ bool wxMaxima::SaveFile(bool forceSave)
     StatusSaveFinished();
     RemoveTempAutosavefile();
     UpdateRecentDocuments();
-    if(m_logPanelTarget) wxLog::SetActiveTarget(m_logPanelTarget);
     return true;
   }
 
   if (m_console->m_configuration->AutoSaveInterval() > 0)
     m_autoSaveTimer.StartOnce(m_console->m_configuration->AutoSaveInterval() > 0);
 
-  wxLog::SetActiveTarget(m_logPanelTarget);
   return false;
 }
 
