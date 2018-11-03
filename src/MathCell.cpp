@@ -359,7 +359,7 @@ void MathCell::RecalculateList(int fontsize)
   {
     tmp->RecalculateWidths(fontsize);
     tmp->RecalculateHeight(fontsize);
-    tmp = tmp->m_next;
+    tmp = tmp->m_nextToDraw;
   }
 }
 
@@ -413,14 +413,19 @@ void MathCell::RecalculateWidths(int WXUNUSED(fontsize))
  */
 bool MathCell::DrawThisCell(wxPoint point)
 {
+  // If the cell isn't on the worksheet we don't draw it.
   if((point.x < 0) || (point.y < 0))
     return false;
 
+  // If a cell is broken into lines its individual parts are displayed but
+  // not the cell itself (example: Denominator and Numerator are displayed
+  // but not the horizontal line with denominator above and numerator below.
+  if(m_isBroken)
+    return false;
+  
   Configuration *configuration = (*m_configuration);
   int top = configuration->GetTop();
   int bottom = configuration->GetBottom();
-  if (top == -1 || bottom == -1)
-    return true;
   if (point.y - GetMaxCenter() > bottom || point.y + GetMaxDrop() < top)
     return false;
   return true;

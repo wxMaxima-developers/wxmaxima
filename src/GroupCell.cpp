@@ -989,7 +989,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
               (tmp->m_previousToDraw == NULL) &&
               configuration->IndentMaths()
             )
-            in.x += Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING;
+            in.x += Scale_Px(configuration->Get<LabelWidth()) + MC_TEXT_PADDING;
           
           if (!tmp->m_isBroken)
           {
@@ -1955,7 +1955,9 @@ void GroupCell::BreakUpCells(MathCell *cell, int WXUNUSED(fontsize), int clientW
     
   while (tmp != NULL && !m_hide)
   {
-    if (tmp->GetWidth() > clientWidth)
+    if (tmp->GetWidth() +
+        (*m_configuration)->GetIndent() +
+        Scale_Px((*m_configuration)->GetLabelWidth()) > clientWidth)
     {
       if (tmp->BreakUp())
         lineHeightsChanged = true;
@@ -1965,14 +1967,10 @@ void GroupCell::BreakUpCells(MathCell *cell, int WXUNUSED(fontsize), int clientW
 
   if(lineHeightsChanged)
   {
-    if(m_inputLabel != NULL)
-    {
-      m_inputLabel->RecalculateList((*m_configuration)->GetDefaultFontSize());
-    }
     if(m_output != NULL)
     {
       m_output->ResetSizeList();
-      m_output->RecalculateList(m_output->IsMath() ? m_mathFontSize : m_fontSize);
+      m_output->RecalculateList(m_mathFontSize);
     }
     ResetData();
   }
@@ -1987,7 +1985,7 @@ void GroupCell::UnBreakUpCells()
     {
       tmp->Unbreak();
     }
-    tmp = tmp->m_next;
+    tmp = tmp->m_nextToDraw;
   }
 }
 

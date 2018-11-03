@@ -248,10 +248,10 @@ public:
   */
   void Recalculate();
 
-  //! Attempt to split Math Cells inside this cell into separate lines, if they are too wide to fit on the screen.
+  //! Attempt to split math objects that are wider than the screen into multiple lines.
   void BreakUpCells(int fontsize, int clientWidth);
 
-  //! Attempt to split Math Cells inside this cell into separate lines, if they are too wide to fit on the screen.
+  //! Attempt to split math objects that are wider than the screen into multiple lines.
   void BreakUpCells(MathCell *cell, int fontsize, int clientWidth);
 
   //! Undo a BreakUpCells
