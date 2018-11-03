@@ -729,7 +729,6 @@ protected:
   RecentDocuments m_recentPackages;
   wxMenu *m_recentDocumentsMenu;
   wxMenu *m_recentPackagesMenu;
-  wxLog *m_logPanelTarget;
 };
 
 #endif // WXMAXIMAFRAME_H

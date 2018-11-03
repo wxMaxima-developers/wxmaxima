@@ -48,7 +48,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_unsavedDocuments(wxT("unsaved")),
   m_recentPackages(wxT("packages"))
 {
-  m_logPanelTarget = NULL;
   m_isNamed = false;
   m_configFileName = configFile,
   m_updateEvaluationQueueLengthDisplay = true;
@@ -1638,7 +1637,7 @@ wxPanel *wxMaximaFrame::CreateLogPane()
   vbox->Add(textCtrl, wxSizerFlags().Expand().Proportion(10));
 
   panel->SetSizerAndFit(vbox);
-  wxLog::SetActiveTarget(m_logPanelTarget = new wxLogTextCtrl(textCtrl));
+  wxLog::SetActiveTarget(new wxLogTextCtrl(textCtrl));
   return panel;
 }
 
