@@ -116,7 +116,7 @@ void FunCell::Draw(wxPoint point, int fontsize)
     wxPoint name(point), arg(point);
     m_nameCell->DrawList(name, fontsize);
 
-    arg.x += m_nameCell->GetFullWidth() - Scale_Px(1);
+    arg.x += m_nameCell->GetFullWidth();
     m_argCell->DrawList(arg, fontsize);
   }
 }
