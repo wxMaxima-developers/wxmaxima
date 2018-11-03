@@ -186,6 +186,7 @@ bool FunCell::BreakUp()
   if (!m_isBroken)
   {
     m_isBroken = true;
+    m_nameCell->m_currentPoint = m_currentPoint;
     m_nameCell->m_previousToDraw = this;
     m_nameCell->m_nextToDraw = m_argCell;
     m_argCell->m_previousToDraw = m_nameCell;

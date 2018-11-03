@@ -960,66 +960,22 @@ void GroupCell::Draw(wxPoint point, int fontsize)
         int drop = tmp->GetMaxDrop();
         if ((configuration->ShowCodeCells()) ||
             (m_groupType != GC_TYPE_CODE))
-        {
           in.y += m_inputLabel->GetMaxDrop();
-        }
+
         in.y += m_output->GetMaxCenter();
         m_outputRect.y = in.y - m_output->GetMaxCenter();
         m_outputRect.x = in.x;
 
         while (tmp != NULL)
-        {
-          if (tmp->BreakLineHere())
-          {
-            if (tmp->m_bigSkip)
-              in.y += MC_LINE_SKIP;
-          
-            if (tmp->m_previousToDraw != NULL &&
-                tmp->GetStyle() == TS_LABEL)
-              in.y += configuration->GetInterEquationSkip();
-          }
-        
+        {         
           tmp->m_currentPoint = in;
 
-          if(
-              (tmp->GetStyle() != TS_LABEL) &&
-              (tmp->GetStyle() != TS_USERLABEL) &&
-              (tmp->GetStyle() != TS_MAIN_PROMPT) &&
-              (tmp->GetStyle() != TS_OTHER_PROMPT) &&
-              (tmp->m_previousToDraw == NULL) &&
-              configuration->IndentMaths()
-            )
-            in.x += Scale_Px(configuration->Get<LabelWidth()) + MC_TEXT_PADDING;
-          
-          if (!tmp->m_isBroken)
-          {
-            if (tmp->DrawThisCell(in))
-              tmp->Draw(in, MAX(tmp->IsMath() ? m_mathFontSize : m_fontSize, MC_MIN_SIZE));
-            if (tmp->m_nextToDraw != NULL)
+          tmp->Draw(in, MAX(tmp->IsMath() ? m_mathFontSize : m_fontSize, MC_MIN_SIZE));
+          if ((tmp->m_nextToDraw != NULL) && (tmp->m_nextToDraw->BreakLineHere()))
             {
-              if (tmp->m_nextToDraw->BreakLineHere())
-              {
-                in.x = point.x;
-                if(
-                  (tmp->m_nextToDraw->GetStyle() != TS_LABEL) &&
-                  (tmp->m_nextToDraw->GetStyle() != TS_USERLABEL) &&
-                  (tmp->m_nextToDraw->GetStyle() != TS_MAIN_PROMPT) &&
-                  (tmp->m_nextToDraw->GetStyle() != TS_OTHER_PROMPT) &&
-                  configuration->IndentMaths()
-                  )
-                  in.x += Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING;
-                in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
-                drop = tmp->m_nextToDraw->GetMaxDrop();
-              }
-              else
-                in.x += (tmp->GetWidth());
-            }
-
-          }
-          else
-          {
-            if (tmp->m_nextToDraw != NULL && tmp->m_nextToDraw->BreakLineHere())
-            {
+              if (tmp->m_nextToDraw->m_bigSkip)
+                in.y += MC_LINE_SKIP;
+ 
               in.x = point.x;
               if(
                 (tmp->m_nextToDraw->GetStyle() != TS_LABEL) &&
@@ -1029,10 +985,13 @@ void GroupCell::Draw(wxPoint point, int fontsize)
                 configuration->IndentMaths()
                 )
                 in.x += Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING;
+              
               in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
               drop = tmp->m_nextToDraw->GetMaxDrop();
             }
-          }
+          else
+            if(tmp->DrawThisCell(in)) in.x += (tmp->GetWidth());
+
           tmp = tmp->m_nextToDraw;
         }
       }
