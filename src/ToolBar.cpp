@@ -500,7 +500,6 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
 
 void ToolBar::OnSize(wxSizeEvent &event)
 {
-  wxLogMessage("ToolBar resizes");
   Refresh();
   event.Skip();
 }

@@ -146,7 +146,6 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFil
     if (strucStat.st_size > 25*1000*1000)
       return;
 
-    wxLogMessage(_("Caching the gnuplot source of an image."));
     // The gnuplot source of the image is cached in a compressed form:
     //
     // as it is text-only and contains many redundancies it will get way
@@ -178,8 +177,6 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFil
         {
           wxString dataFileName;
           dataFileName = replaceDataFileName.GetMatch(line);
-          if(dataFileName != wxEmptyString)
-            wxLogMessage(_("Gnuplot Data File Name: ") + dataFileName);
           replaceDataFileName.Replace(&line,wxT("'<DATAFILENAME>'"));
         }
         textOut << line + wxT("\n");
@@ -230,7 +227,6 @@ void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFil
         wxInputStream *input = fsfile->GetStream();
           if(input->IsOk())
           {
-            wxLogMessage(_("Reading the gnuplot source of an image."));
             wxTextInputStream textIn(*input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
 
             wxMemoryOutputStream mstream;
@@ -374,7 +370,6 @@ wxString Image::GnuplotData()
   wxFileName gnuplotDataFile(m_gnuplotData);
   m_gnuplotData = wxStandardPaths::Get().GetTempDir() + "/" + gnuplotDataFile.GetFullName();
 
-  wxLogMessage(_("Restoring gnuplot data file from cache."));
   wxFileOutputStream output(m_gnuplotData);
   wxTextOutputStream textOut(output);
   if(!output.IsOk())
@@ -414,7 +409,6 @@ wxString Image::GnuplotSource()
   if(!output.IsOk())
     return m_gnuplotSource;
 
-  wxLogMessage(_("Restoring gnuplot source file from cache."));
   wxMemoryInputStream mstream(
     m_gnuplotSource_Compressed.GetData(),
     m_gnuplotSource_Compressed.GetDataLen()

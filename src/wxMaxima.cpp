@@ -2212,6 +2212,8 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
 // Clear document (if clearDocument == true), then insert file
 bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument)
 {
+  wxLogGui logGui;
+  wxLogChain logDialogue(new wxLogGui);
   // Show a busy cursor while we open the file.
   wxBusyCursor crs;
 
@@ -2292,211 +2294,217 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
 
 bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocument)
 {
-  // Show a busy cursor while we open a file.
-  wxBusyCursor crs;
-
-  m_newStatusText = _("Opening file");
-
-  document->Freeze();
-
-  // If the file is empty we don't want to generate an error, but just
-  // open an empty file.
-  //
-  // This makes the following thing work on windows without the need of an
-  // empty template file:
-  //
-  // - Create a registry key named HKEY_LOKAL_MACHINE\SOFTWARE\CLASSES\.wxmx\ShellNew
-  // - Create a string named "NullFile" within this key
-  //
-  // => After the next reboot the right-click context menu's "new" submenu contains
-  //    an entry that creates valid empty .wxmx files.
-  if (wxFile(file, wxFile::read).Eof())
+  wxLogMessage(_("Opening a wxmx file"));
   {
-    document->ClearDocument();
-    StartMaxima();
+    wxLogGui logGui;
+    wxLogChain logDialogue(new wxLogGui);
+    // Show a busy cursor while we open a file.
+    wxBusyCursor crs;
+    
+    m_newStatusText = _("Opening file");
 
-    m_console->m_currentFile = file;
-    ResetTitle(true, true);
-    document->SetSaved(true);
-    document->Thaw();
-    RemoveTempAutosavefile();
-    return true;
-  }
+    document->Freeze();
 
-  // open wxmx file
-  wxXmlDocument xmldoc;
+    // If the file is empty we don't want to generate an error, but just
+    // open an empty file.
+    //
+    // This makes the following thing work on windows without the need of an
+    // empty template file:
+    //
+    // - Create a registry key named HKEY_LOKAL_MACHINE\SOFTWARE\CLASSES\.wxmx\ShellNew
+    // - Create a string named "NullFile" within this key
+    //
+    // => After the next reboot the right-click context menu's "new" submenu contains
+    //    an entry that creates valid empty .wxmx files.
+    if (wxFile(file, wxFile::read).Eof())
+    {
+      document->ClearDocument();
+      StartMaxima();
 
-  // We get only absolute paths so the path should start with a "/"
-  //if(!file.StartsWith(wxT("/")))
-  //  file = wxT("/") + file;
+      m_console->m_currentFile = file;
+      ResetTitle(true, true);
+      document->SetSaved(true);
+      document->Thaw();
+      RemoveTempAutosavefile();
+      return true;
+    }
 
-  wxFileSystem fs;
-  wxString wxmxURI = wxURI(wxT("file://") + file).BuildURI();
-  // wxURI doesn't know that a "#" in a file name is a literal "#" and
-  // not an anchor within the file so we have to care about url-encoding
-  // this char by hand.
-  wxmxURI.Replace("#", "%23");
+    // open wxmx file
+    wxXmlDocument xmldoc;
+
+    // We get only absolute paths so the path should start with a "/"
+    //if(!file.StartsWith(wxT("/")))
+    //  file = wxT("/") + file;
+
+    wxFileSystem fs;
+    wxString wxmxURI = wxURI(wxT("file://") + file).BuildURI();
+    // wxURI doesn't know that a "#" in a file name is a literal "#" and
+    // not an anchor within the file so we have to care about url-encoding
+    // this char by hand.
+    wxmxURI.Replace("#", "%23");
 
 #ifdef  __WXMSW__
-  // Fixes a missing "///" after the "file:". This works because we always get absolute
-  // file names.
-  wxRegEx uriCorector1("^file:([a-zA-Z]):");
-  wxRegEx uriCorector2("^file:([a-zA-Z][a-zA-Z]):");
+    // Fixes a missing "///" after the "file:". This works because we always get absolute
+    // file names.
+    wxRegEx uriCorector1("^file:([a-zA-Z]):");
+    wxRegEx uriCorector2("^file:([a-zA-Z][a-zA-Z]):");
 
-  uriCorector1.ReplaceFirst(&wxmxURI,wxT("file:///\\1:"));
-  uriCorector2.ReplaceFirst(&wxmxURI,wxT("file:///\\1:"));
+    uriCorector1.ReplaceFirst(&wxmxURI,wxT("file:///\\1:"));
+    uriCorector2.ReplaceFirst(&wxmxURI,wxT("file:///\\1:"));
 #endif
-  // The URI of the wxm code contained within the .wxmx file
-  wxString filename = wxmxURI + wxT("#zip:content.xml");
+    // The URI of the wxm code contained within the .wxmx file
+    wxString filename = wxmxURI + wxT("#zip:content.xml");
 
-  // Open the file
-  wxFSFile *fsfile = fs.OpenFile(filename);
-  if (!fsfile)
-  {
-    filename = wxmxURI + wxT("#zip:/content.xml");
-    fsfile = fs.OpenFile(filename);
-  }
-
-  // Did we succeed in opening the file?
-  if (fsfile)
-  {
-    // Let's see if we can load the XML contained in this file.
-    if (!xmldoc.Load(*(fsfile->GetStream()), wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES))
+    // Open the file
+    wxFSFile *fsfile = fs.OpenFile(filename);
+    if (!fsfile)
     {
-      // If we cannot read the file a typical error in old wxMaxima versions was to include
-      // a letter of ascii code 27 in content.xml. Let's filter this char out.
-
-      // Re-open the file.
-      wxDELETE(fsfile);
+      filename = wxmxURI + wxT("#zip:/content.xml");
       fsfile = fs.OpenFile(filename);
-      if (fsfile)
+    }
+
+    // Did we succeed in opening the file?
+    if (fsfile)
+    {
+      // Let's see if we can load the XML contained in this file.
+      if (!xmldoc.Load(*(fsfile->GetStream()), wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES))
       {
-        // Read the file into a string
-        wxString s;
-        wxTextInputStream istream1(*fsfile->GetStream(), wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
-        while (!fsfile->GetStream()->Eof())
-          s += istream1.ReadLine() + wxT("\n");
+        // If we cannot read the file a typical error in old wxMaxima versions was to include
+        // a letter of ascii code 27 in content.xml. Let's filter this char out.
 
-        // Remove the illegal character
-        s.Replace(wxT('\x1b'), wxT("|"));
-
+        // Re-open the file.
+        wxDELETE(fsfile);
+        fsfile = fs.OpenFile(filename);
+        if (fsfile)
         {
-          // Write the string into a memory buffer
-          wxMemoryOutputStream ostream;
-          wxTextOutputStream txtstrm(ostream);
-          txtstrm.WriteString(s);
-          wxMemoryInputStream istream(ostream);
+          // Read the file into a string
+          wxString s;
+          wxTextInputStream istream1(*fsfile->GetStream(), wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+          while (!fsfile->GetStream()->Eof())
+            s += istream1.ReadLine() + wxT("\n");
 
-          // Try to load the file from the memory buffer.
-          xmldoc.Load(istream, wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+          // Remove the illegal character
+          s.Replace(wxT('\x1b'), wxT("|"));
+
+          {
+            // Write the string into a memory buffer
+            wxMemoryOutputStream ostream;
+            wxTextOutputStream txtstrm(ostream);
+            txtstrm.WriteString(s);
+            wxMemoryInputStream istream(ostream);
+
+            // Try to load the file from the memory buffer.
+            xmldoc.Load(istream, wxT("UTF-8"), wxXMLDOC_KEEP_WHITESPACE_NODES);
+          }
         }
       }
     }
-  }
-  else
-  {
+    else
+    {
+      document->Thaw();
+      wxMessageBox(_("wxMaxima cannot open content.xml in the .wxmx zip archive ") + file +
+                   wxT(", URI=") + filename, _("Error"),
+                   wxOK | wxICON_EXCLAMATION);
+      StatusMaximaBusy(waiting);
+      m_newStatusText = _("File could not be opened");
+      return false;
+    }
+
+
+    wxDELETE(fsfile);
+
+    if (!xmldoc.IsOk())
+    {
+      document->Thaw();
+      wxMessageBox(_("wxMaxima cannot read the xml contents of ") + file, _("Error"),
+                   wxOK | wxICON_EXCLAMATION);
+      StatusMaximaBusy(waiting);
+      m_newStatusText = _("File could not be opened");
+      return false;
+    }
+
+    // start processing the XML file
+    if (xmldoc.GetRoot()->GetName() != wxT("wxMaximaDocument"))
+    {
+      document->Thaw();
+      wxMessageBox(_("xml contained in the file claims not to be a wxMaxima worksheet. ") + file, _("Error"),
+                   wxOK | wxICON_EXCLAMATION);
+      StatusMaximaBusy(waiting);
+      m_newStatusText = _("File could not be opened");
+      return false;
+    }
+
+    // read document version and complain
+    wxString docversion = xmldoc.GetRoot()->GetAttribute(wxT("version"), wxT("1.0"));
+    if (!CheckWXMXVersion(docversion))
+    {
+      document->Thaw();
+      StatusMaximaBusy(waiting);
+      return false;
+    }
+
+    // Determine where the cursor was before saving
+    wxString ActiveCellNumber_String = xmldoc.GetRoot()->GetAttribute(wxT("activecell"), wxT("-1"));
+    long ActiveCellNumber;
+    if (!ActiveCellNumber_String.ToLong(&ActiveCellNumber))
+      ActiveCellNumber = -1;
+
+    // read zoom factor
+    wxString doczoom = xmldoc.GetRoot()->GetAttribute(wxT("zoom"), wxT("100"));
+
+    // Read the worksheet's contents.
+    wxXmlNode *xmlcells = xmldoc.GetRoot();
+    GroupCell *tree = CreateTreeFromXMLNode(xmlcells, wxmxURI);
+
+    // from here on code is identical for wxm and wxmx
+    if (clearDocument)
+    {
+      document->ClearDocument();
+      StartMaxima();
+      long int zoom = 100;
+      if (!(doczoom.ToLong(&zoom)))
+        zoom = 100;
+      document->SetZoomFactor(double(zoom) / 100.0, false); // Set zoom if opening, don't recalculate
+    }
+
+    document->InsertGroupCells(tree); // this also requests a recalculate
+    if (clearDocument)
+    {
+      m_console->m_currentFile = file;
+      ResetTitle(true, true);
+      document->SetSaved(true);
+    }
+    else
+      ResetTitle(false);
+
     document->Thaw();
-    wxMessageBox(_("wxMaxima cannot open content.xml in the .wxmx zip archive ") + file +
-                 wxT(", URI=") + filename, _("Error"),
-                 wxOK | wxICON_EXCLAMATION);
-    StatusMaximaBusy(waiting);
-    m_newStatusText = _("File could not be opened");
-    return false;
-  }
+    document->RequestRedraw(); // redraw document outside Freeze-Thaw
 
+    m_console->SetDefaultHCaret();
+    m_console->SetFocus();
 
-  wxDELETE(fsfile);
+    SetCWD(file);
 
-  if (!xmldoc.IsOk())
-  {
-    document->Thaw();
-    wxMessageBox(_("wxMaxima cannot read the xml contents of ") + file, _("Error"),
-                 wxOK | wxICON_EXCLAMATION);
-    StatusMaximaBusy(waiting);
-    m_newStatusText = _("File could not be opened");
-    return false;
-  }
+    // We can set the cursor to the last known position.
+    if (ActiveCellNumber == 0)
+      m_console->SetHCaret(NULL);
+    if (ActiveCellNumber > 0)
+    {
+      GroupCell *pos = m_console->GetTree();
 
-  // start processing the XML file
-  if (xmldoc.GetRoot()->GetName() != wxT("wxMaximaDocument"))
-  {
-    document->Thaw();
-    wxMessageBox(_("xml contained in the file claims not to be a wxMaxima worksheet. ") + file, _("Error"),
-                 wxOK | wxICON_EXCLAMATION);
-    StatusMaximaBusy(waiting);
-    m_newStatusText = _("File could not be opened");
-    return false;
-  }
+      for (long i = 1; i < ActiveCellNumber; i++)
+        if (pos)
+          pos = dynamic_cast<GroupCell *>(pos->m_next);
 
-  // read document version and complain
-  wxString docversion = xmldoc.GetRoot()->GetAttribute(wxT("version"), wxT("1.0"));
-  if (!CheckWXMXVersion(docversion))
-  {
-    document->Thaw();
-    StatusMaximaBusy(waiting);
-    return false;
-  }
-
-  // Determine where the cursor was before saving
-  wxString ActiveCellNumber_String = xmldoc.GetRoot()->GetAttribute(wxT("activecell"), wxT("-1"));
-  long ActiveCellNumber;
-  if (!ActiveCellNumber_String.ToLong(&ActiveCellNumber))
-    ActiveCellNumber = -1;
-
-  // read zoom factor
-  wxString doczoom = xmldoc.GetRoot()->GetAttribute(wxT("zoom"), wxT("100"));
-
-  // Read the worksheet's contents.
-  wxXmlNode *xmlcells = xmldoc.GetRoot();
-  GroupCell *tree = CreateTreeFromXMLNode(xmlcells, wxmxURI);
-
-  // from here on code is identical for wxm and wxmx
-  if (clearDocument)
-  {
-    document->ClearDocument();
-    StartMaxima();
-    long int zoom = 100;
-    if (!(doczoom.ToLong(&zoom)))
-      zoom = 100;
-    document->SetZoomFactor(double(zoom) / 100.0, false); // Set zoom if opening, don't recalculate
-  }
-
-  document->InsertGroupCells(tree); // this also requests a recalculate
-  if (clearDocument)
-  {
-    m_console->m_currentFile = file;
-    ResetTitle(true, true);
-    document->SetSaved(true);
-  }
-  else
-    ResetTitle(false);
-
-  document->Thaw();
-  document->RequestRedraw(); // redraw document outside Freeze-Thaw
-
-  m_console->SetDefaultHCaret();
-  m_console->SetFocus();
-
-  SetCWD(file);
-
-  // We can set the cursor to the last known position.
-  if (ActiveCellNumber == 0)
-    m_console->SetHCaret(NULL);
-  if (ActiveCellNumber > 0)
-  {
-    GroupCell *pos = m_console->GetTree();
-
-    for (long i = 1; i < ActiveCellNumber; i++)
       if (pos)
-        pos = dynamic_cast<GroupCell *>(pos->m_next);
-
-    if (pos)
-      m_console->SetHCaret(pos);
+        m_console->SetHCaret(pos);
+    }
+    StatusMaximaBusy(waiting);
+    m_newStatusText = _("File opened");
+    RemoveTempAutosavefile();
+    return true;
   }
-  StatusMaximaBusy(waiting);
-  m_newStatusText = _("File opened");
-  RemoveTempAutosavefile();
-  return true;
+  wxLogMessage(_("wxmx file opened"));
 }
 
 bool wxMaxima::CheckWXMXVersion(wxString docversion)
