@@ -6177,11 +6177,9 @@ bool MathCtrl::ExportToMAC(wxString file)
     // scan it and a design decision of a filesystem driver might hinder us from moving
     // it during this action => Wait for a second and retry.
     wxSleep(1);
-    wxLogMessage(_("File could not be replaced. Retrying."));
     if (!wxRenameFile(file + wxT("~"), file, true))
     {
       wxSleep(1);
-      wxLogMessage(_("File could not be replaced. Retrying."));
       if (!wxRenameFile(file + wxT("~"), file, true))
         return false;
     }
@@ -6430,11 +6428,9 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
     // scan it and a design decision of a filesystem driver might hinder us from moving
     // it during this action => Wait for a second and retry.
     wxSleep(1);
-    wxLogMessage(_("File could not be replaced. Retrying."));
     if (!wxRenameFile(backupfile, file, true))
     {
       wxSleep(1);
-      wxLogMessage(_("File could not be replaced. Retrying."));
       if (!wxRenameFile(backupfile, file, true))
         return false;
     }
@@ -6737,10 +6733,10 @@ void MathCtrl::FollowEvaluation(bool followEvaluation)
     ScrolledAwayFromEvaluation(false);
 }
 
-bool MathCtrl::ScrollToCellIfNeeded()
+void MathCtrl::ScrollToCellIfNeeded()
 {
   if(!m_cellPointers.m_scrollToCell)
-    return false;
+    return;
   m_cellPointers.m_scrollToCell = false;
   
   RecalculateIfNeeded();
@@ -6752,13 +6748,13 @@ bool MathCtrl::ScrollToCellIfNeeded()
     int view_x, view_y;
     GetViewStart(&view_x, &view_y);
     Scroll(view_x, 0);
-    return true;
+    return;
   }
 
   if (cell == GetActiveCell())
   {
     ScrollToCaret();
-    return true;
+    return;
   }
 
   int cellY = cell->GetCurrentY();
@@ -6775,7 +6771,7 @@ bool MathCtrl::ScrollToCellIfNeeded()
   wxASSERT_MSG(cellY >= 0, _("Bug: Cell with negative y position!"));
 
   if (cellY < 0)
-    return true;
+    return;
 
   int cellDrop = cell->GetDrop();
   int cellCenter = cell->GetCenter();
@@ -6817,7 +6813,6 @@ bool MathCtrl::ScrollToCellIfNeeded()
       Scroll(-1, MAX(cellBottom / m_scrollUnit - 1, 0));
   }
   RequestRedraw();
-  return true;
 }
 
 void MathCtrl::Undo()

@@ -2934,7 +2934,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   }
 }
 
-///--------------------------------------------------------------------------------
+///-------o-------------------------------------------------------------------------
 ///  Idle event
 ///--------------------------------------------------------------------------------
 
@@ -3017,8 +3017,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
 
   if(m_console != NULL)
   {
-    if(m_console->RecalculateIfNeeded())
-      wxLogMessage(_("Recalculated the dimensions of cells"));
+    m_console->RecalculateIfNeeded();
     m_console->ScrollToCellIfNeeded();
   }
   

@@ -114,12 +114,10 @@ void FunCell::Draw(wxPoint point, int fontsize)
     MathCell::Draw(point, fontsize);
 
     wxPoint name(point), arg(point);
-    if (!m_isBroken)
-    {
-      m_nameCell->DrawList(name, fontsize);
-      arg.x += m_nameCell->GetFullWidth() - Scale_Px(1);
-      m_argCell->DrawList(arg, fontsize);
-    }
+    m_nameCell->DrawList(name, fontsize);
+
+    arg.x += m_nameCell->GetFullWidth() - Scale_Px(1);
+    m_argCell->DrawList(arg, fontsize);
   }
 }
 
