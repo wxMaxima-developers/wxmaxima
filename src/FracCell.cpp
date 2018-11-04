@@ -81,7 +81,7 @@ MathCell *FracCell::Copy()
   tmp->m_fracStyle = m_fracStyle;
   tmp->m_exponent = m_exponent;
   tmp->SetupBreakUps();
-  tmp->m_isBroken = m_isBroken;
+  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
 
   return tmp;
 }
@@ -140,7 +140,7 @@ void FracCell::RecalculateWidths(int fontsize)
   MathCell::RecalculateWidths(fontsize);
   wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
-  if (m_isBroken || m_exponent)
+  if (m_isBrokenIntoLines || m_exponent)
   {
     m_num->RecalculateWidthsList(fontsize);
     m_denom->RecalculateWidthsList(fontsize);
@@ -152,7 +152,7 @@ void FracCell::RecalculateWidths(int fontsize)
   }
   wxDC *dc = configuration->GetDC();
   dc->SetFont(configuration->GetFont(TS_VARIABLE,fontsize));
-  if (m_exponent && !m_isBroken)
+  if (m_exponent && !m_isBrokenIntoLines)
   {
     m_protrusion = 0;
     int height;
@@ -193,7 +193,7 @@ void FracCell::RecalculateWidths(int fontsize)
 void FracCell::RecalculateHeight(int fontsize)
 {
   MathCell::RecalculateHeight(fontsize);
-  if (m_isBroken || m_exponent)
+  if (m_isBrokenIntoLines || m_exponent)
   {
     m_num->RecalculateHeightList(fontsize);
     m_denom->RecalculateHeightList(fontsize);
@@ -203,7 +203,7 @@ void FracCell::RecalculateHeight(int fontsize)
     m_num->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
     m_denom->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
   }
-  if(m_isBroken)
+  if(m_isBrokenIntoLines)
   {
     m_height = m_num->GetMaxHeight();
     m_center = m_num->GetMaxCenter();
@@ -243,7 +243,7 @@ void FracCell::Draw(wxPoint point)
     wxDC *dc = configuration->GetDC();
     wxPoint num, denom;
 
-    if (m_exponent && !m_isBroken)
+    if (m_exponent && !m_isBrokenIntoLines)
     {
       num.x = point.x;
       num.y = point.y;
@@ -289,7 +289,7 @@ void FracCell::Draw(wxPoint point)
 wxString FracCell::ToString()
 {
   wxString s;
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
     if (m_fracStyle == FC_NORMAL)
     {
@@ -332,7 +332,7 @@ wxString FracCell::ToString()
 wxString FracCell::ToTeX()
 {
   wxString s;
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
     if (m_fracStyle == FC_CHOOSE)
     {
@@ -441,9 +441,9 @@ bool FracCell::BreakUp()
   if (m_fracStyle == FC_DIFF)
     return false;
 
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
-    m_isBroken = true;
+    m_isBrokenIntoLines = true;
     m_open1->m_previousToDraw = this;
     m_open1->m_nextToDraw = m_num;
     m_num->m_previousToDraw = m_open1;
@@ -476,7 +476,7 @@ bool FracCell::BreakUp()
 
 void FracCell::Unbreak()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
   {
     m_num->UnbreakList();
     m_denom->UnbreakList();

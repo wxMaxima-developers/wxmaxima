@@ -425,7 +425,7 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
       {  // We have a selection of output
         while (tmp != NULL)
         {
-          if (!tmp->m_isBroken && !tmp->m_isHidden && GetActiveCell() != tmp)
+          if (!tmp->m_isBrokenIntoLines && !tmp->m_isHidden && GetActiveCell() != tmp)
             tmp->DrawBoundingBox(dcm, false);
           if (tmp == m_cellPointers.m_selectionEnd)
             break;

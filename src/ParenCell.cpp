@@ -68,7 +68,7 @@ MathCell *ParenCell::Copy()
   ParenCell *tmp = new ParenCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList(), m_type);
-  tmp->m_isBroken = m_isBroken;
+  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
 
   return tmp;
 }
@@ -250,7 +250,7 @@ void ParenCell::RecalculateHeight(int fontsize)
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
 
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
   {
     m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
@@ -382,7 +382,7 @@ void ParenCell::Draw(wxPoint point)
     }
     
     UnsetPen();
-    if(!m_isBroken)
+    if(!m_isBrokenIntoLines)
       m_innerCell->DrawList(innerCellPos);
   }
 }
@@ -390,7 +390,7 @@ void ParenCell::Draw(wxPoint point)
 wxString ParenCell::ToString()
 {
   wxString s;
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
     if (m_print)
       s = wxT("(") + m_innerCell->ListToString() + wxT(")");
@@ -403,7 +403,7 @@ wxString ParenCell::ToString()
 wxString ParenCell::ToTeX()
 {
   wxString s;
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
     wxString innerCell = m_innerCell->ListToTeX();
 
@@ -452,7 +452,7 @@ wxString ParenCell::ToMathML()
 
 wxString ParenCell::ToXML()
 {
-//  if( m_isBroken )
+//  if( m_isBrokenIntoLines )
 //    return wxEmptyString;
   wxString s = m_innerCell->ListToXML();
   wxString flags;
@@ -463,9 +463,9 @@ wxString ParenCell::ToXML()
 
 bool ParenCell::BreakUp()
 {
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
-    m_isBroken = true;
+    m_isBrokenIntoLines = true;
     m_open->m_nextToDraw = m_innerCell;
     m_innerCell->m_previousToDraw = m_open;
     wxASSERT_MSG(m_last1 != NULL, _("Bug: No last cell inside a parenthesis!"));
@@ -488,7 +488,7 @@ bool ParenCell::BreakUp()
 
 void ParenCell::Unbreak()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     m_innerCell->UnbreakList();
   MathCell::Unbreak();
 }

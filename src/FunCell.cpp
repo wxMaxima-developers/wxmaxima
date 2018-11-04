@@ -50,7 +50,7 @@ MathCell *FunCell::Copy()
   CopyData(this, tmp);
   tmp->SetName(m_nameCell->CopyList());
   tmp->SetArg(m_argCell->CopyList());
-  tmp->m_isBroken = m_isBroken;
+  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
 
   return tmp;
 }
@@ -125,7 +125,7 @@ void FunCell::Draw(wxPoint point)
 
 wxString FunCell::ToString()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     return wxEmptyString;
   if (m_altCopyText != wxEmptyString)
     return m_altCopyText + MathCell::ListToString();
@@ -135,7 +135,7 @@ wxString FunCell::ToString()
 
 wxString FunCell::ToTeX()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     return wxEmptyString;
 
   wxString s;
@@ -160,7 +160,7 @@ wxString FunCell::ToTeX()
 
 wxString FunCell::ToXML()
 {
-//  if (m_isBroken)
+//  if (m_isBrokenIntoLines)
 //    return wxEmptyString;
   wxString flags;
   if (m_forceBreakLine)
@@ -171,7 +171,7 @@ wxString FunCell::ToXML()
 
 wxString FunCell::ToMathML()
 {
-//  if (m_isBroken)
+//  if (m_isBrokenIntoLines)
 //    return wxEmptyString;
   return wxT("<mrow>") + m_nameCell->ListToMathML() +
          wxT("<mo>&#x2061;</mo>") + m_argCell->ListToMathML() + wxT("</mrow>\n");
@@ -185,9 +185,9 @@ wxString FunCell::ToOMML()
 
 bool FunCell::BreakUp()
 {
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
-    m_isBroken = true;
+    m_isBrokenIntoLines = true;
     m_nameCell->m_previousToDraw = this;
     m_nameCell->m_nextToDraw = m_argCell;
     m_argCell->m_previousToDraw = m_nameCell;
@@ -202,7 +202,7 @@ bool FunCell::BreakUp()
 
 void FunCell::Unbreak()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
   {
     m_nameCell->UnbreakList();
     m_argCell->UnbreakList();

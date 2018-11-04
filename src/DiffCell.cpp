@@ -51,7 +51,7 @@ MathCell *DiffCell::Copy()
   CopyData(this, tmp);
   tmp->SetDiff(m_diffCell->CopyList());
   tmp->SetBase(m_baseCell->CopyList());
-  tmp->m_isBroken = m_isBroken;
+  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
 
   return tmp;
 }
@@ -129,7 +129,7 @@ void DiffCell::Draw(wxPoint point)
 
 wxString DiffCell::ToString()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     return wxEmptyString;
   MathCell *tmp = m_baseCell->m_next;
   wxString s = wxT("'diff(");
@@ -142,7 +142,7 @@ wxString DiffCell::ToString()
 
 wxString DiffCell::ToTeX()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     return wxEmptyString;
   wxString diff = m_diffCell->ListToTeX();
   wxString function = m_baseCell->ListToTeX();

@@ -55,7 +55,7 @@ MathCell *ConjugateCell::Copy()
   ConjugateCell *tmp = new ConjugateCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
-  tmp->m_isBroken = m_isBroken;
+  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
   tmp->m_open->DontEscapeOpeningParenthesis();
 
   return tmp;
@@ -118,7 +118,7 @@ void ConjugateCell::RecalculateHeight(int fontsize)
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
 
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
   {
     m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
@@ -151,7 +151,7 @@ void ConjugateCell::Draw(wxPoint point)
 
 wxString ConjugateCell::ToString()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     return wxEmptyString;
   else
     return wxT("conjugate(") + m_innerCell->ListToString() + wxT(")");
@@ -159,7 +159,7 @@ wxString ConjugateCell::ToString()
 
 wxString ConjugateCell::ToTeX()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     return wxEmptyString;
   else
     return wxT("\\overline{") + m_innerCell->ListToTeX() + wxT("}");
@@ -189,9 +189,9 @@ wxString ConjugateCell::ToXML()
 
 bool ConjugateCell::BreakUp()
 {
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
-    m_isBroken = true;
+    m_isBrokenIntoLines = true;
     m_open->m_nextToDraw = m_innerCell;
     m_innerCell->m_previousToDraw = m_open;
     wxASSERT_MSG(m_last != NULL, _("Bug: No last cell in an conjugateCell!"));
@@ -213,7 +213,7 @@ bool ConjugateCell::BreakUp()
 
 void ConjugateCell::Unbreak()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     m_innerCell->UnbreakList();
   MathCell::Unbreak();
 }

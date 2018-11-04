@@ -71,7 +71,7 @@ MathCell::MathCell(MathCell *group, Configuration **config)
   m_forceBreakLine = false;
   m_bigSkip = true;
   m_isHidden = false;
-  m_isBroken = false;
+  m_isBrokenIntoLines = false;
   m_highlight = false;
   m_type = MC_TYPE_DEFAULT;
   m_textStyle = TS_VARIABLE;
@@ -255,10 +255,10 @@ int MathCell::GetMaxDrop()
     MathCell *tmp = this;
     while (tmp != NULL)
     {
-      m_maxDrop = MAX(m_maxDrop, tmp->m_isBroken ? 0 : (tmp->m_height - tmp->m_center));
+      m_maxDrop = MAX(m_maxDrop, tmp->m_isBrokenIntoLines ? 0 : (tmp->m_height - tmp->m_center));
       if (tmp->m_nextToDraw == NULL)
         break;
-      if (tmp->m_nextToDraw->m_breakLine && !tmp->m_nextToDraw->m_isBroken)
+      if (tmp->m_nextToDraw->m_breakLine && !tmp->m_nextToDraw->m_isBrokenIntoLines)
         break;
       tmp = tmp->m_nextToDraw;
     }
@@ -314,7 +314,7 @@ int MathCell::GetLineWidth()
       tmp = tmp->m_nextToDraw;
       if(tmp != NULL)
       {
-        if(tmp->m_isBroken || tmp->m_breakLine || (tmp->m_type == MC_TYPE_MAIN_PROMPT))
+        if(tmp->m_isBrokenIntoLines || tmp->m_breakLine || (tmp->m_type == MC_TYPE_MAIN_PROMPT))
           break;
       }
     }
@@ -421,7 +421,7 @@ bool MathCell::DrawThisCell(wxPoint point)
   // If a cell is broken into lines its individual parts are displayed but
   // not the cell itself (example: Denominator and Numerator are displayed
   // but not the horizontal line with denominator above and numerator below.
-  if(m_isBroken)
+  if(m_isBrokenIntoLines)
     return false;
   
   Configuration *configuration = (*m_configuration);
@@ -440,7 +440,7 @@ bool MathCell::DrawThisCell(wxPoint point)
  */
 wxRect MathCell::GetRect(bool all)
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     return wxRect(-1, -1, 0, 0);
   if (all)
     return wxRect(m_currentPoint.x, m_currentPoint.y - GetMaxCenter(),
@@ -973,7 +973,7 @@ void MathCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
 
 bool MathCell::BreakLineHere()
 {
-  return (((!m_isBroken) && m_breakLine) || m_forceBreakLine);
+  return (((!m_isBrokenIntoLines) && m_breakLine) || m_forceBreakLine);
 }
 
 bool MathCell::ContainsRect(const wxRect &sm, bool all)
@@ -1025,7 +1025,7 @@ MathCell *MathCell::last()
 void MathCell::Unbreak()
 {
   ResetData();
-  m_isBroken = false;
+  m_isBrokenIntoLines = false;
   m_nextToDraw = m_next;
   if (m_nextToDraw != NULL)
     m_nextToDraw->m_previousToDraw = this;

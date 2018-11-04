@@ -676,10 +676,11 @@ class MathCell
   bool m_bigSkip;
   /*! true means:  This cell is broken into two or more lines.
     
-    Long abs(), conjugate(), fraction and similar cells can be broken into more
-    than one line and will change their visual representation in this case.
+    Long abs(), conjugate(), fraction and similar cells can be displayed as 2D objects,
+    but will be displayed in their linear form (and therefore broken into lines) if they
+    end up to be wider than the screen. In this case m_isBrokenIntoLines is true.
    */
-  bool m_isBroken;
+  bool m_isBrokenIntoLines;
   /*! True means: This cell is not to be drawn.
 
     Currently the following items fall into this category:

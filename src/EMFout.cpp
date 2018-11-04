@@ -203,7 +203,7 @@ void Emfout::BreakLines()
 
   while (tmp != NULL)
   {
-    if (!tmp->m_isBroken)
+    if (!tmp->m_isBrokenIntoLines)
     {
       tmp->BreakLine(false);
       tmp->ResetData();
@@ -231,7 +231,7 @@ void Emfout::GetMaxPoint(int *width, int *height)
   bool firstCell = true;
   while (tmp != NULL)
   {
-    if (!tmp->m_isBroken)
+    if (!tmp->m_isBrokenIntoLines)
     {
       if (tmp->BreakLineHere() || firstCell)
       {
@@ -272,7 +272,7 @@ void Emfout::Draw()
 
     while (tmp != NULL)
     {
-      if (!tmp->m_isBroken)
+      if (!tmp->m_isBrokenIntoLines)
       {
         tmp->Draw(point, tmp->IsMath() ? mfontsize : fontsize);
         if ((tmp->m_next != NULL) && (tmp->m_next->BreakLineHere()))

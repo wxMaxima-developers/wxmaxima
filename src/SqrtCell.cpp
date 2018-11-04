@@ -63,7 +63,7 @@ MathCell *SqrtCell::Copy()
   SqrtCell *tmp = new SqrtCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
-  tmp->m_isBroken = m_isBroken;
+  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
   tmp->m_open->DontEscapeOpeningParenthesis();
 
   return tmp;
@@ -184,7 +184,7 @@ void SqrtCell::RecalculateHeight(int fontsize)
   m_center = m_innerCell->GetMaxCenter() + Scale_Px(3);
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
   {
     m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
@@ -313,7 +313,7 @@ void SqrtCell::Draw(wxPoint point)
 
 wxString SqrtCell::ToString()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     return wxEmptyString;
   else
     return wxT("sqrt(") + m_innerCell->ListToString() + wxT(")");
@@ -321,7 +321,7 @@ wxString SqrtCell::ToString()
 
 wxString SqrtCell::ToTeX()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     return wxEmptyString;
   else
     return wxT("\\sqrt{") + m_innerCell->ListToTeX() + wxT("}");
@@ -340,7 +340,7 @@ wxString SqrtCell::ToOMML()
 
 wxString SqrtCell::ToXML()
 {
-//  if (m_isBroken)
+//  if (m_isBrokenIntoLines)
 //    return wxEmptyString;
   wxString flags;
   if (m_forceBreakLine)
@@ -351,9 +351,9 @@ wxString SqrtCell::ToXML()
 
 bool SqrtCell::BreakUp()
 {
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
-    m_isBroken = true;
+    m_isBrokenIntoLines = true;
     m_open->m_nextToDraw = m_innerCell;
     m_innerCell->m_previousToDraw = m_open;
     wxASSERT_MSG(m_last != NULL, _("Bug: No last cell inside a square root!"));
@@ -375,7 +375,7 @@ bool SqrtCell::BreakUp()
 
 void SqrtCell::Unbreak()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     m_innerCell->UnbreakList();
   MathCell::Unbreak();
 }

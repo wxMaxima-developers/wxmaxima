@@ -1861,7 +1861,7 @@ void GroupCell::BreakLines(MathCell *cell, int fullWidth)
   {
     tmp->ResetData();
     tmp->BreakLine(false);
-    if (!tmp->m_isBroken)
+    if (!tmp->m_isBrokenIntoLines)
     {
       if (tmp->BreakLineHere() || (currentWidth + tmp->GetWidth() >= fullWidth))
       {
@@ -1941,7 +1941,7 @@ void GroupCell::UnBreakUpCells()
   MathCell *tmp = m_output;
   while (tmp != NULL)
   {
-    if (tmp->m_isBroken)
+    if (tmp->m_isBrokenIntoLines)
     {
       tmp->Unbreak();
     }

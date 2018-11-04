@@ -64,7 +64,7 @@ MathCell *ExptCell::Copy()
   CopyData(this, tmp);
   tmp->SetBase(m_baseCell->CopyList());
   tmp->SetPower(m_powCell->CopyList());
-  tmp->m_isBroken = m_isBroken;
+  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
   tmp->m_open->DontEscapeOpeningParenthesis();
 
   return tmp;
@@ -134,7 +134,7 @@ void ExptCell::RecalculateWidths(int fontsize)
 {
   MathCell::RecalculateWidths(fontsize);
   m_baseCell->RecalculateWidthsList(fontsize);
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     m_powCell->RecalculateWidthsList(fontsize);
   else
     m_powCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - EXPT_DEC));
@@ -150,7 +150,7 @@ void ExptCell::RecalculateHeight(int fontsize)
 {
   MathCell::RecalculateHeight(fontsize);
   m_baseCell->RecalculateHeightList(fontsize);
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     m_powCell->RecalculateHeightList(fontsize);
   else
     m_powCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - EXPT_DEC));
@@ -161,7 +161,7 @@ void ExptCell::RecalculateHeight(int fontsize)
   m_exp->RecalculateHeightList(fontsize);
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
   {
     m_height = MAX(m_baseCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = MAX(m_baseCell->GetMaxCenter(), m_open->GetMaxCenter());
@@ -191,7 +191,7 @@ wxString ExptCell::ToString()
 {
   if (m_altCopyText != wxEmptyString)
     return m_altCopyText;
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     return wxEmptyString;
   wxString s = m_baseCell->ListToString() + wxT("^");
   if (m_isMatrix)
@@ -205,7 +205,7 @@ wxString ExptCell::ToString()
 
 wxString ExptCell::ToTeX()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     return wxEmptyString;
   wxString s = wxT("{{") + m_baseCell->ListToTeX() + wxT("}^{") +
                m_powCell->ListToTeX() + wxT("}}");
@@ -240,7 +240,7 @@ wxString ExptCell::ToOMML()
 
 wxString ExptCell::ToXML()
 {
-//  if (m_isBroken)
+//  if (m_isBrokenIntoLines)
 //    return wxEmptyString;
   wxString flags;
   if (m_forceBreakLine)
@@ -252,9 +252,9 @@ wxString ExptCell::ToXML()
 
 bool ExptCell::BreakUp()
 {
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
-    m_isBroken = true;
+    m_isBrokenIntoLines = true;
     m_baseCell->m_previousToDraw = this;
     wxASSERT_MSG(m_last1 != NULL, _("Bug: No last cell in the base of an exptCell!"));
     if (m_last1 != NULL)
@@ -285,7 +285,7 @@ bool ExptCell::BreakUp()
 
 void ExptCell::Unbreak()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
   {
     m_baseCell->UnbreakList();
     m_powCell->UnbreakList();
