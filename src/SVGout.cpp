@@ -263,7 +263,7 @@ void Svgout::Draw()
     {
       if (!tmp->m_isBroken)
       {
-        tmp->Draw(point, tmp->IsMath() ? mfontsize : fontsize);
+        tmp->Draw(point);
         if ((tmp->m_next != NULL) && (tmp->m_next->BreakLineHere()))
         {
           point.x = 0;

@@ -565,6 +565,7 @@ wxString EditorCell::ToXML()
 
 void EditorCell::RecalculateWidths(int fontsize)
 {
+  MathCell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
 
   // Redo the line wrapping if the viewport width has changed.
@@ -743,19 +744,19 @@ The order this cell is drawn is:
  StyleText() converts m_text into. This way the decisions needed for styling
  text are cached for later use.
 */
-void EditorCell::Draw(wxPoint point1, int fontsize)
+void EditorCell::Draw(wxPoint point1)
 {
+  MathCell::Draw(point1);
   if (DrawThisCell(point1) && !m_isHidden)
   {
-    MathCell::Draw(point1, fontsize);
     Configuration *configuration = (*m_configuration);
     SetFont();
 
     m_selectionChanged = false;
     wxDC *dc = configuration->GetDC();
     wxPoint point(point1);
-    if (m_width == -1 || m_height == -1 || configuration->ForceUpdate())
-      RecalculateWidths(fontsize);
+//    if (m_width == -1 || m_height == -1 || configuration->ForceUpdate())
+//      RecalculateWidths(m_fontsize);
 
     //
     // Mark text that coincides with the selection
@@ -773,7 +774,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
         // This would not only be unnecessary but also could cause
         // selections to flicker in very long texts
         if ((!IsActive()) || (start != MIN(m_selectionStart, m_selectionEnd)))
-          MarkSelection(start, end, TS_EQUALSSELECTION, fontsize);
+          MarkSelection(start, end, TS_EQUALSSELECTION, m_fontSize);
         if(m_cellPointers->m_selectionString.Length() == 0)
           end++;
         start = end;
@@ -788,7 +789,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
       if (m_selectionStart >= 0)
         MarkSelection(MIN(m_selectionStart, m_selectionEnd),
                       MAX(m_selectionStart, m_selectionEnd),
-                      TS_SELECTION, fontsize);
+                      TS_SELECTION, m_fontSize);
 
         //
         // Matching parens - draw only if we don't have selection
@@ -802,7 +803,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
 #endif
         dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION)))); //highlight c.
 
-        wxPoint point = PositionToPoint(fontsize, m_paren1);
+        wxPoint point = PositionToPoint(m_fontSize, m_paren1);
         int width, height;
         dc->GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
         wxRect rect(point.x + 1,
@@ -810,7 +811,7 @@ void EditorCell::Draw(wxPoint point1, int fontsize)
                     width - 1, height - 1);
         if (InUpdateRegion(rect))
           dc->DrawRectangle(CropToUpdateRegion(rect));
-        point = PositionToPoint(fontsize, m_paren2);
+        point = PositionToPoint(m_fontSize, m_paren2);
         dc->GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
         rect = wxRect(point.x + 1,
                       point.y + Scale_Px(2) - m_center + 1,

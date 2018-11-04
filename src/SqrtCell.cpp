@@ -105,6 +105,7 @@ void SqrtCell::SetInner(MathCell *inner)
 
 void SqrtCell::RecalculateWidths(int fontsize)
 {
+  MathCell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
   m_innerCell->RecalculateWidthsList(fontsize);
   if (configuration->CheckTeXFonts())
@@ -190,11 +191,11 @@ void SqrtCell::RecalculateHeight(int fontsize)
   }
 }
 
-void SqrtCell::Draw(wxPoint point, int fontsize)
+void SqrtCell::Draw(wxPoint point)
 {
+  MathCell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    MathCell::Draw(point, fontsize);
     Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();
 
@@ -206,7 +207,7 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
 
       in.x += m_signWidth;
 
-      double fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
+      double fontsize1 = Scale_Px(SIGN_FONT_SCALE * m_fontSize * m_signFontScale);
 
       wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
@@ -306,7 +307,7 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
       UnsetPen();
     }
 
-    m_innerCell->DrawList(in, fontsize);
+    m_innerCell->DrawList(in);
   }
 }
 

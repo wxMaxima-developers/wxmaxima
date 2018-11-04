@@ -137,6 +137,7 @@ void FracCell::SetDenom(MathCell *denom)
 
 void FracCell::RecalculateWidths(int fontsize)
 {
+  MathCell::RecalculateWidths(fontsize);
   wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
   if (m_isBroken || m_exponent)
@@ -191,6 +192,7 @@ void FracCell::RecalculateWidths(int fontsize)
 
 void FracCell::RecalculateHeight(int fontsize)
 {
+  MathCell::RecalculateHeight(fontsize);
   if (m_isBroken || m_exponent)
   {
     m_num->RecalculateHeightList(fontsize);
@@ -229,14 +231,13 @@ void FracCell::RecalculateHeight(int fontsize)
   m_open2->RecalculateHeight(fontsize);
   m_close2->RecalculateHeight(fontsize);
   m_divide->RecalculateHeight(fontsize);
-  MathCell::RecalculateHeight(fontsize);
 }
 
-void FracCell::Draw(wxPoint point, int fontsize)
+void FracCell::Draw(wxPoint point)
 {
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    MathCell::Draw(point, fontsize);
+    MathCell::Draw(point);
     Configuration *configuration = (*m_configuration);
     
     wxDC *dc = configuration->GetDC();
@@ -249,10 +250,10 @@ void FracCell::Draw(wxPoint point, int fontsize)
       denom.x = point.x + m_num->GetFullWidth() + m_expDivideWidth;
       denom.y = num.y;
 
-      m_num->DrawList(num, fontsize);
-      m_denom->DrawList(denom, fontsize);
+      m_num->DrawList(num);
+      m_denom->DrawList(denom);
 
-      int fontsize1 = Scale_Px(fontsize);
+      int fontsize1 = Scale_Px(m_fontSize);
       wxASSERT(fontsize1 > 0);
       dc->SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                         wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
@@ -267,12 +268,12 @@ void FracCell::Draw(wxPoint point, int fontsize)
               (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_num->GetFullWidth()) / 2;
       num.y = point.y - m_num->GetMaxHeight() + m_num->GetMaxCenter() -
               Scale_Px(2);
-      m_num->DrawList(num, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
+      m_num->DrawList(num);
 
       denom.x = point.x + m_horizontalGapLeft +
                 (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_denom->GetFullWidth()) / 2;
       denom.y = point.y + m_denom->GetMaxCenter() + Scale_Px(2);
-      m_denom->DrawList(denom, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
+      m_denom->DrawList(denom);
       SetPen(1.2);
       if (m_fracStyle != FC_CHOOSE)
         dc->DrawLine(point.x + m_horizontalGapLeft + (*m_configuration)->GetDefaultLineWidth() / 2,

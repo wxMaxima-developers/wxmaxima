@@ -92,6 +92,7 @@ void FunCell::SetArg(MathCell *arg)
 
 void FunCell::RecalculateWidths(int fontsize)
 {
+  MathCell::RecalculateWidths(fontsize);
   m_argCell->RecalculateWidthsList(fontsize);
   m_nameCell->RecalculateWidthsList(fontsize);
   m_width = m_nameCell->GetFullWidth() + m_argCell->GetFullWidth() -
@@ -101,23 +102,24 @@ void FunCell::RecalculateWidths(int fontsize)
 
 void FunCell::RecalculateHeight(int fontsize)
 {
+  MathCell::RecalculateHeight(fontsize);
   m_nameCell->RecalculateHeightList(fontsize);
   m_argCell->RecalculateHeightList(fontsize);
   m_center = MAX(m_nameCell->GetMaxCenter(), m_argCell->GetMaxCenter());
   m_height = m_center + MAX(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
 }
 
-void FunCell::Draw(wxPoint point, int fontsize)
+void FunCell::Draw(wxPoint point)
 {
+  MathCell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    MathCell::Draw(point, fontsize);
 
     wxPoint name(point), arg(point);
-    m_nameCell->DrawList(name, fontsize);
+    m_nameCell->DrawList(name);
 
     arg.x += m_nameCell->GetFullWidth();
-    m_argCell->DrawList(arg, fontsize);
+    m_argCell->DrawList(arg);
   }
 }
 
@@ -186,7 +188,6 @@ bool FunCell::BreakUp()
   if (!m_isBroken)
   {
     m_isBroken = true;
-    m_nameCell->m_currentPoint = m_currentPoint;
     m_nameCell->m_previousToDraw = this;
     m_nameCell->m_nextToDraw = m_argCell;
     m_argCell->m_previousToDraw = m_nameCell;

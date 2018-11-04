@@ -108,6 +108,7 @@ void LimitCell::SetUnder(MathCell *under)
 
 void LimitCell::RecalculateWidths(int fontsize)
 {
+  MathCell::RecalculateWidths(fontsize);
   m_base->RecalculateWidthsList(fontsize);
   m_under->RecalculateWidthsList(MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
   m_name->RecalculateWidthsList(fontsize);
@@ -119,6 +120,7 @@ void LimitCell::RecalculateWidths(int fontsize)
 
 void LimitCell::RecalculateHeight(int fontsize)
 {
+  MathCell::RecalculateHeight(fontsize);
   m_under->RecalculateHeightList(MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
   m_name->RecalculateHeightList(fontsize);
   m_base->RecalculateHeightList(fontsize);
@@ -128,27 +130,27 @@ void LimitCell::RecalculateHeight(int fontsize)
                             m_base->GetMaxDrop());
 }
 
-void LimitCell::Draw(wxPoint point, int fontsize)
+void LimitCell::Draw(wxPoint point)
 {
   if (DrawThisCell(point) && InUpdateRegion())
   {   
-    MathCell::Draw(point, fontsize);
+    MathCell::Draw(point);
     wxPoint base(point), under(point), name(point);
 
     name.x = point.x + MAX(m_name->GetFullWidth(),
                            m_under->GetFullWidth()) / 2 -
              m_name->GetFullWidth() / 2;
-    m_name->DrawList(name, fontsize);
+    m_name->DrawList(name);
 
     under.x = point.x + MAX(m_name->GetFullWidth(),
                             m_under->GetFullWidth()) / 2 -
               m_under->GetFullWidth() / 2;
     under.y = point.y + m_name->GetMaxDrop() + m_under->GetMaxCenter();
-    m_under->DrawList(under, MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
+    m_under->DrawList(under);
 
     base.x += MAX(m_name->GetFullWidth(),
                   m_under->GetFullWidth());
-    m_base->DrawList(base, fontsize);
+    m_base->DrawList(base);
   }
 }
 

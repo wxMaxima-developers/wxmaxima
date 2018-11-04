@@ -95,6 +95,7 @@ void DiffCell::SetBase(MathCell *base)
 
 void DiffCell::RecalculateWidths(int fontsize)
 {
+  MathCell::RecalculateWidths(fontsize);
   m_baseCell->RecalculateWidthsList(fontsize);
   m_diffCell->RecalculateWidthsList(fontsize);
   m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
@@ -103,25 +104,26 @@ void DiffCell::RecalculateWidths(int fontsize)
 
 void DiffCell::RecalculateHeight(int fontsize)
 {
+  MathCell::RecalculateHeight(fontsize);
   m_baseCell->RecalculateHeightList(fontsize);
   m_diffCell->RecalculateHeightList(fontsize);
   m_center = MAX(m_diffCell->GetMaxCenter(), m_baseCell->GetMaxCenter());
   m_height = m_center + MAX(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
 }
 
-void DiffCell::Draw(wxPoint point, int fontsize)
+void DiffCell::Draw(wxPoint point)
 {
+  MathCell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   { 
-    MathCell::Draw(point, fontsize);
     wxPoint bs, df;
     df.x = point.x;
     df.y = point.y;
-    m_diffCell->DrawList(df, fontsize);
+    m_diffCell->DrawList(df);
 
     bs.x = point.x + m_diffCell->GetFullWidth();
     bs.y = point.y;
-    m_baseCell->DrawList(bs, fontsize);
+    m_baseCell->DrawList(bs);
   }
 }
 

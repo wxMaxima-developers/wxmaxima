@@ -150,8 +150,9 @@ wxString ImgCell::GetToolTip(const wxPoint &point)
     return wxEmptyString;
 }
 
-void ImgCell::RecalculateWidths(int WXUNUSED(fontsize))
+void ImgCell::RecalculateWidths(int fontsize)
 {
+  MathCell::RecalculateWidths(fontsize);
   // Here we recalculate the height, as well:
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
@@ -170,6 +171,7 @@ void ImgCell::RecalculateWidths(int WXUNUSED(fontsize))
 
 void ImgCell::RecalculateHeight(int fontsize)
 {
+  MathCell::RecalculateHeight(fontsize);
   // Here we recalculate the width, as well:
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
@@ -177,7 +179,7 @@ void ImgCell::RecalculateHeight(int fontsize)
   RecalculateWidths(fontsize);
 }
 
-void ImgCell::Draw(wxPoint point, int fontsize)
+void ImgCell::Draw(wxPoint point)
 {
   if (DrawThisCell(point) && (m_image != NULL))
   {
@@ -188,7 +190,7 @@ void ImgCell::Draw(wxPoint point, int fontsize)
       m_image->Recalculate();
     }
 
-    MathCell::Draw(point, fontsize);
+    MathCell::Draw(point);
     
     if (!InUpdateRegion()) return;
     

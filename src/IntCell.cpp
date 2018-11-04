@@ -135,6 +135,7 @@ void IntCell::SetVar(MathCell *var)
 
 void IntCell::RecalculateWidths(int fontsize)
 {
+  MathCell::RecalculateWidths(fontsize);
   wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
 
@@ -222,6 +223,7 @@ void IntCell::RecalculateWidths(int fontsize)
 
 void IntCell::RecalculateHeight(int fontsize)
 {
+  MathCell::RecalculateHeight(fontsize);
   Configuration *configuration = (*m_configuration);
 
   m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 5));
@@ -255,11 +257,11 @@ void IntCell::RecalculateHeight(int fontsize)
   }
 }
 
-void IntCell::Draw(wxPoint point, int fontsize)
+void IntCell::Draw(wxPoint point)
 {
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    MathCell::Draw(point, fontsize);
+    MathCell::Draw(point);
     Configuration *configuration = (*m_configuration);
     
     wxDC *dc = configuration->GetDC();
@@ -269,7 +271,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
     if (configuration->CheckTeXFonts())
     {
       SetForeground();
-      double fontsize1 = Scale_Px(fontsize * 1.5);
+      double fontsize1 = Scale_Px(m_fontSize * 1.5);
       wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
@@ -382,7 +384,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
       under.x += m_signWidth;
       under.y = point.y + m_signHeight / 2 + m_under->GetMaxCenter() + Scale_Px(2) -
                 m_signHeight / 3;
-      m_under->DrawList(under, MAX(MC_MIN_SIZE, fontsize - 5));
+      m_under->DrawList(under);
 
       if (configuration->CheckTeXFonts())
         over.x += 2 * m_signWidth;
@@ -391,7 +393,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
 
       over.y = point.y - m_signHeight / 2 - m_over->GetMaxDrop() - Scale_Px(2) +
                m_signHeight / 3;
-      m_over->DrawList(over, MAX(MC_MIN_SIZE, fontsize - 5));
+      m_over->DrawList(over);
 
       if (configuration->CheckTeXFonts())
       {
@@ -408,10 +410,10 @@ void IntCell::Draw(wxPoint point, int fontsize)
     else
       base.x += m_signWidth;
 
-    m_base->DrawList(base, fontsize);
+    m_base->DrawList(base);
 
     var.x = base.x + m_base->GetFullWidth();
-    m_var->DrawList(var, fontsize);
+    m_var->DrawList(var);
   }
 }
 

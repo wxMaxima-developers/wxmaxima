@@ -220,7 +220,7 @@ public:
   //! Recalculate the widths of the current cell.
   void RecalculateWidths(int fontsize);
 
-  void Draw(wxPoint point, int fontsize);
+  virtual void Draw(wxPoint point);
 
   wxString ToString();
 

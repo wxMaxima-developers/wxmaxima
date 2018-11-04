@@ -132,6 +132,7 @@ void ExptCell::SetBase(MathCell *base)
 
 void ExptCell::RecalculateWidths(int fontsize)
 {
+  MathCell::RecalculateWidths(fontsize);
   m_baseCell->RecalculateWidthsList(fontsize);
   if (m_isBroken)
     m_powCell->RecalculateWidthsList(fontsize);
@@ -147,6 +148,7 @@ void ExptCell::RecalculateWidths(int fontsize)
 
 void ExptCell::RecalculateHeight(int fontsize)
 {
+  MathCell::RecalculateHeight(fontsize);
   m_baseCell->RecalculateHeightList(fontsize);
   if (m_isBroken)
     m_powCell->RecalculateHeightList(fontsize);
@@ -166,22 +168,22 @@ void ExptCell::RecalculateHeight(int fontsize)
   }
 }
 
-void ExptCell::Draw(wxPoint point, int fontsize)
+void ExptCell::Draw(wxPoint point)
 {
   if (DrawThisCell(point) && InUpdateRegion())
   {
     
-    MathCell::Draw(point, fontsize);
+    MathCell::Draw(point);
     wxPoint bs, pw;
     bs.x = point.x;
     bs.y = point.y;
-    m_baseCell->DrawList(bs, fontsize);
+    m_baseCell->DrawList(bs);
 
     pw.x = point.x + m_baseCell->GetFullWidth() - MC_TEXT_PADDING;
     pw.y = point.y - m_baseCell->GetMaxCenter() - m_powCell->GetMaxHeight()
            + m_powCell->GetMaxCenter() +
-           Scale_Px((8 * fontsize) / 10 + MC_EXP_INDENT);
-    m_powCell->DrawList(pw, MAX(MC_MIN_SIZE, fontsize - EXPT_DEC));
+           Scale_Px((8 * m_fontSize) / 10 + MC_EXP_INDENT);
+    m_powCell->DrawList(pw);
   }
 }
 

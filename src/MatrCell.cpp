@@ -90,6 +90,7 @@ std::list<MathCell *> MatrCell::GetInnerCells()
 
 void MatrCell::RecalculateWidths(int fontsize)
 {
+  MathCell::RecalculateWidths(fontsize);
   for (int i = 0; i < m_matWidth * m_matHeight; i++)
   {
     m_cells[i]->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 2));
@@ -115,6 +116,7 @@ void MatrCell::RecalculateWidths(int fontsize)
 
 void MatrCell::RecalculateHeight(int fontsize)
 {
+  MathCell::RecalculateHeight(fontsize);
   for (int i = 0; i < m_matWidth * m_matHeight; i++)
   {
     m_cells[i]->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 2));
@@ -141,11 +143,11 @@ void MatrCell::RecalculateHeight(int fontsize)
   m_center = m_height / 2;
 }
 
-void MatrCell::Draw(wxPoint point, int fontsize)
+void MatrCell::Draw(wxPoint point)
 {
+  MathCell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    MathCell::Draw(point, fontsize);
     Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();
     wxPoint mp;
@@ -159,7 +161,7 @@ void MatrCell::Draw(wxPoint point, int fontsize)
         mp.y += m_centers[j];
         wxPoint mp1(mp);
         mp1.x = mp.x + (m_widths[i] - m_cells[j * m_matWidth + i]->GetFullWidth()) / 2;
-        m_cells[j * m_matWidth + i]->DrawList(mp1, MAX(MC_MIN_SIZE, fontsize - 2));
+        m_cells[j * m_matWidth + i]->DrawList(mp1);
         mp.y += (m_drops[j] + Scale_Px(10));
       }
       mp.x += (m_widths[i] + Scale_Px(10));

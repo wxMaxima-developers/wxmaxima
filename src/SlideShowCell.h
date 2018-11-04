@@ -164,7 +164,7 @@ protected:
 
   void RecalculateWidths(int fontsize);
 
-  void Draw(wxPoint point, int fontsize);
+  virtual void Draw(wxPoint point);
 
   wxString ToString();
 

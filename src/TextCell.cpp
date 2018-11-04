@@ -302,6 +302,7 @@ MathCell *TextCell::Copy()
 
 void TextCell::RecalculateWidths(int fontsize)
 {
+  MathCell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
 
   bool recalculateNeeded = false;
@@ -442,21 +443,21 @@ void TextCell::RecalculateWidths(int fontsize)
   ResetData();
 }
 
-void TextCell::Draw(wxPoint point, int fontsize)
+void TextCell::Draw(wxPoint point)
 {
   if (DrawThisCell(point) && !m_isHidden)
   {
     
     Configuration *configuration = (*m_configuration);
-    MathCell::Draw(point, fontsize);
+    MathCell::Draw(point);
     wxDC *dc = configuration->GetDC();
     
-    if (m_width == -1 || m_height == -1 || fontsize != m_lastCalculationFontSize)
-      RecalculateWidths(fontsize);
+    if (m_width == -1 || m_height == -1 || m_fontSize != m_lastCalculationFontSize)
+      RecalculateWidths(m_fontSize);
     
     if (InUpdateRegion())
     {
-      SetFont(fontsize);
+      SetFont(m_fontSize);
       SetForeground();
       /// Labels and prompts have special fontsize
       if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))

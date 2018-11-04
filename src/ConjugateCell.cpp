@@ -101,6 +101,7 @@ void ConjugateCell::SetInner(MathCell *inner)
 
 void ConjugateCell::RecalculateWidths(int fontsize)
 {
+  MathCell::RecalculateWidths(fontsize);
   m_innerCell->RecalculateWidthsList(fontsize);
   m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
   m_open->RecalculateWidthsList(fontsize);
@@ -110,6 +111,7 @@ void ConjugateCell::RecalculateWidths(int fontsize)
 
 void ConjugateCell::RecalculateHeight(int fontsize)
 {
+  MathCell::RecalculateHeight(fontsize);
   m_innerCell->RecalculateHeightList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + Scale_Px(4);
   m_center = m_innerCell->GetMaxCenter() + Scale_Px(2);
@@ -123,19 +125,19 @@ void ConjugateCell::RecalculateHeight(int fontsize)
   }
 }
 
-void ConjugateCell::Draw(wxPoint point, int fontsize)
+void ConjugateCell::Draw(wxPoint point)
 {
+  MathCell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   {
     Configuration *configuration = (*m_configuration);
-    MathCell::Draw(point, fontsize);
     
     wxDC *dc = configuration->GetDC();
     SetPen();
     wxPoint in;
     in.x = point.x + Scale_Px(4);
     in.y = point.y;
-    m_innerCell->DrawList(in, fontsize);
+    m_innerCell->DrawList(in);
 
     dc->DrawLine(point.x + Scale_Px(2),
                  point.y - m_center + Scale_Px(2),

@@ -116,7 +116,7 @@ bool MathPrintout::OnPrintPage(int num)
       // cells aren't printed" problem on linux.
       // No Idea why, though.
       dc->SetPen(wxPen(wxT("light grey"), 1, wxPENSTYLE_SOLID));
-      tmp->Draw(point, fontsize);
+      tmp->Draw(point);
       if (tmp->m_next != NULL)
       {
         point.x = marginX;

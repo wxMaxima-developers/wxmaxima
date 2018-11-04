@@ -196,8 +196,9 @@ void SlideShow::SetDisplayedIndex(int ind)
     m_displayed = m_size - 1;
 }
 
-void SlideShow::RecalculateWidths(int WXUNUSED(fontsize))
+void SlideShow::RecalculateWidths(int fontsize)
 {
+  MathCell::RecalculateWidths(fontsize);
   // Here we recalculate the height, as well:
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
@@ -227,13 +228,15 @@ void SlideShow::RecalculateWidths(int WXUNUSED(fontsize))
   m_center = m_height / 2;
 }
 
-void SlideShow::RecalculateHeight(int WXUNUSED(fontsize))
+void SlideShow::RecalculateHeight(int fontsize)
 {
-  // This is already done on recalculating the width.
+  MathCell::RecalculateHeight(fontsize);
+  // The rest is already done on recalculating the width.
 }
 
-void SlideShow::Draw(wxPoint point, int fontsize)
+void SlideShow::Draw(wxPoint point)
 {
+  MathCell::Draw(point);
   // If the animation leaves the screen the timer is stopped automatically.
   if(m_animationRunning)
     ReloadTimer();
@@ -252,8 +255,6 @@ void SlideShow::Draw(wxPoint point, int fontsize)
     } else {
       m_images[m_displayed]->Recalculate();
     }
-
-    MathCell::Draw(point, fontsize);
     
     if (!InUpdateRegion()) return;
     

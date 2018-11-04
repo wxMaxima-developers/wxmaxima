@@ -164,6 +164,7 @@ double Emfout::GetRealHeight()
 
 void Emfout::RecalculateHeight()
 {
+  MathCell::RecalculateHeight(fontsize);
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;
@@ -179,6 +180,7 @@ void Emfout::RecalculateHeight()
 
 void Emfout::RecalculateWidths()
 {
+  MathCell::RecalculateWidths(fontsize);
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;

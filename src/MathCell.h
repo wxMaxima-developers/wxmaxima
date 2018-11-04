@@ -271,20 +271,24 @@ class MathCell
 
   /*! Draw this cell
 
-    \param point The x and y position this cell is drawn at
-    \param fontsize The font size that is to be used
-   */
-  virtual void Draw(wxPoint point, int fontsize);
+    \param point The x and y position this cell is drawn at: All top-level cells get their
+    position during recalculation. But for the cells within them the position needs a 
+    second step after determining the dimension of the contents of the top-level cell.
 
-  virtual void Draw(int fontsize){Draw(m_currentPoint, fontsize);}
+    Example: The position of the denominator of a fraction can only be determined
+    after the height of denominator and numerator are known.
+   */
+  virtual void Draw(wxPoint point);
+
+  virtual void Draw(){Draw(m_currentPoint);}
 
   /*! Draw this list of cells
 
     \param point The x and y position this cell is drawn at
     \param fontsize The font size that is to be used
    */
-  void DrawList(wxPoint point, int fontsize);
-  void DrawList(int fontsize){DrawList(m_currentPoint, fontsize);}
+  void DrawList(wxPoint point);
+  void DrawList(){DrawList(m_currentPoint);}
 
   /*! Draw a rectangle that marks this cell or this list of cells as selected
 
@@ -412,8 +416,8 @@ class MathCell
     \param fontsize In exponents, super- and subscripts the font size is reduced.
     This cell therefore needs to know which font size it has to be drawn at.
   */
-  virtual void RecalculateHeight(int WXUNUSED(fontsize))
-  {};
+  virtual void RecalculateHeight(int fontsize)
+    {m_fontSize = fontsize;}
 
   /*! Recalculate the height of this list of cells
 
@@ -864,7 +868,11 @@ protected:
   Configuration **m_configuration;
 
 virtual std::list<MathCell *> GetInnerCells() = 0;
-  
+
+protected:
+  //! The font size is smaller in super- and subscripts.
+  int m_fontSize;
+
 private:
   //! 0 during printing, 1 prevents from drawing objects that are entirely outside the screen.
   static bool m_clipToDrawRegion;

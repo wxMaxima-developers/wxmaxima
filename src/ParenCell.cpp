@@ -170,6 +170,7 @@ void ParenCell::SetFont(int fontsize)
 
 void ParenCell::RecalculateWidths(int fontsize)
 {
+  MathCell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
 
   // Add a dummy contents to empty parenthesis
@@ -235,6 +236,7 @@ void ParenCell::RecalculateWidths(int fontsize)
 
 void ParenCell::RecalculateHeight(int fontsize)
 {
+  MathCell::RecalculateHeight(fontsize);
   Configuration *configuration = (*m_configuration);
   m_height = MAX(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(2);
   m_center = m_height / 2;
@@ -282,12 +284,12 @@ void ParenCell::RecalculateHeight(int fontsize)
   }
 }
 
-void ParenCell::Draw(wxPoint point, int fontsize)
+void ParenCell::Draw(wxPoint point)
 {
+  MathCell::Draw(point);
   if (DrawThisCell(point) && (InUpdateRegion()))
   { 
     Configuration *configuration = (*m_configuration);
-    MathCell::Draw(point, fontsize);
     wxDC *dc = configuration->GetDC();
     wxPoint innerCellPos(point);
 
@@ -297,9 +299,8 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     {            
     case Configuration::ascii:
       innerCellPos.x += m_open->GetWidth();
-      m_open->DrawList(point, fontsize);
-      m_close->DrawList(wxPoint(point.x + m_signWidth + m_innerCell->GetFullWidth(),point.y),
-                        fontsize);
+      m_open->DrawList(point);
+      m_close->DrawList(wxPoint(point.x + m_signWidth + m_innerCell->GetFullWidth(),point.y));
       break;
     case Configuration::assembled_unicode:
     case Configuration::assembled_unicode_fallbackfont:
@@ -382,7 +383,7 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     
     UnsetPen();
     if(!m_isBroken)
-      m_innerCell->DrawList(innerCellPos, fontsize);
+      m_innerCell->DrawList(innerCellPos);
   }
 }
 

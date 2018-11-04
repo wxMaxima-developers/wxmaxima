@@ -582,18 +582,18 @@ void GroupCell::AppendOutput(MathCell *cell)
 
 void GroupCell::Recalculate()
 {
-  int d_fontsize = (*m_configuration)->GetDefaultFontSize();
-  int m_fontsize = (*m_configuration)->GetMathFontSize();
+  int fontsize = (*m_configuration)->GetDefaultFontSize();
+  
+  m_fontSize = fontsize;
+  m_mathFontSize = (*m_configuration)->GetMathFontSize();
 
-  m_fontSize = d_fontsize;
-  m_mathFontSize = m_fontsize;
-
-  RecalculateWidths(d_fontsize);
-  RecalculateHeight(d_fontsize);
+  RecalculateWidths(fontsize);
+  RecalculateHeight(fontsize);
 }
 
 void GroupCell::RecalculateWidths(int fontsize)
 {
+  MathCell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
   if (m_width == -1 || m_height == -1 || configuration->ForceUpdate())
   {
@@ -773,6 +773,7 @@ void GroupCell::RecalculateHeightOutput(int WXUNUSED(fontsize))
 
 void GroupCell::RecalculateHeight(int fontsize)
 {
+  MathCell::RecalculateHeight(fontsize);
   Configuration *configuration = (*m_configuration);
 
   if (m_width < 0 || m_height < 0 || m_currentPoint.x < 0 || m_currentPoint.y < 0 ||
@@ -883,19 +884,19 @@ void GroupCell::RecalculateAppended()
   m_appendedCells = NULL;
 }
 
-void GroupCell::Draw(wxPoint point, int fontsize)
+void GroupCell::Draw(wxPoint point)
 {
   if (DrawThisCell(point))
   {
     
-    MathCell::Draw(point, fontsize);
+    MathCell::Draw(point);
     
     Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();
     if (m_width == -1 || m_height == -1)
     {
-      RecalculateWidths(fontsize);
-      RecalculateHeight(fontsize);
+      RecalculateWidths(m_fontSize);
+      RecalculateHeight(m_fontSize);
     }
     // draw a thick line for 'page break'
     // and return
@@ -906,7 +907,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
       wxPen pen(configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_DOT);
       dc->SetPen(pen);
       dc->DrawLine(0, y, (*m_configuration)->GetCanvasSize().GetWidth(), y);
-      MathCell::Draw(point, fontsize);
+      MathCell::Draw(point);
       return;
     }
 
@@ -949,7 +950,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
           (m_groupType != GC_TYPE_CODE))
       {
         configuration->Outdated(false);
-        m_inputLabel->DrawList(in, fontsize);
+        m_inputLabel->DrawList(in);
         if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next)
           configuration->Outdated((dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges());
       }
@@ -970,7 +971,7 @@ void GroupCell::Draw(wxPoint point, int fontsize)
         {         
           tmp->m_currentPoint = in;
 
-          tmp->Draw(in, MAX(tmp->IsMath() ? m_mathFontSize : m_fontSize, MC_MIN_SIZE));
+          tmp->Draw(in);
           if ((tmp->m_nextToDraw != NULL) && (tmp->m_nextToDraw->BreakLineHere()))
             {
               if (tmp->m_nextToDraw->m_bigSkip)

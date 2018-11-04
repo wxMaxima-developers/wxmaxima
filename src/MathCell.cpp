@@ -79,6 +79,7 @@ MathCell::MathCell(MathCell *group, Configuration **config)
   m_imageBorderWidth = 0;
   m_currentPoint = wxPoint(-1, -1);
   m_toolTip = (*m_configuration)->GetDefaultMathCellToolTip();
+  m_fontSize = (*m_configuration)->GetMathFontSize();
 }
 
 MathCell::~MathCell()
@@ -326,7 +327,7 @@ int MathCell::GetLineWidth()
  To make this work each derived class must draw the content of the cell
  and then call MathCall::Draw(...).
  */
-void MathCell::Draw(wxPoint point, int WXUNUSED(fontsize))
+void MathCell::Draw(wxPoint point)
 {
   m_currentPoint = point;
 
@@ -338,12 +339,12 @@ void MathCell::Draw(wxPoint point, int WXUNUSED(fontsize))
 #endif
 }
 
-void MathCell::DrawList(wxPoint point, int fontsize)
+void MathCell::DrawList(wxPoint point)
 {
   MathCell *tmp = this;
   while (tmp != NULL)
   {
-    tmp->Draw(point, fontsize);
+    tmp->Draw(point);
     point.x += tmp->m_width;
     wxASSERT(tmp != tmp->m_nextToDraw);
     tmp = tmp->m_nextToDraw;
@@ -403,9 +404,10 @@ void MathCell::RecalculateWidthsList(int fontsize)
   }
 }
 
-void MathCell::RecalculateWidths(int WXUNUSED(fontsize))
+void MathCell::RecalculateWidths(int fontsize)
 {
   ResetData();
+  m_fontSize = fontsize;
 }
 
 /*! Is this cell currently visible in the window?.

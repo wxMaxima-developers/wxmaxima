@@ -44,7 +44,7 @@ public:
 
   void RecalculateWidths(int fontsize);
 
-  void Draw(wxPoint point, int fontsize);
+  virtual void Draw(wxPoint point);
 
   void AddNewCell(MathCell *cell)
   {

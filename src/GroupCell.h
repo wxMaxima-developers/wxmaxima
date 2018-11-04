@@ -366,7 +366,7 @@ public:
     by RecalculateHeightOutput().
 
    */
-  void Draw(wxPoint point, int fontsize);
+  virtual void Draw(wxPoint point);
 
   //! Draw the bracket of this cell
   void DrawBracket();

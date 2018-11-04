@@ -480,7 +480,7 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
       {
         tmp->InEvaluationQueue(m_evaluationQueue.IsInQueue(tmp));
         tmp->LastInEvaluationQueue(m_evaluationQueue.GetCell() == tmp);
-        tmp->Draw(point, MAX(fontsize, MC_MIN_SIZE));
+        tmp->Draw(point);
       }
       if (tmp->m_next != NULL)
       {
