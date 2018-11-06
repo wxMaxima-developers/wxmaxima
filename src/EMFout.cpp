@@ -164,7 +164,6 @@ double Emfout::GetRealHeight()
 
 void Emfout::RecalculateHeight()
 {
-  MathCell::RecalculateHeight(fontsize);
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;
@@ -180,7 +179,6 @@ void Emfout::RecalculateHeight()
 
 void Emfout::RecalculateWidths()
 {
-  MathCell::RecalculateWidths(fontsize);
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;
@@ -274,7 +272,7 @@ void Emfout::Draw()
     {
       if (!tmp->m_isBrokenIntoLines)
       {
-        tmp->Draw(point, tmp->IsMath() ? mfontsize : fontsize);
+        tmp->Draw(point);
         if ((tmp->m_next != NULL) && (tmp->m_next->BreakLineHere()))
         {
           point.x = 0;
