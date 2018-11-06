@@ -346,6 +346,7 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
   // Inform all cells how wide our display is
   m_configuration->SetCanvasSize(GetClientSize());
   wxMemoryDC dcm;
+  DoPrepareDC(dcm);
   wxPaintDC dc(this);
 
   // Prepare data
@@ -379,21 +380,18 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
   dcm.SetUserScale(wxWindow::GetContentScaleFactor(),wxWindow::GetContentScaleFactor());
   dcm.SelectObject(m_memory);
   dcm.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
-  PrepareDC(dcm);
-
   dcm.Clear();
   dcm.SetMapMode(wxMM_TEXT);
   dcm.SetBackgroundMode(wxTRANSPARENT);
 
   wxGCDC antiAliassingDC(dcm);
 
-
   #ifdef __WXGTK__
   // Seems like depending on the wxGTK version the antialiassing DC doesn't inherit the
   // scrolling info from the normal DC.
   //
   // On wxMAC it does, though, and preparing it, too, scrolls it twice.
-  PrepareDC(antiAliassingDC);
+  DoPrepareDC(antiAliassingDC);
   #endif
 
   m_configuration->SetContext(dcm);
@@ -530,7 +528,7 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
   }
 
   // Blit the memory image to the window
-  dcm.SetDeviceOrigin(0, 0);
+//  dcm.SetDeviceOrigin(0, 0);
   dc.Blit(0, rect.GetTop(), sz.x, rect.GetBottom() - rect.GetTop() + 1, &dcm,
           0, rect.GetTop());
 
