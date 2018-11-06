@@ -346,7 +346,6 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
   // Inform all cells how wide our display is
   m_configuration->SetCanvasSize(GetClientSize());
   wxMemoryDC dcm;
-  DoPrepareDC(dcm);
   wxPaintDC dc(this);
 
   // Prepare data
@@ -379,6 +378,7 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
   dcm.SetUserScale(wxWindow::GetContentScaleFactor(),wxWindow::GetContentScaleFactor());
   dcm.SelectObject(m_memory);
+  DoPrepareDC(dcm);
   dcm.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
   dcm.Clear();
   dcm.SetMapMode(wxMM_TEXT);
