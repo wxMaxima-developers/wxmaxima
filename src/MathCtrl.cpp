@@ -386,7 +386,7 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
 
   wxGCDC antiAliassingDC(dcm);
 
-  #ifdef __WXGTK__
+  #if defined(__WXGTK__) && !defined(__WXGTK3__)
   // Seems like depending on the wxGTK version the antialiassing DC doesn't inherit the
   // scrolling info from the normal DC.
   //
@@ -528,7 +528,7 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
   }
 
   // Blit the memory image to the window
-//  dcm.SetDeviceOrigin(0, 0);
+  dcm.SetDeviceOrigin(0, 0);
   dc.Blit(0, rect.GetTop(), sz.x, rect.GetBottom() - rect.GetTop() + 1, &dcm,
           0, rect.GetTop());
 
