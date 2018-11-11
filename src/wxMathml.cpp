@@ -1855,9 +1855,6 @@ wxMathML::wxMathML()
 	wxString("    (format t \"</variable>\"))\n") +
 	wxString("\n") +
 	wxString("  (defun wx-print-variables ()\n") +
-	wxString("    ;; Flush stdout as this might hinder clisp on MSW from failing to send\n") +
-	wxString("    ;; network packets in the wrong order\n") +
-	wxString("    (finish-output)\n") +
 	wxString("    (format t \"<variables>\")\n") +
 	wxString("    (wx-print-variable \'$maxima_userdir)\n") +
 	wxString("    (wx-print-variable \'$maxima_tempdir)\n") +
@@ -1875,9 +1872,6 @@ wxMathML::wxMathML()
 	wxString("	    #+sbcl (ensure-readably-printable-string (lisp-implementation-version))\n") +
 	wxString("	    #-sbcl (lisp-implementation-version))\n") +
 	wxString("    (format t \"</variables>\")\n") +
-	wxString("    ;; Flush stdout as this might hinder clisp on MSW from failing to send\n") +
-	wxString("    ;; network packets in the wrong order\n") +
-	wxString("    (finish-output)\n") +
 	wxString("    )\n") +
 	wxString("\n") +
 	wxString(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n") +
