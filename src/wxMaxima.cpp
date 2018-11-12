@@ -784,10 +784,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     // This way we can avoid searching the whole string for a
     // ending tag if we have received only a few bytes of the
     // data between 2 tags
-    if(m_currentOutput != wxEmptyString)
-      m_currentOutputEnd = m_currentOutput.Right(MIN(30,m_currentOutput.Length())) + newChars;
-    else
-      m_currentOutputEnd = wxEmptyString;
+    m_currentOutputEnd = m_currentOutput.Right(30) + newChars;
 
     m_currentOutput += newChars;
 
