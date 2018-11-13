@@ -790,6 +790,8 @@ bool MathCtrl::RecalculateIfNeeded()
   if(m_dc == NULL)
     return false;
 
+  wxLogMessage(_("Recalculating the cell sizes"));
+
   if(!m_tree->Contains(m_recalculateStart))
     m_recalculateStart = m_tree;
 
