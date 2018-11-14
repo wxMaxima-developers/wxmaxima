@@ -1675,6 +1675,8 @@ wxPanel *wxMaximaFrame::CreateLogPane()
   wxLog::SetActiveTarget(m_logPanelTarget = new wxLogTextCtrl(textCtrl));
   // m_logPanelTarget->SetRepetitionCounting();
   // m_logPanelTarget->DisableTimestamp();
+  SetMinSize(wxSize(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )/6,
+                    wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )/6));
   return panel;
 }
 
