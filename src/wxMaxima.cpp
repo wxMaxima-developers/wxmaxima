@@ -6981,9 +6981,7 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   CleanUp();
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
-#if defined __WXMAC__
-  wxGetApp().topLevelWindows.Erase(wxGetApp().topLevelWindows.Find(this));
-#endif
+  MyApp::m_topLevelWindows.remove(this);
   // Allow the operating system to keep the clipboard's contents even after we
   // exit - if that ioption is supported by the OS.
   wxTheClipboard->Flush();
