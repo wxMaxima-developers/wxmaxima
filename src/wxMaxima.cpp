@@ -259,16 +259,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
 
 }
 
-wxSize wxMaxima::DoGetBestClientSize()
-{
-  wxSize size(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )*.6,
-              wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )*.6);
-  if (size.x<800) size.x=800;
-  if (size.y<600) size.y=600;
-  std::cerr<<"DoGetBestSize!\n";
-  return size;
-}
-
 wxMaxima::~wxMaxima()
 {
   KillMaxima();

@@ -50,7 +50,19 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_recentPackages(wxT("packages"))
 {
   SetName(title);
-  wxPersistenceManager::Get().RegisterAndRestore(this);
+  if(!wxPersistenceManager::Get().RegisterAndRestore(this))
+  {
+    wxSize winSize = wxDefaultSize;
+    if(winSize == wxDefaultSize)
+    {
+      winSize = wxSize(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )*.75,
+                    wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )*.75);
+      if (winSize.x<800) winSize.x=800;
+      if (winSize.y<600) winSize.y=600;
+    }
+    SetSize(winSize);
+  }
+
   m_logPanelTarget = NULL;
   m_isNamed = false;
   m_configFileName = configFile,
@@ -119,7 +131,6 @@ wxSize wxMaximaFrame::DoGetBestClientSize()
               wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )*.6);
   if (size.x<800) size.x=800;
   if (size.y<600) size.y=600;
-  std::cerr<<"DoGetBestSize!\n";
   return size;
 }
 
