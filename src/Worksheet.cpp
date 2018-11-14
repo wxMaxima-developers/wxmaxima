@@ -23,9 +23,9 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  This file defines the class MathCtrl
+  This file defines the class Worksheet
 
-  MathCtrl represents the worksheet.
+  Worksheet represents the worksheet.
  */
 
 
@@ -36,7 +36,7 @@
 #include <wx/richtext/richtextbuffer.h>
 #include <wx/tooltip.h>
 #include "wxMaximaFrame.h"
-#include "MathCtrl.h"
+#include "Worksheet.h"
 #include "Bitmap.h"
 #include "EditorCell.h"
 #include "GroupCell.h"
@@ -67,7 +67,7 @@
 #define ANIMATION_TIMER_TIMEOUT 300
 
 //! This class represents the worksheet shown in the middle of the wxMaxima window.
-MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
+Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
         wxScrolledCanvas(
                 parent, id, position, size,
                 wxVSCROLL | wxHSCROLL | wxWANTS_CHARS
@@ -154,12 +154,12 @@ MathCtrl::MathCtrl(wxWindow *parent, int id, wxPoint position, wxSize size) :
 
   #if wxCHECK_VERSION(3,1,1)
   Connect(wxEVT_GESTURE_ZOOM,
-          wxZoomGestureEventHandler(MathCtrl::OnZoom),
+          wxZoomGestureEventHandler(Worksheet::OnZoom),
           NULL, this);
   #endif
 }
 
-bool MathCtrl::RedrawIfRequested()
+bool Worksheet::RedrawIfRequested()
 {
   bool redrawIssued = false;
 
@@ -275,7 +275,7 @@ bool MathCtrl::RedrawIfRequested()
   return redrawIssued;
 }
 
-void MathCtrl::RequestRedraw(GroupCell *start)
+void Worksheet::RequestRedraw(GroupCell *start)
 {
   m_redrawRequested = true;
 
@@ -308,7 +308,7 @@ void MathCtrl::RequestRedraw(GroupCell *start)
   }
 }
 
-MathCtrl::~MathCtrl()
+Worksheet::~Worksheet()
 {
   if (HasCapture())
     ReleaseMouse();
@@ -329,7 +329,7 @@ MathCtrl::~MathCtrl()
 /***
  * Redraw the control
  */
-void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
+void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 {
   #if wxUSE_ACCESSIBILITY
   if(m_accessibilityInfo != NULL)
@@ -536,7 +536,7 @@ void MathCtrl::OnPaint(wxPaintEvent &WXUNUSED(event))
   m_configuration->UnsetAntialiassingDC();
 }
 
-GroupCell *MathCtrl::InsertGroupCells(GroupCell *cells, GroupCell *where)
+GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where)
 {
   return InsertGroupCells(cells, where, &treeUndoActions);
 }
@@ -545,7 +545,7 @@ GroupCell *MathCtrl::InsertGroupCells(GroupCell *cells, GroupCell *where)
 // inserts groupcells after position "where" (NULL = top of the document)
 // Multiple groupcells can be inserted when tree->m_next != NULL
 // Returns the pointer to the last inserted group cell to have fun with
-GroupCell *MathCtrl::InsertGroupCells(
+GroupCell *Worksheet::InsertGroupCells(
         GroupCell *cells,
         GroupCell *where,
         std::list<TreeUndoAction *> *undoBuffer
@@ -608,7 +608,7 @@ GroupCell *MathCtrl::InsertGroupCells(
 // this goes through m_tree with m_next, to set the correct m_last
 // you can call this after folding, unfolding cells to make sure
 // m_last is correct
-GroupCell *MathCtrl::UpdateMLast()
+GroupCell *Worksheet::UpdateMLast()
 {
   if (!m_tree)
     m_last = NULL;
@@ -623,7 +623,7 @@ GroupCell *MathCtrl::UpdateMLast()
   return m_last;
 }
 
-void MathCtrl::ScrollToError()
+void Worksheet::ScrollToError()
 {
   GroupCell *ErrorCell;
 
@@ -657,7 +657,7 @@ void MathCtrl::ScrollToError()
   }
 }
 
-GroupCell *MathCtrl::GetWorkingGroup(bool resortToLast)
+GroupCell *Worksheet::GetWorkingGroup(bool resortToLast)
 {
   GroupCell *tmp = NULL;
   if(m_cellPointers.GetWorkingGroup(resortToLast) != NULL)
@@ -688,7 +688,7 @@ GroupCell *MathCtrl::GetWorkingGroup(bool resortToLast)
   return tmp;
 }
 
-void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
+void Worksheet::InsertLine(MathCell *newCell, bool forceNewLine)
 {
   if (newCell == NULL)
     return;
@@ -736,7 +736,7 @@ void MathCtrl::InsertLine(MathCell *newCell, bool forceNewLine)
   }
 }
 
-void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
+void Worksheet::SetZoomFactor(double newzoom, bool recalc)
 {
   // Restrict zoom factors to tenths
   newzoom = round (newzoom * 10) / 10.0;
@@ -782,7 +782,7 @@ void MathCtrl::SetZoomFactor(double newzoom, bool recalc)
   ScheduleScrollToCell(cellToScrollTo);
 }
 
-bool MathCtrl::RecalculateIfNeeded()
+bool Worksheet::RecalculateIfNeeded()
 {
   if((m_recalculateStart == NULL) || (m_tree == NULL))
     return false;
@@ -831,7 +831,7 @@ bool MathCtrl::RecalculateIfNeeded()
   return true;
 }
 
-void MathCtrl::Recalculate(GroupCell *start, bool force)
+void Worksheet::Recalculate(GroupCell *start, bool force)
 {
   if(force)
     m_configuration->SetForceUpdate(force);
@@ -863,7 +863,7 @@ void MathCtrl::Recalculate(GroupCell *start, bool force)
 /***
  * Resize the control
  */
-void MathCtrl::OnSize(wxSizeEvent& WXUNUSED(event))
+void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
 {
   Freeze();
 
@@ -932,11 +932,11 @@ void MathCtrl::OnSize(wxSizeEvent& WXUNUSED(event))
 
 /***
  * Clear document
- * Basically set everything to the state as if MathCtrl
+ * Basically set everything to the state as if Worksheet
  * was just created, so there is a blank document.
- * Called when opening a new file into existing MathCtrl.
+ * Called when opening a new file into existing Worksheet.
  */
-void MathCtrl::ClearDocument()
+void Worksheet::ClearDocument()
 {
   CloseAutoCompletePopup();
   SetSelection(NULL);
@@ -962,7 +962,7 @@ void MathCtrl::ClearDocument()
  * Reset all input promts to "-->  "
  * Called when Restart Maxima is called from Maxima menu
  */
-void MathCtrl::ResetInputPrompts()
+void Worksheet::ResetInputPrompts()
 {
   if (m_tree)
     m_tree->ResetInputLabelList(); // recursivly reset prompts
@@ -971,7 +971,7 @@ void MathCtrl::ResetInputPrompts()
 //
 // support for numbered sections with hiding
 //
-void MathCtrl::NumberSections()
+void Worksheet::NumberSections()
 {
   int s, sub, subsub, h5, h6, i;
   s = sub = subsub = i = h5 = h6 = 0;
@@ -979,7 +979,7 @@ void MathCtrl::NumberSections()
     m_tree->Number(s, sub, subsub, h5, h6, i);
 }
 
-bool MathCtrl::IsLesserGCType(int type, int comparedTo)
+bool Worksheet::IsLesserGCType(int type, int comparedTo)
 {
   switch (type)
   {
@@ -1032,7 +1032,7 @@ bool MathCtrl::IsLesserGCType(int type, int comparedTo)
  * Call when a fold action was detected, to update the state in response
  * to a fold occurring.
  */
-void MathCtrl::FoldOccurred()
+void Worksheet::FoldOccurred()
 {
   SetSaved(false);
   UpdateMLast();
@@ -1046,7 +1046,7 @@ void MathCtrl::FoldOccurred()
  * @return        A pointer to a GroupCell if the action succeeded;
  *                NULL otherwise.
  */
-GroupCell *MathCtrl::ToggleFold(GroupCell *which)
+GroupCell *Worksheet::ToggleFold(GroupCell *which)
 {
   if (!which)
     return NULL;
@@ -1076,7 +1076,7 @@ GroupCell *MathCtrl::ToggleFold(GroupCell *which)
  * @return        A pointer to a GroupCell if the action succeeded;
  *                NULL otherwise.
  */
-GroupCell *MathCtrl::ToggleFoldAll(GroupCell *which)
+GroupCell *Worksheet::ToggleFoldAll(GroupCell *which)
 {
   if (!which)
     return NULL;
@@ -1099,7 +1099,7 @@ GroupCell *MathCtrl::ToggleFoldAll(GroupCell *which)
 /**
  * Recursively folds the whole document.
  */
-void MathCtrl::FoldAll()
+void Worksheet::FoldAll()
 {
   if (m_tree)
   {
@@ -1111,7 +1111,7 @@ void MathCtrl::FoldAll()
 /**
  * Recursively unfolds the whole document.
  */
-void MathCtrl::UnfoldAll()
+void Worksheet::UnfoldAll()
 {
   if (m_tree)
   {
@@ -1122,7 +1122,7 @@ void MathCtrl::UnfoldAll()
 
 // Returns the tree from start to end and connets the pointers the right way
 // so that m_tree stays 'correct' - also works in hidden trees
-GroupCell *MathCtrl::TearOutTree(GroupCell *start, GroupCell *end)
+GroupCell *Worksheet::TearOutTree(GroupCell *start, GroupCell *end)
 {
   if ((!start) || (!end))
     return NULL;
@@ -1146,7 +1146,7 @@ GroupCell *MathCtrl::TearOutTree(GroupCell *start, GroupCell *end)
 /***
  * Right mouse - popup-menu
  */
-void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
+void Worksheet::OnMouseRightDown(wxMouseEvent &event)
 {
   ClearNotification();
 
@@ -1543,7 +1543,7 @@ void MathCtrl::OnMouseRightDown(wxMouseEvent &event)
 /***
  * We have a mouse click to the left of a GroupCel.
  */
-void MathCtrl::OnMouseLeftInGcLeft(wxMouseEvent &event, GroupCell *clickedInGC)
+void Worksheet::OnMouseLeftInGcLeft(wxMouseEvent &event, GroupCell *clickedInGC)
 {
   if ((clickedInGC->HideRect()).Contains(m_down)) // did we hit the hide rectancle
   {
@@ -1573,7 +1573,7 @@ void MathCtrl::OnMouseLeftInGcLeft(wxMouseEvent &event, GroupCell *clickedInGC)
 /***
  * We have a mouse click in the GroupCell.
  */
-void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event), GroupCell *clickedInGC)
+void Worksheet::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event), GroupCell *clickedInGC)
 {
   if (GCContainsCurrentQuestion(clickedInGC))
   {
@@ -1626,7 +1626,7 @@ void MathCtrl::OnMouseLeftInGcCell(wxMouseEvent &WXUNUSED(event), GroupCell *cli
   }
 }
 
-void MathCtrl::OnMouseLeftInGc(wxMouseEvent &event, GroupCell *clickedInGc)
+void Worksheet::OnMouseLeftInGc(wxMouseEvent &event, GroupCell *clickedInGc)
 {
   // The click has changed the cell which means the user works here and
   // doesn't want the evaluation mechanism to automatically follow the
@@ -1651,7 +1651,7 @@ void MathCtrl::OnMouseLeftInGc(wxMouseEvent &event, GroupCell *clickedInGc)
  * - if it falls between groupCells activate caret and CLICK_TYPE_GROUP_SELECTION
  * - if it falls within a groupcell investigate where did it fall (input or output)
  */
-void MathCtrl::OnMouseLeftDown(wxMouseEvent &event)
+void Worksheet::OnMouseLeftDown(wxMouseEvent &event)
 {
   CloseAutoCompletePopup();
   m_leftDownPosition = wxPoint(event.GetX(),event.GetY());
@@ -1778,7 +1778,7 @@ void MathCtrl::OnMouseLeftDown(wxMouseEvent &event)
 }
 
 
-GroupCell *MathCtrl::FirstVisibleGC()
+GroupCell *Worksheet::FirstVisibleGC()
 {
   wxPoint point;
   CalcUnscrolledPosition(0, 0, &point.x, &point.y);
@@ -1797,7 +1797,7 @@ GroupCell *MathCtrl::FirstVisibleGC()
   return NULL;
 }
 
-void MathCtrl::OnMouseLeftUp(wxMouseEvent &event)
+void Worksheet::OnMouseLeftUp(wxMouseEvent &event)
 {
   m_cellPointers.ResetSearchStart();
   // No more track the mouse when it is outside the worksheet
@@ -1822,7 +1822,7 @@ void MathCtrl::OnMouseLeftUp(wxMouseEvent &event)
   RequestRedraw();
 }
 
-void MathCtrl::OnMouseWheel(wxMouseEvent &event)
+void Worksheet::OnMouseWheel(wxMouseEvent &event)
 {
   if (event.GetModifiers() & wxMOD_CONTROL)
   {
@@ -1886,7 +1886,7 @@ void MathCtrl::OnMouseWheel(wxMouseEvent &event)
   }
 }
 
-void MathCtrl::OnMouseMotion(wxMouseEvent &event)
+void Worksheet::OnMouseMotion(wxMouseEvent &event)
 {
     CalcUnscrolledPosition(event.GetX(), event.GetY(), &m_pointer_x, &m_pointer_y);
     m_mouseMotionWas = true;
@@ -1904,7 +1904,7 @@ void MathCtrl::OnMouseMotion(wxMouseEvent &event)
     ClickNDrag(m_down, m_up);
 }
 
-void MathCtrl::SelectGroupCells(wxPoint down, wxPoint up)
+void Worksheet::SelectGroupCells(wxPoint down, wxPoint up)
 {
   // Calculate the rectangle that has been selected
   int ytop = MIN(down.y, up.y);
@@ -1972,7 +1972,7 @@ void MathCtrl::SelectGroupCells(wxPoint down, wxPoint up)
   SetSelection(m_cellPointers.m_selectionStart,m_cellPointers.m_selectionEnd);
 }
 
-void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
+void Worksheet::ClickNDrag(wxPoint down, wxPoint up)
 {
   MathCell *selectionStartOld = m_cellPointers.m_selectionStart, *selectionEndOld = m_cellPointers.m_selectionEnd;
   wxRect rect;
@@ -2055,7 +2055,7 @@ void MathCtrl::ClickNDrag(wxPoint down, wxPoint up)
 /***
  * Get the string representation of the selection
  */
-wxString MathCtrl::GetString(bool lb)
+wxString Worksheet::GetString(bool lb)
 {
 
   if (m_cellPointers.m_selectionStart == NULL)
@@ -2083,7 +2083,7 @@ wxString MathCtrl::GetString(bool lb)
 /***
  * Copy selection to clipboard.
  */
-bool MathCtrl::Copy(bool astext)
+bool Worksheet::Copy(bool astext)
 {
   if (GetActiveCell() != NULL)
   {
@@ -2192,7 +2192,7 @@ bool MathCtrl::Copy(bool astext)
   }
 }
 
-wxString MathCtrl::ConvertSelectionToMathML()
+wxString Worksheet::ConvertSelectionToMathML()
 {
   if (GetActiveCell() != NULL)
     return wxEmptyString;
@@ -2244,7 +2244,7 @@ wxString MathCtrl::ConvertSelectionToMathML()
   return s;
 }
 
-bool MathCtrl::CopyMathML()
+bool Worksheet::CopyMathML()
 {
   wxString s = ConvertSelectionToMathML();
 
@@ -2271,7 +2271,7 @@ bool MathCtrl::CopyMathML()
   return false;
 }
 
-bool MathCtrl::CopyTeX()
+bool Worksheet::CopyTeX()
 {
   if (GetActiveCell() != NULL)
     return false;
@@ -2334,7 +2334,7 @@ bool MathCtrl::CopyTeX()
   return false;
 }
 
-bool MathCtrl::CopyText()
+bool Worksheet::CopyText()
 {
   if (GetActiveCell() != NULL)
     return false;
@@ -2369,7 +2369,7 @@ bool MathCtrl::CopyText()
   return false;
 }
 
-bool MathCtrl::CopyCells()
+bool Worksheet::CopyCells()
 {
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (m_cellPointers.m_selectionStart == NULL)
@@ -2451,7 +2451,7 @@ bool MathCtrl::CopyCells()
   return false;
 }
 
-bool MathCtrl::CanDeleteSelection()
+bool Worksheet::CanDeleteSelection()
 {
   if ((m_cellPointers.m_selectionStart == NULL) || (m_cellPointers.m_selectionEnd == NULL))
     return false;
@@ -2462,7 +2462,7 @@ bool MathCtrl::CanDeleteSelection()
   );
 }
 
-void MathCtrl::DeleteSelection()
+void Worksheet::DeleteSelection()
 {
   DeleteRegion(
           dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup()),
@@ -2473,7 +2473,7 @@ void MathCtrl::DeleteSelection()
   UpdateTableOfContents();
 }
 
-void MathCtrl::DeleteCurrentCell()
+void Worksheet::DeleteCurrentCell()
 {
   GroupCell *cellToDelete = NULL;
   if (m_hCaretActive)
@@ -2485,7 +2485,7 @@ void MathCtrl::DeleteCurrentCell()
     DeleteRegion(cellToDelete, cellToDelete);
 }
 
-bool MathCtrl::CanDeleteRegion(GroupCell *start, GroupCell *end)
+bool Worksheet::CanDeleteRegion(GroupCell *start, GroupCell *end)
 {
   if ((start == NULL) || (end == NULL))
     return false;
@@ -2508,12 +2508,12 @@ bool MathCtrl::CanDeleteRegion(GroupCell *start, GroupCell *end)
   return true;
 }
 
-void MathCtrl::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end)
+void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end)
 {
   TreeUndo_MarkCellsAsAdded(start, end, &treeUndoActions);
 }
 
-void MathCtrl::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end, std::list<TreeUndoAction *> *undoBuffer)
+void Worksheet::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end, std::list<TreeUndoAction *> *undoBuffer)
 {
   TreeUndoAction *undoAction = new TreeUndoAction;
   undoAction->m_start = start;
@@ -2522,7 +2522,7 @@ void MathCtrl::TreeUndo_MarkCellsAsAdded(GroupCell *start, GroupCell *end, std::
   TreeUndo_LimitUndoBuffer();
 }
 
-void MathCtrl::TreeUndo_ClearRedoActionList()
+void Worksheet::TreeUndo_ClearRedoActionList()
 {
   while (!treeRedoActions.empty())
   {
@@ -2530,7 +2530,7 @@ void MathCtrl::TreeUndo_ClearRedoActionList()
   }
 }
 
-void MathCtrl::TreeUndo_ClearUndoActionList()
+void Worksheet::TreeUndo_ClearUndoActionList()
 {
   while (!treeUndoActions.empty())
   {
@@ -2538,7 +2538,7 @@ void MathCtrl::TreeUndo_ClearUndoActionList()
   }
 }
 
-void MathCtrl::TreeUndo_ClearBuffers()
+void Worksheet::TreeUndo_ClearBuffers()
 {
   TreeUndo_ClearRedoActionList();
   while (!treeUndoActions.empty())
@@ -2548,7 +2548,7 @@ void MathCtrl::TreeUndo_ClearBuffers()
   TreeUndo_ActiveCell = NULL;
 }
 
-void MathCtrl::TreeUndo_DiscardAction(std::list<TreeUndoAction *> *actionList)
+void Worksheet::TreeUndo_DiscardAction(std::list<TreeUndoAction *> *actionList)
 {
   if(!actionList->empty())
   {
@@ -2562,7 +2562,7 @@ void MathCtrl::TreeUndo_DiscardAction(std::list<TreeUndoAction *> *actionList)
   }
 }
 
-void MathCtrl::TreeUndo_CellLeft()
+void Worksheet::TreeUndo_CellLeft()
 {
   // If no cell is active we didn't leave a cell and return from this function.
   if (GetActiveCell() == NULL)
@@ -2593,7 +2593,7 @@ void MathCtrl::TreeUndo_CellLeft()
   }
 }
 
-void MathCtrl::TreeUndo_CellEntered()
+void Worksheet::TreeUndo_CellEntered()
 {
   if (GetActiveCell())
   {
@@ -2604,7 +2604,7 @@ void MathCtrl::TreeUndo_CellEntered()
   }
 }
 
-void MathCtrl::SetCellStyle(GroupCell *group, int style)
+void Worksheet::SetCellStyle(GroupCell *group, int style)
 {
   if(group == NULL)
     return;
@@ -2625,7 +2625,7 @@ void MathCtrl::SetCellStyle(GroupCell *group, int style)
   RequestRedraw();
 }
 
-void MathCtrl::DeleteRegion(
+void Worksheet::DeleteRegion(
         GroupCell *start,
         GroupCell *end
 )
@@ -2633,7 +2633,7 @@ void MathCtrl::DeleteRegion(
   DeleteRegion(start, end, &treeUndoActions);
 }
 
-void MathCtrl::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUndoAction *> *undoBuffer)
+void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUndoAction *> *undoBuffer)
 {
   m_cellPointers.ResetSearchStart();
   if(end == NULL)
@@ -2724,7 +2724,7 @@ void MathCtrl::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUndo
   m_saved = false;
 }
 
-void MathCtrl::UpdateAnswer(wxString txt)
+void Worksheet::UpdateAnswer(wxString txt)
 {
   GroupCell *answerCell = GetWorkingGroup();
   if(answerCell == NULL)
@@ -2756,7 +2756,7 @@ void MathCtrl::UpdateAnswer(wxString txt)
   answerCell->m_knownAnswers = knownAnswers;
 }
 
-void MathCtrl::OpenQuestionCaret(wxString txt)
+void Worksheet::OpenQuestionCaret(wxString txt)
 {
   wxASSERT_MSG(GetWorkingGroup() != NULL, _("Bug: Got a question but no cell to answer it in"));
 
@@ -2817,7 +2817,7 @@ void MathCtrl::OpenQuestionCaret(wxString txt)
   RequestRedraw();
 }
 
-void MathCtrl::OpenHCaret(wxString txt, int type)
+void Worksheet::OpenHCaret(wxString txt, int type)
 {
   CloseAutoCompletePopup();
 
@@ -2893,7 +2893,7 @@ void MathCtrl::OpenHCaret(wxString txt, int type)
   ForceRedraw();
 }
 
-void MathCtrl::Evaluate()
+void Worksheet::Evaluate()
 {
   wxMenuEvent *EvaluateEvent = new wxMenuEvent(wxEVT_MENU, wxMaximaFrame::menu_evaluate);
   GetParent()->GetEventHandler()->QueueEvent(EvaluateEvent);
@@ -2902,7 +2902,7 @@ void MathCtrl::Evaluate()
 /***
  * Support for copying and deleting with keyboard
  */
-void MathCtrl::OnKeyDown(wxKeyEvent &event)
+void Worksheet::OnKeyDown(wxKeyEvent &event)
 {
   ClearNotification();
 
@@ -3160,7 +3160,7 @@ void MathCtrl::OnKeyDown(wxKeyEvent &event)
   }
 }
 
-bool MathCtrl::GCContainsCurrentQuestion(GroupCell *cell)
+bool Worksheet::GCContainsCurrentQuestion(GroupCell *cell)
 {
   if (GetWorkingGroup())
     return ((cell == GetWorkingGroup()) && m_questionPrompt);
@@ -3168,7 +3168,7 @@ bool MathCtrl::GCContainsCurrentQuestion(GroupCell *cell)
     return false;
 }
 
-void MathCtrl::QuestionAnswered()
+void Worksheet::QuestionAnswered()
 {
   if (m_questionPrompt)
     SetActiveCell(NULL);
@@ -3176,7 +3176,7 @@ void MathCtrl::QuestionAnswered()
   m_questionPrompt = false;
 }
 
-GroupCell *MathCtrl::StartOfSectioningUnit(GroupCell *start)
+GroupCell *Worksheet::StartOfSectioningUnit(GroupCell *start)
 {
   wxASSERT(start != NULL);
   // If the current cell is a sectioning cell we return this cell
@@ -3197,7 +3197,7 @@ GroupCell *MathCtrl::StartOfSectioningUnit(GroupCell *start)
     return start;
 }
 
-GroupCell *MathCtrl::EndOfSectioningUnit(GroupCell *start)
+GroupCell *Worksheet::EndOfSectioningUnit(GroupCell *start)
 {
   wxASSERT(start != NULL);
   GroupCell *sectionbegin = StartOfSectioningUnit(start);
@@ -3217,7 +3217,7 @@ GroupCell *MathCtrl::EndOfSectioningUnit(GroupCell *start)
   return end;
 }
 
-void MathCtrl::UpdateConfigurationClientSize()
+void Worksheet::UpdateConfigurationClientSize()
 {
   m_configuration->SetClientWidth(GetClientSize().GetWidth() -
                                   m_configuration->GetCellBracketWidth() -
@@ -3232,7 +3232,7 @@ void MathCtrl::UpdateConfigurationClientSize()
  * OnCharInActive sends the event to the active EditorCell
  * and then updates the window.
  */
-void MathCtrl::OnCharInActive(wxKeyEvent &event)
+void Worksheet::OnCharInActive(wxKeyEvent &event)
 {
   bool needRecalculate = false;
 
@@ -3471,7 +3471,7 @@ void MathCtrl::OnCharInActive(wxKeyEvent &event)
   }
 }
 
-void MathCtrl::SelectWithChar(int ccode)
+void Worksheet::SelectWithChar(int ccode)
 {
   ScrolledAwayFromEvaluation();
   // start making a selection
@@ -3574,7 +3574,7 @@ void MathCtrl::SelectWithChar(int ccode)
   RequestRedraw();
 }
 
-void MathCtrl::SelectEditable(EditorCell *editor, bool top)
+void Worksheet::SelectEditable(EditorCell *editor, bool top)
 {
   if ((editor != NULL) &&
       (
@@ -3618,7 +3618,7 @@ void MathCtrl::SelectEditable(EditorCell *editor, bool top)
   RequestRedraw();
 }
 
-void MathCtrl::OnCharNoActive(wxKeyEvent &event)
+void Worksheet::OnCharNoActive(wxKeyEvent &event)
 {
   int ccode = event.GetKeyCode();
   wxString txt; // Usually we open an Editor Cell with initial content txt
@@ -3988,7 +3988,7 @@ void MathCtrl::OnCharNoActive(wxKeyEvent &event)
   RequestRedraw();
 }
 
-void MathCtrl::ClearNotification()
+void Worksheet::ClearNotification()
 {
   if(m_notificationMessage != NULL)
   {
@@ -3998,7 +3998,7 @@ void MathCtrl::ClearNotification()
   }
 }
 
-void MathCtrl::SetNotification(wxString message, int flags)
+void Worksheet::SetNotification(wxString message, int flags)
 {
   if(m_windowActive)
     return;
@@ -4032,7 +4032,7 @@ void MathCtrl::SetNotification(wxString message, int flags)
  * OnChar handles key events. If we have an active cell, sends the
  * event to the active cell, else moves the cursor between groups.
  */
-void MathCtrl::OnChar(wxKeyEvent &event)
+void Worksheet::OnChar(wxKeyEvent &event)
 {
   ClearNotification();
 
@@ -4122,7 +4122,7 @@ void MathCtrl::OnChar(wxKeyEvent &event)
 /***
  * Get maximum x and y in the tree.
  */
-void MathCtrl::GetMaxPoint(int *width, int *height)
+void Worksheet::GetMaxPoint(int *width, int *height)
 {
   MathCell *tmp = m_tree;
   int currentHeight = m_configuration->GetBaseIndent();
@@ -4144,7 +4144,7 @@ void MathCtrl::GetMaxPoint(int *width, int *height)
 /***
  * Adjust the virtual size and scrollbars.
  */
-void MathCtrl::AdjustSize()
+void Worksheet::AdjustSize()
 {
   int width = m_configuration->GetBaseIndent(), height = m_configuration->GetBaseIndent();
   int clientWidth, clientHeight, virtualHeight;
@@ -4174,7 +4174,7 @@ void MathCtrl::AdjustSize()
 /***
  * Support for selecting cells outside display
  */
-void MathCtrl::OnMouseExit(wxMouseEvent &event)
+void Worksheet::OnMouseExit(wxMouseEvent &event)
 {
   m_mouseOutside = true;
   if (m_leftDown)
@@ -4196,7 +4196,7 @@ void MathCtrl::OnMouseExit(wxMouseEvent &event)
 }
 
 #if wxCHECK_VERSION(3,1,1)
-void MathCtrl::OnZoom(wxZoomGestureEvent &event)
+void Worksheet::OnZoom(wxZoomGestureEvent &event)
 {
   if(event.IsGestureStart())
     m_zoomAtGestureStart = m_configuration->GetZoomFactor();
@@ -4205,12 +4205,12 @@ void MathCtrl::OnZoom(wxZoomGestureEvent &event)
 }
 #endif
 
-void MathCtrl::OnMouseEnter(wxMouseEvent &WXUNUSED(event))
+void Worksheet::OnMouseEnter(wxMouseEvent &WXUNUSED(event))
 {
   m_mouseOutside = false;
 }
 
-void MathCtrl::StepAnimation(int change)
+void Worksheet::StepAnimation(int change)
 {
   if((GetSelectionStart() != NULL) && (GetSelectionStart() == GetSelectionEnd()) &&
      (GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
@@ -4239,7 +4239,7 @@ void MathCtrl::StepAnimation(int change)
   }
 }
 
-void MathCtrl::OnTimer(wxTimerEvent &event)
+void Worksheet::OnTimer(wxTimerEvent &event)
 {
   switch (event.GetId())
   {
@@ -4352,7 +4352,7 @@ void MathCtrl::OnTimer(wxTimerEvent &event)
   }
 }
 
-void MathCtrl::RequestRedraw(wxRect rect)
+void Worksheet::RequestRedraw(wxRect rect)
 {
   if((m_rectToRefresh.GetLeft() > rect.GetLeft()) || (m_rectToRefresh.GetLeft() < 0))
     m_rectToRefresh.SetLeft(rect.GetLeft());
@@ -4367,7 +4367,7 @@ void MathCtrl::RequestRedraw(wxRect rect)
 /***
  * Destroy the tree
  */
-void MathCtrl::DestroyTree()
+void Worksheet::DestroyTree()
 {
   m_hCaretActive = false;
   SetHCaret(NULL);
@@ -4380,7 +4380,7 @@ void MathCtrl::DestroyTree()
 /***
  * Copy tree
  */
-GroupCell *MathCtrl::CopyTree()
+GroupCell *Worksheet::CopyTree()
 {
   if (m_tree == NULL)
     return (GroupCell *) NULL;
@@ -4391,7 +4391,7 @@ GroupCell *MathCtrl::CopyTree()
 /***
  * Copy selection as bitmap
  */
-bool MathCtrl::CopyBitmap()
+bool Worksheet::CopyBitmap()
 {
   MathCell *tmp = CopySelection();
 
@@ -4407,7 +4407,7 @@ bool MathCtrl::CopyBitmap()
   return retval;
 }
 
-bool MathCtrl::CopyAnimation()
+bool Worksheet::CopyAnimation()
 {
   if((GetSelectionStart() != NULL) && (GetSelectionStart() == GetSelectionEnd()) &&
      (GetSelectionStart()->GetType() == MC_TYPE_SLIDE))
@@ -4416,7 +4416,7 @@ bool MathCtrl::CopyAnimation()
     return false;
 }
 
-bool MathCtrl::CopySVG()
+bool Worksheet::CopySVG()
 {
   MathCell *tmp = CopySelection();
 
@@ -4429,7 +4429,7 @@ bool MathCtrl::CopySVG()
   return retval;
 }
 #if wxUSE_ENH_METAFILE
-bool MathCtrl::CopyEMF()
+bool Worksheet::CopyEMF()
 {
   MathCell *tmp = CopySelection();
 
@@ -4443,7 +4443,7 @@ bool MathCtrl::CopyEMF()
 }
 #endif
 
-bool MathCtrl::CopyRTF()
+bool Worksheet::CopyRTF()
 {
   if(!CellsSelected())
     return false;
@@ -4475,7 +4475,7 @@ bool MathCtrl::CopyRTF()
   return true;
 }
 
-wxSize MathCtrl::CopyToFile(wxString file)
+wxSize Worksheet::CopyToFile(wxString file)
 {
 
   if (m_cellPointers.m_selectionStart != NULL &&
@@ -4501,7 +4501,7 @@ wxSize MathCtrl::CopyToFile(wxString file)
   }
 }
 
-wxSize MathCtrl::CopyToFile(wxString file, MathCell *start, MathCell *end,
+wxSize Worksheet::CopyToFile(wxString file, MathCell *start, MathCell *end,
                             bool asData, int scale)
 {
   MathCell *tmp = CopySelection(start, end, asData);
@@ -4517,12 +4517,12 @@ wxSize MathCtrl::CopyToFile(wxString file, MathCell *start, MathCell *end,
 /***
  * Copy selection
  */
-MathCell *MathCtrl::CopySelection(bool asData)
+MathCell *Worksheet::CopySelection(bool asData)
 {
   return CopySelection(m_cellPointers.m_selectionStart, m_cellPointers.m_selectionEnd, asData);
 }
 
-MathCell *MathCtrl::CopySelection(MathCell *start, MathCell *end, bool asData)
+MathCell *Worksheet::CopySelection(MathCell *start, MathCell *end, bool asData)
 {
   MathCell *tmp, *out = NULL, *outEnd = NULL;
   tmp = start;
@@ -4550,7 +4550,7 @@ MathCell *MathCtrl::CopySelection(MathCell *start, MathCell *end, bool asData)
   return out;
 }
 
-void MathCtrl::AddLineToFile(wxTextFile &output, wxString s, bool unicode)
+void Worksheet::AddLineToFile(wxTextFile &output, wxString s, bool unicode)
 {
   if (s == wxT("\n") || s == wxEmptyString)
     output.AddLine(wxEmptyString);
@@ -4638,7 +4638,7 @@ int getMathCellIndex(MathCell *cell)
   return temp;
 }
 
-void MathCtrl::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std::vector<int> &cellMap)
+void Worksheet::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std::vector<int> &cellMap)
 {
   GroupCell *tmp = dynamic_cast<GroupCell *>(tree);
   while (tmp != NULL)
@@ -4695,7 +4695,7 @@ void MathCtrl::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std
 /***
  * Export content to a HTML file.
  */
-bool MathCtrl::ExportToHTML(wxString file)
+bool Worksheet::ExportToHTML(wxString file)
 {
   // Show a busy cursor as long as we export.
   wxBusyCursor crs;
@@ -5575,7 +5575,7 @@ bool MathCtrl::ExportToHTML(wxString file)
   return outfileOK && cssOK;
 }
 
-void MathCtrl::CodeCellVisibilityChanged()
+void Worksheet::CodeCellVisibilityChanged()
 {
   // Move the cursor out of the currently active cell if we are about to
   // hide it
@@ -5588,7 +5588,7 @@ void MathCtrl::CodeCellVisibilityChanged()
   ScrollToCaret();
 }
 
-GroupCell *MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
+GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
 {
   bool hide = false;
   GroupCell *tree = NULL;
@@ -5911,7 +5911,7 @@ GroupCell *MathCtrl::CreateTreeFromWXMCode(wxArrayString *wxmLines)
 
 /*! Export the file as TeX code
  */
-bool MathCtrl::ExportToTeX(wxString file)
+bool Worksheet::ExportToTeX(wxString file)
 {
   // Show a busy cursor as long as we export.
   wxBusyCursor crs;
@@ -6025,7 +6025,7 @@ bool MathCtrl::ExportToTeX(wxString file)
   return done;
 }
 
-wxString MathCtrl::UnicodeToMaxima(wxString s)
+wxString Worksheet::UnicodeToMaxima(wxString s)
 {
   s.Replace(wxT("\x00B2"), wxT("^2"));
   s.Replace(wxT("\x00B3"), wxT("^3"));
@@ -6071,7 +6071,7 @@ wxString MathCtrl::UnicodeToMaxima(wxString s)
   return retval;
 }
 
-void MathCtrl::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const std::vector<int> &cellMap,
+void Worksheet::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const std::vector<int> &cellMap,
                            bool fixReorderedIndices)
 {
   // Show a busy cursor as long as we open a file.
@@ -6118,7 +6118,7 @@ void MathCtrl::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const 
   }
 }
 
-bool MathCtrl::ExportToMAC(wxString file)
+bool Worksheet::ExportToMAC(wxString file)
 {
   // Show a busy cursor as long as we export or save.
   wxBusyCursor crs;
@@ -6198,7 +6198,7 @@ bool MathCtrl::ExportToMAC(wxString file)
   since the last save. Then the original .wxmx file is replaced in a
   (hopefully) atomic operation.
 */
-bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
+bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
 {
   // Show a busy cursor as long as we export a file.
   wxBusyCursor crs;
@@ -6440,7 +6440,7 @@ bool MathCtrl::ExportToWXMX(wxString file, bool markAsSaved)
   return true;
 }
 
-bool MathCtrl::CanEdit()
+bool Worksheet::CanEdit()
 {
   if (m_cellPointers.m_selectionStart == NULL || m_cellPointers.m_selectionEnd != m_cellPointers.m_selectionStart)
     return false;
@@ -6457,7 +6457,7 @@ bool MathCtrl::CanEdit()
   return true;
 }
 
-void MathCtrl::OnDoubleClick(wxMouseEvent &WXUNUSED(event))
+void Worksheet::OnDoubleClick(wxMouseEvent &WXUNUSED(event))
 {
 
   // No more track the mouse when it is outside the worksheet
@@ -6479,7 +6479,7 @@ void MathCtrl::OnDoubleClick(wxMouseEvent &WXUNUSED(event))
   UpdateTableOfContents();
 }
 
-bool MathCtrl::ActivatePrevInput()
+bool Worksheet::ActivatePrevInput()
 {
   if (m_cellPointers.m_selectionStart == NULL && GetActiveCell() == NULL)
     return false;
@@ -6522,7 +6522,7 @@ bool MathCtrl::ActivatePrevInput()
   return true;
 }
 
-bool MathCtrl::ActivateNextInput(bool input)
+bool Worksheet::ActivateNextInput(bool input)
 {
   if (m_cellPointers.m_selectionStart == NULL && GetActiveCell() == NULL)
     return false;
@@ -6572,7 +6572,7 @@ bool MathCtrl::ActivateNextInput(bool input)
 /////////////////////////////////////////////////////////////
 // methods related to evaluation queue
 //
-void MathCtrl::AddDocumentToEvaluationQueue()
+void Worksheet::AddDocumentToEvaluationQueue()
 {
   FollowEvaluation(true);
   GroupCell *tmp = m_tree;
@@ -6586,7 +6586,7 @@ void MathCtrl::AddDocumentToEvaluationQueue()
   SetHCaret(m_last);
 }
 
-void MathCtrl::AddToEvaluationQueue(GroupCell *cell)
+void Worksheet::AddToEvaluationQueue(GroupCell *cell)
 {
   if (cell->GetGroupType() == GC_TYPE_CODE)
   {
@@ -6603,7 +6603,7 @@ void MathCtrl::AddToEvaluationQueue(GroupCell *cell)
 /**
  * Add the entire document, including hidden cells, to the evaluation queue.
  */
-void MathCtrl::AddEntireDocumentToEvaluationQueue()
+void Worksheet::AddEntireDocumentToEvaluationQueue()
 {
   FollowEvaluation(true);
   GroupCell *tmp = m_tree;
@@ -6616,7 +6616,7 @@ void MathCtrl::AddEntireDocumentToEvaluationQueue()
   SetHCaret(m_last);
 }
 
-void MathCtrl::AddSectionToEvaluationQueue(GroupCell *start)
+void Worksheet::AddSectionToEvaluationQueue(GroupCell *start)
 {
   // Find the begin of the current section
   start = StartOfSectioningUnit(start);
@@ -6626,7 +6626,7 @@ void MathCtrl::AddSectionToEvaluationQueue(GroupCell *start)
   AddSelectionToEvaluationQueue(start, end);
 }
 
-void MathCtrl::AddRestToEvaluationQueue()
+void Worksheet::AddRestToEvaluationQueue()
 {
   GroupCell *start = NULL;
   if(CellsSelected())
@@ -6650,12 +6650,12 @@ void MathCtrl::AddRestToEvaluationQueue()
   AddSelectionToEvaluationQueue(start, m_last);
 }
 
-void MathCtrl::AddSelectionToEvaluationQueue()
+void Worksheet::AddSelectionToEvaluationQueue()
 {
   AddSelectionToEvaluationQueue(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart), dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd));
 }
 
-void MathCtrl::AddSelectionToEvaluationQueue(GroupCell *start, GroupCell *end)
+void Worksheet::AddSelectionToEvaluationQueue(GroupCell *start, GroupCell *end)
 {
   FollowEvaluation(true);
   if ((start == NULL) || (end == NULL))
@@ -6673,7 +6673,7 @@ void MathCtrl::AddSelectionToEvaluationQueue(GroupCell *start, GroupCell *end)
   SetHCaret(dynamic_cast<GroupCell *>(end));
 }
 
-void MathCtrl::AddDocumentTillHereToEvaluationQueue()
+void Worksheet::AddDocumentTillHereToEvaluationQueue()
 {
   FollowEvaluation(true);
   GroupCell *stop;
@@ -6699,14 +6699,14 @@ void MathCtrl::AddDocumentTillHereToEvaluationQueue()
   }
 }
 
-void MathCtrl::AddCellToEvaluationQueue(GroupCell *gc)
+void Worksheet::AddCellToEvaluationQueue(GroupCell *gc)
 {
   AddToEvaluationQueue(dynamic_cast<GroupCell *>(gc));
   SetHCaret(gc);
 }
 
 //////// end of EvaluationQueue related stuff ////////////////
-void MathCtrl::ScrolledAwayFromEvaluation(bool ScrolledAway)
+void Worksheet::ScrolledAwayFromEvaluation(bool ScrolledAway)
 {
   if (ScrolledAway != m_scrolledAwayFromEvaluation)
   {
@@ -6726,14 +6726,14 @@ void MathCtrl::ScrolledAwayFromEvaluation(bool ScrolledAway)
 }
 
 
-void MathCtrl::FollowEvaluation(bool followEvaluation)
+void Worksheet::FollowEvaluation(bool followEvaluation)
 {
   m_followEvaluation = followEvaluation;
   if (followEvaluation)
     ScrolledAwayFromEvaluation(false);
 }
 
-void MathCtrl::ScrollToCellIfNeeded()
+void Worksheet::ScrollToCellIfNeeded()
 {
   if(!m_cellPointers.m_scrollToCell)
     return;
@@ -6815,7 +6815,7 @@ void MathCtrl::ScrollToCellIfNeeded()
   RequestRedraw();
 }
 
-void MathCtrl::Undo()
+void Worksheet::Undo()
 {
   if (CanUndoInsideCell())
   {
@@ -6832,7 +6832,7 @@ void MathCtrl::Undo()
   }
 }
 
-void MathCtrl::TreeUndo_LimitUndoBuffer()
+void Worksheet::TreeUndo_LimitUndoBuffer()
 {
 
   wxConfigBase *config = wxConfig::Get();
@@ -6849,7 +6849,7 @@ void MathCtrl::TreeUndo_LimitUndoBuffer()
     TreeUndo_DiscardAction(&treeUndoActions);
 }
 
-bool MathCtrl::CanTreeUndo()
+bool Worksheet::CanTreeUndo()
 {
   if (treeUndoActions.empty())
     return false;
@@ -6866,7 +6866,7 @@ bool MathCtrl::CanTreeUndo()
   }
 }
 
-bool MathCtrl::CanTreeRedo()
+bool Worksheet::CanTreeRedo()
 {
   if (treeRedoActions.empty())
   {
@@ -6885,7 +6885,7 @@ bool MathCtrl::CanTreeRedo()
   }
 }
 
-void MathCtrl::Redo()
+void Worksheet::Redo()
 {
   if (CanRedoInsideCell())
   {
@@ -6901,7 +6901,7 @@ void MathCtrl::Redo()
   }
 }
 
-bool MathCtrl::CanMergeSelection()
+bool Worksheet::CanMergeSelection()
 {
   // We cannot merge cells if not at least two cells are selected
   if (GetSelectionStart() == GetSelectionEnd())
@@ -6915,7 +6915,7 @@ bool MathCtrl::CanMergeSelection()
   return true;
 }
 
-bool MathCtrl::TreeUndoCellDeletion(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation)
+bool Worksheet::TreeUndoCellDeletion(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation)
 {
   TreeUndoAction *action = sourcelist->front();
   GroupCell *newCursorPos = action->m_oldCells;
@@ -6927,7 +6927,7 @@ bool MathCtrl::TreeUndoCellDeletion(std::list<TreeUndoAction *> *sourcelist, std
   return true;
 }
 
-bool MathCtrl::TreeUndoCellAddition(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation)
+bool Worksheet::TreeUndoCellAddition(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation)
 {
   TreeUndoAction *action = sourcelist->front();
   wxASSERT_MSG(action->m_start != NULL,
@@ -6951,7 +6951,7 @@ bool MathCtrl::TreeUndoCellAddition(std::list<TreeUndoAction *> *sourcelist, std
   return true;
 }
 
-bool MathCtrl::TreeUndoTextChange(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation)
+bool Worksheet::TreeUndoTextChange(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation)
 {
   TreeUndoAction *action = sourcelist->front();
 
@@ -7005,7 +7005,7 @@ bool MathCtrl::TreeUndoTextChange(std::list<TreeUndoAction *> *sourcelist, std::
   return false;
 }
 
-bool MathCtrl::TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation)
+bool Worksheet::TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeUndoAction *> *undoForThisOperation)
 {
   if (sourcelist->empty())
     return false;
@@ -7058,7 +7058,7 @@ bool MathCtrl::TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<TreeU
 /*! Mark a editor cell as the active one
 
  */
-void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
+void Worksheet::SetActiveCell(EditorCell *cell, bool callRefresh)
 {
   if(GetActiveCell() == cell)
     return;
@@ -7117,7 +7117,7 @@ void MathCtrl::SetActiveCell(EditorCell *cell, bool callRefresh)
 }
 
 
-void MathCtrl::SetSelection(MathCell *start, MathCell *end)
+void Worksheet::SetSelection(MathCell *start, MathCell *end)
 {
   if((m_cellPointers.m_selectionStart != start) || (m_cellPointers.m_selectionEnd != end))
     RequestRedraw();
@@ -7151,7 +7151,7 @@ void MathCtrl::SetSelection(MathCell *start, MathCell *end)
   }
 }
 
-bool MathCtrl::PointVisibleIs(wxPoint point)
+bool Worksheet::PointVisibleIs(wxPoint point)
 {
   int view_x, view_y;
   int height, width;
@@ -7172,7 +7172,7 @@ bool MathCtrl::PointVisibleIs(wxPoint point)
   return true;
 }
 
-void MathCtrl::ShowPoint(wxPoint point)
+void Worksheet::ShowPoint(wxPoint point)
 {
   if (point.x < 0 || point.y < 0)
     return;
@@ -7225,7 +7225,7 @@ void MathCtrl::ShowPoint(wxPoint point)
   }
 }
 
-bool MathCtrl::CutToClipboard()
+bool Worksheet::CutToClipboard()
 {
   if (GetActiveCell() != NULL)
   {
@@ -7250,7 +7250,7 @@ bool MathCtrl::CutToClipboard()
  * If not, then pastes text into activeCell or opens a new cell
  * if hCaretActive == true. If yes, copies the cell structure.
  */
-void MathCtrl::PasteFromClipboard()
+void Worksheet::PasteFromClipboard()
 {
   bool cells = false;
 
@@ -7376,7 +7376,7 @@ void MathCtrl::PasteFromClipboard()
   ScrolledAwayFromEvaluation();
 }
 
-void MathCtrl::SelectAll()
+void Worksheet::SelectAll()
 {
   if (GetActiveCell() == NULL && m_tree != NULL)
   {
@@ -7400,7 +7400,7 @@ void MathCtrl::SelectAll()
   RequestRedraw();
 }
 
-void MathCtrl::DivideCell()
+void Worksheet::DivideCell()
 {
   if (GetActiveCell() == NULL)
     return;
@@ -7425,7 +7425,7 @@ void MathCtrl::DivideCell()
   ScrolledAwayFromEvaluation();
 }
 
-void MathCtrl::MergeCells()
+void Worksheet::MergeCells()
 {
   wxString newcell = wxEmptyString;
   MathCell *tmp = m_cellPointers.m_selectionStart;
@@ -7458,7 +7458,7 @@ void MathCtrl::MergeCells()
   ScrolledAwayFromEvaluation();
 }
 
-void MathCtrl::OnSetFocus(wxFocusEvent &event)
+void Worksheet::OnSetFocus(wxFocusEvent &event)
 {
   m_hasFocus = true;
   // We want the cursor to blink in this case
@@ -7477,7 +7477,7 @@ void MathCtrl::OnSetFocus(wxFocusEvent &event)
   event.Skip();
 }
 
-void MathCtrl::OnKillFocus(wxFocusEvent &event)
+void Worksheet::OnKillFocus(wxFocusEvent &event)
 {
   m_hasFocus = false;
   if (GetActiveCell() != NULL)
@@ -7485,7 +7485,7 @@ void MathCtrl::OnKillFocus(wxFocusEvent &event)
   event.Skip();
 }
 
-void MathCtrl::CheckUnixCopy()
+void Worksheet::CheckUnixCopy()
 {
   if (CanCopy(true))
   {
@@ -7507,7 +7507,7 @@ void MathCtrl::CheckUnixCopy()
 }
 
 //! Is this cell selected?
-bool MathCtrl::IsSelected(int type)
+bool Worksheet::IsSelected(int type)
 {
   if (m_cellPointers.m_selectionStart == NULL)
     return false;
@@ -7526,7 +7526,7 @@ bool MathCtrl::IsSelected(int type)
 }
 
 //! Starts playing the animation of a cell generated with the with_slider_* commands
-void MathCtrl::Animate(bool run)
+void Worksheet::Animate(bool run)
 {
   if (CanAnimate())
   {
@@ -7535,7 +7535,7 @@ void MathCtrl::Animate(bool run)
   }
 }
 
-bool MathCtrl::IsSelectionInWorking()
+bool Worksheet::IsSelectionInWorking()
 {
   if (m_cellPointers.m_selectionStart == NULL)
     return false;
@@ -7549,7 +7549,7 @@ bool MathCtrl::IsSelectionInWorking()
   return true;
 }
 
-GroupCell *MathCtrl::GetHCaret()
+GroupCell *Worksheet::GetHCaret()
 {
   if (m_hCaretActive)
     return m_hCaretPosition;
@@ -7570,12 +7570,12 @@ GroupCell *MathCtrl::GetHCaret()
 /**
  * Set the HCaret to its default location, at the end of the document.
  */
-void MathCtrl::SetDefaultHCaret()
+void Worksheet::SetDefaultHCaret()
 {
   SetHCaret(m_last);
 }
 
-void MathCtrl::OnActivate(wxActivateEvent &WXUNUSED(event))
+void Worksheet::OnActivate(wxActivateEvent &WXUNUSED(event))
 {
   // If the focus changes we might want to refresh the menu.
   RequestRedraw();
@@ -7587,7 +7587,7 @@ void MathCtrl::OnActivate(wxActivateEvent &WXUNUSED(event))
  * @param where   The cell to place the cursor before.
  * @param callRefresh   Call with false when manually refreshing.
  */
-void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
+void Worksheet::SetHCaret(GroupCell *where, bool callRefresh)
 {
   SetSelection(NULL);
   if(m_mainToolBar != NULL)
@@ -7625,7 +7625,7 @@ void MathCtrl::SetHCaret(GroupCell *where, bool callRefresh)
   m_hCaretActive = true;
 }
 
-void MathCtrl::ShowHCaret()
+void Worksheet::ShowHCaret()
 {
   if (m_hCaretPosition == NULL)
   {
@@ -7640,14 +7640,14 @@ void MathCtrl::ShowHCaret()
   m_hCaretActive = true;
 }
 
-bool MathCtrl::CanUndoInsideCell()
+bool Worksheet::CanUndoInsideCell()
 {
   if (GetActiveCell() == NULL)
     return false;
   return GetActiveCell()->CanUndo();
 }
 
-void MathCtrl::UndoInsideCell()
+void Worksheet::UndoInsideCell()
 {
   if (GetActiveCell() != NULL)
   {
@@ -7659,14 +7659,14 @@ void MathCtrl::UndoInsideCell()
   }
 }
 
-bool MathCtrl::CanRedoInsideCell()
+bool Worksheet::CanRedoInsideCell()
 {
   if (GetActiveCell() == NULL)
     return false;
   return GetActiveCell()->CanRedo();
 }
 
-void MathCtrl::RedoInsideCell()
+void Worksheet::RedoInsideCell()
 {
   if (GetActiveCell() != NULL)
   {
@@ -7677,13 +7677,13 @@ void MathCtrl::RedoInsideCell()
   }
 }
 
-void MathCtrl::SaveValue()
+void Worksheet::SaveValue()
 {
   if (GetActiveCell() != NULL)
     GetActiveCell()->SaveValue();
 }
 
-void MathCtrl::RemoveAllOutput()
+void Worksheet::RemoveAllOutput()
 {
   // We don't want to remove all output if maxima is currently evaluating.
   if (GetWorkingGroup() != NULL)
@@ -7704,7 +7704,7 @@ void MathCtrl::RemoveAllOutput()
   RequestRedraw();
 }
 
-void MathCtrl::RemoveAllOutput(GroupCell *tree)
+void Worksheet::RemoveAllOutput(GroupCell *tree)
 {
   if (tree == NULL)
     tree = m_tree;
@@ -7724,7 +7724,7 @@ void MathCtrl::RemoveAllOutput(GroupCell *tree)
   }
 }
 
-void MathCtrl::OnMouseMiddleUp(wxMouseEvent &event)
+void Worksheet::OnMouseMiddleUp(wxMouseEvent &event)
 {
   m_cellPointers.ResetSearchStart();
 
@@ -7742,7 +7742,7 @@ void MathCtrl::OnMouseMiddleUp(wxMouseEvent &event)
   }
 }
 
-void MathCtrl::CommentSelection()
+void Worksheet::CommentSelection()
 {
   if (GetActiveCell())
   {
@@ -7754,7 +7754,7 @@ void MathCtrl::CommentSelection()
   }
 }
 
-void MathCtrl::OnScrollChanged(wxScrollEvent &WXUNUSED(ev))
+void Worksheet::OnScrollChanged(wxScrollEvent &WXUNUSED(ev))
 {
   // Did we scroll away from the cell that is being currently evaluated?
   // If yes we want to no more follow the evaluation with the scroll and
@@ -7766,7 +7766,7 @@ void MathCtrl::OnScrollChanged(wxScrollEvent &WXUNUSED(ev))
   m_keyboardInactiveTimer.StartOnce(10000);
 }
 
-wxString MathCtrl::GetInputAboveCaret()
+wxString Worksheet::GetInputAboveCaret()
 {
   if (!m_hCaretActive || m_hCaretPosition == NULL)
     return wxEmptyString;
@@ -7778,7 +7778,7 @@ wxString MathCtrl::GetInputAboveCaret()
   return wxEmptyString;
 }
 
-wxString MathCtrl::GetOutputAboveCaret()
+wxString Worksheet::GetOutputAboveCaret()
 {
   if (!m_hCaretActive || m_hCaretPosition == NULL)
     return wxEmptyString;
@@ -7796,7 +7796,7 @@ wxString MathCtrl::GetOutputAboveCaret()
   return output;
 }
 
-bool MathCtrl::FindIncremental(wxString str, bool down, bool ignoreCase)
+bool Worksheet::FindIncremental(wxString str, bool down, bool ignoreCase)
 {
   if (SearchStart() != NULL)
   {
@@ -7809,7 +7809,7 @@ bool MathCtrl::FindIncremental(wxString str, bool down, bool ignoreCase)
     return true;
 }
 
-bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase, bool warn)
+bool Worksheet::FindNext(wxString str, bool down, bool ignoreCase, bool warn)
 {
   if (m_tree == NULL)
     return false;
@@ -7927,7 +7927,7 @@ bool MathCtrl::FindNext(wxString str, bool down, bool ignoreCase, bool warn)
   return false;
 }
 
-bool MathCtrl::CaretVisibleIs()
+bool Worksheet::CaretVisibleIs()
 {
   if (m_hCaretActive)
   {
@@ -7964,7 +7964,7 @@ bool MathCtrl::CaretVisibleIs()
 
 }
 
-void MathCtrl::ScrollToCaret()
+void Worksheet::ScrollToCaret()
 {
   RecalculateIfNeeded();
   if (m_hCaretActive)
@@ -7992,7 +7992,7 @@ void MathCtrl::ScrollToCaret()
   }
 }
 
-void MathCtrl::Replace(wxString oldString, wxString newString, bool ignoreCase)
+void Worksheet::Replace(wxString oldString, wxString newString, bool ignoreCase)
 {
 
   if (GetActiveCell() != NULL)
@@ -8011,7 +8011,7 @@ void MathCtrl::Replace(wxString oldString, wxString newString, bool ignoreCase)
   }
 }
 
-int MathCtrl::ReplaceAll(wxString oldString, wxString newString, bool ignoreCase)
+int Worksheet::ReplaceAll(wxString oldString, wxString newString, bool ignoreCase)
 {
   m_cellPointers.ResetSearchStart();
 
@@ -8050,7 +8050,7 @@ int MathCtrl::ReplaceAll(wxString oldString, wxString newString, bool ignoreCase
   return count;
 }
 
-bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
+bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
 {
   EditorCell *editor = GetActiveCell();
 
@@ -8258,7 +8258,7 @@ bool MathCtrl::Autocomplete(AutoComplete::autoCompletionType type)
   return true;
 }
 
-void MathCtrl::OnComplete(wxCommandEvent &event)
+void Worksheet::OnComplete(wxCommandEvent &event)
 {
   if (GetActiveCell() == NULL)
     return;
@@ -8291,7 +8291,7 @@ void MathCtrl::OnComplete(wxCommandEvent &event)
 }
 
 
-void MathCtrl::SetActiveCellText(wxString text)
+void Worksheet::SetActiveCellText(wxString text)
 {
   EditorCell *active = dynamic_cast<EditorCell *>(GetActiveCell());
   if (active != NULL)
@@ -8315,7 +8315,7 @@ void MathCtrl::SetActiveCellText(wxString text)
     OpenHCaret(text);
 }
 
-bool MathCtrl::InsertText(wxString text)
+bool Worksheet::InsertText(wxString text)
 {
   CloseAutoCompletePopup();
 
@@ -8338,7 +8338,7 @@ bool MathCtrl::InsertText(wxString text)
   return true;
 }
 
-void MathCtrl::OpenNextOrCreateCell()
+void Worksheet::OpenNextOrCreateCell()
 {
   if (m_hCaretPosition && m_hCaretPosition->m_next)
   {
@@ -8349,7 +8349,7 @@ void MathCtrl::OpenNextOrCreateCell()
     OpenHCaret();
 }
 
-void MathCtrl::SelectGroupCell(GroupCell *cell)
+void Worksheet::SelectGroupCell(GroupCell *cell)
 {
   SetSelection(cell);
   m_hCaretActive = false;
@@ -8367,7 +8367,7 @@ void MathCtrl::SelectGroupCell(GroupCell *cell)
 
 }
 
-void MathCtrl::OnFollow()
+void Worksheet::OnFollow()
 {
   if (GetWorkingGroup())
   {
@@ -8392,61 +8392,61 @@ void MathCtrl::OnFollow()
   }
 }
 
-MathCtrl::MathMLDataObject::MathMLDataObject() : wxCustomDataObject(m_mathmlFormat)
+Worksheet::MathMLDataObject::MathMLDataObject() : wxCustomDataObject(m_mathmlFormat)
 {
 }
 
-MathCtrl::MathMLDataObject::MathMLDataObject(wxString data) : wxCustomDataObject(m_mathmlFormat)
+Worksheet::MathMLDataObject::MathMLDataObject(wxString data) : wxCustomDataObject(m_mathmlFormat)
 {
   m_databuf = data.utf8_str();
   SetData(m_databuf.length(), m_databuf.data());
 }
 
-MathCtrl::wxmDataObject::wxmDataObject() : wxCustomDataObject(m_wxmFormat)
+Worksheet::wxmDataObject::wxmDataObject() : wxCustomDataObject(m_wxmFormat)
 {
 }
 
-MathCtrl::wxmDataObject::wxmDataObject(wxString data) : wxCustomDataObject(m_wxmFormat)
+Worksheet::wxmDataObject::wxmDataObject(wxString data) : wxCustomDataObject(m_wxmFormat)
 {
   data += wxT('\0');
   m_databuf = data.utf8_str();
   SetData(m_databuf.length(), m_databuf.data());
 }
 
-MathCtrl::MathMLDataObject2::MathMLDataObject2() : wxCustomDataObject(m_mathmlFormat2)
+Worksheet::MathMLDataObject2::MathMLDataObject2() : wxCustomDataObject(m_mathmlFormat2)
 {
 }
 
-MathCtrl::MathMLDataObject2::MathMLDataObject2(wxString data) : wxCustomDataObject(m_mathmlFormat2)
-{
-  data += wxT('\0');
-  m_databuf = data.utf8_str();
-  SetData(m_databuf.length(), m_databuf.data());
-}
-
-MathCtrl::RtfDataObject::RtfDataObject() : wxCustomDataObject(m_rtfFormat)
-{
-}
-
-MathCtrl::RtfDataObject::RtfDataObject(wxString data) : wxCustomDataObject(m_rtfFormat)
+Worksheet::MathMLDataObject2::MathMLDataObject2(wxString data) : wxCustomDataObject(m_mathmlFormat2)
 {
   data += wxT('\0');
   m_databuf = data.utf8_str();
   SetData(m_databuf.length(), m_databuf.data());
 }
 
-MathCtrl::RtfDataObject2::RtfDataObject2() : wxCustomDataObject(m_rtfFormat2)
+Worksheet::RtfDataObject::RtfDataObject() : wxCustomDataObject(m_rtfFormat)
 {
 }
 
-MathCtrl::RtfDataObject2::RtfDataObject2(wxString data) : wxCustomDataObject(m_rtfFormat2)
+Worksheet::RtfDataObject::RtfDataObject(wxString data) : wxCustomDataObject(m_rtfFormat)
 {
   data += wxT('\0');
   m_databuf = data.utf8_str();
   SetData(m_databuf.length(), m_databuf.data());
 }
 
-wxString MathCtrl::RTFStart()
+Worksheet::RtfDataObject2::RtfDataObject2() : wxCustomDataObject(m_rtfFormat2)
+{
+}
+
+Worksheet::RtfDataObject2::RtfDataObject2(wxString data) : wxCustomDataObject(m_rtfFormat2)
+{
+  data += wxT('\0');
+  m_databuf = data.utf8_str();
+  SetData(m_databuf.length(), m_databuf.data());
+}
+
+wxString Worksheet::RTFStart()
 {
   // The beginning of the RTF document
   wxString document = wxT("{\\rtf1\\ansi\\deff0\n\n");
@@ -8490,7 +8490,7 @@ wxString MathCtrl::RTFStart()
   return document;
 }
 
-wxString MathCtrl::RTFEnd()
+wxString Worksheet::RTFEnd()
 {
   wxString document;
   // Close the document
@@ -8499,23 +8499,23 @@ wxString MathCtrl::RTFEnd()
   return document;
 }
 
-void MathCtrl::OnMouseCaptureLost(wxMouseCaptureLostEvent &WXUNUSED(event))
+void Worksheet::OnMouseCaptureLost(wxMouseCaptureLostEvent &WXUNUSED(event))
 {
   m_leftDown = false;
 }
 
 #if wxUSE_ACCESSIBILITY
-MathCtrl::AccessibilityInfo::AccessibilityInfo(MathCtrl *mathCtrl): wxAccessible(mathCtrl)
+Worksheet::AccessibilityInfo::AccessibilityInfo(Worksheet *worksheet): wxAccessible(worksheet)
 {
-  m_mathCtrl = mathCtrl;
+  m_worksheet = worksheet;
 }
 
-wxAccStatus MathCtrl::AccessibilityInfo::GetChildCount (int *childCount)
+wxAccStatus Worksheet::AccessibilityInfo::GetChildCount (int *childCount)
 {
   if(childCount == NULL)
     return wxACC_FAIL;
 
-  GroupCell *cell = m_mathCtrl->m_tree;
+  GroupCell *cell = m_worksheet->m_tree;
   *childCount = 0;
   while(cell != NULL)
   {
@@ -8525,12 +8525,12 @@ wxAccStatus MathCtrl::AccessibilityInfo::GetChildCount (int *childCount)
   return wxACC_OK;
 }
 
-wxAccStatus MathCtrl::AccessibilityInfo::GetChild (int childId, wxAccessible **child)
+wxAccStatus Worksheet::AccessibilityInfo::GetChild (int childId, wxAccessible **child)
 {
   if(child == NULL)
     return wxACC_FAIL;
 
-  GroupCell *cell = m_mathCtrl->m_tree;
+  GroupCell *cell = m_worksheet->m_tree;
 
   *child = NULL;
   if(childId == 0)
@@ -8560,7 +8560,7 @@ wxAccStatus MathCtrl::AccessibilityInfo::GetChild (int childId, wxAccessible **c
   }
 }
 
-wxAccStatus MathCtrl::AccessibilityInfo::GetDefaultAction (int childId, wxString *actionName)
+wxAccStatus Worksheet::AccessibilityInfo::GetDefaultAction (int childId, wxString *actionName)
 {
   if(actionName == NULL)
     return wxACC_FAIL;
@@ -8581,12 +8581,12 @@ wxAccStatus MathCtrl::AccessibilityInfo::GetDefaultAction (int childId, wxString
   }
 }
 
-wxAccStatus MathCtrl::AccessibilityInfo::GetParent (wxAccessible ** parent)
+wxAccStatus Worksheet::AccessibilityInfo::GetParent (wxAccessible ** parent)
 {
   if(parent == NULL)
     return wxACC_FAIL;
 
-  *parent = m_mathCtrl->GetAccessible();
+  *parent = m_worksheet->GetAccessible();
   if(*parent != NULL)
     return wxACC_OK;
   else
@@ -8594,9 +8594,9 @@ wxAccStatus MathCtrl::AccessibilityInfo::GetParent (wxAccessible ** parent)
 }
 
 
-wxAccStatus MathCtrl::AccessibilityInfo::GetFocus (int *childId, wxAccessible **child)
+wxAccStatus Worksheet::AccessibilityInfo::GetFocus (int *childId, wxAccessible **child)
 {
-  if(!m_mathCtrl->HasFocus())
+  if(!m_worksheet->HasFocus())
   {
     if(childId != NULL)
       *childId = 0;
@@ -8607,7 +8607,7 @@ wxAccStatus MathCtrl::AccessibilityInfo::GetFocus (int *childId, wxAccessible **
   else
   {
     int id = 0;
-    MathCell *cell = m_mathCtrl->m_tree;
+    MathCell *cell = m_worksheet->m_tree;
     while(cell != NULL)
     {
       id++;
@@ -8631,10 +8631,10 @@ wxAccStatus MathCtrl::AccessibilityInfo::GetFocus (int *childId, wxAccessible **
   }
 }
 
-wxAccStatus MathCtrl::AccessibilityInfo::GetLocation(wxRect &rect, int elementId)
+wxAccStatus Worksheet::AccessibilityInfo::GetLocation(wxRect &rect, int elementId)
 {
   if(elementId == 0)
-    rect = wxRect(m_mathCtrl->GetPosition(), m_mathCtrl->GetPosition()+ m_mathCtrl->GetClientSize());
+    rect = wxRect(m_worksheet->GetPosition(), m_worksheet->GetPosition()+ m_worksheet->GetClientSize());
   else
   {
     wxAccessible *acc = NULL;
@@ -8651,7 +8651,7 @@ wxAccStatus MathCtrl::AccessibilityInfo::GetLocation(wxRect &rect, int elementId
   return GetLocation(rect,0);
 }
 
-wxAccStatus MathCtrl::AccessibilityInfo::HitTest (const wxPoint &pt,
+wxAccStatus Worksheet::AccessibilityInfo::HitTest (const wxPoint &pt,
                                                                 int *childId, wxAccessible **childObject)
 {
   wxRect currentRect;
@@ -8667,7 +8667,7 @@ wxAccStatus MathCtrl::AccessibilityInfo::HitTest (const wxPoint &pt,
   else
   {
 	int id = 0;
-    GroupCell *cell = m_mathCtrl->m_tree;
+    GroupCell *cell = m_worksheet->m_tree;
 
     while(cell != NULL)
     {
@@ -8690,7 +8690,7 @@ wxAccStatus MathCtrl::AccessibilityInfo::HitTest (const wxPoint &pt,
   return wxACC_OK;
 }
 
-wxAccStatus MathCtrl::AccessibilityInfo::GetDescription(int childId, wxString *description)
+wxAccStatus Worksheet::AccessibilityInfo::GetDescription(int childId, wxString *description)
 {
   if(description == NULL)
     return wxACC_FAIL;
@@ -8716,33 +8716,33 @@ wxAccStatus MathCtrl::AccessibilityInfo::GetDescription(int childId, wxString *d
 #endif
 
 
-BEGIN_EVENT_TABLE(MathCtrl, wxScrolledCanvas)
-                EVT_MENU_RANGE(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, MathCtrl::OnComplete)
-                EVT_SIZE(MathCtrl::OnSize)
-                EVT_PAINT(MathCtrl::OnPaint)
-                EVT_MOUSE_CAPTURE_LOST(MathCtrl::OnMouseCaptureLost)
-                EVT_LEFT_UP(MathCtrl::OnMouseLeftUp)
-                EVT_LEFT_DOWN(MathCtrl::OnMouseLeftDown)
-                EVT_RIGHT_DOWN(MathCtrl::OnMouseRightDown)
-                EVT_LEFT_DCLICK(MathCtrl::OnDoubleClick)
-                EVT_MOTION(MathCtrl::OnMouseMotion)
-                EVT_ENTER_WINDOW(MathCtrl::OnMouseEnter)
-                EVT_LEAVE_WINDOW(MathCtrl::OnMouseExit)
-                EVT_TIMER(wxID_ANY, MathCtrl::OnTimer)
-                EVT_KEY_DOWN(MathCtrl::OnKeyDown)
-                EVT_CHAR(MathCtrl::OnChar)
-                EVT_ERASE_BACKGROUND(MathCtrl::OnEraseBackground)
-                EVT_KILL_FOCUS(MathCtrl::OnKillFocus)
-                EVT_SET_FOCUS(MathCtrl::OnSetFocus)
-                EVT_MIDDLE_UP(MathCtrl::OnMouseMiddleUp)
-                EVT_SCROLL_CHANGED(MathCtrl::OnScrollChanged)
-                EVT_MOUSEWHEEL(MathCtrl::OnMouseWheel)
+BEGIN_EVENT_TABLE(Worksheet, wxScrolledCanvas)
+                EVT_MENU_RANGE(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, Worksheet::OnComplete)
+                EVT_SIZE(Worksheet::OnSize)
+                EVT_PAINT(Worksheet::OnPaint)
+                EVT_MOUSE_CAPTURE_LOST(Worksheet::OnMouseCaptureLost)
+                EVT_LEFT_UP(Worksheet::OnMouseLeftUp)
+                EVT_LEFT_DOWN(Worksheet::OnMouseLeftDown)
+                EVT_RIGHT_DOWN(Worksheet::OnMouseRightDown)
+                EVT_LEFT_DCLICK(Worksheet::OnDoubleClick)
+                EVT_MOTION(Worksheet::OnMouseMotion)
+                EVT_ENTER_WINDOW(Worksheet::OnMouseEnter)
+                EVT_LEAVE_WINDOW(Worksheet::OnMouseExit)
+                EVT_TIMER(wxID_ANY, Worksheet::OnTimer)
+                EVT_KEY_DOWN(Worksheet::OnKeyDown)
+                EVT_CHAR(Worksheet::OnChar)
+                EVT_ERASE_BACKGROUND(Worksheet::OnEraseBackground)
+                EVT_KILL_FOCUS(Worksheet::OnKillFocus)
+                EVT_SET_FOCUS(Worksheet::OnSetFocus)
+                EVT_MIDDLE_UP(Worksheet::OnMouseMiddleUp)
+                EVT_SCROLL_CHANGED(Worksheet::OnScrollChanged)
+                EVT_MOUSEWHEEL(Worksheet::OnMouseWheel)
 END_EVENT_TABLE()
 
 // Define the static variable that contains the format info for placing MathMl
 // on the clip board
-wxDataFormat MathCtrl::m_mathmlFormat;
-wxDataFormat MathCtrl::m_mathmlFormat2;
-wxDataFormat MathCtrl::m_rtfFormat;
-wxDataFormat MathCtrl::m_rtfFormat2;
-wxDataFormat MathCtrl::m_wxmFormat;
+wxDataFormat Worksheet::m_mathmlFormat;
+wxDataFormat Worksheet::m_mathmlFormat2;
+wxDataFormat Worksheet::m_rtfFormat;
+wxDataFormat Worksheet::m_rtfFormat2;
+wxDataFormat Worksheet::m_wxmFormat;

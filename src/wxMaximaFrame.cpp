@@ -26,7 +26,7 @@
   This file defines the class wxMaximaFrame
 
   wxMaximaFrame is responsible for everything that is displayed around the actual
-  worksheet - which is displayed by MathCtrl and whose logic partially is defined in
+  worksheet - which is displayed by Worksheet and whose logic partially is defined in
   wxMaxima.
  */
 #include "wxMaximaFrame.h"
@@ -65,7 +65,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   wxDialog::EnableLayoutAdaptation(wxDIALOG_ADAPTATION_MODE_ENABLED);
 
   // console
-  m_worksheet = new MathCtrl(this, -1, wxDefaultPosition, wxDefaultSize);
+  m_worksheet = new Worksheet(this, -1, wxDefaultPosition, wxDefaultSize);
 
   // history
   m_history = new History(this, -1);
@@ -90,8 +90,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   entries[1].Set(wxACCEL_CTRL, WXK_SPACE, menu_autocomplete);
   entries[2].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_TAB, menu_autocomplete_templates);
   entries[3].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_SPACE, menu_autocomplete_templates);
-  entries[4].Set(wxACCEL_ALT, wxT('I'), MathCtrl::menu_zoom_in);
-  entries[5].Set(wxACCEL_ALT, wxT('O'), MathCtrl::menu_zoom_out);
+  entries[4].Set(wxACCEL_ALT, wxT('I'), Worksheet::menu_zoom_in);
+  entries[5].Set(wxACCEL_ALT, wxT('O'), Worksheet::menu_zoom_out);
   entries[6].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_ESCAPE, menu_convert_to_code);
   entries[6].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('1'), menu_convert_to_comment);
   entries[7].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('2'), menu_convert_to_title);
@@ -533,7 +533,7 @@ void wxMaximaFrame::SetupMenu()
   m_EditMenu->Append(menu_copy_tex_from_worksheet, _("Copy as LaTeX"),
                      _("Copy selection from document in LaTeX format"),
                      wxITEM_NORMAL);
-  m_EditMenu->Append(MathCtrl::popid_copy_mathml, _("Copy as MathML"),
+  m_EditMenu->Append(Worksheet::popid_copy_mathml, _("Copy as MathML"),
                      _("Copy selection from document in a MathML format many word processors can display as 2d equation"),
                      wxITEM_NORMAL);
   m_EditMenu->Append(menu_copy_as_bitmap, _("Copy as Image"),
@@ -564,7 +564,7 @@ void wxMaximaFrame::SetupMenu()
                      _("Save selection from document to an image file"),
                      wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
-  m_EditMenu->Append(MathCtrl::popid_comment_selection, _("Comment selection\tCtrl+/"),
+  m_EditMenu->Append(Worksheet::popid_comment_selection, _("Comment selection\tCtrl+/"),
                      _("Comment out the currently selected text"),
                      wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
@@ -617,9 +617,9 @@ void wxMaximaFrame::SetupMenu()
 
 
   m_Maxima_Panes_Sub->AppendSeparator();
-  APPEND_MENU_ITEM(m_Maxima_Panes_Sub, MathCtrl::menu_zoom_in, _("Zoom &In\tCtrl++"),
+  APPEND_MENU_ITEM(m_Maxima_Panes_Sub, Worksheet::menu_zoom_in, _("Zoom &In\tCtrl++"),
                    _("Zoom in 10%"), wxT("gtk-zoom-in"));
-  APPEND_MENU_ITEM(m_Maxima_Panes_Sub, MathCtrl::menu_zoom_out, _("Zoom Ou&t\tCtrl+-"),
+  APPEND_MENU_ITEM(m_Maxima_Panes_Sub, Worksheet::menu_zoom_out, _("Zoom Ou&t\tCtrl+-"),
                    _("Zoom out 10%"), wxT("gtk-zoom-out"));
   // zoom submenu
   m_Edit_Zoom_Sub = new wxMenu;
@@ -694,12 +694,12 @@ void wxMaximaFrame::SetupMenu()
   m_CellMenu->Append(menu_history_next, _("Next Command\tAlt+Down"),
                      _("Recall next command from history"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
-  m_CellMenu->Append(MathCtrl::popid_merge_cells, _("Merge Cells\tCtrl+M"),
+  m_CellMenu->Append(Worksheet::popid_merge_cells, _("Merge Cells\tCtrl+M"),
                      _("Merge the text from two input cells into one"), wxITEM_NORMAL);
-  m_CellMenu->Append(MathCtrl::popid_divide_cell, _("Divide Cell\tCtrl+D"),
+  m_CellMenu->Append(Worksheet::popid_divide_cell, _("Divide Cell\tCtrl+D"),
                      _("Divide this input cell into two cells"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
-  m_CellMenu->AppendCheckItem(MathCtrl::popid_auto_answer, _("Automatically answer questions"),
+  m_CellMenu->AppendCheckItem(Worksheet::popid_auto_answer, _("Automatically answer questions"),
                      _("Automatically fill in answers known from the last run"));
 
   m_MenuBar->Append(m_CellMenu, _("Ce&ll"));

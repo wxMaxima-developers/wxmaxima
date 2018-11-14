@@ -28,7 +28,7 @@ The main things that are important to know are:
    containing strings that look like input or output labels and it doesn't 
    guarantee that there is a way to transform output from maxima into a valid input
    again that has exactly the same meaning.
- - The worksheet is defined in the class MathCtrl.
+ - The worksheet is defined in the class Worksheet.
  - It is organized in GroupCells that each can contain a cell containing a list of
    cells containing a label and the user input and a list of cells containing the
    output label and 2d math from maxima.
@@ -67,7 +67,7 @@ Where to start reading?
 -----------------------
 
 This naturally depends on what you want to archieve.
- - The worksheet is mostly handled by the class MathCtrl
+ - The worksheet is mostly handled by the class Worksheet
  - All the cells that are displayed in the worksheet and all the sub-
    cells that represent individual elements inside one of these cells
    are child objects of MathCell. This object also contains most of
@@ -115,7 +115,7 @@ longer wider than the screen. This is done in GroupCell::BreakLines.
 Objects that are broken apart this way technically aren't displayed 
 any more. Instead the lists of objects they contain are. If an object
 isn't broken apart it is displayed directly and automatically handles 
-displaying all of its contents.x
+displaying all of its contents.
 
 Naming rules
 ------------

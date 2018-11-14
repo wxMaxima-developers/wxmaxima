@@ -52,11 +52,14 @@ FORCE_LINK(gnome_print)
 
 
 IMPLEMENT_APP(MyApp)
+std::list<wxMaxima *> MyApp::m_topLevelWindows;
 
-void MyApp::Cleanup_Static()
+
+void MyApp::Cleanup()
 {
-  if (m_frame)
-    m_frame->CleanUp();
+  for (std::list<wxMaxima *>::iterator it=m_topLevelWindows.begin();
+       it != m_topLevelWindows.end(); ++it)
+    (*it)->CleanUp();
 }
 
 bool MyApp::OnInit()
@@ -92,8 +95,7 @@ bool MyApp::OnInit()
   #endif
   #endif
   
-  m_frame = NULL;
-//  atexit(Cleanup_Static);
+  atexit(Cleanup);
   int lang = wxLANGUAGE_UNKNOWN;
 
   bool exitAfterEval = false;
@@ -280,8 +282,6 @@ int MyApp::OnExit()
 }
 #endif
 
-int window_counter = 0;
-
 void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval)
 {
   int x = 40, y = 40, h = 650, w = 950, m = 0;
@@ -310,30 +310,31 @@ void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval)
     w = 950;
   }
 
-  x += topLevelWindows.GetCount() * 20;
-  y += topLevelWindows.GetCount() * 20;
+  int numberOfWindows = m_topLevelWindows.size();
+  x += numberOfWindows * 20;
+  y += numberOfWindows * 20;
 
-  m_frame = new wxMaxima((wxFrame *) NULL, -1, _("wxMaxima"), m_configFileName,
-                         wxPoint(x, y), wxSize(w, h));
-
+  wxMaxima *frame = new wxMaxima((wxFrame *) NULL, -1, _("wxMaxima"), m_configFileName,
+                                 wxPoint(x, y), wxSize(w, h));
+  
   if (m == 1)
-    m_frame->Maximize(true);
+    frame->Maximize(true);
 
   if (file.Length() > 0)
   {
-    m_frame->SetOpenFile(file);
+    frame->SetOpenFile(file);
   }
 
-  m_frame->ExitAfterEval(exitAfterEval);
-  m_frame->EvalOnStartup(evalOnStartup);
-  topLevelWindows.Append(m_frame);
-  if (topLevelWindows.GetCount() > 1)
-    m_frame->SetTitle(wxString::Format(_("untitled %d"), ++window_counter));
+  frame->ExitAfterEval(exitAfterEval);
+  frame->EvalOnStartup(evalOnStartup);
+  m_topLevelWindows.push_back(frame);
+  if (numberOfWindows > 1)
+    frame->SetTitle(wxString::Format(_("untitled %d"), numberOfWindows));
 
-  SetTopWindow(m_frame);
-  m_frame->Show(true);
-  m_frame->InitSession();
-  m_frame->ShowTip(false);
+  SetTopWindow(frame);
+  frame->Show(true);
+  frame->InitSession();
+  frame->ShowTip(false);
 }
 
 void MyApp::OnFileMenu(wxCommandEvent &ev)
@@ -368,13 +369,10 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
     case wxID_EXIT:
     {
       bool quit = true;
-      wxWindowList::compatibility_iterator node = topLevelWindows.GetFirst();
-      while (node)
+      for (std::list<wxMaxima *>::iterator it=m_topLevelWindows.begin();
+           it != m_topLevelWindows.end(); ++it)
       {
-        wxWindow *frame = node->GetData();
-        node = node->GetNext();
-        frame->Raise();
-        if (!frame->Close())
+        if (!(*it)->Close())
         {
           quit = false;
           break;
@@ -383,7 +381,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
       if (quit)
         wxExit();
     }
-      break;
+    break;
   }
 }
 

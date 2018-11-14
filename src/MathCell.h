@@ -285,7 +285,6 @@ class MathCell
   /*! Draw this list of cells
 
     \param point The x and y position this cell is drawn at
-    \param fontsize The font size that is to be used
    */
   void DrawList(wxPoint point);
   void DrawList(){DrawList(m_currentPoint);}

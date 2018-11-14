@@ -22,13 +22,13 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  This file defines the class MathCtrl
+  This file defines the class Worksheet
 
-  MathCtrl represents the worksheet.
+  Worksheet represents the worksheet.
  */
 
-#ifndef MATHCTRL_H
-#define MATHCTRL_H
+#ifndef WORKSHEET_H
+#define WORKSHEET_H
 
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
@@ -75,7 +75,7 @@ a few redraws in order to process the keypresses as fast as the user types.
 Also this keeps us responsive even if maxima outputs data faster than
 wxMaxima can display it.
 */
-class MathCtrl : public wxScrolledCanvas
+class Worksheet : public wxScrolledCanvas
 {
 private:
   //! Which zoom level were we at when we started the zoom gesture?
@@ -416,7 +416,7 @@ private:
   //! Get the cordinates of the bottom right point of the worksheet.
   void GetMaxPoint(int *width, int *height);
 
-  //! Is executed if a timer associated with MathCtrl has expired.
+  //! Is executed if a timer associated with Worksheet has expired.
   void OnTimer(wxTimerEvent &event);
 
   /*! Has the autosave interval expired?
@@ -864,10 +864,10 @@ public:
   };
 
   //! The constructor
-  MathCtrl(wxWindow *parent, int id, wxPoint pos, wxSize size);
+  Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size);
 
   //! The destructor
-  ~MathCtrl();
+  ~Worksheet();
 
   //! The timer that tells us when the keyboard is inactive so an autosave isn't disrupting
   wxTimer m_keyboardInactiveTimer;
@@ -1455,7 +1455,7 @@ public:
   class AccessibilityInfo: public wxAccessible
   {
   public:
-    AccessibilityInfo(MathCtrl *mathCtrl);
+    AccessibilityInfo(Worksheet *worksheet);
     wxAccStatus GetChildCount (int *childCount);
     wxAccStatus GetChild (int childId, wxAccessible **child);
     wxAccStatus GetDefaultAction(int childId, wxString *actionName);
@@ -1466,7 +1466,7 @@ public:
 	                         int *childId, wxAccessible **childObject);
     wxAccStatus GetDescription(int childId, wxString *description);
    private:
-    MathCtrl *m_mathCtrl;
+    Worksheet *m_worksheet;
   };
 #endif
 protected:
@@ -1485,4 +1485,4 @@ protected:
 DECLARE_EVENT_TABLE()
 };
 
-#endif // MATHCTRL_H
+#endif // WORKSHEET_H

@@ -26,7 +26,7 @@
 /*!\file
   This file defines the contents of the class wxMaxima that contains most of the program's logic.
 
-  The worksheet is defined in the class MathCtrl instead and
+  The worksheet is defined in the class Worksheet instead and
   everything surrounding it in wxMaximaFrame.
  */
 
@@ -35,6 +35,7 @@
 #if defined __WXMSW__
 #include <wchar.h>
 #endif
+#include <wx/app.h>
 #include "wxMaxima.h"
 #include "wxMathml.h"
 #include "ImgCell.h"
@@ -96,6 +97,8 @@
 #if defined __WXMAC__
 #define MACPREFIX "wxMaxima.app/Contents/Resources/"
 #endif
+
+wxDECLARE_APP (MyApp);
 
 void wxMaxima::ConfigChanged()
 {
@@ -160,8 +163,6 @@ void wxMaxima::ConfigChanged()
     SetCWD(filename);
   }
 }
-
-wxMaxima *MyApp::m_frame;
 
 wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxString configFile,
                    const wxPoint pos, const wxSize size) :
@@ -1951,7 +1952,7 @@ wxString wxMaxima::ReadMacContents(wxString file)
   return macContents;
 }
 
-bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument)
+bool wxMaxima::OpenMACFile(wxString file, Worksheet *document, bool clearDocument)
 {
   // Show a busy cursor while we open the file.
   wxBusyCursor crs;
@@ -2207,7 +2208,7 @@ bool wxMaxima::OpenMACFile(wxString file, MathCtrl *document, bool clearDocument
 
 // OpenWXMFile
 // Clear document (if clearDocument == true), then insert file
-bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument)
+bool wxMaxima::OpenWXMFile(wxString file, Worksheet *document, bool clearDocument)
 {
   wxLogGui logGui;
   wxLogChain logDialogue(new wxLogGui);
@@ -2289,7 +2290,7 @@ bool wxMaxima::OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument
   return true;
 }
 
-bool wxMaxima::OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocument)
+bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocument)
 {
   wxLogMessage(_("Opening a wxmx file"));
   // Show a busy cursor while we open a file.
@@ -2532,7 +2533,7 @@ bool wxMaxima::CheckWXMXVersion(wxString docversion)
   return true;
 }
 
-bool wxMaxima::OpenXML(wxString file, MathCtrl *document)
+bool wxMaxima::OpenXML(wxString file, Worksheet *document)
 {
   // Show a busy cursor as long as we open a file.
   wxBusyCursor crs;
@@ -3250,7 +3251,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
   menubar->Enable(menu_copy_from_worksheet, m_worksheet->CanCopy(true));
   menubar->Enable(menu_cut, m_worksheet->CanCut());
   menubar->Enable(menu_copy_tex_from_worksheet, m_worksheet->CanCopy());
-  menubar->Enable(MathCtrl::popid_copy_mathml, m_worksheet->CanCopy());
+  menubar->Enable(Worksheet::popid_copy_mathml, m_worksheet->CanCopy());
   menubar->Enable(menu_copy_as_bitmap, m_worksheet->CanCopy());
   menubar->Enable(menu_copy_as_svg, m_worksheet->CanCopy());
   #if wxUSE_ENH_METAFILE
@@ -3263,7 +3264,7 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
   menubar->Enable(menu_undo, m_worksheet->CanUndo());
   menubar->Enable(menu_redo, m_worksheet->CanRedo());
   menubar->Enable(menu_interrupt_id, m_pid > 0);
-  menubar->Enable(MathCtrl::popid_comment_selection,
+  menubar->Enable(Worksheet::popid_comment_selection,
                   (m_worksheet->GetActiveCell() != NULL) && (m_worksheet->GetActiveCell()->SelectionActive()));
   menubar->Enable(menu_evaluate, (
                     (m_worksheet->GetActiveCell() != NULL) ||
@@ -3290,25 +3291,25 @@ void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
 
   if (m_worksheet->GetTree() != NULL)
   {
-    menubar->Enable(MathCtrl::popid_divide_cell, m_worksheet->GetActiveCell() != NULL);
-    menubar->Enable(MathCtrl::popid_merge_cells, m_worksheet->CanMergeSelection());
+    menubar->Enable(Worksheet::popid_divide_cell, m_worksheet->GetActiveCell() != NULL);
+    menubar->Enable(Worksheet::popid_merge_cells, m_worksheet->CanMergeSelection());
     menubar->Enable(wxID_PRINT, true);
   }
   else
   {
-    menubar->Enable(MathCtrl::popid_divide_cell, false);
-    menubar->Enable(MathCtrl::popid_merge_cells, false);
+    menubar->Enable(Worksheet::popid_divide_cell, false);
+    menubar->Enable(Worksheet::popid_merge_cells, false);
     menubar->Enable(wxID_PRINT, false);
   }
   double zf = m_worksheet->m_configuration->GetZoomFactor();
   if (zf < Configuration::GetMaxZoomFactor())
-    menubar->Enable(MathCtrl::menu_zoom_in, true);
+    menubar->Enable(Worksheet::menu_zoom_in, true);
   else
-    menubar->Enable(MathCtrl::menu_zoom_in, false);
+    menubar->Enable(Worksheet::menu_zoom_in, false);
   if (zf > Configuration::GetMinZoomFactor())
-    menubar->Enable(MathCtrl::menu_zoom_out, true);
+    menubar->Enable(Worksheet::menu_zoom_out, true);
   else
-    menubar->Enable(MathCtrl::menu_zoom_out, false);
+    menubar->Enable(Worksheet::menu_zoom_out, false);
 
 }
 
@@ -4160,7 +4161,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
       }
       break;
 
-    case MathCtrl::popid_animation_start:
+    case Worksheet::popid_animation_start:
       if (m_worksheet->CanAnimate())
       {
         SlideShow *slideShow = dynamic_cast<SlideShow *>(m_worksheet->GetSelectionStart());
@@ -4186,7 +4187,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
 
   switch (event.GetId())
   {
-  case MathCtrl::popid_popup_gnuplot:
+  case Worksheet::popid_popup_gnuplot:
   {
     if(m_worksheet->m_cellPointers.m_selectionStart == NULL)
       return;
@@ -4318,7 +4319,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     if (m_worksheet->CanCopy())
       m_worksheet->CopyTeX();
     break;
-  case MathCtrl::popid_copy_mathml:
+  case Worksheet::popid_copy_mathml:
     if (m_worksheet->CanCopy())
       m_worksheet->CopyMathML();
     break;
@@ -4359,7 +4360,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       }
     }
       break;
-    case MathCtrl::popid_delete:
+    case Worksheet::popid_delete:
       if (m_worksheet->CanDeleteSelection())
       {
         m_worksheet->DeleteSelection();
@@ -4368,10 +4369,10 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
         return;
       }
       break;
-    case MathCtrl::menu_zoom_in:
+    case Worksheet::menu_zoom_in:
       m_worksheet->SetZoomFactor(m_worksheet->m_configuration->GetZoomFactor() + 0.1);
       break;
-    case MathCtrl::menu_zoom_out:
+    case Worksheet::menu_zoom_out:
       m_worksheet->SetZoomFactor(m_worksheet->m_configuration->GetZoomFactor() - 0.1);
       break;
     case menu_zoom_80:
@@ -7001,7 +7002,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
   wxString selection = m_worksheet->GetString();
   switch (event.GetId())
   {
-    case MathCtrl::popid_fold:
+    case Worksheet::popid_fold:
     {
       if (m_worksheet->GetActiveCell())
       {
@@ -7015,7 +7016,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       }
       break;
     }
-    case MathCtrl::popid_maxsizechooser:
+    case Worksheet::popid_maxsizechooser:
       if(m_worksheet->m_cellPointers.m_selectionStart != NULL)
       {
         MathCell *output = dynamic_cast<GroupCell *>(m_worksheet->m_cellPointers.m_selectionStart->GetGroup())->GetLabel();
@@ -7043,7 +7044,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       m_worksheet->RecalculateForce();
       m_worksheet->RequestRedraw();
       break;
-    case MathCtrl::popid_unfold:
+    case Worksheet::popid_unfold:
     {
       GroupCell *group = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
       if (group->IsFoldable())
@@ -7127,7 +7128,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       m_worksheet->UpdateTableOfContents();
       break;
     }
-    case MathCtrl::popid_evaluate_section:
+    case Worksheet::popid_evaluate_section:
     {
       bool evaluating = !m_worksheet->m_evaluationQueue.Empty();
       GroupCell *group = NULL;
@@ -7156,7 +7157,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       }
     }
       break;
-    case MathCtrl::popid_evaluate:
+    case Worksheet::popid_evaluate:
       {
         wxCommandEvent *dummy = new wxCommandEvent;
         EvaluateEvent(*dummy);
@@ -7178,67 +7179,67 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
       TryEvaluateNextInQueue();
       break;
-    case MathCtrl::popid_copy:
+    case Worksheet::popid_copy:
       if (m_worksheet->CanCopy(true))
         m_worksheet->Copy();
       break;
-    case MathCtrl::popid_copy_tex:
+    case Worksheet::popid_copy_tex:
       if (m_worksheet->CanCopy(true))
         m_worksheet->CopyTeX();
       break;
-    case MathCtrl::popid_copy_text:
+    case Worksheet::popid_copy_text:
       if (m_worksheet->CanCopy(true))
         m_worksheet->CopyText();
       break;
-    case MathCtrl::popid_cut:
+    case Worksheet::popid_cut:
       if (m_worksheet->CanCopy(true))
         m_worksheet->CutToClipboard();
       break;
-    case MathCtrl::popid_paste:
+    case Worksheet::popid_paste:
       m_worksheet->PasteFromClipboard();
       break;
-    case MathCtrl::popid_select_all:
+    case Worksheet::popid_select_all:
     case ToolBar::tb_select_all:
       m_worksheet->SelectAll();
       break;
-    case MathCtrl::popid_comment_selection:
+    case Worksheet::popid_comment_selection:
       m_worksheet->CommentSelection();
       break;
-    case MathCtrl::popid_divide_cell:
+    case Worksheet::popid_divide_cell:
       m_worksheet->DivideCell();
       break;
-    case MathCtrl::popid_copy_image:
+    case Worksheet::popid_copy_image:
       if (m_worksheet->CanCopy())
         m_worksheet->CopyBitmap();
       break;
-    case MathCtrl::popid_copy_animation:
+    case Worksheet::popid_copy_animation:
       if (m_worksheet->CanCopy())
         m_worksheet->CopyAnimation();
       break;
-    case MathCtrl::popid_copy_svg:
+    case Worksheet::popid_copy_svg:
       if (m_worksheet->CanCopy())
         m_worksheet->CopySVG();
       break;
 #if wxUSE_ENH_METAFILE
-    case MathCtrl::popid_copy_emf:
+    case Worksheet::popid_copy_emf:
       if (m_worksheet->CanCopy())
         m_worksheet->CopyEMF();
       break;
 #endif
-    case MathCtrl::popid_copy_rtf:
+    case Worksheet::popid_copy_rtf:
       if (m_worksheet->CanCopy(true))
         m_worksheet->CopyRTF();
       break;
-    case MathCtrl::popid_simplify:
+    case Worksheet::popid_simplify:
       MenuCommand(wxT("ratsimp(") + selection + wxT(");"));
       break;
-    case MathCtrl::popid_expand:
+    case Worksheet::popid_expand:
       MenuCommand(wxT("expand(") + selection + wxT(");"));
       break;
-    case MathCtrl::popid_factor:
+    case Worksheet::popid_factor:
       MenuCommand(wxT("factor(") + selection + wxT(");"));
       break;
-    case MathCtrl::popid_solve:
+    case Worksheet::popid_solve:
     {
       Gen2Wiz *wiz = new Gen2Wiz(_("Equation(s):"), _("Variable(s):"),
                                  selection, wxT("x"),
@@ -7263,7 +7264,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       wiz->Destroy();
     }
       break;
-    case MathCtrl::popid_solve_num:
+    case Worksheet::popid_solve_num:
     {
       Gen4Wiz *wiz = new Gen4Wiz(_("Equation:"), _("Variable:"),
                                  _("Lower bound:"), _("Upper bound:"),
@@ -7282,7 +7283,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       wiz->Destroy();
     }
       break;
-    case MathCtrl::popid_integrate:
+    case Worksheet::popid_integrate:
     {
       IntegrateWiz *wiz = new IntegrateWiz(this, -1, m_worksheet->m_configuration, _("Integrate"));
       wiz->SetValue(selection);
@@ -7295,7 +7296,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       wiz->Destroy();
     }
       break;
-    case MathCtrl::popid_diff:
+    case Worksheet::popid_diff:
     {
       Gen3Wiz *wiz = new Gen3Wiz(_("Expression:"), _("Variable(s):"),
                                  _("Times:"), selection, wxT("x"), wxT("1"),
@@ -7322,7 +7323,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       wiz->Destroy();
     }
       break;
-    case MathCtrl::popid_subst:
+    case Worksheet::popid_subst:
     {
       SubstituteWiz *wiz = new SubstituteWiz(this, -1, m_worksheet->m_configuration, _("Substitute"));
       wiz->SetValue(selection);
@@ -7335,7 +7336,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       wiz->Destroy();
     }
       break;
-    case MathCtrl::popid_plot2d:
+    case Worksheet::popid_plot2d:
     {
       Plot2DWiz *wiz = new Plot2DWiz(this, -1, m_worksheet->m_configuration, _("Plot 2D"));
       wiz->SetValue(selection);
@@ -7348,7 +7349,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       wiz->Destroy();
     }
       break;
-    case MathCtrl::popid_plot3d:
+    case Worksheet::popid_plot3d:
     {
       Plot3DWiz *wiz = new Plot3DWiz(this, -1, m_worksheet->m_configuration, _("Plot 3D"));
       wiz->SetValue(selection);
@@ -7361,10 +7362,10 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       wiz->Destroy();
     }
       break;
-    case MathCtrl::popid_float:
+    case Worksheet::popid_float:
       MenuCommand(wxT("float(") + selection + wxT("), numer;"));
       break;
-    case MathCtrl::popid_image:
+    case Worksheet::popid_image:
     {
       wxString file = wxFileSelector(_("Save selection to file"), m_lastPath,
                                      wxT("image.png"), wxT("png"),
@@ -7383,7 +7384,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       }
     }
       break;
-    case MathCtrl::popid_animation_save:
+    case Worksheet::popid_animation_save:
     {
       wxString file = wxFileSelector(_("Save animation to file"), m_lastPath,
                                      wxT("animation.gif"), wxT("gif"),
@@ -7397,7 +7398,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       }
     }
       break;
-    case MathCtrl::popid_merge_cells:
+    case Worksheet::popid_merge_cells:
       m_worksheet->MergeCells();
       break;
   }
@@ -7949,7 +7950,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
   bool output = false;
   switch (event.GetId())
   {
-    case MathCtrl::popid_auto_answer:
+    case Worksheet::popid_auto_answer:
       if((m_worksheet->GetActiveCell() != NULL) &&
          (dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->GetGroupType() == GC_TYPE_CODE))
         dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->AutoAnswer(event.IsChecked());
@@ -7973,7 +7974,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       break;
     case menu_insert_previous_output:
       output = true;
-    case MathCtrl::popid_insert_input:
+    case Worksheet::popid_insert_input:
     case menu_insert_input:
     case menu_insert_previous_input:
       type = GC_TYPE_CODE;
@@ -8003,9 +8004,9 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       }
       break;
     case menu_add_comment:
-    case MathCtrl::popid_add_comment:
+    case Worksheet::popid_add_comment:
     case menu_format_text:
-    case MathCtrl::popid_insert_text:
+    case Worksheet::popid_insert_text:
       type = GC_TYPE_TEXT;
       break;
     case menu_convert_to_title:
@@ -8018,7 +8019,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       break;
     case menu_add_title:
     case menu_format_title:
-    case MathCtrl::popid_insert_title:
+    case Worksheet::popid_insert_title:
       type = GC_TYPE_TITLE;
       break;
     case menu_convert_to_section:
@@ -8031,7 +8032,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       break;
     case menu_add_section:
     case menu_format_section:
-    case MathCtrl::popid_insert_section:
+    case Worksheet::popid_insert_section:
       type = GC_TYPE_SECTION;
       break;
     case menu_convert_to_subsection:
@@ -8044,7 +8045,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       break;
     case menu_add_subsection:
     case menu_format_subsection:
-    case MathCtrl::popid_insert_subsection:
+    case Worksheet::popid_insert_subsection:
       type = GC_TYPE_SUBSECTION;
       break;
     case menu_convert_to_subsubsection:
@@ -8073,17 +8074,17 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       break;
     case menu_add_subsubsection:
     case menu_format_subsubsection:
-    case MathCtrl::popid_insert_subsubsection:
+    case Worksheet::popid_insert_subsubsection:
       type = GC_TYPE_SUBSUBSECTION;
       break;
     case menu_add_heading5:
     case menu_format_heading5:
-    case MathCtrl::popid_insert_heading5:
+    case Worksheet::popid_insert_heading5:
       type = GC_TYPE_HEADING5;
       break;
     case menu_add_heading6:
     case menu_format_heading6:
-    case MathCtrl::popid_insert_heading6:
+    case Worksheet::popid_insert_heading6:
       type = GC_TYPE_HEADING6;
       break;
     case menu_add_pagebreak:
@@ -8506,37 +8507,37 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_TIMER(AUTO_SAVE_TIMER_ID, wxMaxima::OnTimerEvent)
                 EVT_TIMER(wxID_ANY, wxMaxima::OnTimerEvent)
                 EVT_COMMAND_SCROLL(ToolBar::plot_slider_id, wxMaxima::SliderEvent)
-                EVT_MENU(MathCtrl::popid_copy, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_copy_image, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_copy_animation, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_copy_svg, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_copy_emf, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_copy_rtf, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_insert_text, wxMaxima::InsertMenu)
-                EVT_MENU(MathCtrl::popid_insert_title, wxMaxima::InsertMenu)
-                EVT_MENU(MathCtrl::popid_insert_section, wxMaxima::InsertMenu)
-                EVT_MENU(MathCtrl::popid_insert_subsection, wxMaxima::InsertMenu)
-                EVT_MENU(MathCtrl::popid_insert_subsubsection, wxMaxima::InsertMenu)
-                EVT_MENU(MathCtrl::popid_insert_heading5, wxMaxima::InsertMenu)
-                EVT_MENU(MathCtrl::popid_insert_heading6, wxMaxima::InsertMenu)
-                EVT_MENU(MathCtrl::popid_popup_gnuplot, wxMaxima::EditMenu)
-                EVT_MENU(MathCtrl::popid_delete, wxMaxima::EditMenu)
-                EVT_MENU(MathCtrl::popid_simplify, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_factor, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_expand, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_solve, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_solve_num, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_subst, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_plot2d, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_plot3d, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_diff, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_integrate, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_float, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_copy_tex, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_copy_text, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_image, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_animation_save, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_animation_start, wxMaxima::FileMenu)
+                EVT_MENU(Worksheet::popid_copy, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_copy_image, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_copy_animation, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_copy_svg, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_copy_emf, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_copy_rtf, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_insert_text, wxMaxima::InsertMenu)
+                EVT_MENU(Worksheet::popid_insert_title, wxMaxima::InsertMenu)
+                EVT_MENU(Worksheet::popid_insert_section, wxMaxima::InsertMenu)
+                EVT_MENU(Worksheet::popid_insert_subsection, wxMaxima::InsertMenu)
+                EVT_MENU(Worksheet::popid_insert_subsubsection, wxMaxima::InsertMenu)
+                EVT_MENU(Worksheet::popid_insert_heading5, wxMaxima::InsertMenu)
+                EVT_MENU(Worksheet::popid_insert_heading6, wxMaxima::InsertMenu)
+                EVT_MENU(Worksheet::popid_popup_gnuplot, wxMaxima::EditMenu)
+                EVT_MENU(Worksheet::popid_delete, wxMaxima::EditMenu)
+                EVT_MENU(Worksheet::popid_simplify, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_factor, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_expand, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_solve, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_solve_num, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_subst, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_plot2d, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_plot3d, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_diff, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_integrate, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_float, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_copy_tex, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_copy_text, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_image, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_animation_save, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_animation_start, wxMaxima::FileMenu)
                 EVT_BUTTON(button_integrate, wxMaxima::CalculusMenu)
                 EVT_BUTTON(button_diff, wxMaxima::CalculusMenu)
                 EVT_BUTTON(button_solve, wxMaxima::EquationsMenu)
@@ -8679,7 +8680,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(menu_copy_from_worksheet, wxMaxima::EditMenu)
                 EVT_MENU(menu_copy_text_from_worksheet, wxMaxima::EditMenu)
                 EVT_MENU(menu_copy_tex_from_worksheet, wxMaxima::EditMenu)
-                EVT_MENU(MathCtrl::popid_copy_mathml, wxMaxima::EditMenu)
+                EVT_MENU(Worksheet::popid_copy_mathml, wxMaxima::EditMenu)
                 EVT_MENU(menu_undo, wxMaxima::EditMenu)
                 EVT_MENU(menu_redo, wxMaxima::EditMenu)
                 EVT_MENU(menu_texform, wxMaxima::MaximaMenu)
@@ -8687,8 +8688,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(menu_to_gamma, wxMaxima::SimplifyMenu)
                 EVT_MENU(wxID_PRINT, wxMaxima::PrintMenu)
                 EVT_TOOL(ToolBar::tb_print, wxMaxima::PrintMenu)
-                EVT_MENU(MathCtrl::menu_zoom_in, wxMaxima::EditMenu)
-                EVT_MENU(MathCtrl::menu_zoom_out, wxMaxima::EditMenu)
+                EVT_MENU(Worksheet::menu_zoom_in, wxMaxima::EditMenu)
+                EVT_MENU(Worksheet::menu_zoom_out, wxMaxima::EditMenu)
                 EVT_MENU(menu_zoom_80, wxMaxima::EditMenu)
                 EVT_MENU(menu_zoom_100, wxMaxima::EditMenu)
                 EVT_MENU(menu_zoom_120, wxMaxima::EditMenu)
@@ -8739,8 +8740,8 @@ EVT_UPDATE_UI(menu_copy_from_worksheet, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_copy_text_from_worksheet, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_copy_tex_from_worksheet, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_copy_mathml_from_worksheet, wxMaxima::UpdateMenus)
-EVT_UPDATE_UI(MathCtrl::menu_zoom_in, wxMaxima::UpdateMenus)
-EVT_UPDATE_UI(MathCtrl::menu_zoom_out, wxMaxima::UpdateMenus)
+EVT_UPDATE_UI(Worksheet::menu_zoom_in, wxMaxima::UpdateMenus)
+EVT_UPDATE_UI(Worksheet::menu_zoom_out, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(wxID_PRINT, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_copy_as_bitmap, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_copy_as_svg, wxMaxima::UpdateMenus)
@@ -8772,7 +8773,7 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_CLOSE(wxMaxima::OnClose)
                 EVT_END_PROCESS(maxima_process_id, wxMaxima::OnProcessEvent)
                 EVT_END_PROCESS(gnuplot_process_id, wxMaxima::OnGnuplotClose)
-                EVT_MENU(MathCtrl::popid_edit, wxMaxima::EditInputMenu)
+                EVT_MENU(Worksheet::popid_edit, wxMaxima::EditInputMenu)
                 EVT_MENU(menu_evaluate, wxMaxima::EvaluateEvent)
                 EVT_MENU(menu_add_comment, wxMaxima::InsertMenu)
                 EVT_MENU(menu_add_section, wxMaxima::InsertMenu)
@@ -8784,36 +8785,36 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_MENU(menu_add_pagebreak, wxMaxima::InsertMenu)
                 EVT_MENU(menu_fold_all_cells, wxMaxima::InsertMenu)
                 EVT_MENU(menu_unfold_all_cells, wxMaxima::InsertMenu)
-                EVT_MENU(MathCtrl::popid_add_comment, wxMaxima::InsertMenu)
+                EVT_MENU(Worksheet::popid_add_comment, wxMaxima::InsertMenu)
                 EVT_MENU(menu_insert_previous_input, wxMaxima::InsertMenu)
                 EVT_MENU(menu_insert_previous_output, wxMaxima::InsertMenu)
                 EVT_MENU(menu_autocomplete, wxMaxima::InsertMenu)
                 EVT_MENU(menu_autocomplete_templates, wxMaxima::InsertMenu)
                 EVT_MENU(menu_insert_input, wxMaxima::InsertMenu)
-                EVT_MENU(MathCtrl::popid_insert_input, wxMaxima::InsertMenu)
+                EVT_MENU(Worksheet::popid_insert_input, wxMaxima::InsertMenu)
                 EVT_MENU(menu_history_previous, wxMaxima::EditMenu)
                 EVT_MENU(menu_history_next, wxMaxima::EditMenu)
                 EVT_MENU(menu_cut, wxMaxima::EditMenu)
                 EVT_MENU(menu_paste, wxMaxima::EditMenu)
                 EVT_MENU(menu_paste_input, wxMaxima::EditMenu)
-                EVT_MENU(MathCtrl::popid_cut, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_paste, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_select_all, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_comment_selection, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_divide_cell, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_evaluate, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_evaluate_section, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_cut, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_paste, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_select_all, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_comment_selection, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_divide_cell, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_evaluate, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_evaluate_section, wxMaxima::PopupMenu)
                 EVT_MENU(ToolBar::tb_evaluate_rest, wxMaxima::PopupMenu)
                 EVT_MENU(ToolBar::tb_evaltillhere, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_merge_cells, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_maxsizechooser, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_merge_cells, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_maxsizechooser, wxMaxima::PopupMenu)
                 EVT_MENU(TableOfContents::popid_Fold, wxMaxima::PopupMenu)
                 EVT_MENU(TableOfContents::popid_Unfold, wxMaxima::PopupMenu)
                 EVT_MENU(TableOfContents::popid_SelectTocChapter, wxMaxima::PopupMenu)
                 EVT_MENU(TableOfContents::popid_EvalTocChapter, wxMaxima::PopupMenu)
                 EVT_MENU(TableOfContents::popid_ToggleTOCshowsSectionNumbers, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_fold, wxMaxima::PopupMenu)
-                EVT_MENU(MathCtrl::popid_unfold, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_fold, wxMaxima::PopupMenu)
+                EVT_MENU(Worksheet::popid_unfold, wxMaxima::PopupMenu)
                 EVT_MENU(menu_evaluate_all_visible, wxMaxima::MaximaMenu)
                 EVT_MENU(menu_evaluate_all, wxMaxima::MaximaMenu)
                 EVT_MENU(ToolBar::tb_evaltillhere, wxMaxima::MaximaMenu)
@@ -8881,7 +8882,7 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_MENU(menu_insert_image, wxMaxima::InsertMenu)
                 EVT_MENU_RANGE(menu_pane_hideall, menu_pane_stats, wxMaxima::ShowPane)
                 EVT_MENU(menu_show_toolbar, wxMaxima::EditMenu)
-                EVT_MENU(MathCtrl::popid_auto_answer, wxMaxima::InsertMenu)
+                EVT_MENU(Worksheet::popid_auto_answer, wxMaxima::InsertMenu)
                 EVT_LISTBOX_DCLICK(history_ctrl_id, wxMaxima::HistoryDClick)
                 EVT_LIST_ITEM_ACTIVATED(structure_ctrl_id, wxMaxima::TableOfContentsSelection)
                 EVT_BUTTON(menu_stats_histogram, wxMaxima::StatsMenu)

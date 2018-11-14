@@ -132,7 +132,7 @@ public:
 
   //! A timer that polls for output from the maxima process.
   wxTimer m_maximaStdoutPollTimer;
-
+  
   void ShowTip(bool force);
 
   /*! Get the name of the help file
@@ -553,7 +553,7 @@ protected:
 
   /*! Opens a content.xml file that has been extracted from a broken .wxmx file
    */
-  bool OpenXML(wxString file, MathCtrl *document);
+  bool OpenXML(wxString file, Worksheet *document);
 
   //! Complains if the version string from the XML file indicates too low a maxima version
   bool CheckWXMXVersion(wxString docversion);
@@ -562,13 +562,13 @@ protected:
   wxString ReadMacContents(wxString file);
 
   //! Opens a .mac file or a .out file from Xmaxima
-  bool OpenMACFile(wxString file, MathCtrl *document, bool clearDocument = true);
+  bool OpenMACFile(wxString file, Worksheet *document, bool clearDocument = true);
 
   //! Opens a wxm file
-  bool OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument = true);
+  bool OpenWXMFile(wxString file, Worksheet *document, bool clearDocument = true);
 
   //! Opens a wxmx file
-  bool OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocument = true);
+  bool OpenWXMXFile(wxString file, Worksheet *document, bool clearDocument = true);
 
   //! Loads a wxmx description
   GroupCell *CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfilename = wxEmptyString);
@@ -681,6 +681,7 @@ private:
 
 #endif
 
+
 class MyApp : public wxApp
 {
 public:
@@ -703,14 +704,11 @@ public:
     \param exitAfterEval Do we want to close the window after the file has been evaluated?
    */
   void NewWindow(wxString file = wxEmptyString, bool evalOnStartup = false, bool exitAfterEval = false);
-
+    
   //! Is called by atExit and tries to close down the maxima process if wxMaxima has crashed.
-  static void Cleanup_Static();
+  static void Cleanup();
 
-  //! A pointer to the currently running wxMaxima instance
-  static wxMaxima *m_frame;
-
-  wxWindowList topLevelWindows;
+  static std::list<wxMaxima *> m_topLevelWindows;
 
   void OnFileMenu(wxCommandEvent &ev);
 

@@ -40,7 +40,7 @@ surrounding the worksheet.
 #include <wx/aui/aui.h>
 #include <wx/notifmsg.h>
 
-#include "MathCtrl.h"
+#include "Worksheet.h"
 #include "RecentDocuments.h"
 #include "Version.h"
 #include "History.h"
@@ -727,7 +727,7 @@ protected:
   //! true=force an update of the status bar at the next call of StatusMaximaBusy()
   bool m_forceStatusbarUpdate;
   //! The worksheet itself
-  MathCtrl *m_worksheet;
+  Worksheet *m_worksheet;
   //! The history pane
   History *m_history;
   RecentDocuments m_recentDocuments;
