@@ -369,10 +369,17 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
     case wxID_EXIT:
     {
       bool quit = true;
-      for (std::list<wxMaxima *>::iterator it=m_topLevelWindows.begin();
-           it != m_topLevelWindows.end(); ++it)
+      std::list<wxMaxima *>::iterator it=m_topLevelWindows.begin();
+      while(it != m_topLevelWindows.end())
       {
-        if (!(*it)->Close())
+        if ((*it)->Close())
+        {
+          // Remove the window we just closed from the window list.
+          std::list<wxMaxima *>::iterator oldWin = it;
+          ++it;
+          m_topLevelWindows.remove(*oldWin);
+        }
+        else
         {
           quit = false;
           break;
