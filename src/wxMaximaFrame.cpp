@@ -65,13 +65,13 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   wxDialog::EnableLayoutAdaptation(wxDIALOG_ADAPTATION_MODE_ENABLED);
 
   // console
-  m_console = new MathCtrl(this, -1, wxDefaultPosition, wxDefaultSize);
+  m_worksheet = new MathCtrl(this, -1, wxDefaultPosition, wxDefaultSize);
 
   // history
   m_history = new History(this, -1);
 
   // The table of contents
-  m_console->m_tableOfContents = new TableOfContents(this, -1, &m_console->m_configuration);
+  m_worksheet->m_tableOfContents = new TableOfContents(this, -1, &m_worksheet->m_configuration);
 
   m_xmlInspector = new XmlInspector(this, -1);
   SetupMenu();
@@ -137,11 +137,11 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
           m_newStatusText = _("Maxima asks a question");
           break;
         case waiting:
-          m_console->m_cellPointers.SetWorkingGroup(NULL);
+          m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
           // If we evaluated a cell that produces no output we still want the
           // cell to be unselected after evaluating it.
-          if (m_console->FollowEvaluation())
-            m_console->SetSelection(NULL);
+          if (m_worksheet->FollowEvaluation())
+            m_worksheet->SetSelection(NULL);
 
           m_MenuBar->Enable(menu_remove_output, true);
           m_newStatusText = _("Ready for user input");
@@ -235,9 +235,9 @@ wxMaximaFrame::~wxMaximaFrame()
   // or similar events pending for the wxWindows we want to free the memory
   // for.
   m_history->Destroy();
-  m_console->m_tableOfContents->Destroy();
-  m_console->m_tableOfContents = NULL;
-  m_console->Destroy();
+  m_worksheet->m_tableOfContents->Destroy();
+  m_worksheet->m_tableOfContents = NULL;
+  m_worksheet->Destroy();
 }
 
 void wxMaximaFrame::set_properties()
@@ -260,13 +260,13 @@ void wxMaximaFrame::set_properties()
   SetTitle(_("untitled"));
 #endif
 
-  m_console->SetBackgroundColour(wxColour(wxT("WHITE")));
-  m_console->SetMinSize(wxSize(100, 100));
+  m_worksheet->SetBackgroundColour(wxColour(wxT("WHITE")));
+  m_worksheet->SetMinSize(wxSize(100, 100));
 }
 
 void wxMaximaFrame::do_layout()
 {
-  m_manager.AddPane(m_console,
+  m_manager.AddPane(m_worksheet,
                     wxAuiPaneInfo().Name(wxT("console")).
                             Center().
                             CloseButton(false).
@@ -284,7 +284,7 @@ void wxMaximaFrame::do_layout()
                             PaneBorder(true).
                             Right());
 
-  m_manager.AddPane(m_console->m_tableOfContents,
+  m_manager.AddPane(m_worksheet->m_tableOfContents,
                     wxAuiPaneInfo().Name(wxT("structure")).
                             Show(true).CloseButton().PinButton().
                             TopDockable(true).
@@ -392,9 +392,9 @@ void wxMaximaFrame::do_layout()
                     PaneBorder(true).
                     Left());
 
-  m_console->m_mainToolBar = new ToolBar(this);
+  m_worksheet->m_mainToolBar = new ToolBar(this);
   
-  m_manager.AddPane(m_console->m_mainToolBar,
+  m_manager.AddPane(m_worksheet->m_mainToolBar,
                     wxAuiPaneInfo().Name(wxT("toolbar")).
                     ToolbarPane().Top().Resizable(true).
                     TopDockable(true).Show(true).
@@ -525,12 +525,12 @@ void wxMaximaFrame::SetupMenu()
   m_EditMenu->Append(menu_cut, _("Cut\tCtrl+X"),
                      _("Cut selection"),
                      wxITEM_NORMAL);
-  APPEND_MENU_ITEM(m_EditMenu, menu_copy_from_console, _("&Copy\tCtrl+C"),
+  APPEND_MENU_ITEM(m_EditMenu, menu_copy_from_worksheet, _("&Copy\tCtrl+C"),
                    _("Copy selection"), wxT("gtk-copy"));
-  m_EditMenu->Append(menu_copy_text_from_console, _("Copy as Text\tCtrl+Shift+C"),
+  m_EditMenu->Append(menu_copy_text_from_worksheet, _("Copy as Text\tCtrl+Shift+C"),
                      _("Copy selection from document as text"),
                      wxITEM_NORMAL);
-  m_EditMenu->Append(menu_copy_tex_from_console, _("Copy as LaTeX"),
+  m_EditMenu->Append(menu_copy_tex_from_worksheet, _("Copy as LaTeX"),
                      _("Copy selection from document in LaTeX format"),
                      wxITEM_NORMAL);
   m_EditMenu->Append(MathCtrl::popid_copy_mathml, _("Copy as MathML"),
@@ -1310,7 +1310,7 @@ void wxMaximaFrame::RemoveTempAutosavefile()
   {
     // Don't delete the file if we have opened it and haven't saved it under a
     // different name yet.
-    if(wxFileExists(m_tempfileName) && (m_tempfileName != m_console->m_currentFile))
+    if(wxFileExists(m_tempfileName) && (m_tempfileName != m_worksheet->m_currentFile))
       wxRemoveFile(m_tempfileName);
   }
   m_tempfileName = wxEmptyString;
@@ -1372,7 +1372,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
       break;
     case menu_pane_structure:
       m_manager.GetPane(wxT("structure")).Show(show);
-      m_console->m_tableOfContents->UpdateTableOfContents(m_console->GetTree(), m_console->GetHCaret());
+      m_worksheet->m_tableOfContents->UpdateTableOfContents(m_worksheet->GetTree(), m_worksheet->GetHCaret());
       break;
     case menu_pane_xmlInspector:
       m_manager.GetPane(wxT("XmlInspector")).Show(show);
@@ -1541,7 +1541,7 @@ void wxMaximaFrame::CharacterButtonPressed(wxMouseEvent &event)
 {
   wxChar ch = event.GetId();
   wxString ch_string(ch);
-  m_console->InsertText(ch_string);
+  m_worksheet->InsertText(ch_string);
 }
 
 wxPanel *wxMaximaFrame::CharButton(wxPanel *parent, wxChar ch, wxString description, bool WXUNUSED(matchesMaximaCommand))

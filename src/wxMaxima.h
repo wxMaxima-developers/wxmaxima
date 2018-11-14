@@ -179,7 +179,7 @@ public:
 
   //! Load an image from a file into the worksheet.
   void LoadImage(wxString file)
-  { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
+  { m_worksheet->OpenHCaret(file, GC_TYPE_IMAGE); }
 
 private:
   //! Is true if opening the file from the command line failed before updating the statusbar.

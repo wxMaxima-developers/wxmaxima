@@ -266,9 +266,9 @@ public:
     menu_evaluate_all_visible,
     menu_evaluate_all,
     menu_show_tip,
-    menu_copy_from_console,
-    menu_copy_tex_from_console,
-    menu_copy_text_from_console,
+    menu_copy_from_worksheet,
+    menu_copy_tex_from_worksheet,
+    menu_copy_text_from_worksheet,
     menu_undo,
     menu_redo,
     menu_select_all,
@@ -727,7 +727,7 @@ protected:
   //! true=force an update of the status bar at the next call of StatusMaximaBusy()
   bool m_forceStatusbarUpdate;
   //! The worksheet itself
-  MathCtrl *m_console;
+  MathCtrl *m_worksheet;
   //! The history pane
   History *m_history;
   RecentDocuments m_recentDocuments;
