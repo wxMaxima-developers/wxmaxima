@@ -564,8 +564,6 @@ public:
   void StatusExportFailed();
 
 protected:
-  //! != wxEmptyString means: set the status text to this value.
-  wxString m_newStatusText;
   //! The process id of maxima. Is determined by ReadFirstPrompt.
   long m_pid;
   //! Did the user ever give this file a name?
@@ -681,7 +679,20 @@ private:
       wxButton *m_draw_accuracy;
       int m_dimensions;
     };
+public:
+  void LeftStatusText(wxString text, bool saveInLog = true)
+    {m_newLeftStatusText = true; m_leftStatusText = text; if(saveInLog)wxLogMessage(text);}
+  void RightStatusText(wxString text, bool saveInLog = true)
+    {m_newRightStatusText = true; m_rightStatusText = text; if(saveInLog)wxLogMessage(text);}
 protected:
+  //! Do we have new text to output in the Right half of the Status Bar?
+  bool m_newRightStatusText;
+  //! Do we have new text to output in the Left half of the Status Bar?
+  bool m_newLeftStatusText;
+  //! The text for the Right half of the Status Bar
+  wxString m_rightStatusText;
+  //! The text for the Left half of the Status Bar
+  wxString m_leftStatusText;
   //! The default size for the window.
   virtual wxSize DoGetBestClientSize();
   //! The sidebar with the draw commands

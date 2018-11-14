@@ -155,11 +155,11 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
       switch (m_StatusMaximaBusy)
       {
         case process_wont_start:
-          m_newStatusText = _("Cannot start the maxima binary");
+          RightStatusText(_("Cannot start the maxima binary"));
           break;
         case userinput:
           m_MenuBar->Enable(menu_remove_output, false);
-          m_newStatusText = _("Maxima asks a question");
+          RightStatusText(_("Maxima asks a question"));
           break;
         case waiting:
           m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
@@ -169,28 +169,28 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
             m_worksheet->SetSelection(NULL);
 
           m_MenuBar->Enable(menu_remove_output, true);
-          m_newStatusText = _("Ready for user input");
+          RightStatusText(_("Ready for user input"));
           // We don't evaluate any cell right now.
           break;
         case calculating:
           m_MenuBar->Enable(menu_remove_output, false);
-          m_newStatusText = _("Maxima is calculating");
+          RightStatusText(_("Maxima is calculating"), false);
           break;
         case transferring:
           m_MenuBar->Enable(menu_remove_output, false);
-          m_newStatusText = _("Reading Maxima output");
+          RightStatusText(_("Reading Maxima output"),false);
           break;
         case parsing:
           m_MenuBar->Enable(menu_remove_output, false);
-          m_newStatusText = ("Parsing output");
+          RightStatusText(_("Parsing output"),false);
           break;
         case disconnected:
           m_MenuBar->Enable(menu_remove_output, false);
-          m_newStatusText = _("Not connected to maxima");
+          RightStatusText(_("Not connected to maxima"));
           break;
         case wait_for_start:
           m_MenuBar->Enable(menu_remove_output, false);
-          m_newStatusText = _("Maxima started. Waiting for connection...");
+          RightStatusText(_("Maxima started. Waiting for connection..."));
           break;
       }
     }
@@ -202,7 +202,7 @@ void wxMaximaFrame::StatusSaveStart()
 {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = true;
-  m_newStatusText = _("Saving...");
+  RightStatusText(_("Saving..."));
 }
 
 void wxMaximaFrame::StatusSaveFinished()
@@ -212,14 +212,14 @@ void wxMaximaFrame::StatusSaveFinished()
   if (m_StatusMaximaBusy != waiting)
     StatusMaximaBusy(m_StatusMaximaBusy);
   else
-    m_newStatusText = _("Saving successful.");
+    RightStatusText(_("Saving successful."));
 }
 
 void wxMaximaFrame::StatusExportStart()
 {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = true;
-  m_newStatusText = _("Exporting...");
+  RightStatusText(_("Exporting..."));
 }
 
 void wxMaximaFrame::StatusExportFinished()
@@ -229,21 +229,21 @@ void wxMaximaFrame::StatusExportFinished()
   if (m_StatusMaximaBusy != waiting)
     StatusMaximaBusy(m_StatusMaximaBusy);
   else
-    m_newStatusText = _("Export successful.");
+    RightStatusText(_("Export successful."));
 }
 
 void wxMaximaFrame::StatusSaveFailed()
 {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = false;
-  m_newStatusText = _("Saving failed.");
+  RightStatusText(_("Saving failed."));
 }
 
 void wxMaximaFrame::StatusExportFailed()
 {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = false;
-  m_newStatusText = _("Export failed.");
+  RightStatusText(_("Export failed."));
 }
 
 wxMaximaFrame::~wxMaximaFrame()
@@ -1673,7 +1673,8 @@ wxPanel *wxMaximaFrame::CreateLogPane()
 
   panel->SetSizerAndFit(vbox);
   wxLog::SetActiveTarget(m_logPanelTarget = new wxLogTextCtrl(textCtrl));
-  m_logPanelTarget->SetRepetitionCounting();
+  // m_logPanelTarget->SetRepetitionCounting();
+  // m_logPanelTarget->DisableTimestamp();
   return panel;
 }
 
