@@ -1551,7 +1551,7 @@ void wxMaxima::ReadStatusBar(wxString &data)
     {
       wxXmlNode *contents = node->GetChildren();
       if(contents)
-        RightStatusText(contents->GetContent());
+        RightStatusText(contents->GetContent(), false);
     }
     // Remove the status bar info from the data string
     data = data.Right(data.Length()-end-sts.Length());
