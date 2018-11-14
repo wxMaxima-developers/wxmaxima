@@ -864,7 +864,7 @@ public:
   };
 
   //! The constructor
-  Worksheet(wxWindow *parent, int id, wxPoint pos, wxSize size);
+  Worksheet(wxWindow *parent, int id, wxPoint pos = wxDefaultPosition, wxSize size = wxDefaultSize);
 
   //! The destructor
   ~Worksheet();
@@ -1470,6 +1470,7 @@ public:
   };
 #endif
 protected:
+  virtual wxSize DoGetBestClientSize();
 #if wxUSE_ACCESSIBILITY
   AccessibilityInfo *m_accessibilityInfo;
 #endif

@@ -284,52 +284,24 @@ int MyApp::OnExit()
 
 void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval)
 {
-  int x = 40, y = 40, h = 650, w = 950, m = 0;
-  int rs = 0;
-  int display_width = 1024, display_height = 768;
-  bool have_pos;
-
   wxConfigBase *config = wxConfig::Get();
 
-  wxDisplaySize(&display_width, &display_height);
-
-  have_pos = config->Read(wxT("pos-x"), &x);
-  config->Read(wxT("pos-y"), &y);
-  config->Read(wxT("pos-h"), &h);
-  config->Read(wxT("pos-w"), &w);
-  config->Read(wxT("pos-max"), &m);
-  config->Read(wxT("pos-restore"), &rs);
-
-  if (rs == 0)
-    have_pos = false;
-  if (!have_pos || m == 1 || x > display_width || y > display_height || x < 0 || y < 0)
-  {
-    x = 40;
-    y = 40;
-    h = 650;
-    w = 950;
-  }
-
   int numberOfWindows = m_topLevelWindows.size();
-  x += numberOfWindows * 20;
-  y += numberOfWindows * 20;
 
-  wxMaxima *frame = new wxMaxima((wxFrame *) NULL, -1, _("wxMaxima"), m_configFileName,
-                                 wxPoint(x, y), wxSize(w, h));
-  
-  if (m == 1)
-    frame->Maximize(true);
-
+  wxString title = _("wxMaxima");
   if (file.Length() > 0)
-  {
-    frame->SetOpenFile(file);
-  }
+    title = file;
+  
+  if (numberOfWindows > 1)
+    title = wxString::Format(_("wxMaxima %d"), numberOfWindows);
 
+  wxMaxima *frame = new wxMaxima((wxFrame *) NULL, -1, title);
+  if (file.Length() > 0)
+    frame->SetOpenFile(file);
+  
   frame->ExitAfterEval(exitAfterEval);
   frame->EvalOnStartup(evalOnStartup);
   m_topLevelWindows.push_back(frame);
-  if (numberOfWindows > 1)
-    frame->SetTitle(wxString::Format(_("untitled %d"), numberOfWindows));
 
   SetTopWindow(frame);
   frame->Show(true);

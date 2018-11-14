@@ -159,6 +159,15 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
   #endif
 }
 
+wxSize Worksheet::DoGetBestClientSize()
+{
+  wxSize size(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )*.6,
+              wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )*.6);
+  if (size.x<800) size.x=800;
+  if (size.y<600) size.y=600;
+  return size;
+}
+
 bool Worksheet::RedrawIfRequested()
 {
   bool redrawIssued = false;

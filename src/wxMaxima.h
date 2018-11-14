@@ -96,10 +96,12 @@ DECLARE_EVENT_TABLE()
  */
 class wxMaxima : public wxMaximaFrame
 {
+  //! The default size for the window.
+  virtual wxSize DoGetBestClientSize();
 public:
 
-  wxMaxima(wxWindow *parent, int id, const wxString title, const wxString configFile,
-           const wxPoint pos, const wxSize size = wxDefaultSize);
+  wxMaxima(wxWindow *parent, int id, const wxString title, const wxString configFile = wxEmptyString,
+           const wxPoint pos = wxDefaultPosition, const wxSize size = wxDefaultSize);
   
   ~wxMaxima();
 

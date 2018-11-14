@@ -259,6 +259,16 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
 
 }
 
+wxSize wxMaxima::DoGetBestClientSize()
+{
+  wxSize size(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )*.6,
+              wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )*.6);
+  if (size.x<800) size.x=800;
+  if (size.y<600) size.y=600;
+  std::cerr<<"DoGetBestSize!\n";
+  return size;
+}
+
 wxMaxima::~wxMaxima()
 {
   KillMaxima();
@@ -6967,14 +6977,6 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   wxSize size = GetSize();
   wxPoint pos = GetPosition();
   bool maximized = IsMaximized();
-  config->Write(wxT("pos-x"), pos.x);
-  config->Write(wxT("pos-y"), pos.y);
-  config->Write(wxT("pos-w"), size.GetWidth());
-  config->Write(wxT("pos-h"), size.GetHeight());
-  if (maximized)
-    config->Write(wxT("pos-max"), 1);
-  else
-    config->Write(wxT("pos-max"), 0);
   if (m_lastPath.Length() > 0)
     config->Write(wxT("lastPath"), m_lastPath);
   m_closing = true;

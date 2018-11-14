@@ -37,6 +37,7 @@
 #include <wx/image.h>
 #include <wx/filename.h>
 #include <wx/fileconf.h>
+#include <wx/persist/toplevel.h>
 #include "wxMaximaIcon.h"
 
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
@@ -48,6 +49,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_unsavedDocuments(wxT("unsaved")),
   m_recentPackages(wxT("packages"))
 {
+  SetName(title);
+  wxPersistenceManager::Get().RegisterAndRestore(this);
   m_logPanelTarget = NULL;
   m_isNamed = false;
   m_configFileName = configFile,
@@ -65,7 +68,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   wxDialog::EnableLayoutAdaptation(wxDIALOG_ADAPTATION_MODE_ENABLED);
 
   // console
-  m_worksheet = new Worksheet(this, -1, wxDefaultPosition, wxDefaultSize);
+  m_worksheet = new Worksheet(this, -1);
 
   // history
   m_history = new History(this, -1);
@@ -109,6 +112,17 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   set_properties();
   do_layout();
 }
+
+wxSize wxMaximaFrame::DoGetBestClientSize()
+{
+  wxSize size(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )*.6,
+              wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )*.6);
+  if (size.x<800) size.x=800;
+  if (size.y<600) size.y=600;
+  std::cerr<<"DoGetBestSize!\n";
+  return size;
+}
+
 
 void wxMaximaFrame::EvaluationQueueLength(int length, int numberOfCommands)
 {

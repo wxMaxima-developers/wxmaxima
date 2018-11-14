@@ -682,6 +682,8 @@ private:
       int m_dimensions;
     };
 protected:
+  //! The default size for the window.
+  virtual wxSize DoGetBestClientSize();
   //! The sidebar with the draw commands
   DrawPane *m_drawPane;
 private:
