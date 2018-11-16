@@ -423,7 +423,10 @@ bool MathCell::DrawThisCell(wxPoint point)
   // but not the horizontal line with denominator above and numerator below.
   if(m_isBrokenIntoLines)
     return false;
-  
+
+  if(!InUpdateRegion())
+    return false;
+    
   Configuration *configuration = (*m_configuration);
   int top = configuration->GetTop();
   int bottom = configuration->GetBottom();

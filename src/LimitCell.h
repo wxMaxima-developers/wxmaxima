@@ -30,6 +30,7 @@
 #define LIMITCELL_H
 
 #include "MathCell.h"
+#include "TextCell.h"
 
 class LimitCell : public MathCell
 {
@@ -65,11 +66,19 @@ public:
   wxString ToMathML();
 
   void SetGroup(MathCell *parent);
+  void Unbreak();
+  bool BreakUp();
 
 protected:
-  MathCell *m_base;
-  MathCell *m_under;
   MathCell *m_name;
+  TextCell *m_open;
+  MathCell *m_base;
+  TextCell *m_comma;
+  MathCell *m_under;
+  TextCell *m_close;
+  MathCell *m_name_last;
+  MathCell *m_base_last;
+  MathCell *m_under_last;
 };
 
 #endif // LIMITCELL_H
