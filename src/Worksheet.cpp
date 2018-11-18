@@ -4043,6 +4043,8 @@ void Worksheet::SetNotification(wxString message, int flags)
  */
 void Worksheet::OnChar(wxKeyEvent &event)
 {
+  wxAcceleratorEntry keypress(event.GetRawKeyFlags(), event.GetRawKeyCode());
+  wxLogMessage("Char:"+keypress.ToString());
   ClearNotification();
 
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to realize

@@ -743,8 +743,11 @@ void GroupCell::RecalculateHeightInput(int fontsize)
   m_outputRect.x = m_currentPoint.x;
   m_outputRect.y = m_currentPoint.y;
   if (m_output) m_outputRect.y -= m_output->GetMaxCenter();
-  m_outputRect.width = 0;
-  m_outputRect.height = 0;
+  else
+  {
+    m_outputRect.width = 0;
+    m_outputRect.height = 0;
+  }
   if ((configuration->ShowCodeCells()) ||
       (m_groupType != GC_TYPE_CODE))
   {
