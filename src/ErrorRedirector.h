@@ -33,7 +33,7 @@ class ErrorRedirector : public wxLog
 {
 public:
     /**
-        Sets the specified @c logger (which may be @NULL) as the default log
+        Sets the specified @c logger (which may be NULL) as the default log
         target but the log messages are also passed to the previous log target if any.
     */
     ErrorRedirector(wxLog* logger);
@@ -43,6 +43,10 @@ public:
     */
     virtual ~ErrorRedirector();
 
+  /*! This method is called from the idle loop.
+
+    All log targets collect log messages between calls to Flush.
+   */
   virtual void Flush();
 
   virtual void DoLogRecord(wxLogLevel level,
