@@ -42,6 +42,8 @@ public:
     */
     virtual ~ErrorRedirector();
 
+  virtual void Flush();
+
   virtual void DoLogRecord(wxLogLevel level,
                            const wxString& msg,
                            const wxLogRecordInfo& info);

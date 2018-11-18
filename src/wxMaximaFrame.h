@@ -41,6 +41,7 @@ surrounding the worksheet.
 #include <wx/notifmsg.h>
 
 #include "Worksheet.h"
+#include "ErrorRedirector.h"
 #include "RecentDocuments.h"
 #include "Version.h"
 #include "History.h"
@@ -734,6 +735,9 @@ protected:
 
   bool ToolbarIsShown();
 
+  //! Redirects all error messages to gui dialogues
+  ErrorRedirector *m_errorRedirector;
+  //! The manager for dynamic screen layouts
   wxAuiManager m_manager;
   //! A XmlInspector-like xml monitor
   XmlInspector *m_xmlInspector;

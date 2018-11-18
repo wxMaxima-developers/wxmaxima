@@ -28,8 +28,9 @@
  */
 
 #include "ErrorRedirector.h"
+#include <iostream>
 
-ErrorRedirector::ErrorRedirector(wxLog *logger)
+ErrorRedirector::ErrorRedirector(wxLog *logger) : wxLog()
 {
     m_logNew = logger;
 
@@ -74,10 +75,23 @@ void ErrorRedirector::DoLogRecord(wxLogLevel level,
       if ( m_logNew != this )
       {
         if((level == wxLOG_FatalError) || (level == wxLOG_Error))
+        {
+          std::cerr<<msg<<"\n";
           m_logNew->LogRecord(level, msg, info);
+          m_logNew->Flush();
+        }
       }
       else
         wxLog::DoLogRecord(level, msg, info);
     }
 }
 
+void ErrorRedirector::Flush()
+{
+    if ( m_logOld )
+        m_logOld->Flush();
+
+    // be careful to avoid infinite recursion
+    if ( m_logNew && m_logNew != this )
+        m_logNew->Flush();
+}

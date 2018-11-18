@@ -49,6 +49,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_unsavedDocuments(wxT("unsaved")),
   m_recentPackages(wxT("packages"))
 {
+  m_errorRedirector = NULL;
   SetName(title);
   if(!wxPersistenceManager::Get().RegisterAndRestore(this))
   {
@@ -248,6 +249,7 @@ void wxMaximaFrame::StatusExportFailed()
 
 wxMaximaFrame::~wxMaximaFrame()
 {
+  wxDELETE(m_errorRedirector);
   // We are about to delete the panel all log messages are output to =>
   // create a new log target.
   wxLog::SetActiveTarget(new wxLogGui());
@@ -1673,6 +1675,8 @@ wxPanel *wxMaximaFrame::CreateLogPane()
 
   panel->SetSizerAndFit(vbox);
   wxLog::SetActiveTarget(m_logPanelTarget = new wxLogTextCtrl(textCtrl));
+  m_errorRedirector = new ErrorRedirector(new wxLogGui());
+
   // m_logPanelTarget->SetRepetitionCounting();
   // m_logPanelTarget->DisableTimestamp();
   SetMinSize(wxSize(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )/6,
