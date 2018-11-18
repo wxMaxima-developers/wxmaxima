@@ -28,6 +28,7 @@
 
 #include <wx/log.h>
 
+//! Redirect error messages (but not warnings) to a second target.
 class ErrorRedirector : public wxLog
 {
 public:
