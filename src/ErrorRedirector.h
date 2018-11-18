@@ -56,12 +56,12 @@ public:
     void DetachOldLog();
 
     /**
-        Returns the pointer to the previously active log target (which may be @NULL).
+        Returns the pointer to the previously active log target (which may be NULL).
     */
     wxLog* GetOldLog() const;
 
     /**
-        Sets another log target to use (may be @NULL).
+        Sets another log target to use (may be NULL).
 
         The log target specified in the wxLogChain(wxLog*) constructor or in a
         previous call to this function is deleted.
