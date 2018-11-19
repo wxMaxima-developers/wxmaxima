@@ -31,6 +31,9 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
                      long style)
         : wxTextCtrl(parent, id, value, pos, size, style)
 {
+#ifdef __WXMAC__
+  OSXDisableAllSmartSubstitutions(true);
+#endif
   m_config = cfg;
   bool fixedFont = true;
   m_skipTab = true;

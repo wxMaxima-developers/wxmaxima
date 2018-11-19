@@ -673,6 +673,9 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   }
   m_wxStartupCommands = new wxTextCtrl(panel_wxMaximaStartup, -1, wxEmptyString, wxDefaultPosition, wxSize(200,250),
                                      wxTE_MULTILINE | wxHSCROLL);
+  #ifdef __WXMAC__
+  m_wxStartupCommands->OSXDisableAllSmartSubstitutions(true);
+  #endif
   m_wxStartupCommands->SetValue(contents);
   vsizer_wxMaximaStartup->Add(m_wxStartupCommands, wxSizerFlags().Expand().Border(wxALL,5));
   wxStaticText *wxStartupFileLocation = new wxStaticText(panel_wxMaximaStartup, wxID_ANY,
@@ -713,6 +716,9 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   m_startupCommands = new wxTextCtrl(panel_maximaStartup, -1, wxEmptyString, wxDefaultPosition, wxSize(200,250),
                                      wxTE_MULTILINE | wxHSCROLL);
   m_startupCommands->SetValue(contents);
+  #ifdef __WXMAC__
+  m_StartupCommands->OSXDisableAllSmartSubstitutions(true);
+  #endif
 
   vsizer_maximaStartup->Add(m_startupCommands, wxSizerFlags().Expand().Border(wxALL,5));
   wxStaticText *startupFileLocation = new wxStaticText(panel_maximaStartup, wxID_ANY,
