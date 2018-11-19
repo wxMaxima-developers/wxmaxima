@@ -889,18 +889,14 @@ void GroupCell::RecalculateAppended()
 
 void GroupCell::Draw(wxPoint point)
 {
+  MathCell::Draw(point);
   if (DrawThisCell(point))
   {
-    
-    MathCell::Draw(point);
+    if (m_width == -1 || m_height == -1)
+      return;
     
     Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();
-    if (m_width == -1 || m_height == -1)
-    {
-      RecalculateWidths(m_fontSize);
-      RecalculateHeight(m_fontSize);
-    }
     // draw a thick line for 'page break'
     // and return
     if (m_groupType == GC_TYPE_PAGEBREAK)
@@ -910,7 +906,6 @@ void GroupCell::Draw(wxPoint point)
       wxPen pen(configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_DOT);
       dc->SetPen(pen);
       dc->DrawLine(0, y, (*m_configuration)->GetCanvasSize().GetWidth(), y);
-      MathCell::Draw(point);
       return;
     }
 

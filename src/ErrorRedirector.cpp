@@ -76,7 +76,6 @@ void ErrorRedirector::DoLogRecord(wxLogLevel level,
       {
         if((level == wxLOG_FatalError) || (level == wxLOG_Error))
         {
-          std::cerr<<msg<<"\n";
           m_logNew->LogRecord(level, msg, info);
           m_logNew->Flush();
         }
