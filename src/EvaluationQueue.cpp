@@ -71,7 +71,7 @@ void EvaluationQueue::Remove(GroupCell *gr)
   }
 }
 
-void EvaluationQueue::AddToQueue(GroupCell *gr)
+void EvaluationQueue::AddToQueue(GroupCell *gr, bool lispMode)
 {
   if(gr == NULL)
     return;
@@ -79,8 +79,9 @@ void EvaluationQueue::AddToQueue(GroupCell *gr)
   if (gr->GetGroupType() != GC_TYPE_CODE
       || gr->GetEditable() == NULL) // don't add cells which can't be evaluated
     return;
-
-  gr->GetEditable()->AddEnding();
+  
+  if(!lispMode)
+    gr->GetEditable()->AddEnding();
 
   if(m_queue.empty())
   {

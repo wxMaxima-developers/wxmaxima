@@ -6595,7 +6595,7 @@ void Worksheet::AddDocumentToEvaluationQueue()
   SetHCaret(m_last);
 }
 
-void Worksheet::AddToEvaluationQueue(GroupCell *cell)
+void Worksheet::AddToEvaluationQueue(GroupCell *cell, bool lispMode)
 {
   if (cell->GetGroupType() == GC_TYPE_CODE)
   {
@@ -6604,7 +6604,7 @@ void Worksheet::AddToEvaluationQueue(GroupCell *cell)
     {
       cell->GetInput()->ContainsChanges(true);
       // ...and add it to the evaluation queue
-      m_evaluationQueue.AddToQueue(cell);
+      m_evaluationQueue.AddToQueue(cell, lispMode);
     }
   }
 }
@@ -6708,9 +6708,9 @@ void Worksheet::AddDocumentTillHereToEvaluationQueue()
   }
 }
 
-void Worksheet::AddCellToEvaluationQueue(GroupCell *gc)
+void Worksheet::AddCellToEvaluationQueue(GroupCell *gc, bool lispMode)
 {
-  AddToEvaluationQueue(dynamic_cast<GroupCell *>(gc));
+  AddToEvaluationQueue(dynamic_cast<GroupCell *>(gc), lispMode);
   SetHCaret(gc);
 }
 

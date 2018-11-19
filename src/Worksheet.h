@@ -1294,7 +1294,7 @@ public:
   void Evaluate();
 
   //! Adds a group cell to the evaluation queue marking its contents as "outdated".
-  void AddToEvaluationQueue(GroupCell *cell);
+  void AddToEvaluationQueue(GroupCell *cell, bool lispMode = false);
 
   void AddDocumentToEvaluationQueue();
 
@@ -1317,7 +1317,7 @@ public:
   void AddSelectionToEvaluationQueue(GroupCell *start, GroupCell *end);
 
   //! Schedule this cell for evaluation
-  void AddCellToEvaluationQueue(GroupCell *gc);
+  void AddCellToEvaluationQueue(GroupCell *gc, bool lispMode = false);
 
   //! The list of cells that have to be evaluated
   EvaluationQueue m_evaluationQueue;

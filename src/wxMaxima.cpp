@@ -941,6 +941,8 @@ bool wxMaxima::StartServer()
 
 bool wxMaxima::StartMaxima(bool force)
 {
+  // Maxima isn't in lisp mode
+  m_inLispMode = false;
 
   // If we have an open file tell maxima to start in the directory the file is in
   wxUnsetEnv(wxT("MAXIMA_INITIAL_FOLDER"));
@@ -1222,6 +1224,7 @@ void wxMaxima::KillMaxima()
 
   m_client = NULL;
   m_isConnected = false;
+  m_inLispMode = false;
 
   // As we might have killed maxima before it was able to clean up its
   // temp files
@@ -1334,7 +1337,6 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
     GetMenuBar()->Enable(menu_interrupt_id, true);
 
   m_first = false;
-  m_inLispMode = false;
   StatusMaximaBusy(waiting);
   m_closing = false; // when restarting maxima this is temporarily true
 
@@ -1842,10 +1844,19 @@ void wxMaxima::ReadPrompt(wxString &data)
     StatusMaximaBusy(userinput);
   }
 
-  if (o.StartsWith(wxT("\nMAXIMA>")))
+  o.Trim(false);
+  if (o.StartsWith(wxT("MAXIMA>")))
+  {
+    if(!m_inLispMode)
+      wxLogMessage(_("Switched to lisp mode after receiving a lisp prompt!"));
     m_inLispMode = true;
+  }
   else
+  {
+    if(m_inLispMode)
+      wxLogMessage(_("Ended lisp mode after receiving a maxima prompt!"));
     m_inLispMode = false;
+  }
 }
 
 void wxMaxima::SetCWD(wxString file)
@@ -2986,7 +2997,12 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
           LeftStatusText(_("Welcome to wxMaxima"));
       }
       else
-        LeftStatusText(_("Maxima is ready for input."));
+      {
+        if(m_inLispMode)
+          LeftStatusText(_("Lisp mode."));
+        else
+          LeftStatusText(_("Maxima is ready for input."));
+      }
       m_openInitialFileError = false;
     }
     m_updateEvaluationQueueLengthDisplay = false;
@@ -7556,7 +7572,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event))
     else
     { // normally just add to queue (and mark the cell as no more containing an error message)
       m_worksheet->m_cellPointers.m_errorList.Remove(cell);
-      m_worksheet->AddCellToEvaluationQueue(cell);
+      m_worksheet->AddCellToEvaluationQueue(cell, m_inLispMode);
     }
   }
   else
@@ -7595,9 +7611,30 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
     {
       // Opening parenthesis
     case wxT('('):
+    {
       delimiters.push_back(wxT(')'));
       lastC = c;
+      if(m_inLispMode)
+      {
+        // Extract a few chars of the string.
+        wxString command;
+        wxString::const_iterator it2(it);
+        int chars = 0;
+        while((it2 != text.end()) && (chars++ < 12))
+        {
+          command += wxString(*it2);
+          ++it2;
+        }
+        command.Trim(false);
+        if(command.StartsWith(wxT("(to-maxima)")))
+        {
+          wxLogMessage(_("Ending lisp mode!"));
+          m_inLispMode = false;
+          lisp = false;
+        }
+      }
       break;
+    }
     case wxT('['):
       delimiters.push_back(wxT(']'));
       lastC = c;
@@ -7643,22 +7680,25 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
     // a to_lisp command
     case wxT('t'):
     {
-      // Extract 7 chars of the string.
-      wxString command;
-      wxString::const_iterator it2(it);
-      if(it2 != text.end())
+      lastC = c;
       {
-        command += wxString(*it2);
-        ++it2;
+        // Extract a few chars of the string.
+        wxString command;
+        wxString::const_iterator it2(it);
+        int chars = 0;
+        while((it2 != text.end()) && (wxIsalpha(*it2) || (*it2 == wxT('_'))) && (chars++ < 8))
+        {
+          command += wxString(*it2);
+          ++it2;
+        }
+        if(command.StartsWith(wxT("to_lisp")))
+        {
+          wxLogMessage(_("Switching to lisp mode until a (to-maxima) is encountered!"));
+          m_inLispMode = true;
+          lisp = true;
+        }
+        break;
       }
-      while((it2 != text.end()) && (wxIsalpha(*it2)))
-      {
-        command += wxString(*it2);
-        ++it2;
-      }
-      if(command.StartsWith(wxT("to_lisp")))
-         lisp = true;
-      break;
     }
 
     // An eventual :lisp command
@@ -7680,8 +7720,21 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
 
       // Let's see if this is a :lisp-quiet or a :lisp
       if ((command == wxT(":lisp")) || (command == wxT(":lisp-quiet")))
+      {
         lisp = true;
+        wxLogMessage(_("Switching to lisp mode for one line!"));        
+      }
       lastC = c;
+      break;
+    }
+    case wxT('\n'):
+    {
+      if(!m_inLispMode)
+      {
+        if(lisp)
+          lastC = wxT(';');
+        lisp = false;
+      }
       break;
     }
     case wxT(';'):
@@ -7771,7 +7824,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
           endingNeeded = false;
       }
 
-      if(endingNeeded)
+      if((endingNeeded) && (!lisp))
         return _("No dollar ($) or semicolon (;) at the end of command");
     }
     return wxEmptyString;
