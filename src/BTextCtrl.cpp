@@ -32,7 +32,9 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
         : wxTextCtrl(parent, id, value, pos, size, style)
 {
 #ifdef __WXMAC__
-  OSXDisableAllSmartSubstitutions(true);
+  #if wxCHECK_VERSION(3, 1, 1)
+  OSXDisableAllSmartSubstitutions();
+  #endif
 #endif
   m_config = cfg;
   bool fixedFont = true;

@@ -674,7 +674,9 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   m_wxStartupCommands = new wxTextCtrl(panel_wxMaximaStartup, -1, wxEmptyString, wxDefaultPosition, wxSize(200,250),
                                      wxTE_MULTILINE | wxHSCROLL);
   #ifdef __WXMAC__
-  m_wxStartupCommands->OSXDisableAllSmartSubstitutions(true);
+    #if wxCHECK_VERSION(3, 1, 1)
+      m_wxStartupCommands->OSXDisableAllSmartSubstitutions(true);
+    #endif
   #endif
   m_wxStartupCommands->SetValue(contents);
   vsizer_wxMaximaStartup->Add(m_wxStartupCommands, wxSizerFlags().Expand().Border(wxALL,5));
@@ -717,7 +719,9 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
                                      wxTE_MULTILINE | wxHSCROLL);
   m_startupCommands->SetValue(contents);
   #ifdef __WXMAC__
-  m_StartupCommands->OSXDisableAllSmartSubstitutions(true);
+    #if wxCHECK_VERSION(3, 1, 1)
+      m_StartupCommands->OSXDisableAllSmartSubstitutions(true);
+    #endif
   #endif
 
   vsizer_maximaStartup->Add(m_startupCommands, wxSizerFlags().Expand().Border(wxALL,5));
