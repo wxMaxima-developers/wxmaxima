@@ -3369,9 +3369,9 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight, bool 
 
 bool EditorCell::CopyToClipboard()
 {
-  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (m_selectionStart == -1)
     return false;
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
     long start = MIN(m_selectionStart, m_selectionEnd);

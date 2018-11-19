@@ -334,13 +334,13 @@ wxSize Bitmap::ToFile(wxString file)
 
 bool Bitmap::ToClipboard()
 {
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
     bool res = wxTheClipboard->SetData(new wxBitmapDataObject(m_bmp));
     wxTheClipboard->Close();
     return res;
   }
-  wxTheClipboard->Close();
   return false;
 }
 

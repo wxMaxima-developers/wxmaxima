@@ -328,6 +328,7 @@ Svgout::SVGDataObject *Svgout::GetDataObject()
 
 bool Svgout::ToClipboard()
 {
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
     bool res = wxTheClipboard->SetData(GetDataObject());

@@ -365,6 +365,7 @@ wxString ImgCell::ToXML()
 
 bool ImgCell::CopyToClipboard()
 {
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
     bool res = wxTheClipboard->SetData(new wxBitmapDataObject(m_image->GetUnscaledBitmap()));

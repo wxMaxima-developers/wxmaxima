@@ -456,6 +456,7 @@ SlideShow::GifDataObject::GifDataObject(const wxMemoryOutputStream &str) : wxCus
 
 bool SlideShow::CopyToClipboard()
 {
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
     bool res = wxTheClipboard->SetData(new wxBitmapDataObject(m_images[m_displayed]->GetUnscaledBitmap()));

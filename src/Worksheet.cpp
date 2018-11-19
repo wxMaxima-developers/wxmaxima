@@ -2120,6 +2120,7 @@ bool Worksheet::Copy(bool astext)
   }
   else
   {
+    wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
     if (wxTheClipboard->Open())
     {
       wxDataObjectComposite *data = new wxDataObjectComposite;
@@ -2259,6 +2260,7 @@ bool Worksheet::CopyMathML()
 
   if (wxTheClipboard->Open())
   {
+    wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
     wxDataObjectComposite *data = new wxDataObjectComposite;
     // The default clipboard slot for MathML
     data->Add(new MathMLDataObject(s), true);
@@ -2276,7 +2278,6 @@ bool Worksheet::CopyMathML()
     Recalculate();
     return true;
   }
-
   return false;
 }
 
@@ -2331,6 +2332,7 @@ bool Worksheet::CopyTeX()
   if ((inMath == true) && (wrapLatexMath))
     s += wxT("\\]");
 
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
     wxDataObjectComposite *data = new wxDataObjectComposite;
@@ -2366,6 +2368,7 @@ bool Worksheet::CopyText()
     firstcell = false;
   }
 
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
     wxDataObjectComposite *data = new wxDataObjectComposite;
@@ -2456,7 +2459,6 @@ bool Worksheet::CopyCells()
     return true;
   }
 
-  Recalculate();
   return false;
 }
 
@@ -4459,6 +4461,7 @@ bool Worksheet::CopyRTF()
   if(!CellsSelected())
     return false;
 
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (!wxTheClipboard->Open())
     return false;
 
@@ -7261,6 +7264,7 @@ void Worksheet::PasteFromClipboard()
   bool cells = false;
 
   // Check for cell structure
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (!wxTheClipboard->Open())
     return;
 
@@ -7498,6 +7502,7 @@ void Worksheet::CheckUnixCopy()
     wxTheClipboard->UsePrimarySelection(true);
     if (wxTheClipboard->IsUsingPrimarySelection())
     {
+      wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
       if (wxTheClipboard->Open())
       {
         wxDataObjectComposite *data = new wxDataObjectComposite;
