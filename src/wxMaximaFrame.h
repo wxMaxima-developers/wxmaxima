@@ -695,7 +695,7 @@ protected:
   //! The text for the Left half of the Status Bar
   wxString m_leftStatusText;
   //! The default size for the window.
-  virtual wxSize DoGetBestClientSize();
+  virtual wxSize DoGetBestClientSize() const;
   //! The sidebar with the draw commands
   DrawPane *m_drawPane;
 private:

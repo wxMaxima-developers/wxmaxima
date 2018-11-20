@@ -159,7 +159,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
   #endif
 }
 
-wxSize Worksheet::DoGetBestClientSize()
+wxSize Worksheet::DoGetBestClientSize() const
 {
   wxSize size(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )*.6,
               wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )*.6);

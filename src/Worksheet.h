@@ -1470,7 +1470,7 @@ public:
   };
 #endif
 protected:
-  virtual wxSize DoGetBestClientSize();
+  virtual wxSize DoGetBestClientSize() const;
 #if wxUSE_ACCESSIBILITY
   AccessibilityInfo *m_accessibilityInfo;
 #endif

@@ -126,7 +126,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   do_layout();
 }
 
-wxSize wxMaximaFrame::DoGetBestClientSize()
+wxSize wxMaximaFrame::DoGetBestClientSize() const
 {
   wxSize size(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )*.6,
               wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )*.6);
@@ -1679,8 +1679,8 @@ wxPanel *wxMaximaFrame::CreateLogPane()
 
   // m_logPanelTarget->SetRepetitionCounting();
   // m_logPanelTarget->DisableTimestamp();
-  SetMinSize(wxSize(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )/6,
-                    wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )/6));
+  SetMinSize(wxSize(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )/10,
+                    wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )/10));
   return panel;
 }
 
