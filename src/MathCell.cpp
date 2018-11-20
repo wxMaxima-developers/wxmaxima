@@ -77,7 +77,7 @@ MathCell::MathCell(MathCell *group, Configuration **config)
   m_textStyle = TS_VARIABLE;
   m_SuppressMultiplicationDot = false;
   m_imageBorderWidth = 0;
-  m_currentPoint = wxPoint(-1, -1);
+  SetCurrentPoint(wxPoint(-1, -1));
   m_toolTip = (*m_configuration)->GetDefaultMathCellToolTip();
   m_fontSize = (*m_configuration)->GetMathFontSize();
 }
@@ -329,7 +329,7 @@ int MathCell::GetLineWidth()
  */
 void MathCell::Draw(wxPoint point)
 {
-  m_currentPoint = point;
+  SetCurrentPoint(point);
 
   // Tell the screen reader that this cell's contents might have changed.
 
@@ -418,13 +418,17 @@ bool MathCell::DrawThisCell(wxPoint point)
   if((point.x < 0) || (point.y < 0))
     return false;
 
+  SetCurrentPoint(point);
+
   // If a cell is broken into lines its individual parts are displayed but
   // not the cell itself (example: Denominator and Numerator are displayed
   // but not the horizontal line with denominator above and numerator below.
   if(m_isBrokenIntoLines)
     return false;
 
-  if(!InUpdateRegion())
+  // We need to redraw group cell brackets on cursor movements.
+  // TODO: Is this the right method to make this happen?
+  if((m_type != MC_TYPE_GROUP) && (!InUpdateRegion()))
     return false;
     
   Configuration *configuration = (*m_configuration);
@@ -454,7 +458,7 @@ wxRect MathCell::GetRect(bool all)
 
 bool MathCell::InUpdateRegion(const wxRect &rect)
 {
-  if (m_clipToDrawRegion) return true;
+  if (!m_clipToDrawRegion) return true;
   if (rect.GetLeft() > m_updateRegion.GetRight()) return false;
   if (rect.GetRight() < m_updateRegion.GetLeft()) return false;
   if (rect.GetBottom() < m_updateRegion.GetTop()) return false;

@@ -272,12 +272,20 @@ void ParenCell::RecalculateHeight(int fontsize)
         break;
       default:{}
       }
-      m_innerCell->m_currentPoint.x = m_currentPoint.x + m_signWidth;
-      m_innerCell->m_currentPoint.y = m_currentPoint.y;
+      m_innerCell->SetCurrentPoint(
+        wxPoint(m_currentPoint.x + m_signWidth,
+                m_currentPoint.y));
 
       // Center the argument of all big parenthesis vertically
       if(m_bigParenType != Configuration::ascii)
-        m_innerCell->m_currentPoint.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
+        m_innerCell->SetCurrentPoint(
+          wxPoint(m_currentPoint.x + m_signWidth,
+                  m_currentPoint.y + (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2)));
+      else
+        m_innerCell->SetCurrentPoint(
+          wxPoint(m_currentPoint.x + m_signWidth,
+                  m_currentPoint.y));
+      
       m_height = MAX(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(2);      
       m_center = m_height / 2;   
     }

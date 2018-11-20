@@ -296,11 +296,11 @@ void Worksheet::RequestRedraw(GroupCell *start)
     {
       // No need to waste time avoiding to waste time in a refresh when we don't
       // know our cell's position.
-      if ((start->m_currentPoint.y < 0) || (m_redrawStart->m_currentPoint.y < 0))
+      if ((start->GetCurrentPoint().y < 0) || (m_redrawStart->GetCurrentPoint().y < 0))
       {
         m_redrawStart = m_tree;
       }
-      else if (start->m_currentPoint.y < m_redrawStart->m_currentPoint.y)
+      else if (start->GetCurrentPoint().y < m_redrawStart->GetCurrentPoint().y)
         m_redrawStart = start;
     }
     else
@@ -482,7 +482,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
         }
       }
 
-      tmp->m_currentPoint = point;
+      tmp->SetCurrentPoint(point);
       if (tmp->DrawThisCell(point))
       {
         tmp->InEvaluationQueue(m_evaluationQueue.IsInQueue(tmp));
@@ -901,37 +901,37 @@ void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
       CellToScrollTo = CellToScrollTo->m_next;
     }
   }
-
+  
   RecalculateForce();
-
-  MathCell *tmp = m_tree;
-  MathCell *prev = NULL;
+  
+  GroupCell *tmp = m_tree;
+  GroupCell *prev = NULL;
   if (tmp != NULL)
   {
     UpdateConfigurationClientSize();
-
+    
     SetSelection(NULL);
     while (tmp != NULL)
     {
       dynamic_cast<GroupCell*>(tmp)->OnSize();
-
+      
       if (prev == NULL)
       {
-        tmp->m_currentPoint.x = m_configuration->GetIndent();
-        tmp->m_currentPoint.y = m_configuration->GetBaseIndent() + tmp->GetMaxCenter();
+        tmp->SetCurrentPoint(m_configuration->GetIndent(),
+                             m_configuration->GetBaseIndent() + tmp->GetMaxCenter());
       }
       else
       {
-        tmp->m_currentPoint.x = m_configuration->GetIndent();
-        tmp->m_currentPoint.y = prev->m_currentPoint.y + prev->GetMaxDrop() + tmp->GetMaxCenter() +
-          m_configuration->GetGroupSkip();
+        tmp->SetCurrentPoint(m_configuration->GetIndent(),
+                             prev->GetCurrentPoint().y + prev->GetMaxDrop() + tmp->GetMaxCenter() +
+                             m_configuration->GetGroupSkip());
       }
-
+      
       prev = tmp;
-      tmp = tmp->m_next;
+      tmp = dynamic_cast<GroupCell *>(tmp->m_next);
     }
   }
-
+  
   AdjustSize();
   Thaw();
   RequestRedraw();
@@ -3431,7 +3431,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
     GetActiveCell()->RecalculateHeight(MAX(fontsize, MC_MIN_SIZE));
 
     if (height != GetActiveCell()->GetHeight() ||
-        GetActiveCell()->GetWidth() + GetActiveCell()->m_currentPoint.x >=
+        GetActiveCell()->GetWidth() + GetActiveCell()->GetCurrentPoint().x >=
         GetClientSize().GetWidth() - m_configuration->GetCellBracketWidth() - m_configuration->GetBaseIndent())
       needRecalculate = true;
   }

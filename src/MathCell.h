@@ -658,20 +658,6 @@ class MathCell
     separately (and on separate lines).
    */
   MathCell *m_previousToDraw;
-  /*! The point in the work sheet at which this cell begins.
-
-    The begin of a cell is defined as 
-     - x=the left border of the cell
-     - y=the vertical center of the cell. Which (per example in the case of a fraction)
-       might not be the physical center but the vertical position of the horizontal line
-       between nummerator and denominator.
-
-    The current point is recalculated 
-     - for GroupCells by GroupCell::RecalculateHeight
-     - for EditorCells by it's GroupCell's RecalculateHeight and
-     - for MathCells when they are drawn.
-  */
-  wxPoint m_currentPoint;
   bool m_bigSkip;
   /*! true means:  This cell is broken into two or more lines.
     
@@ -813,8 +799,25 @@ class MathCell
 
   //! Set the tooltip of this math cell. wxEmptyString means: no tooltip.
   void SetToolTip(const wxString &tooltip){m_toolTip = tooltip;}
-
+  void SetCurrentPoint(wxPoint point){m_currentPoint = point;}
+  void SetCurrentPoint(int x, int y){m_currentPoint = wxPoint(x,y);}
+  wxPoint GetCurrentPoint(){return m_currentPoint;}
+  
 protected:
+  /*! The point in the work sheet at which this cell begins.
+
+    The begin of a cell is defined as 
+     - x=the left border of the cell
+     - y=the vertical center of the cell. Which (per example in the case of a fraction)
+       might not be the physical center but the vertical position of the horizontal line
+       between nummerator and denominator.
+
+    The current point is recalculated 
+     - for GroupCells by GroupCell::RecalculateHeight
+     - for EditorCells by it's GroupCell's RecalculateHeight and
+     - for MathCells when they are drawn.
+  */
+  wxPoint m_currentPoint;
   //! The worksheet all cells are drawn on
   static wxRect m_updateRegion;
 

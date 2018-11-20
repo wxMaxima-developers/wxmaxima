@@ -613,10 +613,7 @@ void GroupCell::RecalculateWidths(int fontsize)
       m_inputLabel->RecalculateWidthsList(fontsize);
       
       // recalculate the position of input in ReEvaluateSelection!
-      if (m_inputLabel->m_next != NULL)
-      {
-        m_inputLabel->m_next->m_currentPoint.x = m_currentPoint.x + m_inputLabel->GetWidth();
-      }
+      // m_inputLabel->m_currentPoint.x = m_currentPoint.x;
     }
     
     if (m_output == NULL || m_hide)
@@ -814,12 +811,13 @@ void GroupCell::RecalculateHeight(int fontsize)
   // bracket in.  m_appendedCells = NULL;
 
   if (m_inputLabel)
-    m_inputLabel->m_currentPoint = m_currentPoint;
+    m_inputLabel->SetCurrentPoint(m_currentPoint);
   if (GetEditable())
   {
-    GetEditable()->m_currentPoint = m_currentPoint;
-    if(m_inputLabel != NULL)
-      GetEditable()->m_currentPoint.x += m_inputLabel->GetWidth();
+    if(m_inputLabel == NULL)
+      GetEditable()->SetCurrentPoint(m_currentPoint);
+    else
+      GetEditable()->SetCurrentPoint(wxPoint(m_currentPoint.x + m_inputLabel->GetWidth(), m_currentPoint.y));
   }
 }
 
@@ -967,7 +965,7 @@ void GroupCell::Draw(wxPoint point)
 
         while (tmp != NULL)
         {         
-          tmp->m_currentPoint = in;
+          tmp->SetCurrentPoint(in);
 
           tmp->Draw(in);
           if ((tmp->m_nextToDraw != NULL) && (tmp->m_nextToDraw->BreakLineHere()))
@@ -989,7 +987,7 @@ void GroupCell::Draw(wxPoint point)
               drop = tmp->m_nextToDraw->GetMaxDrop();
             }
           else
-            if(tmp->DrawThisCell(in)) in.x += (tmp->GetWidth());
+            in.x += tmp->GetWidth();
 
           tmp = tmp->m_nextToDraw;
         }
