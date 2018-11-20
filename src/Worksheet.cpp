@@ -406,7 +406,6 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   m_configuration->SetContext(dcm);
   m_configuration->SetAntialiassingDC(antiAliassingDC);
   m_configuration->SetBounds(top, bottom);
-  int fontsize = m_configuration->GetDefaultFontSize(); // apply zoomfactor to defaultfontsize
 
   // Draw content
   if (m_tree != NULL)

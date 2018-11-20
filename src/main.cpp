@@ -284,8 +284,6 @@ int MyApp::OnExit()
 
 void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval)
 {
-  wxConfigBase *config = wxConfig::Get();
-
   int numberOfWindows = m_topLevelWindows.size();
 
   wxString title = _("wxMaxima");

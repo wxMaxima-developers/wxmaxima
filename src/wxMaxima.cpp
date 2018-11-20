@@ -6978,9 +6978,6 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   m_autoSaveTimer.Stop();
 
   wxConfigBase *config = wxConfig::Get();
-  wxSize size = GetSize();
-  wxPoint pos = GetPosition();
-  bool maximized = IsMaximized();
   if (m_lastPath.Length() > 0)
     config->Write(wxT("lastPath"), m_lastPath);
   m_closing = true;
