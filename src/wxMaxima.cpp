@@ -7683,13 +7683,13 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
         // Extract a few chars of the string.
         wxString command;
         wxString::const_iterator it2(it);
-        int chars = 0;
-        while((it2 != text.end()) && (wxIsalpha(*it2) || (*it2 == wxT('_'))) && (chars++ < 8))
+        int chars = 10;
+        while((it2 != text.end()) && (wxIsalpha(*it2) || (*it2 == wxT('_'))) && (chars-- != 0))
         {
           command += wxString(*it2);
           ++it2;
         }
-        if(command.StartsWith(wxT("to_lisp")))
+        if(command == (wxT("to_lisp")))
         {
           wxLogMessage(_("Switching to lisp mode until a (to-maxima) is encountered!"));
           m_inLispMode = true;
@@ -7702,22 +7702,18 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
     // An eventual :lisp command
     case wxT(':'):
     {
-      // Extract 5 chars of the string.
+      // Extract a few chars of the string.
       wxString command;
       wxString::const_iterator it2(it);
-      if(it2 != text.end())
-      {
-        command += wxString(*it2);
-        ++it2;
-      }
-      while((it2 != text.end()) && (wxIsalpha(*it2)))
+      int chars = 11;
+      while((it2 != text.end()) && (chars-- != 0))
       {
         command += wxString(*it2);
         ++it2;
       }
 
       // Let's see if this is a :lisp-quiet or a :lisp
-      if ((command == wxT(":lisp")) || (command == wxT(":lisp-quiet")))
+      if (command.StartsWith(wxT(":lisp")) || (command.StartsWith(wxT(":lisp-quiet"))))
       {
         lisp = true;
         wxLogMessage(_("Switching to lisp mode for one line!"));        
