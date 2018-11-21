@@ -290,7 +290,10 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
                             "   Ctrl+2: Title cell\n"
                             "   Ctrl+3: Section cell\n"
                             "   Ctrl+4: Subsection cell\n"
-                            "   Ctrl+5: Sub-Subsection cell"));
+                            "   Ctrl+5: Sub-Subsection cell\n"
+                            "   Ctrl+6: Heading5 cell\n"
+                            "   Ctrl+7: Heading6 cell\n"
+                            ));
   AddControl(m_textStyle);
   
   // Seems like on MSW changing the image of this button has strange side-effects

@@ -2650,6 +2650,7 @@ wxString wxMaxima::EscapeForLisp(wxString str)
 
 void wxMaxima::SetupVariables()
 {
+  wxLogMessage(_("Sending maxima the info how to express 2d maths as XML"));
   SendMaxima(wxT(":lisp-quiet (setf *prompt-suffix* \"") +
              m_promptSuffix +
              wxT("\")\n"));

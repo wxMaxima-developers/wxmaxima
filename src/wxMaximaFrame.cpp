@@ -114,8 +114,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   entries[8].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('3'), menu_convert_to_section);
   entries[9].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('4'), menu_convert_to_subsection);
   entries[10].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('5'), menu_convert_to_subsubsection);
-  entries[10].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('6'), menu_convert_to_subsubsection);
-  entries[10].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('7'), menu_convert_to_subsubsection);
+  entries[10].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('6'), menu_convert_to_heading5);
+  entries[10].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('7'), menu_convert_to_heading6);
   wxAcceleratorTable accel(13, entries);
   SetAcceleratorTable(accel);
 
