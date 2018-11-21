@@ -7,7 +7,7 @@ file(GLOB SOURCE_FILES *.cpp *.h)
 
 if(WIN32)
     include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
-    set(SOURCE_FILES Resources.rc ../data/winrc/wxmaxima.manifest ${SOURCE_FILES})
+    set(SOURCE_FILES Resources.rc ${SOURCE_FILES})
 endif()
 
 # We put Version.h into binary dir
