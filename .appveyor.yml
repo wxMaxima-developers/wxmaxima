@@ -49,7 +49,6 @@ before_build:
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.1/wxMSW-3.1.1_vc140_x64_Dev.7z'
   - cmd: 7z x wxWidgets-3.1.1.7z -oC:\wxWidgets-3.1.1
   - cmd: 7z x wxMSW-3.1.1_vc140_x64_Dev.7z -oC:\wxWidgets-3.1.1
-  - cmd: dir %wxWidgets_LIBRARIES%
   # Download Release wxWidgets DLL's
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.1/wxMSW-3.1.1_vc140_x64_ReleaseDLL.7z' -Timeout 15000
   - cmd: 7z x wxMSW-3.1.1_vc140_x64_ReleaseDLL.7z -oC:\wxWidgets-3.1.1
@@ -65,7 +64,6 @@ before_build:
 
 build_script:
   - cd c:\projects\wxMaxima\build
-  - dir
   - 'CALL "C:\Program Files (x86)\Microsoft Visual Studio %VisualStudioVersion%\VC\vcvarsall.bat" %vcvarsall_platform%'
   - msbuild "INSTALL.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build  /p:Configuration=%configuration% /p:Platform=%platform% /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
