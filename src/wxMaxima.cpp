@@ -7732,6 +7732,16 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
       break;
     }
     case wxT(';'):
+      if(lisp)
+      {
+        lastC = c;
+        // Skip a lisp comment
+        while((it != text.end()) && (*it != '\n'))
+          it++;
+        if(it != text.end())
+          --it;
+        break;
+      }
     case wxT('$'):
       if ((!lisp) && (!delimiters.empty()))
       {
