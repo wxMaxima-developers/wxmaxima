@@ -1219,6 +1219,7 @@ void wxMaxima::KillMaxima()
   {
     if (m_client)
       m_client->Close();
+    wxLogNull logNull;
     wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN);
   }
 
