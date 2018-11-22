@@ -33,7 +33,7 @@
 #include <wx/notifmsg.h>
 
 #if defined __WXMSW__
-#include <wchar.h>
+//#include <wchar.h>
 #endif
 #include <wx/app.h>
 #include "wxMaxima.h"
