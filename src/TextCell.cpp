@@ -1137,6 +1137,7 @@ wxString TextCell::ToMathML()
   {
     case TS_GREEK_CONSTANT:
       text = GetGreekStringUnicode();
+      break;
     case TS_SPECIAL_CONSTANT:
     {
       // The "d" from d/dt can be written as a special unicode symbol. But firefox doesn't

@@ -132,8 +132,10 @@ void EditorCell::AddDrawParameter(wxString param)
 
     if(pos > m_positionOfCaret)
       break;
-
+    else
+    {
       ++ch;++pos;
+    }
   }
 
   // if(ch < m_text.end())
@@ -225,7 +227,9 @@ wxString EditorCell::GetFullCommandUnderCursor()
     }
 
     if(ch < m_text.end())
+    {
       ++ch;++pos;
+    }
   }
   return result;
 }

@@ -4017,7 +4017,11 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
     case menu_save_as_id:
       forceSave = true;
       m_fileSaved = false;
-
+      SaveFile(forceSave);
+      // Seems like resetting the title on "file/save as" is a little bit
+      // sluggish, otherwise.
+      ResetTitle(m_worksheet->IsSaved(), true);
+      break;
     case ToolBar::tb_save:
     case menu_save_id:
       SaveFile(forceSave);
@@ -8023,6 +8027,8 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       break;
     case menu_insert_previous_output:
       output = true;
+      type = GC_TYPE_CODE;
+      break;
     case Worksheet::popid_insert_input:
     case menu_insert_input:
     case menu_insert_previous_input:

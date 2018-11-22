@@ -336,7 +336,7 @@ public:
       )
       return m_clientWidth;
     else
-      return (const int) (double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor);
+      return (int) (double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor);
   }
 
   int GetDefaultFontSize()
