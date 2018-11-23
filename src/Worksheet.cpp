@@ -6434,6 +6434,9 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   // We will try to do so a few times if we suspect a MSW virus scanner or similar
   // temporarily hindering us from doing so.
   bool done = false;
+
+  // The following line is paranoia as closing (and thus writing) the file has
+  // succeeded.
   if(!wxFileExists(backupfile))
     return false;
   
