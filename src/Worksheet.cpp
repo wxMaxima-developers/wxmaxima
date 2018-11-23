@@ -1456,15 +1456,15 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         case GC_TYPE_SUBSECTION:
           popupMenu->Append(popid_evaluate_section, _("Evaluate Subsection\tShift+Ctrl+Enter"), wxEmptyString,
                             wxITEM_NORMAL);
-          break:
+          break;
         case GC_TYPE_SUBSUBSECTION:
           popupMenu->Append(popid_evaluate_section, _("Evaluate Sub-Subsection\tShift+Ctrl+Enter"), wxEmptyString,
                             wxITEM_NORMAL);
-          break:
+          break;
         case GC_TYPE_HEADING5:
           popupMenu->Append(popid_evaluate_section, _("Evaluate Heading 5\tShift+Ctrl+Enter"), wxEmptyString,
                             wxITEM_NORMAL);
-          break:
+          break;
         case GC_TYPE_HEADING6:
           popupMenu->Append(popid_evaluate_section, _("Evaluate Heading 6\tShift+Ctrl+Enter"), wxEmptyString,
                             wxITEM_NORMAL);
