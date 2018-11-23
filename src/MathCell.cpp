@@ -447,13 +447,12 @@ bool MathCell::DrawThisCell(wxPoint point)
  */
 wxRect MathCell::GetRect(bool all)
 {
-  if (m_isBrokenIntoLines)
-    return wxRect(-1, -1, 0, 0);
   if (all)
     return wxRect(m_currentPoint.x, m_currentPoint.y - GetMaxCenter(),
                   GetLineWidth(), GetMaxHeight());
-  return wxRect(m_currentPoint.x, m_currentPoint.y - m_center,
-                m_width, m_height);
+  else
+    return wxRect(m_currentPoint.x, m_currentPoint.y - m_center,
+                  m_width, m_height);
 }
 
 bool MathCell::InUpdateRegion(const wxRect &rect)

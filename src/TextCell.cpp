@@ -64,6 +64,9 @@ void TextCell::SetStyle(int style)
     m_displayedText = wxT("\x0393");
   if ((m_text == wxT("psi")) && (m_textStyle == TS_FUNCTION))
     m_displayedText = wxT("\x03A8");
+  if((style == TS_LABEL) || (style == TS_USERLABEL)||
+     (style == TS_MAIN_PROMPT) || (style == TS_OTHER_PROMPT))
+    m_forceBreakLine = true;
 }
 
 void TextCell::SetValue(const wxString &text)

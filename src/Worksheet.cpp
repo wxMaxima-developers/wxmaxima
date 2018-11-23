@@ -6182,19 +6182,23 @@ bool Worksheet::ExportToMAC(wxString file)
   if (!backupfile.Close()) return false;
   if (!done)return false;
 
-  // If we succeeded in saving the backup file we now can overwrite the Real Thing.
-  if (!wxRenameFile(file + wxT("~"), file, true))
   {
-    // We might have failed to move the file because an over-eager virus scanner wants to
-    // scan it and a design decision of a filesystem driver might hinder us from moving
-    // it during this action => Wait for a second and retry.
-    wxSleep(1);
-    if (!wxRenameFile(file + wxT("~"), file, true))
+    // We try a few times to overwrite the original file: On MSW sometimes
+    // virus scanners lock files for a while
+    wxLogNull suppressor;
+  // If we succeeded in saving the backup file we now can overwrite the Real Thing.
+    done = wxRenameFile(file + wxT("~"), file, true);
+    if(!done)
     {
       wxSleep(1);
-      if (!wxRenameFile(file + wxT("~"), file, true))
-        return false;
+      wxRenameFile(file + wxT("~"), file, true);
     }
+  }
+  if(!done)
+  {
+    wxSleep(1);
+    if (!wxRenameFile(file + wxT("~"), file, true))
+      return false;
   }
 
   if (wxm)
@@ -6426,19 +6430,38 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   if (!out.Close())
     return false;
 
-  // Now that all data is save we can overwrite the actual save file.
-  if (!wxRenameFile(backupfile, file, true))
+  // If all data is saved now we can overwrite the actual save file.
+  // We will try to do so a few times if we suspect a MSW virus scanner or similar
+  // temporarily hindering us from doing so.
+  bool done = false;
+  if(!wxFileExists(backupfile))
+    return false;
+  
   {
-    // We might have failed to move the file because an over-eager virus scanner wants to
-    // scan it and a design decision of a filesystem driver might hinder us from moving
-    // it during this action => Wait for a second and retry.
+    wxLogNull suppressor;
+    done = wxRenameFile(backupfile, file, true);
+    if(!done)
+    {
+      // We might have failed to move the file because an over-eager virus scanner wants to
+      // scan it and a design decision of a filesystem driver might hinder us from moving
+      // it during this action => Wait for a second and retry.
+      wxSleep(1);
+      done = wxRenameFile(backupfile, file, true);
+    }
+    if(!done)
+    {
+      // We might have failed to move the file because an over-eager virus scanner wants to
+      // scan it and a design decision of a filesystem driver might hinder us from moving
+      // it during this action => Wait for a second and retry.
+      wxSleep(1);
+      done = wxRenameFile(backupfile, file, true);
+    }
+  }
+  if(!done)
+  {
     wxSleep(1);
     if (!wxRenameFile(backupfile, file, true))
-    {
-      wxSleep(1);
-      if (!wxRenameFile(backupfile, file, true))
-        return false;
-    }
+      return false;
   }
   if (markAsSaved)
     m_saved = true;

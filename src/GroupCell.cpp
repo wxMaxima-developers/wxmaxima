@@ -914,7 +914,6 @@ void GroupCell::Draw(wxPoint point)
 
     if(configuration->GetIndent() < rect.GetRight())
     {
-       
       if(rect.GetLeft() <= configuration->GetCellBracketWidth())
         rect.SetLeft(configuration->GetIndent());
       
@@ -946,7 +945,16 @@ void GroupCell::Draw(wxPoint point)
           (m_groupType != GC_TYPE_CODE))
       {
         configuration->Outdated(false);
-        m_inputLabel->DrawList(in);
+        if(m_inputLabel)
+          m_inputLabel->Draw(in);
+        EditorCell *input = GetInput();
+        if(input)
+          input->Draw(
+            wxPoint(
+              in.x + Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING,
+              in.y
+              )
+            );
         if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next)
           configuration->Outdated((dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges());
       }

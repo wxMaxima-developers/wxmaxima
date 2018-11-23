@@ -1204,26 +1204,27 @@ void wxMaxima::KillMaxima()
   wxDELETE(m_clientTextStream);m_clientTextStream = NULL;
   wxDELETE(m_clientStream); m_clientStream = NULL;
 
-  if (m_pid <= 0)
+  if(m_client)
   {
-    if(m_client)
-    {
-      if (m_inLispMode)
-        SendMaxima(wxT("($quit)"));
-      else
-        SendMaxima(wxT("quit();"));
-      m_client->Close();
-    }
+    // Try to gracefully close maxima.
+    if (m_inLispMode)
+      SendMaxima(wxT("($quit)"));
+    else
+      SendMaxima(wxT("quit();"));
+
+    // The following command should close maxima, as well.
+    m_client->Close();
+    m_client = NULL;
   }
-  else
+
+  // Just to be absolutely sure: Additionally try to kill maxima
+  if (m_pid > 0)
   {
-    if (m_client)
-      m_client->Close();
+    // wxProcess::kill will fail on MSW.
+    // But as if we close the 
     wxLogNull logNull;
     wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN);
   }
-
-  m_client = NULL;
   m_isConnected = false;
   m_inLispMode = false;
 
