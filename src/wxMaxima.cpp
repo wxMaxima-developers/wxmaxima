@@ -1220,8 +1220,7 @@ void wxMaxima::KillMaxima()
   // Just to be absolutely sure: Additionally try to kill maxima
   if (m_pid > 0)
   {
-    // wxProcess::kill will fail on MSW.
-    // But as if we close the 
+    // wxProcess::kill will fail on MSW. Something with a console.
     wxLogNull logNull;
     wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN);
   }
@@ -1229,8 +1228,7 @@ void wxMaxima::KillMaxima()
   m_inLispMode = false;
 
   // As we might have killed maxima before it was able to clean up its
-  // temp files
-  // we try to do so manually now:
+  // temp files we try to do so manually now:
   if(m_maximaTempDir != wxEmptyString)
   {
     wxLogNull logNull;
