@@ -945,13 +945,17 @@ void GroupCell::Draw(wxPoint point)
           (m_groupType != GC_TYPE_CODE))
       {
         configuration->Outdated(false);
+        int labelWidth = Scale_Px(configuration->GetLabelWidth());
         if(m_inputLabel)
+        {
           m_inputLabel->Draw(in);
+          labelWidth = MAX(labelWidth, m_inputLabel->GetWidth());
+        }
         EditorCell *input = GetInput();
         if(input)
           input->Draw(
             wxPoint(
-              in.x + Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING,
+              in.x + labelWidth,
               in.y
               )
             );
