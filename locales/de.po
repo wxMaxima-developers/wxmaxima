@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-11-24 07:56+0100\n"
-"PO-Revision-Date: 2018-11-21 03:13+0100\n"
+"PO-Revision-Date: 2018-11-24 08:02+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -2803,6 +2803,16 @@ msgid ""
 "   Ctrl+6: Heading5 cell\n"
 "   Ctrl+7: Heading6 cell\n"
 msgstr ""
+"Um die Erstellung von Zellen zu beschleunigen gibt es Testenkürzel:\n"
+"\n"
+"   Ctrl+0: Mathematik\n"
+"   Ctrl+1: Text\n"
+"   Ctrl+2: Titel\n"
+"   Ctrl+3: Kapitel\n"
+"   Ctrl+4: Unterkapitel\n"
+"   Ctrl+5: Unter-Unterkapitel\n"
+"   Ctrl+6: Paragraph\n"
+"   Ctrl+7: Unterparagraph"
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:62
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:61
@@ -5543,7 +5553,7 @@ msgstr "Sende ein \"Unterbrechen\"-Signal an Maxima."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2653
 msgid "Sending maxima the info how to express 2d maths as XML"
-msgstr ""
+msgstr "Sende Maxima die Information, wie 2d-Mathematik als XML übertragen wird."
 
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:66
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6156
