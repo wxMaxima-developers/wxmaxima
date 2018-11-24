@@ -240,6 +240,8 @@ GroupCell *TableOfContents::GetCell(int index)
       case GC_TYPE_HEADING6:
         curr = wxT("          ");
         break;
+      default:
+      {}
     }
     
     curr += m_structure[i]->GetEditable()->ToString(true);

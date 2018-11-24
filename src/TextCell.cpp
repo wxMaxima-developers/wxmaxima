@@ -691,6 +691,8 @@ wxString TextCell::ToString()
         text += wxT("\t");
         break;
       }
+  default:
+  {}
   }
   if((m_next != NULL) && (m_next->BreakLine()))
     text += "\n";

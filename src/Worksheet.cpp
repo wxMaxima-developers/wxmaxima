@@ -1469,6 +1469,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu->Append(popid_evaluate_section, _("Evaluate Heading 6\tShift+Ctrl+Enter"), wxEmptyString,
                             wxITEM_NORMAL);
           break;
+      default:{}
       }
       switch (group->GetGroupType())
       {
@@ -5539,6 +5540,7 @@ bool Worksheet::ExportToHTML(wxString file)
           count++;
         }
           break;
+      case GC_TYPE_CODE:{}
       }
     }
 
