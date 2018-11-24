@@ -103,6 +103,11 @@ void AbsCell::RecalculateWidths(int fontsize)
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
   ResetData();
+  if(m_isBrokenIntoLines)
+  {
+    m_width = 0;
+    m_height = 0;
+  }
 }
 
 void AbsCell::RecalculateHeight(int fontsize)
