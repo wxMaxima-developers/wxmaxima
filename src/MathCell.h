@@ -44,7 +44,7 @@
 
 /*! The supported types of math cells
  */
-enum
+enum CellType
 {
   MC_TYPE_DEFAULT,
   MC_TYPE_MAIN_PROMPT,
@@ -346,7 +346,7 @@ class MathCell
   /*! 
     Returns the type of this cell.
    */
-  int GetType()
+  CellType GetType()
   { return m_type; }
 
   /*! Returns the maximum distance between center and bottom of this line
@@ -461,9 +461,9 @@ class MathCell
   { m_bigSkip = skip; }
 
   //! Sets the text style according to the type
-  void SetType(int type);
+  void SetType(CellType type);
 
-  int GetStyle()
+  TextStyle GetStyle()
   { return m_textStyle; }  //l'ho aggiunto io
 
   void SetPen(double lineWidth = 1.0);
@@ -750,7 +750,7 @@ class MathCell
     the cell's SetGroup is called.
    */
   virtual void SetGroup(MathCell *group)
-    { m_group = group; wxASSERT (group != NULL); }
+    { m_group = group; wxASSERT (group != NULL); wxASSERT (group->GetType() == MC_TYPE_GROUP); }
   
   virtual void SetParent(MathCell *parent)
     { m_parent = parent; }
@@ -761,7 +761,7 @@ class MathCell
    */
   void SetGroupList(MathCell *parent);
 
-  virtual void SetStyle(int style)
+  virtual void SetStyle(TextStyle style)
   {
     m_textStyle = style;
     ResetData();
@@ -831,6 +831,23 @@ protected:
   //! The cell that contains the current cell
   MathCell *m_parent;
 
+  //! Does this cell begin with a forced page break?
+  bool m_breakPage;
+  //! Are we allowed to add a line break before this cell?
+  bool m_breakLine;
+  //! true means we force this cell to begin with a line break.  
+  bool m_forceBreakLine;
+  bool m_highlight;
+  /* Text that should end up on the clipboard if this cell is copied as text.
+
+     \attention  m_altCopyText is not check in all cell types!
+  */
+  wxString m_altCopyText;
+  Configuration **m_configuration;
+
+virtual std::list<MathCell *> GetInnerCells() = 0;
+
+protected:
   //! The height of this cell.
   int m_height;
   /*! The width of this cell.
@@ -853,26 +870,8 @@ protected:
   int m_center;
   int m_maxCenter;
   int m_maxDrop;
-  int m_type;
-  int m_textStyle;
-
-  //! Does this cell begin with a forced page break?
-  bool m_breakPage;
-  //! Are we allowed to add a line break before this cell?
-  bool m_breakLine;
-  //! true means we force this cell to begin with a line break.  
-  bool m_forceBreakLine;
-  bool m_highlight;
-  /* Text that should end up on the clipboard if this cell is copied as text.
-
-     \attention  m_altCopyText is not check in all cell types!
-  */
-  wxString m_altCopyText;
-  Configuration **m_configuration;
-
-virtual std::list<MathCell *> GetInnerCells() = 0;
-
-protected:
+  CellType m_type;
+  TextStyle m_textStyle;
   //! The font size is smaller in super- and subscripts.
   int m_fontSize;
 

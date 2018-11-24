@@ -367,15 +367,15 @@ protected:
     NULL, if there is no such line (for example if the appended object is 
     maths instead).
    */
-  TextCell *ConsoleAppend(wxString s, int type, wxString userLabel = wxEmptyString);        //!< append maxima output to console
-  void DoConsoleAppend(wxString s, int type, 
+  TextCell *ConsoleAppend(wxString s, CellType type, wxString userLabel = wxEmptyString);        //!< append maxima output to console
+  void DoConsoleAppend(wxString s, CellType  type, 
                        bool newLine = true, bool bigSkip = true, wxString userLabel = wxEmptyString);
 
   /*!Append one or more lines of ordinary unicode text to the console
 
     \return A pointer to the last line that was appended or NULL, if there is no such line
    */
-  TextCell *DoRawConsoleAppend(wxString s, int type); 
+  TextCell *DoRawConsoleAppend(wxString s, CellType  type); 
 
   /*! Spawn the "configure" menu.
 

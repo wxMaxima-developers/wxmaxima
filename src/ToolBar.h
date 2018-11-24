@@ -30,6 +30,7 @@
 #include <wx/aui/aui.h>
 #include <wx/choice.h>
 #include "SlideShowCell.h"
+#include "GroupCell.h"
 
 #ifndef _WXMAXIMA_TOOLBAR_H
 #define _WXMAXIMA_TOOLBAR_H
@@ -161,7 +162,7 @@ public:
   void UpdateSlider(SlideShow *cell);
 
   //! Get the cell style for new cells
-  int GetCellStyle();
+  GroupType GetCellType();
   //! Set the cell style to show for the current cell
   void SetCellStyle(int style);
   //! Called if there is no cell to show the style for

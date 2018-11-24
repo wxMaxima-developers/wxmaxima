@@ -2617,7 +2617,7 @@ void Worksheet::TreeUndo_CellEntered()
   }
 }
 
-void Worksheet::SetCellStyle(GroupCell *group, int style)
+void Worksheet::SetCellStyle(GroupCell *group, GroupType style)
 {
   if(group == NULL)
     return;
@@ -2830,7 +2830,7 @@ void Worksheet::OpenQuestionCaret(wxString txt)
   RequestRedraw();
 }
 
-void Worksheet::OpenHCaret(wxString txt, int type)
+void Worksheet::OpenHCaret(wxString txt, GroupType type)
 {
   CloseAutoCompletePopup();
 
@@ -2884,7 +2884,7 @@ void Worksheet::OpenHCaret(wxString txt, int type)
       SetHCaret(result, false);
     }
   }
-  if((type == MC_TYPE_INPUT) && !m_configuration->ShowCodeCells())
+  if((type == GC_TYPE_CODE) && !m_configuration->ShowCodeCells())
   {
     m_configuration->ShowCodeCells(true);
     CodeCellVisibilityChanged();
@@ -7443,7 +7443,7 @@ void Worksheet::DivideCell()
   if (parent->GetEditable() != GetActiveCell())
     return;
 
-  int gctype = parent->GetGroupType();
+  GroupType gctype = parent->GetGroupType();
   if (gctype == GC_TYPE_IMAGE)
     return;
 

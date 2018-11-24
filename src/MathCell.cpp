@@ -50,6 +50,8 @@ wxString MathCell::GetToolTip(const wxPoint &point)
 
 MathCell::MathCell(MathCell *group, Configuration **config)
 {
+  m_textStyle = TS_DEFAULT;
+  m_toolTip = wxEmptyString;
   m_toolTip = wxEmptyString;
   m_cellPointers = NULL;
   m_group = group;
@@ -99,7 +101,7 @@ MathCell::~MathCell()
   }
 }
 
-void MathCell::SetType(int type)
+void MathCell::SetType(CellType type)
 {
   m_type = type;
 

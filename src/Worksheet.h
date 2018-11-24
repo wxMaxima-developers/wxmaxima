@@ -602,7 +602,7 @@ public:
    */
   void OnKeyDown(wxKeyEvent &event);
   //! Change the style of an cell
-  void SetCellStyle(GroupCell *group, int style);
+  void SetCellStyle(GroupCell *group, GroupType style);
 
   //! Renumber all sections
   void NumberSections();
@@ -1224,11 +1224,11 @@ public:
       if(m_mainToolBar == NULL)
         OpenHCaret(txt, GC_TYPE_CODE);
       else
-        OpenHCaret(txt, m_mainToolBar->GetCellStyle());
+        OpenHCaret(txt, m_mainToolBar->GetCellType());
     }
 
   //! Place the cursor into a new cell where the horizontal cursor is
-  void OpenHCaret(wxString txt, int type);
+  void OpenHCaret(wxString txt, GroupType type);
 
   void ShowHCaret();
 

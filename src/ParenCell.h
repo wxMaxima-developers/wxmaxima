@@ -57,7 +57,7 @@ public:
 
   virtual MathCell *Copy();
 
-  void SetInner(MathCell *inner, int style);
+  void SetInner(MathCell *inner, CellType  style);
 
   void SetPrint(bool print)
   {

@@ -40,7 +40,7 @@
 #include "Bitmap.h"
 #include "list"
 
-GroupCell::GroupCell(Configuration **config, int groupType, CellPointers *cellPointers, wxString initString) : MathCell(
+GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString) : MathCell(
         this, config)
 {
   m_next = m_previous = m_nextToDraw = m_previousToDraw = NULL;

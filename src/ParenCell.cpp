@@ -94,7 +94,7 @@ std::list<MathCell *> ParenCell::GetInnerCells()
   return innerCells;
 }
 
-void ParenCell::SetInner(MathCell *inner, int type)
+void ParenCell::SetInner(MathCell *inner, CellType type)
 {
   if (inner == NULL)
     return;

@@ -26,6 +26,7 @@
   This file defines the class GroupCell that bundles input and output in the worksheet.
  */
 
+
 #ifndef GROUPCELL_H
 #define GROUPCELL_H
 
@@ -34,7 +35,8 @@
 
 #define EMPTY_INPUT_LABEL wxT(" -->  ")
 
-enum
+//! All types a GroupCell can be of
+enum GroupType
 {
   GC_TYPE_CODE,
   GC_TYPE_TITLE,
@@ -64,7 +66,7 @@ Items where a list of groupcells can be folded include
 class GroupCell : public MathCell
 {
 public:
-  GroupCell(Configuration **config, int groupType, CellPointers *cellPointers, wxString initString = wxEmptyString);
+  GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString = wxEmptyString);
 
   ~GroupCell();
 
@@ -119,8 +121,11 @@ public:
   MathCell *Copy();
 
   // general methods
-  int GetGroupType()
+  GroupType GetGroupType()
   { return m_groupType; }
+
+  void SetGroupType(GroupType type)
+  { m_groupType = type; }
 
   void SetCellStyle(int style);
 
@@ -471,7 +476,7 @@ protected:
   GroupCell *m_hiddenTree; //!< here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; //!< store linkage to the parent of the fold
   //! Which type this cell is of?
-  int m_groupType;
+  GroupType m_groupType;
   //! The input label of this cell. Is followed by the input of the cell.
   MathCell *m_inputLabel;
   //! The maxima output this cell contains

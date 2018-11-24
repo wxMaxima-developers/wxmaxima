@@ -57,7 +57,7 @@ std::list<MathCell *> TextCell::GetInnerCells()
   return innerCells;
 }
 
-void TextCell::SetStyle(int style)
+void TextCell::SetStyle(TextStyle style)
 {
   MathCell::SetStyle(style);
   if ((m_text == wxT("gamma")) && (m_textStyle == TS_FUNCTION))

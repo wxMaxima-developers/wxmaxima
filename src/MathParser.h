@@ -49,7 +49,7 @@ public:
   ~MathParser();
 
   void SetUserLabel(wxString label){ m_userDefinedLabel = label; }
-  MathCell *ParseLine(wxString s, int style = MC_TYPE_DEFAULT);
+  MathCell *ParseLine(wxString s, CellType style = MC_TYPE_DEFAULT);
 
   MathCell *ParseTag(wxXmlNode *node, bool all = true);
 
@@ -93,9 +93,9 @@ private:
 
   MathCell *ParseFracTag(wxXmlNode *node);
 
-  MathCell *ParseText(wxXmlNode *node, int style = TS_DEFAULT);
+  MathCell *ParseText(wxXmlNode *node, TextStyle style = TS_DEFAULT);
 
-  MathCell *ParseCharCode(wxXmlNode *node, int style = TS_DEFAULT);
+  MathCell *ParseCharCode(wxXmlNode *node, TextStyle style = TS_DEFAULT);
 
   MathCell *ParseSupTag(wxXmlNode *node);
 
@@ -130,7 +130,7 @@ private:
   wxString m_userDefinedLabel;
   wxRegEx m_graphRegex;
 
-  int m_ParserStyle;
+  CellType m_ParserStyle;
   int m_FracStyle;
   MathCell::CellPointers *m_cellPointers;
   Configuration **m_configuration;

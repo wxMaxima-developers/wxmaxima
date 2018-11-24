@@ -372,7 +372,7 @@ void wxMaxima::FirstOutput()
  * It will call
  * DoConsoleAppend if s is in xml and DoRawCosoleAppend if s is not in xml.
  */
-TextCell *wxMaxima::ConsoleAppend(wxString s, int type, wxString userLabel)
+TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, wxString userLabel)
 {
   TextCell *lastLine = NULL;
   // If we want to append an error message to the worksheet and there is no cell
@@ -503,7 +503,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, int type, wxString userLabel)
   return lastLine;
 }
 
-void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
+void wxMaxima::DoConsoleAppend(wxString s, CellType type, bool newLine,
                                bool bigSkip, wxString userLabel)
 {
   MathCell *cell;
@@ -528,7 +528,7 @@ void wxMaxima::DoConsoleAppend(wxString s, int type, bool newLine,
   m_worksheet->InsertLine(cell, newLine || cell->BreakLineHere());
 }
 
-TextCell *wxMaxima::DoRawConsoleAppend(wxString s, int type)
+TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
 {
 
   TextCell *cell = NULL;
@@ -7999,7 +7999,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
   if(m_worksheet != NULL)
     m_worksheet->CloseAutoCompletePopup();
 
-  int type = 0;
+  GroupType type = GC_TYPE_CODE;
   bool output = false;
   switch (event.GetId())
   {
@@ -8045,7 +8045,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_code:
       if (m_worksheet->GetActiveCell())
       {
-        m_worksheet->GetActiveCell()->GetGroup()->SetType(GC_TYPE_CODE);
+        dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->SetGroupType(GC_TYPE_CODE);
         m_worksheet->Recalculate(true);
         m_worksheet->RequestRedraw();
       }
@@ -8053,7 +8053,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_comment:
       if (m_worksheet->GetActiveCell())
       {
-        m_worksheet->GetActiveCell()->GetGroup()->SetType(GC_TYPE_TEXT);
+        dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->SetGroupType(GC_TYPE_TEXT);
         m_worksheet->Recalculate(true);
         m_worksheet->RequestRedraw();
       }
@@ -8067,7 +8067,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_title:
       if (m_worksheet->GetActiveCell())
       {
-        m_worksheet->GetActiveCell()->GetGroup()->SetType(GC_TYPE_TITLE);
+        dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->SetGroupType(GC_TYPE_TITLE);
         m_worksheet->Recalculate(true);
         m_worksheet->RequestRedraw();
       }
@@ -8080,7 +8080,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_section:
       if (m_worksheet->GetActiveCell())
       {
-        m_worksheet->GetActiveCell()->GetGroup()->SetType(GC_TYPE_SECTION);
+        dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->SetGroupType(GC_TYPE_SECTION);
         m_worksheet->Recalculate(true);
         m_worksheet->RequestRedraw();
       }
@@ -8093,7 +8093,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_subsection:
       if (m_worksheet->GetActiveCell())
       {
-        m_worksheet->GetActiveCell()->GetGroup()->SetType(GC_TYPE_SUBSECTION);
+        dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->SetGroupType(GC_TYPE_SUBSECTION);
         m_worksheet->Recalculate(true);
         m_worksheet->RequestRedraw();
       }
@@ -8106,7 +8106,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_subsubsection:
       if (m_worksheet->GetActiveCell())
       {
-        m_worksheet->GetActiveCell()->GetGroup()->SetType(GC_TYPE_SUBSUBSECTION);
+        dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->SetGroupType(GC_TYPE_SUBSUBSECTION);
         m_worksheet->Recalculate(true);
         m_worksheet->RequestRedraw();
       }
@@ -8114,7 +8114,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_heading5:
       if (m_worksheet->GetActiveCell())
       {
-        m_worksheet->GetActiveCell()->GetGroup()->SetType(GC_TYPE_HEADING5);
+        dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->SetGroupType(GC_TYPE_HEADING5);
         m_worksheet->Recalculate(true);
         m_worksheet->RequestRedraw();
       }
@@ -8122,7 +8122,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
     case menu_convert_to_heading6:
       if (m_worksheet->GetActiveCell())
       {
-        m_worksheet->GetActiveCell()->GetGroup()->SetType(GC_TYPE_HEADING6);
+        dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup())->SetGroupType(GC_TYPE_HEADING6);
         m_worksheet->Recalculate(true);
         m_worksheet->RequestRedraw();
       }
@@ -8541,7 +8541,7 @@ void wxMaxima::ChangeCellStyle(wxCommandEvent& WXUNUSED(event))
     case GC_TYPE_SUBSUBSECTION:
     case GC_TYPE_HEADING5:
     case GC_TYPE_HEADING6:
-      m_worksheet->SetCellStyle(group, m_worksheet->m_mainToolBar->GetCellStyle());
+      m_worksheet->SetCellStyle(group, m_worksheet->m_mainToolBar->GetCellType());
       break;
     default:
     {}

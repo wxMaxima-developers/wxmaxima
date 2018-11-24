@@ -450,7 +450,7 @@ MathCell *MathParser::ParseFunTag(wxXmlNode *node)
   return fun;
 }
 
-MathCell *MathParser::ParseText(wxXmlNode *node, int style)
+MathCell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
 {
   wxString str;
   TextCell *retval = NULL;
@@ -510,7 +510,7 @@ void MathParser::ParseCommonAttrs(wxXmlNode *node, MathCell *cell)
     cell->SetToolTip(toolTip);
 }
 
-MathCell *MathParser::ParseCharCode(wxXmlNode *node, int style)
+MathCell *MathParser::ParseCharCode(wxXmlNode *node, TextStyle style)
 {
   TextCell *cell = new TextCell(NULL, m_configuration, m_cellPointers);
   wxString str;
@@ -1014,7 +1014,7 @@ MathCell *MathParser::ParseTag(wxXmlNode *node, bool all)
  * Parse the string s, which is (correct) xml fragment.
  * Put the result in line.
  */
-MathCell *MathParser::ParseLine(wxString s, int style)
+MathCell *MathParser::ParseLine(wxString s, CellType style)
 {
   m_ParserStyle = style;
   m_FracStyle = FracCell::FC_NORMAL;

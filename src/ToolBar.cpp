@@ -377,7 +377,7 @@ void ToolBar::SetDefaultCellStyle()
   }
 }
 
-int ToolBar::GetCellStyle()
+GroupType ToolBar::GetCellType()
 {
   switch(m_textStyle->GetSelection())
   {
