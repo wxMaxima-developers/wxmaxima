@@ -231,6 +231,8 @@ void ParenCell::RecalculateWidths(int fontsize)
     }
   }
   m_width = m_innerCell->GetFullWidth() + m_signWidth * 2;
+  if(m_isBrokenIntoLines)
+    m_width = 0;
   ResetData();
 }
 
