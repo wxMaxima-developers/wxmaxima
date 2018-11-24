@@ -468,7 +468,7 @@ wxString ParenCell::ToXML()
   wxString flags;
   if (m_forceBreakLine)
     flags += wxT(" breakline=\"true\"");
-  return ((m_print) ? _T("<r><") + flags + wxT("p>") + s + _T("</p></r>") : s);
+  return ((m_print) ? _T("<r><p") + flags + wxT(">") + s + _T("</p></r>") : s);
 }
 
 bool ParenCell::BreakUp()
