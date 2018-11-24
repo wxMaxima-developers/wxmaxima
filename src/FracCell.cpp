@@ -188,6 +188,8 @@ void FracCell::RecalculateWidths(int fontsize)
   m_close2->RecalculateWidths(fontsize);
   m_divide->RecalculateWidths(fontsize);
   ResetData();
+  if(m_isBrokenIntoLines)
+    m_width = 0;
 }
 
 void FracCell::RecalculateHeight(int fontsize)

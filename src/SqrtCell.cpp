@@ -175,6 +175,8 @@ void SqrtCell::RecalculateWidths(int fontsize)
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
   ResetData();
+  if(m_isBrokenIntoLines)
+    m_width = 0;
 }
 
 void SqrtCell::RecalculateHeight(int fontsize)
