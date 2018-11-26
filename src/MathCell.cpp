@@ -418,6 +418,9 @@ bool MathCell::DrawThisCell(wxPoint point)
   if((point.x < 0) || (point.y < 0))
     return false;
 
+    if(!m_clipToDrawRegion)
+      return true;
+  
   SetCurrentPoint(point);
 
   // If a cell is broken into lines its individual parts are displayed but
