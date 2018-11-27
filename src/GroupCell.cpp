@@ -955,7 +955,7 @@ void GroupCell::Draw(wxPoint point)
         if(input)
           input->Draw(
             wxPoint(
-              in.x + labelWidth,
+              in.x + labelWidth + MC_TEXT_PADDING,
               in.y
               )
             );
