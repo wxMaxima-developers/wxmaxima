@@ -294,7 +294,7 @@ public:
 
   //! Set the width of the visible window for GetClientWidth()
   void SetClientWidth(int width)
-  { m_clientWidth = width; }
+  { m_clientWidth = width; SetForceUpdate(true);}
 
   //! Set the height of the visible window for GetClientHeight()
   void SetClientHeight(int height)

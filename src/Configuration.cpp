@@ -349,6 +349,7 @@ void Configuration::SetZoomFactor(double newzoom)
 
   m_zoomFactor = newzoom;
   wxConfig::Get()->Write(wxT("ZoomFactor"), m_zoomFactor);
+  SetForceUpdate(true);
 }
 
 Configuration::~Configuration()
