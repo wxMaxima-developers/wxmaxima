@@ -44,7 +44,6 @@ MathPrintout::MathPrintout(wxString title, Configuration **configuration) : wxPr
   m_numberOfPages = 0;
   m_tree = NULL;
   m_printConfigCreated = false;
-  (*m_configuration)->SetForceUpdate(true);
 }
 
 MathPrintout::~MathPrintout()
@@ -53,8 +52,6 @@ MathPrintout::~MathPrintout()
   if(m_printConfigCreated)
     wxDELETE(*m_configuration);
   *m_configuration = m_oldconfig;
-  MathCell::ClipToDrawRegion(true);
-  (*m_configuration)->SetForceUpdate(false);
 }
 
 void MathPrintout::SetData(GroupCell *tree)
@@ -108,8 +105,7 @@ bool MathPrintout::OnPrintPage(int num)
     config->Read(wxT("fontsize"), &fontsize);
 
     PrintHeader(num, dc);
-    MathCell::ClipToDrawRegion(false);
-
+  
     while (tmp != NULL && tmp->GetGroupType() != GC_TYPE_PAGEBREAK)
     {
       // The following line seems to misteriously fix the "subsequent text
@@ -129,10 +125,8 @@ bool MathPrintout::OnPrintPage(int num)
       if (tmp == NULL || tmp->BreakPageHere())
         break;
     }
-    MathCell::ClipToDrawRegion(true);
     return true;
   }
-  MathCell::ClipToDrawRegion(true);
   return false;
 }
 
@@ -148,7 +142,6 @@ void MathPrintout::BreakPages()
   if (m_tree == NULL)
     return;
 
-  MathCell::ClipToDrawRegion(false);
   int pageWidth, pageHeight;
   int marginX, marginY;
   int headerHeight = GetHeaderHeight();
@@ -183,7 +176,6 @@ void MathPrintout::BreakPages()
 
     tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }
-  MathCell::ClipToDrawRegion(true);
 }
 
 void MathPrintout::SetupData()
@@ -195,7 +187,7 @@ void MathPrintout::SetupData()
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
   (*m_configuration)->ShowBrackets((*m_configuration)->PrintBrackets());
   (*m_configuration)->LineWidth_em(400);
-
+  (*m_configuration)->Printing(true);
   
 //  SetUserScale(1/DCSCALE,
 //               1/DCSCALE);
@@ -242,10 +234,10 @@ void MathPrintout::SetupData()
   (*m_configuration)->SetPrinter(true);
   // Make sure that during print nothing is outside the crop rectangle
   marginX += (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent());
-  MathCell::ClipToDrawRegion(false);
 
   Recalculate();
   BreakPages();
+  (*m_configuration)->SetForceUpdate(true);
 }
 
 void MathPrintout::GetPageInfo(int *minPage, int *maxPage,

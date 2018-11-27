@@ -241,7 +241,7 @@ void Bitmap::GetMaxPoint(int *width, int *height)
 
 void Bitmap::Draw()
 {
-  MathCell::ClipToDrawRegion(false);
+  (*m_configuration)->Printing(true);
   MathCell *tmp = m_tree;
 
   wxString bgColStr = wxT("white");
@@ -291,7 +291,6 @@ void Bitmap::Draw()
   m_ppi = m_dc->GetPPI();
   m_ppi.x *= m_scale;
   m_ppi.y *= m_scale;
-  MathCell::ClipToDrawRegion(true);
 }
 
 wxSize Bitmap::ToFile(wxString file)

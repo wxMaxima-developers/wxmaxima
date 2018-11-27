@@ -170,34 +170,20 @@ class MathCell
   { return m_updateRegion; }
 
   //! The part of the rectangle rect that is in the region that is currently drawn
-  static wxRect CropToUpdateRegion(const wxRect &rect);
+  wxRect CropToUpdateRegion(const wxRect &rect);
 
   //! Is part of this rectangle in the region that is currently drawn?
-  static bool InUpdateRegion(const wxRect &rect);
+  bool InUpdateRegion(const wxRect &rect);
 
   //! Is this cell inside the region that is currently drawn?
   bool InUpdateRegion()
   {
-    if (!m_clipToDrawRegion) return true;
+    if ((*m_configuration)->Printing()) return true;
     wxRect boundingBox(
             m_currentPoint + wxPoint(0, -m_center),
             m_currentPoint + wxPoint(0, -m_center) + wxPoint(m_width, m_height));
     return InUpdateRegion(boundingBox);
   }
-
-  /*! true = Don't crop anything just because it is not on the screen
-
-    On some operating systems drawing text outside the screen is slow so
-    if this flag is set we avoid drawing parts of cells that aren't currently
-    visible. During printing or while creating bitmaps we don't want to crop 
-    things to the portion we needed to redraw on the screen last, though.
-   */
-  static void ClipToDrawRegion(bool printing)
-  { m_clipToDrawRegion = printing; }
-
-  //! Delete this cell and all cells that follow it in the list.
-  static bool Printing()
-  { return !m_clipToDrawRegion; }
 
   /*! Add a cell to the end of the list this cell is part of
     
@@ -875,9 +861,6 @@ protected:
   //! The font size is smaller in super- and subscripts.
   int m_fontSize;
 
-private:
-  //! 0 during printing, 1 prevents from drawing objects that are entirely outside the screen.
-  static bool m_clipToDrawRegion;
 public:
   //! The rectangle of the worksheet that is currently visible.
   static wxRect m_visibleRegion;

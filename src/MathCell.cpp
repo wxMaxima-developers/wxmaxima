@@ -420,8 +420,8 @@ bool MathCell::DrawThisCell(wxPoint point)
   if((point.x < 0) || (point.y < 0))
     return false;
 
-    if(!m_clipToDrawRegion)
-      return true;
+  if((*m_configuration)->Printing())
+    return true;
   
   SetCurrentPoint(point);
 
@@ -462,7 +462,8 @@ wxRect MathCell::GetRect(bool all)
 
 bool MathCell::InUpdateRegion(const wxRect &rect)
 {
-  if (!m_clipToDrawRegion) return true;
+  if ((*m_configuration)->Printing())
+    return true;
   if (rect.GetLeft() > m_updateRegion.GetRight()) return false;
   if (rect.GetRight() < m_updateRegion.GetLeft()) return false;
   if (rect.GetBottom() < m_updateRegion.GetTop()) return false;
@@ -472,7 +473,8 @@ bool MathCell::InUpdateRegion(const wxRect &rect)
 
 wxRect MathCell::CropToUpdateRegion(const wxRect &rect)
 {
-  if (m_clipToDrawRegion) return rect;
+  if((*m_configuration)->Printing())
+    return rect;
 
   int left = rect.GetLeft();
   int top = rect.GetTop();
@@ -1415,6 +1417,5 @@ void MathCell::MarkAsDeleted()
 
 // The variables all MathCells share.
 wxRect  MathCell::m_updateRegion;
-bool    MathCell::m_clipToDrawRegion = true;
 wxRect  MathCell::m_visibleRegion;
 wxPoint MathCell::m_worksheetPosition;

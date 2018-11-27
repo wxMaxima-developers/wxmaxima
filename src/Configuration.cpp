@@ -32,6 +32,7 @@
 
 Configuration::Configuration(wxDC &dc) : m_dc(&dc) 
 {
+  m_printing = false;
   m_TOCshowsSectionNumbers = false;
   m_antialiassingDC = NULL;
   m_parenthesisDrawMode = unknown;

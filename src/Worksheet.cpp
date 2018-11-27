@@ -104,7 +104,6 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
   m_mathmlFormat2 = wxDataFormat(wxT("application/mathml-presentation+xml"));
   m_rtfFormat = wxDataFormat(wxT("Rich Text Format"));
   m_rtfFormat2 = wxDataFormat(wxT("text/rtf"));
-  MathCell::ClipToDrawRegion(true);
   m_hCaretBlinkVisible = true;
   m_hasFocus = true;
   m_windowActive = true;
@@ -346,7 +345,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   #endif
   // Don't attempt to refresh the screen as long as the result will
   // end up on a printed page instead.
-  if (MathCell::Printing())
+  if (m_configuration->Printing())
   {
     RequestRedraw();
     return;
@@ -4345,7 +4344,7 @@ void Worksheet::OnTimer(wxTimerEvent &event)
         slideshow->SetDisplayedIndex(pos);
 
         // Refresh the displayed bitmap
-        if(MathCell::Printing())
+        if (m_configuration->Printing())
           slideshow->ReloadTimer();
         else
         {
@@ -4713,7 +4712,7 @@ bool Worksheet::ExportToHTML(wxString file)
   // Show a busy cursor as long as we export.
   wxBusyCursor crs;
 
-  MathCell::ClipToDrawRegion(false);
+  m_configuration->Printing(true);
   // The path to the image directory as seen from the html directory
   wxString imgDir_rel;
   // The absolute path to the image directory
@@ -4740,7 +4739,7 @@ bool Worksheet::ExportToHTML(wxString file)
   {
     if (!wxMkdir(imgDir))
     {
-      MathCell::ClipToDrawRegion(true);
+      m_configuration->Printing(false);
       return false;
     }
   }
@@ -4748,7 +4747,7 @@ bool Worksheet::ExportToHTML(wxString file)
   wxFileOutputStream outfile(file);
   if (!outfile.IsOk())
   {
-    MathCell::ClipToDrawRegion(true);
+    m_configuration->Printing(false);
     return false;
   }
 
@@ -4759,7 +4758,7 @@ bool Worksheet::ExportToHTML(wxString file)
   wxFileOutputStream cssfile(cssfileName);
   if (!cssfile.IsOk())
   {
-    MathCell::ClipToDrawRegion(true);
+    m_configuration->Printing(false);
     return false;
   }
 
@@ -5584,7 +5583,7 @@ bool Worksheet::ExportToHTML(wxString file)
   outfile.Close();
   cssfile.Close();
 
-  MathCell::ClipToDrawRegion(true);
+  m_configuration->Printing(false);
   RecalculateForce();
   return outfileOK && cssOK;
 }

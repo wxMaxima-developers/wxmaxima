@@ -60,7 +60,7 @@ Emfout::Emfout(Configuration **configuration, wxString filename)
   // usable. Also the probability was high that the right font wasn't
   // available in inkscape.
   (*m_configuration)->SetGrouphesisDrawMode(Configuration::handdrawn);
-  MathCell::ClipToDrawRegion(false);
+  m_configuration->Printing(true);
   (*m_configuration)->SetForceUpdate(true);
 }
 
@@ -81,8 +81,7 @@ Emfout::~Emfout()
     wxRemoveFile(m_tempFileName);
   }
   *m_configuration = m_oldconfig;
-  MathCell::ClipToDrawRegion(true);
-  (*m_configuration)->SetForceUpdate(false);
+  (*m_configuration)->SetForceUpdate(true);
 }
 
 wxSize Emfout::SetData(MathCell *tree)

@@ -231,11 +231,13 @@ public:
 
   void ReadStyle();
 
+  //! Force a full recalculation?
   void SetForceUpdate(bool force)
   {
     m_forceUpdate = force;
   }
 
+  //! Force a full recalculation?
   bool ForceUpdate()
   {
     return m_forceUpdate;
@@ -647,6 +649,10 @@ public:
   wxString GetAutosubscript_string();
   //! Determine the default background color of the worksheet
   wxColor DefaultBackgroundColor(){return m_defaultBackgroundColor;}
+  //! Are we currently printing to paper or to a bitmap?
+  bool Printing(){return m_printing;}
+  //! Are we currently printing to paper or to a bitmap?
+  void Printing(bool printing){m_printing = printing; m_forceUpdate = true;}
 private:
   /*! The interval between auto-saves (in milliseconds). 
 
@@ -718,6 +724,7 @@ private:
   int m_defaultFontSize, m_mathFontSize;
   wxString m_mathFontName;
   bool m_forceUpdate;
+  bool m_printing;
   bool m_outdated;
   wxString m_defaultToolTip;
   bool m_TeXFonts;
