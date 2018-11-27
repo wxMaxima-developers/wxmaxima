@@ -1170,37 +1170,74 @@ void GroupCell::DrawBracket()
       delete[] points;
     }
     else
-    { // draw a the triangle that allows hiding and unhiding the cell
-      wxPoint *points = new wxPoint[3];
-      points[0].x = m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2;
-      points[0].y = m_currentPoint.y - m_center + configuration->GetDefaultLineWidth() / 2;
-      points[1].x = m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2;
-      points[1].y = m_currentPoint.y - m_center + bracketWidth - configuration->GetDefaultLineWidth() / 2;
-      points[2].x = m_currentPoint.x - configuration->GetDefaultLineWidth();
-      points[2].y = m_currentPoint.y - m_center + configuration->GetDefaultLineWidth() / 2;
-      adc->DrawPolygon(3, points);
-      delete[] points;
+    { 
+      wxPointList points;
+      // draw the triangle that allows hiding and unhiding the cell
+      points.Append(
+        new wxPoint(
+          m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
+          m_currentPoint.y - m_center + bracketWidth - configuration->GetDefaultLineWidth() / 2
+          )
+        );
+      points.Append(
+        new wxPoint(
+          m_currentPoint.x - configuration->GetDefaultLineWidth(),
+          m_currentPoint.y - m_center + configuration->GetDefaultLineWidth() / 2
+          )
+        );
+      points.Append(
+        new wxPoint(
+          m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
+          m_currentPoint.y - m_center + configuration->GetDefaultLineWidth() / 2
+          )
+        );
 
-      // The vertical line at the back of the bracket
-      adc->DrawLine(m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
-                  m_currentPoint.y - m_center + configuration->GetDefaultLineWidth() / 2,
-                  m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
-                  m_currentPoint.y - m_center + m_height - configuration->GetDefaultLineWidth());
-      // bottom horizontal line
-      adc->DrawLine(m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
-                  m_currentPoint.y - m_center + m_height - configuration->GetDefaultLineWidth(),
-                  m_currentPoint.x - configuration->GetDefaultLineWidth(),
-                  m_currentPoint.y - m_center + m_height - configuration->GetDefaultLineWidth());
-      // middle horizontal
+      // The rest of the bracket
       if (configuration->ShowCodeCells() && m_groupType == GC_TYPE_CODE && m_output != NULL && !m_hide)
       {
-        adc->DrawLine(m_currentPoint.x - bracketWidth / 2,
-                    m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight() +
-                    configuration->GetDefaultLineWidth() / 2,
-                    m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
-                    m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight() +
-                    configuration->GetDefaultLineWidth() / 2);
+        points.Append(
+          new wxPoint(
+            m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
+            m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight()
+            )
+          );
+        points.Append(
+          new wxPoint(
+            m_currentPoint.x - bracketWidth / 2 + configuration->GetDefaultLineWidth() / 2,
+            m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight()
+            )
+          );
+        points.Append(
+          new wxPoint(
+            m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
+            m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight()
+            )
+          );
       }
+      
+      // The remaining part of the vertical line at the back
+      points.Append(
+        new wxPoint(
+          m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
+          m_currentPoint.y - m_center + m_height - configuration->GetDefaultLineWidth()
+          )
+        );
+      // The horizontal line at the bottom
+      points.Append(
+        new wxPoint(
+          m_currentPoint.x - configuration->GetDefaultLineWidth(),
+          m_currentPoint.y - m_center + m_height - configuration->GetDefaultLineWidth()
+          )
+        );
+      points.Append(
+        new wxPoint(
+          m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
+          m_currentPoint.y - m_center + m_height - configuration->GetDefaultLineWidth()
+          )
+        );
+        
+      adc->DrawPolygon(&points);
+
     }
   }
 }
