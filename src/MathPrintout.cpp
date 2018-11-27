@@ -229,12 +229,15 @@ void MathPrintout::SetupData()
     - (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent()));
   (*m_configuration)->SetClientHeight(pageHeight - 2 * marginY);
 
+  if((*m_configuration)->PrintBrackets())
+  {
+    if(marginX < (*m_configuration)->Scale_Px(1 + (*m_configuration)->GetBaseIndent()))
+      marginX = (*m_configuration)->Scale_Px(1 + (*m_configuration)->GetBaseIndent());
+  }
   (*m_configuration)->SetIndent(marginX);
   // Inform the output routines that we are printing
   (*m_configuration)->SetPrinter(true);
   // Make sure that during print nothing is outside the crop rectangle
-  marginX += (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent());
-
   (*m_configuration)->LineWidth_em(10000);
   Recalculate();
   BreakPages();
