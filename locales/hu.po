@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-24 07:56+0100\n"
+"POT-Creation-Date: 2018-11-27 08:44+0100\n"
 "PO-Revision-Date: 2018-10-05 09:15+0200\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
@@ -508,7 +508,7 @@ msgstr ""
 msgid "A section heading"
 msgstr "Fejezetcím"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.h:416
+#: /home/gunter/src/wxmaxima/src/GroupCell.h:421
 msgid "A space between GroupCells"
 msgstr "Szóköz a csoportcellák között"
 
@@ -784,13 +784,13 @@ msgid "Automatic labels (%i1, %o1,...)"
 msgstr "Automatikus címkék (%i1, %o1,...)"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1332
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1477
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1478
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:729
 msgid "Automatically answer questions"
 msgstr "Automatikusan megválaszolt kérdések"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1333
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1478
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1479
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:730
 msgid "Automatically fill in answers known from the last run"
 msgstr "Automatikusan kitöltött válaszok a legutóbbi futási eredmények alapján"
@@ -905,31 +905,31 @@ msgstr "Böngészés"
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr "Hiba: Automatikus kiegészítési kérés ismeretlen típusú elemhez."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2589
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2590
 msgid "Bug: Cell left but not entered."
 msgstr "Hiba: Cella elhagyása belépés nélkül."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6804
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6806
 msgid "Bug: Cell with negative y position!"
 msgstr "Hiba: Cella negatív y pozícióval!"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2774
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2775
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Hiba: Kérdés merült fel, de nincs cella a válaszhoz"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6992
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6994
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Hiba: Kérés egy munkalap kezdete előtti cella tartalmának megváltoztatására."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6967
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6969
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr "Hiba: Kérés egy munkalap kezdete előtti cella törlésére."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7034
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7036
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -937,7 +937,7 @@ msgstr ""
 "Hiba: Kérés egy cella tartalmának megváltoztatására, majd a korábbi tartalom "
 "helyreállítására."
 
-#: /home/gunter/src/wxmaxima/src/MathCell.cpp:223
+#: /home/gunter/src/wxmaxima/src/MathCell.cpp:225
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr ""
 "Hiba: A matematika cella azt állítja, hogy nem tartozik egyetlen "
@@ -990,7 +990,7 @@ msgstr "Hiba: Nincs utolsó cella egy zárójelpár belsejében!"
 msgid "Bug: No last cell inside a square root!"
 msgstr "Hiba: Nincs utolsó cella egy négyzetgyökön belül!"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2599
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2600
 msgid "Bug: Text changed, but no active cell."
 msgstr "Hiba: A szöveg megváltozott, de nincs aktív cella."
 
@@ -1000,14 +1000,14 @@ msgstr "Hiba: A szöveg megváltozott, de nincs aktív cella."
 #: /home/gunter/src/wxmaxima/src/ImgCell.cpp:368
 #: /home/gunter/src/wxmaxima/src/SVGout.cpp:331
 #: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:459
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2125
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2265
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2337
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2373
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2388
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:4462
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7291
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7529
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2126
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2266
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2338
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2374
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2389
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:4463
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7293
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7531
 msgid "Bug: The clipboard is already opened"
 msgstr "Hiba: A vágólap már meg van nyitva"
 
@@ -1027,28 +1027,28 @@ msgstr ""
 "Hiba: A Maxima kimenetét megkísérelte hozzáfűzni egy munkalapon kívüli "
 "cellához."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7638
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7640
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr "Hiba: Vízszintes kurzort nem lehet egy csoportcellába helyezni."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2601
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2602
 msgid "Bug: Trying to record a cell contents change for undo without a cell."
 msgstr ""
 "Hiba: Megkísérelte elmenteni egy cella tartalmának változását cella nélkül."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2001
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2002
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr "Hiba: Kijelölést kísérelt meg egy cellában, annak kijelölése nélkül"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7035
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7037
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Hiba: Visszavonási esemény cella tartalmának változásához és cella "
 "hozzáadásához."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6997
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6999
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr "Hiba: Munkalapon kívüli cella visszaállítási kérelme."
 
@@ -2261,7 +2261,7 @@ msgstr "Hiba!"
 msgid "Eta"
 msgstr "Éta"
 
-#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:289
+#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:291
 msgid "Evaluate"
 msgstr "Kiértékelés"
 
@@ -2298,13 +2298,13 @@ msgstr "Az aktuális hely alatti cellák újraszámolása"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1323
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1465
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1518
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1519
 msgid "Evaluate Heading 5\tShift+Ctrl+Enter"
 msgstr "5. cím kiértékelése \tShift+Ctrl+Enter"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1329
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1469
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1528
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1529
 msgid "Evaluate Heading 6\tShift+Ctrl+Enter"
 msgstr "6. cím kiértékelése \tShift+Ctrl+Enter"
 
@@ -2320,13 +2320,13 @@ msgstr "Fejezet kiértékelése\tShift+Ctrl+Enter"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1317
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1461
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1508
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1509
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
 msgstr "Al-alfejezet kiértékelése\tShift+Ctrl+Enter"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1311
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1457
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1498
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1499
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr "Alfejezet kiértékelése\tShift+Ctrl+Enter"
 
@@ -2965,7 +2965,7 @@ msgstr "Gnuplot adatfájl-név: "
 msgid "Gnuplot has closed."
 msgstr "Gnuplot becsukódott."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6974
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6976
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -3027,7 +3027,7 @@ msgstr "6. cím"
 msgid "Help"
 msgstr "Súgó"
 
-#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:287
+#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:289
 msgid "Hide"
 msgstr "Elrejtés"
 
@@ -3043,27 +3043,27 @@ msgstr "Kód elrejtése"
 msgid "Hide Code Cells\tAlt+Ctrl+H"
 msgstr "Kód cellák elrejtése\tAlt+Ctrl+H"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1525
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1526
 msgid "Hide Heading 5"
 msgstr "5. cím elrejtése"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1535
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1536
 msgid "Hide Heading 6"
 msgstr "6. cím elrejtése"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1487
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1488
 msgid "Hide Part"
 msgstr "Rész elrejtése"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1495
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1496
 msgid "Hide Section"
 msgstr "Fejezet elrejtése"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1505
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1506
 msgid "Hide Subsection"
 msgstr "Alfejezet elrejtése"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1515
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1516
 msgid "Hide Subsubsection"
 msgstr "Al-alfejezet elrejtése"
 
@@ -3071,7 +3071,7 @@ msgstr "Al-alfejezet elrejtése"
 msgid "Hide all panes"
 msgstr "Összes panel elrejtése"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1543
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1544
 msgid "Hide contents"
 msgstr "Tartalmak elrejtése"
 
@@ -3223,7 +3223,7 @@ msgstr ""
 ">Megszakítás' vagy a 'Maxima->A Maxima újraindítása' menüparancsok "
 "használatát."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5426
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5427
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1817
 msgid "Image"
 msgstr "Kép"
@@ -3902,7 +3902,7 @@ msgstr "Nyitó zárójelek párjának automatikus beírása"
 msgid "Math font:"
 msgstr "Matematika betűtípus:"
 
-#: /home/gunter/src/wxmaxima/src/MathCell.cpp:1154
+#: /home/gunter/src/wxmaxima/src/MathCell.cpp:1159
 msgid "Math output"
 msgstr "Matematika kimenet"
 
@@ -5142,8 +5142,8 @@ msgstr "A Maxima újraindítása"
 msgid "Restrict Maximum size"
 msgstr "A maximum méret megszorítása"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5365
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5392
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5366
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5393
 msgid "Result"
 msgstr "Eredmény"
 
@@ -5440,7 +5440,7 @@ msgstr ""
 "html oldalról és a \"jsMath karakterek használata\" bejelölése a "
 "beállításoknál megoldást jelenthet."
 
-#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:288
+#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:290
 msgid "Select"
 msgstr "Kijelölés"
 
@@ -5706,7 +5706,7 @@ msgstr "A wxMaxima konzolja megjeleníti a hosszú kifejezéseket."
 msgid "Show long expressions:"
 msgstr "Hosszú kifejezések megjelenítése:"
 
-#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:295
+#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:297
 msgid "Show section numbers"
 msgstr "Fejezetszámok megjelenítése"
 
@@ -5987,7 +5987,7 @@ msgstr "A szerver leállt"
 msgid "Starting server on port %d"
 msgstr "A szerver elindult és az alábbi porton figyel %d"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6221
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6223
 msgid "Starting to save the worksheet as .wxmx"
 msgstr ""
 
@@ -6436,7 +6436,7 @@ msgstr ""
 msgid "The variable the value of the current source item is stored in."
 msgstr "A változó az aktuális forráselem értékét tárolja."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8735
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8737
 msgid "The worksheet containing maxima's input and output"
 msgstr "A munkalap a Maxima bemenetét és kimenetét tartalmazza"
 
@@ -6699,7 +6699,7 @@ msgstr "&Ismertetők"
 msgid "Two sample t-test"
 msgstr "Kétmintás t-próba"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8605
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8607
 msgid "Type"
 msgstr "Típus"
 
@@ -6763,35 +6763,35 @@ msgstr "&Minden megjelenítése\tCtrl+Alt+]"
 msgid "Unfold all folded sections"
 msgstr "Minden fejezet megjelenítése"
 
-#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:284
+#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:286
 msgid "Unhide"
 msgstr "Megmutat"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1522
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1523
 msgid "Unhide Heading 5"
 msgstr "5. cím megjelenítése"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1532
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1533
 msgid "Unhide Heading 6"
 msgstr "6. cím megjelenítése"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1484
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1485
 msgid "Unhide Part"
 msgstr "Rész megjelenítése"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1492
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1493
 msgid "Unhide Section"
 msgstr "Fejezet megjelenítése"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1502
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1503
 msgid "Unhide Subsection"
 msgstr "Alfejezet megjelenítése"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1512
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1513
 msgid "Unhide Subsubsection"
 msgstr "Al-alfejezet megjelenítése"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1540
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1541
 msgid "Unhide contents"
 msgstr "Tartalmak megjelenítése"
 
@@ -7033,7 +7033,7 @@ msgid ""
 "as equation markers"
 msgstr "A \"LaTeX másolás\" \\[ és \\] jelek közé rakja a kifejezéseket"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7935
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7937
 msgid "Wrapped search"
 msgstr "Csomagolt keresés"
 
@@ -7189,12 +7189,12 @@ msgstr ""
 "[x_1, x_2,...] vagy [x_1, x_2,...],[y_1, y_2,...] vagy matrix([x_1,y_1],[x_2,"
 "y_2],...)"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5335
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5336
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Animált diagram\" style=\"max-width:90%%;\" >\n"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5525
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5526
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Animált diagram\" style=\"max-width:90%%;\" >"
@@ -7746,7 +7746,7 @@ msgstr ""
 msgid "wxMaxima startup file location: "
 msgstr "wxMaxima indító fájl helye: "
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6472
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6474
 msgid "wxmx file saved"
 msgstr ""
 

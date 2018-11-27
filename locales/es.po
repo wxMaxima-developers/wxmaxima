@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wmMaxima 18.10.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-24 07:56+0100\n"
+"POT-Creation-Date: 2018-11-27 08:44+0100\n"
 "PO-Revision-Date: 2018-10-10 20:12+0200\n"
 "Last-Translator: Francisco Javier F. Serrador <fserrador@gmail.com>\n"
 "Language-Team: Spanish Team <serrador@tecknolabs.com>\n"
@@ -513,7 +513,7 @@ msgstr ""
 msgid "A section heading"
 msgstr "Una sección de cabecera"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.h:416
+#: /home/gunter/src/wxmaxima/src/GroupCell.h:421
 msgid "A space between GroupCells"
 msgstr "Un espacio entre GroupCells"
 
@@ -790,13 +790,13 @@ msgid "Automatic labels (%i1, %o1,...)"
 msgstr "Autoetiquetados (%i1, %o1,…)"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1332
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1477
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1478
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:729
 msgid "Automatically answer questions"
 msgstr "Automáticamente responder preguntas"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1333
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1478
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1479
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:730
 msgid "Automatically fill in answers known from the last run"
 msgstr ""
@@ -915,19 +915,19 @@ msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 "Defecto: autocompletado solicitado para un tipo de elemento desconocido."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2589
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2590
 msgid "Bug: Cell left but not entered."
 msgstr "Defecto: celda abandonada sin haber entrado."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6804
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6806
 msgid "Bug: Cell with negative y position!"
 msgstr "Defecto: ¡celda con negativo y positivo!"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2774
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2775
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Defecto: se ha obtenido una pregunta pero sin celda asociada"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6992
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6994
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
@@ -935,14 +935,14 @@ msgstr ""
 "Defecto: se ha solicitado cambiar el contenido de una celda por encima del "
 "comienzo de la hoja del cuaderno."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6967
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6969
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Defecto: se ha solicitado eliminar el contenido de una celda por encima del "
 "comienzo de la hoja de cuaderno."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7034
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7036
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -950,7 +950,7 @@ msgstr ""
 "Defecto: se ha solicitado cambiar primero el contenido de una celda y luego "
 "no borrarla."
 
-#: /home/gunter/src/wxmaxima/src/MathCell.cpp:223
+#: /home/gunter/src/wxmaxima/src/MathCell.cpp:225
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr "Defecto: celda sin grupo al que pertenecer"
 
@@ -1002,7 +1002,7 @@ msgstr "Defecto: ¡sin última celda dentro de un paréntesis!"
 msgid "Bug: No last cell inside a square root!"
 msgstr "Defecto: ¡sin última celda dentro de una raíz cuadrada!"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2599
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2600
 msgid "Bug: Text changed, but no active cell."
 msgstr "Defecto: texto cambiado, pero sin celda activa."
 
@@ -1012,14 +1012,14 @@ msgstr "Defecto: texto cambiado, pero sin celda activa."
 #: /home/gunter/src/wxmaxima/src/ImgCell.cpp:368
 #: /home/gunter/src/wxmaxima/src/SVGout.cpp:331
 #: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:459
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2125
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2265
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2337
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2373
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2388
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:4462
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7291
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7529
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2126
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2266
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2338
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2374
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2389
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:4463
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7293
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7531
 msgid "Bug: The clipboard is already opened"
 msgstr "Defecto: el portapapeles ya está abierto"
 
@@ -1039,7 +1039,7 @@ msgstr ""
 "Defecto: intentando agregar el resultado de 'maxima' a una celda fuera de la "
 "hoja del cuaderno."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7638
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7640
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
@@ -1047,24 +1047,24 @@ msgstr ""
 "Defecto: intentando arrastrar el cursor horizontalmente a un lugar interno a "
 "un grupo de celdas."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2601
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2602
 msgid "Bug: Trying to record a cell contents change for undo without a cell."
 msgstr ""
 "Defecto: intentando registrar un cambio del contenido de celda sin una celda."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2001
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2002
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 "Defecto: intentando seleccionar dentro de una celda sin tener una celda "
 "actual"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7035
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7037
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Defecto: acción de deshacer con ambos contenidos de celda cambian y suman "
 "las celdas."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6997
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6999
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Defecto: solicitud de deshacer para una celda fuera da la hoja del cuaderno."
@@ -2277,7 +2277,7 @@ msgstr "¡Error!"
 msgid "Eta"
 msgstr "Eta"
 
-#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:289
+#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:291
 msgid "Evaluate"
 msgstr "Evaluar"
 
@@ -2314,13 +2314,13 @@ msgstr "Evaluar Celdas Inferiores"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1323
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1465
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1518
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1519
 msgid "Evaluate Heading 5\tShift+Ctrl+Enter"
 msgstr "Evaluar Cabecera 5\tMayús+Ctrl+Intro"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1329
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1469
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1528
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1529
 msgid "Evaluate Heading 6\tShift+Ctrl+Enter"
 msgstr "Evaluar Cabecera 6\tMayús+Ctrl+Intro"
 
@@ -2336,13 +2336,13 @@ msgstr "Evaluar sección\t\tMayús+Ctrl+Intro"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1317
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1461
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1508
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1509
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
 msgstr "Evaluar sub-subsección\tMayús+Ctrl+Intro"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1311
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1457
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1498
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1499
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr "Evaluar subsección\tMayús+Ctrl+Intro"
 
@@ -2977,7 +2977,7 @@ msgstr "Nombre del fichero de datos Gnuplot: "
 msgid "Gnuplot has closed."
 msgstr "Gnuplot ha sido cerrado."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6974
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6976
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -3039,7 +3039,7 @@ msgstr "Cabecera6"
 msgid "Help"
 msgstr "Ayuda"
 
-#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:287
+#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:289
 msgid "Hide"
 msgstr "Ocultar"
 
@@ -3055,27 +3055,27 @@ msgstr "Ocultar Código"
 msgid "Hide Code Cells\tAlt+Ctrl+H"
 msgstr "Ocultar celda de códigos\tAlt+Mayús+H"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1525
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1526
 msgid "Hide Heading 5"
 msgstr "Ocultar Cabecera 5"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1535
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1536
 msgid "Hide Heading 6"
 msgstr "Ocultar Cabecera 6"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1487
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1488
 msgid "Hide Part"
 msgstr "Ocultar Parte"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1495
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1496
 msgid "Hide Section"
 msgstr "Ocultar Sección"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1505
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1506
 msgid "Hide Subsection"
 msgstr "Ocultar Subsección"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1515
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1516
 msgid "Hide Subsubsection"
 msgstr "Ocultar Subsubsección"
 
@@ -3083,7 +3083,7 @@ msgstr "Ocultar Subsubsección"
 msgid "Hide all panes"
 msgstr "Ocultar todos los paneles"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1543
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1544
 msgid "Hide contents"
 msgstr "Ocultar índice"
 
@@ -3240,7 +3240,7 @@ msgstr ""
 "Si un cálculo dura mucho tiempo, se puede parar seleccionando 'Maxima → "
 "Interrumpir' o 'Maxima → Reiniciar Maxima' en el menú de instrucciones."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5426
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5427
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1817
 msgid "Image"
 msgstr "Imagen"
@@ -3925,7 +3925,7 @@ msgstr "Coincidir paréntesis en controles de texto"
 msgid "Math font:"
 msgstr "Tipograma matemático:"
 
-#: /home/gunter/src/wxmaxima/src/MathCell.cpp:1154
+#: /home/gunter/src/wxmaxima/src/MathCell.cpp:1159
 msgid "Math output"
 msgstr "Salida matemática"
 
@@ -5175,8 +5175,8 @@ msgstr "Reiniciar 'maxima'"
 msgid "Restrict Maximum size"
 msgstr "Restringir tamaño Máximo"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5365
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5392
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5366
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5393
 msgid "Result"
 msgstr "Resultado"
 
@@ -5471,7 +5471,7 @@ msgstr ""
 "union.edu/~dpvc/jsmath/download/jsMath-fonts.html y comprobando \"Use JSmath "
 "fonts\" en el diálogo de configuración debería resolver el problema."
 
-#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:288
+#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:290
 msgid "Select"
 msgstr "Selección"
 
@@ -5737,7 +5737,7 @@ msgstr "Mostrar expresiones largas en el documento de wxMaxima."
 msgid "Show long expressions:"
 msgstr "Mostrar expresiones largas:"
 
-#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:295
+#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:297
 msgid "Show section numbers"
 msgstr "Mostrar números de sección"
 
@@ -6012,7 +6012,7 @@ msgstr "Inicialización del servidor ha fallado"
 msgid "Starting server on port %d"
 msgstr "Iniciando servidor en el puerto %d"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6221
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6223
 msgid "Starting to save the worksheet as .wxmx"
 msgstr ""
 
@@ -6466,7 +6466,7 @@ msgstr ""
 msgid "The variable the value of the current source item is stored in."
 msgstr "La variable del valor del ítem actual origen está almacenado ahí."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8735
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8737
 msgid "The worksheet containing maxima's input and output"
 msgstr "La hoja de cuaderno conteniendo entradas y salidas de ‘maxima’"
 
@@ -6730,7 +6730,7 @@ msgstr "Tutoriales"
 msgid "Two sample t-test"
 msgstr "Test t de dos muestras"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8605
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8607
 msgid "Type"
 msgstr "Tipo"
 
@@ -6794,35 +6794,35 @@ msgstr "Desplegar todo\tCtrl+Alt+]"
 msgid "Unfold all folded sections"
 msgstr "Desplegar todas las secciones"
 
-#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:284
+#: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:286
 msgid "Unhide"
 msgstr "Desocultar"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1522
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1523
 msgid "Unhide Heading 5"
 msgstr "Desocultar Cabecera 5"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1532
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1533
 msgid "Unhide Heading 6"
 msgstr "Desocultar Cabecera 6"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1484
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1485
 msgid "Unhide Part"
 msgstr "Desocultar Parte"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1492
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1493
 msgid "Unhide Section"
 msgstr "Desocultar Sección"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1502
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1503
 msgid "Unhide Subsection"
 msgstr "Desocultar Subsección"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1512
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1513
 msgid "Unhide Subsubsection"
 msgstr "Desocultar Subsubsección"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1540
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1541
 msgid "Unhide contents"
 msgstr "Desocultar constantes griegas"
 
@@ -7068,7 +7068,7 @@ msgstr ""
 "Envuelve ecuaciones exportadas con \"copiar como LaTeX\" entre \\[ y \\] "
 "como marcadores de ecuaciones"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7935
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7937
 msgid "Wrapped search"
 msgstr "Búsqueda envuelta"
 
@@ -7220,12 +7220,12 @@ msgid ""
 msgstr ""
 "[x_1, x_2,…] o [x_1, x_2,…],[y_1, y_2,…] o matrix([x_1,y_1],[x_2,y_2],…)"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5335
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5336
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Diagrama animado\" style=\"max-width:90%%;\" >\n"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5525
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5526
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Diagrama animado\" style=\"max-width:90%%;\" >"
@@ -7785,7 +7785,7 @@ msgstr ""
 msgid "wxMaxima startup file location: "
 msgstr "Lugar del fichero de inicio wxMaxima: "
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6472
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6474
 msgid "wxmx file saved"
 msgstr ""
 
