@@ -235,6 +235,7 @@ void MathPrintout::SetupData()
   // Make sure that during print nothing is outside the crop rectangle
   marginX += (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent());
 
+  (*m_configuration)->LineWidth_em(10000);
   Recalculate();
   BreakPages();
   (*m_configuration)->SetForceUpdate(true);
