@@ -906,9 +906,6 @@ void GroupCell::Draw(wxPoint point)
       dc->DrawLine(0, y, (*m_configuration)->GetCanvasSize().GetWidth(), y);
       return;
     }
-
-    if (configuration->ShowBrackets())
-      DrawBracket();
     
     wxRect rect = GetRect(false);
 
@@ -1005,6 +1002,8 @@ void GroupCell::Draw(wxPoint point)
         }
       }
     }
+    if (configuration->ShowBrackets())
+      DrawBracket();
     configuration->Outdated(false); 
     UnsetPen();
   }
@@ -1173,9 +1172,9 @@ void GroupCell::DrawBracket()
     else
     { // draw a the triangle that allows hiding and unhiding the cell
       wxPoint *points = new wxPoint[3];
-      points[0].x = m_currentPoint.x - bracketWidth;
+      points[0].x = m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2;
       points[0].y = m_currentPoint.y - m_center + configuration->GetDefaultLineWidth() / 2;
-      points[1].x = m_currentPoint.x - bracketWidth;
+      points[1].x = m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2;
       points[1].y = m_currentPoint.y - m_center + bracketWidth - configuration->GetDefaultLineWidth() / 2;
       points[2].x = m_currentPoint.x - configuration->GetDefaultLineWidth();
       points[2].y = m_currentPoint.y - m_center + configuration->GetDefaultLineWidth() / 2;
@@ -1183,12 +1182,12 @@ void GroupCell::DrawBracket()
       delete[] points;
 
       // The vertical line at the back of the bracket
-      adc->DrawLine(m_currentPoint.x - bracketWidth,
+      adc->DrawLine(m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
                   m_currentPoint.y - m_center + configuration->GetDefaultLineWidth() / 2,
-                  m_currentPoint.x - bracketWidth,
+                  m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
                   m_currentPoint.y - m_center + m_height - configuration->GetDefaultLineWidth());
       // bottom horizontal line
-      adc->DrawLine(m_currentPoint.x - bracketWidth,
+      adc->DrawLine(m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
                   m_currentPoint.y - m_center + m_height - configuration->GetDefaultLineWidth(),
                   m_currentPoint.x - configuration->GetDefaultLineWidth(),
                   m_currentPoint.y - m_center + m_height - configuration->GetDefaultLineWidth());
@@ -1198,7 +1197,7 @@ void GroupCell::DrawBracket()
         adc->DrawLine(m_currentPoint.x - bracketWidth / 2,
                     m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight() +
                     configuration->GetDefaultLineWidth() / 2,
-                    m_currentPoint.x - bracketWidth,
+                    m_currentPoint.x - bracketWidth + configuration->GetDefaultLineWidth() / 2,
                     m_currentPoint.y - m_center + m_inputLabel->GetMaxHeight() +
                     configuration->GetDefaultLineWidth() / 2);
       }
