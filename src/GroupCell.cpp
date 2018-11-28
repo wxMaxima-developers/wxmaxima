@@ -1158,7 +1158,7 @@ void GroupCell::DrawBracket()
     if (IsFoldable())
     { // draw the square that allows hiding and unhiding the cell
       wxPointList points;
-      points.DeleteContents();
+      points.DeleteContents(true);
       points.Append(
         new wxPoint(
           m_currentPoint.x - bracketWidth,
@@ -1188,7 +1188,7 @@ void GroupCell::DrawBracket()
     else
     { 
       wxPointList points;
-      points.DeleteContents();
+      points.DeleteContents(true);
       // draw the triangle that allows hiding and unhiding the cell
       points.Append(
         new wxPoint(
