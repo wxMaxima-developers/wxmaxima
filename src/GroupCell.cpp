@@ -1157,21 +1157,38 @@ void GroupCell::DrawBracket()
     int bracketWidth = configuration->GetCellBracketWidth() - configuration->GetDefaultLineWidth();
     if (IsFoldable())
     { // draw the square that allows hiding and unhiding the cell
-      wxPoint *points = new wxPoint[4];
-      points[0].x = m_currentPoint.x - bracketWidth;
-      points[0].y = m_currentPoint.y - m_center;
-      points[1].x = m_currentPoint.x - bracketWidth;
-      points[1].y = m_currentPoint.y - m_center + bracketWidth;
-      points[2].x = m_currentPoint.x - configuration->GetDefaultLineWidth();
-      points[2].y = m_currentPoint.y - m_center + bracketWidth;
-      points[3].x = m_currentPoint.x - configuration->GetDefaultLineWidth();
-      points[3].y = m_currentPoint.y - m_center;
-      adc->DrawPolygon(4, points);
-      delete[] points;
+      wxPointList points;
+      points.DeleteContents();
+      points.Append(
+        new wxPoint(
+          m_currentPoint.x - bracketWidth,
+          m_currentPoint.y - m_center
+          )
+        );
+      points.Append(
+        new wxPoint(
+          m_currentPoint.x - bracketWidth,
+          m_currentPoint.y - m_center + bracketWidth
+          )
+        );
+      points.Append(
+        new wxPoint(
+          m_currentPoint.x - configuration->GetDefaultLineWidth(),
+          m_currentPoint.y - m_center + bracketWidth
+          )
+        );
+      points.Append(
+        new wxPoint(
+          m_currentPoint.x - configuration->GetDefaultLineWidth(),
+          m_currentPoint.y - m_center
+          )
+        );
+      adc->DrawPolygon(&points);
     }
     else
     { 
       wxPointList points;
+      points.DeleteContents();
       // draw the triangle that allows hiding and unhiding the cell
       points.Append(
         new wxPoint(
