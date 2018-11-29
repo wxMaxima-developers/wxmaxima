@@ -61,7 +61,6 @@ Bitmap::~Bitmap()
   wxDELETE(m_dc);
   wxDELETE(*m_configuration);
   *m_configuration = m_oldconfig;
-  (*m_configuration)->SetForceUpdate(false);
 }
 
 bool Bitmap::SetData(MathCell *tree, long int maxSize)

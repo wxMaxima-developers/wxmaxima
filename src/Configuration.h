@@ -176,7 +176,11 @@ public:
   void SetZoomFactor(double newzoom);
 
   //! Sets the zoom factor without storing the new value in the config file/registry.
-  void SetZoomFactor_temporarily(double newzoom){m_zoomFactor = newzoom;}
+  void SetZoomFactor_temporarily(double newzoom){
+    if(m_zoomFactor != newzoom)
+      SetForceUpdate(true);
+    m_zoomFactor = newzoom;
+  }
 
   /*! Scales a distance [in pixels] according to the zoom factor
 
@@ -292,11 +296,19 @@ public:
     Normallly this parameter is automatically calculated
    */
   void SetIndent(int indent)
-  { m_indent = indent; }
+  {
+    if(m_indent != indent)
+      SetForceUpdate(true);
+    m_indent = indent;
+  }
 
   //! Set the width of the visible window for GetClientWidth()
   void SetClientWidth(int width)
-  { m_clientWidth = width; SetForceUpdate(true);}
+  {
+    if(m_clientWidth != width)
+      SetForceUpdate(true);
+    m_clientWidth = width;
+  }
 
   //! Set the height of the visible window for GetClientHeight()
   void SetClientHeight(int height)
