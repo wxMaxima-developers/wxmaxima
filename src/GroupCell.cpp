@@ -37,7 +37,7 @@
 #include "TextCell.h"
 #include "EditorCell.h"
 #include "ImgCell.h"
-#include "Bitmap.h"
+#include "BitmapOut.h"
 #include "list"
 
 GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString) : Cell(

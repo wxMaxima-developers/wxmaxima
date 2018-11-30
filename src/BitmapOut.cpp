@@ -24,7 +24,7 @@
   This file defines the class BitMap that renders math as bitmap.
  */
 
-#include "Bitmap.h"
+#include "BitmapOut.h"
 #include "Configuration.h"
 #include "GroupCell.h"
 
@@ -33,7 +33,7 @@
 
 #define BM_FULL_WIDTH 1000
 
-Bitmap::Bitmap(Configuration **configuration, int scale)
+BitmapOut::BitmapOut(Configuration **configuration, int scale)
 {
   m_scale = scale;
 
@@ -55,7 +55,7 @@ Bitmap::Bitmap(Configuration **configuration, int scale)
   (*m_configuration)->RecalculationForce(true);
 }
 
-Bitmap::~Bitmap()
+BitmapOut::~BitmapOut()
 {
   wxDELETE(m_tree);
   wxDELETE(m_dc);
@@ -65,7 +65,7 @@ Bitmap::~Bitmap()
   (*m_configuration)->RecalculationForce(true);
 }
 
-bool Bitmap::SetData(Cell *tree, long int maxSize)
+bool BitmapOut::SetData(Cell *tree, long int maxSize)
 {
   wxDELETE(m_tree);
   m_tree = tree;
@@ -73,7 +73,7 @@ bool Bitmap::SetData(Cell *tree, long int maxSize)
   return Layout(maxSize);
 }
 
-bool Bitmap::Layout(long int maxSize)
+bool BitmapOut::Layout(long int maxSize)
 {
   if(m_tree == NULL)
     return false;
@@ -143,17 +143,17 @@ bool Bitmap::Layout(long int maxSize)
   }
 }
 
-double Bitmap::GetRealWidth()
+double BitmapOut::GetRealWidth()
 {
   return m_width * m_scale;
 }
 
-double Bitmap::GetRealHeight()
+double BitmapOut::GetRealHeight()
 {
   return m_height * m_scale;
 }
 
-void Bitmap::RecalculateHeight()
+void BitmapOut::RecalculateHeight()
 {
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
@@ -168,7 +168,7 @@ void Bitmap::RecalculateHeight()
   }
 }
 
-void Bitmap::RecalculateWidths()
+void BitmapOut::RecalculateWidths()
 {
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
@@ -184,7 +184,7 @@ void Bitmap::RecalculateWidths()
   }
 }
 
-void Bitmap::BreakLines()
+void BitmapOut::BreakLines()
 {
   int fullWidth = BM_FULL_WIDTH * m_scale;
   int currentWidth = 0;
@@ -210,7 +210,7 @@ void Bitmap::BreakLines()
   }
 }
 
-void Bitmap::GetMaxPoint(int *width, int *height)
+void BitmapOut::GetMaxPoint(int *width, int *height)
 {
   Cell *tmp = m_tree;
   int currentHeight = 0;
@@ -240,7 +240,7 @@ void Bitmap::GetMaxPoint(int *width, int *height)
   }
 }
 
-void Bitmap::Draw()
+void BitmapOut::Draw()
 {
   (*m_configuration)->Printing(true);
   Cell *tmp = m_tree;
@@ -294,7 +294,7 @@ void Bitmap::Draw()
   m_ppi.y *= m_scale;
 }
 
-wxSize Bitmap::ToFile(wxString file)
+wxSize BitmapOut::ToFile(wxString file)
 {
   // Assign an resolution to the bitmap.
   wxImage img = m_bmp.ConvertToImage();
@@ -332,7 +332,7 @@ wxSize Bitmap::ToFile(wxString file)
   };
 }
 
-bool Bitmap::ToClipboard()
+bool BitmapOut::ToClipboard()
 {
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
@@ -344,7 +344,7 @@ bool Bitmap::ToClipboard()
   return false;
 }
 
-void Bitmap::BreakUpCells()
+void BitmapOut::BreakUpCells()
 {
   Cell *tmp = m_tree;
   int fontsize = 12;

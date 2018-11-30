@@ -134,6 +134,8 @@ protected:
 private:
   //! Produces a text sample that determines the label width
   wxString m_initialToolTip;
+  //! The number of digits we did display the last time we displayed a number.
+  int m_displayedDigits_old;
 };
 
 #endif // TEXTCELL_H

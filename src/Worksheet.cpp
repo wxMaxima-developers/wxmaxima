@@ -37,7 +37,7 @@
 #include <wx/tooltip.h>
 #include "wxMaximaFrame.h"
 #include "Worksheet.h"
-#include "Bitmap.h"
+#include "BitmapOut.h"
 #include "EditorCell.h"
 #include "GroupCell.h"
 #include "SlideShowCell.h"
@@ -2189,7 +2189,7 @@ bool Worksheet::Copy(bool astext)
           wxBitmap bmp;
           int bitmapScale = 3;
           wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
-          Bitmap bmp_scaled(&m_configuration, bitmapScale);
+          BitmapOut bmp_scaled(&m_configuration, bitmapScale);
           Cell *tmp = CopySelection();
           if (bmp_scaled.SetData(tmp, 4000000))
           {
@@ -2435,7 +2435,7 @@ bool Worksheet::CopyCells()
       Cell *tmp = CopySelection();
       int bitmapScale = 3;
       wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
-      Bitmap bmp(&m_configuration, bitmapScale);
+      BitmapOut bmp(&m_configuration, bitmapScale);
       if (bmp.SetData(tmp, 4000000))
         data->Add(new wxBitmapDataObject(bmp.GetBitmap()));
     }
@@ -4413,7 +4413,7 @@ bool Worksheet::CopyBitmap()
   int bitmapScale = 3;
   wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
 
-  Bitmap bmp(&m_configuration, bitmapScale);
+  BitmapOut bmp(&m_configuration, bitmapScale);
   bmp.SetData(tmp);
 
   bool retval = bmp.ToClipboard();
@@ -4508,7 +4508,7 @@ wxSize Worksheet::CopyToFile(wxString file)
   {
     Cell *tmp = CopySelection();
 
-    Bitmap bmp(&m_configuration);
+    BitmapOut bmp(&m_configuration);
     bmp.SetData(tmp);
 
     wxSize retval = bmp.ToFile(file);
@@ -4522,7 +4522,7 @@ wxSize Worksheet::CopyToFile(wxString file, Cell *start, Cell *end,
 {
   Cell *tmp = CopySelection(start, end, asData);
 
-  Bitmap bmp(&m_configuration, scale);
+  BitmapOut bmp(&m_configuration, scale);
   bmp.SetData(tmp);
 
   wxSize retval = bmp.ToFile(file);

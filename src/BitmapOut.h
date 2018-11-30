@@ -30,7 +30,7 @@
    This is used for exporting HTML with embedded maths as bitmap
    and for putting bitmaps for the clipboard
  */
-class Bitmap
+class BitmapOut
 {
 public:
   /*! The constructor.
@@ -40,9 +40,9 @@ public:
     \param configuration A pointer to the pointer to this worksheet's configuration
            storage
   */
-  Bitmap(Configuration **configuration, int scale = 1);
+  BitmapOut(Configuration **configuration, int scale = 1);
 
-  ~Bitmap();
+  ~BitmapOut();
 
   /*! Renders tree as bitmap
     
