@@ -798,7 +798,12 @@ bool Worksheet::RecalculateIfNeeded()
     return false;
 
   if(m_configuration->RecalculationForce())
-    wxLogMessage(_("Recalculating all cell sizes"));
+  {
+    if(m_configuration->FontChanged())
+      wxLogMessage(_("Recalculating all cell sizes inclusive text dimensions"));
+    else
+      wxLogMessage(_("Recalculating all cell sizes"));
+  }
   else
     wxLogMessage(_("Recalculating changed cell sizes"));
 
