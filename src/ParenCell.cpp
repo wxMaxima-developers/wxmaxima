@@ -23,14 +23,14 @@
 /*! \file
   This file defines the class ParenCell
 
-  ParenCell is the MathCell type that represents a math element that is kept
+  ParenCell is the Cell type that represents a math element that is kept
   between parenthesis.
  */
 
 #include "ParenCell.h"
 #include "TextCell.h"
 
-ParenCell::ParenCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_numberOfExtensions = 0;
@@ -52,7 +52,7 @@ ParenCell::ParenCell(MathCell *parent, Configuration **config, CellPointers *cel
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
-void ParenCell::SetGroup(MathCell *parent)
+void ParenCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_innerCell != NULL)
@@ -63,7 +63,7 @@ void ParenCell::SetGroup(MathCell *parent)
     m_close->SetGroupList(parent);
 }
 
-MathCell *ParenCell::Copy()
+Cell *ParenCell::Copy()
 {
   ParenCell *tmp = new ParenCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -82,9 +82,9 @@ ParenCell::~ParenCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> ParenCell::GetInnerCells()
+std::list<Cell *> ParenCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_innerCell)
     innerCells.push_back(m_innerCell);
   if(m_open)
@@ -94,7 +94,7 @@ std::list<MathCell *> ParenCell::GetInnerCells()
   return innerCells;
 }
 
-void ParenCell::SetInner(MathCell *inner, CellType type)
+void ParenCell::SetInner(Cell *inner, CellType type)
 {
   if (inner == NULL)
     return;
@@ -170,7 +170,7 @@ void ParenCell::SetFont(int fontsize)
 
 void ParenCell::RecalculateWidths(int fontsize)
 {
-  MathCell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
 
   // Add a dummy contents to empty parenthesis
@@ -238,7 +238,7 @@ void ParenCell::RecalculateWidths(int fontsize)
 
 void ParenCell::RecalculateHeight(int fontsize)
 {
-  MathCell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight(fontsize);
   Configuration *configuration = (*m_configuration);
   m_height = MAX(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(2);
   m_center = m_height / 2;
@@ -296,7 +296,7 @@ void ParenCell::RecalculateHeight(int fontsize)
 
 void ParenCell::Draw(wxPoint point)
 {
-  MathCell::Draw(point);
+  Cell::Draw(point);
   if (DrawThisCell(point) && (InUpdateRegion()))
   { 
     Configuration *configuration = (*m_configuration);
@@ -500,5 +500,5 @@ void ParenCell::Unbreak()
 {
   if (m_isBrokenIntoLines)
     m_innerCell->UnbreakList();
-  MathCell::Unbreak();
+  Cell::Unbreak();
 }

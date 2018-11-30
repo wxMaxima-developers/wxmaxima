@@ -23,19 +23,19 @@
 /*! \file
   This file defines the class FunCell
 
-  FunCell is the MathCell type that represents functions that don't require special handling.
+  FunCell is the Cell type that represents functions that don't require special handling.
  */
 
 #include "FunCell.h"
 
-FunCell::FunCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+FunCell::FunCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_nameCell = NULL;
   m_argCell = NULL;
 }
 
-void FunCell::SetGroup(MathCell *parent)
+void FunCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_nameCell != NULL)
@@ -44,7 +44,7 @@ void FunCell::SetGroup(MathCell *parent)
     m_argCell->SetGroupList(parent);
 }
 
-MathCell *FunCell::Copy()
+Cell *FunCell::Copy()
 {
   FunCell *tmp = new FunCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -63,9 +63,9 @@ FunCell::~FunCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> FunCell::GetInnerCells()
+std::list<Cell *> FunCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_nameCell)
     innerCells.push_back(m_nameCell);
   if(m_argCell)
@@ -73,7 +73,7 @@ std::list<MathCell *> FunCell::GetInnerCells()
   return innerCells;
 }
 
-void FunCell::SetName(MathCell *name)
+void FunCell::SetName(Cell *name)
 {
   if (name == NULL)
     return;
@@ -82,7 +82,7 @@ void FunCell::SetName(MathCell *name)
   name->SetStyle(TS_FUNCTION);
 }
 
-void FunCell::SetArg(MathCell *arg)
+void FunCell::SetArg(Cell *arg)
 {
   if (arg == NULL)
     return;
@@ -92,7 +92,7 @@ void FunCell::SetArg(MathCell *arg)
 
 void FunCell::RecalculateWidths(int fontsize)
 {
-  MathCell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths(fontsize);
   m_argCell->RecalculateWidthsList(fontsize);
   m_nameCell->RecalculateWidthsList(fontsize);
   m_width = m_nameCell->GetFullWidth() + m_argCell->GetFullWidth() -
@@ -102,7 +102,7 @@ void FunCell::RecalculateWidths(int fontsize)
 
 void FunCell::RecalculateHeight(int fontsize)
 {
-  MathCell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight(fontsize);
   m_nameCell->RecalculateHeightList(fontsize);
   m_argCell->RecalculateHeightList(fontsize);
   m_center = MAX(m_nameCell->GetMaxCenter(), m_argCell->GetMaxCenter());
@@ -111,7 +111,7 @@ void FunCell::RecalculateHeight(int fontsize)
 
 void FunCell::Draw(wxPoint point)
 {
-  MathCell::Draw(point);
+  Cell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   {
 
@@ -128,7 +128,7 @@ wxString FunCell::ToString()
   if (m_isBrokenIntoLines)
     return wxEmptyString;
   if (m_altCopyText != wxEmptyString)
-    return m_altCopyText + MathCell::ListToString();
+    return m_altCopyText + Cell::ListToString();
   wxString s = m_nameCell->ListToString() + m_argCell->ListToString();
   return s;
 }
@@ -207,5 +207,5 @@ void FunCell::Unbreak()
     m_nameCell->UnbreakList();
     m_argCell->UnbreakList();
   }
-  MathCell::Unbreak();
+  Cell::Unbreak();
 }

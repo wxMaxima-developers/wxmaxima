@@ -37,7 +37,7 @@
 #include <list>
 
 #include "Notification.h"
-#include "MathCell.h"
+#include "Cell.h"
 #include "EditorCell.h"
 #include "GroupCell.h"
 #include "EvaluationQueue.h"
@@ -395,7 +395,7 @@ private:
   void AddLineToFile(wxTextFile &output, wxString s, bool unicode = true);
 
   //! Copy the currently selected cells
-  MathCell *CopySelection(bool asData = false);
+  Cell *CopySelection(bool asData = false);
 
   /*! Copy the currently given list of cells
 
@@ -411,7 +411,7 @@ private:
                This is accurately copied if asdata=false. But m_next and m_previous are
                treated as mere aliasses of m_nextToDraw and m_previousToDraw in this case.
   */
-  MathCell *CopySelection(MathCell *start, MathCell *end, bool asData = false);
+  Cell *CopySelection(Cell *start, Cell *end, bool asData = false);
 
   //! Get the cordinates of the bottom right point of the worksheet.
   void GetMaxPoint(int *width, int *height);
@@ -663,7 +663,7 @@ public:
   }
 
   //! The pointers to cells that can be deleted by these cells on deletion of the cells.
-  MathCell::CellPointers m_cellPointers;
+  Cell::CellPointers m_cellPointers;
 
   /*! Update the table of contents
 
@@ -906,7 +906,7 @@ public:
     If maxima isn't currently evaluating and therefore there is no working group
     the line is appended to m_last, instead.
   */
-  void InsertLine(MathCell *newLine, bool forceNewLine = false);
+  void InsertLine(Cell *newLine, bool forceNewLine = false);
 
   // Actually recalculate the worksheet.
   bool RecalculateIfNeeded();
@@ -1074,9 +1074,9 @@ public:
 
   wxSize CopyToFile(wxString file);
 
-  wxSize CopyToFile(wxString file, MathCell *start, MathCell *end, bool asData = false, int scale = 1);
+  wxSize CopyToFile(wxString file, Cell *start, Cell *end, bool asData = false, int scale = 1);
 
-  void CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std::vector<int> &cellMap);
+  void CalculateReorderedCellIndices(Cell *tree, int &cellIndex, std::vector<int> &cellMap);
 
   //! Export the file to an html document
   bool ExportToHTML(wxString file);
@@ -1121,22 +1121,22 @@ public:
 
     NULL means: No cell is selected.
   */
-  MathCell *GetSelectionStart()
+  Cell *GetSelectionStart()
   { return m_cellPointers.m_selectionStart; }
 
   /*! Return the last of the currently selected cells.
 
     NULL means: No cell is selected.
   */
-  MathCell *GetSelectionEnd()
+  Cell *GetSelectionEnd()
   { return m_cellPointers.m_selectionEnd; }
 
   //! Select the cell sel
-  void SetSelection(MathCell *sel)
+  void SetSelection(Cell *sel)
   { SetSelection(sel, sel); }
 
   //! Select the cell range start-end
-  void SetSelection(MathCell *start, MathCell *end);
+  void SetSelection(Cell *start, Cell *end);
 
   /*! We can edit the input if the we have the whole input in selection!
    */
@@ -1153,7 +1153,7 @@ public:
   void ScrollToCellIfNeeded();
   
   //! Schedules scrolling to a given cell
-  void ScheduleScrollToCell(MathCell *cell, bool scrollToTop = true)
+  void ScheduleScrollToCell(Cell *cell, bool scrollToTop = true)
     {
       m_cellPointers.ScrollToCell(cell);
       m_scrollToTopOfCell = scrollToTop;

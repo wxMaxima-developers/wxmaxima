@@ -24,7 +24,7 @@
 #ifndef EDITORCELL_H
 #define EDITORCELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
 
 #include <vector>
 #include <list>
@@ -53,7 +53,7 @@
   determining which address char n is at. An iterator is the only way of not
   having to determine the address of every single char indepently. 
  */
-class EditorCell : public MathCell
+class EditorCell : public Cell
 {
 private:
 
@@ -99,7 +99,7 @@ private:
   long m_oldSelectionEnd;
 public:
   //! The constructor
-  EditorCell(MathCell *parent, Configuration **config,
+  EditorCell(Cell *parent, Configuration **config,
              CellPointers *cellPointers, wxString text = wxEmptyString);
 
   ~EditorCell();
@@ -199,7 +199,7 @@ public:
     no more displayed currently.
    */
   void MarkAsDeleted();
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
 
   /*! Expand all tabulators.
 
@@ -215,7 +215,7 @@ public:
   //! Convert all but the first of a row of multiple spaces to non-breakable
   static wxString PrependNBSP(wxString input);
 
-  MathCell *Copy();
+  Cell *Copy();
 
   //! Recalculate the widths of the current cell.
   void RecalculateWidths(int fontsize);

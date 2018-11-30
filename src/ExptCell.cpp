@@ -23,7 +23,7 @@
 /*! \file
   This file defines the class ExptCell
 
-  ExptCell is the MathCell type that represents exponents.
+  ExptCell is the Cell type that represents exponents.
  */
 
 #include "ExptCell.h"
@@ -31,7 +31,7 @@
 
 #define EXPT_DEC 2
 
-ExptCell::ExptCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_last1 = NULL;
@@ -45,7 +45,7 @@ ExptCell::ExptCell(MathCell *parent, Configuration **config, CellPointers *cellP
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
-void ExptCell::SetGroup(MathCell *parent)
+void ExptCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_baseCell != NULL)
@@ -58,7 +58,7 @@ void ExptCell::SetGroup(MathCell *parent)
     m_close->SetGroupList(parent);
 }
 
-MathCell *ExptCell::Copy()
+Cell *ExptCell::Copy()
 {
   ExptCell *tmp = new ExptCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -81,9 +81,9 @@ ExptCell::~ExptCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> ExptCell::GetInnerCells()
+std::list<Cell *> ExptCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_baseCell)
     innerCells.push_back(m_baseCell);
   if(m_powCell)
@@ -98,7 +98,7 @@ std::list<MathCell *> ExptCell::GetInnerCells()
 }
 
 
-void ExptCell::SetPower(MathCell *power)
+void ExptCell::SetPower(Cell *power)
 {
   if (power == NULL)
     return;
@@ -117,7 +117,7 @@ void ExptCell::SetPower(MathCell *power)
       m_last2 = m_last2->m_next;
 }
 
-void ExptCell::SetBase(MathCell *base)
+void ExptCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
@@ -132,7 +132,7 @@ void ExptCell::SetBase(MathCell *base)
 
 void ExptCell::RecalculateWidths(int fontsize)
 {
-  MathCell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths(fontsize);
   m_baseCell->RecalculateWidthsList(fontsize);
   if (m_isBrokenIntoLines)
     m_powCell->RecalculateWidthsList(fontsize);
@@ -150,7 +150,7 @@ void ExptCell::RecalculateWidths(int fontsize)
 
 void ExptCell::RecalculateHeight(int fontsize)
 {
-  MathCell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight(fontsize);
   m_baseCell->RecalculateHeightList(fontsize);
   if (m_isBrokenIntoLines)
     m_powCell->RecalculateHeightList(fontsize);
@@ -175,7 +175,7 @@ void ExptCell::Draw(wxPoint point)
   if (DrawThisCell(point) && InUpdateRegion())
   {
     
-    MathCell::Draw(point);
+    Cell::Draw(point);
     wxPoint bs, pw;
     bs.x = point.x;
     bs.y = point.y;
@@ -292,5 +292,5 @@ void ExptCell::Unbreak()
     m_baseCell->UnbreakList();
     m_powCell->UnbreakList();
   }
-  MathCell::Unbreak();
+  Cell::Unbreak();
 }

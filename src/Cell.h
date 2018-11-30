@@ -68,8 +68,8 @@ enum CellType
 /*!
   The base class all cell types the worksheet can consist of are derived from
 
-  Every MathCell is part of two double-linked lists:
-   - A MathCell does have a member m_previous that points to the previous item
+  Every Cell is part of two double-linked lists:
+   - A Cell does have a member m_previous that points to the previous item
      (or contains a NULL for the head node of the list) and a member named m_next 
      that points to the next cell (or contains a NULL if this is the end node of a list).
    - And there is m_previousToDraw and m_nextToDraw that contain fractions and similar 
@@ -78,7 +78,7 @@ enum CellType
      object if the fraction is broken into several lines and therefore displayed in its
      a linear form.
 
-  Also every list of MathCells can be a branch of a tree since every math cell contains
+  Also every list of Cells can be a branch of a tree since every math cell contains
   a pointer to its parent group cell.
 
   Besides the cell types that are directly user visible there are cells for several
@@ -96,19 +96,19 @@ enum CellType
   they have to delete() it.
 
   On systems where wxWidget supports (and is compiled with)
-  accessibility features MathCell is derived from wxAccessible which
+  accessibility features Cell is derived from wxAccessible which
   allows every element in the worksheet to identify itself to an
   eventual screen reader.
 
  */
 #if wxUSE_ACCESSIBILITY
-class MathCell: public wxAccessible
+class Cell: public wxAccessible
 #else
-class MathCell
+class Cell
 #endif
 {
   public:
-  MathCell(MathCell *group, Configuration **config);
+  Cell(Cell *group, Configuration **config);
 
   static void SetVisibleRegion(wxRect visibleRegion){m_visibleRegion = visibleRegion;}
   static void SetWorksheetPosition(wxPoint worksheetPosition){m_worksheetPosition = worksheetPosition;}
@@ -126,14 +126,14 @@ class MathCell
   //! Accessibility: How many childs of this cell GetChild() can retrieve?
   virtual wxAccStatus GetChildCount (int *childCount);
   //! Accessibility: Retrieve a child cell. childId=0 is the current cell
-  virtual wxAccStatus GetChild (int childId, MathCell **child);
+  virtual wxAccStatus GetChild (int childId, Cell **child);
   //! Accessibility: Does this or a child cell currently own the focus?
-  virtual wxAccStatus GetFocus (int *childId, MathCell  **child);
+  virtual wxAccStatus GetFocus (int *childId, Cell  **child);
   //! Accessibility: Where is this cell to be found?
   virtual wxAccStatus GetLocation (wxRect &rect, int elementId);
   //! Is pt inside this cell or a child cell?
   wxAccStatus HitTest (const wxPoint &pt,
-                       int *childId, MathCell **childObject);
+                       int *childId, Cell **childObject);
   //! Accessibility: What is the contents of this cell?
   virtual wxAccStatus GetValue (int childId, wxString *strValue);
   virtual wxAccStatus GetRole (int childId, wxAccRole *role);
@@ -150,7 +150,7 @@ class MathCell
   virtual wxString GetToolTip(const wxPoint &point);
 
   //! Delete this list of cells.
-  virtual ~MathCell();
+  virtual ~Cell();
 
   /*! If the cell is moved to the undo buffer this function drops pointers to it
   
@@ -189,7 +189,7 @@ class MathCell
     
     \param p_next The cell that will be appended to the list.
    */
-  void AppendCell(MathCell *p_next);
+  void AppendCell(Cell *p_next);
 
   //! 0 for ordinary cells, 1 for slide shows and diagrams displayed with a 1-pixel border
   int m_imageBorderWidth;
@@ -239,7 +239,7 @@ class MathCell
     return GetRect().Contains(point);
   }
 
-  void CopyData(MathCell *s, MathCell *t);
+  void CopyData(Cell *s, Cell *t);
 
   /*! Clears memory from cached items automatically regenerated when the cell is drawn
     
@@ -472,10 +472,10 @@ class MathCell
   { return wxEmptyString; }
 
   //! Get the first cell in this list of cells
-  MathCell *first();
+  Cell *first();
 
   //! Get the last cell in this list of cells
-  MathCell *last();
+  Cell *last();
 
   /*! Select a rectangle using the mouse
 
@@ -483,25 +483,25 @@ class MathCell
     \param first Returns the first cell of the rectangle
     \param last Returns the last cell of the rectangle
    */
-  void SelectRect(wxRect &rect, MathCell **first, MathCell **last);
+  void SelectRect(wxRect &rect, Cell **first, Cell **last);
 
   /*! The top left of the rectangle the mouse has selected
 
     \param rect The rectangle the mouse selected
     \param first Returns the first cell of the rectangle
    */
-  void SelectFirst(wxRect &rect, MathCell **first);
+  void SelectFirst(wxRect &rect, Cell **first);
 
   /*! The bottom right of the rectangle the mouse has selected
 
     \param rect The rectangle the mouse selected
     \param last Returns the last cell of the rectangle
    */
-  void SelectLast(wxRect &rect, MathCell **last);
+  void SelectLast(wxRect &rect, Cell **last);
 
   /*! Select the cells inside this cell described by the rectangle rect.
   */
-  virtual void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+  virtual void SelectInner(wxRect &rect, Cell **first, Cell **last);
 
   //! Is this cell an operator?
   virtual bool IsOperator();
@@ -512,7 +512,7 @@ class MathCell
   { return false; }
 
   //! Returns the group cell this cell belongs to
-  MathCell *GetGroup();
+  Cell *GetGroup();
 
   //! For the bitmap export we sometimes want to know how big the result will be...
   struct SizeInMillimeters
@@ -608,13 +608,13 @@ class MathCell
     Reads NULL, if this is the last cell of the list. See also m_nextToDraw, m_previous
     and m_previousToDraw
    */
-  MathCell *m_next;
+  Cell *m_next;
   /*! The previous cell in the list of cells
     
     Reads NULL, if this is the first cell of the list. See also m_previousToDraw, 
     m_nextToDraw and m_next
    */
-  MathCell *m_previous;
+  Cell *m_previous;
   /*! The next cell to draw
     
     For cells that are drawn as an atomic construct this pointer points 
@@ -635,7 +635,7 @@ class MathCell
 
     See also m_previousToDraw and m_next.
    */
-  MathCell *m_nextToDraw;
+  Cell *m_nextToDraw;
   /*! The previous cell to draw
     
     Normally cells are drawn one by one. But if a function is broken into several lines 
@@ -643,7 +643,7 @@ class MathCell
     the function name and its arguments as individual list elements so they can be drawn
     separately (and on separate lines).
    */
-  MathCell *m_previousToDraw;
+  Cell *m_previousToDraw;
   bool m_bigSkip;
   /*! true means:  This cell is broken into two or more lines.
     
@@ -735,17 +735,17 @@ class MathCell
     class has to take care that the subCell's SetGroup is called when
     the cell's SetGroup is called.
    */
-  virtual void SetGroup(MathCell *group)
+  virtual void SetGroup(Cell *group)
     { m_group = group; wxASSERT (group != NULL); wxASSERT (group->GetType() == MC_TYPE_GROUP); }
   
-  virtual void SetParent(MathCell *parent)
+  virtual void SetParent(Cell *parent)
     { m_parent = parent; }
 
-  /*! Define which MathCell is the parent of this list of cells
+  /*! Define which Cell is the parent of this list of cells
 
     Also automatically sets this cell as the "parent" of all cells of the list.
    */
-  void SetGroupList(MathCell *parent);
+  void SetGroupList(Cell *parent);
 
   virtual void SetStyle(TextStyle style)
   {
@@ -760,9 +760,9 @@ class MathCell
 
   /*! Attach a copy of the list of cells that follows this one to a cell
     
-    Used by MathCell::Copy() when the parameter <code>all</code> is true.
+    Used by Cell::Copy() when the parameter <code>all</code> is true.
   */
-  MathCell *CopyList();
+  Cell *CopyList();
 
   /*! Copy this cell
     
@@ -771,7 +771,7 @@ class MathCell
     \return A copy of this cell without the rest of the list this cell is part 
     from.
   */
-  virtual MathCell *Copy() = 0;
+  virtual Cell *Copy() = 0;
 
   /*! Do we want to begin this cell with a center dot if it is part of a product?
 
@@ -801,7 +801,7 @@ protected:
     The current point is recalculated 
      - for GroupCells by GroupCell::RecalculateHeight
      - for EditorCells by it's GroupCell's RecalculateHeight and
-     - for MathCells when they are drawn.
+     - for Cells when they are drawn.
   */
   wxPoint m_currentPoint;
   //! The worksheet all cells are drawn on
@@ -812,10 +812,10 @@ protected:
     Reads NULL, if no parent cell has been set - which is treated as an Error by GetGroup():
     every math cell has a GroupCell it belongs to.
   */
-  MathCell *m_group;
+  Cell *m_group;
 
   //! The cell that contains the current cell
-  MathCell *m_parent;
+  Cell *m_parent;
 
   //! Does this cell begin with a forced page break?
   bool m_breakPage;
@@ -831,7 +831,7 @@ protected:
   wxString m_altCopyText;
   Configuration **m_configuration;
 
-virtual std::list<MathCell *> GetInnerCells() = 0;
+virtual std::list<Cell *> GetInnerCells() = 0;
 
 protected:
   //! The height of this cell.
@@ -876,15 +876,15 @@ public:
   class CellPointers
   {
   public:
-    void ScrollToCell(MathCell *cell){m_cellToScrollTo = cell;}
-    MathCell *CellToScrollTo(){return m_cellToScrollTo;}
+    void ScrollToCell(Cell *cell){m_cellToScrollTo = cell;}
+    Cell *CellToScrollTo(){return m_cellToScrollTo;}
     CellPointers(wxScrolledCanvas *mathCtrl);
     /*! Returns the cell maxima currently works on. NULL if there isn't such a cell.
       
       \param resortToLast true = if we already have set the cell maxima works on to NULL
       use the last cell maxima was known to work on.
     */
-    MathCell *GetWorkingGroup(bool resortToLast = false)
+    Cell *GetWorkingGroup(bool resortToLast = false)
       {
         if ((m_workingGroup != NULL) || (!resortToLast))
           return m_workingGroup;
@@ -893,7 +893,7 @@ public:
       }
 
     //! Sets the cell maxima currently works on. NULL if there isn't such a cell.
-    void SetWorkingGroup(MathCell *group)
+    void SetWorkingGroup(Cell *group)
       {
         if(group != NULL)
           m_lastWorkingGroup = group;
@@ -916,47 +916,47 @@ public:
       //! Is the list of errors empty?
       bool Empty(){return m_errorList.empty();}
       //! Remove one specific GroupCell from the list of errors
-      void Remove(MathCell * cell){m_errorList.remove(cell);}
+      void Remove(Cell * cell){m_errorList.remove(cell);}
       //! Does the list of GroupCell with errors contain cell?
-      bool Contains(MathCell * cell);
+      bool Contains(Cell * cell);
       //! Mark this GroupCell as containing errors
-      void Add(MathCell * cell){m_errorList.push_back(cell);}
+      void Add(Cell * cell){m_errorList.push_back(cell);}
       //! The first GroupCell with error that is still in the list
-      MathCell *FirstError(){if(m_errorList.empty())return NULL; else return m_errorList.front();}
+      Cell *FirstError(){if(m_errorList.empty())return NULL; else return m_errorList.front();}
       //! The last GroupCell with errors in the list
-      MathCell *LastError(){if(m_errorList.empty())return NULL; else return m_errorList.back();}
+      Cell *LastError(){if(m_errorList.empty())return NULL; else return m_errorList.back();}
       //! Empty the list of GroupCells with errors
       void Clear(){m_errorList.clear();}
     private:
       //! A list of GroupCells that contain errors
-      std::list<MathCell *> m_errorList;
+      std::list<Cell *> m_errorList;
     };
 
     //! The list of cells maxima has complained about errors in
     ErrorList m_errorList;
     //! The EditorCell the mouse selection has started in
-    MathCell *m_cellMouseSelectionStartedIn;
+    Cell *m_cellMouseSelectionStartedIn;
     //! The EditorCell the keyboard selection has started in
-    MathCell *m_cellKeyboardSelectionStartedIn;
+    Cell *m_cellKeyboardSelectionStartedIn;
     //! The EditorCell the search was started in
-    MathCell *m_cellSearchStartedIn;
+    Cell *m_cellSearchStartedIn;
     //! Which cursor position incremental search has started at?
     int m_indexSearchStartedAt;
     //! Which cell the blinking cursor is in?
-    MathCell *m_activeCell;
+    Cell *m_activeCell;
     //! The GroupCell that is under the mouse pointer 
-    MathCell *m_groupCellUnderPointer;
+    Cell *m_groupCellUnderPointer;
     //! The EditorCell that contains the currently active question from maxima 
-    MathCell *m_answerCell;
+    Cell *m_answerCell;
     //! The last group cell maxima was working on.
-    MathCell *m_lastWorkingGroup;
+    Cell *m_lastWorkingGroup;
     //! The textcell the text maxima is sending us was ending in.
-    MathCell *m_currentTextCell;
+    Cell *m_currentTextCell;
     /*! The group cell maxima is currently working on.
 
       NULL means that maxima isn't currently evaluating a cell.
     */
-    MathCell *m_workingGroup;
+    Cell *m_workingGroup;
     /*! The currently selected string. 
 
       Since this string is defined here it is available in every editor cell
@@ -987,7 +987,7 @@ public:
     
       See also m_hCaretPositionStart and m_selectionEnd
     */
-    MathCell *m_selectionStart;
+    Cell *m_selectionStart;
     /*! The last cell of the currently selected range of groupCells.
     
       NULL, when no GroupCells are selected and NULL, if only stuff inside a GroupCell
@@ -998,7 +998,7 @@ public:
     */
 
     //! The cell currently under the mouse pointer
-    MathCell *m_cellUnderPointer;
+    Cell *m_cellUnderPointer;
   
     /*! The last cell of the currently selected range of Cells.
     
@@ -1008,7 +1008,7 @@ public:
     
       See also m_hCaretPositionStart, m_hCaretPositionEnd and m_selectionStart.
     */
-    MathCell *m_selectionEnd;
+    Cell *m_selectionEnd;
     WX_DECLARE_VOIDPTR_HASH_MAP( int, SlideShowTimersList);
     SlideShowTimersList m_slideShowTimers;
 
@@ -1018,7 +1018,7 @@ public:
     bool m_scrollToCell;
   private:
     //! If m_scrollToCell = true: Which cell do we need to scroll to?
-    MathCell *m_cellToScrollTo;
+    Cell *m_cellToScrollTo;
     //! The function to call if an animation has to be stepped.
     wxScrolledCanvas *m_mathCtrl;
     //! The image counter for saving .wxmx files

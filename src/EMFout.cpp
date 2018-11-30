@@ -85,7 +85,7 @@ Emfout::~Emfout()
   (*m_configuration)->RecalculationForce(true);
 }
 
-wxSize Emfout::SetData(MathCell *tree)
+wxSize Emfout::SetData(Cell *tree)
 {
   wxDELETE(m_tree);
   m_tree = tree;
@@ -168,7 +168,7 @@ void Emfout::RecalculateHeight()
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   while (tmp != NULL)
   {
@@ -183,7 +183,7 @@ void Emfout::RecalculateWidths()
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   while (tmp != NULL)
   {
@@ -197,7 +197,7 @@ void Emfout::BreakLines()
   int fullWidth = 500;
   int currentWidth = 0;
 
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   while (tmp != NULL)
   {
@@ -220,7 +220,7 @@ void Emfout::BreakLines()
 
 void Emfout::GetMaxPoint(int *width, int *height)
 {
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
   int currentHeight = 0;
   int currentWidth = 0;
   *width = 0;
@@ -254,7 +254,7 @@ void Emfout::GetMaxPoint(int *width, int *height)
 
 void Emfout::Draw()
 {
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   if (tmp != NULL)
   {
@@ -350,7 +350,7 @@ bool Emfout::ToClipboard()
 
 void Emfout::BreakUpCells()
 {
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;

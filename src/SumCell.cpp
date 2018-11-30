@@ -23,7 +23,7 @@
 /*! \file
   This file defines the class SumCell
 
-  SumCell is the MathCell type that represents maxima's <code>sum()</code>, 
+  SumCell is the Cell type that represents maxima's <code>sum()</code>, 
   <code>lsum</code> and <code>product()</code> 
   commands.
 */
@@ -35,7 +35,7 @@
 #define PROD_SIGN "\x59"
 #define SUM_DEC 2
 
-SumCell::SumCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_base = NULL;
@@ -48,7 +48,7 @@ SumCell::SumCell(MathCell *parent, Configuration **config, CellPointers *cellPoi
   m_sumStyle = SM_SUM;
 }
 
-void SumCell::SetGroup(MathCell *parent)
+void SumCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_base != NULL)
@@ -59,7 +59,7 @@ void SumCell::SetGroup(MathCell *parent)
     m_over->SetGroupList(parent);
 }
 
-MathCell *SumCell::Copy()
+Cell *SumCell::Copy()
 {
   SumCell *tmp = new SumCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -82,9 +82,9 @@ SumCell::~SumCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> SumCell::GetInnerCells()
+std::list<Cell *> SumCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_base)
     innerCells.push_back(m_base);
   if(m_under)
@@ -94,7 +94,7 @@ std::list<MathCell *> SumCell::GetInnerCells()
   return innerCells;
 }
 
-void SumCell::SetOver(MathCell *over)
+void SumCell::SetOver(Cell *over)
 {
   if (over == NULL)
     return;
@@ -102,7 +102,7 @@ void SumCell::SetOver(MathCell *over)
   m_over = over;
 }
 
-void SumCell::SetBase(MathCell *base)
+void SumCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
@@ -110,7 +110,7 @@ void SumCell::SetBase(MathCell *base)
   m_base = base;
 }
 
-void SumCell::SetUnder(MathCell *under)
+void SumCell::SetUnder(Cell *under)
 {
   if (under == NULL)
     return;
@@ -120,7 +120,7 @@ void SumCell::SetUnder(MathCell *under)
 
 void SumCell::RecalculateWidths(int fontsize)
 {
-  MathCell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
 
   m_signSize = Scale_Px(50) * configuration->GetZoomFactor();
@@ -163,7 +163,7 @@ void SumCell::RecalculateWidths(int fontsize)
 
 void SumCell::RecalculateHeight(int fontsize)
 {
-  MathCell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight(fontsize);
   m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
   m_over->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
   m_base->RecalculateHeightList(fontsize);
@@ -177,7 +177,7 @@ void SumCell::RecalculateHeight(int fontsize)
 
 void SumCell::Draw(wxPoint point)
 {
-  MathCell::Draw(point);
+  Cell::Draw(point);
 
   if (DrawThisCell(point))
   {
@@ -303,7 +303,7 @@ wxString SumCell::ToString()
     s = wxT("product(");
   s += m_base->ListToString();
 
-  MathCell *tmp = m_under;
+  Cell *tmp = m_under;
   wxString var = tmp->ToString();
   wxString from;
   tmp = tmp->m_next;

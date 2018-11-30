@@ -23,7 +23,7 @@
 /*! \file
   This file defines the class SqrtCell
 
-  SqrtCell is the MathCell type that represents a square root.
+  SqrtCell is the Cell type that represents a square root.
  */
 
 #include "SqrtCell.h"
@@ -31,7 +31,7 @@
 
 #define SIGN_FONT_SCALE 2.0
 
-SqrtCell::SqrtCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_signSize = 50;
@@ -47,7 +47,7 @@ SqrtCell::SqrtCell(MathCell *parent, Configuration **config, CellPointers *cellP
 }
 
 
-void SqrtCell::SetGroup(MathCell *parent)
+void SqrtCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_innerCell != NULL)
@@ -58,7 +58,7 @@ void SqrtCell::SetGroup(MathCell *parent)
     m_close->SetGroupList(parent);
 }
 
-MathCell *SqrtCell::Copy()
+Cell *SqrtCell::Copy()
 {
   SqrtCell *tmp = new SqrtCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -78,9 +78,9 @@ SqrtCell::~SqrtCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> SqrtCell::GetInnerCells()
+std::list<Cell *> SqrtCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_innerCell)
     innerCells.push_back(m_innerCell);
   if(m_open)
@@ -90,7 +90,7 @@ std::list<MathCell *> SqrtCell::GetInnerCells()
   return innerCells;
 }
 
-void SqrtCell::SetInner(MathCell *inner)
+void SqrtCell::SetInner(Cell *inner)
 {
   if (inner == NULL)
     return;
@@ -105,7 +105,7 @@ void SqrtCell::SetInner(MathCell *inner)
 
 void SqrtCell::RecalculateWidths(int fontsize)
 {
-  MathCell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
   m_innerCell->RecalculateWidthsList(fontsize);
   if (configuration->CheckTeXFonts())
@@ -195,7 +195,7 @@ void SqrtCell::RecalculateHeight(int fontsize)
 
 void SqrtCell::Draw(wxPoint point)
 {
-  MathCell::Draw(point);
+  Cell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   {
     Configuration *configuration = (*m_configuration);
@@ -379,5 +379,5 @@ void SqrtCell::Unbreak()
 {
   if (m_isBrokenIntoLines)
     m_innerCell->UnbreakList();
-  MathCell::Unbreak();
+  Cell::Unbreak();
 }

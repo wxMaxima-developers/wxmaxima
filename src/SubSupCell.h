@@ -23,24 +23,24 @@
 #ifndef SUBSUPCELL_H
 #define SUBSUPCELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
 
-class SubSupCell : public MathCell
+class SubSupCell : public Cell
 {
 public:
-  SubSupCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
+  SubSupCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~SubSupCell();
 
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
 
-  MathCell *Copy();
+  Cell *Copy();
 
-  void SetBase(MathCell *base);
+  void SetBase(Cell *base);
 
-  void SetIndex(MathCell *index);
+  void SetIndex(Cell *index);
 
-  void SetExponent(MathCell *expt);
+  void SetExponent(Cell *expt);
 
   void RecalculateHeight(int fontsize);
 
@@ -58,12 +58,12 @@ public:
 
   wxString ToMathML();
 
-  void SetGroup(MathCell *parent);
+  void SetGroup(Cell *parent);
 
 protected:
-  MathCell *m_baseCell;
-  MathCell *m_exptCell;
-  MathCell *m_indexCell;
+  Cell *m_baseCell;
+  Cell *m_exptCell;
+  Cell *m_indexCell;
 };
 
 #endif // SUBSUPCELL_H

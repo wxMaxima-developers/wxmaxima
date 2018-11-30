@@ -23,7 +23,7 @@
 /*! \file
   This file defines the class SlideShowCell
 
-  SlideShowCell is the MathCell type that represents animations.
+  SlideShowCell is the Cell type that represents animations.
 */
 
 // 72 points per inch / 96 pixels per inch
@@ -46,7 +46,7 @@
 #include <wx/wfstream.h>
 #include <wx/anidecod.h>
 
-SlideShow::SlideShow(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxFileSystem *filesystem, int framerate) : MathCell(
+SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxFileSystem *filesystem, int framerate) : Cell(
         parent, config)
 {
   m_cellPointers = cellPointers;
@@ -146,7 +146,7 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
   m_displayed = 0;
 }
 
-MathCell *SlideShow::Copy()
+Cell *SlideShow::Copy()
 {
   SlideShow *tmp = new SlideShow(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -179,12 +179,12 @@ void SlideShow::MarkAsDeleted()
   // Stop and unregister the timer.
   StopTimer();
   ClearCache();
-  MathCell::MarkAsDeleted();
+  Cell::MarkAsDeleted();
 }
 
-std::list<MathCell *> SlideShow::GetInnerCells()
+std::list<Cell *> SlideShow::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   return innerCells;
 }
 
@@ -198,7 +198,7 @@ void SlideShow::SetDisplayedIndex(int ind)
 
 void SlideShow::RecalculateWidths(int fontsize)
 {
-  MathCell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths(fontsize);
   // Here we recalculate the height, as well:
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
@@ -230,13 +230,13 @@ void SlideShow::RecalculateWidths(int fontsize)
 
 void SlideShow::RecalculateHeight(int fontsize)
 {
-  MathCell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight(fontsize);
   // The rest is already done on recalculating the width.
 }
 
 void SlideShow::Draw(wxPoint point)
 {
-  MathCell::Draw(point);
+  Cell::Draw(point);
   // If the animation leaves the screen the timer is stopped automatically.
   if(m_animationRunning)
     ReloadTimer();

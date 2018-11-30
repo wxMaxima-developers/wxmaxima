@@ -28,7 +28,7 @@
 
 #include <wx/font.h>
 #include <wx/config.h>
-#include "MathCell.h"
+#include "Cell.h"
 
 Configuration::Configuration(wxDC &dc) : m_dc(&dc) 
 {

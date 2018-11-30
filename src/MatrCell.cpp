@@ -23,13 +23,13 @@
 /*! \file
   This file defines the class MatrCell
 
-  MatrCell is the MathCell type that represents matrices and matrix-like 
+  MatrCell is the Cell type that represents matrices and matrix-like 
   elements like the table_form command.
 */
 
 #include "MatrCell.h"
 
-MatrCell::MatrCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+MatrCell::MatrCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_matWidth = 0;
@@ -40,7 +40,7 @@ MatrCell::MatrCell(MathCell *parent, Configuration **config, CellPointers *cellP
   m_rowNames = m_colNames = false;
 }
 
-void MatrCell::SetGroup(MathCell *parent)
+void MatrCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   for (unsigned int i = 0; i < m_cells.size(); i++)
@@ -50,7 +50,7 @@ void MatrCell::SetGroup(MathCell *parent)
   }
 }
 
-MathCell *MatrCell::Copy()
+Cell *MatrCell::Copy()
 {
   MatrCell *tmp = new MatrCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -77,9 +77,9 @@ MatrCell::~MatrCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> MatrCell::GetInnerCells()
+std::list<Cell *> MatrCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   for (unsigned int i = 0; i < m_cells.size(); i++)
     if(m_cells[i])
       innerCells.push_back(m_cells[i]);
@@ -90,7 +90,7 @@ std::list<MathCell *> MatrCell::GetInnerCells()
 
 void MatrCell::RecalculateWidths(int fontsize)
 {
-  MathCell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths(fontsize);
   for (int i = 0; i < m_matWidth * m_matHeight; i++)
   {
     m_cells[i]->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 2));
@@ -116,7 +116,7 @@ void MatrCell::RecalculateWidths(int fontsize)
 
 void MatrCell::RecalculateHeight(int fontsize)
 {
-  MathCell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight(fontsize);
   for (int i = 0; i < m_matWidth * m_matHeight; i++)
   {
     m_cells[i]->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 2));
@@ -145,7 +145,7 @@ void MatrCell::RecalculateHeight(int fontsize)
 
 void MatrCell::Draw(wxPoint point)
 {
-  MathCell::Draw(point);
+  Cell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   {
     Configuration *configuration = (*m_configuration);

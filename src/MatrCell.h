@@ -23,22 +23,22 @@
 #ifndef MATRCELL_H
 #define MATRCELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
 
 #include <vector>
 
 using namespace std;
 
-class MatrCell : public MathCell
+class MatrCell : public Cell
 {
 public:
-  MatrCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
+  MatrCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~MatrCell();
 
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
 
-  MathCell *Copy();
+  Cell *Copy();
 
   void RecalculateHeight(int fontsize);
 
@@ -46,7 +46,7 @@ public:
 
   virtual void Draw(wxPoint point);
 
-  void AddNewCell(MathCell *cell)
+  void AddNewCell(Cell *cell)
   {
     m_cells.push_back(cell);
   }
@@ -79,7 +79,7 @@ public:
   void SetInferenceFlag(bool inference)
   { m_inferenceMatrix = inference; }
 
-  void SetGroup(MathCell *parent);
+  void SetGroup(Cell *parent);
 
   void RowNames(bool rn)
   { m_rowNames = rn; }
@@ -94,7 +94,7 @@ protected:
   int m_roundedParens;
   int m_matHeight;
   bool m_specialMatrix, m_inferenceMatrix, m_rowNames, m_colNames;
-  vector<MathCell *> m_cells;
+  vector<Cell *> m_cells;
   vector<int> m_widths;
   vector<int> m_drops;
   vector<int> m_centers;

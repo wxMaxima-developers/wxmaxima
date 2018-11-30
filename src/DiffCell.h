@@ -23,22 +23,22 @@
 #ifndef DIFFCELL_H
 #define DIFFCELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
 
-class DiffCell : public MathCell
+class DiffCell : public Cell
 {
 public:
-  DiffCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
+  DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~DiffCell();
   
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
 
-  MathCell *Copy();
+  Cell *Copy();
 
-  void SetBase(MathCell *base);
+  void SetBase(Cell *base);
 
-  void SetDiff(MathCell *diff);
+  void SetDiff(Cell *diff);
 
   void RecalculateHeight(int fontsize);
 
@@ -56,11 +56,11 @@ public:
 
   wxString ToXML();
 
-  void SetGroup(MathCell *parent);
+  void SetGroup(Cell *parent);
 
 protected:
-  MathCell *m_baseCell;
-  MathCell *m_diffCell;
+  Cell *m_baseCell;
+  Cell *m_diffCell;
 };
 
 #endif // DIFFCELL_H

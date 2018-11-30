@@ -23,7 +23,7 @@
 #ifndef CONJUGATECELL_H
 #define CONJUGATECELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
 #include "TextCell.h"
 
 /*! \file
@@ -45,29 +45,29 @@
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this Cell.
  */
-class ConjugateCell : public MathCell
+class ConjugateCell : public Cell
 {
 public:
-  ConjugateCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
+  ConjugateCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~ConjugateCell();
 
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
 
-  void SetInner(MathCell *inner);
+  void SetInner(Cell *inner);
 
-  MathCell *Copy();
+  Cell *Copy();
 
   bool BreakUp();
 
   void Unbreak();
 
-  void SetGroup(MathCell *parent);
+  void SetGroup(Cell *parent);
 
 protected:
-  MathCell *m_innerCell;
+  Cell *m_innerCell;
   TextCell *m_open, *m_close;
-  MathCell *m_last;
+  Cell *m_last;
 
   void RecalculateHeight(int fontsize);
 

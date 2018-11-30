@@ -65,7 +65,7 @@ Bitmap::~Bitmap()
   (*m_configuration)->RecalculationForce(true);
 }
 
-bool Bitmap::SetData(MathCell *tree, long int maxSize)
+bool Bitmap::SetData(Cell *tree, long int maxSize)
 {
   wxDELETE(m_tree);
   m_tree = tree;
@@ -159,7 +159,7 @@ void Bitmap::RecalculateHeight()
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   while (tmp != NULL)
   {
@@ -175,7 +175,7 @@ void Bitmap::RecalculateWidths()
   int mfontsize = fontsize;
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
 
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   while (tmp != NULL)
   {
@@ -189,7 +189,7 @@ void Bitmap::BreakLines()
   int fullWidth = BM_FULL_WIDTH * m_scale;
   int currentWidth = 0;
 
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   while (tmp != NULL)
   {
@@ -212,7 +212,7 @@ void Bitmap::BreakLines()
 
 void Bitmap::GetMaxPoint(int *width, int *height)
 {
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
   int currentHeight = 0;
   int currentWidth = 0;
   *width = 0;
@@ -243,7 +243,7 @@ void Bitmap::GetMaxPoint(int *width, int *height)
 void Bitmap::Draw()
 {
   (*m_configuration)->Printing(true);
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   wxString bgColStr = wxT("white");
   wxConfig::Get()->Read(wxT("Style/Background/color"), &bgColStr);
@@ -346,7 +346,7 @@ bool Bitmap::ToClipboard()
 
 void Bitmap::BreakUpCells()
 {
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;

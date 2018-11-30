@@ -24,26 +24,26 @@
 #define TEXTCELL_H
 
 #include "wx/regex.h"
-#include "MathCell.h"
+#include "Cell.h"
 
 /*! A Text cell
 
   Everything on the worksheet that is composed of characters with the eception
   of input cells: Input cells are handled by EditorCell instead.
  */
-class TextCell : public MathCell
+class TextCell : public Cell
 {
 private:
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis;
 public:
-  TextCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString);
+  TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString);
 
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
   
   ~TextCell();
   
-  MathCell *Copy();
+  Cell *Copy();
 
   virtual void SetStyle(TextStyle style);
   

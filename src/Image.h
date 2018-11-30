@@ -29,7 +29,7 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
-#include "MathCell.h"
+#include "Cell.h"
 #include <wx/image.h>
 
 #include <wx/filesys.h>

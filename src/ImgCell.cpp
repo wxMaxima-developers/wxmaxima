@@ -23,7 +23,7 @@
 /*! \file
   This file defines the class ImgCell
 
-  ImgCell is the MathCell type that represents still images in maxima's output
+  ImgCell is the Cell type that represents still images in maxima's output
   or in user-provided images.
  */
 
@@ -40,7 +40,7 @@
 #include <wx/clipbrd.h>
 #include <wx/mstream.h>
 
-ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_image = NULL;
@@ -50,7 +50,7 @@ ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellPoi
   m_drawBoundingBox = false;
 }
 
-ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellpointers, wxMemoryBuffer image, wxString type) : MathCell(parent,
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers, wxMemoryBuffer image, wxString type) : Cell(parent,
                                                                                                            config)
 {
   m_cellPointers = cellpointers;
@@ -61,7 +61,7 @@ ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellpoi
   m_drawBoundingBox = false;
 }
 
-ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellpointers, const wxBitmap &bitmap) : MathCell(parent, config)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers, const wxBitmap &bitmap) : Cell(parent, config)
 {
   m_cellPointers = cellpointers;
   m_image = new Image(m_configuration, bitmap);
@@ -74,8 +74,8 @@ ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellpoi
 int ImgCell::s_counter = 0;
 
 // constructor which load image
-ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellpointers, wxString image, bool remove, wxFileSystem *filesystem)
-        : MathCell(parent, config)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers, wxString image, bool remove, wxFileSystem *filesystem)
+        : Cell(parent, config)
 {
   m_cellPointers = cellpointers;
   m_type = MC_TYPE_IMAGE;
@@ -101,7 +101,7 @@ void ImgCell::SetBitmap(const wxBitmap &bitmap)
   m_image = new Image(m_configuration, bitmap);
 }
 
-MathCell *ImgCell::Copy()
+Cell *ImgCell::Copy()
 {
   ImgCell *tmp = new ImgCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -123,12 +123,12 @@ ImgCell::~ImgCell()
 void ImgCell::MarkAsDeleted()
 {
   ClearCache();
-  MathCell::MarkAsDeleted();
+  Cell::MarkAsDeleted();
 }
 
-std::list<MathCell *> ImgCell::GetInnerCells()
+std::list<Cell *> ImgCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   return innerCells;
 }
 
@@ -152,7 +152,7 @@ wxString ImgCell::GetToolTip(const wxPoint &point)
 
 void ImgCell::RecalculateWidths(int fontsize)
 {
-  MathCell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths(fontsize);
   // Here we recalculate the height, as well:
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
@@ -171,7 +171,7 @@ void ImgCell::RecalculateWidths(int fontsize)
 
 void ImgCell::RecalculateHeight(int fontsize)
 {
-  MathCell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight(fontsize);
   // Here we recalculate the width, as well:
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
@@ -190,7 +190,7 @@ void ImgCell::Draw(wxPoint point)
       m_image->Recalculate();
     }
 
-    MathCell::Draw(point);
+    Cell::Draw(point);
     
     if (!InUpdateRegion()) return;
     

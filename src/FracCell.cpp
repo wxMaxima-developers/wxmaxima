@@ -23,7 +23,7 @@
 /*! \file
   This file defines the class FracCell
 
-  FracCell is the MathCell type that represents fractions.
+  FracCell is the Cell type that represents fractions.
 */
 
 #include "FracCell.h"
@@ -31,7 +31,7 @@
 
 #define FRAC_DEC 1
 
-FracCell::FracCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_num = NULL;
@@ -53,7 +53,7 @@ FracCell::FracCell(MathCell *parent, Configuration **config, CellPointers *cellP
   m_divSign = new TextCell(this, config, cellPointers, wxT("/"));
 }
 
-void FracCell::SetGroup(MathCell *parent)
+void FracCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_num != NULL)
@@ -72,7 +72,7 @@ void FracCell::SetGroup(MathCell *parent)
     m_divide->SetGroupList(parent);
 }
 
-MathCell *FracCell::Copy()
+Cell *FracCell::Copy()
 {
   FracCell *tmp = new FracCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -99,9 +99,9 @@ FracCell::~FracCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> FracCell::GetInnerCells()
+std::list<Cell *> FracCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_divide)
     innerCells.push_back(m_divide);
   if(m_denom)
@@ -119,7 +119,7 @@ std::list<MathCell *> FracCell::GetInnerCells()
   return innerCells;
 }
 
-void FracCell::SetNum(MathCell *num)
+void FracCell::SetNum(Cell *num)
 {
   if (num == NULL)
     return;
@@ -127,7 +127,7 @@ void FracCell::SetNum(MathCell *num)
   m_num = num;
 }
 
-void FracCell::SetDenom(MathCell *denom)
+void FracCell::SetDenom(Cell *denom)
 {
   if (denom == NULL)
     return;
@@ -137,7 +137,7 @@ void FracCell::SetDenom(MathCell *denom)
 
 void FracCell::RecalculateWidths(int fontsize)
 {
-  MathCell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths(fontsize);
   wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
   if (m_isBrokenIntoLines || m_exponent)
@@ -194,7 +194,7 @@ void FracCell::RecalculateWidths(int fontsize)
 
 void FracCell::RecalculateHeight(int fontsize)
 {
-  MathCell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight(fontsize);
   if (m_isBrokenIntoLines || m_exponent)
   {
     m_num->RecalculateHeightList(fontsize);
@@ -239,7 +239,7 @@ void FracCell::Draw(wxPoint point)
 {
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    MathCell::Draw(point);
+    Cell::Draw(point);
     Configuration *configuration = (*m_configuration);
     
     wxDC *dc = configuration->GetDC();
@@ -311,7 +311,7 @@ wxString FracCell::ToString()
     }
     else
     {
-      MathCell *tmp = m_denom;
+      Cell *tmp = m_denom;
       while (tmp != NULL)
       {
         tmp = tmp->m_next;   // Skip the d
@@ -483,5 +483,5 @@ void FracCell::Unbreak()
     m_num->UnbreakList();
     m_denom->UnbreakList();
   }
-  MathCell::Unbreak();
+  Cell::Unbreak();
 }

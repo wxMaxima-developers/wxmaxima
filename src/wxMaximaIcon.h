@@ -26,7 +26,7 @@
 #ifndef WXMAXIMAICON_H
 #define WXMAXIMAICON_H
 
-#include "MathCell.h"
+#include "Cell.h"
 #include <wx/icon.h>
 #include <wx/image.h>
 #include <wx/bitmap.h>

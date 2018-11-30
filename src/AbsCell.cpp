@@ -23,7 +23,7 @@
 /*! \file
   This file defines the class AbsCell
 
-  AbsCell is the MathCell type that represents the field that represents the 
+  AbsCell is the Cell type that represents the field that represents the 
   <code>abs()</code> and <code>cabs()</code> commands.
 */
 
@@ -31,7 +31,7 @@
 #include "AbsCell.h"
 #include "TextCell.h"
 
-AbsCell::AbsCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_innerCell = NULL;
@@ -41,7 +41,7 @@ AbsCell::AbsCell(MathCell *parent, Configuration **config, CellPointers *cellPoi
   m_last = NULL;
 }
 
-void AbsCell::SetGroup(MathCell *parent)
+void AbsCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_innerCell != NULL)
@@ -52,7 +52,7 @@ void AbsCell::SetGroup(MathCell *parent)
     m_close->SetGroupList(parent);
 }
 
-MathCell *AbsCell::Copy()
+Cell *AbsCell::Copy()
 {
   AbsCell *tmp = new AbsCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -74,15 +74,15 @@ AbsCell::~AbsCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> AbsCell::GetInnerCells()
+std::list<Cell *> AbsCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_innerCell)
     innerCells.push_back(m_innerCell);
   return innerCells;
 }
 
-void AbsCell::SetInner(MathCell *inner)
+void AbsCell::SetInner(Cell *inner)
 {
   if (inner == NULL)
     return;
@@ -97,7 +97,7 @@ void AbsCell::SetInner(MathCell *inner)
 
 void AbsCell::RecalculateWidths(int fontsize)
 {
-  MathCell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths(fontsize);
   m_innerCell->RecalculateWidthsList(fontsize);
   m_width = m_innerCell->GetFullWidth() + Scale_Px(8) + 2 * (*m_configuration)->GetDefaultLineWidth();
   m_open->RecalculateWidthsList(fontsize);
@@ -112,7 +112,7 @@ void AbsCell::RecalculateWidths(int fontsize)
 
 void AbsCell::RecalculateHeight(int fontsize)
 {
-  MathCell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight(fontsize);
   m_innerCell->RecalculateHeightList(fontsize);
   m_height = m_innerCell->GetMaxHeight() + Scale_Px(4);
   m_center = m_innerCell->GetMaxCenter() + Scale_Px(2);
@@ -128,7 +128,7 @@ void AbsCell::RecalculateHeight(int fontsize)
 
 void AbsCell::Draw(wxPoint point)
 {
-  MathCell::Draw(point);
+  Cell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   {    
     Configuration *configuration = (*m_configuration);
@@ -220,5 +220,5 @@ void AbsCell::Unbreak()
 {
   if (m_isBrokenIntoLines)
     m_innerCell->UnbreakList();
-  MathCell::Unbreak();
+  Cell::Unbreak();
 }

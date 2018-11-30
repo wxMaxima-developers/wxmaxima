@@ -56,7 +56,7 @@
 #include "BC2Wiz.h"
 #include "MatWiz.h"
 #include "SystemWiz.h"
-#include "MathPrintout.h"
+#include "Printout.h"
 #include "TipOfTheDay.h"
 #include "EditorCell.h"
 #include "SlideShowCell.h"
@@ -506,7 +506,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, wxString userLabel)
 void wxMaxima::DoConsoleAppend(wxString s, CellType type, bool newLine,
                                bool bigSkip, wxString userLabel)
 {
-  MathCell *cell;
+  Cell *cell;
 
   if (s.IsEmpty())
     return;
@@ -582,7 +582,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
 
     wxStringTokenizer tokens(s, wxT("\n"));
     int count = 0;
-    MathCell *tmp = NULL, *lst = NULL;
+    Cell *tmp = NULL, *lst = NULL;
     while (tokens.HasMoreTokens())
     {
       cell = new TextCell(m_worksheet->GetTree(), &(m_worksheet->m_configuration),
@@ -1823,14 +1823,14 @@ void wxMaxima::ReadPrompt(wxString &data)
        m_worksheet->SetNotification(_("Maxima asks a question!"),wxICON_INFORMATION);
     if (!o.IsEmpty())
     {
-      m_worksheet->m_configuration->SetDefaultMathCellToolTip(
+      m_worksheet->m_configuration->SetDefaultCellToolTip(
         _("Most questions can be avoided using the assume() "
           "and the declare() command"));
       if (o.Find(wxT("<mth>")) > -1)
         DoConsoleAppend(o, MC_TYPE_PROMPT);
       else
         DoRawConsoleAppend(o, MC_TYPE_PROMPT);
-      m_worksheet->m_configuration->SetDefaultMathCellToolTip(wxEmptyString);
+      m_worksheet->m_configuration->SetDefaultCellToolTip(wxEmptyString);
   }
     if (m_worksheet->ScrolledAwayFromEvaluation())
     {
@@ -2610,7 +2610,7 @@ GroupCell *wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfil
   {
     if (xmlcells->GetType() != wxXML_TEXT_NODE)
     {
-      MathCell *mc = mp.ParseTag(xmlcells, false);
+      Cell *mc = mp.ParseTag(xmlcells, false);
       if (mc != NULL)
       {
         GroupCell *cell = dynamic_cast<GroupCell *>(mc);
@@ -3232,7 +3232,7 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
         m_worksheet->Freeze();
         wxEventBlocker blocker(m_worksheet);
         wxBusyCursor crs;
-        MathPrintout printout(title, &m_worksheet->m_configuration);
+        Printout printout(title, &m_worksheet->m_configuration);
         GroupCell *copy = m_worksheet->CopyTree();
         printout.SetData(copy);
         if (printer.Print(this, &printout, true))
@@ -7030,7 +7030,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     case Worksheet::popid_maxsizechooser:
       if(m_worksheet->m_cellPointers.m_selectionStart != NULL)
       {
-        MathCell *output = dynamic_cast<GroupCell *>(m_worksheet->m_cellPointers.m_selectionStart->GetGroup())->GetLabel();
+        Cell *output = dynamic_cast<GroupCell *>(m_worksheet->m_cellPointers.m_selectionStart->GetGroup())->GetLabel();
         if (output == NULL)
           return;
         if(output->GetType() != MC_TYPE_IMAGE)
@@ -7403,7 +7403,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
                                      wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
       if (file.Length())
       {
-        MathCell *selection = m_worksheet->GetSelectionStart();
+        Cell *selection = m_worksheet->GetSelectionStart();
         if (selection != NULL && selection->GetType() == MC_TYPE_SLIDE)
           dynamic_cast<SlideShow *>(selection)->ToGif(file);
       }

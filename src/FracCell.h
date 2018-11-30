@@ -23,13 +23,13 @@
 /*! \file
   This file declares the class FracCell
 
-  FracCell is the MathCell type that represents fractions.
+  FracCell is the Cell type that represents fractions.
 */
 
 #ifndef FRACCELL_H
 #define FRACCELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
 #include "TextCell.h"
 
 /* This class represents fractions.
@@ -39,14 +39,14 @@
        on the screen, or
      - as a linear division (\f$ a/b \f$) if it doesn't. 
  */
-class FracCell : public MathCell
+class FracCell : public Cell
 {
 public:
-  FracCell(MathCell *parent, Configuration **config, CellPointers *cellpointers);
+  FracCell(Cell *parent, Configuration **config, CellPointers *cellpointers);
 
   ~FracCell();
   
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
 
   //! All types of fractions we supportx
   enum FracType
@@ -56,7 +56,7 @@ public:
     FC_DIFF
   };
 
-  MathCell *Copy();
+  Cell *Copy();
 
   void RecalculateHeight(int fontsize);
 
@@ -70,10 +70,10 @@ public:
   }
 
   //! Set the nummerator for the fraction
-  void SetNum(MathCell *num);
+  void SetNum(Cell *num);
 
   //! Set the denominator of the fraction
-  void SetDenom(MathCell *denom);
+  void SetDenom(Cell *denom);
 
   //! Answers the question if this is an operator by returning "true".
   bool IsOperator()
@@ -99,17 +99,17 @@ public:
 
   void Unbreak();
 
-  void SetGroup(MathCell *parent);
+  void SetGroup(Cell *parent);
 
 protected:
   //! The "/".
   TextCell *m_divSign;
   //! The nummerator
-  MathCell *m_num;
+  Cell *m_num;
   //! The denominator
-  MathCell *m_denom;
-  MathCell *m_open1, *m_open2, *m_close1, *m_close2, *m_divide;
-  MathCell *m_last1, *m_last2;
+  Cell *m_denom;
+  Cell *m_open1, *m_open2, *m_close1, *m_close2, *m_divide;
+  Cell *m_last1, *m_last2;
   bool m_exponent;
   int m_fracStyle;
   //! How much wider should the horizontal line be on both ends than num or denom?

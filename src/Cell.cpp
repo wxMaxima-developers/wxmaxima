@@ -21,23 +21,23 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  This file defines the class MathCell
+  This file defines the class Cell
 
-  MathCell is the base class for all cell- or list-type elements.
+  Cell is the base class for all cell- or list-type elements.
 */
 
-#include "MathCell.h"
+#include "Cell.h"
 #include <wx/regex.h>
 #include <wx/sstream.h>
 
-wxString MathCell::GetToolTip(const wxPoint &point)
+wxString Cell::GetToolTip(const wxPoint &point)
 {
   if(!ContainsPoint(point))
     return wxEmptyString;
 
   wxString toolTip;
-  std::list<MathCell *> innerCells = GetInnerCells();
-  for(std::list<MathCell *>::iterator it = innerCells.begin(); it != innerCells.end(); ++it)
+  std::list<Cell *> innerCells = GetInnerCells();
+  for(std::list<Cell *>::iterator it = innerCells.begin(); it != innerCells.end(); ++it)
   {
     if(*it != NULL)
     {
@@ -48,7 +48,7 @@ wxString MathCell::GetToolTip(const wxPoint &point)
   return m_toolTip;
 }
 
-MathCell::MathCell(MathCell *group, Configuration **config)
+Cell::Cell(Cell *group, Configuration **config)
 {
   m_textStyle = TS_DEFAULT;
   m_toolTip = wxEmptyString;
@@ -80,28 +80,28 @@ MathCell::MathCell(MathCell *group, Configuration **config)
   m_SuppressMultiplicationDot = false;
   m_imageBorderWidth = 0;
   SetCurrentPoint(wxPoint(-1, -1));
-  m_toolTip = (*m_configuration)->GetDefaultMathCellToolTip();
+  m_toolTip = (*m_configuration)->GetDefaultCellToolTip();
   m_fontSize = (*m_configuration)->GetMathFontSize();
 }
 
-MathCell::~MathCell()
+Cell::~Cell()
 {
   // Find the last cell in this list of cells
-  MathCell *last = this;
+  Cell *last = this;
   while (last->m_next != NULL)
     last = last->m_next;
 
   // Delete all cells beginning with the last one
   while ((last != NULL) && (last != this))
   {
-    MathCell *tmp = last;
+    Cell *tmp = last;
     last = last->m_previous;
     wxDELETE(tmp);
     last->m_next = NULL;
   }
 }
 
-void MathCell::SetType(CellType type)
+void Cell::SetType(CellType type)
 {
   m_type = type;
 
@@ -153,11 +153,11 @@ void MathCell::SetType(CellType type)
   ResetSize();
 }
 
-MathCell *MathCell::CopyList()
+Cell *Cell::CopyList()
 {
-  MathCell *dest = Copy();
-  MathCell *src = this->m_next;
-  MathCell *ret = dest;
+  Cell *dest = Copy();
+  Cell *src = this->m_next;
+  Cell *ret = dest;
 
   while (src != NULL)
   {
@@ -169,9 +169,9 @@ MathCell *MathCell::CopyList()
   return ret;
 }
 
-void MathCell::ClearCacheList()
+void Cell::ClearCacheList()
 {
-  MathCell *tmp = this;
+  Cell *tmp = this;
 
   while (tmp != NULL)
   {
@@ -180,9 +180,9 @@ void MathCell::ClearCacheList()
   }
 }
 
-void MathCell::SetGroupList(MathCell *parent)
+void Cell::SetGroupList(Cell *parent)
 {
-  MathCell *tmp = this;
+  Cell *tmp = this;
   while (tmp != NULL)
   {
     tmp->SetGroup(parent);
@@ -194,7 +194,7 @@ void MathCell::SetGroupList(MathCell *parent)
 /***
  * Append new cell to the end of this list.
  */
-void MathCell::AppendCell(MathCell *p_next)
+void Cell::AppendCell(Cell *p_next)
 {
   if (p_next == NULL)
     return;
@@ -202,7 +202,7 @@ void MathCell::AppendCell(MathCell *p_next)
   m_maxCenter = -1;
 
   // Search the last cell in the list
-  MathCell *LastInList = this;
+  Cell *LastInList = this;
   while (LastInList->m_next != NULL)
     LastInList = LastInList->m_next;
 
@@ -211,7 +211,7 @@ void MathCell::AppendCell(MathCell *p_next)
   LastInList->m_next->m_previous = LastInList;
 
   // Search the last cell in the list that is sorted by the drawing order
-  MathCell *LastToDraw = LastInList;
+  Cell *LastToDraw = LastInList;
   while (LastToDraw->m_nextToDraw != NULL)
     LastToDraw = LastToDraw->m_nextToDraw;
 
@@ -220,7 +220,7 @@ void MathCell::AppendCell(MathCell *p_next)
   p_next->m_previousToDraw = LastToDraw;
 }
 
-MathCell *MathCell::GetGroup()
+Cell *Cell::GetGroup()
 {
   wxASSERT_MSG(m_group != NULL, _("Bug: Math Cell that claims to have no group Cell it belongs to"));
   return m_group;
@@ -229,11 +229,11 @@ MathCell *MathCell::GetGroup()
 /***
  * Get the maximum drop of the center.
  */
-int MathCell::GetMaxCenter()
+int Cell::GetMaxCenter()
 {
   if ((m_maxCenter < 0) || ((*m_configuration)->RecalculationForce()))
   {
-    MathCell *tmp = this;
+    Cell *tmp = this;
     while (tmp != NULL)
     {
       m_maxCenter = MAX(m_maxCenter, tmp->m_center);
@@ -250,11 +250,11 @@ int MathCell::GetMaxCenter()
 /***
  * Get the maximum drop of cell.
  */
-int MathCell::GetMaxDrop()
+int Cell::GetMaxDrop()
 {
   if ((m_maxDrop < 0) || ((*m_configuration)->RecalculationForce()))
   {
-    MathCell *tmp = this;
+    Cell *tmp = this;
     while (tmp != NULL)
     {
       m_maxDrop = MAX(m_maxDrop, tmp->m_isBrokenIntoLines ? 0 : (tmp->m_height - tmp->m_center));
@@ -269,19 +269,19 @@ int MathCell::GetMaxDrop()
 }
 
 //!  Get the maximum hight of cells in line.
-int MathCell::GetMaxHeight()
+int Cell::GetMaxHeight()
 {
   return GetMaxCenter() + GetMaxDrop();
 }
 
 /*! Get full width of this group.
  */
-int MathCell::GetFullWidth()
+int Cell::GetFullWidth()
 {
   // Recalculate the with of this list of cells only if this has been marked as necessary.
   if ((m_fullWidth < 0) || ((*m_configuration)->RecalculationForce()))
   {
-    MathCell *tmp = this;
+    Cell *tmp = this;
 
     // We begin this calculation with a negative offset since the full width of only a single
     // cell doesn't contain the space that separates two cells - that is automatically added
@@ -298,14 +298,14 @@ int MathCell::GetFullWidth()
 
 /*! Get the width of this line.
  */
-int MathCell::GetLineWidth()
+int Cell::GetLineWidth()
 {
   if (m_lineWidth < 0)
   {
     m_lineWidth = 0;
     int width = m_width;
 
-    MathCell *tmp = this;
+    Cell *tmp = this;
     while(tmp != NULL)
     {
       width += tmp->m_width;
@@ -329,7 +329,7 @@ int MathCell::GetLineWidth()
  To make this work each derived class must draw the content of the cell
  and then call MathCall::Draw(...).
  */
-void MathCell::Draw(wxPoint point)
+void Cell::Draw(wxPoint point)
 {
   SetCurrentPoint(point);
 
@@ -341,9 +341,9 @@ void MathCell::Draw(wxPoint point)
 #endif
 }
 
-void MathCell::DrawList(wxPoint point)
+void Cell::DrawList(wxPoint point)
 {
-  MathCell *tmp = this;
+  Cell *tmp = this;
   while (tmp != NULL)
   {
     tmp->Draw(point);
@@ -353,9 +353,9 @@ void MathCell::DrawList(wxPoint point)
   }
 }
 
-void MathCell::RecalculateList(int fontsize)
+void Cell::RecalculateList(int fontsize)
 {
-  MathCell *tmp = this;
+  Cell *tmp = this;
 
   while (tmp != NULL)
   {
@@ -365,9 +365,9 @@ void MathCell::RecalculateList(int fontsize)
   }
 }
 
-void MathCell::ResetSizeList()
+void Cell::ResetSizeList()
 {
-  MathCell *tmp = this;
+  Cell *tmp = this;
 
   while (tmp != NULL)
   {
@@ -377,9 +377,9 @@ void MathCell::ResetSizeList()
 }
 
 
-void MathCell::RecalculateHeightList(int fontsize)
+void Cell::RecalculateHeightList(int fontsize)
 {
-  MathCell *tmp = this;
+  Cell *tmp = this;
 
   while (tmp != NULL)
   {
@@ -395,9 +395,9 @@ void MathCell::RecalculateHeightList(int fontsize)
 
   Should set: set m_width.
 */
-void MathCell::RecalculateWidthsList(int fontsize)
+void Cell::RecalculateWidthsList(int fontsize)
 {
-  MathCell *tmp = this;
+  Cell *tmp = this;
 
   while (tmp != NULL)
   {
@@ -406,7 +406,7 @@ void MathCell::RecalculateWidthsList(int fontsize)
   }
 }
 
-void MathCell::RecalculateWidths(int fontsize)
+void Cell::RecalculateWidths(int fontsize)
 {
   ResetData();
   m_fontSize = fontsize;
@@ -414,7 +414,7 @@ void MathCell::RecalculateWidths(int fontsize)
 
 /*! Is this cell currently visible in the window?.
  */
-bool MathCell::DrawThisCell(wxPoint point)
+bool Cell::DrawThisCell(wxPoint point)
 {
   // If the cell isn't on the worksheet we don't draw it.
   if((point.x < 0) || (point.y < 0))
@@ -450,7 +450,7 @@ bool MathCell::DrawThisCell(wxPoint point)
    - true  return the rectangle around the whole line.
    - false return the rectangle around this cell.
  */
-wxRect MathCell::GetRect(bool all)
+wxRect Cell::GetRect(bool all)
 {
   if (all)
     return wxRect(m_currentPoint.x, m_currentPoint.y - GetMaxCenter(),
@@ -460,7 +460,7 @@ wxRect MathCell::GetRect(bool all)
                   m_width, m_height);
 }
 
-bool MathCell::InUpdateRegion(const wxRect &rect)
+bool Cell::InUpdateRegion(const wxRect &rect)
 {
   if ((*m_configuration)->Printing())
     return true;
@@ -471,7 +471,7 @@ bool MathCell::InUpdateRegion(const wxRect &rect)
   return true;
 }
 
-wxRect MathCell::CropToUpdateRegion(const wxRect &rect)
+wxRect Cell::CropToUpdateRegion(const wxRect &rect)
 {
   if((*m_configuration)->Printing())
     return rect;
@@ -491,7 +491,7 @@ wxRect MathCell::CropToUpdateRegion(const wxRect &rect)
   return wxRect(wxPoint(left, top), wxPoint(right, bottom));
 }
 
-void MathCell::DrawBoundingBox(wxDC &dc, bool all)
+void Cell::DrawBoundingBox(wxDC &dc, bool all)
 {
   wxRect rect = GetRect(all);
   if (InUpdateRegion())
@@ -503,7 +503,7 @@ void MathCell::DrawBoundingBox(wxDC &dc, bool all)
 /***
  * Do we have an operator in this line - draw () in frac...
  */
-bool MathCell::IsCompound()
+bool Cell::IsCompound()
 {
   if (IsOperator())
     return true;
@@ -515,7 +515,7 @@ bool MathCell::IsCompound()
 /***
  * Is operator - draw () in frac...
  */
-bool MathCell::IsOperator()
+bool Cell::IsOperator()
 {
   return false;
 }
@@ -523,15 +523,15 @@ bool MathCell::IsOperator()
 /***
  * Return the string representation of cell.
  */
-wxString MathCell::ToString()
+wxString Cell::ToString()
 {
   return wxEmptyString;
 }
 
-wxString MathCell::ListToString()
+wxString Cell::ListToString()
 {
   wxString retval;
-  MathCell *tmp = this;
+  Cell *tmp = this;
   bool firstline = true;
 
   while (tmp != NULL)
@@ -564,15 +564,15 @@ wxString MathCell::ListToString()
   return retval;
 }
 
-wxString MathCell::ToTeX()
+wxString Cell::ToTeX()
 {
   return wxEmptyString;
 }
 
-wxString MathCell::ListToTeX()
+wxString Cell::ListToTeX()
 {
   wxString retval;
-  MathCell *tmp = this;
+  Cell *tmp = this;
 
   while (tmp != NULL)
   {
@@ -593,17 +593,17 @@ wxString MathCell::ListToTeX()
   return retval;
 }
 
-wxString MathCell::ToXML()
+wxString Cell::ToXML()
 {
   return wxEmptyString;
 }
 
-wxString MathCell::ToMathML()
+wxString Cell::ToMathML()
 {
   return wxEmptyString;
 }
 
-wxString MathCell::ListToMathML(bool startofline)
+wxString Cell::ListToMathML(bool startofline)
 {
   bool highlight = false;
 
@@ -611,7 +611,7 @@ wxString MathCell::ListToMathML(bool startofline)
 
   // If the region to export contains linebreaks or labels we put it into a table.
   bool needsTable = false;
-  MathCell *temp = this;
+  Cell *temp = this;
   while (temp)
   {
     if (temp->ForceBreakLineHere())
@@ -669,7 +669,7 @@ wxString MathCell::ListToMathML(bool startofline)
   return retval;
 }
 
-wxString MathCell::OMML2RTF(wxXmlNode *node)
+wxString Cell::OMML2RTF(wxXmlNode *node)
 {
   wxString result;
 
@@ -705,7 +705,7 @@ wxString MathCell::OMML2RTF(wxXmlNode *node)
   return result;
 }
 
-wxString MathCell::OMML2RTF(wxString ommltext)
+wxString Cell::OMML2RTF(wxString ommltext)
 {
   if (ommltext == wxEmptyString)
     return wxEmptyString;
@@ -728,7 +728,7 @@ wxString MathCell::OMML2RTF(wxString ommltext)
   return result;
 }
 
-wxString MathCell::XMLescape(wxString input)
+wxString Cell::XMLescape(wxString input)
 {
   input.Replace(wxT("&"), wxT("&amp;"));
   input.Replace(wxT("<"), wxT("&lt;"));
@@ -738,7 +738,7 @@ wxString MathCell::XMLescape(wxString input)
   return input;
 }
 
-wxString MathCell::RTFescape(wxString input, bool MarkDown)
+wxString Cell::RTFescape(wxString input, bool MarkDown)
 {
   // Characters with a special meaning in RTF
   input.Replace("\\", "\\\\");
@@ -783,7 +783,7 @@ wxString MathCell::RTFescape(wxString input, bool MarkDown)
   return (output);
 }
 
-wxString MathCell::ListToOMML(bool WXUNUSED(startofline))
+wxString Cell::ListToOMML(bool WXUNUSED(startofline))
 {
   bool multiCell = (m_next != NULL);
 
@@ -792,7 +792,7 @@ wxString MathCell::ListToOMML(bool WXUNUSED(startofline))
   // If the region to export contains linebreaks or labels we put it into a table.
   // Export all cells
 
-  MathCell *tmp = this;
+  Cell *tmp = this;
   while (tmp != NULL)
   {
     wxString token = tmp->ToOMML();
@@ -816,10 +816,10 @@ wxString MathCell::ListToOMML(bool WXUNUSED(startofline))
     return retval;
 }
 
-wxString MathCell::ListToRTF(bool startofline)
+wxString Cell::ListToRTF(bool startofline)
 {
   wxString retval;
-  MathCell *tmp = this;
+  Cell *tmp = this;
 
   while (tmp != NULL)
   {
@@ -879,12 +879,12 @@ wxString MathCell::ListToRTF(bool startofline)
   return retval;
 }
 
-wxString MathCell::ListToXML()
+wxString Cell::ListToXML()
 {
   bool highlight = false;
 
   wxString retval;
-  MathCell *tmp = this;
+  Cell *tmp = this;
 
   while (tmp != NULL)
   {
@@ -915,7 +915,7 @@ wxString MathCell::ListToXML()
 /***
  * Get the part for diff tag support - only ExpTag overvrides this.
  */
-wxString MathCell::GetDiffPart()
+wxString Cell::GetDiffPart()
 {
   return wxEmptyString;
 }
@@ -923,7 +923,7 @@ wxString MathCell::GetDiffPart()
 /***
  * Find the first and last cell in rectangle rect in this line.
  */
-void MathCell::SelectRect(wxRect &rect, MathCell **first, MathCell **last)
+void Cell::SelectRect(wxRect &rect, Cell **first, Cell **last)
 {
   SelectFirst(rect, first);
   if (*first != NULL)
@@ -940,7 +940,7 @@ void MathCell::SelectRect(wxRect &rect, MathCell **first, MathCell **last)
 /***
  * Find the first cell in rectangle rect in this line.
  */
-void MathCell::SelectFirst(wxRect &rect, MathCell **first)
+void Cell::SelectFirst(wxRect &rect, Cell **first)
 {
   if (rect.Intersects(GetRect(false)))
     *first = this;
@@ -953,7 +953,7 @@ void MathCell::SelectFirst(wxRect &rect, MathCell **first)
 /***
  * Find the last cell in rectangle rect in this line.
  */
-void MathCell::SelectLast(wxRect &rect, MathCell **last)
+void Cell::SelectLast(wxRect &rect, Cell **last)
 {
   if (rect.Intersects(GetRect(false)))
     *last = this;
@@ -964,13 +964,13 @@ void MathCell::SelectLast(wxRect &rect, MathCell **last)
 /***
  * Select rectangle in deeper cell - derived classes should override this
  */
-void MathCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
+void Cell::SelectInner(wxRect &rect, Cell **first, Cell **last)
 {
   *first = NULL;
   *last = NULL;
 
-  std::list<MathCell*> cellList = GetInnerCells();
-  for (std::list<MathCell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
+  std::list<Cell*> cellList = GetInnerCells();
+  for (std::list<Cell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
     if(*it != NULL)
     {
       if ((*it)->ContainsRect(rect))
@@ -984,12 +984,12 @@ void MathCell::SelectInner(wxRect &rect, MathCell **first, MathCell **last)
   }
 }
 
-bool MathCell::BreakLineHere()
+bool Cell::BreakLineHere()
 {
   return (((!m_isBrokenIntoLines) && m_breakLine) || m_forceBreakLine);
 }
 
-bool MathCell::ContainsRect(const wxRect &sm, bool all)
+bool Cell::ContainsRect(const wxRect &sm, bool all)
 {
   wxRect big = GetRect(all);
   if (big.x <= sm.x &&
@@ -1008,7 +1008,7 @@ bool MathCell::ContainsRect(const wxRect &sm, bool all)
  lines until the widths are recalculated if there aren't any hard line
  breaks.
  */
-void MathCell::ResetData()
+void Cell::ResetData()
 {
   m_fullWidth = -1;
   m_lineWidth = -1;
@@ -1017,25 +1017,25 @@ void MathCell::ResetData()
   m_breakLine = m_forceBreakLine;
 }
 
-MathCell *MathCell::first()
+Cell *Cell::first()
 {
-  MathCell *tmp = this;
+  Cell *tmp = this;
   while (tmp->m_previous)
     tmp = tmp->m_previous;
 
   return tmp;
 }
 
-MathCell *MathCell::last()
+Cell *Cell::last()
 {
-  MathCell *tmp = this;
+  Cell *tmp = this;
   while (tmp->m_next)
     tmp = tmp->m_next;
 
   return tmp;
 }
 
-void MathCell::Unbreak()
+void Cell::Unbreak()
 {
   ResetData();
   m_isBrokenIntoLines = false;
@@ -1044,9 +1044,9 @@ void MathCell::Unbreak()
     m_nextToDraw->m_previousToDraw = this;
 }
 
-void MathCell::UnbreakList()
+void Cell::UnbreakList()
 {
-  MathCell *tmp = this;
+  Cell *tmp = this;
   while (tmp != NULL)
   {
     tmp->Unbreak();
@@ -1057,7 +1057,7 @@ void MathCell::UnbreakList()
 /*!
   Set the pen in device context according to the style of the cell.
 */
-void MathCell::SetPen(double lineWidth)
+void Cell::SetPen(double lineWidth)
 {
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
@@ -1085,7 +1085,7 @@ void MathCell::SetPen(double lineWidth)
 /***
  * Reset the pen in the device context.
  */
-void MathCell::UnsetPen()
+void Cell::UnsetPen()
 {
   Configuration *configuration = (*m_configuration);
   wxDC *dc = configuration->GetDC();
@@ -1097,7 +1097,7 @@ void MathCell::UnsetPen()
 /***
  * Copy all important data from s to t
  */
-void MathCell::CopyData(MathCell *s, MathCell *t)
+void Cell::CopyData(Cell *s, Cell *t)
 {
   t->m_altCopyText = s->m_altCopyText;
   t->m_toolTip = s->m_toolTip;
@@ -1106,7 +1106,7 @@ void MathCell::CopyData(MathCell *s, MathCell *t)
   t->m_textStyle = s->m_textStyle;
 }
 
-void MathCell::SetForeground()
+void Cell::SetForeground()
 {
   Configuration *configuration = (*m_configuration);
   wxColour color;
@@ -1143,7 +1143,7 @@ void MathCell::SetForeground()
   dc->SetTextForeground(color);
 }
 
-bool MathCell::IsMath()
+bool Cell::IsMath()
 {
   return !(m_textStyle == TS_LABEL ||
            m_textStyle == TS_USERLABEL ||
@@ -1151,7 +1151,7 @@ bool MathCell::IsMath()
 }
 
 #if wxUSE_ACCESSIBILITY
-wxAccStatus MathCell::GetDescription(int childId, wxString *description)
+wxAccStatus Cell::GetDescription(int childId, wxString *description)
 {
   if(description == NULL)
     return wxACC_FAIL;
@@ -1163,7 +1163,7 @@ wxAccStatus MathCell::GetDescription(int childId, wxString *description)
   }
   else
   {
-    MathCell *cell = NULL;
+    Cell *cell = NULL;
     if(GetChild(childId,&cell) == wxACC_OK)
     {
       if(cell != NULL)
@@ -1175,7 +1175,7 @@ wxAccStatus MathCell::GetDescription(int childId, wxString *description)
   return wxACC_FAIL;
 }
 
-wxAccStatus MathCell::GetParent (wxAccessible **parent)
+wxAccStatus Cell::GetParent (wxAccessible **parent)
 {
   if(parent == NULL)
     return wxACC_FAIL;
@@ -1190,12 +1190,12 @@ wxAccStatus MathCell::GetParent (wxAccessible **parent)
   return  wxACC_OK;
 }
 
-wxAccStatus MathCell::GetValue (int childId, wxString *strValue)
+wxAccStatus Cell::GetValue (int childId, wxString *strValue)
 {
   if(strValue == NULL)
     return wxACC_FAIL;
 
-  MathCell *cell;
+  Cell *cell;
   if(GetChild(childId,&cell) == wxACC_OK)
   {
     *strValue = cell->ToString();
@@ -1208,14 +1208,14 @@ wxAccStatus MathCell::GetValue (int childId, wxString *strValue)
   }
 }
 
-wxAccStatus MathCell::GetChildCount (int *childCount)
+wxAccStatus Cell::GetChildCount (int *childCount)
 {
   *childCount = GetInnerCells().size();
   return wxACC_OK;
 }
 
-wxAccStatus MathCell::HitTest(const wxPoint &pt,
-	int *childId, MathCell  **childObject)
+wxAccStatus Cell::HitTest(const wxPoint &pt,
+	int *childId, Cell  **childObject)
 {
   wxRect rect;
   GetLocation(rect, 0);
@@ -1234,7 +1234,7 @@ wxAccStatus MathCell::HitTest(const wxPoint &pt,
     GetChildCount(&childCount);
     for (int i = 0; i < childCount; i++)
     {
-      MathCell *child;
+      Cell *child;
       GetChild(i, &child);
       child->GetLocation(rect, 0);
       if (rect.Contains(pt))
@@ -1254,7 +1254,7 @@ wxAccStatus MathCell::HitTest(const wxPoint &pt,
   }
 }
 
-wxAccStatus MathCell::GetChild(int childId, MathCell  **child)
+wxAccStatus Cell::GetChild(int childId, Cell  **child)
 {
   if(child == NULL)
     return wxACC_FAIL;
@@ -1268,9 +1268,9 @@ wxAccStatus MathCell::GetChild(int childId, MathCell  **child)
   {
     if (childId > 0)
     {
-      std::list<MathCell*> cellList = m_parent->GetInnerCells();
+      std::list<Cell*> cellList = m_parent->GetInnerCells();
       int cnt = 1;
-      for (std::list<MathCell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
+      for (std::list<Cell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
         if (cnt++ == childId)
         {
           *child = *it;
@@ -1281,7 +1281,7 @@ wxAccStatus MathCell::GetChild(int childId, MathCell  **child)
   }
 }
 
-wxAccStatus MathCell::GetFocus (int *childId, MathCell  **child)
+wxAccStatus Cell::GetFocus (int *childId, Cell  **child)
 {
   int childCount;
   GetChildCount(&childCount);
@@ -1289,7 +1289,7 @@ wxAccStatus MathCell::GetFocus (int *childId, MathCell  **child)
   for(int i = 0; i < childCount;i++)
   {
     int dummy1;
-    MathCell *cell = NULL;
+    Cell *cell = NULL;
     GetChild(i + 1, &cell);
     if (cell != NULL)
       if(cell->GetFocus(&dummy1, child) == wxACC_OK)
@@ -1309,7 +1309,7 @@ wxAccStatus MathCell::GetFocus (int *childId, MathCell  **child)
   return wxACC_FAIL;
 }
 
-wxAccStatus MathCell::GetLocation(wxRect &rect, int elementId)
+wxAccStatus Cell::GetLocation(wxRect &rect, int elementId)
 {
   if(elementId == 0)
   {
@@ -1328,14 +1328,14 @@ wxAccStatus MathCell::GetLocation(wxRect &rect, int elementId)
   }
   else
   {
-    MathCell *cell = NULL;
+    Cell *cell = NULL;
 	if (GetChild(elementId, &cell) == wxACC_OK)
 		return cell->GetLocation(rect, 0);
   }
   return wxACC_FAIL;
 }
 
-wxAccStatus MathCell::GetRole (int WXUNUSED(childId), wxAccRole *role)
+wxAccStatus Cell::GetRole (int WXUNUSED(childId), wxAccRole *role)
 {
   if(role != NULL)
   {
@@ -1347,7 +1347,7 @@ wxAccStatus MathCell::GetRole (int WXUNUSED(childId), wxAccRole *role)
 
 #endif
 
-MathCell::CellPointers::CellPointers(wxScrolledCanvas *mathCtrl)
+Cell::CellPointers::CellPointers(wxScrolledCanvas *mathCtrl)
 {
   m_cellToScrollTo = NULL;
   m_wxmxImgCounter = 0;
@@ -1368,16 +1368,16 @@ MathCell::CellPointers::CellPointers(wxScrolledCanvas *mathCtrl)
   m_currentTextCell = NULL;
 }
 
-wxString MathCell::CellPointers::WXMXGetNewFileName()
+wxString Cell::CellPointers::WXMXGetNewFileName()
 {
   wxString file(wxT("image"));
   file << (++m_wxmxImgCounter) << wxT(".");
   return file;
 }
 
-bool MathCell::CellPointers::ErrorList::Contains(MathCell *cell)
+bool Cell::CellPointers::ErrorList::Contains(Cell *cell)
 {
-  for(std::list<MathCell *>::iterator it = m_errorList.begin(); it != m_errorList.end();++it)
+  for(std::list<Cell *>::iterator it = m_errorList.begin(); it != m_errorList.end();++it)
   {
     if((*it)==cell)
       return true;
@@ -1385,7 +1385,7 @@ bool MathCell::CellPointers::ErrorList::Contains(MathCell *cell)
   return false;
 }
 
-void MathCell::MarkAsDeleted()
+void Cell::MarkAsDeleted()
 {
   // Delete all pointers to this cell
   if(this == m_cellPointers->CellToScrollTo())
@@ -1407,15 +1407,15 @@ void MathCell::MarkAsDeleted()
     m_cellPointers->m_cellUnderPointer = NULL;
 
   // Delete all pointers to the cells this cell contains
-  std::list<MathCell *> innerCells = GetInnerCells();
-  for(std::list<MathCell *>::iterator it = innerCells.begin(); it != innerCells.end(); ++it)
+  std::list<Cell *> innerCells = GetInnerCells();
+  for(std::list<Cell *>::iterator it = innerCells.begin(); it != innerCells.end(); ++it)
   {
     if(*it != NULL)
       (*it)->MarkAsDeleted();
   }
 }
 
-// The variables all MathCells share.
-wxRect  MathCell::m_updateRegion;
-wxRect  MathCell::m_visibleRegion;
-wxPoint MathCell::m_worksheetPosition;
+// The variables all Cells share.
+wxRect  Cell::m_updateRegion;
+wxRect  Cell::m_visibleRegion;
+wxPoint Cell::m_worksheetPosition;

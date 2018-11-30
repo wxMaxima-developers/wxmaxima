@@ -615,9 +615,9 @@ public:
   int ShowLength(){return m_showLength;}
 
   //! Sets the default toolTip for new cells
-  void SetDefaultMathCellToolTip(wxString defaultToolTip){m_defaultToolTip = defaultToolTip;}
+  void SetDefaultCellToolTip(wxString defaultToolTip){m_defaultToolTip = defaultToolTip;}
   //! Gets the default toolTip for new cells
-  wxString GetDefaultMathCellToolTip(){return m_defaultToolTip;}
+  wxString GetDefaultCellToolTip(){return m_defaultToolTip;}
   //! Which way do we want to draw parenthesis?
   void SetGrouphesisDrawMode(drawMode mode){m_parenthesisDrawMode = mode;}
 

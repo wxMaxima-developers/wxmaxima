@@ -24,7 +24,7 @@
 /*! \file
   This file defines the class EditorCell
 
-  EditorCell is the MathCell type that represents the field that contains user input.
+  EditorCell is the Cell type that represents the field that contains user input.
  */
 
 #include <wx/clipbrd.h>
@@ -40,8 +40,8 @@
 
 const wxString operators = wxT("+-*/^:=#'!;$");
 
-EditorCell::EditorCell(MathCell *parent, Configuration **config,
-                       CellPointers *cellPointers, wxString text) : MathCell(parent, config)
+EditorCell::EditorCell(Cell *parent, Configuration **config,
+                       CellPointers *cellPointers, wxString text) : Cell(parent, config)
 {
   m_errorIndex = -1;
   m_autoAnswer = false;
@@ -266,7 +266,7 @@ wxString EditorCell::PrependNBSP(wxString input)
   return retval;
 }
 
-MathCell *EditorCell::Copy()
+Cell *EditorCell::Copy()
 {
   EditorCell *tmp = new EditorCell(m_group, m_configuration, m_cellPointers);
   // We cannot use SetValue() here, since SetValue() sometimes has the task to change
@@ -384,12 +384,12 @@ void EditorCell::MarkAsDeleted()
   if (m_cellPointers->m_activeCell == this)
     m_cellPointers->m_activeCell = NULL;
 
-  MathCell::MarkAsDeleted();
+  Cell::MarkAsDeleted();
 }
 
-std::list<MathCell *> EditorCell::GetInnerCells()
+std::list<Cell *> EditorCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   return innerCells;
 }
 
@@ -569,7 +569,7 @@ wxString EditorCell::ToXML()
 
 void EditorCell::RecalculateWidths(int fontsize)
 {
-  MathCell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
 
   // Redo the line wrapping if the viewport width has changed.
@@ -750,7 +750,7 @@ The order this cell is drawn is:
 */
 void EditorCell::Draw(wxPoint point1)
 {
-  MathCell::Draw(point1);
+  Cell::Draw(point1);
   if (DrawThisCell(point1) && !m_isHidden)
   {
     Configuration *configuration = (*m_configuration);

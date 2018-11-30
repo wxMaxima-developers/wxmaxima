@@ -23,20 +23,20 @@
 /*! \file
   This file defines the class DiffCell
 
-  DiffCell is the MathCell type that represents the field that represents the diff() command.
+  DiffCell is the Cell type that represents the field that represents the diff() command.
  */
 
 #include "DiffCell.h"
 #include "wx/config.h"
 
-DiffCell::DiffCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+DiffCell::DiffCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_baseCell = NULL;
   m_diffCell = NULL;
   m_cellPointers = cellPointers;
 }
 
-void DiffCell::SetGroup(MathCell *parent)
+void DiffCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_baseCell != NULL)
@@ -45,7 +45,7 @@ void DiffCell::SetGroup(MathCell *parent)
     m_diffCell->SetGroupList(parent);
 }
 
-MathCell *DiffCell::Copy()
+Cell *DiffCell::Copy()
 {
   DiffCell *tmp = new DiffCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -64,9 +64,9 @@ DiffCell::~DiffCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> DiffCell::GetInnerCells()
+std::list<Cell *> DiffCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_baseCell)
     innerCells.push_back(m_baseCell);
   if(m_diffCell)
@@ -75,7 +75,7 @@ std::list<MathCell *> DiffCell::GetInnerCells()
 }
 
 
-void DiffCell::SetDiff(MathCell *diff)
+void DiffCell::SetDiff(Cell *diff)
 {
   if (diff == NULL)
     return;
@@ -85,7 +85,7 @@ void DiffCell::SetDiff(MathCell *diff)
   m_diffCell->m_SuppressMultiplicationDot = true;
 }
 
-void DiffCell::SetBase(MathCell *base)
+void DiffCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
@@ -95,7 +95,7 @@ void DiffCell::SetBase(MathCell *base)
 
 void DiffCell::RecalculateWidths(int fontsize)
 {
-  MathCell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths(fontsize);
   m_baseCell->RecalculateWidthsList(fontsize);
   m_diffCell->RecalculateWidthsList(fontsize);
   m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
@@ -104,7 +104,7 @@ void DiffCell::RecalculateWidths(int fontsize)
 
 void DiffCell::RecalculateHeight(int fontsize)
 {
-  MathCell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight(fontsize);
   m_baseCell->RecalculateHeightList(fontsize);
   m_diffCell->RecalculateHeightList(fontsize);
   m_center = MAX(m_diffCell->GetMaxCenter(), m_baseCell->GetMaxCenter());
@@ -113,7 +113,7 @@ void DiffCell::RecalculateHeight(int fontsize)
 
 void DiffCell::Draw(wxPoint point)
 {
-  MathCell::Draw(point);
+  Cell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   { 
     wxPoint bs, df;
@@ -131,7 +131,7 @@ wxString DiffCell::ToString()
 {
   if (m_isBrokenIntoLines)
     return wxEmptyString;
-  MathCell *tmp = m_baseCell->m_next;
+  Cell *tmp = m_baseCell->m_next;
   wxString s = wxT("'diff(");
   if (tmp != NULL)
     s += tmp->ListToString();

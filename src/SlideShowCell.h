@@ -23,13 +23,13 @@
 /*! \file
   This file declares the class SlideShowCell
 
-  SlideShowCell is the MathCell type that represents animations.
+  SlideShowCell is the Cell type that represents animations.
 */
 
 #ifndef SLIDESHOWCELL_H
 #define SLIDESHOWCELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
 #include "Image.h"
 #include <wx/image.h>
 #include <wx/timer.h>
@@ -43,7 +43,7 @@
 
 using namespace std;
 
-class SlideShow : public MathCell
+class SlideShow : public Cell
 {
 public:
   /*! The constructor
@@ -59,7 +59,7 @@ public:
     \param cellPointers All pointers that might point to this cell and that need to
                         be set to NULL if this cell is deleted.
    */
-  SlideShow(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxFileSystem *filesystem = NULL, int framerate = -1);
+  SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxFileSystem *filesystem = NULL, int framerate = -1);
 
   ~SlideShow();
 
@@ -82,7 +82,7 @@ public:
   
   virtual wxString GetToolTip(const wxPoint &point);
 
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
   void MarkAsDeleted();
 
   /*! Remove all cached scaled images from memory
@@ -94,7 +94,7 @@ public:
 
   void LoadImages(wxArrayString images, bool deleteRead);
 
-  MathCell *Copy();
+  Cell *Copy();
 
   int GetDisplayedIndex()
   { return m_displayed; }

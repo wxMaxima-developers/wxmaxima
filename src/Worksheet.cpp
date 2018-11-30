@@ -367,7 +367,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   updateRegion.SetRight(xend);
   updateRegion.SetTop(top);
   updateRegion.SetBottom(bottom);
-  MathCell::SetUpdateRegion(updateRegion);
+  Cell::SetUpdateRegion(updateRegion);
 
   if (sz.x == 0) sz.x = 1;
   if (sz.y == 0) sz.y = 1;
@@ -414,7 +414,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     //
     if (CellsSelected())
     {
-      MathCell *tmp = m_cellPointers.m_selectionStart;
+      Cell *tmp = m_cellPointers.m_selectionStart;
 
 #if defined(__WXMAC__)
       dcm.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
@@ -464,9 +464,9 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
       wxPoint upperLeftScreenCorner;
       CalcScrolledPosition(0, 0,
                            &upperLeftScreenCorner.x, &upperLeftScreenCorner.y);
-      MathCell::SetVisibleRegion(wxRect(upperLeftScreenCorner,
+      Cell::SetVisibleRegion(wxRect(upperLeftScreenCorner,
                                         upperLeftScreenCorner + wxPoint(width,height)));
-      MathCell::SetWorksheetPosition(GetPosition());
+      Cell::SetWorksheetPosition(GetPosition());
       // Clear the image cache of all cells above or below the viewport.
       if ((rect.GetTop() >= bottom) || (rect.GetBottom() <= top))
       {
@@ -695,7 +695,7 @@ GroupCell *Worksheet::GetWorkingGroup(bool resortToLast)
   return tmp;
 }
 
-void Worksheet::InsertLine(MathCell *newCell, bool forceNewLine)
+void Worksheet::InsertLine(Cell *newCell, bool forceNewLine)
 {
   if (newCell == NULL)
     return;
@@ -761,7 +761,7 @@ void Worksheet::SetZoomFactor(double newzoom, bool recalc)
   
   m_configuration->SetZoomFactor(newzoom);
   // Determine if we have a sane thing we can scroll to.
-  MathCell *cellToScrollTo = NULL;
+  Cell *cellToScrollTo = NULL;
   if (CaretVisibleIs())
   {
     cellToScrollTo = GetHCaret();
@@ -826,9 +826,9 @@ bool Worksheet::RecalculateIfNeeded()
     wxPoint upperLeftScreenCorner;
     CalcScrolledPosition(0, 0,
                          &upperLeftScreenCorner.x, &upperLeftScreenCorner.y);
-    MathCell::SetVisibleRegion(wxRect(upperLeftScreenCorner,
+    Cell::SetVisibleRegion(wxRect(upperLeftScreenCorner,
                                       upperLeftScreenCorner + wxPoint(width,height)));
-    MathCell::SetWorksheetPosition(GetPosition());
+    Cell::SetWorksheetPosition(GetPosition());
 
     tmp->Recalculate();
     tmp = dynamic_cast<GroupCell *>(tmp->m_next);
@@ -882,7 +882,7 @@ void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
   m_configuration->SetCanvasSize(GetClientSize());
 
   // Determine if we have a sane thing we can scroll to.
-  MathCell *CellToScrollTo = NULL;
+  Cell *CellToScrollTo = NULL;
   if (CaretVisibleIs())
   {
     CellToScrollTo = m_hCaretPosition;
@@ -1137,8 +1137,8 @@ GroupCell *Worksheet::TearOutTree(GroupCell *start, GroupCell *end)
 {
   if ((!start) || (!end))
     return NULL;
-  MathCell *prev = start->m_previous;
-  MathCell *next = end->m_next;
+  Cell *prev = start->m_previous;
+  Cell *next = end->m_next;
 
   end->m_next = end->m_nextToDraw = NULL;
   start->m_previous = start->m_previousToDraw = NULL;
@@ -1188,7 +1188,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
       // SELECTION OF OUTPUT
     else
     {
-      MathCell *tmp = m_cellPointers.m_selectionStart;
+      Cell *tmp = m_cellPointers.m_selectionStart;
       wxRect rect;
       while (tmp != NULL)
       {
@@ -1989,7 +1989,7 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up)
 
 void Worksheet::ClickNDrag(wxPoint down, wxPoint up)
 {
-  MathCell *selectionStartOld = m_cellPointers.m_selectionStart, *selectionEndOld = m_cellPointers.m_selectionEnd;
+  Cell *selectionStartOld = m_cellPointers.m_selectionStart, *selectionEndOld = m_cellPointers.m_selectionEnd;
   wxRect rect;
 
   int ytop = MIN(down.y, up.y);
@@ -2082,7 +2082,7 @@ wxString Worksheet::GetString(bool lb)
   }
 
   wxString s;
-  MathCell *tmp = m_cellPointers.m_selectionStart;
+  Cell *tmp = m_cellPointers.m_selectionStart;
   while (tmp != NULL)
   {
     if (lb && tmp->BreakLineHere() && s.Length() > 0)
@@ -2163,7 +2163,7 @@ bool Worksheet::Copy(bool astext)
         // Add a RTF representation of the currently selected text
         // to the clipboard: For some reason libreoffice likes RTF more than
         // it likes the MathML - which is standartized.
-        MathCell *tmp = CopySelection();
+        Cell *tmp = CopySelection();
         if (tmp != NULL)
         {
           wxString rtf;
@@ -2175,7 +2175,7 @@ bool Worksheet::Copy(bool astext)
       }
 
       // Add a string representation of the selected output to the clipboard
-      MathCell *tmp = CopySelection();
+      Cell *tmp = CopySelection();
       s = tmp->ListToString();
       data->Add(new wxTextDataObject(s));
       wxDELETE(tmp);
@@ -2190,7 +2190,7 @@ bool Worksheet::Copy(bool astext)
           int bitmapScale = 3;
           wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
           Bitmap bmp_scaled(&m_configuration, bitmapScale);
-          MathCell *tmp = CopySelection();
+          Cell *tmp = CopySelection();
           if (bmp_scaled.SetData(tmp, 4000000))
           {
             bmp = bmp_scaled.GetBitmap();
@@ -2217,13 +2217,13 @@ wxString Worksheet::ConvertSelectionToMathML()
     return wxEmptyString;
 
   wxString s;
-  MathCell *tmp = CopySelection(m_cellPointers.m_selectionStart, m_cellPointers.m_selectionEnd, true);
+  Cell *tmp = CopySelection(m_cellPointers.m_selectionStart, m_cellPointers.m_selectionEnd, true);
 
   s = wxString(wxT("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\n")) +
       wxT("<semantics>") +
       tmp->ListToMathML(true) +
       wxT("<annotation encoding=\"application/x-maxima\">") +
-      MathCell::XMLescape(tmp->ListToString()) +
+      Cell::XMLescape(tmp->ListToString()) +
       wxT("</annotation>") +
       wxT("</semantics>") +
       wxT("</math>");
@@ -2296,7 +2296,7 @@ bool Worksheet::CopyTeX()
     return false;
 
   wxString s;
-  MathCell *tmp = m_cellPointers.m_selectionStart;
+  Cell *tmp = m_cellPointers.m_selectionStart;
 
   bool inMath = false;
   wxString label;
@@ -2360,7 +2360,7 @@ bool Worksheet::CopyText()
     return false;
 
   wxString result;
-  MathCell *tmp = m_cellPointers.m_selectionStart;
+  Cell *tmp = m_cellPointers.m_selectionStart;
 
   bool firstcell = true;
   while (tmp != NULL)
@@ -2432,7 +2432,7 @@ bool Worksheet::CopyCells()
 
     if(m_configuration->CopyBitmap())
     {
-      MathCell *tmp = CopySelection();
+      Cell *tmp = CopySelection();
       int bitmapScale = 3;
       wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
       Bitmap bmp(&m_configuration, bitmapScale);
@@ -2443,7 +2443,7 @@ bool Worksheet::CopyCells()
 #if wxUSE_ENH_METAFILE
     if(m_configuration->CopyEMF())
     {
-      MathCell *tmp = CopySelection();
+      Cell *tmp = CopySelection();
 
       Emfout emf(&m_configuration);
       emf.SetData(tmp);
@@ -2452,7 +2452,7 @@ bool Worksheet::CopyCells()
 #endif
     if(m_configuration->CopySVG())
     {
-      MathCell *tmp = CopySelection();
+      Cell *tmp = CopySelection();
 
       Svgout svg(&m_configuration);
       svg.SetData(tmp);
@@ -3912,7 +3912,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
         {
           if (event.CmdDown())
           {
-            MathCell *tmp = m_cellPointers.m_selectionEnd;
+            Cell *tmp = m_cellPointers.m_selectionEnd;
             if (tmp->m_next)
             {
               do tmp = dynamic_cast<GroupCell *>(tmp->m_next);
@@ -4139,7 +4139,7 @@ void Worksheet::OnChar(wxKeyEvent &event)
  */
 void Worksheet::GetMaxPoint(int *width, int *height)
 {
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
   int currentHeight = m_configuration->GetBaseIndent();
   int currentWidth = m_configuration->GetBaseIndent();
   *width = m_configuration->GetBaseIndent();
@@ -4331,7 +4331,7 @@ void Worksheet::OnTimer(wxTimerEvent &event)
       SlideShow *slideshow = NULL;
 
       // Determine if the timer that has expired belongs to a slide show cell.
-      for(MathCell::CellPointers::SlideShowTimersList::iterator it = m_cellPointers.m_slideShowTimers.begin();it != m_cellPointers.m_slideShowTimers.end() ; ++it)
+      for(Cell::CellPointers::SlideShowTimersList::iterator it = m_cellPointers.m_slideShowTimers.begin();it != m_cellPointers.m_slideShowTimers.end() ; ++it)
       {
         if(it->second == event.GetId())
         {
@@ -4408,7 +4408,7 @@ GroupCell *Worksheet::CopyTree()
  */
 bool Worksheet::CopyBitmap()
 {
-  MathCell *tmp = CopySelection();
+  Cell *tmp = CopySelection();
 
   int bitmapScale = 3;
   wxConfig::Get()->Read(wxT("bitmapScale"), &bitmapScale);
@@ -4433,7 +4433,7 @@ bool Worksheet::CopyAnimation()
 
 bool Worksheet::CopySVG()
 {
-  MathCell *tmp = CopySelection();
+  Cell *tmp = CopySelection();
 
   Svgout svg(&m_configuration);
   svg.SetData(tmp);
@@ -4446,7 +4446,7 @@ bool Worksheet::CopySVG()
 #if wxUSE_ENH_METAFILE
 bool Worksheet::CopyEMF()
 {
-  MathCell *tmp = CopySelection();
+  Cell *tmp = CopySelection();
 
   Emfout emf(&m_configuration);
   emf.SetData(tmp);
@@ -4506,7 +4506,7 @@ wxSize Worksheet::CopyToFile(wxString file)
   }
   else
   {
-    MathCell *tmp = CopySelection();
+    Cell *tmp = CopySelection();
 
     Bitmap bmp(&m_configuration);
     bmp.SetData(tmp);
@@ -4517,10 +4517,10 @@ wxSize Worksheet::CopyToFile(wxString file)
   }
 }
 
-wxSize Worksheet::CopyToFile(wxString file, MathCell *start, MathCell *end,
+wxSize Worksheet::CopyToFile(wxString file, Cell *start, Cell *end,
                             bool asData, int scale)
 {
-  MathCell *tmp = CopySelection(start, end, asData);
+  Cell *tmp = CopySelection(start, end, asData);
 
   Bitmap bmp(&m_configuration, scale);
   bmp.SetData(tmp);
@@ -4533,14 +4533,14 @@ wxSize Worksheet::CopyToFile(wxString file, MathCell *start, MathCell *end,
 /***
  * Copy selection
  */
-MathCell *Worksheet::CopySelection(bool asData)
+Cell *Worksheet::CopySelection(bool asData)
 {
   return CopySelection(m_cellPointers.m_selectionStart, m_cellPointers.m_selectionEnd, asData);
 }
 
-MathCell *Worksheet::CopySelection(MathCell *start, MathCell *end, bool asData)
+Cell *Worksheet::CopySelection(Cell *start, Cell *end, bool asData)
 {
-  MathCell *tmp, *out = NULL, *outEnd = NULL;
+  Cell *tmp, *out = NULL, *outEnd = NULL;
   tmp = start;
 
   while (tmp != NULL)
@@ -4645,7 +4645,7 @@ struct SimpleMathConfigurationIterator
 };
 
 //returns the index in (%i...) or (%o...)
-int getMathCellIndex(MathCell *cell)
+int getCellIndex(Cell *cell)
 {
   if (!cell) return -1;
   wxString strindex = cell->ToString().Trim(); //(%i...)
@@ -4654,15 +4654,15 @@ int getMathCellIndex(MathCell *cell)
   return temp;
 }
 
-void Worksheet::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, std::vector<int> &cellMap)
+void Worksheet::CalculateReorderedCellIndices(Cell *tree, int &cellIndex, std::vector<int> &cellMap)
 {
   GroupCell *tmp = dynamic_cast<GroupCell *>(tree);
   while (tmp != NULL)
   {
     if (!tmp->IsHidden() && tmp->GetGroupType() == GC_TYPE_CODE)
     {
-      MathCell *prompt = tmp->GetPrompt();
-      MathCell *cell = tmp->GetEditable();
+      Cell *prompt = tmp->GetPrompt();
+      Cell *cell = tmp->GetEditable();
 
       wxString input = cell->ToString();
       if (prompt && cell && input.Len() > 0)
@@ -4680,8 +4680,8 @@ void Worksheet::CalculateReorderedCellIndices(MathCell *tree, int &cellIndex, st
           }
         }
 
-        long promptIndex = getMathCellIndex(prompt);
-        long outputIndex = getMathCellIndex(tmp->GetLabel()) - initialHiddenExpressions;
+        long promptIndex = getCellIndex(prompt);
+        long outputIndex = getCellIndex(tmp->GetLabel()) - initialHiddenExpressions;
         long index = promptIndex;
         if (promptIndex < 0) index = outputIndex; //no input index => use output index
         else
@@ -5268,7 +5268,7 @@ bool Worksheet::ExportToHTML(wxString file)
     {
 
       // Handle the label
-      MathCell *out = tmp->GetLabel();
+      Cell *out = tmp->GetLabel();
 
       if (out || (m_configuration->ShowCodeCells()))
         output << wxT("\n\n<!-- Code cell -->\n\n\n");
@@ -5276,7 +5276,7 @@ bool Worksheet::ExportToHTML(wxString file)
       // Handle the input
       if (m_configuration->ShowCodeCells())
       {
-        MathCell *prompt = tmp->GetPrompt();
+        Cell *prompt = tmp->GetPrompt();
         output << wxT("<TABLE><TR><TD>\n");
         output << wxT("  <SPAN CLASS=\"prompt\">\n");
         output << prompt->ToString();
@@ -5305,10 +5305,10 @@ bool Worksheet::ExportToHTML(wxString file)
         // Output is a list that can consist of equations, images and slideshows.
         // We need to handle each of these item types separately => break down the list
         // into chunks of one type.
-        MathCell *chunkStart = tmp->GetLabel();
+        Cell *chunkStart = tmp->GetLabel();
         while (chunkStart != NULL)
         {
-          MathCell *chunkEnd = chunkStart;
+          Cell *chunkEnd = chunkStart;
 
           if (
                   (chunkEnd->GetType() != MC_TYPE_SLIDE) &&
@@ -5327,7 +5327,7 @@ bool Worksheet::ExportToHTML(wxString file)
             }
 
           // Create a list containing only our chunk.
-          MathCell *chunk = CopySelection(chunkStart, chunkEnd);
+          Cell *chunk = CopySelection(chunkStart, chunkEnd);
 
           // Export the chunk.
           if (chunk->GetType() == MC_TYPE_SLIDE)
@@ -5515,7 +5515,7 @@ bool Worksheet::ExportToHTML(wxString file)
         case GC_TYPE_IMAGE:
         {
           output << wxT("\n\n<!-- Image cell -->\n\n\n");
-          MathCell *out = tmp->GetLabel();
+          Cell *out = tmp->GetLabel();
           output << wxT("<P CLASS=\"image\">\n");
           output << EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() +
                                                                         tmp->GetEditable()->ToString())) << wxT("\n");
@@ -6507,8 +6507,8 @@ void Worksheet::OnDoubleClick(wxMouseEvent &WXUNUSED(event))
   else if (m_cellPointers.m_selectionStart != NULL)
   {
     GroupCell *parent = dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup());
-    MathCell *selectionStart = m_cellPointers.m_selectionStart;
-    MathCell *selectionEnd = m_cellPointers.m_selectionEnd;
+    Cell *selectionStart = m_cellPointers.m_selectionStart;
+    Cell *selectionEnd = m_cellPointers.m_selectionEnd;
     parent->SelectOutput(&selectionStart, &selectionEnd);
   }
 
@@ -6779,7 +6779,7 @@ void Worksheet::ScrollToCellIfNeeded()
   
   RecalculateIfNeeded();
 
-  MathCell *cell = m_cellPointers.CellToScrollTo();
+  Cell *cell = m_cellPointers.CellToScrollTo();
   
   if (cell == NULL)
   {
@@ -7155,7 +7155,7 @@ void Worksheet::SetActiveCell(EditorCell *cell, bool callRefresh)
 }
 
 
-void Worksheet::SetSelection(MathCell *start, MathCell *end)
+void Worksheet::SetSelection(Cell *start, Cell *end)
 {
   if((m_cellPointers.m_selectionStart != start) || (m_cellPointers.m_selectionEnd != end))
     RequestRedraw();
@@ -7467,7 +7467,7 @@ void Worksheet::DivideCell()
 void Worksheet::MergeCells()
 {
   wxString newcell = wxEmptyString;
-  MathCell *tmp = m_cellPointers.m_selectionStart;
+  Cell *tmp = m_cellPointers.m_selectionStart;
   if (!tmp)
     return;
   if (tmp->GetType() != MC_TYPE_GROUP)
@@ -7622,7 +7622,7 @@ void Worksheet::OnActivate(wxActivateEvent &WXUNUSED(event))
 }
 
 /**
- * Set the HCaret at the location of the given MathCell.
+ * Set the HCaret at the location of the given Cell.
  *
  * @param where   The cell to place the cursor before.
  * @param callRefresh   Call with false when manually refreshing.
@@ -7823,8 +7823,8 @@ wxString Worksheet::GetOutputAboveCaret()
   if (!m_hCaretActive || m_hCaretPosition == NULL)
     return wxEmptyString;
 
-  MathCell *selectionStart = m_cellPointers.m_selectionStart;
-  MathCell *selectionEnd = m_cellPointers.m_selectionEnd;
+  Cell *selectionStart = m_cellPointers.m_selectionStart;
+  Cell *selectionEnd = m_cellPointers.m_selectionEnd;
   m_hCaretPosition->SelectOutput(&selectionStart, &selectionEnd);
 
   wxString output = GetString();
@@ -8647,7 +8647,7 @@ wxAccStatus Worksheet::AccessibilityInfo::GetFocus (int *childId, wxAccessible *
   else
   {
     int id = 0;
-    MathCell *cell = m_worksheet->m_tree;
+    Cell *cell = m_worksheet->m_tree;
     while(cell != NULL)
     {
       id++;
@@ -8713,7 +8713,7 @@ wxAccStatus Worksheet::AccessibilityInfo::HitTest (const wxPoint &pt,
     {
       id++;
       cell = dynamic_cast<GroupCell *>(cell->m_next);
-      if((cell != NULL) && (cell->HitTest(pt, childId,(MathCell **) childObject) == wxACC_OK))
+      if((cell != NULL) && (cell->HitTest(pt, childId,(Cell **) childObject) == wxACC_OK))
       {
         if(childId != NULL)
           *childId = id;

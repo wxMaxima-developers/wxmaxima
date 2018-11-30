@@ -22,14 +22,14 @@
 /*! \file
   This file defines the class ConjugateCell
 
-  ConjugateCell is the MathCell type that represents the field that represents the 
+  ConjugateCell is the Cell type that represents the field that represents the 
   conjugate() command.
  */
 
 #include "ConjugateCell.h"
 #include "TextCell.h"
 
-ConjugateCell::ConjugateCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_innerCell = NULL;
@@ -39,7 +39,7 @@ ConjugateCell::ConjugateCell(MathCell *parent, Configuration **config, CellPoint
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
-void ConjugateCell::SetGroup(MathCell *parent)
+void ConjugateCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_innerCell != NULL)
@@ -50,7 +50,7 @@ void ConjugateCell::SetGroup(MathCell *parent)
     m_close->SetGroupList(parent);
 }
 
-MathCell *ConjugateCell::Copy()
+Cell *ConjugateCell::Copy()
 {
   ConjugateCell *tmp = new ConjugateCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -74,9 +74,9 @@ ConjugateCell::~ConjugateCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> ConjugateCell::GetInnerCells()
+std::list<Cell *> ConjugateCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_innerCell)
     innerCells.push_back(m_innerCell);
   if(m_open)
@@ -86,7 +86,7 @@ std::list<MathCell *> ConjugateCell::GetInnerCells()
   return innerCells;
 }
 
-void ConjugateCell::SetInner(MathCell *inner)
+void ConjugateCell::SetInner(Cell *inner)
 {
   if (inner == NULL)
     return;
@@ -101,7 +101,7 @@ void ConjugateCell::SetInner(MathCell *inner)
 
 void ConjugateCell::RecalculateWidths(int fontsize)
 {
-  MathCell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths(fontsize);
   m_innerCell->RecalculateWidthsList(fontsize);
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
@@ -114,7 +114,7 @@ void ConjugateCell::RecalculateWidths(int fontsize)
 
 void ConjugateCell::RecalculateHeight(int fontsize)
 {
-  MathCell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight(fontsize);
   m_innerCell->RecalculateHeightList(fontsize);
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
@@ -133,7 +133,7 @@ void ConjugateCell::RecalculateHeight(int fontsize)
 
 void ConjugateCell::Draw(wxPoint point)
 {
-  MathCell::Draw(point);
+  Cell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   {
     Configuration *configuration = (*m_configuration);
@@ -221,5 +221,5 @@ void ConjugateCell::Unbreak()
 {
   if (m_isBrokenIntoLines)
     m_innerCell->UnbreakList();
-  MathCell::Unbreak();
+  Cell::Unbreak();
 }

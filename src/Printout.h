@@ -34,17 +34,17 @@
 
 #include <vector>
 
-#include "MathCell.h"
+#include "Cell.h"
 #include "GroupCell.h"
 
 using namespace std;
 
-class MathPrintout : public wxPrintout
+class Printout : public wxPrintout
 {
 public:
-  MathPrintout(wxString title, Configuration **configuration);
+  Printout(wxString title, Configuration **configuration);
 
-  ~MathPrintout();
+  ~Printout();
 
   void DestroyTree();
 

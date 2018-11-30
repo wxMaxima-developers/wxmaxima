@@ -30,7 +30,7 @@
 #ifndef GROUPCELL_H
 #define GROUPCELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
 #include "EditorCell.h"
 
 #define EMPTY_INPUT_LABEL wxT(" -->  ")
@@ -63,7 +63,7 @@ Items where a list of groupcells can be folded include
  This GroupCell stores the currently hidden cells in the GroupCell m_hiddenTree. This tree
  has the parent m_hiddenTreeParent.
  */
-class GroupCell : public MathCell
+class GroupCell : public Cell
 {
 public:
   GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString = wxEmptyString);
@@ -93,7 +93,7 @@ public:
     no more displayed currently.
    */
   void MarkAsDeleted();
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
 
   /*! Which GroupCell was the last maxima was working on?
 
@@ -118,7 +118,7 @@ public:
    */
   wxString GetToolTip(const wxPoint &point);
 
-  MathCell *Copy();
+  Cell *Copy();
 
   // general methods
   GroupType GetGroupType()
@@ -129,24 +129,24 @@ public:
 
   void SetCellStyle(int style);
 
-  void SetGroup(MathCell *parent); // setting parent for all mathcells in GC
+  void SetGroup(Cell *parent); // setting parent for all mathcells in GC
 
   // selection methods
-  void SelectInner(wxRect &rect, MathCell **first, MathCell **last);
+  void SelectInner(wxRect &rect, Cell **first, Cell **last);
 
-  void SelectPoint(wxPoint &rect, MathCell **first, MathCell **last);
+  void SelectPoint(wxPoint &rect, Cell **first, Cell **last);
 
-  void SelectOutput(MathCell **start, MathCell **end);
+  void SelectOutput(Cell **start, Cell **end);
 
-  void SelectRectInOutput(wxRect &rect, wxPoint &one, wxPoint &two, MathCell **first, MathCell **last);
+  void SelectRectInOutput(wxRect &rect, wxPoint &one, wxPoint &two, Cell **first, Cell **last);
 
-  void SelectRectGroup(wxRect &rect, wxPoint &one, wxPoint &two, MathCell **first, MathCell **last);
+  void SelectRectGroup(wxRect &rect, wxPoint &one, wxPoint &two, Cell **first, Cell **last);
 
   // methods for manipulating GroupCell
   bool SetEditableContent(wxString text);
 
   EditorCell *GetEditable(); // returns pointer to editor (if there is one)
-  void AppendOutput(MathCell *cell);
+  void AppendOutput(Cell *cell);
 
   /*! Remove all output cells attached to this one
 
@@ -170,7 +170,7 @@ public:
 
   wxString ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCounter);
 
-  wxString ToTeXImage(MathCell *tmp, wxString imgDir, wxString filename, int *imgCounter);
+  wxString ToTeXImage(Cell *tmp, wxString imgDir, wxString filename, int *imgCounter);
 
   wxString ToTeX();
 
@@ -190,15 +190,15 @@ public:
   wxRect HideRect();
 
   // raw manipulation of GC (should be protected)
-  void SetInput(MathCell *input);
+  void SetInput(Cell *input);
 
-  void SetOutput(MathCell *output);
+  void SetOutput(Cell *output);
 
-  void AppendInput(MathCell *cell);
+  void AppendInput(Cell *cell);
 
   wxString TexEscapeOutputCell(wxString Input);
 
-  MathCell *GetPrompt()
+  Cell *GetPrompt()
   { return m_inputLabel; }
 
   EditorCell *GetInput()
@@ -213,14 +213,14 @@ public:
 
     See also GetOutput();
   */
-  MathCell *GetLabel()
+  Cell *GetLabel()
   { return m_output; }
 
   /*! Returns the list of cells the output consists of, starting after the label.
 
     See also GetLabel()
   */
-  MathCell *GetOutput()
+  Cell *GetOutput()
   { if (m_output == NULL) return NULL; else return m_output->m_next; }
 
   //! Determine which rectangle is occupied by this GroupCell
@@ -231,7 +231,7 @@ public:
 
     This command will also assign the GroupCell an y coordinate it is plotted at.
     The y coordinate of all output cells of this GroupCell is assigned during
-    GroupCell::Draw() by providing MathCell::Draw() with the cell's coordinates.
+    GroupCell::Draw() by providing Cell::Draw() with the cell's coordinates.
    */
   void RecalculateHeight(int fontsize);
   //! Recalculate the height of the input part of the cell
@@ -257,7 +257,7 @@ public:
   void BreakUpCells(int fontsize, int clientWidth);
 
   //! Attempt to split math objects that are wider than the screen into multiple lines.
-  void BreakUpCells(MathCell *cell, int fontsize, int clientWidth);
+  void BreakUpCells(Cell *cell, int fontsize, int clientWidth);
 
   //! Undo a BreakUpCells
   void UnBreakUpCells();
@@ -266,7 +266,7 @@ public:
   void BreakLines(int fullWidth);
 
   //! Break this cell into lines
-  void BreakLines(MathCell *cell, int fullWidth);
+  void BreakLines(Cell *cell, int fullWidth);
 
   /*! Reset the input label of the current cell.
 
@@ -347,7 +347,7 @@ public:
   bool IsLesserGCType(int comparedTo);
 
   //! @}
-  bool IsMainInput(MathCell *active);
+  bool IsMainInput(Cell *active);
 
   //!  Return this cell's section- or image number.
   void Number(int &section, int &subsection, int &subsubsection, int &heading5, int &heading6, int &image);
@@ -478,16 +478,16 @@ protected:
   //! Which type this cell is of?
   GroupType m_groupType;
   //! The input label of this cell. Is followed by the input of the cell.
-  MathCell *m_inputLabel;
+  Cell *m_inputLabel;
   //! The maxima output this cell contains
-  MathCell *m_output;
+  Cell *m_output;
   //! Is this cell folded (which hides its contents)?
   bool m_hide;
   int m_fontSize;
   int m_fontSize_Old;
   int m_mathFontSize;
-  MathCell *m_lastInOutput;
-  MathCell *m_appendedCells;
+  Cell *m_lastInOutput;
+  Cell *m_appendedCells;
 private:
   //! Does this GroupCell automatically fill in the answer to questions?
   bool m_autoAnswer;

@@ -23,24 +23,24 @@
 #ifndef IMGCELL_H
 #define IMGCELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
 #include <wx/image.h>
 #include "Image.h"
 
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
 
-class ImgCell : public MathCell
+class ImgCell : public Cell
 {
 public:
-  ImgCell(MathCell *parent, Configuration **config, CellPointers *cellpointers);
+  ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers);
 
-  ImgCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type);
+  ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type);
 
-  ImgCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove = true,
+  ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove = true,
           wxFileSystem *filesystem = NULL);
 
-  ImgCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap);
+  ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap);
 
   ~ImgCell();
 
@@ -65,12 +65,12 @@ public:
       return m_image->GnuplotData();
   }
 
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
   void MarkAsDeleted();
 
   void LoadImage(wxString image, bool remove = true);
 
-  MathCell *Copy();
+  Cell *Copy();
 
   friend class SlideShow;
 

@@ -23,7 +23,7 @@
 /*! \file
   This file defines the class IntCell
 
-  IntCell is the MathCell type that represents maxima's <code>integrate()</code> command.
+  IntCell is the Cell type that represents maxima's <code>integrate()</code> command.
 */
 
 #include "IntCell.h"
@@ -36,7 +36,7 @@
 #define INTEGRAL_FONT_SIZE 12
 #endif
 
-IntCell::IntCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_base = NULL;
   m_under = NULL;
@@ -51,7 +51,7 @@ IntCell::IntCell(MathCell *parent, Configuration **config, CellPointers *cellPoi
   m_cellPointers = cellPointers;
 }
 
-void IntCell::SetGroup(MathCell *parent)
+void IntCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_base != NULL)
@@ -64,7 +64,7 @@ void IntCell::SetGroup(MathCell *parent)
     m_var->SetGroupList(parent);
 }
 
-MathCell *IntCell::Copy()
+Cell *IntCell::Copy()
 {
   IntCell *tmp = new IntCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -87,9 +87,9 @@ IntCell::~IntCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> IntCell::GetInnerCells()
+std::list<Cell *> IntCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_base)
     innerCells.push_back(m_base);
   if(m_under)
@@ -101,7 +101,7 @@ std::list<MathCell *> IntCell::GetInnerCells()
   return innerCells;
 }
 
-void IntCell::SetOver(MathCell *over)
+void IntCell::SetOver(Cell *over)
 {
   if (over == NULL)
     return;
@@ -109,7 +109,7 @@ void IntCell::SetOver(MathCell *over)
   m_over = over;
 }
 
-void IntCell::SetBase(MathCell *base)
+void IntCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
@@ -117,7 +117,7 @@ void IntCell::SetBase(MathCell *base)
   m_base = base;
 }
 
-void IntCell::SetUnder(MathCell *under)
+void IntCell::SetUnder(Cell *under)
 {
   if (under == NULL)
     return;
@@ -125,7 +125,7 @@ void IntCell::SetUnder(MathCell *under)
   m_under = under;
 }
 
-void IntCell::SetVar(MathCell *var)
+void IntCell::SetVar(Cell *var)
 {
   if (var == NULL)
     return;
@@ -135,7 +135,7 @@ void IntCell::SetVar(MathCell *var)
 
 void IntCell::RecalculateWidths(int fontsize)
 {
-  MathCell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths(fontsize);
   wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
 
@@ -223,7 +223,7 @@ void IntCell::RecalculateWidths(int fontsize)
 
 void IntCell::RecalculateHeight(int fontsize)
 {
-  MathCell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight(fontsize);
   Configuration *configuration = (*m_configuration);
 
   m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 5));
@@ -261,7 +261,7 @@ void IntCell::Draw(wxPoint point)
 {
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    MathCell::Draw(point);
+    Cell::Draw(point);
     Configuration *configuration = (*m_configuration);
     
     wxDC *dc = configuration->GetDC();
@@ -423,7 +423,7 @@ wxString IntCell::ToString()
 
   s += m_base->ListToString();
 
-  MathCell *tmp = m_var;
+  Cell *tmp = m_var;
   wxString var;
   tmp = tmp->m_next;
   if (tmp != NULL)

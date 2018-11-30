@@ -23,14 +23,14 @@
 /*! \file
   This file defines the class TextCell
 
-  TextCell is the MathCell type that is used in order to display text that is
+  TextCell is the Cell type that is used in order to display text that is
   contained in maxima's output.
  */
 
 #include "TextCell.h"
 #include "wx/config.h"
 
-TextCell::TextCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxString text) : MathCell(parent, config)
+TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_displayedDigits_old = -1;
@@ -43,7 +43,7 @@ TextCell::TextCell(MathCell *parent, Configuration **config, CellPointers *cellP
   SetValue(text);
   m_highlight = false;
   m_dontEscapeOpeningParenthesis = false;
-  m_initialToolTip = (*m_configuration)->GetDefaultMathCellToolTip();
+  m_initialToolTip = (*m_configuration)->GetDefaultCellToolTip();
 }
 
 TextCell::~TextCell()
@@ -51,15 +51,15 @@ TextCell::~TextCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> TextCell::GetInnerCells()
+std::list<Cell *> TextCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   return innerCells;
 }
 
 void TextCell::SetStyle(TextStyle style)
 {
-  MathCell::SetStyle(style);
+  Cell::SetStyle(style);
   if ((m_text == wxT("gamma")) && (m_textStyle == TS_FUNCTION))
     m_displayedText = wxT("\x0393");
   if ((m_text == wxT("psi")) && (m_textStyle == TS_FUNCTION))
@@ -286,7 +286,7 @@ void TextCell::SetValue(const wxString &text)
   m_alt = m_altJs = false;
 }
 
-MathCell *TextCell::Copy()
+Cell *TextCell::Copy()
 {
   TextCell *retval = new TextCell(m_group, m_configuration, m_cellPointers, wxEmptyString);
   CopyData(this, retval);
@@ -305,7 +305,7 @@ MathCell *TextCell::Copy()
 
 void TextCell::RecalculateWidths(int fontsize)
 {
-  MathCell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
 
   bool recalculateNeeded = false;
@@ -451,7 +451,7 @@ void TextCell::Draw(wxPoint point)
   {
     
     Configuration *configuration = (*m_configuration);
-    MathCell::Draw(point);
+    Cell::Draw(point);
     wxDC *dc = configuration->GetDC();
     
     if (m_width == -1 || m_height == -1 || m_fontSize != m_lastCalculationFontSize)

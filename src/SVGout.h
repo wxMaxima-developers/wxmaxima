@@ -23,7 +23,7 @@
 #ifndef SVGOUT_H
 #define SVGOUT_H
 
-#include "MathCell.h"
+#include "Cell.h"
 
 #include <wx/dcsvg.h>
 /* Renders portions of the work sheet (including 2D maths) as svg.
@@ -45,7 +45,7 @@ public:
     \param tree The list of cells that is to be rendered
     \return true, if the svgout could be created.
    */
-  wxSize SetData(MathCell *tree);
+  wxSize SetData(Cell *tree);
   
   //! Copies the svg representation of the list of cells that was passed to SetData()
   bool ToClipboard();
@@ -67,7 +67,7 @@ protected:
 
   void Draw();
 
-  MathCell *m_tree;
+  Cell *m_tree;
 
   double GetRealHeight();
 

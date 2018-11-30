@@ -23,7 +23,7 @@
 /*! \file
   This file defines the class LimitCell
 
-  LimitCell is the MathCell type that represents maxima's <code>limit()</code> command.
+  LimitCell is the Cell type that represents maxima's <code>limit()</code> command.
 */
 
 #include "LimitCell.h"
@@ -31,7 +31,7 @@
 #define MIN_LIMIT_FONT_SIZE 8
 #define LIMIT_FONT_SIZE_DECREASE 1
 
-LimitCell::LimitCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_base = NULL;
   m_under = NULL;
@@ -43,7 +43,7 @@ LimitCell::LimitCell(MathCell *parent, Configuration **config, CellPointers *cel
   m_cellPointers = cellPointers;
 }
 
-void LimitCell::SetGroup(MathCell *parent)
+void LimitCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_base != NULL)
@@ -60,7 +60,7 @@ void LimitCell::SetGroup(MathCell *parent)
     m_close->SetGroupList(parent);
 }
 
-MathCell *LimitCell::Copy()
+Cell *LimitCell::Copy()
 {
   LimitCell *tmp = new LimitCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -83,9 +83,9 @@ LimitCell::~LimitCell()
   m_base = m_under = m_name = m_open = m_comma = m_close = NULL;
 }
 
-std::list<MathCell *> LimitCell::GetInnerCells()
+std::list<Cell *> LimitCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_base)
     innerCells.push_back(m_base);
   if(m_under)
@@ -101,7 +101,7 @@ std::list<MathCell *> LimitCell::GetInnerCells()
   return innerCells;
 }
 
-void LimitCell::SetName(MathCell *name)
+void LimitCell::SetName(Cell *name)
 {
   if (name == NULL)
     return;
@@ -111,7 +111,7 @@ void LimitCell::SetName(MathCell *name)
     m_name_last = m_name_last->m_next;
 }
 
-void LimitCell::SetBase(MathCell *base)
+void LimitCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
@@ -121,7 +121,7 @@ void LimitCell::SetBase(MathCell *base)
     m_base_last = m_base_last->m_next;
 }
 
-void LimitCell::SetUnder(MathCell *under)
+void LimitCell::SetUnder(Cell *under)
 {
   if (under == NULL)
     return;
@@ -133,7 +133,7 @@ void LimitCell::SetUnder(MathCell *under)
 
 void LimitCell::RecalculateWidths(int fontsize)
 {
-  MathCell::RecalculateWidths(fontsize);
+  Cell::RecalculateWidths(fontsize);
   if(m_base)
     m_base->RecalculateWidthsList(fontsize);
   if(m_under)
@@ -158,7 +158,7 @@ void LimitCell::RecalculateWidths(int fontsize)
 
 void LimitCell::RecalculateHeight(int fontsize)
 {
-  MathCell::RecalculateHeight(fontsize);
+  Cell::RecalculateHeight(fontsize);
   if(m_under)
     m_under->RecalculateHeightList(MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
   if(m_name)
@@ -189,7 +189,7 @@ void LimitCell::Draw(wxPoint point)
 {
   if (DrawThisCell(point) && InUpdateRegion())
   {   
-    MathCell::Draw(point);
+    Cell::Draw(point);
     wxPoint base(point), under(point), name(point);
 
     name.x = point.x + MAX(m_name->GetFullWidth(),
@@ -324,5 +324,5 @@ void LimitCell::Unbreak()
     m_base->UnbreakList();
     m_under->UnbreakList();
   }
-  MathCell::Unbreak();
+  Cell::Unbreak();
 }

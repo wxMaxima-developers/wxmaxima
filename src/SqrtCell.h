@@ -23,7 +23,7 @@
 #ifndef SQRTCELL_H
 #define SQRTCELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
 #include "TextCell.h"
 
 /*! \file
@@ -45,18 +45,18 @@
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this Cell.
  */
-class SqrtCell : public MathCell
+class SqrtCell : public Cell
 {
 public:
-  SqrtCell(MathCell *parent, Configuration **config, CellPointers *m_cellPointers);
+  SqrtCell(Cell *parent, Configuration **config, CellPointers *m_cellPointers);
 
   ~SqrtCell();
 
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
 
-  MathCell *Copy();
+  Cell *Copy();
 
-  void SetInner(MathCell *inner);
+  void SetInner(Cell *inner);
 
   void RecalculateHeight(int fontsize);
 
@@ -78,12 +78,12 @@ public:
 
   wxString ToXML();
 
-  void SetGroup(MathCell *parent);
+  void SetGroup(Cell *parent);
 
 protected:
-  MathCell *m_innerCell;
+  Cell *m_innerCell;
   TextCell *m_open, *m_close;
-  MathCell *m_last;
+  Cell *m_last;
   int m_signWidth, m_signSize, m_signTop;
   int m_signType;
   double m_signFontScale;

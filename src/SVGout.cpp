@@ -82,7 +82,7 @@ Svgout::~Svgout()
   (*m_configuration)->RecalculationForce(true);
 }
 
-wxSize Svgout::SetData(MathCell *tree)
+wxSize Svgout::SetData(Cell *tree)
 {
   wxDELETE(m_tree);
   m_tree = tree;
@@ -157,7 +157,7 @@ void Svgout::RecalculateHeight()
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   while (tmp != NULL)
   {
@@ -173,7 +173,7 @@ void Svgout::RecalculateWidths()
   int mfontsize = fontsize;
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
 
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   while (tmp != NULL)
   {
@@ -187,7 +187,7 @@ void Svgout::BreakLines()
   int fullWidth = 500*m_scale;
   int currentWidth = 0;
 
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   while (tmp != NULL)
   {
@@ -210,7 +210,7 @@ void Svgout::BreakLines()
 
 void Svgout::GetMaxPoint(int *width, int *height)
 {
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
   int currentHeight = 0;
   int currentWidth = 0;
   *width = 0;
@@ -244,7 +244,7 @@ void Svgout::GetMaxPoint(int *width, int *height)
 
 void Svgout::Draw()
 {
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   if (tmp != NULL)
   {
@@ -340,7 +340,7 @@ bool Svgout::ToClipboard()
 
 void Svgout::BreakUpCells()
 {
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;

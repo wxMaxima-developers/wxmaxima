@@ -23,22 +23,22 @@
 #ifndef SUBCELL_H
 #define SUBCELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
 
-class SubCell : public MathCell
+class SubCell : public Cell
 {
 public:
-  SubCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
+  SubCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~SubCell();
 
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
 
-  MathCell *Copy();
+  Cell *Copy();
 
-  void SetBase(MathCell *base);
+  void SetBase(Cell *base);
 
-  void SetIndex(MathCell *index);
+  void SetIndex(Cell *index);
 
   void RecalculateHeight(int fontsize);
 
@@ -56,11 +56,11 @@ public:
 
   wxString ToXML();
 
-  void SetGroup(MathCell *parent);
+  void SetGroup(Cell *parent);
 
 protected:
-  MathCell *m_baseCell;
-  MathCell *m_indexCell;
+  Cell *m_baseCell;
+  Cell *m_indexCell;
 };
 
 #endif // SUBCELL_H

@@ -28,7 +28,7 @@
 */
 
 #include "ConfigDialogue.h"
-#include "MathCell.h"
+#include "Cell.h"
 #include "Configuration.h"
 #include "invalidImage.h"
 #include <wx/config.h>
