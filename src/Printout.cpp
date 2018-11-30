@@ -27,7 +27,7 @@
 */
 
 //! Bitmaps are scaled down if the resolution of the DC is too low.
-#define DPI_REFERENCE 96.0
+#define DPI_REFERENCE 150.0
 
 #include "Printout.h"
 #include "GroupCell.h"
@@ -37,8 +37,9 @@
 #define PRINT_MARGIN_HORIZONTAL 50
 #define PRINT_MARGIN_VERTICAL 50
 
-Printout::Printout(wxString title, Configuration **configuration) : wxPrintout(title)
+Printout::Printout(wxString title, Configuration **configuration, double scaleFactor) : wxPrintout(title)
 {
+  m_scaleFactor = scaleFactor;
   m_configuration = configuration;
   m_oldconfig = *m_configuration;
   m_numberOfPages = 0;
@@ -205,9 +206,7 @@ void Printout::SetupData()
   wxSize printPPI;
   printPPI = (*m_configuration)->GetDC()->GetPPI();
 
-  double userScale_x, userScale_y;
-  m_oldconfig->GetDC()->GetUserScale(&userScale_x, &userScale_y);
-
+  (*m_configuration)->GetDC()->SetUserScale(1.0,1.0);
   (*m_configuration)->SetZoomFactor_temporarily(
     printPPI.x / DPI_REFERENCE * m_oldconfig->PrintScale()
   );

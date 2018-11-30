@@ -42,7 +42,7 @@ using namespace std;
 class Printout : public wxPrintout
 {
 public:
-  Printout(wxString title, Configuration **configuration);
+  Printout(wxString title, Configuration **configuration, double scaleFactor);
 
   ~Printout();
 
@@ -81,6 +81,7 @@ private:
   wxString m_title;
   GroupCell *m_tree;
   vector<GroupCell *> m_pages;
+  double m_scaleFactor;
 };
 
 #endif // MATHPRINTOUT_H
