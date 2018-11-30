@@ -797,7 +797,7 @@ bool Worksheet::RecalculateIfNeeded()
   if(m_dc == NULL)
     return false;
 
-  if(m_configuration->ForceUpdate())
+  if(m_configuration->RecalculationForce())
     wxLogMessage(_("Recalculating all cell sizes"));
   else
     wxLogMessage(_("Recalculating changed cell sizes"));
@@ -835,7 +835,8 @@ bool Worksheet::RecalculateIfNeeded()
   }
 
   AdjustSize();
-  m_configuration->SetForceUpdate(false);
+  m_configuration->RecalculationForce(false);
+  m_configuration->FontChanged(false);
 
   m_recalculateStart = NULL;
   return true;
@@ -844,7 +845,7 @@ bool Worksheet::RecalculateIfNeeded()
 void Worksheet::Recalculate(GroupCell *start, bool force)
 {
   if(force)
-    m_configuration->SetForceUpdate(force);
+    m_configuration->RecalculationForce(force);
 
   GroupCell *tmp = m_tree;
   if(m_recalculateStart == NULL)

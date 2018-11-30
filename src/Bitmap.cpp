@@ -52,7 +52,7 @@ Bitmap::Bitmap(Configuration **configuration, int scale)
   (*m_configuration)->SetZoomFactor_temporarily(1.0);
   (*m_configuration)->SetClientWidth(BM_FULL_WIDTH);
   (*m_configuration)->SetClientHeight(BM_FULL_WIDTH);
-  (*m_configuration)->SetForceUpdate(true);
+  (*m_configuration)->RecalculationForce(true);
 }
 
 Bitmap::~Bitmap()
@@ -61,6 +61,8 @@ Bitmap::~Bitmap()
   wxDELETE(m_dc);
   wxDELETE(*m_configuration);
   *m_configuration = m_oldconfig;
+  (*m_configuration)->FontChanged(true);
+  (*m_configuration)->RecalculationForce(true);
 }
 
 bool Bitmap::SetData(MathCell *tree, long int maxSize)

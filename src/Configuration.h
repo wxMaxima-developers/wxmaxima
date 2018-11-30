@@ -178,7 +178,10 @@ public:
   //! Sets the zoom factor without storing the new value in the config file/registry.
   void SetZoomFactor_temporarily(double newzoom){
     if(m_zoomFactor != newzoom)
-      SetForceUpdate(true);
+    {
+      RecalculationForce(true);
+      FontChanged(true);
+    }
     m_zoomFactor = newzoom;
   }
 
@@ -236,13 +239,13 @@ public:
   void ReadStyle();
 
   //! Force a full recalculation?
-  void SetForceUpdate(bool force)
+  void RecalculationForce(bool force)
   {
     m_forceUpdate = force;
   }
 
   //! Force a full recalculation?
-  bool ForceUpdate()
+  bool RecalculationForce()
   {
     return m_forceUpdate;
   }
@@ -298,7 +301,7 @@ public:
   void SetIndent(int indent)
   {
     if(m_indent != indent)
-      SetForceUpdate(true);
+      RecalculationForce(true);
     m_indent = indent;
   }
 
@@ -306,10 +309,13 @@ public:
   void SetClientWidth(int width)
   {
     if(m_clientWidth != width)
-      SetForceUpdate(true);
+      RecalculationForce(true);
     m_clientWidth = width;
   }
 
+  bool FontChanged(){return m_fontChanged;}
+  void FontChanged(bool fontChanged){m_fontChanged = fontChanged;}
+  
   //! Set the height of the visible window for GetClientHeight()
   void SetClientHeight(int height)
   { m_clientHeight = height; }
@@ -666,6 +672,8 @@ public:
   //! Are we currently printing to paper or to a bitmap?
   void Printing(bool printing){m_printing = printing; m_forceUpdate = true;}
 private:
+  //! Has the font changed?
+  bool m_fontChanged;
   /*! The interval between auto-saves (in milliseconds). 
 
     Values <10000 mean: Auto-save is off.

@@ -114,7 +114,6 @@ protected:
   //! The text we display: m_text might be a number that is longer than we want to display
   wxString m_displayedText;
   //! How many maximum digits did we display the last time this cell was recalculated?
-  int m_displayedDigits_old;
   wxString m_altText, m_altJsText;
   wxString m_fontname, m_texFontname;
 

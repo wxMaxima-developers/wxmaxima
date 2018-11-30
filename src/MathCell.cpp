@@ -231,7 +231,7 @@ MathCell *MathCell::GetGroup()
  */
 int MathCell::GetMaxCenter()
 {
-  if ((m_maxCenter < 0) || ((*m_configuration)->ForceUpdate()))
+  if ((m_maxCenter < 0) || ((*m_configuration)->RecalculationForce()))
   {
     MathCell *tmp = this;
     while (tmp != NULL)
@@ -252,7 +252,7 @@ int MathCell::GetMaxCenter()
  */
 int MathCell::GetMaxDrop()
 {
-  if ((m_maxDrop < 0) || ((*m_configuration)->ForceUpdate()))
+  if ((m_maxDrop < 0) || ((*m_configuration)->RecalculationForce()))
   {
     MathCell *tmp = this;
     while (tmp != NULL)
@@ -279,7 +279,7 @@ int MathCell::GetMaxHeight()
 int MathCell::GetFullWidth()
 {
   // Recalculate the with of this list of cells only if this has been marked as necessary.
-  if ((m_fullWidth < 0) || ((*m_configuration)->ForceUpdate()))
+  if ((m_fullWidth < 0) || ((*m_configuration)->RecalculationForce()))
   {
     MathCell *tmp = this;
 

@@ -33,6 +33,7 @@
 Configuration::Configuration(wxDC &dc) : m_dc(&dc) 
 {
   m_printing = false;
+  m_fontChanged = true;
   m_TOCshowsSectionNumbers = false;
   m_antialiassingDC = NULL;
   m_parenthesisDrawMode = unknown;
@@ -350,7 +351,7 @@ void Configuration::SetZoomFactor(double newzoom)
 
   m_zoomFactor = newzoom;
   wxConfig::Get()->Write(wxT("ZoomFactor"), m_zoomFactor);
-  SetForceUpdate(true);
+  RecalculationForce(true);
 }
 
 Configuration::~Configuration()

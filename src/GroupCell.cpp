@@ -595,7 +595,7 @@ void GroupCell::RecalculateWidths(int fontsize)
 {
   MathCell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
-  if (m_width == -1 || m_height == -1 || configuration->ForceUpdate())
+  if (m_width == -1 || m_height == -1 || configuration->RecalculationForce())
   {
     // special case of 'line cell'
     if (m_groupType == GC_TYPE_PAGEBREAK)
@@ -777,7 +777,7 @@ void GroupCell::RecalculateHeight(int fontsize)
   Configuration *configuration = (*m_configuration);
 
   if (m_width < 0 || m_height < 0 || m_currentPoint.x < 0 || m_currentPoint.y < 0 ||
-      configuration->ForceUpdate() || fontsize != m_fontSize_Old)
+      configuration->RecalculationForce() || fontsize != m_fontSize_Old)
   {
     m_fontSize_Old = fontsize;
 

@@ -585,7 +585,7 @@ void EditorCell::RecalculateWidths(int fontsize)
   int charWidth;
 
   m_isDirty = false;
-  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() || Scale_Px(fontsize) != m_fontSize_Last)
+  if (m_height == -1 || m_width == -1 || configuration->RecalculationForce() || Scale_Px(fontsize) != m_fontSize_Last)
   {
     ResetData();
     m_fontSize_Last = Scale_Px(fontsize);
@@ -759,7 +759,7 @@ void EditorCell::Draw(wxPoint point1)
     m_selectionChanged = false;
     wxDC *dc = configuration->GetDC();
     wxPoint point(point1);
-//    if (m_width == -1 || m_height == -1 || configuration->ForceUpdate())
+//    if (m_width == -1 || m_height == -1 || configuration->RecalculationForce())
 //      RecalculateWidths(m_fontsize);
 
     //

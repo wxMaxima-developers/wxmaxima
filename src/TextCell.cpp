@@ -349,8 +349,7 @@ void TextCell::RecalculateWidths(int fontsize)
     recalculateNeeded = true;
   }
 
-  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() ||
-      m_lastCalculationFontSize != fontsize)
+  if (m_height == -1 || m_width == -1 || configuration->FontChanged())
     recalculateNeeded = true;
 
   if(recalculateNeeded)

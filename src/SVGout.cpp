@@ -78,6 +78,8 @@ Svgout::~Svgout()
     wxRemoveFile(m_tempFileName);
   }
   *m_configuration = m_oldconfig;
+  (*m_configuration)->FontChanged(true);
+  (*m_configuration)->RecalculationForce(true);
 }
 
 wxSize Svgout::SetData(MathCell *tree)

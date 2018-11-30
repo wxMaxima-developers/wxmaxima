@@ -61,7 +61,7 @@ Emfout::Emfout(Configuration **configuration, wxString filename)
   // available in inkscape.
   (*m_configuration)->SetGrouphesisDrawMode(Configuration::handdrawn);
   (*m_configuration)->Printing(true);
-  (*m_configuration)->SetForceUpdate(true);
+  (*m_configuration)->RecalculationForce(true);
 }
 
 Emfout::~Emfout()
@@ -81,7 +81,8 @@ Emfout::~Emfout()
     wxRemoveFile(m_tempFileName);
   }
   *m_configuration = m_oldconfig;
-  (*m_configuration)->SetForceUpdate(true);
+  (*m_configuration)->FontChanged(true);
+  (*m_configuration)->RecalculationForce(true);
 }
 
 wxSize Emfout::SetData(MathCell *tree)
