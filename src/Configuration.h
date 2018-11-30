@@ -312,9 +312,15 @@ public:
       RecalculationForce(true);
     m_clientWidth = width;
   }
-
+  //! Has a font changed?
   bool FontChanged(){return m_fontChanged;}
-  void FontChanged(bool fontChanged){m_fontChanged = fontChanged;}
+  //! Has a font changed?
+  void FontChanged(bool fontChanged)
+    {
+      m_fontChanged = fontChanged;
+      if(fontChanged)
+        RecalculationForce(true);
+    }
   
   //! Set the height of the visible window for GetClientHeight()
   void SetClientHeight(int height)
