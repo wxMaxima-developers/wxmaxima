@@ -972,6 +972,17 @@ void GroupCell::Draw(wxPoint point)
         m_outputRect.y = in.y - m_output->GetMaxCenter();
         m_outputRect.x = in.x;
 
+        if(tmp!=NULL)
+        {
+          if(
+            (tmp->GetStyle() != TS_LABEL) &&
+            (tmp->GetStyle() != TS_USERLABEL) &&
+            (tmp->GetStyle() != TS_MAIN_PROMPT) &&
+            (tmp->GetStyle() != TS_OTHER_PROMPT) &&
+            configuration->IndentMaths()
+            )
+            in.x += Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING;
+        }
         while (tmp != NULL)
         {         
           tmp->SetCurrentPoint(in);

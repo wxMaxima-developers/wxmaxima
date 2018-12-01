@@ -136,6 +136,8 @@ private:
   wxString m_initialToolTip;
   //! The number of digits we did display the last time we displayed a number.
   int m_displayedDigits_old;
+
+  int m_fontsize_old;
 };
 
 #endif // TEXTCELL_H

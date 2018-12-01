@@ -44,6 +44,7 @@ TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_highlight = false;
   m_dontEscapeOpeningParenthesis = false;
   m_initialToolTip = (*m_configuration)->GetDefaultCellToolTip();
+  m_fontsize_old = -1;
 }
 
 TextCell::~TextCell()
@@ -67,6 +68,7 @@ void TextCell::SetStyle(TextStyle style)
   if((style == TS_LABEL) || (style == TS_USERLABEL)||
      (style == TS_MAIN_PROMPT) || (style == TS_OTHER_PROMPT))
     m_forceBreakLine = true;
+  ResetSize();
 }
 
 void TextCell::SetValue(const wxString &text)
@@ -284,6 +286,7 @@ void TextCell::SetValue(const wxString &text)
     }
   }
   m_alt = m_altJs = false;
+  ResetSize();
 }
 
 Cell *TextCell::Copy()
@@ -305,6 +308,9 @@ Cell *TextCell::Copy()
 
 void TextCell::RecalculateWidths(int fontsize)
 {
+  if(fontsize != m_fontsize_old)
+    ResetSize();
+  m_fontsize_old = fontsize;
   Cell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
 
