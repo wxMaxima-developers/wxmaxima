@@ -1,5 +1,5 @@
 project(wxmaxima)
-set(VERSION 18.11.2-unofficial)
+set(VERSION 18.11.4-unofficial)
 set(PACKAGE_VERSION ${VERSION})
 set(GITVERSION ${VERSION})
 set(PACKAGE wxMaxima)
@@ -11,7 +11,7 @@ set(PACKAGE wxMaxima)
 # Avoid a warning by deciding which version of this policy we use in case we can
 # decide this.
 if(POLICY CMP0066)
-   cmake_policy(SET CMP0066 NEW)
+    cmake_policy(SET CMP0066 NEW)
 endif()
 
 cmake_minimum_required(VERSION 3.4)
