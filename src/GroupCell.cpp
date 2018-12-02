@@ -972,17 +972,7 @@ void GroupCell::Draw(wxPoint point)
         m_outputRect.y = in.y - m_output->GetMaxCenter();
         m_outputRect.x = in.x;
 
-        if(tmp!=NULL)
-        {
-          if(
-            (tmp->GetStyle() != TS_LABEL) &&
-            (tmp->GetStyle() != TS_USERLABEL) &&
-            (tmp->GetStyle() != TS_MAIN_PROMPT) &&
-            (tmp->GetStyle() != TS_OTHER_PROMPT) &&
-            configuration->IndentMaths()
-            )
-            in.x += Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING;
-        }
+        in.x += GetLineIndent(tmp);
         while (tmp != NULL)
         {         
           tmp->SetCurrentPoint(in);
@@ -993,16 +983,8 @@ void GroupCell::Draw(wxPoint point)
               if (tmp->m_nextToDraw->m_bigSkip)
                 in.y += MC_LINE_SKIP;
  
-              in.x = point.x;
-              if(
-                (tmp->m_nextToDraw->GetStyle() != TS_LABEL) &&
-                (tmp->m_nextToDraw->GetStyle() != TS_USERLABEL) &&
-                (tmp->m_nextToDraw->GetStyle() != TS_MAIN_PROMPT) &&
-                (tmp->m_nextToDraw->GetStyle() != TS_OTHER_PROMPT) &&
-                configuration->IndentMaths()
-                )
-                in.x += Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING;
-              
+              in.x = point.x + GetLineIndent(tmp->m_nextToDraw);              
+
               in.y += drop + tmp->m_nextToDraw->GetMaxCenter();
               drop = tmp->m_nextToDraw->GetMaxDrop();
             }
@@ -1018,6 +1000,24 @@ void GroupCell::Draw(wxPoint point)
     configuration->Outdated(false); 
     UnsetPen();
   }
+}
+
+int GroupCell::GetLineIndent(Cell *cell)
+{
+  int indent = 0;
+
+  if(cell != NULL)
+  {
+    if(
+      (cell->GetStyle() != TS_LABEL) &&
+      (cell->GetStyle() != TS_USERLABEL) &&
+      (cell->GetStyle() != TS_MAIN_PROMPT) &&
+      (cell->GetStyle() != TS_OTHER_PROMPT) &&
+      (*m_configuration)->IndentMaths()
+      )
+      indent += Scale_Px((*m_configuration)->GetLabelWidth()) + MC_TEXT_PADDING;
+  }
+  return indent;
 }
 
 void GroupCell::CellUnderPointer(GroupCell *cell)
@@ -1925,7 +1925,7 @@ void GroupCell::BreakLines(int fullWidth)
 void GroupCell::BreakLines(Cell *cell, int fullWidth)
 {
   Configuration *configuration = (*m_configuration);
-  int currentWidth = configuration->GetIndent();
+  int currentWidth = configuration->GetIndent() + GetLineIndent(cell);
 
   Cell *tmp = cell;
 
@@ -1937,8 +1937,8 @@ void GroupCell::BreakLines(Cell *cell, int fullWidth)
     {
       if (tmp->BreakLineHere() || (currentWidth + tmp->GetWidth() >= fullWidth))
       {
-        currentWidth = configuration->GetIndent() + tmp->GetWidth();
         tmp->BreakLine(true);
+        currentWidth = configuration->GetIndent() + GetLineIndent(cell) + tmp->GetWidth();
       }
       else
         currentWidth += tmp->GetWidth();
