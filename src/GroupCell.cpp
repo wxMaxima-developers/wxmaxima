@@ -1927,6 +1927,9 @@ void GroupCell::BreakLines(Cell *cell, int fullWidth)
   Configuration *configuration = (*m_configuration);
   int currentWidth = configuration->GetIndent() + GetLineIndent(cell);
 
+  fullWidth -= configuration->GetIndent();
+  if (fullWidth < Scale_Px(200)) fullWidth = Scale_Px(200);
+  
   Cell *tmp = cell;
 
   while (tmp != NULL && !m_hide)
@@ -1938,7 +1941,10 @@ void GroupCell::BreakLines(Cell *cell, int fullWidth)
       if (tmp->BreakLineHere() || (currentWidth + tmp->GetWidth() >= fullWidth))
       {
         tmp->BreakLine(true);
-        currentWidth = configuration->GetIndent() + GetLineIndent(cell) + tmp->GetWidth();
+        Cell *nextCell = tmp;
+        if(tmp->m_nextToDraw)
+          nextCell = tmp->m_nextToDraw;
+        currentWidth = GetLineIndent(nextCell) + tmp->GetWidth();
       }
       else
         currentWidth += tmp->GetWidth();

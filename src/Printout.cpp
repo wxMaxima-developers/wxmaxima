@@ -27,7 +27,7 @@
 */
 
 //! Bitmaps are scaled down if the resolution of the DC is too low.
-#define DPI_REFERENCE 150.0
+#define DPI_REFERENCE 96.0
 
 #include "Printout.h"
 #include "GroupCell.h"
@@ -208,7 +208,7 @@ void Printout::SetupData()
 
   (*m_configuration)->GetDC()->SetUserScale(1.0,1.0);
   (*m_configuration)->SetZoomFactor_temporarily(
-    printPPI.x / DPI_REFERENCE * m_oldconfig->PrintScale()
+    printPPI.x / DPI_REFERENCE * m_oldconfig->PrintScale() / m_scaleFactor
   );
 
   // wxSize screenPPI;

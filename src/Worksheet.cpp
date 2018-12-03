@@ -725,7 +725,6 @@ void Worksheet::InsertLine(Cell *newCell, bool forceNewLine)
     UpdateConfigurationClientSize();
 
     tmp->RecalculateAppended();
-    Recalculate(tmp, false);
 
     if (FollowEvaluation())
     {
