@@ -360,30 +360,53 @@ Configuration::~Configuration()
 
 bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2, wxString char3)
 {
+  wxString name = char1 + char2 + char3;
+  CharsInFontMap::iterator it = m_charsInFontMap.find(name);
+  if(it != m_charsInFontMap.end())
+    return it->second;
+
   if(!font.IsOk())
+  {
+    m_charsInFontMap[name] = false;
     return false;
+  }
   // Seems like Apple didn't hold to their high standards as the maths part of this font
   // don't form nice big mathematical symbols => Blacklisting this font.
   if (font.GetFaceName() == wxT("Monaco"))
+  {
+    m_charsInFontMap[name] = false;
     return false;
+  }
 
   if(!m_useUnicodeMaths)
+  {
+    m_charsInFontMap[name] = false;
     return false;
+  }
   
   // Letters with width or height = 0 don't exist in the current font
   int width1,height1,descent1;
   GetDC()->SetFont(font);
   GetDC()->GetTextExtent(char1,&width1,&height1,&descent1);
   if((width1 < 1) || (height1-descent1 < 1))
+  {
+    m_charsInFontMap[name] = false;
     return false;
+  }
   int width2,height2,descent2;
   GetDC()->GetTextExtent(char2,&width2,&height2,&descent2);
   if((width2 < 1) || (height2-descent2 < 1))
+  {
+    m_charsInFontMap[name] = false;
     return false;
+  }
   int width3,height3,descent3;
   GetDC()->GetTextExtent(char3,&width3,&height3,&descent3);
   if((width3 < 1) || (height3-descent3 < 1))
+  {
+    m_charsInFontMap[name] = false;
     return false;
+  }
 
   if(((width1 != width2) &&
       (width1 != width3) &&
@@ -391,7 +414,10 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
      ((height1 != height2) &&
       (height1 != height3) &&
       (height2 != height3)))
+  {
+    m_charsInFontMap[name] = true;
     return true;
+  }
   
   wxBitmap bmp1(width1,height1);
   wxMemoryDC dc1(bmp1);
@@ -415,9 +441,15 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
   dc3.DrawText(char3,wxPoint(0,0));
 
   if(IsEqual(bmp1,bmp2) || IsEqual(bmp2,bmp3) || IsEqual(bmp1,bmp3))
-    return false; 
+  {
+    m_charsInFontMap[name] = false;
+    return false;
+  }
   else
+  {
+    m_charsInFontMap[name] = false;
     return true;
+  }
 }
 
 wxString Configuration::GetFontName(int type)

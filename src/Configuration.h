@@ -314,12 +314,15 @@ public:
   }
   //! Has a font changed?
   bool FontChanged(){return m_fontChanged;}
+  WX_DECLARE_STRING_HASH_MAP( bool, CharsInFontMap);
+  CharsInFontMap m_charsInFontMap;
   //! Has a font changed?
   void FontChanged(bool fontChanged)
     {
       m_fontChanged = fontChanged;
       if(fontChanged)
         RecalculationForce(true);
+      m_charsInFontMap.clear();
     }
   
   //! Set the height of the visible window for GetClientHeight()
