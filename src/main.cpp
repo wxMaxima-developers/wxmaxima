@@ -166,7 +166,6 @@ bool MyApp::OnInit()
   if (wxFileExists(fontPrefix + wxT(CMR10) + wxT(".ttf")))  wxFont::AddPrivateFont(fontPrefix + wxT(CMR10) + wxT(".ttf"));
   if (wxFileExists(fontPrefix + wxT(CMMI10) + wxT(".ttf"))) wxFont::AddPrivateFont(fontPrefix + wxT(CMMI10) + wxT(".ttf"));
   if (wxFileExists(fontPrefix + wxT(CMTI10) + wxT(".ttf"))) wxFont::AddPrivateFont(fontPrefix + wxT(CMTI10) + wxT(".ttf"));
-  wxFont::ActivatePrivateFonts();
 
   /* Add private Libertine fonts, if they exist */
   if (wxFileExists(fontPrefix + wxT(LIBERTINE1))) 
