@@ -348,7 +348,12 @@ public:
 
   //! The minimum sensible line width in withs of a letter.
   int LineWidth_em()
-  { return m_lineWidth_em; }
+  {
+    if(Printing())
+      return 10000;
+    else
+      return m_lineWidth_em;
+  }
 
   //! Set the minimum sensible line width in widths of a letter.
   void LineWidth_em(int width)
