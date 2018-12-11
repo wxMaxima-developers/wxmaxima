@@ -78,6 +78,8 @@ Emfout::~Emfout()
   {
     // We don't want a braindead virus scanner that disallows us to delete our temp
     // files to trigger asserts.
+    wxLogNull messageBlocker;
+    
     wxRemoveFile(m_tempFileName);
   }
   *m_configuration = m_oldconfig;
@@ -328,6 +330,10 @@ Emfout::EMFDataObject *Emfout::GetDataObject()
   }
   if((m_filename != wxEmptyString) && (wxFileExists(m_filename)))
   {
+    // Don't output error messages if the worst thing that can happen is that we
+    // cannot clean up a temp file
+    wxLogNull messageBlocker;
+
     wxRemoveFile(m_filename);
   }
   m_filename = wxEmptyString;
