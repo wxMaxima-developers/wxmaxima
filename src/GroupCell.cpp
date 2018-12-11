@@ -539,6 +539,11 @@ void GroupCell::RemoveOutput()
   ResetSize();
   RecalculateHeight((*m_configuration)->GetDefaultFontSize());
   m_hide = false;
+
+  // Move all cells that follow the current one up by the amount this cell has shrinked.
+  GroupCell *cell = dynamic_cast<GroupCell *>(this->m_next);
+  while(cell != NULL)
+    cell = cell->UpdateYPosition();
 }
 
 void GroupCell::AppendOutput(Cell *cell)
@@ -577,7 +582,6 @@ void GroupCell::AppendOutput(Cell *cell)
 
   if (m_appendedCells == NULL)
     m_appendedCells = cell;
-  // ResetSize();
 }
 
 void GroupCell::Recalculate()
@@ -828,7 +832,10 @@ void GroupCell::RecalculateAppended()
     return;
   Configuration *configuration = (*m_configuration);
   if (m_appendedCells == NULL)
+    m_appendedCells = m_inputLabel;
+  if (m_appendedCells == NULL)
     return;
+  m_appendedCells->ForceBreakLineHere();
 
   Cell *tmp = m_appendedCells;
   m_fontSize = configuration->GetFontSize(TS_TEXT);
@@ -858,13 +865,14 @@ void GroupCell::RecalculateAppended()
   while (tmp != NULL)
   {
     if ((tmp->BreakLineHere()) ||
-        ((tmp->m_previousToDraw == NULL) && (tmp->m_nextToDraw == NULL)) ||
+        (tmp->m_previousToDraw == NULL) ||
         (tmp->GetStyle() == TS_LABEL) || (tmp->GetStyle() == TS_USERLABEL))
     {
+      int height_Delta = tmp->GetMaxHeight();
       m_width = MAX(m_width, tmp->GetLineWidth());
-      m_outputRect.width = MAX(m_outputRect.width, tmp->GetLineWidth());
-      m_height            += tmp->GetMaxHeight();
-      m_outputRect.height += tmp->GetMaxHeight();
+      m_height            += height_Delta;
+      m_outputRect.width = m_width;
+      m_outputRect.height += height_Delta;
       
       if (tmp->m_previousToDraw != NULL &&
           ((tmp->GetStyle() == TS_LABEL) || (tmp->GetStyle() == TS_USERLABEL)))
@@ -883,6 +891,27 @@ void GroupCell::RecalculateAppended()
   }
 
   m_appendedCells = NULL;
+
+  // 
+  ResetData();
+  
+  // Move all cells that follow the current one down by the amount this cell has grown.
+  GroupCell *cell = dynamic_cast<GroupCell *>(this->m_next);
+  while(cell != NULL)
+    cell = cell->UpdateYPosition();
+}
+
+GroupCell *GroupCell::UpdateYPosition()
+{
+  if (m_previous != NULL)
+  {
+    m_currentPoint.x = (*m_configuration)->GetIndent();
+    m_currentPoint = m_previous->GetCurrentPoint();
+    m_currentPoint.y += m_previous->GetMaxHeight();
+    if(m_previous->GetMaxDrop() > 0)
+      m_currentPoint.y += (*m_configuration)->GetGroupSkip();
+  }
+  return dynamic_cast<GroupCell *>(m_next);
 }
 
 void GroupCell::Draw(wxPoint point)
@@ -1928,7 +1957,9 @@ void GroupCell::BreakLines(Cell *cell, int fullWidth)
   int currentWidth = configuration->GetIndent() + GetLineIndent(cell);
 
   fullWidth -= configuration->GetIndent();
-  if (fullWidth < Scale_Px(200)) fullWidth = Scale_Px(200);
+
+  // Don't let the layout degenerate for small window widths
+  if (fullWidth < Scale_Px(150)) fullWidth = Scale_Px(150);
   
   Cell *tmp = cell;
 

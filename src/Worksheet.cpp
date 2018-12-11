@@ -487,15 +487,12 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
         tmp->LastInEvaluationQueue(m_evaluationQueue.GetCell() == tmp);
         tmp->Draw(point);
       }
-      if (tmp->m_next != NULL)
-      {
-        point.x = m_configuration->GetIndent();
-        point.y += drop + tmp->m_next->GetMaxCenter();
-        if(tmp->GetMaxDrop() > 0)
-          point.y += m_configuration->GetGroupSkip();
-        drop = tmp->m_next->GetMaxDrop();
-      }
       tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+      if (tmp != NULL)
+      {
+        tmp->UpdateYPosition();
+        point = tmp->GetCurrentPoint();
+      }
     }
 
   }

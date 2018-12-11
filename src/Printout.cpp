@@ -185,11 +185,12 @@ void Printout::SetupData()
 {
   wxDC *dc = GetDC();  
   *m_configuration = new Configuration(*dc);
+  // Make sure that during print nothing is outside the crop rectangle
+  (*m_configuration)->LineWidth_em(10000);
   
   m_printConfigCreated = true;
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
   (*m_configuration)->ShowBrackets((*m_configuration)->PrintBrackets());
-  (*m_configuration)->LineWidth_em(400);
   (*m_configuration)->Printing(true);
   
 //  SetUserScale(1/DCSCALE,

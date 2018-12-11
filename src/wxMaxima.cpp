@@ -7900,7 +7900,6 @@ void wxMaxima::TryEvaluateNextInQueue()
         m_worksheet->SetSelection(NULL, NULL);
     }
     tmp->RemoveOutput();
-    m_worksheet->Recalculate(tmp);
     m_worksheet->RequestRedraw();
   }
 
@@ -7983,7 +7982,6 @@ void wxMaxima::TryEvaluateNextInQueue()
         m_worksheet->SetActiveCell(tmp->GetEditable());
       m_worksheet->m_evaluationQueue.RemoveFirst();
     }
-    m_worksheet->Recalculate();
   }
   else
   {

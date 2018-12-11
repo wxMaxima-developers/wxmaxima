@@ -153,30 +153,27 @@ wxString ImgCell::GetToolTip(const wxPoint &point)
 void ImgCell::RecalculateWidths(int fontsize)
 {
   Cell::RecalculateWidths(fontsize);
-  // Here we recalculate the height, as well:
-  //  - This doesn't cost much time and
-  //  - as image cell's sizes might change when the resolution does
-  //    we might have intermittent calculation issues otherwise
   Configuration *configuration = (*m_configuration);
-  if (configuration->GetPrinter()) {
-    m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
-  } else {
-    m_image->Recalculate();
-  }
-
+  if (m_image)
+    // Here we recalculate the height, as well:
+    //  - This doesn't cost much time and
+    //  - as image cell's sizes might change when the resolution does
+    //    we might have intermittent calculation issues otherwise
+    if (configuration->GetPrinter()) {
+      if (m_image)
+        m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
+    } else {
+      if (m_image)
+        m_image->Recalculate();
+    }
   m_width = m_image->m_width + 2 * m_imageBorderWidth;
-  m_height = m_image->m_height + 2 * m_imageBorderWidth;
-  m_center = m_height / 2;
 }
 
 void ImgCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
-  // Here we recalculate the width, as well:
-  //  - This doesn't cost much time and
-  //  - as image cell's sizes might change when the resolution does
-  //    we might have intermittent calculation issues otherwise
-  RecalculateWidths(fontsize);
+  m_height = m_image->m_height + 2 * m_imageBorderWidth;
+  m_center = m_height / 2;
 }
 
 void ImgCell::Draw(wxPoint point)

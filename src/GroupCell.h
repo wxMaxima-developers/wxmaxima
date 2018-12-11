@@ -472,6 +472,12 @@ public:
   };
 #endif
 
+  /*! Recalculate the cell's y position using the position and height of the last one.
+    
+    \return The next GroupCell or NULL if there isn't any.
+  */
+  GroupCell *UpdateYPosition();
+  
 protected:
   int GetLineIndent(Cell *cell);
   GroupCell *m_hiddenTree; //!< here hidden (folded) tree of GCs is stored
