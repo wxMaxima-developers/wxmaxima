@@ -53,6 +53,7 @@ find_package(Git)
 if(Git_FOUND)
     if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
         execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
+                        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
                         OUTPUT_VARIABLE WXMAXIMA_GIT_VERSION
                         OUTPUT_STRIP_TRAILING_WHITESPACE)
         message(STATUS "Building from git development tree, revision: ${WXMAXIMA_GIT_VERSION}")
