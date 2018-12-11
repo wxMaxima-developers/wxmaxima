@@ -3677,6 +3677,7 @@ bool wxMaxima::SaveFile(bool forceSave)
 
 void wxMaxima::ReadStdErr()
 {
+  wxLogNull blocker;
   // Maxima will never send us any data via stderr after it has finished
   // starting up and will send data via stdout only in rare cases:
   // It rather sends us the data over the network.
