@@ -148,8 +148,10 @@ bool MyApp::OnInit()
     m_locale.Init(wxLANGUAGE_ENGLISH);
 
   Dirstructure dirstruct;
-
-  wxSetEnv(wxT("LANG"), m_locale.GetCanonicalName());
+  std::cerr <<lang<<"\n";
+  if((lang != wxLANGUAGE_UNKNOWN) && (lang != wxLANGUAGE_DEFAULT) &&
+     (lang != wxLocale::GetSystemLanguage()))
+    wxSetEnv(wxT("LANG"), m_locale.GetCanonicalName());
   if (!wxGetEnv(wxT("BUILD_DIR"), NULL))
   {
     wxString dir = wxPathOnly(wxStandardPaths::Get().GetExecutablePath());

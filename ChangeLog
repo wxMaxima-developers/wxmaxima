@@ -5,6 +5,8 @@ Current:
   * Source file names that more closely their current meaning
   * Many bug fixes.
   * Now we pass the canonical locale name to maxima, not the short one.
+  * We no more set maxima's locale if it doesn't differ from the system's
+    default one.
 
 18.11.2:
   * Better horizontal spacing of cells that are wider than lines
