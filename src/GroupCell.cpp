@@ -1956,7 +1956,7 @@ void GroupCell::BreakLines(int fullWidth)
 void GroupCell::BreakLines(Cell *cell, int fullWidth)
 {
   Configuration *configuration = (*m_configuration);
-  int currentWidth = configuration->GetIndent() + GetLineIndent(cell);
+  int currentWidth = GetLineIndent(cell);
 
   fullWidth -= configuration->GetIndent();
 
