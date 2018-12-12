@@ -649,8 +649,8 @@ void GroupCell::RecalculateWidths(int fontsize)
       }
     }
 
-    BreakUpCells(m_fontSize, configuration->GetClientWidth());
-    BreakLines(configuration->GetClientWidth());
+    BreakUpCells(m_fontSize);
+    BreakLines();
   }
   ResetData();
 }
@@ -686,9 +686,8 @@ void GroupCell::OnSize()
     tmp->ResetData();
     tmp = tmp->m_next;
   }
-  int clientWidth = (*m_configuration)->GetClientWidth();
-  BreakUpCells(m_fontSize, clientWidth);
-  BreakLines(clientWidth);
+  BreakUpCells(m_fontSize);
+  BreakLines();
   InputHeightChanged();
 }
 
@@ -850,8 +849,8 @@ void GroupCell::RecalculateAppended()
   }
 
   // Breakup cells and break lines
-  BreakUpCells(m_appendedCells, m_fontSize, configuration->GetClientWidth());
-  BreakLines(m_appendedCells, configuration->GetClientWidth());
+  BreakUpCells(m_appendedCells, m_fontSize);
+  BreakLines(m_appendedCells);
 
   // Recalculate size of cells
   tmp = m_appendedCells;
@@ -1948,41 +1947,40 @@ EditorCell *GroupCell::GetEditable()
   }
 }
 
-void GroupCell::BreakLines(int fullWidth)
+void GroupCell::BreakLines()
 {
-  BreakLines(m_output, fullWidth);
+  BreakLines(m_output);
 }
 
-void GroupCell::BreakLines(Cell *cell, int fullWidth)
+void GroupCell::BreakLines(Cell *cell)
 {
+  int fullWidth = (*m_configuration)->GetClientWidth();
   Configuration *configuration = (*m_configuration);
   int currentWidth = GetLineIndent(cell);
-
+  std::cerr << GetLineIndent(cell)<<"\n";
   fullWidth -= configuration->GetIndent();
 
   // Don't let the layout degenerate for small window widths
   if (fullWidth < Scale_Px(150)) fullWidth = Scale_Px(150);
   
-  Cell *tmp = cell;
-
-  while (tmp != NULL && !m_hide)
+  while (cell != NULL && !m_hide)
   {
-    tmp->ResetData();
-    tmp->BreakLine(false);
-    if (!tmp->m_isBrokenIntoLines)
+    cell->ResetData();
+    cell->BreakLine(false);
+    if (!cell->m_isBrokenIntoLines)
     {
-      if (tmp->BreakLineHere() || (currentWidth + tmp->GetWidth() >= fullWidth))
+      if (cell->BreakLineHere() || (currentWidth + cell->GetWidth() >= fullWidth))
       {
-        tmp->BreakLine(true);
-        Cell *nextCell = tmp;
-        if(tmp->m_nextToDraw)
-          nextCell = tmp->m_nextToDraw;
-        currentWidth = GetLineIndent(nextCell) + tmp->GetWidth();
+        cell->BreakLine(true);
+        Cell *nextCell = cell;
+        if(cell->m_nextToDraw)
+          nextCell = cell->m_nextToDraw;
+        currentWidth = GetLineIndent(nextCell) + cell->GetWidth();
       }
       else
-        currentWidth += tmp->GetWidth();
+        currentWidth += cell->GetWidth();
     }
-    tmp = tmp->m_nextToDraw;
+    cell = cell->m_nextToDraw;
   }
 }
 
@@ -2010,13 +2008,14 @@ void GroupCell::SelectOutput(Cell **start, Cell **end)
     *end = *start = NULL;
 }
 
-void GroupCell::BreakUpCells(int fontsize, int clientWidth)
+void GroupCell::BreakUpCells(int fontsize)
 {
-  BreakUpCells(m_output, fontsize, clientWidth);
+  BreakUpCells(m_output, fontsize);
 }
 
-void GroupCell::BreakUpCells(Cell *cell, int WXUNUSED(fontsize), int clientWidth)
+void GroupCell::BreakUpCells(Cell *cell, int WXUNUSED(fontsize))
 {
+  int clientWidth = (*m_configuration)->GetClientWidth();
   if(cell == NULL)
     return;
 
