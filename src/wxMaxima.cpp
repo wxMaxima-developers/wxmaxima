@@ -3029,7 +3029,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   }
 
   if(m_worksheet != NULL)
-  {
+  {    
     m_worksheet->RecalculateIfNeeded();
     m_worksheet->ScrollToCellIfNeeded();
   }
@@ -3061,8 +3061,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
         return;
     }
   }
-
-
+  
   if(m_worksheet->RedrawIfRequested())
   {
     m_updateControls = true;
@@ -3549,7 +3548,10 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
     LeftStatusText(wxString::Format("Errors trying to open the file %s.", file));
 
   if(retval)
+  {
+    m_worksheet->RecalculateForce();
     RightStatusText(_("File opened"));
+  }
   else
     RightStatusText(_("File could not be opened"));
 

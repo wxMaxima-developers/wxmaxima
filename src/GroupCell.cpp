@@ -538,6 +538,7 @@ void GroupCell::RemoveOutput()
 
   ResetSize();
   RecalculateHeight((*m_configuration)->GetDefaultFontSize());
+  (*m_configuration)->AdjustWorksheetSize(true);
   m_hide = false;
 
   // Move all cells that follow the current one up by the amount this cell has shrinked.
@@ -899,6 +900,7 @@ void GroupCell::RecalculateAppended()
   GroupCell *cell = dynamic_cast<GroupCell *>(this->m_next);
   while(cell != NULL)
     cell = cell->UpdateYPosition();
+  (*m_configuration)->AdjustWorksheetSize(true);
 }
 
 GroupCell *GroupCell::UpdateYPosition()

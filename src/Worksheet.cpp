@@ -787,11 +787,21 @@ void Worksheet::SetZoomFactor(double newzoom, bool recalc)
 
 bool Worksheet::RecalculateIfNeeded()
 {
+  bool recalculate = true;
+  
   if((m_recalculateStart == NULL) || (m_tree == NULL))
-    return false;
+    recalculate = false;
 
   if(m_dc == NULL)
-    return false;
+    recalculate = false;
+  
+  if(!recalculate)
+  {
+    if(m_configuration->AdjustWorksheetSize())
+      AdjustSize();
+      return false;
+  }
+  m_configuration->AdjustWorksheetSize(false);
 
   if(m_configuration->RecalculationForce())
   {

@@ -55,6 +55,7 @@ Configuration::Configuration(wxDC &dc) : m_dc(&dc)
   m_printBrackets = false;
   m_hideBrackets = true;
   m_lineWidth_em = 88;
+  m_adjustWorksheetSizeNeeded = false;
   m_showLabelChoice = 1;
   m_abortOnError = true;
   m_autoSaveInterval = 3 * 60 * 1000;

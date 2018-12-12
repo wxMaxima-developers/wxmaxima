@@ -807,18 +807,18 @@ void EditorCell::Draw(wxPoint point1)
 #endif
         dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION)))); //highlight c.
 
-        wxPoint point = PositionToPoint(m_fontSize, m_paren1);
+        wxPoint matchPoint = PositionToPoint(m_fontSize, m_paren1);
         int width, height;
         dc->GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
-        wxRect rect(point.x + 1,
-                    point.y + Scale_Px(2) - m_center + 1,
+        wxRect rect(matchPoint.x + 1,
+                    matchPoint.y + Scale_Px(2) - m_center + 1,
                     width - 1, height - 1);
         if (InUpdateRegion(rect))
           dc->DrawRectangle(CropToUpdateRegion(rect));
-        point = PositionToPoint(m_fontSize, m_paren2);
+        matchPoint = PositionToPoint(m_fontSize, m_paren2);
         dc->GetTextExtent(m_text.GetChar(m_paren1), &width, &height);
-        rect = wxRect(point.x + 1,
-                      point.y + Scale_Px(2) - m_center + 1,
+        rect = wxRect(matchPoint.x + 1,
+                      matchPoint.y + Scale_Px(2) - m_center + 1,
                       width - 1, height - 1);
         if (InUpdateRegion(rect))
           dc->DrawRectangle(CropToUpdateRegion(rect));

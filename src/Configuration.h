@@ -682,6 +682,11 @@ public:
   bool Printing(){return m_printing;}
   //! Are we currently printing to paper or to a bitmap?
   void Printing(bool printing){m_printing = printing; m_forceUpdate = true;}
+  //! Request adjusting the worksheet size?
+  void AdjustWorksheetSize(bool adjust)
+    { m_adjustWorksheetSizeNeeded = adjust; }
+  bool AdjustWorksheetSize()
+    { return m_adjustWorksheetSizeNeeded; }
 private:
   //! Has the font changed?
   bool m_fontChanged;
@@ -783,6 +788,7 @@ private:
   bool m_useUnicodeMaths;
   bool m_indentMaths;
   bool m_abortOnError;
+  bool m_adjustWorksheetSizeNeeded;
   wxColour m_defaultBackgroundColor;
 };
 

@@ -366,7 +366,7 @@ void TextCell::RecalculateWidths(int fontsize)
 
     // Labels and prompts are fixed width - adjust font size so that
     // they fit in
-    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
+    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT) || (m_textStyle == TS_OTHER_PROMPT))
     {
       wxString text = m_text;
 
@@ -392,7 +392,6 @@ void TextCell::RecalculateWidths(int fontsize)
       // We will decrease it before use
       m_fontSizeLabel = m_fontSize + 1;
       int labelWidth,labelHeight;
-      if (m_width < 1) m_width = 10;
       dc->GetTextExtent(text, &labelWidth, &labelHeight);
       wxASSERT_MSG((labelWidth > 0) || (m_displayedText == wxEmptyString),
                    _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
