@@ -751,16 +751,31 @@ The order this cell is drawn is:
 void EditorCell::Draw(wxPoint point1)
 {
   Cell::Draw(point1);
-  if (DrawThisCell(point1) && !m_isHidden)
+  if ((!m_isHidden) && (DrawThisCell(point1)))
   {
+    // Clear the 
+    wxRect rect = GetRect();
+    int y = rect.GetY();
+    
     Configuration *configuration = (*m_configuration);
+    wxDC *dc = configuration->GetDC();
+
+    // Clear the background.
+    // TODO: Do we really need to clear the background before drawing a text cell?
+    if (m_height > 0 && m_width > 0 && y >= 0)
+    {
+      wxBrush br(configuration->GetColor(TS_TEXT_BACKGROUND));
+      dc->SetBrush(br);
+      wxPen pen(configuration->GetColor(TS_TEXT_BACKGROUND));
+      dc->SetPen(pen);
+      rect.SetWidth((*m_configuration)->GetCanvasSize().GetWidth());
+      if (InUpdateRegion(rect))
+        dc->DrawRectangle(CropToUpdateRegion(rect));
+    }      
     SetFont();
 
     m_selectionChanged = false;
-    wxDC *dc = configuration->GetDC();
     wxPoint point(point1);
-//    if (m_width == -1 || m_height == -1 || configuration->RecalculationForce())
-//      RecalculateWidths(m_fontsize);
 
     //
     // Mark text that coincides with the selection

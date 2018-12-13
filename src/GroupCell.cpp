@@ -945,24 +945,6 @@ void GroupCell::Draw(wxPoint point)
         rect.SetLeft(configuration->GetIndent());
       
       //
-      // Paint background if we have a text cell
-      //
-      if (m_groupType == GC_TYPE_TEXT )
-      {
-        int y = rect.GetY();
-
-        if (m_height > 0 && m_width > 0 && y >= 0)
-        {
-          wxBrush br(configuration->GetColor(TS_TEXT_BACKGROUND));
-          dc->SetBrush(br);
-          wxPen pen(configuration->GetColor(TS_TEXT_BACKGROUND));
-          dc->SetPen(pen);
-          rect.SetWidth((*m_configuration)->GetCanvasSize().GetWidth());
-          if (InUpdateRegion(rect))
-            dc->DrawRectangle(CropToUpdateRegion(rect));
-        }
-      }
-      //
       // Draw input and output
       //
       SetPen();
@@ -1957,7 +1939,6 @@ void GroupCell::BreakLines(Cell *cell)
   int fullWidth = (*m_configuration)->GetClientWidth();
   Configuration *configuration = (*m_configuration);
   int currentWidth = GetLineIndent(cell);
-  std::cerr << GetLineIndent(cell)<<"\n";
   fullWidth -= configuration->GetIndent();
 
   // Don't let the layout degenerate for small window widths

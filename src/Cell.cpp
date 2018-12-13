@@ -435,12 +435,7 @@ bool Cell::DrawThisCell(wxPoint point)
   // TODO: Is this the right method to make this happen?
   if((m_type != MC_TYPE_GROUP) && (!InUpdateRegion()))
     return false;
-    
-  Configuration *configuration = (*m_configuration);
-  int top = configuration->GetTop();
-  int bottom = configuration->GetBottom();
-  if (point.y - GetMaxCenter() > bottom || point.y + GetMaxDrop() < top)
-    return false;
+
   return true;
 }
 
