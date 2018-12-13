@@ -176,14 +176,7 @@ class Cell
   bool InUpdateRegion(const wxRect &rect);
 
   //! Is this cell inside the region that is currently drawn?
-  bool InUpdateRegion()
-  {
-    if ((*m_configuration)->Printing()) return true;
-    wxRect boundingBox(
-            m_currentPoint + wxPoint(0, -m_center),
-            m_currentPoint + wxPoint(0, -m_center) + wxPoint(m_width, m_height));
-    return InUpdateRegion(boundingBox);
-  }
+  bool InUpdateRegion() {return InUpdateRegion(GetRect());}
 
   /*! Add a cell to the end of the list this cell is part of
     

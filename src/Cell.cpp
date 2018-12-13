@@ -459,11 +459,8 @@ bool Cell::InUpdateRegion(const wxRect &rect)
 {
   if ((*m_configuration)->Printing())
     return true;
-  if (rect.GetLeft() > m_updateRegion.GetRight()) return false;
-  if (rect.GetRight() < m_updateRegion.GetLeft()) return false;
-  if (rect.GetBottom() < m_updateRegion.GetTop()) return false;
-  if (rect.GetTop() > m_updateRegion.GetBottom()) return false;
-  return true;
+  
+  return rect.Intersects(m_updateRegion);
 }
 
 wxRect Cell::CropToUpdateRegion(const wxRect &rect)
