@@ -92,8 +92,6 @@ wxBitmap ToolBar::GetImage(wxString name,
     img = wxImage(invalidImage_xpm);
   }
 
-  img.ConvertAlphaToMask();
-  
   img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
 #if defined __WXMAC__
   return wxBitmap(img,wxBITMAP_SCREEN_DEPTH,GetContentScaleFactor());
