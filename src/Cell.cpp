@@ -395,7 +395,7 @@ void Cell::RecalculateHeightList(int fontsize)
 
   Should set: set m_width.
 */
-void Cell::RecalculateWidthsList(int fontsize)
+void Cell::RecalculateWidthsList(const int &fontsize)
 {
   Cell *tmp = this;
 
