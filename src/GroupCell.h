@@ -254,10 +254,10 @@ public:
   void Recalculate();
 
   //! Attempt to split math objects that are wider than the screen into multiple lines.
-  void BreakUpCells(int fontsize);
+  void BreakUpCells();
 
   //! Attempt to split math objects that are wider than the screen into multiple lines.
-  void BreakUpCells(Cell *cell, int fontsize);
+  void BreakUpCells(Cell *cell);
 
   //! Undo a BreakUpCells
   void UnBreakUpCells();

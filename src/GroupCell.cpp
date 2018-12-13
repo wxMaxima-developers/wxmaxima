@@ -649,7 +649,7 @@ void GroupCell::RecalculateWidths(int fontsize)
       }
     }
 
-    BreakUpCells(m_fontSize);
+    BreakUpCells();
     BreakLines();
   }
   ResetData();
@@ -686,7 +686,7 @@ void GroupCell::OnSize()
     tmp->ResetData();
     tmp = tmp->m_next;
   }
-  BreakUpCells(m_fontSize);
+  BreakUpCells();
   BreakLines();
   InputHeightChanged();
 }
@@ -849,7 +849,7 @@ void GroupCell::RecalculateAppended()
   }
 
   // Breakup cells and break lines
-  BreakUpCells(m_appendedCells, m_fontSize);
+  BreakUpCells(m_appendedCells);
   BreakLines(m_appendedCells);
 
   // Recalculate size of cells
@@ -2008,12 +2008,12 @@ void GroupCell::SelectOutput(Cell **start, Cell **end)
     *end = *start = NULL;
 }
 
-void GroupCell::BreakUpCells(int fontsize)
+void GroupCell::BreakUpCells()
 {
-  BreakUpCells(m_output, fontsize);
+  BreakUpCells(m_output);
 }
 
-void GroupCell::BreakUpCells(Cell *cell, int WXUNUSED(fontsize))
+void GroupCell::BreakUpCells(Cell *cell)
 {
   int clientWidth = (*m_configuration)->GetClientWidth();
   if(cell == NULL)
