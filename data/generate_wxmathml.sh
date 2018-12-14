@@ -2,9 +2,8 @@
 
 # convert wxMathml.lisp to C Sourcecode (using xxd -i)
 
-    cat >wxMathml.h <<END
-/* Automatically generated file using generate_pngs.sh                                  */
-/* SVG images are converted to PNG (using inkscape) and then converted to C using xxd   */
+    cat >wxMathML.h <<END
+/* Automatically generated file using generate_wxmathml.sh                              */
 /* This file is part of wxMaxima.                                                       */
 
 /* Copyright (C) 2018 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)               */
@@ -24,5 +23,5 @@
 /* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA            */
 END
 
-echo "Converting wxMathML.h to C code"
-xxd -i "$wxMathml.lisp" >> "wxMathML.h"
+echo "Converting wxMathML.lisp to embeddable C code"
+xxd -i "wxMathML.lisp" >> "wxMathML.h"
