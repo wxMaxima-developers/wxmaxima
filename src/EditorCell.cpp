@@ -747,11 +747,13 @@ The order this cell is drawn is:
  The text is not taken from m_text but from the list of styled text snippets
  StyleText() converts m_text into. This way the decisions needed for styling
  text are cached for later use.
+
+ \todo: Why does DrawThisCell(point1) return false, sometimes?
 */
 void EditorCell::Draw(wxPoint point1)
 {
   Cell::Draw(point1);
-  if ((!m_isHidden) && (DrawThisCell(point1)))
+  if (!m_isHidden)
   {
     // Clear the 
     wxRect rect = GetRect();
