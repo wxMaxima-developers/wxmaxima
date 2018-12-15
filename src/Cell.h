@@ -110,9 +110,6 @@ class Cell
   public:
   Cell(Cell *group, Configuration **config);
 
-  static void SetVisibleRegion(wxRect visibleRegion){m_visibleRegion = visibleRegion;}
-  static void SetWorksheetPosition(wxPoint worksheetPosition){m_worksheetPosition = worksheetPosition;}
-
   /*! Scale font sizes and line widths according to the zoom factor.
 
     Is used for displaying/printing/exporting of text/maths
@@ -161,16 +158,14 @@ class Cell
   */
   virtual void MarkAsDeleted();
   
-  //! Sets the region that is to be updated on Draw()
-  static void SetUpdateRegion(wxRect region)
-  { m_updateRegion = region; }
-
-  //! Get the rectangle that is currently drawn
-  static wxRect GetUpdateRegion()
-  { return m_updateRegion; }
-
   //! The part of the rectangle rect that is in the region that is currently drawn
-  wxRect CropToUpdateRegion(const wxRect &rect);
+  wxRect CropToUpdateRegion(wxRect rect)
+    {
+      if((*m_configuration)->Printing())
+        return rect;
+      else
+        return rect.Intersect((*m_configuration)->GetUpdateRegion());
+    }
 
   //! Is part of this rectangle in the region that is currently drawn?
   bool InUpdateRegion(const wxRect &rect);
@@ -797,8 +792,6 @@ protected:
      - for Cells when they are drawn.
   */
   wxPoint m_currentPoint;
-  //! The worksheet all cells are drawn on
-  static wxRect m_updateRegion;
 
   /*! The GroupCell this list of cells belongs to.
     
@@ -855,11 +848,6 @@ protected:
   int m_fontSize;
 
 public:
-  //! The rectangle of the worksheet that is currently visible.
-  static wxRect m_visibleRegion;
-  //! The position of the worksheet in the wxMaxima window
-  static wxPoint m_worksheetPosition;
-
   /*! The storage for pointers to cells.
     
     If a cell is deleted it is necessary to remove all pointers that might

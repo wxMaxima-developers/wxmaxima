@@ -431,11 +431,6 @@ bool Cell::DrawThisCell(wxPoint point)
   if(m_isBrokenIntoLines)
     return false;
 
-  // We need to redraw group cell brackets on cursor movements.
-  // TODO: Is this the right method to make this happen?
-  if((m_type != MC_TYPE_GROUP) && (!InUpdateRegion()))
-    return false;
-
   return true;
 }
 
@@ -460,27 +455,7 @@ bool Cell::InUpdateRegion(const wxRect &rect)
   if ((*m_configuration)->Printing())
     return true;
   
-  return rect.Intersects(m_updateRegion);
-}
-
-wxRect Cell::CropToUpdateRegion(const wxRect &rect)
-{
-  if((*m_configuration)->Printing())
-    return rect;
-
-  int left = rect.GetLeft();
-  int top = rect.GetTop();
-  int right = rect.GetRight();
-  int bottom = rect.GetBottom();
-  if (left < m_updateRegion.GetLeft()) left = m_updateRegion.GetLeft();
-  if (right > m_updateRegion.GetRight()) right = m_updateRegion.GetRight();
-  if (top < m_updateRegion.GetTop()) top = m_updateRegion.GetTop();
-  if (bottom > m_updateRegion.GetBottom()) bottom = m_updateRegion.GetBottom();
-
-  // Windows seems to utterly dislike rectangles with the width or height 0.
-  if (bottom == top) bottom++;
-  if (left == right) right++;
-  return wxRect(wxPoint(left, top), wxPoint(right, bottom));
+  return rect.Intersects((*m_configuration)->GetUpdateRegion());
 }
 
 void Cell::DrawBoundingBox(wxDC &dc, bool all)
@@ -1406,8 +1381,3 @@ void Cell::MarkAsDeleted()
       (*it)->MarkAsDeleted();
   }
 }
-
-// The variables all Cells share.
-wxRect  Cell::m_updateRegion;
-wxRect  Cell::m_visibleRegion;
-wxPoint Cell::m_worksheetPosition;

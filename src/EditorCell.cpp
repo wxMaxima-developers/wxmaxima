@@ -753,7 +753,7 @@ The order this cell is drawn is:
 void EditorCell::Draw(wxPoint point1)
 {
   Cell::Draw(point1);
-  if (!m_isHidden)
+  if ((!m_isHidden) && (DrawThisCell(point1)))
   {
     // Clear the 
     wxRect rect = GetRect();

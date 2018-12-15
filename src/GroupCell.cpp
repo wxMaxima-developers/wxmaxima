@@ -498,6 +498,7 @@ void GroupCell::AppendInput(Cell *cell)
 
 void GroupCell::SetOutput(Cell *output)
 {
+  return;
   if (output == NULL)
     return;
   
@@ -831,8 +832,8 @@ void GroupCell::RecalculateAppended()
   if(m_hide)
     return;
   Configuration *configuration = (*m_configuration);
-  if (m_appendedCells == NULL)
-    m_appendedCells = m_inputLabel;
+//  if (m_appendedCells == NULL)
+//    m_appendedCells = m_inputLabel;
   if (m_appendedCells == NULL)
     return;
   m_appendedCells->ForceBreakLineHere();
@@ -892,7 +893,6 @@ void GroupCell::RecalculateAppended()
 
   m_appendedCells = NULL;
 
-  // 
   ResetData();
   
   // Move all cells that follow the current one down by the amount this cell has grown.
@@ -938,6 +938,9 @@ void GroupCell::Draw(wxPoint point)
     }
     
     wxRect rect = GetRect(false);
+    
+    if (configuration->ShowBrackets())
+      DrawBracket();
 
     if(configuration->GetIndent() < rect.GetRight())
     {
@@ -949,28 +952,6 @@ void GroupCell::Draw(wxPoint point)
       //
       SetPen();
       wxPoint in(point);
-
-      if ((configuration->ShowCodeCells()) ||
-          (m_groupType != GC_TYPE_CODE))
-      {
-        configuration->Outdated(false);
-        int labelWidth = Scale_Px(configuration->GetLabelWidth());
-        if(m_inputLabel)
-        {
-          m_inputLabel->Draw(in);
-          labelWidth = MAX(labelWidth, m_inputLabel->GetWidth());
-        }
-        EditorCell *input = GetInput();
-        if(input)
-          input->Draw(
-            wxPoint(
-              in.x + labelWidth,
-              in.y
-              )
-            );
-        if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next)
-          configuration->Outdated((dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges());
-      }
 
       if (m_output != NULL && !m_hide)
       {
@@ -1006,9 +987,31 @@ void GroupCell::Draw(wxPoint point)
           tmp = tmp->m_nextToDraw;
         }
       }
+      if ((configuration->ShowCodeCells()) ||
+          (m_groupType != GC_TYPE_CODE))
+      {
+        in = point;
+        
+        configuration->Outdated(false);
+        int labelWidth = Scale_Px(configuration->GetLabelWidth());
+        if(m_inputLabel)
+        {
+          m_inputLabel->Draw(in);
+          labelWidth = MAX(labelWidth, m_inputLabel->GetWidth());
+        }
+        EditorCell *input = GetInput();
+        if(input)
+          in = point;
+          input->Draw(
+            wxPoint(
+              in.x + labelWidth,
+              in.y
+              )
+            );
+        if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next)
+          configuration->Outdated((dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges());
+      }
     }
-    if (configuration->ShowBrackets())
-      DrawBracket();
     configuration->Outdated(false); 
     UnsetPen();
   }

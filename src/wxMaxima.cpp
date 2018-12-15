@@ -3542,7 +3542,6 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
     m_worksheet->m_scheduleUpdateToc = false;
     m_worksheet->m_tableOfContents->UpdateTableOfContents(m_worksheet->GetTree(), m_worksheet->GetHCaret());
   }
-  m_worksheet->RequestRedraw();
 
   if(!retval)
     LeftStatusText(wxString::Format("Errors trying to open the file %s.", file));
@@ -3550,6 +3549,7 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
   if(retval)
   {
     m_worksheet->RecalculateForce();
+    m_worksheet->RequestRedraw();
     RightStatusText(_("File opened"));
   }
   else

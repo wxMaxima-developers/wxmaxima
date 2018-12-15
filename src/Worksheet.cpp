@@ -367,7 +367,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   updateRegion.SetRight(xend);
   updateRegion.SetTop(top);
   updateRegion.SetBottom(bottom);
-  Cell::SetUpdateRegion(updateRegion);
+  m_configuration->SetUpdateRegion(updateRegion);
 
   if (sz.x == 0) sz.x = 1;
   if (sz.y == 0) sz.y = 1;
@@ -464,9 +464,9 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
       wxPoint upperLeftScreenCorner;
       CalcScrolledPosition(0, 0,
                            &upperLeftScreenCorner.x, &upperLeftScreenCorner.y);
-      Cell::SetVisibleRegion(wxRect(upperLeftScreenCorner,
+      (m_configuration)->SetVisibleRegion(wxRect(upperLeftScreenCorner,
                                         upperLeftScreenCorner + wxPoint(width,height)));
-      Cell::SetWorksheetPosition(GetPosition());
+      (m_configuration)->SetWorksheetPosition(GetPosition());
       // Clear the image cache of all cells above or below the viewport.
       if ((rect.GetTop() >= bottom) || (rect.GetBottom() <= top))
       {
@@ -837,9 +837,9 @@ bool Worksheet::RecalculateIfNeeded()
     wxPoint upperLeftScreenCorner;
     CalcScrolledPosition(0, 0,
                          &upperLeftScreenCorner.x, &upperLeftScreenCorner.y);
-    Cell::SetVisibleRegion(wxRect(upperLeftScreenCorner,
+    m_configuration->SetVisibleRegion(wxRect(upperLeftScreenCorner,
                                       upperLeftScreenCorner + wxPoint(width,height)));
-    Cell::SetWorksheetPosition(GetPosition());
+    m_configuration->SetWorksheetPosition(GetPosition());
 
     tmp->Recalculate();
     tmp = dynamic_cast<GroupCell *>(tmp->m_next);

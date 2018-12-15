@@ -481,7 +481,9 @@ public:
     wxASSERT_MSG(displayedDigits >= 20, _("Bug: Maximum number of digits that is to be displayed is too low!"));
     wxConfig::Get()->Write(wxT("displayedDigits"), m_displayedDigits = displayedDigits);
   }
-
+  
+  wxRect GetUpdateRegion(){return m_updateRegion;}
+  void SetUpdateRegion(wxRect rect){m_updateRegion = rect;}
   bool GetInsertAns()
   { return m_insertAns; }
 
@@ -687,7 +689,11 @@ public:
     { m_adjustWorksheetSizeNeeded = adjust; }
   bool AdjustWorksheetSize()
     { return m_adjustWorksheetSizeNeeded; }
+  void SetVisibleRegion(wxRect visibleRegion){m_visibleRegion = visibleRegion;}
+  void SetWorksheetPosition(wxPoint worksheetPosition){m_worksheetPosition = worksheetPosition;}
 private:
+  //! The worksheet all cells are drawn on
+  wxRect m_updateRegion;
   //! Has the font changed?
   bool m_fontChanged;
   /*! The interval between auto-saves (in milliseconds). 
@@ -789,6 +795,11 @@ private:
   bool m_indentMaths;
   bool m_abortOnError;
   bool m_adjustWorksheetSizeNeeded;
+  //! The rectangle of the worksheet that is currently visible.
+  wxRect m_visibleRegion;
+  //! The position of the worksheet in the wxMaxima window
+  wxPoint m_worksheetPosition;
+
   wxColour m_defaultBackgroundColor;
 };
 
