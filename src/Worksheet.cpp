@@ -271,7 +271,7 @@ bool Worksheet::RedrawIfRequested()
   }
   else
   {
-    if(m_rectToRefresh.GetLeft() != -1)
+    if(!m_rectToRefresh.IsEmpty())
     {
       CalcScrolledPosition(m_rectToRefresh.x, m_rectToRefresh.y, &m_rectToRefresh.x, &m_rectToRefresh.y);
       RefreshRect(m_rectToRefresh);
@@ -4380,14 +4380,10 @@ void Worksheet::OnTimer(wxTimerEvent &event)
 
 void Worksheet::RequestRedraw(wxRect rect)
 {
-  if((m_rectToRefresh.GetLeft() > rect.GetLeft()) || (m_rectToRefresh.GetLeft() < 0))
-    m_rectToRefresh.SetLeft(rect.GetLeft());
-  if(m_rectToRefresh.GetRight() < rect.GetRight())
-    m_rectToRefresh.SetRight(rect.GetRight());
-  if((m_rectToRefresh.GetTop() > rect.GetTop()) || (m_rectToRefresh.GetTop() < 0))
-    m_rectToRefresh.SetTop(rect.GetTop());
-  if(m_rectToRefresh.GetBottom() < rect.GetBottom())
-    m_rectToRefresh.SetBottom(rect.GetBottom());
+  if(m_rectToRefresh.IsEmpty())
+    m_rectToRefresh = rect;
+  else
+    m_rectToRefresh = m_rectToRefresh.Union(rect);
 }
 
 /***

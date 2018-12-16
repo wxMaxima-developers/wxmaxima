@@ -273,6 +273,7 @@ class Cell
   virtual void DrawBoundingBox(wxDC &WXUNUSED(dc), bool all = false);
 
   bool DrawThisCell(wxPoint point);
+  bool DrawThisCell(){return DrawThisCell(m_currentPoint);}
 
   /*! Insert (or remove) a forced linebreak at the beginning of this cell.
 

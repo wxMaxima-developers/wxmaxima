@@ -420,23 +420,18 @@ bool Cell::DrawThisCell(wxPoint point)
   if((point.x < 0) || (point.y < 0))
     return false;
 
+  SetCurrentPoint(point);
+
   if((*m_configuration)->Printing())
     return true;
   
-  SetCurrentPoint(point);
-
   // If a cell is broken into lines its individual parts are displayed but
   // not the cell itself (example: Denominator and Numerator are displayed
   // but not the horizontal line with denominator above and numerator below.
   if(m_isBrokenIntoLines)
     return false;
 
-  // We need to redraw group cell brackets on cursor movements.
-  // TODO: Is this the right method to make this happen?
-  if(!InUpdateRegion())
-    return false;
-
-  return true;
+  return(InUpdateRegion());
 }
 
 /*! Get the rectangle around this cell
@@ -459,9 +454,11 @@ bool Cell::InUpdateRegion(const wxRect &rect)
 {
   if ((*m_configuration)->Printing())
     return true;
-  
-  return rect.Intersects((*m_configuration)->GetUpdateRegion()) ||
-    (*m_configuration)->GetUpdateRegion().Contains(rect);
+
+  if(rect.Contains(m_currentPoint))
+    return true;
+
+  return rect.Intersects(GetRect()) || rect.Contains(GetRect()) || (rect == GetRect());
 }
 
 void Cell::DrawBoundingBox(wxDC &dc, bool all)
