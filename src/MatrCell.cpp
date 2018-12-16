@@ -158,11 +158,14 @@ void MatrCell::Draw(wxPoint point)
       mp.y = point.y - m_center + Scale_Px(5);
       for (int j = 0; j < m_matHeight; j++)
       {
-        mp.y += m_centers[j];
-        wxPoint mp1(mp);
-        mp1.x = mp.x + (m_widths[i] - m_cells[j * m_matWidth + i]->GetFullWidth()) / 2;
-        m_cells[j * m_matWidth + i]->DrawList(mp1);
-        mp.y += (m_drops[j] + Scale_Px(10));
+        if((j * m_matWidth + i) < m_cells.size())
+          {
+            mp.y += m_centers[j];
+            wxPoint mp1(mp);
+            mp1.x = mp.x + (m_widths[i] - m_cells[j * m_matWidth + i]->GetFullWidth()) / 2;
+            m_cells[j * m_matWidth + i]->DrawList(mp1);
+            mp.y += (m_drops[j] + Scale_Px(10));
+          }
       }
       mp.x += (m_widths[i] + Scale_Px(10));
     }

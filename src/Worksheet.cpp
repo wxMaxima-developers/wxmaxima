@@ -268,10 +268,11 @@ bool Worksheet::RedrawIfRequested()
     m_redrawRequested = false;
     m_redrawStart = NULL;
     redrawIssued = true;
+    m_rectToRefresh = wxRect(-1, -1, -1, -1);
   }
   else
   {
-    if(!m_rectToRefresh.IsEmpty())
+    if(m_rectToRefresh.GetLeft()>=0)
     {
       CalcScrolledPosition(m_rectToRefresh.x, m_rectToRefresh.y, &m_rectToRefresh.x, &m_rectToRefresh.y);
       RefreshRect(m_rectToRefresh);

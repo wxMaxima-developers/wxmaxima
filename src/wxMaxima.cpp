@@ -3430,101 +3430,107 @@ wxString wxMaxima::GetDefaultEntry()
 bool wxMaxima::OpenFile(wxString file, wxString cmd)
 {
   bool retval = true;
-  if (file.Length() && wxFileExists(file))
+  if (file == wxEmptyString)
   {
-    m_lastPath = wxPathOnly(file);
-    wxString unixFilename(file);
+    wxLogError(_("Trying to open a file with an empty name!"));
+    return false;
+  }
+  if(!(wxFileExists(file)))
+  {
+    wxLogError(_("Trying to open the non-existing file %s"), file);
+    return false;
+  }
+
+  m_lastPath = wxPathOnly(file);
+  wxString unixFilename(file);
 #if defined __WXMSW__
-    unixFilename.Replace(wxT("\\"), wxT("/"));
+  unixFilename.Replace(wxT("\\"), wxT("/"));
 #endif
 
-    if (cmd.Length() > 0)
+  if (cmd.Length() > 0)
+  {
+    MenuCommand(cmd + wxT("(\"") + unixFilename + wxT("\")$"));
+    if(cmd == wxT("load"))
     {
-      MenuCommand(cmd + wxT("(\"") + unixFilename + wxT("\")$"));
-      if(cmd == wxT("load"))
-      {
-        ReReadConfig();
-        m_recentPackages.AddDocument(unixFilename);
-        ReReadConfig();
-      }
-    }
-    else if (file.Right(4).Lower() == wxT(".wxm"))
-    {
-      retval = OpenWXMFile(file, m_worksheet);
-      if(retval)
-      {
-        ReReadConfig();
-        m_recentDocuments.AddDocument(file);
-        ReReadConfig();
-      }
-    }
-
-    else if (file.Right(4).Lower() == wxT(".mac"))
-    {
-      retval = OpenMACFile(file, m_worksheet);
-      if(retval)
-      {
-        ReReadConfig();
-        m_recentDocuments.AddDocument(file);
-        ReReadConfig();
-      }
-    }
-    else if (file.Right(4).Lower() == wxT(".out"))
-    {
-      retval = OpenMACFile(file, m_worksheet);
-      if(retval)
-      {
-        ReReadConfig();
-        m_recentDocuments.AddDocument(file);
-        ReReadConfig();
-      }
-    }
-
-    else if (file.Right(5).Lower() == wxT(".wxmx"))
-    {
-      retval = OpenWXMXFile(file, m_worksheet);
-      if(retval)
-      {
-        ReReadConfig();
-        m_recentDocuments.AddDocument(file);
-        ReReadConfig();
-      }
-    }
-
-    else if (file.Right(4).Lower() == wxT(".zip"))
-    {
-      retval = OpenWXMXFile(file, m_worksheet);
-      if(retval)
-      {
-        ReReadConfig();
-        m_recentDocuments.AddDocument(file);
-        ReReadConfig();
-      }
-    }
-
-    else if (file.Right(4).Lower() == wxT(".dem"))
-    {
-      MenuCommand(wxT("demo(\"") + unixFilename + wxT("\")$"));
-      ReReadConfig();
-      m_recentPackages.AddDocument(file);
-      ReReadConfig();
-    }
-
-    else if (file.Right(4).Lower() == wxT(".xml"))
-      retval = OpenXML(file, m_worksheet); // clearDocument = true
-
-    else
-    {
-      MenuCommand(wxT("load(\"") + unixFilename + wxT("\")$"));
       ReReadConfig();
       m_recentPackages.AddDocument(unixFilename);
       ReReadConfig();
     }
-
-    m_isNamed = true;
   }
+  else if (file.Right(4).Lower() == wxT(".wxm"))
+  {
+    retval = OpenWXMFile(file, m_worksheet);
+    if(retval)
+    {
+      ReReadConfig();
+      m_recentDocuments.AddDocument(file);
+      ReReadConfig();
+    }
+  }
+
+  else if (file.Right(4).Lower() == wxT(".mac"))
+  {
+    retval = OpenMACFile(file, m_worksheet);
+    if(retval)
+    {
+      ReReadConfig();
+      m_recentDocuments.AddDocument(file);
+      ReReadConfig();
+    }
+  }
+  else if (file.Right(4).Lower() == wxT(".out"))
+  {
+    retval = OpenMACFile(file, m_worksheet);
+    if(retval)
+    {
+      ReReadConfig();
+      m_recentDocuments.AddDocument(file);
+      ReReadConfig();
+    }
+  }
+
+  else if (file.Right(5).Lower() == wxT(".wxmx"))
+  {
+    retval = OpenWXMXFile(file, m_worksheet);
+    if(retval)
+    {
+      ReReadConfig();
+      m_recentDocuments.AddDocument(file);
+      ReReadConfig();
+    }
+  }
+
+  else if (file.Right(4).Lower() == wxT(".zip"))
+  {
+    retval = OpenWXMXFile(file, m_worksheet);
+    if(retval)
+    {
+      ReReadConfig();
+      m_recentDocuments.AddDocument(file);
+      ReReadConfig();
+    }
+  }
+
+  else if (file.Right(4).Lower() == wxT(".dem"))
+  {
+    MenuCommand(wxT("demo(\"") + unixFilename + wxT("\")$"));
+    ReReadConfig();
+    m_recentPackages.AddDocument(file);
+    ReReadConfig();
+  }
+
+  else if (file.Right(4).Lower() == wxT(".xml"))
+    retval = OpenXML(file, m_worksheet); // clearDocument = true
+
   else
-    retval = false;
+  {
+    MenuCommand(wxT("load(\"") + unixFilename + wxT("\")$"));
+    ReReadConfig();
+    m_recentPackages.AddDocument(unixFilename);
+    ReReadConfig();
+  }
+
+  m_isNamed = true;
 
   UpdateRecentDocuments();
 
