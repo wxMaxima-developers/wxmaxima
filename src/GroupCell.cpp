@@ -821,7 +821,7 @@ void GroupCell::RecalculateHeight(int fontsize)
   {
     wxPoint in = GetCurrentPoint();
     if(m_inputLabel != NULL)
-      in.x += Scale_Px((*m_configuration)->GetLabelWidth());
+      in.x += Scale_Px((*m_configuration)->GetLabelWidth())+MC_TEXT_PADDING;
     GetEditable()->SetCurrentPoint(GetCurrentPoint());
   }
 }
@@ -1004,7 +1004,7 @@ void GroupCell::Draw(wxPoint point)
           in = point;
           input->Draw(
             wxPoint(
-              in.x + labelWidth,
+              in.x + labelWidth + MC_TEXT_PADDING,
               in.y
               )
             );
