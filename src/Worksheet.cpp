@@ -455,7 +455,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 
     while (tmp != NULL)
     {
-      wxRect rect = tmp->GetRect();
+      wxRect cellRect = tmp->GetRect();
 
       int width;
       int height;
@@ -468,12 +468,12 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
                                         upperLeftScreenCorner + wxPoint(width,height)));
       (m_configuration)->SetWorksheetPosition(GetPosition());
       // Clear the image cache of all cells above or below the viewport.
-      if ((rect.GetTop() >= bottom) || (rect.GetBottom() <= top))
+      if ((cellRect.GetTop() >= bottom) || (cellRect.GetBottom() <= top))
       {
         // Only actually clear the image cache if there is a screen's height between
         // us and the image's position: Else the chance is too high that we will
         // very soon have to generated a scaled image again.
-        if ((rect.GetBottom() <= m_lastBottom - height) || (rect.GetTop() >= m_lastTop + height))
+        if ((cellRect.GetBottom() <= m_lastBottom - height) || (cellRect.GetTop() >= m_lastTop + height))
         {
           if (tmp->GetOutput())
             tmp->GetOutput()->ClearCacheList();
@@ -485,8 +485,8 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
       {
         tmp->InEvaluationQueue(m_evaluationQueue.IsInQueue(tmp));
         tmp->LastInEvaluationQueue(m_evaluationQueue.GetCell() == tmp);
-        tmp->Draw(point);
       }
+      tmp->Draw(point);
       tmp = dynamic_cast<GroupCell *>(tmp->m_next);
       if (tmp != NULL)
       {
@@ -533,8 +533,8 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 
   // Blit the memory image to the window
   dcm.SetDeviceOrigin(0, 0);
-  dc.Blit(0, rect.GetTop(), sz.x, rect.GetBottom() - rect.GetTop() + 1, &dcm,
-          0, rect.GetTop());
+  dc.Blit(rect.GetLeft(), rect.GetTop(), rect.GetWidth(), rect.GetHeight(), &dcm,
+          rect.GetLeft(), rect.GetTop());
 
   m_configuration->SetContext(*m_dc);
   m_configuration->UnsetAntialiassingDC();

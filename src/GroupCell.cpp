@@ -819,10 +819,10 @@ void GroupCell::RecalculateHeight(int fontsize)
     m_inputLabel->SetCurrentPoint(m_currentPoint);
   if (GetEditable())
   {
-    if(m_inputLabel == NULL)
-      GetEditable()->SetCurrentPoint(m_currentPoint);
-    else
-      GetEditable()->SetCurrentPoint(wxPoint(m_currentPoint.x + m_inputLabel->GetWidth(), m_currentPoint.y));
+    wxPoint in = GetCurrentPoint();
+    if(m_inputLabel != NULL)
+      in.x += Scale_Px((*m_configuration)->GetLabelWidth());
+    GetEditable()->SetCurrentPoint(GetCurrentPoint());
   }
 }
 
@@ -918,12 +918,17 @@ GroupCell *GroupCell::UpdateYPosition()
 void GroupCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
+
+  Configuration *configuration = (*m_configuration);
+
+  if (configuration->ShowBrackets())
+    DrawBracket();
+
   if (DrawThisCell(point))
   {
     if (m_width == -1 || m_height == -1)
       return;
     
-    Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();
     // draw a thick line for 'page break'
     // and return
@@ -939,9 +944,6 @@ void GroupCell::Draw(wxPoint point)
     
     wxRect rect = GetRect(false);
     
-    if (configuration->ShowBrackets())
-      DrawBracket();
-
     if(configuration->GetIndent() < rect.GetRight())
     {
       if(rect.GetLeft() <= configuration->GetCellBracketWidth())
@@ -995,10 +997,8 @@ void GroupCell::Draw(wxPoint point)
         configuration->Outdated(false);
         int labelWidth = Scale_Px(configuration->GetLabelWidth());
         if(m_inputLabel)
-        {
           m_inputLabel->Draw(in);
-          labelWidth = MAX(labelWidth, m_inputLabel->GetWidth());
-        }
+
         EditorCell *input = GetInput();
         if(input)
           in = point;
