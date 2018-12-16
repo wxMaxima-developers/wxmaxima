@@ -820,8 +820,13 @@ void GroupCell::RecalculateHeight(int fontsize)
   if (GetEditable())
   {
     wxPoint in = GetCurrentPoint();
+    int labelWidth = 0;
+    if((*m_configuration)->IndentMaths())
+      labelWidth = Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING;
+    
     if(m_inputLabel != NULL)
-      in.x += Scale_Px((*m_configuration)->GetLabelWidth())+MC_TEXT_PADDING;
+      labelWidth = MAX(m_inputLabel->GetWidth(),labelWidth);
+    in.x += labelWidth;
     GetEditable()->SetCurrentPoint(GetCurrentPoint());
   }
 }
@@ -995,16 +1000,22 @@ void GroupCell::Draw(wxPoint point)
         in = point;
         
         configuration->Outdated(false);
-        int labelWidth = Scale_Px(configuration->GetLabelWidth());
-        if(m_inputLabel)
+        int labelWidth = 0;
+        if((*m_configuration)->IndentMaths())
+          labelWidth = Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING;
+        
+        if(m_inputLabel != NULL)
+        {          
           m_inputLabel->Draw(in);
+          labelWidth = MAX(m_inputLabel->GetWidth(),labelWidth);
+        }
 
         EditorCell *input = GetInput();
         if(input)
           in = point;
           input->Draw(
             wxPoint(
-              in.x + labelWidth + MC_TEXT_PADDING,
+              in.x + labelWidth,
               in.y
               )
             );
