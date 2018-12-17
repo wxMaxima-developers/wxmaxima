@@ -31,6 +31,7 @@
  */
 #include "wxMaximaFrame.h"
 #include "Dirstructure.h"
+#include "LogPane.h"
 
 #include <wx/artprov.h>
 #include <wx/config.h>
@@ -49,7 +50,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_unsavedDocuments(wxT("unsaved")),
   m_recentPackages(wxT("packages"))
 {
-  m_errorRedirector = NULL;
   SetName(title);
   if(!wxPersistenceManager::Get().RegisterAndRestore(this))
   {
@@ -64,7 +64,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     SetSize(winSize);
   }
 
-  m_logPanelTarget = NULL;
   m_isNamed = false;
   m_configFileName = configFile,
   m_updateEvaluationQueueLengthDisplay = true;
@@ -249,10 +248,6 @@ void wxMaximaFrame::StatusExportFailed()
 
 wxMaximaFrame::~wxMaximaFrame()
 {
-  wxDELETE(m_errorRedirector);
-  // We are about to delete the panel all log messages are output to =>
-  // create a new log target.
-  wxLog::SetActiveTarget(new wxLogGui());
   wxString perspective = m_manager.SavePerspective();
 
   wxConfig::Get()->Write(wxT("AUI/perspective"), perspective);
@@ -358,7 +353,7 @@ void wxMaximaFrame::do_layout()
                             FloatingSize(greekPane->GetEffectiveMinSize()).
                             Left());
 
-  wxPanel *logPane = CreateLogPane();
+  wxPanel *logPane = new LogPane(this, -1);
   m_manager.AddPane(logPane,
                     wxAuiPaneInfo().Name(wxT("log")).
                             Show(false).CloseButton().PinButton().
@@ -1659,28 +1654,6 @@ wxPanel *wxMaximaFrame::CreateGreekPane()
   panel->SetSizerAndFit(vbox);
   vbox->SetSizeHints(panel);
 
-  return panel;
-}
-
-wxPanel *wxMaximaFrame::CreateLogPane()
-{
-  wxPanel    *panel = new wxPanel(this, -1);
-  wxBoxSizer *vbox  = new wxBoxSizer(wxVERTICAL);
-
-  wxTextCtrl *textCtrl = new wxTextCtrl(
-    panel, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
-    wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL);
-
-  vbox->Add(textCtrl, wxSizerFlags().Expand().Proportion(10));
-
-  panel->SetSizerAndFit(vbox);
-  wxLog::SetActiveTarget(m_logPanelTarget = new wxLogTextCtrl(textCtrl));
-  m_errorRedirector = new ErrorRedirector(new wxLogGui());
-
-  // m_logPanelTarget->SetRepetitionCounting();
-  // m_logPanelTarget->DisableTimestamp();
-  SetMinSize(wxSize(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )/10,
-                    wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )/10));
   return panel;
 }
 

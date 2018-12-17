@@ -41,7 +41,6 @@ surrounding the worksheet.
 #include <wx/notifmsg.h>
 
 #include "Worksheet.h"
-#include "ErrorRedirector.h"
 #include "RecentDocuments.h"
 #include "Version.h"
 #include "History.h"
@@ -710,8 +709,6 @@ private:
    */
   wxPanel *CharButton(wxPanel *parent, wxChar ch, wxString description = wxEmptyString, bool matchesMaximaCommand = false);
 
-  wxPanel *CreateLogPane();
-
   wxPanel *CreateGreekPane();
 
   wxPanel *CreateSymbolsPane();
@@ -735,8 +732,6 @@ protected:
 
   bool ToolbarIsShown();
 
-  //! Redirects all error messages to gui dialogues
-  ErrorRedirector *m_errorRedirector;
   //! The manager for dynamic screen layouts
   wxAuiManager m_manager;
   //! A XmlInspector-like xml monitor
@@ -752,7 +747,6 @@ protected:
   RecentDocuments m_recentPackages;
   wxMenu *m_recentDocumentsMenu;
   wxMenu *m_recentPackagesMenu;
-  wxLog *m_logPanelTarget;
 };
 
 #endif // WXMAXIMAFRAME_H

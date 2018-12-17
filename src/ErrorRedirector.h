@@ -26,6 +26,9 @@
   It is a customized copy of a portion of wxWidget's log.cpp.
  */
 
+#ifndef ERRORREDIRECTOR_H
+#define ERRORREDIRECTOR_H
+
 #include <wx/log.h>
 
 //! Redirect error messages (but not warnings) to a second target.
@@ -81,3 +84,4 @@ protected:
   //! the previous log target
   wxLog *m_logOld;
 };
+#endif // ERRORREDIRECTOR_H

@@ -71,7 +71,7 @@ if(APPLE)
         COMMAND ${CMAKE_COMMAND} -E copy ${f} ${APP_FONTS_DIR})
     endforeach()
 endif()
-
+ 
 if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
 elseif(APPLE)
