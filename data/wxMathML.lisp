@@ -72,8 +72,11 @@
   ;; Allow the user to communicate what to display in the statusbar whilst
   ;; the current program is running
   (defun $wxstatusbar (&rest status)
+    #+clisp (finish-output)
     (format t "<statusbar>~a</statusbar>~%" (wxxml-fix-string
-					     (apply '$sconcat status))))
+					     (apply '$sconcat status)))
+    #+clisp (finish-output)
+    )
 
 
 ;;; Without this command encountering unicode characters might cause
@@ -1163,10 +1166,13 @@
   (defprop spaceout wxxml-spaceout wxxml)
 
   (defun mydispla (x)
+    #+clisp (finish-output)
     (let ((*print-circle* nil)
 	  (*wxxml-mratp* (format nil "~{~a~}" (cdr (checkrat x)))))
       (mapc #'princ
-	    (wxxml x '("<mth>") '("</mth>") 'mparen 'mparen))))
+	    (wxxml x '("<mth>") '("</mth>") 'mparen 'mparen)))
+    #+clisp (finish-output)
+    )
 
   (setf *alt-display2d* 'mydispla)
 
@@ -1811,6 +1817,7 @@
 
   ;; A function that determines all symbols for autocompletion
   (defun wxPrint_autoompletesymbols ()
+    #+clisp (finish-output)
     (format t "<wxxml-symbols>")
     ;; Function names and rules
     (format t "~{~a~^$~}"
@@ -1832,7 +1839,9 @@
     ;;	    (no-warning
     ;;	     (format t "~{~a~^$~}"
     ;;		     (mapcar #'print_unit (cdr ($known_units))))))
-    (format t "</wxxml-symbols>"))
+    (format t "</wxxml-symbols>")
+    #+clisp (finish-output)
+    )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -1850,6 +1859,7 @@
     (format t "</variable>"))
 
   (defun wx-print-variables ()
+    #+clisp (finish-output)
     (format t "<variables>")
     (wx-print-variable '$maxima_userdir)
     (wx-print-variable '$maxima_tempdir)
@@ -1867,6 +1877,7 @@
 	    #+sbcl (ensure-readably-printable-string (lisp-implementation-version))
 	    #-sbcl (lisp-implementation-version))
     (format t "</variables>")
+    #+clisp (finish-output)
     )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1978,6 +1989,7 @@
       ($x)
       (declare (special $x))
       (progn
+	#+clisp (finish-output)
 	(simplify (mfunction-call $printf t '"<mth><slide"))
 	(cond
 	 ((is-boole-check (trd-msymeval $wxanimate_autoplay '$wxanimate_autoplay))
@@ -1999,7 +2011,9 @@
 	    (declare (special $i))
 	    (setq $i (car mdo))
 	    (simplify (mfunction-call $printf t '"~a;" $i)))
-	(simplify (mfunction-call $printf t '"</slide></mth>")))
+	(simplify (mfunction-call $printf t '"</slide></mth>"))
+	#+clisp (finish-output)
+	)
       ))
 
 
@@ -2024,6 +2038,7 @@
        (setq type ($file_type searched-for))
        (case type
 	     (($maxima)
+	      #+clisp (finish-output)
 	      (format t "<variables>")
 	      (format t "<variable><name>*wx-load-file-name*</name><value>~a</value></variable>"
 		      (wxxml-fix-string filename))
@@ -2047,6 +2062,7 @@
 	      (format t "<variables>")
 	      (format t "<variable><name>*wx-load-file-start*</name><value>0</value></variable>")
 	      (format t "</variables>")
+	      #+clisp (finish-output)
 	      (wxPrint_autoompletesymbols))
 	     (t
 	      (merror "Maxima bug: Unknown file type ~M" type)))
