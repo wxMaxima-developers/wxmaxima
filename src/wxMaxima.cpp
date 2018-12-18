@@ -2962,7 +2962,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
   // and after drawing the worksheet onIdle is called => we won't miss this
   // event when we wait for it here.
   if ((m_worksheet != NULL) && (m_worksheet->m_configuration->GetDC() != NULL) &&
-      (m_openFile.Length()))
+      (m_openFile != wxEmptyString))
   {
     wxString file = m_openFile;
     m_openFile = wxEmptyString;
