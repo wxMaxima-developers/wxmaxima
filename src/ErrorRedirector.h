@@ -35,48 +35,51 @@
 class ErrorRedirector : public wxLog
 {
 public:
-    /**
-        Sets the specified @c logger (which may be NULL) as the default log
-        target but the log messages are also passed to the previous log target if any.
-    */
-    ErrorRedirector(wxLog* logger);
+  //! >=0 means: Messages should appear in the log pane only
+  static int m_messages_logPaneOnly;
 
-    /**
-        Destroys the previous log target.
-    */
-    virtual ~ErrorRedirector();
+  /**
+     Sets the specified @c logger (which may be NULL) as the default log
+     target but the log messages are also passed to the previous log target if any.
+  */
+  ErrorRedirector(wxLog* logger);
+
+  /**
+     Destroys the previous log target.
+  */
+  virtual ~ErrorRedirector();
 
   /*! This method is called from the idle loop.
 
     All log targets collect log messages between calls to Flush.
-   */
+  */
   virtual void Flush();
 
   virtual void DoLogRecord(wxLogLevel level,
                            const wxString& msg,
                            const wxLogRecordInfo& info);
  
-    /**
-        Detaches the old log target so it won't be destroyed when the wxLogChain object
-        is destroyed.
-    */
-    void DetachOldLog();
+  /**
+     Detaches the old log target so it won't be destroyed when the wxLogChain object
+     is destroyed.
+  */
+  void DetachOldLog();
 
-    /**
-        Returns the pointer to the previously active log target (which may be NULL).
-    */
-    wxLog* GetOldLog() const;
+  /**
+     Returns the pointer to the previously active log target (which may be NULL).
+  */
+  wxLog* GetOldLog() const;
 
-    /**
-        Sets another log target to use (may be NULL).
+  /**
+     Sets another log target to use (may be NULL).
 
-        The log target specified in the wxLogChain(wxLog*) constructor or in a
-        previous call to this function is deleted.
-        This doesn't change the old log target value (the one the messages are
-        forwarded to) which still remains the same as was active when wxLogChain
-        object was created.
-    */
-    void SetLog(wxLog* logger);
+     The log target specified in the wxLogChain(wxLog*) constructor or in a
+     previous call to this function is deleted.
+     This doesn't change the old log target value (the one the messages are
+     forwarded to) which still remains the same as was active when wxLogChain
+     object was created.
+  */
+  void SetLog(wxLog* logger);
 protected:
   //! the current log target
   wxLog *m_logNew;
@@ -84,4 +87,13 @@ protected:
   //! the previous log target
   wxLog *m_logOld;
 };
+
+//! If an variable of this class is alive errors won't create popup dialogues
+class SuppressErrorDialogs
+{
+public:
+  SuppressErrorDialogs(){ErrorRedirector::m_messages_logPaneOnly++;}
+  ~SuppressErrorDialogs(){ErrorRedirector::m_messages_logPaneOnly--;}
+};
+
 #endif // ERRORREDIRECTOR_H

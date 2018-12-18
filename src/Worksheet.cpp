@@ -30,6 +30,7 @@
 
 
 #include "wxMaxima.h"
+#include "ErrorRedirector.h"
 #include "MaxSizeChooser.h"
 #include "SVGout.h"
 #include "EMFout.h"
@@ -6198,7 +6199,7 @@ bool Worksheet::ExportToMAC(wxString file)
   {
     // We try a few times to overwrite the original file: On MSW sometimes
     // virus scanners lock files for a while
-    wxLogNull suppressor;
+    SuppressErrorDialogs suppressor;
   // If we succeeded in saving the backup file we now can overwrite the Real Thing.
     done = wxRenameFile(file + wxT("~"), file, true);
     if(!done)
@@ -6454,7 +6455,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
     return false;
   
   {
-    wxLogNull suppressor;
+    SuppressErrorDialogs suppressor;
     done = wxRenameFile(backupfile, file, true);
     if(!done)
     {

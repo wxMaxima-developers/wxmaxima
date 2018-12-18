@@ -25,7 +25,7 @@
  */
 
 #include "Configuration.h"
-
+#include "ErrorRedirector.h"
 #include <wx/font.h>
 #include <wx/config.h>
 #include "Cell.h"
@@ -116,7 +116,7 @@ bool Configuration::MaximaFound(wxString location)
     maximaFound = true;
 
   // Don't complain if PATH doesn't yield a result.
-  wxLogNull logNull;
+  SuppressErrorDialogs logNull;
   
   wxPathList pathlist;
   pathlist.AddEnvList(wxT("PATH"));

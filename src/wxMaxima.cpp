@@ -65,6 +65,7 @@
 #include "MaxSizeChooser.h"
 #include "ListSortWiz.h"
 #include "wxMaximaIcon.h"
+#include "ErrorRedirector.h"
 
 #include <wx/colordlg.h>
 #include <wx/clipbrd.h>
@@ -1221,7 +1222,7 @@ void wxMaxima::KillMaxima()
   if (m_pid > 0)
   {
     // wxProcess::kill will fail on MSW. Something with a console.
-    wxLogNull logNull;
+    SuppressErrorDialogs logNull;
     wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN);
   }
   m_isConnected = false;
@@ -1231,7 +1232,7 @@ void wxMaxima::KillMaxima()
   // temp files we try to do so manually now:
   if(m_maximaTempDir != wxEmptyString)
   {
-    wxLogNull logNull;
+    SuppressErrorDialogs logNull;
     wxRemoveFile(m_maximaTempDir + wxT("/maxout") + wxString::Format("%li.gnuplot",m_pid));
     wxRemoveFile(m_maximaTempDir + wxT("/data") + wxString::Format("%li.gnuplot",m_pid));
     wxRemoveFile(m_maximaTempDir + wxT("/maxout") + wxString::Format("%li.xmaxima",m_pid));
@@ -3685,7 +3686,7 @@ bool wxMaxima::SaveFile(bool forceSave)
 
 void wxMaxima::ReadStdErr()
 {
-  wxLogNull blocker;
+  SuppressErrorDialogs blocker;
   // Maxima will never send us any data via stderr after it has finished
   // starting up and will send data via stdout only in rare cases:
   // It rather sends us the data over the network.

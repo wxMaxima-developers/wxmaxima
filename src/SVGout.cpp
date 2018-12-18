@@ -25,6 +25,7 @@
  */
 
 #include "SVGout.h"
+#include "ErrorRedirector.h"
 #include <wx/txtstrm.h> 
 #include <wx/filename.h> 
 #include <wx/wfstream.h>
@@ -75,7 +76,7 @@ Svgout::~Svgout()
   {
     // We don't want a braindead virus scanner that disallows us to delete our temp
     // files to trigger asserts.
-    wxLogNull messageBlocker;
+    SuppressErrorDialogs messageBlocker;
     wxRemoveFile(m_tempFileName);
   }
   *m_configuration = m_oldconfig;
@@ -321,7 +322,7 @@ Svgout::SVGDataObject *Svgout::GetDataObject()
   {
     // Don't output error messages if the worst thing that can happen is that we
     // cannot clean up a temp file
-    wxLogNull messageBlocker;
+    SuppressErrorDialogs messageBlocker;
 
     wxRemoveFile(m_filename);
   }

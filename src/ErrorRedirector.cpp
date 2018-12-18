@@ -68,7 +68,7 @@ void ErrorRedirector::DoLogRecord(wxLogLevel level,
         m_logOld->LogRecord(level, msg, info);
 
     // and also send it to the new one
-    if ( m_logNew )
+    if (( m_logNew ) && (m_messages_logPaneOnly <= 0))
     {
         // don't call m_logNew->LogRecord() to avoid infinite recursion when
         // m_logNew is this object itself
@@ -94,3 +94,5 @@ void ErrorRedirector::Flush()
     if ( m_logNew && m_logNew != this )
         m_logNew->Flush();
 }
+
+int ErrorRedirector::m_messages_logPaneOnly = 0;
