@@ -1295,7 +1295,7 @@ wxAccStatus Cell::GetLocation(wxRect &rect, int elementId)
       rect.SetBottom((*m_configuration)->GetVisibleRegion().GetWidth());
     if(rect.GetRight() > (*m_configuration)->GetVisibleRegion().GetHeight())
       rect.SetRight((*m_configuration)->GetVisibleRegion().GetHeight());
-    rect = wxRect(rect.GetTopLeft()+m_worksheetPosition,rect.GetBottomRight()+m_worksheetPosition);
+    rect = wxRect(rect.GetTopLeft()+(*m_configuration)->GetWorksheetPosition(),rect.GetBottomRight()+(*m_configuration)->GetWorksheetPosition());
     return wxACC_OK;
   }
   else

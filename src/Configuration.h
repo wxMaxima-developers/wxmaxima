@@ -692,6 +692,7 @@ public:
   void SetVisibleRegion(wxRect visibleRegion){m_visibleRegion = visibleRegion;}
   wxRect GetVisibleRegion(){return m_visibleRegion;}
   void SetWorksheetPosition(wxPoint worksheetPosition){m_worksheetPosition = worksheetPosition;}
+  wxPoint GetWorksheetPosition(){return m_worksheetPosition;}
 private:
   //! The worksheet all cells are drawn on
   wxRect m_updateRegion;
