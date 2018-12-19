@@ -107,7 +107,7 @@ void MatrCell::RecalculateWidths(int fontsize)
     }
   }
   m_width = 0;
-  for (int i = 0; i < m_matWidth; i++)
+  for (unsigned int i = 0; i < m_matWidth; i++)
   {
     m_width += (m_widths[i] + Scale_Px(10));
   }
@@ -137,7 +137,7 @@ void MatrCell::RecalculateHeight(int fontsize)
       }
   }
   m_height = 0;
-  for (int i = 0; i < m_matHeight; i++)
+  for (unsigned int i = 0; i < m_matHeight; i++)
   {
     m_height += (m_centers[i] + m_drops[i] + Scale_Px(10));
   }
@@ -156,7 +156,7 @@ void MatrCell::Draw(wxPoint point)
     wxPoint mp;
     mp.x = point.x + Scale_Px(5);
     mp.y = point.y - m_center;
-    for (int i = 0; i < m_matWidth; i++)
+    for (unsigned int i = 0; i < m_matWidth; i++)
     {
       mp.y = point.y - m_center + Scale_Px(5);
       for (unsigned int j = 0; j < m_matHeight; j++)
@@ -275,10 +275,10 @@ void MatrCell::Draw(wxPoint point)
 wxString MatrCell::ToString()
 {
   wxString s = wxT("matrix(\n");
-  for (int i = 0; i < m_matHeight; i++)
+  for (unsigned int i = 0; i < m_matHeight; i++)
   {
     s += wxT("\t\t[");
-    for (int j = 0; j < m_matWidth; j++)
+    for (unsigned int j = 0; j < m_matWidth; j++)
     {
       s += m_cells[i * m_matWidth + j]->ListToString();
       if (j < m_matWidth - 1)
@@ -308,13 +308,13 @@ wxString MatrCell::ToTeX()
   else
   {
     s = wxT("\\begin{array}{");
-    for (int j = 0; j < m_matWidth; j++)
+    for (unsigned int j = 0; j < m_matWidth; j++)
       s += wxT("c");
     s += wxT("}");
   }
-  for (int i = 0; i < m_matHeight; i++)
+  for (unsigned int i = 0; i < m_matHeight; i++)
   {
-    for (int j = 0; j < m_matWidth; j++)
+    for (unsigned int j = 0; j < m_matWidth; j++)
     {
       s += m_cells[i * m_matWidth + j]->ListToTeX();
       if (j < m_matWidth - 1)
@@ -342,10 +342,10 @@ wxString MatrCell::ToMathML()
     retval = wxT("<mrow><mo>(</mo><mrow>");
   retval += wxT("<mtable>");
 
-  for (int i = 0; i < m_matHeight; i++)
+  for (unsigned int i = 0; i < m_matHeight; i++)
   {
     retval += wxT("<mtr>");
-    for (int j = 0; j < m_matWidth; j++)
+    for (unsigned int j = 0; j < m_matWidth; j++)
       retval += wxT("<mtd>") + m_cells[i * m_matWidth + j]->ListToMathML() + wxT("</mtd>");
     retval += wxT("</mtr>");
   }
@@ -370,10 +370,10 @@ wxString MatrCell::ToOMML()
   
   retval += wxT("<m:e><m:m>");
 
-  for (int i = 0; i < m_matHeight; i++)
+  for (unsigned int i = 0; i < m_matHeight; i++)
   {
     retval += wxT("<m:mr>");
-    for (int j = 0; j < m_matWidth; j++)
+    for (unsigned int j = 0; j < m_matWidth; j++)
       retval += wxT("<m:e>") + m_cells[i * m_matWidth + j]->ListToOMML() + wxT("</m:e>");
     retval += wxT("</m:mr>");
   }
@@ -400,10 +400,10 @@ wxString MatrCell::ToXML()
   else
     s = wxT("<tb") +flags +wxT(">");
 
-  for (int i = 0; i < m_matHeight; i++)
+  for (unsigned int i = 0; i < m_matHeight; i++)
   {
     s += wxT("<mtr>");
-    for (int j = 0; j < m_matWidth; j++)
+    for (unsigned int j = 0; j < m_matWidth; j++)
       s += wxT("<mtd>") + m_cells[i * m_matWidth + j]->ListToXML() + wxT("</mtd>");
     s += wxT("</mtr>");
   }
