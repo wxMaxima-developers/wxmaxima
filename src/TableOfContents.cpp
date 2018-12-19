@@ -160,10 +160,7 @@ void TableOfContents::UpdateDisplay()
       case GC_TYPE_HEADING6:
         curr = wxT("          ");
         break;
-      GC_TYPE_CODE:
-      GC_TYPE_TEXT:
-      GC_TYPE_IMAGE:
-      GC_TYPE_PAGEBREAK:
+      default:
         break;
       }
     
