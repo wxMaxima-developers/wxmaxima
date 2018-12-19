@@ -164,6 +164,8 @@ void TableOfContents::UpdateDisplay()
       GC_TYPE_TEXT:
       GC_TYPE_IMAGE:
       GC_TYPE_PAGEBREAK:
+        {
+        }
       }
     
     curr += m_structure[i]->GetEditable()->ToString(true);

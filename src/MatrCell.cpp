@@ -61,8 +61,8 @@ Cell *MatrCell::Copy()
   tmp->m_colNames = m_colNames;
   tmp->m_matWidth = m_matWidth;
   tmp->m_matHeight = m_matHeight;
-  for (int i = 0; i < m_matWidth * m_matHeight; i++)
-    if((i) < m_cells.size())
+  for (unsigned int i = 0; i < m_matWidth * m_matHeight; i++)
+    if(i < m_cells.size())
       (tmp->m_cells).push_back(m_cells[i]->CopyList());
   
   return tmp;
@@ -92,15 +92,15 @@ std::list<Cell *> MatrCell::GetInnerCells()
 void MatrCell::RecalculateWidths(int fontsize)
 {
   Cell::RecalculateWidths(fontsize);
-  for (int i = 0; i < m_cells.size(); i++)
+  for (unsigned int i = 0; i < m_cells.size(); i++)
   {
     m_cells[i]->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 2));
   }
   m_widths.clear();
-  for (int i = 0; i < m_matWidth; i++)
+  for (unsigned int i = 0; i < m_matWidth; i++)
   {
     m_widths.push_back(0);
-    for (int j = 0; j < m_matHeight; j++)
+    for (unsigned int j = 0; j < m_matHeight; j++)
     {
       if((m_matWidth * j + i)<m_cells.size())
         m_widths[i] = MAX(m_widths[i], m_cells[m_matWidth * j + i]->GetFullWidth());
@@ -119,17 +119,17 @@ void MatrCell::RecalculateWidths(int fontsize)
 void MatrCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
-  for (int i = 0; i < m_cells.size(); i++)
+  for (unsigned int i = 0; i < m_cells.size(); i++)
   {
     m_cells[i]->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 2));
   }
   m_centers.clear();
   m_drops.clear();
-  for (int i = 0; i < m_matHeight; i++)
+  for (unsigned int i = 0; i < m_matHeight; i++)
   {
     m_centers.push_back(0);
     m_drops.push_back(0);
-    for (int j = 0; j < m_matWidth; j++)
+    for (unsigned int j = 0; j < m_matWidth; j++)
       if(m_matWidth * i + j < m_cells.size())
       {
         m_centers[i] = MAX(m_centers[i], m_cells[m_matWidth * i + j]->GetMaxCenter());
@@ -159,7 +159,7 @@ void MatrCell::Draw(wxPoint point)
     for (int i = 0; i < m_matWidth; i++)
     {
       mp.y = point.y - m_center + Scale_Px(5);
-      for (int j = 0; j < m_matHeight; j++)
+      for (unsigned int j = 0; j < m_matHeight; j++)
       {
         if((j * m_matWidth + i) < m_cells.size())
           {
