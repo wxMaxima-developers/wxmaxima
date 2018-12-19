@@ -450,7 +450,6 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     point.y = m_configuration->GetBaseIndent() + m_tree->GetMaxCenter();
     // Draw tree
     GroupCell *tmp = m_tree;
-    int drop = tmp->GetMaxDrop();
 
     dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
     dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_DEFAULT))));
