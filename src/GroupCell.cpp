@@ -2431,8 +2431,8 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId)
 {
   if(elementId == 0)
   {
-    rect = wxRect(GetRect().GetTopLeft()     + m_visibleRegion.GetTopLeft(),
-                  GetRect().GetBottomRight() + m_visibleRegion.GetTopLeft());
+    rect = wxRect(GetRect().GetTopLeft()     + (*m_configuration)->GetVisibleRegion().GetTopLeft(),
+                  GetRect().GetBottomRight() + (*m_configuration)->GetVisibleRegion().GetTopLeft());
     
     // Our GroupCell handles the hcaret below the cell, as well as its contents
     rect.SetBottom(rect.GetBottom()+(*m_configuration)->GetGroupSkip());
@@ -2446,10 +2446,10 @@ wxAccStatus GroupCell::GetLocation(wxRect &rect, int elementId)
       rect.SetTop(0);
     if(rect.GetLeft() < 0)
       rect.SetLeft(0);
-    if(rect.GetBottom() > m_visibleRegion.GetWidth())
-      rect.SetBottom(m_visibleRegion.GetWidth());
-    if(rect.GetRight() > m_visibleRegion.GetHeight())
-      rect.SetRight(m_visibleRegion.GetHeight());
+    if(rect.GetBottom() > (*m_configuration)->GetVisibleRegion().GetWidth())
+      rect.SetBottom((*m_configuration)->GetVisibleRegion().GetWidth());
+    if(rect.GetRight() > (*m_configuration)->GetVisibleRegion().GetHeight())
+      rect.SetRight((*m_configuration)->GetVisibleRegion().GetHeight());
     rect = wxRect(rect.GetTopLeft()+m_worksheetPosition,rect.GetBottomRight()+m_worksheetPosition);
     return wxACC_OK;
   }
