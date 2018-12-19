@@ -90,9 +90,9 @@ public:
   void RoundedParens(bool rounded)
   { m_roundedParens = rounded;}
 protected:
-  int m_matWidth;
-  int m_roundedParens;
-  int m_matHeight;
+  unsigned int m_matWidth;
+  bool m_roundedParens;
+  unsigned int m_matHeight;
   bool m_specialMatrix, m_inferenceMatrix, m_rowNames, m_colNames;
   vector<Cell *> m_cells;
   vector<int> m_widths;
