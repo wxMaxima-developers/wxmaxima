@@ -35,9 +35,11 @@
 class ErrorRedirector : public wxLog
 {
 public:
-  //! >=0 means: Messages should appear in the log pane only
-  static int m_messages_logPaneOnly;
+  /*! A variable used by the SuppressErrorDialogs class
 
+    >=0 means: Messages should appear in the log pane only.
+   */
+  static int m_messages_logPaneOnly;
   /**
      Sets the specified @c logger (which may be NULL) as the default log
      target but the log messages are also passed to the previous log target if any.
@@ -89,7 +91,7 @@ protected:
 };
 
 //! If an variable of this class is alive errors won't create popup dialogues
-class SuppressErrorDialogs
+class SuppressErrorDialogs 
 {
 public:
   SuppressErrorDialogs(){ErrorRedirector::m_messages_logPaneOnly++;}
