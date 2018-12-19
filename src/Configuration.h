@@ -690,6 +690,7 @@ public:
   bool AdjustWorksheetSize()
     { return m_adjustWorksheetSizeNeeded; }
   void SetVisibleRegion(wxRect visibleRegion){m_visibleRegion = visibleRegion;}
+  wxRect GetVisibleRegion(){return m_visibleRegion;}
   void SetWorksheetPosition(wxPoint worksheetPosition){m_worksheetPosition = worksheetPosition;}
 private:
   //! The worksheet all cells are drawn on
