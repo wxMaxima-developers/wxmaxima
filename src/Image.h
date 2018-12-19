@@ -151,10 +151,8 @@ public:
   //! Saves the image in its original form, or as .png if it originates in a bitmap
   wxSize ToImageFile(wxString filename);
 
-  //! Returns the bitmap being displayed
-  wxBitmap GetBitmap();
   //! Returns the bitmap being displayed with custom scale
-  wxBitmap GetBitmap(double scale);
+  wxBitmap GetBitmap(double scale = 1.0);
 
   //! Does the image show an actual image or an "broken image" symbol?
   bool IsOk() {return m_isOk;}
@@ -162,10 +160,8 @@ public:
   //! Returns the image in its unscaled form
   wxBitmap GetUnscaledBitmap();
 
-  //! Needs to be called on changing the viewport size
-  void Recalculate();
   //! Can be called to specify a specific scale
-  void Recalculate(double scale);
+  void Recalculate(double scale = 1.0);
 
   //! The width of the scaled image
   long m_width;

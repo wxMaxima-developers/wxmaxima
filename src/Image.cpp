@@ -476,11 +476,6 @@ wxSize Image::ToImageFile(wxString filename)
   }
 }
 
-wxBitmap Image::GetBitmap()
-{
-  return GetBitmap(1.0);
-}
-
 wxBitmap Image::GetBitmap(double scale)
 {
   Recalculate(scale);
@@ -627,12 +622,6 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
   }
   Recalculate();
 
-}
-
-void Image::Recalculate()
-{
-  // Don't scale the image by default.
-  Recalculate(1.0);
 }
 
 void Image::Recalculate(double scale)

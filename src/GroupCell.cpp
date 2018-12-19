@@ -498,25 +498,22 @@ void GroupCell::AppendInput(Cell *cell)
 
 void GroupCell::SetOutput(Cell *output)
 {
-  return;
-  if (output == NULL)
-    return;
-  
   if((m_cellPointers->m_answerCell) &&(m_cellPointers->m_answerCell->GetGroup() == this))
     m_cellPointers->m_answerCell = NULL;
   
   wxDELETE(m_output);
 
   m_output = output;
-  m_output->SetGroup(this);
+
 
   m_lastInOutput = m_output;
 
-  while (m_lastInOutput->m_next != NULL)
-    m_lastInOutput = m_lastInOutput->m_next;
-
-  // ResetSize();
-  //m_appendedCells = output;
+  if(m_output != NULL)
+  {
+    m_output->SetGroup(this);
+    while (m_lastInOutput->m_next != NULL)
+      m_lastInOutput = m_lastInOutput->m_next;
+  }
 }
 
 void GroupCell::RemoveOutput()
@@ -960,7 +957,7 @@ void GroupCell::Draw(wxPoint point)
       SetPen();
       wxPoint in(point);
 
-      if (m_output != NULL && !m_hide)
+      if ((m_output != NULL) && !m_hide)
       {
         Cell *tmp = m_output;
         int drop = tmp->GetMaxDrop();

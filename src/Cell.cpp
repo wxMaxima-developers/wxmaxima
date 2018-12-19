@@ -156,8 +156,8 @@ void Cell::SetType(CellType type)
 Cell *Cell::CopyList()
 {
   Cell *dest = Copy();
-  Cell *src = this->m_next;
   Cell *ret = dest;
+  Cell *src = m_next;
 
   while (src != NULL)
   {
