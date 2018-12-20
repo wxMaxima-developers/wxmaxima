@@ -773,18 +773,38 @@ void EditorCell::Draw(wxPoint point1)
     Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();
 
-    // Clear the background.
-    // TODO: Do we really need to clear the background before drawing a text cell?
+    // Set the background to the cell's background color
     if (m_height > 0 && m_width > 0 && y >= 0)
     {
-      wxBrush br(configuration->GetColor(TS_TEXT_BACKGROUND));
-      dc->SetBrush(br);
-      wxPen pen(configuration->GetColor(TS_TEXT_BACKGROUND));
-      dc->SetPen(pen);
+      wxBrush *br;
+      wxPen *pen;
+      std::cerr<<GetStyle()<<"\n";
+      if(GetStyle() == TS_TEXT)
+      {
+        std::cerr << "TEXT\n";
+        br = wxTheBrushList->FindOrCreateBrush(
+          configuration->GetColor(TS_TEXT_BACKGROUND));
+        pen = wxThePenList->FindOrCreatePen(
+          configuration->GetColor(TS_TEXT_BACKGROUND),
+          0,
+          wxPENSTYLE_SOLID);
+      }
+      else
+      {
+        br = wxTheBrushList->FindOrCreateBrush(
+          configuration->DefaultBackgroundColor());
+        pen = wxThePenList->FindOrCreatePen(
+          configuration->DefaultBackgroundColor(),
+          0,
+          wxPENSTYLE_SOLID);
+      }
+      dc->SetBrush(*br);
+      dc->SetPen(*pen);
       rect.SetWidth((*m_configuration)->GetCanvasSize().GetWidth());
       if (InUpdateRegion(rect))
         dc->DrawRectangle(CropToUpdateRegion(rect));
-    }      
+    }
+    dc->SetPen(*wxBLACK_PEN);
     SetFont();
 
     m_selectionChanged = false;
