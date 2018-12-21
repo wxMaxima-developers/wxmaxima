@@ -347,7 +347,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   #endif
   // Don't attempt to refresh the screen as long as the result will
   // end up on a printed page instead.
-  if (m_configuration->Printing())
+  if (!m_configuration->ClipToDrawRegion())
   {
     RequestRedraw();
     return;
@@ -4366,7 +4366,7 @@ void Worksheet::OnTimer(wxTimerEvent &event)
         slideshow->SetDisplayedIndex(pos);
 
         // Refresh the displayed bitmap
-        if (m_configuration->Printing())
+        if (!m_configuration->ClipToDrawRegion())
           slideshow->ReloadTimer();
         else
         {
@@ -4730,7 +4730,7 @@ bool Worksheet::ExportToHTML(wxString file)
   // Show a busy cursor as long as we export.
   wxBusyCursor crs;
 
-  m_configuration->Printing(true);
+  m_configuration->ClipToDrawRegion(false);
   // The path to the image directory as seen from the html directory
   wxString imgDir_rel;
   // The absolute path to the image directory
@@ -4757,7 +4757,7 @@ bool Worksheet::ExportToHTML(wxString file)
   {
     if (!wxMkdir(imgDir))
     {
-      m_configuration->Printing(false);
+      m_configuration->ClipToDrawRegion(true);
       return false;
     }
   }
@@ -4765,7 +4765,7 @@ bool Worksheet::ExportToHTML(wxString file)
   wxFileOutputStream outfile(file);
   if (!outfile.IsOk())
   {
-    m_configuration->Printing(false);
+    m_configuration->ClipToDrawRegion(true);
     return false;
   }
 
@@ -4776,7 +4776,7 @@ bool Worksheet::ExportToHTML(wxString file)
   wxFileOutputStream cssfile(cssfileName);
   if (!cssfile.IsOk())
   {
-    m_configuration->Printing(false);
+    m_configuration->ClipToDrawRegion(true);
     return false;
   }
 
@@ -5601,7 +5601,7 @@ bool Worksheet::ExportToHTML(wxString file)
   outfile.Close();
   cssfile.Close();
 
-  m_configuration->Printing(false);
+  m_configuration->ClipToDrawRegion(true);
   RecalculateForce();
   return outfileOK && cssOK;
 }

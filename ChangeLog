@@ -2,10 +2,10 @@ Current:
   * Use C++'s strong typing for more enums.
   * Another big SpeedUp.
   * Tried to simplify the display code
-  * Source file names that more closely their current meaning
+  * Source file and function names that more closely their current meaning.
   * Many bug fixes.
   * Now we pass the canonical locale name to maxima, not the short one.
-  * We no more set maxima's locale if it doesn't differ from the system's
+  * We no more try to set maxima's locale if it doesn't differ from the system's
     default one.
 
 18.11.2:

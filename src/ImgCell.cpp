@@ -161,7 +161,7 @@ void ImgCell::RecalculateWidths(int fontsize)
     //    we might have intermittent calculation issues otherwise
     if (m_image)
     {
-      if (configuration->GetPrinter())
+      if (configuration->GetPrinting())
         m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
       else
         m_image->Recalculate();
@@ -181,7 +181,7 @@ void ImgCell::Draw(wxPoint point)
   if (DrawThisCell(point) && (m_image != NULL))
   {
     Configuration *configuration = (*m_configuration);
-    if (configuration->GetPrinter()) {
+    if (configuration->GetPrinting()) {
       m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
     } else {
       m_image->Recalculate();
@@ -203,7 +203,7 @@ void ImgCell::Draw(wxPoint point)
       dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
     // Use printing-scale while in printing-mode.
-    wxBitmap bitmap = (configuration->GetPrinter() ? m_image->GetBitmap(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER) : m_image->GetBitmap());
+    wxBitmap bitmap = (configuration->GetPrinting() ? m_image->GetBitmap(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER) : m_image->GetBitmap());
     bitmapDC.SelectObject(bitmap);
 
     if ((m_drawBoundingBox == false) || (m_imageBorderWidth > 0))

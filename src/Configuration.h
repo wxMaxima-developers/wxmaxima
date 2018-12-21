@@ -363,7 +363,7 @@ public:
   {
     if (
       (m_clientWidth <= m_zoomFactor * double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor) ||
-      (m_printer)
+      (m_printing)
       )
       return m_clientWidth;
     else
@@ -443,11 +443,27 @@ public:
 
   void ShowCodeCells(bool show);
 
-  void SetPrinter(bool printer)
-  { m_printer = printer; }
+  /*! Are we currently printing?
 
-  bool GetPrinter()
-  { return m_printer; }
+    This affects the bitmap scale as well as the fact if we want
+    to output objects that are outside the region that currently is
+    redrawn.
+  */
+  void SetPrinting(bool printing)
+    {
+      m_printing = printing;
+      if(printing)
+        ClipToDrawRegion(false);
+    }
+
+  /*! Are we currently printing?
+
+    This affects the bitmap scale as well as the fact if we want
+    to output objects that are outside the region that currently is
+    redrawn.
+  */
+  bool GetPrinting()
+  { return m_printing; }
 
   bool GetMatchParens()
   { return m_matchParens; }
@@ -680,10 +696,10 @@ public:
   wxString GetAutosubscript_string();
   //! Determine the default background color of the worksheet
   wxColor DefaultBackgroundColor(){return m_defaultBackgroundColor;}
-  //! Are we currently printing to paper or to a bitmap?
-  bool Printing(){return m_printing;}
-  //! Are we currently printing to paper or to a bitmap?
-  void Printing(bool printing){m_printing = printing; m_forceUpdate = true;}
+  //! Do we want to save time by only redrawing the area currently shown on the screen?
+  bool ClipToDrawRegion(){return m_clipToDrawRegion;}
+  //! Do we want to save time by only redrawing the area currently shown on the screen?
+  void ClipToDrawRegion(bool clipToDrawRegion){m_clipToDrawRegion = clipToDrawRegion; m_forceUpdate = true;}
   //! Request adjusting the worksheet size?
   void AdjustWorksheetSize(bool adjust)
     { m_adjustWorksheetSizeNeeded = adjust; }
@@ -768,7 +784,7 @@ private:
   int m_defaultFontSize, m_mathFontSize;
   wxString m_mathFontName;
   bool m_forceUpdate;
-  bool m_printing;
+  bool m_clipToDrawRegion;
   bool m_outdated;
   wxString m_defaultToolTip;
   bool m_TeXFonts;
@@ -779,7 +795,7 @@ private:
   int m_clientHeight;
   wxFontEncoding m_fontEncoding;
   style m_styles[STYLE_NUM];
-  bool m_printer;
+  bool m_printing;
   int m_lineWidth_em;
   int m_showLabelChoice;
   bool m_fixReorderedIndices;

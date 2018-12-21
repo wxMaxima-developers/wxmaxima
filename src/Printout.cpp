@@ -191,7 +191,7 @@ void Printout::SetupData()
   m_printConfigCreated = true;
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
   (*m_configuration)->ShowBrackets((*m_configuration)->PrintBrackets());
-  (*m_configuration)->Printing(true);
+  (*m_configuration)->ClipToDrawRegion(false);
   
 //  SetUserScale(1/DCSCALE,
 //               1/DCSCALE);
@@ -238,7 +238,7 @@ void Printout::SetupData()
   }
   (*m_configuration)->SetIndent(marginX);
   // Inform the output routines that we are printing
-  (*m_configuration)->SetPrinter(true);
+  (*m_configuration)->SetPrinting(true);
   // Make sure that during print nothing is outside the crop rectangle
   (*m_configuration)->LineWidth_em(10000);
   Recalculate();

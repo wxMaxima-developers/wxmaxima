@@ -161,7 +161,7 @@ class Cell
   //! The part of the rectangle rect that is in the region that is currently drawn
   wxRect CropToUpdateRegion(wxRect rect)
     {
-      if((*m_configuration)->Printing())
+      if(!(*m_configuration)->ClipToDrawRegion())
         return rect;
       else
         return rect.Intersect((*m_configuration)->GetUpdateRegion());

@@ -214,7 +214,7 @@ void SlideShow::RecalculateWidths(int fontsize)
   {
     if(m_images[i] != NULL)
     {
-      if(configuration->GetPrinter()) {
+      if(configuration->GetPrinting()) {
         m_images[i]->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
       } else {
         m_images[i]->Recalculate();
@@ -250,7 +250,7 @@ void SlideShow::Draw(wxPoint point)
     // restarted anyway.
     //
     Configuration *configuration = (*m_configuration);
-    if(configuration->GetPrinter()) {
+    if(configuration->GetPrinting()) {
         m_images[m_displayed]->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
     } else {
       m_images[m_displayed]->Recalculate();
@@ -269,7 +269,7 @@ void SlideShow::Draw(wxPoint point)
 
     dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
-    wxBitmap bitmap = (configuration->GetPrinter() ? m_images[m_displayed]->GetBitmap(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER) : m_images[m_displayed]->GetBitmap());
+    wxBitmap bitmap = (configuration->GetPrinting() ? m_images[m_displayed]->GetBitmap(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER) : m_images[m_displayed]->GetBitmap());
     bitmapDC.SelectObject(bitmap);
 
     int imageBorderWidth = m_imageBorderWidth;

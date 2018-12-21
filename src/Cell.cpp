@@ -422,7 +422,7 @@ bool Cell::DrawThisCell(wxPoint point)
 
   SetCurrentPoint(point);
 
-  if((*m_configuration)->Printing())
+  if(!(*m_configuration)->ClipToDrawRegion())
     return true;
   
   // If a cell is broken into lines its individual parts are displayed but
@@ -452,7 +452,7 @@ wxRect Cell::GetRect(bool all)
 
 bool Cell::InUpdateRegion(const wxRect &rect)
 {
-  if ((*m_configuration)->Printing())
+  if (!(*m_configuration)->ClipToDrawRegion())
     return true;
 
   if((*m_configuration)->GetUpdateRegion().Contains(m_currentPoint))

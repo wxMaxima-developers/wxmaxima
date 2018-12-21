@@ -32,7 +32,7 @@
 
 Configuration::Configuration(wxDC &dc) : m_dc(&dc) 
 {
-  m_printing = false;
+  m_clipToDrawRegion = true;
   m_fontChanged = true;
   m_TOCshowsSectionNumbers = false;
   m_antialiassingDC = NULL;
@@ -46,9 +46,9 @@ Configuration::Configuration(wxDC &dc) : m_dc(&dc)
   m_printScale = 1.0;
   m_forceUpdate = false;
   m_outdated = false;
-  m_printer = false;
+  m_printing = false;
   m_TeXFonts = false;
-  m_printer = false;
+  m_printing = false;
   m_notifyIfIdle = true;
   m_fixReorderedIndices = true;
   m_showBrackets = true;

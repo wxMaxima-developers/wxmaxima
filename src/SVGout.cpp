@@ -63,7 +63,7 @@ Svgout::Svgout(Configuration **configuration, wxString filename, double scale)
   // usable. Also the probability was high that the right font wasn't
   // available in inkscape.
   (*m_configuration)->SetGrouphesisDrawMode(Configuration::handdrawn);
-  (*m_configuration)->Printing(true);
+  (*m_configuration)->ClipToDrawRegion(false);
 }
 
 Svgout::~Svgout()

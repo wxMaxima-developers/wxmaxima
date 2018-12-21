@@ -242,7 +242,7 @@ void BitmapOut::GetMaxPoint(int *width, int *height)
 
 void BitmapOut::Draw()
 {
-  (*m_configuration)->Printing(true);
+  (*m_configuration)->ClipToDrawRegion(false);
   Cell *tmp = m_tree;
 
   wxString bgColStr = wxT("white");
