@@ -3417,7 +3417,12 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
       GetActiveCell()->ProcessEvent(event);
     break;
   default:
+  {
     GetActiveCell()->ProcessEvent(event);
+    GroupCell *parent = dynamic_cast<GroupCell*>(GetActiveCell()->GetGroup());
+    parent->InputHeightChanged();
+    RequestRedraw();
+  }
   }
 
   // Update title and toolbar in order to reflect the "unsaved" state of the worksheet.
@@ -3999,7 +4004,12 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
     case WXK_ESCAPE:
       OpenHCaret(wxEmptyString);
       if (GetActiveCell() != NULL)
+      {
         GetActiveCell()->ProcessEvent(event);
+        GroupCell *parent = dynamic_cast<GroupCell*>(GetActiveCell()->GetGroup());
+        parent->InputHeightChanged();
+        RequestRedraw();
+      }
       break;
 
       // keycodes which open hCaret with initial content
