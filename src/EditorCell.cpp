@@ -1267,10 +1267,7 @@ void EditorCell::ProcessEvent(wxKeyEvent &event)
     FindMatchingParens();
 
   if (m_isDirty)
-  {
-    // ResetData doesn't work for code cells.
-    m_width = m_maxDrop = -1;
-  }
+    ResetSize();
   m_displayCaret = true;
 }
 

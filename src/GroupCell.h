@@ -479,6 +479,8 @@ public:
   GroupCell *UpdateYPosition();
   
 protected:
+  bool NeedsRecalculation();
+  int GetInputIndent();
   int GetLineIndent(Cell *cell);
   GroupCell *m_hiddenTree; //!< here hidden (folded) tree of GCs is stored
   GroupCell *m_hiddenTreeParent; //!< store linkage to the parent of the fold
@@ -491,7 +493,6 @@ protected:
   //! Is this cell folded (which hides its contents)?
   bool m_hide;
   int m_fontSize;
-  int m_fontSize_Old;
   int m_mathFontSize;
   Cell *m_lastInOutput;
   Cell *m_appendedCells;

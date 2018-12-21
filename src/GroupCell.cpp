@@ -598,7 +598,8 @@ void GroupCell::RecalculateWidths(int fontsize)
 {
   Cell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
-  if (m_width == -1 || m_height == -1 || configuration->RecalculationForce())
+  
+  if (NeedsRecalculation())
   {
     // special case of 'line cell'
     if (m_groupType == GC_TYPE_PAGEBREAK)
@@ -608,42 +609,34 @@ void GroupCell::RecalculateWidths(int fontsize)
       ResetData();
       return;
     }
-
+    
     UnBreakUpCells();
 
     if(m_inputLabel != NULL)
-    {
       m_inputLabel->RecalculateWidthsList(fontsize);
-      
-      // recalculate the position of input in ReEvaluateSelection!
-      // m_inputLabel->m_currentPoint.x = m_currentPoint.x;
-    }
-    
+
     if (m_output == NULL || m_hide)
     {
       if ((configuration->ShowCodeCells()) ||
           (m_groupType != GC_TYPE_CODE))
       {
-        m_width = m_inputLabel->GetFullWidth();
-      }
-      else
-        m_width = 0;
+        m_width = GetInputIndent();
+        if(GetInput())
+          m_width += GetInput()->GetWidth();
+      }  
     }
-    else    {
-      Cell *tmp = m_output;
-      while (tmp != NULL)
-      {
-        tmp->RecalculateWidths(tmp->IsMath() ? m_mathFontSize : m_fontSize);
-        tmp = tmp->m_next;
-      }
-      // This is not correct, m_width will be computed correctly in RecalculateHeight!
+    else
+    {
       if ((configuration->ShowCodeCells()) ||
           (m_groupType != GC_TYPE_CODE))
       {
-        if(m_inputLabel != NULL)
-          m_width = m_inputLabel->GetFullWidth();
+        m_width = Scale_Px(100);
+        if(GetInput() != NULL)
+          m_width = GetInput()->GetFullWidth() + GetInputIndent();
         else
-          m_width = 100;
+        {
+            m_width = GetInputIndent();
+        }
       }
     }
 
@@ -773,23 +766,31 @@ void GroupCell::RecalculateHeightOutput(int WXUNUSED(fontsize))
   }
 }
 
+bool GroupCell::NeedsRecalculation()
+{
+  bool result = ((m_width < 0) || (m_height < 0) ||
+                 (m_currentPoint.x < 0) || (m_currentPoint.y < 0) ||
+                 ((*m_configuration)->RecalculationForce() ||
+                  ((GetInput() != NULL) &&
+                   ((GetInput()->GetWidth() < 0) || (GetInput()->GetHeight() < 0))
+                    )));
+  return result;
+}
+
 void GroupCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
   Configuration *configuration = (*m_configuration);
 
-  if (m_width < 0 || m_height < 0 || m_currentPoint.x < 0 || m_currentPoint.y < 0 ||
-      configuration->RecalculationForce() || fontsize != m_fontSize_Old)
+  if(NeedsRecalculation())
   {
-    m_fontSize_Old = fontsize;
-
     RecalculateHeightInput(fontsize);
     
     RecalculateHeightOutput(fontsize);
   }
 
-  if (((m_height != 0) || (m_next == NULL)) && (m_height < configuration->GetCellBracketWidth()))
-    m_height = configuration->GetCellBracketWidth();
+//  if (((m_height <= 0) || (m_next == NULL)) && (m_height < configuration->GetCellBracketWidth()))
+//    m_height = configuration->GetCellBracketWidth();
   
   configuration= (*m_configuration);
   if (m_previous == NULL)
@@ -817,13 +818,8 @@ void GroupCell::RecalculateHeight(int fontsize)
   if (GetEditable())
   {
     wxPoint in = GetCurrentPoint();
-    int labelWidth = 0;
-    if((*m_configuration)->IndentMaths())
-      labelWidth = Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING;
     
-    if(m_inputLabel != NULL)
-      labelWidth = MAX(m_inputLabel->GetWidth() + MC_TEXT_PADDING,labelWidth);
-    in.x += labelWidth;
+    in.x += GetInputIndent();
     GetEditable()->SetCurrentPoint(GetCurrentPoint());
   }
 }
@@ -915,6 +911,18 @@ GroupCell *GroupCell::UpdateYPosition()
       m_currentPoint.y += (*m_configuration)->GetGroupSkip();
   }
   return dynamic_cast<GroupCell *>(m_next);
+}
+
+int GroupCell::GetInputIndent()
+{
+  int labelWidth = 0;
+  if((*m_configuration)->IndentMaths())
+    labelWidth = Scale_Px((*m_configuration)->GetLabelWidth()) + MC_TEXT_PADDING;
+  
+  if(m_inputLabel != NULL)
+    labelWidth = MAX(m_inputLabel->GetWidth() + MC_TEXT_PADDING,labelWidth);
+
+  return labelWidth;
 }
 
 void GroupCell::Draw(wxPoint point)
@@ -1009,22 +1017,13 @@ void GroupCell::Draw(wxPoint point)
         in = point;
         
         configuration->Outdated(false);
-        int labelWidth = 0;
-        if((*m_configuration)->IndentMaths())
-          labelWidth = Scale_Px(configuration->GetLabelWidth()) + MC_TEXT_PADDING;
-        
-        if(m_inputLabel != NULL)
-        {          
-          m_inputLabel->Draw(in);
-          labelWidth = MAX(m_inputLabel->GetWidth() + MC_TEXT_PADDING,labelWidth);
-        }
 
         EditorCell *input = GetInput();
         if(input)
           in = point;
           input->Draw(
             wxPoint(
-              in.x + labelWidth,
+              in.x + GetInputIndent(),
               in.y
               )
             );

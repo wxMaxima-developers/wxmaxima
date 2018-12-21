@@ -4152,7 +4152,7 @@ void Worksheet::OnChar(wxKeyEvent &event)
 void Worksheet::GetMaxPoint(int *width, int *height)
 {
   Cell *tmp = m_tree;
-  int currentHeight = m_configuration->GetBaseIndent();
+  int currentHeight = m_configuration->GetIndent();
   int currentWidth = m_configuration->GetBaseIndent();
   *width = m_configuration->GetBaseIndent();
   *height = m_configuration->GetBaseIndent();
@@ -4162,8 +4162,8 @@ void Worksheet::GetMaxPoint(int *width, int *height)
     currentHeight += tmp->GetMaxHeight();
     currentHeight += m_configuration->GetGroupSkip();
     *height = currentHeight;
-    currentWidth = m_configuration->GetBaseIndent() + tmp->GetWidth();
-    *width = MAX(currentWidth + m_configuration->GetBaseIndent(), *width);
+    currentWidth = m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->GetDefaultFontSize()) + tmp->GetWidth();
+    *width = MAX(currentWidth + m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->GetDefaultFontSize()), *width);
     tmp = tmp->m_next;
   }
 }
