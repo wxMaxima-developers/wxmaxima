@@ -4322,11 +4322,9 @@ void Worksheet::OnTimer(wxTimerEvent &event)
             rect.SetTop(caretY - m_configuration->GetCursorWidth() / 2);
             rect.SetBottom(caretY + (m_configuration->GetCursorWidth() + 1) / 2);
           }
-          rect.SetLeft(0);
-          rect.SetRight(virtualsize_x);
         }
-        rect.SetLeft (m_configuration->GetVisibleRegion().GetLeft());
-        rect.SetRight(m_configuration->GetVisibleRegion().GetRight());
+        rect.SetLeft(0);
+        rect.SetRight(virtualsize_x + m_configuration->Scale_Px(10));
         RequestRedraw(rect);
       }
 
