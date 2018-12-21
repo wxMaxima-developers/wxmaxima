@@ -646,23 +646,6 @@ void GroupCell::RecalculateWidths(int fontsize)
   ResetData();
 }
 
-void GroupCell::InputHeightChanged()
-{
-  ResetData();
-  ResetSize();
-  EditorCell *editorCell = GetEditable();
-  if (editorCell != NULL) {
-    editorCell->ResetSize();
-    editorCell->RecalculateWidths(m_fontSize);
-  }
-  if (m_inputLabel != NULL) {
-    m_inputLabel->ResetData();
-  }
-  RecalculateHeightInput(m_fontSize);
-  if(m_output)
-    m_height += m_output->GetMaxHeight();
-}
-
 // Called on resize events
 // We need to forget line breaks/breakup cells and
 // breakup cells and compute new line breaks
@@ -679,7 +662,7 @@ void GroupCell::OnSize()
   }
   BreakUpCells();
   BreakLines();
-  InputHeightChanged();
+  Recalculate();
 }
 
 void GroupCell::RecalculateHeightInput(int fontsize)
@@ -917,10 +900,10 @@ int GroupCell::GetInputIndent()
 {
   int labelWidth = 0;
   if((*m_configuration)->IndentMaths())
-    labelWidth = Scale_Px((*m_configuration)->GetLabelWidth()) + MC_TEXT_PADDING;
+    labelWidth = Scale_Px((*m_configuration)->GetLabelWidth());
   
   if(m_inputLabel != NULL)
-    labelWidth = MAX(m_inputLabel->GetWidth() + MC_TEXT_PADDING,labelWidth);
+    labelWidth = MAX(m_inputLabel->GetWidth(),labelWidth);
 
   return labelWidth;
 }
@@ -929,17 +912,17 @@ void GroupCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
 
-  // std::cerr<<"GroupCell("<<
-  //   GetRect().GetLeft()<<","<<
-  //   GetRect().GetTop()<<","<<
-  //   GetRect().GetRight()<<","<<
-  //   GetRect().GetBottom()<<"),"<<
-  //   "), UpdateRegion=("<<
-  //   (*m_configuration)->GetUpdateRegion().GetLeft()<<","<<
-  //   (*m_configuration)->GetUpdateRegion().GetTop()<<","<<
-  //   (*m_configuration)->GetUpdateRegion().GetRight()<<","<<
-  //   (*m_configuration)->GetUpdateRegion().GetBottom()<<"),"<<
-  //   DrawThisCell(point)<<!(*m_configuration)->GetUpdateRegion().Intersect(GetRect()).IsEmpty()<<"\n";
+   std::cerr<<"GroupCell("<<
+     GetRect().GetLeft()<<","<<
+     GetRect().GetTop()<<","<<
+     GetRect().GetRight()<<","<<
+     GetRect().GetBottom()<<"),"<<
+     "), UpdateRegion=("<<
+     (*m_configuration)->GetUpdateRegion().GetLeft()<<","<<
+     (*m_configuration)->GetUpdateRegion().GetTop()<<","<<
+     (*m_configuration)->GetUpdateRegion().GetRight()<<","<<
+     (*m_configuration)->GetUpdateRegion().GetBottom()<<"),"<<
+     DrawThisCell(point)<<!(*m_configuration)->GetUpdateRegion().Intersect(GetRect()).IsEmpty()<<"\n";
 
   Configuration *configuration = (*m_configuration);
 
@@ -992,8 +975,6 @@ void GroupCell::Draw(wxPoint point)
         in.x += GetLineIndent(tmp);
         while (tmp != NULL)
         {         
-          tmp->SetCurrentPoint(in);
-
           tmp->Draw(in);
           if ((tmp->m_nextToDraw != NULL) && (tmp->m_nextToDraw->BreakLineHere()))
             {
@@ -2037,7 +2018,7 @@ void GroupCell::BreakUpCells(Cell *cell)
     }
     tmp = tmp->m_nextToDraw;
   }
-
+  return;
   if(lineHeightsChanged)
   {
     if(m_output != NULL)
