@@ -778,10 +778,8 @@ void EditorCell::Draw(wxPoint point1)
     {
       wxBrush *br;
       wxPen *pen;
-      std::cerr<<GetStyle()<<"\n";
       if(GetStyle() == TS_TEXT)
       {
-        std::cerr << "TEXT\n";
         br = wxTheBrushList->FindOrCreateBrush(
           configuration->GetColor(TS_TEXT_BACKGROUND));
         pen = wxThePenList->FindOrCreatePen(
