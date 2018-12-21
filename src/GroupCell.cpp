@@ -646,6 +646,23 @@ void GroupCell::RecalculateWidths(int fontsize)
   ResetData();
 }
 
+void GroupCell::InputHeightChanged()
+{
+  ResetData();
+  ResetSize();
+  EditorCell *editorCell = GetEditable();
+  if (editorCell != NULL) {
+    editorCell->ResetSize();
+    editorCell->RecalculateWidths(m_fontSize);
+  }
+  if (m_inputLabel != NULL) {
+    m_inputLabel->ResetData();
+  }
+  RecalculateHeightInput(m_fontSize);
+  if(m_output)
+    m_height += m_output->GetMaxHeight();
+}
+
 // Called on resize events
 // We need to forget line breaks/breakup cells and
 // breakup cells and compute new line breaks
@@ -662,7 +679,7 @@ void GroupCell::OnSize()
   }
   BreakUpCells();
   BreakLines();
-  Recalculate();
+  InputHeightChanged();
 }
 
 void GroupCell::RecalculateHeightInput(int fontsize)
@@ -900,10 +917,10 @@ int GroupCell::GetInputIndent()
 {
   int labelWidth = 0;
   if((*m_configuration)->IndentMaths())
-    labelWidth = Scale_Px((*m_configuration)->GetLabelWidth());
+    labelWidth = Scale_Px((*m_configuration)->GetLabelWidth()) + MC_TEXT_PADDING;
   
   if(m_inputLabel != NULL)
-    labelWidth = MAX(m_inputLabel->GetWidth(),labelWidth);
+    labelWidth = MAX(m_inputLabel->GetWidth() + MC_TEXT_PADDING,labelWidth);
 
   return labelWidth;
 }
@@ -2018,7 +2035,7 @@ void GroupCell::BreakUpCells(Cell *cell)
     }
     tmp = tmp->m_nextToDraw;
   }
-  return;
+
   if(lineHeightsChanged)
   {
     if(m_output != NULL)

@@ -396,6 +396,9 @@ public:
   //! Called on MathCtrl resize
   void OnSize();
 
+  //! Reset the data when the input size changes
+  void InputHeightChanged();
+
   //! A list of answers provided by the user
   std::list<wxString> m_knownAnswers;
 

@@ -3127,7 +3127,10 @@ void Worksheet::OnKeyDown(wxKeyEvent &event)
             else
             {
               GetActiveCell()->ProcessEvent(event);
-              Recalculate(dynamic_cast<GroupCell*>(GetActiveCell()->GetGroup()));
+              // Recalculate(dynamic_cast<GroupCell*>(GetActiveCell()->GetGroup()),false);
+              GroupCell *parent = dynamic_cast<GroupCell*>(GetActiveCell()->GetGroup());
+              parent->InputHeightChanged();
+              RequestRedraw();
             }
           }
           else
