@@ -613,7 +613,10 @@ void GroupCell::RecalculateWidths(int fontsize)
     UnBreakUpCells();
 
     if(m_inputLabel != NULL)
+    {
       m_inputLabel->RecalculateWidthsList(fontsize);
+      m_inputLabel->SetCurrentPoint(m_currentPoint);
+    }
 
     if (m_output == NULL || m_hide)
     {
@@ -929,17 +932,17 @@ void GroupCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
 
-   std::cerr<<"GroupCell("<<
-     GetRect().GetLeft()<<","<<
-     GetRect().GetTop()<<","<<
-     GetRect().GetRight()<<","<<
-     GetRect().GetBottom()<<"),"<<
-     "), UpdateRegion=("<<
-     (*m_configuration)->GetUpdateRegion().GetLeft()<<","<<
-     (*m_configuration)->GetUpdateRegion().GetTop()<<","<<
-     (*m_configuration)->GetUpdateRegion().GetRight()<<","<<
-     (*m_configuration)->GetUpdateRegion().GetBottom()<<"),"<<
-     DrawThisCell(point)<<!(*m_configuration)->GetUpdateRegion().Intersect(GetRect()).IsEmpty()<<"\n";
+   // std::cerr<<"GroupCell("<<
+   //   GetRect().GetLeft()<<","<<
+   //   GetRect().GetTop()<<","<<
+   //   GetRect().GetRight()<<","<<
+   //   GetRect().GetBottom()<<"),"<<
+   //   "), UpdateRegion=("<<
+   //   (*m_configuration)->GetUpdateRegion().GetLeft()<<","<<
+   //   (*m_configuration)->GetUpdateRegion().GetTop()<<","<<
+   //   (*m_configuration)->GetUpdateRegion().GetRight()<<","<<
+   //   (*m_configuration)->GetUpdateRegion().GetBottom()<<"),"<<
+   //   DrawThisCell(point)<<!(*m_configuration)->GetUpdateRegion().Intersect(GetRect()).IsEmpty()<<"\n";
 
   Configuration *configuration = (*m_configuration);
 
@@ -1025,6 +1028,10 @@ void GroupCell::Draw(wxPoint point)
               in.y
               )
             );
+
+          if(GetPrompt() != NULL)
+          GetPrompt()->Draw(point);
+        
         if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next)
           configuration->Outdated((dynamic_cast<EditorCell *>(m_inputLabel->m_next))->ContainsChanges());
       }
