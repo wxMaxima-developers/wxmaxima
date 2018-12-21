@@ -921,6 +921,18 @@ void GroupCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
 
+  // std::cerr<<"GroupCell("<<
+  //   GetRect().GetLeft()<<","<<
+  //   GetRect().GetTop()<<","<<
+  //   GetRect().GetRight()<<","<<
+  //   GetRect().GetBottom()<<"),"<<
+  //   "), UpdateRegion=("<<
+  //   (*m_configuration)->GetUpdateRegion().GetLeft()<<","<<
+  //   (*m_configuration)->GetUpdateRegion().GetTop()<<","<<
+  //   (*m_configuration)->GetUpdateRegion().GetRight()<<","<<
+  //   (*m_configuration)->GetUpdateRegion().GetBottom()<<"),"<<
+  //   DrawThisCell(point)<<!(*m_configuration)->GetUpdateRegion().Intersect(GetRect()).IsEmpty()<<"\n";
+
   Configuration *configuration = (*m_configuration);
 
   if (configuration->ShowBrackets())

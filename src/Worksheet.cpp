@@ -4325,10 +4325,8 @@ void Worksheet::OnTimer(wxTimerEvent &event)
           rect.SetLeft(0);
           rect.SetRight(virtualsize_x);
         }
-        rect.SetRight(virtualsize_x);
-
-        // Make sure we don't refresh part of the screen twice and make sure that
-        // we periodically update the screen even if we are never idle.
+        rect.SetLeft (m_configuration->GetVisibleRegion().GetLeft());
+        rect.SetRight(m_configuration->GetVisibleRegion().GetRight());
         RequestRedraw(rect);
       }
 

@@ -747,23 +747,10 @@ The order this cell is drawn is:
  The text is not taken from m_text but from the list of styled text snippets
  StyleText() converts m_text into. This way the decisions needed for styling
  text are cached for later use.
-
- \todo: Why does DrawThisCell(point1) return false, sometimes?
 */
 void EditorCell::Draw(wxPoint point1)
 {
   Cell::Draw(point1);
-  // std::cerr<<"EditorCell("<<
-  //   GetRect().GetLeft()<<","<<
-  //   GetRect().GetTop()<<","<<
-  //   GetRect().GetRight()<<","<<
-  //   GetRect().GetBottom()<<"),"<<
-  //   "), UpdateRegion=("<<
-  //   (*m_configuration)->GetUpdateRegion().GetLeft()<<","<<
-  //   (*m_configuration)->GetUpdateRegion().GetTop()<<","<<
-  //   (*m_configuration)->GetUpdateRegion().GetRight()<<","<<
-  //   (*m_configuration)->GetUpdateRegion().GetBottom()<<"),"<<
-  // DrawThisCell(point1)<<!(*m_configuration)->GetUpdateRegion().Intersect(GetRect()).IsEmpty()<<"\n";
   
   if ((!m_isHidden) && (DrawThisCell()))
   {

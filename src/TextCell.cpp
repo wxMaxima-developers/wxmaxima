@@ -308,6 +308,7 @@ Cell *TextCell::Copy()
 
 void TextCell::RecalculateWidths(int fontsize)
 {
+  m_width = 0;
   if(fontsize != m_fontsize_old)
     ResetSize();
   m_fontsize_old = fontsize;
