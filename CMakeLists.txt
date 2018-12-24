@@ -139,6 +139,13 @@ set(CPACK_SOURCE_IGNORE_FILES
   "wxmaxima-.*\\\\.gz$"
   "${CPACK_SOURCE_IGNORE_FILES}")
 
+# We provide our own manifest. MSVC seems not to autodetect that.
+if(MSVC)
+  set(CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS} /MANIFEST:NO")
+  set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /MANIFEST:NO")
+  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /MANIFEST:NO")
+endif()
+
 add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 
 # Debian wants to be able to download a signature of the source package from the
