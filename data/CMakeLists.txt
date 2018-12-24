@@ -2,7 +2,7 @@ if(APPLE)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in ${CMAKE_CURRENT_BINARY_DIR}/Info.plist)
 endif()
 
-set(DATAFILES
+ set(DATAFILES
         ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.png
         ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.svg)
 
