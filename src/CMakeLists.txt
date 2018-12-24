@@ -6,7 +6,7 @@ file(GLOB SOURCE_FILES *.cpp *.h)
 
 # We provide our own manifest. MSVC seems not to autodetect that.
 if(MSVC)
-  message(STATUS "MSVC detected => Trying to disable the automatic manifest")
+  message(STATUS "MSVC detected => Trying to disable the inclusion of the automatic manifest.")
   set(CMAKE_EXE_LINKER_FLAGS_RELEASE    "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /MANIFEST:NO")
   set(CMAKE_MODULE_LINKER_FLAGS_RELEASE "${CMAKE_MODULE_LINKER_FLAGS_RELEASE} /MANIFEST:NO")
   set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /MANIFEST:NO")
@@ -17,11 +17,7 @@ endif()
 
 if(WIN32)
   include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
-  if(MSVC)    
-    set(SOURCE_FILES Resources_Manifest.rc ${SOURCE_FILES})
-  else()
-    set(SOURCE_FILES Resources_Manifest.rc ${SOURCE_FILES})
-  endif()
+  set(SOURCE_FILES Resources_Manifest.rc ${SOURCE_FILES})
 endif()
 
 # We put Version.h into binary dir
