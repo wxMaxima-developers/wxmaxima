@@ -141,7 +141,7 @@ set(CPACK_SOURCE_IGNORE_FILES
 
 # We provide our own manifest. MSVC seems not to autodetect that.
 if(MSVC)
-  message(STATUS "MSVC detected")
+  message(STATUS "MSVC detected => Trying to disable the automatic manifest")
   set(CMAKE_CFLAGS  "${CMAKE_CXX_FLAGS} /MANIFEST:NO")
   set(CMAKE_CFLAGS_DEBUG  "${CMAKE_CXX_FLAGS_DEBUG} /MANIFEST:NO")
   set(CMAKE_CFLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MANIFEST:NO")
