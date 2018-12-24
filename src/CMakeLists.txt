@@ -6,8 +6,12 @@ file(GLOB SOURCE_FILES *.cpp *.h)
 
 
 if(WIN32)
-    include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
+  include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
+  if(MSVC)    
     set(SOURCE_FILES Resources.rc ${SOURCE_FILES})
+  else()
+    set(SOURCE_FILES Resources_Manifest.rc ${SOURCE_FILES})
+  endif()
 endif()
 
 # We put Version.h into binary dir
