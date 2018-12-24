@@ -1021,6 +1021,7 @@ void GroupCell::Draw(wxPoint point)
 
         EditorCell *input = GetInput();
         if(input)
+        {
           in = point;
           input->Draw(
             wxPoint(
@@ -1028,8 +1029,9 @@ void GroupCell::Draw(wxPoint point)
               in.y
               )
             );
-
-          if(GetPrompt() != NULL)
+        }
+        
+        if(GetPrompt() != NULL)
           GetPrompt()->Draw(point);
         
         if (m_groupType == GC_TYPE_CODE && m_inputLabel->m_next)

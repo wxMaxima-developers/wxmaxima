@@ -1162,7 +1162,8 @@ wxString TextCell::ToMathML()
           text = wxT("i");
       }
     }
-    case TS_VARIABLE:
+    /* FALLTHRU */
+  case TS_VARIABLE:
     {
       bool keepPercent = (*m_configuration)->CheckKeepPercent();
 
@@ -1172,7 +1173,8 @@ wxString TextCell::ToMathML()
           text = wxT("\x03C0");
       }
     }
-    case TS_FUNCTION:
+    /* FALLTHRU */
+  case TS_FUNCTION:
       text = GetGreekStringUnicode();
       if (text == wxT("inf"))
         text = wxT("\x221e");
@@ -1244,7 +1246,8 @@ wxString TextCell::ToOMML()
           text = wxT("i");
       }
     }
-    case TS_VARIABLE:
+    /* FALLTHRU */
+  case TS_VARIABLE:
     {
       bool keepPercent = (*m_configuration)->CheckKeepPercent();
 
@@ -1254,7 +1257,8 @@ wxString TextCell::ToOMML()
           text = wxT("\x03C0");
       }
     }
-    case TS_FUNCTION:
+    /* FALLTHRU */
+  case TS_FUNCTION:
       text = GetGreekStringUnicode();
       if (text == wxT("inf"))
         text = wxT("\x221e");

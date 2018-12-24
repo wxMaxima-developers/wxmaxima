@@ -7757,6 +7757,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
           --it;
         break;
       }
+      /* FALLTHRU */
     case wxT('$'):
       if ((!lisp) && (!delimiters.empty()))
       {

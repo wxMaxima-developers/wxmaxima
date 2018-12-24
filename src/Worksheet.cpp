@@ -800,7 +800,7 @@ bool Worksheet::RecalculateIfNeeded()
   {
     if(m_configuration->AdjustWorksheetSize())
       AdjustSize();
-      return false;
+    return false;
   }
   m_configuration->AdjustWorksheetSize(false);
 
