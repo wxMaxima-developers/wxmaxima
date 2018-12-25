@@ -1,6 +1,8 @@
 18.12.0:
   * Use C++'s strong typing for more enums.
   * Another big SpeedUp.
+  * Now we make sure that the Manifest telling wxMaxima is high-DPI aware is
+    the only manifest packaged with the .exe file.
   * Tried to simplify the display code
   * Source file and function names that more closely their current meaning.
   * Many bug fixes.
