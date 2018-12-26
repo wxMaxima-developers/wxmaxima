@@ -3231,10 +3231,10 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
         // events for the console
         m_worksheet->Freeze();
         wxEventBlocker blocker(m_worksheet);
-        wxBusyCursor crs;
         Printout printout(title, &m_worksheet->m_configuration, GetContentScaleFactor());
         GroupCell *copy = m_worksheet->CopyTree();
         printout.SetData(copy);
+        wxBusyCursor crs;
         if (printer.Print(this, &printout, true))
         {
           wxDELETE(m_printData);

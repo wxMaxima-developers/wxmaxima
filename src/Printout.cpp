@@ -33,6 +33,7 @@
 #include "GroupCell.h"
 
 #include <wx/config.h>
+#include <wx/busyinfo.h>
 
 #define PRINT_MARGIN_HORIZONTAL 50
 #define PRINT_MARGIN_VERTICAL 50
@@ -73,6 +74,7 @@ bool Printout::HasPage(int num)
 
 bool Printout::OnPrintPage(int num)
 {
+//  wxBusyInfo busyInfo(wxString::Format(_("Printing page %i..."),num));
   GroupCell *tmp;
   wxDC *dc = GetDC();
   dc->SetBackground(*wxWHITE_BRUSH);

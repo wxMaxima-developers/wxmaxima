@@ -15,6 +15,7 @@ if(MSVC)
   set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} /MANIFEST:NO")
 endif()
 
+# Include our Resources file that contains our manifest
 if(WIN32)
   include_directories(${CMAKE_SOURCE_DIR}/data/winrc)
   set(SOURCE_FILES Resources.rc ${SOURCE_FILES})
