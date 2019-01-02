@@ -2907,7 +2907,7 @@ void Worksheet::OpenHCaret(wxString txt, GroupType type)
   }
 
   InsertGroupCells(group, m_hCaretPosition);
-  Recalculate(group, false);
+//  Recalculate(group, false);
 
   // activate editor
   SetActiveCell(group->GetEditable(), false);
