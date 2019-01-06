@@ -6429,7 +6429,7 @@ MyAboutDialog::MyAboutDialog(wxWindow *parent, int id, const wxString title, wxS
                       "<body>"
                       "<center>"
                       "<p>"
-                      "<img src=\"%s/wxmaxima.png\">"
+                      "<img src=\"%s/io.github.wxmaxima_developers.wxMaxima.png\">"
                       "</p>"
                       "<h1>wxMaxima</h1>"
                       "<p>%s</p>"
