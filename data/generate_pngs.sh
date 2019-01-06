@@ -7,7 +7,7 @@
 /* SVG images are converted to PNG (using inkscape) and then converted to C using xxd   */
 /* This file is part of wxMaxima.                                                       */
 
-/* Copyright (C) 2018 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)               */
+/* Copyright (C) 2018 wxMaxima Team (https://wxMaxima-developers.github.io/wxmaxima/)   */
 
 /* This program is free software; you can redistribute it and/or modify                 */
 /* it under the terms of the GNU General Public License as published by                 */
@@ -24,7 +24,7 @@
 /* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA            */
 END
 
-for i in wxmaxima.svg; do
+for i in io.github.wxmaxima_developers.wxMaxima.svg; do
     PNGIMAGENAME=$(basename "$i" .svg).png
     echo "Converting image $i to $$PNGIMAGENAME"
     inkscape "--export-png=$PNGIMAGENAME" --export-width=128 "$i"

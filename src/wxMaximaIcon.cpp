@@ -32,7 +32,7 @@
 wxIcon wxMaximaIcon()
 {
     wxImage img;
-    wxMemoryInputStream istream(wxmaxima_png,wxmaxima_png_len);
+    wxMemoryInputStream istream(io_github_wxmaxima_developers_wxMaxima_png,io_github_wxmaxima_developers_wxMaxima_png_len);
     img.LoadFile(istream);
     wxIcon icon;
     icon.CopyFromBitmap(wxBitmap(img));

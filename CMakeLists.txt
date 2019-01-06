@@ -105,7 +105,7 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
 set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${VERSION}")
 set(CPACK_PACKAGE_CONTACT "The wxMaxima Team <wxmaxima-devel@lists.sourceforge.net>")
 set(CPACK_PACKAGE_SECTION "science")
-set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/data/wxmaxima.png")
+set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.png")
 set(CPACK_PACKAGE_VERSION "${VERSION}")
 
 

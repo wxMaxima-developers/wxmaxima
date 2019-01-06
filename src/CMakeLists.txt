@@ -30,8 +30,8 @@ if(APPLE)
   file(GLOB RESOURCES_FILES
     ${CMAKE_BINARY_DIR}/data/wxmathml.lisp
     ${CMAKE_SOURCE_DIR}/test/testbench_simple.wxmx
-    ${CMAKE_SOURCE_DIR}/data/wxmaxima.png
-    ${CMAKE_SOURCE_DIR}/data/wxmaxima.svg)
+    ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.png
+    ${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.svg)
   file(GLOB RESOURCES_FILES_OSX
     ${CMAKE_SOURCE_DIR}/art/wxmac.icns
     ${CMAKE_SOURCE_DIR}/art/wxmac-doc.icns
