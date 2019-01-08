@@ -843,7 +843,7 @@ bool Worksheet::RecalculateIfNeeded()
     m_configuration->SetWorksheetPosition(GetPosition());
 
     tmp->Recalculate();
-    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+    tmp = dynamic_cast<GroupCell *>(tmp->m_next);x
   }
 
   AdjustSize();
@@ -920,10 +920,9 @@ void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
   
   GroupCell *tmp = m_tree;
   GroupCell *prev = NULL;
+  UpdateConfigurationClientSize();
   if (tmp != NULL)
-  {
-    UpdateConfigurationClientSize();
-    
+  {    
     SetSelection(NULL);
     while (tmp != NULL)
     {
