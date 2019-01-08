@@ -3556,6 +3556,7 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
   if(retval)
   {
     m_worksheet->RecalculateForce();
+    m_worksheet->m_configuration->FontChanged(true);
     m_worksheet->RequestRedraw();
     RightStatusText(_("File opened"));
   }
