@@ -843,7 +843,7 @@ bool Worksheet::RecalculateIfNeeded()
     m_configuration->SetWorksheetPosition(GetPosition());
 
     tmp->Recalculate();
-    tmp = dynamic_cast<GroupCell *>(tmp->m_next);x
+    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }
 
   AdjustSize();
