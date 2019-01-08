@@ -2274,10 +2274,11 @@ wxString Worksheet::ConvertSelectionToMathML()
 bool Worksheet::CopyMathML()
 {
   wxString s = ConvertSelectionToMathML();
+  
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
 
   if (wxTheClipboard->Open())
   {
-    wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
     wxDataObjectComposite *data = new wxDataObjectComposite;
     // The default clipboard slot for MathML
     data->Add(new MathMLDataObject(s), true);
