@@ -479,6 +479,7 @@ public:
   GroupCell *UpdateYPosition();
   
 protected:
+  int m_labelWidth_cached;
   bool NeedsRecalculation();
   int GetInputIndent();
   int GetLineIndent(Cell *cell);

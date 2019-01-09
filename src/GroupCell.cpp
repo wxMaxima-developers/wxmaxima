@@ -49,6 +49,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
   m_inEvaluationQueue = false;
   m_lastInEvaluationQueue = false;
   m_inputLabel = NULL;
+  m_labelWidth_cached = 0;
   m_output = NULL;
   m_hiddenTree = NULL;
   m_hiddenTreeParent = NULL;
@@ -923,8 +924,15 @@ int GroupCell::GetInputIndent()
     labelWidth = Scale_Px((*m_configuration)->GetLabelWidth()) + MC_TEXT_PADDING;
   
   if(m_inputLabel != NULL)
-    labelWidth = MAX(m_inputLabel->GetWidth() + MC_TEXT_PADDING,labelWidth);
-
+  {
+    if(m_inputLabel->GetWidth() >= 0)
+      labelWidth = MAX(m_inputLabel->GetWidth() + MC_TEXT_PADDING,labelWidth);
+    else
+      labelWidth = MAX(m_labelWidth_cached,labelWidth);
+  }
+  
+  m_labelWidth_cached = labelWidth;
+    
   return labelWidth;
 }
 
@@ -1056,7 +1064,7 @@ int GroupCell::GetLineIndent(Cell *cell)
       (cell->GetStyle() != TS_OTHER_PROMPT) &&
       (*m_configuration)->IndentMaths()
       )
-      indent += Scale_Px((*m_configuration)->GetLabelWidth()) + MC_TEXT_PADDING;
+      indent += Scale_Px((*m_configuration)->GetLabelWidth()) + 2 * MC_TEXT_PADDING;
   }
   return indent;
 }
