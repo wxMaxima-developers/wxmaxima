@@ -664,8 +664,6 @@ void GroupCell::InputHeightChanged()
   }
   RecalculateHeightInput();
   RecalculateHeightOutput();
-//  if(m_output)
-//    m_height += m_output->GetHeight();
 }
 
 // Called on resize events
