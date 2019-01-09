@@ -2786,6 +2786,10 @@ wxString wxMaxima::GetHelpFile()
   if (wxFileExists(tmp))
     return tmp;
 
+  tmp = html + wxT("maxima_singlepage.html");
+  if (wxFileExists(tmp))
+    return tmp;
+
   return wxEmptyString;
 #else
   wxString headerFile;
@@ -2828,6 +2832,9 @@ wxString wxMaxima::GetHelpFile()
 
   if (!wxFileExists(headerFile))
     headerFile = docdir + wxT("/header.hhp");
+
+  if (!wxFileExists(headerFile))
+    headerFile = docdir + wxT("/maxima_singlepage.html");
 
   if (wxFileExists(headerFile))
     wxConfig::Get()->Write(wxT("helpFile"), headerFile);
@@ -2928,21 +2935,27 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   }
 
 #if defined (__WXMSW__)
-  if(wxFileName(MaximaHelpFile).GetFullPath().Right(4)==wxT(".chm"))
+  if(wxFileName(MaximaHelpFile).GetFullPath().EndsWith(wxT(".chm")))
     ShowCHMHelp(MaximaHelpFile,keyword);
   else
 #endif
   {
-    wxString htmldir = m_worksheet->m_configuration->m_dirStructure.HelpDir();
-    wxString wxMaximaHelpFile = htmldir;
-    if(wxFileExists(htmldir + wxGetApp().m_locale.GetName()+ wxT("/wxmaxima.hhp")))
-      wxMaximaHelpFile = htmldir + wxGetApp().m_locale.GetName() + wxT("/wxmaxima.hhp");
+    if(wxFileName(MaximaHelpFile).GetFullPath().EndsWith(wxT(".html")))
+    {
+      wxLaunchDefaultBrowser(wxFileName(MaximaHelpFile).GetFullPath()+wxT("#")+keyword);
+    }
     else
-      wxMaximaHelpFile = htmldir + wxT("/wxmaxima.hhp");
-    ShowHTMLHelp(MaximaHelpFile,wxMaximaHelpFile,keyword);
+    {
+      wxString htmldir = m_worksheet->m_configuration->m_dirStructure.HelpDir();
+      wxString wxMaximaHelpFile = htmldir;
+      if(wxFileExists(htmldir + wxGetApp().m_locale.GetName()+ wxT("/wxmaxima.hhp")))
+        wxMaximaHelpFile = htmldir + wxGetApp().m_locale.GetName() + wxT("/wxmaxima.hhp");
+      else
+        wxMaximaHelpFile = htmldir + wxT("/wxmaxima.hhp");
+      ShowHTMLHelp(MaximaHelpFile,wxMaximaHelpFile,keyword);
+    }
   }
 }
-
 ///-------o-------------------------------------------------------------------------
 ///  Idle event
 ///--------------------------------------------------------------------------------
