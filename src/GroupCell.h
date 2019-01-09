@@ -235,13 +235,13 @@ public:
    */
   void RecalculateHeight(int fontsize);
   //! Recalculate the height of the input part of the cell
-  void RecalculateHeightInput(int fontsize);
+  void RecalculateHeightInput();
   /*! Recalculate the height of the output part of the cell
 
     \attention Needs to be in sync with the height calculation done during Draw() and
     during RecalculateAppended.
    */
-  void RecalculateHeightOutput(int fontsize);
+  void RecalculateHeightOutput();
 
   /*! Recalculates the width of this GroupCell and all cells inside it if needed.
    */

@@ -662,9 +662,10 @@ void GroupCell::InputHeightChanged()
   if (m_inputLabel != NULL) {
     m_inputLabel->ResetData();
   }
-  RecalculateHeightInput(m_fontSize);
-  if(m_output)
-    m_height += m_output->GetMaxHeight();
+  RecalculateHeightInput();
+  RecalculateHeightOutput();
+//  if(m_output)
+//    m_height += m_output->GetHeight();
 }
 
 // Called on resize events
@@ -686,7 +687,7 @@ void GroupCell::OnSize()
   InputHeightChanged();
 }
 
-void GroupCell::RecalculateHeightInput(int fontsize)
+void GroupCell::RecalculateHeightInput()
 {
   Configuration *configuration = (*m_configuration);
   
@@ -696,7 +697,7 @@ void GroupCell::RecalculateHeightInput(int fontsize)
     m_width = configuration->GetCellBracketWidth();
     m_height = 2;
     m_center = 0;
-    Cell::RecalculateWidthsList(fontsize);
+    Cell::RecalculateWidthsList(m_fontSize);
     return;
   }
   
@@ -705,7 +706,7 @@ void GroupCell::RecalculateHeightInput(int fontsize)
   {
     if(m_inputLabel)
     {
-      m_inputLabel->RecalculateHeightList(fontsize);
+      m_inputLabel->RecalculateHeightList(m_fontSize);
       m_center = m_inputLabel->GetMaxCenter();
       m_height = m_inputLabel->GetMaxHeight();
     }
@@ -760,7 +761,7 @@ void GroupCell::RecalculateHeightInput(int fontsize)
   m_inputWidth = m_width;
 }
 
-void GroupCell::RecalculateHeightOutput(int WXUNUSED(fontsize))
+void GroupCell::RecalculateHeightOutput()
 {
   if(!m_hide)
   {
@@ -788,9 +789,9 @@ void GroupCell::RecalculateHeight(int fontsize)
 
   if(NeedsRecalculation())
   {
-    RecalculateHeightInput(fontsize);
+    RecalculateHeightInput();
     
-    RecalculateHeightOutput(fontsize);
+    RecalculateHeightOutput();
   }
 
 //  if (((m_height <= 0) || (m_next == NULL)) && (m_height < configuration->GetCellBracketWidth()))
