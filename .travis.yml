@@ -9,8 +9,8 @@ branches:
   - DebianPackaging
 cache:
   ccache: true
-  directories:
-  - "$HOME/Library/Caches/Homebrew"
+#  directories:
+#  - "$HOME/Library/Caches/Homebrew"
 before_install:
 - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN
   CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
@@ -19,7 +19,7 @@ before_install:
 #- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --no-verbose -c https://cmake.org/files/v3.12/cmake-3.12.2-Linux-x86_64.tar.gz
 #  ; tar xzf cmake-3.12.2-Linux-x86_64.tar.gz ; export PATH=$(pwd)/cmake-3.12.2-Linux-x86_64/bin:$PATH
 #  ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";brew
+#- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";brew
   install ccache; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=/usr/local/opt/texinfo/bin:$PATH:/usr/local/opt/gettext/bin
   ; fi
