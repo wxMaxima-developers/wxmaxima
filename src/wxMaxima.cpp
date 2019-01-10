@@ -2867,7 +2867,6 @@ void wxMaxima::ShowCHMHelp(wxString helpfile,wxString keyword)
 
 void wxMaxima::ShowWxMaximaHelp()
 {
-  std::cerr<<"wxMaxima\n";
   wxString htmldir = m_worksheet->m_configuration->m_dirStructure.HelpDir();
 
   wxString helpfile = htmldir + wxT("/wxmaxima.hhp");
@@ -2881,7 +2880,6 @@ void wxMaxima::ShowWxMaximaHelp()
     helpfile[2]=wxT(':');
   }
 #endif // __WXMSW__
-  std::cerr<<"helpfile="<<helpfile<<"\n";
   ShowHTMLHelp(helpfile);
 }
 
@@ -6620,7 +6618,6 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       break;
 
     case ToolBar::tb_help:
-      std::cerr<<"TB!\n";
       ShowWxMaximaHelp();
       break;
 
