@@ -216,7 +216,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   m_fileSaved = true;
   m_printData = NULL;
 
-  m_htmlHelpInitialized = false;
   m_chmhelpFile = wxEmptyString;
 
   m_isConnected = false;
@@ -1674,15 +1673,29 @@ void wxMaxima::ReadVariables(wxString &data)
           if(bound)
           {
             if(name == "maxima_userdir")
+            {
               m_worksheet->m_configuration->m_dirStructure.UserConfDir(value);
+              wxLogMessage(wxString::Format("Maxima user configuration in directory %s",value));
+            }
             if(name == "maxima_tempdir")
+            {
               m_maximaTempDir = value;
+              wxLogMessage(wxString::Format("Maxima uses temp directory %s",value));
+            }
             if(name == "*autoconf-version*")
               m_maximaVersion = value;
             if(name == "*autoconf-host*")
               m_maximaArch = value;
+            if(name == "*maxima_infodir*")
+            {
+              m_maximaDocDir = value;
+              wxLogMessage(wxString::Format("Maxima's manual lies in directory %s",value));
+            }
             if(name == "*lisp-name*")
+            {
               m_lispType = value;
+              wxLogMessage(wxString::Format("Maxima was compled using %s",value));
+            }
             if(name == "*lisp-version*")
               m_lispVersion = value;
             if(name == "*wx-load-file-name*")
@@ -2753,120 +2766,84 @@ void wxMaxima::ShowTip(bool force)
 
 wxString wxMaxima::GetHelpFile()
 {
-#if defined __WXMSW__
-  wxFileName command;
-  wxString chm;
-  wxString html;
-
-  command = wxFileName(GetCommand(false));
-
-  chm = wxFindFirstFile(command.GetPathWithSep() + wxT("..\\share\\maxima\\*"), wxDIR);
-
-  if (chm.empty())
-    return wxEmptyString;
-
-  html = chm + wxT("\\doc\\html\\");
-  chm = chm + wxT("\\doc\\chm\\");
-
-  wxString locale = wxGetApp().m_locale.GetCanonicalName().Left(2);
-
-  wxString tmp = chm + locale + wxT("\\maxima.chm");
-  if (wxFileExists(tmp))
-    return tmp;
-
-  tmp = chm + wxT("maxima.chm");
-  if (wxFileExists(tmp))
-    return tmp;
-
-  tmp = html + locale + wxT("\\header.hhp");
-  if (wxFileExists(tmp))
-    return tmp;
-
-  tmp = html + wxT("header.hhp");
-  if (wxFileExists(tmp))
-    return tmp;
-
-  tmp = html + wxT("maxima_singlepage.html");
-  if (wxFileExists(tmp))
-    return tmp;
-
-  return wxEmptyString;
-#else
   wxString headerFile;
   wxConfig::Get()->Read(wxT("helpFile"), &headerFile);
+  
+#if defined (__WXMSW__)
+  // Cygwin uses /c/something instead of c:/something and passes this path to the
+  // web browser - which doesn't support cygwin paths => convert the path to a
+  // native windows pathname if needed.
+  if(headerFile.Length()>1 && headerFile[1]==wxT('/'))
+  {
+    headerFile[1]=headerFile[2];
+    headerFile[2]=wxT(':');
+  }
+#endif
 
   if (headerFile.Length() && wxFileExists(headerFile))
     return headerFile;
   else
     headerFile = wxEmptyString;
 
-  wxString command = GetCommand();
-  command += wxT(" -d");
-  wxArrayString output;
-  wxExecute(command, output, wxEXEC_ASYNC);
+  headerFile = m_maximaDocDir + wxT("/maxima.hhp");
+  if(wxFileExists(headerFile))
+    return headerFile;
 
-  wxString line;
-  wxString docdir;
-  wxString langsubdir;
+  headerFile = m_maximaDocDir + wxT("/html/maxima.hhp");
+  if(wxFileExists(headerFile))
+    return headerFile;
+  
+  headerFile = m_maximaDocDir + wxT("/../html/maxima.hhp");
+  if(wxFileExists(headerFile))
+    return headerFile;
+  
+  headerFile = m_maximaDocDir + wxT("/header.hhp");
+  if(wxFileExists(headerFile))
+    return headerFile;
+  
+  headerFile = m_maximaDocDir + wxT("/html/header.hhp");
+  if(wxFileExists(headerFile))
+    return headerFile;
 
-  for (unsigned int i = 0; i < output.GetCount(); i++)
-  {
-    line = output[i];
-    if (line.StartsWith(wxT("maxima-htmldir")))
-      docdir = line.Mid(15);
-    else if (line.StartsWith(wxT("maxima-lang-subdir")))
-    {
-      langsubdir = line.Mid(19);
-      if (langsubdir == wxT("NIL"))
-        langsubdir = wxEmptyString;
-    }
-  }
+  headerFile = m_maximaDocDir + wxT("/../html/header.hhp");
+  if(wxFileExists(headerFile))
+    return headerFile;
 
-  if (docdir.Length() == 0)
-    return wxEmptyString;
+  headerFile = m_maximaDocDir + wxT("/maxima_singlepage.html");
+  if(wxFileExists(headerFile))
+    return headerFile;
 
-  headerFile = docdir + wxT("/");
-  if (langsubdir.Length())
-    headerFile += langsubdir + wxT("/");
-  headerFile += wxT("header.hhp");
+  headerFile = m_maximaDocDir + wxT("/html/maxima_singlepage.html");
+  if(wxFileExists(headerFile))
+    return headerFile;
 
-  if (!wxFileExists(headerFile))
-    headerFile = docdir + wxT("/header.hhp");
+  headerFile = m_maximaDocDir + wxT("/../html/maxima_singlepage.html");
+  if(wxFileExists(headerFile))
+    return headerFile;
 
-  if (!wxFileExists(headerFile))
-    headerFile = docdir + wxT("/maxima_singlepage.html");
 
-  if (wxFileExists(headerFile))
-    wxConfig::Get()->Write(wxT("helpFile"), headerFile);
+  #ifdef __WXMSW__
+  headerFile = m_maximaDocDir + wxT("/chm/maxima.chm");
+  if(wxFileExists(headerFile))
+    return headerFile;
 
-  return headerFile;
-#endif
+  headerFile = m_maximaDocDir + wxT("/../chm/maxima.chm");
+  if(wxFileExists(headerFile))
+    return headerFile;
+  #endif
+
+  return wxEmptyString;
 }
 
-void wxMaxima::ShowHTMLHelp(wxString helpfile, wxString otherhelpfile, wxString keyword)
+void wxMaxima::ShowHTMLHelp(wxString helpfile, wxString keyword)
 {
-#if defined (__WXMSW__)
-  // Cygwin uses /c/something instead of c:/something and passes this path to the
-  // web browser - which doesn't support cygwin paths => convert the path to a
-  // native windows pathname if needed.
-  if(helpfile.Length()>1 && helpfile[1]==wxT('/'))
-  {
-    helpfile[1]=helpfile[2];
-    helpfile[2]=wxT(':');
-  }
-#endif
-
-  if (!m_htmlHelpInitialized)
-  {
-    wxFileName otherhelpfilenname(otherhelpfile);
-    if (otherhelpfilenname.FileExists())
-      m_htmlhelpCtrl.AddBook(otherhelpfile);
-    m_htmlhelpCtrl.AddBook(helpfile);
-    m_htmlHelpInitialized = true;
-  }
-
+  if(GetHelpFile().EndsWith("hhp"))
+    m_htmlhelpCtrl.AddBook(GetHelpFile());
+  m_htmlhelpCtrl.AddBook(helpfile);
+  
   if ((keyword == wxT("%")) ||
-      (keyword == wxT(" << Graphics >> ")))
+      (keyword == wxT(" << Graphics >> ")) ||
+      (keyword == wxEmptyString))
     m_htmlhelpCtrl.DisplayContents();
   else
     m_htmlhelpCtrl.KeywordSearch(keyword, wxHELP_SEARCH_INDEX);
@@ -2877,7 +2854,7 @@ void wxMaxima::ShowCHMHelp(wxString helpfile,wxString keyword)
 {
   if (m_chmhelpFile != helpfile)
     m_chmhelpCtrl.LoadFile(helpfile);
-
+ 
   if ((keyword == wxT("%")) ||
       (keyword == wxT(" << Graphics >> ")) ||
       (keyword.IsEmpty())
@@ -2890,13 +2867,10 @@ void wxMaxima::ShowCHMHelp(wxString helpfile,wxString keyword)
 
 void wxMaxima::ShowWxMaximaHelp()
 {
+  std::cerr<<"wxMaxima\n";
   wxString htmldir = m_worksheet->m_configuration->m_dirStructure.HelpDir();
 
-#if CHM == true
-  wxString helpfile = htmldir + wxT("/wxmaxima.chm");
-  ShowCHMHelp(helpfile,wxT("%"));
-#else
-  wxString helpfile = htmldir + wxT("/wxmaxima.html");
+  wxString helpfile = htmldir + wxT("/wxmaxima.hhp");
 #if defined (__WXMSW__)
   // Cygwin uses /c/something instead of c:/something and passes this path to the
   // web browser - which doesn't support cygwin paths => convert the path to a
@@ -2907,8 +2881,8 @@ void wxMaxima::ShowWxMaximaHelp()
     helpfile[2]=wxT(':');
   }
 #endif // __WXMSW__
-  wxLaunchDefaultBrowser(wxT("file:///") + helpfile);
-#endif // CHM=false
+  std::cerr<<"helpfile="<<helpfile<<"\n";
+  ShowHTMLHelp(helpfile);
 }
 
 void wxMaxima::ShowMaximaHelp(wxString keyword)
@@ -2935,25 +2909,15 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   }
 
 #if defined (__WXMSW__)
-  if(wxFileName(MaximaHelpFile).GetFullPath().EndsWith(wxT(".chm")))
+  if(MaximaHelpFile.EndsWith(wxT(".chm")))
     ShowCHMHelp(MaximaHelpFile,keyword);
   else
 #endif
   {
-    if(wxFileName(MaximaHelpFile).GetFullPath().EndsWith(wxT(".html")))
-    {
-      wxLaunchDefaultBrowser(wxFileName(MaximaHelpFile).GetFullPath()+wxT("#")+keyword);
-    }
+    if(MaximaHelpFile.EndsWith(wxT(".html")))
+      wxLaunchDefaultBrowser(wxURI("file://"+MaximaHelpFile+wxT("#Item: ")+keyword).BuildURI());
     else
-    {
-      wxString htmldir = m_worksheet->m_configuration->m_dirStructure.HelpDir();
-      wxString wxMaximaHelpFile = htmldir;
-      if(wxFileExists(htmldir + wxGetApp().m_locale.GetName()+ wxT("/wxmaxima.hhp")))
-        wxMaximaHelpFile = htmldir + wxGetApp().m_locale.GetName() + wxT("/wxmaxima.hhp");
-      else
-        wxMaximaHelpFile = htmldir + wxT("/wxmaxima.hhp");
-      ShowHTMLHelp(MaximaHelpFile,wxMaximaHelpFile,keyword);
-    }
+      ShowHTMLHelp(MaximaHelpFile,keyword);
   }
 }
 ///-------o-------------------------------------------------------------------------
@@ -6565,15 +6529,6 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
 
   wxString expr = GetDefaultEntry();
   wxString cmd;
-  wxString helpSearchString = wxT("%");
-  if (m_worksheet->CanCopy(true))
-    helpSearchString = m_worksheet->GetString();
-  else if (m_worksheet->GetActiveCell() != NULL)
-  {
-    helpSearchString = m_worksheet->GetActiveCell()->SelectWordUnderCaret(false);
-  }
-  if (helpSearchString == wxT(""))
-    helpSearchString = wxT("%");
 
   switch (event.GetId())
   {
@@ -6664,14 +6619,18 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
 
       break;
 
-    case wxID_HELP:
     case ToolBar::tb_help:
-      if (helpSearchString == wxT("%"))
-        ShowWxMaximaHelp();
-      else
-        ShowMaximaHelp(helpSearchString);
+      std::cerr<<"TB!\n";
+      ShowWxMaximaHelp();
       break;
 
+    case wxID_HELP:
+      if((expr != "%") && (expr != wxEmptyString))        
+        ShowMaximaHelp(expr);
+      else
+        ShowWxMaximaHelp();
+      break;
+      
     case menu_maximahelp:
       ShowMaximaHelp(expr);
       break;

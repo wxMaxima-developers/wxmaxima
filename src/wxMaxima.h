@@ -269,7 +269,7 @@ protected:
                          this file.
     \param keyword The keyword to show help for
   */
-  void ShowHTMLHelp(wxString helpfile, wxString otherhelpfile, wxString keyword);
+  void ShowHTMLHelp(wxString helpfile, wxString keyword = wxEmptyString);
 
   void CheckForUpdates(bool reportUpToDate = false);
 
@@ -639,10 +639,12 @@ protected:
   wxPrintData *m_printData;
   bool m_closing;
   wxString m_openFile;
+  //! The directory with maxima's temp files
   wxString m_maximaTempDir;
+  //! The directory with maxima's documentation
+  wxString m_maximaDocDir;
   bool m_fileSaved;
   wxString m_chmhelpFile;
-  bool m_htmlHelpInitialized;
   wxString m_maximaVersion;
   wxString m_maximaArch;
   wxString m_lispVersion;
