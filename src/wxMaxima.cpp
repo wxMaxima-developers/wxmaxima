@@ -1675,7 +1675,7 @@ void wxMaxima::ReadVariables(wxString &data)
             if(name == "maxima_userdir")
             {
               m_worksheet->m_configuration->m_dirStructure.UserConfDir(value);
-              wxLogMessage(wxString::Format("Maxima user configuration in directory %s",value));
+              wxLogMessage(wxString::Format("Maxima user configuration lies in directory %s",value));
             }
             if(name == "maxima_tempdir")
             {
@@ -1686,15 +1686,20 @@ void wxMaxima::ReadVariables(wxString &data)
               m_maximaVersion = value;
             if(name == "*autoconf-host*")
               m_maximaArch = value;
-            if(name == "*maxima_infodir*")
+            if(name == "*maxima-infodir*")
             {
               m_maximaDocDir = value;
               wxLogMessage(wxString::Format("Maxima's manual lies in directory %s",value));
             }
+            if(name == "*maxima-sharedir*")
+            {
+              m_maximaShareDir = value;
+              wxLogMessage(wxString::Format("Maxima's share files lie in directory %s",value));
+            }
             if(name == "*lisp-name*")
             {
               m_lispType = value;
-              wxLogMessage(wxString::Format("Maxima was compled using %s",value));
+              wxLogMessage(wxString::Format("Maxima was compiled using %s",value));
             }
             if(name == "*lisp-version*")
               m_lispVersion = value;
@@ -2796,7 +2801,11 @@ wxString wxMaxima::GetHelpFile()
   headerFile = m_maximaDocDir + wxT("/../html/maxima.hhp");
   if(wxFileExists(headerFile))
     return headerFile;
-  
+
+  headerFile = m_maximaShareDir + wxT("/../doc/html/maxima.hhp");
+  if(wxFileExists(headerFile))
+    return headerFile;
+
   headerFile = m_maximaDocDir + wxT("/header.hhp");
   if(wxFileExists(headerFile))
     return headerFile;
@@ -2809,6 +2818,10 @@ wxString wxMaxima::GetHelpFile()
   if(wxFileExists(headerFile))
     return headerFile;
 
+  headerFile = m_maximaShareDir + wxT("/../doc/html/header.hhp");
+  if(wxFileExists(headerFile))
+    return headerFile;
+
   headerFile = m_maximaDocDir + wxT("/maxima_singlepage.html");
   if(wxFileExists(headerFile))
     return headerFile;
@@ -2818,6 +2831,10 @@ wxString wxMaxima::GetHelpFile()
     return headerFile;
 
   headerFile = m_maximaDocDir + wxT("/../html/maxima_singlepage.html");
+  if(wxFileExists(headerFile))
+    return headerFile;
+  
+  headerFile = m_maximaShareDir + wxT("/../doc/html/maxima_singlepage.html");
   if(wxFileExists(headerFile))
     return headerFile;
 

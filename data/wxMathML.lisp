@@ -1863,7 +1863,7 @@
     (format t "<variables>")
     (wx-print-variable '$maxima_userdir)
     (wx-print-variable '$maxima_tempdir)
-    (wx-print-variable '*maxima_infodir*)
+    (wx-print-variable '*maxima-infodir*)
     (wx-print-variable '*maxima-htmldir*)
 					;  (wx-print-variable '*maxima-topdir*)
     (wx-print-variable '$gnuplot_command)
