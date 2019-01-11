@@ -1,4 +1,4 @@
-file(GLOB WXMAXIMA_HELP_FILES *.jpg *.png *.html)
+file(GLOB WXMAXIMA_HELP_FILES *.jpg *.png *.html *.hhp)
 
 #find_program(MAKEINFO makeinfo)
 #if(NOT MAKEINFO)
