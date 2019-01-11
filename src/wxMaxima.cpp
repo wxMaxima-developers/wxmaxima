@@ -1232,12 +1232,18 @@ void wxMaxima::KillMaxima()
   if(m_maximaTempDir != wxEmptyString)
   {
     SuppressErrorDialogs logNull;
-    wxRemoveFile(m_maximaTempDir + wxT("/maxout") + wxString::Format("%li.gnuplot",m_pid));
-    wxRemoveFile(m_maximaTempDir + wxT("/data") + wxString::Format("%li.gnuplot",m_pid));
-    wxRemoveFile(m_maximaTempDir + wxT("/maxout") + wxString::Format("%li.xmaxima",m_pid));
-    wxRemoveFile(m_maximaTempDir + wxT("/maxout_") + wxString::Format("%li.gnuplot",m_pid));
-    wxRemoveFile(m_maximaTempDir + wxT("/data_") + wxString::Format("%li.gnuplot",m_pid));
-    wxRemoveFile(m_maximaTempDir + wxT("/maxout_") + wxString::Format("%li.xmaxima",m_pid));
+    if(wxFileExists(m_maximaTempDir + wxT("/maxout") + wxString::Format("%li.gnuplot",m_pid)))
+      wxRemoveFile(m_maximaTempDir + wxT("/maxout") + wxString::Format("%li.gnuplot",m_pid));
+    if(wxFileExists(m_maximaTempDir + wxT("/data") + wxString::Format("%li.gnuplot",m_pid)))
+      wxRemoveFile(m_maximaTempDir + wxT("/data") + wxString::Format("%li.gnuplot",m_pid));
+    if(wxFileExists(m_maximaTempDir + wxT("/maxout") + wxString::Format("%li.xmaxima",m_pid)))
+      wxRemoveFile(m_maximaTempDir + wxT("/maxout") + wxString::Format("%li.xmaxima",m_pid));
+    if(wxFileExists(m_maximaTempDir + wxT("/maxout_") + wxString::Format("%li.gnuplot",m_pid)))
+      wxRemoveFile(m_maximaTempDir + wxT("/maxout_") + wxString::Format("%li.gnuplot",m_pid));
+    if(wxFileExists(m_maximaTempDir + wxT("/data_") + wxString::Format("%li.gnuplot",m_pid)))
+      wxRemoveFile(m_maximaTempDir + wxT("/data_") + wxString::Format("%li.gnuplot",m_pid));
+    if(wxFileExists(m_maximaTempDir + wxT("/maxout_") + wxString::Format("%li.xmaxima",m_pid)))
+      wxRemoveFile(m_maximaTempDir + wxT("/maxout_") + wxString::Format("%li.xmaxima",m_pid));
   }
   m_pid = -1;
 }
