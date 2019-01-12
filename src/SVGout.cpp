@@ -36,6 +36,7 @@
 
 Svgout::Svgout(Configuration **configuration, wxString filename, double scale)
 {
+  m_CWD = wxGetCwd();
   m_width = m_height = -1;
   m_configuration = configuration;
   m_oldconfig = *m_configuration;
@@ -45,8 +46,18 @@ Svgout::Svgout(Configuration **configuration, wxString filename, double scale)
 
   m_filename = filename;
   if (m_filename == wxEmptyString)
-    m_filename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
-
+    m_filename = wxFileName::CreateTempFileName(wxStandardPaths::Get().GetTempDir ()+wxT("/wxmaxima_"));
+  {
+    wxFileName name(m_filename);
+    name.MakeAbsolute();
+    m_filename = name.GetFullPath();
+  }
+  {
+    wxString path = wxFileName(m_filename).GetPath();
+    if(path.Length() > 1)
+      wxSetWorkingDirectory(path);
+  }
+  
   m_dc = NULL;
   
   wxString m_tempFileName = wxFileName::CreateTempFileName(wxT("wxmaxima_size_"));
@@ -82,6 +93,7 @@ Svgout::~Svgout()
   *m_configuration = m_oldconfig;
   (*m_configuration)->FontChanged(true);
   (*m_configuration)->RecalculationForce(true);
+  wxSetWorkingDirectory(m_CWD);
 }
 
 wxSize Svgout::SetData(Cell *tree)

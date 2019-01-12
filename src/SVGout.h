@@ -108,6 +108,13 @@ private:
   //! The resolution of the svgout.
   wxSize m_ppi;
 
+  /*! The current working directory we were in when we started creating a svg file
+
+    wxWidgets tends to place bitmaps it links to svg files in its current working
+    directory, not in the dir of the .svg file so we temporarily switch the working
+    directory.
+   */
+  wxString m_CWD;
 public:
   //! Returns the svg representation in a format that can be placed on the clipBoard.
   SVGDataObject *GetDataObject();
