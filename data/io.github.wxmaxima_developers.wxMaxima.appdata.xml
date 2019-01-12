@@ -54,6 +54,19 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="19.01.0" date="2019-01-12">
+      <description>
+        <ul>
+          <li>Many bugfixes for the display code.</li>
+          <li>The desktop integration files now adher to the newest standards.</li>
+          <li>Refactoring in order to make the code easier to understand.</li>
+          <li>Spelling fixes.</li>
+          <li>Shipped around a wxWidgets &lt;3.1 bug for embedding bitmaps in svg.</li>
+          <li>Many Links were updated to https.</li>
+          <li>A better help file detection that still works if there is no .hhp file.</li>
+        </ul>
+      </description>
+    </release>
     <release version="18.12.0" date="2018-12-25">
       <description>
         <ul>
