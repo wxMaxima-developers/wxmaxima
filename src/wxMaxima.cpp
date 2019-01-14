@@ -5073,8 +5073,8 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
       //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
-        cmd = wxT("charpoly(") + wiz->GetValue1() + wxT(", ")
-              + wiz->GetValue2() + wxT("), expand;");
+        cmd = wxT("expand(charpoly(") + wiz->GetValue1() + wxT(", ")
+              + wiz->GetValue2() + wxT("));");
         MenuCommand(cmd);
       }
       wiz->Destroy();
