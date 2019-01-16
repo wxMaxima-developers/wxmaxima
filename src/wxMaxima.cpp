@@ -3428,6 +3428,7 @@ wxString wxMaxima::GetDefaultEntry()
 
 bool wxMaxima::OpenFile(wxString file, wxString cmd)
 {
+  wxBusyCursor crs;
   bool retval = true;
   if (file == wxEmptyString)
   {
