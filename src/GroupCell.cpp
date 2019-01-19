@@ -787,8 +787,7 @@ void GroupCell::RecalculateHeight(int fontsize)
 
   if(NeedsRecalculation())
   {
-    RecalculateHeightInput();
-    
+    RecalculateHeightInput();   
     RecalculateHeightOutput();
   }
 
@@ -833,8 +832,10 @@ void GroupCell::RecalculateAppended()
   if(m_hide)
     return;
   Configuration *configuration = (*m_configuration);
-//  if (m_appendedCells == NULL)
-//    m_appendedCells = m_inputLabel;
+  if (m_appendedCells == NULL)
+    m_appendedCells = m_inputLabel;
+  if (m_appendedCells == NULL)
+    m_appendedCells = GetInput();
   if (m_appendedCells == NULL)
     return;
   m_appendedCells->ForceBreakLineHere();
@@ -859,16 +860,15 @@ void GroupCell::RecalculateAppended()
   while (tmp != NULL)
   {
     tmp->RecalculateHeight(tmp->IsMath() ? m_mathFontSize : m_fontSize);
+    tmp->ResetData();
     tmp = tmp->m_next;
   }
 
-  // Update widths
+  // Update heights
   tmp = m_appendedCells;
   while (tmp != NULL)
   {
-    if ((tmp->BreakLineHere()) ||
-        (tmp->m_previousToDraw == NULL) ||
-        (tmp->GetStyle() == TS_LABEL) || (tmp->GetStyle() == TS_USERLABEL))
+    if (tmp->BreakLineHere())
     {
       int height_Delta = tmp->GetMaxHeight();
       m_width = MAX(m_width, tmp->GetLineWidth());

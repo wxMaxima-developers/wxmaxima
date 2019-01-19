@@ -115,6 +115,7 @@ void Cell::SetType(CellType type)
       break;
     case MC_TYPE_LABEL:
       m_textStyle = TS_LABEL;
+      ForceBreakLineHere();
       break;
     case MC_TYPE_INPUT:
       m_textStyle = TS_INPUT;
@@ -234,13 +235,13 @@ int Cell::GetMaxCenter()
   if ((m_maxCenter < 0) || ((*m_configuration)->RecalculationForce()))
   {
     Cell *tmp = this;
+    m_maxCenter  = 0;
     while (tmp != NULL)
     {
-      m_maxCenter = MAX(m_maxCenter, tmp->m_center);
-      if (tmp->m_nextToDraw == NULL)
+      if ((tmp != this) && (tmp->m_breakLine))
         break;
-      if (tmp->m_nextToDraw->m_breakLine)
-        break;
+      if(!tmp->m_isBrokenIntoLines)
+        m_maxCenter = MAX(m_maxCenter, tmp->m_center);
       tmp = tmp->m_nextToDraw;
     }
   }
@@ -254,14 +255,14 @@ int Cell::GetMaxDrop()
 {
   if ((m_maxDrop < 0) || ((*m_configuration)->RecalculationForce()))
   {
+    m_maxDrop = 0;
     Cell *tmp = this;
     while (tmp != NULL)
     {
-      m_maxDrop = MAX(m_maxDrop, tmp->m_isBrokenIntoLines ? 0 : (tmp->m_height - tmp->m_center));
-      if (tmp->m_nextToDraw == NULL)
+      if ((tmp != this) && (tmp->m_breakLine))
         break;
-      if (tmp->m_nextToDraw->m_breakLine && !tmp->m_nextToDraw->m_isBrokenIntoLines)
-        break;
+      if(!tmp->m_isBrokenIntoLines)
+        m_maxDrop = MAX(m_maxDrop, tmp->m_height - tmp->m_center);
       tmp = tmp->m_nextToDraw;
     }
   }
