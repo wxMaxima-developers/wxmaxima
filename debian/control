@@ -10,7 +10,7 @@ Homepage: http://andrejv.github.com/wxmaxima/
 
 Package: wxmaxima
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ibus-gtk3
+Depends: ${shlibs:Depends}, ${misc:Depends}, ibus-gtk3, maxima
 Recommends: maxima-doc
 Suggests: fonts-jsmath, texlive-latex-extra
 Description: GUI for the computer algebra system Maxima
