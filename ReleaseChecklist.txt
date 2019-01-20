@@ -1,8 +1,8 @@
 - Does test/testbench_simple.wxmx work?
 - Enter the new version number into CMakeLists.txt
 - Update data/io.github.wxmaxima_developers.wxMaxima.appdata.xml
-- Create the release on Github
-- (Maybe) create a git tag for the release
+- Create a git tag for the release
+- Go to the releases page Github and convert the tag into a release
 - Update the release info on the download page and in release.txt
   in the gh_pages branch.
 - Append "-DevelopmentSnapshot" to the version number in CMakeLists.txt for the new development version.
