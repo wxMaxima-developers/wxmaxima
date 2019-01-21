@@ -117,12 +117,15 @@ bool Configuration::MaximaFound(wxString location)
 
   // Don't complain if PATH doesn't yield a result.
   SuppressErrorDialogs logNull;
-  
-  wxPathList pathlist;
-  pathlist.AddEnvList(wxT("PATH"));
-  wxString path = pathlist.FindAbsoluteValidPath(location);
-  if (!path.empty())
-    maximaFound = true;
+
+  if(!(location.EndsWith("/") || location.EndsWith("\\")))
+  {
+    wxPathList pathlist;
+    pathlist.AddEnvList(wxT("PATH"));
+    wxString path = pathlist.FindAbsoluteValidPath(location);
+    if (!path.empty())
+      maximaFound = true;
+  }
   return maximaFound;
 }
 
