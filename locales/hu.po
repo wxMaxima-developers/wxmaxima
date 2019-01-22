@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-20 12:05+0100\n"
+"POT-Creation-Date: 2019-01-22 10:43+0100\n"
 "PO-Revision-Date: 2018-10-05 09:15+0200\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
@@ -70,8 +70,8 @@ msgstr ""
 msgid "      -l <name>"
 msgstr "      -l <név>"
 
-#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:231
-#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:236
+#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:238
+#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:243
 msgid " (Graphics) "
 msgstr " (Grafika) "
 
@@ -449,7 +449,7 @@ msgstr ""
 "begépelésével, beillesztésével vagy egy menü parancs végrehajtásával egy új "
 "cella keletkezik."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2437
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2438
 msgid "A GroupCell that bundles input with its output"
 msgstr "Csoportcella, amely a bemeneti adatokat a kimenetével tölti fel"
 
@@ -483,7 +483,7 @@ msgstr ""
 "kimenetét is. Használatához a dokumentum mentésénél válasszuk a 'wxMaxima "
 "XML dokumentum' formátumot."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2432
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2433
 msgid "A page break"
 msgstr "Laptörés"
 
@@ -943,7 +943,7 @@ msgstr ""
 "Hiba: A matematika cella azt állítja, hogy nem tartozik egyetlen "
 "cellacsoporthoz sem"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.h:497
+#: /home/gunter/src/wxmaxima/src/Configuration.h:500
 msgid "Bug: Maximum number of digits that is to be displayed is too low!"
 msgstr "Hiba: A megjelenítendő számjegyek maximális száma túl alacsony!"
 
@@ -953,8 +953,8 @@ msgstr "Hiba: A megjelenítendő számjegyek maximális száma túl alacsony!"
 msgid "Bug: Missing contents"
 msgstr "Hiba: Hiányzó tartalmak"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1425
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1606
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1426
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1607
 msgid "Bug: No image counter to write to!"
 msgstr "Hiba: A kép számlálója hiányzik!"
 
@@ -997,7 +997,7 @@ msgstr "Hiba: A szöveg megváltozott, de nincs aktív cella."
 #: /home/gunter/src/wxmaxima/src/BitmapOut.cpp:337
 #: /home/gunter/src/wxmaxima/src/EMFout.cpp:348
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3408
-#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:365
+#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:372
 #: /home/gunter/src/wxmaxima/src/SVGout.cpp:348
 #: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:459
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2140
@@ -2558,7 +2558,7 @@ msgstr "&Faktoriális- és gamma-függvény"
 msgid "Fatal error"
 msgstr "Végzetes hiba"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2377
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2378
 #, c-format
 msgid "Figure %d:"
 msgstr "%d. ábra:"

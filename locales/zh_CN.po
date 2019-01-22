@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-20 12:05+0100\n"
+"POT-Creation-Date: 2019-01-22 10:43+0100\n"
 "PO-Revision-Date: 2013-01-04 00:31+0800\n"
 "Last-Translator: crickzhang1 <crickzhang1@gmail.com>\n"
 "Language-Team: amateur\n"
@@ -65,8 +65,8 @@ msgstr ""
 msgid "      -l <name>"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:231
-#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:236
+#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:238
+#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:243
 msgid " (Graphics) "
 msgstr ""
 
@@ -447,7 +447,7 @@ msgstr ""
 "wxMaxima 0.8.0 引入了“水平光标”，其看起来为单元之间的水平线，表示您输入或粘贴"
 "文本或之行菜单命令时新单元出现的位置。"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2437
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2438
 msgid "A GroupCell that bundles input with its output"
 msgstr ""
 
@@ -477,7 +477,7 @@ msgstr ""
 "wxMaxima 0.8.2 引入了一种新的文档格式，其不仅保存输入和注释，还保存计算输出。"
 "当保存您的文档时，需要选择“wxMaxima XML 文档”"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2432
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2433
 #, fuzzy
 msgid "A page break"
 msgstr "换页"
@@ -914,7 +914,7 @@ msgstr ""
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Configuration.h:497
+#: /home/gunter/src/wxmaxima/src/Configuration.h:500
 msgid "Bug: Maximum number of digits that is to be displayed is too low!"
 msgstr ""
 
@@ -924,8 +924,8 @@ msgstr ""
 msgid "Bug: Missing contents"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1425
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1606
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1426
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1607
 msgid "Bug: No image counter to write to!"
 msgstr ""
 
@@ -968,7 +968,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/BitmapOut.cpp:337
 #: /home/gunter/src/wxmaxima/src/EMFout.cpp:348
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3408
-#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:365
+#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:372
 #: /home/gunter/src/wxmaxima/src/SVGout.cpp:348
 #: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:459
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2140
@@ -2532,7 +2532,7 @@ msgstr "阶乘和 Gamma 函数(&G)"
 msgid "Fatal error"
 msgstr "致命错误"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2377
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2378
 #, c-format
 msgid "Figure %d:"
 msgstr "图 %d："

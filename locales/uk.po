@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-20 12:05+0100\n"
+"POT-Creation-Date: 2019-01-22 10:43+0100\n"
 "PO-Revision-Date: 2018-07-13 16:18+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -72,8 +72,8 @@ msgstr ""
 msgid "      -l <name>"
 msgstr "      -l <назва>"
 
-#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:231
-#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:236
+#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:238
+#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:243
 msgid " (Graphics) "
 msgstr " (графіка) "
 
@@ -451,7 +451,7 @@ msgstr ""
 "нова комірка, якщо ви введете або вставите текст чи скористаєтеся якимось "
 "пунктом меню."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2437
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2438
 msgid "A GroupCell that bundles input with its output"
 msgstr "GroupCell, яка пакує вхідні дані із виведеним результатом"
 
@@ -484,7 +484,7 @@ msgstr ""
 "результатів обчислень. Під час збереження вашого документа виберіть формат "
 "«XML-документ wxMaxima»."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2432
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2433
 msgid "A page break"
 msgstr "Розрив сторінки"
 
@@ -946,7 +946,7 @@ msgstr ""
 "Вада: комірка рівняння, у якої немає групи комірок, до якої ця комірка "
 "належить"
 
-#: /home/gunter/src/wxmaxima/src/Configuration.h:497
+#: /home/gunter/src/wxmaxima/src/Configuration.h:500
 msgid "Bug: Maximum number of digits that is to be displayed is too low!"
 msgstr "Вада: надто мала максимальна кількість цифр, які має бути показано!"
 
@@ -956,8 +956,8 @@ msgstr "Вада: надто мала максимальна кількість 
 msgid "Bug: Missing contents"
 msgstr "Вада: немає вмісту"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1425
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1606
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1426
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:1607
 msgid "Bug: No image counter to write to!"
 msgstr "Вада: немає лічильника зображень для запису даних!"
 
@@ -1000,7 +1000,7 @@ msgstr "Вада: змінено текст, але немає активної 
 #: /home/gunter/src/wxmaxima/src/BitmapOut.cpp:337
 #: /home/gunter/src/wxmaxima/src/EMFout.cpp:348
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3408
-#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:365
+#: /home/gunter/src/wxmaxima/src/ImgCell.cpp:372
 #: /home/gunter/src/wxmaxima/src/SVGout.cpp:348
 #: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:459
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2140
@@ -2564,7 +2564,7 @@ msgstr "Факторіали і &гамма-функція"
 msgid "Fatal error"
 msgstr "Критична помилка"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2377
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2378
 #, c-format
 msgid "Figure %d:"
 msgstr "Рисунок %d:"
