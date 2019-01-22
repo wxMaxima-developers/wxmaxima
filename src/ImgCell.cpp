@@ -155,25 +155,32 @@ void ImgCell::RecalculateWidths(int fontsize)
   Cell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
   if (m_image)
+  {
     // Here we recalculate the height, as well:
     //  - This doesn't cost much time and
     //  - as image cell's sizes might change when the resolution does
     //    we might have intermittent calculation issues otherwise
-    if (m_image)
-    {
-      if (configuration->GetPrinting())
-        m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
-      else
-        m_image->Recalculate();
-    }
-  m_width = m_image->m_width + 2 * m_imageBorderWidth;
+    if (configuration->GetPrinting())
+      m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
+    else
+      m_image->Recalculate();
+    m_width = m_image->m_width + 2 * m_imageBorderWidth;
+  }
 }
 
 void ImgCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
-  m_height = m_image->m_height + 2 * m_imageBorderWidth;
-  m_center = m_height / 2;
+  Configuration *configuration = (*m_configuration);
+  if (m_image)
+  {
+    if (configuration->GetPrinting())
+      m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
+    else
+      m_image->Recalculate();
+    m_height = m_image->m_height + 2 * m_imageBorderWidth;
+    m_center = m_height / 2;
+  }
 }
 
 void ImgCell::Draw(wxPoint point)

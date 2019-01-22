@@ -281,7 +281,7 @@ class Cell
      - true: Insert a forced linebreak
      - false: Remove the forced linebreak
    */
-  void ForceBreakLine(bool force)
+  void ForceBreakLine(bool force = true)
   { m_forceBreakLine = m_breakLine = force; }
 
   /*! Get the height of this cell

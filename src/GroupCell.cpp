@@ -866,6 +866,7 @@ void GroupCell::RecalculateAppended()
 
   // Update heights
   tmp = m_appendedCells;
+  tmp->ForceBreakLine(true);
   while (tmp != NULL)
   {
     if (tmp->BreakLineHere())
