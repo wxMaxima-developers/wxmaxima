@@ -63,7 +63,10 @@ Configuration::Configuration(wxDC &dc) : m_dc(&dc)
   m_clientHeight = 768;
   Dirstructure dirstruct;
   m_indentMaths=true;
-  m_maximaLocation = dirstruct.MaximaDefaultLocation();
+  if(m_maximaLocation_override != wxEmptyString)
+    m_maximaLocation = m_maximaLocation_override;
+  else
+    m_maximaLocation = dirstruct.MaximaDefaultLocation();
   m_indent = -1;
   m_autoSubscript = 1;
   m_antiAliasLines = true;
@@ -868,3 +871,5 @@ int Configuration::Scale_Px(double px)
     retval = 1;
   return retval;
 }
+
+wxString Configuration::m_maximaLocation_override;

@@ -127,6 +127,8 @@ public:
 
   ~Configuration();
 
+  static wxString m_maximaLocation_override;
+  
   static double GetMinZoomFactor()
   { return 0.1; }
 
