@@ -1,0 +1,15 @@
+#!/bin/sh
+
+PATH="$APPDIR/usr/bin:$PATH"
+export PATH
+
+MAXIMA_PREFIX=$APPDIR/maxima-inst
+export MAXIMA_PREFIX
+
+LD_LIBRARY_PATH=$APPDIR/usr/lib
+export LD_LIBRARY_PATH
+
+GNUPLOT_DRIVER_DIR=$APPDIR/gnuplot-inst/libexec/gnuplot/5.2
+export GNUPLOT_DRIVER_DIR
+
+$APPDIR/usr/bin/wxmaxima -m $APPDIR/usr/bin/maxima
