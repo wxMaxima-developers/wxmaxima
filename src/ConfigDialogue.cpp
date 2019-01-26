@@ -675,7 +675,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
                                      wxTE_MULTILINE | wxHSCROLL);
   #ifdef __WXMAC__
     #if wxCHECK_VERSION(3, 1, 1)
-      m_wxStartupCommands->OSXDisableAllSmartSubstitutions(true);
+      m_wxStartupCommands->OSXDisableAllSmartSubstitutions();
     #endif
   #endif
   m_wxStartupCommands->SetValue(contents);
@@ -720,7 +720,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   m_startupCommands->SetValue(contents);
   #ifdef __WXMAC__
     #if wxCHECK_VERSION(3, 1, 1)
-      m_StartupCommands->OSXDisableAllSmartSubstitutions(true);
+      m_StartupCommands->OSXDisableAllSmartSubstitutions();
     #endif
   #endif
 
