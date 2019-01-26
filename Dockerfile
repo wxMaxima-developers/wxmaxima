@@ -47,7 +47,7 @@ RUN cd libpng-1.2.59 && \
 
 RUN git clone https://git.code.sf.net/p/maxima/code maxima-code && \
     cd maxima-code && \
-    git checkout 5f91fb1188c5ee10ce9e933a2f3137364f925da6
+    git checkout 5.42.2
 
 RUN cd maxima-code && \
     mkdir dist && \
@@ -58,7 +58,7 @@ RUN cd maxima-code && \
 
 RUN git clone https://github.com/wxMaxima-developers/wxmaxima.git && \
     cd wxmaxima && \
-    git checkout 493573fa332fa9e5e75e09282e6a311d4d9c3082
+    git checkout Version-19.01.2
 
 RUN cd wxmaxima && \
     mkdir -p build && \
