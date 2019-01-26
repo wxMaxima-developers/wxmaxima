@@ -140,7 +140,7 @@ set(CPACK_SOURCE_IGNORE_FILES
   "${CPACK_SOURCE_IGNORE_FILES}")
 
 add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
-add_custom_target(docker COMMAND build -t wxmaxima .)
+add_custom_target(appimage COMMAND docker build -t wxmaxima .)
 
 # Debian wants to be able to download a signature of the source package from the
 # project's download directory. If it cannot find it it will still work, but will
