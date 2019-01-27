@@ -3,15 +3,8 @@ FROM debian:oldstable
 RUN apt-get update && apt-get -y install git autoconf python binutils \
     texinfo gcc libtool vim desktop-file-utils pkgconf libcairo2-dev \
     libssl-dev libfuse-dev zsync wget fuse bzip2 gawk g++ gperf \
-    libgtk-3-dev doxygen
-
-RUN wget 'https://github.com/Kitware/CMake/releases/download/v3.13.3/cmake-3.13.3.tar.gz' && \
-    zcat cmake-3.13.3.tar.gz | tar xvf - && \
-    cd cmake-3.13.3 && \
-    ./bootstrap && \
-    make && \
-    make install
-
+    libgtk-3-dev doxygen cmake libwxbase3.0-dev wx3.0-headers libpng-dev
+    
 RUN wget 'http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.16-x86-64-linux-binary.tar.bz2' -O /tmp/sbcl.tar.bz2 && \
     mkdir /sbcl && \
     tar jxvf /tmp/sbcl.tar.bz2 --strip-components=1 -C /sbcl && \
@@ -25,23 +18,6 @@ RUN git clone https://git.code.sf.net/p/gnuplot/gnuplot-main && \
 RUN cd gnuplot-main && \
     ./prepare && \
     ./configure --prefix=`pwd`/dist && \
-    make && \
-    make install
-
-RUN wget 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2.tar.bz2' && \
-    bzcat wxWidgets-3.1.2.tar.bz2 | tar xvf -
-RUN cd wxWidgets-3.1.2 && \
-    mkdir buildgtk && \
-    cd buildgtk && \
-    ../configure --with-gtk && \
-    make && \
-    make install && \
-    ldconfig
-
-RUN wget -O libpng-1.2.59.tar 'https://sourceforge.net/projects/libpng/files/libpng12/1.2.59/libpng-1.2.59.tar.gz/download' && \
-    zcat libpng-1.2.59.tar | tar xvf -
-RUN cd libpng-1.2.59 && \
-    ./configure && \
     make && \
     make install
 
