@@ -25,7 +25,7 @@ before_install:
   ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gettext texinfo
   ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxwidgets --HEAD
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxwidgets
   ; fi
 notification:
   email:

@@ -3,8 +3,15 @@ FROM debian:oldstable
 RUN apt-get update && apt-get -y install git autoconf python binutils \
     texinfo gcc libtool vim desktop-file-utils pkgconf libcairo2-dev \
     libssl-dev libfuse-dev zsync wget fuse bzip2 gawk g++ gperf \
-    libgtk-3-dev doxygen cmake libwxbase3.0-dev wx3.0-headers libpng-dev
-    
+    libgtk-3-dev doxygen libwxbase3.0-dev wx3.0-headers libpng-dev
+
+RUN wget 'https://github.com/Kitware/CMake/releases/download/v3.13.3/cmake-3.13.3.tar.gz' && \
+    zcat cmake-3.13.3.tar.gz | tar xvf - && \
+    cd cmake-3.13.3 && \
+    ./bootstrap && \
+    make && \
+    make install
+
 RUN wget 'http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.16-x86-64-linux-binary.tar.bz2' -O /tmp/sbcl.tar.bz2 && \
     mkdir /sbcl && \
     tar jxvf /tmp/sbcl.tar.bz2 --strip-components=1 -C /sbcl && \

@@ -1,5 +1,6 @@
 
 add_custom_target(appimage DEPENDS wxmaxima-x86_64.AppImage)
+add_custom_target(flatpak DEPENDS wxmaxima-x86_64.AppImage)
 
 add_custom_command(OUTPUT wxmaxima-x86_64.AppImage
   COMMAND docker build -t wxmaxima .
