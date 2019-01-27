@@ -23,7 +23,7 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";brew  install ccache; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=/usr/local/opt/texinfo/bin:$PATH:/usr/local/opt/gettext/bin
   ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gettext texinfo --HEAD
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gettext texinfo
   ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxwidgets --HEAD
   ; fi
