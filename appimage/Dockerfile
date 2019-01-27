@@ -12,7 +12,7 @@ RUN wget 'https://github.com/Kitware/CMake/releases/download/v3.13.3/cmake-3.13.
     make && \
     make install
 
-RUN wget 'http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.15-x86-64-linux-binary.tar.bz2' -O /tmp/sbcl.tar.bz2 && \
+RUN wget 'http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.16-x86-64-linux-binary.tar.bz2' -O /tmp/sbcl.tar.bz2 && \
     mkdir /sbcl && \
     tar jxvf /tmp/sbcl.tar.bz2 --strip-components=1 -C /sbcl && \
     cd /sbcl && \
