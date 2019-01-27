@@ -720,7 +720,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   m_startupCommands->SetValue(contents);
   #ifdef __WXMAC__
     #if wxCHECK_VERSION(3, 1, 1)
-      m_StartupCommands->OSXDisableAllSmartSubstitutions();
+      m_startupCommands->OSXDisableAllSmartSubstitutions();
     #endif
   #endif
 
