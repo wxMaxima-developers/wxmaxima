@@ -1406,8 +1406,8 @@
   (defvar $wxanimate_framerate *default-framerate*)
   (defun slide-tag (images)
     (if (eql *default-framerate* $wxanimate_framerate)
-	($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide" (if (eql $wxanimate_autoplay 't) "running=\"true\" del=\"true\"" "running=\"false\" del=\"true\"")))
-      ($ldisp (list '(wxxmltag simp) (format nil "~{~a;~}" images) "slide" (if (eql $wxanimate_autoplay 't) (format nil "fr=\"~a\" running=\"true\" del=\"true\"" $wxanimate_framerate)  (format nil "fr=\"~a\" running=\"false\" del=\"true\"" $wxanimate_framerate))
+	($ldisp (list '(wxxmltag simp) (wxxml-fix-string (format nil "~{~a;~}" images)) "slide" (if (eql $wxanimate_autoplay 't) "running=\"true\" del=\"yes\"" "running=\"false\" del=\"yes\"")))
+      ($ldisp (list '(wxxmltag simp) (wxxml-fix-string (format nil "~{~a;~}" images)) "slide" (if (eql $wxanimate_autoplay 't) (format nil "fr=\"~a\" running=\"true\" del=\"yes\"" $wxanimate_framerate)  (format nil "fr=\"~a\" running=\"false\" del=\"yes\"" $wxanimate_framerate))
                     ))))
 
   (defun wxanimate (scene)
@@ -1549,7 +1549,7 @@
 			 ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
 			 ((mlist simp) $gnuplot_preamble ,preamble)
 			 ((mlist simp) $gnuplot_out_file ,filename)))
-      ($ldisp `((wxxmltag simp) ,filename "img")))
+      ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
     "")
 
   (defun $wxplot3d (&rest args)
@@ -1568,7 +1568,7 @@
 			 ((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
 			 ((mlist simp) $gnuplot_preamble ,preamble)
 			 ((mlist simp) $gnuplot_out_file ,filename)))
-      ($ldisp `((wxxmltag simp) ,filename "img")))
+      ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
     "")
 
 
@@ -1614,14 +1614,14 @@
 			   `(((mequal simp) $dimensions ,$wxplot_size)))))))
       (if $display_graphics
 	  (progn
-	    ($ldisp `((wxxmltag simp) ,(format nil "~a.png" filename) "img"
+	    ($ldisp `((wxxmltag simp) ,(wxxml-fix-string (format nil "~a.png" filename)) "img"
 		      ,(if file_name_spec
 			   (format nil "del=\"no\" gnuplotsource=\"~a/~a\" gnuplotdata=\"~a/~a\"" $maxima_tempdir gnuplotfilename $maxima_tempdir datafilename)
 			 (format nil "del=\"yes\" gnuplotsource=\"~a/~a\" gnuplotdata=\"~a/~a\"" $maxima_tempdir gnuplotfilename $maxima_tempdir datafilename)
 			 )
 		      ))
 	    (setq res ""))
-	(setf res `((wxxmltag simp) ,(format nil "~a.png" filename) "img")))
+	(setf res `((wxxmltag simp) ,(wxxml-fix-string (format nil "~a.png" filename)) "img")))
       res))
 
   (defmspec $wxdraw_list (args)
@@ -1646,7 +1646,7 @@
 				((mlist simp) $gnuplot_term ,(if $wxplot_pngcairo '$pngcairo '$png))
 				((mlist simp) $gnuplot_preamble ,preamble)
 				((mlist simp) $gnuplot_out_file ,filename)))
-      ($ldisp `((wxxmltag simp) ,filename "img")))
+      ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
     "")
 
 
@@ -1667,11 +1667,11 @@
 			       ((mlist simp) $gnuplot_preamble ,preamble)
 			       ((mlist simp) $gnuplot_out_file ,filename)))
 
-      ($ldisp `((wxxmltag simp) ,filename "img")))
+      ($ldisp `((wxxmltag simp) ,(wxxml-fix-string filename) "img")))
     "")
 
   (defun $show_image (file)
-    ($ldisp `((wxxmltag simp) ,file "img" "del=\"no\"")))
+    ($ldisp `((wxxmltag simp) ,(wxxml-fix-string file) "img" "del=\"no\"")))
 
   ;;
   ;; Port of Barton Willis's texput function.
