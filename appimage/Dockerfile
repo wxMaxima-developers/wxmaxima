@@ -1,10 +1,13 @@
+# If we build atop a recent distribution we depend on a recent libc.
 FROM debian:oldstable
 
 RUN apt-get update && apt-get -y install git autoconf python binutils \
     texinfo gcc libtool vim desktop-file-utils pkgconf libcairo2-dev \
     libssl-dev libfuse-dev zsync wget fuse bzip2 gawk g++ gperf \
-    libgtk-3-dev doxygen libwxbase3.0-dev wx3.0-headers libpng-dev
+    libgtk-3-dev doxygen
 
+# The cmake debian-Oldstable comes with is too old for building wxWidgets 
+# (at least it was in an 2019)
 RUN wget 'https://github.com/Kitware/CMake/releases/download/v3.13.3/cmake-3.13.3.tar.gz' && \
     zcat cmake-3.13.3.tar.gz | tar xvf - && \
     cd cmake-3.13.3 && \
@@ -25,6 +28,25 @@ RUN git clone https://git.code.sf.net/p/gnuplot/gnuplot-main && \
 RUN cd gnuplot-main && \
     ./prepare && \
     ./configure --prefix=`pwd`/dist && \
+    make && \
+    make install
+
+# Debian Oldstable comes with wxWidgets 3.0 - but cmake seems not to detect that version.
+RUN wget 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2.tar.bz2' && \
+    bzcat wxWidgets-3.1.2.tar.bz2 | tar xvf -
+RUN cd wxWidgets-3.1.2 && \
+    mkdir buildgtk && \
+    cd buildgtk && \
+    ../configure --with-gtk && \
+    make && \
+    make install && \
+    ldconfig
+
+# We need to build libpng because if we don't packaging somehow fails.
+RUN wget -O libpng-1.2.59.tar 'https://sourceforge.net/projects/libpng/files/libpng12/1.2.59/libpng-1.2.59.tar.gz/download' && \
+    zcat libpng-1.2.59.tar | tar xvf -
+RUN cd libpng-1.2.59 && \
+    ./configure && \
     make && \
     make install
 

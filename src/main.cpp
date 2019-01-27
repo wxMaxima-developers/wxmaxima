@@ -154,12 +154,12 @@ bool MyApp::OnInit()
   if((lang != wxLANGUAGE_UNKNOWN) && (lang != wxLANGUAGE_DEFAULT) &&
      (lang != wxLocale::GetSystemLanguage()))
     wxSetEnv(wxT("LANG"), m_locale.GetCanonicalName());
-  if (!wxGetEnv(wxT("BUILD_DIR"), NULL))
-  {
-    wxString dir = wxPathOnly(wxStandardPaths::Get().GetExecutablePath());
-    if(dir != wxEmptyString)
-      wxSetWorkingDirectory(wxPathOnly(wxStandardPaths::Get().GetExecutablePath()));
-  }
+//  if (!wxGetEnv(wxT("BUILD_DIR"), NULL))
+//  {
+//    wxString dir = wxPathOnly(wxStandardPaths::Get().GetExecutablePath());
+//    if(dir != wxEmptyString)
+//      wxSetWorkingDirectory(wxPathOnly(wxStandardPaths::Get().GetExecutablePath()));
+//  }
 
 #ifdef __WXMSW__
   wxString fontPrefix = dirstruct.FontDir() + wxT("/");  

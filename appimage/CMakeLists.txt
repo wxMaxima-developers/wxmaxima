@@ -6,5 +6,4 @@ add_custom_command(OUTPUT wxmaxima-x86_64.AppImage
   COMMAND docker build -t wxmaxima .
   COMMAND docker run wxmaxima cat wxmaxima-x86_64.AppImage > wxmaxima-x86_64.AppImage
   COMMAND chmod +x wxmaxima-x86_64.AppImage
-  COMMAND chmod +x wxmaxima-x86_64.AppImage;chmod +x wxmaxima-x86_64.AppImage
  )
