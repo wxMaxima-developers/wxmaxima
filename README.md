@@ -23,3 +23,4 @@ found at https://github.com/wxMaxima-developers/wxmaxima/blob/master/Compiling.m
 
 
 ![Travis CI Build Status](https://travis-ci.org/wxMaxima-developers/wxmaxima.svg?branch=master)
+
