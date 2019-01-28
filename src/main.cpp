@@ -154,14 +154,15 @@ bool MyApp::OnInit()
   if((lang != wxLANGUAGE_UNKNOWN) && (lang != wxLANGUAGE_DEFAULT) &&
      (lang != wxLocale::GetSystemLanguage()))
     wxSetEnv(wxT("LANG"), m_locale.GetCanonicalName());
-//  if (!wxGetEnv(wxT("BUILD_DIR"), NULL))
-//  {
-//    wxString dir = wxPathOnly(wxStandardPaths::Get().GetExecutablePath());
-//    if(dir != wxEmptyString)
-//      wxSetWorkingDirectory(wxPathOnly(wxStandardPaths::Get().GetExecutablePath()));
-//  }
 
 #ifdef __WXMSW__
+  wxString oldWorkingDir = wxGetCwd();
+  if (!wxGetEnv(wxT("BUILD_DIR"), NULL))
+  {
+    wxString dir = wxPathOnly(wxStandardPaths::Get().GetExecutablePath());
+    if(dir != wxEmptyString)
+      wxSetWorkingDirectory(wxPathOnly(wxStandardPaths::Get().GetExecutablePath()));
+  }
   wxString fontPrefix = dirstruct.FontDir() + wxT("/");  
   /* Add private jsMath fonts, if they exist */ 
 #if wxCHECK_VERSION(3, 1, 1)
@@ -183,6 +184,8 @@ bool MyApp::OnInit()
   if (wxFileExists(fontPrefix + wxT(LIBERTINE8))) wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE8));
   if (wxFileExists(fontPrefix + wxT(LIBERTINE9))) wxFont::AddPrivateFont(fontPrefix + wxT(LIBERTINE9));
 #endif
+  wxSetWorkingDirectory(oldWorkingDir);
+
 #endif
 
   m_locale.AddCatalogLookupPathPrefix(dirstruct.LocaleDir());
