@@ -62,7 +62,6 @@ if(Git_FOUND)
 endif()
 
 
-add_subdirectory(appimage)
 add_subdirectory(locales)
 add_subdirectory(Doxygen)
 add_subdirectory(data)

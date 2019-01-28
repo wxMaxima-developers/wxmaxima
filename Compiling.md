@@ -43,17 +43,6 @@ working a typical cause is that the keyboard driver, a window manager or a
 similar entity suppresses them. In this case installing ibus normally resolves
 the problem.
 
-### Creating a FlatPak AppImage
-
-FlatPak allows to create a linux executable that works like an .apk or .app file
-for Android or MacOs and that contains maxima, wxMaxima and gnuplot.
-It can be build the following way:
-
- * Setup docker in a way that you are allowed to upload files.
- * Download appimagetool-x86_64.AppImage an put it into the appimage folder
- * Run 
-    make appimage
-
 ### Compiling on Mac OS X
 
 On Mac OS X you should install XCode. To build wxMaxima open the
