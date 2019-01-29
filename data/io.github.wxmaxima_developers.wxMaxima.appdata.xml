@@ -54,6 +54,15 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="19.01.3" date="2019-01-29">
+      <description>
+        <ul>
+          <li>Repaired compilation on MacOs for wxWidgets 3.1.1.</li>
+          <li>The "-m" switch needed for the appimage to work.</li>
+          <li>Better path detection on MS Windows.</li>
+        </ul>
+      </description>
+    </release>
     <release version="19.01.2" date="2019-01-22">
       <description>
         <ul>
