@@ -214,13 +214,12 @@ wxString Dirstructure::MaximaLispLocation()
     else
     {
       wxArrayString output;
-      wxExecute(wxT("which maxima"), output, (wxEXEC_SYNC |
-                                              wxEXEC_NOEVENTS));
-      if(output.GetCount() > 0)
-      {
-        wxFileName fullpath(output[0] ,wxPATH_NATIVE);
-        return fullpath.GetPath();
-      }
+      wxPathList pathlist;
+      pathlist.AddEnvList(wxT("PATH"));
+      wxString path = pathlist.FindAbsoluteValidPath("maxima");
+      if (!path.empty())
+        maximaName = wxFileName(path);
+      maximaName.MakeAbsolute();
     }
     return maximaName.GetPath();
   }
