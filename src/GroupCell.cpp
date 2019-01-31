@@ -1970,7 +1970,6 @@ void GroupCell::BreakLines(Cell *cell)
   if(cell == NULL)
     return;
 
-  wxLogMessage(wxString::Format("BreakLines=%li",cell));
   UnBreakUpCells(cell);
   if(BreakUpCells(cell))
   {
@@ -1996,7 +1995,7 @@ void GroupCell::BreakLines(Cell *cell)
     cell->SoftLineBreak(false);
     if (!cell->m_isBrokenIntoLines)
     {
-      std::cerr<<"curr="<<currentWidth<<" fullWidth="<<fullWidth<<" width="<<cell->GetWidth()<<"\n";
+//      std::cerr<<"curr="<<currentWidth<<" fullWidth="<<fullWidth<<" width="<<cell->GetWidth()<<"\n";
       if (cell->BreakLineHere() || (currentWidth + cell->GetWidth() >= fullWidth))
       {
         cell->SoftLineBreak(true);
