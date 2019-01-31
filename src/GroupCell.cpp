@@ -611,8 +611,6 @@ void GroupCell::RecalculateWidths(int fontsize)
       return;
     }
     
-    UnBreakUpCells();
-
     if(m_inputLabel != NULL)
     {
       m_inputLabel->RecalculateWidthsList(fontsize);
@@ -643,8 +641,6 @@ void GroupCell::RecalculateWidths(int fontsize)
         }
       }
     }
-
-    BreakUpCells();
     BreakLines();
   }
   ResetData();
@@ -676,11 +672,10 @@ void GroupCell::OnSize()
   while (tmp != NULL)
   {
     tmp->Unbreak();
-    tmp->BreakLine(false);
+    tmp->SoftLineBreak(false);
     tmp->ResetData();
     tmp = tmp->m_next;
   }
-  BreakUpCells();
   BreakLines();
   InputHeightChanged();
 }
@@ -838,7 +833,7 @@ void GroupCell::RecalculateAppended()
     m_appendedCells = GetInput();
   if (m_appendedCells == NULL)
     return;
-  m_appendedCells->ForceBreakLineHere();
+  m_appendedCells->HardLineBreak();
 
   Cell *tmp = m_appendedCells;
   m_fontSize = configuration->GetFontSize(TS_TEXT);
@@ -852,7 +847,6 @@ void GroupCell::RecalculateAppended()
   }
 
   // Breakup cells and break lines
-  BreakUpCells(m_appendedCells);
   BreakLines(m_appendedCells);
 
   // Recalculate size of cells
@@ -1354,7 +1348,7 @@ wxString GroupCell::ToString()
     bool firstCell = true;
     while (tmp != NULL)
     {
-      if (firstCell || (tmp->ForceBreakLineHere() && str.Length() > 0))
+      if (firstCell || (tmp->HardLineBreak() && str.Length() > 0))
       {
         if (firstCell)
           str += wxT("\n");
@@ -1973,6 +1967,21 @@ void GroupCell::BreakLines()
 
 void GroupCell::BreakLines(Cell *cell)
 {
+  if(cell == NULL)
+    return;
+
+  wxLogMessage(wxString::Format("BreakLines=%li",cell));
+  UnBreakUpCells(cell);
+  if(BreakUpCells(cell))
+  {
+    if(m_output != NULL)
+    {
+      m_output->ResetSizeList();
+      m_output->RecalculateList(m_mathFontSize);
+    }
+    ResetData();
+  }
+
   int fullWidth = (*m_configuration)->GetClientWidth();
   Configuration *configuration = (*m_configuration);
   int currentWidth = GetLineIndent(cell);
@@ -1984,12 +1993,13 @@ void GroupCell::BreakLines(Cell *cell)
   while (cell != NULL && !m_hide)
   {
     cell->ResetData();
-    cell->BreakLine(false);
+    cell->SoftLineBreak(false);
     if (!cell->m_isBrokenIntoLines)
     {
+      std::cerr<<"curr="<<currentWidth<<" fullWidth="<<fullWidth<<" width="<<cell->GetWidth()<<"\n";
       if (cell->BreakLineHere() || (currentWidth + cell->GetWidth() >= fullWidth))
       {
-        cell->BreakLine(true);
+        cell->SoftLineBreak(true);
         Cell *nextCell = cell;
         if(cell->m_nextToDraw)
           nextCell = cell->m_nextToDraw;
@@ -2026,54 +2036,39 @@ void GroupCell::SelectOutput(Cell **start, Cell **end)
     *end = *start = NULL;
 }
 
-void GroupCell::BreakUpCells()
+bool GroupCell::BreakUpCells(Cell *cell)
 {
-  BreakUpCells(m_output);
-}
-
-void GroupCell::BreakUpCells(Cell *cell)
-{
-  int clientWidth = (*m_configuration)->GetClientWidth();
   if(cell == NULL)
-    return;
+    return false;
 
-  Cell *tmp = cell;
+  int clientWidth = (*m_configuration)->GetClientWidth();
 
   bool lineHeightsChanged = false;
     
-  while (tmp != NULL && !m_hide)
+  while (cell != NULL && !m_hide)
   {
-    if (tmp->GetWidth() +
+    if (cell->GetWidth() +
         (*m_configuration)->GetIndent() +
         Scale_Px((*m_configuration)->GetLabelWidth()) > clientWidth)
     {
-      if (tmp->BreakUp())
+      if (cell->BreakUp())
         lineHeightsChanged = true;
     }
-    tmp = tmp->m_nextToDraw;
+    cell = cell->m_nextToDraw;
   }
 
-  if(lineHeightsChanged)
-  {
-    if(m_output != NULL)
-    {
-      m_output->ResetSizeList();
-      m_output->RecalculateList(m_mathFontSize);
-    }
-    ResetData();
-  }
+  return lineHeightsChanged;
 }
 
-void GroupCell::UnBreakUpCells()
+void GroupCell::UnBreakUpCells(Cell *cell)
 {
-  Cell *tmp = m_output;
-  while (tmp != NULL)
+  while (cell != NULL)
   {
-    if (tmp->m_isBrokenIntoLines)
+    if (cell->m_isBrokenIntoLines)
     {
-      tmp->Unbreak();
+      cell->Unbreak();
     }
-    tmp = tmp->m_nextToDraw;
+    cell = cell->m_nextToDraw;
   }
 }
 

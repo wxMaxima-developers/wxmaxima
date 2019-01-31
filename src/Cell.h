@@ -183,12 +183,12 @@ class Cell
   int m_imageBorderWidth;
 
   //! Do we want this cell to start with a linebreak?
-  void BreakLine(bool breakLine)
+  void SoftLineBreak(bool breakLine = true)
   { m_breakLine = breakLine; }
 
   //! Does this cell to start with a linebreak?
-  bool BreakLine()
-  { return m_breakLine; }
+  bool LineBreakAtBeginning()
+  { return m_breakLine || m_breakPage || m_forceBreakLine; }
 
   //! Do we want this cell to start with a pagebreak?
   void BreakPage(bool breakPage)
@@ -198,14 +198,17 @@ class Cell
   bool BreakLineHere();
 
   //! Does this cell begin with a manual linebreak?
-  bool ForceBreakLineHere()
+  bool HardLineBreak()
   { return m_forceBreakLine; }
 
   //! Does this cell begin with a manual page break?
   bool BreakPageHere()
   { return m_breakPage; }
 
-  //! Try to split this command into several lines to make it fit on the screen
+  /*! Try to split this command into lines to make it fit on the screen
+
+    \retval true = This cell was split into lines.
+  */
   virtual bool BreakUp()
   { return false; }
 

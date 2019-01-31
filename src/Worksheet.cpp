@@ -2377,7 +2377,7 @@ bool Worksheet::CopyText()
   bool firstcell = true;
   while (tmp != NULL)
   {
-    if ((tmp->ForceBreakLineHere()) && (!firstcell))
+    if ((tmp->HardLineBreak()) && (!firstcell))
       result += wxT("\n");
     result += tmp->ToString();
     if (tmp == m_cellPointers.m_selectionEnd)

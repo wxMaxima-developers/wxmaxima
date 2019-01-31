@@ -206,13 +206,13 @@ void Emfout::BreakLines()
   {
     if (!tmp->m_isBrokenIntoLines)
     {
-      tmp->BreakLine(false);
+      tmp->SoftLineBreak(false);
       tmp->ResetData();
       if (tmp->BreakLineHere() ||
           (currentWidth + tmp->GetWidth() >= fullWidth))
       {
         currentWidth = tmp->GetWidth();
-        tmp->BreakLine(true);
+        tmp->SoftLineBreak(true);
       }
       else
         currentWidth += (tmp->GetWidth());

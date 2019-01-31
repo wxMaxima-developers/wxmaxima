@@ -67,7 +67,7 @@ void TextCell::SetStyle(TextStyle style)
     m_displayedText = wxT("\x03A8");
   if((style == TS_LABEL) || (style == TS_USERLABEL)||
      (style == TS_MAIN_PROMPT) || (style == TS_OTHER_PROMPT))
-    ForceBreakLineHere();
+    HardLineBreak();
   ResetSize();
 }
 
@@ -698,7 +698,7 @@ wxString TextCell::ToString()
   default:
   {}
   }
-  if((m_next != NULL) && (m_next->BreakLine()))
+  if((m_next != NULL) && (m_next->BreakLineHere()))
     text += "\n";
   
   return text;
@@ -1207,8 +1207,8 @@ wxString TextCell::ToOMML()
 {
   //Text-only lines are better handled in RTF.
   if (
-          ((m_previous != NULL) && (m_previous->GetStyle() != TS_LABEL) && (!m_previous->ForceBreakLineHere())) &&
-          (ForceBreakLineHere())
+          ((m_previous != NULL) && (m_previous->GetStyle() != TS_LABEL) && (!m_previous->HardLineBreak())) &&
+          (HardLineBreak())
           )
     return wxEmptyString;
 

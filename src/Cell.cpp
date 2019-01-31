@@ -68,7 +68,7 @@ Cell::Cell(Cell *group, Configuration **config)
   m_width = -1;
   m_height = -1;
   m_center = -1;
-  m_breakLine = false;
+  SoftLineBreak(false);
   m_breakPage = false;
   m_forceBreakLine = false;
   m_bigSkip = true;
@@ -115,7 +115,7 @@ void Cell::SetType(CellType type)
       break;
     case MC_TYPE_LABEL:
       m_textStyle = TS_LABEL;
-      ForceBreakLineHere();
+      HardLineBreak();
       break;
     case MC_TYPE_INPUT:
       m_textStyle = TS_INPUT;
@@ -587,7 +587,7 @@ wxString Cell::ListToMathML(bool startofline)
   Cell *temp = this;
   while (temp)
   {
-    if (temp->ForceBreakLineHere())
+    if (temp->HardLineBreak())
       needsTable = true;
 
     if (temp->GetType() == MC_TYPE_LABEL)
@@ -609,11 +609,11 @@ wxString Cell::ListToMathML(bool startofline)
       retval += wxT("</mrow>");
 
     // Handle linebreaks
-    if ((temp != this) && (temp->ForceBreakLineHere()))
+    if ((temp != this) && (temp->HardLineBreak()))
       retval += wxT("</mtd></mlabeledtr>\n<mlabeledtr columnalign=\"left\"><mtd>");
 
     // If a linebreak isn't followed by a label we need to introduce an empty one.
-    if ((((temp->ForceBreakLineHere()) || (startofline && (this == temp))) &&
+    if ((((temp->HardLineBreak()) || (startofline && (this == temp))) &&
          ((temp->GetStyle() != TS_LABEL) && (temp->GetStyle() != TS_USERLABEL))) && (needsTable))
       retval += wxT("<mtext></mtext></mtd><mtd>");
 
@@ -777,7 +777,7 @@ wxString Cell::ListToOMML(bool WXUNUSED(startofline))
     retval += token;
 
     // Hard linebreaks aren't supported by OMML and therefore need a new equation object
-    if (tmp->ForceBreakLineHere())
+    if (tmp->HardLineBreak())
       break;
 
     tmp = tmp->m_next;
@@ -834,7 +834,7 @@ wxString Cell::ListToRTF(bool startofline)
             break;
 
           // A newline starts a new equation
-          if (tmp->ForceBreakLineHere())
+          if (tmp->HardLineBreak())
           {
             tmp = tmp->m_next;
             break;
@@ -987,7 +987,6 @@ void Cell::ResetData()
   m_lineWidth = -1;
   m_maxCenter = -1;
   m_maxDrop   = -1;
-  m_breakLine = m_forceBreakLine;
 }
 
 Cell *Cell::first()

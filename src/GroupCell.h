@@ -253,14 +253,14 @@ public:
   */
   void Recalculate();
 
-  //! Attempt to split math objects that are wider than the screen into multiple lines.
-  void BreakUpCells();
-
-  //! Attempt to split math objects that are wider than the screen into multiple lines.
-  void BreakUpCells(Cell *cell);
+  /*! Attempt to split math objects that are wider than the screen into multiple lines.
+    
+    \retval true, if this action has changed the height of cells.
+   */
+  bool BreakUpCells(Cell *cell);
 
   //! Undo a BreakUpCells
-  void UnBreakUpCells();
+  void UnBreakUpCells(Cell *cell);
 
   //! Break this cell into lines
   void BreakLines();
