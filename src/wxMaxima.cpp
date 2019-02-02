@@ -782,12 +782,12 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     if (IsPaneDisplayed(menu_pane_xmlInspector))
       m_xmlInspector->Add_FromMaxima(newChars);
 
+    m_currentOutput += newChars;
+
     // This way we can avoid searching the whole string for a
     // ending tag if we have received only a few bytes of the
     // data between 2 tags
-    m_currentOutputEnd = m_currentOutput.Right(30) + newChars;
-
-    m_currentOutput += newChars;
+    m_currentOutputEnd = m_currentOutput.Right(30);
 
     if (!m_dispReadOut &&
         (m_currentOutput != wxT("\n")) &&
@@ -882,7 +882,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_client = m_server->Accept(false);
       m_client->SetEventHandler(*this, socket_client_id);
       m_client->SetNotify(wxSOCKET_INPUT_FLAG);
-       m_client->SetFlags(wxSOCKET_NOWAIT);
+      m_client->SetFlags(wxSOCKET_NOWAIT);
       m_client->SetTimeout(2);
       m_client->Notify(true);
       m_clientStream = new wxSocketInputStream(*m_client);

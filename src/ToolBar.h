@@ -161,6 +161,10 @@ public:
   //! Updates the slider to match the Slide Show cell.
   void UpdateSlider(SlideShow *cell);
 
+  int GetIdealHeight(){
+    return m_needsInformationIcon.GetSize().y;
+  }
+  
   //! Get the cell style for new cells
   GroupType GetCellType();
   //! Set the cell style to show for the current cell
