@@ -157,8 +157,6 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
           wxZoomGestureEventHandler(Worksheet::OnZoom),
           NULL, this);
   #endif
-  wxLogMessage(wxString::Format("Display resolution: %ix%i ppi",wxGetDisplayPPI().x,
-                                wxGetDisplayPPI().y));
 }
 
 wxSize Worksheet::DoGetBestClientSize() const

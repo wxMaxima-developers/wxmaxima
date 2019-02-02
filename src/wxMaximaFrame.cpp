@@ -449,22 +449,29 @@ void wxMaximaFrame::do_layout()
 
   wxConfigBase *config = wxConfig::Get();
   bool loadPanes = true;
+  bool toolbarEnabled = true;
   wxString perspective;
+  config->Read(wxT("AUI/toolbarEnabled"), &toolbarEnabled);
   config->Read(wxT("AUI/savePanes"), &loadPanes);
   config->Read(wxT("AUI/perspective"), &perspective);
 
-  // Loads the window states. We tell wxaui not to recalculate and display the
-  // results of this step now as we will do so manually after
-  // eventually adding the toolbar.
+  // Remove the toolbar with info from the perspective.
+  wxRegEx removeToolbarState(wxT("\\|[^\\|]*name=toolbar[^\\|]*"));
+  removeToolbarState.ReplaceAll(&perspective,wxT(""));
   if(perspective != wxEmptyString)
+  {
+    // Loads the window states. We tell wxaui not to recalculate and display the
+    // results of this step now as we will do so manually after
+    // eventually adding the toolbar.
     m_manager.LoadPerspective(perspective,false);
-
+  }
+  m_worksheet->m_mainToolBar->Realize();
   m_worksheet->m_mainToolBar->SetClientSize(
     wxSize(GetSize().x,m_worksheet->m_mainToolBar->GetIdealHeight()));
-    
   // It somehow is possible to hide the maxima worksheet - which renders wxMaxima
   // basically useless => force it to be enabled.
   m_manager.GetPane(wxT("console")).Show(true);
+  m_manager.GetPane(wxT("toolbar")).Show(toolbarEnabled);
 
   // LoadPerspective overwrites the pane names with the saved ones -which can
   // belong to a translation different to the one selected currently =>
