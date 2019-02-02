@@ -460,11 +460,11 @@ void wxMaximaFrame::do_layout()
     m_manager.LoadPerspective(perspective,false);
 
   m_worksheet->m_mainToolBar->SetMaxSize(
-    wxSize(10000,m_worksheet->m_mainToolBar->GetIdealHeight()));
+    wxSize(10000,m_worksheet->m_mainToolBar->GetIdealHeight()*2));
   m_worksheet->m_mainToolBar->SetMinSize(
-    wxSize(100,m_worksheet->m_mainToolBar->GetIdealHeight()));
+    wxSize(100,m_worksheet->m_mainToolBar->GetIdealHeight()*2));
   m_worksheet->m_mainToolBar->SetSize(
-    wxSize(GetSize().x,m_worksheet->m_mainToolBar->GetIdealHeight()));
+    wxSize(GetSize().x,m_worksheet->m_mainToolBar->GetIdealHeight()*2));
     
   // It somehow is possible to hide the maxima worksheet - which renders wxMaxima
   // basically useless => force it to be enabled.
