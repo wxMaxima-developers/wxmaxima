@@ -24,6 +24,7 @@
 
 #include <wx/wx.h>
 #include <wx/config.h>
+#include <wx/display.h>
 #include <wx/fontenum.h>
 
 #include "TextStyle.h"
@@ -272,10 +273,16 @@ public:
   //! How much vertical space is to be left between two group cells?
   int GetCursorWidth()
   {
-    if (wxGetDisplayPPI().x / 45 < 1)
+    int ppi;
+    #if wxCHECK_VERSION(3, 1, 1)
+    ppi = wxDisplay::GetPPI().x;
+    #else
+    ppi = wxGetDisplayPPI().x;
+    #endif
+    if (ppi / 45 < 1)
       return 1;
     else
-      return wxGetDisplayPPI().x / 45;
+      return ppi / 45;
   }
 
   //! The y position the worksheet starts at

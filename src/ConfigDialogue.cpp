@@ -32,6 +32,7 @@
 #include "Configuration.h"
 #include "invalidImage.h"
 #include <wx/config.h>
+#include <wx/display.h>
 #include <wx/fileconf.h>
 #include <wx/font.h>
 #include <wx/wfstream.h>
@@ -89,7 +90,14 @@ const int langs[] =
 
 int ConfigDialogue::GetImageSize()
 {
-  double targetSize = wxGetDisplayPPI().x * CONFIG_ICON_SCALE;
+  int ppi;
+#if wxCHECK_VERSION(3, 1, 1)
+  ppi = wxDisplay::GetPPI().x;
+#else
+  ppi = wxGetDisplayPPI().x;
+#endif
+  
+  double targetSize = ppi * CONFIG_ICON_SCALE;
 
   int sizeA = 128 << 4;
   while(sizeA * 3 / 2 > targetSize && sizeA >= 32) {
@@ -112,7 +120,13 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
                           unsigned char *data_128, size_t len_128,
                           unsigned char *data_192, size_t len_192)
 {
-  double targetSize = wxGetDisplayPPI().x * CONFIG_ICON_SCALE;
+  int ppi;
+#if wxCHECK_VERSION(3, 1, 1)
+  ppi = wxDisplay::GetPPI().x;
+#else
+  ppi = wxGetDisplayPPI().x;
+#endif
+  double targetSize = ppi * CONFIG_ICON_SCALE;
   int prescale;
 
   int sizeA = 128 << 4;

@@ -28,6 +28,7 @@
 #include "TipOfTheDay.h"
 #include <wx/config.h>
 #include <wx/mstream.h>
+#include <wx/display.h>
 #include <wx/wfstream.h>
 #include <wx/persist.h>
 #include <wx/persist/toplevel.h>
@@ -256,7 +257,13 @@ TipOfTheDay::~TipOfTheDay()
 wxImage TipOfTheDay::GetImage(unsigned char *data_128, size_t len_128,
                               unsigned char *data_192, size_t len_192)
 {
-  double targetSize = wxGetDisplayPPI().x * ICON_SCALE;
+  int ppi;
+#if wxCHECK_VERSION(3, 1, 1)
+  ppi = wxDisplay::GetPPI().x;
+#else
+  ppi = wxGetDisplayPPI().x;
+#endif
+  double targetSize = ppi * ICON_SCALE;
   int prescale;
 
   int sizeA = 128 << 4;

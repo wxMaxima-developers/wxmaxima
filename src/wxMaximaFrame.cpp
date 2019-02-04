@@ -39,6 +39,7 @@
 #include <wx/filename.h>
 #include <wx/fileconf.h>
 #include <wx/persist/toplevel.h>
+#include <wx/display.h>
 #include "wxMaximaIcon.h"
 
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
@@ -418,7 +419,7 @@ void wxMaximaFrame::do_layout()
   
   m_manager.AddPane(m_worksheet->m_mainToolBar,
                     wxAuiPaneInfo().Name(wxT("toolbar")).
-                    ToolbarPane().Top().Resizable(true).
+                    ToolbarPane().Top().
                     TopDockable(true).Show(true).
                     BottomDockable(true).
                     LeftDockable(false).
@@ -458,6 +459,9 @@ void wxMaximaFrame::do_layout()
   // Remove the toolbar with info from the perspective.
   wxRegEx removeToolbarState(wxT("\\|[^\\|]*name=toolbar[^\\|]*"));
   removeToolbarState.ReplaceAll(&perspective,wxT(""));
+  wxRegEx removeToolbarSize(wxT("\\|[^\\|]dock_size(1[^\\|]*"));
+  removeToolbarSize.ReplaceAll(&perspective,wxT(""));
+
   if(perspective != wxEmptyString)
   {
     // Loads the window states. We tell wxaui not to recalculate and display the
@@ -466,8 +470,6 @@ void wxMaximaFrame::do_layout()
     m_manager.LoadPerspective(perspective,false);
   }
   m_worksheet->m_mainToolBar->Realize();
-  m_worksheet->m_mainToolBar->SetClientSize(
-    wxSize(GetSize().x,m_worksheet->m_mainToolBar->GetIdealHeight()));
   // It somehow is possible to hide the maxima worksheet - which renders wxMaxima
   // basically useless => force it to be enabled.
   m_manager.GetPane(wxT("console")).Show(true);
@@ -498,6 +500,18 @@ void wxMaximaFrame::do_layout()
     .CloseButton().PinButton().Resizable();
 
   m_manager.Update();
+  wxSize ppi;
+#if wxCHECK_VERSION(3, 1, 1)
+  ppi = wxDisplay::GetPPI();
+#else
+  ppi = wxGetDisplayPPI();
+#endif
+  wxLogMessage(
+    wxString::Format(
+      _("Display resolution according to wxWidgets: %i x %i ppi"),
+      ppi.x,
+      ppi.y)
+    );
 }
 
 void wxMaximaFrame::SetupMenu()

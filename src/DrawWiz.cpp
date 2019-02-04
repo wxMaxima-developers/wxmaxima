@@ -26,6 +26,7 @@
 
 #include "DrawWiz.h"
 #include <wx/statbox.h>
+#include <wx/display.h>
 #include <wx/persist/toplevel.h>
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
@@ -1037,8 +1038,13 @@ wxImagePanel::wxImagePanel(wxWindow* parent, unsigned char *data, size_t len) :
 wxPanel(parent)
 {  
   Load(data,len);
-  wxSize ppi = wxGetDisplayPPI();
-  SetMinSize(wxSize(ppi.x*6,m_image.GetHeight()*ppi.x*6/m_image.GetWidth()));
+  int ppi;
+#if wxCHECK_VERSION(3, 1, 1)
+  ppi = wxDisplay::GetPPI().x;
+#else
+  ppi = wxGetDisplayPPI().x;
+#endif
+  SetMinSize(wxSize(ppi*6,m_image.GetHeight()*ppi*6/m_image.GetWidth()));
   Connect(wxEVT_PAINT,
           wxPaintEventHandler(wxImagePanel::paintEvent),
           NULL, this);

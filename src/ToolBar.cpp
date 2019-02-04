@@ -31,6 +31,7 @@
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
 #include "GroupCell.h"
+#include <wx/display.h>
 #include <wx/artprov.h>
 #include <wx/filename.h>
 #include "invalidImage.h"
@@ -45,7 +46,13 @@ wxBitmap ToolBar::GetImage(wxString name,
                           unsigned char *data_128, size_t len_128,
                           unsigned char *data_192, size_t len_192)
 {
-  double targetSize = wxGetDisplayPPI().x * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
+  int ppi;
+#if wxCHECK_VERSION(3, 1, 1)
+  ppi = wxDisplay::GetPPI().x;
+#else
+  ppi = wxGetDisplayPPI().x;
+#endif
+  double targetSize = ppi * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
   int prescale;
 
   int sizeA = 128 << 4;
@@ -305,7 +312,13 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
                      _("Start or stop the currently selected animation that has been created with the with_slider class of commands"));
   EnableTool(tb_animation_startStop, false);
 
-  int sliderWidth = wxGetDisplayPPI().x * 200 / 72;
+  int ppi;
+#if wxCHECK_VERSION(3, 1, 1)
+  ppi = wxDisplay::GetPPI().x;
+#else
+  ppi = wxGetDisplayPPI().x;
+#endif
+  int sliderWidth = ppi * 200 / 72;
   int width, height;
   wxDisplaySize(&width, &height);
   if (width < 800)
@@ -319,7 +332,7 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
   m_slideShowMaxIndex = -1;
   m_slideShowDisplayedIndex = -1;
   AddControl(m_plotSlider);
-  AddStretchSpacer();
+  AddStretchSpacer(100);
   AddTool(tb_help, _("Help"),
                      GetImage(wxT("gtk-help"),
                               gtk_help_128_png,gtk_help_128_png_len,
