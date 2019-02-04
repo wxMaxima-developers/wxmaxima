@@ -777,7 +777,11 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
       }
 
     if(newChars == wxEmptyString)
+    {
+      wxLogMessage(_("Got notified about data from maxima, but there was no data."));
       return;
+    }
+    wxLogMessage(wxString::Format(_("Received %li chars from maxima."),newChars.Length()));
 
     if (IsPaneDisplayed(menu_pane_xmlInspector))
       m_xmlInspector->Add_FromMaxima(newChars);
@@ -806,44 +810,48 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
 
       length_old = m_currentOutput.Length();
 
-
-      // First read the prompt that tells us that maxima awaits the next command:
-      // If that is the case ReadPrompt() sends the next command to maxima and
-      // maxima can work while we interpret its output.
-      GroupCell *oldActiveCell = m_worksheet->GetWorkingGroup();
-      ReadPrompt(m_currentOutput);
-      GroupCell *newActiveCell = m_worksheet->GetWorkingGroup();
-
-      // Temporarily switch to the WorkingGroup the output we don't have interpreted yet
-      // was for
-      if(newActiveCell != oldActiveCell)
-        m_worksheet->m_cellPointers.SetWorkingGroup(oldActiveCell);
-      // Handle the <mth> tag that contains math output and sometimes text.
-      ReadMath(m_currentOutput);
-
-      // The following function calls each extract and remove one type of XML tag
-      // information from the beginning of the data string we got - but only do so
-      // after the closing tag has been transferred, as well.
-      ReadLoadSymbols(m_currentOutput);
-
-      // Discard startup warnings
-      ReadSuppressedOutput(m_currentOutput);
-
-      // Let's see if maxima informs us about the values of variables
-      ReadVariables(m_currentOutput);
-
-      // Handle the XML tag that contains Status bar updates
-      ReadStatusBar(m_currentOutput);
-
+      GroupCell *oldActiveCell = NULL;
+      GroupCell *newActiveCell = NULL;
+      
       // Handle text that isn't wrapped in a known tag
       if (!m_first)
+      {
+        // First read the prompt that tells us that maxima awaits the next command:
+        // If that is the case ReadPrompt() sends the next command to maxima and
+        // maxima can work while we interpret its output.
+        oldActiveCell = m_worksheet->GetWorkingGroup();
+        ReadPrompt(m_currentOutput);
+        newActiveCell = m_worksheet->GetWorkingGroup();
+        
+        // Temporarily switch to the WorkingGroup the output we don't have interpreted yet
+        // was for
+        if(newActiveCell != oldActiveCell)
+          m_worksheet->m_cellPointers.SetWorkingGroup(oldActiveCell);
+        // Handle the <mth> tag that contains math output and sometimes text.
+        ReadMath(m_currentOutput);
+        
+        // The following function calls each extract and remove one type of XML tag
+        // information from the beginning of the data string we got - but only do so
+        // after the closing tag has been transferred, as well.
+        ReadLoadSymbols(m_currentOutput);
+        
+        // Discard startup warnings
+        ReadSuppressedOutput(m_currentOutput);
+        
+        // Let's see if maxima informs us about the values of variables
+        ReadVariables(m_currentOutput);
+        
+        // Handle the XML tag that contains Status bar updates
+        ReadStatusBar(m_currentOutput);
+
         // Handle text that isn't XML output: Mostly Error messages or warnings.
         ReadMiscText(m_currentOutput);
+      }
       else
         // This function determines the port maxima is running on from  the text
         // maxima outputs at startup. This piece of text is afterwards discarded.
         ReadFirstPrompt(m_currentOutput);
-
+      
       // Switch to the WorkingGroup the next bunch of data is for.
       if(newActiveCell != oldActiveCell)
         m_worksheet->m_cellPointers.SetWorkingGroup(newActiveCell);
@@ -880,14 +888,14 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_currentOutput = wxEmptyString;
       m_isConnected = true;
       m_client = m_server->Accept(false);
-      m_client->SetEventHandler(*this, socket_client_id);
-      m_client->SetNotify(wxSOCKET_INPUT_FLAG);
-      m_client->SetFlags(wxSOCKET_NOWAIT);
-      m_client->SetTimeout(2);
-      m_client->Notify(true);
       m_clientStream = new wxSocketInputStream(*m_client);
       m_clientTextStream = new wxTextInputStream(*m_clientStream, wxT('\t'),
                                                  wxConvUTF8);
+      m_client->SetEventHandler(*this, socket_client_id);
+      m_client->SetNotify(wxSOCKET_INPUT_FLAG);
+      m_client->Notify(true);
+      m_client->SetFlags(wxSOCKET_NOWAIT);
+      m_client->SetTimeout(1);
       SetupVariables();
 
       // Start the evaluation. If the evaluation queue isn't empty, that is.
