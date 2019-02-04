@@ -207,7 +207,7 @@ wxBitmap StatusBar::GetImage(wxString name,
   wxSize ppi;
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
-  ppi = display.GetPPI().x;
+  ppi = display.GetPPI();
 #else
   ppi = wxGetDisplayPPI();
 #endif
