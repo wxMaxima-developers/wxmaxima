@@ -459,7 +459,7 @@ void wxMaximaFrame::do_layout()
   // Remove the toolbar with info from the perspective.
   wxRegEx removeToolbarState(wxT("\\|[^\\|]*name=toolbar[^\\|]*"));
   removeToolbarState.ReplaceAll(&perspective,wxT(""));
-  wxRegEx removeToolbarSize(wxT("\\|[^\\|]dock_size(1[^\\|]*"));
+  wxRegEx removeToolbarSize(wxT("\\|dock_size.1[^\\|]*"));
   removeToolbarSize.ReplaceAll(&perspective,wxT(""));
 
   if(perspective != wxEmptyString)
