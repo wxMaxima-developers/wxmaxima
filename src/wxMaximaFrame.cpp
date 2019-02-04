@@ -502,7 +502,8 @@ void wxMaximaFrame::do_layout()
   m_manager.Update();
   wxSize ppi;
 #if wxCHECK_VERSION(3, 1, 1)
-  ppi = wxDisplay::GetPPI();
+  wxDisplay display;
+  ppi = display.GetPPI();
 #else
   ppi = wxGetDisplayPPI();
 #endif

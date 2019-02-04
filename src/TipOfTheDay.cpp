@@ -259,7 +259,8 @@ wxImage TipOfTheDay::GetImage(unsigned char *data_128, size_t len_128,
 {
   int ppi;
 #if wxCHECK_VERSION(3, 1, 1)
-  ppi = wxDisplay::GetPPI().x;
+  wxDisplay display;
+  ppi = display.GetPPI().x;
 #else
   ppi = wxGetDisplayPPI().x;
 #endif
