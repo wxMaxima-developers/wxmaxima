@@ -1002,7 +1002,7 @@ bool wxMaxima::StartMaxima(bool force)
 #endif
       m_process = new wxProcess(this, maxima_process_id);
       m_process->Redirect();
-      m_process->SetPriority(wxPRIORITY_MAX);
+//      m_process->SetPriority(wxPRIORITY_MAX);
       m_first = true;
       m_pid = -1;
       wxLogMessage(wxString::Format(_("Running maxima as: %s"), command));
@@ -3154,6 +3154,9 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     m_xmlInspector->Update();
 
   UpdateDrawPane();
+
+   wxSocketEvent dummy(wxSOCKET_INPUT);
+   ClientEvent(dummy);
 
   // Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();
