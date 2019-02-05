@@ -1043,7 +1043,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 
   if (m_pid < 0)
   {
-    GetMenuBar()->Enable(menu_interrupt_id, false);
+    m_MenuBar->Enable(menu_interrupt_id, false);
     return;
   }
 
@@ -1348,7 +1348,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
     data.SubString(s, t).ToLong(&m_pid);
 
   if (m_pid > 0)
-    GetMenuBar()->Enable(menu_interrupt_id, true);
+    m_MenuBar->Enable(menu_interrupt_id, true);
 
   m_first = false;
   StatusMaximaBusy(waiting);
