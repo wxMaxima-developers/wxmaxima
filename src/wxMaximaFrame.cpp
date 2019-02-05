@@ -517,7 +517,7 @@ void wxMaximaFrame::do_layout()
 
 void wxMaximaFrame::SetupMenu()
 {
-  m_MenuBar = new wxMenuBar();
+  m_MenuBar = new MainMenuBar();
 
 #define APPEND_MENU_ITEM(menu, id, label, help, stock)  \
   (menu)->Append((id), (label), (help), wxITEM_NORMAL);

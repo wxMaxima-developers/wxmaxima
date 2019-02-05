@@ -43,6 +43,7 @@ surrounding the worksheet.
 #include "Worksheet.h"
 #include "RecentDocuments.h"
 #include "Version.h"
+#include "MainMenuBar.h"
 #include "History.h"
 #include "ToolBar.h"
 #include "XmlInspector.h"
@@ -575,7 +576,7 @@ protected:
   //! The status bar
   StatusBar *m_statusBar;
   //! The menu bar
-  wxMenuBar *m_MenuBar;
+  MainMenuBar *m_MenuBar;
   //! The file menu.
   wxMenu *m_FileMenu;
   //! The edit menu.

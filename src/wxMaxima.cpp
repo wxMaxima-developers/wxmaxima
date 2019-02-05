@@ -3260,75 +3260,73 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
 
 void wxMaxima::UpdateMenus(wxUpdateUIEvent &WXUNUSED(event))
 {
-  wxMenuBar *menubar = GetMenuBar();
-
   if (!m_worksheet)
     return;
   wxASSERT_MSG((!m_worksheet->HCaretActive()) || (m_worksheet->GetActiveCell() == NULL),
                _("Both horizontal and vertical cursor active at the same time"));
 
-  menubar->Enable(menu_copy_from_worksheet, m_worksheet->CanCopy(true));
-  menubar->Enable(menu_cut, m_worksheet->CanCut());
-  menubar->Enable(menu_copy_tex_from_worksheet, m_worksheet->CanCopy());
-  menubar->Enable(Worksheet::popid_copy_mathml, m_worksheet->CanCopy());
-  menubar->Enable(menu_copy_as_bitmap, m_worksheet->CanCopy());
-  menubar->Enable(menu_copy_as_svg, m_worksheet->CanCopy());
+  m_MenuBar->Enable(menu_copy_from_worksheet, m_worksheet->CanCopy(true));
+  m_MenuBar->Enable(menu_cut, m_worksheet->CanCut());
+  m_MenuBar->Enable(menu_copy_tex_from_worksheet, m_worksheet->CanCopy());
+  m_MenuBar->Enable(Worksheet::popid_copy_mathml, m_worksheet->CanCopy());
+  m_MenuBar->Enable(menu_copy_as_bitmap, m_worksheet->CanCopy());
+  m_MenuBar->Enable(menu_copy_as_svg, m_worksheet->CanCopy());
   #if wxUSE_ENH_METAFILE
-  menubar->Enable(menu_copy_as_emf, m_worksheet->CanCopy());
+  m_MenuBar->Enable(menu_copy_as_emf, m_worksheet->CanCopy());
   #endif
-  menubar->Enable(menu_copy_as_rtf, m_worksheet->CanCopy());
-  menubar->Enable(menu_copy_to_file, m_worksheet->CanCopy());
-  menubar->Enable(menu_copy_text_from_worksheet, m_worksheet->CanCopy(true));
-  menubar->Enable(menu_select_all, m_worksheet->GetTree() != NULL);
-  menubar->Enable(menu_undo, m_worksheet->CanUndo());
-  menubar->Enable(menu_redo, m_worksheet->CanRedo());
-  menubar->Enable(menu_interrupt_id, m_pid > 0);
-  menubar->Enable(Worksheet::popid_comment_selection,
+  m_MenuBar->Enable(menu_copy_as_rtf, m_worksheet->CanCopy());
+  m_MenuBar->Enable(menu_copy_to_file, m_worksheet->CanCopy());
+  m_MenuBar->Enable(menu_copy_text_from_worksheet, m_worksheet->CanCopy(true));
+  m_MenuBar->Enable(menu_select_all, m_worksheet->GetTree() != NULL);
+  m_MenuBar->Enable(menu_undo, m_worksheet->CanUndo());
+  m_MenuBar->Enable(menu_redo, m_worksheet->CanRedo());
+  m_MenuBar->Enable(menu_interrupt_id, m_pid > 0);
+  m_MenuBar->Enable(Worksheet::popid_comment_selection,
                   (m_worksheet->GetActiveCell() != NULL) && (m_worksheet->GetActiveCell()->SelectionActive()));
-  menubar->Enable(menu_evaluate, (
+  m_MenuBar->Enable(menu_evaluate, (
                     (m_worksheet->GetActiveCell() != NULL) ||
                           (m_worksheet->CellsSelected())
                     )
     );
 
-  menubar->Enable(menu_evaluate_all_visible, m_worksheet->GetTree() != NULL);
-  menubar->Enable(ToolBar::tb_evaltillhere,
+  m_MenuBar->Enable(menu_evaluate_all_visible, m_worksheet->GetTree() != NULL);
+  m_MenuBar->Enable(ToolBar::tb_evaltillhere,
                   (m_worksheet->GetTree() != NULL) &&
                   (m_worksheet->CanPaste()) &&
                   (m_worksheet->GetHCaret() != NULL)
   );
 
-  menubar->Enable(menu_jumptoerror, !m_worksheet->m_cellPointers.m_errorList.Empty());
-  menubar->Enable(menu_save_id, (!m_fileSaved));
+  m_MenuBar->Enable(menu_jumptoerror, !m_worksheet->m_cellPointers.m_errorList.Empty());
+  m_MenuBar->Enable(menu_save_id, (!m_fileSaved));
 
   for (int id = menu_pane_math; id <= menu_pane_stats; id++)
-    menubar->Check(id, IsPaneDisplayed(static_cast<Event>(id)));
-  menubar->Check(menu_show_toolbar, ToolbarIsShown());
+    m_MenuBar->Check(id, IsPaneDisplayed(static_cast<Event>(id)));
+  m_MenuBar->Check(menu_show_toolbar, ToolbarIsShown());
 
   bool hidecode = !(m_worksheet->m_configuration->ShowCodeCells());
-  menubar->Check(ToolBar::tb_hideCode, hidecode);
+  m_MenuBar->Check(ToolBar::tb_hideCode, hidecode);
 
   if (m_worksheet->GetTree() != NULL)
   {
-    menubar->Enable(Worksheet::popid_divide_cell, m_worksheet->GetActiveCell() != NULL);
-    menubar->Enable(Worksheet::popid_merge_cells, m_worksheet->CanMergeSelection());
-    menubar->Enable(wxID_PRINT, true);
+    m_MenuBar->Enable(Worksheet::popid_divide_cell, m_worksheet->GetActiveCell() != NULL);
+    m_MenuBar->Enable(Worksheet::popid_merge_cells, m_worksheet->CanMergeSelection());
+    m_MenuBar->Enable(wxID_PRINT, true);
   }
   else
   {
-    menubar->Enable(Worksheet::popid_divide_cell, false);
-    menubar->Enable(Worksheet::popid_merge_cells, false);
-    menubar->Enable(wxID_PRINT, false);
+    m_MenuBar->Enable(Worksheet::popid_divide_cell, false);
+    m_MenuBar->Enable(Worksheet::popid_merge_cells, false);
+    m_MenuBar->Enable(wxID_PRINT, false);
   }
   double zf = m_worksheet->m_configuration->GetZoomFactor();
   if (zf < Configuration::GetMaxZoomFactor())
-    menubar->Enable(Worksheet::menu_zoom_in, true);
+    m_MenuBar->Enable(Worksheet::menu_zoom_in, true);
   else
-    menubar->Enable(Worksheet::menu_zoom_in, false);
+    m_MenuBar->Enable(Worksheet::menu_zoom_in, false);
   if (zf > Configuration::GetMinZoomFactor())
-    menubar->Enable(Worksheet::menu_zoom_out, true);
+    m_MenuBar->Enable(Worksheet::menu_zoom_out, true);
   else
-    menubar->Enable(Worksheet::menu_zoom_out, false);
+    m_MenuBar->Enable(Worksheet::menu_zoom_out, false);
 
 }
 
