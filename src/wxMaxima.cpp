@@ -776,7 +776,6 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
       wxLogMessage(_("Got notified about data from maxima, but there was no data."));
       return;
     }
-    wxLogMessage(wxString::Format(_("Received %li chars from maxima."),newChars.Length()));
 
     if (IsPaneDisplayed(menu_pane_xmlInspector))
       m_xmlInspector->Add_FromMaxima(newChars);
