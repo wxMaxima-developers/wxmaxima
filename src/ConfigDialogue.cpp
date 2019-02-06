@@ -30,6 +30,7 @@
 #include "ConfigDialogue.h"
 #include "Cell.h"
 #include "Configuration.h"
+#include "Dirstructure.h"
 #include "invalidImage.h"
 #include <wx/config.h>
 #include <wx/display.h>
@@ -659,7 +660,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   wxBoxSizer *vsizer_wxMaximaStartup = new wxBoxSizer(wxVERTICAL);
 
 
-  m_startupFileName = m_configuration->m_dirStructure.UserConfDir();
+  m_startupFileName = Dirstructure::Get()->UserConfDir();
   m_wxStartupFileName += m_startupFileName + wxT("wxmaxima-init.mac");
   m_startupFileName += wxT("maxima-init.mac");
 

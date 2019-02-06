@@ -119,8 +119,7 @@
       (format t "Lisp implementation type: ~a~%" (lisp-implementation-type))
       (format t "Lisp implementation version: ~a~%" (lisp-implementation-version))
       (format t "~%~%wxMaxima's idea of the directory layout is:~%User configuration dir: ~a~%" wxUserConfDir)
-      (format t "Help dir: ~a~%" wxHelpDir)
-      (format t "Maxima lisp dir: ~a~%" wxMaximaLispLocation))
+      (format t "Help dir: ~a~%" wxHelpDir))
     "")
 
   (defmfun $wxbug_report ()

@@ -33,6 +33,7 @@
 
 #include "wxMaximaFrame.h"
 #include "MathParser.h"
+#include "Dirstructure.h"
 
 #include <wx/socket.h>
 #include <wx/config.h>
@@ -691,9 +692,7 @@ class MyApp : public wxApp
 public:
   virtual bool OnInit();
 
-#if defined (__WXMSW__)
   virtual int OnExit();
-#endif
   wxLocale m_locale;
 
   /*! Create a new window
@@ -722,6 +721,7 @@ public:
 private:
   //! The name of the config file. Empty = Use the default one.
   wxString m_configFileName;
+  Dirstructure *m_dirstruct;
   DECLARE_EVENT_TABLE()
 };
 

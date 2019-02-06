@@ -143,11 +143,9 @@ void wxMaxima::ConfigChanged()
 
   // A few variables for additional debug info in wxbuild_info();
   m_configCommands += wxString::Format(wxT(":lisp-quiet (setq wxUserConfDir \"%s\")\n"),
-                                       EscapeForLisp(m_worksheet->m_configuration->m_dirStructure.UserConfDir()));
+                                       EscapeForLisp(Dirstructure::Get()->UserConfDir()));
   m_configCommands += wxString::Format(wxT(":lisp-quiet (setq wxHelpDir \"%s\")\n"),
-                              EscapeForLisp(m_worksheet->m_configuration->m_dirStructure.HelpDir()));
-  m_configCommands += wxString::Format(wxT(":lisp-quiet (setq wxMaximaLispLocation \"%s\")\n"),
-                              EscapeForLisp(m_worksheet->m_configuration->m_dirStructure.MaximaLispLocation()));
+                              EscapeForLisp(Dirstructure::Get()->HelpDir()));
 
   int defaultPlotWidth = 600;
   config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
@@ -356,9 +354,6 @@ void wxMaxima::InitSession()
 void wxMaxima::FirstOutput()
 {
   m_lastPrompt = wxT("(%i1) ");
-
-  /// READ FUNCTIONS FOR AUTOCOMPLETION
-  m_worksheet->LoadSymbols();
 
   m_worksheet->SetFocus();
 }
@@ -1688,7 +1683,7 @@ void wxMaxima::ReadVariables(wxString &data)
           {
             if(name == "maxima_userdir")
             {
-              m_worksheet->m_configuration->m_dirStructure.UserConfDir(value);
+              Dirstructure::Get()->UserConfDir(value);
               wxLogMessage(wxString::Format("Maxima user configuration lies in directory %s",value));
             }
             if(name == "maxima_tempdir")
@@ -1707,7 +1702,9 @@ void wxMaxima::ReadVariables(wxString &data)
             }
             if(name == "*maxima-sharedir*")
             {
-              m_maximaShareDir = value;
+              m_worksheet->m_configuration->MaximaShareDir(value);
+              /// READ FUNCTIONS FOR AUTOCOMPLETION
+              m_worksheet->LoadSymbols();
               wxLogMessage(wxString::Format("Maxima's share files lie in directory %s",value));
             }
             if(name == "*lisp-name*")
@@ -2898,7 +2895,7 @@ void wxMaxima::ShowCHMHelp(wxString helpfile,wxString keyword)
 
 void wxMaxima::ShowWxMaximaHelp()
 {
-  wxString htmldir = m_worksheet->m_configuration->m_dirStructure.HelpDir();
+  wxString htmldir = Dirstructure::Get()->HelpDir();
 
   wxString helpfile = htmldir + wxT("/wxmaxima.hhp");
 #if defined (__WXMSW__)

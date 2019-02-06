@@ -4663,7 +4663,7 @@ bool AutoComplete::LoadSymbols()
 
   /// Load private symbol list (do something different on Windows).
   wxString privateList;
-  privateList = m_configuration->m_dirStructure.UserAutocompleteFile();
+  privateList = Dirstructure::Get()->UserAutocompleteFile();
 
   if (wxFileExists(privateList))
   {
@@ -4688,13 +4688,14 @@ bool AutoComplete::LoadSymbols()
   // Prepare a list of all built-in loadable files of maxima.
   {
     GetMacFiles_includingSubdirs maximaLispIterator (m_builtInLoadFiles);
-    wxDir maximadir(m_configuration->m_dirStructure.MaximaLispLocation()+ "/share/");
-    if(!maximadir.IsOpened())
-      maximadir.Open(m_configuration->m_dirStructure.MaximaLispLocation());
-    if(maximadir.IsOpened())
-      maximadir.Traverse(maximaLispIterator);
+    if(m_configuration->MaximaShareDir() != wxEmptyString)
+    {
+      wxDir maximadir(m_configuration->MaximaShareDir());
+      if(maximadir.IsOpened())
+        maximadir.Traverse(maximaLispIterator);
+    }
     GetMacFiles userLispIterator (m_builtInLoadFiles);
-    wxDir maximauserfilesdir(m_configuration->m_dirStructure.UserConfDir());
+    wxDir maximauserfilesdir(Dirstructure::Get()->UserConfDir());
     if(maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
   }
@@ -4703,22 +4704,20 @@ bool AutoComplete::LoadSymbols()
   // Prepare a list of all built-in demos of maxima.
   {
     GetDemoFiles_includingSubdirs maximaLispIterator (m_builtInDemoFiles);
-    wxDir maximadir(m_configuration->m_dirStructure.MaximaLispLocation());
+    wxDir maximadir(m_configuration->MaximaShareDir()+"/..");
     if(maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
     GetDemoFiles userLispIterator (m_builtInDemoFiles);
-    wxDir maximauserfilesdir(m_configuration->m_dirStructure.UserConfDir());
+    wxDir maximauserfilesdir(Dirstructure::Get()->UserConfDir());
     if(maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
   }
   
-
   m_wordList[command].Sort();
   m_wordList[tmplte].Sort();
   m_wordList[unit].Sort();
   m_builtInLoadFiles.Sort();
   m_builtInDemoFiles.Sort();
-
   return false;
 }
 

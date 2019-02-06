@@ -150,7 +150,7 @@ bool MyApp::OnInit()
   else
     m_locale.Init(wxLANGUAGE_ENGLISH);
 
-  Dirstructure dirstruct;
+  m_dirstruct =  new Dirstructure;
   if((lang != wxLANGUAGE_UNKNOWN) && (lang != wxLANGUAGE_DEFAULT) &&
      (lang != wxLocale::GetSystemLanguage()))
     wxSetEnv(wxT("LANG"), m_locale.GetCanonicalName());
@@ -163,7 +163,7 @@ bool MyApp::OnInit()
     if(dir != wxEmptyString)
       wxSetWorkingDirectory(wxPathOnly(wxStandardPaths::Get().GetExecutablePath()));
   }
-  wxString fontPrefix = dirstruct.FontDir() + wxT("/");  
+  wxString fontPrefix = m_dirstruct->FontDir() + wxT("/");  
   /* Add private jsMath fonts, if they exist */ 
 #if wxCHECK_VERSION(3, 1, 1)
   if (wxFileExists(fontPrefix + wxT(CMEX10) + wxT(".ttf"))) wxFont::AddPrivateFont(fontPrefix + wxT(CMEX10) + wxT(".ttf"));
@@ -188,8 +188,8 @@ bool MyApp::OnInit()
 
 #endif
 
-  m_locale.AddCatalogLookupPathPrefix(dirstruct.LocaleDir());
-  m_locale.AddCatalogLookupPathPrefix(dirstruct.LocaleDir()+wxT("/wxwin"));
+  m_locale.AddCatalogLookupPathPrefix(m_dirstruct->LocaleDir());
+  m_locale.AddCatalogLookupPathPrefix(m_dirstruct->LocaleDir()+wxT("/wxwin"));
   m_locale.AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
   m_locale.AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
   m_locale.AddCatalog(wxT("wxMaxima"));
@@ -265,12 +265,12 @@ bool MyApp::OnInit()
   return true;
 }
 
-#if defined (__WXMSW__)
 int MyApp::OnExit()
 {
+  wxDELETE(m_dirstruct);
+  m_dirstruct = NULL;
   return true;
 }
-#endif
 
 void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval)
 {

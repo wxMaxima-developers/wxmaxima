@@ -25,6 +25,7 @@
  */
 
 #include "Configuration.h"
+#include "Dirstructure.h"
 #include "ErrorRedirector.h"
 #include <wx/font.h>
 #include <wx/config.h>
@@ -61,12 +62,11 @@ Configuration::Configuration(wxDC &dc) : m_dc(&dc)
   m_autoSaveInterval = 3 * 60 * 1000;
   m_clientWidth = 1024;
   m_clientHeight = 768;
-  Dirstructure dirstruct;
   m_indentMaths=true;
   if(m_maximaLocation_override != wxEmptyString)
     m_maximaLocation = m_maximaLocation_override;
   else
-    m_maximaLocation = dirstruct.MaximaDefaultLocation();
+    m_maximaLocation = Dirstructure::Get()->MaximaDefaultLocation();
   m_indent = -1;
   m_autoSubscript = 1;
   m_antiAliasLines = true;
@@ -134,7 +134,6 @@ bool Configuration::MaximaFound(wxString location)
 
 void Configuration::ReadConfig()
 {
-  Dirstructure dirstruct;
   wxConfigBase *config = wxConfig::Get();
   m_autoWrap = 3;
 
@@ -168,11 +167,11 @@ void Configuration::ReadConfig()
   config->Read(wxT("maxima"), &m_maximaLocation);
   // Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a
   if (m_maximaLocation.IsSameAs(wxT("1")))
-    m_maximaLocation = dirstruct.MaximaDefaultLocation();
+    m_maximaLocation = Dirstructure::Get()->MaximaDefaultLocation();
 
   // Fallback to the default location if the one from the config file isn't found
   if(!wxFileExists(m_maximaLocation))
-    m_maximaLocation = dirstruct.MaximaDefaultLocation();
+    m_maximaLocation = Dirstructure::Get()->MaximaDefaultLocation();
 
 
   m_autoIndent = true;

@@ -30,6 +30,7 @@
 #include <wx/zstream.h>
 #include <wx/txtstrm.h>
 #include <wx/regex.h>
+#include <wx/stdpaths.h>
 
 wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
 {

@@ -100,9 +100,6 @@ public:
   //! The path we pass to the operating system if we want it to locate maxima instead
   static wxString MaximaDefaultLocation();
 
-  //!
-  static wxString MaximaLispLocation();
-
   /*! The contents of the PREFIX macro as a wxString
 
     wxWidgets 3.0.2 refuses to directly concatenate two wxT-generated strings.
@@ -110,9 +107,14 @@ public:
   */
   wxString Prefix();
 
+  static Dirstructure *Get()
+    {
+      return m_dirStructure;
+    }
 private:
   wxString m_helpDir;
   wxString m_userConfDir;
+  static Dirstructure *m_dirStructure;
 };
 
 #endif // DIRSTRUCTURE_H

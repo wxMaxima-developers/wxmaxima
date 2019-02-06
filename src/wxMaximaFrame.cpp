@@ -30,7 +30,6 @@
   wxMaxima.
  */
 #include "wxMaximaFrame.h"
-#include "Dirstructure.h"
 #include "LogPane.h"
 
 #include <wx/artprov.h>
@@ -38,6 +37,7 @@
 #include <wx/image.h>
 #include <wx/filename.h>
 #include <wx/fileconf.h>
+#include <wx/stdpaths.h>
 #include <wx/persist/toplevel.h>
 #include <wx/display.h>
 #include "wxMaximaIcon.h"

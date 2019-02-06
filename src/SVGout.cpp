@@ -29,6 +29,7 @@
 #include <wx/txtstrm.h> 
 #include <wx/filename.h> 
 #include <wx/wfstream.h>
+#include <wx/stdpaths.h>
 #include "Configuration.h"
 #include "GroupCell.h"
 #include <wx/config.h>

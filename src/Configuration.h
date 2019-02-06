@@ -28,8 +28,6 @@
 #include <wx/fontenum.h>
 
 #include "TextStyle.h"
-#include "Dirstructure.h"
-
 
 #define MC_LINE_SKIP Scale_Px(2)
 #define MC_TEXT_PADDING Scale_Px(1)
@@ -87,7 +85,6 @@
 class Configuration
 {
 public:
-  Dirstructure m_dirStructure;
   enum drawMode
   {
     ascii,              //!< Use ascii characters only
@@ -722,6 +719,8 @@ public:
   wxRect GetVisibleRegion(){return m_visibleRegion;}
   void SetWorksheetPosition(wxPoint worksheetPosition){m_worksheetPosition = worksheetPosition;}
   wxPoint GetWorksheetPosition(){return m_worksheetPosition;}
+  wxString MaximaShareDir(){return m_maximaShareDir;}
+  void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
 private:
   //! The worksheet all cells are drawn on
   wxRect m_updateRegion;
@@ -796,6 +795,7 @@ private:
   wxString m_fontName;
   int m_defaultFontSize, m_mathFontSize;
   wxString m_mathFontName;
+  wxString m_maximaShareDir;
   bool m_forceUpdate;
   bool m_clipToDrawRegion;
   bool m_outdated;
