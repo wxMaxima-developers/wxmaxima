@@ -3446,7 +3446,6 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
     //   int fontsize = m_configuration->GetDefaultFontSize();
     int fontsize = m_configuration->GetDefaultFontSize();
 
-    GetActiveCell()->ResetData();
     GetActiveCell()->RecalculateWidths(MAX(fontsize, MC_MIN_SIZE));
     GetActiveCell()->RecalculateHeight(MAX(fontsize, MC_MIN_SIZE));
 
@@ -3460,13 +3459,12 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
   if (needRecalculate)
   {
     GroupCell *group = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
-    group->ResetSize();
     group->ResetData();
     if (GetActiveCell()->CheckChanges() &&
         (group->GetGroupType() == GC_TYPE_CODE) &&
         (GetActiveCell() == group->GetEditable()))
       group->ResetInputLabel();
-    Recalculate(group, false);
+//    Recalculate(group, false);
     RequestRedraw(group);
   }
   else
