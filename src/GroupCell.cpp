@@ -659,7 +659,12 @@ void GroupCell::InputHeightChanged()
     m_inputLabel->ResetData();
   }
   RecalculateHeightInput();
-  RecalculateHeightOutput();
+
+  if(m_output != NULL)
+  {
+    m_height += m_outputRect.height;
+    m_outputRect.y = m_currentPoint.y + m_center;
+  }
 }
 
 // Called on resize events
@@ -683,6 +688,16 @@ void GroupCell::OnSize()
 void GroupCell::RecalculateHeightInput()
 {
   Configuration *configuration = (*m_configuration);
+
+  if (m_inputLabel)
+    m_inputLabel->SetCurrentPoint(m_currentPoint);
+  if (GetEditable())
+  {
+    wxPoint in = GetCurrentPoint();
+    
+    in.x += GetInputIndent();
+    GetEditable()->SetCurrentPoint(GetCurrentPoint());
+  }
   
   // special case
   if (m_groupType == GC_TYPE_PAGEBREAK)
@@ -731,7 +746,7 @@ void GroupCell::RecalculateHeightInput()
       (*m_configuration)->GetGroupSkip();
   
   m_outputRect.x = m_currentPoint.x;
-  m_outputRect.y = m_currentPoint.y;
+  m_outputRect.y = m_currentPoint.y + m_center;
   if (m_output) m_outputRect.y -= m_output->GetMaxCenter();
   else
   {
@@ -782,6 +797,7 @@ void GroupCell::RecalculateHeight(int fontsize)
 
   if(NeedsRecalculation())
   {
+    m_outputRect.SetHeight(0);
     RecalculateHeightInput();   
     RecalculateHeightOutput();
   }
@@ -809,16 +825,6 @@ void GroupCell::RecalculateHeight(int fontsize)
   // If code is hidden and there is no output a cell can have the height
   // 0. If it is higher than that we make our cell high enough to fit the 
   // bracket in.  m_appendedCells = NULL;
-
-  if (m_inputLabel)
-    m_inputLabel->SetCurrentPoint(m_currentPoint);
-  if (GetEditable())
-  {
-    wxPoint in = GetCurrentPoint();
-    
-    in.x += GetInputIndent();
-    GetEditable()->SetCurrentPoint(GetCurrentPoint());
-  }
 }
 
 // We assume that appended cells will be in a new line!
@@ -830,11 +836,11 @@ void GroupCell::RecalculateAppended()
   if (m_appendedCells == NULL)
     m_appendedCells = m_inputLabel;
   if (m_appendedCells == NULL)
-    m_appendedCells = GetInput();
+    m_appendedCells = GetOutput();
   if (m_appendedCells == NULL)
     return;
   m_appendedCells->HardLineBreak();
-
+  
   Cell *tmp = m_appendedCells;
   m_fontSize = configuration->GetFontSize(TS_TEXT);
   m_mathFontSize = configuration->GetMathFontSize();
