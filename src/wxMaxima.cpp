@@ -279,8 +279,8 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y), const w
     return true;
   }
 
-  if (files[0].Right(4) == wxT(".wxm") ||
-      files[0].Right(5) == wxT(".wxmx"))
+  if (files[0].EndsWith(wxT(".wxm")) ||
+      files[0].EndsWith(wxT(".wxmx")))
   {
     if (m_wxmax->m_worksheet->GetTree() != NULL &&
         !m_wxmax->DocumentSaved())
@@ -301,9 +301,9 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y), const w
     return true;
   }
 
-  if (files[0].Right(4) == wxT(".png") ||
-      files[0].Right(5) == wxT(".jpeg") ||
-      files[0].Right(4) == wxT(".jpg"))
+  if (files[0].EndsWith(wxT(".png")) ||
+      files[0].EndsWith(wxT(".jpeg")) ||
+      files[0].EndsWith(wxT(".jpg")))
   {
     m_wxmax->LoadImage(files[0]);
     return true;
@@ -2743,7 +2743,7 @@ wxString wxMaxima::GetCommand(bool params)
   }
 #endif
 #if defined (__WXMAC__)
-  if (command.Right(4) == wxT(".app")) // if pointing to a Maxima.app
+  if (command.EndsWith(wxT(".app"))) // if pointing to a Maxima.app
     command.Append(wxT("/Contents/Resources/maxima.sh"));
 #endif
 
@@ -3462,7 +3462,7 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
       ReReadConfig();
     }
   }
-  else if (file.Right(4).Lower() == wxT(".wxm"))
+  else if (file.EndsWith(wxT(".wxm")))
   {
     retval = OpenWXMFile(file, m_worksheet);
     if(retval)
@@ -3473,7 +3473,7 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
     }
   }
 
-  else if (file.Right(4).Lower() == wxT(".mac"))
+  else if (file.EndsWith(wxT(".mac")))
   {
     retval = OpenMACFile(file, m_worksheet);
     if(retval)
@@ -3483,7 +3483,7 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
       ReReadConfig();
     }
   }
-  else if (file.Right(4).Lower() == wxT(".out"))
+  else if (file.EndsWith(wxT(".out")))
   {
     retval = OpenMACFile(file, m_worksheet);
     if(retval)
@@ -3622,8 +3622,8 @@ bool wxMaxima::SaveFile(bool forceSave)
 
   if (file.Length())
   {
-    if ((file.Right(4) != wxT(".wxm")) &&
-        (file.Right(5) != wxT(".wxmx"))
+    if (!file.EndsWith(wxT(".wxm")) &&
+        (!file.EndsWith(wxT(".wxmx")))
             )
     {
       switch (ext)
@@ -3644,7 +3644,7 @@ bool wxMaxima::SaveFile(bool forceSave)
 
     m_worksheet->m_currentFile = file;
     m_lastPath = wxPathOnly(file);
-    if (file.Right(5) == wxT(".wxmx"))
+    if (file.EndsWith(wxT(".wxmx")))
     {
       if (!m_worksheet->ExportToWXMX(file))
       {
@@ -3686,7 +3686,7 @@ bool wxMaxima::SaveFile(bool forceSave)
   if (m_worksheet->m_configuration->AutoSaveInterval() > 0)
     m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveInterval() > 0);
 
-  return false;
+  return true;
 }
 
 void wxMaxima::ReadStdErr()
@@ -4080,9 +4080,9 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
         if (file.Length())
         {
           int ext = fileDialog.GetFilterIndex();
-          if ((file.Right(5) != wxT(".html")) &&
-              (file.Right(4) != wxT(".mac")) &&
-              (file.Right(4) != wxT(".tex"))
+          if ((!file.EndsWith(wxT(".html"))) &&
+              (!file.EndsWith(wxT(".mac"))) &&
+              (!file.EndsWith(wxT(".tex")))
                   )
           {
             switch (ext)
@@ -4101,7 +4101,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
             }
           }
 
-          if (file.Right(4) == wxT(".tex"))
+          if (file.EndsWith(wxT(".tex")))
           {
             StatusExportStart();
 
@@ -4117,7 +4117,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
             else
               StatusExportFinished();
           }
-          else if (file.Right(4) == wxT(".mac"))
+          else if (file.EndsWith(wxT(".mac")))
           {
             StatusExportStart();
 
@@ -6969,24 +6969,25 @@ void wxMaxima::OnClose(wxCloseEvent &event)
     // If autosave is on we automatically save the file on closing.
     if(m_isNamed && (m_worksheet->m_configuration->AutoSaveInterval() > 0))
     {
-      if (SaveFile())
-        return;
-    }
-    
-    int close = SaveDocumentP();
-
-    if (close == wxID_CANCEL)
-    {
-      event.Veto();
-      return;
-    }
-
-    if (close == wxID_YES)
-    {
       if (!SaveFile())
-      {
         event.Veto();
-        return;
+    }
+    else
+    {      
+      int close = SaveDocumentP();
+      
+      if (close == wxID_CANCEL)
+        event.Veto();
+      else
+      {
+        if (close == wxID_YES)
+        {
+          if (!SaveFile())
+          {
+            event.Veto();
+            return;
+          }
+        }
       }
     }
   }
@@ -7010,6 +7011,7 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   }
   if (m_worksheet->GetTree())
     m_worksheet->DestroyTree();
+  event.Skip();
   Destroy();
 
   RemoveTempAutosavefile();
@@ -7604,7 +7606,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
 
   std::list<wxChar> delimiters;
 
-  if (text.Right(1) == wxT("\\"))
+  if (text.EndsWith(wxT("\\")))
   {
     index = text.Length() - 1;
     return (_("Cell ends in a backslash"));
