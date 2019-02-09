@@ -1990,7 +1990,8 @@ void GroupCell::BreakLines(Cell *cell)
   int fullWidth = (*m_configuration)->GetClientWidth();
   Configuration *configuration = (*m_configuration);
   int currentWidth = GetLineIndent(cell);
-  fullWidth -= configuration->GetIndent();
+  if((cell->GetStyle() != TS_LABEL) && (cell->GetStyle() != TS_USERLABEL))
+    fullWidth -= configuration->GetIndent();
 
   // Don't let the layout degenerate for small window widths
   if (fullWidth < Scale_Px(150)) fullWidth = Scale_Px(150);
