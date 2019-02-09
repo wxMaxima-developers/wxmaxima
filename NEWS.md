@@ -1,3 +1,9 @@
+# wxMaxima 19.02.0 - Stable
+
+* Resolved a cell size recalculation bug
+* Better wxWidgets 3.1.2 compatibility
+* Improved performance
+
 # wxMaxima 19.01.3 - Stable
 
 * Repaired compilation on MacOs for wxWidgets 3.1.1.
