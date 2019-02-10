@@ -53,7 +53,7 @@ wxBitmap ToolBar::GetImage(wxString name,
 #else
   ppi = wxGetDisplayPPI().x;
 #endif
-  double targetSize = ppi * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
+  double targetSize = MAX(ppi,75) * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
   int prescale;
 
   int sizeA = 128 << 4;
@@ -320,7 +320,7 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
 #else
   ppi = wxGetDisplayPPI().x;
 #endif
-  int sliderWidth = ppi * 200 / 72;
+  int sliderWidth = MAX(ppi,75) * 200 / 72;
   int width, height;
   wxDisplaySize(&width, &height);
   if (width < 800)

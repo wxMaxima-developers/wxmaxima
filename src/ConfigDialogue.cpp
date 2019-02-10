@@ -99,7 +99,7 @@ int ConfigDialogue::GetImageSize()
   ppi = wxGetDisplayPPI().x;
 #endif
   
-  double targetSize = ppi * CONFIG_ICON_SCALE;
+  double targetSize = MAX(ppi,75) * CONFIG_ICON_SCALE;
 
   int sizeA = 128 << 4;
   while(sizeA * 3 / 2 > targetSize && sizeA >= 32) {
@@ -129,7 +129,7 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
 #else
   ppi = wxGetDisplayPPI().x;
 #endif
-  double targetSize = ppi * CONFIG_ICON_SCALE;
+  double targetSize = MAX(ppi,75) * CONFIG_ICON_SCALE;
   int prescale;
 
   int sizeA = 128 << 4;

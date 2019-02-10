@@ -1034,6 +1034,7 @@ wxString WizDrawAccuracy::GetValue()
   return retval;
 }
  
+#define MAX(a, b) ((a)>(b) ? (a) : (b))
 wxImagePanel::wxImagePanel(wxWindow* parent, unsigned char *data, size_t len) :
 wxPanel(parent)
 {  
@@ -1045,6 +1046,7 @@ wxPanel(parent)
 #else
   ppi = wxGetDisplayPPI().x;
 #endif
+  ppi = MAX(ppi,75);
   SetMinSize(wxSize(ppi*6,m_image.GetHeight()*ppi*6/m_image.GetWidth()));
   Connect(wxEVT_PAINT,
           wxPaintEventHandler(wxImagePanel::paintEvent),
