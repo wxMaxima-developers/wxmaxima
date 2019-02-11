@@ -48,11 +48,13 @@ wxBitmap ToolBar::GetImage(wxString name,
 {
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
-  m_ppi = display.GetPPI().x;
+  
+  const unsigned display_idx = wxDisplay::GetFromWindow(GetParent());
+  m_ppi = (display_idx != wxNOT_FOUND ? wxDisplay(display_idx) : wxDisplay(0u)).GetPPI();
 #else
-  m_ppi = wxGetDisplayPPI().x;
+  m_ppi = wxGetDisplayPPI();
 #endif
-  double targetSize = MAX(m_ppi,75) * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
+  double targetSize = MAX(m_ppi.x,75) * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
   int prescale;
 
   int sizeA = 128 << 4;
@@ -314,11 +316,13 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
 
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
-  m_ppi = display.GetPPI().x;
+  
+  const unsigned display_idx = wxDisplay::GetFromWindow(parent);
+  m_ppi = (display_idx != wxNOT_FOUND ? wxDisplay(display_idx) : wxDisplay(0u)).GetPPI();
 #else
   m_ppi = wxGetDisplayPPI().x;
 #endif
-  int sliderWidth = MAX(m_ppi,75) * 200 / 72;
+  int sliderWidth = MAX(m_ppi.x,75) * 200 / 72;
   int width, height;
   wxDisplaySize(&width, &height);
   if (width < 800)
@@ -349,14 +353,16 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
 
 void ToolBar::UpdateBitmaps()
 {
-  int ppi;
+  wxSize ppi;
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
-  ppi = display.GetPPI().x;
+  
+  const unsigned display_idx = wxDisplay::GetFromWindow(GetParent());
+  m_ppi = (display_idx != wxNOT_FOUND ? wxDisplay(display_idx) : wxDisplay(0u)).GetPPI();
 #else
-  ppi = wxGetDisplayPPI().x;
+  ppi = wxGetDisplayPPI();
 #endif
-  if(ppi == m_ppi)
+  if((ppi.x == m_ppi.x) && (ppi.y == m_ppi.y))
     return;
   else
     m_ppi = ppi;

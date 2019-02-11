@@ -185,7 +185,7 @@ protected:
     void OnSize(wxSizeEvent &event);
 private:
   //! The ppi rate.
-  int m_ppi;
+  wxSize m_ppi;
   //! The default style for new cells.
   int m_defaultCellStyle;
   //! The drop-down-box for text styles
