@@ -613,7 +613,7 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
 
 void ToolBar::OnSize(wxSizeEvent &event)
 {
-  UpdateBitmaps();
+//  UpdateBitmaps();
   Refresh();
   event.Skip();
 }
