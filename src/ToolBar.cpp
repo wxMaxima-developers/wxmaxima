@@ -356,17 +356,24 @@ void ToolBar::UpdateBitmaps()
   wxSize ppi;
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
+  return;
   
   const unsigned display_idx = wxDisplay::GetFromWindow(GetParent());
-  m_ppi = (display_idx != wxNOT_FOUND ? wxDisplay(display_idx) : wxDisplay(0u)).GetPPI();
+  if (display_idx == wxNOT_FOUND)
+    return;
+  m_ppi = wxDisplay(display_idx).GetPPI();
 #else
   ppi = wxGetDisplayPPI();
 #endif
+  if(ppi.x == 0)
+    return;
   if((ppi.x == m_ppi.x) && (ppi.y == m_ppi.y))
     return;
   else
     m_ppi = ppi;
-  
+
+  std::cerr<<m_ppi.x<<","<<m_ppi.y<<"\n";
+  std::cerr<<ppi.x<<"+"<<ppi.y<<"\n";
   SetToolBitmap(tb_new,GetImage(wxT("gtk-new"),
                                 gtk_new_128_png,gtk_new_128_png_len,
                                 gtk_new_192_png,gtk_new_192_png_len));
@@ -613,7 +620,7 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
 
 void ToolBar::OnSize(wxSizeEvent &event)
 {
-//  UpdateBitmaps();
+  UpdateBitmaps();
   Refresh();
   event.Skip();
 }
