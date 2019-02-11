@@ -178,10 +178,14 @@ public:
     }
   //! The current style is the new style for new cells
   void SetDefaultCellStyle();
+  //! Update the bitmaps on ppi changes.
+  void UpdateBitmaps();
 
 protected:
     void OnSize(wxSizeEvent &event);
 private:
+  //! The ppi rate.
+  int m_ppi;
   //! The default style for new cells.
   int m_defaultCellStyle;
   //! The drop-down-box for text styles

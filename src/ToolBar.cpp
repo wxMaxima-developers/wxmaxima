@@ -46,14 +46,13 @@ wxBitmap ToolBar::GetImage(wxString name,
                           unsigned char *data_128, size_t len_128,
                           unsigned char *data_192, size_t len_192)
 {
-  int ppi;
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
-  ppi = display.GetPPI().x;
+  m_ppi = display.GetPPI().x;
 #else
-  ppi = wxGetDisplayPPI().x;
+  m_ppi = wxGetDisplayPPI().x;
 #endif
-  double targetSize = MAX(ppi,75) * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
+  double targetSize = MAX(m_ppi,75) * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
   int prescale;
 
   int sizeA = 128 << 4;
@@ -313,14 +312,13 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
                      _("Start or stop the currently selected animation that has been created with the with_slider class of commands"));
   EnableTool(tb_animation_startStop, false);
 
-  int ppi;
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
-  ppi = display.GetPPI().x;
+  m_ppi = display.GetPPI().x;
 #else
-  ppi = wxGetDisplayPPI().x;
+  m_ppi = wxGetDisplayPPI().x;
 #endif
-  int sliderWidth = MAX(ppi,75) * 200 / 72;
+  int sliderWidth = MAX(m_ppi,75) * 200 / 72;
   int width, height;
   wxDisplaySize(&width, &height);
   if (width < 800)
@@ -346,6 +344,107 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
           NULL, this);
   Realize();
   SetInitialSize(wxSize(GetBestSize().x,100000));
+  Realize();
+}
+
+void ToolBar::UpdateBitmaps()
+{
+  int ppi;
+#if wxCHECK_VERSION(3, 1, 1)
+  wxDisplay display;
+  ppi = display.GetPPI().x;
+#else
+  ppi = wxGetDisplayPPI().x;
+#endif
+  if(ppi == m_ppi)
+    return;
+  else
+    m_ppi = ppi;
+  
+  SetToolBitmap(tb_new,GetImage(wxT("gtk-new"),
+                                gtk_new_128_png,gtk_new_128_png_len,
+                                gtk_new_192_png,gtk_new_192_png_len));
+  SetToolBitmap(tb_open,GetImage(wxT("gtk-open"),
+                                 gtk_open_128_png,gtk_open_128_png_len,
+                                 gtk_open_192_png,gtk_open_192_png_len));
+  SetToolBitmap(tb_save,GetImage(wxT("gtk-save"),
+                                 gtk_save_128_png,gtk_save_128_png_len,
+                                 gtk_save_192_png,gtk_save_192_png_len
+                  ));
+  SetToolBitmap(tb_print,GetImage(wxT("gtk-print"),
+                                  gtk_print_128_png,gtk_print_128_png_len,
+                                  gtk_print_192_png,gtk_print_192_png_len
+                  ));
+  SetToolBitmap(tb_pref,GetImage(wxT("gtk-preferences"),
+                                 gtk_preferences_128_png,gtk_preferences_128_png_len,
+                                 gtk_preferences_192_png,gtk_preferences_192_png_len
+                  ));
+  SetToolBitmap(tb_cut,GetImage(wxT("gtk-cut"),
+                                gtk_cut_128_png,gtk_cut_128_png_len,
+                                gtk_cut_192_png,gtk_cut_192_png_len
+                  ));
+  SetToolBitmap(tb_copy,GetImage(wxT("gtk-copy"),
+                                 gtk_copy_128_png,gtk_copy_128_png_len,
+                                 gtk_copy_192_png,gtk_copy_192_png_len
+                  ));
+  SetToolBitmap(tb_paste,GetImage(wxT("gtk-paste"),
+                                  gtk_paste_128_png,gtk_paste_128_png_len,
+                                  gtk_paste_192_png,gtk_paste_192_png_len
+                  ));
+  SetToolBitmap(tb_select_all,
+                GetImage(wxT("gtk-select-all"),
+                         gtk_select_all_128_png,gtk_select_all_128_png_len,
+                         gtk_select_all_192_png,gtk_select_all_192_png_len
+                  ));
+  SetToolBitmap(tb_find,GetImage(wxT("gtk-find"),
+                                 gtk_find_128_png,gtk_find_128_png_len,
+                                 gtk_find_192_png,gtk_find_192_png_len
+                  ));
+  SetToolBitmap(menu_restart_id,GetImage(wxT("view-refresh"),
+                                         view_refresh_128_png,view_refresh_128_png_len,
+                                         view_refresh_192_png,view_refresh_192_png_len
+                  ));
+  SetToolBitmap(tb_interrupt,
+                GetImage(wxT("gtk-stop"),
+                         gtk_stop_128_png,gtk_stop_128_png_len,
+                         gtk_stop_192_png,gtk_stop_192_png_len
+                  ));
+  m_followIcon = GetImage(wxT("weather-clear"),
+                          weather_clear_128_png,weather_clear_128_png_len,
+                          weather_clear_192_png,weather_clear_192_png_len
+    );
+  m_needsInformationIcon = GetImage(wxT("software-update-urgent"),
+                                    software_update_urgent_128_png,software_update_urgent_128_png_len,
+                                    software_update_urgent_192_png,software_update_urgent_192_png_len
+    );
+  SetToolBitmap(tb_follow, m_followIcon);
+  SetToolBitmap(tb_evaltillhere,GetImage(wxT("go-bottom"),
+                                         go_bottom_128_png,go_bottom_128_png_len,
+                                         go_bottom_192_png,go_bottom_192_png_len
+                  ));
+  SetToolBitmap(tb_evaluate_rest, 
+                GetImage(wxT("go-last"),
+                         go_last_128_png,go_last_128_png_len,
+                         go_last_192_png,go_last_192_png_len
+                  ));
+  SetToolBitmap(tb_hideCode,GetImage(wxT("weather-few-clouds"),
+                                     weather_few_clouds_128_png,weather_few_clouds_128_png_len,
+                                     weather_few_clouds_192_png,weather_few_clouds_192_png_len
+                  ));
+  m_PlayButton = GetImage(wxT("media-playback-start"),
+                          media_playback_start_128_png,media_playback_start_128_png_len,
+                          media_playback_start_192_png,media_playback_start_192_png_len
+    );
+  m_StopButton = GetImage(wxT("media-playback-stop"),
+                          media_playback_stop_128_png,media_playback_stop_128_png_len,
+                          media_playback_stop_192_png,media_playback_stop_192_png_len
+    );
+  SetToolBitmap(tb_animation_startStop,
+                m_PlayButton);
+  SetToolBitmap(tb_help,GetImage(wxT("gtk-help"),
+                                 gtk_help_128_png,gtk_help_128_png_len,
+                                 gtk_help_192_png,gtk_help_192_png_len
+                  ));
   Realize();
 }
 
@@ -508,7 +607,7 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
 
 void ToolBar::OnSize(wxSizeEvent &event)
 {
+  UpdateBitmaps();
   Refresh();
   event.Skip();
 }
-

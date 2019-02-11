@@ -423,7 +423,7 @@ void wxMaximaFrame::do_layout()
                     TopDockable(true).Show(true).
                     BottomDockable(true).
                     LeftDockable(false).
-                    RightDockable(false).Gripper(false).Row(1).Fixed()
+                    RightDockable(false).Gripper(false).Row(1).Fixed().DockFixed()
     );
 
   m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).
