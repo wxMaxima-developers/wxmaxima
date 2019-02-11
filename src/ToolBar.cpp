@@ -320,7 +320,7 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
   const unsigned display_idx = wxDisplay::GetFromWindow(parent);
   m_ppi = (display_idx != wxNOT_FOUND ? wxDisplay(display_idx) : wxDisplay(0u)).GetPPI();
 #else
-  m_ppi = wxGetDisplayPPI().x;
+  m_ppi = wxGetDisplayPPI();
 #endif
   int sliderWidth = MAX(m_ppi.x,75) * 200 / 72;
   int width, height;
@@ -372,8 +372,6 @@ void ToolBar::UpdateBitmaps()
   else
     m_ppi = ppi;
 
-  std::cerr<<m_ppi.x<<","<<m_ppi.y<<"\n";
-  std::cerr<<ppi.x<<"+"<<ppi.y<<"\n";
   SetToolBitmap(tb_new,GetImage(wxT("gtk-new"),
                                 gtk_new_128_png,gtk_new_128_png_len,
                                 gtk_new_192_png,gtk_new_192_png_len));
