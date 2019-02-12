@@ -888,7 +888,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_client->SetNotify(wxSOCKET_INPUT_FLAG);
       m_client->Notify(true);
       m_client->SetFlags(wxSOCKET_NOWAIT);
-      m_client->SetTimeout(1);
+      m_client->SetTimeout(2);
       SetupVariables();
 
       // Start the evaluation. If the evaluation queue isn't empty, that is.
@@ -1207,6 +1207,7 @@ void wxMaxima::KillMaxima()
 
   if(m_client)
   {
+    m_client->SetFlags(wxSOCKET_WAITALL);
     // Try to gracefully close maxima.
     if (m_inLispMode)
       SendMaxima(wxT("($quit)"));
