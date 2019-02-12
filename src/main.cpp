@@ -89,12 +89,15 @@ bool MyApp::OnInit()
     wxString dirName(xdgDir.GetPath());
     if(!wxDirExists(dirName))
       wxMkDir(dirName,0x700);
+    wxLogNull blocker;
     if(wxFileExists(configFileOld))
       wxCopyFile(configFileOld,configFileXDG);
   }
   #endif
   #endif
-  
+
+  wxConfig::Set(new wxFileConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName));
+
   atexit(Cleanup);
   int lang = wxLANGUAGE_UNKNOWN;
 
@@ -267,6 +270,7 @@ bool MyApp::OnInit()
 
 int MyApp::OnExit()
 {
+  wxConfig::Get()->Flush();
   wxDELETE(m_dirstruct);
   m_dirstruct = NULL;
   return true;

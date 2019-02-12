@@ -347,7 +347,7 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
           wxSizeEventHandler(ToolBar::OnSize),
           NULL, this);
   Realize();
-  SetInitialSize(wxSize(GetBestSize().x,100000));
+  SetInitialSize(wxSize(100000,GetBestSize().y));
   Realize();
 }
 
