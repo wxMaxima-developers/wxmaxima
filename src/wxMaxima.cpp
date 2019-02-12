@@ -1207,6 +1207,7 @@ void wxMaxima::KillMaxima()
 
   if(m_client)
   {
+    // Make wxWidgets close the connection only after we have sent the close command.
     m_client->SetFlags(wxSOCKET_WAITALL);
     // Try to gracefully close maxima.
     if (m_inLispMode)
