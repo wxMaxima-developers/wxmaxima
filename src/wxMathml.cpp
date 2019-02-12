@@ -18,12 +18,12 @@ wxString wxMathML::GetCmd()
     wxString lineWithoutComments;
 
     bool stringIs = false;
-    wxChar lastChar=wxT(' ');
+    wxChar lastChar=wxT('\n');
     wxString::iterator ch = line.begin();
     while (ch < line.end())
     {
       // Remove formatting spaces
-      if(((lastChar == ' ') && (*ch == ' ')) && (!stringIs))
+      if(((lastChar == '\n') && (*ch == ' ')))
 	  ch++;
       else
 	{

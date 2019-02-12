@@ -1219,6 +1219,9 @@ void wxMaxima::KillMaxima()
     m_client = NULL;
   }
 
+  if(m_xmlInspector != NULL)
+    m_xmlInspector->Clear();
+
   // Just to be absolutely sure: Additionally try to kill maxima
   if (m_pid > 0)
   {
