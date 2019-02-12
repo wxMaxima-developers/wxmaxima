@@ -260,8 +260,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
 wxMaxima::~wxMaxima()
 {
   KillMaxima();
-  wxDELETE(m_printData);
-  m_printData = NULL;
+  wxDELETE(m_printData);m_printData = NULL;
 }
 
 
@@ -2443,7 +2442,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
     RightStatusText(_("File could not be opened"));
     return false;
   }
-
 
   wxDELETE(fsfile);
 
@@ -8478,6 +8476,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
   }
 
   wxDELETE(inputStream);
+  inputStream = NULL;
   connection.Close();
 }
 

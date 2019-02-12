@@ -1311,6 +1311,7 @@ void wxMaximaFrame::ReReadConfig()
     wxConfigBase *config = wxConfig::Get();
     config->Flush();
     wxDELETE(config);
+    config = NULL;
     wxConfig::Set(new wxFileConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName));
   }
   // Re-Reading the config isn't necessary on the Mac where all windows share the same
@@ -1322,6 +1323,7 @@ void wxMaximaFrame::ReReadConfig()
     wxConfigBase *config = wxConfig::Get();
     config->Flush();
     wxDELETE(config);
+    config = NULL;
     wxConfig::Set(new wxConfig(wxT("wxMaxima")));
     }
 #endif
