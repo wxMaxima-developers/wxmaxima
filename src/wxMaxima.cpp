@@ -7014,7 +7014,7 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   if (m_worksheet->GetTree())
     m_worksheet->DestroyTree();
   event.Skip();
-  Destroy();
+//  Destroy();
 
   RemoveTempAutosavefile();
 }
