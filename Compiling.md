@@ -43,6 +43,12 @@ working a typical cause is that the keyboard driver, a window manager or a
 similar entity suppresses them. In this case installing ibus normally resolves
 the problem.
 
+
+CentOS / Redhat have rather old versions of CMake and wxWidgets installed,
+install "cmake3" and "wxGTK3-devel" from the "Extra Packages for Enterprise Linux (EPEL)"
+repository, to compile wxMaxima. (and use "cmake3" instead of "cmake" to call
+the newer version of CMake in the commands above).
+
 ### Compiling on Mac OS X
 
 On Mac OS X you should install XCode. To build wxMaxima open the
@@ -66,7 +72,7 @@ Additional information about installing and configuring wxMaxima
 
 ### Documentation of the source
 
-An html version of wxMaxima's documentation can be found at 
+An html version of wxMaxima's documentation can be found at
 https://www.peterpall.de/wxMaxima/html/index.xhtml
 
 A local version of the documentation of wxMaxima's source can be
@@ -74,6 +80,6 @@ generated using doxygen and the
 
     make html
 
-target. 
+target.
 
 
