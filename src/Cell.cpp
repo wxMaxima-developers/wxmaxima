@@ -332,7 +332,8 @@ int Cell::GetLineWidth()
  */
 void Cell::Draw(wxPoint point)
 {
-  SetCurrentPoint(point);
+  if((m_height > 0) && (point.y > 0))
+    SetCurrentPoint(point);
 
   // Tell the screen reader that this cell's contents might have changed.
 

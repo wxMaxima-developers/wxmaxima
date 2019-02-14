@@ -352,6 +352,12 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     return;
   }
 
+  if (m_configuration->GetPrinting())
+  {
+    RequestRedraw();
+    return;
+  }
+
   // Inform all cells how wide our display is
   m_configuration->SetCanvasSize(GetClientSize());
   wxMemoryDC dcm;
