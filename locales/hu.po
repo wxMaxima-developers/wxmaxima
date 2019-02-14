@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-02-09 11:52+0100\n"
-"PO-Revision-Date: 2018-10-05 09:15+0200\n"
+"PO-Revision-Date: 2019-02-14 12:11+0100\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.1.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: /home/gunter/src/wxmaxima/src/StatusBar.cpp:148
@@ -662,7 +662,7 @@ msgstr ""
 "Minden megnyitható típus (*.wxm, *.wxmx, *.mac, *.out, *.xml)|*.wxm;*.wxmx;*."
 "mac;*.out;*.xml|wxMaxima dokumentum (*.wxm, *.wxmx)|*.wxm;*.wxmx|Maxima "
 "munkalap (*.mac)|*.mac|Xmaxima munkalap (*.out)|*.out|xml problémás .wxmx (*."
-"xml)|*.xml | fájlokból"
+"xml)|*.xml fájlokból"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:589
 msgid "All variable names"
@@ -1927,7 +1927,7 @@ msgstr "Kifejezés megjelenítése TeX formátumban"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:512
 #, c-format
 msgid "Display resolution according to wxWidgets: %i x %i ppi"
-msgstr ""
+msgstr "A felbontás a wxWidgets szerint:% i x% i ppi"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:788
 msgid "Display time used for evaluation"
@@ -2114,11 +2114,11 @@ msgstr "A paraméter értékének vége"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1886
 msgid "Ended lisp mode after receiving a maxima prompt!"
-msgstr ""
+msgstr "Egy Maxima prompt megjelenése miatt a Lisp mód véget ért!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7646
 msgid "Ending lisp mode!"
-msgstr ""
+msgstr "Lisp mód vége!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1156
 msgid "Engineering format (12.1e6 etc.)"
@@ -2784,6 +2784,16 @@ msgid ""
 "   Ctrl+6: Heading5 cell\n"
 "   Ctrl+7: Heading6 cell\n"
 msgstr ""
+"Cellák gyorsabb létrehozásához az alábbi billentyűkombinációk léteznek:\n"
+"\n"
+"   Ctrl+0: Matematika cella\n"
+"   Ctrl+1: Szövegcella\n"
+"   Ctrl+2: Címcella\n"
+"   Ctrl+3: Fejezet cella\n"
+"   Ctrl+4: Alfejezet cella\n"
+"   Ctrl+5: Al-alfejezet cella\n"
+"   Ctrl+6: 5.címcella\n"
+"   Ctrl+7: 6.címcella\n"
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:62
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:61
@@ -2980,7 +2990,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:776
 msgid "Got notified about data from maxima, but there was no data."
-msgstr ""
+msgstr "A Maxima adatokról értesült, de nem volt adat."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:850
 msgid "Greek"
@@ -3312,6 +3322,8 @@ msgid ""
 "Indent maths so all lines are in par with the first line that starts after "
 "the label."
 msgstr ""
+"A matematikái sorok ki vannak jelölve, így minden sor párban van a címke "
+"után kezdődő első sorral."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5465
 msgid "Index End:"
@@ -3784,7 +3796,7 @@ msgstr "Lineáris regresszió..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3006
 msgid "Lisp mode."
-msgstr ""
+msgstr "Lisp mód."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5567
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5591
@@ -4654,7 +4666,7 @@ msgstr "Mátrix megnyitása"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2327
 msgid "Opening a wxmx file"
-msgstr ""
+msgstr "Egy wxmx fájl megnyitása."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1996
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2251
@@ -4946,7 +4958,7 @@ msgstr "Pop"
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1263
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1359
 msgid "Popout interactively"
-msgstr ""
+msgstr "Popout interaktív módon"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:859
 msgid "Portuguese (Brazilian)"
@@ -5024,7 +5036,7 @@ msgstr "RTF OMML matematikával"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:640
 msgid "Raw XML Monitor"
-msgstr ""
+msgstr "Nyers XML-monitor"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:496
 msgid "Raw XML monitor"
@@ -5053,15 +5065,15 @@ msgstr "Bemeneti adatok fogadása"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:812
 msgid "Recalculating all cell sizes"
-msgstr ""
+msgstr "Az összes cellaméret újraszámítása"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:810
 msgid "Recalculating all cell sizes inclusive text dimensions"
-msgstr ""
+msgstr "Az összes cellaméret újraszámítása, beleértve a szövegméreteket"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:815
 msgid "Recalculating changed cell sizes"
-msgstr ""
+msgstr "Az összes cellaméret újraszámítása"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:742
 msgid "Recall next command from history"
@@ -5074,7 +5086,7 @@ msgstr "Az előző parancs előhozása az előzmények közül"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1355
 #, c-format
 msgid "Received maxima's first prompt: %s"
-msgstr ""
+msgstr "A Maxima első promptja :% s"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:886
 msgid "Recent files list length:"
@@ -5522,6 +5534,8 @@ msgstr "Megszakítási jel küldése a Maximának."
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2682
 msgid "Sending maxima the info how to express 2d maths as XML"
 msgstr ""
+"Információ küldése a Maximának, hogy hogyan fejezzük ki a 2d matematikát XML-"
+"ként"
 
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:66
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6172
@@ -6006,7 +6020,7 @@ msgstr "A szerver elindult és az alábbi porton figyel %d"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6238
 msgid "Starting to save the worksheet as .wxmx"
-msgstr ""
+msgstr "Munkalap mentése .wxmx formátumban"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:242
 msgid "Startup commands"
@@ -6080,15 +6094,15 @@ msgstr "Szummajel"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1880
 msgid "Switched to lisp mode after receiving a lisp prompt!"
-msgstr ""
+msgstr "Lisp módba váltott, miután a Lisp promptot megkapta!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7736
 msgid "Switching to lisp mode for one line!"
-msgstr ""
+msgstr "Váltás Lisp módra egy sorban!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7711
 msgid "Switching to lisp mode until a (to-maxima) is encountered!"
-msgstr ""
+msgstr "Lisp módba való átkapcsolás, amíg a (to-maxima) meg nem jelenik!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:634
 msgid "Symbols\tAlt+Shift+Y"
@@ -6485,7 +6499,7 @@ msgid ""
 msgstr ""
 "XML hiba lépett fel!\n"
 " \n"
-" Kérem jelentse a hibát."
+"Kérem jelentse a hibát."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1659
 msgid "Theta"
@@ -6706,12 +6720,12 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3440
 msgid "Trying to open a file with an empty name!"
-msgstr ""
+msgstr "Egy üres nevű fájl megnyitása!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3445
 #, c-format
 msgid "Trying to open the non-existing file %s"
-msgstr ""
+msgstr "Megpróbál megnyitni a nem létező fájlt (% s)"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:862
 msgid "Turkish"
@@ -7263,7 +7277,7 @@ msgstr "khí"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:973
 msgid "choose a lisp maxima was compiled with"
-msgstr "válassza ki, a Maxima melyik lisp fordítóval lett buildelve"
+msgstr "válassza ki, a Maxima melyik Lisp fordítóval lett buildelve"
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:65
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:389
@@ -7633,7 +7647,7 @@ msgstr "wxMaxima"
 #: /home/gunter/src/wxmaxima/src/main.cpp:284
 #, c-format
 msgid "wxMaxima %d"
-msgstr ""
+msgstr "wxMaxima %d"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8250
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8252
@@ -7774,7 +7788,7 @@ msgstr "wxMaxima indító fájl helye: "
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6489
 msgid "wxmx file saved"
-msgstr ""
+msgstr "wxmx fájl elmentve"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:550
 msgid "x"
