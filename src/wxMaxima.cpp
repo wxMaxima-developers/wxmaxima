@@ -1694,9 +1694,15 @@ void wxMaxima::ReadVariables(wxString &data)
               wxLogMessage(wxString::Format("Maxima uses temp directory %s",value));
             }
             if(name == "*autoconf-version*")
+            {
               m_maximaVersion = value;
+              wxLogMessage(wxString::Format("Maxima version: %s",value));
+            }
             if(name == "*autoconf-host*")
+            {
               m_maximaArch = value;
+              wxLogMessage(wxString::Format("Maxima architecture: %s",value));
+            }
             if(name == "*maxima-infodir*")
             {
               m_maximaDocDir = value;
@@ -1715,7 +1721,10 @@ void wxMaxima::ReadVariables(wxString &data)
               wxLogMessage(wxString::Format("Maxima was compiled using %s",value));
             }
             if(name == "*lisp-version*")
+            {
               m_lispVersion = value;
+              wxLogMessage(wxString::Format("Lisp version: %s",value));
+            }
             if(name == "*wx-load-file-name*")
             {
               if(m_nestedLoadCommands == 0)
