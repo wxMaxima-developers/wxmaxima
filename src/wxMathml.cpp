@@ -1,6 +1,8 @@
 #include "wxMathml.h"
 #include "../data/wxMathML.h"
 #include <iostream>
+#include <wx/wx.h>
+#include <wx/string.h>
 
 wxMathML::wxMathML()
 { 
@@ -51,5 +53,7 @@ wxString wxMathML::GetCmd()
     }
     cmd += lineWithoutComments + " ";
   }
+  std::cerr<<cmd.Length();
+  wxASSERT_MSG(cmd.Length()>58000,_("Compiler-Bug? wxMathml.lisp is shorter than expected!"));
   return wxT(":lisp-quiet ") + cmd + "\n";
 }
