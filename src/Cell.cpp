@@ -453,15 +453,31 @@ wxRect Cell::GetRect(bool all)
 
 bool Cell::InUpdateRegion(const wxRect &rect)
 {
+  wxRect updateRegion = (*m_configuration)->GetUpdateRegion();
   if (!(*m_configuration)->ClipToDrawRegion())
     return true;
 
-  if((*m_configuration)->GetUpdateRegion().Contains(m_currentPoint))
+  // If we have deferred the recalculation of the cell height but now
+  // got a draw request due to moving the mouse wheel we need to guess
+  // the cell size 
+  if(m_height < 0)
+  {
+    int height = 0;
+    if(m_next)
+      height = m_next->m_currentPoint.y - m_currentPoint.y;
+
+    if ((updateRegion.GetBottom() >= m_currentPoint.y) &&
+        (updateRegion.GetTop() <= m_currentPoint.y+height))
+    return true;
+  }
+
+  if(updateRegion.Contains(m_currentPoint))
     return true;
 
-  return (*m_configuration)->GetUpdateRegion().Intersects(rect) ||
-    (*m_configuration)->GetUpdateRegion().Contains(rect) ||
-    ((*m_configuration)->GetUpdateRegion() == rect);
+  
+  return updateRegion.Intersects(rect) ||
+    updateRegion.Contains(rect) ||
+    (updateRegion == rect);
 }
 
 void Cell::DrawBoundingBox(wxDC &dc, bool all)

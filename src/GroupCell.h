@@ -236,6 +236,7 @@ public:
   void RecalculateHeight(int fontsize);
   //! Recalculate the height of the input part of the cell
   void RecalculateHeightInput();
+  virtual wxRect GetRect(bool all = false);
   /*! Recalculate the height of the output part of the cell
 
     \attention Needs to be in sync with the height calculation done during Draw() and

@@ -1051,6 +1051,12 @@ void GroupCell::Draw(wxPoint point)
   }
 }
 
+wxRect GroupCell::GetRect(bool WXUNUSED(all))
+{
+  return wxRect(m_currentPoint.x, m_currentPoint.y - m_center,
+                m_width, m_height);
+}
+
 int GroupCell::GetLineIndent(Cell *cell)
 {
   int indent = 0;
