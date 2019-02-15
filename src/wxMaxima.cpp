@@ -260,6 +260,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
 wxMaxima::~wxMaxima()
 {
   KillMaxima();
+  MyApp::m_topLevelWindows.remove(this);
   wxDELETE(m_printData);m_printData = NULL;
 }
 
@@ -1179,6 +1180,8 @@ void wxMaxima::KillMaxima()
   if((m_pid > 0) && (m_client == NULL))
     return;
 
+  m_isRunning = false;
+
   wxLogMessage(_("Killing Maxima."));
   m_nestedLoadCommands = 0;
   m_configCommands = wxEmptyString;
@@ -1203,7 +1206,8 @@ void wxMaxima::KillMaxima()
   m_maximaStderr = NULL;
 
   wxDELETE(m_clientTextStream);m_clientTextStream = NULL;
-  wxDELETE(m_clientStream); m_clientStream = NULL;
+  //  wxDELETE(m_clientStream);
+  m_clientStream = NULL;
 
   if(m_client)
   {
@@ -1216,8 +1220,7 @@ void wxMaxima::KillMaxima()
       SendMaxima(wxT("quit();"));
 
     // The following command should close maxima, as well.
-    m_client->Close();
-    m_client = NULL;
+    m_client->Close(); m_client = NULL;
     if(m_xmlInspector != NULL)
       m_xmlInspector->Clear();
   }
@@ -1305,17 +1308,6 @@ void wxMaxima::CleanUp()
 {
   if (m_isConnected)
     KillMaxima();
-
-  if (m_isRunning)
-  {
-    if (m_server)
-      m_server->Destroy();
-    m_server = NULL;
-  }
-  if(m_process)
-    m_process->Detach();
-  m_process = NULL;
-
 }
 
 ///--------------------------------------------------------------------------------
@@ -6979,14 +6971,20 @@ void wxMaxima::OnClose(wxCloseEvent &event)
     if(m_isNamed && (m_worksheet->m_configuration->AutoSaveInterval() > 0))
     {
       if (!SaveFile())
+      {
         event.Veto();
+        return;
+      }
     }
     else
     {      
       int close = SaveDocumentP();
       
       if (close == wxID_CANCEL)
+      {
         event.Veto();
+        return;
+      }
       else
       {
         if (close == wxID_YES)
@@ -7007,23 +7005,22 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   if (m_lastPath.Length() > 0)
     config->Write(wxT("lastPath"), m_lastPath);
   m_closing = true;
-  CleanUp();
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
-  MyApp::m_topLevelWindows.remove(this);
   // Allow the operating system to keep the clipboard's contents even after we
-  // exit - if that ioption is supported by the OS.
-  if(wxTheClipboard->Open())
-  {
-    wxTheClipboard->Flush();
-    wxTheClipboard->Close();
-  }
-  if (m_worksheet->GetTree())
-    m_worksheet->DestroyTree();
+  // exit - if that option is supported by the OS.
+  //  if(wxTheClipboard->Open())
+  // {
+  //  wxTheClipboard->Flush();
+  //  wxTheClipboard->Close();
+  // }
+  KillMaxima();
   event.Skip();
+  MyApp::m_topLevelWindows.remove(this);
 //  Destroy();
 
   RemoveTempAutosavefile();
+  CleanUp();
 }
 
 void wxMaxima::PopupMenu(wxCommandEvent &event)

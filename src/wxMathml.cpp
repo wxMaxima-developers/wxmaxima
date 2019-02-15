@@ -53,7 +53,6 @@ wxString wxMathML::GetCmd()
     }
     cmd += lineWithoutComments + " ";
   }
-  std::cerr<<cmd.Length();
   wxASSERT_MSG(cmd.Length()>58000,_("Compiler-Bug? wxMathml.lisp is shorter than expected!"));
   return wxT(":lisp-quiet ") + cmd + "\n";
 }
