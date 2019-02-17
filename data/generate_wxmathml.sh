@@ -1,6 +1,6 @@
 #!/bin/sh
 
-gzip wxMathML.lisp
+gzip -k wxMathML.lisp
 # convert wxMathml.lisp to C Sourcecode (using xxd -i)
 
     cat >wxMathML.h <<END
