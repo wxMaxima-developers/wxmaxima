@@ -3,22 +3,22 @@
 # This file is distributed under the same license as the wxMaxima package.
 #
 # Sergey Semerikov <cc@kpi.dp.ua>, 2007.
-# Yuri Chornoivan <yurchor@ukr.net>, 2013, 2015, 2016, 2017, 2018.
+# Yuri Chornoivan <yurchor@ukr.net>, 2013, 2015, 2016, 2017, 2018, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-02-17 14:44+0100\n"
-"PO-Revision-Date: 2018-07-13 16:18+0200\n"
+"PO-Revision-Date: 2019-02-17 16:54+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Lokalize 2.0\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
+"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 19.03.70\n"
 
 #: /home/gunter/src/wxmaxima/src/StatusBar.cpp:148
 #, c-format
@@ -519,11 +519,11 @@ msgstr "Статичний графік"
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4889
 msgid "A sub-sub-sub-subsection heading"
-msgstr ""
+msgstr "Заголовок під-під-під-підрозділу"
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4886
 msgid "A sub-sub-subsection heading"
-msgstr ""
+msgstr "Заголовок під-під-підрозділу"
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4883
 msgid "A sub-subsection heading"
@@ -782,12 +782,13 @@ msgstr "Автовідступ у нових рядках"
 #, c-format
 msgid "Autocompletion: Scanning %s for loadable demo files."
 msgstr ""
+"Автодоповнення: шукаємо у %s придатні до завантаження файли демонстрацій."
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:4695
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:4705
 #, c-format
 msgid "Autocompletion: Scanning %s for loadable lisp files."
-msgstr ""
+msgstr "Автодоповнення: шукаємо у %s придатні до завантаження файли lisp."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:601
 #, c-format
@@ -819,7 +820,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:875
 msgid "Autosave on close and every n minutes (0 means: off):"
-msgstr ""
+msgstr "Автозбереження під час виходу та кожні n хвилин (0 — вимкнути):"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:658
 msgid "Autosubscript"
@@ -918,6 +919,7 @@ msgstr "Перегляд"
 msgid ""
 "Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"
 msgstr ""
+"Вада: після вилучення пробілів wxMathml.lisp виявився коротшим за очікуваний!"
 
 #: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:4857
 msgid "Bug: Autocompletion requested for unknown type of item."
@@ -1214,9 +1216,8 @@ msgstr ""
 "налаштовування не вказано виконуваного файла."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4292
-#, fuzzy
 msgid "Cannot start gnuplot"
-msgstr "Статичний графік"
+msgstr "Не вдалося запустити gnuplot"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1006
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:159
@@ -1404,7 +1405,7 @@ msgstr "Закоментувати позначене\tCtrl+/"
 
 #: /home/gunter/src/wxmaxima/src/wxMathml.cpp:27
 msgid "Compiler-Bug? wxMathml.lisp is shorter than expected!"
-msgstr ""
+msgstr "Вада компілятора? wxMathml.lisp є коротшим за очікуваний!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:708
 msgid "Complete Word\tCtrl+K"
@@ -1605,7 +1606,7 @@ msgstr "Копіювати попередній результат\tCtrl+U"
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1387
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:596
 msgid "Copy as EMF"
-msgstr ""
+msgstr "Копіювати як EMF"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1285
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1378
@@ -1656,7 +1657,7 @@ msgstr "Копіювати позначене"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:597
 msgid "Copy selection from document as an Enhanced Metafile"
-msgstr ""
+msgstr "Скопіювати позначений фрагмент документа як дані EMF"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:590
 msgid "Copy selection from document as an SVG image"
@@ -1908,7 +1909,7 @@ msgstr "Заголовок діаграми"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:199
 msgid "Did you know?"
-msgstr ""
+msgstr "Чи знаєте ви це?"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1499
 msgid "Diff..."
@@ -1956,7 +1957,7 @@ msgstr "Показати останній результат у форматі T
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:512
 #, c-format
 msgid "Display resolution according to wxWidgets: %i x %i ppi"
-msgstr ""
+msgstr "Роздільність показу за даними wxWidgets: %i x %i точок на дюйм"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:788
 msgid "Display time used for evaluation"
@@ -2054,6 +2055,8 @@ msgstr "Ви&йти\tCtrl+Q"
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:1006
 msgid "EditorCell Ignoring the font name as the selected font didn't work"
 msgstr ""
+"EditorCell: ігноруємо назву шрифту, оскільки використання вибраного шрифту не"
+" спрацює"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:879
 msgid "Eige&nvectors"
@@ -2140,11 +2143,11 @@ msgstr "Кінцеве значення параметра"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1890
 msgid "Ended lisp mode after receiving a maxima prompt!"
-msgstr ""
+msgstr "Роботу у режимі lisp завершено після отримання запиту maxima!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7652
 msgid "Ending lisp mode!"
-msgstr ""
+msgstr "Вихід із режиму lisp!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1156
 msgid "Engineering format (12.1e6 etc.)"
@@ -2164,7 +2167,7 @@ msgstr "Розширені параметр просторового:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1033
 msgid "Enhanced meta file (emf)"
-msgstr ""
+msgstr "Удосконалений метафайл (emf)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6762
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6771
@@ -2331,13 +2334,13 @@ msgstr "Обчислити комірки нижче"
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1484
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1538
 msgid "Evaluate Heading 5\tShift+Ctrl+Enter"
-msgstr ""
+msgstr "Обчислити заголовок 5\tShift+Ctrl+Enter"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1348
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1488
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1548
 msgid "Evaluate Heading 6\tShift+Ctrl+Enter"
-msgstr ""
+msgstr "Обчислити заголовок 6\tShift+Ctrl+Enter"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1319
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1469
@@ -2441,7 +2444,7 @@ msgstr "Розкрити тригонометричний вираз"
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:239
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4063
 msgid "Export"
-msgstr "Експортувати"
+msgstr "Експорт"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:803
 msgid ""
@@ -2809,6 +2812,16 @@ msgid ""
 "   Ctrl+6: Heading5 cell\n"
 "   Ctrl+7: Heading6 cell\n"
 msgstr ""
+"Для пришвидшення створення комірок передбачено такі комбінації клавіш:\n"
+"\n"
+"   Ctrl+0: Комірка з рівнянням\n"
+"   Ctrl+1: Комірка з текстом\n"
+"   Ctrl+2: Комірка із заголовком\n"
+"   Ctrl+3: Комірка розділу\n"
+"   Ctrl+4: Комірка підрозділу\n"
+"   Ctrl+5: Комірка підпідрозділу\n"
+"   Ctrl+6: Комірка heading5\n"
+"   Ctrl+7: Комірка heading6\n"
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:62
 #: /home/gunter/src/wxmaxima/src/Plot3dWiz.cpp:61
@@ -2987,11 +3000,11 @@ msgstr "Знайти дійсну частину комплексного вир
 
 #: /home/gunter/src/wxmaxima/src/Image.cpp:255
 msgid "Gnuplot Data File Name: "
-msgstr ""
+msgstr "Назва файла даних gnuplot: "
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1262
 msgid "Gnuplot has closed."
-msgstr ""
+msgstr "Gnuplot закрито."
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6996
 msgid ""
@@ -3004,6 +3017,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:776
 msgid "Got notified about data from maxima, but there was no data."
 msgstr ""
+"Отримано сповіщення щодо надходження даних від maxima, але дані не отримано."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:850
 msgid "Greek"
@@ -3040,20 +3054,20 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1089
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1813
 msgid "Heading 5"
-msgstr ""
+msgstr "Заголовок 5"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1088
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1815
 msgid "Heading 6"
-msgstr ""
+msgstr "Заголовок 6"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:285
 msgid "Heading5"
-msgstr ""
+msgstr "Заголовок5"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:286
 msgid "Heading6"
-msgstr ""
+msgstr "Заголовок6"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:344
 msgid "Help"
@@ -3077,11 +3091,11 @@ msgstr "Приховати комірки з кодом\tAlt+Ctrl+H"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1545
 msgid "Hide Heading 5"
-msgstr ""
+msgstr "Приховати заголовок 5"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1555
 msgid "Hide Heading 6"
-msgstr ""
+msgstr "Приховати заголовок 6"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1507
 msgid "Hide Part"
@@ -3336,13 +3350,15 @@ msgstr "Покроковий пошук"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:615
 msgid "Indent equations by the label width"
-msgstr ""
+msgstr "Відступ у рівняннях на ширину мітки"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:380
 msgid ""
 "Indent maths so all lines are in par with the first line that starts after "
 "the label."
 msgstr ""
+"Встановити відступ у рівняннях так, щоб усі рядки було вирівняно за першим"
+" рядком, який розпочинається після мітки."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5466
 msgid "Index End:"
@@ -3420,11 +3436,11 @@ msgstr "Вставити комірку\tAlt+Shift+C"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1428
 msgid "Insert Heading5 Cell"
-msgstr ""
+msgstr "Вставити комірку Heading5"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1429
 msgid "Insert Heading6 Cell"
-msgstr ""
+msgstr "Вставити комірку Heading6"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8176
 msgid "Insert Image"
@@ -3476,11 +3492,11 @@ msgstr "Вставити комірку заголовка"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:726
 msgid "Insert a new heading5 cell"
-msgstr ""
+msgstr "Вставити нову комірку heading5"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:728
 msgid "Insert a new heading7 cell"
-msgstr ""
+msgstr "Вставити нову комірку heading7"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:714
 msgid "Insert a new input cell"
@@ -3512,11 +3528,11 @@ msgstr "Вставити розрив сторінки"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:725
 msgid "Insert heading5 Cell\tCtrl+6"
-msgstr ""
+msgstr "Вставити комірку heading5\tCtrl+6"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:727
 msgid "Insert heading6 Cell\tCtrl+7"
-msgstr ""
+msgstr "Вставити комірку heading6\tCtrl+7"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:732
 msgid "Insert image"
@@ -3813,7 +3829,7 @@ msgstr "Лінійна регресія…"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3009
 msgid "Lisp mode."
-msgstr ""
+msgstr "Режим lisp."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5568
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5592
@@ -4694,7 +4710,7 @@ msgstr "Відкрити матрицю"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2331
 msgid "Opening a wxmx file"
-msgstr ""
+msgstr "Відкриваємо файл wxmx"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2000
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2255
@@ -4986,7 +5002,7 @@ msgstr "Виштовхнути"
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1268
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1364
 msgid "Popout interactively"
-msgstr ""
+msgstr "Інтерактивна поява"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:859
 msgid "Portuguese (Brazilian)"
@@ -5066,7 +5082,7 @@ msgstr "RTF із формулами у OMML"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:640
 msgid "Raw XML Monitor"
-msgstr ""
+msgstr "Монітор коду XML"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:496
 msgid "Raw XML monitor"
@@ -5094,15 +5110,16 @@ msgstr "Готова до введення команди"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:817
 msgid "Recalculating all cell sizes"
-msgstr ""
+msgstr "Повторно обчислюємо розміри усіх комірок"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:815
 msgid "Recalculating all cell sizes inclusive text dimensions"
 msgstr ""
+"Повторно обчислюємо для усіх комірок розміри із врахуванням розмірів тексту"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:820
 msgid "Recalculating changed cell sizes"
-msgstr ""
+msgstr "Повторно обчислюємо розміри змінених комірок"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:742
 msgid "Recall next command from history"
@@ -5301,9 +5318,8 @@ msgid "Rule:"
 msgstr "Правило:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4286
-#, fuzzy
 msgid "Running gnuplot as: "
-msgstr "Запускаємо maxima як: %s"
+msgstr "Запускаємо gnuplot як: "
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1002
 #, c-format
@@ -5565,6 +5581,8 @@ msgstr "Надсилаємо сигнал переривання Maxima."
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2685
 msgid "Sending maxima the info how to express 2d maths as XML"
 msgstr ""
+"Надсилаємо maxima дані щодо того, як виразити двовимірні математичні формули"
+" у форматі XML"
 
 #: /home/gunter/src/wxmaxima/src/SeriesWiz.cpp:66
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6173
@@ -5775,7 +5793,7 @@ msgstr "Показати визначення функції:"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:226
 msgid "Show tips at Startup"
-msgstr ""
+msgstr "Показувати підказки під час запуску"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1168
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1171
@@ -6044,7 +6062,7 @@ msgstr "Запуск сервера на порту %d"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6243
 msgid "Starting to save the worksheet as .wxmx"
-msgstr ""
+msgstr "Розпочинаємо збереження робочого аркуша у форматі .wxmx"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:242
 msgid "Startup commands"
@@ -6118,15 +6136,15 @@ msgstr "Знак суми"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1884
 msgid "Switched to lisp mode after receiving a lisp prompt!"
-msgstr ""
+msgstr "Перемкнулися до режиму lisp після отримання запиту lisp!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7742
 msgid "Switching to lisp mode for one line!"
-msgstr ""
+msgstr "Перемикаємося до режиму lisp для одного рядка!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7717
 msgid "Switching to lisp mode until a (to-maxima) is encountered!"
-msgstr ""
+msgstr "Перемикаємося до режиму lisp, аж доки не буде виявлено (to-maxima)!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:634
 msgid "Symbols\tAlt+Shift+Y"
@@ -6513,6 +6531,10 @@ msgid ""
 "https://wxMaxima-developers.github.io/wxmaxima/help.html for more "
 "information and to find tutorials on using wxMaxima and Maxima."
 msgstr ""
+"У інтернеті можна знайти багато сторінок, присвячених Maxima та wxMaxima "
+"Відвідайте сторінку https://wxMaxima-developers.github.io/wxmaxima/help.html,"
+" щоб "
+"дізнатися більше і пошукати підручники щодо користування wxMaxima та Maxima."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:515
 msgid ""
@@ -6595,11 +6617,11 @@ msgstr "Порядок:"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:42
 msgid "Tip of the Day"
-msgstr ""
+msgstr "Підказка дня"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:183
 msgid "Tip of the day"
-msgstr ""
+msgstr "Підказка дня"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:281
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1805
@@ -6745,12 +6767,12 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3443
 msgid "Trying to open a file with an empty name!"
-msgstr ""
+msgstr "Спроба відкрити файл із порожньою назвою!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3448
 #, c-format
 msgid "Trying to open the non-existing file %s"
-msgstr ""
+msgstr "Спроба відкрити файл %s, якого не існує"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:862
 msgid "Turkish"
@@ -6834,11 +6856,11 @@ msgstr "Скасувати приховування"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1542
 msgid "Unhide Heading 5"
-msgstr ""
+msgstr "Скасувати приховування заголовка 5"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1552
 msgid "Unhide Heading 6"
-msgstr ""
+msgstr "Скасувати приховування заголовка 6"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1504
 msgid "Unhide Part"
@@ -7672,7 +7694,7 @@ msgstr "wxMaxima"
 #: /home/gunter/src/wxmaxima/src/main.cpp:288
 #, c-format
 msgid "wxMaxima %d"
-msgstr ""
+msgstr "wxMaxima %d"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8256
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8258
@@ -7812,7 +7834,7 @@ msgstr "Розташування файла запуску wxMaxima: "
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6494
 msgid "wxmx file saved"
-msgstr ""
+msgstr "Збережено файл wxmx"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:550
 msgid "x"
