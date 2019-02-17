@@ -1,5 +1,6 @@
 #!/bin/sh
 
+gzip wxMathML.lisp
 # convert wxMathml.lisp to C Sourcecode (using xxd -i)
 
     cat >wxMathML.h <<END
@@ -24,4 +25,4 @@
 END
 
 echo "Converting wxMathML.lisp to embeddable C code"
-xxd -i "wxMathML.lisp" >> "wxMathML.h"
+xxd -i "wxMathML.lisp.gz" >> "wxMathML.h"
