@@ -4692,7 +4692,7 @@ bool AutoComplete::LoadSymbols()
     {
       wxLogMessage(
         wxString::Format(
-          _("Scanning %s for loadable lisp files."),
+          _("Autocompletion: Scanning %s for loadable lisp files."),
           m_configuration->MaximaShareDir()));
       wxDir maximadir(m_configuration->MaximaShareDir());
       if(maximadir.IsOpened())
@@ -4702,7 +4702,7 @@ bool AutoComplete::LoadSymbols()
     wxDir maximauserfilesdir(Dirstructure::Get()->UserConfDir());
       wxLogMessage(
         wxString::Format(
-          _("Scanning %s for loadable lisp files."),
+          _("Autocompletion: Scanning %s for loadable lisp files."),
           Dirstructure::Get()->UserConfDir()));
     if(maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
@@ -4714,7 +4714,7 @@ bool AutoComplete::LoadSymbols()
     GetDemoFiles_includingSubdirs maximaLispIterator (m_builtInDemoFiles);
     wxLogMessage(
       wxString::Format(
-        _("Scanning %s for loadable demo files."),
+        _("Autocompletion: Scanning %s for loadable demo files."),
         m_configuration->MaximaShareDir()+"/.."));
 
     wxDir maximadir(m_configuration->MaximaShareDir()+"/..");
