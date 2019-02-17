@@ -1703,9 +1703,9 @@ void wxMaxima::ReadVariables(wxString &data)
             if(name == "*maxima-sharedir*")
             {
               m_worksheet->m_configuration->MaximaShareDir(value);
+              wxLogMessage(wxString::Format("Maxima's share files lie in directory %s",value));
               /// READ FUNCTIONS FOR AUTOCOMPLETION
               m_worksheet->LoadSymbols();
-              wxLogMessage(wxString::Format("Maxima's share files lie in directory %s",value));
             }
             if(name == "*lisp-name*")
             {
@@ -7014,7 +7014,7 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   //  wxTheClipboard->Flush();
   //  wxTheClipboard->Close();
   // }
-  KillMaxima();
+  // KillMaxima();
   event.Skip();
   MyApp::m_topLevelWindows.remove(this);
 //  Destroy();
