@@ -25,18 +25,21 @@
 /*! \file
   This file defines the class wxMaximaFrame
 
-  wxMaximaFrame is responsible for everything that is displayed around the actual 
-  worksheet - which is displayed by MathCtrl and whose logic partially is defined in
+  wxMaximaFrame is responsible for everything that is displayed around the actual
+  worksheet - which is displayed by Worksheet and whose logic partially is defined in
   wxMaxima.
  */
 #include "wxMaximaFrame.h"
-#include "Dirstructure.h"
+#include "LogPane.h"
 
 #include <wx/artprov.h>
 #include <wx/config.h>
 #include <wx/image.h>
 #include <wx/filename.h>
 #include <wx/fileconf.h>
+#include <wx/stdpaths.h>
+#include <wx/persist/toplevel.h>
+#include <wx/display.h>
 #include "wxMaximaIcon.h"
 
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
@@ -48,6 +51,20 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_unsavedDocuments(wxT("unsaved")),
   m_recentPackages(wxT("packages"))
 {
+  SetName(title);
+  if(!wxPersistenceManager::Get().RegisterAndRestore(this))
+  {
+    wxSize winSize = wxDefaultSize;
+    if(winSize == wxDefaultSize)
+    {
+      winSize = wxSize(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )*.75,
+                    wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )*.75);
+      if (winSize.x<800) winSize.x=800;
+      if (winSize.y<600) winSize.y=600;
+    }
+    SetSize(winSize);
+  }
+
   m_isNamed = false;
   m_configFileName = configFile,
   m_updateEvaluationQueueLengthDisplay = true;
@@ -64,13 +81,13 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   wxDialog::EnableLayoutAdaptation(wxDIALOG_ADAPTATION_MODE_ENABLED);
 
   // console
-  m_console = new MathCtrl(this, -1, wxDefaultPosition, wxDefaultSize);
+  m_worksheet = new Worksheet(this, -1);
 
   // history
   m_history = new History(this, -1);
 
   // The table of contents
-  m_console->m_tableOfContents = new TableOfContents(this, -1, &m_console->m_configuration);
+  m_worksheet->m_tableOfContents = new TableOfContents(this, -1, &m_worksheet->m_configuration);
 
   m_xmlInspector = new XmlInspector(this, -1);
   SetupMenu();
@@ -84,20 +101,22 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   StatusMaximaBusy(waiting);
 
   // Add some shortcuts that aren't automatically set by menu entries.
-  wxAcceleratorEntry entries[11];
+  wxAcceleratorEntry entries[14];
   entries[0].Set(wxACCEL_CTRL, WXK_TAB, menu_autocomplete);
   entries[1].Set(wxACCEL_CTRL, WXK_SPACE, menu_autocomplete);
   entries[2].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_TAB, menu_autocomplete_templates);
   entries[3].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_SPACE, menu_autocomplete_templates);
-  entries[4].Set(wxACCEL_ALT, wxT('I'), MathCtrl::menu_zoom_in);
-  entries[5].Set(wxACCEL_ALT, wxT('O'), MathCtrl::menu_zoom_out);
+  entries[4].Set(wxACCEL_ALT, wxT('I'), Worksheet::menu_zoom_in);
+  entries[5].Set(wxACCEL_ALT, wxT('O'), Worksheet::menu_zoom_out);
   entries[6].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_ESCAPE, menu_convert_to_code);
-  entries[6].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('1'), menu_convert_to_comment);
-  entries[7].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('2'), menu_convert_to_title);
-  entries[8].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('3'), menu_convert_to_section);
-  entries[9].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('4'), menu_convert_to_subsection);
-  entries[10].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('5'), menu_convert_to_subsubsection);
-  wxAcceleratorTable accel(11, entries);
+  entries[7].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('1'), menu_convert_to_comment);
+  entries[8].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('2'), menu_convert_to_title);
+  entries[9].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('3'), menu_convert_to_section);
+  entries[10].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('4'), menu_convert_to_subsection);
+  entries[11].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('5'), menu_convert_to_subsubsection);
+  entries[12].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('6'), menu_convert_to_heading5);
+  entries[13].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('7'), menu_convert_to_heading6);
+  wxAcceleratorTable accel(14, entries);
   SetAcceleratorTable(accel);
 
   Move(pos);
@@ -106,6 +125,16 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   set_properties();
   do_layout();
 }
+
+wxSize wxMaximaFrame::DoGetBestClientSize() const
+{
+  wxSize size(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )*.6,
+              wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )*.6);
+  if (size.x<800) size.x=800;
+  if (size.y<600) size.y=600;
+  return size;
+}
+
 
 void wxMaximaFrame::EvaluationQueueLength(int length, int numberOfCommands)
 {
@@ -127,42 +156,42 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
       switch (m_StatusMaximaBusy)
       {
         case process_wont_start:
-          m_newStatusText = _("Cannot start the maxima binary");
+          RightStatusText(_("Cannot start the maxima binary"));
           break;
         case userinput:
           m_MenuBar->Enable(menu_remove_output, false);
-          m_newStatusText = _("Maxima asks a question");
+          RightStatusText(_("Maxima asks a question"));
           break;
         case waiting:
-          m_console->m_cellPointers.SetWorkingGroup(NULL);
+          m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
           // If we evaluated a cell that produces no output we still want the
           // cell to be unselected after evaluating it.
-          if (m_console->FollowEvaluation())
-            m_console->SetSelection(NULL);
+          if (m_worksheet->FollowEvaluation())
+            m_worksheet->SetSelection(NULL);
 
           m_MenuBar->Enable(menu_remove_output, true);
-          m_newStatusText = _("Ready for user input");
+          RightStatusText(_("Ready for user input"));
           // We don't evaluate any cell right now.
           break;
         case calculating:
           m_MenuBar->Enable(menu_remove_output, false);
-          m_newStatusText = _("Maxima is calculating");
+          RightStatusText(_("Maxima is calculating"), false);
           break;
         case transferring:
           m_MenuBar->Enable(menu_remove_output, false);
-          m_newStatusText = _("Reading Maxima output");
+          RightStatusText(_("Reading Maxima output"),false);
           break;
         case parsing:
           m_MenuBar->Enable(menu_remove_output, false);
-          m_newStatusText = ("Parsing output");
+          RightStatusText(_("Parsing output"),false);
           break;
         case disconnected:
           m_MenuBar->Enable(menu_remove_output, false);
-          m_newStatusText = _("Not connected to maxima");
+          RightStatusText(_("Not connected to maxima"));
           break;
         case wait_for_start:
           m_MenuBar->Enable(menu_remove_output, false);
-          m_newStatusText = _("Maxima started. Waiting for connection...");
+          RightStatusText(_("Maxima started. Waiting for connection..."));
           break;
       }
     }
@@ -174,7 +203,7 @@ void wxMaximaFrame::StatusSaveStart()
 {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = true;
-  m_newStatusText = _("Saving...");
+  RightStatusText(_("Saving..."));
 }
 
 void wxMaximaFrame::StatusSaveFinished()
@@ -184,14 +213,14 @@ void wxMaximaFrame::StatusSaveFinished()
   if (m_StatusMaximaBusy != waiting)
     StatusMaximaBusy(m_StatusMaximaBusy);
   else
-    m_newStatusText = _("Saving successful.");
+    RightStatusText(_("Saving successful."));
 }
 
 void wxMaximaFrame::StatusExportStart()
 {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = true;
-  m_newStatusText = _("Exporting...");
+  RightStatusText(_("Exporting..."));
 }
 
 void wxMaximaFrame::StatusExportFinished()
@@ -201,21 +230,21 @@ void wxMaximaFrame::StatusExportFinished()
   if (m_StatusMaximaBusy != waiting)
     StatusMaximaBusy(m_StatusMaximaBusy);
   else
-    m_newStatusText = _("Export successful.");
+    RightStatusText(_("Export successful."));
 }
 
 void wxMaximaFrame::StatusSaveFailed()
 {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = false;
-  m_newStatusText = _("Saving failed.");
+  RightStatusText(_("Saving failed."));
 }
 
 void wxMaximaFrame::StatusExportFailed()
 {
   m_forceStatusbarUpdate = true;
   m_StatusSaving = false;
-  m_newStatusText = _("Export failed.");
+  RightStatusText(_("Export failed."));
 }
 
 wxMaximaFrame::~wxMaximaFrame()
@@ -223,21 +252,15 @@ wxMaximaFrame::~wxMaximaFrame()
   wxString perspective = m_manager.SavePerspective();
 
   wxConfig::Get()->Write(wxT("AUI/perspective"), perspective);
-#if defined __WXMAC__ || defined __WXMSW__
-  wxConfig::Get()->Write(wxT("AUI/toolbar"),
-                         GetToolBar() != NULL && GetToolBar()->IsShown());
-#else
-  wxConfig::Get()->Write(wxT("AUI/toolbar"), (m_console->m_mainToolBar!=NULL));
-#endif
   m_manager.UnInit();
 
   // We cannot call delete here as we don't know if there are still timer-
   // or similar events pending for the wxWindows we want to free the memory
   // for.
   m_history->Destroy();
-  m_console->m_tableOfContents->Destroy();
-  m_console->m_tableOfContents = NULL;
-  m_console->Destroy();
+  m_worksheet->m_tableOfContents->Destroy();
+  m_worksheet->m_tableOfContents = NULL;
+  m_worksheet->Destroy();
 }
 
 void wxMaximaFrame::set_properties()
@@ -260,13 +283,13 @@ void wxMaximaFrame::set_properties()
   SetTitle(_("untitled"));
 #endif
 
-  m_console->SetBackgroundColour(wxColour(wxT("WHITE")));
-  m_console->SetMinSize(wxSize(100, 100));
+  m_worksheet->SetBackgroundColour(wxColour(wxT("WHITE")));
+  m_worksheet->SetMinSize(wxSize(100, 100));
 }
 
 void wxMaximaFrame::do_layout()
 {
-  m_manager.AddPane(m_console,
+  m_manager.AddPane(m_worksheet,
                     wxAuiPaneInfo().Name(wxT("console")).
                             Center().
                             CloseButton(false).
@@ -284,7 +307,7 @@ void wxMaximaFrame::do_layout()
                             PaneBorder(true).
                             Right());
 
-  m_manager.AddPane(m_console->m_tableOfContents,
+  m_manager.AddPane(m_worksheet->m_tableOfContents,
                     wxAuiPaneInfo().Name(wxT("structure")).
                             Show(true).CloseButton().PinButton().
                             TopDockable(true).
@@ -331,7 +354,7 @@ void wxMaximaFrame::do_layout()
                             FloatingSize(greekPane->GetEffectiveMinSize()).
                             Left());
 
-  wxPanel *logPane = CreateLogPane();
+  wxPanel *logPane = new LogPane(this, -1);
   m_manager.AddPane(logPane,
                     wxAuiPaneInfo().Name(wxT("log")).
                             Show(false).CloseButton().PinButton().
@@ -391,16 +414,27 @@ void wxMaximaFrame::do_layout()
                     RightDockable(true).
                     PaneBorder(true).
                     Left());
+
+  m_worksheet->m_mainToolBar = new ToolBar(this);
   
+  m_manager.AddPane(m_worksheet->m_mainToolBar,
+                    wxAuiPaneInfo().Name(wxT("toolbar")).
+                    ToolbarPane().Top().
+                    TopDockable(true).Show(true).
+                    BottomDockable(true).
+                    LeftDockable(false).
+                    RightDockable(false).Gripper(false).Row(1)
+    );
+
   m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).
     MinSize(greekPane->GetEffectiveMinSize()).
     BestSize(greekPane->GetEffectiveMinSize()).
     Show(true).Gripper(false).CloseButton().PinButton().
     MaxSize(greekPane->GetEffectiveMinSize());
-  
+
   m_manager.GetPane(wxT("log")) = m_manager.GetPane(wxT("log")).
     Show(false).Gripper(false).CloseButton().PinButton();
-  
+
   m_manager.GetPane(wxT("symbols")) = m_manager.GetPane(wxT("symbols")).
     MinSize(symbolsPane->GetEffectiveMinSize()).
     BestSize(symbolsPane->GetEffectiveMinSize()).
@@ -413,22 +447,33 @@ void wxMaximaFrame::do_layout()
     Show(true).CloseButton().PinButton().
     MaxSize(symbolsPane->GetEffectiveMinSize());
 
-  
+
   wxConfigBase *config = wxConfig::Get();
   bool loadPanes = true;
+  bool toolbarEnabled = true;
   wxString perspective;
+  config->Read(wxT("AUI/toolbarEnabled"), &toolbarEnabled);
   config->Read(wxT("AUI/savePanes"), &loadPanes);
   config->Read(wxT("AUI/perspective"), &perspective);
 
-  // Loads the window states. We tell wxaui not to recalculate and display the
-  // results of this step now as we will do so manually after
-  // eventually adding the toolbar.
-  if(perspective != wxEmptyString)
-    m_manager.LoadPerspective(perspective,false);
+  // Remove the toolbar with info from the perspective.
+  wxRegEx removeToolbarState(wxT("\\|[^\\|]*name=toolbar[^\\|]*"));
+  removeToolbarState.ReplaceAll(&perspective,wxT(""));
+  wxRegEx removeToolbarSize(wxT("\\|dock_size.1[^\\|]*"));
+  removeToolbarSize.ReplaceAll(&perspective,wxT(""));
 
+  if(perspective != wxEmptyString)
+  {
+    // Loads the window states. We tell wxaui not to recalculate and display the
+    // results of this step now as we will do so manually after
+    // eventually adding the toolbar.
+    m_manager.LoadPerspective(perspective,false);
+  }
+  m_worksheet->m_mainToolBar->Realize();
   // It somehow is possible to hide the maxima worksheet - which renders wxMaxima
   // basically useless => force it to be enabled.
   m_manager.GetPane(wxT("console")).Show(true);
+  m_manager.GetPane(wxT("toolbar")).Show(toolbarEnabled);
 
   // LoadPerspective overwrites the pane names with the saved ones -which can
   // belong to a translation different to the one selected currently =>
@@ -453,17 +498,26 @@ void wxMaximaFrame::do_layout()
     m_manager.GetPane(wxT("structure")).Caption(_("Table of Contents")).CloseButton().PinButton().Resizable();
   m_manager.GetPane(wxT("history")) = m_manager.GetPane(wxT("history")).Caption(_("History"))
     .CloseButton().PinButton().Resizable();
- 
-  bool toolbar = true;
-  config->Read(wxT("AUI/toolbar"), &toolbar);
-  ShowToolBar(toolbar);
-  
+
   m_manager.Update();
+  wxSize ppi;
+#if wxCHECK_VERSION(3, 1, 1)
+  wxDisplay display;
+  ppi = display.GetPPI();
+#else
+  ppi = wxGetDisplayPPI();
+#endif
+  wxLogMessage(
+    wxString::Format(
+      _("Display resolution according to wxWidgets: %i x %i ppi"),
+      ppi.x,
+      ppi.y)
+    );
 }
 
 void wxMaximaFrame::SetupMenu()
 {
-  m_MenuBar = new wxMenuBar();
+  m_MenuBar = new MainMenuBar();
 
 #define APPEND_MENU_ITEM(menu, id, label, help, stock)  \
   (menu)->Append((id), (label), (help), wxITEM_NORMAL);
@@ -518,15 +572,15 @@ void wxMaximaFrame::SetupMenu()
   m_EditMenu->Append(menu_cut, _("Cut\tCtrl+X"),
                      _("Cut selection"),
                      wxITEM_NORMAL);
-  APPEND_MENU_ITEM(m_EditMenu, menu_copy_from_console, _("&Copy\tCtrl+C"),
+  APPEND_MENU_ITEM(m_EditMenu, menu_copy_from_worksheet, _("&Copy\tCtrl+C"),
                    _("Copy selection"), wxT("gtk-copy"));
-  m_EditMenu->Append(menu_copy_text_from_console, _("Copy as Text\tCtrl+Shift+C"),
+  m_EditMenu->Append(menu_copy_text_from_worksheet, _("Copy as Text\tCtrl+Shift+C"),
                      _("Copy selection from document as text"),
                      wxITEM_NORMAL);
-  m_EditMenu->Append(menu_copy_tex_from_console, _("Copy as LaTeX"),
+  m_EditMenu->Append(menu_copy_tex_from_worksheet, _("Copy as LaTeX"),
                      _("Copy selection from document in LaTeX format"),
                      wxITEM_NORMAL);
-  m_EditMenu->Append(MathCtrl::popid_copy_mathml, _("Copy as MathML"),
+  m_EditMenu->Append(Worksheet::popid_copy_mathml, _("Copy as MathML"),
                      _("Copy selection from document in a MathML format many word processors can display as 2d equation"),
                      wxITEM_NORMAL);
   m_EditMenu->Append(menu_copy_as_bitmap, _("Copy as Image"),
@@ -538,6 +592,11 @@ void wxMaximaFrame::SetupMenu()
   m_EditMenu->Append(menu_copy_as_rtf, _("Copy as RTF"),
                      _("Copy selection from document as rtf that a word processor might understand"),
                      wxITEM_NORMAL);
+#if wxUSE_ENH_METAFILE
+  m_EditMenu->Append(menu_copy_as_emf, _("Copy as EMF"),
+                     _("Copy selection from document as an Enhanced Metafile"),
+                     wxITEM_NORMAL);
+#endif
   m_EditMenu->Append(menu_paste, _("Paste\tCtrl+V"),
                      _("Paste text from clipboard"),
                      wxITEM_NORMAL);
@@ -552,7 +611,7 @@ void wxMaximaFrame::SetupMenu()
                      _("Save selection from document to an image file"),
                      wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
-  m_EditMenu->Append(MathCtrl::popid_comment_selection, _("Comment selection\tCtrl+/"),
+  m_EditMenu->Append(Worksheet::popid_comment_selection, _("Comment selection\tCtrl+/"),
                      _("Comment out the currently selected text"),
                      wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
@@ -578,7 +637,7 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt+Shift+C"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_draw, _("Plot using Draw"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_log,   _("Debug messages"));
-  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector, _("XML Inspector"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector, _("Raw XML Monitor"));
   m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->AppendCheckItem(ToolBar::tb_hideCode, _("Hide Code Cells\tAlt+Ctrl+H"));
   m_Maxima_Panes_Sub->Append(menu_pane_hideall, _("Hide All Toolbars\tAlt+Shift+-"), _("Hide all panes"),
@@ -591,7 +650,7 @@ void wxMaximaFrame::SetupMenu()
   equationType->Append(menu_math_as_graphics, wxT("in 2D"), _("Nice Graphical Equations"), wxITEM_NORMAL);
 
   m_Maxima_Panes_Sub->Append(wxNewId(), _("Display equations"), equationType, _("How to display new equations"));
-  
+
   wxMenu *autoSubscript = new wxMenu;
   autoSubscript->Append(menu_noAutosubscript, wxT("Never"), _("Don't autosubscript after an underscore"), wxITEM_NORMAL);
   autoSubscript->Append(menu_defaultAutosubscript, wxT("Integers and single letters"), _("Autosubscript numbers and text following single letters"), wxITEM_NORMAL);
@@ -605,9 +664,9 @@ void wxMaximaFrame::SetupMenu()
 
 
   m_Maxima_Panes_Sub->AppendSeparator();
-  APPEND_MENU_ITEM(m_Maxima_Panes_Sub, MathCtrl::menu_zoom_in, _("Zoom &In\tCtrl++"),
+  APPEND_MENU_ITEM(m_Maxima_Panes_Sub, Worksheet::menu_zoom_in, _("Zoom &In\tCtrl++"),
                    _("Zoom in 10%"), wxT("gtk-zoom-in"));
-  APPEND_MENU_ITEM(m_Maxima_Panes_Sub, MathCtrl::menu_zoom_out, _("Zoom Ou&t\tCtrl+-"),
+  APPEND_MENU_ITEM(m_Maxima_Panes_Sub, Worksheet::menu_zoom_out, _("Zoom Ou&t\tCtrl+-"),
                    _("Zoom out 10%"), wxT("gtk-zoom-out"));
   // zoom submenu
   m_Edit_Zoom_Sub = new wxMenu;
@@ -663,6 +722,10 @@ void wxMaximaFrame::SetupMenu()
                      _("Insert a new subsection cell"));
   m_CellMenu->Append(menu_add_subsubsection, _("Insert S&ubsubsection Cell\tCtrl+5"),
                      _("Insert a new subsubsection cell"));
+  m_CellMenu->Append(menu_add_heading5, _("Insert heading5 Cell\tCtrl+6"),
+                     _("Insert a new heading5 cell"));
+  m_CellMenu->Append(menu_add_heading6, _("Insert heading6 Cell\tCtrl+7"),
+                     _("Insert a new heading7 cell"));
   m_CellMenu->Append(menu_add_pagebreak, _("Insert Page Break"),
                      _("Insert a page break"));
   m_CellMenu->Append(menu_insert_image, _("Insert Image..."),
@@ -678,12 +741,12 @@ void wxMaximaFrame::SetupMenu()
   m_CellMenu->Append(menu_history_next, _("Next Command\tAlt+Down"),
                      _("Recall next command from history"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
-  m_CellMenu->Append(MathCtrl::popid_merge_cells, _("Merge Cells\tCtrl+M"),
+  m_CellMenu->Append(Worksheet::popid_merge_cells, _("Merge Cells\tCtrl+M"),
                      _("Merge the text from two input cells into one"), wxITEM_NORMAL);
-  m_CellMenu->Append(MathCtrl::popid_divide_cell, _("Divide Cell\tCtrl+D"),
+  m_CellMenu->Append(Worksheet::popid_divide_cell, _("Divide Cell\tCtrl+D"),
                      _("Divide this input cell into two cells"), wxITEM_NORMAL);
   m_CellMenu->AppendSeparator();
-  m_CellMenu->AppendCheckItem(MathCtrl::popid_auto_answer, _("Automatically answer questions"),
+  m_CellMenu->AppendCheckItem(Worksheet::popid_auto_answer, _("Automatically answer questions"),
                      _("Automatically fill in answers known from the last run"));
 
   m_MenuBar->Append(m_CellMenu, _("Ce&ll"));
@@ -791,7 +854,7 @@ void wxMaximaFrame::SetupMenu()
                           _("The half of the equation that is to the right of the \"=\""),
                           wxITEM_NORMAL);
   m_MenuBar->Append(m_EquationsMenu, _("E&quations"));
-  
+
   // Algebra menu
   m_Algebra_Menu = new wxMenu;
   m_Algebra_Menu->Append(menu_gen_mat, _("&Generate Matrix..."),
@@ -904,7 +967,7 @@ void wxMaximaFrame::SetupMenu()
                          _("Convert sum of logarithms to logarithm of product"),
                          wxITEM_NORMAL);
   m_SimplifyMenu->AppendSeparator();
-  // Factorials and gamma 
+  // Factorials and gamma
   m_Simplify_Gamma_Sub = new wxMenu;
   m_Simplify_Gamma_Sub->Append(menu_to_fact, _("Convert to &Factorials"),
                                _("Convert binomials, beta and gamma function to factorials"),
@@ -1011,7 +1074,7 @@ void wxMaximaFrame::SetupMenu()
   listuseSub->Append(menu_list_do_for_each_element, _("do for each element"),
                         _("Execute a command for each element of the list"),
                         wxITEM_NORMAL);
-  
+
   m_listMenu->Append(wxNewId(), _("Use list"),
                      listuseSub,
                      _("Use a list"));
@@ -1085,7 +1148,7 @@ m_listMenu->AppendSeparator();
   m_NumericMenu->AppendSeparator();
   m_NumericMenu->Append(menu_set_precision, _("Set bigfloat &Precision..."),
                         _("Set the precision for numbers that are defined as bigfloat. Such numbers can be generated by entering 1.5b12 or as bfloat(1.234)"),
-                        wxITEM_NORMAL);                        
+                        wxITEM_NORMAL);
   m_NumericMenu->Append(menu_set_displayprecision, _("Set &displayed Precision..."),
                         _("Shows how many digits of a numbers are displayed"),
                         wxITEM_NORMAL);
@@ -1151,6 +1214,11 @@ m_listMenu->AppendSeparator();
 
 }
 
+bool wxMaximaFrame::ToolbarIsShown()
+{
+  return m_manager.GetPane(wxT("toolbar")).IsShown();
+}
+
 void wxMaximaFrame::UpdateRecentDocuments()
 {
   if(m_recentDocumentsMenu == NULL)
@@ -1162,7 +1230,7 @@ void wxMaximaFrame::UpdateRecentDocuments()
     m_recentPackagesMenu = new wxMenu();
   while(m_recentPackagesMenu->GetMenuItemCount() > 0)
     m_recentPackagesMenu->Destroy(m_recentPackagesMenu->FindItemByPosition(0));
-    
+
   long recentItems = 10;
   wxConfig::Get()->Read(wxT("recentItems"), &recentItems);
 
@@ -1172,7 +1240,7 @@ void wxMaximaFrame::UpdateRecentDocuments()
   std::list<wxString> recentDocuments = m_recentDocuments.Get();
   std::list<wxString> unsavedDocuments = m_unsavedDocuments.Get();
   std::list<wxString> recentPackages = m_recentPackages.Get();
-  
+
   // Populate the recent documents menu
   for (int i = menu_recent_document_0; i <= menu_recent_document_0 + recentItems; i++)
   {
@@ -1211,7 +1279,7 @@ void wxMaximaFrame::UpdateRecentDocuments()
       if (!separatorAdded)
         m_recentDocumentsMenu->Append(menu_recent_document_separator,
                                       wxEmptyString, wxEmptyString, wxITEM_SEPARATOR);
-      
+
       m_recentDocumentsMenu->Append(i, label);
       unsavedDocuments.pop_front();
     }
@@ -1243,6 +1311,7 @@ void wxMaximaFrame::ReReadConfig()
     wxConfigBase *config = wxConfig::Get();
     config->Flush();
     wxDELETE(config);
+    config = NULL;
     wxConfig::Set(new wxFileConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName));
   }
   // Re-Reading the config isn't necessary on the Mac where all windows share the same
@@ -1254,10 +1323,11 @@ void wxMaximaFrame::ReReadConfig()
     wxConfigBase *config = wxConfig::Get();
     config->Flush();
     wxDELETE(config);
+    config = NULL;
     wxConfig::Set(new wxConfig(wxT("wxMaxima")));
     }
-#endif  
-}    
+#endif
+}
 
 wxString wxMaximaFrame::GetTempAutosavefileName()
 {
@@ -1280,7 +1350,7 @@ void wxMaximaFrame::RegisterAutoSaveFile()
   wxConfigBase *config = wxConfig::Get();
   config->Read("AutoSaveFiles",&autoSaveFiles);
   m_unsavedDocuments.AddDocument(m_tempfileName);
-  ReReadConfig(); 
+  ReReadConfig();
 }
 
 void wxMaximaFrame::RemoveTempAutosavefile()
@@ -1289,7 +1359,7 @@ void wxMaximaFrame::RemoveTempAutosavefile()
   {
     // Don't delete the file if we have opened it and haven't saved it under a
     // different name yet.
-    if(wxFileExists(m_tempfileName) && (m_tempfileName != m_console->m_currentFile))
+    if(wxFileExists(m_tempfileName) && (m_tempfileName != m_worksheet->m_currentFile))
       wxRemoveFile(m_tempfileName);
   }
   m_tempfileName = wxEmptyString;
@@ -1351,7 +1421,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
       break;
     case menu_pane_structure:
       m_manager.GetPane(wxT("structure")).Show(show);
-      m_console->m_tableOfContents->UpdateTableOfContents(m_console->GetTree(), m_console->GetHCaret());
+      m_worksheet->m_tableOfContents->UpdateTableOfContents(m_worksheet->GetTree(), m_worksheet->GetHCaret());
       break;
     case menu_pane_xmlInspector:
       m_manager.GetPane(wxT("XmlInspector")).Show(show);
@@ -1520,7 +1590,7 @@ void wxMaximaFrame::CharacterButtonPressed(wxMouseEvent &event)
 {
   wxChar ch = event.GetId();
   wxString ch_string(ch);
-  m_console->InsertText(ch_string);
+  m_worksheet->InsertText(ch_string);
 }
 
 wxPanel *wxMaximaFrame::CharButton(wxPanel *parent, wxChar ch, wxString description, bool WXUNUSED(matchesMaximaCommand))
@@ -1611,22 +1681,6 @@ wxPanel *wxMaximaFrame::CreateGreekPane()
   panel->SetSizerAndFit(vbox);
   vbox->SetSizeHints(panel);
 
-  return panel;
-}
-
-wxPanel *wxMaximaFrame::CreateLogPane()
-{
-  wxPanel    *panel = new wxPanel(this, -1);
-  wxBoxSizer *vbox  = new wxBoxSizer(wxVERTICAL);
-
-  wxTextCtrl *textCtrl = new wxTextCtrl(
-    panel, -1, wxEmptyString, wxDefaultPosition, wxDefaultSize,
-    wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL);
-  
-  vbox->Add(textCtrl, wxSizerFlags().Expand().Proportion(10));
-
-  panel->SetSizerAndFit(vbox);
-  wxLog::SetActiveTarget(new wxLogTextCtrl(textCtrl));
   return panel;
 }
 
@@ -1750,11 +1804,15 @@ wxPanel *wxMaximaFrame::CreateFormatPane()
                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_title, _("Title"),
                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);
+  grid->Add(new wxButton(panel, menu_format_section, _("Section"),
+                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_subsection, _("Subsection"),
                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_subsubsection, _("Subsubsection"),
                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);
-  grid->Add(new wxButton(panel, menu_format_section, _("Section"),
+  grid->Add(new wxButton(panel, menu_format_heading5, _("Heading 5"),
+                         wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);
+  grid->Add(new wxButton(panel, menu_format_heading6, _("Heading 6"),
                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);
   grid->Add(new wxButton(panel, menu_format_image, _("Image"),
                          wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxBU_EXACTFIT), 0, style, border);
@@ -1772,7 +1830,7 @@ void wxMaximaFrame::DrawPane::SetDimensions(int dimensions)
 {
   if(dimensions == m_dimensions)
     return;
-  
+
   if(dimensions > 0)
   {
     m_draw_explicit->Enable(true);
@@ -1890,34 +1948,6 @@ wxMaximaFrame::DrawPane::DrawPane(wxWindow *parent, int id) : wxPanel(parent, id
 
 void wxMaximaFrame::ShowToolBar(bool show)
 {
-#if defined __WXMAC__ || defined __WXMSW__
-  wxToolBar *tbar = GetToolBar();
-  if (tbar == NULL)
-  {
-    tbar = CreateToolBar();
-    m_console->m_mainToolBar = new ToolBar(tbar);
-    SetToolBar(m_console->m_mainToolBar->GetToolBar());
-  }
-  tbar->Show(show);
-#if defined __WXMSW__
-  PostSizeEvent();
-#endif
-#else
-  if (show) {
-    if (m_console->m_mainToolBar == NULL) {
-      wxToolBar *tbar = CreateToolBar(wxTB_HORIZONTAL | wxTB_FLAT | wxTB_NODIVIDER);
-      m_console->m_mainToolBar=new ToolBar(tbar);
-    }
-    SetToolBar(m_console->m_mainToolBar->GetToolBar());
-  }
-  else
-  {
-    if(m_console->m_mainToolBar)
-    {
-      SetToolBar(NULL);
-      wxDELETE(m_console->m_mainToolBar);
-      m_console->m_mainToolBar = NULL;
-    }
-  }
-#endif
+  m_manager.GetPane(wxT("toolbar")).Show(show);
+  m_manager.Update();
 }

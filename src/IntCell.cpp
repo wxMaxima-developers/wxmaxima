@@ -23,7 +23,7 @@
 /*! \file
   This file defines the class IntCell
 
-  IntCell is the MathCell type that represents maxima's <code>integrate()</code> command.
+  IntCell is the Cell type that represents maxima's <code>integrate()</code> command.
 */
 
 #include "IntCell.h"
@@ -36,7 +36,7 @@
 #define INTEGRAL_FONT_SIZE 12
 #endif
 
-IntCell::IntCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_base = NULL;
   m_under = NULL;
@@ -51,7 +51,7 @@ IntCell::IntCell(MathCell *parent, Configuration **config, CellPointers *cellPoi
   m_cellPointers = cellPointers;
 }
 
-void IntCell::SetGroup(MathCell *parent)
+void IntCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_base != NULL)
@@ -64,7 +64,7 @@ void IntCell::SetGroup(MathCell *parent)
     m_var->SetGroupList(parent);
 }
 
-MathCell *IntCell::Copy()
+Cell *IntCell::Copy()
 {
   IntCell *tmp = new IntCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -87,9 +87,9 @@ IntCell::~IntCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> IntCell::GetInnerCells()
+std::list<Cell *> IntCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_base)
     innerCells.push_back(m_base);
   if(m_under)
@@ -101,7 +101,7 @@ std::list<MathCell *> IntCell::GetInnerCells()
   return innerCells;
 }
 
-void IntCell::SetOver(MathCell *over)
+void IntCell::SetOver(Cell *over)
 {
   if (over == NULL)
     return;
@@ -109,7 +109,7 @@ void IntCell::SetOver(MathCell *over)
   m_over = over;
 }
 
-void IntCell::SetBase(MathCell *base)
+void IntCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
@@ -117,7 +117,7 @@ void IntCell::SetBase(MathCell *base)
   m_base = base;
 }
 
-void IntCell::SetUnder(MathCell *under)
+void IntCell::SetUnder(Cell *under)
 {
   if (under == NULL)
     return;
@@ -125,7 +125,7 @@ void IntCell::SetUnder(MathCell *under)
   m_under = under;
 }
 
-void IntCell::SetVar(MathCell *var)
+void IntCell::SetVar(Cell *var)
 {
   if (var == NULL)
     return;
@@ -135,6 +135,7 @@ void IntCell::SetVar(MathCell *var)
 
 void IntCell::RecalculateWidths(int fontsize)
 {
+  Cell::RecalculateWidths(fontsize);
   wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
 
@@ -155,13 +156,17 @@ void IntCell::RecalculateWidths(int fontsize)
   if (configuration->CheckTeXFonts())
   {
     wxDC *dc = configuration->GetDC();
-    int fontsize1 = Scale_Px(fontsize * 1.5);
+    double fontsize1 = Scale_Px(fontsize * 1.5);
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                 configuration->GetTeXCMEX());
     if (!font.IsOk())
       font = *wxNORMAL_FONT;
+#if wxCHECK_VERSION(3, 1, 2)
+    font.SetFractionalPointSize(fontsize1);
+#else
     font.SetPointSize(fontsize1);
+#endif
     wxASSERT(fontsize1 > 0);
     dc->SetFont(font);
     dc->GetTextExtent(wxT("\x5A"), &m_signWidth, &m_signHeight);
@@ -182,14 +187,18 @@ void IntCell::RecalculateWidths(int fontsize)
   {
 #if defined __WXMSW__
     wxDC *dc = configuration->GetDC();
-    int fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
+    double fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
     wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                 wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
                 false,
                 configuration->GetSymbolFontName());
     if(!font.IsOk())
       font = *wxNORMAL_FONT;
+#if wxCHECK_VERSION(3, 1, 2)
+    font.SetFractionalPointSize(fontsize1);
+#else
     font.SetPointSize(fontsize1);
+#endif
     wxASSERT(fontsize1 > 0);
     dc->SetFont(font);
     dc->GetTextExtent(INTEGRAL_TOP, &m_charWidth, &m_charHeight);
@@ -214,6 +223,7 @@ void IntCell::RecalculateWidths(int fontsize)
 
 void IntCell::RecalculateHeight(int fontsize)
 {
+  Cell::RecalculateHeight(fontsize);
   Configuration *configuration = (*m_configuration);
 
   m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 5));
@@ -247,11 +257,11 @@ void IntCell::RecalculateHeight(int fontsize)
   }
 }
 
-void IntCell::Draw(wxPoint point, int fontsize)
+void IntCell::Draw(wxPoint point)
 {
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    MathCell::Draw(point, fontsize);
+    Cell::Draw(point);
     Configuration *configuration = (*m_configuration);
     
     wxDC *dc = configuration->GetDC();
@@ -261,14 +271,18 @@ void IntCell::Draw(wxPoint point, int fontsize)
     if (configuration->CheckTeXFonts())
     {
       SetForeground();
-      int fontsize1 = Scale_Px(fontsize * 1.5);
+      double fontsize1 = Scale_Px(m_fontSize * 1.5);
       wxFont font(fontsize1, wxFONTFAMILY_MODERN,
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
       if (!font.IsOk())
         font = *wxNORMAL_FONT;
       wxASSERT(fontsize1 > 0);
+#if wxCHECK_VERSION(3, 1, 2)
+      font.SetFractionalPointSize(fontsize1);
+#else
       font.SetPointSize(fontsize1);
+#endif
       dc->SetFont(font);
       dc->DrawText(wxT("\x5A"),
                   sign.x,
@@ -278,14 +292,21 @@ void IntCell::Draw(wxPoint point, int fontsize)
     {
 #if defined __WXMSW__
       SetForeground();
-      int fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
+      double fontsize1 = Scale_Px(INTEGRAL_FONT_SIZE);
       int m_signWCenter = m_signWidth / 2;
 
       wxASSERT(fontsize1 > 0);
-      dc->SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
+      wxFont font (fontsize1, wxFONTFAMILY_MODERN,
       wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
       false,
-                        configuration->GetSymbolFontName()));
+                   configuration->GetSymbolFontName());
+
+#if wxCHECK_VERSION(3, 1, 2)
+      font.SetFractionalPointSize(fontsize1);
+#else
+      font.SetPointSize(fontsize1);
+#endif
+      dc->SetFont(font);
       dc->DrawText(INTEGRAL_TOP,
                   sign.x + m_signWCenter - m_charWidth / 2,
                   sign.y - (m_signHeight + 1) / 2);
@@ -363,7 +384,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
       under.x += m_signWidth;
       under.y = point.y + m_signHeight / 2 + m_under->GetMaxCenter() + Scale_Px(2) -
                 m_signHeight / 3;
-      m_under->DrawList(under, MAX(MC_MIN_SIZE, fontsize - 5));
+      m_under->DrawList(under);
 
       if (configuration->CheckTeXFonts())
         over.x += 2 * m_signWidth;
@@ -372,7 +393,7 @@ void IntCell::Draw(wxPoint point, int fontsize)
 
       over.y = point.y - m_signHeight / 2 - m_over->GetMaxDrop() - Scale_Px(2) +
                m_signHeight / 3;
-      m_over->DrawList(over, MAX(MC_MIN_SIZE, fontsize - 5));
+      m_over->DrawList(over);
 
       if (configuration->CheckTeXFonts())
       {
@@ -389,10 +410,10 @@ void IntCell::Draw(wxPoint point, int fontsize)
     else
       base.x += m_signWidth;
 
-    m_base->DrawList(base, fontsize);
+    m_base->DrawList(base);
 
     var.x = base.x + m_base->GetFullWidth();
-    m_var->DrawList(var, fontsize);
+    m_var->DrawList(var);
   }
 }
 
@@ -402,7 +423,7 @@ wxString IntCell::ToString()
 
   s += m_base->ListToString();
 
-  MathCell *tmp = m_var;
+  Cell *tmp = m_var;
   wxString var;
   tmp = tmp->m_next;
   if (tmp != NULL)

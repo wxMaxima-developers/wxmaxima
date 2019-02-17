@@ -23,21 +23,21 @@
 /*! \file
   This file defines the class SubCell
 
-  SubCell is the MathCell type that represents a math element with subscript.
+  SubCell is the Cell type that represents a math element with subscript.
  */
 
 #include "SubCell.h"
 
 #define SUB_DEC 2
 
-SubCell::SubCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+SubCell::SubCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_baseCell = NULL;
   m_indexCell = NULL;
 }
 
-void SubCell::SetGroup(MathCell *parent)
+void SubCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_baseCell != NULL)
@@ -46,7 +46,7 @@ void SubCell::SetGroup(MathCell *parent)
     m_indexCell->SetGroupList(parent);
 }
 
-MathCell *SubCell::Copy()
+Cell *SubCell::Copy()
 {
   SubCell *tmp = new SubCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -65,9 +65,9 @@ SubCell::~SubCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> SubCell::GetInnerCells()
+std::list<Cell *> SubCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_baseCell)
     innerCells.push_back(m_baseCell);
   if(m_indexCell)
@@ -76,7 +76,7 @@ std::list<MathCell *> SubCell::GetInnerCells()
 }
 
 
-void SubCell::SetIndex(MathCell *index)
+void SubCell::SetIndex(Cell *index)
 {
   if (index == NULL)
     return;
@@ -84,7 +84,7 @@ void SubCell::SetIndex(MathCell *index)
   m_indexCell = index;
 }
 
-void SubCell::SetBase(MathCell *base)
+void SubCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
@@ -94,6 +94,7 @@ void SubCell::SetBase(MathCell *base)
 
 void SubCell::RecalculateWidths(int fontsize)
 {
+  Cell::RecalculateWidths(fontsize);
   m_baseCell->RecalculateWidthsList(fontsize);
   m_indexCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUB_DEC));
   m_width = m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() -
@@ -103,6 +104,7 @@ void SubCell::RecalculateWidths(int fontsize)
 
 void SubCell::RecalculateHeight(int fontsize)
 {
+  Cell::RecalculateHeight(fontsize);
   m_baseCell->RecalculateHeightList(fontsize);
   m_indexCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUB_DEC));
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
@@ -110,22 +112,22 @@ void SubCell::RecalculateHeight(int fontsize)
   m_center = m_baseCell->GetCenter();
 }
 
-void SubCell::Draw(wxPoint point, int fontsize)
+void SubCell::Draw(wxPoint point)
 {
+  Cell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    MathCell::Draw(point, fontsize);
     wxPoint bs, in;
 
     bs.x = point.x;
     bs.y = point.y;
-    m_baseCell->DrawList(bs, fontsize);
+    m_baseCell->DrawList(bs);
 
     in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
     in.y = point.y + m_baseCell->GetMaxDrop() +
            m_indexCell->GetMaxCenter() -
-           Scale_Px((8 * fontsize) / 10 + MC_EXP_INDENT);
-    m_indexCell->DrawList(in, MAX(MC_MIN_SIZE, fontsize - SUB_DEC));
+           Scale_Px((8 * m_fontSize) / 10 + MC_EXP_INDENT);
+    m_indexCell->DrawList(in);
   }
 }
 

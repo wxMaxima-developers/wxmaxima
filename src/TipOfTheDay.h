@@ -25,23 +25,48 @@
 #include <wx/wx.h>
 #include <wx/tipdlg.h>
 #include <wx/arrstr.h>
+#include <wx/image.h>
+#include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/stattext.h>
 
-class TipOfTheDay : public wxTipProvider
+extern unsigned char media_playback_start_128_png[];
+extern unsigned int  media_playback_start_128_png_len;
+extern unsigned char media_playback_start_192_png[];
+extern unsigned int  media_playback_start_192_png_len;
+extern unsigned char media_playback_start_reverse_128_png[];
+extern unsigned int  media_playback_start_reverse_128_png_len;
+extern unsigned char media_playback_start_reverse_192_png[];
+extern unsigned int  media_playback_start_reverse_192_png_len;
+extern const char * invalidImage_xpm[];
+
+/*! A minimalistic Tip of the day dialogue
+
+  We roll our own dialogue here as the one from wxWidgets is modal (which
+  means it blocks the application until it is closed) and Ubuntu's Focus 
+  Stealing Prevention makes it pop up below wxMaxima (which means the user
+  has no means of finding out it needs closing).
+
+  For details see https://trac.wxwidgets.org/ticket/17974.
+ */
+class TipOfTheDay : public wxDialog
 {
 public:
-  TipOfTheDay(unsigned int n);
-
+  TipOfTheDay(wxWindow *parent);
   ~TipOfTheDay();
-
-  wxString GetTip();
-
-  unsigned int GetCurrentTip()
-  {
-    return m_current;
-  }
+protected:
+  void OnNextButton(wxCommandEvent &dummy);
+  void OnPreviousButton(wxCommandEvent &dummy);
+  void OnOkButton(wxCommandEvent &dummy);
 
 private:
-  unsigned int m_current;
+  wxString GetTip(unsigned int n);
+  int m_num;
+  wxTextCtrl *m_tip;
+  wxString GetTip();
+  wxCheckBox *m_showAtStartup;
+  wxImage GetImage(unsigned char *data_128, size_t len_128,
+                   unsigned char *data_192, size_t len_192);
   wxArrayString m_tips;
 };
 

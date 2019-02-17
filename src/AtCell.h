@@ -23,26 +23,26 @@
 #ifndef ATCELL_H
 #define ATCELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
 
-class AtCell : public MathCell
+class AtCell : public Cell
 {
 public:
-  AtCell(MathCell *parent, Configuration **config, CellPointers *m_cellPointers);
+  AtCell(Cell *parent, Configuration **config, CellPointers *m_cellPointers);
 
   ~AtCell();
 
-  std::list<MathCell *> GetInnerCells();
-  MathCell *Copy();
+  std::list<Cell *> GetInnerCells();
+  Cell *Copy();
   
-  void SetBase(MathCell *base);
-  void SetIndex(MathCell *index);
+  void SetBase(Cell *base);
+  void SetIndex(Cell *index);
 
   void RecalculateHeight(int fontsize);
 
   void RecalculateWidths(int fontsize);
 
-  void Draw(wxPoint point, int fontsize);
+  virtual void Draw(wxPoint point);
 
   wxString ToString();
 
@@ -54,11 +54,11 @@ public:
 
   wxString ToMathML();
 
-  void SetGroup(MathCell *parent);
+  void SetGroup(Cell *parent);
 
 protected:
-  MathCell *m_baseCell;
-  MathCell *m_indexCell;
+  Cell *m_baseCell;
+  Cell *m_indexCell;
 };
 
 #endif // ATCELL_H

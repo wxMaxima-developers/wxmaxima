@@ -63,8 +63,10 @@ enum TextStyle
   TS_HIGHLIGHT,
   TS_TEXT_BACKGROUND,
   TS_TEXT,
-  TS_SUBSECTION,
+  TS_HEADING6,
+  TS_HEADING5,
   TS_SUBSUBSECTION,
+  TS_SUBSECTION,
   TS_SECTION,
   TS_TITLE,
   TS_WARNING,
@@ -85,6 +87,6 @@ enum TextStyle
 };
 
 //! The number of entries TextStyle is long
-#define STYLE_NUM 34
+#define STYLE_NUM (TS_CODE_ENDOFLINE-TS_DEFAULT+1)
 
 #endif // TEXTSTYLE_H

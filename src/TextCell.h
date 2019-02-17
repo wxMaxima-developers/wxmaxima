@@ -24,28 +24,28 @@
 #define TEXTCELL_H
 
 #include "wx/regex.h"
-#include "MathCell.h"
+#include "Cell.h"
 
 /*! A Text cell
 
   Everything on the worksheet that is composed of characters with the eception
   of input cells: Input cells are handled by EditorCell instead.
  */
-class TextCell : public MathCell
+class TextCell : public Cell
 {
 private:
   //! Is an ending "(" of a function name the opening parenthesis of the function?
   bool m_dontEscapeOpeningParenthesis;
 public:
-  TextCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString);
+  TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString);
 
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
   
   ~TextCell();
   
-  MathCell *Copy();
+  Cell *Copy();
 
-  virtual void SetStyle(int style);
+  virtual void SetStyle(TextStyle style);
   
   //! Set the text contained in this cell
   void SetValue(const wxString &text);
@@ -55,7 +55,7 @@ public:
 
   void RecalculateWidths(int fontsize);
 
-  void Draw(wxPoint point, int fontsize);
+  virtual void Draw(wxPoint point);
 
   void SetFont(int fontsize);
 
@@ -114,7 +114,6 @@ protected:
   //! The text we display: m_text might be a number that is longer than we want to display
   wxString m_displayedText;
   //! How many maximum digits did we display the last time this cell was recalculated?
-  int m_displayedDigits_old;
   wxString m_altText, m_altJsText;
   wxString m_fontname, m_texFontname;
 
@@ -126,17 +125,19 @@ protected:
     \f$ a/b\f$. \f$ \Longrightarrow\f$ we need a mechanism that tells us that the font 
     size has changed and we need to re-calculate the text width.
    */
-  int m_lastCalculationFontSize;
+  double m_lastCalculationFontSize;
   //! The line height
-  int m_fontSize;
+  double m_fontSize;
   //! The actual font size for labels (that have a fixed width)
-  int m_fontSizeLabel;
+  double m_fontSizeLabel;
   double m_lastZoomFactor;
-  int m_labelWidth, m_labelHeight;
 private:
   //! Produces a text sample that determines the label width
-  wxString LabelWidthText();
   wxString m_initialToolTip;
+  //! The number of digits we did display the last time we displayed a number.
+  int m_displayedDigits_old;
+
+  int m_fontsize_old;
 };
 
 #endif // TEXTCELL_H

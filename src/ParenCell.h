@@ -23,15 +23,14 @@
 /*! \file
   This file declares the class ParenCell
 
-  ParenCell is the MathCell type that represents a math element that is kept
+  ParenCell is the Cell type that represents a math element that is kept
   between parenthesis.
  */
 
 #ifndef PARENCELL_H
 #define PARENCELL_H
 
-#include "MathCell.h"
-#include "Setup.h"
+#include "Cell.h"
 
 /*! The class that represents parenthesis that are wrapped around text
 
@@ -47,18 +46,18 @@
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this Cell.
  */
-class ParenCell : public MathCell
+class ParenCell : public Cell
 {
 public:
-  ParenCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
+  ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~ParenCell();
 
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
 
-  virtual MathCell *Copy();
+  virtual Cell *Copy();
 
-  void SetInner(MathCell *inner, int style);
+  void SetInner(Cell *inner, CellType  style);
 
   void SetPrint(bool print)
   {
@@ -69,7 +68,7 @@ public:
 
   void RecalculateWidths(int fontsize);
 
-  void Draw(wxPoint point, int fontsize);
+  virtual void Draw(wxPoint point);
 
   bool BreakUp();
 
@@ -85,7 +84,7 @@ public:
 
   wxString ToXML();
 
-  void SetGroup(MathCell *parent);
+  void SetGroup(Cell *parent);
 
 protected:
    /*! How to create a big parenthesis sign?
@@ -93,8 +92,8 @@ protected:
   Configuration::drawMode m_bigParenType;
   int m_fontSize;
   void SetFont(int fontsize);
-  MathCell *m_innerCell, *m_open, *m_close;
-  MathCell *m_last1;
+  Cell *m_innerCell, *m_open, *m_close;
+  Cell *m_last1;
   bool m_print;
   int m_numberOfExtensions;
   int m_charWidth, m_charHeight;

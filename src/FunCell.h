@@ -23,7 +23,7 @@
 #ifndef FUNCELL_H
 #define FUNCELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
 /*! \file
 
   This file declares the class FunCell() that represents a maxima function.
@@ -49,26 +49,26 @@
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this Cell. 
 */
-class FunCell : public MathCell
+class FunCell : public Cell
 {
 public:
-  FunCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
+  FunCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~FunCell();
 
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
 
-  MathCell *Copy();
+  Cell *Copy();
 
-  void SetName(MathCell *base);
+  void SetName(Cell *base);
 
-  void SetArg(MathCell *index);
+  void SetArg(Cell *index);
 
   void RecalculateHeight(int fontsize);
 
   void RecalculateWidths(int fontsize);
 
-  void Draw(wxPoint point, int fontsize);
+  virtual void Draw(wxPoint point);
 
   wxString ToString();
 
@@ -84,11 +84,11 @@ public:
 
   void Unbreak();
 
-  void SetGroup(MathCell *parent);
+  void SetGroup(Cell *parent);
 
 protected:
-  MathCell *m_nameCell;
-  MathCell *m_argCell;
+  Cell *m_nameCell;
+  Cell *m_argCell;
 };
 
 

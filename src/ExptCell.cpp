@@ -23,7 +23,7 @@
 /*! \file
   This file defines the class ExptCell
 
-  ExptCell is the MathCell type that represents exponents.
+  ExptCell is the Cell type that represents exponents.
  */
 
 #include "ExptCell.h"
@@ -31,7 +31,7 @@
 
 #define EXPT_DEC 2
 
-ExptCell::ExptCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_last1 = NULL;
@@ -45,7 +45,7 @@ ExptCell::ExptCell(MathCell *parent, Configuration **config, CellPointers *cellP
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
-void ExptCell::SetGroup(MathCell *parent)
+void ExptCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_baseCell != NULL)
@@ -58,13 +58,13 @@ void ExptCell::SetGroup(MathCell *parent)
     m_close->SetGroupList(parent);
 }
 
-MathCell *ExptCell::Copy()
+Cell *ExptCell::Copy()
 {
   ExptCell *tmp = new ExptCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetBase(m_baseCell->CopyList());
   tmp->SetPower(m_powCell->CopyList());
-  tmp->m_isBroken = m_isBroken;
+  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
   tmp->m_open->DontEscapeOpeningParenthesis();
 
   return tmp;
@@ -81,9 +81,9 @@ ExptCell::~ExptCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> ExptCell::GetInnerCells()
+std::list<Cell *> ExptCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_baseCell)
     innerCells.push_back(m_baseCell);
   if(m_powCell)
@@ -98,7 +98,7 @@ std::list<MathCell *> ExptCell::GetInnerCells()
 }
 
 
-void ExptCell::SetPower(MathCell *power)
+void ExptCell::SetPower(Cell *power)
 {
   if (power == NULL)
     return;
@@ -117,7 +117,7 @@ void ExptCell::SetPower(MathCell *power)
       m_last2 = m_last2->m_next;
 }
 
-void ExptCell::SetBase(MathCell *base)
+void ExptCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
@@ -132,23 +132,27 @@ void ExptCell::SetBase(MathCell *base)
 
 void ExptCell::RecalculateWidths(int fontsize)
 {
+  Cell::RecalculateWidths(fontsize);
   m_baseCell->RecalculateWidthsList(fontsize);
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     m_powCell->RecalculateWidthsList(fontsize);
   else
     m_powCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - EXPT_DEC));
   m_width = m_baseCell->GetFullWidth() + m_powCell->GetFullWidth() -
-            Scale_Px(MC_TEXT_PADDING);
+            MC_TEXT_PADDING;
   m_exp->RecalculateWidthsList(fontsize);
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
   ResetData();
+  if(m_isBrokenIntoLines)
+    m_width = 0;
 }
 
 void ExptCell::RecalculateHeight(int fontsize)
 {
+  Cell::RecalculateHeight(fontsize);
   m_baseCell->RecalculateHeightList(fontsize);
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     m_powCell->RecalculateHeightList(fontsize);
   else
     m_powCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - EXPT_DEC));
@@ -159,29 +163,29 @@ void ExptCell::RecalculateHeight(int fontsize)
   m_exp->RecalculateHeightList(fontsize);
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
   {
     m_height = MAX(m_baseCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = MAX(m_baseCell->GetMaxCenter(), m_open->GetMaxCenter());
   }
 }
 
-void ExptCell::Draw(wxPoint point, int fontsize)
+void ExptCell::Draw(wxPoint point)
 {
   if (DrawThisCell(point) && InUpdateRegion())
   {
     
-    MathCell::Draw(point, fontsize);
+    Cell::Draw(point);
     wxPoint bs, pw;
     bs.x = point.x;
     bs.y = point.y;
-    m_baseCell->DrawList(bs, fontsize);
+    m_baseCell->DrawList(bs);
 
-    pw.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(MC_TEXT_PADDING);
+    pw.x = point.x + m_baseCell->GetFullWidth() - MC_TEXT_PADDING;
     pw.y = point.y - m_baseCell->GetMaxCenter() - m_powCell->GetMaxHeight()
            + m_powCell->GetMaxCenter() +
-           Scale_Px((8 * fontsize) / 10 + MC_EXP_INDENT);
-    m_powCell->DrawList(pw, MAX(MC_MIN_SIZE, fontsize - EXPT_DEC));
+           Scale_Px((8 * m_fontSize) / 10 + MC_EXP_INDENT);
+    m_powCell->DrawList(pw);
   }
 }
 
@@ -189,7 +193,7 @@ wxString ExptCell::ToString()
 {
   if (m_altCopyText != wxEmptyString)
     return m_altCopyText;
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     return wxEmptyString;
   wxString s = m_baseCell->ListToString() + wxT("^");
   if (m_isMatrix)
@@ -203,7 +207,7 @@ wxString ExptCell::ToString()
 
 wxString ExptCell::ToTeX()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     return wxEmptyString;
   wxString s = wxT("{{") + m_baseCell->ListToTeX() + wxT("}^{") +
                m_powCell->ListToTeX() + wxT("}}");
@@ -238,7 +242,7 @@ wxString ExptCell::ToOMML()
 
 wxString ExptCell::ToXML()
 {
-//  if (m_isBroken)
+//  if (m_isBrokenIntoLines)
 //    return wxEmptyString;
   wxString flags;
   if (m_forceBreakLine)
@@ -250,9 +254,9 @@ wxString ExptCell::ToXML()
 
 bool ExptCell::BreakUp()
 {
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
-    m_isBroken = true;
+    m_isBrokenIntoLines = true;
     m_baseCell->m_previousToDraw = this;
     wxASSERT_MSG(m_last1 != NULL, _("Bug: No last cell in the base of an exptCell!"));
     if (m_last1 != NULL)
@@ -283,10 +287,10 @@ bool ExptCell::BreakUp()
 
 void ExptCell::Unbreak()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
   {
     m_baseCell->UnbreakList();
     m_powCell->UnbreakList();
   }
-  MathCell::Unbreak();
+  Cell::Unbreak();
 }

@@ -23,14 +23,14 @@
 /*! \file
   This file declares the class AbsCell
 
-  AbsCell is the MathCell type that represents the field that represents the 
+  AbsCell is the Cell type that represents the field that represents the 
   <code>abs()</code> and <code>cabs()</code> commands.
  */
 
 #ifndef ABSCELL_H
 #define ABSCELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
 #include "TextCell.h"
 
 /*! \file
@@ -52,40 +52,40 @@
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this AbsCell.  
  */
-class AbsCell : public MathCell
+class AbsCell : public Cell
 {
 public:
-  AbsCell(MathCell *parent, Configuration **config, CellPointers *m_cellPointers);
+  AbsCell(Cell *parent, Configuration **config, CellPointers *m_cellPointers);
 
   ~AbsCell();
   
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
 
-  void SetInner(MathCell *inner);
+  void SetInner(Cell *inner);
 
-  MathCell *Copy();
+  Cell *Copy();
 
   bool BreakUp();
 
   void Unbreak();
 
-  void SetGroup(MathCell *parent);
+  void SetGroup(Cell *parent);
 
 protected:
   //! The contents of the abs() comand
-  MathCell *m_innerCell;
+  Cell *m_innerCell;
   //! The cell containing the eventual "abs" and the opening parenthesis
   TextCell *m_open;
   //! The cell containing the closing parenthesis
   TextCell *m_close;
   //! The last element of m_innerCell
-  MathCell *m_last;
+  Cell *m_last;
 
   void RecalculateHeight(int fontsize);
 
   void RecalculateWidths(int fontsize);
 
-  void Draw(wxPoint point, int fontsize);
+  virtual void Draw(wxPoint point);
 
   wxString ToString();
 

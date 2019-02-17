@@ -29,7 +29,7 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
-#include "MathCell.h"
+#include "Cell.h"
 #include <wx/image.h>
 
 #include <wx/filesys.h>
@@ -84,6 +84,41 @@ public:
    */
   Image(Configuration **config, wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
 
+  ~Image();
+
+  /*! Sets the name of the gnuplot source and data file of this image
+
+    Causes the files to be cached if they are not way too long; As the files
+    are text-only they profit from being compressed and are stored in the 
+    memory in their compressed form.
+   */
+  void GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFileSystem *filesystem = NULL);
+  /*! Returns the gnuplot source file name of this image
+
+    If maxima has deleted the temporary file in the meantime or if it comes from 
+    a .wxmx file and has never been created from maxima the file is created by this 
+    function.
+
+    If the file cannot be created (for example if no gnuplot source exists/ 
+    is known) this function returns wxEmptyString.
+   */
+  wxString GnuplotSource();
+  /*! Returns the gnuplot data file name of this image
+
+    If maxima has deleted the temporary file in the meantime or if it comes from 
+    a .wxmx file and has never been created from maxima the file is created by this 
+    function.
+
+    If the file cannot be created (for example if no gnuplot source exists/ 
+    is known) this function returns wxEmptyString.
+   */
+  wxString GnuplotData();
+
+  //! Returns the gnuplot source of this image
+  wxMemoryBuffer GetGnuplotSource();
+  //! Returns the gnuplot data of this image
+  wxMemoryBuffer GetGnuplotData();
+  
   /*! Temporarily forget the scaled image in order to save memory
 
     Will recreate the scaled image as soon as needed.
@@ -101,9 +136,13 @@ public:
   //! Loads an image from a file
   void LoadImage(wxString image, bool remove = true, wxFileSystem *filesystem = NULL);
 
+  //! The maximum width this image shall be displayed with
   double GetMaxWidth(){return m_maxWidth;}
+  //! The maximum height this image shall be displayed with
   double GetMaxHeight(){return m_maxHeight;}
+  //! Set the maximum width this image shall be displayed with
   void   SetMaxWidth(double width){m_maxWidth = width;}
+  //! Set the maximum height this image shall be displayed with
   void   SetMaxHeight(double height){m_maxHeight = height;}
   
   //! "Loads" an image from a bitmap
@@ -112,10 +151,8 @@ public:
   //! Saves the image in its original form, or as .png if it originates in a bitmap
   wxSize ToImageFile(wxString filename);
 
-  //! Returns the bitmap being displayed
-  wxBitmap GetBitmap();
   //! Returns the bitmap being displayed with custom scale
-  wxBitmap GetBitmap(double scale);
+  wxBitmap GetBitmap(double scale = 1.0);
 
   //! Does the image show an actual image or an "broken image" symbol?
   bool IsOk() {return m_isOk;}
@@ -123,10 +160,8 @@ public:
   //! Returns the image in its unscaled form
   wxBitmap GetUnscaledBitmap();
 
-  //! Needs to be called on changing the viewport size
-  void Recalculate();
   //! Can be called to specify a specific scale
-  void Recalculate(double scale);
+  void Recalculate(double scale = 1.0);
 
   //! The width of the scaled image
   long m_width;
@@ -149,6 +184,10 @@ public:
   wxMemoryBuffer m_compressedImage;
 
 protected:
+  //! A zipped version of the gnuplot commands that produced this image.
+  wxMemoryBuffer m_gnuplotSource_Compressed;
+  //! A zipped version of the gnuplot data needed in order to create this image.
+  wxMemoryBuffer m_gnuplotData_Compressed;
   //! The width of the unscaled image
   size_t m_originalWidth;
   //! The height of the unscaled image
@@ -159,9 +198,15 @@ protected:
   wxString m_extension;
   //! Does this image contain an actual image?
   bool m_isOk;
+  //! The gnuplot source file for this image, if any.
+  wxString m_gnuplotSource;
+  //! The gnuplot data file for this image, if any.
+  wxString m_gnuplotData;
 private:
   Configuration **m_configuration;
+  //! The upper width limit for displaying this image
   double m_maxWidth;
+  //! The upper height limit for displaying this image
   double m_maxHeight;
 };
 

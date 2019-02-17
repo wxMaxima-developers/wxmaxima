@@ -23,12 +23,13 @@
 /*! \file
   This file defines the class ImgCell
 
-  ImgCell is the MathCell type that represents still images in maxima's output
+  ImgCell is the Cell type that represents still images in maxima's output
   or in user-provided images.
  */
 
 // 72 points per inch / 96 pixels per inch
 #define PRINT_SIZE_MULTIPLIER (72.0 / 96.0)
+#define SELECTION_BORDER_WDTH Scale_Px(3)
 
 #include "ImgCell.h"
 
@@ -39,7 +40,7 @@
 #include <wx/clipbrd.h>
 #include <wx/mstream.h>
 
-ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_image = NULL;
@@ -49,7 +50,7 @@ ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellPoi
   m_drawBoundingBox = false;
 }
 
-ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellpointers, wxMemoryBuffer image, wxString type) : MathCell(parent,
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers, wxMemoryBuffer image, wxString type) : Cell(parent,
                                                                                                            config)
 {
   m_cellPointers = cellpointers;
@@ -60,7 +61,7 @@ ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellpoi
   m_drawBoundingBox = false;
 }
 
-ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellpointers, const wxBitmap &bitmap) : MathCell(parent, config)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers, const wxBitmap &bitmap) : Cell(parent, config)
 {
   m_cellPointers = cellpointers;
   m_image = new Image(m_configuration, bitmap);
@@ -73,8 +74,8 @@ ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellpoi
 int ImgCell::s_counter = 0;
 
 // constructor which load image
-ImgCell::ImgCell(MathCell *parent, Configuration **config, CellPointers *cellpointers, wxString image, bool remove, wxFileSystem *filesystem)
-        : MathCell(parent, config)
+ImgCell::ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers, wxString image, bool remove, wxFileSystem *filesystem)
+        : Cell(parent, config)
 {
   m_cellPointers = cellpointers;
   m_type = MC_TYPE_IMAGE;
@@ -100,7 +101,7 @@ void ImgCell::SetBitmap(const wxBitmap &bitmap)
   m_image = new Image(m_configuration, bitmap);
 }
 
-MathCell *ImgCell::Copy()
+Cell *ImgCell::Copy()
 {
   ImgCell *tmp = new ImgCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -122,12 +123,12 @@ ImgCell::~ImgCell()
 void ImgCell::MarkAsDeleted()
 {
   ClearCache();
-  MathCell::MarkAsDeleted();
+  Cell::MarkAsDeleted();
 }
 
-std::list<MathCell *> ImgCell::GetInnerCells()
+std::list<Cell *> ImgCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   return innerCells;
 }
 
@@ -149,45 +150,51 @@ wxString ImgCell::GetToolTip(const wxPoint &point)
     return wxEmptyString;
 }
 
-void ImgCell::RecalculateWidths(int WXUNUSED(fontsize))
+void ImgCell::RecalculateWidths(int fontsize)
 {
-  // Here we recalculate the height, as well:
-  //  - This doesn't cost much time and
-  //  - as image cell's sizes might change when the resolution does
-  //    we might have intermittent calculation issues otherwise
+  Cell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
-  if (configuration->GetPrinter()) {
-    m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
-  } else {
-    m_image->Recalculate();
+  if (m_image)
+  {
+    // Here we recalculate the height, as well:
+    //  - This doesn't cost much time and
+    //  - as image cell's sizes might change when the resolution does
+    //    we might have intermittent calculation issues otherwise
+    if (configuration->GetPrinting())
+      m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
+    else
+      m_image->Recalculate();
+    m_width = m_image->m_width + 2 * m_imageBorderWidth;
   }
-
-  m_width = m_image->m_width + 2 * m_imageBorderWidth;
-  m_height = m_image->m_height + 2 * m_imageBorderWidth;
-  m_center = m_height / 2;
 }
 
 void ImgCell::RecalculateHeight(int fontsize)
 {
-  // Here we recalculate the width, as well:
-  //  - This doesn't cost much time and
-  //  - as image cell's sizes might change when the resolution does
-  //    we might have intermittent calculation issues otherwise
-  RecalculateWidths(fontsize);
+  Cell::RecalculateHeight(fontsize);
+  Configuration *configuration = (*m_configuration);
+  if (m_image)
+  {
+    if (configuration->GetPrinting())
+      m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
+    else
+      m_image->Recalculate();
+    m_height = m_image->m_height + 2 * m_imageBorderWidth;
+    m_center = m_height / 2;
+  }
 }
 
-void ImgCell::Draw(wxPoint point, int fontsize)
+void ImgCell::Draw(wxPoint point)
 {
   if (DrawThisCell(point) && (m_image != NULL))
   {
     Configuration *configuration = (*m_configuration);
-    if (configuration->GetPrinter()) {
+    if (configuration->GetPrinting()) {
       m_image->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
     } else {
       m_image->Recalculate();
     }
 
-    MathCell::Draw(point, fontsize);
+    Cell::Draw(point);
     
     if (!InUpdateRegion()) return;
     
@@ -203,15 +210,20 @@ void ImgCell::Draw(wxPoint point, int fontsize)
       dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
     // Use printing-scale while in printing-mode.
-    wxBitmap bitmap = (configuration->GetPrinter() ? m_image->GetBitmap(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER) : m_image->GetBitmap());
+    wxBitmap bitmap = (configuration->GetPrinting() ? m_image->GetBitmap(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER) : m_image->GetBitmap());
     bitmapDC.SelectObject(bitmap);
 
     if ((m_drawBoundingBox == false) || (m_imageBorderWidth > 0))
-      dc->Blit(point.x + m_imageBorderWidth, point.y - m_center + m_imageBorderWidth, m_width - 2 * m_imageBorderWidth,
-              m_height - 2 * m_imageBorderWidth, &bitmapDC, 0, 0);
+      dc->Blit(point.x + m_imageBorderWidth, point.y - m_center + m_imageBorderWidth,
+               m_width - 2 * m_imageBorderWidth, m_height - 2 * m_imageBorderWidth,
+               &bitmapDC,
+               0, 0);
     else
-      dc->StretchBlit(point.x + 5, point.y - m_center + 5, m_width - 2 * 5, m_height - 2 * 5, &bitmapDC, 0, 0, m_width,
-                     m_height);
+      dc->Blit(point.x + m_imageBorderWidth + SELECTION_BORDER_WDTH, point.y - m_center + m_imageBorderWidth + SELECTION_BORDER_WDTH,
+               m_width - 2 * m_imageBorderWidth - 2*SELECTION_BORDER_WDTH,
+               m_height - 2 * m_imageBorderWidth - 2*SELECTION_BORDER_WDTH,
+               &bitmapDC,
+               SELECTION_BORDER_WDTH, SELECTION_BORDER_WDTH);
   }
   else
     // The cell isn't drawn => No need to keep it's image cache for now.
@@ -283,7 +295,7 @@ wxString ImgCell::ToRTF()
 
 wxString ImgCell::ToXML()
 {
-  wxString basename = ImgCell::WXMXGetNewFileName();
+  wxString basename = m_cellPointers->WXMXGetNewFileName();
 
   // add the file to memory
   if (m_image)
@@ -308,19 +320,56 @@ wxString ImgCell::ToXML()
   if(m_image->GetMaxHeight() > 0)
     flags += wxString::Format(wxT(" maxHeight=\"%f\""), m_image->GetMaxHeight());
 
+  if (m_image)
+  {
+    // Anonymize the name of our temp directory for saving
+    wxString gnuplotSource;
+    wxString gnuplotData;
+    if(m_image->GnuplotData() != wxEmptyString)
+    {
+      wxFileName gnuplotDataFile(m_image->GnuplotData());
+      gnuplotData = gnuplotDataFile.GetFullName();
+    }
+    if(m_image->GnuplotSource() != wxEmptyString)
+    {
+      wxFileName gnuplotSourceFile(m_image->GnuplotSource());
+      gnuplotSource = gnuplotSourceFile.GetFullName();
+    }
+
+    // Save the gnuplot source, if necessary.
+    if(gnuplotSource != wxEmptyString)
+    {
+      flags += " gnuplotsource=\"" + gnuplotSource + "\"";
+      wxMemoryBuffer data = m_image->GetGnuplotSource();
+      if(data.GetDataLen() > 0)
+      {
+        wxMemoryFSHandler::AddFile(gnuplotSource,
+                                   data.GetData(),
+                                   data.GetDataLen()
+          );
+      }
+    }
+    if(gnuplotData != wxEmptyString)
+    {
+      flags += " gnuplotdata=\"" + gnuplotData + "\"";
+      wxMemoryBuffer data = m_image->GetGnuplotData();
+      if(data.GetDataLen() > 0)
+      {
+        wxMemoryFSHandler::AddFile(gnuplotData,
+                                   data.GetData(),
+                                   data.GetDataLen()
+          );
+      }
+    }
+  }
+  
   return (wxT("<img") + flags + wxT(">") +
           basename + m_image->GetExtension() + wxT("</img>"));
 }
 
-wxString ImgCell::WXMXGetNewFileName()
-{
-  wxString file(wxT("image"));
-  file << (++s_counter) << wxT(".");
-  return file;
-}
-
 bool ImgCell::CopyToClipboard()
 {
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
     bool res = wxTheClipboard->SetData(new wxBitmapDataObject(m_image->GetUnscaledBitmap()));

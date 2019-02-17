@@ -23,21 +23,18 @@
 /*! \file
   This file defines the class TextCell
 
-  TextCell is the MathCell type that is used in order to display text that is
+  TextCell is the Cell type that is used in order to display text that is
   contained in maxima's output.
  */
 
 #include "TextCell.h"
-#include "Setup.h"
 #include "wx/config.h"
 
-TextCell::TextCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxString text) : MathCell(parent, config)
+TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_displayedDigits_old = -1;
   m_height = -1;
-  m_labelWidth = -1;
-  m_labelHeight = -1;
   m_realCenter = m_center = -1;
   m_lastCalculationFontSize = -1;
   m_fontSize = -1;
@@ -46,7 +43,8 @@ TextCell::TextCell(MathCell *parent, Configuration **config, CellPointers *cellP
   SetValue(text);
   m_highlight = false;
   m_dontEscapeOpeningParenthesis = false;
-  m_initialToolTip = (*m_configuration)->GetDefaultMathCellToolTip();
+  m_initialToolTip = (*m_configuration)->GetDefaultCellToolTip();
+  m_fontsize_old = -1;
 }
 
 TextCell::~TextCell()
@@ -54,19 +52,23 @@ TextCell::~TextCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> TextCell::GetInnerCells()
+std::list<Cell *> TextCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   return innerCells;
 }
 
-void TextCell::SetStyle(int style)
+void TextCell::SetStyle(TextStyle style)
 {
-  MathCell::SetStyle(style);
+  Cell::SetStyle(style);
   if ((m_text == wxT("gamma")) && (m_textStyle == TS_FUNCTION))
     m_displayedText = wxT("\x0393");
   if ((m_text == wxT("psi")) && (m_textStyle == TS_FUNCTION))
     m_displayedText = wxT("\x03A8");
+  if((style == TS_LABEL) || (style == TS_USERLABEL)||
+     (style == TS_MAIN_PROMPT) || (style == TS_OTHER_PROMPT))
+    HardLineBreak();
+  ResetSize();
 }
 
 void TextCell::SetValue(const wxString &text)
@@ -284,9 +286,10 @@ void TextCell::SetValue(const wxString &text)
     }
   }
   m_alt = m_altJs = false;
+  ResetSize();
 }
 
-MathCell *TextCell::Copy()
+Cell *TextCell::Copy()
 {
   TextCell *retval = new TextCell(m_group, m_configuration, m_cellPointers, wxEmptyString);
   CopyData(this, retval);
@@ -303,19 +306,12 @@ MathCell *TextCell::Copy()
   return retval;
 }
 
-wxString TextCell::LabelWidthText()
-{
-  Configuration *configuration = (*m_configuration);
-  wxString result;
-
-  for (int i = 0; i < configuration->GetLabelWidth(); i++)
-    result += wxT("X");
-
-  return result;
-}
-
 void TextCell::RecalculateWidths(int fontsize)
 {
+  if(fontsize != m_fontsize_old)
+    ResetSize();
+  m_fontsize_old = fontsize;
+  Cell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
 
   bool recalculateNeeded = false;
@@ -359,8 +355,7 @@ void TextCell::RecalculateWidths(int fontsize)
     recalculateNeeded = true;
   }
 
-  if (m_height == -1 || m_width == -1 || configuration->ForceUpdate() ||
-      m_lastCalculationFontSize != fontsize)
+  if (m_height == -1 || m_width == -1 || configuration->FontChanged())
     recalculateNeeded = true;
 
   if(recalculateNeeded)
@@ -371,7 +366,7 @@ void TextCell::RecalculateWidths(int fontsize)
 
     // Labels and prompts are fixed width - adjust font size so that
     // they fit in
-    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
+    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT) || (m_textStyle == TS_OTHER_PROMPT))
     {
       wxString text = m_text;
 
@@ -382,36 +377,39 @@ void TextCell::RecalculateWidths(int fontsize)
       }
 
       wxFont font = dc->GetFont();
-      int fontsize1 = Scale_Px(configuration->GetDefaultFontSize());
+      double fontsize1 = Scale_Px(configuration->GetDefaultFontSize());
       if(fontsize1 < 4)
         fontsize1 = 4;
+#if wxCHECK_VERSION(3, 1, 2)
+      font.SetFractionalPointSize(fontsize1);
+#else
       font.SetPointSize(fontsize1);
+#endif
       dc->SetFont(font);
-      
-      // Check for output annotations (/R/ for CRE and /T/ for Taylor expressions)
-      if (text.Right(2) != wxT("/ "))
-        dc->GetTextExtent(wxT("(%o") + LabelWidthText() + wxT(")"), &m_width, &m_height);
-      else
-        dc->GetTextExtent(wxT("(%o") + LabelWidthText() + wxT(")/R/"), &m_width, &m_height);
 
+      
+      m_width = Scale_Px(configuration->GetLabelWidth());
       // We will decrease it before use
       m_fontSizeLabel = m_fontSize + 1;
-      wxASSERT_MSG((m_width > 0) || (text == wxEmptyString),
-                   _("The letter \"X\" is of width zero. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
-      if (m_width < 1) m_width = 10;
-      dc->GetTextExtent(text, &m_labelWidth, &m_labelHeight);
-      wxASSERT_MSG((m_labelWidth > 0) || (m_displayedText == wxEmptyString),
+      int labelWidth,labelHeight;
+      dc->GetTextExtent(text, &labelWidth, &labelHeight);
+      wxASSERT_MSG((labelWidth > 0) || (m_displayedText == wxEmptyString),
                    _("Seems like something is broken with the maths font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
       font = dc->GetFont();
       do
       {
+#if wxCHECK_VERSION(3, 1, 2)
+        font.SetFractionalPointSize(Scale_Px(--m_fontSizeLabel));
+#else
         font.SetPointSize(Scale_Px(--m_fontSizeLabel));
+#endif
         dc->SetFont(font);
-        dc->GetTextExtent(text, &m_labelWidth, &m_labelHeight);
-      } while ((m_labelWidth >= m_width) && (m_fontSizeLabel > 2));
+        dc->GetTextExtent(text, &labelWidth, &labelHeight);
+      } while ((labelWidth >= m_width) && (m_fontSizeLabel > 2));
+      m_height = labelHeight;
+      m_center = m_height / 2;
     }
-
-      /// Check if we are using jsMath and have jsMath character
+    // Check if we are using jsMath and have jsMath character
     else if (m_altJs && configuration->CheckTeXFonts())
     {
       dc->GetTextExtent(m_altJsText, &m_width, &m_height);
@@ -437,8 +435,8 @@ void TextCell::RecalculateWidths(int fontsize)
     else
       dc->GetTextExtent(m_displayedText, &m_width, &m_height);
 
-    m_width = m_width + 2 * Scale_Px(MC_TEXT_PADDING);
-    m_height = m_height + 2 * Scale_Px(MC_TEXT_PADDING);
+    m_width = m_width + 2 * MC_TEXT_PADDING;
+    m_height = m_height + 2 * MC_TEXT_PADDING;
 
     /// Hidden cells (multiplication * is not displayed)
     if (m_isHidden)
@@ -447,27 +445,26 @@ void TextCell::RecalculateWidths(int fontsize)
       m_width = m_width / 4;
     }
   }
-  if(m_width < 4) m_width = 4;
-  if(m_height < 4) m_height = 4;
+  if(m_height < Scale_Px(4)) m_height = Scale_Px(4);
   m_realCenter = m_center = m_height / 2;
   ResetData();
 }
 
-void TextCell::Draw(wxPoint point, int fontsize)
+void TextCell::Draw(wxPoint point)
 {
   if (DrawThisCell(point) && !m_isHidden)
   {
     
     Configuration *configuration = (*m_configuration);
-    MathCell::Draw(point, fontsize);
+    Cell::Draw(point);
     wxDC *dc = configuration->GetDC();
     
-    if (m_width == -1 || m_height == -1 || fontsize != m_lastCalculationFontSize)
-      RecalculateWidths(fontsize);
+    if (m_width == -1 || m_height == -1 || m_fontSize != m_lastCalculationFontSize)
+      RecalculateWidths(m_fontSize);
     
     if (InUpdateRegion())
     {
-      SetFont(fontsize);
+      SetFont(m_fontSize);
       SetForeground();
       /// Labels and prompts have special fontsize
       if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
@@ -482,38 +479,38 @@ void TextCell::Draw(wxPoint point, int fontsize)
             wxString text = m_userDefinedLabel;
             m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
             dc->DrawText(wxT("(") + text + wxT(")"),
-                        point.x + Scale_Px(MC_TEXT_PADDING),
-                        point.y - m_realCenter + (m_height - m_labelHeight) / 2);
+                         point.x + MC_TEXT_PADDING,
+                         point.y - m_realCenter + MC_TEXT_PADDING);
           }
           else
             dc->DrawText(m_displayedText,
-                        point.x + Scale_Px(MC_TEXT_PADDING),
-                        point.y - m_realCenter + (m_height - m_labelHeight) / 2);            
+                         point.x + MC_TEXT_PADDING,
+                         point.y - m_realCenter + MC_TEXT_PADDING);
         }
       }
 
         /// Check if we are using jsMath and have jsMath character
       else if (m_altJs && configuration->CheckTeXFonts())
         dc->DrawText(m_altJsText,
-                    point.x + Scale_Px(MC_TEXT_PADDING),
-                    point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
+                    point.x + MC_TEXT_PADDING,
+                    point.y - m_realCenter + MC_TEXT_PADDING);
 
         /// We are using a special symbol
       else if (m_alt)
         dc->DrawText(m_altText,
-                    point.x + Scale_Px(MC_TEXT_PADDING),
-                    point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
+                    point.x + MC_TEXT_PADDING,
+                    point.y - m_realCenter + MC_TEXT_PADDING);
 
         /// Change asterisk
       else if (configuration->GetChangeAsterisk() && m_displayedText == wxT("*"))
         dc->DrawText(wxT("\xB7"),
-                    point.x + Scale_Px(MC_TEXT_PADDING),
-                    point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
+                    point.x + MC_TEXT_PADDING,
+                    point.y - m_realCenter + MC_TEXT_PADDING);
 
       else if (m_displayedText == wxT("#"))
         dc->DrawText(wxT("\x2260"),
-                    point.x + Scale_Px(MC_TEXT_PADDING),
-                    point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
+                    point.x + MC_TEXT_PADDING,
+                    point.y - m_realCenter + MC_TEXT_PADDING);
         /// This is the default.
       else
       {
@@ -522,16 +519,16 @@ void TextCell::Draw(wxPoint point, int fontsize)
           case MC_TYPE_TEXT:
             // TODO: Add markdown formatting for bold, italic and underlined here.
             dc->DrawText(m_displayedText,
-                        point.x + Scale_Px(MC_TEXT_PADDING),
-                        point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
+                        point.x + MC_TEXT_PADDING,
+                        point.y - m_realCenter + MC_TEXT_PADDING);
             break;
           case MC_TYPE_INPUT:
             // This cell has already been drawn as an EditorCell => we don't repeat this action here.
             break;
           default:
             dc->DrawText(m_displayedText,
-                        point.x + Scale_Px(MC_TEXT_PADDING),
-                        point.y - m_realCenter + Scale_Px(MC_TEXT_PADDING));
+                        point.x + MC_TEXT_PADDING,
+                        point.y - m_realCenter + MC_TEXT_PADDING);
         }
       }
     }
@@ -541,7 +538,11 @@ void TextCell::Draw(wxPoint point, int fontsize)
 void TextCell::SetFontSizeForLabel(wxDC *dc)
 {
   wxFont font(dc->GetFont());
+#if wxCHECK_VERSION(3, 1, 2)
+  font.SetFractionalPointSize(Scale_Px(m_fontSizeLabel));
+#else
   font.SetPointSize(Scale_Px(m_fontSizeLabel));
+#endif
   dc->SetFont(font);
 }
 
@@ -554,7 +555,9 @@ void TextCell::SetFont(int fontsize)
   if ((m_textStyle == TS_TITLE) ||
       (m_textStyle == TS_SECTION) ||
       (m_textStyle == TS_SUBSECTION) ||
-      (m_textStyle == TS_SUBSUBSECTION))
+      (m_textStyle == TS_SUBSUBSECTION) ||
+      (m_textStyle == TS_HEADING5) || 
+      (m_textStyle == TS_HEADING6))
   {
     // Titles have a fixed font size 
     m_fontSize = configuration->GetFontSize(m_textStyle);
@@ -600,7 +603,11 @@ void TextCell::SetFont(int fontsize)
   }
 
   wxASSERT(Scale_Px(m_fontSize) > 0);
+#if wxCHECK_VERSION(3, 1, 2)
+  font.SetFractionalPointSize(Scale_Px(m_fontSize));
+#else
   font.SetPointSize(Scale_Px(m_fontSize));
+#endif
 
   wxASSERT_MSG(font.IsOk(),
                _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
@@ -688,8 +695,10 @@ wxString TextCell::ToString()
         text += wxT("\t");
         break;
       }
+  default:
+  {}
   }
-  if((m_next != NULL) && (m_next->BreakLine()))
+  if((m_next != NULL) && (m_next->BreakLineHere()))
     text += "\n";
   
   return text;
@@ -1137,6 +1146,7 @@ wxString TextCell::ToMathML()
   {
     case TS_GREEK_CONSTANT:
       text = GetGreekStringUnicode();
+      break;
     case TS_SPECIAL_CONSTANT:
     {
       // The "d" from d/dt can be written as a special unicode symbol. But firefox doesn't
@@ -1152,7 +1162,8 @@ wxString TextCell::ToMathML()
           text = wxT("i");
       }
     }
-    case TS_VARIABLE:
+    /* FALLTHRU */
+  case TS_VARIABLE:
     {
       bool keepPercent = (*m_configuration)->CheckKeepPercent();
 
@@ -1162,7 +1173,8 @@ wxString TextCell::ToMathML()
           text = wxT("\x03C0");
       }
     }
-    case TS_FUNCTION:
+    /* FALLTHRU */
+  case TS_FUNCTION:
       text = GetGreekStringUnicode();
       if (text == wxT("inf"))
         text = wxT("\x221e");
@@ -1195,8 +1207,8 @@ wxString TextCell::ToOMML()
 {
   //Text-only lines are better handled in RTF.
   if (
-          ((m_previous != NULL) && (m_previous->GetStyle() != TS_LABEL) && (!m_previous->ForceBreakLineHere())) &&
-          (ForceBreakLineHere())
+          ((m_previous != NULL) && (m_previous->GetStyle() != TS_LABEL) && (!m_previous->HardLineBreak())) &&
+          (HardLineBreak())
           )
     return wxEmptyString;
 
@@ -1234,7 +1246,8 @@ wxString TextCell::ToOMML()
           text = wxT("i");
       }
     }
-    case TS_VARIABLE:
+    /* FALLTHRU */
+  case TS_VARIABLE:
     {
       bool keepPercent = (*m_configuration)->CheckKeepPercent();
 
@@ -1244,7 +1257,8 @@ wxString TextCell::ToOMML()
           text = wxT("\x03C0");
       }
     }
-    case TS_FUNCTION:
+    /* FALLTHRU */
+  case TS_FUNCTION:
       text = GetGreekStringUnicode();
       if (text == wxT("inf"))
         text = wxT("\x221e");

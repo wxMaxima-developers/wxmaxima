@@ -28,7 +28,7 @@ The main things that are important to know are:
    containing strings that look like input or output labels and it doesn't 
    guarantee that there is a way to transform output from maxima into a valid input
    again that has exactly the same meaning.
- - The worksheet is defined in the class MathCtrl.
+ - The worksheet is defined in the class Worksheet.
  - It is organized in GroupCells that each can contain a cell containing a list of
    cells containing a label and the user input and a list of cells containing the
    output label and 2d math from maxima.
@@ -67,7 +67,7 @@ Where to start reading?
 -----------------------
 
 This naturally depends on what you want to archieve.
- - The worksheet is mostly handled by the class MathCtrl
+ - The worksheet is mostly handled by the class Worksheet
  - All the cells that are displayed in the worksheet and all the sub-
    cells that represent individual elements inside one of these cells
    are child objects of MathCell. This object also contains most of
@@ -93,7 +93,7 @@ Things you have to know
    - Some objects like sqrt() or a pair of parenthesis might contain
      a list.
    - Super- and subscripts are lists.
-   - GroupCells allows to move its childs to a separate list that isn't
+   - GroupCells allow to move their children to a separate list that isn't
      displayed (which enables folding of chapters).
  - Methods that operate on lists typically start processing the list from
    the element they were called from. This means that they only will work
@@ -105,6 +105,17 @@ Things you have to know
 
         MathCell *ListStart=this;
         while(ListStart->m_previous) ListStart = ListStart->m_previous;
+
+Breaking long 2D objects into lines
+-----------------------------------
+
+wxMaxima can break some 2D objects into lines if they otherwise would be 
+longer wider than the screen. This is done in GroupCell::BreakLines.
+
+Objects that are broken apart this way technically aren't displayed 
+any more. Instead the lists of objects they contain are. If an object
+isn't broken apart it is displayed directly and automatically handles 
+displaying all of its contents.
 
 Naming rules
 ------------

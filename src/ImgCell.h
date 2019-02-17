@@ -23,33 +23,54 @@
 #ifndef IMGCELL_H
 #define IMGCELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
 #include <wx/image.h>
 #include "Image.h"
 
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
 
-class ImgCell : public MathCell
+class ImgCell : public Cell
 {
 public:
-  ImgCell(MathCell *parent, Configuration **config, CellPointers *cellpointers);
+  ImgCell(Cell *parent, Configuration **config, CellPointers *cellpointers);
 
-  ImgCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type);
+  ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxMemoryBuffer image, wxString type);
 
-  ImgCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove = true,
+  ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString image, bool remove = true,
           wxFileSystem *filesystem = NULL);
 
-  ImgCell(MathCell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap);
+  ImgCell(Cell *parent, Configuration **config, CellPointers *cellPointers, const wxBitmap &bitmap);
 
   ~ImgCell();
 
-  std::list<MathCell *> GetInnerCells();
+  //! Tell the image which gnuplot files it was made from
+  void GnuplotSource(wxString sourcefile, wxString datafile, wxFileSystem *filesystem = NULL)
+    {
+      if(m_image != NULL)
+        m_image->GnuplotSource(sourcefile,datafile, filesystem);
+    }
+  //! The name of the file with gnuplot commands that created this file
+  wxString GnuplotSource(){
+    if(m_image == NULL)
+      return wxEmptyString;
+    else
+      return m_image->GnuplotSource();
+  }
+  //! The name of the file with gnuplot data needed for creating this file
+  wxString GnuplotData(){
+    if(m_image == NULL)
+      return wxEmptyString;
+    else
+      return m_image->GnuplotData();
+  }
+
+  std::list<Cell *> GetInnerCells();
   void MarkAsDeleted();
 
   void LoadImage(wxString image, bool remove = true);
 
-  MathCell *Copy();
+  Cell *Copy();
 
   friend class SlideShow;
 
@@ -79,16 +100,6 @@ public:
   //! Copies the cell to the system's clipboard
   bool CopyToClipboard();
 
-  // These methods should only be used for saving wxmx files
-  // and are shared with SlideShowCell.
-  static void WXMXResetCounter()
-  { s_counter = 0; }
-
-  static wxString WXMXGetNewFileName();
-
-  static int WXMXImageCount()
-  { return s_counter; }
-
   void DrawRectangle(bool draw)
   { m_drawRectangle = draw; }
 
@@ -112,7 +123,7 @@ protected:
 
   void RecalculateWidths(int fontsize);
 
-  void Draw(wxPoint point, int fontsize);
+  virtual void Draw(wxPoint point);
 
   wxString ToString();
 

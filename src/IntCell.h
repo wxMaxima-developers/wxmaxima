@@ -23,47 +23,46 @@
 /*! \file
   This file declares the class IntCell
 
-  IntCell is the MathCell type that represents maxima's <code>integrate()</code> command.
+  IntCell is the Cell type that represents maxima's <code>integrate()</code> command.
 */
 
 
 #ifndef INTCELL_H
 #define INTCELL_H
 
-#include "MathCell.h"
-#include "Setup.h"
+#include "Cell.h"
 
 /*! This class represents an integral
 
   This class represents an integral including the integral sign and its contents.
  */
-class IntCell : public MathCell
+class IntCell : public Cell
 {
 public:
-  IntCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
+  IntCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~IntCell();
 
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
 
-  MathCell *Copy();
+  Cell *Copy();
 
   void RecalculateHeight(int fontsize);
 
   void RecalculateWidths(int fontsize);
 
-  void Draw(wxPoint point, int fontsize);
+  virtual void Draw(wxPoint point);
 
-  void SetBase(MathCell *base);
+  void SetBase(Cell *base);
 
   //! Set the lower limit of the integral
-  void SetUnder(MathCell *under);
+  void SetUnder(Cell *under);
 
   //! Set the higher limit of the integral
-  void SetOver(MathCell *name);
+  void SetOver(Cell *name);
 
   //! Set the integration variable
-  void SetVar(MathCell *var);
+  void SetVar(Cell *var);
 
   enum IntegralType
   {
@@ -87,17 +86,17 @@ public:
 
   wxString ToXML();
 
-  void SetGroup(MathCell *parent);
+  void SetGroup(Cell *parent);
 
 protected:
   //! The part of the formula that is to be integrated.
-  MathCell *m_base;
+  Cell *m_base;
   //! The lower limit of the integral
-  MathCell *m_under;
+  Cell *m_under;
   //! The upper limit of the integral
-  MathCell *m_over;
+  Cell *m_over;
   //! The integration variable
-  MathCell *m_var;
+  Cell *m_var;
   //! The height of the integral sign
   int m_signHeight;
   //! The width of the integral sign

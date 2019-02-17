@@ -27,6 +27,10 @@
 #include "Image.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
+#include <wx/zstream.h>
+#include <wx/txtstrm.h>
+#include <wx/regex.h>
+#include <wx/stdpaths.h>
 
 wxMemoryBuffer Image::ReadCompressedImage(wxInputStream *data)
 {
@@ -110,6 +114,323 @@ Image::Image(Configuration **config, wxString image, bool remove, wxFileSystem *
   m_maxHeight = -1;
 }
 
+Image::~Image()
+{
+  if(m_gnuplotSource != wxEmptyString)
+  {
+    if(wxFileExists(m_gnuplotSource))
+      wxRemoveFile(m_gnuplotSource);
+
+    if(wxFileExists(m_gnuplotData))
+      wxRemoveFile(m_gnuplotData);
+
+    wxString popoutname = m_gnuplotSource + wxT(".popout");
+    if(wxFileExists(popoutname))
+      wxRemoveFile(popoutname);
+    
+  }
+}
+
+void Image::GnuplotSource(wxString gnuplotFilename, wxString dataFilename, wxFileSystem *filesystem)
+{
+  m_gnuplotSource = gnuplotFilename;
+  m_gnuplotData = dataFilename;
+
+  if(filesystem == NULL)
+  {
+    if(!wxFileExists(dataFilename))
+      return;
+    
+    // Don't cache the data for unreasonably long files.
+    wxStructStat strucStat;
+    wxStat(dataFilename, &strucStat);
+    if (strucStat.st_size > 25*1000*1000)
+      return;
+
+    // The gnuplot source of the image is cached in a compressed form:
+    //
+    // as it is text-only and contains many redundancies it will get way
+    // smaller this way.
+    {
+      wxFileInputStream input(m_gnuplotSource);
+      if(!input.IsOk())
+        return;
+      wxTextInputStream textIn(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+      
+      wxMemoryOutputStream mstream;
+      int zlib_flags;
+      if(wxZlibOutputStream::CanHandleGZip())
+        zlib_flags = wxZLIB_GZIP;
+      else
+        zlib_flags = wxZLIB_ZLIB;
+      wxZlibOutputStream zstream(mstream,wxZ_BEST_COMPRESSION,zlib_flags);
+      wxTextOutputStream textOut(zstream);
+      wxString line;
+      
+      // A RegEx that matches the name of the data file (needed if we ever want to
+      // move a data file into the temp directory of a new computer that locates its
+      // temp data somewhere strange).
+      wxRegEx replaceDataFileName("'[^']*maxout_[^']*_[0-9]*\\.data'");
+      while(!input.Eof())
+      {
+        line = textIn.ReadLine();
+        if(replaceDataFileName.Matches(line))
+        {
+          wxString dataFileName;
+          dataFileName = replaceDataFileName.GetMatch(line);
+          replaceDataFileName.Replace(&line,wxT("'<DATAFILENAME>'"));
+        }
+        textOut << line + wxT("\n");
+      }
+      textOut.Flush();
+      zstream.Close();
+      
+      m_gnuplotSource_Compressed.Clear();
+      m_gnuplotSource_Compressed.AppendData(mstream.GetOutputStreamBuffer()->GetBufferStart(),
+                                            mstream.GetOutputStreamBuffer()->GetBufferSize());
+    }
+    
+    {
+      wxFileInputStream input(m_gnuplotData);
+      if(!input.IsOk())
+        return;
+      wxTextInputStream textIn(input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+      
+      wxMemoryOutputStream mstream;
+      int zlib_flags;
+      if(wxZlibOutputStream::CanHandleGZip())
+        zlib_flags = wxZLIB_GZIP;
+      else
+        zlib_flags = wxZLIB_ZLIB;
+      wxZlibOutputStream zstream(mstream,wxZ_BEST_COMPRESSION,zlib_flags);
+      wxTextOutputStream textOut(zstream);
+      wxString line;
+      
+      while(!input.Eof())
+      {
+      line = textIn.ReadLine();
+      textOut << line + wxT("\n");
+      }
+      textOut.Flush();
+      zstream.Close();
+      
+      m_gnuplotData_Compressed.Clear();
+      m_gnuplotData_Compressed.AppendData(mstream.GetOutputStreamBuffer()->GetBufferStart(),
+                                          mstream.GetOutputStreamBuffer()->GetBufferSize());
+    }
+  }
+  else
+  {
+    {
+      wxFSFile *fsfile = filesystem->OpenFile(m_gnuplotSource);
+      if (fsfile)
+      { // open successful
+        wxInputStream *input = fsfile->GetStream();
+          if(input->IsOk())
+          {
+            wxTextInputStream textIn(*input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+
+            wxMemoryOutputStream mstream;
+            int zlib_flags;
+            if(wxZlibOutputStream::CanHandleGZip())
+              zlib_flags = wxZLIB_GZIP;
+            else
+              zlib_flags = wxZLIB_ZLIB;
+            wxZlibOutputStream zstream(mstream,wxZ_BEST_COMPRESSION,zlib_flags);
+            wxTextOutputStream textOut(zstream);
+            wxString line;
+            
+            // A RegEx that matches the name of the data file (needed if we ever want to
+            // move a data file into the temp directory of a new computer that locates its
+            // temp data somewhere strange).
+            wxRegEx replaceDataFileName("'[^']*maxout_[^']*_[0-9*]\\.data'");
+            while(!input->Eof())
+            {
+              line = textIn.ReadLine();
+              if(replaceDataFileName.Matches(line))
+              {
+                wxString dataFileName;
+                dataFileName = replaceDataFileName.GetMatch(line);
+                if(dataFileName != wxEmptyString)
+                  wxLogMessage(_("Gnuplot Data File Name: ") + dataFileName);
+                replaceDataFileName.Replace(&line,wxT("'<DATAFILENAME>'"));
+              }
+              textOut << line + wxT("\n");
+            }
+            textOut.Flush();
+            zstream.Close();
+            m_gnuplotSource_Compressed.Clear();
+            m_gnuplotSource_Compressed.AppendData(mstream.GetOutputStreamBuffer()->GetBufferStart(),
+                                                  mstream.GetOutputStreamBuffer()->GetBufferSize());
+            wxDELETE(input);
+          }
+      }
+    }
+    {
+      wxFSFile *fsfile = filesystem->OpenFile(m_gnuplotData);
+      if (fsfile)
+      { // open successful
+        wxInputStream *input = fsfile->GetStream();
+        if(input->IsOk())
+        {
+          wxTextInputStream textIn(*input, wxT('\t'), wxConvAuto(wxFONTENCODING_UTF8));
+            
+          wxMemoryOutputStream mstream;
+          int zlib_flags;
+          if(wxZlibOutputStream::CanHandleGZip())
+            zlib_flags = wxZLIB_GZIP;
+          else
+            zlib_flags = wxZLIB_ZLIB;
+          wxZlibOutputStream zstream(mstream,wxZ_BEST_COMPRESSION,zlib_flags);
+          wxTextOutputStream textOut(zstream);
+          wxString line;
+            
+          while(!input->Eof())
+          {
+            line = textIn.ReadLine();
+            textOut << line + wxT("\n");
+          }
+          textOut.Flush();
+          zstream.Close();
+            
+          m_gnuplotData_Compressed.Clear();
+          m_gnuplotData_Compressed.AppendData(mstream.GetOutputStreamBuffer()->GetBufferStart(),
+                                              mstream.GetOutputStreamBuffer()->GetBufferSize());
+        }
+      }
+    }
+  }
+}
+
+wxMemoryBuffer Image::GetGnuplotSource()
+{
+  wxMemoryBuffer retval;
+  
+  wxMemoryOutputStream output;
+  wxTextOutputStream textOut(output);
+  if(!output.IsOk())
+    return retval;
+
+  wxMemoryInputStream mstream(
+    m_gnuplotSource_Compressed.GetData(),
+    m_gnuplotSource_Compressed.GetDataLen()
+    );
+  wxZlibInputStream zstream(mstream);
+  wxTextInputStream textIn(zstream);
+  wxString line;
+  
+  while(!mstream.Eof())
+  {
+    line = textIn.ReadLine();
+    textOut << line + wxT("\n");
+  }
+  textOut.Flush();
+
+  retval.AppendData(output.GetOutputStreamBuffer()->GetBufferStart(),
+                    output.GetOutputStreamBuffer()->GetBufferSize());
+  return retval;
+}
+
+wxMemoryBuffer Image::GetGnuplotData()
+{
+  wxMemoryBuffer retval;
+  
+  wxMemoryOutputStream output;
+  wxTextOutputStream textOut(output);
+  if(!output.IsOk())
+    return retval;
+
+  wxMemoryInputStream mstream(
+    m_gnuplotData_Compressed.GetData(),
+    m_gnuplotData_Compressed.GetDataLen()
+    );
+  wxZlibInputStream zstream(mstream);
+  wxTextInputStream textIn(zstream);
+  wxString line;
+  
+  while(!mstream.Eof())
+  {
+    line = textIn.ReadLine();
+    textOut << line + wxT("\n");
+  }
+  textOut.Flush();
+
+  retval.AppendData(output.GetOutputStreamBuffer()->GetBufferStart(),
+                    output.GetOutputStreamBuffer()->GetBufferSize());
+  return retval;
+}
+
+wxString Image::GnuplotData()
+{
+  if((m_gnuplotData == wxEmptyString) || (wxFileExists(m_gnuplotData)))
+    return m_gnuplotData;
+
+  // Move the gnuplot data and data file into our temp directory
+  wxFileName gnuplotSourceFile(m_gnuplotSource);
+  m_gnuplotSource = wxStandardPaths::Get().GetTempDir() + "/" + gnuplotSourceFile.GetFullName();
+  wxFileName gnuplotDataFile(m_gnuplotData);
+  m_gnuplotData = wxStandardPaths::Get().GetTempDir() + "/" + gnuplotDataFile.GetFullName();
+
+  wxFileOutputStream output(m_gnuplotData);
+  wxTextOutputStream textOut(output);
+  if(!output.IsOk())
+    return m_gnuplotData;
+
+  wxMemoryInputStream mstream(
+    m_gnuplotData_Compressed.GetData(),
+    m_gnuplotData_Compressed.GetDataLen()
+    );
+  wxZlibInputStream zstream(mstream);
+  wxTextInputStream textIn(zstream);
+  wxString line;
+  
+  while(!mstream.Eof())
+  {
+    line = textIn.ReadLine();
+    textOut << line + wxT("\n");
+  }
+  textOut.Flush();
+  
+  return m_gnuplotData;
+}
+
+wxString Image::GnuplotSource()
+{
+  if((m_gnuplotSource == wxEmptyString) || (wxFileExists(m_gnuplotSource)))
+    return m_gnuplotSource;
+
+  // Move the gnuplot source and data file into our temp directory
+  wxFileName gnuplotSourceFile(m_gnuplotSource);
+  m_gnuplotSource = wxStandardPaths::Get().GetTempDir() + "/" + gnuplotSourceFile.GetFullName();
+  wxFileName gnuplotDataFile(m_gnuplotData);
+  m_gnuplotData = wxStandardPaths::Get().GetTempDir() + "/" + gnuplotDataFile.GetFullName();
+  
+  wxFileOutputStream output(m_gnuplotSource);
+  wxTextOutputStream textOut(output);
+  if(!output.IsOk())
+    return m_gnuplotSource;
+
+  wxMemoryInputStream mstream(
+    m_gnuplotSource_Compressed.GetData(),
+    m_gnuplotSource_Compressed.GetDataLen()
+    );
+  wxZlibInputStream zstream(mstream);
+  wxTextInputStream textIn(zstream);
+  wxString line;
+  
+  while(!mstream.Eof())
+  {
+    line = textIn.ReadLine();
+    line.Replace(wxT("'<DATAFILENAME>'"),wxT("'")+m_gnuplotData+wxT("'"));
+    textOut << line + wxT("\n");
+  }
+  textOut.Flush();
+  // Restore the data file, as well.
+  GnuplotData();
+  
+  return m_gnuplotSource;
+}
+
 wxSize Image::ToImageFile(wxString filename)
 {
   wxFileName fn(filename);
@@ -154,11 +475,6 @@ wxSize Image::ToImageFile(wxString filename)
       return wxSize(-1, -1);
     return image.GetSize();
   }
-}
-
-wxBitmap Image::GetBitmap()
-{
-  return GetBitmap(1.0);
 }
 
 wxBitmap Image::GetBitmap(double scale)
@@ -307,12 +623,6 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
   }
   Recalculate();
 
-}
-
-void Image::Recalculate()
-{
-  // Don't scale the image by default.
-  Recalculate(1.0);
 }
 
 void Image::Recalculate(double scale)

@@ -33,7 +33,7 @@ The header file for the xml cell parser
 #include <wx/filesys.h>
 #include <wx/fs_arc.h>
 
-#include "MathCell.h"
+#include "Cell.h"
 #include "TextCell.h"
 
 /*! This class handles parsing the xml representation of a cell tree.
@@ -44,19 +44,19 @@ inside a wxmx file
 class MathParser
 {
 public:
-  MathParser(Configuration **cfg, MathCell::CellPointers *cellPointers, wxString zipfile = wxEmptyString);
+  MathParser(Configuration **cfg, Cell::CellPointers *cellPointers, wxString zipfile = wxEmptyString);
 
   ~MathParser();
 
   void SetUserLabel(wxString label){ m_userDefinedLabel = label; }
-  MathCell *ParseLine(wxString s, int style = MC_TYPE_DEFAULT);
+  Cell *ParseLine(wxString s, CellType style = MC_TYPE_DEFAULT);
 
-  MathCell *ParseTag(wxXmlNode *node, bool all = true);
+  Cell *ParseTag(wxXmlNode *node, bool all = true);
 
 private:
-  void ParseCommonAttrs(wxXmlNode *node, MathCell *cell);
+  void ParseCommonAttrs(wxXmlNode *node, Cell *cell);
 
-  MathCell *HandleNullPointer(MathCell *cell);
+  Cell *HandleNullPointer(Cell *cell);
 
   /*! Get the next xml tag
 
@@ -87,52 +87,52 @@ private:
     has to be reflected here in order to ensure proper
     loading of WXMX files.
   */
-  MathCell *ParseCellTag(wxXmlNode *node);
+  Cell *ParseCellTag(wxXmlNode *node);
 
-  MathCell *ParseEditorTag(wxXmlNode *node);
+  Cell *ParseEditorTag(wxXmlNode *node);
 
-  MathCell *ParseFracTag(wxXmlNode *node);
+  Cell *ParseFracTag(wxXmlNode *node);
 
-  MathCell *ParseText(wxXmlNode *node, int style = TS_DEFAULT);
+  Cell *ParseText(wxXmlNode *node, TextStyle style = TS_DEFAULT);
 
-  MathCell *ParseCharCode(wxXmlNode *node, int style = TS_DEFAULT);
+  Cell *ParseCharCode(wxXmlNode *node, TextStyle style = TS_DEFAULT);
 
-  MathCell *ParseSupTag(wxXmlNode *node);
+  Cell *ParseSupTag(wxXmlNode *node);
 
-  MathCell *ParseSubTag(wxXmlNode *node);
+  Cell *ParseSubTag(wxXmlNode *node);
 
-  MathCell *ParseAbsTag(wxXmlNode *node);
+  Cell *ParseAbsTag(wxXmlNode *node);
 
-  MathCell *ParseConjugateTag(wxXmlNode *node);
+  Cell *ParseConjugateTag(wxXmlNode *node);
 
-  MathCell *ParseUnderTag(wxXmlNode *node);
+  Cell *ParseUnderTag(wxXmlNode *node);
 
-  MathCell *ParseTableTag(wxXmlNode *node);
+  Cell *ParseTableTag(wxXmlNode *node);
 
-  MathCell *ParseAtTag(wxXmlNode *node);
+  Cell *ParseAtTag(wxXmlNode *node);
 
-  MathCell *ParseDiffTag(wxXmlNode *node);
+  Cell *ParseDiffTag(wxXmlNode *node);
 
-  MathCell *ParseSumTag(wxXmlNode *node);
+  Cell *ParseSumTag(wxXmlNode *node);
 
-  MathCell *ParseIntTag(wxXmlNode *node);
+  Cell *ParseIntTag(wxXmlNode *node);
 
-  MathCell *ParseFunTag(wxXmlNode *node);
+  Cell *ParseFunTag(wxXmlNode *node);
 
-  MathCell *ParseSqrtTag(wxXmlNode *node);
+  Cell *ParseSqrtTag(wxXmlNode *node);
 
-  MathCell *ParseLimitTag(wxXmlNode *node);
+  Cell *ParseLimitTag(wxXmlNode *node);
 
-  MathCell *ParseParenTag(wxXmlNode *node);
+  Cell *ParseParenTag(wxXmlNode *node);
 
-  MathCell *ParseSubSupTag(wxXmlNode *node);
+  Cell *ParseSubSupTag(wxXmlNode *node);
 
   wxString m_userDefinedLabel;
   wxRegEx m_graphRegex;
 
-  int m_ParserStyle;
+  CellType m_ParserStyle;
   int m_FracStyle;
-  MathCell::CellPointers *m_cellPointers;
+  Cell::CellPointers *m_cellPointers;
   Configuration **m_configuration;
   bool m_highlight;
   wxFileSystem *m_fileSystem; // used for loading pictures in <img> and <slide>

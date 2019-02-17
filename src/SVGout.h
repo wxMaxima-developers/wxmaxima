@@ -23,7 +23,7 @@
 #ifndef SVGOUT_H
 #define SVGOUT_H
 
-#include "MathCell.h"
+#include "Cell.h"
 
 #include <wx/dcsvg.h>
 /* Renders portions of the work sheet (including 2D maths) as svg.
@@ -45,7 +45,7 @@ public:
     \param tree The list of cells that is to be rendered
     \return true, if the svgout could be created.
    */
-  wxSize SetData(MathCell *tree);
+  wxSize SetData(Cell *tree);
   
   //! Copies the svg representation of the list of cells that was passed to SetData()
   bool ToClipboard();
@@ -67,7 +67,7 @@ protected:
 
   void Draw();
 
-  MathCell *m_tree;
+  Cell *m_tree;
 
   double GetRealHeight();
 
@@ -89,6 +89,7 @@ protected:
   };
 
 private:
+  int Scale_Px(double px){ return (*m_configuration)->Scale_Px(px);}
   //! The name of a temp file we create while calculating the svg size.
   wxString m_tempFileName;
   //! The draw context we draw to during recalculation.
@@ -107,6 +108,13 @@ private:
   //! The resolution of the svgout.
   wxSize m_ppi;
 
+  /*! The current working directory we were in when we started creating a svg file
+
+    wxWidgets tends to place bitmaps it links to svg files in its current working
+    directory, not in the dir of the .svg file so we temporarily switch the working
+    directory.
+   */
+  wxString m_CWD;
 public:
   //! Returns the svg representation in a format that can be placed on the clipBoard.
   SVGDataObject *GetDataObject();

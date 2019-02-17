@@ -24,16 +24,13 @@
 
 #include <wx/wx.h>
 #include <wx/config.h>
+#include <wx/display.h>
 #include <wx/fontenum.h>
 
 #include "TextStyle.h"
-#include "Dirstructure.h"
-#include "Setup.h"
 
-
-#define MC_CELL_SKIP 0
-#define MC_LINE_SKIP 2
-#define MC_TEXT_PADDING 1
+#define MC_LINE_SKIP Scale_Px(2)
+#define MC_TEXT_PADDING Scale_Px(1)
 
 #define PAREN_OPEN_TOP_UNICODE     "\x239b"
 #define PAREN_OPEN_EXTEND_UNICODE  "\x239c"
@@ -88,7 +85,6 @@
 class Configuration
 {
 public:
-  Dirstructure m_dirStructure;
   enum drawMode
   {
     ascii,              //!< Use ascii characters only
@@ -129,6 +125,8 @@ public:
 
   ~Configuration();
 
+  static wxString m_maximaLocation_override;
+  
   static double GetMinZoomFactor()
   { return 0.1; }
 
@@ -178,7 +176,14 @@ public:
   void SetZoomFactor(double newzoom);
 
   //! Sets the zoom factor without storing the new value in the config file/registry.
-  void SetZoomFactor_temporarily(double newzoom){m_zoomFactor = newzoom;}
+  void SetZoomFactor_temporarily(double newzoom){
+    if(m_zoomFactor != newzoom)
+    {
+      RecalculationForce(true);
+      FontChanged(true);
+    }
+    m_zoomFactor = newzoom;
+  }
 
   /*! Scales a distance [in pixels] according to the zoom factor
 
@@ -233,12 +238,14 @@ public:
 
   void ReadStyle();
 
-  void SetForceUpdate(bool force)
+  //! Force a full recalculation?
+  void RecalculationForce(bool force)
   {
     m_forceUpdate = force;
   }
 
-  bool ForceUpdate()
+  //! Force a full recalculation?
+  bool RecalculationForce()
   {
     return m_forceUpdate;
   }
@@ -249,7 +256,7 @@ public:
   }
 
   int GetLabelWidth()
-  { return m_labelWidth; }
+  { return m_labelWidth * 14; }
 
   //! Get the indentation of GroupCells.
   int GetIndent()
@@ -263,10 +270,17 @@ public:
   //! How much vertical space is to be left between two group cells?
   int GetCursorWidth()
   {
-    if (wxGetDisplayPPI().x / 45 < 1)
+    int ppi;
+    #if wxCHECK_VERSION(3, 1, 1)
+    wxDisplay display;
+    ppi = display.GetPPI().x;
+    #else
+    ppi = wxGetDisplayPPI().x;
+    #endif
+    if (ppi / 45 < 1)
       return 1;
     else
-      return wxGetDisplayPPI().x / 45;
+      return ppi / 45;
   }
 
   //! The y position the worksheet starts at
@@ -292,12 +306,32 @@ public:
     Normallly this parameter is automatically calculated
    */
   void SetIndent(int indent)
-  { m_indent = indent; }
+  {
+    if(m_indent != indent)
+      RecalculationForce(true);
+    m_indent = indent;
+  }
 
   //! Set the width of the visible window for GetClientWidth()
   void SetClientWidth(int width)
-  { m_clientWidth = width; }
-
+  {
+    if(m_clientWidth != width)
+      RecalculationForce(true);
+    m_clientWidth = width;
+  }
+  //! Has a font changed?
+  bool FontChanged(){return m_fontChanged;}
+  WX_DECLARE_STRING_HASH_MAP( bool, CharsInFontMap);
+  CharsInFontMap m_charsInFontMap;
+  //! Has a font changed?
+  void FontChanged(bool fontChanged)
+    {
+      m_fontChanged = fontChanged;
+      if(fontChanged)
+        RecalculationForce(true);
+      m_charsInFontMap.clear();
+    }
+  
   //! Set the height of the visible window for GetClientHeight()
   void SetClientHeight(int height)
   { m_clientHeight = height; }
@@ -321,9 +355,14 @@ public:
 
   //! The minimum sensible line width in withs of a letter.
   int LineWidth_em()
-  { return m_lineWidth_em; }
+  {
+    if(!m_printing)
+      return m_lineWidth_em;
+    else
+      return 10000;
+  }
 
-  //! Set the minimum sensible line width in widths of a lletter.
+  //! Set the minimum sensible line width in widths of a letter.
   void LineWidth_em(int width)
   { m_lineWidth_em = width; }
 
@@ -332,10 +371,13 @@ public:
   // But text blocks that are 1 meter wide and 2 cm high feel - weird.
   int GetLineWidth()
   {
-    if (m_clientWidth <= m_zoomFactor * double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor)
+    if (
+      (m_clientWidth <= m_zoomFactor * double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor) ||
+      (m_printing)
+      )
       return m_clientWidth;
     else
-      return (const int) (double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor);
+      return (int) (double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor);
   }
 
   int GetDefaultFontSize()
@@ -372,9 +414,12 @@ public:
     wxConfig::Get()->Write(wxT("autoIndent"), m_autoIndent = autoIndent);
   }
 
+  //! Do we want to indent all maths?
+  bool IndentMaths(){return m_indentMaths;}
+  void IndentMaths(bool indent){wxConfig::Get()->Write(wxT("indentMaths"), m_indentMaths=indent);}
   int GetFontSize(int st)
   {
-    if (st == TS_TEXT || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
+    if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
       return m_styles[st].fontSize;
     return 0;
   }
@@ -408,11 +453,27 @@ public:
 
   void ShowCodeCells(bool show);
 
-  void SetPrinter(bool printer)
-  { m_printer = printer; }
+  /*! Are we currently printing?
 
-  bool GetPrinter()
-  { return m_printer; }
+    This affects the bitmap scale as well as the fact if we want
+    to output objects that are outside the region that currently is
+    redrawn.
+  */
+  void SetPrinting(bool printing)
+    {
+      m_printing = printing;
+      if(printing)
+        ClipToDrawRegion(false);
+    }
+
+  /*! Are we currently printing?
+
+    This affects the bitmap scale as well as the fact if we want
+    to output objects that are outside the region that currently is
+    redrawn.
+  */
+  bool GetPrinting()
+  { return m_printing; }
 
   bool GetMatchParens()
   { return m_matchParens; }
@@ -446,7 +507,9 @@ public:
     wxASSERT_MSG(displayedDigits >= 20, _("Bug: Maximum number of digits that is to be displayed is too low!"));
     wxConfig::Get()->Write(wxT("displayedDigits"), m_displayedDigits = displayedDigits);
   }
-
+  
+  wxRect GetUpdateRegion(){return m_updateRegion;}
+  void SetUpdateRegion(wxRect rect){m_updateRegion = rect;}
   bool GetInsertAns()
   { return m_insertAns; }
 
@@ -579,6 +642,11 @@ public:
     {
       wxConfig::Get()->Write(wxT("copySVG"), m_copySVG = copySVG );
     }
+  bool CopyEMF(){return m_copyEMF;}
+  void CopyEMF(bool copyEMF)
+    {
+      wxConfig::Get()->Write(wxT("copyEMF"), m_copyEMF = copyEMF );
+    }
   void ShowLength(int length)
     {
       wxConfig::Get()->Write(wxT("showLength"), m_showLength = length );
@@ -586,9 +654,9 @@ public:
   int ShowLength(){return m_showLength;}
 
   //! Sets the default toolTip for new cells
-  void SetDefaultMathCellToolTip(wxString defaultToolTip){m_defaultToolTip = defaultToolTip;}
+  void SetDefaultCellToolTip(wxString defaultToolTip){m_defaultToolTip = defaultToolTip;}
   //! Gets the default toolTip for new cells
-  wxString GetDefaultMathCellToolTip(){return m_defaultToolTip;}
+  wxString GetDefaultCellToolTip(){return m_defaultToolTip;}
   //! Which way do we want to draw parenthesis?
   void SetGrouphesisDrawMode(drawMode mode){m_parenthesisDrawMode = mode;}
 
@@ -627,6 +695,10 @@ public:
       );
   }
   
+  bool GetAbortOnError(){return m_abortOnError;}
+  void SetAbortOnError(bool abortOnError)
+    {wxConfig::Get()->Write("abortOnError",m_abortOnError = abortOnError);}
+  
   //! Get the worksheet this configuration storage is valid for
   int GetAutosubscript_Num(){return m_autoSubscript;}
   void SetAutosubscript_Num(int autosubscriptnum)
@@ -634,7 +706,26 @@ public:
   wxString GetAutosubscript_string();
   //! Determine the default background color of the worksheet
   wxColor DefaultBackgroundColor(){return m_defaultBackgroundColor;}
+  //! Do we want to save time by only redrawing the area currently shown on the screen?
+  bool ClipToDrawRegion(){return m_clipToDrawRegion;}
+  //! Do we want to save time by only redrawing the area currently shown on the screen?
+  void ClipToDrawRegion(bool clipToDrawRegion){m_clipToDrawRegion = clipToDrawRegion; m_forceUpdate = true;}
+  //! Request adjusting the worksheet size?
+  void AdjustWorksheetSize(bool adjust)
+    { m_adjustWorksheetSizeNeeded = adjust; }
+  bool AdjustWorksheetSize()
+    { return m_adjustWorksheetSizeNeeded; }
+  void SetVisibleRegion(wxRect visibleRegion){m_visibleRegion = visibleRegion;}
+  wxRect GetVisibleRegion(){return m_visibleRegion;}
+  void SetWorksheetPosition(wxPoint worksheetPosition){m_worksheetPosition = worksheetPosition;}
+  wxPoint GetWorksheetPosition(){return m_worksheetPosition;}
+  wxString MaximaShareDir(){return m_maximaShareDir;}
+  void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
 private:
+  //! The worksheet all cells are drawn on
+  wxRect m_updateRegion;
+  //! Has the font changed?
+  bool m_fontChanged;
   /*! The interval between auto-saves (in milliseconds). 
 
     Values <10000 mean: Auto-save is off.
@@ -704,7 +795,9 @@ private:
   wxString m_fontName;
   int m_defaultFontSize, m_mathFontSize;
   wxString m_mathFontName;
+  wxString m_maximaShareDir;
   bool m_forceUpdate;
+  bool m_clipToDrawRegion;
   bool m_outdated;
   wxString m_defaultToolTip;
   bool m_TeXFonts;
@@ -715,7 +808,7 @@ private:
   int m_clientHeight;
   wxFontEncoding m_fontEncoding;
   style m_styles[STYLE_NUM];
-  bool m_printer;
+  bool m_printing;
   int m_lineWidth_em;
   int m_showLabelChoice;
   bool m_fixReorderedIndices;
@@ -727,8 +820,17 @@ private:
   int m_showLength;
   bool m_copyRTF;
   bool m_copySVG;
+  bool m_copyEMF;
   bool m_TOCshowsSectionNumbers;
   bool m_useUnicodeMaths;
+  bool m_indentMaths;
+  bool m_abortOnError;
+  bool m_adjustWorksheetSizeNeeded;
+  //! The rectangle of the worksheet that is currently visible.
+  wxRect m_visibleRegion;
+  //! The position of the worksheet in the wxMaxima window
+  wxPoint m_worksheetPosition;
+
   wxColour m_defaultBackgroundColor;
 };
 

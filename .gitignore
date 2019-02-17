@@ -29,6 +29,11 @@ wxMaxima/
 acinclude.m4
 texput.log
 *.tar.gz.asc
+*.exe
+*.o
+obj
+wxMaxima.depend
+wxMaxima.layout
 *~
 #*
 .#*
@@ -58,3 +63,9 @@ checksums-sha512.txt
 create-checksums.sh
 parts
 locale
+*.orig
+cov-int
+*.tgz
+appimagetool-*.AppImage
+_image*.png
+gmon.out

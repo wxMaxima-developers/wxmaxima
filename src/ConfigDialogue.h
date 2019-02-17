@@ -21,11 +21,11 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*!
-\file 
+\file
 The configuration dialog.
 
-This file contains the code for ConfigDialogue, the class that handles the preferences 
-dialog. The preferences themself will be read directly using 
+This file contains the code for ConfigDialogue, the class that handles the preferences
+dialog. The preferences themself will be read directly using
 <code> config->Read </code>, instead, where needed or from Configuration.
 */
 
@@ -46,7 +46,6 @@ dialog. The preferences themself will be read directly using
 
 #include "TextStyle.h"
 #include "Configuration.h"
-#include "Setup.h"
 
 enum
 {
@@ -66,9 +65,9 @@ enum
 
 /*! The configuration dialog
 
-This class draws and handles the configuration dialog. 
+This class draws and handles the configuration dialog.
 
-Code that needs to know the value of the preferences that are set here reads 
+Code that needs to know the value of the preferences that are set here reads
 them directly using <code> config->Read </code>, instead.
  */
 class ConfigDialogue : public wxPropertySheetDialog
@@ -89,7 +88,7 @@ public:
     svg = 3
   };
 
-  /*! Called if the color of an item has been changed 
+  /*! Called if the color of an item has been changed
 
     called from class ColorPanel
   */
@@ -97,7 +96,7 @@ public:
 
   /*! Stores the settings from the configuration dialog.
 
-    wxWidgets knows how to store the settings to gconf, the registry or wherever the current 
+    wxWidgets knows how to store the settings to gconf, the registry or wherever the current
     system expects settings to be saved to.
   */
   void WriteSettings();
@@ -137,7 +136,7 @@ private:
     //! Sets the font size of the example
     void SetFontSize(int size)
       { m_size = size; }
-  
+
   private:
     /*! Actually updates the formatting example
 
@@ -171,9 +170,9 @@ private:
                int id, wxPoint pos, wxSize size, long style);
 
     void OnPaint(wxPaintEvent &WXUNUSED(event));
-    
+
     void OnClick(wxMouseEvent& WXUNUSED(event));
-  
+
     void SetColor(wxColor color)
       {
         m_color = color;
@@ -196,7 +195,7 @@ private:
   int GetImageSize();
 
   //! Loads the image for a configuration tab
-  wxImage GetImage(wxString name,
+  wxBitmap GetImage(wxString name,
                    unsigned char *data_128, size_t len_128,
                    unsigned char *data_192, size_t len_192);
 
@@ -204,6 +203,10 @@ private:
   wxPanel *CreateClipboardPanel();
 
   wxCheckBox *m_copyBitmap, *m_copyMathML, *m_copyMathMLHTML, *m_copyRTF, *m_copySVG;
+  #if wxUSE_ENH_METAFILE
+  wxCheckBox *m_copyEMF;
+  #endif
+
   //! The panel that allows to set the editing options
   wxPanel *CreateWorksheetPanel();
 
@@ -236,7 +239,7 @@ protected:
 
   //! Called if the user changes the style that is to be edited.
   void OnStyleToEditChanged(wxCommandEvent &event);
-  
+
   // begin wxGlade: ConfigDialogue::attributes
   //! A textbox containing maxima's startup commands
   wxTextCtrl *m_startupCommands;
@@ -282,6 +285,7 @@ protected:
   wxCheckBox *m_autoIndent;
   wxCheckBox *m_cursorJump;
   wxCheckBox *m_hideBrackets;
+  wxCheckBox *m_indentMaths;
   wxChoice *m_autoWrap;
   wxSpinCtrl *m_labelWidth;
   wxSpinCtrl *m_undoLimit;
@@ -313,9 +317,6 @@ protected:
   wxString m_mathFontName;
   wxButton *m_saveStyle, *m_loadStyle;
   wxSpinCtrl *m_defaultPort;
-#ifdef __WXMSW__
-  wxCheckBox* m_wxcd;
-#endif
   ExamplePanel *m_examplePanel;
   // end wxGlade
   style m_styleDefault,
@@ -333,6 +334,8 @@ protected:
           m_styleHighlight,
           m_styleWarning,
           m_styleText,
+          m_styleHeading6,
+          m_styleHeading5,
           m_styleSubsubsection,
           m_styleSubsection,
           m_styleSection,
@@ -400,7 +403,7 @@ protected:
   int m_mathFontSize;
 
   /*! A pointer to the style that is currently selected for being edited.
-    
+
     \attention Should match whatever is put in m_styleFor
   */
   style *GetStylePointer();

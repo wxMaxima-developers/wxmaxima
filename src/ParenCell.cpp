@@ -23,14 +23,14 @@
 /*! \file
   This file defines the class ParenCell
 
-  ParenCell is the MathCell type that represents a math element that is kept
+  ParenCell is the Cell type that represents a math element that is kept
   between parenthesis.
  */
 
 #include "ParenCell.h"
 #include "TextCell.h"
 
-ParenCell::ParenCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_numberOfExtensions = 0;
@@ -52,7 +52,7 @@ ParenCell::ParenCell(MathCell *parent, Configuration **config, CellPointers *cel
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
-void ParenCell::SetGroup(MathCell *parent)
+void ParenCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_innerCell != NULL)
@@ -63,12 +63,12 @@ void ParenCell::SetGroup(MathCell *parent)
     m_close->SetGroupList(parent);
 }
 
-MathCell *ParenCell::Copy()
+Cell *ParenCell::Copy()
 {
   ParenCell *tmp = new ParenCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList(), m_type);
-  tmp->m_isBroken = m_isBroken;
+  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
 
   return tmp;
 }
@@ -82,9 +82,9 @@ ParenCell::~ParenCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> ParenCell::GetInnerCells()
+std::list<Cell *> ParenCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_innerCell)
     innerCells.push_back(m_innerCell);
   if(m_open)
@@ -94,7 +94,7 @@ std::list<MathCell *> ParenCell::GetInnerCells()
   return innerCells;
 }
 
-void ParenCell::SetInner(MathCell *inner, int type)
+void ParenCell::SetInner(Cell *inner, CellType type)
 {
   if (inner == NULL)
     return;
@@ -170,6 +170,7 @@ void ParenCell::SetFont(int fontsize)
 
 void ParenCell::RecalculateWidths(int fontsize)
 {
+  Cell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
 
   // Add a dummy contents to empty parenthesis
@@ -230,11 +231,14 @@ void ParenCell::RecalculateWidths(int fontsize)
     }
   }
   m_width = m_innerCell->GetFullWidth() + m_signWidth * 2;
+  if(m_isBrokenIntoLines)
+    m_width = 0;
   ResetData();
 }
 
 void ParenCell::RecalculateHeight(int fontsize)
 {
+  Cell::RecalculateHeight(fontsize);
   Configuration *configuration = (*m_configuration);
   m_height = MAX(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(2);
   m_center = m_height / 2;
@@ -248,7 +252,7 @@ void ParenCell::RecalculateHeight(int fontsize)
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
 
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
   {
     m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
@@ -270,24 +274,32 @@ void ParenCell::RecalculateHeight(int fontsize)
         break;
       default:{}
       }
-      m_innerCell->m_currentPoint.x = m_currentPoint.x + m_signWidth;
-      m_innerCell->m_currentPoint.y = m_currentPoint.y;
+      m_innerCell->SetCurrentPoint(
+        wxPoint(m_currentPoint.x + m_signWidth,
+                m_currentPoint.y));
 
       // Center the argument of all big parenthesis vertically
       if(m_bigParenType != Configuration::ascii)
-        m_innerCell->m_currentPoint.y += (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2);
+        m_innerCell->SetCurrentPoint(
+          wxPoint(m_currentPoint.x + m_signWidth,
+                  m_currentPoint.y + (m_innerCell->GetMaxCenter() - m_innerCell->GetMaxHeight() /2)));
+      else
+        m_innerCell->SetCurrentPoint(
+          wxPoint(m_currentPoint.x + m_signWidth,
+                  m_currentPoint.y));
+      
       m_height = MAX(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(2);      
       m_center = m_height / 2;   
     }
   }
 }
 
-void ParenCell::Draw(wxPoint point, int fontsize)
+void ParenCell::Draw(wxPoint point)
 {
+  Cell::Draw(point);
   if (DrawThisCell(point) && (InUpdateRegion()))
   { 
     Configuration *configuration = (*m_configuration);
-    MathCell::Draw(point, fontsize);
     wxDC *dc = configuration->GetDC();
     wxPoint innerCellPos(point);
 
@@ -297,9 +309,8 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     {            
     case Configuration::ascii:
       innerCellPos.x += m_open->GetWidth();
-      m_open->DrawList(point, fontsize);
-      m_close->DrawList(wxPoint(point.x + m_signWidth + m_innerCell->GetFullWidth(),point.y),
-                        fontsize);
+      m_open->DrawList(point);
+      m_close->DrawList(wxPoint(point.x + m_signWidth + m_innerCell->GetFullWidth(),point.y));
       break;
     case Configuration::assembled_unicode:
     case Configuration::assembled_unicode_fallbackfont:
@@ -381,15 +392,15 @@ void ParenCell::Draw(wxPoint point, int fontsize)
     }
     
     UnsetPen();
-    if(!m_isBroken)
-      m_innerCell->DrawList(innerCellPos, fontsize);
+    if(!m_isBrokenIntoLines)
+      m_innerCell->DrawList(innerCellPos);
   }
 }
 
 wxString ParenCell::ToString()
 {
   wxString s;
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
     if (m_print)
       s = wxT("(") + m_innerCell->ListToString() + wxT(")");
@@ -402,7 +413,7 @@ wxString ParenCell::ToString()
 wxString ParenCell::ToTeX()
 {
   wxString s;
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
     wxString innerCell = m_innerCell->ListToTeX();
 
@@ -451,20 +462,20 @@ wxString ParenCell::ToMathML()
 
 wxString ParenCell::ToXML()
 {
-//  if( m_isBroken )
+//  if( m_isBrokenIntoLines )
 //    return wxEmptyString;
   wxString s = m_innerCell->ListToXML();
   wxString flags;
   if (m_forceBreakLine)
     flags += wxT(" breakline=\"true\"");
-  return ((m_print) ? _T("<r><") + flags + wxT("p>") + s + _T("</p></r>") : s);
+  return ((m_print) ? _T("<r><p") + flags + wxT(">") + s + _T("</p></r>") : s);
 }
 
 bool ParenCell::BreakUp()
 {
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
-    m_isBroken = true;
+    m_isBrokenIntoLines = true;
     m_open->m_nextToDraw = m_innerCell;
     m_innerCell->m_previousToDraw = m_open;
     wxASSERT_MSG(m_last1 != NULL, _("Bug: No last cell inside a parenthesis!"));
@@ -487,7 +498,7 @@ bool ParenCell::BreakUp()
 
 void ParenCell::Unbreak()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     m_innerCell->UnbreakList();
-  MathCell::Unbreak();
+  Cell::Unbreak();
 }

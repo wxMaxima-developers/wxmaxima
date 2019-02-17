@@ -29,50 +29,52 @@
 //! Bitmaps are scaled down if the resolution of the DC is too low.
 #define DPI_REFERENCE 96.0
 
-#include "MathPrintout.h"
+#include "Printout.h"
 #include "GroupCell.h"
 
 #include <wx/config.h>
+#include <wx/busyinfo.h>
 
 #define PRINT_MARGIN_HORIZONTAL 50
 #define PRINT_MARGIN_VERTICAL 50
 
-MathPrintout::MathPrintout(wxString title, Configuration **configuration) : wxPrintout(title)
+Printout::Printout(wxString title, Configuration **configuration, double scaleFactor) : wxPrintout(title)
 {
+  m_scaleFactor = scaleFactor;
   m_configuration = configuration;
   m_oldconfig = *m_configuration;
   m_numberOfPages = 0;
   m_tree = NULL;
   m_printConfigCreated = false;
-  (*m_configuration)->SetForceUpdate(true);
 }
 
-MathPrintout::~MathPrintout()
+Printout::~Printout()
 {
   DestroyTree();
   if(m_printConfigCreated)
     wxDELETE(*m_configuration);
   *m_configuration = m_oldconfig;
-  MathCell::ClipToDrawRegion(true);
-  (*m_configuration)->SetForceUpdate(false);
+  (*m_configuration)->FontChanged(true);
+  (*m_configuration)->RecalculationForce(true);  
 }
 
-void MathPrintout::SetData(GroupCell *tree)
+void Printout::SetData(GroupCell *tree)
 {
   m_tree = tree;
   if (m_tree != NULL)
     m_tree->BreakPage(true);
 }
 
-bool MathPrintout::HasPage(int num)
+bool Printout::HasPage(int num)
 {
   if (num > 0 && num <= m_numberOfPages)
     return true;
   return false;
 }
 
-bool MathPrintout::OnPrintPage(int num)
+bool Printout::OnPrintPage(int num)
 {
+//  wxBusyInfo busyInfo(wxString::Format(_("Printing page %i..."),num));
   GroupCell *tmp;
   wxDC *dc = GetDC();
   dc->SetBackground(*wxWHITE_BRUSH);
@@ -108,15 +110,14 @@ bool MathPrintout::OnPrintPage(int num)
     config->Read(wxT("fontsize"), &fontsize);
 
     PrintHeader(num, dc);
-    MathCell::ClipToDrawRegion(false);
-
+  
     while (tmp != NULL && tmp->GetGroupType() != GC_TYPE_PAGEBREAK)
     {
       // The following line seems to misteriously fix the "subsequent text
       // cells aren't printed" problem on linux.
       // No Idea why, though.
       dc->SetPen(wxPen(wxT("light grey"), 1, wxPENSTYLE_SOLID));
-      tmp->Draw(point, fontsize);
+      tmp->Draw(point);
       if (tmp->m_next != NULL)
       {
         point.x = marginX;
@@ -129,26 +130,23 @@ bool MathPrintout::OnPrintPage(int num)
       if (tmp == NULL || tmp->BreakPageHere())
         break;
     }
-    MathCell::ClipToDrawRegion(true);
     return true;
   }
-  MathCell::ClipToDrawRegion(true);
   return false;
 }
 
-bool MathPrintout::OnBeginDocument(int startPage, int endPage)
+bool Printout::OnBeginDocument(int startPage, int endPage)
 {
   if (!wxPrintout::OnBeginDocument(startPage, endPage))
     return false;
   return true;
 }
 
-void MathPrintout::BreakPages()
+void Printout::BreakPages()
 {
   if (m_tree == NULL)
     return;
 
-  MathCell::ClipToDrawRegion(false);
   int pageWidth, pageHeight;
   int marginX, marginY;
   int headerHeight = GetHeaderHeight();
@@ -183,19 +181,19 @@ void MathPrintout::BreakPages()
 
     tmp = dynamic_cast<GroupCell *>(tmp->m_next);
   }
-  MathCell::ClipToDrawRegion(true);
 }
 
-void MathPrintout::SetupData()
+void Printout::SetupData()
 {
   wxDC *dc = GetDC();  
   *m_configuration = new Configuration(*dc);
+  // Make sure that during print nothing is outside the crop rectangle
+  (*m_configuration)->LineWidth_em(10000);
   
   m_printConfigCreated = true;
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
   (*m_configuration)->ShowBrackets((*m_configuration)->PrintBrackets());
-  (*m_configuration)->LineWidth_em(400);
-
+  (*m_configuration)->ClipToDrawRegion(false);
   
 //  SetUserScale(1/DCSCALE,
 //               1/DCSCALE);
@@ -211,11 +209,9 @@ void MathPrintout::SetupData()
   wxSize printPPI;
   printPPI = (*m_configuration)->GetDC()->GetPPI();
 
-  double userScale_x, userScale_y;
-  m_oldconfig->GetDC()->GetUserScale(&userScale_x, &userScale_y);
-
+  (*m_configuration)->GetDC()->SetUserScale(1.0,1.0);
   (*m_configuration)->SetZoomFactor_temporarily(
-    printPPI.x / DPI_REFERENCE * m_oldconfig->PrintScale()
+    printPPI.x / DPI_REFERENCE * m_oldconfig->PrintScale() / m_scaleFactor
   );
 
   // wxSize screenPPI;
@@ -237,18 +233,22 @@ void MathPrintout::SetupData()
     - (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent()));
   (*m_configuration)->SetClientHeight(pageHeight - 2 * marginY);
 
+  if((*m_configuration)->PrintBrackets())
+  {
+    if(marginX < (*m_configuration)->Scale_Px(1 + (*m_configuration)->GetBaseIndent()))
+      marginX = (*m_configuration)->Scale_Px(1 + (*m_configuration)->GetBaseIndent());
+  }
   (*m_configuration)->SetIndent(marginX);
   // Inform the output routines that we are printing
-  (*m_configuration)->SetPrinter(true);
+  (*m_configuration)->SetPrinting(true);
   // Make sure that during print nothing is outside the crop rectangle
-  marginX += (*m_configuration)->Scale_Px((*m_configuration)->GetBaseIndent());
-  MathCell::ClipToDrawRegion(false);
-
+  (*m_configuration)->LineWidth_em(10000);
   Recalculate();
   BreakPages();
+  (*m_configuration)->RecalculationForce(true);
 }
 
-void MathPrintout::GetPageInfo(int *minPage, int *maxPage,
+void Printout::GetPageInfo(int *minPage, int *maxPage,
                                int *fromPage, int *toPage)
 {
   *minPage = 1;
@@ -257,18 +257,18 @@ void MathPrintout::GetPageInfo(int *minPage, int *maxPage,
   *toPage = m_numberOfPages;
 }
 
-void MathPrintout::OnPreparePrinting()
+void Printout::OnPreparePrinting()
 {
   SetupData();
 }
 
-void MathPrintout::GetPageMargins(int *horizontal, int *vertical)
+void Printout::GetPageMargins(int *horizontal, int *vertical)
 {
   *horizontal = (int) ((*m_configuration)->Scale_Px(PRINT_MARGIN_HORIZONTAL));
   *vertical = (int) ((*m_configuration)->Scale_Px(PRINT_MARGIN_VERTICAL));
 }
 
-int MathPrintout::GetHeaderHeight()
+int Printout::GetHeaderHeight()
 {
   wxDC *dc = GetDC();
   int width, height;
@@ -278,7 +278,7 @@ int MathPrintout::GetHeaderHeight()
   return height + (*m_configuration)->Scale_Px(12);
 }
 
-void MathPrintout::PrintHeader(int pageNum, wxDC *dc)
+void Printout::PrintHeader(int pageNum, wxDC *dc)
 {
   int page_width, page_height;
   int title_width, title_height;
@@ -306,7 +306,7 @@ void MathPrintout::PrintHeader(int pageNum, wxDC *dc)
   dc->SetPen(wxPen(wxT("black"), 1, wxPENSTYLE_SOLID));
 }
 
-void MathPrintout::Recalculate()
+void Printout::Recalculate()
 {
   GroupCell *tmp = m_tree;
 
@@ -325,7 +325,7 @@ void MathPrintout::Recalculate()
   }
 }
 
-void MathPrintout::DestroyTree()
+void Printout::DestroyTree()
 {
   wxDELETE(m_tree);
   m_tree = NULL;

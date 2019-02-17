@@ -23,7 +23,7 @@
 /*! \file
   This file defines the class SqrtCell
 
-  SqrtCell is the MathCell type that represents a square root.
+  SqrtCell is the Cell type that represents a square root.
  */
 
 #include "SqrtCell.h"
@@ -31,7 +31,7 @@
 
 #define SIGN_FONT_SCALE 2.0
 
-SqrtCell::SqrtCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_signSize = 50;
@@ -47,7 +47,7 @@ SqrtCell::SqrtCell(MathCell *parent, Configuration **config, CellPointers *cellP
 }
 
 
-void SqrtCell::SetGroup(MathCell *parent)
+void SqrtCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_innerCell != NULL)
@@ -58,12 +58,12 @@ void SqrtCell::SetGroup(MathCell *parent)
     m_close->SetGroupList(parent);
 }
 
-MathCell *SqrtCell::Copy()
+Cell *SqrtCell::Copy()
 {
   SqrtCell *tmp = new SqrtCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetInner(m_innerCell->CopyList());
-  tmp->m_isBroken = m_isBroken;
+  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
   tmp->m_open->DontEscapeOpeningParenthesis();
 
   return tmp;
@@ -78,9 +78,9 @@ SqrtCell::~SqrtCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> SqrtCell::GetInnerCells()
+std::list<Cell *> SqrtCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_innerCell)
     innerCells.push_back(m_innerCell);
   if(m_open)
@@ -90,7 +90,7 @@ std::list<MathCell *> SqrtCell::GetInnerCells()
   return innerCells;
 }
 
-void SqrtCell::SetInner(MathCell *inner)
+void SqrtCell::SetInner(Cell *inner)
 {
   if (inner == NULL)
     return;
@@ -105,6 +105,7 @@ void SqrtCell::SetInner(MathCell *inner)
 
 void SqrtCell::RecalculateWidths(int fontsize)
 {
+  Cell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
   m_innerCell->RecalculateWidthsList(fontsize);
   if (configuration->CheckTeXFonts())
@@ -113,11 +114,15 @@ void SqrtCell::RecalculateWidths(int fontsize)
     m_innerCell->RecalculateHeightList(fontsize);
 
     m_signFontScale = 1.0;
-    int fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
+    double fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
     wxASSERT(fontsize1 > 0);
     wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                 configuration->GetTeXCMEX());
+#if wxCHECK_VERSION(3, 1, 2)
+    font.SetFractionalPointSize(fontsize1);
+#else
     font.SetPointSize(fontsize1);
+#endif
     dc->SetFont(font);
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
@@ -155,7 +160,11 @@ void SqrtCell::RecalculateWidths(int fontsize)
     font = wxFont(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
     wxASSERT(fontsize1 > 0);
+#if wxCHECK_VERSION(3, 1, 2)
+    font.SetFractionalPointSize(fontsize1);
+#else
     font.SetPointSize(fontsize1);
+#endif
     dc->SetFont(font);
     dc->GetTextExtent(wxT("s"), &m_signWidth, &m_signSize);
     m_signTop = m_signSize / 5;
@@ -166,6 +175,8 @@ void SqrtCell::RecalculateWidths(int fontsize)
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
   ResetData();
+  if(m_isBrokenIntoLines)
+    m_width = 0;
 }
 
 void SqrtCell::RecalculateHeight(int fontsize)
@@ -175,18 +186,18 @@ void SqrtCell::RecalculateHeight(int fontsize)
   m_center = m_innerCell->GetMaxCenter() + Scale_Px(3);
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
   {
     m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
   }
 }
 
-void SqrtCell::Draw(wxPoint point, int fontsize)
+void SqrtCell::Draw(wxPoint point)
 {
+  Cell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    MathCell::Draw(point, fontsize);
     Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();
 
@@ -198,12 +209,16 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
 
       in.x += m_signWidth;
 
-      int fontsize1 = Scale_Px(SIGN_FONT_SCALE * fontsize * m_signFontScale);
+      double fontsize1 = Scale_Px(SIGN_FONT_SCALE * m_fontSize * m_signFontScale);
 
       wxFont font(fontsize1, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                   configuration->GetTeXCMEX());
       wxASSERT(fontsize1 > 0);
+#if wxCHECK_VERSION(3, 1, 2)
+      font.SetFractionalPointSize(fontsize1);
+#else
       font.SetPointSize(fontsize1);
+#endif
       dc->SetFont(font);
       SetForeground();
       if (m_signType < 4)
@@ -294,13 +309,13 @@ void SqrtCell::Draw(wxPoint point, int fontsize)
       UnsetPen();
     }
 
-    m_innerCell->DrawList(in, fontsize);
+    m_innerCell->DrawList(in);
   }
 }
 
 wxString SqrtCell::ToString()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     return wxEmptyString;
   else
     return wxT("sqrt(") + m_innerCell->ListToString() + wxT(")");
@@ -308,7 +323,7 @@ wxString SqrtCell::ToString()
 
 wxString SqrtCell::ToTeX()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     return wxEmptyString;
   else
     return wxT("\\sqrt{") + m_innerCell->ListToTeX() + wxT("}");
@@ -327,7 +342,7 @@ wxString SqrtCell::ToOMML()
 
 wxString SqrtCell::ToXML()
 {
-//  if (m_isBroken)
+//  if (m_isBrokenIntoLines)
 //    return wxEmptyString;
   wxString flags;
   if (m_forceBreakLine)
@@ -338,9 +353,9 @@ wxString SqrtCell::ToXML()
 
 bool SqrtCell::BreakUp()
 {
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
-    m_isBroken = true;
+    m_isBrokenIntoLines = true;
     m_open->m_nextToDraw = m_innerCell;
     m_innerCell->m_previousToDraw = m_open;
     wxASSERT_MSG(m_last != NULL, _("Bug: No last cell inside a square root!"));
@@ -362,7 +377,7 @@ bool SqrtCell::BreakUp()
 
 void SqrtCell::Unbreak()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
     m_innerCell->UnbreakList();
-  MathCell::Unbreak();
+  Cell::Unbreak();
 }

@@ -40,9 +40,10 @@ surrounding the worksheet.
 #include <wx/aui/aui.h>
 #include <wx/notifmsg.h>
 
-#include "MathCtrl.h"
+#include "Worksheet.h"
 #include "RecentDocuments.h"
-#include "Setup.h"
+#include "Version.h"
+#include "MainMenuBar.h"
 #include "History.h"
 #include "ToolBar.h"
 #include "XmlInspector.h"
@@ -266,9 +267,9 @@ public:
     menu_evaluate_all_visible,
     menu_evaluate_all,
     menu_show_tip,
-    menu_copy_from_console,
-    menu_copy_tex_from_console,
-    menu_copy_text_from_console,
+    menu_copy_from_worksheet,
+    menu_copy_tex_from_worksheet,
+    menu_copy_text_from_worksheet,
     menu_undo,
     menu_redo,
     menu_select_all,
@@ -287,6 +288,8 @@ public:
     menu_copy_as_bitmap,
     menu_copy_as_svg,
     menu_save_as_svg,
+    menu_copy_as_emf,
+    menu_save_as_emf,
     menu_copy_as_rtf,
     menu_copy_to_file,
     menu_export_html,
@@ -297,7 +300,11 @@ public:
     menu_add_comment,
     menu_convert_to_comment,
     menu_add_subsubsection,
+    menu_add_heading5,
+    menu_add_heading6,
     menu_convert_to_subsubsection,
+    menu_convert_to_heading5,
+    menu_convert_to_heading6,
     menu_add_subsection,
     menu_convert_to_subsection,
     menu_add_section,
@@ -461,6 +468,8 @@ public:
     menu_stats_subsample,
     menu_format_code,
     menu_format_text,
+    menu_format_heading6,
+    menu_format_heading5,
     menu_format_subsubsection,
     menu_format_subsection,
     menu_format_section,
@@ -474,7 +483,9 @@ public:
     menu_history_next,
     menu_check_updates,
     socket_client_id,
-    socket_server_id
+    socket_server_id,
+    maxima_process_id,
+    gnuplot_process_id
   };
 
   /*! Update the recent documents list
@@ -554,8 +565,6 @@ public:
   void StatusExportFailed();
 
 protected:
-  //! != wxEmptyString means: set the status text to this value.
-  wxString m_newStatusText;
   //! The process id of maxima. Is determined by ReadFirstPrompt.
   long m_pid;
   //! Did the user ever give this file a name?
@@ -567,7 +576,7 @@ protected:
   //! The status bar
   StatusBar *m_statusBar;
   //! The menu bar
-  wxMenuBar *m_MenuBar;
+  MainMenuBar *m_MenuBar;
   //! The file menu.
   wxMenu *m_FileMenu;
   //! The edit menu.
@@ -671,7 +680,22 @@ private:
       wxButton *m_draw_accuracy;
       int m_dimensions;
     };
+public:
+  void LeftStatusText(wxString text, bool saveInLog = true)
+    {m_newLeftStatusText = true; m_leftStatusText = text; if(saveInLog)wxLogMessage(text);}
+  void RightStatusText(wxString text, bool saveInLog = true)
+    {m_newRightStatusText = true; m_rightStatusText = text; if(saveInLog)wxLogMessage(text);}
 protected:
+  //! Do we have new text to output in the Right half of the Status Bar?
+  bool m_newRightStatusText;
+  //! Do we have new text to output in the Left half of the Status Bar?
+  bool m_newLeftStatusText;
+  //! The text for the Right half of the Status Bar
+  wxString m_rightStatusText;
+  //! The text for the Left half of the Status Bar
+  wxString m_leftStatusText;
+  //! The default size for the window.
+  virtual wxSize DoGetBestClientSize() const;
   //! The sidebar with the draw commands
   DrawPane *m_drawPane;
 private:
@@ -685,8 +709,6 @@ private:
 
    */
   wxPanel *CharButton(wxPanel *parent, wxChar ch, wxString description = wxEmptyString, bool matchesMaximaCommand = false);
-
-  wxPanel *CreateLogPane();
 
   wxPanel *CreateGreekPane();
 
@@ -709,13 +731,16 @@ protected:
 
   void CharacterButtonPressed(wxMouseEvent &event);
 
+  bool ToolbarIsShown();
+
+  //! The manager for dynamic screen layouts
   wxAuiManager m_manager;
   //! A XmlInspector-like xml monitor
   XmlInspector *m_xmlInspector;
   //! true=force an update of the status bar at the next call of StatusMaximaBusy()
   bool m_forceStatusbarUpdate;
   //! The worksheet itself
-  MathCtrl *m_console;
+  Worksheet *m_worksheet;
   //! The history pane
   History *m_history;
   RecentDocuments m_recentDocuments;

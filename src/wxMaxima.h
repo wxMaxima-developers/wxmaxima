@@ -33,6 +33,7 @@
 
 #include "wxMaximaFrame.h"
 #include "MathParser.h"
+#include "Dirstructure.h"
 
 #include <wx/socket.h>
 #include <wx/config.h>
@@ -98,8 +99,8 @@ class wxMaxima : public wxMaximaFrame
 {
 public:
 
-  wxMaxima(wxWindow *parent, int id, const wxString title, const wxString configFile,
-           const wxPoint pos, const wxSize size = wxDefaultSize);
+  wxMaxima(wxWindow *parent, int id, const wxString title, const wxString configFile = wxEmptyString,
+           const wxPoint pos = wxDefaultPosition, const wxSize size = wxDefaultSize);
   
   ~wxMaxima();
 
@@ -132,7 +133,7 @@ public:
 
   //! A timer that polls for output from the maxima process.
   wxTimer m_maximaStdoutPollTimer;
-
+  
   void ShowTip(bool force);
 
   /*! Get the name of the help file
@@ -179,7 +180,7 @@ public:
 
   //! Load an image from a file into the worksheet.
   void LoadImage(wxString file)
-  { m_console->OpenHCaret(file, GC_TYPE_IMAGE); }
+  { m_worksheet->OpenHCaret(file, GC_TYPE_IMAGE); }
 
 private:
   //! Is true if opening the file from the command line failed before updating the statusbar.
@@ -242,6 +243,8 @@ private:
   int m_nestedLoadCommands;
 
 protected:
+  //! The gnuplot process info
+  wxProcess *m_gnuplotProcess;
   //! Is this window active?
   bool m_isActive;
   //! Called when this window is activated or deactivated.
@@ -267,7 +270,7 @@ protected:
                          this file.
     \param keyword The keyword to show help for
   */
-  void ShowHTMLHelp(wxString helpfile, wxString otherhelpfile, wxString keyword);
+  void ShowHTMLHelp(wxString helpfile, wxString keyword = wxEmptyString);
 
   void CheckForUpdates(bool reportUpToDate = false);
 
@@ -321,6 +324,7 @@ protected:
    */
   void ShowPane(wxCommandEvent &event);            //<! Makes a sidebar visible
   void OnProcessEvent(wxProcessEvent &event);      //
+  void OnGnuplotClose(wxProcessEvent &event);      //
   void PopupMenu(wxCommandEvent &event);           //
   void StatsMenu(wxCommandEvent &event);           //
 
@@ -364,15 +368,15 @@ protected:
     NULL, if there is no such line (for example if the appended object is 
     maths instead).
    */
-  TextCell *ConsoleAppend(wxString s, int type, wxString userLabel = wxEmptyString);        //!< append maxima output to console
-  void DoConsoleAppend(wxString s, int type, 
+  TextCell *ConsoleAppend(wxString s, CellType type, wxString userLabel = wxEmptyString);        //!< append maxima output to console
+  void DoConsoleAppend(wxString s, CellType  type, 
                        bool newLine = true, bool bigSkip = true, wxString userLabel = wxEmptyString);
 
   /*!Append one or more lines of ordinary unicode text to the console
 
     \return A pointer to the last line that was appended or NULL, if there is no such line
    */
-  TextCell *DoRawConsoleAppend(wxString s, int type); 
+  TextCell *DoRawConsoleAppend(wxString s, CellType  type); 
 
   /*! Spawn the "configure" menu.
 
@@ -490,6 +494,9 @@ protected:
    */
   void ReadLoadSymbols(wxString &data);
 
+  //! Read (and discard) suppressed output
+  void ReadSuppressedOutput(wxString &data);
+
     /*! Reads the variable values maxima advertises to us
    */
   void ReadVariables(wxString &data);
@@ -547,7 +554,7 @@ protected:
 
   /*! Opens a content.xml file that has been extracted from a broken .wxmx file
    */
-  bool OpenXML(wxString file, MathCtrl *document);
+  bool OpenXML(wxString file, Worksheet *document);
 
   //! Complains if the version string from the XML file indicates too low a maxima version
   bool CheckWXMXVersion(wxString docversion);
@@ -556,13 +563,13 @@ protected:
   wxString ReadMacContents(wxString file);
 
   //! Opens a .mac file or a .out file from Xmaxima
-  bool OpenMACFile(wxString file, MathCtrl *document, bool clearDocument = true);
+  bool OpenMACFile(wxString file, Worksheet *document, bool clearDocument = true);
 
   //! Opens a wxm file
-  bool OpenWXMFile(wxString file, MathCtrl *document, bool clearDocument = true);
+  bool OpenWXMFile(wxString file, Worksheet *document, bool clearDocument = true);
 
   //! Opens a wxmx file
-  bool OpenWXMXFile(wxString file, MathCtrl *document, bool clearDocument = true);
+  bool OpenWXMXFile(wxString file, Worksheet *document, bool clearDocument = true);
 
   //! Loads a wxmx description
   GroupCell *CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfilename = wxEmptyString);
@@ -621,6 +628,10 @@ protected:
   wxString m_symbolsPrefix;
   //! The marker for the end of a list of autocompletion templates
   wxString m_symbolsSuffix;
+  //! The marker that tells to start suppressing any output from maxima
+  wxString m_suppressOutputPrefix;
+  //! The marker that tells to stop to suppress any output from maxima
+  wxString m_suppressOutputSuffix;
   wxString m_firstPrompt;
   bool m_dispReadOut;               //!< what is displayed in statusbar
   bool m_inLispMode;                //!< don't add ; in lisp mode
@@ -629,10 +640,14 @@ protected:
   wxPrintData *m_printData;
   bool m_closing;
   wxString m_openFile;
+  //! The directory with maxima's temp files
   wxString m_maximaTempDir;
+  //! The directory with maxima's documentation
+  wxString m_maximaDocDir;
+  //! The directory with maxima's share files
+  wxString m_maximaShareDir;
   bool m_fileSaved;
   wxString m_chmhelpFile;
-  bool m_htmlHelpInitialized;
   wxString m_maximaVersion;
   wxString m_maximaArch;
   wxString m_lispVersion;
@@ -671,14 +686,13 @@ private:
 
 #endif
 
+
 class MyApp : public wxApp
 {
 public:
   virtual bool OnInit();
 
-#if defined (__WXMSW__)
   virtual int OnExit();
-#endif
   wxLocale m_locale;
 
   /*! Create a new window
@@ -693,14 +707,11 @@ public:
     \param exitAfterEval Do we want to close the window after the file has been evaluated?
    */
   void NewWindow(wxString file = wxEmptyString, bool evalOnStartup = false, bool exitAfterEval = false);
-
+    
   //! Is called by atExit and tries to close down the maxima process if wxMaxima has crashed.
-  static void Cleanup_Static();
+  static void Cleanup();
 
-  //! A pointer to the currently running wxMaxima instance
-  static wxMaxima *m_frame;
-
-  wxWindowList topLevelWindows;
+  static std::list<wxMaxima *> m_topLevelWindows;
 
   void OnFileMenu(wxCommandEvent &ev);
 
@@ -710,6 +721,7 @@ public:
 private:
   //! The name of the config file. Empty = Use the default one.
   wxString m_configFileName;
+  Dirstructure *m_dirstruct;
   DECLARE_EVENT_TABLE()
 };
 

@@ -84,7 +84,9 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *cursorPo
               (groupType == GC_TYPE_TITLE) ||
               (groupType == GC_TYPE_SECTION) ||
               (groupType == GC_TYPE_SUBSECTION) ||
-              (groupType == GC_TYPE_SUBSUBSECTION)
+              (groupType == GC_TYPE_SUBSUBSECTION) ||
+              (groupType == GC_TYPE_HEADING5) ||
+              (groupType == GC_TYPE_HEADING6)
               )
         m_structure.push_back(cell);
 
@@ -152,7 +154,15 @@ void TableOfContents::UpdateDisplay()
       case GC_TYPE_SUBSUBSECTION:
         curr = wxT("      ");
         break;
-    }
+      case GC_TYPE_HEADING5:
+        curr = wxT("        ");
+        break;
+      case GC_TYPE_HEADING6:
+        curr = wxT("          ");
+        break;
+      default:
+        break;
+      }
     
     curr += m_structure[i]->GetEditable()->ToString(true);
 
@@ -226,6 +236,14 @@ GroupCell *TableOfContents::GetCell(int index)
       case GC_TYPE_SUBSUBSECTION:
         curr = wxT("      ");
         break;
+      case GC_TYPE_HEADING5:
+        curr = wxT("        ");
+        break;
+      case GC_TYPE_HEADING6:
+        curr = wxT("          ");
+        break;
+      default:
+      {}
     }
     
     curr += m_structure[i]->GetEditable()->ToString(true);

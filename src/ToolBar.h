@@ -30,13 +30,15 @@
 #include <wx/aui/aui.h>
 #include <wx/choice.h>
 #include "SlideShowCell.h"
+#include "GroupCell.h"
 
 #ifndef _WXMAXIMA_TOOLBAR_H
 #define _WXMAXIMA_TOOLBAR_H
 
-class ToolBar
+class ToolBar : public wxAuiToolBar
 {
 public:
+  ToolBar(wxWindow *parent);
   /*! All states the "start/stop animation" toolbar button can be in
    */
   enum AnimationStartStopState
@@ -46,11 +48,9 @@ public:
     Inactive //!< No animation is currently running
   };
   
-  wxImage GetImage(wxString name,
-                   unsigned char *data_128, size_t len_128,
-                   unsigned char *data_192, size_t len_192);
-
-  ToolBar(wxToolBar *tbar);
+  wxBitmap GetImage(wxString name,
+                    unsigned char *data_128, size_t len_128,
+                    unsigned char *data_192, size_t len_192);
 
   virtual ~ToolBar();
 
@@ -59,7 +59,7 @@ public:
   {
     if (!m_needsInformation)
     {
-      m_toolBar->SetToolNormalBitmap(tb_follow, m_needsInformationIcon);
+      SetToolBitmap(tb_follow, m_needsInformationIcon);
       m_needsInformation = true;
     }
   }
@@ -69,19 +69,9 @@ public:
   {
     if (m_needsInformation)
     {
-      m_toolBar->SetToolNormalBitmap(tb_follow, m_followIcon);
+      SetToolBitmap(tb_follow, m_followIcon);
       m_needsInformation = false;
     }
-  }
-
-  void EnableTool(int id, bool enable)
-  {
-    m_toolBar->EnableTool(id, enable);
-  }
-
-  wxToolBar *GetToolBar()
-  {
-    return m_toolBar;
   }
 
   void AnimationButtonState(AnimationStartStopState state);
@@ -117,17 +107,10 @@ public:
   //! The slider for animations
   wxSlider *m_plotSlider;
 
-#if defined __WXGTK__
   wxBitmap  m_followIcon;
   wxBitmap  m_needsInformationIcon;
   wxBitmap  m_PlayButton;
   wxBitmap  m_StopButton;
-#else
-  wxImage m_followIcon;
-  wxImage m_needsInformationIcon;
-  wxImage m_PlayButton;
-  wxImage m_StopButton;
-#endif
 
   void CanCopy(bool value)
   {
@@ -178,8 +161,12 @@ public:
   //! Updates the slider to match the Slide Show cell.
   void UpdateSlider(SlideShow *cell);
 
+  int GetIdealHeight(){
+    return m_needsInformationIcon.GetSize().y;
+  }
+  
   //! Get the cell style for new cells
-  int GetCellStyle();
+  GroupType GetCellType();
   //! Set the cell style to show for the current cell
   void SetCellStyle(int style);
   //! Called if there is no cell to show the style for
@@ -191,8 +178,14 @@ public:
     }
   //! The current style is the new style for new cells
   void SetDefaultCellStyle();
-  
+  //! Update the bitmaps on ppi changes.
+  void UpdateBitmaps();
+
+protected:
+    void OnSize(wxSizeEvent &event);
 private:
+  //! The ppi rate.
+  wxSize m_ppi;
   //! The default style for new cells.
   int m_defaultCellStyle;
   //! The drop-down-box for text styles
@@ -206,11 +199,9 @@ private:
   bool m_canSave_old;
   bool m_canPrint_old;
   bool m_canEvalTillHere_old;
-  wxToolBar *m_toolBar;
   AnimationStartStopState m_AnimationStartStopState;
   //! True if we show the "needs information" button.
   bool m_needsInformation;
-
 };
 
 #endif

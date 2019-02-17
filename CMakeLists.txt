@@ -1,12 +1,25 @@
-cmake_minimum_required(VERSION 3.4)
-
 project(wxmaxima)
-
-set(VERSION 18.02.0.unofficial)
+set(VERSION 19.02.0-DevelopmentSnapshot)
 set(PACKAGE_VERSION ${VERSION})
 set(GITVERSION ${VERSION})
 set(PACKAGE wxMaxima)
 
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
+#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
+#SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+
+# Avoid a warning by deciding which version of this policy we use in case we can
+# decide this.
+if(POLICY CMP0066)
+    cmake_policy(SET CMP0066 NEW)
+endif()
+
+cmake_minimum_required(VERSION 3.4)
+
+# Turn off many warnings wxWidgets triggers on MSVC
+if(MSVC)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+endif()
 
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -28,8 +41,10 @@ option(BUILD_PDF_DOCUMENTATION "Build the PDF documentation." NO)
 # MacOSX version-min compiler settings
 if(MACOSX_VERSION_MIN)
     message(STATUS "Compiling with min macosx version ${MACOSX_VERSION_MIN}")
-    set(CMAKE_CXX_FLAGS -mmacosx-version-min=${MACOSX_VERSION_MIN})
-    set(CMAKE_EXE_LINKER_FLAGS -mmacosx-version-min=${MACOSX_VERSION_MIN})
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -mmacosx-version-min=${MACOSX_VERSION_MIN}")
+    set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} -mmacosx-version-min=${MACOSX_VERSION_MIN}")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -mmacosx-version-min=${MACOSX_VERSION_MIN}")
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_LINKER_FLAGS_RELEASE} -mmacosx-version-min=${MACOSX_VERSION_MIN}")
 endif()
 
 
@@ -38,6 +53,7 @@ find_package(Git)
 if(Git_FOUND)
     if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
         execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
+                        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
                         OUTPUT_VARIABLE WXMAXIMA_GIT_VERSION
                         OUTPUT_STRIP_TRAILING_WHITESPACE)
         message(STATUS "Building from git development tree, revision: ${WXMAXIMA_GIT_VERSION}")
@@ -80,30 +96,16 @@ else()
     list(APPEND  CPACK_GENERATOR "RPM")
 endif()
 
-# Remove install instructions and travis icon from README for binary RPM packages
-file(STRINGS "${CMAKE_SOURCE_DIR}/README.md" READMETEXT)
-list(FIND READMETEXT "Building wxMaxima from source" LSTART)
-list(LENGTH READMETEXT LEND)
-math(EXPR LEND "${LEND} - 1")
-foreach(loop_var RANGE ${LSTART} ${LEND})
-   list(REMOVE_AT READMETEXT ${LSTART})
-endforeach()
-list(REMOVE_AT READMETEXT 0)
-foreach(line IN LISTS READMETEXT)
-    string(APPEND multiline "${line}\n")
-endforeach() 
-file(WRITE "${CMAKE_BINARY_DIR}/README.md" ${multiline})
-
 
 
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "wxMaxima is a GUI for the CAS Maxima")
 set(CPACK_PACKAGE_VENDOR "The wxMaxima Team")
-set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_BINARY_DIR}/README.md")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/README.md")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
 set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${VERSION}")
 set(CPACK_PACKAGE_CONTACT "The wxMaxima Team <wxmaxima-devel@lists.sourceforge.net>")
 set(CPACK_PACKAGE_SECTION "science")
-set(CPACK_PACKAGE_ICON ${CMAKE_SOURCE_DIR}/data/wxmaxima.png)
+set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/data/io.github.wxmaxima_developers.wxMaxima.png")
 set(CPACK_PACKAGE_VERSION "${VERSION}")
 
 

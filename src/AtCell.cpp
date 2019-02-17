@@ -23,19 +23,19 @@
 /*! \file
   This file defines the class AtCell
 
-  AtCell is the MathCell type that represents maxima's at() command.
+  AtCell is the Cell type that represents maxima's at() command.
 */
 
 #include "AtCell.h"
 
-AtCell::AtCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+AtCell::AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_baseCell = NULL;
   m_indexCell = NULL;
 }
 
-void AtCell::SetGroup(MathCell *parent)
+void AtCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_baseCell != NULL)
@@ -44,7 +44,7 @@ void AtCell::SetGroup(MathCell *parent)
     m_indexCell->SetGroupList(parent);
 }
 
-MathCell *AtCell::Copy()
+Cell *AtCell::Copy()
 {
   AtCell *tmp = new AtCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -62,9 +62,9 @@ AtCell::~AtCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> AtCell::GetInnerCells()
+std::list<Cell *> AtCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_baseCell)
     innerCells.push_back(m_baseCell);
   if(m_indexCell)
@@ -72,7 +72,7 @@ std::list<MathCell *> AtCell::GetInnerCells()
   return innerCells;
 }
 
-void AtCell::SetIndex(MathCell *index)
+void AtCell::SetIndex(Cell *index)
 {
   if (index == NULL)
     return;
@@ -80,7 +80,7 @@ void AtCell::SetIndex(MathCell *index)
   m_indexCell = index;
 }
 
-void AtCell::SetBase(MathCell *base)
+void AtCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
@@ -90,8 +90,9 @@ void AtCell::SetBase(MathCell *base)
 
 void AtCell::RecalculateWidths(int fontsize)
 {
+  Cell::RecalculateWidths(fontsize);
   m_baseCell->RecalculateWidthsList(fontsize);
-  m_indexCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 4));
+  m_indexCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 3));
   m_width = m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() +
             Scale_Px(4);
   ResetData();
@@ -99,6 +100,7 @@ void AtCell::RecalculateWidths(int fontsize)
 
 void AtCell::RecalculateHeight(int fontsize)
 {
+  Cell::RecalculateHeight(fontsize);
   m_baseCell->RecalculateHeightList(fontsize);
   m_indexCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 3));
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
@@ -106,11 +108,11 @@ void AtCell::RecalculateHeight(int fontsize)
   m_center = m_baseCell->GetCenter();
 }
 
-void AtCell::Draw(wxPoint point, int fontsize)
+void AtCell::Draw(wxPoint point)
 {
+  Cell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    MathCell::Draw(point, fontsize);
     
     Configuration *configuration = (*m_configuration);
     wxDC *dc = configuration->GetDC();
@@ -118,12 +120,12 @@ void AtCell::Draw(wxPoint point, int fontsize)
 
     bs.x = point.x;
     bs.y = point.y;
-    m_baseCell->DrawList(bs, fontsize);
+    m_baseCell->DrawList(bs);
 
     in.x = point.x + m_baseCell->GetFullWidth() + Scale_Px(4);
     in.y = point.y + m_baseCell->GetMaxDrop() +
            +m_indexCell->GetMaxCenter() - Scale_Px(7);
-    m_indexCell->DrawList(in, MAX(MC_MIN_SIZE, fontsize - 3));
+    m_indexCell->DrawList(in);
     SetPen();
     dc->DrawLine(in.x - Scale_Px(2),
                 bs.y - m_baseCell->GetMaxCenter(),

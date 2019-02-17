@@ -21,62 +21,97 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 /*! \file
-  This file defines the class BitMap that renders math as bitmap.
+  This file defines the class Emfout that renders math as scalable emf graphics.
  */
 
-#include "Bitmap.h"
+#include "EMFout.h"
+#include "ErrorRedirector.h"
+#include <wx/txtstrm.h>
+#include <wx/filename.h>
+#include <wx/wfstream.h>
 #include "Configuration.h"
 #include "GroupCell.h"
-
 #include <wx/config.h>
 #include <wx/clipbrd.h>
 
-#define BM_FULL_WIDTH 1000
+#if wxUSE_ENH_METAFILE
 
-Bitmap::Bitmap(Configuration **configuration, int scale)
+Emfout::Emfout(Configuration **configuration, wxString filename)
 {
-  m_scale = scale;
-
+  m_width = m_height = -1;
   m_configuration = configuration;
   m_oldconfig = *m_configuration;
   m_tree = NULL;
+  m_emfFormat = wxDataFormat(wxT("image/x-emf"));
 
-  m_dc = new wxMemoryDC();
-  m_bmp.CreateScaled(m_width = 10, m_height= 10, 24, scale);
-  m_dc->SelectObject(m_bmp);
-  m_dc->SetUserScale(m_scale, m_scale);
-  m_dc->SetPen(wxNullPen);
-  
-  *m_configuration = new Configuration(*m_dc);
+  m_filename = filename;
+  if (m_filename == wxEmptyString)
+    m_filename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
+
+  m_dc = NULL;
+
+  wxString m_tempFileName = wxFileName::CreateTempFileName(wxT("wxmaxima_size_"));
+  m_recalculationDc = new wxEnhMetaFileDC(m_tempFileName,3000,50000);
+  *m_configuration = new Configuration(*m_recalculationDc);
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
-  (*m_configuration)->SetZoomFactor_temporarily(1.0);
-  (*m_configuration)->SetClientWidth(BM_FULL_WIDTH);
-  (*m_configuration)->SetClientHeight(BM_FULL_WIDTH);
-  (*m_configuration)->SetForceUpdate(true);
+  (*m_configuration)->SetClientWidth(3000);
+  (*m_configuration)->SetZoomFactor_temporarily(1);
+  // The last time I tried it the vertical positioning of the elements
+  // of a big unicode parenthesis wasn't accurate enough in emf to be
+  // usable. Also the probability was high that the right font wasn't
+  // available in inkscape.
+  (*m_configuration)->SetGrouphesisDrawMode(Configuration::handdrawn);
+  (*m_configuration)->ClipToDrawRegion(false);
+  (*m_configuration)->RecalculationForce(true);
 }
 
-Bitmap::~Bitmap()
+Emfout::~Emfout()
 {
   wxDELETE(m_tree);
-  wxDELETE(m_dc);
+  m_tree = NULL;
   wxDELETE(*m_configuration);
+  m_configuration = NULL;
+  wxDELETE(m_dc);
+  m_dc = NULL;
+  wxDELETE(m_recalculationDc);
+  m_recalculationDc = NULL;
+  if(wxFileExists(m_tempFileName))
+  {
+    // We don't want a braindead virus scanner that disallows us to delete our temp
+    // files to trigger asserts.
+    SuppressErrorDialogs messageBlocker;
+    
+    wxRemoveFile(m_tempFileName);
+  }
   *m_configuration = m_oldconfig;
-  (*m_configuration)->SetForceUpdate(false);
+  (*m_configuration)->FontChanged(true);
+  (*m_configuration)->RecalculationForce(true);
 }
 
-bool Bitmap::SetData(MathCell *tree, long int maxSize)
+wxSize Emfout::SetData(Cell *tree)
 {
   wxDELETE(m_tree);
   m_tree = tree;
-  m_tree->ResetSize();
-  return Layout(maxSize);
+  if(m_tree != NULL)
+  {
+    m_tree = tree;
+    m_tree->ResetSize();
+    if(Layout())
+      return wxSize(m_width, m_height);
+    else
+      return wxSize(-1,-1);
+  }
+  else
+    return wxSize(-1,-1);
 }
 
-bool Bitmap::Layout(long int maxSize)
+bool Emfout::Layout()
 {
-  if(m_tree == NULL)
+  if(m_recalculationDc == NULL)
     return false;
   
+  (*m_configuration)->SetContext(*m_recalculationDc);
+
   if (m_tree->GetType() != MC_TYPE_GROUP)
   {
     RecalculateWidths();
@@ -94,71 +129,49 @@ bool Bitmap::Layout(long int maxSize)
     }
   }
 
-  GetMaxPoint(&m_width, &m_height);
-
-  // Too big bitmaps or bitmaps that are too wide or high can crash windows
-  // or the X server.
-  if ((maxSize < 0) ||
-      (
-              (m_width * m_height * m_scale * m_scale < maxSize) &&
-              (m_width * m_scale < 20000) &&
-              (m_height * m_scale < 20000)
-      )
-          )
+  if(!m_recalculationDc->IsOk())
   {
-    // The depth 24 hinders wxWidgets from creating rgb0 bitmaps that some
-    // windows applications will interpret as rgba if they appear on
-    // the clipboards and therefore render them all-transparent.
-    wxDELETE(m_dc);
-    m_bmp.CreateScaled(m_width, m_height, 24, m_scale);
-    if(!m_bmp.IsOk())
-    {
-      m_bmp = wxNullBitmap;
-      return false;
-    }
-    else
-    {
-      m_dc = new wxMemoryDC();
-      m_dc->SelectObject(m_bmp);
-      if(m_dc->IsOk())
-      {
-        m_dc->SetUserScale(m_scale, m_scale);
-        (*m_configuration)->SetContext(*m_dc);
-        m_dc->SetPen(wxNullPen);
-        Draw();
-        return true;
-      }
-      else
-      {
-        m_bmp = wxNullBitmap;
-        return false;
-      }
-    }
-  }
-  else
-  {
-    m_bmp = wxNullBitmap;
     return false;
   }
+
+  GetMaxPoint(&m_width, &m_height);
+  if(m_dc != NULL)
+  {
+    m_dc->Close();
+    wxDELETE(m_dc);
+  }
+  // Let's switch to a DC of the right size for our object.
+  m_dc = new wxEnhMetaFileDC(m_filename, m_width, m_height);
+  if(m_dc != NULL)
+  {
+    (*m_configuration)->SetContext(*m_dc);
+    
+    Draw();
+    // Closing the DC seems to trigger the actual output of the file.
+    m_dc->Close();
+    wxDELETE(m_dc);
+    m_dc = NULL;
+  }
+  return true;
 }
 
-double Bitmap::GetRealWidth()
+double Emfout::GetRealWidth()
 {
-  return m_width * m_scale;
+  return m_width;
 }
 
-double Bitmap::GetRealHeight()
+double Emfout::GetRealHeight()
 {
-  return m_height * m_scale;
+  return m_height;
 }
 
-void Bitmap::RecalculateHeight()
+void Emfout::RecalculateHeight()
 {
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   while (tmp != NULL)
   {
@@ -167,14 +180,13 @@ void Bitmap::RecalculateHeight()
   }
 }
 
-void Bitmap::RecalculateWidths()
+void Emfout::RecalculateWidths()
 {
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
-
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   while (tmp != NULL)
   {
@@ -183,35 +195,35 @@ void Bitmap::RecalculateWidths()
   }
 }
 
-void Bitmap::BreakLines()
+void Emfout::BreakLines()
 {
-  int fullWidth = BM_FULL_WIDTH * m_scale;
+  int fullWidth = 500;
   int currentWidth = 0;
 
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   while (tmp != NULL)
   {
-    if (!tmp->m_isBroken)
+    if (!tmp->m_isBrokenIntoLines)
     {
-      tmp->BreakLine(false);
+      tmp->SoftLineBreak(false);
       tmp->ResetData();
       if (tmp->BreakLineHere() ||
           (currentWidth + tmp->GetWidth() >= fullWidth))
       {
         currentWidth = tmp->GetWidth();
-        tmp->BreakLine(true);
+        tmp->SoftLineBreak(true);
       }
       else
-        currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
+        currentWidth += (tmp->GetWidth());
     }
     tmp = tmp->m_nextToDraw;
   }
 }
 
-void Bitmap::GetMaxPoint(int *width, int *height)
+void Emfout::GetMaxPoint(int *width, int *height)
 {
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
   int currentHeight = 0;
   int currentWidth = 0;
   *width = 0;
@@ -220,7 +232,7 @@ void Bitmap::GetMaxPoint(int *width, int *height)
   bool firstCell = true;
   while (tmp != NULL)
   {
-    if (!tmp->m_isBroken)
+    if (!tmp->m_isBrokenIntoLines)
     {
       if (tmp->BreakLineHere() || firstCell)
       {
@@ -234,8 +246,8 @@ void Bitmap::GetMaxPoint(int *width, int *height)
       }
       else
       {
-        currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
-        *width = MAX(currentWidth - MC_CELL_SKIP, *width);
+        currentWidth += (tmp->GetWidth());
+        *width = MAX(currentWidth, *width);
       }
       bigSkip = tmp->m_bigSkip;
     }
@@ -243,15 +255,9 @@ void Bitmap::GetMaxPoint(int *width, int *height)
   }
 }
 
-void Bitmap::Draw()
+void Emfout::Draw()
 {
-  MathCell::ClipToDrawRegion(false);
-  MathCell *tmp = m_tree;
-
-  wxString bgColStr = wxT("white");
-  wxConfig::Get()->Read(wxT("Style/Background/color"), &bgColStr);
-  m_dc->SetBackground(*(wxTheBrushList->FindOrCreateBrush(bgColStr, wxBRUSHSTYLE_SOLID)));
-  m_dc->Clear();
+  Cell *tmp = m_tree;
 
   if (tmp != NULL)
   {
@@ -267,9 +273,9 @@ void Bitmap::Draw()
 
     while (tmp != NULL)
     {
-      if (!tmp->m_isBroken)
+      if (!tmp->m_isBrokenIntoLines)
       {
-        tmp->Draw(point, tmp->IsMath() ? mfontsize : fontsize);
+        tmp->Draw(point);
         if ((tmp->m_next != NULL) && (tmp->m_next->BreakLineHere()))
         {
           point.x = 0;
@@ -279,7 +285,7 @@ void Bitmap::Draw()
           drop = tmp->m_next->GetMaxDrop();
         }
         else
-          point.x += (tmp->GetWidth() + MC_CELL_SKIP);
+          point.x += (tmp->GetWidth());
       }
       else
       {
@@ -295,66 +301,64 @@ void Bitmap::Draw()
       tmp = tmp->m_nextToDraw;
     }
   }
-  // Update the bitmap's size information.
-  m_ppi = m_dc->GetPPI();
-  m_ppi.x *= m_scale;
-  m_ppi.y *= m_scale;
-  MathCell::ClipToDrawRegion(true);
 }
 
-wxSize Bitmap::ToFile(wxString file)
+Emfout::EMFDataObject::EMFDataObject() : wxCustomDataObject(m_emfFormat)
 {
-  // Assign an resolution to the bitmap.
-  wxImage img = m_bmp.ConvertToImage();
-  int resolution = img.GetOptionInt(wxIMAGE_OPTION_RESOLUTION);
-  if (resolution <= 0)
-    resolution = 75;
-  img.SetOption(wxIMAGE_OPTION_RESOLUTION, resolution * m_scale);
-
-  bool success = false;
-  if (file.Right(4) == wxT(".bmp"))
-    success = img.SaveFile(file, wxBITMAP_TYPE_BMP);
-  else if (file.Right(4) == wxT(".xpm"))
-    success = img.SaveFile(file, wxBITMAP_TYPE_XPM);
-  else if (file.Right(4) == wxT(".jpg"))
-    success = img.SaveFile(file, wxBITMAP_TYPE_JPEG);
-  else
-  {
-    if (file.Right(4) != wxT(".png"))
-      file = file + wxT(".png");
-    success = img.SaveFile(file, wxBITMAP_TYPE_PNG);
-  }
-
-  wxSize retval;
-  if (success)
-  {
-    retval.x = GetRealWidth();
-    retval.y = GetRealHeight();
-    return retval;
-  }
-  else
-  {
-    retval.x = -1;
-    retval.y = -1;
-    return retval;
-  };
 }
 
-bool Bitmap::ToClipboard()
+Emfout::EMFDataObject::EMFDataObject(wxMemoryBuffer data) : wxCustomDataObject(m_emfFormat)
 {
+  SetData(data.GetBufSize(), data.GetData());
+}
+
+
+wxDataFormat Emfout::m_emfFormat;
+
+Emfout::EMFDataObject *Emfout::GetDataObject()
+{
+  wxMemoryBuffer emfContents;
+  {
+    char *data =(char *) malloc(8192);
+    wxFileInputStream str(m_filename);
+    if(str.IsOk())
+      while (!str.Eof())
+      {
+        str.Read(data,8192);
+        emfContents.AppendData(data,str.LastRead());
+      }
+    free(data);
+  }
+  if((m_filename != wxEmptyString) && (wxFileExists(m_filename)))
+  {
+    // Don't output error messages if the worst thing that can happen is that we
+    // cannot clean up a temp file
+
+    SuppressErrorDialogs messageBlocker;
+
+    wxRemoveFile(m_filename);
+  }
+  m_filename = wxEmptyString;
+
+  return new EMFDataObject(emfContents);
+}
+
+bool Emfout::ToClipboard()
+{
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
-    bool res = wxTheClipboard->SetData(new wxBitmapDataObject(m_bmp));
+    bool res = wxTheClipboard->SetData(GetDataObject());
     wxTheClipboard->Close();
+    m_filename = wxEmptyString;
     return res;
   }
-  wxTheClipboard->Close();
   return false;
 }
 
-void Bitmap::BreakUpCells()
+void Emfout::BreakUpCells()
 {
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;
@@ -362,7 +366,7 @@ void Bitmap::BreakUpCells()
 
   while (tmp != NULL)
   {
-    if (tmp->GetWidth() > BM_FULL_WIDTH * m_scale)
+    if (tmp->GetWidth() > 500)
     {
       if (tmp->BreakUp())
       {
@@ -373,3 +377,4 @@ void Bitmap::BreakUpCells()
     tmp = tmp->m_nextToDraw;
   }
 }
+#endif // wxUSE_ENH_METAFILE

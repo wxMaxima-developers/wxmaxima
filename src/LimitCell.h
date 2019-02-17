@@ -23,36 +23,37 @@
 /*! \file
   This file declares the class LimitCell
 
-  LimitCell is the MathCell type that represents maxima's <code>limit()</code> command.
+  LimitCell is the Cell type that represents maxima's <code>limit()</code> command.
 */
 
 #ifndef LIMITCELL_H
 #define LIMITCELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
+#include "TextCell.h"
 
-class LimitCell : public MathCell
+class LimitCell : public Cell
 {
 public:
-  LimitCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
+  LimitCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~LimitCell();
 
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
 
-  MathCell *Copy();
+  Cell *Copy();
 
   void RecalculateHeight(int fontsize);
 
   void RecalculateWidths(int fontsize);
 
-  void Draw(wxPoint point, int fontsize);
+  virtual void Draw(wxPoint point);
 
-  void SetBase(MathCell *base);
+  void SetBase(Cell *base);
 
-  void SetUnder(MathCell *under);
+  void SetUnder(Cell *under);
 
-  void SetName(MathCell *name);
+  void SetName(Cell *name);
 
   wxString ToString();
 
@@ -64,12 +65,20 @@ public:
 
   wxString ToMathML();
 
-  void SetGroup(MathCell *parent);
+  void SetGroup(Cell *parent);
+  void Unbreak();
+  bool BreakUp();
 
 protected:
-  MathCell *m_base;
-  MathCell *m_under;
-  MathCell *m_name;
+  Cell *m_name;
+  TextCell *m_open;
+  Cell *m_base;
+  TextCell *m_comma;
+  Cell *m_under;
+  TextCell *m_close;
+  Cell *m_name_last;
+  Cell *m_base_last;
+  Cell *m_under_last;
 };
 
 #endif // LIMITCELL_H

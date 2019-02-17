@@ -23,7 +23,7 @@
 #ifndef EXPTCELL_H
 #define EXPTCELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
 #include "TextCell.h"
 
 /*!\file
@@ -45,28 +45,28 @@
   If it isn't broken into multiple cells m_nextToDraw points to the 
   cell that follows this Cell. 
  */
-class ExptCell : public MathCell
+class ExptCell : public Cell
 {
 public:
-  ExptCell(MathCell *parent, Configuration **config, CellPointers *cellpointers);
+  ExptCell(Cell *parent, Configuration **config, CellPointers *cellpointers);
 
   ~ExptCell();
 
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
 
-  MathCell *Copy();
+  Cell *Copy();
 
   //! Set the mantissa
-  void SetBase(MathCell *base);
+  void SetBase(Cell *base);
 
   //! Set the exponent
-  void SetPower(MathCell *power);
+  void SetPower(Cell *power);
 
   void RecalculateHeight(int fontsize);
 
   void RecalculateWidths(int fontsize);
 
-  void Draw(wxPoint point, int fontsize);
+  virtual void Draw(wxPoint point);
 
   wxString ToString();
 
@@ -89,13 +89,13 @@ public:
 
   void Unbreak();
 
-  void SetGroup(MathCell *parent);
+  void SetGroup(Cell *parent);
 
 protected:
-  MathCell *m_baseCell, *m_powCell;
+  Cell *m_baseCell, *m_powCell;
   TextCell *m_open, *m_close;
-  MathCell *m_last2;
-  MathCell *m_exp, *m_last1;
+  Cell *m_last2;
+  Cell *m_exp, *m_last1;
   bool m_isMatrix;
 };
 

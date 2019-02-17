@@ -23,7 +23,7 @@
 /*! \file
   This file declares the class SumCell
 
-  SumCell is the MathCell type that represents maxima's <code>sum()</code>, 
+  SumCell is the Cell type that represents maxima's <code>sum()</code>, 
   <code>lsum</code> and <code>product()</code> 
   commands.
 */
@@ -31,7 +31,7 @@
 #ifndef SUMCELL_H
 #define SUMCELL_H
 
-#include "MathCell.h"
+#include "Cell.h"
 
 enum
 {
@@ -39,28 +39,28 @@ enum
   SM_PROD
 };
 
-class SumCell : public MathCell
+class SumCell : public Cell
 {
 public:
-  SumCell(MathCell *parent, Configuration **config, CellPointers *cellPointers);
+  SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~SumCell();
   
-  std::list<MathCell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells();
 
-  MathCell *Copy();
+  Cell *Copy();
   
   void RecalculateHeight(int fontsize);
 
   void RecalculateWidths(int fontsize);
 
-  void Draw(wxPoint point, int fontsize);
+  virtual void Draw(wxPoint point);
 
-  void SetBase(MathCell *base);
+  void SetBase(Cell *base);
 
-  void SetUnder(MathCell *under);
+  void SetUnder(Cell *under);
 
-  void SetOver(MathCell *name);
+  void SetOver(Cell *name);
 
   void SetSumStyle(int style)
   {
@@ -77,12 +77,12 @@ public:
 
   wxString ToOMML();
 
-  void SetGroup(MathCell *parent);
+  void SetGroup(Cell *parent);
 
 protected:
-  MathCell *m_base;
-  MathCell *m_under;
-  MathCell *m_over;
+  Cell *m_base;
+  Cell *m_under;
+  Cell *m_over;
   int m_signSize;
   int m_signWidth;
   int m_sumStyle;

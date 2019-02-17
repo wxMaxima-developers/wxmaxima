@@ -23,7 +23,7 @@
 /*! \file
   This file defines the class SlideShowCell
 
-  SlideShowCell is the MathCell type that represents animations.
+  SlideShowCell is the Cell type that represents animations.
 */
 
 // 72 points per inch / 96 pixels per inch
@@ -46,7 +46,7 @@
 #include <wx/wfstream.h>
 #include <wx/anidecod.h>
 
-SlideShow::SlideShow(MathCell *parent, Configuration **config, CellPointers *cellPointers, wxFileSystem *filesystem, int framerate) : MathCell(
+SlideShow::SlideShow(Cell *parent, Configuration **config, CellPointers *cellPointers, wxFileSystem *filesystem, int framerate) : Cell(
         parent, config)
 {
   m_cellPointers = cellPointers;
@@ -56,7 +56,7 @@ SlideShow::SlideShow(MathCell *parent, Configuration **config, CellPointers *cel
   m_type = MC_TYPE_SLIDE;
   m_fileSystem = filesystem; // NULL when not loading from wxmx
   m_framerate = framerate;
-  m_imageBorderWidth = 1;
+  m_imageBorderWidth = Scale_Px(1);
   m_drawBoundingBox = false;
   if(m_animationRunning)
     ReloadTimer();
@@ -146,7 +146,7 @@ void SlideShow::LoadImages(wxArrayString images, bool deleteRead)
   m_displayed = 0;
 }
 
-MathCell *SlideShow::Copy()
+Cell *SlideShow::Copy()
 {
   SlideShow *tmp = new SlideShow(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -179,12 +179,12 @@ void SlideShow::MarkAsDeleted()
   // Stop and unregister the timer.
   StopTimer();
   ClearCache();
-  MathCell::MarkAsDeleted();
+  Cell::MarkAsDeleted();
 }
 
-std::list<MathCell *> SlideShow::GetInnerCells()
+std::list<Cell *> SlideShow::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   return innerCells;
 }
 
@@ -196,8 +196,9 @@ void SlideShow::SetDisplayedIndex(int ind)
     m_displayed = m_size - 1;
 }
 
-void SlideShow::RecalculateWidths(int WXUNUSED(fontsize))
+void SlideShow::RecalculateWidths(int fontsize)
 {
+  Cell::RecalculateWidths(fontsize);
   // Here we recalculate the height, as well:
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
@@ -213,7 +214,7 @@ void SlideShow::RecalculateWidths(int WXUNUSED(fontsize))
   {
     if(m_images[i] != NULL)
     {
-      if(configuration->GetPrinter()) {
+      if(configuration->GetPrinting()) {
         m_images[i]->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
       } else {
         m_images[i]->Recalculate();
@@ -227,13 +228,15 @@ void SlideShow::RecalculateWidths(int WXUNUSED(fontsize))
   m_center = m_height / 2;
 }
 
-void SlideShow::RecalculateHeight(int WXUNUSED(fontsize))
+void SlideShow::RecalculateHeight(int fontsize)
 {
-  // This is already done on recalculating the width.
+  Cell::RecalculateHeight(fontsize);
+  // The rest is already done on recalculating the width.
 }
 
-void SlideShow::Draw(wxPoint point, int fontsize)
+void SlideShow::Draw(wxPoint point)
 {
+  Cell::Draw(point);
   // If the animation leaves the screen the timer is stopped automatically.
   if(m_animationRunning)
     ReloadTimer();
@@ -247,13 +250,11 @@ void SlideShow::Draw(wxPoint point, int fontsize)
     // restarted anyway.
     //
     Configuration *configuration = (*m_configuration);
-    if(configuration->GetPrinter()) {
+    if(configuration->GetPrinting()) {
         m_images[m_displayed]->Recalculate(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER);
     } else {
       m_images[m_displayed]->Recalculate();
     }
-
-    MathCell::Draw(point, fontsize);
     
     if (!InUpdateRegion()) return;
     
@@ -262,24 +263,35 @@ void SlideShow::Draw(wxPoint point, int fontsize)
 
     // Slide show cells have a red border except if they are selected
     if (m_drawBoundingBox)
-      dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))));
+      dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_SELECTION))));
     else
       dc->SetPen(*wxRED_PEN);
 
-    // If we need a selection border on another redraw we will be informed by OnPaint() again.
-    m_drawBoundingBox = false;
-
     dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
 
-    wxBitmap bitmap = (configuration->GetPrinter() ? m_images[m_displayed]->GetBitmap(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER) : m_images[m_displayed]->GetBitmap());
+    wxBitmap bitmap = (configuration->GetPrinting() ? m_images[m_displayed]->GetBitmap(configuration->GetZoomFactor() * PRINT_SIZE_MULTIPLIER) : m_images[m_displayed]->GetBitmap());
     bitmapDC.SelectObject(bitmap);
 
-    dc->Blit(point.x + m_imageBorderWidth, point.y - m_center + m_imageBorderWidth, m_width - 2 * m_imageBorderWidth,
-            m_height - 2 * m_imageBorderWidth, &bitmapDC, 0, 0);
+    int imageBorderWidth = m_imageBorderWidth;
+    if (m_drawBoundingBox)
+    {
+      imageBorderWidth = Scale_Px(3);
+      dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_SELECTION))));
+      dc->DrawRectangle(wxRect(point.x, point.y - m_center, m_width, m_height));
+    }
+
+    dc->Blit(point.x + imageBorderWidth, point.y - m_center + imageBorderWidth,
+             m_width - 2 * imageBorderWidth, m_height - 2 * imageBorderWidth,
+             &bitmapDC,
+             imageBorderWidth - m_imageBorderWidth, imageBorderWidth - m_imageBorderWidth);
+
   }
   else
     // The cell isn't drawn => No need to keep it's image cache for now.
     ClearCache();
+
+  // If we need a selection border on another redraw we will be informed by OnPaint() again.
+  m_drawBoundingBox = false;
 }
 
 wxString SlideShow::ToString()
@@ -298,7 +310,7 @@ wxString SlideShow::ToXML()
 
   for (int i = 0; i < m_size; i++)
   {
-    wxString basename = ImgCell::WXMXGetNewFileName();
+    wxString basename = m_cellPointers->WXMXGetNewFileName();
     // add the file to memory
     if (m_images[i])
     {
@@ -444,6 +456,7 @@ SlideShow::GifDataObject::GifDataObject(const wxMemoryOutputStream &str) : wxCus
 
 bool SlideShow::CopyToClipboard()
 {
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
     bool res = wxTheClipboard->SetData(new wxBitmapDataObject(m_images[m_displayed]->GetUnscaledBitmap()));

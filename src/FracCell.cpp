@@ -23,7 +23,7 @@
 /*! \file
   This file defines the class FracCell
 
-  FracCell is the MathCell type that represents fractions.
+  FracCell is the Cell type that represents fractions.
 */
 
 #include "FracCell.h"
@@ -31,7 +31,7 @@
 
 #define FRAC_DEC 1
 
-FracCell::FracCell(MathCell *parent, Configuration **config, CellPointers *cellPointers) : MathCell(parent, config)
+FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_num = NULL;
@@ -53,7 +53,7 @@ FracCell::FracCell(MathCell *parent, Configuration **config, CellPointers *cellP
   m_divSign = new TextCell(this, config, cellPointers, wxT("/"));
 }
 
-void FracCell::SetGroup(MathCell *parent)
+void FracCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_num != NULL)
@@ -72,7 +72,7 @@ void FracCell::SetGroup(MathCell *parent)
     m_divide->SetGroupList(parent);
 }
 
-MathCell *FracCell::Copy()
+Cell *FracCell::Copy()
 {
   FracCell *tmp = new FracCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -81,7 +81,7 @@ MathCell *FracCell::Copy()
   tmp->m_fracStyle = m_fracStyle;
   tmp->m_exponent = m_exponent;
   tmp->SetupBreakUps();
-  tmp->m_isBroken = m_isBroken;
+  tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
 
   return tmp;
 }
@@ -99,9 +99,9 @@ FracCell::~FracCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> FracCell::GetInnerCells()
+std::list<Cell *> FracCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_divide)
     innerCells.push_back(m_divide);
   if(m_denom)
@@ -119,7 +119,7 @@ std::list<MathCell *> FracCell::GetInnerCells()
   return innerCells;
 }
 
-void FracCell::SetNum(MathCell *num)
+void FracCell::SetNum(Cell *num)
 {
   if (num == NULL)
     return;
@@ -127,7 +127,7 @@ void FracCell::SetNum(MathCell *num)
   m_num = num;
 }
 
-void FracCell::SetDenom(MathCell *denom)
+void FracCell::SetDenom(Cell *denom)
 {
   if (denom == NULL)
     return;
@@ -137,9 +137,10 @@ void FracCell::SetDenom(MathCell *denom)
 
 void FracCell::RecalculateWidths(int fontsize)
 {
+  Cell::RecalculateWidths(fontsize);
   wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
-  if (m_isBroken || m_exponent)
+  if (m_isBrokenIntoLines || m_exponent)
   {
     m_num->RecalculateWidthsList(fontsize);
     m_denom->RecalculateWidthsList(fontsize);
@@ -151,7 +152,7 @@ void FracCell::RecalculateWidths(int fontsize)
   }
   wxDC *dc = configuration->GetDC();
   dc->SetFont(configuration->GetFont(TS_VARIABLE,fontsize));
-  if (m_exponent && !m_isBroken)
+  if (m_exponent && !m_isBrokenIntoLines)
   {
     m_protrusion = 0;
     int height;
@@ -187,11 +188,14 @@ void FracCell::RecalculateWidths(int fontsize)
   m_close2->RecalculateWidths(fontsize);
   m_divide->RecalculateWidths(fontsize);
   ResetData();
+  if(m_isBrokenIntoLines)
+    m_width = 0;
 }
 
 void FracCell::RecalculateHeight(int fontsize)
 {
-  if (m_isBroken || m_exponent)
+  Cell::RecalculateHeight(fontsize);
+  if (m_isBrokenIntoLines || m_exponent)
   {
     m_num->RecalculateHeightList(fontsize);
     m_denom->RecalculateHeightList(fontsize);
@@ -201,7 +205,7 @@ void FracCell::RecalculateHeight(int fontsize)
     m_num->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
     m_denom->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
   }
-  if(m_isBroken)
+  if(m_isBrokenIntoLines)
   {
     m_height = m_num->GetMaxHeight();
     m_center = m_num->GetMaxCenter();
@@ -229,37 +233,36 @@ void FracCell::RecalculateHeight(int fontsize)
   m_open2->RecalculateHeight(fontsize);
   m_close2->RecalculateHeight(fontsize);
   m_divide->RecalculateHeight(fontsize);
-  MathCell::RecalculateHeight(fontsize);
 }
 
-void FracCell::Draw(wxPoint point, int fontsize)
+void FracCell::Draw(wxPoint point)
 {
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    MathCell::Draw(point, fontsize);
+    Cell::Draw(point);
     Configuration *configuration = (*m_configuration);
     
     wxDC *dc = configuration->GetDC();
     wxPoint num, denom;
 
-    if (m_exponent && !m_isBroken)
+    if (m_exponent && !m_isBrokenIntoLines)
     {
       num.x = point.x;
       num.y = point.y;
       denom.x = point.x + m_num->GetFullWidth() + m_expDivideWidth;
       denom.y = num.y;
 
-      m_num->DrawList(num, fontsize);
-      m_denom->DrawList(denom, fontsize);
+      m_num->DrawList(num);
+      m_denom->DrawList(denom);
 
-      int fontsize1 = Scale_Px(fontsize);
+      int fontsize1 = Scale_Px(m_fontSize);
       wxASSERT(fontsize1 > 0);
       dc->SetFont(wxFont(fontsize1, wxFONTFAMILY_MODERN,
                         wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false,
                         configuration->GetFontName(TS_VARIABLE)));
       dc->DrawText(wxT("/"),
                   point.x + m_num->GetFullWidth(),
-                  point.y - m_num->GetMaxCenter() + Scale_Px(MC_TEXT_PADDING));
+                  point.y - m_num->GetMaxCenter() + MC_TEXT_PADDING);
     }
     else
     {
@@ -267,12 +270,12 @@ void FracCell::Draw(wxPoint point, int fontsize)
               (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_num->GetFullWidth()) / 2;
       num.y = point.y - m_num->GetMaxHeight() + m_num->GetMaxCenter() -
               Scale_Px(2);
-      m_num->DrawList(num, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
+      m_num->DrawList(num);
 
       denom.x = point.x + m_horizontalGapLeft +
                 (m_width - m_horizontalGapLeft - m_horizontalGapRight - m_denom->GetFullWidth()) / 2;
       denom.y = point.y + m_denom->GetMaxCenter() + Scale_Px(2);
-      m_denom->DrawList(denom, MAX(MC_MIN_SIZE, fontsize - FRAC_DEC));
+      m_denom->DrawList(denom);
       SetPen(1.2);
       if (m_fracStyle != FC_CHOOSE)
         dc->DrawLine(point.x + m_horizontalGapLeft + (*m_configuration)->GetDefaultLineWidth() / 2,
@@ -288,7 +291,7 @@ void FracCell::Draw(wxPoint point, int fontsize)
 wxString FracCell::ToString()
 {
   wxString s;
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
     if (m_fracStyle == FC_NORMAL)
     {
@@ -308,7 +311,7 @@ wxString FracCell::ToString()
     }
     else
     {
-      MathCell *tmp = m_denom;
+      Cell *tmp = m_denom;
       while (tmp != NULL)
       {
         tmp = tmp->m_next;   // Skip the d
@@ -331,7 +334,7 @@ wxString FracCell::ToString()
 wxString FracCell::ToTeX()
 {
   wxString s;
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
     if (m_fracStyle == FC_CHOOSE)
     {
@@ -440,9 +443,9 @@ bool FracCell::BreakUp()
   if (m_fracStyle == FC_DIFF)
     return false;
 
-  if (!m_isBroken)
+  if (!m_isBrokenIntoLines)
   {
-    m_isBroken = true;
+    m_isBrokenIntoLines = true;
     m_open1->m_previousToDraw = this;
     m_open1->m_nextToDraw = m_num;
     m_num->m_previousToDraw = m_open1;
@@ -475,10 +478,10 @@ bool FracCell::BreakUp()
 
 void FracCell::Unbreak()
 {
-  if (m_isBroken)
+  if (m_isBrokenIntoLines)
   {
     m_num->UnbreakList();
     m_denom->UnbreakList();
   }
-  MathCell::Unbreak();
+  Cell::Unbreak();
 }

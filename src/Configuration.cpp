@@ -25,17 +25,20 @@
  */
 
 #include "Configuration.h"
-
+#include "Dirstructure.h"
+#include "ErrorRedirector.h"
 #include <wx/font.h>
 #include <wx/config.h>
-#include "MathCell.h"
+#include "Cell.h"
 
 Configuration::Configuration(wxDC &dc) : m_dc(&dc) 
 {
+  m_clipToDrawRegion = true;
+  m_fontChanged = true;
   m_TOCshowsSectionNumbers = false;
   m_antialiassingDC = NULL;
   m_parenthesisDrawMode = unknown;
-  m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML");
+  m_mathJaxURL = wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML");
   m_zoomFactor = 1.0; // affects returned fontsizes
   m_top = -1;
   m_bottom = -1;
@@ -44,21 +47,26 @@ Configuration::Configuration(wxDC &dc) : m_dc(&dc)
   m_printScale = 1.0;
   m_forceUpdate = false;
   m_outdated = false;
-  m_printer = false;
+  m_printing = false;
   m_TeXFonts = false;
-  m_printer = false;
+  m_printing = false;
   m_notifyIfIdle = true;
   m_fixReorderedIndices = true;
   m_showBrackets = true;
   m_printBrackets = false;
   m_hideBrackets = true;
   m_lineWidth_em = 88;
+  m_adjustWorksheetSizeNeeded = false;
   m_showLabelChoice = 1;
+  m_abortOnError = true;
   m_autoSaveInterval = 3 * 60 * 1000;
   m_clientWidth = 1024;
   m_clientHeight = 768;
-  Dirstructure dirstruct;
-  m_maximaLocation = dirstruct.MaximaDefaultLocation();
+  m_indentMaths=true;
+  if(m_maximaLocation_override != wxEmptyString)
+    m_maximaLocation = m_maximaLocation_override;
+  else
+    m_maximaLocation = Dirstructure::Get()->MaximaDefaultLocation();
   m_indent = -1;
   m_autoSubscript = 1;
   m_antiAliasLines = true;
@@ -72,6 +80,7 @@ Configuration::Configuration(wxDC &dc) : m_dc(&dc)
   m_copyMathMLHTML = false;
   m_copyRTF = true;
   m_copySVG = true;
+  m_copyEMF = false;
   m_showLength = 2;
   m_useUnicodeMaths = true;
   m_defaultBackgroundColor = *wxWHITE;
@@ -110,20 +119,22 @@ bool Configuration::MaximaFound(wxString location)
     maximaFound = true;
 
   // Don't complain if PATH doesn't yield a result.
-  wxLogNull logNull;
-  
-  wxPathList pathlist;
-  pathlist.AddEnvList(wxT("PATH"));
-  wxString path = pathlist.FindAbsoluteValidPath(location);
-  if (!path.empty())
-    maximaFound = true;
+  SuppressErrorDialogs logNull;
+
+  if(!(location.EndsWith("/") || location.EndsWith("\\")))
+  {
+    wxPathList pathlist;
+    pathlist.AddEnvList(wxT("PATH"));
+    wxString path = pathlist.FindAbsoluteValidPath(location);
+    if (!path.empty())
+      maximaFound = true;
+  }
   return maximaFound;
 }
 
 void Configuration::ReadConfig()
 {
-  Dirstructure dirstruct;
-  wxConfig *config = (wxConfig *) wxConfig::Get();
+  wxConfigBase *config = wxConfig::Get();
   m_autoWrap = 3;
 
   wxString bgColStr = wxT("white");
@@ -137,8 +148,10 @@ void Configuration::ReadConfig()
   config->Read(wxT("useUnicodeMaths"), &m_useUnicodeMaths);
   config->Read(wxT("mathJaxURL"), &m_mathJaxURL);
   config->Read(wxT("autosubscript"), &m_autoSubscript);
-  config->Read(wxT("antiAliasLines"), & m_antiAliasLines);
-  
+  config->Read(wxT("antiAliasLines"), &m_antiAliasLines);
+  config->Read(wxT("indentMaths"), &m_indentMaths);
+  config->Read(wxT("abortOnError"),&m_abortOnError);
+
   config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
 
   config->Read(wxT("showLength"), &m_showLength);
@@ -149,15 +162,16 @@ void Configuration::ReadConfig()
   config->Read(wxT("copyMathMLHTML"), &m_copyMathMLHTML);
   config->Read(wxT("copyRTF"), &m_copyRTF);
   config->Read(wxT("copySVG"), &m_copySVG );
+  config->Read(wxT("copyEMF"), &m_copyEMF );
 
   config->Read(wxT("maxima"), &m_maximaLocation);
   // Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a
   if (m_maximaLocation.IsSameAs(wxT("1")))
-    m_maximaLocation = dirstruct.MaximaDefaultLocation();
+    m_maximaLocation = Dirstructure::Get()->MaximaDefaultLocation();
 
   // Fallback to the default location if the one from the config file isn't found
   if(!wxFileExists(m_maximaLocation))
-    m_maximaLocation = dirstruct.MaximaDefaultLocation();
+    m_maximaLocation = Dirstructure::Get()->MaximaDefaultLocation();
 
 
   m_autoIndent = true;
@@ -224,7 +238,9 @@ wxFont Configuration::GetFont(int textStyle, int fontSize)
   if ((textStyle == TS_TITLE) ||
       (textStyle == TS_SECTION) ||
       (textStyle == TS_SUBSECTION) ||
-      (textStyle == TS_SUBSUBSECTION))
+      (textStyle == TS_SUBSUBSECTION) ||
+      (textStyle == TS_HEADING5) ||
+      (textStyle == TS_HEADING6))
   {
     // While titles and section names may be underlined the section number
     // isn't. Else the space between section number and section title
@@ -234,6 +250,8 @@ wxFont Configuration::GetFont(int textStyle, int fontSize)
     // Besides that these items have a fixed font size.
     fontSize = GetFontSize(textStyle);
   }  
+  if (fontSize < 4)
+    fontSize = 4;
 
   // The font size scales with the worksheet
   int fontSize1 = Scale_Px(fontSize);
@@ -242,7 +260,6 @@ wxFont Configuration::GetFont(int textStyle, int fontSize)
   if (fontSize1 < 4)
     fontSize1 = 4;
 
-  wxASSERT(fontSize > 0);
 
   fontName = GetFontName(textStyle);
   fontStyle = IsItalic(textStyle);
@@ -340,6 +357,7 @@ void Configuration::SetZoomFactor(double newzoom)
 
   m_zoomFactor = newzoom;
   wxConfig::Get()->Write(wxT("ZoomFactor"), m_zoomFactor);
+  RecalculationForce(true);
 }
 
 Configuration::~Configuration()
@@ -348,30 +366,53 @@ Configuration::~Configuration()
 
 bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2, wxString char3)
 {
+  wxString name = char1 + char2 + char3;
+  CharsInFontMap::iterator it = m_charsInFontMap.find(name);
+  if(it != m_charsInFontMap.end())
+    return it->second;
+
   if(!font.IsOk())
+  {
+    m_charsInFontMap[name] = false;
     return false;
+  }
   // Seems like Apple didn't hold to their high standards as the maths part of this font
   // don't form nice big mathematical symbols => Blacklisting this font.
   if (font.GetFaceName() == wxT("Monaco"))
+  {
+    m_charsInFontMap[name] = false;
     return false;
+  }
 
   if(!m_useUnicodeMaths)
+  {
+    m_charsInFontMap[name] = false;
     return false;
+  }
   
   // Letters with width or height = 0 don't exist in the current font
   int width1,height1,descent1;
   GetDC()->SetFont(font);
   GetDC()->GetTextExtent(char1,&width1,&height1,&descent1);
   if((width1 < 1) || (height1-descent1 < 1))
+  {
+    m_charsInFontMap[name] = false;
     return false;
+  }
   int width2,height2,descent2;
   GetDC()->GetTextExtent(char2,&width2,&height2,&descent2);
   if((width2 < 1) || (height2-descent2 < 1))
+  {
+    m_charsInFontMap[name] = false;
     return false;
+  }
   int width3,height3,descent3;
   GetDC()->GetTextExtent(char3,&width3,&height3,&descent3);
   if((width3 < 1) || (height3-descent3 < 1))
+  {
+    m_charsInFontMap[name] = false;
     return false;
+  }
 
   if(((width1 != width2) &&
       (width1 != width3) &&
@@ -379,7 +420,10 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
      ((height1 != height2) &&
       (height1 != height3) &&
       (height2 != height3)))
+  {
+    m_charsInFontMap[name] = true;
     return true;
+  }
   
   wxBitmap bmp1(width1,height1);
   wxMemoryDC dc1(bmp1);
@@ -403,19 +447,30 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
   dc3.DrawText(char3,wxPoint(0,0));
 
   if(IsEqual(bmp1,bmp2) || IsEqual(bmp2,bmp3) || IsEqual(bmp1,bmp3))
-    return false; 
+  {
+    m_charsInFontMap[name] = false;
+    return false;
+  }
   else
+  {
+    m_charsInFontMap[name] = false;
     return true;
+  }
 }
 
 wxString Configuration::GetFontName(int type)
 {
-  if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION || type == TS_SECTION || type == TS_TEXT)
-    return m_styles[type].font;
-  else if (type == TS_NUMBER || type == TS_VARIABLE || type == TS_FUNCTION ||
-           type == TS_SPECIAL_CONSTANT || type == TS_STRING)
-    return m_mathFontName;
-  return m_fontName;
+  wxString retval = m_fontName;
+  if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION ||
+      type == TS_HEADING5 || type == TS_HEADING6 || type == TS_SECTION || type == TS_TEXT)
+    retval = m_styles[type].font;
+  if(retval == wxEmptyString)
+    retval = m_fontName;
+  
+  if (type == TS_NUMBER || type == TS_VARIABLE || type == TS_FUNCTION ||
+      type == TS_SPECIAL_CONSTANT || type == TS_STRING)
+    retval = m_mathFontName;
+  return retval;
 }
 
 void Configuration::ReadStyle()
@@ -548,12 +603,42 @@ void Configuration::ReadStyle()
   m_styles[TS_CODE_ENDOFLINE].underlined = false;
   READ_STYLES(TS_CODE_ENDOFLINE, "Style/CodeHighlighting/EndOfLine/")
 
+  // Heading6
+  m_styles[TS_HEADING6].color = wxT("black");
+  m_styles[TS_HEADING6].bold = true;
+  m_styles[TS_HEADING6].italic = false;
+  m_styles[TS_HEADING6].underlined = false;
+  m_styles[TS_HEADING6].fontSize = 14;
+#ifdef __WXOSX_MAC__
+  m_styles[TS_HEADING6].font = "Monaco";
+#endif
+  config->Read(wxT("Style/Heading6/fontsize"),
+               &m_styles[TS_HEADING6].fontSize);
+  config->Read(wxT("Style/Heading6/fontname"),
+               &m_styles[TS_HEADING6].font);
+  READ_STYLES(TS_HEADING6, "Style/Heading6/")
+
+  // Heading5
+  m_styles[TS_HEADING5].color = wxT("black");
+  m_styles[TS_HEADING5].bold = true;
+  m_styles[TS_HEADING5].italic = false;
+  m_styles[TS_HEADING5].underlined = false;
+  m_styles[TS_HEADING5].fontSize = 15;
+#ifdef __WXOSX_MAC__
+  m_styles[TS_HEADING5].font = "Monaco";
+#endif
+  config->Read(wxT("Style/Heading5/fontsize"),
+               &m_styles[TS_HEADING5].fontSize);
+  config->Read(wxT("Style/Heading5/fontname"),
+               &m_styles[TS_HEADING5].font);
+  READ_STYLES(TS_HEADING5, "Style/Heading5/")
+
   // Subsubsection
   m_styles[TS_SUBSUBSECTION].color = wxT("black");
   m_styles[TS_SUBSUBSECTION].bold = true;
   m_styles[TS_SUBSUBSECTION].italic = false;
   m_styles[TS_SUBSUBSECTION].underlined = false;
-  m_styles[TS_SUBSUBSECTION].fontSize = 14;
+  m_styles[TS_SUBSUBSECTION].fontSize = 16;
 #ifdef __WXOSX_MAC__
   m_styles[TS_SUBSUBSECTION].font = "Monaco";
 #endif
@@ -724,8 +809,7 @@ void Configuration::ReadStyle()
                    &tmp))
     m_styles[TS_CURSOR].color.Set(tmp);
 
-  wxSystemSettings settings;
-  m_styles[TS_SELECTION].color = settings.GetColour(wxSYS_COLOUR_HIGHLIGHT);
+   m_styles[TS_SELECTION].color = wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT);
 
   if (config->Read(wxT("Style/Selection/color"),
                    &tmp))
@@ -786,3 +870,5 @@ int Configuration::Scale_Px(double px)
     retval = 1;
   return retval;
 }
+
+wxString Configuration::m_maximaLocation_override;

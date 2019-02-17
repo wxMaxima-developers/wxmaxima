@@ -25,9 +25,11 @@
  */
 
 #include "SVGout.h"
+#include "ErrorRedirector.h"
 #include <wx/txtstrm.h> 
 #include <wx/filename.h> 
 #include <wx/wfstream.h>
+#include <wx/stdpaths.h>
 #include "Configuration.h"
 #include "GroupCell.h"
 #include <wx/config.h>
@@ -35,6 +37,7 @@
 
 Svgout::Svgout(Configuration **configuration, wxString filename, double scale)
 {
+  m_CWD = wxGetCwd();
   m_width = m_height = -1;
   m_configuration = configuration;
   m_oldconfig = *m_configuration;
@@ -44,8 +47,18 @@ Svgout::Svgout(Configuration **configuration, wxString filename, double scale)
 
   m_filename = filename;
   if (m_filename == wxEmptyString)
-    m_filename = wxFileName::CreateTempFileName(wxT("wxmaxima_"));
-
+    m_filename = wxFileName::CreateTempFileName(wxStandardPaths::Get().GetTempDir ()+wxT("/wxmaxima_"));
+  {
+    wxFileName name(m_filename);
+    name.MakeAbsolute();
+    m_filename = name.GetFullPath();
+  }
+  {
+    wxString path = wxFileName(m_filename).GetPath();
+    if(path.Length() > 1)
+      wxSetWorkingDirectory(path);
+  }
+  
   m_dc = NULL;
   
   wxString m_tempFileName = wxFileName::CreateTempFileName(wxT("wxmaxima_size_"));
@@ -62,8 +75,7 @@ Svgout::Svgout(Configuration **configuration, wxString filename, double scale)
   // usable. Also the probability was high that the right font wasn't
   // available in inkscape.
   (*m_configuration)->SetGrouphesisDrawMode(Configuration::handdrawn);
-  MathCell::ClipToDrawRegion(false);
-  (*m_configuration)->SetForceUpdate(true);
+  (*m_configuration)->ClipToDrawRegion(false);
 }
 
 Svgout::~Svgout()
@@ -76,14 +88,16 @@ Svgout::~Svgout()
   {
     // We don't want a braindead virus scanner that disallows us to delete our temp
     // files to trigger asserts.
+    SuppressErrorDialogs messageBlocker;
     wxRemoveFile(m_tempFileName);
   }
   *m_configuration = m_oldconfig;
-  MathCell::ClipToDrawRegion(true);
-  (*m_configuration)->SetForceUpdate(false);
+  (*m_configuration)->FontChanged(true);
+  (*m_configuration)->RecalculationForce(true);
+  wxSetWorkingDirectory(m_CWD);
 }
 
-wxSize Svgout::SetData(MathCell *tree)
+wxSize Svgout::SetData(Cell *tree)
 {
   wxDELETE(m_tree);
   m_tree = tree;
@@ -158,7 +172,7 @@ void Svgout::RecalculateHeight()
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   while (tmp != NULL)
   {
@@ -174,7 +188,7 @@ void Svgout::RecalculateWidths()
   int mfontsize = fontsize;
   wxConfig::Get()->Read(wxT("mathfontsize"), &mfontsize);
 
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   while (tmp != NULL)
   {
@@ -188,22 +202,22 @@ void Svgout::BreakLines()
   int fullWidth = 500*m_scale;
   int currentWidth = 0;
 
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   while (tmp != NULL)
   {
-    if (!tmp->m_isBroken)
+    if (!tmp->m_isBrokenIntoLines)
     {
-      tmp->BreakLine(false);
+      tmp->SoftLineBreak(false);
       tmp->ResetData();
       if (tmp->BreakLineHere() ||
           (currentWidth + tmp->GetWidth() >= fullWidth))
       {
         currentWidth = tmp->GetWidth();
-        tmp->BreakLine(true);
+        tmp->SoftLineBreak(true);
       }
       else
-        currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
+        currentWidth += (tmp->GetWidth());
     }
     tmp = tmp->m_nextToDraw;
   }
@@ -211,7 +225,7 @@ void Svgout::BreakLines()
 
 void Svgout::GetMaxPoint(int *width, int *height)
 {
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
   int currentHeight = 0;
   int currentWidth = 0;
   *width = 0;
@@ -220,7 +234,7 @@ void Svgout::GetMaxPoint(int *width, int *height)
   bool firstCell = true;
   while (tmp != NULL)
   {
-    if (!tmp->m_isBroken)
+    if (!tmp->m_isBrokenIntoLines)
     {
       if (tmp->BreakLineHere() || firstCell)
       {
@@ -234,8 +248,8 @@ void Svgout::GetMaxPoint(int *width, int *height)
       }
       else
       {
-        currentWidth += (tmp->GetWidth() + MC_CELL_SKIP);
-        *width = MAX(currentWidth - MC_CELL_SKIP, *width);
+        currentWidth += (tmp->GetWidth());
+        *width = MAX(currentWidth, *width);
       }
       bigSkip = tmp->m_bigSkip;
     }
@@ -245,7 +259,7 @@ void Svgout::GetMaxPoint(int *width, int *height)
 
 void Svgout::Draw()
 {
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
 
   if (tmp != NULL)
   {
@@ -261,9 +275,9 @@ void Svgout::Draw()
 
     while (tmp != NULL)
     {
-      if (!tmp->m_isBroken)
+      if (!tmp->m_isBrokenIntoLines)
       {
-        tmp->Draw(point, tmp->IsMath() ? mfontsize : fontsize);
+        tmp->Draw(point);
         if ((tmp->m_next != NULL) && (tmp->m_next->BreakLineHere()))
         {
           point.x = 0;
@@ -273,7 +287,7 @@ void Svgout::Draw()
           drop = tmp->m_next->GetMaxDrop();
         }
         else
-          point.x += (tmp->GetWidth() + MC_CELL_SKIP);
+          point.x += (tmp->GetWidth());
       }
       else
       {
@@ -319,6 +333,10 @@ Svgout::SVGDataObject *Svgout::GetDataObject()
   }
   if((m_filename != wxEmptyString) && (wxFileExists(m_filename)))
   {
+    // Don't output error messages if the worst thing that can happen is that we
+    // cannot clean up a temp file
+    SuppressErrorDialogs messageBlocker;
+
     wxRemoveFile(m_filename);
   }
   m_filename = wxEmptyString;
@@ -328,6 +346,7 @@ Svgout::SVGDataObject *Svgout::GetDataObject()
 
 bool Svgout::ToClipboard()
 {
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
     bool res = wxTheClipboard->SetData(GetDataObject());
@@ -340,7 +359,7 @@ bool Svgout::ToClipboard()
 
 void Svgout::BreakUpCells()
 {
-  MathCell *tmp = m_tree;
+  Cell *tmp = m_tree;
   int fontsize = 12;
   wxConfig::Get()->Read(wxT("fontSize"), &fontsize);
   int mfontsize = fontsize;

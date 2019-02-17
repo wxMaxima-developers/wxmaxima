@@ -26,6 +26,7 @@
 
 #include "DrawWiz.h"
 #include <wx/statbox.h>
+#include <wx/display.h>
 #include <wx/persist/toplevel.h>
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
@@ -99,9 +100,9 @@ ExplicitWiz::ExplicitWiz(wxWindow *parent, Configuration *config, wxString expre
 #endif
   okButton->SetDefault(); 
   vbox->Add(buttonSizer, wxSizerFlags().Right());
-  wxPersistenceManager::Get().RegisterAndRestore(this);
   m_expression ->SetValue(expression);
   SetSizerAndFit(vbox);
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 }
 
 wxString ExplicitWiz::GetValue()
@@ -201,9 +202,9 @@ ImplicitWiz::ImplicitWiz(wxWindow *parent, Configuration *config, wxString expre
 #endif
   okButton->SetDefault(); 
   vbox->Add(buttonSizer, wxSizerFlags().Right());
-  wxPersistenceManager::Get().RegisterAndRestore(this);
   m_expression ->SetValue(expression);
   SetSizerAndFit(vbox);
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 }
 
 wxString ImplicitWiz::GetValue()
@@ -321,9 +322,9 @@ AxisWiz::AxisWiz(wxWindow *parent, Configuration *config, int dimensions) :
 #endif
   okButton->SetDefault(); 
   vbox->Add(buttonSizer, wxSizerFlags().Right());
-  wxPersistenceManager::Get().RegisterAndRestore(this);
   SetSizerAndFit(vbox);
-};
+  wxPersistenceManager::Get().RegisterAndRestore(this);
+}
 
 wxString AxisWiz::GetValue()
 {
@@ -481,10 +482,9 @@ DrawWiz::DrawWiz(wxWindow *parent, Configuration *config, int dimensions) :
   okButton->SetDefault(); 
   vbox->Add(buttonSizer, wxSizerFlags().Right());
 
-  SetName(wxString::Format("Draw_%idWiz", dimensions));
-  wxPersistenceManager::Get().RegisterAndRestore(this);
-  
+  SetName(wxString::Format("Draw_%idWiz", dimensions));  
   SetSizerAndFit(vbox);
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 }
 
 wxString DrawWiz::GetValue()
@@ -545,10 +545,9 @@ Wiz3D::Wiz3D(wxWindow *parent, Configuration *WXUNUSED(config)) :
   vbox->Add(buttonSizer, wxSizerFlags().Right());
 
   SetName("Draw_Wiz3D");
-  wxPersistenceManager::Get().RegisterAndRestore(this);
-
   SetSizerAndFit(vbox);
-};
+  wxPersistenceManager::Get().RegisterAndRestore(this);
+}
 
 wxString Wiz3D::GetValue()
 {
@@ -668,10 +667,9 @@ WizContour::WizContour(wxWindow *parent, Configuration *WXUNUSED(config)) :
   vbox->Add(buttonSizer, wxSizerFlags().Right());
 
   SetName("Draw_ContourWiz");
-  wxPersistenceManager::Get().RegisterAndRestore(this);
-
   SetSizerAndFit(vbox);
-};
+  wxPersistenceManager::Get().RegisterAndRestore(this);
+}
 
 wxString WizContour::GetValue()
 {
@@ -769,8 +767,8 @@ ParametricWiz::ParametricWiz(wxWindow *parent, Configuration *config, int dimens
   okButton->SetDefault(); 
   vbox->Add(buttonSizer, wxSizerFlags().Right());
   SetName("Draw_%idParametricWiz");
-  wxPersistenceManager::Get().RegisterAndRestore(this);
   SetSizerAndFit(vbox);
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 }
 
 wxString ParametricWiz::GetValue()
@@ -838,10 +836,10 @@ WizPoints::WizPoints(wxWindow *parent, Configuration *config, int dimensions, wx
   okButton->SetDefault(); 
   vbox->Add(buttonSizer, wxSizerFlags().Right());
   SetName(wxString::Format("Draw_%idPointWiz", dimensions));
-  wxPersistenceManager::Get().RegisterAndRestore(this);
   m_data->SetValue(expr);
   SetSizerAndFit(vbox);
-};
+  wxPersistenceManager::Get().RegisterAndRestore(this);
+}
 
 wxString WizPoints::GetValue()
 {
@@ -969,9 +967,9 @@ WizDrawAccuracy::WizDrawAccuracy(wxWindow *parent, Configuration *config, int di
   okButton->SetDefault(); 
   vbox->Add(buttonSizer, wxSizerFlags().Right());
   SetName(wxString::Format("Draw_Accuracy%idWiz", dimensions));
-  wxPersistenceManager::Get().RegisterAndRestore(this);
   SetSizerAndFit(vbox);
-};
+  wxPersistenceManager::Get().RegisterAndRestore(this);
+}
 
 wxString WizDrawAccuracy::GetValue()
 {
@@ -1036,12 +1034,20 @@ wxString WizDrawAccuracy::GetValue()
   return retval;
 }
  
+#define MAX(a, b) ((a)>(b) ? (a) : (b))
 wxImagePanel::wxImagePanel(wxWindow* parent, unsigned char *data, size_t len) :
 wxPanel(parent)
 {  
   Load(data,len);
-  wxSize ppi = wxGetDisplayPPI();
-  SetMinSize(wxSize(ppi.x*6,m_image.GetHeight()*ppi.x*6/m_image.GetWidth()));
+  int ppi;
+#if wxCHECK_VERSION(3, 1, 1)
+  wxDisplay display;
+  ppi = display.GetPPI().x;
+#else
+  ppi = wxGetDisplayPPI().x;
+#endif
+  ppi = MAX(ppi,75);
+  SetMinSize(wxSize(ppi*6,m_image.GetHeight()*ppi*6/m_image.GetWidth()));
   Connect(wxEVT_PAINT,
           wxPaintEventHandler(wxImagePanel::paintEvent),
           NULL, this);

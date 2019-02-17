@@ -36,6 +36,7 @@
 
 Dirstructure::Dirstructure()
 {
+  m_dirStructure = this;
   m_helpDir = ResourcesDir();
   if(wxDirExists(m_helpDir + wxT("/doc/wxmaxima")))
     m_helpDir += wxT("/doc/wxmaxima");
@@ -129,103 +130,6 @@ wxString Dirstructure::ArtDir()
   return dir;
 }
 
-wxString Dirstructure::MaximaLispLocation()
-{
-  wxString result;
-  wxString basedir = "/usr/local/share/maxima/";
-  wxDir dir (basedir);
-  if(!dir.IsOpened())
-  {
-    basedir = "/usr/share/maxima/";
-    dir.Open(basedir);
-  }
-
-  if(!dir.IsOpened())
-  {
-    basedir = "/opt/local/maxima/";
-    dir.Open(basedir);
-  }
-
-  if(!dir.IsOpened())
-  {
-    basedir = "/sw/maxima/";
-    dir.Open(basedir);
-  }
-
-  if(!dir.IsOpened())
-  {
-    wxFileName maximaLocation(MaximaDefaultLocation());
-    basedir = maximaLocation.GetPath();
-    if(wxDirExists(basedir + "/../maxima/share/maxima"))
-    {
-      basedir = basedir + "/../maxima/share/maxima";
-      dir.Open(basedir);
-    }
-  }
-
-  if(!dir.IsOpened())
-  {
-    wxFileName maximaLocation(MaximaDefaultLocation());
-    basedir = maximaLocation.GetPath();
-    if(wxDirExists(basedir + "/../share/maxima"))
-    {
-      basedir = basedir + "/../share/maxima";
-      dir.Open(basedir);
-    }
-  }
-
-  if(!dir.IsOpened())
-  {
-    wxFileName maximaLocation(MaximaDefaultLocation());
-    basedir = maximaLocation.GetPath();
-    if(wxDirExists(basedir + "/../maxima"))
-    {
-      basedir = basedir + "/../maxima";
-      dir.Open(basedir);
-    }
-  }
-    
-  if(dir.IsOpened())
-  {
-    bool more = dir.GetFirst(&result);
-    while(more)
-      more = dir.GetNext(&result);
-  }
-
-  if(result != wxEmptyString)
-  {
-    result = basedir + wxT("/") + result;
-    return result;
-  }
-
-  result = MaximaDefaultLocation();
-  if(result.EndsWith(".app"))
-  {
-    result += "/";
-    return result;
-  }
-  else
-  {
-    wxFileName maximaName(result);
-    if(maximaName.GetDirCount() > 1)
-    {
-      maximaName.RemoveLastDir();
-    }
-    else
-    {
-      wxArrayString output;
-      wxExecute(wxT("which maxima"), output, (wxEXEC_SYNC |
-                                              wxEXEC_NOEVENTS));
-      if(output.GetCount() > 0)
-      {
-        wxFileName fullpath(output[0] ,wxPATH_NATIVE);
-        return fullpath.GetPath();
-      }
-    }
-    return maximaName.GetPath();
-  }
-}
-
 wxString Dirstructure::MaximaDefaultLocation()
 {
 #if defined __WXMSW__
@@ -262,3 +166,5 @@ wxString Dirstructure::MaximaDefaultLocation()
   return wxT("maxima");
 #endif
 }
+
+Dirstructure *Dirstructure::m_dirStructure;

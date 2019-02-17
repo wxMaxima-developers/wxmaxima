@@ -29,24 +29,22 @@
 #ifndef MATHPRINTOUT_H
 #define MATHPRINTOUT_H
 
-#include "Setup.h"
-
 #include <wx/wx.h>
 #include <wx/print.h>
 
 #include <vector>
 
-#include "MathCell.h"
+#include "Cell.h"
 #include "GroupCell.h"
 
 using namespace std;
 
-class MathPrintout : public wxPrintout
+class Printout : public wxPrintout
 {
 public:
-  MathPrintout(wxString title, Configuration **configuration);
+  Printout(wxString title, Configuration **configuration, double scaleFactor);
 
-  ~MathPrintout();
+  ~Printout();
 
   void DestroyTree();
 
@@ -83,6 +81,7 @@ private:
   wxString m_title;
   GroupCell *m_tree;
   vector<GroupCell *> m_pages;
+  double m_scaleFactor;
 };
 
 #endif // MATHPRINTOUT_H

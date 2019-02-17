@@ -21,6 +21,7 @@
 //  SPDX-License-Identifier: GPL-2.0+
 
 #include "Gen1Wiz.h"
+#include <wx/persist/toplevel.h>
 
 Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &title,
                  const wxString &label1,
@@ -56,6 +57,8 @@ Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &t
 
   set_properties();
   do_layout();
+  SetName(title);
+  wxPersistenceManager::Get().RegisterAndRestore(this);
 }
 
 

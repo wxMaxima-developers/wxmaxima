@@ -23,7 +23,7 @@
 /*! \file
   This file defines the class SubSupCell
 
-  SubSubCell is the MathCell type that represents a math element with subscript and
+  SubSubCell is the Cell type that represents a math element with subscript and
   superscript.
  */
 
@@ -33,7 +33,7 @@
 
 #define SUBSUP_DEC 3
 
-SubSupCell::SubSupCell(MathCell *parent, Configuration **config,CellPointers *cellPointers) : MathCell(parent, config)
+SubSupCell::SubSupCell(Cell *parent, Configuration **config,CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
   m_baseCell = NULL;
@@ -41,7 +41,7 @@ SubSupCell::SubSupCell(MathCell *parent, Configuration **config,CellPointers *ce
   m_exptCell = NULL;
 }
 
-void SubSupCell::SetGroup(MathCell *parent)
+void SubSupCell::SetGroup(Cell *parent)
 {
   m_group = parent;
   if (m_baseCell != NULL)
@@ -52,7 +52,7 @@ void SubSupCell::SetGroup(MathCell *parent)
     m_exptCell->SetGroupList(parent);
 }
 
-MathCell *SubSupCell::Copy()
+Cell *SubSupCell::Copy()
 {
   SubSupCell *tmp = new SubSupCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
@@ -74,9 +74,9 @@ SubSupCell::~SubSupCell()
   MarkAsDeleted();
 }
 
-std::list<MathCell *> SubSupCell::GetInnerCells()
+std::list<Cell *> SubSupCell::GetInnerCells()
 {
-  std::list<MathCell *> innerCells;
+  std::list<Cell *> innerCells;
   if(m_baseCell)
     innerCells.push_back(m_baseCell);
   if(m_indexCell)
@@ -86,7 +86,7 @@ std::list<MathCell *> SubSupCell::GetInnerCells()
   return innerCells;
 }
 
-void SubSupCell::SetIndex(MathCell *index)
+void SubSupCell::SetIndex(Cell *index)
 {
   if (index == NULL)
     return;
@@ -94,7 +94,7 @@ void SubSupCell::SetIndex(MathCell *index)
   m_indexCell = index;
 }
 
-void SubSupCell::SetBase(MathCell *base)
+void SubSupCell::SetBase(Cell *base)
 {
   if (base == NULL)
     return;
@@ -102,7 +102,7 @@ void SubSupCell::SetBase(MathCell *base)
   m_baseCell = base;
 }
 
-void SubSupCell::SetExponent(MathCell *exp)
+void SubSupCell::SetExponent(Cell *exp)
 {
   if (exp == NULL)
     return;
@@ -112,6 +112,7 @@ void SubSupCell::SetExponent(MathCell *exp)
 
 void SubSupCell::RecalculateWidths(int fontsize)
 {
+  Cell::RecalculateWidths(fontsize);
   m_baseCell->RecalculateWidthsList(fontsize);
   m_indexCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
   m_exptCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
@@ -123,6 +124,7 @@ void SubSupCell::RecalculateWidths(int fontsize)
 
 void SubSupCell::RecalculateHeight(int fontsize)
 {
+  Cell::RecalculateHeight(fontsize);
   m_baseCell->RecalculateHeightList(fontsize);
   m_indexCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
   m_exptCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
@@ -135,27 +137,27 @@ void SubSupCell::RecalculateHeight(int fontsize)
              Scale_Px((8 * fontsize) / 10 + MC_EXP_INDENT);
 }
 
-void SubSupCell::Draw(wxPoint point, int fontsize)
+void SubSupCell::Draw(wxPoint point)
 {
+  Cell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    MathCell::Draw(point, fontsize);
     wxPoint bs, in;
 
     bs.x = point.x;
     bs.y = point.y;
-    m_baseCell->DrawList(bs, fontsize);
+    m_baseCell->DrawList(bs);
 
     in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
     in.y = point.y + m_baseCell->GetMaxDrop() +
            m_indexCell->GetMaxCenter() -
-           Scale_Px((8 * fontsize) / 10 + MC_EXP_INDENT);
-    m_indexCell->DrawList(in, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+           Scale_Px((8 * m_fontSize) / 10 + MC_EXP_INDENT);
+    m_indexCell->DrawList(in);
 
     in.y = point.y - m_baseCell->GetMaxCenter() - m_exptCell->GetMaxHeight()
            + m_exptCell->GetMaxCenter() +
-           Scale_Px((8 * fontsize) / 10 + MC_EXP_INDENT);
-    m_exptCell->DrawList(in, MAX(MC_MIN_SIZE, fontsize - SUBSUP_DEC));
+           Scale_Px((8 * m_fontSize) / 10 + MC_EXP_INDENT);
+    m_exptCell->DrawList(in);
   }
 }
 

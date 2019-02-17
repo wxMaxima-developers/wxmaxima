@@ -26,6 +26,7 @@
 */
 #include "StatusBar.h"
 #include <wx/artprov.h>
+#include <wx/display.h>
 #include "invalidImage.h"
 #include "../art/statusbar/images.h"
 #include <wx/mstream.h>
@@ -203,8 +204,15 @@ wxBitmap StatusBar::GetImage(wxString name,
                           unsigned char *data_128, size_t len_128,
                           unsigned char *data_192, size_t len_192)
 {
-  double targetWidth = static_cast<double>(GetSize().GetHeight()) / wxGetDisplayPPI().y * wxGetDisplayPPI().x;
-  double targetHeight = static_cast<double>(GetSize().GetHeight());
+  wxSize ppi;
+#if wxCHECK_VERSION(3, 1, 1)
+  wxDisplay display;
+  ppi = display.GetPPI();
+#else
+  ppi = wxGetDisplayPPI();
+#endif
+  double targetWidth = static_cast<double>(GetSize().GetHeight()) / ppi.y * ppi.x*GetContentScaleFactor();
+  double targetHeight = static_cast<double>(GetSize().GetHeight())*GetContentScaleFactor();
 
   wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR, wxSize(targetWidth, targetHeight));
   wxImage img;
@@ -253,12 +261,16 @@ wxBitmap StatusBar::GetImage(wxString name,
     img = wxImage(invalidImage_xpm);
   }
 
-  targetWidth = static_cast<double>(GetSize().GetHeight()) / wxGetDisplayPPI().y * wxGetDisplayPPI().x;
+  targetWidth = static_cast<double>(GetSize().GetHeight()) / ppi.y * ppi.x;
   targetHeight = static_cast<double>(GetSize().GetHeight());
 
   img.Rescale(targetWidth, targetHeight, wxIMAGE_QUALITY_HIGH);
 
-  return img;
+#if defined __WXMAC__
+  return wxBitmap(img,wxBITMAP_SCREEN_DEPTH,GetContentScaleFactor());
+#else
+  return wxBitmap(img,wxBITMAP_SCREEN_DEPTH);
+#endif
 }
 
 

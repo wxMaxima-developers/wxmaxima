@@ -44,6 +44,8 @@ XmlInspector::XmlInspector(wxWindow *parent, int id) : wxRichTextCtrl(parent, id
   m_indentLevel = 0;
   BeginSuppressUndo();
   Clear();
+  SetMinSize(wxSize(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )/10,
+                    wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )/10));
 }
 
 XmlInspector::~XmlInspector()

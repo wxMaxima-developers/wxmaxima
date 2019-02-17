@@ -23,14 +23,14 @@
 #ifndef BITMAP_H
 #define BITMAP_H
 
-#include "MathCell.h"
+#include "Cell.h"
 
 /*! Renders portions of the work sheet (including 2D maths) as bitmap.
 
    This is used for exporting HTML with embedded maths as bitmap
    and for putting bitmaps for the clipboard
  */
-class Bitmap
+class BitmapOut
 {
 public:
   /*! The constructor.
@@ -40,9 +40,9 @@ public:
     \param configuration A pointer to the pointer to this worksheet's configuration
            storage
   */
-  Bitmap(Configuration **configuration, int scale = 1);
+  BitmapOut(Configuration **configuration, int scale = 1);
 
-  ~Bitmap();
+  ~BitmapOut();
 
   /*! Renders tree as bitmap
     
@@ -52,7 +52,7 @@ public:
 
     \return true, if the bitmap could be created.
    */
-  bool SetData(MathCell *tree, long int maxSize = -1);
+  bool SetData(Cell *tree, long int maxSize = -1);
 
   /*! Exports this bitmap to a file
 
@@ -84,7 +84,7 @@ protected:
 
   void Draw();
 
-  MathCell *m_tree;
+  Cell *m_tree;
 
   double GetRealHeight();
 

@@ -47,7 +47,14 @@ void AutocompletePopup::UpdateResults()
     m_editor->ReplaceSelection(
       m_editor->GetSelectionString(),
       m_completions[0]
-      );
+      );    
+    m_editor->ClearSelection();
+    m_parent->GetParent()->Refresh();
+    if (!m_editor->IsActive())
+      m_editor->ActivateCursor();
+    *m_doneptr = NULL;
+    Destroy();
+    break;
   case 0:
     m_editor->ClearSelection();
     m_parent->GetParent()->Refresh();

@@ -85,7 +85,6 @@ private:
   virtual wxString itemizeItem()=0;       //!< The marker for the begin of an item
   virtual wxString itemizeEndItem()=0;    //!< The marker for the end of an item
   virtual wxString NewLine()=0;           //!< The marker for the beginning of a new line
-  virtual bool NewLineBreaksLine()=0; //!< Does a single newline in the output actually break lines?
 };
 
 //! A markdown parser for TeX
@@ -117,10 +116,8 @@ private:
   { return wxEmptyString; }
 
   virtual wxString NewLine()
-  { return wxT(" "); }
+  { return wxT("\n\n"); }
 
-  virtual bool NewLineBreaksLine()
-  { return false; }
 };
 
 //! A markdown parser for HTML
@@ -153,9 +150,6 @@ private:
 
   virtual wxString NewLine()
   { return wxT("<BR>"); }
-
-  virtual bool NewLineBreaksLine()
-  { return true; }
 };
 
 #endif // MARKDOWN_H
