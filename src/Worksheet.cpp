@@ -393,27 +393,28 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
   dcm.SetUserScale(wxWindow::GetContentScaleFactor(),wxWindow::GetContentScaleFactor());
   dcm.SelectObject(m_memory);
-  DoPrepareDC(dcm);
   dcm.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
   dcm.Clear();
   dcm.SetMapMode(wxMM_TEXT);
   dcm.SetBackgroundMode(wxTRANSPARENT);
 
+  // Create a graphics context that supports antialiassing, but on MSW
+  // only supports fonts that come in the Right Format.
   wxGCDC antiAliassingDC(dcm);
 
-  #if defined(__WXGTK__) && !defined(__WXGTK3__)
-  // Seems like depending on the wxGTK version the antialiassing DC doesn't inherit the
-  // scrolling info from the normal DC.
-  //
-  // On wxMAC it does, though, and preparing it, too, scrolls it twice.
+  // Scroll both drawing contexts.
+  // Hope this is the Right Order to do things: If I first scroll dcm and
+  // then create antiAliassingDC on some systems antiAliassingDC inherits
+  // the scrolling, on some it doesn't and on some systems it just
+  // believes to have inherited it.
+  DoPrepareDC(dcm);
   DoPrepareDC(antiAliassingDC);
-  #endif
 
   m_configuration->SetContext(dcm);
   m_configuration->SetAntialiassingDC(antiAliassingDC);
   m_configuration->SetBounds(top, bottom);
 
-  // Draw content
+  // Draw the contents
   if (m_tree != NULL)
   {
     //
