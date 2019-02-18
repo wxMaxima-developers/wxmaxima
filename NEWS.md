@@ -1,3 +1,10 @@
+# wxMaxima 19.02.1 - Stable
+
+* Support for the broken ArchLinux compiler
+* Resolved the Crash on Closing for Mac Os
+* A "File open" bug that was depending on the language setting
+* Corrected scrolling on wxWidgets 3.1.3 for GTK3
+
 # wxMaxima 19.02.0 - Stable
 
 * Resolved a cell size recalculation bug
