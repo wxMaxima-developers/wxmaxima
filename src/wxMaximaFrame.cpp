@@ -368,7 +368,14 @@ void wxMaximaFrame::do_layout()
                             MinSize(logPane->GetEffectiveMinSize()).
                             FloatingSize(logPane->GetEffectiveMinSize()).
                             Left());
-
+  #ifdef __WXGTK__
+  #ifdef __WXGTK3__
+  wxLogMessage(_("wxWidgets is using GTK3"));
+  #else
+  wxLogMessage(_("wxWidgets is using GTK2"));
+  #endif
+  #endif
+  
   wxPanel *symbolsPane = CreateSymbolsPane();
   m_manager.AddPane(symbolsPane,
                     wxAuiPaneInfo().Name(wxT("symbols")).
