@@ -1114,7 +1114,7 @@ void GroupCell::DrawBracket()
   if ((m_currentPoint.y >= selectionStart_px) &&
       (m_currentPoint.y <= selectionEnd_px))
   {
-#if defined(__WXMAC__)
+#if defined(__WXOSX__)
     dc->SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
 #else
     dc->SetPen(*(wxThePenList->FindOrCreatePen(
@@ -1129,7 +1129,7 @@ void GroupCell::DrawBracket()
   }
   else if (m_cellPointers->m_errorList.Contains(this))
   {
-#if defined(__WXMAC__)
+#if defined(__WXOSX__)
     dc->SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
 #else
     dc->SetPen(*wxRED_PEN);
@@ -1140,7 +1140,7 @@ void GroupCell::DrawBracket()
   }
   else if ((m_cellPointers->m_answerCell) && (m_cellPointers->m_answerCell->GetGroup() == this))
   {
-#if defined(__WXMAC__)
+#if defined(__WXOSX__)
     dc->SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
 #else
     dc->SetPen(*wxYELLOW_PEN);

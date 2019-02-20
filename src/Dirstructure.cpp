@@ -149,7 +149,7 @@ wxString Dirstructure::MaximaDefaultLocation()
   wxFileName maximapath(maxima);
   maximapath.MakeAbsolute();
   return maximapath.GetFullPath();
-#elif defined __WXMAC__
+#elif defined __WXOSX__
   wxString command;
   if (wxFileExists("/Applications/Maxima.app"))
     command = wxT("/Applications/Maxima.app");

@@ -563,7 +563,7 @@ private:
    */
   wxArrayString StringToTokens(wxString string);
 
-#if defined __WXMAC__
+#if defined __WXOSX__
 
   bool HandleCtrlCommand(wxKeyEvent &ev);
 

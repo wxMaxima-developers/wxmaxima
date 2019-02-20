@@ -95,7 +95,7 @@
 #include <wx/sstream.h>
 #include <list>
 
-#if defined __WXMAC__
+#if defined __WXOSX__
 #define MACPREFIX "wxMaxima.app/Contents/Resources/"
 #endif
 
@@ -126,7 +126,7 @@ void wxMaxima::ConfigChanged()
   m_worksheet->RecalculateForce();
   m_worksheet->RequestRedraw();
 
-#if defined (__WXMAC__)
+#if defined (__WXOSX__)
   bool usepngCairo = false;
 #else
   bool usepngCairo=true;
@@ -908,7 +908,7 @@ bool wxMaxima::StartServer()
 
   wxIPV4address addr;
 
-#ifndef __WXMAC__
+#ifndef __WXOSX__
   addr.LocalHost();
 #else
   addr.AnyAddress();
@@ -986,7 +986,7 @@ bool wxMaxima::StartMaxima(bool force)
 
       command.Append(wxString::Format(wxT(" -s %d "), m_port));
 
-#if defined __WXMAC__
+#if defined __WXOSX__
       wxSetEnv(wxT("DISPLAY"), wxT(":0.0"));
 #endif
 
@@ -2696,7 +2696,7 @@ void wxMaxima::SetupVariables()
   SendMaxima(wxmathml.GetCmd());
   wxString cmd;
 
-#if defined (__WXMAC__)
+#if defined (__WXOSX__)
   wxString gnuplotbin(wxT("/Applications/Gnuplot.app/Contents/Resources/bin/gnuplot"));
   if (wxFileExists(gnuplotbin))
     cmd += wxT("\n:lisp-quiet (setf $gnuplot_command \"") + gnuplotbin + wxT("\")\n");
@@ -2745,7 +2745,7 @@ wxString wxMaxima::GetCommand(bool params)
     command = wxT("maxima");
   }
 #endif
-#if defined (__WXMAC__)
+#if defined (__WXOSX__)
   if (command.EndsWith(wxT(".app"))) // if pointing to a Maxima.app
     command.Append(wxT("/Contents/Resources/maxima.sh"));
 #endif
@@ -4019,7 +4019,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
 
       // On the mac the "File/New" menu item by default opens a new window instead od
       // reusing the old one.
-      #ifdef __WXMAC__
+      #ifdef __WXOSX__
       if(m_worksheet->IsEmpty())
         OpenFile(file,wxEmptyString);
       else
@@ -6421,7 +6421,7 @@ MyAboutDialog::MyAboutDialog(wxWindow *parent, int id, const wxString title, wxS
   html_bottom->SetBorders(5);
 
   wxString cwd = wxGetCwd();
-#if defined __WXMAC__
+#if defined __WXOSX__
   cwd = cwd + wxT("/") + wxT(MACPREFIX);
 #else
   cwd.Replace(wxT("\\"), wxT("/"));
@@ -8251,7 +8251,7 @@ void wxMaxima::ResetTitle(bool saved, bool force)
     m_fileSaved = saved;
     if (m_worksheet->m_currentFile.Length() == 0)
     {
-#ifndef __WXMAC__
+#ifndef __WXOSX__
       if (saved)
         SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) + _("[ unsaved ]"));
       else
@@ -8262,7 +8262,7 @@ void wxMaxima::ResetTitle(bool saved, bool force)
     {
       wxString name, ext;
       wxFileName::SplitPath(m_worksheet->m_currentFile, NULL, NULL, &name, &ext);
-#ifndef __WXMAC__
+#ifndef __WXOSX__
       if (m_fileSaved)
         SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) +
                  wxT(" [ ") + name + wxT(".") + ext + wxT(" ]"));
@@ -8273,7 +8273,7 @@ void wxMaxima::ResetTitle(bool saved, bool force)
       SetTitle(name + wxT(".") + ext);
 #endif
     }
-#if defined __WXMAC__
+#if defined __WXOSX__
 #if defined __WXOSX_COCOA__
     OSXSetModified(!saved);
     if (m_worksheet->m_currentFile != wxEmptyString)
@@ -8497,7 +8497,7 @@ int wxMaxima::SaveDocumentP()
     if (!save)
       return wxID_NO;
 
-#if defined __WXMAC__
+#if defined __WXOSX__
     file = GetTitle();
 #else
     file = _("unsaved");
@@ -8635,7 +8635,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_BUTTON(button_trigrat, wxMaxima::SimplifyMenu)
                 EVT_MENU(menu_polarform, wxMaxima::SimplifyMenu)
                 EVT_MENU(ToolBar::menu_restart_id, wxMaxima::MaximaMenu)
-#ifndef __WXMAC__
+#ifndef __WXOSX__
                 EVT_MENU(wxID_EXIT, wxMaxima::FileMenu)
 #endif
                 EVT_MENU(wxID_ABOUT, wxMaxima::HelpMenu)

@@ -266,7 +266,7 @@ wxBitmap StatusBar::GetImage(wxString name,
 
   img.Rescale(targetWidth, targetHeight, wxIMAGE_QUALITY_HIGH);
 
-#if defined __WXMAC__
+#if defined __WXOSX__
   return wxBitmap(img,wxBITMAP_SCREEN_DEPTH,GetContentScaleFactor());
 #else
   return wxBitmap(img,wxBITMAP_SCREEN_DEPTH);

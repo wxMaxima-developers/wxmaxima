@@ -104,7 +104,7 @@ wxBitmap ToolBar::GetImage(wxString name,
   }
 
   img.Rescale(targetSize, targetSize, wxIMAGE_QUALITY_HIGH);
-#if defined __WXMAC__
+#if defined __WXOSX__
   return wxBitmap(img,wxBITMAP_SCREEN_DEPTH,GetContentScaleFactor());
 #else
   return wxBitmap(img,wxBITMAP_SCREEN_DEPTH);
@@ -171,7 +171,7 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
                               gtk_save_192_png,gtk_save_192_png_len
                        ),
                      _("Save document"));
-#ifndef __WXMAC__
+#ifndef __WXOSX__
   AddSeparator();
 #endif
   AddTool(tb_print, _("Print"),
@@ -186,7 +186,7 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
                               gtk_preferences_192_png,gtk_preferences_192_png_len
                        ),
                      _("Configure wxMaxima"));
-#ifndef __WXMAC__
+#ifndef __WXOSX__
   AddSeparator();
 #endif
   AddTool(tb_cut, _("Cut"),
@@ -213,7 +213,7 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
                               gtk_select_all_192_png,gtk_select_all_192_png_len
                        ),
                      _("Select all"));
-#ifndef __WXMAC__
+#ifndef __WXOSX__
   AddSeparator();
 #endif
   AddTool(tb_find, _("Find"),
@@ -222,7 +222,7 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
                               gtk_find_192_png,gtk_find_192_png_len
                        ),
                      _("Find and replace"));
-#ifndef __WXMAC__
+#ifndef __WXOSX__
   AddSeparator();
 #endif
   AddTool(menu_restart_id, _("Restart maxima"),
@@ -263,7 +263,7 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
                        ),
                      _("Evaluate the file from the cursor to its end"));
 
-#ifndef __WXMAC__
+#ifndef __WXOSX__
     AddSeparator();
 #endif
     AddTool(tb_hideCode, _("Hide Code"),
@@ -272,7 +272,7 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
                      weather_few_clouds_192_png,weather_few_clouds_192_png_len
               ),
             _("Toggle the visibility of code cells"));
-#ifndef __WXMAC__
+#ifndef __WXOSX__
   AddSeparator();
 #endif
   wxArrayString textStyle;

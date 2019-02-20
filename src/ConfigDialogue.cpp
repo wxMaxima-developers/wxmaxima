@@ -185,7 +185,7 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
 ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 {
   m_configuration = cfg;
-#if defined __WXMAC__
+#if defined __WXOSX__
   SetSheetStyle(wxPROPSHEET_BUTTONTOOLBOOK | wxPROPSHEET_SHRINKTOFIT);
 #else
   SetSheetStyle(wxPROPSHEET_LISTBOOK);
@@ -240,7 +240,7 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   m_notebook->AddPage(CreateOptionsPanel(), _("Options"), false, 4);
   m_notebook->AddPage(CreateClipboardPanel(), _("Copy"), false, 5);
   m_notebook->AddPage(CreateStartupPanel(), _("Startup commands"), false, 6);
-#ifndef __WXMAC__
+#ifndef __WXOSX__
   CreateButtons(wxOK | wxCANCEL);
 #endif
 
@@ -268,14 +268,14 @@ ConfigDialogue::~ConfigDialogue()
 
 
 void ConfigDialogue::UsepngcairoChanged(
-  #ifdef __WXMAC__
+  #ifdef __WXOSX__
   wxCommandEvent &event
   #else
   wxCommandEvent &WXUNUSED(event)
   #endif
   )
 {
-  #ifdef __WXMAC__
+  #ifdef __WXOSX__
   if(event.IsChecked())
   {
     m_usepngCairo->SetForegroundColour(*wxRED);
@@ -405,7 +405,7 @@ void ConfigDialogue::SetProperties()
   wxString symbolPaneAdditionalChars = wxT("üØ");
   m_symbolPaneAdditionalChars->SetValue(symbolPaneAdditionalChars);
 
-#if defined (__WXMAC__)
+#if defined (__WXOSX__)
   bool usepngCairo = false;
 #else
   bool usepngCairo=true;
@@ -475,7 +475,7 @@ void ConfigDialogue::SetProperties()
     m_saveSize->SetValue(false);
   m_savePanes->SetValue(savePanes);
   m_usepngCairo->SetValue(usepngCairo);
-  #ifdef __WXMAC__
+  #ifdef __WXOSX__
   m_usepngCairo->SetForegroundColour(*wxRED);
   #endif
   m_antialiasLines->SetValue(configuration->AntiAliasLines());
@@ -690,7 +690,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   }
   m_wxStartupCommands = new wxTextCtrl(panel_wxMaximaStartup, -1, wxEmptyString, wxDefaultPosition, wxSize(200,250),
                                      wxTE_MULTILINE | wxHSCROLL);
-  #ifdef __WXMAC__
+  #ifdef __WXOSX__
     #if wxCHECK_VERSION(3, 1, 1)
       m_wxStartupCommands->OSXDisableAllSmartSubstitutions();
     #endif
@@ -735,7 +735,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
   m_startupCommands = new wxTextCtrl(panel_maximaStartup, -1, wxEmptyString, wxDefaultPosition, wxSize(200,250),
                                      wxTE_MULTILINE | wxHSCROLL);
   m_startupCommands->SetValue(contents);
-  #ifdef __WXMAC__
+  #ifdef __WXOSX__
     #if wxCHECK_VERSION(3, 1, 1)
       m_startupCommands->OSXDisableAllSmartSubstitutions();
     #endif
@@ -1181,7 +1181,7 @@ void ConfigDialogue::OnClose(wxCloseEvent&  WXUNUSED(event))
 {
   wxConfigBase *config = wxConfig::Get();
   config->Write(wxT("ConfigDialogTab"), m_notebook->GetSelection());
-#if defined __WXMAC__
+#if defined __WXOSX__
   EndModal(wxID_OK);
 #else
   EndModal(wxID_CANCEL);

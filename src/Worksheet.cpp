@@ -382,7 +382,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   if (sz.y == 0) sz.y = 1;
 
   // Test if m_memory is NULL or of the wrong size
-  #ifdef __WXMAC__
+  #ifdef __WXOSX__
   if ((!m_memory.IsOk()) || (m_memory.GetSize() != sz))
     m_memory = wxBitmap(sz*wxWindow::GetContentScaleFactor(),
                         wxBITMAP_SCREEN_DEPTH,
@@ -426,7 +426,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     {
       Cell *tmp = m_cellPointers.m_selectionStart;
 
-#if defined(__WXMAC__)
+#if defined(__WXOSX__)
       dcm.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
 #else
       dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));

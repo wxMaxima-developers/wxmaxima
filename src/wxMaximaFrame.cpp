@@ -277,7 +277,7 @@ void wxMaximaFrame::set_properties()
   // find it?".
   SetIcon(wxMaximaIcon());
 #endif
-#ifndef __WXMAC__
+#ifndef __WXOSX__
   SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) + _("[ unsaved ]"));
 #else
   SetTitle(_("untitled"));
@@ -368,11 +368,27 @@ void wxMaximaFrame::do_layout()
                             MinSize(logPane->GetEffectiveMinSize()).
                             FloatingSize(logPane->GetEffectiveMinSize()).
                             Left());
+  wxLogMessage(wxString::Format(_("wxMaxima version %s"), GITVERSION));
+  #ifdef __WXMSW__
+  wxLogMessage(_("Running on MS Windows")));
+  #endif
+  #ifdef __WXMOTIF__
+  wxLogMessage(_("Running on Motif")));
+  #endif
+  #ifdef __WXDFB__
+  wxLogMessage(_("Running on DirectFB")));
+  #endif
+  #ifdef __WXUNIVERSAL__
+  wxLogMessage(_("Running on the universal wxWidgets port")));
+  #endif
+  #ifdef __WXOSX__
+  wxLogMessage(_("Running on Mac OS")));
+  #endif
   #ifdef __WXGTK__
   #ifdef __WXGTK3__
-  wxLogMessage(_("wxWidgets is using GTK3"));
+  wxLogMessage(_("wxWidgets is using GTK 3"));
   #else
-  wxLogMessage(_("wxWidgets is using GTK2"));
+  wxLogMessage(_("wxWidgets is using GTK 2"));
   #endif
   #endif
   
@@ -531,7 +547,7 @@ void wxMaximaFrame::SetupMenu()
 
   // File menu
   m_FileMenu = new wxMenu;
-#if defined __WXMAC__
+#if defined __WXOSX__
   m_FileMenu->Append(mac_newId, _("New\tCtrl+N"),
                      _("Open a new window"));
 #else
@@ -542,7 +558,7 @@ void wxMaximaFrame::SetupMenu()
                    _("Open a document"), wxT("gtk-open"));
   m_recentDocumentsMenu = new wxMenu();
   m_FileMenu->Append(menu_recent_documents, _("Open Recent"), m_recentDocumentsMenu);
-#if defined __WXMAC__
+#if defined __WXOSX__
   m_FileMenu->AppendSeparator();
   m_FileMenu->Append(mac_closeId, _("Close\tCtrl+W"),
                      _("Close window"), wxITEM_NORMAL);
@@ -622,7 +638,7 @@ void wxMaximaFrame::SetupMenu()
                      _("Comment out the currently selected text"),
                      wxITEM_NORMAL);
   m_EditMenu->AppendSeparator();
-#if defined __WXMAC__
+#if defined __WXOSX__
   APPEND_MENU_ITEM(m_EditMenu, wxID_PREFERENCES, _("Preferences...\tCtrl+,"),
                    _("Configure wxMaxima"), wxT("gtk-preferences"));
 #else
@@ -761,7 +777,7 @@ void wxMaximaFrame::SetupMenu()
   // Maxima menu
   m_MaximaMenu = new wxMenu;
 
-#if defined (__WXMAC__)
+#if defined (__WXOSX__)
   APPEND_MENU_ITEM(m_MaximaMenu, menu_interrupt_id,
                    _("&Interrupt\tCtrl+."), // command-. interrupts (mac standard)
                    _("Interrupt current computation"), wxT("gtk-stop"));
@@ -1170,7 +1186,7 @@ m_listMenu->AppendSeparator();
 
   // Help menu
   m_HelpMenu = new wxMenu;
-#if defined __WXMAC__
+#if defined __WXOSX__
   m_HelpMenu->Append(wxID_HELP, _("wxMaxima &Help\tCtrl+?"),
                      _("Show wxMaxima help"), wxITEM_NORMAL);
 #else
@@ -1200,10 +1216,10 @@ m_listMenu->AppendSeparator();
   m_HelpMenu->Append(menu_check_updates, _("Check for Updates"),
                      _("Check if a newer version of wxMaxima/Maxima exist."),
                      wxITEM_NORMAL);
-#ifndef __WXMAC__
+#ifndef __WXOSX__
   m_HelpMenu->AppendSeparator();
 #endif
-#ifndef __WXMAC__
+#ifndef __WXOSX__
   APPEND_MENU_ITEM(m_HelpMenu, wxID_ABOUT,
     _("About"),
     _("About wxMaxima"), wxT("stock_about"));

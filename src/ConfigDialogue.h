@@ -113,7 +113,7 @@ private:
     //! The constructor
     ExamplePanel(wxWindow *parent, int id, wxPoint pos, wxSize size) : wxPanel(parent, id, pos, size)
       {
-#if defined (__WXMAC__)
+#if defined (__WXOSX__)
         m_size = 12;
 #else
         m_size = 10;

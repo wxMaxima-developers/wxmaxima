@@ -190,7 +190,7 @@ bool MyApp::OnInit()
   m_locale.AddCatalog(wxT("wxMaxima"));
   m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
 
-#if defined __WXMAC__
+#if defined __WXOSX__
   wxString path;
   wxGetEnv(wxT("PATH"), &path);
   wxSetEnv(wxT("PATH"), path << wxT(":/usr/local/bin"));
@@ -304,7 +304,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
       // the same process. On all other OSes we create a separate process for each
       // window: This way if one instance of wxMaxima crashes all the other instances
       // are still alive.
-#if defined __WXMAC__
+#if defined __WXOSX__
       NewWindow();
 #else
 //      NewWindow();

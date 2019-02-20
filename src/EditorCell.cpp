@@ -700,7 +700,7 @@ void EditorCell::MarkSelection(long start, long end, TextStyle style, int fontsi
   wxPoint point, point1;
   long pos1 = start, pos2 = start;
 
-#if defined(__WXMAC__)
+#if defined(__WXOSX__)
   configuration->GetDC()->SetPen(wxNullPen); // no border on rectangles
 #else
       configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(style), 1, wxPENSTYLE_SOLID)) );
@@ -718,7 +718,7 @@ void EditorCell::MarkSelection(long start, long end, TextStyle style, int fontsi
     point1 = PositionToPoint(fontsize, pos1); // right point
     long selectionWidth = point1.x - point.x;
     wxRect rect;
-#if defined(__WXMAC__)
+#if defined(__WXOSX__)
     rect = GetRect(); // rectangle representing the cell
     if (pos1 != end) // we have a \n, draw selection to the right border (mac behaviour)
       selectionWidth = rect.GetRight() - point.x;
@@ -833,7 +833,7 @@ void EditorCell::Draw(wxPoint point1)
         //
       else if (m_paren1 != -1 && m_paren2 != -1)
       {
-#if defined(__WXMAC__)
+#if defined(__WXOSX__)
         configuration->GetDC()->SetPen(wxNullPen); // no border on rectangles
 #else
         dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID))); // window linux, set a pen
@@ -947,7 +947,7 @@ void EditorCell::Draw(wxPoint point1)
 
       dc->SetPen(*(wxThePenList->FindOrCreatePen(configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
       dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
-#if defined(__WXMAC__)
+#if defined(__WXOSX__)
       // draw 1 pixel shorter caret than on windows
       dc->DrawRectangle(point.x  + lineWidth - (*m_configuration)->GetCursorWidth(),
                        point.y + Scale_Px(1) - m_center + caretInLine * m_charHeight,
@@ -1186,7 +1186,7 @@ size_t EditorCell::EndOfLine(long pos)
   return pos;
 }
 
-#if defined __WXMAC__
+#if defined __WXOSX__
 
 bool EditorCell::HandleCtrlCommand(wxKeyEvent &ev)
 {
@@ -1248,13 +1248,13 @@ bool EditorCell::HandleCtrlCommand(wxKeyEvent &ev)
   return done;
 }
 
-#endif // __WXMAC__
+#endif // __WXOSX__
 
 void EditorCell::ProcessEvent(wxKeyEvent &event)
 {
   bool done;
 
-#if defined __WXMAC__
+#if defined __WXOSX__
   done = HandleCtrlCommand(event);
 #endif
 

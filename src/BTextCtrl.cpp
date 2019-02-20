@@ -31,7 +31,7 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
                      long style)
         : wxTextCtrl(parent, id, value, pos, size, style)
 {
-#ifdef __WXMAC__
+#ifdef __WXOSX__
   #if wxCHECK_VERSION(3, 1, 1)
   OSXDisableAllSmartSubstitutions();
   #endif
@@ -44,7 +44,7 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
   if (fixedFont)
   {
     wxFont font;
-#if defined (__WXMAC__)
+#if defined (__WXOSX__)
     font = wxFont(12, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, 0, wxEmptyString);
 #else
     font = wxFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, 0, wxEmptyString);
