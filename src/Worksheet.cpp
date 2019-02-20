@@ -320,6 +320,8 @@ void Worksheet::RequestRedraw(GroupCell *start)
 
 Worksheet::~Worksheet()
 {
+  if(wxConfig::Get() != NULL)
+    wxConfig::Get()->Flush();
   if (HasCapture())
     ReleaseMouse();
 
