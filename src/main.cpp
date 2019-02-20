@@ -55,13 +55,6 @@ IMPLEMENT_APP(MyApp)
 std::list<wxMaxima *> MyApp::m_topLevelWindows;
 
 
-void MyApp::Cleanup()
-{
-  for (std::list<wxMaxima *>::iterator it=m_topLevelWindows.begin();
-       it != m_topLevelWindows.end(); ++it)
-    (*it)->CleanUp();
-}
-
 bool MyApp::OnInit()
 {
   // MSW: Perhaps that is faster.
@@ -98,7 +91,6 @@ bool MyApp::OnInit()
 
   wxConfig::Set(new wxFileConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName));
 
-  atexit(Cleanup);
   int lang = wxLANGUAGE_UNKNOWN;
 
   bool exitAfterEval = false;
@@ -270,7 +262,6 @@ bool MyApp::OnInit()
 
 int MyApp::OnExit()
 {
-  wxConfig::Get()->Flush();
   wxDELETE(m_dirstruct);
   m_dirstruct = NULL;
   return true;

@@ -707,10 +707,7 @@ public:
     \param exitAfterEval Do we want to close the window after the file has been evaluated?
    */
   void NewWindow(wxString file = wxEmptyString, bool evalOnStartup = false, bool exitAfterEval = false);
-    
-  //! Is called by atExit and tries to close down the maxima process if wxMaxima has crashed.
-  static void Cleanup();
-
+  
   static std::list<wxMaxima *> m_topLevelWindows;
 
   void OnFileMenu(wxCommandEvent &ev);
