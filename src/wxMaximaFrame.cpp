@@ -257,10 +257,13 @@ wxMaximaFrame::~wxMaximaFrame()
   // We cannot call delete here as we don't know if there are still timer-
   // or similar events pending for the wxWindows we want to free the memory
   // for.
-  m_history->Destroy();
-  m_worksheet->m_tableOfContents->Destroy();
-  m_worksheet->m_tableOfContents = NULL;
-  m_worksheet->Destroy();
+  //
+  // And as their parent is destroyed all objects in the frame will
+  // automatically be destroyed, anyway.
+  // m_history->Destroy();
+  // m_worksheet->m_tableOfContents->Destroy();
+  // m_worksheet->m_tableOfContents = NULL;
+  // m_worksheet->Destroy();
 }
 
 void wxMaximaFrame::set_properties()

@@ -327,14 +327,11 @@ Worksheet::~Worksheet()
 
   m_mainToolBar = NULL;
 
-  if (m_tree != NULL)
-    DestroyTree();
-  m_tree = NULL;
-
+  ClearDocument();
+  
   wxDELETE(m_configuration);
-  wxDELETE(m_dc);
-  m_dc = NULL;
   m_configuration = NULL;
+  m_dc = NULL;
 }
 
 /***
