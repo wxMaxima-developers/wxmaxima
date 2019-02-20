@@ -370,19 +370,19 @@ void wxMaximaFrame::do_layout()
                             Left());
   wxLogMessage(wxString::Format(_("wxMaxima version %s"), GITVERSION));
   #ifdef __WXMSW__
-  wxLogMessage(_("Running on MS Windows")));
+  wxLogMessage(_("Running on MS Windows"));
   #endif
   #ifdef __WXMOTIF__
-  wxLogMessage(_("Running on Motif")));
+  wxLogMessage(_("Running on Motif"));
   #endif
   #ifdef __WXDFB__
-  wxLogMessage(_("Running on DirectFB")));
+  wxLogMessage(_("Running on DirectFB"));
   #endif
   #ifdef __WXUNIVERSAL__
-  wxLogMessage(_("Running on the universal wxWidgets port")));
+  wxLogMessage(_("Running on the universal wxWidgets port"));
   #endif
   #ifdef __WXOSX__
-  wxLogMessage(_("Running on Mac OS")));
+  wxLogMessage(_("Running on Mac OS"));
   #endif
   #ifdef __WXGTK__
   #ifdef __WXGTK3__
