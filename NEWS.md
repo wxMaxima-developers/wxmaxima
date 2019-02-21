@@ -1,3 +1,8 @@
+# wxMaxima 19.02.2 - Stable
+
+ * Corrected the GTK3 fix
+ * Cleaned up the cleanup process on closing wxMaxima
+
 # wxMaxima 19.02.1 - Stable
 
 * Support for the broken ArchLinux compiler
