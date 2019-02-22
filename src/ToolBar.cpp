@@ -373,6 +373,13 @@ void ToolBar::UpdateBitmaps()
   if((ppi.x == m_ppi.x) && (ppi.y == m_ppi.y))
     return;
 
+  wxLogMessage(
+    wxString::Format(
+      _("Display resolution according to wxWidgets: %i x %i ppi"),
+      ppi.x,
+      ppi.y)
+    );
+
   if(ppi.x == 0)
     return;
 
