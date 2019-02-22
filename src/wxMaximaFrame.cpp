@@ -445,10 +445,9 @@ void wxMaximaFrame::do_layout()
   
   m_manager.AddPane(m_worksheet->m_mainToolBar,
                     wxAuiPaneInfo().Name(wxT("toolbar")).
-                    ToolbarPane().Top().
-                    TopDockable(true).Show(true).
+                    Top().TopDockable(true).Show(true).
                     BottomDockable(true).
-                    LeftDockable(false).
+                    LeftDockable(false).DockFixed().
                     RightDockable(false).Gripper(false).Row(1)
     );
 
