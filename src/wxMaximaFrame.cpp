@@ -413,7 +413,7 @@ void wxMaximaFrame::do_layout()
                             Left());
   m_manager.AddPane(CreateMathPane(),
                     wxAuiPaneInfo().Name(wxT("math")).
-                            Show(false).CloseButton().PinButton().
+                            Show(false).CloseButton(true).PinButton().
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
@@ -423,7 +423,7 @@ void wxMaximaFrame::do_layout()
 
   m_manager.AddPane(CreateFormatPane(),
                     wxAuiPaneInfo().Name(wxT("format")).
-                            Show(false).CloseButton().PinButton().
+                            Show(false).CloseButton(true).PinButton().
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
@@ -433,7 +433,7 @@ void wxMaximaFrame::do_layout()
 
   m_manager.AddPane(m_drawPane = new DrawPane(this, -1),
                     wxAuiPaneInfo().Name(wxT("draw")).
-                    Show(false).CloseButton().PinButton().
+                    Show(false).CloseButton(true).PinButton().
                     TopDockable(true).
                     BottomDockable(true).
                     LeftDockable(true).
@@ -446,7 +446,8 @@ void wxMaximaFrame::do_layout()
   m_manager.AddPane(m_worksheet->m_mainToolBar,
                     wxAuiPaneInfo().Name(wxT("toolbar")).
                     Top().TopDockable(true).Show(true).
-                    BottomDockable(true).
+                    BottomDockable(true).//ToolbarPane().
+                    CaptionVisible(false).CloseButton(false).
                     LeftDockable(false).DockFixed().
                     RightDockable(false).Gripper(false).Row(1)
     );
