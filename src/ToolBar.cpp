@@ -140,6 +140,7 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
                                                   wxAUI_TB_OVERFLOW | wxAUI_TB_PLAIN_BACKGROUND |
                                                   wxAUI_TB_HORIZONTAL)
 {
+  m_ppi = wxSize(-1,-1);
   m_defaultCellStyle = GC_TYPE_CODE;
   m_canCopy_old = true;
   m_canCut_old = true;
@@ -360,22 +361,23 @@ void ToolBar::UpdateBitmaps()
   wxSize ppi;
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
-  return;
   
   unsigned display_idx = wxDisplay::GetFromWindow(GetParent());
   if (display_idx == wxNOT_FOUND)
     display_idx = 0;
-  m_ppi = wxDisplay(display_idx).GetPPI();
+  ppi = wxDisplay(display_idx).GetPPI();
 #else
   ppi = wxGetDisplayPPI();
 #endif
-  if(ppi.x == 0)
-    return;
+
   if((ppi.x == m_ppi.x) && (ppi.y == m_ppi.y))
     return;
-  else
-    m_ppi = ppi;
 
+  if(ppi.x == 0)
+    return;
+
+  m_ppi = ppi;
+  
   SetToolBitmap(tb_new,GetImage(wxT("gtk-new"),
                                 gtk_new_128_png,gtk_new_128_png_len,
                                 gtk_new_192_png,gtk_new_192_png_len));

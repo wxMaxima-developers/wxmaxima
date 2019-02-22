@@ -34,6 +34,7 @@
 
 StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id)
 {
+  m_ppi = wxSize(-1,-1);
   int widths[] = {-1, 300, GetSize().GetHeight()};
   m_maximaPercentage = -1;
   m_oldmaximaPercentage = -1;
@@ -44,6 +45,45 @@ StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id)
           "Maxima, the program that does the actual mathematics and wxMaxima, which displays the worksheet are kept in separate processes. This means that even if maxima crashes wxMaxima (and therefore the worksheet) stays intact. Both programs communicate over a local network socket. This time this socket could not be created which might be caused by a firewall that it setup to not only intercepts connections from the outside, but also to intercept connections between two programs that run on the same computer.");
   m_noConnectionToolTip = _(
           "Maxima, the program that does the actual mathematics and wxMaxima, which displays the worksheet are kept in separate processes. This means that even if maxima crashes wxMaxima (and therefore the worksheet) stays intact. Currently the two programs aren't connected to each other which might mean that maxima is still starting up or couldn't be started. Alternatively it can be caused by a firewall that it setup to not only intercepts connections from the outside, but also to intercept connections between two programs that run on the same computer. Another reason for maxima not starting up might be that maxima cannot be found (see wxMaxima's Configuration dialogue for a way to specify maxima's location) or isn't in a working order.");
+  UpdateBitmaps();
+  m_networkStatus = new wxStaticBitmap(this, wxID_ANY, m_network_offline);
+  m_networkStatus->SetToolTip(m_stdToolTip);
+  ReceiveTimer.SetOwner(this, wxID_ANY);
+  SendTimer.SetOwner(this, wxID_ANY);
+  m_icon_shows_receive = m_icon_shows_transmit = false;
+  m_networkState = offline;
+  // Mark the network state as "to be changed"
+  m_oldNetworkState = receive;
+}
+
+void StatusBar::UpdateBitmaps()
+{
+  wxSize ppi;
+#if wxCHECK_VERSION(3, 1, 1)
+  wxDisplay display;
+  
+  unsigned display_idx = wxDisplay::GetFromWindow(GetParent());
+  if (display_idx == wxNOT_FOUND)
+    display_idx = 0;
+  ppi = wxDisplay(display_idx).GetPPI();
+#else
+  ppi = wxGetDisplayPPI();
+#endif
+
+  if((ppi.x == m_ppi.x) && (ppi.y == m_ppi.y))
+    return;
+
+  wxLogMessage(
+    wxString::Format(
+      _("Display resolution according to wxWidgets: %i x %i ppi"),
+      ppi.x,
+      ppi.y)
+    );
+
+  if(ppi.x == 0)
+    return;
+
+  m_ppi = ppi;
   m_network_error = GetImage("network-error",
                              network_error_128_png,network_error_128_png_len,
                              network_error_192_png,network_error_192_png_len
@@ -69,14 +109,6 @@ StatusBar::StatusBar(wxWindow *parent, int id) : wxStatusBar(parent, id)
                               network_transmit_receive_128_png,network_transmit_receive_128_png_len,
                               network_transmit_receive_192_png,network_transmit_receive_192_png_len
     );
-  m_networkStatus = new wxStaticBitmap(this, wxID_ANY, m_network_offline);
-  m_networkStatus->SetToolTip(m_stdToolTip);
-  ReceiveTimer.SetOwner(this, wxID_ANY);
-  SendTimer.SetOwner(this, wxID_ANY);
-  m_icon_shows_receive = m_icon_shows_transmit = false;
-  m_networkState = offline;
-  // Mark the network state as "to be changed"
-  m_oldNetworkState = receive;
 }
 
 void StatusBar::OnTimerEvent(wxTimerEvent &WXUNUSED(event))
@@ -127,6 +159,7 @@ void StatusBar::OnTimerEvent(wxTimerEvent &WXUNUSED(event))
 
 void StatusBar::NetworkStatus(networkState status)
 {
+  UpdateBitmaps();
   if((status != m_oldNetworkState) || (m_maximaPercentage !=
                                        m_oldmaximaPercentage))
   {

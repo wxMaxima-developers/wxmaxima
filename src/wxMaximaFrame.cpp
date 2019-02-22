@@ -533,12 +533,6 @@ void wxMaximaFrame::do_layout()
 #else
   ppi = wxGetDisplayPPI();
 #endif
-  wxLogMessage(
-    wxString::Format(
-      _("Display resolution according to wxWidgets: %i x %i ppi"),
-      ppi.x,
-      ppi.y)
-    );
 }
 
 void wxMaximaFrame::SetupMenu()

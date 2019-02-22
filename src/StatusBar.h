@@ -55,6 +55,9 @@ public:
     transmit
   };
 
+  //! Update the bitmaps to the Right size for the Resolution
+  void UpdateBitmaps();
+  
   //! Informs the status bar about networking events.
   void NetworkStatus(networkState status);
 
@@ -73,6 +76,8 @@ protected:
   void OnTimerEvent(wxTimerEvent &event);
 
 private:
+  //! The display resolution
+  wxSize m_ppi;
   /*! How many percents of the available CPU power does maxima use?
 
     See m_maximaPercentage and SetMaximaCPUPercentage()
