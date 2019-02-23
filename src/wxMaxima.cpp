@@ -1350,6 +1350,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   wxLogMessage(wxString::Format(_("Received maxima's first prompt: %s"),
                                 prompt_compact));
 
+  wxLogMessage(wxString::Format(_("Maxima's PID is %li"),(long)m_pid));
   // Remove the first prompt from Maxima's answer.
   data = data.Right(data.Length() - end - m_firstPrompt.Length());
 
