@@ -567,7 +567,6 @@ private:
   wxTimer m_timer;
   //! The cursor blink rate. Also the timeout for redrawing the worksheet
   wxTimer m_caretTimer;
-  wxBitmap m_memory;
   //! True if no changes have to be saved.
   bool m_saved;
   AutoComplete *m_autocomplete;

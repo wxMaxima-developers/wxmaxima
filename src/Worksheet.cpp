@@ -36,6 +36,7 @@
 #include "EMFout.h"
 #include <wx/richtext/richtextbuffer.h>
 #include <wx/tooltip.h>
+#include <wx/dcbuffer.h>
 #include "wxMaximaFrame.h"
 #include "Worksheet.h"
 #include "BitmapOut.h"
@@ -359,8 +360,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 
   // Inform all cells how wide our display is
   m_configuration->SetCanvasSize(GetClientSize());
-  wxMemoryDC dcm;
-  wxPaintDC dc(this);
+  wxBufferedPaintDC dc(this);
 
   // Prepare data
   wxRect rect = GetUpdateRegion().GetBox();
@@ -378,38 +378,19 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   if (sz.x == 0) sz.x = 1;
   if (sz.y == 0) sz.y = 1;
 
-  // Test if m_memory is NULL or of the wrong size
-  #ifdef __WXOSX__
-  if ((!m_memory.IsOk()) || (m_memory.GetSize() != sz))
-    m_memory = wxBitmap(sz*wxWindow::GetContentScaleFactor(),
-                        wxBITMAP_SCREEN_DEPTH,
-                        wxWindow::GetContentScaleFactor());
-  #else
-  if ((!m_memory.IsOk()) || (m_memory.GetSize() != sz))
-    m_memory = wxBitmap(sz*wxWindow::GetContentScaleFactor(), wxBITMAP_SCREEN_DEPTH);
-  #endif
   // Prepare memory DC
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
-  dcm.SetUserScale(wxWindow::GetContentScaleFactor(),wxWindow::GetContentScaleFactor());
-  dcm.SelectObject(m_memory);
-  #ifndef __WXGTK__
-  DoPrepareDC(dcm);
-  #endif
-  dcm.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
-  dcm.Clear();
-  dcm.SetMapMode(wxMM_TEXT);
-  dcm.SetBackgroundMode(wxTRANSPARENT);
+  dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
+  dc.Clear();
+  dc.SetMapMode(wxMM_TEXT);
+  dc.SetBackgroundMode(wxTRANSPARENT);
+  DoPrepareDC(dc);
 
   // Create a graphics context that supports antialiassing, but on MSW
   // only supports fonts that come in the Right Format.
-  wxGCDC antiAliassingDC(dcm);
+  wxGCDC antiAliassingDC(dc);
 
-  #ifdef __WXGTK__
-  DoPrepareDC(dcm);
-  DoPrepareDC(antiAliassingDC);
-  #endif
-
-  m_configuration->SetContext(dcm);
+  m_configuration->SetContext(dc);
   m_configuration->SetAntialiassingDC(antiAliassingDC);
   m_configuration->SetBounds(top, bottom);
 
@@ -424,12 +405,12 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
       Cell *tmp = m_cellPointers.m_selectionStart;
 
 #if defined(__WXOSX__)
-      dcm.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
+      dc.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
 #else
-      dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
 // window linux, set a pen
 #endif
-      dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION)))); //highlight c.
+      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION)))); //highlight c.
 
       // Draw the marker that tells us which output cells are selected -
       // if output cells are selected, that is.
@@ -438,7 +419,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
         while (tmp != NULL)
         {
           if (!tmp->m_isBrokenIntoLines && !tmp->m_isHidden && GetActiveCell() != tmp)
-            tmp->DrawBoundingBox(dcm, false);
+            tmp->DrawBoundingBox(dc, false);
           if (tmp == m_cellPointers.m_selectionEnd)
             break;
           tmp = tmp->m_nextToDraw;
@@ -456,8 +437,8 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     // Draw tree
     GroupCell *tmp = m_tree;
 
-    dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
-    dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_DEFAULT))));
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
+    dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_DEFAULT))));
 
     while (tmp != NULL)
     {
@@ -508,12 +489,12 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hCaretBlinkVisible) && (m_hasFocus) &&
       (m_hCaretPosition != NULL))
   {
-    dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
-    dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
+    dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
 
     wxRect currentGCRect = m_hCaretPosition->GetRect();
     int caretY = ((int) m_configuration->GetGroupSkip()) / 2 + currentGCRect.GetBottom() + 1;
-    dcm.DrawRectangle(xstart + m_configuration->GetBaseIndent(),
+    dc.DrawRectangle(xstart + m_configuration->GetBaseIndent(),
                       caretY - m_configuration->GetCursorWidth() / 2,
                       MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
   }
@@ -522,25 +503,20 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   {
     if (!m_hCaretBlinkVisible)
     {
-      dcm.SetBrush(*wxWHITE_BRUSH);
-      dcm.SetPen(*wxWHITE_PEN);
+      dc.SetBrush(*wxWHITE_BRUSH);
+      dc.SetPen(*wxWHITE_PEN);
     }
     else
     {
-      dcm.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
-      dcm.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
+      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
     }
 
     wxRect cursor = wxRect(xstart + m_configuration->GetCellBracketWidth(),
                            (m_configuration->GetBaseIndent() - m_configuration->GetCursorWidth()) / 2,
                            MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
-    dcm.DrawRectangle(cursor);
+    dc.DrawRectangle(cursor);
   }
-
-  // Blit the memory image to the window
-  dcm.SetDeviceOrigin(0, 0);
-  dc.Blit(rect.GetLeft(), rect.GetTop(), rect.GetWidth(), rect.GetHeight(), &dcm,
-          rect.GetLeft(), rect.GetTop());
 
   m_configuration->SetContext(*m_dc);
   m_configuration->UnsetAntialiassingDC();
