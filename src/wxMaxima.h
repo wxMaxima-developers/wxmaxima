@@ -644,8 +644,6 @@ protected:
   wxString m_maximaTempDir;
   //! The directory with maxima's documentation
   wxString m_maximaDocDir;
-  //! The directory with maxima's share files
-  wxString m_maximaShareDir;
   bool m_fileSaved;
   wxString m_chmhelpFile;
   wxString m_maximaVersion;

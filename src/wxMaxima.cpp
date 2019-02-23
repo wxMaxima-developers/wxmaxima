@@ -2803,72 +2803,90 @@ wxString wxMaxima::GetHelpFile()
   else
     headerFile = wxEmptyString;
 
+  wxString searchText = _("Searching for maxima help file %s");
   headerFile = m_maximaDocDir + wxT("/maxima.hhp");
+  wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_maximaDocDir + wxT("/html/maxima.hhp");
+  wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
   
   headerFile = m_maximaDocDir + wxT("/../html/maxima.hhp");
+  wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
 
-  headerFile = m_maximaShareDir + wxT("/../doc/html/maxima.hhp");
+  headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/../doc/html/maxima.hhp");
+  wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
 
-  headerFile = m_maximaShareDir + wxT("/doc/html/maxima.hhp");
+  headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/doc/html/maxima.hhp");
+  wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_maximaDocDir + wxT("/header.hhp");
+  wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
   
   headerFile = m_maximaDocDir + wxT("/html/header.hhp");
+  wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_maximaDocDir + wxT("/../html/header.hhp");
+  wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
 
-  headerFile = m_maximaShareDir + wxT("/../doc/html/header.hhp");
+  headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/../doc/html/header.hhp");
+  wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
 
-  headerFile = m_maximaShareDir + wxT("/doc/html/header.hhp");
+  headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/doc/html/header.hhp");
+  wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_maximaDocDir + wxT("/maxima_singlepage.html");
+  wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_maximaDocDir + wxT("/html/maxima_singlepage.html");
+  wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_maximaDocDir + wxT("/../html/maxima_singlepage.html");
+  wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
   
-  headerFile = m_maximaShareDir + wxT("/../doc/html/maxima_singlepage.html");
+  headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/../doc/html/maxima_singlepage.html");
+  wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
 
-  headerFile = m_maximaShareDir + wxT("/doc/html/maxima_singlepage.html");
+  headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/doc/html/maxima_singlepage.html");
+  wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
 
   #ifdef __WXMSW__
   headerFile = m_maximaDocDir + wxT("/chm/maxima.chm");
+  wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_maximaDocDir + wxT("/../chm/maxima.chm");
+  wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
   #endif
