@@ -264,10 +264,6 @@ protected:
   /*! Launches the HTML help browser
 
     \param helpfile The name of the file the help browser has to be launched with
-    \param otherhelpfile We offer help for maxima and wxMaxima in separate manuals.
-                         This parameter contains the filename of the manual we aren't
-                         using currently so the help browser can open a tab containing
-                         this file.
     \param keyword The keyword to show help for
   */
   void ShowHTMLHelp(wxString helpfile, wxString keyword = wxEmptyString);
