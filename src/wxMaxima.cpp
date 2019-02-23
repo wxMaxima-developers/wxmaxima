@@ -2819,6 +2819,10 @@ wxString wxMaxima::GetHelpFile()
   if(wxFileExists(headerFile))
     return headerFile;
 
+  headerFile = m_maximaShareDir + wxT("/doc/html/maxima.hhp");
+  if(wxFileExists(headerFile))
+    return headerFile;
+
   headerFile = m_maximaDocDir + wxT("/header.hhp");
   if(wxFileExists(headerFile))
     return headerFile;
@@ -2832,6 +2836,10 @@ wxString wxMaxima::GetHelpFile()
     return headerFile;
 
   headerFile = m_maximaShareDir + wxT("/../doc/html/header.hhp");
+  if(wxFileExists(headerFile))
+    return headerFile;
+
+  headerFile = m_maximaShareDir + wxT("/doc/html/header.hhp");
   if(wxFileExists(headerFile))
     return headerFile;
 
@@ -2851,6 +2859,9 @@ wxString wxMaxima::GetHelpFile()
   if(wxFileExists(headerFile))
     return headerFile;
 
+  headerFile = m_maximaShareDir + wxT("/doc/html/maxima_singlepage.html");
+  if(wxFileExists(headerFile))
+    return headerFile;
 
   #ifdef __WXMSW__
   headerFile = m_maximaDocDir + wxT("/chm/maxima.chm");
