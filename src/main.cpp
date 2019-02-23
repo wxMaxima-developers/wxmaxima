@@ -57,6 +57,9 @@ std::list<wxMaxima *> MyApp::m_topLevelWindows;
 
 bool MyApp::OnInit()
 {
+  #ifdef wxUSE_ON_FATAL_EXCEPTION
+  wxHandleFatalExceptions(true);
+  #endif
   // MSW: Perhaps that is faster.
   wxSystemOptions::SetOption("msw.display.directdraw","1");
   // No spell checking in our dialog's input portions on the mac.
