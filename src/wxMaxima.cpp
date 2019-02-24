@@ -2927,9 +2927,7 @@ void wxMaxima::ShowCHMHelp(wxString helpfile,wxString keyword)
 
 void wxMaxima::ShowWxMaximaHelp()
 {
-  wxString htmldir = Dirstructure::Get()->HelpDir();
-
-  wxString helpfile = htmldir + wxT("/wxmaxima.hhp");
+  wxString helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.hhp");
 #if defined (__WXMSW__)
   // Cygwin uses /c/something instead of c:/something and passes this path to the
   // web browser - which doesn't support cygwin paths => convert the path to a
@@ -2940,6 +2938,12 @@ void wxMaxima::ShowWxMaximaHelp()
     helpfile[2]=wxT(':');
   }
 #endif // __WXMSW__
+
+  // The path Gentoo hides the manual at
+  if(!wxFileExists(helpfile))
+    helpfile = wxString::Format("/usr/share/doc/wxmaxima-%s",GITVERSION);
+    
+  wxLogMessage(wxString::Format(_("wxMaxima help should be at %s."),helpfile));
   ShowHTMLHelp(helpfile);
 }
 
