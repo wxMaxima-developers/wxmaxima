@@ -2814,6 +2814,12 @@ wxString wxMaxima::GetHelpFile()
   wxLogMessage(wxString::Format(searchText, headerFile));
   if(wxFileExists(headerFile))
     return headerFile;
+
+  // Gentoo needs this one
+  headerFile = wxString::Format("/usr/share/doc/maxima-%s/html/maxima.hhp",m_maximaVersion);
+  wxLogMessage(wxString::Format(searchText, headerFile));
+  if(wxFileExists(headerFile))
+    return headerFile;
   
   headerFile = m_maximaDocDir + wxT("/../html/maxima.hhp");
   wxLogMessage(wxString::Format(searchText, headerFile));
