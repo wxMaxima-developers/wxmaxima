@@ -2947,7 +2947,7 @@ void wxMaxima::ShowWxMaximaHelp()
 
   // The path Gentoo hides the manual at
   if(!wxFileExists(helpfile))
-    helpfile = wxString::Format("/usr/share/doc/wxmaxima-%s",GITVERSION);
+    helpfile = wxString::Format("/usr/share/doc/wxmaxima-%s/wxmaxima.hhp",GITVERSION);
     
   wxLogMessage(wxString::Format(_("wxMaxima help should be at %s."),helpfile));
   ShowHTMLHelp(helpfile);
