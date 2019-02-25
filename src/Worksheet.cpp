@@ -78,6 +78,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
 #endif
                   ),m_cellPointers(this)
 {
+  wxWindow::SetBackgroundStyle(wxBG_STYLE_PAINT);
 #if wxUSE_ACCESSIBILITY
   m_accessibilityInfo = NULL;
 #endif
@@ -360,6 +361,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 
   // Inform all cells how wide our display is
   m_configuration->SetCanvasSize(GetClientSize());
+  
   wxAutoBufferedPaintDC dc(this);
 
   // Prepare data
