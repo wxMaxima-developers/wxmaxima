@@ -360,7 +360,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 
   // Inform all cells how wide our display is
   m_configuration->SetCanvasSize(GetClientSize());
-  wxBufferedPaintDC dc(this);
+  wxAutoBufferedPaintDC dc(this);
 
   // Prepare data
   wxRect rect = GetUpdateRegion().GetBox();
