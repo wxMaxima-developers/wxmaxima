@@ -78,7 +78,9 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
 #endif
                   ),m_cellPointers(this)
 {
-  wxWindow::SetBackgroundStyle(wxBG_STYLE_PAINT);
+  // This is somehow needed for wxAutoBufferedPaintDC
+  SetBackgroundStyle(wxBG_STYLE_PAINT);
+  
 #if wxUSE_ACCESSIBILITY
   m_accessibilityInfo = NULL;
 #endif

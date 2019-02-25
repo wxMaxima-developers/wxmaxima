@@ -2950,7 +2950,7 @@ void wxMaxima::ShowWxMaximaHelp()
     helpfile = wxString::Format("/usr/share/doc/wxmaxima-%s/wxmaxima.hhp",GITVERSION);
     
   wxLogMessage(wxString::Format(_("wxMaxima help should be at %s."),helpfile));
-  ShowHTMLHelp(helpfile);
+  ShowHTMLHelp(helpfile, "wxMaxma");
 }
 
 void wxMaxima::ShowMaximaHelp(wxString keyword)
