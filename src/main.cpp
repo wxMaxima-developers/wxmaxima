@@ -57,7 +57,7 @@ std::list<wxMaxima *> MyApp::m_topLevelWindows;
 
 bool MyApp::OnInit()
 {
-  #ifdef wxUSE_ON_FATAL_EXCEPTION
+  #if wxUSE_ON_FATAL_EXCEPTION
   wxHandleFatalExceptions(true);
   #endif
   // MSW: Perhaps that is faster.
