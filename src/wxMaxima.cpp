@@ -2905,7 +2905,8 @@ void wxMaxima::ShowHTMLHelp(wxString helpfile, wxString keyword)
 {
   if(GetHelpFile().EndsWith("hhp"))
     m_htmlhelpCtrl.AddBook(GetHelpFile());
-  m_htmlhelpCtrl.AddBook(helpfile);
+  else
+    m_htmlhelpCtrl.AddBook(helpfile);
   
   if ((keyword == wxT("%")) ||
       (keyword == wxT(" << Graphics >> ")) ||
@@ -2950,7 +2951,13 @@ void wxMaxima::ShowWxMaximaHelp()
     helpfile = wxString::Format("/usr/share/doc/wxmaxima-%s/wxmaxima.hhp",GITVERSION);
     
   wxLogMessage(wxString::Format(_("wxMaxima help should be at %s."),helpfile));
-  ShowHTMLHelp(helpfile, "wxMaxma");
+  wxString helpcontents = helpfile;
+  helpcontents.Replace(".hhp",".html");
+  if(GetHelpFile().EndsWith("hhp"))
+    m_htmlhelpCtrl.AddBook(GetHelpFile());
+  m_htmlhelpCtrl.AddBook(helpfile);
+  
+  m_htmlhelpCtrl.DisplaySection(helpcontents);
 }
 
 void wxMaxima::ShowMaximaHelp(wxString keyword)
