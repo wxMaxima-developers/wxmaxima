@@ -385,7 +385,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
   dc.SetMapMode(wxMM_TEXT);
   dc.SetBackgroundMode(wxTRANSPARENT);
-  DoPrepareDC(dc);
+  PrepareDC(dc);
   dc.Clear();
 
   // Create a graphics context that supports antialiassing, but on MSW
