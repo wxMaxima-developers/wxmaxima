@@ -363,8 +363,6 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 
   // Inform all cells how wide our display is
   m_configuration->SetCanvasSize(GetClientSize());
-  
-  wxAutoBufferedPaintDC dc(this);
 
   // Prepare data
   wxRect rect = GetUpdateRegion().GetBox();
@@ -379,16 +377,16 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   updateRegion.SetBottom(bottom);
   m_configuration->SetUpdateRegion(updateRegion);
 
-  if (sz.x == 0) sz.x = 1;
-  if (sz.y == 0) sz.y = 1;
+  if ((sz.x < 1) || (sz.y < 1))
+    return;
 
-  // Prepare memory DC
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
+  wxAutoBufferedPaintDC dc(this);
   dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
-  dc.Clear();
   dc.SetMapMode(wxMM_TEXT);
   dc.SetBackgroundMode(wxTRANSPARENT);
   DoPrepareDC(dc);
+  dc.Clear();
 
   // Create a graphics context that supports antialiassing, but on MSW
   // only supports fonts that come in the Right Format.
