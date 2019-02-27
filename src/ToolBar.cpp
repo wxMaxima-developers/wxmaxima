@@ -58,6 +58,10 @@ wxBitmap ToolBar::GetImage(wxString name,
 #endif
   if((m_ppi.x < 10) || (m_ppi.y < 10))
     m_ppi = wxGetDisplayPPI();
+
+  if((m_ppi.x < 10) || (m_ppi.y <= 10))
+    m_ppi = wxSize(72,72);
+
   double targetSize = MAX(m_ppi.x,75) * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
   int prescale;
 
@@ -330,8 +334,10 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
   m_ppi = wxGetDisplayPPI();
 #endif
   if((m_ppi.x < 10) || (m_ppi.y < 10))
-
     m_ppi = wxGetDisplayPPI();
+  if((m_ppi.x < 10) || (m_ppi.y <= 10))
+    m_ppi = wxSize(72,72);
+
   int sliderWidth = MAX(m_ppi.x,75) * 200 / 72;
   int width, height;
   wxDisplaySize(&width, &height);
@@ -375,10 +381,13 @@ void ToolBar::UpdateBitmaps()
   
   if((ppi.x < 10) || (ppi.y < 10))
     ppi = wxGetDisplayPPI();
-  
+
+  if((ppi.x < 10) || (ppi.y <= 10))
+    ppi = wxSize(72,72);
+
   if((ppi.x == m_ppi.x) && (ppi.y == m_ppi.y))
     return;
-  
+
   wxLogMessage(
     wxString::Format(
       _("Display resolution according to wxWidgets: %i x %i ppi"),

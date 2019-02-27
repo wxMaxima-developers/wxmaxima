@@ -74,9 +74,9 @@ void StatusBar::UpdateBitmaps()
   if((ppi.x == m_ppi.x) && (ppi.y == m_ppi.y))
     return;
 
-  if(ppi.x == 0)
-    return;
-
+  if((ppi.x < 10) || (ppi.y < 10))
+    ppi = wxSize(72,72);
+    
   m_ppi = ppi;
   m_network_error = GetImage("network-error",
                              network_error_128_png,network_error_128_png_len,
