@@ -236,6 +236,11 @@ wxBitmap StatusBar::GetImage(wxString name,
   ppi = display.GetPPI();
 #else
   ppi = wxGetDisplayPPI();
+
+  if (ppi.x < 72)
+    ppi.x = 72;
+  if (ppi.y < 72)
+    ppi.y = 72;
 #endif
   double targetWidth = static_cast<double>(GetSize().GetHeight()) / ppi.y * ppi.x*GetContentScaleFactor();
   double targetHeight = static_cast<double>(GetSize().GetHeight())*GetContentScaleFactor();
