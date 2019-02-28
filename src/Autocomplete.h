@@ -59,6 +59,7 @@ public:
     loadfile,//! loadable files
     demofile,//! loadable files
     generalfile,//! general files
+    esccommand, //! Esc commmands describing symbols
     unit    //! Unit names. \attention Must be the last entry in this enum
   };
 
@@ -218,7 +219,7 @@ private:
       }
   };
 
-  wxArrayString m_wordList[6];
+  wxArrayString m_wordList[7];
   wxRegEx m_args;
   WorksheetWords m_worksheetWords;
 };

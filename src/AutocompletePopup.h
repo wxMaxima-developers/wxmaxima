@@ -70,6 +70,8 @@ class AutocompletePopup : public wxListView, public wxComboPopup
     }
 protected:
   int m_value; // current item index
+  //! The current string in the autocompletion
+  wxString m_partial;
 private:
   wxWindow *m_parent;
   wxArrayString m_completions;

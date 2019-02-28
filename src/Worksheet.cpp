@@ -3985,12 +3985,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
     case WXK_ESCAPE:
       OpenHCaret(wxEmptyString);
       if (GetActiveCell() != NULL)
-      {
-        GetActiveCell()->ProcessEvent(event);
-        GroupCell *parent = dynamic_cast<GroupCell*>(GetActiveCell()->GetGroup());
-        parent->InputHeightChanged();
-        RequestRedraw();
-      }
+        Autocomplete(AutoComplete::esccommand);
       break;
 
       // keycodes which open hCaret with initial content
@@ -4132,7 +4127,12 @@ void Worksheet::OnChar(wxKeyEvent &event)
   }
 
   if (GetActiveCell() != NULL)
-    OnCharInActive(event);
+  {
+    if(event.GetKeyCode() != WXK_ESCAPE)
+      OnCharInActive(event);
+    else
+      Autocomplete(AutoComplete::esccommand);
+  }
   else
     OnCharNoActive(event);
 }
@@ -8092,8 +8092,13 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
   if (editor == NULL)
     return false;
 
-  editor->SelectWordUnderCaret(false, false, true);
-  wxString partial = editor->GetSelectionString();
+  
+  wxString partial;
+  if(type != AutoComplete::esccommand)
+  {
+    editor->SelectWordUnderCaret(false, false, true);
+    partial = editor->GetSelectionString();
+  }
 
   if (type == AutoComplete::command)
   {
@@ -8238,7 +8243,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
   }
 
   /// If there is only one completion, use it
-  if (m_completions.GetCount() == 1)
+  if ((m_completions.GetCount() == 1) && (type != AutoComplete::esccommand))
   {
     int start, end;
     editor->GetSelection(&start, &end);

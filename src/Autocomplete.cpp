@@ -114,12 +114,17 @@ void AutoComplete::AddWorksheetWords(wxArrayString wordlist)
 }
 
 bool AutoComplete::LoadSymbols()
-{
+{  
   for (int i = command; i <= unit; i++)
   {
     if (m_wordList[i].GetCount() != 0)
       m_wordList[i].Clear();
   }
+
+  for(Configuration::StringHash::iterator it = m_configuration->m_escCodes.begin();
+      it != m_configuration->m_escCodes.end();
+      ++it)
+    m_wordList[esccommand].Add(it->first);
 
   wxString line;
 

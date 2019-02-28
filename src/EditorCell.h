@@ -104,6 +104,9 @@ public:
 
   ~EditorCell();
 
+  //! Insert the symbol that corresponds to the ESC command txt
+  void InsertEscCommand(wxString txt){InsertText(InterpretEscapeString(txt));}
+
   //! Get the whole maxima command that is currently under the cursor (including all arguments)
   wxString GetFullCommandUnderCursor();
 

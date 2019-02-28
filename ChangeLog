@@ -1,4 +1,10 @@
 Current:
+ * The ESC sequences for inputting symbols now use autocompletion.
+ * Use wxAutoBufferedPaintDC for drawing the worksheet instead of
+   implementing our own version of it.
+ * The usual bug fixes
+
+19.01.0:
  * Many bugfixes for the display code
  * The desktop integration files now adher to the newest standards
  * Refactoring in order to make the code easier to understand.
