@@ -264,6 +264,11 @@ wxImage TipOfTheDay::GetImage(unsigned char *data_128, size_t len_128,
 #else
   ppi = wxGetDisplayPPI().x;
 #endif
+  if(ppi < 10)
+    ppi = wxGetDisplayPPI().x;
+  if(ppi <= 10)
+    ppi = 72;
+  
   double targetSize = MAX(ppi,75) * ICON_SCALE;
   int prescale;
 

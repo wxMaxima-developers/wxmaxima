@@ -70,6 +70,8 @@ void StatusBar::UpdateBitmaps()
 
   if((ppi.x < 10) || (ppi.y < 10))
     ppi = wxGetDisplayPPI();
+  if((ppi.x <= 10) || (ppi.y <= 10))
+    ppi = wxSize(72,72);
 
   if((ppi.x == m_ppi.x) && (ppi.y == m_ppi.y))
     return;
