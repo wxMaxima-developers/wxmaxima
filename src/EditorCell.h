@@ -693,6 +693,8 @@ private:
    */
   wxString InterpretEscapeString(wxString txt);
 
+  WX_DECLARE_STRING_HASH_MAP(wxString, StringHash);
+  StringHash m_escCodes;
   wxString m_text;
   wxArrayString m_textHistory;
   std::vector<int> m_positionHistory;

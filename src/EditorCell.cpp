@@ -77,6 +77,169 @@ EditorCell::EditorCell(Cell *parent, Configuration **config,
   m_historyPosition = -1;
   SetValue(TabExpand(text, 0));
   ResetSize();
+  
+  m_escCodes["pm"]    = wxT("\x00B1");
+  m_escCodes["+/-"]   = wxT("\x00B1");
+  m_escCodes["a"]     = wxT("\x03B1");
+  m_escCodes["alpha"] = wxT("\x03B1");
+  m_escCodes["b"]     = wxT("\x03B2");
+  m_escCodes["beta"]  = wxT("\x03B2");
+  m_escCodes["g"]     = wxT("\x03B3");
+  m_escCodes["gamma"] = wxT("\x03B3");
+  m_escCodes["d"]     = wxT("\x03B4");
+  m_escCodes["delta"] = wxT("\x03B4");
+  m_escCodes["e"]     = wxT("\x03B5");
+  m_escCodes["epsilon"] = wxT("\x03B5");
+  m_escCodes["z"] = wxT("\x03B6");
+  m_escCodes["zeta"] = wxT("\x03B6");
+  m_escCodes["h"] = wxT("\x03B7");
+  m_escCodes["eta"] = wxT("\x03B7");
+  m_escCodes["q"] = wxT("\x03B8");
+  m_escCodes["theta"] = wxT("\x03B8");
+  m_escCodes["i"] = wxT("\x03B9");
+  m_escCodes["iota"] = wxT("\x03B9");
+  m_escCodes["k"] = wxT("\x03BA");
+  m_escCodes["kappa"] = wxT("\x03BA");
+  m_escCodes["l"] = wxT("\x03BB");
+  m_escCodes["lambda"] = wxT("\x03BB");
+  m_escCodes["m"] = wxT("\x03BC");
+  m_escCodes["mu"] = wxT("\x03BC");
+  m_escCodes["n"] = wxT("\x03BD");
+  m_escCodes["nu"] = wxT("\x03BD");
+  m_escCodes["x"] = wxT("\x03BE");
+  m_escCodes["xi"] = wxT("\x03BE");
+  m_escCodes["om"] = wxT("\x03BF");
+  m_escCodes["omicron"] = wxT("\x03BF");
+  m_escCodes["p"] = wxT("\x03C0");
+  m_escCodes["pi"] = wxT("\x03C0");
+  m_escCodes["r"] = wxT("\x03C1");
+  m_escCodes["rho"] = wxT("\x03C1");
+  m_escCodes["s"] = wxT("\x03C3");
+  m_escCodes["sigma"] = wxT("\x03C3");
+  m_escCodes["t"] = wxT("\x03C4");
+  m_escCodes["tau"] = wxT("\x03C4");
+  m_escCodes["u"] = wxT("\x03C5");
+  m_escCodes["upsilon"] = wxT("\x03C5");
+  m_escCodes["f"] = wxT("\x03C6");
+  m_escCodes["phi"] = wxT("\x03C6");
+  m_escCodes["c"] = wxT("\x03C7");
+  m_escCodes["chi"] = wxT("\x03C7");
+  m_escCodes["y"] = wxT("\x03C8");
+  m_escCodes["psi"] = wxT("\x03C8");
+  m_escCodes["o"] = wxT("\x03C9");
+  m_escCodes["omega"] = wxT("\x03C9");
+  m_escCodes["A"] = wxT("\x0391");
+  m_escCodes["Alpha"] = wxT("\x0391");
+  m_escCodes["B"] = wxT("\x0392");
+  m_escCodes["Beta"] = wxT("\x0392");
+  m_escCodes["G"] = wxT("\x0393");
+  m_escCodes["Gamma"] = wxT("\x0393");
+  m_escCodes["D"] = wxT("\x0394");
+  m_escCodes["Delta"] = wxT("\x0394");
+  m_escCodes["E"] = wxT("\x0395");
+  m_escCodes["Epsilon"] = wxT("\x0395");
+  m_escCodes["Z"] = wxT("\x0396");
+  m_escCodes["Zeta"] = wxT("\x0396");
+  m_escCodes["H"] = wxT("\x0397");
+  m_escCodes["Eta"] = wxT("\x0397");
+  m_escCodes["T"] = wxT("\x0398");
+  m_escCodes["Theta"] = wxT("\x0398");
+  m_escCodes["I"] = wxT("\x0399");
+  m_escCodes["Iota"] = wxT("\x0399");
+  m_escCodes["K"] = wxT("\x039A");
+  m_escCodes["Kappa"] = wxT("\x039A");
+  m_escCodes["L"] = wxT("\x039B");
+  m_escCodes["Lambda"] = wxT("\x039B");
+  m_escCodes["M"] = wxT("\x039C");
+  m_escCodes["Mu"] = wxT("\x039C");
+  m_escCodes["N"] = wxT("\x039D");
+  m_escCodes["Nu"] = wxT("\x039D");
+  m_escCodes["X"] = wxT("\x039E");
+  m_escCodes["Xi"] = wxT("\x039E");
+  m_escCodes["Om"] = wxT("\x039F");
+  m_escCodes["Omicron"] = wxT("\x039F");
+  m_escCodes["P"] = wxT("\x03A0");
+  m_escCodes["Pi"] = wxT("\x03A0");
+  m_escCodes["R"] = wxT("\x03A1");
+  m_escCodes["Rho"] = wxT("\x03A1");
+  m_escCodes["S"] = wxT("\x03A3");
+  m_escCodes["Sigma"] = wxT("\x03A3");
+  m_escCodes["T"] = wxT("\x03A4");
+  m_escCodes["Tau"] = wxT("\x03A4");
+  m_escCodes["U"] = wxT("\x03A5");
+  m_escCodes["Upsilon"] = wxT("\x03A5");
+  m_escCodes["P"] = wxT("\x03A6");
+  m_escCodes["Phi"] = wxT("\x03A6");
+  m_escCodes["C"] = wxT("\x03A7");
+  m_escCodes["Chi"] = wxT("\x03A7");
+  m_escCodes["Y"] = wxT("\x03A8");
+  m_escCodes["Psi"] = wxT("\x03A8");
+  m_escCodes["O"] = wxT("\x03A9");
+  m_escCodes["Omega"] = wxT("\x03A9");
+  //////////////////////////
+  m_escCodes["2"] = wxT("\x00B2");
+  m_escCodes["3"] = wxT("\x00B3");
+  m_escCodes["/2"] = wxT("\x00BD");
+  m_escCodes["sq"] = wxT("\x221A");
+  m_escCodes["ii"] = wxT("\x2148");
+  m_escCodes["ee"] = wxT("\x2147");
+  m_escCodes["hb"] = wxT("\x210F");
+  m_escCodes["in"] = wxT("\x2208");
+  m_escCodes["impl"] = wxT("\x21D2");
+  m_escCodes["inf"] = wxT("\x221e");
+  m_escCodes["empty"] = wxT("\x2205");
+  m_escCodes["TB"] = wxT("\x25b6");
+  m_escCodes["tb"] = wxT("\x25b8");
+  m_escCodes["and"] = wxT("\x22C0");
+  m_escCodes["or"] = wxT("\x22C1");
+  m_escCodes["xor"] = wxT("\x22BB");
+  m_escCodes["nand"] = wxT("\x22BC");
+  m_escCodes["nor"] = wxT("\x22BD");
+  m_escCodes["implies"] = wxT("\x21D2");
+  m_escCodes["=>"] = wxT("\x21D2");
+  m_escCodes["equiv"] = wxT("\x21D4");
+  m_escCodes["<=>"] = wxT("\x21D4");
+  m_escCodes["not"] = wxT("\x00AC");
+  m_escCodes["union"] = wxT("\x22C3");
+  m_escCodes["inter"] = wxT("\x22C2");
+  m_escCodes["subseteq"] = wxT("\x2286");
+  m_escCodes["subset"] = wxT("\x2282");
+  m_escCodes["notsubseteq"] = wxT("\x2288");
+  m_escCodes["notsubset"] = wxT("\x2284");
+  m_escCodes["hbar"] = wxT("\x0127");
+  m_escCodes["Hbar"] = wxT("\x0126");
+  m_escCodes["partial"] = wxT("\x2202");
+  m_escCodes["integral"] = wxT("\x222b");
+  m_escCodes["approx"] = wxT("\x2245");
+  m_escCodes["prop"] = wxT("\x221d");
+  m_escCodes["propto"] = wxT("\x221d");
+  m_escCodes["neq"] = wxT("\x2260");
+  m_escCodes["!="] = wxT("\x2260");
+  m_escCodes["/="] = wxT("\x2260");
+  m_escCodes["#"] = wxT("\x2260");
+  m_escCodes["<="] = wxT("\x2264");
+  m_escCodes["leq"] = wxT("\x2264");
+  m_escCodes[">="] = wxT("\x2265");
+  m_escCodes["geq"] = wxT("\x2265");
+  m_escCodes["ll"] = wxT("\x226A");
+  m_escCodes["<<"] = wxT("\x226A");
+  m_escCodes["gg"] = wxT("\x226B");
+  m_escCodes[">>"] = wxT("\x226B");
+  m_escCodes["qed"] = wxT("\x220E");
+  m_escCodes["equiv"] = wxT("\x2263");
+  m_escCodes["sum"] = wxT("\x2211");
+  m_escCodes["prod"] = wxT("\x220F");
+  m_escCodes["product"] = wxT("\x220F");
+  m_escCodes["exists"] = wxT("\x2203");
+  m_escCodes["nexists"] = wxT("\x2204");
+  m_escCodes["parallel"] = wxT("\x2225");
+  m_escCodes["perp"] = wxT("\x27C2");
+  m_escCodes["perpendicular"] = wxT("\x27C2");
+  m_escCodes["bot"] = wxT("\x27C2");
+  m_escCodes["leadsto"] = wxT("\x219D");
+  m_escCodes["->"] = wxT("\x2192");
+  m_escCodes["-->"] = wxT("\x27F6");
+  m_escCodes[" --> "] = wxT("\x27F6");
 }
 
 wxString EditorCell::EscapeHTMLChars(wxString input)
@@ -2546,243 +2709,20 @@ void EditorCell::FindMatchingParens()
 
 wxString EditorCell::InterpretEscapeString(wxString txt)
 {
-  long int unicodeval = -1;
+  wxString retval = m_escCodes[txt];
 
-  if ((txt == wxT("pm")) || (txt == wxT("+/-")))
-    return L"\x00B1";
-  if ((txt == wxT("a")) || (txt == wxT("alpha")))
-    return L"\x03B1";
-  else if ((txt == wxT("b")) || (txt == wxT("beta")))
-    return L"\x03B2";
-  else if ((txt == wxT("g")) || (txt == wxT("gamma")))
-    return L"\x03B3";
-  else if ((txt == wxT("d")) || (txt == wxT("delta")))
-    return L"\x03B4";
-  else if ((txt == wxT("e")) || (txt == wxT("epsilon")))
-    return L"\x03B5";
-  else if ((txt == wxT("z")) || (txt == wxT("zeta")))
-    return L"\x03B6";
-  else if ((txt == wxT("h")) || (txt == wxT("eta")))
-    return L"\x03B7";
-  else if ((txt == wxT("q")) || (txt == wxT("theta")))
-    return L"\x03B8";
-  else if ((txt == wxT("i")) || (txt == wxT("iota")))
-    return L"\x03B9";
-  else if ((txt == wxT("k")) || (txt == wxT("kappa")))
-    return L"\x03BA";
-  else if ((txt == wxT("l")) || (txt == wxT("lambda")))
-    return L"\x03BB";
-  else if ((txt == wxT("m")) || (txt == wxT("mu")))
-    return L"\x03BC";
-  else if ((txt == wxT("n")) || (txt == wxT("nu")))
-    return L"\x03BD";
-  else if ((txt == wxT("x")) || (txt == wxT("xi")))
-    return L"\x03BE";
-  else if ((txt == wxT("om")) || (txt == wxT("omicron")))
-    return L"\x03BF";
-  else if ((txt == wxT("p")) || (txt == wxT("pi")))
-    return L"\x03C0";
-  else if ((txt == wxT("r")) || (txt == wxT("rho")))
-    return L"\x03C1";
-  else if ((txt == wxT("s")) || (txt == wxT("sigma")))
-    return L"\x03C3";
-  else if ((txt == wxT("t")) || (txt == wxT("tau")))
-    return L"\x03C4";
-  else if ((txt == wxT("u")) || (txt == wxT("upsilon")))
-    return L"\x03C5";
-  else if ((txt == wxT("f")) || (txt == wxT("phi")))
-    return L"\x03C6";
-  else if ((txt == wxT("c")) || (txt == wxT("chi")))
-    return L"\x03C7";
-  else if ((txt == wxT("y")) || (txt == wxT("psi")))
-    return L"\x03C8";
-  else if ((txt == wxT("o")) || (txt == wxT("omega")))
-    return L"\x03C9";
-  else if ((txt == wxT("A")) || (txt == wxT("Alpha")))
-    return L"\x0391";
-  else if ((txt == wxT("B")) || (txt == wxT("Beta")))
-    return L"\x0392";
-  else if ((txt == wxT("G")) || (txt == wxT("Gamma")))
-    return L"\x0393";
-  else if ((txt == wxT("D")) || (txt == wxT("Delta")))
-    return L"\x0394";
-  else if ((txt == wxT("E")) || (txt == wxT("Epsilon")))
-    return L"\x0395";
-  else if ((txt == wxT("Z")) || (txt == wxT("Zeta")))
-    return L"\x0396";
-  else if ((txt == wxT("H")) || (txt == wxT("Eta")))
-    return L"\x0397";
-  else if ((txt == wxT("T")) || (txt == wxT("Theta")))
-    return L"\x0398";
-  else if ((txt == wxT("I")) || (txt == wxT("Iota")))
-    return L"\x0399";
-  else if ((txt == wxT("K")) || (txt == wxT("Kappa")))
-    return L"\x039A";
-  else if ((txt == wxT("L")) || (txt == wxT("Lambda")))
-    return L"\x039B";
-  else if ((txt == wxT("M")) || (txt == wxT("Mu")))
-    return L"\x039C";
-  else if ((txt == wxT("N")) || (txt == wxT("Nu")))
-    return L"\x039D";
-  else if ((txt == wxT("X")) || (txt == wxT("Xi")))
-    return L"\x039E";
-  else if ((txt == wxT("Om")) || (txt == wxT("Omicron")))
-    return L"\x039F";
-  else if ((txt == wxT("P")) || (txt == wxT("Pi")))
-    return L"\x03A0";
-  else if ((txt == wxT("R")) || (txt == wxT("Rho")))
-    return L"\x03A1";
-  else if ((txt == wxT("S")) || (txt == wxT("Sigma")))
-    return L"\x03A3";
-  else if ((txt == wxT("T")) || (txt == wxT("Tau")))
-    return L"\x03A4";
-  else if ((txt == wxT("U")) || (txt == wxT("Upsilon")))
-    return L"\x03A5";
-  else if ((txt == wxT("P")) || (txt == wxT("Phi")))
-    return L"\x03A6";
-  else if ((txt == wxT("C")) || (txt == wxT("Chi")))
-    return L"\x03A7";
-  else if ((txt == wxT("Y")) || (txt == wxT("Psi")))
-    return L"\x03A8";
-  else if ((txt == wxT("O")) || (txt == wxT("Omega")))
-    return L"\x03A9";
-    //////////////////////////
-  else if (txt == wxT("2"))
-    return L"\x00B2";
-  else if (txt == wxT("3"))
-    return L"\x00B3";
-  else if (txt == wxT("/2"))
-    return L"\x00BD";
-  else if (txt == wxT("sq"))
-    return L"\x221A";
-  else if (txt == wxT("ii"))
-    return L"\x2148";
-  else if (txt == wxT("ee"))
-    return L"\x2147";
-  else if (txt == wxT("hb"))
-    return L"\x210F";
-  else if (txt == wxT("in"))
-    return L"\x2208";
-  else if (txt == wxT("impl"))
-    return L"\x21D2";
-  else if (txt == wxT("inf"))
-    return L"\x221e";
-  else if (txt == wxT("empty"))
-    return L"\x2205";
-  else if (txt == wxT("TB"))
-    return L"\x25b6";
-  else if (txt == wxT("tb"))
-    return L"\x25b8";
-  else if (txt == wxT("and"))
-    return L"\x22C0";
-  else if (txt == wxT("or"))
-    return L"\x22C1";
-  else if (txt == wxT("xor"))
-    return L"\x22BB";
-  else if (txt == wxT("nand"))
-    return L"\x22BC";
-  else if (txt == wxT("nor"))
-    return L"\x22BD";
-  else if (txt == wxT("implies") || txt == wxT("=>"))
-    return L"\x21D2";
-  else if (txt == wxT("equiv") || txt == wxT("<=>"))
-    return L"\x21D4";
-  else if (txt == wxT("not"))
-    return L"\x00AC";
-  else if (txt == wxT("union"))
-    return L"\x22C3";
-  else if (txt == wxT("inter"))
-    return L"\x22C2";
-  else if (txt == wxT("subseteq"))
-    return L"\x2286";
-  else if (txt == wxT("subset"))
-    return L"\x2282";
-  else if (txt == wxT("notsubseteq"))
-    return L"\x2288";
-  else if (txt == wxT("notsubset"))
-    return L"\x2284";
-  else if (txt == wxT("hbar"))
-    return L"\x0127";
-  else if (txt == wxT("Hbar"))
-    return L"\x0126";
-  else if (txt == wxT("partial"))
-    return L"\x2202";
-  else if (txt == wxT("integral"))
-    return L"\x222b";
-  else if (txt == wxT("approx"))
-    return L"\x2245";
-  else if (txt == wxT("prop"))
-    return L"\x221d";
-  else if (txt == wxT("propto"))
-    return L"\x221d";
-  else if (txt == wxT("neq"))
-    return L"\x2260";
-  else if (txt == wxT("!="))
-    return L"\x2260";
-  else if (txt == wxT("/="))
-    return L"\x2260";
-  else if (txt == wxT("#"))
-    return L"\x2260";
-  else if (txt == wxT("<="))
-    return L"\x2264";
-  else if (txt == wxT("leq"))
-    return L"\x2264";
-  else if (txt == wxT(">="))
-    return L"\x2265";
-  else if (txt == wxT("geq"))
-    return L"\x2265";
-  else if (txt == wxT("ll"))
-    return L"\x226A";
-  else if (txt == wxT("<<"))
-    return L"\x226A";
-  else if (txt == wxT("gg"))
-    return L"\x226B";
-  else if (txt == wxT(">>"))
-    return L"\x226B";
-  else if (txt == wxT("qed"))
-    return L"\x220E";
-  else if (txt == wxT("equiv"))
-    return L"\x2263";
-  else if (txt == wxT("sum"))
-    return L"\x2211";
-  else if (txt == wxT("prod"))
-    return L"\x220F";
-  else if (txt == wxT("product"))
-    return L"\x220F";
-  else if (txt == wxT("exists"))
-    return L"\x2203";
-  else if (txt == wxT("nexists"))
-    return L"\x2204";
-  else if (txt == wxT("parallel"))
-    return L"\x2225";
-  else if (txt == wxT("perp"))
-    return L"\x27C2";
-  else if (txt == wxT("perpendicular"))
-    return L"\x27C2";
-  else if (txt == wxT("bot"))
-    return L"\x27C2";
-  else if (txt == wxT("leadsto"))
-    return L"\x219D";
-  else if (txt == wxT("->"))
-    return L"\x2192";
-  else if (txt == wxT("-->"))
-    return L"\x27F6";
-  else if (txt == wxT(" --> "))
-    return L"\x27F6";
-
-    /////////////////////////
-  else if (txt.ToLong(&unicodeval, 16))
+  if(retval == wxEmptyString)
   {
-    if (unicodeval >= 32)
-      return wxString(wxChar(unicodeval));
-    else
-      return wxT(" ");
-
+    long int unicodeval = -1;
+    if (txt.ToLong(&unicodeval, 16))
+    {
+      if (unicodeval >= 32)
+        retval = wxString(wxChar(unicodeval));
+      else
+        retval = wxT(" ");
+    }
   }
-
-    /////////////////////////
-  else
-    return wxEmptyString;
+  return retval;
 }
 
 
