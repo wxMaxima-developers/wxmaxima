@@ -103,10 +103,6 @@ public:
              CellPointers *cellPointers, wxString text = wxEmptyString);
 
   ~EditorCell();
-  
-  WX_DECLARE_STRING_HASH_MAP(wxString, StringHash);
-  //! A list of all symbols that can be entered using Esc-Codes
-  StringHash m_escCodes;
 
   //! Get the whole maxima command that is currently under the cursor (including all arguments)
   wxString GetFullCommandUnderCursor();

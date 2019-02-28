@@ -95,6 +95,10 @@ public:
     unknown
   };
 
+  WX_DECLARE_STRING_HASH_MAP(wxString, StringHash);
+  //! A list of all symbols that can be entered using Esc-Codes
+  StringHash m_escCodes;
+
   //! Set maxima's working directory
   void SetWorkingDirectory(wxString dir)
   { m_workingdir = dir; }
