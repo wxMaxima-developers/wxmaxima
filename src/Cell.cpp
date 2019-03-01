@@ -424,15 +424,15 @@ bool Cell::DrawThisCell(wxPoint point)
 
   SetCurrentPoint(point);
 
-  if(!(*m_configuration)->ClipToDrawRegion())
-    return true;
-  
   // If a cell is broken into lines its individual parts are displayed but
   // not the cell itself (example: Denominator and Numerator are displayed
   // but not the horizontal line with denominator above and numerator below.
   if(m_isBrokenIntoLines)
     return false;
-
+  
+  if(!(*m_configuration)->ClipToDrawRegion())
+    return true;
+  
   return(InUpdateRegion());
 }
 
