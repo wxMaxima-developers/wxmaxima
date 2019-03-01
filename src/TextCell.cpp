@@ -308,10 +308,10 @@ Cell *TextCell::Copy()
 
 void TextCell::RecalculateWidths(int fontsize)
 {
+  Cell::RecalculateWidths(fontsize);
   if(fontsize != m_fontsize_old)
     ResetSize();
   m_fontsize_old = fontsize;
-  Cell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
 
   bool recalculateNeeded = false;
@@ -452,11 +452,11 @@ void TextCell::RecalculateWidths(int fontsize)
 
 void TextCell::Draw(wxPoint point)
 {
+  Cell::Draw(point);
   if (DrawThisCell(point) && !m_isHidden)
   {
     
     Configuration *configuration = (*m_configuration);
-    Cell::Draw(point);
     wxDC *dc = configuration->GetDC();
     
     if (m_width == -1 || m_height == -1 || m_fontSize != m_lastCalculationFontSize)

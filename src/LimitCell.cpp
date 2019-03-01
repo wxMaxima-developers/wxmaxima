@@ -187,9 +187,9 @@ void LimitCell::RecalculateHeight(int fontsize)
 
 void LimitCell::Draw(wxPoint point)
 {
+  Cell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   {   
-    Cell::Draw(point);
     wxPoint base(point), under(point), name(point);
 
     name.x = point.x + MAX(m_name->GetFullWidth(),

@@ -237,9 +237,9 @@ void FracCell::RecalculateHeight(int fontsize)
 
 void FracCell::Draw(wxPoint point)
 {
+  Cell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    Cell::Draw(point);
     Configuration *configuration = (*m_configuration);
     
     wxDC *dc = configuration->GetDC();

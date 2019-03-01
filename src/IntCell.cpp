@@ -233,21 +233,11 @@ void IntCell::RecalculateHeight(int fontsize)
 
   if (m_intStyle == INT_DEF)
   {
-    if (configuration->CheckTeXFonts())
-    {
-      m_center = MAX(m_over->GetMaxHeight() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
-                     m_base->GetMaxCenter());
-      m_height = m_center +
-                 MAX(m_under->GetMaxHeight() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
-                     m_base->GetMaxDrop());
-    }
-    else
-    {
-      m_height = m_center +
-                 MAX(m_under->GetMaxHeight() + Scale_Px(4) + m_signHeight / 2,
-                     m_base->GetMaxDrop());
-      m_center = m_height / 2;
-     }
+    m_center = MAX(m_over->GetMaxHeight() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
+                   m_base->GetMaxCenter());
+    m_height = m_center +
+      MAX(m_under->GetMaxHeight() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
+          m_base->GetMaxDrop());
   }
   else
   {
@@ -259,9 +249,9 @@ void IntCell::RecalculateHeight(int fontsize)
 
 void IntCell::Draw(wxPoint point)
 {
+  Cell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
   {
-    Cell::Draw(point);
     Configuration *configuration = (*m_configuration);
     
     wxDC *dc = configuration->GetDC();

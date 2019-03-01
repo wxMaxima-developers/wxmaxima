@@ -185,6 +185,7 @@ void ImgCell::RecalculateHeight(int fontsize)
 
 void ImgCell::Draw(wxPoint point)
 {
+  Cell::Draw(point);
   if (DrawThisCell(point) && (m_image != NULL))
   {
     Configuration *configuration = (*m_configuration);
@@ -194,8 +195,6 @@ void ImgCell::Draw(wxPoint point)
       m_image->Recalculate();
     }
 
-    Cell::Draw(point);
-    
     if (!InUpdateRegion()) return;
     
     wxDC *dc = configuration->GetDC();

@@ -172,10 +172,9 @@ void ExptCell::RecalculateHeight(int fontsize)
 
 void ExptCell::Draw(wxPoint point)
 {
+  Cell::Draw(point);
   if (DrawThisCell(point) && InUpdateRegion())
-  {
-    
-    Cell::Draw(point);
+  {    
     wxPoint bs, pw;
     bs.x = point.x;
     bs.y = point.y;
