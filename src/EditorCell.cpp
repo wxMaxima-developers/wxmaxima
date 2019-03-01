@@ -3137,10 +3137,8 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight, bool 
             break;
           }
         }
-      }
-      if(leftChar == wxT('\"'))
-      {
-        break;
+        else
+          break;
       }
     }
   }
