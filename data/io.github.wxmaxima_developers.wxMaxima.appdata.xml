@@ -54,6 +54,18 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="19.03.0" date="2019-03-01">
+      <description>
+        <ul>
+          <li>The ESC sequences for inputting symbols now use autocompletion</li>
+          <li>Use wxAutoBufferedPaintDC for drawing the worksheet instead of
+	  implementing our own version of it</li>
+	  <li>The usual bug fixes, this time including one bug fix that makes
+   wxMaxima work again on Gentoo and help path lookup fixes for
+   different operating systems.</li>
+        </ul>
+      </description>
+    </release>
     <release version="19.02.2" date="2019-02-18">
       <description>
         <ul>

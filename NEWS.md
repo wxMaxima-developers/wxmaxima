@@ -1,3 +1,12 @@
+# wxMaxima 19.03.9 - Stable
+
+ * The ESC sequences for inputting symbols now use autocompletion.
+ * Use wxAutoBufferedPaintDC for drawing the worksheet instead of
+   implementing our own version of it.
+ * The usual bug fixes, this time including one bug fix that makes
+   wxMaxima work again on Gentoo and help path lookup fixes for
+   different operating systems.
+
 # wxMaxima 19.02.2 - Stable
 
  * Corrected the GTK3 fix
