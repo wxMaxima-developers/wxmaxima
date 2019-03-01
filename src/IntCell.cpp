@@ -224,7 +224,6 @@ void IntCell::RecalculateWidths(int fontsize)
 void IntCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
-  Configuration *configuration = (*m_configuration);
 
   m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 5));
   m_over->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 5));
