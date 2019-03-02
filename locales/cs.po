@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-01 21:54+0100\n"
+"POT-Creation-Date: 2019-03-02 14:33+0100\n"
 "PO-Revision-Date: 2010-03-10 14:21+0100\n"
 "Last-Translator: Robert Marik <maarik@mendelu.cz>\n"
 "Language-Team:  <cs@li.org>\n"
@@ -74,12 +74,16 @@ msgstr "      -l <name>"
 msgid " (Graphics) "
 msgstr " (Gràfics) "
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3712
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4123
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4244
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3714
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4128
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4249
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr " ... + %i linies amagades"
+
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3717
+msgid " ... + 1 hidden line"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:1063
 msgid " << Expression longer than allowed by the configuration setting! >>"
@@ -505,7 +509,7 @@ msgid ""
 "pdf pages."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4652
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4657
 msgid "A section heading"
 msgstr ""
 
@@ -518,20 +522,20 @@ msgstr ""
 msgid "A static plot"
 msgstr "Graf zadaný parametricky"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4664
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4669
 msgid "A sub-sub-sub-subsection heading"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4661
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4666
 msgid "A sub-sub-subsection heading"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4658
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4663
 #, fuzzy
 msgid "A sub-subsection heading"
 msgstr "Pole podkapitoly"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4655
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4660
 #, fuzzy
 msgid "A subsection heading"
 msgstr "Pole podkapitoly"
@@ -795,14 +799,14 @@ msgstr ""
 msgid "Automatic labels (%i1, %o1,...)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1329
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1475
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1335
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1481
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:773
 msgid "Automatically answer questions"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1330
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1476
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1336
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1482
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:774
 msgid "Automatically fill in answers known from the last run"
 msgstr ""
@@ -913,30 +917,30 @@ msgstr ""
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2588
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2594
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6804
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6810
 msgid "Bug: Cell with negative y position!"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2773
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2779
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6992
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6998
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6967
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6973
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7034
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7040
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -993,7 +997,7 @@ msgstr ""
 msgid "Bug: No last cell inside a square root!"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2598
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2604
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 
@@ -1003,14 +1007,14 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/ImgCell.cpp:371
 #: /home/gunter/src/wxmaxima/src/SVGout.cpp:349
 #: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:459
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2123
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2261
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2336
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2372
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2387
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:4461
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7291
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7529
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2129
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2267
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2342
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2378
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2393
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:4467
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7297
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7535
 msgid "Bug: The clipboard is already opened"
 msgstr ""
 
@@ -1022,33 +1026,33 @@ msgstr ""
 msgid "Bug: Trying to append NULL to a group cell."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:722
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:728
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7638
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7644
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2600
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2606
 msgid "Bug: Trying to record a cell contents change for undo without a cell."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1999
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2005
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7035
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7041
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6997
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7003
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4670
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4675
 msgid "Bug: Unknown type of text"
 msgstr ""
 
@@ -1367,11 +1371,11 @@ msgstr "Zadejte x-ové souřadnice oddělené čárkou"
 msgid "Commands that are executed at every start of maxima."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4667
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4672
 msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1424
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1430
 msgid "Comment Selection"
 msgstr "Zakomentovat výběr"
 
@@ -1564,16 +1568,16 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:249
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:205
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1224
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1257
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1350
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1418
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1230
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1263
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1356
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1424
 msgid "Copy"
 msgstr "Kopírovat"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1229
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1267
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1360
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1235
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1273
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1366
 #, fuzzy
 msgid "Copy Animation"
 msgstr "Zastavit animaci"
@@ -1587,20 +1591,20 @@ msgstr "Kopírovat předchozí vstup\tCtrl+I"
 msgid "Copy Previous Output\tCtrl+U"
 msgstr "Kopírovat předchozí vstup\tCtrl+I"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1272
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1365
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1278
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1371
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:620
 msgid "Copy as EMF"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1263
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1356
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1269
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1362
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:610
 msgid "Copy as Image"
 msgstr "Kopírovat jako obrázek"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1258
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1351
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1264
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1357
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:604
 msgid "Copy as LaTeX"
 msgstr "Kopírovat jako LaTeX"
@@ -1610,20 +1614,20 @@ msgstr "Kopírovat jako LaTeX"
 msgid "Copy as MathML"
 msgstr "Kopírovat jako obrázek"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1261
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1353
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1267
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1359
 msgid "Copy as MathML (e.g. to word processor)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1275
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1368
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1281
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1374
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:616
 #, fuzzy
 msgid "Copy as RTF"
 msgstr "Kopírovat jako LaTeX"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1269
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1362
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1275
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1368
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:613
 #, fuzzy
 msgid "Copy as SVG"
@@ -1633,8 +1637,8 @@ msgstr "Kopírovat jako LaTeX"
 msgid "Copy as Text\tCtrl+Shift+C"
 msgstr "Kopírovat jako text\tCtrl+Shift+C"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1259
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1352
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1265
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1358
 #, fuzzy
 msgid "Copy as plain text"
 msgstr "Kopírovat jako obrázek"
@@ -1738,7 +1742,7 @@ msgid "Cursor"
 msgstr "Kurzor"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:199
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1417
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1423
 msgid "Cut"
 msgstr "Vyjmout"
 
@@ -1840,8 +1844,8 @@ msgstr "Odstranit"
 msgid "Delete F&unction..."
 msgstr "Zrušit &funkci..."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1278
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1371
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1284
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1377
 msgid "Delete Selection"
 msgstr "Odstranit výběr"
 
@@ -1915,7 +1919,7 @@ msgstr "Derivovat"
 msgid "Differentiate expression"
 msgstr "Derivovat výraz"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1388
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1394
 msgid "Differentiate..."
 msgstr "Derivovat..."
 
@@ -1964,7 +1968,7 @@ msgstr "Řešit rovnici/rovnice"
 msgid "Divide"
 msgstr "Dělit"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1426
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1432
 msgid "Divide Cell"
 msgstr "Rozdělit pole"
 
@@ -2302,12 +2306,12 @@ msgstr "Vyhodnotit všechna vstupní pole\tCtrl+R"
 msgid "Evaluate All Visible Cells\tCtrl+R"
 msgstr "Vyhodnotit všechna vstupní pole\tCtrl+R"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1281
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1287
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:714
 msgid "Evaluate Cell(s)"
 msgstr "Vyhodnotit vstupní pole"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1409
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1415
 #, fuzzy
 msgid "Evaluate Cells Above"
 msgstr "Vyhodnotit vstupní pole"
@@ -2317,44 +2321,44 @@ msgstr "Vyhodnotit vstupní pole"
 msgid "Evaluate Cells Above\tCtrl+Shift+P"
 msgstr "Vyhodnotit všechna vstupní pole\tCtrl+R"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1283
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1410
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1289
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1416
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:722
 #, fuzzy
 msgid "Evaluate Cells Below"
 msgstr "Vyhodnotit vstupní pole"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1320
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1462
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1516
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1326
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1468
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1522
 msgid "Evaluate Heading 5\tShift+Ctrl+Enter"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1326
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1466
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1526
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1332
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1472
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1532
 msgid "Evaluate Heading 6\tShift+Ctrl+Enter"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1297
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1447
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1303
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1453
 msgid "Evaluate Part\tShift+Ctrl+Enter"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1302
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1450
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1308
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1456
 msgid "Evaluate Section\tShift+Ctrl+Enter"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1314
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1458
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1506
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1320
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1464
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1512
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1308
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1454
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1496
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1314
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1460
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1502
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
@@ -2424,7 +2428,7 @@ msgstr "Rozložit"
 msgid "Expand (tr)"
 msgstr "Rozložit (trig.)"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1384
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1390
 msgid "Expand Expression"
 msgstr "Rozložit výraz"
 
@@ -2578,7 +2582,7 @@ msgstr "Na součin"
 msgid "Factor Complex"
 msgstr "Faktorizovat komplexní výraz"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1383
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1389
 msgid "Factor Expression"
 msgstr "Faktorizovat výraz"
 
@@ -2659,7 +2663,7 @@ msgstr "Najít &limitu..."
 msgid "Find Minimum..."
 msgstr "Najít minimum..."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1380
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1386
 msgid "Find Root..."
 msgstr "Najít kořen..."
 
@@ -2995,7 +2999,7 @@ msgstr ""
 msgid "Gnuplot has closed."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6974
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6980
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -3081,30 +3085,30 @@ msgstr "Rozdělit pole"
 msgid "Hide Code Cells\tAlt+Ctrl+H"
 msgstr "Rozdělit pole"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1523
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1529
 msgid "Hide Heading 5"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1533
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1539
 msgid "Hide Heading 6"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1485
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1491
 #, fuzzy
 msgid "Hide Part"
 msgstr "Rozdělit pole"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1493
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1499
 #, fuzzy
 msgid "Hide Section"
 msgstr "Sekce"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1503
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1509
 #, fuzzy
 msgid "Hide Subsection"
 msgstr "Podkapitola"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1513
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1519
 #, fuzzy
 msgid "Hide Subsubsection"
 msgstr "Podkapitola"
@@ -3113,7 +3117,7 @@ msgstr "Podkapitola"
 msgid "Hide all panes"
 msgstr "Skrýt panely nástrojů"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1541
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1547
 #, fuzzy
 msgid "Hide contents"
 msgstr "Konstanty označené řeckými písmeny"
@@ -3248,7 +3252,7 @@ msgstr ""
 "Jestliže výpočet trvá příliš dlouho, můžete zkusit volby 'Maxima->Interrupt' "
 "nebo 'Maxima->Restart Maxima'."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5425
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5431
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1841
 msgid "Image"
 msgstr "Obraz"
@@ -3387,11 +3391,11 @@ msgstr "Vložit textové pole\tF6"
 msgid "Insert Cell\tAlt+Shift+C"
 msgstr "Vložit pole\tAlt+Shift+C"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1406
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1412
 msgid "Insert Heading5 Cell"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1407
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1413
 msgid "Insert Heading6 Cell"
 msgstr ""
 
@@ -3423,17 +3427,17 @@ msgstr "Vložit pole s podkapitolou\tF8"
 msgid "Insert S&ubsubsection Cell\tCtrl+5"
 msgstr "Vložit pole s podkapitolou\tF8"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1403
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1409
 #, fuzzy
 msgid "Insert Section Cell"
 msgstr "Vložit pole s kapitolou\tF8"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1404
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1410
 #, fuzzy
 msgid "Insert Subsection Cell"
 msgstr "Vložit pole s podkapitolou\tF8"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1405
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1411
 #, fuzzy
 msgid "Insert Subsubsection Cell"
 msgstr "Vložit pole s podkapitolou\tF8"
@@ -3443,12 +3447,12 @@ msgstr "Vložit pole s podkapitolou\tF8"
 msgid "Insert T&itle Cell\tCtrl+2"
 msgstr "Vložit pole s nadpisem\tF9"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1401
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1407
 #, fuzzy
 msgid "Insert Text Cell"
 msgstr "Vložit textové pole\tF6"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1402
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1408
 #, fuzzy
 msgid "Insert Title Cell"
 msgstr "Vložit pole s nadpisem\tF9"
@@ -3533,7 +3537,7 @@ msgstr "Integrovat výraz"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Integrovat výraz pomocí Rischova algoritmu"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1387
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1393
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1525
 msgid "Integrate..."
 msgstr "Integrovat..."
@@ -4014,7 +4018,7 @@ msgid ""
 "continues the one from the last line."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4646
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4651
 #, fuzzy
 msgid "Maxima code"
 msgstr "Nastavení programu wxMaxima"
@@ -4240,7 +4244,7 @@ msgstr "Průměr:"
 msgid "Median..."
 msgstr "Medián"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1286
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1292
 msgid "Merge Cells"
 msgstr "Spojit pole"
 
@@ -4709,8 +4713,8 @@ msgid ""
 msgstr "Část dokumentu nebude otevřena korektně!"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:211
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1398
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1419
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1404
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1425
 msgid "Paste"
 msgstr "Vložit"
 
@@ -4775,7 +4779,7 @@ msgstr "2D graf"
 msgid "Plot 2D..."
 msgstr "2D graf..."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1390
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1396
 msgid "Plot 2d..."
 msgstr "2D graf..."
 
@@ -4789,7 +4793,7 @@ msgstr "3D graf"
 msgid "Plot 3D..."
 msgstr "3D graf..."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1391
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1397
 msgid "Plot 3d..."
 msgstr "3D graf..."
 
@@ -4874,8 +4878,8 @@ msgstr "Polynom 2:"
 msgid "Pop"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1246
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1342
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1252
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1348
 msgid "Popout interactively"
 msgstr ""
 
@@ -4982,15 +4986,15 @@ msgstr "Čtení výstupu programu Maxima"
 msgid "Ready for user input"
 msgstr "Připraven na vstup"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:795
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:801
 msgid "Recalculating all cell sizes"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:793
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:799
 msgid "Recalculating all cell sizes inclusive text dimensions"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:798
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:804
 msgid "Recalculating changed cell sizes"
 msgstr ""
 
@@ -5088,14 +5092,14 @@ msgstr "Restart programu Maxima"
 msgid "Restart maxima"
 msgstr "Restart programu Maxima"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1238
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1335
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1244
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1341
 #, fuzzy
 msgid "Restrict Maximum size"
 msgstr "Restart programu Maxima"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5364
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5391
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5370
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5397
 msgid "Result"
 msgstr ""
 
@@ -5273,7 +5277,7 @@ msgstr ""
 msgid "Save"
 msgstr "Uložit"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1228
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1234
 msgid "Save Animation..."
 msgstr "Uložit animaci..."
 
@@ -5285,7 +5289,7 @@ msgstr "Uložit jako"
 msgid "Save As...\tShift+Ctrl+S"
 msgstr "Uložit jako...\tShift+Ctrl+S"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1225
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1231
 msgid "Save Image..."
 msgstr "Uložit obrázek..."
 
@@ -5413,8 +5417,8 @@ msgstr ""
 msgid "Select"
 msgstr "Výběr"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1399
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1421
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1405
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1427
 msgid "Select All"
 msgstr "Vybrat vše"
 
@@ -5721,7 +5725,7 @@ msgstr "Zjednodušit (rac.)"
 msgid "Simplify (tr)"
 msgstr "Zjednodušit (trig.)"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1382
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1388
 msgid "Simplify Expression"
 msgstr "Zjednodušit výraz"
 
@@ -5844,7 +5848,7 @@ msgstr "Řešit ODR nejvýše 2. řádu"
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "Řešit ODR pomocí Laplaceovy transfromace"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1379
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1385
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1519
 msgid "Solve..."
 msgstr "Řešit..."
@@ -5897,7 +5901,7 @@ msgstr "Speciální konstanty"
 msgid "Speed versus accuracy"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1231
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1237
 #, fuzzy
 msgid "Start Animation"
 msgstr "Spustit animaci"
@@ -5954,7 +5958,7 @@ msgstr "Start serveru selhal"
 msgid "Starting server on port %d"
 msgstr "Spouštím server na portu %d"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6221
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6227
 msgid "Starting to save the worksheet as .wxmx"
 msgstr ""
 
@@ -6006,7 +6010,7 @@ msgstr "Subst..."
 msgid "Substitute"
 msgstr "Provést substituci"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1385
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1391
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1052
 msgid "Substitute..."
 msgstr "Substituce..."
@@ -6346,7 +6350,7 @@ msgstr ""
 msgid "The variable the value of the current source item is stored in."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8740
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8746
 msgid "The worksheet containing maxima's input and output"
 msgstr ""
 
@@ -6465,7 +6469,7 @@ msgstr "Přesnost &bigfloat"
 msgid "To &Float"
 msgstr "převést na &Float (plovoucí řádová čárka)"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1377
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1383
 msgid "To Float"
 msgstr "Float (plovoucí řádová čárka)"
 
@@ -6593,12 +6597,12 @@ msgstr "Tutoriál"
 msgid "Two sample t-test"
 msgstr "Text příkladu"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8610
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8616
 #, fuzzy
 msgid "Type"
 msgstr "Typ:"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4680
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4685
 #, fuzzy
 msgid "Type in text"
 msgstr "Kopírovat jako obrázek"
@@ -6662,34 +6666,34 @@ msgstr ""
 msgid "Unhide"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1520
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1526
 msgid "Unhide Heading 5"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1530
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1536
 msgid "Unhide Heading 6"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1482
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1488
 msgid "Unhide Part"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1490
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1496
 #, fuzzy
 msgid "Unhide Section"
 msgstr "Sekce"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1500
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1506
 #, fuzzy
 msgid "Unhide Subsection"
 msgstr "Podkapitola"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1510
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1516
 #, fuzzy
 msgid "Unhide Subsubsection"
 msgstr "Podkapitola"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1538
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1544
 #, fuzzy
 msgid "Unhide contents"
 msgstr "Konstanty označené řeckými písmeny"
@@ -6928,7 +6932,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7935
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7941
 msgid "Wrapped search"
 msgstr ""
 
@@ -7077,12 +7081,12 @@ msgid ""
 "y_2],...)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5334
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5340
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5524
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5530
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr ""
@@ -7646,7 +7650,7 @@ msgstr ""
 msgid "wxWidgets is using GTK 3"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6472
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6478
 msgid "wxmx file saved"
 msgstr ""
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-01 21:54+0100\n"
+"POT-Creation-Date: 2019-03-02 14:33+0100\n"
 "PO-Revision-Date: 2019-02-17 16:54+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -77,12 +77,16 @@ msgstr "      -l <назва>"
 msgid " (Graphics) "
 msgstr " (графіка) "
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3712
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4123
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4244
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3714
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4128
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4249
 #, c-format
 msgid " ... + %i hidden lines"
 msgstr " ... + %i прихованих рядків"
+
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:3717
+msgid " ... + 1 hidden line"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:1063
 msgid " << Expression longer than allowed by the configuration setting! >>"
@@ -505,7 +509,7 @@ msgstr ""
 "Масштаб для друку. Корисно для друку великих рівнянь на маленьких сторінках "
 "pdf."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4652
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4657
 msgid "A section heading"
 msgstr "Заголовок розділу"
 
@@ -517,19 +521,19 @@ msgstr "Пробіл між GroupCell"
 msgid "A static plot"
 msgstr "Статичний графік"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4664
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4669
 msgid "A sub-sub-sub-subsection heading"
 msgstr "Заголовок під-під-під-підрозділу"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4661
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4666
 msgid "A sub-sub-subsection heading"
 msgstr "Заголовок під-під-підрозділу"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4658
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4663
 msgid "A sub-subsection heading"
 msgstr "Заголовок підпідрозділу"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4655
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4660
 msgid "A subsection heading"
 msgstr "Заголовок підрозділу"
 
@@ -795,14 +799,14 @@ msgstr "Автодоповнення: шукаємо у %s придатні до
 msgid "Automatic labels (%i1, %o1,...)"
 msgstr "Автоматичні мітки (%i1, %o1,...)"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1329
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1475
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1335
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1481
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:773
 msgid "Automatically answer questions"
 msgstr "Автоматично відповідати на питання"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1330
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1476
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1336
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1482
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:774
 msgid "Automatically fill in answers known from the last run"
 msgstr ""
@@ -925,32 +929,32 @@ msgstr ""
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr "Вада: надіслано запит щодо автодоповнення для невідомого типу записів."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2588
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2594
 msgid "Bug: Cell left but not entered."
 msgstr "Вада: полишено комірку без введення даних."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6804
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6810
 msgid "Bug: Cell with negative y position!"
 msgstr "Вада: комірка із від’ємною координатою y!"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2773
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2779
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr "Вада: маємо питання, але не маємо комірки для відповіді на нього"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6992
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6998
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 "Вада: отримано запит на зміну вмісту комірки над початком робочого аркуша."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6967
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6973
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 "Вада: отримано запит на вилучення комірки над початком робочого аркуша."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7034
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7040
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -1011,7 +1015,7 @@ msgstr "Вада: немає останньої комірки у дужках!"
 msgid "Bug: No last cell inside a square root!"
 msgstr "Вада: немає останньої комірки у квадратному корені!"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2598
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2604
 msgid "Bug: Text changed, but no active cell."
 msgstr "Вада: змінено текст, але немає активної комірки."
 
@@ -1021,14 +1025,14 @@ msgstr "Вада: змінено текст, але немає активної 
 #: /home/gunter/src/wxmaxima/src/ImgCell.cpp:371
 #: /home/gunter/src/wxmaxima/src/SVGout.cpp:349
 #: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:459
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2123
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2261
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2336
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2372
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2387
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:4461
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7291
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7529
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2129
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2267
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2342
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2378
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2393
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:4467
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7297
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7535
 msgid "Bug: The clipboard is already opened"
 msgstr "Вада: буфер обміну вже відкрито"
 
@@ -1040,41 +1044,41 @@ msgstr "Вада: буфер обміну не відкрито для вста�
 msgid "Bug: Trying to append NULL to a group cell."
 msgstr "Вада: спроба дописування NULL до комірки групи."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:722
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:728
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 "Вада: спроба дописати виведені maxima дані до комірки поза межами робочого "
 "аркуша."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7638
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7644
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 "Вада: спроба пересунути горизонтальний курсор до місця усередині GroupCell."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2600
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2606
 msgid "Bug: Trying to record a cell contents change for undo without a cell."
 msgstr ""
 "Вада: спроба запису змін у вмісті комірок для скасовування без визначення "
 "комірки."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1999
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2005
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr "Вада: спроба позначити щось у комірці без визначення поточної комірки"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7035
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7041
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 "Вада: дія зі скасування із одночасною зміною вмісту комірки і додаванням "
 "комірки."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6997
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7003
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 "Вада: запит щодо скасування дій із коміркою поза межами робочого аркуша."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4670
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4675
 msgid "Bug: Unknown type of text"
 msgstr "Вада: невідомий тип тексту"
 
@@ -1385,13 +1389,13 @@ msgstr "Змінні, відокремлені комами"
 msgid "Commands that are executed at every start of maxima."
 msgstr "Команди, які виконуються під час кожного запуску maxima."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4667
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4672
 msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
 msgstr ""
 "Коментар (звичайний текст на робочому аркуші, який не передаватиметься "
 "maxima)"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1424
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1430
 msgid "Comment Selection"
 msgstr "Закоментувати позначене"
 
@@ -1581,16 +1585,16 @@ msgstr "Перетворює вкладений список, наприклад
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:249
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:205
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1224
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1257
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1350
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1418
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1230
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1263
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1356
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1424
 msgid "Copy"
 msgstr "Копіювати"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1229
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1267
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1360
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1235
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1273
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1366
 msgid "Copy Animation"
 msgstr "Копіювати анімацію"
 
@@ -1602,20 +1606,20 @@ msgstr "Копіювати попередню введену команду\tCtr
 msgid "Copy Previous Output\tCtrl+U"
 msgstr "Копіювати попередній результат\tCtrl+U"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1272
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1365
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1278
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1371
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:620
 msgid "Copy as EMF"
 msgstr "Копіювати як EMF"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1263
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1356
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1269
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1362
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:610
 msgid "Copy as Image"
 msgstr "Копіювати як зображення"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1258
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1351
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1264
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1357
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:604
 msgid "Copy as LaTeX"
 msgstr "Копіювати як LaTeX"
@@ -1624,19 +1628,19 @@ msgstr "Копіювати як LaTeX"
 msgid "Copy as MathML"
 msgstr "Копіювати як MathML"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1261
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1353
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1267
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1359
 msgid "Copy as MathML (e.g. to word processor)"
 msgstr "Копіювати як MathML (наприклад для текстових процесорів)"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1275
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1368
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1281
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1374
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:616
 msgid "Copy as RTF"
 msgstr "Копіювати як RTF"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1269
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1362
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1275
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1368
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:613
 msgid "Copy as SVG"
 msgstr "Копіювати як SVG"
@@ -1645,8 +1649,8 @@ msgstr "Копіювати як SVG"
 msgid "Copy as Text\tCtrl+Shift+C"
 msgstr "Копіювати як текст\tCtrl+Shift+C"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1259
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1352
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1265
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1358
 msgid "Copy as plain text"
 msgstr "Копіювати як звичайний текст"
 
@@ -1748,7 +1752,7 @@ msgid "Cursor"
 msgstr "Курсор"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:199
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1417
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1423
 msgid "Cut"
 msgstr "Вирізати"
 
@@ -1850,8 +1854,8 @@ msgstr "Вилучити"
 msgid "Delete F&unction..."
 msgstr "Вилучити ф&ункцію…"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1278
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1371
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1284
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1377
 msgid "Delete Selection"
 msgstr "Вилучити позначене"
 
@@ -1924,7 +1928,7 @@ msgstr "Продиференціювати"
 msgid "Differentiate expression"
 msgstr "Продиференціювати вираз"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1388
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1394
 msgid "Differentiate..."
 msgstr "Продиференціювати…"
 
@@ -1971,7 +1975,7 @@ msgstr "Точність показу"
 msgid "Divide"
 msgstr "Ділити"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1426
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1432
 msgid "Divide Cell"
 msgstr "Ділити комірку"
 
@@ -2311,12 +2315,12 @@ msgstr "Обчислити усі комірки\tCtrl+Shift+R"
 msgid "Evaluate All Visible Cells\tCtrl+R"
 msgstr "Обчислити усі видимі комірки\tCtrl+R"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1281
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1287
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:714
 msgid "Evaluate Cell(s)"
 msgstr "Обчислити комірки"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1409
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1415
 msgid "Evaluate Cells Above"
 msgstr "Обчислити комірки вище"
 
@@ -2324,43 +2328,43 @@ msgstr "Обчислити комірки вище"
 msgid "Evaluate Cells Above\tCtrl+Shift+P"
 msgstr "Обчислити комірку вище\tCtrl+Shift+P"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1283
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1410
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1289
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1416
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:722
 msgid "Evaluate Cells Below"
 msgstr "Обчислити комірки нижче"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1320
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1462
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1516
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1326
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1468
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1522
 msgid "Evaluate Heading 5\tShift+Ctrl+Enter"
 msgstr "Обчислити заголовок 5\tShift+Ctrl+Enter"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1326
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1466
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1526
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1332
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1472
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1532
 msgid "Evaluate Heading 6\tShift+Ctrl+Enter"
 msgstr "Обчислити заголовок 6\tShift+Ctrl+Enter"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1297
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1447
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1303
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1453
 msgid "Evaluate Part\tShift+Ctrl+Enter"
 msgstr "Обчислити частину\tShift+Ctrl+Enter"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1302
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1450
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1308
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1456
 msgid "Evaluate Section\tShift+Ctrl+Enter"
 msgstr "Обчислити розділ\tShift+Ctrl+Enter"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1314
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1458
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1506
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1320
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1464
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1512
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
 msgstr "Обчислити підпідрозділ\tShift+Ctrl+Enter"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1308
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1454
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1496
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1314
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1460
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1502
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr "Обчислити підрозділ\tShift+Ctrl+Enter"
 
@@ -2425,7 +2429,7 @@ msgstr "Розкрити"
 msgid "Expand (tr)"
 msgstr "Розкрити (триг)"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1384
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1390
 msgid "Expand Expression"
 msgstr "Розкрити вираз"
 
@@ -2572,7 +2576,7 @@ msgstr "Розкласти на множники"
 msgid "Factor Complex"
 msgstr "Розкласти на комплексні множники"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1383
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1389
 msgid "Factor Expression"
 msgstr "Розкласти на множники вираз"
 
@@ -2651,7 +2655,7 @@ msgstr "Знайти &границю…"
 msgid "Find Minimum..."
 msgstr "Знайти мінімум…"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1380
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1386
 msgid "Find Root..."
 msgstr "Знайти корінь…"
 
@@ -3006,7 +3010,7 @@ msgstr "Назва файла даних gnuplot: "
 msgid "Gnuplot has closed."
 msgstr "Gnuplot закрито."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6974
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6980
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -3089,27 +3093,27 @@ msgstr "Приховати код"
 msgid "Hide Code Cells\tAlt+Ctrl+H"
 msgstr "Приховати комірки з кодом\tAlt+Ctrl+H"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1523
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1529
 msgid "Hide Heading 5"
 msgstr "Приховати заголовок 5"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1533
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1539
 msgid "Hide Heading 6"
 msgstr "Приховати заголовок 6"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1485
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1491
 msgid "Hide Part"
 msgstr "Приховати частину"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1493
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1499
 msgid "Hide Section"
 msgstr "Приховати розділ"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1503
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1509
 msgid "Hide Subsection"
 msgstr "Приховати підрозділ"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1513
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1519
 msgid "Hide Subsubsection"
 msgstr "Приховати підпідрозділ"
 
@@ -3117,7 +3121,7 @@ msgstr "Приховати підпідрозділ"
 msgid "Hide all panes"
 msgstr "Приховати усі панелі"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1541
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1547
 msgid "Hide contents"
 msgstr "Приховати вміст"
 
@@ -3277,7 +3281,7 @@ msgstr ""
 "допомогою пунктів меню «Maxima → Перервати» та «Maxima → Перезапустити "
 "Maxima»."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5425
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5431
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1841
 msgid "Image"
 msgstr "Зображення"
@@ -3434,11 +3438,11 @@ msgstr "Вставити комірку &тексту\tCtrl+1"
 msgid "Insert Cell\tAlt+Shift+C"
 msgstr "Вставити комірку\tAlt+Shift+C"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1406
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1412
 msgid "Insert Heading5 Cell"
 msgstr "Вставити комірку Heading5"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1407
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1413
 msgid "Insert Heading6 Cell"
 msgstr "Вставити комірку Heading6"
 
@@ -3466,15 +3470,15 @@ msgstr "Вставити комірку п&ідрозділу\tCtrl+4"
 msgid "Insert S&ubsubsection Cell\tCtrl+5"
 msgstr "Вставити комірку підпі&дрозділу\tCtrl+5"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1403
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1409
 msgid "Insert Section Cell"
 msgstr "Вставити комірку розділу"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1404
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1410
 msgid "Insert Subsection Cell"
 msgstr "Вставити комірку підрозділу"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1405
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1411
 msgid "Insert Subsubsection Cell"
 msgstr "Вставити комірку підпідрозділу"
 
@@ -3482,11 +3486,11 @@ msgstr "Вставити комірку підпідрозділу"
 msgid "Insert T&itle Cell\tCtrl+2"
 msgstr "Вставити комірку з&аголовка\tCtrl+2"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1401
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1407
 msgid "Insert Text Cell"
 msgstr "Вставити текстову комірку (коментар)"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1402
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1408
 msgid "Insert Title Cell"
 msgstr "Вставити комірку заголовка"
 
@@ -3568,7 +3572,7 @@ msgstr "Проінтегрувати вираз"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Проінтегрувати вираз за допомогою алгоритму Ріша"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1387
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1393
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1525
 msgid "Integrate..."
 msgstr "Проінтегрувати…"
@@ -4070,7 +4074,7 @@ msgstr ""
 "розрізнення рядків різних рівнянь і рядків одного рівняння, поділеного на "
 "рядки."
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4646
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4651
 msgid "Maxima code"
 msgstr "Код Maxima"
 
@@ -4344,7 +4348,7 @@ msgstr "Середнє:"
 msgid "Median..."
 msgstr "Медіана…"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1286
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1292
 msgid "Merge Cells"
 msgstr "Об’єднати комірки"
 
@@ -4844,8 +4848,8 @@ msgstr ""
 "Виявлено невідомий теґ XML із назвою "
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:211
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1398
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1419
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1404
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1425
 msgid "Paste"
 msgstr "Вставити"
 
@@ -4909,7 +4913,7 @@ msgstr "Двовимірний графік"
 msgid "Plot 2D..."
 msgstr "Двовимірний графік…"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1390
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1396
 msgid "Plot 2d..."
 msgstr "Двовимірний графік…"
 
@@ -4923,7 +4927,7 @@ msgstr "Тривимірний графік"
 msgid "Plot 3D..."
 msgstr "Тривимірний графік…"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1391
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1397
 msgid "Plot 3d..."
 msgstr "Тривимірний графік…"
 
@@ -5004,8 +5008,8 @@ msgstr "Поліном 2:"
 msgid "Pop"
 msgstr "Виштовхнути"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1246
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1342
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1252
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1348
 msgid "Popout interactively"
 msgstr "Інтерактивна поява"
 
@@ -5113,16 +5117,16 @@ msgstr "Читаємо результат обчислень Maxima"
 msgid "Ready for user input"
 msgstr "Готова до введення команди"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:795
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:801
 msgid "Recalculating all cell sizes"
 msgstr "Повторно обчислюємо розміри усіх комірок"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:793
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:799
 msgid "Recalculating all cell sizes inclusive text dimensions"
 msgstr ""
 "Повторно обчислюємо для усіх комірок розміри із врахуванням розмірів тексту"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:798
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:804
 msgid "Recalculating changed cell sizes"
 msgstr "Повторно обчислюємо розміри змінених комірок"
 
@@ -5217,13 +5221,13 @@ msgstr "Перезапустити Maxima"
 msgid "Restart maxima"
 msgstr "Перезапустити maxima"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1238
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1335
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1244
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1341
 msgid "Restrict Maximum size"
 msgstr "Обмежити максимальний розмір"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5364
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5391
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5370
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5397
 msgid "Result"
 msgstr "Результат"
 
@@ -5401,7 +5405,7 @@ msgstr "Вибірок на лінію:"
 msgid "Save"
 msgstr "Зберегти"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1228
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1234
 msgid "Save Animation..."
 msgstr "Зберегти анімацію…"
 
@@ -5413,7 +5417,7 @@ msgstr "Зберегти як"
 msgid "Save As...\tShift+Ctrl+S"
 msgstr "Зберегти як\tShift+Ctrl+S"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1225
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1231
 msgid "Save Image..."
 msgstr "Зберегти зображення…"
 
@@ -5549,8 +5553,8 @@ msgstr ""
 msgid "Select"
 msgstr "Вибрати"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1399
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1421
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1405
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1427
 msgid "Select All"
 msgstr "Позначити все"
 
@@ -5854,7 +5858,7 @@ msgstr "Спростити (рац)"
 msgid "Simplify (tr)"
 msgstr "Спростити (триг)"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1382
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1388
 msgid "Simplify Expression"
 msgstr "Спростити вираз"
 
@@ -5979,7 +5983,7 @@ msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr ""
 "Розв’язати звичайне диференціальне рівняння за допомогою перетворення Лапласа"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1379
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1385
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1519
 msgid "Solve..."
 msgstr "Розв’язати…"
@@ -6034,7 +6038,7 @@ msgstr "Додаткові сталі"
 msgid "Speed versus accuracy"
 msgstr "Швидкість <-> Точність"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1231
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1237
 msgid "Start Animation"
 msgstr "Почати анімацію"
 
@@ -6090,7 +6094,7 @@ msgstr "Не вдалося запустити сервер"
 msgid "Starting server on port %d"
 msgstr "Запуск сервера на порту %d"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6221
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6227
 msgid "Starting to save the worksheet as .wxmx"
 msgstr "Розпочинаємо збереження робочого аркуша у форматі .wxmx"
 
@@ -6141,7 +6145,7 @@ msgstr "Підставити…"
 msgid "Substitute"
 msgstr "Підставити"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1385
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1391
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1052
 msgid "Substitute..."
 msgstr "Підставити…"
@@ -6541,7 +6545,7 @@ msgstr ""
 msgid "The variable the value of the current source item is stored in."
 msgstr "Змінна, до якої слід зберегти значення поточного пункту джерела."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8740
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8746
 msgid "The worksheet containing maxima's input and output"
 msgstr "Робочий аркуш, який містить вхідні і вихідні дані maxima"
 
@@ -6688,7 +6692,7 @@ msgstr "У число &підвищеної точності з рухомою �
 msgid "To &Float"
 msgstr "У число з &рухомою крапкою"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1377
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1383
 msgid "To Float"
 msgstr "У число з рухомою крапкою"
 
@@ -6816,11 +6820,11 @@ msgstr "Настанови"
 msgid "Two sample t-test"
 msgstr "Двовибіркова t-перевірка"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8610
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8616
 msgid "Type"
 msgstr "Тип"
 
-#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4680
+#: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4685
 msgid "Type in text"
 msgstr "Введіть текст"
 
@@ -6884,31 +6888,31 @@ msgstr "Розгорнути всі згорнути розділи"
 msgid "Unhide"
 msgstr "Скасувати приховування"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1520
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1526
 msgid "Unhide Heading 5"
 msgstr "Скасувати приховування заголовка 5"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1530
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1536
 msgid "Unhide Heading 6"
 msgstr "Скасувати приховування заголовка 6"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1482
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1488
 msgid "Unhide Part"
 msgstr "Скасувати приховування частини"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1490
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1496
 msgid "Unhide Section"
 msgstr "Скасувати приховування розділу"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1500
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1506
 msgid "Unhide Subsection"
 msgstr "Скасувати приховування підрозділу"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1510
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1516
 msgid "Unhide Subsubsection"
 msgstr "Скасувати приховування підпідрозділ"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1538
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1544
 msgid "Unhide contents"
 msgstr "Скасувати приховування змісту"
 
@@ -7149,7 +7153,7 @@ msgstr ""
 "Брати рівняння, експортовані за допомогою пункту «Копіювати як LaTeX», у "
 "позначення рівняння, \\[ на початку і \\] наприкінці"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7935
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7941
 msgid "Wrapped search"
 msgstr "Циклічний пошук"
 
@@ -7307,12 +7311,12 @@ msgstr ""
 "[x_1, x_2,...], або [x_1, x_2,...],[y_1, y_2,...], або matrix([x_1,y_1],[x_2,"
 "y_2],...)"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5334
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5340
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr "_%d.gif\"  alt=\"Анімована діаграма\" style=\"max-width:90%%;\" >\n"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5524
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5530
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr "_%d.gif\" alt=\"Анімована діаграма\" style=\"max-width:90%%;\" >"
@@ -7880,7 +7884,7 @@ msgstr ""
 msgid "wxWidgets is using GTK 3"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6472
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6478
 msgid "wxmx file saved"
 msgstr "Збережено файл wxmx"
 
