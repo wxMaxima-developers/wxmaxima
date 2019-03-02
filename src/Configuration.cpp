@@ -182,6 +182,7 @@ Configuration::Configuration(wxDC &dc) : m_dc(&dc)
   m_escCodes["Psi"] = wxT("\x03A8");
   m_escCodes["O"] = wxT("\x03A9");
   m_escCodes["Omega"] = wxT("\x03A9");
+  m_escCodes["Ohm"] = wxT("\x03A9");
   //////////////////////////
   m_escCodes["2"] = wxT("\x00B2");
   m_escCodes["3"] = wxT("\x00B3");

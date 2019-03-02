@@ -3708,8 +3708,13 @@ void EditorCell::StyleTextCode()
     long newlinepos = textToStyle.Find(wxT("\n"));
     if (newlinepos != wxNOT_FOUND)
     {
-      textToStyle = textToStyle.Left(newlinepos) +
-      wxString::Format(_(" ... + %i hidden lines"), textToStyle.Freq(wxT('\n')));
+      int lines = textToStyle.Freq(wxT('\n'));
+      if(lines > 1)
+        textToStyle = textToStyle.Left(newlinepos) +
+          wxString::Format(_(" ... + %i hidden lines"), lines);
+      else
+        textToStyle = textToStyle.Left(newlinepos) +
+          _(" ... + 1 hidden line");
     }
   }
 

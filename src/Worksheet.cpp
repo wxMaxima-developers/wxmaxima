@@ -355,6 +355,12 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     return;
   }
 
+  // Don't attempt to draw on a screen of the size 0.
+  if(GetClientSize().x < 1)
+    return;
+  if(GetClientSize().y < 1)
+    return;
+    
   if (m_configuration->GetPrinting())
   {
     RequestRedraw();
