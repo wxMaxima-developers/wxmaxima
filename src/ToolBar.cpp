@@ -56,7 +56,7 @@ wxBitmap ToolBar::GetImage(wxString name,
 #else
   m_ppi = wxGetDisplayPPI();
 #endif
-  if((m_ppi.x < 10) || (m_ppi.y < 10))
+  if((m_ppi.x <= 10) || (m_ppi.y <= 10))
     m_ppi = wxGetDisplayPPI();
 
   if((m_ppi.x <= 10) || (m_ppi.y <= 10))

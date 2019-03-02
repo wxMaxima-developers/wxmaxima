@@ -674,7 +674,19 @@ void Image::Recalculate(double scale)
   m_height = (int) (scale * height);
   m_width = (int) (scale * width);
 
-  // Clear this cell's image cache if it doesn't contain an image of the size
+  if((m_height < 1) || (m_width < 1))
+  {
+    scale = 1;
+    m_height = (int) (scale * height);
+    m_width = (int) (scale * width);
+  }
+
+  if((m_height < 1) || (m_width < 1))
+  {
+    m_height = 100;
+    m_width = 100;
+  }
+// Clear this cell's image cache if it doesn't contain an image of the size
   // we need right now.
   if (m_scaledBitmap.GetWidth() != m_width)
     ClearCache();

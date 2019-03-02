@@ -208,7 +208,10 @@ void Printout::SetupData()
   // factor is 1.0.
   wxSize printPPI;
   printPPI = (*m_configuration)->GetDC()->GetPPI();
-
+  if(printPPI.x < 1)
+    printPPI.x = 72;
+  if(printPPI.y < 1)
+    printPPI.y = 72;
   (*m_configuration)->GetDC()->SetUserScale(1.0,1.0);
   (*m_configuration)->SetZoomFactor_temporarily(
     printPPI.x / DPI_REFERENCE * m_oldconfig->PrintScale() / m_scaleFactor
