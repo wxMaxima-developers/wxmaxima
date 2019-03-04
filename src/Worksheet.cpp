@@ -391,12 +391,12 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
   dc.SetMapMode(wxMM_TEXT);
   dc.SetBackgroundMode(wxTRANSPARENT);
+  PrepareDC(dc);
 
   // Create a graphics context that supports antialiassing, but on MSW
   // only supports fonts that come in the Right Format.
   wxGCDC antiAliassingDC(dc);
 
-  PrepareDC(dc);
   dc.Clear();
 
 
