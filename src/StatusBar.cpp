@@ -76,9 +76,6 @@ void StatusBar::UpdateBitmaps()
   if((ppi.x == m_ppi.x) && (ppi.y == m_ppi.y))
     return;
 
-  if((ppi.x < 10) || (ppi.y < 10))
-    ppi = wxSize(72,72);
-    
   m_ppi = ppi;
   m_network_error = GetImage("network-error",
                              network_error_128_png,network_error_128_png_len,
@@ -248,6 +245,11 @@ wxBitmap StatusBar::GetImage(wxString name,
   double targetWidth = static_cast<double>(GetSize().GetHeight()) / ppi.y * ppi.x*GetContentScaleFactor();
   double targetHeight = static_cast<double>(GetSize().GetHeight())*GetContentScaleFactor();
 
+  if(targetWidth < 16)
+    targetWidth = 16;
+  if(targetHeight < 16)
+    targetHeight = 16;
+  
   wxBitmap bmp = wxArtProvider::GetBitmap(name, wxART_TOOLBAR, wxSize(targetWidth, targetHeight));
   wxImage img;
 
