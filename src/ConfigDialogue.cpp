@@ -94,11 +94,7 @@ int ConfigDialogue::GetImageSize()
   int ppi;
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
-  
-  int display_idx = wxDisplay::GetFromWindow(GetParent());
-  if (display_idx < 0)
-    display_idx = 0;
-  ppi = wxDisplay(display_idx).GetPPI();
+  ppi = display.GetPPI().x;
 #else
   ppi = wxGetDisplayPPI().x;
 #endif
@@ -133,11 +129,7 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
   int ppi;
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
-  
-  int display_idx = wxDisplay::GetFromWindow(GetParent());
-  if (display_idx < 0)
-    display_idx = 0;
-  ppi = wxDisplay(display_idx).GetPPI();
+  ppi = display.GetPPI().x;
 #else
   ppi = wxGetDisplayPPI().x;
 #endif

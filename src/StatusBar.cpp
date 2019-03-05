@@ -63,7 +63,7 @@ void StatusBar::UpdateBitmaps()
   wxDisplay display;
   
   int display_idx = wxDisplay::GetFromWindow(GetParent());
-  if (display_idx < 0)
+  if (display_idx == wxNOT_FOUND)
     display_idx = 0;
   ppi = wxDisplay(display_idx).GetPPI();
 #endif
@@ -233,11 +233,7 @@ wxBitmap StatusBar::GetImage(wxString name,
   wxSize ppi;
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
-  
-  int display_idx = wxDisplay::GetFromWindow(GetParent());
-  if (display_idx < 0)
-    display_idx = 0;
-  ppi = wxDisplay(display_idx).GetPPI();
+  ppi = display.GetPPI();
 #else
   ppi = wxGetDisplayPPI();
 

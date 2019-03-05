@@ -50,9 +50,9 @@ wxBitmap ToolBar::GetImage(wxString name,
   wxDisplay display;
   
   int display_idx = wxDisplay::GetFromWindow(GetParent());
-  if (display_idx < 0)
+  if(display_idx == wxNOT_FOUND)
     display_idx = 0;
-  ppi = wxDisplay(display_idx).GetPPI();
+  m_ppi = wxDisplay(display_idx).GetPPI();
 #else
   m_ppi = wxGetDisplayPPI();
 #endif
@@ -326,10 +326,10 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
 #if wxCHECK_VERSION(3, 1, 1)
   wxDisplay display;
   
-  int display_idx = wxDisplay::GetFromWindow(GetParent());
-  if (display_idx < 0)
+  int display_idx = wxDisplay::GetFromWindow(parent);
+  if(display_idx == wxNOT_FOUND)
     display_idx = 0;
-  ppi = wxDisplay(display_idx).GetPPI();
+  m_ppi = wxDisplay(display_idx).GetPPI();
 #else
   m_ppi = wxGetDisplayPPI();
 #endif
@@ -374,7 +374,7 @@ void ToolBar::UpdateBitmaps()
   wxDisplay display;
   
   int display_idx = wxDisplay::GetFromWindow(GetParent());
-  if (display_idx < 0)
+  if (display_idx == wxNOT_FOUND)
     display_idx = 0;
   ppi = wxDisplay(display_idx).GetPPI();
 #endif
