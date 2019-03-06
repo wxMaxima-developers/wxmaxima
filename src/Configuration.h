@@ -278,10 +278,8 @@ public:
     #if wxCHECK_VERSION(3, 1, 1)
     wxDisplay display;
     
-    int display_idx = wxDisplay::GetFromWindow(GetParent());
-    if (display_idx < 0)
-      display_idx = 0;
-    ppi = wxDisplay(display_idx).GetPPI();
+    int display_idx = 0; // TODO: Get the index of the current window.
+    ppi = wxDisplay(display_idx).GetPPI().x;
     #else
     ppi = wxGetDisplayPPI().x;
     #endif
