@@ -7929,7 +7929,7 @@ void wxMaxima::TryEvaluateNextInQueue()
 
     // If the window isn't active we can inform the user that maxima in the meantime
     // has finished working.
-    if(m_worksheet->m_configuration->NotifyIfIdle())
+    if((m_worksheet->m_configuration->NotifyIfIdle()) && (m_worksheet->GetTree() != NULL))
       m_worksheet->SetNotification(_("Maxima has finished calculating."));
 
     return; //empty queue
