@@ -297,7 +297,7 @@ wxBitmap StatusBar::GetImage(wxString name,
     img = wxImage(invalidImage_xpm);
   }
 
-  targetWidth = static_cast<double>(GetSize().GetHeight()) * ppi.x / ppi.y;
+  targetWidth = static_cast<double>(GetSize().GetHeight());
   targetHeight = static_cast<double>(GetSize().GetHeight());
 
   img.Rescale(targetWidth, targetHeight, wxIMAGE_QUALITY_HIGH);
