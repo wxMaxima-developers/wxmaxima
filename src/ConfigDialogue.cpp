@@ -47,7 +47,7 @@
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
 
-#define CONFIG_ICON_SCALE (0.6)
+#define CONFIG_ICON_SCALE (1.0)
 
 #define ABS(val) ((val) >= 0 ? (val) : -(val))
 #define MAX(a, b) ((a)>(b) ? (a) : (b))
@@ -145,6 +145,7 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
     ppi = wxGetDisplayPPI().x;
   if(ppi <= 10)
     ppi = 72;
+  
   double targetSize = MAX(ppi,75) * CONFIG_ICON_SCALE;
   int prescale;
 
