@@ -3262,6 +3262,7 @@ void EditorCell::PasteFromClipboard(bool primary)
     wxTheClipboard->GetData(obj);
     InsertText(obj.GetText());
     m_containsChanges = true;
+    StyleText();
   }
   if (primary)
     wxTheClipboard->UsePrimarySelection(false);
