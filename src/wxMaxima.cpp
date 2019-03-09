@@ -590,7 +590,6 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
       }
       else
       {
-        std::cerr<<token<<"\n";
         cell = new TextCell(m_worksheet->GetTree(), &(m_worksheet->m_configuration),
                             &m_worksheet->m_cellPointers,
                             token);
