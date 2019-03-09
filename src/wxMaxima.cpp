@@ -248,6 +248,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   wxASSERT(m_varRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *:")));
   // RegEx for blank statement removal
   wxASSERT(m_blankStatementRegEx.Compile(wxT("(^;)|((^|;)(((\\/\\*.*\\*\\/)?([[:space:]]*))+;)+)")));
+  wxASSERT(m_sbclCompilationRegEx.Compile(wxT("; compiling (.* \\.\\.\\.)")));
 
   m_statusBar->GetNetworkStatusElement()->Connect(wxEVT_LEFT_DCLICK,
                                                   wxCommandEventHandler(wxMaxima::NetworkDClick),
@@ -524,8 +525,7 @@ void wxMaxima::DoConsoleAppend(wxString s, CellType type, bool newLine,
 }
 
 TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
-{
-
+{  
   TextCell *cell = NULL;
   // If we want to append an error message to the worksheet and there is no cell
   // that can contain it we need to create such a cell.
@@ -580,24 +580,35 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
     Cell *tmp = NULL, *lst = NULL;
     while (tokens.HasMoreTokens())
     {
-      cell = new TextCell(m_worksheet->GetTree(), &(m_worksheet->m_configuration),
-                           &m_worksheet->m_cellPointers,
-                           tokens.GetNextToken());
-
-      cell->SetType(type);
-
-      if (tokens.HasMoreTokens())
-        cell->SetSkip(false);
-
-      if (lst == NULL)
-        tmp = lst = cell;
+      wxString token = tokens.GetNextToken();
+      // Move endles streams of compilation messages to the status bar...
+      if(m_sbclCompilationRegEx.Matches(token))
+      {
+        wxString fileName = token;
+        m_sbclCompilationRegEx.Replace(&fileName, wxT("\\1"));
+        LeftStatusText(wxString::Format(_("Compiling %s"),fileName));
+      }
       else
       {
-        lst->AppendCell(cell);
-        cell->ForceBreakLine(true);
-        lst = cell;
+        std::cerr<<token<<"\n";
+        cell = new TextCell(m_worksheet->GetTree(), &(m_worksheet->m_configuration),
+                            &m_worksheet->m_cellPointers,
+                            token);
+        
+        cell->SetType(type);
+        
+        if (tokens.HasMoreTokens())
+          cell->SetSkip(false);
+        
+        if (lst == NULL)
+          tmp = lst = cell;
+        else
+        {
+          lst->AppendCell(cell);
+          cell->ForceBreakLine(true);
+          lst = cell;
+        }
       }
-
       count++;
     }
     m_worksheet->InsertLine(tmp, true);
