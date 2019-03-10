@@ -1,4 +1,14 @@
-# wxMaxima 19.03.9 - Stable
+# wxMaxima 19.03.1 - Stable
+
+ * HighDPI fixes for ArchLinux, Windows and SuSE
+ * Resolved crashes on RedHat and MS Windows
+ * SBCL's compilation messages now appear in the status bar, not
+   in the worksheet.
+ * Removed an unneeded "maxima has finished calculating" on startup.
+ * Many small bug fixes.
+ * wxWidgets >= 3.1.0: Corrected the toolbar icon size.
+
+# wxMaxima 19.03.0 - Stable
 
  * The ESC sequences for inputting symbols now use autocompletion.
  * Use wxAutoBufferedPaintDC for drawing the worksheet instead of

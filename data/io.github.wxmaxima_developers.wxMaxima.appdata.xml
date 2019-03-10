@@ -54,6 +54,19 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="19.03.1" date="2019-03-10">
+      <description>
+        <ul>
+          <li>HighDPI fixes for ArchLinux, Windows and SuSE</li>
+          <li>Resolved crashes on RedHat and MS Windows</li>
+          <li>SBCL's compilation messages now appear in the status bar, not
+	  in the worksheet</li>
+          <li>Removed an unneeded &quot;maxima has finished calculating&quot; on startup</li>
+	  <li>wxWidgets &gt;= 3.1.0: Corrected the toolbar icon size</li>
+	  <li>Many small bug fixes</li>
+        </ul>
+      </description>
+    </release>
     <release version="19.03.0" date="2019-03-01">
       <description>
         <ul>
