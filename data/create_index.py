@@ -13,6 +13,7 @@ INDEX_FILES = ["maxima_44.html", "maxima_45.html", "maxima_46.html", "maxima_47.
   "maxima_48.html", "maxima_49.html", "maxima_50.html", "maxima_51.html", "maxima_52.html",
   "maxima_53.html", "maxima_54.html", "maxima_55.html"]
 
+
 def convert_index(files):
   index = open("index.hhk", "w")
   fun = re.compile(".*?\"top\"><a\shref=\"(.*?)\"><code>(.*?)</code></a>*")
@@ -33,10 +34,11 @@ def convert_index(files):
           index.write("   <param name=\"Name\" value=\"" + m.group(2) + "\"></object>\n")
   index.close
 
+
 def convert_toc(toc):
-  f = open(toc, "r")
+  with open(toc, "r") as f:
+      lines = f.readlines()
   contents = open("contents.hhc", "w")
-  lines = f.readlines()
   li = re.compile(".*?<li><a\sname=\"(.*?\")\shref=\"(.*?)\">.*?\s(.*?)</a>")
   ul = re.compile(".*<ul class=\"toc\">")
   ul_end = re.compile(".*</ul>")
@@ -52,15 +54,14 @@ def convert_toc(toc):
       contents.write("<li><object type=\"text/sitemap\">\n")
       contents.write("   <param name=\"Local\" value=\"" + m.group(2) + "\">\n")
       contents.write("   <param name=\"Name\" value=\"" + m.group(3) + "\"></object>\n")
-  f.close()
   contents.close()
 
 if __name__ == "__main__":
   try:
     convert_toc(TOC_FILE)
   except:
-    print "Error creating TOC file"
+    print("Error creating TOC file")
   try:
     convert_index(INDEX_FILES)
   except:
-    print "Error creating INDEX file"
+    print("Error creating INDEX file")
