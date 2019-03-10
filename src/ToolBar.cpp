@@ -36,7 +36,11 @@
 #include <wx/filename.h>
 #include "invalidImage.h"
 
+#if wxCHECK_VERSION(3, 1, 0)
+#define TOOLBAR_ICON_SCALE (0.25)
+#else
 #define TOOLBAR_ICON_SCALE (0.35)
+#endif
 
 #define ABS(val) ((val) >= 0 ? (val) : -(val))
 #define MAX(a, b) ((a)>(b) ? (a) : (b))
