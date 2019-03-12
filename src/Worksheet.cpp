@@ -4178,28 +4178,32 @@ void Worksheet::GetMaxPoint(int *width, int *height)
  */
 void Worksheet::AdjustSize()
 {
-  int width = m_configuration->GetBaseIndent(), height = m_configuration->GetBaseIndent();
-  int clientWidth, clientHeight, virtualHeight;
-
+  int width = 4, height = 4;
+  int virtualHeight = 4;
+  int clientWidth, clientHeight;
   GetClientSize(&clientWidth, &clientHeight);
   if (m_tree != NULL)
+  {
+    width = m_configuration->GetBaseIndent();
+    height = width;
+
     GetMaxPoint(&width, &height);
-  // when window is scrolled all the way down, document occupies top 1/8 of clientHeight
-  height += clientHeight - (int) (1.0 / 8.0 * (float) clientHeight);
-  virtualHeight = MAX(clientHeight + 10, height); // ensure we always have VSCROLL active
-
+    // when window is scrolled all the way down, document occupies top 1/8 of clientHeight
+    height += clientHeight - (int) (1.0 / 8.0 * (float) clientHeight);
+    virtualHeight = MAX(clientHeight + 10, height); // ensure we always have VSCROLL active
+      
+    // Don't set m_scrollUnit too high for big windows on hi-res screens:
+    // Allow scrolling by a tenth of a line doesn't make too much sense,
+    // but will make scrolling feel sluggish.
+    height = GetClientSize().y;
+  }
   SetVirtualSize(width, virtualHeight);
-
-  // Don't set m_scrollUnit too high for big windows on hi-res screens:
-  // Allow scrolling by a tenth of a line doesn't make too much sense,
-  // but will make scrolling feel sluggish.
-  height = GetClientSize().y;
   m_scrollUnit = height / 30;
   // Ensure a sane scroll unit even for the fringe case of a very small
   // screen.
   if (m_scrollUnit < 10)
     m_scrollUnit = 10;
-
+  
   SetScrollRate(m_scrollUnit, m_scrollUnit);
 }
 
