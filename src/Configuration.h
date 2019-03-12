@@ -277,18 +277,28 @@ public:
     int ppi;
     #if wxCHECK_VERSION(3, 1, 1)
     wxDisplay display;
-    
-    int display_idx = 0; // TODO: Get the index of the current window.
-    ppi = wxDisplay(display_idx).GetPPI().x;
-    #else
-    ppi = wxGetDisplayPPI().x;
-    #endif
+
+    if(!m_printing)
+    {
+      int display_idx;
+      if(GetWorkSheet() != NULL)
+        display_idx = wxDisplay::GetFromWindow(GetWorkSheet());
+      if (display_idx < 0)
+        display_idx = 0;
+      ppi = wxDisplay(display_idx).GetPPI().x;
+#else
+      ppi = wxGetDisplayPPI().x;
+#endif
+  }
+    else
+      ppi = 96;
+
     if (ppi / 45 < 1)
       return 1;
     else
       return ppi / 45;
   }
-
+  
   //! The y position the worksheet starts at
   int GetBaseIndent()
   {

@@ -526,17 +526,6 @@ void wxMaximaFrame::do_layout()
     .CloseButton().PinButton().Resizable();
 
   m_manager.Update();
-  wxSize ppi;
-#if wxCHECK_VERSION(3, 1, 1)
-  wxDisplay display;
-  ppi = display.GetPPI();
-#else
-  ppi = wxGetDisplayPPI();
-#endif
-  if((ppi.x < 10) || (ppi.y < 10))
-    ppi = wxGetDisplayPPI();
-  if((ppi.x <= 10) || (ppi.y <= 10))
-    ppi = wxSize(72,72);
 }
 
 void wxMaximaFrame::SetupMenu()
