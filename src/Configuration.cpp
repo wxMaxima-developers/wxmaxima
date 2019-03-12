@@ -202,6 +202,29 @@ Configuration::Configuration(wxDC &dc) : m_dc(&dc)
   m_escCodes[" --> "] = wxT("\x27F6");
 }
 
+wxSize Configuration::GetPPI(wxWindow *win)
+{
+  if(win == NULL)
+    return wxSize(96,96);
+  
+  wxSize ppi(-1,-1);
+#if wxCHECK_VERSION(3, 1, 1)
+  wxDisplay display;
+  
+  int display_idx = wxDisplay::GetFromWindow(win);
+  if (display_idx < 0)
+    display_idx = 0;
+  ppi = wxDisplay(display_idx).GetPPI();
+#endif
+
+  if((ppi.x < 10) || (ppi.y < 10))
+    ppi = wxGetDisplayPPI();
+  if((ppi.x <= 10) || (ppi.y <= 10))
+    ppi = wxSize(72,72);
+
+  return ppi;
+}
+
 wxString Configuration::GetAutosubscript_string(){
   switch (m_autoSubscript)
   {

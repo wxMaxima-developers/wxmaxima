@@ -271,25 +271,18 @@ public:
       return m_indent;
   }
 
+  //! Get the resolution of the display showing the worksheet
+  wxSize GetPPI(){return GetPPI(GetWorkSheet());}
+  //! Get the resolution of an arbitrary display
+  wxSize GetPPI(wxWindow *win);
+  
   //! How much vertical space is to be left between two group cells?
   int GetCursorWidth()
   {
     int ppi;
-    #if wxCHECK_VERSION(3, 1, 1)
-    wxDisplay display;
 
     if(!m_printing)
-    {
-      int display_idx;
-      if(GetWorkSheet() != NULL)
-        display_idx = wxDisplay::GetFromWindow(GetWorkSheet());
-      if (display_idx < 0)
-        display_idx = 0;
-      ppi = wxDisplay(display_idx).GetPPI().x;
-#else
-      ppi = wxGetDisplayPPI().x;
-#endif
-  }
+      ppi = GetPPI().x;
     else
       ppi = 96;
 
