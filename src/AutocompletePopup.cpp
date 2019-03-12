@@ -43,7 +43,7 @@ void AutocompletePopup::UpdateResults()
   switch (m_completions.GetCount())
   {
   case 1:
-    if((m_type = AutoComplete::esccommand) && (m_partial.Length() < 2))
+    if((m_type == AutoComplete::esccommand) && (m_partial.Length() < 2))
     {
       DeleteAllItems();
       for(unsigned int i=0; i < m_completions.GetCount(); i++)
