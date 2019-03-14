@@ -6452,7 +6452,7 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
       cmd = wxT("engineering_format_floats: ") + wiz->GetValue1() + wxT("$\n") +
         wxT("engineering_format_min: ") + wiz->GetValue2() + wxT("$\n") +
         wxT("engineering_format_max: ") + wiz->GetValue3() + wxT("$\n") +
-        wxT("fpprintprec: ") + wiz->GetValue4() + wxT("$\n");
+        wxT("fpprintprec: ") + wiz->GetValue4() + wxT("$");
       MenuCommand(cmd);
     }
     wiz->Destroy();
