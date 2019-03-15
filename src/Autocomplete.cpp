@@ -2577,6 +2577,8 @@ bool AutoComplete::LoadSymbols()
   m_wordList[tmplte ].Add("fifth(<expr>)"); // OPTION
   m_wordList[command].Add("first"); // FUNCTION
   m_wordList[tmplte ].Add("first(<expr>)"); // OPTION
+  m_wordList[command].Add("firstn"); // FUNCTION
+  m_wordList[tmplte ].Add("first(<expr>, <number>)"); // OPTION
   m_wordList[command].Add("fourth"); // FUNCTION
   m_wordList[tmplte ].Add("fourth(<expr>)"); // OPTION
   m_wordList[command].Add("get"); // FUNCTION
@@ -2585,6 +2587,8 @@ bool AutoComplete::LoadSymbols()
   m_wordList[tmplte ].Add("join(<l>, <m>)"); // OPTION
   m_wordList[command].Add("last"); // FUNCTION
   m_wordList[tmplte ].Add("last(<expr>)"); // OPTION
+  m_wordList[command].Add("lastn"); // FUNCTION
+  m_wordList[tmplte ].Add("lastn(<expr>, <number>)"); // OPTION
   m_wordList[command].Add("length"); // FUNCTION
   m_wordList[tmplte ].Add("length(<expr>)"); // OPTION
   m_wordList[command].Add("listarith"); // OPTION

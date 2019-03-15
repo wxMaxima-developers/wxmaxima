@@ -107,6 +107,7 @@ private:
       m_files(files) { m_prefix = prefix; }
     virtual wxDirTraverseResult OnFile(const wxString& filename)
       {
+        std::cerr<<"GeneralFiles"<<filename<<"\n";
         wxFileName newItemName(filename);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "\"";
         newItem.Replace(wxFileName::GetPathSeparator(),"/");
@@ -136,6 +137,7 @@ private:
       m_files(files) { m_prefix = prefix; }
     virtual wxDirTraverseResult OnFile(const wxString& filename)
       {
+        std::cerr<<"MacFiles"<<filename<<"\n";
         if(
           (filename.EndsWith(".mac"))||
           (filename.EndsWith(".lisp"))||
@@ -183,6 +185,7 @@ private:
       m_files(files) { m_prefix = prefix; }
     virtual wxDirTraverseResult OnFile(const wxString& filename)
       {
+        std::cerr<<"DemoFiles"<<filename<<"\n";
         if(filename.EndsWith(".dem"))
         {
           wxFileName newItemName(filename);
