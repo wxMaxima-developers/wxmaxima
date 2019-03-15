@@ -2581,6 +2581,7 @@ bool AutoComplete::LoadSymbols()
   m_wordList[tmplte ].Add("first(<expr>, <number>)"); // OPTION
   m_wordList[command].Add("fourth"); // FUNCTION
   m_wordList[tmplte ].Add("fourth(<expr>)"); // OPTION
+  m_wordList[command].Add("garbage_collect"); // FUNCTION
   m_wordList[command].Add("get"); // FUNCTION
   m_wordList[tmplte ].Add("get(<a>, <i>)"); // OPTION
   m_wordList[command].Add("join"); // FUNCTION
