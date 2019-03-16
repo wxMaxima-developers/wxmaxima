@@ -1,7 +1,7 @@
 ﻿// -*- mode: c++; c-file-style: "linux"; c-basic-offset: 2; indent-tabs-mode: nil -*-
 //
 //  Copyright (C) 2009-2015 Andrej Vodopivec <andrej.vodopivec@gmail.com>
-//  Copyright (C) 2015-2018 Gunter Königsmann     <wxMaxima@physikbuch.de>
+//  Copyright (C) 2015-2019 Gunter Königsmann     <wxMaxima@physikbuch.de>
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -2578,7 +2578,7 @@ bool AutoComplete::LoadSymbols()
   m_wordList[command].Add("first"); // FUNCTION
   m_wordList[tmplte ].Add("first(<expr>)"); // OPTION
   m_wordList[command].Add("firstn"); // FUNCTION
-  m_wordList[tmplte ].Add("first(<expr>, <number>)"); // OPTION
+  m_wordList[tmplte ].Add("firstn(<expr>, <number>)"); // OPTION
   m_wordList[command].Add("fourth"); // FUNCTION
   m_wordList[tmplte ].Add("fourth(<expr>)"); // OPTION
   m_wordList[command].Add("garbage_collect"); // FUNCTION
