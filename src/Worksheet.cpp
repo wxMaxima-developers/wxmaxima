@@ -76,7 +76,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
 #if defined __WXMSW__
                 | wxSUNKEN_BORDER
 #endif
-                  ),m_cellPointers(this)
+          ),m_cellPointers(this)
 {
   // This is somehow needed for wxAutoBufferedPaintDC
   SetBackgroundStyle(wxBG_STYLE_PAINT);
@@ -95,8 +95,9 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
   m_mouseMotionWas = false;
   m_rectToRefresh = wxRect(-1,-1,-1,-1);
   m_notificationMessage = NULL;
+  m_configuration = &m_configurationTopInstance;
   m_dc = new wxClientDC(this);
-  m_configuration = new Configuration(*m_dc);
+  m_configuration->SetContext(*m_dc);
   m_autocomplete  = new AutoComplete(m_configuration);
   m_configuration->SetWorkSheet(this);
   m_configuration->ReadConfig();
@@ -333,7 +334,6 @@ Worksheet::~Worksheet()
 
   ClearDocument();
   
-  wxDELETE(m_configuration);
   m_configuration = NULL;
   m_dc = NULL;
 }
@@ -7400,7 +7400,8 @@ void Worksheet::PasteFromClipboard()
     {
       GetActiveCell()->PasteFromClipboard();
       GetActiveCell()->GetGroup()->ResetSize();
-      Recalculate();
+      GetActiveCell()->ResetSize();
+      Recalculate(GetActiveCell()->GetGroup());
       RequestRedraw();
     }
     else

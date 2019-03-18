@@ -112,7 +112,7 @@ public:
     
     \param dc The drawing context that is to be used for drawing objects
    */
-  Configuration(wxDC &dc);
+  Configuration(wxDC *dc = NULL);
 
   //! Set the drawing context that is currently active
   void SetContext(wxDC &dc)

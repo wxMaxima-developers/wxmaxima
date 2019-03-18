@@ -47,7 +47,7 @@ BitmapOut::BitmapOut(Configuration **configuration, int scale)
   m_dc->SetUserScale(m_scale, m_scale);
   m_dc->SetPen(wxNullPen);
   
-  *m_configuration = new Configuration(*m_dc);
+  *m_configuration = new Configuration(m_dc);
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
   (*m_configuration)->SetZoomFactor_temporarily(1.0);
   (*m_configuration)->SetClientWidth(BM_FULL_WIDTH);

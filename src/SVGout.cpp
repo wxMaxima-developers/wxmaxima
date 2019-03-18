@@ -66,7 +66,7 @@ Svgout::Svgout(Configuration **configuration, wxString filename, double scale)
 #if wxCHECK_VERSION(3, 1, 0)
   m_recalculationDc->SetBitmapHandler(new wxSVGBitmapEmbedHandler());
 #endif
-  *m_configuration = new Configuration(*m_recalculationDc);
+  *m_configuration = new Configuration(m_recalculationDc);
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
   (*m_configuration)->SetClientWidth(700*m_scale);
   (*m_configuration)->SetZoomFactor_temporarily(1);

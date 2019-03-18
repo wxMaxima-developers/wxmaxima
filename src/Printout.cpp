@@ -186,7 +186,7 @@ void Printout::BreakPages()
 void Printout::SetupData()
 {
   wxDC *dc = GetDC();  
-  *m_configuration = new Configuration(*dc);
+  *m_configuration = new Configuration(dc);
   // Make sure that during print nothing is outside the crop rectangle
   (*m_configuration)->LineWidth_em(10000);
   

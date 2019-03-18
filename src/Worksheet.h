@@ -84,6 +84,8 @@ private:
   bool m_scrollToTopOfCell;
   //! Is our window currently active?
   bool m_windowActive;
+  //! The configuration storage
+  Configuration m_configurationTopInstance;
   //! The rectangle we need to refresh. -1 as "left" coordinate means: No rectangle
   wxRect m_rectToRefresh;
   /*! The size of a scroll step
@@ -620,7 +622,7 @@ public:
 
   //! Is called if this element looses or gets the focus
   void OnActivate(wxActivateEvent &event);
-  //! The central settings storage
+  //! The pointer to the central settings storage
   Configuration *m_configuration;
   //! Get the currently active EditorCell
   EditorCell *GetActiveCell()

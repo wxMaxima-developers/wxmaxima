@@ -31,7 +31,7 @@
 #include <wx/config.h>
 #include "Cell.h"
 
-Configuration::Configuration(wxDC &dc) : m_dc(&dc) 
+Configuration::Configuration(wxDC *dc) : m_dc(dc) 
 {
   m_clipToDrawRegion = true;
   m_fontChanged = true;

@@ -477,15 +477,20 @@ void TextCell::Draw(wxPoint point)
           if(m_textStyle == TS_USERLABEL)
           {
             wxString text = m_userDefinedLabel;
+            SetToolTip(m_text);
             m_unescapeRegEx.ReplaceAll(&text,wxT("\\1"));
             dc->DrawText(wxT("(") + text + wxT(")"),
                          point.x + MC_TEXT_PADDING,
                          point.y - m_realCenter + MC_TEXT_PADDING);
           }
           else
+          {
+//            SetToolTip(m_userDefinedLabel);
+            SetToolTip(wxEmptyString);
             dc->DrawText(m_displayedText,
                          point.x + MC_TEXT_PADDING,
                          point.y - m_realCenter + MC_TEXT_PADDING);
+          }
         }
       }
 
