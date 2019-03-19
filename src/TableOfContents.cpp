@@ -109,7 +109,9 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *cursorPo
       if ((long) m_displayedItems->GetItemCount() < selection)
         selection = m_displayedItems->GetItemCount() - 1;
       if ((selection >= 0) && (selection < m_displayedItems->GetItemCount()))
+      {
         m_displayedItems->SetItemState(selection, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+      }
       m_lastSelection = selection;
     }
     UpdateDisplay();

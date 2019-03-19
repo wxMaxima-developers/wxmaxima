@@ -207,39 +207,42 @@ void TextCell::SetValue(const wxString &text)
   }
   else
   {
-    if((text == wxT(" LINE SEARCH FAILED. SEE"))||
-       text.Contains(wxT(" DOCUMENTATION OF ROUTINE MCSRCH")) ||
-       text.Contains(wxT(" POSSIBLE CAUSES: FUNCTION OR GRADIENT ARE INCORRECT")))
-      m_toolTip = _("This message can appear when trying to numerically find an optimum. "
-                    "In this case it might indicate that a starting point lies in a local "
-                    "optimum that fits the data best if one parameter is increased to "
-                    "infinity or decreased to -infinity. It also can indicate that an "
-                    "attempt was made to fit data to an equation that actually matches "
-		    "the data best if one parameter is set to +/- infinity.");
-    if(text.StartsWith(wxT("incorrect syntax")) && (text.Contains(wxT("is not an infix operator"))))
-      m_toolTip = _("A command or number wasn't preceded by a \":\", a \"$\", a \";\" or a \",\".\n"
-        "Most probable cause: A missing comma between two list items.");
-    if(text.StartsWith(wxT("incorrect syntax")) && (text.Contains(wxT("Found LOGICAL expression where ALGEBRAIC expression expected"))))
-      m_toolTip = _("Most probable cause: A dot instead a comma between two list items containing assignments.");
-    if(text.Contains(wxT("Illegal use of delimiter")))
-      m_toolTip = _("Most probable cause: an operator was directly followed by a closing parenthesis.");
-
-    if(text.StartsWith(wxT("part: fell off the end.")))
-       m_toolTip = _("part() or the [] operator was used in order to extract the nth element "
-                     "of something that was less than n elements long.");
-    if(text.StartsWith(wxT("assignment: cannot assign to")))
-       m_toolTip = _("The value of few special variables is assigned by Maxima and cannot be changed by the user. Also a few constructs aren't variable names and therefore cannot be written to.");
-    if(text.StartsWith(wxT("rat: replaced ")))
-      m_toolTip = _("Normally computers use floating-point numbers that can be handled "
-                    "incredibly fast while being accurate to dozens of digits. "
-                    "They will, though, introduce a small error into some common numbers. "
-                    "For example 0.1 is represented as 3602879701896397/36028797018963968.\n"
-                    "As mathematics is based on the fact that numbers that are exactly "
-                    "equal cancel each other out small errors can quickly add up to big errors "
-                    "(see Wilkinson's Polynomials or Rump's Polynomials). Some maxima "
-                    "commands therefore use rat() in order to automatically convert floats to "
-                    "exact numbers (like 1/10 or sqrt(2)/2) where floating-point errors might "
-                    "add up.\n\n"
+    if((text.Contains(wxT("LINE SEARCH FAILED. SEE"))||
+        (text.Contains(wxT("DOCUMENTATION OF ROUTINE MCSRCH"))) ||
+        (test.Contains(wxT("ERROR RETURN OF LINE SEARCH:"))) ||
+        text.Contains(wxT("POSSIBLE CAUSES: FUNCTION OR GRADIENT ARE INCORRECT")))
+       m_toolTip = _("This message can appear when trying to numerically find an optimum. "
+                     "In this case it might indicate that a starting point lies in a local "
+                     "optimum that fits the data best if one parameter is increased to "
+                     "infinity or decreased to -infinity. It also can indicate that an "
+                     "attempt was made to fit data to an equation that actually matches "
+                     "the data best if one parameter is set to +/- infinity.");
+       if(text.StartsWith(wxT("incorrect syntax")) && (text.Contains(wxT("is not an infix operator"))))
+         m_toolTip = _("A command or number wasn't preceded by a \":\", a \"$\", a \";\" or a \",\".\n"
+                       "Most probable cause: A missing comma between two list items.");
+       if(text.StartsWith(wxT("incorrect syntax")) && (text.Contains(wxT("Found LOGICAL expression where ALGEBRAIC expression expected"))))
+         m_toolTip = _("Most probable cause: A dot instead a comma between two list items containing assignments.");
+       if(text.StartsWith(wxT("incorrect syntax")) && (text.Contains(wxT("is not a prefix operator"))))
+         m_toolTip = _("Most probable cause: Two commas or similar separators in a row.");
+       if(text.Contains(wxT("Illegal use of delimiter")))
+         m_toolTip = _("Most probable cause: an operator was directly followed by a closing parenthesis.");
+       
+       if(text.StartsWith(wxT("part: fell off the end.")))
+         m_toolTip = _("part() or the [] operator was used in order to extract the nth element "
+                       "of something that was less than n elements long.");
+       if(text.StartsWith(wxT("assignment: cannot assign to")))
+         m_toolTip = _("The value of few special variables is assigned by Maxima and cannot be changed by the user. Also a few constructs aren't variable names and therefore cannot be written to.");
+       if(text.StartsWith(wxT("rat: replaced ")))
+         m_toolTip = _("Normally computers use floating-point numbers that can be handled "
+                       "incredibly fast while being accurate to dozens of digits. "
+                       "They will, though, introduce a small error into some common numbers. "
+                       "For example 0.1 is represented as 3602879701896397/36028797018963968.\n"
+                       "As mathematics is based on the fact that numbers that are exactly "
+                       "equal cancel each other out small errors can quickly add up to big errors "
+                       "(see Wilkinson's Polynomials or Rump's Polynomials). Some maxima "
+                       "commands therefore use rat() in order to automatically convert floats to "
+                       "exact numbers (like 1/10 or sqrt(2)/2) where floating-point errors might "
+                       "add up.\n\n"
                     "This error message doesn't occur if exact numbers (1/10 instead of 0.1) "
                     "are used.\n"
                     "The info that numbers have automatically been converted can be suppressed "
