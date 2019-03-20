@@ -101,9 +101,9 @@ Image::Image(Configuration **config, const wxBitmap &bitmap)
   m_configuration = config;
   m_width = 1;
   m_height = 1;
-  LoadImage(bitmap);
   m_maxWidth = -1;
   m_maxHeight = -1;
+  LoadImage(bitmap);
 }
 
 // constructor which loads an image
@@ -113,9 +113,9 @@ Image::Image(Configuration **config, wxString image, bool remove, wxFileSystem *
   m_scaledBitmap.Create(1, 1);
   m_width = 1;
   m_height = 1;
-  LoadImage(image, remove, filesystem);
   m_maxWidth = -1;
   m_maxHeight = -1;
+  LoadImage(image, remove, filesystem);
 }
 
 Image::~Image()
@@ -612,6 +612,9 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
 
   m_extension = wxFileName(image).GetExt();
 
+  m_originalWidth = 400;
+  m_originalHeight = 250;
+
   if (Image.Ok())
   {
     m_originalWidth = Image.GetWidth();
@@ -619,12 +622,8 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
     m_isOk = true;
   }
   else
-  {
-    // Leave space for an image showing an error message
-    m_originalWidth = 400;
-    m_originalHeight = 250;
     m_isOk = false;
-  }
+
   Recalculate();
 
 }
