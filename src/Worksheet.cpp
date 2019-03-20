@@ -7401,7 +7401,7 @@ void Worksheet::PasteFromClipboard()
       GetActiveCell()->PasteFromClipboard();
       GetActiveCell()->GetGroup()->ResetSize();
       GetActiveCell()->ResetSize();
-      Recalculate(GetActiveCell()->GetGroup());
+      Recalculate(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
       RequestRedraw();
     }
     else

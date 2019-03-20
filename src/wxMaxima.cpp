@@ -3211,8 +3211,8 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
 
   UpdateDrawPane();
 
-   wxSocketEvent dummy(wxSOCKET_INPUT);
-   ClientEvent(dummy);
+//  wxSocketEvent dummy(wxSOCKET_INPUT);
+//  ClientEvent(dummy);
 
   // Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();

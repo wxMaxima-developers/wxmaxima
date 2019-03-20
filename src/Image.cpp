@@ -99,6 +99,8 @@ Image::Image(Configuration **config, wxMemoryBuffer image, wxString type)
 Image::Image(Configuration **config, const wxBitmap &bitmap)
 {
   m_configuration = config;
+  m_width = 1;
+  m_height = 1;
   LoadImage(bitmap);
   m_maxWidth = -1;
   m_maxHeight = -1;
@@ -109,6 +111,8 @@ Image::Image(Configuration **config, wxString image, bool remove, wxFileSystem *
 {
   m_configuration = config;
   m_scaledBitmap.Create(1, 1);
+  m_width = 1;
+  m_height = 1;
   LoadImage(image, remove, filesystem);
   m_maxWidth = -1;
   m_maxHeight = -1;
