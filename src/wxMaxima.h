@@ -634,7 +634,10 @@ protected:
   wxString m_lastPrompt;
   wxString m_lastPath;
   wxPrintData *m_printData;
-  //! Did we tell maxima to close?
+  /*! Did we tell maxima to close?
+
+    If we didn't we respan an unexpectedly-closing maxima.
+   */
   bool m_closing;
   wxString m_openFile;
   //! The directory with maxima's temp files

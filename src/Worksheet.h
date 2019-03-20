@@ -622,7 +622,11 @@ public:
 
   //! Is called if this element looses or gets the focus
   void OnActivate(wxActivateEvent &event);
-  //! The pointer to the central settings storage
+  /*! The pointer to the currently active central settings storage
+
+    Whilst printing or exporting the worksheet a settings storage
+    with the print settings might be active.
+   */
   Configuration *m_configuration;
   //! Get the currently active EditorCell
   EditorCell *GetActiveCell()

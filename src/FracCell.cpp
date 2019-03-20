@@ -215,10 +215,7 @@ void FracCell::RecalculateHeight(int fontsize)
     if (!m_exponent)
     {
       m_height = m_num->GetMaxHeight() + m_denom->GetMaxHeight() +
-        Scale_Px(4.5); // TODO: Theoretically this should be a 4. But
-                       // the example a:1/b$for i:1 thru 15 do a:subst(b=1/b+1,a)$a;kill(a)$
-                       // shows that 4 isn't sufficient => a rounding error? Or what did I get
-                       // completely wrong?
+        Scale_Px(4);
       m_center = m_num->GetMaxHeight() + Scale_Px(2);
     }
     else
