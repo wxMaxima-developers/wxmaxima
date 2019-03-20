@@ -102,8 +102,6 @@ public:
   void SetGroup(Cell *parent);
 
 protected:
-  //! The "/".
-  TextCell *m_divSign;
   //! The nummerator
   Cell *m_num;
   //! The denominator

@@ -50,7 +50,6 @@ FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_open2 = NULL;
   m_close2 = NULL;
   m_divide = NULL;
-  m_divSign = new TextCell(this, config, cellPointers, wxT("/"));
 }
 
 void FracCell::SetGroup(Cell *parent)
