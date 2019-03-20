@@ -7057,11 +7057,11 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   }
   // We have saved the file now => No need to have the timer around any longer.
   m_autoSaveTimer.Stop();
-
+  m_closing = true;
   wxConfigBase *config = wxConfig::Get();
   if (m_lastPath.Length() > 0)
     config->Write(wxT("lastPath"), m_lastPath);
-  m_closing = true;
+  KillMaxima();
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
   // Allow the operating system to keep the clipboard's contents even after we
