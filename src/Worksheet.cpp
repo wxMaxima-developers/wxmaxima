@@ -853,8 +853,9 @@ bool Worksheet::RecalculateIfNeeded()
   return true;
 }
 
-void Worksheet::Recalculate(GroupCell *start, bool force)
+void Worksheet::Recalculate(Cell *start, bool force)
 {
+  start = start->GetGroup();
   if(force)
     m_configuration->RecalculationForce(force);
 

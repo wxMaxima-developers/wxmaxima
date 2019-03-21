@@ -917,7 +917,7 @@ public:
   bool RecalculateIfNeeded();
 
   //! Schedule a recalculation of the worksheet starting with the cell start.
-  void Recalculate(GroupCell *start, bool force = false);
+  void Recalculate(Cell *start, bool force = false);
 
   void Recalculate(bool force = false)
   { Recalculate(m_tree, force); }
