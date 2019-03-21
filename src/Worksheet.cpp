@@ -855,20 +855,23 @@ bool Worksheet::RecalculateIfNeeded()
 
 void Worksheet::Recalculate(Cell *start, bool force)
 {
-  start = start->GetGroup();
+  GroupCell *group = m_tree;
+  if(start != NULL)
+    group = dynamic_cast<GroupCell *>(start->GetGroup());
+  
   if(force)
     m_configuration->RecalculationForce(force);
 
   GroupCell *tmp = m_tree;
   if(m_recalculateStart == NULL)
-    m_recalculateStart = start;
+    m_recalculateStart = group;
   else
-    // Move m_recalculateStart backwards to start, if start comes before m_recalculateStart.
+    // Move m_recalculateStart backwards to group, if group comes before m_recalculateStart.
     while(tmp != NULL)
     {
-      if (tmp == start)
+      if (tmp == group)
       {
-        m_recalculateStart = start;
+        m_recalculateStart = group;
         return;
       }
 
@@ -7402,8 +7405,8 @@ void Worksheet::PasteFromClipboard()
     if (GetActiveCell() != NULL)
     {
       GetActiveCell()->PasteFromClipboard();
-      GetActiveCell()->GetGroup()->ResetSize();
       GetActiveCell()->ResetSize();
+      GetActiveCell()->GetGroup()->ResetSize();
       Recalculate(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
       RequestRedraw();
     }
