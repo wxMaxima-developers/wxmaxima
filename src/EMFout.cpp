@@ -52,7 +52,7 @@ Emfout::Emfout(Configuration **configuration, wxString filename)
 
   wxString m_tempFileName = wxFileName::CreateTempFileName(wxT("wxmaxima_size_"));
   m_recalculationDc = new wxEnhMetaFileDC(m_tempFileName,3000,50000);
-  *m_configuration = new Configuration(*m_recalculationDc);
+  *m_configuration = new Configuration(m_recalculationDc);
   (*m_configuration)->ShowCodeCells(m_oldconfig->ShowCodeCells());
   (*m_configuration)->SetClientWidth(3000);
   (*m_configuration)->SetZoomFactor_temporarily(1);

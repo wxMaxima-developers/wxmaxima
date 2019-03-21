@@ -54,7 +54,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   // Redirect all debug messages to a dockable panel and output some info
   // about this program.
   wxPanel *m_logPane = new LogPane(this, -1);
-  wxLogMessage(wxString::Format(_("wxMaxima version %s"), GITVERSION));
+  wxLogDebug(wxString::Format(_("wxMaxima version %s"), GITVERSION));
   #ifdef __WXMSW__
   wxLogMessage(_("Running on MS Windows"));
   #endif
