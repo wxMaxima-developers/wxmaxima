@@ -51,6 +51,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_unsavedDocuments(wxT("unsaved")),
   m_recentPackages(wxT("packages"))
 {
+  wxPanel *m_logPane = new LogPane(this, -1);
+
   SetName(title);
   if(!wxPersistenceManager::Get().RegisterAndRestore(this))
   {
@@ -61,8 +63,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                     wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )*.75);
       if (winSize.x<800) winSize.x=800;
       if (winSize.y<600) winSize.y=600;
+      SetSize(winSize);
     }
-    SetSize(winSize);
   }
 
   m_isNamed = false;
@@ -346,8 +348,7 @@ void wxMaximaFrame::do_layout()
                             FloatingSize(greekPane->GetEffectiveMinSize()).
                             Left());
 
-  wxPanel *logPane = new LogPane(this, -1);
-  m_manager.AddPane(logPane,
+  m_manager.AddPane(m_logPane,
                     wxAuiPaneInfo().Name(wxT("log")).
                             Show(false).CloseButton().PinButton().
                             DockFixed(false).

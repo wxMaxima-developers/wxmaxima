@@ -739,6 +739,8 @@ protected:
   XmlInspector *m_xmlInspector;
   //! true=force an update of the status bar at the next call of StatusMaximaBusy()
   bool m_forceStatusbarUpdate;
+  //! The panel the log and debug messages will appear on
+  wxPanel *m_logPane;
   //! The worksheet itself
   Worksheet *m_worksheet;
   //! The history pane
