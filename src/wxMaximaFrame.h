@@ -632,10 +632,6 @@ private:
   //! True=We are currently saving.
   bool m_StatusSaving;
 
-  void set_properties();
-
-  void do_layout();
-
   void SetupToolBar();
 
 /*! 

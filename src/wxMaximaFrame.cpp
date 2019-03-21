@@ -51,22 +51,47 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_unsavedDocuments(wxT("unsaved")),
   m_recentPackages(wxT("packages"))
 {
+  // Redirect all debug messages to a dockable panel and output some info
+  // about this program.
   wxPanel *m_logPane = new LogPane(this, -1);
+  wxLogMessage(wxString::Format(_("wxMaxima version %s"), GITVERSION));
+  #ifdef __WXMSW__
+  wxLogMessage(_("Running on MS Windows"));
+  #endif
+  #ifdef __WXMOTIF__
+  wxLogMessage(_("Running on Motif"));
+  #endif
+  #ifdef __WXDFB__
+  wxLogMessage(_("Running on DirectFB"));
+  #endif
+  #ifdef __WXUNIVERSAL__
+  wxLogMessage(_("Running on the universal wxWidgets port"));
+  #endif
+  #ifdef __WXOSX__
+  wxLogMessage(_("Running on Mac OS"));
+  #endif
+  #ifdef __WXGTK__
+  #ifdef __WXGTK3__
+  wxLogMessage(_("wxWidgets is using GTK 3"));
+  #else
+  wxLogMessage(_("wxWidgets is using GTK 2"));
+  #endif
+  #endif
 
+  // Make wxWidgets remember the size and position of the wxMaxima window
   SetName(title);
   if(!wxPersistenceManager::Get().RegisterAndRestore(this))
   {
-    wxSize winSize = wxDefaultSize;
-    if(winSize == wxDefaultSize)
-    {
-      winSize = wxSize(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )*.75,
-                    wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )*.75);
-      if (winSize.x<800) winSize.x=800;
-      if (winSize.y<600) winSize.y=600;
-      SetSize(winSize);
-    }
+    // We don't remember the window size from a previous wxMaxima run
+    // => Make sure the window is at least half-way big enough to make sense.
+    wxSize winSize = wxSize(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )*.75,
+                     wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )*.75);
+    if (winSize.x<800) winSize.x=800;
+    if (winSize.y<600) winSize.y=600;
+    SetSize(winSize);
   }
 
+  // Some default values
   m_isNamed = false;
   m_configFileName = configFile,
   m_updateEvaluationQueueLengthDisplay = true;
@@ -82,6 +107,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   // Better support for low-resolution netbook screens.
   wxDialog::EnableLayoutAdaptation(wxDIALOG_ADAPTATION_MODE_ENABLED);
 
+  // Now it is time to construct the window contents.
+  
   // console
   m_worksheet = new Worksheet(this, -1);
 
@@ -102,6 +129,233 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_StatusMaximaBusy = calculating;
   StatusMaximaBusy(waiting);
 
+  #if defined (__WXMSW__)
+  // On Windows the taskbar icon needs to reside in the Ressources file the linker
+  // includes. Also it needs to be in Microsoft's own .ico format =>
+  // This file we don't ship with the source, but take it from the Resources
+  // file instead.
+  SetIcon(wxICON(icon0));
+#elif defined (__WXGTK__)
+  // This icon we include in the executable [in its compressed form] so we avoid
+  // the questions "Was the icon file packaged with wxMaxima?" and "Can we
+  // find it?".
+  SetIcon(wxMaximaIcon());
+#endif
+#ifndef __WXOSX__
+  SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) + _("[ unsaved ]"));
+#else
+  SetTitle(_("untitled"));
+#endif
+
+  m_manager.AddPane(m_worksheet,
+                    wxAuiPaneInfo().Name(wxT("console")).
+                            Center().
+                            CloseButton(false).
+                            CaptionVisible(false).
+                            MinSize(wxSize(100,100)).
+                            PaneBorder(false));
+
+  m_manager.AddPane(m_history,
+                    wxAuiPaneInfo().Name(wxT("history")).
+                            Show(false).CloseButton().PinButton().
+                            TopDockable(true).
+                            BottomDockable(true).
+                            LeftDockable(true).
+                            RightDockable(true).
+                            PaneBorder(true).
+                            Right());
+
+  m_manager.AddPane(m_worksheet->m_tableOfContents,
+                    wxAuiPaneInfo().Name(wxT("structure")).
+                            Show(true).CloseButton().PinButton().
+                            TopDockable(true).
+                            BottomDockable(true).
+                            LeftDockable(true).
+                            RightDockable(true).
+                            PaneBorder(true).
+                            Right());
+
+  m_manager.AddPane(m_xmlInspector,
+                    wxAuiPaneInfo().Name(wxT("XmlInspector")).
+                            Show(false).CloseButton().PinButton().
+                            TopDockable(true).
+                            BottomDockable(true).
+                            LeftDockable(true).
+                            RightDockable(true).
+                            PaneBorder(true).
+                            Right());
+
+  m_manager.AddPane(CreateStatPane(),
+                    wxAuiPaneInfo().Name(wxT("stats")).
+                            Show(false).CloseButton().PinButton().
+                            TopDockable(true).
+                            BottomDockable(true).
+                            LeftDockable(true).
+                            RightDockable(true).
+                            PaneBorder(true).
+                            Left());
+
+  wxPanel *greekPane = CreateGreekPane();
+  m_manager.AddPane(greekPane,
+                    wxAuiPaneInfo().Name(wxT("greek")).
+                            Show(false).CloseButton().PinButton().
+                            DockFixed(false).
+                            Gripper(false).
+                            TopDockable(true).
+                            BottomDockable(true).
+                            LeftDockable(true).
+                            RightDockable(true).
+                            PaneBorder(true).
+                            MinSize(greekPane->GetEffectiveMinSize()).
+                            BestSize(greekPane->GetEffectiveMinSize()).
+                            MaxSize(greekPane->GetEffectiveMinSize()).
+                            FloatingSize(greekPane->GetEffectiveMinSize()).
+                            Left());
+
+  m_manager.AddPane(m_logPane,
+                    wxAuiPaneInfo().Name(wxT("log")).
+                            Show(false).CloseButton().PinButton().
+                            DockFixed(false).
+                            Gripper(false).
+                            TopDockable(true).
+                            BottomDockable(true).
+                            LeftDockable(true).
+                            RightDockable(true).
+                            PaneBorder(true).
+                            MinSize(m_logPane->GetEffectiveMinSize()).
+                            FloatingSize(m_logPane->GetEffectiveMinSize()).
+                            Left());
+  
+  wxPanel *symbolsPane = CreateSymbolsPane();
+  m_manager.AddPane(symbolsPane,
+                    wxAuiPaneInfo().Name(wxT("symbols")).
+                            Show(false).
+                            DockFixed(false).CloseButton().PinButton().
+                            Gripper(false).
+                            TopDockable(true).
+                            BottomDockable(true).
+                            LeftDockable(true).
+                            RightDockable(true).
+                            PaneBorder(true).
+                            MinSize(symbolsPane->GetEffectiveMinSize()).
+                            BestSize(symbolsPane->GetEffectiveMinSize()).
+                            MaxSize(symbolsPane->GetEffectiveMinSize()).
+                            FloatingSize(symbolsPane->GetEffectiveMinSize()).
+                            Left());
+  m_manager.AddPane(CreateMathPane(),
+                    wxAuiPaneInfo().Name(wxT("math")).
+                            Show(false).CloseButton(true).PinButton().
+                            TopDockable(true).
+                            BottomDockable(true).
+                            LeftDockable(true).
+                            RightDockable(true).
+                            PaneBorder(true).
+                            Left());
+
+  m_manager.AddPane(CreateFormatPane(),
+                    wxAuiPaneInfo().Name(wxT("format")).
+                            Show(false).CloseButton(true).PinButton().
+                            TopDockable(true).
+                            BottomDockable(true).
+                            LeftDockable(true).
+                            RightDockable(true).
+                            PaneBorder(true).
+                            Left());
+
+  m_manager.AddPane(m_drawPane = new DrawPane(this, -1),
+                    wxAuiPaneInfo().Name(wxT("draw")).
+                    Show(false).CloseButton(true).PinButton().
+                    TopDockable(true).
+                    BottomDockable(true).
+                    LeftDockable(true).
+                    RightDockable(true).
+                    PaneBorder(true).
+                    Left());
+
+  m_worksheet->m_mainToolBar = new ToolBar(this);
+  
+  m_manager.AddPane(m_worksheet->m_mainToolBar,
+                    wxAuiPaneInfo().Name(wxT("toolbar")).
+                    Top().TopDockable(true).Show(true).
+                    BottomDockable(true).//ToolbarPane().
+                    CaptionVisible(false).CloseButton(false).
+                    LeftDockable(false).DockFixed().
+                    RightDockable(false).Gripper(false).Row(1)
+    );
+
+  m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).
+    MinSize(greekPane->GetEffectiveMinSize()).
+    BestSize(greekPane->GetEffectiveMinSize()).
+    Show(true).Gripper(false).CloseButton().PinButton().
+    MaxSize(greekPane->GetEffectiveMinSize());
+
+  m_manager.GetPane(wxT("log")) = m_manager.GetPane(wxT("log")).
+    Show(false).Gripper(false).CloseButton().PinButton();
+
+  m_manager.GetPane(wxT("symbols")) = m_manager.GetPane(wxT("symbols")).
+    MinSize(symbolsPane->GetEffectiveMinSize()).
+    BestSize(symbolsPane->GetEffectiveMinSize()).
+    Show(true).Gripper(false).CloseButton().PinButton().
+    MaxSize(symbolsPane->GetEffectiveMinSize());
+
+  m_manager.GetPane(wxT("draw")) = m_manager.GetPane(wxT("draw")).
+    MinSize(symbolsPane->GetEffectiveMinSize()).
+    BestSize(symbolsPane->GetEffectiveMinSize()).
+    Show(true).CloseButton().PinButton().
+    MaxSize(symbolsPane->GetEffectiveMinSize());
+
+
+  // Read the perspektive (the sidebar state and positions).
+  wxConfigBase *config = wxConfig::Get();
+  bool loadPanes = true;
+  bool toolbarEnabled = true;
+  wxString perspective;
+  config->Read(wxT("AUI/toolbarEnabled"), &toolbarEnabled);
+  config->Read(wxT("AUI/savePanes"), &loadPanes);
+  config->Read(wxT("AUI/perspective"), &perspective);
+
+  if(perspective != wxEmptyString)
+  {
+    // Loads the window states. We tell wxaui not to recalculate and display the
+    // results of this step now as we will do so manually after
+    // eventually adding the toolbar.
+    m_manager.LoadPerspective(perspective,false);
+  }
+
+  // Make sure that some of the settings that comprise the perspektive actualle
+  // make sense.
+  m_worksheet->m_mainToolBar->Realize();
+  // It somehow is possible to hide the maxima worksheet - which renders wxMaxima
+  // basically useless => force it to be enabled.
+  m_manager.GetPane(wxT("console")).Show(true);
+  m_manager.GetPane(wxT("toolbar")).Show(toolbarEnabled);
+
+  // LoadPerspective overwrites the pane names with the saved ones -which can
+  // belong to a translation different to the one selected currently =>
+  // let's overwrite the names here.
+  m_manager.GetPane(wxT("symbols")) =
+    m_manager.GetPane(wxT("symbols")).Caption(_("Mathematical Symbols")).CloseButton().PinButton().Resizable().Gripper(false);
+  m_manager.GetPane(wxT("format")) =
+    m_manager.GetPane(wxT("format")).Caption(_("Insert")).CloseButton().PinButton().Resizable();
+  m_manager.GetPane(wxT("draw")) =
+    m_manager.GetPane(wxT("draw")).Caption(_("Plot using Draw")).CloseButton().PinButton().Resizable();
+  m_manager.GetPane(wxT("greek")) =
+    m_manager.GetPane(wxT("greek")).Caption(_("Greek Letters")).CloseButton().PinButton().Resizable().Gripper(false);
+  m_manager.GetPane(wxT("log")) =
+    m_manager.GetPane(wxT("log")).Caption(_("Debug Messages")).CloseButton().PinButton().Resizable().Gripper(false);
+  m_manager.GetPane(wxT("math")) = m_manager.GetPane(wxT("math")).Caption(_("General Math")).
+    CloseButton().PinButton().Resizable();
+  m_manager.GetPane(wxT("stats")) = m_manager.GetPane(wxT("stats")).Caption(_("Statistics")).
+    CloseButton().PinButton().Resizable();
+  m_manager.GetPane(wxT("XmlInspector")) =
+    m_manager.GetPane(wxT("XmlInspector")).Caption(_("Raw XML monitor")).CloseButton().PinButton().Resizable();
+  m_manager.GetPane(wxT("structure")) =
+    m_manager.GetPane(wxT("structure")).Caption(_("Table of Contents")).CloseButton().PinButton().Resizable();
+  m_manager.GetPane(wxT("history")) = m_manager.GetPane(wxT("history")).Caption(_("History"))
+    .CloseButton().PinButton().Resizable();
+
+  m_manager.Update();
+
   // Add some shortcuts that aren't automatically set by menu entries.
   wxAcceleratorEntry entries[14];
   entries[0].Set(wxACCEL_CTRL, WXK_TAB, menu_autocomplete);
@@ -120,12 +374,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   entries[13].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('7'), menu_convert_to_heading6);
   wxAcceleratorTable accel(14, entries);
   SetAcceleratorTable(accel);
-
-  Move(pos);
-  SetSize(size);
-
-  set_properties();
-  do_layout();
 }
 
 wxSize wxMaximaFrame::DoGetBestClientSize() const
@@ -255,267 +503,6 @@ wxMaximaFrame::~wxMaximaFrame()
 
   wxConfig::Get()->Write(wxT("AUI/perspective"), perspective);
   m_manager.UnInit();
-}
-
-void wxMaximaFrame::set_properties()
-{
-#if defined (__WXMSW__)
-  // On Windows the taskbar icon needs to reside in the Ressources file the linker
-  // includes. Also it needs to be in Microsoft's own .ico format =>
-  // This file we don't ship with the source, but take it from the Resources
-  // file instead.
-  SetIcon(wxICON(icon0));
-#elif defined (__WXGTK__)
-  // This icon we include in the executable [in its compressed form] so we avoid
-  // the questions "Was the icon file packaged with wxMaxima?" and "Can we
-  // find it?".
-  SetIcon(wxMaximaIcon());
-#endif
-#ifndef __WXOSX__
-  SetTitle(wxString::Format(_("wxMaxima %s "), wxT(GITVERSION)) + _("[ unsaved ]"));
-#else
-  SetTitle(_("untitled"));
-#endif
-
-  m_worksheet->SetBackgroundColour(wxColour(wxT("WHITE")));
-  m_worksheet->SetMinSize(wxSize(100, 100));
-}
-
-void wxMaximaFrame::do_layout()
-{
-  m_manager.AddPane(m_worksheet,
-                    wxAuiPaneInfo().Name(wxT("console")).
-                            Center().
-                            CloseButton(false).
-                            CaptionVisible(false).
-                            MinSize(wxSize(100,100)).
-                            PaneBorder(false));
-
-  m_manager.AddPane(m_history,
-                    wxAuiPaneInfo().Name(wxT("history")).
-                            Show(false).CloseButton().PinButton().
-                            TopDockable(true).
-                            BottomDockable(true).
-                            LeftDockable(true).
-                            RightDockable(true).
-                            PaneBorder(true).
-                            Right());
-
-  m_manager.AddPane(m_worksheet->m_tableOfContents,
-                    wxAuiPaneInfo().Name(wxT("structure")).
-                            Show(true).CloseButton().PinButton().
-                            TopDockable(true).
-                            BottomDockable(true).
-                            LeftDockable(true).
-                            RightDockable(true).
-                            PaneBorder(true).
-                            Right());
-
-  m_manager.AddPane(m_xmlInspector,
-                    wxAuiPaneInfo().Name(wxT("XmlInspector")).
-                            Show(false).CloseButton().PinButton().
-                            TopDockable(true).
-                            BottomDockable(true).
-                            LeftDockable(true).
-                            RightDockable(true).
-                            PaneBorder(true).
-                            Right());
-
-  m_manager.AddPane(CreateStatPane(),
-                    wxAuiPaneInfo().Name(wxT("stats")).
-                            Show(false).CloseButton().PinButton().
-                            TopDockable(true).
-                            BottomDockable(true).
-                            LeftDockable(true).
-                            RightDockable(true).
-                            PaneBorder(true).
-                            Left());
-
-  wxPanel *greekPane = CreateGreekPane();
-  m_manager.AddPane(greekPane,
-                    wxAuiPaneInfo().Name(wxT("greek")).
-                            Show(false).CloseButton().PinButton().
-                            DockFixed(false).
-                            Gripper(false).
-                            TopDockable(true).
-                            BottomDockable(true).
-                            LeftDockable(true).
-                            RightDockable(true).
-                            PaneBorder(true).
-                            MinSize(greekPane->GetEffectiveMinSize()).
-                            BestSize(greekPane->GetEffectiveMinSize()).
-                            MaxSize(greekPane->GetEffectiveMinSize()).
-                            FloatingSize(greekPane->GetEffectiveMinSize()).
-                            Left());
-
-  m_manager.AddPane(m_logPane,
-                    wxAuiPaneInfo().Name(wxT("log")).
-                            Show(false).CloseButton().PinButton().
-                            DockFixed(false).
-                            Gripper(false).
-                            TopDockable(true).
-                            BottomDockable(true).
-                            LeftDockable(true).
-                            RightDockable(true).
-                            PaneBorder(true).
-                            MinSize(logPane->GetEffectiveMinSize()).
-                            FloatingSize(logPane->GetEffectiveMinSize()).
-                            Left());
-  wxLogMessage(wxString::Format(_("wxMaxima version %s"), GITVERSION));
-  #ifdef __WXMSW__
-  wxLogMessage(_("Running on MS Windows"));
-  #endif
-  #ifdef __WXMOTIF__
-  wxLogMessage(_("Running on Motif"));
-  #endif
-  #ifdef __WXDFB__
-  wxLogMessage(_("Running on DirectFB"));
-  #endif
-  #ifdef __WXUNIVERSAL__
-  wxLogMessage(_("Running on the universal wxWidgets port"));
-  #endif
-  #ifdef __WXOSX__
-  wxLogMessage(_("Running on Mac OS"));
-  #endif
-  #ifdef __WXGTK__
-  #ifdef __WXGTK3__
-  wxLogMessage(_("wxWidgets is using GTK 3"));
-  #else
-  wxLogMessage(_("wxWidgets is using GTK 2"));
-  #endif
-  #endif
-  
-  wxPanel *symbolsPane = CreateSymbolsPane();
-  m_manager.AddPane(symbolsPane,
-                    wxAuiPaneInfo().Name(wxT("symbols")).
-                            Show(false).
-                            DockFixed(false).CloseButton().PinButton().
-                            Gripper(false).
-                            TopDockable(true).
-                            BottomDockable(true).
-                            LeftDockable(true).
-                            RightDockable(true).
-                            PaneBorder(true).
-                            MinSize(symbolsPane->GetEffectiveMinSize()).
-                            BestSize(symbolsPane->GetEffectiveMinSize()).
-                            MaxSize(symbolsPane->GetEffectiveMinSize()).
-                            FloatingSize(symbolsPane->GetEffectiveMinSize()).
-                            Left());
-  m_manager.AddPane(CreateMathPane(),
-                    wxAuiPaneInfo().Name(wxT("math")).
-                            Show(false).CloseButton(true).PinButton().
-                            TopDockable(true).
-                            BottomDockable(true).
-                            LeftDockable(true).
-                            RightDockable(true).
-                            PaneBorder(true).
-                            Left());
-
-  m_manager.AddPane(CreateFormatPane(),
-                    wxAuiPaneInfo().Name(wxT("format")).
-                            Show(false).CloseButton(true).PinButton().
-                            TopDockable(true).
-                            BottomDockable(true).
-                            LeftDockable(true).
-                            RightDockable(true).
-                            PaneBorder(true).
-                            Left());
-
-  m_manager.AddPane(m_drawPane = new DrawPane(this, -1),
-                    wxAuiPaneInfo().Name(wxT("draw")).
-                    Show(false).CloseButton(true).PinButton().
-                    TopDockable(true).
-                    BottomDockable(true).
-                    LeftDockable(true).
-                    RightDockable(true).
-                    PaneBorder(true).
-                    Left());
-
-  m_worksheet->m_mainToolBar = new ToolBar(this);
-  
-  m_manager.AddPane(m_worksheet->m_mainToolBar,
-                    wxAuiPaneInfo().Name(wxT("toolbar")).
-                    Top().TopDockable(true).Show(true).
-                    BottomDockable(true).//ToolbarPane().
-                    CaptionVisible(false).CloseButton(false).
-                    LeftDockable(false).DockFixed().
-                    RightDockable(false).Gripper(false).Row(1)
-    );
-
-  m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).
-    MinSize(greekPane->GetEffectiveMinSize()).
-    BestSize(greekPane->GetEffectiveMinSize()).
-    Show(true).Gripper(false).CloseButton().PinButton().
-    MaxSize(greekPane->GetEffectiveMinSize());
-
-  m_manager.GetPane(wxT("log")) = m_manager.GetPane(wxT("log")).
-    Show(false).Gripper(false).CloseButton().PinButton();
-
-  m_manager.GetPane(wxT("symbols")) = m_manager.GetPane(wxT("symbols")).
-    MinSize(symbolsPane->GetEffectiveMinSize()).
-    BestSize(symbolsPane->GetEffectiveMinSize()).
-    Show(true).Gripper(false).CloseButton().PinButton().
-    MaxSize(symbolsPane->GetEffectiveMinSize());
-
-  m_manager.GetPane(wxT("draw")) = m_manager.GetPane(wxT("draw")).
-    MinSize(symbolsPane->GetEffectiveMinSize()).
-    BestSize(symbolsPane->GetEffectiveMinSize()).
-    Show(true).CloseButton().PinButton().
-    MaxSize(symbolsPane->GetEffectiveMinSize());
-
-
-  wxConfigBase *config = wxConfig::Get();
-  bool loadPanes = true;
-  bool toolbarEnabled = true;
-  wxString perspective;
-  config->Read(wxT("AUI/toolbarEnabled"), &toolbarEnabled);
-  config->Read(wxT("AUI/savePanes"), &loadPanes);
-  config->Read(wxT("AUI/perspective"), &perspective);
-
-  // Remove the toolbar with info from the perspective.
-  wxRegEx removeToolbarState(wxT("\\|[^\\|]*name=toolbar[^\\|]*"));
-  removeToolbarState.ReplaceAll(&perspective,wxT(""));
-  wxRegEx removeToolbarSize(wxT("\\|dock_size.1[^\\|]*"));
-  removeToolbarSize.ReplaceAll(&perspective,wxT(""));
-
-  if(perspective != wxEmptyString)
-  {
-    // Loads the window states. We tell wxaui not to recalculate and display the
-    // results of this step now as we will do so manually after
-    // eventually adding the toolbar.
-    m_manager.LoadPerspective(perspective,false);
-  }
-  m_worksheet->m_mainToolBar->Realize();
-  // It somehow is possible to hide the maxima worksheet - which renders wxMaxima
-  // basically useless => force it to be enabled.
-  m_manager.GetPane(wxT("console")).Show(true);
-  m_manager.GetPane(wxT("toolbar")).Show(toolbarEnabled);
-
-  // LoadPerspective overwrites the pane names with the saved ones -which can
-  // belong to a translation different to the one selected currently =>
-  // let's overwrite the names here.
-  m_manager.GetPane(wxT("symbols")) =
-    m_manager.GetPane(wxT("symbols")).Caption(_("Mathematical Symbols")).CloseButton().PinButton().Resizable().Gripper(false);
-  m_manager.GetPane(wxT("format")) =
-    m_manager.GetPane(wxT("format")).Caption(_("Insert")).CloseButton().PinButton().Resizable();
-  m_manager.GetPane(wxT("draw")) =
-    m_manager.GetPane(wxT("draw")).Caption(_("Plot using Draw")).CloseButton().PinButton().Resizable();
-  m_manager.GetPane(wxT("greek")) =
-    m_manager.GetPane(wxT("greek")).Caption(_("Greek Letters")).CloseButton().PinButton().Resizable().Gripper(false);
-  m_manager.GetPane(wxT("log")) =
-    m_manager.GetPane(wxT("log")).Caption(_("Debug Messages")).CloseButton().PinButton().Resizable().Gripper(false);
-  m_manager.GetPane(wxT("math")) = m_manager.GetPane(wxT("math")).Caption(_("General Math")).
-    CloseButton().PinButton().Resizable();
-  m_manager.GetPane(wxT("stats")) = m_manager.GetPane(wxT("stats")).Caption(_("Statistics")).
-    CloseButton().PinButton().Resizable();
-  m_manager.GetPane(wxT("XmlInspector")) =
-    m_manager.GetPane(wxT("XmlInspector")).Caption(_("Raw XML monitor")).CloseButton().PinButton().Resizable();
-  m_manager.GetPane(wxT("structure")) =
-    m_manager.GetPane(wxT("structure")).Caption(_("Table of Contents")).CloseButton().PinButton().Resizable();
-  m_manager.GetPane(wxT("history")) = m_manager.GetPane(wxT("history")).Caption(_("History"))
-    .CloseButton().PinButton().Resizable();
-
-  m_manager.Update();
 }
 
 void wxMaximaFrame::SetupMenu()

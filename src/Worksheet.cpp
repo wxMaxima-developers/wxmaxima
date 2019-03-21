@@ -80,6 +80,8 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
 {
   // This is somehow needed for wxAutoBufferedPaintDC
   SetBackgroundStyle(wxBG_STYLE_PAINT);
+  SetBackgroundColour(wxColour(wxT("WHITE")));
+  SetMinSize(wxSize(100, 100));
   
 #if wxUSE_ACCESSIBILITY
   m_accessibilityInfo = NULL;
