@@ -356,7 +356,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     RequestRedraw();
     return;
   }
-
+  
   // Don't attempt to draw on a screen of the size 0.
   if(GetClientSize().x < 1)
     return;
@@ -387,6 +387,11 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 
   if ((sz.x < 1) || (sz.y < 1))
     return;
+
+  // We might be triggered after someone changed the worksheet and before the idle
+  // loop caused it to be recalculated => Ensure all sizes and positions to be known
+  // before we proceed.
+  RecalculateIfNeeded();
 
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
   wxAutoBufferedPaintDC dc(this);
