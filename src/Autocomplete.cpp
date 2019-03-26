@@ -2729,6 +2729,7 @@ bool AutoComplete::LoadSymbols()
   m_wordList[command].Add("invert"); // FUNCTION
   m_wordList[tmplte ].Add("invert(<M>)"); // OPTION
   m_wordList[command].Add("lmxchar"); // OPTION
+  m_wordList[command].Add("load_pathname"); // OPTION
   m_wordList[command].Add("matrix"); // FUNCTION
   m_wordList[tmplte ].Add("matrix(<row_1>, ..., <row_n>)"); // OPTION
   m_wordList[command].Add("matrixmap"); // FUNCTION
