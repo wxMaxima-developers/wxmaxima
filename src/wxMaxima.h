@@ -234,13 +234,6 @@ private:
   wxString GetUnmatchedParenthesisState(wxString text,int &index);
   //! The buffer all text from maxima is stored in before converting it to a wxString.
   wxMemoryBuffer m_uncompletedChars;
-  /*! How many load() commands are currently nested?
-
-    We are only interested on the filenames of load() commands that are 
-    loaded by the user, but not the ones that are loaded by a loaded 
-    package.
-   */
-  int m_nestedLoadCommands;
 
 protected:
   //! The gnuplot process info

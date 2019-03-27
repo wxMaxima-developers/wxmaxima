@@ -169,7 +169,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
 {
   m_gnuplotProcess = NULL;
   m_openInitialFileError = false;
-  m_nestedLoadCommands = 0;
   m_maximaJiffies_old = 0;
   m_cpuTotalJiffies_old = 0;
 
@@ -978,7 +977,6 @@ bool wxMaxima::StartMaxima(bool force)
         );
   }
   
-  m_nestedLoadCommands = 0;
   // We only need to start or restart maxima if we aren't connected to a maxima
   // that till now never has done anything and therefore is in perfect working
   // order.
@@ -1193,7 +1191,6 @@ void wxMaxima::KillMaxima()
   m_isRunning = false;
 
   wxLogMessage(_("Killing Maxima."));
-  m_nestedLoadCommands = 0;
   m_configCommands = wxEmptyString;
   // The new maxima process will be in its initial condition => mark it as such.
   m_hasEvaluatedCells = false;
@@ -1730,22 +1727,8 @@ void wxMaxima::ReadVariables(wxString &data)
             }
             if(name == "*wx-load-file-name*")
             {
-              if(m_nestedLoadCommands == 0)
-              {
-                m_recentPackages.AddDocument(value);
-                wxLogMessage(wxString::Format(_("Maxima loads the file %s."),value));
-              }
-            }
-            if(name == "*wx-load-file-start*")
-            {
-              if(value == "0")
-                m_nestedLoadCommands -= 1;
-              if(value == "1")
-                m_nestedLoadCommands += 1;
-              if(m_nestedLoadCommands < 0)
-                m_nestedLoadCommands = 0;
-              if((value == "0") && (m_nestedLoadCommands == 0))
-                UpdateRecentDocuments();
+              m_recentPackages.AddDocument(value);
+              wxLogMessage(wxString::Format(_("Maxima loads the file %s."),value));
             }
          }
           var = var->GetNext();

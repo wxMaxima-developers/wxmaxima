@@ -71,6 +71,6 @@ wxString wxMathML::GetCmd()
     }
     cmd += lineWithoutComments + " ";
   }
-  wxASSERT_MSG(cmd.Length()>58000,_("Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"));
+  wxASSERT_MSG(cmd.Length()>54000,_("Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"));
   return wxT(":lisp-quiet ") + cmd + "\n";
 }

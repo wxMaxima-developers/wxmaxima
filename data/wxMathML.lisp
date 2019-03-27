@@ -1832,12 +1832,10 @@
 	     *variable-initial-values*)
 
     ;; ezunits publishes all known units in a function.
-    ;; Currently the following lines produce a warning, though, that
-    ;; $known_units is undefined.
-    ;;	(if (boundp '$known_units)
-    ;;	    (no-warning
-    ;;	     (format t "~{~a~^$~}"
-    ;;		     (mapcar #'print_unit (cdr ($known_units))))))
+    (if (boundp '$known_units)
+    	(no-warning
+    	 (format t "~{~a~^$~}"
+    		 (mapcar #'print_unit (cdr ($known_units))))))
     (format t "</wxxml-symbols>")
     #+clisp (finish-output)
     )
@@ -1847,8 +1845,6 @@
 ;;; Communication between wxMaxima and wxMaxima about variables and directories
 ;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
 ;;; Communicate the contents of variables to wxMaxima
   (defun wx-print-variable (var)
     (format t "<variable>")
@@ -2029,49 +2025,35 @@
 ;;; We also inform wxMaxima about the name of the package and about the fact
 ;;; if it was loaded by another package.
 ;;;
+
+  (defvar *wxmaxima-nested-loads* 0 "How many load commands are nested, currently?")
+  (setf (symbol-function 'load_original_wxmaxima) (symbol-function '$load))
+  
   (no-warning
    (defun $load (filename)
-     (let ((searched-for
-	    ($file_search1 filename
-			   '((mlist) $file_search_maxima $file_search_lisp  )))
-	   type)
-       (setq type ($file_type searched-for))
-       (case type
-	     (($maxima)
-	      #+clisp (finish-output)
-	      (format t "<variables>")
-	      (format t "<variable><name>*wx-load-file-name*</name><value>~a</value></variable>"
-		      (wxxml-fix-string filename))
-	      (format t "<variable><name>*wx-load-file-start*</name><value>1</value></variable>")
-	      (format t "</variables>")
-	      ($batchload searched-for)
-	      (format t "<variables>")
-	      (format t "<variable><name>*wx-load-file-start*</name><value>0</value></variable>")
-	      (format t "</variables>")
-	      (wxPrint_autoompletesymbols))
-	     (($lisp $object)
-	      ;; do something about handling errors
-	      ;; during loading. Foobar fail act errors.
-	      (format t "<variables>")
-	      (format t "<variable><name>*wx-load-file-name*</name><value>~a</value></variable>"
-		      (wxxml-fix-string filename))
-	      (format t "<variable><name>*wx-load-file-start*</name><value>1</value></variable>")
-	      (format t "</variables>")
-	      (no-warning
-	       (load-and-tell searched-for))
-	      (format t "<variables>")
-	      (format t "<variable><name>*wx-load-file-start*</name><value>0</value></variable>")
-	      (format t "</variables>")
-	      #+clisp (finish-output)
-	      (wxPrint_autoompletesymbols))
-	     (t
-	      (merror "Maxima bug: Unknown file type ~M" type)))
-       searched-for)))
-  (force-output)
+
+     ;; Inform wxMaxima that we load a file.
+     (if (eq *wxmaxima-nested-loads* 0)
+	 (progn
+	   (format t "<variables>")
+	   (format t "<variable><name>*wx-load-file-name*</name><value>~a</value></variable>"
+		   (wxxml-fix-string filename))
+	   (format t "</variables>")))
+     (setq *wxmaxima-nested-loads* (+ *wxmaxima-nested-loads* 1))
+     ;; Load the file
+     (unwind-protect
+	 (load_original_wxmaxima filename)
+       (progn
+	 ;; After loading the file: Tell wxMaxima we have finished loading the file
+	 ;; and what autocompletable symbols we know about.
+	 (setq *wxmaxima-nested-loads* (- *wxmaxima-nested-loads* 1))
+	 (if (eq *wxmaxima-nested-loads* 0)
+	     (wxPrint_autoompletesymbols))
+	 ))))
   (format t "</suppressOutput>")
   ;; Publish all new global variables maxima might contain to wxMaxima's
   ;; autocompletion feature.
   (wxPrint_autoompletesymbols)
   (wx-print-variables)
-  (force-output)
+  (finish-output)
 )
