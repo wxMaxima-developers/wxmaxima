@@ -3,6 +3,8 @@ Current:
  * Autocompletion sometimes cleared the result after inputting it
  * Added more commands to autocompletion
  * Spanish and italian translation updates
+ * We no more need to re-implement the load() routine from maxima.
+   Instead we call the original one now.
 
 19.03.1:
  * HighDPI fixes for ArchLinux, Windows and SuSE
