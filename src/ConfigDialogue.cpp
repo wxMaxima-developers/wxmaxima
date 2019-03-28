@@ -53,42 +53,6 @@
 #define MAX(a, b) ((a)>(b) ? (a) : (b))
 #define MIN(a, b) ((a)>(b) ? (b) : (a))
 
-/*! The enum that chooses the language in the language drop-down menu.
-
-  \attention
-  - Should match whatever is put in the m_language.
-*/
-const int langs[] =
-        {
-                wxLANGUAGE_DEFAULT,
-                wxLANGUAGE_CATALAN,
-                wxLANGUAGE_CHINESE_SIMPLIFIED,
-                wxLANGUAGE_CHINESE_TRADITIONAL,
-                wxLANGUAGE_CZECH,
-                wxLANGUAGE_DANISH,
-                wxLANGUAGE_ENGLISH,
-                wxLANGUAGE_FINNISH,
-                wxLANGUAGE_FRENCH,
-                wxLANGUAGE_GALICIAN,
-                wxLANGUAGE_GERMAN,
-                wxLANGUAGE_GREEK,
-                wxLANGUAGE_HUNGARIAN,
-                wxLANGUAGE_ITALIAN,
-                wxLANGUAGE_JAPANESE,
-#if wxCHECK_VERSION(3, 0, 1)
-                wxLANGUAGE_KABYLE,
-#endif
-                wxLANGUAGE_NORWEGIAN_BOKMAL,
-                wxLANGUAGE_POLISH,
-                wxLANGUAGE_PORTUGUESE_BRAZILIAN,
-                wxLANGUAGE_RUSSIAN,
-                wxLANGUAGE_SPANISH,
-                wxLANGUAGE_TURKISH,
-                wxLANGUAGE_UKRAINIAN
-        };
-
-#define LANGUAGE_NUMBER (long)(sizeof(langs)/(signed)sizeof(langs[1]))
-
 int ConfigDialogue::GetImageSize()
 {
   int ppi;
@@ -203,6 +167,32 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
 
 ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
 {
+  m_languages[_("(Use default language)")]=wxLANGUAGE_DEFAULT;
+  m_languages[_("Catalan")]=wxLANGUAGE_CATALAN;
+  m_languages[_("Chinese (Simplified)")]=wxLANGUAGE_CHINESE_SIMPLIFIED;
+  m_languages[_("Chinese (traditional)")]=wxLANGUAGE_CHINESE_TRADITIONAL;
+  m_languages[_("Czech")]=wxLANGUAGE_CZECH;
+  m_languages[_("Danish")]=wxLANGUAGE_DANISH;
+  m_languages[_("English")]=wxLANGUAGE_ENGLISH;
+  m_languages[_("Finnish")]=wxLANGUAGE_FINNISH;
+  m_languages[_("French")]=wxLANGUAGE_FRENCH;
+  m_languages[_("Galician")]=wxLANGUAGE_GALICIAN;
+  m_languages[_("German")]=wxLANGUAGE_GERMAN;
+  m_languages[_("Greek")]=wxLANGUAGE_GREEK;
+  m_languages[_("Hungarian")]=wxLANGUAGE_HUNGARIAN;
+  m_languages[_("Italian")]=wxLANGUAGE_ITALIAN;
+  m_languages[_("Japanese")]=wxLANGUAGE_JAPANESE;
+#if wxCHECK_VERSION(3, 0, 1)
+  m_languages[_("Kabyle")]=wxLANGUAGE_KABYLE;
+#endif
+  m_languages[_("Norwegian")]=wxLANGUAGE_NORWEGIAN_BOKMAL;
+  m_languages[_("Polish")]=wxLANGUAGE_POLISH;
+  m_languages[_("Portuguese (Brazilian)")]=wxLANGUAGE_PORTUGUESE_BRAZILIAN;
+  m_languages[_("Russian")]=wxLANGUAGE_RUSSIAN;
+  m_languages[_("Spanish")]=wxLANGUAGE_SPANISH;
+  m_languages[_("Turkish")]=wxLANGUAGE_TURKISH;
+  m_languages[_("Ukrainian")]=wxLANGUAGE_UKRAINIAN;
+  
   m_configuration = cfg;
 #if defined __WXOSX__
   SetSheetStyle(wxPROPSHEET_BUTTONTOOLBOOK | wxPROPSHEET_SHRINKTOFIT);
@@ -432,7 +422,6 @@ void ConfigDialogue::SetProperties()
 
 
   int rs = 0;
-  int lang = wxLANGUAGE_UNKNOWN;
   int panelSize = 1;
 
   config->Read(wxT("maxima"), &mp);
@@ -452,6 +441,7 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
   config->Read(wxT("HTMLequationFormat"), &exportWithMathJAX);
   config->Read(wxT("pos-restore"), &rs);
+  int lang = wxLANGUAGE_UNKNOWN;
   config->Read(wxT("language"), &lang);
   config->Read(wxT("documentclass"), &documentclass);
   config->Read(wxT("texPreamble"), &texPreamble);
@@ -467,16 +457,17 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("incrementalSearch"), &incrementalSearch);
   config->Read(wxT("usejsmath"), &usejsmath);
   config->Read(wxT("keepPercent"), &keepPercent);
+  m_language->SetSelection(0);
   unsigned int i = 0;
-  for (i = 0; i < LANGUAGE_NUMBER; i++)
-    if (langs[i] == lang)
-      break;
-  if (i < LANGUAGE_NUMBER)
-    m_language->SetSelection(i);
-  else
-    m_language->SetSelection(0);
+  for( Languages::iterator it = m_languages.begin(); it != m_languages.end(); ++it )
+  {
+    if(it->second == lang)
+      m_language->SetSelection(i);
+    i++;
+  }
 
-  config->Read(wxT("symbolPaneAdditionalChars"), &symbolPaneAdditionalChars);
+
+    config->Read(wxT("symbolPaneAdditionalChars"), &symbolPaneAdditionalChars);
 
   m_documentclass->SetValue(documentclass);
   m_mathJaxURL->SetValue(configuration->MathJaXURL());
@@ -852,37 +843,13 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(6, 2, 5, 5);
   wxFlexGridSizer *vsizer = new wxFlexGridSizer(18, 1, 5, 5);
 
+  wxArrayString languages;
+  for(Languages::iterator it = m_languages.begin(); it != m_languages.end(); ++it )
+    languages.Add(it->first);
+
+  
   wxStaticText *lang = new wxStaticText(panel, -1, _("Language:"));
-  const wxString m_language_choices[] =
-          {
-                  _("(Use default language)"),
-                  _("Catalan"),
-                  _("Chinese Simplified"),
-                  _("Chinese traditional"),
-                  _("Czech"),
-                  _("Danish"),
-                  _("English"),
-                  _("Finnish"),
-                  _("French"),
-                  _("Galician"),
-                  _("German"),
-                  _("Greek"),
-                  _("Hungarian"),
-                  _("Italian"),
-                  _("Japanese"),
-#if wxCHECK_VERSION(3, 0, 1)
-                  _("Kabyle"),
-#endif
-                  _("Norwegian"),
-                  _("Polish"),
-                  _("Portuguese (Brazilian)"),
-                  _("Russian"),
-                  _("Spanish"),
-                  _("Turkish"),
-                  _("Ukrainian")
-          };
-  m_language = new wxChoice(panel, language_id, wxDefaultPosition, wxSize(230, -1), LANGUAGE_NUMBER,
-                            m_language_choices);
+  m_language = new wxChoice(panel, language_id, wxDefaultPosition, wxSize(230, -1), languages);
   grid_sizer->Add(lang, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
@@ -1273,9 +1240,13 @@ void ConfigDialogue::WriteSettings()
   else
     config->Write(wxT("pos-restore"), 0);
   long i = 0;
-  i = m_language->GetSelection();
-  if (i > -1 && i < LANGUAGE_NUMBER)
-    config->Write(wxT("language"), langs[i]);
+  config->Write(wxT("language"), (int) wxLANGUAGE_UNKNOWN);
+  for(Languages::iterator it = m_languages.begin(); it != m_languages.end(); ++it )
+  {
+    if(i++ == m_language->GetSelection())
+      config->Write(wxT("language"), it->second);
+
+  }
   config->Write(wxT("symbolPaneAdditionalChars"), m_symbolPaneAdditionalChars->GetValue());
 
   configuration->CopyBitmap(m_copyBitmap->GetValue());

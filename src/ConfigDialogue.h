@@ -31,6 +31,7 @@ dialog. The preferences themself will be read directly using
 
 #include <wx/wx.h>
 #include <wx/image.h>
+#include <wx/hashmap.h>
 
 #include <wx/propdlg.h>
 #include <wx/generic/propdlg.h>
@@ -61,7 +62,6 @@ enum
   save_id,
   load_id
 };
-
 
 /*! The configuration dialog
 
@@ -102,7 +102,11 @@ public:
   void WriteSettings();
 
 private:
+  //! The configuration storage
   Configuration *m_configuration;
+  
+  WX_DECLARE_STRING_HASH_MAP(int, Languages);
+  Languages m_languages;
   /*! TheSample text that is shown by the style selector.
 
     This is a piece of text that shows the user how the selected style will look.

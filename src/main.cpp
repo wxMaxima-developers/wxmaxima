@@ -144,14 +144,20 @@ bool MyApp::OnInit()
   config->Read(wxT("language"), &lang);
 
   if(wxLocale::IsAvailable(lang))
+  {
     m_locale.Init(lang);
+    if((lang != wxLANGUAGE_UNKNOWN) && (lang != wxLANGUAGE_DEFAULT) &&
+       (lang != wxLocale::GetSystemLanguage()))
+      wxSetEnv(wxT("LANG"), m_locale.GetCanonicalName());
+  }
   else
-    m_locale.Init(wxLANGUAGE_ENGLISH);
+  {
+    wxLogDebug("According to the OS the current language isn't available!");
+    wxLogNull blocker;
+    m_locale.Init(lang);
+  }
 
   m_dirstruct =  new Dirstructure;
-  if((lang != wxLANGUAGE_UNKNOWN) && (lang != wxLANGUAGE_DEFAULT) &&
-     (lang != wxLocale::GetSystemLanguage()))
-    wxSetEnv(wxT("LANG"), m_locale.GetCanonicalName());
 
 #ifdef __WXMSW__
   wxString oldWorkingDir = wxGetCwd();
