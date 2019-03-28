@@ -1908,7 +1908,8 @@
            "Info: wxMathml.cpp: Changing the working dir during a maxima session isn't implemented for this lisp.")
   	  (namestring dir)
 	  (wx-print-variables)))
-      (format t "Warning: Can set maxima's working directory but cannot change it in a running maxima session:~%~&~%")))
+      (error (c)        (format t "Warning: Can set maxima's working directory but cannot change it during the maxima session :~%~&~%")
+          (values 0 c))))
 
 ;;;;;;;;;;;;;;;;;;;;;
   ;; table_form implementation
