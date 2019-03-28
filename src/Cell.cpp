@@ -357,6 +357,7 @@ void Cell::DrawList(wxPoint point)
 
 void Cell::RecalculateList(int fontsize)
 {
+  std::cerr<<"RecalculateList\n";
   Cell *tmp = this;
 
   while (tmp != NULL)

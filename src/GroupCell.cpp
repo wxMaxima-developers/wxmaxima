@@ -1974,6 +1974,7 @@ EditorCell *GroupCell::GetEditable()
 
 void GroupCell::BreakLines()
 {
+  std::cerr<<"BreakLines!\n";
   BreakLines(m_output);
 }
 

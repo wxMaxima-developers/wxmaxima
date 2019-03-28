@@ -331,6 +331,8 @@ wxString SlideShow::ToXML()
     flags += wxT(" running=\"true\"");
   else
     flags += wxT(" running=\"false\"");
+  flags += wxString::Format(wxT(" frame=\"%i\""),m_displayed);
+
   if (m_framerate > 0)
     flags +=  wxString::Format(wxT(" fr=\"%i\""), GetFrameRate());
   return wxT("\n<slide") + flags + wxT(">") + images + wxT("</slide>");
