@@ -148,7 +148,21 @@ bool MyApp::OnInit()
     m_locale.Init(lang);
     if((lang != wxLANGUAGE_UNKNOWN) && (lang != wxLANGUAGE_DEFAULT) &&
        (lang != wxLocale::GetSystemLanguage()))
-      wxSetEnv(wxT("LANG"), m_locale.GetCanonicalName());
+    {
+      wxString localeName = m_locale.GetCanonicalName();
+      if((m_locale.GetSystemEncoding() == wxFONTENCODING_UTF8) ||
+         (m_locale.GetSystemEncoding() == wxFONTENCODING_SYSTEM) ||
+         (m_locale.GetSystemEncoding() == wxFONTENCODING_UNICODE) ||
+         (m_locale.GetSystemEncoding() == wxFONTENCODING_DEFAULT))
+        localeName+=wxT(".UTF-8");
+      if(m_locale.GetSystemEncoding() == wxFONTENCODING_UTF16)
+        localeName+=wxT(".UTF-16");
+      if(m_locale.GetSystemEncoding() == wxFONTENCODING_UTF32)
+        localeName+=wxT(".UTF-32");
+    
+      wxLogDebug(wxString::Format(_("Setting maxima's locale to %s."),localeName));
+      wxSetEnv(wxT("LANG"), localeName);
+    }
   }
   else
   {
