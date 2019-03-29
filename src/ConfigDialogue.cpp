@@ -1262,6 +1262,15 @@ void ConfigDialogue::WriteSettings()
   config->Flush();
 
   {
+    wxFileName startupFile(m_startupFileName);
+    startupFile.MakeAbsolute();
+    wxString startupDir = startupFile.GetPath();
+    if(!wxDirExists(startupDir))
+    {
+      wxLogMessage(wxString::Format(_("The directory %s with maxima's startup file doesn't exist. Trying to create it..."),startupDir));
+      wxMkdir(startupDir);
+    }
+      
     wxFileOutputStream output(m_startupFileName);
     if(output.IsOk())
     {
