@@ -139,36 +139,46 @@ bool MyApp::OnInit()
 
   wxFileSystem::AddHandler(new wxZipFSHandler);
 
+  m_locale.AddCatalogLookupPathPrefix(m_dirstruct->LocaleDir());
+  m_locale.AddCatalogLookupPathPrefix(m_dirstruct->LocaleDir() + wxT("/wxwin"));
+  m_locale.AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
+  m_locale.AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
+  m_locale.AddCatalog(wxT("wxMaxima"));
+  m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
+
   wxConfigBase *config = wxConfig::Get();
   lang = wxLocale::GetSystemLanguage();
-  config->Read(wxT("language"), &lang);
-
-  if(wxLocale::IsAvailable(lang))
+  if(lang == wxLANGUAGE_UNKNOWN)
+    lang = wxLANGUAGE_DEFAULT;
+  if(config->Read(wxT("language"), &lang))
   {
-    m_locale.Init(lang);
-    if((lang != wxLANGUAGE_UNKNOWN) && (lang != wxLANGUAGE_DEFAULT) &&
-       (lang != wxLocale::GetSystemLanguage()))
+    if(wxLocale::IsAvailable(lang))
     {
-      wxString localeName = m_locale.GetCanonicalName();
-      if((m_locale.GetSystemEncoding() == wxFONTENCODING_UTF8) ||
-         (m_locale.GetSystemEncoding() == wxFONTENCODING_SYSTEM) ||
-         (m_locale.GetSystemEncoding() == wxFONTENCODING_UNICODE) ||
-         (m_locale.GetSystemEncoding() == wxFONTENCODING_DEFAULT))
-        localeName+=wxT(".UTF-8");
-      if(m_locale.GetSystemEncoding() == wxFONTENCODING_UTF16)
-        localeName+=wxT(".UTF-16");
-      if(m_locale.GetSystemEncoding() == wxFONTENCODING_UTF32)
-        localeName+=wxT(".UTF-32");
-    
-      wxLogDebug(wxString::Format(_("Setting maxima's locale to %s."),localeName));
-      wxSetEnv(wxT("LANG"), localeName);
+      m_locale.Init(lang);
+      if((lang != wxLANGUAGE_UNKNOWN) && (lang != wxLANGUAGE_DEFAULT) &&
+         (lang != wxLocale::GetSystemLanguage()))
+      {
+        wxString localeName = m_locale.GetCanonicalName();
+        if((m_locale.GetSystemEncoding() == wxFONTENCODING_UTF8) ||
+           (m_locale.GetSystemEncoding() == wxFONTENCODING_SYSTEM) ||
+           (m_locale.GetSystemEncoding() == wxFONTENCODING_UNICODE) ||
+           (m_locale.GetSystemEncoding() == wxFONTENCODING_DEFAULT))
+          localeName+=wxT(".UTF-8");
+        if(m_locale.GetSystemEncoding() == wxFONTENCODING_UTF16)
+          localeName+=wxT(".UTF-16");
+        if(m_locale.GetSystemEncoding() == wxFONTENCODING_UTF32)
+          localeName+=wxT(".UTF-32");
+        
+        wxLogDebug(wxString::Format(_("Setting maxima's locale to %s."),localeName));
+        wxSetEnv(wxT("LANG"), localeName);
+      }
     }
-  }
-  else
-  {
-    wxLogDebug("According to the OS the current language isn't available!");
-    wxLogNull blocker;
-    m_locale.Init(lang);
+    else
+    {
+      wxLogDebug("According to the OS the current language isn't available!");
+      wxLogNull blocker;
+      m_locale.Init(lang);
+    }
   }
 
   m_dirstruct =  new Dirstructure;
@@ -205,13 +215,6 @@ bool MyApp::OnInit()
   wxSetWorkingDirectory(oldWorkingDir);
 
 #endif
-
-  m_locale.AddCatalogLookupPathPrefix(m_dirstruct->LocaleDir());
-  m_locale.AddCatalogLookupPathPrefix(m_dirstruct->LocaleDir()+wxT("/wxwin"));
-  m_locale.AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
-  m_locale.AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
-  m_locale.AddCatalog(wxT("wxMaxima"));
-  m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
 
 #if defined __WXOSX__
   wxString path;
