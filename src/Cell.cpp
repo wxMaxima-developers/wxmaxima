@@ -152,6 +152,8 @@ void Cell::SetType(CellType type)
       break;
   }
   ResetSize();
+  if(m_group != NULL)
+    GetGroup()->ResetSize();
 }
 
 Cell *Cell::CopyList()

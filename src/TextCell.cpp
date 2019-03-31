@@ -360,7 +360,7 @@ void TextCell::RecalculateWidths(int fontsize)
     recalculateNeeded = true;
   }
 
-  if (m_height == -1 || m_width == -1 || configuration->FontChanged())
+  if ((m_height < 0) || (m_width < 0) || configuration->FontChanged())
     recalculateNeeded = true;
 
   if(recalculateNeeded)
