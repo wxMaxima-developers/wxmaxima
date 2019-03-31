@@ -230,6 +230,8 @@ void TextCell::SetValue(const wxString &text)
     if(text.StartsWith(wxT("part: fell off the end.")))
       m_toolTip = _("part() or the [] operator was used in order to extract the nth element "
                     "of something that was less than n elements long.");
+    if(text.StartsWith(wxT("rest: fell off the end.")))
+      m_toolTip = _("rest() tried to drop more entries from a list than the list was long.");
     if(text.StartsWith(wxT("assignment: cannot assign to")))
       m_toolTip = _("The value of few special variables is assigned by Maxima and cannot be changed by the user. Also a few constructs aren't variable names and therefore cannot be written to.");
     if(text.StartsWith(wxT("rat: replaced ")))
