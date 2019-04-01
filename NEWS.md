@@ -1,3 +1,21 @@
+# wxMaxima 19.04.0 - Stable
+
+ * The cursor width now is taken from the current screen
+ * Autocompletion sometimes cleared the result after inputting it
+ * Added more commands to autocompletion
+ * Spanish and italian translation updates
+ * We no more need to re-implement maxima's load() routine.
+   Instead we call the original one now.
+ * Animations now on load remember which slide they stopped at.
+ * A more error-proof language selection.
+ * If the system looks like it uses UTF8 by default the locale name
+   that is passed to maxima now ends in ".UTF8" which should resolve
+   the "setting locale failed" errors from maxima.
+ * Corrected the initial size of error messages.
+ * Many additional bug fixes
+ * Code cleanups
+
+
 # wxMaxima 19.03.1 - Stable
 
  * HighDPI fixes for ArchLinux, Windows and SuSE

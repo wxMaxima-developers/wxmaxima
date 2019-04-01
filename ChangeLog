@@ -3,7 +3,7 @@ Current:
  * Autocompletion sometimes cleared the result after inputting it
  * Added more commands to autocompletion
  * Spanish and italian translation updates
- * We no more need to re-implement the load() routine from maxima.
+ * We no more need to re-implement maxima's load() routine.
    Instead we call the original one now.
  * Animations now on load remember which slide they stopped at.
  * A more error-proof language selection.
@@ -11,6 +11,8 @@ Current:
    that is passed to maxima now ends in ".UTF8" which should resolve
    the "setting locale failed" errors from maxima.
  * Corrected the initial size of error messages.
+ * Many additional bug fixes
+ * Code cleanups
 
 19.03.1:
  * HighDPI fixes for ArchLinux, Windows and SuSE
