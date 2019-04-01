@@ -94,7 +94,9 @@ public:
   wxString GetSymbolUnicode(bool keepPercent);
 
   bool IsShortNum();
-  
+
+  virtual void SetType(CellType type);
+
 protected:
   void SetAltText();
   

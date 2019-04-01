@@ -439,7 +439,7 @@ class Cell
   { m_bigSkip = skip; }
 
   //! Sets the text style according to the type
-  void SetType(CellType type);
+  virtual void SetType(CellType type);
 
   TextStyle GetStyle()
   { return m_textStyle; }  //l'ho aggiunto io

@@ -71,6 +71,12 @@ void TextCell::SetStyle(TextStyle style)
   ResetSize();
 }
 
+void TextCell::SetType(CellType type)
+{
+  Cell::SetType(type);
+  SetFont((*m_configuration)->GetDefaultFontSize());
+}
+
 void TextCell::SetValue(const wxString &text)
 {
   m_toolTip = m_initialToolTip;
@@ -576,10 +582,15 @@ void TextCell::SetFont(int fontsize)
   {
     // Font within maths has a dynamic font size that might be reduced for example
     // within fractions, subscripts or superscripts.
-    if ((m_textStyle != TS_MAIN_PROMPT) && (m_textStyle != TS_OTHER_PROMPT))
+    if (
+      (m_textStyle != TS_MAIN_PROMPT) &&
+      (m_textStyle != TS_OTHER_PROMPT) &&
+      (m_textStyle != TS_ERROR) &&
+      (m_textStyle != TS_WARNING)
+      )
       m_fontSize = fontsize;
   }
-
+    
   wxFont font = configuration->GetFont(m_textStyle,fontsize);
 
   // Use jsMath
