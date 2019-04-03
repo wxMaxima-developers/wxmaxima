@@ -514,7 +514,9 @@ void GroupCell::SetOutput(Cell *output)
     m_output->SetGroup(this);
     while (m_lastInOutput->m_next != NULL)
       m_lastInOutput = m_lastInOutput->m_next;
+    m_output->ResetSizeList();
   }
+  Recalculate();
 }
 
 void GroupCell::RemoveOutput()
