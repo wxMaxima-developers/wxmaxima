@@ -1,3 +1,6 @@
+# wxMaxima 19.04.1 - Stable
+ * Corrected the size of error messages
+ 
 # wxMaxima 19.04.0 - Stable
 
  * The cursor width now is taken from the current screen
