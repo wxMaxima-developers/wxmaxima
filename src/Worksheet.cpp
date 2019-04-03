@@ -463,8 +463,21 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
     dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_DEFAULT))));
 
+    bool recalculateNecessaryWas = false;
+
     while (tmp != NULL)
     {
+      if(
+        (tmp->GetCurrentPoint().x < 0) ||
+        (tmp->GetCurrentPoint().y < 0) ||
+        (tmp->GetRect().GetWidth() < 0) ||
+        (tmp->GetRect().GetHeight() < 0)
+        )
+      {
+        tmp->Recalculate();
+        recalculateNecessaryWas = true;
+      }
+      
       wxRect cellRect = tmp->GetRect();
 
       int width;
@@ -505,7 +518,11 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
       }
     }
 
+    if(recalculateNecessaryWas)
+      wxLogMessage(_("Cell wasn't recalculated on draw!"));
   }
+
+    
   //
   // Draw horizontal caret
   //

@@ -741,9 +741,12 @@ void GroupCell::RecalculateHeightInput()
     m_currentPoint.y = (*m_configuration)->GetBaseIndent() + GetMaxCenter();
   }
   else
-    m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y +
-      dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetMaxCenter() +
-      (*m_configuration)->GetGroupSkip();
+  {
+    if(dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y > 0)
+      m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y +
+        dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetMaxCenter() +
+        (*m_configuration)->GetGroupSkip();
+  }
   
   m_outputRect.x = m_currentPoint.x;
   m_outputRect.y = m_currentPoint.y + m_center;
