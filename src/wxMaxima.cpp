@@ -8018,10 +8018,9 @@ void wxMaxima::TryEvaluateNextInQueue()
       cell->SetType(MC_TYPE_ERROR);
       cell->SetGroup(tmp);
       tmp->SetOutput(cell);
-//      tmp->ResetSize();
+      tmp->ResetSize();
       tmp->Recalculate();
       m_worksheet->Recalculate(cell);
-      //m_worksheet->RecalculateForce();
       tmp->GetInput()->SetCaretPosition(index);
       tmp->GetInput()->SetErrorIndex((m_commandIndex = index) - 1);
 
