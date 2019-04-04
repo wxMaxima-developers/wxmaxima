@@ -817,10 +817,15 @@ void GroupCell::RecalculateHeight(int fontsize)
 
 // We assume that appended cells will be in a new line!
 void GroupCell::RecalculateAppended()
-{
+{  
   if(m_hide)
     return;
-  Configuration *configuration = (*m_configuration);
+  
+  if(m_height < 0)
+  {
+    RecalculateHeightInput();
+    m_appendedCells = m_output;
+  }
   if (m_appendedCells == NULL)
     m_appendedCells = m_inputLabel;
   if (m_appendedCells == NULL)
@@ -828,7 +833,9 @@ void GroupCell::RecalculateAppended()
   if (m_appendedCells == NULL)
     return;
   m_appendedCells->HardLineBreak();
-  
+
+  Configuration *configuration = (*m_configuration);
+
   Cell *tmp = m_appendedCells;
   m_fontSize = configuration->GetFontSize(TS_TEXT);
   m_mathFontSize = configuration->GetMathFontSize();
@@ -880,7 +887,6 @@ void GroupCell::RecalculateAppended()
     }
     tmp = tmp->m_nextToDraw;
   }
-
   m_appendedCells = NULL;
 
   ResetData();
@@ -936,18 +942,6 @@ int GroupCell::GetInputIndent()
 void GroupCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-
-   // std::cerr<<"GroupCell("<<
-   //   GetRect().GetLeft()<<","<<
-   //   GetRect().GetTop()<<","<<
-   //   GetRect().GetRight()<<","<<
-   //   GetRect().GetBottom()<<"),"<<
-   //   "), UpdateRegion=("<<
-   //   (*m_configuration)->GetUpdateRegion().GetLeft()<<","<<
-   //   (*m_configuration)->GetUpdateRegion().GetTop()<<","<<
-   //   (*m_configuration)->GetUpdateRegion().GetRight()<<","<<
-   //   (*m_configuration)->GetUpdateRegion().GetBottom()<<"),"<<
-   //   DrawThisCell(point)<<!(*m_configuration)->GetUpdateRegion().Intersect(GetRect()).IsEmpty()<<"\n";
 
   Configuration *configuration = (*m_configuration);
 
