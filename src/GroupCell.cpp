@@ -798,7 +798,6 @@ bool GroupCell::NeedsRecalculation()
 void GroupCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
-  Configuration *configuration = (*m_configuration);
 
   if(NeedsRecalculation())
   {
@@ -810,23 +809,7 @@ void GroupCell::RecalculateHeight(int fontsize)
 //  if (((m_height <= 0) || (m_next == NULL)) && (m_height < configuration->GetCellBracketWidth()))
 //    m_height = configuration->GetCellBracketWidth();
   
-  configuration= (*m_configuration);
-  if (m_previous == NULL)
-  {
-    m_currentPoint.x = configuration->GetIndent();
-    m_currentPoint.y = (*m_configuration)->GetBaseIndent() + GetMaxCenter();
-  }
-  else
-  {
-    m_currentPoint.x = configuration->GetIndent();
-    if(dynamic_cast<GroupCell *>(m_previous)->m_height > 0)
-      m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y +
-        dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetMaxCenter() +
-        (*m_configuration)->GetGroupSkip();
-    else
-      m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y;
-  }
-
+  UpdateYPosition();
   // If code is hidden and there is no output a cell can have the height
   // 0. If it is higher than that we make our cell high enough to fit the 
   // bracket in.  m_appendedCells = NULL;
@@ -903,7 +886,7 @@ void GroupCell::RecalculateAppended()
   ResetData();
   
   // Move all cells that follow the current one down by the amount this cell has grown.
-  GroupCell *cell = dynamic_cast<GroupCell *>(this->m_next);
+  GroupCell *cell = this;
   while(cell != NULL)
     cell = cell->UpdateYPosition();
   (*m_configuration)->AdjustWorksheetSize(true);
@@ -911,13 +894,22 @@ void GroupCell::RecalculateAppended()
 
 GroupCell *GroupCell::UpdateYPosition()
 {
-  if (m_previous != NULL)
+  Configuration *configuration = (*m_configuration);
+  
+  if (m_previous == NULL)
   {
-    m_currentPoint.x = (*m_configuration)->GetIndent();
-    m_currentPoint = m_previous->GetCurrentPoint();
-    m_currentPoint.y += m_previous->GetMaxHeight();
-    if(m_previous->GetMaxDrop() > 0)
-      m_currentPoint.y += (*m_configuration)->GetGroupSkip();
+    m_currentPoint.x = configuration->GetIndent();
+    m_currentPoint.y = configuration->GetBaseIndent() + GetMaxCenter();
+  }
+  else
+  {
+    m_currentPoint.x = configuration->GetIndent();
+    if(dynamic_cast<GroupCell *>(m_previous)->m_height > 0)
+      m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y +
+        dynamic_cast<GroupCell *>(m_previous)->GetMaxDrop() + GetMaxCenter() +
+        configuration->GetGroupSkip();
+    else
+      m_currentPoint.y = dynamic_cast<GroupCell *>(m_previous)->m_currentPoint.y;
   }
   return dynamic_cast<GroupCell *>(m_next);
 }
