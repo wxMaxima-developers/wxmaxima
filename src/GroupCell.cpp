@@ -820,9 +820,17 @@ void GroupCell::RecalculateAppended()
 {  
   if(m_hide)
     return;
-  
+
+  Configuration *configuration = (*m_configuration);
+
   if(m_height < 0)
   {
+    int fontsize = configuration->GetDefaultFontSize();
+    
+    m_fontSize = fontsize;
+    m_mathFontSize = (*m_configuration)->GetMathFontSize();
+    
+    RecalculateWidths(fontsize);
     RecalculateHeightInput();
     m_appendedCells = m_output;
   }
@@ -833,8 +841,6 @@ void GroupCell::RecalculateAppended()
   if (m_appendedCells == NULL)
     return;
   m_appendedCells->HardLineBreak();
-
-  Configuration *configuration = (*m_configuration);
 
   Cell *tmp = m_appendedCells;
   m_fontSize = configuration->GetFontSize(TS_TEXT);
