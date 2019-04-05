@@ -49,6 +49,9 @@ wxString Cell::GetToolTip(const wxPoint &point)
 }
 
 Cell::Cell(Cell *group, Configuration **config)
+#if wxUSE_ACCESSIBILITY
+  :wxAccessible((*config)->GetWorkSheet())
+#endif
 {
   m_textStyle = TS_DEFAULT;
   m_toolTip = wxEmptyString;
