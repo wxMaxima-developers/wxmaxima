@@ -50,7 +50,7 @@ wxString Cell::GetToolTip(const wxPoint &point)
 
 Cell::Cell(Cell *group, Configuration **config)
 #if wxUSE_ACCESSIBILITY
-  :wxAccessible((*config)->GetWorkSheet())
+  :wxAccessible()
 #endif
 {
   m_textStyle = TS_DEFAULT;

@@ -156,7 +156,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
   ShowScrollbars(wxSHOW_SB_ALWAYS, wxSHOW_SB_ALWAYS);
   ClearDocument();
   #if wxUSE_ACCESSIBILITY
-  m_accessibilityInfo = new AccessibilityInfo(this);
+  m_accessibilityInfo = new AccessibilityInfo(GetTargetWindow());
   #endif
 
   #if wxCHECK_VERSION(3,1,1)
