@@ -1460,7 +1460,7 @@ public:
   class AccessibilityInfo: public wxAccessible
   {
   public:
-    AccessibilityInfo(wxWindow *worksheet);
+    AccessibilityInfo(Worksheet *worksheet);
     wxAccStatus GetChildCount (int *childCount);
     wxAccStatus GetChild (int childId, wxAccessible **child);
     wxAccStatus GetDefaultAction(int childId, wxString *actionName);
@@ -1471,7 +1471,7 @@ public:
 	                         int *childId, wxAccessible **childObject);
     wxAccStatus GetDescription(int childId, wxString *description);
    private:
-    wxWindow *m_worksheet;
+    Worksheet *m_worksheet;
   };
 #endif
 protected:
