@@ -8592,7 +8592,7 @@ void Worksheet::OnMouseCaptureLost(wxMouseCaptureLostEvent &WXUNUSED(event))
 }
 
 #if wxUSE_ACCESSIBILITY
-Worksheet::AccessibilityInfo::AccessibilityInfo(Worksheet *worksheet): wxAccessible(worksheet)
+Worksheet::AccessibilityInfo::AccessibilityInfo(wxWindow *worksheet): wxAccessible(worksheet)
 {
   m_worksheet = worksheet;
 }
