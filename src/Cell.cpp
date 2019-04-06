@@ -559,6 +559,47 @@ wxString Cell::ListToString()
   return retval;
 }
 
+wxString Cell::ToMatlab()
+{
+  return wxEmptyString;
+}
+
+wxString Cell::ListToMatlab()
+{
+	wxString retval;
+	Cell *tmp = this;
+	bool firstline = true;
+
+	while (tmp != NULL)
+	{
+	  if ((!firstline) && (tmp->m_forceBreakLine))
+	  {
+		if(!retval.EndsWith(wxT('\n')))
+		  retval += wxT("\n");
+		// if(
+		//    (tmp->GetStyle() != TS_LABEL) &&
+		//    (tmp->GetStyle() != TS_USERLABEL) &&
+		//    (tmp->GetStyle() != TS_MAIN_PROMPT) &&
+		//    (tmp->GetStyle() != TS_OTHER_PROMPT))
+		//   retval += wxT("\t");
+	  }
+	  // if(firstline)
+	  // {
+	  //   if((tmp->GetStyle() != TS_LABEL) &&
+	  //      (tmp->GetStyle() != TS_USERLABEL) &&
+	  //      (tmp->GetStyle() != TS_MAIN_PROMPT) &&
+	  //      (tmp->GetStyle() != TS_OTHER_PROMPT))
+	  //     retval += wxT("\t");
+	  // }
+	  retval += tmp->ToMatlab();
+
+	  firstline = false;
+	  tmp = tmp->m_nextToDraw;
+	}
+
+	return retval;
+}
+
 wxString Cell::ToTeX()
 {
   return wxEmptyString;

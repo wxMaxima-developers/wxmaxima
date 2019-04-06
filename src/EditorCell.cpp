@@ -303,6 +303,30 @@ wxString EditorCell::ToString(bool dontLimitToSelection)
   return text;
 }
 
+wxString EditorCell::ToMatlab()
+{
+  return ToMatlab(false);
+}
+
+wxString EditorCell::ToMatlab(bool dontLimitToSelection)
+{
+  wxString text = m_text;
+  // Remove all soft line breaks
+  text.Replace(wxT('\r'), wxT(' '));
+  // Convert non-breakable spaces to breakable ones
+  text.Replace(wxT("\xa0"), wxT(" "));
+
+  if (SelectionActive() && (!dontLimitToSelection))
+  {
+	long start = MIN(m_selectionStart, m_selectionEnd);
+	long end = MAX(m_selectionStart, m_selectionEnd) - 1;
+	if (end >= (signed)m_text.Length()) end = m_text.Length() - 1;
+	if (start < 0) start = 0;
+	text = m_text.SubString(start, end);
+  }
+  return text;
+}
+
 wxString EditorCell::ToRTF()
 {
   wxString retval;

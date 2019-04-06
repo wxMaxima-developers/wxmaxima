@@ -268,6 +268,7 @@ public:
     menu_evaluate_all,
     menu_show_tip,
     menu_copy_from_worksheet,
+	menu_copy_matlab_from_worksheet,
     menu_copy_tex_from_worksheet,
     menu_copy_text_from_worksheet,
     menu_undo,

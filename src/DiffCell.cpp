@@ -140,6 +140,19 @@ wxString DiffCell::ToString()
   return s;
 }
 
+wxString DiffCell::ToMatlab()
+{
+  if (m_isBrokenIntoLines)
+	return wxEmptyString;
+  Cell *tmp = m_baseCell->m_next;
+  wxString s = wxT("'diff(");
+  if (tmp != NULL)
+	s += tmp->ListToMatlab();
+  s += m_diffCell->ListToMatlab();
+  s += wxT(")");
+  return s;
+}
+
 wxString DiffCell::ToTeX()
 {
   if (m_isBrokenIntoLines)

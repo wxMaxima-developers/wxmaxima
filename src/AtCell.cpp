@@ -143,6 +143,14 @@ wxString AtCell::ToString()
   return s;
 }
 
+wxString AtCell::ToMatlab()
+{
+  wxString s = wxT("at(");
+  s += m_baseCell->ListToMatlab();
+  s += wxT(",") + m_indexCell->ListToMatlab() + wxT(")");
+  return s;
+}
+
 wxString AtCell::ToTeX()
 {
   wxString s = wxT("\\left. ");

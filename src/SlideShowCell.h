@@ -168,6 +168,8 @@ protected:
 
   wxString ToString();
 
+  wxString ToMatlab();
+
   wxString ToTeX();
 
   wxString ToRTF();

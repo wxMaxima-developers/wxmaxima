@@ -327,6 +327,49 @@ wxString FracCell::ToString()
   return s;
 }
 
+wxString FracCell::ToMatlab()
+{
+  wxString s;
+  if (!m_isBrokenIntoLines)
+  {
+	if (m_fracStyle == FC_NORMAL)
+	{
+	  if (m_num->IsCompound())
+		s += wxT("(") + m_num->ListToMatlab() + wxT(")/");
+	  else
+		s += m_num->ListToMatlab() + wxT("/");
+	  if (m_denom->IsCompound())
+		s += wxT("(") + m_denom->ListToMatlab() + wxT(")");
+	  else
+		s += m_denom->ListToMatlab();
+	}
+	else if (m_fracStyle == FC_CHOOSE)
+	{
+	  s = wxT("binomial(") + m_num->ListToMatlab() + wxT(",") +
+		  m_denom->ListToMatlab() + wxT(")");
+	}
+	else
+	{
+	  Cell *tmp = m_denom;
+	  while (tmp != NULL)
+	  {
+		tmp = tmp->m_next;   // Skip the d
+		if (tmp == NULL)
+		  break;
+		tmp = tmp->m_next;   // Skip the *
+		if (tmp == NULL)
+		  break;
+		s += tmp->GetDiffPart();
+		tmp = tmp->m_next;   // Skip the *
+		if (tmp == NULL)
+		  break;
+		tmp = tmp->m_next;
+	  }
+	}
+  }
+  return s;
+}
+
 wxString FracCell::ToTeX()
 {
   wxString s;

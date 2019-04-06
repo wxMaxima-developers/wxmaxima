@@ -216,6 +216,23 @@ wxString LimitCell::ToString()
   wxString base = m_base->ListToString();
   wxString var = under.SubString(0, under.Find(wxT("->")) - 1);
   wxString to = under.SubString(under.Find(wxT("->")) + 2,
+								under.Length() - 1);
+  if (to.Right(1) == wxT("+"))
+	to = to.Left(to.Length() - 1) + wxT(",plus");
+  if (to.Right(1) == wxT("-"))
+	to = to.Left(to.Length() - 1) + wxT(",minus");
+
+  s += wxT("(") + base + wxT(",") + var + wxT(",") + to + wxT(")");
+  return s;
+}
+
+wxString LimitCell::ToMatlab()
+{
+  wxString s(wxT("limit"));
+  wxString under = m_under->ListToMatlab();
+  wxString base = m_base->ListToMatlab();
+  wxString var = under.SubString(0, under.Find(wxT("->")) - 1);
+  wxString to = under.SubString(under.Find(wxT("->")) + 2,
                                 under.Length() - 1);
   if (to.Right(1) == wxT("+"))
     to = to.Left(to.Length() - 1) + wxT(",plus");

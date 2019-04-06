@@ -517,6 +517,9 @@ class Cell
   virtual wxString ListToString();
 
   //! Convert this list to its LaTeX representation
+  virtual wxString ListToMatlab();
+
+  //! Convert this list to its LaTeX representation
   virtual wxString ListToTeX();
 
   //! Convert this list to an representation fit for saving in a .wxmx file
@@ -559,6 +562,9 @@ class Cell
    */
   virtual wxString ToOMML()
   { return wxEmptyString; }
+
+  //! Convert this cell to its Matlab representation
+  virtual wxString ToMatlab();
 
   //! Convert this cell to its LaTeX representation
   virtual wxString ToTeX();

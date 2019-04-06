@@ -1297,7 +1297,8 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         if (CanCopy())
         {
           popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
-          popupMenu->Append(popid_copy_tex, _("Copy as LaTeX"), wxEmptyString, wxITEM_NORMAL);
+		  popupMenu->Append(popid_copy_matlab, _("Copy as Matlab"), wxEmptyString, wxITEM_NORMAL);
+		  popupMenu->Append(popid_copy_tex, _("Copy as LaTeX"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_text, _("Copy as plain text"), wxEmptyString, wxITEM_NORMAL);
           if (m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd)
             popupMenu->Append(popid_copy_mathml, _("Copy as MathML (e.g. to word processor)"), wxEmptyString,
@@ -1390,6 +1391,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         if (CanCopy(true))
         {
           popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
+		  popupMenu->Append(popid_copy_matlab, _("Copy as Matlab"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_tex, _("Copy as LaTeX"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_text, _("Copy as plain text"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_mathml, _("Copy as MathML (e.g. to word processor)"), wxEmptyString,
@@ -2321,6 +2323,42 @@ bool Worksheet::CopyMathML()
     Recalculate();
     return true;
   }
+  return false;
+}
+
+bool Worksheet::CopyMatlab()
+{
+  if (GetActiveCell() != NULL)
+	return false;
+
+  if (m_cellPointers.m_selectionStart == NULL)
+	return false;
+
+  wxString result;
+  Cell *tmp = m_cellPointers.m_selectionStart;
+
+  bool firstcell = true;
+  while (tmp != NULL)
+  {
+	if ((tmp->HardLineBreak()) && (!firstcell))
+	  result += wxT("\n");
+	result += tmp->ToMatlab();
+	if (tmp == m_cellPointers.m_selectionEnd)
+	  break;
+	tmp = tmp->m_next;
+	firstcell = false;
+  }
+
+  wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
+  if (wxTheClipboard->Open())
+  {
+	wxDataObjectComposite *data = new wxDataObjectComposite;
+	data->Add(new wxTextDataObject(result));
+	wxTheClipboard->SetData(data);
+	wxTheClipboard->Close();
+	return true;
+  }
+
   return false;
 }
 
