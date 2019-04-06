@@ -4396,6 +4396,10 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
     if (m_worksheet->CanRedo())
       m_worksheet->Redo();
     break;
+  case menu_copy_matlab_from_worksheet:
+	if (m_worksheet->CanCopy())
+	  m_worksheet->CopyMatlab();
+	break;
   case menu_copy_tex_from_worksheet:
     if (m_worksheet->CanCopy())
       m_worksheet->CopyTeX();
@@ -7257,6 +7261,10 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       if (m_worksheet->CanCopy(true))
         m_worksheet->Copy();
       break;
+	case Worksheet::popid_copy_matlab:
+		if (m_worksheet->CanCopy(true))
+		  m_worksheet->CopyMatlab();
+	break;
     case Worksheet::popid_copy_tex:
       if (m_worksheet->CanCopy(true))
         m_worksheet->CopyTeX();
@@ -8650,6 +8658,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(Worksheet::popid_diff, wxMaxima::PopupMenu)
                 EVT_MENU(Worksheet::popid_integrate, wxMaxima::PopupMenu)
                 EVT_MENU(Worksheet::popid_float, wxMaxima::PopupMenu)
+				EVT_MENU(Worksheet::popid_copy_matlab, wxMaxima::PopupMenu)
                 EVT_MENU(Worksheet::popid_copy_tex, wxMaxima::PopupMenu)
                 EVT_MENU(Worksheet::popid_copy_text, wxMaxima::PopupMenu)
                 EVT_MENU(Worksheet::popid_image, wxMaxima::PopupMenu)
@@ -8797,6 +8806,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(menu_copy_from_worksheet, wxMaxima::EditMenu)
                 EVT_MENU(menu_copy_text_from_worksheet, wxMaxima::EditMenu)
                 EVT_MENU(menu_copy_tex_from_worksheet, wxMaxima::EditMenu)
+				EVT_MENU(menu_copy_matlab_from_worksheet, wxMaxima::EditMenu)
                 EVT_MENU(Worksheet::popid_copy_mathml, wxMaxima::EditMenu)
                 EVT_MENU(menu_undo, wxMaxima::EditMenu)
                 EVT_MENU(menu_redo, wxMaxima::EditMenu)

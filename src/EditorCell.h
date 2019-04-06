@@ -227,6 +227,8 @@ public:
 
   wxString ToString();
 
+  wxString ToMatlab();
+
   /*! Convert the current cell to a string
   
     \param dontLimitToSelection
@@ -234,6 +236,9 @@ public:
     - true:  Always return all text in this text cell
   */
   wxString ToString(bool dontLimitToSelection);
+
+  //! Convert the current cell to Matlab code
+  wxString ToMatlab(bool dontLimitToSelection);
 
   //! Convert the current cell to LaTeX code
   wxString ToTeX();

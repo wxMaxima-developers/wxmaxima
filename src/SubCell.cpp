@@ -147,6 +147,22 @@ wxString SubCell::ToString()
   return s;
 }
 
+wxString SubCell::ToMatlab()
+{
+  if (m_altCopyText != wxEmptyString)
+  {
+	return m_altCopyText;
+  }
+
+  wxString s;
+  if (m_baseCell->IsCompound())
+	s += wxT("(") + m_baseCell->ListToMatlab() + wxT(")");
+  else
+	s += m_baseCell->ListToMatlab();
+  s += wxT("[") + m_indexCell->ListToMatlab() + wxT("]");
+  return s;
+}
+
 wxString SubCell::ToTeX()
 {
   wxString s;

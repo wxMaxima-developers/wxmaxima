@@ -841,6 +841,7 @@ public:
     popid_edit,
     popid_add_comment,
     popid_insert_input,
+	popid_copy_matlab,
     popid_copy_tex,
     popid_copy_text,
     popid_copy_mathml,
@@ -1044,6 +1045,9 @@ public:
 
   //! Copy the selection to the clipboard as it would appear in a .wxm file
   bool CopyCells();
+
+  //! Copy a Matlab representation of the current selection to the clipboard
+  bool CopyMatlab();
 
   //! Copy a textual representation of the current selection to the clipboard
   bool CopyText();

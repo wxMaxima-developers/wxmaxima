@@ -431,6 +431,31 @@ wxString IntCell::ToString()
   return s;
 }
 
+wxString IntCell::ToMatlab()
+{
+  wxString s = wxT("integrate(");
+
+  s += m_base->ListToMatlab();
+
+  Cell *tmp = m_var;
+  wxString var;
+  tmp = tmp->m_next;
+  if (tmp != NULL)
+  {
+	var = tmp->ListToMatlab();
+  }
+
+  wxString to = m_over->ListToMatlab();
+  wxString from = m_under->ListToMatlab();
+
+  s += wxT(",") + var;
+  if (m_intStyle == INT_DEF)
+	s += wxT(",") + from + wxT(",") + to;
+
+  s += wxT(")");
+  return s;
+}
+
 wxString IntCell::ToTeX()
 {
   wxString s = wxT("\\int");

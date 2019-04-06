@@ -725,6 +725,88 @@ wxString TextCell::ToString()
   return text;
 }
 
+wxString TextCell::ToMatlab()
+{
+	wxString text;
+	if (m_altCopyText != wxEmptyString)
+	  text = m_altCopyText;
+	else
+	{
+	  text = m_text;
+	  if(((*m_configuration)->UseUserLabels())&&(m_userDefinedLabel != wxEmptyString))
+		text = wxT("(") + m_userDefinedLabel + wxT(")");
+	  text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign
+	  text.Replace(wxT("\x2794"), wxT("-->"));
+	  text.Replace(wxT("\x2192"), wxT("->"));
+
+	  if (text == wxT("%e"))
+		text = wxT("e");
+	  else if (text == wxT("%i"))
+		text = wxT("i");
+	  else if (text == wxT("%pi"))
+		text = wxString(wxT("pi"));
+	}
+	switch (m_textStyle)
+	{
+	  case TS_VARIABLE:
+	  case TS_FUNCTION:
+		// The only way for variable or function names to contain quotes and
+		// characters that clearly represent operators is that these chars
+		// are quoted by a backslash: They cannot be quoted by quotation
+		// marks since maxima would'nt allow strings here.
+	  {
+		// TODO: We could escape the - char inside a variable name.
+		// But we get false positives, then.
+		wxString charsNeedingQuotes("\\'\"()[]{}^+*/&§?:;=#<>$");
+		bool isOperator = true;
+		for (size_t i = 0; i < m_text.Length(); i++)
+		{
+		  if ((m_text[i] == wxT(' ')) || (charsNeedingQuotes.Find(m_text[i]) == wxNOT_FOUND))
+		  {
+			isOperator = false;
+			break;
+		  }
+		}
+
+		if (!isOperator)
+		{
+		  wxString lastChar;
+		  if ((m_dontEscapeOpeningParenthesis) && (text.Length() > 0) && (text[text.Length() - 1] == wxT('(')))
+		  {
+			lastChar = text[text.Length() - 1];
+			text = text.Left(text.Length() - 1);
+		  }
+		  for (size_t i = 0; i < charsNeedingQuotes.Length(); i++)
+			text.Replace(charsNeedingQuotes[i], wxT("\\") + wxString(charsNeedingQuotes[i]));
+		  text += lastChar;
+		}
+		break;
+	  }
+	  case TS_STRING:
+		text = wxT("\"") + text + wxT("\"");
+		break;
+
+		// Labels sometimes end with a few spaces. But if they are long they don't do
+		// that any more => Add a TAB to the end of any label replacing trailing
+		// whitespace. But don't do this if we copy only the label.
+	  case TS_LABEL:
+	  case TS_USERLABEL:
+	  case TS_MAIN_PROMPT:
+	  case TS_OTHER_PROMPT:
+		{
+		  text.Trim();
+		  text += wxT("\t");
+		  break;
+		}
+	default:
+	{}
+	}
+	if((m_next != NULL) && (m_next->BreakLineHere()))
+	  text += "\n";
+
+	return text;
+}
+
 wxString TextCell::ToTeX()
 {
   wxString text = m_displayedText;

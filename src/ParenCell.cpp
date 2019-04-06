@@ -410,6 +410,19 @@ wxString ParenCell::ToString()
   return s;
 }
 
+wxString ParenCell::ToMatlab()
+{
+  wxString s;
+  if (!m_isBrokenIntoLines)
+  {
+	if (m_print)
+	  s = wxT("(") + m_innerCell->ListToMatlab() + wxT(")");
+	else
+	  s = m_innerCell->ListToMatlab();
+  }
+  return s;
+}
+
 wxString ParenCell::ToTeX()
 {
   wxString s;

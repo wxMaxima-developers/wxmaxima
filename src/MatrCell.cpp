@@ -280,7 +280,7 @@ wxString MatrCell::ToString()
     s += wxT("\t\t[");
     for (unsigned int j = 0; j < m_matWidth; j++)
     {
-      s += m_cells[i * m_matWidth + j]->ListToString();
+	  s += m_cells[i * m_matWidth + j]->ListToString();
       if (j < m_matWidth - 1)
         s += wxT(",\t");
     }
@@ -291,6 +291,29 @@ wxString MatrCell::ToString()
   }
   s += wxT("\t)");
   return s;
+}
+
+wxString MatrCell::ToMatlab()
+{
+	//ToDo: We ignore colNames and rowNames here. Are they currently in use?
+	wxString s;
+
+	s = wxT("[");
+	for (unsigned int i = 0; i < m_matHeight; i++)
+	{
+	  for (unsigned int j = 0; j < m_matWidth; j++)
+	  {
+		s += m_cells[i * m_matWidth + j]->ListToMatlab();
+		if (j < m_matWidth - 1)
+		  s += wxT(", ");
+	  }
+	  if (i < m_matHeight - 1)
+		s += wxT(";\n");
+	}
+
+	s += wxT("];");
+
+	return s;
 }
 
 wxString MatrCell::ToTeX()

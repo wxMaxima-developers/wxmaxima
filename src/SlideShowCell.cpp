@@ -299,6 +299,11 @@ wxString SlideShow::ToString()
   return wxT(" << Animation >> ");
 }
 
+wxString SlideShow::ToMatlab()
+{
+  return wxT(" << Animation >> ");
+}
+
 wxString SlideShow::ToTeX()
 {
   return wxT(" << Graphics >> ");

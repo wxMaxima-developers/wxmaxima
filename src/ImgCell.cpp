@@ -237,6 +237,11 @@ wxString ImgCell::ToString()
   return _(" (Graphics) ");
 }
 
+wxString ImgCell::ToMatlab()
+{
+  return _(" (Graphics) ");
+}
+
 wxString ImgCell::ToTeX()
 {
   return _(" (Graphics) ");

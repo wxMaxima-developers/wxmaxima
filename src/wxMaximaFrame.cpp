@@ -567,6 +567,9 @@ void wxMaximaFrame::SetupMenu()
   m_EditMenu->Append(menu_copy_text_from_worksheet, _("Copy as Text\tCtrl+Shift+C"),
                      _("Copy selection from document as text"),
                      wxITEM_NORMAL);
+  m_EditMenu->Append(menu_copy_matlab_from_worksheet, _("Copy as Matlab"),
+					 _("Copy selection from document in Matlab format"),
+					 wxITEM_NORMAL);
   m_EditMenu->Append(menu_copy_tex_from_worksheet, _("Copy as LaTeX"),
                      _("Copy selection from document in LaTeX format"),
                      wxITEM_NORMAL);

@@ -178,6 +178,23 @@ wxString SubSupCell::ToString()
   return s;
 }
 
+wxString SubSupCell::ToMatlab()
+{
+  wxString s;
+  if (m_baseCell->IsCompound())
+	s += wxT("(") + m_baseCell->ListToMatlab() + wxT(")");
+  else
+	s += m_baseCell->ListToMatlab();
+  s += wxT("[") + m_indexCell->ListToMatlab() + wxT("]");
+  s += wxT("^");
+  if (m_exptCell->IsCompound())
+	s += wxT("(");
+  s += m_exptCell->ListToMatlab();
+  if (m_exptCell->IsCompound())
+	s += wxT(")");
+  return s;
+}
+
 wxString SubSupCell::ToTeX()
 {
   wxConfigBase *config = wxConfig::Get();

@@ -127,6 +127,8 @@ protected:
 
   wxString ToString();
 
+  wxString ToMatlab();
+
   wxString ToRTF();
 
   wxString ToTeX();

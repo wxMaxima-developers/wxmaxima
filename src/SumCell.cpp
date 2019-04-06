@@ -322,6 +322,34 @@ wxString SumCell::ToString()
   return s;
 }
 
+wxString SumCell::ToMatlab()
+{
+  wxString s;
+  if (m_sumStyle == SM_SUM)
+	s = wxT("sum(");
+  else
+	s = wxT("product(");
+  s += m_base->ListToMatlab();
+
+  Cell *tmp = m_under;
+  wxString var = tmp->ToMatlab();
+  wxString from;
+  tmp = tmp->m_next;
+  if (tmp != NULL)
+  {
+	tmp = tmp->m_next;
+	if (tmp != NULL)
+	  from = tmp->ListToMatlab();
+  }
+  wxString to = m_over->ListToMatlab();
+  s += wxT(",") + var + wxT(",") + from;
+  if (to != wxEmptyString)
+	s += wxT(",") + to + wxT(")");
+  else
+	s = wxT("l") + s + wxT(")");
+  return s;
+}
+
 wxString SumCell::ToTeX()
 {
   wxString s;

@@ -77,6 +77,8 @@ protected:
 
   wxString ToString();
 
+  wxString ToMatlab();
+
   wxString ToTeX();
 
   wxString ToMathML();

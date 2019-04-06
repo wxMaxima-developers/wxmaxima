@@ -204,6 +204,22 @@ wxString ExptCell::ToString()
   return s;
 }
 
+wxString ExptCell::ToMatlab()
+{
+  if (m_altCopyText != wxEmptyString)
+	return m_altCopyText;
+  if (m_isBrokenIntoLines)
+	return wxEmptyString;
+  wxString s = m_baseCell->ListToMatlab() + wxT("^");
+  if (m_isMatrix)
+	s += wxT("^");
+  if (m_powCell->IsCompound())
+	s += wxT("(") + m_powCell->ListToMatlab() + wxT(")");
+  else
+	s += m_powCell->ListToMatlab();
+  return s;
+}
+
 wxString ExptCell::ToTeX()
 {
   if (m_isBrokenIntoLines)

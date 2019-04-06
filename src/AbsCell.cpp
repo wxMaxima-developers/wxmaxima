@@ -160,6 +160,15 @@ wxString AbsCell::ToString()
   return s;
 }
 
+wxString AbsCell::ToMatlab()
+{
+  if (m_isBrokenIntoLines)
+	return wxEmptyString;
+  wxString s;
+  s = wxT("abs(") + m_innerCell->ListToMatlab() + wxT(")");
+  return s;
+}
+
 wxString AbsCell::ToTeX()
 {
   if (m_isBrokenIntoLines)

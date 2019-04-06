@@ -139,6 +139,16 @@ wxString FunCell::ToString()
   return s;
 }
 
+wxString FunCell::ToMatlab()
+{
+  if (m_isBrokenIntoLines)
+	return wxEmptyString;
+  if (m_altCopyText != wxEmptyString)
+	return m_altCopyText + Cell::ListToMatlab();
+  wxString s = m_nameCell->ListToMatlab() + m_argCell->ListToMatlab();
+  return s;
+}
+
 wxString FunCell::ToTeX()
 {
   if (m_isBrokenIntoLines)

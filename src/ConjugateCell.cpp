@@ -163,6 +163,14 @@ wxString ConjugateCell::ToString()
     return wxT("conjugate(") + m_innerCell->ListToString() + wxT(")");
 }
 
+wxString ConjugateCell::ToMatlab()
+{
+  if (m_isBrokenIntoLines)
+	return wxEmptyString;
+  else
+	return wxT("conjugate(") + m_innerCell->ListToMatlab() + wxT(")");
+}
+
 wxString ConjugateCell::ToTeX()
 {
   if (m_isBrokenIntoLines)

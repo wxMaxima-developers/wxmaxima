@@ -321,6 +321,14 @@ wxString SqrtCell::ToString()
     return wxT("sqrt(") + m_innerCell->ListToString() + wxT(")");
 }
 
+wxString SqrtCell::ToMatlab()
+{
+  if (m_isBrokenIntoLines)
+	return wxEmptyString;
+  else
+	return wxT("sqrt(") + m_innerCell->ListToMatlab() + wxT(")");
+}
+
 wxString SqrtCell::ToTeX()
 {
   if (m_isBrokenIntoLines)
