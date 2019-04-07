@@ -782,7 +782,8 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
         chr = m_clientTextStream->GetChar();
         if(chr == wxEOT)
           break;
-        newChars += chr;
+        if(chr != '\0')
+          newChars += chr;
       }
 
     if(newChars == wxEmptyString)
