@@ -154,11 +154,12 @@ bool MyApp::OnInit()
   {
     if(wxLocale::IsAvailable(lang))
     {
-      m_locale.Init(lang);
       if((lang != wxLANGUAGE_UNKNOWN) && (lang != wxLANGUAGE_DEFAULT) &&
          (lang != wxLocale::GetSystemLanguage()))
       {
+        m_locale.Init(lang);
         wxString localeName = m_locale.GetCanonicalName();
+        wxLogDebug(wxString::Format(_("wxMaxima's locale is set to to %s"),localeName));
         if((m_locale.GetSystemEncoding() == wxFONTENCODING_UTF8) ||
            (m_locale.GetSystemEncoding() == wxFONTENCODING_SYSTEM) ||
            (m_locale.GetSystemEncoding() == wxFONTENCODING_UNICODE) ||
@@ -171,6 +172,20 @@ bool MyApp::OnInit()
         
         wxLogDebug(wxString::Format(_("Setting maxima's locale to %s."),localeName));
         wxSetEnv(wxT("LANG"), localeName);
+      }
+      else
+      {
+        if((lang != wxLANGUAGE_UNKNOWN) && (lang != wxLANGUAGE_DEFAULT))
+        {
+          m_locale.Init(lang);
+          wxString localeName = m_locale.GetCanonicalName();
+          wxLogDebug(
+            wxString::Format(_("Setting wxMaxima's language to the system language %s"),
+                             localeName)
+            );
+        }
+        else
+          wxLogDebug(wxString::Format(_("Not setting language %i"), lang));
       }
     }
     else
