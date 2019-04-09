@@ -139,13 +139,6 @@ bool MyApp::OnInit()
 
   wxFileSystem::AddHandler(new wxZipFSHandler);
 
-  m_locale.AddCatalogLookupPathPrefix(m_dirstruct->LocaleDir());
-  m_locale.AddCatalogLookupPathPrefix(m_dirstruct->LocaleDir() + wxT("/wxwin"));
-  m_locale.AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
-  m_locale.AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
-  m_locale.AddCatalog(wxT("wxMaxima"));
-  m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
-
   wxConfigBase *config = wxConfig::Get();
   lang = wxLocale::GetSystemLanguage();
   if(lang == wxLANGUAGE_UNKNOWN)
@@ -230,6 +223,13 @@ bool MyApp::OnInit()
   wxSetWorkingDirectory(oldWorkingDir);
 
 #endif
+
+  m_locale.AddCatalogLookupPathPrefix(m_dirstruct->LocaleDir());
+  m_locale.AddCatalogLookupPathPrefix(m_dirstruct->LocaleDir()+wxT("/wxwin"));
+  m_locale.AddCatalogLookupPathPrefix(wxT("/usr/share/locale"));
+  m_locale.AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
+  m_locale.AddCatalog(wxT("wxMaxima"));
+  m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
 
 #if defined __WXOSX__
   wxString path;
