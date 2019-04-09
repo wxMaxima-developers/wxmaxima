@@ -1872,7 +1872,7 @@
     (format t "<variable><name>*lisp-version*</name><value>~a</value></variable>"
 	    #+sbcl (ensure-readably-printable-string (lisp-implementation-version))
 	    #-sbcl (lisp-implementation-version))
-    (format t "</variables>")
+    (format t "</variables>~%")
     #+clisp (finish-output)
     )
 
@@ -1968,7 +1968,7 @@
 
   ;; Load the initial functions (from mac-init.mac)
   (let ((*print-circle* nil))
-    (format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>"
+    (format t "<wxxml-symbols>~{~a~^$~}</wxxml-symbols>~%"
 	    (mapcar #'$print_function (cdr ($append $functions $macros)))))
 
   (no-warning
@@ -2038,7 +2038,7 @@
 	   (format t "<variables>")
 	   (format t "<variable><name>*wx-load-file-name*</name><value>~a</value></variable>"
 		   (wxxml-fix-string filename))
-	   (format t "</variables>")))
+	   (format t "</variables>~%")))
      (setq *wxmaxima-nested-loads* (+ *wxmaxima-nested-loads* 1))
      ;; Load the file
      (unwind-protect
@@ -2050,7 +2050,7 @@
 	 (if (eq *wxmaxima-nested-loads* 0)
 	     (wxPrint_autoompletesymbols))
 	 ))))
-  (format t "</suppressOutput>")
+  (format t "</suppressOutput>~%")
   ;; Publish all new global variables maxima might contain to wxMaxima's
   ;; autocompletion feature.
   (wxPrint_autoompletesymbols)

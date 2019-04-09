@@ -1,6 +1,8 @@
 Current:
  * Corrected the size of error messages
  * A "Copy to mathlab"-feature.
+ * Maxima now delays interpreting the data from maxima until it encounters
+   a newline or an Timer expires.
 
 19.04.0:
  * The cursor width now is taken from the current screen

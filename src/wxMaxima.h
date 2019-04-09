@@ -128,6 +128,9 @@ public:
    */
   wxTimer m_autoSaveTimer;
 
+  //! A timer that tells us to wait until maxima ends its data.
+  wxTimer m_waitForStringEndTimer;
+
   //! Is triggered when a timer this class is responsible for requires
   void OnTimerEvent(wxTimerEvent &event);
 
@@ -289,7 +292,14 @@ protected:
     is too busy to execute the idle task at all.
   */
   void OnIdle(wxIdleEvent &event);
+  /*! Interpret the new data from maxima
 
+    We don't interpret this data directly in the idle event since if we
+    block somewhere in the idle event we block gnome.
+   */
+  void InterpretDataFromMaxima(wxCommandEvent &event);
+  bool m_dataFromMaximaIs;
+  
   void MenuCommand(wxString cmd);                  //!< Inserts command cmd into the worksheet
   void FileMenu(wxCommandEvent &event);            //!< Processes "file menu" clicks
   void MaximaMenu(wxCommandEvent &event);          //!< Processes "maxima menu" clicks
@@ -594,6 +604,8 @@ protected:
   //! The stderr of the maxima process
   wxInputStream *m_maximaStderr;
   int m_port;
+  //! All chars from maxima that still aren't part of m_currentOutput
+  wxString m_newCharsFromMaxima;
   /*! The end of maxima's current uninterpreted output, see m_currentOutput.
    
     If we just want to look if maxima's current output contains an ending tag

@@ -167,6 +167,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, configFile, pos, size)
 {
+  m_dataFromMaximaIs = false;
   m_gnuplotProcess = NULL;
   m_openInitialFileError = false;
   m_maximaJiffies_old = 0;
@@ -254,7 +255,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
                                                   NULL, this);
   m_clientStream = NULL;
   m_clientTextStream = NULL;
-
 }
 
 wxMaxima::~wxMaxima()
@@ -771,9 +771,6 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
 
     m_statusBar->NetworkStatus(StatusBar::receive);
 
-    // The memory we store new chars we receive from maxima in
-    wxString newChars;
-
     // Read all new lines of text we received.
     wxChar chr;
 
@@ -783,88 +780,14 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
         if(chr == wxEOT)
           break;
         if(chr != '\0')
-          newChars += chr;
+          m_newCharsFromMaxima += chr;
       }
 
-    if(newChars == wxEmptyString)
-    {
-      wxLogMessage(_("Got notified about data from maxima, but there was no data."));
-      return;
-    }
-
-    if (IsPaneDisplayed(menu_pane_xmlInspector))
-      m_xmlInspector->Add_FromMaxima(newChars);
-
-    // This way we can avoid searching the whole string for a
-    // ending tag if we have received only a few bytes of the
-    // data between 2 tags
-    m_currentOutputEnd = m_currentOutput.Right(30) + newChars;
-
-    m_currentOutput += newChars;
-
-    if (!m_dispReadOut &&
-        (m_currentOutput != wxT("\n")) &&
-        (m_currentOutput != wxT("<wxxml-symbols></wxxml-symbols>")))
-    {
-      StatusMaximaBusy(transferring);
-      m_dispReadOut = true;
-    }
-
-    size_t length_old = -1;
-
-    while (length_old != m_currentOutput.Length())
-    {
-      if (m_currentOutput.StartsWith("\n<"))
-        m_currentOutput = m_currentOutput.Right(m_currentOutput.Length() - 1);
-
-      length_old = m_currentOutput.Length();
-
-      GroupCell *oldActiveCell = NULL;
-      GroupCell *newActiveCell = NULL;
-      
-      // Handle text that isn't wrapped in a known tag
-      if (!m_first)
-      {
-        // First read the prompt that tells us that maxima awaits the next command:
-        // If that is the case ReadPrompt() sends the next command to maxima and
-        // maxima can work while we interpret its output.
-        oldActiveCell = m_worksheet->GetWorkingGroup();
-        ReadPrompt(m_currentOutput);
-        newActiveCell = m_worksheet->GetWorkingGroup();
-        
-        // Temporarily switch to the WorkingGroup the output we don't have interpreted yet
-        // was for
-        if(newActiveCell != oldActiveCell)
-          m_worksheet->m_cellPointers.SetWorkingGroup(oldActiveCell);
-        // Handle the <mth> tag that contains math output and sometimes text.
-        ReadMath(m_currentOutput);
-        
-        // The following function calls each extract and remove one type of XML tag
-        // information from the beginning of the data string we got - but only do so
-        // after the closing tag has been transferred, as well.
-        ReadLoadSymbols(m_currentOutput);
-        
-        // Discard startup warnings
-        ReadSuppressedOutput(m_currentOutput);
-        
-        // Let's see if maxima informs us about the values of variables
-        ReadVariables(m_currentOutput);
-        
-        // Handle the XML tag that contains Status bar updates
-        ReadStatusBar(m_currentOutput);
-
-        // Handle text that isn't XML output: Mostly Error messages or warnings.
-        ReadMiscText(m_currentOutput);
-      }
-      else
-        // This function determines the port maxima is running on from  the text
-        // maxima outputs at startup. This piece of text is afterwards discarded.
-        ReadFirstPrompt(m_currentOutput);
-      
-      // Switch to the WorkingGroup the next bunch of data is for.
-      if(newActiveCell != oldActiveCell)
-        m_worksheet->m_cellPointers.SetWorkingGroup(newActiveCell);
-    }
+    m_dataFromMaximaIs = true;
+    if(m_newCharsFromMaxima.EndsWith("\n") || m_newCharsFromMaxima.EndsWith("<PROMPT-S/>"))
+      m_waitForStringEndTimer.Stop();
+    else
+      m_waitForStringEndTimer.StartOnce(50);
     break;
     }
   default:
@@ -2994,19 +2917,100 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
       ShowHTMLHelp(MaximaHelpFile,keyword);
   }
 }
-///-------o-------------------------------------------------------------------------
+
+void wxMaxima::InterpretDataFromMaxima(wxCommandEvent &WXUNUSED(event))
+{
+  // This way we can avoid searching the whole string for a
+  // ending tag if we have received only a few bytes of the
+  // data between 2 tags
+  m_currentOutputEnd = m_currentOutput.Right(30) + m_newCharsFromMaxima;
+
+  m_currentOutput += m_newCharsFromMaxima;
+  m_newCharsFromMaxima = wxEmptyString;
+  if (IsPaneDisplayed(menu_pane_xmlInspector))
+    m_xmlInspector->Add_FromMaxima(m_newCharsFromMaxima);
+  
+  if (!m_dispReadOut &&
+      (m_currentOutput != wxT("\n")) &&
+      (m_currentOutput != wxT("<wxxml-symbols></wxxml-symbols>")))
+  {
+    StatusMaximaBusy(transferring);
+    m_dispReadOut = true;
+  }
+  
+  size_t length_old = -1;
+  
+  while (length_old != m_currentOutput.Length())
+  {
+    if (m_currentOutput.StartsWith("\n<"))
+      m_currentOutput = m_currentOutput.Right(m_currentOutput.Length() - 1);
+    
+    length_old = m_currentOutput.Length();
+    
+    GroupCell *oldActiveCell = NULL;
+    GroupCell *newActiveCell = NULL;
+    
+    // Handle text that isn't wrapped in a known tag
+    if (!m_first)
+    {
+      // First read the prompt that tells us that maxima awaits the next command:
+      // If that is the case ReadPrompt() sends the next command to maxima and
+      // maxima can work while we interpret its output.
+      oldActiveCell = m_worksheet->GetWorkingGroup();
+      ReadPrompt(m_currentOutput);
+      newActiveCell = m_worksheet->GetWorkingGroup();
+      
+      // Temporarily switch to the WorkingGroup the output we don't have interpreted yet
+      // was for
+      if(newActiveCell != oldActiveCell)
+        m_worksheet->m_cellPointers.SetWorkingGroup(oldActiveCell);
+      // Handle the <mth> tag that contains math output and sometimes text.
+      ReadMath(m_currentOutput);
+      
+      // The following function calls each extract and remove one type of XML tag
+      // information from the beginning of the data string we got - but only do so
+      // after the closing tag has been transferred, as well.
+      ReadLoadSymbols(m_currentOutput);
+      
+      // Discard startup warnings
+      ReadSuppressedOutput(m_currentOutput);
+      
+      // Let's see if maxima informs us about the values of variables
+      ReadVariables(m_currentOutput);
+      
+      // Handle the XML tag that contains Status bar updates
+      ReadStatusBar(m_currentOutput);
+      
+      // Handle text that isn't XML output: Mostly Error messages or warnings.
+      ReadMiscText(m_currentOutput);
+    }
+    else
+      // This function determines the port maxima is running on from  the text
+      // maxima outputs at startup. This piece of text is afterwards discarded.
+      ReadFirstPrompt(m_currentOutput);
+    
+    // Switch to the WorkingGroup the next bunch of data is for.
+    if(newActiveCell != oldActiveCell)
+      m_worksheet->m_cellPointers.SetWorkingGroup(newActiveCell);
+  }
+}
+
+///--------------------------------------------------------------------------------
 ///  Idle event
 ///--------------------------------------------------------------------------------
 
 void wxMaxima::OnIdle(wxIdleEvent &event)
 {
-  // On msw sometimes the communication stalls even if there is new data.
-  // Communication can be resumed manually by manually triggering
-  // listening to socket events from time to time, see
-  // https://groups.google.com/forum/m/#!topic/wx-users/fdMyu3AKFRQ
-  wxSocketEvent dummyEvent(wxSOCKET_INPUT);
-  ClientEvent(dummyEvent);
-
+  // Handle the text we have received from maxima
+  if((m_dataFromMaximaIs) && (!m_waitForStringEndTimer.IsRunning()))
+  {
+    m_dataFromMaximaIs = false;
+    wxMenuEvent *interpretEvent = new wxMenuEvent(wxEVT_MENU, interpret_data_from_maxima);
+    GetEventHandler()->QueueEvent(interpretEvent);    
+    event.RequestMore();
+    return;
+  }
+    
   // If wxMaxima has to open a file on startup we wait for that until we have
   // a valid draw context for size calculations.
   //
@@ -9049,7 +9053,8 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_FIND_REPLACE_ALL(wxID_ANY, wxMaxima::OnReplaceAll)
                 EVT_FIND_CLOSE(wxID_ANY, wxMaxima::OnFindClose)
                 EVT_ACTIVATE(wxMaxima::OnActivate)
-                EVT_ICONIZE(wxMaxima::OnMinimize)
+                EVT_ICONIZE(wxMaxima::OnMinimize)  
+                EVT_MENU(interpret_data_from_maxima,wxMaxima::InterpretDataFromMaxima)
 END_EVENT_TABLE()
 
 
