@@ -2714,6 +2714,14 @@ void wxMaxima::ShowTip(bool force)
 
 wxString wxMaxima::GetHelpFile()
 {
+  // Some operating systems don't like "//" or similar in paths.
+  wxFileName helpFile(GetHelpFile2());
+  helpFile.MakeAbsolute();
+  return helpFile.GetFullPath();
+}
+
+wxString wxMaxima::GetHelpFile2()
+{
   wxString headerFile;
   wxConfig::Get()->Read(wxT("helpFile"), &headerFile);
   

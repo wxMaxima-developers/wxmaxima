@@ -147,6 +147,8 @@ public:
     installed instead of the ones from the alphabetically first installation we find.
    */
   wxString GetHelpFile();
+  //! An helper function for GetHelpFile()
+  wxString GetHelpFile2();
 
   void ShowMaximaHelp(wxString keyword = wxEmptyString);
 
