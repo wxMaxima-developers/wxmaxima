@@ -787,13 +787,11 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
 
     if(m_newCharsFromMaxima.EndsWith("\n") || m_newCharsFromMaxima.EndsWith("<PROMPT-S/>"))
     {
-      wxCommandEvent dummy;
-      InterpretDataFromMaxima(dummy)
+      m_waitForStringEndTimer.Stop();
+      InterpretDataFromMaxima();
     }
     else
-    {
       m_waitForStringEndTimer.StartOnce(50);
-    }
 
     break;
     }
@@ -2927,7 +2925,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   }
 }
 
-void wxMaxima::InterpretDataFromMaxima(wxCommandEvent &WXUNUSED(event))
+void wxMaxima::InterpretDataFromMaxima()
 {
   // This way we can avoid searching the whole string for a
   // ending tag if we have received only a few bytes of the
@@ -3967,13 +3965,9 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
   switch (event.GetId())
   {
     case WAITFORSTRING_ID:
-    {
-      wxMenuEvent *interpretEvent = new wxMenuEvent(wxEVT_MENU, interpret_data_from_maxima);
-      GetEventHandler()->QueueEvent(interpretEvent);    
-      if(m_dataFromMaximaIs)
-        wxLogMessage(_("String from maxima apparently didn't end in a newline"));
-    }
-    break;
+      InterpretDataFromMaxima();
+      wxLogMessage(_("String from maxima apparently didn't end in a newline"));
+      break;
     case MAXIMA_STDOUT_POLL_ID:
       ReadStdErr();
 
@@ -9061,7 +9055,6 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_FIND_CLOSE(wxID_ANY, wxMaxima::OnFindClose)
                 EVT_ACTIVATE(wxMaxima::OnActivate)
                 EVT_ICONIZE(wxMaxima::OnMinimize)  
-                EVT_MENU(interpret_data_from_maxima,wxMaxima::InterpretDataFromMaxima)
 END_EVENT_TABLE()
 
 

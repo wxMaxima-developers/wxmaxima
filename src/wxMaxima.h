@@ -299,7 +299,7 @@ protected:
     We don't interpret this data directly in the idle event since if we
     block somewhere in the idle event we block gnome.
    */
-  void InterpretDataFromMaxima(wxCommandEvent &event);
+  void InterpretDataFromMaxima();
   bool m_dataFromMaximaIs;
   
   void MenuCommand(wxString cmd);                  //!< Inserts command cmd into the worksheet
