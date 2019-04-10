@@ -117,7 +117,7 @@ void wxMaxima::ConfigChanged()
       m_maxOutputCellsPerCommand = 1200;
       break;
     case 2:
-      m_maxOutputCellsPerCommand = 100;
+      m_maxOutputCellsPerCommand = 5000;
       break;
     case 3:
       m_maxOutputCellsPerCommand = -1;
@@ -2941,6 +2941,8 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
 
 void wxMaxima::InterpretDataFromMaxima()
 {
+    if (IsPaneDisplayed(menu_pane_xmlInspector))
+      m_xmlInspector->Add_FromMaxima(m_newCharsFromMaxima);
   // This way we can avoid searching the whole string for a
   // ending tag if we have received only a few bytes of the
   // data between 2 tags
