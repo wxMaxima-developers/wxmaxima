@@ -131,6 +131,7 @@ void wxMaxima::ConfigChanged()
 #else
   bool usepngCairo=true;
 #endif
+  wxLogMessage(_("Sending configuration data to maxima."));
   config->Read(wxT("usepngCairo"), &usepngCairo);
   if (usepngCairo)
     m_configCommands += wxT(":lisp-quiet (setq $wxplot_pngcairo t)\n");
@@ -233,6 +234,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   m_worksheet->SetFocus();
   m_worksheet->m_keyboardInactiveTimer.SetOwner(this, KEYBOARD_INACTIVITY_TIMER_ID);
   m_maximaStdoutPollTimer.SetOwner(this, MAXIMA_STDOUT_POLL_ID);
+  m_waitForStringEndTimer.SetOwner(this, WAITFORSTRING_ID);
 
   m_autoSaveTimer.SetOwner(this, AUTO_SAVE_TIMER_ID);
 
@@ -1848,6 +1850,7 @@ void wxMaxima::SetCWD(wxString file)
 
   if (workingDirectory != GetCWD())
   {
+    wxLogMessage(_("Telling maxima about the new working directory."));
     m_configCommands += wxT(":lisp-quiet (setf $wxfilename \"") +
       filenamestring +
       wxT("\")\n");
@@ -2605,16 +2608,14 @@ wxString wxMaxima::EscapeForLisp(wxString str)
 
 void wxMaxima::SetupVariables()
 {
-  wxLogMessage(_("Sending maxima the info how to express 2d maths as XML"));
-  SendMaxima(wxT(":lisp-quiet (setf *prompt-suffix* \"") +
+  wxLogMessage(_("Setting a few prerequisites for wxMaxima"));
+  SendMaxima(wxT(":lisp-quiet (progn (setf *prompt-suffix* \"") +
              m_promptSuffix +
-             wxT("\")\n"));
-  SendMaxima(wxT(":lisp-quiet (setf *prompt-prefix* \"") +
+             wxT("\") (setf *prompt-prefix* \"") +
              m_promptPrefix +
-             wxT("\")\n"));
-  SendMaxima(wxT(":lisp-quiet (setf $in_netmath nil)\n"));
-  SendMaxima(wxT(":lisp-quiet (setf $show_openplot t)\n"));
+             wxT("\") (setf $in_netmath nil) (setf $show_openplot t))\n"));
 
+  wxLogMessage(_("Sending maxima the info how to express 2d maths as XML"));
   wxMathML wxmathml;
   SendMaxima(wxmathml.GetCmd());
   wxString cmd;
@@ -2631,12 +2632,15 @@ void wxMaxima::SetupVariables()
   wxmaximaversion_lisp.Replace("\\","\\\\");
   wxmaximaversion_lisp.Replace("\"","\\\"");
 
-  SendMaxima(wxString(wxT(":lisp-quiet (setq $wxmaximaversion \"")) +
-             wxmaximaversion_lisp + "\")\n");
-  SendMaxima(wxString(wxT(":lisp-quiet ($put \'$wxmaxima (read-wxmaxima-version \"")) +
-             wxmaximaversion_lisp +
-             wxT("\") '$version)\n"));
-  SendMaxima(wxString(wxT(":lisp-quiet (setq $wxwidgetsversion \"")) + wxVERSION_STRING + "\")\n");
+  wxLogMessage(_("Updating maxima's configuration"));
+
+  SendMaxima(wxString(wxT(":lisp-quiet (progn (setq $wxmaximaversion \"")) +
+             wxString(wxmaximaversion_lisp) +
+             wxT("\") ($put \'$wxmaxima (read-wxmaxima-version \"" +
+             wxString(wxmaximaversion_lisp) +
+             wxT("\") '$version) (setq $wxwidgetsversion \"")) + wxString(wxVERSION_STRING) +
+             wxT("\"))\n")
+    );
 
   ConfigChanged();
 
@@ -3967,6 +3971,10 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
 {
   switch (event.GetId())
   {
+    case WAITFORSTRING_ID:
+      if(m_dataFromMaximaIs)
+        wxLogMessage(_("String from maxima apparently didn't end in a newline"));
+    break;
     case MAXIMA_STDOUT_POLL_ID:
       ReadStdErr();
 

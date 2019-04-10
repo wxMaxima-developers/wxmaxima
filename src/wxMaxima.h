@@ -113,7 +113,9 @@ public:
     //! The time between two auto-saves has elapsed.
             AUTO_SAVE_TIMER_ID,
     //! We look if we got new data from maxima's stdout.
-            MAXIMA_STDOUT_POLL_ID
+            MAXIMA_STDOUT_POLL_ID,
+            //! We have finished waiting if the current string ends in a newline
+            WAITFORSTRING_ID
   };
 
   /*! A timer that determines when to do the next autosave;

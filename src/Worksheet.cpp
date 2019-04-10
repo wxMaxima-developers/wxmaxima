@@ -1297,7 +1297,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         if (CanCopy())
         {
           popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
-		  popupMenu->Append(popid_copy_matlab, _("Copy as Matlab"), wxEmptyString, wxITEM_NORMAL);
+		  popupMenu->Append(popid_copy_matlab, _("Copy for Octave/Matlab"), wxEmptyString, wxITEM_NORMAL);
 		  popupMenu->Append(popid_copy_tex, _("Copy as LaTeX"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_text, _("Copy as plain text"), wxEmptyString, wxITEM_NORMAL);
           if (m_cellPointers.m_selectionStart == m_cellPointers.m_selectionEnd)
@@ -1391,7 +1391,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         if (CanCopy(true))
         {
           popupMenu->Append(popid_copy, _("Copy"), wxEmptyString, wxITEM_NORMAL);
-		  popupMenu->Append(popid_copy_matlab, _("Copy as Matlab"), wxEmptyString, wxITEM_NORMAL);
+		  popupMenu->Append(popid_copy_matlab, _("Copy for Octave/Matlab"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_tex, _("Copy as LaTeX"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_text, _("Copy as plain text"), wxEmptyString, wxITEM_NORMAL);
           popupMenu->Append(popid_copy_mathml, _("Copy as MathML (e.g. to word processor)"), wxEmptyString,
