@@ -4242,7 +4242,8 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
                                      wxEmptyString, wxEmptyString,
                                      _("Maxima package (*.mac)|*.mac"),
                                      wxFD_OPEN);
-      OpenFile(file, wxT("batch"));
+      if(file != wxEmptyString)
+        OpenFile(file, wxT("batch"));
     }
       break;
 
