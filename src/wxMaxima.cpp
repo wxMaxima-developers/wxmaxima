@@ -1626,6 +1626,12 @@ void wxMaxima::ReadVariables(wxString &data)
             {
               m_maximaTempDir = value;
               wxLogMessage(wxString::Format("Maxima uses temp directory %s",value));
+              {
+                // Sometimes people delete their temp dir
+                // and gnuplot won't create a new one for them.
+                wxLogNull logNull;
+                wxMkDir(value, wxS_DIR_DEFAULT);
+              }
             }
             if(name == "*autoconf-version*")
             {
