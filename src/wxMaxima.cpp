@@ -785,11 +785,16 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
           m_newCharsFromMaxima += chr;
       }
 
-    m_dataFromMaximaIs = true;
     if(m_newCharsFromMaxima.EndsWith("\n") || m_newCharsFromMaxima.EndsWith("<PROMPT-S/>"))
-      m_waitForStringEndTimer.Stop();
+    {
+      wxCommandEvent dummy;
+      InterpretDataFromMaxima(dummy)
+    }
     else
+    {
       m_waitForStringEndTimer.StartOnce(50);
+    }
+
     break;
     }
   default:
@@ -3004,17 +3009,7 @@ void wxMaxima::InterpretDataFromMaxima(wxCommandEvent &WXUNUSED(event))
 ///--------------------------------------------------------------------------------
 
 void wxMaxima::OnIdle(wxIdleEvent &event)
-{
-  // Handle the text we have received from maxima
-  if((m_dataFromMaximaIs) && (!m_waitForStringEndTimer.IsRunning()))
-  {
-    m_dataFromMaximaIs = false;
-    wxMenuEvent *interpretEvent = new wxMenuEvent(wxEVT_MENU, interpret_data_from_maxima);
-    GetEventHandler()->QueueEvent(interpretEvent);    
-    event.RequestMore();
-    return;
-  }
-    
+{    
   // If wxMaxima has to open a file on startup we wait for that until we have
   // a valid draw context for size calculations.
   //
@@ -3972,8 +3967,12 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
   switch (event.GetId())
   {
     case WAITFORSTRING_ID:
+    {
+      wxMenuEvent *interpretEvent = new wxMenuEvent(wxEVT_MENU, interpret_data_from_maxima);
+      GetEventHandler()->QueueEvent(interpretEvent);    
       if(m_dataFromMaximaIs)
         wxLogMessage(_("String from maxima apparently didn't end in a newline"));
+    }
     break;
     case MAXIMA_STDOUT_POLL_ID:
       ReadStdErr();
