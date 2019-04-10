@@ -1405,9 +1405,23 @@
   (defvar $wxanimate_framerate *default-framerate*)
   (defun slide-tag (images)
     (if (eql *default-framerate* $wxanimate_framerate)
-	($ldisp (list '(wxxmltag simp) (wxxml-fix-string (format nil "~{~a;~}" images)) "slide" (if (eql $wxanimate_autoplay 't) "running=\"true\" del=\"yes\"" "running=\"false\" del=\"yes\"")))
-      ($ldisp (list '(wxxmltag simp) (wxxml-fix-string (format nil "~{~a;~}" images)) "slide" (if (eql $wxanimate_autoplay 't) (format nil "fr=\"~a\" running=\"true\" del=\"yes\"" $wxanimate_framerate)  (format nil "fr=\"~a\" running=\"false\" del=\"yes\"" $wxanimate_framerate))
-                    ))))
+	($ldisp
+	 (list '(wxxmltag simp)
+	       (wxxml-fix-string (format nil "~{~a;~}" images))
+	       "slide"
+	       (if (eql $wxanimate_autoplay 't)
+		   "running=\"true\" del=\"yes\""
+		 "running=\"false\" del=\"yes\""))
+	 (format nil "~%"))
+      ($ldisp
+       (list '(wxxmltag simp)
+	     (wxxml-fix-string
+	      (format nil "~{~a;~}" images))
+	     "slide"
+	     (if (eql $wxanimate_autoplay 't)
+		 (format nil "fr=\"~a\" running=\"true\" del=\"yes\"" $wxanimate_framerate)
+	       (format nil "fr=\"~a\" running=\"false\" del=\"yes\"" $wxanimate_framerate)))
+       (format nil "~%"))))
 
   (defun wxanimate (scene)
     (let* ((scene (cdr scene))

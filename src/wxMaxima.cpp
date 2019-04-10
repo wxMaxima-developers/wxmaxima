@@ -117,7 +117,7 @@ void wxMaxima::ConfigChanged()
       m_maxOutputCellsPerCommand = 1200;
       break;
     case 2:
-      m_maxOutputCellsPerCommand = 5000;
+      m_maxOutputCellsPerCommand = 100;
       break;
     case 3:
       m_maxOutputCellsPerCommand = -1;
@@ -791,7 +791,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
       InterpretDataFromMaxima();
     }
     else
-      m_waitForStringEndTimer.StartOnce(50);
+      m_waitForStringEndTimer.StartOnce(5000);
 
     break;
     }
