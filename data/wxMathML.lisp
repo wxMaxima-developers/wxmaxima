@@ -1829,7 +1829,7 @@
 
 
   ;; A function that determines all symbols for autocompletion
-  (defun wxPrint_autoompletesymbols ()
+  (defun wxPrint_autocompletesymbols ()
     #+clisp (finish-output)
     (format t "<wxxml-symbols>")
     ;; Function names and rules
@@ -2062,12 +2062,12 @@
 	 ;; and what autocompletable symbols we know about.
 	 (setq *wxmaxima-nested-loads* (- *wxmaxima-nested-loads* 1))
 	 (if (eq *wxmaxima-nested-loads* 0)
-	     (wxPrint_autoompletesymbols))
+	     (wxPrint_autocompletesymbols))
 	 ))))
   (format t "</suppressOutput>~%")
   ;; Publish all new global variables maxima might contain to wxMaxima's
   ;; autocompletion feature.
-  (wxPrint_autoompletesymbols)
+  (wxPrint_autocompletesymbols)
   (wx-print-variables)
   (finish-output)
 )
