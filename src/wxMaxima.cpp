@@ -250,7 +250,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   wxASSERT(m_varRegEx.Compile(wxT("^ *([[:alnum:]%_]+) *:")));
   // RegEx for blank statement removal
   wxASSERT(m_blankStatementRegEx.Compile(wxT("(^;)|((^|;)(((\\/\\*.*\\*\\/)?([[:space:]]*))+;)+)")));
-  wxASSERT(m_sbclCompilationRegEx.Compile(wxT("; compiling (.* \\.\\.\\.)")));
+  wxASSERT(m_sbclCompilationRegEx.Compile(wxT("; compiling (.* \\.*)")));
 
   m_statusBar->GetNetworkStatusElement()->Connect(wxEVT_LEFT_DCLICK,
                                                   wxCommandEventHandler(wxMaxima::NetworkDClick),
@@ -1668,7 +1668,7 @@ void wxMaxima::ReadVariables(wxString &data)
             if(name == "*wx-load-file-name*")
             {
               m_recentPackages.AddDocument(value);
-              wxLogMessage(wxString::Format(_("Maxima loads the file %s."),value));
+              wxLogMessage(wxString::Format(_("Maxima has loaded the file %s."),value));
             }
          }
           var = var->GetNext();
@@ -3217,9 +3217,13 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
 
   UpdateDrawPane();
 
-   // On MS Windows sometimes we don't get a wxSOCKET_INPUT event on input.
-   wxSocketEvent dummy(wxSOCKET_INPUT);
-   ClientEvent(dummy);
+  
+  // On MS Windows sometimes we don't get a wxSOCKET_INPUT event on input.
+  // Let's trigger interpretation of new input if we don't have anything
+  // else to do just to make sure that wxMaxima will eventually restart
+  // receiving data.
+  wxSocketEvent dummy(wxSOCKET_INPUT);
+  ClientEvent(dummy);
 
   // Tell wxWidgets it can process its own idle commands, as well.
   event.Skip();

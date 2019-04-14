@@ -4722,13 +4722,16 @@ bool AutoComplete::LoadSymbols()
 
   // Prepare a list of all built-in demos of maxima.
   {
+    wxFileName demoDir(m_configuration->MaximaShareDir());
+    demoDir.MakeAbsolute();
+    demoDir.RemoveLastDir();
     GetDemoFiles_includingSubdirs maximaLispIterator (m_builtInDemoFiles);
     wxLogMessage(
       wxString::Format(
         _("Autocompletion: Scanning %s for loadable demo files."),
-        m_configuration->MaximaShareDir()+"/.."));
+        demoDir.GetFullPath()));
 
-    wxDir maximadir(m_configuration->MaximaShareDir()+"/..");
+    wxDir maximadir(demoDir.GetFullPath());
     if(maximadir.IsOpened())
       maximadir.Traverse(maximaLispIterator);
     GetDemoFiles userLispIterator (m_builtInDemoFiles);
