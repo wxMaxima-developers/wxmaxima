@@ -7535,6 +7535,8 @@ void Worksheet::DivideCell()
   if (GetActiveCell()->CaretAtStart() || GetActiveCell()->CaretAtEnd())
     return;
 
+  dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup())->RemoveOutput();
+
   wxString newcellstring = GetActiveCell()->DivideAtCaret();
 
   SetHCaret(parent, false);
@@ -7571,6 +7573,7 @@ void Worksheet::MergeCells()
   DeleteSelection();
   editor->GetGroup()->ResetSize();
   dynamic_cast<GroupCell *>(editor->GetGroup())->ResetInputLabel();
+  dynamic_cast<GroupCell *>(editor->GetGroup())->RemoveOutput();
   editor->ResetSize();
   Recalculate();
   SetActiveCell(editor, true);

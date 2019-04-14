@@ -273,7 +273,7 @@ void TextCell::SetValue(const wxString &text)
                     "that isn't a list.\n"
                     "Enclosing the new element for the list in brackets ([]) "
                     "converts it to a list and makes it appendable.");
-    if(text.StartsWith(wxT("part: invalid index")))
+    if(text.Contains(wxT(": invalid index")))
       m_toolTip = _("The [] or the part() command tried to access a list or matrix "
                     "element that doesn't exist.");
     if(text.StartsWith(wxT("apply: subscript must be an integer; found:")))
