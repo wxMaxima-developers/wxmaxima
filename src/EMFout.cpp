@@ -32,6 +32,7 @@
 #include "Configuration.h"
 #include "GroupCell.h"
 #include <wx/config.h>
+#include <wx/log.h>
 #include <wx/clipbrd.h>
 
 #if wxUSE_ENH_METAFILE
@@ -80,7 +81,8 @@ Emfout::~Emfout()
     // files to trigger asserts.
     SuppressErrorDialogs messageBlocker;
     
-    wxRemoveFile(m_tempFileName);
+    if(!wxRemoveFile(m_tempFileName))
+      wxLogMessage(_("Cannot remove the file %s"),m_tempFileName);
   }
   *m_configuration = m_oldconfig;
   (*m_configuration)->FontChanged(true);
