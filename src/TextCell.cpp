@@ -1380,7 +1380,7 @@ wxString TextCell::ToOMML()
     {
     }
   }
-  text = wxT("<m:t>") + text + wxT("</m:t>\n");
+  text = wxT("<m:r>") + text + wxT("</m:r>\n");
   return text;
 }
 

@@ -70,7 +70,6 @@ Emfout::~Emfout()
   wxDELETE(m_tree);
   m_tree = NULL;
   wxDELETE(*m_configuration);
-  m_configuration = NULL;
   wxDELETE(m_dc);
   m_dc = NULL;
   wxDELETE(m_recalculationDc);
@@ -86,6 +85,7 @@ Emfout::~Emfout()
   *m_configuration = m_oldconfig;
   (*m_configuration)->FontChanged(true);
   (*m_configuration)->RecalculationForce(true);
+  m_configuration = NULL;
 }
 
 wxSize Emfout::SetData(Cell *tree)
