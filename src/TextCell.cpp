@@ -1625,7 +1625,7 @@ wxString TextCell::GetGreekStringUnicode()
   else if (txt == wxT("%Omega"))
     return wxT("\x03A9");
 
-  return txt;
+  return m_text;
 }
 
 wxString TextCell::GetSymbolUnicode(bool keepPercent)
