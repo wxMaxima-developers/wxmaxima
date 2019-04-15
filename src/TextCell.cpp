@@ -1353,9 +1353,7 @@ wxString TextCell::ToOMML()
     /* FALLTHRU */
   case TS_VARIABLE:
     {
-      bool keepPercent = (*m_configuration)->CheckKeepPercent();
-
-      if (!keepPercent)
+      if (!(*m_configuration)->CheckKeepPercent())
       {
         if (text == wxT("%pi"))
           text = wxT("\x03C0");
@@ -1627,7 +1625,7 @@ wxString TextCell::GetGreekStringUnicode()
   else if (txt == wxT("%Omega"))
     return wxT("\x03A9");
 
-  return wxEmptyString;
+  return txt;
 }
 
 wxString TextCell::GetSymbolUnicode(bool keepPercent)
