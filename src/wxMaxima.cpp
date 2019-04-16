@@ -5098,15 +5098,18 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
       break;
     case menu_map_mat:
     {
-      Gen2Wiz *wiz = new Gen2Wiz(_("Function:"), _("Matrix:"),
-                                 wxEmptyString, expr,
+      Gen2Wiz *wiz = new Gen3Wiz(_("Resulting Matrix name (may be empty):"), _("Function:"), _("Matrix:"),
+                                 wxEmptyString, wxEmptyString, expr,
                                  m_worksheet->m_configuration,
                                  this, -1, _("Matrix map"));
       //wiz->Centre(wxBOTH);
       if (wiz->ShowModal() == wxID_OK)
       {
-        cmd = wxT("matrixmap(") + wiz->GetValue1() + wxT(", ")
-              + wiz->GetValue2() + wxT(");");
+        cmd = wxEmptyString;
+        if(wiz->GetValue1() == wxEmptyString)
+          cmd = wiz->GetValue1() + wxT(":");
+        cmd += wxT("matrixmap(") + wiz->GetValue2() + wxT(", ")
+              + wiz->GetValue3() + wxT(");");
         MenuCommand(cmd);
       }
       wiz->Destroy();
