@@ -5098,7 +5098,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
       break;
     case menu_map_mat:
     {
-      Gen2Wiz *wiz = new Gen3Wiz(_("Resulting Matrix name (may be empty):"), _("Function:"), _("Matrix:"),
+      Gen3Wiz *wiz = new Gen3Wiz(_("Resulting Matrix name (may be empty):"), _("Function:"), _("Matrix:"),
                                  wxEmptyString, wxEmptyString, expr,
                                  m_worksheet->m_configuration,
                                  this, -1, _("Matrix map"));
