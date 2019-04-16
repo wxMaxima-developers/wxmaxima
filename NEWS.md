@@ -1,3 +1,13 @@
+# wxMaxima 19.04.2 - Stable
+ * Corrected the size of error messages
+ * A "Copy to mathlab"-feature.
+ * Maxima now delays interpreting the data from maxima until it encounters
+   a newline or an Timer expires.
+ * EMF output no no more causes crashes and strange behaviour.
+ * RTF output should now work again
+ * entermatrix() now works again.
+ * Better help file detection on MS Windows.
+
 # wxMaxima 19.04.1 - Stable
  * Corrected the size of error messages
  
