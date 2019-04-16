@@ -378,7 +378,7 @@ void TextCell::RecalculateWidths(int fontsize)
 
     // Labels and prompts are fixed width - adjust font size so that
     // they fit in
-    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT) || (m_textStyle == TS_OTHER_PROMPT))
+    if ((m_textStyle == TS_LABEL) || (m_textStyle == TS_USERLABEL) || (m_textStyle == TS_MAIN_PROMPT))
     {
       wxString text = m_text;
 
