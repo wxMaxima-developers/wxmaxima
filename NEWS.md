@@ -1,3 +1,6 @@
+# wxMaxima 19.04.3 - Stable
+ * wxMaxima now informs maxima which front-end is in use.
+
 # wxMaxima 19.04.2 - Stable
  * Corrected the size of error messages
  * A "Copy to mathlab"-feature.
