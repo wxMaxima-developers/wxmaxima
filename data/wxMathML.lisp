@@ -102,6 +102,11 @@
 	   (rest (subseq v (1+ d2))))
       (list '(mlist simp) (parse-integer year) (parse-integer month) rest)))
 
+  (if (boundp $maxima_frontend)
+      (setq $maxima_frontend "wxMaxima"))
+  (if (boundp $maxima_frontend-version)
+      (setq $maxima_frontend_version $wxmaximaversion))
+
   (defun $wxbuild_info ()
     (let ((year (sixth cl-user:*maxima-build-time*))
 	  (month (fifth cl-user:*maxima-build-time*))

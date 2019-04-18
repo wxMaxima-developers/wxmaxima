@@ -3514,6 +3514,8 @@ bool AutoComplete::LoadSymbols()
   m_wordList[command].Add("maxima_tempdir"); // OPTION
   m_wordList[command].Add("maxima_userdir"); // OPTION
   m_wordList[command].Add("maxima_objdir"); // OPTION
+  m_wordList[command].Add("maxima_frontend"); // OPTION
+  m_wordList[command].Add("maxima_frontend_version"); // OPTION
   m_wordList[command].Add("room"); // FUNCTION
   m_wordList[tmplte ].Add("room()"); // OPTION
   m_wordList[tmplte ].Add("room(true)"); // OPTION
