@@ -785,7 +785,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
           m_newCharsFromMaxima += chr;
       }
 
-    if(m_newCharsFromMaxima.EndsWith("\n") || m_newCharsFromMaxima.EndsWith("<PROMPT-S/>"))
+    if(m_newCharsFromMaxima.EndsWith("\n") || m_newCharsFromMaxima.EndsWith(m_promptSuffix))
     {
       m_waitForStringEndTimer.Stop();
       InterpretDataFromMaxima();
