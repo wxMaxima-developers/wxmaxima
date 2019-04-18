@@ -106,8 +106,6 @@
   (defvar $maxima_frontend_version nil)
   (if (boundp $maxima_frontend)
       (setq $maxima_frontend "wxMaxima"))
-  (if (boundp $maxima_frontend_version)
-      (setq $maxima_frontend_version $wxmaximaversion))
 
   (defun $wxbuild_info ()
     (let ((year (sixth cl-user:*maxima-build-time*))

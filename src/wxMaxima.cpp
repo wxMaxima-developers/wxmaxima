@@ -2648,7 +2648,8 @@ void wxMaxima::SetupVariables()
              wxT("\") ($put \'$wxmaxima (read-wxmaxima-version \"" +
              wxString(wxmaximaversion_lisp) +
              wxT("\") '$version) (setq $wxwidgetsversion \"")) + wxString(wxVERSION_STRING) +
-             wxT("\"))\n")
+             wxT("\")   (if (boundp $maxima_frontend_version) (setq $maxima_frontend_version \"" +
+                 wxmaximaversion_lisp + "\")))\n")
     );
 
   ConfigChanged();
