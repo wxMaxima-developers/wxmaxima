@@ -395,8 +395,11 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
   wxAutoBufferedPaintDC dc(this);
-  dc.SetBackground(*(wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID)));
+  wxBrush *backgroundBrush = wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID);
+  dc.SetBackground(*backgroundBrush);
+  dc.SetBrush(*backgroundBrush);
   dc.SetMapMode(wxMM_TEXT);
+  // Don't draw text with an opaque background
   dc.SetBackgroundMode(wxTRANSPARENT);
   PrepareDC(dc);
   
