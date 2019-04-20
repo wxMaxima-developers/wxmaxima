@@ -399,7 +399,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   dc.SetBackground(*backgroundBrush);
   dc.SetBrush(*backgroundBrush);
   dc.SetMapMode(wxMM_TEXT);
-  // Don't draw text with an opaque background
+  // Don't draw text with an opaque background.
   dc.SetBackgroundMode(wxTRANSPARENT);
   PrepareDC(dc);
   
