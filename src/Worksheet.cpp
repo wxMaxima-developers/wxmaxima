@@ -110,7 +110,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
   m_wxmFormat = wxDataFormat(wxT("text/x-wxmaxima-batch"));
   m_mathmlFormat = wxDataFormat(wxT("MathML"));
   m_mathmlFormat2 = wxDataFormat(wxT("application/mathml-presentation+xml"));
-  m_rtfFormat = wxDataFormat(wxT("Rich Text Format"));
+  m_rtfFormat = wxDataFormat(wxT("application/rtf"));
   m_rtfFormat2 = wxDataFormat(wxT("text/rtf"));
   m_hCaretBlinkVisible = true;
   m_hasFocus = true;
