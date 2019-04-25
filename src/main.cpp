@@ -57,7 +57,6 @@ std::list<wxMaxima *> MyApp::m_topLevelWindows;
 
 bool MyApp::OnInit()
 {
-  m_locale.Init(wxLANGUAGE_DEFAULT);
   #if wxUSE_ON_FATAL_EXCEPTION
   wxHandleFatalExceptions(true);
   #endif
@@ -95,52 +94,9 @@ bool MyApp::OnInit()
 
   wxConfig::Set(new wxFileConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName));
 
-  int lang = wxLANGUAGE_UNKNOWN;
-
-  bool exitAfterEval = false;
-  bool evalOnStartup = false;
-
-  wxCmdLineParser cmdLineParser(argc, argv);
-
-  static const wxCmdLineEntryDesc cmdLineDesc[] =
-          {
-            {wxCMD_LINE_SWITCH, "v", "version", "Output the version info", wxCMD_LINE_VAL_NONE , 0},
-                  /* Usually wxCMD_LINE_OPTION_HELP is used with the following option, but that displays a message
-                   * using a own window and we want the message on the command line. If a user enters a command
-                   * line option, he expects probably a answer just on the command line... */
-                  {wxCMD_LINE_SWITCH, "h", "help", "show this help message", wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP},
-                  {wxCMD_LINE_OPTION, "o", "open", "open a file", wxCMD_LINE_VAL_STRING , 0},
-                  {wxCMD_LINE_SWITCH, "e", "eval",
-                   "evaluate the file after opening it.", wxCMD_LINE_VAL_NONE , 0},
-                  {wxCMD_LINE_SWITCH, "b", "batch",
-                   "run the file and exit afterwards. Halts on questions and stops on errors.",  wxCMD_LINE_VAL_NONE, 0},
-                  { wxCMD_LINE_OPTION, "f", "ini", "allows to specify a file to store the configuration in", wxCMD_LINE_VAL_STRING , 0},
-                  { wxCMD_LINE_OPTION, "m", "maxima", "allows to specify the location of the maxima binary", wxCMD_LINE_VAL_STRING , 0},
-                  {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
-            {wxCMD_LINE_NONE, "", "", "", wxCMD_LINE_VAL_NONE, 0}
-          };
-
-  cmdLineParser.SetDesc(cmdLineDesc);
-  cmdLineParser.Parse();
-  wxString ini, file;
-  // Attention: The config file is changed by wxMaximaFrame::wxMaximaFrame::ReReadConfig
-  if (cmdLineParser.Found(wxT("f"),&ini))
-  {
-    Configuration::m_maximaLocation_override = ini;
-  }
-  else
-    wxConfig::Set(new wxConfig(wxT("wxMaxima")));
-
-  if (cmdLineParser.Found(wxT("m"),&ini))
-    wxConfig::Get()->Write(wxT("maxima"), ini);
-
-  wxImage::AddHandler(new wxPNGHandler);
-  wxImage::AddHandler(new wxXPMHandler);
-  wxImage::AddHandler(new wxJPEGHandler);
-
-  wxFileSystem::AddHandler(new wxZipFSHandler);
-
   wxConfigBase *config = wxConfig::Get();
+
+  int lang = wxLANGUAGE_UNKNOWN;
   lang = wxLocale::GetSystemLanguage();
   if(lang == wxLANGUAGE_UNKNOWN)
     lang = wxLANGUAGE_DEFAULT;
@@ -189,6 +145,8 @@ bool MyApp::OnInit()
       m_locale.Init(lang);
     }
   }
+  else
+    m_locale.Init(wxLANGUAGE_DEFAULT);
 
   m_locale.AddCatalogLookupPathPrefix(m_dirstruct->LocaleDir());
   m_locale.AddCatalogLookupPathPrefix(m_dirstruct->LocaleDir()+wxT("/wxwin"));
@@ -196,6 +154,51 @@ bool MyApp::OnInit()
   m_locale.AddCatalogLookupPathPrefix(wxT("/usr/local/share/locale"));
   m_locale.AddCatalog(wxT("wxMaxima"));
   m_locale.AddCatalog(wxT("wxMaxima-wxstd"));
+
+  bool exitAfterEval = false;
+  bool evalOnStartup = false;
+
+  wxCmdLineParser cmdLineParser(argc, argv);
+
+  static const wxCmdLineEntryDesc cmdLineDesc[] =
+          {
+            {wxCMD_LINE_SWITCH, "v", "version", "Output the version info", wxCMD_LINE_VAL_NONE , 0},
+                  /* Usually wxCMD_LINE_OPTION_HELP is used with the following option, but that displays a message
+                   * using a own window and we want the message on the command line. If a user enters a command
+                   * line option, he expects probably a answer just on the command line... */
+                  {wxCMD_LINE_SWITCH, "h", "help", "show this help message", wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP},
+                  {wxCMD_LINE_OPTION, "o", "open", "open a file", wxCMD_LINE_VAL_STRING , 0},
+                  {wxCMD_LINE_SWITCH, "e", "eval",
+                   "evaluate the file after opening it.", wxCMD_LINE_VAL_NONE , 0},
+                  {wxCMD_LINE_SWITCH, "b", "batch",
+                   "run the file and exit afterwards. Halts on questions and stops on errors.",  wxCMD_LINE_VAL_NONE, 0},
+                  { wxCMD_LINE_OPTION, "f", "ini", "allows to specify a file to store the configuration in", wxCMD_LINE_VAL_STRING , 0},
+                  { wxCMD_LINE_OPTION, "m", "maxima", "allows to specify the location of the maxima binary", wxCMD_LINE_VAL_STRING , 0},
+                  {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
+            {wxCMD_LINE_NONE, "", "", "", wxCMD_LINE_VAL_NONE, 0}
+          };
+
+  cmdLineParser.SetDesc(cmdLineDesc);
+  cmdLineParser.Parse();
+  wxString ini, file;
+  // Attention: The config file is changed by wxMaximaFrame::wxMaximaFrame::ReReadConfig
+  if (cmdLineParser.Found(wxT("f"),&ini))
+  {
+    Configuration::m_maximaLocation_override = ini;
+  }
+  else
+    wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+
+  config = wxConfig::Get();
+
+  if (cmdLineParser.Found(wxT("m"),&ini))
+    wxConfig::Get()->Write(wxT("maxima"), ini);
+
+  wxImage::AddHandler(new wxPNGHandler);
+  wxImage::AddHandler(new wxXPMHandler);
+  wxImage::AddHandler(new wxJPEGHandler);
+
+  wxFileSystem::AddHandler(new wxZipFSHandler);
 
   m_dirstruct =  new Dirstructure;
 
