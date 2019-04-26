@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 12:15+0200\n"
+"POT-Creation-Date: 2019-04-26 12:31+0200\n"
 "PO-Revision-Date: 2013-11-04 00:21+0100\n"
 "Last-Translator: Bernard Alfonsi <bernard.alfonsi@free.fr>\n"
 "Language-Team: francais <fr@li.org>\n"
@@ -2267,7 +2267,6 @@ msgid "Equations:"
 msgstr "Équation(s) :"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1314
-#: /home/gunter/src/wxmaxima/src/Image.cpp:513
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1889
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2200
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2211
@@ -2291,6 +2290,15 @@ msgstr "Erreur"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5136
 msgid "Error!"
 msgstr "Erreur !"
+
+#: /home/gunter/src/wxmaxima/src/Image.cpp:515
+#, c-format
+msgid "Error: Cannot render %s."
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/Image.cpp:517
+msgid "Error: Cannot render the image."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1653
 msgid "Eta"

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 12:15+0200\n"
-"PO-Revision-Date: 2019-04-20 16:42+0200\n"
+"POT-Creation-Date: 2019-04-26 12:31+0200\n"
+"PO-Revision-Date: 2019-04-26 12:32+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -2313,7 +2313,6 @@ msgid "Equations:"
 msgstr "Gleichungen:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1314
-#: /home/gunter/src/wxmaxima/src/Image.cpp:513
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1889
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2200
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2211
@@ -2337,6 +2336,15 @@ msgstr "Fehler"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5136
 msgid "Error!"
 msgstr "Fehler!"
+
+#: /home/gunter/src/wxmaxima/src/Image.cpp:515
+#, c-format
+msgid "Error: Cannot render %s."
+msgstr "Fehler: Kann %s nicht rendern."
+
+#: /home/gunter/src/wxmaxima/src/Image.cpp:517
+msgid "Error: Cannot render the image."
+msgstr "Fehler: Kann das Bild nicht rendern."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1653
 msgid "Eta"

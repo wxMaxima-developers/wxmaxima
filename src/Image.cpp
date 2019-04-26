@@ -508,9 +508,13 @@ wxBitmap Image::GetBitmap(double scale)
     {
       m_isOk = false;
       // Create a "image not loaded" bitmap.
-      m_scaledBitmap.Create(400, 250);
+      m_scaledBitmap.Create(m_width, m_height);
 
-      wxString error(_("Error"));
+      wxString error;
+      if(m_imageName != wxEmptyString)
+        error = wxString::Format(_("Error: Cannot render %s."), m_imageName);
+      else
+        error = wxString::Format(_("Error: Cannot render the image."));
 
       wxMemoryDC dc;
       dc.SelectObject(m_scaledBitmap);
@@ -518,13 +522,12 @@ wxBitmap Image::GetBitmap(double scale)
       int width = 0, height = 0;
       dc.GetTextExtent(error, &width, &height);
 
-      dc.DrawRectangle(0, 0, 400, 250);
-      dc.DrawLine(0, 0, 400, 250);
-      dc.DrawLine(0, 250, 400, 0);
-      dc.DrawText(error, 200 - width / 2, 125 - height / 2);
+      dc.DrawRectangle(0, 0, m_width - 1, m_height - 1);
+      dc.DrawLine(0, 0, m_width - 1, m_height - 1);
+      dc.DrawLine(0, m_height - 1, m_width - 1, 0);
 
       dc.GetTextExtent(error, &width, &height);
-      dc.DrawText(error, 200 - width / 2, 150 - height / 2);
+      dc.DrawText(error, (m_width - width) / 2, (m_height - height) / 2);
     }
   }
 
@@ -560,6 +563,7 @@ void Image::LoadImage(const wxBitmap &bitmap)
 
 void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
 {
+  m_imageName = image;
   m_compressedImage.Clear();
   m_scaledBitmap.Create(1, 1);
 
@@ -612,8 +616,8 @@ void Image::LoadImage(wxString image, bool remove, wxFileSystem *filesystem)
 
   m_extension = wxFileName(image).GetExt();
 
-  m_originalWidth = 400;
-  m_originalHeight = 250;
+  m_originalWidth = 700;
+  m_originalHeight = 300;
 
   if (Image.Ok())
   {
@@ -644,8 +648,8 @@ void Image::Recalculate(double scale)
 
   if ((width < 1) || (height < 1))
   {
-    m_width = 400;
-    m_height = 250;
+    m_width = 700;
+    m_height = 300;
     return;
   }
 

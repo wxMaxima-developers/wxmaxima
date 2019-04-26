@@ -208,6 +208,8 @@ private:
   double m_maxWidth;
   //! The upper height limit for displaying this image
   double m_maxHeight;
+  //! The name of the image, if known.
+  wxString m_imageName;
 };
 
 #endif // IMAGE_H
