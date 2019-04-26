@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Greek translation of wxMaxima GUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-18 19:30+0200\n"
+"POT-Creation-Date: 2019-04-26 12:15+0200\n"
 "PO-Revision-Date: 2010-06-04 19:46+0200\n"
 "Last-Translator: aga <akritas@uth.gr>\n"
 "Language-Team: uth <aakritas@uth.gr>\n"
@@ -289,7 +289,7 @@ msgstr "Εμφάνιση βοήθειας για το Maxima"
 msgid "&Modulus Computation..."
 msgstr "Ορισμός του modulo (για rat, κτλ)..."
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:242
+#: /home/gunter/src/wxmaxima/src/main.cpp:246
 #, fuzzy
 msgid "&New\tCtrl+N"
 msgstr "Νέο\tCtrl+N"
@@ -306,7 +306,7 @@ msgstr "Αριθμητική Ολοκλήρωση"
 msgid "&Nusum"
 msgstr "Νusum"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:243
+#: /home/gunter/src/wxmaxima/src/main.cpp:247
 #, fuzzy
 msgid "&Open\tCtrl+O"
 msgstr "Άνοιγμα\tCtrl+O"
@@ -790,14 +790,14 @@ msgstr ""
 msgid "Automatic labels (%i1, %o1,...)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1372
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1519
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1375
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1522
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:742
 msgid "Automatically answer questions"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1373
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1520
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1376
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1523
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:743
 msgid "Automatically fill in answers known from the last run"
 msgstr ""
@@ -909,30 +909,30 @@ msgstr ""
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2668
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2671
 msgid "Bug: Cell left but not entered."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6888
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6891
 msgid "Bug: Cell with negative y position!"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2853
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2856
 msgid "Bug: Got a question but no cell to answer it in"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7076
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7079
 msgid ""
 "Bug: Got a request to change the contents of the cell above the beginning of "
 "the worksheet."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7051
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7054
 msgid ""
 "Bug: Got a request to delete the cell above the beginning of the worksheet."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7118
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7121
 msgid ""
 "Bug: Got a request to first change the contents of a cell and to then "
 "undelete it."
@@ -989,7 +989,7 @@ msgstr ""
 msgid "Bug: No last cell inside a square root!"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2678
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2681
 msgid "Bug: Text changed, but no active cell."
 msgstr ""
 
@@ -999,15 +999,15 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/ImgCell.cpp:376
 #: /home/gunter/src/wxmaxima/src/SVGout.cpp:349
 #: /home/gunter/src/wxmaxima/src/SlideShowCell.cpp:466
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2167
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2305
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2352
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2416
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2452
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2467
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:4545
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7375
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7617
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2170
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2308
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2355
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2419
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2455
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2470
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:4548
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7378
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7620
 msgid "Bug: The clipboard is already opened"
 msgstr ""
 
@@ -1019,29 +1019,29 @@ msgstr ""
 msgid "Bug: Trying to append NULL to a group cell."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:760
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:763
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7726
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7729
 msgid ""
 "Bug: Trying to move the horizontally-drawn cursor to a place inside a "
 "GroupCell."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2680
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2683
 msgid "Bug: Trying to record a cell contents change for undo without a cell."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2043
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:2046
 msgid "Bug: Trying to select inside a cell without having a current cell"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7119
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7122
 msgid "Bug: Undo action with both cell contents change and cell addition."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7081
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7084
 msgid "Bug: Undo request for cell outside worksheet."
 msgstr ""
 
@@ -1222,7 +1222,7 @@ msgstr "Άγκιστρο κελιού"
 msgid "Cell ends in a backslash"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:522
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:525
 msgid "Cell wasn't recalculated on draw!"
 msgstr ""
 
@@ -1376,7 +1376,7 @@ msgstr ""
 msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1468
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1471
 msgid "Comment Selection"
 msgstr "Επιλογή Σχολίων"
 
@@ -1575,16 +1575,16 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:250
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:210
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1266
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1299
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1393
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1462
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1269
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1302
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1396
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1465
 msgid "Copy"
 msgstr "Αντιγραφή"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1271
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1310
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1404
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1274
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1313
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1407
 #, fuzzy
 msgid "Copy Animation"
 msgstr "Διακοπή του εφέ κίνησης"
@@ -1598,20 +1598,20 @@ msgstr "Αντιγραφή προηγούμενης εισαγωγής\tCtrl+I"
 msgid "Copy Previous Output\tCtrl+U"
 msgstr "Αντιγραφή προηγούμενης εισαγωγής\tCtrl+I"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1315
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1409
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1318
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1412
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:589
 msgid "Copy as EMF"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1306
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1400
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1309
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1403
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:579
 msgid "Copy as Image"
 msgstr "Αντιγραφή ως εικόνα"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1301
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1395
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1304
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1398
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:573
 msgid "Copy as LaTeX"
 msgstr "Αντιγραφή ως LaTeX"
@@ -1621,20 +1621,20 @@ msgstr "Αντιγραφή ως LaTeX"
 msgid "Copy as MathML"
 msgstr "Αντιγραφή ως εικόνα"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1304
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1397
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1307
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1400
 msgid "Copy as MathML (e.g. to word processor)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1318
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1412
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1321
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1415
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:585
 #, fuzzy
 msgid "Copy as RTF"
 msgstr "Αντιγραφή ως LaTeX"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1312
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1406
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1315
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1409
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:582
 #, fuzzy
 msgid "Copy as SVG"
@@ -1644,14 +1644,14 @@ msgstr "Αντιγραφή ως LaTeX"
 msgid "Copy as Text\tCtrl+Shift+C"
 msgstr "Αντιγραφή ως κείμενο\tCtrl+Shift+C"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1302
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1396
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1305
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1399
 #, fuzzy
 msgid "Copy as plain text"
 msgstr "Αντιγραφή ως εικόνα"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1300
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1394
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1303
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1397
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:570
 msgid "Copy for Octave/Matlab"
 msgstr ""
@@ -1759,7 +1759,7 @@ msgid "Cursor"
 msgstr "Κέρσορας"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:204
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1461
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1464
 msgid "Cut"
 msgstr "Αποκοπή"
 
@@ -1863,8 +1863,8 @@ msgstr "Διαγραφή"
 msgid "Delete F&unction..."
 msgstr "Διαγραφή συνάρτησης..."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1321
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1415
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1324
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1418
 msgid "Delete Selection"
 msgstr "Διαγραφή επιλογής"
 
@@ -1938,7 +1938,7 @@ msgstr "Παραγώγιση"
 msgid "Differentiate expression"
 msgstr "Παραγώγιση παράστασης"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1432
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1435
 msgid "Differentiate..."
 msgstr "Παραγώγιση..."
 
@@ -1987,7 +1987,7 @@ msgstr "Επίλυση εξίσωσης(-εων)"
 msgid "Divide"
 msgstr "Διαίρεση"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1470
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1473
 msgid "Divide Cell"
 msgstr "Διαίρεση κελιού"
 
@@ -2325,12 +2325,12 @@ msgstr "Υπολογισμός όλων των κελιών\tCtrl+R"
 msgid "Evaluate All Visible Cells\tCtrl+R"
 msgstr "Υπολογισμός όλων των κελιών\tCtrl+R"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1324
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1327
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:683
 msgid "Evaluate Cell(s)"
 msgstr "Υπολογισμός κελιού(-ιών)"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1453
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1456
 #, fuzzy
 msgid "Evaluate Cells Above"
 msgstr "Υπολογισμός κελιού(-ιών)"
@@ -2340,44 +2340,44 @@ msgstr "Υπολογισμός κελιού(-ιών)"
 msgid "Evaluate Cells Above\tCtrl+Shift+P"
 msgstr "Υπολογισμός όλων των κελιών\tCtrl+R"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1326
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1454
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1329
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1457
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:691
 #, fuzzy
 msgid "Evaluate Cells Below"
 msgstr "Υπολογισμός κελιού(-ιών)"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1363
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1506
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1560
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1366
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1509
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1563
 msgid "Evaluate Heading 5\tShift+Ctrl+Enter"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1369
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1510
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1570
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1372
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1513
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1573
 msgid "Evaluate Heading 6\tShift+Ctrl+Enter"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1340
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1491
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1343
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1494
 msgid "Evaluate Part\tShift+Ctrl+Enter"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1345
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1494
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1348
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1497
 msgid "Evaluate Section\tShift+Ctrl+Enter"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1357
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1502
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1550
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1360
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1505
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1553
 msgid "Evaluate Sub-Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1351
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1498
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1540
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1354
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1501
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1543
 msgid "Evaluate Subsection\tShift+Ctrl+Enter"
 msgstr ""
 
@@ -2447,7 +2447,7 @@ msgstr "Ανάπτυξη"
 msgid "Expand (tr)"
 msgstr "Ανάπτυξη (τρ)"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1428
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1431
 msgid "Expand Expression"
 msgstr "Ανάπτυξη παράστασης"
 
@@ -2601,7 +2601,7 @@ msgstr "Παραγοντοποίηση"
 msgid "Factor Complex"
 msgstr "Παραγοντοποίηση παράστασης (Μιγαδική)"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1427
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1430
 msgid "Factor Expression"
 msgstr "Παραγοντοποίηση παράστασης"
 
@@ -2626,7 +2626,7 @@ msgstr "Ολέθριο σφάλμα"
 msgid "Figure %d:"
 msgstr "Σχέδιο"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:244
+#: /home/gunter/src/wxmaxima/src/main.cpp:248
 msgid "File"
 msgstr "Αρχείο"
 
@@ -2682,7 +2682,7 @@ msgstr "Εύρεση ορίου..."
 msgid "Find Minimum..."
 msgstr "Εύρεση ελαχίστου..."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1424
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1427
 msgid "Find Root..."
 msgstr "Εύρεση ρίζας..."
 
@@ -3020,7 +3020,7 @@ msgstr ""
 msgid "Gnuplot has closed."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7058
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7061
 msgid ""
 "Got a request to undo an action that involves an delete which isn't possible "
 "at this moment."
@@ -3102,30 +3102,30 @@ msgstr "Διαίρεση κελιού"
 msgid "Hide Code Cells\tAlt+Ctrl+H"
 msgstr "Προσθήκη κελιού\tAlt+Shift+C"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1567
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1570
 msgid "Hide Heading 5"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1577
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1580
 msgid "Hide Heading 6"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1529
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1532
 #, fuzzy
 msgid "Hide Part"
 msgstr "Διαίρεση κελιού"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1537
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1540
 #, fuzzy
 msgid "Hide Section"
 msgstr "Ενότητα"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1547
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1550
 #, fuzzy
 msgid "Hide Subsection"
 msgstr "Υποενότητα"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1557
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1560
 #, fuzzy
 msgid "Hide Subsubsection"
 msgstr "Υποενότητα"
@@ -3134,7 +3134,7 @@ msgstr "Υποενότητα"
 msgid "Hide all panes"
 msgstr "Απόκρυψη όλων των παλετών"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1585
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1588
 #, fuzzy
 msgid "Hide contents"
 msgstr "Ελληνικές σταθερές"
@@ -3269,7 +3269,7 @@ msgstr ""
 "Αν ο υπολογισμός σας καθυστερεί πολύ, μπορείτε να δοκιμάσετε τις εντολές του "
 "μενού 'Maxima->Διακοπή' ή 'Maxima->Επανεκκίνηση Maxima'."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5509
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5512
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1810
 msgid "Image"
 msgstr "Εικόνα"
@@ -3408,11 +3408,11 @@ msgstr "Προσθήκη κελιού &κειμένου\tF6"
 msgid "Insert Cell\tAlt+Shift+C"
 msgstr "Προσθήκη κελιού\tAlt+Shift+C"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1450
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1453
 msgid "Insert Heading5 Cell"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1451
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1454
 msgid "Insert Heading6 Cell"
 msgstr ""
 
@@ -3444,17 +3444,17 @@ msgstr "Προσθήκη κελιού υποενότητας"
 msgid "Insert S&ubsubsection Cell\tCtrl+5"
 msgstr "Προσθήκη κελιού υποενότητας"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1447
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1450
 #, fuzzy
 msgid "Insert Section Cell"
 msgstr "Προσθήκη κελιού &ενότητας\tF8"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1448
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1451
 #, fuzzy
 msgid "Insert Subsection Cell"
 msgstr "Προσθήκη κελιού υποενότητας"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1449
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1452
 #, fuzzy
 msgid "Insert Subsubsection Cell"
 msgstr "Προσθήκη κελιού υποενότητας"
@@ -3464,12 +3464,12 @@ msgstr "Προσθήκη κελιού υποενότητας"
 msgid "Insert T&itle Cell\tCtrl+2"
 msgstr "Προσθήκη κελιού τίτλου"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1445
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1448
 #, fuzzy
 msgid "Insert Text Cell"
 msgstr "Προσθήκη κελιού &κειμένου\tF6"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1446
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1449
 #, fuzzy
 msgid "Insert Title Cell"
 msgstr "Προσθήκη κελιού τίτλου"
@@ -3554,7 +3554,7 @@ msgstr "Ολοκλήρωση παράστασης"
 msgid "Integrate expression with Risch algorithm"
 msgstr "Ολοκλήρωση παράστασης με τον αλγόριθμο Risch "
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1431
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1434
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1494
 msgid "Integrate..."
 msgstr "Ολοκλήρωση..."
@@ -4255,7 +4255,7 @@ msgstr "Μέση τιμή:"
 msgid "Median..."
 msgstr "Διάμεση τιμή"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1329
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1332
 msgid "Merge Cells"
 msgstr "Συγχώνευση κελιών"
 
@@ -4467,7 +4467,7 @@ msgstr ""
 msgid "Not connected."
 msgstr "Δεν είστε συνδεδεμένοι."
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:181
+#: /home/gunter/src/wxmaxima/src/main.cpp:138
 #, c-format
 msgid "Not setting language %i"
 msgstr ""
@@ -4583,7 +4583,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:930
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:174
-#: /home/gunter/src/wxmaxima/src/main.cpp:357
+#: /home/gunter/src/wxmaxima/src/main.cpp:361
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4084
 msgid "Open"
 msgstr "Άνοιγμα"
@@ -4729,8 +4729,8 @@ msgid ""
 msgstr "Μέρη του εγγράφου δεν θα φορτωθούν σωστά"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:216
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1442
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1463
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1445
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1466
 msgid "Paste"
 msgstr "Επικόλληση"
 
@@ -4797,7 +4797,7 @@ msgstr "2-Δ γράφημα"
 msgid "Plot 2D..."
 msgstr "2-Δ γράφημα..."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1434
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1437
 msgid "Plot 2d..."
 msgstr "2-Δ γράφημα..."
 
@@ -4811,7 +4811,7 @@ msgstr "3-Δ γράφημα"
 msgid "Plot 3D..."
 msgstr "3-Δ γράφημα..."
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1435
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1438
 msgid "Plot 3d..."
 msgstr "3-Δ γράφημα..."
 
@@ -4896,8 +4896,8 @@ msgstr "Πολυώνυμο 2:"
 msgid "Pop"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1288
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1385
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1291
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1388
 msgid "Popout interactively"
 msgstr ""
 
@@ -5004,15 +5004,15 @@ msgstr "Διάβασμα αποτελέσματος Maxima"
 msgid "Ready for user input"
 msgstr "Έτοιμο για είσοδο από το χρήστη"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:833
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:836
 msgid "Recalculating all cell sizes"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:831
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:834
 msgid "Recalculating all cell sizes inclusive text dimensions"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:836
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:839
 msgid "Recalculating changed cell sizes"
 msgstr ""
 
@@ -5110,14 +5110,14 @@ msgstr "Επανεκίνηση του Maxima"
 msgid "Restart maxima"
 msgstr "Επανεκίνηση του Maxima"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1280
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1378
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1283
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1381
 #, fuzzy
 msgid "Restrict Maximum size"
 msgstr "Επανεκίνηση του Maxima"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5448
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5475
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5451
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5478
 msgid "Result"
 msgstr ""
 
@@ -5298,7 +5298,7 @@ msgstr ""
 msgid "Save"
 msgstr "Αποθήκευση"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1270
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1273
 msgid "Save Animation..."
 msgstr "Αποθήκευση εφε κίνησης ..."
 
@@ -5310,7 +5310,7 @@ msgstr "Αποθήκευση ως"
 msgid "Save As...\tShift+Ctrl+S"
 msgstr "Αποθήκευση ως...\tShift+Ctrl+S"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1267
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1270
 msgid "Save Image..."
 msgstr "Αποθήκευση εικόνας..."
 
@@ -5438,8 +5438,8 @@ msgstr ""
 msgid "Select"
 msgstr "Επιλογή"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1443
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1465
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1446
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1468
 msgid "Select All"
 msgstr "Επιλογή όλων"
 
@@ -5596,12 +5596,12 @@ msgstr "Ορισμός ζουμ στο 80%"
 msgid "Setting a few prerequisites for wxMaxima"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:166
+#: /home/gunter/src/wxmaxima/src/main.cpp:123
 #, c-format
 msgid "Setting maxima's locale to %s."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:176
+#: /home/gunter/src/wxmaxima/src/main.cpp:133
 #, c-format
 msgid "Setting wxMaxima's language to the system language %s"
 msgstr ""
@@ -5766,7 +5766,7 @@ msgstr "Απλοποίηση (ρ)"
 msgid "Simplify (tr)"
 msgstr "Απλοποίηση (τρ)"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1426
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1429
 msgid "Simplify Expression"
 msgstr "Απλοποίηση παράστασης"
 
@@ -5890,7 +5890,7 @@ msgstr "Επίλυση συνήθους διαφορικής εξίσωσης μ
 msgid "Solve ordinary differential equations with Laplace transformation"
 msgstr "Επίλυση συνήθους διαφορικής εξίσωσης με μετασχηματισμό Laplace"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1423
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1426
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1488
 msgid "Solve..."
 msgstr "Επίλυση..."
@@ -5943,7 +5943,7 @@ msgstr "Ειδικές μεταβλητές"
 msgid "Speed versus accuracy"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1273
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1276
 msgid "Start Animation"
 msgstr "Εκκίνηση εφέ κίνησης"
 
@@ -5999,7 +5999,7 @@ msgstr "Η εκκίνηση του εξυπηρετητή απέτυχε"
 msgid "Starting server on port %d"
 msgstr "Εκκίνηση του εξυπηρετητή στη θύρα %d"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6305
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6308
 msgid "Starting to save the worksheet as .wxmx"
 msgstr ""
 
@@ -6054,7 +6054,7 @@ msgstr "Αντικατάσταση..."
 msgid "Substitute"
 msgstr "Αντικατάσταση"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1429
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1432
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1021
 msgid "Substitute..."
 msgstr "Αντικατάσταση..."
@@ -6407,7 +6407,7 @@ msgstr ""
 msgid "The variable the value of the current source item is stored in."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8828
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8831
 msgid "The worksheet containing maxima's input and output"
 msgstr ""
 
@@ -6525,7 +6525,7 @@ msgstr "Σε μεγάλο αριθμό κινητής υποδιαστολής (
 msgid "To &Float"
 msgstr "Σε αριθμό κινητής υποδιαστολής"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1421
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1424
 msgid "To Float"
 msgstr "Σε αριθμό κινητής υποδιαστολής"
 
@@ -6655,7 +6655,7 @@ msgstr "Διδακτικές παρουσιάσεις"
 msgid "Two sample t-test"
 msgstr "t-τεστ δυο δειγμάτων"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8698
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8701
 #, fuzzy
 msgid "Type"
 msgstr "Τύπος:"
@@ -6724,34 +6724,34 @@ msgstr ""
 msgid "Unhide"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1564
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1567
 msgid "Unhide Heading 5"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1574
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1577
 msgid "Unhide Heading 6"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1526
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1529
 msgid "Unhide Part"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1534
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1537
 #, fuzzy
 msgid "Unhide Section"
 msgstr "Ενότητα"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1544
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1547
 #, fuzzy
 msgid "Unhide Subsection"
 msgstr "Υποενότητα"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1554
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1557
 #, fuzzy
 msgid "Unhide Subsubsection"
 msgstr "Υποενότητα"
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1582
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1585
 #, fuzzy
 msgid "Unhide contents"
 msgstr "Ελληνικές σταθερές"
@@ -6995,7 +6995,7 @@ msgid ""
 "as equation markers"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8023
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8026
 msgid "Wrapped search"
 msgstr ""
 
@@ -7156,12 +7156,12 @@ msgid ""
 "y_2],...)"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5418
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5421
 #, c-format
 msgid "_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5608
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5611
 #, c-format
 msgid "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"
 msgstr ""
@@ -7575,12 +7575,12 @@ msgstr "Ονόματα συναρτήσεων"
 msgid "use the actual values stored"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:315
+#: /home/gunter/src/wxmaxima/src/main.cpp:319
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6671
 msgid "wxMaxima"
 msgstr "wxMaxima"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:320
+#: /home/gunter/src/wxmaxima/src/main.cpp:324
 #, c-format
 msgid "wxMaxima %d"
 msgstr ""
@@ -7672,7 +7672,7 @@ msgstr ""
 msgid "wxMaxima document"
 msgstr "έγγραφο wxMaxima"
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:359
+#: /home/gunter/src/wxmaxima/src/main.cpp:363
 msgid "wxMaxima document (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 msgstr "έγγραφο wxMaxima (*.wxm, *.wxmx)|*.wxm;*.wxmx"
 
@@ -7725,7 +7725,7 @@ msgstr "Εκκίνηση εφέ κίνησης"
 msgid "wxMaxima version %s"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/main.cpp:155
+#: /home/gunter/src/wxmaxima/src/main.cpp:112
 #, c-format
 msgid "wxMaxima's locale is set to to %s"
 msgstr ""
@@ -7738,7 +7738,7 @@ msgstr ""
 msgid "wxWidgets is using GTK 3"
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6556
+#: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6559
 msgid "wxmx file saved"
 msgstr ""
 
