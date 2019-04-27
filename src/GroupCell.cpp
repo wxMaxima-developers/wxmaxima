@@ -790,7 +790,9 @@ bool GroupCell::NeedsRecalculation()
                  (m_currentPoint.x < 0) || (m_currentPoint.y < 0) ||
                  ((*m_configuration)->RecalculationForce() ||
                   ((GetInput() != NULL) &&
-                   ((GetInput()->GetWidth() <= 0) || (GetInput()->GetHeight() <= 0))
+                   ((GetInput()->GetWidth() <= 0) || (GetInput()->GetHeight() <= 0) ||
+                    (GetInput()->GetCurrentPoint().x <= 0) || (GetInput()->GetCurrentPoint().y <= 0)
+                     )
                     )));
   return result;
 }
