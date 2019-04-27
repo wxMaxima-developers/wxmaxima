@@ -4090,16 +4090,19 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
                                       "xml from broken .wxmx (*.xml)|*.xml"),
                                      wxFD_OPEN);
 
-      // On the mac the "File/New" menu item by default opens a new window instead od
-      // reusing the old one.
-      #ifdef __WXOSX__
-      if(m_worksheet->IsEmpty())
+      if (!file.empty())
+      {
+        // On the mac the "File/New" menu item by default opens a new window instead od
+        // reusing the old one.
+        #ifdef __WXOSX__
+        if(m_worksheet->IsEmpty())
+          OpenFile(file,wxEmptyString);
+        else
+          wxGetApp().NewWindow(file);
+        #else
         OpenFile(file,wxEmptyString);
-      else
-        wxGetApp().NewWindow(file);
-      #else
-      OpenFile(file,wxEmptyString);
-      #endif
+        #endif
+      }
     }
       break;
 
@@ -4240,7 +4243,8 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
                                      _("Maxima package (*.mac)|*.mac|"
                                                "Lisp package (*.lisp)|*.lisp|All|*"),
                                      wxFD_OPEN);
-      OpenFile(file, wxT("load"));
+      if (!file.empty())
+        OpenFile(file, wxT("load"));
     }
       break;
 
