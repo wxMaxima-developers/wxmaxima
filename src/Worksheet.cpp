@@ -401,7 +401,10 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   dc.SetMapMode(wxMM_TEXT);
   // Don't draw text with an opaque background.
   dc.SetBackgroundMode(wxTRANSPARENT);
+#if wxCHECK_VERSION(3, 1, 0)
+#else
   PrepareDC(dc);
+#endif
   
   // Create a graphics context that supports antialiassing, but on MSW
   // only supports fonts that come in the Right Format.
