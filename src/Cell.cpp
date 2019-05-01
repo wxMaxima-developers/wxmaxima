@@ -432,7 +432,7 @@ bool Cell::DrawThisCell(wxPoint point)
 
   SetCurrentPoint(point);
 
-  // If a cell is broken into lines its individual parts are displayed but
+  // If a cell is broken into lines the cells it contains are displayed but
   // not the cell itself (example: Denominator and Numerator are displayed
   // but not the horizontal line with denominator above and numerator below.
   if(m_isBrokenIntoLines)
@@ -462,9 +462,13 @@ wxRect Cell::GetRect(bool all)
 
 bool Cell::InUpdateRegion(const wxRect &rect)
 {
-  wxRect updateRegion = (*m_configuration)->GetUpdateRegion();
   if (!(*m_configuration)->ClipToDrawRegion())
     return true;
+
+  if((m_currentPoint.x < 0) || (m_currentPoint.y < 0))
+    return false;
+  
+  wxRect updateRegion = (*m_configuration)->GetUpdateRegion();
 
   // If we have deferred the recalculation of the cell height but now
   // got a draw request due to moving the mouse wheel we need to guess
@@ -483,10 +487,9 @@ bool Cell::InUpdateRegion(const wxRect &rect)
   if(updateRegion.Contains(m_currentPoint))
     return true;
 
-  
   return updateRegion.Intersects(rect) ||
     updateRegion.Contains(rect) ||
-    (updateRegion == rect);
+    (updateRegion == rect) || rect.Contains(updateRegion);
 }
 
 void Cell::DrawBoundingBox(wxDC &dc, bool all)
