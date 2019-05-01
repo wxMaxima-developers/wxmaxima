@@ -53,12 +53,15 @@ Cell::Cell(Cell *group, Configuration **config)
   :wxAccessible()
 #endif
 {
+  m_cellsInGroup = -1;
   m_textStyle = TS_DEFAULT;
   m_toolTip = wxEmptyString;
   m_toolTip = wxEmptyString;
   m_cellPointers = NULL;
   m_group = group;
   m_parent = group;
+  if(m_group != NULL)
+    m_group->m_cellsInGroup++;
   m_configuration = config;
   m_next = NULL;
   m_previous = NULL;

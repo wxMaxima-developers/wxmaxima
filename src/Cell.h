@@ -135,8 +135,9 @@ class Cell
   virtual wxAccStatus GetValue (int childId, wxString *strValue);
   virtual wxAccStatus GetRole (int childId, wxAccRole *role);
 #endif
-
-
+  
+  //! The number of cells the current group contains (-1, if no GroupCell)
+  int m_cellsInGroup;
 
   wxString m_toolTip;
 

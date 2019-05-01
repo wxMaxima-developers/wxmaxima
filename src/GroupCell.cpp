@@ -2064,9 +2064,10 @@ bool GroupCell::BreakUpCells(Cell *cell)
     
   while (cell != NULL && !m_hide)
   {
-    if (cell->GetWidth() +
-        (*m_configuration)->GetIndent() +
-        Scale_Px((*m_configuration)->GetLabelWidth()) > clientWidth)
+    if ((!cell->m_isBrokenIntoLines) &&
+        ((cell->GetWidth() +
+          (*m_configuration)->GetIndent() +
+          Scale_Px((*m_configuration)->GetLabelWidth()) > clientWidth)))
     {
       if (cell->BreakUp())
         lineHeightsChanged = true;
@@ -2079,6 +2080,29 @@ bool GroupCell::BreakUpCells(Cell *cell)
 
 void GroupCell::UnBreakUpCells(Cell *cell)
 {
+  int showLength;
+  switch ((*m_configuration)->ShowLength())
+  {
+  case 0:
+    showLength = 500;
+    break;
+  case 1:
+    showLength = 5000;
+    break;
+  case 2:
+    showLength = 25000;
+    break;
+  case 3:
+    showLength = 50000;
+    break;
+  default:
+    showLength = 500;    
+  }
+
+  // Reduce the number of steps involved in layouting big equations
+ if(m_cellsInGroup > showLength)
+    return;
+ 
   while (cell != NULL)
   {
     if (cell->m_isBrokenIntoLines)
