@@ -402,6 +402,9 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   // Don't draw text with an opaque background.
   dc.SetBackgroundMode(wxTRANSPARENT);
 #if wxCHECK_VERSION(3, 1, 0)
+  #ifdef __WXGTK3__
+  PrepareDC(dc);
+  #endif
 #else
   PrepareDC(dc);
 #endif
