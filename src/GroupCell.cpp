@@ -2084,16 +2084,16 @@ void GroupCell::UnBreakUpCells(Cell *cell)
   switch ((*m_configuration)->ShowLength())
   {
   case 0:
-    showLength = 500;
+    showLength = 50;
     break;
   case 1:
-    showLength = 5000;
+    showLength = 500;
     break;
   case 2:
-    showLength = 25000;
+    showLength = 2500;
     break;
   case 3:
-    showLength = 50000;
+    showLength = 5000;
     break;
   default:
     showLength = 500;    
@@ -2101,7 +2101,10 @@ void GroupCell::UnBreakUpCells(Cell *cell)
 
   // Reduce the number of steps involved in layouting big equations
  if(m_cellsInGroup > showLength)
-    return;
+ {
+   wxLogMessage(_("Resolving to linear layout for one big cell in order to save time"));
+   return;
+ }
  
   while (cell != NULL)
   {
