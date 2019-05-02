@@ -58,7 +58,7 @@ public:
       config->Read(wxT("Style/Text/fontname"),
                    &m_fontName);
 #ifdef __WXOSX_MAC__
-      if(m_fontName = wxEmptyString) m_fontName = "Monaco";
+      if(m_fontName == wxEmptyString) m_fontName = "Monaco";
 #endif
       wxFont font;
       font.SetFamily(wxFONTFAMILY_MODERN);
