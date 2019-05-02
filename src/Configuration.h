@@ -682,7 +682,7 @@ public:
     }
   void ShowLength(int length)
     {
-      wxConfig::Get()->Write(wxT("showLength"), m_showLength = length );
+      wxConfig::Get()->Write(wxT("showLength"), m_showLength = length);
     }
   int ShowLength(){return m_showLength;}
 
