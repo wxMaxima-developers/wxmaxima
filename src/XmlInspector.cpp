@@ -123,7 +123,7 @@ void XmlInspector::Update()
 
     // Indent the XML
     wxString textWithIndention;
-    long int length = 0;
+    long length = 0;
     for ( wxString::iterator it = m_fromMaxima.begin(); it!=m_fromMaxima.end(); ++it)
     {
       length++;
@@ -155,7 +155,7 @@ void XmlInspector::Update()
 
     // Adding many chars to the XML inspector is slow => Warn our users if we do so.
     if(length > 100000)
-      wxLogMessage(wxString::Format(_("Added %li% chars to the XML inspector..")));
+      wxLogMessage(wxString::Format(_("Added much text (%li chars) to the XML inspector.")));
   }
 }
 
