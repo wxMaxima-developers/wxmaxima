@@ -4388,7 +4388,7 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       // Write the changes in the configuration to the disk.
       config->Flush();
       // Refresh the display as the settings that affect it might have changed.
-      m_worksheet->m_configuration->ReadStyle();
+      m_worksheet->m_configuration->ReadStyles();
       m_worksheet->RecalculateForce();
       m_worksheet->m_configuration->FontChanged(true);
       m_worksheet->RequestRedraw();

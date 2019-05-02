@@ -236,8 +236,6 @@ ConfigDialogue::ConfigDialogue(wxWindow *parent, Configuration *cfg)
   Create(parent, wxID_ANY, _("wxMaxima configuration"),
          wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
 
-  ReadStyles();
-
   m_notebook = GetBookCtrl();
 
   m_notebook->SetImageList(m_imageList);
@@ -1045,13 +1043,14 @@ wxPanel *ConfigDialogue::CreateStylePanel()
 
   wxStaticText *df = new wxStaticText(panel, -1, _("Default font:"));
   m_getFont = new wxButton(panel, font_family, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
-  if (m_styleDefault.font.Length())
-    m_getFont->SetLabel(m_styleDefault.font + wxString::Format(wxT(" (%d)"), m_fontSize));
+  
+  if (m_configuration->m_styles[TS_DEFAULT].FontName() != wxEmptyString)
+    m_getFont->SetLabel(m_configuration->m_styles[TS_DEFAULT].FontName() + wxString::Format(wxT(" (%d)"), m_configuration->GetDefaultFontSize()));
 
   m_mathFont = new wxStaticText(panel, -1, _("Math font:"));
   m_getMathFont = new wxButton(panel, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
   if (m_mathFontName.Length() > 0)
-    m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_mathFontSize));
+    m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_configuration->GetMathFontSize()));
 
   m_useJSMath = new wxCheckBox(panel, -1, _("Use jsMath fonts"));
   const wxString m_styleFor_choices[] =
@@ -1188,8 +1187,8 @@ void ConfigDialogue::WriteSettings()
           )
     configuration->MaximaLocation(m_maximaProgram->GetValue());
   config->Write(wxT("parameters"), m_additionalParameters->GetValue());
-  config->Write(wxT("fontSize"), m_fontSize);
-  config->Write(wxT("mathFontsize"), m_mathFontSize);
+  config->Write(wxT("fontSize"), m_configuration->GetDefaultFontSize());
+  config->Write(wxT("mathFontsize"), m_configuration->GetMathFontSize());
   config->Write(wxT("matchParens"), m_matchParens->GetValue());
   configuration->ShowLength(m_showLength->GetSelection());
   configuration->SetAutosubscript_Num(m_autosubscript->GetSelection());
@@ -1258,7 +1257,7 @@ void ConfigDialogue::WriteSettings()
   configuration->CopyEMF(m_copyEMF->GetValue());
   #endif
 
-  WriteStyles();
+  m_configuration->WriteStyles();
   config->Flush();
 
   {
@@ -1327,7 +1326,7 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
   font.SetStyle(wxFONTSTYLE_NORMAL );
   if(!font.IsOk())
 #endif
-    font = wxFont(m_mathFontSize, wxFONTFAMILY_DEFAULT,
+    font = wxFont(m_configuration->GetMathFontSize(), wxFONTFAMILY_DEFAULT,
                   wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL,
                   false, m_mathFontName);
 
@@ -1340,9 +1339,9 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
   if (math.Ok())
   {
     m_mathFontName = math.GetFaceName();
-    m_mathFontSize = math.GetPointSize();
-    math.SetPointSize(m_mathFontSize);
-    m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_mathFontSize));
+    m_configuration->SetMathFontSize(math.GetPointSize());
+    math.SetPointSize(m_configuration->GetMathFontSize());
+    m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_configuration->GetMathFontSize()));
   }
 
   UpdateExample();
@@ -1351,9 +1350,10 @@ void ConfigDialogue::OnMathBrowse(wxCommandEvent&  WXUNUSED(event))
 void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
 {
   wxFont font;
-  int fontsize = m_fontSize;
-  style *tmp = GetStylePointer();
+  int fontsize = m_configuration->GetDefaultFontSize();
   wxString fontName;
+
+  TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
 
 #ifdef __WXMSW__
   font.SetFamily(wxFONTFAMILY_MODERN);
@@ -1366,20 +1366,20 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
     font = *wxNORMAL_FONT;
 
   if (
-    (tmp == &m_styleText)          ||
-    (tmp == &m_styleTitle)         ||
-    (tmp == &m_styleHeading6)      ||
-    (tmp == &m_styleHeading5)      ||
-    (tmp == &m_styleSubsubsection) ||
-    (tmp == &m_styleSubsection)    ||
-    (tmp == &m_styleSection))
+    (st == TS_TEXT)          ||
+    (st == TS_TITLE)         ||
+    (st == TS_HEADING6)      ||
+    (st == TS_HEADING5)      ||
+    (st == TS_SUBSUBSECTION) ||
+    (st == TS_SUBSECTION)    ||
+    (st == TS_SECTION))
   {
-    if (tmp->fontSize != 0)
-      fontsize = tmp->fontSize;
-    fontName = tmp->font;
+    if (m_configuration->m_styles[st].FontSize() != 0)
+      fontsize = m_configuration->m_styles[st].FontSize();
+    fontName = m_configuration->m_styles[st].FontName();
   }
   else
-    fontName = m_styleDefault.font;
+    fontName = m_configuration->m_styles[TS_DEFAULT].FontName();
   font = wxFont(fontsize,
                 wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
                 wxFONTWEIGHT_NORMAL,
@@ -1387,7 +1387,7 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
                 m_fontEncoding);
   if(!font.IsOk())
     font = *wxNORMAL_FONT;
-
+  
   font.SetPointSize(fontsize);
   font = wxGetFontFromUser(this, font);
 
@@ -1395,508 +1395,40 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
   {
     if (event.GetId() == font_family)
     {
-      m_styleDefault.font = font.GetFaceName();
-      m_fontEncoding = font.GetEncoding();
-      m_fontSize = font.GetPointSize();
-      m_fontSize = MIN(m_fontSize, MC_MAX_SIZE);
-      m_fontSize = MAX(m_fontSize, MC_MIN_SIZE);
-      m_getFont->SetLabel(m_styleDefault.font + wxString::Format(wxT(" (%d)"), m_fontSize));
+      m_configuration->m_styles[TS_DEFAULT].FontName(font.GetFaceName());
+      m_configuration->SetFontEncoding(font.GetEncoding());
+      m_configuration->SetDefaultFontSize(MAX(
+                                            MIN(
+                                              font.GetPointSize(), MC_MAX_SIZE),
+                                            MC_MIN_SIZE)
+        );
+      m_getFont->SetLabel(m_configuration->m_styles[TS_DEFAULT].FontName() +
+                          wxString::Format(wxT(" (%d)"), m_configuration->GetDefaultFontSize()));
     }
     else
     {
-      tmp->font = font.GetFaceName();
-      tmp->fontSize = font.GetPointSize();
-      tmp->fontSize = MAX(tmp->fontSize, MC_MIN_SIZE);
+      m_configuration->m_styles[st].FontName(font.GetFaceName());
+      m_configuration->m_styles[st].FontSize(MAX(MC_MIN_SIZE,font.GetPointSize()));
     }
   }
   UpdateExample();
 }
 
-void ConfigDialogue::ReadStyles(wxString file)
-{
-  wxConfigBase *config = NULL;
-  if (file == wxEmptyString)
-    config = wxConfig::Get();
-  else
-  {
-    wxFileInputStream str(file);
-    config = new wxFileConfig(str);
-  }
-
-  m_fontSize = m_mathFontSize = 12;
-  config->Read(wxT("fontsize"), &m_fontSize);
-  config->Read(wxT("mathfontsize"), &m_mathFontSize);
-  config->Read(wxT("Style/fontname"), &m_styleDefault.font);
-
-  int encoding = wxFONTENCODING_DEFAULT;
-  config->Read(wxT("fontEncoding"), &encoding);
-  m_fontEncoding = (wxFontEncoding) encoding;
-
-  m_mathFontName = wxEmptyString;
-  config->Read(wxT("Style/Math/fontname"), &m_mathFontName);
-
-  wxString tmp;
-  // Document background color
-  m_styleBackground.color = wxT("white");
-  if (config->Read(wxT("Style/Background/color"),
-                   &tmp))
-    m_styleBackground.color.Set(tmp);
-
-  // Text background
-  m_styleTextBackground.color = wxT("white");
-  if (config->Read(wxT("Style/TextBackground/color"),
-                   &tmp))
-    m_styleTextBackground.color.Set(tmp);
-
-  // Highlighting color
-  m_styleHighlight.color = wxT("red");
-  if (config->Read(wxT("Style/Highlight/color"),
-                   &tmp))
-    m_styleHighlight.color.Set(tmp);
-
-  // Groupcell bracket color
-  m_styleCellBracket.color = wxT("rgb(0,0,0)");
-  if (config->Read(wxT("Style/CellBracket/color"),
-                   &tmp))
-    m_styleCellBracket.color.Set(tmp);
-
-  // Active groupcell bracket color
-  m_styleActiveCellBracket.color = wxT("rgb(255,0,0)");
-  if (config->Read(wxT("Style/ActiveCellBracket/color"),
-                   &tmp))
-    m_styleActiveCellBracket.color.Set(tmp);
-
-  // Horizontal caret color/ cursor color
-  m_styleCursor.color = wxT("rgb(0,0,0)");
-  if (config->Read(wxT("Style/Cursor/color"),
-                   &tmp))
-    m_styleCursor.color.Set(tmp);
-
-  // Outdated cells
-  m_styleOutdated.color = wxT("rgb(153,153,153)");
-  if (config->Read(wxT("Style/Outdated/color"),
-                   &tmp))
-    m_styleOutdated.color.Set(tmp);
-
-  m_styleSelection.color = wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT);
-
-  if (config->Read(wxT("Style/Selection/color"),
-                   &tmp))
-    m_styleSelection.color.Set(tmp);
-
-  // Text equal to the current selection
-  m_styleEqualsSelection.color = wxT("rgb(192,255,192)");
-  if (config->Read(wxT("Style/EqualsSelection/color"),
-                   &tmp))
-    m_styleEqualsSelection.color.Set(tmp);
-
-#define READ_STYLE(style, where)                                        \
-  if (config->Read(wxT(where "color"), &tmp)) style.color.Set(tmp);     \
-  config->Read(wxT(where "bold"),                                       \
-               &style.bold);                                            \
-  config->Read(wxT(where "italic"),                                     \
-               &style.italic);                                          \
-  config->Read(wxT(where "underlined"),                                 \
-               &style.underlined);
-
-  // Text in math output
-  m_styleDefault.color = wxT("black");
-  m_styleDefault.bold = false;
-  m_styleDefault.italic = false;
-  m_styleDefault.underlined = false;
-  READ_STYLE(m_styleDefault, "Style/NormalText/")
-
-  // Main prompt
-  m_styleMainPrompt.color = wxT("rgb(255,128,128)");
-  m_styleMainPrompt.bold = false;
-  m_styleMainPrompt.italic = false;
-  m_styleMainPrompt.underlined = false;
-  READ_STYLE(m_styleMainPrompt, "Style/MainPrompt/")
-
-  // Other prompt
-  m_styleOtherPrompt.color = wxT("red");
-  m_styleOtherPrompt.bold = false;
-  m_styleOtherPrompt.italic = true;
-  m_styleOtherPrompt.underlined = false;
-  READ_STYLE(m_styleOtherPrompt, "Style/OtherPrompt/")
-
-  // Labels
-  m_styleLabel.color = wxT("rgb(255,192,128)");
-  m_styleLabel.bold = false;
-  m_styleLabel.italic = false;
-  m_styleLabel.underlined = false;
-  READ_STYLE(m_styleLabel, "Style/Label/")
-
-  // Warnings
-  m_styleWarning.color = wxT("orange");
-  m_styleWarning.bold = true;
-  m_styleWarning.italic = false;
-  m_styleWarning.underlined = false;
-  READ_STYLE(m_styleWarning, "Style/Warning/")
-
-  // User-defined Labels
-  m_styleUserDefinedLabel.color = wxT("rgb(255,64,0)");
-  m_styleUserDefinedLabel.bold = false;
-  m_styleUserDefinedLabel.italic = false;
-  m_styleUserDefinedLabel.underlined = false;
-  READ_STYLE(m_styleUserDefinedLabel, "Style/UserDefinedLabel/")
-
-  // Special
-  m_styleSpecial.color = m_styleDefault.color;
-  m_styleSpecial.bold = false;
-  m_styleSpecial.italic = false;
-  m_styleSpecial.underlined = false;
-  READ_STYLE(m_styleSpecial, "Style/Special/")
-
-  // Input
-  m_styleInput.color = wxT("blue");
-  m_styleInput.bold = false;
-  m_styleInput.italic = false;
-  m_styleInput.underlined = false;
-  READ_STYLE(m_styleInput, "Style/Input/")
-
-  // Number
-  m_styleNumber.color = m_styleDefault.color;
-  m_styleNumber.bold = false;
-  m_styleNumber.italic = false;
-  m_styleNumber.underlined = false;
-  READ_STYLE(m_styleNumber, "Style/Number/")
-
-  // String
-  m_styleString.color = m_styleDefault.color;
-  m_styleString.bold = false;
-  m_styleString.italic = true;
-  m_styleString.underlined = false;
-  READ_STYLE(m_styleString, "Style/String/")
-
-  // Operator
-  m_styleString.color = m_styleDefault.color;
-  m_styleString.bold = false;
-  m_styleString.italic = true;
-  m_styleString.underlined = false;
-  READ_STYLE(m_styleString, "Style/String/Operator")
-
-  // Greek
-  m_styleGreek.color = m_styleDefault.color;
-  m_styleGreek.bold = false;
-  m_styleGreek.italic = false;
-  m_styleGreek.underlined = false;
-  READ_STYLE(m_styleGreek, "Style/Greek/")
-
-  // Variable
-  m_styleVariable.color = m_styleDefault.color;
-  m_styleVariable.bold = false;
-  m_styleVariable.italic = true;
-  m_styleVariable.underlined = false;
-  READ_STYLE(m_styleVariable, "Style/Variable/")
-
-  // Function
-  m_styleFunction.color = m_styleDefault.color;
-  m_styleFunction.bold = false;
-  m_styleFunction.italic = false;
-  m_styleFunction.underlined = false;
-  READ_STYLE(m_styleFunction, "Style/Function/")
-
-  // Text
-  m_styleText.color = wxT("black");
-  m_styleText.bold = true;
-  m_styleText.italic = false;
-  m_styleText.underlined = false;
-  m_styleText.font = m_styleDefault.font;
-  m_styleText.fontSize = m_fontSize;
-  config->Read(wxT("Style/Text/fontsize"),
-               &m_styleText.fontSize);
-  config->Read(wxT("Style/Text/fontname"),
-               &m_styleText.font);
-  READ_STYLE(m_styleText, "Style/Text/")
-
-  // Variables in highlighted code
-  m_styleCodeHighlightingVariable.color = wxT("rgb(0,128,0)");
-  m_styleCodeHighlightingVariable.bold = false;
-  m_styleCodeHighlightingVariable.italic = true;
-  m_styleCodeHighlightingVariable.underlined = false;
-  READ_STYLE(m_styleCodeHighlightingVariable, "Style/CodeHighlighting/Variable/")
-
-  // Functions in highlighted code
-  m_styleCodeHighlightingFunction.color = wxT("rgb(128,0,0)");
-  m_styleCodeHighlightingFunction.bold = false;
-  m_styleCodeHighlightingFunction.italic = true;
-  m_styleCodeHighlightingFunction.underlined = false;
-  READ_STYLE(m_styleCodeHighlightingFunction, "Style/CodeHighlighting/Function/")
-
-  // Comments in highlighted code
-  m_styleCodeHighlightingComment.color = wxT("rgb(64,64,64)");
-  m_styleCodeHighlightingComment.bold = false;
-  m_styleCodeHighlightingComment.italic = true;
-  m_styleCodeHighlightingComment.underlined = false;
-  READ_STYLE(m_styleCodeHighlightingComment, "Style/CodeHighlighting/Comment/")
-
-  // Numbers in highlighted code
-  m_styleCodeHighlightingNumber.color = wxT("rgb(128,64,0)");
-  m_styleCodeHighlightingNumber.bold = false;
-  m_styleCodeHighlightingNumber.italic = true;
-  m_styleCodeHighlightingNumber.underlined = false;
-  READ_STYLE(m_styleCodeHighlightingNumber, "Style/CodeHighlighting/Number/")
-
-  // Strings in highlighted code
-  m_styleCodeHighlightingString.color = wxT("rgb(0,0,128)");
-  m_styleCodeHighlightingString.bold = false;
-  m_styleCodeHighlightingString.italic = true;
-  m_styleCodeHighlightingString.underlined = false;
-  READ_STYLE(m_styleCodeHighlightingString, "Style/CodeHighlighting/String/")
-
-  // Operators in highlighted code
-  m_styleCodeHighlightingOperator.color = wxT("rgb(0,0,128)");
-  m_styleCodeHighlightingOperator.bold = false;
-  m_styleCodeHighlightingOperator.italic = true;
-  m_styleCodeHighlightingOperator.underlined = false;
-  READ_STYLE(m_styleCodeHighlightingOperator, "Style/CodeHighlighting/Operator/")
-  // Line endings in highlighted code
-  m_styleCodeHighlightingEndOfLine.color = wxT("rgb(128,128,128)");
-  m_styleCodeHighlightingEndOfLine.bold = false;
-  m_styleCodeHighlightingEndOfLine.italic = true;
-  m_styleCodeHighlightingEndOfLine.underlined = false;
-  READ_STYLE(m_styleCodeHighlightingEndOfLine, "Style/CodeHighlighting/EndOfLine/")
-
-  // Heading 6
-  m_styleHeading6.color = wxT("black");
-  m_styleHeading6.bold = true;
-  m_styleHeading6.italic = false;
-  m_styleHeading6.underlined = false;
-  m_styleHeading6.font = m_styleDefault.font;
-  m_styleHeading6.fontSize = 14;
-  config->Read(wxT("Style/Heading6/fontsize"),
-               &m_styleHeading6.fontSize);
-  config->Read(wxT("Style/Heading6/fontname"),
-               &m_styleHeading6.font);
-  READ_STYLE(m_styleHeading6, "Style/Heading6/")
-
-  // Heading 5
-  m_styleHeading5.color = wxT("black");
-  m_styleHeading5.bold = true;
-  m_styleHeading5.italic = false;
-  m_styleHeading5.underlined = false;
-  m_styleHeading5.font = m_styleDefault.font;
-  m_styleHeading5.fontSize = 15;
-  config->Read(wxT("Style/Heading5/fontsize"),
-               &m_styleHeading5.fontSize);
-  config->Read(wxT("Style/Heading5/fontname"),
-               &m_styleHeading5.font);
-  READ_STYLE(m_styleHeading5, "Style/Heading5/")
-  // Subsubsection
-  m_styleSubsubsection.color = wxT("black");
-  m_styleSubsubsection.bold = true;
-  m_styleSubsubsection.italic = false;
-  m_styleSubsubsection.underlined = false;
-  m_styleSubsubsection.font = m_styleDefault.font;
-  m_styleSubsubsection.fontSize = 16;
-  config->Read(wxT("Style/Subsubsection/fontsize"),
-               &m_styleSubsubsection.fontSize);
-  config->Read(wxT("Style/Subsubsection/fontname"),
-               &m_styleSubsubsection.font);
-  READ_STYLE(m_styleSubsubsection, "Style/Subsubsection/")
-  // Subsection
-  m_styleSubsection.color = wxT("black");
-  m_styleSubsection.bold = true;
-  m_styleSubsection.italic = false;
-  m_styleSubsection.underlined = false;
-  m_styleSubsection.font = m_styleDefault.font;
-  m_styleSubsection.fontSize = 16;
-  config->Read(wxT("Style/Subsection/fontsize"),
-               &m_styleSubsection.fontSize);
-  config->Read(wxT("Style/Subsection/fontname"),
-               &m_styleSubsection.font);
-  READ_STYLE(m_styleSubsection, "Style/Subsection/")
-
-  // Section
-  m_styleSection.color = wxT("black");
-  m_styleSection.bold = true;
-  m_styleSection.italic = true;
-  m_styleSection.underlined = false;
-  m_styleSection.font = m_styleDefault.font;
-  m_styleSection.fontSize = 18;
-  config->Read(wxT("Style/Section/fontsize"),
-               &m_styleSection.fontSize);
-  config->Read(wxT("Style/Section/fontname"),
-               &m_styleSection.font);
-  READ_STYLE(m_styleSection, "Style/Section/")
-
-  // Title
-  m_styleTitle.color = wxT("black");
-  m_styleTitle.bold = true;
-  m_styleTitle.italic = false;
-  m_styleTitle.underlined = true;
-  m_styleTitle.font = m_styleDefault.font;
-  m_styleTitle.fontSize = 24;
-  config->Read(wxT("Style/Title/fontsize"),
-               &m_styleTitle.fontSize);
-  config->Read(wxT("Style/Title/fontname"),
-               &m_styleTitle.font);
-  READ_STYLE(m_styleTitle, "Style/Title/")
-
-#undef READ_STYLE
-
-  // Set values in dialog
-  if (file != wxEmptyString)
-    wxDELETE(config);
-}
-
-void ConfigDialogue::WriteStyles(wxString file)
-{
-  wxConfigBase *config = NULL;
-  if (file == wxEmptyString)
-    config = wxConfig::Get();
-  else
-  {
-    wxStringInputStream str(wxEmptyString);
-    config = new wxFileConfig(str);
-  }
-
-  config->Write(wxT("Style/Background/color"),
-                m_styleBackground.color.GetAsString(wxC2S_CSS_SYNTAX));
-  config->Write(wxT("Style/Highlight/color"),
-                m_styleHighlight.color.GetAsString(wxC2S_CSS_SYNTAX));
-  config->Write(wxT("Style/TextBackground/color"),
-                m_styleTextBackground.color.GetAsString(wxC2S_CSS_SYNTAX));
-  config->Write(wxT("Style/CellBracket/color"),
-                m_styleCellBracket.color.GetAsString(wxC2S_CSS_SYNTAX));
-  config->Write(wxT("Style/ActiveCellBracket/color"),
-                m_styleActiveCellBracket.color.GetAsString(wxC2S_CSS_SYNTAX));
-  config->Write(wxT("Style/Cursor/color"),
-                m_styleCursor.color.GetAsString(wxC2S_CSS_SYNTAX));
-  config->Write(wxT("Style/Selection/color"),
-                m_styleSelection.color.GetAsString(wxC2S_CSS_SYNTAX));
-  config->Write(wxT("Style/EqualsSelection/color"),
-                m_styleEqualsSelection.color.GetAsString(wxC2S_CSS_SYNTAX));
-  config->Write(wxT("Style/Outdated/color"),
-                m_styleOutdated.color.GetAsString(wxC2S_CSS_SYNTAX));
-
-  config->Write(wxT("Style/fontname"), m_styleDefault.font);
-  config->Write(wxT("fontEncoding"), (int) m_fontEncoding);
-
-  config->Write(wxT("Style/Math/fontname"), m_mathFontName);
-
-#define WRITE_STYLE(style, where)                                       \
-  config->Write(wxT(where "color"), style.color.GetAsString(wxC2S_CSS_SYNTAX)); \
-  config->Write(wxT(where "bold"), style.bold);                         \
-  config->Write(wxT(where "italic"), style.italic);                     \
-  config->Write(wxT(where "underlined"), style.underlined);
-
-  // Normal text
-  WRITE_STYLE(m_styleDefault, "Style/NormalText/")
-
-  // Main prompt
-  WRITE_STYLE(m_styleMainPrompt, "Style/MainPrompt/")
-
-  // Other prompt
-  WRITE_STYLE(m_styleOtherPrompt, "Style/OtherPrompt/")
-
-  // Label
-  WRITE_STYLE(m_styleLabel, "Style/Label/")
-
-  // Warning
-  WRITE_STYLE(m_styleWarning, "Style/Warning/")
-
-  // User-defined Label
-  WRITE_STYLE(m_styleUserDefinedLabel, "Style/UserDefinedLabel/")
-
-  // Special
-  WRITE_STYLE(m_styleSpecial, "Style/Special/")
-
-  // Input
-  WRITE_STYLE(m_styleInput, "Style/Input/")
-
-  // Number
-  WRITE_STYLE(m_styleNumber, "Style/Number/")
-
-  // Greek
-  WRITE_STYLE(m_styleGreek, "Style/Greek/")
-
-  // String
-  WRITE_STYLE(m_styleString, "Style/String/")
-
-  // Variable
-  WRITE_STYLE(m_styleVariable, "Style/Variable/")
-
-  // Text
-  config->Write(wxT("Style/Text/fontname"), m_styleText.font);
-  config->Write(wxT("Style/Text/fontsize"), m_styleText.fontSize);
-  WRITE_STYLE(m_styleText, "Style/Text/")
-
-  // Syntax highlighting
-  WRITE_STYLE(m_styleCodeHighlightingVariable, "Style/CodeHighlighting/Variable/")
-  WRITE_STYLE(m_styleCodeHighlightingFunction, "Style/CodeHighlighting/Function/")
-  WRITE_STYLE(m_styleCodeHighlightingComment, "Style/CodeHighlighting/Comment/")
-  WRITE_STYLE(m_styleCodeHighlightingNumber, "Style/CodeHighlighting/Number/")
-  WRITE_STYLE(m_styleCodeHighlightingString, "Style/CodeHighlighting/String/")
-  WRITE_STYLE(m_styleCodeHighlightingOperator, "Style/CodeHighlighting/Operator/")
-  WRITE_STYLE(m_styleCodeHighlightingEndOfLine, "Style/CodeHighlighting/EndOfLine/")
-
-  // Heading6
-  config->Write(wxT("Style/Heading6/fontname"), m_styleHeading6.font);
-  config->Write(wxT("Style/Heading6/fontsize"), m_styleHeading6.fontSize);
-  WRITE_STYLE(m_styleHeading6, "Style/Heading6/")
-
-  // Heading5
-  config->Write(wxT("Style/Heading5/fontname"), m_styleHeading5.font);
-  config->Write(wxT("Style/Heading5/fontsize"), m_styleHeading5.fontSize);
-  WRITE_STYLE(m_styleHeading5, "Style/Heading5/")
-
-  // Subsubsection
-  config->Write(wxT("Style/Subsubsection/fontname"), m_styleSubsubsection.font);
-  config->Write(wxT("Style/Subsubsection/fontsize"), m_styleSubsubsection.fontSize);
-  WRITE_STYLE(m_styleSubsubsection, "Style/Subsubsection/")
-
-  // Subsection
-  config->Write(wxT("Style/Subsection/fontname"), m_styleSubsection.font);
-  config->Write(wxT("Style/Subsection/fontsize"), m_styleSubsection.fontSize);
-  WRITE_STYLE(m_styleSubsection, "Style/Subsection/")
-
-  // Section
-  config->Write(wxT("Style/Section/fontname"), m_styleSection.font);
-  config->Write(wxT("Style/Section/fontsize"), m_styleSection.fontSize);
-  WRITE_STYLE(m_styleSection, "Style/Section/")
-
-  // Title
-  config->Write(wxT("Style/Title/fontname"), m_styleTitle.font);
-  config->Write(wxT("Style/Title/fontsize"), m_styleTitle.fontSize);
-  WRITE_STYLE(m_styleTitle, "Style/Title/")
-
-  // Function names
-  WRITE_STYLE(m_styleFunction, "Style/Function/")
-
-  config->Flush();
-
-  if (file != wxEmptyString)
-  {
-    wxFile fl(file, wxFile::write);
-    wxFileOutputStream str(fl);
-    ((wxFileConfig *) config)->Save(str);
-    wxDELETE(config);
-  }
-}
-
 void ConfigDialogue::OnChangeColor()
 {
-  style *tmp = GetStylePointer();
-//  if(tmp->color.alpha == 0)
-//    if(tmp->color.alpha = 10);
-
-  wxColour col = wxGetColourFromUser(this, tmp->color);
+  TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
+  wxColour col = wxGetColourFromUser(this, m_configuration->m_styles[st].Color());
+  m_configuration->m_styles[st].Color(col);
   if (col.IsOk())
-  {
-    tmp->color = col.GetAsString(wxC2S_CSS_SYNTAX);
-    m_styleColor->SetColor(tmp->color);
-  }
+    m_configuration->m_styles[st].Color(col.GetAsString(wxC2S_CSS_SYNTAX));
   UpdateExample();
 }
 
 void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
 {
-  style *tmp = GetStylePointer();
-  int st = m_styleFor->GetSelection();
+  TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
 
-  m_styleColor->SetColor(tmp->color);
+  m_styleColor->SetColor(m_configuration->m_styles[st].Color());
 
   // MAGIC NUMBERS:
   // the positions of TEXT and TITLE style in the list.
@@ -1928,9 +1460,9 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
       m_boldCB->Enable(true);
       m_italicCB->Enable(true);
       m_underlinedCB->Enable(true);
-      m_boldCB->SetValue(tmp->bold);
-      m_italicCB->SetValue(tmp->italic);
-      m_underlinedCB->SetValue(tmp->underlined);
+      m_boldCB->SetValue(m_configuration->m_styles[st].Bold());
+      m_italicCB->SetValue(m_configuration->m_styles[st].Italic());
+      m_underlinedCB->SetValue(m_configuration->m_styles[st].Underlined());
     }
   }
   UpdateExample();
@@ -1938,11 +1470,10 @@ void ConfigDialogue::OnChangeStyle(wxCommandEvent&  WXUNUSED(event))
 
 void ConfigDialogue::OnCheckbox(wxCommandEvent&  WXUNUSED(event))
 {
-  style *tmp = GetStylePointer();
-
-  tmp->bold = m_boldCB->GetValue();
-  tmp->italic = m_italicCB->GetValue();
-  tmp->underlined = m_underlinedCB->GetValue();
+  TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
+  m_configuration->m_styles[st].Bold(m_boldCB->GetValue());
+  m_configuration->m_styles[st].Italic(m_italicCB->GetValue());
+  m_configuration->m_styles[st].Underlined(m_underlinedCB->GetValue());
   UpdateExample();
 }
 
@@ -1954,174 +1485,63 @@ void ConfigDialogue::OnChangeWarning(wxCommandEvent&  WXUNUSED(event))
   UpdateExample();
 }
 
-style *ConfigDialogue::GetStylePointer()
-{
-  style *tmp;
-  switch (m_styleFor->GetSelection())
-  {
-    case 1:
-      tmp = &m_styleVariable;
-      break;
-    case 2:
-      tmp = &m_styleNumber;
-      break;
-    case 3:
-      tmp = &m_styleFunction;
-      break;
-    case 4:
-      tmp = &m_styleSpecial;
-      break;
-    case 5:
-      tmp = &m_styleGreek;
-      break;
-    case 6:
-      tmp = &m_styleString;
-      break;
-    case 7:
-      tmp = &m_styleInput;
-      break;
-    case 8:
-      tmp = &m_styleMainPrompt;
-      break;
-    case 9:
-      tmp = &m_styleOtherPrompt;
-      break;
-    case 10:
-      tmp = &m_styleLabel;
-      break;
-    case 11:
-      tmp = &m_styleUserDefinedLabel;
-      break;
-    case 12:
-      tmp = &m_styleHighlight;
-      break;
-    case 13:
-      tmp = &m_styleWarning;
-      break;
-    case 14:
-      tmp = &m_styleText;
-      break;
-    case 15:
-      tmp = &m_styleHeading6;
-      break;
-    case 16:
-      tmp = &m_styleHeading5;
-      break;
-    case 17:
-      tmp = &m_styleSubsubsection;
-      break;
-    case 18:
-      tmp = &m_styleSubsection;
-      break;
-    case 19:
-      tmp = &m_styleSection;
-      break;
-    case 20:
-      tmp = &m_styleTitle;
-      break;
-    case 21:
-      tmp = &m_styleTextBackground;
-      break;
-    case 22:
-      tmp = &m_styleBackground;
-      break;
-    case 23:
-      tmp = &m_styleCellBracket;
-      break;
-    case 24:
-      tmp = &m_styleActiveCellBracket;
-      break;
-    case 25:
-      tmp = &m_styleCursor;
-      break;
-    case 26:
-      tmp = &m_styleSelection;
-      break;
-    case 27:
-      tmp = &m_styleEqualsSelection;
-      break;
-    case 28:
-      tmp = &m_styleOutdated;
-      break;
-    case 29:
-      tmp = &m_styleCodeHighlightingVariable;
-      break;
-    case 30:
-      tmp = &m_styleCodeHighlightingFunction;
-      break;
-    case 31:
-      tmp = &m_styleCodeHighlightingComment;
-      break;
-    case 32:
-      tmp = &m_styleCodeHighlightingNumber;
-      break;
-    case 33:
-      tmp = &m_styleCodeHighlightingString;
-      break;
-    case 34:
-      tmp = &m_styleCodeHighlightingOperator;
-      break;
-    case 35:
-      tmp = &m_styleCodeHighlightingEndOfLine;
-      break;
-    default:
-      tmp = &m_styleDefault;
-  }
-  return tmp;
-}
-
 void ConfigDialogue::UpdateExample()
 {
-  style *tmp = GetStylePointer();
-  if(tmp == NULL)
-    return;
+  TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
 
   wxString example = _("Example text");
-  wxColour color(tmp->color);
-  wxString font(m_styleDefault.font);
+  wxColour color(m_configuration->m_styles[st].Color());
+  wxString font(m_configuration->m_styles[TS_DEFAULT].FontName());
 
-  if (tmp == &m_styleBackground)
-    color = m_styleInput.color;
+  if (st == TS_TEXT_BACKGROUND)
+    color = m_configuration->m_styles[st].Color();
 
-  int fontsize = m_fontSize;
-  if (tmp == &m_styleText || tmp == &m_styleHeading5 || tmp == &m_styleHeading6 ||
-      tmp == &m_styleSubsubsection || tmp == &m_styleSubsection ||
-      tmp == &m_styleSection || tmp == &m_styleTitle)
+  int fontsize = m_configuration->GetDefaultFontSize();
+  if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 ||
+      st == TS_SUBSUBSECTION || st == TS_SUBSUBSECTION ||
+      st == TS_SECTION || st == TS_TITLE)
   {
-    fontsize = tmp->fontSize;
-    font = tmp->font;
+    fontsize = m_configuration->m_styles[st].FontSize();
+    font = m_configuration->m_styles[st].FontName();
     if (fontsize <= 0)
-      fontsize = m_fontSize;
+      fontsize = m_configuration->GetDefaultFontSize();
   }
-  else if (tmp == &m_styleVariable || tmp == &m_styleNumber || tmp == &m_styleFunction ||
-           tmp == &m_styleSpecial)
+  else if (st == TS_VARIABLE || st == TS_NUMBER || st == TS_FUNCTION ||
+           st == TS_SPECIAL_CONSTANT)
   {
-    fontsize = m_mathFontSize;
+    fontsize = m_configuration->GetMathFontSize();
     font = m_mathFontName;
   }
 
-  if (tmp == &m_styleTextBackground)
+  if (st == TS_TEXT_BACKGROUND)
   {
-    m_examplePanel->SetFontSize(m_styleText.fontSize);
-    m_examplePanel->SetStyle(m_styleText.color, m_styleText.italic, m_styleText.bold, m_styleText.underlined,
-                             m_styleText.font);
+    m_examplePanel->SetFontSize(m_configuration->m_styles[st].FontSize());
+    m_examplePanel->SetStyle(m_configuration->m_styles[st].Color(),
+                             m_configuration->m_styles[st].Italic(),
+                             m_configuration->m_styles[st].Bold(),
+                             m_configuration->m_styles[st].Underlined(),
+                             m_configuration->m_styles[st].FontName());
   }
   else
   {
     m_examplePanel->SetFontSize(fontsize);
-    m_examplePanel->SetStyle(color, tmp->italic, tmp->bold, tmp->underlined, font);
+    m_examplePanel->SetStyle(color,
+                             m_configuration->m_styles[st].Italic(),
+                             m_configuration->m_styles[st].Bold(),
+                             m_configuration->m_styles[st].Underlined(),
+                             m_configuration->m_styles[st].FontName());
   }
 
-  if (tmp == &m_styleTextBackground ||
-      tmp == &m_styleText)
+  if (st == TS_TEXT_BACKGROUND ||
+      st == TS_TEXT)
   {
-    if(m_examplePanel->GetBackgroundColour() != m_styleTextBackground.color)
-      m_examplePanel->SetBackgroundColour(m_styleTextBackground.color);
+    if(m_examplePanel->GetBackgroundColour() != m_configuration->m_styles[TS_TEXT_BACKGROUND].Color())
+      m_examplePanel->SetBackgroundColour(m_configuration->m_styles[TS_TEXT_BACKGROUND].Color());
   }
   else
   {
-    if(m_examplePanel->GetBackgroundColour() != m_styleBackground.color)
-    m_examplePanel->SetBackgroundColour(m_styleBackground.color);
+    if(m_examplePanel->GetBackgroundColour() != m_configuration->m_styles[TS_TEXT_BACKGROUND].Color())
+    m_examplePanel->SetBackgroundColour(m_configuration->m_styles[TS_TEXT_BACKGROUND].Color());
   }
 
   m_examplePanel->Refresh();
@@ -2143,7 +1563,7 @@ void ConfigDialogue::LoadSave(wxCommandEvent &event)
                                    _("Config file (*.ini)|*.ini"),
                                    wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
     if (file != wxEmptyString)
-      WriteStyles(file);
+      m_configuration->WriteStyles(file);
   }
   else
   {
@@ -2153,7 +1573,7 @@ void ConfigDialogue::LoadSave(wxCommandEvent &event)
                                    wxFD_OPEN);
     if (file != wxEmptyString)
     {
-      ReadStyles(file);
+      m_configuration->ReadStyles(file);
       wxCommandEvent dummy;
       dummy.SetInt(m_styleFor->GetSelection());
       OnChangeStyle(dummy);

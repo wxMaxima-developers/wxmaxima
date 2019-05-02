@@ -1144,25 +1144,28 @@ void GroupCell::DrawBracket()
     dc->SetBrush(*wxRED_BRUSH);
     drawBracket = true;
   }
-  else if ((m_cellPointers->m_answerCell) && (m_cellPointers->m_answerCell->GetGroup() == this))
-  {
-#if defined(__WXOSX__)
-    dc->SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
-#else
-    dc->SetPen(*wxYELLOW_PEN);
-// window linux, set a pen
-#endif
-    dc->SetBrush(*wxYELLOW_BRUSH);
-    drawBracket = true;
-  }
   else
   {
-    dc->SetBrush(*wxWHITE_BRUSH);
-    dc->SetPen(*(wxThePenList->FindOrCreatePen(
-            *wxWHITE,
-            configuration->GetDefaultLineWidth(),
-            wxPENSTYLE_SOLID)
-    ));
+    if ((m_cellPointers->m_answerCell) && (m_cellPointers->m_answerCell->GetGroup() == this))
+    {
+#if defined(__WXOSX__)
+      dc->SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
+#else
+      dc->SetPen(*wxYELLOW_PEN);
+// window linux, set a pen
+#endif
+      dc->SetBrush(*wxYELLOW_BRUSH);
+      drawBracket = true;
+    }
+    else
+    {
+      dc->SetBrush((*m_configuration)->GetBackgroundBrush());
+      dc->SetPen(*(wxThePenList->FindOrCreatePen(
+                     *wxWHITE,
+                     configuration->GetDefaultLineWidth(),
+                     wxPENSTYLE_SOLID)
+                   ));
+    }
   }
   wxRect rect = GetRect();
   rect = wxRect(

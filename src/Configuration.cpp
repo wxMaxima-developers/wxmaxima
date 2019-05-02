@@ -27,12 +27,16 @@
 #include "Configuration.h"
 #include "Dirstructure.h"
 #include "ErrorRedirector.h"
+#include <wx/wx.h>
+#include <wx/string.h>
 #include <wx/font.h>
 #include <wx/config.h>
+#include <wx/wfstream.h>
 #include "Cell.h"
 
 Configuration::Configuration(wxDC *dc) : m_dc(dc) 
 {
+  m_BackgroundBrush = *wxWHITE_BRUSH;
   m_clipToDrawRegion = true;
   m_fontChanged = true;
   m_TOCshowsSectionNumbers = false;
@@ -200,6 +204,61 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_escCodes["->"] = wxT("\x2192");
   m_escCodes["-->"] = wxT("\x27F6");
   m_escCodes[" --> "] = wxT("\x27F6");
+
+  m_parenthesisDrawMode = unknown;
+  wxConfigBase *config = wxConfig::Get();
+
+  #ifdef __WXMSW__
+  wxFont font;
+  font.SetFamily(wxFONTFAMILY_MODERN);
+  font.SetFaceName(wxT("Linux Libertine O"));
+  font.SetStyle(wxFONTSTYLE_NORMAL );
+  if(font.IsOk())
+    m_fontName = wxT("Linux Libertine O");
+  if(font.IsOk())
+    m_mathFontName = wxT("Linux Libertine O");
+  else
+    m_mathFontName = wxEmptyString;
+  #endif
+  m_defaultFontSize = 12;
+  m_mathFontSize = m_defaultFontSize;
+  m_fontEncoding = wxFONTENCODING_DEFAULT;
+  m_styles[TS_DEFAULT].Set(*wxBLACK, true, true, false, 12);
+  m_styles[TS_TEXT].Set(*wxBLACK, false, false, 12);
+  m_styles[TS_DEFAULT].Read(config,"Style/NormalText/");
+  m_styles[TS_CODE_VARIABLE].Set(wxColor(0,128,0), false, true, false);
+  m_styles[TS_CODE_FUNCTION].Set(wxColor(128,0,0), false, true, false);
+  m_styles[TS_CODE_COMMENT].Set(wxColor(64,64,64), false, true, false);
+  m_styles[TS_CODE_NUMBER].Set(wxColor(128,64,0), false, true, false);
+  m_styles[TS_CODE_STRING].Set(wxColor(0,0,128), false, true, false);
+  m_styles[TS_CODE_OPERATOR].Set(*wxBLACK, false, true, false);
+  m_styles[TS_CODE_ENDOFLINE].Set(wxColor(128,128,128), false, true, false);
+  m_styles[TS_HEADING6].Set(*wxBLACK, true, false, false, 14);
+  m_styles[TS_HEADING5].Set(*wxBLACK, true, false, false, 15);
+  m_styles[TS_SUBSUBSECTION].Set(*wxBLACK, true, false, false, 16);
+  m_styles[TS_SUBSECTION].Set(*wxBLACK, true, false, false, 16);
+  m_styles[TS_SECTION].Set(*wxBLACK, true, true, false, 18);
+  m_styles[TS_TITLE].Set(*wxBLACK, true, false, true, 24);
+  m_styles[TS_WARNING].Set(wxColor(wxT("orange")), true, false, false, 12);
+  m_styles[TS_MAIN_PROMPT].Set(wxColor(wxT("rgb(255,128,128)")), false, false, false);
+  m_styles[TS_OTHER_PROMPT].Set(*wxRED, false, true, false);
+  m_styles[TS_LABEL].Set(wxColor(wxT("rgb(255,192,128)")), false, false, false);
+  m_styles[TS_USERLABEL].Set(wxColor(wxT("rgb(255,64,0)")), false, false, false);
+  m_styles[TS_SPECIAL_CONSTANT].Set(*wxBLACK, false, false, false);
+  m_styles[TS_INPUT].Set(*wxBLUE, false, false, false);
+  m_styles[TS_NUMBER].Set(*wxBLACK, false, false, false);
+  m_styles[TS_STRING].Set(*wxBLACK, false, true, false);
+  m_styles[TS_GREEK_CONSTANT].Set(*wxBLACK, false, false, false);
+  m_styles[TS_VARIABLE].Set(*wxBLACK, false, true, false);
+  m_styles[TS_FUNCTION].Set(*wxBLACK);
+  m_styles[TS_HIGHLIGHT].Set(*wxRED);
+  m_styles[TS_TEXT_BACKGROUND].Set(*wxWHITE);
+  m_styles[TS_CELL_BRACKET].Set(wxColour(wxT("rgb(0,0,0)")));
+  m_styles[TS_ACTIVE_CELL_BRACKET].Set(wxT("rgb(255,0,0)"));
+  m_styles[TS_CURSOR].Set(wxT("rgb(0,0,0)"));
+  m_styles[TS_SELECTION].Set(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
+  m_styles[TS_EQUALSSELECTION].Set(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT).ChangeLightness(150));
+  m_styles[TS_OUTDATED].Set(wxColor(wxT("rgb(153,153,153)")));
 }
 
 wxSize Configuration::GetPPI(wxWindow *win)
@@ -279,7 +338,7 @@ void Configuration::ReadConfig()
 
   wxString bgColStr = wxT("white");
   config->Read(wxT("Style/Background/color"), &bgColStr);
-  m_defaultBackgroundColor = wxColour(bgColStr);
+  m_defaultBackgroundColor = wxColour(bgColStr);      
     
   if(config->Read(wxT("autoSaveInterval"),&m_autoSaveInterval))
     m_autoSaveInterval *= 1000 * 60;
@@ -364,10 +423,10 @@ void Configuration::ReadConfig()
   m_keepPercent = true;
   wxConfig::Get()->Read(wxT("keepPercent"), &m_keepPercent);
 
-  ReadStyle();
+  ReadStyles();
 }
 
-wxFont Configuration::GetFont(int textStyle, int fontSize)
+wxFont Configuration::GetFont(TextStyle textStyle, int fontSize)
 {
   wxString fontName;
   wxFontStyle fontStyle;
@@ -502,6 +561,7 @@ void Configuration::SetZoomFactor(double newzoom)
 
 Configuration::~Configuration()
 {
+  WriteStyles();
 }
 
 bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2, wxString char3)
@@ -603,7 +663,7 @@ wxString Configuration::GetFontName(int type)
   wxString retval = m_fontName;
   if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION ||
       type == TS_HEADING5 || type == TS_HEADING6 || type == TS_SECTION || type == TS_TEXT)
-    retval = m_styles[type].font;
+    retval = m_styles[type].FontName();
   if(retval == wxEmptyString)
     retval = m_fontName;
   
@@ -613,20 +673,16 @@ wxString Configuration::GetFontName(int type)
   return retval;
 }
 
-void Configuration::ReadStyle()
+void Configuration::ReadStyles(wxString file)
 {
-  m_parenthesisDrawMode = unknown;
-  wxConfigBase *config = wxConfig::Get();
-
-
-  #ifdef __WXMSW__
-  wxFont font;
-  font.SetFamily(wxFONTFAMILY_MODERN);
-  font.SetFaceName(wxT("Linux Libertine O"));
-  font.SetStyle(wxFONTSTYLE_NORMAL );
-  if(font.IsOk())
-    m_fontName = wxT("Linux Libertine O");
-  #endif
+  wxConfigBase *config = NULL;
+  if (file == wxEmptyString)
+    config = wxConfig::Get();
+  else
+  {
+    wxFileInputStream str(file);
+    config = new wxFileConfig(str);
+  }
   
   // Font
   config->Read(wxT("Style/fontname"), &m_fontName);
@@ -637,25 +693,12 @@ void Configuration::ReadStyle()
   }
 #endif
 
-  // Default fontsize
-  m_defaultFontSize = 12;
   config->Read(wxT("fontSize"), &m_defaultFontSize);
-  m_mathFontSize = m_defaultFontSize;
   config->Read(wxT("mathfontsize"), &m_mathFontSize);
-
-  // Encoding - used only for comments
-  m_fontEncoding = wxFONTENCODING_DEFAULT;
   int encoding = m_fontEncoding;
   config->Read(wxT("fontEncoding"), &encoding);
   m_fontEncoding = (wxFontEncoding) encoding;
 
-  // Math font
-  #ifdef __WXMSW__
-  if(font.IsOk())
-    m_mathFontName = wxT("Linux Libertine O");
-  else
-    m_mathFontName = wxEmptyString;
-  #endif
   config->Read(wxT("Style/Math/fontname"), &m_mathFontName);
 #ifdef __WXOSX_MAC__
   if (m_mathFontName.IsEmpty())
@@ -663,329 +706,115 @@ void Configuration::ReadStyle()
     m_mathFontName = "Monaco";
   }
 #endif
-
-  wxString tmp;
-
-#define READ_STYLES(type, where)                                    \
-  if (config->Read(wxT(where "color"), &tmp)) m_styles[type].color.Set(tmp);          \
-  config->Read(wxT(where "bold"), &m_styles[type].bold);            \
-  config->Read(wxT(where "italic"), &m_styles[type].italic);        \
-  config->Read(wxT(where "underlined"), &m_styles[type].underlined);
-
-  // Normal text
-  m_styles[TS_DEFAULT].color = wxT("black");
-  m_styles[TS_DEFAULT].bold = true;
-  m_styles[TS_DEFAULT].italic = true;
-  m_styles[TS_DEFAULT].underlined = false;
-  READ_STYLES(TS_DEFAULT, "Style/NormalText/")
-
-  // Text
-  m_styles[TS_TEXT].color = wxT("black");
-  m_styles[TS_TEXT].bold = false;
-  m_styles[TS_TEXT].italic = false;
-  m_styles[TS_TEXT].underlined = false;
-  m_styles[TS_TEXT].fontSize = 12;
-#ifdef __WXOSX_MAC__
-  m_styles[TS_TEXT].font = "Monaco";
-#endif
-  config->Read(wxT("Style/Text/fontsize"),
-               &m_styles[TS_TEXT].fontSize);
-  config->Read(wxT("Style/Text/fontname"),
-               &m_styles[TS_TEXT].font);
-  READ_STYLES(TS_TEXT, "Style/Text/")
-
-  // Variables in highlighted code
-  m_styles[TS_CODE_VARIABLE].color = wxT("rgb(0,128,0)");
-  m_styles[TS_CODE_VARIABLE].bold = false;
-  m_styles[TS_CODE_VARIABLE].italic = true;
-  m_styles[TS_CODE_VARIABLE].underlined = false;
-  READ_STYLES(TS_CODE_VARIABLE, "Style/CodeHighlighting/Variable/")
-
-  // Keywords in highlighted code
-  m_styles[TS_CODE_FUNCTION].color = wxT("rgb(128,0,0)");
-  m_styles[TS_CODE_FUNCTION].bold = false;
-  m_styles[TS_CODE_FUNCTION].italic = true;
-  m_styles[TS_CODE_FUNCTION].underlined = false;
-  READ_STYLES(TS_CODE_FUNCTION, "Style/CodeHighlighting/Function/")
-
-  // Comments in highlighted code
-  m_styles[TS_CODE_COMMENT].color = wxT("rgb(64,64,64)");
-  m_styles[TS_CODE_COMMENT].bold = false;
-  m_styles[TS_CODE_COMMENT].italic = true;
-  m_styles[TS_CODE_COMMENT].underlined = false;
-  READ_STYLES(TS_CODE_COMMENT, "Style/CodeHighlighting/Comment/")
-
-  // Numbers in highlighted code
-  m_styles[TS_CODE_NUMBER].color = wxT("rgb(128,64,0)");
-  m_styles[TS_CODE_NUMBER].bold = false;
-  m_styles[TS_CODE_NUMBER].italic = true;
-  m_styles[TS_CODE_NUMBER].underlined = false;
-  READ_STYLES(TS_CODE_NUMBER, "Style/CodeHighlighting/Number/")
-
-  // Strings in highlighted code
-  m_styles[TS_CODE_STRING].color = wxT("rgb(0,0,128)");
-  m_styles[TS_CODE_STRING].bold = false;
-  m_styles[TS_CODE_STRING].italic = true;
-  m_styles[TS_CODE_STRING].underlined = false;
-  READ_STYLES(TS_CODE_STRING, "Style/CodeHighlighting/String/")
-
-  // Operators in highlighted code
-  m_styles[TS_CODE_OPERATOR].color = wxT("rgb(0,0,0)");
-  m_styles[TS_CODE_OPERATOR].bold = false;
-  m_styles[TS_CODE_OPERATOR].italic = true;
-  m_styles[TS_CODE_OPERATOR].underlined = false;
-  READ_STYLES(TS_CODE_OPERATOR, "Style/CodeHighlighting/Operator/")
-
-  // Line endings in highlighted code
-  m_styles[TS_CODE_ENDOFLINE].color = wxT("rgb(128,128,128)");
-  m_styles[TS_CODE_ENDOFLINE].bold = false;
-  m_styles[TS_CODE_ENDOFLINE].italic = true;
-  m_styles[TS_CODE_ENDOFLINE].underlined = false;
-  READ_STYLES(TS_CODE_ENDOFLINE, "Style/CodeHighlighting/EndOfLine/")
-
-  // Heading6
-  m_styles[TS_HEADING6].color = wxT("black");
-  m_styles[TS_HEADING6].bold = true;
-  m_styles[TS_HEADING6].italic = false;
-  m_styles[TS_HEADING6].underlined = false;
-  m_styles[TS_HEADING6].fontSize = 14;
-#ifdef __WXOSX_MAC__
-  m_styles[TS_HEADING6].font = "Monaco";
-#endif
-  config->Read(wxT("Style/Heading6/fontsize"),
-               &m_styles[TS_HEADING6].fontSize);
-  config->Read(wxT("Style/Heading6/fontname"),
-               &m_styles[TS_HEADING6].font);
-  READ_STYLES(TS_HEADING6, "Style/Heading6/")
-
-  // Heading5
-  m_styles[TS_HEADING5].color = wxT("black");
-  m_styles[TS_HEADING5].bold = true;
-  m_styles[TS_HEADING5].italic = false;
-  m_styles[TS_HEADING5].underlined = false;
-  m_styles[TS_HEADING5].fontSize = 15;
-#ifdef __WXOSX_MAC__
-  m_styles[TS_HEADING5].font = "Monaco";
-#endif
-  config->Read(wxT("Style/Heading5/fontsize"),
-               &m_styles[TS_HEADING5].fontSize);
-  config->Read(wxT("Style/Heading5/fontname"),
-               &m_styles[TS_HEADING5].font);
-  READ_STYLES(TS_HEADING5, "Style/Heading5/")
-
-  // Subsubsection
-  m_styles[TS_SUBSUBSECTION].color = wxT("black");
-  m_styles[TS_SUBSUBSECTION].bold = true;
-  m_styles[TS_SUBSUBSECTION].italic = false;
-  m_styles[TS_SUBSUBSECTION].underlined = false;
-  m_styles[TS_SUBSUBSECTION].fontSize = 16;
-#ifdef __WXOSX_MAC__
-  m_styles[TS_SUBSUBSECTION].font = "Monaco";
-#endif
-  config->Read(wxT("Style/Subsubsection/fontsize"),
-               &m_styles[TS_SUBSUBSECTION].fontSize);
-  config->Read(wxT("Style/Subsubsection/fontname"),
-               &m_styles[TS_SUBSUBSECTION].font);
-  READ_STYLES(TS_SUBSUBSECTION, "Style/Subsubsection/")
-
-  // Subsection
-  m_styles[TS_SUBSECTION].color = wxT("black");
-  m_styles[TS_SUBSECTION].bold = true;
-  m_styles[TS_SUBSECTION].italic = false;
-  m_styles[TS_SUBSECTION].underlined = false;
-  m_styles[TS_SUBSECTION].fontSize = 16;
-#ifdef __WXOSX_MAC__
-  m_styles[TS_SUBSECTION].font = "Monaco";
-#endif
-  config->Read(wxT("Style/Subsection/fontsize"),
-               &m_styles[TS_SUBSECTION].fontSize);
-  config->Read(wxT("Style/Subsection/fontname"),
-               &m_styles[TS_SUBSECTION].font);
-  READ_STYLES(TS_SUBSECTION, "Style/Subsection/")
-
-  // Section
-  m_styles[TS_SECTION].color = wxT("black");
-  m_styles[TS_SECTION].bold = true;
-  m_styles[TS_SECTION].italic = true;
-  m_styles[TS_SECTION].underlined = false;
-  m_styles[TS_SECTION].fontSize = 18;
-#ifdef __WXOSX_MAC__
-  m_styles[TS_SECTION].font = "Monaco";
-#endif
-  config->Read(wxT("Style/Section/fontsize"),
-               &m_styles[TS_SECTION].fontSize);
-  config->Read(wxT("Style/Section/fontname"),
-               &m_styles[TS_SECTION].font);
-  READ_STYLES(TS_SECTION, "Style/Section/")
-
-  // Title
-  m_styles[TS_TITLE].color = wxT("black");
-  m_styles[TS_TITLE].bold = true;
-  m_styles[TS_TITLE].italic = false;
-  m_styles[TS_TITLE].underlined = true;
-  m_styles[TS_TITLE].fontSize = 24;
-#ifdef __WXOSX_MAC__
-  m_styles[TS_TITLE].font = "Monaco";
-#endif
-  config->Read(wxT("Style/Title/fontsize"),
-               &m_styles[TS_TITLE].fontSize);
-  config->Read(wxT("Style/Title/fontname"),
-               &m_styles[TS_TITLE].font);
-  READ_STYLES(TS_TITLE, "Style/Title/")
-
-  // Warning
-  m_styles[TS_WARNING].color = wxT("orange");
-  m_styles[TS_WARNING].bold = true;
-  m_styles[TS_WARNING].italic = false;
-  m_styles[TS_WARNING].underlined = false;
-  m_styles[TS_WARNING].fontSize = 24;
-  config->Read(wxT("Style/Warning/fontname"),
-               &m_styles[TS_WARNING].font);
-  READ_STYLES(TS_WARNING, "Style/Warning/")
   
-  // Main prompt
-  m_styles[TS_MAIN_PROMPT].color = wxT("rgb(255,128,128)");
-  m_styles[TS_MAIN_PROMPT].bold = false;
-  m_styles[TS_MAIN_PROMPT].italic = false;
-  m_styles[TS_MAIN_PROMPT].underlined = false;
-  READ_STYLES(TS_MAIN_PROMPT, "Style/MainPrompt/")
+  m_styles[TS_TEXT].Read(config, "Style/Text/");
+  m_styles[TS_CODE_VARIABLE].Read(config, "Style/CodeHighlighting/Variable/");
+  m_styles[TS_CODE_FUNCTION].Read(config, "Style/CodeHighlighting/Function/");
+  m_styles[TS_CODE_COMMENT].Read(config, "Style/CodeHighlighting/Comment/");
+  m_styles[TS_CODE_NUMBER].Read(config, "Style/CodeHighlighting/Number/");
+  m_styles[TS_CODE_STRING].Read(config, "Style/CodeHighlighting/String/");
+  m_styles[TS_CODE_OPERATOR].Read(config, "Style/CodeHighlighting/Operator/");
+  m_styles[TS_CODE_ENDOFLINE].Read(config, "Style/CodeHighlighting/EndOfLine/");
+  m_styles[TS_HEADING6].Read(config, "Style/Heading6/");
+  m_styles[TS_HEADING5].Read(config, "Style/Heading5/");
+  m_styles[TS_SUBSUBSECTION].Read(config, "Style/Subsubsection/");
+  m_styles[TS_SUBSECTION].Read(config, "Style/Subsection/");
+  m_styles[TS_SECTION].Read(config, "Style/Section/");
+  m_styles[TS_TITLE].Read(config, "Style/Title/");
+  m_styles[TS_WARNING].Read(config, "Style/Warning/");
+  m_styles[TS_MAIN_PROMPT].Read(config, "Style/MainPrompt/");
+  m_styles[TS_OTHER_PROMPT].Read(config, "Style/OtherPrompt/");
+  m_styles[TS_LABEL].Read(config, "Style/Label/");  
+  m_styles[TS_USERLABEL].Read(config, "Style/UserDefinedLabel/");
+  m_styles[TS_SPECIAL_CONSTANT].Read(config, "Style/Special/");
+  m_styles[TS_INPUT].Read(config, "Style/Input/");
+  m_styles[TS_NUMBER].Read(config, "Style/Number/");
+  m_styles[TS_STRING].Read(config, "Style/String/");
+  m_styles[TS_GREEK_CONSTANT].Read(config, "Style/Greek/");
+  m_styles[TS_VARIABLE].Read(config, "Style/Variable/");
+  m_styles[TS_FUNCTION].Read(config, "Style/Function/");
+  m_styles[TS_HIGHLIGHT].Read(config, "Style/Highlight/");  
+  m_styles[TS_TEXT_BACKGROUND].Read(config, "Style/Background/");    
+  m_styles[TS_CELL_BRACKET].Read(config, "Style/CellBracket/");
+  m_styles[TS_ACTIVE_CELL_BRACKET].Read(config,wxT("Style/ActiveCellBracket/"));
+  m_styles[TS_CURSOR].Read(config,wxT("Style/ActiveCellBracket/"));
+  m_styles[TS_SELECTION].Read(config,wxT("Style/Selection/"));
+  m_styles[TS_EQUALSSELECTION].Read(config,wxT("Style/EqualsSelection/"));
+  m_styles[TS_OUTDATED].Read(config,wxT("Style/Outdated/"));
+}
 
-  // Other prompt
-  m_styles[TS_OTHER_PROMPT].color = wxT("red");
-  m_styles[TS_OTHER_PROMPT].bold = false;
-  m_styles[TS_OTHER_PROMPT].italic = true;
-  m_styles[TS_OTHER_PROMPT].underlined = false;
-  READ_STYLES(TS_OTHER_PROMPT, "Style/OtherPrompt/");
+//! Saves the style settings to a file.
+void Configuration::WriteStyles(wxString file)
+{
+  wxConfigBase *config = NULL;
+  if (file == wxEmptyString)
+    config = wxConfig::Get();
+  else
+  {
+    wxFileInputStream str(file);
+    config = new wxFileConfig(str);
+  }
 
-  // Labels
-  m_styles[TS_LABEL].color = wxT("rgb(255,192,128)");
-  m_styles[TS_LABEL].bold = false;
-  m_styles[TS_LABEL].italic = false;
-  m_styles[TS_LABEL].underlined = false;
-  READ_STYLES(TS_LABEL, "Style/Label/")
-
-  // User-defined Labels
-  m_styles[TS_USERLABEL].color = wxT("rgb(255,64,0)");
-  m_styles[TS_USERLABEL].bold = false;
-  m_styles[TS_USERLABEL].italic = false;
-  m_styles[TS_USERLABEL].underlined = false;
-  READ_STYLES(TS_USERLABEL, "Style/UserDefinedLabel/")
-
-  // Special
-  m_styles[TS_SPECIAL_CONSTANT].color = m_styles[TS_DEFAULT].color;
-  m_styles[TS_SPECIAL_CONSTANT].bold = false;
-  m_styles[TS_SPECIAL_CONSTANT].italic = false;
-  m_styles[TS_SPECIAL_CONSTANT].underlined = false;
-  READ_STYLES(TS_SPECIAL_CONSTANT, "Style/Special/")
-
-  // Input
-  m_styles[TS_INPUT].color = wxT("blue");
-  m_styles[TS_INPUT].bold = false;
-  m_styles[TS_INPUT].italic = false;
-  m_styles[TS_INPUT].underlined = false;
-  READ_STYLES(TS_INPUT, "Style/Input/")
-
-  // Number
-  m_styles[TS_NUMBER].color = m_styles[TS_DEFAULT].color;
-  m_styles[TS_NUMBER].bold = false;
-  m_styles[TS_NUMBER].italic = false;
-  m_styles[TS_NUMBER].underlined = false;
-  READ_STYLES(TS_NUMBER, "Style/Number/")
-
-  // String
-  m_styles[TS_STRING].color = m_styles[TS_DEFAULT].color;
-  m_styles[TS_STRING].bold = false;
-  m_styles[TS_STRING].italic = true;
-  m_styles[TS_STRING].underlined = false;
-  READ_STYLES(TS_STRING, "Style/String/")
-
-  // Greek
-  m_styles[TS_GREEK_CONSTANT].color = m_styles[TS_DEFAULT].color;
-  m_styles[TS_GREEK_CONSTANT].bold = false;
-  m_styles[TS_GREEK_CONSTANT].italic = false;
-  m_styles[TS_GREEK_CONSTANT].underlined = false;
-  READ_STYLES(TS_GREEK_CONSTANT, "Style/Greek/")
-
-  // Variables
-  m_styles[TS_VARIABLE].color = m_styles[TS_DEFAULT].color;
-  m_styles[TS_VARIABLE].bold = false;
-  m_styles[TS_VARIABLE].italic = true;
-  m_styles[TS_VARIABLE].underlined = false;
-  READ_STYLES(TS_VARIABLE, "Style/Variable/")
-
-  // FUNCTIONS
-  m_styles[TS_FUNCTION].color = m_styles[TS_DEFAULT].color;
-  m_styles[TS_FUNCTION].bold = false;
-  m_styles[TS_FUNCTION].italic = false;
-  m_styles[TS_FUNCTION].underlined = false;
-  READ_STYLES(TS_FUNCTION, "Style/Function/")
-
-  // Highlight
-  m_styles[TS_HIGHLIGHT].color = m_styles[TS_DEFAULT].color;
-  if (config->Read(wxT("Style/Highlight/color"),
-                   &tmp))
-    m_styles[TS_HIGHLIGHT].color.Set(tmp);
-
-  // Text background
-  m_styles[TS_TEXT_BACKGROUND].color = wxColour(wxT("white"));
-  if (config->Read(wxT("Style/TextBackground/color"),
-                   &tmp))
-    m_styles[TS_TEXT_BACKGROUND].color.Set(tmp);
-
-  // Cell bracket colors
-  m_styles[TS_CELL_BRACKET].color = wxColour(wxT("rgb(0,0,0)"));
-  if (config->Read(wxT("Style/CellBracket/color"),
-                   &tmp))
-    m_styles[TS_CELL_BRACKET].color.Set(tmp);
-
-  m_styles[TS_ACTIVE_CELL_BRACKET].color = wxT("rgb(255,0,0)");
-  if (config->Read(wxT("Style/ActiveCellBracket/color"),
-                   &tmp))
-    m_styles[TS_ACTIVE_CELL_BRACKET].color.Set(tmp);
-
-  // Cursor (hcaret in MathCtrl and caret in EditorCell)
-  m_styles[TS_CURSOR].color = wxT("rgb(0,0,0)");
-  if (config->Read(wxT("Style/Cursor/color"),
-                   &tmp))
-    m_styles[TS_CURSOR].color.Set(tmp);
-
-   m_styles[TS_SELECTION].color = wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT);
-
-  if (config->Read(wxT("Style/Selection/color"),
-                   &tmp))
-    m_styles[TS_SELECTION].color.Set(tmp);
-  m_styles[TS_EQUALSSELECTION].color = wxT("rgb(192,255,192)");
-  if (config->Read(wxT("Style/EqualsSelection/color"),
-                   &tmp))
-    m_styles[TS_EQUALSSELECTION].color.Set(tmp);
-
-  // Outdated cells
-  m_styles[TS_OUTDATED].color = wxT("rgb(153,153,153)");
-  if (config->Read(wxT("Style/Outdated/color"),
-                   &tmp))
-    m_styles[TS_OUTDATED].color.Set(tmp);
-
-
-#undef READ_STYLES
+  // Font
+  config->Write(wxT("Style/fontname"), m_fontName);
+  config->Write(wxT("fontSize"), m_defaultFontSize);
+  config->Write(wxT("mathfontsize"), m_mathFontSize);
+  config->Write(wxT("fontEncoding"), static_cast<int>(m_fontEncoding));
+  config->Write(wxT("Style/Math/fontname"), m_mathFontName);
+  
+  m_styles[TS_TEXT].Write(config, "Style/Text/");
+  m_styles[TS_CODE_VARIABLE].Write(config, "Style/CodeHighlighting/Variable/");
+  m_styles[TS_CODE_FUNCTION].Write(config, "Style/CodeHighlighting/Function/");
+  m_styles[TS_CODE_COMMENT].Write(config, "Style/CodeHighlighting/Comment/");
+  m_styles[TS_CODE_NUMBER].Write(config, "Style/CodeHighlighting/Number/");
+  m_styles[TS_CODE_STRING].Write(config, "Style/CodeHighlighting/String/");
+  m_styles[TS_CODE_OPERATOR].Write(config, "Style/CodeHighlighting/Operator/");
+  m_styles[TS_CODE_ENDOFLINE].Write(config, "Style/CodeHighlighting/EndOfLine/");
+  m_styles[TS_HEADING6].Write(config, "Style/Heading6/");
+  m_styles[TS_HEADING5].Write(config, "Style/Heading5/");
+  m_styles[TS_SUBSUBSECTION].Write(config, "Style/Subsubsection/");
+  m_styles[TS_SUBSECTION].Write(config, "Style/Subsection/");
+  m_styles[TS_SECTION].Write(config, "Style/Section/");
+  m_styles[TS_TITLE].Write(config, "Style/Title/");
+  m_styles[TS_WARNING].Write(config, "Style/Warning/");
+  m_styles[TS_MAIN_PROMPT].Write(config, "Style/MainPrompt/");
+  m_styles[TS_OTHER_PROMPT].Write(config, "Style/OtherPrompt/");
+  m_styles[TS_LABEL].Write(config, "Style/Label/");  
+  m_styles[TS_USERLABEL].Write(config, "Style/UserDefinedLabel/");
+  m_styles[TS_SPECIAL_CONSTANT].Write(config, "Style/Special/");
+  m_styles[TS_INPUT].Write(config, "Style/Input/");
+  m_styles[TS_NUMBER].Write(config, "Style/Number/");
+  m_styles[TS_STRING].Write(config, "Style/String/");
+  m_styles[TS_GREEK_CONSTANT].Write(config, "Style/Greek/");
+  m_styles[TS_VARIABLE].Write(config, "Style/Variable/");
+  m_styles[TS_FUNCTION].Write(config, "Style/Function/");
+  m_styles[TS_HIGHLIGHT].Write(config, "Style/Highlight/");  
+  m_styles[TS_TEXT_BACKGROUND].Write(config, "Style/Background/");    
+  m_styles[TS_CELL_BRACKET].Write(config, "Style/CellBracket/");
+  m_styles[TS_ACTIVE_CELL_BRACKET].Write(config,wxT("Style/ActiveCellBracket/"));
+  m_styles[TS_CURSOR].Write(config,wxT("Style/ActiveCellBracket/"));
+  m_styles[TS_SELECTION].Write(config,wxT("Style/Selection/"));
+  m_styles[TS_EQUALSSELECTION].Write(config,wxT("Style/EqualsSelection/"));
+  m_styles[TS_OUTDATED].Write(config,wxT("Style/Outdated/"));
 }
 
 wxFontWeight Configuration::IsBold(int st)
 {
-  if (m_styles[st].bold)
+  if (m_styles[st].Bold())
     return wxFONTWEIGHT_BOLD;
   return wxFONTWEIGHT_NORMAL;
 }
 
 wxFontStyle Configuration::IsItalic(int st)
 {
-  if (m_styles[st].italic)
+  if (m_styles[st].Italic())
     return wxFONTSTYLE_SLANT;
   return wxFONTSTYLE_NORMAL;
 }
 
 bool Configuration::IsUnderlined(int st)
 {
-  return m_styles[st].underlined;
+  return m_styles[st].Underlined();
 }
 
 wxString Configuration::GetSymbolFontName()
@@ -999,8 +828,8 @@ wxString Configuration::GetSymbolFontName()
 wxColour Configuration::GetColor(int st)
 {
   if (m_outdated)
-    return m_styles[TS_OUTDATED].color;
-  return m_styles[st].color;
+    return m_styles[TS_OUTDATED].Color();
+  return m_styles[st].Color();
 }
 
 int Configuration::Scale_Px(double px)
@@ -1012,3 +841,4 @@ int Configuration::Scale_Px(double px)
 }
 
 wxString Configuration::m_maximaLocation_override;
+

@@ -121,6 +121,8 @@ public:
     m_antialiassingDC = NULL;
   }
 
+  void SetBackgroundBrush(wxBrush brush){m_BackgroundBrush = brush;}
+  wxBrush GetBackgroundBrush(){return m_BackgroundBrush;}
   void SetAntialiassingDC(wxDC &antialiassingDC)
     {m_antialiassingDC = &antialiassingDC;}
 
@@ -240,8 +242,6 @@ public:
 
   bool IsUnderlined(int st);
 
-  void ReadStyle();
-
   //! Force a full recalculation?
   void RecalculationForce(bool force)
   {
@@ -257,6 +257,11 @@ public:
   wxFontEncoding GetFontEncoding()
   {
     return m_fontEncoding;
+  }
+
+  void SetFontEncoding(wxFontEncoding encoding)
+  {
+    m_fontEncoding = encoding;
   }
 
   int GetLabelWidth()
@@ -392,8 +397,14 @@ public:
   int GetDefaultFontSize()
   { return m_defaultFontSize; }
 
+  void SetDefaultFontSize(int fontSize)
+  { m_defaultFontSize = fontSize; }
+
   int GetMathFontSize()
   { return m_mathFontSize; }
+
+  void SetMathFontSize(double size)
+  { m_mathFontSize = size; }
 
   //! Do we want to have automatic line breaks for text cells?
   bool GetAutoWrap()
@@ -426,13 +437,19 @@ public:
   //! Do we want to indent all maths?
   bool IndentMaths(){return m_indentMaths;}
   void IndentMaths(bool indent){wxConfig::Get()->Write(wxT("indentMaths"), m_indentMaths=indent);}
-  int GetFontSize(int st)
+  int GetFontSize(TextStyle st)
   {
     if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
-      return m_styles[st].fontSize;
+      return m_styles[st].FontSize();
     return 0;
   }
 
+  //! Reads the style settings from a file
+  void ReadStyles(wxString file = wxEmptyString);
+  
+  //! Saves the style settings to a file.
+  void WriteStyles(wxString file = wxEmptyString);
+  
   void Outdated(bool outdated)
   { m_outdated = outdated; }
 
@@ -689,7 +706,7 @@ public:
     \param fontSize Only relevant for math cells: Super- and subscripts can have different
     font styles than the rest.
    */
-  wxFont GetFont(int textStyle, int fontSize);
+  wxFont GetFont(TextStyle textStyle, int fontSize);
 
   //! Get the worksheet this configuration storage is valid for
   wxWindow *GetWorkSheet(){return m_workSheet;}
@@ -730,6 +747,7 @@ public:
   wxPoint GetWorksheetPosition(){return m_worksheetPosition;}
   wxString MaximaShareDir(){return m_maximaShareDir;}
   void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
+  Style m_styles[STYLE_NUM];
 private:
   //! The worksheet all cells are drawn on
   wxRect m_updateRegion;
@@ -816,7 +834,6 @@ private:
   int m_clientWidth;
   int m_clientHeight;
   wxFontEncoding m_fontEncoding;
-  style m_styles[STYLE_NUM];
   bool m_printing;
   int m_lineWidth_em;
   int m_showLabelChoice;
@@ -841,6 +858,8 @@ private:
   wxPoint m_worksheetPosition;
 
   wxColour m_defaultBackgroundColor;
+  //! The brush the normal cell background is painted with
+  wxBrush m_BackgroundBrush;
 };
 
 #endif // CONFIGURATION_H

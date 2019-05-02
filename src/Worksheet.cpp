@@ -80,7 +80,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
 {
   // This is somehow needed for wxAutoBufferedPaintDC
   SetBackgroundStyle(wxBG_STYLE_PAINT);
-  SetBackgroundColour(wxColour(wxT("WHITE")));
+  SetBackgroundColour(*wxWHITE);
   SetMinSize(wxSize(100, 100));
   
 #if wxUSE_ACCESSIBILITY
@@ -98,6 +98,9 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
   m_rectToRefresh = wxRect(-1,-1,-1,-1);
   m_notificationMessage = NULL;
   m_configuration = &m_configurationTopInstance;
+  m_configuration->SetBackgroundBrush(
+    *(wxTheBrushList->FindOrCreateBrush(*wxWHITE, wxBRUSHSTYLE_SOLID)));
+  
   m_dc = new wxClientDC(this);
   m_configuration->SetContext(*m_dc);
   m_autocomplete  = new AutoComplete(m_configuration);
@@ -395,9 +398,8 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
   wxAutoBufferedPaintDC dc(this);
-  wxBrush *backgroundBrush = wxTheBrushList->FindOrCreateBrush(GetBackgroundColour(), wxBRUSHSTYLE_SOLID);
-  dc.SetBackground(*backgroundBrush);
-  dc.SetBrush(*backgroundBrush);
+  dc.SetBackground(m_configuration->GetBackgroundBrush());
+  dc.SetBrush(*m_configuration->GetBackgroundBrush());
   dc.SetMapMode(wxMM_TEXT);
   // Don't draw text with an opaque background.
   dc.SetBackgroundMode(wxTRANSPARENT);
@@ -550,12 +552,12 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   {
     if (!m_hCaretBlinkVisible)
     {
-      dc.SetBrush(*wxWHITE_BRUSH);
-      dc.SetPen(*wxWHITE_PEN);
+      dc.SetBrush(m_configuration->GetBackgroundBrush());
+      dc.SetPen(*wxThePenList->FindOrCreatePen(GetBackgroundColour(), m_configuration->Scale_Px(1)));
     }
     else
     {
-      dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
+      dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), m_configuration->Scale_Px(1), wxPENSTYLE_SOLID)));
       dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
     }
 

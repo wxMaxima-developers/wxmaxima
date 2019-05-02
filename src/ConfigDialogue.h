@@ -323,42 +323,6 @@ protected:
   wxSpinCtrl *m_defaultPort;
   ExamplePanel *m_examplePanel;
   // end wxGlade
-  style m_styleDefault,
-          m_styleVariable,
-          m_styleFunction,
-          m_styleNumber,
-          m_styleSpecial,
-          m_styleGreek,
-          m_styleString,
-          m_styleInput,
-          m_styleMainPrompt,
-          m_styleOtherPrompt,
-          m_styleLabel,
-          m_styleUserDefinedLabel,
-          m_styleHighlight,
-          m_styleWarning,
-          m_styleText,
-          m_styleHeading6,
-          m_styleHeading5,
-          m_styleSubsubsection,
-          m_styleSubsection,
-          m_styleSection,
-          m_styleTitle,
-          m_styleTextBackground,
-          m_styleBackground,
-          m_styleCellBracket,
-          m_styleActiveCellBracket,
-          m_styleCursor,
-          m_styleSelection,
-          m_styleEqualsSelection,
-          m_styleOutdated,
-          m_styleCodeHighlightingVariable,
-          m_styleCodeHighlightingFunction,
-          m_styleCodeHighlightingComment,
-          m_styleCodeHighlightingNumber,
-          m_styleCodeHighlightingString,
-          m_styleCodeHighlightingOperator,
-          m_styleCodeHighlightingEndOfLine;
 
   //! Is called when the path to the maxima binary was changed.
   void MaximaLocationChanged(wxCommandEvent &unused);
@@ -386,12 +350,6 @@ protected:
   //! Called if one of the checkboxes for bold, italic or underlined is toggled
   void OnCheckbox(wxCommandEvent &event);
 
-  //! Reads the style settings from a file
-  void ReadStyles(wxString file = wxEmptyString);
-
-  //! Saves the style settings to a file.
-  void WriteStyles(wxString file = wxEmptyString);
-
   //! Sets the style example's style on style changes.
   void UpdateExample();
 
@@ -405,12 +363,6 @@ protected:
   int m_fontSize;
   //! The size of the maths font.
   int m_mathFontSize;
-
-  /*! A pointer to the style that is currently selected for being edited.
-
-    \attention Should match whatever is put in m_styleFor
-  */
-  style *GetStylePointer();
 
   //! A list containing the pictograms for the tabs.
   wxImageList *m_imageList;

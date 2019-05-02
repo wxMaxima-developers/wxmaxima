@@ -28,17 +28,84 @@ shown on the work sheet.
 #ifndef TEXTSTYLE_H
 #define TEXTSTYLE_H
 
+#include <wx/config.h>
+#include <wx/colour.h>
+#include <wx/font.h>
+
 //! A text style for the work sheet
-struct style
+class Style
 {
-  style() : bold(false), italic(false), underlined(false)
-  {};
-  wxColour color;
-  wxString font;
-  int fontSize;
-  bool bold;
-  bool italic;
-  bool underlined;
+public:
+  Style() : m_bold(false), m_italic(false), m_underlined(false), m_fontSize(10)
+  {
+  };
+  void Read(wxConfigBase *config, wxString where)
+    {
+      wxString tmp;
+      if (config->Read(where + wxT("color"), &tmp))
+        Color(wxColor((tmp)));
+      config->Read(where + wxT("bold"), &m_bold);
+      config->Read(where + wxT("italic"), &m_italic);
+      config->Read(where + wxT("underlined"), &m_underlined);
+      int size = 12;
+      config->Read(wxT("Style/Text/fontsize"),
+                   &m_fontSize);
+      config->Read(wxT("Style/Text/fontname"),
+                   &m_fontName);
+#ifdef __WXOSX_MAC__
+      if(m_fontName = wxEmptyString) m_fontName = "Monaco";
+#endif
+      wxFont font;
+      font.SetFamily(wxFONTFAMILY_MODERN);
+      font.SetFaceName(m_fontName);
+      if (!font.IsOk())
+      {
+        font = wxFontInfo(10);
+        m_fontName = font.GetFaceName();
+      }
+    }
+  void Write(wxConfigBase *config, wxString where)
+    {
+      config->Write(where + wxT("color"), Color().GetAsString());
+      config->Write(where + wxT("bold"), m_bold);
+      config->Write(where + wxT("italic"), m_italic);
+      config->Write(where + wxT("underlined"), m_underlined);
+      config->Write(wxT("Style/Text/fontsize"),
+               m_fontSize);
+      config->Write(wxT("Style/Text/fontname"),
+               m_fontName);
+    }
+  void Set(wxColor color,
+           bool bold = false, bool italic = false, bool underlined = false,
+           int fontSize=10)
+    {
+      m_color = color;
+      m_bold = bold;
+      m_italic = italic;
+      m_underlined = underlined;
+      m_fontSize = fontSize;
+    }
+  bool Italic(){return m_italic;}
+  void Italic(bool italic){m_italic = italic;}
+  bool Bold(){return m_bold;}
+  void Bold(bool bold){m_bold = bold;}
+  bool Underlined(){return m_underlined;}
+  void Underlined(bool underlined){m_underlined = underlined;}
+  int FontSize(){return m_fontSize;}
+  void FontSize(int size){m_fontSize = size;}
+  wxString FontName(){return m_fontName;}
+  void FontName(wxString name){m_fontName = name;}
+  wxColor GetColor(){return m_color;}
+  void Color(wxColor color){m_color = color;}
+  void Color(int r, int g, int b){m_color = wxColor(r,g,b);}
+  wxColor Color(){return m_color;}
+private:
+  wxColor m_color;
+  wxString m_fontName;
+  int m_fontSize;
+  bool m_bold;
+  bool m_italic;
+  bool m_underlined;
 };
 
 /*! All text styles known to wxMaxima
