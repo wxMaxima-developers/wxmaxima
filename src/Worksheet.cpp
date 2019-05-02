@@ -399,10 +399,9 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
   wxAutoBufferedPaintDC dc(this);
   dc.SetBackground(m_configuration->GetBackgroundBrush());
-  dc.SetBrush(*m_configuration->GetBackgroundBrush());
+  dc.SetBrush(m_configuration->GetBackgroundBrush());
   dc.SetMapMode(wxMM_TEXT);
-  // Don't draw text with an opaque background.
-  dc.SetBackgroundMode(wxTRANSPARENT);
+//  dc.SetBackgroundMode(wxTRANSPARENT);
 #ifdef __WXGTK__
 #ifndef __WXGTK3__
   PrepareDC(dc);
@@ -419,13 +418,19 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 #endif
 #endif
 
-  dc.Clear();
-
 
   m_configuration->SetContext(dc);
   m_configuration->SetAntialiassingDC(antiAliassingDC);
   m_configuration->SetBounds(top, bottom);
 
+  // Clear the drawing area
+#if wxCHECK_VERSION(3, 1, 2)
+  dc.Clear();
+#else
+  dc.SetPen(wxNullPen);
+  dc.DrawRectangle(updateRegion);
+#endif
+  
   // Draw content
   if (m_tree != NULL)
   {
@@ -531,7 +536,6 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
       wxLogMessage(_("Cell wasn't recalculated on draw!"));
   }
 
-    
   //
   // Draw horizontal caret
   //
