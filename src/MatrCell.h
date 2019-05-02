@@ -81,8 +81,6 @@ public:
   void SetInferenceFlag(bool inference)
   { m_inferenceMatrix = inference; }
 
-  void SetGroup(Cell *parent);
-
   void RowNames(bool rn)
   { m_rowNames = rn; }
 

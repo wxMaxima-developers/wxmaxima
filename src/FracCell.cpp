@@ -52,25 +52,6 @@ FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_divide = NULL;
 }
 
-void FracCell::SetGroup(Cell *parent)
-{
-  m_group = parent;
-  if (m_num != NULL)
-    m_num->SetGroupList(parent);
-  if (m_denom != NULL)
-    m_denom->SetGroupList(parent);
-  if (m_open1 != NULL)
-    m_open1->SetGroupList(parent);
-  if (m_close1 != NULL)
-    m_close2->SetGroupList(parent);
-  if (m_open2 != NULL)
-    m_open2->SetGroupList(parent);
-  if (m_close2 != NULL)
-    m_close2->SetGroupList(parent);
-  if (m_divide != NULL)
-    m_divide->SetGroupList(parent);
-}
-
 Cell *FracCell::Copy()
 {
   FracCell *tmp = new FracCell(m_group, m_configuration, m_cellPointers);

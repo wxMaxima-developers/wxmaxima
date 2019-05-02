@@ -101,8 +101,6 @@ public:
 
   void Unbreak();
 
-  void SetGroup(Cell *parent);
-
 protected:
   //! The nummerator
   Cell *m_num;

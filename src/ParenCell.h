@@ -86,8 +86,6 @@ public:
 
   wxString ToXML();
 
-  void SetGroup(Cell *parent);
-
 protected:
    /*! How to create a big parenthesis sign?
    */

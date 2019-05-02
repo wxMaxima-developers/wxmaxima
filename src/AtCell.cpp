@@ -35,15 +35,6 @@ AtCell::AtCell(Cell *parent, Configuration **config, CellPointers *cellPointers)
   m_indexCell = NULL;
 }
 
-void AtCell::SetGroup(Cell *parent)
-{
-  m_group = parent;
-  if (m_baseCell != NULL)
-    m_baseCell->SetGroupList(parent);
-  if (m_indexCell != NULL)
-    m_indexCell->SetGroupList(parent);
-}
-
 Cell *AtCell::Copy()
 {
   AtCell *tmp = new AtCell(m_group, m_configuration, m_cellPointers);

@@ -51,19 +51,6 @@ IntCell::IntCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_cellPointers = cellPointers;
 }
 
-void IntCell::SetGroup(Cell *parent)
-{
-  m_group = parent;
-  if (m_base != NULL)
-    m_base->SetGroupList(parent);
-  if (m_under != NULL)
-    m_under->SetGroupList(parent);
-  if (m_over != NULL)
-    m_over->SetGroupList(parent);
-  if (m_var != NULL)
-    m_var->SetGroupList(parent);
-}
-
 Cell *IntCell::Copy()
 {
   IntCell *tmp = new IntCell(m_group, m_configuration, m_cellPointers);

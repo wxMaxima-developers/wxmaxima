@@ -79,8 +79,6 @@ public:
 
   wxString ToOMML();
 
-  void SetGroup(Cell *parent);
-
 protected:
   Cell *m_base;
   Cell *m_under;

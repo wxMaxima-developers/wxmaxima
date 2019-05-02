@@ -67,7 +67,6 @@ public:
 
   wxString ToMathML();
 
-  void SetGroup(Cell *parent);
   void Unbreak();
   bool BreakUp();
 

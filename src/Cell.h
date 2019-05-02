@@ -136,9 +136,6 @@ class Cell
   virtual wxAccStatus GetRole (int childId, wxAccRole *role);
 #endif
   
-  //! The number of cells the current group contains (-1, if no GroupCell)
-  int m_cellsInGroup;
-
   wxString m_toolTip;
 
   /*! Returns the ToolTip this cell provides.
@@ -149,6 +146,9 @@ class Cell
 
   //! Delete this list of cells.
   virtual ~Cell();
+
+  //! How many cells does this cell contain?
+  int CellsInListRecursive();
 
   /*! If the cell is moved to the undo buffer this function drops pointers to it
   
@@ -734,18 +734,19 @@ class Cell
     class has to take care that the subCell's SetGroup is called when
     the cell's SetGroup is called.
    */
-  virtual void SetGroup(Cell *group)
-    { m_group = group; wxASSERT (group != NULL); wxASSERT (group->GetType() == MC_TYPE_GROUP); }
   
   virtual void SetParent(Cell *parent)
     { m_parent = parent; }
 
-  /*! Define which Cell is the parent of this list of cells
+  /*! Define which Cell is the GroupCell this list of cells belongs to
 
     Also automatically sets this cell as the "parent" of all cells of the list.
    */
   void SetGroupList(Cell *parent);
 
+  //! Define which Sell is the GroupCell this list of cells belongs to
+  virtual void SetGroup(Cell *parent);
+  
   virtual void SetStyle(TextStyle style)
   {
     m_textStyle = style;

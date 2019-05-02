@@ -45,6 +45,7 @@ GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *
 {
   m_next = m_previous = m_nextToDraw = m_previousToDraw = NULL;
   m_autoAnswer = false;
+  m_cellsInGroup = 1;
   m_cellPointers = cellPointers;
   m_inEvaluationQueue = false;
   m_lastInEvaluationQueue = false;
@@ -244,7 +245,7 @@ void GroupCell::SetCellStyle(int style)
 
 */
 void GroupCell::SetGroup(Cell *parent)
-{
+{  
   //m_group = parent;
   if (m_inputLabel != NULL)
     m_inputLabel->SetGroupList(parent);
@@ -516,6 +517,7 @@ void GroupCell::SetOutput(Cell *output)
       m_lastInOutput = m_lastInOutput->m_next;
     m_output->ResetSizeList();
   }
+  UpdateCellsInGroup();
   Recalculate();
 }
 
@@ -546,6 +548,7 @@ void GroupCell::RemoveOutput()
   GroupCell *cell = dynamic_cast<GroupCell *>(this->m_next);
   while(cell != NULL)
     cell = cell->UpdateYPosition();
+  UpdateCellsInGroup();
 }
 
 void GroupCell::AppendOutput(Cell *cell)
@@ -584,6 +587,8 @@ void GroupCell::AppendOutput(Cell *cell)
 
   if (m_appendedCells == NULL)
     m_appendedCells = cell;
+
+  UpdateCellsInGroup();
 }
 
 void GroupCell::Recalculate()
@@ -2058,27 +2063,61 @@ void GroupCell::SelectOutput(Cell **start, Cell **end)
 
 bool GroupCell::BreakUpCells(Cell *cell)
 {
+  bool lineHeightsChanged = false;
+
   if(cell == NULL)
     return false;
 
-  int clientWidth = (*m_configuration)->GetClientWidth();
-
-  bool lineHeightsChanged = false;
-    
-  while (cell != NULL && !m_hide)
+    int showLength;
+  switch ((*m_configuration)->ShowLength())
   {
-    if ((!cell->m_isBrokenIntoLines) &&
-        ((cell->GetWidth() +
-          (*m_configuration)->GetIndent() +
-          Scale_Px((*m_configuration)->GetLabelWidth()) > clientWidth)))
+  case 0:
+    showLength = 5000;
+    break;
+  case 1:
+    showLength = 10000;
+    break;
+  case 2:
+    showLength = 25000;
+    break;
+  case 3:
+    showLength = 50000;
+    break;
+  default:
+    showLength = 500;    
+  }
+
+  // Reduce the number of steps involved in layouting big equations
+  if(m_cellsInGroup > showLength)
+  {
+    wxLogMessage(_("Resolving to linear layout for one big cell in order to save time"));
+    while (cell != NULL && !m_hide)
     {
       if (cell->BreakUp())
         lineHeightsChanged = true;
+      cell = cell->m_nextToDraw;
     }
-    cell = cell->m_nextToDraw;
+    return lineHeightsChanged;
   }
-
-  return lineHeightsChanged;
+  else
+  {
+    int clientWidth = (*m_configuration)->GetClientWidth();
+    
+    while (cell != NULL && !m_hide)
+    {
+      if ((!cell->m_isBrokenIntoLines) &&
+          ((cell->GetWidth() +
+            (*m_configuration)->GetIndent() +
+            Scale_Px((*m_configuration)->GetLabelWidth()) > clientWidth)))
+      {
+        if (cell->BreakUp())
+          lineHeightsChanged = true;
+      }
+      cell = cell->m_nextToDraw;
+    }
+    
+    return lineHeightsChanged;
+  }
 }
 
 void GroupCell::UnBreakUpCells(Cell *cell)
@@ -2103,11 +2142,11 @@ void GroupCell::UnBreakUpCells(Cell *cell)
   }
 
   // Reduce the number of steps involved in layouting big equations
- if(m_cellsInGroup > showLength)
- {
-   wxLogMessage(_("Resolving to linear layout for one big cell in order to save time"));
-   return;
- }
+  if(m_cellsInGroup > showLength)
+  {
+    wxLogMessage(_("Resolving to linear layout for one big cell in order to save time"));
+    return;
+  }
  
   while (cell != NULL)
   {

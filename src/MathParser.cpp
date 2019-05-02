@@ -1028,17 +1028,17 @@ Cell *MathParser::ParseLine(wxString s, CellType style)
   Cell *cell = NULL;
 
   int showLength;
-  
+
   switch ((*m_configuration)->ShowLength())
   {
     case 0:
-      showLength = 50000;
+      showLength = 6000;
       break;
     case 1:
-      showLength = 500000;
+      showLength = 20000;
       break;
     case 2:
-      showLength = 5000000;
+      showLength = 250000;
       break;
     case 3:
       showLength = 0;

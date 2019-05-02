@@ -52,17 +52,6 @@ ParenCell::ParenCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
-void ParenCell::SetGroup(Cell *parent)
-{
-  m_group = parent;
-  if (m_innerCell != NULL)
-    m_innerCell->SetGroupList(parent);
-  if (m_open != NULL)
-    m_open->SetGroupList(parent);
-  if (m_close != NULL)
-    m_close->SetGroupList(parent);
-}
-
 Cell *ParenCell::Copy()
 {
   ParenCell *tmp = new ParenCell(m_group, m_configuration, m_cellPointers);

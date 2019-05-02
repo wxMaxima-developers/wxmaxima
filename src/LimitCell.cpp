@@ -43,23 +43,6 @@ LimitCell::LimitCell(Cell *parent, Configuration **config, CellPointers *cellPoi
   m_cellPointers = cellPointers;
 }
 
-void LimitCell::SetGroup(Cell *parent)
-{
-  m_group = parent;
-  if (m_base != NULL)
-    m_base->SetGroupList(parent);
-  if (m_under != NULL)
-    m_under->SetGroupList(parent);
-  if (m_name != NULL)
-    m_name->SetGroupList(parent);
-  if (m_open != NULL)
-    m_open->SetGroupList(parent);
-  if (m_comma != NULL)
-  m_comma->SetGroupList(parent);
-  if (m_close != NULL)
-    m_close->SetGroupList(parent);
-}
-
 Cell *LimitCell::Copy()
 {
   LimitCell *tmp = new LimitCell(m_group, m_configuration, m_cellPointers);

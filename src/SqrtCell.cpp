@@ -47,17 +47,6 @@ SqrtCell::SqrtCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 }
 
 
-void SqrtCell::SetGroup(Cell *parent)
-{
-  m_group = parent;
-  if (m_innerCell != NULL)
-    m_innerCell->SetGroupList(parent);
-  if (m_open != NULL)
-    m_open->SetGroupList(parent);
-  if (m_close != NULL)
-    m_close->SetGroupList(parent);
-}
-
 Cell *SqrtCell::Copy()
 {
   SqrtCell *tmp = new SqrtCell(m_group, m_configuration, m_cellPointers);

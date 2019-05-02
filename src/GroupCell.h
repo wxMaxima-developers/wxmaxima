@@ -505,7 +505,13 @@ private:
   bool m_inEvaluationQueue;
   bool m_lastInEvaluationQueue;
   int m_inputWidth, m_inputHeight, m_outputWidth, m_outputHeight;
-
+  //! The number of cells the current group contains (-1, if no GroupCell)
+  int m_cellsInGroup;
+  void UpdateCellsInGroup(){
+    if(m_output != NULL)
+      m_cellsInGroup = 2 + m_output->CellsInListRecursive();
+    else
+      m_cellsInGroup = 2;
+  }
 };
-
 #endif /* GROUPCELL_H */

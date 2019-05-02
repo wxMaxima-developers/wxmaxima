@@ -37,15 +37,6 @@ SubCell::SubCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_indexCell = NULL;
 }
 
-void SubCell::SetGroup(Cell *parent)
-{
-  m_group = parent;
-  if (m_baseCell != NULL)
-    m_baseCell->SetGroupList(parent);
-  if (m_indexCell != NULL)
-    m_indexCell->SetGroupList(parent);
-}
-
 Cell *SubCell::Copy()
 {
   SubCell *tmp = new SubCell(m_group, m_configuration, m_cellPointers);

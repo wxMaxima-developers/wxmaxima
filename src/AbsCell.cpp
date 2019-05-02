@@ -41,17 +41,6 @@ AbsCell::AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_last = NULL;
 }
 
-void AbsCell::SetGroup(Cell *parent)
-{
-  m_group = parent;
-  if (m_innerCell != NULL)
-    m_innerCell->SetGroupList(parent);
-  if (m_open != NULL)
-    m_open->SetGroupList(parent);
-  if (m_close != NULL)
-    m_close->SetGroupList(parent);
-}
-
 Cell *AbsCell::Copy()
 {
   AbsCell *tmp = new AbsCell(m_group, m_configuration, m_cellPointers);

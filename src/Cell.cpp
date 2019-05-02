@@ -53,15 +53,13 @@ Cell::Cell(Cell *group, Configuration **config)
   :wxAccessible()
 #endif
 {
-  m_cellsInGroup = -1;
+  m_group = group;
   m_textStyle = TS_DEFAULT;
   m_toolTip = wxEmptyString;
   m_toolTip = wxEmptyString;
   m_cellPointers = NULL;
   m_group = group;
   m_parent = group;
-  if(m_group != NULL)
-    m_group->m_cellsInGroup++;
   m_configuration = config;
   m_next = NULL;
   m_previous = NULL;
@@ -199,6 +197,45 @@ void Cell::SetGroupList(Cell *parent)
     tmp = tmp->m_next;
   }
 }
+
+int Cell::CellsInListRecursive()
+{
+  
+  //! The number of cells the current group contains (-1, if no GroupCell)
+  int cells = 0;
+
+  Cell *tmp = this;
+
+  while(tmp != NULL)
+  {
+    cells ++;
+    std::list<Cell*> cellList = tmp->GetInnerCells();
+    for (std::list<Cell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
+    {
+      if(*it != NULL)
+        cells += (*it)->CellsInListRecursive();
+    }
+    tmp = tmp->m_next;
+  }
+  return cells;
+}
+
+void Cell::SetGroup(Cell *group)
+{
+  m_group = group;
+  if(group != NULL)
+  {
+    wxASSERT (group->GetType() == MC_TYPE_GROUP);
+  }
+  
+  std::list<Cell*> cellList = GetInnerCells();
+  for (std::list<Cell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
+  {
+    if(*it != NULL)
+      (*it)->SetGroupList(group);
+  }
+}
+
 
 /***
  * Append new cell to the end of this list.

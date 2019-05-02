@@ -88,8 +88,6 @@ public:
 
   wxString ToXML();
 
-  void SetGroup(Cell *parent);
-
 protected:
   //! The part of the formula that is to be integrated.
   Cell *m_base;

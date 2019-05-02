@@ -86,8 +86,6 @@ public:
 
   void Unbreak();
 
-  void SetGroup(Cell *parent);
-
 protected:
   Cell *m_nameCell;
   Cell *m_argCell;

@@ -45,19 +45,6 @@ ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
-void ExptCell::SetGroup(Cell *parent)
-{
-  m_group = parent;
-  if (m_baseCell != NULL)
-    m_baseCell->SetGroupList(parent);
-  if (m_powCell != NULL)
-    m_powCell->SetGroupList(parent);
-  if (m_open != NULL)
-    m_open->SetGroupList(parent);
-  if (m_close != NULL)
-    m_close->SetGroupList(parent);
-}
-
 Cell *ExptCell::Copy()
 {
   ExptCell *tmp = new ExptCell(m_group, m_configuration, m_cellPointers);

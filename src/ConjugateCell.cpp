@@ -39,17 +39,6 @@ ConjugateCell::ConjugateCell(Cell *parent, Configuration **config, CellPointers 
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
-void ConjugateCell::SetGroup(Cell *parent)
-{
-  m_group = parent;
-  if (m_innerCell != NULL)
-    m_innerCell->SetGroupList(parent);
-  if (m_open != NULL)
-    m_open->SetGroupList(parent);
-  if (m_close != NULL)
-    m_close->SetGroupList(parent);
-}
-
 Cell *ConjugateCell::Copy()
 {
   ConjugateCell *tmp = new ConjugateCell(m_group, m_configuration, m_cellPointers);

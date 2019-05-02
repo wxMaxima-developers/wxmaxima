@@ -56,8 +56,6 @@ public:
 
   wxString ToMathML();
 
-  void SetGroup(Cell *parent);
-
 protected:
   Cell *m_baseCell;
   Cell *m_indexCell;

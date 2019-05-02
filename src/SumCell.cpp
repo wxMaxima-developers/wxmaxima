@@ -48,17 +48,6 @@ SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_sumStyle = SM_SUM;
 }
 
-void SumCell::SetGroup(Cell *parent)
-{
-  m_group = parent;
-  if (m_base != NULL)
-    m_base->SetGroupList(parent);
-  if (m_under != NULL)
-    m_under->SetGroupList(parent);
-  if (m_over != NULL)
-    m_over->SetGroupList(parent);
-}
-
 Cell *SumCell::Copy()
 {
   SumCell *tmp = new SumCell(m_group, m_configuration, m_cellPointers);

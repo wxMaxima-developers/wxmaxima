@@ -36,15 +36,6 @@ DiffCell::DiffCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_cellPointers = cellPointers;
 }
 
-void DiffCell::SetGroup(Cell *parent)
-{
-  m_group = parent;
-  if (m_baseCell != NULL)
-    m_baseCell->SetGroupList(parent);
-  if (m_diffCell != NULL)
-    m_diffCell->SetGroupList(parent);
-}
-
 Cell *DiffCell::Copy()
 {
   DiffCell *tmp = new DiffCell(m_group, m_configuration, m_cellPointers);

@@ -40,16 +40,6 @@ MatrCell::MatrCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_rowNames = m_colNames = false;
 }
 
-void MatrCell::SetGroup(Cell *parent)
-{
-  m_group = parent;
-  for (unsigned int i = 0; i < m_cells.size(); i++)
-  {
-    if (m_cells[i] != NULL)
-      m_cells[i]->SetGroupList(parent);
-  }
-}
-
 Cell *MatrCell::Copy()
 {
   MatrCell *tmp = new MatrCell(m_group, m_configuration, m_cellPointers);

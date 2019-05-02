@@ -80,8 +80,6 @@ public:
 
   wxString ToXML();
 
-  void SetGroup(Cell *parent);
-
 protected:
   Cell *m_innerCell;
   TextCell *m_open, *m_close;

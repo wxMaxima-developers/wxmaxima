@@ -41,17 +41,6 @@ SubSupCell::SubSupCell(Cell *parent, Configuration **config,CellPointers *cellPo
   m_exptCell = NULL;
 }
 
-void SubSupCell::SetGroup(Cell *parent)
-{
-  m_group = parent;
-  if (m_baseCell != NULL)
-    m_baseCell->SetGroupList(parent);
-  if (m_indexCell != NULL)
-    m_indexCell->SetGroupList(parent);
-  if (m_exptCell != NULL)
-    m_exptCell->SetGroupList(parent);
-}
-
 Cell *SubSupCell::Copy()
 {
   SubSupCell *tmp = new SubSupCell(m_group, m_configuration, m_cellPointers);

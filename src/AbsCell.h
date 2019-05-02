@@ -69,8 +69,6 @@ public:
 
   void Unbreak();
 
-  void SetGroup(Cell *parent);
-
 protected:
   //! The contents of the abs() comand
   Cell *m_innerCell;

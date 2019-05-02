@@ -35,15 +35,6 @@ FunCell::FunCell(Cell *parent, Configuration **config, CellPointers *cellPointer
   m_argCell = NULL;
 }
 
-void FunCell::SetGroup(Cell *parent)
-{
-  m_group = parent;
-  if (m_nameCell != NULL)
-    m_nameCell->SetGroupList(parent);
-  if (m_argCell != NULL)
-    m_argCell->SetGroupList(parent);
-}
-
 Cell *FunCell::Copy()
 {
   FunCell *tmp = new FunCell(m_group, m_configuration, m_cellPointers);
