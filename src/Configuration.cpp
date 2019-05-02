@@ -32,6 +32,7 @@
 #include <wx/font.h>
 #include <wx/config.h>
 #include <wx/wfstream.h>
+#include <wx/fileconf.h>
 #include "Cell.h"
 
 Configuration::Configuration(wxDC *dc) : m_dc(dc) 
@@ -224,7 +225,7 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_mathFontSize = m_defaultFontSize;
   m_fontEncoding = wxFONTENCODING_DEFAULT;
   m_styles[TS_DEFAULT].Set(*wxBLACK, true, true, false, 12);
-  m_styles[TS_TEXT].Set(*wxBLACK, false, false, 12);
+  m_styles[TS_TEXT].Set(*wxBLACK, false, false, false, 12);
   m_styles[TS_DEFAULT].Read(config,"Style/NormalText/");
   m_styles[TS_CODE_VARIABLE].Set(wxColor(0,128,0), false, true, false);
   m_styles[TS_CODE_FUNCTION].Set(wxColor(128,0,0), false, true, false);
