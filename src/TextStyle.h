@@ -37,8 +37,12 @@ class Style
 {
 public:
   //! The constructor
-  Style() : m_bold(false), m_italic(false), m_underlined(false), m_fontSize(10)
+  Style()
   {
+    m_bold = false;
+    m_italic = false;
+    m_underlined = false;
+    m_fontSize = 10;
   };
   //! Read thisstyle from a config source
   void Read(wxConfigBase *config, wxString where)
@@ -49,7 +53,6 @@ public:
       config->Read(where + wxT("bold"), &m_bold);
       config->Read(where + wxT("italic"), &m_italic);
       config->Read(where + wxT("underlined"), &m_underlined);
-      int size = 12;
       config->Read(wxT("Style/Text/fontsize"),
                    &m_fontSize);
       config->Read(wxT("Style/Text/fontname"),
