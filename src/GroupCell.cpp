@@ -2068,7 +2068,7 @@ bool GroupCell::BreakUpCells(Cell *cell)
   if(cell == NULL)
     return false;
 
-    int showLength;
+  int showLength;
   switch ((*m_configuration)->ShowLength())
   {
   case 0:
