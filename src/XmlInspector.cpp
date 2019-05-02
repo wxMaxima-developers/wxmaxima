@@ -123,8 +123,10 @@ void XmlInspector::Update()
 
     // Indent the XML
     wxString textWithIndention;
+    long int length = 0;
     for ( wxString::iterator it = m_fromMaxima.begin(); it!=m_fromMaxima.end(); ++it)
-    {    
+    {
+      length++;
       // Assume that all tags add indentation
       if (*it == wxT('>'))
         m_indentLevel++;
@@ -151,6 +153,10 @@ void XmlInspector::Update()
     EndTextColour();
     m_fromMaxima = wxEmptyString;
   }
+
+  // Adding many chars to the XML inspector is slow => Warn our clients if we do so.
+  if(length > 100000)
+    wxLogMessage(wxString::Format(_("Added %li% chars to the XML inspector..")));
 }
 
 wxString XmlInspector::IndentString(int level)

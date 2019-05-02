@@ -349,6 +349,10 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     CloseButton().PinButton().Resizable();
   m_manager.GetPane(wxT("XmlInspector")) =
     m_manager.GetPane(wxT("XmlInspector")).Caption(_("Raw XML monitor")).CloseButton().PinButton().Resizable();
+  // The XML inspector scares many users and displaying long XML responses there slows
+  // down wxMaxima => disable the XML inspector on startup.
+  m_manager.GetPane(wxT("XmlInspector")).Show(false);
+
   m_manager.GetPane(wxT("structure")) =
     m_manager.GetPane(wxT("structure")).Caption(_("Table of Contents")).CloseButton().PinButton().Resizable();
   m_manager.GetPane(wxT("history")) = m_manager.GetPane(wxT("history")).Caption(_("History"))
