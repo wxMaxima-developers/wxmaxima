@@ -444,10 +444,17 @@ public:
     return 0;
   }
 
-  //! Reads the style settings from a file
+  /*! Reads the style settings 
+
+    If a file name is given the settings are read from a file.
+  */
+  
   void ReadStyles(wxString file = wxEmptyString);
   
-  //! Saves the style settings to a file.
+  /*! Saves the style settings 
+
+    If a file name is given the settings are written to a file.
+  */
   void WriteStyles(wxString file = wxEmptyString);
   
   void Outdated(bool outdated)
