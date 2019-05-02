@@ -1498,7 +1498,7 @@ void ConfigDialogue::UpdateExample()
 
   int fontsize = m_configuration->GetDefaultFontSize();
   if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 ||
-      st == TS_SUBSUBSECTION || st == TS_SUBSUBSECTION ||
+      st == TS_SUBSUBSECTION || st == TS_SUBSECTION ||
       st == TS_SECTION || st == TS_TITLE)
   {
     fontsize = m_configuration->m_styles[st].FontSize();
