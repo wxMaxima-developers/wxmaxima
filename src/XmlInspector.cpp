@@ -152,11 +152,11 @@ void XmlInspector::Update()
     WriteText(textWithIndention);
     EndTextColour();
     m_fromMaxima = wxEmptyString;
-  }
 
-  // Adding many chars to the XML inspector is slow => Warn our clients if we do so.
-  if(length > 100000)
-    wxLogMessage(wxString::Format(_("Added %li% chars to the XML inspector..")));
+    // Adding many chars to the XML inspector is slow => Warn our users if we do so.
+    if(length > 100000)
+      wxLogMessage(wxString::Format(_("Added %li% chars to the XML inspector..")));
+  }
 }
 
 wxString XmlInspector::IndentString(int level)
