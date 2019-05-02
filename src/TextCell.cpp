@@ -30,8 +30,10 @@
 #include "TextCell.h"
 #include "wx/config.h"
 
-TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text) : Cell(parent, config)
+TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers,
+                   wxString text, TextStyle style) : Cell(parent, config)
 {
+  m_textStyle = style;
   m_cellPointers = cellPointers;
   m_displayedDigits_old = -1;
   m_height = -1;

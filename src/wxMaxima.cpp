@@ -257,6 +257,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
                                                   NULL, this);
   m_clientStream = NULL;
   m_clientTextStream = NULL;
+  m_parser = new MathParser (&m_worksheet->m_configuration, &m_worksheet->m_cellPointers);
 }
 
 wxMaxima::~wxMaxima()
@@ -264,6 +265,8 @@ wxMaxima::~wxMaxima()
   KillMaxima();
   MyApp::m_topLevelWindows.remove(this);
   wxDELETE(m_printData);m_printData = NULL;
+  delete(m_parser);
+  m_parser = NULL;
 }
 
 
@@ -510,9 +513,8 @@ void wxMaxima::DoConsoleAppend(wxString s, CellType type, bool newLine,
 
   s.Replace(wxT("\n"), wxT(" "), true);
 
-  MathParser mParser(&m_worksheet->m_configuration, &m_worksheet->m_cellPointers);
-  mParser.SetUserLabel(userLabel);
-  cell = mParser.ParseLine(s, type);
+  m_parser->SetUserLabel(userLabel);
+  cell = m_parser->ParseLine(s, type);
 
   wxASSERT_MSG(cell != NULL, _("There was an error in generated XML!\n\n"
                                        "Please report this as a bug."));
@@ -1833,7 +1835,6 @@ void wxMaxima::SetCWD(wxString file)
     return;
 
   // Tell the math parser where to search for local files.
-  MathParser mParser(&m_worksheet->m_configuration, &m_worksheet->m_cellPointers);
   m_worksheet->m_configuration->SetWorkingDirectory(wxFileName(file).GetPath());
 
 #if defined __WXMSW__
@@ -3024,7 +3025,7 @@ void wxMaxima::InterpretDataFromMaxima()
 ///--------------------------------------------------------------------------------
 
 void wxMaxima::OnIdle(wxIdleEvent &event)
-{    
+{
   // If wxMaxima has to open a file on startup we wait for that until we have
   // a valid draw context for size calculations.
   //
@@ -3092,16 +3093,21 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       ((m_newLeftStatusText) || (m_newRightStatusText)) ||
       ((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded()))
       )
+    {
       event.RequestMore();
-    else
-      event.Skip();
-    return;
+      return;
+    }
   }
 
   if(m_worksheet != NULL)
-  {    
-    m_worksheet->RecalculateIfNeeded();
+  {
+    bool requestMore = m_worksheet->RecalculateIfNeeded();
     m_worksheet->ScrollToCellIfNeeded();
+    if(requestMore)
+    {
+      event.RequestMore();
+      return;
+    }
   }
   
   // Incremental search is done from the idle task. This means that we don't forcefully
@@ -3158,11 +3164,10 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     if((m_worksheet->m_scheduleUpdateToc) ||
        ((m_newLeftStatusText) || (m_newRightStatusText)) ||
        ((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded())))
+    {
       event.RequestMore();
-    else
-      event.Skip();
-
-    return;
+      return;
+    }
   }
 
   if((m_newLeftStatusText) || (m_newRightStatusText))
@@ -3181,10 +3186,10 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     if((m_worksheet->m_scheduleUpdateToc) ||
        ((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded()))
       )
+    {
       event.RequestMore();
-    else
-      event.Skip();
-    return;
+      return;
+    }
   }
 
   // If we have set the flag that tells us we should update the table of
@@ -3208,16 +3213,15 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     m_worksheet->m_scheduleUpdateToc = false;
 
     if((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded()))
+    {
       event.RequestMore();
-    else
-      event.Skip();
-    return;
+      return;
+    }
   }
   if((m_xmlInspector != NULL) && (m_xmlInspector->UpdateNeeded()))
     m_xmlInspector->Update();
 
   UpdateDrawPane();
-
   
   // On MS Windows sometimes we don't get a wxSOCKET_INPUT event on input.
   // Let's trigger interpretation of new input if we don't have anything

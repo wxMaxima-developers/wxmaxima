@@ -1066,8 +1066,9 @@ Cell *MathParser::ParseLine(wxString s, CellType style)
   else
   {
     cell = new TextCell(NULL, m_configuration, m_cellPointers,
-                        _(" << Expression longer than allowed by the configuration setting! >>"));
-    cell->SetToolTip(_("The maximum size of a expression wxMaxima is allowed to be displayed "
+                        _("(Expression longer than allowed by the configuration setting)"),
+      TS_WARNING);
+    cell->SetToolTip(_("The maximum size of the expressions wxMaxima is allowed to display "
                        "can be changed in the configuration dialogue."
                        ));
     cell->ForceBreakLine(true);
