@@ -49,6 +49,8 @@ ErrorRedirector::~ErrorRedirector()
 
     if ( m_logNew != this )
         delete m_logNew;
+
+    m_logNew = NULL;
 }
 
 void ErrorRedirector::SetLog(wxLog *logger)
