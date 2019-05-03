@@ -7098,18 +7098,16 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   m_maximaStderr = NULL;
   // Allow the operating system to keep the clipboard's contents even after we
   // exit - if that option is supported by the OS.
-  //  if(wxTheClipboard->Open())
-  // {
-  //  wxTheClipboard->Flush();
-  //  wxTheClipboard->Close();
-  // }
-  // KillMaxima();
+  if(wxTheClipboard->Open())
+  {
+    wxTheClipboard->Flush();
+    wxTheClipboard->Close();
+  }
   event.Skip();
-  MyApp::m_topLevelWindows.remove(this);
-//  Destroy();
 
   RemoveTempAutosavefile();
   CleanUp();
+  MyApp::m_topLevelWindows.remove(this);
 }
 
 void wxMaxima::PopupMenu(wxCommandEvent &event)
