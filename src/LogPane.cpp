@@ -45,5 +45,6 @@ LogPane::~LogPane()
 {
   // m_logPanelTarget is automatically destroyed in this step.
   wxDELETE(m_errorRedirector);
+  wxLog::SetActiveTarget(new wxLogGui());
   m_logPanelTarget = m_errorRedirector = NULL;
 }
