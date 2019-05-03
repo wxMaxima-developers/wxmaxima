@@ -1,3 +1,11 @@
+# wxMaxima 19.05.0 - Stable
+ * Another ArchLinux displaying issue
+ * More GTK3 compatibility
+ * Resolved a windows hang
+ * Better Dark Mode compatibility
+ * Performance improvements and bugfixes
+ * Many code optimizations.
+
 # wxMaxima 19.04.3 - Stable
  * wxMaxima now informs maxima which front-end is in use.
 
