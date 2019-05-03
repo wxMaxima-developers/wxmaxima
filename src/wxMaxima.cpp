@@ -671,14 +671,6 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
   {
     s = m_worksheet->UnicodeToMaxima(s);
 
-    // If there is no working group and we still are trying to send something
-    // we are trying to change maxima's settings from the background and might never
-    // get an answer that changes the status again.
-    if (m_worksheet->GetWorkingGroup())
-      StatusMaximaBusy(calculating);
-    else
-      StatusMaximaBusy(waiting);
-
     m_dispReadOut = false;
 
     /// Add this command to History
@@ -730,8 +722,15 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
       }
     }
 
-    if (m_client)
+    if ((m_client) && (s.Length() >= 1))
     {
+      // If there is no working group and we still are trying to send something
+      // we are trying to change maxima's settings from the background and might never
+      // get an answer that changes the status again.
+      if (m_worksheet->GetWorkingGroup())
+        StatusMaximaBusy(calculating);
+      else
+        StatusMaximaBusy(waiting);
       wxScopedCharBuffer const data_raw = s.utf8_str();
       m_client->Write(data_raw.data(), data_raw.length());
       m_statusBar->NetworkStatus(StatusBar::transmit);
@@ -836,9 +835,6 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_client->SetFlags(wxSOCKET_NOWAIT);
       m_client->SetTimeout(2);
       SetupVariables();
-
-      // Start the evaluation. If the evaluation queue isn't empty, that is.
-      TryEvaluateNextInQueue();
     }
     break;
 
@@ -1301,11 +1297,22 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   {
     // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
-    if ((m_worksheet->m_configuration->GetOpenHCaret()) && (m_worksheet->GetActiveCell() == NULL))
-      m_worksheet->OpenNextOrCreateCell();
+    if ((m_evalOnStartup && m_isNamed) || (!m_evalOnStartup))
+    {
+      wxLogMessage(_("Starting evaluation of the document"));
+      m_evalOnStartup = false;
+      m_worksheet->AddDocumentToEvaluationQueue();
+      EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
+      TriggerEvaluation();
+    }
+    else
+    {
+      if ((m_worksheet->m_configuration->GetOpenHCaret()) && (m_worksheet->GetActiveCell() == NULL))
+        m_worksheet->OpenNextOrCreateCell();
+    }
   }
   else
-    TryEvaluateNextInQueue();
+    TriggerEvaluation();
 }
 
 int wxMaxima::GetMiscTextEnd(const wxString &data)
@@ -1685,6 +1692,7 @@ void wxMaxima::ReadVariables(wxString &data)
  */
 void wxMaxima::ReadPrompt(wxString &data)
 {
+  m_evalOnStartup = false;
   if (!data.StartsWith(m_promptPrefix))
     return;
 
@@ -1764,9 +1772,9 @@ void wxMaxima::ReadPrompt(wxString &data)
     { // we don't have an empty queue
       m_ready = false;
       m_worksheet->RequestRedraw();
-      StatusMaximaBusy(calculating);
       m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
-      TryEvaluateNextInQueue();
+      StatusMaximaBusy(sending);
+      TriggerEvaluation();
     }
 
     if (m_worksheet->m_evaluationQueue.Empty())
@@ -2650,12 +2658,6 @@ void wxMaxima::SetupVariables()
     );
 
   ConfigChanged();
-
-  if ((m_evalOnStartup) && (m_worksheet->m_evaluationQueue.Empty()))
-  {
-    m_evalOnStartup = false;
-    m_worksheet->AddDocumentToEvaluationQueue();
-  }
 }
 
 ///--------------------------------------------------------------------------------
@@ -3266,13 +3268,10 @@ void wxMaxima::UpdateDrawPane()
 
 void wxMaxima::MenuCommand(wxString cmd)
 {
-  bool evaluating = (!m_worksheet->m_evaluationQueue.Empty()) && (m_StatusMaximaBusy == waiting);
-
   m_worksheet->SetFocus();
   m_worksheet->OpenHCaret(cmd);
   m_worksheet->AddCellToEvaluationQueue(dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup()));
-  if (!evaluating)
-    TryEvaluateNextInQueue();
+  TriggerEvaluation();
   m_worksheet->RequestRedraw();
 }
 
@@ -3438,6 +3437,14 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
       m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, true);
       break;
     case waiting:
+      m_worksheet->m_mainToolBar->ShowFollowBitmap();
+      if (m_worksheet->GetWorkingGroup() == NULL)
+      {
+        m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
+        m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, false);
+      }
+      break;
+    case sending:
       m_worksheet->m_mainToolBar->ShowFollowBitmap();
       if (m_worksheet->GetWorkingGroup() == NULL)
       {
@@ -3633,6 +3640,15 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
   {
     m_worksheet->RequestRedraw();
     RightStatusText(_("File opened"));
+    if (m_evalOnStartup && m_ready)
+    {
+      wxLogMessage(_("Starting evaluation of the document"));
+      m_evalOnStartup = false;
+      m_worksheet->AddDocumentToEvaluationQueue();
+      EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
+      TriggerEvaluation();
+    }
+
   }
   else
     RightStatusText(_("File could not be opened"));
@@ -3815,8 +3831,8 @@ void wxMaxima::ReadStdErr()
        (o.Length() > 1))
     {
       DoRawConsoleAppend(o, MC_TYPE_ERROR);
-      if(!AbortOnError())
-        TryEvaluateNextInQueue();
+      AbortOnError();
+      TriggerEvaluation();
       m_worksheet->m_cellPointers.m_errorList.Add(m_worksheet->GetWorkingGroup(true));
     }
     else
@@ -4737,7 +4753,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
       m_worksheet->AddDocumentToEvaluationQueue();
       // Inform the user about the length of the evaluation queue.
       EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
-      TryEvaluateNextInQueue();
+      TriggerEvaluation();
     }
       break;
     case menu_evaluate_all:
@@ -4750,7 +4766,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
       m_worksheet->AddEntireDocumentToEvaluationQueue();
       // Inform the user about the length of the evaluation queue.
       EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
-      TryEvaluateNextInQueue();
+      TriggerEvaluation();
     }
       break;
     case ToolBar::tb_evaltillhere:
@@ -4763,7 +4779,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
       m_worksheet->AddDocumentTillHereToEvaluationQueue();
       // Inform the user about the length of the evaluation queue.
       EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
-      TryEvaluateNextInQueue();
+      TriggerEvaluation();
     }
       break;
     case menu_clear_var:
@@ -7231,10 +7247,8 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       // cell that was clicked at actually still is part of the tree.
       if ((m_worksheet->GetTree()) && (m_worksheet->GetTree()->Contains(SelectionStart)))
       {
-        bool evaluating = !m_worksheet->m_evaluationQueue.Empty();
         m_worksheet->AddSectionToEvaluationQueue(m_worksheet->m_tableOfContents->RightClickedOn());
-        if (!evaluating)
-          TryEvaluateNextInQueue();
+        TriggerEvaluation();
       }
       break;
     }
@@ -7246,7 +7260,6 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     }
     case Worksheet::popid_evaluate_section:
     {
-      bool evaluating = !m_worksheet->m_evaluationQueue.Empty();
       GroupCell *group = NULL;
       if (m_worksheet->GetActiveCell())
       {
@@ -7268,8 +7281,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       if (group)
       {
         m_worksheet->AddSectionToEvaluationQueue(group);
-        if (!evaluating)
-          TryEvaluateNextInQueue();
+        TriggerEvaluation();
       }
     }
       break;
@@ -7282,7 +7294,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     case ToolBar::tb_evaluate_rest:
       m_worksheet->AddRestToEvaluationQueue();
       EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
-      TryEvaluateNextInQueue();
+      TriggerEvaluation();
       break;
     case ToolBar::tb_evaltillhere:
       m_worksheet->m_evaluationQueue.Clear();
@@ -7293,7 +7305,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
       m_worksheet->AddDocumentTillHereToEvaluationQueue();
       // Inform the user about the length of the evaluation queue.
       EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
-      TryEvaluateNextInQueue();
+      TriggerEvaluation();
       break;
     case Worksheet::popid_copy:
       if (m_worksheet->CanCopy(true))
@@ -7693,8 +7705,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event))
   }
   // Inform the user about the length of the evaluation queue.
   EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
-  if (!evaluating)
-    TryEvaluateNextInQueue();;
+    TriggerEvaluation();
 }
 
 wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
@@ -7952,8 +7963,12 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
 //! Tries to evaluate next group cell in queue
 //
 // Calling this function should not do anything dangerous
-void wxMaxima::TryEvaluateNextInQueue()
+void wxMaxima::TriggerEvaluation()
 {
+  // If evaluation is already running we don't have anything to do
+  if((m_StatusMaximaBusy_next != waiting) && (m_StatusMaximaBusy_next != sending))
+    return;
+  
   // If we aren't connected yet this function will be triggered as soon as maxima
   // connects to wxMaxima
   if (!m_isConnected)
@@ -8084,7 +8099,7 @@ void wxMaxima::TryEvaluateNextInQueue()
       {
         m_worksheet->m_evaluationQueue.RemoveFirst();
         m_outputCellsFromCurrentCommand = 0;
-        TryEvaluateNextInQueue();
+        TriggerEvaluation();
       }
       if((tmp)&&(tmp->GetEditable()))
         m_worksheet->SetActiveCell(tmp->GetEditable());
@@ -8095,7 +8110,7 @@ void wxMaxima::TryEvaluateNextInQueue()
   {
     m_worksheet->m_evaluationQueue.RemoveFirst();
     m_outputCellsFromCurrentCommand = 0;
-    TryEvaluateNextInQueue();
+    TriggerEvaluation();
   }
   m_worksheet->m_answersExhausted = m_worksheet->m_evaluationQueue.AnswersEmpty();
 

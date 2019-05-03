@@ -407,7 +407,7 @@ protected:
   void DumpProcessOutput();
 
   //! Try to evaluate the next command for maxima that is in the evaluation queue
-  void TryEvaluateNextInQueue();
+  void TriggerEvaluation();
 
   void TryUpdateInspector();
 

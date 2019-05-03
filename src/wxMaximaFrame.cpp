@@ -416,6 +416,11 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
           m_MenuBar->Enable(menu_remove_output, false);
           RightStatusText(_("Maxima asks a question"));
           break;
+        case sending:
+          m_MenuBar->Enable(menu_remove_output, true);
+          RightStatusText(_("Sending a command to maxima"));
+          // We don't evaluate any cell right now.
+          break;
         case waiting:
           m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
           // If we evaluated a cell that produces no output we still want the

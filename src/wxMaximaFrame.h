@@ -520,6 +520,7 @@ public:
   {
     wait_for_start,
     process_wont_start,
+    sending,
     waiting,
     calculating,
     parsing,
