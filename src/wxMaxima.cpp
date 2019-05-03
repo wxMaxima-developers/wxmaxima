@@ -268,7 +268,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
 wxMaxima::~wxMaxima()
 {
   KillMaxima();
-  MyApp::m_topLevelWindows.remove(this);
   wxDELETE(m_printData);m_printData = NULL;
   delete(m_parser);
   m_parser = NULL;

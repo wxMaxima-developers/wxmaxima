@@ -518,6 +518,7 @@ wxMaximaFrame::~wxMaximaFrame()
 
   wxConfig::Get()->Write(wxT("AUI/perspective"), perspective);
   m_manager.UnInit();
+  MyApp::m_topLevelWindows.remove(this);
 }
 
 void wxMaximaFrame::SetupMenu()
