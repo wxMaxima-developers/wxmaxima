@@ -401,11 +401,13 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   dc.SetBackground(m_configuration->GetBackgroundBrush());
   dc.SetBrush(m_configuration->GetBackgroundBrush());
   dc.SetMapMode(wxMM_TEXT);
-//  dc.SetBackgroundMode(wxTRANSPARENT);
+//  dc.SetBackgroundMode(wxSOLID);
 #ifdef __WXGTK__
 #ifndef __WXGTK3__
   PrepareDC(dc);
 #endif
+#else
+  PrepareDC(dc);
 #endif
   
   // Create a graphics context that supports antialiassing, but on MSW
@@ -427,8 +429,12 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 #if wxCHECK_VERSION(3, 1, 2)
   dc.Clear();
 #else
+#ifdef __WXGTK3__
   dc.SetPen(wxNullPen);
   dc.DrawRectangle(updateRegion);
+#else
+  dc.Clear();
+#endif
 #endif
   
   // Draw content
