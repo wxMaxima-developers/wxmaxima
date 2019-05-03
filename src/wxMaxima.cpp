@@ -1305,11 +1305,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
       m_worksheet->OpenNextOrCreateCell();
   }
   else
-  {
-    // Needed in order to make batch mode start
-    if(m_evalOnStartup)
-      TryEvaluateNextInQueue();
-  }
+    TryEvaluateNextInQueue();
 }
 
 int wxMaxima::GetMiscTextEnd(const wxString &data)

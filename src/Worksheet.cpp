@@ -430,7 +430,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   dc.Clear();
 #else
 #ifdef __WXGTK3__
-  dc.SetPen(wxNullPen);
+  dc.SetPen(wxTRANSPARENT_PEN);
   dc.DrawRectangle(updateRegion);
 #else
   dc.Clear();
