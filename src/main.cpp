@@ -370,7 +370,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
       std::list<wxMaxima *>::iterator it=m_topLevelWindows.begin();
       while(it != m_topLevelWindows.end())
       {
-        if (!(*it)->Close())
+        if ((*it != NULL) && (!(*it)->Close()))
         {
           quit = false;
           break;
