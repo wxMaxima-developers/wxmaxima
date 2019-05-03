@@ -666,7 +666,7 @@ void wxMaxima::StripComments(wxString &s)
 
 void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 {
-  if (m_xmlInspector)
+  if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
     m_xmlInspector->Add_ToMaxima(s);
 
   // Normally we catch parenthesis errors before adding cells to the
@@ -1167,7 +1167,7 @@ void wxMaxima::KillMaxima()
 
     // The following command should close maxima, as well.
     m_client->Close(); m_client = NULL;
-    if(m_xmlInspector != NULL)
+    if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
       m_xmlInspector->Clear();
   }
 
@@ -2930,8 +2930,8 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
 
 void wxMaxima::InterpretDataFromMaxima()
 {
-    if (IsPaneDisplayed(menu_pane_xmlInspector))
-      m_xmlInspector->Add_FromMaxima(m_newCharsFromMaxima);
+  if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
+    m_xmlInspector->Add_FromMaxima(m_newCharsFromMaxima);
   // This way we can avoid searching the whole string for a
   // ending tag if we have received only a few bytes of the
   // data between 2 tags
@@ -2939,7 +2939,7 @@ void wxMaxima::InterpretDataFromMaxima()
 
   m_currentOutput += m_newCharsFromMaxima;
   m_newCharsFromMaxima = wxEmptyString;
-  if (IsPaneDisplayed(menu_pane_xmlInspector))
+  if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
     m_xmlInspector->Add_FromMaxima(m_newCharsFromMaxima);
   
   if (!m_dispReadOut &&
@@ -8038,7 +8038,7 @@ void wxMaxima::TriggerEvaluation()
       tmp->GetPrompt()->SetValue(m_lastPrompt);
       // Clear the monitor that shows the xml representation of the output of the
       // current maxima command.
-      if (m_xmlInspector)
+      if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
         m_xmlInspector->Clear();
 
       SendMaxima(m_configCommands + text, true);
