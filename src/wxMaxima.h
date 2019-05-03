@@ -190,6 +190,7 @@ public:
   { m_worksheet->OpenHCaret(file, GC_TYPE_IMAGE); }
 
 private:
+  bool m_isLogTarget;
   //! Is true if opening the file from the command line failed before updating the statusbar.
   bool m_openInitialFileError;
   //! Escape strings into a format lisp accepts
@@ -543,7 +544,7 @@ protected:
  */
   void SetupVariables();
 
-  void KillMaxima();                 //!< kills the maxima process
+  void KillMaxima(bool logMessage = true);                 //!< kills the maxima process
   /*! Update the title
 
     Updates the "saved" status, as well, but does only do anything if saved has
@@ -553,6 +554,8 @@ protected:
    */
   void ResetTitle(bool saved, bool force = false);
 
+  void BecomeLogTarget();
+  
   void FirstOutput();
 
   /*! Opens a content.xml file that has been extracted from a broken .wxmx file
@@ -722,6 +725,7 @@ public:
   void OnFileMenu(wxCommandEvent &ev);
 
   virtual void MacNewFile();
+  void BecomeLogTarget();
 
   virtual void MacOpenFile(const wxString &file);
 private:

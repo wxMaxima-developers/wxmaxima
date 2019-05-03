@@ -167,8 +167,10 @@ void wxMaxima::ConfigChanged()
 
 wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxString configFile,
                    const wxPoint pos, const wxSize size) :
-  wxMaximaFrame(parent, id, title, configFile, pos, size)
+  wxMaximaFrame(parent, id, title, configFile, pos, size, wxDEFAULT_FRAME_STYLE,
+                MyApp::m_topLevelWindows.empty())
 {
+  m_isLogTarget = MyApp::m_topLevelWindows.empty();
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
@@ -267,13 +269,21 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
 
 wxMaxima::~wxMaxima()
 {
-  KillMaxima();
+  KillMaxima(false);
   wxDELETE(m_printData);m_printData = NULL;
   delete(m_parser);
   m_parser = NULL;
   MyApp::m_topLevelWindows.remove(this);
   if(MyApp::m_topLevelWindows.empty())
      wxExit();
+  else
+  {
+    if(m_isLogTarget)
+    {
+      m_logPane->DropLogTarget();
+      MyApp::m_topLevelWindows.back()->BecomeLogTarget();
+    }
+  }
 }
 
 
@@ -1122,14 +1132,21 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
 #endif
 }
 
-void wxMaxima::KillMaxima()
+void wxMaxima::BecomeLogTarget()
+{
+  if(m_logPane != NULL)
+    m_logPane->BecomeLogTarget();
+}
+
+void wxMaxima::KillMaxima(bool logMessage)
 {
   if((m_pid > 0) && (m_client == NULL))
     return;
 
   m_isRunning = false;
 
-  wxLogMessage(_("Killing Maxima."));
+  if(logMessage)
+    wxLogMessage(_("Killing Maxima."));
   m_configCommands = wxEmptyString;
   // The new maxima process will be in its initial condition => mark it as such.
   m_hasEvaluatedCells = false;

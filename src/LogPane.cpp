@@ -21,19 +21,22 @@
 
 #include "LogPane.h"
 
-LogPane::LogPane(wxWindow *parent, wxWindowID id) : wxPanel(parent, id)
+LogPane::LogPane(wxWindow *parent, wxWindowID id, bool becomeLogTarget) : wxPanel(parent, id)
 {
+  m_isLogTarget = false;
+  m_errorRedirector = NULL;
+  m_logPanelTarget = NULL;
   wxBoxSizer *vbox  = new wxBoxSizer(wxVERTICAL);
 
-  wxTextCtrl *textCtrl = new wxTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
+  m_textCtrl = new wxTextCtrl(this, -1, wxEmptyString, wxDefaultPosition,
 					wxDefaultSize,
 					wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL);
 
-  vbox->Add(textCtrl, wxSizerFlags().Expand().Proportion(10));
+  vbox->Add(m_textCtrl, wxSizerFlags().Expand().Proportion(10));
 
   SetSizerAndFit(vbox);
-  wxLog::SetActiveTarget(m_logPanelTarget = new wxLogTextCtrl(textCtrl));
-  m_errorRedirector = new ErrorRedirector(new wxLogGui());
+  if(becomeLogTarget)
+    BecomeLogTarget();
 
   // m_logPanelTarget->SetRepetitionCounting();
   // m_logPanelTarget->DisableTimestamp();
@@ -41,10 +44,26 @@ LogPane::LogPane(wxWindow *parent, wxWindowID id) : wxPanel(parent, id)
                     wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )/10));
 }
 
-LogPane::~LogPane()
+void LogPane::DropLogTarget()
 {
   // m_logPanelTarget is automatically destroyed in this step.
-  wxDELETE(m_errorRedirector);
-  wxLog::SetActiveTarget(new wxLogGui());
+  if(m_isLogTarget)
+  {
+    wxDELETE(m_errorRedirector);
+    wxLog::SetActiveTarget(NULL);
+  }
   m_logPanelTarget = m_errorRedirector = NULL;
+  m_isLogTarget = false;
+}
+
+void LogPane::BecomeLogTarget()
+{
+  m_isLogTarget = true;
+  wxLog::SetActiveTarget(m_logPanelTarget = new wxLogTextCtrl(m_textCtrl));  
+  m_errorRedirector = new ErrorRedirector(new wxLogGui());
+}
+
+LogPane::~LogPane()
+{
+  DropLogTarget();
 }

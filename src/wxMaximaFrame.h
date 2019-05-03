@@ -48,6 +48,7 @@ surrounding the worksheet.
 #include "ToolBar.h"
 #include "XmlInspector.h"
 #include "StatusBar.h"
+#include "LogPane.h"
 #include <list>
 
 
@@ -59,7 +60,7 @@ public:
   wxMaximaFrame(wxWindow *parent, int id, const wxString &title, const wxString configFile,
                 const wxPoint &pos = wxDefaultPosition,
                 const wxSize &size = wxDefaultSize,
-                long style = wxDEFAULT_FRAME_STYLE);
+                long style = wxDEFAULT_FRAME_STYLE, bool becomeLogTarget = true);
 
   /*! The destructor
   */
@@ -738,7 +739,7 @@ protected:
   //! true=force an update of the status bar at the next call of StatusMaximaBusy()
   bool m_forceStatusbarUpdate;
   //! The panel the log and debug messages will appear on
-  wxPanel *m_logPane;
+  LogPane *m_logPane;
   //! The worksheet itself
   Worksheet *m_worksheet;
   //! The history pane

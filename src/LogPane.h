@@ -33,13 +33,18 @@
 class LogPane : public wxPanel
 {
 public:
-  LogPane(wxWindow *parent, wxWindowID id = wxID_ANY);
+  LogPane(wxWindow *parent, wxWindowID id = wxID_ANY, bool becomeLogTarget = true);
+  void BecomeLogTarget();
+  void DropLogTarget();
   ~LogPane();
 
 private:
+  //! The textctrl all log messages appear on
+  wxTextCtrl *m_textCtrl;
   //! Redirects all error messages to gui dialogues
   ErrorRedirector *m_errorRedirector;
   wxLog *m_logPanelTarget;
+  bool m_isLogTarget;
 };
 
 #endif // LOGPANE_H

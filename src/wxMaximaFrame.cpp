@@ -46,7 +46,7 @@
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                              const wxString configFile,
                              const wxPoint &pos, const wxSize &size,
-                             long style) :
+                             long style, bool becomeLogTarget) :
   wxFrame(parent, id, title, pos, size, style),
   m_recentDocuments(wxT("document")),
   m_unsavedDocuments(wxT("unsaved")),
@@ -59,7 +59,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     
   // Redirect all debug messages to a dockable panel and output some info
   // about this program.
-  wxPanel *m_logPane = new LogPane(this, -1);
+  m_logPane = new LogPane(this, -1, becomeLogTarget);
   wxLogMessage(wxString::Format(_("wxMaxima version %s"), GITVERSION));
   #ifdef __WXMSW__
   wxLogMessage(_("Running on MS Windows"));
