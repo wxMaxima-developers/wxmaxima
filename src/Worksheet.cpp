@@ -926,8 +926,6 @@ void Worksheet::Recalculate(Cell *start, bool force)
  */
 void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
 {
-  Freeze();
-
   // Inform all cells how wide our display is now
   m_configuration->SetCanvasSize(GetClientSize());
 
@@ -984,7 +982,6 @@ void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
   }
   
   AdjustSize();
-  Thaw();
   RequestRedraw();
   if (CellToScrollTo)
     ScheduleScrollToCell(CellToScrollTo, false);

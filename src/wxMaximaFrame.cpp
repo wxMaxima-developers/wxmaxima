@@ -40,6 +40,7 @@
 #include <wx/stdpaths.h>
 #include <wx/persist/toplevel.h>
 #include <wx/display.h>
+#include <wx/wupdlock.h>
 #include "wxMaximaIcon.h"
 
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
@@ -51,6 +52,11 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_unsavedDocuments(wxT("unsaved")),
   m_recentPackages(wxT("packages"))
 {
+  // Suppress window updates until this window has fully been created.
+  // Not redrawing the window whilst constructing it hopefully speeds up
+  // everything.
+  wxWindowUpdateLocker noUpdates(this);
+    
   // Redirect all debug messages to a dockable panel and output some info
   // about this program.
   wxPanel *m_logPane = new LogPane(this, -1);

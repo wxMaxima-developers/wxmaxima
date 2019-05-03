@@ -90,6 +90,7 @@
 #include <wx/sckstrm.h>
 #include <wx/fs_mem.h>
 #include <wx/persist/toplevel.h>
+#include <wx/wupdlock.h>
 
 #include <wx/url.h>
 #include <wx/sstream.h>
@@ -168,6 +169,10 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, configFile, pos, size)
 {
+  // Suppress window updates until this window has fully been created.
+  // Not redrawing the window whilst constructing it hopefully speeds up
+  // everything.
+  wxWindowUpdateLocker noUpdates(this);
   m_dataFromMaximaIs = false;
   m_gnuplotProcess = NULL;
   m_openInitialFileError = false;
@@ -1938,15 +1943,12 @@ bool wxMaxima::OpenMACFile(wxString file, Worksheet *document, bool clearDocumen
   wxBusyCursor crs;
 
   RightStatusText(_("Opening file"));
-  document->Freeze();
+  wxWindowUpdateLocker noUpdates(document);
 
   wxString macContents = ReadMacContents(file);
 
   if(macContents == wxEmptyString)
-  {
-    document->Thaw();
     return false;
-  }
 
   if (clearDocument)
     document->ClearDocument();
@@ -2170,8 +2172,7 @@ bool wxMaxima::OpenMACFile(wxString file, Worksheet *document, bool clearDocumen
     m_worksheet->UpdateTableOfContents();
   }
 
-  document->Thaw();
-  document->RequestRedraw(); // redraw document outside Freeze-Thaw
+  document->RequestRedraw();
 
   m_worksheet->SetDefaultHCaret();
   m_worksheet->SetFocus();
@@ -2193,7 +2194,7 @@ bool wxMaxima::OpenWXMFile(wxString file, Worksheet *document, bool clearDocumen
   wxBusyCursor crs;
 
   RightStatusText(_("Opening file"));
-  document->Freeze();
+  wxWindowUpdateLocker noUpdates(document);
 
   // open wxm file
   wxTextFile inputFile(file);
@@ -2201,7 +2202,6 @@ bool wxMaxima::OpenWXMFile(wxString file, Worksheet *document, bool clearDocumen
 
   if (!inputFile.Open())
   {
-    document->Thaw();
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
     RightStatusText(_("File could not be opened"));
@@ -2212,7 +2212,6 @@ bool wxMaxima::OpenWXMFile(wxString file, Worksheet *document, bool clearDocumen
       wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"))
   {
     inputFile.Close();
-    document->Thaw();
     wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
     return false;
   }
@@ -2250,8 +2249,7 @@ bool wxMaxima::OpenWXMFile(wxString file, Worksheet *document, bool clearDocumen
   else
     ResetTitle(false);
 
-  document->Thaw();
-  document->RequestRedraw(); // redraw document outside Freeze-Thaw
+  document->RequestRedraw();
 
   m_worksheet->SetDefaultHCaret();
   m_worksheet->SetFocus();
@@ -2273,8 +2271,8 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
   wxBusyCursor crs;
   
   RightStatusText(_("Opening file"));
-  
-  document->Freeze();
+
+  wxWindowUpdateLocker noUpdates(document);
   
   // If the file is empty we don't want to generate an error, but just
   // open an empty file.
@@ -2295,7 +2293,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
     m_worksheet->m_currentFile = file;
     ResetTitle(true, true);
     document->SetSaved(true);
-    document->Thaw();
     RemoveTempAutosavefile();
     return true;
   }
@@ -2377,7 +2374,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
       m_worksheet->RecalculateForce();
       m_worksheet->RecalculateIfNeeded();
     }
-    document->Thaw();
     wxMessageBox(_("wxMaxima cannot open content.xml in the .wxmx zip archive ") + file +
                  wxT(", URI=") + filename, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
@@ -2390,7 +2386,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
 
   if (!xmldoc.IsOk())
   {
-    document->Thaw();
     wxMessageBox(_("wxMaxima cannot read the xml contents of ") + file, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
@@ -2401,7 +2396,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
   // start processing the XML file
   if (xmldoc.GetRoot()->GetName() != wxT("wxMaximaDocument"))
   {
-    document->Thaw();
     wxMessageBox(_("xml contained in the file claims not to be a wxMaxima worksheet. ") + file, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
@@ -2413,7 +2407,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
   wxString docversion = xmldoc.GetRoot()->GetAttribute(wxT("version"), wxT("1.0"));
   if (!CheckWXMXVersion(docversion))
   {
-    document->Thaw();
     StatusMaximaBusy(waiting);
     return false;
   }
@@ -2451,8 +2444,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
   }
   else
     ResetTitle(false);
-
-  document->Thaw();
 
   m_worksheet->SetDefaultHCaret();
   m_worksheet->SetFocus();
@@ -2509,7 +2500,7 @@ bool wxMaxima::OpenXML(wxString file, Worksheet *document)
 
   RightStatusText(_("Opening file"));
 
-  document->Freeze();
+  wxWindowUpdateLocker noUpdates(document);
 
   wxXmlDocument xmldoc;
 
@@ -2518,7 +2509,6 @@ bool wxMaxima::OpenXML(wxString file, Worksheet *document)
 
   if (!xmldoc.IsOk())
   {
-    document->Thaw();
     wxMessageBox(
             _("The .xml file doesn't seem to be valid xml or isn't a content.xml extracted from a .wxmx zip archive"),
             _("Error"),
@@ -2531,7 +2521,6 @@ bool wxMaxima::OpenXML(wxString file, Worksheet *document)
   // Process the XML document
   if (xmldoc.GetRoot()->GetName() != wxT("wxMaximaDocument"))
   {
-    document->Thaw();
     wxMessageBox(_("xml contained in the file claims not to be a wxMaxima worksheet. ") + file, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
@@ -2543,7 +2532,6 @@ bool wxMaxima::OpenXML(wxString file, Worksheet *document)
   wxString docversion = xmldoc.GetRoot()->GetAttribute(wxT("version"), wxT("1.0"));
   if (!CheckWXMXVersion(docversion))
   {
-    document->Thaw();
     StatusMaximaBusy(waiting);
     return false;
   }
@@ -2557,7 +2545,6 @@ bool wxMaxima::OpenXML(wxString file, Worksheet *document)
   document->InsertGroupCells(tree); // this also requests a recalculate
   m_worksheet->m_currentFile = file;
   ResetTitle(true, true);
-  document->Thaw();
   document->RequestRedraw();
   m_worksheet->SetDefaultHCaret();
   m_worksheet->SetFocus();
@@ -3305,7 +3292,7 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
       {
         // Redraws during printing might end up on paper => temporarily block all redraw
         // events for the console
-        m_worksheet->Freeze();
+        wxWindowUpdateLocker noUpdates(m_worksheet);
         wxEventBlocker blocker(m_worksheet);
         Printout printout(title, &m_worksheet->m_configuration, GetContentScaleFactor());
         GroupCell *copy = m_worksheet->CopyTree();
@@ -3316,7 +3303,6 @@ void wxMaxima::PrintMenu(wxCommandEvent &event)
           wxDELETE(m_printData);
           m_printData = new wxPrintData(printer.GetPrintDialogData().GetPrintData());
         }
-        m_worksheet->Thaw();
       }
       m_worksheet->RecalculateForce();
       m_worksheet->RequestRedraw();
