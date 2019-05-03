@@ -370,7 +370,10 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
       while(it != m_topLevelWindows.end())
       {
         if (*it != NULL)
-          (*it)->Close();
+        {
+          wxCloseEvent *event = new wxCloseEvent();
+          (*it)->GetEventHandler()->QueueEvent(event);
+        }
         ++it;
       }
     }
