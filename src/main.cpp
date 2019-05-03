@@ -371,6 +371,7 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
       {
         if (*it != NULL)
           (*it)->Destroy();
+        ++it;
       }
     }
     break;
