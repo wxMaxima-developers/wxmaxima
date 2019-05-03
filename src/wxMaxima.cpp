@@ -7087,6 +7087,10 @@ void wxMaxima::OnClose(wxCloseEvent &event)
       }
     }
   }
+
+  // Log events we generate now won't appear on the log panel any more.
+  wxLogStderr blocker;
+  
   // We have saved the file now => No need to have the timer around any longer.
   m_autoSaveTimer.Stop();
   m_closing = true;
