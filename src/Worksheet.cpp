@@ -446,14 +446,8 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     if (CellsSelected())
     {
       Cell *tmp = m_cellPointers.m_selectionStart;
-
-#if defined(__WXOSX__)
-      dc.SetPen(wxNullPen); // wxmac doesn't like a border with wxXOR
-#else
       dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
-// window linux, set a pen
-#endif
-      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION)))); //highlight c.
+      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
 
       // Draw the marker that tells us which output cells are selected -
       // if output cells are selected, that is.
