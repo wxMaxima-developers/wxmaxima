@@ -366,18 +366,12 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
       break;
     case wxID_EXIT:
     {
-      bool quit = true;
       std::list<wxMaxima *>::iterator it=m_topLevelWindows.begin();
       while(it != m_topLevelWindows.end())
       {
-        if ((*it != NULL) && (!(*it)->Close()))
-        {
-          quit = false;
-          break;
-        }
+        if (*it != NULL)
+          (*it)->Destroy();
       }
-      if (quit)
-        wxExit();
     }
     break;
   }

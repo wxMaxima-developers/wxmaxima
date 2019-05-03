@@ -271,6 +271,9 @@ wxMaxima::~wxMaxima()
   wxDELETE(m_printData);m_printData = NULL;
   delete(m_parser);
   m_parser = NULL;
+  MyApp::m_topLevelWindows.remove(this);
+  if(MyApp::m_topLevelWindows.empty())
+     wxExit();
 }
 
 
