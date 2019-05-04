@@ -372,6 +372,8 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
         if (*it != NULL)
         {
           wxCloseEvent *event = new wxCloseEvent();
+          event->SetCanVeto(true);
+          event->SetLoggingOff(false);
           (*it)->GetEventHandler()->QueueEvent(event);
         }
         ++it;
