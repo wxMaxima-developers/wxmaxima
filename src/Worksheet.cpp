@@ -405,6 +405,10 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 #ifdef __WXGTK__
 #ifndef __WXGTK3__
   PrepareDC(dc);
+#else
+#if wxCHECK_VERSION(3, 1, 0)
+  PrepareDC(dc);
+#endif
 #endif
 #else
   PrepareDC(dc);
