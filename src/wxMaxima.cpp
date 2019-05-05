@@ -8956,6 +8956,8 @@ EVT_UPDATE_UI(menu_save_id, wxMaxima::UpdateMenus)
 EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
 */
                 EVT_CLOSE(wxMaxima::OnClose)
+                EVT_QUERY_END_SESSION(wxMaxima::OnClose)
+                EVT_END_SESSION(wxMaxima::OnClose)
                 EVT_END_PROCESS(maxima_process_id, wxMaxima::OnProcessEvent)
                 EVT_END_PROCESS(gnuplot_process_id, wxMaxima::OnGnuplotClose)
                 EVT_MENU(Worksheet::popid_edit, wxMaxima::EditInputMenu)
