@@ -7071,6 +7071,9 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
 
 void wxMaxima::OnClose(wxCloseEvent &event)
 {
+  if(event.GetEventType() == wxEVT_END_SESSION)
+    KillMaxima();;
+  
   if (SaveNecessary())
   {
     // If autosave is on we automatically save the file on closing.
