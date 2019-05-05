@@ -1,3 +1,9 @@
+# wxMaxima 19.05.1 - Stable
+ * Fixes for various combinations of GTK and wxWidgets versions
+ * A working Mac version
+ * A few Windows bug Fixes
+ * Big performance improvements.
+
 # wxMaxima 19.05.0 - Stable
  * Another ArchLinux displaying issue
  * More GTK3 compatibility
