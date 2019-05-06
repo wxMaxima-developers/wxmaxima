@@ -812,10 +812,8 @@ public:
 
       This item is the first of the enum and is assigned a high enough number
       that it won't collide with the numbers to be found in wxFrame::Event
-
-      wxID_HIGHEST + 500...503 are assigned in TableOfContents.h
      */
-            popid_copy = wxID_HIGHEST + 504,
+            popid_copy = wxID_HIGHEST + 500,
     popid_cut,
     popid_paste,
     popid_select_all,

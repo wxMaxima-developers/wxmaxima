@@ -50,10 +50,10 @@ public:
   enum PopIds
   {
     popid_Fold = wxID_HIGHEST + 1500,
-    popid_Unfold = wxID_HIGHEST + 1501,
-    popid_SelectTocChapter = wxID_HIGHEST + 1502,
-    popid_EvalTocChapter = wxID_HIGHEST + 1503,
-    popid_ToggleTOCshowsSectionNumbers = wxID_HIGHEST + 1504
+    popid_Unfold,
+    popid_SelectTocChapter,
+    popid_EvalTocChapter,
+    popid_ToggleTOCshowsSectionNumbers
   };
 
   TableOfContents(wxWindow *parent, int id, Configuration **config);

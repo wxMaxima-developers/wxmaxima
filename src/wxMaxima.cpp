@@ -175,6 +175,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxStrin
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
   wxWindowUpdateLocker noUpdates(this);
+  m_evalOnStartup = false;
   m_dataFromMaximaIs = false;
   m_gnuplotProcess = NULL;
   m_openInitialFileError = false;
@@ -3649,7 +3650,6 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
     {
       wxLogMessage(_("Starting evaluation of the document"));
       m_evalOnStartup = false;
-      m_worksheet->AddDocumentToEvaluationQueue();
       EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
       TriggerEvaluation();
     }
