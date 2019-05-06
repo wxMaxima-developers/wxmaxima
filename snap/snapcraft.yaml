@@ -20,7 +20,7 @@ apps:
 
 parts:
   wxmaxima:
-    plugin: autotools
+    plugin: cmake
     source: .
     build-packages:
      - libwxbase3.0-dev
