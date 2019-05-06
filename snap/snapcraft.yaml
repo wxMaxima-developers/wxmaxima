@@ -21,7 +21,7 @@ apps:
 parts:
   wxmaxima:
     plugin: cmake
-    source: .
+    source: https://github.com/wxMaxima-developers/wxmaxima.git
     build-packages:
      - libwxbase3.0-dev
      - libwxgtk3.0-dev
