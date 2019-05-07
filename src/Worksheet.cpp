@@ -3010,7 +3010,6 @@ void Worksheet::Evaluate()
  */
 void Worksheet::OnKeyDown(wxKeyEvent &event)
 {
-  wxLogMessage(wxString::Format(_("Char:%s"),wxString(event.GetUnicodeKey())));
   ClearNotification();
 
   // Track the activity of the keyboard. Setting the keyboard
