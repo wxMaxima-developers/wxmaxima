@@ -3010,6 +3010,7 @@ void Worksheet::Evaluate()
  */
 void Worksheet::OnKeyDown(wxKeyEvent &event)
 {
+  wxLogMessage(wxString::Format(_("Char:%s"),wxString(event.GetUnicodeKey())));
   ClearNotification();
 
   // Track the activity of the keyboard. Setting the keyboard
@@ -4143,6 +4144,7 @@ void Worksheet::SetNotification(wxString message, int flags)
  */
 void Worksheet::OnChar(wxKeyEvent &event)
 {
+  wxLogMessage(wxString::Format(_("Input char:%i"),event.GetKeyCode()));
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to realize
   // them they need to be passed to it using the event's Skip() function.
   if(event.AltDown() && ((event.GetKeyCode()==WXK_UP)||(event.GetKeyCode()==WXK_DOWN)))
