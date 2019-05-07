@@ -1,4 +1,10 @@
 # wxMaxima 19.05.1 - Stable
+ * Sometimes the auto-evaluation of the worksheet auto-triggered
+ * Support for broken locales that for valid non-ascii chars returned
+   isprint()= false
+ * Corrected reading font sizes from styles and configuring styles.
+
+# wxMaxima 19.05.1 - Stable
  * Fixes for various combinations of GTK and wxWidgets versions
  * A working Mac version
  * A few Windows bug Fixes
