@@ -1152,7 +1152,7 @@ void GroupCell::DrawBracket()
     {
       dc->SetBrush((*m_configuration)->GetBackgroundBrush());
       dc->SetPen(*(wxThePenList->FindOrCreatePen(
-                     *wxWHITE,
+                     configuration->DefaultBackgroundColor(),
                      configuration->GetDefaultLineWidth(),
                      wxPENSTYLE_SOLID)
                    ));

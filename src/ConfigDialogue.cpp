@@ -1382,9 +1382,8 @@ void ConfigDialogue::OnChangeColor()
 {
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
   wxColour col = wxGetColourFromUser(this, m_configuration->m_styles[st].Color());
-  m_configuration->m_styles[st].Color(col);
   if (col.IsOk())
-    m_configuration->m_styles[st].Color(col.GetAsString(wxC2S_CSS_SYNTAX));
+    m_configuration->m_styles[st].Color(col);
   UpdateExample();
 }
 

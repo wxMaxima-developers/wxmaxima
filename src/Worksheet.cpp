@@ -8599,7 +8599,7 @@ wxString Worksheet::RTFStart()
 
   // Define all colors we want to use
   document += wxT("{\\colortbl;\n");
-  for (int i = 1; i < STYLE_NUM; i++)
+  for (int i = 1; i < NUMBEROFSTYLES; i++)
   {
     wxColor color = wxColor(m_configuration->GetColor(i));
     if (color.IsOk())
