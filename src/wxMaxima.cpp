@@ -1322,7 +1322,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   {
     // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
-    if ((m_evalOnStartup && m_isNamed) || (!m_evalOnStartup))
+    if (m_evalOnStartup && m_isNamed)
     {
       wxLogMessage(_("Starting evaluation of the document"));
       m_evalOnStartup = false;
@@ -1332,6 +1332,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
     }
     else
     {
+      m_evalOnStartup = false;
       if ((m_worksheet->m_configuration->GetOpenHCaret()) && (m_worksheet->GetActiveCell() == NULL))
         m_worksheet->OpenNextOrCreateCell();
     }

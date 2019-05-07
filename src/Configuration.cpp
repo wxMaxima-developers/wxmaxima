@@ -88,7 +88,6 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_copyEMF = false;
   m_showLength = 2;
   m_useUnicodeMaths = true;
-  m_defaultBackgroundColor = *wxWHITE;
   m_escCodes["pm"]    = wxT("\x00B1");
   m_escCodes["+/-"]   = wxT("\x00B1");
   m_escCodes["alpha"] = wxT("\x03B1");
@@ -337,10 +336,6 @@ void Configuration::ReadConfig()
   wxConfigBase *config = wxConfig::Get();
   m_autoWrap = 3;
 
-  wxString bgColStr = wxT("white");
-  config->Read(wxT("Style/Background/color"), &bgColStr);
-  m_defaultBackgroundColor = wxColour(bgColStr);      
-    
   if(config->Read(wxT("autoSaveInterval"),&m_autoSaveInterval))
     m_autoSaveInterval *= 1000 * 60;
   config->Read(wxT("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
@@ -736,12 +731,16 @@ void Configuration::ReadStyles(wxString file)
   m_styles[TS_FUNCTION].Read(config, "Style/Function/");
   m_styles[TS_HIGHLIGHT].Read(config, "Style/Highlight/");  
   m_styles[TS_TEXT_BACKGROUND].Read(config, "Style/Background/");    
+  m_styles[TS_DOCUMENT_BACKGROUND].Read(config, "Style/DocumentBackground/");
+  m_styles[TS_ERROR].Read(config, "Style/Error/");
   m_styles[TS_CELL_BRACKET].Read(config, "Style/CellBracket/");
   m_styles[TS_ACTIVE_CELL_BRACKET].Read(config,wxT("Style/ActiveCellBracket/"));
   m_styles[TS_CURSOR].Read(config,wxT("Style/ActiveCellBracket/"));
   m_styles[TS_SELECTION].Read(config,wxT("Style/Selection/"));
   m_styles[TS_EQUALSSELECTION].Read(config,wxT("Style/EqualsSelection/"));
   m_styles[TS_OUTDATED].Read(config,wxT("Style/Outdated/"));
+  m_BackgroundBrush = *wxTheBrushList->FindOrCreateBrush(m_styles[TS_DOCUMENT_BACKGROUND].GetColor(), wxBRUSHSTYLE_SOLID);
+
 }
 
 //! Saves the style settings to a file.
@@ -791,6 +790,8 @@ void Configuration::WriteStyles(wxString file)
   m_styles[TS_FUNCTION].Write(config, "Style/Function/");
   m_styles[TS_HIGHLIGHT].Write(config, "Style/Highlight/");  
   m_styles[TS_TEXT_BACKGROUND].Write(config, "Style/Background/");    
+  m_styles[TS_DOCUMENT_BACKGROUND].Write(config, "Style/DocumentBackground/");
+  m_styles[TS_ERROR].Write(config, "Style/Error/");
   m_styles[TS_CELL_BRACKET].Write(config, "Style/CellBracket/");
   m_styles[TS_ACTIVE_CELL_BRACKET].Write(config,wxT("Style/ActiveCellBracket/"));
   m_styles[TS_CURSOR].Write(config,wxT("Style/ActiveCellBracket/"));

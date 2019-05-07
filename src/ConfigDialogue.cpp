@@ -1070,6 +1070,7 @@ wxPanel *ConfigDialogue::CreateStylePanel()
                   _("User-defined labels"),
                   _("Highlight (dpart)"),
                   _("Maxima warnings"),
+                  _("Maxima errors"),
                   _("Text cell"),
                   _("Heading 6"),
                   _("Heading 5"),

@@ -738,7 +738,7 @@ public:
     {wxConfig::Get()->Write("autosubscript",m_autoSubscript = autosubscriptnum);}
   wxString GetAutosubscript_string();
   //! Determine the default background color of the worksheet
-  wxColor DefaultBackgroundColor(){return m_defaultBackgroundColor;}
+  wxColor DefaultBackgroundColor(){return m_styles[TS_DOCUMENT_BACKGROUND].GetColor();}
   //! Do we want to save time by only redrawing the area currently shown on the screen?
   bool ClipToDrawRegion(){return m_clipToDrawRegion;}
   //! Do we want to save time by only redrawing the area currently shown on the screen?
@@ -754,7 +754,7 @@ public:
   wxPoint GetWorksheetPosition(){return m_worksheetPosition;}
   wxString MaximaShareDir(){return m_maximaShareDir;}
   void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
-  Style m_styles[STYLE_NUM];
+  Style m_styles[NUMBEROFSTYLES];
 private:
   //! The worksheet all cells are drawn on
   wxRect m_updateRegion;

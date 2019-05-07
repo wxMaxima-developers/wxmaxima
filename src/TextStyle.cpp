@@ -28,7 +28,7 @@
 
 #include "TextStyle.h"
 
-void TextStyle::Read(wxConfigBase *config, wxString where)
+void Style::Read(wxConfigBase *config, wxString where)
 {
   wxString tmp;
   wxColor col;
@@ -58,7 +58,7 @@ void TextStyle::Read(wxConfigBase *config, wxString where)
     }
 }
 
-void TextStyle::Write(wxConfigBase *config, wxString where)
+void Style::Write(wxConfigBase *config, wxString where)
 {
   config->Write(where + wxT("color"), Color().GetAsString());
   config->Write(where + wxT("bold"), m_bold);

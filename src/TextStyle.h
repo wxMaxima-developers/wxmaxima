@@ -98,26 +98,26 @@ private:
 
 /*! All text styles known to wxMaxima
 
-  \attention If an additional style is added ad the beginning or the end of this
-  list STYLE_NUM has to be incremented accordingly and the config dialogue 
+  \attention If this list is changed the config dialogue 
   sometimes needs additional tweaking after that.. 
  */
 enum TextStyle
 {
   TS_DEFAULT = 0,
   TS_VARIABLE,
-  TS_FUNCTION,
   TS_NUMBER,
-  TS_GREEK_CONSTANT,
+  TS_FUNCTION,
   TS_SPECIAL_CONSTANT,
+  TS_GREEK_CONSTANT,
   TS_STRING,
+  TS_INPUT,
   TS_MAIN_PROMPT,
   TS_OTHER_PROMPT,
   TS_LABEL,
   TS_USERLABEL,
-  TS_INPUT,
   TS_HIGHLIGHT,
-  TS_TEXT_BACKGROUND,
+  TS_WARNING,
+  TS_ERROR,
   TS_TEXT,
   TS_HEADING6,
   TS_HEADING5,
@@ -125,24 +125,22 @@ enum TextStyle
   TS_SUBSECTION,
   TS_SECTION,
   TS_TITLE,
-  TS_WARNING,
-  TS_ERROR,
+  TS_TEXT_BACKGROUND,
+  TS_DOCUMENT_BACKGROUND,
   TS_CELL_BRACKET,
   TS_ACTIVE_CELL_BRACKET,
   TS_CURSOR,
   TS_SELECTION,
   TS_EQUALSSELECTION,
   TS_OUTDATED,
-  TS_CODE_COMMENT,
   TS_CODE_VARIABLE,
   TS_CODE_FUNCTION,
+  TS_CODE_COMMENT,
   TS_CODE_NUMBER,
   TS_CODE_STRING,
   TS_CODE_OPERATOR,
-  TS_CODE_ENDOFLINE
+  TS_CODE_ENDOFLINE,
+  NUMBEROFSTYLES //!< This is no style, but its number tells us how many styles we defined
 };
-
-//! The number of entries TextStyle is long
-#define STYLE_NUM (TS_CODE_ENDOFLINE-TS_DEFAULT+1)
 
 #endif // TEXTSTYLE_H
