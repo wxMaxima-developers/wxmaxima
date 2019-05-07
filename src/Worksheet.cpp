@@ -4086,7 +4086,7 @@ void Worksheet::OnCharNoActive(wxKeyEvent &event)
       // keycodes which open hCaret with initial content
     default:
       wxChar txt(event.GetUnicodeKey());
-      if (!wxIsprint(txt))
+      if (txt == WXK_NONE)
       {
         event.Skip();
         return;
@@ -4144,7 +4144,6 @@ void Worksheet::SetNotification(wxString message, int flags)
  */
 void Worksheet::OnChar(wxKeyEvent &event)
 {
-  wxLogMessage(wxString::Format(_("Input char:%i"),event.GetKeyCode()));
   // Alt+Up and Alt+Down are hotkeys. In order for the main application to realize
   // them they need to be passed to it using the event's Skip() function.
   if(event.AltDown() && ((event.GetKeyCode()==WXK_UP)||(event.GetKeyCode()==WXK_DOWN)))

@@ -1276,13 +1276,14 @@ bool EditorCell::HandleCtrlCommand(wxKeyEvent &ev)
 
 void EditorCell::ProcessEvent(wxKeyEvent &event)
 {
-  bool done;
+  bool done = false;
 
 #if defined __WXOSX__
   done = HandleCtrlCommand(event);
 #endif
 
-  done = HandleSpecialKey(event);
+  if(!done)
+    done = HandleSpecialKey(event);
 
   if (!done)
     HandleOrdinaryKey(event);
@@ -2243,7 +2244,7 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event)
 
   // If we got passed a non-printable character we have to send it back to the
   // hotkey management.
-  if (!wxIsprint(keyCode))
+  if (keyCode == WXK_NONE)
   {
     event.Skip();
     return false;
