@@ -53,9 +53,9 @@ public:
       config->Read(where + wxT("bold"), &m_bold);
       config->Read(where + wxT("italic"), &m_italic);
       config->Read(where + wxT("underlined"), &m_underlined);
-      config->Read(wxT("Style/Text/fontsize"),
+      config->Read(where + wxT("Style/Text/fontsize"),
                    &m_fontSize);
-      config->Read(wxT("Style/Text/fontname"),
+      config->Read(where + wxT("Style/Text/fontname"),
                    &m_fontName);
 #ifdef __WXOSX_MAC__
       if(m_fontName == wxEmptyString) m_fontName = "Monaco";
@@ -76,9 +76,9 @@ public:
       config->Write(where + wxT("bold"), m_bold);
       config->Write(where + wxT("italic"), m_italic);
       config->Write(where + wxT("underlined"), m_underlined);
-      config->Write(wxT("Style/Text/fontsize"),
+      config->Write(where + wxT("Style/Text/fontsize"),
                m_fontSize);
-      config->Write(wxT("Style/Text/fontname"),
+      config->Write(where + wxT("Style/Text/fontname"),
                m_fontName);
     }
   //! Set this style
