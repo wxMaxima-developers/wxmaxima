@@ -49,7 +49,7 @@ public:
     {
       wxString tmp;
       if (config->Read(where + wxT("color"), &tmp))
-        Color(wxColor((tmp)));
+        m_color = wxColor(tmp);
       config->Read(where + wxT("bold"), &m_bold);
       config->Read(where + wxT("italic"), &m_italic);
       config->Read(where + wxT("underlined"), &m_underlined);

@@ -305,7 +305,7 @@ wxString EvaluationQueue::GetCommand()
             i++;
           else
           {
-            if ((!wxIsalnum(userLabel[i])) && (userLabel[i] != '_'))
+            if ((!wxIsalnum(userLabel[i])) && (userLabel[i] != '_') && (userLabel[i] != '[') && (userLabel[i] != ']'))
             {
               userLabel = wxEmptyString;
               break;
