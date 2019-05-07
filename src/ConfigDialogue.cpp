@@ -46,6 +46,7 @@
 #include "../art/config/images.h"
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
+#include <wx/config.h>
 
 #define CONFIG_ICON_SCALE (1.0)
 
@@ -1615,6 +1616,9 @@ void ConfigDialogue::ColorPanel::OnClick(wxMouseEvent& WXUNUSED(event))
 void ConfigDialogue::ColorPanel::OnPaint(wxPaintEvent &WXUNUSED(event))
 {
   wxPaintDC dc(this);
+  if(!m_color.IsOk())
+    m_color = *wxWHITE;
+  
   wxColor backgroundColor(
     m_color.Red() * m_color.Alpha() / wxALPHA_OPAQUE,
     m_color.Green() * m_color.Alpha() / wxALPHA_OPAQUE,

@@ -28,9 +28,9 @@ shown on the work sheet.
 #ifndef TEXTSTYLE_H
 #define TEXTSTYLE_H
 
-#include <wx/config.h>
 #include <wx/colour.h>
 #include <wx/font.h>
+#include <wx/config.h>
 
 //! A text style for the work sheet
 class Style
@@ -45,42 +45,9 @@ public:
     m_fontSize = 10;
   };
   //! Read thisstyle from a config source
-  void Read(wxConfigBase *config, wxString where)
-    {
-      wxString tmp;
-      if (config->Read(where + wxT("color"), &tmp))
-        m_color = wxColor(tmp);
-      config->Read(where + wxT("bold"), &m_bold);
-      config->Read(where + wxT("italic"), &m_italic);
-      config->Read(where + wxT("underlined"), &m_underlined);
-      config->Read(where + wxT("Style/Text/fontsize"),
-                   &m_fontSize);
-      config->Read(where + wxT("Style/Text/fontname"),
-                   &m_fontName);
-#ifdef __WXOSX_MAC__
-      if(m_fontName == wxEmptyString) m_fontName = "Monaco";
-#endif
-      wxFont font;
-      font.SetFamily(wxFONTFAMILY_MODERN);
-      font.SetFaceName(m_fontName);
-      if (!font.IsOk())
-      {
-        font = wxFontInfo(10);
-        m_fontName = font.GetFaceName();
-      }
-    }
+  void Read(wxConfigBase *config, wxString where);
   //! Write this style to a config source
-  void Write(wxConfigBase *config, wxString where)
-    {
-      config->Write(where + wxT("color"), Color().GetAsString());
-      config->Write(where + wxT("bold"), m_bold);
-      config->Write(where + wxT("italic"), m_italic);
-      config->Write(where + wxT("underlined"), m_underlined);
-      config->Write(where + wxT("Style/Text/fontsize"),
-               m_fontSize);
-      config->Write(where + wxT("Style/Text/fontname"),
-               m_fontName);
-    }
+  void Write(wxConfigBase *config, wxString where);
   //! Set this style
   void Set(wxColor color,
            bool bold = false, bool italic = false, bool underlined = false,
