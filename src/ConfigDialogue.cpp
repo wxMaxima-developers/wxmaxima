@@ -1054,48 +1054,10 @@ wxPanel *ConfigDialogue::CreateStylePanel()
     m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_configuration->GetMathFontSize()));
 
   m_useJSMath = new wxCheckBox(panel, -1, _("Use jsMath fonts"));
-  const wxString m_styleFor_choices[] =
-          {
-                  _("Default"),
-                  _("Variables"),
-                  _("Numbers"),
-                  _("Function names"),
-                  _("Special constants"),
-                  _("Greek constants"),
-                  _("Strings"),
-                  _("Maxima input"),
-                  _("Input labels"),
-                  _("Maxima questions"),
-                  _("Output labels"),
-                  _("User-defined labels"),
-                  _("Highlight (dpart)"),
-                  _("Maxima warnings"),
-                  _("Maxima errors"),
-                  _("Text cell"),
-                  _("Heading 6"),
-                  _("Heading 5"),
-                  _("Subsubsection cell"),
-                  _("Subsection cell"),
-                  _("Section cell"),
-                  _("Title cell"),
-                  _("Text cell background"),
-                  _("Document background"),
-                  _("Cell bracket"),
-                  _("Active cell bracket"),
-                  _("Cursor"),
-                  _("Selection"),
-                  _("Text equal to selection"),
-                  _("Outdated cells"),
-                  _("Code highlighting: Variables"),
-                  _("Code highlighting: Functions"),
-                  _("Code highlighting: Comments"),
-                  _("Code highlighting: Numbers"),
-                  _("Code highlighting: Strings"),
-                  _("Code highlighting: Operators"),
-                  _("Code highlighting: End of line")
-          };
-
-  m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(250, -1), 33, m_styleFor_choices,
+  wxArrayString m_styleFor_choices;
+  for(int i = 0; i < NUMBEROFSTYLES; i++)
+    m_styleFor_choices.Add(m_configuration->m_styles[i].Name());
+  m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(250, -1), m_styleFor_choices,
                              wxLB_SINGLE);
   m_styleFor->Connect(wxEVT_LISTBOX,
                          wxCommandEventHandler(ConfigDialogue::OnStyleToEditChanged),

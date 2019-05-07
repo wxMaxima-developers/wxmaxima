@@ -206,7 +206,6 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_escCodes[" --> "] = wxT("\x27F6");
 
   m_parenthesisDrawMode = unknown;
-  wxConfigBase *config = wxConfig::Get();
 
   #ifdef __WXMSW__
   wxFont font;
@@ -223,42 +222,44 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_defaultFontSize = 12;
   m_mathFontSize = m_defaultFontSize;
   m_fontEncoding = wxFONTENCODING_DEFAULT;
-  m_styles[TS_DEFAULT].Set(*wxBLACK, true, true, false, 12);
-  m_styles[TS_TEXT].Set(*wxBLACK, false, false, false, 12);
-  m_styles[TS_DEFAULT].Read(config,"Style/NormalText/");
-  m_styles[TS_CODE_VARIABLE].Set(wxColor(0,128,0), false, true, false);
-  m_styles[TS_CODE_FUNCTION].Set(wxColor(128,0,0), false, true, false);
-  m_styles[TS_CODE_COMMENT].Set(wxColor(64,64,64), false, true, false);
-  m_styles[TS_CODE_NUMBER].Set(wxColor(128,64,0), false, true, false);
-  m_styles[TS_CODE_STRING].Set(wxColor(0,0,128), false, true, false);
-  m_styles[TS_CODE_OPERATOR].Set(*wxBLACK, false, true, false);
-  m_styles[TS_CODE_ENDOFLINE].Set(wxColor(128,128,128), false, true, false);
-  m_styles[TS_HEADING6].Set(*wxBLACK, true, false, false, 14);
-  m_styles[TS_HEADING5].Set(*wxBLACK, true, false, false, 15);
-  m_styles[TS_SUBSUBSECTION].Set(*wxBLACK, true, false, false, 16);
-  m_styles[TS_SUBSECTION].Set(*wxBLACK, true, false, false, 16);
-  m_styles[TS_SECTION].Set(*wxBLACK, true, true, false, 18);
-  m_styles[TS_TITLE].Set(*wxBLACK, true, false, true, 24);
-  m_styles[TS_WARNING].Set(wxColor(wxT("orange")), true, false, false, 12);
-  m_styles[TS_MAIN_PROMPT].Set(wxColor(wxT("rgb(255,128,128)")), false, false, false);
-  m_styles[TS_OTHER_PROMPT].Set(*wxRED, false, true, false);
-  m_styles[TS_LABEL].Set(wxColor(wxT("rgb(255,192,128)")), false, false, false);
-  m_styles[TS_USERLABEL].Set(wxColor(wxT("rgb(255,64,0)")), false, false, false);
-  m_styles[TS_SPECIAL_CONSTANT].Set(*wxBLACK, false, false, false);
-  m_styles[TS_INPUT].Set(*wxBLUE, false, false, false);
-  m_styles[TS_NUMBER].Set(*wxBLACK, false, false, false);
-  m_styles[TS_STRING].Set(*wxBLACK, false, true, false);
-  m_styles[TS_GREEK_CONSTANT].Set(*wxBLACK, false, false, false);
-  m_styles[TS_VARIABLE].Set(*wxBLACK, false, true, false);
-  m_styles[TS_FUNCTION].Set(*wxBLACK);
-  m_styles[TS_HIGHLIGHT].Set(*wxRED);
-  m_styles[TS_TEXT_BACKGROUND].Set(*wxWHITE);
-  m_styles[TS_CELL_BRACKET].Set(wxColour(wxT("rgb(0,0,0)")));
-  m_styles[TS_ACTIVE_CELL_BRACKET].Set(wxT("rgb(255,0,0)"));
-  m_styles[TS_CURSOR].Set(wxT("rgb(0,0,0)"));
-  m_styles[TS_SELECTION].Set(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
-  m_styles[TS_EQUALSSELECTION].Set(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT).ChangeLightness(150));
-  m_styles[TS_OUTDATED].Set(wxColor(wxT("rgb(153,153,153)")));
+  m_styles[TS_DEFAULT].Set(_("Default"),*wxBLACK, true, true, false, 12);
+  m_styles[TS_TEXT].Set(_("Text cell"),*wxBLACK, false, false, false, 12);
+  m_styles[TS_CODE_VARIABLE].Set(_("Code highlighting: Variables"),wxColor(0,128,0), false, true, false);
+  m_styles[TS_CODE_FUNCTION].Set(_("Code highlighting: Functions"),wxColor(128,0,0), false, true, false);
+  m_styles[TS_CODE_COMMENT].Set(_("Code highlighting: Comments"),wxColor(64,64,64), false, true, false);
+  m_styles[TS_CODE_NUMBER].Set(_("Code highlighting: Numbers"),wxColor(128,64,0), false, true, false);
+  m_styles[TS_CODE_STRING].Set(_("Code highlighting: Strings"),wxColor(0,0,128), false, true, false);
+  m_styles[TS_CODE_OPERATOR].Set(_("Code highlighting: Operators"),*wxBLACK, false, true, false);
+  m_styles[TS_CODE_ENDOFLINE].Set(_("Code highlighting: End of line"),wxColor(128,128,128), false, true, false);
+  m_styles[TS_GREEK_CONSTANT].Set(_("Greek constants"),*wxBLACK, false, true, false);
+  m_styles[TS_HEADING6].Set(_("Heading 6"),*wxBLACK, true, false, false, 14);
+  m_styles[TS_HEADING5].Set(_("Heading 5"),*wxBLACK, true, false, false, 15);
+  m_styles[TS_SUBSUBSECTION].Set(_("Subsubsection cell"),*wxBLACK, true, false, false, 16);
+  m_styles[TS_SUBSECTION].Set(_("Subsection cell"),*wxBLACK, true, false, false, 16);
+  m_styles[TS_SECTION].Set(_("Section cell"),*wxBLACK, true, true, false, 18);
+  m_styles[TS_TITLE].Set(_("Title cell"),*wxBLACK, true, false, true, 24);
+  m_styles[TS_WARNING].Set(_("Maxima warnings"),wxColor(wxT("orange")), true, false, false, 12);
+  m_styles[TS_ERROR].Set(_("Maxima errors"),*wxRED, false, false, false, 12);
+  m_styles[TS_MAIN_PROMPT].Set(_("Input labels"),wxColor(wxT("rgb(255,128,128)")), false, false, false);
+  m_styles[TS_OTHER_PROMPT].Set(_("Maxima questions"),*wxRED, false, true, false);
+  m_styles[TS_LABEL].Set(_("Output labels"),wxColor(wxT("rgb(255,192,128)")), false, false, false);
+  m_styles[TS_USERLABEL].Set(_("User-defined labels"),wxColor(wxT("rgb(255,64,0)")), false, false, false);
+  m_styles[TS_SPECIAL_CONSTANT].Set(_("Special constants"),*wxBLACK, false, false, false);
+  m_styles[TS_INPUT].Set(_("Maxima input"),*wxBLUE, false, false, false);
+  m_styles[TS_NUMBER].Set(_("Numbers"),*wxBLACK, false, false, false);
+  m_styles[TS_STRING].Set(_("Strings"),*wxBLACK, false, true, false);
+  m_styles[TS_GREEK_CONSTANT].Set(_("Greek Constants"),*wxBLACK, false, false, false);
+  m_styles[TS_VARIABLE].Set(_("Variables"),*wxBLACK, false, true, false);
+  m_styles[TS_FUNCTION].Set(_("Function names"),*wxBLACK);
+  m_styles[TS_HIGHLIGHT].Set(_("Highlight (dpart)"),*wxRED);
+  m_styles[TS_TEXT_BACKGROUND].Set(_("Text cell background"),*wxWHITE);
+  m_styles[TS_DOCUMENT_BACKGROUND].Set(_("Document background"),*wxWHITE);
+  m_styles[TS_CELL_BRACKET].Set(_("Cell bracket"),wxColour(wxT("rgb(0,0,0)")));
+  m_styles[TS_ACTIVE_CELL_BRACKET].Set(_("Active cell bracket"),wxT("rgb(255,0,0)"));
+  m_styles[TS_CURSOR].Set(_("Cursor"),wxT("rgb(0,0,0)"));
+  m_styles[TS_SELECTION].Set(_("Selection"),wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
+  m_styles[TS_EQUALSSELECTION].Set(_("Text equal to selection"),wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT).ChangeLightness(150));
+  m_styles[TS_OUTDATED].Set(_("Outdated cells"),wxColor(wxT("rgb(153,153,153)")));
 }
 
 wxSize Configuration::GetPPI(wxWindow *win)
@@ -703,6 +704,7 @@ void Configuration::ReadStyles(wxString file)
   }
 #endif
   
+  m_styles[TS_DEFAULT].Read(config, "Style/Default/");
   m_styles[TS_TEXT].Read(config, "Style/Text/");
   m_styles[TS_CODE_VARIABLE].Read(config, "Style/CodeHighlighting/Variable/");
   m_styles[TS_CODE_FUNCTION].Read(config, "Style/CodeHighlighting/Function/");
@@ -723,6 +725,7 @@ void Configuration::ReadStyles(wxString file)
   m_styles[TS_LABEL].Read(config, "Style/Label/");  
   m_styles[TS_USERLABEL].Read(config, "Style/UserDefinedLabel/");
   m_styles[TS_SPECIAL_CONSTANT].Read(config, "Style/Special/");
+  m_styles[TS_GREEK_CONSTANT].Read(config, "Style/Greek/");
   m_styles[TS_INPUT].Read(config, "Style/Input/");
   m_styles[TS_NUMBER].Read(config, "Style/Number/");
   m_styles[TS_STRING].Read(config, "Style/String/");
@@ -762,6 +765,7 @@ void Configuration::WriteStyles(wxString file)
   config->Write(wxT("fontEncoding"), static_cast<int>(m_fontEncoding));
   config->Write(wxT("Style/Math/fontname"), m_mathFontName);
   
+  m_styles[TS_DEFAULT].Read(config, "Style/Default/");
   m_styles[TS_TEXT].Write(config, "Style/Text/");
   m_styles[TS_CODE_VARIABLE].Write(config, "Style/CodeHighlighting/Variable/");
   m_styles[TS_CODE_FUNCTION].Write(config, "Style/CodeHighlighting/Function/");
@@ -782,6 +786,7 @@ void Configuration::WriteStyles(wxString file)
   m_styles[TS_LABEL].Write(config, "Style/Label/");  
   m_styles[TS_USERLABEL].Write(config, "Style/UserDefinedLabel/");
   m_styles[TS_SPECIAL_CONSTANT].Write(config, "Style/Special/");
+  m_styles[TS_GREEK_CONSTANT].Write(config, "Style/Greek/");
   m_styles[TS_INPUT].Write(config, "Style/Input/");
   m_styles[TS_NUMBER].Write(config, "Style/Number/");
   m_styles[TS_STRING].Write(config, "Style/String/");

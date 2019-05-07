@@ -49,10 +49,12 @@ public:
   //! Write this style to a config source
   void Write(wxConfigBase *config, wxString where);
   //! Set this style
-  void Set(wxColor color,
+  void Set(wxString name,
+           wxColor color,
            bool bold = false, bool italic = false, bool underlined = false,
            int fontSize=10)
     {
+      m_name = name;
       m_color = color;
       m_bold = bold;
       m_italic = italic;
@@ -82,6 +84,8 @@ public:
   //! Get the color of this style
   wxColor GetColor(){return m_color;}
   //! Set the color of this style
+  wxString Name(){return m_name;}
+  //! Set the color of this style
   void Color(wxColor color){m_color = color;}
   //! Set the color of this style
   void Color(int r, int g, int b){m_color = wxColor(r,g,b);}
@@ -90,6 +94,7 @@ public:
 private:
   wxColor m_color;
   wxString m_fontName;
+  wxString m_name;
   int m_fontSize;
   bool m_bold;
   bool m_italic;
@@ -99,7 +104,7 @@ private:
 /*! All text styles known to wxMaxima
 
   \attention If this list is changed the config dialogue 
-  sometimes needs additional tweaking after that.. 
+  sometimes needs additional tweaking after that.
  */
 enum TextStyle
 {
