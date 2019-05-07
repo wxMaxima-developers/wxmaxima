@@ -1452,6 +1452,8 @@ void ConfigDialogue::UpdateExample()
 {
   TextStyle st = static_cast<TextStyle>(m_styleFor->GetSelection());
 
+  m_styleColor->SetColor(m_configuration->m_styles[st].Color());
+  
   wxString example = _("Example text");
   wxColour color(m_configuration->m_styles[st].Color());
   wxString font(m_configuration->m_styles[TS_DEFAULT].FontName());
