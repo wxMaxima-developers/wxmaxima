@@ -370,8 +370,8 @@ void wxMaxima::InitSession()
 
   Refresh();
   m_worksheet->SetFocus();
-  if (m_worksheet->m_configuration->AutoSaveInterval() > 0)
-    m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveInterval());
+  if (m_worksheet->m_configuration->AutoSaveMiliseconds() > 0)
+    m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveMiliseconds());
 }
 
 void wxMaxima::FirstOutput()
@@ -3625,8 +3625,8 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
 
   UpdateRecentDocuments();
 
-  if ((m_worksheet->m_configuration->AutoSaveInterval() > 0) && (m_worksheet->m_currentFile.Length() > 0))
-    m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveInterval());
+  if ((m_worksheet->m_configuration->AutoSaveMiliseconds() > 0) && (m_worksheet->m_currentFile.Length() > 0))
+    m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveMiliseconds());
 
   if (m_worksheet)m_worksheet->TreeUndo_ClearBuffers();
   if (m_worksheet->m_currentFile != wxEmptyString)
@@ -3706,8 +3706,8 @@ bool wxMaxima::SaveFile(bool forceSave)
     }
     else
     {
-      if ((m_worksheet->m_configuration->AutoSaveInterval() > 0) && (m_worksheet->m_currentFile.Length() > 0))
-        m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveInterval());
+      if ((m_worksheet->m_configuration->AutoSaveMiliseconds() > 0) && (m_worksheet->m_currentFile.Length() > 0))
+        m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveMiliseconds());
       return false;
     }
   }
@@ -3741,8 +3741,8 @@ bool wxMaxima::SaveFile(bool forceSave)
       if (!m_worksheet->ExportToWXMX(file))
       {
         StatusSaveFailed();
-        if (m_worksheet->m_configuration->AutoSaveInterval() > 0)
-          m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveInterval());
+        if (m_worksheet->m_configuration->AutoSaveMiliseconds() > 0)
+          m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveMiliseconds());
         return false;
       }
       else
@@ -3756,8 +3756,8 @@ bool wxMaxima::SaveFile(bool forceSave)
         config->Write(wxT("defaultExt"), wxT("wxm"));
 
         StatusSaveFailed();
-        if (m_worksheet->m_configuration->AutoSaveInterval() > 0)
-          m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveInterval() > 0);
+        if (m_worksheet->m_configuration->AutoSaveMiliseconds() > 0)
+          m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveMiliseconds() > 0);
         return false;
       }
       else
@@ -3767,16 +3767,16 @@ bool wxMaxima::SaveFile(bool forceSave)
     m_recentDocuments.AddDocument(file);
     SetCWD(file);
 
-    if (m_worksheet->m_configuration->AutoSaveInterval() > 0)
-      m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveInterval() > 0);
+    if (m_worksheet->m_configuration->AutoSaveMiliseconds() > 0)
+      m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveMiliseconds() > 0);
     StatusSaveFinished();
     RemoveTempAutosavefile();
     UpdateRecentDocuments();
     return true;
   }
 
-  if (m_worksheet->m_configuration->AutoSaveInterval() > 0)
-    m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveInterval() > 0);
+  if (m_worksheet->m_configuration->AutoSaveMiliseconds() > 0)
+    m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveMiliseconds() > 0);
 
   return true;
 }
@@ -4039,7 +4039,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
     case AUTO_SAVE_TIMER_ID:
       if ((!m_worksheet->m_keyboardInactiveTimer.IsRunning()) && (!m_autoSaveTimer.IsRunning()))
       {
-        if (m_worksheet->m_configuration->AutoSaveInterval() > 10000)
+        if (m_worksheet->m_configuration->AutoSaveMiliseconds() > 0)
         {
           if(SaveNecessary())
           {
@@ -4060,7 +4060,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
             }
           }
 
-          m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveInterval());
+          m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveMiliseconds());
         }
       }
       break;
@@ -4248,8 +4248,8 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
             else
               StatusExportFinished();
           }
-          if (m_worksheet->m_configuration->AutoSaveInterval() > 10000)
-            m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveInterval());
+          if (m_worksheet->m_configuration->AutoSaveMiliseconds() > 0)
+            m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveMiliseconds());
 
           wxFileName::SplitPath(file, NULL, NULL, NULL, &fileExt);
           wxConfig::Get()->Write(wxT("defaultExportExt"), fileExt);
@@ -7078,7 +7078,7 @@ void wxMaxima::OnClose(wxCloseEvent &event)
   if (SaveNecessary())
   {
     // If autosave is on we automatically save the file on closing.
-    if(m_isNamed && (m_worksheet->m_configuration->AutoSaveInterval() > 0))
+    if(m_isNamed && (m_worksheet->m_configuration->AutoSaveMiliseconds() > 0))
     {
       if (!SaveFile())
       {
@@ -8618,7 +8618,7 @@ int wxMaxima::SaveDocumentP()
   }
   else
   {
-    if (m_worksheet->m_configuration->AutoSaveInterval() > 10000)
+    if (m_worksheet->m_configuration->AutoSaveMiliseconds() > 0)
       if (SaveFile())
         return wxID_NO;
 

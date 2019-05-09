@@ -64,7 +64,7 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_adjustWorksheetSizeNeeded = false;
   m_showLabelChoice = 1;
   m_abortOnError = true;
-  m_autoSaveInterval = 3 * 60 * 1000;
+  m_autoSaveMinutes = 3;
   m_clientWidth = 1024;
   m_clientHeight = 768;
   m_indentMaths=true;
@@ -337,8 +337,10 @@ void Configuration::ReadConfig()
   wxConfigBase *config = wxConfig::Get();
   m_autoWrap = 3;
 
-  if(config->Read(wxT("autoSaveInterval"),&m_autoSaveInterval))
-    m_autoSaveInterval *= 1000 * 60;
+  config->Read(wxT("autoSaveMinutes"),&m_autoSaveMinutes);
+  if(m_autoSaveMinutes < 0)
+    m_autoSaveMinutes = 0;
+
   config->Read(wxT("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
   config->Read(wxT("autoWrapMode"), &m_autoWrap);
   config->Read(wxT("useUnicodeMaths"), &m_useUnicodeMaths);

@@ -471,7 +471,7 @@ void ConfigDialogue::SetProperties()
   m_documentclass->SetValue(documentclass);
   m_mathJaxURL->SetValue(configuration->MathJaXURL());
   m_texPreamble->SetValue(texPreamble);
-  m_autoSaveInterval->SetValue(configuration->AutoSaveInterval() /  60 / 1000);
+  m_autoSaveInterval->SetValue(configuration->AutoSaveMinutes());
 
   m_maximaProgram->SetValue(configuration->MaximaLocation());
   wxCommandEvent dummy;
@@ -1195,7 +1195,7 @@ void ConfigDialogue::WriteSettings()
   configuration->UseUnicodeMaths(m_useUnicodeMaths->GetValue());
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
   config->Write(wxT("texPreamble"), m_texPreamble->GetValue());
-  configuration->AutoSaveInterval(m_autoSaveInterval->GetValue() * 60 * 1000);
+  configuration->AutoSaveMinutes(m_autoSaveInterval->GetValue());
   config->Write(wxT("documentclass"), m_documentclass->GetValue());
   configuration->MathJaXURL(m_mathJaxURL->GetValue());
   if (m_saveSize->GetValue())

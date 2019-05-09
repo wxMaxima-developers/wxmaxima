@@ -721,11 +721,12 @@ public:
   void SetWorkSheet(wxWindow *workSheet){m_workSheet = workSheet;}
 
   //! Get the autosave interval [in milliseconds]; 0 = no autosave
-  int AutoSaveInterval(){if (m_autoSaveInterval > 1) return m_autoSaveInterval; else return 0;}
-  //! Set the autosave interval [in milliseconds]; 0 = noautosave
-  void AutoSaveInterval(int miliseconds){wxConfig::Get()->Write(wxT("autoSaveInterval"),
-                                                  (m_autoSaveInterval = miliseconds / 1000 / 60)
-      );
+  int AutoSaveMiliseconds(){return m_autoSaveMinutes * 1000 * 60;}
+  //! Get the autosave interval [in minutes]; 0 = no autosave
+  int AutoSaveMinutes(){return m_autoSaveMinutes;}
+  //! Set the autosave interval [in minutes]; 0 = noautosave
+  void AutoSaveMinutes(int minutes){wxConfig::Get()->Write(wxT("autoSaveInterval"),
+                                                           m_autoSaveMinutes = minutes);
   }
   
   bool GetAbortOnError(){return m_abortOnError;}
@@ -764,7 +765,7 @@ private:
 
     Values <10000 mean: Auto-save is off.
   */
-  int m_autoSaveInterval;
+  int m_autoSaveMinutes;
   //! Which objects do we want to convert into subscripts if they occur after an underscore?
   int m_autoSubscript;
   //! The worksheet this configuration storage is valid for
