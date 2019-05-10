@@ -852,6 +852,9 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_client->SetFlags(wxSOCKET_NOWAIT);
       m_client->SetTimeout(2);
       SetupVariables();
+      wxUpdateUIEvent dummy;
+      UpdateToolBar(dummy);
+      UpdateMenus(dummy);
     }
     break;
 
@@ -1217,6 +1220,9 @@ void wxMaxima::KillMaxima(bool logMessage)
       wxRemoveFile(m_maximaTempDir + wxT("/maxout_") + wxString::Format("%li.xmaxima",m_pid));
   }
   m_pid = -1;
+  wxUpdateUIEvent dummy;
+  UpdateToolBar(dummy);
+  UpdateMenus(dummy);
 }
 
 void wxMaxima::OnGnuplotClose(wxProcessEvent& WXUNUSED(event))
@@ -1265,6 +1271,9 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
     m_worksheet->m_evaluationQueue.Clear();
   }
   StatusMaximaBusy(disconnected);
+  wxUpdateUIEvent dummy;
+  UpdateToolBar(dummy);
+  UpdateMenus(dummy);
 }
 
 void wxMaxima::CleanUp()
