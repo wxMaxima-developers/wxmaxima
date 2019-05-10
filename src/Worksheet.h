@@ -1219,7 +1219,8 @@ public:
     return m_last;
   }
 
-  bool IsSelectionInWorking();
+  //! Is the selection in the current working group?
+  bool IsSelectionInWorkingGroup();
 
   void SetActiveCell(EditorCell *cell, bool callRefresh = true);
 
@@ -1248,6 +1249,7 @@ public:
   //! Place the cursor into a new cell where the horizontal cursor is
   void OpenHCaret(wxString txt, GroupType type);
 
+  //! Activates the horizontal cursor
   void ShowHCaret();
 
   /*! Is it possible to issue an undo in the currently selected cell?

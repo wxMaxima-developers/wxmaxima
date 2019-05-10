@@ -7671,7 +7671,7 @@ void Worksheet::Animate(bool run)
   }
 }
 
-bool Worksheet::IsSelectionInWorking()
+bool Worksheet::IsSelectionInWorkingGroup()
 {
   if (m_cellPointers.m_selectionStart == NULL)
     return false;

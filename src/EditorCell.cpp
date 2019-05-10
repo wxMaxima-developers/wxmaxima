@@ -3688,8 +3688,8 @@ void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidt
 
   // Normally the cell begins at the x position m_currentPoint.x - but sometimes
   // m_currentPoint is 0 so we need to determine our own value for the x position.
-  int xmargin = Scale_Px(configuration->GetLabelWidth()) +
-                configuration->GetCellBracketWidth();
+  int xmargin = Scale_Px(configuration->GetLabelWidth() +
+                         configuration->GetCellBracketWidth());
 
   if (
           (lineWidth + xmargin + indentationPixels >= configuration->GetLineWidth()) &&
