@@ -2175,7 +2175,6 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
       }
       else
       {
-        // TODO: search only a few positions back for an escchar (10? and not over newlines)
         bool insertescchar = false;
         int esccharpos = m_text.Left(m_positionOfCaret).Find(ESC_CHAR, true);
         if (esccharpos > -1)

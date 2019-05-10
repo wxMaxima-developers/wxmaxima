@@ -678,7 +678,7 @@ wxString TextCell::ToString()
     {
       // TODO: We could escape the - char inside a variable name.
       // But we get false positives, then.
-      wxString charsNeedingQuotes("\\'\"()[]{}^+*/&§?:;=#<>$");
+      wxString charsNeedingQuotes("\\'\"()[]-{}^+*/&§?:;=#<>$");
       bool isOperator = true;
       for (size_t i = 0; i < m_text.Length(); i++)
       {

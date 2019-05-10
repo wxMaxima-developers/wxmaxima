@@ -287,7 +287,6 @@ wxMaxima::~wxMaxima()
   }
 }
 
-
 #if wxUSE_DRAG_AND_DROP
 
 bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y), const wxArrayString &files)

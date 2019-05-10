@@ -661,14 +661,6 @@ wxString Cell::ListToTeX()
     retval += tmp->ToTeX();
     tmp = tmp->m_next;
   }
-
-  // TODO: Things like {a}_{b} make the LaTeX code harder to read. But things like
-  // \sqrt{a} need us to use braces from time to time.
-  //
-  // How far I got was:
-  //
-  //  wxRegEx removeUnneededBraces1(wxT("{([a-zA-Z0-9])}([{}_a-zA-Z0-9 \\\\^_])"));
-  //  removeUnneededBraces1.Replace(&retval,wxT(" \\1\\2"),true);
   return retval;
 }
 

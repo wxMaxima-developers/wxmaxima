@@ -341,9 +341,6 @@ class Cell
     Note that the center doesn't need to be exactly in the middle of an object.
     For a fraction for example the center is exactly at the middle of the 
     horizontal line.
-
-    \todo Seems to currently calculate the height of the heighest line in 
-    the list, not of the current line.
   */
   int GetMaxCenter();
 

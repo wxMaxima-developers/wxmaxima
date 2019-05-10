@@ -1385,7 +1385,6 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         }
         popupMenu->AppendCheckItem(popid_auto_answer, _("Automatically answer questions"),
                                    _("Automatically fill in answers known from the last run"));
-        // TODO: Do we need to check or uncheck this item sometimes?
         if(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart)->GetGroupType() == GC_TYPE_IMAGE)
         {
           popupMenu->AppendSeparator();
@@ -1817,7 +1816,7 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event)
 
   if (clickedBeforeGC != NULL)
   { // we clicked between groupcells, set hCaret
-    SetHCaret(dynamic_cast<GroupCell *>(tmp->m_previous), false);
+    SetHCaret(dynamic_cast<GroupCell *>(tmp->m_previous));
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
 
     // The click will has changed the position that is in focus so we assume
@@ -1834,7 +1833,7 @@ void Worksheet::OnMouseLeftDown(wxMouseEvent &event)
   else
   { // we clicked below last groupcell (both clickedInGC and clickedBeforeGC == NULL)
     // set hCaret (or activate last cell?)
-    SetHCaret(m_last, false);
+    SetHCaret(m_last);
     m_clickType = CLICK_TYPE_GROUP_SELECTION;
     ScrolledAwayFromEvaluation(true);
   }
@@ -2012,7 +2011,7 @@ void Worksheet::SelectGroupCells(wxPoint down, wxPoint up)
   {
     if (m_cellPointers.m_selectionEnd == (m_cellPointers.m_selectionStart->m_previous))
     {
-      SetHCaret(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd), false);
+      SetHCaret(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionEnd));
     }
     else
     {
@@ -2755,7 +2754,7 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUnd
   //! Set the cursor to a sane place
   SetActiveCell(NULL, false);
   SetSelection(NULL);
-  SetHCaret(dynamic_cast<GroupCell *>(start->m_previous), false);
+  SetHCaret(dynamic_cast<GroupCell *>(start->m_previous));
 
   // check if chapters or sections need to be renumbered
   bool renumber = false;
@@ -2952,16 +2951,16 @@ void Worksheet::OpenHCaret(wxString txt, GroupType type)
   // set m_hCaretPosition to a sensible value
   if (GetActiveCell() != NULL)
   {
-    SetHCaret(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()), false);
+    SetHCaret(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
   }
   else if (m_cellPointers.m_selectionStart != NULL)
-    SetHCaret(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup()), false);
+    SetHCaret(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart->GetGroup()));
 
   if (!m_hCaretActive)
   {
     if (m_last == NULL)
       return;
-    SetHCaret(m_last, false);
+    SetHCaret(m_last);
   }
 
   // insert a new group cell
@@ -2974,7 +2973,7 @@ void Worksheet::OpenHCaret(wxString txt, GroupType type)
       GroupCell *result = m_hCaretPosition->Unfold();
       if (result == NULL) // assumes that unfold sets hcaret to the end of unfolded cells
         break; // unfold returns NULL when it cannot unfold
-      SetHCaret(result, false);
+      SetHCaret(result);
     }
   }
   if((type == GC_TYPE_CODE) && !m_configuration->ShowCodeCells())
@@ -7553,7 +7552,7 @@ void Worksheet::DivideCell()
 
   wxString newcellstring = GetActiveCell()->DivideAtCaret();
 
-  SetHCaret(parent, false);
+  SetHCaret(parent);
   OpenHCaret(newcellstring, gctype);
   if (GetActiveCell())
     GetActiveCell()->CaretToStart();
@@ -7644,7 +7643,7 @@ void Worksheet::CheckUnixCopy()
 }
 
 //! Is this cell selected?
-bool Worksheet::IsSelected(int type)
+bool Worksheet::IsSelected(CellType type)
 {
   if (m_cellPointers.m_selectionStart == NULL)
     return false;
@@ -7704,9 +7703,6 @@ GroupCell *Worksheet::GetHCaret()
   return m_last;
 }
 
-/**
- * Set the HCaret to its default location, at the end of the document.
- */
 void Worksheet::SetDefaultHCaret()
 {
   SetHCaret(m_last);
@@ -7718,13 +7714,7 @@ void Worksheet::OnActivate(wxActivateEvent &WXUNUSED(event))
   RequestRedraw();
 }
 
-/**
- * Set the HCaret at the location of the given Cell.
- *
- * @param where   The cell to place the cursor before.
- * @param callRefresh   Call with false when manually refreshing.
- */
-void Worksheet::SetHCaret(GroupCell *where, bool callRefresh)
+void Worksheet::SetHCaret(GroupCell *where)
 {
   SetSelection(NULL);
   if(m_mainToolBar != NULL)
@@ -7744,8 +7734,7 @@ void Worksheet::SetHCaret(GroupCell *where, bool callRefresh)
     m_hCaretPosition = where;
     m_hCaretActive = true;
 
-    if (callRefresh) // = true default
-      RequestRedraw();
+    RequestRedraw();
     if (where != NULL)
       ScheduleScrollToCell(where, false);
 
@@ -8131,7 +8120,6 @@ void Worksheet::ScrollToCaret()
 
 void Worksheet::Replace(wxString oldString, wxString newString, bool ignoreCase)
 {
-
   if (GetActiveCell() != NULL)
   {
     if (GetActiveCell()->ReplaceSelection(oldString, newString, false, ignoreCase))

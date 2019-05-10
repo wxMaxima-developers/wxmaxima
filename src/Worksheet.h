@@ -1153,7 +1153,8 @@ public:
 
   bool ActivateNextInput(bool input = false);
 
-  //! Scrolls to the cursor
+  /*! Scrolls to the cursor
+  */
   void ScrollToCaret();
 
   //! Scrolls to the cell given by ScheduleScrollToCell; Is called once we have time to do so.
@@ -1191,11 +1192,14 @@ public:
    */
   void ShowPoint(wxPoint point);
 
+  //! What to do if the worksheet is in the input focus
   void OnSetFocus(wxFocusEvent &event);
 
+  //! What to do if the worksheet looses the input focus
   void OnKillFocus(wxFocusEvent &event);
 
-  bool IsSelected(int type);
+  //! Does the selection start with a cell of the type "type"
+  bool IsSelected(CellType type);
 
   /*! Set the slide of the currently selected slideshow or advance it by one step
 
@@ -1219,9 +1223,16 @@ public:
 
   void SetActiveCell(EditorCell *cell, bool callRefresh = true);
 
+/*!
+  Set the HCaret to its default location, at the end of the document.
+ */
   void SetDefaultHCaret();
 
-  void SetHCaret(GroupCell *where, bool callRefresh = true); // call with false, when manually refreshing
+  /*! Set the HCaret at the location of the given Cell.
+    
+    @param where   The cell to place the cursor before.
+  */
+  void SetHCaret(GroupCell *where); // call with false, when manually refreshing
   //! The cell the horizontal cursor is above. NULL means at the start of the document.
   GroupCell *GetHCaret();
 
@@ -1446,8 +1457,6 @@ public:
   bool GCContainsCurrentQuestion(GroupCell *cell);
 
   /*! Move the cursor to the question maxima currently asks and if needed add a cell for user input
-
-    \todo Currently scrolls to the GroupCell the question is in, not to the actual question.
    */
   void OpenQuestionCaret(wxString txt = wxT(""));
 
