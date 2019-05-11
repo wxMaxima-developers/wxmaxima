@@ -1,4 +1,8 @@
-# wxMaxima 19.05.1 - Stable
+# wxMaxima 19.05.3 - Stable
+ * Corrected the autowrap line width for high zoom factors
+ * Added a few missing "Update the user interface" events
+
+# wxMaxima 19.05.2 - Stable
  * Sometimes the auto-evaluation of the worksheet auto-triggered
  * Support for broken locales that for valid non-ascii chars returned
    isprint()= false
