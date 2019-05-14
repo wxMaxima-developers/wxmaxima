@@ -165,9 +165,9 @@ void wxMaxima::ConfigChanged()
   }
 }
 
-wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title, const wxString configFile,
+wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
                    const wxPoint pos, const wxSize size) :
-  wxMaximaFrame(parent, id, title, configFile, pos, size, wxDEFAULT_FRAME_STYLE,
+  wxMaximaFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE,
                 MyApp::m_topLevelWindows.empty())
 {
   m_isLogTarget = MyApp::m_topLevelWindows.empty();

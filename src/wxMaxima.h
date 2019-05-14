@@ -99,7 +99,7 @@ class wxMaxima : public wxMaximaFrame
 {
 public:
 
-  wxMaxima(wxWindow *parent, int id, const wxString title, const wxString configFile = wxEmptyString,
+  wxMaxima(wxWindow *parent, int id, const wxString title,
            const wxPoint pos = wxDefaultPosition, const wxSize size = wxDefaultSize);
   
   ~wxMaxima();

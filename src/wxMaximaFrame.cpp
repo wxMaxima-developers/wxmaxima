@@ -44,7 +44,6 @@
 #include "wxMaximaIcon.h"
 
 wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
-                             const wxString configFile,
                              const wxPoint &pos, const wxSize &size,
                              long style, bool becomeLogTarget) :
   wxFrame(parent, id, title, pos, size, style),
@@ -99,7 +98,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
 
   // Some default values
   m_isNamed = false;
-  m_configFileName = configFile,
   m_updateEvaluationQueueLengthDisplay = true;
   m_recentDocumentsMenu = NULL;
   m_recentPackagesMenu = NULL;
@@ -1314,13 +1312,14 @@ void wxMaximaFrame::UpdateRecentDocuments()
 
 void wxMaximaFrame::ReReadConfig()
 {
-  if (m_configFileName != wxEmptyString)
+  if (Configuration::m_configfileLocation_override != wxEmptyString)
   {
     wxConfigBase *config = wxConfig::Get();
     config->Flush();
     wxDELETE(config);
     config = NULL;
-    wxConfig::Set(new wxFileConfig(wxT("wxMaxima"), wxEmptyString, m_configFileName));
+    wxConfig::Set(new wxFileConfig(wxT("wxMaxima"),
+                                   wxEmptyString, Configuration::m_configfileLocation_override));
   }
   // Re-Reading the config isn't necessary on the Mac where all windows share the same
   // window and on Windows where the registry is re-read every time the configuration

@@ -37,6 +37,7 @@
 
 Configuration::Configuration(wxDC *dc) : m_dc(dc) 
 {
+  m_autodetectMaxima = true;
   m_BackgroundBrush = *wxWHITE_BRUSH;
   m_clipToDrawRegion = true;
   m_fontChanged = true;
@@ -69,9 +70,9 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_clientHeight = 768;
   m_indentMaths=true;
   if(m_maximaLocation_override != wxEmptyString)
-    m_maximaLocation = m_maximaLocation_override;
+    m_maximaUserLocation = m_maximaLocation_override;
   else
-    m_maximaLocation = Dirstructure::Get()->MaximaDefaultLocation();
+    m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
   m_indent = -1;
   m_autoSubscript = 1;
   m_antiAliasLines = true;
@@ -308,8 +309,9 @@ void Configuration::ShowCodeCells(bool show)
 
 bool Configuration::MaximaFound(wxString location)
 {
-  if (location == wxEmptyString)
-    location = m_maximaLocation;
+  if(location == wxEmptyString)
+    return false;
+  
   bool maximaFound = false;
   if (wxFileExists(location))
     maximaFound = true;
@@ -362,15 +364,12 @@ void Configuration::ReadConfig()
   config->Read(wxT("copySVG"), &m_copySVG );
   config->Read(wxT("copyEMF"), &m_copyEMF );
 
-  config->Read(wxT("maxima"), &m_maximaLocation);
+  config->Read(wxT("autodetectMaxima"), &m_autodetectMaxima);
+
+  config->Read(wxT("maxima"), &m_maximaUserLocation);
   // Fix wrong" maxima=1" paraneter in ~/.wxMaxima if upgrading from 0.7.0a
-  if (m_maximaLocation.IsSameAs(wxT("1")))
-    m_maximaLocation = Dirstructure::Get()->MaximaDefaultLocation();
-
-  // Fallback to the default location if the one from the config file isn't found
-  if(!wxFileExists(m_maximaLocation))
-    m_maximaLocation = Dirstructure::Get()->MaximaDefaultLocation();
-
+  if (m_maximaUserLocation.IsSameAs(wxT("1")))
+    m_maximaUserLocation = Dirstructure::Get()->MaximaDefaultLocation();
 
   m_autoIndent = true;
   config->Read(wxT("autoIndent"), &m_autoIndent);
@@ -672,6 +671,19 @@ wxString Configuration::GetFontName(int type)
   return retval;
 }
 
+wxString Configuration::MaximaLocation()
+{
+  if(m_autodetectMaxima)
+    return MaximaDefaultLocation();
+  else
+    return m_maximaUserLocation;
+}
+
+wxString Configuration::MaximaDefaultLocation()
+{ 
+  return Dirstructure::Get()->MaximaDefaultLocation();
+}
+
 void Configuration::ReadStyles(wxString file)
 {
   wxConfigBase *config = NULL;
@@ -849,5 +861,7 @@ int Configuration::Scale_Px(double px)
   return retval;
 }
 
+
 wxString Configuration::m_maximaLocation_override;
+wxString Configuration::m_configfileLocation_override;
 

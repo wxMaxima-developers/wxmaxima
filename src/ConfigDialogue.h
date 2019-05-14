@@ -238,6 +238,8 @@ protected:
   //! The text "Maxima Program" that can change color.
   wxStaticText *m_mp;
 
+  wxRadioButton *m_autodetectMaxima;
+  wxRadioButton *m_noAutodetectMaxima;
   //! Called if the currently active dialogue sheet is changed.
   void OnTabChange(wxBookCtrlEvent &event);
 

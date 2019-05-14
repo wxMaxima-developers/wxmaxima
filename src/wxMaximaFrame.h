@@ -57,7 +57,7 @@ surrounding the worksheet.
 class wxMaximaFrame : public wxFrame
 {
 public:
-  wxMaximaFrame(wxWindow *parent, int id, const wxString &title, const wxString configFile,
+  wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                 const wxPoint &pos = wxDefaultPosition,
                 const wxSize &size = wxDefaultSize,
                 long style = wxDEFAULT_FRAME_STYLE, bool becomeLogTarget = true);
@@ -716,8 +716,6 @@ private:
 protected:
   //! The current length of the evaluation queue of commands we still need to send to maxima
   int m_EvaluationQueueLength;
-  //! The name of the config file or wxEmptyString if the default is used.
-  wxString m_configFileName;
   //! Update the "user symbols" portion of the symbols pane.
   void UpdateUserSymbols();
   //! Do we need to update the display showing the evaluation queue length?

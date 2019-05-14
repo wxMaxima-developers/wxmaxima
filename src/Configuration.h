@@ -132,6 +132,7 @@ public:
   ~Configuration();
 
   static wxString m_maximaLocation_override;
+  static wxString m_configfileLocation_override;
   
   static double GetMinZoomFactor()
   { return 0.1; }
@@ -613,14 +614,22 @@ public:
     return print;
   }
 
+  bool AutodetectMaxima(){return m_autodetectMaxima;}
+  void AutodetectMaxima(bool autodetectmaxima){wxConfig::Get()->Write(
+      wxT("autodetectMaxima"),
+      m_autodetectMaxima = autodetectmaxima);
+  }
+
+  //! The auto-detected maxima location
+  wxString MaximaDefaultLocation();
+
   //! Returns the location of the maxima binary.
-  wxString MaximaLocation()
-  { return m_maximaLocation; }
+  wxString MaximaLocation();
 
   //! Sets the location of the maxima binary.
   void MaximaLocation(wxString maxima)
   {
-    wxConfig::Get()->Write(wxT("maxima"), m_maximaLocation = maxima);
+    wxConfig::Get()->Write(wxT("maxima"), m_maximaUserLocation = maxima);
   }
 
   /*! Could a maxima binary be found in the path we expect it to be in?
@@ -757,6 +766,8 @@ public:
   void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
   Style m_styles[NUMBEROFSTYLES];
 private:
+  //! Autodetect maxima's location?
+  bool m_autodetectMaxima;
   //! The worksheet all cells are drawn on
   wxRect m_updateRegion;
   //! Has the font changed?
@@ -788,7 +799,9 @@ private:
   //! Caches the information on how to draw big parenthesis for GetGrouphesisDrawMode().
   drawMode m_parenthesisDrawMode;
   wxString m_workingdir;
-  wxString m_maximaLocation;
+  bool m_autodetectMaximar;
+
+  wxString m_maximaUserLocation;
   //! Hide brackets that are not under the pointer
   bool m_hideBrackets;
   //! The scale for printing

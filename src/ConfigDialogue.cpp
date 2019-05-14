@@ -299,15 +299,11 @@ void ConfigDialogue::UsepngcairoChanged(
 void ConfigDialogue::MaximaLocationChanged(wxCommandEvent& WXUNUSED(unused))
 {
   if (m_configuration->MaximaFound(m_maximaProgram->GetValue()))
-  {
-    m_mp->SetForegroundColour(
-            wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT)
-    );
-  }
+    m_noAutodetectMaxima->SetForegroundColour(
+      wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT)
+      );
   else
-  {
-    m_mp->SetForegroundColour(*wxRED);
-  }
+    m_noAutodetectMaxima->SetForegroundColour(*wxRED);
 }
 
 void ConfigDialogue::SetProperties()
@@ -920,21 +916,33 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer *sizer = new wxFlexGridSizer(4, 2, 0, 0);
+  wxFlexGridSizer *sizer = new wxFlexGridSizer(5, 2, 0, 0);
   wxFlexGridSizer *sizer2 = new wxFlexGridSizer(6, 2, 0, 0);
   wxFlexGridSizer *vsizer = new wxFlexGridSizer(9, 1, 0, 0);
 
+  wxFlexGridSizer *nameSizer = new wxFlexGridSizer(2, 3, 0, 0);
   m_mp = new wxStaticText(panel, -1, _("Maxima program:"));
+  vsizer->Add(m_mp, wxSizerFlags().Expand().Border(wxALL, 0));
+  m_autodetectMaxima = new wxRadioButton(panel, -1, _("Autodetect"), wxDefaultPosition,
+                                         wxDefaultSize, wxRB_GROUP);
+  nameSizer->Add(m_autodetectMaxima, wxSizerFlags().Expand().Border(wxALL, 0));
+  nameSizer->Add(
+    new wxTextCtrl(panel, -1, m_configuration->MaximaDefaultLocation(),
+                   wxDefaultPosition, wxSize(250, -1), wxTE_RICH|wxTE_READONLY));
+  nameSizer->Add(10, 10);
+  
+  m_noAutodetectMaxima = new wxRadioButton(panel, -1, _("User specified"));
+  m_autodetectMaxima->SetValue(m_configuration->AutodetectMaxima());
+  m_noAutodetectMaxima->SetValue(!m_configuration->AutodetectMaxima());
+  nameSizer->Add(m_noAutodetectMaxima, wxSizerFlags().Expand().Border(wxALL, 0));
   m_maximaProgram = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
   m_mpBrowse = new wxButton(panel, wxID_OPEN, _("Open"));
-  sizer->Add(m_mp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  sizer->Add(10, 10);
-  sizer->Add(m_maximaProgram, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  sizer->Add(m_mpBrowse, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  nameSizer->Add(m_maximaProgram, wxSizerFlags().Expand().Border(wxALL, 0));
+  nameSizer->Add(m_mpBrowse, wxSizerFlags().Expand().Border(wxALL, 0));
   m_maximaProgram->Connect(wxEVT_COMMAND_TEXT_UPDATED,
                            wxCommandEventHandler(ConfigDialogue::MaximaLocationChanged),
                            NULL, this);
-
+  vsizer->Add(nameSizer, wxSizerFlags().Expand().Border(wxALL, 0));
   int defaultPort = 4010;
   wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
   m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 50,
@@ -1145,11 +1153,8 @@ void ConfigDialogue::WriteSettings()
   Configuration *configuration = m_configuration;
   configuration->SetAbortOnError(m_abortOnError->GetValue());
   configuration->RestartOnReEvaluation(m_restartOnReEvaluation->GetValue());
-  if (
-          (configuration->MaximaFound()) ||
-          (configuration->MaximaLocation() != m_maximaProgram->GetValue())
-          )
-    configuration->MaximaLocation(m_maximaProgram->GetValue());
+  configuration->MaximaLocation(m_maximaProgram->GetValue());
+  configuration->AutodetectMaxima(m_autodetectMaxima->GetValue());
   config->Write(wxT("parameters"), m_additionalParameters->GetValue());
   config->Write(wxT("fontSize"), m_configuration->GetDefaultFontSize());
   config->Write(wxT("mathFontsize"), m_configuration->GetMathFontSize());

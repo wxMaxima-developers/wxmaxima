@@ -182,7 +182,10 @@ bool MyApp::OnInit()
   // Attention: The config file is changed by wxMaximaFrame::wxMaximaFrame::ReReadConfig
   if (cmdLineParser.Found(wxT("f"),&ini))
   {
-    Configuration::m_maximaLocation_override = ini;
+    Configuration::m_configfileLocation_override = ini;
+    wxConfig::Set(new wxFileConfig(wxT("wxMaxima"),
+                                   wxEmptyString,
+                                   Configuration::m_configfileLocation_override));
   }
   else
     wxConfig::Set(new wxConfig(wxT("wxMaxima")));
@@ -190,7 +193,9 @@ bool MyApp::OnInit()
   config = wxConfig::Get();
 
   if (cmdLineParser.Found(wxT("m"),&ini))
-    wxConfig::Get()->Write(wxT("maxima"), ini);
+  {
+    Configuration::m_maximaLocation_override = ini;
+  }
 
   wxImage::AddHandler(new wxPNGHandler);
   wxImage::AddHandler(new wxXPMHandler);
