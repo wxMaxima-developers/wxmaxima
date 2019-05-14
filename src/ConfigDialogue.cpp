@@ -298,7 +298,7 @@ void ConfigDialogue::UsepngcairoChanged(
 
 void ConfigDialogue::MaximaLocationChanged(wxCommandEvent& WXUNUSED(unused))
 {
-  if (m_configuration->MaximaFound(m_maximaProgram->GetValue()))
+  if (m_configuration->MaximaFound(m_maximaUserLocation->GetValue()))
     m_noAutodetectMaxima->SetForegroundColour(
       wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT)
       );
@@ -318,7 +318,7 @@ void ConfigDialogue::SetProperties()
   m_openHCaret->SetToolTip("If this checkbox is set a new code cell is opened as soon as maxima requests data. If it isn't set a new code cell is opened in this case as soon as the user starts typing in code.");
   m_restartOnReEvaluation->SetToolTip(
           _("Maxima provides no \"forget all\" command that flushes all settings a maxima session could make. wxMaxima therefore normally defaults to starting a fresh maxima process every time the worksheet is to be re-evaluated. As this needs a little bit of time this switch allows to disable this behavior."));
-  m_maximaProgram->SetToolTip(_("Enter the path to the Maxima executable."));
+  m_maximaUserLocation->SetToolTip(_("Enter the path to the Maxima executable."));
   m_additionalParameters->SetToolTip(_("Additional parameters for Maxima"
                                                " (e.g. -l clisp)."));
   m_mathJaxURL->SetToolTip(_("The URL MathJaX.js should be downloaded from by our HTML export."));
@@ -469,7 +469,7 @@ void ConfigDialogue::SetProperties()
   m_texPreamble->SetValue(texPreamble);
   m_autoSaveInterval->SetValue(configuration->AutoSaveMinutes());
 
-  m_maximaProgram->SetValue(configuration->MaximaUserLocation());
+  m_maximaUserLocation->SetValue(configuration->MaximaUserLocation());
   wxCommandEvent dummy;
   MaximaLocationChanged(dummy);
 
@@ -935,11 +935,11 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   m_autodetectMaxima->SetValue(m_configuration->AutodetectMaxima());
   m_noAutodetectMaxima->SetValue(!m_configuration->AutodetectMaxima());
   nameSizer->Add(m_noAutodetectMaxima, wxSizerFlags().Expand().Border(wxALL, 0));
-  m_maximaProgram = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
+  m_maximaUserLocation = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
   m_mpBrowse = new wxButton(panel, wxID_OPEN, _("Open"));
-  nameSizer->Add(m_maximaProgram, wxSizerFlags().Expand().Border(wxALL, 0));
+  nameSizer->Add(m_maximaUserLocation, wxSizerFlags().Expand().Border(wxALL, 0));
   nameSizer->Add(m_mpBrowse, wxSizerFlags().Expand().Border(wxALL, 0));
-  m_maximaProgram->Connect(wxEVT_COMMAND_TEXT_UPDATED,
+  m_maximaUserLocation->Connect(wxEVT_COMMAND_TEXT_UPDATED,
                            wxCommandEventHandler(ConfigDialogue::MaximaLocationChanged),
                            NULL, this);
   vsizer->Add(nameSizer, wxSizerFlags().Expand().Border(wxALL, 0));
@@ -1153,7 +1153,7 @@ void ConfigDialogue::WriteSettings()
   Configuration *configuration = m_configuration;
   configuration->SetAbortOnError(m_abortOnError->GetValue());
   configuration->RestartOnReEvaluation(m_restartOnReEvaluation->GetValue());
-  configuration->MaximaUserLocation(m_maximaProgram->GetValue());
+  configuration->MaximaUserLocation(m_maximaUserLocation->GetValue());
   configuration->AutodetectMaxima(m_autodetectMaxima->GetValue());
   config->Write(wxT("parameters"), m_additionalParameters->GetValue());
   config->Write(wxT("fontSize"), m_configuration->GetDefaultFontSize());
@@ -1282,7 +1282,7 @@ void ConfigDialogue::OnMpBrowse(wxCommandEvent&  WXUNUSED(event))
                    _("Error"),
                    wxOK | wxICON_ERROR);
     else
-      m_maximaProgram->SetValue(file);
+      m_maximaUserLocation->SetValue(file);
   }
 }
 
