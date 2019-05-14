@@ -614,7 +614,9 @@ public:
     return print;
   }
 
+  //! Autodetect maxima's location? (If false the user-specified location is used)
   bool AutodetectMaxima(){return m_autodetectMaxima;}
+  //! Autodetect maxima's location?
   void AutodetectMaxima(bool autodetectmaxima){wxConfig::Get()->Write(
       wxT("autodetectMaxima"),
       m_autodetectMaxima = autodetectmaxima);
@@ -626,8 +628,11 @@ public:
   //! Returns the location of the maxima binary.
   wxString MaximaLocation();
 
+  //! Returns the location of the maxima binary the user has selected.
+  wxString MaximaUserLocation(){return m_maximaUserLocation;}
+
   //! Sets the location of the maxima binary.
-  void MaximaLocation(wxString maxima)
+  void MaximaUserLocation(wxString maxima)
   {
     wxConfig::Get()->Write(wxT("maxima"), m_maximaUserLocation = maxima);
   }
@@ -799,7 +804,6 @@ private:
   //! Caches the information on how to draw big parenthesis for GetGrouphesisDrawMode().
   drawMode m_parenthesisDrawMode;
   wxString m_workingdir;
-  bool m_autodetectMaximar;
 
   wxString m_maximaUserLocation;
   //! Hide brackets that are not under the pointer

@@ -469,7 +469,7 @@ void ConfigDialogue::SetProperties()
   m_texPreamble->SetValue(texPreamble);
   m_autoSaveInterval->SetValue(configuration->AutoSaveMinutes());
 
-  m_maximaProgram->SetValue(configuration->MaximaLocation());
+  m_maximaProgram->SetValue(configuration->MaximaUserLocation());
   wxCommandEvent dummy;
   MaximaLocationChanged(dummy);
 
@@ -1153,7 +1153,7 @@ void ConfigDialogue::WriteSettings()
   Configuration *configuration = m_configuration;
   configuration->SetAbortOnError(m_abortOnError->GetValue());
   configuration->RestartOnReEvaluation(m_restartOnReEvaluation->GetValue());
-  configuration->MaximaLocation(m_maximaProgram->GetValue());
+  configuration->MaximaUserLocation(m_maximaProgram->GetValue());
   configuration->AutodetectMaxima(m_autodetectMaxima->GetValue());
   config->Write(wxT("parameters"), m_additionalParameters->GetValue());
   config->Write(wxT("fontSize"), m_configuration->GetDefaultFontSize());

@@ -238,7 +238,9 @@ protected:
   //! The text "Maxima Program" that can change color.
   wxStaticText *m_mp;
 
+  //! Autodetect the maxima location?
   wxRadioButton *m_autodetectMaxima;
+  //! The radio button that is set if m_autodetectMaxima is unset
   wxRadioButton *m_noAutodetectMaxima;
   //! Called if the currently active dialogue sheet is changed.
   void OnTabChange(wxBookCtrlEvent &event);
@@ -251,7 +253,7 @@ protected:
   wxTextCtrl *m_startupCommands;
   //! A textbox containing wxMaxima's startup commands
   wxTextCtrl *m_wxStartupCommands;
-  wxTextCtrl *m_maximaProgram;
+  wxTextCtrl *m_maximaUserLocation;
   wxTextCtrl *m_documentclass;
   wxTextCtrl *m_texPreamble;
   wxSpinCtrl *m_autoSaveInterval;
