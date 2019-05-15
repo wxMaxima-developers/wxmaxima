@@ -142,7 +142,7 @@ wxString Dirstructure::MaximaDefaultLocation()
   maxima = exeDir + "../bin/maxima.bat";
   maxima.MakeAbsolute();
   if(wxFileExists(maximaLocation = maxima.GetFullPath()))
-    return maximaLocation();
+    return maximaLocation;
 
   wxLogMessage(wxString::Format(notFound,maximaLocation));
   maxima = exeDir + "maxima.bat";
