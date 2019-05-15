@@ -2701,7 +2701,6 @@ wxString wxMaxima::GetCommand(bool params)
   if (command.EndsWith(wxT(".app"))) // if pointing to a Maxima.app
     command.Append(wxT("/Contents/Resources/maxima.sh"));
 #endif
-  command.Replace(wxT(" "), wxT("\\ "));
   
   if (params) {
     // escape quotes
@@ -2709,7 +2708,9 @@ wxString wxMaxima::GetCommand(bool params)
     // surround with quotes
     return wxT("\"") + command + wxT("\" ") + parameters;
   }
-  else {
+  else
+  {
+    command = wxT("\"") + command + wxT("\"");
     return command;
   }
 }
