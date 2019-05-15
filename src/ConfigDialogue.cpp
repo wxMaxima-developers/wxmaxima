@@ -961,20 +961,24 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   wxStaticText *ap1 = new wxStaticText(panel, -1, _("Examples:"));
   sizer2->Add(ap1, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer2->Add(10, 10);
-  wxStaticText *ap2 = new wxStaticText(panel, -1, _("      -l <name>"));
-  sizer2->Add(ap2, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  wxStaticText *ap3 = new wxStaticText(panel, -1, _("choose a lisp maxima was compiled with"));
-  sizer2->Add(ap3, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer2->Add(new wxStaticText(panel, -1, _("      -l <name>")), 0,
+              wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer2->Add(new wxStaticText(panel, -1, _("choose a lisp maxima was compiled with")),
+              0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer2->Add(new wxStaticText(panel, -1, _("      -u <number>")), 0,
+              wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer2->Add(new wxStaticText(panel, -1, _("choose between installed maxima versions")),
+              0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   wxString sbclMemoryParameter;
 #ifdef __WXMSW__
   sbclMemoryParameter = "      -X \"--dynamic-space-size <int>\"";
 #else
   sbclMemoryParameter = "      -X '--dynamic-space-size <int>'";
 #endif
-  wxStaticText *ap4 = new wxStaticText(panel, -1, sbclMemoryParameter);
-  sizer2->Add(ap4, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  wxStaticText *ap5 = new wxStaticText(panel, -1, _("tell sbcl to use <int>Mbytes of heap"));
-  sizer2->Add(ap5, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer2->Add(new wxStaticText(panel, -1, sbclMemoryParameter), 0,
+              wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  sizer2->Add(new wxStaticText(panel, -1, _("tell sbcl to use <int>Mbytes of heap")),
+              0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   vsizer->Add(sizer2);
   m_additionalParameters = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(600, -1), wxTE_RICH);
   vsizer->Add(m_additionalParameters, 0, wxALL, 0);
