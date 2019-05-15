@@ -960,7 +960,7 @@ bool wxMaxima::StartMaxima(bool force)
       m_first = true;
       m_pid = -1;
       wxLogMessage(wxString::Format(_("Running maxima as: %s"), command));
-      if (wxExecute(command, wxEXEC_ASYNC, m_process) < 0)
+      if (wxExecute(command, wxEXEC_ASYNC, m_process) <= 0 )
       {
         StatusMaximaBusy(process_wont_start);
         RightStatusText(_("Cannot start the maxima binary"));
@@ -6584,6 +6584,8 @@ MyAboutDialog::MyAboutDialog(wxWindow *parent, int id, const wxString title, wxS
                       "Ziga Lenarcic<br>"
                       "Doug Ilijev<br>"
                       "Gunter Königsmann<br>"
+                      "Tomio Arisaka<br>"
+                      "Rene Hansen<br>"
                       "</p>"
                       "<h4>Patches</h4>"
                       "Sandro Montanar (SF-patch 2537150)"
@@ -6712,6 +6714,8 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.AddDeveloper(wxT("Doug Ilijev <doug.ilijev@gmail.com>"));
       info.AddDeveloper(wxT("Gunter Königsmann <wxMaxima@physikbuch.de>"));
       info.AddDeveloper(wxT("Elias Mårtenson"));
+      info.AddDeveloper(wxT("Tomio Arisaka"));
+      info.AddDeveloper(wxT("Rene Hansen"));
       info.AddTranslator(wxT("Innocent De Marchi (ca)"));
       info.AddTranslator(wxT("Josef Barak (cs)"));
       info.AddTranslator(wxT("Robert Marik (cs)"));

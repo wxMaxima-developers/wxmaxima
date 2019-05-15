@@ -133,19 +133,54 @@ wxString Dirstructure::ArtDir()
 wxString Dirstructure::MaximaDefaultLocation()
 {
 #if defined __WXMSW__
-  wxString maxima = wxGetCwd();
-  if (maxima.Right(8) == wxT("wxMaxima"))
-    maxima.Replace(wxT("wxMaxima"), wxT("bin\\maxima.bat"));
-  else
-    maxima.Append("\\maxima.bat");
-  if (!wxFileExists(maxima))
-  {
-    wxFileName exe = wxStandardPaths::Get().GetExecutablePath();
-    exe.MakeAbsolute();
-    wxString exeDir = exe.GetPathWithSep();
-    wxString maximapath = exeDir + wxT("..") + exe.GetPathSeparator() +
-      wxT("bin")  + exe.GetPathSeparator() + wxT("maxima.bat");
-  }
+  wxString cwd = wxGetCwd();
+  wxFileName maxima;
+
+  maxima = cwd + "../bin/maxima.bat";
+  maxima.MakeAbsolute();
+  if(wxFileExists(maxima.GetFullPath()))
+    return maxima.GetFullPath();
+
+  maxima = cwd + "/maxima.bat";
+  maxima.MakeAbsolute();
+  if(wxFileExists(maxima.GetFullPath()))
+    return maxima.GetFullPath();
+
+  maxima = cwd + "/bin/maxima.bat";
+  maxima.MakeAbsolute();
+  if(wxFileExists(maxima.GetFullPath()))
+    return maxima.GetFullPath();
+
+  maxima = cwd + "../maxima.bat";
+  maxima.MakeAbsolute();
+  if(wxFileExists(maxima.GetFullPath()))
+    return maxima.GetFullPath();
+
+  maxima = cwd + "/maxima";
+  maxima.MakeAbsolute();
+  if(wxFileExists(maxima.GetFullPath()))
+    return maxima.GetFullPath();
+
+  maxima = cwd + "/bin/maxima";
+  maxima.MakeAbsolute();
+  if(wxFileExists(maxima.GetFullPath()))
+    return maxima.GetFullPath();
+
+  maxima = cwd + "../maxima";
+  maxima.MakeAbsolute();
+  if(wxFileExists(maxima.GetFullPath()))
+    return maxima.GetFullPath();
+
+  maxima = cwd + "../bin/maxima";
+  maxima.MakeAbsolute();
+  if(wxFileExists(maxima.GetFullPath()))
+    return maxima.GetFullPath();
+
+  wxFileName exe = wxStandardPaths::Get().GetExecutablePath();
+  exe.MakeAbsolute();
+  wxString exeDir = exe.GetPathWithSep();
+  wxString maximapath = exeDir + wxT("..") + exe.GetPathSeparator() +
+    wxT("bin")  + exe.GetPathSeparator() + wxT("maxima.bat");
   wxFileName maximapath(maxima);
   maximapath.MakeAbsolute();
   return maximapath.GetFullPath();
