@@ -767,10 +767,7 @@ void Configuration::WriteStyles(wxString file)
   if (file == wxEmptyString)
     config = wxConfig::Get();
   else
-  {
-    wxFileInputStream str(file);
-    config = new wxFileConfig(str);
-  }
+    config = new wxFileConfig(wxT("wxMaxima"),wxEmptyString,file);
 
   // Font
   config->Write(wxT("Style/fontname"), m_fontName);
@@ -817,6 +814,11 @@ void Configuration::WriteStyles(wxString file)
   m_styles[TS_SELECTION].Write(config,wxT("Style/Selection/"));
   m_styles[TS_EQUALSSELECTION].Write(config,wxT("Style/EqualsSelection/"));
   m_styles[TS_OUTDATED].Write(config,wxT("Style/Outdated/"));
+  if(file != wxEmptyString)
+  {
+    config->Flush();
+    delete config;
+  }
 }
 
 wxFontWeight Configuration::IsBold(int st)
