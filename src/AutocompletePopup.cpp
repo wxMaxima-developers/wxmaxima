@@ -152,6 +152,14 @@ void AutocompletePopup::OnKeyDown(wxKeyEvent &event)
   break;
   case WXK_LEFT:
   case WXK_ESCAPE:
+    if((m_type == AutoComplete::esccommand) && (m_partial != wxEmptyString))
+    {
+      int selection = GetNextItem(0,wxLIST_NEXT_ALL,
+                                  wxLIST_STATE_SELECTED);
+      if(selection < 0)
+        selection = 0;
+      m_editor->InsertEscCommand(m_completions[selection]);
+    }
     m_parent->GetParent()->Refresh();
     if (!m_editor->IsActive())
       m_editor->ActivateCursor();
