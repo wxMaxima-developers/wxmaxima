@@ -1,3 +1,10 @@
+# wxMaxima 19.05.4 - Stable
+ * Corrected saving formatting styles in the config dialogue
+ * Allow to change the title etc. font again
+ * Correctly output uppercase greek letters in TeX
+ * Re-enable the old-style ESC commands.
+ * Made wxMaxima default to auto-searching for the maxima binary.
+
 # wxMaxima 19.05.3 - Stable
  * Corrected the autowrap line width for high zoom factors
  * Added a few missing "Update the user interface" events
