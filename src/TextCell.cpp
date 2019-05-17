@@ -925,21 +925,21 @@ wxString TextCell::ToTeX()
   text.Replace(L"\x03C7", mathModeStart + wxT("\\chi") + mathModeEnd);
   text.Replace(L"\x03C8", mathModeStart + wxT("\\psi") + mathModeEnd);
   text.Replace(L"\x03C9", mathModeStart + wxT("\\omega") + mathModeEnd);
-  text.Replace(L"\x0391", mathModeStart + wxT("\\Alpha") + mathModeEnd);
-  text.Replace(L"\x0392", mathModeStart + wxT("\\Beta") + mathModeEnd);
+  text.Replace(L"\x0391", wxT("A"));
+  text.Replace(L"\x0392", wxT("B"));
   text.Replace(L"\x0393", mathModeStart + wxT("\\Gamma") + mathModeEnd);
   text.Replace(L"\x0394", mathModeStart + wxT("\\Delta") + mathModeEnd);
-  text.Replace(L"\x0395", mathModeStart + wxT("\\Epsilon") + mathModeEnd);
-  text.Replace(L"\x0396", mathModeStart + wxT("\\Zeta") + mathModeEnd);
-  text.Replace(L"\x0397", mathModeStart + wxT("\\Eta") + mathModeEnd);
+  text.Replace(L"\x0395", wxT("E"));
+  text.Replace(L"\x0396", wxT("Z"));
+  text.Replace(L"\x0397", wxT("H"));
   text.Replace(L"\x0398", mathModeStart + wxT("\\Theta") + mathModeEnd);
-  text.Replace(L"\x0399", mathModeStart + wxT("\\Iota") + mathModeEnd);
-  text.Replace(L"\x039A", mathModeStart + wxT("\\Kappa") + mathModeEnd);
+  text.Replace(L"\x0399", wxT("I"));
+  text.Replace(L"\x039A", wxT("K"));
   text.Replace(L"\x039B", mathModeStart + wxT("\\Lambda") + mathModeEnd);
-  text.Replace(L"\x039C", mathModeStart + wxT("\\Mu") + mathModeEnd);
-  text.Replace(L"\x039D", mathModeStart + wxT("\\Nu") + mathModeEnd);
+  text.Replace(L"\x039C", wxT("M"));
+  text.Replace(L"\x039D", wxT("N"));
   text.Replace(L"\x039E", mathModeStart + wxT("\\Xi") + mathModeEnd);
-  text.Replace(L"\x039F", mathModeStart + wxT("\\Omicron") + mathModeEnd);
+  text.Replace(L"\x039F", wxT("O"));
   text.Replace(L"\x03A0", mathModeStart + wxT("\\Pi") + mathModeEnd);
   text.Replace(L"\x03A1", mathModeStart + wxT("\\Rho") + mathModeEnd);
   text.Replace(L"\x03A3", mathModeStart + wxT("\\Sigma") + mathModeEnd);
@@ -1093,9 +1093,9 @@ wxString TextCell::ToTeX()
     else if (text == wxT("\\% omega"))
       return wxT("\\omega ");
     else if (text == wxT("\\% Alpha"))
-      return wxT("\\Alpha ");
+      return wxT("A");
     else if (text == wxT("\\% Beta"))
-      return wxT("\\Beta ");
+      return wxT("B");
     else if (text == wxT("\\% Gamma"))
       return wxT("\\Gamma ");
     else if (text == wxT("\\% Delta"))
