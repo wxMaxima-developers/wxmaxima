@@ -36,7 +36,7 @@
     </screenshot>
     <screenshot>
       <image>https://wxMaxima-developers.github.io/wxmaxima/images/linux_3.jpg</image>
-      <caption>wxMaxima provides wizards for the most important functions of Maxima</caption>
+      <caption>An example of a wizard for a Maxima funtion</caption>
     </screenshot>
   </screenshots>
   <url type="bugtracker">https://github.com/wxMaxima-developers/wxmaxima/issues</url>
@@ -63,15 +63,15 @@
           <li>Made wxMaxima default to auto-searching for the maxima binary</li>
         </ul>
       </description>
-    </release> 
+    </release>
     <release version="19.05.3" date="2019-05-11">
       <description>
         <ul>
           <li>Corrected the autowrap line width for high zoom factors</li>
-          <li>Added a few missing &quot;Update the user interface&quot; events</li>
+          <li>Added a few missing "Update the user interface" events</li>
         </ul>
       </description>
-    </release> 
+    </release>
     <release version="19.05.2" date="2019-05-07">
       <description>
         <ul>
@@ -80,7 +80,7 @@
           <li>Corrected reading font sizes from styles and configuring styles</li>
         </ul>
       </description>
-    </release> 
+    </release>
     <release version="19.05.1" date="2019-05-05">
       <description>
         <ul>
@@ -417,7 +417,7 @@
           <li>MathJaX export can now be configured to instruct the html export to download MathJaX from a different URL: They moved the URL one can use and might do so again somewhere in the future</li>
           <li>Maximum number of digits and if we use user-defined labels now are no more hardcoded into the worksheet at evaluation time</li>
           <li>Anwers to Maxima's questions are now remembered across sessions</li>
-          <li>CMake is now our main build system: It is supported under MSVC, XCode, Code::Blocks, its output looks much nicer than the one from the autotools and setting it up uses much more straightforward constructs. The recipe to build a debian package using cmake can be found at https://code.launchpad.net/~peterpall/wxmaxima/packaging</li>
+          <li>CMake is now our main build system: It is supported under MSVC, XCode, Code::Blocks, its output looks much nicer than the one from the autotools and setting it up uses much more straightforward constructs. The recipe to build a debian package using cmake can be found at PeterPall's wxmaxima repository on Launchpad</li>
           <li>Massive speed-ups</li>
           <li>File/Open can now import .mac and .out files from Xmaxima</li>
           <li>Many additional bug fixes and stability enhancements</li>
