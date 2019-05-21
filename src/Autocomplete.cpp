@@ -2842,6 +2842,8 @@ bool AutoComplete::LoadSymbols()
   m_wordList[tmplte ].Add("cardinality(<a>)"); // OPTION
   m_wordList[command].Add("cartesian_product"); // FUNCTION
   m_wordList[tmplte ].Add("cartesian_product(<b_1>, ... , <b_n>)"); // OPTION
+  m_wordList[command].Add("cartesian_product_list"); // FUNCTION
+  m_wordList[tmplte ].Add("cartesian_product_list(<l_1>, ... , <l_n>)"); // OPTION
   m_wordList[command].Add("disjoin"); // FUNCTION
   m_wordList[tmplte ].Add("disjoin(<x>, <a>)"); // OPTION
   m_wordList[command].Add("disjointp"); // FUNCTION
