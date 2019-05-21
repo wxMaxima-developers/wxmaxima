@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-05-21 06:48+0200\n"
-"PO-Revision-Date: 2019-05-20 09:40+0200\n"
+"PO-Revision-Date: 2019-05-21 07:52+0200\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
 "Language: hu\n"
@@ -27,7 +27,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"A maxima jelenleg az összes elérhető CPU-ból %3.3f%%-t használ."
+"A Maxima jelenleg az összes elérhető CPU-ból %3.3f%%-t használ."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6695
 #, c-format
@@ -68,11 +68,11 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:974
 msgid "      -X \"--dynamic-space-size <int>\""
-msgstr ""
+msgstr "      -X \"--dinamikus-helyméret <egész>\""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:976
 msgid "      -X '--dynamic-space-size <int>'"
-msgstr ""
+msgstr "      -X '--dinamikus-helyméret <egész>'"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:964
 msgid "      -l <name>"
@@ -80,7 +80,7 @@ msgstr "      -l <név>"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:968
 msgid "      -u <number>"
-msgstr ""
+msgstr "      -u <szám>"
 
 #: /home/gunter/src/wxmaxima/src/ImgCell.cpp:237
 #: /home/gunter/src/wxmaxima/src/ImgCell.cpp:242
@@ -341,7 +341,7 @@ msgstr "T&rigonometrikus redukálás"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:773
 msgid "&Restart Maxima"
-msgstr "&A maxima újraindítása"
+msgstr "&A Maxima újraindítása"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:821
 msgid "&Roots of Polynomial (Real)"
@@ -648,11 +648,11 @@ msgstr "További sorok a TeX preambulumba:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:322
 msgid "Additional parameters for Maxima (e.g. -l clisp)."
-msgstr "A maxima további paraméterei (pl. -l clisp)."
+msgstr "A Maxima további paraméterei (pl. -l clisp)."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:958
 msgid "Additional parameters for maxima"
-msgstr "További maxima-paraméterek"
+msgstr "További Maxima-paraméterek"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:851
 msgid "Additional symbols for the \"symbols\" sidebar:"
@@ -683,7 +683,7 @@ msgid ""
 msgstr ""
 "Minden megnyitható típus (*.wxm, *.wxmx, *.mac, *.out, *.xml)|*.wxm;*.wxmx;*."
 "mac;*.out;*.xml|wxMaxima dokumentum (*.wxm, *.wxmx)|*.wxm;*.wxmx|Maxima "
-"munkalap (*.mac)|*.mac|Xmaxima munkalap (*.out)|*.out|xml problémás .wxmx (*."
+"munkalap (*.mac)|*.mac|XMaxima munkalap (*.out)|*.out|xml problémás .wxmx (*."
 "xml)|*.xml fájlokból"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:594
@@ -704,7 +704,7 @@ msgstr "Alfa"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:663
 msgid "Always"
-msgstr ""
+msgstr "Mindig"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:663
 msgid "Always autosubscript after an underscore"
@@ -784,7 +784,7 @@ msgid ""
 "It also can be hidden by setting fpprintprec to an appropriate value. But be "
 "aware in this case that even small errors can add up."
 msgstr ""
-"Ahogy a 0.1 ^ 12 kiszámítása demonstrálja, a maxima alapértelmezés szerint "
+"Ahogy a 0.1 ^ 12 kiszámítása demonstrálja, a Maxima alapértelmezés szerint "
 "nem hajlamos elrejteni azt , ami úgy néz ki, mintha a lebegőpontos számok "
 "használatánál egy kis hiba lenne.\n"
 "Ha úgy tűnik, hogy ez a helyzet, a hibát elkerülhetjük az olyan pontos "
@@ -817,7 +817,7 @@ msgstr "Automatikus kiegészítés:%s felderítése betölthető lisp fájlokhoz
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:926
 msgid "Autodetect"
-msgstr ""
+msgstr "Automatikus felismerés"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:606
 #, c-format
@@ -1072,7 +1072,7 @@ msgstr "Hiba: Üres elemet kísérelt meg hozzáfűzni egy csoportcellához."
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:777
 msgid "Bug: Trying to append maxima's output to a cell outside the worksheet."
 msgstr ""
-"Hiba: A maxima kimenetét megkísérelte hozzáfűzni egy munkalapon kívüli "
+"Hiba: A Maxima kimenetét megkísérelte hozzáfűzni egy munkalapon kívüli "
 "cellához."
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:7730
@@ -1253,7 +1253,7 @@ msgstr "Gnuplot nem futtatható"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:966
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:417
 msgid "Cannot start the maxima binary"
-msgstr "A maxima bináris nem tudott elindulni"
+msgstr "A Maxima bináris nem tudott elindulni"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1494
 msgid "Canonical (tr)"
@@ -1416,11 +1416,11 @@ msgstr "Vesszővel elválasztott változók"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:753
 msgid "Commands that are executed at every start of maxima."
-msgstr "Maxima parancsok végrehajtása a maxima minden egyes indulásakor."
+msgstr "Maxima parancsok végrehajtása a Maxima minden egyes indulásakor."
 
 #: /home/gunter/src/wxmaxima/src/EditorCell.cpp:4697
 msgid "Comment (ordinary worksheet text that isn't fed to maxima)"
-msgstr "Megjegyzés (szokásos munkalap-szöveg, amely a maxima nem futtat)"
+msgstr "Megjegyzés (szokásos munkalap-szöveg, amely a Maxima nem futtat)"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1481
 msgid "Comment Selection"
@@ -1453,7 +1453,7 @@ msgstr "Szó automatikus kiegészítése"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:245
 msgid "Completely stop maxima and restart it"
-msgstr "A maxima teljes leállítása és újraindítása"
+msgstr "A Maxima teljes leállítása és újraindítása"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:140
 msgid "Complex infinity."
@@ -1739,7 +1739,7 @@ msgid ""
 "to maxima."
 msgstr ""
 "Nem sikerült feltérképezni a fájlt a célból, hogy megszakítási jelet küldjön "
-"a maxima számára."
+"a Maxima számára."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1073
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1125
@@ -1865,12 +1865,12 @@ msgstr "Alapértelmezett betűtípus:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:550
 msgid "Default plot size for new maxima sessions:"
-msgstr "Új maxima munkalap alapértelmezett ábrázolási mérete:"
+msgstr "Új Maxima munkalap alapértelmezett ábrázolási mérete:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:951
 msgid "Default port for communication with wxMaxima:"
 msgstr ""
-"A maxima és a wxMaxima közötti kommunikáció során használt alapértelmezett "
+"A Maxima és a wxMaxima közötti kommunikáció során használt alapértelmezett "
 "port:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:331
@@ -2190,7 +2190,7 @@ msgstr "A paraméter értékének vége"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1864
 msgid "Ended lisp mode after receiving a maxima prompt!"
-msgstr "Egy maxima prompt megjelenése miatt a Lisp mód véget ért!"
+msgstr "Egy Maxima prompt megjelenése miatt a Lisp mód véget ért!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7777
 msgid "Ending lisp mode!"
@@ -2262,7 +2262,7 @@ msgstr "Új pontosság bevitele:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:321
 msgid "Enter the path to the Maxima executable."
-msgstr "A maxima elérési útjának beírása."
+msgstr "A Maxima elérési útjának beírása."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1665
 msgid "Epsilon"
@@ -3105,7 +3105,7 @@ msgid ""
 "HTML file (*.html)|*.html|maxima batch file (*.mac)|*.mac|pdfLaTeX file (*."
 "tex)|*.tex"
 msgstr ""
-"HTML fájl (*.html)|*.html|maxima batch fájl (*.mac)|*.mac|pdfLaTeX fájl (*."
+"HTML fájl (*.html)|*.html|Maxima batch fájl (*.mac)|*.mac|pdfLaTeX fájl (*."
 "tex)|*.tex"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:237
@@ -3323,7 +3323,7 @@ msgid ""
 ">Interrupt' or 'Maxima->Restart Maxima' menu commands."
 msgstr ""
 "Ha egy számítás elvégzése túl sokáig tart, megpróbálhatjuk a 'Maxima-"
-">Megszakítás' vagy a 'Maxima->A maxima újraindítása' menüparancsok "
+">Megszakítás' vagy a 'Maxima->A Maxima újraindítása' menüparancsok "
 "használatát."
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5522
@@ -3445,7 +3445,7 @@ msgstr "Végtelen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1195
 msgid "Info about Maxima build"
-msgstr "Információ a maxima fordításáról"
+msgstr "Információ a Maxima fordításáról"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6319
 msgid "Initial Estimates:"
@@ -3653,7 +3653,7 @@ msgid ""
 "Interrupt current computation. To completely restart maxima press the button "
 "left to this one."
 msgstr ""
-"Az aktuális művelet megszakadt. A maxima teljes újraindításához nyomja meg "
+"Az aktuális művelet megszakadt. A Maxima teljes újraindításához nyomja meg "
 "az alábbi gombot."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1076
@@ -3677,7 +3677,7 @@ msgid ""
 msgstr ""
 "Hibás elérési út.\n"
 "\n"
-"Írja be a maxima futtatható fájl elérési útját újra."
+"Írja be a Maxima futtatható fájl elérési útját újra."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6247
 msgid "Inverse Laplace"
@@ -3696,7 +3696,7 @@ msgid ""
 "Issue a notification if maxima finishes calculating while the wxMaxima "
 "window isn't in focus."
 msgstr ""
-"Értesítés kiadása, ha a maxima befejezi a számítást, miközben a wxMaxima "
+"Értesítés kiadása, ha a Maxima befejezi a számítást, miközben a wxMaxima "
 "ablak nincs fókuszban."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:147
@@ -3716,11 +3716,11 @@ msgid ""
 "handled by wxMaxima, not by maxima and therefore cannot be recognized on "
 "load()."
 msgstr ""
-"A wxMaxima lehetőséget nyújt maxima könyvtárak (library-k) definiálására, "
+"A wxMaxima lehetőséget nyújt Maxima könyvtárak (library-k) definiálására, "
 "azoknak a load() függvénnyel való betöltésére és felhasználására. E célból "
 "csak annyit kell tenni, hogy a fájlt mac vagy .wxm formátumban mentjük el. "
 "Néhány speciális karaktert, mint a \"nem egyenlő\" jelentésű \"#\"-ot a "
-"wxMaxima kezel, viszont a maxima nem, így azokat a load() sem ismeri fel."
+"wxMaxima kezel, viszont a Maxima nem, így azokat a load() sem ismeri fel."
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:440
 msgid "It needs to be filled with objects to draw afterwards."
@@ -3761,7 +3761,7 @@ msgstr "Ugrás az első hibára"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:803
 msgid "Jump to the first cell maxima has reported an error in."
-msgstr "Ugrás a maxima által jelzett első hibás cellára."
+msgstr "Ugrás a Maxima által jelzett első hibás cellára."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:187
 msgid "Kabyle"
@@ -3845,7 +3845,7 @@ msgstr "Legkisebb négyzetes közelítés..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:856
 msgid "Left side to the \"=\""
-msgstr "A \"=\" bal oldala."
+msgstr "A \"=\" bal oldala"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1114
 msgid "Length"
@@ -3860,7 +3860,7 @@ msgstr ""
 "A könyvtárak (library-k) bármelyik wxMaxima eljárás számára hozzáférhetőek "
 "(függetlenül attól, hogy az eljárások mely könyvtárban futnak), ha a "
 "felhasználói könyvtárban helyeztük el azokat. A felhasználói könyvtár "
-"elérési útját a maxima_userdir parancs végrehajtásával tudhatjuk meg"
+"elérési útját a Maxima_userdir parancs végrehajtásával tudhatjuk meg"
 
 #: /home/gunter/src/wxmaxima/src/LimitWiz.cpp:69
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6304
@@ -3937,7 +3937,7 @@ msgstr "Aktuális csomag betöltése"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:555
 msgid "Load a Maxima file using the batch command"
-msgstr "Batch parancsokat használó maxima fájl betöltése"
+msgstr "Batch parancsokat használó Maxima fájl betöltése"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:551
 msgid "Load a Maxima package file"
@@ -4089,11 +4089,11 @@ msgstr "Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:421
 msgid "Maxima asks a question"
-msgstr "A maxima kérdez"
+msgstr "A Maxima kérdez"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1830
 msgid "Maxima asks a question!"
-msgstr "A maxima kérdez!"
+msgstr "A Maxima kérdez!"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:315
 #, c-format
@@ -4108,7 +4108,7 @@ msgid ""
 "order to ease discerning which line starts a new equation and which one only "
 "continues the one from the last line."
 msgstr ""
-"A maxima minden parancsot/egyenletet automatikus címkével lát el (ami úgy "
+"A Maxima minden parancsot/egyenletet automatikus címkével lát el (ami úgy "
 "néz ki, mint % i1 vagy %o1). Ha egy parancs egy leíró névvel kezdődik, majd "
 "ezt követi egy \":\",  a wxMaxima azt \"felhasználó által megadott címke\"-"
 "nek nevezi. Ez a választás most lehetővé teszi a wxMaxima számára, hogy csak "
@@ -4126,7 +4126,7 @@ msgstr "Maxima kód"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:719
 msgid "Maxima commands to be executed at every start of Maxima: "
-msgstr "Maxima parancsok végrehajtása a maxima minden egyes indulásakor: "
+msgstr "Maxima parancsok végrehajtása a Maxima minden egyes indulásakor: "
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:674
 msgid "Maxima commands to be executed every time wxMaxima starts Maxima: "
@@ -4138,20 +4138,20 @@ msgstr "Maxima hibák"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8015
 msgid "Maxima has finished calculating."
-msgstr "A maxima befejezte a számolást."
+msgstr "A Maxima befejezte a számolást."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3871
 msgid "Maxima has issued an error!"
-msgstr "A maxima hibajelzést küldött!"
+msgstr "A Maxima hibajelzést küldött!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1710
 #, c-format
 msgid "Maxima has loaded the file %s."
-msgstr "A maxima betöltötte a %s fájlt."
+msgstr "A Maxima betöltötte a %s fájlt."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1236
 msgid "Maxima has terminated."
-msgstr "A maxima futása megszakadt."
+msgstr "A Maxima futása megszakadt."
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:249
 msgid "Maxima input"
@@ -4159,16 +4159,16 @@ msgstr "Maxima bemenet"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:441
 msgid "Maxima is calculating"
-msgstr "A maxima számol"
+msgstr "A Maxima számol"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3092
 msgid "Maxima is ready for input."
-msgstr "A maxima használatra kész."
+msgstr "A Maxima használatra kész."
 
 #: /home/gunter/src/wxmaxima/src/Dirstructure.cpp:135
 #, c-format
 msgid "Maxima not found as %s"
-msgstr ""
+msgstr "A Maxima nem találta %s -ként"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4287
 msgid "Maxima package (*.mac)|*.mac"
@@ -4180,7 +4180,7 @@ msgstr "Maxima csomag (*.mac)|*.mac|Lisp csomag (*.lisp)|*.lisp|Minden fájl|*"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1240
 msgid "Maxima process terminated."
-msgstr "A maxima eljárásának futása megszakadt."
+msgstr "A Maxima eljárásának futása megszakadt."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:924
 msgid "Maxima program:"
@@ -4204,11 +4204,11 @@ msgstr "Maxima kérdései"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1623
 msgid "Maxima sends a new set of auto-completible symbols."
-msgstr "A maxima új, automatikusan kiegészülő szimbólumokat küld."
+msgstr "A Maxima új, automatikusan kiegészülő szimbólumokat küld."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:457
 msgid "Maxima started. Waiting for connection..."
-msgstr "A maxima elindult és vár a kapcsolatra..."
+msgstr "A Maxima elindult és vár a kapcsolatra..."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:751
 msgid "Maxima startup file location: "
@@ -4225,7 +4225,7 @@ msgid ""
 "to introduce a (very small) error and use things like "
 "3602879701896397/36028797018963968 for 0.1."
 msgstr ""
-"A maxima háromféle számtípust támogat: közönséges törteket (például ilyen "
+"A Maxima háromféle számtípust támogat: közönséges törteket (például ilyen "
 "jön létre, amikor az gépeljük be, hogy 1/10), az IEEE lebegőpontos "
 "számformátumot (0.2) és tetszőleges pontosságú hosszú tizedes törteket "
 "(1b-1). Vegyük azonban figyelembe, hogy bináris (nem decimális) számok "
@@ -4239,7 +4239,7 @@ msgid ""
 "Maxima uses ':' to set values ('a : 3;') and ':=' to define functions "
 "('f(x) := x^2;')."
 msgstr ""
-"A maxima a ':' jelet használja változó értékadására ('a : 3;') és a ':=' "
+"A Maxima a ':' jelet használja változó értékadására ('a : 3;') és a ':=' "
 "jelet függvény definiálására ('f(x) := x^2;')."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6758
@@ -4261,7 +4261,7 @@ msgid ""
 "    %[1];\n"
 "    result_b:b=at(b,%);"
 msgstr ""
-"A maxima \"at\" függvényével kinyerhetjük egy tetszőleges változó értékét az "
+"A Maxima \"at\" függvényével kinyerhetjük egy tetszőleges változó értékét az "
 "eredménylistából:\n"
 "\n"
 "    g1:a*x+y=0;\n"
@@ -4273,11 +4273,11 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1325
 #, c-format
 msgid "Maxima's PID is %li"
-msgstr "A maxima PID-je a(z) %li"
+msgstr "A Maxima PID-je a(z) %li"
 
 #: /home/gunter/src/wxmaxima/src/ActualValuesStorageWiz.cpp:33
 msgid "Maxima's power lies in symbolic operations."
-msgstr "A maxima ereje a szimbolikus műveletekben rejlik."
+msgstr "A Maxima ereje a szimbolikus műveletekben rejlik."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:150
 msgid ""
@@ -4295,7 +4295,7 @@ msgid ""
 "    at(result,Values);\n"
 "    float(%);"
 msgstr ""
-"A maxima erőssége az egyenletek átalakításai és a szimbolikus számítások. "
+"A Maxima erőssége az egyenletek átalakításai és a szimbolikus számítások. "
 "Használjunk ezért inkább egyenleteket és címkéket függvények helyett és "
 "tartsuk a változók aktuális értékeit listában, mint hogy közvetlenül  adnánk "
 "meg azokat. Egy példa:\n"
@@ -4319,9 +4319,9 @@ msgid ""
 "not only intercepts connections from the outside, but also to intercept "
 "connections between two programs that run on the same computer."
 msgstr ""
-"A maxima, a program, amely valójában a matematikai műveleteket végzi és a "
+"A Maxima, a program, amely valójában a matematikai műveleteket végzi és a "
 "wxMaxima, ami megjeleníti a munkalapot, külön eljárásként fut. Ez azt "
-"jelenti, hogy  ha a maxima futása megszakad, a wxMaxima (és így a munkalap) "
+"jelenti, hogy  ha a Maxima futása megszakad, a wxMaxima (és így a munkalap) "
 "ép marad. A két program egy helyi hálózati socketen keresztül kommunikál. "
 "Ezúttal ez a socket nem jött létre, amit okozhatott egy tűzfal, mely nem "
 "csak a külső, hanem az egyazon a számítógépen futó programok közti "
@@ -4340,15 +4340,15 @@ msgid ""
 "might be that maxima cannot be found (see wxMaxima's Configuration dialogue "
 "for a way to specify maxima's location) or isn't in a working order."
 msgstr ""
-"A maxima, a program, amely valójában a matematikai műveleteket végzi és a "
+"A Maxima, a program, amely valójában a matematikai műveleteket végzi és a "
 "wxMaxima, ami megjeleníti a munkalapot, külön eljárásként fut. Ez azt "
-"jelenti, hogy ha a maxima futása megszakad, a wxMaxima (és így a munkalap) "
+"jelenti, hogy ha a Maxima futása megszakad, a wxMaxima (és így a munkalap) "
 "ép marad. Jelenleg a két program nincs kapcsolatban egymással, ami lehet "
-"amiatt, hogy a maxima még csak most indul, vagy nem tudott elindulni. Az is "
+"amiatt, hogy a Maxima még csak most indul, vagy nem tudott elindulni. Az is "
 "előfordulhat, hogy a problémát egy tűzfal okozza, mely nem csak a külső, "
 "hanem az egyazon a számítógépen futó programok közti kapcsolatokat is "
-"korlátozza. A maxima nem indulásának másik oka az lehet, hogy a maxima nem "
-"található (lásd a wxMaxima beállításait a maxima helyének meghatározására), "
+"korlátozza. A Maxima nem indulásának másik oka az lehet, hogy a Maxima nem "
+"található (lásd a wxMaxima beállításait a Maxima helyének meghatározására), "
 "vagy nincs futtatható állapotban."
 
 #: /home/gunter/src/wxmaxima/src/StatusBar.cpp:43
@@ -4358,10 +4358,10 @@ msgid ""
 "cannot harm wxMaxima, which displays the worksheet.\n"
 "This icon indicates if data is transferred between maxima and wxMaxima."
 msgstr ""
-"A maxima, a program, amely valójában a matematikai műveleteket végzi, külön "
-"eljárásként fut. Ennek az az előnye, hogy ha a maxima futása megszakad, az "
+"A Maxima, a program, amely valójában a matematikai műveleteket végzi, külön "
+"eljárásként fut. Ennek az az előnye, hogy ha a Maxima futása megszakad, az "
 "nincs hatással a wxMaximára, mely a munkalapot megjeleníti.\n"
-"Ez az ikon jelzi az adatforgalmat a maxima és a wxMaxima között."
+"Ez az ikon jelzi az adatforgalmat a Maxima és a wxMaxima között."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6504
 msgid "Maximum absolute value printed without exponent:"
@@ -4409,7 +4409,7 @@ msgstr "Két bemeneti cella tartalmának összefűzése"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3822
 msgid "Message from the stdout of Maxima: "
-msgstr "Üzenet a maxima kimenetéről: "
+msgstr "Üzenet a Maxima kimenetéről: "
 
 #: /home/gunter/src/wxmaxima/src/IntegrateWiz.cpp:48
 msgid "Method:"
@@ -4585,7 +4585,7 @@ msgstr ""
 "reprezentálja.\n"
 "Mivel a matematika azon a tényen alapul, hogy a pontosan ugyanolyan számok "
 "helyettesíthetőek egymással, a kis hibák gyorsan nagy hibákat generálhatnak "
-"(lásd a Wilkinson-polinomok vagy a Rump-polinomok). Egyes maxima parancsok "
+"(lásd a Wilkinson-polinomok vagy a Rump-polinomok). Egyes Maxima parancsok "
 "ezért a rat() függvényt használják annak érdekében, hogy a lebegőpontos "
 "számokat pontos értékekké konvertálják (pl. 1/10-é vagy sqrt (2)/2-vé), így "
 "a lebegőpontos hibák már nem jelentkezhetnek.\n"
@@ -4754,7 +4754,7 @@ msgstr "Me&gnyitás"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:626
 msgid "Open a cell when Maxima expects input"
-msgstr "Nyit egy cellát, amikor a maxima bemenetet vár"
+msgstr "Nyit egy cellát, amikor a Maxima bemenetet vár"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:538
 msgid "Open a document"
@@ -4818,7 +4818,7 @@ msgid ""
 msgstr ""
 "A listákban deklarált tömbökön kívül semmilyen módon sem lehet ugrani. "
 "Meghatározzuk az n-edik elem címét, iterálunk az egyik elemtől a másikig, "
-"amíg az n-edik elemet el nem érjük. Ez nem egy maxima-specifikus jelenség, "
+"amíg az n-edik elemet el nem érjük. Ez nem egy Maxima-specifikus jelenség, "
 "de ez az ára, hogy a listákat könnyebben át lehet méretezni, mint a "
 "deklarált tömböket. Ha az aktuális elem címe ismert, akkor a következőhöz "
 "triviálisan juthatunk, melyhez\n"
@@ -5094,7 +5094,7 @@ msgid ""
 "packages and from functions that are defined in the current file."
 msgstr ""
 "A Ctrl+Space vagy a Ctrl+Tab megnyomására elindul egy automatikus "
-"kiegészítési eljárás, mely nem csak a maxima alapvető függvényeit és azok "
+"kiegészítési eljárás, mely nem csak a Maxima alapvető függvényeit és azok "
 "paramétereit ismeri, hanem a betöltött csomagokéit és az aktuális fájlon "
 "belül definiáltakéit is."
 
@@ -5195,7 +5195,7 @@ msgstr "Az előző parancs előhozása az előzmények közül"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1322
 #, c-format
 msgid "Received maxima's first prompt: %s"
-msgstr "A maxima első promptja :% s"
+msgstr "A Maxima első promptja :% s"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:867
 msgid "Recent files list length:"
@@ -5277,11 +5277,11 @@ msgstr "Időtakarékosságból lineáris elrendezés használata egy nagy cellá
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:773
 msgid "Restart Maxima"
-msgstr "A maxima újraindítása"
+msgstr "A Maxima újraindítása"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:240
 msgid "Restart maxima"
-msgstr "A maxima újraindítása"
+msgstr "A Maxima újraindítása"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1294
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1391
@@ -5383,7 +5383,7 @@ msgstr "P&olinom gyökei (bfloat)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:667
 msgid "Rounded"
-msgstr ""
+msgstr "Kerek"
 
 #: /home/gunter/src/wxmaxima/src/MatWiz.cpp:174
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5209
@@ -5580,7 +5580,7 @@ msgstr "Szóródási pont..."
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2768
 #, c-format
 msgid "Searching for maxima help file %s"
-msgstr "%s maxima súgófájl keresése"
+msgstr "%s Maxima súgófájl keresése"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:294
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1814
@@ -5634,7 +5634,7 @@ msgstr "&Minden kiválasztása\tCtrl+A"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1272
 msgid "Select Maxima program"
-msgstr "A maxima program kiválasztása"
+msgstr "A Maxima program kiválasztása"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7056
 msgid "Select Subsample"
@@ -5787,7 +5787,7 @@ msgstr "Néhány előfeltétel megadása a wxMaxima számára"
 #: /home/gunter/src/wxmaxima/src/main.cpp:126
 #, c-format
 msgid "Setting maxima's locale to %s."
-msgstr "A maxima helyének beállítása %s -ra."
+msgstr "A Maxima helyének beállítása %s -ra."
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:136
 #, c-format
@@ -6136,7 +6136,7 @@ msgstr "Sebesség vs. pontosság"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:668
 msgid "Square"
-msgstr ""
+msgstr "Szögletes"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1287
 msgid "Start Animation"
@@ -6144,7 +6144,7 @@ msgstr "Animáció indítása"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:993
 msgid "Start a new maxima for each re-evaluation"
-msgstr "Új maxima indítása minden újraértékeléshez"
+msgstr "Új Maxima indítása minden újraértékeléshez"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:52
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:148
@@ -6182,7 +6182,7 @@ msgstr "A paraméter értékének kezdete"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:368
 msgid "Starting Maxima process failed"
-msgstr "A maxima folyamat leállt"
+msgstr "A Maxima folyamat leállt"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1335
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3662
@@ -6217,7 +6217,7 @@ msgstr "Statisztika\tAlt+Shift+S"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4023
 msgid "String from maxima apparently didn't end in a newline"
-msgstr "A maxima sztringje nyilvánvalóan nem végződött új sorban"
+msgstr "A Maxima sztringje nyilvánvalóan nem végződött új sorban"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:251
 msgid "Strings"
@@ -6287,7 +6287,7 @@ msgstr "Váltás Lisp módra egy sorban!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7842
 msgid "Switching to lisp mode until a (to-maxima) is encountered!"
-msgstr "Lisp módba való átkapcsolás, amíg a (to-maxima) meg nem jelenik!"
+msgstr "Lisp módba való átkapcsolás, amíg a (to-Maxima) meg nem jelenik!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:640
 msgid "Symbols\tAlt+Shift+Y"
@@ -6331,7 +6331,7 @@ msgstr "TeX, MathJaX-szal értelmezve"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1901
 msgid "Telling maxima about the new working directory."
-msgstr "A maxima tájékoztatása az új munkakönyvtárról."
+msgstr "A Maxima tájékoztatása az új munkakönyvtárról."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6057
 msgid "Tellrat"
@@ -6399,7 +6399,7 @@ msgid ""
 "The Maxima process doesn't offer a shared memory segment we can send an "
 "interrupt signal to."
 msgstr ""
-"A maxima folyamat nem kínál megosztott memória szegmenst, így küldhetünk "
+"A Maxima folyamat nem kínál megosztott memória szegmenst, így küldhetünk "
 "megszakítási jelet."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:324
@@ -6431,13 +6431,13 @@ msgid ""
 "The default height for embedded plots. Can be read out or overridden by the "
 "maxima variable wxplot_size."
 msgstr ""
-"A beágyazott pontok alapértelmezett magassága. A maxima wxplot_size nevű "
+"A beágyazott pontok alapértelmezett magassága. A Maxima wxplot_size nevű "
 "változója olvashatja vagy átírhatja."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:374
 msgid "The default port used for communication between Maxima and wxMaxima."
 msgstr ""
-"A maxima és a wxMaxima közötti kommunikáció során használt alapértelmezett "
+"A Maxima és a wxMaxima közötti kommunikáció során használt alapértelmezett "
 "port."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:333
@@ -6445,7 +6445,7 @@ msgid ""
 "The default width for embedded plots. Can be read out or overridden by the "
 "maxima variable wxplot_size"
 msgstr ""
-"A beágyazott pontok alapértelmezett szélessége. A maxima wxplot_size nevű "
+"A beágyazott pontok alapértelmezett szélessége. A Maxima wxplot_size nevű "
 "változója olvashatja vagy átírhatja"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1921
@@ -6458,7 +6458,7 @@ msgid ""
 "The directory %s with maxima's startup file doesn't exist. Trying to create "
 "it..."
 msgstr ""
-"A(z)%s könyvtár a maxima indítófájljával nem létezik. Megpróbáljuk "
+"A(z)%s könyvtár a Maxima indítófájljával nem létezik. Megpróbáljuk "
 "létrehozni ..."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:369
@@ -6503,7 +6503,7 @@ msgid ""
 "images"
 msgstr ""
 "A kép nem jeleníthető meg. Lehet, hogy sérült, hibás formátumú, esetleg a "
-"Gnuplot nem tudta írni a képet, vagy érti, hogy a maxima mit szeretne "
+"Gnuplot nem tudta írni a képet, vagy érti, hogy a Maxima mit szeretne "
 "ábrázolni.\n"
 "Egy példa lehet az utóbbira: a Gnuplot nem tud mit kezdeni a teljesen üres "
 "képekkel"
@@ -6529,8 +6529,8 @@ msgid ""
 "The load() command of Maxima versions >5.38 is able to load .wxm files as "
 "library of maxima's commands."
 msgstr ""
-"Az 5.38-asnál nagyobb verziószámú maxima load() parancsa képes a .wxm "
-"fájloknak maxima parancskönyvtárakként való betöltésére."
+"Az 5.38-asnál nagyobb verziószámú Maxima load() parancsa képes a .wxm "
+"fájloknak Maxima parancskönyvtárakként való betöltésére."
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:197
 msgid ""
@@ -6568,7 +6568,7 @@ msgstr "Az \"Index kezdete\"-ről az \"Index vége\"-ig tett lépések száma."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1180
 msgid "The offline manual of maxima"
-msgstr "A maxima offline kézikönyve"
+msgstr "A Maxima offline kézikönyve"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:675
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:720
@@ -6578,7 +6578,7 @@ msgid ""
 "end in a \";\" or a \"$\""
 msgstr ""
 "Ezen parancsoknak a kimenetelének azt a részét, melyet nem \"matematikaiként"
-"\" deklarálnak, a wxMaxima elhagyhatja, mivel a maxima parancsoknak a \";\" "
+"\" deklarálnak, a wxMaxima elhagyhatja, mivel a Maxima parancsoknak a \";\" "
 "vagy a \"$\" jelre kell végződniük"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:358
@@ -6656,7 +6656,7 @@ msgid ""
 "changed by the user. Also a few constructs aren't variable names and "
 "therefore cannot be written to."
 msgstr ""
-"Néhány speciális változó értékét a maxima rendelte hozzá, és a felhasználó "
+"Néhány speciális változó értékét a Maxima rendelte hozzá, és a felhasználó "
 "nem változtathatja meg. Néhány konstrukció nem változó név, ezért nem "
 "módosítható."
 
@@ -6667,7 +6667,7 @@ msgstr "A változó az aktuális forráselem értékét tárolja."
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:8830
 msgid "The worksheet containing maxima's input and output"
-msgstr "A munkalap a maxima bemenetét és kimenetét tartalmazza"
+msgstr "A munkalap a Maxima bemenetét és kimenetét tartalmazza"
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:272
 msgid ""
@@ -6687,7 +6687,7 @@ msgid ""
 msgstr ""
 "Az Interneten számtalan Maximával és wxMaximával foglalkozó leírás "
 "található. További információkért látogassa meg a https://wxMaxima-"
-"developers.github.io/wxmaxima/help.html honlapot!"
+"developers.github.io/wxMaxima/help.html honlapot!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:536
 msgid ""
@@ -6721,9 +6721,9 @@ msgid ""
 "order to add startup commands that are executed in this case, too, please "
 "add them to maxima-init.mac, instead."
 msgstr ""
-"Ez a fájl nem olvasható a maxima által, ha a Maximát a wxMaxima nélkül "
+"Ez a fájl nem olvasható a Maxima által, ha a Maximát a wxMaxima nélkül "
 "használja. Az ebben az esetben végrehajtott indítási parancsok hozzáadásához "
-"kérjük, adja hozzá azokat a maxima-init.mac fájlhoz."
+"kérjük, adja hozzá azokat a Maxima-init.mac fájlhoz."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5751
 msgid ""
@@ -6970,7 +6970,7 @@ msgid ""
 "Unable to interpret the version info I got from http://wxMaxima-developers."
 "github.io//wxmaxima/version.txt: "
 msgstr ""
-"Nem tudtam értelmezni a http://wxMaxima-developers.github.io//wxmaxima/"
+"Nem tudtam értelmezni a http://wxMaxima-developers.github.io//wxMaxima/"
 "version.txt címről kapott verzióinformációt: "
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1083
@@ -7056,7 +7056,7 @@ msgstr "Fel"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2665
 msgid "Updating maxima's configuration"
-msgstr "A maxima beállításának frissítése"
+msgstr "A Maxima beállításának frissítése"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8583
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8590
@@ -7144,7 +7144,7 @@ msgstr "Unicode matematikai szimbólumok használata, amit az lehetséges"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:934
 msgid "User specified"
-msgstr ""
+msgstr "Felhasználó által meghatározott"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:247
 msgid "User-defined labels"
@@ -7266,7 +7266,7 @@ msgid ""
 "Whole document (*.wxmx)|*.wxmx|The input, readable by load() (maxima > 5.38) "
 "(*.wxm)|*.wxm"
 msgstr ""
-"Egész dokumentum: (*.wxmx)|*.wxmx|Bemenet, olvasható a load()-al (maxima > "
+"Egész dokumentum: (*.wxmx)|*.wxmx|Bemenet, olvasható a load()-al (Maxima > "
 "5.38):(*.wxm)|*.wxm"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:244
@@ -7329,7 +7329,7 @@ msgid ""
 "function name and pressing F1. wxMaxima will search help index for the "
 "selection or the word under the cursor."
 msgstr ""
-"A maxima egy függvényéről segítséget kaphatunk, ha kijelöljük vagy "
+"A Maxima egy függvényéről segítséget kaphatunk, ha kijelöljük vagy "
 "rákattintunk a nevére, majd megnyomjuk az F1-et. A wxMaxima meg fogja "
 "keresni a kijelölt vagy a kurzor alatti szöveg 'Tartalom mutató'-ját a "
 "Súgóban."
@@ -7467,11 +7467,11 @@ msgstr "függvény alkalmazása az összes elemre"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:654
 msgid "as 1D ASCII"
-msgstr ""
+msgstr "1D-s ASCII-ként"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:655
 msgid "as ASCII Art"
-msgstr ""
+msgstr "ASCII Art-ként"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1061
 msgid "as storage for actual values for variables"
@@ -7491,11 +7491,11 @@ msgstr "khí"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:966
 msgid "choose a lisp maxima was compiled with"
-msgstr "válassza ki, a maxima melyik Lisp fordítóval lett buildelve"
+msgstr "válassza ki, a Maxima melyik Lisp fordítóval lett buildelve"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:970
 msgid "choose between installed maxima versions"
-msgstr ""
+msgstr "a telepített Maxima verziók közti választás"
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:65
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:389
@@ -7586,7 +7586,7 @@ msgstr "ban"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:656
 msgid "in 2D"
-msgstr ""
+msgstr "2D-sen"
 
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:66
 #: /home/gunter/src/wxmaxima/src/Plot2dWiz.cpp:197
@@ -7780,7 +7780,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1713
 msgid "sqrt (needs parenthesis for its argument to work as a maxima command)"
 msgstr ""
-"sqrt (hogy maxima parancsként működjön, az argumentumát zárójelbe kell rakni)"
+"sqrt (hogy Maxima parancsként működjön, az argumentumát zárójelbe kell rakni)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1738
 msgid "subset"
@@ -7800,7 +7800,7 @@ msgstr "tau"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:980
 msgid "tell sbcl to use <int>Mbytes of heap"
-msgstr "az sbcl <int> megabájt heap-et használjon"
+msgstr "az sbcl <egész> megabájt heap-et használjon"
 
 #: /home/gunter/src/wxmaxima/src/TextCell.cpp:282
 msgid ""
@@ -7901,8 +7901,8 @@ msgid ""
 "directory can be found by typing maxima_userdir"
 msgstr ""
 "A wxMaxima minden induláskor végrehajtja a felhasználói könyvtárban "
-"elhelyezett wxmaxima.rc szövegfájlban elhelyezett maxima parancsokat. A "
-"felhasználói könyvtár elérési útját a maxima_userdir parancs végrehajtásával "
+"elhelyezett wxMaxima.rc szövegfájlban elhelyezett Maxima parancsokat. A "
+"felhasználói könyvtár elérési útját a Maxima_userdir parancs végrehajtásával "
 "tudhatjuk meg"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2406
@@ -7927,7 +7927,7 @@ msgid ""
 "Please configure wxMaxima with 'Edit->Configure'.\n"
 "Then start Maxima with 'Maxima->Restart Maxima'."
 msgstr ""
-"A wxMaxima nem találja a maxima programot!\n"
+"A wxMaxima nem találja a Maxima programot!\n"
 " \n"
 "Kérem adja meg az elérési útját a 'Szerkesztés->Beállítás' menüpont alatt.\n"
 "Ezután indítsa el a Maximát a 'Maxima->Maxima újraindítása' segítségével."
@@ -7992,7 +7992,7 @@ msgid ""
 "wxMaxima is a graphical user interface for the computer algebra system "
 "MAXIMA based on wxWidgets."
 msgstr ""
-"A wxMaxima egy wxWidgets-en alapuló grafikus felhasználói felület a maxima "
+"A wxMaxima egy wxWidgets-en alapuló grafikus felhasználói felület a Maxima "
 "komputeralgebrai rendszer számára."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6689
@@ -8000,7 +8000,7 @@ msgid ""
 "wxMaxima is a graphical user interface for the computer algebra system "
 "Maxima based on wxWidgets."
 msgstr ""
-"A wxMaxima egy wxWidgets-en alapuló grafikus felhasználói felület a maxima "
+"A wxMaxima egy wxWidgets-en alapuló grafikus felhasználói felület a Maxima "
 "komputeralgebrai rendszer számára."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:138
