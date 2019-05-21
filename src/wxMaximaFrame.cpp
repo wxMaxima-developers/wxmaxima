@@ -651,21 +651,21 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendSeparator();
   // equation display type submenu
   wxMenu *equationType = new wxMenu;
-  equationType->Append(menu_math_as_1D_ASCII, wxT("as 1D ASCII"), _("Show equations in their linear form"), wxITEM_NORMAL);
-  equationType->Append(menu_math_as_2D_ASCII, wxT("as ASCII Art"), _("2D equations using ASCII Art"), wxITEM_NORMAL);
-  equationType->Append(menu_math_as_graphics, wxT("in 2D"), _("Nice Graphical Equations"), wxITEM_NORMAL);
+  equationType->Append(menu_math_as_1D_ASCII, _("as 1D ASCII"), _("Show equations in their linear form"), wxITEM_NORMAL);
+  equationType->Append(menu_math_as_2D_ASCII, _("as ASCII Art"), _("2D equations using ASCII Art"), wxITEM_NORMAL);
+  equationType->Append(menu_math_as_graphics, _("in 2D"), _("Nice Graphical Equations"), wxITEM_NORMAL);
 
   m_Maxima_Panes_Sub->Append(wxNewId(), _("Display equations"), equationType, _("How to display new equations"));
 
   wxMenu *autoSubscript = new wxMenu;
-  autoSubscript->Append(menu_noAutosubscript, wxT("Never"), _("Don't autosubscript after an underscore"), wxITEM_NORMAL);
-  autoSubscript->Append(menu_defaultAutosubscript, wxT("Integers and single letters"), _("Autosubscript numbers and text following single letters"), wxITEM_NORMAL);
-  autoSubscript->Append(menu_alwaysAutosubscript, wxT("Always"), _("Always autosubscript after an underscore"), wxITEM_NORMAL);
+  autoSubscript->Append(menu_noAutosubscript, _("Never"), _("Don't autosubscript after an underscore"), wxITEM_NORMAL);
+  autoSubscript->Append(menu_defaultAutosubscript, _("Integers and single letters"), _("Autosubscript numbers and text following single letters"), wxITEM_NORMAL);
+  autoSubscript->Append(menu_alwaysAutosubscript, _("Always"), _("Always autosubscript after an underscore"), wxITEM_NORMAL);
   m_Maxima_Panes_Sub->Append(wxNewId(), _("Autosubscript"), autoSubscript, _("Autosubscript chars after an underscore"));
 
   wxMenu *roundedMatrixParens = new wxMenu;
-  roundedMatrixParens->Append(menu_roundedMatrixParensYes, wxT("Rounded"), _("Use rounded parenthesis for matrices"), wxITEM_NORMAL);
-  roundedMatrixParens->Append(menu_roundedMatrixParensNo, wxT("Square"), _("Use square parenthesis for matrices"), wxITEM_NORMAL);
+  roundedMatrixParens->Append(menu_roundedMatrixParensYes, _("Rounded"), _("Use rounded parenthesis for matrices"), wxITEM_NORMAL);
+  roundedMatrixParens->Append(menu_roundedMatrixParensNo, _("Square"), _("Use square parenthesis for matrices"), wxITEM_NORMAL);
   m_Maxima_Panes_Sub->Append(wxNewId(), _("Matrix parenthesis"), roundedMatrixParens, _("Choose the parenthesis type for Matrices"));
 
 

@@ -971,9 +971,9 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
               0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   wxString sbclMemoryParameter;
 #ifdef __WXMSW__
-  sbclMemoryParameter = "      -X \"--dynamic-space-size <int>\"";
+  sbclMemoryParameter = _("      -X \"--dynamic-space-size <int>\"");
 #else
-  sbclMemoryParameter = "      -X '--dynamic-space-size <int>'";
+  sbclMemoryParameter = _("      -X '--dynamic-space-size <int>'");
 #endif
   sizer2->Add(new wxStaticText(panel, -1, sbclMemoryParameter), 0,
               wxALL | wxALIGN_CENTER_VERTICAL, 5);

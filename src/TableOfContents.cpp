@@ -110,7 +110,9 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *cursorPo
         selection = m_displayedItems->GetItemCount() - 1;
       if ((selection >= 0) && (selection < m_displayedItems->GetItemCount()))
       {
-        m_displayedItems->SetItemState(selection, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+        m_displayedItems->SetItemState(selection,
+                                       wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED,
+                                       wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
       }
       m_lastSelection = selection;
     }
