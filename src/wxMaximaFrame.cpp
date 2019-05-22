@@ -71,6 +71,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   entries[10].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('4'), menu_convert_to_subsection);
   entries[11].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('5'), menu_convert_to_subsubsection);
   entries[12].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('6'), menu_convert_to_heading5);
+  // wxWidgets can read the hotkeys that now follow from the menus. But it doesn't
+  // do so on debian if the input method is xim.
   entries[13].Set(wxACCEL_CTRL, wxT('+'), Worksheet::menu_zoom_in);
   entries[14].Set(wxACCEL_CTRL, wxT('-'), Worksheet::menu_zoom_out);
   entries[15].Set(wxACCEL_CTRL, wxT('0'), menu_insert_input);
