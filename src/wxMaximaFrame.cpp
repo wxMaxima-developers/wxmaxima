@@ -57,7 +57,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   wxWindowUpdateLocker noUpdates(this);
 
   // Add some shortcuts that aren't automatically set by menu entries.
-  wxAcceleratorEntry entries[16];
+  wxAcceleratorEntry entries[23];
   entries[0].Set(wxACCEL_CTRL, WXK_TAB, menu_autocomplete);
   entries[1].Set(wxACCEL_CTRL, WXK_SPACE, menu_autocomplete);
   entries[2].Set(wxACCEL_CTRL | wxACCEL_SHIFT, WXK_TAB, menu_autocomplete_templates);
@@ -73,7 +73,15 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   entries[12].Set(wxACCEL_CTRL | wxACCEL_SHIFT, wxT('6'), menu_convert_to_heading5);
   entries[13].Set(wxACCEL_CTRL, wxT('+'), Worksheet::menu_zoom_in);
   entries[14].Set(wxACCEL_CTRL, wxT('-'), Worksheet::menu_zoom_out);
-  wxAcceleratorTable accel(15, entries);
+  entries[15].Set(wxACCEL_CTRL, wxT('0'), menu_insert_input);
+  entries[16].Set(wxACCEL_CTRL, wxT('1'), menu_add_comment);
+  entries[17].Set(wxACCEL_CTRL, wxT('2'), menu_add_title);
+  entries[18].Set(wxACCEL_CTRL, wxT('3'), menu_add_section);
+  entries[19].Set(wxACCEL_CTRL, wxT('4'), menu_add_subsection);
+  entries[20].Set(wxACCEL_CTRL, wxT('5'), menu_add_subsubsection);
+  entries[21].Set(wxACCEL_CTRL, wxT('6'), menu_add_heading5);
+  entries[22].Set(wxACCEL_CTRL, wxT('7'), menu_add_heading6);
+  wxAcceleratorTable accel(23, entries);
   SetAcceleratorTable(accel);
     
   // Redirect all debug messages to a dockable panel and output some info
