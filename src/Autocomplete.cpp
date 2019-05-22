@@ -4271,6 +4271,8 @@ bool AutoComplete::LoadSymbols()
   m_wordList[command].Add("simplified_output"); // OPTION
   m_wordList[command].Add("linear_solver"); // OPTION
   m_wordList[command].Add("warnings"); // OPTION
+  m_wordList[command].Add("warning"); // FUNCTION
+  m_wordList[tmplte ].Add("warning(<expr>, <...>, <expr_n>)"); // OPTION
   m_wordList[command].Add("Gosper_in_Zeilberger"); // OPTION
   m_wordList[command].Add("trivial_solutions"); // OPTION
   m_wordList[command].Add("mod_test"); // OPTION
