@@ -78,6 +78,14 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
 #endif
           ),m_cellPointers(this)
 {
+  #ifdef __WXGTK__
+  wxString gtk_input_method;
+  if(wxGetEnv(wxT("GTK_IM_MODULE"),&gtk_input_method))
+  {
+    if(gtk_input_method==wxT("xim"))
+      wxLogMessage(_("Warning: GTK_IM_MODULE is set to \"xim\" which means that some hotkeys might not work."));
+  }
+  #endif
   // This is somehow needed for wxAutoBufferedPaintDC
   SetBackgroundStyle(wxBG_STYLE_PAINT);
   SetBackgroundColour(*wxWHITE);
