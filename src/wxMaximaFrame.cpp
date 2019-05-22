@@ -1342,7 +1342,11 @@ void wxMaximaFrame::ReReadConfig()
     config->Flush();
     wxDELETE(config);
     config = NULL;
-    wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+    if(Configuration::m_configfileLocation_override != wxEmptyString)
+      wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+    else
+      wxConfig::Set(new wxFileConfig(wxT("wxMaxima"), wxEmptyString,
+                                     Configuration::m_configfileLocation_override));
     }
 #endif
 }

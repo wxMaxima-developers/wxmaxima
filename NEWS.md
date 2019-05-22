@@ -1,3 +1,9 @@
+# wxMaxima 19.05.5 - Stable
+ * An updated hungarian translation
+ * The new maxima command cartesian_product_list is now known to
+   the autocompletion.
+ * Better xim compatibility.
+
 # wxMaxima 19.05.4 - Stable
  * Corrected saving formatting styles in the config dialogue
  * Allow to change the title etc. font again
