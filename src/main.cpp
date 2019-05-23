@@ -185,7 +185,7 @@ bool MyApp::OnInit()
     Configuration::m_configfileLocation_override = ini;
     wxConfig::Set(new wxFileConfig(wxT("wxMaxima"),
                                    wxEmptyString,
-                                   Configuration::m_configfileLocation_overridey));
+                                   Configuration::m_configfileLocation_override));
   }
   else
     wxConfig::Set(new wxConfig(wxT("wxMaxima")));
