@@ -185,7 +185,7 @@ bool MyApp::OnInit()
     Configuration::m_configfileLocation_override = ini;
     wxConfig::Set(new wxFileConfig(wxT("wxMaxima"),
                                    wxEmptyString,
-                                   Configuration::m_configfileLocation_override));
+                                   Configuration::m_configfileLocation_overridey));
   }
   else
     wxConfig::Set(new wxConfig(wxT("wxMaxima")));
@@ -346,8 +346,8 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
   {
     case wxMaximaFrame::menu_new_id:
     case ToolBar::tb_new:
-    case wxMaxima::mac_newId:
-
+  case wxMaxima::mac_newId:
+    {
       // Mac computers insist that all instances of a new application need to share
       // the same process. On all other OSes we create a separate process for each
       // window: This way if one instance of wxMaxima crashes all the other instances
@@ -356,15 +356,16 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
       NewWindow();
 #else
 //      NewWindow();
-  wxString args;
-  if(Configuration::m_configfileLocation_override != wxEmptyString)
-    args += " -f \"" + Configuration::m_configfileLocation_override + "\"";
-  if(Configuration::m_maximaLocation_override != wxEmptyString)
-    args += " -m \"" + Configuration::m_maximaLocation_override + "\"";
+      wxString args;
+      if(Configuration::m_configfileLocation_override != wxEmptyString)
+        args += " -f \"" + Configuration::m_configfileLocation_override + "\"";
+      if(Configuration::m_maximaLocation_override != wxEmptyString)
+        args += " -m \"" + Configuration::m_maximaLocation_override + "\"";
 
-wxExecute(wxT("\"") + wxStandardPaths::Get().GetExecutablePath() + wxT("\"") + args);
+      wxExecute(wxT("\"") + wxStandardPaths::Get().GetExecutablePath() + wxT("\"") + args);
 #endif
       break;
+    }
     case wxMaxima::mac_openId:
     {
       wxString file = wxFileSelector(_("Open"), wxEmptyString,
