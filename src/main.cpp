@@ -356,7 +356,13 @@ void MyApp::OnFileMenu(wxCommandEvent &ev)
       NewWindow();
 #else
 //      NewWindow();
-      wxExecute(wxT("\"")+wxStandardPaths::Get().GetExecutablePath()+wxT("\""));
+  wxString args;
+  if(Configuration::m_configfileLocation_override != wxEmptyString)
+    args += " -f \"" + Configuration::m_configfileLocation_override + "\"";
+  if(Configuration::m_maximaLocation_override != wxEmptyString)
+    args += " -m \"" + Configuration::m_maximaLocation_override + "\"";
+
+wxExecute(wxT("\"") + wxStandardPaths::Get().GetExecutablePath() + wxT("\"") + args);
 #endif
       break;
     case wxMaxima::mac_openId:
