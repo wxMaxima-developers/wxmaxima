@@ -739,7 +739,7 @@ public:
   //! Get the autosave interval [in minutes]; 0 = no autosave
   int AutoSaveMinutes(){return m_autoSaveMinutes;}
   //! Set the autosave interval [in minutes]; 0 = noautosave
-  void AutoSaveMinutes(int minutes){wxConfig::Get()->Write(wxT("autoSaveInterval"),
+  void AutoSaveMinutes(int minutes){wxConfig::Get()->Write(wxT("autoSaveMinutes"),
                                                            m_autoSaveMinutes = minutes);
   }
   
