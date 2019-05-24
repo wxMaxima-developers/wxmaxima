@@ -803,6 +803,8 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
           m_newCharsFromMaxima += chr;
       }
 
+    m_bytesFromMaxima += m_newCharsFromMaxima.Length();
+    
     if(m_newCharsFromMaxima.EndsWith("\n") || m_newCharsFromMaxima.EndsWith(m_promptSuffix))
     {
       m_waitForStringEndTimer.Stop();
@@ -1292,7 +1294,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   if((end = m_currentOutput.Find(m_firstPrompt)) == wxNOT_FOUND)
     return;
 
-//  m_worksheet->m_cellPointers.m_currentTextCell = NULL;
+  m_bytesFromMaxima = 0;
 
   int start = 0;
   start = data.Find(wxT("Maxima "));
@@ -1740,6 +1742,8 @@ void wxMaxima::ReadPrompt(wxString &data)
   if (end == wxNOT_FOUND)
     return;
 
+  m_bytesFromMaxima = 0;
+  
   wxString o = data.SubString(m_promptPrefix.Length(), end - 1);
   // Remove the prompt we will process from the string.
   data = data.Right(data.Length()-end-m_promptSuffix.Length());

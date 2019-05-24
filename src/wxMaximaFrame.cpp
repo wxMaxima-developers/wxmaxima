@@ -51,6 +51,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_unsavedDocuments(wxT("unsaved")),
   m_recentPackages(wxT("packages"))
 {
+  m_bytesFromMaxima = 0;
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
@@ -417,7 +418,9 @@ void wxMaximaFrame::EvaluationQueueLength(int length, int numberOfCommands)
 
 void wxMaximaFrame::UpdateStatusMaximaBusy()
 {
-  if ((m_StatusMaximaBusy != m_StatusMaximaBusy_next) || (m_forceStatusbarUpdate))
+  if ((m_StatusMaximaBusy != m_StatusMaximaBusy_next) || (m_forceStatusbarUpdate) ||
+      (!m_bytesReadDisplayTimer.IsRunning() && (m_bytesFromMaxima != m_bytesFromMaxima_last) &&
+       (m_StatusMaximaBusy == transferring)))
   {
     m_StatusMaximaBusy = m_StatusMaximaBusy_next;
     if (!m_StatusSaving)
@@ -425,18 +428,22 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
       switch (m_StatusMaximaBusy)
       {
         case process_wont_start:
+          m_bytesFromMaxima_last = 0;
           RightStatusText(_("Cannot start the maxima binary"));
           break;
         case userinput:
+          m_bytesFromMaxima_last = 0;
           m_MenuBar->Enable(menu_remove_output, false);
           RightStatusText(_("Maxima asks a question"));
           break;
         case sending:
+          m_bytesFromMaxima_last = 0;
           m_MenuBar->Enable(menu_remove_output, true);
           RightStatusText(_("Sending a command to maxima"));
           // We don't evaluate any cell right now.
           break;
         case waiting:
+          m_bytesFromMaxima_last = 0;
           m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
           // If we evaluated a cell that produces no output we still want the
           // cell to be unselected after evaluating it.
@@ -448,22 +455,33 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
           // We don't evaluate any cell right now.
           break;
         case calculating:
+          m_bytesFromMaxima_last = 0;
           m_MenuBar->Enable(menu_remove_output, false);
           RightStatusText(_("Maxima is calculating"), false);
           break;
         case transferring:
           m_MenuBar->Enable(menu_remove_output, false);
-          RightStatusText(_("Reading Maxima output"),false);
+          m_bytesFromMaxima_last = m_bytesFromMaxima;
+          m_bytesReadDisplayTimer.StartOnce(300);
+          if(m_bytesFromMaxima == 0)
+            RightStatusText(_("Reading Maxima output"),false);
+          else
+            RightStatusText(wxString::Format(
+                              _("Reading Maxima output: %li bytes"), m_bytesFromMaxima),
+                            false);
           break;
         case parsing:
+          m_bytesFromMaxima_last = 0;
           m_MenuBar->Enable(menu_remove_output, false);
           RightStatusText(_("Parsing output"),false);
           break;
         case disconnected:
+          m_bytesFromMaxima_last = 0;
           m_MenuBar->Enable(menu_remove_output, false);
           RightStatusText(_("Not connected to maxima"));
           break;
         case wait_for_start:
+          m_bytesFromMaxima_last = 0;
           m_MenuBar->Enable(menu_remove_output, false);
           RightStatusText(_("Maxima started. Waiting for connection..."));
           break;

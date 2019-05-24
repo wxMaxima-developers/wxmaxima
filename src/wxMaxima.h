@@ -138,7 +138,7 @@ public:
 
   //! A timer that polls for output from the maxima process.
   wxTimer m_maximaStdoutPollTimer;
-  
+
   void ShowTip(bool force);
 
   /*! Get the name of the help file

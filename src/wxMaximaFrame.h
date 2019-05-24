@@ -568,6 +568,8 @@ public:
   void StatusExportFailed();
 
 protected:
+  //! How many bytes did maxima send us until now?
+  long m_bytesFromMaxima;
   //! The process id of maxima. Is determined by ReadFirstPrompt.
   long m_pid;
   //! Did the user ever give this file a name?
@@ -627,6 +629,9 @@ protected:
   //! Remember an temporary autosave file name.
   void RegisterAutoSaveFile();
 private:
+  //! How many bytes did maxima send us when we updated the statusbar?
+  long m_bytesFromMaxima_last;
+  wxTimer m_bytesReadDisplayTimer; 
   //! A panel that shows all user-defined symbols on the symbols pane.
   wxPanel *m_userSymbols;
   //! A button per user defined symbol
