@@ -1,3 +1,8 @@
+# wxMaxima 19.05.6 - Stable
+ * Correctly save the autosave interval
+ * A better logic for saving on exit if autosave is on and the file 
+   cannot be created.
+ 
 # wxMaxima 19.05.5 - Stable
  * An updated hungarian translation
  * The new maxima command cartesian_product_list is now known to
