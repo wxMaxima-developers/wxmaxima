@@ -157,3 +157,6 @@ add_custom_target(checksums
     ${CMAKE_COMMAND} -DVERSION=${VERSION} -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -P ${CMAKE_SOURCE_DIR}/checksums.cmake)
 
 include(CPack)
+
+enable_testing()
+add_test(NAME run_wxmaxima COMMAND wxmaxima-local ${CMAKE_SOURCE_DIR}/test/testbench_automatic.wxmx -b)
