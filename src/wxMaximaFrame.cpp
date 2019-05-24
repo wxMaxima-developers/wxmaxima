@@ -420,7 +420,7 @@ void wxMaximaFrame::UpdateStatusMaximaBusy()
 {
   if ((m_StatusMaximaBusy != m_StatusMaximaBusy_next) || (m_forceStatusbarUpdate) ||
       (!m_bytesReadDisplayTimer.IsRunning() && (m_bytesFromMaxima != m_bytesFromMaxima_last) &&
-       (m_StatusMaximaBusy == transferring)))
+       (m_StatusMaximaBusy_next == transferring)))
   {
     m_StatusMaximaBusy = m_StatusMaximaBusy_next;
     if (!m_StatusSaving)
