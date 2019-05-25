@@ -15,7 +15,7 @@ before_install:
 - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN
   CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq install -y libwxgtk3.0-dev
-  libwxgtk3.0 gettext doxygen graphviz rpm cmake maxima; fi
+  libwxgtk3.0 gettext doxygen graphviz rpm cmake; fi
 #- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --no-verbose -c https://cmake.org/files/v3.12/cmake-3.12.2-Linux-x86_64.tar.gz
 #  ; tar xzf cmake-3.12.2-Linux-x86_64.tar.gz ; export PATH=$(pwd)/cmake-3.12.2-Linux-x86_64/bin:$PATH
 #  ; fi
@@ -26,8 +26,6 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gettext texinfo
   ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxwidgets
-  ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install maxima
   ; fi
 notification:
   email:
@@ -51,7 +49,6 @@ script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake --build . -- html; fi
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
-- ./wxmaxima-local test/testbench_automatic.wxmx
 - cd ..
 #- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then git clean -dfx;bash .coverity/coverity.sh ;fi
 env:
