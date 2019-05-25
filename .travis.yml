@@ -51,7 +51,7 @@ script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake --build . -- html; fi
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
-- make test
+- ./wxmaxima-local test/testbench_automatic.wxmx
 - cd ..
 #- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then git clean -dfx;bash .coverity/coverity.sh ;fi
 env:
