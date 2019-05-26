@@ -158,5 +158,6 @@ add_custom_target(checksums
 
 include(CPack)
 
-enable_testing()
-add_test(NAME run_wxmaxima COMMAND wxmaxima-local ${CMAKE_SOURCE_DIR}/test/testbench_automatic.wxmx -b)
+# Launchpad doesn't like these tests ans they ant to access the gui.
+#enable_testing()
+#add_test(NAME run_wxmaxima COMMAND wxmaxima-local ${CMAKE_SOURCE_DIR}/test/testbench_automatic.wxmx -b)
