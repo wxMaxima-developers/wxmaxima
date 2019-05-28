@@ -47,7 +47,6 @@ if(MACOSX_VERSION_MIN)
     set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_LINKER_FLAGS_RELEASE} -mmacosx-version-min=${MACOSX_VERSION_MIN}")
 endif()
 
-
 # Get the git version, if available.
 find_package(Git)
 if(Git_FOUND)
@@ -158,6 +157,10 @@ add_custom_target(checksums
 
 include(CPack)
 
-# Launchpad doesn't like these tests ans they ant to access the gui.
-#enable_testing()
-#add_test(NAME run_wxmaxima COMMAND wxmaxima-local ${CMAKE_SOURCE_DIR}/test/testbench_automatic.wxmx -b)
+find_program(XVFB xvfb-run)
+enable_testing()
+if(XVFB)
+  add_test(NAME run_wxmaxima_batch COMMAND xvfb-run ./wxmaxima-local --batch ${CMAKE_SOURCE_DIR}/test/testbench_automatic.wxmx)
+else()
+    message(STATUS "xvfb not found => Not enabling the tests.")  
+endif()
