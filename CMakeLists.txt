@@ -1,5 +1,5 @@
 project(wxmaxima)
-set(VERSION 19.05.6-DevelopmentSnapshot)
+set(VERSION 19.05.7)
 set(PACKAGE_VERSION ${VERSION})
 set(GITVERSION ${VERSION})
 set(PACKAGE wxMaxima)

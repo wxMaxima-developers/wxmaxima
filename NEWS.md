@@ -1,3 +1,7 @@
+# wxMaxima 19.05.7 - Stable
+ * In conjunction with a new enough maxima worksheets can now start
+   with a :lisp command.
+ 
 # wxMaxima 19.05.6 - Stable
  * Correctly save the autosave interval
  * A better logic for saving on exit if autosave is on and the file 
