@@ -1765,6 +1765,7 @@ void wxMaxima::ReadPrompt(wxString &data)
                   (o[o.Length() - 2] == (wxT(')'))) &&
                   (o[0] == (wxT('(')))
           ) ||
+          o.IsEmpty() || 
           m_inLispMode ||
           (o.StartsWith(wxT("MAXIMA>"))) ||
           (o.StartsWith(wxT("\nMAXIMA>")))
@@ -2674,7 +2675,7 @@ void wxMaxima::SetupVariables()
              wxString(wxmaximaversion_lisp) +
              wxT("\") '$version) (setq $wxwidgetsversion \"")) + wxString(wxVERSION_STRING) +
              wxT("\")   (if (boundp $maxima_frontend_version) (setq $maxima_frontend_version \"" +
-                 wxmaximaversion_lisp + "\")))\n")
+                 wxmaximaversion_lisp + "\")) (ignore-errors (setf (symbol-value '*lisp-quiet-suppressed-prompt*) \"" + m_promptPrefix + m_promptSuffix + "\")))\n")
     );
 
   ConfigChanged();
