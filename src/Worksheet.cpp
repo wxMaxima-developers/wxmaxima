@@ -6058,9 +6058,17 @@ bool Worksheet::ExportToTeX(wxString file)
                         "\n\n");
   output << wxT("\\setlength{\\parskip}{\\medskipamount}\n");
   output << wxT("\\setlength{\\parindent}{0pt}\n");
-  output << wxT("\\usepackage[utf8]{luainputenc}\n");
-  // Tell LaTeX how to handle a few special characters.
-  output << wxT("\\DeclareUnicodeCharacter{00B5}{\\ensuremath{\\mu}}\n");
+  output << wxT("\\usepackage{iftex}\n");
+  output << wxT("\\ifPDFTeX\n");
+  output << wxT("  % PDFLaTeX or LaTeX \n");
+  output << wxT("  \\usepackage[utf8]{inputenc}\n");
+  output << wxT("  \\usepackage[T1]{fontenc}\n");
+  output << wxT("  \\DeclareUnicodeCharacter{00B5}{\\ensuremath{\\mu}}\n");
+  output << wxT("\\else\n");
+  output << wxT("  %  XeLaTeX or LuaLaTeX\n");
+  output << wxT("  \\usepackage{fontspec}\n");
+  output << wxT("\\fi\n");
+
   // The following line loads all code needed in order to include graphics.
   output << wxT("\\usepackage{graphicx}\n");
   // We want to color the labels and text cells. The following line adds the necessary
