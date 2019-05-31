@@ -49,6 +49,7 @@ surrounding the worksheet.
 #include "XmlInspector.h"
 #include "StatusBar.h"
 #include "LogPane.h"
+#include "VariablesPane.h"
 #include <list>
 
 
@@ -102,10 +103,11 @@ public:
     menu_pane_structure,    //!< Both the "toggle the structure pane" command and the structure
     menu_pane_xmlInspector, //!< Both the "toggle the xml monitor" command and the monitor pane
     menu_pane_format,    //!< Both the "toggle the format pane" command and the format pane
-    menu_pane_greek,     //!< Both the "toggle the format pane" command for the "greek" pane
-    menu_pane_log,       //!< Both the "toggle the format pane" command for the "debug" pane
-    menu_pane_draw,      //!< Both the "toggle the format pane" command for the "draw" pane
-    menu_pane_symbols,   //!< Both the "toggle the format pane" command for the "symbols" pane
+    menu_pane_greek,     //!< Both the "toggle the greek pane" command and the "greek" pane
+    menu_pane_log,       //!< Both the "toggle the log pane" command and the "log" pane
+    menu_pane_variables, //!< Both the "toggle the variables pane" command and the "variables" pane
+    menu_pane_draw,      //!< Both the "toggle the draw pane" command for the "draw" pane
+    menu_pane_symbols,   //!< Both the "toggle the symbols pane" command for the "symbols" pane
     /*! Both used as the "toggle the stats pane" command and as the ID of the stats pane
 
       Since this enum is also used for iterating over the panes it is vital 
@@ -741,6 +743,8 @@ protected:
   XmlInspector *m_xmlInspector;
   //! true=force an update of the status bar at the next call of StatusMaximaBusy()
   bool m_forceStatusbarUpdate;
+  //! The panel the log and debug messages will appear on
+  Variablespane *m_variablesPane;
   //! The panel the log and debug messages will appear on
   LogPane *m_logPane;
   //! The worksheet itself

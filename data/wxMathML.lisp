@@ -1865,11 +1865,16 @@
 
 ;;; Communicate the contents of variables to wxMaxima
   (defun wx-print-variable (var)
-    (format t "<variable>")
-    (format t "<name>~a</name>" (symbol-to-xml var))
-    (if (boundp var)
-	(format t "<value>~a</value>" (wxxml-fix-string(eval var))))
+    (format t "<variable>~%<name>~a</name>" (symbol-to-xml var))
+    (ignore-errors
+      (let (($display2d nil))
+	    (mtell "<value>~M</value>" (wxxml-fix-string(eval var)))))
     (format t "</variable>"))
+
+  (defun wx-query-variable (var)
+    (format t "<variables>")
+    (wx-print-variable var)
+    (format t "</variables>~%"))
 
   (defun wx-print-variables ()
     #+clisp (finish-output)

@@ -1,5 +1,5 @@
 find_package(wxWidgets 3 REQUIRED std xml html adv aui core net base richtext)
- 
+
 include(${wxWidgets_USE_FILE})
 
 file(GLOB SOURCE_FILES *.cpp *.h)

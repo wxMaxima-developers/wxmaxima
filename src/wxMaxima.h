@@ -189,7 +189,12 @@ public:
   void LoadImage(wxString file)
   { m_worksheet->OpenHCaret(file, GC_TYPE_IMAGE); }
 
+  //! Query the value of a new maxima variable
+  void QueryVariableValue();
+
 private:
+  //! The variable names to query for the variables pane
+  wxArrayString m_varNamesToQuery;
   bool m_isLogTarget;
   //! Is true if opening the file from the command line failed before updating the statusbar.
   bool m_openInitialFileError;
@@ -387,7 +392,8 @@ protected:
     \todo Inform maxima about the new default plot window size.
   */
   void EditInputMenu(wxCommandEvent &event);
-
+  //! Trigger reading all variables from Maxima that are shown in the Variables sidebar
+  void VarReadEvent(wxCommandEvent &event);
   void EvaluateEvent(wxCommandEvent &event);       //
   void InsertMenu(wxCommandEvent &event);          //
   void PrintMenu(wxCommandEvent &event);

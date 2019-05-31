@@ -260,7 +260,21 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             MinSize(m_logPane->GetEffectiveMinSize()).
                             FloatingSize(m_logPane->GetEffectiveMinSize()).
                             Left());
-  
+
+  m_manager.AddPane(m_variablesPane = new Variablespane(this,-1),
+                    wxAuiPaneInfo().Name(wxT("variables")).
+                            Show(false).CloseButton().PinButton().
+                            DockFixed(false).
+                            Gripper(false).
+                            TopDockable(true).
+                            BottomDockable(true).
+                            LeftDockable(true).
+                            RightDockable(true).
+                            PaneBorder(true).
+                            MinSize(m_logPane->GetEffectiveMinSize()).
+                            FloatingSize(m_logPane->GetEffectiveMinSize()).
+                            Left());
+
   wxPanel *symbolsPane = CreateSymbolsPane();
   m_manager.AddPane(symbolsPane,
                     wxAuiPaneInfo().Name(wxT("symbols")).
@@ -327,6 +341,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_manager.GetPane(wxT("log")) = m_manager.GetPane(wxT("log")).
     Show(false).Gripper(false).CloseButton().PinButton();
 
+  m_manager.GetPane(wxT("variables")) = m_manager.GetPane(wxT("variables")).
+    Gripper(false).CloseButton().PinButton();
+
   m_manager.GetPane(wxT("symbols")) = m_manager.GetPane(wxT("symbols")).
     MinSize(symbolsPane->GetEffectiveMinSize()).
     BestSize(symbolsPane->GetEffectiveMinSize()).
@@ -378,6 +395,8 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
     m_manager.GetPane(wxT("greek")).Caption(_("Greek Letters")).CloseButton().PinButton().Resizable().Gripper(false);
   m_manager.GetPane(wxT("log")) =
     m_manager.GetPane(wxT("log")).Caption(_("Debug Messages")).CloseButton().PinButton().Resizable().Gripper(false);
+  m_manager.GetPane(wxT("variables")) =
+    m_manager.GetPane(wxT("variables")).Caption(_("Variables")).CloseButton().PinButton().Resizable().Gripper(false);
   m_manager.GetPane(wxT("math")) = m_manager.GetPane(wxT("math")).Caption(_("General Math")).
     CloseButton().PinButton().Resizable();
   m_manager.GetPane(wxT("stats")) = m_manager.GetPane(wxT("stats")).Caption(_("Statistics")).
@@ -672,6 +691,7 @@ void wxMaximaFrame::SetupMenu()
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_format, _("Insert Cell\tAlt+Shift+C"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_draw, _("Plot using Draw"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_log,   _("Debug messages"));
+  m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_variables,   _("Variables"));
   m_Maxima_Panes_Sub->AppendCheckItem(menu_pane_xmlInspector, _("Raw XML Monitor"));
   m_Maxima_Panes_Sub->AppendSeparator();
   m_Maxima_Panes_Sub->AppendCheckItem(ToolBar::tb_hideCode, _("Hide Code Cells\tAlt+Ctrl+H"));
@@ -1432,6 +1452,9 @@ bool wxMaximaFrame::IsPaneDisplayed(Event id)
     case menu_pane_log:
       displayed = m_manager.GetPane(wxT("log")).IsShown();
       break;
+    case menu_pane_variables:
+      displayed = m_manager.GetPane(wxT("variables")).IsShown();
+      break;
     case menu_pane_symbols:
       displayed = m_manager.GetPane(wxT("symbols")).IsShown();
       break;
@@ -1475,6 +1498,9 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
     case menu_pane_log:
       m_manager.GetPane(wxT("log")).Show(show);
       break;
+    case menu_pane_variables:
+      m_manager.GetPane(wxT("variables")).Show(show);
+      break;
     case menu_pane_symbols:
       m_manager.GetPane(wxT("symbols")).Show(show);
       break;
@@ -1492,6 +1518,7 @@ void wxMaximaFrame::ShowPane(Event id, bool show)
       m_manager.GetPane(wxT("stats")).Show(false);
       m_manager.GetPane(wxT("greek")).Show(false);
       m_manager.GetPane(wxT("log")).Show(false);
+      m_manager.GetPane(wxT("variables")).Show(false);
       m_manager.GetPane(wxT("symbols")).Show(false);
       m_manager.GetPane(wxT("format")).Show(false);
       ShowToolBar(false);
