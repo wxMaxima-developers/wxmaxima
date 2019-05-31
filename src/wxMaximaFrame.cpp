@@ -273,7 +273,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             PaneBorder(true).
                             MinSize(m_logPane->GetEffectiveMinSize()).
                             FloatingSize(m_logPane->GetEffectiveMinSize()).
-                            Left());
+                            Bottom().Row(2));
 
   wxPanel *symbolsPane = CreateSymbolsPane();
   m_manager.AddPane(symbolsPane,
