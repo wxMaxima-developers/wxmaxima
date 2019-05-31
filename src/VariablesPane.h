@@ -46,6 +46,7 @@ public:
   wxString UnescapeVarname(wxString var);
   //! Tell the variables pane about a variable value
   void VariableValue(wxString var, wxString val);
+  void VariableUndefined(wxString var);
   ~Variablespane();
 };
 

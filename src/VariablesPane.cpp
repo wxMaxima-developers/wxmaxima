@@ -64,7 +64,20 @@ void Variablespane::VariableValue(wxString var, wxString val)
 {
   for(int i = 0; i < GetNumberRows(); i++)
     if(GetCellValue(i,0) == UnescapeVarname(var))
+    {
+      SetCellTextColour(i,1,*wxBLACK);
       SetCellValue(i,1,val);
+    }
+}
+
+void Variablespane::VariableUndefined(wxString var)
+{
+  for(int i = 0; i < GetNumberRows(); i++)
+    if(GetCellValue(i,0) == UnescapeVarname(var))
+    {
+      SetCellTextColour(i,1,*wxLIGHT_GREY);
+      SetCellValue(i,1,_("Undefined"));
+    }
 }
 
 wxArrayString Variablespane::GetEscapedVarnames()

@@ -1714,7 +1714,10 @@ void wxMaxima::ReadVariables(wxString &data)
               wxLogMessage(wxString::Format(_("Maxima has loaded the file %s."),value));
             }
             m_variablesPane->VariableValue(name, value);
-         }
+          }
+          else
+            m_variablesPane->VariableUndefined(name);
+
           var = var->GetNext();
         }
         vars = vars->GetNext();
