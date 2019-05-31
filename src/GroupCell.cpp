@@ -1455,7 +1455,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
               << wxT("  \\begin{center}\n")
               << wxT("    \\includeimage{")
               << filename << wxT("_img/") << image << wxT("}\n")
-              << wxT("  \\caption{") << m_inputLabel->m_next->ToTeX() << wxT("}\n")
+              << wxT("  \\caption{") << m_inputLabel->m_next->ToTeX().Trim() << wxT("}\n")
               << wxT("  \\end{center}\n")
               << wxT("\\end{figure}\n");
         }
@@ -1481,19 +1481,24 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
             str += wxT("\\setcounter{figure}{0}\n");
             break;
           case TS_SECTION:
-            str = wxT("\n\\section{") + str + wxT("}\n");
+            // Trim() strings for TeX export to remove newlines in \section{}, \subsection{}, ... commands
+	    // LaTeX creates an error on the following code:
+	    // \section{Chapter 1
+	    //
+	    // }
+            str = wxT("\n\\section{") + str.Trim() + wxT("}\n");
             break;
           case TS_SUBSECTION:
-            str = wxT("\n\\subsection{") + str + wxT("}\n");
+            str = wxT("\n\\subsection{") + str.Trim() + wxT("}\n");
             break;
           case TS_SUBSUBSECTION:
-            str = wxT("\n\\subsubsection{") + str + wxT("}\n");
+            str = wxT("\n\\subsubsection{") + str.Trim() + wxT("}\n");
             break;
           case TS_HEADING5:
-            str = wxT("\n\\paragraph{") + str + wxT("}\n");
+            str = wxT("\n\\paragraph{") + str.Trim() + wxT("}\n");
             break;
           case TS_HEADING6:
-            str = wxT("\n\\subparagraph{") + str + wxT("}\n");
+            str = wxT("\n\\subparagraph{") + str.Trim() + wxT("}\n");
             break;
           default:
             if (str.StartsWith(wxT("TeX:")))
