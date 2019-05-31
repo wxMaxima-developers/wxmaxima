@@ -1452,11 +1452,10 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
         if (dynamic_cast<ImgCell *>(copy)->ToImageFile(file).x >= 0)
         {
           str << wxT("\\begin{figure}[htb]\n")
-              << wxT("  \\begin{center}\n")
+              << wxT("  \\centering\n")
               << wxT("    \\includeimage{")
               << filename << wxT("_img/") << image << wxT("}\n")
               << wxT("  \\caption{") << m_inputLabel->m_next->ToTeX().Trim() << wxT("}\n")
-              << wxT("  \\end{center}\n")
               << wxT("\\end{figure}\n");
         }
       }
@@ -1476,7 +1475,7 @@ wxString GroupCell::ToTeX(wxString imgDir, wxString filename, int *imgCounter)
         switch (GetEditable()->GetStyle())
         {
           case TS_TITLE:
-            str = wxT("\n\\pagebreak{}\n{\\Huge {\\sc ") + str + wxT("}}\n");
+            str = wxT("\n\\pagebreak{}\n{\\Huge {\\scshape ") + str + wxT("}}\n");
             str += wxT("\\setcounter{section}{0}\n\\setcounter{subsection}{0}\n");
             str += wxT("\\setcounter{figure}{0}\n");
             break;
@@ -1526,7 +1525,7 @@ wxString GroupCell::ToTeXCodeCell(wxString imgDir, wxString filename, int *imgCo
     str = wxT("\n\n\\noindent\n%%%%%%%%%%%%%%%\n")
       wxT("%%% INPUT:\n") +
       wxString::Format(
-        wxT("\\begin{minipage}[t]{%iem}\\color{red}\\bf\n"),
+        wxT("\\begin{minipage}[t]{%iem}\\color{red}\\bfseries\n"),
         configuration->GetLabelWidth()/14
         ) +
       m_inputLabel->ToTeX() +
