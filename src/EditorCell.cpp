@@ -468,8 +468,8 @@ wxString EditorCell::ToTeX()
     text.Replace(L"\x03BB", wxT("\\ensuremath{\\lambda}"));
     text.Replace(L"\x03BC", wxT("\\ensuremath{\\mu}"));
     text.Replace(L"\x03BD", wxT("\\ensuremath{\\nu}"));
-    text.Replace(L"\x03BE", wxT("\\ensuremath{\\xi}"));
-    text.Replace(L"\x03BF", wxT("\\ensuremath{\\omicron}"));
+    text.Replace(L"\x03BE", wxT("x"));
+    text.Replace(L"\x03BF", wxT("o"));
     text.Replace(L"\x03C0", wxT("\\ensuremath{\\pi}"));
     text.Replace(L"\x03C1", wxT("\\ensuremath{\\rho}"));
     text.Replace(L"\x03C3", wxT("\\ensuremath{\\sigma}"));
@@ -495,12 +495,12 @@ wxString EditorCell::ToTeX()
     text.Replace(L"\x039E", wxT("\\ensuremath{\\Xi}"));
     text.Replace(L"\x039F", wxT("O"));
     text.Replace(L"\x03A0", wxT("\\ensuremath{\\Pi}"));
-    text.Replace(L"\x03A1", wxT("\\ensuremath{\\Rho}"));
+    text.Replace(L"\x03A1", wxT("P"));
     text.Replace(L"\x03A3", wxT("\\ensuremath{\\Sigma}"));
-    text.Replace(L"\x03A4", wxT("\\ensuremath{\\Tau}"));
+    text.Replace(L"\x03A4", wxT("T"));
     text.Replace(L"\x03A5", wxT("\\ensuremath{\\Upsilon}"));
     text.Replace(L"\x03A6", wxT("\\ensuremath{\\Phi}"));
-    text.Replace(L"\x03A7", wxT("\\ensuremath{\\Chi}"));
+    text.Replace(L"\x03A7", wxT("X"));
     text.Replace(L"\x03A8", wxT("\\ensuremath{\\Psi}"));
     text.Replace(L"\x03A9", wxT("\\ensuremath{\\Omega}"));
     text.Replace(L"\x2202", wxT("\\ensuremath{\\partial}"));

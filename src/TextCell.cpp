@@ -915,7 +915,7 @@ wxString TextCell::ToTeX()
   text.Replace(L"\x03BC", mathModeStart + wxT("\\mu") + mathModeEnd);
   text.Replace(L"\x03BD", mathModeStart + wxT("\\nu") + mathModeEnd);
   text.Replace(L"\x03BE", mathModeStart + wxT("\\xi") + mathModeEnd);
-  text.Replace(L"\x03BF", mathModeStart + wxT("\\omicron") + mathModeEnd);
+  text.Replace(L"\x03BF", wxT("o"));
   text.Replace(L"\x03C0", mathModeStart + wxT("\\pi") + mathModeEnd);
   text.Replace(L"\x03C1", mathModeStart + wxT("\\rho") + mathModeEnd);
   text.Replace(L"\x03C3", mathModeStart + wxT("\\sigma") + mathModeEnd);
@@ -941,12 +941,12 @@ wxString TextCell::ToTeX()
   text.Replace(L"\x039E", mathModeStart + wxT("\\Xi") + mathModeEnd);
   text.Replace(L"\x039F", wxT("O"));
   text.Replace(L"\x03A0", mathModeStart + wxT("\\Pi") + mathModeEnd);
-  text.Replace(L"\x03A1", mathModeStart + wxT("\\Rho") + mathModeEnd);
+  text.Replace(L"\x03A1", wxT("P"));
   text.Replace(L"\x03A3", mathModeStart + wxT("\\Sigma") + mathModeEnd);
-  text.Replace(L"\x03A4", mathModeStart + wxT("\\Tau") + mathModeEnd);
+  text.Replace(L"\x03A4", wxT("T"));
   text.Replace(L"\x03A5", mathModeStart + wxT("\\Upsilon") + mathModeEnd);
   text.Replace(L"\x03A6", mathModeStart + wxT("\\Phi") + mathModeEnd);
-  text.Replace(L"\x03A7", mathModeStart + wxT("\\Chi") + mathModeEnd);
+  text.Replace(L"\x03A7", wxT("X"));
   text.Replace(L"\x03A8", mathModeStart + wxT("\\Psi") + mathModeEnd);
   text.Replace(L"\x03A9", mathModeStart + wxT("\\Omega") + mathModeEnd);
   text.Replace(L"\x2202", mathModeStart + wxT("\\partial") + mathModeEnd);
