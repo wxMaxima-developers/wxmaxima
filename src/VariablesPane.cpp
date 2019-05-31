@@ -45,6 +45,11 @@ Variablespane::Variablespane(wxWindow *parent, wxWindowID id) : wxGrid(parent, i
 void Variablespane::OnTextChange(wxGridEvent &event)
 {
   SetCellValue(event.GetRow(),1,wxT(""));
+  if(IsValidVariable(GetCellValue(event.GetRow(),0)))
+    SetCellTextColour(event.GetRow(),0,*wxBLACK);
+  else
+    SetCellTextColour(event.GetRow(),0,*wxRED);
+
   if((GetNumberRows() == 0) || (GetCellValue(GetNumberRows()-1,0) != wxEmptyString))
     AppendRows();
   else
@@ -132,6 +137,10 @@ bool Variablespane::IsValidVariable(wxString var)
   if(var.Contains("("))
     return false;
   if(var.Contains(")"))
+    return false;
+  if(var.Contains("["))
+    return false;
+  if(var.Contains("]"))
     return false;
   return true;
 }
