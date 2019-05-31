@@ -6067,6 +6067,8 @@ bool Worksheet::ExportToTeX(wxString file)
   // logic for this to TeX.
   output << wxT("\\usepackage{color}\n");
   output << wxT("\\usepackage{amsmath}\n");
+  // Support characters like spaces and underscores in graphic filenames
+  output << wxT("\\usepackage{grffile}\n");
 
   // We want to shrink pictures the user has included if they are
   // higher or wider than the page.
