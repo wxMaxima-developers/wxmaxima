@@ -190,7 +190,7 @@ public:
   { m_worksheet->OpenHCaret(file, GC_TYPE_IMAGE); }
 
   //! Query the value of a new maxima variable
-  void QueryVariableValue();
+  bool QueryVariableValue();
 
 private:
   //! The variable names to query for the variables pane

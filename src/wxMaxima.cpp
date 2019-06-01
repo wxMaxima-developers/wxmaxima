@@ -1730,21 +1730,26 @@ void wxMaxima::ReadVariables(wxString &data)
     StatusMaximaBusy(waiting);
     if(m_worksheet->m_evaluationQueue.Empty())
     {
-      QueryVariableValue();
+      if(!QueryVariableValue())
+        m_variablesPane->AutoSize();
+      m_variablesPane->GetParent()->Layout();
     }
     else
       TriggerEvaluation();
   }
 }
 
-void wxMaxima::QueryVariableValue()
+bool wxMaxima::QueryVariableValue()
 {
   if(m_varNamesToQuery.GetCount() > 0)
   {
     SendMaxima(wxT(":lisp-quiet (wx-query-variable \'") +
                m_varNamesToQuery.Last()+wxT(")\n"));
     m_varNamesToQuery.RemoveAt(m_varNamesToQuery.GetCount()-1);
+    return true;
   }
+  else
+    return false;
 }
 
 /***

@@ -261,7 +261,12 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             FloatingSize(m_logPane->GetEffectiveMinSize()).
                             Left());
 
-  m_manager.AddPane(m_variablesPane = new Variablespane(this,-1),
+  wxPanel *variables = new wxPanel(this,wxID_ANY);
+  m_variablesPane = new Variablespane(variables,wxID_ANY);
+  wxSizer *variablesSizer = new wxBoxSizer(wxVERTICAL);
+  variablesSizer->Add(m_variablesPane,wxSizerFlags().Expand());
+  variables->SetSizerAndFit(variablesSizer);
+  m_manager.AddPane(variables,
                     wxAuiPaneInfo().Name(wxT("variables")).
                             Show(false).CloseButton().PinButton().
                             DockFixed(false).

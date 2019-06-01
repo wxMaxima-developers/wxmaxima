@@ -136,7 +136,7 @@ bool Variablespane::IsValidVariable(wxString var)
       return false;
   }
 
-  if(var==wxEmptyString)
+  if(var == wxEmptyString)
     return false;
   if(var.Contains(":"))
     return false;
