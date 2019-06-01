@@ -1728,7 +1728,7 @@ void wxMaxima::ReadVariables(wxString &data)
     data = data.Right(data.Length()-end-m_variablesSuffix.Length());
   // If maxima currently isn't busy we can ask for the value of a variable
     StatusMaximaBusy(waiting);
-    if(m_worksheet->m_evaluationQueue.Empty())
+    if((m_worksheet->m_evaluationQueue.Empty()) && (!m_worksheet->QuestionPending()))
     {
       if(!QueryVariableValue())
         m_variablesPane->AutoSize();
@@ -1835,7 +1835,8 @@ void wxMaxima::ReadPrompt(wxString &data)
       m_worksheet->m_evaluationQueue.RemoveFirst();
       m_worksheet->RequestRedraw();
       // Now that maxima is idle we can ask for the contents of its variables
-      QueryVariableValue();
+      if(!m_worksheet->QuestionPending())
+        QueryVariableValue();
     }
     else
     { // we don't have an empty queue
@@ -7725,7 +7726,8 @@ void wxMaxima::VarReadEvent(wxCommandEvent &WXUNUSED(event))
   m_varNamesToQuery = m_variablesPane->GetEscapedVarnames();
   if(m_worksheet->m_evaluationQueue.Empty())
   {
-    QueryVariableValue();
+    if(!m_worksheet->QuestionPending())
+      QueryVariableValue();
   }
 }
 

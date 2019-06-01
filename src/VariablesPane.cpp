@@ -45,11 +45,18 @@ Variablespane::Variablespane(wxWindow *parent, wxWindowID id) : wxGrid(parent, i
 void Variablespane::OnTextChange(wxGridEvent &event)
 {
   BeginBatch();
-  SetCellValue(event.GetRow(),1,wxT(""));
   if(IsValidVariable(GetCellValue(event.GetRow(),0)))
+  {
+    SetCellValue(event.GetRow(),1,wxT(""));
     SetCellTextColour(event.GetRow(),0,*wxBLACK);
+  }
   else
+  {
     SetCellTextColour(event.GetRow(),0,*wxRED);
+    SetCellTextColour(event.GetRow(),1,*wxLIGHT_GREY);
+    SetCellValue(event.GetRow(),1,_("(Not a valid variable name)"));
+    RefreshAttr(event.GetRow(), 1);
+  }
   RefreshAttr(event.GetRow(), 0);
 
   if((GetNumberRows() == 0) || (GetCellValue(GetNumberRows()-1,0) != wxEmptyString))
