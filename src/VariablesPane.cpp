@@ -32,7 +32,7 @@ Variablespane::Variablespane(wxWindow *parent, wxWindowID id) : wxGrid(parent, i
   SetColLabelValue(0,_("Variable"));
   attr1 = new wxGridCellAttr;
   attr1->SetReadOnly();
-  attr1->SetRenderer(new wxGridCellAutoWrapStringRenderer);
+//  attr1->SetRenderer(new wxGridCellAutoWrapStringRenderer);
   SetColAttr(1,attr1);
   SetColLabelValue(1,_("Contents"));
   Connect(wxEVT_GRID_CELL_CHANGED,
@@ -59,7 +59,7 @@ void Variablespane::OnTextChange(wxGridEvent &event)
       if(GetCellValue(i,0) == wxEmptyString)
         DeleteRows(i);
   wxMenuEvent *VarReadEvent = new wxMenuEvent(wxEVT_MENU, varID_newVar);
-  GetParent()->GetEventHandler()->QueueEvent(VarReadEvent);
+  GetParent()->GetParent()->GetEventHandler()->QueueEvent(VarReadEvent);
   EndBatch();
 }
 
@@ -166,7 +166,16 @@ bool Variablespane::IsValidVariable(wxString var)
 void Variablespane::ResetValues()
 {
   for(int i = 0; i < GetNumberRows(); i++)
-    SetCellValue(i,1,wxT(""));
+  {
+    if(GetCellValue(i,0) != wxEmptyString)
+    {
+      SetCellTextColour(i,1,*wxLIGHT_GREY);
+      SetCellValue(i,1,_("Undefined"));
+      RefreshAttr(i,1);
+    }
+    else
+      SetCellValue(i,1,wxT(""));
+  }
 }
 
 Variablespane::~Variablespane()
