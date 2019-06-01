@@ -44,6 +44,7 @@ Variablespane::Variablespane(wxWindow *parent, wxWindowID id) : wxGrid(parent, i
 
 void Variablespane::OnTextChange(wxGridEvent &event)
 {
+  BeginBatch();
   SetCellValue(event.GetRow(),1,wxT(""));
   if(IsValidVariable(GetCellValue(event.GetRow(),0)))
     SetCellTextColour(event.GetRow(),0,*wxBLACK);
@@ -59,6 +60,7 @@ void Variablespane::OnTextChange(wxGridEvent &event)
         DeleteRows(i);
   wxMenuEvent *VarReadEvent = new wxMenuEvent(wxEVT_MENU, varID_newVar);
   GetParent()->GetEventHandler()->QueueEvent(VarReadEvent);
+  EndBatch();
 }
 
 void Variablespane::VariableValue(wxString var, wxString val)
