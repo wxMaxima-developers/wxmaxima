@@ -49,6 +49,7 @@ void Variablespane::OnTextChange(wxGridEvent &event)
     SetCellTextColour(event.GetRow(),0,*wxBLACK);
   else
     SetCellTextColour(event.GetRow(),0,*wxRED);
+  RefreshAttr(event.GetRow(), 0);
 
   if((GetNumberRows() == 0) || (GetCellValue(GetNumberRows()-1,0) != wxEmptyString))
     AppendRows();
@@ -67,6 +68,7 @@ void Variablespane::VariableValue(wxString var, wxString val)
     {
       SetCellTextColour(i,1,*wxBLACK);
       SetCellValue(i,1,val);
+      RefreshAttr(i, 1);
     }
 }
 
@@ -75,8 +77,9 @@ void Variablespane::VariableUndefined(wxString var)
   for(int i = 0; i < GetNumberRows(); i++)
     if(GetCellValue(i,0) == UnescapeVarname(var))
     {
-//      SetCellTextColour(i,1,*wxLIGHT_GREY);
+      SetCellTextColour(i,1,*wxLIGHT_GREY);
       SetCellValue(i,1,_("Undefined"));
+      RefreshAttr(i, 1);
     }
 }
 
