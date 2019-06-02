@@ -57,6 +57,7 @@
 #include <wx/mstream.h>
 #include <wx/dcgraph.h>
 #include <wx/fileconf.h>
+#include <wx/uri.h>
 
 #include <wx/zipstrm.h>
 #include <wx/wfstream.h>
@@ -4998,7 +4999,9 @@ bool Worksheet::ExportToHTML(wxString file)
   config->Read(wxT("Style/Heading6/italic"), &italicHeading6);
   config->Read(wxT("Style/Heading6/underlined"), &underHeading6);
 
-  output << wxT("  <link rel=\"stylesheet\" type=\"text/css\" href=\"") + cssfileName_rel + wxT("\"/>\n");
+  wxURI css_url (cssfileName_rel);
+  wxString encoded_css_url = css_url.BuildURI(); /* handle HTML entities like " " => "%20" */
+  output << wxT("  <link rel=\"stylesheet\" type=\"text/css\" href=\"") + encoded_css_url + wxT("\"/>\n");
 
   wxString version(wxT(GITVERSION));
   css << wxT("\n");
