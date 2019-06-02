@@ -4889,8 +4889,7 @@ bool Worksheet::ExportToHTML(wxString file)
     output << wxT("    TeX: {TagSide: \"left\"}") << endl;
     output << wxT("  })") << endl;
     output << wxT("</script>") << endl;
-    output << wxT("<script type=\"text/javascript\"") << endl;
-    output << wxT("  src=\"")+m_configuration->MathJaXURL()+wxT("\">") << endl;
+    output << wxT("<script src=\"")+m_configuration->MathJaXURL()+wxT("\">") << endl;
     output << wxT("</script>") << endl;
   }
 
