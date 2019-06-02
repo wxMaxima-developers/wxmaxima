@@ -4866,6 +4866,10 @@ bool Worksheet::ExportToHTML(wxString file)
     m_configuration->ClipToDrawRegion(true);
     return false;
   }
+  
+  wxURI filename_uri(filename);
+  wxString filename_encoded = filename_uri.BuildURI(); /* handle HTML entities like " " => "%20" */
+
 
   wxTextOutputStream css(cssfile);
 
@@ -5432,12 +5436,13 @@ bool Worksheet::ExportToHTML(wxString file)
           Cell *chunk = CopySelection(chunkStart, chunkEnd);
 
           // Export the chunk.
+
           if (chunk->GetType() == MC_TYPE_SLIDE)
           {
             dynamic_cast<SlideShow *>(chunk)->ToGif(
                     imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
-            output << wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
-                      filename +
+            output << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
+                      filename_encoded +
                       wxString::Format(_("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"), count);
           }
           else if (chunk->GetType() != MC_TYPE_IMAGE)
@@ -5474,7 +5479,7 @@ bool Worksheet::ExportToHTML(wxString file)
               Svgout svgout(&m_configuration, imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.svg"), count));
               wxSize size = svgout.SetData(chunk);
               wxString line = wxT("  <img src=\"") +
-                filename + wxT("_htmlimg/") + filename +
+                filename_encoded + wxT("_htmlimg/") + filename_encoded +
                 wxString::Format(wxT("_%d.svg\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
                                  count, size.x) +
                 alttext +
@@ -5501,7 +5506,7 @@ bool Worksheet::ExportToHTML(wxString file)
               borderwidth = chunk->m_imageBorderWidth;
 
               wxString line = wxT("  <img src=\"") +
-                filename + wxT("_htmlimg/") + filename +
+                filename_encoded + wxT("_htmlimg/") + filename_encoded +
                 wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
                                  count, ext, size.x / bitmapScale - 2 * borderwidth) +
                 alttext +
@@ -5535,7 +5540,7 @@ bool Worksheet::ExportToHTML(wxString file)
             borderwidth = chunk->m_imageBorderWidth;
 
             wxString line = wxT("  <img src=\"") +
-              filename + wxT("_htmlimg/") + filename +
+              filename_encoded + wxT("_htmlimg/") + filename_encoded +
               wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
                                count, ext, size.x - 2 * borderwidth) +
               alttext +
@@ -5626,8 +5631,8 @@ bool Worksheet::ExportToHTML(wxString file)
           {
             dynamic_cast<SlideShow *>(tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename +
                                                                wxString::Format(wxT("_%d.gif"), count));
-            output << wxT("  <img src=\"") + filename + wxT("_htmlimg/") +
-                      filename +
+            output << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
+                      filename_encoded +
                       wxString::Format(_("_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"), count)
                    << wxT("\n");
           }
@@ -5637,8 +5642,8 @@ bool Worksheet::ExportToHTML(wxString file)
             imgCell->ToImageFile(
                     imgDir + wxT("/") + filename + wxString::Format(wxT("_%d."), count) +
                     imgCell->GetExtension());
-            output << wxT("  <IMG src=\"") + filename + wxT("_htmlimg/") +
-                      filename +
+            output << wxT("  <IMG src=\"") + filename_encoded + wxT("_htmlimg/") +
+                      filename_encoded +
                       wxString::Format(wxT("_%d.%s\" alt=\"Diagram\" style=\"max-width:90%%;\" >"), count,
                                        imgCell->GetExtension());
           }
