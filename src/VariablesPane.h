@@ -35,10 +35,22 @@ public:
   enum VarIds
   {
     varID_newVar = wxID_HIGHEST + 3000,
+    varID_values,
+    varID_functions,
+    varID_arrays,
+    varID_myoptions,
+    varID_rules,
+    varID_aliases,
+    varID_dependencies,
+    varID_gradefs,
+    varID_prop,
+    varID_let_rule_packages
   };
 
   Variablespane(wxWindow *parent, wxWindowID id = wxID_ANY);
   void OnTextChange(wxGridEvent &event);
+  void OnRightClick(wxGridEvent &event);
+  void InsertMenu(wxCommandEvent &event);
   bool IsValidVariable(wxString var);
   wxArrayString GetEscapedVarnames();
   void ResetValues();

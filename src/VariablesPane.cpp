@@ -38,8 +38,64 @@ Variablespane::Variablespane(wxWindow *parent, wxWindowID id) : wxGrid(parent, i
   Connect(wxEVT_GRID_CELL_CHANGED,
           wxGridEventHandler(Variablespane::OnTextChange),
           NULL, this);
+  Connect(wxEVT_GRID_CELL_RIGHT_CLICK,
+          wxGridEventHandler(Variablespane::OnRightClick),
+          NULL, this);
+  Connect(wxEVT_MENU,
+          wxCommandEventHandler(Variablespane::InsertMenu),
+          NULL, this);
   HideRowLabels();
   EnableDragCell();
+}
+
+void Variablespane::InsertMenu(wxCommandEvent &event)
+{
+  wxString varname;
+  switch(event.GetId())
+  {
+  case varID_values:varname="values";break;
+  case varID_functions:varname="functions";break;
+  case varID_arrays:varname="arrays";break;
+  case varID_myoptions:varname="myoptions";break;
+  case varID_rules:varname="rules";break;
+  case varID_aliases:varname="aliases";break;
+  case varID_dependencies:varname="dependencies";break;
+  case varID_gradefs:varname="gradefs";break;
+  case varID_prop:varname="props";break;
+  case varID_let_rule_packages:varname="let_rule_packages";break;
+  }
+  SetCellValue(GetNumberRows()-1,0,varname);
+  wxGridEvent evt(wxID_ANY,wxEVT_GRID_CELL_CHANGED,this,GetNumberRows()-1,0);
+  OnTextChange(evt);
+}
+
+void Variablespane::OnRightClick(wxGridEvent &event)
+{
+  wxMenu *popupMenu = new wxMenu();
+  popupMenu->Append(varID_values,
+                    _("List of user variables"), wxEmptyString, wxITEM_NORMAL);
+  popupMenu->Append(varID_functions,
+                    _("List of user functions"), wxEmptyString, wxITEM_NORMAL);
+  popupMenu->Append(varID_arrays,
+                    _("List of arrays"), wxEmptyString, wxITEM_NORMAL);
+  popupMenu->Append(varID_myoptions,
+                    _("List of changed options"), wxEmptyString, wxITEM_NORMAL);
+  popupMenu->Append(varID_rules,
+                    _("List of user rules"), wxEmptyString, wxITEM_NORMAL);
+  popupMenu->Append(varID_aliases,
+                    _("List of user aliases"), wxEmptyString, wxITEM_NORMAL);
+  popupMenu->Append(varID_gradefs,
+                    _("List of user-defined derivatives"), wxEmptyString, wxITEM_NORMAL);
+  popupMenu->Append(varID_prop,
+                    _("List of user-defined properties"), wxEmptyString, wxITEM_NORMAL);
+  popupMenu->Append(varID_gradefs,
+                    _("List of user-defined let rule packages"), wxEmptyString, wxITEM_NORMAL);
+    // create menu if we have any items
+  if (popupMenu->GetMenuItemCount() > 0)
+    PopupMenu( popupMenu);
+  
+  wxDELETE(popupMenu);
+  
 }
 
 void Variablespane::OnTextChange(wxGridEvent &event)
@@ -52,10 +108,13 @@ void Variablespane::OnTextChange(wxGridEvent &event)
   }
   else
   {
-    SetCellTextColour(event.GetRow(),0,*wxRED);
-    SetCellTextColour(event.GetRow(),1,*wxLIGHT_GREY);
-    SetCellValue(event.GetRow(),1,_("(Not a valid variable name)"));
-    RefreshAttr(event.GetRow(), 1);
+    if(GetCellValue(event.GetRow(),0) != wxEmptyString)
+    {
+      SetCellTextColour(event.GetRow(),0,*wxRED);
+      SetCellTextColour(event.GetRow(),1,*wxLIGHT_GREY);
+      SetCellValue(event.GetRow(),1,_("(Not a valid variable name)"));
+      RefreshAttr(event.GetRow(), 1);
+    }
   }
   RefreshAttr(event.GetRow(), 0);
 
