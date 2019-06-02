@@ -71,26 +71,39 @@ void Variablespane::InsertMenu(wxCommandEvent &event)
 
 void Variablespane::OnRightClick(wxGridEvent &event)
 {
+  m_vars.clear();
+  for(int i = 0; i < GetNumberRows(); i++)
+    m_vars[GetCellValue(i,0)] = 1;
+  
   wxMenu *popupMenu = new wxMenu();
-  popupMenu->Append(varID_values,
-                    _("List of user variables"), wxEmptyString, wxITEM_NORMAL);
-  popupMenu->Append(varID_functions,
-                    _("List of user functions"), wxEmptyString, wxITEM_NORMAL);
-  popupMenu->Append(varID_arrays,
-                    _("List of arrays"), wxEmptyString, wxITEM_NORMAL);
-  popupMenu->Append(varID_myoptions,
-                    _("List of changed options"), wxEmptyString, wxITEM_NORMAL);
-  popupMenu->Append(varID_rules,
-                    _("List of user rules"), wxEmptyString, wxITEM_NORMAL);
-  popupMenu->Append(varID_aliases,
-                    _("List of user aliases"), wxEmptyString, wxITEM_NORMAL);
-  popupMenu->Append(varID_gradefs,
-                    _("List of user-defined derivatives"), wxEmptyString, wxITEM_NORMAL);
-  popupMenu->Append(varID_prop,
-                    _("List of user-defined properties"), wxEmptyString, wxITEM_NORMAL);
-  popupMenu->Append(varID_gradefs,
-                    _("List of user-defined let rule packages"), wxEmptyString, wxITEM_NORMAL);
-    // create menu if we have any items
+  if(m_vars["values"] != 1)
+    popupMenu->Append(varID_values,
+                      _("List of user variables"), wxEmptyString, wxITEM_NORMAL);
+  if(m_vars["functions"] != 1)
+    popupMenu->Append(varID_functions,
+                      _("List of user functions"), wxEmptyString, wxITEM_NORMAL);
+  if(m_vars["arrays"] != 1)
+    popupMenu->Append(varID_arrays,
+                      _("List of arrays"), wxEmptyString, wxITEM_NORMAL);
+  if(m_vars["myoptions"] != 1)
+    popupMenu->Append(varID_myoptions,
+                      _("List of changed options"), wxEmptyString, wxITEM_NORMAL);
+  if(m_vars["rules"] != 1)
+    popupMenu->Append(varID_rules,
+                      _("List of user rules"), wxEmptyString, wxITEM_NORMAL);
+  if(m_vars["aliases"] != 1)
+    popupMenu->Append(varID_aliases,
+                      _("List of user aliases"), wxEmptyString, wxITEM_NORMAL);
+  if(m_vars["gradefs"] != 1)
+    popupMenu->Append(varID_gradefs,
+                      _("List of user-defined derivatives"), wxEmptyString, wxITEM_NORMAL);
+  if(m_vars["props"] != 1)
+    popupMenu->Append(varID_prop,
+                      _("List of user-defined properties"), wxEmptyString, wxITEM_NORMAL);
+  if(m_vars["gradefs"] != 1)
+    popupMenu->Append(varID_gradefs,
+                      _("List of user-defined let rule packages"), wxEmptyString, wxITEM_NORMAL);
+  // create menu if we have any items
   if (popupMenu->GetMenuItemCount() > 0)
     PopupMenu( popupMenu);
   

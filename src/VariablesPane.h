@@ -60,6 +60,10 @@ public:
   void VariableValue(wxString var, wxString val);
   void VariableUndefined(wxString var);
   ~Variablespane();
+private:
+  WX_DECLARE_STRING_HASH_MAP(int, IntHash);
+  //! A list of all symbols that can be entered using Esc-Codes
+  IntHash m_vars;
 };
 
 #endif // VARIABLESPANE_H
