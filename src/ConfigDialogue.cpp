@@ -465,7 +465,9 @@ void ConfigDialogue::SetProperties()
     config->Read(wxT("symbolPaneAdditionalChars"), &symbolPaneAdditionalChars);
 
   m_documentclass->SetValue(documentclass);
-  m_mathJaxURL->SetValue(configuration->MathJaXURL());
+  m_mathJaxURL->SetValue(configuration->MathJaXURL_User());
+  m_autodetectMathJaX->SetValue(!configuration->MathJaXURL_UseUser());
+  m_noAutodetectMathJaX->SetValue(configuration->MathJaXURL_UseUser());
   m_texPreamble->SetValue(texPreamble);
   m_autoSaveInterval->SetValue(configuration->AutoSaveMinutes());
 
@@ -762,7 +764,7 @@ wxPanel *ConfigDialogue::CreateExportPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(7, 2, 5, 5);
+  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(8, 2, 5, 5);
   wxFlexGridSizer *vsizer = new wxFlexGridSizer(17, 1, 5, 5);
 
   wxStaticText *dc = new wxStaticText(panel, -1, _("Documentclass for TeX export:"));
@@ -786,10 +788,20 @@ wxPanel *ConfigDialogue::CreateExportPanel()
   m_exportWithMathJAX = new wxChoice(panel, -1, wxDefaultPosition, wxDefaultSize, mathJaxChoices);
   grid_sizer->Add(mju, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_exportWithMathJAX, 0, wxALL, 5);
-
   wxStaticText *mj = new wxStaticText(panel, -1, _("URL MathJaX.js lies at:"));
+  grid_sizer->Add(mj, 0, wxALL, 5);
+  grid_sizer->Add(5,5);
+
+  m_autodetectMathJaX = new wxRadioButton(panel, -1, _("Automatic"), wxDefaultPosition,
+                                          wxDefaultSize, wxRB_GROUP);
+  grid_sizer->Add(m_autodetectMathJaX, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  wxTextCtrl *autoMathJaxURL = new wxTextCtrl(panel, -1, m_configuration->MathJaXURL_Auto(), wxDefaultPosition, wxSize(350, wxDefaultSize.GetY()), wxTE_READONLY);
+  grid_sizer->Add(autoMathJaxURL, 0, wxALL, 5);
+
+  m_noAutodetectMathJaX = new wxRadioButton(panel, -1, _("User specified"));
+  grid_sizer->Add(m_noAutodetectMathJaX, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+
   m_mathJaxURL = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350, wxDefaultSize.GetY()));
-  grid_sizer->Add(mj, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_mathJaxURL, 0, wxALL, 5);
 
   wxStaticText *bs = new wxStaticText(panel, -1, _("Bitmap scale for export:"));
@@ -1207,6 +1219,7 @@ void ConfigDialogue::WriteSettings()
   configuration->AutoSaveMinutes(m_autoSaveInterval->GetValue());
   config->Write(wxT("documentclass"), m_documentclass->GetValue());
   configuration->MathJaXURL(m_mathJaxURL->GetValue());
+  configuration->MathJaXURL_UseUser(m_noAyutodetectMathJaX->GetValue());
   if (m_saveSize->GetValue())
     config->Write(wxT("pos-restore"), 1);
   else

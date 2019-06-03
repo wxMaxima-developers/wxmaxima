@@ -41,6 +41,7 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_BackgroundBrush = *wxWHITE_BRUSH;
   m_clipToDrawRegion = true;
   m_fontChanged = true;
+  m_mathJaxURL_UseUser = false;
   m_TOCshowsSectionNumbers = false;
   m_antialiassingDC = NULL;
   m_parenthesisDrawMode = unknown;
@@ -345,6 +346,7 @@ void Configuration::ReadConfig()
 
   config->Read(wxT("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
   config->Read(wxT("autoWrapMode"), &m_autoWrap);
+  config->Read(wxT("mathJaxURL_UseUser"), &m_mathJaxURL_UseUser);
   config->Read(wxT("useUnicodeMaths"), &m_useUnicodeMaths);
   config->Read(wxT("mathJaxURL"), &m_mathJaxURL);
   config->Read(wxT("autosubscript"), &m_autoSubscript);

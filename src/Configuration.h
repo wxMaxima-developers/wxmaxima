@@ -655,7 +655,12 @@ public:
   }
 
   //! Returns the URL MathJaX can be found at.
-  wxString MathJaXURL(){ return m_mathJaxURL;}
+  wxString MathJaXURL(){if(m_mathJaxURL_UseUser) return m_mathJaxURL; else return MathJaXURL_Auto();}
+  wxString MathJaXURL_User(){ return m_mathJaxURL;}
+  bool MathJaXURL_UseUser(){ return m_mathJaxURL_UseUser;}
+  void MathJaXURL_UseUser(bool useUser){wxConfig::Get()->Write(wxT("mathJaxURL_UseUser"),
+                                                               m_mathJaxURL_UseUser = useUser);}
+  wxString MathJaXURL_Auto(){ return wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML");}
   //! Returns the URL MathJaX can be found at.
   void MathJaXURL(wxString url){wxConfig::Get()->Write(wxT("mathJaxURL"), m_mathJaxURL = url);}
   bool AntiAliasLines(){return m_antiAliasLines;}
@@ -864,6 +869,7 @@ private:
   int m_showLabelChoice;
   bool m_fixReorderedIndices;
   wxString m_mathJaxURL;
+  bool m_mathJaxURL_UseUser;
   bool m_showCodeCells;
   bool m_copyBitmap;
   bool m_copyMathML;

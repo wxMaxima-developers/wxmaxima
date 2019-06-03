@@ -242,6 +242,10 @@ protected:
   wxRadioButton *m_autodetectMaxima;
   //! The radio button that is set if m_autodetectMaxima is unset
   wxRadioButton *m_noAutodetectMaxima;
+  //! Autodetect the mathJaX location?
+  wxRadioButton *m_autodetectMathJaX;
+  //! The radio button that is set if m_autodetectMathJaX is unset
+  wxRadioButton *m_noAutodetectMathJaX;
   //! Called if the currently active dialogue sheet is changed.
   void OnTabChange(wxBookCtrlEvent &event);
 
