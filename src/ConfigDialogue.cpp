@@ -1219,7 +1219,7 @@ void ConfigDialogue::WriteSettings()
   configuration->AutoSaveMinutes(m_autoSaveInterval->GetValue());
   config->Write(wxT("documentclass"), m_documentclass->GetValue());
   configuration->MathJaXURL(m_mathJaxURL->GetValue());
-  configuration->MathJaXURL_UseUser(m_noAyutodetectMathJaX->GetValue());
+  configuration->MathJaXURL_UseUser(m_noAutodetectMathJaX->GetValue());
   if (m_saveSize->GetValue())
     config->Write(wxT("pos-restore"), 1);
   else
