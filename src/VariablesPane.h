@@ -56,6 +56,7 @@ public:
   bool IsValidVariable(wxString var);
   wxArrayString GetEscapedVarnames();
   void ResetValues();
+  void Clear();
   wxString EscapeVarname(wxString var);
   wxString UnescapeVarname(wxString var);
   //! Tell the variables pane about a variable value

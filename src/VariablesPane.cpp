@@ -65,6 +65,7 @@ void Variablespane::InsertMenu(wxCommandEvent &event)
   case varID_gradefs:varname="gradefs";break;
   case varID_prop:varname="props";break;
   case varID_let_rule_packages:varname="let_rule_packages";break;
+  case varID_clear:Clear();break;
   }
   SetCellValue(GetNumberRows()-1,0,varname);
   wxGridEvent evt(wxID_ANY,wxEVT_GRID_CELL_CHANGED,this,GetNumberRows()-1,0);
@@ -106,6 +107,11 @@ void Variablespane::OnRightClick(wxGridEvent &event)
     popupMenu->Append(varID_gradefs,
                       _("List of user-defined let rule packages"), wxEmptyString, wxITEM_NORMAL);
   // create menu if we have any items
+  if(GetNumberRows()>1)
+  {
+    popupMenu->Append(varID_clear,
+                      _("Remove all"), wxEmptyString, wxITEM_NORMAL);
+  }
   if (popupMenu->GetMenuItemCount() > 0)
     PopupMenu( popupMenu);
   
@@ -266,6 +272,12 @@ void Variablespane::ResetValues()
     else
       SetCellValue(i,1,wxT(""));
   }
+}
+
+void Variablespane::Clear()
+{
+  while(GetNumberRows() > 1)
+    DeleteRows(0);    
 }
 
 Variablespane::~Variablespane()
