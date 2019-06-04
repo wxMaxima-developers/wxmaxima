@@ -1624,7 +1624,7 @@ void wxMaxima::ReadVariables(wxString &data)
 
   if (end != wxNOT_FOUND)
   {
-    wxLogMessage(_("Maxima sends a new set of auto-completible symbols."));
+    int num = 0;
     wxXmlDocument xmldoc;
     wxString xml = data.Left( end + m_variablesSuffix.Length());
     wxStringInputStream xmlStream(xml);
@@ -1644,6 +1644,7 @@ void wxMaxima::ReadVariables(wxString &data)
         {
           if(var->GetName() == wxT("name"))
           {
+            num++;
             wxXmlNode *namenode = var->GetChildren();
             if(namenode)
               name = namenode->GetContent();
@@ -1724,6 +1725,11 @@ void wxMaxima::ReadVariables(wxString &data)
       }
     }
 
+    if(num>1)
+      wxLogMessage(_("Maxima sends a new set of auto-completible symbols."));
+    else
+      wxLogMessage(_("Maxima has sent a new variable value."));
+      
     // Remove the symbols from the data string
     data = data.Right(data.Length()-end-m_variablesSuffix.Length());
   // If maxima currently isn't busy we can ask for the value of a variable
