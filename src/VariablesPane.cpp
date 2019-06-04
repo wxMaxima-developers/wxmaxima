@@ -31,12 +31,14 @@ Variablespane::Variablespane(wxWindow *parent, wxWindowID id) : wxGrid(parent, i
   SetColAttr(0,attr0);
   SetColLabelValue(0,_("Variable"));
   attr1 = new wxGridCellAttr;
-  attr1->SetReadOnly();
-//  attr1->SetRenderer(new wxGridCellAutoWrapStringRenderer);
+//  attr1->SetReadOnly();
   SetColAttr(1,attr1);
   SetColLabelValue(1,_("Contents"));
   Connect(wxEVT_GRID_CELL_CHANGED,
           wxGridEventHandler(Variablespane::OnTextChange),
+          NULL, this);
+  Connect(wxEVT_GRID_CELL_CHANGING,
+          wxGridEventHandler(Variablespane::OnTextChanging),
           NULL, this);
   Connect(wxEVT_GRID_CELL_RIGHT_CLICK,
           wxGridEventHandler(Variablespane::OnRightClick),
@@ -109,6 +111,17 @@ void Variablespane::OnRightClick(wxGridEvent &event)
   
   wxDELETE(popupMenu);
   
+}
+
+void Variablespane::OnTextChanging(wxGridEvent &event)
+{
+  // Setting the 2nd column to "Read-only" prevents copy-and-paste.
+  // Preventing edits is therefore perhaps better for our purposes.
+  if(event.GetCol()==1)
+  {
+    event.Veto();
+    return;
+  }
 }
 
 void Variablespane::OnTextChange(wxGridEvent &event)
@@ -224,8 +237,6 @@ bool Variablespane::IsValidVariable(wxString var)
   if(var.Contains("\'"))
     return false;
   if(var.Contains("\""))
-    return false;
-  if(var.Contains("\\"))
     return false;
   if(var.Contains(";"))
     return false;

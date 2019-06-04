@@ -44,11 +44,13 @@ public:
     varID_dependencies,
     varID_gradefs,
     varID_prop,
-    varID_let_rule_packages
+    varID_let_rule_packages,
+    varID_clear
   };
 
   Variablespane(wxWindow *parent, wxWindowID id = wxID_ANY);
   void OnTextChange(wxGridEvent &event);
+  void OnTextChanging(wxGridEvent &event);
   void OnRightClick(wxGridEvent &event);
   void InsertMenu(wxCommandEvent &event);
   bool IsValidVariable(wxString var);
