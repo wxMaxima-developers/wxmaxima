@@ -91,13 +91,13 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
   SetBackgroundStyle(wxBG_STYLE_PAINT);
   SetBackgroundColour(*wxWHITE);
   SetMinSize(wxSize(100, 100));
-  
+
 #if wxUSE_ACCESSIBILITY
   m_accessibilityInfo = NULL;
 #endif
 #if wxCHECK_VERSION(3,1,1)
   EnableTouchEvents(wxTOUCH_ZOOM_GESTURE);
-#endif  
+#endif
   m_zoomAtGestureStart = 1.0;
   m_scrollToTopOfCell = false;
   m_pointer_x = -1;
@@ -109,7 +109,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
   m_configuration = &m_configurationTopInstance;
   m_configuration->SetBackgroundBrush(
     *(wxTheBrushList->FindOrCreateBrush(*wxWHITE, wxBRUSHSTYLE_SOLID)));
-  
+
   m_dc = new wxClientDC(this);
   m_configuration->SetContext(*m_dc);
   m_autocomplete  = new AutoComplete(m_configuration);
@@ -347,7 +347,7 @@ Worksheet::~Worksheet()
   m_mainToolBar = NULL;
 
   ClearDocument();
-  
+
   m_configuration = NULL;
   m_dc = NULL;
 }
@@ -368,13 +368,13 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     RequestRedraw();
     return;
   }
-  
+
   // Don't attempt to draw on a screen of the size 0.
   if(GetClientSize().x < 1)
     return;
   if(GetClientSize().y < 1)
     return;
-    
+
   if (m_configuration->GetPrinting())
   {
     RequestRedraw();
@@ -422,7 +422,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 #else
   PrepareDC(dc);
 #endif
-  
+
   // Create a graphics context that supports antialiassing, but on MSW
   // only supports fonts that come in the Right Format.
   wxGCDC antiAliassingDC(dc);
@@ -449,7 +449,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   dc.Clear();
 #endif
 #endif
-  
+
   // Draw content
   if (m_tree != NULL)
   {
@@ -504,7 +504,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
         tmp->Recalculate();
         recalculateNecessaryWas = true;
       }
-      
+
       wxRect cellRect = tmp->GetRect();
 
       int width;
@@ -802,7 +802,7 @@ void Worksheet::SetZoomFactor(double newzoom, bool recalc)
   // is a bad habit.
   if(fabs(m_configuration->GetZoomFactor() - newzoom) < .00005)
     return;
-  
+
   m_configuration->SetZoomFactor(newzoom);
   // Determine if we have a sane thing we can scroll to.
   Cell *cellToScrollTo = NULL;
@@ -836,13 +836,13 @@ void Worksheet::SetZoomFactor(double newzoom, bool recalc)
 bool Worksheet::RecalculateIfNeeded()
 {
   bool recalculate = true;
-  
+
   if((m_recalculateStart == NULL) || (m_tree == NULL))
     recalculate = false;
 
   if(m_dc == NULL)
     recalculate = false;
-  
+
   if(!recalculate)
   {
     if(m_configuration->AdjustWorksheetSize())
@@ -906,7 +906,7 @@ void Worksheet::Recalculate(Cell *start, bool force)
   GroupCell *group = m_tree;
   if(start != NULL)
     group = dynamic_cast<GroupCell *>(start->GetGroup());
-  
+
   if(force)
     m_configuration->RecalculationForce(force);
 
@@ -964,19 +964,19 @@ void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
       CellToScrollTo = CellToScrollTo->m_next;
     }
   }
-  
+
   RecalculateForce();
-  
+
   GroupCell *tmp = m_tree;
   GroupCell *prev = NULL;
   UpdateConfigurationClientSize();
   if (tmp != NULL)
-  {    
+  {
     SetSelection(NULL);
     while (tmp != NULL)
     {
       dynamic_cast<GroupCell*>(tmp)->OnSize();
-      
+
       if (prev == NULL)
       {
         tmp->SetCurrentPoint(m_configuration->GetIndent(),
@@ -988,12 +988,12 @@ void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
                              prev->GetCurrentPoint().y + prev->GetMaxDrop() + tmp->GetMaxCenter() +
                              m_configuration->GetGroupSkip());
       }
-      
+
       prev = tmp;
       tmp = dynamic_cast<GroupCell *>(tmp->m_next);
     }
   }
-  
+
   AdjustSize();
   RequestRedraw();
   if (CellToScrollTo)
@@ -2323,7 +2323,7 @@ wxString Worksheet::ConvertSelectionToMathML()
 bool Worksheet::CopyMathML()
 {
   wxString s = ConvertSelectionToMathML();
-  
+
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
 
   if (wxTheClipboard->Open())
@@ -4279,7 +4279,7 @@ void Worksheet::AdjustSize()
     // when window is scrolled all the way down, document occupies top 1/8 of clientHeight
     height += clientHeight - (int) (1.0 / 8.0 * (float) clientHeight);
     virtualHeight = MAX(clientHeight + 10, height); // ensure we always have VSCROLL active
-      
+
     // Don't set m_scrollUnit too high for big windows on hi-res screens:
     // Allow scrolling by a tenth of a line doesn't make too much sense,
     // but will make scrolling feel sluggish.
@@ -4291,7 +4291,7 @@ void Worksheet::AdjustSize()
   // screen.
   if (m_scrollUnit < 10)
     m_scrollUnit = 10;
-  
+
   SetScrollRate(m_scrollUnit, m_scrollUnit);
 }
 
@@ -4324,7 +4324,7 @@ void Worksheet::OnZoom(wxZoomGestureEvent &event)
 {
   if(event.IsGestureStart())
     m_zoomAtGestureStart = m_configuration->GetZoomFactor();
-  
+
   SetZoomFactor(m_zoomAtGestureStart*event.GetZoomFactor());
 }
 #endif
@@ -4866,7 +4866,7 @@ bool Worksheet::ExportToHTML(wxString file)
     m_configuration->ClipToDrawRegion(true);
     return false;
   }
-  
+
   wxURI filename_uri(filename);
   wxString filename_encoded = filename_uri.BuildURI(); /* handle HTML entities like " " => "%20" */
 
@@ -5291,7 +5291,7 @@ bool Worksheet::ExportToHTML(wxString file)
   css << wxT("}\n");
 
 
-  
+
   // TITLE STYLE
   css << wxT(".title {\n");
   if (fontTitle.Length())
@@ -5562,68 +5562,68 @@ bool Worksheet::ExportToHTML(wxString file)
       {
         case GC_TYPE_TEXT:
           output << wxT("\n\n<!-- Text cell -->\n\n\n");
-          output << wxT("<P CLASS=\"comment\">&nbsp;\n");
+          output << wxT("<div CLASS=\"comment\">&nbsp;\n");
           output << EditorCell::PrependNBSP(
                   MarkDown.MarkDown(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString()))) << wxT("\n");
-          output << wxT("</P>\n");
+          output << wxT("</div>\n");
           break;
         case GC_TYPE_SECTION:
           output << wxT("\n\n<!-- Section cell -->\n\n\n");
-          output << wxT("<P CLASS=\"section\">\n");
+          output << wxT("<div CLASS=\"section\">\n");
           output << EditorCell::PrependNBSP(
                   EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))
                  << wxT("\n");
-          output << wxT("</P>\n");
+          output << wxT("</div>\n");
           break;
         case GC_TYPE_SUBSECTION:
           output << wxT("\n\n<!-- Subsection cell -->\n\n\n");
-          output << wxT("<P CLASS=\"subsect\">\n");
+          output << wxT("<div CLASS=\"subsect\">\n");
           output << EditorCell::PrependNBSP(
                   EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))
                  << wxT("\n");
-          output << wxT("</P>\n");
+          output << wxT("</div>\n");
           break;
         case GC_TYPE_SUBSUBSECTION:
           output << wxT("\n\n<!-- Subsubsection cell -->\n\n\n");
-          output << wxT("<P CLASS=\"subsubsect\">\n");
+          output << wxT("<div CLASS=\"subsubsect\">\n");
           output << EditorCell::PrependNBSP(
                   EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))
                  << wxT("\n");
-          output << wxT("</P>\n");
+          output << wxT("</div>\n");
           break;
         case GC_TYPE_HEADING5:
           output << wxT("\n\n<!-- Heading5 cell -->\n\n\n");
-          output << wxT("<P CLASS=\"heading5\">\n");
+          output << wxT("<div CLASS=\"heading5\">\n");
           output << EditorCell::PrependNBSP(
                   EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))
                  << wxT("\n");
-          output << wxT("</P>\n");
+          output << wxT("</div>\n");
           break;
         case GC_TYPE_HEADING6:
           output << wxT("\n\n<!-- Heading6 cell -->\n\n\n");
-          output << wxT("<P CLASS=\"heading6\">\n");
+          output << wxT("<div CLASS=\"heading6\">\n");
           output << EditorCell::PrependNBSP(
                   EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))
                  << wxT("\n");
-          output << wxT("</P>\n");
+          output << wxT("</div>\n");
           break;
         case GC_TYPE_TITLE:
           output << wxT("\n\n<!-- Title cell -->\n\n\n");
-          output << wxT("<P CLASS=\"title\">\n");
+          output << wxT("<div CLASS=\"title\">\n");
           output << EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString())) << wxT("\n");
-          output << wxT("</P>\n");
+          output << wxT("</div>\n");
           break;
         case GC_TYPE_PAGEBREAK:
           output << wxT("\n\n<!-- Page break cell -->\n\n\n");
-          output << wxT("<P CLASS=\"comment\">\n");
+          output << wxT("<div CLASS=\"comment\">\n");
           output << wxT("<hr/>\n");
-          output << wxT("</P>\n");
+          output << wxT("</div>\n");
           break;
         case GC_TYPE_IMAGE:
         {
           output << wxT("\n\n<!-- Image cell -->\n\n\n");
           Cell *out = tmp->GetLabel();
-          output << wxT("<P CLASS=\"image\">\n");
+          output << wxT("<div CLASS=\"image\">\n");
           output << EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() +
                                                                         tmp->GetEditable()->ToString())) << wxT("\n");
           output << wxT("<BR/>\n");
@@ -5647,6 +5647,7 @@ bool Worksheet::ExportToHTML(wxString file)
                       wxString::Format(wxT("_%d.%s\" alt=\"Diagram\" style=\"max-width:90%%;\" >"), count,
                                        imgCell->GetExtension());
           }
+          output << wxT("</div>\n");
           count++;
         }
           break;
@@ -6561,7 +6562,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   // succeeded.
   if(!wxFileExists(backupfile))
     return false;
-  
+
   {
     SuppressErrorDialogs suppressor;
     done = wxRenameFile(backupfile, file, true);
@@ -6893,11 +6894,11 @@ void Worksheet::ScrollToCellIfNeeded()
   if(!m_cellPointers.m_scrollToCell)
     return;
   m_cellPointers.m_scrollToCell = false;
-  
+
   RecalculateIfNeeded();
 
   Cell *cell = m_cellPointers.CellToScrollTo();
-  
+
   if (cell == NULL)
   {
     int view_x, view_y;
@@ -8207,7 +8208,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
   if (editor == NULL)
     return false;
 
-  
+
   wxString partial;
   if(type != AutoComplete::esccommand)
   {
