@@ -680,6 +680,7 @@ protected:
   wxRegEx m_blankStatementRegEx;
   wxRegEx m_sbclCompilationRegEx;
   MathParser *m_parser;
+  bool m_maximaBusy;
 #if wxUSE_DRAG_AND_DROP
 
   friend class MyDropTarget;

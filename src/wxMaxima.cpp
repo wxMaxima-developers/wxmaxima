@@ -175,6 +175,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
   wxWindowUpdateLocker noUpdates(this);
+  m_maximaBusy = true;
   m_evalOnStartup = false;
   m_dataFromMaximaIs = false;
   m_gnuplotProcess = NULL;
@@ -1304,6 +1305,8 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
     start = 0;
   FirstOutput();
 
+  m_maximaBusy = false;
+
   // Wait for a line maxima informs us about it's process id in.
   int s = data.Find(wxT("pid=")) + 4;
   int t = s + data.SubString(s, data.Length()).Find(wxT("\n")) - 1;
@@ -1734,7 +1737,8 @@ void wxMaxima::ReadVariables(wxString &data)
     data = data.Right(data.Length()-end-m_variablesSuffix.Length());
   // If maxima currently isn't busy we can ask for the value of a variable
     StatusMaximaBusy(waiting);
-    if((m_worksheet->m_evaluationQueue.Empty()) && (!m_worksheet->QuestionPending()))
+    if((m_worksheet->m_evaluationQueue.Empty()) && (!m_worksheet->QuestionPending()) &&
+       (!m_maximaBusy))
     {
       if(!QueryVariableValue())
         m_variablesPane->AutoSize();
@@ -1777,6 +1781,7 @@ void wxMaxima::ReadPrompt(wxString &data)
   if (end == wxNOT_FOUND)
     return;
 
+  m_maximaBusy = false;
   m_bytesFromMaxima = 0;
   
   wxString o = data.SubString(m_promptPrefix.Length(), end - 1);
@@ -4082,7 +4087,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
         m_statusBar->SetMaximaCPUPercentage(cpuPercentage);
 
         if((m_process != NULL) && (m_pid > 0) &&
-           ((cpuPercentage > 0) || (m_StatusMaximaBusy_next != waiting)))
+           ((cpuPercentage > 0) || (m_maximaBusy)))
           m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
       }
 
@@ -7730,7 +7735,7 @@ void wxMaxima::EditInputMenu(wxCommandEvent &WXUNUSED(event))
 void wxMaxima::VarReadEvent(wxCommandEvent &WXUNUSED(event))
 {
   m_varNamesToQuery = m_variablesPane->GetEscapedVarnames();
-  if(m_worksheet->m_evaluationQueue.Empty())
+  if((m_worksheet->m_evaluationQueue.Empty()) && (!m_maximaBusy))
   {
     if(!m_worksheet->QuestionPending())
       QueryVariableValue();
@@ -8048,7 +8053,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
 void wxMaxima::TriggerEvaluation()
 {
   // If evaluation is already running we don't have anything to do
-  if((m_StatusMaximaBusy_next != waiting) && (m_StatusMaximaBusy_next != sending))
+  if(m_maximaBusy)
     return;
   
   // If we aren't connected yet this function will be triggered as soon as maxima
@@ -8136,6 +8141,7 @@ void wxMaxima::TriggerEvaluation()
         m_xmlInspector->Clear();
 
       SendMaxima(m_configCommands + text, true);
+      m_maximaBusy = true;
       // Now that we have sent a command we need to query all variable values anew
       m_varNamesToQuery = m_variablesPane->GetEscapedVarnames();
       m_configCommands = wxEmptyString;
