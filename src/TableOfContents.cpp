@@ -113,6 +113,7 @@ void TableOfContents::UpdateTableOfContents(GroupCell *tree, GroupCell *cursorPo
         m_displayedItems->SetItemState(selection,
                                        wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED,
                                        wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
+        m_displayedItems->EnsureVisible(selection);
       }
       m_lastSelection = selection;
     }
