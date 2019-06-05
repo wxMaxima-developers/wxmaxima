@@ -319,8 +319,9 @@ wxString Variablespane::EscapeVarname(wxString var)
   var.Replace(")","\\)");
   var.Replace("{","\\{");
   var.Replace("}","\\}");
-  var.Replace("[","\\]");
-  var.Replace("[","\\]");
+  var.Replace("[","\\[");
+  var.Replace("]","\\]");
+  var.Replace(" ","\\ ");
   if(var.StartsWith("\\?"))
     var = var.Right(var.Length()-1);
   if(!var.StartsWith(wxT("?")))
