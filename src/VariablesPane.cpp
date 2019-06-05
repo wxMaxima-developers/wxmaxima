@@ -297,13 +297,16 @@ wxString Variablespane::EscapeVarname(wxString var)
 {
   var.Replace("\\","\\\\");
   var.Replace("+","\\+");
-  var.Replace("#","\\+");
-  var.Replace("'","\\+");
-  var.Replace("!","\\+");
+  var.Replace("#","\\#");
+  var.Replace("'","\\'");
+  var.Replace("\"","\\\"");
+  var.Replace("!","\\!");
   var.Replace("-","\\-");
   var.Replace("*","\\*");
   var.Replace("/","\\/");
   var.Replace("^","\\^");
+  var.Replace("$","\\$");
+  var.Replace(";","\\;");
   var.Replace(",","\\,");
   var.Replace("<","\\<");
   var.Replace(">","\\>");
@@ -312,6 +315,12 @@ wxString Variablespane::EscapeVarname(wxString var)
   var.Replace("~","\\~");
   var.Replace("`","\\`");
   var.Replace("?","\\?");
+  var.Replace("(","\\(");
+  var.Replace(")","\\)");
+  var.Replace("{","\\{");
+  var.Replace("}","\\}");
+  var.Replace("[","\\]");
+  var.Replace("[","\\]");
   if(var.StartsWith("\\?"))
     var = var.Right(var.Length()-1);
   if(!var.StartsWith(wxT("?")))
@@ -332,22 +341,6 @@ bool Variablespane::IsValidVariable(wxString var)
   if((var[0] >= '0') && (var[0] <= '9'))
     return false;    
   if(var.Contains(":"))
-    return false;
-  if(var.Contains("\'"))
-    return false;
-  if(var.Contains("\""))
-    return false;
-  if(var.Contains(";"))
-    return false;
-  if(var.Contains("$"))
-    return false;
-  if(var.Contains("("))
-    return false;
-  if(var.Contains(")"))
-    return false;
-  if(var.Contains("["))
-    return false;
-  if(var.Contains("]"))
     return false;
   return true;
 }
