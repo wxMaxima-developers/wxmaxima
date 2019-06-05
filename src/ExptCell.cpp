@@ -124,7 +124,7 @@ void ExptCell::RecalculateWidths(int fontsize)
   if (m_isBrokenIntoLines)
     m_powCell->RecalculateWidthsList(fontsize);
   else
-    m_powCell->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - EXPT_DEC));
+    m_powCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - EXPT_DEC));
   m_width = m_baseCell->GetFullWidth() + m_powCell->GetFullWidth() -
             MC_TEXT_PADDING;
   m_exp->RecalculateWidthsList(fontsize);
@@ -142,7 +142,7 @@ void ExptCell::RecalculateHeight(int fontsize)
   if (m_isBrokenIntoLines)
     m_powCell->RecalculateHeightList(fontsize);
   else
-    m_powCell->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - EXPT_DEC));
+    m_powCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - EXPT_DEC));
   m_height = m_baseCell->GetMaxHeight() + m_powCell->GetMaxHeight() -
              Scale_Px((8 * fontsize) / 10 + MC_EXP_INDENT);
   m_center = m_powCell->GetMaxHeight() + m_baseCell->GetMaxCenter() -
@@ -152,8 +152,8 @@ void ExptCell::RecalculateHeight(int fontsize)
   m_close->RecalculateHeightList(fontsize);
   if (m_isBrokenIntoLines)
   {
-    m_height = MAX(m_baseCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = MAX(m_baseCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_baseCell->GetMaxHeight(), m_open->GetMaxHeight());
+    m_center = wxMax(m_baseCell->GetMaxCenter(), m_open->GetMaxCenter());
   }
 }
 
@@ -280,8 +280,8 @@ bool ExptCell::BreakUp()
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = m_close;
     m_nextToDraw = m_baseCell;
-    m_height = MAX(m_baseCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = MAX(m_baseCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_baseCell->GetMaxHeight(), m_open->GetMaxHeight());
+    m_center = wxMax(m_baseCell->GetMaxCenter(), m_open->GetMaxCenter());
     return true;
   }
   return false;

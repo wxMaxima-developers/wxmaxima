@@ -286,7 +286,7 @@ int Cell::GetMaxCenter()
       if ((tmp != this) && (tmp->m_breakLine))
         break;
       if(!tmp->m_isBrokenIntoLines)
-        m_maxCenter = MAX(m_maxCenter, tmp->m_center);
+        m_maxCenter = wxMax(m_maxCenter, tmp->m_center);
       tmp = tmp->m_nextToDraw;
     }
   }
@@ -307,7 +307,7 @@ int Cell::GetMaxDrop()
       if ((tmp != this) && (tmp->m_breakLine))
         break;
       if(!tmp->m_isBrokenIntoLines)
-        m_maxDrop = MAX(m_maxDrop, tmp->m_height - tmp->m_center);
+        m_maxDrop = wxMax(m_maxDrop, tmp->m_height - tmp->m_center);
       tmp = tmp->m_nextToDraw;
     }
   }

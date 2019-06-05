@@ -3554,7 +3554,7 @@ wxString wxMaxima::ExtractFirstExpression(wxString entry)
 
   int index;
   if (semiFound && dollarFound)
-    index = MIN(semicolon, dollar);
+    index = wxMin(semicolon, dollar);
   else if (semiFound && !dollarFound)
     index = semicolon;
   else if (!semiFound && dollarFound)

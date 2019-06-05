@@ -229,7 +229,7 @@ void ParenCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
   Configuration *configuration = (*m_configuration);
-  m_height = MAX(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(2);
+  m_height = wxMax(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(2);
   m_center = m_height / 2;
 
   SetFont(fontsize);
@@ -243,8 +243,8 @@ void ParenCell::RecalculateHeight(int fontsize)
 
   if (m_isBrokenIntoLines)
   {
-    m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
+    m_center = wxMax(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
   }
   else
   {
@@ -277,7 +277,7 @@ void ParenCell::RecalculateHeight(int fontsize)
           wxPoint(m_currentPoint.x + m_signWidth,
                   m_currentPoint.y));
       
-      m_height = MAX(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(2);      
+      m_height = wxMax(m_signHeight,m_innerCell->GetMaxHeight()) + Scale_Px(2);      
       m_center = m_height / 2;   
     }
   }
@@ -491,8 +491,8 @@ bool ParenCell::BreakUp()
       m_nextToDraw->m_previousToDraw = m_close;
     m_nextToDraw = m_open;
 
-    m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
+    m_center = wxMax(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
     return true;
   }
   return false;

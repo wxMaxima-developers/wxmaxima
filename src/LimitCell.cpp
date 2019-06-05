@@ -120,7 +120,7 @@ void LimitCell::RecalculateWidths(int fontsize)
   if(m_base)
     m_base->RecalculateWidthsList(fontsize);
   if(m_under)
-    m_under->RecalculateWidthsList(MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
+    m_under->RecalculateWidthsList(wxMax(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
   if(m_name)
     m_name->RecalculateWidthsList(fontsize);
   if(m_open)
@@ -131,7 +131,7 @@ void LimitCell::RecalculateWidths(int fontsize)
     m_close->RecalculateWidthsList(fontsize);
 
   if (!m_isBrokenIntoLines)
-    m_width = MAX(m_name->GetFullWidth(), m_under->GetFullWidth())
+    m_width = wxMax(m_name->GetFullWidth(), m_under->GetFullWidth())
       + m_base->GetFullWidth();
   else
     m_width = 0;
@@ -143,7 +143,7 @@ void LimitCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
   if(m_under)
-    m_under->RecalculateHeightList(MAX(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
+    m_under->RecalculateHeightList(wxMax(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
   if(m_name)
     m_name->RecalculateHeightList(fontsize);
   if(m_base)
@@ -157,8 +157,8 @@ void LimitCell::RecalculateHeight(int fontsize)
 
   if (!m_isBrokenIntoLines)
   {
-    m_center = MAX(m_base->GetMaxCenter(), m_name->GetMaxCenter());
-    m_height = m_center + MAX(m_name->GetMaxDrop() + m_under->GetMaxHeight(),
+    m_center = wxMax(m_base->GetMaxCenter(), m_name->GetMaxCenter());
+    m_height = m_center + wxMax(m_name->GetMaxDrop() + m_under->GetMaxHeight(),
                               m_base->GetMaxDrop());
   }
   else
@@ -175,18 +175,18 @@ void LimitCell::Draw(wxPoint point)
   {   
     wxPoint base(point), under(point), name(point);
 
-    name.x = point.x + MAX(m_name->GetFullWidth(),
+    name.x = point.x + wxMax(m_name->GetFullWidth(),
                            m_under->GetFullWidth()) / 2 -
              m_name->GetFullWidth() / 2;
     m_name->DrawList(name);
 
-    under.x = point.x + MAX(m_name->GetFullWidth(),
+    under.x = point.x + wxMax(m_name->GetFullWidth(),
                             m_under->GetFullWidth()) / 2 -
               m_under->GetFullWidth() / 2;
     under.y = point.y + m_name->GetMaxDrop() + m_under->GetMaxCenter();
     m_under->DrawList(under);
 
-    base.x += MAX(m_name->GetFullWidth(),
+    base.x += wxMax(m_name->GetFullWidth(),
                   m_under->GetFullWidth());
     m_base->DrawList(base);
   }

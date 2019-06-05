@@ -880,7 +880,7 @@ void GroupCell::RecalculateAppended()
     if (tmp->BreakLineHere())
     {
       int height_Delta = tmp->GetMaxHeight();
-      m_width = MAX(m_width, tmp->GetLineWidth());
+      m_width = wxMax(m_width, tmp->GetLineWidth());
       m_height            += height_Delta;
       m_outputRect.width = m_width;
       m_outputRect.height += height_Delta;
@@ -942,9 +942,9 @@ int GroupCell::GetInputIndent()
   if(m_inputLabel != NULL)
   {
     if(m_inputLabel->GetWidth() >= 0)
-      labelWidth = MAX(m_inputLabel->GetWidth() + MC_TEXT_PADDING,labelWidth);
+      labelWidth = wxMax(m_inputLabel->GetWidth() + MC_TEXT_PADDING,labelWidth);
     else
-      labelWidth = MAX(m_labelWidth_cached,labelWidth);
+      labelWidth = wxMax(m_labelWidth_cached,labelWidth);
   }
   
   m_labelWidth_cached = labelWidth;

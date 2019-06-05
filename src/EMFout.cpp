@@ -244,12 +244,12 @@ void Emfout::GetMaxPoint(int *width, int *height)
           currentHeight += MC_LINE_SKIP;
         *height = currentHeight;
         currentWidth = tmp->GetWidth();
-        *width = MAX(currentWidth, *width);
+        *width = wxMax(currentWidth, *width);
       }
       else
       {
         currentWidth += (tmp->GetWidth());
-        *width = MAX(currentWidth, *width);
+        *width = wxMax(currentWidth, *width);
       }
       bigSkip = tmp->m_bigSkip;
     }

@@ -35,8 +35,6 @@
 
 #define ICON_SCALE (0.35)
 #define ABS(val) ((val) >= 0 ? (val) : -(val))
-#define MAX(a, b) ((a)>(b) ? (a) : (b))
-#define MIN(a, b) ((a)>(b) ? (b) : (a))
 
 TipOfTheDay::TipOfTheDay(wxWindow *parent)
   : wxDialog(parent,-1,_("Tip of the Day"))
@@ -274,7 +272,7 @@ wxImage TipOfTheDay::GetImage(unsigned char *data_128, size_t len_128,
   if(ppi <= 10)
     ppi = 72;
   
-  double targetSize = MAX(ppi,75) * ICON_SCALE;
+  double targetSize = wxMax(ppi,75) * ICON_SCALE;
   int prescale;
 
   int sizeA = 128 << 4;

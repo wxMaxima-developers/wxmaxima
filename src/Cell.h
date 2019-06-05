@@ -28,9 +28,6 @@
 #ifndef MATHCELL_H
 #define MATHCELL_H
 
-#define MAX(a, b) ((a)>(b) ? (a) : (b))
-#define MIN(a, b) ((a)>(b) ? (b) : (a))
-
 #include <list>
 #include <wx/wx.h>
 #include <wx/xml/xml.h>

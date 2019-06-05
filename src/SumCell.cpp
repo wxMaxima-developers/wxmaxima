@@ -117,10 +117,10 @@ void SumCell::RecalculateWidths(int fontsize)
   m_signWCenter = Scale_Px(15) * configuration->GetZoomFactor();
 
   m_base->RecalculateWidthsList(fontsize);
-  m_under->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
+  m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
   if (m_over == NULL)
     m_over = new TextCell(m_group, m_configuration, m_cellPointers);
-  m_over->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
+  m_over->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
 
   if (configuration->CheckTeXFonts())
   {
@@ -143,8 +143,8 @@ void SumCell::RecalculateWidths(int fontsize)
     m_signTop = (2 * m_signSize) / 5;
     m_signSize = (2 * m_signSize) / 5;
   }
-  m_signWCenter = MAX(m_signWCenter, m_under->GetFullWidth() / 2);
-  m_signWCenter = MAX(m_signWCenter, m_over->GetFullWidth() / 2);
+  m_signWCenter = wxMax(m_signWCenter, m_under->GetFullWidth() / 2);
+  m_signWCenter = wxMax(m_signWCenter, m_over->GetFullWidth() / 2);
   m_width = 2 * m_signWCenter + m_base->GetFullWidth() + Scale_Px(4);
 
   ResetData();
@@ -153,14 +153,14 @@ void SumCell::RecalculateWidths(int fontsize)
 void SumCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
-  m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
-  m_over->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - SUM_DEC));
+  m_under->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
+  m_over->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUM_DEC));
   m_base->RecalculateHeightList(fontsize);
 
-  m_center = MAX(m_over->GetMaxHeight() + Scale_Px(4) + m_signSize / 2,
+  m_center = wxMax(m_over->GetMaxHeight() + Scale_Px(4) + m_signSize / 2,
                  m_base->GetMaxCenter());
   m_height = m_center +
-             MAX(m_under->GetMaxHeight() + Scale_Px(4) + m_signSize / 2,
+             wxMax(m_under->GetMaxHeight() + Scale_Px(4) + m_signSize / 2,
                  m_base->GetMaxDrop());
 }
 

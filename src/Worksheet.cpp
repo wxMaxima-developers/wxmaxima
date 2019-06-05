@@ -1999,8 +1999,8 @@ void Worksheet::OnMouseMotion(wxMouseEvent &event)
 void Worksheet::SelectGroupCells(wxPoint down, wxPoint up)
 {
   // Calculate the rectangle that has been selected
-  int ytop = MIN(down.y, up.y);
-  int ybottom = MAX(down.y, up.y);
+  int ytop = wxMin(down.y, up.y);
+  int ybottom = wxMax(down.y, up.y);
   m_cellPointers.m_selectionStart = m_cellPointers.m_selectionEnd = NULL;
 
   wxRect rect;
@@ -2069,8 +2069,8 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up)
   Cell *selectionStartOld = m_cellPointers.m_selectionStart, *selectionEndOld = m_cellPointers.m_selectionEnd;
   wxRect rect;
 
-  int ytop = MIN(down.y, up.y);
-  int ybottom = MAX(down.y, up.y);
+  int ytop = wxMin(down.y, up.y);
+  int ybottom = wxMax(down.y, up.y);
 
   switch (m_clickType)
   {
@@ -2126,10 +2126,10 @@ void Worksheet::ClickNDrag(wxPoint down, wxPoint up)
 
     case CLICK_TYPE_OUTPUT_SELECTION:
       SetSelection(NULL);
-      rect.x = MIN(down.x, up.x);
-      rect.y = MIN(down.y, up.y);
-      rect.width = MAX(abs(down.x - up.x), 1);
-      rect.height = MAX(abs(down.y - up.y), 1);
+      rect.x = wxMin(down.x, up.x);
+      rect.y = wxMin(down.y, up.y);
+      rect.width = wxMax(abs(down.x - up.x), 1);
+      rect.height = wxMax(abs(down.y - up.y), 1);
 
       if (m_clickInGC != NULL)
         m_clickInGC->SelectRectInOutput(rect, down, up, &m_cellPointers.m_selectionStart, &m_cellPointers.m_selectionEnd);
@@ -3548,8 +3548,8 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
     //   int fontsize = m_configuration->GetDefaultFontSize();
     int fontsize = m_configuration->GetDefaultFontSize();
 
-    GetActiveCell()->RecalculateWidths(MAX(fontsize, MC_MIN_SIZE));
-    GetActiveCell()->RecalculateHeight(MAX(fontsize, MC_MIN_SIZE));
+    GetActiveCell()->RecalculateWidths(wxMax(fontsize, MC_MIN_SIZE));
+    GetActiveCell()->RecalculateHeight(wxMax(fontsize, MC_MIN_SIZE));
 
     if (height != GetActiveCell()->GetHeight() ||
         GetActiveCell()->GetWidth() + GetActiveCell()->GetCurrentPoint().x >=
@@ -4273,7 +4273,7 @@ void Worksheet::GetMaxPoint(int *width, int *height)
     currentHeight += m_configuration->GetGroupSkip();
     *height = currentHeight;
     currentWidth = m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->GetDefaultFontSize()) + tmp->GetWidth();
-    *width = MAX(currentWidth + m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->GetDefaultFontSize()), *width);
+    *width = wxMax(currentWidth + m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->GetDefaultFontSize()), *width);
     tmp = tmp->m_next;
   }
 }
@@ -4295,7 +4295,7 @@ void Worksheet::AdjustSize()
     GetMaxPoint(&width, &height);
     // when window is scrolled all the way down, document occupies top 1/8 of clientHeight
     height += clientHeight - (int) (1.0 / 8.0 * (float) clientHeight);
-    virtualHeight = MAX(clientHeight + 10, height); // ensure we always have VSCROLL active
+    virtualHeight = wxMax(clientHeight + 10, height); // ensure we always have VSCROLL active
 
     // Don't set m_scrollUnit too high for big windows on hi-res screens:
     // Allow scrolling by a tenth of a line doesn't make too much sense,
@@ -6963,24 +6963,24 @@ void Worksheet::ScrollToCellIfNeeded()
     // Scroll upwards if the top of the thing we want to scroll to is less than 1/2
     // scroll unit away from the top of the page
     if (cellTop - m_scrollUnit < view_y)
-      Scroll(-1, MAX(cellTop / m_scrollUnit - 1, 0));
+      Scroll(-1, wxMax(cellTop / m_scrollUnit - 1, 0));
 
     // Scroll downwards if the top of the thing we want to scroll to is less than 1/2
     // scroll unit away from the bottom of the page
     if (cellTop + m_scrollUnit > view_y + height)
-      Scroll(-1, MAX(cellTop / m_scrollUnit - 1, 0));
+      Scroll(-1, wxMax(cellTop / m_scrollUnit - 1, 0));
   }
   else
   {
     // Scroll downwards if the bottom of the thing we want to scroll to is less
     // than 1/2 scroll unit away from the bottom of the page
     if (cellBottom + m_scrollUnit > view_y + height)
-      Scroll(-1, MAX(cellBottom / m_scrollUnit - 1, 0));
+      Scroll(-1, wxMax(cellBottom / m_scrollUnit - 1, 0));
 
     // Scroll upwards if the bottom of the thing we want to scroll to is less than 1/2
     // scroll unit away from the top of the page
     if (cellBottom - m_scrollUnit < view_y)
-      Scroll(-1, MAX(cellBottom / m_scrollUnit - 1, 0));
+      Scroll(-1, wxMax(cellBottom / m_scrollUnit - 1, 0));
   }
   RequestRedraw();
 }

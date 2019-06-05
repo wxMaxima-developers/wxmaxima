@@ -43,8 +43,6 @@
 #endif
 
 #define ABS(val) ((val) >= 0 ? (val) : -(val))
-#define MAX(a, b) ((a)>(b) ? (a) : (b))
-#define MIN(a, b) ((a)>(b) ? (b) : (a))
 
 wxBitmap ToolBar::GetImage(wxString name,
                           unsigned char *data_128, size_t len_128,
@@ -67,7 +65,7 @@ wxBitmap ToolBar::GetImage(wxString name,
   if((m_ppi.x <= 10) || (m_ppi.y <= 10))
     m_ppi = wxSize(72,72);
 
-  double targetSize = MAX(m_ppi.x,75) * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
+  double targetSize = wxMax(m_ppi.x,75) * TOOLBAR_ICON_SCALE * GetContentScaleFactor();
   int prescale;
 
   int sizeA = 128 << 4;
@@ -344,11 +342,11 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
   if((m_ppi.x <= 10) || (m_ppi.y <= 10))
     m_ppi = wxSize(72,72);
 
-  int sliderWidth = MAX(m_ppi.x,75) * 200 / 72;
+  int sliderWidth = wxMax(m_ppi.x,75) * 200 / 72;
   int width, height;
   wxDisplaySize(&width, &height);
   if (width < 800)
-    sliderWidth = MIN(sliderWidth, 100);
+    sliderWidth = wxMin(sliderWidth, 100);
   m_plotSlider = new wxSlider(this, plot_slider_id, 0, 0, 10,
                               wxDefaultPosition, wxSize(sliderWidth, -1),
                               wxSL_HORIZONTAL | !wxSL_AUTOTICKS);

@@ -51,8 +51,6 @@
 #define CONFIG_ICON_SCALE (1.0)
 
 #define ABS(val) ((val) >= 0 ? (val) : -(val))
-#define MAX(a, b) ((a)>(b) ? (a) : (b))
-#define MIN(a, b) ((a)>(b) ? (b) : (a))
 
 int ConfigDialogue::GetImageSize()
 {
@@ -73,7 +71,7 @@ int ConfigDialogue::GetImageSize()
   if(ppi <= 10)
     ppi = 72;
 
-  double targetSize = MAX(ppi,75) * CONFIG_ICON_SCALE;
+  double targetSize = wxMax(ppi,75) * CONFIG_ICON_SCALE;
 
   int sizeA = 128 << 4;
   while(sizeA * 3 / 2 > targetSize && sizeA >= 32) {
@@ -113,7 +111,7 @@ wxBitmap ConfigDialogue::GetImage(wxString name,
   if(ppi <= 10)
     ppi = 72;
   
-  double targetSize = MAX(ppi,75) * CONFIG_ICON_SCALE;
+  double targetSize = wxMax(ppi,75) * CONFIG_ICON_SCALE;
   int prescale;
 
   int sizeA = 128 << 4;
@@ -1383,8 +1381,8 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
     {
       m_configuration->m_styles[TS_DEFAULT].FontName(font.GetFaceName());
       m_configuration->SetFontEncoding(font.GetEncoding());
-      m_configuration->SetDefaultFontSize(MAX(
-                                            MIN(
+      m_configuration->SetDefaultFontSize(wxMax(
+                                            wxMin(
                                               font.GetPointSize(), MC_MAX_SIZE),
                                             MC_MIN_SIZE)
         );
@@ -1394,7 +1392,7 @@ void ConfigDialogue::OnChangeFontFamily(wxCommandEvent &event)
     else
     {
       m_configuration->m_styles[st].FontName(font.GetFaceName());
-      m_configuration->m_styles[st].FontSize(MAX(MC_MIN_SIZE,font.GetPointSize()));
+      m_configuration->m_styles[st].FontSize(wxMax(MC_MIN_SIZE,font.GetPointSize()));
     }
   }
   UpdateExample();

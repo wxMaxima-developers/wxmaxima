@@ -228,12 +228,12 @@ void BitmapOut::GetMaxPoint(int *width, int *height)
         currentHeight += tmp->GetMaxHeight();
         *height = currentHeight;
         currentWidth = tmp->GetWidth();
-        *width = MAX(currentWidth, *width);
+        *width = wxMax(currentWidth, *width);
       }
       else
       {
         currentWidth += (tmp->GetWidth());
-        *width = MAX(currentWidth, *width);
+        *width = wxMax(currentWidth, *width);
       }
     }
     tmp = tmp->m_nextToDraw;

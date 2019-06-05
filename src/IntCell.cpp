@@ -135,10 +135,10 @@ void IntCell::RecalculateWidths(int fontsize)
   m_var->RecalculateWidthsList(fontsize);
   if (m_under == NULL)
     m_under = new TextCell(m_group, m_configuration, m_cellPointers);
-  m_under->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 5));
+  m_under->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 5));
   if (m_over == NULL)
     m_over = new TextCell(m_group, m_configuration, m_cellPointers);
-  m_over->RecalculateWidthsList(MAX(MC_MIN_SIZE, fontsize - 5));
+  m_over->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 5));
 
   if (configuration->CheckTeXFonts())
   {
@@ -165,7 +165,7 @@ void IntCell::RecalculateWidths(int fontsize)
     m_signHeight = (85 * m_signHeight) / 100;
 
     m_width = m_signWidth +
-              MAX(m_over->GetFullWidth() + m_signWidth, m_under->GetFullWidth()) +
+              wxMax(m_over->GetFullWidth() + m_signWidth, m_under->GetFullWidth()) +
               m_base->GetFullWidth() +
               m_var->GetFullWidth() +
               Scale_Px(4);
@@ -192,13 +192,13 @@ void IntCell::RecalculateWidths(int fontsize)
 
     m_width = m_signWidth +
               m_base->GetFullWidth() +
-              MAX(m_over->GetFullWidth(), m_under->GetFullWidth()) +
+              wxMax(m_over->GetFullWidth(), m_under->GetFullWidth()) +
               m_var->GetFullWidth() +
               Scale_Px(4);
 #else
     m_width = m_signWidth +
               m_base->GetFullWidth() +
-              MAX(m_over->GetFullWidth(), m_under->GetFullWidth()) +
+              wxMax(m_over->GetFullWidth(), m_under->GetFullWidth()) +
               m_var->GetFullWidth() +
               Scale_Px(4);
     if(m_signHeight < Scale_Px(35))
@@ -212,24 +212,24 @@ void IntCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
 
-  m_under->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 5));
-  m_over->RecalculateHeightList(MAX(MC_MIN_SIZE, fontsize - 5));
+  m_under->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 5));
+  m_over->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - 5));
   m_base->RecalculateHeightList(fontsize);
   m_var->RecalculateHeightList(fontsize);
 
   if (m_intStyle == INT_DEF)
   {
-    m_center = MAX(m_over->GetMaxHeight() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
+    m_center = wxMax(m_over->GetMaxHeight() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
                    m_base->GetMaxCenter());
     m_height = m_center +
-      MAX(m_under->GetMaxHeight() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
+      wxMax(m_under->GetMaxHeight() + Scale_Px(4) + m_signHeight / 2 - m_signHeight / 3,
           m_base->GetMaxDrop());
   }
   else
   {
-    m_center = MAX(m_signHeight / 2, m_base->GetMaxCenter());
+    m_center = wxMax(m_signHeight / 2, m_base->GetMaxCenter());
     m_height = m_center +
-               MAX(m_signHeight / 2, m_base->GetMaxDrop());
+               wxMax(m_signHeight / 2, m_base->GetMaxDrop());
   }
 }
 
@@ -374,11 +374,11 @@ void IntCell::Draw(wxPoint point)
       if (configuration->CheckTeXFonts())
       {
         base.x += m_signWidth +
-                  MAX(m_over->GetFullWidth() + m_signWidth, m_under->GetFullWidth());
+                  wxMax(m_over->GetFullWidth() + m_signWidth, m_under->GetFullWidth());
       }
       else
         base.x += m_signWidth +
-                  MAX(m_over->GetFullWidth(), m_under->GetFullWidth());
+                  wxMax(m_over->GetFullWidth(), m_under->GetFullWidth());
     }
 
     else if (configuration->CheckTeXFonts())

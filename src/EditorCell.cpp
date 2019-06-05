@@ -294,8 +294,8 @@ wxString EditorCell::ToString(bool dontLimitToSelection)
 
   if (SelectionActive() && (!dontLimitToSelection))
   {
-    long start = MIN(m_selectionStart, m_selectionEnd);
-    long end = MAX(m_selectionStart, m_selectionEnd) - 1;
+    long start = wxMin(m_selectionStart, m_selectionEnd);
+    long end = wxMax(m_selectionStart, m_selectionEnd) - 1;
     if (end >= (signed)m_text.Length()) end = m_text.Length() - 1;
     if (start < 0) start = 0;
     text = m_text.SubString(start, end);
@@ -318,8 +318,8 @@ wxString EditorCell::ToMatlab(bool dontLimitToSelection)
 
   if (SelectionActive() && (!dontLimitToSelection))
   {
-	long start = MIN(m_selectionStart, m_selectionEnd);
-	long end = MAX(m_selectionStart, m_selectionEnd) - 1;
+	long start = wxMin(m_selectionStart, m_selectionEnd);
+	long end = wxMax(m_selectionStart, m_selectionEnd) - 1;
 	if (end >= (signed)m_text.Length()) end = m_text.Length() - 1;
 	if (start < 0) start = 0;
 	text = m_text.SubString(start, end);
@@ -643,7 +643,7 @@ void EditorCell::RecalculateWidths(int fontsize)
       {
         dc->GetTextExtent(textSnippet->GetText(), &tokenwidth, &tokenheight);
         linewidth += tokenwidth;
-        width = MAX(width, linewidth);
+        width = wxMax(width, linewidth);
       }
     }
 
@@ -834,7 +834,7 @@ void EditorCell::Draw(wxPoint point1)
         // Mark only text that won't be marked in the next step:
         // This would not only be unnecessary but also could cause
         // selections to flicker in very long texts
-        if ((!IsActive()) || (start != MIN(m_selectionStart, m_selectionEnd)))
+        if ((!IsActive()) || (start != wxMin(m_selectionStart, m_selectionEnd)))
           MarkSelection(start, end, TS_EQUALSSELECTION, m_fontSize);
         if(m_cellPointers->m_selectionString.Length() == 0)
           end++;
@@ -848,8 +848,8 @@ void EditorCell::Draw(wxPoint point1)
       // Mark selection
       //
       if (m_selectionStart >= 0)
-        MarkSelection(MIN(m_selectionStart, m_selectionEnd),
-                      MAX(m_selectionStart, m_selectionEnd),
+        MarkSelection(wxMin(m_selectionStart, m_selectionEnd),
+                      wxMax(m_selectionStart, m_selectionEnd),
                       TS_SELECTION, m_fontSize);
 
         //
@@ -1483,8 +1483,8 @@ void EditorCell::ProcessNewline(bool keepCursorAtStartOfLine)
         if (m_selectionStart != -1) // we have a selection, delete it, then proceed
       {
         SaveValue();
-        long start = MIN(m_selectionEnd, m_selectionStart);
-        long end = MAX(m_selectionEnd, m_selectionStart);
+        long start = wxMin(m_selectionEnd, m_selectionStart);
+        long end = wxMax(m_selectionEnd, m_selectionStart);
         m_text = m_text.SubString(0, start - 1) +
                  m_text.SubString(end, m_text.Length());
         m_positionOfCaret = start;
@@ -1916,8 +1916,8 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
           m_containsChanges = true;
           SaveValue();
           m_saveValue = true;
-          long start = MIN(m_selectionEnd, m_selectionStart);
-          long end = MAX(m_selectionEnd, m_selectionStart);
+          long start = wxMin(m_selectionEnd, m_selectionStart);
+          long end = wxMax(m_selectionEnd, m_selectionStart);
           m_text = m_text.SubString(0, start - 1) +
                    m_text.SubString(end, m_text.Length());
           m_positionOfCaret = start;
@@ -1967,8 +1967,8 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
         m_saveValue = true;
         m_containsChanges = true;
         m_isDirty = true;
-        long start = MIN(m_selectionEnd, m_selectionStart);
-        long end = MAX(m_selectionEnd, m_selectionStart);
+        long start = wxMin(m_selectionEnd, m_selectionStart);
+        long end = wxMax(m_selectionEnd, m_selectionStart);
         m_text = m_text.SubString(0, start - 1) +
                  m_text.SubString(end, m_text.Length());
         m_positionOfCaret = start;
@@ -2056,9 +2056,9 @@ bool EditorCell::HandleSpecialKey(wxKeyEvent &event)
             // Selection active and Tab
             SaveValue();
 
-            long start = MIN(m_selectionStart, m_selectionEnd);
-            long end = MAX(m_selectionStart, m_selectionEnd);
-            long newLineIndex = MIN(m_text.find(wxT('\n'), start), m_text.find(wxT('\r'), start));
+            long start = wxMin(m_selectionStart, m_selectionEnd);
+            long end = wxMax(m_selectionStart, m_selectionEnd);
+            long newLineIndex = wxMin(m_text.find(wxT('\n'), start), m_text.find(wxT('\r'), start));
 
             if (((newLineIndex != wxNOT_FOUND) && (newLineIndex < end)) ||
                 (m_text.SubString(newLineIndex, start).Trim() == wxEmptyString)
@@ -2264,8 +2264,8 @@ bool EditorCell::HandleOrdinaryKey(wxKeyEvent &event)
   if (m_selectionStart > -1)
   {
     SaveValue();
-    long start = MIN(m_selectionEnd, m_selectionStart);
-    long end = MAX(m_selectionEnd, m_selectionStart);
+    long start = wxMin(m_selectionEnd, m_selectionStart);
+    long end = wxMax(m_selectionEnd, m_selectionStart);
 
     switch (keyCode)
     {
@@ -2864,7 +2864,7 @@ void EditorCell::SelectPointText(wxPoint &point)
     m_caretColumn = -1;
     FindMatchingParens();
     // The line that now follows is pure paranoia.
-    m_positionOfCaret = MIN(m_positionOfCaret, (signed) m_text.Length());
+    m_positionOfCaret = wxMin(m_positionOfCaret, (signed) m_text.Length());
   }
   else
   {
@@ -2892,7 +2892,7 @@ void EditorCell::SelectPointText(wxPoint &point)
 
       m_positionOfCaret++;
     }
-    m_positionOfCaret = MIN(m_positionOfCaret, (signed) text.Length());
+    m_positionOfCaret = wxMin(m_positionOfCaret, (signed) text.Length());
 
 
     m_displayCaret = true;
@@ -2973,7 +2973,7 @@ bool EditorCell::IsPointInSelection(wxPoint point)
       break;
     positionOfCaret++;
   }
-  positionOfCaret = MIN(positionOfCaret, (signed) text.Length());
+  positionOfCaret = wxMin(positionOfCaret, (signed) text.Length());
 
   return !((m_selectionStart >= positionOfCaret) || (m_selectionEnd <= positionOfCaret));
 
@@ -3041,8 +3041,8 @@ void EditorCell::SetSelection(int start, int end)
       m_cellPointers->m_selectionString = wxEmptyString;
     else
       m_cellPointers->m_selectionString = m_text.SubString(
-              MIN(m_selectionStart, m_selectionEnd),
-              MAX(m_selectionStart, m_selectionEnd) - 1
+              wxMin(m_selectionStart, m_selectionEnd),
+              wxMax(m_selectionStart, m_selectionEnd) - 1
       );
     m_cellPointers->m_selectionString.Replace(wxT('\r'), wxT(' '));
   }
@@ -3057,7 +3057,7 @@ void EditorCell::CommentSelection()
   SetValue(m_text.SubString(0, m_selectionStart - 1) + wxT("/*")
            + m_text.SubString(m_selectionStart, m_selectionEnd - 1) + wxT("*/")
            + m_text.SubString(m_selectionEnd, m_text.Length()));
-  m_positionOfCaret = MIN(m_selectionEnd + 4, (signed long) m_text.Length());
+  m_positionOfCaret = wxMin(m_selectionEnd + 4, (signed long) m_text.Length());
   ClearSelection();
 }
 
@@ -3121,7 +3121,7 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight, bool 
 
   if (selectParens && (m_paren1 != -1) && (m_paren2 != -1))
   {
-    SetSelection(MIN(m_paren1, m_paren2) + 1, MAX(m_paren1, m_paren2));
+    SetSelection(wxMin(m_paren1, m_paren2) + 1, wxMax(m_paren1, m_paren2));
     m_positionOfCaret = m_selectionEnd;
     return wxT("%");
   }
@@ -3242,8 +3242,8 @@ bool EditorCell::CopyToClipboard()
   wxASSERT_MSG(!wxTheClipboard->IsOpened(),_("Bug: The clipboard is already opened"));
   if (wxTheClipboard->Open())
   {
-    long start = MIN(m_selectionStart, m_selectionEnd);
-    long end = MAX(m_selectionStart, m_selectionEnd) - 1;
+    long start = wxMin(m_selectionStart, m_selectionEnd);
+    long end = wxMax(m_selectionStart, m_selectionEnd) - 1;
     wxString s = m_text.SubString(start, end);
 
     // For some reason wxMaxima sometimes hangs when putting string on the
@@ -3271,8 +3271,8 @@ bool EditorCell::CutToClipboard()
   m_containsChanges = true;
   CopyToClipboard();
 
-  long start = MIN(m_selectionStart, m_selectionEnd);
-  long end = MAX(m_selectionStart, m_selectionEnd);
+  long start = wxMin(m_selectionStart, m_selectionEnd);
+  long end = wxMax(m_selectionStart, m_selectionEnd);
   m_positionOfCaret = start;
 
   // We cannot use SetValue() here, since SetValue() tends to move the cursor.
@@ -4526,8 +4526,8 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSel
   wxString text(m_text);
   text.Replace(wxT("\r"), wxT(" "));
 
-  long start = MIN(m_selectionStart, m_selectionEnd);
-  long end = MAX(m_selectionStart, m_selectionEnd);
+  long start = wxMin(m_selectionStart, m_selectionEnd);
+  long end = wxMax(m_selectionStart, m_selectionEnd);
   if (m_selectionStart < 0)
   {
     if (oldStr == wxEmptyString)

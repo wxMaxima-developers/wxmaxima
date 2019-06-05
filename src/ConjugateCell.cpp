@@ -115,8 +115,8 @@ void ConjugateCell::RecalculateHeight(int fontsize)
   }
   else
   {
-    m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
+    m_center = wxMax(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
   }
 }
 
@@ -207,8 +207,8 @@ bool ConjugateCell::BreakUp()
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = m_close;
     m_nextToDraw = m_open;
-    m_height = MAX(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
-    m_center = MAX(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
+    m_center = wxMax(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
     return true;
   }
   return false;
