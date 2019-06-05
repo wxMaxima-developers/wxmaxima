@@ -33,7 +33,31 @@
 TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers,
                    wxString text, TextStyle style) : Cell(parent, config)
 {
-  m_textStyle = style;
+  switch(m_textStyle = style)
+  {
+  case TS_DEFAULT: m_type = MC_TYPE_DEFAULT; break;
+  case TS_VARIABLE: m_type = MC_TYPE_DEFAULT; break;
+  case TS_NUMBER: m_type = MC_TYPE_DEFAULT; break;
+  case TS_FUNCTION: m_type = MC_TYPE_DEFAULT; break;
+  case TS_SPECIAL_CONSTANT: m_type = MC_TYPE_DEFAULT; break;
+  case TS_GREEK_CONSTANT: m_type = MC_TYPE_DEFAULT; break;
+  case TS_STRING: m_type = MC_TYPE_DEFAULT; break;
+  case TS_INPUT: m_type = MC_TYPE_INPUT; break;
+  case TS_MAIN_PROMPT: m_type = MC_TYPE_MAIN_PROMPT; break;
+  case TS_OTHER_PROMPT: m_type = MC_TYPE_PROMPT; break;
+  case TS_LABEL: m_type = MC_TYPE_LABEL; break;
+  case TS_USERLABEL: m_type = MC_TYPE_LABEL; break;
+  case TS_HIGHLIGHT: m_type = MC_TYPE_DEFAULT; break;
+  case TS_WARNING: m_type = MC_TYPE_WARNING; break;
+  case TS_ERROR: m_type = MC_TYPE_ERROR; break;
+  case TS_TEXT: m_type = MC_TYPE_TEXT; break;
+  case TS_HEADING6: m_type = MC_TYPE_HEADING6; break;
+  case TS_HEADING5: m_type = MC_TYPE_HEADING5; break;
+  case TS_SUBSUBSECTION: m_type = MC_TYPE_SUBSUBSECTION; break;
+  case TS_SUBSECTION: m_type = MC_TYPE_SUBSECTION; break;
+  case TS_SECTION: m_type = MC_TYPE_SECTION; break;
+  case TS_TITLE: m_type = MC_TYPE_TITLE; break;
+  }
   m_cellPointers = cellPointers;
   m_displayedDigits_old = -1;
   m_height = -1;

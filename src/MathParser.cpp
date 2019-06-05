@@ -467,10 +467,19 @@ Cell *MathParser::ParseText(wxXmlNode *node, TextStyle style)
       case TS_ERROR:
         cell->SetType(MC_TYPE_ERROR);
         break;
-        
+
       case TS_WARNING:
         cell->SetType(MC_TYPE_WARNING);
         break;
+
+      case TS_LABEL:
+        cell->SetType(MC_TYPE_LABEL);
+        break;
+
+      case TS_USERLABEL:
+        cell->SetType(MC_TYPE_LABEL);
+        break;
+
       default:
         cell->SetType(m_ParserStyle);
       }

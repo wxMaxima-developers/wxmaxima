@@ -1436,7 +1436,13 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           if (CanDeleteSelection())
             popupMenu->Append(popid_delete, _("Delete Selection"), wxEmptyString, wxITEM_NORMAL);
         }
-
+        if(IsSelected(MC_TYPE_LABEL))
+        {
+          if(popupMenu->GetMenuItemCount()>0)
+            popupMenu->AppendSeparator();
+          popupMenu->Append(popid_add_watch_label, _("Add to watchlist"), wxEmptyString, wxITEM_NORMAL);
+        }
+        
         if (IsSelected(MC_TYPE_DEFAULT) || IsSelected(MC_TYPE_LABEL))
         {
           popupMenu->AppendSeparator();
@@ -7685,7 +7691,7 @@ bool Worksheet::IsSelected(CellType type)
   if (m_cellPointers.m_selectionStart == NULL)
     return false;
 
-  else if (type == MC_TYPE_IMAGE || type == MC_TYPE_SLIDE)
+  if (type == MC_TYPE_IMAGE || type == MC_TYPE_SLIDE)
   {
     if (m_cellPointers.m_selectionStart != m_cellPointers.m_selectionEnd || m_cellPointers.m_selectionStart->GetType() != type)
       return false;
