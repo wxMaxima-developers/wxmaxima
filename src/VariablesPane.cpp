@@ -61,10 +61,10 @@ Variablespane::Variablespane(wxWindow *parent, wxWindowID id) : wxGrid(parent, i
 void Variablespane::OnChar(wxKeyEvent &event)
 {
   wxChar txt(event.GetUnicodeKey());
-  if((wxIsprint(txt))&&(GetCursorRow()>=0))
+  if((wxIsprint(txt))&&(GetGridCursorRow()>=0))
   {
-    SetCellValue(GetCursorRow(),0,wxString(txt));
-    GoToCell(GetCursorRow(),0);
+    SetCellValue(GetGridCursorRow(),0,wxString(txt));
+    GoToCell(GetGridCursorRow(),0);
     ShowCellEditControl();
     EnableCellEditControl();    
   }
@@ -95,7 +95,7 @@ void Variablespane::OnKey(wxKeyEvent &event)
       }
       else
       {
-        DeleteRows(GetCursorRow());
+        DeleteRows(GetGridCursorRow());
       }
       wxGridEvent evt(wxID_ANY,wxEVT_GRID_CELL_CHANGED,this,GetNumberRows()-1,0);
       OnTextChange(evt);
@@ -175,7 +175,7 @@ void Variablespane::OnRightClick(wxGridEvent &event)
                       _("List of user-defined let rule packages"), wxEmptyString, wxITEM_NORMAL);
   if ((popupMenu->GetMenuItemCount() > 0) && (GetNumberRows() > 1))
     popupMenu->AppendSeparator();    
-  if(GetCursorRow()>=0)
+  if(GetGridCursorRow()>=0)
   {
     popupMenu->Append(varID_delete_row,
                       _("Remove"), wxEmptyString, wxITEM_NORMAL);
