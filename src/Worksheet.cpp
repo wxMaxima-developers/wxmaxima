@@ -1442,7 +1442,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
             popupMenu->AppendSeparator();
           popupMenu->Append(popid_add_watch_label, _("Add to watchlist"), wxEmptyString, wxITEM_NORMAL);
         }
-        
+
         if (IsSelected(MC_TYPE_DEFAULT) || IsSelected(MC_TYPE_LABEL))
         {
           popupMenu->AppendSeparator();
@@ -5400,19 +5400,19 @@ bool Worksheet::ExportToHTML(wxString file)
       if (m_configuration->ShowCodeCells())
       {
         Cell *prompt = tmp->GetPrompt();
-        output << wxT("<TABLE><TR><TD>\n");
-        output << wxT("  <SPAN CLASS=\"prompt\">\n");
+        output << wxT("<table><tr><td>\n");
+        output << wxT("  <span class=\"prompt\">\n");
         output << prompt->ToString();
-        output << wxT("\n  </SPAN></TD>\n");
+        output << wxT("\n  </span></td>\n");
 
         EditorCell *input = tmp->GetInput();
         if (input != NULL)
         {
-          output << wxT("  <TD><SPAN CLASS=\"input\">\n");
+          output << wxT("  <td><span class=\"input\">\n");
           output << input->ToHTML();
-          output << wxT("  </SPAN></TD>\n");
+          output << wxT("  </span></td>\n");
         }
-        output << wxT("</TR></TABLE>\n");
+        output << wxT("</tr></table>\n");
       }
 
       // Handle the output - if output exists.
@@ -5500,7 +5500,7 @@ bool Worksheet::ExportToHTML(wxString file)
                 wxString::Format(wxT("_%d.svg\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
                                  count, size.x) +
                 alttext +
-                wxT("\" ><BR/>\n");
+                wxT("\" ><br/>\n");
 
               output << line << endl;
               break;
@@ -5579,14 +5579,14 @@ bool Worksheet::ExportToHTML(wxString file)
       {
         case GC_TYPE_TEXT:
           output << wxT("\n\n<!-- Text cell -->\n\n\n");
-          output << wxT("<div CLASS=\"comment\">&nbsp;\n");
+          output << wxT("<div class=\"comment\">&nbsp;\n");
           output << EditorCell::PrependNBSP(
                   MarkDown.MarkDown(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString()))) << wxT("\n");
           output << wxT("</div>\n");
           break;
         case GC_TYPE_SECTION:
           output << wxT("\n\n<!-- Section cell -->\n\n\n");
-          output << wxT("<div CLASS=\"section\">\n");
+          output << wxT("<div class=\"section\">\n");
           output << EditorCell::PrependNBSP(
                   EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))
                  << wxT("\n");
@@ -5594,7 +5594,7 @@ bool Worksheet::ExportToHTML(wxString file)
           break;
         case GC_TYPE_SUBSECTION:
           output << wxT("\n\n<!-- Subsection cell -->\n\n\n");
-          output << wxT("<div CLASS=\"subsect\">\n");
+          output << wxT("<div class=\"subsect\">\n");
           output << EditorCell::PrependNBSP(
                   EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))
                  << wxT("\n");
@@ -5602,7 +5602,7 @@ bool Worksheet::ExportToHTML(wxString file)
           break;
         case GC_TYPE_SUBSUBSECTION:
           output << wxT("\n\n<!-- Subsubsection cell -->\n\n\n");
-          output << wxT("<div CLASS=\"subsubsect\">\n");
+          output << wxT("<div class=\"subsubsect\">\n");
           output << EditorCell::PrependNBSP(
                   EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))
                  << wxT("\n");
@@ -5610,7 +5610,7 @@ bool Worksheet::ExportToHTML(wxString file)
           break;
         case GC_TYPE_HEADING5:
           output << wxT("\n\n<!-- Heading5 cell -->\n\n\n");
-          output << wxT("<div CLASS=\"heading5\">\n");
+          output << wxT("<div class=\"heading5\">\n");
           output << EditorCell::PrependNBSP(
                   EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))
                  << wxT("\n");
@@ -5618,7 +5618,7 @@ bool Worksheet::ExportToHTML(wxString file)
           break;
         case GC_TYPE_HEADING6:
           output << wxT("\n\n<!-- Heading6 cell -->\n\n\n");
-          output << wxT("<div CLASS=\"heading6\">\n");
+          output << wxT("<div class=\"heading6\">\n");
           output << EditorCell::PrependNBSP(
                   EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))
                  << wxT("\n");
@@ -5626,13 +5626,13 @@ bool Worksheet::ExportToHTML(wxString file)
           break;
         case GC_TYPE_TITLE:
           output << wxT("\n\n<!-- Title cell -->\n\n\n");
-          output << wxT("<div CLASS=\"title\">\n");
+          output << wxT("<div class=\"title\">\n");
           output << EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString())) << wxT("\n");
           output << wxT("</div>\n");
           break;
         case GC_TYPE_PAGEBREAK:
           output << wxT("\n\n<!-- Page break cell -->\n\n\n");
-          output << wxT("<div CLASS=\"comment\">\n");
+          output << wxT("<div class=\"comment\">\n");
           output << wxT("<hr/>\n");
           output << wxT("</div>\n");
           break;
@@ -5640,10 +5640,10 @@ bool Worksheet::ExportToHTML(wxString file)
         {
           output << wxT("\n\n<!-- Image cell -->\n\n\n");
           Cell *out = tmp->GetLabel();
-          output << wxT("<div CLASS=\"image\">\n");
+          output << wxT("<div class=\"image\">\n");
           output << EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() +
                                                                         tmp->GetEditable()->ToString())) << wxT("\n");
-          output << wxT("<BR/>\n");
+          output << wxT("<br/>\n");
           if (tmp->GetLabel()->GetType() == MC_TYPE_SLIDE)
           {
             dynamic_cast<SlideShow *>(tmp->GetOutput())->ToGif(imgDir + wxT("/") + filename +
@@ -5659,7 +5659,7 @@ bool Worksheet::ExportToHTML(wxString file)
             imgCell->ToImageFile(
                     imgDir + wxT("/") + filename + wxString::Format(wxT("_%d."), count) +
                     imgCell->GetExtension());
-            output << wxT("  <IMG src=\"") + filename_encoded + wxT("_htmlimg/") +
+            output << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
                       filename_encoded +
                       wxString::Format(wxT("_%d.%s\" alt=\"Diagram\" style=\"max-width:90%%;\" >"), count,
                                        imgCell->GetExtension());
@@ -5680,11 +5680,10 @@ bool Worksheet::ExportToHTML(wxString file)
 //////////////////////////////////////////////
 
   output << wxT("\n");
-  output << wxT(" <HR>\n");
-  output << wxT(" <SMALL> Created with "
-                        "<A HREF=\"https://wxMaxima-developers.github.io/wxmaxima/\">"
-                        "wxMaxima</A>"
-                        ".</SMALL>\n");
+  output << wxT(" <hr>\n");
+  output << wxT(" <small> Created with "
+                        "<a href=\"https://wxMaxima-developers.github.io/wxmaxima/\">"
+                        "wxMaxima</a>.</small>\n");
   output << wxEmptyString;
 
   bool exportContainsWXMX = false;
@@ -5695,17 +5694,15 @@ bool Worksheet::ExportToHTML(wxString file)
     wxString wxmxfileName_rel = imgDir_rel + wxT("/") + filename + wxT(".wxmx");
     wxString wxmxfileName = path + wxT("/") + wxmxfileName_rel;
     ExportToWXMX(wxmxfileName, false);
-    output << wxT(" <SMALL> The source of this maxima session can be downloaded "
-                          "<A HREF=\"") + wxmxfileName_rel + wxT("\">"
-                                                                         "here</A>"
-                                                                         ".</SMALL>\n");
+    output << wxT(" <small> The source of this maxima session can be downloaded "
+                  "<a href=\"") + wxmxfileName_rel + wxT("\">here</a>.</small>\n");
   }
 
   //
   // Close document
   //
-  output << wxT(" </BODY>\n");
-  output << wxT("</HTML>\n");
+  output << wxT(" </body>\n");
+  output << wxT("</html>\n");
 
   bool outfileOK = !outfile.GetFile()->Error();
   bool cssOK = !cssfile.GetFile()->Error();
