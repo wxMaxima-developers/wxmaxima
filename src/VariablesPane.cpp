@@ -26,6 +26,7 @@ Variablespane::Variablespane(wxWindow *parent, wxWindowID id) : wxGrid(parent, i
   SetMinSize(wxSize(wxSystemSettings::GetMetric ( wxSYS_SCREEN_X )/10,
                     wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y )/10));
   CreateGrid(1,2);
+  SetUseNativeColLabels();
   wxGridCellAttr *attr0, *attr1;
   attr0 = new wxGridCellAttr;
   SetColAttr(0,attr0);
