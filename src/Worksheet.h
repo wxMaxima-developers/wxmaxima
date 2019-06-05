@@ -370,7 +370,7 @@ private:
 
   /*! Escape all chars that aren't allowed in html.
 
-    Also converts \n to <BR>
+    Also converts \n to <br>
    */
   wxString EscapeHTMLChars(wxString input);
 
