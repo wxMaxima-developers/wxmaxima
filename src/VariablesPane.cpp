@@ -286,6 +286,27 @@ wxArrayString Variablespane::GetEscapedVarnames()
   return retVal;
 }
 
+void Variablespane::AddWatchCode(wxString code)
+{
+  BeginBatch();
+  wxString unescapedCode;
+  for (wxString::iterator it = code.begin(); it != code.end(); ++it)
+  {
+    if(*it != '\\')
+      unescapedCode+=*it;
+    else
+    {
+      it++;
+      if(it != code.end())
+        unescapedCode+=*it;
+    }
+  }
+  SetCellValue(GetNumberRows()-1,0,unescapedCode);
+  wxGridEvent evt(wxID_ANY,wxEVT_GRID_CELL_CHANGED,this,GetNumberRows()-1,0);
+  OnTextChange(evt);
+  EndBatch();
+}
+
 wxString Variablespane::UnescapeVarname(wxString var)
 {
   if(var.StartsWith(wxT("?")))

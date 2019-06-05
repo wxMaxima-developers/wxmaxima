@@ -8231,6 +8231,17 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
       m_worksheet->RequestRedraw();
       return;
       break;
+    case Worksheet::popid_add_watch:
+      if(m_worksheet->GetActiveCell())
+      {
+        wxString selectionString = m_worksheet->GetActiveCell()->GetSelectionString();
+        if(selectionString.IsEmpty())
+          selectionString = m_worksheet->GetActiveCell()->GetWordUnderCaret();
+        m_variablesPane->AddWatchCode(selectionString);
+        wxMaximaFrame::ShowPane(menu_pane_variables,true);
+      }
+      return;
+      break;
     case menu_insert_previous_output:
       output = true;
       type = GC_TYPE_CODE;
@@ -9053,6 +9064,7 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_MENU(menu_fold_all_cells, wxMaxima::InsertMenu)
                 EVT_MENU(menu_unfold_all_cells, wxMaxima::InsertMenu)
                 EVT_MENU(Worksheet::popid_add_comment, wxMaxima::InsertMenu)
+                EVT_MENU(Worksheet::popid_add_watch, wxMaxima::InsertMenu)
                 EVT_MENU(menu_insert_previous_input, wxMaxima::InsertMenu)
                 EVT_MENU(menu_insert_previous_output, wxMaxima::InsertMenu)
                 EVT_MENU(menu_autocomplete, wxMaxima::InsertMenu)

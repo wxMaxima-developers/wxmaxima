@@ -3061,6 +3061,42 @@ void EditorCell::CommentSelection()
   ClearSelection();
 }
 
+wxString EditorCell::GetWordUnderCaret()
+{
+  long start = m_positionOfCaret;
+  if(start < 0)
+    return wxEmptyString;
+  if(start >= m_text.Length())
+    start = m_text.Length();
+
+  wxString retval;
+  long pos = 0;
+  for (wxString::iterator it = m_text.begin(); it != m_text.end(); ++it)
+  {
+    if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_'))
+    {
+      if(pos >= start)
+        return retval;
+      else
+        retval = wxEmptyString;
+    }
+    else
+      retval += *it;
+
+    if(*it == '\\')
+    {
+      *it++;
+      if(it != m_text.end())
+      {
+        retval += *it;
+        pos++;   
+      }
+    }        
+    pos++;   
+  }
+  return retval;
+}
+    
 /***
  * SelectWordUnderCaret
  * - called from MathCtrl::OnDoubleClick, MathCtrl::Autocomplete and wxMaxima::HelpMenu
@@ -3069,7 +3105,6 @@ void EditorCell::CommentSelection()
  * Returns the selected string if selected a word successfully - used for F1 help and
  * MathCtrl::Autocomplete.
  */
-
 wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight, bool includeDoubleQuotes)
 {
   if(m_positionOfCaret < 0)

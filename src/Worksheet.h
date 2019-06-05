@@ -824,6 +824,7 @@ public:
     popid_copy_svg,
     popid_copy_emf,
     popid_copy_rtf,
+    popid_add_watch,
     popid_delete,
     popid_simplify,
     popid_expand,

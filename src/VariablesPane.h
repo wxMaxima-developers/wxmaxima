@@ -56,6 +56,7 @@ public:
   void InsertMenu(wxCommandEvent &event);
   void OnKey(wxKeyEvent &event);
   void OnChar(wxKeyEvent &event);
+  void AddWatchCode(wxString code);
   bool IsValidVariable(wxString var);
   wxArrayString GetEscapedVarnames();
   void ResetValues();

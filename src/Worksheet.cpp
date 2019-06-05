@@ -1488,6 +1488,17 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
     if ((clickInSelection) &&
         dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup())->GetGroupType() == GC_TYPE_CODE)
       popupMenu->Append(popid_comment_selection, _("Comment Selection"), wxEmptyString, wxITEM_NORMAL);
+    wxString selectionString = GetActiveCell()->GetSelectionString();
+    if(selectionString.IsEmpty())
+      selectionString = GetActiveCell()->GetWordUnderCaret();
+    if(!selectionString.IsEmpty() &&
+       !selectionString.Contains("\n") &&
+       !selectionString.Contains("\r") &&
+       !selectionString.Contains(":") &&
+       ((selectionString[0] < '0') || (selectionString[0] > '9'))
+      )
+      popupMenu->Append(popid_add_watch, _("Add to watchlist"), wxEmptyString, wxITEM_NORMAL);
+
     if (!clickInSelection)
       popupMenu->Append(popid_divide_cell, _("Divide Cell"), wxEmptyString, wxITEM_NORMAL);
 

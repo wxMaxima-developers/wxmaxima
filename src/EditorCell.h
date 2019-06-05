@@ -512,6 +512,9 @@ public:
   //! Convert the current selection to a string
   wxString GetSelectionString();
 
+  //! The word the cursor currently is at
+  wxString GetWordUnderCaret();
+
   //! Get the command the cursor is in the arguments for.
   wxString GetCurrentCommand();
   
