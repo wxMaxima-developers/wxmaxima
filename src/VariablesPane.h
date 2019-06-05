@@ -68,6 +68,7 @@ public:
   void VariableUndefined(wxString var);
   ~Variablespane();
 private:
+  wxString InvertCase(wxString var);
   WX_DECLARE_STRING_HASH_MAP(int, IntHash);
   //! A list of all symbols that can be entered using Esc-Codes
   IntHash m_vars;

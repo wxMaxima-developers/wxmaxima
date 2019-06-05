@@ -281,9 +281,28 @@ wxArrayString Variablespane::GetEscapedVarnames()
   {
     wxString var = GetCellValue(i,0);
     if(IsValidVariable(var))
-      retVal.Add(EscapeVarname(var));
+      retVal.Add(InvertCase(EscapeVarname(var)));
   }
   return retVal;
+}
+
+wxString Variablespane::InvertCase(wxString var)
+{
+  wxString retval;
+  for (wxString::iterator it = var.begin(); it != var.end(); ++it)
+  {
+    if(wxIsupper(*it))
+      retval += wxString(*it).Lower();
+    else
+    {
+      if(wxIslower(*it))
+        retval += wxString(*it).Upper();
+      else
+        retval += *it;
+    }
+      
+  }
+  return retval;
 }
 
 void Variablespane::AddWatchCode(wxString code)
