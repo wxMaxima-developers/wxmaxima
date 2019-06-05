@@ -4890,12 +4890,12 @@ bool Worksheet::ExportToHTML(wxString file)
 
   wxTextOutputStream css(cssfile);
 
-  output << wxT("<!DOCTYPE HTML>\n");
-  output << wxT("<HTML>\n");
-  output << wxT(" <HEAD>\n");
-  output << wxT("  <TITLE>") + filename + wxT("</TITLE>\n");
-  output << wxT("  <META NAME=\"generator\" CONTENT=\"wxMaxima\">\n");
-  output << wxT("  <META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=utf-8\">\n");
+  output << wxT("<!DOCTYPE html>\n");
+  output << wxT("<html>\n");
+  output << wxT(" <head>\n");
+  output << wxT("  <title>") + filename + wxT("</title>\n");
+  output << wxT("  <meta name=\"generator\" CONTENT=\"wxMaxima\">\n");
+  output << wxT("  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n");
 
 //////////////////////////////////////////////
 // Write styles
@@ -5352,8 +5352,8 @@ bool Worksheet::ExportToHTML(wxString file)
   css << wxT("  padding: 1mm;\n");
   css << wxT("}\n");
 
-  output << wxT(" </HEAD>\n");
-  output << wxT(" <BODY>\n");
+  output << wxT(" </head>\n");
+  output << wxT(" <body>\n");
 
   output << wxT("\n");
   output << wxT("<!-- ***************************************************** -->\n");
@@ -5527,7 +5527,7 @@ bool Worksheet::ExportToHTML(wxString file)
                 wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
                                  count, ext, size.x / bitmapScale - 2 * borderwidth) +
                 alttext +
-                wxT("\" ><BR/>\n");
+                wxT("\" ><br/>\n");
 
               output << line << endl;
               wxDELETE(chunk);
@@ -5694,7 +5694,7 @@ bool Worksheet::ExportToHTML(wxString file)
     wxString wxmxfileName_rel = imgDir_rel + wxT("/") + filename + wxT(".wxmx");
     wxString wxmxfileName = path + wxT("/") + wxmxfileName_rel;
     ExportToWXMX(wxmxfileName, false);
-    output << wxT(" <small> The source of this maxima session can be downloaded "
+    output << wxT(" <small> The source of this Maxima session can be downloaded "
                   "<a href=\"") + wxmxfileName_rel + wxT("\">here</a>.</small>\n");
   }
 

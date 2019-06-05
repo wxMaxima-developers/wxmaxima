@@ -137,19 +137,19 @@ private:
   { return wxT("</blockquote>\n"); }
 
   virtual wxString itemizeBegin()
-  { return wxT("<UL>\n"); }
+  { return wxT("<ul>\n"); }
 
   virtual wxString itemizeEnd()
-  { return wxT("</UL>\n"); }
+  { return wxT("</ul>\n"); }
 
   virtual wxString itemizeItem()
-  { return wxT("<LI>"); }
+  { return wxT("<li>"); }
 
   virtual wxString itemizeEndItem()
-  { return wxT("</LI>\n"); }
+  { return wxT("</li>\n"); }
 
   virtual wxString NewLine()
-  { return wxT("<BR>"); }
+  { return wxT("<br>"); }
 };
 
 #endif // MARKDOWN_H
