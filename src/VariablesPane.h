@@ -45,6 +45,7 @@ public:
     varID_gradefs,
     varID_prop,
     varID_let_rule_packages,
+    varID_delete_row,
     varID_clear
   };
 
@@ -53,6 +54,8 @@ public:
   void OnTextChanging(wxGridEvent &event);
   void OnRightClick(wxGridEvent &event);
   void InsertMenu(wxCommandEvent &event);
+  void OnKey(wxKeyEvent &event);
+  void OnChar(wxKeyEvent &event);
   bool IsValidVariable(wxString var);
   wxArrayString GetEscapedVarnames();
   void ResetValues();
@@ -67,6 +70,8 @@ private:
   WX_DECLARE_STRING_HASH_MAP(int, IntHash);
   //! A list of all symbols that can be entered using Esc-Codes
   IntHash m_vars;
+  int m_rightClickRow;
+  static int CompareInt(int *int1, int *int2){return *int1<*int2;}
 };
 
 #endif // VARIABLESPANE_H

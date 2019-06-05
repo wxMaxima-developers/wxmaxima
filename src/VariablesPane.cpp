@@ -34,6 +34,7 @@ Variablespane::Variablespane(wxWindow *parent, wxWindowID id) : wxGrid(parent, i
 //  attr1->SetReadOnly();
   SetColAttr(1,attr1);
   SetColLabelValue(1,_("Contents"));
+  m_rightClickRow = -1;
   Connect(wxEVT_GRID_CELL_CHANGED,
           wxGridEventHandler(Variablespane::OnTextChange),
           NULL, this);
@@ -46,8 +47,64 @@ Variablespane::Variablespane(wxWindow *parent, wxWindowID id) : wxGrid(parent, i
   Connect(wxEVT_MENU,
           wxCommandEventHandler(Variablespane::InsertMenu),
           NULL, this);
+  Connect(wxEVT_KEY_DOWN,
+          wxKeyEventHandler(Variablespane::OnKey),
+          NULL, this);
+//  Connect(wxEVT_CHAR,
+//          wxKeyEventHandler(Variablespane::OnChar),
+//          NULL, this);
   HideRowLabels();
   EnableDragCell();
+}
+
+void Variablespane::OnChar(wxKeyEvent &event)
+{
+  wxChar txt(event.GetUnicodeKey());
+  if((wxIsprint(txt))&&(GetCursorRow()>=0))
+  {
+    SetCellValue(GetCursorRow(),0,wxString(txt));
+    GoToCell(GetCursorRow(),0);
+    ShowCellEditControl();
+    EnableCellEditControl();    
+  }
+}
+
+void Variablespane::OnKey(wxKeyEvent &event)
+{
+  switch (event.GetKeyCode())
+  {
+
+  case WXK_DELETE:
+  case WXK_NUMPAD_DELETE:
+  {
+    if(GetNumberRows() > 1)
+    {
+      BeginBatch();
+      wxArrayInt selectedRows = GetSelectedRows();
+      selectedRows.Sort(CompareInt);
+      int offset = 0;
+      
+      if(!selectedRows.IsEmpty())
+      {
+        for (wxArrayInt::iterator it = selectedRows.begin(); it != selectedRows.end(); ++it)
+        {
+          DeleteRows(*it-offset);
+          offset++;
+        }
+      }
+      else
+      {
+        DeleteRows(GetCursorRow());
+      }
+      wxGridEvent evt(wxID_ANY,wxEVT_GRID_CELL_CHANGED,this,GetNumberRows()-1,0);
+      OnTextChange(evt);
+      EndBatch();
+    }
+    break;
+  }
+  default:
+    event.Skip();
+  }
 }
 
 void Variablespane::InsertMenu(wxCommandEvent &event)
@@ -66,6 +123,14 @@ void Variablespane::InsertMenu(wxCommandEvent &event)
   case varID_prop:varname="props";break;
   case varID_let_rule_packages:varname="let_rule_packages";break;
   case varID_clear:Clear();break;
+  case varID_delete_row:
+    if((m_rightClickRow>=0)&&(m_rightClickRow<GetNumberRows()))
+    {
+      DeleteRows(m_rightClickRow);
+      wxGridEvent evt(wxID_ANY,wxEVT_GRID_CELL_CHANGED,this,m_rightClickRow,0);
+      OnTextChange(evt);
+    }
+    break;
   }
   SetCellValue(GetNumberRows()-1,0,varname);
   wxGridEvent evt(wxID_ANY,wxEVT_GRID_CELL_CHANGED,this,GetNumberRows()-1,0);
@@ -74,6 +139,7 @@ void Variablespane::InsertMenu(wxCommandEvent &event)
 
 void Variablespane::OnRightClick(wxGridEvent &event)
 {
+  m_rightClickRow = event.GetRow();
   m_vars.clear();
   for(int i = 0; i < GetNumberRows(); i++)
     m_vars[GetCellValue(i,0)] = 1;
@@ -106,12 +172,20 @@ void Variablespane::OnRightClick(wxGridEvent &event)
   if(m_vars["gradefs"] != 1)
     popupMenu->Append(varID_gradefs,
                       _("List of user-defined let rule packages"), wxEmptyString, wxITEM_NORMAL);
-  // create menu if we have any items
+  if ((popupMenu->GetMenuItemCount() > 0) && (GetNumberRows() > 1))
+    popupMenu->AppendSeparator();    
+  if(GetCursorRow()>=0)
+  {
+    popupMenu->Append(varID_delete_row,
+                      _("Remove"), wxEmptyString, wxITEM_NORMAL);
+  }
+  
   if(GetNumberRows()>1)
   {
     popupMenu->Append(varID_clear,
                       _("Remove all"), wxEmptyString, wxITEM_NORMAL);
   }
+
   if (popupMenu->GetMenuItemCount() > 0)
     PopupMenu( popupMenu);
   
@@ -132,6 +206,8 @@ void Variablespane::OnTextChanging(wxGridEvent &event)
 
 void Variablespane::OnTextChange(wxGridEvent &event)
 {
+  if((event.GetRow()>GetNumberRows()) || (event.GetRow()<0))
+    return;
   BeginBatch();
   if(IsValidVariable(GetCellValue(event.GetRow(),0)))
   {
@@ -158,6 +234,20 @@ void Variablespane::OnTextChange(wxGridEvent &event)
         DeleteRows(i);
   wxMenuEvent *VarReadEvent = new wxMenuEvent(wxEVT_MENU, varID_newVar);
   GetParent()->GetParent()->GetEventHandler()->QueueEvent(VarReadEvent);
+
+  // Avoid introducing a cell with the same name twice.
+  m_vars.clear();
+  for(int i = 0; i < GetNumberRows(); i++)
+  {
+    if(i!=event.GetRow())
+      m_vars[GetCellValue(i,0)] = i+1;      
+  }
+  int identicalVar = m_vars[GetCellValue(event.GetRow(),0)];
+  if(identicalVar > 0)
+  {
+    wxEventBlocker blocker(this);
+    DeleteRows(identicalVar-1);
+  }
   EndBatch();
 }
 
