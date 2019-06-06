@@ -5372,10 +5372,10 @@ bool Worksheet::ExportToHTML(wxString file)
     output << wxT("</noscript>");
 
     // Tell mathJax about the \abs{} operator we define for LaTeX.
-    output << wxT("\\(");
+    output << wxT("<p hidden>\\(");
     output << wxT("      \\DeclareMathOperator{\\abs}{abs}\n");
     output << wxT("      \\newcommand{\\ensuremath}[1]{\\mbox{$#1$}}\n");
-    output << wxT("\\)");
+    output << wxT("\\)</p>");
 
   }
 
@@ -5579,7 +5579,7 @@ bool Worksheet::ExportToHTML(wxString file)
       {
         case GC_TYPE_TEXT:
           output << wxT("\n\n<!-- Text cell -->\n\n\n");
-          output << wxT("<div class=\"comment\">&nbsp;\n");
+          output << wxT("<div class=\"comment\">\n");
           output << EditorCell::PrependNBSP(
                   MarkDown.MarkDown(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString()))) << wxT("\n");
           output << wxT("</div>\n");
