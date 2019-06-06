@@ -328,8 +328,10 @@ void Variablespane::AddWatchCode(wxString code)
 
 wxString Variablespane::UnescapeVarname(wxString var)
 {
-  if(var.StartsWith(wxT("?")))
+  if(var.StartsWith(wxT("$")))
     var = var.Right(var.Length()-1);
+  else
+    var = "?" + var;
   return var;
 }
 

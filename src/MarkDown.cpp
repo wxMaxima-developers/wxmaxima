@@ -82,11 +82,10 @@ wxString MarkDownParser::MarkDown(wxString str)
     {
       // The line contains actual text..
 
-      // If the line begins with a star followed by a space it is part
-      // of a bullet list
-      if (str.Left(2) == wxT("* "))
+      // Let's see if the line is the start of a bullet list item
+      if ((str.StartsWith("* ")) &&
+          ((indentationTypes.empty())||(indentationTypes.back() == wxT('*'))))
       {
-        // We are part of a bullet list.
 
         // Remove the bullet list start marker from our string.
         str = str.Right(str.Length() - 2);
@@ -96,37 +95,35 @@ wxString MarkDownParser::MarkDown(wxString str)
         if (indentationLevels.empty())
         {
           // This is the first item => Start the itemization.
-          result += itemizeBegin() + itemizeItem();
+          result += itemizeBegin();
           indentationLevels.push_back(index);
           indentationTypes.push_back(wxT('*'));
         }
         else
         {
-          // We are inside a bullet list.
-
-          // Are we on a new indentation level?
-          if (indentationLevels.back() < index)
-          {
-            // A new identation level => add the itemization-start-command.
-            result += itemizeEndItem() + itemizeBegin();
-            indentationLevels.push_back(index);
-            indentationTypes.push_back(wxT('*'));
-          }
-
-          // End lists if we are at a old indentation level.
-          while (!indentationLevels.empty() && (indentationLevels.back() > index))
-          {
-            if (indentationTypes.back() == wxT('*'))
-              result += itemizeEnd();
-            else
-              result += quoteEnd();
-            indentationLevels.pop_back();
-            indentationTypes.pop_back();
-          }
-
-          // Add a new item marker.
-          result += itemizeEndItem() + itemizeItem();
+          // End the last item.
+          result += itemizeEndItem();
         }
+
+        // Did we switch to a higher indentation level?
+        if (index > indentationLevels.back())
+        {
+          // A higher identation level => add the itemization-start-command.
+          result += itemizeBegin();
+          indentationLevels.push_back(index);
+          indentationTypes.push_back(wxT('*'));
+        }
+
+        // Did we switch to a lower indentation level?
+        while (!indentationLevels.empty() && (index < indentationLevels.back()))
+        {
+          result += itemizeEnd();
+          indentationLevels.pop_back();
+          indentationTypes.pop_back();
+        }
+
+        // Add a new item marker.
+        result += itemizeItem();
         result += str += wxT(" ");
       }
       else if (str.StartsWith(quoteChar() + wxT(" ")))
@@ -187,21 +184,22 @@ wxString MarkDownParser::MarkDown(wxString str)
                    (indentationLevels.back() > index))
             {
               if (indentationTypes.back() == wxT('*'))
+              {
+                result += itemizeEndItem();
                 result += itemizeEnd();
+              }
               else
                 result += quoteEnd();
+
               indentationLevels.pop_back();
               indentationTypes.pop_back();
             }
-            if (!indentationLevels.empty()) result += itemizeItem();
+//            if (!indentationLevels.empty()) result += itemizeItem();
           }
           line = line.Right(line.Length() - index);
         }
 
         // Add the text to the output.        
-//        if (!m_configuration->GetAutoWrap())
-//          result += line + "\n";
-//        else
           result += line + NewLine();
 
       }
@@ -216,7 +214,10 @@ wxString MarkDownParser::MarkDown(wxString str)
   while (!indentationLevels.empty())
   {
     if (indentationTypes.back() == wxT('*'))
+    {
+      result += itemizeEndItem();
       result += itemizeEnd();
+    }
     else
       result += quoteEnd();
     indentationLevels.pop_back();
