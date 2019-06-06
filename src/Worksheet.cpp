@@ -5681,9 +5681,9 @@ bool Worksheet::ExportToHTML(wxString file)
 
   output << wxT("\n");
   output << wxT(" <hr>\n");
-  output << wxT(" <small> Created with "
+  output << wxT(" <p><small> Created with "
                         "<a href=\"https://wxMaxima-developers.github.io/wxmaxima/\">"
-                        "wxMaxima</a>.</small>\n");
+                        "wxMaxima</a>.</small></p>\n");
   output << wxEmptyString;
 
   bool exportContainsWXMX = false;
