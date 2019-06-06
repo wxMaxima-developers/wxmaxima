@@ -124,6 +124,11 @@ wxString MarkDownParser::MarkDown(wxString str)
 
         // Add a new item marker.
         result += itemizeItem();
+
+        // Add the item itself
+        str.Trim();
+        if(str.EndsWith(NewLine()))
+          str = str.Left(str.Length() - NewLine().Length());
         result += str += wxT(" ");
       }
       else if (str.StartsWith(quoteChar() + wxT(" ")))
@@ -176,6 +181,13 @@ wxString MarkDownParser::MarkDown(wxString str)
         // and add a new item if we still are inside a list.
         if (!indentationLevels.empty())
         {
+          // Add the text to the output.
+          if((result != wxEmptyString) &&
+             (!result.EndsWith(itemizeEndItem())) &&
+             (!result.EndsWith(itemizeEnd())) &&
+             (!result.EndsWith(quoteEnd()))
+            )
+            result += NewLine();
           if (indentationLevels.back() > index)
           {
             if (!m_configuration->GetAutoWrap())
@@ -194,19 +206,11 @@ wxString MarkDownParser::MarkDown(wxString str)
               indentationLevels.pop_back();
               indentationTypes.pop_back();
             }
-//            if (!indentationLevels.empty()) result += itemizeItem();
           }
           line = line.Right(line.Length() - index);
+          result += line;
         }
-
-        // Add the text to the output.        
-          result += line + NewLine();
-
       }
-    }
-    else
-    {
-      if (lines.HasMoreTokens()) result += NewLine();
     }
   }
 

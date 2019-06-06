@@ -4308,7 +4308,6 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
           if (m_worksheet->m_configuration->AutoSaveMiliseconds() > 0)
             m_autoSaveTimer.StartOnce(m_worksheet->m_configuration->AutoSaveMiliseconds());
 
-          wxFileName::SplitPath(file, NULL, NULL, NULL, &fileExt);
           wxConfig::Get()->Write(wxT("defaultExportExt"), fileExt);
         }
       }
