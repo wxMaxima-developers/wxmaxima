@@ -214,8 +214,8 @@ wxString MarkDownParser::MarkDown(wxString str)
               indentationTypes.pop_back();
             }
           }
-          line = line.Right(line.Length() - index);
         }
+        line = line.Right(line.Length() - index);
         result += line;
       }
     }
