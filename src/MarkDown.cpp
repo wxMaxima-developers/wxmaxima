@@ -215,8 +215,8 @@ wxString MarkDownParser::MarkDown(wxString str)
             }
           }
           line = line.Right(line.Length() - index);
-          result += line;
         }
+        result += line;
       }
     }
   }
