@@ -5015,10 +5015,16 @@ bool Worksheet::ExportToHTML(wxString file)
   output << wxT("  <link rel=\"stylesheet\" type=\"text/css\" href=\"") + encoded_css_url + wxT("\"/>\n");
 
   wxString version(wxT(GITVERSION));
+
+  wxString versionString = "Created with wxMaxima version " + version;
+  wxString versionPad;
+  for(int i = 0; i<versionString.Length(); i++)
+    versionPad += "*";
+
   css << wxT("\n");
-  css << wxT("/*--------------------------------------------------------\n");
-  css << wxT("  --          Created with wxMaxima version ") + version;
-  css << wxT("  -------------------------------------------------------- */\n\n");
+  css << wxT("/* *********") + versionPad    + wxT("******** \n");
+  css << wxT("   *        ") + versionString + wxT("       * \n");
+  css << wxT("   *********") + versionPad    + wxT("******** */\n");
 
   // BODY STYLE
   css << wxT("body {\n");
@@ -5346,9 +5352,9 @@ bool Worksheet::ExportToHTML(wxString file)
   output << wxT(" <body>\n");
 
   output << wxT("\n");
-  output << wxT("<!-- ***************************************************** -->\n");
-  output << wxT("<!--          Created with wxMaxima version ") + version + wxT("         -->\n");
-  output << wxT("<!-- ***************************************************** -->\n");
+  output << wxT("<!-- *********") + versionPad    + wxT("******** -->\n");
+  output << wxT("<!-- *        ") + versionString + wxT("       * -->\n");
+  output << wxT("<!-- *********") + versionPad    + wxT("******** -->\n");
 
   if ((htmlEquationFormat != ConfigDialogue::bitmap) &&
       (htmlEquationFormat != ConfigDialogue::svg))
