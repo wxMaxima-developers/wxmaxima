@@ -5367,7 +5367,7 @@ bool Worksheet::ExportToHTML(wxString file)
     output << wxT("<noscript>");
     output << wxT("<div class=\"error message\">");
     output
-            << wxT("    Please enable JavaScript in order to get a 2d display of the equations embedded in this web page.");
+            << wxT("<p hidden>Please enable JavaScript in order to get a 2d display of the equations embedded in this web page.</p>");
     output << wxT("</div>");
     output << wxT("</noscript>");
 
