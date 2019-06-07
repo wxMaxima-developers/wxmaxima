@@ -101,8 +101,9 @@ wxString MarkDownParser::MarkDown(wxString str)
         }
         else
         {
-          // End the last item.
-          result += itemizeEndItem();
+          // End the previous item before we start a new one on the same level.
+          if (index == indentationLevels.back())
+            result += itemizeEndItem();
         }
 
         // Did we switch to a higher indentation level?
@@ -190,8 +191,6 @@ wxString MarkDownParser::MarkDown(wxString str)
             result += NewLine();
           if (indentationLevels.back() > index)
           {
-            if (!m_configuration->GetAutoWrap())
-              result += itemizeEndItem();
             while ((!indentationLevels.empty()) &&
                    (indentationLevels.back() > index))
             {
