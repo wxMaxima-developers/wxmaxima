@@ -187,12 +187,16 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             Center().
                             CloseButton(false).
                             CaptionVisible(false).
+                            TopDockable(true).
+                            BottomDockable(true).
+                            LeftDockable(true).
+                            RightDockable(true).
                             MinSize(wxSize(100,100)).
-                            PaneBorder(false));
+                            PaneBorder(false).Row(2));
 
   m_manager.AddPane(m_history,
                     wxAuiPaneInfo().Name(wxT("history")).
-                            Show(false).CloseButton().PinButton().
+                            Show(false).CloseButton(true).PinButton().
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
@@ -202,7 +206,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
 
   m_manager.AddPane(m_worksheet->m_tableOfContents,
                     wxAuiPaneInfo().Name(wxT("structure")).
-                            Show(true).CloseButton().PinButton().
+                            Show(true).CloseButton(true).PinButton().
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
@@ -212,7 +216,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
 
   m_manager.AddPane(m_xmlInspector,
                     wxAuiPaneInfo().Name(wxT("XmlInspector")).
-                            Show(false).CloseButton().PinButton().
+                            Show(false).CloseButton(true).PinButton().
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
@@ -222,7 +226,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
 
   m_manager.AddPane(CreateStatPane(),
                     wxAuiPaneInfo().Name(wxT("stats")).
-                            Show(false).CloseButton().PinButton().
+                            Show(false).CloseButton(true).PinButton().
                             TopDockable(true).
                             BottomDockable(true).
                             LeftDockable(true).
@@ -233,7 +237,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   wxPanel *greekPane = CreateGreekPane();
   m_manager.AddPane(greekPane,
                     wxAuiPaneInfo().Name(wxT("greek")).
-                            Show(false).CloseButton().PinButton().
+                            Show(false).CloseButton(true).PinButton().
                             DockFixed(false).
                             Gripper(false).
                             TopDockable(true).
@@ -249,7 +253,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
 
   m_manager.AddPane(m_logPane,
                     wxAuiPaneInfo().Name(wxT("log")).
-                            Show(false).CloseButton().PinButton().
+                            Show(false).CloseButton(true).PinButton().
                             DockFixed(false).
                             Gripper(false).
                             TopDockable(true).
@@ -268,7 +272,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   variables->SetSizerAndFit(variablesSizer);
   m_manager.AddPane(variables,
                     wxAuiPaneInfo().Name(wxT("variables")).
-                            Show(false).CloseButton().PinButton().
+                            Show(false).CloseButton(true).PinButton().
                             DockFixed(false).
                             Gripper(false).
                             TopDockable(true).
@@ -278,13 +282,13 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             PaneBorder(true).
                             MinSize(m_logPane->GetEffectiveMinSize()).
                             FloatingSize(m_logPane->GetEffectiveMinSize()).
-                            Bottom().Row(2));
+                            Bottom());
 
   wxPanel *symbolsPane = CreateSymbolsPane();
   m_manager.AddPane(symbolsPane,
                     wxAuiPaneInfo().Name(wxT("symbols")).
                             Show(false).
-                            DockFixed(false).CloseButton().PinButton().
+                            DockFixed(false).CloseButton(true).PinButton().
                             Gripper(false).
                             TopDockable(true).
                             BottomDockable(true).
@@ -340,25 +344,25 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_manager.GetPane(wxT("greek")) = m_manager.GetPane(wxT("greek")).
     MinSize(greekPane->GetEffectiveMinSize()).
     BestSize(greekPane->GetEffectiveMinSize()).
-    Show(true).Gripper(false).CloseButton().PinButton().
+    Show(true).Gripper(false).CloseButton(true).PinButton().
     MaxSize(greekPane->GetEffectiveMinSize());
 
   m_manager.GetPane(wxT("log")) = m_manager.GetPane(wxT("log")).
-    Show(false).Gripper(false).CloseButton().PinButton();
+    Show(false).Gripper(false).CloseButton(true).PinButton();
 
   m_manager.GetPane(wxT("variables")) = m_manager.GetPane(wxT("variables")).
-    Gripper(false).CloseButton().PinButton();
+    Gripper(false).CloseButton(true).PinButton();
 
   m_manager.GetPane(wxT("symbols")) = m_manager.GetPane(wxT("symbols")).
     MinSize(symbolsPane->GetEffectiveMinSize()).
     BestSize(symbolsPane->GetEffectiveMinSize()).
-    Show(true).Gripper(false).CloseButton().PinButton().
+    Show(true).Gripper(false).CloseButton(true).PinButton().
     MaxSize(symbolsPane->GetEffectiveMinSize());
 
   m_manager.GetPane(wxT("draw")) = m_manager.GetPane(wxT("draw")).
     MinSize(symbolsPane->GetEffectiveMinSize()).
     BestSize(symbolsPane->GetEffectiveMinSize()).
-    Show(true).CloseButton().PinButton().
+    Show(true).CloseButton(true).PinButton().
     MaxSize(symbolsPane->GetEffectiveMinSize());
 
 
@@ -387,35 +391,46 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   m_manager.GetPane(wxT("console")).Show(true);
   m_manager.GetPane(wxT("toolbar")).Show(toolbarEnabled);
 
+  m_manager.GetPane(wxT("console")) = m_manager.GetPane(wxT("console")).
+    Center().
+    CloseButton(false).
+    CaptionVisible(false).
+    TopDockable(true).
+    BottomDockable(true).
+    LeftDockable(true).
+    RightDockable(true).
+    MinSize(wxSize(100,100)).
+    PaneBorder(false).Row(2);
+
   // LoadPerspective overwrites the pane names with the saved ones -which can
   // belong to a translation different to the one selected currently =>
   // let's overwrite the names here.
   m_manager.GetPane(wxT("symbols")) =
-    m_manager.GetPane(wxT("symbols")).Caption(_("Mathematical Symbols")).CloseButton().PinButton().Resizable().Gripper(false);
+    m_manager.GetPane(wxT("symbols")).Caption(_("Mathematical Symbols")).CloseButton(true).PinButton().Resizable().Gripper(false);
   m_manager.GetPane(wxT("format")) =
-    m_manager.GetPane(wxT("format")).Caption(_("Insert")).CloseButton().PinButton().Resizable();
+    m_manager.GetPane(wxT("format")).Caption(_("Insert")).CloseButton(true).PinButton().Resizable();
   m_manager.GetPane(wxT("draw")) =
-    m_manager.GetPane(wxT("draw")).Caption(_("Plot using Draw")).CloseButton().PinButton().Resizable();
+    m_manager.GetPane(wxT("draw")).Caption(_("Plot using Draw")).CloseButton(true).PinButton().Resizable();
   m_manager.GetPane(wxT("greek")) =
-    m_manager.GetPane(wxT("greek")).Caption(_("Greek Letters")).CloseButton().PinButton().Resizable().Gripper(false);
+    m_manager.GetPane(wxT("greek")).Caption(_("Greek Letters")).CloseButton(true).PinButton().Resizable().Gripper(false);
   m_manager.GetPane(wxT("log")) =
-    m_manager.GetPane(wxT("log")).Caption(_("Debug Messages")).CloseButton().PinButton().Resizable().Gripper(false);
+    m_manager.GetPane(wxT("log")).Caption(_("Debug Messages")).CloseButton(true).PinButton().Resizable().Gripper(false);
   m_manager.GetPane(wxT("variables")) =
-    m_manager.GetPane(wxT("variables")).Caption(_("Variables")).CloseButton().PinButton().Resizable().Gripper(false);
+    m_manager.GetPane(wxT("variables")).Caption(_("Variables")).CloseButton(true).PinButton().Resizable().Gripper(false);
   m_manager.GetPane(wxT("math")) = m_manager.GetPane(wxT("math")).Caption(_("General Math")).
-    CloseButton().PinButton().Resizable();
+    CloseButton(true).PinButton().Resizable();
   m_manager.GetPane(wxT("stats")) = m_manager.GetPane(wxT("stats")).Caption(_("Statistics")).
-    CloseButton().PinButton().Resizable();
+    CloseButton(true).PinButton().Resizable();
   m_manager.GetPane(wxT("XmlInspector")) =
-    m_manager.GetPane(wxT("XmlInspector")).Caption(_("Raw XML monitor")).CloseButton().PinButton().Resizable();
+    m_manager.GetPane(wxT("XmlInspector")).Caption(_("Raw XML monitor")).CloseButton(true).PinButton().Resizable();
   // The XML inspector scares many users and displaying long XML responses there slows
   // down wxMaxima => disable the XML inspector on startup.
   m_manager.GetPane(wxT("XmlInspector")).Show(false);
 
   m_manager.GetPane(wxT("structure")) =
-    m_manager.GetPane(wxT("structure")).Caption(_("Table of Contents")).CloseButton().PinButton().Resizable();
+    m_manager.GetPane(wxT("structure")).Caption(_("Table of Contents")).CloseButton(true).PinButton().Resizable();
   m_manager.GetPane(wxT("history")) = m_manager.GetPane(wxT("history")).Caption(_("History"))
-    .CloseButton().PinButton().Resizable();
+    .CloseButton(true).PinButton().Resizable();
 
   m_manager.Update();
 }
