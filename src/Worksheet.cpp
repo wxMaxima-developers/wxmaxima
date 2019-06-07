@@ -2329,8 +2329,9 @@ wxString Worksheet::ConvertSelectionToMathML()
       s = wxString::FromUTF8((char *) ostream.GetOutputStreamBuffer()->GetBufferStart(),
                              ostream.GetOutputStreamBuffer()->GetBufferSize());
 
-      // Now the string has a header we want to drop again.
+      // Now the string has a header we want to get rid of again.
       s = s.SubString(s.Find("\n") + 1, s.Length());
+      
     }
   }
   Recalculate();
@@ -4834,7 +4835,6 @@ bool Worksheet::ExportToHTML(wxString file)
   // Show a busy cursor as long as we export.
   wxBusyCursor crs;
 
-  m_configuration->ClipToDrawRegion(false);
   // The path to the image directory as seen from the html directory
   wxString imgDir_rel;
   // The absolute path to the image directory
@@ -4860,29 +4860,14 @@ bool Worksheet::ExportToHTML(wxString file)
   if (!wxDirExists(imgDir))
   {
     if (!wxMkdir(imgDir))
-    {
-      m_configuration->ClipToDrawRegion(true);
       return false;
-    }
   }
-
-  wxFileOutputStream outfile(file);
-  if (!outfile.IsOk())
-  {
-    m_configuration->ClipToDrawRegion(true);
-    return false;
-  }
-
-  wxTextOutputStream output(outfile);
 
   wxString cssfileName_rel = imgDir_rel + wxT("/") + filename + wxT(".css");
   wxString cssfileName = path + wxT("/") + cssfileName_rel;
   wxFileOutputStream cssfile(cssfileName);
   if (!cssfile.IsOk())
-  {
-    m_configuration->ClipToDrawRegion(true);
     return false;
-  }
 
   wxURI filename_uri(filename);
   wxString filename_encoded = filename_uri.BuildURI(); /* handle HTML entities like " " => "%20" */
@@ -4890,29 +4875,34 @@ bool Worksheet::ExportToHTML(wxString file)
 
   wxTextOutputStream css(cssfile);
 
+  wxString output;
+  
+
+  m_configuration->ClipToDrawRegion(false);
   output << wxT("<!DOCTYPE html>\n");
   output << wxT("<html>\n");
   output << wxT(" <head>\n");
   output << wxT("  <title>") + filename + wxT("</title>\n");
-  output << wxT("  <meta name=\"generator\" CONTENT=\"wxMaxima\">\n");
-  output << wxT("  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n");
+  output << wxT("  <meta name=\"generator\" content=\"wxMaxima\"/>\n");
+  output << wxT("  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n");
 
 //////////////////////////////////////////////
 // Write styles
 //////////////////////////////////////////////
 
-  if ((htmlEquationFormat != ConfigDialogue::bitmap) &&
-      (htmlEquationFormat != ConfigDialogue::svg))
+  if ((htmlEquationFormat = ConfigDialogue::mathML_mathJaX) ||
+      (htmlEquationFormat != ConfigDialogue::mathJaX_TeX))
   {
-    output << wxT("<script type=\"text/x-mathjax-config\">") << endl;
-    output << wxT("  MathJax.Hub.Config({") << endl;
-    output << wxT("    displayAlign: \"left\",") << endl;
-    output << wxT("    context: \"MathJax\",") << endl;
-    output << wxT("    TeX: {TagSide: \"left\"}") << endl;
-    output << wxT("  })") << endl;
-    output << wxT("</script>") << endl;
-    output << wxT("<script src=\"")+m_configuration->MathJaXURL()+wxT("\">") << endl;
-    output << wxT("</script>") << endl;
+    output << wxT("<script type=\"text/x-mathjax-config\">\n");
+    output << wxT("  MathJax.Hub.Config({\n");
+    output << wxT("    displayAlign: \"left\",\n");
+    output << wxT("    context: \"MathJax\",\n");
+    output << wxT("    TeX: {TagSide: \"left\"}\n");
+    output << wxT("  })\n");
+    output << wxT("</script>\n");
+    output << wxT("<script src=\"") + m_configuration->MathJaXURL() + wxT("\" async=\"true\">\n");
+    output << wxT("<!-- A comment that hinders wxWidgets from optimizing this tag too much -->\n");
+    output << wxT("</script>\n");
   }
 
   wxString font, fontTitle, fontSection, fontSubsection, fontSubsubsection, fontHeading5, fontHeading6, fontText;
@@ -5372,7 +5362,7 @@ bool Worksheet::ExportToHTML(wxString file)
     output << wxT("</noscript>");
 
     // Tell mathJax about the \abs{} operator we define for LaTeX.
-    output << wxT("<p hidden>\\(");
+    output << wxT("<p hidden = \"true\">\\(");
     output << wxT("      \\DeclareMathOperator{\\abs}{abs}\n");
     output << wxT("      \\newcommand{\\ensuremath}[1]{\\mbox{$#1$}}\n");
     output << wxT("\\)</p>");
@@ -5460,7 +5450,7 @@ bool Worksheet::ExportToHTML(wxString file)
                     imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
             output << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
                       filename_encoded +
-                      wxString::Format(_("_%d.gif\"  alt=\"Animated Diagram\" style=\"max-width:90%%;\" >\n"), count);
+                      wxString::Format(_("_%d.gif\"  alt=\"Animated Diagram\" loading=\"lazy\" style=\"max-width:90%%;\" >\n"), count);
           }
           else if (chunk->GetType() != MC_TYPE_IMAGE)
           {
@@ -5497,12 +5487,12 @@ bool Worksheet::ExportToHTML(wxString file)
               wxSize size = svgout.SetData(chunk);
               wxString line = wxT("  <img src=\"") +
                 filename_encoded + wxT("_htmlimg/") + filename_encoded +
-                wxString::Format(wxT("_%d.svg\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
+                wxString::Format(wxT("_%d.svg\" width=\"%i\" style=\"max-width:90%%;\" alt=\" loading=\"lazy\"" ),
                                  count, size.x) +
                 alttext +
                 wxT("\" ><br/>\n");
 
-              output << line << endl;
+              output << line + "\n";
               break;
             }
 
@@ -5524,12 +5514,12 @@ bool Worksheet::ExportToHTML(wxString file)
 
               wxString line = wxT("  <img src=\"") +
                 filename_encoded + wxT("_htmlimg/") + filename_encoded +
-                wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
+                wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" alt=\" loading=\"lazy\""),
                                  count, ext, size.x / bitmapScale - 2 * borderwidth) +
                 alttext +
                 wxT("\" ><br/>\n");
 
-              output << line << endl;
+              output << line + "\n";
               wxDELETE(chunk);
               break;
             }
@@ -5558,12 +5548,12 @@ bool Worksheet::ExportToHTML(wxString file)
 
             wxString line = wxT("  <img src=\"") +
               filename_encoded + wxT("_htmlimg/") + filename_encoded +
-              wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" alt=\""),
+              wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" alt=\" loading=\"lazy\""),
                                count, ext, size.x - 2 * borderwidth) +
               alttext +
               wxT("\" ><BR/>\n");
 
-            output << line << endl;
+            output << line + "\n";
             wxDELETE(chunk);
 
           }
@@ -5650,7 +5640,7 @@ bool Worksheet::ExportToHTML(wxString file)
                                                                wxString::Format(wxT("_%d.gif"), count));
             output << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
                       filename_encoded +
-                      wxString::Format(_("_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" >"), count)
+                      wxString::Format(_("_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" loading=\"lazy\">"), count)
                    << wxT("\n");
           }
           else
@@ -5661,7 +5651,7 @@ bool Worksheet::ExportToHTML(wxString file)
                     imgCell->GetExtension());
             output << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
                       filename_encoded +
-                      wxString::Format(wxT("_%d.%s\" alt=\"Diagram\" style=\"max-width:90%%;\" >"), count,
+                      wxString::Format(wxT("_%d.%s\" alt=\"Diagram\" style=\"max-width:90%%;\" loading=\"lazy\" >"), count,
                                        imgCell->GetExtension());
           }
           output << wxT("</div>\n");
@@ -5680,7 +5670,7 @@ bool Worksheet::ExportToHTML(wxString file)
 //////////////////////////////////////////////
 
   output << wxT("\n");
-  output << wxT(" <hr>\n");
+  output << wxT(" <hr/>\n");
   output << wxT(" <p><small> Created with "
                         "<a href=\"https://wxMaxima-developers.github.io/wxmaxima/\">"
                         "wxMaxima</a>.</small></p>\n");
@@ -5699,10 +5689,46 @@ bool Worksheet::ExportToHTML(wxString file)
   }
 
   //
-  // Close document
+  // Close the document
   //
   output << wxT(" </body>\n");
   output << wxT("</html>\n");
+
+  m_configuration->ClipToDrawRegion(true);
+
+  // Indent the document and test it for validity.
+  wxXmlDocument doc;
+  {
+    wxMemoryOutputStream ostream;
+    wxTextOutputStream txtstrm(ostream);
+    txtstrm.WriteString(output);
+    wxMemoryInputStream istream(ostream);
+    doc.Load(istream);
+  }
+      
+  // Replace the raw document by the indented one. If that step worked, that ist.
+  if (doc.IsOk())
+  {
+    wxMemoryOutputStream ostream;
+    doc.Save(ostream);
+    output = wxString::FromUTF8((char *) ostream.GetOutputStreamBuffer()->GetBufferStart(),
+                                ostream.GetOutputStreamBuffer()->GetBufferSize());
+    
+    // Now the string has a header we want to drop again.
+    output = output.SubString(output.Find("\n") + 1, output.Length());
+  }
+  else
+    wxLogMessage(_("Bug: HTML output is no valid XML"));
+  
+  wxFileOutputStream outfile(file);
+  if (!outfile.IsOk())
+  {
+    return false;
+  }
+  
+  wxTextOutputStream outstream(outfile);
+  outstream << "<!DOCTYPE html>\n";
+  outstream << output;
 
   bool outfileOK = !outfile.GetFile()->Error();
   bool cssOK = !cssfile.GetFile()->Error();

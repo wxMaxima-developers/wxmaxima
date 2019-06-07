@@ -116,11 +116,16 @@ wxString MarkDownParser::MarkDown(wxString str)
         }
 
         // Did we switch to a lower indentation level?
-        while (!indentationLevels.empty() && (index < indentationLevels.back()))
+        if (index < indentationLevels.back())
         {
-          result += itemizeEnd();
-          indentationLevels.pop_back();
-          indentationTypes.pop_back();
+          while (!indentationLevels.empty() && (index < indentationLevels.back()))
+          {
+            result += itemizeEndItem();
+            result += itemizeEnd();
+            indentationLevels.pop_back();
+            indentationTypes.pop_back();
+          }
+          result += itemizeEndItem();
         }
 
         // Add a new item marker.
@@ -165,7 +170,10 @@ wxString MarkDownParser::MarkDown(wxString str)
           while (!indentationLevels.empty() && (indentationLevels.back() > index))
           {
             if (indentationTypes.back() == wxT('*'))
+            {
+              result += itemizeEndItem();
               result += itemizeEnd();
+            }
             else
               result += quoteEnd();
             indentationLevels.pop_back();
