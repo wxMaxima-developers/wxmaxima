@@ -149,7 +149,7 @@ private:
   { return wxT("</li>\n"); }
 
   virtual wxString NewLine()
-  { return wxT("<br>"); }
+  { return wxT("<br/>"); }
 };
 
 #endif // MARKDOWN_H

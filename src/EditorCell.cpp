@@ -85,7 +85,7 @@ wxString EditorCell::EscapeHTMLChars(wxString input)
   input.Replace(wxT("\""), wxT("&quot;"));
   input.Replace(wxT("<"), wxT("&lt;"));
   input.Replace(wxT(">"), wxT("&gt;"));
-  input.Replace(wxT("\n"), wxT("<br>\n"));
+  input.Replace(wxT("\n"), wxT("<br/>\n"));
   input.Replace(wxT("\r"), wxT(" "));
   return input;
 }

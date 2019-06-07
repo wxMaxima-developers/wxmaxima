@@ -5570,54 +5570,58 @@ bool Worksheet::ExportToHTML(wxString file)
         case GC_TYPE_TEXT:
           output << wxT("\n\n<!-- Text cell -->\n\n\n");
           output << wxT("<div class=\"comment\">\n");
-          output << EditorCell::PrependNBSP(
-                  MarkDown.MarkDown(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString()))) << wxT("\n");
+          output << wxT("<p>\n");
+          output << MarkDown.MarkDown(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString())) + "\n";
+          output << wxT("</p>\n");
           output << wxT("</div>\n");
           break;
         case GC_TYPE_SECTION:
           output << wxT("\n\n<!-- Section cell -->\n\n\n");
           output << wxT("<div class=\"section\">\n");
-          output << EditorCell::PrependNBSP(
-                  EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))
-                 << wxT("\n");
+          output << wxT("<p>\n");
+          output << EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()) + "\n";
+          output << wxT("</p>\n");
           output << wxT("</div>\n");
           break;
         case GC_TYPE_SUBSECTION:
           output << wxT("\n\n<!-- Subsection cell -->\n\n\n");
           output << wxT("<div class=\"subsect\">\n");
-          output << EditorCell::PrependNBSP(
-                  EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))
-                 << wxT("\n");
+          output << wxT("<p>\n");
+          output << 
+                  EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()) + "\n";
+          output << wxT("</p>\n");
           output << wxT("</div>\n");
           break;
         case GC_TYPE_SUBSUBSECTION:
           output << wxT("\n\n<!-- Subsubsection cell -->\n\n\n");
           output << wxT("<div class=\"subsubsect\">\n");
-          output << EditorCell::PrependNBSP(
-                  EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))
-                 << wxT("\n");
+          output << wxT("<p>\n");
+          output << EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()) + "\n";
+          output << wxT("</p>\n");
           output << wxT("</div>\n");
           break;
         case GC_TYPE_HEADING5:
           output << wxT("\n\n<!-- Heading5 cell -->\n\n\n");
           output << wxT("<div class=\"heading5\">\n");
-          output << EditorCell::PrependNBSP(
-                  EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))
-                 << wxT("\n");
+          output << wxT("<p>\n");
+          output << EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()) + "\n";
+          output << wxT("</p>\n");
           output << wxT("</div>\n");
           break;
         case GC_TYPE_HEADING6:
           output << wxT("\n\n<!-- Heading6 cell -->\n\n\n");
           output << wxT("<div class=\"heading6\">\n");
-          output << EditorCell::PrependNBSP(
-                  EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()))
-                 << wxT("\n");
+          output << wxT("<p>\n");
+          output << EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() + tmp->GetEditable()->ToString()) + "\n";
+          output << wxT("</p>\n");
           output << wxT("</div>\n");
           break;
         case GC_TYPE_TITLE:
           output << wxT("\n\n<!-- Title cell -->\n\n\n");
           output << wxT("<div class=\"title\">\n");
-          output << EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString())) << wxT("\n");
+          output << wxT("<p>\n");
+          output << EditorCell::EscapeHTMLChars(tmp->GetEditable()->ToString()) +"\n";
+          output << wxT("</p>\n");
           output << wxT("</div>\n");
           break;
         case GC_TYPE_PAGEBREAK:
@@ -5631,8 +5635,8 @@ bool Worksheet::ExportToHTML(wxString file)
           output << wxT("\n\n<!-- Image cell -->\n\n\n");
           Cell *out = tmp->GetLabel();
           output << wxT("<div class=\"image\">\n");
-          output << EditorCell::PrependNBSP(EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() +
-                                                                        tmp->GetEditable()->ToString())) << wxT("\n");
+          output << EditorCell::EscapeHTMLChars(tmp->GetPrompt()->ToString() +
+                                                tmp->GetEditable()->ToString()) << wxT("\n");
           output << wxT("<br/>\n");
           if (tmp->GetLabel()->GetType() == MC_TYPE_SLIDE)
           {
