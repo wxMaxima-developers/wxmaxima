@@ -255,7 +255,7 @@ wxString EditorCell::PrependNBSP(wxString input)
         retval += ch;
       }
       else
-        retval += wxT("&nbsp;");
+        retval += wxT("\xA0");
     }
     else
     {
@@ -713,7 +713,6 @@ wxString EditorCell::ToHTML()
     }
     tmp = dynamic_cast<EditorCell *>(tmp->m_next);
   }
-  retval.Replace(wxT("\xa0"), wxT("&nbsp;"));
   return retval;
 }
 
