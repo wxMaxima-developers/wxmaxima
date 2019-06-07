@@ -5557,7 +5557,7 @@ bool Worksheet::ExportToHTML(wxString file)
               wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" alt=\" loading=\"lazy\""),
                                count, ext, size.x - 2 * borderwidth) +
               alttext +
-              wxT("\" ><BR/>\n");
+              wxT("\" ><br/>\n");
 
             output << line + "\n";
             wxDELETE(chunk);
