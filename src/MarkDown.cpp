@@ -268,21 +268,21 @@ MarkDownTeX::MarkDownTeX(Configuration *cfg) : MarkDownParser(cfg)
 MarkDownHTML::MarkDownHTML(Configuration *cfg) : MarkDownParser(cfg)
 {
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\&lt;=\\&gt;"), wxT("\\&hArr;")));
+          new RegexReplacer(wxT("\\&lt;=\\&gt;"), wxT("\x21d4")));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("=\\&gt;"), wxT("\\&rArr;")));
+          new RegexReplacer(wxT("=\\&gt;"), wxT("\x21d2")));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("&lt;-\\&gt;"), wxT("\\&harr;")));
+          new RegexReplacer(wxT("&lt;-\\&gt;"), wxT("\x2194")));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("-\\&gt;"), wxT("\\&rarr;")));
+          new RegexReplacer(wxT("-\\&gt;"), wxT("\x2192")));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\&lt;-"), wxT("\\&larr;")));
+          new RegexReplacer(wxT("\\&lt;-"), wxT("\x2190")));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\&lt;="), wxT("\\&le;")));
+          new RegexReplacer(wxT("\\&lt;="), wxT("\x2264")));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\&gt;="), wxT("\\&ge;")));
+          new RegexReplacer(wxT("\\&gt;="), wxT("\x2265")));
   regexReplaceList.push_back(
-          new RegexReplacer(wxT("\\+/-"), wxT("\\&plusmn;")));
+          new RegexReplacer(wxT("\\+/-"), wxT("\xB1")));
   regexReplaceList.push_back(
-    new RegexReplacer(L"\xDCB6", wxT("\xA0;")));
+    new RegexReplacer(L"\xDCB6", wxT("\xA0")));
 }

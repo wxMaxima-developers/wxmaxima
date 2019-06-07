@@ -5456,7 +5456,7 @@ bool Worksheet::ExportToHTML(wxString file)
                     imgDir + wxT("/") + filename + wxString::Format(wxT("_%d.gif"), count));
             output << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
                       filename_encoded +
-                      wxString::Format(_("_%d.gif\"  alt=\"Animated Diagram\" loading=\"lazy\" style=\"max-width:90%%;\" >\n"), count);
+                      wxString::Format(_("_%d.gif\"  alt=\"Animated Diagram\" loading=\"lazy\" style=\"max-width:90%%;\" />\n"), count);
           }
           else if (chunk->GetType() != MC_TYPE_IMAGE)
           {
@@ -5493,10 +5493,10 @@ bool Worksheet::ExportToHTML(wxString file)
               wxSize size = svgout.SetData(chunk);
               wxString line = wxT("  <img src=\"") +
                 filename_encoded + wxT("_htmlimg/") + filename_encoded +
-                wxString::Format(wxT("_%d.svg\" width=\"%i\" style=\"max-width:90%%;\" alt=\" loading=\"lazy\"" ),
+                wxString::Format(wxT("_%d.svg\" width=\"%i\" style=\"max-width:90%%;\" loading=\"lazy\" alt=\"" ),
                                  count, size.x) +
                 alttext +
-                wxT("\" ><br/>\n");
+                wxT("\" /><br/>\n");
 
               output << line + "\n";
               break;
@@ -5520,10 +5520,10 @@ bool Worksheet::ExportToHTML(wxString file)
 
               wxString line = wxT("  <img src=\"") +
                 filename_encoded + wxT("_htmlimg/") + filename_encoded +
-                wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" alt=\" loading=\"lazy\""),
+                wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" loading=\"lazy\" alt=\" "),
                                  count, ext, size.x / bitmapScale - 2 * borderwidth) +
                 alttext +
-                wxT("\" ><br/>\n");
+                wxT("\" /><br/>\n");
 
               output << line + "\n";
               wxDELETE(chunk);
@@ -5554,10 +5554,10 @@ bool Worksheet::ExportToHTML(wxString file)
 
             wxString line = wxT("  <img src=\"") +
               filename_encoded + wxT("_htmlimg/") + filename_encoded +
-              wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" alt=\" loading=\"lazy\""),
+              wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" loading=\"lazy\" alt=\""),
                                count, ext, size.x - 2 * borderwidth) +
               alttext +
-              wxT("\" ><br/>\n");
+              wxT("\" /><br/>\n");
 
             output << line + "\n";
             wxDELETE(chunk);
@@ -5650,7 +5650,7 @@ bool Worksheet::ExportToHTML(wxString file)
                                                                wxString::Format(wxT("_%d.gif"), count));
             output << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
                       filename_encoded +
-                      wxString::Format(_("_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" loading=\"lazy\">"), count)
+                      wxString::Format(_("_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" loading=\"lazy\" />"), count)
                    << wxT("\n");
           }
           else
@@ -5661,7 +5661,7 @@ bool Worksheet::ExportToHTML(wxString file)
                     imgCell->GetExtension());
             output << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
                       filename_encoded +
-                      wxString::Format(wxT("_%d.%s\" alt=\"Diagram\" style=\"max-width:90%%;\" loading=\"lazy\" >"), count,
+                      wxString::Format(wxT("_%d.%s\" alt=\"Diagram\" style=\"max-width:90%%;\" loading=\"lazy\" />"), count,
                                        imgCell->GetExtension());
           }
           output << wxT("</div>\n");
