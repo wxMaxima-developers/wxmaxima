@@ -491,7 +491,7 @@ void ConfigDialogue::SetProperties()
   m_wrapLatexMath->SetValue(wrapLatexMath);
   m_exportContainsWXMX->SetValue(exportContainsWXMX);
   m_printBrackets->SetValue(configuration->PrintBrackets());
-  m_exportWithMathJAX->SetSelection(exportWithMathJAX);
+  m_exportWithMathJAX->SetSelection((int)configuration->HTMLequationFormat());
   m_matchParens->SetValue(configuration->GetMatchParens());
   m_showLength->SetSelection(configuration->ShowLength());
   m_autosubscript->SetSelection(configuration->GetAutosubscript_Num());
@@ -1209,7 +1209,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("wrapLatexMath"), m_wrapLatexMath->GetValue());
   config->Write(wxT("exportContainsWXMX"), m_exportContainsWXMX->GetValue());
   configuration->PrintBrackets(m_printBrackets->GetValue());
-  config->Write(wxT("HTMLequationFormat"), m_exportWithMathJAX->GetSelection());
+  configuration->HTMLequationFormat((Configuration::htmlExportFormat) m_exportWithMathJAX->GetSelection());
   config->Write(wxT("usejsmath"), m_useJSMath->GetValue());
   configuration->UseUnicodeMaths(m_useUnicodeMaths->GetValue());
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());

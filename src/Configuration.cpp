@@ -37,6 +37,7 @@
 
 Configuration::Configuration(wxDC *dc) : m_dc(dc) 
 {
+  m_htmlEquationFormat = mathJaX_TeX;
   m_autodetectMaxima = true;
   m_BackgroundBrush = *wxWHITE_BRUSH;
   m_clipToDrawRegion = true;
@@ -344,7 +345,13 @@ void Configuration::ReadConfig()
   if(m_autoSaveMinutes < 0)
     m_autoSaveMinutes = 0;
 
-  config->Read(wxT("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
+  {
+    int tmp;
+    config->Read("HTMLequationFormat", &tmp);
+    m_htmlEquationFormat = (Configuration::htmlExportFormat)tmp;
+  }
+  
+config->Read(wxT("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
   config->Read(wxT("autoWrapMode"), &m_autoWrap);
   config->Read(wxT("mathJaxURL_UseUser"), &m_mathJaxURL_UseUser);
   config->Read(wxT("useUnicodeMaths"), &m_useUnicodeMaths);

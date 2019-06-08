@@ -79,15 +79,6 @@ public:
   //! The destructor
   ~ConfigDialogue();
 
-  //! The export formats we support for HTML equations
-  enum htmlExportFormats
-  {
-    mathJaX_TeX = 0,
-    bitmap = 1,
-    mathML_mathJaX = 2,
-    svg = 3
-  };
-
   /*! Called if the color of an item has been changed
 
     called from class ColorPanel

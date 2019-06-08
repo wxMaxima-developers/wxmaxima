@@ -85,6 +85,15 @@
 class Configuration
 {
 public:
+  //! The export formats we support for HTML equations
+  enum htmlExportFormat
+  {
+    mathJaX_TeX = 0,
+    bitmap = 1,
+    mathML_mathJaX = 2,
+    svg = 3
+  };
+
   enum drawMode
   {
     ascii,              //!< Use ascii characters only
@@ -751,7 +760,11 @@ public:
   bool GetAbortOnError(){return m_abortOnError;}
   void SetAbortOnError(bool abortOnError)
     {wxConfig::Get()->Write("abortOnError",m_abortOnError = abortOnError);}
-  
+
+  htmlExportFormat HTMLequationFormat(){return m_htmlEquationFormat;}
+  void HTMLequationFormat(htmlExportFormat HTMLequationFormat)
+    {wxConfig::Get()->Write("HTMLequationFormat", (int) (m_htmlEquationFormat = HTMLequationFormat));}
+
   //! Get the worksheet this configuration storage is valid for
   int GetAutosubscript_Num(){return m_autoSubscript;}
   void SetAutosubscript_Num(int autosubscriptnum)
@@ -882,6 +895,7 @@ private:
   bool m_useUnicodeMaths;
   bool m_indentMaths;
   bool m_abortOnError;
+  htmlExportFormat m_htmlEquationFormat;
   bool m_adjustWorksheetSizeNeeded;
   //! The rectangle of the worksheet that is currently visible.
   wxRect m_visibleRegion;

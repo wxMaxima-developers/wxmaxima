@@ -4843,12 +4843,6 @@ bool Worksheet::ExportToHTML(wxString file)
   wxString path, filename, ext;
   wxConfigBase *config = wxConfig::Get();
 
-  ConfigDialogue::htmlExportFormats htmlEquationFormat = ConfigDialogue::mathJaX_TeX;
-  {
-    int tmp = htmlEquationFormat;
-    config->Read(wxT("HTMLequationFormat"), &tmp);
-    htmlEquationFormat = (ConfigDialogue::htmlExportFormats) tmp;
-  }
   int count = 0;
   GroupCell *tmp = m_tree;
   MarkDownHTML MarkDown(m_configuration);
@@ -4890,8 +4884,8 @@ bool Worksheet::ExportToHTML(wxString file)
 // Write styles
 //////////////////////////////////////////////
 
-  if ((htmlEquationFormat = ConfigDialogue::mathML_mathJaX) ||
-      (htmlEquationFormat != ConfigDialogue::mathJaX_TeX))
+  if ((m_configuration->HTMLequationFormat() == Configuration::mathML_mathJaX) ||
+      (m_configuration->HTMLequationFormat() == Configuration::mathJaX_TeX))
   {
     output << wxT("<script type=\"text/x-mathjax-config\">\n");
     output << wxT("  MathJax.Hub.Config({\n");
@@ -5361,8 +5355,8 @@ bool Worksheet::ExportToHTML(wxString file)
   output << wxT("<!-- *        ") + versionString + wxT("       * -->\n");
   output << wxT("<!-- *********") + versionPad    + wxT("******** -->\n");
 
-  if ((htmlEquationFormat != ConfigDialogue::bitmap) &&
-      (htmlEquationFormat != ConfigDialogue::svg))
+  if ((m_configuration->HTMLequationFormat() != Configuration::bitmap) &&
+      (m_configuration->HTMLequationFormat() != Configuration::svg))
   {
     // Tell users that have disabled JavaScript why they don't get 2d maths.
     output << wxT("<noscript>");
@@ -5465,13 +5459,14 @@ bool Worksheet::ExportToHTML(wxString file)
           }
           else if (chunk->GetType() != MC_TYPE_IMAGE)
           {
-            switch(htmlEquationFormat)
+            switch(m_configuration->HTMLequationFormat())
             {
-            case ConfigDialogue::mathJaX_TeX:
+            case Configuration::mathJaX_TeX:
             {
               wxString line = chunk->ListToTeX();
 
               line.Replace(wxT("<"), wxT("&lt;"));
+              line.Replace(wxT("&"), wxT("&amp;"));
               line.Replace(wxT(">"), wxT("&gt;"));
               // Work around a known limitation in MathJaX: According to
               // https://github.com/mathjax/MathJax/issues/569 Non-Math Text will still
@@ -5484,12 +5479,12 @@ bool Worksheet::ExportToHTML(wxString file)
 	      // we would need to escape the % with \%, but now that is not necessary.
               line.Replace(wxT("\\tag{\\% "), wxT("\\tag{%"));
 
-              output << wxT("\\[") << line << wxT("\\]\n");
+              output << wxT("<p>\n\\[") << line << wxT("\\]\n</p>\n");
               wxDELETE(chunk);
               break;
             }
 
-            case ConfigDialogue::svg:
+            case Configuration::svg:
             {
               wxString alttext = _("Result");
               alttext = chunk->ListToString();
@@ -5507,7 +5502,7 @@ bool Worksheet::ExportToHTML(wxString file)
               break;
             }
 
-            case ConfigDialogue::bitmap:
+            case Configuration::bitmap:
             {
               wxString ext;
               wxSize size;
