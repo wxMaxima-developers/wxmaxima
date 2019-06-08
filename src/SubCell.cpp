@@ -85,12 +85,11 @@ void SubCell::SetBase(Cell *base)
 
 void SubCell::RecalculateWidths(int fontsize)
 {
-  Cell::RecalculateWidths(fontsize);
   m_baseCell->RecalculateWidthsList(fontsize);
   m_indexCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - SUB_DEC));
   m_width = m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() -
             Scale_Px(2);
-  ResetData();
+  Cell::RecalculateWidths(fontsize);
 }
 
 void SubCell::RecalculateHeight(int fontsize)

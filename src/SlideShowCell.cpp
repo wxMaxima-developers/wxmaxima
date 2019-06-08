@@ -198,7 +198,6 @@ void SlideShow::SetDisplayedIndex(int ind)
 
 void SlideShow::RecalculateWidths(int fontsize)
 {
-  Cell::RecalculateWidths(fontsize);
   // Here we recalculate the height, as well:
   //  - This doesn't cost much time and
   //  - as image cell's sizes might change when the resolution does
@@ -226,6 +225,7 @@ void SlideShow::RecalculateWidths(int fontsize)
     }
   }       
   m_center = m_height / 2;
+  Cell::RecalculateWidths(fontsize);
 }
 
 void SlideShow::RecalculateHeight(int fontsize)

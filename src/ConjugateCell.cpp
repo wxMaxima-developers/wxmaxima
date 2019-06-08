@@ -90,15 +90,14 @@ void ConjugateCell::SetInner(Cell *inner)
 
 void ConjugateCell::RecalculateWidths(int fontsize)
 {
-  Cell::RecalculateWidths(fontsize);
   m_innerCell->RecalculateWidthsList(fontsize);
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
-  ResetData();
   if(!m_isBrokenIntoLines)
     m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
   else
     m_width = 0;
+  Cell::RecalculateWidths(fontsize);
 }
 
 void ConjugateCell::RecalculateHeight(int fontsize)

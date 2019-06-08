@@ -53,6 +53,8 @@ Cell::Cell(Cell *group, Configuration **config)
   :wxAccessible()
 #endif
 {
+  m_lastZoomFactor = -1;
+  m_clientWidth_old = -1;
   m_group = group;
   m_textStyle = TS_DEFAULT;
   m_toolTip = wxEmptyString;
@@ -293,6 +295,17 @@ int Cell::GetMaxCenter()
   return m_maxCenter;
 }
 
+bool Cell::NeedsRecalculation()
+{
+
+  return (m_width < 0) || (m_height < 0) || (m_center < 0) ||
+    (m_currentPoint.x < 0) || (m_currentPoint.y < 0) ||
+    (m_clientWidth_old != (*m_configuration)->GetClientWidth()) ||
+    (m_lastZoomFactor != (*m_configuration)->GetZoomFactor()) ||
+    ((*m_configuration)->RecalculationForce()) ||
+    (*m_configuration)->FontChanged();
+}
+
 /***
  * Get the maximum drop of cell.
  */
@@ -457,6 +470,8 @@ void Cell::RecalculateWidths(int fontsize)
 {
   ResetData();
   m_fontSize = fontsize;
+  m_clientWidth_old = (*m_configuration)->GetClientWidth();
+  m_lastZoomFactor = (*m_configuration)->GetZoomFactor();
 }
 
 /*! Is this cell currently visible in the window?.

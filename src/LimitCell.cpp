@@ -116,7 +116,6 @@ void LimitCell::SetUnder(Cell *under)
 
 void LimitCell::RecalculateWidths(int fontsize)
 {
-  Cell::RecalculateWidths(fontsize);
   if(m_base)
     m_base->RecalculateWidthsList(fontsize);
   if(m_under)
@@ -136,7 +135,7 @@ void LimitCell::RecalculateWidths(int fontsize)
   else
     m_width = 0;
   
-  ResetData();
+  Cell::RecalculateWidths(fontsize);
 }
 
 void LimitCell::RecalculateHeight(int fontsize)

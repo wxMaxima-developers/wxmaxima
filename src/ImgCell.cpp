@@ -152,7 +152,6 @@ wxString ImgCell::GetToolTip(const wxPoint &point)
 
 void ImgCell::RecalculateWidths(int fontsize)
 {
-  Cell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
   if (m_image)
   {
@@ -166,6 +165,7 @@ void ImgCell::RecalculateWidths(int fontsize)
       m_image->Recalculate();
     m_width = m_image->m_width + 2 * m_imageBorderWidth;
   }
+  Cell::RecalculateWidths(fontsize);
 }
 
 void ImgCell::RecalculateHeight(int fontsize)

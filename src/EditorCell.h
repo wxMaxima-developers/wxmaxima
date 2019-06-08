@@ -66,12 +66,6 @@ private:
   #endif
   
   int m_errorIndex;
-  //! The viewport size the linewrap was done for.
-  int m_oldViewportWidth;
-  //! The zoom factor the linewrap was done for.
-  int m_oldZoomFactor;
-  //! The font size the linewrap was done for.
-  int m_oldDefaultFontSize;
 
   //! A list of all potential autoComplete targets within this cell
   wxArrayString m_wordList;

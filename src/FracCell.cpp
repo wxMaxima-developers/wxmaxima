@@ -117,7 +117,6 @@ void FracCell::SetDenom(Cell *denom)
 
 void FracCell::RecalculateWidths(int fontsize)
 {
-  Cell::RecalculateWidths(fontsize);
   wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
   if (m_isBrokenIntoLines || m_exponent)
@@ -167,9 +166,9 @@ void FracCell::RecalculateWidths(int fontsize)
   m_open2->RecalculateWidths(fontsize);
   m_close2->RecalculateWidths(fontsize);
   m_divide->RecalculateWidths(fontsize);
-  ResetData();
   if(m_isBrokenIntoLines)
     m_width = 0;
+  Cell::RecalculateWidths(fontsize);
 }
 
 void FracCell::RecalculateHeight(int fontsize)

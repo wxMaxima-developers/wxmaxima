@@ -81,12 +81,11 @@ void AtCell::SetBase(Cell *base)
 
 void AtCell::RecalculateWidths(int fontsize)
 {
-  Cell::RecalculateWidths(fontsize);
   m_baseCell->RecalculateWidthsList(fontsize);
   m_indexCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - 3));
   m_width = m_baseCell->GetFullWidth() + m_indexCell->GetFullWidth() +
             Scale_Px(4);
-  ResetData();
+  Cell::RecalculateWidths(fontsize);
 }
 
 void AtCell::RecalculateHeight(int fontsize)

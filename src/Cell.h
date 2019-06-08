@@ -379,6 +379,8 @@ class Cell
    */
   virtual wxRect GetRect(bool all = false);
 
+  virtual bool NeedsRecalculation();
+  
   virtual wxString GetDiffPart();
 
   /*! Recalculate the height of the cell and the difference between top and center
@@ -1014,6 +1016,12 @@ public:
 
 protected:
   CellPointers *m_cellPointers;
+
+private:
+  //! The client width at the time of the last recalculation.
+  int m_clientWidth_old;
+  //! The zoom factor at the time of the last recalculation.
+  double m_lastZoomFactor;
 };
 
 #endif // MATHCELL_H

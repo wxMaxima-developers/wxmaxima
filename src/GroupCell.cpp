@@ -43,7 +43,6 @@
 GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString) : Cell(
         this, config)
 {
-  m_clientWidth_old = -1;
   m_next = m_previous = m_nextToDraw = m_previousToDraw = NULL;
   m_autoAnswer = false;
   m_cellsInGroup = 1;
@@ -792,16 +791,11 @@ void GroupCell::RecalculateHeightOutput()
 
 bool GroupCell::NeedsRecalculation()
 {
-  bool result = ((m_width < 0) || (m_height < 0) ||
-                 (m_currentPoint.x < 0) || (m_currentPoint.y < 0) ||
-                 (m_clientWidth_old != (*m_configuration)->GetClientWidth()) ||
-                 ((*m_configuration)->RecalculationForce() ||
-                  ((GetInput() != NULL) &&
-                   ((GetInput()->GetWidth() <= 0) || (GetInput()->GetHeight() <= 0) ||
-                    (GetInput()->GetCurrentPoint().x <= 0) || (GetInput()->GetCurrentPoint().y <= 0)
-                     )
-                    )));
-  return result;
+  return Cell::NeedsRecalculation() ||
+    ((GetInput() != NULL) &&
+     ((GetInput()->GetWidth() <= 0) || (GetInput()->GetHeight() <= 0) ||
+      (GetInput()->GetCurrentPoint().x <= 0) || (GetInput()->GetCurrentPoint().y <= 0)
+       ));
 }
 
 void GroupCell::RecalculateHeight(int fontsize)
@@ -810,7 +804,6 @@ void GroupCell::RecalculateHeight(int fontsize)
 
   if(NeedsRecalculation())
   {
-    m_clientWidth_old = (*m_configuration)->GetClientWidth();
     m_outputRect.SetHeight(0);
     RecalculateHeightInput();   
     RecalculateHeightOutput();

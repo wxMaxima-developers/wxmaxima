@@ -46,9 +46,6 @@ EditorCell::EditorCell(Cell *parent, Configuration **config,
   m_errorIndex = -1;
   m_autoAnswer = false;
   m_cellPointers = cellPointers;
-  m_oldViewportWidth = -1;
-  m_oldZoomFactor = -1;
-  m_oldDefaultFontSize = -1;
   m_numberOfLines = 1;
   m_charHeight = 12;
   m_selectionChanged = false;
@@ -593,31 +590,19 @@ wxString EditorCell::ToXML()
 
 void EditorCell::RecalculateWidths(int fontsize)
 {
-  Cell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
 
-  // Redo the line wrapping if the viewport width has changed.
-  // Redoing the line wrapping will mark the cell height and width
-  // as "to be recalculated".
-  if (
-          (configuration->GetClientWidth() != m_oldViewportWidth) ||
-          (configuration->GetZoomFactor() != m_oldZoomFactor) ||
-          (configuration->GetDefaultFontSize() != m_oldDefaultFontSize)
-          )
-    StyleText();
-
-  int charWidth;
-
   m_isDirty = false;
-  if (m_height == -1 || m_width == -1 || configuration->RecalculationForce() || Scale_Px(fontsize) != m_fontSize_Last)
+  if (NeedsRecalculation())
   {
-    ResetData();
+    StyleText();
     m_fontSize_Last = Scale_Px(fontsize);
     wxDC *dc = configuration->GetDC();
     SetFont();
 
     // Measure the text hight using characters that might extend below or above the region
     // ordinary characters move in.
+    int charWidth;
     dc->GetTextExtent(wxT("äXÄgy"), &charWidth, &m_charHeight);
 
     // We want a little bit of vertical space between two text lines (and between two labels).
@@ -664,6 +649,7 @@ void EditorCell::RecalculateWidths(int fontsize)
     // The center lies in the middle of the 1st line
     m_center = m_charHeight / 2;
   }
+  Cell::RecalculateWidths(fontsize);
 }
 
 wxString EditorCell::ToHTML()
@@ -4325,10 +4311,6 @@ void EditorCell::StyleText()
   Configuration *configuration = (*m_configuration);
   SetFont();
 
-  // Remember what settings we did linebreaks with
-  m_oldViewportWidth = configuration->GetClientWidth();
-  m_oldZoomFactor = configuration->GetZoomFactor();
-  m_oldDefaultFontSize = configuration->GetDefaultFontSize();
 
   m_wordList.Clear();
   m_styledText.clear();

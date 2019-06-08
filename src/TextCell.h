@@ -105,6 +105,7 @@ protected:
   //! Resets the font size to label size
   void SetFontSizeForLabel(wxDC *dc);
 
+  bool NeedsRecalculation();
   static wxRegEx m_unescapeRegEx;
   static wxRegEx m_roundingErrorRegEx1;
   static wxRegEx m_roundingErrorRegEx2;

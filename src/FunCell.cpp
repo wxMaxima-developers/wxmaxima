@@ -83,7 +83,6 @@ void FunCell::SetArg(Cell *arg)
 
 void FunCell::RecalculateWidths(int fontsize)
 {
-  Cell::RecalculateWidths(fontsize);
   m_argCell->RecalculateWidthsList(fontsize);
   m_nameCell->RecalculateWidthsList(fontsize);
   if(!m_isBrokenIntoLines)
@@ -91,7 +90,7 @@ void FunCell::RecalculateWidths(int fontsize)
       Scale_Px(1);
   else
     m_width = 0;
-  ResetData();
+  Cell::RecalculateWidths(fontsize);
 }
 
 void FunCell::RecalculateHeight(int fontsize)

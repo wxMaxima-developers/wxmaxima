@@ -499,7 +499,6 @@ protected:
   Cell *m_lastInOutput;
   Cell *m_appendedCells;
 private:
-  int m_clientWidth_old;
   //! Does this GroupCell automatically fill in the answer to questions?
   bool m_autoAnswer;
   wxRect m_outputRect;

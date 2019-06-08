@@ -344,60 +344,57 @@ Cell *TextCell::Copy()
   return retval;
 }
 
+bool TextCell::NeedsRecalculation()
+{
+  return Cell::NeedsRecalculation() ||
+    (
+      (m_textStyle == TS_USERLABEL) &&
+      (!(*m_configuration)->UseUserLabels())
+      ) ||
+    (
+      (m_textStyle == TS_LABEL) &&
+      ((*m_configuration)->UseUserLabels()) &&
+    (m_userDefinedLabel != wxEmptyString)
+      ) ||
+    (
+      (m_textStyle == TS_NUMBER) &&
+      (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits())
+      );
+}
+
 void TextCell::RecalculateWidths(int fontsize)
 {
-  Cell::RecalculateWidths(fontsize);
   if(fontsize != m_fontsize_old)
     ResetSize();
   m_fontsize_old = fontsize;
   Configuration *configuration = (*m_configuration);
-
-  bool recalculateNeeded = false;
-
-  if(m_lastZoomFactor != configuration->GetZoomFactor())
-  {
-    m_lastZoomFactor = configuration->GetZoomFactor();
-    recalculateNeeded = true;
-  }
   
-  // If the setting has changed and we want to show a user-defined label
-  // instead of an automatic one or vice versa we decide that here.
-  if(
-    (m_textStyle == TS_USERLABEL) &&
-    (!configuration->UseUserLabels())
-    )
+  if(NeedsRecalculation())
   {
-    m_textStyle = TS_LABEL;
-    recalculateNeeded = true;
-  }
-  if(
-    (m_textStyle == TS_LABEL) &&
-    (configuration->UseUserLabels()) &&
-    (m_userDefinedLabel != wxEmptyString)
-    )
-  {
-    m_textStyle = TS_USERLABEL;
-    recalculateNeeded = true;
-  }
-  
-  SetAltText();
-
-  // If the config settings about how many digits to display has changed we
-  // need to regenerate the info which number to show.
-  if (
-          (m_textStyle == TS_NUMBER) &&
-          (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits())
-          )
-  {
-    SetValue(m_text);
-    recalculateNeeded = true;
-  }
-
-  if ((m_height < 0) || (m_width < 0) || configuration->FontChanged())
-    recalculateNeeded = true;
-
-  if(recalculateNeeded)
-  {
+    // If the setting has changed and we want to show a user-defined label
+    // instead of an automatic one or vice versa we decide that here.
+    if(
+      (m_textStyle == TS_USERLABEL) &&
+      (!configuration->UseUserLabels())
+      )
+      m_textStyle = TS_LABEL;
+    if(
+      (m_textStyle == TS_LABEL) &&
+      (configuration->UseUserLabels()) &&
+      (m_userDefinedLabel != wxEmptyString)
+      )
+      m_textStyle = TS_USERLABEL;
+    
+    SetAltText();
+    
+    // If the config settings about how many digits to display has changed we
+    // need to regenerate the info which number to show.
+    if (
+      (m_textStyle == TS_NUMBER) &&
+      (m_displayedDigits_old != (*m_configuration)->GetDisplayedDigits())
+      )
+      SetValue(m_text);
+    
     m_lastCalculationFontSize = fontsize;
     wxDC *dc = configuration->GetDC();
     SetFont(fontsize);
@@ -485,7 +482,7 @@ void TextCell::RecalculateWidths(int fontsize)
   }
   if(m_height < Scale_Px(4)) m_height = Scale_Px(4);
   m_realCenter = m_center = m_height / 2;
-  ResetData();
+  Cell::RecalculateWidths(fontsize);
 }
 
 void TextCell::Draw(wxPoint point)

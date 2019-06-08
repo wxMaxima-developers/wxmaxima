@@ -122,7 +122,6 @@ void IntCell::SetVar(Cell *var)
 
 void IntCell::RecalculateWidths(int fontsize)
 {
-  Cell::RecalculateWidths(fontsize);
   wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
 
@@ -205,7 +204,7 @@ void IntCell::RecalculateWidths(int fontsize)
       m_signHeight = Scale_Px(35);
 #endif
   }
-  ResetData();
+  Cell::RecalculateWidths(fontsize);
 }
 
 void IntCell::RecalculateHeight(int fontsize)

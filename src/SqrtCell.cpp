@@ -94,7 +94,6 @@ void SqrtCell::SetInner(Cell *inner)
 
 void SqrtCell::RecalculateWidths(int fontsize)
 {
-  Cell::RecalculateWidths(fontsize);
   Configuration *configuration = (*m_configuration);
   m_innerCell->RecalculateWidthsList(fontsize);
   if (configuration->CheckTeXFonts())
@@ -163,9 +162,9 @@ void SqrtCell::RecalculateWidths(int fontsize)
     m_width = m_innerCell->GetFullWidth() + Scale_Px(13) + 1;
   m_open->RecalculateWidthsList(fontsize);
   m_close->RecalculateWidthsList(fontsize);
-  ResetData();
   if(m_isBrokenIntoLines)
     m_width = 0;
+  Cell::RecalculateWidths(fontsize);
 }
 
 void SqrtCell::RecalculateHeight(int fontsize)

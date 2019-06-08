@@ -90,7 +90,7 @@ void DiffCell::RecalculateWidths(int fontsize)
   m_baseCell->RecalculateWidthsList(fontsize);
   m_diffCell->RecalculateWidthsList(fontsize);
   m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
-  ResetData();
+  Cell::RecalculateWidths(fontsize);
 }
 
 void DiffCell::RecalculateHeight(int fontsize)
