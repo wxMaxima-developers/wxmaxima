@@ -297,7 +297,6 @@ int Cell::GetMaxCenter()
 
 bool Cell::NeedsRecalculation()
 {
-
   return (m_width < 0) || (m_height < 0) || (m_center < 0) ||
     (m_currentPoint.x < 0) || (m_currentPoint.y < 0) ||
     (m_clientWidth_old != (*m_configuration)->GetClientWidth()) ||

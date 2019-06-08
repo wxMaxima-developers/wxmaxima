@@ -379,6 +379,7 @@ class Cell
    */
   virtual wxRect GetRect(bool all = false);
 
+  //! True, if something that affects the cell size has changed.
   virtual bool NeedsRecalculation();
   
   virtual wxString GetDiffPart();
