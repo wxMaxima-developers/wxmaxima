@@ -5097,6 +5097,11 @@ bool Worksheet::ExportToHTML(wxString file)
     css << wxT("}\n");
   }
 
+  css << wxT("p {\n");
+  css << wxT("  margin-top: 0em;\n");
+  css << wxT("  margin-bottom: 0em;\n");
+  css << wxT("}\n");
+
   if (colorCodeFunction.Length())
   {
     wxColour color(colorCodeFunction);
