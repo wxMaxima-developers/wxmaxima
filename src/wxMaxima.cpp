@@ -907,6 +907,9 @@ bool wxMaxima::StartServer()
 
 bool wxMaxima::StartMaxima(bool force)
 {
+  if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
+    m_xmlInspector->Clear();
+
   // Maxima isn't in lisp mode
   m_inLispMode = false;
 
@@ -1192,8 +1195,6 @@ void wxMaxima::KillMaxima(bool logMessage)
 
     // The following command should close maxima, as well.
     m_client->Close(); m_client = NULL;
-    if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
-      m_xmlInspector->Clear();
   }
 
   // Just to be absolutely sure: Additionally try to kill maxima
@@ -8116,6 +8117,11 @@ void wxMaxima::TriggerEvaluation()
 
   if (m_worksheet->m_evaluationQueue.m_workingGroupChanged)
   {
+    // Clear the monitor that shows the xml representation of the output of the
+    // current maxima command.
+    if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
+      m_xmlInspector->Clear();
+    
     // If the cell's output that we are about to remove contains the currently
     // selected cells we undo the selection.
     if (m_worksheet->GetSelectionStart())
@@ -8152,10 +8158,6 @@ void wxMaxima::TriggerEvaluation()
 
       m_worksheet->m_cellPointers.SetWorkingGroup(tmp);
       tmp->GetPrompt()->SetValue(m_lastPrompt);
-      // Clear the monitor that shows the xml representation of the output of the
-      // current maxima command.
-      if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
-        m_xmlInspector->Clear();
 
       SendMaxima(m_configCommands + text, true);
       m_maximaBusy = true;
