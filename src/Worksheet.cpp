@@ -6466,15 +6466,17 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   // next zip entry is "content.xml", xml of m_tree
 
   zip.PutNextEntry(wxT("content.xml"));
-  output << wxT("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-  output << wxT("\n<!--   Created using wxMaxima ") << wxT(GITVERSION) << wxT("   -->");
-  output << wxT("\n<!--https://wxMaxima-developers.github.io/wxmaxima/-->\n");
+  wxString xmlText;
+
+  xmlText << wxT("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+  xmlText << wxT("\n<!--   Created using wxMaxima ") << wxT(GITVERSION) << wxT("   -->");
+  xmlText << wxT("\n<!--https://wxMaxima-developers.github.io/wxmaxima/-->\n");
 
   // write document
-  output << wxT("\n<wxMaximaDocument version=\"");
-  output << DOCUMENT_VERSION_MAJOR << wxT(".");
-  output << DOCUMENT_VERSION_MINOR << wxT("\" zoom=\"");
-  output << int(100.0 * m_configuration->GetZoomFactor()) << wxT("\"");
+  xmlText << wxT("\n<wxMaximaDocument version=\"");
+  xmlText << DOCUMENT_VERSION_MAJOR << wxT(".");
+  xmlText << DOCUMENT_VERSION_MINOR << wxT("\" zoom=\"");
+  xmlText << int(100.0 * m_configuration->GetZoomFactor()) << wxT("\"");
 
   // **************************************************************************
   // Find out the number of the cell the cursor is at and save this information
@@ -6519,37 +6521,37 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   // If we know where the cursor was we save this piece of information.
   // If not we omit it.
   if (ActiveCellNumber >= 0)
-    output << wxString::Format(wxT(" activecell=\"%li\""), ActiveCellNumber);
+    xmlText << wxString::Format(wxT(" activecell=\"%li\""), ActiveCellNumber);
 
-  output << ">\n";
+  xmlText << ">\n";
 
   // Reset image counter
   m_cellPointers.WXMXResetCounter();
 
-  wxString xmlText;
   if (m_tree)
-    xmlText = m_tree->ListToXML();
-  size_t xmlLen = xmlText.Length();
+    xmlText += m_tree->ListToXML();
 
   // Delete all but one control character from the string: there should be
   // no way for them to enter this string, anyway. But sometimes they still
   // do...
-  for (size_t index = 0; index < xmlLen; index++)
+  for (wxString::iterator it = xmlText.begin(); it != xmlText.end(); ++it)
   {
-    wxChar c = xmlText[index];
-
+    wxChar c = *it;
     if ((c < wxT('\t')) ||
         ((c > wxT('\n')) && (c < wxT(' '))) ||
         (c == wxChar((char) 0x7F))
       )
     {
-      xmlText[index] = wxT(' ');
+      // *it = wxT(' ');
     }
   }
 
-  if (m_tree != NULL)output << xmlText;
-  output << wxT("\n</wxMaximaDocument>");
+  xmlText +=  wxT("\n</wxMaximaDocument>");
 
+  // Prepare reading the files we have stored in memory
+  wxFileSystem *fsystem = new wxFileSystem();
+  fsystem->AddHandler(new wxMemoryFSHandler);
+  fsystem->ChangePathTo(wxT("memory:"), true);
 
   // In wxWidgets 3.1.1 fsystem->FindFirst crashes if we don't have a file
   // in the memory filesystem => Let's create a file just to make sure
@@ -6559,10 +6561,47 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
                              dummyBuf.GetData(),
                              dummyBuf.GetDataLen());
 
+  // Let wxWidgets test if the document can be read again by the XML parser before
+  // the user finds out the hard way.
+  {
+    wxXmlDocument doc;
+    {
+      wxMemoryOutputStream ostream;
+      wxTextOutputStream txtstrm(ostream);
+      txtstrm.WriteString(xmlText);
+      wxMemoryInputStream istream(ostream);
+      doc.Load(istream);
+    }
+
+    // If we fail to load the document we abort the safe process as it will
+    // only destroy data.
+    // But we can still put the erroneous data into the clipboard for debugging purposes.
+    if (!doc.IsOk())
+    {
+      if (wxTheClipboard->Open())
+      {
+        wxDataObjectComposite *data = new wxDataObjectComposite;
+        data->Add(new wxTextDataObject(xmlText));
+        wxTheClipboard->SetData(data);
+        wxLogMessage(_("Save failed. The erroneous XML data has been put on the clipboard in order to allow to debug it."));
+      }
+
+      // Remove all files from our internal filesystem
+      wxString memFsName = fsystem->FindFirst("*", wxFILE);
+      while(memFsName != wxEmptyString)
+      {
+        wxString name = memFsName.Right(memFsName.Length()-7);
+        wxMemoryFSHandler::RemoveFile(name);
+        memFsName = fsystem->FindNext();
+      }
+      wxDELETE(fsystem);
+      return false;
+    }
+  }
+
+  if (m_tree != NULL)output << xmlText;
+
   // Move all files we have stored in memory during saving to zip file
-  wxFileSystem *fsystem = new wxFileSystem();
-  fsystem->AddHandler(new wxMemoryFSHandler);
-  fsystem->ChangePathTo(wxT("memory:"), true);
 
   wxString memFsName = fsystem->FindFirst("*", wxFILE);
   while(memFsName != wxEmptyString)
