@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-09 11:25+0200\n"
-"PO-Revision-Date: 2019-06-07 09:21+0200\n"
+"PO-Revision-Date: 2019-06-09 22:45+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1011,7 +1011,7 @@ msgstr "Interner Fehler: soll den Inhalt einer Zelle ändern und sie löschen."
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5731
 msgid "Bug: HTML output is no valid XML"
-msgstr ""
+msgstr "Interner Fehler: Die HTML-Ausgabe ist kein gültiges XML."
 
 #: /home/gunter/src/wxmaxima/src/Cell.cpp:273
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
@@ -5633,7 +5633,7 @@ msgstr "Dokument speichern als"
 msgid ""
 "Save failed. The erroneous XML data has been put on the clipboard in order "
 "to allow to debug it."
-msgstr ""
+msgstr "Fehler beim Speichern. Die fehlerhaften XML-Daten wurden für das Debugging in die Zwischenablage kopiert."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:374
 msgid ""
@@ -7584,6 +7584,8 @@ msgid ""
 "_%d.gif\"  alt=\"Animated Diagram\" loading=\"lazy\" style=\"max-width:90%%;"
 "\" />\n"
 msgstr ""
+"_%d.gif\"  alt=\"Animation\" loading=\"lazy\" style=\"max-width:90%%;"
+"\" />\n"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5653
 #, c-format
@@ -7591,6 +7593,8 @@ msgid ""
 "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" loading=\"lazy"
 "\" />"
 msgstr ""
+"_%d.gif\" alt=\"Animation\" style=\"max-width:90%%;\" loading=\"lazy"
+"\" />"
 
 #: /home/gunter/src/wxmaxima/src/ListSortWiz.cpp:46
 msgid "a>b"
