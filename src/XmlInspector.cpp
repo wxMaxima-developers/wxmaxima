@@ -169,6 +169,12 @@ wxString XmlInspector::IndentString(int level)
 
 void XmlInspector::Add_ToMaxima(wxString text)
 {
+  if(m_toMaxima != wxEmptyString)
+  {
+    m_toMaxima += wxT("\n\x2015\n");
+    if(m_fromMaxima != wxEmptyString)
+      m_fromMaxima += wxT("\n\x2015\n");
+  }
   m_toMaxima += text;
   m_updateNeeded = true;
 }
