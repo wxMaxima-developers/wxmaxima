@@ -4874,7 +4874,7 @@ bool Worksheet::ExportToHTML(wxString file)
 
   m_configuration->ClipToDrawRegion(false);
   output << wxT("<!DOCTYPE html>\n");
-  output << wxT("<html>\n");
+  output << wxT("<html lang=\"\">\n"); // We do not know the language of the exported document.
   output << wxT(" <head>\n");
   output << wxT("  <title>") + filename + wxT("</title>\n");
   output << wxT("  <meta name=\"generator\" content=\"wxMaxima\"/>\n");
@@ -4894,8 +4894,9 @@ bool Worksheet::ExportToHTML(wxString file)
     output << wxT("    TeX: {TagSide: \"left\"}\n");
     output << wxT("  })\n");
     output << wxT("</script>\n");
-    output << wxT("<script src=\"") + m_configuration->MathJaXURL() + wxT("\" async=\"true\">\n");
-    output << wxT("<!-- A comment that hinders wxWidgets from optimizing this tag too much -->\n");
+    output << wxT("<script src=\"") + m_configuration->MathJaXURL() + wxT("\" async=\"async\">\n");
+    // prevent optimizing <srcipt src="..."><script> to <script src=..."/>
+    output << wxT("  // A comment that hinders wxWidgets from optimizing this tag too much.\n");
     output << wxT("</script>\n");
   }
 
@@ -5367,7 +5368,7 @@ bool Worksheet::ExportToHTML(wxString file)
     output << wxT("</noscript>");
 
     // Tell mathJax about the \abs{} operator we define for LaTeX.
-    output << wxT("<p hidden = \"true\">\\(");
+    output << wxT("<p hidden = \"hidden\">\\(");
     output << wxT("      \\DeclareMathOperator{\\abs}{abs}\n");
     output << wxT("      \\newcommand{\\ensuremath}[1]{\\mbox{$#1$}}\n");
     output << wxT("\\)</p>");
