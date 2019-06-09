@@ -6523,6 +6523,17 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   if (ActiveCellNumber >= 0)
     xmlText << wxString::Format(wxT(" activecell=\"%li\""), ActiveCellNumber);
 
+
+  // Save the variables list for the "variables" sidepane.
+  wxArrayString variables = m_variablesPane->GetVarnames();
+  if(variables.GetCount() > 1)
+  {
+    long varcount = variables.GetCount() - 1;
+    xmlText += wxString::Format(" variables_num=\"%li\"", varcount);
+    for(long i = 0; i<variables.GetCount(); i++)
+      xmlText += wxString::Format(" variables_%li=\"%s\"", i, Cell::XMLescape(variables[i]));
+  }
+  
   xmlText << ">\n";
 
   // Reset image counter
@@ -6599,10 +6610,11 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
     }
   }
 
+  // wxWidgets could pretty-print the XML document now. But as no-one will
+  // look at it, anyway, there might be no good reason to do so.
   if (m_tree != NULL)output << xmlText;
 
   // Move all files we have stored in memory during saving to zip file
-
   wxString memFsName = fsystem->FindFirst("*", wxFILE);
   while(memFsName != wxEmptyString)
   {

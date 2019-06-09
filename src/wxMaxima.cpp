@@ -1146,8 +1146,8 @@ void wxMaxima::BecomeLogTarget()
 
 void wxMaxima::KillMaxima(bool logMessage)
 {
-  m_variablesPane->ResetValues();
-  m_varNamesToQuery = m_variablesPane->GetEscapedVarnames();
+  m_worksheet->m_variablesPane->ResetValues();
+  m_varNamesToQuery = m_worksheet->m_variablesPane->GetEscapedVarnames();
   if((m_pid > 0) && (m_client == NULL))
     return;
 
@@ -1717,10 +1717,10 @@ void wxMaxima::ReadVariables(wxString &data)
               m_recentPackages.AddDocument(value);
               wxLogMessage(wxString::Format(_("Maxima has loaded the file %s."),value));
             }
-            m_variablesPane->VariableValue(name, value);
+            m_worksheet->m_variablesPane->VariableValue(name, value);
           }
           else
-            m_variablesPane->VariableUndefined(name);
+            m_worksheet->m_variablesPane->VariableUndefined(name);
 
           var = var->GetNext();
         }
@@ -1741,8 +1741,8 @@ void wxMaxima::ReadVariables(wxString &data)
        (!m_maximaBusy))
     {
       if(!QueryVariableValue())
-        m_variablesPane->AutoSize();
-      m_variablesPane->GetParent()->Layout();
+        m_worksheet->m_variablesPane->AutoSize();
+      m_worksheet->m_variablesPane->GetParent()->Layout();
     }
     else
       TriggerEvaluation();
@@ -2493,7 +2493,25 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
   if (!ActiveCellNumber_String.ToLong(&ActiveCellNumber))
     ActiveCellNumber = -1;
 
-  // read zoom factor
+  wxString VariablesNumberString = xmldoc.GetRoot()->GetAttribute(wxT("variables_num"), wxT("0"));
+  long VariablesNumber;
+  if (!VariablesNumberString.ToLong(&VariablesNumber))
+    VariablesNumber = 0;
+  std::cerr << VariablesNumberString << "\n";
+  if(VariablesNumber > 0)
+  {
+    m_worksheet->m_variablesPane->Clear();
+    
+    for(long i=0; i<VariablesNumber; i++)
+    {
+      wxString variable = xmldoc.GetRoot()->GetAttribute(
+        wxString::Format("variables_%li", i));
+      std::cerr << "Var=" << variable << "\n";
+      m_worksheet->m_variablesPane->AddWatch(variable);
+    }
+  }
+  
+  // read the zoom factor
   wxString doczoom = xmldoc.GetRoot()->GetAttribute(wxT("zoom"), wxT("100"));
 
   // Read the worksheet's contents.
@@ -7733,7 +7751,7 @@ void wxMaxima::EditInputMenu(wxCommandEvent &WXUNUSED(event))
 
 void wxMaxima::VarReadEvent(wxCommandEvent &WXUNUSED(event))
 {
-  m_varNamesToQuery = m_variablesPane->GetEscapedVarnames();
+  m_varNamesToQuery = m_worksheet->m_variablesPane->GetEscapedVarnames();
   if((m_worksheet->m_evaluationQueue.Empty()) && (!m_maximaBusy))
   {
     if(!m_worksheet->QuestionPending())
@@ -8142,7 +8160,7 @@ void wxMaxima::TriggerEvaluation()
       SendMaxima(m_configCommands + text, true);
       m_maximaBusy = true;
       // Now that we have sent a command we need to query all variable values anew
-      m_varNamesToQuery = m_variablesPane->GetEscapedVarnames();
+      m_varNamesToQuery = m_worksheet->m_variablesPane->GetEscapedVarnames();
       m_configCommands = wxEmptyString;
 
       EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(),
@@ -8242,7 +8260,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
         wxString selectionString = m_worksheet->GetActiveCell()->GetSelectionString();
         if(selectionString.IsEmpty())
           selectionString = m_worksheet->GetActiveCell()->GetWordUnderCaret();
-        m_variablesPane->AddWatchCode(selectionString);
+        m_worksheet->m_variablesPane->AddWatchCode(selectionString);
         wxMaximaFrame::ShowPane(menu_pane_variables,true);
       }
       return;
@@ -8257,7 +8275,7 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
           selectionString = selectionString.Right(selectionString.Length()-1);
         if(selectionString.EndsWith(")"))
           selectionString = selectionString.Left(selectionString.Length()-1);
-        m_variablesPane->AddWatchCode(selectionString);
+        m_worksheet->m_variablesPane->AddWatchCode(selectionString);
         wxMaximaFrame::ShowPane(menu_pane_variables,true);
       }
       return;

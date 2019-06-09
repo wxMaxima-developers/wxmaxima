@@ -286,6 +286,17 @@ wxArrayString Variablespane::GetEscapedVarnames()
   return retVal;
 }
 
+wxArrayString Variablespane::GetVarnames()
+{
+  wxArrayString retVal;
+  for(int i = 0; i < GetNumberRows(); i++)
+  {
+    wxString var = GetCellValue(i,0);
+    retVal.Add(var);
+  }
+  return retVal;
+}
+
 wxString Variablespane::InvertCase(wxString var)
 {
   wxString retval;
@@ -307,7 +318,6 @@ wxString Variablespane::InvertCase(wxString var)
 
 void Variablespane::AddWatchCode(wxString code)
 {
-  BeginBatch();
   wxString unescapedCode;
   for (wxString::iterator it = code.begin(); it != code.end(); ++it)
   {
@@ -317,10 +327,16 @@ void Variablespane::AddWatchCode(wxString code)
     {
       it++;
       if(it != code.end())
-        unescapedCode+=*it;
+        unescapedCode += *it;
     }
   }
-  SetCellValue(GetNumberRows()-1,0,unescapedCode);
+  AddWatch(unescapedCode);
+}
+
+void Variablespane::AddWatch(wxString watch)
+{
+  BeginBatch();
+  SetCellValue(GetNumberRows()-1,0,watch);
   wxGridEvent evt(wxID_ANY,wxEVT_GRID_CELL_CHANGED,this,GetNumberRows()-1,0);
   OnTextChange(evt);
   EndBatch();

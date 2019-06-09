@@ -49,7 +49,6 @@ surrounding the worksheet.
 #include "XmlInspector.h"
 #include "StatusBar.h"
 #include "LogPane.h"
-#include "VariablesPane.h"
 #include <list>
 
 
@@ -743,8 +742,6 @@ protected:
   XmlInspector *m_xmlInspector;
   //! true=force an update of the status bar at the next call of StatusMaximaBusy()
   bool m_forceStatusbarUpdate;
-  //! The panel the log and debug messages will appear on
-  Variablespane *m_variablesPane;
   //! The panel the log and debug messages will appear on
   LogPane *m_logPane;
   //! The worksheet itself

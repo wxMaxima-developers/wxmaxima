@@ -36,6 +36,7 @@
 #include <wx/fdrepdlg.h>
 #include <list>
 
+#include "VariablesPane.h"
 #include "Notification.h"
 #include "Cell.h"
 #include "EditorCell.h"
@@ -1470,6 +1471,9 @@ public:
     use the last cell maxima was known to work on.
   */
   GroupCell *GetWorkingGroup(bool resortToLast = false);
+
+  //! The panel the user can display variable contents in
+  Variablespane *m_variablesPane;
 
 #if wxUSE_ACCESSIBILITY
   class AccessibilityInfo: public wxAccessible

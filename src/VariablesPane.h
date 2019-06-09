@@ -56,9 +56,13 @@ public:
   void InsertMenu(wxCommandEvent &event);
   void OnKey(wxKeyEvent &event);
   void OnChar(wxKeyEvent &event);
+  //! Add a variable whose name contains all the escapes maxima needs to the variables list
   void AddWatchCode(wxString code);
+  //! Add a variable without escapes to the list.
+  void AddWatch(wxString watch);
   bool IsValidVariable(wxString var);
   wxArrayString GetEscapedVarnames();
+  wxArrayString GetVarnames();
   void ResetValues();
   void Clear();
   wxString EscapeVarname(wxString var);

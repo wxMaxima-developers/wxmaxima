@@ -266,9 +266,9 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
                             Left());
 
   wxPanel *variables = new wxPanel(this,wxID_ANY);
-  m_variablesPane = new Variablespane(variables,wxID_ANY);
+  m_worksheet->m_variablesPane = new Variablespane(variables,wxID_ANY);
   wxSizer *variablesSizer = new wxBoxSizer(wxVERTICAL);
-  variablesSizer->Add(m_variablesPane,wxSizerFlags().Expand());
+  variablesSizer->Add(m_worksheet->m_variablesPane,wxSizerFlags().Expand());
   variables->SetSizerAndFit(variablesSizer);
   m_manager.AddPane(variables,
                     wxAuiPaneInfo().Name(wxT("variables")).
