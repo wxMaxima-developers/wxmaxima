@@ -1814,12 +1814,13 @@ void wxMaxima::ReadPrompt(wxString &data)
   {
     // Maxima displayed a new main prompt => We don't have a question
     m_worksheet->QuestionAnswered();
+    // And we can remove one command from the evaluation queue.
+    m_worksheet->m_evaluationQueue.RemoveFirst();
 
     //m_lastPrompt = o.Mid(1,o.Length()-1);
     //m_lastPrompt.Replace(wxT(")"), wxT(":"), false);
     m_lastPrompt = o;
     // remove the event maxima has just processed from the evaluation queue
-    m_worksheet->m_evaluationQueue.RemoveFirst();
     // if we remove a command from the evaluation queue the next output line will be the
     // first from the next command.
     m_outputCellsFromCurrentCommand = 0;
@@ -7793,7 +7794,6 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event))
         m_worksheet->UpdateAnswer(answer);
       SendMaxima(answer, true);
       StatusMaximaBusy(calculating);
-      m_worksheet->QuestionAnswered();
     }
     else
     { // normally just add to queue (and mark the cell as no more containing an error message)
@@ -8070,7 +8070,11 @@ void wxMaxima::TriggerEvaluation()
   // If evaluation is already running we don't have anything to do
   if(m_maximaBusy)
     return;
-  
+
+  // While we wait for an answer we cannot send new commands.
+  if (m_worksheet->QuestionPending())
+    return;
+
   // If we aren't connected yet this function will be triggered as soon as maxima
   // connects to wxMaxima
   if (!m_isConnected)
@@ -8203,19 +8207,17 @@ void wxMaxima::TriggerEvaluation()
       m_worksheet->RequestRedraw();
       if(!AbortOnError())
       {
-        m_worksheet->m_evaluationQueue.RemoveFirst();
         m_outputCellsFromCurrentCommand = 0;
         TriggerEvaluation();
       }
       if((tmp)&&(tmp->GetEditable()))
         m_worksheet->SetActiveCell(tmp->GetEditable());
-      m_worksheet->m_evaluationQueue.RemoveFirst();
     }
   }
   else
   {
-    m_worksheet->m_evaluationQueue.RemoveFirst();
     m_outputCellsFromCurrentCommand = 0;
+    m_worksheet->m_evaluationQueue.RemoveFirst();
     TriggerEvaluation();
   }
   m_worksheet->m_answersExhausted = m_worksheet->m_evaluationQueue.AnswersEmpty();
