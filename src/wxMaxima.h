@@ -560,6 +560,10 @@ protected:
    */
   void ResetTitle(bool saved, bool force = false);
 
+  /*! Makes this window the debug log target of all windows from this maxima process
+
+    Only necessary on the mac where the same process creates loads of windows.
+   */
   void BecomeLogTarget();
   
   void FirstOutput();
