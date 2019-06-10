@@ -1736,22 +1736,19 @@ void wxMaxima::ReadVariables(wxString &data)
       
     // Remove the symbols from the data string
     data = data.Right(data.Length()-end-m_variablesSuffix.Length());
-  // If maxima currently isn't busy we can ask for the value of a variable
-    StatusMaximaBusy(waiting);
-    if((m_worksheet->m_evaluationQueue.Empty()) && (!m_worksheet->QuestionPending()) &&
-       (!m_maximaBusy))
-    {
-      if(!QueryVariableValue())
-        m_worksheet->m_variablesPane->AutoSize();
-      m_worksheet->m_variablesPane->GetParent()->Layout();
-    }
-    else
-      TriggerEvaluation();
+    TriggerEvaluation();
+    QueryVariableValue();
   }
 }
 
 bool wxMaxima::QueryVariableValue()
 {
+  if((!m_worksheet->m_evaluationQueue.Empty()) || (m_maximaBusy))
+    return false;
+
+  if(!m_worksheet->QuestionPending())
+    return false;
+  
   if(m_varNamesToQuery.GetCount() > 0)
   {
     SendMaxima(wxT(":lisp-quiet (wx-query-variable \"") +
@@ -1760,7 +1757,11 @@ bool wxMaxima::QueryVariableValue()
     return true;
   }
   else
+  {
+    m_worksheet->m_variablesPane->AutoSize();
+    m_worksheet->m_variablesPane->GetParent()->Layout();
     return false;
+  }
 }
 
 /***
@@ -1847,8 +1848,7 @@ void wxMaxima::ReadPrompt(wxString &data)
       m_worksheet->m_evaluationQueue.RemoveFirst();
       m_worksheet->RequestRedraw();
       // Now that maxima is idle we can ask for the contents of its variables
-      if(!m_worksheet->QuestionPending())
-        QueryVariableValue();
+      QueryVariableValue();
     }
     else
     { // we don't have an empty queue
@@ -7751,11 +7751,7 @@ void wxMaxima::EditInputMenu(wxCommandEvent &WXUNUSED(event))
 void wxMaxima::VarReadEvent(wxCommandEvent &WXUNUSED(event))
 {
   m_varNamesToQuery = m_worksheet->m_variablesPane->GetEscapedVarnames();
-  if((m_worksheet->m_evaluationQueue.Empty()) && (!m_maximaBusy))
-  {
-    if(!m_worksheet->QuestionPending())
-      QueryVariableValue();
-  }
+  QueryVariableValue();
 }
 
 //! Handle the evaluation event
@@ -7794,6 +7790,8 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event))
         m_worksheet->UpdateAnswer(answer);
       SendMaxima(answer, true);
       StatusMaximaBusy(calculating);
+      m_worksheet->SetHCaret(cell);
+      m_worksheet->ScrollToCaret();
     }
     else
     { // normally just add to queue (and mark the cell as no more containing an error message)
