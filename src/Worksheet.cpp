@@ -2890,9 +2890,9 @@ void Worksheet::UpdateAnswer(wxString txt)
 
 void Worksheet::OpenQuestionCaret(wxString txt)
 {
-  wxASSERT_MSG(GetWorkingGroup() != NULL, _("Bug: Got a question but no cell to answer it in"));
-
   GroupCell *group = GetWorkingGroup(true);
+  wxASSERT_MSG(group != NULL, _("Bug: Got a question but no cell to answer it in"));
+
   if(group == NULL)
     return;
 

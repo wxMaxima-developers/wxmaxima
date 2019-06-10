@@ -1794,25 +1794,24 @@ void wxMaxima::ReadPrompt(wxString &data)
   // If we got a prompt our connection to maxima was successful.
   if(m_unsuccessfulConnectionAttempts > 0)
     m_unsuccessfulConnectionAttempts--;
-
+  o.Trim(true);
+  o.Trim(false);
   // Input prompts have a length > 0 and end in a number followed by a ")".
   // They also begin with a "(". Questions (hopefully)
   // don't do that; Lisp prompts look like question prompts.
   if (
-          (
-                  (o.Length() > 3) &&
-                  (o[o.Length() - 3] >= (wxT('0'))) &&
-                  (o[o.Length() - 3] <= (wxT('9'))) &&
-                  (o[o.Length() - 2] == (wxT(')'))) &&
-                  (o[0] == (wxT('(')))
-          ) ||
-          m_inLispMode ||
-          (o.StartsWith(wxT("MAXIMA>"))) ||
-          (o.StartsWith(wxT("\nMAXIMA>")))
-          )
+    (
+      (o.Length() > 2) &&
+      o.StartsWith("(%") &&
+      o.EndsWith(")") &&
+      (o[o.Length()-2] >= (wxT('0'))) &&
+      (o[o.Length()-2] <= (wxT('9')))
+      ) ||
+    m_inLispMode ||
+    (o.StartsWith(wxT("MAXIMA>"))) ||
+    (o.StartsWith(wxT("\nMAXIMA>")))
+    )
   {
-    o.Trim(true);
-    o.Trim(false);
     // Maxima displayed a new main prompt => We don't have a question
     m_worksheet->QuestionAnswered();
 
