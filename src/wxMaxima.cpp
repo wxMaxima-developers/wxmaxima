@@ -2498,7 +2498,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
   long VariablesNumber;
   if (!VariablesNumberString.ToLong(&VariablesNumber))
     VariablesNumber = 0;
-  std::cerr << VariablesNumberString << "\n";
   if(VariablesNumber > 0)
   {
     m_worksheet->m_variablesPane->Clear();
@@ -2507,7 +2506,6 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
     {
       wxString variable = xmldoc.GetRoot()->GetAttribute(
         wxString::Format("variables_%li", i));
-      std::cerr << "Var=" << variable << "\n";
       m_worksheet->m_variablesPane->AddWatch(variable);
     }
   }
