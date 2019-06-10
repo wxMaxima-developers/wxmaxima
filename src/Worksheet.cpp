@@ -3302,8 +3302,16 @@ bool Worksheet::GCContainsCurrentQuestion(GroupCell *cell)
 
 void Worksheet::QuestionAnswered()
 {
-  if (m_questionPrompt)
+  if((m_cellPointers.m_answerCell != NULL) || m_questionPrompt)
+  {
     SetActiveCell(NULL);
+    GroupCell *wg = GetWorkingGroup(true);
+    if(wg != NULL)
+    {
+      SetHCaret(wg);
+      ScrollToCaret();
+    }
+  }
   m_cellPointers.m_answerCell = NULL;
   m_questionPrompt = false;
 }
