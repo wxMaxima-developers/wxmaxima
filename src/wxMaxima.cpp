@@ -1743,10 +1743,13 @@ void wxMaxima::ReadVariables(wxString &data)
 
 bool wxMaxima::QueryVariableValue()
 {
-  if((!m_worksheet->m_evaluationQueue.Empty()) || (m_maximaBusy))
+  if(!m_worksheet->m_evaluationQueue.Empty())
     return false;
 
-  if(!m_worksheet->QuestionPending())
+  if(m_maximaBusy)
+    return false;
+  
+  if(m_worksheet->QuestionPending())
     return false;
   
   if(m_varNamesToQuery.GetCount() > 0)
