@@ -3113,6 +3113,7 @@ wxString EditorCell::SelectWordUnderCaret(bool WXUNUSED(selectParens), bool toRi
     if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '_') &&
        !((*it == '\"') && includeDoubleQuotes))
     {
+      // !!toRight is 0, if toRight is false or guaranteed to be 1, if toRight is true
       if(pos >= m_positionOfCaret + !!toRight)
         break;
       else
