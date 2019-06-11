@@ -186,7 +186,7 @@ void Variablespane::OnRightClick(wxGridEvent &event)
                       _("Remove"), wxEmptyString, wxITEM_NORMAL);
   }
   
-  if(GetNumberRows()>1)
+  if(GetNumberRows()>2)
   {
     popupMenu->Append(varID_clear,
                       _("Remove all"), wxEmptyString, wxITEM_NORMAL);
