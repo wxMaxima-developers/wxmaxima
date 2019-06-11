@@ -26,7 +26,8 @@
 #include <wx/grid.h>
 #include <wx/arrstr.h>
 
-/*! \file The file that contains the "variables" sidepane
+/*! \file 
+The file that contains the "variables" sidepane
 
 This file contains the class Variablespane.
 */
