@@ -3180,6 +3180,7 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight, bool 
           {
             break;
           }
+          else left--;
         }
         else
           break;
