@@ -50,6 +50,7 @@ public:
     varID_gradefs,
     varID_prop,
     varID_let_rule_packages,
+    varID_add_all,
     varID_delete_row,
     varID_clear
   };

@@ -1823,6 +1823,15 @@
 			(cdr fun))))
       (format nil "<function>~a</function><template>~a(~{&lt;~a&gt;~^, ~})</template>" fun-name fun-name args)))
 
+  ;; Add the variable val to the watch list
+  (defun wx-add-variable-name (val)
+    (format t "<variable>~a</variable>~%" (symbol-to-xml val)))
+  ;; Add all currently defined variables to the watch list
+  (defun wx-add-all-variables ()
+    (format t "<watch_variables_add>~%")
+    (mapcar #'wx-add-variable-name (cdr $values))
+    (format t "</watch_variables_add>~%"))
+
   (defun print_value (val)
     (format nil "<value>~a</value>" (symbol-to-xml val)))
 

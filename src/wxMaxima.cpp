@@ -211,6 +211,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_symbolsSuffix = wxT("</wxxml-symbols>");
   m_variablesPrefix = wxT("<variables>");
   m_variablesSuffix = wxT("</variables>");
+  m_addVariablesPrefix = wxT("<watch_variables_add>");
+  m_addVariablesSuffix = wxT("</watch_variables_add>");
   m_firstPrompt = wxT("(%i1) ");
 
   m_client = NULL;
@@ -1372,6 +1374,8 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
     return 0;
   if(data.StartsWith(m_variablesPrefix))
     return 0;
+  if(data.StartsWith(m_addVariablesPrefix))
+    return 0;
   if(data.StartsWith(m_suppressOutputPrefix))
     return 0;
 
@@ -1382,6 +1386,7 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
   int symbolspos = data.Find(m_symbolsPrefix);
   int suppressOutputPos = data.Find(m_suppressOutputPrefix);
   int variablespos = data.Find(m_variablesPrefix);
+  int addvariablespos = data.Find(m_addVariablesPrefix);
 
   int tagPos = data.Length();
   if ((mthpos != wxNOT_FOUND) && (mthpos < tagPos))
@@ -1398,6 +1403,8 @@ int wxMaxima::GetMiscTextEnd(const wxString &data)
     tagPos = symbolspos;
   if ((tagPos == wxNOT_FOUND) || ((variablespos != wxNOT_FOUND) && (variablespos < tagPos)))
     tagPos = variablespos;
+  if ((tagPos == wxNOT_FOUND) || ((addvariablespos != wxNOT_FOUND) && (addvariablespos < tagPos)))
+    tagPos = addvariablespos;
   if ((tagPos == wxNOT_FOUND) || ((suppressOutputPos != wxNOT_FOUND) && (suppressOutputPos < tagPos)))
     tagPos = suppressOutputPos;
   return tagPos;
@@ -1738,6 +1745,42 @@ void wxMaxima::ReadVariables(wxString &data)
     data = data.Right(data.Length()-end-m_variablesSuffix.Length());
     TriggerEvaluation();
     QueryVariableValue();
+  }
+}
+
+void wxMaxima::ReadAddVariables(wxString &data)
+{
+  if (!data.StartsWith(m_addVariablesPrefix))
+    return;
+
+  int end = FindTagEnd(data, m_addVariablesSuffix);
+
+  if (end != wxNOT_FOUND)
+  {
+    wxLogMessage(_("Maxima sends us a new set of variables for the watch list."));
+    wxXmlDocument xmldoc;
+    wxString xml = data.Left( end + m_addVariablesSuffix.Length());
+    wxStringInputStream xmlStream(xml);
+    xmldoc.Load(xmlStream, wxT("UTF-8"));
+    wxXmlNode *node = xmldoc.GetRoot();
+    if(node != NULL)
+    {
+      wxXmlNode *var = node->GetChildren();
+      while (var != NULL)
+      {
+        wxString name;
+        {
+          if(var->GetName() == wxT("variable"))
+          {
+            wxXmlNode *valnode = var->GetChildren();
+            if(valnode)
+              m_worksheet->m_variablesPane->AddWatch(valnode->GetContent());
+          }
+        }
+        var = var->GetNext();
+      }
+    }
+    data = data.Right(data.Length()-end-m_addVariablesSuffix.Length());
   }
 }
 
@@ -3085,7 +3128,10 @@ void wxMaxima::InterpretDataFromMaxima()
       
       // Let's see if maxima informs us about the values of variables
       ReadVariables(m_currentOutput);
-      
+
+      // Let's see if maxima tells us to add new symbols to the watchlist
+      ReadAddVariables(m_currentOutput);
+
       // Handle the XML tag that contains Status bar updates
       ReadStatusBar(m_currentOutput);
       
@@ -7751,6 +7797,16 @@ void wxMaxima::EditInputMenu(wxCommandEvent &WXUNUSED(event))
   m_worksheet->SetActiveCell(tmp);
 }
 
+void wxMaxima::VarAddAllEvent(wxCommandEvent &WXUNUSED(event))
+{
+  wxString command = "\n:lisp-quiet (wx-add-all-variables)\n";
+  if((!m_worksheet->m_evaluationQueue.Empty()) ||
+     (m_maximaBusy) ||
+     (m_worksheet->QuestionPending()))
+    m_configCommands += command;
+  else SendMaxima(command);
+}
+
 void wxMaxima::VarReadEvent(wxCommandEvent &WXUNUSED(event))
 {
   m_varNamesToQuery = m_worksheet->m_variablesPane->GetEscapedVarnames();
@@ -8098,6 +8154,9 @@ void wxMaxima::TriggerEvaluation()
     if((m_worksheet->m_configuration->NotifyIfIdle()) && (m_worksheet->GetTree() != NULL))
       m_worksheet->SetNotification(_("Maxima has finished calculating."));
 
+    if(m_configCommands != wxEmptyString)
+      SendMaxima(m_configCommands);
+    m_configCommands = wxEmptyString;
     return; //empty queue
   }
 
@@ -9093,6 +9152,7 @@ EVT_UPDATE_UI(menu_show_toolbar, wxMaxima::UpdateMenus)
                 EVT_MENU(Worksheet::popid_edit, wxMaxima::EditInputMenu)
                 EVT_MENU(menu_evaluate, wxMaxima::EvaluateEvent)
                 EVT_MENU(Variablespane::varID_newVar, wxMaxima::VarReadEvent)
+                EVT_MENU(Variablespane::varID_add_all, wxMaxima::VarAddAllEvent)
                 EVT_MENU(menu_add_comment, wxMaxima::InsertMenu)
                 EVT_MENU(menu_add_section, wxMaxima::InsertMenu)
                 EVT_MENU(menu_add_subsection, wxMaxima::InsertMenu)

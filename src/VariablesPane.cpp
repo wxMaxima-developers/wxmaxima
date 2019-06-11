@@ -124,6 +124,12 @@ void Variablespane::InsertMenu(wxCommandEvent &event)
   case varID_prop:varname="props";break;
   case varID_let_rule_packages:varname="let_rule_packages";break;
   case varID_clear:Clear();break;
+  case varID_add_all:
+  {
+    wxMenuEvent *VarAddEvent = new wxMenuEvent(wxEVT_MENU, varID_add_all);
+    GetParent()->GetParent()->GetEventHandler()->QueueEvent(VarAddEvent);
+    break;
+  }
   case varID_delete_row:
     if((m_rightClickRow>=0)&&(m_rightClickRow<GetNumberRows()))
     {
@@ -173,8 +179,7 @@ void Variablespane::OnRightClick(wxGridEvent &event)
   if(m_vars["gradefs"] != 1)
     popupMenu->Append(varID_gradefs,
                       _("List of user-defined let rule packages"), wxEmptyString, wxITEM_NORMAL);
-  if ((popupMenu->GetMenuItemCount() > 0) && (GetNumberRows() > 1))
-    popupMenu->AppendSeparator();    
+  popupMenu->AppendSeparator();    
   if(GetGridCursorRow()>=0)
   {
     popupMenu->Append(varID_delete_row,
@@ -186,6 +191,8 @@ void Variablespane::OnRightClick(wxGridEvent &event)
     popupMenu->Append(varID_clear,
                       _("Remove all"), wxEmptyString, wxITEM_NORMAL);
   }
+  popupMenu->Append(varID_add_all,
+                    _("Add all"), wxEmptyString, wxITEM_NORMAL);
 
   if (popupMenu->GetMenuItemCount() > 0)
     PopupMenu( popupMenu);

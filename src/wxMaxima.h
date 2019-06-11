@@ -394,6 +394,8 @@ protected:
   void EditInputMenu(wxCommandEvent &event);
   //! Trigger reading all variables from Maxima that are shown in the Variables sidebar
   void VarReadEvent(wxCommandEvent &event);
+  //! Trigger adding all variables to the variables sidebar
+  void VarAddAllEvent(wxCommandEvent &event);
   void EvaluateEvent(wxCommandEvent &event);       //
   void InsertMenu(wxCommandEvent &event);          //
   void PrintMenu(wxCommandEvent &event);
@@ -507,9 +509,13 @@ protected:
   //! Read (and discard) suppressed output
   void ReadSuppressedOutput(wxString &data);
 
-    /*! Reads the variable values maxima advertises to us
+  /*! Reads the variable values maxima advertises to us
    */
   void ReadVariables(wxString &data);
+  
+  /*! Reads the "add variable to watch list" tag maxima can send us
+   */
+  void ReadAddVariables(wxString &data);
 
 #ifndef __WXMSW__
 
@@ -642,6 +648,10 @@ protected:
   wxString m_variablesPrefix;
   //! The marker for the end of a variables section
   wxString m_variablesSuffix;
+  //! The marker for the start of a "add variables" section
+  wxString m_addVariablesPrefix;
+  //! The marker for the end of a "add variables" section
+  wxString m_addVariablesSuffix;
   //! The marker for the start of a list of autocompletion templates
   wxString m_symbolsPrefix;
   //! The marker for the end of a list of autocompletion templates
