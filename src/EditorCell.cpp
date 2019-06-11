@@ -3091,7 +3091,7 @@ wxString EditorCell::GetWordUnderCaret()
  * Returns the selected string if selected a word successfully - used for F1 help and
  * MathCtrl::Autocomplete.
  */
-wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight, bool includeDoubleQuotes)
+wxString EditorCell::SelectWordUnderCaret(bool WXUNUSED(selectParens), bool toRight, bool includeDoubleQuotes)
 {
   if(m_positionOfCaret < 0)
     return wxEmptyString;
@@ -3110,12 +3110,13 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight, bool 
       }
       continue;
     }        
-    if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '_'))
+    if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '_') &&
+       !((*it == '\"') && includeDoubleQuotes))
     {
       if(pos >= m_positionOfCaret + !!toRight)
         break;
       else
-        start = pos + 1;
+        start = pos + 1;   
     }
     pos++;   
   }
