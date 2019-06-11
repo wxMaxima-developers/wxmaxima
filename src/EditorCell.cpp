@@ -3058,16 +3058,6 @@ wxString EditorCell::GetWordUnderCaret()
   long pos = 0;
   for (wxString::iterator it = m_text.begin(); it != m_text.end(); ++it)
   {
-    if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_'))
-    {
-      if(pos >= start)
-        return retval;
-      else
-        retval = wxEmptyString;
-    }
-    else
-      retval += *it;
-
     if(*it == '\\')
     {
       *it++;
@@ -3077,6 +3067,17 @@ wxString EditorCell::GetWordUnderCaret()
         pos++;   
       }
     }        
+
+    if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '&'))
+    {
+      if(pos >= start)
+        return retval;
+      else
+        retval = wxEmptyString;
+    }
+    else
+      retval += *it;
+
     pos++;   
   }
   return retval;
@@ -3094,131 +3095,39 @@ wxString EditorCell::SelectWordUnderCaret(bool selectParens, bool toRight, bool 
 {
   if(m_positionOfCaret < 0)
     return wxEmptyString;
-
-  // if((unsigned long)m_positionOfCaret < m_text.Length())
-  // {
-  //   if(m_text[m_positionOfCaret] == wxT('\"'))
-  //     m_positionOfCaret--;
-  // }
-
-  // if(m_positionOfCaret < 0)
-  //   return wxEmptyString;
-
-  if (selectParens && (m_paren1 != -1) && (m_paren2 != -1))
+  
+  long start = 0;
+  long pos = 0;
+  for (wxString::iterator it = m_text.begin(); it != m_text.end(); ++it)
   {
-    SetSelection(wxMin(m_paren1, m_paren2) + 1, wxMax(m_paren1, m_paren2));
-    m_positionOfCaret = m_selectionEnd;
-    return wxT("%");
-  }
-
-  long right = m_positionOfCaret;
-  if (toRight)
-  {
-    while (right < (signed) m_text.length())
+    if(*it == '\\')
     {
-      wxChar rightChar = m_text.GetChar(right);
-      // A dot inside a number is part of a word.
-      if (rightChar == wxT('.'))
+      pos++;
+      if(it != m_text.end())
       {
-        if (
-                ((right > 0) && (IsNum(m_text.GetChar(right - 1)))) ||
-                ((right < (signed) m_text.length() - 1) && (IsNum(m_text.GetChar(right + 1))))
-                )
-        {
-          right++;
-          continue;
-        }
+        *it++;
+        pos++;
       }
-      // An escaped non-alphanumeric character is part of a word.
-      if (rightChar == wxT('\\'))
-      {
-        right += 2;
-        if (right >= (signed) m_text.length())
-        {
-          right = (signed) m_text.length() - 1;
-          break;
-        }
-      }
-      if (!IsAlphaNum(rightChar) &&
-          !(includeDoubleQuotes && (rightChar == wxT('\"'))))
+      continue;
+    }        
+    if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '_'))
+    {
+      if(pos >= m_positionOfCaret + !!toRight)
         break;
-      right++;
-    }
-  }
-  else
-  {
-    // The editor automatically adds a closing quote which prevents auto-
-    // completing a partial filename if we don't add it to the autocompletion text.
-    if(includeDoubleQuotes && (m_text.GetChar(right) == wxT('\"')))
-      right++;
-  }
-
-  long left = -1;
-  if(includeDoubleQuotes)
-  {
-    left = m_positionOfCaret;
-    while (left > 0)
-    {
-      wxChar leftChar = m_text.GetChar(left - 1);
-      if (IsAlphaNum(leftChar) ||
-          (leftChar == wxT('\"')) ||
-          (leftChar == wxT('/')))
-      {
-        left--;
-      }
       else
-      {
-        if (left >= 2)
-        {
-          // An escaped non-alphanumeric character and a dot inside a number are part of a word.
-          if ((m_text.GetChar(left - 2) != wxT('\\')) &&
-              !(
-                (leftChar == wxT('.')) &&
-                ((IsNum(m_text.GetChar(left - 2)) || (IsNum(m_text.GetChar(left)))))
-                )
-            )
-          {
-            break;
-          }
-          else left--;
-        }
-        else
-          break;
-      }
+        start = pos + 1;
     }
+    pos++;   
   }
-
-  if(left < 0)
-  {
-    left = m_positionOfCaret;
-    while (left > 0)
-    {
-      wxChar leftChar = m_text.GetChar(left - 1);
-      if (!IsAlphaNum(leftChar) &&
-          !((includeDoubleQuotes) && (leftChar == wxT('\"'))))
-      {
-        if (left >= 2)
-        {
-          // An escaped non-alphanumeric character and a dot inside a number are part of a word.
-          if ((m_text.GetChar(left - 2) != wxT('\\')) &&
-              !(
-                (leftChar == wxT('.')) &&
-                ((IsNum(m_text.GetChar(left - 2)) || (IsNum(m_text.GetChar(left)))))
-                )
-            )
-            break;
-        }
-      }
-      left--;
-    }
-  }
-
-  SetSelection(left, right);
-  m_positionOfCaret = m_selectionEnd;
+  if(pos > 0)
+    SetSelection(start, pos);
+  m_positionOfCaret = pos;
+  
   if (left != right)
     return m_cellPointers->m_selectionString;
   else
     return wxString(wxT("%"));
+  
 }
 
 bool EditorCell::CopyToClipboard()
