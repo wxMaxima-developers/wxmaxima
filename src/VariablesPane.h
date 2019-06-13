@@ -47,6 +47,7 @@ public:
     varID_myoptions,
     varID_rules,
     varID_aliases,
+    varID_structs,
     varID_dependencies,
     varID_gradefs,
     varID_prop,

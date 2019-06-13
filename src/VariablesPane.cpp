@@ -119,6 +119,7 @@ void Variablespane::InsertMenu(wxCommandEvent &event)
   case varID_myoptions:varname="myoptions";break;
   case varID_rules:varname="rules";break;
   case varID_aliases:varname="aliases";break;
+  case varID_structs:varname="structures";break;
   case varID_dependencies:varname="dependencies";break;
   case varID_gradefs:varname="gradefs";break;
   case varID_prop:varname="props";break;
@@ -170,6 +171,9 @@ void Variablespane::OnRightClick(wxGridEvent &event)
   if(m_vars["aliases"] != 1)
     popupMenu->Append(varID_aliases,
                       _("List of user aliases"), wxEmptyString, wxITEM_NORMAL);
+  if(m_vars["structures"] != 1)
+    popupMenu->Append(varID_structs,
+                      _("List of structs"), wxEmptyString, wxITEM_NORMAL);
   if(m_vars["gradefs"] != 1)
     popupMenu->Append(varID_gradefs,
                       _("List of user-defined derivatives"), wxEmptyString, wxITEM_NORMAL);
