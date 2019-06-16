@@ -4004,7 +4004,7 @@ long long wxMaxima::GetTotalCpuTime()
   FILETIME systemtime;
   GetSystemTimeAsFileTime(&systemtime);
   return (long long) systemtime.dwLowDateTime +
-        (2^32)*((long long) systemtime.dwHighDateTime);
+        ((long long) systemtime.dwHighDateTime << 32);
 #else
   int CpuJiffies = 0;
   if(wxFileExists("/proc/stat"))
