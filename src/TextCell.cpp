@@ -701,12 +701,15 @@ wxString TextCell::ToString()
       // But we get false positives, then.
       wxString charsNeedingQuotes("\\'\"()[]-{}^+*/&§?:;=#<>$");
       bool isOperator = true;
-      for (size_t i = 0; i < m_text.Length(); i++)
+      if(m_text.Length() > 1)
       {
-        if ((m_text[i] == wxT(' ')) || (charsNeedingQuotes.Find(m_text[i]) == wxNOT_FOUND))
+        for (size_t i = 0; i < m_text.Length(); i++)
         {
-          isOperator = false;
-          break;
+          if ((m_text[i] == wxT(' ')) || (charsNeedingQuotes.Find(m_text[i]) == wxNOT_FOUND))
+          {
+            isOperator = false;
+            break;
+          }
         }
       }
 

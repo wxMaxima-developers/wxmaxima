@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-11 21:10+0200\n"
+"POT-Creation-Date: 2019-06-14 14:13+0200\n"
 "PO-Revision-Date: 2019-06-11 21:11+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -394,7 +394,7 @@ msgstr "&Farbe nach Höhe"
 msgid "(Expression longer than allowed by the configuration setting)"
 msgstr "(Ausdruck länger als im Konfigurations-Dialog erlaubt)"
 
-#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:231
+#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:235
 msgid "(Not a valid variable name)"
 msgstr "(Kein gültiger Variablenname)"
 
@@ -612,7 +612,7 @@ msgstr ""
 "Füge ein neues Element zum Anfang der Liste hinzu. Praktisch zur Generierung "
 "von Stapelspeichern."
 
-#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:195
+#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:199
 msgid "Add all"
 msgstr "Alle hinzufügen"
 
@@ -1017,7 +1017,7 @@ msgstr "Interner Fehler: soll den Inhalt einer Zelle ändern und sie löschen."
 msgid "Bug: HTML output is no valid XML"
 msgstr "Interner Fehler: Die HTML-Ausgabe ist kein gültiges XML."
 
-#: /home/gunter/src/wxmaxima/src/Cell.cpp:273
+#: /home/gunter/src/wxmaxima/src/Cell.cpp:271
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
 msgstr "Interner Fehler: Eine MathCell behauptet, keine GroupCell zu besitzen."
 
@@ -3962,39 +3962,43 @@ msgstr "Liste"
 msgid "List name:"
 msgstr "Name der Liste:"
 
-#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:163
+#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:164
 msgid "List of arrays"
 msgstr "Liste der Arrays"
 
-#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:166
+#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:167
 msgid "List of changed options"
 msgstr "Liste der geänderten Optionen"
 
-#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:172
+#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:176
+msgid "List of structs"
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:173
 msgid "List of user aliases"
 msgstr "Liste der aliases"
 
-#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:160
+#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:161
 msgid "List of user functions"
 msgstr "Liste der selbstdefinierten Funktionen"
 
-#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:169
+#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:170
 msgid "List of user rules"
 msgstr "Liste der selbstdefinierten Regeln"
 
-#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:157
+#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:158
 msgid "List of user variables"
 msgstr "Liste der selbstdefinierten Variablen"
 
-#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:175
+#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:179
 msgid "List of user-defined derivatives"
 msgstr "Liste der gradefs"
 
-#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:181
+#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:185
 msgid "List of user-defined let rule packages"
 msgstr "List der let-Regeln"
 
-#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:178
+#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:182
 msgid "List of user-defined properties"
 msgstr "Liste der benutzerdefinierten Eigenschaften"
 
@@ -4107,7 +4111,7 @@ msgstr "Automatisch passende Klammern erzeugen"
 msgid "Math font:"
 msgstr "Math. Schriftart:"
 
-#: /home/gunter/src/wxmaxima/src/Cell.cpp:1245
+#: /home/gunter/src/wxmaxima/src/Cell.cpp:1243
 msgid "Math output"
 msgstr "Ausgabe"
 
@@ -5341,7 +5345,7 @@ msgstr "Versucht den Grad von trigonometrischen Ausdrücken zu veringern"
 msgid "Refusing to send cell to maxima: "
 msgstr "Weigere mich, die Zelle an Maxima zu senden: "
 
-#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:186
+#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:190
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -5349,7 +5353,7 @@ msgstr "Entfernen"
 msgid "Remove All Output"
 msgstr "Lösche alle Ausgaben"
 
-#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:192
+#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:196
 msgid "Remove all"
 msgstr "Entferne alle"
 
@@ -7102,8 +7106,8 @@ msgstr ""
 "Schaffe es nicht, die folgende Versionsinfo von http://wxMaxima-developers."
 "github.io/wxmaxima/version.txt zu interpretieren:"
 
-#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:279
-#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:421
+#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:283
+#: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:425
 msgid "Undefined"
 msgstr "Undefiniert"
 

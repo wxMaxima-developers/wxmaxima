@@ -57,8 +57,6 @@ Cell::Cell(Cell *group, Configuration **config)
   m_clientWidth_old = -1;
   m_group = group;
   m_textStyle = TS_DEFAULT;
-  m_toolTip = wxEmptyString;
-  m_toolTip = wxEmptyString;
   m_cellPointers = NULL;
   m_group = group;
   m_parent = group;
@@ -77,7 +75,7 @@ Cell::Cell(Cell *group, Configuration **config)
   SoftLineBreak(false);
   m_breakPage = false;
   m_forceBreakLine = false;
-  m_bigSkip = true;
+  m_bigSkip = false;
   m_isHidden = false;
   m_isBrokenIntoLines = false;
   m_highlight = false;
