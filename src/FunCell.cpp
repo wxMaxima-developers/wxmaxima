@@ -202,6 +202,7 @@ bool FunCell::BreakUp()
       m_nextToDraw->m_previousToDraw = m_argCell;
     m_nextToDraw = m_nameCell;
     m_width = 0;
+    ResetData();    
     return true;
   }
   return false;

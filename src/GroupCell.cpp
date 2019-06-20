@@ -2138,9 +2138,7 @@ void GroupCell::UnBreakUpCells(Cell *cell)
   while (cell != NULL)
   {
     if (cell->m_isBrokenIntoLines)
-    {
       cell->Unbreak();
-    }
     cell = cell->m_nextToDraw;
   }
 }

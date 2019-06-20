@@ -62,6 +62,9 @@ public:
   //! Set the exponent
   void SetPower(Cell *power);
 
+  //! By how much do we want to rise the power?
+  double PowRise(){return Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);}
+  
   void RecalculateHeight(int fontsize);
 
   void RecalculateWidths(int fontsize);
@@ -92,7 +95,7 @@ public:
   void Unbreak();
 
 protected:
-  Cell *m_baseCell, *m_powCell;
+  Cell *m_baseCell, *m_exptCell;
   TextCell *m_open, *m_close;
   Cell *m_last2;
   Cell *m_exp, *m_last1;

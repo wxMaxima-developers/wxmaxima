@@ -364,6 +364,8 @@ bool SqrtCell::BreakUp()
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = m_close;
     m_nextToDraw = m_open;
+
+    ResetData();
     m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = wxMax(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
     return true;

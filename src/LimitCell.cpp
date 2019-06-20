@@ -310,6 +310,7 @@ bool LimitCell::BreakUp()
     m_comma->m_previousToDraw = m_base_last;
     m_under->m_previousToDraw = m_comma;
     m_close->m_previousToDraw = m_under_last;
+    ResetData();    
     return true;
   }
   return false;

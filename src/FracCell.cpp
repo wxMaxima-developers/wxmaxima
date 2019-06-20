@@ -117,6 +117,12 @@ void FracCell::SetDenom(Cell *denom)
 
 void FracCell::RecalculateWidths(int fontsize)
 {
+  m_open1->RecalculateWidths(fontsize);
+  m_close1->RecalculateWidths(fontsize);
+  m_open2->RecalculateWidths(fontsize);
+  m_close2->RecalculateWidths(fontsize);
+  m_divide->RecalculateWidths(fontsize);
+  
   wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
   if (m_isBrokenIntoLines || m_exponent)
@@ -161,11 +167,6 @@ void FracCell::RecalculateWidths(int fontsize)
     m_width = wxMax(m_num->GetFullWidth(), m_denom->GetFullWidth()) +
               2 * m_protrusion + m_horizontalGapLeft + m_horizontalGapRight;
   }
-  m_open1->RecalculateWidths(fontsize);
-  m_close1->RecalculateWidths(fontsize);
-  m_open2->RecalculateWidths(fontsize);
-  m_close2->RecalculateWidths(fontsize);
-  m_divide->RecalculateWidths(fontsize);
   if(m_isBrokenIntoLines)
     m_width = 0;
   Cell::RecalculateWidths(fontsize);
@@ -174,6 +175,11 @@ void FracCell::RecalculateWidths(int fontsize)
 void FracCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
+  m_open1->RecalculateHeight(fontsize);
+  m_close1->RecalculateHeight(fontsize);
+  m_open2->RecalculateHeight(fontsize);
+  m_close2->RecalculateHeight(fontsize);
+  m_divide->RecalculateHeight(fontsize);
   if (m_isBrokenIntoLines || m_exponent)
   {
     m_num->RecalculateHeightList(fontsize);
@@ -203,12 +209,6 @@ void FracCell::RecalculateHeight(int fontsize)
       m_center = m_height / 2;
     }
   }
-
-  m_open1->RecalculateHeight(fontsize);
-  m_close1->RecalculateHeight(fontsize);
-  m_open2->RecalculateHeight(fontsize);
-  m_close2->RecalculateHeight(fontsize);
-  m_divide->RecalculateHeight(fontsize);
 }
 
 void FracCell::Draw(wxPoint point)
@@ -490,6 +490,7 @@ bool FracCell::BreakUp()
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = m_close2;
     m_nextToDraw = m_open1;
+    ResetData();    
     return true;
   }
   return false;

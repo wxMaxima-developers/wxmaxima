@@ -308,7 +308,7 @@ bool Cell::NeedsRecalculation()
  */
 int Cell::GetMaxDrop()
 {
-  if ((m_maxDrop < 0) || ((*m_configuration)->RecalculationForce()))
+//  if ((m_maxDrop < 0) || ((*m_configuration)->RecalculationForce()))
   {
     m_maxDrop = 0;
     Cell *tmp = this;
@@ -1097,6 +1097,10 @@ void Cell::ResetData()
   m_lineWidth = -1;
   m_maxCenter = -1;
   m_maxDrop   = -1;
+  std::list<Cell*> cellList = GetInnerCells();
+  for (std::list<Cell *>::iterator it = cellList.begin(); it != cellList.end(); ++it)
+    if(*it != NULL)
+      (*it)->ResetData();
 }
 
 Cell *Cell::first()
@@ -1119,11 +1123,19 @@ Cell *Cell::last()
 
 void Cell::Unbreak()
 {
+//  if(m_isBrokenIntoLines)
   ResetData();
+
   m_isBrokenIntoLines = false;
   m_nextToDraw = m_next;
   if (m_nextToDraw != NULL)
     m_nextToDraw->m_previousToDraw = this;
+
+  // Unbreak the inner cells, too
+  std::list<Cell *> innerCells = GetInnerCells();
+  for(std::list<Cell *>::iterator it = innerCells.begin(); it != innerCells.end(); ++it)
+    if(*it != NULL)
+      (*it)->Unbreak();
 }
 
 void Cell::UnbreakList()

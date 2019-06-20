@@ -37,7 +37,7 @@ ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_last1 = NULL;
   m_last2 = NULL;
   m_baseCell = NULL;
-  m_powCell = NULL;
+  m_exptCell = NULL;
   m_isMatrix = false;
   m_exp = new TextCell(parent, config, cellPointers, wxT("^"));
   m_open = new TextCell(parent, config, cellPointers, wxT("("));
@@ -50,7 +50,7 @@ Cell *ExptCell::Copy()
   ExptCell *tmp = new ExptCell(m_group, m_configuration, m_cellPointers);
   CopyData(this, tmp);
   tmp->SetBase(m_baseCell->CopyList());
-  tmp->SetPower(m_powCell->CopyList());
+  tmp->SetPower(m_exptCell->CopyList());
   tmp->m_isBrokenIntoLines = m_isBrokenIntoLines;
   tmp->m_open->DontEscapeOpeningParenthesis();
 
@@ -60,11 +60,11 @@ Cell *ExptCell::Copy()
 ExptCell::~ExptCell()
 {
   wxDELETE(m_baseCell);
-  wxDELETE(m_powCell);
+  wxDELETE(m_exptCell);
   wxDELETE(m_exp);
   wxDELETE(m_open);
   wxDELETE(m_close);
-  m_baseCell = m_powCell = m_exp = m_open = m_close = NULL;
+  m_baseCell = m_exptCell = m_exp = m_open = m_close = NULL;
   MarkAsDeleted();
 }
 
@@ -73,8 +73,8 @@ std::list<Cell *> ExptCell::GetInnerCells()
   std::list<Cell *> innerCells;
   if(m_baseCell)
     innerCells.push_back(m_baseCell);
-  if(m_powCell)
-    innerCells.push_back(m_powCell);
+  if(m_exptCell)
+    innerCells.push_back(m_exptCell);
   if(m_exp)
     innerCells.push_back(m_exp);
   if(m_open)
@@ -89,10 +89,10 @@ void ExptCell::SetPower(Cell *power)
 {
   if (power == NULL)
     return;
-  wxDELETE(m_powCell);
-  m_powCell = power;
+  wxDELETE(m_exptCell);
+  m_exptCell = power;
 
-  if (!m_powCell->IsCompound())
+  if (!m_exptCell->IsCompound())
   {
     m_open->m_isHidden = true;
     m_close->m_isHidden = true;
@@ -121,10 +121,10 @@ void ExptCell::RecalculateWidths(int fontsize)
 {
   m_baseCell->RecalculateWidthsList(fontsize);
   if (m_isBrokenIntoLines)
-    m_powCell->RecalculateWidthsList(fontsize);
+    m_exptCell->RecalculateWidthsList(fontsize);
   else
-    m_powCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - EXPT_DEC));
-  m_width = m_baseCell->GetFullWidth() + m_powCell->GetFullWidth() -
+    m_exptCell->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - EXPT_DEC));
+  m_width = m_baseCell->GetFullWidth() + m_exptCell->GetFullWidth() -
             MC_TEXT_PADDING;
   m_exp->RecalculateWidthsList(fontsize);
   m_open->RecalculateWidthsList(fontsize);
@@ -139,13 +139,12 @@ void ExptCell::RecalculateHeight(int fontsize)
   Cell::RecalculateHeight(fontsize);
   m_baseCell->RecalculateHeightList(fontsize);
   if (m_isBrokenIntoLines)
-    m_powCell->RecalculateHeightList(fontsize);
+    m_exptCell->RecalculateHeightList(fontsize);
   else
-    m_powCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - EXPT_DEC));
-  m_height = m_baseCell->GetMaxHeight() + m_powCell->GetMaxHeight() -
-             Scale_Px((8 * fontsize) / 10 + MC_EXP_INDENT);
-  m_center = m_powCell->GetMaxHeight() + m_baseCell->GetMaxCenter() -
-             Scale_Px((8 * fontsize) / 10 + MC_EXP_INDENT);
+    m_exptCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - EXPT_DEC));
+  m_height = wxMax(
+    m_baseCell->GetMaxHeight(), m_exptCell->GetMaxHeight() + m_exptCell->GetMaxCenter() + PowRise());
+  m_center = m_baseCell->GetMaxCenter() + wxMax (0, m_height - m_baseCell->GetMaxHeight());
   m_exp->RecalculateHeightList(fontsize);
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
@@ -166,11 +165,9 @@ void ExptCell::Draw(wxPoint point)
     bs.y = point.y;
     m_baseCell->DrawList(bs);
 
-    pw.x = point.x + m_baseCell->GetFullWidth() - MC_TEXT_PADDING;
-    pw.y = point.y - m_baseCell->GetMaxCenter() - m_powCell->GetMaxHeight()
-           + m_powCell->GetMaxCenter() +
-           Scale_Px((8 * m_fontSize) / 10 + MC_EXP_INDENT);
-    m_powCell->DrawList(pw);
+    point.x += m_baseCell->GetFullWidth() - MC_TEXT_PADDING;
+    point.y -= PowRise() + m_exptCell->GetMaxCenter();
+    m_exptCell->DrawList(point);
   }
 }
 
@@ -183,10 +180,10 @@ wxString ExptCell::ToString()
   wxString s = m_baseCell->ListToString() + wxT("^");
   if (m_isMatrix)
     s += wxT("^");
-  if (m_powCell->IsCompound())
-    s += wxT("(") + m_powCell->ListToString() + wxT(")");
+  if (m_exptCell->IsCompound())
+    s += wxT("(") + m_exptCell->ListToString() + wxT(")");
   else
-    s += m_powCell->ListToString();
+    s += m_exptCell->ListToString();
   return s;
 }
 
@@ -199,10 +196,10 @@ wxString ExptCell::ToMatlab()
   wxString s = m_baseCell->ListToMatlab() + wxT("^");
   if (m_isMatrix)
 	s += wxT("^");
-  if (m_powCell->IsCompound())
-	s += wxT("(") + m_powCell->ListToMatlab() + wxT(")");
+  if (m_exptCell->IsCompound())
+	s += wxT("(") + m_exptCell->ListToMatlab() + wxT(")");
   else
-	s += m_powCell->ListToMatlab();
+	s += m_exptCell->ListToMatlab();
   return s;
 }
 
@@ -211,7 +208,7 @@ wxString ExptCell::ToTeX()
   if (m_isBrokenIntoLines)
     return wxEmptyString;
   wxString s = wxT("{{") + m_baseCell->ListToTeX() + wxT("}^{") +
-               m_powCell->ListToTeX() + wxT("}}");
+               m_exptCell->ListToTeX() + wxT("}}");
   return s;
 }
 
@@ -221,8 +218,8 @@ wxString ExptCell::GetDiffPart()
   if (m_baseCell != NULL)
     s += m_baseCell->ListToString();
   s += wxT(",");
-  if (m_powCell != NULL)
-    s += m_powCell->ListToString();
+  if (m_exptCell != NULL)
+    s += m_exptCell->ListToString();
   return s;
 }
 
@@ -230,15 +227,15 @@ wxString ExptCell::ToMathML()
 {
   return wxT("<msup>") +
          m_baseCell->ListToMathML() +
-         m_powCell->ListToMathML() +
+         m_exptCell->ListToMathML() +
          wxT("</msup>\n");
-//  return wxT("<apply><power/>") + m_baseCell->ListToMathML() + m_powCell->ListToMathML() + wxT("</apply>");
+//  return wxT("<apply><power/>") + m_baseCell->ListToMathML() + m_exptCell->ListToMathML() + wxT("</apply>");
 }
 
 wxString ExptCell::ToOMML()
 {
   return wxT("<m:sSup><m:e>") + m_baseCell->ListToOMML() + wxT("</m:e><m:sup>") +
-         m_powCell->ListToOMML() + wxT("</m:sup></m:sSup>\n");
+         m_exptCell->ListToOMML() + wxT("</m:sup></m:sSup>\n");
 }
 
 wxString ExptCell::ToXML()
@@ -250,7 +247,7 @@ wxString ExptCell::ToXML()
     flags += wxT(" breakline=\"true\"");
 
   return wxT("<e") + flags + wxT("><r>") + m_baseCell->ListToXML() + _T("</r><r>") +
-         m_powCell->ListToXML() + _T("</r></e>");
+         m_exptCell->ListToXML() + _T("</r></e>");
 }
 
 bool ExptCell::BreakUp()
@@ -267,8 +264,8 @@ bool ExptCell::BreakUp()
     }
     m_exp->m_nextToDraw = m_open;
     m_open->m_previousToDraw = m_exp;
-    m_open->m_nextToDraw = m_powCell;
-    m_powCell->m_previousToDraw = m_open;
+    m_open->m_nextToDraw = m_exptCell;
+    m_exptCell->m_previousToDraw = m_open;
     wxASSERT_MSG(m_last2 != NULL, _("Bug: No last cell in an exponent of an exptCell!"));
     if (m_last2 != NULL)
     {
@@ -279,6 +276,7 @@ bool ExptCell::BreakUp()
     if (m_nextToDraw != NULL)
       m_nextToDraw->m_previousToDraw = m_close;
     m_nextToDraw = m_baseCell;
+    ResetData();    
     m_height = wxMax(m_baseCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = wxMax(m_baseCell->GetMaxCenter(), m_open->GetMaxCenter());
     return true;
@@ -291,7 +289,7 @@ void ExptCell::Unbreak()
   if (m_isBrokenIntoLines)
   {
     m_baseCell->UnbreakList();
-    m_powCell->UnbreakList();
+    m_exptCell->UnbreakList();
   }
   Cell::Unbreak();
 }
