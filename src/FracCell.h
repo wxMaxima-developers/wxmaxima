@@ -93,6 +93,7 @@ public:
 
   wxString ToXML();
 
+  //! Fractions in exponents are shown in their linear form.
   void SetExponentFlag();
 
   bool BreakUp();
@@ -102,12 +103,13 @@ public:
   void Unbreak();
 
 protected:
-  //! The nummerator
+  //! The numerator
   Cell *m_num;
   //! The denominator
   Cell *m_denom;
   Cell *m_open1, *m_open2, *m_close1, *m_close2, *m_divide;
   Cell *m_last1, *m_last2;
+  //! Fractions in exponents are shown in their linear form.
   bool m_exponent;
   int m_fracStyle;
   //! How much wider should the horizontal line be on both ends than num or denom?

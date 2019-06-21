@@ -56,7 +56,7 @@ void ExptCell::Draw(wxPoint point)
     m_baseCell->DrawList(bs);
 
     point.x += m_baseCell->GetFullWidth() - MC_TEXT_PADDING;
-    point.y -= PowRise() - m_exptCell->GetMaxCenter();
+    point.y -= PowRise() + wxMax(m_exptCell->GetMaxCenter()- m_baseCell->GetMaxCenter(),0);
     m_exptCell->DrawList(point);
   }
 }
@@ -159,9 +159,13 @@ void ExptCell::RecalculateHeight(int fontsize)
     m_exptCell->RecalculateHeightList(fontsize);
   else
     m_exptCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - EXPT_DEC));
-  m_height = wxMax(
-    m_baseCell->GetMaxHeight(), m_exptCell->GetMaxHeight() + m_exptCell->GetMaxCenter() + PowRise());
-  m_center = m_baseCell->GetMaxCenter() + wxMax (0, m_height - m_baseCell->GetMaxHeight());
+
+  m_center = wxMax (
+    m_baseCell->GetMaxCenter(),
+    PowRise() + m_exptCell->GetMaxHeight() - m_baseCell->GetMaxCenter());
+  
+  m_height = m_baseCell->GetMaxHeight() +
+    wxMax(0,m_center - m_baseCell->GetMaxCenter());
   m_exp->RecalculateHeightList(fontsize);
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
