@@ -47,7 +47,6 @@ script:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
   else export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"; fi
 - mkdir build && cd build && cmake .. && cmake --build .
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake --build . -- html; fi
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
 # For some reason on Travis wxMaxima fails to close automatically.
