@@ -2051,6 +2051,38 @@
   (when ($file_search "wxmaxima-init")
     ($load "wxmaxima-init"))
 
+  ;;; From Elias: Code that extracts the name of our function's parameters
+  (defun arglist-from-function (name)
+    (ignore-errors (cadr (function-lambda-expression name))
+    ))
+
+  (defun arglist-from-maxima-function (name)
+    (labels ((format-list-entry (v)
+				(etypecase v
+					   (symbol (format-sym-name v :any-sym t))
+					   (list (progn
+						   (assert (eq (caar v) 'maxima::mlist))
+						   (format nil "[~{~a~^, ~}]" (mapcar #'format-list-entry (cdr v))))))))
+	    (let ((mexpr (or (maxima::mget name 'maxima::mexpr)
+			     (maxima::mget name 'maxima::mmacro))))
+	      (cond (mexpr
+		     ;; I'm not entirely certain about how the content of the
+		     ;; function definition can vary, so let's add some assertions
+		     ;; that encodes the current understanding of the situation.
+		     (assert (eq (caar mexpr) 'lambda))
+		     (let ((arglist (second mexpr)))
+		       (assert (eq (caar arglist) 'maxima::mlist))
+		       (format nil "(~{~a~^, ~})" (mapcar #'format-list-entry (cdr arglist)))))
+		    (t
+		     "variable")))))
+
+  (defun function-signature (name)
+    (check-type name symbol)
+    (if (fboundp name)
+	(arglist-from-function name)
+      ;; ELSE: Possibly a Maxima function?
+      (arglist-from-maxima-function name)))
+  
 ;;;
 ;;; Now that we have loaded the init file we can rewrite of the function load
 ;;; (maxima/src/mload.lisp) to displays functions and variable names after
