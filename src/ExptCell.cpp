@@ -45,6 +45,23 @@ ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   m_close = new TextCell(parent, config, cellPointers, wxT(")"));
 }
 
+void ExptCell::Draw(wxPoint point)
+{
+  Cell::Draw(point);
+  if (DrawThisCell(point) && InUpdateRegion())
+  {    
+    wxPoint bs, pw;
+    bs.x = point.x;
+    bs.y = point.y;
+    m_baseCell->DrawList(bs);
+
+    point.x += m_baseCell->GetFullWidth() - MC_TEXT_PADDING;
+    point.y -= PowRise() - m_exptCell->GetMaxCenter();
+    m_exptCell->DrawList(point);
+  }
+}
+
+
 Cell *ExptCell::Copy()
 {
   ExptCell *tmp = new ExptCell(m_group, m_configuration, m_cellPointers);
@@ -152,22 +169,6 @@ void ExptCell::RecalculateHeight(int fontsize)
   {
     m_height = wxMax(m_baseCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = wxMax(m_baseCell->GetMaxCenter(), m_open->GetMaxCenter());
-  }
-}
-
-void ExptCell::Draw(wxPoint point)
-{
-  Cell::Draw(point);
-  if (DrawThisCell(point) && InUpdateRegion())
-  {    
-    wxPoint bs, pw;
-    bs.x = point.x;
-    bs.y = point.y;
-    m_baseCell->DrawList(bs);
-
-    point.x += m_baseCell->GetFullWidth() - MC_TEXT_PADDING;
-    point.y -= PowRise() + m_exptCell->GetMaxCenter();
-    m_exptCell->DrawList(point);
   }
 }
 

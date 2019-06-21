@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-14 14:13+0200\n"
-"PO-Revision-Date: 2019-06-11 21:11+0200\n"
+"POT-Creation-Date: 2019-06-21 09:56+0200\n"
+"PO-Revision-Date: 2019-06-21 10:00+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -468,7 +468,7 @@ msgstr ""
 "zwischen den Zellen als eine horizontale Linie erscheint. Der horizontale "
 "Cursor zeigt an, wo z. B. die nächste neue Zelle eingefügt wird."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2506
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2504
 msgid "A GroupCell that bundles input with its output"
 msgstr "Eine Gruppe, die eine Eingabe mit einer eventuellen Ausgabe bündelt."
 
@@ -503,7 +503,7 @@ msgstr ""
 "Berechnungen. Wenn Sie Ihr Dokument speichern, können Sie dazu das Format "
 "'wxMaxima-XML-Dokument' auswählen."
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2501
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2499
 msgid "A page break"
 msgstr "Ein Seitenumbruch"
 
@@ -1050,7 +1050,7 @@ msgstr "Interner Fehler: Ein conjugate()-Kommando ohne Ende des Arguments!"
 msgid "Bug: No last cell in an denominator!"
 msgstr "Interner Fehler: Bruch ohne Nenner"
 
-#: /home/gunter/src/wxmaxima/src/ExptCell.cpp:272
+#: /home/gunter/src/wxmaxima/src/ExptCell.cpp:270
 msgid "Bug: No last cell in an exponent of an exptCell!"
 msgstr "Interner Fehler: Ein exp()-Kommando ohne Ende des Arguments!"
 
@@ -1058,7 +1058,7 @@ msgstr "Interner Fehler: Ein exp()-Kommando ohne Ende des Arguments!"
 msgid "Bug: No last cell in an numerator!"
 msgstr "Interner Fehler: Bruch ohne Zähler"
 
-#: /home/gunter/src/wxmaxima/src/ExptCell.cpp:262
+#: /home/gunter/src/wxmaxima/src/ExptCell.cpp:260
 msgid "Bug: No last cell in the base of an exptCell!"
 msgstr ""
 "Interner Fehler: Kein Ende des Arguments in der Basis eines Exponenten!"
@@ -2699,7 +2699,7 @@ msgstr "Fakultät und &Gamma"
 msgid "Fatal error"
 msgstr "Fataler Fehler"
 
-#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2446
+#: /home/gunter/src/wxmaxima/src/GroupCell.cpp:2444
 #, c-format
 msgid "Figure %d:"
 msgstr "Abbildung %d:"
@@ -3972,7 +3972,7 @@ msgstr "Liste der geänderten Optionen"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:176
 msgid "List of structs"
-msgstr ""
+msgstr "Liste der Strukturen"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:173
 msgid "List of user aliases"
@@ -4111,7 +4111,7 @@ msgstr "Automatisch passende Klammern erzeugen"
 msgid "Math font:"
 msgstr "Math. Schriftart:"
 
-#: /home/gunter/src/wxmaxima/src/Cell.cpp:1243
+#: /home/gunter/src/wxmaxima/src/Cell.cpp:1255
 msgid "Math output"
 msgstr "Ausgabe"
 
