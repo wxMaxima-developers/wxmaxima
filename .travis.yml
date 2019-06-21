@@ -51,7 +51,7 @@ script:
 - cmake --build . -- package
 # For some reason on Travis wxMaxima fails to close automatically.
 #- make test
-#- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make test ;fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make test ;fi
 - cd ..
 #- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then git clean -dfx;bash .coverity/coverity.sh ;fi
 env:
