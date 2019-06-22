@@ -8279,6 +8279,9 @@ void wxMaxima::TriggerEvaluation()
     m_outputCellsFromCurrentCommand = 0;
     m_worksheet->m_evaluationQueue.RemoveFirst();
     TriggerEvaluation();
+    if (m_exitAfterEval && m_worksheet->m_evaluationQueue.Empty())
+      Close();
+
   }
   m_worksheet->m_answersExhausted = m_worksheet->m_evaluationQueue.AnswersEmpty();
 
