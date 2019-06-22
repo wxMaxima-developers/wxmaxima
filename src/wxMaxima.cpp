@@ -762,6 +762,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
                   parenthesisError + wxT("\n"),
                   MC_TYPE_ERROR);
     m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
+    m_worksheet->m_evaluationQueue.Clear();
   }
   if(!m_maximaStdoutPollTimer.IsRunning())
       m_statusBar->SetMaximaCPUPercentage(-1);
@@ -8253,9 +8254,13 @@ void wxMaxima::TriggerEvaluation()
                                     parenthesisError + wxT("\n"));
       cell->SetType(MC_TYPE_ERROR);
       cell->SetGroup(tmp);
+      tmp->InEvaluationQueue(false);
+      tmp->LastInEvaluationQueue(false);
       tmp->SetOutput(cell);
       tmp->ResetSize();
       tmp->Recalculate();
+      m_worksheet->m_evaluationQueue.Clear();
+      m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
       m_worksheet->Recalculate(cell);
       tmp->GetInput()->SetCaretPosition(index);
       tmp->GetInput()->SetErrorIndex((m_commandIndex = index) - 1);

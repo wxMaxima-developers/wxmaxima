@@ -42,8 +42,7 @@ EvaluationQueue::EvaluationQueue()
 
 void EvaluationQueue::Clear()
 {
-  while (!Empty())
-    RemoveFirst();
+  m_queue.clear();
   m_size = 0;
   m_commands.clear();
   m_workingGroupChanged = false;
