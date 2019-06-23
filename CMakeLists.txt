@@ -67,14 +67,6 @@ add_subdirectory(data)
 add_subdirectory(info)
 add_subdirectory(src)
 
-if(WIN32)
-    install(FILES COPYING README README.md DESTINATION wxMaxima/doc)
-    install(FILES test/testbench_simple.wxmx test/a.png test/b.png test/c.png test/d.png DESTINATION wxMaxima/data)
-else()
-    install(FILES COPYING README README.md DESTINATION share/wxMaxima)
-    install(FILES test/testbench_simple.wxmx test/a.png test/b.png test/c.png test/d.png DESTINATION share/wxMaxima)
-endif()
-
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
 if(UNIX)
@@ -157,11 +149,5 @@ add_custom_target(checksums
 
 include(CPack)
 
-find_program(XVFB xvfb-run)
 enable_testing()
-if(XVFB)
-    add_test(NAME wxmaxima_batch_textcell COMMAND xvfb-run ./wxmaxima-local --batch ${CMAKE_SOURCE_DIR}/test/textcells.wxmx)
-    # add_test(NAME run_wxmaxima_batch COMMAND xvfb-run ./wxmaxima-local --batch ${CMAKE_SOURCE_DIR}/test/testbench_automatic.wxmx)
-else()
-    message(STATUS "xvfb not found => Not enabling the tests.")
-endif()
+add_subdirectory(test)
