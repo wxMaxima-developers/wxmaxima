@@ -67,6 +67,12 @@ add_subdirectory(data)
 add_subdirectory(info)
 add_subdirectory(src)
 
+if(WIN32)
+    install(FILES COPYING README README.md DESTINATION wxMaxima/doc)
+else()
+    install(FILES COPYING README README.md DESTINATION share/wxMaxima)
+endif()
+
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
 if(UNIX)
