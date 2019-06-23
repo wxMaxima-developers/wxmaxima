@@ -264,13 +264,13 @@ bool MyApp::OnInit()
     std::cout << " (Git version: " << WXMAXIMA_GIT_VERSION << ")";
 #endif
     std::cout << "\n";
-    wxExit();
+    exit(0);
   }
   if (cmdLineParser.Found(wxT("h")))
   {
     std::cout << "A feature-rich graphical user interface for the computer algebra system maxima\n";
     std::cout << cmdLineParser.GetUsageString();
-    wxExit();
+    exit(0);
   }
 
   if (cmdLineParser.Found(wxT("b")))
