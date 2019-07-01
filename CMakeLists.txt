@@ -76,7 +76,7 @@ endif()
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
 if(UNIX)
-    file(COPY "${CMAKE_SOURCE_DIR}/src/wxmaxima-local" DESTINATION .)
+    configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local" wxmaxima-local)
 endif()
 # Build Packages
 set(CPACK_GENERATOR "TGZ;TBZ2")
