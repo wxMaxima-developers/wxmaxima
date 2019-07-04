@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-21 09:56+0200\n"
-"PO-Revision-Date: 2019-05-21 07:52+0200\n"
+"PO-Revision-Date: 2019-07-04 10:42+0200\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
 "Language: hu\n"
@@ -398,7 +398,7 @@ msgstr "(A kifejezés hosszabb, mint ami a beállítások alapján megengedett)"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:235
 msgid "(Not a valid variable name)"
-msgstr ""
+msgstr "(Nem egy érvényes változó neve)"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:169
 msgid "(Use default language)"
@@ -614,7 +614,7 @@ msgstr "Új elem hozzáadása a lista elejéhez. Hasznos kötegek létrehozásá
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:199
 msgid "Add all"
-msgstr ""
+msgstr "Mind hozzáadása"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6006
 msgid "Add an element to a list"
@@ -639,7 +639,7 @@ msgstr "&Hozzáadás az elérési úthoz..."
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1443
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1506
 msgid "Add to watchlist"
-msgstr ""
+msgstr "Add a megnézendők listájához"
 
 #: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:158
 #, c-format
@@ -834,7 +834,7 @@ msgstr "Automatikus felismerés"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:793
 msgid "Automatic"
-msgstr ""
+msgstr "Automatikus"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:606
 #, c-format
@@ -1003,7 +1003,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5740
 msgid "Bug: HTML output is no valid XML"
-msgstr ""
+msgstr "Hiba: A HTML kimenet nem érvényes XML"
 
 #: /home/gunter/src/wxmaxima/src/Cell.cpp:271
 msgid "Bug: Math Cell that claims to have no group Cell it belongs to"
@@ -1546,7 +1546,7 @@ msgstr "Állandó"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:37
 msgid "Contents"
-msgstr ""
+msgstr "Tartalmak"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2006
 msgid "Contour"
@@ -3926,43 +3926,43 @@ msgstr "Lista név:"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:164
 msgid "List of arrays"
-msgstr ""
+msgstr "Vektorok listája"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:167
 msgid "List of changed options"
-msgstr ""
+msgstr "Megváltozott beállítások listálja"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:176
 msgid "List of structs"
-msgstr ""
+msgstr "Struktúrák listája"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:173
 msgid "List of user aliases"
-msgstr ""
+msgstr "A felhasználói álnevek listája"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:161
 msgid "List of user functions"
-msgstr ""
+msgstr "A felhasználói függvények listája"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:170
 msgid "List of user rules"
-msgstr ""
+msgstr "A felhasználói szabályok listája"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:158
 msgid "List of user variables"
-msgstr ""
+msgstr "A felhasználói változók listája"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:179
 msgid "List of user-defined derivatives"
-msgstr ""
+msgstr "A felhasználói derivatívák listája"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:185
 msgid "List of user-defined let rule packages"
-msgstr ""
+msgstr "A felhasználó által megadott letiltási szabálycsomagok listája"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:182
 msgid "List of user-defined properties"
-msgstr ""
+msgstr "A felhasználó által megadott tulajdonságok"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5906
 msgid "List with values"
@@ -4216,7 +4216,7 @@ msgstr "A Maxima betöltötte a %s fájlt."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1742
 msgid "Maxima has sent a new variable value."
-msgstr ""
+msgstr "A Maxima új változó értéket küldött."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1244
 msgid "Maxima has terminated."
@@ -4277,7 +4277,7 @@ msgstr "A Maxima új, automatikusan kiegészülő szimbólumokat küld."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1760
 msgid "Maxima sends us a new set of variables for the watch list."
-msgstr ""
+msgstr "A Maxima új változót küld nekünk a figyelők listájához."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:525
 msgid "Maxima started. Waiting for connection..."
@@ -5244,7 +5244,7 @@ msgstr "Maxima kimenetelének olvasása"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:509
 #, c-format
 msgid "Reading Maxima output: %li bytes"
-msgstr ""
+msgstr "Maxima kimenet olvasása:%li bájt"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:493
 msgid "Ready for user input"
@@ -5306,7 +5306,7 @@ msgstr "A cella Maximához küldésének megtagadása: "
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:190
 msgid "Remove"
-msgstr ""
+msgstr "Eltávolítás"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:776
 msgid "Remove All Output"
@@ -5314,7 +5314,7 @@ msgstr "A&z összes kimenet eltávolítása"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:196
 msgid "Remove all"
-msgstr ""
+msgstr "Az összes eltávolítása"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1187
 msgid ""
@@ -5603,6 +5603,8 @@ msgid ""
 "Save failed. The erroneous XML data has been put on the clipboard in order "
 "to allow to debug it."
 msgstr ""
+"A mentés sikertelen. A hibás XML-adatok  hibakeresés céljából vágólapra "
+"kerületek."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:374
 msgid ""
@@ -7068,7 +7070,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:283
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:425
 msgid "Undefined"
-msgstr ""
+msgstr "Nem definiált"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1093
 msgid "Underlined"
@@ -7266,7 +7268,7 @@ msgstr "Érték:"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:33
 msgid "Variable"
-msgstr ""
+msgstr "Változó"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:48
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:144
@@ -7352,6 +7354,8 @@ msgid ""
 "Warning: GTK_IM_MODULE is set to \"xim\" which means that some hotkeys might "
 "not work."
 msgstr ""
+"Figyelem: A GTK_IM_MODULE értéke \"xim\", ami azt jelenti, hogy egyes "
+"gyorsbillentyűk nem működnek."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3198
 msgid "Welcome to wxMaxima"
@@ -7551,6 +7555,8 @@ msgid ""
 "_%d.gif\"  alt=\"Animated Diagram\" loading=\"lazy\" style=\"max-width:90%%;"
 "\" />\n"
 msgstr ""
+"_%d.gif\"  alt=\"Animated Diagram\" loading=\"lazy\" style=\"max-width:90%%;"
+"\" />\n"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:5662
 #, c-format
@@ -7558,6 +7564,8 @@ msgid ""
 "_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" loading=\"lazy"
 "\" />"
 msgstr ""
+"_%d.gif\" alt=\"Animated Diagram\" style=\"max-width:90%%;\" loading=\"lazy"
+"\" />"
 
 #: /home/gunter/src/wxmaxima/src/ListSortWiz.cpp:46
 msgid "a>b"
