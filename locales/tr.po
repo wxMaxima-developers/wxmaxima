@@ -111,7 +111,7 @@ msgstr "&Sınır Değeri Problemi"
 
 #: ../src/wxMaximaFrame.cpp:871
 msgid "&Bug Report"
-msgstr "Hata Raporu"
+msgstr "&Hata Raporu"
 
 #: ../src/wxMaximaFrame.cpp:721
 msgid "&Calculus"
@@ -163,7 +163,7 @@ msgstr "&Diferansiyelini bul"
 
 #: ../src/wxMaximaFrame.cpp:461
 msgid "&Edit"
-msgstr "&Düzenle"
+msgstr "&Düzen"
 
 #: ../src/wxMaximaFrame.cpp:605
 msgid "&Eliminate Variable..."
@@ -191,7 +191,7 @@ msgstr "&Üstel Hale Getir"
 
 #: ../src/wxMaximaFrame.cpp:383
 msgid "&Export..."
-msgstr "&Çıkar"
+msgstr "&Çıkar..."
 
 #: ../src/wxMaximaFrame.cpp:730
 msgid "&Factor Expression"
@@ -219,7 +219,7 @@ msgstr "&Yardım"
 
 #: ../src/wxMaximaFrame.cpp:673
 msgid "&Integrate..."
-msgstr "&İntegral"
+msgstr "&İntegralini al..."
 
 #: ../src/wxMaximaFrame.cpp:541
 msgid "&Interrupt\tCtrl-."
@@ -239,7 +239,7 @@ msgstr "&Paket Yükle\tCtrl-L"
 
 #: ../src/wxMaximaFrame.cpp:665
 msgid "&Map to List..."
-msgstr "&Listeye Eşle"
+msgstr "&Listeye Eşle..."
 
 #: ../src/wxMaximaFrame.cpp:580
 msgid "&Maxima"
@@ -328,7 +328,7 @@ msgstr "&Trigonomtrik Sadeleştir"
 
 #: ../src/wxMaximaFrame.cpp:584
 msgid "&Solve..."
-msgstr "&Çöz"
+msgstr "&Çöz..."
 
 #: ../src/Plot2dWiz.cpp:33
 msgid "&Special"
@@ -364,7 +364,8 @@ msgstr "- Sonsuz"
 msgid ""
 "... [suppressed additional lines since the output is longer than allowed in "
 "the configuration] "
-msgstr "....[Yapılandırmada izin verilenden daha uzun bir çıktı olduğundan çıkarılmış ek satırlar]"
+msgstr "....[Yapılandırmada izin verilenden daha uzun bir çıktı olduğundan"
+"çıkarılmış ek satırlar]"
 
 #: ../src/wxMaxima.cpp:4275
 msgid "<br>Lisp: "
@@ -394,7 +395,7 @@ msgstr ""
 
 #: ../src/wxMaximaFrame.cpp:627
 msgid "A&t Value..."
-msgstr "&Başlangıç Şartı"
+msgstr "&Başlangıç Şartı..."
 
 #: ../src/Config.cpp:549
 msgid "Abort evaluation on error"
@@ -519,7 +520,7 @@ msgstr "Bat Dosyaları (*.bat)|*.bat|tümü|*"
 
 #: ../src/wxMaxima.cpp:2623
 msgid "Batch File"
-msgstr "Dosya Kütüğü"
+msgstr "Toplu İş Dosyası "
 
 #: ../data/tips.txt:25 ../data/tips.txt:26
 msgid ""
@@ -646,7 +647,7 @@ msgstr ""
 "Varsayılan olarak -enter- tuşu bir alt satıra geçmek için kullanılırken -"
 "Shift+Enter kullanıcı tarafından girilen komutların Maxima tarafından  "
 "değerlendirmeye alınması\\ hesaplanması için kullanılır.Değerlendirme için "
-"sadece -Enter- tuşu kullanılmak istenirse'Düzenle-> Yapılandır'a bastıktan "
+"sadece -Enter- tuşu kullanılmak istenirse'Düzen-> Yapılandır'a bastıktan "
 "sonra açılan pencerede 'Enter tuşu komutları değerlendirir'sekmesi "
 "tıklanmalıdır.Tersi için tekrar tıklanarak işaret kaldırılır."
 
@@ -2420,7 +2421,7 @@ msgstr "Hücreleri birleştir"
 
 #: ../src/wxMaximaFrame.cpp:514
 msgid "Merge the text from two input cells into one"
-msgstr ""
+msgstr "Metni iki giriş hücresinden bire birleştir"
 
 #: ../src/wxMaxima.cpp:2378
 msgid "Message from the stdout of Maxima: "
@@ -2702,7 +2703,7 @@ msgstr "Pasta dilimi"
 
 #: ../src/wxMaxima.cpp:1730
 msgid "Please configure wxMaxima with 'Edit->Configure'."
-msgstr "Lütfen wxMaxima'yı 'Düzenle-> Yapılandır' ile yapılandırınız."
+msgstr "Lütfen wxMaxima'yı 'Düzen-> Yapılandır' ile yapılandırınız."
 
 #: ../src/Config.cpp:1300
 msgid "Please restart wxMaxima for changes to take effect!"
@@ -3657,7 +3658,7 @@ msgid ""
 ">Configure' dialog."
 msgstr ""
 "Yeni oturumlar için wxMaxima pencersinin boyutunu ve konumunu kaydetmek "
-"isterseniz 'Düzenle-> Yapılandır' menüsünden ilgili kutuyu tklayın."
+"isterseniz 'Düzen-> Yapılandır' menüsünden ilgili kutuyu tklayın."
 
 #: ../data/tips.txt:1
 msgid ""
@@ -4161,7 +4162,7 @@ msgid ""
 msgstr ""
 "wxMaxima Maxima'yı bulamadı!\n"
 "\n"
-"Lütfen wxMaxima'yı 'Düzenle->Yapılandır' ile yapılandır.\n"
+"Lütfen wxMaxima'yı 'Düzen->Yapılandır' ile yapılandır.\n"
 "Sonra da Maxima'yı 'Maxima->Maxima'yı yeniden başlat' ile başlatın."
 
 #: ../src/wxMaxima.cpp:1968
@@ -4171,6 +4172,7 @@ msgid ""
 "Please check your installation."
 msgstr ""
 "wxMaxima yardım dosyalarını bulamadı.\n"
+"\n"
 "Kurulumunuzu kontrol edin lütfen."
 
 #: ../src/wxMaxima.cpp:1808
@@ -4888,7 +4890,7 @@ msgstr "evet"
 #~ "You can delete output/input group if you select the input label and "
 #~ "choose 'Edit->Delete selection' from menus."
 #~ msgstr ""
-#~ "Eğer GİRDİnin etiketini seçer ve menüden 'Düzenle-> Sil "
+#~ "Eğer GİRDİnin etiketini seçer ve menüden 'Düzen-> Sil "
 #~ "Seçileni'seçerseniz,GİRDİ\\ÇIKTI grubunu silebilirsiniz."
 
 #~ msgid ""
