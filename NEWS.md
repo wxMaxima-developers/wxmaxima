@@ -1,3 +1,11 @@
+# wxMaxima 19.07.0 - Stable
+ * Many improvements and bugfixes in the LaTeX and HTML export function
+ * Many updated translations
+ * Resolved a freeze on autocompletion
+ * A sidebar that shows the contents of variables
+ * Simplified the recalculation logic in order to squash the remaining bugs
+ * Simplified the sync between input and output cells
+
 # wxMaxima 19.05.7 - Stable
  * In conjunction with a new enough maxima worksheets can now start
    with a :lisp command.

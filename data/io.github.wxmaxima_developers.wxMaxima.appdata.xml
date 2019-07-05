@@ -57,6 +57,18 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="19.07.0" date="2019-07-05">
+      <description>
+        <ul>
+          <li>Many improvements and bugfixes in the LaTeX and HTML export function</li>
+          <li>Many updated translations</li>
+          <li>Resolved a freeze on autocompletion</li>
+          <li>A sidebar that shows the contents of variables</li>
+	  <li>Simplified the recalculation logic in order to squash the remaining bugs</li>
+	  <li>Simplified the sync between input and output cells</li>
+        </ul>
+      </description>
+    </release>
     <release version="19.05.7" date="2019-05-30">
       <description>
         <ul>
