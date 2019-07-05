@@ -785,7 +785,7 @@ void Configuration::WriteStyles(wxString file)
   config->Write(wxT("fontEncoding"), static_cast<int>(m_fontEncoding));
   config->Write(wxT("Style/Math/fontname"), m_mathFontName);
   
-  m_styles[TS_DEFAULT].Read(config, "Style/Default/");
+  m_styles[TS_DEFAULT].Write(config, "Style/Default/");
   m_styles[TS_TEXT].Write(config, "Style/Text/");
   m_styles[TS_CODE_VARIABLE].Write(config, "Style/CodeHighlighting/Variable/");
   m_styles[TS_CODE_FUNCTION].Write(config, "Style/CodeHighlighting/Function/");
