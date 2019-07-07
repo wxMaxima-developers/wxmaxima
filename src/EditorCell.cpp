@@ -3477,7 +3477,7 @@ wxArrayString EditorCell::StringToTokens(wxString text)
       ++it;
     }
     // Find a keyword that starts at the current position
-    else if ((IsAlpha(Ch)) || (Ch == wxT('\\')))
+    else if (IsAlpha(Ch) || (Ch == '\\') || (Ch == '?'))
     {
       if (token != wxEmptyString)
       {
@@ -3485,7 +3485,14 @@ wxArrayString EditorCell::StringToTokens(wxString text)
         token = wxEmptyString;
       }
 
-      while ((it < text.end()) && IsAlphaNum(Ch = *it))
+      if(Ch == '?')
+      {
+        token += Ch;
+        it++;
+        Ch = *it;
+      }
+      
+      while ((it < text.end()) && (IsAlphaNum(Ch = *it)))
       {
         token += Ch;
 
@@ -3850,7 +3857,13 @@ void EditorCell::StyleTextCode()
       }
 
       // Text
-      if ((IsAlpha(token[0])) || (token[0] == wxT('\\')))
+      if ((IsAlpha(token[0])) || (token[0] == '\\') ||
+          // '?' might be the 1st letter of a variable name or an help operator
+          // or an non-infix operator of some kind
+          (
+            (token[0] == '?') && (token.Length() > 1)
+            )
+        )
       {
         // Sometimes we can differ between variables and functions by the context.
         // But I assume there cannot be an algorithm that always makes
