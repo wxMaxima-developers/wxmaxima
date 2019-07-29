@@ -1845,15 +1845,19 @@ void wxMaxima::ReadPrompt(wxString &data)
   o.Trim(true);
   o.Trim(false);
   // Input prompts have a length > 0 and end in a number followed by a ")".
-  // They also begin with a "(". Questions (hopefully)
+  // Depending on ibase the digits of the number might lie between 'A' and 'Z',
+  // too. Input prompts also begin with a "(". Questions (hopefully)
   // don't do that; Lisp prompts look like question prompts.
   if (
     (
       (o.Length() > 2) &&
       o.StartsWith("(%") &&
       o.EndsWith(")") &&
-      (o[o.Length()-2] >= (wxT('0'))) &&
-      (o[o.Length()-2] <= (wxT('9')))
+      ((o[o.Length()-2] >= (wxT('0'))) &&
+       (o[o.Length()-2] <= (wxT('9'))) ||
+       (o[o.Length()-2] >= (wxT('A'))) &&
+       (o[o.Length()-2] <= (wxT('Z')))
+        )
       ) ||
     m_inLispMode ||
     (o.StartsWith(wxT("MAXIMA>"))) ||
