@@ -4919,6 +4919,7 @@ bool Worksheet::ExportToHTML(wxString file)
   wxString colorCodeNumber = wxT("rgb(128,64,0)");
   wxString colorCodeString = wxT("rgb(0,0,128)");
   wxString colorCodeOperator = wxT("rgb(0,0,128)");
+  wxString colorCodeLisp = wxT("rgb(255,0,128)");
   wxString colorCodeEndOfLine = wxT("rgb(192,192,192)");
 
 
@@ -4985,6 +4986,7 @@ bool Worksheet::ExportToHTML(wxString file)
   config->Read(wxT("Style/CodeHighlighting/Number/color"), &colorCodeNumber);
   config->Read(wxT("Style/CodeHighlighting/String/color"), &colorCodeString);
   config->Read(wxT("Style/CodeHighlighting/Operator/color"), &colorCodeOperator);
+  config->Read(wxT("Style/CodeHighlighting/Lisp/color"), &colorCodeLisp);
 
   // read bold and italic
   config->Read(wxT("Style/Input/bold"), &boldInput);
@@ -5161,6 +5163,19 @@ bool Worksheet::ExportToHTML(wxString file)
   {
     wxColour color(colorCodeOperator);
     css << wxT(".code_operator {\n");
+    css << wxT("  color: ") +
+           wxString::Format(wxT("rgb(%d,%d,%d)"),
+                            color.Red(),
+                            color.Green(),
+                            color.Blue()) +
+           wxT(";\n");
+    css << wxT("}\n");
+  }
+
+  if (colorCodeLisp.Length())
+  {
+    wxColour color(colorCodeLisp);
+    css << wxT(".code_lisp {\n");
     css << wxT("  color: ") +
            wxString::Format(wxT("rgb(%d,%d,%d)"),
                             color.Red(),

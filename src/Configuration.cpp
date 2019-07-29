@@ -233,6 +233,7 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_styles[TS_CODE_NUMBER].Set(_("Code highlighting: Numbers"),wxColor(128,64,0), false, true, false);
   m_styles[TS_CODE_STRING].Set(_("Code highlighting: Strings"),wxColor(0,0,128), false, true, false);
   m_styles[TS_CODE_OPERATOR].Set(_("Code highlighting: Operators"),*wxBLACK, false, true, false);
+  m_styles[TS_CODE_LISP].Set(_("Code highlighting: Lisp"),wxColor(255,0,128), false, true, false);
   m_styles[TS_CODE_ENDOFLINE].Set(_("Code highlighting: End of line"),wxColor(128,128,128), false, true, false);
   m_styles[TS_GREEK_CONSTANT].Set(_("Greek constants"),*wxBLACK, false, true, false);
   m_styles[TS_HEADING6].Set(_("Heading 6"),*wxBLACK, true, false, false, 14);
@@ -735,6 +736,7 @@ void Configuration::ReadStyles(wxString file)
   m_styles[TS_CODE_NUMBER].Read(config, "Style/CodeHighlighting/Number/");
   m_styles[TS_CODE_STRING].Read(config, "Style/CodeHighlighting/String/");
   m_styles[TS_CODE_OPERATOR].Read(config, "Style/CodeHighlighting/Operator/");
+  m_styles[TS_CODE_LISP].Read(config, "Style/CodeHighlighting/Lisp/");
   m_styles[TS_CODE_ENDOFLINE].Read(config, "Style/CodeHighlighting/EndOfLine/");
   m_styles[TS_HEADING6].Read(config, "Style/Heading6/");
   m_styles[TS_HEADING5].Read(config, "Style/Heading5/");
@@ -793,6 +795,7 @@ void Configuration::WriteStyles(wxString file)
   m_styles[TS_CODE_NUMBER].Write(config, "Style/CodeHighlighting/Number/");
   m_styles[TS_CODE_STRING].Write(config, "Style/CodeHighlighting/String/");
   m_styles[TS_CODE_OPERATOR].Write(config, "Style/CodeHighlighting/Operator/");
+  m_styles[TS_CODE_LISP].Write(config, "Style/CodeHighlighting/Lisp/");
   m_styles[TS_CODE_ENDOFLINE].Write(config, "Style/CodeHighlighting/EndOfLine/");
   m_styles[TS_HEADING6].Write(config, "Style/Heading6/");
   m_styles[TS_HEADING5].Write(config, "Style/Heading5/");

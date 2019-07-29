@@ -13,7 +13,7 @@ set(PACKAGE wxMaxima)
 if(POLICY CMP0066)
     cmake_policy(SET CMP0066 NEW)
 endif()
-
+ 
 cmake_minimum_required(VERSION 3.4)
 
 # Turn off many warnings wxWidgets triggers on MSVC

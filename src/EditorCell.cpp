@@ -35,10 +35,9 @@
 #include "MarkDown.h"
 #include "wxMaximaFrame.h"
 #include <wx/tokenzr.h>
+#include "MaximaTokenizer.h"
 
 #define ESC_CHAR wxT('\xA6')
-
-const wxString operators = wxT("+-*/^:=#'!;$");
 
 EditorCell::EditorCell(Cell *parent, Configuration **config,
                        CellPointers *cellPointers, wxString text) : Cell(parent, config)
@@ -687,6 +686,9 @@ wxString EditorCell::ToHTML()
             break;
           case TS_CODE_OPERATOR:
             retval += wxT("<span class=\"code_operator\">") + text + wxT("</span>");
+            break;
+          case TS_CODE_LISP:
+            retval += wxT("<span class=\"code_lisp\">") + text + wxT("</span>");
             break;
           case TS_CODE_ENDOFLINE:
           default:
@@ -3382,227 +3384,6 @@ void EditorCell::ClearUndo()
   m_historyPosition = -1;
 }
 
-bool EditorCell::IsAlpha(wxChar ch)
-{
-  static const wxString alphas = wxT("\\_%");
-
-  if (wxIsalpha(ch))
-    return true;
-
-  return alphas.Find(ch) != wxNOT_FOUND;
-
-}
-
-bool EditorCell::IsNum(wxChar ch)
-{
-  return ch >= '0' && ch <= '9';
-}
-
-bool EditorCell::IsAlphaNum(wxChar ch)
-{
-  return IsAlpha(ch) || IsNum(ch);
-}
-
-wxArrayString EditorCell::StringToTokens(wxString text)
-{
-  wxArrayString retval;
-  wxString token;
-
-  wxString::const_iterator it = text.begin();
-
-  while (it < text.end())
-  {
-    // Determine the current char and the one that will follow it
-    wxChar Ch = *it;
-    wxString::const_iterator it2(it);
-    if(it2 < text.end())
-      ++it2;
-    wxChar nextChar;
-
-    if(it2 < text.end())
-      nextChar = *it2;
-    else
-      nextChar = wxT(' ');
-
-    // Check for newline characters (hard+soft line break)
-    if ((Ch == wxT('\n')) || (Ch == wxT('\r')))
-    {
-      if (token != wxEmptyString)
-      {
-        retval.Add(token);
-        token = wxEmptyString;
-      }
-      retval.Add(wxT("\n"));
-      ++it;
-    }
-    // A minus and a plus are special tokens as they can be both
-    // operators or part of a number.
-    else if (
-            (Ch == wxT('+')) ||
-            (Ch == wxT('-')) ||
-            (Ch == wxT('\x2212')) // An unicode minus sign
-            )
-    {
-      if (token != wxEmptyString)
-        retval.Add(token);
-      token = wxString(Ch);
-      retval.Add(token);
-      ++it;
-      token = wxEmptyString;
-    }
-    // Check for "comment start" or "comment end" markers
-    else if (((Ch == '/') && ((nextChar == wxT('*')) || (nextChar == wxT('\xB7')))) ||
-             (((Ch == wxT('*')) || (Ch == wxT('\xB7'))) && ((nextChar == wxT('/')))))
-    {
-      if (token != wxEmptyString)
-      {
-        retval.Add(token);
-        token = wxEmptyString;
-      }
-      retval.Add(wxString(Ch) + nextChar);
-      ++it;
-      if(it < text.end())
-        ++it;
-    }
-
-    // Find operators that start at the current position
-    else if (operators.Find(Ch) != wxNOT_FOUND)
-    {
-      if (token != wxEmptyString)
-      {
-        retval.Add(token);
-        token = wxEmptyString;
-      }
-      retval.Add(wxString(Ch));
-      ++it;
-    }
-    // Find a keyword that starts at the current position
-    else if (IsAlpha(Ch) || (Ch == '\\') || (Ch == '?'))
-    {
-      if (token != wxEmptyString)
-      {
-        retval.Add(token);
-        token = wxEmptyString;
-      }
-
-      if(Ch == '?')
-      {
-        token += Ch;
-        it++;
-        Ch = *it;
-      }
-      
-      while ((it < text.end()) && (IsAlphaNum(Ch = *it)))
-      {
-        token += Ch;
-
-        if (Ch == wxT('\\'))
-        {
-          ++it;
-          if (it < text.end())
-          {
-            Ch = *it;
-            if (Ch != wxT('\n'))
-              token += Ch;
-            else
-            {
-              retval.Add(token);
-              token = wxEmptyString;
-
-              break;
-            }
-          }
-        }
-        if(it < text.end())
-          ++it;
-      }
-      retval.Add(token);
-      token = wxEmptyString;
-    }
-    // Find a string that starts at the current position
-    else if (Ch == wxT('\"'))
-    {
-      if (token != wxEmptyString)
-        retval.Add(token);
-
-      // Add the opening quote
-      token = Ch;
-      ++it;
-
-      // Add the string contents
-      while (it < text.end())
-      {
-        Ch = *it;
-        token += Ch;
-        ++it;
-        if(Ch == wxT('\\'))
-        {
-          if(it < text.end())
-          {
-            token += *it;
-            ++it;
-          }
-        }
-        else if(Ch == wxT('\"'))
-          break;
-      }
-      retval.Add(token);
-      token = wxEmptyString;
-    }
-    // Find a number
-    else if (IsNum(Ch))
-    {
-      if (token != wxEmptyString)
-      {
-        retval.Add(token);
-        token = wxEmptyString;
-      }
-
-      while ((it < text.end()) &&
-             (IsNum(Ch) ||
-              ((Ch >= wxT('a')) && (Ch <= wxT('z'))) ||
-              ((Ch >= wxT('A')) && (Ch <= wxT('Z')))
-             )
-              )
-      {
-        token += Ch;
-        if (++it < text.end()) {
-          Ch = *it;
-        }
-      }
-
-      retval.Add(token);
-      token = wxEmptyString;
-    }
-    // Merge consecutive spaces into one single token
-    else if (Ch == wxT(' '))
-    {
-      while ((it < text.end()) &&
-             (Ch == wxT(' '))
-              )
-      {
-        token += Ch;
-        if (++it < text.end()) {
-          Ch = *it;
-        }
-      }
-
-      retval.Add(token);
-      token = wxEmptyString;
-    }
-    else
-    {
-      token = token + Ch;
-      ++it;
-    }
-  }
-
-  // Add the last token we detected to the token list
-  retval.Add(token);
-
-  return retval;
-}
-
 void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidth, const wxString &token,
                                            unsigned int charInCell, wxString &text, size_t &lastSpacePos,
                                            int &indentationPixels)
@@ -3683,251 +3464,88 @@ void EditorCell::StyleTextCode()
   }
 
   // Split the line into commands, numbers etc.
-  wxArrayString tokens = StringToTokens(textToStyle);
+  MaximaTokenizer::TokenList tokens = MaximaTokenizer(textToStyle).GetTokens();
 
   // Now handle the text pieces one by one
   wxString lastTokenWithText;
   int pos = 0;
   int lineWidth = 0;
-  wxString token;
-  if(tokens.GetCount() > 0)
-    for (size_t i = 0; i < tokens.GetCount(); i++)
+  MaximaTokenizer::Token token;
+
+  for(MaximaTokenizer::TokenList::iterator it = tokens.begin(); it != tokens.end(); ++it)
+  {
+    pos += token.GetText().Length();
+    token = *(*it);
+    if (token.GetText().Length() < 1)
+      continue;
+    wxChar Ch = token.GetText()[0];
+    
+    // Handle Spaces
+    if (Ch == wxT(' '))
     {
-      pos += token.Length();
-      token = tokens[i];
-      if (token.Length() < 1)
-        continue;
-      wxChar Ch = token[0];
-
-      // Save the last non-whitespace character in lastChar -
-      // or a space if there is no such char.
-      wxChar lastChar = wxT(' ');
-      if (lastTokenWithText != wxEmptyString)
-        lastChar = lastTokenWithText.Right(1)[0];
-      wxString tmp = token;
-      tmp = tmp.Trim();
-      if (tmp != wxEmptyString)
-        lastTokenWithText = tmp;
-
-      // Save the next non-whitespace character in lastChar -
-      // or a space if there is no such char.
-      wxChar nextChar = wxT(' ');
-      size_t o = i + 1;
-      while (o < tokens.GetCount())
-      {
-        wxString nextToken = tokens[o];
-        nextToken = nextToken.Trim(false);
-        if (nextToken != wxEmptyString)
-        {
-          nextChar = nextToken[0];
-        break;
-        }
-        o++;
-      }
-
-      // Handle Spaces
-      if (Ch == wxT(' '))
-      {
-        // All spaces except the last one (that could cause a line break)
+      // All spaces except the last one (that could cause a line break)
       // share the same token
-        if (token.Length() > 1)
-          m_styledText.push_back(StyledText(token.Right(token.Length()-1)));
-
-        // Now we push the last space to the list of tokens and remember this
-        // space as the space that potentially serves as the next point to
-        // introduce a soft line break.
-        m_styledText.push_back(StyledText(wxT(" ")));
-        if (!m_styledText.empty())
-        {
-          lastSpace = &m_styledText.back();
-          lastSpacePos = pos + token.Length() - 1;
-        }
-        else
-        {
-          lastSpace = NULL;
-          lastSpacePos = -1;
-        }
-
-        continue;
+      if (token.GetText().Length() > 1)
+        m_styledText.push_back(StyledText(token.GetText().Right(token.GetText().Length()-1)));
+      
+      // Now we push the last space to the list of tokens and remember this
+      // space as the space that potentially serves as the next point to
+      // introduce a soft line break.
+      m_styledText.push_back(StyledText(wxT(" ")));
+      if (!m_styledText.empty())
+      {
+        lastSpace = &m_styledText.back();
+        lastSpacePos = pos + token.GetText().Length() - 1;
       }
       else
-      // Handle Newlines
-      if (Ch == wxT('\n'))
       {
         lastSpace = NULL;
-        lineWidth = 0;
-        m_styledText.push_back(StyledText(token));
-        int charWidth, height;
-        configuration->GetDC()->GetTextExtent(wxT(" "), &charWidth, &height);
-        indentationPixels = charWidth * GetIndentDepth(m_text, pos);
-        continue;
+        lastSpacePos = -1;
       }
-
-      // Handle strings
-      if (token.StartsWith(wxT("\"")))
-      {
-        // Handle the first few lines of a multi-line string
-        int pos;
-        while((pos = token.Find(wxT('\n'))) != wxNOT_FOUND)
-        {
-          wxString line = token.Left(pos);
-          m_styledText.push_back(StyledText(TS_CODE_STRING, line));
-          m_styledText.push_back(wxString(token[pos]));
-          token = token.Right(token.length()-pos-1);
-        }
-        // Handle the last line of a multi-line string
-        if(token != wxEmptyString)
-          m_styledText.push_back(StyledText(TS_CODE_STRING, token));
-        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
-                                  indentationPixels);
-        continue;
-      }
-
-      // Plus and Minus, optionally as part of a number
-      if ((Ch == wxT('+')) ||
-          (Ch == wxT('-')) ||
-          (Ch == wxT('\x2212'))
-        )
-      {
-        if (
-          (nextChar >= wxT('0')) &&
-          (nextChar <= wxT('9'))
-          )
-        {
-          // Our sign precedes a number.
-          if (
-            (wxIsalnum(lastChar)) ||
-            (lastChar == wxT('%')) ||
-            (lastChar == wxT(')')) ||
-            (lastChar == wxT('}')) ||
-            (lastChar == wxT(']'))
-            )
-          {
-            m_styledText.push_back(StyledText(TS_CODE_OPERATOR, token));
-          }
-          else
-          {
-            m_styledText.push_back(StyledText(TS_CODE_NUMBER, token));
-          }
-        }
-        else
-          m_styledText.push_back(StyledText(TS_CODE_OPERATOR, token));
-
-        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
-                                  indentationPixels);
-        continue;
-      }
-
-      // Comments
-      if ((token == wxT("/*")) || (token == wxT("/\xB7")))
-      {
-        m_styledText.push_back(StyledText(TS_CODE_COMMENT, token));
-        while ((i + 1 < tokens.GetCount()) && (token != wxT("*/")) && (token != wxT("\xB7/")))
-        {
-          i++;
-          token = tokens[i];
-          m_styledText.push_back(StyledText(TS_CODE_COMMENT, token));
-        }
-
-        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
-                                  indentationPixels);
-        continue;
-      }
-
-      // End of a command
-      if (operators.Find(token) != wxNOT_FOUND)
-      {
-        if ((token == wxT('$')) || (token == wxT(';')))
-          m_styledText.push_back(StyledText(TS_CODE_ENDOFLINE, token));
-        else
-          m_styledText.push_back(StyledText(TS_CODE_OPERATOR, token));
-
-        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
-                                  indentationPixels);
-        continue;
-      }
-
-      // Numbers
-      if (isdigit(token[0]) || ((token[0] == wxT('.')) && (nextChar >= wxT('0')) && (nextChar <= wxT('9'))))
-      {
-        m_styledText.push_back(StyledText(TS_CODE_NUMBER, token));
-        HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
-                                  indentationPixels);
-        continue;
-      }
-
-      // Text
-      if ((IsAlpha(token[0])) || (token[0] == '\\') ||
-          // '?' might be the 1st letter of a variable name or an help operator
-          // or an non-infix operator of some kind
-          (
-            (token[0] == '?') && (token.Length() > 1)
-            )
-        )
-      {
-        // Sometimes we can differ between variables and functions by the context.
-        // But I assume there cannot be an algorithm that always makes
-        // the right decision here:
-        //  - Function names can be used without the parenthesis that make out
-        //    functions.
-        //  - The same name can stand for a function and a variable
-        //  - There are indexed functions
-        //  - using lambda a user can store a function in a variable
-        //  - and is U_C1(t) really meant as a function or does it represent a variable
-        //    named U_C1 that depends on t?
-        if ((tokens.GetCount() > i + 1))
-        {
-          wxString nextToken = tokens[i + 1];
-          nextToken = nextToken.Trim(false);
-
-          if (token == wxT("for") ||
-              token == wxT("in") ||
-              token == wxT("then") ||
-              token == wxT("while") ||
-              token == wxT("do") ||
-              token == wxT("thru") ||
-              token == wxT("next") ||
-              token == wxT("step") ||
-              token == wxT("unless") ||
-              token == wxT("from") ||
-              token == wxT("if") ||
-              token == wxT("else") ||
-              token == wxT("elif") ||
-              token == wxT("and") ||
-              token == wxT("or") ||
-              token == wxT("not") ||
-              token == wxT("not") ||
-              token == wxT("true") ||
-              token == wxT("false"))
-            m_styledText.push_back(token);
-          else if (nextChar == wxT('('))
-          {
-            m_styledText.push_back(StyledText(TS_CODE_FUNCTION, token));
-            m_wordList.Add(token);
-          }
-          else
-          {
-            m_styledText.push_back(StyledText(TS_CODE_VARIABLE, token));
-            m_wordList.Add(token);
-          }
-          HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
-                                    indentationPixels);
-          continue;
-        }
-        else
-        {
-          m_styledText.push_back(StyledText(TS_CODE_VARIABLE, token));
-          m_wordList.Add(token);
-
-          HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
-                                    indentationPixels);
-          continue;
-        }
-      }
-
-      m_styledText.push_back(StyledText(token));
-      //      HandleSoftLineBreaks_Code(lastSpace,lineWidth,token,pos,m_text,lastSpacePos);
+      
+      continue;
     }
+    else
+      // Most things can contain Newlines - that we want as separate tokens
+    {
+      wxString txt = token.GetText();
+      wxString line;      
+      for (wxString::iterator it2 = txt.begin(); it2 < txt.end(); ++it2)
+      {
+        if(*it2 != '\n')
+          line +=wxString(*it2);
+        else
+        {
+          if(line != wxEmptyString)
+            m_styledText.push_back(StyledText(token.GetStyle(), line));
+          m_styledText.push_back(StyledText(token.GetStyle(), "\n"));
+          line = wxEmptyString;
+        }
+      }
+      if(line != wxEmptyString)
+        m_styledText.push_back(StyledText(token.GetStyle(), line));
+      HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
+                                indentationPixels);
+      continue;
+    }
+    // End of a command
+    if (token.GetStyle() == TS_CODE_ENDOFLINE)
+    {
+      m_styledText.push_back(StyledText(TS_CODE_ENDOFLINE, token));
+      continue;
+    }
+    
+    // Numbers
+    if (token.GetStyle() == TS_CODE_NUMBER)
+    {
+      m_styledText.push_back(StyledText(TS_CODE_NUMBER, token));
+      HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
+                                indentationPixels);
+      if ((token.GetStyle() == TS_CODE_VARIABLE) || (token.GetStyle() == TS_CODE_FUNCTION))
+        m_wordList.Add(token);
+      continue;
+    }
+  }
   m_wordList.Sort();
 }
 

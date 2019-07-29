@@ -29,7 +29,6 @@
 #include <vector>
 #include <list>
 #include <vector>
-#include <wx/tokenzr.h>
 
 /*! \file
 
@@ -562,12 +561,6 @@ public:
 private:
   //! Mark this cell as "Automatically answer questions".
   bool m_autoAnswer;
-  /*! Divide a string into tokens
-
-    Used when styling text.
-   */
-  wxArrayString StringToTokens(wxString string);
-
 #if defined __WXOSX__
 
   bool HandleCtrlCommand(wxKeyEvent &ev);
@@ -577,12 +570,6 @@ private:
   bool HandleSpecialKey(wxKeyEvent &ev);
 
   bool HandleOrdinaryKey(wxKeyEvent &ev);
-
-  bool IsAlpha(wxChar c);
-
-  bool IsNum(wxChar c);
-
-  bool IsAlphaNum(wxChar c);
 
   /*! A piece of styled text for syntax highlighting
 
