@@ -60,6 +60,56 @@ MaximaTokenizer::MaximaTokenizer(wxString commands)
       m_tokens.push_back(new Token(wxChar(Ch)));
       ++it;
     }
+    // Check for comments
+    else if ((Ch == '/') && ((nextChar == wxT('*')) || (nextChar == wxT('\xB7'))))
+    {
+      wxString token;
+      // Add the comment start
+      token+=*it;++it;
+      token+=*it;++it;
+
+      int commentDepth = 0;
+      wxChar lastCh = ' ';
+      while (it < commands.end())
+      {
+
+        // Handle escaped chars
+        if(*it == '\\')
+        {
+          token += *it;
+          it++;
+          if(it < commands.end())
+          {
+            token += *it;
+            it++;
+          }
+        }
+
+        // handle comment begins within comments.
+        if((lastCh == '/') && ((*it == '*') || (*it == wxT('\xB7'))))
+        {
+          commentDepth++;
+        }
+        // handle comment endings
+        if(((lastCh == '*') || (lastCh == wxT('\xB7'))) && (*it == '/'))
+        {
+          commentDepth--;
+          if(commentDepth < 0)
+          {
+            token += *it;
+            ++it;
+            break;
+          }
+        }
+        lastCh = *it;
+        if(it < commands.end())
+        {
+          token += *it;
+          ++it;
+        }
+      }
+      m_tokens.push_back(new Token(token, TS_CODE_COMMENT));
+    }
     // Handle operators and :lisp commands
     else if (Operators().Find(Ch) != wxNOT_FOUND)
     {
@@ -99,52 +149,6 @@ MaximaTokenizer::MaximaTokenizer(wxString commands)
         m_tokens.push_back(new Token(wxString(Ch), TS_CODE_OPERATOR));
         ++it;
       }
-    }
-    // Check for comments
-    else if ((Ch == '/') && ((nextChar == wxT('*')) || (nextChar == wxT('\xB7'))))
-    {
-      wxString token;
-      // Add the comment start
-      token+=*it;++it;
-      token+=*it;++it;
-
-      int commentDepth = 0;
-      wxChar lastCh = ' ';
-      while (it < commands.end())
-      {
-
-        // Handle escaped chars
-        if(*it == '\\')
-        {
-          token += *it;
-          it++;
-          if(it < commands.end())
-          {
-            token += *it;
-            it++;
-          }
-        }
-
-        // handle comment begins within comments.
-        if((lastCh == '/') && (*it == '*'))
-          commentDepth++;
-        // handle comment endings
-        if((lastCh == '*') && (*it == '/'))
-        {
-          commentDepth--;
-          if(commentDepth < 1)
-          {
-            token += *it;
-            break;
-          }
-        }
-        if(it < commands.end())
-        {
-          token += *it;
-          it++;
-        }
-      }      
-      m_tokens.push_back(new Token(token, TS_CODE_COMMENT));
     }
     // Handle strings
     else if (Ch == wxT('\"'))
