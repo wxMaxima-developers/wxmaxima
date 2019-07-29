@@ -69,10 +69,8 @@ MaximaTokenizer::MaximaTokenizer(wxString commands)
       token+=*it;++it;
 
       int commentDepth = 0;
-      wxChar lastCh = ' ';
       while (it < commands.end())
       {
-
         // Handle escaped chars
         if(*it == '\\')
         {
@@ -83,25 +81,44 @@ MaximaTokenizer::MaximaTokenizer(wxString commands)
             token += *it;
             it++;
           }
+          continue;
         }
+        
+        wxString::const_iterator it2(it);
+        if(it2 < commands.end())
+          ++it2;
+        wxChar nextCh = ' ';
+        if(it2 < commands.end())
+          nextCh = *it2;
 
         // handle comment begins within comments.
-        if((lastCh == '/') && ((*it == '*') || (*it == wxT('\xB7'))))
+        if((*it == '/') && ((nextCh == '*') || (nextCh == wxT('\xB7'))))
         {
           commentDepth++;
-        }
-        // handle comment endings
-        if(((lastCh == '*') || (lastCh == wxT('\xB7'))) && (*it == '/'))
-        {
-          commentDepth--;
-          if(commentDepth < 0)
+          token += *it;
+          it++;
+          if(it < commands.end())
           {
             token += *it;
-            ++it;
-            break;
+            it++;
           }
+          continue;
         }
-        lastCh = *it;
+        // handle comment endings
+        if(((*it == '*') || (*it == wxT('\xB7'))) && (nextCh == '/'))
+        {
+          commentDepth--;
+          token += *it;
+          it++;
+          if(it < commands.end())
+          {
+            token += *it;
+            it++;
+          }
+          if(commentDepth < 0)
+            break;
+          continue;
+        }
         if(it < commands.end())
         {
           token += *it;
