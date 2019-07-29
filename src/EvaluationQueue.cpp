@@ -28,6 +28,7 @@
 */
 
 #include "EvaluationQueue.h"
+#include "MaximaTokenizer.h"
 
 bool EvaluationQueue::Empty()
 {
@@ -135,142 +136,34 @@ void EvaluationQueue::AddTokens(GroupCell *cell)
 {
   if(cell == NULL)
     return;
-  
-  wxString commandString = cell->GetEditable()->GetValue();
-
-  m_knownAnswers = cell->m_knownAnswers;
-
+  MaximaTokenizer::TokenList tokens = MaximaTokenizer(cell->GetEditable()->GetValue()).GetTokens();
+  MaximaTokenizer::TokenList::iterator it;
   wxString token;
-
-  wxString::iterator it = commandString.begin();
   int index = 0;
-  
-  while(it != commandString.end())
+  for (it = tokens.begin(); it != tokens.end(); ++it)
   {
+    wxString itemText = (*it)->GetText();
+    TextStyle itemStyle = (*it)->GetStyle();
+    index += itemText.Length();
+    if(itemStyle != TS_CODE_COMMENT)
+      token += itemText;
 
-    // Add strings as a whole
-    if (*it == wxT('\"'))
+    if(itemStyle == TS_CODE_LISP)
     {
-      token += *it;
-      ++it;++index;
-      while ((it != commandString.end()) && (*it != wxT('\"')))
-      {
-        if (*it == wxT('\\'))
-        {
-          token += *it;
-          ++it;++index;
-        }
-        if(it != commandString.end())
-        {
-          token += *it;
-          ++it;++index;
-        }
-      }
-        // add the closing quote;
-      if(it != commandString.end())
-      {
-        token += *it;
-        ++it;++index;
-      }
+      m_commands.push_back(command(token, index));
+      token = wxEmptyString;
       continue;
     }
 
-    // :lisp -commands should be added as a whole
-    if (*it == wxT(':'))
+    if(itemStyle == TS_CODE_ENDOFLINE)
     {
-      wxString::iterator it2(it);
-      wxString chars;
-      for(int i=0; (i<6) && it2 != commandString.end(); i++)
-      {
-        chars += *it2;
-        ++it2;
-      }
-      if (chars.StartsWith(wxT(":lisp")))
-      {
-        while(it != commandString.end())
-        {
-          token += *it;
-          ++it;++index;
-        }
-        continue;
-      }
-    }
-
-    // Handle escaped chars
-    if (*it == wxT('\\'))
-    {
-      token += *it;
-      ++it;++index;
-      if(it != commandString.end())
-      {
-        token += *it;
-        ++it;++index;
-        continue;
-      }
-    }
-
-    // Skip comments
-    if (*it == wxT('/'))
-    {
-      wxString::iterator it2(it);
-      ++it2;
-      if((it2 != commandString.end()) && (*it2 == wxT('*')))
-      {
-        // Skip the comment start
-        ++it;++index;
-        if(it != commandString.end())
-        {
-          ++it;++index;
-        }
-
-        // skip the rest of the comment.
-        if(it != commandString.end())
-        {
-          wxChar lastCh = *it;
-          ++it;++index;
-          while ((it != commandString.end()) &&
-                 (! ((lastCh == wxT('*'))&&(*it == wxT('/'))))
-            )
-          {
-            lastCh = *it;
-            ++it;++index;
-          }
-        }
-        if(it != commandString.end())
-        {
-          ++it;++index;
-        }
-        continue;
-      }
-    }
-    // Add the current char to the current token
-    token += *it;
-
-    // If we ended a command we now have to add a new token to the list.
-    if (
-            (*it == wxT(';')) ||
-            (*it == wxT('$'))
-            )
-    {
-      // trim() the token to allow MathCtrl::TryEvaluateNextInQueue()
-      // to detect if the token is empty.
-      // The Trim(false) is needed in order to make a cell ending in a semicolon
-      // followed by a comment followed by a semicolon work.
-      token.Trim(false);
-      token.Trim(true);
-      if (token.Length() > 1)
-        m_commands.push_back(command(token, index));
+      m_commands.push_back(command(token, index));
       token = wxEmptyString;
+      continue;
     }
-    ++it;++index;
   }
-  // There might be a last token in the string we still haven't added.
-  // Let's trim() it first: This way MathCtrl::TryEvaluateNextInQueue()
-  // will detect if the token is empty.
-  token.Trim(false);
-  token.Trim(true);
-  if (token.Length() > 1)
-    m_commands.push_back(command(token, index));
+  
+  m_knownAnswers = cell->m_knownAnswers;
 }
 
 GroupCell *EvaluationQueue::GetCell()
