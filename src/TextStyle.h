@@ -43,6 +43,7 @@ public:
     m_italic = false;
     m_underlined = false;
     m_fontSize = 10;
+    m_color = *wxBlack;
   };
   //! Read thisstyle from a config source
   void Read(wxConfigBase *config, wxString where);

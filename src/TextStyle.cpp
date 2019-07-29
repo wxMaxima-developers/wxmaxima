@@ -28,15 +28,16 @@
 
 #include "TextStyle.h"
 
+
 void Style::Read(wxConfigBase *config, wxString where)
 {
   wxString tmp;
   wxColor col;
   if (config->Read(where + wxT("color"), &tmp))
     {
-        col = wxColor(tmp);
-        if(col.IsOk())
-          m_color = col;
+      col = wxColor(tmp);
+      if(col.IsOk())
+        m_color = col;
     }
   config->Read(where + wxT("bold"), &m_bold);
   config->Read(where + wxT("italic"), &m_italic);
