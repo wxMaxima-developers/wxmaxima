@@ -659,7 +659,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
  *
  * @param s The command string from which to remove comment expressions.
  */
-void wxMaxima::StripComments(wxString &s)
+void wxMaxima::StripLispComments(wxString &s)
 {
   if (s.StartsWith(wxT(":lisp\n")) || s.StartsWith(wxT(":lisp ")))
   {
@@ -697,7 +697,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
     if (addToHistory)
       AddToHistory(s);
 
-    StripComments(s);
+    StripLispComments(s);
 
     if (s.StartsWith(wxT(":lisp ")) || s.StartsWith(wxT(":lisp\n")))
       s.Replace(wxT("\n"), wxT(" "));

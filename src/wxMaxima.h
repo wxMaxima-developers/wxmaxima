@@ -173,7 +173,7 @@ public:
       m_exitAfterEval = exitaftereval;
     }
   
-  void StripComments(wxString &s);
+  void StripLispComments(wxString &s);
 
   void SendMaxima(wxString s, bool history = false);
 
