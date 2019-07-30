@@ -915,31 +915,36 @@ void EditorCell::Draw(wxPoint point1)
           lastStyle = -1;
           SetForeground();
         }
-
-        // replace "*" with centerdot and "-" by a Minus if requested
-//        if (configuration->GetChangeAsterisk())
-//        {
-//          TextToDraw.Replace(wxT("*"), wxT("\xB7"));
-//          if (m_type == MC_TYPE_INPUT)
-//            TextToDraw.Replace(wxT("-"), wxT("\x2212"));
-//        }
-
+        
         // Draw a char that shows we continue an indentation - if this is needed.
         if (textSnippet->GetIndentChar() != wxEmptyString)
           dc->DrawText(textSnippet->GetIndentChar(),
                       TextStartingpoint.x + lastIndent,
                       TextCurrentPoint.y - m_center);
 
-        dc->DrawText(TextToDraw,
-                    TextCurrentPoint.x,
-                    TextCurrentPoint.y - m_center);
-        /*
-        dc->DrawLine(TextCurrentPoint.x + Scale_Px(2),
-                    TextCurrentPoint.y - m_center,
-                    TextCurrentPoint.x + Scale_Px(2),
-                    TextCurrentPoint.y); */
+        // Determine the box the will be is in.
+        if(!textSnippet->SizeKnown())
+        {
+          dc->GetTextExtent(TextToDraw, &width, &height);
+          textSnippet->SetWidth(width);
+        }
+        else
+          width = textSnippet->GetWidth();
+        wxRect textRect(TextCurrentPoint.x,
+                        TextCurrentPoint.y - m_center,
+                        TextCurrentPoint.x + width,
+                        TextCurrentPoint.y - m_center + m_charHeight);
 
-        dc->GetTextExtent(TextToDraw, &width, &height);
+        // Draw the text only if it overlaps the update region
+        wxRect updateRegion = (*m_configuration)->GetUpdateRegion();
+        if(((!(*m_configuration)->ClipToDrawRegion())) ||
+           (updateRegion.Intersects(textRect) ||
+            updateRegion.Contains(textRect) ||
+            (updateRegion == textRect) || textRect.Contains(updateRegion)))
+          dc->DrawText(TextToDraw,
+                       TextCurrentPoint.x,
+                       TextCurrentPoint.y - m_center);
+        
         TextCurrentPoint.x += width;
       }
     }

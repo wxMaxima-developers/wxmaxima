@@ -51,6 +51,8 @@
   byte making iterating over every single char of the string the only way of
   determining which address char n is at. An iterator is the only way of not
   having to determine the address of every single char indepently. 
+
+  \todo Draw only tokens that are in the redraw region.
  */
 class EditorCell : public Cell
 {
@@ -594,6 +596,8 @@ private:
     int m_indentPixels;
     //! Chars that mark continued indentation
     wxString m_indentChar;
+    //! The cached width of this piece of text
+    int m_width;
   public:
     //! Defines a piece of styled text
     StyledText(TextStyle style, wxString text)
@@ -603,6 +607,7 @@ private:
       m_styleThisText = true;
       m_indentPixels = 0;
       m_indentChar = wxEmptyString;
+      m_width = -1;
     }
 
     /*! Defines a piece of text with the default style that possibly is indented
@@ -614,8 +619,13 @@ private:
       m_styleThisText = false;
       m_indentPixels = indentPixels;
       m_indentChar = indentChar;
+      m_width = -1;
     }
-    
+
+    void SetWidth(int width){m_width = width;}
+    void ResetSize(){SetWidth(-1);}
+    int GetWidth(){return m_width;}
+    bool SizeKnown(){return GetWidth() >= 0;}
     //! Returns the piece of text
     wxString GetText()
     {
