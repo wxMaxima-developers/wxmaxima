@@ -7967,7 +7967,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
   if (!delimiters.empty())
     return _("Un-closed parenthesis");
   
-  if(endingNeeded)
+  if((endingNeeded) && (!m_inLispMode))
     return _("No dollar ($) or semicolon (;) at the end of command");
   else
     return wxEmptyString;
