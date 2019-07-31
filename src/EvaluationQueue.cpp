@@ -136,7 +136,7 @@ void EvaluationQueue::AddTokens(GroupCell *cell)
 {
   if(cell == NULL)
     return;
-  MaximaTokenizer::TokenList tokens = MaximaTokenizer(cell->GetEditable()->GetValue()).GetTokens();
+  MaximaTokenizer::TokenList tokens = cell->GetEditable()->GetTokens();
   MaximaTokenizer::TokenList::iterator it;
   wxString token;
   int index = 0;

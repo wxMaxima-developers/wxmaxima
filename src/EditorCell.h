@@ -29,6 +29,7 @@
 #include <vector>
 #include <list>
 #include <vector>
+#include "MaximaTokenizer.h"
 
 /*! \file
 
@@ -560,6 +561,9 @@ public:
     SetSelection(m_lastSelectionStart, m_text.Length());
   }
 
+  //! Get the lost of commands, parenthesis, strings and whitespaces in a code cell
+  MaximaTokenizer::TokenList GetTokens(){return m_tokens;}
+
 private:
   //! Mark this cell as "Automatically answer questions".
   bool m_autoAnswer;
@@ -729,6 +733,8 @@ private:
   bool m_containsChanges;
   bool m_containsChangesCheck;
   bool m_firstLineOnly;
+  //! The individual commands, parenthesis, strings and whitespaces a code cell consists of
+  MaximaTokenizer::TokenList m_tokens;
 };
 
 #endif // EDITORCELL_H

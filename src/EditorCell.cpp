@@ -35,7 +35,6 @@
 #include "MarkDown.h"
 #include "wxMaximaFrame.h"
 #include <wx/tokenzr.h>
-#include "MaximaTokenizer.h"
 
 #define ESC_CHAR wxT('\xA6')
 
@@ -3469,7 +3468,7 @@ void EditorCell::StyleTextCode()
   }
 
   // Split the line into commands, numbers etc.
-  MaximaTokenizer::TokenList tokens = MaximaTokenizer(textToStyle).GetTokens();
+  m_tokens = MaximaTokenizer(textToStyle).GetTokens();
 
   // Now handle the text pieces one by one
   wxString lastTokenWithText;
@@ -3477,7 +3476,7 @@ void EditorCell::StyleTextCode()
   int lineWidth = 0;
   MaximaTokenizer::Token token;
 
-  for(MaximaTokenizer::TokenList::iterator it = tokens.begin(); it != tokens.end(); ++it)
+  for(MaximaTokenizer::TokenList::iterator it = m_tokens.begin(); it != m_tokens.end(); ++it)
   {
     pos += token.GetText().Length();
     token = *(*it);
