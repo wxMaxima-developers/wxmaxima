@@ -5023,7 +5023,7 @@ bool Worksheet::ExportToHTML(wxString file)
 
   wxString versionString = "Created with wxMaxima version " + version;
   wxString versionPad;
-  for(int i = 0; i<versionString.Length(); i++)
+  for(unsigned int i = 0; i<versionString.Length(); i++)
     versionPad += "*";
 
   css << wxT("\n");
@@ -6554,7 +6554,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   {
     long varcount = variables.GetCount() - 1;
     xmlText += wxString::Format(" variables_num=\"%li\"", varcount);
-    for(long i = 0; i<variables.GetCount(); i++)
+    for(unsigned long i = 0; i<variables.GetCount(); i++)
       xmlText += wxString::Format(" variables_%li=\"%s\"", i, Cell::XMLescape(variables[i]));
   }
   

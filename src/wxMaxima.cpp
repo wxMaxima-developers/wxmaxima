@@ -1853,10 +1853,10 @@ void wxMaxima::ReadPrompt(wxString &data)
       (o.Length() > 2) &&
       o.StartsWith("(%") &&
       o.EndsWith(")") &&
-      ((o[o.Length()-2] >= (wxT('0'))) &&
-       (o[o.Length()-2] <= (wxT('9'))) ||
-       (o[o.Length()-2] >= (wxT('A'))) &&
-       (o[o.Length()-2] <= (wxT('Z')))
+      (((o[o.Length()-2] >= (wxT('0'))) &&
+        (o[o.Length()-2] <= (wxT('9')))) ||
+       ((o[o.Length()-2] >= (wxT('A'))) &&
+        (o[o.Length()-2] <= (wxT('Z'))))
         )
       ) ||
     m_inLispMode ||
@@ -7883,6 +7883,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
 
   MaximaTokenizer::TokenList tokens = MaximaTokenizer(text).GetTokens();
 
+  index = 0;
   bool endingNeeded = true;
   wxChar lastnonWhitespace;
   wxChar lastnonWhitespace_Next = wxT(' ');
@@ -7892,6 +7893,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
   {
     wxString itemText = (*it)->GetText();
     TextStyle itemStyle = (*it)->GetStyle();
+    index += itemText.Length();
 
     lastnonWhitespace = lastnonWhitespace_Next;
 

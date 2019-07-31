@@ -38,8 +38,6 @@ MaximaTokenizer::MaximaTokenizer(wxString commands)
   // ----------------------------------------------------------------
   wxString::const_iterator it = commands.begin();
 
-  TextStyle style = TS_DEFAULT;
-  
   while (it < commands.end())
   {
     // Determine the current char and the one that will follow it

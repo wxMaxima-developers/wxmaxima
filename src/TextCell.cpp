@@ -57,6 +57,9 @@ TextCell::TextCell(Cell *parent, Configuration **config, CellPointers *cellPoint
   case TS_SUBSECTION: m_type = MC_TYPE_SUBSECTION; break;
   case TS_SECTION: m_type = MC_TYPE_SECTION; break;
   case TS_TITLE: m_type = MC_TYPE_TITLE; break;
+  default:
+    wxLogMessage(wxString::Format(_("Unexpected text style %i for TextCell"),style));
+    m_type = MC_TYPE_DEFAULT;
   }
   m_cellPointers = cellPointers;
   m_displayedDigits_old = -1;
