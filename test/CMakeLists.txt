@@ -1,4 +1,4 @@
-file(GLOB TEST_FILES *.png *.wxmx)
+file(GLOB TEST_FILES *.png *.wxmx *.wxm *.mac)
 
 if(WIN32)
     install(FILES ${TEST_FILES} DESTINATION wxMaxima/data)
