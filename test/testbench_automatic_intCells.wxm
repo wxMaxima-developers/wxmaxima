@@ -6,32 +6,24 @@ x(n):=sum(x[i],i,1,n)$
 
 
 /* [wxMaxima: input   start ] */
-f(x):=3;
+f(n):=sum(f[i](t),i,1,n)$
 /* [wxMaxima: input   end   ] */
 
 
 /* [wxMaxima: input   start ] */
-f12345689(x):=3;
+integrate(f(1),t,0,T);
+integrate(f(10),t,0,T);
+integrate(f(100),t,0,T);
 /* [wxMaxima: input   end   ] */
 
 
 /* [wxMaxima: input   start ] */
-f12345689012345689012345689012345689012345689012345689012345689012345689012345689012345689(x):=3;
+'integrate(sin(x),x,1,a(x)/b(x));
 /* [wxMaxima: input   end   ] */
 
 
 /* [wxMaxima: input   start ] */
-f(x):=x(50);
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-f12345689(x):=x(50);
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-f12345689012345689012345689012345689012345689012345689012345689012345689012345689012345689(x):=x(50);
+'integrate(sin(x),x,a(x)/b(x),1);
 /* [wxMaxima: input   end   ] */
 
 
