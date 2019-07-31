@@ -3450,7 +3450,7 @@ void EditorCell::StyleTextCode()
     if (m_type == MC_TYPE_INPUT)
       textToStyle.Replace(wxT("-"), wxT("\x2212"));
   }
-
+  
   // Handle folding of EditorCells
   if (m_firstLineOnly)
   {
@@ -3480,17 +3480,18 @@ void EditorCell::StyleTextCode()
   {
     pos += token.GetText().Length();
     token = *(*it);
-    if (token.GetText().Length() < 1)
+    wxString tokenString = token.GetText();
+    if (tokenString.IsEmpty())
       continue;
-    wxChar Ch = token.GetText()[0];
+    wxChar Ch = tokenString[0];
     
     // Handle Spaces
     if (Ch == wxT(' '))
     {
       // All spaces except the last one (that could cause a line break)
       // share the same token
-      if (token.GetText().Length() > 1)
-        m_styledText.push_back(StyledText(token.GetText().Right(token.GetText().Length()-1)));
+      if (tokenString.Length() > 1)
+        m_styledText.push_back(StyledText(tokenString.Right(tokenString.Length()-1)));
       
       // Now we push the last space to the list of tokens and remember this
       // space as the space that potentially serves as the next point to
@@ -3499,54 +3500,38 @@ void EditorCell::StyleTextCode()
       if (!m_styledText.empty())
       {
         lastSpace = &m_styledText.back();
-        lastSpacePos = pos + token.GetText().Length() - 1;
+        lastSpacePos = pos + tokenString.Length() - 1;
       }
       else
       {
         lastSpace = NULL;
         lastSpacePos = -1;
-      }
-      
-      continue;
-    }
-    else
-      // Most things can contain Newlines - that we want as separate tokens
-    {
-      wxString txt = token.GetText();
-      wxString line;      
-      for (wxString::iterator it2 = txt.begin(); it2 < txt.end(); ++it2)
-      {
-        if(*it2 != '\n')
-          line +=wxString(*it2);
-        else
-        {
-          if(line != wxEmptyString)
-            m_styledText.push_back(StyledText(token.GetStyle(), line));
-          m_styledText.push_back(StyledText(token.GetStyle(), "\n"));
-          line = wxEmptyString;
-        }
-      }
-      if(line != wxEmptyString)
-        m_styledText.push_back(StyledText(token.GetStyle(), line));
-      HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
-                                indentationPixels);
-      continue;
-    }
-    // End of a command
-    if (token.GetStyle() == TS_CODE_ENDOFLINE)
-    {
-      m_styledText.push_back(StyledText(TS_CODE_ENDOFLINE, token));
+      }      
       continue;
     }
     
-    // Numbers
-    if (token.GetStyle() == TS_CODE_NUMBER)
+    // Most of the other item types can contain Newlines - that we want as separate tokens
+    wxString txt = tokenString;
+    wxString line;      
+    for (wxString::iterator it2 = txt.begin(); it2 < txt.end(); ++it2)
     {
-      m_styledText.push_back(StyledText(TS_CODE_NUMBER, token));
-      HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
-                                indentationPixels);
-      if ((token.GetStyle() == TS_CODE_VARIABLE) || (token.GetStyle() == TS_CODE_FUNCTION))
-        m_wordList.Add(token);
+      if(*it2 != '\n')
+        line +=wxString(*it2);
+      else
+      {
+        if(line != wxEmptyString)
+          m_styledText.push_back(StyledText(token.GetStyle(), line));
+        m_styledText.push_back(StyledText(token.GetStyle(), "\n"));
+        line = wxEmptyString;
+      }
+    }
+    if(line != wxEmptyString)
+      m_styledText.push_back(StyledText(token.GetStyle(), line));
+    HandleSoftLineBreaks_Code(lastSpace, lineWidth, token, pos, m_text, lastSpacePos,
+                              indentationPixels);
+    if ((token.GetStyle() == TS_CODE_VARIABLE) || (token.GetStyle() == TS_CODE_FUNCTION))
+    {
+      m_wordList.Add(token);
       continue;
     }
   }
