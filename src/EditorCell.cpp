@@ -3054,7 +3054,7 @@ void EditorCell::CommentSelection()
 
 wxString EditorCell::GetWordUnderCaret()
 {
-  long start = m_positionOfCaret;
+  unsigned long start = m_positionOfCaret;
   if(start < 0)
     return wxEmptyString;
   if(start >= m_text.Length())
@@ -3855,7 +3855,6 @@ void EditorCell::StyleText()
 {
   // We will need to determine the width of text and therefore need to set
   // the font type and size.
-  Configuration *configuration = (*m_configuration);
   SetFont();
 
 
