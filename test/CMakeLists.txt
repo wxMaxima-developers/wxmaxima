@@ -54,3 +54,6 @@ set_tests_properties(intCells PROPERTIES TIMEOUT 180)
 add_test(NAME functionCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_functionCells.wxm)
 set_tests_properties(functionCells PROPERTIES TIMEOUT 180)
 
+add_test(NAME runMaxima WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND echo "quit();"|maxima)
+set_tests_properties(runMaxima PROPERTIES TIMEOUT 180)
+
