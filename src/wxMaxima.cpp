@@ -1919,6 +1919,9 @@ void wxMaxima::ReadPrompt(wxString &data)
       if ((m_worksheet->m_configuration->GetOpenHCaret()) && (m_worksheet->GetActiveCell() == NULL))
         m_worksheet->OpenNextOrCreateCell();
     }
+
+    if (m_exitAfterEval && m_worksheet->m_evaluationQueue.Empty())
+      Close();
   }
   else
   {  // We have a question
@@ -8143,9 +8146,6 @@ void wxMaxima::TriggerEvaluation()
     m_outputCellsFromCurrentCommand = 0;
     m_worksheet->m_evaluationQueue.RemoveFirst();
     TriggerEvaluation();
-    if (m_exitAfterEval && m_worksheet->m_evaluationQueue.Empty())
-      Close();
-
   }
   m_worksheet->m_answersExhausted = m_worksheet->m_evaluationQueue.AnswersEmpty();
 
