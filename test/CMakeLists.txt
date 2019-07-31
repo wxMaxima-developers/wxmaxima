@@ -39,6 +39,18 @@ set_tests_properties(diffCells PROPERTIES TIMEOUT 180)
 add_test(NAME atCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_atCells.wxm)
 set_tests_properties(atCells PROPERTIES TIMEOUT 180)
 
-add_test(NAME conjugateCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --bconjugatech test/testbench_automatic_conjugateCells.wxm)
+add_test(NAME conjugateCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_conjugateCells.wxm)
 set_tests_properties(conjugateCells PROPERTIES TIMEOUT 180)
+
+add_test(NAME exptCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_exptCells.wxm)
+set_tests_properties(exptCells PROPERTIES TIMEOUT 180)
+
+add_test(NAME fracCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_fracCells.wxm)
+set_tests_properties(fracCells PROPERTIES TIMEOUT 180)
+
+add_test(NAME intCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_intCells.wxm)
+set_tests_properties(intCells PROPERTIES TIMEOUT 180)
+
+add_test(NAME functionCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_functionCells.wxm)
+set_tests_properties(functionCells PROPERTIES TIMEOUT 180)
 
