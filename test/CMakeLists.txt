@@ -14,10 +14,18 @@ add_test(NAME wxmaxima_version_string WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMM
 set_tests_properties(wxmaxima_version_string PROPERTIES  PASS_REGULAR_EXPRESSION "wxMaxima ${VERSION}.*")
 add_test(NAME wxmaxima_version_returncode WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --version)
 add_test(NAME wxmaxima_help WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --help)
+
 add_test(NAME all_celltypes WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_all_celltypes.wxmx)
 set_tests_properties(all_celltypes PROPERTIES TIMEOUT 180)
+
 add_test(NAME other_features WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/other-features.wxmx)
 set_tests_properties(other_features PROPERTIES TIMEOUT 180)
+
 add_test(NAME misc_problematic_things WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/misc-problematic-things.wxmx)
 set_tests_properties(misc_problematic_things PROPERTIES TIMEOUT 180)
 
+add_test(NAME simpleInput WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_simpleInput.wxm)
+set_tests_properties(simpleInput PROPERTIES TIMEOUT 180)
+
+add_test(NAME rememberingAnswers WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_rememberingAnswers.wxm)
+set_tests_properties(rememberingAnswers PROPERTIES TIMEOUT 180)
