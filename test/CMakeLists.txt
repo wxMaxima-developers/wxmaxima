@@ -15,7 +15,7 @@ set_tests_properties(wxmaxima_version_string PROPERTIES  PASS_REGULAR_EXPRESSION
 add_test(NAME wxmaxima_version_returncode WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --version)
 add_test(NAME wxmaxima_help WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --help)
 
-add_test(NAME all_celltypes WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_all_celltypes.wxmx)
+add_test(NAME all_celltypes WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_all_celltypes.wxm)
 set_tests_properties(all_celltypes PROPERTIES TIMEOUT 180)
 
 add_test(NAME other_features WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/other-features.wxmx)
