@@ -6256,7 +6256,9 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
   s.Replace(wxT("\x2264"), wxT(" <= "));
   s.Replace(wxT("\x2265"), wxT(" >= "));
   s.Replace(wxT("\x2212"), wxT("-")); // An unicode minus sign
+  s.Replace(wxT("\x00B7"), wxT("*")); // An unicode multiplication sign
   s.Replace(wxT("\xDCB6"), wxT(" ")); // A non-breakable space
+  s.Replace(wxT("\r"), wxT(" ")); // A soft linebreak
 
   // Convert \x03C0 to %pi if it isn't part of a synbol name
   wxString retval;

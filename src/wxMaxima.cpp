@@ -679,9 +679,6 @@ void wxMaxima::StripLispComments(wxString &s)
 
 void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 {
-  if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
-    m_xmlInspector->Add_ToMaxima(s);
-
   // Normally we catch parenthesis errors before adding cells to the
   // evaluation queue. But if the error is introduced only after the
   // cell is placed in the evaluation queue we need to catch it here.
@@ -689,8 +686,15 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
   wxString parenthesisError = GetUnmatchedParenthesisState(s,index);
   if (parenthesisError == wxEmptyString)
   {
+    if(!s.StartsWith(":"))
+      wxLogMessage("unicode="+s+"\n");
     s = m_worksheet->UnicodeToMaxima(s);
+    if(!s.StartsWith(":"))
+      wxLogMessage("maxima="+s+"\n");
 
+    if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
+      m_xmlInspector->Add_ToMaxima(s);
+    
     m_dispReadOut = false;
 
     /// Add this command to History
