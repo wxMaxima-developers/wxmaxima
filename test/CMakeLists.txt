@@ -29,3 +29,16 @@ set_tests_properties(simpleInput PROPERTIES TIMEOUT 180)
 
 add_test(NAME rememberingAnswers WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_rememberingAnswers.wxm)
 set_tests_properties(rememberingAnswers PROPERTIES TIMEOUT 180)
+
+add_test(NAME absCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_absCells.wxm)
+set_tests_properties(absCells PROPERTIES TIMEOUT 180)
+
+add_test(NAME diffCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_diffCells.wxm)
+set_tests_properties(diffCells PROPERTIES TIMEOUT 180)
+
+add_test(NAME atCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_atCells.wxm)
+set_tests_properties(atCells PROPERTIES TIMEOUT 180)
+
+add_test(NAME conjugateCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --bconjugatech test/testbench_automatic_conjugateCells.wxm)
+set_tests_properties(conjugateCells PROPERTIES TIMEOUT 180)
+
