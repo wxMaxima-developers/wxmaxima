@@ -57,3 +57,6 @@ set_tests_properties(functionCells PROPERTIES TIMEOUT 180)
 add_test(NAME runMaxima WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND echo "quit();"|maxima)
 set_tests_properties(runMaxima PROPERTIES TIMEOUT 180)
 
+add_test(NAME runMaxima-over-network WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND echo 'quit();' | nc -l 2000 & sleep 10 ; maxima -s 2000)
+set_tests_properties(runMaxima-over-network PROPERTIES TIMEOUT 180)
+
