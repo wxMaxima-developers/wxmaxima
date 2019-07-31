@@ -406,7 +406,12 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   RecalculateIfNeeded();
 
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
+#ifdef __WXGTK3__
+  // In wxgtk3 the autobufferedpaintdc flickers
+  wxBufferedPaintDC dc(this);
+#else
   wxAutoBufferedPaintDC dc(this);
+#endif
   dc.SetBackground(m_configuration->GetBackgroundBrush());
   dc.SetBrush(m_configuration->GetBackgroundBrush());
   dc.SetMapMode(wxMM_TEXT);
