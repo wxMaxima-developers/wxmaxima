@@ -7904,7 +7904,6 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
     // Handle comments
     if(itemStyle == TS_CODE_COMMENT)
     {
-      endingNeeded = true;
       if(!itemText.EndsWith("*/"))
         return (_("Unterminated comment."));
       continue;

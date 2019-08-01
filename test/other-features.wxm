@@ -299,7 +299,9 @@ Lisp ode spread across multiple cells
 
 
 /* [wxMaxima: input   start ] */
-to_lisp)();
+to_lisp();
+(format nil "test");
+(format nil "test");
 /* [wxMaxima: input   end   ] */
 
 
@@ -310,6 +312,11 @@ to_lisp)();
 
 /* [wxMaxima: input   start ] */
 (to-maxima)
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+test;
 /* [wxMaxima: input   end   ] */
 
 
