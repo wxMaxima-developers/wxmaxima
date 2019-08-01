@@ -1,4 +1,4 @@
-file(GLOB TEST_FILES *.png *.wxmx)
+file(GLOB TEST_FILES *.png *.wxmx *.wxm *.mac)
 
 if(WIN32)
     install(FILES ${TEST_FILES} DESTINATION wxMaxima/data)
@@ -83,4 +83,7 @@ set_tests_properties(subsupCells PROPERTIES TIMEOUT 180)
 
 add_test(NAME sumCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_sumCells.wxm)
 set_tests_properties(sumCells PROPERTIES TIMEOUT 180)
+
+add_test(NAME runMaxima-over-network WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND echo 'quit();' | nc -l 2000 & sleep 10 ; maxima -s 2000)
+set_tests_properties(runMaxima-over-network PROPERTIES TIMEOUT 180)
 
