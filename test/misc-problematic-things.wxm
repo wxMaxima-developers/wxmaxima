@@ -1,0 +1,259 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 19.07.0-DevelopmentSnapshot ] */
+/* [wxMaxima: section start ]
+Miscellaneous things that did get wrong at least once
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Cell height calculations
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+The cell height is calculated by GroupCell::Draw, GroupCell::RecalculateAppended and by GroupCell::RecalculateHeight. Once upon a time these functions were not in sync.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/sqrt(a/b))))))))))))))))))));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+sqrt(a/b);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+for i:1 thru 20 do printf(true,"test~%");
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Labels that contain escaped characters
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+A label that begins with a number
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+\1:2;
+if \1≠2 then error("Label \1 doesn't hold the right value!")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+A label that contains a comma
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+a\,1:test;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Leading spaces in front of characters that in XML need to be quoted
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+One o the following signs should be indented.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+print(" <=>")$
+print("<=>")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+The contents of this list should still be indented after a load/save cycle.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+[
+    "test",
+    "test2"
+]$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Former crashes
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+The following cells at least once crashed wxMaxima on windows and are therefore
+included into the testbench:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+a: (x+y)^2;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+α=1;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+α:1;
+kill(α);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+Bauteilwerte:[
+    α=1
+];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Constructs that don't make sense but still can be displayed
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: input   start ] */
+(makelist(c01,i,1,2)+c01);
+%(1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+{0,1}(1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+A weird windows parenthesis issue
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+The following equation had a weird parenthesis issue on windows once while it worked fine
+on linux.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+f(x,y):=x^2*(1-exp((y-sqrt(3*G)*x)^2*(L^2/x^2-0.5)*((R+y)/(R(R-K+y)))/G) )/(R+y)^2;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Mouseover ToolTips
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+A long number that (hopefully) is shortened by wxMaxima and that therefore will be equipped with a Mouseover tooltip:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+longnum:100^ 1000;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Let's see if tooltips are provided for the insides of all cell types:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+abs(longnum+a);
+'diff(longnum*x,x+longnum);
+'test@longnum;
+conjungate(longnum+a);
+(a+longnum)^(b+longnum);
+(a+longnum)/(b+longnum);
+'integrate(a+''longnum,a,-longnum,longnum);
+'limit(a+longnum,a,longnum);
+matrix([longnum]);
+sqrt(a+longnum);
+a[longnum];
+'(a[''longnum]^''longnum);
+'sum(a+''longnum,a,-longnum,longnum);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Special cases for the TeX export
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Function names should be exported as upright text:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+function(x):=10;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+For equations LaTeX uses a font that uses spacing that makes clear that ab means "a*b". We therefore
+need to make sure that a variable named "ab" isn't displayed in this way.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+ab≠a*b;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+What makes this more complicated is that the auto-subscript mechanism adds more corner cases here:
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+a_b*c;
+a*b_c;
+a_b*c;
+aa*b_c;
+a*bb_c;
+aa*bb_c;
+aa_c*b;
+a_c*bb;
+aa_c*bb;
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 19.07.0-DevelopmentSnapshot"$

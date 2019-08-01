@@ -7,9 +7,12 @@ else()
 endif()
 file(COPY ${TEST_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
+# If this test fails we know why all subsequent tests fail, too.
+add_test(NAME runMaxima WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND echo "quit();"|maxima)
+set_tests_properties(runMaxima PROPERTIES TIMEOUT 180)
 
-add_test(NAME wxmaxima_batch_textcell WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/textcells.wxmx)
-add_test(NAME wxmaxima_batch_foreign_characters WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/foreign-characters.wxmx)
+add_test(NAME wxmaxima_batch_textcell WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/textcells.wxm)
+add_test(NAME wxmaxima_batch_foreign_characters WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/foreign-characters.wxm)
 add_test(NAME wxmaxima_version_string WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --version)
 set_tests_properties(wxmaxima_version_string PROPERTIES  PASS_REGULAR_EXPRESSION "wxMaxima ${VERSION}.*")
 add_test(NAME wxmaxima_version_returncode WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --version)
@@ -18,10 +21,10 @@ add_test(NAME wxmaxima_help WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxma
 add_test(NAME all_celltypes WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_all_celltypes.wxm)
 set_tests_properties(all_celltypes PROPERTIES TIMEOUT 180)
 
-add_test(NAME other_features WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/other-features.wxmx)
+add_test(NAME other_features WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/other-features.wxm)
 set_tests_properties(other_features PROPERTIES TIMEOUT 180)
 
-add_test(NAME misc_problematic_things WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/misc-problematic-things.wxmx)
+add_test(NAME misc_problematic_things WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/misc-problematic-things.wxm)
 set_tests_properties(misc_problematic_things PROPERTIES TIMEOUT 180)
 
 add_test(NAME simpleInput WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_simpleInput.wxm)
@@ -54,6 +57,30 @@ set_tests_properties(intCells PROPERTIES TIMEOUT 180)
 add_test(NAME functionCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_functionCells.wxm)
 set_tests_properties(functionCells PROPERTIES TIMEOUT 180)
 
-add_test(NAME runMaxima WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND echo "quit();"|maxima)
-set_tests_properties(runMaxima PROPERTIES TIMEOUT 180)
+add_test(NAME slideshowCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_slideshowCells.wxm)
+set_tests_properties(slideshowCells PROPERTIES TIMEOUT 180)
+
+add_test(NAME imageCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_imageCells.wxm)
+set_tests_properties(imageCells PROPERTIES TIMEOUT 180)
+
+add_test(NAME limitCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_limitCells.wxm)
+set_tests_properties(limitCells PROPERTIES TIMEOUT 180)
+
+add_test(NAME matrixCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_matrixCells.wxm)
+set_tests_properties(matrixCells PROPERTIES TIMEOUT 180)
+
+add_test(NAME parenthesisCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_parenthesisCells.wxm)
+set_tests_properties(parenthesisCells PROPERTIES TIMEOUT 180)
+
+add_test(NAME sqrtCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_sqrtCells.wxm)
+set_tests_properties(sqrtCells PROPERTIES TIMEOUT 180)
+
+add_test(NAME subCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_subCells.wxm)
+set_tests_properties(subCells PROPERTIES TIMEOUT 180)
+
+add_test(NAME subsupCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_subsupCells.wxm)
+set_tests_properties(subsupCells PROPERTIES TIMEOUT 180)
+
+add_test(NAME sumCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_sumCells.wxm)
+set_tests_properties(sumCells PROPERTIES TIMEOUT 180)
 

@@ -1,0 +1,35 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 19.07.0-DevelopmentSnapshot ] */
+/* [wxMaxima: input   start ] */
+wxplot_size:[200,200]$
+wxanimate_framerate:1$wxanimate_autoplay:true$
+with_slider_draw(
+    t,makelist(f,f,0,59),
+    title=sconcat(t," s"),
+    proportional_axes=xy,xrange=[-1,1],yrange=[-1,1],
+    parametric(r*sin(2*%pi/60*t),r*cos(2*%pi/60*t),r,0,1),
+    grid=true
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxanimate_autoplay:false$
+with_slider_draw(
+    t,makelist(f,f,0,59),
+    title=sconcat(t," s"),
+    proportional_axes=xy,xrange=[-1,1],yrange=[-1,1],
+    parametric(r*sin(2*%pi/60*t),r*cos(2*%pi/60*t),r,0,1),
+    grid=true
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+wxanimate_from_imgfiles("a.png","b.png","c.png","d.png")$
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 19.07.0-DevelopmentSnapshot"$
