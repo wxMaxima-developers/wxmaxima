@@ -674,6 +674,7 @@ void wxMaxima::StripLispComments(wxString &s)
 
 void wxMaxima::SendMaxima(wxString s, bool addToHistory)
 {
+  std::cerr<<"Send="<<s<<"\n";
   // Normally we catch parenthesis errors before adding cells to the
   // evaluation queue. But if the error is introduced only after the
   // cell is placed in the evaluation queue we need to catch it here.

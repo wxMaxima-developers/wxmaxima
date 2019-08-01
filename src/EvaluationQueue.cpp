@@ -76,13 +76,9 @@ void EvaluationQueue::AddToQueue(GroupCell *gr, bool lispMode)
   if(gr == NULL)
     return;
   
-  if (gr->GetGroupType() != GC_TYPE_CODE
-      || gr->GetEditable() == NULL) // don't add cells which can't be evaluated
+  if (gr->GetGroupType() != GC_TYPE_CODE || gr->GetEditable() == NULL) // don't add cells which can't be evaluated
     return;
   
-  if(!lispMode)
-    gr->GetEditable()->AddEnding();
-
   if(m_queue.empty())
   {
     AddTokens(gr);
@@ -162,6 +158,8 @@ void EvaluationQueue::AddTokens(GroupCell *cell)
       continue;
     }
   }
+  if(!token.IsEmpty())
+    m_commands.push_back(command(token, index));
   
   m_knownAnswers = cell->m_knownAnswers;
 }

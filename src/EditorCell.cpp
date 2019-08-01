@@ -2672,7 +2672,7 @@ bool EditorCell::AddEnding()
   {
     text = text.SubString(0,text.Length()-2);
     text.Trim();
-      if (text.EndsWith(wxT("to-maxima")))
+      if (text.EndsWith(wxT("(to-maxima)")))
         endingNeeded = false;
   }
 
