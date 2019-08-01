@@ -953,11 +953,8 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
                            wxCommandEventHandler(ConfigDialogue::MaximaLocationChanged),
                            NULL, this);
   vsizer->Add(nameSizer, wxSizerFlags().Expand().Border(wxALL, 0));
-  int defaultPort = 4010;
-  wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
   m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 50,
-                                 65534, defaultPort);
-  m_defaultPort->SetValue(defaultPort);
+                                 65534, m_configuration->DefaultPort());
   wxStaticText *dp = new wxStaticText(panel, -1, _("Default port for communication with wxMaxima:"));
   sizer->Add(dp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   sizer->Add(m_defaultPort, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -1195,7 +1192,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("incrementalSearch"), m_incrementalSearch->GetValue());
   configuration->NotifyIfIdle(m_notifyIfIdle->GetValue());
   configuration->SetLabelChoice(m_showUserDefinedLabels->GetSelection());
-  config->Write(wxT("defaultPort"), m_defaultPort->GetValue());
+  configuration->DefaultPort(m_defaultPort->GetValue());
   config->Write(wxT("AUI/savePanes"), m_savePanes->GetValue());
   config->Write(wxT("usepngCairo"), m_usepngCairo->GetValue());
   configuration->AntiAliasLines(m_antialiasLines->GetValue());

@@ -69,6 +69,8 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_abortOnError = true;
   m_autoSaveMinutes = 3;
   m_clientWidth = 1024;
+  m_defaultPort = 40100;
+
   m_clientHeight = 768;
   m_indentMaths=true;
   if(m_maximaLocation_override != wxEmptyString)
@@ -352,7 +354,7 @@ void Configuration::ReadConfig()
     m_htmlEquationFormat = (Configuration::htmlExportFormat)tmp;
   }
   
-config->Read(wxT("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
+  config->Read(wxT("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
   config->Read(wxT("autoWrapMode"), &m_autoWrap);
   config->Read(wxT("mathJaxURL_UseUser"), &m_mathJaxURL_UseUser);
   config->Read(wxT("useUnicodeMaths"), &m_useUnicodeMaths);
@@ -361,9 +363,9 @@ config->Read(wxT("TOCshowsSectionNumbers"), &m_TOCshowsSectionNumbers);
   config->Read(wxT("antiAliasLines"), &m_antiAliasLines);
   config->Read(wxT("indentMaths"), &m_indentMaths);
   config->Read(wxT("abortOnError"),&m_abortOnError);
-
+  config->Read("defaultPort",&m_defaultPort);
   config->Read(wxT("fixReorderedIndices"), &m_fixReorderedIndices);
-
+  
   config->Read(wxT("showLength"), &m_showLength);
   config->Read(wxT("printScale"), &m_printScale);
 

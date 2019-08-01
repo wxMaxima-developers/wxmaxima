@@ -756,7 +756,9 @@ public:
   void AutoSaveMinutes(int minutes){wxConfig::Get()->Write(wxT("autoSaveMinutes"),
                                                            m_autoSaveMinutes = minutes);
   }
-  
+
+  int DefaultPort(){return m_defaultPort;}
+  void DefaultPort(int port){wxConfig::Get()->Write("defaultPort",m_defaultPort = port);}
   bool GetAbortOnError(){return m_abortOnError;}
   void SetAbortOnError(bool abortOnError)
     {wxConfig::Get()->Write("abortOnError",m_abortOnError = abortOnError);}
@@ -895,6 +897,7 @@ private:
   bool m_useUnicodeMaths;
   bool m_indentMaths;
   bool m_abortOnError;
+  int m_defaultPort;
   htmlExportFormat m_htmlEquationFormat;
   bool m_adjustWorksheetSizeNeeded;
   //! The rectangle of the worksheet that is currently visible.

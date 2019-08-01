@@ -191,7 +191,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_unsuccessfulConnectionAttempts = 0;
   m_outputCellsFromCurrentCommand = 0;
   m_CWD = wxEmptyString;
-  m_port = 4010;
   m_pid = -1;
   wxASSERT(m_gnuplotErrorRegex.Compile(wxT("\".*\\.gnuplot\", line [0-9][0-9]*: ")));
   m_hasEvaluatedCells = false;
@@ -346,15 +345,11 @@ bool MyDropTarget::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y), const w
 void wxMaxima::InitSession()
 {
   bool server = false;
-  int defaultPort = 4010;
-
-  wxConfig::Get()->Read(wxT("defaultPort"), &defaultPort);
-  m_port = defaultPort;
-
+  m_port = m_worksheet->m_configuration->DefaultPort();
   while (!(server = StartServer()))
   {
     m_port++;
-    if (m_port > defaultPort + 50)
+    if ((m_port > m_worksheet->m_configuration->DefaultPort() + 15000) || (m_port > 65535)) 
     {
       wxMessageBox(_("wxMaxima could not start the server.\n\n"
                              "Please check you have network support\n"
