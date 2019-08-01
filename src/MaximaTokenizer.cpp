@@ -280,7 +280,6 @@ MaximaTokenizer::MaximaTokenizer(wxString commands)
       }
       if(token == ("to_lisp"))
       {
-        ++it;
         while((it < commands.end()) && ((!token.EndsWith("(to-maxima"))) && ((!token.EndsWith(wxString("(to")+wxT("\x2212")+"maxima"))))
         {
           token += wxString(*it);
