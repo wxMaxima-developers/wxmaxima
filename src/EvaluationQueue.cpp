@@ -146,18 +146,26 @@ void EvaluationQueue::AddTokens(GroupCell *cell)
 
     if(itemStyle == TS_CODE_LISP)
     {
-      m_commands.push_back(command(token, index));
+      token.Trim(true);
+      token.Trim(false);
+      if(!token.IsEmpty())
+        m_commands.push_back(command(token, index));      
       token = wxEmptyString;
       continue;
     }
 
     if(itemStyle == TS_CODE_ENDOFLINE)
     {
-      m_commands.push_back(command(token, index));
+      token.Trim(true);
+      token.Trim(false);
+      if(!token.IsEmpty())
+        m_commands.push_back(command(token, index));
       token = wxEmptyString;
       continue;
     }
   }
+  token.Trim(true);
+  token.Trim(false);
   if(!token.IsEmpty())
     m_commands.push_back(command(token, index));
   
