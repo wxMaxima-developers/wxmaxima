@@ -662,7 +662,6 @@ protected:
   wxString m_suppressOutputSuffix;
   wxString m_firstPrompt;
   bool m_dispReadOut;               //!< what is displayed in statusbar
-  bool m_inLispMode;                //!< don't add ; in lisp mode
   wxString m_lastPrompt;
   wxString m_lastPath;
   wxPrintData *m_printData;

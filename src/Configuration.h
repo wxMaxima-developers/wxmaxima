@@ -789,6 +789,8 @@ public:
   wxPoint GetWorksheetPosition(){return m_worksheetPosition;}
   wxString MaximaShareDir(){return m_maximaShareDir;}
   void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
+  void InLispMode(bool lisp){m_inLispMode = lisp;}
+  bool InLispMode(){return m_inLispMode;}
   Style m_styles[NUMBEROFSTYLES];
 private:
   //! Autodetect maxima's location?
@@ -890,6 +892,8 @@ private:
   bool m_copyMathML;
   bool m_copyMathMLHTML;
   int m_showLength;
+  //!< don't add ; in lisp mode
+  bool m_inLispMode;
   bool m_copyRTF;
   bool m_copySVG;
   bool m_copyEMF;

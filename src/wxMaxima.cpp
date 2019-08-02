@@ -198,7 +198,6 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_maximaStdout = NULL;
   m_maximaStderr = NULL;
   m_ready = false;
-  m_inLispMode = false;
   m_first = true;
   m_isRunning = false;
   m_dispReadOut = false;
@@ -914,7 +913,7 @@ bool wxMaxima::StartMaxima(bool force)
     m_xmlInspector->Clear();
 
   // Maxima isn't in lisp mode
-  m_inLispMode = false;
+  m_worksheet->m_configuration->InLispMode(false);
 
   // If we have an open file tell maxima to start in the directory the file is in
   wxUnsetEnv(wxT("MAXIMA_INITIAL_FOLDER"));
@@ -1191,7 +1190,7 @@ void wxMaxima::KillMaxima(bool logMessage)
     // Make wxWidgets close the connection only after we have sent the close command.
     m_client->SetFlags(wxSOCKET_WAITALL);
     // Try to gracefully close maxima.
-    if (m_inLispMode)
+    if (m_worksheet->m_configuration->InLispMode())
       SendMaxima(wxT("($quit)"));
     else
       SendMaxima(wxT("quit();"));
@@ -1208,7 +1207,7 @@ void wxMaxima::KillMaxima(bool logMessage)
     wxProcess::Kill(m_pid, wxSIGKILL, wxKILL_CHILDREN);
   }
   m_isConnected = false;
-  m_inLispMode = false;
+  m_worksheet->m_configuration->InLispMode(false);
 
   // As we might have killed maxima before it was able to clean up its
   // temp files we try to do so manually now:
@@ -1861,7 +1860,7 @@ void wxMaxima::ReadPrompt(wxString &data)
         (o[o.Length()-2] <= (wxT('Z'))))
         )
       ) ||
-    m_inLispMode ||
+      m_worksheet->m_configuration->InLispMode() ||
     (o.StartsWith(wxT("MAXIMA>"))) ||
     (o.StartsWith(wxT("\nMAXIMA>")))
     )
@@ -1958,15 +1957,15 @@ void wxMaxima::ReadPrompt(wxString &data)
   o.Trim(false);
   if (o.StartsWith(wxT("MAXIMA>")))
   {
-    if(!m_inLispMode)
+    if(!m_worksheet->m_configuration->InLispMode())
       wxLogMessage(_("Switched to lisp mode after receiving a lisp prompt!"));
-    m_inLispMode = true;
+    m_worksheet->m_configuration->InLispMode(true);
   }
   else
   {
-    if(m_inLispMode)
+    if(  m_worksheet->m_configuration->InLispMode())
       wxLogMessage(_("Ended lisp mode after receiving a maxima prompt!"));
-    m_inLispMode = false;
+    m_worksheet->m_configuration->InLispMode(false);
   }
 }
 
@@ -3209,7 +3208,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
       }
       else
       {
-        if(m_inLispMode)
+        if(  m_worksheet->m_configuration->InLispMode())
           LeftStatusText(_("Lisp mode."));
         else
           LeftStatusText(_("Maxima is ready for input."));
@@ -7843,7 +7842,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event))
 
   if (tmp != NULL) // we have an active cell
   {
-    if (tmp->GetType() == MC_TYPE_INPUT && !m_inLispMode)
+    if (tmp->GetType() == MC_TYPE_INPUT && (!m_worksheet->m_configuration->InLispMode()))
       tmp->AddEnding();
     // if active cell is part of a working group, we have a special
     // case - answering 1a question. Manually send answer to Maxima.
@@ -7865,7 +7864,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event))
     else
     { // normally just add to queue (and mark the cell as no more containing an error message)
       m_worksheet->m_cellPointers.m_errorList.Remove(cell);
-      m_worksheet->AddCellToEvaluationQueue(cell, m_inLispMode);
+      m_worksheet->AddCellToEvaluationQueue(cell, m_worksheet->m_configuration->InLispMode());
     }
   }
   else
@@ -7973,7 +7972,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
   if (!delimiters.empty())
     return _("Un-closed parenthesis");
   
-  if((endingNeeded) && (!m_inLispMode))
+  if((endingNeeded) && (!m_worksheet->m_configuration->InLispMode()))
     return _("No dollar ($) or semicolon (;) at the end of command");
   else
     return wxEmptyString;
