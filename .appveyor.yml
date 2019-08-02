@@ -55,12 +55,7 @@ before_build:
   - echo Running cmake...
   - cmd: mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - cmd: echo wxWidgets_CONFIGURATION:STRING=mswu > CMakeCache.txt
-  - cmd: echo wxWidgets_LIB_DIR:PATH=%wxWidgets_LIBRARIES% >> CMakeCache.txt
-  - cmd: echo wxWidgets_ROOT_DIR:PATH=%wxWidgets_ROOT_DIR% >> CMakeCache.txt
-  - cmd: echo WX_LIB_DIR:INTERNAL=%wxWidgets_LIBRARIES% >> CMakeCache.txt
-  - cmd: echo WX_ROOT_DIR:INTERNAL=%wxWidgets_ROOT_DIR% >> CMakeCache.txt
-  - cmake -G "Visual Studio 14 2015 Win64" c:\projects\wxMaxima -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON ..
+  - cmake -G "Visual Studio 14 2015 Win64" c:\projects\wxMaxima -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON .. -DwxWidgets_ROOT_DIR="%wxWidgets_ROOT_DIR%" -DwxWidgets_LIBRARIES="%wxWidgets_LIBRARIES%"
 
 build_script:
   - cd c:\projects\wxMaxima\build
