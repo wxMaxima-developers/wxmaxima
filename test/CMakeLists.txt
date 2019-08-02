@@ -83,8 +83,14 @@ set_tests_properties(subsupCells PROPERTIES TIMEOUT 60)
 add_test(NAME sumCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_sumCells.wxm)
 set_tests_properties(sumCells PROPERTIES TIMEOUT 60)
 
-add_test(NAME printf WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_printf.wxm)
-set_tests_properties(printf PROPERTIES TIMEOUT 60)
+add_test(NAME printf_simple WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_printf_simple.wxm)
+set_tests_properties(printf_simple PROPERTIES TIMEOUT 60)
+
+add_test(NAME printf_equations WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_printf_equations.wxm)
+set_tests_properties(printf_equations PROPERTIES TIMEOUT 60)
+
+add_test(NAME printf_continuationLines WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_printf_continuationLines.wxm)
+set_tests_properties(printf_continuationLines PROPERTIES TIMEOUT 60)
 
 add_test(NAME weirdLabels WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_weirdLabels.wxm)
 set_tests_properties(weirdLabels PROPERTIES TIMEOUT 60)

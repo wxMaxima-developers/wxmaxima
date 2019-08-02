@@ -1,21 +1,6 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
 /* [ Created with wxMaxima version 19.07.0-DevelopmentSnapshot ] */
 /* [wxMaxima: input   start ] */
-for i:1 thru 20 do printf(true,"test~%");
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-for i:1 thru 20 do printf(true,"test~%")$
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-printf(true,"Ordinary text")$
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
 (
     disp("XML Text"),
     printf(true,"Text enclosed by equations"),
@@ -79,22 +64,6 @@ x=2;
     disp("XML Text"),
     printf(true,"Text following equations")
 )$
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-for i:0 thru 1000 do printf(true,"t");
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-printf(true,"line1~%line2~%")$
-/* [wxMaxima: input   end   ] */
-
-
-/* [wxMaxima: input   start ] */
-printf(true,"line3~%")$
-printf(true,"line4~%")$
 /* [wxMaxima: input   end   ] */
 
 
