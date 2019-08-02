@@ -45,7 +45,7 @@ before_build:
   - echo Running cmake...
   - cmd: mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - cmake -G "Visual Studio 14 2015 Win64" c:\projects\wxMaxima -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON .. -DwxWidgets_ROOT_DIR="C:\wxWidgets\" -DwxWidgets_LIBRARIES="C:\wxWidgets\lib\vc140_x64_dll"
+  - cmake -G "Visual Studio 14 2015 Win64" c:\projects\wxMaxima -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON .. -DwxWidgets_ROOT_DIR="C:\wxWidgets\" -DwxWidgets_LIBRARIES="C:\wxWidgets\lib\vc_dll"
 
 build_script:
   - cd c:\projects\wxMaxima\build
