@@ -10,11 +10,6 @@ environment:
       vcvarsall_platform: "x64"
   global:
     MSVC_DEFAULT_OPTIONS: ON
-    WXWIN: C:\wxWidgets-3.1.0\
-    wxWidgets_ROOT_DIR: C:\wxWidgets-3.1.0\
-    wxWidgets_INCLUDE_DIRS: C:\wxWidgets-3.1.0\include
-    wxWidgets_LIBRARIES: C:\wxWidgets-3.1.0\lib\vc140_x64_dll
-
 
 # clone directory
 clone_folder: c:\projects\wxMaxima
@@ -41,21 +36,16 @@ configuration: Release
 
 # scripts to run before build
 before_build:
-  # sent environment variables for wxWidgets
-  - set WXWIN=C:\wxWidgets-3.1.0\
-  - set wxWidgets_ROOT_DIR=%WXWIN%
-  - set wxWidgets_LIB_DIR=%WXWIN%\lib\vc_dll
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.0/wxWidgets-3.1.0.7z'
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.0/wxMSW-3.1.0_vc140_x64_Dev.7z'
-  - cmd: 7z x wxWidgets-3.1.0.7z -oC:\wxWidgets-3.1.0
-  - cmd: 7z x wxMSW-3.1.0_vc140_x64_Dev.7z -oC:\wxWidgets-3.1.0
-  # Download Release wxWidgets DLL's
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.0/wxMSW-3.1.0_vc140_x64_ReleaseDLL.7z' -Timeout 15000
-  - cmd: 7z x wxMSW-3.1.0_vc140_x64_ReleaseDLL.7z -oC:\wxWidgets-3.1.0
+  - cmd: 7z x wxWidgets-3.1.0.7z -oC:\wxWidgets
+  - cmd: 7z x wxMSW-3.1.0_vc140_x64_Dev.7z -oC:\wxWidgets
+  - cmd: 7z x wxMSW-3.1.0_vc140_x64_ReleaseDLL.7z -oC:\wxWidgets
   - echo Running cmake...
   - cmd: mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - cmake -G "Visual Studio 14 2015 Win64" c:\projects\wxMaxima -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON .. -DwxWidgets_ROOT_DIR="%wxWidgets_ROOT_DIR%" -DwxWidgets_LIBRARIES="%wxWidgets_LIBRARIES%"
+  - cmake -G "Visual Studio 14 2015 Win64" c:\projects\wxMaxima -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON .. -DwxWidgets_ROOT_DIR="C:\wxWidgets\" -DwxWidgets_LIBRARIES="C:\wxWidgets\lib\vc140_x64_dll"
 
 build_script:
   - cd c:\projects\wxMaxima\build
