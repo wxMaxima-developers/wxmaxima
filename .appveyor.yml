@@ -1,16 +1,6 @@
 # This file is based on
 # https://github.com/Ifsttar/I-Simpa/blob/master/appveyor.yml
 
-# specify custom environment variables
-environment:
-  matrix:
-    - VisualStudioVersion: 14.0
-      platform: x64
-      configuration: Release
-      vcvarsall_platform: "x64"
-  global:
-    MSVC_DEFAULT_OPTIONS: ON
-
 # clone directory
 clone_folder: c:\projects\wxMaxima
 
@@ -24,16 +14,6 @@ branches:
   only:
     - master
 
-# Operating system (build VM template)
-os: Visual Studio 2015
-
-# scripts that are called at very beginning, before repo cloning
-init:
-
-platform: x64
-configuration: Release
-
-
 # scripts to run before build
 before_build:
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.0/wxWidgets-3.1.0.7z'
@@ -45,17 +25,13 @@ before_build:
   - echo Running cmake...
   - cmd: mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - cmake -G "Visual Studio 14 2015 Win64" c:\projects\wxMaxima -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON .. -DwxWidgets_ROOT_DIR="C:\wxWidgets\" -DwxWidgets_LIBRARIES="C:\wxWidgets\lib\vc_dll"
+  - cmake c:\projects\wxMaxima -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON .. -DwxWidgets_ROOT_DIR="C:\wxWidgets\" -DwxWidgets_LIBRARIES="C:\wxWidgets\lib\vc_dll\"
 
 build_script:
   - cd c:\projects\wxMaxima\build
-  - 'CALL "C:\Program Files (x86)\Microsoft Visual Studio %VisualStudioVersion%\VC\vcvarsall.bat" %vcvarsall_platform%'
-  - msbuild "INSTALL.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build  /p:Configuration=%configuration% /p:Platform=%platform% /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-
-after_build:
-  - cd c:\projects\wxMaxima\build
-  - 'CALL "C:\Program Files (x86)\Microsoft Visual Studio %VisualStudioVersion%\VC\vcvarsall.bat" %vcvarsall_platform%'
-  - msbuild "PACKAGE.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build  /p:Configuration=%configuration% /p:Platform=%platform% /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - 'CALL "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
+#  - 'CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community}VC\Auxiliary\Build\vcvars64.bat"
+  - msbuild "INSTALL.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 artifacts:
   - path: 'build\CMakeFiles\CMakeOutput.log'
