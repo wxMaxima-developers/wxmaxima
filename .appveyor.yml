@@ -8,8 +8,8 @@ image:
 clone_folder: c:\projects\wxMaxima
 
 # cache the build results in order to speed up the build
-#cache:
-#  - build\CMakeFiles
+cache:
+  - build\CMakeFiles
 
 # branches to build
 branches:
@@ -27,12 +27,17 @@ before_build:
   - echo Running cmake...
   - cmd: mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - cmake c:\projects\wxMaxima -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON .. -DwxWidgets_ROOT_DIR="C:\wxWidgets\" -DwxWidgets_LIBRARIES="C:\wxWidgets\lib\vc_dll\"
+  - cmake c:\projects\wxMaxima -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON .. -DwxWidgets_ROOT_DIR="C:\wxWidgets" -DwxWidgets_LIBRARIES="C:\wxWidgets\lib\vc141_x64_dll"
 
 build_script:
   - cd c:\projects\wxMaxima\build
   - CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community}VC\Auxiliary\Build\vcvars64.bat"
   - msbuild "INSTALL.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+
+after_build:
+  - cd c:\projects\wxMaxima\build
+  - CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community}VC\Auxiliary\Build\vcvars64.bat"
+  - msbuild "PACKAGE.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 artifacts:
   - path: 'build\CMakeFiles\CMakeOutput.log'
