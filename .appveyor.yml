@@ -25,7 +25,7 @@ before_build:
   - echo Running cmake...
   - cmd: mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - cmake c:\projects\wxMaxima -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DwxWidgets_ROOT_DIR="C:\wxWidgets" -DwxWidgets_LIB_DIR="C:\wxWidgets\lib\vc141_x64_dll" ..
+  - cmake c:\projects\wxMaxima -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DwxWidgets_ROOT_DIR="C:\wxWidgets" -DwxWidgets_LIBRARIES="C:\wxWidgets\lib\vc141_x64_dll" ..
 
 build_script:
   - cd c:\projects\wxMaxima\build
