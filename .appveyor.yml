@@ -4,8 +4,17 @@
 image:
  - Visual Studio 2017
 
+# specify custom environment variables
+environment:
+  global:
+    WXWIN: C:\wxWidgets\
+    wxWidgets_ROOT_DIR: C:\wxWidgets\
+    wxWidgets_INCLUDE_DIRS: C:\wxWidgets\include
+    wxWidgets_LIBRARIES: C:\wxWidgets\lib\vc141_x64_dll
+
 # clone directory
 clone_folder: c:\projects\wxMaxima
+
 
 # cache the build results in order to speed up the build
 cache:
@@ -18,16 +27,21 @@ branches:
 
 # scripts to run before build
 before_build:
-  - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2.7z'
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_x64_Dev.7z'
-  - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_x64_ReleaseDLL.7z' -Timeout 15000
-  - cmd: 7z x wxWidgets-3.1.2.7z -oC:\wxWidgets
+  - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_ReleaseDLL.7z'
+  - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2-headers.7z'
   - cmd: 7z x wxMSW-3.1.2_vc141_x64_Dev.7z -oC:\wxWidgets
-  - cmd: 7z x wxMSW-3.1.2_vc141_x64_ReleaseDLL.7z -oC:\wxWidgets
+  - cmd: 7z x wxMSW-3.1.2_vc141_ReleaseDLL.7z -oC:\wxWidgets
+  - cmd: 7z x wxWidgets-3.1.2-headers.7z -oC:\wxWidgets
   - echo Running cmake...
   - cmd: mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - cmake c:\projects\wxMaxima -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON .. -DwxWidgets_ROOT_DIR="C:\wxWidgets" -DwxWidgets_LIBRARIES="C:\wxWidgets\lib\vc141_x64_dll"
+  - cmd: echo wxWidgets_CONFIGURATION:STRING=mswu > CMakeCache.txt
+  - cmd: echo wxWidgets_LIB_DIR:PATH=%wxWidgets_LIBRARIES% >> CMakeCache.txt
+  - cmd: echo wxWidgets_ROOT_DIR:PATH=%wxWidgets_ROOT_DIR% >> CMakeCache.txt
+  - cmd: echo WX_LIB_DIR:INTERNAL=%wxWidgets_LIBRARIES% >> CMakeCache.txt
+  - cmd: echo WX_ROOT_DIR:INTERNAL=%wxWidgets_ROOT_DIR% >> CMakeCache.txt
+  - cmd: cmake -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -LAH ..
 
 build_script:
   - cd c:\projects\wxMaxima\build
