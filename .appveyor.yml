@@ -4,6 +4,14 @@
 image:
  - Visual Studio 2017
 
+# specify custom environment variables
+environment:
+  global:
+    WXWIN: C:\wxWidgets\
+    wxWidgets_ROOT_DIR: C:\wxWidgets\
+    wxWidgets_INCLUDE_DIRS: C:\wxWidgets\include
+    wxWidgets_LIBRARIES: C:\wxWidgets\lib\vc141_x64_dll
+
 # clone directory
 clone_folder: c:\projects\wxMaxima
 
@@ -26,9 +34,11 @@ before_build:
   - echo Running cmake...
   - cmd: mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - set WXWIN=C:\wxWidgets
-  - set wxWidgets_ROOT_DIR=%WXWIN%
-  - set wxWidgets_LIBRARIES=%WXWIN%\lib\vc141_x64_dll
+  - cmd: echo wxWidgets_CONFIGURATION:STRING=mswu > CMakeCache.txt
+  - cmd: echo wxWidgets_LIB_DIR:PATH=%wxWidgets_LIBRARIES% >> CMakeCache.txt
+  - cmd: echo wxWidgets_ROOT_DIR:PATH=%wxWidgets_ROOT_DIR% >> CMakeCache.txt
+  - cmd: echo WX_LIB_DIR:INTERNAL=%wxWidgets_LIBRARIES% >> CMakeCache.txt
+  - cmd: echo WX_ROOT_DIR:INTERNAL=%wxWidgets_ROOT_DIR% >> CMakeCache.txt
   - cmd: cmake -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON ..
 
 build_script:
