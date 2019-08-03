@@ -39,7 +39,7 @@ before_build:
   - cmd: echo wxWidgets_ROOT_DIR:PATH=%wxWidgets_ROOT_DIR% >> CMakeCache.txt
   - cmd: echo WX_LIB_DIR:INTERNAL=%wxWidgets_LIBRARIES% >> CMakeCache.txt
   - cmd: echo WX_ROOT_DIR:INTERNAL=%wxWidgets_ROOT_DIR% >> CMakeCache.txt
-  - cmd: cmake -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON ..
+  - cmd: cmake -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -LAH ..
 
 build_script:
   - cd c:\projects\wxMaxima\build
