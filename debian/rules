@@ -13,6 +13,9 @@ export DEB_LDFLAGS_MAINT_APPEND  = -Wl,--as-needed
 override_dh_auto_build:
 	dh_auto_build -- all
 
+override_dh_auto_test:
+	xvfb-run make test
+
 override_dh_auto_install:
 	dh_auto_install
 	rm debian/wxmaxima/usr/share/wxMaxima/COPYING
