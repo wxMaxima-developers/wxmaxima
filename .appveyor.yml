@@ -28,7 +28,7 @@ before_build:
   - cmd: cd c:\projects\wxMaxima\build
   - set WXWIN=C:\wxWidgets
   - set wxWidgets_ROOT_DIR=%WXWIN%
-  - set wxWidgets_LIB_DIR=%WXWIN%\lib\vc141_x64_dll
+  - set wxWidgets_LIBRARIES=%WXWIN%\lib\vc141_x64_dll
   - cmd: cmake -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON ..
 
 build_script:
