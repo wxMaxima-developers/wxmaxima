@@ -37,7 +37,7 @@ before_build:
   - cmd: mkdir c:\projects\wxMaxima\build
 
 build_script:
-  - CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community}VC\Auxiliary\Build\vcvars64.bat"
+  - CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - cmd: cd c:\projects\wxMaxima\build
   - cmd: echo wxWidgets_CONFIGURATION:STRING=mswu > CMakeCache.txt
   - cmd: echo wxWidgets_LIB_DIR:PATH=%wxWidgets_LIBRARIES% >> CMakeCache.txt
@@ -49,7 +49,7 @@ build_script:
 
 after_build:
   - cd c:\projects\wxMaxima\build
-  - CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community}VC\Auxiliary\Build\vcvars64.bat"
+  - CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - msbuild "PACKAGE.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 artifacts:
