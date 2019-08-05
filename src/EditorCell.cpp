@@ -3055,13 +3055,13 @@ void EditorCell::CommentSelection()
 wxString EditorCell::GetWordUnderCaret()
 {
   unsigned long start = m_positionOfCaret;
-  if(start < 0)
+  if(m_positionOfCaret < 0)
     return wxEmptyString;
   if(start >= m_text.Length())
     start = m_text.Length();
 
   wxString retval;
-  long pos = 0;
+  unsigned long pos = 0;
   for (wxString::iterator it = m_text.begin(); it != m_text.end(); ++it)
   {
     if(*it == '\\')

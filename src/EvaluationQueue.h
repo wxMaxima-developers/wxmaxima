@@ -109,7 +109,7 @@ public:
   bool IsInQueue(GroupCell *gr);
 
   //! Adds a GroupCell to the evaluation queue.
-  void AddToQueue(GroupCell *gr, bool lispMode = false);
+  void AddToQueue(GroupCell *gr);
 
   //! Remove a GroupCell from the evaluation queue.
   void Remove(GroupCell *gr);

@@ -6876,7 +6876,7 @@ void Worksheet::AddToEvaluationQueue(GroupCell *cell, bool lispMode)
     {
       cell->GetInput()->ContainsChanges(true);
       // ...and add it to the evaluation queue
-      m_evaluationQueue.AddToQueue(cell, lispMode);
+      m_evaluationQueue.AddToQueue(cell);
     }
   }
 }

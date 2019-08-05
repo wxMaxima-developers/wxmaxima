@@ -71,7 +71,7 @@ void EvaluationQueue::Remove(GroupCell *gr)
   }
 }
 
-void EvaluationQueue::AddToQueue(GroupCell *gr, bool lispMode)
+void EvaluationQueue::AddToQueue(GroupCell *gr)
 {
   if(gr == NULL)
     return;
