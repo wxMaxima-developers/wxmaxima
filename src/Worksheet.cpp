@@ -407,7 +407,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 #if wxCHECK_VERSION(3, 1, 0)
   wxAutoBufferedPaintDC dc(this);
 #else
-  wxBufferedPaintDC dc(this);
+  wxAutoBufferedPaintDC dc(this);
 #endif
 #endif
 
