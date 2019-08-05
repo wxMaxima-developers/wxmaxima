@@ -411,8 +411,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 #endif
 #endif
 
-  dc.SetBackground(m_configuration->GetBackgroundBrush());
-  dc.SetBrush(m_configuration->GetBackgroundBrush());
+  // Don't fill the text background with the background color
   dc.SetMapMode(wxMM_TEXT);
 #ifdef __WXGTK__
 #ifndef __WXGTK3__
@@ -426,138 +425,28 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   PrepareDC(dc);
 #endif
 
-  // Create a graphics context that supports antialiassing, but on MSW
-  // only supports fonts that come in the Right Format.
-  wxGCDC antiAliassingDC(dc);
-#ifdef __WXGTK__
-#if wxCHECK_VERSION(3, 1, 0)
-#else
-  PrepareDC(antiAliassingDC);
-#endif
-#endif
-  
-  m_configuration->SetContext(dc);
-  m_configuration->SetAntialiassingDC(antiAliassingDC);
-  m_configuration->SetBounds(top, bottom);
-
   // Clear the drawing area
+  dc.SetBackground(m_configuration->GetBackgroundBrush());
+  dc.SetBrush(m_configuration->GetBackgroundBrush());
   dc.SetPen(*wxTRANSPARENT_PEN);
   dc.Clear();
 
-  // Draw content
-  if (m_tree != NULL)
-  {
-    //
-    // First draw selection under content with wxCOPY and selection brush/color
-    //
-    if (CellsSelected())
-    {
-      Cell *tmp = m_cellPointers.m_selectionStart;
-      dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
-      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
-
-      // Draw the marker that tells us which output cells are selected -
-      // if output cells are selected, that is.
-      if (m_cellPointers.m_selectionStart->GetType() != MC_TYPE_GROUP)
-      {  // We have a selection of output
-        while (tmp != NULL)
-        {
-          if (!tmp->m_isBrokenIntoLines && !tmp->m_isHidden && GetActiveCell() != tmp)
-            tmp->DrawBoundingBox(dc, false);
-          if (tmp == m_cellPointers.m_selectionEnd)
-            break;
-          tmp = tmp->m_nextToDraw;
-        } // end while (1)
-      }
-    }
-    m_lastTop = top;
-    m_lastBottom = bottom;
-    //
-    // Draw content over the highlighting
-    //
-    wxPoint point;
-    point.x = m_configuration->GetIndent();
-    point.y = m_configuration->GetBaseIndent() + m_tree->GetMaxCenter();
-    // Draw tree
-    GroupCell *tmp = m_tree;
-
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
-    dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_DEFAULT))));
-
-    bool recalculateNecessaryWas = false;
-
-    while (tmp != NULL)
-    {
-      if(
-        (tmp->GetCurrentPoint().x < 0) ||
-        (tmp->GetCurrentPoint().y < 0) ||
-        (tmp->GetRect().GetWidth() < 0) ||
-        (tmp->GetRect().GetHeight() < 0)
-        )
-      {
-        tmp->Recalculate();
-        recalculateNecessaryWas = true;
-      }
-
-      wxRect cellRect = tmp->GetRect();
-
-      int width;
-      int height;
-      GetClientSize(&width, &height);
-
-      wxPoint upperLeftScreenCorner;
-      CalcScrolledPosition(0, 0,
-                           &upperLeftScreenCorner.x, &upperLeftScreenCorner.y);
-      (m_configuration)->SetVisibleRegion(wxRect(upperLeftScreenCorner,
-                                        upperLeftScreenCorner + wxPoint(width,height)));
-      (m_configuration)->SetWorksheetPosition(GetPosition());
-      // Clear the image cache of all cells above or below the viewport.
-      if ((cellRect.GetTop() >= bottom) || (cellRect.GetBottom() <= top))
-      {
-        // Only actually clear the image cache if there is a screen's height between
-        // us and the image's position: Else the chance is too high that we will
-        // very soon have to generated a scaled image again.
-        if ((cellRect.GetBottom() <= m_lastBottom - height) || (cellRect.GetTop() >= m_lastTop + height))
-        {
-          if (tmp->GetOutput())
-            tmp->GetOutput()->ClearCacheList();
-        }
-      }
-
-      tmp->SetCurrentPoint(point);
-      if (tmp->DrawThisCell(point))
-      {
-        tmp->InEvaluationQueue(m_evaluationQueue.IsInQueue(tmp));
-        tmp->LastInEvaluationQueue(m_evaluationQueue.GetCell() == tmp);
-      }
-      tmp->Draw(point);
-      tmp = dynamic_cast<GroupCell *>(tmp->m_next);
-      if (tmp != NULL)
-      {
-        tmp->UpdateYPosition();
-        point = tmp->GetCurrentPoint();
-      }
-    }
-
-    if(recalculateNecessaryWas)
-      wxLogMessage(_("Cell wasn't recalculated on draw!"));
-  }
   //
-  // Draw horizontal caret
+  // Draw the horizontal caret
   //
   if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hCaretBlinkVisible) && (m_hasFocus) &&
       (m_hCaretPosition != NULL))
   {
     dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
     dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
-
+    
     wxRect currentGCRect = m_hCaretPosition->GetRect();
     int caretY = ((int) m_configuration->GetGroupSkip()) / 2 + currentGCRect.GetBottom() + 1;
     dc.DrawRectangle(xstart + m_configuration->GetBaseIndent(),
-                      caretY - m_configuration->GetCursorWidth() / 2,
-                      MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
+                     caretY - m_configuration->GetCursorWidth() / 2,
+                     MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
   }
-
+  
   if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hasFocus) && (m_hCaretPosition == NULL))
   {
     if (!m_hCaretBlinkVisible)
@@ -570,15 +459,129 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
       dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), m_configuration->Scale_Px(1), wxPENSTYLE_SOLID)));
       dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
     }
-
+    
     wxRect cursor = wxRect(xstart + m_configuration->GetCellBracketWidth(),
                            (m_configuration->GetBaseIndent() - m_configuration->GetCursorWidth()) / 2,
                            MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
     dc.DrawRectangle(cursor);
   }
+  
+  if (m_tree == NULL)
+    return;
 
+  // Create a graphics context that supports antialiassing, but on MSW
+  // only supports fonts that come in the Right Format.
+  wxGCDC antiAliassingDC(dc);
+#ifdef __WXGTK__
+#if wxCHECK_VERSION(3, 1, 0)
+#else
+  PrepareDC(antiAliassingDC);
+#endif
+#endif
+
+  // Inform the config object about our current configuration
+  m_configuration->SetContext(dc);
+  m_configuration->SetAntialiassingDC(antiAliassingDC);
+  m_configuration->SetBounds(top, bottom);
+
+  //
+  // Draw the selection marks
+  //
+  if (CellsSelected())
+  {
+    Cell *tmp = m_cellPointers.m_selectionStart;
+    dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
+    dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
+    
+    // Draw the marker that tells us which output cells are selected -
+    // if output cells are selected, that is.
+    if (m_cellPointers.m_selectionStart->GetType() != MC_TYPE_GROUP)
+    {  // We have a selection of output
+      while (tmp != NULL)
+      {
+        if (!tmp->m_isBrokenIntoLines && !tmp->m_isHidden && GetActiveCell() != tmp)
+          tmp->DrawBoundingBox(dc, false);
+        if (tmp == m_cellPointers.m_selectionEnd)
+          break;
+        tmp = tmp->m_nextToDraw;
+      } // end while (1)
+    }
+  }
+
+  //
+  // Draw the cell contents
+  //
+  wxPoint point;
+  point.x = m_configuration->GetIndent();
+  point.y = m_configuration->GetBaseIndent() + m_tree->GetMaxCenter();
+  // Draw tree
+  GroupCell *tmp = m_tree;
+  
+  dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
+  dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_DEFAULT))));
+  
+  bool recalculateNecessaryWas = false;
+  
+  while (tmp != NULL)
+  {
+    if(
+      (tmp->GetCurrentPoint().x < 0) ||
+      (tmp->GetCurrentPoint().y < 0) ||
+      (tmp->GetRect().GetWidth() < 0) ||
+      (tmp->GetRect().GetHeight() < 0)
+      )
+    {
+      tmp->Recalculate();
+      recalculateNecessaryWas = true;
+    }
+    
+    wxRect cellRect = tmp->GetRect();
+    
+    int width;
+    int height;
+    GetClientSize(&width, &height);
+    
+    wxPoint upperLeftScreenCorner;
+    CalcScrolledPosition(0, 0,
+                         &upperLeftScreenCorner.x, &upperLeftScreenCorner.y);
+    (m_configuration)->SetVisibleRegion(wxRect(upperLeftScreenCorner,
+                                               upperLeftScreenCorner + wxPoint(width,height)));
+    (m_configuration)->SetWorksheetPosition(GetPosition());
+    // Clear the image cache of all cells above or below the viewport.
+    if ((cellRect.GetTop() >= bottom) || (cellRect.GetBottom() <= top))
+    {
+      // Only actually clear the image cache if there is a screen's height between
+      // us and the image's position: Else the chance is too high that we will
+      // very soon have to generated a scaled image again.
+      if ((cellRect.GetBottom() <= m_lastBottom - height) || (cellRect.GetTop() >= m_lastTop + height))
+      {
+        if (tmp->GetOutput())
+          tmp->GetOutput()->ClearCacheList();
+      }
+    }
+    
+    tmp->SetCurrentPoint(point);
+    if (tmp->DrawThisCell(point))
+    {
+      tmp->InEvaluationQueue(m_evaluationQueue.IsInQueue(tmp));
+      tmp->LastInEvaluationQueue(m_evaluationQueue.GetCell() == tmp);
+    }
+    tmp->Draw(point);
+    tmp = dynamic_cast<GroupCell *>(tmp->m_next);
+    if (tmp != NULL)
+    {
+      tmp->UpdateYPosition();
+      point = tmp->GetCurrentPoint();
+    }
+  }
+  
+  if(recalculateNecessaryWas)
+    wxLogMessage(_("Cell wasn't recalculated on draw!"));
+  
   m_configuration->SetContext(*m_dc);
   m_configuration->UnsetAntialiassingDC();
+  m_lastTop = top;
+  m_lastBottom = bottom;
 }
 
 GroupCell *Worksheet::InsertGroupCells(GroupCell *cells, GroupCell *where)
