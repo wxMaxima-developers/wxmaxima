@@ -71,13 +71,13 @@
 
 //! This class represents the worksheet shown in the middle of the wxMaxima window.
 Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
-        wxScrolledCanvas(
-                parent, id, position, size,
-                wxVSCROLL | wxHSCROLL | wxWANTS_CHARS
+  wxScrolled<wxWindow>(
+    parent, id, position, size,
+    wxVSCROLL | wxHSCROLL | wxWANTS_CHARS
 #if defined __WXMSW__
-                | wxSUNKEN_BORDER
+    | wxSUNKEN_BORDER
 #endif
-          ),m_cellPointers(this)
+    ),m_cellPointers(this)
 {
   #ifdef __WXGTK__
   wxString gtk_input_method;
@@ -87,6 +87,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
       wxLogMessage(_("Warning: GTK_IM_MODULE is set to \"xim\" which means that some hotkeys might not work."));
   }
   #endif
+  SetMinClientSize(wxSize(100,100));
   // This is somehow needed for wxAutoBufferedPaintDC
   SetBackgroundStyle(wxBG_STYLE_PAINT);
   SetBackgroundColour(*wxWHITE);

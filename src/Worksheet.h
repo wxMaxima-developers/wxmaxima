@@ -76,7 +76,7 @@ a few redraws in order to process the keypresses as fast as the user types.
 Also this keeps us responsive even if maxima outputs data faster than
 wxMaxima can display it.
 */
-class Worksheet : public wxScrolledCanvas
+class Worksheet : public wxScrolled<wxWindow>
 {
 private:
   //! Which zoom level were we at when we started the zoom gesture?
