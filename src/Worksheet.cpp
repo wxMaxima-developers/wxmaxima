@@ -358,7 +358,7 @@ Worksheet::~Worksheet()
 /***
  * Redraw the control
  */
-void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
+void Worksheet::OnDraw(wxDC &dc)
 {
   #if wxUSE_ACCESSIBILITY
   if(m_accessibilityInfo != NULL)
@@ -402,29 +402,9 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   RecalculateIfNeeded();
 
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
-#ifndef __WXGTK3__
-  wxAutoBufferedPaintDC dc(this);
-#else
-#if wxCHECK_VERSION(3, 1, 0)
-  wxAutoBufferedPaintDC dc(this);
-#else
-  wxAutoBufferedPaintDC dc(this);
-#endif
-#endif
 
   // Don't fill the text background with the background color
   dc.SetMapMode(wxMM_TEXT);
-#ifdef __WXGTK__
-#ifndef __WXGTK3__
-  PrepareDC(dc);
-#else
-#if wxCHECK_VERSION(3, 1, 0)
-  PrepareDC(dc);
-#endif
-#endif
-#else
-  PrepareDC(dc);
-#endif
 
   // Clear the drawing area
   dc.SetBackground(m_configuration->GetBackgroundBrush());
@@ -472,7 +452,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
 
   // Create a graphics context that supports antialiassing, but on MSW
   // only supports fonts that come in the Right Format.
-  wxGCDC antiAliassingDC(dc);
+  wxGCDC antiAliassingDC(&dc);
 #ifdef __WXGTK__
 #if wxCHECK_VERSION(3, 1, 0)
 #else
@@ -9004,7 +8984,6 @@ wxAccStatus Worksheet::AccessibilityInfo::GetDescription(int childId, wxString *
 BEGIN_EVENT_TABLE(Worksheet, wxScrolledCanvas)
                 EVT_MENU_RANGE(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, Worksheet::OnComplete)
                 EVT_SIZE(Worksheet::OnSize)
-                EVT_PAINT(Worksheet::OnPaint)
                 EVT_MOUSE_CAPTURE_LOST(Worksheet::OnMouseCaptureLost)
                 EVT_LEFT_UP(Worksheet::OnMouseLeftUp)
                 EVT_LEFT_DOWN(Worksheet::OnMouseLeftDown)
