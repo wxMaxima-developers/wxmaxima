@@ -6867,7 +6867,7 @@ void Worksheet::AddDocumentToEvaluationQueue()
   SetHCaret(m_last);
 }
 
-void Worksheet::AddToEvaluationQueue(GroupCell *cell, bool lispMode)
+void Worksheet::AddToEvaluationQueue(GroupCell *cell)
 {
   if (cell->GetGroupType() == GC_TYPE_CODE)
   {
@@ -6980,9 +6980,9 @@ void Worksheet::AddDocumentTillHereToEvaluationQueue()
   }
 }
 
-void Worksheet::AddCellToEvaluationQueue(GroupCell *gc, bool lispMode)
+void Worksheet::AddCellToEvaluationQueue(GroupCell *gc)
 {
-  AddToEvaluationQueue(dynamic_cast<GroupCell *>(gc), lispMode);
+  AddToEvaluationQueue(dynamic_cast<GroupCell *>(gc));
   SetHCaret(gc);
 }
 

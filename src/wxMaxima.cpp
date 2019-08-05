@@ -7863,7 +7863,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event))
     else
     { // normally just add to queue (and mark the cell as no more containing an error message)
       m_worksheet->m_cellPointers.m_errorList.Remove(cell);
-      m_worksheet->AddCellToEvaluationQueue(cell, m_worksheet->m_configuration->InLispMode());
+      m_worksheet->AddCellToEvaluationQueue(cell);
     }
   }
   else
