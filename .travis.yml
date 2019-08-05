@@ -1,6 +1,5 @@
 language: cpp
 sudo: required
-dist: bionic
 os:
   - linux
   - osx
@@ -10,6 +9,7 @@ branches:
   except:
   - gh_pages
   - DebianPackaging
+  - DebianPackaging_NightlyBuild
 cache:
   ccache: true
   directories:
@@ -27,8 +27,6 @@ before_install:
   ; fi
 notification:
   email:
-    recipients:
-    - andrej.vodopivec@gmail.com
     on_success: change
     on_failure: change
 git:
