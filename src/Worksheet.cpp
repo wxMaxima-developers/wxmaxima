@@ -401,11 +401,19 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   RecalculateIfNeeded();
 
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
+#ifndef __WXGTK3__
   wxAutoBufferedPaintDC dc(this);
+#else
+#if wxCHECK_VERSION(3, 1, 0)
+  wxAutoBufferedPaintDC dc(this);
+#else
+  wxBufferedPaintDC dc(this);
+#endif
+#endif
+
   dc.SetBackground(m_configuration->GetBackgroundBrush());
   dc.SetBrush(m_configuration->GetBackgroundBrush());
-//  dc.SetMapMode(wxMM_TEXT);
-  dc.SetBackgroundMode(wxSOLID);
+  dc.SetMapMode(wxMM_TEXT);
 #ifdef __WXGTK__
 #ifndef __WXGTK3__
   PrepareDC(dc);
@@ -465,7 +473,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     m_lastTop = top;
     m_lastBottom = bottom;
     //
-    // Draw content over the highlighting we did until now
+    // Draw content over the highlighting
     //
     wxPoint point;
     point.x = m_configuration->GetIndent();
@@ -534,7 +542,6 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     if(recalculateNecessaryWas)
       wxLogMessage(_("Cell wasn't recalculated on draw!"));
   }
-
   //
   // Draw horizontal caret
   //
