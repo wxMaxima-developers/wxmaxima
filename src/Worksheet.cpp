@@ -365,23 +365,16 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   #endif
   // Don't attempt to refresh the screen as long as the result will
   // end up on a printed page instead.
-  if (!m_configuration->ClipToDrawRegion())
+  if ((!m_configuration->ClipToDrawRegion()) || (m_configuration->GetPrinting()))
   {
+    wxLogMessage(_("Suppressing a redraw during printing/export"));
     RequestRedraw();
     return;
   }
 
   // Don't attempt to draw on a screen of the size 0.
-  if(GetClientSize().x < 1)
+  if( (GetClientSize().x < 1) || (GetClientSize().y < 1))
     return;
-  if(GetClientSize().y < 1)
-    return;
-
-  if (m_configuration->GetPrinting())
-  {
-    RequestRedraw();
-    return;
-  }
 
   // Inform all cells how wide our display is
   m_configuration->SetCanvasSize(GetClientSize());
@@ -411,8 +404,8 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   wxAutoBufferedPaintDC dc(this);
   dc.SetBackground(m_configuration->GetBackgroundBrush());
   dc.SetBrush(m_configuration->GetBackgroundBrush());
-  dc.SetMapMode(wxMM_TEXT);
-//  dc.SetBackgroundMode(wxSOLID);
+//  dc.SetMapMode(wxMM_TEXT);
+  dc.SetBackgroundMode(wxSOLID);
 #ifdef __WXGTK__
 #ifndef __WXGTK3__
   PrepareDC(dc);
@@ -434,23 +427,14 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   PrepareDC(antiAliassingDC);
 #endif
 #endif
-
-
+  
   m_configuration->SetContext(dc);
   m_configuration->SetAntialiassingDC(antiAliassingDC);
   m_configuration->SetBounds(top, bottom);
 
   // Clear the drawing area
-#if wxCHECK_VERSION(3, 1, 2)
-  dc.Clear();
-#else
-#ifdef __WXGTK3__
   dc.SetPen(*wxTRANSPARENT_PEN);
-  dc.DrawRectangle(updateRegion);
-#else
   dc.Clear();
-#endif
-#endif
 
   // Draw content
   if (m_tree != NULL)
