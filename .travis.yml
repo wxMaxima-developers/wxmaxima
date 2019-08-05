@@ -3,8 +3,6 @@ sudo: required
 os:
   - linux
   - osx
-services:
-  - xvfb
 branches:
   except:
   - gh_pages
@@ -45,7 +43,7 @@ script:
 - mkdir build && cd build && cmake .. && cmake --build .
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make test ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xvfb-run make test ; fi
 - cd ..
 #- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then git clean -dfx;bash .coverity/coverity.sh ;fi
 env:
