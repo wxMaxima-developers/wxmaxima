@@ -91,7 +91,9 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
   SetBackgroundStyle(wxBG_STYLE_PAINT);
   SetBackgroundColour(*wxWHITE);
   SetMinSize(wxSize(100, 100));
-
+  m_virtualWidth_Last = -1;
+  m_virtualHeight_Last = -1;
+ 
 #if wxUSE_ACCESSIBILITY
   m_accessibilityInfo = NULL;
 #endif
@@ -4311,14 +4313,19 @@ void Worksheet::AdjustSize()
     // but will make scrolling feel sluggish.
     height = GetClientSize().y;
   }
-  SetVirtualSize(width, virtualHeight);
-  m_scrollUnit = height / 30;
-  // Ensure a sane scroll unit even for the fringe case of a very small
-  // screen.
-  if (m_scrollUnit < 10)
-    m_scrollUnit = 10;
-
-  SetScrollRate(m_scrollUnit, m_scrollUnit);
+  if((m_virtualWidth_Last != width) || (m_virtualHeight_Last != height))
+  {
+    m_virtualWidth_Last = width;
+    m_virtualHeight_Last = height;
+    SetVirtualSize(width, virtualHeight);
+    m_scrollUnit = height / 30;
+    // Ensure a sane scroll unit even for the fringe case of a very small
+    // screen.
+    if (m_scrollUnit < 10)
+      m_scrollUnit = 10;
+    
+    SetScrollRate(m_scrollUnit, m_scrollUnit);
+  }
 }
 
 /***

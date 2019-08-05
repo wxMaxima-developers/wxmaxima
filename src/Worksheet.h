@@ -1494,6 +1494,9 @@ public:
   };
 #endif
 protected:
+  int m_virtualWidth_Last;
+  int m_virtualHeight_Last;  
+
   virtual wxSize DoGetBestClientSize() const;
 #if wxUSE_ACCESSIBILITY
   AccessibilityInfo *m_accessibilityInfo;

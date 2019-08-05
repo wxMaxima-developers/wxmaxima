@@ -27,6 +27,8 @@
   The C code for ConfigDialogue, the preferences dialog.
 */
 
+
+
 #include "ConfigDialogue.h"
 #include "Cell.h"
 #include "Configuration.h"
@@ -47,6 +49,7 @@
 #include <wx/mstream.h>
 #include <wx/wfstream.h>
 #include <wx/config.h>
+#include <wx/dcbuffer.h>
 
 #define CONFIG_ICON_SCALE (1.0)
 
@@ -1596,7 +1599,7 @@ void ConfigDialogue::ColorPanel::OnClick(wxMouseEvent& WXUNUSED(event))
 
 void ConfigDialogue::ColorPanel::OnPaint(wxPaintEvent &WXUNUSED(event))
 {
-  wxPaintDC dc(this);
+  wxBufferedPaintDC dc(this);
   if(!m_color.IsOk())
     m_color = *wxWHITE;
   
