@@ -410,8 +410,17 @@ void Worksheet::OnDraw(wxDC &dc)
   dc.SetBackground(m_configuration->GetBackgroundBrush());
   dc.SetBrush(m_configuration->GetBackgroundBrush());
   dc.SetPen(*wxTRANSPARENT_PEN);
+  // Clear the drawing area
+#if wxCHECK_VERSION(3, 1, 2)
   dc.Clear();
-
+#else
+#ifdef __WXGTK3__
+  dc.SetPen(*wxTRANSPARENT_PEN);
+  dc.DrawRectangle(updateRegion);
+#else
+  dc.Clear();
+#endif
+#endif
   //
   // Draw the horizontal caret
   //
