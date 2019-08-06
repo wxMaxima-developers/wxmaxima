@@ -1,21 +1,22 @@
 language: cpp
 sudo: required
+dist: bionic
 os:
   - linux
   - osx
-dist: bionic
+services:
+  - xvfb
 branches:
   except:
   - gh_pages
   - DebianPackaging
-  - DebianPackaging_NightlyBuild
 cache:
   ccache: true
   directories:
   - "$HOME/Library/Caches/Homebrew"
 before_install:
 - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-certificates.crt
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq install -y libwxgtk3.0-dev libwxgtk3.0 gettext doxygen graphviz rpm cmake maxima xvfb netcat-openbsd ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq install -y libwxgtk3.0-gtk3-dev libwxgtk3.0 gettext doxygen graphviz rpm cmake maxima xvfb netcat-openbsd ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS;brew update; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";brew  install ccache; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=/usr/local/opt/texinfo/bin:$PATH:/usr/local/opt/gettext/bin
@@ -26,6 +27,8 @@ before_install:
   ; fi
 notification:
   email:
+    recipients:
+    - andrej.vodopivec@gmail.com
     on_success: change
     on_failure: change
 git:
@@ -44,7 +47,7 @@ script:
 - mkdir build && cd build && cmake .. && cmake --build .
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xvfb-run make test ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make test ; fi
 - cd ..
 #- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then git clean -dfx;bash .coverity/coverity.sh ;fi
 env:
