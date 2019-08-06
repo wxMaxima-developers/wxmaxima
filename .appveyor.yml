@@ -7,10 +7,6 @@ image:
 # specify custom environment variables
 environment:
   global:
-    WXWIN: C:\wxWidgets\
-    wxWidgets_ROOT_DIR: C:\wxWidgets\
-    wxWidgets_INCLUDE_DIRS: C:\wxWidgets\include
-    wxWidgets_LIBRARIES: C:\wxWidgets\lib\vc141_x64_dll
 
 # clone directory
 clone_folder: c:\projects\wxMaxima
@@ -39,12 +35,7 @@ before_build:
 build_script:
   - CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - cmd: cd c:\projects\wxMaxima\build
-  - cmd: echo wxWidgets_CONFIGURATION:STRING=mswu > CMakeCache.txt
-  - cmd: echo wxWidgets_LIB_DIR:PATH=%wxWidgets_LIBRARIES% >> CMakeCache.txt
-  - cmd: echo wxWidgets_ROOT_DIR:PATH=%wxWidgets_ROOT_DIR% >> CMakeCache.txt
-  - cmd: echo WX_LIB_DIR:INTERNAL=%wxWidgets_LIBRARIES% >> CMakeCache.txt
-  - cmd: echo WX_ROOT_DIR:INTERNAL=%wxWidgets_ROOT_DIR% >> CMakeCache.txt
-  - cmd: cmake -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -LAH ..
+  - cmd: cmake -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -LAH -DwxWidgets_CONFIGURATION=mswud -DwxWidgets_ROOT_DIR=C:\wxWidgets\ -DwxWidgets_LIB_DIR=C:\wxWidgets\lib\vc141_x64_dll -DCMAKE_BUILD_TYPE=debug ..
   - msbuild "INSTALL.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 after_build:
