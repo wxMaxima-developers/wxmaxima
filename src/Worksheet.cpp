@@ -84,7 +84,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
   if(wxGetEnv(wxT("GTK_IM_MODULE"),&gtk_input_method))
   {
     if(gtk_input_method==wxT("xim"))
-      wxLogMessage(_("Warning: GTK_IM_MODULE is set to \"xim\" which means that some hotkeys might not work."));
+      wxLogMessage(_("Warning: GTK_IM_MODULE is set to \"xim\" which means that some hotkeys and non-ASCII characters might not work."));
   }
   #endif
   SetMinClientSize(wxSize(100,100));
