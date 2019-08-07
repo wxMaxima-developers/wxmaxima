@@ -28,7 +28,7 @@ before_build:
   - cmd: 7z x wxMSW-3.1.2_vc141_x64_Dev.7z -oC:\wxWidgets
   - cmd: 7z x wxWidgets-3.1.2-headers.7z -oC:\wxWidgets
   - echo Running cmake...
-  - cmd: mkdir c:\projects\wxMaxima\build
+  - cmd: if not exist c:\projects\wxMaxima\build mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
   - cmd: cmake  -LAH -G "Visual Studio 15 2017 Win64" ..
 
