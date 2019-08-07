@@ -171,7 +171,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
   ShowScrollbars(wxSHOW_SB_ALWAYS, wxSHOW_SB_ALWAYS);
   ClearDocument();
   #if wxUSE_ACCESSIBILITY
-  m_accessibilityInfo = new AccessibilityInfo(this);
+  m_accessibilityInfo = new AccessibilityInfo(GetTargetWindow(),this);
   #endif
 
   #if wxCHECK_VERSION(3,1,1)
@@ -8779,9 +8779,12 @@ void Worksheet::OnMouseCaptureLost(wxMouseCaptureLostEvent &WXUNUSED(event))
 }
 
 #if wxUSE_ACCESSIBILITY
-Worksheet::AccessibilityInfo::AccessibilityInfo(Worksheet *worksheet): wxAccessible(worksheet->GetTargetWindow())
+Worksheet::AccessibilityInfo::AccessibilityInfo(wxWindow *parent,
+                                                Worksheet *worksheet):
+  wxAccessible(worksheet->GetTargetWindow())
 {
-  m_worksheet = worksheet->GetTargetWindow();
+  m_worksheet = worksheet;
+  m_parent = parent;
 }
 
 wxAccStatus Worksheet::AccessibilityInfo::GetChildCount (int *childCount)
