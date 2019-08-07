@@ -462,7 +462,15 @@ void Worksheet::OnDraw(wxDC &dc)
   // Create a graphics context that supports antialiassing, but on MSW
   // only supports fonts that come in the Right Format.
   wxGCDC antiAliassingDC(&dc);
+#ifdef __WXGTK__
+#if wxCHECK_VERSION(3, 1, 0)
   if(antiAliassingDC.IsOk())
+#else
+  if(antiAliassingDC.IsOK())
+#endif
+#else
+      if(antiAliassingDC.IsOk())
+#endif    
   {
 #ifdef __WXGTK__
 #if wxCHECK_VERSION(3, 1, 0)

@@ -443,7 +443,7 @@ private:
     The canonical way to schedule triggering this function is calling the Refresh()
     function of this class.
    */
-  void OnDraw(wxDC &dc);
+  virtul void OnDraw(wxDC &dc) wxOVERRIDE;
 
   void OnSize(wxSizeEvent &event);
 
