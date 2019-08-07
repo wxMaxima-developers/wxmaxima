@@ -24,17 +24,13 @@ before_build:
   - set WXWIN=C:/wxWidgets
   - set wxWidgets_ROOT_DIR=%WXWIN%
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_x64_Dev.7z'
-  - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_ReleaseDLL.7z'
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2-headers.7z'
-  - ps: Start-FileDownload 'https://github.com/Kitware/CMake/releases/download/v3.14.6/cmake-3.14.6-win64-x64.zip'
   - cmd: 7z x wxMSW-3.1.2_vc141_x64_Dev.7z -oC:\wxWidgets
-  - cmd: 7z x wxMSW-3.1.2_vc141_ReleaseDLL.7z -oC:\wxWidgets
   - cmd: 7z x wxWidgets-3.1.2-headers.7z -oC:\wxWidgets
-  - cmd: 7z x cmake-3.14.6-win64-x64.zip -oC:\
   - echo Running cmake...
   - cmd: mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - C:\cmake-3.14.6-win64-x64\bin\cmake  -LAH -G "Visual Studio 15 2017 Win64" ..
+  - cmd: cmake  -LAH -G "Visual Studio 15 2017 Win64" ..
 
 build_script:
   - cd c:\projects\wxMaxima\build
