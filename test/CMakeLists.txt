@@ -12,7 +12,7 @@ add_test(NAME runMaxima WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND echo "quit
 set_tests_properties(runMaxima PROPERTIES TIMEOUT 60)
 
 # Test if maxima is able to communicate with a backend
-add_test(NAME runMaxima-over-network WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND echo 'quit ();' | nc -l 40000 & sleep 10 ; maxima -s 40000)
+add_test(NAME runMaxima-over-network WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND echo 'quit() ;' | nc -l 40000 & sleep 10 ; maxima -s 40000)
 set_tests_properties(runMaxima-over-network PROPERTIES TIMEOUT 60)
 
 add_test(NAME wxmaxima_batch_textcell WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/textcells.wxm)
