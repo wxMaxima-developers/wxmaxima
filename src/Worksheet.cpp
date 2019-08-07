@@ -360,6 +360,9 @@ Worksheet::~Worksheet()
  */
 void Worksheet::OnDraw(wxDC &dc)
 {
+  if(!dc.IsOk())
+    return;
+  
   #if wxUSE_ACCESSIBILITY
   if(m_accessibilityInfo != NULL)
     m_accessibilityInfo->NotifyEvent(0, this, wxOBJID_CLIENT, wxOBJID_CLIENT);
