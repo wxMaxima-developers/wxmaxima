@@ -360,7 +360,6 @@ Worksheet::~Worksheet()
  */
 void Worksheet::OnDraw(wxDC &dc)
 {
-  m_configuration->SetContext(dc);
   #if wxUSE_ACCESSIBILITY
   if(m_accessibilityInfo != NULL)
     m_accessibilityInfo->NotifyEvent(0, this, wxOBJID_CLIENT, wxOBJID_CLIENT);
@@ -393,7 +392,6 @@ void Worksheet::OnDraw(wxDC &dc)
   updateRegion.SetTop(top);
   updateRegion.SetBottom(bottom);
   m_configuration->SetUpdateRegion(updateRegion);
-  m_configuration->SetBounds(top, bottom);
 
   if ((sz.x < 1) || (sz.y < 1))
     return;
@@ -459,6 +457,8 @@ void Worksheet::OnDraw(wxDC &dc)
   if (m_tree == NULL)
     return;
 
+  m_configuration->SetContext(dc);
+
   /*
   // Create a graphics context that supports antialiassing, but on MSW
   // only supports fonts that come in the Right Format.
@@ -469,8 +469,12 @@ void Worksheet::OnDraw(wxDC &dc)
   PrepareDC(antiAliassingDC);
 #endif
 #endif
+
+  // Inform the config object about our current configuration
   m_configuration->SetAntialiassingDC(antiAliassingDC);
   */
+  m_configuration->SetBounds(top, bottom);
+
   //
   // Draw the selection marks
   //
