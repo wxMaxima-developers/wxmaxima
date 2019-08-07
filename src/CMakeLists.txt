@@ -1,4 +1,4 @@
-find_package(wxWidgets 3 REQUIRED std xml html adv aui core net base richtext)
+find_package(wxWidgets 3 REQUIRED base core adv xml html aui net richtext)
 
 include(${wxWidgets_USE_FILE})
 
