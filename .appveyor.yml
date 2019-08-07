@@ -21,9 +21,8 @@ branches:
 # scripts to run before build
 before_build:
   # sent environment variables for wxWidgets
-  - set WXWIN=C:\wxWidgets
+  - set WXWIN=C:/wxWidgets
   - set wxWidgets_ROOT_DIR=%WXWIN%
-  - set wxWidgets_LIB_DIR=%WXWIN%\lib\vc_dll
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_x64_Dev.7z'
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_ReleaseDLL.7z'
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2-headers.7z'
@@ -35,12 +34,7 @@ before_build:
   - echo Running cmake...
   - cmd: mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - cmd: echo wxWidgets_CONFIGURATION:STRING=mswu > CMakeCache.txt
-  - cmd: echo wxWidgets_LIB_DIR:PATH=%wxWidgets_LIBRARIES% >> CMakeCache.txt
-  - cmd: echo wxWidgets_ROOT_DIR:PATH=%wxWidgets_ROOT_DIR% >> CMakeCache.txt
-  - cmd: echo WX_LIB_DIR:INTERNAL=%wxWidgets_LIBRARIES% >> CMakeCache.txt
-  - cmd: echo WX_ROOT_DIR:INTERNAL=%wxWidgets_ROOT_DIR% >> CMakeCache.txt
-  - C:\cmake-3.14.6-win64-x64\bin\cmake -G "Visual Studio 15 2017 Win64" -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON ..
+  - C:\cmake-3.14.6-win64-x64\bin\cmake  -LAH -G "Visual Studio 15 2017 Win64" ..
 
 build_script:
   - cd c:\projects\wxMaxima\build
