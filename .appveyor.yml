@@ -23,16 +23,18 @@ before_build:
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_x64_Dev.7z'
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_ReleaseDLL.7z'
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2-headers.7z'
+  - ps: Start-FileDownload 'https://github.com/Kitware/CMake/releases/download/v3.14.6/cmake-3.14.6-win64-x64.zip'
   - cmd: 7z x wxMSW-3.1.2_vc141_x64_Dev.7z -oC:\wxWidgets
   - cmd: 7z x wxMSW-3.1.2_vc141_ReleaseDLL.7z -oC:\wxWidgets
   - cmd: 7z x wxWidgets-3.1.2-headers.7z -oC:\wxWidgets
+  - cmd: 7z x cmake-3.14.6-win64-x64.zip -oC:\
   - echo Running cmake...
   - cmd: mkdir c:\projects\wxMaxima\build
 
 build_script:
   - CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - cmd: cd c:\projects\wxMaxima\build
-  - cmd: cmake -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -LAH -DwxWidgets_CONFIGURATION=mswud -DwxWidgets_ROOT_DIR=C:\wxWidgets\ -DwxWidgets_LIB_DIR=C:\wxWidgets\lib\vc141_x64_dll -DCMAKE_BUILD_TYPE=debug ..
+  - cmd: C:\cmake-3.14.6-win64-x64\bin\cmake -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -LAH -DwxWidgets_CONFIGURATION=mswud -DwxWidgets_ROOT_DIR=C:\wxWidgets -DwxWidgets_LIB_DIR=C:\wxWidgets\lib\vc141_x64_dll -DCMAKE_BUILD_TYPE=debug ..
   - msbuild "INSTALL.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 after_build:
