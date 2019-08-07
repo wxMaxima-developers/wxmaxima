@@ -466,7 +466,7 @@ void Worksheet::OnDraw(wxDC &dc)
 #if wxCHECK_VERSION(3, 1, 0)
   if(antiAliassingDC.IsOk())
 #else
-  if(antiAliassingDC.IsOK())
+  if(antiAliassingDC.IsOk())
 #endif
 #else
       if(antiAliassingDC.IsOk())
