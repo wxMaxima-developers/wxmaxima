@@ -355,6 +355,23 @@ Worksheet::~Worksheet()
   m_dc = NULL;
 }
 
+#if wxCHECK_VERSION(3, 1, 2)
+#define WORKING_DC_CLEAR 1
+#else
+#ifndef __WXGTK3__
+#define WORKING_DC_CLEAR 1
+#endif
+#endif
+
+#if wxCHECK_VERSION(3, 1, 2)
+#define NO_MANUAL_DOUBLE_BUFFERING 1
+#else
+#ifndef __WXGTK3__
+#define NO_MANUAL_DOUBLE_BUFFERING 1
+#endif
+#endif
+#define NO_MANUAL_DOUBLE_BUFFERING 1
+
 /***
  * Redraw the control
  */
@@ -376,6 +393,11 @@ void Worksheet::OnDraw(wxDC &dc)
     return;
   }
 
+  // We might be triggered after someone changed the worksheet and before the idle
+  // loop caused it to be recalculated => Ensure all sizes and positions to be known
+  // before we proceed.
+  RecalculateIfNeeded();
+
   // Don't attempt to draw on a screen of the size 0.
   if( (GetClientSize().x < 1) || (GetClientSize().y < 1))
     return;
@@ -386,6 +408,8 @@ void Worksheet::OnDraw(wxDC &dc)
   // Prepare data
   wxRect rect = GetUpdateRegion().GetBox();
   wxSize sz = GetSize();
+  if ((sz.x < 1) || (sz.y < 1))
+    return;
   int xstart, xend, top, bottom;
   CalcUnscrolledPosition(rect.GetLeft(), rect.GetTop(), &xstart, &top);
   CalcUnscrolledPosition(rect.GetRight(), rect.GetBottom(), &xend, &bottom);
@@ -396,30 +420,51 @@ void Worksheet::OnDraw(wxDC &dc)
   updateRegion.SetBottom(bottom);
   m_configuration->SetUpdateRegion(updateRegion);
 
-  if ((sz.x < 1) || (sz.y < 1))
+  #ifdef WORKING_AUTO_BUFFER
+  m_configuration->SetContext(dc);
+  #else
+  wxMemoryDC dcm;
+  // Test if m_memory is NULL or of the wrong size
+  #ifdef __WXMAC__
+  if ((!m_memory.IsOk()) || (m_memory.GetSize() != sz))
+    m_memory = wxBitmap(sz*wxWindow::GetContentScaleFactor(),
+                        wxBITMAP_SCREEN_DEPTH,
+                        wxWindow::GetContentScaleFactor());
+  #else
+  if ((!m_memory.IsOk()) || (m_memory.GetSize() != sz))
+    m_memory = wxBitmap(sz*wxWindow::GetContentScaleFactor(), wxBITMAP_SCREEN_DEPTH);
+  #endif
+  if(!m_memory.IsOk())
+  {
+    m_configuration->SetContext(*m_dc);
+    m_configuration->UnsetAntialiassingDC();
     return;
-
-  // We might be triggered after someone changed the worksheet and before the idle
-  // loop caused it to be recalculated => Ensure all sizes and positions to be known
-  // before we proceed.
-  RecalculateIfNeeded();
-
+  }
+  dcm.SetUserScale(wxWindow::GetContentScaleFactor(),wxWindow::GetContentScaleFactor());
+  dcm.SelectObject(m_memory);
+  if(!dcm.IsOk())
+  {
+    m_configuration->SetContext(*m_dc);
+    m_configuration->UnsetAntialiassingDC();
+    return;
+  }
+  DoPrepareDC(dcm);
+//  dcm.SetBackgroundMode(wxTRANSPARENT);
+  m_configuration->SetContext(dcm);
+  #endif
+  
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
 
   // Clear the drawing area
-  dc.SetBackground(m_configuration->GetBackgroundBrush());
-  dc.SetBrush(m_configuration->GetBackgroundBrush());
-  dc.SetPen(*wxTRANSPARENT_PEN);
-  dc.SetLogicalFunction(wxCOPY);
+  m_configuration->GetDC()->SetBackground(m_configuration->GetBackgroundBrush());
+  m_configuration->GetDC()->SetBrush(m_configuration->GetBackgroundBrush());
+  m_configuration->GetDC()->SetPen(*wxTRANSPARENT_PEN);
+  m_configuration->GetDC()->SetLogicalFunction(wxCOPY);
   // Clear the drawing area
-#if wxCHECK_VERSION(3, 1, 2)
-  dc.Clear();
+#if WORKING_DC_CLEAR
+  m_configuration->GetDC()->Clear();
 #else
-#ifdef __WXGTK3__
-  dc.DrawRectangle(updateRegion);
-#else
-  dc.Clear();
-#endif
+  m_configuration->GetDC()->DrawRectangle(updateRegion);
 #endif
 
   //
@@ -428,12 +473,12 @@ void Worksheet::OnDraw(wxDC &dc)
   if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hCaretBlinkVisible) && (m_hasFocus) &&
       (m_hCaretPosition != NULL))
   {
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
-    dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
+    m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
+    m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
     
     wxRect currentGCRect = m_hCaretPosition->GetRect();
     int caretY = ((int) m_configuration->GetGroupSkip()) / 2 + currentGCRect.GetBottom() + 1;
-    dc.DrawRectangle(xstart + m_configuration->GetBaseIndent(),
+    m_configuration->GetDC()->DrawRectangle(xstart + m_configuration->GetBaseIndent(),
                      caretY - m_configuration->GetCursorWidth() / 2,
                      MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
   }
@@ -442,38 +487,33 @@ void Worksheet::OnDraw(wxDC &dc)
   {
     if (!m_hCaretBlinkVisible)
     {
-      dc.SetBrush(m_configuration->GetBackgroundBrush());
-      dc.SetPen(*wxThePenList->FindOrCreatePen(GetBackgroundColour(), m_configuration->Scale_Px(1)));
+      m_configuration->GetDC()->SetBrush(m_configuration->GetBackgroundBrush());
+      m_configuration->GetDC()->SetPen(*wxThePenList->FindOrCreatePen(GetBackgroundColour(), m_configuration->Scale_Px(1)));
     }
     else
     {
-      dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), m_configuration->Scale_Px(1), wxPENSTYLE_SOLID)));
-      dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
+      m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), m_configuration->Scale_Px(1), wxPENSTYLE_SOLID)));
+      m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_CURSOR), wxBRUSHSTYLE_SOLID)));
     }
     
     wxRect cursor = wxRect(xstart + m_configuration->GetCellBracketWidth(),
                            (m_configuration->GetBaseIndent() - m_configuration->GetCursorWidth()) / 2,
                            MC_HCARET_WIDTH, m_configuration->GetCursorWidth());
-    dc.DrawRectangle(cursor);
+    m_configuration->GetDC()->DrawRectangle(cursor);
   }
   
   if (m_tree == NULL)
+  {
+    m_configuration->SetContext(*m_dc);
+    m_configuration->UnsetAntialiassingDC();
     return;
-
-  m_configuration->SetContext(dc);
+  }
 
   // Create a graphics context that supports antialiassing, but on MSW
   // only supports fonts that come in the Right Format.
-  wxGCDC antiAliassingDC(&dc);
-#ifdef __WXGTK__
-#if wxCHECK_VERSION(3, 1, 0)
+  wxGCDC antiAliassingDC(m_configuration->GetDC());
+  
   if(antiAliassingDC.IsOk())
-#else
-  if(antiAliassingDC.IsOk())
-#endif
-#else
-      if(antiAliassingDC.IsOk())
-#endif    
   {
 #ifdef __WXGTK__
 #if wxCHECK_VERSION(3, 1, 0)
@@ -484,15 +524,15 @@ void Worksheet::OnDraw(wxDC &dc)
     m_configuration->SetAntialiassingDC(antiAliassingDC);
   }
   m_configuration->SetBounds(top, bottom);
-
+  
   //
   // Draw the selection marks
   //
   if (CellsSelected())
   {
     Cell *tmp = m_cellPointers.m_selectionStart;
-    dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
-    dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
+    m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_SELECTION), 1, wxPENSTYLE_SOLID)));
+    m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_SELECTION))));
     
     // Draw the marker that tells us which output cells are selected -
     // if output cells are selected, that is.
@@ -510,7 +550,7 @@ void Worksheet::OnDraw(wxDC &dc)
   }
 
   // Don't fill the text background with the background color
-  dc.SetMapMode(wxMM_TEXT);
+  m_configuration->GetDC()->SetMapMode(wxMM_TEXT);
   
   //
   // Draw the cell contents
@@ -521,8 +561,8 @@ void Worksheet::OnDraw(wxDC &dc)
   // Draw tree
   GroupCell *tmp = m_tree;
   
-  dc.SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
-  dc.SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_DEFAULT))));
+  m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_DEFAULT), 1, wxPENSTYLE_SOLID)));
+  m_configuration->GetDC()->SetBrush(*(wxTheBrushList->FindOrCreateBrush(m_configuration->GetColor(TS_DEFAULT))));
   
   bool recalculateNecessaryWas = false;
   
@@ -581,6 +621,13 @@ void Worksheet::OnDraw(wxDC &dc)
   
   if(recalculateNecessaryWas)
     wxLogMessage(_("Cell wasn't recalculated on draw!"));
+  
+  #ifndef WORKING_AUTO_BUFFER
+  // Blit the memory image to the window
+  dcm.SetDeviceOrigin(0, 0);
+  dc.Blit(0, rect.GetTop(), sz.x, rect.GetBottom() - rect.GetTop() + 1, &dcm,
+          0, rect.GetTop());
+  #endif
   
   m_configuration->SetContext(*m_dc);
   m_configuration->UnsetAntialiassingDC();

@@ -1497,8 +1497,9 @@ public:
 #endif
 protected:
   int m_virtualWidth_Last;
-  int m_virtualHeight_Last;  
-
+  int m_virtualHeight_Last;
+  //! A memory we can manually buffer the contents of the area that is to be redrawn in
+  wxBitmap m_memory;
   virtual wxSize DoGetBestClientSize() const;
 #if wxUSE_ACCESSIBILITY
   AccessibilityInfo *m_accessibilityInfo;
