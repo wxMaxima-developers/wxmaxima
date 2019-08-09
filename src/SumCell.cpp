@@ -38,9 +38,9 @@
 SumCell::SumCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
-  m_base = NULL;
-  m_under = NULL;
-  m_over = NULL;
+  m_base = new TextCell(parent, config, cellPointers);
+  m_under = new TextCell(parent, config, cellPointers);
+  m_over = new TextCell(parent, config, cellPointers);
   m_signSize = 50;
   m_signTop = (2 * m_signSize) / 5;
   m_signWidth = 30;

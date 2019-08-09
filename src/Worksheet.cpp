@@ -66,9 +66,6 @@
 #include <wx/fs_mem.h>
 #include <stdlib.h>
 
-//! The default delay between animation steps in milliseconds
-#define ANIMATION_TIMER_TIMEOUT 300
-
 //! This class represents the worksheet shown in the middle of the wxMaxima window.
 Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
   wxScrolled<wxWindow>(
@@ -91,7 +88,6 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
   // This is somehow needed for wxAutoBufferedPaintDC
   SetBackgroundStyle(wxBG_STYLE_PAINT);
   SetBackgroundColour(*wxWHITE);
-  SetMinSize(wxSize(100, 100));
   m_virtualWidth_Last = -1;
   m_virtualHeight_Last = -1;
  
