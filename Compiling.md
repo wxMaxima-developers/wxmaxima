@@ -83,3 +83,12 @@ generated using doxygen and the
 target.
 
 
+Additional information for packagers
+------------------------------------
+
+On linux wxMaxima's "make test" target requires a way to connect to a
+display - which by default doesn't exist on a build server. But a
+
+    xvfb-run make test
+
+might succeed.
