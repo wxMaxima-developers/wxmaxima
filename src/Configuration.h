@@ -223,23 +223,7 @@ public:
       else
         return m_dc;
     }
-
-  void SetBounds(int top, int bottom)
-  {
-    m_top = top;
-    m_bottom = bottom;
-  }
-
-  int GetTop()
-  {
-    return m_top;
-  }
-
-  int GetBottom()
-  {
-    return m_bottom;
-  }
-
+  
   wxString GetFontName(int type = TS_DEFAULT);
 
   wxString GetSymbolFontName();
@@ -865,7 +849,6 @@ private:
   double m_zoomFactor;
   wxDC *m_dc;
   wxDC *m_antialiassingDC;
-  int m_top, m_bottom;
   wxString m_fontName;
   int m_defaultFontSize, m_mathFontSize;
   wxString m_mathFontName;

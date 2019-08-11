@@ -359,6 +359,13 @@ Worksheet::~Worksheet()
 #endif
 #endif
 
+#ifdef __WXGTK__
+#if wxCHECK_VERSION(3, 1, 0)
+#else
+#define ANTIALIASSING_DC_NOT_CORRECTLY_SCROLLED 1
+#endif
+#endif    
+
 #define WORKING_AUTO_BUFFER 1
 
 void Worksheet::OnDraw(wxDC &dc)
@@ -501,15 +508,11 @@ void Worksheet::OnDraw(wxDC &dc)
   
   if(antiAliassingDC.IsOk())
   {
-#ifdef __WXGTK__
-#if wxCHECK_VERSION(3, 1, 0)
-#else
+#ifdef ANTIALIASSING_DC_NOT_CORRECTLY_SCROLLED
     PrepareDC(antiAliassingDC);
-#endif
 #endif    
     m_configuration->SetAntialiassingDC(antiAliassingDC);
   }
-  m_configuration->SetBounds(top, bottom);
   
   //
   // Draw the selection marks
