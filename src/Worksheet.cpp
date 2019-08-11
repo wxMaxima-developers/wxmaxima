@@ -359,18 +359,8 @@ Worksheet::~Worksheet()
 #endif
 #endif
 
-#if wxCHECK_VERSION(3, 1, 2)
-#define NO_MANUAL_DOUBLE_BUFFERING 1
-#else
-#ifndef __WXGTK3__
-#define NO_MANUAL_DOUBLE_BUFFERING 1
-#endif
-#endif
-#define NO_MANUAL_DOUBLE_BUFFERING 1
+#define WORKING_AUTO_BUFFER 1
 
-/***
- * Redraw the control
- */
 void Worksheet::OnDraw(wxDC &dc)
 {
   if(!dc.IsOk())
