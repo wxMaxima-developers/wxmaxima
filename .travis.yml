@@ -40,10 +40,11 @@ script:
 # The "-ansi -std=c++11" is necessary for coverity.
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
   else export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 xvfb-run -a xdpyinfo;fi
 - mkdir build && cd build && cmake .. && cmake --build .
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 xvfb-run -a -s "-screen 0 1024x768x24" make test ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 xvfb-run -a make test ; fi
 - cd ..
 #- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then git clean -dfx;bash .coverity/coverity.sh ;fi
 env:
