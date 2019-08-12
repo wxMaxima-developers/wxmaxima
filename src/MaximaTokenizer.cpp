@@ -45,7 +45,10 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       (it < commands.end()) &&
       ((!token.EndsWith("(to-maxima)"))) &&
       ((!token.EndsWith(wxString("(to")+wxT("\x2212")+"maxima)"))))
+    {
       token +=*it;
+      ++it;
+    }
     token.Trim(true);
     if(!token.IsEmpty())
       m_tokens.push_back(new Token(token, TS_CODE_LISP));
