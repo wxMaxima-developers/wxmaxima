@@ -7885,7 +7885,7 @@ wxString wxMaxima::GetUnmatchedParenthesisState(wxString text,int &index)
   if (text.EndsWith(wxT("\\")))
     return (_("Cell ends in a backslash"));
 
-  MaximaTokenizer::TokenList tokens = MaximaTokenizer(text).GetTokens();
+  MaximaTokenizer::TokenList tokens = MaximaTokenizer(text, m_worksheet->m_configuration).GetTokens();
 
   index = 0;
   bool endingNeeded = true;

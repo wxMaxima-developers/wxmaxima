@@ -30,7 +30,7 @@
 #include <wx/wx.h>
 #include <wx/string.h>
 
-MaximaTokenizer::MaximaTokenizer(wxString commands)
+MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration)
 {
   // ----------------------------------------------------------------
   // --------------------- Step one:                -----------------
@@ -38,6 +38,18 @@ MaximaTokenizer::MaximaTokenizer(wxString commands)
   // ----------------------------------------------------------------
   wxString::const_iterator it = commands.begin();
 
+  if(configuration->InLispMode())
+  {
+    wxString token;
+    while(
+      (it < commands.end()) &&
+      ((!token.EndsWith("(to-maxima)"))) &&
+      ((!token.EndsWith(wxString("(to")+wxT("\x2212")+"maxima)"))))
+      token +=*it;
+    token.Trim(true);
+    if(!token.IsEmpty())
+      m_tokens.push_back(new Token(token, TS_CODE_LISP));
+  }
   while (it < commands.end())
   {
     // Determine the current char and the one that will follow it

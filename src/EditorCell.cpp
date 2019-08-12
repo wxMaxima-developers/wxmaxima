@@ -3468,7 +3468,7 @@ void EditorCell::StyleTextCode()
   }
 
   // Split the line into commands, numbers etc.
-  m_tokens = MaximaTokenizer(textToStyle).GetTokens();
+  m_tokens = MaximaTokenizer(textToStyle, *m_configuration).GetTokens();
 
   // Now handle the text pieces one by one
   wxString lastTokenWithText;

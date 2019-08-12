@@ -27,6 +27,7 @@
 #include <wx/string.h>
 #include <wx/arrstr.h>
 #include "TextStyle.h"
+#include "Configuration.h"
 #include <list>
 
 /*!\file
@@ -42,7 +43,7 @@
 class MaximaTokenizer
 {
 public:
-  MaximaTokenizer(wxString commands);
+  MaximaTokenizer(wxString commands, Configuration *configuration);
 
   class Token
   {
