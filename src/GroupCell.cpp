@@ -967,9 +967,6 @@ void GroupCell::Draw(wxPoint point)
 
   if (DrawThisCell(point))
   {
-    if (m_width < 0|| m_height < 0)
-      return;
-    
     wxDC *dc = configuration->GetDC();
     // draw a thick line for 'page break'
     // and return
@@ -1097,7 +1094,7 @@ void GroupCell::DrawBracket()
   // attempt to draw it's bracket.
   if((GetRect().GetLeft() < 0) || (GetRect().GetTop() < 0))
     return;
-  
+
   Configuration *configuration = (*m_configuration);
   bool drawBracket = !configuration->HideBrackets();
 

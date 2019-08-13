@@ -1051,7 +1051,9 @@ wxPanel(parent)
   ppi = wxGetDisplayPPI().x;
 #endif
   ppi = wxMax(ppi,75);
-  SetMinSize(wxSize(ppi*6,m_image.GetHeight()*ppi*6/m_image.GetWidth()));
+
+  SetMinSize(wxSize(ppi*4,m_image.GetHeight()*ppi*4/m_image.GetWidth()));
+
   Connect(wxEVT_PAINT,
           wxPaintEventHandler(wxImagePanel::paintEvent),
           NULL, this);

@@ -359,6 +359,8 @@ Worksheet::~Worksheet()
 #endif
 #endif
 
+#define WORKING_DC_CLEAR 1
+
 #ifdef __WXGTK__
 #if wxCHECK_VERSION(3, 1, 0)
 #else

@@ -51,7 +51,8 @@ BTextCtrl::BTextCtrl(wxWindow *parent,
 #endif
     wxASSERT_MSG(font.IsOk(),
                  _("Seems like something is broken with a font. Installing http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html and checking \"Use JSmath fonts\" in the configuration dialogue should fix it."));
-    SetFont(font);
+    if(font.IsOk())
+      SetFont(font);
   }
 }
 
