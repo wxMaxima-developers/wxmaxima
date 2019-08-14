@@ -370,8 +370,10 @@ Worksheet::~Worksheet()
 
 #define WORKING_AUTO_BUFFER 1
 
-void Worksheet::OnDraw(wxDC &dc)
+void Worksheet::OnDraw(wxDC &WXUNUSED(dc_casted_wrongly))
 {
+  
+  wxAutoBufferedPaintDC dc(this);
   if(!dc.IsOk())
     return;
   
@@ -417,6 +419,9 @@ void Worksheet::OnDraw(wxDC &dc)
 
   #ifdef WORKING_AUTO_BUFFER
   m_configuration->SetContext(dc);
+  // Create a graphics context that supports antialiassing, but on MSW
+  // only supports fonts that come in the Right Format.
+  wxGCDC antiAliassingDC(dc);
   #else
   wxMemoryDC dcm;
   // Test if m_memory is NULL or of the wrong size
@@ -432,7 +437,6 @@ void Worksheet::OnDraw(wxDC &dc)
   if(!m_memory.IsOk())
   {
     m_configuration->SetContext(*m_dc);
-    m_configuration->UnsetAntialiassingDC();
     return;
   }
   dcm.SetUserScale(wxWindow::GetContentScaleFactor(),wxWindow::GetContentScaleFactor());
@@ -440,12 +444,14 @@ void Worksheet::OnDraw(wxDC &dc)
   if(!dcm.IsOk())
   {
     m_configuration->SetContext(*m_dc);
-    m_configuration->UnsetAntialiassingDC();
     return;
   }
   DoPrepareDC(dcm);
 //  dcm.SetBackgroundMode(wxTRANSPARENT);
   m_configuration->SetContext(dcm);
+  // Create a graphics context that supports antialiassing, but on MSW
+  // only supports fonts that come in the Right Format.
+  wxGCDC antiAliassingDC(dcm);
   #endif
   
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
@@ -465,7 +471,10 @@ void Worksheet::OnDraw(wxDC &dc)
   //
   // Draw the horizontal caret
   //
-  if ((m_hCaretActive) && (m_hCaretPositionStart == NULL) && (m_hCaretBlinkVisible) && (m_hasFocus) &&
+  if ((m_hCaretActive) &&
+      (m_hCaretPositionStart == NULL) &&
+      (m_hCaretBlinkVisible) &&
+      (m_hasFocus) &&
       (m_hCaretPosition != NULL))
   {
     m_configuration->GetDC()->SetPen(*(wxThePenList->FindOrCreatePen(m_configuration->GetColor(TS_CURSOR), 1, wxPENSTYLE_SOLID)));
@@ -500,13 +509,8 @@ void Worksheet::OnDraw(wxDC &dc)
   if (m_tree == NULL)
   {
     m_configuration->SetContext(*m_dc);
-    m_configuration->UnsetAntialiassingDC();
     return;
   }
-
-  // Create a graphics context that supports antialiassing, but on MSW
-  // only supports fonts that come in the Right Format.
-  wxGCDC antiAliassingDC(m_configuration->GetDC());
   
   if(antiAliassingDC.IsOk())
   {
