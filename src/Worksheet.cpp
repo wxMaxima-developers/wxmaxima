@@ -371,11 +371,22 @@ Worksheet::~Worksheet()
 #define WORKING_AUTO_BUFFER 1
 
 void Worksheet::OnDraw(wxDC &WXUNUSED(dc_casted_wrongly))
-{
-  
+{  
   wxAutoBufferedPaintDC dc(this);
   if(!dc.IsOk())
     return;
+  
+#ifdef __WXGTK__
+#ifndef __WXGTK3__
+  PrepareDC(dc);
+#else
+#if wxCHECK_VERSION(3, 1, 0)
+  PrepareDC(dc);
+#endif
+#endif
+#else
+  PrepareDC(dc);
+#endif
   
   #if wxUSE_ACCESSIBILITY
   if(m_accessibilityInfo != NULL)
