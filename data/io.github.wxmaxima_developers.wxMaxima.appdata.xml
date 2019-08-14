@@ -57,6 +57,21 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="19.08.0" date="2019-08-14">
+      <description>
+        <ul>
+          <li>Updated the russian translation</li>
+          <li>More and better test cases</li>
+          <li>Another SpeedUp</li>
+          <li>Correctly handle nested comments</li>
+          <li>Format lisp code correctly</li>
+          <li>Correctly read the default style</li>
+          <li>Gracefully handle invalid colors</li>
+          <li>Changed the default communication port to 40100</li>
+          <li>Several fixes for different combinations of wxWidgets and GTK versions</li>
+        </ul>
+      </description>
+    </release>
     <release version="19.07.0" date="2019-07-05">
       <description>
         <ul>
