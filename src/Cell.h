@@ -675,21 +675,20 @@ class Cell
            || (!input && IsComment());
   }
 
+  //! Processes a key event.
   virtual void ProcessEvent(wxKeyEvent &WXUNUSED(event))
   {}
 
+  //! Add a semicolon to a cell, of needed.
   virtual bool AddEnding()
   { return false; }
 
-  virtual void SelectPointText(wxPoint &WXUNUSED(point))
-  {}
+  virtual void SelectPointText(const wxPoint &point);
       
-  virtual void SelectRectText(wxPoint &WXUNUSED(one), wxPoint &WXUNUSED(two))
-  {}
+  virtual void SelectRectText(const wxPoint &one, const wxPoint &two);
   
-  virtual void PasteFromClipboard(bool WXUNUSED(primary) = false)
-  {}
-
+  virtual void PasteFromClipboard(const bool &primary = false);
+  
   virtual bool CopyToClipboard()
   { return false; }
 

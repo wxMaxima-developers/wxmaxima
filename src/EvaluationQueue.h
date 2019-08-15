@@ -45,6 +45,7 @@ private:
   public:
     command(wxString string, int index){m_command = string; m_indexStart = index;}
     wxString GetString(){return m_command;}
+    void AddEnding(){m_command += ";";}
     int GetIndex(){return m_indexStart;}
   private:
     int m_indexStart;
@@ -93,6 +94,11 @@ public:
 
   EvaluationQueue();
 
+  void AddEnding()
+    {
+      m_commands.back().AddEnding();
+    }
+  
   ~EvaluationQueue()
   {};
 

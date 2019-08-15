@@ -370,24 +370,14 @@ Worksheet::~Worksheet()
 
 #define WORKING_AUTO_BUFFER 1
 
-void Worksheet::OnDraw(wxDC &WXUNUSED(dc_casted_wrongly))
-{  
+void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
+{    
   wxAutoBufferedPaintDC dc(this);
   if(!dc.IsOk())
     return;
   
-#ifdef __WXGTK__
-#ifndef __WXGTK3__
   PrepareDC(dc);
-#else
-#if wxCHECK_VERSION(3, 1, 0)
-  PrepareDC(dc);
-#endif
-#endif
-#else
-  PrepareDC(dc);
-#endif
-  
+
   #if wxUSE_ACCESSIBILITY
   if(m_accessibilityInfo != NULL)
     m_accessibilityInfo->NotifyEvent(0, this, wxOBJID_CLIENT, wxOBJID_CLIENT);
@@ -401,11 +391,6 @@ void Worksheet::OnDraw(wxDC &WXUNUSED(dc_casted_wrongly))
     return;
   }
 
-  // We might be triggered after someone changed the worksheet and before the idle
-  // loop caused it to be recalculated => Ensure all sizes and positions to be known
-  // before we proceed.
-  RecalculateIfNeeded();
-
   // Don't attempt to draw on a screen of the size 0.
   if( (GetClientSize().x < 1) || (GetClientSize().y < 1))
     return;
@@ -416,8 +401,6 @@ void Worksheet::OnDraw(wxDC &WXUNUSED(dc_casted_wrongly))
   // Prepare data
   wxRect rect = GetUpdateRegion().GetBox();
   wxSize sz = GetSize();
-  if ((sz.x < 1) || (sz.y < 1))
-    return;
   int xstart, xend, top, bottom;
   CalcUnscrolledPosition(rect.GetLeft(), rect.GetTop(), &xstart, &top);
   CalcUnscrolledPosition(rect.GetRight(), rect.GetBottom(), &xend, &bottom);
@@ -428,8 +411,17 @@ void Worksheet::OnDraw(wxDC &WXUNUSED(dc_casted_wrongly))
   updateRegion.SetBottom(bottom);
   m_configuration->SetUpdateRegion(updateRegion);
 
-  #ifdef WORKING_AUTO_BUFFER
+#ifdef WORKING_AUTO_BUFFER
   m_configuration->SetContext(dc);
+
+  if ((sz.x < 1) || (sz.y < 1))
+    return;
+
+  // We might be triggered after someone changed the worksheet and before the idle
+  // loop caused it to be recalculated => Ensure all sizes and positions to be known
+  // before we proceed.
+  RecalculateIfNeeded();
+
   // Create a graphics context that supports antialiassing, but on MSW
   // only supports fonts that come in the Right Format.
   wxGCDC antiAliassingDC(dc);
@@ -1271,8 +1263,8 @@ GroupCell *Worksheet::TearOutTree(GroupCell *start, GroupCell *end)
  */
 void Worksheet::OnMouseRightDown(wxMouseEvent &event)
 {
+  RecalculateIfNeeded();
   ClearNotification();
-
   m_cellPointers.ResetSearchStart();
 
   wxMenu *popupMenu = new wxMenu();
@@ -1798,6 +1790,7 @@ void Worksheet::OnMouseLeftInGc(wxMouseEvent &event, GroupCell *clickedInGc)
  */
 void Worksheet::OnMouseLeftDown(wxMouseEvent &event)
 {
+  RecalculateIfNeeded();
   CloseAutoCompletePopup();
   m_leftDownPosition = wxPoint(event.GetX(),event.GetY());
   ClearNotification();
@@ -7768,6 +7761,7 @@ void Worksheet::DivideCell()
   if (GetActiveCell())
     GetActiveCell()->CaretToStart();
   ScrolledAwayFromEvaluation();
+  Recalculate();
 }
 
 void Worksheet::MergeCells()
@@ -9063,6 +9057,7 @@ wxAccStatus Worksheet::AccessibilityInfo::GetDescription(int childId, wxString *
 BEGIN_EVENT_TABLE(Worksheet, wxScrolledCanvas)
                 EVT_MENU_RANGE(popid_complete_00, popid_complete_00 + AC_MENU_LENGTH, Worksheet::OnComplete)
                 EVT_SIZE(Worksheet::OnSize)
+                EVT_PAINT(Worksheet::OnPaint)
                 EVT_MOUSE_CAPTURE_LOST(Worksheet::OnMouseCaptureLost)
                 EVT_LEFT_UP(Worksheet::OnMouseLeftUp)
                 EVT_LEFT_DOWN(Worksheet::OnMouseLeftDown)

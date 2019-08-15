@@ -374,6 +374,14 @@ public:
    */
   virtual void Draw(wxPoint point);
 
+  virtual bool AddEnding()
+    {
+      if(GetEditable() != NULL)
+        return GetEditable()->AddEnding();
+      else
+        return false;
+    }
+
   //! Draw the bracket of this cell
   void DrawBracket();
 

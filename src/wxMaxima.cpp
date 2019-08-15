@@ -680,12 +680,8 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
   wxString parenthesisError = GetUnmatchedParenthesisState(s,index);
   if (parenthesisError == wxEmptyString)
   {
-    if(!s.StartsWith(":"))
-      wxLogMessage("unicode="+s+"\n");
     s = m_worksheet->UnicodeToMaxima(s);
-    if(!s.StartsWith(":"))
-      wxLogMessage("maxima="+s+"\n");
-
+    
     if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
       m_xmlInspector->Add_ToMaxima(s);
     
@@ -756,9 +752,9 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
   }
   else
   {
-    ConsoleAppend(_("Refusing to send cell to maxima: ") +
-                  parenthesisError + wxT("\n"),
-                  MC_TYPE_ERROR);
+    DoRawConsoleAppend(
+      _("Refusing to send cell to maxima: ") +
+      parenthesisError + wxT("\n"),              MC_TYPE_ERROR);
     m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
     m_worksheet->m_evaluationQueue.Clear();
   }
@@ -8020,6 +8016,10 @@ void wxMaxima::TriggerEvaluation()
     return; //empty queue
   }
 
+  // Add a semicolon at the end of the cell, if needed.
+  if(tmp->AddEnding())
+    m_worksheet->m_evaluationQueue.AddEnding();
+
   // Display the evaluation queue's status.
   EvaluationQueueLength(m_worksheet->m_evaluationQueue.Size(), m_worksheet->m_evaluationQueue.CommandsLeftInCell());
 
@@ -8120,7 +8120,7 @@ void wxMaxima::TriggerEvaluation()
       tmp->Recalculate();
       m_worksheet->m_evaluationQueue.Clear();
       m_worksheet->m_cellPointers.SetWorkingGroup(NULL);
-      m_worksheet->Recalculate(cell);
+      m_worksheet->Recalculate(cell->GetGroup());
       tmp->GetInput()->SetCaretPosition(index);
       tmp->GetInput()->SetErrorIndex((m_commandIndex = index) - 1);
 

@@ -962,6 +962,12 @@ wxString Cell::ListToRTF(bool startofline)
   return retval;
 }
 
+void Cell::SelectPointText(const wxPoint &WXUNUSED(point)){}
+
+void Cell::SelectRectText(const wxPoint &WXUNUSED(one), const wxPoint &WXUNUSED(two)){}
+
+void Cell::PasteFromClipboard(const bool &WXUNUSED(primary)){}
+
 wxString Cell::ListToXML()
 {
   bool highlight = false;

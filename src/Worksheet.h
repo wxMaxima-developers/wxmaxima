@@ -57,7 +57,7 @@ cells of the current session.
 Most of the logic that handles that this canvas might be larger than the screen
 (and could even be larger than the computer's RAM would it have been handled as
 a big bitmap) is provided by wxWidgets:
- - If part of the screen needs to be drawn it calls the OnDraw() method.
+ - If part of the screen needs to be drawn it calls the OnPaint() method.
  - If the canvas is scrolled wxWidgets the parts that are already decides how much
    of the off-screen part of the canvas is cached in a backing store
  - Also if the canvas is scrolled wxWidgets is intelligent enough to only request
@@ -99,7 +99,7 @@ private:
   int m_scrollUnit;
   /*! The drawing contect used for calculating sizes.
 
-    Drawing is done in OnDraw() instead.
+    Drawing is done from a wxPaintDC in OnPaint() instead.
   */
   wxDC *m_dc;
   //! Where do we need to start the repainting of the worksheet?
@@ -443,7 +443,7 @@ private:
     The canonical way to schedule triggering this function is calling the Refresh()
     function of this class.
    */
-  virtual void OnDraw(wxDC &WXUNUSED(dc));
+  void OnPaint(wxPaintEvent &event);
 
   void OnSize(wxSizeEvent &event);
 

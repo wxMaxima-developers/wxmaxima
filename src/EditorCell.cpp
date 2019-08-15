@@ -2611,6 +2611,14 @@ void EditorCell::ActivateCursor()
 
 bool EditorCell::AddEnding()
 {
+  // Lisp cells don't require a maxima line ending
+  if((*m_configuration)->InLispMode())
+    return false;
+
+  // Cells that aren't code cells don't require a maxima line ending.
+  if(GetType() != MC_TYPE_INPUT)
+    return false;
+    
   if (m_text.StartsWith(wxT(":lisp")))
     return false;
 
