@@ -1,3 +1,7 @@
+# wxMaxima 19.07.1 - Stable
+  * Bugfixes for nearly every instance something was drawn on the screen.
+  * Better handling of multi-cell lisp code
+
 # wxMaxima 19.07.0 - Stable
  * Many improvements and bugfixes in the LaTeX and HTML export function
  * Many updated translations
