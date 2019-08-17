@@ -71,9 +71,9 @@ Gen3Wiz::Gen3Wiz(wxString lab1, wxString lab2, wxString lab3,
     m_warning = NULL;
 
   set_properties();
-  do_layout();
   SetName(title);
   wxPersistenceManager::Get().RegisterAndRestore(this);
+  do_layout();
 }
 
 void Gen3Wiz::do_layout()

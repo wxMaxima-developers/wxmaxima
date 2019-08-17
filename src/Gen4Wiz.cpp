@@ -76,9 +76,9 @@ Gen4Wiz::Gen4Wiz(wxString lab1, wxString lab2, wxString lab3, wxString lab4,
     m_warning = NULL;
 
   set_properties();
-  do_layout();
   SetName(title);
   wxPersistenceManager::Get().RegisterAndRestore(this);
+  do_layout();
 }
 
 void Gen4Wiz::do_layout()

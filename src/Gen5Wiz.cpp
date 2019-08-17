@@ -83,9 +83,9 @@ static_line_1 = new wxStaticLine(this, -1);
   else
     m_warning = NULL;
   set_properties();
-  do_layout();
   SetName(title);
   wxPersistenceManager::Get().RegisterAndRestore(this);
+  do_layout();
 }
 
 void Gen5Wiz::do_layout()

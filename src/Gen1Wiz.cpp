@@ -56,9 +56,9 @@ Gen1Wiz::Gen1Wiz(wxWindow *parent, int id, Configuration *cfg, const wxString &t
     m_warning = NULL;
 
   set_properties();
-  do_layout();
   SetName(title);
   wxPersistenceManager::Get().RegisterAndRestore(this);
+  do_layout();
 }
 
 
