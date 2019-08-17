@@ -368,6 +368,7 @@ void ConfigDialogue::SetProperties()
   m_symbolPaneAdditionalChars->SetToolTip(
           _("Symbols that are entered or copied here will appear in the symbols sidebar so they can be entered into the worksheet easily."));
   m_documentclass->SetToolTip(_("The document class LaTeX is instructed to use for our documents."));
+  m_documentclassOptions->SetToolTip(_("The options the document class LaTeX is instructed to use for our documents gets."));
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
   m_getFont->SetToolTip(_("Font used for display in document."));
   m_getMathFont->SetToolTip(_("Font used for displaying math characters in document."));
@@ -406,7 +407,6 @@ void ConfigDialogue::SetProperties()
   bool incrementalSearch = true;
   int defaultFramerate = 2;
   wxString texPreamble = wxEmptyString;
-  wxString documentclass = wxT("article");
   wxString symbolPaneAdditionalChars = wxT("üØ");
   m_symbolPaneAdditionalChars->SetValue(symbolPaneAdditionalChars);
 
@@ -439,7 +439,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("pos-restore"), &rs);
   int lang = wxLANGUAGE_UNKNOWN;
   config->Read(wxT("language"), &lang);
-  config->Read(wxT("documentclass"), &documentclass);
   config->Read(wxT("texPreamble"), &texPreamble);
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
@@ -462,10 +461,11 @@ void ConfigDialogue::SetProperties()
     i++;
   }
 
-
-    config->Read(wxT("symbolPaneAdditionalChars"), &symbolPaneAdditionalChars);
-
-  m_documentclass->SetValue(documentclass);
+  
+  config->Read(wxT("symbolPaneAdditionalChars"), &symbolPaneAdditionalChars);
+  
+  m_documentclass->SetValue(configuration->Documentclass());
+  m_documentclassOptions->SetValue(configuration->DocumentclassOptions());
   m_mathJaxURL->SetValue(configuration->MathJaXURL_User());
   m_autodetectMathJaX->SetValue(!configuration->MathJaXURL_UseUser());
   m_noAutodetectMathJaX->SetValue(configuration->MathJaXURL_UseUser());
@@ -552,12 +552,12 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
 
   wxStaticText *pw = new wxStaticText(panel, -1, _("Default plot size for new maxima sessions:"));
   wxBoxSizer *PlotWidthHbox = new wxBoxSizer(wxHORIZONTAL);
-  m_defaultPlotWidth = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS,
+  m_defaultPlotWidth = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS,
                                       100, 16384);
   PlotWidthHbox->Add(m_defaultPlotWidth, 0, wxEXPAND, 0);
   wxStaticText *xx = new wxStaticText(panel, -1, _("x"));
   PlotWidthHbox->Add(xx, 0, wxALIGN_CENTER_VERTICAL, 0);
-  m_defaultPlotHeight = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS,
+  m_defaultPlotHeight = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS,
                                        100, 16384);
   PlotWidthHbox->Add(m_defaultPlotHeight, 0, wxEXPAND, 0);
   //  plotWidth->SetSizerAndFit(PlotWidthHbox);
@@ -565,7 +565,7 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   grid_sizer->Add(PlotWidthHbox, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
   wxStaticText *dd = new wxStaticText(panel, -1, _("Maximum displayed number of digits:"));
-  m_displayedDigits = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 20,
+  m_displayedDigits = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 20,
                                      INT_MAX);
   grid_sizer->Add(dd, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_displayedDigits, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -600,7 +600,7 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
 
   wxStaticText *lw = new wxStaticText(panel, -1, _("Label width:"));
   grid_sizer->Add(lw, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  m_labelWidth = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 3, 10);
+  m_labelWidth = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 3, 10);
   grid_sizer->Add(m_labelWidth, 0, wxALL, 5);
 
   wxStaticText *slt = new wxStaticText(panel, -1, _("Show labels:"));
@@ -696,7 +696,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
       }
     }
   }
-  m_wxStartupCommands = new wxTextCtrl(panel_wxMaximaStartup, -1, wxEmptyString, wxDefaultPosition, wxSize(200,250),
+  m_wxStartupCommands = new wxTextCtrl(panel_wxMaximaStartup, -1, wxEmptyString, wxDefaultPosition, wxSize(200*GetContentScaleFactor(),250*GetContentScaleFactor()),
                                      wxTE_MULTILINE | wxHSCROLL);
   #ifdef __WXOSX__
     #if wxCHECK_VERSION(3, 1, 1)
@@ -740,7 +740,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
       }
     }
   }
-  m_startupCommands = new wxTextCtrl(panel_maximaStartup, -1, wxEmptyString, wxDefaultPosition, wxSize(200,250),
+  m_startupCommands = new wxTextCtrl(panel_maximaStartup, -1, wxEmptyString, wxDefaultPosition, wxSize(200*GetContentScaleFactor(),250*GetContentScaleFactor()),
                                      wxTE_MULTILINE | wxHSCROLL);
   m_startupCommands->SetValue(contents);
   #ifdef __WXOSX__
@@ -765,16 +765,21 @@ wxPanel *ConfigDialogue::CreateExportPanel()
 {
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
-  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(8, 2, 5, 5);
+  wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(9, 2, 5, 5);
   wxFlexGridSizer *vsizer = new wxFlexGridSizer(17, 1, 5, 5);
 
   wxStaticText *dc = new wxStaticText(panel, -1, _("Documentclass for TeX export:"));
-  m_documentclass = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350, wxDefaultSize.GetY()));
+  m_documentclass = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
   grid_sizer->Add(dc, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_documentclass, 0, wxALL, 5);
 
+  wxStaticText *dco = new wxStaticText(panel, -1, _("Documentclass options:"));
+  m_documentclassOptions = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
+  grid_sizer->Add(dco, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(m_documentclassOptions, 0, wxALL, 5);
+
   wxStaticText *tp = new wxStaticText(panel, -1, _("Additional lines for the TeX preamble:"));
-  m_texPreamble = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350, 100),
+  m_texPreamble = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), 100),
                                  wxTE_MULTILINE | wxHSCROLL);
   grid_sizer->Add(tp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_texPreamble, 0, wxALL, 5);
@@ -796,22 +801,22 @@ wxPanel *ConfigDialogue::CreateExportPanel()
   m_autodetectMathJaX = new wxRadioButton(panel, -1, _("Automatic"), wxDefaultPosition,
                                           wxDefaultSize, wxRB_GROUP);
   grid_sizer->Add(m_autodetectMathJaX, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  wxTextCtrl *autoMathJaxURL = new wxTextCtrl(panel, -1, m_configuration->MathJaXURL_Auto(), wxDefaultPosition, wxSize(350, wxDefaultSize.GetY()), wxTE_READONLY);
+  wxTextCtrl *autoMathJaxURL = new wxTextCtrl(panel, -1, m_configuration->MathJaXURL_Auto(), wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()), wxTE_READONLY);
   grid_sizer->Add(autoMathJaxURL, 0, wxALL, 5);
 
   m_noAutodetectMathJaX = new wxRadioButton(panel, -1, _("User specified"));
   grid_sizer->Add(m_noAutodetectMathJaX, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-  m_mathJaxURL = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350, wxDefaultSize.GetY()));
+  m_mathJaxURL = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(350*GetContentScaleFactor(), wxDefaultSize.GetY()));
   grid_sizer->Add(m_mathJaxURL, 0, wxALL, 5);
 
   wxStaticText *bs = new wxStaticText(panel, -1, _("Bitmap scale for export:"));
-  m_bitmapScale = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 1, 3);
+  m_bitmapScale = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1, 3);
   grid_sizer->Add(bs, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_bitmapScale, 0, wxALL, 5);
 
   wxStaticText *ps = new wxStaticText(panel, -1, _("Print scale:"));
-  m_printScale = new wxSpinCtrlDouble(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, .1, 4, .1);
+  m_printScale = new wxSpinCtrlDouble(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, .1, 4, .1);
   m_printScale->SetDigits(2);
   m_printScale->SetIncrement(.1);
   grid_sizer->Add(ps, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -857,7 +862,7 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
 
   
   wxStaticText *lang = new wxStaticText(panel, -1, _("Language:"));
-  m_language = new wxChoice(panel, language_id, wxDefaultPosition, wxSize(230, -1), languages);
+  m_language = new wxChoice(panel, language_id, wxDefaultPosition, wxSize(230*GetContentScaleFactor(), -1), languages);
   grid_sizer->Add(lang, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
@@ -867,23 +872,23 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   grid_sizer->Add(m_symbolPaneAdditionalChars, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
   wxStaticText *as = new wxStaticText(panel, -1, _("Autosave on close and every n minutes (0 means: off):"));
-  m_autoSaveInterval = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 0,
+  m_autoSaveInterval = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0,
                                       30);
   grid_sizer->Add(as, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_autoSaveInterval, 0, wxALL, 5);
 
   wxStaticText *ul = new wxStaticText(panel, -1, _("Undo limit (0 for none):"));
-  m_undoLimit = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 0, 10000);
+  m_undoLimit = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0, 10000);
   grid_sizer->Add(ul, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_undoLimit, 0, wxALL, 5);
 
   wxStaticText *rf = new wxStaticText(panel, -1, _("Recent files list length:"));
-  m_recentItems = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 5, 30);
+  m_recentItems = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 5, 30);
   grid_sizer->Add(rf, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_recentItems, 0, wxALL, 5);
 
   wxStaticText *df = new wxStaticText(panel, -1, _("Default animation framerate:"));
-  m_defaultFramerate = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100, -1), wxSP_ARROW_KEYS, 1,
+  m_defaultFramerate = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 1,
                                       200);
   grid_sizer->Add(df, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_defaultFramerate, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -941,14 +946,14 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   nameSizer->Add(m_autodetectMaxima, wxSizerFlags().Expand().Border(wxALL, 0));
   nameSizer->Add(
     new wxTextCtrl(panel, -1, m_configuration->MaximaDefaultLocation(),
-                   wxDefaultPosition, wxSize(250, -1), wxTE_RICH|wxTE_READONLY));
+                   wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), wxTE_RICH|wxTE_READONLY));
   nameSizer->Add(10, 10);
   
   m_noAutodetectMaxima = new wxRadioButton(panel, -1, _("User specified"));
   m_autodetectMaxima->SetValue(m_configuration->AutodetectMaxima());
   m_noAutodetectMaxima->SetValue(!m_configuration->AutodetectMaxima());
   nameSizer->Add(m_noAutodetectMaxima, wxSizerFlags().Expand().Border(wxALL, 0));
-  m_maximaUserLocation = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250, -1), wxTE_RICH);
+  m_maximaUserLocation = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), wxTE_RICH);
   m_mpBrowse = new wxButton(panel, wxID_OPEN, _("Open"));
   nameSizer->Add(m_maximaUserLocation, wxSizerFlags().Expand().Border(wxALL, 0));
   nameSizer->Add(m_mpBrowse, wxSizerFlags().Expand().Border(wxALL, 0));
@@ -956,7 +961,7 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
                            wxCommandEventHandler(ConfigDialogue::MaximaLocationChanged),
                            NULL, this);
   vsizer->Add(nameSizer, wxSizerFlags().Expand().Border(wxALL, 0));
-  m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230, -1), wxSP_ARROW_KEYS, 50,
+  m_defaultPort = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 50,
                                  65534, m_configuration->DefaultPort());
   wxStaticText *dp = new wxStaticText(panel, -1, _("Default port for communication with wxMaxima:"));
   sizer->Add(dp, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -990,7 +995,7 @@ wxPanel *ConfigDialogue::CreateMaximaPanel()
   sizer2->Add(new wxStaticText(panel, -1, _("tell sbcl to use <int>Mbytes of heap")),
               0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   vsizer->Add(sizer2);
-  m_additionalParameters = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(600, -1), wxTE_RICH);
+  m_additionalParameters = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(600*GetContentScaleFactor(), -1), wxTE_RICH);
   vsizer->Add(m_additionalParameters, 0, wxALL, 0);
 
   vsizer->Add(10, 10);
@@ -1065,13 +1070,13 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   wxBoxSizer *vbox_sizer = new wxBoxSizer(wxVERTICAL);
 
   wxStaticText *df = new wxStaticText(panel, -1, _("Default font:"));
-  m_getFont = new wxButton(panel, font_family, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
+  m_getFont = new wxButton(panel, font_family, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
   
   if (m_configuration->m_styles[TS_DEFAULT].FontName() != wxEmptyString)
     m_getFont->SetLabel(m_configuration->m_styles[TS_DEFAULT].FontName() + wxString::Format(wxT(" (%d)"), m_configuration->GetDefaultFontSize()));
 
   m_mathFont = new wxStaticText(panel, -1, _("Math font:"));
-  m_getMathFont = new wxButton(panel, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250, -1));
+  m_getMathFont = new wxButton(panel, button_mathFont, _("Choose font"), wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1));
   if (m_mathFontName.Length() > 0)
     m_getMathFont->SetLabel(m_mathFontName + wxString::Format(wxT(" (%d)"), m_configuration->GetMathFontSize()));
 
@@ -1079,19 +1084,19 @@ wxPanel *ConfigDialogue::CreateStylePanel()
   wxArrayString m_styleFor_choices;
   for(int i = 0; i < NUMBEROFSTYLES; i++)
     m_styleFor_choices.Add(m_configuration->m_styles[i].Name());
-  m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(250, -1), m_styleFor_choices,
+  m_styleFor = new wxListBox(panel, listbox_styleFor, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), -1), m_styleFor_choices,
                              wxLB_SINGLE);
   m_styleFor->Connect(wxEVT_LISTBOX,
                          wxCommandEventHandler(ConfigDialogue::OnStyleToEditChanged),
                          NULL, this);
 
-  m_getStyleFont = new wxButton(panel, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150, -1));
-  m_styleColor = new ColorPanel(this, panel, color_id, wxDefaultPosition, wxSize(150, 30),
+  m_getStyleFont = new wxButton(panel, style_font_family, _("Choose font"), wxDefaultPosition, wxSize(150*GetContentScaleFactor(), -1));
+  m_styleColor = new ColorPanel(this, panel, color_id, wxDefaultPosition, wxSize(150*GetContentScaleFactor(), 30),
                                 wxSUNKEN_BORDER | wxFULL_REPAINT_ON_RESIZE);
   m_boldCB = new wxCheckBox(panel, checkbox_bold, _("Bold"));
   m_italicCB = new wxCheckBox(panel, checkbox_italic, _("Italic"));
   m_underlinedCB = new wxCheckBox(panel, checkbox_underlined, _("Underlined"));
-  m_examplePanel = new ExamplePanel(panel, -1, wxDefaultPosition, wxSize(250, 60));
+  m_examplePanel = new ExamplePanel(panel, -1, wxDefaultPosition, wxSize(250*GetContentScaleFactor(), 60));
   m_loadStyle = new wxButton(panel, load_id, _("Load"));
   m_saveStyle = new wxButton(panel, save_id, _("Save"));
 
@@ -1215,7 +1220,8 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
   config->Write(wxT("texPreamble"), m_texPreamble->GetValue());
   configuration->AutoSaveMinutes(m_autoSaveInterval->GetValue());
-  config->Write(wxT("documentclass"), m_documentclass->GetValue());
+  configuration->Documentclass(m_documentclass->GetValue());
+  configuration->DocumentclassOptions(m_documentclassOptions->GetValue());
   configuration->MathJaXURL(m_mathJaxURL->GetValue());
   configuration->MathJaXURL_UseUser(m_noAutodetectMathJaX->GetValue());
   if (m_saveSize->GetValue())

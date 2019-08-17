@@ -747,6 +747,12 @@ public:
   void SetAbortOnError(bool abortOnError)
     {wxConfig::Get()->Write("abortOnError",m_abortOnError = abortOnError);}
 
+  wxString Documentclass(){return m_documentclass;}
+  void Documentclass(wxString clss){wxConfig::Get()->Write("documentclass",m_documentclass = clss);}
+  wxString DocumentclassOptions(){return m_documentclassOptions;}
+  void DocumentclassOptions(wxString classOptions){wxConfig::Get()->Write("documentclassoptions",m_documentclassOptions = classOptions);}
+
+  
   htmlExportFormat HTMLequationFormat(){return m_htmlEquationFormat;}
   void HTMLequationFormat(htmlExportFormat HTMLequationFormat)
     {wxConfig::Get()->Write("HTMLequationFormat", (int) (m_htmlEquationFormat = HTMLequationFormat));}
@@ -885,6 +891,8 @@ private:
   bool m_indentMaths;
   bool m_abortOnError;
   int m_defaultPort;
+  wxString m_documentclass;
+  wxString m_documentclassOptions;
   htmlExportFormat m_htmlEquationFormat;
   bool m_adjustWorksheetSizeNeeded;
   //! The rectangle of the worksheet that is currently visible.

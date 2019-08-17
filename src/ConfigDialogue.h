@@ -250,6 +250,7 @@ protected:
   wxTextCtrl *m_wxStartupCommands;
   wxTextCtrl *m_maximaUserLocation;
   wxTextCtrl *m_documentclass;
+  wxTextCtrl *m_documentclassOptions;
   wxTextCtrl *m_texPreamble;
   wxSpinCtrl *m_autoSaveInterval;
   wxButton *m_mpBrowse;

@@ -6180,12 +6180,14 @@ bool Worksheet::ExportToTeX(wxString file)
 
   wxTextOutputStream output(outfile);
 
-  wxString documentclass = wxT("article");
-  wxConfig::Get()->Read(wxT("documentclass"), &documentclass);
-
-  output << wxT("\\documentclass[leqno]{") +
-            documentclass +
-            wxT("}\n\n");
+  if(m_configuration->DocumentclassOptions().IsEmpty())
+    output << "\\documentclass{" +
+      m_configuration->Documentclass() +
+      "}\n\n";
+  else
+    output << "\\documentclass["+ m_configuration->DocumentclassOptions() +"]{" +
+      m_configuration->Documentclass() +
+      "}\n\n";
   output << wxT("%% Created with wxMaxima "
                         GITVERSION
                         "\n\n");

@@ -37,6 +37,9 @@
 
 Configuration::Configuration(wxDC *dc) : m_dc(dc) 
 {
+  m_documentclass = wxT("article");
+  m_documentclassOptions = wxT("fleqn");
+  
   m_inLispMode = false;
   m_htmlEquationFormat = mathJaX_TeX;
   m_autodetectMaxima = true;
@@ -346,6 +349,9 @@ void Configuration::ReadConfig()
   config->Read(wxT("autoSaveMinutes"),&m_autoSaveMinutes);
   if(m_autoSaveMinutes < 0)
     m_autoSaveMinutes = 0;
+
+  config->Read(wxT("documentclass"), &m_documentclass);
+  config->Read(wxT("documentclassoptions"), &m_documentclassOptions);
 
   {
     int tmp;
