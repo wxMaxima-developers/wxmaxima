@@ -751,13 +751,13 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
       wxUint32 last;
       while (1) {
         if (!m_client->WaitForWrite()) {
-          std::cerr << "Timeout waiting for Maxima socket to be writable" << std::endl;
-          exit(1);
+          DoRawConsoleAppend(_("Timeout waiting for Maxima socket to be writable"));
+          return;
         }
         m_client->Write(buf, len);        
         if (m_client->Error()) {
-          std::cerr << "Error writing to Maxima" << std::endl;
-          exit(1);
+          DoRawConsoleAppend(_("Error writing to Maxima"));
+          return;
         }
         last = m_client->LastWriteCount();
         if (last == len)
