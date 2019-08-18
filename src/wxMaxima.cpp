@@ -746,7 +746,25 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
       else
         StatusMaximaBusy(waiting);
       wxScopedCharBuffer const data_raw = s.utf8_str();
-      m_client->Write(data_raw.data(), data_raw.length());
+      const void *buf = data_raw.data();
+      wxUint32 len = data_raw.length();
+      wxUint32 last;
+      while (1) {
+        if (!m_client->WaitForWrite()) {
+          std::cerr << "Timeout waiting for Maxima socket to be writable" << std::endl;
+          exit(1);
+        }
+        m_client->Write(buf, len);        
+        if (m_client->Error()) {
+          std::cerr << "Error writing to Maxima" << std::endl;
+          exit(1);
+        }
+        last = m_client->LastWriteCount();
+        if (last == len)
+          break;
+        buf = (const void*)((uintptr_t)buf + last);
+        len -= last;
+      }
       m_statusBar->NetworkStatus(StatusBar::transmit);
     }
   }
