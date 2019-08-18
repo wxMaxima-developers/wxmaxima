@@ -868,7 +868,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_client->SetNotify(wxSOCKET_INPUT_FLAG);
       m_client->Notify(true);
       m_client->SetFlags(wxSOCKET_NOWAIT);
-      m_client->SetTimeout(2);
+      m_client->SetTimeout(15);
       SetupVariables();
       wxUpdateUIEvent dummy;
       UpdateToolBar(dummy);
