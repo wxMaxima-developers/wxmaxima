@@ -8730,7 +8730,7 @@ void wxMaxima::ChangeCellStyle(wxCommandEvent& WXUNUSED(event))
   if(m_worksheet->GetActiveCell())
   {
     GroupCell *group = dynamic_cast<GroupCell *>(m_worksheet->GetActiveCell()->GetGroup());
-    switch(group->GetStyle())
+    switch(group->GetGroupType())
     {
     case GC_TYPE_CODE:
     case GC_TYPE_TEXT:
