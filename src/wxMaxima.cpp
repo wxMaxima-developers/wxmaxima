@@ -746,7 +746,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
       else
         StatusMaximaBusy(waiting);
       wxScopedCharBuffer const data_raw = s.utf8_str();
-      const void *buf = data_raw.data();
+      const char *buf = data_raw.data();
       wxUint32 len = data_raw.length();
       wxUint32 last;
       while (1) {
@@ -754,7 +754,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
           DoRawConsoleAppend(_("Timeout waiting for Maxima socket to be writable"), MC_TYPE_ERROR);
           return;
         }
-        m_client->Write(buf, len);        
+        m_client->Write((void *)buf, len);        
         if (m_client->Error()) {
           DoRawConsoleAppend(_("Error writing to Maxima"), MC_TYPE_ERROR);
           return;
@@ -762,7 +762,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
         last = m_client->LastWriteCount();
         if (last == len)
           break;
-        buf = (const void*)((uintptr_t)buf + last);
+        buf = buf + last;
         len -= last;
       }
       m_statusBar->NetworkStatus(StatusBar::transmit);
