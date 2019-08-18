@@ -6727,6 +6727,7 @@ MyAboutDialog::MyAboutDialog(wxWindow *parent, int id, const wxString title, wxS
                       "<h4>Patches</h4>"
                       "Sandro Montanar (SF-patch 2537150)"
                       "Elias Mårtenson"
+                      "Steven McDonald"
                       "</p>"
                       "<h4>%s</h4>"
                       "<p>"
@@ -6850,6 +6851,7 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.AddDeveloper(wxT("Doug Ilijev <doug.ilijev@gmail.com>"));
       info.AddDeveloper(wxT("Gunter Königsmann <wxMaxima@physikbuch.de>"));
       info.AddDeveloper(wxT("Elias Mårtenson"));
+      info.AddDeveloper(wxT("Steven McDonald"));
       info.AddDeveloper(wxT("Tomio Arisaka"));
       info.AddDeveloper(wxT("Rene Hansen"));
       info.AddDeveloper(wxT("Wolfgang Dautermann"));
