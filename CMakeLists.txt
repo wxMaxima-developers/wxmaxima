@@ -13,7 +13,7 @@ set(PACKAGE wxMaxima)
 if(POLICY CMP0066)
     cmake_policy(SET CMP0066 NEW)
 endif()
- 
+
 cmake_minimum_required(VERSION 3.4)
 
 # Turn off many warnings wxWidgets triggers on MSVC
@@ -79,7 +79,12 @@ if(UNIX)
     configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local" wxmaxima-local)
 endif()
 # Build Packages
-set(CPACK_GENERATOR "TGZ;TBZ2")
+if(WIN32)
+    set(CPACK_GENERATOR "ZIP;NSIS")
+else()
+    set(CPACK_GENERATOR "TGZ;TBZ2")
+endif()
+
 if(UNIX AND NOT APPLE)
     list(APPEND CPACK_GENERATOR "DEB") # Don't build DEB packages on MacOS
 endif()

@@ -836,7 +836,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
   }
   case wxSOCKET_LOST:
   {
-    
+    // TODO 
     break;
   }
   default:
