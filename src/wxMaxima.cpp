@@ -838,7 +838,10 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
   }
   case wxSOCKET_LOST:
   {
-    // TODO 
+    
+    wxLogMessage(_"Connection ti maxima lost => Assuming Maxima has terminated");
+    wxProcessEvent dummy;
+    OnProcessEvent(&dummy);
     break;
   }
   default:
@@ -875,7 +878,7 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
       m_clientTextStream = new wxTextInputStream(*m_clientStream, wxT('\t'),
                                                  wxConvUTF8);
       m_client->SetEventHandler(*this, socket_client_id);
-      m_client->SetNotify(wxSOCKET_INPUT_FLAG);
+      m_client->SetNotify(wxSOCKET_INPUT_FLAG|wxSOCKET_OUTPUT_FLAG|wxSOCKET_LOST_FLAG);
       m_client->Notify(true);
       m_client->SetFlags(wxSOCKET_NOWAIT);
       m_client->SetTimeout(15);
