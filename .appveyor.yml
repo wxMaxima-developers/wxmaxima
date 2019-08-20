@@ -21,29 +21,29 @@ branches:
 # scripts to run before build
 before_build:
   # sent environment variables for wxWidgets
-  - set WXWIN=C:/wxWidgets
-  - set wxWidgets_ROOT_DIR=%WXWIN%
+  - cmd: set WXWIN=C:/wxWidgets
+  - cmd: set wxWidgets_ROOT_DIR=%WXWIN%
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_x64_Dev.7z'
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2-headers.7z'
   - cmd: 7z x wxMSW-3.1.2_vc141_x64_Dev.7z -oC:\wxWidgets
   - cmd: 7z x wxWidgets-3.1.2-headers.7z -oC:\wxWidgets
-  - echo Running cmake...
+  - cmd: echo Running cmake...
   - cmd: if not exist c:\projects\wxMaxima\build mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
   - cmd: cmake  -LAH -G "Visual Studio 15 2017 Win64" ..
 
 build_script:
-  - cd c:\projects\wxMaxima\build
-  - CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - msbuild "INSTALL.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - cmd: cd c:\projects\wxMaxima\build
+  - cmd: CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - cmd: msbuild "INSTALL.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 after_build:
-  - cd c:\projects\wxMaxima\build
-  - CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - mkdir src/Release
-  - copy src/Debug/wxmaxima.exe src/Release
-  - cpack -G NSIS . --debug --verbose
-  - msbuild "PACKAGE.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - cmd: cd c:\projects\wxMaxima\build
+  - cmd: CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - cmd: mkdir src/Release
+  - cmd: copy src/Debug/wxmaxima.exe src/Release
+  - cmd: cpack -G NSIS . --debug --verbose
+  - cmd: msbuild "PACKAGE.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 artifacts:
   - path: 'build\CMakeFiles\CMakeOutput.log'
