@@ -175,6 +175,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
   wxWindowUpdateLocker noUpdates(this);
+  m_rawDataToSend = NULL;
+  m_rawBytesToSend = 0;
   m_maximaBusy = true;
   m_evalOnStartup = false;
   m_dataFromMaximaIs = false;
