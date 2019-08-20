@@ -694,8 +694,8 @@ protected:
   wxRegEx m_sbclCompilationRegEx;
   MathParser *m_parser;
   bool m_maximaBusy;
-  const char *m_rawDataToSend;
-  long int m_rawBytesToSend;
+  wxMemoryBuffer *m_rawDataToSend;
+  long int m_rawBytesSent;
 #if wxUSE_DRAG_AND_DROP
 
   friend class MyDropTarget;

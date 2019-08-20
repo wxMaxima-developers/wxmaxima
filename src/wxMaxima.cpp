@@ -175,8 +175,7 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   // Not redrawing the window whilst constructing it hopefully speeds up
   // everything.
   wxWindowUpdateLocker noUpdates(this);
-  m_rawDataToSend = NULL;
-  m_rawBytesToSend = 0;
+  m_rawBytesSent = 0;
   m_maximaBusy = true;
   m_evalOnStartup = false;
   m_dataFromMaximaIs = false;
@@ -748,9 +747,8 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
       else
         StatusMaximaBusy(waiting);
       wxScopedCharBuffer const data_raw = s.utf8_str();
-      m_rawDataToSend = data_raw.data();
-      m_rawBytesToSend = data_raw.length();
-      m_client->Write((void *)m_rawDataToSend, m_rawBytesToSend);
+      m_rawDataToSend.Append(data_raw.data(),data_raw.length());
+      m_client->Write((void *)m_rawDataToSend, data_raw.length());
       if (m_client->Error()) {
         DoRawConsoleAppend(_("Error writing to Maxima"), MC_TYPE_ERROR);
         return;
@@ -824,15 +822,20 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
   case wxSOCKET_OUTPUT:
   {
     long int bytesWritten = m_client->LastWriteCount();
-    m_rawDataToSend += bytesWritten;
-    m_rawBytesToSend -= bytesWritten;
-    if(m_rawBytesToSend > 0)
+    m_rawBytesSent  += bytesWritten;
+    if(m_rawDataToSend.GetData() > m_rawBytesSent)
     {
-      m_client->Write((void *)m_rawDataToSend, m_rawBytesToSend);
+      m_client->Write((void *)m_rawDataToSend.GetData() + m_rawBytesSent, m_rawDataToSend.GetDataLen() - m_rawBytesSent);
       if (m_client->Error()) {
         DoRawConsoleAppend(_("Error writing to Maxima"), MC_TYPE_ERROR);
         return;
       }   
+      m_statusBar->NetworkStatus(StatusBar::transmit);
+    }
+    else
+    {
+      m_rawBytesSent = 0;
+      m_rawDataToSend.Clear();
     }
     break;
   }
@@ -860,6 +863,8 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
     case wxSOCKET_CONNECTION :
     {
       wxLogMessage(_("Connected."));
+      m_rawDataToSend.Clear();
+      m_rawBytesSent = 0;
       if (m_isConnected)
       {
         wxSocketBase *tmp = m_server->Accept(false);
@@ -1268,6 +1273,8 @@ void wxMaxima::OnGnuplotClose(wxProcessEvent& WXUNUSED(event))
 void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
 {
   wxLogMessage(_("Maxima has terminated."));
+  m_rawDataToSend.Clear();
+  m_rawBytesSent = 0;
   m_statusBar->NetworkStatus(StatusBar::offline);
   if (!m_closing)
   {
