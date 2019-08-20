@@ -842,7 +842,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
   case wxSOCKET_LOST:
   {
     
-    wxLogMessage(_"Connection ti maxima lost => Assuming Maxima has terminated");
+    wxLogMessage(_("Connection to Maxima lost => Assuming Maxima has terminated."));
     wxProcessEvent dummy;
     OnProcessEvent(&dummy);
     break;
