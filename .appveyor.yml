@@ -40,6 +40,8 @@ build_script:
 after_build:
   - cd c:\projects\wxMaxima\build
   - CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - mkdir src/Release
+  - copy src/Debug/wxmaxima.exe src/Release
   - cpack -G NSIS . --debug --verbose
   - msbuild "PACKAGE.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
