@@ -747,8 +747,14 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
       else
         StatusMaximaBusy(waiting);
       wxScopedCharBuffer const data_raw = s.utf8_str();
-      m_rawDataToSend.Append(data_raw.data(),data_raw.length());
-      m_client->Write((void *)m_rawDataToSend, data_raw.length());
+      if(m_rawDataToSend.GetDataLen() > 0)
+        m_rawDataToSend.AppendData(data_raw.data(),data_raw.length());        
+      else
+      {
+        m_rawDataToSend.AppendData(data_raw.data(),data_raw.length());        
+        m_client->Write((void *)m_rawDataToSend.GetData(), m_rawDataToSend.GetDataLen());
+      }
+      
       if (m_client->Error()) {
         DoRawConsoleAppend(_("Error writing to Maxima"), MC_TYPE_ERROR);
         return;
@@ -823,9 +829,12 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
   {
     long int bytesWritten = m_client->LastWriteCount();
     m_rawBytesSent  += bytesWritten;
-    if(m_rawDataToSend.GetData() > m_rawBytesSent)
+    if(m_rawDataToSend.GetDataLen() > m_rawBytesSent)
     {
-      m_client->Write((void *)m_rawDataToSend.GetData() + m_rawBytesSent, m_rawDataToSend.GetDataLen() - m_rawBytesSent);
+      wxLogMessage(_("Continuing sending data to maxima."));
+      m_client->Write(
+        (void *)((char *)m_rawDataToSend.GetData() + m_rawBytesSent),
+        m_rawDataToSend.GetDataLen() - m_rawBytesSent);
       if (m_client->Error()) {
         DoRawConsoleAppend(_("Error writing to Maxima"), MC_TYPE_ERROR);
         return;
@@ -842,9 +851,8 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
   case wxSOCKET_LOST:
   {
     
-    wxLogMessage(_("Connection to Maxima lost => Assuming Maxima has terminated."));
-    wxProcessEvent dummy;
-    OnProcessEvent(&dummy);
+    wxLogMessage(_("Connection to Maxima lost."));
+    KillMaxima();
     break;
   }
   default:
