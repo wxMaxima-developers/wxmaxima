@@ -31,6 +31,12 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 
+# Set the install configuration the same as the build type (for cpack)
+if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
+    set(CMAKE_INSTALL_CONFIG_NAME "${CMAKE_BUILD_TYPE}")
+endif()
+
+
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
     message(WARNING "Cmake strongly discourages in-source builds. It is therefore advisable to make an out-of-source-build instead: Create a separate directory for the build and run cmake <path to the source dir> and make from there).")
 endif()
@@ -81,6 +87,8 @@ endif()
 # Build Packages
 if(WIN32)
     set(CPACK_GENERATOR "ZIP;NSIS")
+    # We install wxmaxima.exe to the installation prefix on Windows, not to bin/.
+    set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
 else()
     set(CPACK_GENERATOR "TGZ;TBZ2")
 endif()
