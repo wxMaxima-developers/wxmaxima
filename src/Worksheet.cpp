@@ -359,6 +359,14 @@ Worksheet::~Worksheet()
 #endif
 #endif
 
+#if wxCHECK_VERSION(3, 1, 2)
+#else
+#ifdef __WXGTK3__
+#else
+#define DC_ALREADY_SCROLLED 1
+#endif
+#endif
+
 #define WORKING_DC_CLEAR 1
 
 #ifdef __WXGTK__
@@ -375,15 +383,18 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   wxAutoBufferedPaintDC dc(this);
   if(!dc.IsOk())
     return;
-  
+
+  // Some drawing contents 
+  #ifndef DC_ALREADY_SCROLLED
   PrepareDC(dc);
+  #endif
 
   #if wxUSE_ACCESSIBILITY
   if(m_accessibilityInfo != NULL)
     m_accessibilityInfo->NotifyEvent(0, this, wxOBJID_CLIENT, wxOBJID_CLIENT);
   #endif
-  // Don't attempt to refresh the screen as long as the result will
-  // end up on a printed page instead.
+  // Don't attempt to refresh the screen while we are trying to output the
+  // worksheet on paper, on a bitmap or similar.
   if ((!m_configuration->ClipToDrawRegion()) || (m_configuration->GetPrinting()))
   {
     wxLogMessage(_("Suppressing a redraw during printing/export"));
@@ -391,7 +402,7 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     return;
   }
 
-  // Don't attempt to draw on a screen of the size 0.
+  // Don't attempt to draw in a window of the size 0.
   if( (GetClientSize().x < 1) || (GetClientSize().y < 1))
     return;
 
@@ -411,11 +422,12 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
   updateRegion.SetBottom(bottom);
   m_configuration->SetUpdateRegion(updateRegion);
 
-#ifdef WORKING_AUTO_BUFFER
-  m_configuration->SetContext(dc);
-
+  // Don't draw into a window of the size 0.
   if ((sz.x < 1) || (sz.y < 1))
     return;
+  
+#ifdef WORKING_AUTO_BUFFER
+  m_configuration->SetContext(dc);
 
   // We might be triggered after someone changed the worksheet and before the idle
   // loop caused it to be recalculated => Ensure all sizes and positions to be known
@@ -450,20 +462,31 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     return;
   }
   DoPrepareDC(dcm);
-//  dcm.SetBackgroundMode(wxTRANSPARENT);
   m_configuration->SetContext(dcm);
   // Create a graphics context that supports antialiassing, but on MSW
   // only supports fonts that come in the Right Format.
   wxGCDC antiAliassingDC(dcm);
   #endif
+
+  if(antiAliassingDC.IsOk())
+  {
+#ifdef ANTIALIASSING_DC_NOT_CORRECTLY_SCROLLED
+    PrepareDC(antiAliassingDC);
+#endif    
+    m_configuration->SetAntialiassingDC(antiAliassingDC);
+  }
   
+
   SetBackgroundColour(m_configuration->DefaultBackgroundColor());
 
-  // Clear the drawing area
+  // Don't fill the text background with the background color
+  m_configuration->GetDC()->SetMapMode(wxMM_TEXT);
+  m_configuration->GetDC()->SetBackgroundMode(wxTRANSPARENT);
   m_configuration->GetDC()->SetBackground(m_configuration->GetBackgroundBrush());
   m_configuration->GetDC()->SetBrush(m_configuration->GetBackgroundBrush());
   m_configuration->GetDC()->SetPen(*wxTRANSPARENT_PEN);
   m_configuration->GetDC()->SetLogicalFunction(wxCOPY);
+
   // Clear the drawing area
 #if WORKING_DC_CLEAR
   m_configuration->GetDC()->Clear();
@@ -515,14 +538,6 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
     return;
   }
   
-  if(antiAliassingDC.IsOk())
-  {
-#ifdef ANTIALIASSING_DC_NOT_CORRECTLY_SCROLLED
-    PrepareDC(antiAliassingDC);
-#endif    
-    m_configuration->SetAntialiassingDC(antiAliassingDC);
-  }
-  
   //
   // Draw the selection marks
   //
@@ -546,9 +561,6 @@ void Worksheet::OnPaint(wxPaintEvent &WXUNUSED(event))
       } // end while (1)
     }
   }
-
-  // Don't fill the text background with the background color
-  m_configuration->GetDC()->SetMapMode(wxMM_TEXT);
   
   //
   // Draw the cell contents

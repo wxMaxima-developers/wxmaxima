@@ -30,7 +30,7 @@ before_build:
   - echo Running cmake...
   - cmd: if not exist c:\projects\wxMaxima\build mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - cmd: cmake  -LAH -G "Visual Studio 15 2017 Win64" ..
+  - cmd: cmake  -LAH -G "Visual Studio 15 2017 Win64" .. -DCMAKE_BUILD_TYPE=release
 
 build_script:
   - cd c:\projects\wxMaxima\build
@@ -40,7 +40,7 @@ build_script:
 after_build:
   - cd c:\projects\wxMaxima\build
   - CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - cpack -G NSIS . --debug --verbose
+  - xcopy /i Debug Release
   - msbuild "PACKAGE.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 artifacts:

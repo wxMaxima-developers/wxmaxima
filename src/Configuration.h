@@ -905,4 +905,40 @@ private:
   wxBrush m_BackgroundBrush;
 };
 
+//! Sets the configuration's "printing" flag until this class is left.
+class Printing
+{
+public:
+  Printing(Configuration *configuration)
+    {
+      m_configuration = configuration;
+      m_configuration->SetPrinting(true);
+      m_configuration->ClipToDrawRegion(false);
+    }
+  ~Printing()
+    {
+      m_configuration->SetPrinting(false);
+      m_configuration->ClipToDrawRegion(true);
+    }
+private:
+  Configuration * m_configuration;
+};
+
+//! Clears the configuration's "Clip to draw region" flag until this class is left.
+class NoClipToDrawRegion
+{
+public:
+  NoClipToDrawRegion(Configuration *configuration)
+    {
+      m_configuration = configuration;
+      m_configuration->ClipToDrawRegion(false);
+    }
+  ~NoClipToDrawRegion()
+    {
+      m_configuration->ClipToDrawRegion(true);
+    }
+private:
+  Configuration * m_configuration;
+};
+
 #endif // CONFIGURATION_H
