@@ -87,6 +87,8 @@ endif()
 # Build Packages
 if(WIN32)
     set(CPACK_GENERATOR "ZIP;NSIS")
+    # We install wxmaxima.exe to the installation prefix on Windows, not to bin/.
+    set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
 else()
     set(CPACK_GENERATOR "TGZ;TBZ2")
 endif()
