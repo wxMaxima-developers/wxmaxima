@@ -748,10 +748,14 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
         StatusMaximaBusy(waiting);
       wxScopedCharBuffer const data_raw = s.utf8_str();
       if(m_rawDataToSend.GetDataLen() > 0)
-        m_rawDataToSend.AppendData(data_raw.data(),data_raw.length());        
+      {
+        // Append everything except the NULL char at the end
+        m_rawDataToSend.AppendData(data_raw.data(),data_raw.length() - 1);
+      }
       else
       {
-        m_rawDataToSend.AppendData(data_raw.data(),data_raw.length());        
+        // Append everything except the NULL char at the end
+        m_rawDataToSend.AppendData(data_raw.data(),data_raw.length() - 1);        
         m_client->Write((void *)m_rawDataToSend.GetData(), m_rawDataToSend.GetDataLen());
       }
       
