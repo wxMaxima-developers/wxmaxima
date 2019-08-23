@@ -819,7 +819,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
 
     m_bytesFromMaxima += m_newCharsFromMaxima.Length();
     
-    if(m_newCharsFromMaxima.EndsWith("\n") || m_newCharsFromMaxima.EndsWith(m_promptSuffix))
+    if(m_newCharsFromMaxima.EndsWith("\n") || m_newCharsFromMaxima.EndsWith(m_promptSuffix) || (m_first))
     {
       m_waitForStringEndTimer.Stop();
       InterpretDataFromMaxima();
