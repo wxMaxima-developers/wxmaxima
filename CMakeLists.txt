@@ -91,6 +91,7 @@ if(WIN32)
     set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
 else()
     set(CPACK_GENERATOR "TGZ;TBZ2")
+    set(CPACK_PACKAGE_ICON  "${CMAKE_CURRENT_SOURCE_DIR}/data\\\\io.github.wxmaxima_developers.wxMaxima.png")
 endif()
 
 if(UNIX AND NOT APPLE)
