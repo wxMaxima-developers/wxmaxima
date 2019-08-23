@@ -757,7 +757,6 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
         // Append everything except the NULL char at the end
         m_rawDataToSend.AppendData(data_raw.data(),data_raw.length());
         m_client->Write((void *)m_rawDataToSend.GetData(), m_rawDataToSend.GetDataLen());
-        std::cerr<<"sent="<<s;
       }
       
       if (m_client->Error()) {
