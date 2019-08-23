@@ -45,9 +45,9 @@ after_build:
   - cmd: xcopy /i Debug Release
   - cmd: cd ..
   - cmd: echo cpack -G NSIS --debug --verbose . > pack.bat
-  - cmd: echo echo NSISLOG: > pack.bat
+  - cmd: echo echo NSISLOG > pack.bat
   - cmd: echo type C:/projects/wxMaxima/build/_CPack_Packages/win64/NSIS/NSISOutput.log >>pack.bat
-  - cmd: echo echo NSISLOG END: > pack.bat
+  - cmd: echo echo NSISLOG END > pack.bat
   - cmd: ./pack.bat
   - cmd: msbuild "PACKAGE.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
