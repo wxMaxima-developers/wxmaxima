@@ -97,6 +97,10 @@ if(UNIX AND NOT APPLE)
     list(APPEND CPACK_GENERATOR "DEB") # Don't build DEB packages on MacOS
 endif()
 
+if(APPLE)
+    list(APPEND CPACK_GENERATOR "DMG") # Build DMG packages on MacOS
+endif()
+  
 # build RPMs only if rpmbuild is installed
 find_program(RPMBUILD_EXECUTABLE rpmbuild)
 if(NOT RPMBUILD_EXECUTABLE)
