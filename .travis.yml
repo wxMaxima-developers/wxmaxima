@@ -1,8 +1,8 @@
 language: cpp
 sudo: required
 os:
-  - linux
-  - osx
+- linux
+- osx
 branches:
   except:
   - gh_pages
@@ -13,16 +13,20 @@ cache:
   directories:
   - "$HOME/Library/Caches/Homebrew"
 before_install:
-- echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-certificates.crt
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq install -y libwxgtk3.0-gtk3-dev libwxgtk3.0 gettext doxygen graphviz rpm cmake maxima netcat-openbsd xvfb ; fi
+- openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv
+  -in .travis/deploy_rsa.enc -out .travis/deploy_rsa -d
+- echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END
+  CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-certificates.crt
+- chmod 600 .travis/deploy_rsa
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq install -y libwxgtk3.0-gtk3-dev
+  libwxgtk3.0 gettext doxygen graphviz rpm cmake maxima netcat-openbsd xvfb ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS;brew update; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";brew  install ccache; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";brew  install
+  ccache; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=/usr/local/opt/texinfo/bin:$PATH:/usr/local/opt/gettext/bin
   ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gettext texinfo
-  ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxwidgets
-  ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gettext texinfo ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxwidgets ; fi
 notification:
   email:
     on_success: change
@@ -36,16 +40,29 @@ script:
 - export COVERITY_SCAN_BRANCH_PATTERN="master"
 - export COVERITY_SCAN_BUILD_COMMAND_PREPEND="cmake ."
 - export COVERITY_SCAN_BUILD_COMMAND="make"
-
-# The "-ansi -std=c++11" is necessary for coverity.
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
   else export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"; fi
 - mkdir build && cd build && cmake .. && cmake --build .
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 xvfb-run -a make test ; fi
+- mv *.dmg wxMaxima-nightly.dmg
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 xvfb-run -a
+  make test ; fi
 - cd ..
-#- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then git clean -dfx;bash .coverity/coverity.sh ;fi
 env:
-  global:
-    secure: RGJ+5ay90dj7kAWAcHYpzjshBPmd7NyceUrH1PpsqPM0hq45EUoEt/4U7JSlUn+CialIClod5jsgnZHtdiEaOW0LRbf7FHApauiUhgDOZxj6WVWbVoouDVkm0mb53CODXlQJcb7jWhsaY4BY8z8Johc1DRDv8aCsVtk2y4V95Ff5ku8whgNq2lem2BthxozxQIcIhPguDkn6m4SkkOMjVeaZ8kaJY/S9riLas9FVtoF72jBYivaGPjKl39EfAIPFoCJe8ljXs/XB5ya2NzmKRXN4GvP7qq/8Kx5k2LwRBonN+UIwnvXF2J/36SfkO9IvrJ52Vx88FT6xY3vIUtnOrzIIB8+p06HetjDb2URCOsAmV9OR+QzrhfniNlpPIo9EH7R4tR0TsQjfbcJV9Ql83rhwnDfqIrpeC22HWZG5QJD5nUeNCxm1BZj+3R+ryGfZh1L6ScNAmFlKEp8bIqpJlzqJWtoevnZesxXcuQSPogNw0C3B4lS6Hk7R6RItSNtv5Wi02NjyUJcg8yXDPVLI/IHKFvqwujAIw9D2tthQsGd+B7sB7liVsqmTdj7KrrvVKESO8439MEl7pPNpRG7X3AqyQvRJ5C0zFXUl4OFaEYukp+3AxW2B2rGEZ12LCmgeNG2X+1NXPwFIJ3K5bn+wGsTNPj4JEKMzOPlrqC4B0ug=
+  matrix:
+    secure: anLrnBmzWLoIE5nL8oPY3t+jdSrOzxI8pV1KhBqLyC6GDaA/yQVB14NYZAQcbEZ9sg3Ybtls+TBq8PMtfuRP47nERG8TFsyapH6wGSbLNSE104WHKynq18f+JJbZHQbKAcLsLR4Ov9MHAKef9/cV8ou7uHh+m+kM17KPMoxoeHBRt+iQyLjvYWPk4RVD0dEVnHSIe82CzR3lsLkMPwfERzm1+Pm5iXOdAa13xNtzmg8YIt8rg1Whd/NRESOG3UYGCYoPEC69gOplia5Zfs6rp+9PcrXnEAlUrcYzojXkf48xvrUFLgsAvdStHMtYrsuxBoa0UwKuHebWRbHub9JMiE+jb4ea/R4veefCuWiy+wD4PU1oJ1gFV8UDnK6XWF1Zoz7zEQQB8vJA2ZGgQvXvatebeBtC25FZhUxuHXT8/FmE+rrceUqdYLkxZIwPw6aiqm7k6os8OB2Yk5nS8BnjMJG3L3aDSk9AxPYprho38fK2okHArAVTznTQoTsdqwGWriuiybd29irJbtDdpaeqiesEwrrjJX4vJdtyHOeSgIRmYoOoR9hqYltFKpI4KKXv4Pjz3XQ/Mi4QTiEaMF308FgyvWJCDgufNewOJOxpRAImUXjXZLf5Kf2vLUcDKT2Vh6B39+F0AveB6X8vTfNXeWCuII4VXRXoDK+59Ve598k=
+
+addons:
+  ssh_known_hosts: home67027059.1and1-data.host
+
+before_deploy:
+- eval "$(ssh-agent -s)"
+- ssh-add .travis/deploy_rsa
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/build/wxMaxima-nightly.dmg p33761049-travis@home67027059.1and1-data.host:wxMaxima/nightly
+  on:
+    branch: master
