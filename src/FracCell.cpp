@@ -34,8 +34,8 @@
 FracCell::FracCell(Cell *parent, Configuration **config, CellPointers *cellPointers) : Cell(parent, config)
 {
   m_cellPointers = cellPointers;
-  m_num = NULL;
-  m_denom = NULL;
+  m_num = new TextCell(parent, config, cellPointers);
+  m_denom = new TextCell(parent, config, cellPointers);
   m_last1 = NULL;
   m_last2 = NULL;
   m_expDivideWidth = 12;
