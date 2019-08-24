@@ -98,7 +98,8 @@ if(UNIX AND NOT APPLE)
 endif()
 
 if(APPLE)
-    list(APPEND CPACK_GENERATOR "DMG") # Build DMG packages on MacOS
+    set(MACOSX_BUNDLE)
+    list(APPEND CPACK_GENERATOR "DragNDrop") # Build DMG packages on MacOS
 endif()
   
 # build RPMs only if rpmbuild is installed
