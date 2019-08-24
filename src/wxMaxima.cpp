@@ -831,6 +831,12 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     }
   case wxSOCKET_OUTPUT:
   {
+    if(!m_client)
+    {
+      m_rawBytesSent = 0;
+      m_rawDataToSend.Clear();
+      return;
+    }
     long int bytesWritten = m_client->LastWriteCount();
     m_rawBytesSent  += bytesWritten;
     if(m_rawDataToSend.GetDataLen() > m_rawBytesSent)

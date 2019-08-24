@@ -725,7 +725,7 @@ class MyApp : public wxApp
 {
 public:
   virtual bool OnInit();
-
+  virtual int OnRun();
   virtual int OnExit();
   wxLocale m_locale;
 

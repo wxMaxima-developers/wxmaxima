@@ -312,7 +312,13 @@ int MyApp::OnExit()
 {
   wxDELETE(m_dirstruct);
   m_dirstruct = NULL;
-  return true;
+  return 0;
+}
+
+int MyApp::OnRun()
+{
+  wxApp::OnRun();
+  return 0;
 }
 
 void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval)
