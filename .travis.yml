@@ -63,6 +63,6 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script:  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sftp -i .travis/deploy_rsa put build/*dmg sftp://p33761049-travis@home67027059.1and1-data.host:wxMaxima/nightly;fi
+  script:  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then echo "put build/wxMaxima-nightly.dmg wxMaxima/nightly " | sftp -i .travis/deploy_rsa sftp://p33761049-travis@home67027059.1and1-data.host;fi
   on:
     branch: master
