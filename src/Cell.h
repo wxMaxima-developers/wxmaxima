@@ -473,21 +473,21 @@ class Cell
     \param first Returns the first cell of the rectangle
     \param last Returns the last cell of the rectangle
    */
-  void SelectRect(wxRect &rect, Cell **first, Cell **last);
+  void SelectRect(const wxRect &rect, Cell **first, Cell **last);
 
   /*! The top left of the rectangle the mouse has selected
 
     \param rect The rectangle the mouse selected
     \param first Returns the first cell of the rectangle
    */
-  void SelectFirst(wxRect &rect, Cell **first);
+  void SelectFirst(const wxRect &rect, Cell **first);
 
   /*! The bottom right of the rectangle the mouse has selected
 
     \param rect The rectangle the mouse selected
     \param last Returns the last cell of the rectangle
    */
-  void SelectLast(wxRect &rect, Cell **last);
+  void SelectLast(const wxRect &rect, Cell **last);
 
   /*! Select the cells inside this cell described by the rectangle rect.
   */

@@ -320,10 +320,10 @@ public:
   wxPoint PositionToPoint(int fontsize, int pos = -1);
 
   //! Sets the cursor to the screen coordinate point
-  void SelectPointText(wxPoint &point);
+  void SelectPointText(const wxPoint &point);
 
   //! Selects the text between the screen coordinates one and two
-  void SelectRectText(wxPoint &one, wxPoint &two);
+  void SelectRectText(const wxPoint &one, wxPoint &two);
 
   //! Selects the word the cursor is currently at.
   wxString SelectWordUnderCaret(bool selectParens = true, bool toRight = true,
@@ -336,7 +336,7 @@ public:
 
   bool CutToClipboard();
 
-  void PasteFromClipboard(bool primary = false);
+  void PasteFromClipboard(const bool &primary = false);
 
   //! Get the character position the selection has been started with
   int GetSelectionStart()

@@ -1012,7 +1012,7 @@ wxString Cell::GetDiffPart()
 /***
  * Find the first and last cell in rectangle rect in this line.
  */
-void Cell::SelectRect(wxRect &rect, Cell **first, Cell **last)
+void Cell::SelectRect(const wxRect &rect, Cell **first, Cell **last)
 {
   SelectFirst(rect, first);
   if (*first != NULL)
@@ -1029,7 +1029,7 @@ void Cell::SelectRect(wxRect &rect, Cell **first, Cell **last)
 /***
  * Find the first cell in rectangle rect in this line.
  */
-void Cell::SelectFirst(wxRect &rect, Cell **first)
+void Cell::SelectFirst(const wxRect &rect, Cell **first)
 {
   if (rect.Intersects(GetRect(false)))
     *first = this;
@@ -1042,7 +1042,7 @@ void Cell::SelectFirst(wxRect &rect, Cell **first)
 /***
  * Find the last cell in rectangle rect in this line.
  */
-void Cell::SelectLast(wxRect &rect, Cell **last)
+void Cell::SelectLast(const wxRect &rect, Cell **last)
 {
   if (rect.Intersects(GetRect(false)))
     *last = this;
