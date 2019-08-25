@@ -46,7 +46,7 @@ before_deploy:
   -in .travis/deploy_rsa.enc -out .ssh/id_rsa -d
 - chmod 600 .ssh/id_rsa
 - eval "$(ssh-agent -s)"
-- ssh-add .travis/.ssh/id_rsa
+- ssh-add .ssh/id_rsa
 deploy:
   provider: script
   skip_cleanup: true
