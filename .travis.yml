@@ -63,6 +63,9 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/build/wxMaxima-nightly.dmg p33761049-travis@home67027059.1and1-data.host:wxMaxima/nightly
+  script:  curl --ftp-create-dirs
+       -T filename
+       --key .travis/deploy_rsa
+       sftp://p33761049-travis@home67027059.1and1-data.host:wxMaxima/nightly
   on:
     branch: master
