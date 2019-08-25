@@ -323,7 +323,7 @@ public:
   void SelectPointText(const wxPoint &point);
 
   //! Selects the text between the screen coordinates one and two
-  void SelectRectText(const wxPoint &one, wxPoint &two);
+  void SelectRectText(const wxPoint &one, const wxPoint &two);
 
   //! Selects the word the cursor is currently at.
   wxString SelectWordUnderCaret(bool selectParens = true, bool toRight = true,
