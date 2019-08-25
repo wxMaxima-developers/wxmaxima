@@ -1053,7 +1053,7 @@ void Cell::SelectLast(const wxRect &rect, Cell **last)
 /***
  * Select rectangle in deeper cell - derived classes should override this
  */
-void Cell::SelectInner(wxRect &rect, Cell **first, Cell **last)
+void Cell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
 {
   *first = NULL;
   *last = NULL;

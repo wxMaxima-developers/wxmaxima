@@ -132,15 +132,15 @@ public:
   void SetGroup(Cell *parent); // setting parent for all mathcells in GC
 
   // selection methods
-  void SelectInner(wxRect &rect, Cell **first, Cell **last);
+  void SelectInner(const wxRect &rect, Cell **first, Cell **last);
 
-  void SelectPoint(wxPoint &rect, Cell **first, Cell **last);
+  void SelectPoint(const wxPoint &rect, Cell **first, Cell **last);
 
   void SelectOutput(Cell **start, Cell **end);
 
-  void SelectRectInOutput(wxRect &rect, wxPoint &one, wxPoint &two, Cell **first, Cell **last);
+  void SelectRectInOutput(const wxRect &rect, wxPoint &one, wxPoint &two, Cell **first, Cell **last);
 
-  void SelectRectGroup(wxRect &rect, wxPoint &one, wxPoint &two, Cell **first, Cell **last);
+  void SelectRectGroup(const wxRect &rect, wxPoint &one, wxPoint &two, Cell **first, Cell **last);
 
   // methods for manipulating GroupCell
   bool SetEditableContent(wxString text);

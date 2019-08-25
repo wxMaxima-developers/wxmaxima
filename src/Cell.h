@@ -491,7 +491,7 @@ class Cell
 
   /*! Select the cells inside this cell described by the rectangle rect.
   */
-  virtual void SelectInner(wxRect &rect, Cell **first, Cell **last);
+  virtual void SelectInner(const wxRect &rect, Cell **first, Cell **last);
 
   //! Is this cell an operator?
   virtual bool IsOperator();

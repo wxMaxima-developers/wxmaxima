@@ -1785,7 +1785,7 @@ wxString GroupCell::ToXML()
   return str;
 }
 
-void GroupCell::SelectRectGroup(wxRect &rect, wxPoint &one, wxPoint &two,
+void GroupCell::SelectRectGroup(const wxRect &rect, wxPoint &one, wxPoint &two,
                                 Cell **first, Cell **last)
 {
   Configuration *configuration = (*m_configuration);
@@ -1812,7 +1812,7 @@ void GroupCell::SelectRectGroup(wxRect &rect, wxPoint &one, wxPoint &two,
   }
 }
 
-void GroupCell::SelectInner(wxRect &rect, Cell **first, Cell **last)
+void GroupCell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
 {
   *first = NULL;
   *last = NULL;
@@ -1829,7 +1829,7 @@ void GroupCell::SelectInner(wxRect &rect, Cell **first, Cell **last)
   }
 }
 
-void GroupCell::SelectPoint(wxPoint &point, Cell **first, Cell **last)
+void GroupCell::SelectPoint(const wxPoint &point, Cell **first, Cell **last)
 {
   *first = NULL;
   *last = NULL;
@@ -1840,7 +1840,7 @@ void GroupCell::SelectPoint(wxPoint &point, Cell **first, Cell **last)
     m_inputLabel->SelectInner(rect, first, last);
 }
 
-void GroupCell::SelectRectInOutput(wxRect &rect, wxPoint &one, wxPoint &two,
+void GroupCell::SelectRectInOutput(const wxRect &rect, wxPoint &one, wxPoint &two,
                                    Cell **first, Cell **last)
 {
   if (m_hide)

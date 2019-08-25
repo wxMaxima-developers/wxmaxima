@@ -2772,7 +2772,7 @@ wxPoint EditorCell::PositionToPoint(int WXUNUSED(fontsize), int pos)
   return wxPoint(x, y);
 }
 
-void EditorCell::SelectPointText(wxPoint &point)
+void EditorCell::SelectPointText(const wxPoint &point)
 {
   wxString s;
   SetFont();
@@ -2899,7 +2899,7 @@ void EditorCell::SelectPointText(wxPoint &point)
   }
 }
 
-void EditorCell::SelectRectText(wxPoint &one, wxPoint &two)
+void EditorCell::SelectRectText(const wxPoint &one, wxPoint &two)
 {
   SelectPointText(one);
   long start = m_positionOfCaret;
@@ -3221,7 +3221,7 @@ void EditorCell::InsertText(wxString text)
   StyleText();
 }
 
-void EditorCell::PasteFromClipboard(bool primary)
+void EditorCell::PasteFromClipboard(const bool &primary)
 {
   if (primary)
     wxTheClipboard->UsePrimarySelection(true);
