@@ -34,7 +34,8 @@ script:
 - mkdir build && cd build && cmake .. && cmake --build .
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then mv *.dmg wxMaxima-nightly.dmg; fi
+- mkdir -p deploy
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then mv *.dmg deploy/wxMaxima-nightly.dmg; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 xvfb-run -a
   make test ; fi
 - cd ..
@@ -50,7 +51,7 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: scp -i .ssh/id_rsa -r build/wx* p33761049-travis@home67027059.1and1-data.host
+  script: scp -i .ssh/id_rsa -r build/deploy p33761049-travis@home67027059.1and1-data.host
   on:
     branch: master
 env:
