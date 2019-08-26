@@ -50,7 +50,7 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: scp -i .ssh/id_rsa -r build/ p33761049-travis@home67027059.1and1-data.host
+  script: scp -i .ssh/id_rsa -r build/wx* p33761049-travis@home67027059.1and1-data.host
   on:
     branch: master
 env:
