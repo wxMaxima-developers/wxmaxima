@@ -360,10 +360,10 @@ Worksheet::~Worksheet()
 #endif
 
 #if wxCHECK_VERSION(3, 1, 2)
+#define DC_ALREADY_SCROLLED 1
 #else
 #ifdef __WXGTK3__
 #else
-#define DC_ALREADY_SCROLLED 1
 #endif
 #endif
 
