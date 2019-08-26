@@ -35,10 +35,10 @@ script:
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
 - mkdir -p deploy
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then mv *.dmg deploy/wxMaxima-nightly.dmg; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 xvfb-run -a
-  make test ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp *.dmg deploy/wxMaxima-nightly.dmg; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 xvfb-run -a make test ; fi
 - cd ..
+- ls build/deploy
 addons:
   ssh_known_hosts: home67027059.1and1-data.host
 before_deploy:
