@@ -41,19 +41,14 @@ script:
 - ls build/deploy
 addons:
   ssh_known_hosts: home67027059.1and1-data.host
-before_deploy:
+after_success:
 - mkdir -p .ssh
-- openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv
-  -in .travis/deploy_rsa.enc -out .ssh/id_rsa -d
+- openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv -in .travis/deploy_rsa.enc -out .ssh/id_rsa -d
 - chmod 600 .ssh/id_rsa
 - eval "$(ssh-agent -s)"
 - ssh-add .ssh/id_rsa
-deploy:
-  provider: script
-  skip_cleanup: true
-  script: scp -i .ssh/id_rsa -r build/deploy p33761049-travis@home67027059.1and1-data.host
-  on:
-    branch: master
+- scp -i .ssh/id_rsa -r build/deploy p33761049-travis@home67027059.1and1-data.host
+
 env:
   global:
     secure: FOIPVgpFCQjLbFI+mOmCTu4MLh7jqgV2bwKOr3zfcJzFTV+0pHP42GWJfS1Krf5MTrztYx+2p38ovK1Gq09HCBCR7Qc9C7brM961Nvqt2tFlFXXEfrE73unUHU/CxJlCi+1O9oQQJby7X+/IaZr5nDmbkKCjSBiEsajiI5Jtb+Xiopr9cJfT4cDZwofdPo7RME8/zzMao9gtPgk9fkeeQWg9JhECQ4zLdxyaJb1osx8oZ/wd6fOvhW2E5zMczv/svb3hR9dYSPF2K547+JZMaQtbA17MZ4xd59FR8JISnfwtiAihU1ngtm6l9/H6EkuoP4ndhBR9aMMLOfUxiH1UKUsFmazhqhwvWDEuScD60dXV/ulyCaLw1kVunWQd6rkmx12OU22omqP61+9Cg6OIib8BuW4w72O9WqoYVNf6ZrjTX3q9axSPlAzliMvivmUB8UsYEKTmNrWi+a0mStyGbFPMi4TwFgmbCp3SnNOq4Qe7XsjcBAQJ4BlgzMAQdaMBm2gLdGVxaVwSbhTD7W7f/2PKg/A/OvT8QEdj4jwq3qaV4b1MMLwoTRmKVZPFGaaU2HLumrM8uqeJVkOPXBV+2lx8BYCQqfbAwrgOkuNNEAjNqut87/06husmdlPKjVOVBGXQnHF5u0aD5k0oMtgfeoKPw93cvQn/6XMFtJqiPFM=
