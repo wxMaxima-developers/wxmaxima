@@ -751,11 +751,13 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
       {
         // Append everything except the NULL char at the end
         m_rawDataToSend.AppendData(data_raw.data(),data_raw.length());
+        wxLogMessage(_("MSW Debug: Data stored for sending."));
       }
       else
       {
         // Append everything except the NULL char at the end
         m_rawDataToSend.AppendData(data_raw.data(),data_raw.length());
+        wxLogMessage(_("MSW Debug: Data send initiated."));
         m_client->Write((void *)m_rawDataToSend.GetData(), m_rawDataToSend.GetDataLen());
       }
       
@@ -831,6 +833,7 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     }
   case wxSOCKET_OUTPUT:
   {
+    wxLogMessage(_("MSW Debug: Data sent."));
     if(!m_client)
     {
       m_rawBytesSent = 0;
@@ -861,8 +864,8 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
   case wxSOCKET_LOST:
   {
     
-    wxLogMessage(_("Connection to Maxima lost."));
-    KillMaxima();
+//    wxLogMessage(_("Connection to Maxima lost."));
+    //  KillMaxima();
     break;
   }
   default:
@@ -880,17 +883,19 @@ void wxMaxima::ServerEvent(wxSocketEvent &event)
 
     case wxSOCKET_CONNECTION :
     {
-      wxLogMessage(_("Connected."));
-      m_rawDataToSend.Clear();
-      m_rawBytesSent = 0;
       if (m_isConnected)
       {
         wxSocketBase *tmp = m_server->Accept(false);
         tmp->Close();
+        wxLogMessage(_("New connection attempt when already connected."));
         return;
       }
       if(m_process == NULL)
         return;
+
+      wxLogMessage(_("Connected."));
+      m_rawDataToSend.Clear();
+      m_rawBytesSent = 0;
 
       m_statusBar->NetworkStatus(StatusBar::idle);
       m_worksheet->QuestionAnswered();
