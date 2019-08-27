@@ -746,21 +746,22 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
         StatusMaximaBusy(calculating);
       else
         StatusMaximaBusy(waiting);
+      #ifdef __WXMSW__
+      m_client->Write(s);
+      #else
       wxScopedCharBuffer const data_raw = s.utf8_str();
       if(m_rawDataToSend.GetDataLen() > 0)
       {
         // Append everything except the NULL char at the end
         m_rawDataToSend.AppendData(data_raw.data(),data_raw.length());
-        wxLogMessage(_("MSW Debug: Data stored for sending."));
       }
       else
       {
         // Append everything except the NULL char at the end
         m_rawDataToSend.AppendData(data_raw.data(),data_raw.length());
-        wxLogMessage(_("MSW Debug: Data send initiated."));
         m_client->Write((void *)m_rawDataToSend.GetData(), m_rawDataToSend.GetDataLen());
       }
-      
+      #endif
       if (m_client->Error()) {
         DoRawConsoleAppend(_("Error writing to Maxima"), MC_TYPE_ERROR);
         return;
