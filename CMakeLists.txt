@@ -74,12 +74,14 @@ add_subdirectory(info)
 add_subdirectory(src)
 
 if(WIN32)
-    include(InstallRequiredSystemLibraries)
     install(FILES COPYING README README.md DESTINATION wxMaxima/doc)
 else()
     install(FILES COPYING README README.md DESTINATION share/wxMaxima)
 endif()
 
+install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
+  DESTINATION programs
+  COMPONENT applications)
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
 if(UNIX)
@@ -177,6 +179,7 @@ add_custom_target(gpg DEPENDS dist
 add_custom_target(checksums
     ${CMAKE_COMMAND} -DVERSION=${VERSION} -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -P ${CMAKE_SOURCE_DIR}/checksums.cmake)
 
+include(InstallRequiredSystemLibraries)
 include(CPack)
 
 enable_testing()
