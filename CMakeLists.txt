@@ -74,6 +74,7 @@ add_subdirectory(info)
 add_subdirectory(src)
 
 if(WIN32)
+    include(InstallRequiredSystemLibraries)
     install(FILES COPYING README README.md DESTINATION wxMaxima/doc)
 else()
     install(FILES COPYING README README.md DESTINATION share/wxMaxima)
@@ -98,7 +99,8 @@ if(UNIX AND NOT APPLE)
 endif()
 
 if(APPLE)
-    set(MACOSX_BUNDLE)
+    include(InstallRequiredSystemLibraries)
+     set(MACOSX_BUNDLE)
     list(APPEND CPACK_GENERATOR "DragNDrop") # Build DMG packages on MacOS
 endif()
   
