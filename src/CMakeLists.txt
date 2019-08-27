@@ -1,7 +1,3 @@
-find_package(wxWidgets 3 REQUIRED base core adv xml html aui net richtext)
-
-include(${wxWidgets_USE_FILE})
-
 file(GLOB SOURCE_FILES *.cpp *.h)
 
 # We provide our own manifest. MSVC seems not to autodetect that.

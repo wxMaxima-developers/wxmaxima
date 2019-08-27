@@ -4,6 +4,9 @@ set(PACKAGE_VERSION ${VERSION})
 set(GITVERSION ${VERSION})
 set(PACKAGE wxMaxima)
 
+find_package(wxWidgets 3 REQUIRED base core adv xml html aui net richtext)
+include(${wxWidgets_USE_FILE})
+
 #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
 #SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
 #SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
@@ -102,7 +105,8 @@ if(UNIX AND NOT APPLE)
 endif()
 
 if(APPLE)
-    include(InstallRequiredSystemLibraries)
+    include(BundleUtilities)
+    fixup_bundle(${CMAKE_INSTALL_PREFIX}/MyApp.app ${wxWidgets_LIBRARIES} ${wxWidgets_LIB_DIR})
      set(MACOSX_BUNDLE)
     list(APPEND CPACK_GENERATOR "DragNDrop") # Build DMG packages on MacOS
 endif()
