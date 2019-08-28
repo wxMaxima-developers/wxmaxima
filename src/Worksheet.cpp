@@ -2011,7 +2011,7 @@ void Worksheet::OnMouseWheel(wxMouseEvent &event)
       if ((m_mainToolBar != NULL) && (m_mainToolBar->m_plotSlider != NULL))
       {
 #ifdef __WXMSW__
-                                                                                                                                // On windows: Set the focus to the slider so it handles further wheel events
+        // On Windows: Set the focus to the slider so it handles further wheel events
         m_mainToolBar -> m_plotSlider -> SetFocus();
 #endif
 
@@ -2020,8 +2020,7 @@ void Worksheet::OnMouseWheel(wxMouseEvent &event)
       }
 
 #ifdef __WXMSW__
-                                                                                                                              // On windows the first scroll event scrolls the canvas. Let's scroll it back
-      // again.
+      // On Windows the first scroll event scrolls the canvas. Let's scroll it back again.
       int view_x,view_y;
       GetViewStart(&view_x, &view_y);
       if(rot>0)
