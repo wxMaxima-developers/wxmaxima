@@ -23,11 +23,7 @@ file(GLOB WXMAXIMA_HELP_FILES *.jpg *.png *.html *.hhp *.pdf)
 #    endif()
 #endif()
 
-if(WIN32)
-    install(FILES ${WXMAXIMA_HELP_FILES} DESTINATION wxMaxima/help)
-else()
-    install(FILES ${WXMAXIMA_HELP_FILES} DESTINATION share/doc/wxmaxima)
-endif()
+install(FILES ${WXMAXIMA_HELP_FILES} DESTINATION share/doc/wxmaxima)
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
 if(UNIX)
