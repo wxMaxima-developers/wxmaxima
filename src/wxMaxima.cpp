@@ -747,7 +747,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
       else
         StatusMaximaBusy(waiting);
       #ifdef __WXMSW__
-      m_client->Write(s);
+      m_client->Write(data_raw.data(), data_raw.length());
       #else
       wxScopedCharBuffer const data_raw = s.utf8_str();
       if(m_rawDataToSend.GetDataLen() > 0)
