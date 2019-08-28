@@ -24,14 +24,13 @@ if(GETTEXT_FOUND)
                 DESTINATION "share/locale/${LANG}/LC_MESSAGES/"
                 RENAME "wxMaxima.mo")
 
-            # 'install' message files in the directory "${CMAKE_BINARY_DIR}/locale/..."
-            # too (at build time, not at install time), so that running ./wxmaxima-local
-            # (without installing it) can find the message files and i18n works.
-            file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/locale/${LANG}")
-            add_custom_target(build-locale-${LANG} ALL
-                DEPENDS pofiles
-                COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo" "${CMAKE_BINARY_DIR}/locale/${LANG}/LC_MESSAGES/wxMaxima.mo")
-        endif()
+        # 'install' message files in the directory "${CMAKE_BINARY_DIR}/locale/..."
+        # too (at build time, not at install time), so that running ./wxmaxima-local
+        # (without installing it) can find the message files and i18n works.
+        file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/locale/${LANG}")
+        add_custom_target(build-locale-${LANG} ALL
+            DEPENDS pofiles
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo" "${CMAKE_BINARY_DIR}/locale/${LANG}/LC_MESSAGES/wxMaxima.mo")
         # Call msgmerge for each language and create a merged language file
         message(STATUS "Create PO-file for language ${LANG}")
         execute_process(
