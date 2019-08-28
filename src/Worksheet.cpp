@@ -6301,49 +6301,97 @@ bool Worksheet::ExportToTeX(wxString file)
 
 wxString Worksheet::UnicodeToMaxima(wxString s)
 {
-  s.Replace(wxT("\x00B2"), wxT("^2"));
-  s.Replace(wxT("\x00B3"), wxT("^3"));
-  s.Replace(wxT("\x00BD"), wxT("(1/2)"));
-  s.Replace(wxT("\x221A"), wxT("sqrt"));
-//  s.Replace(wxT("\x03C0"), wxT("%pi"));
-//  s.Replace(wxT("\x2148"), wxT("%i"));
-//  s.Replace(wxT("\x2147"), wxT("%e"));
-  s.Replace(wxT("\x221E"), wxT("inf"));
-  s.Replace(wxT("\x22C0"), wxT(" and "));
-  s.Replace(wxT("\x22C1"), wxT(" or "));
-  s.Replace(wxT("\x22BB"), wxT(" xor "));
-  s.Replace(wxT("\x22BC"), wxT(" nand "));
-  s.Replace(wxT("\x22BD"), wxT(" nor "));
-  s.Replace(wxT("\x21D2"), wxT(" implies "));
-  s.Replace(wxT("\x21D4"), wxT(" equiv "));
-  s.Replace(wxT("\x00AC"), wxT(" not "));
-  s.Replace(wxT("\x2260"), wxT(" # "));
-  s.Replace(wxT("\x2264"), wxT(" <= "));
-  s.Replace(wxT("\x2265"), wxT(" >= "));
-  s.Replace(wxT("\x2212"), wxT("-")); // An unicode minus sign
-  s.Replace(wxT("\x00B7"), wxT("*")); // An unicode multiplication sign
-  s.Replace(wxT("\xDCB6"), wxT(" ")); // A non-breakable space
-  s.Replace(wxT("\r"), wxT(" ")); // A soft linebreak
-
-  // Convert \x03C0 to %pi if it isn't part of a synbol name
   wxString retval;
-  for (size_t i = 0; i < s.Length(); i++)
-    switch (wxChar(s[i]))
+
+  std::cerr<<"Old=\""<<s<<"\"\n";
+  wxChar ch;
+  wxChar ch_Last = '\0';
+  for (wxString::iterator it = s.begin(); it < s.end(); ++it)
+  {
+    ch = *it;
+    switch (ch)
     {
-      case wxT('\x03C0'):
+    // Strings aren't converted
+    case '\"':
+      retval += ch;
+      ++it;
+      while(it < s.end())
       {
-        if (
-                ((i == 0) || (!wxIsalnum(s[i - 1]))) &&
-                ((i == s.Length() - 1) || (!wxIsalnum(s[i + 1])))
-                )
-          retval += wxT("%pi");
+        retval += *it;
+        if(*it == '\\')
+        {
+          ++it;
+          if(it != s.end())
+            retval += *it;
+          else
+            return retval;
+          ++it;
+        }
         else
-          retval += s[i];
+        {
+          if(*it == '\"')
+          {
+            if (it < s.end())
+              break;
+            else
+              return retval;
+           }
+          else
+            ++it;
+        }
       }
-        break;
-      default:
-        retval += s[i];
+      break;
+    // Backslashed items aren't converted.
+    case '\\':
+      retval += ch;
+      ++it;
+      if(it != s.end())
+        retval += *it;
+      else
+        return retval;
+      break;
+    case wxT('\x00B2'): retval += wxT("^2");break;
+    case wxT('\x00B3'): retval += wxT("^3");break;
+    case wxT('\x00BD'): retval += wxT("(1/2)");break;
+    case wxT('\x221A'): retval += wxT("sqrt");break;
+    case wxT('\x2148'): retval += wxT("%i");break;
+    case wxT('\x2147'): retval += wxT("%e");break;
+    case wxT('\x221E'): retval += wxT("inf");break;
+    case wxT('\x22C0'): retval += wxT(" and ");break;
+    case wxT('\x22C1'): retval += wxT(" or ");break;
+    case wxT('\x22BB'): retval += wxT(" xor ");break;
+    case wxT('\x22BC'): retval += wxT(" nand ");break;
+    case wxT('\x22BD'): retval += wxT(" nor ");break;
+    case wxT('\x21D2'): retval += wxT(" implies ");break;
+    case wxT('\x21D4'): retval += wxT(" equiv ");break;
+    case wxT('\x00AC'): retval += wxT(" not ");break;
+    case wxT('\x2260'): retval += wxT(" # ");break;
+    case wxT('\x2264'): retval += wxT(" <= ");break;
+    case wxT('\x2265'): retval += wxT(" >= ");break;
+    case wxT('\x2212'): retval += wxT("-");break; // An unicode minus sinbreak;
+    case wxT('\x00B7'): retval += wxT("*");break; // An unicode multiplication sinbreak;
+    case wxT('\xDCB6'): retval += wxT(" ");break; // A non-breakable spaebreak;
+    case wxT('\r'): retval += wxT(" ");break; // A soft linebreak
+    // Convert \x03C0 to %pi if it isn't part of a symbol name
+    case wxT('\x03C0'):
+    {
+      wxString::iterator it2 = it;
+      ++it2;
+      if (
+        (!wxIsalnum(ch_Last)) &&
+        ((it2 == s.end()) || (!wxIsalnum(*it2)))
+        )
+        retval += wxT("%pi");
+      else
+        retval += *it;
     }
+    break;
+    default:
+      retval += *it;
+    }
+    ch_Last = ch;
+  }
+  std::cerr<<"New=\""<<retval<<"\"\n";
   return retval;
 }
 

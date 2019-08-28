@@ -758,8 +758,6 @@ public:
   /*! Make a few unicode characters interpretable by maxima.
 
     Does convert the not equal sign to a '#' and similar.
-
-    \todo We perhaps could think of only doing this outside of strings.
    */
   wxString UnicodeToMaxima(wxString s);
 

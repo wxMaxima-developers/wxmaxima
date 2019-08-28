@@ -1,5 +1,8 @@
 Current:
   * Handle timeouts when writing to maxima and partial writes.
+  * Code did disappear on scrolling on some platforms.
+  * Sped up sending code to maxima.
+  * Unicode characters within strings sent to maxima are no more quoted.
 
 19.08.1:
   * Bugfixes for nearly every instance something was drawn on the screen.
