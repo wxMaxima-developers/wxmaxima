@@ -77,11 +77,7 @@ add_subdirectory(data)
 add_subdirectory(info)
 add_subdirectory(src)
 
-if(WIN32)
-    install(FILES COPYING README README.md DESTINATION wxMaxima/doc)
-else()
-    install(FILES COPYING README README.md DESTINATION share/wxMaxima)
-endif()
+install(FILES COPYING README README.md DESTINATION share/wxMaxima)
 
 install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
   DESTINATION programs

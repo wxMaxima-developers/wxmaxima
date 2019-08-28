@@ -1,10 +1,6 @@
 file(GLOB TEST_FILES *.png *.wxmx *.wxm *.mac)
 
-if(WIN32)
-    install(FILES ${TEST_FILES} DESTINATION wxMaxima/data)
-else()
-    install(FILES ${TEST_FILES} DESTINATION share/wxMaxima)
-endif()
+install(FILES ${TEST_FILES} DESTINATION share/wxMaxima)
 file(COPY ${TEST_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 # Test if maxima is working

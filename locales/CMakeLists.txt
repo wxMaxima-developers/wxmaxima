@@ -19,16 +19,10 @@ if(GETTEXT_FOUND)
         string(REGEX REPLACE ".*locales/(.*).po$" "\\1" LANG ${POFILE})
 
         # convert the po to mo files and install them
-        # (FIXME: different destination directories on Windows and Unix, should probably be unified.)
         gettext_process_po_files(${LANG} ALL PO_FILES ${POFILE})
-        if(WIN32)
-            install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo"
-                    DESTINATION "wxMaxima/locale/${LANG}/LC_MESSAGES/"
-                    RENAME "wxMaxima.mo")
-        else()
-            install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo"
-                    DESTINATION "share/locale/${LANG}/LC_MESSAGES/"
-                    RENAME "wxMaxima.mo")
+        install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo"
+                DESTINATION "share/locale/${LANG}/LC_MESSAGES/"
+                RENAME "wxMaxima.mo")
 
             # 'install' message files in the directory "${CMAKE_BINARY_DIR}/locale/..."
             # too (at build time, not at install time), so that running ./wxmaxima-local
