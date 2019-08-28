@@ -142,9 +142,6 @@ public:
   void ShowTip(bool force);
 
   /*! Get the name of the help file
-
-    \todo We probably should use the help files from the newest maxima version
-    installed instead of the ones from the alphabetically first installation we find.
    */
   wxString GetHelpFile();
   //! An helper function for GetHelpFile()
