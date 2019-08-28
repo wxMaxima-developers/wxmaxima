@@ -94,8 +94,6 @@ endif()
 # Build Packages
 if(WIN32)
     set(CPACK_GENERATOR "ZIP;NSIS")
-    # We install wxmaxima.exe to the installation prefix on Windows, not to bin/.
-    set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
 else()
     set(CPACK_GENERATOR "TGZ;TBZ2")
 endif()
@@ -179,8 +177,7 @@ add_custom_target(gpg DEPENDS dist
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.xz
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.Z)
-
-
+  
 add_custom_target(checksums
     ${CMAKE_COMMAND} -DVERSION=${VERSION} -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -P ${CMAKE_SOURCE_DIR}/checksums.cmake)
 
