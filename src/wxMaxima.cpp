@@ -737,7 +737,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
       }
     }
 
-    if ((m_client) && (s.Length() >= 1))
+    if ((m_client) && (s.Length() >= 1) && (m_client->IsOk()))
     {
       // If there is no working group and we still are trying to send something
       // we are trying to change maxima's settings from the background and might never
@@ -834,7 +834,6 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
     }
   case wxSOCKET_OUTPUT:
   {
-    wxLogMessage(_("MSW Debug: Data sent."));
     if(!m_client)
     {
       m_rawBytesSent = 0;
@@ -3133,8 +3132,11 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   }
 }
 
-void wxMaxima::InterpretDataFromMaxima()
+bool wxMaxima::InterpretDataFromMaxima()
 {
+  if(m_newCharsFromMaxima.IsEmpty())
+    return false;
+  
   if ((m_xmlInspector) && (IsPaneDisplayed(menu_pane_xmlInspector)))
     m_xmlInspector->Add_FromMaxima(m_newCharsFromMaxima);
   // This way we can avoid searching the whole string for a
@@ -3213,6 +3215,7 @@ void wxMaxima::InterpretDataFromMaxima()
     if(newActiveCell != oldActiveCell)
       m_worksheet->m_cellPointers.SetWorkingGroup(newActiveCell);
   }
+  return true;
 }
 
 ///--------------------------------------------------------------------------------
@@ -4198,8 +4201,8 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
   switch (event.GetId())
   {
     case WAITFORSTRING_ID:
-      InterpretDataFromMaxima();
-      wxLogMessage(_("String from maxima apparently didn't end in a newline"));
+      if(InterpretDataFromMaxima())
+        wxLogMessage(_("String from maxima apparently didn't end in a newline"));
       break;
     case MAXIMA_STDOUT_POLL_ID:
       ReadStdErr();
