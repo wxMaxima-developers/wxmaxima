@@ -46,7 +46,6 @@ public:
 
   /* The destructor
 
-     \todo Save the history on exit and reload it on loading a file?
    */
   ~History();
 

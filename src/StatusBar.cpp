@@ -77,32 +77,35 @@ void StatusBar::UpdateBitmaps()
   if((ppi.x == m_ppi.x) && (ppi.y == m_ppi.y))
     return;
 
-  m_ppi = ppi;
-  m_network_error = GetImage("network-error",
-                             network_error_128_png,network_error_128_png_len,
-                             network_error_192_png,network_error_192_png_len
-    );
-  m_network_offline = GetImage("network-offline",
-                               network_offline_128_png,network_offline_128_png_len,
-                               network_offline_192_png,network_offline_192_png_len
-    );
-  m_network_transmit = GetImage("network-transmit",
-                              network_transmit_128_png,network_transmit_128_png_len,
-                              network_transmit_192_png,network_transmit_192_png_len
-    );
-  m_network_idle = GetImage("network-idle",
-                            network_idle_128_png,network_idle_128_png_len,
-                            network_idle_192_png,network_idle_192_png_len
-    );
-  m_network_idle_inactive = wxBitmap(m_network_idle.ConvertToImage().ConvertToDisabled());
-  m_network_receive = GetImage("network-receive",
-                              network_receive_128_png,network_receive_128_png_len,
-                              network_receive_192_png,network_receive_192_png_len
-    );
-  m_network_transmit_receive = GetImage("network-transmit-receive",
-                              network_transmit_receive_128_png,network_transmit_receive_128_png_len,
-                              network_transmit_receive_192_png,network_transmit_receive_192_png_len
-    );
+  if(m_ppi != ppi)
+  {
+    m_ppi = ppi;
+    m_network_error = GetImage("network-error",
+                               network_error_128_png,network_error_128_png_len,
+                               network_error_192_png,network_error_192_png_len
+      );
+    m_network_offline = GetImage("network-offline",
+                                 network_offline_128_png,network_offline_128_png_len,
+                                 network_offline_192_png,network_offline_192_png_len
+      );
+    m_network_transmit = GetImage("network-transmit",
+                                  network_transmit_128_png,network_transmit_128_png_len,
+                                  network_transmit_192_png,network_transmit_192_png_len
+      );
+    m_network_idle = GetImage("network-idle",
+                              network_idle_128_png,network_idle_128_png_len,
+                              network_idle_192_png,network_idle_192_png_len
+      );
+    m_network_idle_inactive = wxBitmap(m_network_idle.ConvertToImage().ConvertToDisabled());
+    m_network_receive = GetImage("network-receive",
+                                 network_receive_128_png,network_receive_128_png_len,
+                                 network_receive_192_png,network_receive_192_png_len
+      );
+    m_network_transmit_receive = GetImage("network-transmit-receive",
+                                          network_transmit_receive_128_png,network_transmit_receive_128_png_len,
+                                          network_transmit_receive_192_png,network_transmit_receive_192_png_len
+      );
+  }
 }
 
 void StatusBar::OnTimerEvent(wxTimerEvent &WXUNUSED(event))

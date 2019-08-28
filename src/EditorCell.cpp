@@ -3643,6 +3643,7 @@ void EditorCell::StyleTextTexts()
           // auto-wrapping
           if ((*it == ' ') || (*it == '\n') || (nextChar >= m_text.end()))
           {
+            
             // Determine the current line's length
             configuration->GetDC()->GetTextExtent(m_text.SubString(lastLineStart, i), &width, &height);
             // Determine the current indentation

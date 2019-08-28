@@ -278,11 +278,7 @@ public:
     that this line is to be broken here until the window's width changes.
    */
   void StyleText();
-  /*! Is Called by StyleText() for code cells
-
-    \todo This function gets *extremely* slow for long code cells (a cell with 13000 words
-    needs minutes in order to run through this function).
-  */
+  /*! Is Called by StyleText() if this is a code cell */
   void StyleTextCode();
   void StyleTextTexts();
 

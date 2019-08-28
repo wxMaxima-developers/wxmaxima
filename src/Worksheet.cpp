@@ -1706,7 +1706,7 @@ void Worksheet::OnMouseLeftInGcLeft(wxMouseEvent &event, GroupCell *clickedInGC)
     }
     else
     {
-      clickedInGC->SwitchHide(); // todo if there's nothin to hide, select as normal
+      clickedInGC->SwitchHide();
       clickedInGC->ResetSize();
       Recalculate(clickedInGC, false);
       m_clickType = CLICK_TYPE_NONE; // ignore drag-select
