@@ -746,19 +746,31 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
         StatusMaximaBusy(calculating);
       else
         StatusMaximaBusy(waiting);
+
+      wxScopedCharBuffer const data_raw = s.utf8_str();
       #ifdef __WXMSW__
+      // On MS Windows we don't get a signal that tells us if a write has
+      // finishes. But it seems a write always succeeds
       m_client->Write(data_raw.data(), data_raw.length());
       #else
-      wxScopedCharBuffer const data_raw = s.utf8_str();
+      // On Linux (and most probably all other non MS-Windows systems) we get a
+      // signal that tells us a write command has finished - and tells us how many
+      // bytes were sent. Which (at least on BSD) might be lower than we wanted.
       if(m_rawDataToSend.GetDataLen() > 0)
       {
-        // Append everything except the NULL char at the end
+        // We are already sending => append everything except the trailing NULL
+        // char at the end of the string to the buffer containing the data we want
+        // to send.
         m_rawDataToSend.AppendData(data_raw.data(),data_raw.length());
       }
       else
       {
-        // Append everything except the NULL char at the end
+        // Put everything except the NULL char at the end of the string into the
+        // buffer containing the data we want to send
         m_rawDataToSend.AppendData(data_raw.data(),data_raw.length());
+        // Now we have done this we attempt to send the data. If our try falls
+        // short we'll find that out in the client event of the type wxSOCKET_OUTPUT
+        // that will follow the write.
         m_client->Write((void *)m_rawDataToSend.GetData(), m_rawDataToSend.GetDataLen());
       }
       #endif
