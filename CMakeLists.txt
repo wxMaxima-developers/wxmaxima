@@ -3,6 +3,7 @@ set(VERSION 19.08.1-DevelopmentSnapshot)
 set(PACKAGE_VERSION ${VERSION})
 set(GITVERSION ${VERSION})
 set(PACKAGE wxMaxima)
+set(APP_NAME wxMaxima)
 
 find_package(wxWidgets 3 REQUIRED base core adv xml html aui net richtext)
 include(${wxWidgets_USE_FILE})
@@ -82,6 +83,17 @@ install(FILES COPYING README README.md DESTINATION share/wxMaxima)
 install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
   DESTINATION programs
   COMPONENT applications)
+
+install(TARGETS wxmaxima
+  BUNDLE DESTINATION . COMPONENT Runtime
+  RUNTIME DESTINATION bin COMPONENT Runtime
+  )
+
+# Mac specific extension .app
+set(APPS "\${CMAKE_INSTALL_PREFIX}/wxMaxima.app")
+
+install(CODE "include(BundleUtilities)
+    fixup_bundle(\"${APPS}\" \"\" \"${wxWidgets_LIBRARY_DIRS}\")")
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
 if(UNIX)
