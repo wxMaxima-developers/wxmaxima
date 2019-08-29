@@ -86,7 +86,7 @@ install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
 
 if(APPLE)
 # Mac specific extension .app
-set(APPS "\${PROJECT_BINARY_DIR}/src/wxMaxima.app")
+set(APPS ${PROJECT_BINARY_DIR}"/src/wxMaxima.app")
 
 install(CODE "include(BundleUtilities)
     fixup_bundle(\"${APPS}\" \"${wxWidgets_LIBRARIES}\" \"${wxWidgets_LIBRARY_DIRS}\")")
