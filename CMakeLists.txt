@@ -85,11 +85,6 @@ install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
   COMPONENT applications)
 
 if(APPLE)
-install(TARGETS wxmaxima
-  BUNDLE DESTINATION . COMPONENT Runtime
-  RUNTIME DESTINATION bin COMPONENT Runtime
-  )
-
 # Mac specific extension .app
 set(APPS "\${CMAKE_INSTALL_PREFIX}/wxMaxima.app")
 
