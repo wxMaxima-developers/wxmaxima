@@ -86,10 +86,10 @@ install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
 
 if(APPLE)
 # Mac specific extension .app
-set(APPS "\${CMAKE_INSTALL_PREFIX}/wxMaxima.app")
+set(APPS "\${PROJECT_BINARY_DIR}/src/wxMaxima.app")
 
 install(CODE "include(BundleUtilities)
-    fixup_bundle(\"${APPS}\" \"\" \"${wxWidgets_LIBRARY_DIRS}\")")
+    fixup_bundle(\"${APPS}\" \"${wxWidgets_LIBRARIES}\" \"${wxWidgets_LIBRARY_DIRS}\")")
 endif()
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
