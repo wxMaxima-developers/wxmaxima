@@ -17,9 +17,7 @@ set(PIXMAPS
 if(WIN32)
     add_subdirectory(fonts)
     add_subdirectory(winrc)
-    install(FILES ${DATAFILES} DESTINATION wxMaxima/data)
 else()
-    install(FILES ${DATAFILES}                                                                   DESTINATION share/wxMaxima)
     install(FILES ${PIXMAPS}                                                                     DESTINATION share/pixmaps)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima                                           DESTINATION share/bash-completion/completions)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.1                                         DESTINATION share/man/man1)
@@ -28,6 +26,7 @@ else()
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/x-wxmathml.xml                                     DESTINATION share/mime/packages)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/x-wxmaxima-batch.xml                               DESTINATION share/mime/packages)
 endif()
+install(FILES ${DATAFILES} DESTINATION share/wxMaxima)
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
 if(UNIX)
