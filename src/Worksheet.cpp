@@ -7872,7 +7872,7 @@ void Worksheet::OnSetFocus(wxFocusEvent &event)
 
   // And we want the cursor start in its visible phase.
 
-  wxTimerEvent dummy = new wxTimerEvent(*new wxTimer());
+  wxTimerEvent dummy(m_timer);
   dummy.SetId(CARET_TIMER_ID);
   OnTimer(dummy);
   event.Skip();

@@ -108,7 +108,7 @@ void StatusBar::UpdateBitmaps()
   }
 }
 
-void StatusBar::OnTimerEvent(wxTimerEvent &WXUNUSED(event))
+void StatusBar::HandleTimerEvent()
 {
   // don't do anything if the network status didn't change.
   if ((m_icon_shows_receive == (ReceiveTimer.IsRunning())) &&
@@ -154,6 +154,11 @@ void StatusBar::OnTimerEvent(wxTimerEvent &WXUNUSED(event))
   }
 }
 
+void StatusBar::OnTimerEvent(wxTimerEvent &WXUNUSED(event))
+{
+  HandleTimerEvent();
+}
+
 void StatusBar::NetworkStatus(networkState status)
 {
   UpdateBitmaps();
@@ -194,8 +199,7 @@ void StatusBar::NetworkStatus(networkState status)
     case receive:
     {
       ReceiveTimer.StartOnce(200);
-      wxTimerEvent dummy = new wxTimerEvent(*new wxTimer());
-      OnTimerEvent(dummy);
+      HandleTimerEvent();
       if((m_oldmaximaPercentage >= 0) &&(m_maximaPercentage < 0))
         m_networkStatus->SetToolTip(m_stdToolTip);
     }
@@ -203,8 +207,7 @@ void StatusBar::NetworkStatus(networkState status)
     case transmit:
     {
       SendTimer.StartOnce(200);
-      wxTimerEvent dummy = new wxTimerEvent(*new wxTimer());
-      OnTimerEvent(dummy);
+      HandleTimerEvent();
       if((m_oldmaximaPercentage >= 0) &&(m_maximaPercentage < 0))
         m_networkStatus->SetToolTip(m_stdToolTip);
     }

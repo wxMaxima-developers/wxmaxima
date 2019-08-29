@@ -72,6 +72,8 @@ protected:
 
   void OnTimerEvent(wxTimerEvent &event);
 
+  void HandleTimerEvent();
+
 private:
   //! The display resolution
   wxSize m_ppi;
