@@ -84,6 +84,7 @@ install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
   DESTINATION programs
   COMPONENT applications)
 
+if(APPLE)
 install(TARGETS wxmaxima
   BUNDLE DESTINATION . COMPONENT Runtime
   RUNTIME DESTINATION bin COMPONENT Runtime
@@ -94,6 +95,7 @@ set(APPS "\${CMAKE_INSTALL_PREFIX}/wxMaxima.app")
 
 install(CODE "include(BundleUtilities)
     fixup_bundle(\"${APPS}\" \"\" \"${wxWidgets_LIBRARY_DIRS}\")")
+endif()
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
 if(UNIX)

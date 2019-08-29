@@ -47,7 +47,7 @@ after_success:
 - chmod 600 .ssh/id_rsa
 - eval "$(ssh-agent -s)"
 - ssh-add .ssh/id_rsa
-- scp -v -i .ssh/id_rsa -r build/deploy p33761049-travis@home67027059.1and1-data.host:~
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then echo "put deploy/wxMaxima-nightly.dmg" | sftp -i .ssh/id_rsa p33761049-travis@home67027059.1and1-data.host; fi
 
 env:
   global:
