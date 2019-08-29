@@ -92,7 +92,7 @@ endif()
 
 if(APPLE)
 # Mac specific extension .app
-set(APPS "${PROJECT_BINARY_DIR}/src/wxMaxima.app")
+set(APPS "/src/wxMaxima.app")
 
 install(CODE "include(BundleUtilities)
     fixup_bundle(\"${APPS}\" \"${wxWidgets_LIBRARIES}\" \"${wxWidgets_LIBRARY_DIRS}\")")
