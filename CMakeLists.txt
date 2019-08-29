@@ -108,9 +108,7 @@ if(UNIX AND NOT APPLE)
 endif()
 
 if(APPLE)
-    include(BundleUtilities)
-#    fixup_bundle(${CMAKE_INSTALL_PREFIX}/MyApp.app ${wxWidgets_LIBRARIES} ${wxWidgets_LIB_DIR})
-     set(MACOSX_BUNDLE)
+    set(MACOSX_BUNDLE)
     list(APPEND CPACK_GENERATOR "DragNDrop") # Build DMG packages on MacOS
 endif()
   
