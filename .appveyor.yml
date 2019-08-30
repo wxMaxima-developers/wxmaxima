@@ -38,8 +38,12 @@ build_script:
 
 after_build:
   - cmd: cd c:\projects\wxMaxima\build
-  - cmd: cmake --build . -- install DESTDIR=installtest
-  - cmd: cmake --build . -- package
+  - cmd: CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - cmd: cd src
+  - cmd: xcopy /i Debug Release
+  - cmd: cd ..
+  - cpack -G NSIS
+  - cmd: msbuild "PACKAGE.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 on_failure:
   - cmd: 7z a FailureDump.zip *
