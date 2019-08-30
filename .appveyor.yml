@@ -51,9 +51,5 @@ on_failure:
   - cmd: appveyor PushArtifact FailureDump.zip
 
 artifacts:
-  - path: 'build\CMakeFiles\CMakeOutput.log'
-    name: cmake_output_log
   - path: 'build/wxmaxima-*.exe'
     name: wxMaxima_Installer
-  - path: '\build\src\Debug\wxmaxima.exe'
-    name: wxMaxima
