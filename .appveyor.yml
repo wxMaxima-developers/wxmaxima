@@ -34,8 +34,7 @@ before_build:
 
 build_script:
   - cmd: cd c:\projects\wxMaxima\build
-  - cmd: CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - cmd: msbuild "INSTALL.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - cmd: cmake --build .
 
 after_build:
   - cmd: cd c:\projects\wxMaxima\build
