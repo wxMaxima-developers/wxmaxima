@@ -38,7 +38,7 @@ build_script:
 
 after_build:
   - cmd: cd c:\projects\wxMaxima\build
-  - cmd: cpack -G NSIS
+  - cmd: cpack -G NSIS,ZIP
 
 on_failure:
   - cmd: 7z a FailureDump.zip *
