@@ -98,11 +98,8 @@ if(WIN32 AND APPVEYOR_BUILD)
 endif()
 
 if(APPLE)
-# Mac specific extension .app
-set(APPS "src/wxMaxima.app")
-
 install(CODE "include(BundleUtilities)
-    fixup_bundle(\"${APPS}\" \"\" \"${wxWidgets_LIBRARY_DIRS}\")")
+    fixup_bundle(\"wxMaxima.app\" \"\" \"${wxWidgets_LIBRARY_DIRS}\")")
 endif()
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
