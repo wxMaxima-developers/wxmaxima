@@ -12,10 +12,12 @@ include(${wxWidgets_USE_FILE})
 #SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
 #SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
 
-SET(wxWidgets_lib_names ${wxWidgets_LIBRARIES})
-list(FILTER wxWidgets_lib_names INCLUDE REGEX "^-l.*")
-list(TRANSFORM wxWidgets_lib_names REPLACE "^-l" "")
-message(STATUS "wxWidgets libs: ${wxWidgets_lib_names}.")
+# Assemble a list of all the library names we need to ship with our installer
+# in order to make it work on any system.
+#SET(wxWidgets_lib_names ${wxWidgets_LIBRARIES})
+#list(FILTER wxWidgets_lib_names INCLUDE REGEX "^-l.*")
+#list(TRANSFORM wxWidgets_lib_names REPLACE "^-l" "")
+#message(STATUS "wxWidgets libs: ${wxWidgets_lib_names}.")
 
 # Avoid a warning by deciding which version of this policy we use in case we can
 # decide this.
@@ -100,7 +102,7 @@ if(APPLE)
 set(APPS "src/wxMaxima.app")
 
 install(CODE "include(BundleUtilities)
-    fixup_bundle(\"${APPS}\" \"${wxWidgets_lib_names}\" \"${wxWidgets_LIBRARY_DIRS}\")")
+    fixup_bundle(\"${APPS}\" \"\" \"${wxWidgets_LIBRARY_DIRS}\")")
 endif()
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
