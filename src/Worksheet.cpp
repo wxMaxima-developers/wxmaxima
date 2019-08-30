@@ -6302,7 +6302,6 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
 {
   wxString retval;
 
-  std::cerr<<"Old=\""<<s<<"\"\n";
   wxChar ch;
   wxChar ch_Last = '\0';
   for (wxString::iterator it = s.begin(); it < s.end(); ++it)
@@ -6390,7 +6389,6 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
     }
     ch_Last = ch;
   }
-  std::cerr<<"New=\""<<retval<<"\"\n";
   return retval;
 }
 
