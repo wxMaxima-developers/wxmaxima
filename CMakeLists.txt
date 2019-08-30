@@ -97,11 +97,16 @@ if(WIN32 AND APPVEYOR_BUILD)
     install(FILES ${wxwidgets_dlls} DESTINATION bin/)
 endif()
 
-set(BU_CHMOD_BUNDLE_ITEM)
-if(APPLE)
-install(CODE "include(BundleUtilities)
-    fixup_bundle(\"${PROJECT_BINARY_DIR}/wxMaxima.app\" \"\" \"\")")
-endif()
+# Make the bundle portable to other macs.
+#
+# Doesn't currently work, unfortunately, see
+# https://gitlab.kitware.com/cmake/cmake/issues/19663
+#
+# set(BU_CHMOD_BUNDLE_ITEM)
+# if(APPLE)
+# install(CODE "include(BundleUtilities)
+#     fixup_bundle(\"${PROJECT_BINARY_DIR}/wxMaxima.app\" \"\" \"\")")
+# endif()
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
 if(UNIX)
