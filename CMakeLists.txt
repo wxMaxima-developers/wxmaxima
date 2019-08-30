@@ -99,7 +99,7 @@ endif()
 
 if(APPLE)
 install(CODE "include(BundleUtilities)
-    fixup_bundle(\"\${PROJECT_BINARY_DIR}/wxMaxima.app\" \"\" \"\")")
+    fixup_bundle(\"${PROJECT_BINARY_DIR}/wxMaxima.app\" \"\" \"\")")
 endif()
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
