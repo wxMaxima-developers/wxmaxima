@@ -97,6 +97,7 @@ if(WIN32 AND APPVEYOR_BUILD)
     install(FILES ${wxwidgets_dlls} DESTINATION bin/)
 endif()
 
+set(BU_CHMOD_BUNDLE_ITEM)
 if(APPLE)
 install(CODE "include(BundleUtilities)
     fixup_bundle(\"${PROJECT_BINARY_DIR}/wxMaxima.app\" \"\" \"\")")
