@@ -107,15 +107,15 @@
     <h4 id="WindowsNightly">Windows</h4>
     <p>
       <a href="https://wolfgang.dautermann.at/maxima/nightlybuild/">Wolfgang Dautermann's
-	site</a> always contains a recent build of Maxima and wxMaxima.</p>
-    <p> Additionally users who have installed the
-      <a href="https://my.visualstudio.com/Downloads?pid=2082"> 
-	Microsoft Visual Studio 2015 runtime</a> can find a working executable of wxMaxima
-      that inherits all changes from about 10 minutes back at
-      <a href="https://ci.appveyor.com/project/gunterkoenigsmann/wxmaxima/build/18.10.0_unofficial_17/artifacts"> https://ci.appveyor.com/project/gunterkoenigsmann/wxmaxima/build/18.10.0_unofficial_17/artifacts </a>. As the executable neither comes with maxima nor with the help files this 
-      version of the nightly build additionally requires a working install of
-      wxMaxima+maxima, though. 
-    </p>
+	site</a> always contains a recent build of Maxima and wxMaxima. Additionally
+      <a href="https://ci.appveyor.com/project/gunterkoenigsmann/wxmaxima/build/artifacts/">appveyor</a>
+      tries to create a wxMaxima-only installer immediately after
+      wxMaxima's sourcecode has been changed. This build is only
+      available if there was no code change in the last about 10
+      minutes and if the code actually compiled for windows.  As this
+      build is compiled using Microsoft Visual C++ it is considerably
+      slower than Wolfgang's nightly build, though, which is made
+      using the gnu toolchain.</p>
     <h4>Linux</h4>
     A nightly build of wxMaxima can be downloaded from
     <a href="https://code.launchpad.net/~peterpall/+archive/ubuntu/wxmaxima-nightlies">
