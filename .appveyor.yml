@@ -31,7 +31,7 @@ before_build:
   - cmd: echo Running cmake...
   - cmd: if not exist c:\projects\wxMaxima\build mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - cmd: cmake  -LAH -G "Visual Studio 15 2017 Win64" -DAPPVEYOR_BUILD=1 -D CMAKE_CONFIGURATION_TYPES=Release ..
+  - cmd: cmake  -LAH -G "Visual Studio 15 2017 Win64" -DAPPVEYOR_BUILD=1 -D CMAKE_CONFIGURATION_TYPES=Debug -CDMAKE_CXX_FLAGS=-D_DEBUG=1  ..
 
 build_script:
   - cmd: cd c:\projects\wxMaxima\build

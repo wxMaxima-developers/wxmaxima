@@ -14,10 +14,12 @@ include(${wxWidgets_USE_FILE})
 
 # Assemble a list of all the library names we need to ship with our installer
 # in order to make it work on any system.
-#SET(wxWidgets_lib_names ${wxWidgets_LIBRARIES})
-#list(FILTER wxWidgets_lib_names INCLUDE REGEX "^-l.*")
-#list(TRANSFORM wxWidgets_lib_names REPLACE "^-l" "")
-#message(STATUS "wxWidgets libs: ${wxWidgets_lib_names}.")
+if(MSVC)
+SET(wxWidgets_lib_names ${wxWidgets_LIBRARIES})
+list(FILTER wxWidgets_lib_names INCLUDE REGEX "^-l.*")
+list(TRANSFORM wxWidgets_lib_names REPLACE "^-l" "")
+message(STATUS "wxWidgets libs: ${wxWidgets_lib_names}.")
+endif()
 
 # Avoid a warning by deciding which version of this policy we use in case we can
 # decide this.
