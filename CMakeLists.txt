@@ -5,9 +5,6 @@ set(GITVERSION ${VERSION})
 set(PACKAGE wxMaxima)
 set(APP_NAME wxMaxima)
 
-if(WIN32)
-    set(wxWidgets_CONFIGURATION mswu)
-endif(WIN32)
 find_package(wxWidgets 3 REQUIRED base core adv xml html aui net richtext)
 include(${wxWidgets_USE_FILE})
 

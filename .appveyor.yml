@@ -23,6 +23,7 @@ before_build:
   # sent environment variables for wxWidgets
   - cmd: set WXWIN=C:/wxWidgets
   - cmd: set wxWidgets_ROOT_DIR=%WXWIN%
+  - cmd: set wxWidgets_CONFIGURATION=mswu
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_x64_ReleaseDLL.7z'
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2-headers.7z'
   - cmd: 7z x wxMSW-3.1.2_vc141_x64_ReleaseDLL.7z -oC:\wxWidgets
