@@ -5,12 +5,8 @@ set(GITVERSION ${VERSION})
 set(PACKAGE wxMaxima)
 set(APP_NAME wxMaxima)
 
-find_package(wxWidgets 3 REQUIRED base core adv xml html aui net richtext)
+find_package(wxWidgets 3 REQUIRED adv xml html aui net richtext)
 include(${wxWidgets_USE_FILE})
-
-#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
-#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
-#SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
 
 # Assemble a list of all the library names we need to ship with our installer
 # in order to make it work on any system.

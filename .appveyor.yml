@@ -20,10 +20,7 @@ branches:
 
 # scripts to run before build
 before_build:
-  # sent environment variables for wxWidgets
-  - cmd: set WXWIN=C:/wxWidgets
-  - cmd: set wxWidgets_ROOT_DIR=%WXWIN%
-  - cmd: set wxWidgets_CONFIGURATION=mswu
+  - cmd: Downloading and unpacking wxWidgets...
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_x64_ReleaseDLL.7z'
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2-headers.7z'
   - cmd: 7z x wxMSW-3.1.2_vc141_x64_ReleaseDLL.7z -oC:\wxWidgets
@@ -31,7 +28,7 @@ before_build:
   - cmd: echo Running cmake...
   - cmd: if not exist c:\projects\wxMaxima\build mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - cmd: cmake  -LAH -G "Visual Studio 15 2017 Win64" -DAPPVEYOR_BUILD=1 -D CMAKE_CONFIGURATION_TYPES=Debug -CDMAKE_CXX_FLAGS=-D_DEBUG=1  ..
+  - cmd: cmake  -LAH -G "Visual Studio 15 2017 Win64" -DAPPVEYOR_BUILD=1 -DCMAKE_CONFIGURATION_TYPES=debug -DwxWidgets_ROOT_DIR="C:/wXWidgets" ..
 
 build_script:
   - cmd: cd c:\projects\wxMaxima\build
@@ -41,7 +38,7 @@ after_build:
   - cmd: cd c:\projects\wxMaxima\build
   - cmd: CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - cpack -G NSIS
-  - cmd: msbuild "PACKAGE.vcxproj" /consoleloggerparameters:Verbosity=minimal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - cmd: msbuild "PACKAGE.vcxproj" /consoleloggerparameters:Verbosity=normal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 on_failure:
   - cmd: 7z a FailureDump.zip *
