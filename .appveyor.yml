@@ -29,12 +29,12 @@ before_build:
   - cmd: 7z x wxWidgets-3.1.2-headers.7z -o%WXWIN%
   - cmd: 7z x wxMSW-3.1.2_vc141_x64_ReleaseDLL.7z -o%WXWIN%
   - cmd: 7z x wxMSW-3.1.2_vc141_x64_ReleasePDB.7z -o%WXWIN%
-#  - cmd: 7z x wxMSW-3.1.2_vc141_x64_Dev.7z -o%WXWIN%
+  - cmd: 7z x wxMSW-3.1.2_vc141_x64_Dev.7z -o%WXWIN%
   - cmd: ls %WXWIN%
   - cmd: echo Running cmake...
   - cmd: if not exist c:\projects\wxMaxima\build mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - cmd: cmake  -LAH -G "Visual Studio 15 2017 Win64" -DAPPVEYOR_BUILD=1 -DCMAKE_BUILD_TYPE=release -DwxWidgets_ROOT_DIR=%WXWIN% -DWX_ROOT_DIR=%WXWIN% -DwxWidgets_LIB_DIR=%WXWIN%/lib/vc141_x64_dll -DwxWidgets_USE_DEBUG=false ..
+  - cmd: cmake  -LAH -G "Visual Studio 15 2017 Win64" -DAPPVEYOR_BUILD=1 -DCMAKE_BUILD_TYPE=release -DwxWidgets_ROOT_DIR=%WXWIN% -DWX_ROOT_DIR=%WXWIN% -DwxWidgets_LIB_DIR=%WXWIN%/lib/vc141_x64_dll -D CMAKE_CXX_FLAGS="-D_DEBUG=1" ..
 
 build_script:
   - cmd: cd c:\projects\wxMaxima\build
