@@ -24,10 +24,12 @@ before_build:
   - cmd: set WXWIN=C:/wxWidgets
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_x64_ReleaseDLL.7z'
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2-headers.7z'
+  - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_x64_Dev.7z'
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_x64_ReleasePDB.7z'
   - cmd: 7z x wxWidgets-3.1.2-headers.7z -o%WXWIN%
   - cmd: 7z x wxMSW-3.1.2_vc141_x64_ReleaseDLL.7z -o%WXWIN%
   - cmd: 7z x wxMSW-3.1.2_vc141_x64_ReleasePDB.7z -o%WXWIN%
+  - cmd: 7z x wxMSW-3.1.2_vc141_x64_Dev.7z -o%WXWIN%
   - cmd: ls %WXWIN%
   - cmd: echo Running cmake...
   - cmd: if not exist c:\projects\wxMaxima\build mkdir c:\projects\wxMaxima\build
