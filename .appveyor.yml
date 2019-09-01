@@ -20,7 +20,7 @@ branches:
 
 # scripts to run before build
 before_build:
-  - cmd: Downloading and unpacking wxWidgets...
+  - cmd: echo Downloading and unpacking wxWidgets...
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_x64_ReleaseDLL.7z'
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2-headers.7z'
   - cmd: 7z x wxMSW-3.1.2_vc141_x64_ReleaseDLL.7z -oC:\wxWidgets
@@ -28,7 +28,7 @@ before_build:
   - cmd: echo Running cmake...
   - cmd: if not exist c:\projects\wxMaxima\build mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - cmd: cmake  -LAH -G "Visual Studio 15 2017 Win64" -DAPPVEYOR_BUILD=1 -DCMAKE_CONFIGURATION_TYPES=debug -DwxWidgets_ROOT_DIR="C:/wXWidgets" ..
+  - cmd: cmake  -LAH -G "Visual Studio 15 2017 Win64" -DAPPVEYOR_BUILD=1 -DCMAKE_CONFIGURATION_TYPES=debug -DwxWidgets_ROOT_DIR="C:/wxWidgets" ..
 
 build_script:
   - cmd: cd c:\projects\wxMaxima\build
