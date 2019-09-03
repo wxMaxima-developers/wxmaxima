@@ -113,4 +113,8 @@ set_tests_properties(boxes PROPERTIES TIMEOUT 60)
 add_test(NAME unicode WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/testbench_automatic_unicode.wxm)
 set_tests_properties(unicode PROPERTIES TIMEOUT 60)
 
+add_test(NAME check_desktop_file 
+  COMMAND desktop-file-validate ${CMAKE_CURRENT_SOURCE_DIR}/../data/io.github.wxmaxima_developers.wxMaxima.desktop)
 
+add_test(NAME check_appstream_file 
+  COMMAND appstream-util validate ${CMAKE_CURRENT_SOURCE_DIR}/../data/io.github.wxmaxima_developers.wxMaxima.appdata.xml)
