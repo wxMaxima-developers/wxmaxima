@@ -1,3 +1,11 @@
+cmake_minimum_required(VERSION 3.4)
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+  # Support Unix Makefiles and Ninja
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+  MESSAGE(STATUS "Found CCache ${CCACHE_PROGRAM}")
+endif()
+
 project(wxmaxima LANGUAGES CXX)
 set(VERSION 19.08.1-DevelopmentSnapshot)
 set(PACKAGE_VERSION ${VERSION})
@@ -16,15 +24,6 @@ include(${wxWidgets_USE_FILE})
 # decide this.
 if(POLICY CMP0066)
     cmake_policy(SET CMP0066 NEW)
-endif()
-
-cmake_minimum_required(VERSION 3.4)
-
-find_program(CCACHE_PROGRAM ccache)
-if(CCACHE_PROGRAM)
-  # Support Unix Makefiles and Ninja
-  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
-  MESSAGE(STATUS "Found CCache ${CCACHE_PROGRAM}")
 endif()
   
 # Turn off many warnings wxWidgets triggers on MSVC
