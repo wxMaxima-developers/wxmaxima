@@ -32,7 +32,7 @@ addons:
     - appstream-util
     - desktop-file-utils
 before_cache:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; brew cleanup; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cleanup; fi
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS;brew update; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";brew  install ccache; brew link ccache; fi
