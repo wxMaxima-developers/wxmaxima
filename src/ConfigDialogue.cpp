@@ -30,6 +30,7 @@
 
 
 #include "ConfigDialogue.h"
+#include "BTextCtrl.h"
 #include "Cell.h"
 #include "Configuration.h"
 #include "Dirstructure.h"
@@ -696,7 +697,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
       }
     }
   }
-  m_wxStartupCommands = new wxTextCtrl(panel_wxMaximaStartup, -1, wxEmptyString, wxDefaultPosition, wxSize(200*GetContentScaleFactor(),250*GetContentScaleFactor()),
+  m_wxStartupCommands = new BTextCtrl(panel_wxMaximaStartup, -1, m_configuration, wxEmptyString, wxDefaultPosition, wxSize(200*GetContentScaleFactor(),250*GetContentScaleFactor()),
                                      wxTE_MULTILINE | wxHSCROLL);
   #ifdef __WXOSX__
     #if wxCHECK_VERSION(3, 1, 1)
@@ -740,7 +741,7 @@ wxPanel *ConfigDialogue::CreateStartupPanel()
       }
     }
   }
-  m_startupCommands = new wxTextCtrl(panel_maximaStartup, -1, wxEmptyString, wxDefaultPosition, wxSize(200*GetContentScaleFactor(),250*GetContentScaleFactor()),
+  m_startupCommands = new BTextCtrl(panel_maximaStartup, -1, m_configuration, wxEmptyString, wxDefaultPosition, wxSize(200*GetContentScaleFactor(),250*GetContentScaleFactor()),
                                      wxTE_MULTILINE | wxHSCROLL);
   m_startupCommands->SetValue(contents);
   #ifdef __WXOSX__
