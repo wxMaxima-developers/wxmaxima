@@ -57,6 +57,7 @@ script:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp *.dmg deploy/wxMaxima-nightly.dmg; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 xvfb-run -a make test ; fi
 - cd ..
+- ccache -s
 - ls build/deploy
 after_success:
 - mkdir -p .ssh
