@@ -12,9 +12,23 @@ cache:
   ccache: true
   directories:
   - "$HOME/Library/Caches/Homebrew"
+addons:
+  ssh_known_hosts: home67027059.1and1-data.host
+  apt:
+    packages:
+    - libwxgtk3.0-gtk3-dev
+    - libwxgtk3.0
+    - gettext
+    - doxygen
+    - graphviz
+    - rpm
+    - cmake
+    - maxima
+    - netcat-openbsd
+    - xvfb
+    - appstream-util
+    - desktop-file-utils
 before_install:
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq install -y libwxgtk3.0-gtk3-dev
-  libwxgtk3.0 gettext doxygen graphviz rpm cmake maxima netcat-openbsd xvfb ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS;brew update; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";brew  install
   ccache; fi
@@ -39,8 +53,6 @@ script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 xvfb-run -a make test ; fi
 - cd ..
 - ls build/deploy
-addons:
-  ssh_known_hosts: home67027059.1and1-data.host
 after_success:
 - mkdir -p .ssh
 - openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv -in .travis/deploy_rsa.enc -out .ssh/id_rsa -d
