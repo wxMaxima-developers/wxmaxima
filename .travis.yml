@@ -35,8 +35,7 @@ before_cache:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; brew cleanup; fi
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS;brew update; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";brew  install
-  ccache; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";brew  install ccache; brew link ccache; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=/usr/local/opt/texinfo/bin:$PATH:/usr/local/opt/gettext/bin
   ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gettext texinfo ; fi
