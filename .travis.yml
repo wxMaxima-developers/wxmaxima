@@ -28,14 +28,15 @@ addons:
     - xvfb
     - appstream-util
     - desktop-file-utils
-before_install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS;brew update; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";brew  install
-  ccache; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=/usr/local/opt/texinfo/bin:$PATH:/usr/local/opt/gettext/bin
-  ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gettext texinfo ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install wxwidgets ; fi
+  homebrew:
+    packages:
+    - ccache
+    - gettext
+    - texinfo
+    - wxWidgets
+#before_install:
+#- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS;brew update; fi
+#- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:/usr/local/opt/texinfo/bin:$PATH"; fi
 notification:
   email:
     on_success: change
