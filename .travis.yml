@@ -12,8 +12,9 @@ cache:
   ccache: true
   directories:
   - "$HOME/Library/Caches/Homebrew"
-  - /usr/local/Cellar
-  - /usr/local/opt
+  - /usr/local/Cellar/libpng
+  - /usr/local/Cellar/gettext
+  - /usr/local/Cellar/ccache
 addons:
   ssh_known_hosts: home67027059.1and1-data.host
   apt:
