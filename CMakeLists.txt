@@ -20,6 +20,13 @@ endif()
 
 cmake_minimum_required(VERSION 3.4)
 
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+  # Support Unix Makefiles and Ninja
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+  MESSAGE(STATUS "Found CCache ${CCACHE_PROGRAM}")
+endif()
+  
 # Turn off many warnings wxWidgets triggers on MSVC
 if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
