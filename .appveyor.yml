@@ -32,9 +32,9 @@ before_build:
   - cmd: 7z x wxMSW-3.1.2_vc141_x64_ReleasePDB.7z -o%WXWIN%
   - cmd: 7z x wxMSW-3.1.2_vc141_x64_Dev.7z -o%WXWIN%
   - cmd: echo "compiling wxwidgets from source"
-  - cmd: 7z x wxWidgets-3.1.2.7z -oC:/wxwidgets-source
-  - cmd: mkdir C:/wxwidgets-build
-  - cmd: cd C:/wxwidgets-build
+  - cmd: 7z x wxWidgets-3.1.2.7z -oC:\wxwidgets-source
+  - cmd: mkdir C:\wxwidgets-build
+  - cmd: cd C:\wxwidgets-build
   - cmd: cmake -LAH -G "Visual Studio 15 2017 Win64" -DwxBUILD_SHARED=NO ../wxwidgets-source
   - cmd: cmake --build .
   - cmd: ls %WXWIN%
