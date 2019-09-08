@@ -35,13 +35,14 @@ before_build:
   - cmd: 7z x wxWidgets-3.1.2.7z -oC:\wxwidgets-source
   - cmd: mkdir C:\wxwidgets-build
   - cmd: cd C:\wxwidgets-build
-  - cmd: cmake -LAH -G "Visual Studio 15 2017 Win64" -DwxBUILD_SHARED=NO ../wxwidgets-source
+  - cmd: cmake -LAH -G "Visual Studio 15 2017 Win64" -DwxBUILD_SHARED=NO -DCMAKE_CONFIGURATION_TYPES=Release -DCMAKE_INSTALL_PREFIX=C:\wxwidgets-install ../wxwidgets-source
   - cmd: cmake --build .
+  - cmd: cmake --build . --target install
   - cmd: ls %WXWIN%
   - cmd: echo Running cmake...
   - cmd: if not exist c:\projects\wxMaxima\build mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - cmd: cmake  -LAH -G "Visual Studio 15 2017 Win64" -DAPPVEYOR_BUILD=1 -DCMAKE_CONFIGURATION_TYPES="Release" -DwxWidgets_ROOT_DIR=%WXWIN% -DWX_ROOT_DIR=%WXWIN% -DwxWidgets_LIB_DIR=%WXWIN%/lib/vc141_x64_dll -D CMAKE_CXX_FLAGS="/EHsc /D_UNICODE=1" -DwxWidgets_CONFIGURATION=mswu ..
+  - cmd: cmake  -LAH -G "Visual Studio 15 2017 Win64" -DAPPVEYOR_BUILD=1 -DCMAKE_CONFIGURATION_TYPES=Release -DwxWidgets_ROOT_DIR=C:\wxwidgets-install -D CMAKE_CXX_FLAGS="/EHsc /D_UNICODE=1" -DwxWidgets_CONFIGURATION=mswu ..
 
 build_script:
   - cmd: cd c:\projects\wxMaxima\build
