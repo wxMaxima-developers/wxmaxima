@@ -22,10 +22,6 @@ branches:
 before_build:
   - cmd: echo Downloading and unpacking wxWidgets...
   - cmd: set WXWIN=C:/wxWidgets
-  - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_x64_ReleaseDLL.7z'
-  - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2-headers.7z'
-  - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_x64_Dev.7z'
-  - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxMSW-3.1.2_vc141_x64_ReleasePDB.7z'
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2.7z'
   - cmd: 7z x wxWidgets-3.1.2-headers.7z -o%WXWIN%
   - cmd: 7z x wxMSW-3.1.2_vc141_x64_ReleaseDLL.7z -o%WXWIN%
@@ -53,7 +49,6 @@ after_build:
   - cmd: cd c:\projects\wxMaxima\build
   - cmd: CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - cpack -G NSIS
-  - cmd: msbuild "PACKAGE.vcxproj" /consoleloggerparameters:Verbosity=normal /target:Build /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 on_failure:
   - cmd: 7z a FailureDump.zip *
