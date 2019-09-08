@@ -31,7 +31,6 @@ before_build:
   - cmd: cmake -LAH -G "Visual Studio 15 2017 Win64" -DwxBUILD_SHARED=NO --config Release -DCMAKE_INSTALL_PREFIX=C:\wxwidgets-install ../wxwidgets-source
   - cmd: cmake --build . --config Release
   - cmd: cmake --build . --config Release --target install
-  - cmd: ls %WXWIN%
   - cmd: echo Running cmake...
   - cmd: if not exist c:\projects\wxMaxima\build mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
