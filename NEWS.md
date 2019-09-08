@@ -1,3 +1,9 @@
+# wxMaxima 19.08.0 - Stable
+  * Handle timeouts when writing to maxima and partial writes.
+  * Worksheet text disappeared on scrolling on some platforms.
+  * Sped up sending code to maxima.
+  * Removed quoting of Unicode characters within strings sent to maxima.
+
 # wxMaxima 19.07.1 - Stable
   * Bugfixes for nearly every instance something was drawn on the screen.
   * Better handling of multi-cell lisp code

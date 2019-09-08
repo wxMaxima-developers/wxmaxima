@@ -50,6 +50,19 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="19.09.0" date="2019-09-08">
+      <description>
+	<p>
+	  Bugfix release.
+	</p>
+        <ul>
+          <li>Handle timeouts when writing to maxima and partial writes</li>
+          <li>Worksheet text disappeared on scrolling on some platforms</li>
+          <li>Sped up sending code to maxima</li>
+          <li>No morequoting of Unicode characters within strings sent to maxima</li>
+        </ul>
+      </description>
+    </release>
     <release version="19.08.1" date="2019-08-17">
       <description>
 	<p>

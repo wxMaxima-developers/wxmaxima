@@ -1,8 +1,8 @@
-Current:
+19.09.0:
   * Handle timeouts when writing to maxima and partial writes.
-  * Code did disappear on scrolling on some platforms.
+  * Worksheet text disappeared on scrolling on some platforms.
   * Sped up sending code to maxima.
-  * Unicode characters within strings sent to maxima are no more quoted.
+  * Removed quoting of Unicode characters within strings sent to maxima.
 
 19.08.1:
   * Bugfixes for nearly every instance something was drawn on the screen.
