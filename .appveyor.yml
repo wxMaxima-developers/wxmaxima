@@ -35,6 +35,7 @@ before_build:
   - cmd: 7z x wxWidgets-3.1.2.7z -oC:\wxwidgets-source
   - cmd: mkdir C:\wxwidgets-build
   - cmd: cd C:\wxwidgets-build
+  - cmd: CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - cmd: cmake -LAH -G "Visual Studio 15 2017 Win64" -DwxBUILD_SHARED=NO -DCMAKE_CONFIGURATION_TYPES=Release -DCMAKE_INSTALL_PREFIX=C:\wxwidgets-install ../wxwidgets-source
   - cmd: cmake --build .
   - cmd: cmake --build . --target install
