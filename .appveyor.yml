@@ -13,7 +13,9 @@ clone_folder: c:\projects\wxMaxima
 cache:
   - C:\wxwidgets-build\CMakeFiles
   - C:\wxwidgets-build\Release
-
+  - C:\wxwidgets-build\CMakeCache.txt
+  - c:\projects\wxMaxima\build\CMakeCache.txt
+  
 # branches to build
 branches:
   only:
@@ -29,7 +31,7 @@ before_build:
   - cmd: mkdir C:\wxwidgets-build
   - cmd: cd C:\wxwidgets-build
   - cmd: CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - cmd: cmake -LAH -G "Visual Studio 15 2017 Win64" -DwxBUILD_SHARED=NO --config Release -DCMAKE_INSTALL_PREFIX=C:\wxwidgets-install ../wxwidgets-source -DCMAKE_STATIC_LINKER_FLAGS=/-INCREMENTAL=YES -DCMAKE_MODULE_LINKER_FLAGS=/-INCREMENTAL=YES
+  - cmd: cmake -LAH -G "Visual Studio 15 2017 Win64" -DwxBUILD_SHARED=NO --config Release -DCMAKE_INSTALL_PREFIX=C:\wxwidgets-install ../wxwidgets-source -DCMAKE_STATIC_LINKER_FLAGS="/INCREMENTAL:YES" -DCMAKE_MODULE_LINKER_FLAGS="/INCREMENTAL:YES"
   - cmd: cmake --build . --config Release
   - cmd: cmake --build . --config Release --target install
   - cmd: echo Running cmake...
