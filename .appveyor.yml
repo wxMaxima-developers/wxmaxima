@@ -28,7 +28,7 @@ branches:
 before_build:
   - cmd: echo Downloading and unpacking wxWidgets...
   - cmd: set WXVERSION=3.1.2
-  - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v%WXVERSION%/wxWidgets-%WXVERSION%.7z'
+  - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2.7z'
   - cmd: echo "compiling wxwidgets from source"
   - cmd: if not exist C:\wxwidgets-source_%WXVERSION% 7z x wxWidgets-%WXVERSION%.7z -oC:\wxwidgets-source_%WXVERSION%
   - cmd: if not exist C:\wxwidgets-build_%WXVERSION%  mkdir C:\wxwidgets-build_%WXVERSION%
