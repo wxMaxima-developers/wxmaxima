@@ -16,6 +16,7 @@ cache:
   - c:\projects\wxMaxima\build\CMakeCache.txt
   - c:\projects\wxMaxima\build\CMakeFiles
   - c:\projects\wxMaxima\build\Release
+  - c:\projects\wxMaxima\build\Debug
   
 # branches to build
 branches:
@@ -32,7 +33,7 @@ before_build:
   - cmd: if not exist C:\wxwidgets-build  mkdir C:\wxwidgets-build
   - cmd: cd C:\wxwidgets-build
   - cmd: CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - cmd: cmake -LAH -G "Visual Studio 15 2017 Win64" -DwxBUILD_SHARED=NO --config Release -DCMAKE_INSTALL_PREFIX=C:\wxwidgets-install ../wxwidgets-source -DCMAKE_STATIC_LINKER_FLAGS="/INCREMENTAL" -DCMAKE_MODULE_LINKER_FLAGS="/INCREMENTAL"
+  - cmd: if not exist C:\wxwidgets-build\wxWidgets.sln cmake -LAH -G "Visual Studio 15 2017 Win64" -DwxBUILD_SHARED=NO --config Release -DCMAKE_INSTALL_PREFIX=C:\wxwidgets-install ../wxwidgets-source -DCMAKE_STATIC_LINKER_FLAGS="/INCREMENTAL" -DCMAKE_MODULE_LINKER_FLAGS="/INCREMENTAL"
   - cmd: dir
   - cmd: cmake --build . --config Release
   - cmd: cmake --build . --config Release --target install
