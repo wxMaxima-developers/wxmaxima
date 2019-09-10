@@ -12,11 +12,20 @@ add_test(NAME runMaxima-over-network WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMA
 set_tests_properties(runMaxima-over-network PROPERTIES TIMEOUT 60)
 
 add_test(NAME wxmaxima_batch_textcell WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/automatic_test_files/textcells.wxm)
+set_tests_properties(wxmaxima_batch_textcell PROPERTIES TIMEOUT 60)
+
 add_test(NAME wxmaxima_batch_foreign_characters WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/automatic_test_files/foreign-characters.wxm)
+set_tests_properties(wxmaxima_batch_foreign_characters PROPERTIES TIMEOUT 60)
+
 add_test(NAME wxmaxima_version_string WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --version)
 set_tests_properties(wxmaxima_version_string PROPERTIES  PASS_REGULAR_EXPRESSION "wxMaxima ${VERSION}.*")
+set_tests_properties(wxmaxima_version_string PROPERTIES TIMEOUT 60)
+
 add_test(NAME wxmaxima_version_returncode WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --version)
+set_tests_properties(wxmaxima_version_returncode PROPERTIES TIMEOUT 60)
+
 add_test(NAME wxmaxima_help WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --help)
+set_tests_properties(wxmaxima_version_returncode PROPERTIES TIMEOUT 60)
 
 add_test(NAME all_celltypes WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch test/automatic_test_files/testbench_all_celltypes.wxm)
 set_tests_properties(all_celltypes PROPERTIES TIMEOUT 60)
@@ -118,6 +127,7 @@ find_program(DESKTOP_FILE_VALIDATE_FOUND desktop-file-validate)
 if(DESKTOP_FILE_VALIDATE_FOUND)
   add_test(NAME check_desktop_file 
     COMMAND desktop-file-validate ${CMAKE_CURRENT_SOURCE_DIR}/../data/io.github.wxmaxima_developers.wxMaxima.desktop)
+  set_tests_properties(check_desktop_file PROPERTIES TIMEOUT 60)
 else()
   message(STATUS "desktop-file-validate not found => Skipping verifikation of the .desktop file")
 endif()
@@ -126,6 +136,7 @@ find_program(APPSTREAM_UTIL_FOUND appstream-util)
 if(APPSTREAM_UTIL_FOUND)
   add_test(NAME check_appstream_file 
     COMMAND appstream-util validate ${CMAKE_CURRENT_SOURCE_DIR}/../data/io.github.wxmaxima_developers.wxMaxima.appdata.xml)
+  set_tests_properties(check_appstream_file PROPERTIES TIMEOUT 60)
 else()
   message(STATUS "appstream-util not found => Skipping verifikation of the appdata file")  
 endif()
