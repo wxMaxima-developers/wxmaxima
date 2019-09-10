@@ -2122,5 +2122,6 @@
   ;; autocompletion feature.
   (wxPrint_autocompletesymbols)
   (wx-print-variables)
+  (format t "~%")
   (finish-output)
 )
