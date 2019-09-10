@@ -67,6 +67,8 @@ public:
   */
   void DetachOldLog();
 
+  //! Sets the "batch mode" flag that causes error messages to be output to stderr, as well.
+  void SetBatchMode(){m_batchMode = true;}
   /**
      Returns the pointer to the previously active log target (which may be NULL).
   */
@@ -88,6 +90,8 @@ protected:
   
   //! the previous log target
   wxLog *m_logOld;
+
+  bool m_batchMode;
 };
 
 //! If an variable of this class is alive errors won't create popup dialogues

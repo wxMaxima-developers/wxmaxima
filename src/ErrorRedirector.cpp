@@ -41,6 +41,7 @@ ErrorRedirector::ErrorRedirector(wxLog *logger) : wxLog()
     // logging entirely.
     m_logOld = wxLog::GetActiveTarget();
     wxLog::SetActiveTarget(this);
+    m_batchMode = false;
 }
 
 ErrorRedirector::~ErrorRedirector()
@@ -85,6 +86,8 @@ void ErrorRedirector::DoLogRecord(wxLogLevel level,
       else
         wxLog::DoLogRecord(level, msg, info);
     }
+    if((m_batchMode) && (level >= wxLOG_Error))
+      std::cerr<< msg;
 }
 
 void ErrorRedirector::Flush()
