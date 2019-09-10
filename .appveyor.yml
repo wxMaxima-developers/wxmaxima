@@ -11,9 +11,7 @@ clone_folder: c:\projects\wxMaxima
 
 # cache the build results in order to speed up the build
 cache:
-  - C:\wxwidgets-build_*
-  - C:\wxwidgets-source_*
-  - C:\wxwidgets-install_*
+  - C:\wxwidgets-install_3.1.2
   - c:\projects\wxMaxima\build\CMakeCache.txt
   - c:\projects\wxMaxima\build\CMakeFiles
   - c:\projects\wxMaxima\build\src\CMakeFiles
@@ -30,11 +28,11 @@ before_build:
   - cmd: set WXVERSION=3.1.2
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2.7z'
   - cmd: echo "compiling wxwidgets from source"
-  - cmd: if not exist C:\wxwidgets-source_%WXVERSION% 7z x wxWidgets-%WXVERSION%.7z -oC:\wxwidgets-source_%WXVERSION%
-  - cmd: if not exist C:\wxwidgets-build_%WXVERSION%  mkdir C:\wxwidgets-build_%WXVERSION%
+  - cmd: if not exist C:\wxwidgets-install_%WXVERSION% 7z x wxWidgets-%WXVERSION%.7z -oC:\wxwidgets-source_%WXVERSION%
+  - cmd: if not exist C:\wxwidgets-build_%WXVERSION% mkdir C:\wxwidgets-build_%WXVERSION%
   - cmd: cd C:\wxwidgets-build_%WXVERSION%
   - cmd: CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - cmd: if not exist C:\wxwidgets-build_%WXVERSION%\wxWidgets.sln cmake -LAH -G "Visual Studio 15 2017 Win64" -DwxBUILD_SHARED=NO --config Release -DCMAKE_INSTALL_PREFIX=C:\wxwidgets-install_%WXVERSION% ../wxwidgets-source_%WXVERSION% -DCMAKE_STATIC_LINKER_FLAGS="/INCREMENTAL" -DCMAKE_MODULE_LINKER_FLAGS="/INCREMENTAL"
+  - cmd: if not exist C:\wxwidgets-install_%WXVERSION% cmake -LAH -G "Visual Studio 15 2017 Win64" -DwxBUILD_SHARED=NO --config Release -DCMAKE_INSTALL_PREFIX=C:\wxwidgets-install_%WXVERSION% ../wxwidgets-source_%WXVERSION% -DCMAKE_STATIC_LINKER_FLAGS="/INCREMENTAL" -DCMAKE_MODULE_LINKER_FLAGS="/INCREMENTAL"
   - cmd: if not exist C:\wxwidgets-install_%WXVERSION% cmake --build . --config Release
   - cmd: if not exist C:\wxwidgets-install_%WXVERSION% cmake --build . --config Release --target install
   - cmd: echo Running cmake...
