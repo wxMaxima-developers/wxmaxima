@@ -101,7 +101,11 @@ else()
 endif()
 
 get_target_property(EXEPATH wxmaxima BINARY_DIR)
+get_target_property(RUNTIME wxmaxima RUNTIME_OUTPUT_DIRECTORY )
+get_target_property(OUTPUTNAME wxmaxima OUTPUT_NAME)
 message(STATUS "Binary dir: ${EXEPATH}")
+message(STATUS "Runtime dir: ${RUNTIME}")
+message(STATUS "Output name: ${OUTPUTNAME}")
 # allow local execution (./wxmaxima-local) from the build directory without installation
 configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local" ../wxmaxima-local)
 if(WIN32)
