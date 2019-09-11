@@ -46,6 +46,7 @@ before_build:
 build_script:
   - cmd: cd c:\projects\wxMaxima\build
   - cmd: cmake --build . --config Release
+  - cmd: ctest
 
 after_build:
   - cmd: cd c:\projects\wxMaxima\build
