@@ -100,6 +100,15 @@ else()
     add_executable(wxmaxima ${SOURCE_FILES})
 endif()
 
+get_target_property(EXEPATH wxmaxima BINARY_DIR)
+message(STATUS "Binary dir: ${EXEPATH}")
+# allow local execution (./wxmaxima-local) from the build directory without installation
+configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local" ../wxmaxima-local)
+if(WIN32)
+    configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local.bat" ../wxmaxima-local.bat)
+endif()
+
+
 target_link_libraries(wxmaxima ${wxWidgets_LIBRARIES})
 
 include(CheckIncludeFiles)

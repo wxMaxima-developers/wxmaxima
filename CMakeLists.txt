@@ -112,13 +112,6 @@ endif()
 #     fixup_bundle(\"${PROJECT_BINARY_DIR}/wxMaxima.app\" \"\" \"\")")
 # endif()
 
-# allow local execution (./wxmaxima-local) from the build directory without installation
-if(UNIX)
-    configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local" wxmaxima-local)
-endif()
-if(WIN32)
-    configure_file("${CMAKE_SOURCE_DIR}/src/wxmaxima-local.bat" wxmaxima-local.bat)
-endif()
 # Build Packages
 if(WIN32)
     set(CPACK_GENERATOR "ZIP;NSIS")
