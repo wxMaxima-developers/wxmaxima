@@ -15,6 +15,8 @@ cache:
   - c:\projects\wxMaxima\build\CMakeFiles
   - c:\projects\wxMaxima\build\src\CMakeFiles
   - c:\projects\wxMaxima\build\src\Release
+  - C:\ProgramData\chocolatey\bin
+  - C:\ProgramData\chocolatey\lib
   
 # branches to build
 branches:
@@ -23,6 +25,8 @@ branches:
 
 # scripts to run before build
 before_build:
+  - cmd: echo Installing maxima...
+  - cmd: choco install maxima
   - cmd: echo Downloading and unpacking wxWidgets...
   - cmd: set WXVERSION=3.1.2
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2.7z'
