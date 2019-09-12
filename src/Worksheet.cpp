@@ -663,6 +663,7 @@ GroupCell *Worksheet::InsertGroupCells(
   if (!cells)
     return NULL; // nothing to insert
 
+  m_configuration->AdjustWorksheetSize(true);
   bool renumbersections = false; // only renumber when true
   GroupCell *next; // next gc to insertion point
   GroupCell *prev;
@@ -730,7 +731,7 @@ GroupCell *Worksheet::UpdateMLast()
   }
 
   if(m_last != NULL)
-    AdjustSize();
+    m_configuration->AdjustWorksheetSize(true);
   return m_last;
 }
 
@@ -1053,7 +1054,7 @@ void Worksheet::OnSize(wxSizeEvent& WXUNUSED(event))
     }
   }
 
-  AdjustSize();
+  m_configuration->AdjustWorksheetSize(true);
   RequestRedraw();
   if (CellToScrollTo)
     ScheduleScrollToCell(CellToScrollTo, false);
@@ -3069,7 +3070,7 @@ void Worksheet::OpenHCaret(wxString txt, GroupType type)
   }
 
   InsertGroupCells(group, m_hCaretPosition);
-//  Recalculate(group, false);
+  // Recalculate(group, false);
 
   // activate editor
   SetActiveCell(group->GetEditable(), false);
@@ -4351,6 +4352,8 @@ void Worksheet::GetMaxPoint(int *width, int *height)
  */
 void Worksheet::AdjustSize()
 {
+  wxLogMessage(_("Adjusting the worksheet size"));
+//  RecalculateIfNeeded();
   int width = 4, height = 4;
   int virtualHeight = 4;
   int clientWidth, clientHeight;
@@ -8115,6 +8118,7 @@ void Worksheet::RemoveAllOutput(GroupCell *tree)
       RemoveAllOutput(sub);
     tree = dynamic_cast<GroupCell *>(tree->m_next);
   }
+  m_configuration->AdjustWorksheetSize(true);
 }
 
 void Worksheet::OnMouseMiddleUp(wxMouseEvent &event)
