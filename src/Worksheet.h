@@ -1092,7 +1092,6 @@ public:
 
   /*! Export a region of the file to a .wxm or .mac file maxima's load command can read
 
-    \todo Make this use GroupCell::ToWXM()
    */
   void
   ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const std::vector<int> &cellMap, bool fixReorderedIndices);

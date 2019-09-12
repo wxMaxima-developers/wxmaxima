@@ -3124,7 +3124,7 @@ wxString EditorCell::SelectWordUnderCaret(bool WXUNUSED(selectParens), bool toRi
       }
       continue;
     }        
-    if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '_') &&
+    if(!wxIsalnum(*it) && !(*it == '\\') && !(*it == '_') && !(*it == '?') &&
        !((*it == '\"') && includeDoubleQuotes))
     {
       // !!toRight is 0, if toRight is false or guaranteed to be 1, if toRight is true

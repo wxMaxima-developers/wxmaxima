@@ -7567,6 +7567,7 @@ bool Worksheet::PointVisibleIs(wxPoint point)
 
 void Worksheet::ShowPoint(wxPoint point)
 {
+  wxASSERT((point.x >=0) && (point.y >=0));
   if (point.x < 0 || point.y < 0)
     return;
 
