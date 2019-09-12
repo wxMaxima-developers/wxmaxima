@@ -729,6 +729,8 @@ GroupCell *Worksheet::UpdateMLast()
       m_last = dynamic_cast<GroupCell *>(m_last->m_next);
   }
 
+  if(m_last != NULL)
+    AdjustSize();
   return m_last;
 }
 
