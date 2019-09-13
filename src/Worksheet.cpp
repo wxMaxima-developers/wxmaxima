@@ -4372,7 +4372,7 @@ void Worksheet::AdjustSize()
     // but will make scrolling feel sluggish.
     height = GetClientSize().y;
   }
-  if((m_virtualWidth_Last != width) || (m_virtualHeight_Last != height))
+  if((m_virtualWidth_Last != width) || (m_virtualHeight_Last != virtualHeight))
   {
     m_virtualWidth_Last = width;
     m_virtualHeight_Last = height;

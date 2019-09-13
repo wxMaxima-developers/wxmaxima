@@ -6716,154 +6716,6 @@ void wxMaxima::NumericalMenu(wxCommandEvent &event)
   }
 }
 
-#ifndef __WXGTK__
-
-MyAboutDialog::MyAboutDialog(wxWindow *parent, int id, const wxString title, wxString description) :
-        wxDialog(parent, id, title)
-{
-
-  wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
-
-  wxHtmlWindow *html_top = new wxHtmlWindow(this, -1, wxDefaultPosition, wxSize(380, 250), wxHW_SCROLLBAR_NEVER);
-  html_top->SetBorders(5);
-
-  wxHtmlWindow *html_bottom = new wxHtmlWindow(this, -1, wxDefaultPosition, wxSize(380, 280));
-  html_bottom->SetBorders(5);
-
-  wxString cwd = wxGetCwd();
-#if defined __WXOSX__
-  cwd = cwd + wxT("/") + wxT(MACPREFIX);
-#else
-  cwd.Replace(wxT("\\"), wxT("/"));
-  cwd = cwd + wxT("/data/");
-#endif
-
-  wxString page_top = wxString::Format(
-          wxT("<html>"
-                      "<head>"
-                      "</head>"
-                      "<body>"
-                      "<center>"
-                      "<p>"
-                      "<img src=\"%s/io.github.wxmaxima_developers.wxMaxima.png\">"
-                      "</p>"
-                      "<h1>wxMaxima</h1>"
-                      "<p>%s</p>"
-                      "<p><small>(C) 2004 - 2018 Andrej Vodopivec</small><br></p>"
-                      "</center>"
-                      "</body>"
-                      "</html>"),
-          cwd,
-          wxT(GITVERSION));
-
-  wxString page_bottom = wxString::Format(
-          wxT("<html>"
-                      "<head>"
-                      "</head>"
-                      "<body>"
-                      "<center>"
-                      "<p>"
-                      "%s"
-                      "</p>"
-                      "<p><a href=\"https://wxMaxima-developers.github.io/wxmaxima/\">wxMaxima</a><br>"
-                      "   <a href=\"http://maxima.sourceforge.net/\">Maxima</a></p>"
-                      "<h4>%s</h4>"
-                      "<p>"
-                      "wxWidgets: %d.%d.%d<br>"
-                      "%s: %s<br>"
-                      "%s"
-                      "</p>"
-                      "<h4>%s</h4>"
-                      "<p>"
-                      "Andrej Vodopivec<br>"
-                      "Ziga Lenarcic<br>"
-                      "Doug Ilijev<br>"
-                      "Gunter Königsmann<br>"
-                      "Tomio Arisaka<br>"
-                      "Rene Hansen<br>"
-                      "Wolfgang Dautermann"
-                      "</p>"
-                      "<h4>Patches</h4>"
-                      "Sandro Montanar (SF-patch 2537150)"
-                      "Elias Mårtenson"
-                      "Steven McDonald"
-                      "</p>"
-                      "<h4>%s</h4>"
-                      "<p>"
-                      "%s: Sven Hodapp<br>"
-                      "%s: <a href=\"http://tango.freedesktop.org/Tango_Desktop_Project\">TANGO project</a>"
-                      "</p>"
-                      "<h4>%s</h4>"
-                      "<p>"
-                      "Innocent De Marchi (ca)<br>"
-                      "Josef Barak (cs)<br>"
-                      "Robert Marik (cs)<br>"
-                      "Jens Thostrup (da)<br>"
-                      "Harald Geyer (de)<br>"
-                      "Dieter Kaiser (de)<br>"
-                      "Gunter Königsmann (de)<br>"
-                      "Alkis Akritas (el)<br>"
-                      "Evgenia Kelepesi-Akritas (el)<br>"
-                      "Kostantinos Derekas (el)<br>"
-                      "Mario Rodriguez Riotorto (es)<br>"
-                      "Antonio Ullan (es)<br>"
-                      "Eric Delevaux (fr)<br>"
-                      "Michele Gosse (fr)<br>"
-                      "Marco Ciampa (it)<br>"
-                      "Blahota István (hu)<br>"
-                      "Asbjørn Apeland (nb)<br>"
-                      "Rafal Topolnicki (pl)<br>"
-                      "Eduardo M. Kalinowski (pt_br)<br>"
-                      "Alexey Beshenov (ru)<br>"
-                      "Vadim V. Zhytnikov (ru)<br>"
-                      "Sergey Semerikov (uk)<br>"
-                      "Tufan Şirin (tr)<br>"
-                      "Frank Weng (zh_TW)<br>"
-                      "cw.ahbong (zh_TW)"
-                      "  </p>"
-                      "</center>"
-                      "</body>"
-                      "</html>"),
-          _("wxMaxima is a graphical user interface for the computer algebra system MAXIMA based on wxWidgets."),
-          _("System info"),
-          wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER,
-          _("Unicode Support"),
-          wxT("yes"),
-          description.c_str(),
-          _("Written by"),
-          _("Artwork by"),
-          _("wxMaxima icon"),
-          _("Toolbar icons"),
-          _("Translated by"));
-
-  html_top->SetPage(page_top);
-  html_bottom->SetPage(page_bottom);
-
-  html_top->SetSize(wxDefaultCoord,
-                    html_top->GetInternalRepresentation()->GetHeight());
-
-  sizer->Add(html_top, 0, wxALL, 0);
-  sizer->Add(html_bottom, 0, wxALL, 0);
-
-  SetSizer(sizer);
-  sizer->Fit(this);
-  sizer->SetSizeHints(this);
-
-  SetAutoLayout(true);
-  Layout();
-}
-
-void MyAboutDialog::OnLinkClicked(wxHtmlLinkEvent &event)
-{
-  wxLaunchDefaultBrowser(event.GetLinkInfo().GetHref());
-}
-
-BEGIN_EVENT_TABLE(MyAboutDialog, wxDialog)
-                EVT_HTML_LINK_CLICKED(wxID_ANY, MyAboutDialog::OnLinkClicked)
-END_EVENT_TABLE()
-
-#endif
-
 void wxMaxima::HelpMenu(wxCommandEvent &event)
 {
   if(m_worksheet != NULL)
@@ -6875,13 +6727,12 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
   switch (event.GetId())
   {
     case wxID_ABOUT:
-#if defined __WXGTK__
     {
       wxAboutDialogInfo info;
       wxString description;
-
+      
       description = _("wxMaxima is a graphical user interface for the computer algebra system Maxima based on wxWidgets.");
-
+      
 #if defined(WXMAXIMA_GIT_VERSION)
       description += wxString::Format("\n(Build from Git version: " WXMAXIMA_GIT_VERSION ")");
 #endif
@@ -6945,25 +6796,8 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
       info.AddArtist(wxT("svg version of the icon: Gunter Königsmann"));
 
       wxAboutBox(info);
-    }
-#else
-    {
-      wxString description;
-
-      if (m_maximaVersion != wxEmptyString)
-        description += _("Maxima version: ") + m_maximaVersion + " ("+m_maximaArch+")";
-      else
-        description += _("Not connected.");
-      if (m_lispVersion != wxEmptyString)
-        description += _("<br>Lisp: ") + m_lispType + " " + m_lispVersion;
-
-      MyAboutDialog dlg(this, wxID_ANY, wxString(_("About")), description);
-      dlg.Center();
-      dlg.ShowModal();
-    }
-#endif
-
-      break;
+    }    
+    break;
 
     case ToolBar::tb_help:
       ShowWxMaximaHelp();
