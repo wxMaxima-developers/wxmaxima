@@ -4334,17 +4334,16 @@ void Worksheet::GetMaxPoint(int *width, int *height)
   int currentHeight = m_configuration->GetIndent();
   int currentWidth = m_configuration->GetBaseIndent();
   *width = m_configuration->GetBaseIndent();
-  *height = m_configuration->GetBaseIndent();
 
   while (tmp != NULL)
   {
     currentHeight += tmp->GetMaxHeight();
     currentHeight += m_configuration->GetGroupSkip();
-    *height = currentHeight;
-    currentWidth = m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->GetDefaultFontSize()) + tmp->GetWidth();
-    *width = wxMax(currentWidth + m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->GetDefaultFontSize()), *width);
+    currentWidth = m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->GetDefaultFontSize()) + tmp->GetWidth() + m_configuration->Scale_Px(m_configuration->GetIndent() + m_configuration->GetDefaultFontSize());
+    *width = wxMax(currentWidth, *width);
     tmp = tmp->m_next;
   }
+  *height = currentHeight;
 }
 
 /***
@@ -4354,8 +4353,8 @@ void Worksheet::AdjustSize()
 {
   wxLogMessage(_("Adjusting the worksheet size"));
 //  RecalculateIfNeeded();
-  int width = 4, height = 4;
-  int virtualHeight = 4;
+  int width = 40, height = 40;
+  int virtualHeight = 40;
   int clientWidth, clientHeight;
   GetClientSize(&clientWidth, &clientHeight);
   if (m_tree != NULL)
@@ -4365,7 +4364,7 @@ void Worksheet::AdjustSize()
 
     GetMaxPoint(&width, &height);
     // when window is scrolled all the way down, document occupies top 1/8 of clientHeight
-    height += clientHeight - (int) (1.0 / 8.0 * (float) clientHeight);
+    height += clientHeight - clientHeight / 8;
     virtualHeight = wxMax(clientHeight + 10, height); // ensure we always have VSCROLL active
 
     // Don't set m_scrollUnit too high for big windows on hi-res screens:
