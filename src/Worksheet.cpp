@@ -4351,8 +4351,6 @@ void Worksheet::GetMaxPoint(int *width, int *height)
  */
 void Worksheet::AdjustSize()
 {
-  wxLogMessage(_("Adjusting the worksheet size"));
-//  RecalculateIfNeeded();
   int width = 40, height = 40;
   int virtualHeight = 40;
   int clientWidth, clientHeight;
