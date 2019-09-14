@@ -58,5 +58,5 @@ on_failure:
   - cmd: appveyor PushArtifact FailureDump.zip
 
 artifacts:
-  - path: 'build/wxmaxima-*.exe'
+  - path: 'build\wxmaxima-*.exe'
     name: wxMaxima_Installer
