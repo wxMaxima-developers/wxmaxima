@@ -60,3 +60,9 @@ on_failure:
 artifacts:
   - path: 'build\wxmaxima-*.exe'
     name: wxMaxima_Installer
+
+deploy:
+  - provider: Environment
+    name: GithubReleases
+    on:
+      APPVEYOR_REPO_TAG: true
