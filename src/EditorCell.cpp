@@ -2870,12 +2870,6 @@ void EditorCell::SelectPointText(const wxPoint &point)
     // Text cell
 
     wxString text = m_text;
-    if ((*m_configuration)->GetChangeAsterisk())
-    {
-      text.Replace(wxT("*"), wxT("\xB7"));
-      if (m_type == MC_TYPE_INPUT)
-        text.Replace(wxT("-"), wxT("\x2212"));
-    }
 
     // Handle indentation.
     posInCell.x -= indentPixels;
@@ -2927,12 +2921,6 @@ bool EditorCell::IsPointInSelection(wxPoint point)
 
   wxString s;
   wxString text = m_text;
-  if ((*m_configuration)->GetChangeAsterisk())
-  {
-    text.Replace(wxT("*"), wxT("\xB7"));
-    if (m_type == MC_TYPE_INPUT)
-      text.Replace(wxT("-"), wxT("\x2212"));
-  }
   SetFont();
   // Determine the line the point would be in
   wxPoint posInCell(point);
@@ -3452,12 +3440,6 @@ void EditorCell::StyleTextCode()
   int indentationPixels = 0;
   wxString textToStyle = m_text;
   SetFont();
-  if (configuration->GetChangeAsterisk())
-  {
-    textToStyle.Replace(wxT("*"), wxT("\xB7"));
-    if (m_type == MC_TYPE_INPUT)
-      textToStyle.Replace(wxT("-"), wxT("\x2212"));
-  }
   
   // Handle folding of EditorCells
   if (m_firstLineOnly)

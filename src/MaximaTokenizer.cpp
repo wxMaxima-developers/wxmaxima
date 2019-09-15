@@ -37,7 +37,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
   // --------------------- Break a line into tokens -----------------
   // ----------------------------------------------------------------
   wxString::const_iterator it = commands.begin();
-
+      
   if(configuration->InLispMode())
   {
     wxString token;
@@ -176,7 +176,14 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       }
       else
       {
-        m_tokens.push_back(new Token(wxString(Ch), TS_CODE_OPERATOR));
+        wxString token = wxString(Ch);
+        if (configuration->GetChangeAsterisk())
+        {
+          token.Replace(wxT("*"), wxT("\xB7"));
+          token.Replace(wxT("-"), wxT("\x2212"));
+        }
+        
+        m_tokens.push_back(new Token(token, TS_CODE_OPERATOR));
         ++it;
       }
     }
