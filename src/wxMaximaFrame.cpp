@@ -1264,6 +1264,9 @@ m_listMenu->AppendSeparator();
                      _("Info about Maxima build"), wxITEM_NORMAL);
   m_HelpMenu->Append(menu_bug_report, _("&Bug Report"),
                      _("Report bug"), wxITEM_NORMAL);
+  m_HelpMenu->Append(menu_license, _("&License"),
+                     _("wxMaxima's license"),
+                     wxITEM_NORMAL);
   m_HelpMenu->AppendSeparator();
   m_HelpMenu->Append(menu_check_updates, _("Check for Updates"),
                      _("Check if a newer version of wxMaxima/Maxima exist."),

@@ -40,6 +40,7 @@
 #include "wxMathml.h"
 #include "ImgCell.h"
 #include "DrawWiz.h"
+#include "LicenseDialog.h"
 #include "SubstituteWiz.h"
 #include "IntegrateWiz.h"
 #include "LimitWiz.h"
@@ -6799,6 +6800,14 @@ void wxMaxima::HelpMenu(wxCommandEvent &event)
     }    
     break;
 
+    case menu_license:
+    {
+      LicenseDialog *dlg = new LicenseDialog(this);
+      dlg->ShowModal();
+      dlg->Destroy();
+    }
+    break;
+  
     case ToolBar::tb_help:
       ShowWxMaximaHelp();
       break;
@@ -8715,6 +8724,7 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(wxID_EXIT, wxMaxima::FileMenu)
 #endif
                 EVT_MENU(wxID_ABOUT, wxMaxima::HelpMenu)
+                EVT_MENU(menu_license, wxMaxima::HelpMenu)
                 EVT_MENU(menu_save_id, wxMaxima::FileMenu)
                 EVT_MENU(menu_save_as_id, wxMaxima::FileMenu)
                 EVT_MENU(menu_load_id, wxMaxima::FileMenu)

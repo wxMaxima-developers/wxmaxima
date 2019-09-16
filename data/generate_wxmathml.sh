@@ -28,3 +28,8 @@ rm -f wxMathML.lisp.gz
 gzip -k wxMathML.lisp
 xxd -i "wxMathML.lisp.gz" >> "wxMathML.h"
 rm -f wxMathML.lisp.gz
+echo "Converting ../COPYING to embeddable C code"
+gzip -c ../COPYING > License.gz
+xxd -i "License.gz" > "License.h"
+rm -f License.gz
+
