@@ -2100,7 +2100,7 @@
    (defun $load (filename)
 
      ;; Inform wxMaxima that we load a file.
-     (if (= *wxmaxima-nested-loads* 0)
+     (if (< *wxmaxima-nested-loads* 1)
 	 (progn
 	   (format t "<variables>")
 	   (format t "<variable><name>*wx-load-file-name*</name><value>~a</value></variable>"
@@ -2113,10 +2113,10 @@
        (progn
 	 ;; After loading the file: Tell wxMaxima we have finished loading the file
 	 ;; and what autocompletable symbols we know about.
-	 (setq *wxmaxima-nested-loads* (- *wxmaxima-nested-loads* 1))
-	 (if (= *wxmaxima-nested-loads* 0)
-	     (wxPrint_autocompletesymbols))
-	 ))))
+	 (setq *wxmaxima-nested-loads* (- *wxmaxima-nested-loads* 1))))
+     (if (< *wxmaxima-nested-loads* 1)
+	 (wxPrint_autocompletesymbols))
+     ))
   (format t "</suppressOutput>~%")
   ;; Publish all new global variables maxima might contain to wxMaxima's
   ;; autocompletion feature.
