@@ -171,6 +171,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   wxMaximaFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE,
                 MyApp::m_topLevelWindows.empty())
 {
+  // Will be corrected by ConfigChanged()
+  m_maxOutputCellsPerCommand = -1;
   m_isLogTarget = MyApp::m_topLevelWindows.empty();
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
@@ -190,7 +192,8 @@ wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
   m_isActive = true;
   wxASSERT(m_outputPromptRegEx.Compile(wxT("<lbl>.*</lbl>")));
   wxConfigBase *config = wxConfig::Get();
-  m_unsuccessfulConnectionAttempts = 0;
+  // If maxima fails to come up directly on startup of wxMaxima there is no need to retry.
+  m_unsuccessfulConnectionAttempts = 11;
   m_outputCellsFromCurrentCommand = 0;
   m_CWD = wxEmptyString;
   m_pid = -1;
@@ -413,7 +416,7 @@ TextCell *wxMaxima::ConsoleAppend(wxString s, CellType type, wxString userLabel)
   {
     // If we already have output more lines than we are allowed to we a inform the user
     // about this and return.
-    if (m_outputCellsFromCurrentCommand++ == m_maxOutputCellsPerCommand)
+    if (m_outputCellsFromCurrentCommand++ >= m_maxOutputCellsPerCommand)
     {
       DoRawConsoleAppend(
               _("... [suppressed additional lines since the output is longer than allowed in the configuration] "),
@@ -1009,9 +1012,11 @@ bool wxMaxima::StartMaxima(bool force)
   // order.
   if ((m_process == NULL) || (m_hasEvaluatedCells) || force)
   {
-    m_closing = true;
     if(m_process != NULL)
+    {
+      m_closing = true;
       KillMaxima();
+    }
     m_maximaStdoutPollTimer.StartOnce(MAXIMAPOLLMSECS);
 
     wxString command = GetCommand();
@@ -1314,10 +1319,17 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
   m_rawDataToSend.Clear();
   m_rawBytesSent = 0;
   m_statusBar->NetworkStatus(StatusBar::offline);
+  std::cerr<<m_first<<" "<<m_unsuccessfulConnectionAttempts<<"\n";
   if (!m_closing)
   {
     RightStatusText(_("Maxima process terminated."));
 
+    if(m_first)
+    {
+      wxMessageBox(_("Can not start maxima. The most probable cause is that maxima isn't installed (it can be downloaded from http://maxima.sourceforge.net) or in wxMaxima's config dialogue the setting for maxima's location is wrong."), _("Error"),
+                   wxOK | wxICON_ERROR);
+    }
+    
     // Let's see if maxima has told us why this did happen.
     ReadStdErr();
 
