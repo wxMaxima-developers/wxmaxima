@@ -164,20 +164,34 @@ void ExptCell::RecalculateHeight(int fontsize)
   else
     m_exptCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - EXPT_DEC));
 
-  m_center = wxMax (
-    m_baseCell->GetMaxCenter(),
-    PowRise() + m_exptCell->GetMaxHeight() - m_baseCell->GetMaxCenter());
-  
-  m_height = m_baseCell->GetMaxHeight() +
-    wxMax(0,m_center - m_baseCell->GetMaxCenter());
   m_exp->RecalculateHeightList(fontsize);
   m_open->RecalculateHeightList(fontsize);
   m_close->RecalculateHeightList(fontsize);
+  
   if (m_isBrokenIntoLines)
   {
     m_height = wxMax(m_baseCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = wxMax(m_baseCell->GetMaxCenter(), m_open->GetMaxCenter());
   }
+  else
+  {
+    int expt_yoffset = 0;
+    
+    if(m_exptCell->GetMaxCenter() < m_baseCell->GetMaxCenter())
+      expt_yoffset = m_baseCell->GetMaxCenter() - m_exptCell->GetMaxCenter();
+    // Raise the exponent a little bit more so it looks like an exponent
+    expt_yoffset = PowRise();
+    m_height = m_baseCell->GetMaxHeight();
+    m_center = m_baseCell->GetMaxCenter();
+    
+    if(expt_yoffset > 0)
+    {
+      m_height += expt_yoffset;
+      m_center += expt_yoffset;
+    }
+  }
+  
+  
 }
 
 wxString ExptCell::ToString()
