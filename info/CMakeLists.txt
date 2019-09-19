@@ -29,3 +29,21 @@ install(FILES ${WXMAXIMA_HELP_FILES} DESTINATION share/doc/wxmaxima)
 if(UNIX)
     file(COPY ${WXMAXIMA_HELP_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 endif()
+
+find_program(PANDOC pandoc)
+if(NOT PANDOC)
+    message(WARNING "Pandoc not found. Documentation can not converted from Markdown.")
+else()
+    add_custom_target(wxmaxima.pdf ALL
+        COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.pdf --number-sections --table-of-contents
+    )
+    add_custom_target(wxmaxima.docx ALL
+        COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.docx --number-sections --table-of-contents
+    )
+    add_custom_target(wxmaxima.epub ALL
+        COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.epub --number-sections --table-of-contents
+    )
+    add_custom_target(wxmaxima.html ALL
+        COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.html --number-sections --table-of-contents
+    )
+endif()
