@@ -86,8 +86,6 @@ void ErrorRedirector::DoLogRecord(wxLogLevel level,
       else
         wxLog::DoLogRecord(level, msg, info);
     }
-    if((m_batchMode) && (level >= wxLOG_Error))
-      std::cerr<< msg;
 }
 
 void ErrorRedirector::Flush()
