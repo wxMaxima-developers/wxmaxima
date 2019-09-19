@@ -1,9 +1,3 @@
-# wxMaxima 19.09.1 - Stable
-  * Handle timeouts when writing to maxima and partial writes.
-  * Worksheet text disappeared on scrolling on some platforms.
-  * Sped up sending code to maxima.
-  * Removed quoting of Unicode characters within strings sent to maxima.
-
 # wxMaxima 19.09.0 - Stable
   * Handle timeouts when writing to maxima and partial writes.
   * Worksheet text disappeared on scrolling on some platforms.
