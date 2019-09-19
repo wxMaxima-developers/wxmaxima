@@ -119,10 +119,10 @@ void SubSupCell::RecalculateHeight(int fontsize)
 
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() +
              m_exptCell->GetMaxHeight() -
-             2 * Scale_Px((8 * fontsize) / 10 + MC_EXP_INDENT);
+             2 * Scale_Px(.8 * fontsize + MC_EXP_INDENT);
 
   m_center = m_exptCell->GetMaxHeight() + m_baseCell->GetMaxCenter() -
-             Scale_Px((8 * fontsize) / 10 + MC_EXP_INDENT);
+             Scale_Px(.8 * fontsize + MC_EXP_INDENT);
 }
 
 void SubSupCell::Draw(wxPoint point)
@@ -139,12 +139,12 @@ void SubSupCell::Draw(wxPoint point)
     in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
     in.y = point.y + m_baseCell->GetMaxDrop() +
            m_indexCell->GetMaxCenter() -
-           Scale_Px((8 * m_fontSize) / 10 + MC_EXP_INDENT);
+           Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
     m_indexCell->DrawList(in);
 
     in.y = point.y - m_baseCell->GetMaxCenter() - m_exptCell->GetMaxHeight()
            + m_exptCell->GetMaxCenter() +
-           Scale_Px((8 * m_fontSize) / 10 + MC_EXP_INDENT);
+           Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
     m_exptCell->DrawList(in);
   }
 }

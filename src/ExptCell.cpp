@@ -48,7 +48,7 @@ ExptCell::ExptCell(Cell *parent, Configuration **config, CellPointers *cellPoint
 void ExptCell::Draw(wxPoint point)
 {
   Cell::Draw(point);
-  if (DrawThisCell(point) && InUpdateRegion())
+  if (DrawThisCell(point))
   {    
     wxPoint bs, pw;
     bs.x = point.x;
@@ -56,7 +56,11 @@ void ExptCell::Draw(wxPoint point)
     m_baseCell->DrawList(bs);
 
     point.x += m_baseCell->GetFullWidth() - MC_TEXT_PADDING;
-    point.y -= PowRise() + wxMax(m_exptCell->GetMaxCenter()- m_baseCell->GetMaxCenter(),0);
+    // Raise the exponent to share the upper border with the base cell
+    if(m_exptCell->GetMaxCenter() < m_baseCell->GetMaxCenter())
+      point.y -= m_baseCell->GetMaxCenter() - m_exptCell->GetMaxCenter();
+    // Raise the exponent a little bit more so it looks like an exponent
+    point.y -= PowRise();
     m_exptCell->DrawList(point);
   }
 }

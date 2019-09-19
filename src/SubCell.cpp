@@ -98,7 +98,7 @@ void SubCell::RecalculateHeight(int fontsize)
   m_baseCell->RecalculateHeightList(fontsize);
   m_indexCell->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - SUB_DEC));
   m_height = m_baseCell->GetMaxHeight() + m_indexCell->GetMaxHeight() -
-             Scale_Px((8 * fontsize) / 10 + MC_EXP_INDENT);
+             Scale_Px(.8 * fontsize + MC_EXP_INDENT);
   m_center = m_baseCell->GetCenter();
 }
 
@@ -116,7 +116,7 @@ void SubCell::Draw(wxPoint point)
     in.x = point.x + m_baseCell->GetFullWidth() - Scale_Px(2);
     in.y = point.y + m_baseCell->GetMaxDrop() +
            m_indexCell->GetMaxCenter() -
-           Scale_Px((8 * m_fontSize) / 10 + MC_EXP_INDENT);
+           Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);
     m_indexCell->DrawList(in);
   }
 }

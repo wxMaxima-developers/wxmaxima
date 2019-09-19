@@ -42,15 +42,9 @@
 //! The width of the horizontally-drawn cursor
 #define MC_HCARET_WIDTH 25
 
-#if defined __WXOSX__
 #define MC_EXP_INDENT 2
-#define MC_MIN_SIZE 10
-#define MC_MAX_SIZE 36
-#else
-#define MC_EXP_INDENT 4
 #define MC_MIN_SIZE 8
 #define MC_MAX_SIZE 36
-#endif
 
 #define CMEX10 "jsMath-cmex10"
 #define CMSY10 "jsMath-cmsy10"
