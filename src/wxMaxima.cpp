@@ -2898,8 +2898,8 @@ wxString wxMaxima::GetCommand(bool params)
     if (!wxFileExists(command)) {
       wxMessageBox(_("wxMaxima could not find Maxima!\n\n"
                      "Please configure wxMaxima with 'Edit->Configure'.\n"
-                     "Then start Maxima with 'Maxima->Restart Maxima'."),
-                     "If maxima isn't installed it can be downloaded from http://maxima.sourceforge.net\n",
+                     "Then start Maxima with 'Maxima->Restart Maxima'."
+                     "If maxima isn't installed it can be downloaded from http://maxima.sourceforge.net\n"),
                    _("Warning"),
                    wxOK | wxICON_EXCLAMATION);
       LeftStatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
