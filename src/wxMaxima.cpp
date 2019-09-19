@@ -2896,10 +2896,7 @@ wxString wxMaxima::GetCommand(bool params)
    // if 'maxima' is not searched in the path, check, if the file exists.
   if (command.Cmp("maxima")!=0) {
     if (!wxFileExists(command)) {
-      wxMessageBox(_("wxMaxima could not find Maxima!\n\n"
-                     "Please configure wxMaxima with 'Edit->Configure'.\n"
-                     "Then start Maxima with 'Maxima->Restart Maxima'."
-                     "If maxima isn't installed it can be downloaded from http://maxima.sourceforge.net\n"),
+      wxMessageBox(_("Can not start maxima. The most probable cause is that maxima isn't installed (it can be downloaded from http://maxima.sourceforge.net) or in wxMaxima's config dialogue the setting for maxima's location is wrong."),
                    _("Warning"),
                    wxOK | wxICON_EXCLAMATION);
       LeftStatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
