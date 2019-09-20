@@ -7,14 +7,9 @@ file(GLOB TRANSLATION_FILES *.po)
 file(GLOB POT_SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*.cpp ${CMAKE_SOURCE_DIR}/src/*.h)
 
 find_program(PO4A po4a)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/po4a.cfg.in ${CMAKE_CURRENT_BINARY_DIR}/po4a.cfg)
 
 if(GETTEXT_FOUND)
-    if(PO4A)
-        if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
-            execute_process(
-                COMMAND ${po4a} po4a.cfg)
-        endif()
-    endif()
     find_program(XGETTEXT xgettext)
     # generate a wxMaxima.pot in the build dir - don't touch the existing source (for now)
     # if that is okay, one may copy it to the source dir.
@@ -47,10 +42,17 @@ if(GETTEXT_FOUND)
             ERROR_QUIET)
         file(RENAME "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.po.new" "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.po")
     endforeach()
+    if(PO4A)
+        execute_process(
+            COMMAND ${po4a} po4a.cfg)
+    endif()
+
     message(STATUS "The new POT and PO files were generated in the build directory.")
-    message(STATUS "Call 'make update-locale' to modify the wxMaxima sourcecode.")
-
-
+    if(PO4A)
+        message(STATUS "Call 'make update-locale' to modify the wxMaxima sourcecode.")
+    else()
+        message(STATUS "As po4a is missing they aren't suitable for working on the translations.")
+    endif()	
     file(GLOB NEW_PO_FILES "${CMAKE_BINARY_DIR}/locales/*.po")
 
     add_custom_target(update-locale
