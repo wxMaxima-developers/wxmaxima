@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-19 18:34+0200\n"
+"POT-Creation-Date: 2019-09-20 08:44+0200\n"
 "PO-Revision-Date: 2019-07-24 18:07MSK\n"
 "Last-Translator: Olesya Gerasimenko <gammaray@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
@@ -153,7 +153,7 @@ msgstr "&Граничная задача..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1265
 msgid "&Bug Report"
-msgstr "&Сообщение об ошибке"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1022
 msgid "&Calculus"
@@ -819,7 +819,7 @@ msgstr "Значение в точке"
 msgid "Auto-indent new lines"
 msgstr "Автоотступ в новых строках"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:4741
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:4740
 #, c-format
 msgid "Autocompletion: Scanning %s for loadable demo files."
 msgstr ""
@@ -851,7 +851,7 @@ msgstr "Автоматические метки (%i1, %o1,...)"
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1618
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:824
 msgid "Automatically answer questions"
-msgstr "Автоматически отвечать на вопросы"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1456
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1619
@@ -957,7 +957,7 @@ msgstr "Жирный"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3557
 msgid "Both horizontal and vertical cursor active at the same time"
-msgstr "Одновременно активны и горизонтальный, и вертикальный курсоры"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1655
 msgid "Boxplot..."
@@ -973,7 +973,7 @@ msgid ""
 "Bug: After removing the whitespace wxMathml.lisp is shorter than expected!"
 msgstr "Ошибка: после удаления пробелов длина wxMathml.lisp короче ожидаемой!"
 
-#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:4881
+#: /home/gunter/src/wxmaxima/src/Autocomplete.cpp:4880
 msgid "Bug: Autocompletion requested for unknown type of item."
 msgstr "Ошибка: автодополнение запрошено для неизвестного типа элемента."
 
@@ -1050,7 +1050,7 @@ msgstr "Ошибка: нет последнего поля в команде con
 msgid "Bug: No last cell in an denominator!"
 msgstr "Ошибка: нет последнего поля в знаменателе!"
 
-#: /home/gunter/src/wxmaxima/src/ExptCell.cpp:278
+#: /home/gunter/src/wxmaxima/src/ExptCell.cpp:292
 msgid "Bug: No last cell in an exponent of an exptCell!"
 msgstr "Ошибка: нет последнего поля в команде expt() (показатель степени)!"
 
@@ -1058,7 +1058,7 @@ msgstr "Ошибка: нет последнего поля в команде exp
 msgid "Bug: No last cell in an numerator!"
 msgstr "Ошибка: нет последнего поля в числителе!"
 
-#: /home/gunter/src/wxmaxima/src/ExptCell.cpp:268
+#: /home/gunter/src/wxmaxima/src/ExptCell.cpp:282
 msgid "Bug: No last cell in the base of an exptCell!"
 msgstr "Ошибка: нет последнего поля в команде expt() (основание степени)!"
 
@@ -1460,7 +1460,7 @@ msgstr "Уравнения, разделённые запятыми"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5083
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7470
 msgid "Comma-separated variables"
-msgstr "Переменные, разделённые запятыми"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:757
 msgid "Commands that are executed at every start of maxima."
@@ -1548,7 +1548,7 @@ msgstr "Файл конфигурации (*.ini)|*.ini"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1473
 msgid "Configuration warning"
-msgstr "Предупреждение настройки"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:198
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:694
@@ -1920,7 +1920,7 @@ msgstr "По умолчанию"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:891
 msgid "Default animation framerate:"
-msgstr "Частота кадров анимации по умолчанию:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1073
 msgid "Default font:"
@@ -1928,7 +1928,7 @@ msgstr "Шрифт по умолчанию:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:554
 msgid "Default plot size for new maxima sessions:"
-msgstr "Размер графика по умолчанию для новых сеансов Maxima:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:967
 msgid "Default port for communication with wxMaxima:"
@@ -2531,7 +2531,7 @@ msgstr "Текст примера"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:977
 msgid "Examples:"
-msgstr "Примеры:"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1150
 msgid "Execute a command for each element of the list"
@@ -2539,7 +2539,7 @@ msgstr "Выполнить команду для каждого элемента
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:632
 msgid "Exit wxMaxima"
-msgstr "Выйти из wxMaxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1571
 msgid "Expand"
@@ -3658,12 +3658,12 @@ msgstr "Вставить поле &Заголовок6\tCtrl+7"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:807
 msgid "Insert image"
-msgstr "Вставить изображение"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:597
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:731
 msgid "Integers and single letters"
-msgstr "Целые числа и отдельные буквы"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1827
 msgid "Integral sign"
@@ -3777,8 +3777,6 @@ msgid ""
 "It is possible to add custom symbols to the \"symbols\" sidebar by copying "
 "them into the respective field in the configuration dialogue."
 msgstr ""
-"Можно добавить пользовательские символы в боковую панель символов, "
-"скопировав их в соответствующее поле диалога настройки."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:121
 msgid ""
@@ -4120,7 +4118,7 @@ msgstr "Учитывать регистр"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:633
 msgid "Match parenthesis in text controls"
-msgstr "Проверять расстановку скобок в текстовом вводе"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1079
 msgid "Math font:"
@@ -4128,7 +4126,7 @@ msgstr "Математический шрифт:"
 
 #: /home/gunter/src/wxmaxima/src/Cell.cpp:1261
 msgid "Math output"
-msgstr "Вывод формул"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:357
 msgid ""
@@ -4203,7 +4201,7 @@ msgstr "Матрица:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:247
 msgid "Maxima"
-msgstr "Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:476
 msgid "Maxima asks a question"
@@ -4753,7 +4751,7 @@ msgstr "Неверное число уравнений!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:520
 msgid "Not connected to maxima"
-msgstr "Нет соединения с Maxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:141
 #, c-format
@@ -6653,7 +6651,7 @@ msgstr "Обратное преобразование Лапласа."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:169
 msgid "The key combination Shift+Space results in a non-breakable space."
-msgstr "Комбинация клавиш Shift+Пробел позволяет создать неразрывный пробел."
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6004
 msgid ""
@@ -7252,7 +7250,7 @@ msgstr "Использовать точку как символ умножени
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1084
 msgid "Use jsMath fonts"
-msgstr "Использовать шрифты jsMath"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1153
 msgid "Use list"
@@ -8036,7 +8034,7 @@ msgstr "использовать сохранённые фактические �
 #: /home/gunter/src/wxmaxima/src/main.cpp:328
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6767
 msgid "wxMaxima"
-msgstr "wxMaxima"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:333
 #, c-format
@@ -8241,6 +8239,118 @@ msgstr "диапазон по z (автоматически, если непол
 msgid "zeta"
 msgstr "ζ"
 
+#, fuzzy
+#~| msgid "wxMaxima icon"
+#~ msgid "wxMaxima basics"
+#~ msgstr "Значок wxMaxima"
+
+#, fuzzy
+#~| msgid "Automatically answer questions"
+#~ msgid "Frequently asked questions"
+#~ msgstr "Автоматически отвечать на вопросы"
+
+#, fuzzy
+#~| msgid "Exit wxMaxima"
+#~ msgid "### Maxima and wxMaxima"
+#~ msgstr "Выйти из wxMaxima"
+
+#, fuzzy
+#~| msgid "Maxima"
+#~ msgid "#### Maxima"
+#~ msgstr "Maxima"
+
+#, fuzzy
+#~| msgid "wxMaxima"
+#~ msgid "#### wxMaxima"
+#~ msgstr "wxMaxima"
+
+#, fuzzy
+#~| msgid "Insert image"
+#~ msgid "one or more image"
+#~ msgstr "Вставить изображение"
+
+#, fuzzy
+#~| msgid "Both horizontal and vertical cursor active at the same time"
+#~ msgid "#### Horizontal and vertical cursors"
+#~ msgstr "Одновременно активны и горизонтальный, и вертикальный курсоры"
+
+#, fuzzy
+#~| msgid "Math output"
+#~ msgid "#### MathML output"
+#~ msgstr "Вывод формул"
+
+#, fuzzy
+#~| msgid "The key combination Shift+Space results in a non-breakable space."
+#~ msgid "`Shift+Space` inserts a non-breaking space."
+#~ msgstr ""
+#~ "Комбинация клавиш Shift+Пробел позволяет создать неразрывный пробел."
+
+#, fuzzy
+#~| msgid "Examples:"
+#~ msgid "One Example:"
+#~ msgstr "Примеры:"
+
+#, fuzzy
+#~| msgid "Configuration warning"
+#~ msgid "### Configuration options"
+#~ msgstr "Предупреждение настройки"
+
+#, fuzzy
+#~| msgid "Default animation framerate:"
+#~ msgid "#### Default animation framerate"
+#~ msgstr "Частота кадров анимации по умолчанию:"
+
+#, fuzzy
+#~| msgid "Default plot size for new maxima sessions:"
+#~ msgid "#### Default plot size for new maxima sessions"
+#~ msgstr "Размер графика по умолчанию для новых сеансов Maxima:"
+
+#, fuzzy
+#~| msgid "Use jsMath fonts"
+#~ msgid "#### Use jsMath fonts"
+#~ msgstr "Использовать шрифты jsMath"
+
+#, fuzzy
+#~| msgid "Match parenthesis in text controls"
+#~ msgid "#### Match parenthesis in text controls"
+#~ msgstr "Проверять расстановку скобок в текстовом вводе"
+
+#, fuzzy
+#~| msgid "Comma-separated variables"
+#~ msgid "### Subscripted variables"
+#~ msgstr "Переменные, разделённые запятыми"
+
+#, fuzzy
+#~| msgid "Integers and single letters"
+#~ msgid "`y` is a single letter"
+#~ msgstr "Целые числа и отдельные буквы"
+
+#, fuzzy
+#~| msgid "wxMaxima"
+#~ msgid "### wxmaximarc"
+#~ msgstr "wxMaxima"
+
+#, fuzzy
+#~| msgid "&Bug Report"
+#~ msgid "### Bug reporting"
+#~ msgstr "&Сообщение об ошибке"
+
+#, fuzzy
+#~| msgid "Not connected to maxima"
+#~ msgid "### Cannot connect to Maxima"
+#~ msgstr "Нет соединения с Maxima"
+
+#, fuzzy
+#~| msgid ""
+#~| "It is possible to add custom symbols to the \"symbols\" sidebar by "
+#~| "copying them into the respective field in the configuration dialogue."
+#~ msgid ""
+#~ "There is: Just add the following lines to the LaTeX preamble (for example "
+#~ "by using the respective field in the config dialog):"
+#~ msgstr ""
+#~ "Можно добавить пользовательские символы в боковую панель символов, "
+#~ "скопировав их в соответствующее поле диалога настройки."
+
 #~ msgid "<br>Lisp: "
 #~ msgstr "<br>Lisp: "
 
@@ -8278,9 +8388,6 @@ msgstr "ζ"
 #~ "\n"
 #~ "Настройте wxMaxima в меню «Правка->Настройка» и запустите Maxima снова\n"
 #~ " («Maxima->Перезапустить»)."
-
-#~ msgid "wxMaxima icon"
-#~ msgstr "Значок wxMaxima"
 
 #~ msgid ""
 #~ "wxMaxima is a graphical user interface for the computer algebra system "

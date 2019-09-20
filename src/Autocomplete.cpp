@@ -4732,7 +4732,7 @@ bool AutoComplete::LoadSymbols()
 
   // Prepare a list of all built-in demos of maxima.
   {
-    wxFileName demoDir(m_configuration->MaximaShareDir()+"/..");
+    wxFileName demoDir(m_configuration->MaximaShareDir() + "/..");
     demoDir.MakeAbsolute();
     GetDemoFiles_includingSubdirs maximaLispIterator (m_builtInDemoFiles);
     wxLogMessage(
