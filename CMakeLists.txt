@@ -17,6 +17,7 @@ set(PACKAGE_VERSION ${VERSION})
 set(GITVERSION ${VERSION})
 set(PACKAGE wxMaxima)
 set(APP_NAME wxMaxima)
+set(CMAKE_USE_RELATIVE_PATHS)
 
 find_package(wxWidgets 3 REQUIRED base core adv xml html aui net richtext)
 include(${wxWidgets_USE_FILE})
