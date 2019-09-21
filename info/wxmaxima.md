@@ -331,7 +331,7 @@ For some common configuration variables wxMaxima offers two ways of configuring:
 
 ### Default animation framerate
 
-The animation framerate that is used for new animations is kept in the variable wxanimate\_framerate. The initial value this variable will contain in a new worksheet can be changed using the configuration dialogue.
+The animation framerate that is used for new animations is kept in the variable `wxanimate_framerate`. The initial value this variable will contain in a new worksheet can be changed using the configuration dialogue.
 
 ### Default plot size for new maxima sessions
 
@@ -385,7 +385,7 @@ If the variable name doesn’t match these requirements it can still be declared
 
 ## User feedback in the statusbar
 
-Long-runnning commands can provide user-feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to maxima is finished. It is safe to use `wxstatusbar()` even in libraries that might be used with plain maxima (as opposed to wxMaxima): If wxMaxima isn't present the `wxstatusbar()` command will just be left unevelated.
+Long-running commands can provide user-feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to maxima is finished. It is safe to use `wxstatusbar()` even in libraries that might be used with plain maxima (as opposed to wxMaxima): If wxMaxima isn't present the `wxstatusbar()` command will just be left unevelated.
 
     (%i2)	for i:1 thru 10 do (
 	            /* Tell the user how far we got */
@@ -404,7 +404,7 @@ Maxima normally instructs the external program gnuplot to open a separate window
 
 ### Making embedded plots bigger or smaller
 
-As noted above, the configure dialog provides a way to change the default size plots are created with which sets the starting value of wxplot\_size. The plotting routines of wxMaxima respect this variable that specifies the size of a plot in pixels. It can always be queried or used to set the size of the following plots:
+As noted above, the configure dialog provides a way to change the default size plots are created with which sets the starting value of `wxplot_size`. The plotting routines of wxMaxima respect this variable that specifies the size of a plot in pixels. It can always be queried or used to set the size of the following plots:
 
     %i1 wxplot_size:[1200,800];
     %o1 [1200,800];
@@ -438,7 +438,7 @@ If the size of only one plot is to be changed _Maxima_ provides a canonical way 
 
 ### Better quality plots
 
-Gnuplot doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output the `cairo` library provides. On systems where gnuplot is compiled to use this library the pngcairo option from the configuration menu (that can be overridden by the variable wxplot\_pngcairo) enables support for antialiasing and additional line styles.
+Gnuplot doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output the `cairo` library provides. On systems where gnuplot is compiled to use this library the pngcairo option from the configuration menu (that can be overridden by the variable `wxplot_pngcairo`) enables support for antialiasing and additional line styles.
 
 ### Embedding animations into the spreadsheet
 
@@ -512,7 +512,7 @@ While not being a provided by wxMaxima this feature of Maxima (on setups that su
 
 if the .wxmx file format is being used embedding files in a wxMaxima project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:
 
-show\_image("Mann.png");
+    show_image("Mann.png");
 
 ## wxmaximarc
 
@@ -643,9 +643,9 @@ It is theoretically possible that wxMaxima doesn’t realize that Maxima has fin
 
 ## File I/O from Maxima doesn’t work on Windows
 
-On Windows, file I/O is not relative to the directory of the current file by default. If you store the Maxima file on the drive on which wxMaxima is installed, then setting wxchangedir to `true` will fix that for `load`, `read_list`, `batch`, `read_matrix`, `save` and all similar commands.
+On Windows, file I/O is not relative to the directory of the current file by default. If you store the Maxima file on the drive on which wxMaxima is installed, then setting `wxchangedir` to `true` will fix that for `load`, `read_list`, `batch`, `read_matrix`, `save` and all similar commands.
 
-Setting this variable to `true` might have a drawback, though: Maxima knows which directory it is installed in and will search for any additional package that is requested by a `load` command in this directory, too. But it might not know which drive it is installed on. If wxchangedir is `true` and the current file is saved on a different drive than the one Maxima is installed on Maxima therefore might fail to load the additional packages it was bundled with.
+Setting this variable to `true` might have a drawback, though: Maxima knows which directory it is installed in and will search for any additional package that is requested by a `load` command in this directory, too. But it might not know which drive it is installed on. If `wxchangedir` is `true` and the current file is saved on a different drive than the one Maxima is installed on Maxima therefore might fail to load the additional packages it was bundled with.
 
 ## My SBCL-based Maxima runs out of memory
 
@@ -664,11 +664,11 @@ Installing the package `ibus-gtk` should resolve this issue. See ([https://bugs.
 
 If your Maxima is based on sbcl the following lines have to be added to your .sblrc:
 
-(setf sb-impl::\*default-external-format\* :utf-8)
+    (setf sb-impl::\*default-external-format\* :utf-8)
 
 The folder this file has to be placed in is system- and installation-specific. But any sbcl-based Maxima that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:
 
-:lisp (sb-impl::userinit-pathname)
+    :lisp (sb-impl::userinit-pathname)
 
 ## Plotting
 
@@ -732,7 +732,7 @@ Most operating systems provide less complicated ways of starting programs than t
 *   `-v` or `--version`: Output the version information
 *   `-h` or `--help`: Output a short help text
 *   `-o` or `--open`: Open the filename given as argument to this command-line switch
-*   `-b` or `--batch`: If the command-line opens a file all cells in this file are evaluated and the file is saved afterwards. This is for example useful if the sesson described in the file makes Maxima generate output files. Batch-processing will be stopped if wxMaxima detects that Maxima has output an error and will pause if Maxima has a question: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed.
+*   `-b` or `--batch`: If the command-line opens a file all cells in this file are evaluated and the file is saved afterwards. This is for example useful if the session described in the file makes Maxima generate output files. Batch-processing will be stopped if wxMaxima detects that Maxima has output an error and will pause if Maxima has a question: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed.
 *   (Only on windows): `-f` or `--ini`: Use the init file that was given as argument to this command-line switch
 
 Instead of a minus some operating systems might use a dash in front of the command-line switches.
@@ -746,23 +746,32 @@ Annotated Index
 
 **A**
 [Animations](#Embedding-animations-into-the-spreadsheet): commands to embed animations into a wxMaxima workbook
+
 [Animations, failure](#Outputting-animations-doesn_0027t-work): why creation and execution of some animations might not work
+
 [Autocompletion](#Command-autocompletion): using _wxMaxima_ a command
+
 [Aspect ratio](#Can-I-set-the-aspect-ratio-of-a-plot_003f): set the aspect ratio for a plot
+
 [Autosave](#Autosave-interval): set interval for saving a wxMaxima session file (workbook)
 
 **C**
 [Cells](#Cells): the nature and use of cells in a _wxMaxima_ workbook
+
 [Cells, Input/Output](#Input%20Output%20Cell): Cells that contain one or more commands and the results of executing the command(s)
+
 [Command autocompletion](#Command-autocompletion): using _wxMaxima_ a command
+
 [Configure wxMaxima](#Configuration-options): how to configure a _wxMaxima_ workbook
+
 [Cursors, vertical and horizontal](#Drag%20and%20drop): entering text or selecting entered material
 
 **D**
-[Drag and drop](#Drag%20and%20drop): Copying and pasting material in one or more cells or eexecuting a sequence of cells
+[Drag and drop](#Drag%20and%20drop): Copying and pasting material in one or more cells or executing a sequence of cells
 
 **F**
 [File Info](#wxfilename%20command): command to print name and location of currently-open wxMaxima workbook
+
 [File Formats](#File-Formats): types of files that _wxMaxima_ can create and open
 
 **G**
@@ -770,6 +779,7 @@ Annotated Index
 
 **H**
 [HTML](#Markdown-support): export material as html
+
 [Hotkeys](#Hotkeys): shortcut key combinations, alternatives to menu options
 
 **I**
@@ -780,13 +790,18 @@ Annotated Index
 
 **L**
 [LaTeX](#Markdown-support): export material as LaTeX
+
 [Lost content](#I-lost-a-cell-contents-and-undo-doesn_0027t-remember): ways to recover lost cell contents
-**
-M**
+
+**M**
 [Macro files](#g_t_002emac): .mac files, batch files that can be entered into _wxMaxima_ workbooks
+
 [MathML](#MathML-output): export mathematical expressions with MathML markup
+
 [Matrix](#Matrix): Create a matrix and convert the matrix to a table
+
 [Maxima and wxMaxima](#Maxima-and-wxMaxima "Maxima and wxMaxima"): the relationship between the Maxima CAS and the wxMaxima front-end
+
 [Maxima-wxMaxima connection](#Cannot-connect-to-Maxima): possible reasons from failure of wxMaxima to communicate with Maxima
 
 **N**
@@ -794,12 +809,19 @@ M**
 
 **P**
 [Plot, aspect ratio](#Can-I-set-the-aspect-ratio-of-a-plot_003f): set the aspect ratio for a plot
+
 [Plot, embedding](#Embedding-a-plot-into-the-work-sheet): embed a _Maxima_\-generated plot in a _wxMaxima_ workbook
+
 [Plot, failure](#Plotting-only-shows-an-closed-empty-envelope-with-an-error-message): some reasons that attempts to plot might fail
+
 [Plot file, embedding](#Embedding-graphics): embed a plot file in a _wxMaxima_ workbook
+
 [Plot size](#Making-embedded-plots-bigger-or-smaller): control the size of embedded plots
+
 [Plots, better quality](#Better-quality-plots): notes related to the quality of gnuplot plots
+
 [Plots, multiple](#Opening-multiple-plots-in-contemporaneous-windows): open multiple plots in contemporaneous windows
+
 [Progress indicators](#statusbar): Giving user feedback in the status bar
 
 **R**
@@ -807,24 +829,36 @@ M**
 
 **S**
 [Side Panes](#Side-Panes): collections of buttons that open dialog boxes, enter commands, and enter special characters
+
 [Startup file location](#index-Startup-File): location of an initialization file that is passed to _wxMaxima_ when it opens
+
 [Status bar](#statusbar): Giving user feedback in the status bar
-[Subscripted variables](#Subscripted-variables): using the command wxsubscripts to display subscripted variables
+
+[Subscripted variables](#Subscripted-variables): using the command `wxsubscripts` to display subscripted variables
 
 **T**
 [Table](#Pretty_002dprinting-2D-output): show lists of text and values as a table
+
 [TeX markup](#Raw-TeX-in-the-TeX-export): allows TeX markup to be entered into a text file
 
 **U**
 [undo](#I-lost-a-cell-contents-and-undo-doesn_0027t-remember): ways to recover lost cell contents
 
 **W**
-[with\_slider\_draw](#Embedding-animations-into-the-spreadsheet): command to embed animations -- alternative: wxanimate\_draw
-[with\_slider\_draw3d](#Embedding-animations-into-the-spreadsheet): command to embed animations -- alternative: wxnimate\_draw3d
+[with\_slider\_draw](#Embedding-animations-into-the-spreadsheet): command to embed animations -- alternative: `wxanimate_draw`
+
+[with\_slider\_draw3d](#Embedding-animations-into-the-spreadsheet): command to embed animations -- alternative: `wxanimate_draw3d`
+
 [wxanimate\_draw](#Embedding-animations-into-the-spreadsheet): command to embed animations
+
 [wxanimate\_draw3d](#Embedding-animations-into-the-spreadsheet): command to embed animations
+
 [wxMaxima and Maxima](#Maxima-and-wxMaxima "wxMaxima and Maxima"): the relationship between the Maxima CAS and the wxMaxima front-end
+
 [wxMaxima documentation](#wxMaxima)
+
 [wxMaxima workbook structure](#The-worksheet-approach): central features of a _wxMaxima_ workbook
+
 [wxm and wxmx files](#g_t_002ewxm): formats for _wxMaxima_ workbooks
+
 [wxmx data](#Broken%20wxmx): retrieve data from a broken wxmx file
