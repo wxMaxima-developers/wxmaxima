@@ -440,6 +440,14 @@ If the size of only one plot is to be changed _Maxima_ provides a canonical way 
 
 Gnuplot doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output the `cairo` library provides. On systems where gnuplot is compiled to use this library the pngcairo option from the configuration menu (that can be overridden by the variable `wxplot_pngcairo`) enables support for antialiasing and additional line styles.
 
+### Opening up plots in interactive gnuplot windows
+
+If a plot was generated using the `wxdraw`-type commands (`wxplot` isn't supported by this feature) and the file size of the underlying gnuplot project isn't way too high wxMaxima offers a right-click menu that allows to open the plot in an interactive gnuplot window.
+
+### Opening gnuplot's command console in windows created by `plot` and `draw`
+
+On MS Windows if in maxima's variable `gnuplot_command` "gnuplot" is replaced by "wgnuplot" gnuplot offers the possibility to open a console window gnuplot commands can be entered into. Unfortunately enabling this feature causes gnuplot to "steal" the keyboard focus for a short time every time a plot is prepared.
+
 ### Embedding animations into the spreadsheet
 
 The `with_slider_draw` command is a version of `wxdraw2d` that does prepare multiple plots and allows to switch between them by moving the slider on top of the screen. If ImageMagick is installed wxMaxima even allows to export this animation as an animated gif.
