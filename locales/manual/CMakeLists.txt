@@ -10,7 +10,8 @@ if(PO4A)
     execute_process(COMMAND po4a-updatepo --master-charset utf8 -f text -m ${CMAKE_SOURCE_DIR}/info/wxmaxima.md -p ${POFILE} )
     execute_process(COMMAND po4a-translate --master-charset utf8 -f text -m ${CMAKE_SOURCE_DIR}/info/wxmaxima.md -p ${POFILE} ${CMAKE_SOURCE_DIR}/info/wxmaxima.${LANG}.md )
   endforeach()
-  add_custom_target(update-locale
+  message(STATUS "Call 'make update-manual-locale' to update the manual translation in wxMaxima's source tree.")
+  add_custom_target(update-manual-locale
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/wxMaxima.pot" "${CMAKE_SOURCE_DIR}/locales/manual/wxmaxima.md.pot"
     COMMAND ${CMAKE_COMMAND} -E copy "*.po" "${CMAKE_SOURCE_DIR}/locales/manual"
     COMMENT "Installing wxmaxima.md.pot and po-files in the source directory ${CMAKE_SOURCE_DIR}/locales/manual")
