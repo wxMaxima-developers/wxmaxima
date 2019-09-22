@@ -32,6 +32,7 @@ addons:
     - appstream-util
     - desktop-file-utils
     - pandoc
+    - texlive-latex-base
 before_cache:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cleanup; fi
 before_install:
