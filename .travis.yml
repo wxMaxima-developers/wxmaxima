@@ -31,6 +31,7 @@ addons:
     - xvfb
     - appstream-util
     - desktop-file-utils
+    - pandoc
 before_cache:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cleanup; fi
 before_install:
