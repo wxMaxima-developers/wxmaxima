@@ -34,6 +34,7 @@ addons:
     - pandoc
     - texlive-latex-base
     - lmodern
+    - texlive-fonts-recommended
 before_cache:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cleanup; fi
 before_install:
