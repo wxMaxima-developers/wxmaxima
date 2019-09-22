@@ -297,7 +297,11 @@ Ordinary text</code></pre>
 ),wxplot_size=[1600,800]$</code></pre>
 <h3 id="better-quality-plots"><span class="header-section-number">2.3.2</span> Better quality plots</h3>
 <p>Gnuplot doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output the <code>cairo</code> library provides. On systems where gnuplot is compiled to use this library the pngcairo option from the configuration menu (that can be overridden by the variable <code>wxplot_pngcairo</code>) enables support for antialiasing and additional line styles.</p>
-<h3 id="embedding-animations-into-the-spreadsheet"><span class="header-section-number">2.3.3</span> Embedding animations into the spreadsheet</h3>
+<h3 id="opening-up-plots-in-interactive-gnuplot-windows"><span class="header-section-number">2.3.3</span> Opening up plots in interactive gnuplot windows</h3>
+<p>If a plot was generated using the <code>wxdraw</code>-type commands (<code>wxplot</code> isn’t supported by this feature) and the file size of the underlying gnuplot project isn’t way too high wxMaxima offers a right-click menu that allows to open the plot in an interactive gnuplot window.</p>
+<h3 id="opening-gnuplots-command-console-in-windows-created-by-plot-and-draw"><span class="header-section-number">2.3.4</span> Opening gnuplot’s command console in windows created by <code>plot</code> and <code>draw</code></h3>
+<p>On MS Windows if in maxima’s variable <code>gnuplot_command</code> “gnuplot” is replaced by “wgnuplot” gnuplot offers the possibility to open a console window gnuplot commands can be entered into. Unfortunately enabling this feature causes gnuplot to “steal” the keyboard focus for a short time every time a plot is prepared.</p>
+<h3 id="embedding-animations-into-the-spreadsheet"><span class="header-section-number">2.3.5</span> Embedding animations into the spreadsheet</h3>
 <p>The <code>with_slider_draw</code> command is a version of <code>wxdraw2d</code> that does prepare multiple plots and allows to switch between them by moving the slider on top of the screen. If ImageMagick is installed wxMaxima even allows to export this animation as an animated gif.</p>
 <p>The first two arguments for <code>with_slider_draw</code> are the name of the variable that is stepped between the plots and a list of the values of these variable. The arguments that follow are the ordinary arguments for <code>wxdraw2d</code>:</p>
 <pre><code>with_slider_draw(
@@ -334,7 +338,7 @@ with_slider_draw(
     grid=true,
     explicit(&#39;&#39;f,x,0,10)
 )$</code></pre>
-<h3 id="opening-multiple-plots-in-contemporaneous-windows"><span class="header-section-number">2.3.4</span> Opening multiple plots in contemporaneous windows</h3>
+<h3 id="opening-multiple-plots-in-contemporaneous-windows"><span class="header-section-number">2.3.6</span> Opening multiple plots in contemporaneous windows</h3>
 <p>While not being a provided by wxMaxima this feature of Maxima (on setups that support it) sometimes comes in handily. The following example comes from a post from Mario Rodriguez to the Maxima mailing list:</p>
 <pre><code>load(draw);
 
