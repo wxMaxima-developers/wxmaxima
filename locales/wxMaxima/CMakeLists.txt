@@ -45,9 +45,9 @@ if(GETTEXT_FOUND)
   file(GLOB NEW_PO_FILES "${CMAKE_BINARY_DIR}/locales/*.po")
 
   add_custom_target(update-locale
-    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/wxMaxima.pot" "${CMAKE_SOURCE_DIR}/locales/wxMaxima.pot"
-    COMMAND ${CMAKE_COMMAND} -E copy "*.po" "${CMAKE_SOURCE_DIR}/locales/"
-    COMMENT "Installing wxMaxima.pot and po-files in the source directory ${CMAKE_SOURCE_DIR}/locales")
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/wxMaxima.pot" "${CMAKE_SOURCE_DIR}/locales/wxMaxima/wxMaxima.pot"
+    COMMAND ${CMAKE_COMMAND} -E copy "*.po" "${CMAKE_SOURCE_DIR}/locales/wxMaxima/"
+    COMMENT "Installing wxMaxima.pot and po-files in the source directory ${CMAKE_SOURCE_DIR}/locales/wxMaxima")
 else()
-  message(STATUS "Gettext not found - translations will be disabled")
+  message(STATUS "Gettext not found - translations of wxMaxima will be disabled")
 endif()
