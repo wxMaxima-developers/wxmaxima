@@ -3428,8 +3428,6 @@ void EditorCell::HandleSoftLineBreaks_Code(StyledText *&lastSpace, int &lineWidt
 
 void EditorCell::StyleTextCode()
 {
-  Configuration *configuration = (*m_configuration);
-
   // We have to style code
   StyledText *lastSpace = NULL;
   size_t lastSpacePos = 0;
