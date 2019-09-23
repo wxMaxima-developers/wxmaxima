@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-22 16:37+0200\n"
-"PO-Revision-Date: 2019-09-22 16:41+0200\n"
+"PO-Revision-Date: 2019-09-23 06:36+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -150,7 +150,7 @@ msgid ""
 "writer for a DVD backup tool. Another advantage is that splitting one big "
 "task into smaller parts allows the developers to provide several user "
 "interfaces for the same program."
-msgstr ""
+msgstr "Im Open-Source-Bereich ist es üblich, große Systeme in kleine Projekte aufzuteilen, die jeweils klein genug sind, dass eine endliche Menge an Entwicklern ausreicht, um sie weiterzuentwickeln. Beispielsweise ist ein CD-Brennprogramm aus einem Kommandozeilentool zusammengesetzt, das die CDs brennt und eine graphische Benutzerumgebung, die dieses Tool bedient. Ein Vorteil dieses Ansatzes ist es, dass dasselbe Kommandozeilenprogramm von vielen Stellen aus genutzt werden: Das Brennprogramm, ein \"Sende an die CD\"-Knopf und beispielsweise ein Backup-Tool. Ein weiterer Vorteil ist es, dass auf diese Weise für eine Funktionalität mehrere Benutzerinterfaces angeboten werden können."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:51
@@ -163,12 +163,12 @@ msgid ""
 "command line. Often, however, an interface like wxMaxima proves a more "
 "efficient way to access the software, especially for newcomers. computer "
 "algebra system."
-msgstr ""
+msgstr "Ein Computer-Algebrasystem (CAS) wie Maxima ist hervorragend für diesen Ansatz geeignet: Es kann die Logik hinter einem Taschenrecher liefern, der mit beliebig langen Zahlen hantieren kann, Formeln für ein größeres System, z.B. [Sage](http://www.sagemath.org/) umstellen. Alternativ kann es direkt verwendet werden. Dies kann von der Kommandozeile aus geschehen, oder von wxMaxima aus, das eine komfortablere Bedienung unterstützt."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:53
 msgid "### Maxima"
-msgstr ""
+msgstr "### Maxima"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:55
@@ -181,12 +181,12 @@ msgid ""
 "analytical solutions. Furthermore, it offers a range of numerical methods of "
 "analysis for equations or systems of equations that cannot be solved "
 "analytically."
-msgstr ""
+msgstr "Maxima ist ein komplettes Computer-Algebrasystem (CAS): Ein Programm, das die Formel, nicht nur die Zahl sucht, die ein mathematisches Problem löst. Auch wenn es darauf  spezialisiert ist, mit Buchstaben zu rechnen, bietet es auch eine Menge an Funktionen, die Probleme lösen, für die nur numerische Lösungen existieren."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:57
 msgid "![Maxima screenshot](./maxima_screenshot.png)"
-msgstr ""
+msgstr "![Maxima screenshot](./maxima_screenshot.png)"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:59
@@ -197,12 +197,12 @@ msgid ""
 "systems that would be the F1 key) causes wxMaxima’s context-sensitive help "
 "feature will automatically jump to Maxima’s manual page for the command at "
 "the cursor."
-msgstr ""
+msgstr "Umfangreiche Dokumentation für Maxima ist [im Internet verfügbar](http://maxima.sourceforge.net/documentation.html). Teile davon sind auch im Hilfe-Menü von wxMaxima erhältlich. Ein Druck auf die Hilfe-Taste (auf den meisten Systemen ist dies die F1-Taste) startet eine Suche nach einem geeigneten Thema darin."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:61
 msgid "### wxMaxima"
-msgstr ""
+msgstr "### wxMaxima"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:63
@@ -217,24 +217,24 @@ msgid ""
 "illustrate aspects of its use, is online at the wxMaxima [help site](https://"
 "wxMaxima-developers.github.io/wxmaxima/help.html), as well as via the help "
 "menu."
-msgstr ""
+msgstr "wxMaxima ist ein graphisches Benutzer-Interface, das die komplette Funktionalität und Flexibilität von Maxima zu nutzen erlaubt. Zudem bietet es viele Funktionalitäten an, die die Verwendung von Maxima einfacher gestalten. Beispielsweise kann es den Inhalt eines Arbeitsblates, einer Zelle des Arbeitsblatts oder einen Teil einer Formel nach LaTeX, MathML oder in eine RTF-Formel für eine Textverarbeitung konvertieren. Dokumentation für wxMaxima kann [im Internet](https://wxMaxima-developers.github.io/wxmaxima/help.html) gefunden werden, oder über das Hilfemenü."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:65
 msgid "![wxMaxima window](./wxMaximaWindow.png)"
-msgstr ""
+msgstr "![wxMaxima window](./wxMaximaWindow.png)"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:67
 msgid ""
 "The calculations that are entered in _wxMaxima_ are performed by the Maxima "
 "command-line tool in the background."
-msgstr ""
+msgstr "wxMaxima lässt alle Berechnungen im Hintergrund durch das Kommandozeilen-Werkzeug Maxima durchführen."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:70
 msgid "## Workbook basics"
-msgstr ""
+msgstr "## Grundlagen zum Arbeitsblatt"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:72
@@ -247,12 +247,12 @@ msgid ""
 "_Maxima_ and the use of wxMaxima to interact with Maxima. This manual "
 "concentrates on describing aspects of wxMaxima that are not likely to be "
 "self-evident and that might not be covered in the online material."
-msgstr ""
+msgstr "wxMaxima ist größtenteils selbsterklärend. [Diese Internetseite](https://wxMaxima-developers.github.io/wxmaxima/help.html) bietet einige Beispiele an, wovon das \"10-Minuten-Tutorial\" besonders zu empfehlen ist. Dieses Handbuch beschreibt einige zusätzliche Aspekte von wxMaxima."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:74
 msgid "### The workbook approach"
-msgstr ""
+msgstr "Der Arbeitsblatt-Ansatz"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:76
@@ -269,7 +269,7 @@ msgid ""
 "(where the user certainly does not want every small change to automatically "
 "to trigger a full re-evaluation of the whole document). Also, this approach "
 "is very handy for debugging."
-msgstr ""
+msgstr "Eine der Sachen, die neue Benutzer oft verwirrt, ist, dass das Arbeitsblatt von wxMaxima in Zellen aufgeteilt ist, die nur auf Befehl vom Benutzer an _Maxima_ gesendet werden. Dieser Ansatz ist jedoch für die Fehlersuche praktisch. Auch hat der gegenüber der Alternative, nach jeder Änderung alle Zellen im das Arbeitsblatt neu auszuwerten, oft viel Zeit."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:78
@@ -283,7 +283,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:80
 msgid "![Input/output cell](./InputCell.jpg)"
-msgstr ""
+msgstr "![Input/output cell](./InputCell.jpg)"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:82
