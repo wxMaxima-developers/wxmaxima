@@ -6,9 +6,9 @@ if(CCACHE_PROGRAM)
   if(UNIX)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK "${CCACHE_PROGRAM}")
   endif()
-  MESSAGE(STATUS "Found CCache ${CCACHE_PROGRAM}")
+  message(STATUS "Found CCache ${CCACHE_PROGRAM}")
 else()
-  MESSAGE(STATUS "Not found a ccache that speeds up incremental compilation.")
+  message(STATUS "Not found a ccache that speeds up incremental compilation.")
 endif()
 
 project(wxmaxima LANGUAGES CXX)
@@ -30,7 +30,7 @@ include(${wxWidgets_USE_FILE})
 if(POLICY CMP0066)
     cmake_policy(SET CMP0066 NEW)
 endif()
-  
+
 # Turn off many warnings wxWidgets triggers on MSVC
 if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
@@ -127,7 +127,7 @@ if(APPLE)
     set(MACOSX_BUNDLE)
     list(APPEND CPACK_GENERATOR "DragNDrop") # Build DMG packages on MacOS
 endif()
-  
+
 # build RPMs only if rpmbuild is installed
 find_program(RPMBUILD_EXECUTABLE rpmbuild)
 if(NOT RPMBUILD_EXECUTABLE)
@@ -196,7 +196,7 @@ add_custom_target(gpg DEPENDS dist
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.xz
   COMMAND ${gpg} --armor --detach-sign ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.Z)
-  
+
 add_custom_target(checksums
     ${CMAKE_COMMAND} -DVERSION=${VERSION} -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -P ${CMAKE_SOURCE_DIR}/checksums.cmake)
 
