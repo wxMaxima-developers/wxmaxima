@@ -83,7 +83,7 @@ if(WIN32)
     add_executable(wxmaxima WIN32 ${SOURCE_FILES})
 elseif(APPLE)
   add_executable(wxmaxima ${SOURCE_FILES})
-  
+
     install(TARGETS wxmaxima
       BUNDLE DESTINATION . COMPONENT Runtime
       RUNTIME DESTINATION bin COMPONENT Runtime
@@ -99,9 +99,9 @@ elseif(APPLE)
 else()
     add_executable(wxmaxima ${SOURCE_FILES})
 endif()
- 
+
 get_target_property(EXEPATH wxmaxima BINARY_DIR)
-get_target_property(RUNTIME wxmaxima RUNTIME_OUTPUT_DIRECTORY )
+get_target_property(RUNTIME wxmaxima RUNTIME_OUTPUT_DIRECTORY)
 get_target_property(OUTPUTNAME wxmaxima OUTPUT_NAME)
 message(STATUS "Binary dir: ${EXEPATH}")
 message(STATUS "Runtime dir: ${RUNTIME}")

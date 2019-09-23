@@ -53,7 +53,7 @@ file(GLOB TRANSLATION_FILES ${CMAKE_SOURCE_DIR}/locales/manual/*.po)
 foreach(POFILE ${TRANSLATION_FILES})
   string(REGEX REPLACE ".*locales/manual/(.*).po$" "\\1" LANG ${POFILE})
   message(WARNING "POFILE = ${POFILE}")
-  message(WARNING "LANG = ${LANG}")  
+  message(WARNING "LANG = ${LANG}")
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.${LANG}.hhp)
 endforeach()
 

@@ -125,7 +125,7 @@ set_tests_properties(unicode PROPERTIES TIMEOUT 60)
 
 find_program(DESKTOP_FILE_VALIDATE_FOUND desktop-file-validate)
 if(DESKTOP_FILE_VALIDATE_FOUND)
-  add_test(NAME check_desktop_file 
+  add_test(NAME check_desktop_file
     COMMAND desktop-file-validate ${CMAKE_CURRENT_SOURCE_DIR}/../data/io.github.wxmaxima_developers.wxMaxima.desktop)
   set_tests_properties(check_desktop_file PROPERTIES TIMEOUT 60)
 else()
@@ -134,11 +134,11 @@ endif()
 
 find_program(APPSTREAM_UTIL_FOUND appstream-util)
 if(APPSTREAM_UTIL_FOUND)
-  add_test(NAME check_appstream_file 
+  add_test(NAME check_appstream_file
     COMMAND appstream-util validate ${CMAKE_CURRENT_SOURCE_DIR}/../data/io.github.wxmaxima_developers.wxMaxima.appdata.xml)
   set_tests_properties(check_appstream_file PROPERTIES TIMEOUT 600)
 else()
-  message(STATUS "appstream-util not found => Skipping verifikation of the appdata file")  
+  message(STATUS "appstream-util not found => Skipping verifikation of the appdata file")
 endif()
 
 
