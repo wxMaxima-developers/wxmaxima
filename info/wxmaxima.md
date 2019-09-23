@@ -74,7 +74,7 @@ Much of wxMaxima is self-explaining, but some details require attention. [This s
 
 One of the very few things that are not standard in wxMaxima is that it organizes the data for Maxima into cells that are evaluated (which means: sent to _Maxima_) only when the user requests this. When a cell is evaluated, all commands in that cell, and only that cell, are evaluated as a batch. (The preceding statement is not quite accurate: One can select a set of adjacent cells and evaluate them together. Also, one can instruct _Maxima_ to evaluate all cells in a workbook in one pass.) _wxMaxima_'s approach to submitting commands for execution might feel unfamiliar at the first sight. It does, however, drastically ease work with big documents (where the user certainly does not want every small change to automatically to trigger a full re-evaluation of the whole document). Also, this approach is very handy for debugging.
 
-If text is typed into _wxMaxima_ it automatically creates a new worksheet cell. If this is a code cell and the cell is sent to maxima the result of the calculation is displayed below the code. A pair of such commands appears below.
+If text is typed into _wxMaxima_ it automatically creates a new worksheet cell. The type of this cell can be selected in the toolbar. If a code cell is created the cell can be sent to maxima, which causes the result of the calculation to be displayed below the code. A pair of such commands is shown below.
 
 ![Input/output cell](./InputCell.jpg)
 
