@@ -55,15 +55,8 @@ endif()
 
 
 foreach(POFILE ${TRANSLATION_FILES})
-<<<<<<< HEAD
     string(REGEX REPLACE ".*locales/manual/(.*).po$" "\\1" LANG ${POFILE})
-    message(WARNING "POFILE = ${POFILE}")
-    message(WARNING "LANG = ${LANG}")
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.${LANG}.hhp)
-=======
-  string(REGEX REPLACE ".*locales/manual/(.*).po$" "\\1" LANG ${POFILE})
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.${LANG}.hhp)
->>>>>>> 971f024208edfa9aa60fcd628e6aae3b7d310a39
 endforeach()
 
 
