@@ -5,8 +5,11 @@ find_program(PO4A po4a)
 if(PO4A)
   message(STATUS "Updating the manual translations.")
   execute_process(
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    COMMAND ${po4a} -k 0 {CMAKE_BINARY_DIR}/locales/manual/po4a.cfg)
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMAND ${PO4A} -k 0 ${CMAKE_CURRENT_BINARY_DIR}/po4a.cfg)
+  execute_process(
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMAND echo ${PO4A} -k 0 ${CMAKE_CURRENT_BINARY_DIR}/po4a.cfg)
 
   add_custom_target(TARGET update-locale
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/wxMaxima.pot" "${CMAKE_SOURCE_DIR}/locales/manual/wxmaxima.md.pot"
