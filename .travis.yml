@@ -31,7 +31,6 @@ addons:
     - xvfb
     - appstream-util
     - desktop-file-utils
-    - pandoc
     - po4a
     - texlive-latex-base
     - texlive-latex-extra
@@ -51,6 +50,7 @@ git:
 script:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
   else export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-linux.tar.gz ; tar xvf pandoc-2.7.3-linux.tar.gz ; export PATH="$(pwd)/pandoc-2.7.3/bin:$PATH" ; fi # Use a current pandoc. The version included in Ubuntu does not recognize the new option --pdf-engine
 - mkdir build && cd build && cmake .. && cmake --build .
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
