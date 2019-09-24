@@ -668,7 +668,7 @@ Possible reasons for this error are:
 
 *   The plotting command is part of a third-party package like `implicit_plot` but this package was not loaded by Maxima’s `load()` command before trying to plot.
 *   Maxima tried to do something the currently installed version of gnuplot isn’t able to understand. In this case the file maxout.gnuplot in the directory Maxima’s variable maxima\_userdir points to contains the instructions from Maxima to gnuplot. Most of the time this file’s contents therefore are helpful when debugging the problem.
-*   Gnuplot was instructed to use the pngcairo library that provides antialiassing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the "Use the cairo terminal for plot" checkbox in the configuration dialog and don’t set `wxplot_pngcairo` to true from Maxima.
+*   Gnuplot was instructed to use the pngcairo library that provides antialiasing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the "Use the cairo terminal for plot" checkbox in the configuration dialog and don’t set `wxplot_pngcairo` to true from Maxima.
 *   Gnuplot didn’t output a valid .png file.
 
 ## Plotting an animation results in “error: undefined variable”
