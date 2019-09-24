@@ -640,12 +640,6 @@ If the zip signature at the end of the file is still intact after renaming a bro
 
 If the text file containing this contents is saved as a file ending in .xml wxMaxima will know how to recover the text of the document from it.
 
-## wxMaxima waits forever for data from Maxima
-
-In old versions of Maxima this might be caused by the fact that a closing brace, bracket, parenthesis or hyphenation mark is missing: In this case Maxima waits until it gets the rest of its input (which it never does).
-
-In order to find out if this is the issue, the operating system normally provides a way to determine whether _Maxima_ is actually really working forever trying to solve the current problem.
-
 ## I want some debug info to be displayed on the screen before my command has finished
 
 Normally wxMaxima waits for the whole 2D formula to be transferred before it begins to typeset. This saves time for making many attempts to typeset a only partially completed equation. There is a `disp` command, though, that will provide debug output immediately and without waiting for the current Maxima command to finish:
