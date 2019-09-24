@@ -583,12 +583,12 @@ The answer from Maxima will specify the name of the directory that the startup f
 
 ## Special variables wx...
 
-*   wxsubscripts tells _Maxima_ if it should convert variable names that contain an underscore (`R_150` or the like) into subscripted variables. See `wxdeclare_subscript` for details which variable names are automatically converted.
-*   wxfilename This variable contains the name of the file currently opened in _wxMaxima_. On Windows this piece of information is available only if in the configuration dialogue the checkbox `Maxima/maxima's pwd is path to document` is checked.
-*   wxplot\_pngcairo tells whether _wxMaxima_ tries to use _gnuplot_’s pngcairo terminal that provides more line styles and a better overall graphics quality. This variable can be used for reading or overriding the respective setting in the configuration dialog.
-*   wxplot\_size defines the size of embedded plots.
-*   wxchangedir: On most operating systems _wxMaxima_ automatically sets _Maxima_’s working directory to the directory of the current file. This allows file I/O (e.g. by `read_matrix`) to work without specifying the whole path to the file that has to be read or written. On Windows this feature is deactivated: The Lisp Standard doesn’t contain a concept of the current working directory. Therefore there is no standard way of setting it and changing to a directory that isn’t on the drive Maxima has been installed to might cause Maxima to try to read is own package files from this drive, too, instead of from the drive to which _Maxima_ has been installed. Setting wxchangedir to `true` tells wxMmaxima that it has to risk that and to set Maxima’s working directory.
-*   wxanimate\_framerate The number of frames per second the following animations have to be played back with. -1 tells wxMaxima to use the default frame rate from the config dialog.
+*   `wxsubscripts` tells _Maxima_ if it should convert variable names that contain an underscore (`R_150` or the like) into subscripted variables. See `wxdeclare_subscript` for details which variable names are automatically converted.
+*   `wxfilename`: This variable contains the name of the file currently opened in _wxMaxima_. On Windows this piece of information is available only if in the configuration dialogue the checkbox `Maxima/maxima's pwd is path to document` is checked.
+*   `wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_’s pngcairo terminal that provides more line styles and a better overall graphics quality. This variable can be used for reading or overriding the respective setting in the configuration dialog.
+*   `wxplot_size` defines the size of embedded plots.
+*   `wxchangedir`: On most operating systems _wxMaxima_ automatically sets _Maxima_’s working directory to the directory of the current file. This allows file I/O (e.g. by `read_matrix`) to work without specifying the whole path to the file that has to be read or written. On Windows this feature is deactivated: The Lisp Standard doesn’t contain a concept of the current working directory. Therefore there is no standard way of setting it and changing to a directory that isn’t on the drive Maxima has been installed to might cause Maxima to try to read is own package files from this drive, too, instead of from the drive to which _Maxima_ has been installed. Setting wxchangedir to `true` tells wxMmaxima that it has to risk that and to set Maxima’s working directory.
+*   `wxanimate_framerate` The number of frames per second the following animations have to be played back with. -1 tells wxMaxima to use the default frame rate from the config dialog.
 
 ## Pretty-printing 2D output
 
@@ -668,7 +668,7 @@ Possible reasons for this error are:
 
 *   The plotting command is part of a third-party package like `implicit_plot` but this package was not loaded by Maxima’s `load()` command before trying to plot.
 *   Maxima tried to do something the currently installed version of gnuplot isn’t able to understand. In this case the file maxout.gnuplot in the directory Maxima’s variable maxima\_userdir points to contains the instructions from Maxima to gnuplot. Most of the time this file’s contents therefore are helpful when debugging the problem.
-*   Gnuplot was instructed to use the pngcairo library that provides antialiassing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the "Use the cairo terminal for plot" checkbox in the configuration dialog and don’t set wxplot\_pngcairo to true from Maxima.
+*   Gnuplot was instructed to use the pngcairo library that provides antialiassing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the "Use the cairo terminal for plot" checkbox in the configuration dialog and don’t set `wxplot_pngcairo` to true from Maxima.
 *   Gnuplot didn’t output a valid .png file.
 
 ## Plotting an animation results in “error: undefined variable”
