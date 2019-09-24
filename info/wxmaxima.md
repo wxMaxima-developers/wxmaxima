@@ -675,7 +675,7 @@ There are separate undo functions for cell operations and for changes inside of 
 
 *   wxMaxima actually has two undo features: The global undo buffer that is active if no cell is selected and a per-cell undo buffer that is active if the cursor is inside a cell. It is worth trying to use both undo options in order to see if an old value can still be accessed.
 *   If you still have a way to find out what label Maxima has assigned to the cell just type in the cell’s label and its contents will reappear.
-*   If you don’t: Don’t panic. In the “Maxima” menu there is a way to show a history pane that shows all Maxima commands that have been issued recently.
+*   If you don’t: Don’t panic. In the “View” menu there is a way to show a history pane that shows all Maxima commands that have been issued recently.
 *   If nothing else helps Maxima contains a replay feature:
 
     %i1 playback();
