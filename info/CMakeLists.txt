@@ -41,9 +41,9 @@ else()
         COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.pdf --number-sections --table-of-contents)
     foreach(POFILE ${TRANSLATION_FILES})
         string(REGEX REPLACE ".*locales/manual/(.*).po$" "\\1" LANG ${POFILE})
-        # it seems, ${PANDOC} --pdf-engine=lualatex is required for unicode handling.
+        # it seems, ${PANDOC} --pdf-engine=xelatex is required for unicode handling.
         add_custom_target(wxmaxima.${LANG}.pdf ALL
-            COMMAND ${PANDOC} --pdf-engine=lualatex ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md -o wxmaxima.${LANG}.pdf --number-sections --table-of-contents)
+            COMMAND ${PANDOC} --pdf-engine=xelatex ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md -o wxmaxima.${LANG}.pdf --number-sections --table-of-contents)
         add_custom_target(wxmaxima.${LANG}.docx ALL
             COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.${LANG}.docx --number-sections --table-of-contents)
         add_custom_target(wxmaxima.${LANG}.epub ALL
