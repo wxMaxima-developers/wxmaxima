@@ -64,8 +64,8 @@ else()
           add_custom_target(wxmaxima.${LANG}.pdf DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
             COMMAND ${PANDOC} ${PANDOC_TEXSELECT_OPTION}=${LATEX} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md -o wxmaxima.${LANG}.pdf --number-sections --table-of-contents)
 	endif()
-        add_custom_target(wxmaxima.${LANG}.docx DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
-            COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.${LANG}.docx --number-sections --table-of-contents)
+        add_custom_target(wxmaxima.${LANG}.odt DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
+            COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.${LANG}.odt --number-sections --table-of-contents)
         add_custom_target(wxmaxima.${LANG}.epub DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
             COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.${LANG}.epub --number-sections --table-of-contents --metadata title="wxMaxima")
         add_custom_target(wxmaxima.${LANG}.html DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
