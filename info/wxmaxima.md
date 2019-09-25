@@ -463,7 +463,7 @@ The first two arguments for `with_slider_draw` are the name of the variable that
         ),grid=true
     );
 
-The same functionality for 3d plots is accessible as `with_slider_draw3d`.
+The same functionality for 3D plots is accessible as `with_slider_draw3d`.
 
 There is a second set of functions making use of the slider
 
@@ -519,26 +519,26 @@ While not being a provided by wxMaxima this feature of Maxima (on setups that su
 The "Plot using draw" sidebar hides a simple code generator that allows to generate scenes that make use of some of the flexibility of the _draw_ package maxima comes with.
 
 #### 2D
-Generates the sceleton of a _draw()_ command that draws a 2d scene. This scene later has to be filled with commands that generate the scene's contents, for example by using the buttons in the rows below the "2D" button.
+Generates the sceleton of a `draw()` command that draws a 2D scene. This scene later has to be filled with commands that generate the scene's contents, for example by using the buttons in the rows below the "2D" button.
 
-One helpul feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is _t_ has a different value in each frame: Often an moving 2D plot allows easier interpretation than the same data in a non-moving 3d one.
+One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is _t_ has a different value in each frame: Often an moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.
 
 #### 3D
-Generates the sceleton of a _draw()_ command that draws a 3d scene. If neither a 2D or a 3D scene are set up all of the other buttons set up a 2d scene that contains the command the button generates. 
+Generates the sceleton of a `draw()` command that draws a 3D scene. If neither a 2D or a 3D scene are set up all of the other buttons set up a 2D scene that contains the command the button generates.
 
 #### Expression
-Appends a standard plot of an expression like _sin(x)_, _x*sin(x)_ or _x^2+2*x-4_ to the draw() command the cursor currently is in. If there is no draw command a 2D scene with the plot is generated. Each scene can be filled with any number of plots.
+Appends a standard plot of an expression like `sin(x)`, `x*sin(x)` or `x^2+2*x-4` to the `draw()` command the cursor currently is in. If there is no draw command a 2D scene with the plot is generated. Each scene can be filled with any number of plots.
 
 #### Implicit plot
-Tries to find all points an expression like _y=sin(x)_, _y*sin(x)=3_ or _x^2+y^2=4_ is true at and plots the resulting curve in the draw() command the cursor currently is in. If there is no draw command a 2D scene with the plot is generated. 
+Tries to find all points an expression like `y=sin(x)`, `y*sin(x)=3` or `x^2+y^2=4` is true at and plots the resulting curve in the `draw()` command the cursor currently is in. If there is no draw command a 2D scene with the plot is generated.
 
 #### Parametric plot
-Steps a variable from a lower limit to an upper limit and uses two expressions like _t*sin(t)_ and _t*cos(t)_ for generating the x, y (and in 3d plots also z) coordinates of a curve that is put into the current draw command.
+Steps a variable from a lower limit to an upper limit and uses two expressions like `t*sin(t)` and `t*cos(t)` for generating the x, y (and in 3D plots also z) coordinates of a curve that is put into the current draw command.
 
 #### Points
 Draws many points that can optionally be joined. The coordinates of the points are taken from a list of lists, an 2D array or one list or array for each axis.
 
-#### Diagram title 
+#### Diagram title
 Draws a title on the upper end of the diagram,
 
 #### Axis
@@ -566,7 +566,7 @@ Allows to select an adequate point in the speed vs. accuracy tradeoff that is pa
 
 if the .wxmx file format is being used embedding files in a wxMaxima project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:
 
-    show_image("Mann.png");
+    show_image("man.png");
 
 ## wxmaximarc
 
