@@ -32,18 +32,7 @@ endif()
 
 file(GLOB TRANSLATION_FILES ${CMAKE_SOURCE_DIR}/locales/manual/*.po)
 
-find_program(XELATEX xelatex)
-find_program(LUALATEX lualatex)
-if(XELATEX)
-  set(LATEX ${XELATEX})
-else()
-  if(LUALATEX)
-    set(LATEX ${LUALATEX})
-  else()
-    message(WARNING "Neither xelatex nor lualatex found. Documentation can not converted from Markdown to PDF.")
-  endif()
-endif()
-
+find_program(LATEX lualatex xelatex)
 find_program(PANDOC pandoc)
 if(NOT PANDOC)
     message(FATAL_ERROR "Pandoc not found. Documentation can not converted from Markdown.")
@@ -62,13 +51,19 @@ else()
         set(PANDOC_TEXSELECT_OPTION "--latex-engine")
     endif()
     # the english manual has no special LANG extension
-    add_custom_target(wxmaxima.pdf ALL
+    if(LATEX)
+      add_custom_target(wxmaxima.pdf ALL
         COMMAND ${PANDOC} ${PANDOC_TEXSELECT_OPTION}=${LATEX} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.pdf --number-sections --table-of-contents)
+    else()
+        message(STATUS "lualatex or xelatex required for building the pdf manual.")
+    endif()
     foreach(POFILE ${TRANSLATION_FILES})
         string(REGEX REPLACE ".*locales/manual/(.*).po$" "\\1" LANG ${POFILE})
-        # it seems, ${PANDOC} --pdf-engine=xelatex is required for unicode handling.
-        add_custom_target(wxmaxima.${LANG}.pdf ALL
+	if(LATEX)
+          # it seems, ${PANDOC} --pdf-engine=xelatex is required for unicode handling.
+          add_custom_target(wxmaxima.${LANG}.pdf ALL
             COMMAND ${PANDOC} ${PANDOC_TEXSELECT_OPTION}=${LATEX} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md -o wxmaxima.${LANG}.pdf --number-sections --table-of-contents)
+	endif()
         add_custom_target(wxmaxima.${LANG}.docx ALL
             COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.${LANG}.docx --number-sections --table-of-contents)
         add_custom_target(wxmaxima.${LANG}.epub ALL
