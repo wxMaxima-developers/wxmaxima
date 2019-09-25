@@ -52,7 +52,7 @@ else()
     endif()
     # the english manual has no special LANG extension
     if(LATEX)
-      add_custom_target(wxmaxima.pdf ALL
+      add_custom_target(wxmaxima.pdf DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
         COMMAND ${PANDOC} ${PANDOC_TEXSELECT_OPTION}=${LATEX} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.pdf --number-sections --table-of-contents)
     else()
         message(STATUS "lualatex or xelatex required for building the pdf manual.")
@@ -61,14 +61,14 @@ else()
         string(REGEX REPLACE ".*locales/manual/(.*).po$" "\\1" LANG ${POFILE})
 	if(LATEX)
           # it seems, ${PANDOC} --pdf-engine=xelatex is required for unicode handling.
-          add_custom_target(wxmaxima.${LANG}.pdf ALL
+          add_custom_target(wxmaxima.${LANG}.pdf DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
             COMMAND ${PANDOC} ${PANDOC_TEXSELECT_OPTION}=${LATEX} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md -o wxmaxima.${LANG}.pdf --number-sections --table-of-contents)
 	endif()
-        add_custom_target(wxmaxima.${LANG}.docx ALL
+        add_custom_target(wxmaxima.${LANG}.docx DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
             COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.${LANG}.docx --number-sections --table-of-contents)
-        add_custom_target(wxmaxima.${LANG}.epub ALL
+        add_custom_target(wxmaxima.${LANG}.epub DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
             COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.${LANG}.epub --number-sections --table-of-contents --metadata title="wxMaxima")
-        add_custom_target(wxmaxima.${LANG}.html ALL
+        add_custom_target(wxmaxima.${LANG}.html DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
             COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.${LANG}.html --number-sections --table-of-contents)
     endforeach()
 endif()
