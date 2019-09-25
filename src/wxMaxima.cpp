@@ -3106,7 +3106,7 @@ wxString wxMaxima::SearchwxMaximaHelp()
   if(langinfo)
   {
     wxString lang_long = langinfo->GetLocaleName();
-    wxString lang_short = lang_long.Left(lang_long.Find('_')-1);
+    wxString lang_short = lang_long.Left(lang_long.Find('_'));
     helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_") + lang_long + ".hhp";
 #if defined (__WXMSW__)
     // Cygwin uses /c/something instead of c:/something and passes this path to the
