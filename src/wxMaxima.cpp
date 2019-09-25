@@ -3098,8 +3098,10 @@ wxString wxMaxima::SearchwxMaximaHelp()
 {
   wxString failmsg = _("No helpfile found at %s.");
   wxString helpfile;
-
-  const wxLanguageInfo *langinfo = m_locale->GetLanguageInfo(m_locale->GetLanguage());
+  long language = m_locale->GetLanguage();
+  if(language == wxLANGUAGE_DEFAULT)
+    language = wxLocale::GetSystemLanguage();
+  const wxLanguageInfo *langinfo = m_locale->GetLanguageInfo(language);
 
   wxASSERT(langinfo);
   
