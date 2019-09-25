@@ -332,7 +332,7 @@ void MyApp::NewWindow(wxString file, bool evalOnStartup, bool exitAfterEval)
   if (numberOfWindows > 1)
     title = wxString::Format(_("wxMaxima %d"), numberOfWindows);
 
-  wxMaxima *frame = new wxMaxima((wxFrame *) NULL, -1, title);
+  wxMaxima *frame = new wxMaxima((wxFrame *) NULL, -1, &m_locale, title);
   if (file.Length() > 0)
     frame->SetOpenFile(file);
   

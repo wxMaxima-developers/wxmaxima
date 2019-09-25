@@ -166,13 +166,14 @@ void wxMaxima::ConfigChanged()
   }
 }
 
-wxMaxima::wxMaxima(wxWindow *parent, int id, const wxString title,
+wxMaxima::wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString title,
                    const wxPoint pos, const wxSize size) :
   wxMaximaFrame(parent, id, title, pos, size, wxDEFAULT_FRAME_STYLE,
                 MyApp::m_topLevelWindows.empty())
 {
   // Will be corrected by ConfigChanged()
   m_maxOutputCellsPerCommand = -1;
+  m_locale = locale;
   m_isLogTarget = MyApp::m_topLevelWindows.empty();
   // Suppress window updates until this window has fully been created.
   // Not redrawing the window whilst constructing it hopefully speeds up
@@ -3093,24 +3094,71 @@ void wxMaxima::ShowCHMHelp(wxString helpfile,wxString keyword)
 }
 #endif
 
-void wxMaxima::ShowWxMaximaHelp()
+wxString wxMaxima::SearchwxMaximaHelp()
 {
-  wxString helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.hhp");
+  wxString failmsg = _("No helpfile found at %s.");
+  wxString helpfile;
+
+  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + m_locale->GetLocale() + ".hhp";
 #if defined (__WXMSW__)
   // Cygwin uses /c/something instead of c:/something and passes this path to the
   // web browser - which doesn't support cygwin paths => convert the path to a
   // native windows pathname if needed.
-  if(helpfile.Length()>1 && helpfile[1]==wxT('/'))
-  {
-    helpfile[1]=helpfile[2];
-    helpfile[2]=wxT(':');
-  }
+  if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
-
-  // The path Gentoo hides the manual at
+  if(wxFileExists(helpfile))
+    return helpfile;
+  wxLogMessage(wxString::Format(failmsg, helpfile));
+  
+  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + m_locale->GetName() + ".hhp";
+#if defined (__WXMSW__)
+  // Cygwin uses /c/something instead of c:/something and passes this path to the
+  // web browser - which doesn't support cygwin paths => convert the path to a
+  // native windows pathname if needed.
+  if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
+#endif // __WXMSW__
+  if(wxFileExists(helpfile))
+    return helpfile;
+  wxLogMessage(wxString::Format(failmsg, helpfile));
+  
+  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_") + m_locale->GetLocale() + ".hhp";
+#if defined (__WXMSW__)
+  // Cygwin uses /c/something instead of c:/something and passes this path to the
+  // web browser - which doesn't support cygwin paths => convert the path to a
+  // native windows pathname if needed.
+  if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
+#endif // __WXMSW__
+  if(wxFileExists(helpfile))
+    return helpfile;
+  wxLogMessage(wxString::Format(failmsg, helpfile));
+  
+  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_") + m_locale->GetName() + ".hhp";
+#if defined (__WXMSW__)
+  // Cygwin uses /c/something instead of c:/something and passes this path to the
+  // web browser - which doesn't support cygwin paths => convert the path to a
+  // native windows pathname if needed.
+  if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
+#endif // __WXMSW__
+  if(wxFileExists(helpfile))
+    return helpfile;
+  wxLogMessage(wxString::Format(failmsg, helpfile));
+  
+  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.hhp");
+#if defined (__WXMSW__)
+  // Cygwin uses /c/something instead of c:/something and passes this path to the
+  // web browser - which doesn't support cygwin paths => convert the path to a
+  // native windows pathname if needed.
+  if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
+#endif // __WXMSW__
   if(!wxFileExists(helpfile))
-    helpfile = wxString::Format("/usr/share/doc/wxmaxima-%s/wxmaxima.hhp",GITVERSION);
+    wxLogMessage(wxString::Format(failmsg, helpfile));
+  return helpfile;
+}
 
+void wxMaxima::ShowWxMaximaHelp()
+{
+  wxString helpfile = SearchwxMaximaHelp();
+  
   wxLogMessage(wxString::Format(_("wxMaxima help should be at %s."),helpfile));
   wxString helpcontents = helpfile;
   helpcontents.Replace(".hhp",".html");

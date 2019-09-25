@@ -99,7 +99,7 @@ class wxMaxima : public wxMaximaFrame
 {
 public:
 
-  wxMaxima(wxWindow *parent, int id, const wxString title,
+  wxMaxima(wxWindow *parent, int id, wxLocale *locale, const wxString title,
            const wxPoint pos = wxDefaultPosition, const wxSize size = wxDefaultSize);
   
   ~wxMaxima();
@@ -194,6 +194,9 @@ public:
   bool QueryVariableValue();
 
 private:
+  //! Search for the wxMaxima help file
+  wxString SearchwxMaximaHelp();
+  wxLocale *m_locale;
   //! The variable names to query for the variables pane
   wxArrayString m_varNamesToQuery;
   bool m_isLogTarget;
