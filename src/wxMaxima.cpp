@@ -3099,49 +3099,58 @@ wxString wxMaxima::SearchwxMaximaHelp()
   wxString failmsg = _("No helpfile found at %s.");
   wxString helpfile;
 
-  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + m_locale->GetLocale() + ".hhp";
-#if defined (__WXMSW__)
-  // Cygwin uses /c/something instead of c:/something and passes this path to the
-  // web browser - which doesn't support cygwin paths => convert the path to a
-  // native windows pathname if needed.
-  if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
-#endif // __WXMSW__
-  if(wxFileExists(helpfile))
-    return helpfile;
-  wxLogMessage(wxString::Format(failmsg, helpfile));
+  const wxLanguageInfo *langinfo = m_locale->GetLanguageInfo(m_locale->GetLanguage());
+
+  wxASSERT(langinfo);
   
-  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + m_locale->GetName() + ".hhp";
+  if(langinfo)
+  {
+    wxString lang_long = langinfo->GetLocaleName();
+    wxString lang_short = lang_long.Left(lang_long.Find('_')-1);
+    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_") + lang_long + ".hhp";
 #if defined (__WXMSW__)
-  // Cygwin uses /c/something instead of c:/something and passes this path to the
-  // web browser - which doesn't support cygwin paths => convert the path to a
-  // native windows pathname if needed.
-  if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
+    // Cygwin uses /c/something instead of c:/something and passes this path to the
+    // web browser - which doesn't support cygwin paths => convert the path to a
+    // native windows pathname if needed.
+    if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
-  if(wxFileExists(helpfile))
-    return helpfile;
-  wxLogMessage(wxString::Format(failmsg, helpfile));
-  
-  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_") + m_locale->GetLocale() + ".hhp";
+    if(wxFileExists(helpfile))
+      return helpfile;
+    wxLogMessage(wxString::Format(failmsg, helpfile));
+    
+    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_") + lang_short + ".hhp";
 #if defined (__WXMSW__)
-  // Cygwin uses /c/something instead of c:/something and passes this path to the
-  // web browser - which doesn't support cygwin paths => convert the path to a
-  // native windows pathname if needed.
-  if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
+    // Cygwin uses /c/something instead of c:/something and passes this path to the
+    // web browser - which doesn't support cygwin paths => convert the path to a
+    // native windows pathname if needed.
+    if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
-  if(wxFileExists(helpfile))
+    if(wxFileExists(helpfile))
     return helpfile;
-  wxLogMessage(wxString::Format(failmsg, helpfile));
-  
-  helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_") + m_locale->GetName() + ".hhp";
+    wxLogMessage(wxString::Format(failmsg, helpfile));
+
+    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_long + ".hhp";
 #if defined (__WXMSW__)
-  // Cygwin uses /c/something instead of c:/something and passes this path to the
-  // web browser - which doesn't support cygwin paths => convert the path to a
-  // native windows pathname if needed.
-  if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
+    // Cygwin uses /c/something instead of c:/something and passes this path to the
+    // web browser - which doesn't support cygwin paths => convert the path to a
+    // native windows pathname if needed.
+    if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
-  if(wxFileExists(helpfile))
-    return helpfile;
-  wxLogMessage(wxString::Format(failmsg, helpfile));
+    if(wxFileExists(helpfile))
+      return helpfile;
+    wxLogMessage(wxString::Format(failmsg, helpfile));
+    
+    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_short + ".Hhp";
+#if defined (__WXMSW__)
+    // Cygwin uses /c/something instead of c:/something and passes this path to the
+    // web browser - which doesn't support cygwin paths => convert the path to a
+    // native windows pathname if needed.
+    if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
+#endif // __WXMSW__
+    if(wxFileExists(helpfile))
+      return helpfile;
+    wxLogMessage(wxString::Format(failmsg, helpfile));
+  }
   
   helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.hhp");
 #if defined (__WXMSW__)
