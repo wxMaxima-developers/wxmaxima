@@ -34,7 +34,7 @@ file(GLOB TRANSLATION_FILES ${CMAKE_SOURCE_DIR}/locales/manual/*.po)
 find_program(LATEX NAMES xelatex lualatex)
 find_program(PANDOC pandoc)
 if(NOT PANDOC)
-    message(FATAL_ERROR "Pandoc not found. Documentation can not converted from Markdown.")
+    message(WARNING "Pandoc not found. Documentation can not converted from Markdown.")
 else()
     execute_process(
         COMMAND ${PANDOC} --version
