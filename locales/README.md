@@ -4,6 +4,12 @@ wxMaxima's Translations
 Translations are an important aspect of open-source programs. Any help with them
 is always appreciated.
 
+The subdirectories of this folder contain the translations of
+
+* wxMaxima itself
+* wxWidgets, the framework wxMaxima makes extensive use of
+* wxMaxima's manual
+
 ### Translating wxMaxima to a new language
 
 In order to translate wxMaxima to a entirely new language two things have to be done:
