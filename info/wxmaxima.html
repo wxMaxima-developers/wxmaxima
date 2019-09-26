@@ -1,3 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>wxMaxima</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">wxMaxima</h1>
+</header>
+<nav id="TOC">
+<ul>
+<li><a href="#the-wxmaxima-users-manual">The wxMaxima user’s manual</a></li>
+<li><a href="#introduction-to-wxmaxima"><span class="toc-section-number">1</span> Introduction to wxMaxima</a><ul>
+<li><a href="#maxima-and-wxmaxima"><span class="toc-section-number">1.1</span> Maxima and wxMaxima</a><ul>
+<li><a href="#maxima"><span class="toc-section-number">1.1.1</span> Maxima</a></li>
+<li><a href="#wxmaxima"><span class="toc-section-number">1.1.2</span> wxMaxima</a></li>
+</ul></li>
+<li><a href="#workbook-basics"><span class="toc-section-number">1.2</span> Workbook basics</a><ul>
+<li><a href="#the-workbook-approach"><span class="toc-section-number">1.2.1</span> The workbook approach</a></li>
+<li><a href="#cells"><span class="toc-section-number">1.2.2</span> Cells</a></li>
+<li><a href="#horizontal-and-vertical-cursors"><span class="toc-section-number">1.2.3</span> Horizontal and vertical cursors</a></li>
+<li><a href="#command-autocompletion"><span class="toc-section-number">1.2.4</span> Command autocompletion</a></li>
+<li><a href="#side-panes"><span class="toc-section-number">1.2.5</span> Side Panes</a></li>
+<li><a href="#mathml-output"><span class="toc-section-number">1.2.6</span> MathML output</a></li>
+<li><a href="#markdown-support"><span class="toc-section-number">1.2.7</span> Markdown support</a></li>
+<li><a href="#hotkeys"><span class="toc-section-number">1.2.8</span> Hotkeys</a></li>
+<li><a href="#raw-tex-in-the-tex-export"><span class="toc-section-number">1.2.9</span> Raw TeX in the TeX export</a></li>
+</ul></li>
+<li><a href="#file-formats"><span class="toc-section-number">1.3</span> File Formats</a><ul>
+<li><a href="#mac"><span class="toc-section-number">1.3.1</span> .mac</a></li>
+<li><a href="#wxm"><span class="toc-section-number">1.3.2</span> .wxm</a></li>
+<li><a href="#wxmx"><span class="toc-section-number">1.3.3</span> .wxmx</a></li>
+</ul></li>
+<li><a href="#configuration-options"><span class="toc-section-number">1.4</span> Configuration options</a><ul>
+<li><a href="#default-animation-framerate"><span class="toc-section-number">1.4.1</span> Default animation framerate</a></li>
+<li><a href="#default-plot-size-for-new-maxima-sessions"><span class="toc-section-number">1.4.2</span> Default plot size for new maxima sessions</a></li>
+<li><a href="#use-jsmath-fonts"><span class="toc-section-number">1.4.3</span> Use jsMath fonts</a></li>
+<li><a href="#match-parenthesis-in-text-controls"><span class="toc-section-number">1.4.4</span> Match parenthesis in text controls</a></li>
+<li><a href="#autosave-interval"><span class="toc-section-number">1.4.5</span> Autosave interval</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#extensions-to-maxima"><span class="toc-section-number">2</span> Extensions to <em>Maxima</em></a><ul>
+<li><a href="#subscripted-variables"><span class="toc-section-number">2.1</span> Subscripted variables</a></li>
+<li><a href="#user-feedback-in-the-statusbar"><span class="toc-section-number">2.2</span> User feedback in the statusbar</a></li>
+<li><a href="#plotting"><span class="toc-section-number">2.3</span> Plotting</a><ul>
+<li><a href="#embedding-a-plot-into-the-work-sheet"><span class="toc-section-number">2.3.1</span> Embedding a plot into the work sheet</a></li>
+<li><a href="#making-embedded-plots-bigger-or-smaller"><span class="toc-section-number">2.3.2</span> Making embedded plots bigger or smaller</a></li>
+<li><a href="#better-quality-plots"><span class="toc-section-number">2.3.3</span> Better quality plots</a></li>
+<li><a href="#opening-up-plots-in-interactive-gnuplot-windows"><span class="toc-section-number">2.3.4</span> Opening up plots in interactive gnuplot windows</a></li>
+<li><a href="#opening-gnuplots-command-console-in-windows-created-by-plot-and-draw"><span class="toc-section-number">2.3.5</span> Opening gnuplot’s command console in windows created by <code>plot</code> and <code>draw</code></a></li>
+<li><a href="#embedding-animations-into-the-spreadsheet"><span class="toc-section-number">2.3.6</span> Embedding animations into the spreadsheet</a></li>
+<li><a href="#opening-multiple-plots-in-contemporaneous-windows"><span class="toc-section-number">2.3.7</span> Opening multiple plots in contemporaneous windows</a></li>
+<li><a href="#the-plot-using-draw-sidepane"><span class="toc-section-number">2.3.8</span> The “Plot using draw” sidepane</a></li>
+</ul></li>
+<li><a href="#embedding-graphics"><span class="toc-section-number">2.4</span> Embedding graphics</a></li>
+<li><a href="#wxmaximarc"><span class="toc-section-number">2.5</span> wxmaximarc</a></li>
+<li><a href="#special-variables-wx"><span class="toc-section-number">2.6</span> Special variables wx…</a></li>
+<li><a href="#pretty-printing-2d-output"><span class="toc-section-number">2.7</span> Pretty-printing 2D output</a></li>
+<li><a href="#bug-reporting"><span class="toc-section-number">2.8</span> Bug reporting</a></li>
+<li><a href="#marking-output-being-drawn-in-red"><span class="toc-section-number">2.9</span> Marking output being drawn in red</a></li>
+</ul></li>
+<li><a href="#troubleshooting"><span class="toc-section-number">3</span> Troubleshooting</a><ul>
+<li><a href="#cannot-connect-to-maxima"><span class="toc-section-number">3.1</span> Cannot connect to Maxima</a></li>
+<li><a href="#how-to-save-data-from-a-broken-.wxmx-file"><span class="toc-section-number">3.2</span> How to save data from a broken .wxmx file</a></li>
+<li><a href="#i-want-some-debug-info-to-be-displayed-on-the-screen-before-my-command-has-finished"><span class="toc-section-number">3.3</span> I want some debug info to be displayed on the screen before my command has finished</a></li>
+<li><a href="#wxmaxima-on-windows-crashes-on-displaying-seemingly-simple-equations"><span class="toc-section-number">3.4</span> wxMaxima on Windows crashes on displaying seemingly simple equations</a></li>
+<li><a href="#plotting-only-shows-an-closed-empty-envelope-with-an-error-message"><span class="toc-section-number">3.5</span> Plotting only shows an closed empty envelope with an error message</a></li>
+<li><a href="#plotting-an-animation-results-in-error-undefined-variable"><span class="toc-section-number">3.6</span> Plotting an animation results in “error: undefined variable”</a></li>
+<li><a href="#i-lost-a-cell-contents-and-undo-doesnt-remember"><span class="toc-section-number">3.7</span> I lost a cell contents and undo doesn’t remember</a></li>
+<li><a href="#wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="toc-section-number">3.8</span> wxMaxima starts up with the message “Maxima process Terminated.”</a></li>
+<li><a href="#maxima-is-forever-calculating-and-not-responding-to-input"><span class="toc-section-number">3.9</span> Maxima is forever calculating and not responding to input</a></li>
+<li><a href="#file-io-from-maxima-doesnt-work-on-windows"><span class="toc-section-number">3.10</span> File I/O from Maxima doesn’t work on Windows</a></li>
+<li><a href="#my-sbcl-based-maxima-runs-out-of-memory"><span class="toc-section-number">3.11</span> My SBCL-based Maxima runs out of memory</a></li>
+<li><a href="#input-sometimes-is-sluggishignoring-keys-on-ubuntu"><span class="toc-section-number">3.12</span> Input sometimes is sluggish/ignoring keys on Ubuntu</a></li>
+<li><a href="#wxmaxima-halts-when-maxima-processes-greek-characters-or-umlauts"><span class="toc-section-number">3.13</span> wxMaxima halts when Maxima processes Greek characters or Umlauts</a></li>
+<li><a href="#plotting-1"><span class="toc-section-number">3.14</span> Plotting</a><ul>
+<li><a href="#can-i-make-wxmaxima-output-both-image-files-and-embedded-plots-at-once"><span class="toc-section-number">3.14.1</span> Can I make wxMaxima output both image files and embedded plots at once?</a></li>
+<li><a href="#can-i-set-the-aspect-ratio-of-a-plot"><span class="toc-section-number">3.14.2</span> Can I set the aspect ratio of a plot?</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#faq"><span class="toc-section-number">4</span> FAQ</a><ul>
+<li><a href="#is-there-a-way-to-make-more-text-fit-on-a-pdflatex-page"><span class="toc-section-number">4.1</span> Is there a way to make more text fit on a pdfLaTeX page?</a></li>
+</ul></li>
+<li><a href="#command-line-arguments"><span class="toc-section-number">5</span> Command-line arguments</a></li>
+<li><a href="#annotated-index"><span class="toc-section-number">6</span> Annotated Index</a></li>
+</ul>
+</nav>
 <h1 id="the-wxmaxima-users-manual" class="unnumbered">The wxMaxima user’s manual</h1>
 <p>wxMaxima is a graphical user interface (GUI) for the Maxima computer algebra system (CAS). wxMaxima allows one to use all of Maxima’s functions. In addition, it provides convenient wizards for accessing the most commonly used features. This manual describes some of the features that make wxMaxima one of the most popular GUIs for Maxima.</p>
 <p><a href="wxMaximaLogo"><img src="./wxMaximaLogo.png" alt="wxMaxima logo" /></a></p>
@@ -580,3 +676,5 @@ pngdraw2d(&quot;Test&quot;,
 <p><a href="#The-worksheet-approach">wxMaxima workbook structure</a>: central features of a <em>wxMaxima</em> workbook</p>
 <p><a href="#g_t_002ewxm">wxm and wxmx files</a>: formats for <em>wxMaxima</em> workbooks</p>
 <p><a href="#Broken%20wxmx">wxmx data</a>: retrieve data from a broken wxmx file</p>
+</body>
+</html>

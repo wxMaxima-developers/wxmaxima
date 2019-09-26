@@ -55,7 +55,7 @@ else()
     add_custom_target(wxmaxima.epub ALL DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
         COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.epub --number-sections --table-of-contents --metadata title="wxMaxima")
     add_custom_target(wxmaxima.html ALL DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
-        COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.html --number-sections --table-of-contents)
+        COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.html --number-sections --table-of-contents -s --metadata title="wxMaxima")
     if(LATEX)
         add_custom_target(wxmaxima.pdf ALL DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
             COMMAND ${PANDOC} ${PANDOC_TEXSELECT_OPTION}=${LATEX} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.pdf --number-sections --table-of-contents)
@@ -70,11 +70,11 @@ else()
                 COMMAND ${PANDOC} ${PANDOC_TEXSELECT_OPTION}=${LATEX} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md -o wxmaxima.${LANG}.pdf --number-sections --table-of-contents)
         endif()
         add_custom_target(wxmaxima.${LANG}.odt ALL DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
-            COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.${LANG}.odt --number-sections --table-of-contents)
+            COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md -o wxmaxima.${LANG}.odt --number-sections --table-of-contents)
         add_custom_target(wxmaxima.${LANG}.epub ALL DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
-            COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.${LANG}.epub --number-sections --table-of-contents --metadata title="wxMaxima")
+            COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md -o wxmaxima.${LANG}.epub --number-sections --table-of-contents --metadata title="wxMaxima")
         add_custom_target(wxmaxima.${LANG}.html ALL DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
-            COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.${LANG}.html --number-sections --table-of-contents)
+            COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md -o wxmaxima.${LANG}.html --number-sections --table-of-contents -s --metadata title="wxMaxima")
     endforeach()
 endif()
 
