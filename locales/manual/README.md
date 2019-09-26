@@ -14,7 +14,16 @@ Any help is always welcome.
 
 ### Specialities of the manual
 
-po4any offers to translate the characters that contain the formatting hints 
-for the markdown parser, too. If you remove them or exchange them by something
-completely different the formatting will change, too.
+[po4a](http://po4a.alioth.debian.org/) po4a offers to translate the characters 
+that contain the formatting hints for the markdown parser, too. If you remove 
+them or exchange them by something completely different the formatting will change, too.
 
+### Why not to translate the manual file directly
+
+Translating a text file is more convenient than translating a .po file.
+But manually keeping the translation of a text file in sync with the original 
+if the original changes is a complicated task.
+
+Translating .po files is a more complicated than translating the original text.
+But po4a keeps track about which paragraphs have already been translated or 
+need to be translated which makes maintaining the translation easier.

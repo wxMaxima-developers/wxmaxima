@@ -516,50 +516,65 @@ While not being a provided by wxMaxima this feature of Maxima (on setups that su
     draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
 
 ### The "Plot using draw" sidepane
+
 The "Plot using draw" sidebar hides a simple code generator that allows to generate scenes that make use of some of the flexibility of the _draw_ package maxima comes with.
 
 #### 2D
+
 Generates the sceleton of a `draw()` command that draws a 2D scene. This scene later has to be filled with commands that generate the scene's contents, for example by using the buttons in the rows below the "2D" button.
 
 One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is _t_ has a different value in each frame: Often an moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.
 
 #### 3D
+
 Generates the sceleton of a `draw()` command that draws a 3D scene. If neither a 2D or a 3D scene are set up all of the other buttons set up a 2D scene that contains the command the button generates.
 
 #### Expression
+
 Appends a standard plot of an expression like `sin(x)`, `x*sin(x)` or `x^2+2*x-4` to the `draw()` command the cursor currently is in. If there is no draw command a 2D scene with the plot is generated. Each scene can be filled with any number of plots.
 
 #### Implicit plot
+
 Tries to find all points an expression like `y=sin(x)`, `y*sin(x)=3` or `x^2+y^2=4` is true at and plots the resulting curve in the `draw()` command the cursor currently is in. If there is no draw command a 2D scene with the plot is generated.
 
 #### Parametric plot
+
 Steps a variable from a lower limit to an upper limit and uses two expressions like `t*sin(t)` and `t*cos(t)` for generating the x, y (and in 3D plots also z) coordinates of a curve that is put into the current draw command.
 
 #### Points
+
 Draws many points that can optionally be joined. The coordinates of the points are taken from a list of lists, an 2D array or one list or array for each axis.
 
 #### Diagram title
+
 Draws a title on the upper end of the diagram,
 
 #### Axis
+
 Sets up the axis.
 
 #### Contour
+
 (Only for 3D plots): Adds contour lines similar to the ones one can find in a map of a mountain to the plot commands that follow in the current draw() command and/or to the ground plane of the diagram. Alternatively this wizard allows skipping drawing the curves entirely only showing the contour plot.
 
 #### Plot name
+
 Adds a legend entry showing the next plot's name to the legend of the diagram. An empty name disables generating legend entries for the following plots.
 
 #### Line color
+
 Sets the line color for the following plots the current draw command contains.
 
 #### Fill color
+
 Sets the fill color for the following plots the current draw command contains.
 
 #### Grid
+
 Pops up a wizard that allows to set up grid lines.
 
 #### Accuracy
+
 Allows to select an adequate point in the speed vs. accuracy tradeoff that is part of any plot program.
 
 ## Embedding graphics
