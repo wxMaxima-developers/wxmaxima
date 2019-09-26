@@ -54,6 +54,7 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_zoomFactor = 1.0; // affects returned fontsizes
   m_changeAsterisk = true;
   m_workSheet = NULL;
+  m_latin2greek = false;
   m_printScale = 1.0;
   m_forceUpdate = false;
   m_outdated = false;
@@ -352,6 +353,7 @@ void Configuration::ReadConfig()
 
   config->Read(wxT("documentclass"), &m_documentclass);
   config->Read(wxT("documentclassoptions"), &m_documentclassOptions);
+  config->Read(wxT("latin2greek"), &m_latin2greek);
 
   {
     int tmp;

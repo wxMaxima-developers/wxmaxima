@@ -1510,12 +1510,15 @@ void TextCell::SetAltText()
   /// Greek characters are defined in jsMath, Windows and Unicode
   if (GetStyle() == TS_GREEK_CONSTANT)
   {
-    m_altJs = true;
-    m_altJsText = GetGreekStringTeX();
-    m_texFontname = CMMI10;
-
-    m_alt = true;
-    m_altText = GetGreekStringUnicode();
+    if((*m_configuration)->Latin2Greek())
+    {
+      m_altJs = true;
+      m_altJsText = GetGreekStringTeX();
+      m_texFontname = CMMI10;
+      
+      m_alt = true;
+      m_altText = GetGreekStringUnicode();
+    }
   }
 
     /// Check for other symbols

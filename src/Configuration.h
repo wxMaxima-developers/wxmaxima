@@ -506,6 +506,14 @@ public:
   {
     wxConfig::Get()->Write(wxT("changeAsterisk"), m_changeAsterisk = changeAsterisk);
   }
+
+  bool Latin2Greek()
+    {return m_latin2greek;}
+
+  void Latin2Greek(bool latin2greek)
+    {
+      wxConfig::Get()->Write(wxT("latin2greek"), m_latin2greek = latin2greek);
+    }
   
   //! Notify the user if maxima is idle?
   bool NotifyIfIdle()
@@ -845,6 +853,7 @@ private:
   //! The width of input and output labels [in chars]
   int m_labelWidth;
   int m_indent;
+  bool m_latin2greek;
   bool m_antiAliasLines;
   double m_zoomFactor;
   wxDC *m_dc;

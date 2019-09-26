@@ -312,6 +312,7 @@ protected:
   wxCheckBox *m_fixedFontInTC;
   wxCheckBox *m_unixCopy;
   wxCheckBox *m_changeAsterisk;
+  wxCheckBox *m_latin2Greek;
   wxCheckBox *m_useJSMath;
   wxCheckBox *m_useUnicodeMaths;
   wxCheckBox *m_keepPercentWithSpecials;
