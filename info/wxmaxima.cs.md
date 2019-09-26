@@ -156,13 +156,10 @@ below.
 On evaluation of an input cellâs contents the input cell _Maxima_ assigns
 a label to the input (by default shown in red and recognizable by the `%i`)
 by which it can be referenced later in the _wxMaxima_ session. The output
-that _Maxima_ generates will be shown in a different style (which can be
-user-selected) and is preceded by a _Maxima_ label that begins beginning
-with `%o`. The output item can be accessed later with a reference to this
-code. By default _wxMaxima_ will also attempt to replace this
-dynamically-generated label by a more descriptive name if the user provides
-one. The `%o`\-style label _Maxima_ auto-generates will still be accessible,
-though.
+that _Maxima_ generates also gets a label that begins with `%o` and by
+default is hidden, except if the user assigns the output a name. In this
+case by default the user-defined label is displayed. The `%o`\-style label
+_Maxima_ auto-generates will also be accessible, though.
 
 Besides the input cells wxMaxima allows for text cells for documentation,
 image cells, title cells, chapter cells and section cells. Every cell has
@@ -720,7 +717,7 @@ variable. The arguments that follow are the ordinary arguments for
         ),grid=true
     );
 
-The same functionality for 3d plots is accessible as `with_slider_draw3d`.
+The same functionality for 3D plots is accessible as `with_slider_draw3d`.
 
 There is a second set of functions making use of the slider
 
@@ -781,67 +778,96 @@ from a post from Mario Rodriguez to the Maxima mailing list:
     /* Paraboloid in window #3 */
     draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));
 
-### The "Plot using draw" sidepane The "Plot using draw" sidebar hides a
-simple code generator that allows to generate scenes that make use of some
-of the flexibility of the _draw_ package maxima comes with.
+### The "Plot using draw" sidepane
 
-#### 2D Generates the sceleton of a _draw()_ command that draws a 2d
-scene. This scene later has to be filled with commands that generate the
-scene's contents, for example by using the buttons in the rows below the
-"2D" button.
+The "Plot using draw" sidebar hides a simple code generator that allows to
+generate scenes that make use of some of the flexibility of the _draw_
+package maxima comes with.
 
-One helpul feature of the 2D button is that it allows to setup the scene as
+#### 2D
+
+Generates the sceleton of a `draw()` command that draws a 2D scene. This
+scene later has to be filled with commands that generate the scene's
+contents, for example by using the buttons in the rows below the "2D"
+button.
+
+One helpful feature of the 2D button is that it allows to setup the scene as
 an animation in which a variable (by default it is _t_ has a different value
 in each frame: Often an moving 2D plot allows easier interpretation than the
-same data in a non-moving 3d one.
+same data in a non-moving 3D one.
 
-#### 3D Generates the sceleton of a _draw()_ command that draws a 3d
-scene. If neither a 2D or a 3D scene are set up all of the other buttons set
-up a 2d scene that contains the command the button generates.
+#### 3D
 
-#### Expression Appends a standard plot of an expression like _sin(x)_,
-_x*sin(x)_ or _x^2+2*x-4_ to the draw() command the cursor currently is
-in. If there is no draw command a 2D scene with the plot is generated. Each
-scene can be filled with any number of plots.
+Generates the sceleton of a `draw()` command that draws a 3D scene. If
+neither a 2D or a 3D scene are set up all of the other buttons set up a 2D
+scene that contains the command the button generates.
 
-#### Implicit plot Tries to find all points an expression like _y=sin(x)_,
-_y*sin(x)=3_ or _x^2+y^2=4_ is true at and plots the resulting curve in the
-draw() command the cursor currently is in. If there is no draw command a 2D
-scene with the plot is generated.
+#### Expression
 
-#### Parametric plot Steps a variable from a lower limit to an upper limit
-and uses two expressions like _t*sin(t)_ and _t*cos(t)_ for generating the
-x, y (and in 3d plots also z) coordinates of a curve that is put into the
-current draw command.
+Appends a standard plot of an expression like `sin(x)`, `x*sin(x)` or
+`x^2+2*x-4` to the `draw()` command the cursor currently is in. If there is
+no draw command a 2D scene with the plot is generated. Each scene can be
+filled with any number of plots.
 
-#### Points Draws many points that can optionally be joined. The coordinates
-of the points are taken from a list of lists, an 2D array or one list or
-array for each axis.
+#### Implicit plot
 
-#### Diagram title Draws a title on the upper end of the diagram,
+Tries to find all points an expression like `y=sin(x)`, `y*sin(x)=3` or
+`x^2+y^2=4` is true at and plots the resulting curve in the `draw()` command
+the cursor currently is in. If there is no draw command a 2D scene with the
+plot is generated.
 
-#### Axis Sets up the axis.
+#### Parametric plot
 
-#### Contour (Only for 3D plots): Adds contour lines similar to the ones one
-can find in a map of a mountain to the plot commands that follow in the
-current draw() command and/or to the ground plane of the
-diagram. Alternatively this wizard allows skipping drawing the curves
-entirely only showing the contour plot.
+Steps a variable from a lower limit to an upper limit and uses two
+expressions like `t*sin(t)` and `t*cos(t)` for generating the x, y (and in
+3D plots also z) coordinates of a curve that is put into the current draw
+command.
 
-#### Plot name Adds a legend entry showing the next plot's name to the
-legend of the diagram. An empty name disables generating legend entries for
-the following plots.
+#### Points
 
-#### Line color Sets the line color for the following plots the current draw
-command contains.
+Draws many points that can optionally be joined. The coordinates of the
+points are taken from a list of lists, an 2D array or one list or array for
+each axis.
 
-#### Fill color Sets the fill color for the following plots the current draw
-command contains.
+#### Diagram title
 
-#### Grid Pops up a wizard that allows to set up grid lines.
+Draws a title on the upper end of the diagram,
 
-#### Accuracy Allows to select an adequate point in the speed vs. accuracy
-tradeoff that is part of any plot program.
+#### Axis
+
+Sets up the axis.
+
+#### Contour
+
+(Only for 3D plots): Adds contour lines similar to the ones one can find in
+a map of a mountain to the plot commands that follow in the current draw()
+command and/or to the ground plane of the diagram. Alternatively this wizard
+allows skipping drawing the curves entirely only showing the contour plot.
+
+#### Plot name
+
+Adds a legend entry showing the next plot's name to the legend of the
+diagram. An empty name disables generating legend entries for the following
+plots.
+
+#### Line color
+
+Sets the line color for the following plots the current draw command
+contains.
+
+#### Fill color
+
+Sets the fill color for the following plots the current draw command
+contains.
+
+#### Grid
+
+Pops up a wizard that allows to set up grid lines.
+
+#### Accuracy
+
+Allows to select an adequate point in the speed vs. accuracy tradeoff that
+is part of any plot program.
 
 ## Embedding graphics
 
@@ -850,7 +876,7 @@ can be done as easily as per drag-and-drop. But sometimes (for example if an
 imageâs contents might change later on in a session) it is better to tell
 the file to load the image on evaluation:
 
-    show_image("Mann.png");
+    show_image("man.png");
 
 ## wxmaximarc
 
@@ -871,20 +897,20 @@ startup file can be placed in.
 
 ## Special variables wx...
 
-*   wxsubscripts tells _Maxima_ if it should convert variable names that
+*   `wxsubscripts` tells _Maxima_ if it should convert variable names that
     contain an underscore (`R_150` or the like) into subscripted
     variables. See `wxdeclare_subscript` for details which variable names
     are automatically converted.
-*   wxfilename This variable contains the name of the file currently opened
-    in _wxMaxima_. On Windows this piece of information is available only if
-    in the configuration dialogue the checkbox `Maxima/maxima's pwd is path
-    to document` is checked.
-*   wxplot\_pngcairo tells whether _wxMaxima_ tries to use _gnuplot_âs
+*   `wxfilename`: This variable contains the name of the file currently
+    opened in _wxMaxima_. On Windows this piece of information is available
+    only if in the configuration dialogue the checkbox `Maxima/maxima's pwd
+    is path to document` is checked.
+*   `wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_âs
     pngcairo terminal that provides more line styles and a better overall
     graphics quality. This variable can be used for reading or overriding
     the respective setting in the configuration dialog.
-*   wxplot\_size defines the size of embedded plots.
-*   wxchangedir: On most operating systems _wxMaxima_ automatically sets
+*   `wxplot_size` defines the size of embedded plots.
+*   `wxchangedir`: On most operating systems _wxMaxima_ automatically sets
     _Maxima_âs working directory to the directory of the current
     file. This allows file I/O (e.g. by `read_matrix`) to work without
     specifying the whole path to the file that has to be read or written. On
@@ -896,7 +922,7 @@ startup file can be placed in.
     which _Maxima_ has been installed. Setting wxchangedir to `true` tells
     wxMmaxima that it has to risk that and to set Maximaâs working
     directory.
-*   wxanimate\_framerate The number of frames per second the following
+*   `wxanimate_framerate` The number of frames per second the following
     animations have to be played back with. -1 tells wxMaxima to use the
     default frame rate from the config dialog.
 
@@ -985,16 +1011,6 @@ XML portion of the file's contents.
 If the text file containing this contents is saved as a file ending in .xml
 wxMaxima will know how to recover the text of the document from it.
 
-## wxMaxima waits forever for data from Maxima
-
-In old versions of Maxima this might be caused by the fact that a closing
-brace, bracket, parenthesis or hyphenation mark is missing: In this case
-Maxima waits until it gets the rest of its input (which it never does).
-
-In order to find out if this is the issue, the operating system normally
-provides a way to determine whether _Maxima_ is actually really working
-forever trying to solve the current problem.
-
 ## I want some debug info to be displayed on the screen before my command
 has finished
 
@@ -1035,10 +1051,10 @@ Possible reasons for this error are:
     instructions from Maxima to gnuplot. Most of the time this fileâs
     contents therefore are helpful when debugging the problem.
 *   Gnuplot was instructed to use the pngcairo library that provides
-    antialiassing and additional line styles, but it was not compiled to
+    antialiasing and additional line styles, but it was not compiled to
     support this possibility. Solution: Uncheck the "Use the cairo terminal
     for plot" checkbox in the configuration dialog and donât set
-    wxplot\_pngcairo to true from Maxima.
+    `wxplot_pngcairo` to true from Maxima.
 *   Gnuplot didnât output a valid .png file.
 
 ## Plotting an animation results in âerror: undefined variableâ
@@ -1059,9 +1075,9 @@ several methods to recover data:
     options in order to see if an old value can still be accessed.
 *   If you still have a way to find out what label Maxima has assigned to
     the cell just type in the cellâs label and its contents will reappear.
-*   If you donât: Donât panic. In the âMaximaâ menu there is a way
-    to show a history pane that shows all Maxima commands that have been
-    issued recently.
+*   If you donât: Donât panic. In the âViewâ menu there is a way to
+    show a history pane that shows all Maxima commands that have been issued
+    recently.
 *   If nothing else helps Maxima contains a replay feature:
 
     %i1 playback();

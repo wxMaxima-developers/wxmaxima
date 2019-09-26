@@ -78,7 +78,7 @@ If text is typed into _wxMaxima_ it automatically creates a new worksheet cell. 
 
 ![Input/output cell](./InputCell.jpg)
 
-On evaluation of an input cell’s contents the input cell _Maxima_ assigns a label to the input (by default shown in red and recognizable by the `%i`) by which it can be referenced later in the _wxMaxima_ session. The output that _Maxima_ generates will be shown in a different style (which can be user-selected) and is preceded by a _Maxima_ label that begins beginning with `%o`. The output item can be accessed later with a reference to this code. By default _wxMaxima_ will also attempt to replace this dynamically-generated label by a more descriptive name if the user provides one. The `%o`\-style label _Maxima_ auto-generates will still be accessible, though.
+On evaluation of an input cell’s contents the input cell _Maxima_ assigns a label to the input (by default shown in red and recognizable by the `%i`) by which it can be referenced later in the _wxMaxima_ session. The output that _Maxima_ generates also gets a label that begins with `%o` and by default is hidden, except if the user assigns the output a name. In this case by default the user-defined label is displayed. The `%o`\-style label _Maxima_ auto-generates will also be accessible, though. 
 
 Besides the input cells wxMaxima allows for text cells for documentation, image cells, title cells, chapter cells and section cells. Every cell has its own undo buffer so debugging by changing the values of several cells and then gradually reverting the unneeded changes is rather easy. Furthermore the worksheet itself has a global undo buffer that can undo cell edits, adds and deletes.
 
