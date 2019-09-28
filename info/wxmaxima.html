@@ -18,7 +18,7 @@
 </header>
 <nav id="TOC">
 <ul>
-<li><a href="#the-wxmaxima-users-manual">The wxMaxima user’s manual</a></li>
+<li><a href="#the-wxmaxima-user-manual">The wxMaxima user manual</a></li>
 <li><a href="#introduction-to-wxmaxima"><span class="toc-section-number">1</span> Introduction to wxMaxima</a><ul>
 <li><a href="#maxima-and-wxmaxima"><span class="toc-section-number">1.1</span> Maxima and wxMaxima</a><ul>
 <li><a href="#maxima"><span class="toc-section-number">1.1.1</span> Maxima</a></li>
@@ -94,19 +94,29 @@
 <li><a href="#annotated-index"><span class="toc-section-number">6</span> Annotated Index</a></li>
 </ul>
 </nav>
-<h1 id="the-wxmaxima-users-manual" class="unnumbered">The wxMaxima user’s manual</h1>
+<h1 id="the-wxmaxima-user-manual" class="unnumbered">The wxMaxima user manual</h1>
 <p>wxMaxima is a graphical user interface (GUI) for the Maxima computer algebra system (CAS). wxMaxima allows one to use all of Maxima’s functions. In addition, it provides convenient wizards for accessing the most commonly used features. This manual describes some of the features that make wxMaxima one of the most popular GUIs for Maxima.</p>
 <p><a href="wxMaximaLogo"><img src="./wxMaximaLogo.png" alt="wxMaxima logo" /></a></p>
 <p>Before we look at the content a few points regarding navigation are in order. Immediately below is a short table of contents. Clicking on any of the listed items moves the cursor to the top of the indicated section of the manual. Clicking on <a href="#SEC_Contents" title="Full table of contents">Contents</a> here or on the line below the short table of contents moves the cursor to an extended table of contents. This extended table can be used to navigate more directly to specific parts of the manual. Finally, an <a href="#Index" title="Alphabetical index">index</a> provides an alphabetical listing of many of the items in the manual with links to these items.</p>
-<p>• <a href="#Introduction" title="Introduction to wxMaxima">Introduction</a>:</p>
+<ul>
+<li><a href="#Introduction" title="Introduction to wxMaxima">Introduction</a>:</li>
+</ul>
 <p>wxMaxima basics</p>
-<p>• <a href="#Extensions" title="Extensions">Extensions</a>:</p>
+<ul>
+<li><a href="#Extensions" title="Extensions">Extensions</a>:</li>
+</ul>
 <p>The commands wxMaxima adds to Maxima</p>
-<p>• <a href="#Troubleshooting" title="Troubleshooting">Troubleshooting</a>:</p>
+<ul>
+<li><a href="#Troubleshooting" title="Troubleshooting">Troubleshooting</a>:</li>
+</ul>
 <p>What to do if wxMaxima does not work as expected</p>
-<p>• <a href="#FAQ" title="FAQ">FAQ</a>:</p>
+<ul>
+<li><a href="#FAQ" title="FAQ">FAQ</a>:</li>
+</ul>
 <p>Frequently asked questions</p>
-<p>• <a href="#CommandLine" title="Maxima Command Line">CommandLine</a>:</p>
+<ul>
+<li><a href="#CommandLine" title="Maxima Command Line">CommandLine</a>:</li>
+</ul>
 <p>The command-line arguments wxMaxima supports</p>
 <hr />
 <h1 id="introduction-to-wxmaxima"><span class="header-section-number">1</span> Introduction to wxMaxima</h1>
@@ -145,10 +155,10 @@
 <li>one or more lines of <em>Maxima</em> input</li>
 <li>one or more image</li>
 <li>output of, or a question from, <em>Maxima</em></li>
-<li>normal a text block that can for example used for explaining the meaning of the math cell’s contents</li>
+<li>a text block that can for example be used for documentation</li>
 <li>a title, section or a subsection.</li>
 </ul>
-<p>The default behavior of <em>wxMaxima</em> when text is entered is to automatically create a math cell. Cells of other types can be created using the Cell menu or using the hot keys shown in the menu. That is, to enter commands, just type and enter material. Before entering text, a workbook title, or a section or subsection title, one must first create the cell of the specified type. These cells can be created in one of three ways: via the Cell menu, by use of hot key combinations (indicated in the menu), or (depending on your operating system) by right-clicking between two cells and selecting an option from the drop-down menu.</p>
+<p>The default behavior of <em>wxMaxima</em> when text is entered is to automatically create a math cell. Cells of other types can be created using the Cell menu, using the hot keys shown in the menu or using the drop-down list in the toolbar.</p>
 <h3 id="horizontal-and-vertical-cursors"><span class="header-section-number">1.2.3</span> Horizontal and vertical cursors</h3>
 <p>It sometimes is desirable to allow selecting multiple cells or only part of a cell for export or Drag-and-Drop. However, beginning such an action in the middle of one cell and ending it in the middle of another will almost certainly lead to unexpected results. <em>wxMaxima</em> will therefore extend the selection to full cells in this case.</p>
 <p><em>wxMaxima</em> provides drag-and-drop flexibility by defining two types of cursors. <em>wxMaxima</em> will switch between automatically when needed:</p>

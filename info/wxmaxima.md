@@ -1,5 +1,5 @@
-The wxMaxima user’s manual {-}
-==============================
+The wxMaxima user manual {-}
+============================
 
 wxMaxima is a graphical user interface (GUI) for the Maxima computer algebra system (CAS). wxMaxima allows one to use all of Maxima’s functions. In addition, it provides convenient wizards for accessing the most commonly used features. This manual describes some of the features that make wxMaxima one of the most popular GUIs for Maxima.
 
@@ -7,31 +7,31 @@ wxMaxima is a graphical user interface (GUI) for the Maxima computer algebra sys
 
 Before we look at the content a few points regarding navigation are in order. Immediately below is a short table of contents. Clicking on any of the listed items moves the cursor to the top of the indicated section of the manual. Clicking on [Contents](#SEC_Contents "Full table of contents") here or on the line below the short table of contents moves the cursor to an extended table of contents. This extended table can be used to navigate more directly to specific parts of the manual. Finally, an [index](#Index "Alphabetical index") provides an alphabetical listing of many of the items in the manual with links to these items.
 
-• [Introduction](#Introduction "Introduction to wxMaxima"):
+* [Introduction](#Introduction "Introduction to wxMaxima"):
 
 
 
 wxMaxima basics
 
-• [Extensions](#Extensions "Extensions"):
+* [Extensions](#Extensions "Extensions"):
 
 
 
 The commands wxMaxima adds to Maxima
 
-• [Troubleshooting](#Troubleshooting "Troubleshooting"):
+* [Troubleshooting](#Troubleshooting "Troubleshooting"):
 
 
 
 What to do if wxMaxima does not work as expected
 
-• [FAQ](#FAQ "FAQ"):
+* [FAQ](#FAQ "FAQ"):
 
 
 
 Frequently asked questions
 
-• [CommandLine](#CommandLine "Maxima Command Line"):
+* [CommandLine](#CommandLine "Maxima Command Line"):
 
 
 
@@ -94,10 +94,10 @@ The worksheet is organized in cells. Each cell can contain one or more of the fo
 *   one or more lines of _Maxima_ input
 *   one or more image
 *   output of,  or a question from, _Maxima_
-*   normal a text block that can for example used for explaining the meaning of the math cell’s contents
+*   a text block that can for example be used for documentation
 *   a title, section or a subsection.
 
-The default behavior of _wxMaxima_ when text is entered is to automatically create a math cell. Cells of other types can be created using the Cell menu or using the hot keys shown in the menu. That is, to enter commands, just type and enter material. Before entering text, a workbook title, or a section or subsection title, one must first create the cell of the specified type. These cells can be created in one of three ways: via the Cell menu, by use of hot key combinations (indicated in the menu), or (depending on your operating system) by right-clicking between two cells and selecting an option from the drop-down menu.
+The default behavior of _wxMaxima_ when text is entered is to automatically create a math cell. Cells of other types can be created using the Cell menu,  using the hot keys shown in the menu or using the drop-down list in the toolbar.
 
 ### Horizontal and vertical cursors
 

@@ -1,8 +1,8 @@
-The wxMaxima userâs manual {-}
-==============================
+The wxMaxima user manual {-}
+============================
 
 wxMaxima is a graphical user interface (GUI) for the Maxima computer algebra
-system (CAS). wxMaxima allows one to use all of Maximaâs functions. In
+system (CAS). wxMaxima allows one to use all of Maxima’s functions. In
 addition, it provides convenient wizards for accessing the most commonly
 used features. This manual describes some of the features that make wxMaxima
 one of the most popular GUIs for Maxima.
@@ -19,31 +19,31 @@ directly to specific parts of the manual. Finally, an [index](#Index
 "Alphabetical index") provides an alphabetical listing of many of the items
 in the manual with links to these items.
 
-â¢ [Introduction](#Introduction "Introduction to wxMaxima"):
+* [Introduction](#Introduction "Introduction to wxMaxima"):
 
 
 
 wxMaxima basics
 
-â¢ [Extensions](#Extensions "Extensions"):
+* [Extensions](#Extensions "Extensions"):
 
 
 
 The commands wxMaxima adds to Maxima
 
-â¢ [Troubleshooting](#Troubleshooting "Troubleshooting"):
+* [Troubleshooting](#Troubleshooting "Troubleshooting"):
 
 
 
 What to do if wxMaxima does not work as expected
 
-â¢ [FAQ](#FAQ "FAQ"):
+* [FAQ](#FAQ "FAQ"):
 
 
 
 Frequently asked questions
 
-â¢ [CommandLine](#CommandLine "Maxima Command Line"):
+* [CommandLine](#CommandLine "Maxima Command Line"):
 
 
 
@@ -65,9 +65,9 @@ implement it without having to learn about all the command line switches and
 in fact without using the command line at all. One advantage of this
 approach is that the developing work that was invested into the command-line
 program can be shared by many programs: The same CD-burner command-line
-program can be used as a âsend-to-CDâ-plug-in for a file manager
-application, for the âburn to CDâ function of a music player and as the
-CD writer for a DVD backup tool. Another advantage is that splitting one big
+program can be used as a “send-to-CD”-plug-in for a file manager
+application, for the “burn to CD” function of a music player and as the CD
+writer for a DVD backup tool. Another advantage is that splitting one big
 task into smaller parts allows the developers to provide several user
 interfaces for the same program.
 
@@ -94,9 +94,9 @@ analytically.
 
 Extensive documentation for Maxima is [available in the
 internet](http://maxima.sourceforge.net/documentation.html). Part of this
-documentation is also available in wxMaximaâs help menu. Pressing the Help
-key (on most systems that would be the F1 key) causes wxMaximaâs
-context-sensitive help feature will automatically jump to Maximaâs manual
+documentation is also available in wxMaxima’s help menu. Pressing the Help
+key (on most systems that would be the F1 key) causes wxMaxima’s
+context-sensitive help feature will automatically jump to Maxima’s manual
 page for the command at the cursor.
 
 ### wxMaxima
@@ -104,11 +104,11 @@ page for the command at the cursor.
 wxMaxima is a graphical user interface that provides the full functionality
 and flexibility of Maxima. wxMaxima offers users a graphical display and
 many features that make working with Maxima easier. For example wxMaxima
-allows one to export any cellâs contents (or, if that is needed, any part
-of a formula, as well) as text, as LaTeX or as MathML specification at a
-simple right-click. Indeed, an entire workbook can be exported, either as an
-HTML file or as a LaTeX file. Documentation for wxMaxima, including
-workbooks to illustrate aspects of its use, is online at the wxMaxima [help
+allows one to export any cell’s contents (or, if that is needed, any part of
+a formula, as well) as text, as LaTeX or as MathML specification at a simple
+right-click. Indeed, an entire workbook can be exported, either as an HTML
+file or as a LaTeX file. Documentation for wxMaxima, including workbooks to
+illustrate aspects of its use, is online at the wxMaxima [help
 site](https://wxMaxima-developers.github.io/wxmaxima/help.html), as well as
 via the help menu.
 
@@ -125,7 +125,7 @@ attention. [This
 site](https://wxMaxima-developers.github.io/wxmaxima/help.html) contains a
 number of workbooks that address various aspects of wxMaxima. Working
 through some of these (particularly the "10 minute (wx)Maxima tutorial")
-will increase oneâs familiarity with both the content of _Maxima_ and the
+will increase one’s familiarity with both the content of _Maxima_ and the
 use of wxMaxima to interact with Maxima. This manual concentrates on
 describing aspects of wxMaxima that are not likely to be self-evident and
 that might not be covered in the online material.
@@ -153,13 +153,13 @@ below.
 
 ![Input/output cell](./InputCell.jpg)
 
-On evaluation of an input cellâs contents the input cell _Maxima_ assigns
-a label to the input (by default shown in red and recognizable by the `%i`)
-by which it can be referenced later in the _wxMaxima_ session. The output
-that _Maxima_ generates also gets a label that begins with `%o` and by
-default is hidden, except if the user assigns the output a name. In this
-case by default the user-defined label is displayed. The `%o`\-style label
-_Maxima_ auto-generates will also be accessible, though.
+On evaluation of an input cell’s contents the input cell _Maxima_ assigns a
+label to the input (by default shown in red and recognizable by the `%i`) by
+which it can be referenced later in the _wxMaxima_ session. The output that
+_Maxima_ generates also gets a label that begins with `%o` and by default is
+hidden, except if the user assigns the output a name. In this case by
+default the user-defined label is displayed. The `%o`\-style label _Maxima_
+auto-generates will also be accessible, though.
 
 Besides the input cells wxMaxima allows for text cells for documentation,
 image cells, title cells, chapter cells and section cells. Every cell has
@@ -182,19 +182,13 @@ the following types of content:
 *   one or more lines of _Maxima_ input
 *   one or more image
 *   output of, or a question from, _Maxima_
-*   normal a text block that can for example used for explaining the meaning
-    of the math cellâs contents
+*   a text block that can for example be used for documentation
 *   a title, section or a subsection.
 
 The default behavior of _wxMaxima_ when text is entered is to automatically
-create a math cell. Cells of other types can be created using the Cell menu
-or using the hot keys shown in the menu. That is, to enter commands, just
-type and enter material. Before entering text, a workbook title, or a
-section or subsection title, one must first create the cell of the specified
-type. These cells can be created in one of three ways: via the Cell menu, by
-use of hot key combinations (indicated in the menu), or (depending on your
-operating system) by right-clicking between two cells and selecting an
-option from the drop-down menu.
+create a math cell. Cells of other types can be created using the Cell menu,
+using the hot keys shown in the menu or using the drop-down list in the
+toolbar.
 
 ### Horizontal and vertical cursors
 
@@ -231,7 +225,7 @@ unit specification for ezUnits it will offer a list of applicable units.
 
 ![ezUnits](./ezUnits.png)
 
-Besides completing the current commandâs or variableâs name the
+Besides completing the current command’s or variable’s name the
 autocompletion is able to show a template for most of the commands
 indicating the type (and meaning) of the parameters this program expects. To
 activate this feature press Shift+Ctrl+k or select the respective menu item
@@ -360,7 +354,7 @@ leadsto       a "leads to" sign
 -->           a long right arrow
 ~~~~
 
-If a special symbol isnât in the list it is possible to input arbitrary
+If a special symbol isn’t in the list it is possible to input arbitrary
 unicode characters by pressing `<ESC>number of the
 character<ESC>`. `<ESC>61<ESC>` therefore results in an `a`.
 
@@ -370,7 +364,7 @@ be able to deal with files that contain special Unicode characters.
 Please note that most of these symbols (notable exceptions are the logic
 symbols) do not have a special meaning in _Maxima_ and therefore will be
 interpreted as ordinary characters - or might provoke unexpected results in
-case that the _Maxima_ is being run by a lisp that doesnât support dealing
+case that the _Maxima_ is being run by a lisp that doesn’t support dealing
 with special Unicode characters.
 
 
@@ -390,10 +384,10 @@ these letters that the preceding section discusses.
 
 Several word processors and similar programs either recognize MathML input
 and automatically insert it as an editable 2D equation - or (like
-LibreOffice 5.1) have an equation editor that offers an âimport MathML
-from clipboardâ feature. In order to accommodate this feature, _wxMaxima_
-offers a âcopy to word processorâ right-click menu entry that outputs
-the selected part of an equation with MathML formatting.
+LibreOffice 5.1) have an equation editor that offers an “import MathML from
+clipboard” feature. In order to accommodate this feature, _wxMaxima_ offers
+a “copy to word processor” right-click menu entry that outputs the selected
+part of an equation with MathML formatting.
 
 
 ### Markdown support
@@ -455,8 +449,8 @@ use in any of three ways:
 
 ### .mac
 
-.mac files are ordinary text files that can be read using Maximaâs read
-command or wxMaximaâs File/Batch File menu entry.
+.mac files are ordinary text files that can be read using Maxima’s read
+command or wxMaxima’s File/Batch File menu entry.
 
 One Example:
 
@@ -470,15 +464,15 @@ deleted.)
     %i1 read("test.mac");
 
 You can be use `.mac` files for writing own library of macros. But since
-they donât contain enough structural information they cannot be read back
-as a wxMaxima session.
+they don’t contain enough structural information they cannot be read back as
+a wxMaxima session.
 
 ### .wxm
 
 .wxm files contain the input for Maxima, as well as any text cells, title
 cells and chapter or section cells the user has typed in. On maxima versions
 >5.38 they can be read using maxima's load() function just as .mac files can
-be. Maximaâs output is not saved along with the .wxm file, though.
+be. Maxima’s output is not saved along with the .wxm file, though.
 
 ### .wxmx
 
@@ -526,10 +520,10 @@ in a new worksheet can be changed using the configuration dialogue.
 ### Default plot size for new maxima sessions
 
 After the next start plots embedded into the worksheet will be created with
-this size if the value of `wxplot_size` isnât changed by maxima.
+this size if the value of `wxplot_size` isn’t changed by maxima.
 
 In order to set the plot size of a single graph only use the following
-notation can be used that sets a variableâs value for one command only:
+notation can be used that sets a variable’s value for one command only:
 
     wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$
 
@@ -579,8 +573,8 @@ Extensions to _Maxima_
 _wxMaxima_ is primarily a graphical user interface for _Maxima_. As such,
 its main purpose is to pass along commands to _Maxima_ and to report the
 results of executing those commands. In some cases, however, _wxMaxima_ adds
-functionality to _Maxima_. _wxMaxima_âs ability to generate reports by
-exporting a workbookâs contents to HTML and LaTeX files has been
+functionality to _Maxima_. _wxMaxima_’s ability to generate reports by
+exporting a workbook’s contents to HTML and LaTeX files has been
 mentioned. This section considers some ways that _wxMaxima_ enhances the
 inclusion of graphics into a session. described here.
 
@@ -592,7 +586,7 @@ displayed using a subscript if
 *   `y` is a single letter
 *   `y` is an integer
 
-If the variable name doesnât match these requirements it can still be
+If the variable name doesn’t match these requirements it can still be
 declared as "to be subscripted" using the command
 `wxdeclare_subscript(variable_name);` or
 `wxdeclare_subscript([variable_name1,variable_name2,...]);` Declaring a
@@ -627,10 +621,10 @@ original program.
 Maxima normally instructs the external program gnuplot to open a separate
 window for every diagram it creates. Since many times it is convenient to
 embed graphs into the work sheet instead wxMaxima provides its own set of
-plot functions that donât differ from the corresponding maxima functions
-save in their name: They are all prefixed by a âwxâ. For example
-`wxplot` corresponds to `plot`, `wxdraw` corresponds to `draw` and
-`wxhistogram` corresponds to `histogram`.
+plot functions that don’t differ from the corresponding maxima functions
+save in their name: They are all prefixed by a “wx”. For example `wxplot`
+corresponds to `plot`, `wxdraw` corresponds to `draw` and `wxhistogram`
+corresponds to `histogram`.
 
 ### Making embedded plots bigger or smaller
 
@@ -673,7 +667,7 @@ way to change an attribute only for the current cell.
 
 ### Better quality plots
 
-Gnuplot doesnât seem to provide a portable way of determining whether it
+Gnuplot doesn’t seem to provide a portable way of determining whether it
 supports the high-quality bitmap output the `cairo` library provides. On
 systems where gnuplot is compiled to use this library the pngcairo option
 from the configuration menu (that can be overridden by the variable
@@ -737,10 +731,9 @@ animation is played back the variable wxanimate\_framerate can be used:
         sin(a*x), [x,-5,5]), wxanimate_framerate=6$
 
 The animation functions have a pitfall that one has to be aware of when
-using them: The slider variableâs value are substituted into the
-expression that is to be plotted - which will fail, if the variable isnât
-directly visible in the expression. Therefore the following example will
-fail:
+using them: The slider variable’s value are substituted into the expression
+that is to be plotted - which will fail, if the variable isn’t directly
+visible in the expression. Therefore the following example will fail:
 
     f:sin(a*x);
     with_slider_draw(
@@ -751,7 +744,7 @@ fail:
     )$
 
 If Maxima is forced to first evaluate the expression and then asked to
-substitute the sliderâs value plotting works fine instead:
+substitute the slider’s value plotting works fine instead:
 
     f:sin(a*x);
     with_slider_draw(
@@ -873,7 +866,7 @@ is part of any plot program.
 
 if the .wxmx file format is being used embedding files in a wxMaxima project
 can be done as easily as per drag-and-drop. But sometimes (for example if an
-imageâs contents might change later on in a session) it is better to tell
+image’s contents might change later on in a session) it is better to tell
 the file to load the image on evaluation:
 
     show_image("man.png");
@@ -905,23 +898,22 @@ startup file can be placed in.
     opened in _wxMaxima_. On Windows this piece of information is available
     only if in the configuration dialogue the checkbox `Maxima/maxima's pwd
     is path to document` is checked.
-*   `wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_âs
+*   `wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_’s
     pngcairo terminal that provides more line styles and a better overall
     graphics quality. This variable can be used for reading or overriding
     the respective setting in the configuration dialog.
 *   `wxplot_size` defines the size of embedded plots.
 *   `wxchangedir`: On most operating systems _wxMaxima_ automatically sets
-    _Maxima_âs working directory to the directory of the current
-    file. This allows file I/O (e.g. by `read_matrix`) to work without
-    specifying the whole path to the file that has to be read or written. On
-    Windows this feature is deactivated: The Lisp Standard doesnât contain
-    a concept of the current working directory. Therefore there is no
-    standard way of setting it and changing to a directory that isnât on
-    the drive Maxima has been installed to might cause Maxima to try to read
-    is own package files from this drive, too, instead of from the drive to
-    which _Maxima_ has been installed. Setting wxchangedir to `true` tells
-    wxMmaxima that it has to risk that and to set Maximaâs working
-    directory.
+    _Maxima_’s working directory to the directory of the current file. This
+    allows file I/O (e.g. by `read_matrix`) to work without specifying the
+    whole path to the file that has to be read or written. On Windows this
+    feature is deactivated: The Lisp Standard doesn’t contain a concept of
+    the current working directory. Therefore there is no standard way of
+    setting it and changing to a directory that isn’t on the drive Maxima
+    has been installed to might cause Maxima to try to read is own package
+    files from this drive, too, instead of from the drive to which _Maxima_
+    has been installed. Setting wxchangedir to `true` tells wxMmaxima that
+    it has to risk that and to set Maxima’s working directory.
 *   `wxanimate_framerate` The number of frames per second the following
     animations have to be played back with. -1 tells wxMaxima to use the
     default frame rate from the config dialog.
@@ -929,7 +921,7 @@ startup file can be placed in.
 ## Pretty-printing 2D output
 
 The function `(table_form)` displays a 2D list in a form that is more
-readable than the output Maximaâs default output routine. The input is a
+readable than the output Maxima’s default output routine. The input is a
 list of one or more lists. Like the print command, this command displays
 output even when ended with a dollar sign. Ending the command with a
 semicolon results in the same table along with a "done" statement.
@@ -977,7 +969,7 @@ Since Maxima (the program that does the actual mathematics) and wxMaxima
 (providing the easy-to-use user interface) are separate programs that
 communicate by the means of a local network connection. Therefore the most
 probable cause is that this connection is somehow not working. For example a
-firewall could be set up in a way that it doesnât just prevent against
+firewall could be set up in a way that it doesn’t just prevent against
 unauthorized connections from the internet (and perhaps to intercept some
 connections to the internet, too), but it also to blocks
 inter-process-communication inside the same computer. Note that since Maxima
@@ -988,7 +980,7 @@ or similar names.
 
 On Un\*x computers another possible reason would be that the loopback
 network that provides network connections between two programs in the same
-computer isnât properly configured.
+computer isn’t properly configured.
 
 ## How to save data from a broken .wxmx file
 
@@ -1000,13 +992,13 @@ If the zip signature at the end of the file is still intact after renaming a
 broken .wxmx file to .zip most operating systems will provide a way to
 extract any portion of information that is stored inside it. The can be done
 when there is the need of recovering the original image files from a text
-processor document. If the zip signature isnât intact that does not need
-to be the end of the world: If wxMaxima during saving detected that
-something went wrong there will be a wxmx~ file whose contents might help
-and even if there isnât such a file: If the configuration option is set
-that .wxmx files have to be optimized for version control it is possible to
-rename the .wxmx file to a .txt file and to use a text editor to recover the
-XML portion of the file's contents.
+processor document. If the zip signature isn’t intact that does not need to
+be the end of the world: If wxMaxima during saving detected that something
+went wrong there will be a wxmx~ file whose contents might help and even if
+there isn’t such a file: If the configuration option is set that .wxmx files
+have to be optimized for version control it is possible to rename the .wxmx
+file to a .txt file and to use a text editor to recover the XML portion of
+the file's contents.
 
 If the text file containing this contents is saved as a file ending in .xml
 wxMaxima will know how to recover the text of the document from it.
@@ -1033,7 +1025,7 @@ broken versions of this package that crash wxMaxima. A working version can
 be downloaded from
 [http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html](http://www.math.union.edu/%7Edpvc/jsmath/download/jsMath-fonts.html).
 To make wxMaxima actually use these fonts the according checkbox has to be
-enabled in the Styles tab of wxMaximaâs configuration dialogue.
+enabled in the Styles tab of wxMaxima’s configuration dialogue.
 
 ## Plotting only shows an closed empty envelope with an error message
 
@@ -1043,27 +1035,27 @@ supposed to instruct gnuplot to create.
 Possible reasons for this error are:
 
 *   The plotting command is part of a third-party package like
-    `implicit_plot` but this package was not loaded by Maximaâs `load()`
+    `implicit_plot` but this package was not loaded by Maxima’s `load()`
     command before trying to plot.
 *   Maxima tried to do something the currently installed version of gnuplot
-    isnât able to understand. In this case the file maxout.gnuplot in the
-    directory Maximaâs variable maxima\_userdir points to contains the
-    instructions from Maxima to gnuplot. Most of the time this fileâs
+    isn’t able to understand. In this case the file maxout.gnuplot in the
+    directory Maxima’s variable maxima\_userdir points to contains the
+    instructions from Maxima to gnuplot. Most of the time this file’s
     contents therefore are helpful when debugging the problem.
 *   Gnuplot was instructed to use the pngcairo library that provides
     antialiasing and additional line styles, but it was not compiled to
     support this possibility. Solution: Uncheck the "Use the cairo terminal
-    for plot" checkbox in the configuration dialog and donât set
+    for plot" checkbox in the configuration dialog and don’t set
     `wxplot_pngcairo` to true from Maxima.
-*   Gnuplot didnât output a valid .png file.
+*   Gnuplot didn’t output a valid .png file.
 
-## Plotting an animation results in âerror: undefined variableâ
+## Plotting an animation results in “error: undefined variable”
 
 The value of the slider variable by default is only substituted into the
 expression that is to be plotted if it is visible there. Putting an `ev()`
 around this expression should resolve this problem.
 
-## I lost a cell contents and undo doesnât remember
+## I lost a cell contents and undo doesn’t remember
 
 There are separate undo functions for cell operations and for changes inside
 of cells so chances are low that this ever happens. If it does there are
@@ -1074,30 +1066,30 @@ several methods to recover data:
     if the cursor is inside a cell. It is worth trying to use both undo
     options in order to see if an old value can still be accessed.
 *   If you still have a way to find out what label Maxima has assigned to
-    the cell just type in the cellâs label and its contents will reappear.
-*   If you donât: Donât panic. In the âViewâ menu there is a way to
-    show a history pane that shows all Maxima commands that have been issued
+    the cell just type in the cell’s label and its contents will reappear.
+*   If you don’t: Don’t panic. In the “View” menu there is a way to show a
+    history pane that shows all Maxima commands that have been issued
     recently.
 *   If nothing else helps Maxima contains a replay feature:
 
     %i1 playback();
 
 
-## wxMaxima starts up with the message âMaxima process Terminated.â
+## wxMaxima starts up with the message “Maxima process Terminated.”
 
 One possible reason is that Maxima cannot be found in the location that is
-set in the âMaximaâ tab of wxMaximaâs configuration dialog and
-therefore wonât run at all. Setting the path to a working Maxima binary
-should fix this problem.
+set in the “Maxima” tab of wxMaxima’s configuration dialog and therefore
+won’t run at all. Setting the path to a working Maxima binary should fix
+this problem.
 
 ## Maxima is forever calculating and not responding to input
 
-It is theoretically possible that wxMaxima doesnât realize that Maxima has
+It is theoretically possible that wxMaxima doesn’t realize that Maxima has
 finished calculating and therefore never gets informed it can send new data
-to Maxima. If this is the case âTrigger evaluationâ might resynchronize
-the two programs.
+to Maxima. If this is the case “Trigger evaluation” might resynchronize the
+two programs.
 
-## File I/O from Maxima doesnât work on Windows
+## File I/O from Maxima doesn’t work on Windows
 
 On Windows, file I/O is not relative to the directory of the current file by
 default. If you store the Maxima file on the drive on which wxMaxima is
@@ -1124,7 +1116,7 @@ should reserve. A 32bit-windows-sbcl can reserve up to 999 Megabytes,
 than the about 1280 Megabytes compiling lapack needs.
 
 One way to provide maxima (and thus sbcl) with command line parameters is
-the `additional parameters` field of wxMaximaâs configuration dialogue.
+the `additional parameters` field of wxMaxima’s configuration dialogue.
 
 ![sbcl memory](./sbclMemory.png)
 
