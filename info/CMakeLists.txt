@@ -26,9 +26,8 @@ file(GLOB WXMAXIMA_HELP_FILES *.jpg *.png *.html *.hhp *.pdf)
 install(FILES ${WXMAXIMA_HELP_FILES} DESTINATION share/doc/wxmaxima)
 
 # allow local execution (./wxmaxima-local) from the build directory without installation
-if(UNIX)
-    file(COPY ${WXMAXIMA_HELP_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-endif()
+# and ensure that the images will be found by pandoc
+file(COPY ${WXMAXIMA_HELP_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 file(GLOB TRANSLATION_FILES ${CMAKE_SOURCE_DIR}/locales/manual/*.po)
 find_program(LATEX NAMES xelatex lualatex)
