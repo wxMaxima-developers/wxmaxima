@@ -168,8 +168,6 @@ void EvaluationQueue::AddTokens(GroupCell *cell)
   token.Trim(false);
   if(!token.IsEmpty())
     m_commands.push_back(command(token, index));
-  
-  m_knownAnswers = cell->m_knownAnswers;
 }
 
 GroupCell *EvaluationQueue::GetCell()

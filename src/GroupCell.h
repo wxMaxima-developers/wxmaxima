@@ -70,6 +70,17 @@ public:
 
   ~GroupCell();
 
+  wxString GetAnswer(int answer)
+    {
+      return m_knownAnswers[wxString::Format(wxT("Question #%i"),answer)];
+    }
+  wxString GetAnswer(wxString question)
+    {
+      wxString answer = m_knownAnswers[question];
+      if(answer.IsEmpty())
+        answer = GetAnswer(++m_numberedAnswersCount);
+      return answer;
+    }
   //! Does this GroupCell save the answer to a question?
   bool AutoAnswer(){return m_autoAnswer;}
   //! Does this GroupCell save the answer to a question?
@@ -78,10 +89,10 @@ public:
     if(GetEditable() != NULL) GetEditable()->AutoAnswer(autoAnswer);
   }
   // Add a new answer to the cell
-  void AddAnswer(wxString answer)
+  void SetAnswer(wxString question, wxString answer)
     {
       if(answer != wxEmptyString)
-        m_knownAnswers.push_back(answer);
+        m_knownAnswers[question] = answer;
     }
   /*! Tell this cell to remove it from all gui actions.
 
@@ -408,9 +419,10 @@ public:
   //! Reset the data when the input size changes
   void InputHeightChanged();
 
+  WX_DECLARE_STRING_HASH_MAP(wxString, StringHash);
   //! A list of answers provided by the user
-  std::list<wxString> m_knownAnswers;
-
+  StringHash m_knownAnswers;
+  
 #if wxUSE_ACCESSIBILITY
   wxAccStatus GetDescription(int childId, wxString *description);
   wxAccStatus GetLocation (wxRect &rect, int elementId);
@@ -515,6 +527,7 @@ private:
   int m_inputWidth, m_inputHeight, m_outputWidth, m_outputHeight;
   //! The number of cells the current group contains (-1, if no GroupCell)
   int m_cellsInGroup;
+  int m_numberedAnswersCount;
   void UpdateCellsInGroup(){
     if(m_output != NULL)
       m_cellsInGroup = 2 + m_output->CellsInListRecursive();

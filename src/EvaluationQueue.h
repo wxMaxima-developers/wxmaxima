@@ -70,7 +70,8 @@ private:
   void AddTokens(GroupCell *cell);
 
   //! A list of answers provided by the user
-  std::list<wxString> m_knownAnswers;
+  wxArrayString m_knownAnswers;
+  wxArrayString m_knownQuestions;
 
 public:
   /*! Query for the label the user has assigned to the current command.  
@@ -126,9 +127,6 @@ public:
   //! Removes the first command in the queue
   void RemoveFirst();
 
-  //! Removes the first answer in the queue
-  void RemoveFirstAnswer(){m_knownAnswers.pop_front();}
-
   /*! Gets the cell the next command in the queue belongs to
 
     The command itself can be read out by issuing GetCommand();
@@ -138,26 +136,11 @@ public:
   //! Is the queue empty?
   bool Empty();
 
-  //! How many saved answers do we have left?
-  std::list<wxString> GetKnownAnswers(){return m_knownAnswers;}
-  
-  //! Is the answer queue empty?
-  bool AnswersEmpty() {return m_knownAnswers.empty();}
-
   //! Clear the queue
   void Clear();
 
   //! Return the next command that needs to be evaluated.
-  wxString GetCommand();
-  
-  //! Return the next known answer.
-  wxString GetAnswer()
-  {
-    if(!m_knownAnswers.empty())
-      return (m_knownAnswers.front());
-    else
-      return wxEmptyString;
-  }
+  wxString GetCommand();  
 
   //! Get the size of the queue [in cells]
   int Size()

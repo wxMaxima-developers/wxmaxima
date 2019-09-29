@@ -1029,6 +1029,9 @@ public:
   void DivideCell();
 
   void MergeCells();
+  
+  void SetLastQuestion(wxString lastQuestion){m_lastQuestion = lastQuestion;}
+  wxString GetLastQuestion(){return m_lastQuestion;}
 
   //! Add the currently selected cells to the clipboard and delete them.
   bool CutToClipboard();
@@ -1430,10 +1433,8 @@ public:
   /*! Handling questions from and answers for maxima
   @{
   */
-  //! Update the current answer to contain the string passed to this function.
-  void UpdateAnswer(wxString answer);
-  //! Is the list of known answers exhausted for the current Working Group?
-  bool m_answersExhausted;
+  //! Remember the answer to the LastQuestion().
+  void SetAnswer(wxString answer);
   //! Mark the current question from maxima as "answered"..
   void QuestionAnswered();
 
@@ -1493,6 +1494,7 @@ public:
   };
 #endif
 protected:
+  wxString m_lastQuestion;
   int m_virtualWidth_Last;
   int m_virtualHeight_Last;
   //! A memory we can manually buffer the contents of the area that is to be redrawn in

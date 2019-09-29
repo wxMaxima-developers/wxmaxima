@@ -43,6 +43,7 @@
 GroupCell::GroupCell(Configuration **config, GroupType groupType, CellPointers *cellPointers, wxString initString) : Cell(
         this, config)
 {
+  m_numberedAnswersCount = 0;
   m_next = m_previous = m_nextToDraw = m_previousToDraw = NULL;
   m_autoAnswer = false;
   m_cellsInGroup = 1;
@@ -324,11 +325,18 @@ wxString GroupCell::ToWXM(bool wxm)
       // Export the list of known answers
       if(wxm)
       {
-        for(std::list<wxString>::iterator it = m_knownAnswers.begin(); it != m_knownAnswers.end();++it)
+        for(StringHash::iterator it = m_knownAnswers.begin();
+            it != m_knownAnswers.end();
+            ++it)
         {
-          retval += wxT("/* [wxMaxima: answer  start ] */\n");
-          retval += *it + wxT("\n");
-          retval += wxT("/* [wxMaxima: answer  end   ] */\n");
+          {
+            retval += wxT("/* [wxMaxima: question  start ] */\n");
+            retval += it->first + wxT("\n");
+            retval += wxT("/* [wxMaxima: question  end   ] */\n");
+            retval += wxT("/* [wxMaxima: answer  start ] */\n");
+            retval += it->second + wxT("\n");
+            retval += wxT("/* [wxMaxima: answer  end   ] */\n");
+          }
         }
         if (m_autoAnswer)
           retval += wxT("/* [wxMaxima: autoanswer    ] */\n");
@@ -523,6 +531,7 @@ void GroupCell::SetOutput(Cell *output)
 
 void GroupCell::RemoveOutput()
 {
+  m_numberedAnswersCount = 0;
   // If there is nothing to do we can skip the rest of this action.
   if (m_output == NULL)
     return;
@@ -1667,16 +1676,22 @@ wxString GroupCell::ToXML()
     {
       str += wxT(" type=\"code\"");
       int i = 0;
-      for(std::list<wxString>::iterator it = m_knownAnswers.begin(); it != m_knownAnswers.end();++it)
+      for(StringHash::iterator it = m_knownAnswers.begin();
+          it != m_knownAnswers.end();
+          ++it)
       {
         i++;
         // In theory the attribute should be saved and read verbatim, with the exception
         // of the characters XML wants to be quoted. In reality wxWidget's newline handling
         // seems to be broken => escape newlines.
-        wxString answer = Cell::XMLescape(*it);
+        wxString question = Cell::XMLescape(it->first);
+        question.Replace(wxT("\n"),wxT("&#10;"));
+        wxString answer = Cell::XMLescape(it->second);
         answer.Replace(wxT("\n"),wxT("&#10;"));
+        str += wxString::Format(wxT(" question%i=\""),i) + question + wxT("\"");
         str += wxString::Format(wxT(" answer%i=\""),i) + answer + wxT("\"");
-      }
+      }      
+      
       if(m_autoAnswer)
         str += wxT(" auto_answer=\"yes\"");
       break;

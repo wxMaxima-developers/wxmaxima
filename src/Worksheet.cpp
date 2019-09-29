@@ -2916,36 +2916,19 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUnd
   m_saved = false;
 }
 
-void Worksheet::UpdateAnswer(wxString txt)
+void Worksheet::SetAnswer(wxString answer)
 {
   GroupCell *answerCell = GetWorkingGroup();
   if(answerCell == NULL)
     return;
 
-  std::list<wxString> knownAnswers = answerCell->m_knownAnswers;
+  if(answer.IsEmpty())
+    return;
 
-  // Remove all answers after the current one
-  std::list<wxString> answersToAppend = m_evaluationQueue.GetKnownAnswers();
-  while(!answersToAppend.empty())
-  {
-    if(!knownAnswers.empty())
-      knownAnswers.pop_back();
-    answersToAppend.pop_back();
-  }
-
-  // Replace the current answer or append it to the list of known answers
-  if(!knownAnswers.empty())
-    knownAnswers.pop_back();
-  knownAnswers.push_back(txt);
-  // Append the unused known answers again
-  answersToAppend = m_evaluationQueue.GetKnownAnswers();
-  while(!answersToAppend.empty())
-  {
-    knownAnswers.push_back((answersToAppend.front()));
-    answersToAppend.pop_front();
-  }
-
-  answerCell->m_knownAnswers = knownAnswers;
+  if(m_lastQuestion.IsEmpty())
+    return;
+  
+  answerCell->SetAnswer(m_lastQuestion, answer);
 }
 
 void Worksheet::OpenQuestionCaret(wxString txt)
@@ -2980,13 +2963,9 @@ void Worksheet::OpenQuestionCaret(wxString txt)
     bool autoEvaluate = false;
     if(txt == wxEmptyString)
     {
-      m_answersExhausted = m_evaluationQueue.AnswersEmpty();
-      if(!m_answersExhausted)
-      {
-        txt = m_evaluationQueue.GetAnswer();
-        m_evaluationQueue.RemoveFirstAnswer();
+      txt = group->GetAnswer(m_lastQuestion);
+      if(!txt.IsEmpty())
         autoEvaluate = group->AutoAnswer();
-      }
     }
     m_cellPointers.m_answerCell->SetValue(txt);
     dynamic_cast<EditorCell *>(m_cellPointers.m_answerCell)->CaretToEnd();
@@ -5858,6 +5837,8 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
   GroupCell *last = NULL;
   GroupCell *cell = NULL;
 
+  wxString question;
+  
   while (!wxmLines->IsEmpty())
   {
     cell = NULL;
@@ -6123,8 +6104,24 @@ GroupCell *Worksheet::CreateTreeFromWXMCode(wxArrayString *wxmLines)
 
         wxmLines->RemoveAt(0);
       }
-      if(last != NULL)
-        last->AddAnswer(line);
+      if((last != NULL) && (!question.IsEmpty()))
+        last->SetAnswer(question, line);
+    }
+    if (wxmLines->Item(0) == wxT("/* [wxMaxima: question  start ] */"))
+    {
+      wxmLines->RemoveAt(0);
+
+      wxString line;
+      while ((!wxmLines->IsEmpty()) && (wxmLines->Item(0) != wxT("/* [wxMaxima: question  end   ] */")))
+      {
+        if (line.Length() == 0)
+          line += wxmLines->Item(0);
+        else
+          line += wxT("\n") + wxmLines->Item(0);
+
+        wxmLines->RemoveAt(0);
+      }
+      question = line;
     }
     if (wxmLines->Item(0) == wxT("/* [wxMaxima: autoanswer    ] */"))
     {

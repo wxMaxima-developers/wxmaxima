@@ -122,10 +122,15 @@ Cell *MathParser::ParseCellTag(wxXmlNode *node)
     wxString isAutoAnswer = node->GetAttribute(wxT("auto_answer"), wxT("no"));
     if(isAutoAnswer == wxT("yes"))
       group->AutoAnswer(true);
-    int i = 1; wxString answer;
+    int i = 1;
+    wxString answer;
+    wxString question;
     while (node->GetAttribute(wxString::Format(wxT("answer%i"),i),&answer))
     {
-      group->AddAnswer(answer);
+      if(node->GetAttribute(wxString::Format(wxT("question%i"),i),&question))
+        group->SetAnswer(question,answer);
+      else
+        group->SetAnswer(wxString::Format(wxT("Question #%i"),i),answer);
       i++;
     }
     wxXmlNode *children = node->GetChildren();

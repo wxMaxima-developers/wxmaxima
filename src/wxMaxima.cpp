@@ -2006,6 +2006,7 @@ void wxMaxima::ReadPrompt(wxString &data)
   }
   else
   {  // We have a question
+    m_worksheet->SetLastQuestion(o);
     m_worksheet->QuestionAnswered();
     m_worksheet->QuestionPending(true);
     // If the user answers a question additional output might be required even
@@ -7841,10 +7842,7 @@ void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event))
       wxString answer = tmp->ToString(true);
       // Add the answer to the current working cell or update the answer
       // that is stored within it.
-      if(m_worksheet->m_answersExhausted)
-        cell->AddAnswer(answer);
-      else
-        m_worksheet->UpdateAnswer(answer);
+      cell->SetAnswer(m_worksheet->GetLastQuestion(), answer);
       SendMaxima(answer, true);
       StatusMaximaBusy(calculating);
       m_worksheet->SetHCaret(cell);
@@ -8137,8 +8135,6 @@ void wxMaxima::TriggerEvaluation()
     m_worksheet->m_evaluationQueue.RemoveFirst();
     TriggerEvaluation();
   }
-  m_worksheet->m_answersExhausted = m_worksheet->m_evaluationQueue.AnswersEmpty();
-
 }
 
 void wxMaxima::InsertMenu(wxCommandEvent &event)
