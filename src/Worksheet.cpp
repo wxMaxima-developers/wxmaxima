@@ -6799,6 +6799,36 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
   if(!wxFileExists(backupfile))
     return false;
 
+  // Now we try to open the file in order to see if saving hasn't failed
+  // without returning an error - which can apparently happen on MSW.
+  wxString wxmxURI = wxURI(wxT("file://") + backupfile).BuildURI();
+  wxmxURI.Replace("#", "%23");
+#ifdef  __WXMSW__
+  // Fixes a missing "///" after the "file:". This works because we always get absolute
+  // file names.
+  wxRegEx uriCorector1("^file:([a-zA-Z]):");
+  wxRegEx uriCorector2("^file:([a-zA-Z][a-zA-Z]):");
+  uriCorector1.ReplaceFirst(&wxmxURI,wxT("file:///\\1:"));
+  uriCorector2.ReplaceFirst(&wxmxURI,wxT("file:///\\1:"));
+#endif
+  // The URI of the wxm code contained within the .wxmx file
+  wxString filename = wxmxURI + wxT("#zip:content.xml");
+
+  // Open the file
+  wxFileSystem fs;
+  wxFSFile *fsfile = fs.OpenFile(filename);
+  if (!fsfile)
+  {
+    filename = wxmxURI + wxT("#zip:/content.xml");
+    fsfile = fs.OpenFile(filename);
+  }
+
+  // Did we succeed in opening the file?
+  if (!fsfile)
+    return false;
+
+  delete fsfile;
+  
   {
     SuppressErrorDialogs suppressor;
     done = wxRenameFile(backupfile, file, true);
