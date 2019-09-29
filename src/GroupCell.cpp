@@ -1690,7 +1690,7 @@ wxString GroupCell::ToXML()
         answer.Replace(wxT("\n"),wxT("&#10;"));
         str += wxString::Format(wxT(" question%i=\""),i) + question + wxT("\"");
         str += wxString::Format(wxT(" answer%i=\""),i) + answer + wxT("\"");
-      }      
+      }
       
       if(m_autoAnswer)
         str += wxT(" auto_answer=\"yes\"");
