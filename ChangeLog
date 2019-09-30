@@ -9,7 +9,8 @@ Current:
   * Chinese translation updates from liulitchi.
   * wxMaxima now remembers the question for each answer, not only its number.
   * Now the manual can be localized, too.
-  * Many bug fixes.
+  * Non-breaking spaces are now replaced by ordinary spaces before being sent to maxima.
+  * Many other bug fixes.
 
 19.09.0:
   * Handle timeouts when writing to maxima and partial writes.
