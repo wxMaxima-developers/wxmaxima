@@ -1,9 +1,18 @@
-wxmaxima (19.09.0-1) unstable; urgency=medium
+wxmaxima (19.09.1-1) unstable; urgency=medium
 
   * A new upstream version.
   * The debian package now uses GTK3.
-  * New build depends: debian-file-utils and appstream-util
- -- Gunter Königsmann <wxmaxima@physikbuch.de>  Wed, 14 Aug 2019 21:59:36 +0100
+  * New build depends for the automatic tests: netcat-openbsd, xvfb,
+    debian-file-utils and appstream-util
+
+ -- Gunter Königsmann <wxmaxima@physikbuch.de>  Mon, 30 Sep 2019 10:28:36 +0100
+
+wxmaxima (19.07.0-1.1) unstable; urgency=medium
+
+  * Non-maintainer upload with maintainers permission.
+  * Update to build against GTK3 flavour of wxwidgets3.0. (Closes: #933429)
+
+ -- Olly Betts <olly@survex.com>  Fri, 27 Sep 2019 09:06:45 +1200
 
 wxmaxima (19.07.0-1) unstable; urgency=medium
 
