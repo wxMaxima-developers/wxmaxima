@@ -2,8 +2,8 @@ Source: wxmaxima
 Section: math
 Priority: optional
 Maintainer: Gunter Königsmann <wxmaxima@physikbuch.de>
-Build-Depends: debhelper (>= 8), cmake (>= 3.4) | cmake3, libwxgtk3.0-gtk3-dev, xvfb, netcat-openbsd, desktop-file-utils, appstream-util
-Standards-Version: 3.9.8
+Build-Depends: debhelper (>= 11), cmake, libwxgtk3.0-gtk3-dev, gettext, netcat-openbsd, xvfb, debian-file-utils, appstream-util
+Standards-Version: 4.4.0
 Vcs-Git: https://github.com/wxMaxima-developers/wxmaxima.git -b DebianPackaging
 Vcs-Browser: https://github.com/wxMaxima-developers/wxmaxima
 Homepage: http://wxmaxima-developers.github.io/wxmaxima/
