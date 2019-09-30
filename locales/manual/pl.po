@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-26 19:58+0200\n"
+"POT-Creation-Date: 2019-09-30 09:41+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ihor Rokach <rokach@tu.kielce.pl>\n"
 "Language-Team: \n"
@@ -21,8 +21,8 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:2
 #, no-wrap
 msgid ""
-"The wxMaxima user’s manual {-}\n"
-"==============================\n"
+"The wxMaxima user manual {-}\n"
+"============================\n"
 msgstr ""
 
 #. type: Plain text
@@ -54,9 +54,9 @@ msgid ""
 "items in the manual with links to these items."
 msgstr ""
 
-#. type: Plain text
+#. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:11
-msgid "• [Introduction](#Introduction \"Introduction to wxMaxima\"):"
+msgid "[Introduction](#Introduction \"Introduction to wxMaxima\"):"
 msgstr ""
 
 #. type: Plain text
@@ -64,9 +64,9 @@ msgstr ""
 msgid "wxMaxima basics"
 msgstr ""
 
-#. type: Plain text
+#. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:17
-msgid "• [Extensions](#Extensions \"Extensions\"):"
+msgid "[Extensions](#Extensions \"Extensions\"):"
 msgstr ""
 
 #. type: Plain text
@@ -74,9 +74,9 @@ msgstr ""
 msgid "The commands wxMaxima adds to Maxima"
 msgstr ""
 
-#. type: Plain text
+#. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:23
-msgid "• [Troubleshooting](#Troubleshooting \"Troubleshooting\"):"
+msgid "[Troubleshooting](#Troubleshooting \"Troubleshooting\"):"
 msgstr ""
 
 #. type: Plain text
@@ -84,9 +84,9 @@ msgstr ""
 msgid "What to do if wxMaxima does not work as expected"
 msgstr ""
 
-#. type: Plain text
+#. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:29
-msgid "• [FAQ](#FAQ \"FAQ\"):"
+msgid "[FAQ](#FAQ \"FAQ\"):"
 msgstr ""
 
 #. type: Plain text
@@ -94,9 +94,9 @@ msgstr ""
 msgid "Frequently asked questions"
 msgstr ""
 
-#. type: Plain text
+#. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:35
-msgid "• [CommandLine](#CommandLine \"Maxima Command Line\"):"
+msgid "[CommandLine](#CommandLine \"Maxima Command Line\"):"
 msgstr ""
 
 #. type: Plain text
@@ -342,9 +342,7 @@ msgstr ""
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:99
-msgid ""
-"normal a text block that can for example used for explaining the meaning of "
-"the math cell’s contents"
+msgid "a text block that can for example be used for documentation"
 msgstr ""
 
 #. type: Bullet: '*   '
@@ -356,14 +354,9 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:101
 msgid ""
 "The default behavior of _wxMaxima_ when text is entered is to automatically "
-"create a math cell. Cells of other types can be created using the Cell menu "
-"or using the hot keys shown in the menu. That is, to enter commands, just "
-"type and enter material. Before entering text, a workbook title, or a "
-"section or subsection title, one must first create the cell of the specified "
-"type. These cells can be created in one of three ways: via the Cell menu, by "
-"use of hot key combinations (indicated in the menu), or (depending on your "
-"operating system) by right-clicking between two cells and selecting an "
-"option from the drop-down menu."
+"create a math cell. Cells of other types can be created using the Cell menu, "
+"using the hot keys shown in the menu or using the drop-down list in the "
+"toolbar."
 msgstr ""
 
 #. type: Plain text

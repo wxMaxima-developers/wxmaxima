@@ -50,17 +50,25 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
-    <release version="19.09.1" date="2019-09-19">
+    <release version="19.09.1" date="2019-09-30">
       <description>
 	<p>
-	  Bugfix release.
+	  Many small improvements, thanks to all the testers!
 	</p>
         <ul>
+	  <li>The names of greek letters are no more converted to greek letters in variable
+	  names by default</li>
           <li>Smarter Formatting of asterisk and hyphen</li>
           <li>An automatic per-commit Windows Build for Appveyor</li>
           <li>Always recalculate the worksheet size when needed</li>
           <li>Better vertical alignment of exponents</li>
           <li>The layout is now more consistent between platforms</li>
+	  <li> Chinese translation updates from liulitchi</li>
+	  <li>wxMaxima now remembers the question for each answer, not only its number</li>
+	  <li>Now the manual can be localized, too</li>
+	  <li>Non-breaking spaces are now replaced by ordinary spaces
+	  before being sent to maxima</li>
+	  <li>As always: Many additional bug fixes</li>
         </ul>
       </description>
     </release>

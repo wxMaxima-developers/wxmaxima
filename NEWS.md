@@ -1,3 +1,18 @@
+# wxMaxima 19.09.1 - Stable
+  * The names of greek letters are no more converted to greek letters in variable
+	names by default
+  * Smarter Formatting of asterisk and hyphen
+  * An automatic per-commit Windows Build for Appveyor
+  * Always recalculate the worksheet size when needed
+  * Better vertical alignment of exponents
+  * The layout is now more consigstent between platforms
+  * Chinese translation updates from liulitchi
+  * wxMaxima now remembers the question for each answer, not only its number
+  * Now the manual can be localized, too
+  * Non-breaking spaces are now replaced by ordinary spaces
+    before being sent to maxima
+  * As always: Many additional bug fixes
+
 # wxMaxima 19.09.0 - Stable
   * Handle timeouts when writing to maxima and partial writes.
   * Worksheet text disappeared on scrolling on some platforms.

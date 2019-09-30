@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-26 19:58+0200\n"
+"POT-Creation-Date: 2019-09-30 09:41+0200\n"
 "PO-Revision-Date: 2019-09-26 20:06+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
@@ -17,10 +17,13 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:2
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "The wxMaxima user’s manual {-}\n"
+#| "==============================\n"
 msgid ""
-"The wxMaxima user’s manual {-}\n"
-"==============================\n"
+"The wxMaxima user manual {-}\n"
+"============================\n"
 msgstr ""
 "Das Handbuch von wxMaxima {-}\n"
 "-----------------------------\n"
@@ -65,9 +68,11 @@ msgstr ""
 "genauere Navigation ermöglicht. Zudem steht ein (#Index \"Alphabetischer "
 "Index\") zur Verfügung, der auf viele Punkte des Handbuchs verweist."
 
-#. type: Plain text
+#. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:11
-msgid "• [Introduction](#Introduction \"Introduction to wxMaxima\"):"
+#, fuzzy
+#| msgid "• [Introduction](#Introduction \"Introduction to wxMaxima\"):"
+msgid "[Introduction](#Introduction \"Introduction to wxMaxima\"):"
 msgstr "• [Einführung](#Introduction \"Einführung in wxMaxima\"):"
 
 #. type: Plain text
@@ -75,9 +80,11 @@ msgstr "• [Einführung](#Introduction \"Einführung in wxMaxima\"):"
 msgid "wxMaxima basics"
 msgstr "Die Grundlagen"
 
-#. type: Plain text
+#. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:17
-msgid "• [Extensions](#Extensions \"Extensions\"):"
+#, fuzzy
+#| msgid "• [Extensions](#Extensions \"Extensions\"):"
+msgid "[Extensions](#Extensions \"Extensions\"):"
 msgstr "• [Erweiterungen](#Extensions \"Erweiterungen\"):"
 
 #. type: Plain text
@@ -85,9 +92,9 @@ msgstr "• [Erweiterungen](#Extensions \"Erweiterungen\"):"
 msgid "The commands wxMaxima adds to Maxima"
 msgstr "Die Kommandos, mittels dessen wxMaxima Maxima erweitert"
 
-#. type: Plain text
+#. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:23
-msgid "• [Troubleshooting](#Troubleshooting \"Troubleshooting\"):"
+msgid "[Troubleshooting](#Troubleshooting \"Troubleshooting\"):"
 msgstr ""
 
 #. type: Plain text
@@ -95,9 +102,11 @@ msgstr ""
 msgid "What to do if wxMaxima does not work as expected"
 msgstr "Was tun, wenn wxMaxima nicht wie erwartet funktioniert"
 
-#. type: Plain text
+#. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:29
-msgid "• [FAQ](#FAQ \"FAQ\"):"
+#, fuzzy
+#| msgid "• [FAQ](#FAQ \"FAQ\"):"
+msgid "[FAQ](#FAQ \"FAQ\"):"
 msgstr "• [FAQ](#FAQ \"Häufig gestellte Fragen\"):"
 
 #. type: Plain text
@@ -105,9 +114,11 @@ msgstr "• [FAQ](#FAQ \"Häufig gestellte Fragen\"):"
 msgid "Frequently asked questions"
 msgstr "Häufig gestellte Fragen"
 
-#. type: Plain text
+#. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:35
-msgid "• [CommandLine](#CommandLine \"Maxima Command Line\"):"
+#, fuzzy
+#| msgid "• [CommandLine](#CommandLine \"Maxima Command Line\"):"
+msgid "[CommandLine](#CommandLine \"Maxima Command Line\"):"
 msgstr ""
 "• [CommandLine](#CommandLine \\\"Kommandozeilenparameter für Maxima\\\"):"
 
@@ -362,7 +373,13 @@ msgid ""
 "hidden, except if the user assigns the output a name. In this case by "
 "default the user-defined label is displayed. The `%o`\\-style label _Maxima_ "
 "auto-generates will also be accessible, though."
-msgstr "Wird eine Code-Zelle ausgewertet, weist ihr _Maxima_ eine Marke zu (standardmäßig ist diese in roter Schrift gehalten und beginnt mit einem `%i`), über das sie später wieder referenziert werden kann. Für die Ausgabe wird eine Marke generiert, die standardmäßig mit `%o` beginnt und nicht angezeigt wird, außer der Benutzer hat der Formel einen sprechenden Namen gegeben, der stattdessen angezeigt werden kann."
+msgstr ""
+"Wird eine Code-Zelle ausgewertet, weist ihr _Maxima_ eine Marke zu "
+"(standardmäßig ist diese in roter Schrift gehalten und beginnt mit einem `"
+"%i`), über das sie später wieder referenziert werden kann. Für die Ausgabe "
+"wird eine Marke generiert, die standardmäßig mit `%o` beginnt und nicht "
+"angezeigt wird, außer der Benutzer hat der Formel einen sprechenden Namen "
+"gegeben, der stattdessen angezeigt werden kann."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:84
@@ -373,7 +390,12 @@ msgid ""
 "then gradually reverting the unneeded changes is rather easy. Furthermore "
 "the worksheet itself has a global undo buffer that can undo cell edits, adds "
 "and deletes."
-msgstr "Außer Code-Zellen kennt wxMaxima auch Testzellen und solche mit Bildern oder Überschriften. Jede Zelle hat ihren eigenen Speicher für das Rückgängigmachen von Aktionen, was sich oft als hilfreich erwiesen hat. Zudem besitzt, wie in fast allen Applikationen, das Arbeitsblatt einen eigenen Speicher für die Rückgängigmachen-Funktion."
+msgstr ""
+"Außer Code-Zellen kennt wxMaxima auch Testzellen und solche mit Bildern oder "
+"Überschriften. Jede Zelle hat ihren eigenen Speicher für das "
+"Rückgängigmachen von Aktionen, was sich oft als hilfreich erwiesen hat. "
+"Zudem besitzt, wie in fast allen Applikationen, das Arbeitsblatt einen "
+"eigenen Speicher für die Rückgängigmachen-Funktion."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:86
@@ -416,9 +438,7 @@ msgstr ""
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:99
-msgid ""
-"normal a text block that can for example used for explaining the meaning of "
-"the math cell’s contents"
+msgid "a text block that can for example be used for documentation"
 msgstr ""
 
 #. type: Bullet: '*   '
@@ -430,14 +450,9 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:101
 msgid ""
 "The default behavior of _wxMaxima_ when text is entered is to automatically "
-"create a math cell. Cells of other types can be created using the Cell menu "
-"or using the hot keys shown in the menu. That is, to enter commands, just "
-"type and enter material. Before entering text, a workbook title, or a "
-"section or subsection title, one must first create the cell of the specified "
-"type. These cells can be created in one of three ways: via the Cell menu, by "
-"use of hot key combinations (indicated in the menu), or (depending on your "
-"operating system) by right-clicking between two cells and selecting an "
-"option from the drop-down menu."
+"create a math cell. Cells of other types can be created using the Cell menu, "
+"using the hot keys shown in the menu or using the drop-down list in the "
+"toolbar."
 msgstr ""
 
 #. type: Plain text
