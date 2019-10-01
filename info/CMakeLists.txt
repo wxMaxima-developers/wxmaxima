@@ -7,18 +7,18 @@ file(GLOB WXMAXIMA_HELP_FILES *.jpg *.png *.html *.hhp *.pdf)
 #    message(STATUS "Makeinfo found at ${MAKEINFO}")
 #    add_custom_command(OUTPUT "wxmaxima.info"
 #        COMMAND ${MAKEINFO} -o wxmaxima.info --no-split ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.texi)
-#    add_custom_target(wxmaxima.info ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.info)
+#    add_custom_target(wxmaxima.info DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.info)
 #    # where should the info file be installed? Is it used anywhere?
 #
 #    add_custom_command(OUTPUT "wxmaxima.html"
 #        COMMAND ${MAKEINFO} -o wxmaxima.html --html --force --no-split ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.texi)
-#    add_custom_target(wxmaxima.html ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.html)
+#    add_custom_target(wxmaxima.html DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.html)
 #    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.html DESTINATION share/doc/wxmaxima)
 #
 #    if(BUILD_PDF_DOCUMENTATION)
 #        add_custom_command(OUTPUT "wxmaxima.pdf"
 #            COMMAND ${MAKEINFO} -o wxmaxima.pdf --pdf --force --no-split ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.texi)
-#        add_custom_target(wxmaxima.pdf  ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.pdf)
+#        add_custom_target(wxmaxima.pdf  DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.pdf)
 #        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.pdf DESTINATION share/doc/wxmaxima)
 #    endif()
 #endif()
@@ -49,14 +49,14 @@ else()
         set(PANDOC_TEXSELECT_OPTION "--latex-engine")
     endif()
     # the english manual has no special LANG extension
-    add_custom_target(wxmaxima.odt ALL DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
+    add_custom_target(wxmaxima.odt DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
         COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.odt --number-sections --table-of-contents)
-    add_custom_target(wxmaxima.epub ALL DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
+    add_custom_target(wxmaxima.epub DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
         COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.epub --number-sections --table-of-contents --metadata title="wxMaxima")
-    add_custom_target(wxmaxima.html ALL DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
+    add_custom_target(wxmaxima.html DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
         COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.html --number-sections --table-of-contents -s --metadata title="wxMaxima")
     if(LATEX)
-        add_custom_target(wxmaxima.pdf ALL DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
+        add_custom_target(wxmaxima.pdf DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
             COMMAND ${PANDOC} ${PANDOC_TEXSELECT_OPTION}=${LATEX} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -o wxmaxima.pdf --number-sections --table-of-contents)
     else()
         message(STATUS "lualatex or xelatex required for building the pdf manual.")
@@ -65,14 +65,14 @@ else()
         string(REGEX REPLACE ".*locales/manual/(.*).po$" "\\1" LANG ${POFILE})
         if(LATEX)
             # it seems, ${PANDOC} --pdf-engine=xelatex is required for unicode handling.
-            add_custom_target(wxmaxima.${LANG}.pdf ALL DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
+            add_custom_target(wxmaxima.${LANG}.pdf DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
                 COMMAND ${PANDOC} ${PANDOC_TEXSELECT_OPTION}=${LATEX} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md -o wxmaxima.${LANG}.pdf --number-sections --table-of-contents)
         endif()
-        add_custom_target(wxmaxima.${LANG}.odt ALL DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
+        add_custom_target(wxmaxima.${LANG}.odt DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
             COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md -o wxmaxima.${LANG}.odt --number-sections --table-of-contents)
-        add_custom_target(wxmaxima.${LANG}.epub ALL DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
+        add_custom_target(wxmaxima.${LANG}.epub DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
             COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md -o wxmaxima.${LANG}.epub --number-sections --table-of-contents --metadata title="wxMaxima")
-        add_custom_target(wxmaxima.${LANG}.html ALL DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
+        add_custom_target(wxmaxima.${LANG}.html DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md
             COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.${LANG}.md -o wxmaxima.${LANG}.html --number-sections --table-of-contents -s --metadata title="wxMaxima")
     endforeach()
 endif()
