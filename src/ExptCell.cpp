@@ -57,8 +57,8 @@ void ExptCell::Draw(wxPoint point)
 
     point.x += m_baseCell->GetFullWidth() - MC_TEXT_PADDING;
     // Raise the exponent to share the upper border with the base cell
-    if(m_exptCell->GetMaxCenter() < m_baseCell->GetMaxCenter())
-      point.y -= m_baseCell->GetMaxCenter() - m_exptCell->GetMaxCenter();
+    if(m_exptCell->GetMaxHeight() < m_baseCell->GetMaxHeight())
+      point.y -= m_baseCell->GetMaxHeight() - m_exptCell->GetMaxHeight();
     // Raise the exponent a little bit more so it looks like an exponent
     point.y -= PowRise();
     m_exptCell->DrawList(point);
@@ -176,19 +176,18 @@ void ExptCell::RecalculateHeight(int fontsize)
   else
   {
     int expt_yoffset = 0;
-    
+
     if(m_exptCell->GetMaxCenter() < m_baseCell->GetMaxCenter())
-      expt_yoffset = m_baseCell->GetMaxCenter() - m_exptCell->GetMaxCenter();
+      expt_yoffset += m_baseCell->GetMaxHeight() - m_exptCell->GetMaxHeight();
     // Raise the exponent a little bit more so it looks like an exponent
-    expt_yoffset = PowRise();
+    expt_yoffset += PowRise();
+
     m_height = m_baseCell->GetMaxHeight();
     m_center = m_baseCell->GetMaxCenter();
-    
-    if(expt_yoffset > 0)
-    {
-      m_height += expt_yoffset;
-      m_center += expt_yoffset;
-    }
+
+    if(expt_yoffset + m_exptCell->GetMaxCenter() - m_baseCell->GetMaxCenter() > 0)
+    m_height += expt_yoffset + m_exptCell->GetMaxCenter() - m_baseCell->GetMaxCenter();
+    m_center += expt_yoffset + m_exptCell->GetMaxCenter() - m_baseCell->GetMaxCenter();
   }
   
   
