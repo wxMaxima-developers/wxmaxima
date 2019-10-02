@@ -20,8 +20,10 @@ cache:
   
 # branches to build
 branches:
-  only:
-    - master
+  except:
+  - gh_pages
+  - DebianPackaging
+  - DebianPackaging_NightlyBuild
 
 # scripts to run before build
 before_build:
