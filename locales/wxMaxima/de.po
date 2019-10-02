@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-01 07:18+0200\n"
-"PO-Revision-Date: 2019-09-25 22:10+0200\n"
+"PO-Revision-Date: 2019-10-02 22:25+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1338,7 +1338,7 @@ msgstr "Format &2D Anzeige"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:641
 msgid "Change names of greek letters to greek letters"
-msgstr ""
+msgstr "Zeige Namen griechischer Buchstaben als griechischen Buchstaben an"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:866
 msgid "Change the 2d display algorithm used to display math output"
@@ -1347,7 +1347,7 @@ msgstr "Wähle ein Format für die 2D Anzeige"
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:377
 msgid ""
 "Change the text \"alpha\" and \"beta\" to the corresponding greek letter?"
-msgstr ""
+msgstr "Variablennamen wie \"alpha\" oder \"beta\" durch den entsprechenden griechischen Buchstaben austauschen?"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6363
 msgid "Change variable"
@@ -1936,7 +1936,7 @@ msgstr "Standard"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:896
 msgid "Default animation framerate:"
-msgstr ""
+msgstr "Die Standard-Wiederholrate für Animationen:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1078
 msgid "Default font:"
@@ -1944,7 +1944,7 @@ msgstr "Standardschrift:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:556
 msgid "Default plot size for new maxima sessions:"
-msgstr ""
+msgstr "Die Standard-Größe von Diagrammen:"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:972
 msgid "Default port for communication with wxMaxima:"
@@ -2545,7 +2545,7 @@ msgstr "Mustertext"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:982
 msgid "Examples:"
-msgstr ""
+msgstr "Beispiele:"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1150
 msgid "Execute a command for each element of the list"
@@ -2553,7 +2553,7 @@ msgstr "Führt einen Befehl für jedes Element der Liste aus."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:632
 msgid "Exit wxMaxima"
-msgstr ""
+msgstr "Beende wxMaxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1571
 msgid "Expand"
@@ -3677,12 +3677,12 @@ msgstr "Füge Unterparagraph ein\tCtrl+7"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:807
 msgid "Insert image"
-msgstr ""
+msgstr "Bild einfügen"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:599
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:731
 msgid "Integers and single letters"
-msgstr ""
+msgstr "Ganze Zahlen und Einzelbuchstaben"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1827
 msgid "Integral sign"
@@ -3797,7 +3797,7 @@ msgstr ""
 msgid ""
 "It is possible to add custom symbols to the \"symbols\" sidebar by copying "
 "them into the respective field in the configuration dialogue."
-msgstr ""
+msgstr "Es ist möglich, eigene Symbole in die \"Symbole\"-Seitenleiste einzutragen, indem sie in das entsprechende Feld des Konfigurationsdialogs kopiert werden."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:121
 msgid ""
@@ -4138,7 +4138,7 @@ msgstr "Groß-/Kleinschreibung beachten"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:635
 msgid "Match parenthesis in text controls"
-msgstr ""
+msgstr "Klammern in Eingabefeldern automatisch schließen"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1084
 msgid "Math font:"
@@ -4146,7 +4146,7 @@ msgstr "Math. Schriftart:"
 
 #: /home/gunter/src/wxmaxima/src/Cell.cpp:1261
 msgid "Math output"
-msgstr ""
+msgstr "Mathematische Ausgabe"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:357
 msgid ""
@@ -4218,7 +4218,7 @@ msgstr "Matrix"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:247
 msgid "Maxima"
-msgstr ""
+msgstr "Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:476
 msgid "Maxima asks a question"
@@ -4697,7 +4697,7 @@ msgstr "Kein Dollarzeichen ($) oder Semikolon (;) am Ende eines Befehls"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3100
 #, c-format
 msgid "No helpfile found at %s."
-msgstr ""
+msgstr "Keine Hilfedatei unter %s gefunden."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4898
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4921
@@ -4776,7 +4776,7 @@ msgstr "Keine gültige Anzahl an Gleichungen!"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:520
 msgid "Not connected to maxima"
-msgstr ""
+msgstr "Nicht mit Maxima verbunden"
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:141
 #, c-format
@@ -6670,7 +6670,7 @@ msgstr "Die Inverse Laplacetransformation."
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:169
 msgid "The key combination Shift+Space results in a non-breakable space."
-msgstr ""
+msgstr "Die Tastenkombination Shift+Leertaste erzeugt eine nicht-trennbare Leertaste."
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6064
 msgid ""
@@ -7262,7 +7262,7 @@ msgstr "Zentrierter Punkt als Zeichen für Multiplikation"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1089
 msgid "Use jsMath fonts"
-msgstr ""
+msgstr "Verwende jsMath-Zeichensätze"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1153
 msgid "Use list"
@@ -8055,7 +8055,7 @@ msgstr "verwende die konkreten in der Liste gespeicherten Variablenwerte"
 #: /home/gunter/src/wxmaxima/src/main.cpp:328
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6827
 msgid "wxMaxima"
-msgstr ""
+msgstr "wxMaxima"
 
 #: /home/gunter/src/wxmaxima/src/main.cpp:333
 #, c-format
