@@ -109,7 +109,7 @@ endif()
 # set(BU_CHMOD_BUNDLE_ITEM)
 # if(APPLE)
 # install(CODE "include(BundleUtilities)
-#     fixup_bundle(\"${PROJECT_BINARY_DIR}/wxMaxima.app\" \"\" \"\")")
+#     fixup_bundle(\"${PROJECT_BINARY_DIR}/wxMaxima.app\" \"\" \"${wxWidgets_LIB_DIR}\")")
 # endif()
 
 # Build Packages
