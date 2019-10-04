@@ -3263,7 +3263,7 @@ void Worksheet::OnKeyDown(wxKeyEvent &event)
             // User pressed enter inside a cell that does contain code.
 
             bool controlOrShift = event.ControlDown() || event.ShiftDown();
-            if ((m_configuration->EnterEvaluates() && controlOrShift) ||
+            if ((!m_configuration->EnterEvaluates() && controlOrShift) ||
                 (m_configuration->EnterEvaluates() && !controlOrShift))
             { // shift-enter pressed === menu_evaluate event
               GroupCell *currentGroup = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
