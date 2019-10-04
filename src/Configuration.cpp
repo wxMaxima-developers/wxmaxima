@@ -355,7 +355,7 @@ void Configuration::ReadConfig()
   config->Read(wxT("documentclass"), &m_documentclass);
   config->Read(wxT("documentclassoptions"), &m_documentclassOptions);
   config->Read(wxT("latin2greek"), &m_latin2greek);
-  config-Read(wxT("enterEvaluates"), &m_enterEvaluates);
+  config->Read(wxT("enterEvaluates"), &m_enterEvaluates);
 
   {
     int tmp;

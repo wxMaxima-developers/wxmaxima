@@ -1,3 +1,8 @@
+# wxMaxima 19.10.0 - Stable
+  * Corrected a Regression: The better display of exponents failed for exp(x^2).
+  * Seems like some Windows computers only have a numpad enter key.
+  * Chinese translation updates from liulitchi.
+
 # wxMaxima 19.09.1 - Stable
   * The names of greek letters are no more converted to greek letters in variable
 	names by default

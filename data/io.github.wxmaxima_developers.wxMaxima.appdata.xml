@@ -50,6 +50,18 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="19.10.0" date="2019-10-04">
+      <description>
+	<p>
+	  Resolved an Regression.
+	</p>
+        <ul>
+	  <li>Corrected a Regression: The better display of exponents failed for exp(x^2)</li>
+          <li>Seems like some Windows computers only have a numpad enter key</li>
+          <li>Chinese translation updates from liulitchi</li>
+        </ul>
+      </description>
+    </release>
     <release version="19.09.1" date="2019-09-30">
       <description>
 	<p>
