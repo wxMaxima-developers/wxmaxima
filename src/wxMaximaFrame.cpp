@@ -369,9 +369,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   // Read the perspektive (the sidebar state and positions).
   wxConfigBase *config = wxConfig::Get();
   bool loadPanes = true;
-  bool toolbarEnabled = true;
   wxString perspective;
-  config->Read(wxT("AUI/toolbarEnabled"), &toolbarEnabled);
   config->Read(wxT("AUI/savePanes"), &loadPanes);
   config->Read(wxT("AUI/perspective"), &perspective);
 
@@ -389,7 +387,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   // It somehow is possible to hide the maxima worksheet - which renders wxMaxima
   // basically useless => force it to be enabled.
   m_manager.GetPane(wxT("console")).Show(true);
-  m_manager.GetPane(wxT("toolbar")).Show(toolbarEnabled);
 
   m_manager.GetPane(wxT("console")) = m_manager.GetPane(wxT("console")).
     Center().
