@@ -3160,26 +3160,8 @@ void Worksheet::OnKeyDown(wxKeyEvent &event)
       break;
 
     case WXK_NUMPAD_ENTER:
-      if (event.ControlDown() && event.ShiftDown())
-      {
-        // Queue an evaluate event for the window containing this worksheet.
-        wxCommandEvent *evaluateEvent = new wxCommandEvent;
-        evaluateEvent->SetEventType(wxEVT_MENU);
-        evaluateEvent->SetId(popid_evaluate_section);
-        GetParent()->GetEventHandler()->QueueEvent(evaluateEvent);
-      }
-      else
-      {
-        if (GetActiveCell() != NULL && GetActiveCell()->GetType() == MC_TYPE_INPUT)
-          Evaluate();
-        else if (m_hCaretActive)
-          OpenHCaret(wxT("%"));
-        else
-          event.Skip();
-      }
-      break;
-
     case WXK_RETURN:
+      // If Ctrl+Shift are pressed at the same time this is an evaluate event.
       if (event.ControlDown() && event.ShiftDown())
       {
         // Queue an evaluate event for the window containing this worksheet.
@@ -3190,10 +3172,10 @@ void Worksheet::OnKeyDown(wxKeyEvent &event)
       }
       else
       {
+
+        // If we aren't inside a cell <ENTER> jumps to the next cell.
         if (GetActiveCell() == NULL)
         {
-          // We are instructed to evaluate something - but we aren't inside a cell.
-          // Let's see if there are selected cells we can evaluate.
           if (CellsSelected())
           {
             bool enterEvaluates = false;
@@ -3268,6 +3250,7 @@ void Worksheet::OnKeyDown(wxKeyEvent &event)
             }
             else
             {
+              // The user pressed enter without Shift and Ctrl inside a non-code cell 
               GetActiveCell()->ProcessEvent(event);
               // Recalculate(dynamic_cast<GroupCell*>(GetActiveCell()->GetGroup()),false);
               GroupCell *parent = dynamic_cast<GroupCell*>(GetActiveCell()->GetGroup());
@@ -3279,11 +3262,9 @@ void Worksheet::OnKeyDown(wxKeyEvent &event)
           {
             // User pressed enter inside a cell that does contain code.
 
-            bool enterEvaluates = false;
             bool controlOrShift = event.ControlDown() || event.ShiftDown();
-            wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
-            if ((!enterEvaluates && controlOrShift) ||
-                (enterEvaluates && !controlOrShift))
+            if ((m_configuration->EnterEvaluates() && controlOrShift) ||
+                (m_configuration->EnterEvaluates() && !controlOrShift))
             { // shift-enter pressed === menu_evaluate event
               GroupCell *currentGroup = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
               if ((m_evaluationQueue.IsLastInQueue(currentGroup)) &&

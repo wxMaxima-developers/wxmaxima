@@ -655,6 +655,10 @@ public:
   bool MathJaXURL_UseUser(){ return m_mathJaxURL_UseUser;}
   void MathJaXURL_UseUser(bool useUser){wxConfig::Get()->Write(wxT("mathJaxURL_UseUser"),
                                                                m_mathJaxURL_UseUser = useUser);}
+
+  bool EnterEvaluates() {return m_enterEvaluates;}
+  void EnterEvaluates(bool enterEvaluates) {wxConfig::Get()->Write(wxT("enterEvaluates"),
+                                                                m_enterEvaluates = enterEvaluates);}
   wxString MathJaXURL_Auto(){ return wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML");}
   //! Returns the URL MathJaX can be found at.
   void MathJaXURL(wxString url){wxConfig::Get()->Write(wxT("mathJaxURL"), m_mathJaxURL = url);}
@@ -886,6 +890,7 @@ private:
   int m_showLength;
   //!< don't add ; in lisp mode
   bool m_inLispMode;
+  bool m_enterEvaluates;
   bool m_copyRTF;
   bool m_copySVG;
   bool m_copyEMF;

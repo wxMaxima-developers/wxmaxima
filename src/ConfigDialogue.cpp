@@ -394,7 +394,7 @@ void ConfigDialogue::SetProperties()
   // configuration data for this item.
   bool savePanes = true;
   bool fixedFontTC = true, usejsmath = true, keepPercent = true;
-  bool enterEvaluates = false, saveUntitled = true,
+  bool saveUntitled = true,
           AnimateLaTeX = true, TeXExponentsAfterSubscript = false,
           usePartialForDiff = false,
           wrapLatexMath = true,
@@ -444,7 +444,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("texPreamble"), &texPreamble);
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
-  config->Read(wxT("enterEvaluates"), &enterEvaluates);
   config->Read(wxT("saveUntitled"), &saveUntitled);
   config->Read(wxT("cursorJump"), &cursorJump);
   config->Read(wxT("labelWidth"), &labelWidth);
@@ -502,7 +501,7 @@ void ConfigDialogue::SetProperties()
   m_autosubscript->SetSelection(configuration->GetAutosubscript_Num());
   m_changeAsterisk->SetValue(configuration->GetChangeAsterisk());
   m_latin2Greek->SetValue(configuration->Latin2Greek());
-  m_enterEvaluates->SetValue(enterEvaluates);
+  m_enterEvaluates->SetValue(configuration->EnterEvaluates());
   m_saveUntitled->SetValue(saveUntitled);
   m_openHCaret->SetValue(configuration->GetOpenHCaret());
   m_insertAns->SetValue(configuration->GetInsertAns());
@@ -1189,7 +1188,7 @@ void ConfigDialogue::WriteSettings()
   config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());
   configuration->SetChangeAsterisk(m_changeAsterisk->GetValue());
   configuration->Latin2Greek(m_latin2Greek->GetValue());
-  config->Write(wxT("enterEvaluates"), m_enterEvaluates->GetValue());
+  configuration->EnterEvaluates(m_enterEvaluates->GetValue());
   config->Write(wxT("saveUntitled"), m_saveUntitled->GetValue());
   configuration->SetOpenHCaret(m_openHCaret->GetValue());
   configuration->SetInsertAns(m_insertAns->GetValue());

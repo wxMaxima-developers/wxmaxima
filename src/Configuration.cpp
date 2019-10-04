@@ -55,6 +55,7 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_changeAsterisk = true;
   m_workSheet = NULL;
   m_latin2greek = false;
+  m_enterEvaluates = false;
   m_printScale = 1.0;
   m_forceUpdate = false;
   m_outdated = false;
@@ -354,6 +355,7 @@ void Configuration::ReadConfig()
   config->Read(wxT("documentclass"), &m_documentclass);
   config->Read(wxT("documentclassoptions"), &m_documentclassOptions);
   config->Read(wxT("latin2greek"), &m_latin2greek);
+  config-Read(wxT("enterEvaluates"), &m_enterEvaluates);
 
   {
     int tmp;
