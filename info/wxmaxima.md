@@ -89,7 +89,7 @@ The figure below shows different cell types (Title cells, section cells, subsect
 
 ### Cells
 
-The worksheet is organized in cells. Each cell can contain one or more of the following types of content:
+The worksheet is organized in cells. Each cell can contain other cells or the following types of content:
 
 *   one or more lines of _Maxima_ input
 *   one or more image
@@ -101,15 +101,12 @@ The default behavior of _wxMaxima_ when text is entered is to automatically crea
 
 ### Horizontal and vertical cursors
 
-It sometimes is desirable to allow selecting multiple cells or only part of a cell for export or Drag-and-Drop. However, beginning such an action in the middle of one cell and ending it in the middle of another will almost certainly lead to unexpected results. _wxMaxima_ will therefore extend the selection to full cells in this case.
+If the user tries to select a complete sentence a word processor will try to extend the selection to automatically begin and end with a word boundary. Likewise _wxMaxima_ if more than one cell is selected will extend the selection to whole cells.
 
-_wxMaxima_ provides drag-and-drop flexibility by defining two types of cursors. _wxMaxima_ will switch between automatically when needed:
+What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by defining two types of cursors. _wxMaxima_ will switch between them automatically when needed:
 
 *   A horizontal cursor that is able to select any number of whole cells. This cursor is activated by moving the cursor between two cells or by clicking on a space between two cells. To select a set of adjacent cells, click in the bracket at the left of the top cell (but not inside the triangle) and then drag the cursor so that this cell and the next cell (or range of cells) is highlighted. Then use ctrl+enter or shift+enter to execute the highlighted cells.
 *   A vertical cursor that works inside a cell. This cursor is activated by moving the cursor inside a cell using the mouse pointer or the cursor keys and works much like the cursor in a text editor.
-
-As long as the cursor is inside a cell search operations will limit their scope to the current cell.
-
 
 ### Command autocompletion
 
