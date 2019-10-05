@@ -301,7 +301,7 @@ You can be use `.mac` files for writing own library of macros. But since they do
 
 ### .wxm
 
-.wxm files contain the input for Maxima, as well as any text cells, title cells and chapter or section cells the user has typed in. On maxima versions >5.38 they can be read using maxima's load() function just as .mac files can be. Maxima’s output is not saved along with the .wxm file, though.
+.wxm files contain the input for Maxima, as well as any text cells, title cells and chapter or section cells the user has typed in. On maxima versions >5.38 they can be read using Maxima's `load()` function just as .mac files can be. Maxima’s output is not saved along with the .wxm file, though.
 
 ### .wxmx
 
@@ -332,7 +332,7 @@ The animation framerate that is used for new animations is kept in the variable 
 
 ### Default plot size for new maxima sessions
 
-After the next start plots embedded into the worksheet will be created with this size if the value of `wxplot_size` isn’t changed by maxima.
+After the next start plots embedded into the worksheet will be created with this size if the value of `wxplot_size` isn't changed by maxima.
 
 In order to set the plot size of a single graph only use the following notation can be used that sets a variable’s value for one command only:
 
@@ -576,7 +576,7 @@ Allows to select an adequate point in the speed vs. accuracy tradeoff that is pa
 
 ## Embedding graphics
 
-if the .wxmx file format is being used embedding files in a wxMaxima project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:
+if the `.wxmx` file format is being used embedding files in a wxMaxima project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:
 
     show_image("man.png");
 
@@ -613,7 +613,7 @@ The function `table_form()` displays a 2D list in a form that is more readable t
         ]
     )$
 
-As the next example shows, the lists that are assembled by the table\_form command can be created before the command is executed.
+As the next example shows, the lists that are assembled by the `table_form` command can be created before the command is executed.
 
 ![A third table example](./Matrix%20table%20example.png)
 
@@ -793,8 +793,10 @@ Most operating systems provide less complicated ways of starting programs than t
 *   `-v` or `--version`: Output the version information
 *   `-h` or `--help`: Output a short help text
 *   `-o` or `--open`: Open the filename given as argument to this command-line switch
+*   `-e` or `--eval`: Evaluate the file after opening it.
 *   `-b` or `--batch`: If the command-line opens a file all cells in this file are evaluated and the file is saved afterwards. This is for example useful if the session described in the file makes Maxima generate output files. Batch-processing will be stopped if wxMaxima detects that Maxima has output an error and will pause if Maxima has a question: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed.
-*   (Only on windows): `-f` or `--ini`: Use the init file that was given as argument to this command-line switch
+*   `-f` or `--ini`: Use the init file that was given as argument to this command-line switch
+*   `-m` or `--maxima`    allows to specify the location of the maxima binary
 
 Instead of a minus some operating systems might use a dash in front of the command-line switches.
 
