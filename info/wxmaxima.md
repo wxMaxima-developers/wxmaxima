@@ -76,7 +76,7 @@ One of the very few things that are not standard in wxMaxima is that it organize
 
 If text is typed into _wxMaxima_ it automatically creates a new worksheet cell. The type of this cell can be selected in the toolbar. If a code cell is created the cell can be sent to maxima, which causes the result of the calculation to be displayed below the code. A pair of such commands is shown below.
 
-![Input/output cell](./InputCell.jpg)
+![Input/output cell](./InputCell.png)
 
 On evaluation of an input cell's contents the input cell _Maxima_ assigns a label to the input (by default shown in red and recognizable by the `%i`) by which it can be referenced later in the _wxMaxima_ session. The output that _Maxima_ generates also gets a label that begins with `%o` and by default is hidden, except if the user assigns the output a name. In this case by default the user-defined label is displayed. The `%o`\-style label _Maxima_ auto-generates will also be accessible, though.
 
