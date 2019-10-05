@@ -78,7 +78,7 @@ If text is typed into _wxMaxima_ it automatically creates a new worksheet cell. 
 
 ![Input/output cell](./InputCell.jpg)
 
-On evaluation of an input cell’s contents the input cell _Maxima_ assigns a label to the input (by default shown in red and recognizable by the `%i`) by which it can be referenced later in the _wxMaxima_ session. The output that _Maxima_ generates also gets a label that begins with `%o` and by default is hidden, except if the user assigns the output a name. In this case by default the user-defined label is displayed. The `%o`\-style label _Maxima_ auto-generates will also be accessible, though. 
+On evaluation of an input cell's contents the input cell _Maxima_ assigns a label to the input (by default shown in red and recognizable by the `%i`) by which it can be referenced later in the _wxMaxima_ session. The output that _Maxima_ generates also gets a label that begins with `%o` and by default is hidden, except if the user assigns the output a name. In this case by default the user-defined label is displayed. The `%o`\-style label _Maxima_ auto-generates will also be accessible, though.
 
 Besides the input cells wxMaxima allows for text cells for documentation, image cells, title cells, chapter cells and section cells. Every cell has its own undo buffer so debugging by changing the values of several cells and then gradually reverting the unneeded changes is rather easy. Furthermore the worksheet itself has a global undo buffer that can undo cell edits, adds and deletes.
 
@@ -243,11 +243,11 @@ A wxMaxima workbook can be exported as either an HTML file or a LaTeX file. The 
 
 ~~~~
 Ordinary text
- \* One item, indentation level 1
- \* Another item at indentation level 1
-   \* An item at a second indentation level
-   \* A second item at the second indentation level
- \* A third item at the first indentation level
+ * One item, indentation level 1
+ * Another item at indentation level 1
+   * An item at a second indentation level
+   * A second item at the second indentation level
+ * A third item at the first indentation level
 Ordinary text
 ~~~~
 
@@ -382,7 +382,7 @@ If the variable name doesn’t match these requirements it can still be declared
 
 ## User feedback in the statusbar
 
-Long-running commands can provide user-feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to maxima is finished. It is safe to use `wxstatusbar()` even in libraries that might be used with plain maxima (as opposed to wxMaxima): If wxMaxima isn't present the `wxstatusbar()` command will just be left unevelated.
+Long-running commands can provide user-feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to maxima is finished. It is safe to use `wxstatusbar()` even in libraries that might be used with plain Maxima (as opposed to wxMaxima): If wxMaxima isn't present the `wxstatusbar()` command will just be left unevelated.
 
     (%i2)	for i:1 thru 10 do (
 	            /* Tell the user how far we got */
@@ -435,7 +435,7 @@ If the size of only one plot is to be changed _Maxima_ provides a canonical way 
 
 ### Better quality plots
 
-Gnuplot doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output the `cairo` library provides. On systems where gnuplot is compiled to use this library the pngcairo option from the configuration menu (that can be overridden by the variable `wxplot_pngcairo`) enables support for antialiasing and additional line styles.
+Gnuplot doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output the cairo library provides. On systems where gnuplot is compiled to use this library the pngcairo option from the configuration menu (that can be overridden by the variable `wxplot_pngcairo`) enables support for antialiasing and additional line styles.
 
 ### Opening up plots in interactive gnuplot windows
 
@@ -443,7 +443,7 @@ If a plot was generated using the `wxdraw`-type commands (`wxplot` isn't support
 
 ### Opening gnuplot's command console in windows created by `plot` and `draw`
 
-On MS Windows if in maxima's variable `gnuplot_command` "gnuplot" is replaced by "wgnuplot" gnuplot offers the possibility to open a console window gnuplot commands can be entered into. Unfortunately enabling this feature causes gnuplot to "steal" the keyboard focus for a short time every time a plot is prepared.
+On MS Windows if in Maxima's variable `gnuplot_command` "gnuplot" is replaced by "wgnuplot" gnuplot offers the possibility to open a console window gnuplot commands can be entered into. Unfortunately enabling this feature causes gnuplot to "steal" the keyboard focus for a short time every time a plot is prepared.
 
 ### Embedding animations into the spreadsheet
 
@@ -477,7 +477,7 @@ Normally the animations are played back or exported with the frame rate chosen i
     wxanimate(a, 10,
         sin(a*x), [x,-5,5]), wxanimate_framerate=6$
 
-The animation functions have a pitfall that one has to be aware of when using them: The slider variable’s value are substituted into the expression that is to be plotted - which will fail, if the variable isn’t directly visible in the expression. Therefore the following example will fail:
+The animation functions have a pitfall that one has to be aware of when using them: The slider variable's value are substituted into the expression that is to be plotted - which will fail, if the variable isn't directly visible in the expression. Therefore the following example will fail:
 
     f:sin(a*x);
     with_slider_draw(
@@ -582,7 +582,7 @@ if the .wxmx file format is being used embedding files in a wxMaxima project can
 
 ## wxmaximarc
 
-The _Maxima_ user directory contains a text file named wxmaxima-init.mac the contents of the file is passed to Maxima automatically every time a new worksheet has been started.
+The _Maxima_ user directory contains a text file named `wxmaxima-init.mac` the contents of the file is passed to Maxima automatically every time a new worksheet has been started.
 
 To find out which directory Maxima uses as the user directory just type in the following line:
 
@@ -604,7 +604,7 @@ The answer from Maxima will specify the name of the directory that the startup f
 
 ## Pretty-printing 2D output
 
-The function `(table_form)` displays a 2D list in a form that is more readable than the output Maxima’s default output routine. The input is a list of one or more lists. Like the print command, this command displays output even when ended with a dollar sign. Ending the command with a semicolon results in the same table along with a "done" statement.
+The function `table_form()` displays a 2D list in a form that is more readable than the output Maxima’s default output routine. The input is a list of one or more lists. Like the print command, this command displays output even when ended with a dollar sign. Ending the command with a semicolon results in the same table along with a "done" statement.
 
     table_form(
         [
@@ -711,7 +711,7 @@ Setting this variable to `true` might have a drawback, though: Maxima knows whic
 
 SBCL by default comes with a memory limit that allows it to run even on low-end computers. When compiling a big software package like lapack or dealing with extremely big lists or equations this limit might be too low. In order to extend the limits sbcl can be provided with the command line parameter `--dynamic-space-size` that tells sbcl how many megabytes it should reserve. A 32bit-windows-sbcl can reserve up to 999 Megabytes, 1800. A 64-bit sbcl version running on windows can be instructed to use more than the about 1280 Megabytes compiling lapack needs.
 
-One way to provide maxima (and thus sbcl) with command line parameters is the `additional parameters` field of wxMaxima’s configuration dialogue.
+One way to provide maxima (and thus sbcl) with command line parameters is the "Additional parameters for Maxima" field of wxMaxima’s configuration dialogue.
 
 ![sbcl memory](./sbclMemory.png)
 
@@ -722,9 +722,9 @@ Installing the package `ibus-gtk` should resolve this issue. See ([https://bugs.
 
 ## wxMaxima halts when Maxima processes Greek characters or Umlauts
 
-If your Maxima is based on sbcl the following lines have to be added to your .sblrc:
+If your Maxima is based on sbcl the following lines have to be added to your `.sblrc`:
 
-    (setf sb-impl::\*default-external-format\* :utf-8)
+    (setf sb-impl::*default-external-format* :utf-8)
 
 The folder this file has to be placed in is system- and installation-specific. But any sbcl-based Maxima that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:
 
@@ -765,7 +765,8 @@ pngdraw2d("Test",
 Not directly using Maxima. But there are gnuplot commands for it:
 
      wxdraw2d(
-         user_preamble="set size ratio 1;set tmargin 3;set bmargin 3;set lmargin 3;set rmargin 3",
+         user_preamble="set size ratio 1; set tmargin 3; set bmargin 3;
+                        set lmargin 3; set rmargin 3",
          explicit(sin(x),x,1,10)
      ),wxplot_size=[1000,1000];
 
@@ -777,9 +778,9 @@ FAQ
 
 ## Is there a way to make more text fit on a pdfLaTeX page?
 
-There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialog):
+There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue ("Export"->"Additional lines for the TeX preamble"):
 
-    \usepackage[a4paper,landscape,left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}
+    \usepackage[a4paper,left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}
 
 * * *
 
