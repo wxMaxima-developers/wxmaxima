@@ -150,7 +150,7 @@
 <img src="./cell-example.png" alt="Example of different wxMaxima cells" /><figcaption>Example of different wxMaxima cells</figcaption>
 </figure>
 <h3 id="cells"><span class="header-section-number">1.2.2</span> Cells</h3>
-<p>The worksheet is organized in cells. Each cell can contain one or more of the following types of content:</p>
+<p>The worksheet is organized in cells. Each cell can contain other cells or the following types of content:</p>
 <ul>
 <li>one or more lines of <em>Maxima</em> input</li>
 <li>one or more image</li>
@@ -160,13 +160,12 @@
 </ul>
 <p>The default behavior of <em>wxMaxima</em> when text is entered is to automatically create a math cell. Cells of other types can be created using the Cell menu, using the hot keys shown in the menu or using the drop-down list in the toolbar.</p>
 <h3 id="horizontal-and-vertical-cursors"><span class="header-section-number">1.2.3</span> Horizontal and vertical cursors</h3>
-<p>It sometimes is desirable to allow selecting multiple cells or only part of a cell for export or Drag-and-Drop. However, beginning such an action in the middle of one cell and ending it in the middle of another will almost certainly lead to unexpected results. <em>wxMaxima</em> will therefore extend the selection to full cells in this case.</p>
-<p><em>wxMaxima</em> provides drag-and-drop flexibility by defining two types of cursors. <em>wxMaxima</em> will switch between automatically when needed:</p>
+<p>If the user tries to select a complete sentence a word processor will try to extend the selection to automatically begin and end with a word boundary. Likewise <em>wxMaxima</em> if more than one cell is selected will extend the selection to whole cells.</p>
+<p>What isn’t standard is that <em>wxMaxima</em> provides drag-and-drop flexibility by defining two types of cursors. <em>wxMaxima</em> will switch between them automatically when needed:</p>
 <ul>
 <li>A horizontal cursor that is able to select any number of whole cells. This cursor is activated by moving the cursor between two cells or by clicking on a space between two cells. To select a set of adjacent cells, click in the bracket at the left of the top cell (but not inside the triangle) and then drag the cursor so that this cell and the next cell (or range of cells) is highlighted. Then use ctrl+enter or shift+enter to execute the highlighted cells.</li>
 <li>A vertical cursor that works inside a cell. This cursor is activated by moving the cursor inside a cell using the mouse pointer or the cursor keys and works much like the cursor in a text editor.</li>
 </ul>
-<p>As long as the cursor is inside a cell search operations will limit their scope to the current cell.</p>
 <h3 id="command-autocompletion"><span class="header-section-number">1.2.4</span> Command autocompletion</h3>
 <p><em>wxMaxima</em> contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination Ctrl+k. The autocompletion is context-sensitive and if activated within an unit specification for ezUnits it will offer a list of applicable units.</p>
 <figure>
@@ -268,11 +267,11 @@ leadsto       a &quot;leads to&quot; sign
 <h3 id="markdown-support"><span class="header-section-number">1.2.7</span> Markdown support</h3>
 <p>A wxMaxima workbook can be exported as either an HTML file or a LaTeX file. The program uses a set of standard markdown conventions. Markdown in many cases collides with the notations that are frequently used for mathematics. wxMaxima will recognize bullet lists, though, for the HTML and TeX export when the items are marked with stars.</p>
 <pre><code>Ordinary text
- \* One item, indentation level 1
- \* Another item at indentation level 1
-   \* An item at a second indentation level
-   \* A second item at the second indentation level
- \* A third item at the first indentation level
+ * One item, indentation level 1
+ * Another item at indentation level 1
+   * An item at a second indentation level
+   * A second item at the second indentation level
+ * A third item at the first indentation level
 Ordinary text</code></pre>
 <p>wxMaxima will recognize text starting with &gt; chars as block quotes:</p>
 <pre><code>Ordinary text
@@ -305,7 +304,7 @@ Ordinary text</code></pre>
 <pre><code>%i1 read(&quot;test.mac&quot;);</code></pre>
 <p>You can be use <code>.mac</code> files for writing own library of macros. But since they don’t contain enough structural information they cannot be read back as a wxMaxima session.</p>
 <h3 id="wxm"><span class="header-section-number">1.3.2</span> .wxm</h3>
-<p>.wxm files contain the input for Maxima, as well as any text cells, title cells and chapter or section cells the user has typed in. On maxima versions &gt;5.38 they can be read using maxima’s load() function just as .mac files can be. Maxima’s output is not saved along with the .wxm file, though.</p>
+<p>.wxm files contain the input for Maxima, as well as any text cells, title cells and chapter or section cells the user has typed in. On maxima versions &gt;5.38 they can be read using Maxima’s <code>load()</code> function just as .mac files can be. Maxima’s output is not saved along with the .wxm file, though.</p>
 <h3 id="wxmx"><span class="header-section-number">1.3.3</span> .wxmx</h3>
 <p>This xml-based file format saves all text and images the work sheet contains. It is the preferred file format now and comes in two flavors:</p>
 <ul>
@@ -362,7 +361,7 @@ Ordinary text</code></pre>
 </ul>
 <p>If the variable name doesn’t match these requirements it can still be declared as “to be subscripted” using the command <code>wxdeclare_subscript(variable_name);</code> or <code>wxdeclare_subscript([variable_name1,variable_name2,...]);</code> Declaring a variable as subscripted can be reverted using the following command: <code>wxdeclare_subscript(variable_name,false);</code></p>
 <h2 id="user-feedback-in-the-statusbar"><span class="header-section-number">2.2</span> User feedback in the statusbar</h2>
-<p>Long-running commands can provide user-feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to maxima is finished. It is safe to use <code>wxstatusbar()</code> even in libraries that might be used with plain maxima (as opposed to wxMaxima): If wxMaxima isn’t present the <code>wxstatusbar()</code> command will just be left unevelated.</p>
+<p>Long-running commands can provide user-feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to maxima is finished. It is safe to use <code>wxstatusbar()</code> even in libraries that might be used with plain Maxima (as opposed to wxMaxima): If wxMaxima isn’t present the <code>wxstatusbar()</code> command will just be left unevelated.</p>
 <pre><code>(%i2)   for i:1 thru 10 do (
             /* Tell the user how far we got */
             wxstatusbar(concat(&quot;Pass &quot;,i)),
@@ -402,11 +401,11 @@ Ordinary text</code></pre>
     )
 ),wxplot_size=[1600,800]$</code></pre>
 <h3 id="better-quality-plots"><span class="header-section-number">2.3.3</span> Better quality plots</h3>
-<p>Gnuplot doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output the <code>cairo</code> library provides. On systems where gnuplot is compiled to use this library the pngcairo option from the configuration menu (that can be overridden by the variable <code>wxplot_pngcairo</code>) enables support for antialiasing and additional line styles.</p>
+<p>Gnuplot doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output the cairo library provides. On systems where gnuplot is compiled to use this library the pngcairo option from the configuration menu (that can be overridden by the variable <code>wxplot_pngcairo</code>) enables support for antialiasing and additional line styles.</p>
 <h3 id="opening-up-plots-in-interactive-gnuplot-windows"><span class="header-section-number">2.3.4</span> Opening up plots in interactive gnuplot windows</h3>
 <p>If a plot was generated using the <code>wxdraw</code>-type commands (<code>wxplot</code> isn’t supported by this feature) and the file size of the underlying gnuplot project isn’t way too high wxMaxima offers a right-click menu that allows to open the plot in an interactive gnuplot window.</p>
 <h3 id="opening-gnuplots-command-console-in-windows-created-by-plot-and-draw"><span class="header-section-number">2.3.5</span> Opening gnuplot’s command console in windows created by <code>plot</code> and <code>draw</code></h3>
-<p>On MS Windows if in maxima’s variable <code>gnuplot_command</code> “gnuplot” is replaced by “wgnuplot” gnuplot offers the possibility to open a console window gnuplot commands can be entered into. Unfortunately enabling this feature causes gnuplot to “steal” the keyboard focus for a short time every time a plot is prepared.</p>
+<p>On MS Windows if in Maxima’s variable <code>gnuplot_command</code> “gnuplot” is replaced by “wgnuplot” gnuplot offers the possibility to open a console window gnuplot commands can be entered into. Unfortunately enabling this feature causes gnuplot to “steal” the keyboard focus for a short time every time a plot is prepared.</p>
 <h3 id="embedding-animations-into-the-spreadsheet"><span class="header-section-number">2.3.6</span> Embedding animations into the spreadsheet</h3>
 <p>The <code>with_slider_draw</code> command is a version of <code>wxdraw2d</code> that does prepare multiple plots and allows to switch between them by moving the slider on top of the screen. If ImageMagick is installed wxMaxima even allows to export this animation as an animated gif.</p>
 <p>The first two arguments for <code>with_slider_draw</code> are the name of the variable that is stepped between the plots and a list of the values of these variable. The arguments that follow are the ordinary arguments for <code>wxdraw2d</code>:</p>
@@ -488,10 +487,10 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <h4 id="accuracy"><span class="header-section-number">2.3.8.14</span> Accuracy</h4>
 <p>Allows to select an adequate point in the speed vs. accuracy tradeoff that is part of any plot program.</p>
 <h2 id="embedding-graphics"><span class="header-section-number">2.4</span> Embedding graphics</h2>
-<p>if the .wxmx file format is being used embedding files in a wxMaxima project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:</p>
+<p>if the <code>.wxmx</code> file format is being used embedding files in a wxMaxima project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:</p>
 <pre><code>show_image(&quot;man.png&quot;);</code></pre>
 <h2 id="wxmaximarc"><span class="header-section-number">2.5</span> wxmaximarc</h2>
-<p>The <em>Maxima</em> user directory contains a text file named wxmaxima-init.mac the contents of the file is passed to Maxima automatically every time a new worksheet has been started.</p>
+<p>The <em>Maxima</em> user directory contains a text file named <code>wxmaxima-init.mac</code> the contents of the file is passed to Maxima automatically every time a new worksheet has been started.</p>
 <p>To find out which directory Maxima uses as the user directory just type in the following line:</p>
 <pre><code>maxima_userdir;</code></pre>
 <p>The answer from Maxima will specify the name of the directory that the startup file can be placed in.</p>
@@ -506,14 +505,14 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <li><code>wxanimate_framerate</code> The number of frames per second the following animations have to be played back with. -1 tells wxMaxima to use the default frame rate from the config dialog.</li>
 </ul>
 <h2 id="pretty-printing-2d-output"><span class="header-section-number">2.7</span> Pretty-printing 2D output</h2>
-<p>The function <code>(table_form)</code> displays a 2D list in a form that is more readable than the output Maxima’s default output routine. The input is a list of one or more lists. Like the print command, this command displays output even when ended with a dollar sign. Ending the command with a semicolon results in the same table along with a “done” statement.</p>
+<p>The function <code>table_form()</code> displays a 2D list in a form that is more readable than the output Maxima’s default output routine. The input is a list of one or more lists. Like the print command, this command displays output even when ended with a dollar sign. Ending the command with a semicolon results in the same table along with a “done” statement.</p>
 <pre><code>table_form(
     [
         [1,2],
         [3,4]
     ]
 )$</code></pre>
-<p>As the next example shows, the lists that are assembled by the table_form command can be created before the command is executed.</p>
+<p>As the next example shows, the lists that are assembled by the <code>table_form</code> command can be created before the command is executed.</p>
 <figure>
 <img src="./Matrix%20table%20example.png" alt="A third table example" /><figcaption>A third table example</figcaption>
 </figure>
@@ -576,15 +575,15 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <p>Setting this variable to <code>true</code> might have a drawback, though: Maxima knows which directory it is installed in and will search for any additional package that is requested by a <code>load</code> command in this directory, too. But it might not know which drive it is installed on. If <code>wxchangedir</code> is <code>true</code> and the current file is saved on a different drive than the one Maxima is installed on Maxima therefore might fail to load the additional packages it was bundled with.</p>
 <h2 id="my-sbcl-based-maxima-runs-out-of-memory"><span class="header-section-number">3.11</span> My SBCL-based Maxima runs out of memory</h2>
 <p>SBCL by default comes with a memory limit that allows it to run even on low-end computers. When compiling a big software package like lapack or dealing with extremely big lists or equations this limit might be too low. In order to extend the limits sbcl can be provided with the command line parameter <code>--dynamic-space-size</code> that tells sbcl how many megabytes it should reserve. A 32bit-windows-sbcl can reserve up to 999 Megabytes, 1800. A 64-bit sbcl version running on windows can be instructed to use more than the about 1280 Megabytes compiling lapack needs.</p>
-<p>One way to provide maxima (and thus sbcl) with command line parameters is the <code>additional parameters</code> field of wxMaxima’s configuration dialogue.</p>
+<p>One way to provide maxima (and thus sbcl) with command line parameters is the “Additional parameters for Maxima” field of wxMaxima’s configuration dialogue.</p>
 <figure>
 <img src="./sbclMemory.png" alt="sbcl memory" /><figcaption>sbcl memory</figcaption>
 </figure>
 <h2 id="input-sometimes-is-sluggishignoring-keys-on-ubuntu"><span class="header-section-number">3.12</span> Input sometimes is sluggish/ignoring keys on Ubuntu</h2>
 <p>Installing the package <code>ibus-gtk</code> should resolve this issue. See (<a href="https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558">https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558</a>) for details.</p>
 <h2 id="wxmaxima-halts-when-maxima-processes-greek-characters-or-umlauts"><span class="header-section-number">3.13</span> wxMaxima halts when Maxima processes Greek characters or Umlauts</h2>
-<p>If your Maxima is based on sbcl the following lines have to be added to your .sblrc:</p>
-<pre><code>(setf sb-impl::\*default-external-format\* :utf-8)</code></pre>
+<p>If your Maxima is based on sbcl the following lines have to be added to your <code>.sblrc</code>:</p>
+<pre><code>(setf sb-impl::*default-external-format* :utf-8)</code></pre>
 <p>The folder this file has to be placed in is system- and installation-specific. But any sbcl-based Maxima that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:</p>
 <pre><code>:lisp (sb-impl::userinit-pathname)</code></pre>
 <h2 id="plotting-1"><span class="header-section-number">3.14</span> Plotting</h2>
@@ -614,14 +613,15 @@ pngdraw2d(&quot;Test&quot;,
 <h3 id="can-i-set-the-aspect-ratio-of-a-plot"><span class="header-section-number">3.14.2</span> Can I set the aspect ratio of a plot?</h3>
 <p>Not directly using Maxima. But there are gnuplot commands for it:</p>
 <pre><code> wxdraw2d(
-     user_preamble=&quot;set size ratio 1;set tmargin 3;set bmargin 3;set lmargin 3;set rmargin 3&quot;,
+     user_preamble=&quot;set size ratio 1; set tmargin 3; set bmargin 3;
+                    set lmargin 3; set rmargin 3&quot;,
      explicit(sin(x),x,1,10)
  ),wxplot_size=[1000,1000];</code></pre>
 <hr />
 <h1 id="faq"><span class="header-section-number">4</span> FAQ</h1>
 <h2 id="is-there-a-way-to-make-more-text-fit-on-a-pdflatex-page"><span class="header-section-number">4.1</span> Is there a way to make more text fit on a pdfLaTeX page?</h2>
-<p>There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialog):</p>
-<pre><code>\usepackage[a4paper,landscape,left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</code></pre>
+<p>There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue (“Export”-&gt;“Additional lines for the TeX preamble”):</p>
+<pre><code>\usepackage[a4paper,left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</code></pre>
 <hr />
 <h1 id="command-line-arguments"><span class="header-section-number">5</span> Command-line arguments</h1>
 <p>Most operating systems provide less complicated ways of starting programs than the command line so this possibility is only rarely used. wxMaxima still provides some command line switches, though.</p>
@@ -629,8 +629,10 @@ pngdraw2d(&quot;Test&quot;,
 <li><code>-v</code> or <code>--version</code>: Output the version information</li>
 <li><code>-h</code> or <code>--help</code>: Output a short help text</li>
 <li><code>-o</code> or <code>--open</code>: Open the filename given as argument to this command-line switch</li>
+<li><code>-e</code> or <code>--eval</code>: Evaluate the file after opening it.</li>
 <li><code>-b</code> or <code>--batch</code>: If the command-line opens a file all cells in this file are evaluated and the file is saved afterwards. This is for example useful if the session described in the file makes Maxima generate output files. Batch-processing will be stopped if wxMaxima detects that Maxima has output an error and will pause if Maxima has a question: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed.</li>
-<li>(Only on windows): <code>-f</code> or <code>--ini</code>: Use the init file that was given as argument to this command-line switch</li>
+<li><code>-f</code> or <code>--ini</code>: Use the init file that was given as argument to this command-line switch</li>
+<li><code>-m</code> or <code>--maxima</code> allows to specify the location of the maxima binary</li>
 </ul>
 <p>Instead of a minus some operating systems might use a dash in front of the command-line switches.</p>
 <hr />
