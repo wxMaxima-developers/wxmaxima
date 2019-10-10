@@ -28,9 +28,7 @@ branches:
 # scripts to run before build
 before_build:
   - cmd: echo Installing pandoc...
-  - cmd: choco upgrade chocolatey
-  - cmd: choco upgrade chocolatey-core.extension
-  - cmd: choco install pandoc --version 2.7.2 
+  - cinst pandoc
   - cmd: echo Downloading and unpacking wxWidgets...
   - cmd: set WXVERSION=3.1.2
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2.7z'
