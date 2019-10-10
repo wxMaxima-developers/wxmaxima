@@ -28,7 +28,7 @@ branches:
 # scripts to run before build
 before_build:
   - cmd: echo Installing pandoc...
-  - cmd: cmd /c choco install pandoc
+  - cmd: choco install pandoc --version 2.7.2
   - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\"
   - cmd: echo Downloading and unpacking wxWidgets...
   - cmd: set WXVERSION=3.1.2
