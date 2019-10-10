@@ -1,3 +1,5 @@
+# -*- mode: CMake; cmake-tab-width: 4; -*-
+
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/po4a.cfg.in ${CMAKE_CURRENT_BINARY_DIR}/po4a.cfg)
 
 find_program(PO4A po4a)

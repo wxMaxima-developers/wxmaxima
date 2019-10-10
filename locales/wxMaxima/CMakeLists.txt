@@ -1,3 +1,5 @@
+# -*- mode: CMake; cmake-tab-width: 4; -*-
+
 find_package(Gettext)
 
 # which languages are supported?

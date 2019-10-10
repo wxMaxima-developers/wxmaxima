@@ -1,3 +1,5 @@
+# -*- mode: CMake; cmake-tab-width: 4; -*-
+
 find_package(Doxygen)
 
 if(DOXYGEN_FOUND)

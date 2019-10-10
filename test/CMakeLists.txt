@@ -1,3 +1,5 @@
+# -*- mode: CMake; cmake-tab-width: 4; -*-
+
 file(GLOB TEST_FILES *.png *.wxmx *.wxm *.mac)
 
 install(FILES ${TEST_FILES} DESTINATION share/wxMaxima)

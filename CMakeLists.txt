@@ -1,3 +1,5 @@
+# -*- mode: CMake; cmake-tab-width: 4; -*-
+
 cmake_minimum_required(VERSION 3.4)
 find_program(CCACHE_PROGRAM ccache)
 if(CCACHE_PROGRAM)

@@ -1,3 +1,5 @@
+# -*- mode: CMake; cmake-tab-width: 4; -*-
+
 file(GLOB SOURCE_FILES *.cpp *.h)
 
 # We provide our own manifest. MSVC seems not to autodetect that.
