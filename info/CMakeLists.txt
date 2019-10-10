@@ -5,6 +5,10 @@ file(GLOB BASENAMES ${CMAKE_SOURCE_DIR}/locales/manual/*.po)
 list(TRANSFORM BASENAMES REPLACE ".*/(.*).po$" "wxmaxima.\\1")
 list(APPEND BASENAMES "wxmaxima")
 
+add_custom_target(pdf)
+add_custom_target(odt)
+add_custom_target(epub)
+
 # Find a suitable LaTeX installation
 find_program(LATEX NAMES xelatex lualatex)
 
@@ -26,29 +30,34 @@ else()
         message(STATUS "pandoc version < 2 found - using option --latex-engine")
         set(PANDOC_TEXSELECT_OPTION "--latex-engine")
     endif()
-    set(PANDOC_ARGS "--number-sections --table-of-contents -s --metadata title=\"wxMaxima\" ${PANDOC_TEXSELECT_OPTION}=${LATEX}")
+    set(PANDOC_ARGS --number-sections --table-of-contents -s --metadata title="wxMaxima" ${PANDOC_TEXSELECT_OPTION}=${LATEX})
     if(NOT LATEX)
         message(STATUS "lualatex or xelatex required for building the pdf manual.")
     endif()
     foreach(BASENAME ${BASENAMES})
         if(LATEX)
             add_custom_command(
-		OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.pdf
+		TARGET  pdf
 		DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md
-		COMMAND ${PANDOC} ${BASENAME}.md -o ${BASENAME}.pdf ${PANDOC_ARGS})
+		COMMAND ${PANDOC} ${BASENAME}.md -o ${BASENAME}.pdf ${PANDOC_ARGS}
+		COMMENT "Generating ${BASENAME}.pdf ...")    
         endif()
         add_custom_command(
-	    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.odt
+	    TARGET  odt
 	    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md
-            COMMAND ${PANDOC} ${BASENAME}.md -o ${BASENAME}.odt ${PANDOC_ARGS})
+            COMMAND ${PANDOC} ${BASENAME}.md -o ${BASENAME}.odt ${PANDOC_ARGS}
+	    COMMENT "Generating ${BASENAME}.odt ...")    
         add_custom_command(
-	    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.epub
+	    TARGET  epub
 	    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md
-            COMMAND ${PANDOC} ${BASENAME}.md -o ${BASENAME}.epub ${PANDOC_ARGS})
+            COMMAND ${PANDOC} ${BASENAME}.md -o ${BASENAME}.epub ${PANDOC_ARGS}
+	    COMMENT "Generating ${BASENAME}.epub ...")    
         add_custom_command(
-	    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.html
+	    OUTPUT  ${BASENAME}.html
 	    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md
             COMMAND ${PANDOC} ${BASENAME}.md -o ${BASENAME}.html ${PANDOC_ARGS})
+	add_custom_target(${BASENAME}.html ALL
+	    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md)
 	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
     endforeach()
 endif()
