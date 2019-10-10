@@ -29,6 +29,7 @@ branches:
 before_build:
   - cmd: echo Installing pandoc...
   - cmd: choco upgrade chocolatey
+  - cmd: choco choco install chocolatey-core.extension
   - cmd: choco install pandoc --version 2.7.2 
   - cmd: echo Downloading and unpacking wxWidgets...
   - cmd: set WXVERSION=3.1.2
