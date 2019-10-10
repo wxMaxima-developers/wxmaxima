@@ -39,24 +39,24 @@ else()
             add_custom_command(
 		TARGET  pdf
 		DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md
-		COMMAND ${PANDOC} ${BASENAME}.md -o ${BASENAME}.pdf ${PANDOC_ARGS}
-		COMMENT "Generating ${BASENAME}.pdf ...")    
+		COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md -o ${BASENAME}.pdf ${PANDOC_ARGS}
+		COMMENT "Generating ${BASENAME}.pdf ...")
         endif()
         add_custom_command(
 	    TARGET  odt
 	    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md
-            COMMAND ${PANDOC} ${BASENAME}.md -o ${BASENAME}.odt ${PANDOC_ARGS}
-	    COMMENT "Generating ${BASENAME}.odt ...")    
+            COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md -o ${BASENAME}.odt ${PANDOC_ARGS}
+	    COMMENT "Generating ${BASENAME}.odt ...")
         add_custom_command(
 	    TARGET  epub
 	    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md
-            COMMAND ${PANDOC} ${BASENAME}.md -o ${BASENAME}.epub ${PANDOC_ARGS}
-	    COMMENT "Generating ${BASENAME}.epub ...")    
+            COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md -o ${BASENAME}.epub ${PANDOC_ARGS}
+	    COMMENT "Generating ${BASENAME}.epub ...")
 	add_custom_command(
 	    OUTPUT ${BASENAME}.html
 	    DEPENDS ${BASENAME}.md
 	    COMMAND ${PANDOC} ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.md -o ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.html ${PANDOC_ARGS})
-	
+
 	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
     endforeach()
 endif()
