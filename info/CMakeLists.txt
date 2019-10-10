@@ -52,12 +52,9 @@ else()
 	    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md
             COMMAND ${PANDOC} ${BASENAME}.md -o ${BASENAME}.epub ${PANDOC_ARGS}
 	    COMMENT "Generating ${BASENAME}.epub ...")    
-        add_custom_command(
-	    OUTPUT  ${BASENAME}.html
-	    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md
-            COMMAND ${PANDOC} ${BASENAME}.md -o ${BASENAME}.html ${PANDOC_ARGS})
 	add_custom_target(${BASENAME}.html ALL
-	    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md)
+	    DEPENDS ${BASENAME}.md
+	    COMMAND ${PANDOC} ${BASENAME}.md -o ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.html ${PANDOC_ARGS})
 	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
     endforeach()
 endif()
