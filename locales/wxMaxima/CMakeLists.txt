@@ -2,8 +2,8 @@
 
 find_package(Gettext)
 
-add_custom_target(update-locale-wxmaxima)
-set_target_properties(update-locale-wxmaxima
+add_custom_target(update-locale)
+set_target_properties(update-locale
     PROPERTIES OUTPUT_NAME update-locale)
 
 # which languages are supported?
@@ -51,7 +51,7 @@ if(GETTEXT_FOUND)
     file(GLOB NEW_PO_FILES "${CMAKE_BINARY_DIR}/locales/*.po")
 
     add_custom_command(
-	TARGET update-locale-wxmaxima
+	TARGET update-locale
 	COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/wxMaxima.pot" "${CMAKE_SOURCE_DIR}/locales/wxMaxima/wxMaxima.pot"
 	COMMAND ${CMAKE_COMMAND} -E copy "*.po" "${CMAKE_SOURCE_DIR}/locales/wxMaxima/"
 	COMMENT "Installing wxMaxima.pot and po-files in the source directory ${CMAKE_SOURCE_DIR}/locales/wxMaxima")
