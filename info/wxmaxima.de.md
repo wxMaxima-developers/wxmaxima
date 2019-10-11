@@ -208,17 +208,16 @@ program expects. To activate this feature press
 
 #### Griechische Zeichen
 
-Computers traditionally store characters in 8-bit values. This allows for a
-maximum of 256 different characters. All letters, numbers, and control
-symbols (end of transmission, end of string, lines and edges for drawing
-rectangles for menus _etc_.) of nearly any given language can fit within
-that limit.
+Computer speichern Zeichen meist als 8-Bit-Werte, was maximal 256
+unterschiedliche Typen von Zeichen erlaubt. Die meisten Sprachen nutzen
+inklusive Steuerzeichen, Ziffern und ein paar Zeichen, aus denen Graphiken
+zusammengesetzt werden können, weniger als dies.
 
 For most countries the codepage of 256 characters that has been chosen does
-not include Greek letters, though. To overcome this limitation Unicode has
-been invented: This is a method of including characters that are not
-normally used in the English language in a text that (as long as only the
-basic form of Latin characters is used) looks like plain 8-bit ASCII.
+not include things like Greek letters, though, that are frequently used in
+mathematics. To overcome this type of limitation Unicode has been invented:
+An encoding that makes english text work like normal, but to use characters
+whose keycode are more than 8 bits long.
 
 _Maxima_ allows for unicode characters if it runs on a lisp (the language on
 which _Maxima_ is built) that supports them. If the _wxWidgets_ library on

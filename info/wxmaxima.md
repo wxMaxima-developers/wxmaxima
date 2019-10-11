@@ -120,7 +120,7 @@ Besides completing a file name, an unit name or the current command’s or varia
 
 Computers traditionally store characters in 8-bit values. This allows for a maximum of 256 different characters. All letters, numbers, and control symbols (end of transmission, end of string, lines and edges for drawing rectangles for menus _etc_.) of nearly any given language can fit within that limit.
 
-For most countries the codepage of 256 characters that has been chosen does not include Greek letters, though. To overcome this limitation Unicode has been invented: This is a method of including characters that are not normally used in the English language in a text that (as long as only the basic form of Latin characters is used) looks like plain 8-bit ASCII.
+For most countries the codepage of 256 characters that has been chosen does not include things like Greek letters, though, that are frequently used in mathematics. To overcome this type of limitation Unicode has been invented: An encoding that makes english text work like normal, but to use characters whose keycode are more than 8 bits long.
 
 _Maxima_ allows for unicode characters if it runs on a lisp (the language on which _Maxima_ is built) that supports them. If the _wxWidgets_ library on which _wxMaxima_ is built on supports Unicode characters, too, then _wxMaxima_ can be built with Unicode support. In this case it (besides a Greek Characters Sidebar) provides a method of entering Greek characters using the keyboard:
 
