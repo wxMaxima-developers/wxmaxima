@@ -188,22 +188,25 @@ vertikalen oder einen horizontalen Cursor darstellen kann:
     wird er vertikal dargestellt, und erlaubt es, ganze Zellen auszuwählen.
 *   Innerhalb einer Zelle wird der Cursor vertikal dargestellt.
 
-### Command autocompletion
+### Auto-Vervollständigung
 
-_wxMaxima_ contains an autocompletion feature that is triggered via the menu
-(Cell/Complete Word) or alternatively by pressing the key combination
-Ctrl+k. The autocompletion is context-sensitive and if activated within an
-unit specification for ezUnits it will offer a list of applicable units.
+wxMaxima versucht, automatisch die Namen von Befehlen oder Variablen zu
+vervollständigen, wenn der Menüpunkt (Vervollständige Befehl) angewählt
+wird, oder die Tastenkombination Strg+Leertaste gedrückt wird. Die
+automatische Vervollständigung erkennt oft den Kontext, in dem sie
+ausgeführt wird, und kann beispielsweise Dateinamen oder Einheiten für
+ezUnits vorschlagen.
 
 ![ezUnits](./ezUnits.png)
 
-Besides completing the current commandâs or variableâs name the
-autocompletion is able to show a template for most of the commands
-indicating the type (and meaning) of the parameters this program expects. To
-activate this feature press Shift+Ctrl+k or select the respective menu item
+Besides completing a file name, an unit name or the current commandâs or
+variableâs name the autocompletion is able to show a template for most of
+the commands indicating the type (and meaning) of the parameters this
+program expects. To activate this feature press
+&lt;Shift&gt;+&lt;Ctrl&gt;+&lt;Space&gt; or select the respective menu item
 (Cell/Show Template).
 
-#### Greek characters
+#### Griechische Zeichen
 
 Computers traditionally store characters in 8-bit values. This allows for a
 maximum of 256 different characters. All letters, numbers, and control

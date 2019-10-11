@@ -216,15 +216,17 @@ automatically when needed:
 
 _wxMaxima_ contains an autocompletion feature that is triggered via the menu
 (Cell/Complete Word) or alternatively by pressing the key combination
-Ctrl+k. The autocompletion is context-sensitive and if activated within an
-unit specification for ezUnits it will offer a list of applicable units.
+Ctrl+&gt;Space&lt;. The autocompletion is context-sensitive. For example if
+activated within an unit specification for ezUnits it will offer a list of
+applicable units.
 
 ![ezUnits](./ezUnits.png)
 
-Besides completing the current commandâs or variableâs name the
-autocompletion is able to show a template for most of the commands
-indicating the type (and meaning) of the parameters this program expects. To
-activate this feature press Shift+Ctrl+k or select the respective menu item
+Besides completing a file name, an unit name or the current commandâs or
+variableâs name the autocompletion is able to show a template for most of
+the commands indicating the type (and meaning) of the parameters this
+program expects. To activate this feature press
+&lt;Shift&gt;+&lt;Ctrl&gt;+&lt;Space&gt; or select the respective menu item
 (Cell/Show Template).
 
 #### Greek characters

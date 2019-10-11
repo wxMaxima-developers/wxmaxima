@@ -14,9 +14,7 @@ find_program(LATEX NAMES xelatex lualatex)
 
 # Generate the manuals
 find_program(PANDOC pandoc)
-if(NOT PANDOC)
-    message(WARNING "Pandoc not found. Documentation can not converted from Markdown.")
-else()
+if(PANDOC)
     execute_process(
         COMMAND ${PANDOC} --version
         OUTPUT_VARIABLE PANDOC_VERSION_TEXT
@@ -62,11 +60,14 @@ else()
     )
 	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
     endforeach()
+else()
+    message(WARNING "Pandoc not found. Documentation can not converted from Markdown.")
+    # allow local execution (./wxmaxima-local) from the build directory without installation
+    # and ensure that the images will be found by pandoc
+    file(COPY ${WXMAXIMA_HELP_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 endif()
 
 file(GLOB WXMAXIMA_HELP_FILES *.jpg *.png *.html *.hhp *.pdf)
 install(FILES ${WXMAXIMA_HELP_FILES} DESTINATION share/doc/wxmaxima)
 
-# allow local execution (./wxmaxima-local) from the build directory without installation
-# and ensure that the images will be found by pandoc
-file(COPY ${WXMAXIMA_HELP_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
