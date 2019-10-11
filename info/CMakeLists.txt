@@ -56,7 +56,10 @@ else()
 	    OUTPUT ${BASENAME}.html
 	    DEPENDS ${BASENAME}.md
 	    COMMAND ${PANDOC} ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.md -o ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.html ${PANDOC_ARGS})
-
+	add_custom_target(
+	    ${BASENAME}.html.stamp ALL
+	    DEPENDS ${BASENAME}.html
+    )
 	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
     endforeach()
 endif()
