@@ -30,8 +30,9 @@ before_build:
   - cmd: echo Installing pandoc...
   - ps: Start-FileDownload 'https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-windows-x86_64.zip'
   - cmd: 7z x pandoc-2.7.3-windows-x86_64.zip -o"C:\Program Files (x86)\Pandoc\"
+  - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\pandoc-2.7.3-windows-x86_64"
 #  - cmd: choco install pandoc
-  - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\"
+#  - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\"
   - cmd: echo Downloading and unpacking wxWidgets...
   - cmd: set WXVERSION=3.1.2
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2.7z'
