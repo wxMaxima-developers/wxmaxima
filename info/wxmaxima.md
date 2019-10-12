@@ -122,16 +122,13 @@ Computers traditionally store characters in 8-bit values. This allows for a maxi
 
 For most countries the codepage of 256 characters that has been chosen does not include things like Greek letters, though, that are frequently used in mathematics. To overcome this type of limitation Unicode has been invented: An encoding that makes english text work like normal, but to use characters whose keycode are more than 8 bits long.
 
-_Maxima_ allows for unicode characters if it runs on a lisp (the language on which _Maxima_ is built) that supports them. If the _wxWidgets_ library on which _wxMaxima_ is built on supports Unicode characters, too, then _wxMaxima_ can be built with Unicode support. In this case it (besides a Greek Characters Sidebar) provides a method of entering Greek characters using the keyboard:
+_Maxima_ allows for unicode characters if it was compiled using a lisp compiler that either supports lisp or that doesn't care about the font encoding. As at least one of this is likely to be true _wxMaxima_ provides a method of entering Greek characters using the keyboard:
 
-*   An alpha is entered by pressing the <ESC> key and then typing in the character a followed by a press on the <ESC> key.
-*   A beta is entered by pressing the <ESC> key and then typing in the character b followed by a press on the <ESC> key.
-*   A gamma is entered by pressing the <ESC> key and then typing in the character c followed by a press on the <ESC> key.
+*   An alpha is entered by pressing the <ESC> key and then typing in the character a followed by a press on the <ESC> key. Alternatively an alpha can be produced by pressing the <ESC> key and typing the first letters of the word "alpha".
+*   A beta is entered by pressing the <ESC> key and then typing in the character b followed by a press on the <ESC> key - or by pressing <ESC> and starting to type the word "beta".
 *   ...and so on.
 
-If the system does not provide unicode support _wxMaxima_ will still provide a method of showing Greek characters: Variable names like "alpha" are always displayed as the corresponding Greek symbols in _wxMaxima_ output.
-
-The lowercase Greek letters actually can be entered both by enter a Latin letter or the whole Latin name of the Greek letter followed and preceded by a press of the escape key:
+The following letters are supported:
 
 ~~~~
 a alpha    i iota      r rho
@@ -142,11 +139,6 @@ e epsilon  n nu        f phi
 z zeta     x xi        c chi
 h eta      om omicron  y psi
 q theta    p pi        o omega
-~~~~
-
-The same is true for the uppercase greek letters:
-
-~~~~
 A Alpha    I Iota      R Rho
 B Beta     K Kappa     S Sigma
 G Gamma    L Lambda    T Tau
@@ -157,17 +149,11 @@ H Eta      Om Omicron  Y Psi
 T Theta    P Pi        O Omega
 ~~~~
 
-This mechanism also allows to enter some miscellaneous mathematical symbols:
+The same mechanism also allows to enter some miscellaneous mathematical symbols:
 
 ~~~~
 hbar          planck's constant: a h with a horizontal bar above it
 Hbar          a H with a horizontal bar above it
-~~~~
-
-This mechanism also allows to enter some miscellaneous mathematical symbols:
-
-
-~~~~
 2             squared
 3             to the power of three
 /2            1/2
@@ -176,8 +162,6 @@ integral      integral sign
 sq            root
 ii            imaginary
 ee            element
-hb or hbar    h barred
-Hbar          H barred
 in            in
 impl,implies  implies
 inf           infinity
