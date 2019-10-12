@@ -205,8 +205,5 @@ add_custom_target(checksums
 include(InstallRequiredSystemLibraries)
 include(CPack)
 
-set(LANGUAGES ca de es gl kab pt_BR uk cs el fi it nb ru zh_CN da en fr ja pl tr zh_TW)
-
-
 enable_testing()
 add_subdirectory(test)

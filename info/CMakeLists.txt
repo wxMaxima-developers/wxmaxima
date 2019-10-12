@@ -1,13 +1,22 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-# Create a list of the common part of the name of all the translated manuals
-file(GLOB BASENAMES ${CMAKE_SOURCE_DIR}/locales/manual/*.po)
-list(TRANSFORM BASENAMES REPLACE ".*/(.*).po$" "wxmaxima.\\1")
-list(APPEND BASENAMES "wxmaxima")
-
+# "make pdf" creates the manual in PDF form. The other of the targets that now
+# follow do the same for other formats
 add_custom_target(pdf)
+add_custom_target(docx)
 add_custom_target(odt)
 add_custom_target(epub)
+
+# Create a list of the common part of the name of all the translated manuals.
+# The "list(TRANSFORM" type of commands only is available in very new cmake
+# versions and therefore (in 2019) of only limited use so we'll have to do
+# this by hand.
+set(BASENAMES "wxmaxima")
+file(GLOB POFILES ${CMAKE_SOURCE_DIR}/locales/manual/*.po)
+foreach(POFILE ${POFILES})
+    string(REGEX REPLACE ".*/(.*).po$" "wxmaxima.\\1" BASENAME ${POFILE})
+    list(APPEND BASENAMES ${BASENAME})
+endforeach()
 
 # Find a suitable LaTeX installation
 find_program(LATEX NAMES xelatex lualatex)
@@ -50,6 +59,11 @@ if(PANDOC)
 	    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md
             COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md -o ${BASENAME}.epub ${PANDOC_ARGS}
 	    COMMENT "Generating ${BASENAME}.epub ...")
+        add_custom_command(
+	    TARGET  docx
+	    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md
+            COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md -o ${BASENAME}.docx ${PANDOC_ARGS}
+	    COMMENT "Generating ${BASENAME}.docx ...")
 	add_custom_command(
 	    OUTPUT ${BASENAME}.html
 	    DEPENDS ${BASENAME}.md
