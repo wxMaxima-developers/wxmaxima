@@ -27,6 +27,8 @@ branches:
 
 # scripts to run before build
 before_build:
+# pandoc normally is installed using chocolatey. But currently (10/2019) that results
+# in an powershell error => let's install it manually instead.
   - cmd: echo Installing pandoc...
   - ps: Start-FileDownload 'https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-windows-x86_64.zip'
   - cmd: 7z x pandoc-2.7.3-windows-x86_64.zip -o"C:\Program Files (x86)\Pandoc\"
