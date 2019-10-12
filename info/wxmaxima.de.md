@@ -9,50 +9,53 @@ one of the most popular GUIs for Maxima.
 
 [![wxMaxima logo](./wxMaximaLogo.png)](wxMaximaLogo)
 
-Vor dem eigentlichen Inhalt ist es vielleicht angebracht, die Navigation zu
-erklären: Die nun folgende Liste enthält Hyperlinks auf die einzelnen
-Kapitel der Dokumentation. [Contents](#SEC_Contents \"Detailliertes
-Inhaltsverzeichnis\") fürt zu einer entsprechenden Sektion, die eine
-genauere Navigation ermöglicht. Zudem steht ein (#Index "Alphabetischer
-Index") zur Verfügung, der auf viele Punkte des Handbuchs verweist.
+Before we look at the content a few points regarding navigation are in
+order. Immediately below is a short table of contents. Clicking on any of
+the listed items moves the cursor to the top of the indicated section of the
+manual. Clicking on [Contents](#SEC_Contents "Full table of contents") here
+or on the line below the short table of contents moves the cursor to an
+extended table of contents. This extended table can be used to navigate more
+directly to specific parts of the manual. Finally, an [index](#Index
+"Alphabetical index") provides an alphabetical listing of many of the items
+in the manual with links to these items.
 
 * [Introduction](#Introduction "Introduction to wxMaxima"):
 
 
 
-Die Grundlagen
+wxMaxima basics
 
 * [Extensions](#Extensions "Extensions"):
 
 
 
-Die Kommandos, mittels dessen wxMaxima Maxima erweitert
+The commands wxMaxima adds to Maxima
 
-* [Troubleshooting](#Fehlersuche "Fehlersuche"):
-
-
-
-Was tun, wenn wxMaxima nicht wie erwartet funktioniert
-
-* • [FAQ](#FAQ "Häufig gestellte Fragen"):
+* [Troubleshooting](#Troubleshooting "Troubleshooting"):
 
 
 
-Häufig gestellte Fragen
+What to do if wxMaxima does not work as expected
+
+* [FAQ](#FAQ "FAQ"):
+
+
+
+Frequently asked questions
 
 * [CommandLine](#CommandLine "Maxima Command Line"):
 
 
 
-Die Kommandozeilenargumente von wxMaxima
+The command-line arguments wxMaxima supports
 
 * * *
 
 
-Einführung in wxMaxima
-======================
+Introduction to wxMaxima
+========================
 
-## Maxima und wxMaxima
+## Maxima and wxMaxima
 
 In the open-source domain big systems are normally split into smaller
 projects that are easier to handle for small groups of developers. For
@@ -78,11 +81,14 @@ efficient way to access the software, especially for newcomers.
 
 ### Maxima
 
-Maxima ist ein komplettes Computer-Algebrasystem (CAS): Ein Programm, das
-die Formel, nicht nur die Zahl sucht, die ein mathematisches Problem
-löst. Auch wenn es darauf  spezialisiert ist, mit Buchstaben zu rechnen,
-bietet es auch eine Menge an Funktionen, die Probleme lösen, für die nur
-numerische Lösungen existieren.
+Maxima is a full-featured computer algebra system (CAS). A CAS is a program
+that can solve mathematical problems by rearranging formulas and finding a
+formula that solves the problem as opposed to just outputting the numeric
+value of the result. In other words, Maxima can serve as a calculator that
+gives numerical representations of variables, and it can also provide
+analytical solutions. Furthermore, it offers a range of numerical methods of
+analysis for equations or systems of equations that cannot be solved
+analytically.
 
 ![Maxima screenshot](./maxima_screenshot.png)
 
@@ -108,11 +114,11 @@ via the help menu.
 
 ![wxMaxima window](./wxMaximaWindow.png)
 
-wxMaxima lässt alle Berechnungen im Hintergrund durch das
-Kommandozeilen-Werkzeug Maxima durchführen.
+The calculations that are entered in _wxMaxima_ are performed by the Maxima
+command-line tool in the background.
 
 
-## Grundlagen zum Arbeitsblatt
+## Workbook basics
 
 Much of wxMaxima is self-explaining, but some details require
 attention. [This
@@ -124,18 +130,26 @@ use of wxMaxima to interact with Maxima. This manual concentrates on
 describing aspects of wxMaxima that are not likely to be self-evident and
 that might not be covered in the online material.
 
-Der Arbeitsblatt-Ansatz
+### The workbook approach
 
-Eine der Sachen, die neue Benutzer oft verwirrt, ist, dass das Arbeitsblatt
-von wxMaxima in Zellen aufgeteilt ist, die nur auf Befehl vom Benutzer an
-_Maxima_ gesendet werden. Dieser Ansatz ist jedoch für die Fehlersuche
-praktisch. Auch hat der gegenüber der Alternative, nach jeder Änderung alle
-Zellen im das Arbeitsblatt neu auszuwerten, oft viel Zeit.
+One of the very few things that are not standard in wxMaxima is that it
+organizes the data for Maxima into cells that are evaluated (which means:
+sent to _Maxima_) only when the user requests this. When a cell is
+evaluated, all commands in that cell, and only that cell, are evaluated as a
+batch. (The preceding statement is not quite accurate: One can select a set
+of adjacent cells and evaluate them together. Also, one can instruct
+_Maxima_ to evaluate all cells in a workbook in one pass.) _wxMaxima_'s
+approach to submitting commands for execution might feel unfamiliar at the
+first sight. It does, however, drastically ease work with big documents
+(where the user certainly does not want every small change to automatically
+to trigger a full re-evaluation of the whole document). Also, this approach
+is very handy for debugging.
 
-Wenn Text in _wxMaxima_ eingegeben wird, erzeugt er automatisch eine neue
-Zelle des Arbeitsblattes. Wenn dies eine Code-Zelle ist, kann ihr Inhalt an
-Maxima gesendet werden und das Resultat dieser Aktion wird unter der Zelle
-angezeigt, wie unten abgebildet.
+If text is typed into _wxMaxima_ it automatically creates a new worksheet
+cell. The type of this cell can be selected in the toolbar. If a code cell
+is created the cell can be sent to maxima, which causes the result of the
+calculation to be displayed below the code. A pair of such commands is shown
+below.
 
 ![Input/output cell](./InputCell.png)
 
@@ -147,55 +161,64 @@ hidden, except if the user assigns the output a name. In this case by
 default the user-defined label is displayed. The `%o`\-style label _Maxima_
 auto-generates will also be accessible, though.
 
-Außer Code-Zellen kennt wxMaxima auch Testzellen und solche mit Bildern oder
-Überschriften. Jede Zelle hat ihren eigenen Speicher für das
-Rückgängigmachen von Aktionen, was sich oft als hilfreich erwiesen
-hat. Zudem besitzt, wie in fast allen Applikationen, das Arbeitsblatt einen
-eigenen Speicher für die Rückgängigmachen-Funktion.
+Besides the input cells wxMaxima allows for text cells for documentation,
+image cells, title cells, chapter cells and section cells. Every cell has
+its own undo buffer so debugging by changing the values of several cells and
+then gradually reverting the unneeded changes is rather easy. Furthermore
+the worksheet itself has a global undo buffer that can undo cell edits, adds
+and deletes.
 
-Die nun folgende Abbildung zeigt verschiedene Zelltypen.
+The figure below shows different cell types (Title cells, section cells,
+subsection cells, text cells, input/output cells and an image cell.
 
-![Ein Beispiel verschiedener Zelltypen](./cell-example.png)
+![Example of different wxMaxima cells](./cell-example.png)
 
 
-### Zellen
+### Cells
 
-Das Arbeitsblatt ist in Zellen aufgeteilt, von denen jede mehr Zellen oder
-Elemente der folgenden Typen enthalten kann:
+The worksheet is organized in cells. Each cell can contain other cells or
+the following types of content:
 
-*   Eine oder mehr Zeilen an Eingabe für _Maxima_
-*   Ein oder mehrere Bilder
-*   Ausgaben oder Fragen von _Maxima_
-*   Einen Textblock mit Dokumentation
-*   Eine Überschrift
+*   one or more lines of _Maxima_ input
+*   one or more image
+*   output of, or a question from, _Maxima_
+*   a text block that can for example be used for documentation
+*   a title, section or a subsection.
 
-Wenn Text eingegeben ist, erzeugt _wxMaxima_ normalerweise gleich eine
-Code-Zelle. Andere Zelltypen können über das "Zellen"-Menü, die dort
-dokumentierten Tastenkombinationen oder über die Werkzeugleiste erzeugt
-werden.
+The default behavior of _wxMaxima_ when text is entered is to automatically
+create a math cell. Cells of other types can be created using the Cell menu,
+using the hot keys shown in the menu or using the drop-down list in the
+toolbar.
 
-### Horizontale und vertikale Cursors
+### Horizontal and vertical cursors
 
-Wenn in einer Textverarbeitung versucht wird, einen Satz auszuwählen, wird
-diese versuchen, Beginn und Ende der Auswahl so zu verschieben, dass ganze
-Wörter ausgewählt sind. _wxMaxima_ wird aus diesem Grund, wenn mehr als eine
-Zelle ausgewählt wird, die Auswahl auf ganze Zellen ausdehnen.
+If the user tries to select a complete sentence a word processor will try to
+extend the selection to automatically begin and end with a word
+boundary. Likewise _wxMaxima_ if more than one cell is selected will extend
+the selection to whole cells.
 
-Was ungewöhnlich erscheinen kann ist, dass _wxMaxima_ alternativ einen
-vertikalen oder einen horizontalen Cursor darstellen kann:
+What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by
+defining two types of cursors. _wxMaxima_ will switch between them
+automatically when needed:
 
-*   Wenn der Cursor über einer Zelle und unter einer anderen Zelle steht,
-    wird er vertikal dargestellt, und erlaubt es, ganze Zellen auszuwählen.
-*   Innerhalb einer Zelle wird der Cursor vertikal dargestellt.
+*   A horizontal cursor that is able to select any number of whole
+    cells. This cursor is activated by moving the cursor between two cells
+    or by clicking on a space between two cells. To select a set of adjacent
+    cells, click in the bracket at the left of the top cell (but not inside
+    the triangle) and then drag the cursor so that this cell and the next
+    cell (or range of cells) is highlighted. Then use ctrl+enter or
+    shift+enter to execute the highlighted cells.
+*   A vertical cursor that works inside a cell. This cursor is activated by
+    moving the cursor inside a cell using the mouse pointer or the cursor
+    keys and works much like the cursor in a text editor.
 
-### Auto-Vervollständigung
+### Command autocompletion
 
-wxMaxima versucht, automatisch die Namen von Befehlen oder Variablen zu
-vervollständigen, wenn der Menüpunkt (Vervollständige Befehl) angewählt
-wird, oder die Tastenkombination Strg+Leertaste gedrückt wird. Die
-automatische Vervollständigung erkennt oft den Kontext, in dem sie
-ausgeführt wird, und kann beispielsweise Dateinamen oder Einheiten für
-ezUnits vorschlagen.
+_wxMaxima_ contains an autocompletion feature that is triggered via the menu
+(Cell/Complete Word) or alternatively by pressing the key combination
+Ctrl+&gt;Space&lt;. The autocompletion is context-sensitive. For example if
+activated within an unit specification for ezUnits it will offer a list of
+applicable units.
 
 ![ezUnits](./ezUnits.png)
 
@@ -206,12 +229,13 @@ program expects. To activate this feature press
 &lt;Shift&gt;+&lt;Ctrl&gt;+&lt;Space&gt; or select the respective menu item
 (Cell/Show Template).
 
-#### Griechische Zeichen
+#### Greek characters
 
-Computer speichern Zeichen meist als 8-Bit-Werte, was maximal 256
-unterschiedliche Typen von Zeichen erlaubt. Die meisten Sprachen nutzen
-inklusive Steuerzeichen, Ziffern und ein paar Zeichen, aus denen Graphiken
-zusammengesetzt werden können, weniger als dies.
+Computers traditionally store characters in 8-bit values. This allows for a
+maximum of 256 different characters. All letters, numbers, and control
+symbols (end of transmission, end of string, lines and edges for drawing
+rectangles for menus _etc_.) of nearly any given language can fit within
+that limit.
 
 For most countries the codepage of 256 characters that has been chosen does
 not include things like Greek letters, though, that are frequently used in
@@ -219,11 +243,10 @@ mathematics. To overcome this type of limitation Unicode has been invented:
 An encoding that makes english text work like normal, but to use characters
 whose keycode are more than 8 bits long.
 
-Wenn Maxima mit einem Compiler generiert wurde, der Unicode unterstützt oder
-sich nicht darum kümmert, auf welche Weise Zeichen ausgedrückt werden,
-unterstützt es Unicode. Da meist eine dieser Bedingungen gegeben ist, bietet
-_wxMaxima_ eine Methode an, griechische Zeichen mit einer nicht-griechischen
-Tastatur einzugeben:
+_Maxima_ allows for unicode characters if it was compiled using a lisp
+compiler that either supports lisp or that doesn't care about the font
+encoding. As at least one of this is likely to be true _wxMaxima_ provides a
+method of entering Greek characters using the keyboard:
 
 *   A greek letter can be entered by pressing the <ESC> key and then
     starting to type the greek character's name.
@@ -1021,8 +1044,7 @@ several methods to recover data:
 *   If you donât: Donât panic. In the âViewâ menu there is a way to
     show a history pane that shows all Maxima commands that have been issued
     recently.
-*   Wenn nichts anderes funktioniert, bietet Maxima die Möglichkeit an, alle
-    bisherigen Befehle nochmals auszuführen:
+*   If nothing else helps Maxima contains a replay feature:
 
     %i1 playback();
 
@@ -1034,7 +1056,7 @@ set in the âMaximaâ tab of wxMaximaâs configuration dialog and
 therefore wonât run at all. Setting the path to a working Maxima binary
 should fix this problem.
 
-## Maxima hört nicht auf zu rechnen und reagiert nicht auf Eingaben
+## Maxima is forever calculating and not responding to input
 
 It is theoretically possible that wxMaxima doesnât realize that Maxima has
 finished calculating and therefore never gets informed it can send new data
