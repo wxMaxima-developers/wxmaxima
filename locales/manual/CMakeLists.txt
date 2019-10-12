@@ -19,7 +19,6 @@ if(PO4A)
 	DEPENDS ${POT_SOURCE_FILES}
 	COMMAND ${PO4A} -k 0 po4a.cfg
 	COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/wxMaxima.pot" "${CMAKE_SOURCE_DIR}/locales/manual/wxmaxima.md.pot"
-	COMMAND ${CMAKE_COMMAND} -E copy "*.md" "${CMAKE_SOURCE_DIR}/info"
 	COMMAND ${TOUCH} ${CMAKE_SOURCE_DIR}/info/wxmaxima.de.md
 	COMMENT "Updating wxmaxima.md.pot and the po-files in the source tree in order to keep the source files in sync.")
 else()
