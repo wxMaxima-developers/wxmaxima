@@ -124,11 +124,8 @@ For most countries the codepage of 256 characters that has been chosen does not 
 
 _Maxima_ allows for unicode characters if it was compiled using a lisp compiler that either supports lisp or that doesn't care about the font encoding. As at least one of this is likely to be true _wxMaxima_ provides a method of entering Greek characters using the keyboard:
 
-*   An alpha is entered by pressing the <ESC> key and then typing in the character a followed by a press on the <ESC> key. Alternatively an alpha can be produced by pressing the <ESC> key and typing the first letters of the word "alpha".
-*   A beta is entered by pressing the <ESC> key and then typing in the character b followed by a press on the <ESC> key - or by pressing <ESC> and starting to type the word "beta".
-*   ...and so on.
-
-The following letters are supported:
+*   A greek letter can be entered by pressing the <ESC> key and then starting to type the greek character's name.
+*   Alternatively it can be entered by pressing <ESC>, one letter and <ESC> again. In this case the following letters are supported:
 
 ~~~~
 a alpha    i iota      r rho
