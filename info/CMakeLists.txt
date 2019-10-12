@@ -37,7 +37,7 @@ if(PANDOC)
         message(STATUS "pandoc version >= 2 found - using option --pdf-engine")
         set(PANDOC_TEXSELECT_OPTION "--pdf-engine")
     endif()
-    set(PANDOC_ARGS --number-sections --table-of-contents -s --metadata title="wxMaxima" ${PANDOC_TEXSELECT_OPTION}=${LATEX})
+    set(PANDOC_ARGS --number-sections --table-of-contents -s --metadata title="wxMaxima")
     if(NOT LATEX)
         message(STATUS "lualatex or xelatex required for building the pdf manual.")
     endif()
@@ -46,7 +46,7 @@ if(PANDOC)
             add_custom_command(
 		TARGET  pdf
 		DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md
-		COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md -o ${BASENAME}.pdf ${PANDOC_ARGS}
+		COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md -o ${BASENAME}.pdf ${PANDOC_ARGS} ${PANDOC_TEXSELECT_OPTION}=${LATEX}
 		COMMENT "Generating ${BASENAME}.pdf ...")
         endif()
         add_custom_command(
