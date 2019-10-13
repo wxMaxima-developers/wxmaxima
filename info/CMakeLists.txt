@@ -21,6 +21,8 @@ endforeach()
 # Find a suitable LaTeX installation
 find_program(LATEX NAMES xelatex lualatex)
 
+find_program(PO4ATRANSLATE po4a-translate)
+
 # Generate the manuals
 find_program(PANDOC pandoc)
 if(PANDOC)
@@ -45,25 +47,34 @@ if(PANDOC)
         if(LATEX)
             add_custom_command(
 		TARGET  pdf
-		DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.md
-		COMMAND ${PANDOC} ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.md -o ${BASENAME}.pdf ${PANDOC_ARGS} ${PANDOC_TEXSELECT_OPTION}=${LATEX}
+		DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md
+		COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md -o ${BASENAME}.pdf ${PANDOC_ARGS} ${PANDOC_TEXSELECT_OPTION}=${LATEX}
 		COMMENT "Generating ${BASENAME}.pdf ...")
         endif()
         add_custom_command(
 	    TARGET  odt
-	    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.md
-            COMMAND ${PANDOC} ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.md -o ${BASENAME}.odt ${PANDOC_ARGS}
+	    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md
+            COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md -o ${BASENAME}.odt ${PANDOC_ARGS}
 	    COMMENT "Generating ${BASENAME}.odt ...")
         add_custom_command(
 	    TARGET  epub
-	    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.md
-            COMMAND ${PANDOC} ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.md -o ${BASENAME}.epub ${PANDOC_ARGS}
+	    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md
+            COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md -o ${BASENAME}.epub ${PANDOC_ARGS}
 	    COMMENT "Generating ${BASENAME}.epub ...")
         add_custom_command(
 	    TARGET  docx
-	    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.md
-            COMMAND ${PANDOC} ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.md -o ${BASENAME}.docx ${PANDOC_ARGS}
+	    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md
+            COMMAND ${PANDOC} ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.md -o ${BASENAME}.docx ${PANDOC_ARGS}
 	    COMMENT "Generating ${BASENAME}.docx ...")
+	string(REGEX REPLACE "wxmaxima.(.*)$" "\\1" LANG ${BASENAME})	
+	if(PO4ATRANSLATE)
+	    if(NOT BASENAME STREQUAL "wxmaxima")
+		add_custom_command(
+		    OUTPUT ${BASENAME}.md
+		    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/../locales/manual/${LANG}.po ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
+		    COMMAND po4a-translate -k 0 -f text -m ${CMAKE_CURRENT_BINARY_DIR}/wxmaxima.md -p ${CMAKE_CURRENT_SOURCE_DIR}/../locales/manual/${LANG}.po -l ${BASENAME}.md -M UTF-8)
+	    endif()
+	endif()
 	add_custom_command(
 	    OUTPUT ${BASENAME}.html
 	    DEPENDS ${BASENAME}.md
@@ -71,7 +82,7 @@ if(PANDOC)
 	add_custom_target(
 	    ${BASENAME}.html.stamp ALL
 	    DEPENDS ${BASENAME}.html
-    )
+	    )
 	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
     endforeach()
 else()
@@ -79,6 +90,10 @@ else()
     # allow local execution (./wxmaxima-local) from the build directory without installation
     # and ensure that the images will be found by pandoc
     file(COPY ${WXMAXIMA_HELP_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+endif()
+
+if(NOT PO4ATRANSLATE)
+    message(WARNING "po4a-translate not found. Localized Documentation can not be created.")
 endif()
 
 file(GLOB WXMAXIMA_HELP_FILES *.jpg *.png *.html *.hhp *.pdf)

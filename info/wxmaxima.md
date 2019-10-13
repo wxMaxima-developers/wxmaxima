@@ -110,7 +110,7 @@ What isn't standard is that _wxMaxima_ provides drag-and-drop flexibility by def
 
 ### Command autocompletion
 
-_wxMaxima_ contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination Ctrl+&gt;Space&lt;. The autocompletion is context-sensitive. For example if activated within an unit specification for ezUnits it will offer a list of applicable units.
+_wxMaxima_ contains an autocompletion feature that is triggered via the menu (Cell/Complete Word) or alternatively by pressing the key combination <Ctrl>+<Space>. The autocompletion is context-sensitive. For example if activated within an unit specification for ezUnits it will offer a list of applicable units.
 
 ![ezUnits](./ezUnits.png)
 
