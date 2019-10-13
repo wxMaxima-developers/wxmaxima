@@ -91,10 +91,17 @@ if(PANDOC AND PO4ATRANSLATE)
 	install(FILES ${BASENAME}.hhp DESTINATION share/doc/wxmaxima)
     endforeach()
 else()
-    message(WARNING "Pandoc or po4a-translate not found. Documentation can not be converted from Markdown.")
     # allow local execution (./wxmaxima-local) from the build directory without installation
     # and ensure that the images will be found by pandoc
     file(COPY ${WXMAXIMA_HELP_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+endif()
+
+if(NOT PANDOC)
+    message(WARNING "Pandoc not found. Documentation can not be converted from Markdown.")
+endif()
+
+if(NOT PO4ATRANSLATE)
+    message(WARNING "po4a-translate not found. Documentation can not be converted from Markdown.")
 endif()
 
 file(GLOB WXMAXIMA_HELP_FILES *.jpg *.png *.pdf)

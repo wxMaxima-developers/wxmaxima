@@ -38,7 +38,7 @@ before_build:
 #  - cmd: choco install pandoc
   - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\"
   - cmd: echo Installing po4a...
-  - ps: $env:Path += ";C:\msys64\usr\bin;%PATH%"
+  - ps: $env:Path += ";C:\msys64\usr\bin\"
   - cmd: pacman -Syu -q --noconfirm
   - cmd: pacman -Su -q --noconfirm
   - cmd: pacman --needed -q --noconfirm -S po4a
