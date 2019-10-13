@@ -10,17 +10,18 @@ find_program(PO4AUPDATEPO po4a-updatepo)
 
 file(GLOB POT_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.po)
 
-if(PO4A-UPDATEPO)
+if(PO4AUPDATEPO)
     foreach(POFILE ${POT_SOURCE_FILES})
+	string(REGEX REPLACE ".*/(.*).po$" "\\1" LANG ${POFILE})
 	add_custom_command(
-	    OUTPUT ${POFILE}
+	    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${POFILE}
 	    DEPENDS ${CMAKE_SOURCE_DIR}/info/wxmaxima.md
-	    COMMAND ${PO4A-UPDATEPO}
+	    COMMAND ${PO4AUPDATEPO} -f text -m ${CMAKE_SOURCE_DIR}/info/wxmaxima.md -p ${POFILE}  -M UTF-8
 	    COMMENT "Updating ${POFILE} in order to sync the file with the changes in ${CMAKE_SOURCE_DIR}/info/wxmaxima.md"
 	    )
 	add_custom_target(
-	    ${BASENAME}.po.stamp ALL
-	    DEPENDS ${CMAKE_SOURCE_DIR}/info/wxmaxima.md
+	    update_manual_po_${LANG} ALL
+	    DEPENDS ${POFILE}
 	    )
     endforeach()
 else()

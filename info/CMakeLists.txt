@@ -25,7 +25,7 @@ find_program(PO4ATRANSLATE po4a-translate)
 
 # Generate the manuals
 find_program(PANDOC pandoc)
-if(PANDOC)
+if(PANDOC AND PO4ATRANSLATE)
     execute_process(
         COMMAND ${PANDOC} --version
         OUTPUT_VARIABLE PANDOC_VERSION_TEXT
@@ -86,14 +86,10 @@ if(PANDOC)
 	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
     endforeach()
 else()
-    message(WARNING "Pandoc not found. Documentation can not converted from Markdown.")
+    message(WARNING "Pandoc or po4a-translate not found. Documentation can not converted from Markdown.")
     # allow local execution (./wxmaxima-local) from the build directory without installation
     # and ensure that the images will be found by pandoc
     file(COPY ${WXMAXIMA_HELP_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-endif()
-
-if(NOT PO4ATRANSLATE)
-    message(WARNING "po4a-translate not found. Localized Documentation can not be created.")
 endif()
 
 file(GLOB WXMAXIMA_HELP_FILES *.jpg *.png *.html *.hhp *.pdf)
