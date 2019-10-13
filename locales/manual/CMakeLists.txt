@@ -21,7 +21,7 @@ if(PO4AUPDATEPO)
 	    )
 	add_custom_target(
 	    update_manual_po_${LANG} ALL
-	    DEPENDS ${POFILE}
+	    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${POFILE}
 	    )
     endforeach()
 else()
