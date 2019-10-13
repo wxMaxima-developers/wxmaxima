@@ -55,6 +55,8 @@ On Mac OS X you should install XCode. To build wxMaxima open the
 Terminal application and follow the instructions for building with cmake.
 It is recommended that you compile your own version of
 wxMac. See the section about compiling wxWidgets.
+In order to get the wxMaxima manual in html for po4a (a perl program) and
+pandoc are necessary.
 
 
 ### Compiling on Windows
@@ -62,8 +64,9 @@ wxMac. See the section about compiling wxWidgets.
 On Windows install MinGW (https://sourceforge.net/projects/mingw/). In
 the installation process make sure you select `g++`, `MSYS Basic
 System` and `MinGW Developer ToolKit` in the `Select components` page
-of the installer.  Then run the MinGW Shell and follow the
-instructions for compiling wxWidgets and wxMaxima with cmake.
+of the installer. Also select po4a and install pandoc.
+Then run the MinGW Shell and follow the instructions for compiling
+wxWidgets and wxMaxima with cmake.
 
 
 Additional information about installing and configuring wxMaxima
