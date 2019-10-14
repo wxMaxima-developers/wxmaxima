@@ -86,9 +86,9 @@ if(PANDOC AND PO4ATRANSLATE)
 	    ${BASENAME}.html.stamp ALL
 	    DEPENDS ${BASENAME}.html
 	    )
-	install(FILES ${BASENAME}.html DESTINATION share/doc/wxmaxima)
+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.html DESTINATION share/doc/wxmaxima)
 	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
-	install(FILES ${BASENAME}.hhp DESTINATION share/doc/wxmaxima)
+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.hhp DESTINATION share/doc/wxmaxima)
     endforeach()
 else()
     # allow local execution (./wxmaxima-local) from the build directory without installation
