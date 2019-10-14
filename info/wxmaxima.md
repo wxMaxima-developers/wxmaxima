@@ -202,20 +202,18 @@ leadsto       a "leads to" sign
 
 If a special symbol isn’t in the list it is possible to input arbitrary unicode characters by pressing `<ESC>number of the character<ESC>`. `<ESC>61<ESC>` therefore results in an `a`.
 
-Be aware that a _Maxima_ running on a lisp without Unicode support might not be able to deal with files that contain special Unicode characters.
-
-Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in _Maxima_ and therefore will be interpreted as ordinary characters - or might provoke unexpected results in case that the _Maxima_ is being run by a lisp that doesn’t support dealing with special Unicode characters.
+Please note that most of these symbols (notable exceptions are the logic symbols) do not have a special meaning in _Maxima_ and therefore will be interpreted as ordinary characters. If  _Maxima_ is compiled using a lisp that doesn’t support dealing with Unicode characters they might cause an error message instead.
 
 
 ### Side Panes
 
-Shortcuts to the most important _Maxima_ commands and a history of the last issued commands can be accessed using the side panes. They can be enabled using the "View" menu. The shortcuts can be moved to where the location is most convenient, inside or outside the _wxMaxima_ window. The same commands can be accessed via the menus. Also, a pane that contains Greek letters can be opened. This pane provides an alternative to the methods of entering these letters that the preceding section discusses.
+Shortcuts to the most important _Maxima_ commands or things like a table of contents, windows with debug messages or a history of the last issued commands can be accessed using the side panes. They can be enabled using the "View" menu. They all can be moved to other locations inside or outside the _wxMaxima_ window. Other useful panes is the one that allows to input Greek letters using the mouse.
 
 ![Example of different side panes](./SidePanes.png)
 
 ### MathML output
 
-Several word processors and similar programs either recognize MathML input and automatically insert it as an editable 2D equation - or (like LibreOffice 5.1) have an equation editor that offers an “import MathML from clipboard” feature. In order to accommodate this feature, _wxMaxima_ offers a “copy to word processor” right-click menu entry that outputs the selected part of an equation with MathML formatting.
+Several word processors and similar programs either recognize MathML input and automatically insert it as an editable 2D equation - or (like LibreOffice 5.1) have an equation editor that offers an “import MathML from clipboard” feature. Others support RTF maths. _wxMaxima_ therefore offers several entries in the right-click menu.
 
 
 ### Markdown support
