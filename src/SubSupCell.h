@@ -42,6 +42,10 @@ public:
 
   void SetExponent(Cell *expt);
 
+  void SetPreSub(Cell *expt);
+
+  void SetPreSup(Cell *expt);
+  
   void RecalculateHeight(int fontsize);
 
   void RecalculateWidths(int fontsize);
@@ -62,8 +66,11 @@ public:
 
 protected:
   Cell *m_baseCell;
-  Cell *m_exptCell;
-  Cell *m_indexCell;
+  Cell *m_postSupCell;
+  Cell *m_postSubCell;
+  Cell *m_preSupCell;
+  Cell *m_preSubCell;
+  std::list<Cell *> m_innerCellList;
 };
 
 #endif // SUBSUPCELL_H

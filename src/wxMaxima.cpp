@@ -4648,10 +4648,9 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
       textOut<<"quit\n";
    textOut.Flush();
     }
-
-    wxString gnuplot_binary;
       
     // Find gnuplot
+    wxString gnuplot_binary;
     if(wxFileName(m_gnuplotcommand).IsAbsolute())
       gnuplot_binary = m_gnuplotcommand;
     else
