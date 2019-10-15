@@ -688,6 +688,8 @@ protected:
   wxString m_maximaArch;
   wxString m_lispVersion;
   wxString m_lispType;
+  //! Maxima's idea about gnuplot's location
+  wxString m_gnuplotcommand;
   //! The Char the current command starts at in the current WorkingGroup
   int m_commandIndex;
 #if defined (__WXMSW__)
