@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-13 09:30+0200\n"
-"PO-Revision-Date: 2019-10-14 20:05+0200\n"
+"POT-Creation-Date: 2019-10-15 07:26+0200\n"
+"PO-Revision-Date: 2019-10-15 07:30+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -643,14 +643,18 @@ msgstr ""
 msgid ""
 "A greek letter can be entered by pressing the <ESC> key and then starting to "
 "type the greek character's name."
-msgstr "Ein griechischer Buchstabe kann eingegeben werden, indem erst auf die <ESC>-Taste gedrück wird, und dann sein Name einzugeben begonnen wird."
+msgstr ""
+"Ein griechischer Buchstabe kann eingegeben werden, indem erst auf die <ESC>-"
+"Taste gedrück wird, und dann sein Name einzugeben begonnen wird."
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:129
 msgid ""
 "Alternatively it can be entered by pressing <ESC>, one letter and <ESC> "
 "again. In this case the following letters are supported:"
-msgstr "Ebenso kann er eingegeben werden, indem <ESC> gedrückt wird, ein Buchstabe und dann erneut <ESC>:"
+msgstr ""
+"Ebenso kann er eingegeben werden, indem <ESC> gedrückt wird, ein Buchstabe "
+"und dann erneut <ESC>:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:148
@@ -681,7 +685,8 @@ msgstr ""
 msgid ""
 "The same mechanism also allows to enter some miscellaneous mathematical "
 "symbols:"
-msgstr "Derselbe Mechanismus erlaubt es auch, einige andere Symbole einzugeben:"
+msgstr ""
+"Derselbe Mechanismus erlaubt es auch, einige andere Symbole einzugeben:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:202
@@ -742,87 +747,107 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:204
-#, fuzzy
 msgid ""
 "If a special symbol isn’t in the list it is possible to input arbitrary "
 "unicode characters by pressing `<ESC>number of the character<ESC>`. "
 "`<ESC>61<ESC>` therefore results in an `a`."
-msgstr "Wenn das gewünschte Zeichen auf diese Weise nicht erreichbar ist, können Zeichen auch als <ESC> (Nummer des Zeichens) <ESC> eingegeben werden. <ESC>61<ESC> ergibt auf diese Weise ein `a`."
+msgstr ""
+"Wenn das gewünschte Zeichen auf diese Weise nicht erreichbar ist, können "
+"Zeichen auch als <ESC> (Nummer des Zeichens) <ESC> eingegeben werden. "
+"<ESC>61<ESC> ergibt auf diese Weise ein `a`."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:206
-msgid ""
-"Be aware that a _Maxima_ running on a lisp without Unicode support might not "
-"be able to deal with files that contain special Unicode characters."
-msgstr "Falls _Maxima_ mit einem Lisp compiliert wurde, das kein Unicode unterstützt, kann dies der Grund sein, wenn Unicode-Sonderzeichen nicht funktionieren."
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:208
+#, fuzzy
+#| msgid ""
+#| "Please note that most of these symbols (notable exceptions are the logic "
+#| "symbols) do not have a special meaning in _Maxima_ and therefore will be "
+#| "interpreted as ordinary characters - or might provoke unexpected results "
+#| "in case that the _Maxima_ is being run by a lisp that doesn’t support "
+#| "dealing with special Unicode characters."
 msgid ""
 "Please note that most of these symbols (notable exceptions are the logic "
 "symbols) do not have a special meaning in _Maxima_ and therefore will be "
-"interpreted as ordinary characters - or might provoke unexpected results in "
-"case that the _Maxima_ is being run by a lisp that doesn’t support dealing "
-"with special Unicode characters."
-msgstr "Viele der Unicode-Symbole (mit der Ausnahme der logischen Verknüpfungen) haben keine direkte Entsprechung in _Maxima_ und werden daher als normale Zeichen interpretiert."
+"interpreted as ordinary characters. If _Maxima_ is compiled using a lisp "
+"that doesn’t support dealing with Unicode characters they might cause an "
+"error message instead."
+msgstr ""
+"Viele der Unicode-Symbole (mit der Ausnahme der logischen Verknüpfungen) "
+"haben keine direkte Entsprechung in _Maxima_ und werden daher als normale "
+"Zeichen interpretiert."
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:211
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:209
 msgid "### Side Panes"
 msgstr "### Seitenleisten"
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:213
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:211
+#, fuzzy
+#| msgid ""
+#| "Shortcuts to the most important _Maxima_ commands and a history of the "
+#| "last issued commands can be accessed using the side panes. They can be "
+#| "enabled using the \"View\" menu. The shortcuts can be moved to where the "
+#| "location is most convenient, inside or outside the _wxMaxima_ window. The "
+#| "same commands can be accessed via the menus. Also, a pane that contains "
+#| "Greek letters can be opened. This pane provides an alternative to the "
+#| "methods of entering these letters that the preceding section discusses."
 msgid ""
-"Shortcuts to the most important _Maxima_ commands and a history of the last "
-"issued commands can be accessed using the side panes. They can be enabled "
-"using the \"View\" menu. The shortcuts can be moved to where the location is "
-"most convenient, inside or outside the _wxMaxima_ window. The same commands "
-"can be accessed via the menus. Also, a pane that contains Greek letters can "
-"be opened. This pane provides an alternative to the methods of entering "
-"these letters that the preceding section discusses."
+"Shortcuts to the most important _Maxima_ commands or things like a table of "
+"contents, windows with debug messages or a history of the last issued "
+"commands can be accessed using the side panes. They can be enabled using the "
+"\"View\" menu. They all can be moved to other locations inside or outside "
+"the _wxMaxima_ window. Other useful panes is the one that allows to input "
+"Greek letters using the mouse."
 msgstr ""
+"Die meisten _Maxima_-Befehle und eine Liste der zuletzt verwendeten Befehle "
+"werden in Seitenleisten angeboten, die über das \"Ansicht-Menü aktiviert und "
+"an beliebige Stellen in oder außerhalb des _wxMaxima_-Fensters verschoben "
+"werden können. Ebenso kann eine Seitenleiste mit griechischen Buchstaben "
+"geöffnet werden, die eine alternative Methode anbietet, griechische "
+"Buchstaben einzugeben."
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:215
-#, fuzzy
-#| msgid "![Example of different wxMaxima cells](./cell-example.png)"
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:213
 msgid "![Example of different side panes](./SidePanes.png)"
 msgstr "![Ein Beispiel verschiedener Zelltypen](./cell-example.png)"
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:217
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:215
 msgid "### MathML output"
-msgstr ""
+msgstr "### MathML-Ausgabe"
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:219
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:217
 msgid ""
 "Several word processors and similar programs either recognize MathML input "
 "and automatically insert it as an editable 2D equation - or (like "
 "LibreOffice 5.1) have an equation editor that offers an “import MathML from "
-"clipboard” feature. In order to accommodate this feature, _wxMaxima_ offers "
-"a “copy to word processor” right-click menu entry that outputs the selected "
-"part of an equation with MathML formatting."
+"clipboard” feature. Others support RTF maths. _wxMaxima_ therefore offers "
+"several entries in the right-click menu."
 msgstr ""
+"Einige Textverarbeitungen verstehen entweder MathML (Der Formeleditor von "
+"LibreOffice 5.1 kann zumindest entsprechende Gleichungen importieren). "
+"Andere unterstützen Mathematik im RTF-Format. _wxMaxima_ bietet daher einige "
+"entsprechende Optionen im Rechtsklick-Menü an. "
+
+#. type: Plain text
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:220
+msgid "### Markdown support"
+msgstr "### Markdown-Unterstützung"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:222
-msgid "### Markdown support"
-msgstr ""
-
-#. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:224
 msgid ""
-"A wxMaxima workbook can be exported as either an HTML file or a LaTeX file. "
-"The program uses a set of standard markdown conventions. Markdown in many "
-"cases collides with the notations that are frequently used for mathematics. "
-"wxMaxima will recognize bullet lists, though, for the HTML and TeX export "
-"when the items are marked with stars."
+"_wxMaxima_offers a set of standard markdown conventions that don't collide "
+"with mathematical notation. One of this elements is bullet lists."
 msgstr ""
+"_wxMaxima_ unterstürtr einige Markdown-Kommandos, die nicht mit Konstrukten "
+"kollidieren, die in mathematischen Formeln vorkommen. Eines dieser Elemente "
+"sind Aufzählungen:"
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:234
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:232
 #, no-wrap
 msgid ""
 "~~~~\n"
@@ -835,42 +860,67 @@ msgid ""
 "Ordinary text\n"
 "~~~~\n"
 msgstr ""
+"~~~~\n"
+"Normaler Text\n"
+" * Ein eingerückter Aufzählungspunkt\n"
+" * Ein zweiter Aufzählungspunkt\n"
+"   * Eine Aufzählung in der Aufzählung\n"
+"   * Ein zweiter Aufzählungspunkt der Aufzählung in der Aufzählung\n"
+" * Ein Punkt in der äußeren Aufzählung\n"
+"Normaler text\n"
+"~~~~\n"
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:236
-msgid "wxMaxima will recognize text starting with > chars as block quotes:"
-msgstr ""
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:234
+#, fuzzy
+#| msgid ""
+#| "_wxMaxima_ will recognize text starting with > chars as block quotes:"
+msgid "_wxMaxima_ will recognize text starting with `>` chars as block quotes:"
+msgstr "_wxMaxima_ erkennt Text, der mit einem \">\" beginnt, als ein Zitat:"
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:244
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:242
 msgid ""
 "~~~~ Ordinary text > quote quote quote quote > quote quote quote quote > "
 "quote quote quote quote Ordinary text ~~~~"
 msgstr ""
+"~~~~\n"
+"Normaler Text\n"
+"> Zitat Zitat Zitat\n"
+"> Zitat Zitat Zitat Zitat\n"
+"> Zitat Zitat Zitat\n"
+"> Zitat Zitat Zitat\n"
+"Normaler Text\n"
+"~~~~"
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:246
-msgid "wxMaxima will also recognize `=>` and replace it by a"
-msgstr ""
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:244
+msgid ""
+"_wxMaxima_'s TeX and html output will also recognize `=>` and replace it by "
+"the corresponding unicode sign:"
+msgstr "Die Text- und HTML-Ausgabe von _wxMaxima_ erkennen auch \"=>\" und ersetzen es durch das entsprechende Symbol:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:248
-msgid "cogito => sum."
+msgid "~~~ cogito => sum.  ~~~"
 msgstr ""
+"~~~~\n"
+"cogito => sum\n"
+"~~~~"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:250
 msgid ""
-"Other symbols the markdown parser will recognize are `<=` and `>=` for "
+"Other symbols the html and TeX export will recognize are `<=` and `>=` for "
 "comparisons, a double-pointed double arrow (`<=>`), single- headed arrows "
 "(`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also "
 "`<<` and `>>` are recognized."
-msgstr ""
+msgstr "Andere Symbole, die vom HTML- und TeX-Export erkannt werden, sind `<=` und `>=`, `<=>`, einfache Pfeile (`<->`, `->` and `<-`) und `+/-`. Die TeX-Ausgabe erkennt ebenfalls `<<` und `>>`.\""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:252
 msgid "### Hotkeys"
-msgstr ""
+msgstr "### Tastenkürzel"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:254
@@ -2915,6 +2965,14 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:908
 msgid "[wxmx data](#Broken%20wxmx): retrieve data from a broken wxmx file"
 msgstr ""
+
+#~ msgid ""
+#~ "Be aware that a _Maxima_ running on a lisp without Unicode support might "
+#~ "not be able to deal with files that contain special Unicode characters."
+#~ msgstr ""
+#~ "Falls _Maxima_ mit einem Lisp compiliert wurde, das kein Unicode "
+#~ "unterstützt, kann dies der Grund sein, wenn Unicode-Sonderzeichen nicht "
+#~ "funktionieren."
 
 #, fuzzy
 #~| msgid "### Maxima"

@@ -218,7 +218,7 @@ Several word processors and similar programs either recognize MathML input and a
 
 ### Markdown support
 
-A wxMaxima workbook can be exported as either an HTML file or a LaTeX file. The program uses a set of standard markdown conventions. Markdown in many cases collides with the notations that are frequently used for mathematics. wxMaxima will recognize bullet lists, though, for the HTML and TeX export when the items are marked with stars.
+_wxMaxima_offers a set of standard markdown conventions that don't collide with mathematical notation. One of this elements is bullet lists.
 
 ~~~~
 Ordinary text
@@ -230,7 +230,7 @@ Ordinary text
 Ordinary text
 ~~~~
 
-wxMaxima will recognize text starting with > chars as block quotes:
+_wxMaxima_ will recognize text starting with `>` chars as block quotes:
 
 ~~~~
 Ordinary text
@@ -240,11 +240,13 @@ Ordinary text
 Ordinary text
 ~~~~
 
-wxMaxima will also recognize `=>` and replace it by a
+_wxMaxima_'s TeX and html output will also recognize `=>` and replace it by the corresponding unicode sign:
 
+~~~~
 cogito => sum.
+~~~~
 
-Other symbols the markdown parser will recognize are `<=` and `>=` for comparisons, a double-pointed double arrow (`<=>`), single- headed arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also `<<` and `>>` are recognized.
+Other symbols the html and TeX export will recognize are `<=` and `>=` for comparisons, a double-pointed double arrow (`<=>`), single- headed arrows (`<->`, `->` and `<-`) and `+/-` as the respective sign. For TeX output also `<<` and `>>` are recognized.
 
 ### Hotkeys
 
