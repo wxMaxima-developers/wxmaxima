@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-15 22:14+0200\n"
-"PO-Revision-Date: 2019-10-15 08:05+0200\n"
+"PO-Revision-Date: 2019-10-15 22:18+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1073,6 +1073,7 @@ msgstr "Das Arbeitsblatt kann auf verschiedene Weisen ausgegeben werden:"
 msgid "### .mac"
 msgstr "### .mac"
 
+# .mac-Dateien sind Textdateien mit _Maxima_-Befehlen. Sie können über Maxima's read()-Befehl oder in wxMaxima über "Datei/Batch File laden" gelesen werden.
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:271
 msgid ""
@@ -1084,7 +1085,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:273
 msgid "One Example:"
-msgstr ""
+msgstr "Ein Beispiel:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:275
@@ -1098,14 +1099,13 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:277
 msgid "![Batch image](./BatchImage.png)"
-msgstr ""
+msgstr "![Batch image](./BatchImage.png)"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:279
-#, fuzzy, no-wrap
-#| msgid "    %i1 playback();\n"
+#, no-wrap
 msgid "    %i1 read(\"test.mac\");\n"
-msgstr "    %i1 playback();\n"
+msgstr "%i1 read(\"test.mac\");\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:281
