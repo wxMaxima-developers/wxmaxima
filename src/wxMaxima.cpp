@@ -4645,16 +4645,18 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
 
     // Find gnuplot
     wxPathList pathlist;
-    pathlist.AddEnvList(wxT("PATH"));
     pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath());
     pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../");
     pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../gnuplot");
     pathlist.Add(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetPath()+"/../gnuplot/bin");
+    pathlist.AddEnvList(wxT("PATH"));
     wxString gnuplot_binary = pathlist.FindAbsoluteValidPath(wxT("gnuplot"));
     if(gnuplot_binary == wxEmptyString)
       gnuplot_binary = pathlist.FindAbsoluteValidPath(wxT("gnuplot.exe"));
     if(gnuplot_binary == wxEmptyString)
       gnuplot_binary = pathlist.FindAbsoluteValidPath(wxT("gnuplot.app"));
+    if(gnuplot_binary == wxEmptyString)
+      gnuplot_binary = pathlist.FindAbsoluteValidPath(wxT("wgnuplot.exe"));
     if(gnuplot_binary == wxEmptyString)
       gnuplot_binary = wxT("gnuplot");
     // Execute gnuplot
