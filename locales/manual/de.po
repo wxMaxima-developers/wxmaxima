@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-15 22:14+0200\n"
-"PO-Revision-Date: 2019-10-15 22:18+0200\n"
+"PO-Revision-Date: 2019-10-16 20:54+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1095,6 +1095,8 @@ msgid ""
 "entering that batch file appears below. (Some directory path information is "
 "deleted.)"
 msgstr ""
+"Eine .mac-Datei mit dem Namen Quadratic.mac wurde erstellt, die aus zwei Befehlen besteht:\n"
+"`f(x):=(x-5)^2;` und `wxdraw2d(explicit(f(x),x,-1,15));`. Das Ergebnis dieser Befehle (ohne die Pfade, die darin enthalten sind) sieht folgendermaßen aus:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:277
@@ -1113,12 +1115,12 @@ msgid ""
 "You can be use `.mac` files for writing own library of macros. But since "
 "they don’t contain enough structural information they cannot be read back as "
 "a _wxMaxima_ session."
-msgstr ""
+msgstr ".mac-Dateien eignen sich dafür, eine Bibliothek von Maxima-Befehlen aufzubauen. Ausreichend Information über die Struktur eines _wxMaxima_-Arbeitsblatts, dass sie es erlauben, dieses wieder zu rekonstruieren, enthalten sie aber nicht."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:283
 msgid "### .wxm"
-msgstr ""
+msgstr "### .wxm"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:285
