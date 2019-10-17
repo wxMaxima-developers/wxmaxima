@@ -21,11 +21,13 @@ endforeach()
 # Find a suitable LaTeX installation
 find_program(LATEX NAMES xelatex lualatex)
 
-find_program(PO4ATRANSLATE po4a-translate)
+if (NOT PO4A-TRANSLATE)
+    find_program(PO4A-TRANSLATE po4a-translate)
+endif()
 
 # Generate the manuals
 find_program(PANDOC pandoc)
-if(PANDOC AND PO4ATRANSLATE)
+if(PANDOC AND PO4A-TRANSLATE)
     execute_process(
         COMMAND ${PANDOC} --version
         OUTPUT_VARIABLE PANDOC_VERSION_TEXT
@@ -70,7 +72,7 @@ if(PANDOC AND PO4ATRANSLATE)
             COMMAND ${PANDOC} ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.md -o ${BASENAME}.docx ${PANDOC_ARGS}
 	    COMMENT "Generating ${BASENAME}.docx ...")
 	string(REGEX REPLACE "wxmaxima.(.*)$" "\\1" LANG ${BASENAME})
-	if(PO4ATRANSLATE)
+	if(PO4A-TRANSLATE)
 	    if(NOT BASENAME STREQUAL "wxmaxima")
 		add_custom_command(
 		    OUTPUT ${BASENAME}.md
@@ -100,7 +102,7 @@ if(NOT PANDOC)
     message(WARNING "Pandoc not found. Documentation can not be converted from Markdown.")
 endif()
 
-if(NOT PO4ATRANSLATE)
+if(NOT PO4A-TRANSLATE)
     message(WARNING "po4a-translate not found. Documentation can not be converted from Markdown.")
 endif()
 
