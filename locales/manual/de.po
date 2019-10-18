@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-18 06:43+0200\n"
-"PO-Revision-Date: 2019-10-18 07:13+0200\n"
+"PO-Revision-Date: 2019-10-18 20:08+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1204,51 +1204,49 @@ msgid ""
 "The animation framerate that is used for new animations is kept in the "
 "variable `wxanimate_framerate`. The initial value this variable will contain "
 "in a new worksheet can be changed using the configuration dialogue."
-msgstr ""
+msgstr "Die Bildwiederholgeschwindigkeit für Animationen wird in der Variable `wxanimate_framerate` gespeichert. wxMaxima setzt sie auf den Wert aus dem Konfigurationsdialog, wenn ein neues _Maxima_ gestartet wird."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:304
 msgid "### Default plot size for new _maxima_ sessions"
-msgstr ""
+msgstr "### Die Standardgröße der Diagramme"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:306
 msgid ""
 "After the next start plots embedded into the worksheet will be created with "
 "this size if the value of `wxplot_size` isn't changed by _maxima_."
-msgstr ""
+msgstr "`wxplot_size` definiert, wie groß die nachfolgenden in das Arbeitsblatt eingebauten Diagramme sind."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:308
 msgid ""
 "In order to set the plot size of a single graph only use the following "
 "notation can be used that sets a variable’s value for one command only:"
-msgstr ""
+msgstr "Diese Variable kann notfalls auch nur für das aktuelle Diagramm gesetzt werden:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:310
 #, no-wrap
 msgid "    wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$\n"
-msgstr ""
+msgstr "    wxdraw2d( explicit(x^2,x,-5,5)), wxplot_size=[480,480]$\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:312
 msgid "### Use jsMath fonts"
-msgstr ""
+msgstr "### jsMath-Zeichensätze"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:314
 msgid ""
 "The style menu allows customization that pertains to the appearance of your "
 "notebook as you work."
-msgstr ""
+msgstr "Im \"Stil\"-Menü können Einstellungen vorgenommen werden, die das Aussehen des Arbeitsblattes beeinflussen."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:316
-#, fuzzy
-#| msgid "![wxMaxima window](./wxMaximaWindow.png)"
 msgid "![wxMaxima configuration 2](./wxMaxima_configuration_002.png)"
-msgstr "![wxMaxima window](./wxMaximaWindow.png)"
+msgstr "![wxMaxima configuration 2](./wxMaxima_configuration_002.png)"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:318
@@ -1260,53 +1258,53 @@ msgid ""
 "highlighted. The jsMath fonts can be found on [this site](https://www.mpim-"
 "bonn.mpg.de/node/258). The site describes JsMath fonts and provides "
 "installation instructions."
-msgstr ""
+msgstr "Eine dieser Einstellungen ist die Option, jsMath-Zeichensätze zu verwenden, die speziell für die Mathematik entworfen wurden. Falls sie auf dem aktuellen System nicht installiert sind, können sie von [dieser Seite](https://www.mpim-bonn.mpg.de/node/258). heruntergeladen werden, wo es auch eine Installationsanleitung gibt."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:321
 msgid "### Match parenthesis in text controls"
-msgstr ""
+msgstr "### Automatisches Schließen von Klammern"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:323
 msgid "This option enables two things:"
-msgstr ""
+msgstr "Diese Option schaltet zwei Funktionen ein:"
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:326
 msgid ""
 "If an opening parenthesis, bracket or double quote is entered _wxMaxima_ "
 "will insert a closing one after it."
-msgstr ""
+msgstr "Wenn eine öffnende Klammer eingegeben wird, fügt _wxMaxima_ automatisch eine schließende Klammer ein."
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:326
 msgid ""
 "If text is selected if any of these keys is pressed the selected text will "
 "be put between the matched signs."
-msgstr ""
+msgstr "Markierter Text wird, wenn man eine geöffnete Klammer einzugeben versucht, automatisch in Klammern gesetzt."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:328
 msgid "### Autosave interval"
-msgstr ""
+msgstr "### Intervall des automatischen Speicherns"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:330
 msgid ""
 "If this value is set to a value bigger than zero _Maxima_ will work in a "
 "more mobile-device-like fashion:"
-msgstr ""
+msgstr "Wenn diese Zahl größer als Null ist, verhält sich _wxMaxima_ wie viele Programme auf dem Handy:"
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:333
 msgid "Files are saved automatically on exit"
-msgstr ""
+msgstr "Dateien werden beim Schließen automatisch gespeichert"
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:333
 msgid "And the file will automatically be saved every n minutes."
-msgstr ""
+msgstr "und sie werden alle n Minuten zwischengespeichert."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:335
@@ -1314,20 +1312,17 @@ msgid ""
 "For the automatic saving functionality to work _wxMaxima_ needs to know a "
 "name to save the file with, though. This means this feature will only work "
 "if the file has already been saved to or opened from the disk."
-msgstr ""
+msgstr "Dies funktioniert natürlich erst, wenn die Datei bereits unter einem Namen gespeichert ist, unter dem sie zwischengespeichert werden kann."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:340
-#, fuzzy, no-wrap
-#| msgid ""
-#| "Introduction to wxMaxima\n"
-#| "========================\n"
+#, no-wrap
 msgid ""
 "Extensions to _Maxima_\n"
 "======================\n"
 msgstr ""
-"Einführung in wxMaxima\n"
-"======================\n"
+"Erweiterungen für _Maxima_\n"
+"==========================\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:343
