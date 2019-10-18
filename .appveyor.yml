@@ -50,13 +50,13 @@ before_build:
   - cmd: if not exist C:\wxwidgets-build_%WXVERSION% mkdir C:\wxwidgets-build_%WXVERSION%
   - cmd: cd C:\wxwidgets-build_%WXVERSION%
   - cmd: CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - cmd: if not exist C:\wxwidgets-install_%WXVERSION% cmake -G "Visual Studio 15 2017 Win64" -DwxBUILD_SHARED=NO --config Release -DCMAKE_INSTALL_PREFIX=C:\wxwidgets-install_%WXVERSION% ../wxwidgets-source_%WXVERSION% -DCMAKE_STATIC_LINKER_FLAGS="/INCREMENTAL" -DCMAKE_MODULE_LINKER_FLAGS="/INCREMENTAL" -DPO4A-TRANSLATE="bash po4a-translate"
+  - cmd: if not exist C:\wxwidgets-install_%WXVERSION% cmake -G "Visual Studio 15 2017 Win64" -DwxBUILD_SHARED=NO --config Release -DCMAKE_INSTALL_PREFIX=C:\wxwidgets-install_%WXVERSION% ../wxwidgets-source_%WXVERSION% -DCMAKE_STATIC_LINKER_FLAGS="/INCREMENTAL" -DCMAKE_MODULE_LINKER_FLAGS="/INCREMENTAL"
   - cmd: if not exist C:\wxwidgets-install_%WXVERSION% cmake --build . --config Release
   - cmd: if not exist C:\wxwidgets-install_%WXVERSION% cmake --build . --config Release --target install
   - cmd: echo Running cmake...
   - cmd: if not exist c:\projects\wxMaxima\build mkdir c:\projects\wxMaxima\build
   - cmd: cd c:\projects\wxMaxima\build
-  - cmd: cmake -G "Visual Studio 15 2017 Win64" -DAPPVEYOR_BUILD=1 --config Release -DwxWidgets_ROOT_DIR=C:\wxwidgets-install_%WXVERSION% -D CMAKE_CXX_FLAGS="/EHsc /D_UNICODE=1" -DwxWidgets_CONFIGURATION=mswu ..
+  - cmd: cmake -G "Visual Studio 15 2017 Win64" -DAPPVEYOR_BUILD=1 --config Release -DwxWidgets_ROOT_DIR=C:\wxwidgets-install_%WXVERSION% -D CMAKE_CXX_FLAGS="/EHsc /D_UNICODE=1" -DwxWidgets_CONFIGURATION=mswu -DPO4A-TRANSLATE="bash po4a-translate" ..
 
 build_script:
   - cmd: cd c:\projects\wxMaxima\build
