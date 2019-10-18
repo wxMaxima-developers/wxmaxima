@@ -281,21 +281,11 @@ You can be use `.mac` files for writing own library of macros. But since they do
 
 ### .wxm
 
-.wxm files contain the input for _Maxima_, as well as any text cells, title cells and chapter or section cells the user has typed in. On maxima versions >5.38 they can be read using _Maxima_'s `load()` function just as .mac files can be. _Maxima_’s output is not saved along with the .wxm file, though. Also this format tends not to be downwards compatible with older versions of _wxMaxima_
+.wxm files contains the worksheet except _maxima_'s output. On maxima versions >5.38 they can be read using _Maxima_'s `load()` function just as .mac files can be. With this plain-text format it sometimes is unavoidable that worksheets that use new features are not downwards-compatible with older versions of _wxMaxima_.
 
 ### .wxmx
 
-This xml-based file format saves all text and images the work sheet contains. It is the preferred file format now and comes in two flavors:
-
-*   Files saved in the version-control friendly .wxmx format contain all images in a standard compressed format (.png) and a uncompressed copy of the xml tree that contains the structure of the document and the text typed in by the user. Since the images are compressed individually and the text is saved as text a version control system like bazaar, subversion, git or mercurial will only have to save the elements of the file that actually have changed since the last version.
-*   Files saved in disk space-optimized .wxmx format are compressed as a whole. If no version control system is used this will save disk space:
-
-    *   The portion of the file that is pure xml data tends to get fundamentally smaller when being compressed
-    *   and after the compression recurring data like image headers will use up only a fraction of the space they originally did.
-
-    This comes at the cost, though, that the change of even a single line of text in the uncompressed version tends to completely change the structure of the compressed version of a file. A version control system that deals with such a file will - however optimized it might be on handling differences between binary files - will therefore have to track (and to store) a much higher number of differences between two file versions than necessary; Since most version control systems compress the data they store on the server the server space occupied by the initial version of both .wxmx flavors should be nearly identical in size.
-
-
+This xml-based file format saves the complete worksheet including things like the zoom factor and the watchlist. It is the preferred file format.
 
 ## Configuration options
 
