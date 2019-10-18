@@ -45,8 +45,8 @@ if(GETTEXT_FOUND)
 	    COMMAND ${GETTEXT_MSGMERGE_EXECUTABLE} -N ${CMAKE_SOURCE_DIR}/locales/wxMaxima/${LANG}.po ${CMAKE_BINARY_DIR}/wxMaxima.pot -U)
     endforeach()
 
-    message(STATUS "The new POT and PO files were generated in the build directory.")
-    message(STATUS "Call 'make update-locale' to modify the wxMaxima sourcecode.")
+    message(STATUS "The updated POT and PO files were generated in the build directory.")
+    message(STATUS "Call 'make update-locale' to update the .po files in the source tree, too.")
     file(GLOB NEW_PO_FILES "${CMAKE_BINARY_DIR}/locales/*.po")
 
     add_custom_command(

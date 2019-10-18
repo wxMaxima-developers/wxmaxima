@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-18 06:43+0200\n"
-"PO-Revision-Date: 2019-10-18 06:40+0200\n"
+"PO-Revision-Date: 2019-10-18 07:13+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1131,14 +1131,6 @@ msgstr "### .wxm"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:285
-#, fuzzy
-#| msgid ""
-#| ".wxm files contain the input for _Maxima_, as well as any text cells, "
-#| "title cells and chapter or section cells the user has typed in. On maxima "
-#| "versions >5.38 they can be read using _Maxima_'s `load()` function just "
-#| "as .mac files can be. _Maxima_’s output is not saved along with the .wxm "
-#| "file, though. Also this format tends not to be downwards compatible with "
-#| "older versions of _wxMaxima_"
 msgid ""
 ".wxm files contains the worksheet except _maxima_'s output. On maxima "
 "versions >5.38 they can be read using _Maxima_'s `load()` function just as ."
@@ -1171,8 +1163,6 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:291
-#, fuzzy
-#| msgid "### Command autocompletion"
 msgid "## Configuration options"
 msgstr "### Auto-Vervollständigung"
 
@@ -1181,14 +1171,14 @@ msgstr "### Auto-Vervollständigung"
 msgid ""
 "For some common configuration variables _wxMaxima_ offers two ways of "
 "configuring:"
-msgstr ""
+msgstr "Einige Variablen, über die Maxima konfiguriert wird, können auf zwei Weisen eingestellt werden:"
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:296
 msgid ""
 "The configuration dialog box below lets you change their default values for "
 "the current and subsequent sessions."
-msgstr ""
+msgstr "Die können global im Konfigurationsdialog eingestellt werden."
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:296
@@ -1196,19 +1186,17 @@ msgid ""
 "Also, the values for most configuration variables can be changed for the "
 "current session only by overwriting their values from the worksheet, as "
 "shown below."
-msgstr ""
+msgstr "Ebenso können sie von Maxima aus überschrieben werden."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:298
-#, fuzzy
-#| msgid "![wxMaxima window](./wxMaximaWindow.png)"
 msgid "![wxMaxima configuration 1](./wxMaxima_configuration_001.png)"
-msgstr "![wxMaxima window](./wxMaximaWindow.png)"
+msgstr "![wxMaxima configuration 1](./wxMaxima_configuration_001.png)"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:300
 msgid "### Default animation framerate"
-msgstr ""
+msgstr "### Die Standard-Bildwiederholrate bei Animationen"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:302
