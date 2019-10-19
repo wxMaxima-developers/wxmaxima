@@ -44,6 +44,7 @@ before_cache:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cleanup; fi
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS; brew update; export PATH="/usr/local/opt/ccache/libexec:$PATH"; brew install ccache; brew link ccache; export PATH=/Library/TeX/texbin:/usr/local/opt/texinfo/bin:$PATH:/usr/local/opt/gettext/bin; brew install gettext texinfo wxwidgets pandoc homebrew/cask/basictex; sudo tlmgr update --self; sudo tlmgr install collection-fontsrecommended; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap petere/debian; brew install po4a; fi
 notification:
   email:
     on_success: change
