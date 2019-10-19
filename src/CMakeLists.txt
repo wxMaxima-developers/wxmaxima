@@ -51,6 +51,7 @@ if(APPLE)
     set(APP_RESOURCES_DIR ${APP_DIR}/Resources)
     set(APP_HELP_DIR ${APP_RESOURCES_DIR}/help)
     set(APP_FONTS_DIR ${APP_RESOURCES_DIR}/fonts)
+    set(APP_LOCALE_DIR ${APP_RESOURCES_DIR}/locale)
     # CUSTOM TARGET
     add_custom_target(wxMaxima.app)
     add_custom_command(TARGET wxMaxima.app PRE_BUILD
@@ -79,6 +80,8 @@ if(APPLE)
       add_custom_command(TARGET wxMaxima.app
         COMMAND ${CMAKE_COMMAND} -E copy ${f} ${APP_FONTS_DIR})
     endforeach()
+    add_custom_command(TARGET wxMaxima.app
+      COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/locale ${APP_LOCALE_DIR})
 endif()
 
 if(WIN32)
