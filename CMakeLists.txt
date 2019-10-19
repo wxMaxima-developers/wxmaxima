@@ -108,11 +108,11 @@ endif()
 # Doesn't currently work, unfortunately, see
 # https://gitlab.kitware.com/cmake/cmake/issues/19663
 #
- set(BU_CHMOD_BUNDLE_ITEM)
- if(APPLE)
- install(CODE "include(BundleUtilities)
+if(APPLE)
+    set(BU_CHMOD_BUNDLE_ITEMS TRUE)
+    install(CODE "include(BundleUtilities)
      fixup_bundle(\"${PROJECT_BINARY_DIR}/wxMaxima.app\" \"\" \"${wxWidgets_LIB_DIR}\")")
- endif()
+endif()
 
 # Build Packages
 if(WIN32)
