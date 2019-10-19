@@ -93,7 +93,7 @@ if(PANDOC AND PO4A-TRANSLATE)
 		add_custom_command(
 		    OUTPUT ${BASENAME}.md
 		    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/../locales/manual/${LANG}.po ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
-		    COMMAND po4a-translate -k 0 -f text -m ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -p ${CMAKE_CURRENT_SOURCE_DIR}/../locales/manual/${LANG}.po -l ${BASENAME}.md -M UTF-8)
+		    COMMAND ${PO4A-TRANSLATE} -k 0 -f text -m ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -p ${CMAKE_CURRENT_SOURCE_DIR}/../locales/manual/${LANG}.po -l ${BASENAME}.md -M UTF-8)
 	    endif()
 	endif()
 	add_custom_command(
