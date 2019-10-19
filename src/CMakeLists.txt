@@ -45,6 +45,8 @@ if(APPLE)
     ${CMAKE_SOURCE_DIR}/data/PkgInfo)
   file(GLOB FONT_FILES
     ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf)
+  file(GLOB WXSTD_LOCALE_FILES
+    ${CMAKE_SOURCE_DIR}/locales/wxwin/*.mo)
     # DEFINE DIRECTORIES
     set(APP_DIR ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents)
     set(APP_MACOSX_DIR ${APP_DIR}/MacOS)
@@ -82,6 +84,11 @@ if(APPLE)
     endforeach()
     add_custom_command(TARGET wxMaxima.app
       COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/locale ${APP_LOCALE_DIR})
+    foreach(f ${WXSTD_LOCALE_FILES})
+      string(REGEX REPLACE ".*locales/wxwin/(.*).mo$" "\\1" LANG ${f})
+      add_custom_command(TARGET wxMaxima.app
+        COMMAND ${CMAKE_COMMAND} -E copy ${f} ${APP_LOCALE_DIR}/${LANG}/LC_MESSAGES/wxMaxima-wxstd.mo)
+    endforeach()
 endif()
 
 if(WIN32)
