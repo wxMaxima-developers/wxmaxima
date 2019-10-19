@@ -45,12 +45,15 @@ if(APPLE)
     ${CMAKE_SOURCE_DIR}/data/PkgInfo)
   file(GLOB FONT_FILES
     ${CMAKE_SOURCE_DIR}/data/fonts/*.ttf)
+  file(GLOB WXSTD_LOCALE_FILES
+    ${CMAKE_SOURCE_DIR}/locales/wxwin/*.mo)
     # DEFINE DIRECTORIES
     set(APP_DIR ${CMAKE_BINARY_DIR}/wxMaxima.app/Contents)
     set(APP_MACOSX_DIR ${APP_DIR}/MacOS)
     set(APP_RESOURCES_DIR ${APP_DIR}/Resources)
     set(APP_HELP_DIR ${APP_RESOURCES_DIR}/help)
     set(APP_FONTS_DIR ${APP_RESOURCES_DIR}/fonts)
+    set(APP_LOCALE_DIR ${APP_RESOURCES_DIR}/locale)
     # CUSTOM TARGET
     add_custom_target(wxMaxima.app)
     add_custom_command(TARGET wxMaxima.app PRE_BUILD
@@ -78,6 +81,13 @@ if(APPLE)
     foreach(f ${FONT_FILES})
       add_custom_command(TARGET wxMaxima.app
         COMMAND ${CMAKE_COMMAND} -E copy ${f} ${APP_FONTS_DIR})
+    endforeach()
+    add_custom_command(TARGET wxMaxima.app
+      COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/locale ${APP_LOCALE_DIR})
+    foreach(f ${WXSTD_LOCALE_FILES})
+      string(REGEX REPLACE ".*locales/wxwin/(.*).mo$" "\\1" LANG ${f})
+      add_custom_command(TARGET wxMaxima.app
+        COMMAND ${CMAKE_COMMAND} -E copy ${f} ${APP_LOCALE_DIR}/${LANG}/LC_MESSAGES/wxMaxima-wxstd.mo)
     endforeach()
 endif()
 
