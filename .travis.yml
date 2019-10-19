@@ -3,6 +3,7 @@ sudo: required
 os:
 - linux
 - osx
+osx_image: xcode11.2
 branches:
   except:
   - gh_pages
