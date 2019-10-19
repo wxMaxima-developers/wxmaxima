@@ -2,7 +2,6 @@ language: cpp
 os:
 - linux
 - osx
-# osx_image: xcode11.2
 branches:
   except:
   - gh_pages
@@ -13,9 +12,9 @@ cache:
   ccache: true
   directories:
   - "$HOME/Library/Caches/Homebrew"
-  - /usr/local/Cellar/libpng
-  - /usr/local/Cellar/gettext
-  - /usr/local/Cellar/ccache
+  - "/usr/local/Cellar/libpng"
+  - "/usr/local/Cellar/gettext"
+  - "/usr/local/Cellar/ccache"
 addons:
   ssh_known_hosts: home67027059.1and1-data.host
   apt:
@@ -40,10 +39,13 @@ addons:
     - lmodern
     - texlive-fonts-recommended
 before_cache:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cleanup; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cleanup; fi
 before_install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS; brew update; export PATH="/usr/local/opt/ccache/libexec:$PATH"; brew install ccache; brew link ccache; export PATH=/Library/TeX/texbin:/usr/local/opt/texinfo/bin:$PATH:/usr/local/opt/gettext/bin; brew install gettext texinfo wxwidgets pandoc homebrew/cask/basictex; sudo tlmgr update --self; sudo tlmgr install collection-fontsrecommended; fi
-#- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap petere/debian; brew install po4a; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS; brew update; export
+  PATH="/usr/local/opt/ccache/libexec:$PATH"; brew install ccache; brew link ccache;
+  export PATH=/Library/TeX/texbin:/usr/local/opt/texinfo/bin:$PATH:/usr/local/opt/gettext/bin;
+  brew install gettext texinfo wxwidgets pandoc homebrew/cask/basictex; sudo tlmgr
+  update --self; sudo tlmgr install collection-fontsrecommended; fi
 notifications:
   email:
     on_success: change
@@ -56,16 +58,23 @@ script:
 - mkdir build && cd build && cmake .. && cmake --build .
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 xvfb-run -a make test ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 xvfb-run -a
+  make test ; fi
 - cd ..
 - ccache -s
-
-
 deploy:
   provider: releases
   api_key:
-    secure: "Zoo6p3CTOMf7mUcUuTrTz03U8xSIvhRCGRQlLGzcU3eF7/bNyo7MyXlePSC3bPsi+Fs7BX41eakQV2E2ycBnwRxMapOAxMv9yhk+nnlGSrS5tagNP1ljcqT30JJrEyDGBVP3S1FqiqMyzESiZLvaYmMzbFyisaiF4Cn6O+XxyU2xRz3EEX6sdhnkd9txU0rwjw/TUksG2xrtJdiOaCKXjjTVbJx1R4pAu2BWIfnFVrliwNNIDVby2riBeqO0QSt5NxU5OuWFXYX9Q6RlxlRmAr6njCVi7GA4uG/c5x7WNKjPiOXFpy2LyvRMlTY2hEL0KVeCqYUArvMkLM3ELyoniQvv+QJk+MnAcvdF+04ioIO9/rhYTtU5bjmZI1uAnzPsXGZJXgIRdxmDcGnFZJbmwlolp/kZtBKR9pwqPOYT2Xymg7QkJwy9R4MaCv2/6EZ/zHxi3qRxiKH+zhT8Ymdsn0UUe96pGw6oiOOdQPvxcOPCVmmJyxjVr9OkvBYjd5yRGZHdfXAs5ZfJGdotVq6OWq906ISQkOdAB2CDSklmGjXEf3d1RSxiueSC2rQa0h+/6kDzyRyHKFX+dtdLlHqKdvjRWXVmDMXrZ+qj6oZTykfa5s8BzcykmsLnVS1txw8at4P3/BsFshUAuMPmBg3cs7dLpwezEN+Yu+4dxkImYX4="
-  file: "wxMaxima.app"
+    secure: Zoo6p3CTOMf7mUcUuTrTz03U8xSIvhRCGRQlLGzcU3eF7/bNyo7MyXlePSC3bPsi+Fs7BX41eakQV2E2ycBnwRxMapOAxMv9yhk+nnlGSrS5tagNP1ljcqT30JJrEyDGBVP3S1FqiqMyzESiZLvaYmMzbFyisaiF4Cn6O+XxyU2xRz3EEX6sdhnkd9txU0rwjw/TUksG2xrtJdiOaCKXjjTVbJx1R4pAu2BWIfnFVrliwNNIDVby2riBeqO0QSt5NxU5OuWFXYX9Q6RlxlRmAr6njCVi7GA4uG/c5x7WNKjPiOXFpy2LyvRMlTY2hEL0KVeCqYUArvMkLM3ELyoniQvv+QJk+MnAcvdF+04ioIO9/rhYTtU5bjmZI1uAnzPsXGZJXgIRdxmDcGnFZJbmwlolp/kZtBKR9pwqPOYT2Xymg7QkJwy9R4MaCv2/6EZ/zHxi3qRxiKH+zhT8Ymdsn0UUe96pGw6oiOOdQPvxcOPCVmmJyxjVr9OkvBYjd5yRGZHdfXAs5ZfJGdotVq6OWq906ISQkOdAB2CDSklmGjXEf3d1RSxiueSC2rQa0h+/6kDzyRyHKFX+dtdLlHqKdvjRWXVmDMXrZ+qj6oZTykfa5s8BzcykmsLnVS1txw8at4P3/BsFshUAuMPmBg3cs7dLpwezEN+Yu+4dxkImYX4=
+  file: wxMaxima.app
   skip_cleanup: true
   on:
     tags: true
+env:
+  global:
+    secure: eagjtgIpCBv8+v1PgL//UmiaDSsw91aj3J5Imj4hJUr1DhkHJoOoREFNbvAsb5hQwSMNb4Hu+7PDkaxaXlhQ00d1tG1+GEtS8cykQKYJHF0F2qUucOUHKBKtgEy3UuwmbBrwW/pcKHfe9GpMH/TOaJKY8/u+PmUFbHKn7umaOKpL2IUS8mEMAsjCWdyOaweiTadvIwhrtH+zmAwhrsM0ZnniUa39frBYZpgqqHuShRBNZaqHW3R7iHc5vExLYKmeyy+UGAnDfJtmIZsysVXJYPCBEe9WwKssLZpfah5ic+q+Re4CylODV6fWbNYRKz2608C2OlZ+8Toh0Df1TfEymoeQFbIKEWWMvZ3n3NT+NdPUhefMlIDMb4Q6TWEV08S0yEEo2NEf/2/NORqdXznDCwl969jB2hSTnoAFubXw6J/1pkIyQXSi9cfnF8uiByjQvqgGakMNEWGg1cTjoUygj3gLvF3thsQHcO5Bl3ME7wwV1ItAWPcIR6NNnIdYpmvv+E6+vGhedVK97+AcjDyi6Wm+41P4eWhMKrVXsOWMbRQty8pDkj5KP8vt4DrstA/154Sm+kmrdQfagAo0Jiz9IgLU8rlWr9p+rTKiLXbe++3PVdfsBX6B/b1R7CSVq6JvkBNNrG4B5O8NEgH6gkOlKksbzXij+eHPMVZvpuHM1J4=
+
+
+after_success:
+- openssl aes-256-cbc -K $encrypted_0a6446eb3ae3_key -iv $encrypted_0a6446eb3ae3_iv -in .travis/deploy_rsa.enc -out .travis/deploy_rsa -d
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl --ftp-create-dirs -T wxMaxima.app --key .travis/deploy_rsa sftp://${SFTP_USER}@home67027059.1and1-data.host:/kunden/homepages/30/d67027059/htdocs/wxMaxima/nightly/wxMaxima.app; fi
