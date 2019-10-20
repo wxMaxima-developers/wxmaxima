@@ -62,7 +62,7 @@ script:
   make test ; fi
 - cd ..
 - openssl aes-256-cbc -K $encrypted_0a6446eb3ae3_key -iv $encrypted_0a6446eb3ae3_iv -in .travis/deploy_rsa.enc -out .travis/deploy_rsa -d
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl --ftp-create-dirs -T wxMaxima.app --key .travis/deploy_rsa sftp://${SFTP_USER}@home67027059.1and1-data.host:/kunden/homepages/30/d67027059/htdocs/wxMaxima/nightly/wxMaxima.app; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl --ftp-create-dirs -T wxMaxima.app --key .travis/deploy_rsa sftp://${SFTP_USER}@home67027059.1and1-data.host:; fi
 - ls
 - ls .travis
 - ccache -s
