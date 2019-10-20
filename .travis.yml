@@ -65,7 +65,7 @@ script:
 - ls build
 - openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv -in .travis/deploy_rsa.enc -out .travis/deploy_rsa -d
 - ls .travis
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp build/*.dmg build/wxMaxima.dmg;curl --verbose --ftp-create-dirs -T build/wxMaxima.dmg --key .travis/deploy_rsa sftp://${SFTP_USER}@home67027059.1and1-data.host:; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp build/*.dmg build/wxMaxima.dmg;rsync --key .travis/deploy_rsa --verbose build/wxMaxima.dmg ${SFTP_USER}@home67027059.1and1-data.host:; fi
 - ccache -s
 deploy:
   provider: releases
