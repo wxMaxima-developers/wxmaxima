@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-11 20:17+0200\n"
-"PO-Revision-Date: 2019-10-14 14:19+0800\n"
+"PO-Revision-Date: 2019-10-20 12:34+0800\n"
 "Last-Translator: litchi <kz-xy@163.com>\n"
 "Language-Team: amateur\n"
 "Language: zh\n"
@@ -124,7 +124,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:3340
 #, c-format
 msgid "%i cells in evaluation queue"
-msgstr ""
+msgstr "%i 单元位于估算队列"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:967
 msgid "&Algebra"
@@ -398,11 +398,11 @@ msgstr "&pm3d"
 
 #: /home/gunter/src/wxmaxima/src/MathParser.cpp:1083
 msgid "(Expression longer than allowed by the configuration setting)"
-msgstr ""
+msgstr "（表达式已超出配置允许的长度）"
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:235
 msgid "(Not a valid variable name)"
-msgstr ""
+msgstr "(非可用变量名)"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:173
 msgid "(Use default language)"
@@ -612,7 +612,7 @@ msgstr "添加恒等式至有理式化简因子"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:844
 msgid "Add the .wxmx file to the HTML export"
-msgstr ""
+msgstr "为导出的 HTML 添加 wxmx 文件"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:842
 msgid "Add to &Path..."
@@ -661,14 +661,12 @@ msgid ""
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1156
-#, fuzzy
 msgid "All but the 1st n elements"
-msgstr "应用函数至列表"
+msgstr "除去首项的所有元素"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1157
-#, fuzzy
 msgid "All but the last n elements"
-msgstr "应用函数至列表"
+msgstr "除去末项的所有元素"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4385
 msgid ""
@@ -746,9 +744,8 @@ msgid "Apply"
 msgstr "应用"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6047
-#, fuzzy
 msgid "Apply a function to each list element"
-msgstr "应用函数至列表"
+msgstr "应用函数至每列元素"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:962
 msgid "Apply function to a list"
@@ -1083,7 +1080,6 @@ msgid "Build &Info"
 msgstr "构建信息(&I)"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:46
-#, fuzzy
 msgid ""
 "By default, Shift-Enter is used to evaluate commands, while Enter is used "
 "for multiline input. This behaviour can be changed in 'Edit->Configure' "
@@ -1091,7 +1087,7 @@ msgid ""
 "two key commands."
 msgstr ""
 "默认使用 Shift+Enter 对命令求值，Enter 则用于进行多行输入。通过在“编辑->配"
-"置”对话框中选中”使用 Enter 对单元求值“可以对此进行更改，交换两组按键的功能。"
+"置”对话框中选中“使用 Enter 对单元求值”可以对此进行更改，交换两组按键的功能。"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:976
 msgid "C&hange Variable..."
@@ -2021,9 +2017,8 @@ msgid "Division by 0."
 msgstr "除以 0 。"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6118
-#, fuzzy
 msgid "Do for each list element"
-msgstr "应用函数至列表"
+msgstr "应用函数至元素"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8669
 #, c-format
@@ -2226,9 +2221,8 @@ msgid "Enter new animation frame rate [Hz, integer]:"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6744
-#, fuzzy
 msgid "Enter new precision for bigfloats:"
-msgstr "输入新的精度："
+msgstr "为大浮点输入新的精度："
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:323
 msgid "Enter the path to the Maxima executable."
@@ -3058,7 +3052,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:246
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1900
 msgid "Heading 5"
-msgstr ""
+msgstr "小小小节单元"
 
 #: /home/gunter/src/wxmaxima/src/Configuration.cpp:245
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1902
@@ -4987,7 +4981,7 @@ msgstr "正在读取 Maxima 输入"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:506
 #, c-format
 msgid "Reading Maxima output: %li bytes"
-msgstr ""
+msgstr "读取 Maxima 输出：%li 字节"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:490
 msgid "Ready for user input"
@@ -5020,7 +5014,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:890
 msgid "Recent files list length:"
-msgstr ""
+msgstr "最近的文件列表长度："
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1570
 msgid "Rectform"
@@ -5045,7 +5039,7 @@ msgstr "对表达式进行三角函数化简"
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:792
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:8103
 msgid "Refusing to send cell to maxima: "
-msgstr ""
+msgstr "禁止向 maxima 传送单元："
 
 #: /home/gunter/src/wxmaxima/src/VariablesPane.cpp:190
 msgid "Remove"
@@ -5072,7 +5066,7 @@ msgstr "从表达式创建列表"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1184
 msgid "Remove duplicates"
-msgstr ""
+msgstr "移除重复项"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:774
 msgid "Remove output from input cells"
@@ -5145,31 +5139,31 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1154
 msgid "Returns an arbitrary list item"
-msgstr ""
+msgstr "返回列表的任意一项"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1155
 msgid "Returns the first item of the list"
-msgstr ""
+msgstr "返回列表首项"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1158
 msgid "Returns the last item of the list"
-msgstr ""
+msgstr "返回列表末项"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1159
 msgid "Returns the last n items of the list"
-msgstr ""
+msgstr "返回列表最后 n 项"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1180
 msgid "Returns the length of the list"
-msgstr ""
+msgstr "返回列表长度"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1156
 msgid "Returns the list without its first n elements"
-msgstr ""
+msgstr "返回列表，不包括前 n 项"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1157
 msgid "Returns the list without its last n elements"
-msgstr ""
+msgstr "返回列表，不包括最后 n 项"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:817
 msgid "Reuse last"
@@ -5261,7 +5255,7 @@ msgstr "俄语"
 
 #: /home/gunter/src/wxmaxima/src/XmlInspector.cpp:88
 msgid "SENT TO MAXIMA:"
-msgstr ""
+msgstr "发送至 MAXIMA："
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:798
 msgid "SVG graphics"
@@ -5397,7 +5391,7 @@ msgstr "保存中……"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1045
 msgid "Scalable Vector Graphics (svg)"
-msgstr ""
+msgstr "可缩放矢量图(svg)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:6981
 msgid "Scatterplot"
@@ -5537,9 +5531,8 @@ msgid "Set Zoom"
 msgstr "设定显示比例"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1221
-#, fuzzy
 msgid "Set bigfloat &Precision..."
-msgstr "设定长浮点数精度"
+msgstr "设定长浮点数精度..."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:373
 msgid "Set fixed font in text controls."
@@ -5547,7 +5540,7 @@ msgstr "设定文本控件中使用固定字体"
 
 #: /home/gunter/src/wxmaxima/src/MaxSizeChooser.cpp:30
 msgid "Set maximum image size [in mm]"
-msgstr ""
+msgstr "设置图像最大尺寸[mm]"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1199
 msgid "Set plot format"
@@ -5640,7 +5633,7 @@ msgstr "设定模运算"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:2005
 msgid "Setup the axis"
-msgstr ""
+msgstr "设置坐标轴"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:234
 msgid "Setup the axis for the current plot."
@@ -5736,7 +5729,7 @@ msgstr "显示函数的定义"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:224
 msgid "Show tips at Startup"
-msgstr ""
+msgstr "开启软件后显示提示"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1240
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1243
@@ -5899,22 +5892,24 @@ msgid ""
 "output them. If this option is selected additional LaTeX packages might be "
 "needed in order to compile the output, though."
 msgstr ""
+"wxMaxima 可以输出动态图像的 PDF(一些 PDF 软件可以查看)。 不过，此功能可能需要"
+"其他 LaTeX 软件包辅助，才能编译输出。"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5816
 msgid "Something like f(x_1,x_2)"
-msgstr ""
+msgstr "如 f(x_1,x_2) 这样的格式"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1183
 msgid "Sort"
-msgstr ""
+msgstr "排序"
 
 #: /home/gunter/src/wxmaxima/src/ListSortWiz.cpp:42
 msgid "Sort Criterion:"
-msgstr ""
+msgstr "排序标准："
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5909
 msgid "Sort a list"
-msgstr ""
+msgstr "为列表排序"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5877
 msgid "Source list:"
@@ -6004,11 +5999,11 @@ msgstr "正在启动服务器，端口为 %d"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:6510
 msgid "Starting to save the worksheet as .wxmx"
-msgstr ""
+msgstr "保存表格格式为 wxmx"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:252
 msgid "Startup commands"
-msgstr ""
+msgstr "开启命令"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:419
 msgid "Statistics"
@@ -6100,7 +6095,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:428
 msgid "Table of Contents"
-msgstr ""
+msgstr "内容列表"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:707
 msgid "Table of Contents\tAlt+Shift+T"
@@ -6927,7 +6922,7 @@ msgstr "方差..."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:757
 msgid "View"
-msgstr ""
+msgstr "视图"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:927
 msgid "Warn if an inactive window is idle"
@@ -7287,9 +7282,8 @@ msgid "inline"
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1816
-#, fuzzy
 msgid "intersection"
-msgstr "方向："
+msgstr "方向"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1718
 msgid "iota"
