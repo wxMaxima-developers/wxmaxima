@@ -608,7 +608,7 @@ void Plot2DPar::do_layout()
 wxString Plot2DPar::GetValue()
 {
   wxString s;
-  s = wxT("['parametric, ");
+  s = wxT("'parametric, ");
   s += text_ctrl_1->GetValue();
   s += wxT(", ");
   s += text_ctrl_2->GetValue();
@@ -618,8 +618,8 @@ wxString Plot2DPar::GetValue()
   s += text_ctrl_4->GetValue();
   s += wxT(", ");
   s += text_ctrl_5->GetValue();
-  s += wxT("], ");
-  s += wxString::Format(wxT("[nticks, %d]]"), spin_ctrl_1->GetValue());
+  s += wxT("]], ");
+  s += wxString::Format(wxT("[nticks, %d"), spin_ctrl_1->GetValue());
 
   return s;
 }
