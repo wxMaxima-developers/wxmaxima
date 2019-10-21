@@ -86,6 +86,8 @@ if(PANDOC AND PO4A-TRANSLATE)
             COMMAND ${PANDOC} ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.md -o ${BASENAME}.docx ${PANDOC_ARGS}
 	    COMMENT "Generating ${BASENAME}.docx ...")
 	string(REGEX REPLACE "wxmaxima.(.*)$" "\\1" LANG ${BASENAME})
+	string(REGEX REPLACE "wxmaxima$" "" LANG ${LANG})
+
 	if(PO4A-TRANSLATE)
 	    if(NOT BASENAME STREQUAL "wxmaxima")
 		add_custom_command(

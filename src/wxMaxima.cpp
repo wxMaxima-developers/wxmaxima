@@ -3149,7 +3149,7 @@ wxString wxMaxima::SearchwxMaximaHelp()
       return helpfile;
     wxLogMessage(wxString::Format(failmsg, helpfile));
     
-    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_short + ".Hhp";
+    helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_short + ".hhp";
 #if defined (__WXMSW__)
     // Cygwin uses /c/something instead of c:/something and passes this path to the
     // web browser - which doesn't support cygwin paths => convert the path to a
