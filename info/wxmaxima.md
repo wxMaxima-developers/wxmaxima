@@ -343,7 +343,7 @@ _wxMaxima_ is primarily a graphical user interface for _Maxima_. As such, its ma
 
 ## Subscripted variables
 
-if wxsubscripts is set to true variable names of the format `x_y` are displayed using a subscript if
+if `wxsubscripts` is set to true variable names of the format `x_y` are displayed using a subscript if
 
 *   `y` is a single letter
 *   `y` is an integer

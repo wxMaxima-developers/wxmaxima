@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-18 06:43+0200\n"
-"PO-Revision-Date: 2019-10-18 20:08+0200\n"
+"POT-Creation-Date: 2019-10-21 22:17+0200\n"
+"PO-Revision-Date: 2019-10-21 22:22+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1150,10 +1150,6 @@ msgstr "### .wxmx"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:289
-#, fuzzy
-#| msgid ""
-#| "This xml-based file format saves all text and images the work sheet "
-#| "contains. It is the preferred file format now and comes in two flavors:"
 msgid ""
 "This xml-based file format saves the complete worksheet including things "
 "like the zoom factor and the watchlist. It is the preferred file format."
@@ -1171,7 +1167,9 @@ msgstr "### Auto-Vervollständigung"
 msgid ""
 "For some common configuration variables _wxMaxima_ offers two ways of "
 "configuring:"
-msgstr "Einige Variablen, über die Maxima konfiguriert wird, können auf zwei Weisen eingestellt werden:"
+msgstr ""
+"Einige Variablen, über die Maxima konfiguriert wird, können auf zwei Weisen "
+"eingestellt werden:"
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:296
@@ -1204,7 +1202,10 @@ msgid ""
 "The animation framerate that is used for new animations is kept in the "
 "variable `wxanimate_framerate`. The initial value this variable will contain "
 "in a new worksheet can be changed using the configuration dialogue."
-msgstr "Die Bildwiederholgeschwindigkeit für Animationen wird in der Variable `wxanimate_framerate` gespeichert. wxMaxima setzt sie auf den Wert aus dem Konfigurationsdialog, wenn ein neues _Maxima_ gestartet wird."
+msgstr ""
+"Die Bildwiederholgeschwindigkeit für Animationen wird in der Variable "
+"`wxanimate_framerate` gespeichert. wxMaxima setzt sie auf den Wert aus dem "
+"Konfigurationsdialog, wenn ein neues _Maxima_ gestartet wird."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:304
@@ -1216,14 +1217,18 @@ msgstr "### Die Standardgröße der Diagramme"
 msgid ""
 "After the next start plots embedded into the worksheet will be created with "
 "this size if the value of `wxplot_size` isn't changed by _maxima_."
-msgstr "`wxplot_size` definiert, wie groß die nachfolgenden in das Arbeitsblatt eingebauten Diagramme sind."
+msgstr ""
+"`wxplot_size` definiert, wie groß die nachfolgenden in das Arbeitsblatt "
+"eingebauten Diagramme sind."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:308
 msgid ""
 "In order to set the plot size of a single graph only use the following "
 "notation can be used that sets a variable’s value for one command only:"
-msgstr "Diese Variable kann notfalls auch nur für das aktuelle Diagramm gesetzt werden:"
+msgstr ""
+"Diese Variable kann notfalls auch nur für das aktuelle Diagramm gesetzt "
+"werden:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:310
@@ -1241,7 +1246,9 @@ msgstr "### jsMath-Zeichensätze"
 msgid ""
 "The style menu allows customization that pertains to the appearance of your "
 "notebook as you work."
-msgstr "Im \"Stil\"-Menü können Einstellungen vorgenommen werden, die das Aussehen des Arbeitsblattes beeinflussen."
+msgstr ""
+"Im \"Stil\"-Menü können Einstellungen vorgenommen werden, die das Aussehen "
+"des Arbeitsblattes beeinflussen."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:316
@@ -1258,7 +1265,12 @@ msgid ""
 "highlighted. The jsMath fonts can be found on [this site](https://www.mpim-"
 "bonn.mpg.de/node/258). The site describes JsMath fonts and provides "
 "installation instructions."
-msgstr "Eine dieser Einstellungen ist die Option, jsMath-Zeichensätze zu verwenden, die speziell für die Mathematik entworfen wurden. Falls sie auf dem aktuellen System nicht installiert sind, können sie von [dieser Seite](https://www.mpim-bonn.mpg.de/node/258). heruntergeladen werden, wo es auch eine Installationsanleitung gibt."
+msgstr ""
+"Eine dieser Einstellungen ist die Option, jsMath-Zeichensätze zu verwenden, "
+"die speziell für die Mathematik entworfen wurden. Falls sie auf dem "
+"aktuellen System nicht installiert sind, können sie von [dieser Seite]"
+"(https://www.mpim-bonn.mpg.de/node/258). heruntergeladen werden, wo es auch "
+"eine Installationsanleitung gibt."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:321
@@ -1275,14 +1287,18 @@ msgstr "Diese Option schaltet zwei Funktionen ein:"
 msgid ""
 "If an opening parenthesis, bracket or double quote is entered _wxMaxima_ "
 "will insert a closing one after it."
-msgstr "Wenn eine öffnende Klammer eingegeben wird, fügt _wxMaxima_ automatisch eine schließende Klammer ein."
+msgstr ""
+"Wenn eine öffnende Klammer eingegeben wird, fügt _wxMaxima_ automatisch eine "
+"schließende Klammer ein."
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:326
 msgid ""
 "If text is selected if any of these keys is pressed the selected text will "
 "be put between the matched signs."
-msgstr "Markierter Text wird, wenn man eine geöffnete Klammer einzugeben versucht, automatisch in Klammern gesetzt."
+msgstr ""
+"Markierter Text wird, wenn man eine geöffnete Klammer einzugeben versucht, "
+"automatisch in Klammern gesetzt."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:328
@@ -1294,7 +1310,9 @@ msgstr "### Intervall des automatischen Speicherns"
 msgid ""
 "If this value is set to a value bigger than zero _Maxima_ will work in a "
 "more mobile-device-like fashion:"
-msgstr "Wenn diese Zahl größer als Null ist, verhält sich _wxMaxima_ wie viele Programme auf dem Handy:"
+msgstr ""
+"Wenn diese Zahl größer als Null ist, verhält sich _wxMaxima_ wie viele "
+"Programme auf dem Handy:"
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:333
@@ -1312,7 +1330,9 @@ msgid ""
 "For the automatic saving functionality to work _wxMaxima_ needs to know a "
 "name to save the file with, though. This means this feature will only work "
 "if the file has already been saved to or opened from the disk."
-msgstr "Dies funktioniert natürlich erst, wenn die Datei bereits unter einem Namen gespeichert ist, unter dem sie zwischengespeichert werden kann."
+msgstr ""
+"Dies funktioniert natürlich erst, wenn die Datei bereits unter einem Namen "
+"gespeichert ist, unter dem sie zwischengespeichert werden kann."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:340
@@ -1335,28 +1355,31 @@ msgid ""
 "This section considers some ways that _wxMaxima_ enhances the inclusion of "
 "graphics into a session. described here."
 msgstr ""
+"_wxMaxima_'s Hauptaufgabe ist es, die Ein- und Ausgaben von Maxima graphisch "
+"darzustellen. An einigen Stellen fügt es jedoch Funktionalitäten zu _Maxima_ "
+"hinzu:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:345
 msgid "## Subscripted variables"
-msgstr ""
+msgstr "## Variablen mit tiefgestelltem Index"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:347
 msgid ""
-"if wxsubscripts is set to true variable names of the format `x_y` are "
+"if `wxsubscripts` is set to true variable names of the format `x_y` are "
 "displayed using a subscript if"
-msgstr ""
+msgstr "Wenn `wxxsubscripts` auf `true` gesetzt ist, werden Variablennamen im Format `x_y` mit einem tiefgestellten `y` dargestellt, wenn"
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:350
 msgid "`y` is a single letter"
-msgstr ""
+msgstr "`y` ein einzelner Buchstabe ist"
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:350
 msgid "`y` is an integer"
-msgstr ""
+msgstr "oder `y` eine ganze Zahl ist"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:352
@@ -1368,11 +1391,13 @@ msgid ""
 "variable as subscripted can be reverted using the following command: "
 "`wxdeclare_subscript(variable_name,false);`"
 msgstr ""
+"Wenn nicht, kann jede Variable als mit tiefgestelltem `y` ausgestattet deklariert werden mittels `wxdeclare_subscript(variablenname);` oder `wxdeclare_subscript([variablenname1,variablenname2,...]);`\n"
+"Rückgängig gemacht werden kann dies mittels `wxdeclare_subscript(variablenname,false);`\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:354
 msgid "## User feedback in the statusbar"
-msgstr ""
+msgstr "## Meldungen in der Statusleiste"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:356
