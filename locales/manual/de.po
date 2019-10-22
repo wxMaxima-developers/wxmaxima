@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-21 22:17+0200\n"
-"PO-Revision-Date: 2019-10-21 22:36+0200\n"
+"POT-Creation-Date: 2019-10-23 00:18+0200\n"
+"PO-Revision-Date: 2019-10-23 00:19+0200\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1369,7 +1369,9 @@ msgstr "## Variablen mit tiefgestelltem Index"
 msgid ""
 "if `wxsubscripts` is set to true variable names of the format `x_y` are "
 "displayed using a subscript if"
-msgstr "Wenn `wxxsubscripts` auf `true` gesetzt ist, werden Variablennamen im Format `x_y` mit einem tiefgestellten `y` dargestellt, wenn"
+msgstr ""
+"Wenn `wxxsubscripts` auf `true` gesetzt ist, werden Variablennamen im Format "
+"`x_y` mit einem tiefgestellten `y` dargestellt, wenn"
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:350
@@ -1391,8 +1393,11 @@ msgid ""
 "variable as subscripted can be reverted using the following command: "
 "`wxdeclare_subscript(variable_name,false);`"
 msgstr ""
-"Wenn nicht, kann jede Variable als mit tiefgestelltem `y` ausgestattet deklariert werden mittels `wxdeclare_subscript(variablenname);` oder `wxdeclare_subscript([variablenname1,variablenname2,...]);`\n"
-"Rückgängig gemacht werden kann dies mittels `wxdeclare_subscript(variablenname,false);`"
+"Wenn nicht, kann jede Variable als mit tiefgestelltem `y` ausgestattet "
+"deklariert werden mittels `wxdeclare_subscript(variablenname);` oder "
+"`wxdeclare_subscript([variablenname1,variablenname2,...]);`\n"
+"Rückgängig gemacht werden kann dies mittels "
+"`wxdeclare_subscript(variablenname,false);`"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:354
@@ -1410,6 +1415,13 @@ msgid ""
 "_wxMaxima_): If _wxMaxima_ isn't present the `wxstatusbar()` command will "
 "just be left unevelated."
 msgstr ""
+"Kommandos, die lange arbeiten, können Fortschrittsinformationen in die "
+"Statuszeile ausgeben. Diese Informationen überschreiben deren Inhalt. "
+"wxstatusbar() kann sogar in Bibliotheken verwendet werden, bei denen nicht "
+"bekannt ist, ob sie mit _wxMaxima_ oder in einem _Maxima_ ohne Frontend "
+"verwendet werden: Wenn _wxMaxima_ diese Funktion nicht definiert hat, wird "
+"sie von Maxima einfach als undefinierte Funktion betrachtet und nicht weiter "
+"bearbeitet. "
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:363
@@ -1427,7 +1439,7 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:365
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:704
 msgid "## Plotting"
-msgstr ""
+msgstr "## Diagramme"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:367
@@ -1436,11 +1448,13 @@ msgid ""
 "graphical user interface will have to provide some extensions to the "
 "original program."
 msgstr ""
+"Diagramme haben per definitionem mit einer graphischen Benutzerumgebung zu "
+"tun, weswegen an dieser Stelle Erweiterungen von Maxima zu erwarten sind."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:369
 msgid "### Embedding a plot into the work sheet"
-msgstr ""
+msgstr "### Der Einbau von Diagrammen in das Arbeitsblatt"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:371
@@ -1453,11 +1467,17 @@ msgid ""
 "corresponds to `plot`, `wxdraw` corresponds to `draw` and `wxhistogram` "
 "corresponds to `histogram`."
 msgstr ""
+"_Maxima_ weist normalerweise gnuplot an, Diagramme in eigenen Fenstern "
+"darzustellen. Wenn dem entsprechenden `draw` oder `plot`-Kommando ein \"wx\" "
+"vorangestellt wird, wird das Bild stattdessen in das Arbeitsblatt eingebaut: "
+"`wxplot` arbeitet wie `plot`, aber im Arbeitsblatt, `wxdraw` und "
+"`wxhistogram` funktionieren wie `draw` und `histogram`, aber betten das "
+"Resultat ein."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:373
 msgid "### Making embedded plots bigger or smaller"
-msgstr ""
+msgstr "### Die Größe eingebetteter Diagramme"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:375
@@ -1468,6 +1488,9 @@ msgid ""
 "size of a plot in pixels. It can always be queried or used to set the size "
 "of the following plots:"
 msgstr ""
+"Wie bereits beschrieben kann die Größe von Diagrammen mittels der Variable "
+"`wxplot_size` definiert werden. Ihr Inhalt kann jederzeit gelesen oder "
+"geändert werden:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:378
@@ -1495,6 +1518,8 @@ msgid ""
 "If the size of only one plot is to be changed _Maxima_ provides a canonical "
 "way to change an attribute only for the current cell."
 msgstr ""
+"Wenn die Größe nur des aktuellen Diagramms geändert werden soll, erlaubt "
+"_Maxima_ dies auf die folgende Weise zu tun:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:390
@@ -1531,7 +1556,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:407
 msgid "### Better quality plots"
-msgstr ""
+msgstr "### Hochqualitativere Diagramme"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:409
@@ -1541,13 +1566,14 @@ msgid ""
 "systems where gnuplot is compiled to use this library the pngcairo option "
 "from the configuration menu (that can be overridden by the variable "
 "`wxplot_pngcairo`) enables support for antialiasing and additional line "
-"styles."
-msgstr ""
+"styles. If `wxplot_pngcairo` is set without gnuplot supporting this the "
+"result will be error messages instead of graphics."
+msgstr "Gnuplot bietet keine unfehlbare Möglichkeit an, ob es Cairo unterstützt, eine Bibliothek, die Graphik mit Antialiasing und den unterschiedlichsten Linienmustern zu zeichnen erlaubt. Wurde gnuplot mit diesen Möglichkeiten ausgestattet, schaltet die entsprechende Option im Konfigurationsmenü oder ein `wxplot_pngcairo:true` die Unterstützung hierfür ein. Wurde gnuplot ohne diese Möglichkeit erstellt, führt `wxplot_pngcairo:true` jedoch zu leeren Plots."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:411
-msgid "### Opening up plots in interactive gnuplot windows"
-msgstr ""
+msgid "### Opening embedded plots in interactive gnuplot windows"
+msgstr "### Die Größe eingebetteter Diagramme"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:413

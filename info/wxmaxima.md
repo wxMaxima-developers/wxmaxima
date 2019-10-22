@@ -405,9 +405,9 @@ If the size of only one plot is to be changed _Maxima_ provides a canonical way 
 
 ### Better quality plots
 
-Gnuplot doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output the cairo library provides. On systems where gnuplot is compiled to use this library the pngcairo option from the configuration menu (that can be overridden by the variable `wxplot_pngcairo`) enables support for antialiasing and additional line styles.
+Gnuplot doesn’t seem to provide a portable way of determining whether it supports the high-quality bitmap output the cairo library provides. On systems where gnuplot is compiled to use this library the pngcairo option from the configuration menu (that can be overridden by the variable `wxplot_pngcairo`) enables support for antialiasing and additional line styles. If `wxplot_pngcairo` is set without gnuplot supporting this the result will be error messages instead of graphics.
 
-### Opening up plots in interactive gnuplot windows
+### Opening embedded plots in interactive gnuplot windows
 
 If a plot was generated using the `wxdraw`-type commands (`wxplot` isn't supported by this feature) and the file size of the underlying gnuplot project isn't way too high _wxMaxima_ offers a right-click menu that allows to open the plot in an interactive gnuplot window.
 
