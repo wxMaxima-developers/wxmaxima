@@ -104,10 +104,6 @@ if(WIN32 AND APPVEYOR_BUILD)
 endif()
 
 # Make the bundle portable to other macs.
-#
-# Doesn't currently work, unfortunately, see
-# https://gitlab.kitware.com/cmake/cmake/issues/19663
-#
 if(APPLE)
     install(CODE "include(BundleUtilities)
     set(BU_CHMOD_BUNDLE_ITEMS TRUE)
