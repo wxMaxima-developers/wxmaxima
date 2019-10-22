@@ -21,9 +21,9 @@ endforeach()
 # Find a suitable LaTeX installation
 find_program(LATEX NAMES xelatex lualatex)
 
+find_program(PO4A_TRANSLATE po4a-translate)
 if (NOT PO4A_TRANSLATE)
     message(STATUS "No po4a-translate binary")
-    find_program(PO4A_TRANSLATE po4a-translate)
     if(NOT PO4A_TRANSLATE)
         find_package(PERL)
 	if(PERL_FOUND)
