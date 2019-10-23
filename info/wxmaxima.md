@@ -357,8 +357,9 @@ Long-running commands can provide user-feedback in the status bar. This user fee
     (%i2)	for i:1 thru 10 do (
 	            /* Tell the user how far we got */
 	            wxstatusbar(concat("Pass ",i)),
-	            /* A truly long-running command */
-	           a:makelist(o^i,o,1,100000)
+	            /* (sleep n) is a Lisp function, which can be used with "?" before. */
+	            /* it delays for a some time (here for 3 seconds) */
+	            ?sleep(3)
 	        )$
 
 ## Plotting
