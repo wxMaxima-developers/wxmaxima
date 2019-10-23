@@ -358,7 +358,7 @@ Long-running commands can provide user-feedback in the status bar. This user fee
 	            /* Tell the user how far we got */
 	            wxstatusbar(concat("Pass ",i)),
 	            /* (sleep n) is a Lisp function, which can be used with "?" before. */
-	            /* it delays for a some time (here for 3 seconds) */
+	            /* it delays the program execution for some time (here for 3 seconds) */
 	            ?sleep(3)
 	        )$
 
