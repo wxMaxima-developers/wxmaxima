@@ -20,8 +20,15 @@ endforeach()
 
 # Find a suitable LaTeX installation
 find_program(LATEX NAMES xelatex lualatex)
+if(NOT LATEX)
+    message(WARNING "Xelatex or Lualatex not found. PDF documentation can not be converted from Markdown.")
+endif()
 
 find_program(PO4A_TRANSLATE po4a-translate)
+if(NOT PO4A_TRANSLATE)
+    message(WARNING "po4a-translate not found. Localized documentation can not be converted from Markdown.")
+endif()
+
 if (NOT PO4A_TRANSLATE)
     message(STATUS "No po4a-translate binary")
     if(NOT PO4A_TRANSLATE)
@@ -32,8 +39,11 @@ if (NOT PO4A_TRANSLATE)
 	    if(PO4A_TRANSLATE)
 		message(STATUS "Found po4a-translate")
 		get_filename_component(PO4A_TRANSLATE_DIR ${PO4A_TRANSLATE} DIRECTORY)
-		set(PO4A-TRANSLATE ${PERL_EXECUTABLE} -I${PO4A_TRANSLATE_DIR}/lib ${PO4A_TRANSLATE})
-		message(STATUS "PO4A-TRANSLATE = ${PO4A_TRANSLATE}")
+		set(PO4A-TRANSLATE ${PERL_Eif(NOT PANDOC)
+    message(WARNING "Pandoc not found. Documentation can not be converted from Markdown.")
+endif()
+XECUTABLE} -I${PO4A_TRANSLATE_DIR}/lib ${PO4A_TRANSLATE})
+		message(STATUS "PO4A_TRANSLATE = ${PO4A_TRANSLATE}")
 	    endif()
 	endif()
     endif()
@@ -41,7 +51,11 @@ endif()
 
 # Generate the manuals
 find_program(PANDOC pandoc)
-if(PANDOC AND PO4A-TRANSLATE)
+if(NOT PANDOC)
+    message(WARNING "Pandoc not found. Documentation can not be converted from Markdown.")
+endif()
+
+if(PANDOC AND PO4A_TRANSLATE)
     execute_process(
         COMMAND ${PANDOC} --version
         OUTPUT_VARIABLE PANDOC_VERSION_TEXT
@@ -88,12 +102,12 @@ if(PANDOC AND PO4A-TRANSLATE)
 	string(REGEX REPLACE "wxmaxima.(.*)$" "\\1" LANG ${BASENAME})
 	string(REGEX REPLACE "wxmaxima$" "" LANG ${LANG})
 
-	if(PO4A-TRANSLATE)
+	if(PO4A_TRANSLATE)
 	    if(NOT BASENAME STREQUAL "wxmaxima")
 		add_custom_command(
 		    OUTPUT ${BASENAME}.md
 		    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/../locales/manual/${LANG}.po ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md
-		    COMMAND ${PO4A-TRANSLATE} -k 0 -f text -m ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -p ${CMAKE_CURRENT_SOURCE_DIR}/../locales/manual/${LANG}.po -l ${BASENAME}.md -M UTF-8)
+		    COMMAND ${PO4A_TRANSLATE} -k 0 -f text -m ${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.md -p ${CMAKE_CURRENT_SOURCE_DIR}/../locales/manual/${LANG}.po -l ${BASENAME}.md -M UTF-8)
 	    endif()
 	endif()
 	add_custom_command(
@@ -114,13 +128,7 @@ else()
     file(COPY ${WXMAXIMA_HELP_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 endif()
 
-if(NOT PANDOC)
-    message(WARNING "Pandoc not found. Documentation can not be converted from Markdown.")
-endif()
 
-if(NOT PO4A-TRANSLATE)
-    message(WARNING "po4a-translate not found. Documentation can not be converted from Markdown.")
-endif()
 
 file(GLOB WXMAXIMA_HELP_FILES *.jpg *.png *.pdf)
 install(FILES ${WXMAXIMA_HELP_FILES} DESTINATION share/doc/wxmaxima)
