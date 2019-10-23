@@ -411,13 +411,13 @@ Gnuplot doesn’t seem to provide a portable way of determining whether it suppo
 
 If a plot was generated using the `wxdraw`-type commands (`wxplot` isn't supported by this feature) and the file size of the underlying gnuplot project isn't way too high _wxMaxima_ offers a right-click menu that allows to open the plot in an interactive gnuplot window.
 
-### Opening gnuplot's command console in windows created by `plot` and `draw`
+### Opening gnuplot's command console in `plot` windows
 
 On MS Windows if in _Maxima_'s variable `gnuplot_command` "gnuplot" is replaced by "wgnuplot" gnuplot offers the possibility to open a console window gnuplot commands can be entered into. Unfortunately enabling this feature causes gnuplot to "steal" the keyboard focus for a short time every time a plot is prepared.
 
 ### Embedding animations into the spreadsheet
 
-The `with_slider_draw` command is a version of `wxdraw2d` that does prepare multiple plots and allows to switch between them by moving the slider on top of the screen. If ImageMagick is installed _wxMaxima_ even allows to export this animation as an animated gif.
+3D diagrams tend to make it hard to read quantitative data. A viable alternative might be to assign the 3rd parameter to the mouse wheel. The `with_slider_draw` command is a version of `wxdraw2d` that does prepare multiple plots and allows to switch between them by moving the slider on top of the screen. _wxMaxima_ allows to export this animation as an animated gif.
 
 The first two arguments for `with_slider_draw` are the name of the variable that is stepped between the plots and a list of the values of these variable. The arguments that follow are the ordinary arguments for `wxdraw2d`:
 
@@ -430,7 +430,22 @@ The first two arguments for `with_slider_draw` are the name of the variable that
         ),grid=true
     );
 
-The same functionality for 3D plots is accessible as `with_slider_draw3d`.
+The same functionality for 3D plots is accessible as `with_slider_draw3d`, which allows for rotating 3d plots:
+
+    wxanimate_autoplay:true;
+    wxanimate_framerate:20;
+    with_slider_draw3d(
+	    α,makelist(i,i,1,360,3),
+		title=sconcat("α=",α),
+        surface_hide=true,
+        contour=both,
+	    view=[60,α],
+	    explicit(
+		    sin(x)*sin(y),
+			x,-π,π,
+			y,-π,π
+	    )
+	)$
 
 There is a second set of functions making use of the slider
 
