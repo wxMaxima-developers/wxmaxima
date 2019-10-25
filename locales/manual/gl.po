@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-23 08:51+0200\n"
+"POT-Creation-Date: 2019-10-25 21:50+0200\n"
 "PO-Revision-Date: 2007-08-02 17:05+0200\n"
 "Last-Translator: Mario Rodriguez <mario@edu.xunta.es>\n"
 "Language-Team:  <gl@li.org>\n"
@@ -1032,25 +1032,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:363
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:364
 #, no-wrap
 msgid ""
 "    (%i2)\tfor i:1 thru 10 do (\n"
 "\t            /* Tell the user how far we got */\n"
 "\t            wxstatusbar(concat(\"Pass \",i)),\n"
-"\t            /* A truly long-running command */\n"
-"\t           a:makelist(o^i,o,1,100000)\n"
+"\t            /* (sleep n) is a Lisp function, which can be used with \"?\" before. */\n"
+"\t            /* it delays the program execution for some time (here for 3 seconds) */\n"
+"\t            ?sleep(3)\n"
 "\t        )$\n"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:365
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:366
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:720
 msgid "## Plotting"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:367
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:368
 msgid ""
 "Plotting (having fundamentally to do with graphics) is a place where a "
 "graphical user interface will have to provide some extensions to the "
@@ -1058,12 +1059,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:369
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:370
 msgid "### Embedding a plot into the work sheet"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:371
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:372
 msgid ""
 "_Maxima_ normally instructs the external program gnuplot to open a separate "
 "window for every diagram it creates. Since many times it is convenient to "
@@ -1075,12 +1076,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:373
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:374
 msgid "### Making embedded plots bigger or smaller"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:375
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:376
 msgid ""
 "As noted above, the configure dialog provides a way to change the default "
 "size plots are created with which sets the starting value of `wxplot_size`. "
@@ -1090,7 +1091,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:378
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:379
 #, no-wrap
 msgid ""
 "    %i1 wxplot_size:[1200,800];\n"
@@ -1098,7 +1099,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:385
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:386
 #, no-wrap
 msgid ""
 "    %i2 wxdraw2d(\n"
@@ -1110,14 +1111,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:387
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:388
 msgid ""
 "If the size of only one plot is to be changed _Maxima_ provides a canonical "
 "way to change an attribute only for the current cell."
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:390
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:391
 #, no-wrap
 msgid ""
 "     %i1 wxplot_size:[1200,800];\n"
@@ -1125,7 +1126,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:397
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:398
 #, no-wrap
 msgid ""
 "     %i1 wxdraw2d(\n"
@@ -1137,7 +1138,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:404
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:405
 #, no-wrap
 msgid ""
 "    %i1 wxdraw2d(\n"
@@ -1149,12 +1150,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:407
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:408
 msgid "### Better quality plots"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:409
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:410
 msgid ""
 "Gnuplot doesn’t seem to provide a portable way of determining whether it "
 "supports the high-quality bitmap output the cairo library provides. On "
@@ -1166,12 +1167,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:411
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:412
 msgid "### Opening embedded plots in interactive gnuplot windows"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:413
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:414
 msgid ""
 "If a plot was generated using the `wxdraw`-type commands (`wxplot` isn't "
 "supported by this feature) and the file size of the underlying gnuplot "
@@ -1180,12 +1181,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:415
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:416
 msgid "### Opening gnuplot's command console in `plot` windows"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:417
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:418
 msgid ""
 "On MS Windows if in _Maxima_'s variable `gnuplot_command` \"gnuplot\" is "
 "replaced by \"wgnuplot\" gnuplot offers the possibility to open a console "
@@ -1195,7 +1196,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:419
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:420
 msgid "### Embedding animations into the spreadsheet"
 msgstr ""
 
@@ -1203,10 +1204,10 @@ msgstr ""
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:422
 msgid ""
 "3D diagrams tend to make it hard to read quantitative data. A viable "
-"alternative might be The `with_slider_draw` command is a version of "
-"`wxdraw2d` that does prepare multiple plots and allows to switch between "
-"them by moving the slider on top of the screen. If ImageMagick is installed "
-"_wxMaxima_ even allows to export this animation as an animated gif."
+"alternative might be to assign the 3rd parameter to the mouse wheel. The "
+"`with_slider_draw` command is a version of `wxdraw2d` that does prepare "
+"multiple plots and allows to switch between them by moving the slider on top "
+"of the screen. _wxMaxima_ allows to export this animation as an animated gif."
 msgstr ""
 
 #. type: Plain text

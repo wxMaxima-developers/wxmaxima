@@ -267,7 +267,7 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       token = wxEmptyString;
     }
     // Handle keywords
-    else if (IsAlpha(Ch) || (Ch == '\\') || (Ch == '?'))
+    else if (IsAlpha(Ch) || (Ch == '\\') || (Ch == '?') || (Ch == wxT('µ')))
     {
       wxString token;
       if(Ch == '?')
