@@ -6332,6 +6332,9 @@ wxString Worksheet::UnicodeToMaxima(wxString s)
     case wxT('\x00B3'): retval += wxT("^3");break;
     case wxT('\x00BD'): retval += wxT("(1/2)");break;
     case wxT('\x221A'): retval += wxT("sqrt");break;
+    case wxT('\x222B'): retval += wxT("integrate");break;
+    case wxT('\x2211'): retval += wxT("sum");break;
+    case wxT('\x2205'): retval += wxT("[]");break;
     case wxT('\x2148'): retval += wxT("%i");break;
     case wxT('\x2147'): retval += wxT("%e");break;
     case wxT('\x221E'): retval += wxT("inf");break;

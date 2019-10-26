@@ -72,9 +72,10 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
     {
       m_tokens.push_back(new Token(wxChar(Ch)));
       ++it;
+      continue;
     }
     // Check for comments
-    else if ((Ch == '/') && ((nextChar == wxT('*')) || (nextChar == wxT('\xB7'))))
+    if ((Ch == '/') && ((nextChar == wxT('*')) || (nextChar == wxT('\xB7'))))
     {
       wxString token;
       // Add the comment start
@@ -139,9 +140,10 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         }
       }
       m_tokens.push_back(new Token(token, TS_CODE_COMMENT));
+      continue;
     }
     // Handle operators and :lisp commands
-    else if (Operators().Find(Ch) != wxNOT_FOUND)
+    if (Operators().Find(Ch) != wxNOT_FOUND)
     {
       if(Ch == ':')
       {
@@ -186,9 +188,10 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
         m_tokens.push_back(new Token(token, TS_CODE_OPERATOR));
         ++it;
       }
+      continue;
     }
     // Handle strings
-    else if (Ch == wxT('\"'))
+    if (Ch == wxT('\"'))
     {
       wxString token;
       // Add the opening quote
@@ -213,11 +216,19 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
           break;
       }
       m_tokens.push_back(new Token(token, TS_CODE_STRING));
-      token = wxEmptyString;
+      continue;
     }
+    // Handle number-like symbols
+    if(UnicodeNumbers().Find(Ch) != wxNOT_FOUND)
+    {
+       wxString token = Ch;
+       ++it;
+       m_tokens.push_back(new Token(token, TS_CODE_NUMBER));
+       continue;
+    } 
     // Handle numbers. Numbers begin with a digit, but can continue with letters and can
     // contain a + or - that follows an e, f, g, h or l.
-    else if (IsNum(Ch))
+    if (IsNum(Ch))
     {
       wxString token;
       wxChar lastChar = *it;
@@ -247,10 +258,10 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       }
       
       m_tokens.push_back(new Token(token, TS_CODE_NUMBER));
-      token = wxEmptyString;
+      continue;
     }
     // Merge consecutive spaces into one single token
-    else if ((Ch == wxT(' ')) || (Ch == wxT('\t')))
+    if ((Ch == wxT(' ')) || (Ch == wxT('\t')))
     {
       wxString token;
       while ((it < commands.end()) &&
@@ -264,10 +275,10 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
       }
 
       m_tokens.push_back(new Token(token));
-      token = wxEmptyString;
+      continue;
     }
     // Handle keywords
-    else if (IsAlpha(Ch) || (Ch == '\\') || (Ch == '?') || (Ch == wxT('µ')))
+    if (IsAlpha(Ch) || (Ch == '\\') || (Ch == '?') || (Ch == wxT('µ')))
     {
       wxString token;
       if(Ch == '?')
@@ -349,17 +360,20 @@ MaximaTokenizer::MaximaTokenizer(wxString commands, Configuration *configuration
           }
         }
       }
-      token = wxEmptyString;
+      continue;
     }   
-    else if((Ch == '$') || (Ch == ';'))
+    if((Ch == '$') || (Ch == ';'))
     {
       m_tokens.push_back(new Token(wxString(Ch), TS_CODE_ENDOFLINE));
       ++it;
+      continue;
     }
-    else
+
     {
+      // Everything that hasn't been handled until now.
       m_tokens.push_back(new Token(wxString(Ch)));
       ++it;
+      continue;
     }
   }
 }
@@ -383,3 +397,4 @@ bool MaximaTokenizer::IsAlphaNum(wxChar ch)
 {
   return IsAlpha(ch) || IsNum(ch);
 }
+

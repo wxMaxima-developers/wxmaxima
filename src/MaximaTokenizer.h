@@ -66,7 +66,34 @@ public:
   static bool IsAlpha(wxChar ch);
   static bool IsNum(wxChar ch);
   static bool IsAlphaNum(wxChar ch);
-  static const wxString Operators(){return wxString("+-*/^:=#'!()[]{}");}
+  static const wxString UnicodeNumbers()
+    {
+      return wxString(
+        wxT(
+          "\x00BD" // 1/2
+          "\x00B2" // ^2
+          "\x00B3" // ^3
+          "\x221E" // infinity
+          )
+        );
+    }
+  static const wxString Operators(){return wxString(
+      wxT(
+        "\x221A" // sqrt
+        "\x22C0" // and
+        "\x22C1" // or
+        "\x22BB" // xor
+        "\x22BC" // nand
+        "\x22BD" // nor
+        "\x00AC" // not
+        "\x222b" // integral
+        "\x2264" // Less or equal
+        "\x2265" // Greater than or equal
+        "\x2211" // Sum
+        "\x2260" // Not identical
+        "+-*/^:=#'!()[]{}"
+        )
+      );}
 
   TokenList GetTokens(){return m_tokens;}
 
