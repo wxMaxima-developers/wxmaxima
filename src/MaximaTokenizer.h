@@ -69,29 +69,11 @@ public:
   static const wxString UnicodeNumbers()
     {
       return wxString(
-        wxT(
-          "\x00BD" // 1/2
-          "\x00B2" // ^2
-          "\x00B3" // ^3
-          "\x221E" // infinity
-          )
+        wxT("\x00BD\x00B2\x00B3\x221E")
         );
     }
   static const wxString Operators(){return wxString(
-      wxT(
-        "\x221A" // sqrt
-        "\x22C0" // and
-        "\x22C1" // or
-        "\x22BB" // xor
-        "\x22BC" // nand
-        "\x22BD" // nor
-        "\x00AC" // not
-        "\x222b" // integral
-        "\x2264" // Less or equal
-        "\x2265" // Greater than or equal
-        "\x2211" // Sum
-        "\x2260" // Not identical
-        "+-*/^:=#'!()[]{}"
+      wxT("\x221A\x22C0\x22C1\x22BB\x22BC\x22BD\x00AC\x222b\x2264\x2265\x2211\x2260+-*/^:=#'!()[]{}"
         )
       );}
 
