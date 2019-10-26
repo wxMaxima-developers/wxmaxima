@@ -3100,11 +3100,6 @@ wxString wxMaxima::SearchwxMaximaHelp()
 {
   wxString failmsg = _("No helpfile found at %s.");
   wxString helpfile;
-  long language = m_locale->GetLanguage();
-  if(language == wxLANGUAGE_DEFAULT)
-    language = wxLocale::GetSystemLanguage();
-  const wxLanguageInfo *langinfo = m_locale->GetLanguageInfo(language);
-  
   wxString lang_long = m_locale->GetCanonicalName();
   wxString lang_short = lang_long.Left(lang_long.Find('_'));
   helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_") + lang_long + ".hhp";
