@@ -7785,6 +7785,7 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event)
   if (wxFileExists(file))
   {
     OpenFile(file);
+    m_worksheet->m_currentFile = wxEmptyString;
     m_fileSaved = false;
     m_tempfileName = file;
   }
