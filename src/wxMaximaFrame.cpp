@@ -128,7 +128,6 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   }
 
   // Some default values
-  m_isNamed = false;
   m_updateEvaluationQueueLengthDisplay = true;
   m_recentDocumentsMenu = NULL;
   m_recentPackagesMenu = NULL;

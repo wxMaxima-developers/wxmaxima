@@ -1424,7 +1424,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
   {
     // Inform the user that the evaluation queue is empty.
     EvaluationQueueLength(0);
-    if (m_evalOnStartup && m_isNamed)
+    if (m_evalOnStartup)
     {
       wxLogMessage(_("Starting evaluation of the document"));
       m_evalOnStartup = false;
@@ -3439,10 +3439,7 @@ void wxMaxima::OnIdle(wxIdleEvent &event)
     UpdateMenus(dummy);
     UpdateToolBar(dummy);
     UpdateSlider(dummy);
-    if(m_isNamed)
-      ResetTitle(m_worksheet->IsSaved());
-    else
-      ResetTitle(false);
+    ResetTitle(m_worksheet->IsSaved());
 
     // This was a half-way lengthy task => Return from the idle task so we can give
     // maxima a chance to deliver new data.
@@ -3900,8 +3897,6 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
     ReReadConfig();
   }
 
-  m_isNamed = true;
-
   UpdateRecentDocuments();
 
   m_autoSaveTimer.StartOnce(180000);
@@ -4022,10 +4017,7 @@ bool wxMaxima::SaveFile(bool forceSave)
         return false;
       }
       else
-      {
-        m_isNamed = true;
         RemoveTempAutosavefile();
-      }
     }
     else
     {
@@ -4038,10 +4030,7 @@ bool wxMaxima::SaveFile(bool forceSave)
         return false;
       }
       else
-      {
-        m_isNamed = true;
         RemoveTempAutosavefile();
-      }
     }
 
     m_recentDocuments.AddDocument(file);
@@ -4336,18 +4325,18 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
               m_fileSaved = false;
             }
           }
-
-          m_autoSaveTimer.StartOnce(180000);
         }
         else
         {
-          // The file hasn't been given a name yet.
-          // Save the file and remember the file name.
-          wxString name = GetTempAutosavefileName();
-          m_worksheet->ExportToWXMX(name);
-          RegisterAutoSaveFile();
-          m_fileSaved = false;
+          if(SaveNecessary())
+          {
+            wxString name = GetTempAutosavefileName();
+            m_worksheet->ExportToWXMX(name);
+            RegisterAutoSaveFile();
+            m_fileSaved = false;
+          }
         }
+        m_autoSaveTimer.StartOnce(180000);
       }
       break;
   }
@@ -7791,7 +7780,6 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event)
   {
     OpenFile(file);
     m_fileSaved = false;
-    m_isNamed   = false;
     m_tempfileName = file;
   }
   else
@@ -7811,7 +7799,7 @@ bool wxMaxima::SaveNecessary()
     return false;
 
 
-  return ((!m_fileSaved) || (!m_isNamed));
+  return !m_fileSaved;
 }
 
 void wxMaxima::EditInputMenu(wxCommandEvent &WXUNUSED(event))
@@ -8419,17 +8407,8 @@ void wxMaxima::InsertMenu(wxCommandEvent &event)
 
 void wxMaxima::ResetTitle(bool saved, bool force)
 {
-  if(!m_isNamed)
-  {
-    SetRepresentedFilename(wxEmptyString);
-    OSXSetModified(true);
-    saved = false;
-  }
-  else
-  {
-    SetRepresentedFilename(m_worksheet->m_currentFile);
-    OSXSetModified((saved != m_fileSaved) || (force));
-  }
+  SetRepresentedFilename(m_worksheet->m_currentFile);
+  OSXSetModified((saved != m_fileSaved) || (force));
 
   if ((saved != m_fileSaved) || (force))
   {
@@ -8674,7 +8653,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
 int wxMaxima::SaveDocumentP()
 {
   wxString file, ext;
-  if ((m_worksheet->m_currentFile == wxEmptyString) || (!m_isNamed))
+  if (m_worksheet->m_currentFile == wxEmptyString)
   {
     // Check if we want to save modified untitled documents on exit
     bool save = true;
