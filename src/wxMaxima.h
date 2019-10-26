@@ -609,6 +609,9 @@ protected:
    */
   bool SaveFile(bool forceSave = false);
 
+  //! Save the project in a temp file.
+  bool SaveTempFile();
+  
   int SaveDocumentP();
 
   //! Set the current working directory file I/O from maxima is relative to.

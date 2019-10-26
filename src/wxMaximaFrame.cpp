@@ -1414,7 +1414,6 @@ wxString wxMaximaFrame::GetTempAutosavefileName()
     wxString::Format("/untitled_%li_%li.wxmx",
                      wxGetProcessId(),m_pid);
 
-  m_tempfileName = name;
   return m_tempfileName;
 }
 

@@ -4311,30 +4311,40 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
               SaveFile(false);
             }
             else
-            {
-              // The file hasn't been given a name yet.
-              // Save the file and remember the file name.
-              wxString name = GetTempAutosavefileName();
-              m_worksheet->ExportToWXMX(name);
-              RegisterAutoSaveFile();
-              m_fileSaved = false;
-            }
+              SaveTempFile();
           }
         }
         else
         {
           if(SaveNecessary())
           {
-            wxString name = GetTempAutosavefileName();
-            m_worksheet->ExportToWXMX(name);
-            RegisterAutoSaveFile();
-            m_fileSaved = false;
+            SaveTempFile();
           }
         }
         m_autoSaveTimer.StartOnce(180000);
       }
       break;
   }
+}
+
+bool wxMaxima::SaveTempFile()
+{
+  wxString name = GetTempAutosavefileName();
+  bool saved = m_worksheet->ExportToWXMX(name);
+  if((m_tempfileName != name) && saved)
+  {
+    if(!m_tempfileName.IsEmpty())
+    {
+      if(wxFileExists(m_tempfileName))
+      {
+        SuppressErrorDialogs blocker;
+        wxRemoveFile(m_tempfileName);
+      }
+    }
+    m_tempfileName = name;
+    RegisterAutoSaveFile();
+  }
+  m_fileSaved = false;
 }
 
 void wxMaxima::FileMenu(wxCommandEvent &event)
