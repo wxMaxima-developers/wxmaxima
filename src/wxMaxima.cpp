@@ -2382,7 +2382,6 @@ bool wxMaxima::OpenMACFile(wxString file, Worksheet *document, bool clearDocumen
 
   if (clearDocument)
   {
-//    m_worksheet->m_currentFile = file.SubString(0,file.Length()-4) + wxT("wxmx");
     StartMaxima();
     m_worksheet->m_currentFile = file;
     ResetTitle(true, true);
@@ -4001,7 +4000,8 @@ bool wxMaxima::SaveFile(bool forceSave)
     StatusSaveStart();
     config->Write(wxT("defaultExt"), wxT("wxmx"));
 
-    m_worksheet->m_currentFile = file;
+    if(m_worksheet->m_currentFile != m_tempfileName)
+      m_worksheet->m_currentFile = file;
     m_lastPath = wxPathOnly(file);
     if (file.EndsWith(wxT(".wxmx")))
     {
