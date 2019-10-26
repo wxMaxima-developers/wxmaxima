@@ -364,6 +364,9 @@ public:
       return 10000;
   }
 
+  bool AutoSaveAsTempFile(){return m_autoSaveAsTempFile;}
+  void AutoSaveAsTempFile(bool asTempFile){wxConfig::Get()->Write(wxT("AutoSaveAsTempFile"), m_autoSaveAsTempFile = asTempFile);}
+
   //! Set the minimum sensible line width in widths of a letter.
   void LineWidth_em(int width)
   { m_lineWidth_em = width; }
@@ -738,15 +741,6 @@ public:
   //! Set the worksheet this configuration storage is valid for
   void SetWorkSheet(wxWindow *workSheet){m_workSheet = workSheet;}
 
-  //! Get the autosave interval [in milliseconds]; 0 = no autosave
-  int AutoSaveMiliseconds(){return m_autoSaveMinutes * 1000 * 60;}
-  //! Get the autosave interval [in minutes]; 0 = no autosave
-  int AutoSaveMinutes(){return m_autoSaveMinutes;}
-  //! Set the autosave interval [in minutes]; 0 = noautosave
-  void AutoSaveMinutes(int minutes){wxConfig::Get()->Write(wxT("autoSaveMinutes"),
-                                                           m_autoSaveMinutes = minutes);
-  }
-
   int DefaultPort(){return m_defaultPort;}
   void DefaultPort(int port){wxConfig::Get()->Write("defaultPort",m_defaultPort = port);}
   bool GetAbortOnError(){return m_abortOnError;}
@@ -789,17 +783,14 @@ public:
   bool InLispMode(){return m_inLispMode;}
   Style m_styles[NUMBEROFSTYLES];
 private:
+  //! true = Autosave doesn't save into the current file.
+  bool m_autoSaveAsTempFile;
   //! Autodetect maxima's location?
   bool m_autodetectMaxima;
   //! The worksheet all cells are drawn on
   wxRect m_updateRegion;
   //! Has the font changed?
   bool m_fontChanged;
-  /*! The interval between auto-saves (in milliseconds). 
-
-    Values <10000 mean: Auto-save is off.
-  */
-  int m_autoSaveMinutes;
   //! Which objects do we want to convert into subscripts if they occur after an underscore?
   int m_autoSubscript;
   //! The worksheet this configuration storage is valid for

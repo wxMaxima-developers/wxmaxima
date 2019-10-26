@@ -39,7 +39,7 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
 {
   m_documentclass = wxT("article");
   m_documentclassOptions = wxT("fleqn");
-  
+  m_autoSaveAsTempFile = false;
   m_inLispMode = false;
   m_htmlEquationFormat = mathJaX_TeX;
   m_autodetectMaxima = true;
@@ -71,7 +71,6 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_adjustWorksheetSizeNeeded = false;
   m_showLabelChoice = 1;
   m_abortOnError = true;
-  m_autoSaveMinutes = 3;
   m_clientWidth = 1024;
   m_defaultPort = 40100;
 
@@ -348,10 +347,7 @@ void Configuration::ReadConfig()
   wxConfigBase *config = wxConfig::Get();
   m_autoWrap = 3;
 
-  config->Read(wxT("autoSaveMinutes"),&m_autoSaveMinutes);
-  if(m_autoSaveMinutes < 0)
-    m_autoSaveMinutes = 0;
-
+  config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile);
   config->Read(wxT("documentclass"), &m_documentclass);
   config->Read(wxT("documentclassoptions"), &m_documentclassOptions);
   config->Read(wxT("latin2greek"), &m_latin2greek);

@@ -252,7 +252,7 @@ protected:
   wxTextCtrl *m_documentclass;
   wxTextCtrl *m_documentclassOptions;
   wxTextCtrl *m_texPreamble;
-  wxSpinCtrl *m_autoSaveInterval;
+  wxCheckBox *m_autoSaveAsTempFile;
   wxButton *m_mpBrowse;
   wxTextCtrl *m_additionalParameters;
   wxTextCtrl *m_mathJaxURL;

@@ -328,8 +328,8 @@ void ConfigDialogue::SetProperties()
   m_texPreamble->SetToolTip(_("Additional commands to be added to the preamble of LaTeX output for pdftex."));
   m_useJSMath->SetToolTip(_("Use nice js math symbols in order to get nice integral, sum, product and sqrt signs\nWill only work if the corresponding js math fonts can be found by wxMaxima."));
   m_useUnicodeMaths->SetToolTip(_("If the font provides big parenthesis symbols: Use them when big parenthesis are needed for maths display."));
-  m_autoSaveInterval->SetToolTip(
-          _("If this number of minutes has elapsed after the last save of the file, the file has been given a name (by opening or saving it) and the keyboard has been inactive for > 10 seconds the file is saved. If this number is zero the file isn't saved automatically at all."));
+  m_autoSaveAsTempFile->SetToolTip(
+          _("If this checkbox is checked wxMaxima does automatically save the file every few minutes in a temp file instead of keeping the currently-open file up-to-date all the time."));
   m_defaultFramerate->SetToolTip(_("Define the default speed (in frames per second) animations are played back with."));
   m_defaultPlotWidth->SetToolTip(
           _("The default width for embedded plots. Can be read out or overridden by the maxima variable wxplot_size"));
@@ -471,7 +471,7 @@ void ConfigDialogue::SetProperties()
   m_autodetectMathJaX->SetValue(!configuration->MathJaXURL_UseUser());
   m_noAutodetectMathJaX->SetValue(configuration->MathJaXURL_UseUser());
   m_texPreamble->SetValue(texPreamble);
-  m_autoSaveInterval->SetValue(configuration->AutoSaveMinutes());
+  m_autoSaveAsTempFile->SetValue(configuration->AutoSaveAsTempFile());
 
   m_maximaUserLocation->SetValue(configuration->MaximaUserLocation());
   wxCommandEvent dummy;
@@ -876,12 +876,6 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   grid_sizer->Add(additionalSymbols, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_symbolPaneAdditionalChars, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-  wxStaticText *as = new wxStaticText(panel, -1, _("Autosave on close and every n minutes (0 means: off):"));
-  m_autoSaveInterval = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(230*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0,
-                                      30);
-  grid_sizer->Add(as, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  grid_sizer->Add(m_autoSaveInterval, 0, wxALL, 5);
-
   wxStaticText *ul = new wxStaticText(panel, -1, _("Undo limit (0 for none):"));
   m_undoLimit = new wxSpinCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(100*GetContentScaleFactor(), -1), wxSP_ARROW_KEYS, 0, 10000);
   grid_sizer->Add(ul, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
@@ -905,6 +899,9 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
 
   m_savePanes = new wxCheckBox(panel, -1, _("Save panes layout"));
   vsizer->Add(m_savePanes, 0, wxALL, 5);
+
+  m_autoSaveAsTempFile = new wxCheckBox(panel, -1, _("Don't save the worksheet automatically"));
+  vsizer->Add(m_autoSaveAsTempFile, 0, wxALL, 5);
 
   m_usepngCairo = new wxCheckBox(panel, -1, _("Use cairo to improve plot quality."));
   m_usepngCairo->Connect(wxEVT_CHECKBOX,
@@ -1225,7 +1222,7 @@ void ConfigDialogue::WriteSettings()
   configuration->UseUnicodeMaths(m_useUnicodeMaths->GetValue());
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
   config->Write(wxT("texPreamble"), m_texPreamble->GetValue());
-  configuration->AutoSaveMinutes(m_autoSaveInterval->GetValue());
+  configuration->AutoSaveAsTempFile(m_autoSaveAsTempFile->GetValue());
   configuration->Documentclass(m_documentclass->GetValue());
   configuration->DocumentclassOptions(m_documentclassOptions->GetValue());
   configuration->MathJaXURL(m_mathJaxURL->GetValue());
