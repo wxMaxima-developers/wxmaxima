@@ -4329,21 +4329,21 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
 
 bool wxMaxima::SaveTempFile()
 {
-  wxString name = GetTempAutosavefileName();
+  wxString oldTempFile = m_tempfileName;
+  wxString m_tempfileName = GetTempAutosavefileName();
   bool saved = m_worksheet->ExportToWXMX(name);
-  if((m_tempfileName != name) && saved)
+  if((m_tempfileName != oldTempFile) && saved)
   {
-    if(!m_tempfileName.IsEmpty())
+    if(!oldTempFile.IsEmpty())
     {
-      if(wxFileExists(m_tempfileName))
+      if(wxFileExists(oldTempFile))
       {
         SuppressErrorDialogs blocker;
-        wxRemoveFile(m_tempfileName);
+        wxRemoveFile(oldTempFile);
       }
     }
-    m_tempfileName = name;
-    RegisterAutoSaveFile();
   }
+  RegisterAutoSaveFile();
   m_fileSaved = false;
   return saved;
 }
