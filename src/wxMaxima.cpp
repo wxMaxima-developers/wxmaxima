@@ -4022,8 +4022,10 @@ bool wxMaxima::SaveFile(bool forceSave)
         return false;
       }
       else
+      {
         m_isNamed = true;
-
+        RemoveTempAutosavefile();
+      }
     }
     else
     {
@@ -4036,7 +4038,10 @@ bool wxMaxima::SaveFile(bool forceSave)
         return false;
       }
       else
+      {
         m_isNamed = true;
+        RemoveTempAutosavefile();
+      }
     }
 
     m_recentDocuments.AddDocument(file);
