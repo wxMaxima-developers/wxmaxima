@@ -13,6 +13,9 @@ set_tests_properties(runMaxima PROPERTIES TIMEOUT 60)
 add_test(NAME runMaxima-over-network WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND echo 'quit() ;' | nc -l 40000 & sleep 10 ; maxima -s 40000)
 set_tests_properties(runMaxima-over-network PROPERTIES TIMEOUT 60)
 
+add_test(NAME wxmaxima_batch_emptyFile WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch ${CMAKE_SOURCE_DIR}/test/automatic_test_files/testbench_automatic_empty_file.wxm)
+set_tests_properties(wxmaxima_batch_emptyFile PROPERTIES TIMEOUT 60)
+
 add_test(NAME wxmaxima_batch_textcell WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch ${CMAKE_SOURCE_DIR}/test/automatic_test_files/textcells.wxm)
 set_tests_properties(wxmaxima_batch_textcell PROPERTIES TIMEOUT 60)
 
