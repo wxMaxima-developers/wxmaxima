@@ -7168,7 +7168,7 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
           MenuCommand(cmd + wxT("read_matrix(\"") + file + wxT("\");"));
       }
     }
-      break;
+    break;
     case menu_stats_subsample:
     {
       Gen4Wiz *wiz = new Gen4Wiz(_("Data Matrix:"), _("Condition:"),
@@ -7211,25 +7211,46 @@ void wxMaxima::OnClose(wxCloseEvent &event)
 {
   if(event.GetEventType() == wxEVT_END_SESSION)
     KillMaxima();;
-
+  
   if (SaveNecessary())
   {
     // If autosave is on we automatically save the file on closing.
     if(m_isNamed && (m_worksheet->m_configuration->AutoSaveMiliseconds() > 0))
     {
-      if (!SaveFile())
+      bool saved;
       {
-        if(!SaveFile(true))
+        wxLogStderr blocker;
+        saved = SaveFile(true);
+      }
+      if (!saved)
+      {
+        int close = SaveDocumentP();
+        
+        if (close == wxID_CANCEL)
         {
           event.Veto();
           return;
+        }
+        else
+        {
+          if (close == wxID_YES)
+          {
+            if (!SaveFile())
+            {
+              if(!SaveFile(true))
+              {
+                event.Veto();
+                return;
+              }
+            }
+          }
         }
       }
     }
     else
     {
       int close = SaveDocumentP();
-
+      
       if (close == wxID_CANCEL)
       {
         event.Veto();
