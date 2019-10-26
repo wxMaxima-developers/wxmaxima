@@ -7206,7 +7206,7 @@ void wxMaxima::OnClose(wxCloseEvent &event)
       bool saved;
       {
         wxLogStderr blocker;
-        saved = SaveFile(true);
+        saved = SaveFile();
       }
       if (!saved)
       {
