@@ -4345,6 +4345,7 @@ bool wxMaxima::SaveTempFile()
     RegisterAutoSaveFile();
   }
   m_fileSaved = false;
+  return saved;
 }
 
 void wxMaxima::FileMenu(wxCommandEvent &event)
