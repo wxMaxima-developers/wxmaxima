@@ -8638,9 +8638,7 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
     // Find the position for the popup menu
     wxPoint pos = editor->PositionToPoint(m_configuration->GetDefaultFontSize());
     wxASSERT((pos.x>=0) && (pos.y >=0));
-    #ifndef __WXMSW__
     CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
-    #endif
     // The popup menu appears half a character too high.
     pos.y += m_configuration->Scale_Px(m_configuration->GetFontSize(TS_TEXT));
     m_autocompletePopup = new AutocompletePopup(this,editor,m_autocomplete,type,&m_autocompletePopup);

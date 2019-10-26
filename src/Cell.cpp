@@ -54,6 +54,7 @@ Cell::Cell(Cell *group, Configuration **config)
 #endif
 {
   m_lastZoomFactor = -1;
+  m_currentPoint_Last = wxPoint(-1,-1);
   m_clientWidth_old = -1;
   m_group = group;
   m_textStyle = TS_DEFAULT;

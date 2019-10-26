@@ -781,7 +781,11 @@ class Cell
 
   //! Set the tooltip of this math cell. wxEmptyString means: no tooltip.
   void SetToolTip(const wxString &tooltip){m_toolTip = tooltip;}
-  void SetCurrentPoint(wxPoint point){m_currentPoint = point;}
+  void SetCurrentPoint(wxPoint point){m_currentPoint = point;
+    if((m_currentPoint.x >=0) &&
+       (m_currentPoint.y >=0))
+  m_currentPoint_Last = point;
+  }
   void SetCurrentPoint(int x, int y){m_currentPoint = wxPoint(x,y);}
   wxPoint GetCurrentPoint(){return m_currentPoint;}
   
@@ -800,6 +804,8 @@ protected:
      - for Cells when they are drawn.
   */
   wxPoint m_currentPoint;
+
+  wxPoint m_currentPoint_Last;
 
   /*! The GroupCell this list of cells belongs to.
     

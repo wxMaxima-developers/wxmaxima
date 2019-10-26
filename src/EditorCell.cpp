@@ -2754,6 +2754,12 @@ wxPoint EditorCell::PositionToPoint(int WXUNUSED(fontsize), int pos)
 
   int x = m_currentPoint.x, y = m_currentPoint.y;
   if (x == -1 || y == -1)
+  {
+    x = m_currentPoint_Last.x;
+    y = m_currentPoint_Last.y;
+  }
+
+  if (x == -1 || y == -1)
     return wxPoint(-1, -1);
 
   int width;
