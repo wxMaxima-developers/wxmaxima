@@ -3995,8 +3995,6 @@ bool wxMaxima::SaveFile(bool forceSave)
     StatusSaveStart();
     config->Write(wxT("defaultExt"), wxT("wxmx"));
 
-    if(m_worksheet->m_currentFile != m_tempfileName)
-      m_worksheet->m_currentFile = file;
     m_lastPath = wxPathOnly(file);
     if (file.EndsWith(wxT(".wxmx")))
     {
@@ -4007,20 +4005,27 @@ bool wxMaxima::SaveFile(bool forceSave)
         return false;
       }
       else
+      {
         RemoveTempAutosavefile();
+        if(m_worksheet->m_currentFile != m_tempfileName)
+          m_worksheet->m_currentFile = file;
+      }
     }
     else
     {
+      config->Write(wxT("defaultExt"), wxT("wxm"));
       if (!m_worksheet->ExportToMAC(file))
       {
-        config->Write(wxT("defaultExt"), wxT("wxm"));
-
         StatusSaveFailed();
         m_autoSaveTimer.StartOnce(180000);
         return false;
       }
       else
+      {
         RemoveTempAutosavefile();
+        if(m_worksheet->m_currentFile != m_tempfileName)
+          m_worksheet->m_currentFile = file;
+      }
     }
 
     m_recentDocuments.AddDocument(file);
