@@ -4329,7 +4329,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
 bool wxMaxima::SaveTempFile()
 {
   wxString oldTempFile = m_tempfileName;
-  wxString m_tempfileName = GetTempAutosavefileName();
+  m_tempfileName = GetTempAutosavefileName();
   wxLogMessage(wxString::Format("Saving as temp file %s"), m_tempfileName);
   bool saved = m_worksheet->ExportToWXMX(m_tempfileName);
   if((m_tempfileName != oldTempFile) && saved)
