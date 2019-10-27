@@ -4308,6 +4308,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
             {
               // Automatically safe the file for the user making it seem like the file
               // is always saved -
+              wxLogMessage(wxString::Format("Saving file %s"), m_worksheet->m_currentFile);
               SaveFile(false);
             }
             else
@@ -4317,9 +4318,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
         else
         {
           if(SaveNecessary())
-          {
             SaveTempFile();
-          }
         }
         m_autoSaveTimer.StartOnce(180000);
       }
@@ -4331,6 +4330,7 @@ bool wxMaxima::SaveTempFile()
 {
   wxString oldTempFile = m_tempfileName;
   wxString m_tempfileName = GetTempAutosavefileName();
+  wxLogMessage(wxString::Format("Saving as temp file %s"), m_tempfileName);
   bool saved = m_worksheet->ExportToWXMX(m_tempfileName);
   if((m_tempfileName != oldTempFile) && saved)
   {
@@ -4339,7 +4339,8 @@ bool wxMaxima::SaveTempFile()
       if(wxFileExists(oldTempFile))
       {
         SuppressErrorDialogs blocker;
-        wxRemoveFile(oldTempFile);
+        wxLogMessage(wxString::Format("Removing old temp file %s"), oldTempFile);
+        wxRemoveFile(oldTempFile);        
       }
     }
   }

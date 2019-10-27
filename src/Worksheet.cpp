@@ -911,16 +911,6 @@ bool Worksheet::RecalculateIfNeeded()
   }
   m_configuration->AdjustWorksheetSize(false);
 
-  if(m_configuration->RecalculationForce())
-  {
-    if(m_configuration->FontChanged())
-      wxLogMessage(_("Recalculating all cell sizes inclusive text dimensions"));
-    else
-      wxLogMessage(_("Recalculating all cell sizes"));
-  }
-  else
-    wxLogMessage(_("Recalculating changed cell sizes"));
-
   if(!m_tree->Contains(m_recalculateStart))
     m_recalculateStart = m_tree;
 
