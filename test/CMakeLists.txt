@@ -1,6 +1,6 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
-file(GLOB TEST_FILES *.png *.wxmx *.wxm *.mac)
+file(GLOB TEST_FILES *.png *.wxmx *.wxm *.mac *.cfg)
 
 install(FILES ${TEST_FILES} DESTINATION share/wxMaxima)
 file(COPY ${TEST_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
@@ -66,8 +66,8 @@ add_test(NAME functionCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxma
 set_tests_properties(functionCells PROPERTIES TIMEOUT 60)
 
 # Broken on Travis:
-#add_test(NAME slideshowCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch ${CMAKE_BINARY_DIR}/test/automatic_test_files/testbench_automatic_slideshowCells.wxm)
-#set_tests_properties(slideshowCells PROPERTIES TIMEOUT 60)
+add_test(NAME slideshowCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch ${CMAKE_BINARY_DIR}/test/automatic_test_files/testbench_automatic_slideshowCells.wxm)
+set_tests_properties(slideshowCells PROPERTIES TIMEOUT 60)
 
 add_test(NAME imageCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch ${CMAKE_BINARY_DIR}/test/automatic_test_files/testbench_automatic_imageCells.wxm)
 set_tests_properties(imageCells PROPERTIES TIMEOUT 60)
@@ -94,14 +94,14 @@ add_test(NAME sumCells WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-
 set_tests_properties(sumCells PROPERTIES TIMEOUT 60)
 
 # Is mysteriously broken on travis.
-# add_test(NAME printf_simple WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch ${CMAKE_BINARY_DIR}/test/automatic_test_files/testbench_automatic_printf_simple.wxm)
-# set_tests_properties(printf_simple PROPERTIES TIMEOUT 60)
+ add_test(NAME printf_simple WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch ${CMAKE_BINARY_DIR}/test/automatic_test_files/testbench_automatic_printf_simple.wxm)
+ set_tests_properties(printf_simple PROPERTIES TIMEOUT 60)
 #
-# add_test(NAME printf_equations WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch ${CMAKE_BINARY_DIR}/test/automatic_test_files/testbench_automatic_printf_equations.wxm)
-# set_tests_properties(printf_equations PROPERTIES TIMEOUT 60)
+ add_test(NAME printf_equations WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch ${CMAKE_BINARY_DIR}/test/automatic_test_files/testbench_automatic_printf_equations.wxm)
+ set_tests_properties(printf_equations PROPERTIES TIMEOUT 60)
 #
-# add_test(NAME printf_continuationLines WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch ${CMAKE_BINARY_DIR}/test/automatic_test_files/testbench_automatic_printf_continuationLines.wxm)
-# set_tests_properties(printf_continuationLines PROPERTIES TIMEOUT 60)
+ add_test(NAME printf_continuationLines WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch ${CMAKE_BINARY_DIR}/test/automatic_test_files/testbench_automatic_printf_continuationLines.wxm)
+ set_tests_properties(printf_continuationLines PROPERTIES TIMEOUT 60)
 
 add_test(NAME weirdLabels WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch ${CMAKE_BINARY_DIR}/test/automatic_test_files/testbench_automatic_weirdLabels.wxm)
 set_tests_properties(weirdLabels PROPERTIES TIMEOUT 60)
@@ -127,6 +127,11 @@ set_tests_properties(boxes PROPERTIES TIMEOUT 60)
 add_test(NAME unicode WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch ${CMAKE_BINARY_DIR}/test/automatic_test_files/testbench_automatic_unicode.wxm)
 set_tests_properties(unicode PROPERTIES TIMEOUT 60)
 
+add_test(NAME autosave WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local -f ${CMAKE_BINARY_DIR}/test/automatic_test_files/autosave.cfg --batch ${CMAKE_BINARY_DIR}/test/automatic_test_files/testbench_automatic_unicode.wxm)
+set_tests_properties(autosave PROPERTIES TIMEOUT 60)
+
+add_test(NAME noautosave WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local -f ${CMAKE_BINARY_DIR}/test/automatic_test_files/noautosave.cfg --batch ${CMAKE_BINARY_DIR}/test/automatic_test_files/testbench_automatic_unicode.wxm)
+set_tests_properties(noautosave PROPERTIES TIMEOUT 60)
 
 find_program(DESKTOP_FILE_VALIDATE_FOUND desktop-file-validate)
 if(DESKTOP_FILE_VALIDATE_FOUND)
