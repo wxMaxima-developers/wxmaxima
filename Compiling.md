@@ -53,10 +53,14 @@ the newer version of CMake in the commands above).
 
 On Mac OS X you should install XCode. To build wxMaxima open the
 Terminal application and follow the instructions for building with cmake.
-It is recommended that you compile your own version of
-wxMac. See the section about compiling wxWidgets.
-In order to get the wxMaxima manual in html for po4a (a perl program) and
-pandoc are necessary.
+wxMac can be installed using homebrew, fink or macports. Alternatively 
+see the section about compiling wxWidgets.
+In order to work on the translations of the manual addintionally po4a 
+(a perl program) and pandoc are necessary. An app bundle in the .dmg
+format should be assembled if after compiling wxMaxima the following 
+command is executed:
+
+    cmake --build . -- package
 
 
 ### Compiling on Windows
