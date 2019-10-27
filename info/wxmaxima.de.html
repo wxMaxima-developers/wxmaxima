@@ -43,7 +43,7 @@
 <li><a href="#die-standardgröße-der-diagramme"><span class="toc-section-number">1.3.6</span> Die Standardgröße der Diagramme</a></li>
 <li><a href="#jsmath-zeichensätze"><span class="toc-section-number">1.3.7</span> jsMath-Zeichensätze</a></li>
 <li><a href="#automatisches-schließen-von-klammern"><span class="toc-section-number">1.3.8</span> Automatisches Schließen von Klammern</a></li>
-<li><a href="#intervall-des-automatischen-speicherns"><span class="toc-section-number">1.3.9</span> Intervall des automatischen Speicherns</a></li>
+<li><a href="#dont-save-the-worksheet-automatically"><span class="toc-section-number">1.3.9</span> Don’t save the worksheet automatically</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#erweiterungen-für-maxima"><span class="toc-section-number">2</span> Erweiterungen für <em>Maxima</em></a><ul>
@@ -323,13 +323,13 @@ Normaler Text</code></pre>
 <li>Wenn eine öffnende Klammer eingegeben wird, fügt <em>wxMaxima</em> automatisch eine schließende Klammer ein.</li>
 <li>Markierter Text wird, wenn man eine geöffnete Klammer einzugeben versucht, automatisch in Klammern gesetzt.</li>
 </ul>
-<h3 id="intervall-des-automatischen-speicherns"><span class="header-section-number">1.3.9</span> Intervall des automatischen Speicherns</h3>
-<p>Wenn diese Zahl größer als Null ist, verhält sich <em>wxMaxima</em> wie viele Programme auf dem Handy:</p>
+<h3 id="dont-save-the-worksheet-automatically"><span class="header-section-number">1.3.9</span> Don’t save the worksheet automatically</h3>
+<p>If this option is set the file the worksheet is in is overwriten only on request of the user. In case of a crash/power loss/… a recent backup copy is still made available in the temp directory, though.</p>
+<p>If this option isn’t set wxMaxima behaves more like a modern cellphone app:</p>
 <ul>
 <li>Dateien werden beim Schließen automatisch gespeichert</li>
-<li>und sie werden alle n Minuten zwischengespeichert.</li>
+<li>And the file will automatically be saved every 3 minutes.</li>
 </ul>
-<p>Dies funktioniert natürlich erst, wenn die Datei bereits unter einem Namen gespeichert ist, unter dem sie zwischengespeichert werden kann.</p>
 <hr />
 <h1 id="erweiterungen-für-maxima"><span class="header-section-number">2</span> Erweiterungen für <em>Maxima</em></h1>
 <p><em>wxMaxima</em>’s Hauptaufgabe ist es, die Ein- und Ausgaben von Maxima graphisch darzustellen. An einigen Stellen fügt es jedoch Funktionalitäten zu <em>Maxima</em> hinzu:</p>

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-25 21:50+0200\n"
+"POT-Creation-Date: 2019-10-27 19:10+0100\n"
 "PO-Revision-Date: 2019-07-04 14:57+0300\n"
 "Last-Translator: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
 "Language-Team: Tufan Şirin <tsirin@turgutozal.edu.tr>\n"
@@ -933,32 +933,31 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:328
-msgid "### Autosave interval"
+msgid "### Don't save the worksheet automatically"
 msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:330
 msgid ""
-"If this value is set to a value bigger than zero _Maxima_ will work in a "
-"more mobile-device-like fashion:"
+"If this option is set the file the worksheet is in is overwriten only on "
+"request of the user. In case of a crash/power loss/... a recent backup copy "
+"is still made available in the temp directory, though."
+msgstr ""
+
+#. type: Plain text
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:332
+msgid ""
+"If this option isn't set wxMaxima behaves more like a modern cellphone app:"
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:333
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:335
 msgid "Files are saved automatically on exit"
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:333
-msgid "And the file will automatically be saved every n minutes."
-msgstr ""
-
-#. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:335
-msgid ""
-"For the automatic saving functionality to work _wxMaxima_ needs to know a "
-"name to save the file with, though. This means this feature will only work "
-"if the file has already been saved to or opened from the disk."
+msgid "And the file will automatically be saved every 3 minutes."
 msgstr ""
 
 #. type: Plain text

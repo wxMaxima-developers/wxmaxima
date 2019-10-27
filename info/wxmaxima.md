@@ -324,14 +324,14 @@ This option enables two things:
 *   If an opening parenthesis, bracket or double quote is entered _wxMaxima_ will insert a closing one after it.
 *   If text is selected if any of these keys is pressed the selected text will be put between the matched signs.
 
-### Autosave interval
+### Don't save the worksheet automatically
 
-If this value is set to a value bigger than zero _Maxima_ will work in a more mobile-device-like fashion:
+If this option is set the file the worksheet is in is overwriten only on request of the user. In case of a crash/power loss/... a recent backup copy is still made available in the temp directory, though.
+
+If this option isn't set wxMaxima behaves more like a modern cellphone app: 
 
 *   Files are saved automatically on exit
-*   And the file will automatically be saved every n minutes.
-
-For the automatic saving functionality to work _wxMaxima_ needs to know a name to save the file with, though. This means this feature will only work if the file has already been saved to or opened from the disk.
+*   And the file will automatically be saved every 3 minutes.
 
 * * *
 
