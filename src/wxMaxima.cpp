@@ -4300,7 +4300,7 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
     case AUTO_SAVE_TIMER_ID:
       if ((!m_worksheet->m_keyboardInactiveTimer.IsRunning()) && (!m_autoSaveTimer.IsRunning()))
       {
-        if (m_worksheet->m_configuration->AutoSaveAsTempFile())
+        if (!m_worksheet->m_configuration->AutoSaveAsTempFile())
         {
           if(SaveNecessary())
           {
@@ -4331,7 +4331,7 @@ bool wxMaxima::SaveTempFile()
 {
   wxString oldTempFile = m_tempfileName;
   wxString m_tempfileName = GetTempAutosavefileName();
-  bool saved = m_worksheet->ExportToWXMX(name);
+  bool saved = m_worksheet->ExportToWXMX(m_tempfileName);
   if((m_tempfileName != oldTempFile) && saved)
   {
     if(!oldTempFile.IsEmpty())
