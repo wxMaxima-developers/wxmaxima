@@ -3887,7 +3887,7 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
   }
 
   UpdateRecentDocuments();
-
+  RemoveTempAutosavefile();
   m_autoSaveTimer.StartOnce(180000);
 
   if (m_worksheet)m_worksheet->TreeUndo_ClearBuffers();
