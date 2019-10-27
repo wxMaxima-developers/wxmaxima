@@ -97,7 +97,7 @@ set_tests_properties(sumCells PROPERTIES TIMEOUT 60)
 # add_test(NAME printf_simple WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch ${CMAKE_BINARY_DIR}/test/automatic_test_files/testbench_automatic_printf_simple.wxm)
 # set_tests_properties(printf_simple PROPERTIES TIMEOUT 60)
 #
-ä add_test(NAME printf_equations WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch ${CMAKE_BINARY_DIR}/test/automatic_test_files/testbench_automatic_printf_equations.wxm)
+# add_test(NAME printf_equations WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch ${CMAKE_BINARY_DIR}/test/automatic_test_files/testbench_automatic_printf_equations.wxm)
 # set_tests_properties(printf_equations PROPERTIES TIMEOUT 60)
 #
 # add_test(NAME printf_continuationLines WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ./wxmaxima-local --batch ${CMAKE_BINARY_DIR}/test/automatic_test_files/testbench_automatic_printf_continuationLines.wxm)
