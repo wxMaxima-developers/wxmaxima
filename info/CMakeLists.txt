@@ -130,7 +130,7 @@ endif()
 
 
 
-file(GLOB WXMAXIMA_HELP_FILES *.jpg *.png *.pdf)
+file(GLOB WXMAXIMA_HELP_FILES *.jpg *.png *.pdf *.html)
 install(FILES ${WXMAXIMA_HELP_FILES} DESTINATION share/doc/wxmaxima)
 
 
