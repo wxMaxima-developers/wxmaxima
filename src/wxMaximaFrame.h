@@ -620,12 +620,6 @@ protected:
   void RemoveTempAutosavefile();
   //! Re-read the configuration.
   void ReReadConfig();  
-  /*! Determine a suitable name for a temporary autosave file.
-    
-    Is used if we want to autosave the current file, but still have no 
-    filename to save it to.
-  */  
-  wxString GetTempAutosavefileName();
   //! Remember an temporary autosave file name.
   void RegisterAutoSaveFile();
 private:

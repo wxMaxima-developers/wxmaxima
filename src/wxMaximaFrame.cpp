@@ -1408,15 +1408,6 @@ void wxMaximaFrame::ReReadConfig()
 #endif
 }
 
-wxString wxMaximaFrame::GetTempAutosavefileName()
-{
-  wxString name = wxStandardPaths::Get().GetTempDir()+
-    wxString::Format("/untitled_%li_%li.wxmx",
-                     wxGetProcessId(),m_pid);
-
-  return m_tempfileName;
-}
-
 void wxMaximaFrame::RegisterAutoSaveFile()
 {
   wxString autoSaveFiles;
