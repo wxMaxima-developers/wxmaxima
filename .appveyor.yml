@@ -15,8 +15,6 @@ cache:
   - c:\projects\wxMaxima\build\CMakeFiles
   - c:\projects\wxMaxima\build\src\CMakeFiles
   - c:\projects\wxMaxima\build\src\Release
-  - C:\msys64\var\cache\pacman\pkg
-  - C:\cygwin64\var\cache\setup
 #  - C:\ProgramData\chocolatey\bin
 #  - C:\ProgramData\chocolatey\lib
 
@@ -38,11 +36,6 @@ before_build:
 #  - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\pandoc-2.7.3-windows-x86_64"
 #  - cmd: choco install pandoc
   - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\"
-  - cmd: echo Installing po4a...
-  - ps: $env:Path += ";C:\msys64\usr\bin\"
-  - cmd: pacman -Syu -q --noconfirm
-  - cmd: pacman -Su -q --noconfirm
-  - cmd: pacman --needed -q --noconfirm -S po4a
   - cmd: echo Downloading and unpacking wxWidgets...
   - cmd: set WXVERSION=3.1.2
   - ps: Start-FileDownload 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2.7z'
