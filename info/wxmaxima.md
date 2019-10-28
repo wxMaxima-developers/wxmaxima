@@ -591,11 +591,12 @@ The config dialogue of _wxMaxima_ offers to edit two files with commands that ar
 ## Special variables wx...
 
 *   `wxsubscripts` tells _Maxima_ if it should convert variable names that contain an underscore (`R_150` or the like) into subscripted variables. See `wxdeclare_subscript` for details which variable names are automatically converted.
-*   `wxfilename`: This variable contains the name of the file currently opened in _wxMaxima_. On Windows this piece of information is available only if in the configuration dialogue the checkbox `Maxima/maxima's pwd is path to document` is checked.
-*   `wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_’s pngcairo terminal that provides more line styles and a better overall graphics quality. This variable can be used for reading or overriding the respective setting in the configuration dialog.
-*   `wxplot_size` defines the size of embedded plots.
-*   `wxchangedir`: On most operating systems _wxMaxima_ automatically sets _Maxima_’s working directory to the directory of the current file. This allows file I/O (e.g. by `read_matrix`) to work without specifying the whole path to the file that has to be read or written. On Windows this feature is deactivated: The Lisp Standard doesn’t contain a concept of the current working directory. Therefore there is no standard way of setting it and changing to a directory that isn’t on the drive _Maxima_ has been installed to might cause _Maxima_ to try to read is own package files from this drive, too, instead of from the drive to which _Maxima_ has been installed. Setting wxchangedir to `true` tells wxMmaxima that it has to risk that and to set _Maxima_’s working directory.
-*   `wxanimate_framerate` The number of frames per second the following animations have to be played back with. -1 tells _wxMaxima_ to use the default frame rate from the config dialog.
+*   `wxfilename`: This variable contains the name of the file currently opened in _wxMaxima_.
+*   `wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_’s pngcairo terminal that provides more line styles and a better overall graphics quality.
+*   `wxplot_size` defines the resolution of embedded plots.
+*   `wxchangedir`: On most operating systems _wxMaxima_ automatically sets _Maxima_’s working directory to the directory of the current file. This allows file I/O (e.g. by `read_matrix`) to work without specifying the whole path to the file that has to be read or written. On Windows this feature sometimes causes error messages and therefore can be set to `false` from the config dialogue.
+*   `wxanimate_framerate`: The number of frames per second the following animations have to be played back with.
+*   `wxanimate_autoplay`: Automatically play animations by default?
 
 ## Pretty-printing 2D output
 
@@ -628,7 +629,7 @@ _wxMaxima_ provides a few functions that gather bug reporting information about 
 
 ## Marking output being drawn in red
 
-_Maxima_'s `box()` command causes _wxMaxima_ to print its argument with a red background.
+_Maxima_'s `box()` command causes _wxMaxima_ to print its argument with a red foreground.
 
 Troubleshooting
 ===============
@@ -641,7 +642,7 @@ On Un\*x computers another possible reason would be that the loopback network th
 
 ## How to save data from a broken .wxmx file
 
-Internally most modern xml-based formats are ordinary zip-files with one special characteristic: the first file in the archive is stored uncompressed and provides information about what type of program can open this file.
+Internally most modern xml-based formats are ordinary zip-files. wxMaxima doesn't turn on compression which makes the contents of .wxmx files viewable in any text editor.
 
 If the zip signature at the end of the file is still intact after renaming a broken .wxmx file to .zip most operating systems will provide a way to extract any portion of information that is stored inside it. The can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If _wxMaxima_ during saving detected that something went wrong there will be a wxmx~ file whose contents might help and even if there isn’t such a file: If the configuration option is set that .wxmx files have to be optimized for version control it is possible to rename the .wxmx file to a .txt file and to use a text editor to recover the XML portion of the file's contents.
 
@@ -657,10 +658,6 @@ Normally _wxMaxima_ waits for the whole 2D formula to be transferred before it b
        length(t)
     )$
 
-## _wxMaxima_ on Windows crashes on displaying seemingly simple equations
-
-The jsMath fonts allow for excellent 2D-display of equations. But there are broken versions of this package that crash _wxMaxima_. A working version can be downloaded from [http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html](http://www.math.union.edu/%7Edpvc/jsmath/download/jsMath-fonts.html). To make _wxMaxima_ actually use these fonts the according checkbox has to be enabled in the Styles tab of _wxMaxima_’s configuration dialogue.
-
 ## Plotting only shows an closed empty envelope with an error message
 
 This means that _wxMaxima_ could not read the file _Maxima_ that was supposed to instruct gnuplot to create.
@@ -668,13 +665,13 @@ This means that _wxMaxima_ could not read the file _Maxima_ that was supposed to
 Possible reasons for this error are:
 
 *   The plotting command is part of a third-party package like `implicit_plot` but this package was not loaded by _Maxima_’s `load()` command before trying to plot.
-*   _Maxima_ tried to do something the currently installed version of gnuplot isn’t able to understand. In this case the file maxout.gnuplot in the directory _Maxima_’s variable maxima\_userdir points to contains the instructions from _Maxima_ to gnuplot. Most of the time this file’s contents therefore are helpful when debugging the problem.
+*   _Maxima_ tried to do something the currently installed version of gnuplot isn’t able to understand. In this case a file ending in .gnuplot in the directory _Maxima_’s variable maxima\_userdir points to contains the instructions from _Maxima_ to gnuplot. Most of the time this file’s contents therefore are helpful when debugging the problem.
 *   Gnuplot was instructed to use the pngcairo library that provides antialiasing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the "Use the cairo terminal for plot" checkbox in the configuration dialog and don’t set `wxplot_pngcairo` to true from _Maxima_.
 *   Gnuplot didn’t output a valid .png file.
 
 ## Plotting an animation results in “error: undefined variable”
 
-The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Putting an `ev()` around this expression should resolve this problem.
+The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Using an `subst` command that substitutes the slider variable into the equation to plot (there should be an example of this in this manual) resolves this problem.
 
 ## I lost a cell contents and undo doesn’t remember
 
@@ -695,12 +692,6 @@ One possible reason is that _Maxima_ cannot be found in the location that is set
 ## Maxima is forever calculating and not responding to input
 
 It is theoretically possible that _wxMaxima_ doesn’t realize that _Maxima_ has finished calculating and therefore never gets informed it can send new data to _Maxima_. If this is the case “Trigger evaluation” might resynchronize the two programs.
-
-## File I/O from Maxima doesn’t work on Windows
-
-On Windows, file I/O is not relative to the directory of the current file by default. If you store the _Maxima_ file on the drive on which _wxMaxima_ is installed, then setting `wxchangedir` to `true` will fix that for `load`, `read_list`, `batch`, `read_matrix`, `save` and all similar commands.
-
-Setting this variable to `true` might have a drawback, though: _Maxima_ knows which directory it is installed in and will search for any additional package that is requested by a `load` command in this directory, too. But it might not know which drive it is installed on. If `wxchangedir` is `true` and the current file is saved on a different drive than the one _Maxima_ is installed on _Maxima_ therefore might fail to load the additional packages it was bundled with.
 
 ## My SBCL-based _Maxima_ runs out of memory
 
@@ -760,8 +751,7 @@ pngdraw2d("Test",
 Not directly using _Maxima_. But there are gnuplot commands for it:
 
      wxdraw2d(
-         user_preamble="set size ratio 1; set tmargin 3; set bmargin 3;
-                        set lmargin 3; set rmargin 3",
+	     proportional_axis=xy,
          explicit(sin(x),x,1,10)
      ),wxplot_size=[1000,1000];
 

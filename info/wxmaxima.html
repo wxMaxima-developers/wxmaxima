@@ -72,19 +72,17 @@
 <li><a href="#cannot-connect-to-maxima"><span class="toc-section-number">3.1</span> Cannot connect to <em>Maxima</em></a></li>
 <li><a href="#how-to-save-data-from-a-broken-.wxmx-file"><span class="toc-section-number">3.2</span> How to save data from a broken .wxmx file</a></li>
 <li><a href="#i-want-some-debug-info-to-be-displayed-on-the-screen-before-my-command-has-finished"><span class="toc-section-number">3.3</span> I want some debug info to be displayed on the screen before my command has finished</a></li>
-<li><a href="#wxmaxima-on-windows-crashes-on-displaying-seemingly-simple-equations"><span class="toc-section-number">3.4</span> <em>wxMaxima</em> on Windows crashes on displaying seemingly simple equations</a></li>
-<li><a href="#plotting-only-shows-an-closed-empty-envelope-with-an-error-message"><span class="toc-section-number">3.5</span> Plotting only shows an closed empty envelope with an error message</a></li>
-<li><a href="#plotting-an-animation-results-in-error-undefined-variable"><span class="toc-section-number">3.6</span> Plotting an animation results in “error: undefined variable”</a></li>
-<li><a href="#i-lost-a-cell-contents-and-undo-doesnt-remember"><span class="toc-section-number">3.7</span> I lost a cell contents and undo doesn’t remember</a></li>
-<li><a href="#wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="toc-section-number">3.8</span> <em>wxMaxima</em> starts up with the message “Maxima process Terminated.”</a></li>
-<li><a href="#maxima-is-forever-calculating-and-not-responding-to-input"><span class="toc-section-number">3.9</span> Maxima is forever calculating and not responding to input</a></li>
-<li><a href="#file-io-from-maxima-doesnt-work-on-windows"><span class="toc-section-number">3.10</span> File I/O from Maxima doesn’t work on Windows</a></li>
-<li><a href="#my-sbcl-based-maxima-runs-out-of-memory"><span class="toc-section-number">3.11</span> My SBCL-based <em>Maxima</em> runs out of memory</a></li>
-<li><a href="#input-sometimes-is-sluggishignoring-keys-on-ubuntu"><span class="toc-section-number">3.12</span> Input sometimes is sluggish/ignoring keys on Ubuntu</a></li>
-<li><a href="#wxmaxima-halts-when-maxima-processes-greek-characters-or-umlauts"><span class="toc-section-number">3.13</span> <em>wxMaxima</em> halts when <em>Maxima</em> processes Greek characters or Umlauts</a></li>
-<li><a href="#plotting-1"><span class="toc-section-number">3.14</span> Plotting</a><ul>
-<li><a href="#can-i-make-wxmaxima-output-both-image-files-and-embedded-plots-at-once"><span class="toc-section-number">3.14.1</span> Can I make <em>wxMaxima</em> output both image files and embedded plots at once?</a></li>
-<li><a href="#can-i-set-the-aspect-ratio-of-a-plot"><span class="toc-section-number">3.14.2</span> Can I set the aspect ratio of a plot?</a></li>
+<li><a href="#plotting-only-shows-an-closed-empty-envelope-with-an-error-message"><span class="toc-section-number">3.4</span> Plotting only shows an closed empty envelope with an error message</a></li>
+<li><a href="#plotting-an-animation-results-in-error-undefined-variable"><span class="toc-section-number">3.5</span> Plotting an animation results in “error: undefined variable”</a></li>
+<li><a href="#i-lost-a-cell-contents-and-undo-doesnt-remember"><span class="toc-section-number">3.6</span> I lost a cell contents and undo doesn’t remember</a></li>
+<li><a href="#wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="toc-section-number">3.7</span> <em>wxMaxima</em> starts up with the message “Maxima process Terminated.”</a></li>
+<li><a href="#maxima-is-forever-calculating-and-not-responding-to-input"><span class="toc-section-number">3.8</span> Maxima is forever calculating and not responding to input</a></li>
+<li><a href="#my-sbcl-based-maxima-runs-out-of-memory"><span class="toc-section-number">3.9</span> My SBCL-based <em>Maxima</em> runs out of memory</a></li>
+<li><a href="#input-sometimes-is-sluggishignoring-keys-on-ubuntu"><span class="toc-section-number">3.10</span> Input sometimes is sluggish/ignoring keys on Ubuntu</a></li>
+<li><a href="#wxmaxima-halts-when-maxima-processes-greek-characters-or-umlauts"><span class="toc-section-number">3.11</span> <em>wxMaxima</em> halts when <em>Maxima</em> processes Greek characters or Umlauts</a></li>
+<li><a href="#plotting-1"><span class="toc-section-number">3.12</span> Plotting</a><ul>
+<li><a href="#can-i-make-wxmaxima-output-both-image-files-and-embedded-plots-at-once"><span class="toc-section-number">3.12.1</span> Can I make <em>wxMaxima</em> output both image files and embedded plots at once?</a></li>
+<li><a href="#can-i-set-the-aspect-ratio-of-a-plot"><span class="toc-section-number">3.12.2</span> Can I set the aspect ratio of a plot?</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#faq"><span class="toc-section-number">4</span> FAQ</a><ul>
@@ -511,11 +509,12 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <h2 id="special-variables-wx"><span class="header-section-number">2.6</span> Special variables wx…</h2>
 <ul>
 <li><code>wxsubscripts</code> tells <em>Maxima</em> if it should convert variable names that contain an underscore (<code>R_150</code> or the like) into subscripted variables. See <code>wxdeclare_subscript</code> for details which variable names are automatically converted.</li>
-<li><code>wxfilename</code>: This variable contains the name of the file currently opened in <em>wxMaxima</em>. On Windows this piece of information is available only if in the configuration dialogue the checkbox <code>Maxima/maxima's pwd is path to document</code> is checked.</li>
-<li><code>wxplot_pngcairo</code> tells whether <em>wxMaxima</em> tries to use <em>gnuplot</em>’s pngcairo terminal that provides more line styles and a better overall graphics quality. This variable can be used for reading or overriding the respective setting in the configuration dialog.</li>
-<li><code>wxplot_size</code> defines the size of embedded plots.</li>
-<li><code>wxchangedir</code>: On most operating systems <em>wxMaxima</em> automatically sets <em>Maxima</em>’s working directory to the directory of the current file. This allows file I/O (e.g. by <code>read_matrix</code>) to work without specifying the whole path to the file that has to be read or written. On Windows this feature is deactivated: The Lisp Standard doesn’t contain a concept of the current working directory. Therefore there is no standard way of setting it and changing to a directory that isn’t on the drive <em>Maxima</em> has been installed to might cause <em>Maxima</em> to try to read is own package files from this drive, too, instead of from the drive to which <em>Maxima</em> has been installed. Setting wxchangedir to <code>true</code> tells wxMmaxima that it has to risk that and to set <em>Maxima</em>’s working directory.</li>
-<li><code>wxanimate_framerate</code> The number of frames per second the following animations have to be played back with. -1 tells <em>wxMaxima</em> to use the default frame rate from the config dialog.</li>
+<li><code>wxfilename</code>: This variable contains the name of the file currently opened in <em>wxMaxima</em>.</li>
+<li><code>wxplot_pngcairo</code> tells whether <em>wxMaxima</em> tries to use <em>gnuplot</em>’s pngcairo terminal that provides more line styles and a better overall graphics quality.</li>
+<li><code>wxplot_size</code> defines the resolution of embedded plots.</li>
+<li><code>wxchangedir</code>: On most operating systems <em>wxMaxima</em> automatically sets <em>Maxima</em>’s working directory to the directory of the current file. This allows file I/O (e.g. by <code>read_matrix</code>) to work without specifying the whole path to the file that has to be read or written. On Windows this feature sometimes causes error messages and therefore can be set to <code>false</code> from the config dialogue.</li>
+<li><code>wxanimate_framerate</code>: The number of frames per second the following animations have to be played back with.</li>
+<li><code>wxanimate_autoplay</code>: Automatically play animations by default?</li>
 </ul>
 <h2 id="pretty-printing-2d-output"><span class="header-section-number">2.7</span> Pretty-printing 2D output</h2>
 <p>The function <code>table_form()</code> displays a 2D list in a form that is more readable than the output <em>Maxima</em>’s default output routine. The input is a list of one or more lists. Like the print command, this command displays output even when ended with a dollar sign. Ending the command with a semicolon results in the same table along with a “done” statement.</p>
@@ -541,13 +540,13 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 </ul>
 <hr />
 <h2 id="marking-output-being-drawn-in-red"><span class="header-section-number">2.9</span> Marking output being drawn in red</h2>
-<p><em>Maxima</em>’s <code>box()</code> command causes <em>wxMaxima</em> to print its argument with a red background.</p>
+<p><em>Maxima</em>’s <code>box()</code> command causes <em>wxMaxima</em> to print its argument with a red foreground.</p>
 <h1 id="troubleshooting"><span class="header-section-number">3</span> Troubleshooting</h1>
 <h2 id="cannot-connect-to-maxima"><span class="header-section-number">3.1</span> Cannot connect to <em>Maxima</em></h2>
 <p>Since <em>Maxima</em> (the program that does the actual mathematics) and <em>wxMaxima</em> (providing the easy-to-use user interface) are separate programs that communicate by the means of a local network connection. Therefore the most probable cause is that this connection is somehow not working. For example a firewall could be set up in a way that it doesn’t just prevent against unauthorized connections from the internet (and perhaps to intercept some connections to the internet, too), but it also to blocks inter-process-communication inside the same computer. Note that since <em>Maxima</em> is being run by a lisp processor the process communication that is blocked from does not necessarily have to be named “maxima”. Common names of the program that opens the network connection would be sbcl, gcl, ccl, lisp.exe or similar names.</p>
 <p>On Un*x computers another possible reason would be that the loopback network that provides network connections between two programs in the same computer isn’t properly configured.</p>
 <h2 id="how-to-save-data-from-a-broken-.wxmx-file"><span class="header-section-number">3.2</span> How to save data from a broken .wxmx file</h2>
-<p>Internally most modern xml-based formats are ordinary zip-files with one special characteristic: the first file in the archive is stored uncompressed and provides information about what type of program can open this file.</p>
+<p>Internally most modern xml-based formats are ordinary zip-files. wxMaxima doesn’t turn on compression which makes the contents of .wxmx files viewable in any text editor.</p>
 <p>If the zip signature at the end of the file is still intact after renaming a broken .wxmx file to .zip most operating systems will provide a way to extract any portion of information that is stored inside it. The can be done when there is the need of recovering the original image files from a text processor document. If the zip signature isn’t intact that does not need to be the end of the world: If <em>wxMaxima</em> during saving detected that something went wrong there will be a wxmx~ file whose contents might help and even if there isn’t such a file: If the configuration option is set that .wxmx files have to be optimized for version control it is possible to rename the .wxmx file to a .txt file and to use a text editor to recover the XML portion of the file’s contents.</p>
 <p>If the text file containing this contents is saved as a file ending in .xml <em>wxMaxima</em> will know how to recover the text of the document from it.</p>
 <h2 id="i-want-some-debug-info-to-be-displayed-on-the-screen-before-my-command-has-finished"><span class="header-section-number">3.3</span> I want some debug info to be displayed on the screen before my command has finished</h2>
@@ -557,20 +556,18 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
    t:makelist(i,i,1000000),
    length(t)
 )$</code></pre>
-<h2 id="wxmaxima-on-windows-crashes-on-displaying-seemingly-simple-equations"><span class="header-section-number">3.4</span> <em>wxMaxima</em> on Windows crashes on displaying seemingly simple equations</h2>
-<p>The jsMath fonts allow for excellent 2D-display of equations. But there are broken versions of this package that crash <em>wxMaxima</em>. A working version can be downloaded from <a href="http://www.math.union.edu/%7Edpvc/jsmath/download/jsMath-fonts.html">http://www.math.union.edu/~dpvc/jsmath/download/jsMath-fonts.html</a>. To make <em>wxMaxima</em> actually use these fonts the according checkbox has to be enabled in the Styles tab of <em>wxMaxima</em>’s configuration dialogue.</p>
-<h2 id="plotting-only-shows-an-closed-empty-envelope-with-an-error-message"><span class="header-section-number">3.5</span> Plotting only shows an closed empty envelope with an error message</h2>
+<h2 id="plotting-only-shows-an-closed-empty-envelope-with-an-error-message"><span class="header-section-number">3.4</span> Plotting only shows an closed empty envelope with an error message</h2>
 <p>This means that <em>wxMaxima</em> could not read the file <em>Maxima</em> that was supposed to instruct gnuplot to create.</p>
 <p>Possible reasons for this error are:</p>
 <ul>
 <li>The plotting command is part of a third-party package like <code>implicit_plot</code> but this package was not loaded by <em>Maxima</em>’s <code>load()</code> command before trying to plot.</li>
-<li><em>Maxima</em> tried to do something the currently installed version of gnuplot isn’t able to understand. In this case the file maxout.gnuplot in the directory <em>Maxima</em>’s variable maxima_userdir points to contains the instructions from <em>Maxima</em> to gnuplot. Most of the time this file’s contents therefore are helpful when debugging the problem.</li>
+<li><em>Maxima</em> tried to do something the currently installed version of gnuplot isn’t able to understand. In this case a file ending in .gnuplot in the directory <em>Maxima</em>’s variable maxima_userdir points to contains the instructions from <em>Maxima</em> to gnuplot. Most of the time this file’s contents therefore are helpful when debugging the problem.</li>
 <li>Gnuplot was instructed to use the pngcairo library that provides antialiasing and additional line styles, but it was not compiled to support this possibility. Solution: Uncheck the “Use the cairo terminal for plot” checkbox in the configuration dialog and don’t set <code>wxplot_pngcairo</code> to true from <em>Maxima</em>.</li>
 <li>Gnuplot didn’t output a valid .png file.</li>
 </ul>
-<h2 id="plotting-an-animation-results-in-error-undefined-variable"><span class="header-section-number">3.6</span> Plotting an animation results in “error: undefined variable”</h2>
-<p>The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Putting an <code>ev()</code> around this expression should resolve this problem.</p>
-<h2 id="i-lost-a-cell-contents-and-undo-doesnt-remember"><span class="header-section-number">3.7</span> I lost a cell contents and undo doesn’t remember</h2>
+<h2 id="plotting-an-animation-results-in-error-undefined-variable"><span class="header-section-number">3.5</span> Plotting an animation results in “error: undefined variable”</h2>
+<p>The value of the slider variable by default is only substituted into the expression that is to be plotted if it is visible there. Using an <code>subst</code> command that substitutes the slider variable into the equation to plot (there should be an example of this in this manual) resolves this problem.</p>
+<h2 id="i-lost-a-cell-contents-and-undo-doesnt-remember"><span class="header-section-number">3.6</span> I lost a cell contents and undo doesn’t remember</h2>
 <p>There are separate undo functions for cell operations and for changes inside of cells so chances are low that this ever happens. If it does there are several methods to recover data:</p>
 <ul>
 <li><em>wxMaxima</em> actually has two undo features: The global undo buffer that is active if no cell is selected and a per-cell undo buffer that is active if the cursor is inside a cell. It is worth trying to use both undo options in order to see if an old value can still be accessed.</li>
@@ -579,28 +576,25 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <li><p>If nothing else helps <em>Maxima</em> contains a replay feature:</p>
 <p>%i1 playback();</p></li>
 </ul>
-<h2 id="wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="header-section-number">3.8</span> <em>wxMaxima</em> starts up with the message “Maxima process Terminated.”</h2>
+<h2 id="wxmaxima-starts-up-with-the-message-maxima-process-terminated."><span class="header-section-number">3.7</span> <em>wxMaxima</em> starts up with the message “Maxima process Terminated.”</h2>
 <p>One possible reason is that <em>Maxima</em> cannot be found in the location that is set in the “Maxima” tab of <em>wxMaxima</em>’s configuration dialog and therefore won’t run at all. Setting the path to a working <em>Maxima</em> binary should fix this problem.</p>
-<h2 id="maxima-is-forever-calculating-and-not-responding-to-input"><span class="header-section-number">3.9</span> Maxima is forever calculating and not responding to input</h2>
+<h2 id="maxima-is-forever-calculating-and-not-responding-to-input"><span class="header-section-number">3.8</span> Maxima is forever calculating and not responding to input</h2>
 <p>It is theoretically possible that <em>wxMaxima</em> doesn’t realize that <em>Maxima</em> has finished calculating and therefore never gets informed it can send new data to <em>Maxima</em>. If this is the case “Trigger evaluation” might resynchronize the two programs.</p>
-<h2 id="file-io-from-maxima-doesnt-work-on-windows"><span class="header-section-number">3.10</span> File I/O from Maxima doesn’t work on Windows</h2>
-<p>On Windows, file I/O is not relative to the directory of the current file by default. If you store the <em>Maxima</em> file on the drive on which <em>wxMaxima</em> is installed, then setting <code>wxchangedir</code> to <code>true</code> will fix that for <code>load</code>, <code>read_list</code>, <code>batch</code>, <code>read_matrix</code>, <code>save</code> and all similar commands.</p>
-<p>Setting this variable to <code>true</code> might have a drawback, though: <em>Maxima</em> knows which directory it is installed in and will search for any additional package that is requested by a <code>load</code> command in this directory, too. But it might not know which drive it is installed on. If <code>wxchangedir</code> is <code>true</code> and the current file is saved on a different drive than the one <em>Maxima</em> is installed on <em>Maxima</em> therefore might fail to load the additional packages it was bundled with.</p>
-<h2 id="my-sbcl-based-maxima-runs-out-of-memory"><span class="header-section-number">3.11</span> My SBCL-based <em>Maxima</em> runs out of memory</h2>
+<h2 id="my-sbcl-based-maxima-runs-out-of-memory"><span class="header-section-number">3.9</span> My SBCL-based <em>Maxima</em> runs out of memory</h2>
 <p>SBCL by default comes with a memory limit that allows it to run even on low-end computers. When compiling a big software package like lapack or dealing with extremely big lists or equations this limit might be too low. In order to extend the limits sbcl can be provided with the command line parameter <code>--dynamic-space-size</code> that tells sbcl how many megabytes it should reserve. A 32bit-windows-sbcl can reserve up to 999 Megabytes, 1800. A 64-bit sbcl version running on windows can be instructed to use more than the about 1280 Megabytes compiling lapack needs.</p>
 <p>One way to provide <em>maxima</em> (and thus sbcl) with command line parameters is the “Additional parameters for Maxima” field of <em>wxMaxima</em>’s configuration dialogue.</p>
 <figure>
 <img src="./sbclMemory.png" alt="sbcl memory" /><figcaption>sbcl memory</figcaption>
 </figure>
-<h2 id="input-sometimes-is-sluggishignoring-keys-on-ubuntu"><span class="header-section-number">3.12</span> Input sometimes is sluggish/ignoring keys on Ubuntu</h2>
+<h2 id="input-sometimes-is-sluggishignoring-keys-on-ubuntu"><span class="header-section-number">3.10</span> Input sometimes is sluggish/ignoring keys on Ubuntu</h2>
 <p>Installing the package <code>ibus-gtk</code> should resolve this issue. See (<a href="https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558">https://bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558</a>) for details.</p>
-<h2 id="wxmaxima-halts-when-maxima-processes-greek-characters-or-umlauts"><span class="header-section-number">3.13</span> <em>wxMaxima</em> halts when <em>Maxima</em> processes Greek characters or Umlauts</h2>
+<h2 id="wxmaxima-halts-when-maxima-processes-greek-characters-or-umlauts"><span class="header-section-number">3.11</span> <em>wxMaxima</em> halts when <em>Maxima</em> processes Greek characters or Umlauts</h2>
 <p>If your <em>Maxima</em> is based on sbcl the following lines have to be added to your <code>.sblrc</code>:</p>
 <pre><code>(setf sb-impl::*default-external-format* :utf-8)</code></pre>
 <p>The folder this file has to be placed in is system- and installation-specific. But any sbcl-based <em>Maxima</em> that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:</p>
 <pre><code>:lisp (sb-impl::userinit-pathname)</code></pre>
-<h2 id="plotting-1"><span class="header-section-number">3.14</span> Plotting</h2>
-<h3 id="can-i-make-wxmaxima-output-both-image-files-and-embedded-plots-at-once"><span class="header-section-number">3.14.1</span> Can I make <em>wxMaxima</em> output both image files and embedded plots at once?</h3>
+<h2 id="plotting-1"><span class="header-section-number">3.12</span> Plotting</h2>
+<h3 id="can-i-make-wxmaxima-output-both-image-files-and-embedded-plots-at-once"><span class="header-section-number">3.12.1</span> Can I make <em>wxMaxima</em> output both image files and embedded plots at once?</h3>
 <p>It is easier to make it first generate the images and then import them again as the following two functions will do:</p>
 <pre><code>load(&quot;draw&quot;);
 pngdraw(name,[contents]):=
@@ -623,11 +617,10 @@ pngdraw2d(name,[contents]):=
 pngdraw2d(&quot;Test&quot;,
         explicit(sin(x),x,1,10)
 );</code></pre>
-<h3 id="can-i-set-the-aspect-ratio-of-a-plot"><span class="header-section-number">3.14.2</span> Can I set the aspect ratio of a plot?</h3>
+<h3 id="can-i-set-the-aspect-ratio-of-a-plot"><span class="header-section-number">3.12.2</span> Can I set the aspect ratio of a plot?</h3>
 <p>Not directly using <em>Maxima</em>. But there are gnuplot commands for it:</p>
 <pre><code> wxdraw2d(
-     user_preamble=&quot;set size ratio 1; set tmargin 3; set bmargin 3;
-                    set lmargin 3; set rmargin 3&quot;,
+     proportional_axis=xy,
      explicit(sin(x),x,1,10)
  ),wxplot_size=[1000,1000];</code></pre>
 <hr />
