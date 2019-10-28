@@ -59,7 +59,7 @@
 <li><a href="#mehrere-diagramme-gleichzeitig-in-fenstern-öffnen"><span class="toc-section-number">2.3.7</span> Mehrere Diagramme gleichzeitig in Fenstern öffnen</a></li>
 </ul></li>
 <li><a href="#einbetten-von-bildern"><span class="toc-section-number">2.4</span> Einbetten von Bildern</a></li>
-<li><a href="#wxmaximarc"><span class="toc-section-number">2.5</span> wxmaximarc</a></li>
+<li><a href="#startup-files"><span class="toc-section-number">2.5</span> Startup files</a></li>
 <li><a href="#special-variables-wx"><span class="toc-section-number">2.6</span> Special variables wx…</a></li>
 <li><a href="#pretty-printing-2d-output"><span class="toc-section-number">2.7</span> Pretty-printing 2D output</a></li>
 <li><a href="#bug-reporting"><span class="toc-section-number">2.8</span> Bug reporting</a></li>
@@ -501,12 +501,12 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <h2 id="einbetten-von-bildern"><span class="header-section-number">2.4</span> Einbetten von Bildern</h2>
 <p>Das <code>.wxmx</code>-Dateiformat erlaubt es, Bilder per Drag-And-Drop einzubetten. Es ist aber auch möglich, <em>Maxima</em> anzuweisen, Bilder einzubauen:</p>
 <pre><code>show_image(\&quot;man.png\&quot;);</code></pre>
-<h2 id="wxmaximarc"><span class="header-section-number">2.5</span> wxmaximarc</h2>
-<p>The <em>Maxima</em> user directory contains a text file named <code>wxmaxima-init.mac</code> the contents of the file is passed to <em>Maxima</em> automatically every time a new worksheet has been started.</p>
-<p>To find out which directory <em>Maxima</em> uses as the user directory just type in the following line:</p>
-<pre><code>maxima_userdir;</code></pre>
-<p>The answer from <em>Maxima</em> will specify the name of the directory that the startup file can be placed in.</p>
-<pre><code>%o1 /home/username/.maxima</code></pre>
+<h2 id="startup-files"><span class="header-section-number">2.5</span> Startup files</h2>
+<p>The config dialogue of <em>wxMaxima</em> offers to edit two files with commands that are executed on startup:</p>
+<ul>
+<li>A file that contains commands that are executed on starting up <em>Maxima</em>, and</li>
+<li>one file of additional commands that are executed if <em>wxMaxima</em> is starting <em>Maxima</em>.</li>
+</ul>
 <h2 id="special-variables-wx"><span class="header-section-number">2.6</span> Special variables wx…</h2>
 <ul>
 <li><code>wxsubscripts</code> tells <em>Maxima</em> if it should convert variable names that contain an underscore (<code>R_150</code> or the like) into subscripted variables. See <code>wxdeclare_subscript</code> for details which variable names are automatically converted.</li>

@@ -581,18 +581,12 @@ if the `.wxmx` file format is being used embedding files in a _wxMaxima_ project
 
     show_image("man.png");
 
-## wxmaximarc
+## Startup files
 
-The _Maxima_ user directory contains a text file named `wxmaxima-init.mac` the contents of the file is passed to _Maxima_ automatically every time a new worksheet has been started.
+The config dialogue of _wxMaxima_ offers to edit two files with commands that are executed on startup:
 
-To find out which directory _Maxima_ uses as the user directory just type in the following line:
-
-    maxima_userdir;
-
-The answer from _Maxima_ will specify the name of the directory that the startup file can be placed in.
-
-    %o1 /home/username/.maxima
-
+ * A file that contains commands that are executed on starting up _Maxima_, and
+ * one file of additional commands that are executed if _wxMaxima_ is starting _Maxima_.
 
 ## Special variables wx...
 
