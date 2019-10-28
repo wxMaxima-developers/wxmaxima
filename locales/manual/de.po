@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-27 19:10+0100\n"
-"PO-Revision-Date: 2019-10-23 08:58+0200\n"
+"PO-Revision-Date: 2019-10-28 09:37+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -755,6 +755,24 @@ msgid ""
 "T Theta    P Pi        O Omega\n"
 "~~~~\n"
 msgstr ""
+"~~~~\n"
+"a alpha    i iota      r rho\n"
+"b beta     k kappa     s sigma\n"
+"g gamma    l lambda    t tau\n"
+"d delta    m mu        u upsilon\n"
+"e epsilon  n nu        f phi\n"
+"z zeta     x xi        c chi\n"
+"h eta      om omicron  y psi\n"
+"q theta    p pi        o omega\n"
+"A Alpha    I Iota      R Rho\n"
+"B Beta     K Kappa     S Sigma\n"
+"G Gamma    L Lambda    T Tau\n"
+"D Delta    M Mu        U Upsilon\n"
+"E Epsilon  N Nu        P Phi\n"
+"Z Zeta     X Xi        C Chi\n"
+"H Eta      Om Omicron  Y Psi\n"
+"T Theta    P Pi        O Omega\n"
+"~~~~\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:150
@@ -820,6 +838,57 @@ msgid ""
 "-->           a long right arrow\n"
 "~~~~\n"
 msgstr ""
+"~~~~\n"
+"hbar          planck's constant: a h with a horizontal bar above it\n"
+"Hbar          a H with a horizontal bar above it\n"
+"2             squared\n"
+"3             to the power of three\n"
+"/2            1/2\n"
+"partial       partial sign (the d of dx/dt)\n"
+"integral      integral sign\n"
+"sq            root\n"
+"ii            imaginary\n"
+"ee            element\n"
+"in            in\n"
+"impl,implies  implies\n"
+"inf           infinity\n"
+"empty         empty\n"
+"TB            Big triangle right\n"
+"tb            small triangle right\n"
+"and           and\n"
+"or            or\n"
+"xor           xor\n"
+"nand          nand\n"
+"nor           nor\n"
+"equiv         equivalent\n"
+"not           not\n"
+"union         union\n"
+"inter         intersection\n"
+"subseteq      subset or equal\n"
+"subset        subset\n"
+"notsubseteq   not subset or equal\n"
+"notsubset     not subset\n"
+"approx        approximately\n"
+"propto        proportional to\n"
+"neq,!=,/=\n"
+"or #          not equal to\n"
+"+/- or pm     a plus/minus sign\n"
+"<= or leq     equal or less than\n"
+">= or geq     equal or greater than\n"
+"<< or ll      much less than\n"
+">> or gg      much greater than\n"
+"equiv         equivalent to\n"
+"qed           end of proof\n"
+"sum           sum sign\n"
+"prod          product sign\n"
+"exists        \"there exists\" sign\n"
+"nexists       \"there is no\" sign\n"
+"parallel      a \"parallel\" sign\n"
+"perp          a \"perpendicular\" sign\n"
+"leadsto       a \"leads to\" sign\n"
+"->            a right arrow\n"
+"-->           a long right arrow\n"
+"~~~~\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:204
@@ -1080,7 +1149,7 @@ msgid ""
 ".mac files are ordinary text files that contain _Maxima_ commands. They can "
 "be read using _Maxima_’s read command or _wxMaxima_’s File/Batch File menu "
 "entry."
-msgstr ""
+msgstr ".mac-Dateien sind Textdateien mit _Maxima_-Befehlen. Sie können über Maxima's read()-Befehl oder in wxMaxima über \"Datei/Batch File laden\" gelesen werden."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:273
@@ -1303,7 +1372,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:328
 msgid "### Don't save the worksheet automatically"
-msgstr ""
+msgstr "### Arbeitsblatt nicht automatisch speichern"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:330
@@ -1311,13 +1380,13 @@ msgid ""
 "If this option is set the file the worksheet is in is overwriten only on "
 "request of the user. In case of a crash/power loss/... a recent backup copy "
 "is still made available in the temp directory, though."
-msgstr ""
+msgstr "Wenn diese Option gewählt ist, wird das Arbeitsblatt nur überschrieben, wenn der Benutzer es speichert. Ein aktuelles Backup wird in diesem Fall im temp-Verzeichnis abgelegt."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:332
 msgid ""
 "If this option isn't set wxMaxima behaves more like a modern cellphone app:"
-msgstr ""
+msgstr "Ist diese Option nicht angewählt, arbeitet _wxMaxima_ wie eine moderne Handy-Applikation:"
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:335
@@ -1326,8 +1395,6 @@ msgstr "Dateien werden beim Schließen automatisch gespeichert"
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:335
-#, fuzzy
-#| msgid "And the file will automatically be saved every n minutes."
 msgid "And the file will automatically be saved every 3 minutes."
 msgstr "und sie werden alle n Minuten zwischengespeichert."
 
@@ -1432,6 +1499,13 @@ msgid ""
 "\t            ?sleep(3)\n"
 "\t        )$\n"
 msgstr ""
+"    (%i2) for i:1 thru 10 do (\n"
+"            /* Tell the user how far we got */\n"
+"            wxstatusbar(concat(\\\"Pass \\\",i)),\n"
+"            /* (sleep n) is a Lisp function, which can be used with \\\"?\\\" before. */\n"
+"            /* it delays the program execution for some time (here for 3 seconds) */\n"
+"            ?sleep(3)\n"
+"        )$\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:366
@@ -1497,6 +1571,8 @@ msgid ""
 "    %i1 wxplot_size:[1200,800];\n"
 "    %o1 [1200,800];\n"
 msgstr ""
+"    %i1 wxplot_size:[1200,800];\n"
+"    %o1 [1200,800];\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:386
@@ -1509,6 +1585,12 @@ msgid ""
 "        )\n"
 "    )$\n"
 msgstr ""
+"    %i2 wxdraw2d(\n"
+"        explicit(\n"
+"            sin(x),\n"
+"            x,1,10\n"
+"        )\n"
+"    )$\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:388
@@ -1526,6 +1608,9 @@ msgid ""
 "     %i1 wxplot_size:[1200,800];\n"
 "     %o1 [1200,800];\n"
 msgstr ""
+"     %i1 wxplot_size:[1200,800];\n"
+"     %o1 [1200,800];\n"
+"\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:398
@@ -1538,6 +1623,12 @@ msgid ""
 "             )\n"
 "         ),wxplot_size=[1600,800]$\n"
 msgstr ""
+"     %i1 wxdraw2d(\n"
+"             explicit(\n"
+"                 sin(x),\n"
+"                 x,1,10\n"
+"             )\n"
+"         ),wxplot_size=[1600,800]$\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:405
@@ -1550,6 +1641,12 @@ msgid ""
 "        )\n"
 "    ),wxplot_size=[1600,800]$\n"
 msgstr ""
+"    %i1 wxdraw2d(\n"
+"        explicit(\n"
+"            sin(x),\n"
+"            x,1,10\n"
+"        )\n"
+"    ),wxplot_size=[1600,800]$\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:408
@@ -1587,7 +1684,7 @@ msgid ""
 "supported by this feature) and the file size of the underlying gnuplot "
 "project isn't way too high _wxMaxima_ offers a right-click menu that allows "
 "to open the plot in an interactive gnuplot window."
-msgstr ""
+msgstr "Wenn ein Diagramm mittels einem `wxdraw`-ähnlichen Befehl erstellt wurde (`wxplot` wird hier nicht unterstüzt) und die Gnuplot-Datei nicht allzu lang ist, bietet _wxMaxima_ einen Rechts-Klick-Menüpunkt an, der das Diagramm in einem interaktiven Gnuplot-Fenster öffnet."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:416
@@ -1604,7 +1701,7 @@ msgid ""
 "window gnuplot commands can be entered into. Unfortunately enabling this "
 "feature causes gnuplot to \"steal\" the keyboard focus for a short time "
 "every time a plot is prepared."
-msgstr ""
+msgstr "Wenn unter Windows die Variable `gnuplot_command` auf \"wgnuplot\" geändert wird, erlaubt gnuplot, eine Kommandokonsole zu öffnen, stielt aber jedes Mal, wenn ein Diagramm gezeichnet wird, die Zeichen, die währenddessen in die Tastatur eingegeben werden."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:420
@@ -3066,7 +3163,7 @@ msgstr ""
 msgid ""
 "[Subscripted variables](#Subscripted-variables): using the command "
 "`wxsubscripts` to display subscripted variables"
-msgstr ""
+msgstr "[Variablen mit Subscript](#Subscripted-variables): wxsubsripts zeigt [Variablen mit Subscript](#Subscripted-variables) an"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:890
@@ -3075,13 +3172,15 @@ msgid ""
 "**T**\n"
 "[Table](#Pretty_002dprinting-2D-output): show lists of text and values as a table\n"
 msgstr ""
+"**T**\n"
+"[Table](#Pretty_002dprinting-2D-output): Zeigt Listen und Werte als Tabelle an\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:892
 msgid ""
 "[TeX markup](#Raw-TeX-in-the-TeX-export): allows TeX markup to be entered "
 "into a text file"
-msgstr ""
+msgstr "[TeX markup](#Raw-TeX-in-the-TeX-export): Erlaubt es, TeX in eine textdatei einzugeben"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:895

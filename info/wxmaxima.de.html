@@ -43,7 +43,7 @@
 <li><a href="#die-standardgröße-der-diagramme"><span class="toc-section-number">1.3.6</span> Die Standardgröße der Diagramme</a></li>
 <li><a href="#jsmath-zeichensätze"><span class="toc-section-number">1.3.7</span> jsMath-Zeichensätze</a></li>
 <li><a href="#automatisches-schließen-von-klammern"><span class="toc-section-number">1.3.8</span> Automatisches Schließen von Klammern</a></li>
-<li><a href="#dont-save-the-worksheet-automatically"><span class="toc-section-number">1.3.9</span> Don’t save the worksheet automatically</a></li>
+<li><a href="#arbeitsblatt-nicht-automatisch-speichern"><span class="toc-section-number">1.3.9</span> Arbeitsblatt nicht automatisch speichern</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#erweiterungen-für-maxima"><span class="toc-section-number">2</span> Erweiterungen für <em>Maxima</em></a><ul>
@@ -284,7 +284,7 @@ Normaler Text</code></pre>
 <h2 id="dateiformate"><span class="header-section-number">1.3</span> Dateiformate</h2>
 <p>The material that is developed in a <em>wxMaxima</em> session can be stored for later use in any of three ways:</p>
 <h3 id="mac"><span class="header-section-number">1.3.1</span> .mac</h3>
-<p>.mac files are ordinary text files that contain <em>Maxima</em> commands. They can be read using <em>Maxima</em>’s read command or <em>wxMaxima</em>’s File/Batch File menu entry.</p>
+<p>.mac-Dateien sind Textdateien mit <em>Maxima</em>-Befehlen. Sie können über Maxima’s read()-Befehl oder in wxMaxima über “Datei/Batch File laden” gelesen werden.</p>
 <p>Ein Beispiel:</p>
 <p>Eine .mac-Datei mit dem Namen Quadratic.mac wurde erstellt, die aus zwei Befehlen besteht: <code>f(x):=(x-5)^2;</code> und <code>wxdraw2d(explicit(f(x),x,-1,15));</code>. Das Ergebnis dieser Befehle (ohne die Pfade, die darin enthalten sind) sieht folgendermaßen aus:</p>
 <figure>
@@ -323,12 +323,12 @@ Normaler Text</code></pre>
 <li>Wenn eine öffnende Klammer eingegeben wird, fügt <em>wxMaxima</em> automatisch eine schließende Klammer ein.</li>
 <li>Markierter Text wird, wenn man eine geöffnete Klammer einzugeben versucht, automatisch in Klammern gesetzt.</li>
 </ul>
-<h3 id="dont-save-the-worksheet-automatically"><span class="header-section-number">1.3.9</span> Don’t save the worksheet automatically</h3>
-<p>If this option is set the file the worksheet is in is overwriten only on request of the user. In case of a crash/power loss/… a recent backup copy is still made available in the temp directory, though.</p>
-<p>If this option isn’t set wxMaxima behaves more like a modern cellphone app:</p>
+<h3 id="arbeitsblatt-nicht-automatisch-speichern"><span class="header-section-number">1.3.9</span> Arbeitsblatt nicht automatisch speichern</h3>
+<p>Wenn diese Option gewählt ist, wird das Arbeitsblatt nur überschrieben, wenn der Benutzer es speichert. Ein aktuelles Backup wird in diesem Fall im temp-Verzeichnis abgelegt.</p>
+<p>Ist diese Option nicht angewählt, arbeitet <em>wxMaxima</em> wie eine moderne Handy-Applikation:</p>
 <ul>
 <li>Dateien werden beim Schließen automatisch gespeichert</li>
-<li>And the file will automatically be saved every 3 minutes.</li>
+<li>und sie werden alle n Minuten zwischengespeichert.</li>
 </ul>
 <hr />
 <h1 id="erweiterungen-für-maxima"><span class="header-section-number">2</span> Erweiterungen für <em>Maxima</em></h1>
@@ -342,13 +342,13 @@ Normaler Text</code></pre>
 <p>Wenn nicht, kann jede Variable als mit tiefgestelltem <code>y</code> ausgestattet deklariert werden mittels <code>wxdeclare_subscript(variablenname);</code> oder <code>wxdeclare_subscript([variablenname1,variablenname2,...]);</code> Rückgängig gemacht werden kann dies mittels <code>wxdeclare_subscript(variablenname,false);</code></p>
 <h2 id="meldungen-in-der-statusleiste"><span class="header-section-number">2.2</span> Meldungen in der Statusleiste</h2>
 <p>Kommandos, die lange arbeiten, können Fortschrittsinformationen in die Statuszeile ausgeben. Diese Informationen überschreiben deren Inhalt. wxstatusbar() kann sogar in Bibliotheken verwendet werden, bei denen nicht bekannt ist, ob sie mit <em>wxMaxima</em> oder in einem <em>Maxima</em> ohne Frontend verwendet werden: Wenn <em>wxMaxima</em> diese Funktion nicht definiert hat, wird sie von Maxima einfach als undefinierte Funktion betrachtet und nicht weiter bearbeitet.</p>
-<pre><code>(%i2)   for i:1 thru 10 do (
-            /* Tell the user how far we got */
-            wxstatusbar(concat(&quot;Pass &quot;,i)),
-            /* (sleep n) is a Lisp function, which can be used with &quot;?&quot; before. */
-            /* it delays the program execution for some time (here for 3 seconds) */
-            ?sleep(3)
-        )$</code></pre>
+<pre><code>(%i2) for i:1 thru 10 do (
+        /* Tell the user how far we got */
+        wxstatusbar(concat(\&quot;Pass \&quot;,i)),
+        /* (sleep n) is a Lisp function, which can be used with \&quot;?\&quot; before. */
+        /* it delays the program execution for some time (here for 3 seconds) */
+        ?sleep(3)
+    )$</code></pre>
 <h2 id="diagramme"><span class="header-section-number">2.3</span> Diagramme</h2>
 <p>Diagramme haben per definitionem mit einer graphischen Benutzerumgebung zu tun, weswegen an dieser Stelle Erweiterungen von Maxima zu erwarten sind.</p>
 <h3 id="der-einbau-von-diagrammen-in-das-arbeitsblatt"><span class="header-section-number">2.3.1</span> Der Einbau von Diagrammen in das Arbeitsblatt</h3>
@@ -368,6 +368,7 @@ Normaler Text</code></pre>
 <pre><code> %i1 wxplot_size:[1200,800];
  %o1 [1200,800];
 
+
  %i1 wxdraw2d(
          explicit(
              sin(x),
@@ -384,9 +385,9 @@ Normaler Text</code></pre>
 <h3 id="hochqualitativere-diagramme"><span class="header-section-number">2.3.3</span> Hochqualitativere Diagramme</h3>
 <p>Gnuplot bietet keine unfehlbare Möglichkeit an, ob es Cairo unterstützt, eine Bibliothek, die Graphik mit Antialiasing und den unterschiedlichsten Linienmustern zu zeichnen erlaubt. Wurde gnuplot mit diesen Möglichkeiten ausgestattet, schaltet die entsprechende Option im Konfigurationsmenü oder ein <code>wxplot_pngcairo:true</code> die Unterstützung hierfür ein. Wurde gnuplot ohne diese Möglichkeit erstellt, führt <code>wxplot_pngcairo:true</code> jedoch zu leeren Plots.</p>
 <h3 id="die-größe-eingebetteter-diagramme-1"><span class="header-section-number">2.3.4</span> Die Größe eingebetteter Diagramme</h3>
-<p>If a plot was generated using the <code>wxdraw</code>-type commands (<code>wxplot</code> isn’t supported by this feature) and the file size of the underlying gnuplot project isn’t way too high <em>wxMaxima</em> offers a right-click menu that allows to open the plot in an interactive gnuplot window.</p>
+<p>Wenn ein Diagramm mittels einem <code>wxdraw</code>-ähnlichen Befehl erstellt wurde (<code>wxplot</code> wird hier nicht unterstüzt) und die Gnuplot-Datei nicht allzu lang ist, bietet <em>wxMaxima</em> einen Rechts-Klick-Menüpunkt an, der das Diagramm in einem interaktiven Gnuplot-Fenster öffnet.</p>
 <h3 id="opening-gnuplots-command-console-in-plot-windows"><span class="header-section-number">2.3.5</span> Opening gnuplot’s command console in <code>plot</code> windows</h3>
-<p>On MS Windows if in <em>Maxima</em>’s variable <code>gnuplot_command</code> “gnuplot” is replaced by “wgnuplot” gnuplot offers the possibility to open a console window gnuplot commands can be entered into. Unfortunately enabling this feature causes gnuplot to “steal” the keyboard focus for a short time every time a plot is prepared.</p>
+<p>Wenn unter Windows die Variable <code>gnuplot_command</code> auf “wgnuplot” geändert wird, erlaubt gnuplot, eine Kommandokonsole zu öffnen, stielt aber jedes Mal, wenn ein Diagramm gezeichnet wird, die Zeichen, die währenddessen in die Tastatur eingegeben werden.</p>
 <h3 id="einbetten-von-animationen-in-das-arbeitsblatt"><span class="header-section-number">2.3.6</span> Einbetten von Animationen in das Arbeitsblatt</h3>
 <p>3D diagrams tend to make it hard to read quantitative data. A viable alternative might be to assign the 3rd parameter to the mouse wheel. The <code>with_slider_draw</code> command is a version of <code>wxdraw2d</code> that does prepare multiple plots and allows to switch between them by moving the slider on top of the screen. <em>wxMaxima</em> allows to export this animation as an animated gif.</p>
 <p>Die ersten beiden Argumente von <code>with_slider_draw</code> sind der Name der Variable des zu variierenden Parameters und die Liste der Werte, die dieser annehmen soll. Darauf folgen die ganz normalen Argumente, die <code>wxdraw2d</code> akzeptiert:</p>
@@ -672,9 +673,9 @@ pngdraw2d(&quot;Test&quot;,
 <p><strong>S</strong> <a href="#Side-Panes">Side Panes</a>: collections of buttons that open dialog boxes, enter commands, and enter special characters</p>
 <p><a href="#index-Startup-File">Startup file location</a>: location of an initialization file that is passed to <em>wxMaxima</em> when it opens</p>
 <p><a href="#statusbar">Status bar</a>: Giving user feedback in the status bar</p>
-<p><a href="#Subscripted-variables">Subscripted variables</a>: using the command <code>wxsubscripts</code> to display subscripted variables</p>
-<p><strong>T</strong> <a href="#Pretty_002dprinting-2D-output">Table</a>: show lists of text and values as a table</p>
-<p><a href="#Raw-TeX-in-the-TeX-export">TeX markup</a>: allows TeX markup to be entered into a text file</p>
+<p><a href="#Subscripted-variables">Variablen mit Subscript</a>: wxsubsripts zeigt <a href="#Subscripted-variables">Variablen mit Subscript</a> an</p>
+<p><strong>T</strong> <a href="#Pretty_002dprinting-2D-output">Table</a>: Zeigt Listen und Werte als Tabelle an</p>
+<p><a href="#Raw-TeX-in-the-TeX-export">TeX markup</a>: Erlaubt es, TeX in eine textdatei einzugeben</p>
 <p><strong>U</strong> <a href="#I-lost-a-cell-contents-and-undo-doesn_0027t-remember">undo</a>: ways to recover lost cell contents</p>
 <p><strong>W</strong> <a href="#Embedding-animations-into-the-spreadsheet">with_slider_draw</a>: command to embed animations – alternative: <code>wxanimate_draw</code></p>
 <p><a href="#Embedding-animations-into-the-spreadsheet">with_slider_draw3d</a>: command to embed animations – alternative: <code>wxanimate_draw3d</code></p>

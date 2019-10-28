@@ -45,7 +45,7 @@
 <li><a href="#default-plot-size-for-new-maxima-sessions"><span class="toc-section-number">1.4.2</span> Default plot size for new <em>maxima</em> sessions</a></li>
 <li><a href="#use-jsmath-fonts"><span class="toc-section-number">1.4.3</span> Use jsMath fonts</a></li>
 <li><a href="#match-parenthesis-in-text-controls"><span class="toc-section-number">1.4.4</span> Match parenthesis in text controls</a></li>
-<li><a href="#autosave-interval"><span class="toc-section-number">1.4.5</span> Autosave interval</a></li>
+<li><a href="#dont-save-the-worksheet-automatically"><span class="toc-section-number">1.4.5</span> Don’t save the worksheet automatically</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#extensions-to-maxima"><span class="toc-section-number">2</span> Extensions to <em>Maxima</em></a><ul>
@@ -320,13 +320,13 @@ Ordinary text</code></pre>
 <li>If an opening parenthesis, bracket or double quote is entered <em>wxMaxima</em> will insert a closing one after it.</li>
 <li>If text is selected if any of these keys is pressed the selected text will be put between the matched signs.</li>
 </ul>
-<h3 id="autosave-interval"><span class="header-section-number">1.4.5</span> Autosave interval</h3>
-<p>If this value is set to a value bigger than zero <em>Maxima</em> will work in a more mobile-device-like fashion:</p>
+<h3 id="dont-save-the-worksheet-automatically"><span class="header-section-number">1.4.5</span> Don’t save the worksheet automatically</h3>
+<p>If this option is set the file the worksheet is in is overwriten only on request of the user. In case of a crash/power loss/… a recent backup copy is still made available in the temp directory, though.</p>
+<p>If this option isn’t set wxMaxima behaves more like a modern cellphone app:</p>
 <ul>
 <li>Files are saved automatically on exit</li>
-<li>And the file will automatically be saved every n minutes.</li>
+<li>And the file will automatically be saved every 3 minutes.</li>
 </ul>
-<p>For the automatic saving functionality to work <em>wxMaxima</em> needs to know a name to save the file with, though. This means this feature will only work if the file has already been saved to or opened from the disk.</p>
 <hr />
 <h1 id="extensions-to-maxima"><span class="header-section-number">2</span> Extensions to <em>Maxima</em></h1>
 <p><em>wxMaxima</em> is primarily a graphical user interface for <em>Maxima</em>. As such, its main purpose is to pass along commands to <em>Maxima</em> and to report the results of executing those commands. In some cases, however, <em>wxMaxima</em> adds functionality to <em>Maxima</em>. <em>wxMaxima</em>’s ability to generate reports by exporting a workbook’s contents to HTML and LaTeX files has been mentioned. This section considers some ways that <em>wxMaxima</em> enhances the inclusion of graphics into a session. described here.</p>
