@@ -56,10 +56,9 @@
 <li><a href="#die-größe-eingebetteter-diagramme-1"><span class="toc-section-number">2.3.4</span> Die Größe eingebetteter Diagramme</a></li>
 <li><a href="#opening-gnuplots-command-console-in-plot-windows"><span class="toc-section-number">2.3.5</span> Opening gnuplot’s command console in <code>plot</code> windows</a></li>
 <li><a href="#einbetten-von-animationen-in-das-arbeitsblatt"><span class="toc-section-number">2.3.6</span> Einbetten von Animationen in das Arbeitsblatt</a></li>
-<li><a href="#opening-multiple-plots-in-contemporaneous-windows"><span class="toc-section-number">2.3.7</span> Opening multiple plots in contemporaneous windows</a></li>
-<li><a href="#the-plot-using-draw-sidepane"><span class="toc-section-number">2.3.8</span> The “Plot using draw” sidepane</a></li>
+<li><a href="#mehrere-diagramme-gleichzeitig-in-fenstern-öffnen"><span class="toc-section-number">2.3.7</span> Mehrere Diagramme gleichzeitig in Fenstern öffnen</a></li>
 </ul></li>
-<li><a href="#embedding-graphics"><span class="toc-section-number">2.4</span> Embedding graphics</a></li>
+<li><a href="#einbetten-von-bildern"><span class="toc-section-number">2.4</span> Einbetten von Bildern</a></li>
 <li><a href="#wxmaximarc"><span class="toc-section-number">2.5</span> wxmaximarc</a></li>
 <li><a href="#special-variables-wx"><span class="toc-section-number">2.6</span> Special variables wx…</a></li>
 <li><a href="#pretty-printing-2d-output"><span class="toc-section-number">2.7</span> Pretty-printing 2D output</a></li>
@@ -437,7 +436,7 @@ with_slider_draw3d(
 <p>Die Standard-Bildwiderholrate für Animationen kann im Konfigurations-Dialog von <em>wxMaxima</em> eingestellt werden. Um die Geschwindigkeit einer einzelnen Animation zu ändern, kann die Variable <code>wxanimate_framerate</code> geändert werden:</p>
 <pre><code>wxanimate(a, 10,
     sin(a*x), [x,-5,5]), wxanimate_framerate=6$</code></pre>
-<p>The animation functions use <em>maxima</em>’s <code>makelist</code> command and therefore shares the pitfall that the slider variable’s value is substituted into the expression only if the variable is directly visible in the expression. Therefore the following example will fail:</p>
+<p>Die Animations-Funktionen haben eine Eigentümlichkeit, die daher rührt, dass sie makelist verwenden: Der Parameter, der sich von Bild zu Bild ändert, wird nur eingesetzt, wenn die Variable direkt sichtbar ist. Das folgende Beispiel scheitert daher:</p>
 <pre><code>f:sin(a*x);
 with_slider_draw(
     a,makelist(i/2,i,1,10),
@@ -445,7 +444,7 @@ with_slider_draw(
     grid=true,
     explicit(f,x,0,10)
 )$</code></pre>
-<p>If <em>Maxima</em> is explicitely asked to substitute the slider’s value plotting works fine instead:</p>
+<p>Wenn <em>Maxima</em> explizit gebeten wird, den Wert einzusetzen, funktioniert der Befehl stattdessen:</p>
 <pre><code>f:sin(a*x);
 with_slider_draw(
     b,makelist(i/2,i,1,10),
@@ -456,52 +455,52 @@ with_slider_draw(
         x,0,10
     )
 )$</code></pre>
-<h3 id="opening-multiple-plots-in-contemporaneous-windows"><span class="header-section-number">2.3.7</span> Opening multiple plots in contemporaneous windows</h3>
-<p>While not being a provided by <em>wxMaxima</em> this feature of <em>Maxima</em> (on setups that support it) sometimes comes in handily. The following example comes from a post from Mario Rodriguez to the <em>Maxima</em> mailing list:</p>
+<h3 id="mehrere-diagramme-gleichzeitig-in-fenstern-öffnen"><span class="header-section-number">2.3.7</span> Mehrere Diagramme gleichzeitig in Fenstern öffnen</h3>
+<p>Strenggenommen kein Feature von <em>wxMaxima</em>. Aber Maxima erlaubt auf vielen Systemen das folgende Beispiel von Mario Rodriguez auszuführen:</p>
 <pre><code>load(draw);
 
-/* Parabola in window #1 */
+/* Eine Parabel in Fenster #1 */
 draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));
 
-/* Parabola in window #2 */
+/* Eine Parabel in Fenster #2 */
 draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));
 
-/* Paraboloid in window #3 */
+/* Ein Paraboloid in Fenster #3 */
 draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
-<h3 id="the-plot-using-draw-sidepane"><span class="header-section-number">2.3.8</span> The “Plot using draw” sidepane</h3>
-<p>The “Plot using draw” sidebar hides a simple code generator that allows to generate scenes that make use of some of the flexibility of the <em>draw</em> package <em>maxima</em> comes with.</p>
-<h4 id="d"><span class="header-section-number">2.3.8.1</span> 2D</h4>
-<p>Generates the sceleton of a <code>draw()</code> command that draws a 2D scene. This scene later has to be filled with commands that generate the scene’s contents, for example by using the buttons in the rows below the “2D” button.</p>
-<p>One helpful feature of the 2D button is that it allows to setup the scene as an animation in which a variable (by default it is <em>t</em> has a different value in each frame: Often an moving 2D plot allows easier interpretation than the same data in a non-moving 3D one.</p>
-<h4 id="d-1"><span class="header-section-number">2.3.8.2</span> 3D</h4>
-<p>Generates the sceleton of a <code>draw()</code> command that draws a 3D scene. If neither a 2D or a 3D scene are set up all of the other buttons set up a 2D scene that contains the command the button generates.</p>
-<h4 id="expression"><span class="header-section-number">2.3.8.3</span> Expression</h4>
-<p>Appends a standard plot of an expression like <code>sin(x)</code>, <code>x*sin(x)</code> or <code>x^2+2*x-4</code> to the <code>draw()</code> command the cursor currently is in. If there is no draw command a 2D scene with the plot is generated. Each scene can be filled with any number of plots.</p>
-<h4 id="implicit-plot"><span class="header-section-number">2.3.8.4</span> Implicit plot</h4>
-<p>Tries to find all points an expression like <code>y=sin(x)</code>, <code>y*sin(x)=3</code> or <code>x^2+y^2=4</code> is true at and plots the resulting curve in the <code>draw()</code> command the cursor currently is in. If there is no draw command a 2D scene with the plot is generated.</p>
-<h4 id="parametric-plot"><span class="header-section-number">2.3.8.5</span> Parametric plot</h4>
-<p>Steps a variable from a lower limit to an upper limit and uses two expressions like <code>t*sin(t)</code> and <code>t*cos(t)</code> for generating the x, y (and in 3D plots also z) coordinates of a curve that is put into the current draw command.</p>
-<h4 id="points"><span class="header-section-number">2.3.8.6</span> Points</h4>
-<p>Draws many points that can optionally be joined. The coordinates of the points are taken from a list of lists, an 2D array or one list or array for each axis.</p>
-<h4 id="diagram-title"><span class="header-section-number">2.3.8.7</span> Diagram title</h4>
-<p>Draws a title on the upper end of the diagram,</p>
-<h4 id="axis"><span class="header-section-number">2.3.8.8</span> Axis</h4>
-<p>Sets up the axis.</p>
-<h4 id="contour"><span class="header-section-number">2.3.8.9</span> Contour</h4>
-<p>(Only for 3D plots): Adds contour lines similar to the ones one can find in a map of a mountain to the plot commands that follow in the current draw() command and/or to the ground plane of the diagram. Alternatively this wizard allows skipping drawing the curves entirely only showing the contour plot.</p>
-<h4 id="plot-name"><span class="header-section-number">2.3.8.10</span> Plot name</h4>
-<p>Adds a legend entry showing the next plot’s name to the legend of the diagram. An empty name disables generating legend entries for the following plots.</p>
-<h4 id="line-color"><span class="header-section-number">2.3.8.11</span> Line color</h4>
-<p>Sets the line color for the following plots the current draw command contains.</p>
-<h4 id="fill-color"><span class="header-section-number">2.3.8.12</span> Fill color</h4>
-<p>Sets the fill color for the following plots the current draw command contains.</p>
-<h4 id="grid"><span class="header-section-number">2.3.8.13</span> Grid</h4>
-<p>Pops up a wizard that allows to set up grid lines.</p>
-<h4 id="accuracy"><span class="header-section-number">2.3.8.14</span> Accuracy</h4>
-<p>Allows to select an adequate point in the speed vs. accuracy tradeoff that is part of any plot program.</p>
-<h2 id="embedding-graphics"><span class="header-section-number">2.4</span> Embedding graphics</h2>
-<p>if the <code>.wxmx</code> file format is being used embedding files in a <em>wxMaxima</em> project can be done as easily as per drag-and-drop. But sometimes (for example if an image’s contents might change later on in a session) it is better to tell the file to load the image on evaluation:</p>
-<pre><code>show_image(&quot;man.png&quot;);</code></pre>
+<p>Die “Plotte mittels Draw”-Seitenleiste</p>
+<p>Die “Plotte mittels Draw”-Seitenleiste enthält einen Codegenerator, der es erlaubt, einen Teil der Flexibilität des <em>draw</em>-Pakets von <em>Maxima</em> zu nutzen.</p>
+<h4 id="d"><span class="header-section-number">2.3.7.1</span> 2D</h4>
+<p>Generiert einen <code>draw()</code>-Befehl, der mittels der anderen Knöpfe der Seitenleiste mit einer 2D-Szene gefüllt werden kann.</p>
+<p>Dieser Knopf ist hauptsächlich dann praktisch, wenn eine Animation erstellt werden soll: Ein sich bewegendes flaches Diagramm ist einfacher abzulesen, als ein räumliches Solches.</p>
+<h4 id="d-1"><span class="header-section-number">2.3.7.2</span> 3D</h4>
+<p>Wie “2D”, aber für dreidimensionale Diagramme.</p>
+<h4 id="ausdruck"><span class="header-section-number">2.3.7.3</span> Ausdruck</h4>
+<p>Fügt den aktuellen <code>draw()</code>-Befehl den Plot einer Kurve wie <code>sin(x)</code> oder <code>x^2+2*x-4</code> hinzu. Besteht noch kein <code>draw()</code>-Befehl, wird automatisch eine 2D-Szene erzeugt.</p>
+<h4 id="implizit"><span class="header-section-number">2.3.7.4</span> Implizit</h4>
+<p>Markiert alle Punkte, an denen eine Bedingung wie <code>y=sin(x)</code>, <code>y*sin(x)=3</code> oder <code>x^2+y^2=4</code> erfüllt ist und zeichnet diese Kurve in das aktuelle Diagramm ein. Gibt es kein aktuelles Diagramm, wird ein 2D-Diagramm erzeugt.</p>
+<h4 id="parametrisch"><span class="header-section-number">2.3.7.5</span> Parametrisch</h4>
+<p>Bewegt eine Variable von einem Start- zu einem Endwert und verwendet getrennte Ausdrücke wie <code>t*sin(t)</code> und <code>t*cos(t)</code>, um die x-, die y- und (in 3D-Diagrammen die z-Koordinate zu generieren.</p>
+<h4 id="punkte"><span class="header-section-number">2.3.7.6</span> Punkte</h4>
+<p>Zeichnet eine Reihe von Punkten, die optional miteinander verbunden werden. Die Koordinaten der Punkte können aus einer Liste von Listen, einem 2-dimensionalen Array oder einer Liste oder einem Array pro Axe entnommen werden.</p>
+<h4 id="diagrammtitel"><span class="header-section-number">2.3.7.7</span> Diagrammtitel</h4>
+<p>Bestimmt den Titel des Diagramms.</p>
+<h4 id="achsen"><span class="header-section-number">2.3.7.8</span> Achsen</h4>
+<p>Die Einstellungen für die Achsen.</p>
+<h4 id="höhenlinien"><span class="header-section-number">2.3.7.9</span> Höhenlinien</h4>
+<p>(Nur für 3D-Diagramme): Erzeugt Höhenlinien auf der zu zeichnenden Oberfläche, dem Boden des Diagramms oder auf Beiden. Kann optional auch nur die Höhenlinen in der Ansicht von Oben zeichnen.</p>
+<h4 id="name-der-kurve"><span class="header-section-number">2.3.7.10</span> Name der Kurve</h4>
+<p>Fügt einen Eintrag zur Legende hinzu, der für die nächsten Objekte gilt. Ein leerer Name bedeutet, dass die nun folgenden Objekte keinen eigenen Eintrag erhalten.</p>
+<h4 id="linienfarbe"><span class="header-section-number">2.3.7.11</span> Linienfarbe</h4>
+<p>Setzt die Linienfarbe für die die nun folgenden Objekte.</p>
+<h4 id="füllfarbe"><span class="header-section-number">2.3.7.12</span> Füllfarbe</h4>
+<p>Setzt die Füllfarbe für die nun folgenden Objekte des aktuellen <code>draw</code>-Kommandos.</p>
+<h4 id="gitter"><span class="header-section-number">2.3.7.13</span> Gitter</h4>
+<p>Ein Assistent, der die Gitterlinien einzustellen hilft.</p>
+<h4 id="genauigkeit"><span class="header-section-number">2.3.7.14</span> Genauigkeit</h4>
+<p>Erlaubt das Wählen zwischen Geschwindigkeit und Genauigkeit bei der Erstellung der folgenden Kurven.</p>
+<h2 id="einbetten-von-bildern"><span class="header-section-number">2.4</span> Einbetten von Bildern</h2>
+<p>Das <code>.wxmx</code>-Dateiformat erlaubt es, Bilder per Drag-And-Drop einzubetten. Es ist aber auch möglich, <em>Maxima</em> anzuweisen, Bilder einzubauen:</p>
+<pre><code>show_image(\&quot;man.png\&quot;);</code></pre>
 <h2 id="wxmaximarc"><span class="header-section-number">2.5</span> wxmaximarc</h2>
 <p>The <em>Maxima</em> user directory contains a text file named <code>wxmaxima-init.mac</code> the contents of the file is passed to <em>Maxima</em> automatically every time a new worksheet has been started.</p>
 <p>To find out which directory <em>Maxima</em> uses as the user directory just type in the following line:</p>

@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-28 11:31+0100\n"
-"PO-Revision-Date: 2019-10-28 11:20+0100\n"
+"PO-Revision-Date: 2019-10-28 14:49+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -1884,13 +1884,6 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:479
-#, fuzzy
-#| msgid ""
-#| "The animation functions have a pitfall that one has to be aware of when "
-#| "using them: The slider variable's value are substituted into the "
-#| "expression that is to be plotted - which will fail, if the variable isn't "
-#| "directly visible in the expression. Therefore the following example will "
-#| "fail:"
 msgid ""
 "The animation functions use _maxima_'s `makelist` command and therefore "
 "shares the pitfall that the slider variable's value is substituted into the "
@@ -1924,14 +1917,10 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:489
-#, fuzzy
-#| msgid ""
-#| "If _Maxima_ is forced to first evaluate the expression and then asked to "
-#| "substitute the slider’s value plotting works fine instead:"
 msgid ""
 "If _Maxima_ is explicitely asked to substitute the slider’s value plotting "
 "works fine instead:"
-msgstr "Wenn _Maxima_ gezwungen"
+msgstr "Wenn _Maxima_ explizit gebeten wird, den Wert einzusetzen, funktioniert der Befehl stattdessen:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:500
@@ -1967,7 +1956,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:502
 msgid "### Opening multiple plots in contemporaneous windows"
-msgstr ""
+msgstr "### Mehrere Diagramme gleichzeitig in Fenstern öffnen"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:504
@@ -1975,13 +1964,13 @@ msgid ""
 "While not being a provided by _wxMaxima_ this feature of _Maxima_ (on setups "
 "that support it) sometimes comes in handily. The following example comes "
 "from a post from Mario Rodriguez to the _Maxima_ mailing list:"
-msgstr ""
+msgstr "Strenggenommen kein Feature von _wxMaxima_. Aber Maxima erlaubt auf vielen Systemen das folgende Beispiel von Mario Rodriguez auszuführen:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:506
 #, no-wrap
 msgid "    load(draw);\n"
-msgstr ""
+msgstr "    load(draw);\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:509
@@ -1990,6 +1979,8 @@ msgid ""
 "    /* Parabola in window #1 */\n"
 "    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
 msgstr ""
+"    /* Eine Parabel in Fenster #1 */\n"
+"    draw2d(terminal=[wxt,1],explicit(x^2,x,-1,1));\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:512
@@ -1998,6 +1989,8 @@ msgid ""
 "    /* Parabola in window #2 */\n"
 "    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
 msgstr ""
+"    /* Eine Parabel in Fenster #2 */\n"
+"    draw2d(terminal=[wxt,2],explicit(x^2,x,-1,1));\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:515
@@ -2006,11 +1999,13 @@ msgid ""
 "    /* Paraboloid in window #3 */\n"
 "    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 msgstr ""
+"    /* Ein Paraboloid in Fenster #3 */\n"
+"    draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:517
 msgid "### The \"Plot using draw\" sidepane"
-msgstr ""
+msgstr "Die \"Plotte mittels Draw\"-Seitenleiste"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:519
@@ -2018,12 +2013,12 @@ msgid ""
 "The \"Plot using draw\" sidebar hides a simple code generator that allows to "
 "generate scenes that make use of some of the flexibility of the _draw_ "
 "package _maxima_ comes with."
-msgstr ""
+msgstr "Die \"Plotte mittels Draw\"-Seitenleiste enthält einen Codegenerator, der es erlaubt, einen Teil der Flexibilität des _draw_-Pakets von _Maxima_ zu nutzen."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:521
 msgid "#### 2D"
-msgstr ""
+msgstr "#### 2D"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:523
@@ -2032,7 +2027,7 @@ msgid ""
 "scene later has to be filled with commands that generate the scene's "
 "contents, for example by using the buttons in the rows below the \"2D\" "
 "button."
-msgstr ""
+msgstr "Generiert einen `draw()`-Befehl, der mittels der anderen Knöpfe der Seitenleiste mit einer 2D-Szene gefüllt werden kann."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:525
@@ -2041,12 +2036,12 @@ msgid ""
 "an animation in which a variable (by default it is _t_ has a different value "
 "in each frame: Often an moving 2D plot allows easier interpretation than the "
 "same data in a non-moving 3D one."
-msgstr ""
+msgstr "Dieser Knopf ist hauptsächlich dann praktisch, wenn eine Animation erstellt werden soll: Ein sich bewegendes flaches Diagramm ist einfacher abzulesen, als ein räumliches Solches."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:527
 msgid "#### 3D"
-msgstr ""
+msgstr "#### 3D"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:529
@@ -2054,12 +2049,12 @@ msgid ""
 "Generates the sceleton of a `draw()` command that draws a 3D scene. If "
 "neither a 2D or a 3D scene are set up all of the other buttons set up a 2D "
 "scene that contains the command the button generates."
-msgstr ""
+msgstr "Wie \"2D\", aber für dreidimensionale Diagramme."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:531
 msgid "#### Expression"
-msgstr ""
+msgstr "#### Ausdruck"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:533
@@ -2068,12 +2063,12 @@ msgid ""
 "`x^2+2*x-4` to the `draw()` command the cursor currently is in. If there is "
 "no draw command a 2D scene with the plot is generated. Each scene can be "
 "filled with any number of plots."
-msgstr ""
+msgstr "Fügt den aktuellen `draw()`-Befehl den Plot einer Kurve wie `sin(x)` oder `x^2+2*x-4` hinzu. Besteht noch kein `draw()`-Befehl, wird automatisch eine 2D-Szene erzeugt."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:535
 msgid "#### Implicit plot"
-msgstr ""
+msgstr "#### Implizit"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:537
@@ -2082,12 +2077,12 @@ msgid ""
 "`x^2+y^2=4` is true at and plots the resulting curve in the `draw()` command "
 "the cursor currently is in. If there is no draw command a 2D scene with the "
 "plot is generated."
-msgstr ""
+msgstr "Markiert alle Punkte, an denen eine Bedingung wie `y=sin(x)`, `y*sin(x)=3` oder `x^2+y^2=4` erfüllt ist und zeichnet diese Kurve in das aktuelle Diagramm ein. Gibt es kein aktuelles Diagramm, wird ein 2D-Diagramm erzeugt."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:539
 msgid "#### Parametric plot"
-msgstr ""
+msgstr "#### Parametrisch"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:541
@@ -2096,12 +2091,12 @@ msgid ""
 "expressions like `t*sin(t)` and `t*cos(t)` for generating the x, y (and in "
 "3D plots also z) coordinates of a curve that is put into the current draw "
 "command."
-msgstr ""
+msgstr "Bewegt eine Variable von einem Start- zu einem Endwert und verwendet getrennte Ausdrücke wie `t*sin(t)` und `t*cos(t)`, um die x-, die y- und (in 3D-Diagrammen die z-Koordinate zu generieren."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:543
 msgid "#### Points"
-msgstr ""
+msgstr "#### Punkte"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:545
@@ -2109,34 +2104,32 @@ msgid ""
 "Draws many points that can optionally be joined. The coordinates of the "
 "points are taken from a list of lists, an 2D array or one list or array for "
 "each axis."
-msgstr ""
+msgstr "Zeichnet eine Reihe von Punkten, die optional miteinander verbunden werden. Die Koordinaten der Punkte können aus einer Liste von Listen, einem 2-dimensionalen Array oder einer Liste oder einem Array pro Axe entnommen werden."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:547
 msgid "#### Diagram title"
-msgstr ""
+msgstr "#### Diagrammtitel"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:549
 msgid "Draws a title on the upper end of the diagram,"
-msgstr ""
+msgstr "Bestimmt den Titel des Diagramms."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:551
-#, fuzzy
-#| msgid "### Maxima"
 msgid "#### Axis"
-msgstr "### Maxima"
+msgstr "#### Achsen"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:553
 msgid "Sets up the axis."
-msgstr ""
+msgstr "Die Einstellungen für die Achsen."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:555
 msgid "#### Contour"
-msgstr ""
+msgstr "#### Höhenlinien"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:557
@@ -2145,12 +2138,12 @@ msgid ""
 "a map of a mountain to the plot commands that follow in the current draw() "
 "command and/or to the ground plane of the diagram. Alternatively this wizard "
 "allows skipping drawing the curves entirely only showing the contour plot."
-msgstr ""
+msgstr "(Nur für 3D-Diagramme): Erzeugt Höhenlinien auf der zu zeichnenden Oberfläche, dem Boden des Diagramms oder auf Beiden. Kann optional auch nur die Höhenlinen in der Ansicht von Oben zeichnen."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:559
 msgid "#### Plot name"
-msgstr ""
+msgstr "#### Name der Kurve"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:561
@@ -2158,58 +2151,58 @@ msgid ""
 "Adds a legend entry showing the next plot's name to the legend of the "
 "diagram. An empty name disables generating legend entries for the following "
 "plots."
-msgstr ""
+msgstr "Fügt einen Eintrag zur Legende hinzu, der für die nächsten Objekte gilt. Ein leerer Name bedeutet, dass die nun folgenden Objekte keinen eigenen Eintrag erhalten."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:563
 msgid "#### Line color"
-msgstr ""
+msgstr "#### Linienfarbe"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:565
 msgid ""
 "Sets the line color for the following plots the current draw command "
 "contains."
-msgstr ""
+msgstr "Setzt die Linienfarbe für die die nun folgenden Objekte."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:567
 msgid "#### Fill color"
-msgstr ""
+msgstr "#### Füllfarbe"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:569
 msgid ""
 "Sets the fill color for the following plots the current draw command "
 "contains."
-msgstr ""
+msgstr "Setzt die Füllfarbe für die nun folgenden Objekte des aktuellen `draw`-Kommandos."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:571
 msgid "#### Grid"
-msgstr ""
+msgstr "#### Gitter"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:573
 msgid "Pops up a wizard that allows to set up grid lines."
-msgstr ""
+msgstr "Ein Assistent, der die Gitterlinien einzustellen hilft."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:575
 msgid "#### Accuracy"
-msgstr ""
+msgstr "#### Genauigkeit"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:577
 msgid ""
 "Allows to select an adequate point in the speed vs. accuracy tradeoff that "
 "is part of any plot program."
-msgstr ""
+msgstr "Erlaubt das Wählen zwischen Geschwindigkeit und Genauigkeit bei der Erstellung der folgenden Kurven."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:579
 msgid "## Embedding graphics"
-msgstr ""
+msgstr "## Einbetten von Bildern"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:581
@@ -2218,13 +2211,13 @@ msgid ""
 "project can be done as easily as per drag-and-drop. But sometimes (for "
 "example if an image’s contents might change later on in a session) it is "
 "better to tell the file to load the image on evaluation:"
-msgstr ""
+msgstr "Das `.wxmx`-Dateiformat erlaubt es, Bilder per Drag-And-Drop einzubetten. Es ist aber auch möglich, _Maxima_ anzuweisen, Bilder einzubauen:"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:583
 #, no-wrap
 msgid "    show_image(\"man.png\");\n"
-msgstr ""
+msgstr "    show_image(\\\"man.png\\\");\n"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:585
