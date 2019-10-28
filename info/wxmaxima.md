@@ -448,22 +448,34 @@ The same functionality for 3D plots is accessible as `with_slider_draw3d`, which
 	    )
 	)$
 
-There is a second set of functions making use of the slider
+If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make it's 3D nature available to the intiution:
 
-*   `wxanimate_draw` and
-*   `wxanimate_draw3d`:
+    wxanimate_autoplay:true;
+    wxanimate_framerate:20;
+    with_slider_draw3d(
+	    t,makelist(i,i,0,2*π,.05*π),
+		title=sconcat("α=",α),
+        surface_hide=true,
+        contour=both,
+	    view=[60,30+5*sin(t)],
+	    explicit(
+		    sin(x)*y^2,
+			x,-2*π,2*π,
+			y,-2*π,2*π
+	    )
+	)$
 
-    wxanimate_draw(
-        a, 3,
-        explicit(sin(a*x), x, -4, 4),
-        title=printf(false, "a=~a", a));
+For those more familiar with `plot` than with `draw` there is a second set of functions:
+
+ * `with_slider` and
+ * `wxanimate`.
 
 Normally the animations are played back or exported with the frame rate chosen in the configuration of _wxMaxima_. To set the speed an individual animation is played back the variable wxanimate\_framerate can be used:
 
     wxanimate(a, 10,
         sin(a*x), [x,-5,5]), wxanimate_framerate=6$
 
-The animation functions have a pitfall that one has to be aware of when using them: The slider variable's value are substituted into the expression that is to be plotted - which will fail, if the variable isn't directly visible in the expression. Therefore the following example will fail:
+The animation functions use _maxima_'s `makelist` command and therefore shares the pitfall that the slider variable's value is substituted into the expression only if the variable is directly visible in the expression. Therefore the following example will fail:
 
     f:sin(a*x);
     with_slider_draw(
@@ -473,14 +485,17 @@ The animation functions have a pitfall that one has to be aware of when using th
         explicit(f,x,0,10)
     )$
 
-If _Maxima_ is forced to first evaluate the expression and then asked to substitute the slider’s value plotting works fine instead:
+If _Maxima_ is explicitely asked to substitute the slider’s value plotting works fine instead:
 
     f:sin(a*x);
     with_slider_draw(
-        a,makelist(i/2,i,1,10),
-        title=concat("a=",float(a)),
+        b,makelist(i/2,i,1,10),
+        title=concat("a=",float(b)),
         grid=true,
-        explicit(''f,x,0,10)
+        explicit(
+		    subst(a=b,f),
+			x,0,10
+	    )
     )$
 
 ### Opening multiple plots in contemporaneous windows

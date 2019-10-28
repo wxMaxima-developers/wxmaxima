@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: da\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-27 19:10+0100\n"
+"POT-Creation-Date: 2019-10-28 11:31+0100\n"
 "PO-Revision-Date: 2009-06-08 20:39-0300\n"
 "Last-Translator: Jens Thostrup <jt@gu-nuuk.gl>\n"
 "Language-Team: danish <matematik@gu_nuuk.gl>\n"
@@ -107,10 +107,10 @@ msgstr ""
 #. type: Bullet: '* '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:41
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:337
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:618
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:760
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:772
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:792
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:633
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:775
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:787
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:807
 msgid "* *"
 msgstr ""
 
@@ -1046,7 +1046,7 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:366
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:720
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:735
 msgid "## Plotting"
 msgstr ""
 
@@ -1262,31 +1262,51 @@ msgstr ""
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:452
-msgid "There is a second set of functions making use of the slider"
-msgstr ""
-
-#. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:455
-msgid "`wxanimate_draw` and"
-msgstr ""
-
-#. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:455
-msgid "`wxanimate_draw3d`:"
+msgid ""
+"If the general shape of the plot is what matters it might suffice to move "
+"the plot just a little bit in order to make it's 3D nature available to the "
+"intiution:"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:460
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:467
 #, no-wrap
 msgid ""
-"    wxanimate_draw(\n"
-"        a, 3,\n"
-"        explicit(sin(a*x), x, -4, 4),\n"
-"        title=printf(false, \"a=~a\", a));\n"
+"    wxanimate_autoplay:true;\n"
+"    wxanimate_framerate:20;\n"
+"    with_slider_draw3d(\n"
+"\t    t,makelist(i,i,0,2*π,.05*π),\n"
+"\t\ttitle=sconcat(\"α=\",α),\n"
+"        surface_hide=true,\n"
+"        contour=both,\n"
+"\t    view=[60,30+5*sin(t)],\n"
+"\t    explicit(\n"
+"\t\t    sin(x)*y^2,\n"
+"\t\t\tx,-2*π,2*π,\n"
+"\t\t\ty,-2*π,2*π\n"
+"\t    )\n"
+"\t)$\n"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:462
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:469
+msgid ""
+"For those more familiar with `plot` than with `draw` there is a second set "
+"of functions:"
+msgstr ""
+
+#. type: Bullet: ' * '
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:472
+msgid "`with_slider` and"
+msgstr ""
+
+#. type: Bullet: ' * '
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:472
+msgid "`wxanimate`."
+msgstr ""
+
+#. type: Plain text
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:474
 msgid ""
 "Normally the animations are played back or exported with the frame rate "
 "chosen in the configuration of _wxMaxima_. To set the speed an individual "
@@ -1294,7 +1314,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:465
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:477
 #, no-wrap
 msgid ""
 "    wxanimate(a, 10,\n"
@@ -1302,16 +1322,16 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:467
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:479
 msgid ""
-"The animation functions have a pitfall that one has to be aware of when "
-"using them: The slider variable's value are substituted into the expression "
-"that is to be plotted - which will fail, if the variable isn't directly "
-"visible in the expression. Therefore the following example will fail:"
+"The animation functions use _maxima_'s `makelist` command and therefore "
+"shares the pitfall that the slider variable's value is substituted into the "
+"expression only if the variable is directly visible in the expression. "
+"Therefore the following example will fail:"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:475
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:487
 #, no-wrap
 msgid ""
 "    f:sin(a*x);\n"
@@ -1324,32 +1344,35 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:477
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:489
 msgid ""
-"If _Maxima_ is forced to first evaluate the expression and then asked to "
-"substitute the slider’s value plotting works fine instead:"
+"If _Maxima_ is explicitely asked to substitute the slider’s value plotting "
+"works fine instead:"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:485
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:500
 #, no-wrap
 msgid ""
 "    f:sin(a*x);\n"
 "    with_slider_draw(\n"
-"        a,makelist(i/2,i,1,10),\n"
-"        title=concat(\"a=\",float(a)),\n"
+"        b,makelist(i/2,i,1,10),\n"
+"        title=concat(\"a=\",float(b)),\n"
 "        grid=true,\n"
-"        explicit(''f,x,0,10)\n"
+"        explicit(\n"
+"\t\t    subst(a=b,f),\n"
+"\t\t\tx,0,10\n"
+"\t    )\n"
 "    )$\n"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:487
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:502
 msgid "### Opening multiple plots in contemporaneous windows"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:489
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:504
 msgid ""
 "While not being a provided by _wxMaxima_ this feature of _Maxima_ (on setups "
 "that support it) sometimes comes in handily. The following example comes "
@@ -1357,13 +1380,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:491
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:506
 #, no-wrap
 msgid "    load(draw);\n"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:494
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:509
 #, no-wrap
 msgid ""
 "    /* Parabola in window #1 */\n"
@@ -1371,7 +1394,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:497
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:512
 #, no-wrap
 msgid ""
 "    /* Parabola in window #2 */\n"
@@ -1379,7 +1402,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:500
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:515
 #, no-wrap
 msgid ""
 "    /* Paraboloid in window #3 */\n"
@@ -1387,12 +1410,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:502
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:517
 msgid "### The \"Plot using draw\" sidepane"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:504
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:519
 msgid ""
 "The \"Plot using draw\" sidebar hides a simple code generator that allows to "
 "generate scenes that make use of some of the flexibility of the _draw_ "
@@ -1400,12 +1423,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:506
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:521
 msgid "#### 2D"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:508
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:523
 msgid ""
 "Generates the sceleton of a `draw()` command that draws a 2D scene. This "
 "scene later has to be filled with commands that generate the scene's "
@@ -1414,7 +1437,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:510
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:525
 msgid ""
 "One helpful feature of the 2D button is that it allows to setup the scene as "
 "an animation in which a variable (by default it is _t_ has a different value "
@@ -1423,12 +1446,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:512
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:527
 msgid "#### 3D"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:514
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:529
 msgid ""
 "Generates the sceleton of a `draw()` command that draws a 3D scene. If "
 "neither a 2D or a 3D scene are set up all of the other buttons set up a 2D "
@@ -1436,12 +1459,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:516
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:531
 msgid "#### Expression"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:518
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:533
 msgid ""
 "Appends a standard plot of an expression like `sin(x)`, `x*sin(x)` or "
 "`x^2+2*x-4` to the `draw()` command the cursor currently is in. If there is "
@@ -1450,12 +1473,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:520
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:535
 msgid "#### Implicit plot"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:522
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:537
 msgid ""
 "Tries to find all points an expression like `y=sin(x)`, `y*sin(x)=3` or "
 "`x^2+y^2=4` is true at and plots the resulting curve in the `draw()` command "
@@ -1464,12 +1487,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:524
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:539
 msgid "#### Parametric plot"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:526
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:541
 msgid ""
 "Steps a variable from a lower limit to an upper limit and uses two "
 "expressions like `t*sin(t)` and `t*cos(t)` for generating the x, y (and in "
@@ -1478,12 +1501,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:528
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:543
 msgid "#### Points"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:530
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:545
 msgid ""
 "Draws many points that can optionally be joined. The coordinates of the "
 "points are taken from a list of lists, an 2D array or one list or array for "
@@ -1491,32 +1514,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:532
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:547
 msgid "#### Diagram title"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:534
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:549
 msgid "Draws a title on the upper end of the diagram,"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:536
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:551
 msgid "#### Axis"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:538
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:553
 msgid "Sets up the axis."
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:540
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:555
 msgid "#### Contour"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:542
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:557
 msgid ""
 "(Only for 3D plots): Adds contour lines similar to the ones one can find in "
 "a map of a mountain to the plot commands that follow in the current draw() "
@@ -1525,12 +1548,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:544
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:559
 msgid "#### Plot name"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:546
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:561
 msgid ""
 "Adds a legend entry showing the next plot's name to the legend of the "
 "diagram. An empty name disables generating legend entries for the following "
@@ -1538,58 +1561,58 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:548
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:563
 msgid "#### Line color"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:550
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:565
 msgid ""
 "Sets the line color for the following plots the current draw command "
 "contains."
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:552
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:567
 msgid "#### Fill color"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:554
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:569
 msgid ""
 "Sets the fill color for the following plots the current draw command "
 "contains."
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:556
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:571
 msgid "#### Grid"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:558
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:573
 msgid "Pops up a wizard that allows to set up grid lines."
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:560
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:575
 msgid "#### Accuracy"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:562
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:577
 msgid ""
 "Allows to select an adequate point in the speed vs. accuracy tradeoff that "
 "is part of any plot program."
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:564
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:579
 msgid "## Embedding graphics"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:566
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:581
 msgid ""
 "if the `.wxmx` file format is being used embedding files in a _wxMaxima_ "
 "project can be done as easily as per drag-and-drop. But sometimes (for "
@@ -1598,18 +1621,18 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:568
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:583
 #, no-wrap
 msgid "    show_image(\"man.png\");\n"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:570
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:585
 msgid "## wxmaximarc"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:572
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:587
 msgid ""
 "The _Maxima_ user directory contains a text file named `wxmaxima-init.mac` "
 "the contents of the file is passed to _Maxima_ automatically every time a "
@@ -1617,38 +1640,38 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:574
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:589
 msgid ""
 "To find out which directory _Maxima_ uses as the user directory just type in "
 "the following line:"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:576
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:591
 #, no-wrap
 msgid "    maxima_userdir;\n"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:578
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:593
 msgid ""
 "The answer from _Maxima_ will specify the name of the directory that the "
 "startup file can be placed in."
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:580
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:595
 #, no-wrap
 msgid "    %o1 /home/username/.maxima\n"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:583
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:598
 msgid "## Special variables wx..."
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:590
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:605
 msgid ""
 "`wxsubscripts` tells _Maxima_ if it should convert variable names that "
 "contain an underscore (`R_150` or the like) into subscripted variables. See "
@@ -1657,7 +1680,7 @@ msgid ""
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:590
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:605
 msgid ""
 "`wxfilename`: This variable contains the name of the file currently opened "
 "in _wxMaxima_. On Windows this piece of information is available only if in "
@@ -1666,7 +1689,7 @@ msgid ""
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:590
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:605
 msgid ""
 "`wxplot_pngcairo` tells whether _wxMaxima_ tries to use _gnuplot_’s pngcairo "
 "terminal that provides more line styles and a better overall graphics "
@@ -1675,12 +1698,12 @@ msgid ""
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:590
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:605
 msgid "`wxplot_size` defines the size of embedded plots."
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:590
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:605
 msgid ""
 "`wxchangedir`: On most operating systems _wxMaxima_ automatically sets "
 "_Maxima_’s working directory to the directory of the current file. This "
@@ -1696,7 +1719,7 @@ msgid ""
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:590
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:605
 msgid ""
 "`wxanimate_framerate` The number of frames per second the following "
 "animations have to be played back with. -1 tells _wxMaxima_ to use the "
@@ -1704,12 +1727,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:592
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:607
 msgid "## Pretty-printing 2D output"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:594
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:609
 msgid ""
 "The function `table_form()` displays a 2D list in a form that is more "
 "readable than the output _Maxima_’s default output routine. The input is a "
@@ -1719,7 +1742,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:601
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:616
 #, no-wrap
 msgid ""
 "    table_form(\n"
@@ -1731,67 +1754,67 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:603
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:618
 msgid ""
 "As the next example shows, the lists that are assembled by the `table_form` "
 "command can be created before the command is executed."
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:605
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:620
 msgid "![A third table example](./Matrix%20table%20example.png)"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:607
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:622
 msgid ""
 "Also, because a matrix is a list of lists, matrices can be converted to "
 "tables in a similar fashion."
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:609
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:624
 msgid "![Another table_form example](./Second%20table%20example.png)"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:611
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:626
 msgid "## Bug reporting"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:613
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:628
 msgid ""
 "_wxMaxima_ provides a few functions that gather bug reporting information "
 "about the current system:"
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:616
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:631
 msgid ""
 "`wxbuild_info()` gathers information about the currently running version of "
 "_wxMaxima_"
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:616
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:631
 msgid "`wxbug_report()` tells how and where to file bugs"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:621
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:636
 msgid "## Marking output being drawn in red"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:623
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:638
 msgid ""
 "_Maxima_'s `box()` command causes _wxMaxima_ to print its argument with a "
 "red background."
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:625
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:640
 #, no-wrap
 msgid ""
 "Troubleshooting\n"
@@ -1799,12 +1822,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:628
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:643
 msgid "## Cannot connect to _Maxima_"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:630
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:645
 msgid ""
 "Since _Maxima_ (the program that does the actual mathematics) and _wxMaxima_ "
 "(providing the easy-to-use user interface) are separate programs that "
@@ -1821,7 +1844,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:632
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:647
 msgid ""
 "On Un\\*x computers another possible reason would be that the loopback "
 "network that provides network connections between two programs in the same "
@@ -1829,12 +1852,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:634
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:649
 msgid "## How to save data from a broken .wxmx file"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:636
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:651
 msgid ""
 "Internally most modern xml-based formats are ordinary zip-files with one "
 "special characteristic: the first file in the archive is stored uncompressed "
@@ -1842,7 +1865,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:638
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:653
 msgid ""
 "If the zip signature at the end of the file is still intact after renaming a "
 "broken .wxmx file to .zip most operating systems will provide a way to "
@@ -1858,21 +1881,21 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:640
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:655
 msgid ""
 "If the text file containing this contents is saved as a file ending in .xml "
 "_wxMaxima_ will know how to recover the text of the document from it."
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:642
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:657
 msgid ""
 "## I want some debug info to be displayed on the screen before my command "
 "has finished"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:644
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:659
 msgid ""
 "Normally _wxMaxima_ waits for the whole 2D formula to be transferred before "
 "it begins to typeset. This saves time for making many attempts to typeset a "
@@ -1882,7 +1905,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:650
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:665
 #, no-wrap
 msgid ""
 "    for i:1 thru 10 do (\n"
@@ -1893,13 +1916,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:652
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:667
 msgid ""
 "## _wxMaxima_ on Windows crashes on displaying seemingly simple equations"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:654
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:669
 msgid ""
 "The jsMath fonts allow for excellent 2D-display of equations. But there are "
 "broken versions of this package that crash _wxMaxima_. A working version can "
@@ -1910,24 +1933,24 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:656
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:671
 msgid "## Plotting only shows an closed empty envelope with an error message"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:658
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:673
 msgid ""
 "This means that _wxMaxima_ could not read the file _Maxima_ that was "
 "supposed to instruct gnuplot to create."
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:660
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:675
 msgid "Possible reasons for this error are:"
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:665
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:680
 msgid ""
 "The plotting command is part of a third-party package like `implicit_plot` "
 "but this package was not loaded by _Maxima_’s `load()` command before trying "
@@ -1935,7 +1958,7 @@ msgid ""
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:665
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:680
 msgid ""
 "_Maxima_ tried to do something the currently installed version of gnuplot "
 "isn’t able to understand. In this case the file maxout.gnuplot in the "
@@ -1945,7 +1968,7 @@ msgid ""
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:665
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:680
 msgid ""
 "Gnuplot was instructed to use the pngcairo library that provides "
 "antialiasing and additional line styles, but it was not compiled to support "
@@ -1955,17 +1978,17 @@ msgid ""
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:665
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:680
 msgid "Gnuplot didn’t output a valid .png file."
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:667
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:682
 msgid "## Plotting an animation results in “error: undefined variable”"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:669
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:684
 msgid ""
 "The value of the slider variable by default is only substituted into the "
 "expression that is to be plotted if it is visible there. Putting an `ev()` "
@@ -1973,12 +1996,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:671
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:686
 msgid "## I lost a cell contents and undo doesn’t remember"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:673
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:688
 msgid ""
 "There are separate undo functions for cell operations and for changes inside "
 "of cells so chances are low that this ever happens. If it does there are "
@@ -1986,7 +2009,7 @@ msgid ""
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:678
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:693
 msgid ""
 "_wxMaxima_ actually has two undo features: The global undo buffer that is "
 "active if no cell is selected and a per-cell undo buffer that is active if "
@@ -1995,37 +2018,37 @@ msgid ""
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:678
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:693
 msgid ""
 "If you still have a way to find out what label _Maxima_ has assigned to the "
 "cell just type in the cell’s label and its contents will reappear."
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:678
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:693
 msgid ""
 "If you don’t: Don’t panic. In the “View” menu there is a way to show a "
 "history pane that shows all _Maxima_ commands that have been issued recently."
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:678
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:693
 msgid "If nothing else helps _Maxima_ contains a replay feature:"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:680
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:695
 #, no-wrap
 msgid "    %i1 playback();\n"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:683
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:698
 msgid "## _wxMaxima_ starts up with the message “Maxima process Terminated.”"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:685
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:700
 msgid ""
 "One possible reason is that _Maxima_ cannot be found in the location that is "
 "set in the “Maxima” tab of _wxMaxima_’s configuration dialog and therefore "
@@ -2034,12 +2057,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:687
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:702
 msgid "## Maxima is forever calculating and not responding to input"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:689
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:704
 msgid ""
 "It is theoretically possible that _wxMaxima_ doesn’t realize that _Maxima_ "
 "has finished calculating and therefore never gets informed it can send new "
@@ -2048,12 +2071,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:691
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:706
 msgid "## File I/O from Maxima doesn’t work on Windows"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:693
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:708
 msgid ""
 "On Windows, file I/O is not relative to the directory of the current file by "
 "default. If you store the _Maxima_ file on the drive on which _wxMaxima_ is "
@@ -2062,7 +2085,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:695
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:710
 msgid ""
 "Setting this variable to `true` might have a drawback, though: _Maxima_ "
 "knows which directory it is installed in and will search for any additional "
@@ -2074,12 +2097,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:697
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:712
 msgid "## My SBCL-based _Maxima_ runs out of memory"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:699
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:714
 msgid ""
 "SBCL by default comes with a memory limit that allows it to run even on low-"
 "end computers. When compiling a big software package like lapack or dealing "
@@ -2092,7 +2115,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:701
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:716
 msgid ""
 "One way to provide _maxima_ (and thus sbcl) with command line parameters is "
 "the \"Additional parameters for Maxima\" field of _wxMaxima_’s configuration "
@@ -2100,17 +2123,17 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:703
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:718
 msgid "![sbcl memory](./sbclMemory.png)"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:706
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:721
 msgid "## Input sometimes is sluggish/ignoring keys on Ubuntu"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:708
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:723
 msgid ""
 "Installing the package `ibus-gtk` should resolve this issue. See ([https://"
 "bugs.launchpad.net/ubuntu/+source/wxwidgets3.0/+bug/1421558](https://bugs."
@@ -2118,25 +2141,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:710
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:725
 msgid "## _wxMaxima_ halts when _Maxima_ processes Greek characters or Umlauts"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:712
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:727
 msgid ""
 "If your _Maxima_ is based on sbcl the following lines have to be added to "
 "your `.sblrc`:"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:714
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:729
 #, no-wrap
 msgid "    (setf sb-impl::*default-external-format* :utf-8)\n"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:716
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:731
 msgid ""
 "The folder this file has to be placed in is system- and installation-"
 "specific. But any sbcl-based _Maxima_ that already has evaluated a cell in "
@@ -2145,26 +2168,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:718
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:733
 #, no-wrap
 msgid "    :lisp (sb-impl::userinit-pathname)\n"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:722
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:737
 msgid ""
 "### Can I make _wxMaxima_ output both image files and embedded plots at once?"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:724
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:739
 msgid ""
 "It is easier to make it first generate the images and then import them again "
 "as the following two functions will do:"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:743
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:758
 #, no-wrap
 msgid ""
 "~~~~\n"
@@ -2188,7 +2211,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:748
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:763
 #, no-wrap
 msgid ""
 "pngdraw2d(\"Test\",\n"
@@ -2198,17 +2221,17 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:750
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:765
 msgid "### Can I set the aspect ratio of a plot?"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:752
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:767
 msgid "Not directly using _Maxima_. But there are gnuplot commands for it:"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:758
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:773
 #, no-wrap
 msgid ""
 "     wxdraw2d(\n"
@@ -2219,7 +2242,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:763
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:778
 #, no-wrap
 msgid ""
 "FAQ\n"
@@ -2227,12 +2250,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:766
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:781
 msgid "## Is there a way to make more text fit on a pdfLaTeX page?"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:768
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:783
 msgid ""
 "There is: Just add the following lines to the LaTeX preamble (for example by "
 "using the respective field in the config dialogue (\"Export\"->\"Additional "
@@ -2240,13 +2263,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:770
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:785
 #, no-wrap
 msgid "    \\usepackage[a4paper,left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}\n"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:775
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:790
 #, no-wrap
 msgid ""
 "Command-line arguments\n"
@@ -2254,7 +2277,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:778
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:793
 msgid ""
 "Most operating systems provide less complicated ways of starting programs "
 "than the command line so this possibility is only rarely used. _wxMaxima_ "
@@ -2262,29 +2285,29 @@ msgid ""
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:786
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:801
 msgid "`-v` or `--version`: Output the version information"
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:786
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:801
 msgid "`-h` or `--help`: Output a short help text"
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:786
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:801
 msgid ""
 "`-o` or `--open`: Open the filename given as argument to this command-line "
 "switch"
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:786
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:801
 msgid "`-e` or `--eval`: Evaluate the file after opening it."
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:786
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:801
 msgid ""
 "`-b` or `--batch`: If the command-line opens a file all cells in this file "
 "are evaluated and the file is saved afterwards. This is for example useful "
@@ -2296,27 +2319,27 @@ msgid ""
 msgstr ""
 
 #. type: Bullet: '*   '
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:786
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:801
 msgid ""
 "`-f` or `--ini`: Use the init file that was given as argument to this "
 "command-line switch"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:786
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:801
 #, no-wrap
 msgid "*   `-m` or `--maxima`    allows to specify the location of the _maxima_ binary\n"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:788
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:803
 msgid ""
 "Instead of a minus some operating systems might use a dash in front of the "
 "command-line switches."
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:794
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:809
 #, no-wrap
 msgid ""
 "Annotated Index\n"
@@ -2324,7 +2347,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:798
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:813
 #, no-wrap
 msgid ""
 "**A**\n"
@@ -2332,33 +2355,33 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:800
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:815
 msgid ""
 "[Animations, failure](#Outputting-animations-doesn_0027t-work): why creation "
 "and execution of some animations might not work"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:802
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:817
 msgid "[Autocompletion](#Command-autocompletion): using _wxMaxima_ a command"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:804
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:819
 msgid ""
 "[Aspect ratio](#Can-I-set-the-aspect-ratio-of-a-plot_003f): set the aspect "
 "ratio for a plot"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:806
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:821
 msgid ""
 "[Autosave](#Autosave-interval): set interval for saving a _wxMaxima_ session "
 "file (workbook)"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:809
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:824
 #, no-wrap
 msgid ""
 "**C**\n"
@@ -2366,34 +2389,34 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:811
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:826
 msgid ""
 "[Cells, Input/Output](#Input%20Output%20Cell): Cells that contain one or "
 "more commands and the results of executing the command(s)"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:813
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:828
 msgid ""
 "[Command autocompletion](#Command-autocompletion): using _wxMaxima_ a command"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:815
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:830
 msgid ""
 "[Configure wxMaxima](#Configuration-options): how to configure a _wxMaxima_ "
 "workbook"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:817
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:832
 msgid ""
 "[Cursors, vertical and horizontal](#Drag%20and%20drop): entering text or "
 "selecting entered material"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:820
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:835
 #, no-wrap
 msgid ""
 "**D**\n"
@@ -2401,7 +2424,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:823
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:838
 #, no-wrap
 msgid ""
 "**F**\n"
@@ -2409,14 +2432,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:825
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:840
 msgid ""
 "[File Formats](#File-Formats): types of files that _wxMaxima_ can create and "
 "open"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:828
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:843
 #, no-wrap
 msgid ""
 "**G**\n"
@@ -2424,7 +2447,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:831
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:846
 #, no-wrap
 msgid ""
 "**H**\n"
@@ -2432,13 +2455,13 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:833
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:848
 msgid ""
 "[Hotkeys](#Hotkeys): shortcut key combinations, alternatives to menu options"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:836
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:851
 #, no-wrap
 msgid ""
 "**I**\n"
@@ -2446,7 +2469,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:839
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:854
 #, no-wrap
 msgid ""
 "**J**\n"
@@ -2454,7 +2477,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:842
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:857
 #, no-wrap
 msgid ""
 "**L**\n"
@@ -2462,14 +2485,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:844
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:859
 msgid ""
 "[Lost content](#I-lost-a-cell-contents-and-undo-doesn_0027t-remember): ways "
 "to recover lost cell contents"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:847
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:862
 #, no-wrap
 msgid ""
 "**M**\n"
@@ -2477,32 +2500,32 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:849
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:864
 msgid ""
 "[MathML](#MathML-output): export mathematical expressions with MathML markup"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:851
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:866
 msgid "[Matrix](#Matrix): Create a matrix and convert the matrix to a table"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:853
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:868
 msgid ""
 "[Maxima and wxMaxima](#Maxima-and-wxMaxima \"Maxima and wxMaxima\"): the "
 "relationship between the Maxima CAS and the _wxMaxima_ front-end"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:855
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:870
 msgid ""
 "[Maxima-wxMaxima connection](#Cannot-connect-to-Maxima): possible reasons "
 "from failure of _wxMaxima_ to communicate with _Maxima_"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:858
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:873
 #, no-wrap
 msgid ""
 "**N**\n"
@@ -2510,7 +2533,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:861
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:876
 #, no-wrap
 msgid ""
 "**P**\n"
@@ -2518,55 +2541,55 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:863
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:878
 msgid ""
 "[Plot, embedding](#Embedding-a-plot-into-the-work-sheet): embed a _Maxima_\\-"
 "generated plot in a _wxMaxima_ workbook"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:865
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:880
 msgid ""
 "[Plot, failure](#Plotting-only-shows-an-closed-empty-envelope-with-an-error-"
 "message): some reasons that attempts to plot might fail"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:867
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:882
 msgid ""
 "[Plot file, embedding](#Embedding-graphics): embed a plot file in a "
 "_wxMaxima_ workbook"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:869
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:884
 msgid ""
 "[Plot size](#Making-embedded-plots-bigger-or-smaller): control the size of "
 "embedded plots"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:871
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:886
 msgid ""
 "[Plots, better quality](#Better-quality-plots): notes related to the quality "
 "of gnuplot plots"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:873
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:888
 msgid ""
 "[Plots, multiple](#Opening-multiple-plots-in-contemporaneous-windows): open "
 "multiple plots in contemporaneous windows"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:875
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:890
 msgid ""
 "[Progress indicators](#statusbar): Giving user feedback in the status bar"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:878
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:893
 #, no-wrap
 msgid ""
 "**R**\n"
@@ -2574,7 +2597,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:881
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:896
 #, no-wrap
 msgid ""
 "**S**\n"
@@ -2582,26 +2605,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:883
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:898
 msgid ""
 "[Startup file location](#index-Startup-File): location of an initialization "
 "file that is passed to _wxMaxima_ when it opens"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:885
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:900
 msgid "[Status bar](#statusbar): Giving user feedback in the status bar"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:887
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:902
 msgid ""
 "[Subscripted variables](#Subscripted-variables): using the command "
 "`wxsubscripts` to display subscripted variables"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:890
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:905
 #, no-wrap
 msgid ""
 "**T**\n"
@@ -2609,14 +2632,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:892
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:907
 msgid ""
 "[TeX markup](#Raw-TeX-in-the-TeX-export): allows TeX markup to be entered "
 "into a text file"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:895
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:910
 #, no-wrap
 msgid ""
 "**U**\n"
@@ -2624,7 +2647,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:898
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:913
 #, no-wrap
 msgid ""
 "**W**\n"
@@ -2632,51 +2655,51 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:900
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:915
 msgid ""
 "[with\\_slider\\_draw3d](#Embedding-animations-into-the-spreadsheet): "
 "command to embed animations -- alternative: `wxanimate_draw3d`"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:902
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:917
 msgid ""
 "[wxanimate\\_draw](#Embedding-animations-into-the-spreadsheet): command to "
 "embed animations"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:904
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:919
 msgid ""
 "[wxanimate\\_draw3d](#Embedding-animations-into-the-spreadsheet): command to "
 "embed animations"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:906
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:921
 msgid ""
 "[wxMaxima and Maxima](#Maxima-and-wxMaxima \"wxMaxima and Maxima\"): the "
 "relationship between the _Maxima_ CAS and the _wxMaxima_ front-end"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:908
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:923
 msgid "[wxMaxima documentation](#wxMaxima)"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:910
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:925
 msgid ""
 "[wxMaxima workbook structure](#The-worksheet-approach): central features of "
 "a _wxMaxima_ workbook"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:912
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:927
 msgid "[wxm and wxmx files](#g_t_002ewxm): formats for _wxMaxima_ workbooks"
 msgstr ""
 
 #. type: Plain text
-#: /home/gunter/src/wxmaxima/info/wxmaxima.md:913
+#: /home/gunter/src/wxmaxima/info/wxmaxima.md:928
 msgid "[wxmx data](#Broken%20wxmx): retrieve data from a broken wxmx file"
 msgstr ""
