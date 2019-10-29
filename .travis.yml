@@ -36,10 +36,9 @@ addons:
     - desktop-file-utils
     - po4a
     - pandoc
-before_cache:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cleanup; fi
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS; brew update; fi
+install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH"; brew install ccache; brew link ccache;fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=/Library/TeX/texbin:/usr/local/opt/texinfo/bin:$PATH:/usr/local/opt/gettext/bin;
   brew install gettext texinfo wxwidgets pandoc homebrew/cask/basictex; sudo tlmgr
@@ -75,6 +74,9 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
+before_cache:
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cleanup; fi
 env:
+- LANG=en_US.UTF-8
   global:
     secure: eagjtgIpCBv8+v1PgL//UmiaDSsw91aj3J5Imj4hJUr1DhkHJoOoREFNbvAsb5hQwSMNb4Hu+7PDkaxaXlhQ00d1tG1+GEtS8cykQKYJHF0F2qUucOUHKBKtgEy3UuwmbBrwW/pcKHfe9GpMH/TOaJKY8/u+PmUFbHKn7umaOKpL2IUS8mEMAsjCWdyOaweiTadvIwhrtH+zmAwhrsM0ZnniUa39frBYZpgqqHuShRBNZaqHW3R7iHc5vExLYKmeyy+UGAnDfJtmIZsysVXJYPCBEe9WwKssLZpfah5ic+q+Re4CylODV6fWbNYRKz2608C2OlZ+8Toh0Df1TfEymoeQFbIKEWWMvZ3n3NT+NdPUhefMlIDMb4Q6TWEV08S0yEEo2NEf/2/NORqdXznDCwl969jB2hSTnoAFubXw6J/1pkIyQXSi9cfnF8uiByjQvqgGakMNEWGg1cTjoUygj3gLvF3thsQHcO5Bl3ME7wwV1ItAWPcIR6NNnIdYpmvv+E6+vGhedVK97+AcjDyi6Wm+41P4eWhMKrVXsOWMbRQty8pDkj5KP8vt4DrstA/154Sm+kmrdQfagAo0Jiz9IgLU8rlWr9p+rTKiLXbe++3PVdfsBX6B/b1R7CSVq6JvkBNNrG4B5O8NEgH6gkOlKksbzXij+eHPMVZvpuHM1J4=
