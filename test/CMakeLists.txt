@@ -3,7 +3,7 @@
 file(GLOB TEST_FILES automatic_test_files/*.png automatic_test_files/*.wxmx automatic_test_files/*.wxm automatic_test_files/*.mac automatic_test_files/*.cfg)
 
 install(FILES ${TEST_FILES} DESTINATION share/wxMaxima)
-file(COPY ${TEST_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files PERMISSIONS OWNER_WRITE OWNER_READ)
+file(COPY ${TEST_FILES} PERMISSIONS OWNER_WRITE OWNER_READ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files)
 
 # Test if maxima is working
 add_test(NAME runMaxima WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND echo "quit();" | maxima)
