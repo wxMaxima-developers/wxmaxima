@@ -57,7 +57,9 @@ git:
 script:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export CXXFLAGS="-Wall -Wextra -fcolor-diagnostics";
   else export CXXFLAGS="-Wall -Wextra -ansi -std=c++11"; fi
-- mkdir build && cd build && cmake .. && cmake --build .
+- mkdir build
+- cp .travis/CTestCustom.cmake build
+- cd build && cmake .. && cmake --build .
 - cmake --build . -- install DESTDIR=$(pwd)/installtest
 - cmake --build . -- package
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 xvfb-run -a make test; fi
