@@ -36,10 +36,9 @@ addons:
     - desktop-file-utils
     - po4a
     - pandoc
-before_cache:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cleanup; fi
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS; brew update; fi
+install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH"; brew install ccache; brew link ccache;fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=/Library/TeX/texbin:/usr/local/opt/texinfo/bin:$PATH:/usr/local/opt/gettext/bin;
   brew install gettext texinfo wxwidgets pandoc homebrew/cask/basictex; sudo tlmgr
@@ -75,6 +74,8 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
+before_cache:
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cleanup; fi
 env:
   global:
     - LANG=en_US.UTF-8
