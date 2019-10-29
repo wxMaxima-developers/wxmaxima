@@ -112,8 +112,14 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
   #else
   wxLogMessage(_("wxWidgets is using GTK 2"));
   #endif
-  #endif
+#endif
 
+  if(Configuration::m_configfileLocation_override != wxEmptyString)
+    wxLogMessage(wxString::Format(_("Reading the config from %s."),
+                                  Configuration::m_configfileLocation_override));
+  else
+    wxLogMessage(_("Reading the config from the default location."));
+  
   // Make wxWidgets remember the size and position of the wxMaxima window
   SetName(title);
   if(!wxPersistenceManager::Get().RegisterAndRestore(this))
@@ -1380,32 +1386,35 @@ void wxMaximaFrame::UpdateRecentDocuments()
 
 void wxMaximaFrame::ReReadConfig()
 {
+  // On wxMac re-reading the config isn't necessary as all windows share the
+  // same process and the same configuration.
+  #ifndef __WXMAC__
+  // On MSW re-reading the config is only necessary if the config is read from
+  // the registry
+  #ifdef __WXMSW__
   if (Configuration::m_configfileLocation_override != wxEmptyString)
+  #endif
   {
+    // Delete the old config
     wxConfigBase *config = wxConfig::Get();
     config->Flush();
     wxDELETE(config);
     config = NULL;
-    wxConfig::Set(new wxFileConfig(wxT("wxMaxima"),
-                                   wxEmptyString, Configuration::m_configfileLocation_override));
-  }
-  // Re-Reading the config isn't necessary on the Mac where all windows share the same
-  // window and on Windows where the registry is re-read every time the configuration
-  // is accessed.
-#ifdef __WXGTK__
-  else
-  {
-    wxConfigBase *config = wxConfig::Get();
-    config->Flush();
-    wxDELETE(config);
-    config = NULL;
-    if(Configuration::m_configfileLocation_override != wxEmptyString)
+    
+    if (Configuration::m_configfileLocation_override == wxEmptyString)
+    {
+      wxLogMessage(_("Re-Reading the config from the default location."));
       wxConfig::Set(new wxConfig(wxT("wxMaxima")));
-    else
-      wxConfig::Set(new wxFileConfig(wxT("wxMaxima"), wxEmptyString,
-                                     Configuration::m_configfileLocation_override));
     }
-#endif
+    else
+    {
+      wxLogMessage(wxString::Format(_("Re-Reading the config from %s."),
+                     Configuration::m_configfileLocation_override));
+      wxConfig::Set(new wxFileConfig(wxT("wxMaxima"),
+                                     wxEmptyString, Configuration::m_configfileLocation_override));
+    }
+  }
+  #endif
 }
 
 void wxMaximaFrame::RegisterAutoSaveFile()
