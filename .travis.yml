@@ -36,6 +36,8 @@ addons:
     - desktop-file-utils
     - po4a
     - pandoc
+before_cache:
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cleanup; fi
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS; brew update; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH"; brew install ccache; brew link ccache;fi
@@ -73,8 +75,6 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-before_cache:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cleanup; fi
 env:
 - LANG=en_US.UTF-8
   global:
