@@ -32,70 +32,71 @@
 
 ErrorRedirector::ErrorRedirector(wxLog *logger) : wxLog()
 {
-    m_logNew = logger;
+  m_logNew = logger;
 
-    // Notice that we use GetActiveTarget() here instead of directly calling
-    // SetActiveTarget() to trigger wxLog auto-creation: if we're created as
-    // the first logger, we should still chain with the standard, implicit and
-    // possibly still not created standard logger instead of disabling normal
-    // logging entirely.
-    m_logOld = wxLog::GetActiveTarget();
-    wxLog::SetActiveTarget(this);
-    m_batchMode = false;
+  // Notice that we use GetActiveTarget() here instead of directly calling
+  // SetActiveTarget() to trigger wxLog auto-creation: if we're created as
+  // the first logger, we should still chain with the standard, implicit and
+  // possibly still not created standard logger instead of disabling normal
+  // logging entirely.
+  m_logOld = wxLog::GetActiveTarget();
+  wxLog::SetActiveTarget(this);
+  m_batchMode = false;
 }
 
 ErrorRedirector::~ErrorRedirector()
 {
-    wxLog::SetActiveTarget(m_logOld);
+  wxLog::SetActiveTarget(m_logOld);
 
-    if ( m_logNew != this )
-        delete m_logNew;
+  if ( m_logNew != this )
+    delete m_logNew;
 
-    m_logNew = NULL;
+  m_logNew = NULL;
 }
 
 void ErrorRedirector::SetLog(wxLog *logger)
 {
-    if ( m_logNew != this )
-        delete m_logNew;
+  if ( m_logNew != this )
+    delete m_logNew;
 
-    m_logNew = logger;
+  m_logNew = logger;
 }
 
 void ErrorRedirector::DoLogRecord(wxLogLevel level,
-                             const wxString& msg,
-                             const wxLogRecordInfo& info)
+                                  const wxString& msg,
+                                  const wxLogRecordInfo& info)
 {
-    // let the previous logger show it
-    if ( m_logOld )
-        m_logOld->LogRecord(level, msg, info);
-
-    // and also send it to the new one
-    if (( m_logNew ) && (m_messages_logPaneOnly <= 0))
+  std::cerr << msg<<"\n";
+  // let the previous logger show it
+  if ( m_logOld )
+    m_logOld->LogRecord(level, msg, info);
+  
+  // and also send it to the new one
+  if (( m_logNew ) && (m_messages_logPaneOnly <= 0))
+  {
+    // don't call m_logNew->LogRecord() to avoid infinite recursion when
+    // m_logNew is this object itself
+    if ( m_logNew != this )
     {
-        // don't call m_logNew->LogRecord() to avoid infinite recursion when
-        // m_logNew is this object itself
-      if ( m_logNew != this )
+      if((level == wxLOG_FatalError) || (level == wxLOG_Error))
       {
-        if((level == wxLOG_FatalError) || (level == wxLOG_Error))
-        {
-          m_logNew->LogRecord(level, msg, info);
-          m_logNew->Flush();
-        }
+        m_logNew->LogRecord(level, msg, info);
+        m_logNew->Flush();
       }
-      else
-        wxLog::DoLogRecord(level, msg, info);
     }
+    else
+      wxLog::DoLogRecord(level, msg, info);
+  }
 }
 
 void ErrorRedirector::Flush()
 {
-    if ( m_logOld )
-        m_logOld->Flush();
+  if ( m_logOld )
+    m_logOld->Flush();
 
-    // be careful to avoid infinite recursion
-    if ( m_logNew && m_logNew != this )
-        m_logNew->Flush();
+  // be careful to avoid infinite recursion
+  if ( m_logNew && m_logNew != this )
+    m_logNew->Flush();
 }
 
 int ErrorRedirector::m_messages_logPaneOnly = 0;
