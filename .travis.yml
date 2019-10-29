@@ -20,7 +20,6 @@ cache:
 #  - "/usr/local/Cellar/gettext"
   - "/usr/local/Cellar/ccache"
 addons:
-  ssh_known_hosts: home67027059.1and1-data.host
   apt:
     packages:
     - libwxgtk3.0-dev
@@ -36,6 +35,7 @@ addons:
     - desktop-file-utils
     - po4a
     - pandoc
+#  ssh_known_hosts: home67027059.1and1-data.host
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS; brew update; fi
 install:
@@ -60,6 +60,7 @@ script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 xvfb-run -a make test; fi
 - cd ..
 - mkdir .ssh
+- echo "|1|y89aUvd2eeD3cEPqnfP6FNbhD3Y=|sael1XGSEw/2OZLmN+RzdmXT/nI= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFjDE2sDVlaHhXudMMsLEuJvY+nBuTbwLGpQkLaJ5oxIR9vXinw/2dSzqnDAlrmJ1ZgWKQnvPh7Mz770Hp/sobU=">.ssh/known_hosts
 - openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv -in .travis/deploy_rsa.enc -out id_rsa -d
 - chmod 0600 id_rsa
 - eval `ssh-agent -s`
@@ -71,7 +72,7 @@ deploy:
   api_key:
     secure: Zoo6p3CTOMf7mUcUuTrTz03U8xSIvhRCGRQlLGzcU3eF7/bNyo7MyXlePSC3bPsi+Fs7BX41eakQV2E2ycBnwRxMapOAxMv9yhk+nnlGSrS5tagNP1ljcqT30JJrEyDGBVP3S1FqiqMyzESiZLvaYmMzbFyisaiF4Cn6O+XxyU2xRz3EEX6sdhnkd9txU0rwjw/TUksG2xrtJdiOaCKXjjTVbJx1R4pAu2BWIfnFVrliwNNIDVby2riBeqO0QSt5NxU5OuWFXYX9Q6RlxlRmAr6njCVi7GA4uG/c5x7WNKjPiOXFpy2LyvRMlTY2hEL0KVeCqYUArvMkLM3ELyoniQvv+QJk+MnAcvdF+04ioIO9/rhYTtU5bjmZI1uAnzPsXGZJXgIRdxmDcGnFZJbmwlolp/kZtBKR9pwqPOYT2Xymg7QkJwy9R4MaCv2/6EZ/zHxi3qRxiKH+zhT8Ymdsn0UUe96pGw6oiOOdQPvxcOPCVmmJyxjVr9OkvBYjd5yRGZHdfXAs5ZfJGdotVq6OWq906ISQkOdAB2CDSklmGjXEf3d1RSxiueSC2rQa0h+/6kDzyRyHKFX+dtdLlHqKdvjRWXVmDMXrZ+qj6oZTykfa5s8BzcykmsLnVS1txw8at4P3/BsFshUAuMPmBg3cs7dLpwezEN+Yu+4dxkImYX4=
   file: build/*.dmg
-  skip_cleanup: true
+  cleanup: false
   on:
     tags: true
 before_cache:
