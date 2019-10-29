@@ -7,7 +7,6 @@ branches:
   - gh_pages
   - DebianPackaging
   - DebianPackaging_NightlyBuild
-dist: bionic
 cache:
   ccache: true
   directories:
@@ -30,7 +29,6 @@ addons:
     - pandoc
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS; brew update; fi
-install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH"; brew install ccache; brew link ccache;fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=/Library/TeX/texbin:/usr/local/opt/texinfo/bin:$PATH:/usr/local/opt/gettext/bin;
   brew install gettext texinfo wxwidgets pandoc homebrew/cask/basictex; sudo tlmgr
