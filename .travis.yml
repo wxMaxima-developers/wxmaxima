@@ -8,6 +8,8 @@ branches:
   - DebianPackaging
   - DebianPackaging_NightlyBuild
 dist: bionic
+env:
+  - LANG=en_US.UTF-8
 cache:
   ccache: true
   directories:
