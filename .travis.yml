@@ -2,6 +2,8 @@ language: cpp
 os:
 - linux
 - osx
+dist:
+- bionic
 branches:
   except:
   - gh_pages
@@ -21,8 +23,7 @@ addons:
   ssh_known_hosts: home67027059.1and1-data.host
   apt:
     packages:
-    - libwxgtk3.0-gtk3-dev
-    - libwxgtk3.0
+    - libwxgtk3.0-dev
     - gettext
     - doxygen
     - graphviz
@@ -35,11 +36,6 @@ addons:
     - desktop-file-utils
     - po4a
     - pandoc
-    - texlive-latex-base
-    - texlive-latex-extra
-    - texlive-xetex
-    - lmodern
-    - texlive-fonts-recommended
 before_cache:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cleanup; fi
 before_install:
