@@ -60,7 +60,7 @@ script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then CTEST_OUTPUT_ON_FAILURE=1 xvfb-run -a make test; fi
 - cd ..
 - mkdir .ssh
-- echo "|1|y89aUvd2eeD3cEPqnfP6FNbhD3Y=|sael1XGSEw/2OZLmN+RzdmXT/nI= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFjDE2sDVlaHhXudMMsLEuJvY+nBuTbwLGpQkLaJ5oxIR9vXinw/2dSzqnDAlrmJ1ZgWKQnvPh7Mz770Hp/sobU=">.ssh/known_hosts
+- cp .travis/known_hosts .ssh
 - openssl aes-256-cbc -K $encrypted_f94fa95f949a_key -iv $encrypted_f94fa95f949a_iv -in .travis/deploy_rsa.enc -out id_rsa -d
 - chmod 0600 id_rsa
 - eval `ssh-agent -s`
