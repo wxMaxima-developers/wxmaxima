@@ -45,6 +45,10 @@ public:
   void SetPreSub(Cell *expt);
 
   void SetPreSup(Cell *expt);
+
+  void SetPostSub(Cell *expt){SetIndex(expt);}
+
+  void SetPostSup(Cell *expt){SetExponent(expt);}
   
   void RecalculateHeight(int fontsize);
 

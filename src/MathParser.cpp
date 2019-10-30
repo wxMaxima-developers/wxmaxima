@@ -395,19 +395,40 @@ Cell *MathParser::ParseSubSupTag(wxXmlNode *node)
   child = SkipWhitespaceNode(child);
   subsup->SetBase(HandleNullPointer(ParseTag(child, false)));
   child = GetNextTag(child);
-  Cell *index = HandleNullPointer(ParseTag(child, false));
-  index->SetExponentFlag();
-  subsup->SetIndex(index);
-  child = GetNextTag(child);
-  Cell *power = HandleNullPointer(ParseTag(child, false));
-  power->SetExponentFlag();
-  subsup->SetExponent(power);
-  subsup->SetType(m_ParserStyle);
-  subsup->SetStyle(TS_VARIABLE);
-  ParseCommonAttrs(node, subsup);
+  wxString pos;
+  if((child != NULL) && (child->GetAttribute("pos", wxEmptyString) != wxEmptyString))
+  {
+    while(child != NULL)
+    {
+      Cell *cell = HandleNullPointer(ParseTag(child, false));
+      child->GetAttribute("pos", wxEmptyString);
+      if(pos == "presub")
+        subsup->SetPreSub(cell);
+      else if(pos == "presup")
+        subsup->SetPreSup(cell);
+      else if(pos == "postsup")
+        subsup->SetPostSup(cell);
+      else if(pos == "postsub")
+        subsup->SetPostSub(cell);
+
+      child = GetNextTag(child);
+    }
+  }
+  else
+  {
+    Cell *index = HandleNullPointer(ParseTag(child, false));
+    index->SetExponentFlag();
+    subsup->SetIndex(index);
+    child = GetNextTag(child);
+    Cell *power = HandleNullPointer(ParseTag(child, false));
+    power->SetExponentFlag();
+    subsup->SetExponent(power);
+    subsup->SetType(m_ParserStyle);
+    subsup->SetStyle(TS_VARIABLE);
+    ParseCommonAttrs(node, subsup);
+  }
   return subsup;
 }
-
 Cell *MathParser::ParseSubTag(wxXmlNode *node)
 {
   SubCell *sub = new SubCell(NULL, m_configuration, m_cellPointers);
