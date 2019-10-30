@@ -354,13 +354,13 @@ If the variable name doesn’t match these requirements it can still be declared
 
 Long-running commands can provide user-feedback in the status bar. This user feedback is replaced by any new feedback that is placed there (allowing to use it as a progress indicator) and is deleted as soon as the current command sent to _maxima_ is finished. It is safe to use `wxstatusbar()` even in libraries that might be used with plain _Maxima_ (as opposed to _wxMaxima_): If _wxMaxima_ isn't present the `wxstatusbar()` command will just be left unevelated.
 
-    (%i2)	for i:1 thru 10 do (
-	            /* Tell the user how far we got */
-	            wxstatusbar(concat("Pass ",i)),
-	            /* (sleep n) is a Lisp function, which can be used with "?" before. */
-	            /* it delays the program execution for some time (here for 3 seconds) */
-	            ?sleep(3)
-	        )$
+    (%i2)   for i:1 thru 10 do (
+                /* Tell the user how far we got */
+                wxstatusbar(concat("Pass ",i)),
+                /* (sleep n) is a Lisp function, which can be used with "?" before. */
+                /* it delays the program execution for some time (here for 3 seconds) */
+                ?sleep(3)
+            )$
 
 ## Plotting
 
@@ -436,34 +436,34 @@ The same functionality for 3D plots is accessible as `with_slider_draw3d`, which
     wxanimate_autoplay:true;
     wxanimate_framerate:20;
     with_slider_draw3d(
-	    α,makelist(i,i,1,360,3),
-		title=sconcat("α=",α),
+        α,makelist(i,i,1,360,3),
+        title=sconcat("α=",α),
         surface_hide=true,
         contour=both,
-	    view=[60,α],
-	    explicit(
-		    sin(x)*sin(y),
-			x,-π,π,
-			y,-π,π
-	    )
-	)$
+        view=[60,α],
+        explicit(
+            sin(x)*sin(y),
+            x,-π,π,
+            y,-π,π
+        )
+    )$
 
 If the general shape of the plot is what matters it might suffice to move the plot just a little bit in order to make it's 3D nature available to the intiution:
 
     wxanimate_autoplay:true;
     wxanimate_framerate:20;
     with_slider_draw3d(
-	    t,makelist(i,i,0,2*π,.05*π),
-		title=sconcat("α=",α),
+        t,makelist(i,i,0,2*π,.05*π),
+        title=sconcat("α=",α),
         surface_hide=true,
         contour=both,
-	    view=[60,30+5*sin(t)],
-	    explicit(
-		    sin(x)*y^2,
-			x,-2*π,2*π,
-			y,-2*π,2*π
-	    )
-	)$
+        view=[60,30+5*sin(t)],
+        explicit(
+            sin(x)*y^2,
+            x,-2*π,2*π,
+            y,-2*π,2*π
+        )
+    )$
 
 For those more familiar with `plot` than with `draw` there is a second set of functions:
 
@@ -493,9 +493,9 @@ If _Maxima_ is explicitely asked to substitute the slider’s value plotting wor
         title=concat("a=",float(b)),
         grid=true,
         explicit(
-		    subst(a=b,f),
-			x,0,10
-	    )
+            subst(a=b,f),
+            x,0,10
+        )
     )$
 
 ### Opening multiple plots in contemporaneous windows
@@ -720,7 +720,16 @@ The folder this file has to be placed in is system- and installation-specific. B
 
 ### Can I make _wxMaxima_ output both image files and embedded plots at once?
 
-It is easier to make it first generate the images and then import them again as the following two functions will do:
+The worksheet embeds .png files. wxMaxima allows the user to specify where they should be generated:
+
+~~~~
+wxdraw2d(
+    file_name="test",
+    explicit(sin(x),x,1,10)
+);
+~~~~
+
+If a different format is to be used it is easier to generate the images and then to import them into the worksheet again:
 
 ~~~~
 load("draw");
@@ -751,7 +760,7 @@ pngdraw2d("Test",
 Not directly using _Maxima_. But there are gnuplot commands for it:
 
      wxdraw2d(
-	     proportional_axis=xy,
+         proportional_axis=xy,
          explicit(sin(x),x,1,10)
      ),wxplot_size=[1000,1000];
 
