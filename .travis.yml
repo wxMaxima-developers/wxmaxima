@@ -17,7 +17,7 @@ cache:
   directories:
   - $HOME/Library/Caches/Homebrew
   - /usr/local/Homebrew
-  - "/usr/local/Cellar/ccache"
+  - /usr/local/Cellar/ccache
 addons:
   apt:
     packages:
@@ -34,7 +34,6 @@ addons:
     - desktop-file-utils
     - po4a
     - pandoc
-#  ssh_known_hosts: home67027059.1and1-data.host
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS; brew update; fi
 install:
