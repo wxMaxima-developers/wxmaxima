@@ -34,7 +34,7 @@ addons:
     - desktop-file-utils
     - po4a
     - pandoc
-#  ssh_known_hosts: home67027059.1and1-data.host
+  ssh_known_hosts: home67027059.1and1-data.host
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS; brew update; fi
 install:
@@ -64,9 +64,9 @@ script:
 - eval `ssh-agent -s`
 - ssh-keyscan -t "dsa,ecdsa,ed25519,rsa" home67027059.1and1-data.host
 - ssh-add id_rsa
-- cat .travis/known_hosts >>.ssh/known_hosts
-- cat .ssh/known_hosts
+#- cat .travis/known_hosts >>.ssh/known_hosts
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp build/*.dmg wxMaxima.dmg;echo "put wxMaxima.dmg"|sftp ${SFTP_USER}@home67027059.1and1-data.host; fi
+- cat .ssh/known_hosts
 - ccache -s
 deploy:
   provider: releases
