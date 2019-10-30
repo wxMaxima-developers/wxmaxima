@@ -595,7 +595,12 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <pre><code>:lisp (sb-impl::userinit-pathname)</code></pre>
 <h2 id="plotting-1"><span class="header-section-number">3.12</span> Plotting</h2>
 <h3 id="can-i-make-wxmaxima-output-both-image-files-and-embedded-plots-at-once"><span class="header-section-number">3.12.1</span> Can I make <em>wxMaxima</em> output both image files and embedded plots at once?</h3>
-<p>It is easier to make it first generate the images and then import them again as the following two functions will do:</p>
+<p>The worksheet embeds .png files. wxMaxima allows the user to specify where they should be generated:</p>
+<pre><code>wxdraw2d(
+    file_name=&quot;test&quot;,
+    explicit(sin(x),x,1,10)
+);</code></pre>
+<p>If a different format is to be used it is easier to generate the images and then to import them into the worksheet again:</p>
 <pre><code>load(&quot;draw&quot;);
 pngdraw(name,[contents]):=
 (

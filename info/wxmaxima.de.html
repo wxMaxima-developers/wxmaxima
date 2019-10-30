@@ -74,11 +74,11 @@
 <li><a href="#undo-erinnert-sich-nicht-an-das-was-ich-brauche"><span class="toc-section-number">3.6</span> Undo erinnert sich nicht an das, was ich brauche</a></li>
 <li><a href="#wxmaxima-meldet-gleich-beim-hochfahren-maxima-hat-sich-beendet."><span class="toc-section-number">3.7</span> wxMaxima meldet gleich beim Hochfahren “Maxima hat sich beendet.”</a></li>
 <li><a href="#maxima-hört-nicht-auf-zu-rechnen-und-reagiert-nicht-auf-eingaben"><span class="toc-section-number">3.8</span> Maxima hört nicht auf zu rechnen und reagiert nicht auf Eingaben</a></li>
-<li><a href="#my-sbcl-based-maxima-runs-out-of-memory"><span class="toc-section-number">3.9</span> My SBCL-based <em>Maxima</em> runs out of memory</a></li>
+<li><a href="#sbcl-beschwert-sich-über-einen-mangel-an-speicher"><span class="toc-section-number">3.9</span> SBCL beschwert sich über einen Mangel an Speicher</a></li>
 <li><a href="#ubuntu-die-tastatur-ist-langsam-oder-ignoriert-einzelne-tasten"><span class="toc-section-number">3.10</span> Ubuntu: Die Tastatur ist langsam oder ignoriert einzelne Tasten</a></li>
 <li><a href="#maxima-mag-griechische-buchstaben-und-umlaute-nicht"><span class="toc-section-number">3.11</span> <em>Maxima</em> mag griechische Buchstaben und Umlaute nicht</a></li>
 <li><a href="#diagramme-1"><span class="toc-section-number">3.12</span> Diagramme</a><ul>
-<li><a href="#can-i-make-wxmaxima-output-both-image-files-and-embedded-plots-at"><span class="toc-section-number">3.12.1</span> Can I make <em>wxMaxima</em> output both image files and embedded plots at</a></li>
+<li><a href="#kann-wxmaxima-das-eingebettete-diagramm-gleich-noch-als-datei"><span class="toc-section-number">3.12.1</span> Kann <em>wxMaxima</em> das eingebettete Diagramm gleich noch als Datei</a></li>
 <li><a href="#can-i-set-the-aspect-ratio-of-a-plot"><span class="toc-section-number">3.12.2</span> Can I set the aspect ratio of a plot?</a></li>
 </ul></li>
 </ul></li>
@@ -426,7 +426,7 @@ with_slider_draw3d(
         y,-2*π,2*π
     )
 )$</code></pre>
-<p>For those more familiar with <code>plot</code> than with <code>draw</code> there is a second set of functions:</p>
+<p>Wer <code>plot</code> <code>draw</code> vorzieht, dem steht ein zweiter Satz an Funktionen zur Verfügung:</p>
 <ul>
 <li><code>with_slider</code> and</li>
 <li><code>wxanimate</code>.</li>
@@ -527,7 +527,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <figure>
 <img src="./Matrix%20table%20example.png" alt="A third table example" /><figcaption>A third table example</figcaption>
 </figure>
-<p>Also, because a matrix is a list of lists, matrices can be converted to tables in a similar fashion.</p>
+<p>Da Matritzen effektiv Listen von Listen sind, können auch sie in Tabellen verwandelt werden.</p>
 <figure>
 <img src="./Second%20table%20example.png" alt="Another table_form example" /><figcaption>Another table_form example</figcaption>
 </figure>
@@ -545,7 +545,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <p><em>Maxima</em> und wxMaxima reden über ein lokales Netzwerk miteinander. Dies kann durch einen übereifrigen Firewall unterbunden werden, der auch Verbindungen innerhalb des Rechners verbietet. Manchmal ist es schwer, herauszufinden, welches Programm erlaubt sein soll, da <em>Maxima</em> manchmal unter Namen wie sbcl, gcl, ccl, lisp.exe oder ähnlichen firmiert.</p>
 <p>Auf Linux-Rechnern kann ein weiterer Grund sein, dass das “loopback”-Netzwerkgerät nicht korrekt eingestellt ist.</p>
 <h2 id="wie-repariere-ich-kaputte-.wxmx-dateien"><span class="header-section-number">3.2</span> Wie repariere ich kaputte .wxmx-Dateien?</h2>
-<p>Internally most modern xml-based formats are ordinary zip-files. wxMaxima doesn’t turn on compression which makes the contents of .wxmx files viewable in any text editor.</p>
+<p>Die meisten xml-basierten Format sind von ihrem Inhalt her einfache .zip-Dateien. <em>wxMaxima</em> schaltet bei ihnen die Kompression nicht ein, weswegen ihr Inhalt in einem normalen Texteditor lesbar ist.</p>
 <p>Wenn die Zip-Signatur am Ende der Datei intakt ist, kann man die Datei nach <irgendwas>.zip umbenennen, entpacken, reparieren, neu packen und wieder nach <irgendwas>.wxmx umbenennen. Dies ist auch eine praktische möglichkeit, Word oder Powerpoint die originalen Bilddateien zu entlocken. Ist dies nicht der Fall, ist dies nicht das Ende der Welt: Oft gibt es eine funktionierende wxmx~-Datei. Wenn nicht, kann der xml-Anteil aus der .wxmx-Datei mit einem Texteditor kopiert werden.</p>
 <p>Wird dieser Text als .xml-Datei gespeichert, weiß <em>wxMaxima</em>, wie man ihn wieder öffnet.</p>
 <h2 id="ich-will-statusmeldungen-ausgeben-während-mein-befehl-ausgeführt-wird"><span class="header-section-number">3.3</span> Ich will Statusmeldungen ausgeben, während mein Befehl ausgeführt wird</h2>
@@ -580,7 +580,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <p>Ein möglicher Grund ist, dass Maxima nicht dort gefunden worden kann, wo dies in wxMaxima’s Konfigurationsdialog angegeben ist. Korrektur des dort angegebenen Pfades zum Programm löst dieses Problem.</p>
 <h2 id="maxima-hört-nicht-auf-zu-rechnen-und-reagiert-nicht-auf-eingaben"><span class="header-section-number">3.8</span> Maxima hört nicht auf zu rechnen und reagiert nicht auf Eingaben</h2>
 <p>It is theoretically possible that <em>wxMaxima</em> doesn’t realize that <em>Maxima</em> has finished calculating and therefore never gets informed it can send new data to <em>Maxima</em>. If this is the case “Trigger evaluation” might resynchronize the two programs.</p>
-<h2 id="my-sbcl-based-maxima-runs-out-of-memory"><span class="header-section-number">3.9</span> My SBCL-based <em>Maxima</em> runs out of memory</h2>
+<h2 id="sbcl-beschwert-sich-über-einen-mangel-an-speicher"><span class="header-section-number">3.9</span> SBCL beschwert sich über einen Mangel an Speicher</h2>
 <p>SBCL reserviert gleich beim Hochfahren allen Speicher, den es im Betrieb nutzen will. Wird mehr Speicher benöigt, muss ihm über den Kommandozeilenparameter <code>--dynamic-space-size</code> gesagt werden, wie viel Speicher benötigt wird. SBCL kann nur in etwa die Hälfte des freien Speiches des Systems verwenden. Auf 32-Bit-Rechnern ist dies meist unter 999 Megabytes.</p>
 <p>Kommandozeilenparameter für Maxima können in <em>wxMaxima</em>’s Konfigurationsdialog eingegeben werden.</p>
 <figure>
@@ -591,12 +591,17 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <h2 id="maxima-mag-griechische-buchstaben-und-umlaute-nicht"><span class="header-section-number">3.11</span> <em>Maxima</em> mag griechische Buchstaben und Umlaute nicht</h2>
 <p>Wenn <em>Maxima</em> mittels sbcl compiliert wurde, können die folgenden Befehle zur <code>.sbclrc</code> hinzugefügt werden:</p>
 <pre><code>(setf sb-impl::*default-external-format* :utf-8)</code></pre>
-<p>The folder this file has to be placed in is system- and installation-specific. But any sbcl-based <em>Maxima</em> that already has evaluated a cell in the current session will happily tell where it can be found after getting the following command:</p>
+<p>Wo diese Datei abgelegt werden muss, ist systemabhängig. Aber ein mit sbcl compiliertes Maxima kann durch den folgenden Befehl verleitet werden, den Ort zu nennen:</p>
 <pre><code>:lisp (sb-impl::userinit-pathname)</code></pre>
 <h2 id="diagramme-1"><span class="header-section-number">3.12</span> Diagramme</h2>
-<h3 id="can-i-make-wxmaxima-output-both-image-files-and-embedded-plots-at"><span class="header-section-number">3.12.1</span> Can I make <em>wxMaxima</em> output both image files and embedded plots at</h3>
-<p>once?</p>
-<p>It is easier to make it first generate the images and then import them again as the following two functions will do:</p>
+<h3 id="kann-wxmaxima-das-eingebettete-diagramm-gleich-noch-als-datei"><span class="header-section-number">3.12.1</span> Kann <em>wxMaxima</em> das eingebettete Diagramm gleich noch als Datei</h3>
+<p>ausgeben?</p>
+<p>The worksheet embeds .png files. wxMaxima allows the user to specify where they should be generated:</p>
+<pre><code>wxdraw2d(
+    file_name=&quot;test&quot;,
+    explicit(sin(x),x,1,10)
+);</code></pre>
+<p>If a different format is to be used it is easier to generate the images and then to import them into the worksheet again:</p>
 <pre><code>load(&quot;draw&quot;);
 pngdraw(name,[contents]):=
 (
