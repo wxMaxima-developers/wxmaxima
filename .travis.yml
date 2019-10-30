@@ -65,6 +65,7 @@ script:
 - ssh-keyscan -t "dsa,ecdsa,ed25519,rsa" home67027059.1and1-data.host
 - ssh-add id_rsa
 - cat .travis/known_hosts >>.ssh/known_hosts
+- cat .ssh/known_hosts
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp build/*.dmg wxMaxima.dmg;echo "put wxMaxima.dmg"|sftp ${SFTP_USER}@home67027059.1and1-data.host; fi
 - ccache -s
 deploy:
