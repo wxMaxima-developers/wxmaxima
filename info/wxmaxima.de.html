@@ -79,11 +79,11 @@
 <li><a href="#maxima-mag-griechische-buchstaben-und-umlaute-nicht"><span class="toc-section-number">3.11</span> <em>Maxima</em> mag griechische Buchstaben und Umlaute nicht</a></li>
 <li><a href="#diagramme-1"><span class="toc-section-number">3.12</span> Diagramme</a><ul>
 <li><a href="#kann-wxmaxima-das-eingebettete-diagramm-gleich-noch-als-datei"><span class="toc-section-number">3.12.1</span> Kann <em>wxMaxima</em> das eingebettete Diagramm gleich noch als Datei</a></li>
-<li><a href="#can-i-set-the-aspect-ratio-of-a-plot"><span class="toc-section-number">3.12.2</span> Can I set the aspect ratio of a plot?</a></li>
+<li><a href="#kann-ich-das-seitenverhältnis-des-plots-angeben"><span class="toc-section-number">3.12.2</span> Kann ich das Seitenverhältnis des Plots angeben?</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#faq"><span class="toc-section-number">4</span> FAQ</a><ul>
-<li><a href="#is-there-a-way-to-make-more-text-fit-on-a-pdflatex-page"><span class="toc-section-number">4.1</span> Is there a way to make more text fit on a pdfLaTeX page?</a></li>
+<li><a href="#gibt-es-eine-möglichkeit-mehr-text-auf-eine-pdflattex-seite-zu-schreiben"><span class="toc-section-number">4.1</span> Gibt es eine Möglichkeit mehr Text auf eine pdfLatTex-Seite zu schreiben?</a></li>
 </ul></li>
 <li><a href="#command-line-arguments"><span class="toc-section-number">5</span> Command-line arguments</a></li>
 <li><a href="#alphabetischer-index"><span class="toc-section-number">6</span> Alphabetischer Index</a></li>
@@ -172,7 +172,7 @@
 <p>For most countries the codepage of 256 characters that has been chosen does not include things like Greek letters, though, that are frequently used in mathematics. To overcome this type of limitation Unicode has been invented: An encoding that makes english text work like normal, but to use characters whose keycode are more than 8 bits long.</p>
 <p>Wenn Maxima mit einem Compiler generiert wurde, der Unicode unterstützt oder sich nicht darum kümmert, auf welche Weise Zeichen ausgedrückt werden, unterstützt es Unicode. Da meist eine dieser Bedingungen gegeben ist, bietet <em>wxMaxima</em> eine Methode an, griechische Zeichen mit einer nicht-griechischen Tastatur einzugeben:</p>
 <ul>
-<li>Ein griechischer Buchstabe kann eingegeben werden, indem erst auf die <ESC>-Taste gedrück wird, und dann sein Name einzugeben begonnen wird.</li>
+<li>Ein griechischer Buchstabe kann eingegeben werden, indem erst auf die <ESC>-Taste gedrückt wird, und dann sein Name einzugeben begonnen wird.</li>
 <li>Ebenso kann er eingegeben werden, indem <ESC> gedrückt wird, ein Buchstabe und dann erneut <ESC>:</li>
 </ul>
 <pre><code>a alpha    i iota      r rho
@@ -272,7 +272,7 @@ Normaler Text</code></pre>
 <h3 id="tastenkürzel"><span class="header-section-number">1.2.7</span> Tastenkürzel</h3>
 <p>Die meisten Tastenkürzel entstammen den Menüs, was bedeutet, dass sie mit diesen übersetzt werden könen, falls die Tastatur der aktuellen Sprache dies erforderlich macht. Nicht dort dokumentiert ist:</p>
 <ul>
-<li><code>Ctrl+Shift+Backspace</code> löscht die aktuelle Zelle.</li>
+<li><code>Ctrl+Shift+Delete</code> löscht die aktuelle Zelle.</li>
 <li><code>Ctrl+Tab</code> or <code>Ctrl+Shift+Tab</code> triggers the auto-completion mechanism.</li>
 <li><code>Shift+Leertaste</code> fügt eine Leertaste ein, die nicht in einen Zeilenumbruch umgewandelt werden kann.</li>
 </ul>
@@ -558,7 +558,7 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <h2 id="statt-eines-diagramms-wird-ein-briefumschlag-mit-einer-fehlermeldung"><span class="header-section-number">3.4</span> Statt eines Diagramms wird ein Briefumschlag mit einer Fehlermeldung</h2>
 <p>dargestellt</p>
 <p><em>wxMaxima</em> konnte die Datei, die <em>Maxima</em> <em>gnuplot</em> instruiert hat, zu generieren, nicht lesen.</p>
-<p>Mögliche Gründe:</p>
+<p>Mögliche Gründe für diesen Fehler sind:</p>
 <ul>
 <li><code>implicit_plot</code> wurde verwendet, ohne vorher via <code>load()</code> geladen zu werden.</li>
 <li><em>Maxima</em> hat versucht, gnuplot zu etwas zu bewegen, was dieses Programm nicht versteht. In diesem Fall stehen die betreffenden Befehle in dem Verzeichnis, auf das <code>maxima_userdir</code> zeigt in einer .gnuplot-Datei geschrieben.</li>
@@ -596,12 +596,12 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 <h2 id="diagramme-1"><span class="header-section-number">3.12</span> Diagramme</h2>
 <h3 id="kann-wxmaxima-das-eingebettete-diagramm-gleich-noch-als-datei"><span class="header-section-number">3.12.1</span> Kann <em>wxMaxima</em> das eingebettete Diagramm gleich noch als Datei</h3>
 <p>ausgeben?</p>
-<p>The worksheet embeds .png files. wxMaxima allows the user to specify where they should be generated:</p>
+<p>Das Arbeitsblatt enthält png-Dateien. wxMaxima erlaubt dem User anzugeben, wo sie generiert werden sollen:</p>
 <pre><code>wxdraw2d(
     file_name=&quot;test&quot;,
     explicit(sin(x),x,1,10)
 );</code></pre>
-<p>If a different format is to be used it is easier to generate the images and then to import them into the worksheet again:</p>
+<p>Wenn ein unterschiedliches Format benutzt wird, ist es einfacher, Bilder zu generieren und dann in daas Arbeitsblatt zu importieren:</p>
 <pre><code>load(&quot;draw&quot;);
 pngdraw(name,[contents]):=
 (
@@ -623,23 +623,23 @@ pngdraw2d(name,[contents]):=
 pngdraw2d(&quot;Test&quot;,
         explicit(sin(x),x,1,10)
 );</code></pre>
-<h3 id="can-i-set-the-aspect-ratio-of-a-plot"><span class="header-section-number">3.12.2</span> Can I set the aspect ratio of a plot?</h3>
-<p>Not directly using <em>Maxima</em>. But there are gnuplot commands for it:</p>
+<h3 id="kann-ich-das-seitenverhältnis-des-plots-angeben"><span class="header-section-number">3.12.2</span> Kann ich das Seitenverhältnis des Plots angeben?</h3>
+<p>Nicht direkt bei <em>Maxima</em>. Aber es gibt Gnuplot-Kommandos dafür:</p>
 <pre><code> wxdraw2d(
      proportional_axis=xy,
      explicit(sin(x),x,1,10)
  ),wxplot_size=[1000,1000];</code></pre>
 <hr />
 <h1 id="faq"><span class="header-section-number">4</span> FAQ</h1>
-<h2 id="is-there-a-way-to-make-more-text-fit-on-a-pdflatex-page"><span class="header-section-number">4.1</span> Is there a way to make more text fit on a pdfLaTeX page?</h2>
-<p>There is: Just add the following lines to the LaTeX preamble (for example by using the respective field in the config dialogue (“Export”-&gt;“Additional lines for the TeX preamble”):</p>
+<h2 id="gibt-es-eine-möglichkeit-mehr-text-auf-eine-pdflattex-seite-zu-schreiben"><span class="header-section-number">4.1</span> Gibt es eine Möglichkeit mehr Text auf eine pdfLatTex-Seite zu schreiben?</h2>
+<p>Ja, gibt es. Geben Sie einfach die folgenden Zeilen im LaTeX-Vorspann (z.B. indem sie das entsprechende Feld im Konfigurationsdialog (“Export”-&gt;“Additional lines for the TeX preamble”) angeben.</p>
 <pre><code>\usepackage[a4paper,left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}</code></pre>
 <hr />
 <h1 id="command-line-arguments"><span class="header-section-number">5</span> Command-line arguments</h1>
 <p>Most operating systems provide less complicated ways of starting programs than the command line so this possibility is only rarely used. <em>wxMaxima</em> still provides some command line switches, though.</p>
 <ul>
-<li><code>-v</code> or <code>--version</code>: Output the version information</li>
-<li><code>-h</code> or <code>--help</code>: Output a short help text</li>
+<li><code>-v</code> or <code>--version</code>: Gibt die Versionsnummer aus</li>
+<li><code>-h</code> or <code>--help</code>: Gibt einen kurzen Hilfetext aus</li>
 <li><code>-o</code> or <code>--open</code>: Open the filename given as argument to this command-line switch</li>
 <li><code>-e</code> or <code>--eval</code>: Evaluate the file after opening it.</li>
 <li><code>-b</code> or <code>--batch</code>: If the command-line opens a file all cells in this file are evaluated and the file is saved afterwards. This is for example useful if the session described in the file makes <em>Maxima</em> generate output files. Batch-processing will be stopped if <em>wxMaxima</em> detects that <em>Maxima</em> has output an error and will pause if <em>Maxima</em> has a question: Mathematics is somewhat interactive by nature so a completely interaction-free batch processing cannot always be guaranteed.</li>
