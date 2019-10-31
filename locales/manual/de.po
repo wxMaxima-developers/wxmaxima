@@ -2414,7 +2414,7 @@ msgstr ""
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:615
 msgid "![A third table example](./Matrix%20table%20example.png)"
-msgstr "![A third table example](./Matrix%20table%20example.png)"
+msgstr "![Ein drittes Tabellen-Beispiel](./Matrix%20table%20example.png)"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:617
@@ -2422,13 +2422,13 @@ msgid ""
 "Also, because a matrix is a list of lists, matrices can be converted to "
 "tables in a similar fashion."
 msgstr ""
-"Da Matritzen effektiv Listen von Listen sind, können auch sie in Tabellen "
+"Da Matrizen effektiv Listen von Listen sind, können auch sie in Tabellen "
 "verwandelt werden."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:619
 msgid "![Another table_form example](./Second%20table%20example.png)"
-msgstr "![Another table_form example](./Second%20table%20example.png)"
+msgstr "![Ein anderes table_form Beispiel](./Second%20table%20example.png)"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:621
@@ -2447,12 +2447,12 @@ msgstr "_wxMaxima_ bietet einige Funktionen für das Melden von Fehlern an:"
 msgid ""
 "`wxbuild_info()` gathers information about the currently running version of "
 "_wxMaxima_"
-msgstr "`wxbuild_info()` sammelt Informationen über _wxMaxima_"
+msgstr "`wxbuild_info()` sammelt Informationen über die derzeit ausgeführte Version von _wxMaxima_"
 
 #. type: Bullet: '*   '
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:626
 msgid "`wxbug_report()` tells how and where to file bugs"
-msgstr "`wxbug_report()` sagt, wo Fehler gemeldet werden können"
+msgstr "`wxbug_report()` sagt, wo und wie Fehler gemeldet werden können"
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:631
@@ -2498,7 +2498,7 @@ msgid ""
 "similar names."
 msgstr ""
 "_Maxima_ und wxMaxima reden über ein lokales Netzwerk miteinander. Dies kann "
-"durch einen übereifrigen Firewall unterbunden werden, der auch Verbindungen "
+"durch eine übereifrigen Firewall unterbunden werden, die auch Verbindungen "
 "innerhalb des Rechners verbietet. Manchmal ist es schwer, herauszufinden, "
 "welches Programm erlaubt sein soll, da _Maxima_ manchmal unter Namen wie "
 "sbcl, gcl, ccl, lisp.exe oder ähnlichen firmiert."
@@ -2510,7 +2510,7 @@ msgid ""
 "network that provides network connections between two programs in the same "
 "computer isn’t properly configured."
 msgstr ""
-"Auf Linux-Rechnern kann ein weiterer Grund sein, dass das \"loopback\"-"
+"Auf Unix/Linux-Rechnern kann ein weiterer Grund sein, dass das \"loopback\"-"
 "Netzwerkgerät nicht korrekt eingestellt ist."
 
 #. type: Plain text
@@ -2525,7 +2525,7 @@ msgid ""
 "doesn't turn on compression which makes the contents of .wxmx files viewable "
 "in any text editor."
 msgstr ""
-"Die meisten xml-basierten Format sind von ihrem Inhalt her einfache .zip-"
+"Die meisten xml-basierten Formate sind von ihrem Inhalt her einfache .zip-"
 "Dateien. _wxMaxima_ schaltet bei ihnen die Kompression nicht ein, weswegen "
 "ihr Inhalt in einem normalen Texteditor lesbar ist."
 
@@ -2768,7 +2768,9 @@ msgid ""
 "has finished calculating and therefore never gets informed it can send new "
 "data to _Maxima_. If this is the case “Trigger evaluation” might "
 "resynchronize the two programs."
-msgstr "Theor"
+msgstr "Theoretisch kann es passeieren, daß wxMaxima nicht erkennt, dass Maxima fertig ist "
+"und daher nie neue Befehle an Maxima sendet. In diesem Fall kann der Befehl 'Trigger Evaluation' "
+"die Synchronisation wieder herstellen."
 
 #. type: Plain text
 #: /home/gunter/src/wxmaxima/info/wxmaxima.md:697
