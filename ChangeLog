@@ -1,8 +1,8 @@
 Current:
   * Chinese translation updates from liulitchi
   * Turkish translation updates from TufanSirin.
-  * Better detection of the gnuplot location
-  * Better detection of the Right Place to open autocomplete popups in
+  * Better detection of the Gnuplot location
+  * Better detection of the right place to open autocomplete popups in
   * Better formatting of special unicode operators
   * If autosave on closing fails: Allow the user to ask to exit anyway.
   * Enable Autosave even if the option to keep the file saved is disabled.
@@ -18,25 +18,25 @@ Current:
   * The names of greek letters are no more converted to greek letters in variable
     names by default.
   * Smarter Formatting of asterisk and hyphen.
-  * An automatic per-commit Windows Build for Appveyor.
+  * An automatic per-commit Windows build for Appveyor.
   * Always recalculate the worksheet size when needed.
   * Better vertical alignment of exponents.
   * The layout is now more consistent between platforms.
   * Chinese translation updates from liulitchi.
   * wxMaxima now remembers the question for each answer, not only its number.
   * Now the manual can be localized, too.
-  * Non-breaking spaces are now replaced by ordinary spaces before being sent to maxima.
+  * Non-breaking spaces are now replaced by ordinary spaces before being sent to Maxima.
   * Many other bug fixes.
 
 19.09.0:
   * Handle timeouts when writing to maxima and partial writes.
   * Worksheet text disappeared on scrolling on some platforms.
-  * Sped up sending code to maxima.
+  * Sped up sending code to Maxima.
   * Removed quoting of Unicode characters within strings sent to maxima.
 
 19.08.1:
   * Bugfixes for nearly every instance something was drawn on the screen.
-  * Better handling of multi-cell lisp code
+  * Better handling of multi-cell Lisp code
 
 19.08.0:
   * Updated the russian translation
@@ -104,7 +104,7 @@ Current:
  * Many code optimizations.
 
 19.04.3:
- * wxMaxima now informs maxima which front-end is in use.
+ * wxMaxima now informs Maxima which front-end is in use.
 
 19.04.2:
  * Corrected the size of error messages
@@ -124,13 +124,13 @@ Current:
  * Autocompletion sometimes cleared the result after inputting it
  * Added more commands to autocompletion
  * Spanish and italian translation updates
- * We no more need to re-implement maxima's load() routine.
+ * We no more need to re-implement Maxima's load() routine.
    Instead we call the original one now.
  * Animations now on load remember which slide they stopped at.
  * A more error-proof language selection.
  * If the system looks like it uses UTF8 by default the locale name
-   that is passed to maxima now ends in ".UTF8" which should resolve
-   the "setting locale failed" errors from maxima.
+   that is passed to Maxima now ends in ".UTF8" which should resolve
+   the "setting locale failed" errors from Maxima.
  * Corrected the initial size of error messages.
  * Many additional bug fixes
  * Code cleanups
@@ -162,7 +162,7 @@ Current:
  * Shipped around a wxWidgets <3.1 bug for embedding bitmaps in svg
  * Many Links were updated to https
  * A better help file detection that still works if there is no .hhp file.
- * A command-line option that allows to specify the location of maxima.
+ * A command-line option that allows to specify the location of Maxima.
 
 18.12.0:
   * Use C++'s strong typing for more enums.
@@ -172,8 +172,8 @@ Current:
   * Tried to simplify the display code
   * Source file and function names that more closely their current meaning.
   * Many bug fixes.
-  * Now we pass the canonical locale name to maxima, not the short one.
-  * We no more try to set maxima's locale if it doesn't differ from the system's
+  * Now we pass the canonical locale name to Maxima, not the short one.
+  * We no more try to set Maxima's locale if it doesn't differ from the system's
     default one.
 
 18.11.2:
@@ -197,7 +197,7 @@ Current:
   * A menu item that sets the autosubscript feature for the current worksheet.
   * A menu allowing to switch floats to engineering format.
   * Maxima can now pass the values of variables to wxMaxima.
-  * Autocompletion for functions from lisp-only packages and for all of maxima's.
+  * Autocompletion for functions from lisp-only packages and for all of Maxima's.
     built in functions.
   * A context-sensitive "draw" sidepane.
   * We now allow a packet from Maxima to end in the middle of an unicode codepoint.
@@ -398,7 +398,7 @@ Current:
 
 15.08:
   * Compatibility with Maxima 5.37.0
-  * MathJAX now provides scaleable equations and extended drag-and-drop for the html export.
+  * MathJAX now provides scalable equations and extended drag-and-drop for the html export.
   * The table-of-contents-sidebar now shows the current cursor position
   * Fixed a few instances of cursors jumping out of the screen
   * Fixed a few instances of cursors jumping to the beginning or end of the worksheet
