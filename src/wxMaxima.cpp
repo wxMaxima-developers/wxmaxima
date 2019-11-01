@@ -1320,7 +1320,6 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
   m_rawDataToSend.Clear();
   m_rawBytesSent = 0;
   m_statusBar->NetworkStatus(StatusBar::offline);
-  std::cerr<<m_first<<" "<<m_unsuccessfulConnectionAttempts<<"\n";
   if (!m_closing)
   {
     RightStatusText(_("Maxima process terminated."));
@@ -3996,22 +3995,7 @@ bool wxMaxima::SaveFile(bool forceSave)
     config->Write(wxT("defaultExt"), wxT("wxmx"));
 
     m_lastPath = wxPathOnly(file);
-    if (file.EndsWith(wxT(".wxmx")))
-    {
-      if (!m_worksheet->ExportToWXMX(file))
-      {
-        StatusSaveFailed();
-        m_autoSaveTimer.StartOnce(180000);
-        return false;
-      }
-      else
-      {
-        RemoveTempAutosavefile();
-        if(m_worksheet->m_currentFile != m_tempfileName)
-          m_worksheet->m_currentFile = file;
-      }
-    }
-    else
+    if (file.EndsWith(wxT(".wxm")))
     {
       config->Write(wxT("defaultExt"), wxT("wxm"));
       if (!m_worksheet->ExportToMAC(file))
@@ -4023,18 +4007,30 @@ bool wxMaxima::SaveFile(bool forceSave)
       else
       {
         RemoveTempAutosavefile();
-        if(m_worksheet->m_currentFile != m_tempfileName)
+        if(file != m_tempfileName)
+          m_worksheet->m_currentFile = file;
+      }
+    }
+    else
+    {
+      if (!m_worksheet->ExportToWXMX(file))
+      {
+        StatusSaveFailed();
+        m_autoSaveTimer.StartOnce(180000);
+        return false;
+      }
+      else
+      {
+        RemoveTempAutosavefile();
+        if(file != m_tempfileName)
           m_worksheet->m_currentFile = file;
       }
     }
 
     m_recentDocuments.AddDocument(file);
     SetCWD(file);
-
-    m_autoSaveTimer.StartOnce(180000);
     StatusSaveFinished();
     UpdateRecentDocuments();
-    return true;
   }
 
   m_autoSaveTimer.StartOnce(180000);
