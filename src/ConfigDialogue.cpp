@@ -416,9 +416,6 @@ void ConfigDialogue::SetProperties()
 #else
   bool usepngCairo=true;
 #endif
-
-
-  int rs = 0;
   int panelSize = 1;
 
   config->Read(wxT("maxima"), &mp);
