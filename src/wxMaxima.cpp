@@ -4606,14 +4606,14 @@ void wxMaxima::EditMenu(wxCommandEvent &event)
   {
   case Worksheet::popid_digits_20:
   {
-    m_worksheet->m_configuration->SetDisplayedDigits(15);
+    m_worksheet->m_configuration->SetDisplayedDigits(20);
     m_worksheet->RecalculateForce();
     m_worksheet->RequestRedraw();
     break;
   }
   case Worksheet::popid_digits_50:
   {
-    m_worksheet->m_configuration->SetDisplayedDigits(30);
+    m_worksheet->m_configuration->SetDisplayedDigits(50);
     m_worksheet->RecalculateForce();
     m_worksheet->RequestRedraw();
     break;
