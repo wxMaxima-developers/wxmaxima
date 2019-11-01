@@ -258,7 +258,6 @@ protected:
   wxTextCtrl *m_mathJaxURL;
   wxChoice *m_language;
   wxTextCtrl *m_symbolPaneAdditionalChars;
-  wxCheckBox *m_saveSize;
   wxCheckBox *m_abortOnError;
   wxCheckBox *m_restartOnReEvaluation;
   wxCheckBox *m_wrapLatexMath;

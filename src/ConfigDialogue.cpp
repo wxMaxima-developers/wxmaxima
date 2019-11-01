@@ -324,7 +324,6 @@ void ConfigDialogue::SetProperties()
   m_additionalParameters->SetToolTip(_("Additional parameters for Maxima"
                                                " (e.g. -l clisp)."));
   m_mathJaxURL->SetToolTip(_("The URL MathJaX.js should be downloaded from by our HTML export."));
-  m_saveSize->SetToolTip(_("Save wxMaxima window size/position between sessions."));
   m_texPreamble->SetToolTip(_("Additional commands to be added to the preamble of LaTeX output for pdftex."));
   m_useJSMath->SetToolTip(_("Use nice js math symbols in order to get nice integral, sum, product and sqrt signs\nWill only work if the corresponding js math fonts can be found by wxMaxima."));
   m_useUnicodeMaths->SetToolTip(_("If the font provides big parenthesis symbols: Use them when big parenthesis are needed for maths display."));
@@ -438,7 +437,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("wrapLatexMath"), &wrapLatexMath);
   config->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
   config->Read(wxT("HTMLequationFormat"), &exportWithMathJAX);
-  config->Read(wxT("pos-restore"), &rs);
   int lang = wxLANGUAGE_UNKNOWN;
   config->Read(wxT("language"), &lang);
   config->Read(wxT("texPreamble"), &texPreamble);
@@ -478,10 +476,6 @@ void ConfigDialogue::SetProperties()
   MaximaLocationChanged(dummy);
 
   m_additionalParameters->SetValue(mc);
-  if (rs == 1)
-    m_saveSize->SetValue(true);
-  else
-    m_saveSize->SetValue(false);
   m_savePanes->SetValue(savePanes);
   m_usepngCairo->SetValue(usepngCairo);
   #ifdef __WXOSX__
@@ -893,10 +887,6 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   grid_sizer->Add(m_defaultFramerate, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   vsizer->Add(grid_sizer, 1, wxEXPAND, 5);
 
-
-  m_saveSize = new wxCheckBox(panel, -1, _("Save wxMaxima window size/position"));
-  vsizer->Add(m_saveSize, 0, wxALL, 5);
-
   m_savePanes = new wxCheckBox(panel, -1, _("Save panes layout"));
   vsizer->Add(m_savePanes, 0, wxALL, 5);
 
@@ -1227,10 +1217,6 @@ void ConfigDialogue::WriteSettings()
   configuration->DocumentclassOptions(m_documentclassOptions->GetValue());
   configuration->MathJaXURL(m_mathJaxURL->GetValue());
   configuration->MathJaXURL_UseUser(m_noAutodetectMathJaX->GetValue());
-  if (m_saveSize->GetValue())
-    config->Write(wxT("pos-restore"), 1);
-  else
-    config->Write(wxT("pos-restore"), 0);
   long i = 0;
   config->Write(wxT("language"), (int) wxLANGUAGE_UNKNOWN);
   for(Languages::iterator it = m_languages.begin(); it != m_languages.end(); ++it )
