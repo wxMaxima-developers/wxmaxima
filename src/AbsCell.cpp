@@ -86,15 +86,18 @@ void AbsCell::SetInner(Cell *inner)
 
 void AbsCell::RecalculateWidths(int fontsize)
 {
-  m_innerCell->RecalculateWidthsList(fontsize);
-  m_width = m_innerCell->GetFullWidth() + Scale_Px(8) + 2 * (*m_configuration)->GetDefaultLineWidth();
-  m_open->RecalculateWidthsList(fontsize);
-  m_close->RecalculateWidthsList(fontsize);
-  ResetData();
+  ResetData(); // TODO: Is this ResetData() necessary?
   if(m_isBrokenIntoLines)
   {
     m_width = 0;
     m_height = 0;
+  }
+  else
+  {
+    m_innerCell->RecalculateWidthsList(fontsize);
+    m_width = m_innerCell->GetFullWidth() + Scale_Px(8) + 2 * (*m_configuration)->GetDefaultLineWidth();
+    m_open->RecalculateWidthsList(fontsize);
+    m_close->RecalculateWidthsList(fontsize);
   }
   Cell::RecalculateWidths(fontsize);
 }
@@ -102,16 +105,15 @@ void AbsCell::RecalculateWidths(int fontsize)
 void AbsCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
-  m_innerCell->RecalculateHeightList(fontsize);
-  m_height = m_innerCell->GetMaxHeight() + Scale_Px(4);
-  m_center = m_innerCell->GetMaxCenter() + Scale_Px(2);
-  m_open->RecalculateHeightList(fontsize);
-  m_close->RecalculateHeightList(fontsize);
-
-  if (m_isBrokenIntoLines)
+  if (!m_isBrokenIntoLines)
   {
     m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = wxMax(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
+    m_innerCell->RecalculateHeightList(fontsize);
+    m_height = m_innerCell->GetMaxHeight() + Scale_Px(4);
+    m_center = m_innerCell->GetMaxCenter() + Scale_Px(2);
+    m_open->RecalculateHeightList(fontsize);
+    m_close->RecalculateHeightList(fontsize);
   }
 }
 

@@ -90,11 +90,13 @@ void ConjugateCell::SetInner(Cell *inner)
 
 void ConjugateCell::RecalculateWidths(int fontsize)
 {
-  m_innerCell->RecalculateWidthsList(fontsize);
-  m_open->RecalculateWidthsList(fontsize);
-  m_close->RecalculateWidthsList(fontsize);
   if(!m_isBrokenIntoLines)
+  {
+    m_innerCell->RecalculateWidthsList(fontsize);
+    m_open->RecalculateWidthsList(fontsize);
+    m_close->RecalculateWidthsList(fontsize);
     m_width = m_innerCell->GetFullWidth() + Scale_Px(8);
+  }
   else
     m_width = 0;
   Cell::RecalculateWidths(fontsize);
@@ -103,12 +105,11 @@ void ConjugateCell::RecalculateWidths(int fontsize)
 void ConjugateCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
-  m_innerCell->RecalculateHeightList(fontsize);
-  m_open->RecalculateHeightList(fontsize);
-  m_close->RecalculateHeightList(fontsize);
-
   if(!m_isBrokenIntoLines)
   {
+    m_innerCell->RecalculateHeightList(fontsize);
+    m_open->RecalculateHeightList(fontsize);
+    m_close->RecalculateHeightList(fontsize);
     m_height = m_innerCell->GetMaxHeight() + Scale_Px(4);
     m_center = m_innerCell->GetMaxCenter() + Scale_Px(2);
   }

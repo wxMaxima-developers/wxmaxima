@@ -87,19 +87,25 @@ void DiffCell::SetBase(Cell *base)
 void DiffCell::RecalculateWidths(int fontsize)
 {
   Cell::RecalculateWidths(fontsize);
-  m_baseCell->RecalculateWidthsList(fontsize);
-  m_diffCell->RecalculateWidthsList(fontsize);
-  m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
+  if(!m_isBrokenIntoLines)
+  {
+    m_baseCell->RecalculateWidthsList(fontsize);
+    m_diffCell->RecalculateWidthsList(fontsize);
+    m_width = m_baseCell->GetFullWidth() + m_diffCell->GetFullWidth();
+  }
   Cell::RecalculateWidths(fontsize);
 }
 
 void DiffCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
-  m_baseCell->RecalculateHeightList(fontsize);
-  m_diffCell->RecalculateHeightList(fontsize);
-  m_center = wxMax(m_diffCell->GetMaxCenter(), m_baseCell->GetMaxCenter());
-  m_height = m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
+  if(!m_isBrokenIntoLines)
+  {
+    m_baseCell->RecalculateHeightList(fontsize);
+    m_diffCell->RecalculateHeightList(fontsize);
+    m_center = wxMax(m_diffCell->GetMaxCenter(), m_baseCell->GetMaxCenter());
+    m_height = m_center + wxMax(m_diffCell->GetMaxDrop(), m_baseCell->GetMaxDrop());
+  }
 }
 
 void DiffCell::Draw(wxPoint point)

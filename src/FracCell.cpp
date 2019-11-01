@@ -117,23 +117,24 @@ void FracCell::SetDenom(Cell *denom)
 
 void FracCell::RecalculateWidths(int fontsize)
 {
-  m_open1->RecalculateWidths(fontsize);
-  m_close1->RecalculateWidths(fontsize);
-  m_open2->RecalculateWidths(fontsize);
-  m_close2->RecalculateWidths(fontsize);
-  m_divide->RecalculateWidths(fontsize);
+  if(!m_isBrokenIntoLines)
+  {
+    
+    m_open1->RecalculateWidths(fontsize);
+    m_close1->RecalculateWidths(fontsize);
+    m_open2->RecalculateWidths(fontsize);
+    m_close2->RecalculateWidths(fontsize);
+    m_divide->RecalculateWidths(fontsize);
+    m_num->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_denom->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+  }
   
   wxASSERT(fontsize >= 1);
   Configuration *configuration = (*m_configuration);
-  if (m_isBrokenIntoLines || m_exponent)
+  if (m_exponent)
   {
     m_num->RecalculateWidthsList(fontsize);
     m_denom->RecalculateWidthsList(fontsize);
-  }
-  else
-  {
-    m_num->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
-    m_denom->RecalculateWidthsList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
   }
   wxDC *dc = configuration->GetDC();
   dc->SetFont(configuration->GetFont(TS_VARIABLE,fontsize));
@@ -175,20 +176,20 @@ void FracCell::RecalculateWidths(int fontsize)
 void FracCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
-  m_open1->RecalculateHeight(fontsize);
-  m_close1->RecalculateHeight(fontsize);
-  m_open2->RecalculateHeight(fontsize);
-  m_close2->RecalculateHeight(fontsize);
-  m_divide->RecalculateHeight(fontsize);
-  if (m_isBrokenIntoLines || m_exponent)
+  if(!m_isBrokenIntoLines)
+  {
+    m_open1->RecalculateHeight(fontsize);
+    m_close1->RecalculateHeight(fontsize);
+    m_open2->RecalculateHeight(fontsize);
+    m_close2->RecalculateHeight(fontsize);
+    m_divide->RecalculateHeight(fontsize);
+    m_num->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+    m_denom->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
+  }
+  if (m_exponent)
   {
     m_num->RecalculateHeightList(fontsize);
     m_denom->RecalculateHeightList(fontsize);
-  }
-  else
-  {
-    m_num->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
-    m_denom->RecalculateHeightList(wxMax(MC_MIN_SIZE, fontsize - FRAC_DEC));
   }
   if(m_isBrokenIntoLines)
   {

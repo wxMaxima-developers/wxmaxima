@@ -165,8 +165,13 @@ void ParenCell::RecalculateWidths(int fontsize)
   if (m_innerCell == NULL)
     m_innerCell = new TextCell(m_group, m_configuration, m_cellPointers);
   
-  m_innerCell->RecalculateWidthsList(fontsize);
-  m_innerCell->RecalculateHeightList(fontsize);
+  if(!m_isBrokenIntoLines)
+  {
+    m_innerCell->RecalculateWidthsList(fontsize);
+    m_innerCell->RecalculateHeightList(fontsize);
+    m_open->RecalculateWidthsList(fontsize);
+    m_close->RecalculateWidthsList(fontsize);
+  }
   
   wxDC *dc = configuration->GetDC();
   int size = m_innerCell->GetMaxHeight();
@@ -178,8 +183,6 @@ void ParenCell::RecalculateWidths(int fontsize)
   {
     if(configuration->GetGrouphesisDrawMode() != Configuration::handdrawn)
       m_bigParenType = Configuration::ascii;
-    m_open->RecalculateWidthsList(fontsize);
-    m_close->RecalculateWidthsList(fontsize);
     m_signWidth = m_open->GetWidth();
     m_signHeight= m_open->GetHeight();
   }

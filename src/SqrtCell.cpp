@@ -95,7 +95,13 @@ void SqrtCell::SetInner(Cell *inner)
 void SqrtCell::RecalculateWidths(int fontsize)
 {
   Configuration *configuration = (*m_configuration);
-  m_innerCell->RecalculateWidthsList(fontsize);
+  if(!m_isBrokenIntoLines)
+  {
+    m_innerCell->RecalculateWidthsList(fontsize);
+    m_open->RecalculateWidths(fontsize);
+    m_close->RecalculateWidths(fontsize);
+  }
+
   if (configuration->CheckTeXFonts())
   {
     wxDC *dc = configuration->GetDC();
@@ -160,8 +166,6 @@ void SqrtCell::RecalculateWidths(int fontsize)
   }
   else
     m_width = m_innerCell->GetFullWidth() + Scale_Px(13) + 1;
-  m_open->RecalculateWidthsList(fontsize);
-  m_close->RecalculateWidthsList(fontsize);
   if(m_isBrokenIntoLines)
     m_width = 0;
   Cell::RecalculateWidths(fontsize);
@@ -169,13 +173,13 @@ void SqrtCell::RecalculateWidths(int fontsize)
 
 void SqrtCell::RecalculateHeight(int fontsize)
 {
-  m_innerCell->RecalculateHeightList(fontsize);
-  m_height = m_innerCell->GetMaxHeight() + Scale_Px(3);
-  m_center = m_innerCell->GetMaxCenter() + Scale_Px(3);
-  m_open->RecalculateHeightList(fontsize);
-  m_close->RecalculateHeightList(fontsize);
-  if (m_isBrokenIntoLines)
+  if(!m_isBrokenIntoLines)
   {
+    m_innerCell->RecalculateHeightList(fontsize);
+    m_height = m_innerCell->GetMaxHeight() + Scale_Px(3);
+    m_center = m_innerCell->GetMaxCenter() + Scale_Px(3);
+    m_open->RecalculateHeightList(fontsize);
+    m_close->RecalculateHeightList(fontsize);
     m_height = wxMax(m_innerCell->GetMaxHeight(), m_open->GetMaxHeight());
     m_center = wxMax(m_innerCell->GetMaxCenter(), m_open->GetMaxCenter());
   }

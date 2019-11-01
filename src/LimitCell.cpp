@@ -116,19 +116,22 @@ void LimitCell::SetUnder(Cell *under)
 
 void LimitCell::RecalculateWidths(int fontsize)
 {
-  if(m_base)
-    m_base->RecalculateWidthsList(fontsize);
-  if(m_under)
-    m_under->RecalculateWidthsList(wxMax(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
-  if(m_name)
-    m_name->RecalculateWidthsList(fontsize);
-  if(m_open)
-    m_open->RecalculateWidthsList(fontsize);
-  if(m_comma)
-    m_comma->RecalculateWidthsList(fontsize);
-  if(m_close)
-    m_close->RecalculateWidthsList(fontsize);
-
+  if(!m_isBrokenIntoLines)
+  {
+    if(m_base)
+      m_base->RecalculateWidthsList(fontsize);
+    if(m_under)
+      m_under->RecalculateWidthsList(wxMax(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
+    if(m_name)
+      m_name->RecalculateWidthsList(fontsize);
+    if(m_open)
+      m_open->RecalculateWidthsList(fontsize);
+    if(m_comma)
+      m_comma->RecalculateWidthsList(fontsize);
+    if(m_close)
+      m_close->RecalculateWidthsList(fontsize);
+  }
+  
   if (!m_isBrokenIntoLines)
     m_width = wxMax(m_name->GetFullWidth(), m_under->GetFullWidth())
       + m_base->GetFullWidth();
@@ -141,24 +144,23 @@ void LimitCell::RecalculateWidths(int fontsize)
 void LimitCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
-  if(m_under)
-    m_under->RecalculateHeightList(wxMax(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
-  if(m_name)
-    m_name->RecalculateHeightList(fontsize);
-  if(m_base)
-    m_base->RecalculateHeightList(fontsize);
-  if(m_open)
-    m_open->RecalculateHeightList(fontsize);
-  if(m_comma)
-    m_comma->RecalculateHeightList(fontsize);
-  if(m_close)
-    m_close->RecalculateHeightList(fontsize);
-
-  if (!m_isBrokenIntoLines)
+  if(!m_isBrokenIntoLines)
   {
+    if(m_under)
+      m_under->RecalculateHeightList(wxMax(MIN_LIMIT_FONT_SIZE, fontsize - LIMIT_FONT_SIZE_DECREASE));
+    if(m_name)
+      m_name->RecalculateHeightList(fontsize);
+    if(m_base)
+      m_base->RecalculateHeightList(fontsize);
+    if(m_open)
+      m_open->RecalculateHeightList(fontsize);
+    if(m_comma)
+      m_comma->RecalculateHeightList(fontsize);
+    if(m_close)
+      m_close->RecalculateHeightList(fontsize);
     m_center = wxMax(m_base->GetMaxCenter(), m_name->GetMaxCenter());
     m_height = m_center + wxMax(m_name->GetMaxDrop() + m_under->GetMaxHeight(),
-                              m_base->GetMaxDrop());
+                                m_base->GetMaxDrop());
   }
   else
   {

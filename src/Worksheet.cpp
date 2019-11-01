@@ -1513,7 +1513,9 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu->Append(popid_plot3d, _("Plot 3d..."), wxEmptyString, wxITEM_NORMAL);
         }
       }
-      if (IsSelected(MC_TYPE_LABEL))
+      if (IsSelected(MC_TYPE_LABEL)  ||
+          IsSelected(MC_TYPE_PROMPT) ||
+          IsSelected(MC_TYPE_MAIN_PROMPT))
       {
         popupMenu->AppendSeparator();
         popupMenu->AppendRadioItem(popid_labels_user, _("Prefer user labels"));

@@ -83,11 +83,13 @@ void FunCell::SetArg(Cell *arg)
 
 void FunCell::RecalculateWidths(int fontsize)
 {
-  m_argCell->RecalculateWidthsList(fontsize);
-  m_nameCell->RecalculateWidthsList(fontsize);
   if(!m_isBrokenIntoLines)
+  {
+    m_argCell->RecalculateWidthsList(fontsize);
+    m_nameCell->RecalculateWidthsList(fontsize);
     m_width = m_nameCell->GetFullWidth() + m_argCell->GetFullWidth() -
       Scale_Px(1);
+  }
   else
     m_width = 0;
   Cell::RecalculateWidths(fontsize);
@@ -96,11 +98,13 @@ void FunCell::RecalculateWidths(int fontsize)
 void FunCell::RecalculateHeight(int fontsize)
 {
   Cell::RecalculateHeight(fontsize);
-  m_nameCell->RecalculateHeightList(fontsize);
-  m_argCell->RecalculateHeightList(fontsize);
-  m_center = wxMax(m_nameCell->GetMaxCenter(), m_argCell->GetMaxCenter());
   if(!m_isBrokenIntoLines)
+  {
+    m_nameCell->RecalculateHeightList(fontsize);
+    m_argCell->RecalculateHeightList(fontsize);
+    m_center = wxMax(m_nameCell->GetMaxCenter(), m_argCell->GetMaxCenter());
     m_height = m_center + wxMax(m_nameCell->GetMaxDrop(), m_argCell->GetMaxDrop());
+  }
   else
     m_height = 0;
 }
