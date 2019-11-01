@@ -347,7 +347,12 @@ void Configuration::ReadConfig()
   wxConfigBase *config = wxConfig::Get();
   m_autoWrap = 3;
 
-  config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile);
+  if(!config->Read(wxT("AutoSaveAsTempFile"), &m_autoSaveAsTempFile))
+  {
+    long autoSaveMinutes = 0;
+    config->Read(wxT("autoSaveMinutes"), &autoSaveMinutes);
+    m_autoSaveAsTempFile = (autoSaveMinutes == 0);
+  }
   config->Read(wxT("documentclass"), &m_documentclass);
   config->Read(wxT("documentclassoptions"), &m_documentclassOptions);
   config->Read(wxT("latin2greek"), &m_latin2greek);
