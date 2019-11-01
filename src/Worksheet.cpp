@@ -1486,7 +1486,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           if (CanDeleteSelection())
             popupMenu->Append(popid_delete, _("Delete Selection"), wxEmptyString, wxITEM_NORMAL);
         }
-        if(IsSelected(MC_TYPE_LABEL) || IsSelected(MC_TYPE_PROMPT))
+        if(IsSelected(MC_TYPE_LABEL))
         {
           if(popupMenu->GetMenuItemCount()>0)
             popupMenu->AppendSeparator();
