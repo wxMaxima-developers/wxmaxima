@@ -1513,6 +1513,18 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
           popupMenu->Append(popid_plot3d, _("Plot 3d..."), wxEmptyString, wxITEM_NORMAL);
         }
       }
+      if (
+        (GetSelectionStart() == GetSelectionEnd()) &&
+        (GetSelectionStart()->GetStyle() == TS_NUMBER)
+        )
+      {
+        popupMenu->AppendSeparator();
+        popupMenu->Append(popid_digits_20, _("Show max. 20 digits"));
+        popupMenu->Append(popid_digits_50, _("Show max. 50 digits"));
+        popupMenu->Append(popid_digits_100, _("Show max. 100 digits"));
+        popupMenu->Append(popid_digits_all, _("Always show all digits"));
+      }
+
       if (IsSelected(MC_TYPE_LABEL)  ||
           IsSelected(MC_TYPE_PROMPT) ||
           IsSelected(MC_TYPE_MAIN_PROMPT))
