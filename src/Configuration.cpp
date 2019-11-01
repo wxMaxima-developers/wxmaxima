@@ -69,7 +69,7 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_hideBrackets = true;
   m_lineWidth_em = 88;
   m_adjustWorksheetSizeNeeded = false;
-  m_showLabelChoice = 1;
+  m_showLabelChoice = labels_prefer_user;
   m_abortOnError = true;
   m_clientWidth = 1024;
   m_defaultPort = 40100;
@@ -391,7 +391,9 @@ void Configuration::ReadConfig()
   m_autoIndent = true;
   config->Read(wxT("autoIndent"), &m_autoIndent);
 
-  config->Read(wxT("showLabelChoice"), &m_showLabelChoice);
+  int showLabelChoice;
+  config->Read(wxT("showLabelChoice"), &showLabelChoice);
+  m_showLabelChoice = (showLabels) showLabelChoice; 
 
   config->Read(wxT("changeAsterisk"), &m_changeAsterisk);
 

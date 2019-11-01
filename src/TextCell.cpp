@@ -523,8 +523,7 @@ void TextCell::Draw(wxPoint point)
           }
           else
           {
-//            SetToolTip(m_userDefinedLabel);
-            SetToolTip(wxEmptyString);
+            SetToolTip(m_userDefinedLabel);
             dc->DrawText(m_displayedText,
                          point.x + MC_TEXT_PADDING,
                          point.y - m_realCenter + MC_TEXT_PADDING);
@@ -887,13 +886,7 @@ wxString TextCell::ToTeX()
     text.Replace(wxT("Ö"), wxT("\\text{Ö}"));
     text.Replace(wxT("Ü"), wxT("\\text{Ü}"));
   }
-
-  // If we don't want to show automatic labels the following "if" empties the label.
-  if ((m_textStyle == TS_LABEL) && (((!(*m_configuration)->ShowAutomaticLabels())) ||
-                                    !(*m_configuration)->ShowLabels())
-    )
-    text = wxT("");
-
+  
   text.Replace(wxT("<"), mathModeStart + wxT("<") + mathModeEnd);
   text.Replace(wxT(">"), mathModeStart + wxT(">") + mathModeEnd);
   text.Replace(wxT("\x2212"), wxT("-")); // unicode minus sign

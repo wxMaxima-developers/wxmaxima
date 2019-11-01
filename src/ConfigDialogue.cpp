@@ -1202,7 +1202,7 @@ void ConfigDialogue::WriteSettings()
   configuration->FixReorderedIndices(m_fixReorderedIndices->GetValue());
   config->Write(wxT("incrementalSearch"), m_incrementalSearch->GetValue());
   configuration->NotifyIfIdle(m_notifyIfIdle->GetValue());
-  configuration->SetLabelChoice(m_showUserDefinedLabels->GetSelection());
+  configuration->SetLabelChoice((Configuration::showLabels) m_showUserDefinedLabels->GetSelection());
   configuration->DefaultPort(m_defaultPort->GetValue());
   config->Write(wxT("AUI/savePanes"), m_savePanes->GetValue());
   config->Write(wxT("usepngCairo"), m_usepngCairo->GetValue());

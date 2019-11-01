@@ -88,6 +88,14 @@ public:
     svg = 3
   };
 
+  enum showLabels
+  {
+    labels_automatic = 0,
+    labels_prefer_user = 1,
+    labels_useronly = 2,
+    labels_none = 3
+  };
+
   enum drawMode
   {
     ascii,              //!< Use ascii characters only
@@ -585,25 +593,25 @@ public:
   bool PrintBrackets()
   { return m_printBrackets; }
 
-  int GetLabelChoice()
+  showLabels GetLabelChoice()
   { return m_showLabelChoice; }
 
   //! Do we want to show maxima's automatic labels (%o1, %t1, %i1,...)?
   bool ShowAutomaticLabels()
-  { return (m_showLabelChoice < 2); }
+  { return (m_showLabelChoice < labels_useronly); }
 
   //! Do we want at all to show labels?
   bool UseUserLabels()
-  { return m_showLabelChoice > 0; }
+  { return m_showLabelChoice > labels_automatic; }
 
   //! Do we want at all to show labels?
   bool ShowLabels()
-  { return m_showLabelChoice < 3; }
+  { return m_showLabelChoice < labels_none; }
 
   //! Sets the value of the Configuration ChoiceBox that treads displaying labels
-  void SetLabelChoice(int choice)
+  void SetLabelChoice(showLabels choice)
   {
-    wxConfig::Get()->Write(wxT("showLabelChoice"), m_showLabelChoice = choice);
+    wxConfig::Get()->Write(wxT("showLabelChoice"), (int) (m_showLabelChoice = choice));
   }
 
   bool PrintBrackets(bool print)
@@ -870,7 +878,7 @@ private:
   wxFontEncoding m_fontEncoding;
   bool m_printing;
   int m_lineWidth_em;
-  int m_showLabelChoice;
+  showLabels m_showLabelChoice;
   bool m_fixReorderedIndices;
   wxString m_mathJaxURL;
   bool m_mathJaxURL_UseUser;
