@@ -525,27 +525,27 @@ draw3d(terminal=[wxt,3],explicit(x^2+y^2,x,-1,1,y,-1,1));</code></pre>
 )$</code></pre>
 <p>Das folgende Beispiel zeigt das Zusammensetzen der Listen für solch eine Tabelle.</p>
 <figure>
-<img src="./Matrix%20table%20example.png" alt="A third table example" /><figcaption>A third table example</figcaption>
+<img src="./Matrix%20table%20example.png" alt="Ein drittes Tabellen-Beispiel" /><figcaption>Ein drittes Tabellen-Beispiel</figcaption>
 </figure>
-<p>Da Matritzen effektiv Listen von Listen sind, können auch sie in Tabellen verwandelt werden.</p>
+<p>Da Matrizen effektiv Listen von Listen sind, können auch sie in Tabellen verwandelt werden.</p>
 <figure>
-<img src="./Second%20table%20example.png" alt="Another table_form example" /><figcaption>Another table_form example</figcaption>
+<img src="./Second%20table%20example.png" alt="Ein anderes table_form Beispiel" /><figcaption>Ein anderes table_form Beispiel</figcaption>
 </figure>
 <h2 id="fehler-melden"><span class="header-section-number">2.8</span> Fehler melden</h2>
 <p><em>wxMaxima</em> bietet einige Funktionen für das Melden von Fehlern an:</p>
 <ul>
-<li><code>wxbuild_info()</code> sammelt Informationen über <em>wxMaxima</em></li>
-<li><code>wxbug_report()</code> sagt, wo Fehler gemeldet werden können</li>
+<li><code>wxbuild_info()</code> sammelt Informationen über die derzeit ausgeführte Version von <em>wxMaxima</em></li>
+<li><code>wxbug_report()</code> sagt, wo und wie Fehler gemeldet werden können</li>
 </ul>
 <hr />
 <h2 id="rotes-markieren-von-formelteilen"><span class="header-section-number">2.9</span> Rotes Markieren von Formelteilen</h2>
 <p>Der <code>box()</code>-Befehl stellt sein Argument in <em>wxMaxima</em> rot dar.</p>
 <h1 id="fehlersuche"><span class="header-section-number">3</span> Fehlersuche</h1>
 <h2 id="keine-verbindung-zu-maxima"><span class="header-section-number">3.1</span> Keine Verbindung zu <em>Maxima</em></h2>
-<p><em>Maxima</em> und wxMaxima reden über ein lokales Netzwerk miteinander. Dies kann durch einen übereifrigen Firewall unterbunden werden, der auch Verbindungen innerhalb des Rechners verbietet. Manchmal ist es schwer, herauszufinden, welches Programm erlaubt sein soll, da <em>Maxima</em> manchmal unter Namen wie sbcl, gcl, ccl, lisp.exe oder ähnlichen firmiert.</p>
-<p>Auf Linux-Rechnern kann ein weiterer Grund sein, dass das “loopback”-Netzwerkgerät nicht korrekt eingestellt ist.</p>
+<p><em>Maxima</em> und wxMaxima reden über ein lokales Netzwerk miteinander. Dies kann durch eine übereifrigen Firewall unterbunden werden, die auch Verbindungen innerhalb des Rechners verbietet. Manchmal ist es schwer, herauszufinden, welches Programm erlaubt sein soll, da <em>Maxima</em> manchmal unter Namen wie sbcl, gcl, ccl, lisp.exe oder ähnlichen firmiert.</p>
+<p>Auf Unix/Linux-Rechnern kann ein weiterer Grund sein, dass das “loopback”-Netzwerkgerät nicht korrekt eingestellt ist.</p>
 <h2 id="wie-repariere-ich-kaputte-.wxmx-dateien"><span class="header-section-number">3.2</span> Wie repariere ich kaputte .wxmx-Dateien?</h2>
-<p>Die meisten xml-basierten Format sind von ihrem Inhalt her einfache .zip-Dateien. <em>wxMaxima</em> schaltet bei ihnen die Kompression nicht ein, weswegen ihr Inhalt in einem normalen Texteditor lesbar ist.</p>
+<p>Die meisten xml-basierten Formate sind von ihrem Inhalt her einfache .zip-Dateien. <em>wxMaxima</em> schaltet bei ihnen die Kompression nicht ein, weswegen ihr Inhalt in einem normalen Texteditor lesbar ist.</p>
 <p>Wenn die Zip-Signatur am Ende der Datei intakt ist, kann man die Datei nach <irgendwas>.zip umbenennen, entpacken, reparieren, neu packen und wieder nach <irgendwas>.wxmx umbenennen. Dies ist auch eine praktische möglichkeit, Word oder Powerpoint die originalen Bilddateien zu entlocken. Ist dies nicht der Fall, ist dies nicht das Ende der Welt: Oft gibt es eine funktionierende wxmx~-Datei. Wenn nicht, kann der xml-Anteil aus der .wxmx-Datei mit einem Texteditor kopiert werden.</p>
 <p>Wird dieser Text als .xml-Datei gespeichert, weiß <em>wxMaxima</em>, wie man ihn wieder öffnet.</p>
 <h2 id="ich-will-statusmeldungen-ausgeben-während-mein-befehl-ausgeführt-wird"><span class="header-section-number">3.3</span> Ich will Statusmeldungen ausgeben, während mein Befehl ausgeführt wird</h2>
