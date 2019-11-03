@@ -1157,7 +1157,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
         else
         {
           errorMessage = wxString::Format(_("Interrupting maxima: %s"),
-                                          errorText.utf8_str());
+                                          errorText);
           LocalFree(errorText);
         }
 
