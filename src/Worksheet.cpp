@@ -5589,7 +5589,7 @@ bool Worksheet::ExportToHTML(wxString file)
               wxString line = wxT("  <img src=\"") +
                 filename_encoded + wxT("_htmlimg/") + filename_encoded +
                 wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" loading=\"lazy\" alt=\" "),
-                                 count, ext, size.x / bitmapScale - 2 * borderwidth) +
+                                 count, ext.utf8_str(), size.x / bitmapScale - 2 * borderwidth) +
                 alttext +
                 wxT("\" /><br/>\n");
 
@@ -5623,7 +5623,7 @@ bool Worksheet::ExportToHTML(wxString file)
             wxString line = wxT("  <img src=\"") +
               filename_encoded + wxT("_htmlimg/") + filename_encoded +
               wxString::Format(wxT("_%d%s\" width=\"%i\" style=\"max-width:90%%;\" loading=\"lazy\" alt=\""),
-                               count, ext, size.x - 2 * borderwidth) +
+                               count, ext.utf8_str(), size.x - 2 * borderwidth) +
               alttext +
               wxT("\" /><br/>\n");
 
@@ -5730,7 +5730,7 @@ bool Worksheet::ExportToHTML(wxString file)
             output << wxT("  <img src=\"") + filename_encoded + wxT("_htmlimg/") +
                       filename_encoded +
                       wxString::Format(wxT("_%d.%s\" alt=\"Diagram\" style=\"max-width:90%%;\" loading=\"lazy\" />"), count,
-                                       imgCell->GetExtension());
+                                       imgCell->GetExtension().utf8_str());
           }
           output << wxT("</div>\n");
           count++;
@@ -6670,7 +6670,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
     long varcount = variables.GetCount() - 1;
     xmlText += wxString::Format(" variables_num=\"%li\"", varcount);
     for(unsigned long i = 0; i<variables.GetCount(); i++)
-      xmlText += wxString::Format(" variables_%li=\"%s\"", i, Cell::XMLescape(variables[i]));
+      xmlText += wxString::Format(" variables_%li=\"%s\"", i, Cell::XMLescape(variables[i]).utf8_str());
   }
   
   xmlText << ">\n";

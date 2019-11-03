@@ -512,7 +512,7 @@ wxBitmap Image::GetBitmap(double scale)
 
       wxString error;
       if(m_imageName != wxEmptyString)
-        error = wxString::Format(_("Error: Cannot render %s."), m_imageName);
+        error = wxString::Format(_("Error: Cannot render %s."), m_imageName.utf8_str());
       else
         error = wxString::Format(_("Error: Cannot render the image."));
 

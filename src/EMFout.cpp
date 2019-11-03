@@ -82,7 +82,7 @@ Emfout::~Emfout()
     SuppressErrorDialogs messageBlocker;
     
     if(!wxRemoveFile(m_tempFileName))
-      wxLogMessage(_("Cannot remove the file %s"),m_tempFileName);
+      wxLogMessage(_("Cannot remove the file %s"),m_tempFileName.utf8_str());
   }
   *m_configuration = m_oldconfig;
   (*m_configuration)->FontChanged(true);

@@ -146,9 +146,9 @@ void wxMaxima::ConfigChanged()
 
   // A few variables for additional debug info in wxbuild_info();
   m_configCommands += wxString::Format(wxT(":lisp-quiet (setq wxUserConfDir \"%s\")\n"),
-                                       EscapeForLisp(Dirstructure::Get()->UserConfDir()));
+                                       EscapeForLisp(Dirstructure::Get()->UserConfDir()).utf8_str());
   m_configCommands += wxString::Format(wxT(":lisp-quiet (setq wxHelpDir \"%s\")\n"),
-                              EscapeForLisp(Dirstructure::Get()->HelpDir()));
+                              EscapeForLisp(Dirstructure::Get()->HelpDir()).utf8_str());
 
   int defaultPlotWidth = 600;
   config->Read(wxT("defaultPlotWidth"), &defaultPlotWidth);
@@ -609,7 +609,7 @@ TextCell *wxMaxima::DoRawConsoleAppend(wxString s, CellType type)
       {
         wxString fileName = token;
         m_sbclCompilationRegEx.Replace(&fileName, wxT("\\1"));
-        LeftStatusText(wxString::Format(_("Compiling %s"),fileName));
+        LeftStatusText(wxString::Format(_("Compiling %s"),fileName.utf8_str()));
       }
       else
       {
@@ -1004,7 +1004,7 @@ bool wxMaxima::StartMaxima(bool force)
     else
       wxLogWarning(wxString::Format(
                      wxT("Directory %s doesn't exist. Maxima might complain about that."),
-                     dirname)
+                     dirname.utf8_str())
         );
   }
 
@@ -1040,7 +1040,7 @@ bool wxMaxima::StartMaxima(bool force)
 //      m_process->SetPriority(wxPRIORITY_MAX);
       m_first = true;
       m_pid = -1;
-      wxLogMessage(wxString::Format(_("Running maxima as: %s"), command));
+      wxLogMessage(wxString::Format(_("Running maxima as: %s"), command.utf8_str()));
       if (wxExecute(command, wxEXEC_ASYNC, m_process) <= 0 )
       {
         StatusMaximaBusy(process_wont_start);
@@ -1157,7 +1157,7 @@ void wxMaxima::Interrupt(wxCommandEvent& WXUNUSED(event))
         else
         {
           errorMessage = wxString::Format(_("Interrupting maxima: %s"),
-                                          errorText);
+                                          errorText.utf8_str());
           LocalFree(errorText);
         }
 
@@ -1413,7 +1413,7 @@ void wxMaxima::ReadFirstPrompt(wxString &data)
 
 
   wxLogMessage(wxString::Format(_("Received maxima's first prompt: %s"),
-                                prompt_compact));
+                                prompt_compact.utf8_str()));
 
   wxLogMessage(wxString::Format(_("Maxima's PID is %li"),(long)m_pid));
   // Remove the first prompt from Maxima's answer.
@@ -1760,12 +1760,12 @@ void wxMaxima::ReadVariables(wxString &data)
             if(name == "maxima_userdir")
             {
               Dirstructure::Get()->UserConfDir(value);
-              wxLogMessage(wxString::Format("Maxima user configuration lies in directory %s",value));
+              wxLogMessage(wxString::Format("Maxima user configuration lies in directory %s",value.utf8_str()));
             }
             if(name == "maxima_tempdir")
             {
               m_maximaTempDir = value;
-              wxLogMessage(wxString::Format("Maxima uses temp directory %s",value));
+              wxLogMessage(wxString::Format("Maxima uses temp directory %s",value.utf8_str()));
               {
                 // Sometimes people delete their temp dir
                 // and gnuplot won't create a new one for them.
@@ -1776,44 +1776,44 @@ void wxMaxima::ReadVariables(wxString &data)
             if(name == "*autoconf-version*")
             {
               m_maximaVersion = value;
-              wxLogMessage(wxString::Format("Maxima version: %s",value));
+              wxLogMessage(wxString::Format("Maxima version: %s",value.utf8_str()));
             }
             if(name == "*autoconf-host*")
             {
               m_maximaArch = value;
-              wxLogMessage(wxString::Format("Maxima architecture: %s",value));
+              wxLogMessage(wxString::Format("Maxima architecture: %s",value.utf8_str()));
             }
             if(name == "*maxima-infodir*")
             {
               m_maximaDocDir = value;
-              wxLogMessage(wxString::Format("Maxima's manual lies in directory %s",value));
+              wxLogMessage(wxString::Format("Maxima's manual lies in directory %s",value.utf8_str()));
             }
             if(name == "gnuplot_command")
             {
               m_gnuplotcommand = value;
-              wxLogMessage(wxString::Format("Gnuplot can be found at %s",value));
+              wxLogMessage(wxString::Format("Gnuplot can be found at %s",value.utf8_str()));
             }
             if(name == "*maxima-sharedir*")
             {
               m_worksheet->m_configuration->MaximaShareDir(value);
-              wxLogMessage(wxString::Format("Maxima's share files lie in directory %s",value));
+              wxLogMessage(wxString::Format("Maxima's share files lie in directory %s",value.utf8_str()));
               /// READ FUNCTIONS FOR AUTOCOMPLETION
               m_worksheet->LoadSymbols();
             }
             if(name == "*lisp-name*")
             {
               m_lispType = value;
-              wxLogMessage(wxString::Format("Maxima was compiled using %s",value));
+              wxLogMessage(wxString::Format("Maxima was compiled using %s",value.utf8_str()));
             }
             if(name == "*lisp-version*")
             {
               m_lispVersion = value;
-              wxLogMessage(wxString::Format("Lisp version: %s",value));
+              wxLogMessage(wxString::Format("Lisp version: %s",value.utf8_str()));
             }
             if(name == "*wx-load-file-name*")
             {
               m_recentPackages.AddDocument(value);
-              wxLogMessage(wxString::Format(_("Maxima has loaded the file %s."),value));
+              wxLogMessage(wxString::Format(_("Maxima has loaded the file %s."),value.utf8_str()));
             }
             m_worksheet->m_variablesPane->VariableValue(name, value);
           }
@@ -2969,94 +2969,94 @@ wxString wxMaxima::GetHelpFile2()
 
   wxString searchText = _("Searching for maxima help file %s");
   headerFile = m_maximaDocDir + wxT("/maxima.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_maximaDocDir + wxT("/html/maxima.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
 
   // Gentoo needs this one
   headerFile = wxString::Format("/usr/share/doc/maxima-%s/html/maxima.hhp",m_maximaVersion);
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_maximaDocDir + wxT("/../html/maxima.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/../doc/html/maxima.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/doc/html/maxima.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_maximaDocDir + wxT("/header.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_maximaDocDir + wxT("/html/header.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_maximaDocDir + wxT("/../html/header.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/../doc/html/header.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/doc/html/header.hhp");
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_maximaDocDir + wxT("/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_maximaDocDir + wxT("/html/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_maximaDocDir + wxT("/../html/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/../doc/html/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_worksheet->m_configuration->MaximaShareDir() + wxT("/doc/html/maxima_singlepage.html");
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
 
   #ifdef __WXMSW__
   headerFile = m_maximaDocDir + wxT("/chm/maxima.chm");
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
 
   headerFile = m_maximaDocDir + wxT("/../chm/maxima.chm");
-  wxLogMessage(wxString::Format(searchText, headerFile));
+  wxLogMessage(wxString::Format(searchText, headerFile.utf8_str()));
   if(wxFileExists(headerFile))
     return headerFile;
   #endif
@@ -4304,7 +4304,8 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
             {
               // Automatically safe the file for the user making it seem like the file
               // is always saved -
-              // wxLogMessage(wxString::Format("Saving file %s"), m_worksheet->m_currentFile);
+//              wxLogMessage(wxString::Format("Saving file %s"),
+//                           m_worksheet->m_currentFile.utf8_str());
               SaveFile(false);
             }
             else
@@ -4328,7 +4329,7 @@ bool wxMaxima::SaveTempFile()
   m_tempfileName = wxStandardPaths::Get().GetTempDir()+
     wxString::Format("/untitled_%li_%li.wxmx",
                      wxGetProcessId(),m_pid);
-  // wxLogMessage(wxString::Format("Saving as temp file %s"), m_tempfileName);
+//  wxLogMessage(wxString::Format("Saving as temp file %s"), m_tempfileName.utf8_str());
   bool saved = m_worksheet->ExportToWXMX(m_tempfileName);
   if((m_tempfileName != oldTempFile) && saved)
   {
@@ -4337,7 +4338,7 @@ bool wxMaxima::SaveTempFile()
       if(wxFileExists(oldTempFile))
       {
         SuppressErrorDialogs blocker;
-        // wxLogMessage(wxString::Format("Removing old temp file %s"), oldTempFile);
+        // wxLogMessage(wxString::Format("Removing old temp file %s"), oldTempFile.utf8_str());
         wxRemoveFile(oldTempFile);        
       }
     }
@@ -8678,7 +8679,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
         bool visit = wxMessageBox(wxString::Format(
                                           _("You have version %s. Current version is %s.\n\n"
                                                     "Select OK to visit the wxMaxima webpage."),
-                                          wxT(GITVERSION), version.c_str()),
+                                          wxT(GITVERSION), version.utf8_str()),
                                   _("Upgrade"),
                                   wxOK | wxCANCEL | wxICON_INFORMATION) == wxOK;
 
@@ -8744,7 +8745,7 @@ int wxMaxima::SaveDocumentP()
 
   wxMessageDialog dialog(this,
                          wxString::Format(_("Do you want to save the changes you made in the document \"%s\"?"),
-                                          file),
+                                          file.utf8_str()),
                          "wxMaxima", wxCENTER | wxYES_NO | wxCANCEL);
 
   dialog.SetExtendedMessage(_("Your changes will be lost if you don't save them."));

@@ -13,7 +13,7 @@ void RecentDocuments::Load()
 
   for(int i=0; i<30; i++)
     {
-      wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"), m_documentType, i);
+      wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"), m_documentType.utf8_str(), i);
       wxString filename;
       if (config->Read(name, &filename))
 	{
@@ -48,13 +48,13 @@ void RecentDocuments::Save()
   int i = 0;
   for(std::list<wxString>::iterator it = m_listOfFiles.begin(); it != m_listOfFiles.end();++it)
     {
-      wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"), m_documentType, i);
+      wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"), m_documentType.utf8_str(), i);
       i++;
       config->Write(name, *it);
     }
   for(;i<30;i++)
     {
-      wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"), m_documentType, i);
+      wxString name = wxString::Format(wxT("RecentDocuments/%s_%d"), m_documentType.utf8_str(), i);
       config->DeleteEntry(name);
     }
 }

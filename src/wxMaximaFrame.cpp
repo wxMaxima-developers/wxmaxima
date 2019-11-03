@@ -116,7 +116,7 @@ wxMaximaFrame::wxMaximaFrame(wxWindow *parent, int id, const wxString &title,
 
   if(Configuration::m_configfileLocation_override != wxEmptyString)
     wxLogMessage(wxString::Format(_("Reading the config from %s."),
-                                  Configuration::m_configfileLocation_override));
+                                  Configuration::m_configfileLocation_override.utf8_str()));
   else
     wxLogMessage(_("Reading the config from the default location."));
   
@@ -1409,7 +1409,7 @@ void wxMaximaFrame::ReReadConfig()
     else
     {
       wxLogMessage(wxString::Format(_("Re-Reading the config from %s."),
-                     Configuration::m_configfileLocation_override));
+                     Configuration::m_configfileLocation_override.utf8_str()));
       wxConfig::Set(new wxFileConfig(wxT("wxMaxima"),
                                      wxEmptyString, Configuration::m_configfileLocation_override));
     }

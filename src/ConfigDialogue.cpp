@@ -1242,7 +1242,8 @@ void ConfigDialogue::WriteSettings()
     wxString startupDir = startupFile.GetPath();
     if(!wxDirExists(startupDir))
     {
-      wxLogMessage(wxString::Format(_("The directory %s with maxima's startup file doesn't exist. Trying to create it..."),startupDir));
+      wxLogMessage(
+        wxString::Format(_("The directory %s with maxima's startup file doesn't exist. Trying to create it..."),startupDir.utf8_str()));
       wxMkdir(startupDir);
     }
       
