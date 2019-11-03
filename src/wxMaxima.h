@@ -609,8 +609,11 @@ protected:
    */
   bool SaveFile(bool forceSave = false);
 
-  //! Save the project in a temp file.
-  bool SaveTempFile();
+  /*! Save the project in a temp file.
+
+    Returns false if a save was necessary, but not possible.
+   */
+  bool AutoSave();
   
   int SaveDocumentP();
 

@@ -4296,55 +4296,53 @@ void wxMaxima::OnTimerEvent(wxTimerEvent &event)
     case AUTO_SAVE_TIMER_ID:
       if ((!m_worksheet->m_keyboardInactiveTimer.IsRunning()) && (!m_autoSaveTimer.IsRunning()))
       {
-        if (!m_worksheet->m_configuration->AutoSaveAsTempFile())
-        {
-          if(SaveNecessary())
-          {
-            if ((m_worksheet->m_currentFile.Length() > 0))
-            {
-              // Automatically safe the file for the user making it seem like the file
-              // is always saved -
-//              wxLogMessage(wxString::Format("Saving file %s"),
-//                           m_worksheet->m_currentFile.utf8_str());
-              SaveFile(false);
-            }
-            else
-              SaveTempFile();
-          }
-        }
-        else
-        {
-          if(SaveNecessary())
-            SaveTempFile();
-        }
+        AutoSave();
         m_autoSaveTimer.StartOnce(180000);
       }
       break;
   }
 }
 
-bool wxMaxima::SaveTempFile()
+bool wxMaxima::AutoSave()
 {
+  if(!SaveNecessary())
+    return true;
+  
+  bool saved;
   wxString oldTempFile = m_tempfileName;
   m_tempfileName = wxStandardPaths::Get().GetTempDir()+
     wxString::Format("/untitled_%li_%li.wxmx",
                      wxGetProcessId(),m_pid);
-//  wxLogMessage(wxString::Format("Saving as temp file %s"), m_tempfileName.utf8_str());
-  bool saved = m_worksheet->ExportToWXMX(m_tempfileName);
-  if((m_tempfileName != oldTempFile) && saved)
+
+  
+  if (m_worksheet->m_configuration->AutoSaveAsTempFile() ||
+      m_worksheet->m_currentFile.IsEmpty())
   {
-    if(!oldTempFile.IsEmpty())
+    saved = m_worksheet->ExportToWXMX(m_tempfileName);
+
+    wxLogMessage(_("Autosaving as temp file"));
+    if((m_tempfileName != oldTempFile) && saved)
     {
-      if(wxFileExists(oldTempFile))
+      if(!oldTempFile.IsEmpty())
       {
-        SuppressErrorDialogs blocker;
-        // wxLogMessage(wxString::Format("Removing old temp file %s"), oldTempFile.utf8_str());
-        wxRemoveFile(oldTempFile);        
+        if(wxFileExists(oldTempFile))
+        {
+          SuppressErrorDialogs blocker;
+          wxLogMessage(_("Trying to remove the old temp file"));
+          wxRemoveFile(oldTempFile);
+        }
       }
     }
+    RegisterAutoSaveFile();
+    m_fileSaved = false;
   }
-  RegisterAutoSaveFile();
-  m_fileSaved = false;
+  else
+  {
+    wxLogMessage(_("Autosaving"));
+    saved = SaveFile(false);
+  }
+  
+  oldTempFile = m_tempfileName;
   return saved;
 }
 
