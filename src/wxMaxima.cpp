@@ -985,6 +985,9 @@ bool wxMaxima::StartMaxima(bool force)
 
   // Maxima isn't in lisp mode
   m_worksheet->m_configuration->InLispMode(false);
+  
+  // Maxima isn't asking questions
+  m_worksheet->QuestionAnswered();
 
   // If we have an open file tell maxima to start in the directory the file is in
   wxUnsetEnv(wxT("MAXIMA_INITIAL_FOLDER"));
@@ -1271,7 +1274,8 @@ void wxMaxima::KillMaxima(bool logMessage)
       SendMaxima(wxT("quit();"));
 
     // The following command should close maxima, as well.
-    m_client->Close(); m_client = NULL;
+    m_client->Close();
+    m_client = NULL;
   }
 
   // Just to be absolutely sure: Additionally try to kill maxima
