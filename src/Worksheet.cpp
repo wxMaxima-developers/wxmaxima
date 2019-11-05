@@ -360,7 +360,7 @@ Worksheet::~Worksheet()
 #endif
 
 #if wxCHECK_VERSION(3, 1, 2)
-#if wxCHECK_VERSION(3, 1, 4)
+#if wxCHECK_VERSION(3, 1, 3)
 #else
 #define DC_ALREADY_SCROLLED 1
 #endif
