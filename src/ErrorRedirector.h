@@ -84,6 +84,9 @@ public:
      object was created.
   */
   void SetLog(wxLog* logger);
+
+  //! Output all log messages to stderr, too.
+  static void LogToStdErr(){m_logToStdErr = true;}
 protected:
   //! the current log target
   wxLog *m_logNew;
@@ -92,6 +95,10 @@ protected:
   wxLog *m_logOld;
 
   bool m_batchMode;
+
+private:
+  //! Output all log messages to stderr, too?
+  static  bool m_logToStdErr;
 };
 
 //! If an variable of this class is alive errors won't create popup dialogues

@@ -170,6 +170,8 @@ bool MyApp::OnInit()
                    "evaluate the file after opening it.", wxCMD_LINE_VAL_NONE , 0},
                   {wxCMD_LINE_SWITCH, "b", "batch",
                    "run the file and exit afterwards. Halts on questions and stops on errors.",  wxCMD_LINE_VAL_NONE, 0},
+                  {wxCMD_LINE_SWITCH, "l", "logtostdout",
+                   "Log all \"debug messages\" sidebar messages to stdout, too.",  wxCMD_LINE_VAL_NONE, 0},
                   { wxCMD_LINE_OPTION, "f", "ini", "allows to specify a file to store the configuration in", wxCMD_LINE_VAL_STRING , 0},
                   { wxCMD_LINE_OPTION, "m", "maxima", "allows to specify the location of the maxima binary", wxCMD_LINE_VAL_STRING , 0},
                   {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
@@ -178,6 +180,7 @@ bool MyApp::OnInit()
 
   cmdLineParser.SetDesc(cmdLineDesc);
   cmdLineParser.Parse();
+
   wxString ini, file;
   // Attention: The config file is changed by wxMaximaFrame::wxMaximaFrame::ReReadConfig
   if (cmdLineParser.Found(wxT("f"),&ini))
@@ -191,14 +194,12 @@ bool MyApp::OnInit()
   }
   else
     wxConfig::Set(new wxConfig(wxT("wxMaxima")));
+  
+  if (cmdLineParser.Found(wxT("l")))
+    ErrorRedirector::LogToStdErr();
 
   config = wxConfig::Get();
-
-  if (cmdLineParser.Found(wxT("m"),&ini))
-  {
-    Configuration::m_maximaLocation_override = ini;
-  }
-
+  
   wxImage::AddHandler(new wxPNGHandler);
   wxImage::AddHandler(new wxXPMHandler);
   wxImage::AddHandler(new wxJPEGHandler);

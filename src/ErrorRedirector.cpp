@@ -86,6 +86,9 @@ void ErrorRedirector::DoLogRecord(wxLogLevel level,
       else
         wxLog::DoLogRecord(level, msg, info);
     }
+    
+    if(m_logToStdErr)
+      std::cerr << msg << "\n";
 }
 
 void ErrorRedirector::Flush()
@@ -99,3 +102,5 @@ void ErrorRedirector::Flush()
 }
 
 int ErrorRedirector::m_messages_logPaneOnly = 0;
+
+bool ErrorRedirector::m_logToStdErr = false;

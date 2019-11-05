@@ -67,3 +67,4 @@ LogPane::~LogPane()
 {
   DropLogTarget();
 }
+
