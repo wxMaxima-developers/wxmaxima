@@ -35,7 +35,7 @@ addons:
     - po4a
     - pandoc
 before_install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export HOMEBREW_LOGS; brew update; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH";
   brew install ccache; brew link ccache;fi
