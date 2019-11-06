@@ -3822,7 +3822,8 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
     if(retval)
     {
       ReReadConfig();
-      m_recentDocuments.AddDocument(file);
+      if(!m_exitAfterEval)
+        m_recentDocuments.AddDocument(file);
       ReReadConfig();
     }
   }
@@ -3833,7 +3834,8 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
     if(retval)
     {
       ReReadConfig();
-      m_recentDocuments.AddDocument(file);
+      if(!m_exitAfterEval)
+        m_recentDocuments.AddDocument(file);
       ReReadConfig();
     }
   }
@@ -3843,7 +3845,8 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
     if(retval)
     {
       ReReadConfig();
-      m_recentDocuments.AddDocument(file);
+      if(!m_exitAfterEval)
+        m_recentDocuments.AddDocument(file);
       ReReadConfig();
     }
   }
@@ -3854,7 +3857,8 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
     if(retval)
     {
       ReReadConfig();
-      m_recentDocuments.AddDocument(file);
+      if(!m_exitAfterEval)
+        m_recentDocuments.AddDocument(file);
       ReReadConfig();
     }
   }
@@ -3865,7 +3869,8 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
     if(retval)
     {
       ReReadConfig();
-      m_recentDocuments.AddDocument(file);
+      if(!m_exitAfterEval)
+        m_recentDocuments.AddDocument(file);
       ReReadConfig();
     }
   }
@@ -4031,7 +4036,8 @@ bool wxMaxima::SaveFile(bool forceSave)
       }
     }
 
-    m_recentDocuments.AddDocument(file);
+    if(!m_exitAfterEval)
+      m_recentDocuments.AddDocument(file);
     SetCWD(file);
     StatusSaveFinished();
     UpdateRecentDocuments();
