@@ -370,6 +370,7 @@ void ConfigDialogue::SetProperties()
   m_documentclass->SetToolTip(_("The document class LaTeX is instructed to use for our documents."));
   m_documentclassOptions->SetToolTip(_("The options the document class LaTeX is instructed to use for our documents gets."));
   m_fixedFontInTC->SetToolTip(_("Set fixed font in text controls."));
+  m_offerKnownAnswers->SetToolTip(_("wxMaxima remembers the answers to maxima's questions. If this checkbox is set it automatically offers to enter the last answer to this question the user has input."));
   m_getFont->SetToolTip(_("Font used for display in document."));
   m_getMathFont->SetToolTip(_("Font used for displaying math characters in document."));
   m_changeAsterisk->SetToolTip(_("Use centered dot and Minus, not Star and Hyphen"));
@@ -541,7 +542,7 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   wxPanel *panel = new wxPanel(m_notebook, -1);
 
   wxFlexGridSizer *grid_sizer = new wxFlexGridSizer(10, 2, 5, 5);
-  wxFlexGridSizer *vsizer = new wxFlexGridSizer(30, 1, 5, 5);
+  wxFlexGridSizer *vsizer = new wxFlexGridSizer(31, 1, 5, 5);
 
   wxStaticText *pw = new wxStaticText(panel, -1, _("Default plot size for new maxima sessions:"));
   wxBoxSizer *PlotWidthHbox = new wxBoxSizer(wxHORIZONTAL);
@@ -646,6 +647,9 @@ wxPanel *ConfigDialogue::CreateWorksheetPanel()
   m_fixedFontInTC = new wxCheckBox(panel, -1, _("Fixed font in text controls"));
   vsizer->Add(m_fixedFontInTC, 0, wxALL, 5);
 
+  m_offerKnownAnswers = new wxCheckBox(panel, -1, _("Offer known answers"));
+  vsizer->Add(m_offerKnownAnswers, 0, wxALL, 5);
+  
   vsizer->AddGrowableRow(10);
   panel->SetSizer(vsizer);
   vsizer->Fit(panel);
@@ -1170,6 +1174,7 @@ void ConfigDialogue::WriteSettings()
   configuration->ShowLength(m_showLength->GetSelection());
   configuration->SetAutosubscript_Num(m_autosubscript->GetSelection());
   config->Write(wxT("fixedFontTC"), m_fixedFontInTC->GetValue());
+  configuration->OfferKnownAnswers(m_offerKnownAnswers->GetValue());
   configuration->SetChangeAsterisk(m_changeAsterisk->GetValue());
   configuration->Latin2Greek(m_latin2Greek->GetValue());
   configuration->EnterEvaluates(m_enterEvaluates->GetValue());

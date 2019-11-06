@@ -96,6 +96,7 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_copyEMF = false;
   m_showLength = 2;
   m_useUnicodeMaths = true;
+  m_offerKnownAnswers = true;
   m_escCodes["pm"]    = wxT("\x00B1");
   m_escCodes["+/-"]   = wxT("\x00B1");
   m_escCodes["alpha"] = wxT("\x03B1");
@@ -353,6 +354,7 @@ void Configuration::ReadConfig()
     config->Read(wxT("autoSaveMinutes"), &autoSaveMinutes);
     m_autoSaveAsTempFile = (autoSaveMinutes == 0);
   }
+  config->Read("offerKnownAnswers", &m_offerKnownAnswers);
   config->Read(wxT("documentclass"), &m_documentclass);
   config->Read(wxT("documentclassoptions"), &m_documentclassOptions);
   config->Read(wxT("latin2greek"), &m_latin2greek);

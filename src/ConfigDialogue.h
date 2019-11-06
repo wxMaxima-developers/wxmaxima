@@ -259,6 +259,7 @@ protected:
   wxChoice *m_language;
   wxTextCtrl *m_symbolPaneAdditionalChars;
   wxCheckBox *m_abortOnError;
+  wxCheckBox *m_offerKnownAnswers;
   wxCheckBox *m_restartOnReEvaluation;
   wxCheckBox *m_wrapLatexMath;
   wxCheckBox *m_savePanes;

@@ -755,6 +755,10 @@ public:
   void SetAbortOnError(bool abortOnError)
     {wxConfig::Get()->Write("abortOnError",m_abortOnError = abortOnError);}
 
+  bool OfferKnownAnswers(){return m_offerKnownAnswers;}
+  void OfferKnownAnswers(bool offerKnownAnswers)
+    {wxConfig::Get()->Write("offerKnownAnswers",m_offerKnownAnswers = offerKnownAnswers);}
+  
   wxString Documentclass(){return m_documentclass;}
   void Documentclass(wxString clss){wxConfig::Get()->Write("documentclass",m_documentclass = clss);}
   wxString DocumentclassOptions(){return m_documentclassOptions;}
@@ -897,6 +901,7 @@ private:
   bool m_useUnicodeMaths;
   bool m_indentMaths;
   bool m_abortOnError;
+  bool m_offerKnownAnswers;
   int m_defaultPort;
   wxString m_documentclass;
   wxString m_documentclassOptions;
