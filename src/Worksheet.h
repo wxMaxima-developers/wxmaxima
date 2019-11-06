@@ -1313,6 +1313,12 @@ public:
   void SetSaved(bool saved)
   { m_saved = saved; }
 
+  void OutputChanged()
+    {
+      if(m_currentFile.EndsWith(".wxmx"))
+        m_saved = false;
+    }
+
   void RemoveAllOutput();
 
   void RemoveAllOutput(GroupCell *cell);

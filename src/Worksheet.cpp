@@ -147,7 +147,7 @@ Worksheet::Worksheet(wxWindow *parent, int id, wxPoint position, wxSize size) :
   m_blinkDisplayCaret = true;
   m_timer.SetOwner(this, TIMER_ID);
   m_caretTimer.SetOwner(this, CARET_TIMER_ID);
-  m_saved = false;
+  SetSaved(false);
   AdjustSize();
   m_autocompleteTemplates = false;
 
@@ -709,7 +709,7 @@ GroupCell *Worksheet::InsertGroupCells(
   if (renumbersections)
     NumberSections();
   Recalculate(where, false);
-  m_saved = false; // document has been modified
+  SetSaved(false); // document has been modified
 
   if (undoBuffer)
     TreeUndo_MarkCellsAsAdded(cells, lastOfCellsToInsert, undoBuffer);
@@ -808,7 +808,7 @@ void Worksheet::InsertLine(Cell *newCell, bool forceNewLine)
   if (newCell == NULL)
     return;
 
-  m_saved = false;
+  OutputChanged();
 
   GroupCell *tmp = GetWorkingGroup(true);
 
@@ -1075,7 +1075,7 @@ void Worksheet::ClearDocument()
   DestroyTree();
 
   m_blinkDisplayCaret = true;
-  m_saved = false;
+  SetSaved(false);
   UpdateTableOfContents();
 
   Scroll(0, 0);
@@ -1157,7 +1157,7 @@ bool Worksheet::IsLesserGCType(int type, int comparedTo)
  */
 void Worksheet::FoldOccurred()
 {
-  SetSaved(false);
+  OutputChanged();
   UpdateMLast();
 }
 
@@ -2936,7 +2936,7 @@ void Worksheet::DeleteRegion(GroupCell *start, GroupCell *end, std::list<TreeUnd
   UpdateTableOfContents();
   Recalculate();
   RequestRedraw();
-  m_saved = false;
+  SetSaved(false);
 }
 
 void Worksheet::SetAnswer(wxString answer)
@@ -3582,7 +3582,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
   // Update title and toolbar in order to reflect the "unsaved" state of the worksheet.
   if (IsSaved() && activeCell->GetValue() != oldValue)
   {
-    m_saved = false;
+    SetSaved(false);
     RequestRedraw();
   }
   // The keypress might have moved the cursor off-screen.
@@ -3594,7 +3594,7 @@ void Worksheet::OnCharInActive(wxKeyEvent &event)
 
   if (activeCell->IsDirty())
   {
-    m_saved = false;
+    SetSaved(false);
 
     int height = activeCell->GetHeight();
     //   int fontsize = m_configuration->GetDefaultFontSize();
@@ -6447,6 +6447,8 @@ void Worksheet::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const
 
 bool Worksheet::ExportToMAC(wxString file)
 {
+  bool wasSaved = m_saved;
+  
   // Show a busy cursor as long as we export or save.
   wxBusyCursor crs;
 
@@ -6517,7 +6519,7 @@ bool Worksheet::ExportToMAC(wxString file)
   }
 
   if (wxm)
-    m_saved = true;
+    SetSaved(wasSaved);
   return true;
 }
 
@@ -6863,7 +6865,7 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
       return false;
   }
   if (markAsSaved)
-    m_saved = true;
+    SetSaved(true);
 
   wxLogMessage(_("wxmx file saved"));
   return true;
@@ -7439,7 +7441,7 @@ bool Worksheet::TreeUndo(std::list<TreeUndoAction *> *sourcelist, std::list<Tree
   if (sourcelist->empty())
     return false;
 
-  m_saved = false;
+  SetSaved(false);
 
   // Seems like saving the current value of the currently active cell
   // in the tree undo buffer makes the behavior of TreeUndo feel
@@ -8140,7 +8142,7 @@ void Worksheet::RemoveAllOutput(GroupCell *tree)
   {
     // If this function actually does do something we
     // should enable the "save" button.
-    m_saved = false;
+    OutputChanged();
 
     tree->RemoveOutput();
 
@@ -8426,7 +8428,7 @@ void Worksheet::Replace(wxString oldString, wxString newString, bool ignoreCase)
   {
     if (GetActiveCell()->ReplaceSelection(oldString, newString, false, ignoreCase))
     {
-      m_saved = false;
+      SetSaved(false);
       GroupCell *group = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
       group->ResetInputLabel();
       group->ResetSize();
@@ -8469,7 +8471,7 @@ int Worksheet::ReplaceAll(wxString oldString, wxString newString, bool ignoreCas
 
   if (count > 0)
   {
-    m_saved = false;
+    SetSaved(false);
     Recalculate();
     RequestRedraw();
   }
