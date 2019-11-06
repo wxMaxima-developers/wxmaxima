@@ -8734,7 +8734,7 @@ int wxMaxima::SaveDocumentP()
   }
   else
   {
-    if (m_worksheet->m_configuration->AutoSaveAsTempFile())
+    if (!m_worksheet->m_configuration->AutoSaveAsTempFile())
     {
       if (SaveFile())
         return wxID_NO;
