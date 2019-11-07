@@ -4348,7 +4348,7 @@ bool wxMaxima::AutoSave()
   }
   else
   {
-    wxLogMessage(_("Autosaving"));
+    wxLogMessage(_("Autosaving the .wxmx file"));
     saved = SaveFile(false);
   }
   
@@ -7271,7 +7271,10 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
 bool wxMaxima::SaveOnClose()
 {
   if (!SaveNecessary())
+  {
+    wxLogMessage(_("No saving on close necessary."));
     return true;
+  }
 
   // If we want to keep the file saved we automatically save the file on closing.
   if(m_worksheet->m_configuration->AutoSaveAsTempFile())
@@ -7290,6 +7293,7 @@ bool wxMaxima::SaveOnClose()
             return false;
         }
       }
+      return true;
     }
   }
   else
