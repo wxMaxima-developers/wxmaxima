@@ -7268,55 +7268,43 @@ void wxMaxima::StatsMenu(wxCommandEvent &ev)
   }
 }
 
-void wxMaxima::OnClose(wxCloseEvent &event)
+bool wxMaxima::SaveOnClose()
 {
-  if(event.GetEventType() == wxEVT_END_SESSION)
-    KillMaxima();;
-  
-  if (SaveNecessary())
+  if (!SaveNecessary())
+    return true;
+
+  // If we want to keep the file saved we automatically save the file on closing.
+  if(m_worksheet->m_configuration->AutoSaveAsTempFile())
   {
-    // If we want to keep the file saved we automatically save the file on closing.
-    if(!m_worksheet->m_configuration->AutoSaveAsTempFile())
+    int close = SaveDocumentP();
+    
+    if (close == wxID_CANCEL)
+      return false;
+    else
     {
-      bool saved;
+      if (close == wxID_YES)
       {
-        wxLogStderr blocker;
-        saved = SaveFile();
-      }
-      if (!saved)
-      {
-        int close = SaveDocumentP();
-        
-        if (close == wxID_CANCEL)
+        if (!SaveFile())
         {
-          event.Veto();
-          return;
-        }
-        else
-        {
-          if (close == wxID_YES)
-          {
-            if (!SaveFile())
-            {
-              if(!SaveFile(true))
-              {
-                event.Veto();
-                return;
-              }
-            }
-          }
+          if(!SaveFile(true))
+            return false;
         }
       }
     }
-    else
+  }
+  else
+  {
+    bool saved;
+    {
+      wxLogStderr blocker;
+      saved = SaveFile();
+    }
+    if (!saved)
     {
       int close = SaveDocumentP();
-      
+        
       if (close == wxID_CANCEL)
-      {
-        event.Veto();
-        return;
-      }
+        return false;
       else
       {
         if (close == wxID_YES)
@@ -7324,17 +7312,28 @@ void wxMaxima::OnClose(wxCloseEvent &event)
           if (!SaveFile())
           {
             if(!SaveFile(true))
-            {
-              event.Veto();
-              return;
-            }
+              return false;
           }
         }
       }
     }
   }
+  return true;
+}
 
-  // Log events we generate now won't appear on the log panel any more.
+
+void wxMaxima::OnClose(wxCloseEvent &event)
+{
+  if(event.GetEventType() == wxEVT_END_SESSION)
+    KillMaxima();
+
+  if(!SaveOnClose())
+  {
+    event.Veto();
+    return;
+  }
+  
+  // Stop log events from appearing on the log panel
   wxLogStderr blocker;
 
   // We have saved the file and will close now => No need to have the

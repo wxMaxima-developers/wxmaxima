@@ -609,6 +609,8 @@ protected:
    */
   bool SaveFile(bool forceSave = false);
 
+  //! Try to save the file before closing it - or return false 
+  bool SaveOnClose();
   /*! Save the project in a temp file.
 
     Returns false if a save was necessary, but not possible.
