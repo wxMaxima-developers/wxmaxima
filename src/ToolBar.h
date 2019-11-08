@@ -165,6 +165,9 @@ public:
     return m_needsInformationIcon.GetSize().y;
   }
   
+  //! Remove all ools and then add all tools that are requested/fit in the toolbar/...
+  void AddTools();
+
   //! Get the cell style for new cells
   GroupType GetCellType();
   //! Set the cell style to show for the current cell

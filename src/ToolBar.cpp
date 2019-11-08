@@ -149,7 +149,6 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
                                                   wxAUI_TB_OVERFLOW | wxAUI_TB_PLAIN_BACKGROUND |
                                                   wxAUI_TB_HORIZONTAL)
 {
-  m_ppi = wxSize(-1,-1);
   m_defaultCellStyle = GC_TYPE_CODE;
   m_canCopy_old = true;
   m_canCut_old = true;
@@ -162,7 +161,21 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
 
   SetToolBitmapSize(wxSize(24, 24));
   SetGripperVisible(false);
-  
+  m_plotSlider = NULL;
+  m_textStyle = NULL;
+  AddTools();
+
+  // For some reason overflow and re-sizing don't play together in some cases if we don't
+  // do the following:
+  Realize();
+  SetInitialSize(wxSize(100000,GetBestSize().y));
+  Realize();  
+}
+
+void ToolBar::AddTools()
+{
+  Clear();
+  m_ppi = wxSize(-1,-1);  
   AddTool(tb_new, _("New"),
                      GetImage(wxT("gtk-new"),
                               gtk_new_128_png,gtk_new_128_png_len,
@@ -294,6 +307,7 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
   textStyle.Add(_("Subsubsection"));
   textStyle.Add(_("Heading5"));
   textStyle.Add(_("Heading6"));
+  wxDELETE(m_textStyle);
   m_textStyle = new wxChoice(this, tb_changeStyle, wxDefaultPosition, wxDefaultSize, textStyle);
   m_textStyle->SetToolTip(_("For faster creation of cells the following shortcuts exist:\n\n"
                             "   Ctrl+0: Math cell\n"
@@ -347,6 +361,7 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
   wxDisplaySize(&width, &height);
   if (width < 800)
     sliderWidth = wxMin(sliderWidth, 100);
+  wxDELETE(m_plotSlider);
   m_plotSlider = new wxSlider(this, plot_slider_id, 0, 0, 10,
                               wxDefaultPosition, wxSize(sliderWidth, -1),
                               wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
@@ -366,9 +381,6 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
   Connect(wxEVT_SIZE,
           wxSizeEventHandler(ToolBar::OnSize),
           NULL, this);
-  Realize();
-  SetInitialSize(wxSize(100000,GetBestSize().y));
-  Realize();
 }
 
 void ToolBar::UpdateBitmaps()
@@ -608,7 +620,6 @@ void ToolBar::SetCellStyle(int style)
   }
 }
 
-
 void ToolBar::AnimationButtonState(AnimationStartStopState state)
 {
   if (m_AnimationStartStopState != state)
@@ -651,7 +662,8 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
 
 void ToolBar::OnSize(wxSizeEvent &event)
 {
+//  AddTools();
   UpdateBitmaps();
-  Refresh();
+//  Refresh();
   event.Skip();
 }
