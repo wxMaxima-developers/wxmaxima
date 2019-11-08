@@ -180,6 +180,15 @@ public:
       }
     }
 
+  void WorksheetEmpty(bool value)
+    {
+      if (value != m_worksheetEmpty_old)
+      {
+        EnableTool(tb_eval_all, !value);
+        m_worksheetEmpty_old = value;
+      }
+    }
+
   //! Updates the slider to match the Slide Show cell.
   void UpdateSlider(SlideShow *cell);
 
@@ -255,6 +264,7 @@ private:
   bool m_canPrint_old;
   bool m_canEvalTillHere_old;
   bool m_canEvalThisCell_old;
+  bool m_worksheetEmpty_old;
   AnimationStartStopState m_AnimationStartStopState;
   //! True if we show the "needs information" button.
   bool m_needsInformation;

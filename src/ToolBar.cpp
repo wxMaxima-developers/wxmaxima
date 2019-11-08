@@ -150,6 +150,8 @@ ToolBar::ToolBar(wxWindow *parent) : wxAuiToolBar(parent,-1, wxDefaultPosition, 
                                                   wxAUI_TB_HORIZONTAL)
 {
   m_defaultCellStyle = GC_TYPE_CODE;
+  m_canEvalThisCell_old = true;
+  m_worksheetEmpty_old = false;
   m_canCopy_old = true;
   m_canCut_old = true;
   m_canSave_old = true;

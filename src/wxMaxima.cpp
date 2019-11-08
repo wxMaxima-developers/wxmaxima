@@ -3754,14 +3754,20 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
       m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, false);
       break;
   }
-  if (m_worksheet->GetActiveCell() != NULL)
-  {
-    if((m_worksheet->GetActiveCell()->GetGroup()->GetType() == MC_TYPE_INPUT) ||
-       m_worksheet->IsSelected(MC_TYPE_INPUT))
-      m_worksheet->m_mainToolBar->CanEvalThisCell(true);
-    else
-      m_worksheet->m_mainToolBar->CanEvalThisCell(false);
-  }
+  if(
+    ((m_worksheet->GetActiveCell() != NULL) &&
+     (m_worksheet->GetActiveCell()->GetStyle() == TS_INPUT)
+      ) ||
+    (
+      (m_worksheet->GetSelectionStart() != NULL) &&
+      (m_worksheet->GetSelectionStart() == m_worksheet->GetSelectionEnd()) &&
+      (dynamic_cast<GroupCell *>(m_worksheet->GetSelectionStart())->GetEditable()->GetStyle() == TS_INPUT)))
+    m_worksheet->m_mainToolBar->CanEvalThisCell(true);
+  else
+    m_worksheet->m_mainToolBar->CanEvalThisCell(false);
+  m_worksheet->m_mainToolBar->WorksheetEmpty(m_worksheet->GetTree() == NULL);
+  
+  m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_interrupt, false);
 }
 
 wxString wxMaxima::ExtractFirstExpression(wxString entry)
