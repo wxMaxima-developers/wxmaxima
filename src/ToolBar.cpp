@@ -417,10 +417,7 @@ void ToolBar::AddTools()
   Connect(wxEVT_RIGHT_DOWN,
           wxMouseEventHandler(ToolBar::OnMouseRightDown),
           NULL, this);
-  if(!GetToolBarFits())
-    DeleteTool(tb_animation_startStop);
-
-  Realize();
+  Realize();  
 }
 
 void ToolBar::UpdateBitmaps()
@@ -776,4 +773,5 @@ void ToolBar::OnMenu(wxMenuEvent &event)
     AddTools();
     break;
   }
+  Realize();
 }
