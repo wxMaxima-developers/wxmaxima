@@ -300,7 +300,7 @@ void ToolBar::AddTools()
                    go_jump_128_png,go_jump_128_png_len,
                    go_jump_192_png,go_jump_192_png_len
             ),
-          _("Send the current cell to maxima"));
+          _("Send all cells to maxima"));
 
   AddTool(tb_evaltillhere, _("Evaluate to point"),
           GetImage(wxT("go-bottom"),
