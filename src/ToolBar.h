@@ -50,7 +50,13 @@ public:
 
   enum popupitems
   {
-    copy_paste
+    copy_paste,
+    open_save,
+    print,
+    options,
+    shownew,
+    search,
+    help
   };
 
   wxBitmap GetImage(wxString name,
@@ -97,6 +103,8 @@ public:
     tb_pref,
     tb_interrupt,
     tb_follow,
+    tb_eval,
+    tb_eval_all,
     tb_evaltillhere,
     tb_evaluate_rest,
     tb_help,
@@ -163,6 +171,15 @@ public:
     }
   }
 
+  void CanEvalThisCell(bool value)
+    {
+      if (value != m_canEvalThisCell_old)
+      {
+        EnableTool(tb_eval, value);
+        m_canEvalThisCell_old = value;
+      }
+    }
+
   //! Updates the slider to match the Slide Show cell.
   void UpdateSlider(SlideShow *cell);
 
@@ -192,7 +209,31 @@ public:
   bool ShowCopyPaste(){bool show = true;wxConfig::Get()->Read("Toolbar/showCopyPaste",&show);
     return show;}
   void ShowCopyPaste(bool show){wxConfig::Get()->Write("Toolbar/showCopyPaste",show);}
+
+  bool ShowOpenSave(){bool show = true;wxConfig::Get()->Read("Toolbar/showOpenSave",&show);
+    return show;}
+  void ShowOpenSave(bool show){wxConfig::Get()->Write("Toolbar/showOpenSave",show);}
   
+  bool ShowNew(){bool show = true;wxConfig::Get()->Read("Toolbar/showNew",&show);
+    return show;}
+  void ShowNew(bool show){wxConfig::Get()->Write("Toolbar/showNew",show);}
+
+  bool ShowSearch(){bool show = true;wxConfig::Get()->Read("Toolbar/showSearch",&show);
+    return show;}
+  void ShowSearch(bool show){wxConfig::Get()->Write("Toolbar/showSearch",show);}
+
+  bool ShowHelp(){bool show = true;wxConfig::Get()->Read("Toolbar/showHelp",&show);
+    return show;}
+  void ShowHelp(bool show){wxConfig::Get()->Write("Toolbar/showHelp",show);}
+
+  bool ShowPrint(){bool show = true;wxConfig::Get()->Read("Toolbar/showPrint",&show);
+    return show;}
+  void ShowPrint(bool show){wxConfig::Get()->Write("Toolbar/showPrint",show);}
+
+  bool ShowOptions(){bool show = true;wxConfig::Get()->Read("Toolbar/showOptions",&show);
+    return show;}
+  void ShowOptions(bool show){wxConfig::Get()->Write("Toolbar/showOptions",show);}
+
 protected:
   void OnSize(wxSizeEvent &event);
   void OnMouseRightDown(wxMouseEvent &event);
@@ -213,6 +254,7 @@ private:
   bool m_canSave_old;
   bool m_canPrint_old;
   bool m_canEvalTillHere_old;
+  bool m_canEvalThisCell_old;
   AnimationStartStopState m_AnimationStartStopState;
   //! True if we show the "needs information" button.
   bool m_needsInformation;

@@ -3754,6 +3754,14 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
       m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, false);
       break;
   }
+  if (m_worksheet->GetActiveCell() != NULL)
+  {
+    if((m_worksheet->GetActiveCell()->GetGroup()->GetType() == MC_TYPE_INPUT) ||
+       m_worksheet->IsSelected(MC_TYPE_INPUT))
+      m_worksheet->m_mainToolBar->CanEvalThisCell(true);
+    else
+      m_worksheet->m_mainToolBar->CanEvalThisCell(false);
+  }
 }
 
 wxString wxMaxima::ExtractFirstExpression(wxString entry)
@@ -5099,6 +5107,7 @@ void wxMaxima::MaximaMenu(wxCommandEvent &event)
     }
       break;
     case menu_evaluate_all_visible:
+    case ToolBar::tb_eval_all:
     {
       m_worksheet->m_evaluationQueue.Clear();
       m_worksheet->ResetInputPrompts();
@@ -7523,6 +7532,7 @@ void wxMaxima::PopupMenu(wxCommandEvent &event)
     }
       break;
     case Worksheet::popid_evaluate:
+    case ToolBar::tb_eval:
       {
         wxCommandEvent *dummy = new wxCommandEvent;
         EvaluateEvent(*dummy);
@@ -9094,6 +9104,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_MENU(Worksheet::popid_divide_cell, wxMaxima::PopupMenu)
                 EVT_MENU(Worksheet::popid_evaluate, wxMaxima::PopupMenu)
                 EVT_MENU(Worksheet::popid_evaluate_section, wxMaxima::PopupMenu)
+                EVT_MENU(ToolBar::tb_eval, wxMaxima::PopupMenu)
+                EVT_MENU(ToolBar::tb_eval_all, wxMaxima::MaximaMenu)
                 EVT_MENU(ToolBar::tb_evaluate_rest, wxMaxima::PopupMenu)
                 EVT_MENU(ToolBar::tb_evaltillhere, wxMaxima::PopupMenu)
                 EVT_MENU(Worksheet::popid_merge_cells, wxMaxima::PopupMenu)

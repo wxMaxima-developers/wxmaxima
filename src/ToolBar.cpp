@@ -176,44 +176,52 @@ void ToolBar::AddTools()
 {
   Clear();
   m_ppi = wxSize(-1,-1);  
-  AddTool(tb_new, _("New"),
-                     GetImage(wxT("gtk-new"),
-                              gtk_new_128_png,gtk_new_128_png_len,
-                              gtk_new_192_png,gtk_new_192_png_len
-                       ),
-                     _("New document"));
-  AddTool(tb_open, _("Open"),
-                     GetImage(wxT("gtk-open"),
-                              gtk_open_128_png,gtk_open_128_png_len,
-                              gtk_open_192_png,gtk_open_192_png_len
-                       ),
-                     _("Open document"));
-  AddTool(tb_save, _("Save"),
-                     GetImage(wxT("gtk-save"),
-                              gtk_save_128_png,gtk_save_128_png_len,
-                              gtk_save_192_png,gtk_save_192_png_len
-                       ),
-                     _("Save document"));
+  if(ShowNew())
+    AddTool(tb_new, _("New"),
+            GetImage(wxT("gtk-new"),
+                     gtk_new_128_png,gtk_new_128_png_len,
+                     gtk_new_192_png,gtk_new_192_png_len
+              ),
+            _("New document"));
+  if(ShowOpenSave())
+  {
+    AddTool(tb_open, _("Open"),
+            GetImage(wxT("gtk-open"),
+                     gtk_open_128_png,gtk_open_128_png_len,
+                     gtk_open_192_png,gtk_open_192_png_len
+              ),
+            _("Open document"));
+    AddTool(tb_save, _("Save"),
+            GetImage(wxT("gtk-save"),
+                     gtk_save_128_png,gtk_save_128_png_len,
+                     gtk_save_192_png,gtk_save_192_png_len
+              ),
+            _("Save document"));
+  }
+  if(ShowPrint())
+  {
 #ifndef __WXOSX__
-  AddSeparator();
+    AddSeparator();
 #endif
-  AddTool(tb_print, _("Print"),
-                     GetImage(wxT("gtk-print"),
-                              gtk_print_128_png,gtk_print_128_png_len,
-                              gtk_print_192_png,gtk_print_192_png_len
-                       ),
-                     _("Print document"));
-  AddTool(tb_pref, _("Options"),
-                     GetImage(wxT("gtk-preferences"),
-                              gtk_preferences_128_png,gtk_preferences_128_png_len,
-                              gtk_preferences_192_png,gtk_preferences_192_png_len
-                       ),
-                     _("Configure wxMaxima"));
-#ifndef __WXOSX__
-  AddSeparator();
-#endif
+    AddTool(tb_print, _("Print"),
+            GetImage(wxT("gtk-print"),
+                     gtk_print_128_png,gtk_print_128_png_len,
+                     gtk_print_192_png,gtk_print_192_png_len
+              ),
+            _("Print document"));
+  }
+  if(ShowOptions())
+    AddTool(tb_pref, _("Options"),
+            GetImage(wxT("gtk-preferences"),
+                     gtk_preferences_128_png,gtk_preferences_128_png_len,
+                     gtk_preferences_192_png,gtk_preferences_192_png_len
+              ),
+            _("Configure wxMaxima"));
   if(ShowCopyPaste())
   {
+#ifndef __WXOSX__
+    AddSeparator();
+#endif
     AddTool(tb_cut, _("Cut"),
             GetImage(wxT("gtk-cut"),
                      gtk_cut_128_png,gtk_cut_128_png_len,
@@ -239,65 +247,82 @@ void ToolBar::AddTools()
                    gtk_select_all_192_png,gtk_select_all_192_png_len
             ),
           _("Select all"));
+  if(ShowSearch())
+  {
 #ifndef __WXOSX__
-  AddSeparator();
+    AddSeparator();
 #endif
-  AddTool(tb_find, _("Find"),
-                     GetImage(wxT("gtk-find"),
-                              gtk_find_128_png,gtk_find_128_png_len,
-                              gtk_find_192_png,gtk_find_192_png_len
-                       ),
-                     _("Find and replace"));
+    AddTool(tb_find, _("Find"),
+            GetImage(wxT("gtk-find"),
+                     gtk_find_128_png,gtk_find_128_png_len,
+                     gtk_find_192_png,gtk_find_192_png_len
+              ),
+            _("Find and replace"));
+  }
 #ifndef __WXOSX__
   AddSeparator();
 #endif
   AddTool(menu_restart_id, _("Restart maxima"),
-                     GetImage(wxT("view-refresh"),
-                              view_refresh_128_png,view_refresh_128_png_len,
-                              view_refresh_192_png,view_refresh_192_png_len
-                       ),
-                     _("Completely stop maxima and restart it"));
+          GetImage(wxT("view-refresh"),
+                   view_refresh_128_png,view_refresh_128_png_len,
+                   view_refresh_192_png,view_refresh_192_png_len
+            ),
+          _("Completely stop maxima and restart it"));
   AddTool(tb_interrupt, _("Interrupt"),
-                     GetImage(wxT("gtk-stop"),
-                              gtk_stop_128_png,gtk_stop_128_png_len,
-                              gtk_stop_192_png,gtk_stop_192_png_len
-                       ),
-                     _("Interrupt current computation. To completely restart maxima press the button left to this one."));
+          GetImage(wxT("gtk-stop"),
+                   gtk_stop_128_png,gtk_stop_128_png_len,
+                   gtk_stop_192_png,gtk_stop_192_png_len
+            ),
+          _("Interrupt current computation. To completely restart maxima press the button left to this one."));
   m_followIcon = GetImage(wxT("weather-clear"),
-                              weather_clear_128_png,weather_clear_128_png_len,
-                              weather_clear_192_png,weather_clear_192_png_len
+                          weather_clear_128_png,weather_clear_128_png_len,
+                          weather_clear_192_png,weather_clear_192_png_len
     );
   m_needsInformationIcon = GetImage(wxT("software-update-urgent"),
-                              software_update_urgent_128_png,software_update_urgent_128_png_len,
-                              software_update_urgent_192_png,software_update_urgent_192_png_len
+                                    software_update_urgent_128_png,software_update_urgent_128_png_len,
+                                    software_update_urgent_192_png,software_update_urgent_192_png_len
     );
   AddTool(tb_follow, _("Follow"), m_followIcon,
-                     _("Return to the cell that is currently being evaluated"));
+          _("Return to the cell that is currently being evaluated"));
   EnableTool(tb_follow, false);
 
+  AddTool(tb_eval, _("Evaluate current cell"),
+          GetImage(wxT("go-next"),
+                   go_next_128_png,go_next_128_png_len,
+                   go_next_192_png,go_next_192_png_len
+            ),
+          _("Send the current cell to maxima"));
+
+  AddTool(tb_eval_all, _("Evaluate all"),
+          GetImage(wxT("go-jump"),
+                   go_jump_128_png,go_jump_128_png_len,
+                   go_jump_192_png,go_jump_192_png_len
+            ),
+          _("Send the current cell to maxima"));
+
   AddTool(tb_evaltillhere, _("Evaluate to point"),
-                     GetImage(wxT("go-bottom"),
-                              go_bottom_128_png,go_bottom_128_png_len,
-                              go_bottom_192_png,go_bottom_192_png_len
-                       ),
-                     _("Evaluate the file from its beginning to the cell above the cursor"));
-
-    AddTool(tb_evaluate_rest, _("Evaluate the rest"),
-                     GetImage(wxT("go-last"),
-                              go_last_128_png,go_last_128_png_len,
-                              go_last_192_png,go_last_192_png_len
-                       ),
-                     _("Evaluate the file from the cursor to its end"));
-
+          GetImage(wxT("go-bottom"),
+                   go_bottom_128_png,go_bottom_128_png_len,
+                   go_bottom_192_png,go_bottom_192_png_len
+            ),
+          _("Evaluate the file from its beginning to the cell above the cursor"));
+  
+  AddTool(tb_evaluate_rest, _("Evaluate the rest"),
+          GetImage(wxT("go-last"),
+                   go_last_128_png,go_last_128_png_len,
+                   go_last_192_png,go_last_192_png_len
+            ),
+          _("Evaluate the file from the cursor to its end"));
+  
 #ifndef __WXOSX__
-    AddSeparator();
+  AddSeparator();
 #endif
-    AddTool(tb_hideCode, _("Hide Code"),
-            GetImage(wxT("weather-few-clouds"),
-                     weather_few_clouds_128_png,weather_few_clouds_128_png_len,
-                     weather_few_clouds_192_png,weather_few_clouds_192_png_len
-              ),
-            _("Toggle the visibility of code cells"));
+  AddTool(tb_hideCode, _("Hide Code"),
+          GetImage(wxT("weather-few-clouds"),
+                   weather_few_clouds_128_png,weather_few_clouds_128_png_len,
+                   weather_few_clouds_192_png,weather_few_clouds_192_png_len
+            ),
+          _("Toggle the visibility of code cells"));
 #ifndef __WXOSX__
   AddSeparator();
 #endif
@@ -331,20 +356,18 @@ void ToolBar::AddTools()
   // Seems like on MSW changing the image of this button has strange side-effects
   // so we combine both images into one for this OS.
   m_PlayButton = GetImage(wxT("media-playback-start"),
-                              media_playback_start_128_png,media_playback_start_128_png_len,
-                              media_playback_start_192_png,media_playback_start_192_png_len
+                          media_playback_start_128_png,media_playback_start_128_png_len,
+                          media_playback_start_192_png,media_playback_start_192_png_len
     );
   m_StopButton = GetImage(wxT("media-playback-stop"),
-                              media_playback_stop_128_png,media_playback_stop_128_png_len,
-                              media_playback_stop_192_png,media_playback_stop_192_png_len
+                          media_playback_stop_128_png,media_playback_stop_128_png_len,
+                          media_playback_stop_192_png,media_playback_stop_192_png_len
     );
 
   // It felt like a good idea to combine the play and the stop button.
-  // On windows changing a button seems to somehow stop the animation, though, so
-  // this OS requires the buttons to be separate.
   AddTool(tb_animation_startStop, _("Start or Stop animation"),
-                     m_PlayButton,
-                     _("Start or stop the currently selected animation that has been created with the with_slider class of commands"));
+          m_PlayButton,
+          _("Start or stop the currently selected animation that has been created with the with_slider class of commands"));
   EnableTool(tb_animation_startStop, false);
 
 #if wxCHECK_VERSION(3, 1, 1)
@@ -373,24 +396,28 @@ void ToolBar::AddTools()
                               wxDefaultPosition, wxSize(sliderWidth, -1),
                               wxSL_HORIZONTAL | !wxSL_AUTOTICKS);
   m_plotSlider->SetToolTip(
-          _("After clicking on animations created with with_slider_draw() or similar this slider allows to change the current frame."));
+    _("After clicking on animations created with with_slider_draw() or similar this slider allows to change the current frame."));
   m_plotSlider->Enable(false);
   m_slideShowMaxIndex = -1;
   m_slideShowDisplayedIndex = -1;
   AddControl(m_plotSlider);
   AddStretchSpacer(100);
-  AddTool(tb_help, _("Help"),
-                     GetImage(wxT("gtk-help"),
-                              gtk_help_128_png,gtk_help_128_png_len,
-                              gtk_help_192_png,gtk_help_192_png_len
-                       ),
-                     _("Show Maxima help"));
+  if(ShowHelp())
+    AddTool(tb_help, _("Help"),
+            GetImage(wxT("gtk-help"),
+                     gtk_help_128_png,gtk_help_128_png_len,
+                     gtk_help_192_png,gtk_help_192_png_len
+              ),
+            _("Show Maxima help"));
   Connect(wxEVT_SIZE,
           wxSizeEventHandler(ToolBar::OnSize),
           NULL, this);
   Connect(wxEVT_RIGHT_DOWN,
           wxMouseEventHandler(ToolBar::OnMouseRightDown),
           NULL, this);
+  if(!GetToolBarFits())
+    DeleteTool(tb_animation_startStop);
+
   Realize();
 }
 
@@ -670,11 +697,12 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
     m_AnimationStartStopState = state;
   }
   //  Realize() flickers on GTK3
-  Refresh();
+ Refresh();
 }
 
 void ToolBar::OnSize(wxSizeEvent &event)
 {
+//  AddTools();
   event.Skip();
 }
 
@@ -682,8 +710,27 @@ void ToolBar::OnMouseRightDown(wxMouseEvent &event)
 {
   wxMenu *popupMenu = new wxMenu();
   popupMenu->AppendCheckItem(copy_paste, _("Copy, Cut and Paste button"),
-                             _("Show the Copy, Cut and Paste button?"));
+                             _("Show the Copy, Cut and the Paste button?"));
   popupMenu->Check(copy_paste, ShowCopyPaste());
+  popupMenu->AppendCheckItem(open_save, _("Open and save button"),
+                             _("Show the open and the save button?"));
+  popupMenu->Check(open_save, ShowOpenSave());
+  popupMenu->AppendCheckItem(print, _("Print button"),
+                             _("Show the print button?"));
+  popupMenu->Check(print, ShowPrint());
+  popupMenu->AppendCheckItem(options, _("Preferences button"),
+                             _("Show the preferences button?"));
+  popupMenu->Check(options, ShowOptions());
+  popupMenu->AppendCheckItem(shownew, _("New button"),
+                             _("Show the \"New\" button?"));
+  popupMenu->Check(shownew, ShowNew());
+  popupMenu->AppendCheckItem(search, _("Search button"),
+                             _("Show the \"search\" button?"));
+  popupMenu->Check(search, ShowSearch());
+  popupMenu->AppendCheckItem(help, _("Help button"),
+                             _("Show the \"help\" button?"));
+  popupMenu->Check(help, ShowHelp());
+
   if (popupMenu->GetMenuItemCount() > 0)
   {
     popupMenu->Connect(wxEVT_MENU,
@@ -701,5 +748,30 @@ void ToolBar::OnMenu(wxMenuEvent &event)
   case copy_paste:
     ShowCopyPaste(!ShowCopyPaste());
     AddTools();
+    break;
+  case open_save:
+    ShowOpenSave(!ShowOpenSave());
+    AddTools();
+    break;
+  case print:
+    ShowPrint(!ShowPrint());
+    AddTools();
+    break;
+  case options:
+    ShowOptions(!ShowOptions());
+    AddTools();
+    break;
+  case shownew:
+    ShowNew(!ShowNew());
+    AddTools();
+    break;
+  case search:
+    ShowSearch(!ShowSearch());
+    AddTools();
+    break;
+  case help:
+    ShowHelp(!ShowHelp());
+    AddTools();
+    break;
   }
 }
