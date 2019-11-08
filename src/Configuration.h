@@ -684,6 +684,7 @@ public:
     {
       wxConfig::Get()->Write(wxT("copyBitmap"), m_copyBitmap = copyBitmap );
     }
+  
   bool CopyMathML(){return m_copyMathML;}
   void CopyMathML(bool copyMathML)
     {

@@ -1447,6 +1447,7 @@ void Worksheet::OnMouseRightDown(wxMouseEvent &event)
         }
         popupMenu->AppendCheckItem(popid_auto_answer, _("Automatically answer questions"),
                                    _("Automatically fill in answers known from the last run"));
+        popupMenu->Check(popid_auto_answer,dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart)->AutoAnswer());
         if(dynamic_cast<GroupCell *>(m_cellPointers.m_selectionStart)->GetGroupType() == GC_TYPE_IMAGE)
         {
           popupMenu->AppendSeparator();

@@ -47,7 +47,12 @@ public:
     Stopped, //!< The animation is stopped
     Inactive //!< No animation is currently running
   };
-  
+
+  enum popupitems
+  {
+    copy_paste
+  };
+
   wxBitmap GetImage(wxString name,
                     unsigned char *data_128, size_t len_128,
                     unsigned char *data_192, size_t len_192);
@@ -184,8 +189,14 @@ public:
   //! Update the bitmaps on ppi changes.
   void UpdateBitmaps();
 
+  bool ShowCopyPaste(){bool show = true;wxConfig::Get()->Read("Toolbar/showCopyPaste",&show);
+    return show;}
+  void ShowCopyPaste(bool show){wxConfig::Get()->Write("Toolbar/showCopyPaste",show);}
+  
 protected:
-    void OnSize(wxSizeEvent &event);
+  void OnSize(wxSizeEvent &event);
+  void OnMouseRightDown(wxMouseEvent &event);
+  void OnMenu(wxMenuEvent &event);
 private:
   //! The ppi rate.
   wxSize m_ppi;

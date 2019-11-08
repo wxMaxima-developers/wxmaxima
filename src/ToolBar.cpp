@@ -212,30 +212,33 @@ void ToolBar::AddTools()
 #ifndef __WXOSX__
   AddSeparator();
 #endif
-  AddTool(tb_cut, _("Cut"),
-                     GetImage(wxT("gtk-cut"),
-                              gtk_cut_128_png,gtk_cut_128_png_len,
-                              gtk_cut_192_png,gtk_cut_192_png_len
-                       ),
-                     _("Cut selection"));
-  AddTool(tb_copy, _("Copy"),
-                     GetImage(wxT("gtk-copy"),
-                              gtk_copy_128_png,gtk_copy_128_png_len,
-                              gtk_copy_192_png,gtk_copy_192_png_len
-                       ),
-                     _("Copy selection"));
-  AddTool(tb_paste, _("Paste"),
-                     GetImage(wxT("gtk-paste"),
-                              gtk_paste_128_png,gtk_paste_128_png_len,
-                              gtk_paste_192_png,gtk_paste_192_png_len
-                       ),
-                     _("Paste from clipboard"));
+  if(ShowCopyPaste())
+  {
+    AddTool(tb_cut, _("Cut"),
+            GetImage(wxT("gtk-cut"),
+                     gtk_cut_128_png,gtk_cut_128_png_len,
+                     gtk_cut_192_png,gtk_cut_192_png_len
+              ),
+            _("Cut selection"));
+    AddTool(tb_copy, _("Copy"),
+            GetImage(wxT("gtk-copy"),
+                     gtk_copy_128_png,gtk_copy_128_png_len,
+                     gtk_copy_192_png,gtk_copy_192_png_len
+              ),
+            _("Copy selection"));
+    AddTool(tb_paste, _("Paste"),
+            GetImage(wxT("gtk-paste"),
+                     gtk_paste_128_png,gtk_paste_128_png_len,
+                     gtk_paste_192_png,gtk_paste_192_png_len
+              ),
+            _("Paste from clipboard"));
+  }
   AddTool(tb_select_all, _("Select all"),
-                     GetImage(wxT("gtk-select-all"),
-                              gtk_select_all_128_png,gtk_select_all_128_png_len,
-                              gtk_select_all_192_png,gtk_select_all_192_png_len
-                       ),
-                     _("Select all"));
+          GetImage(wxT("gtk-select-all"),
+                   gtk_select_all_128_png,gtk_select_all_128_png_len,
+                   gtk_select_all_192_png,gtk_select_all_192_png_len
+            ),
+          _("Select all"));
 #ifndef __WXOSX__
   AddSeparator();
 #endif
@@ -307,6 +310,9 @@ void ToolBar::AddTools()
   textStyle.Add(_("Subsubsection"));
   textStyle.Add(_("Heading5"));
   textStyle.Add(_("Heading6"));
+  int textStyleSelection = 0;
+  if(m_textStyle)
+    textStyleSelection = m_textStyle->GetSelection();
   wxDELETE(m_textStyle);
   m_textStyle = new wxChoice(this, tb_changeStyle, wxDefaultPosition, wxDefaultSize, textStyle);
   m_textStyle->SetToolTip(_("For faster creation of cells the following shortcuts exist:\n\n"
@@ -319,6 +325,7 @@ void ToolBar::AddTools()
                             "   Ctrl+6: Heading5 cell\n"
                             "   Ctrl+7: Heading6 cell\n"
                             ));
+  m_textStyle->SetSelection(textStyleSelection);
   AddControl(m_textStyle);
   
   // Seems like on MSW changing the image of this button has strange side-effects
@@ -381,6 +388,10 @@ void ToolBar::AddTools()
   Connect(wxEVT_SIZE,
           wxSizeEventHandler(ToolBar::OnSize),
           NULL, this);
+  Connect(wxEVT_RIGHT_DOWN,
+          wxMouseEventHandler(ToolBar::OnMouseRightDown),
+          NULL, this);
+  Realize();
 }
 
 void ToolBar::UpdateBitmaps()
@@ -658,12 +669,37 @@ void ToolBar::AnimationButtonState(AnimationStartStopState state)
     }
     m_AnimationStartStopState = state;
   }
+  //  Realize() flickers on GTK3
+  Refresh();
 }
 
 void ToolBar::OnSize(wxSizeEvent &event)
 {
-//  AddTools();
-  UpdateBitmaps();
-//  Refresh();
   event.Skip();
+}
+
+void ToolBar::OnMouseRightDown(wxMouseEvent &event)
+{
+  wxMenu *popupMenu = new wxMenu();
+  popupMenu->AppendCheckItem(copy_paste, _("Copy, Cut and Paste button"),
+                             _("Show the Copy, Cut and Paste button?"));
+  popupMenu->Check(copy_paste, ShowCopyPaste());
+  if (popupMenu->GetMenuItemCount() > 0)
+  {
+    popupMenu->Connect(wxEVT_MENU,
+                       wxMenuEventHandler(ToolBar::OnMenu),
+                       NULL, this);
+    PopupMenu(popupMenu);
+  }
+  wxDELETE(popupMenu);
+}
+
+void ToolBar::OnMenu(wxMenuEvent &event)
+{
+  switch(event.GetId())
+  {
+  case copy_paste:
+    ShowCopyPaste(!ShowCopyPaste());
+    AddTools();
+  }
 }
