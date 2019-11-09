@@ -21,6 +21,12 @@ if(GETTEXT_FOUND)
     execute_process(
 	COMMAND ${XGETTEXT} -C -k_ -s -o "wxMaxima.pot" ${POT_SOURCE_FILES})
 
+    add_custom_command(
+	TARGET update-locale
+	COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/wxMaxima.pot" "${CMAKE_SOURCE_DIR}/locales/wxMaxima/wxMaxima.pot"
+	COMMAND ${CMAKE_COMMAND} -E copy "*.po" "${CMAKE_SOURCE_DIR}/locales/wxMaxima/"
+	COMMENT "Installing wxMaxima.pot and po-files in the source directory ${CMAKE_SOURCE_DIR}/locales/wxMaxima")
+    
     foreach(POFILE ${TRANSLATION_FILES})
 	string(REGEX REPLACE ".*locales/wxMaxima/(.*).po$" "\\1" LANG ${POFILE})
 
@@ -43,17 +49,12 @@ if(GETTEXT_FOUND)
 	    TARGET update-locale
 	    COMMAND ${CMAKE_COMMAND} -E copy "*.po" "${CMAKE_BINARY_DIR}/locales/wxMaxima/"
 	    COMMAND ${GETTEXT_MSGMERGE_EXECUTABLE} -N ${CMAKE_SOURCE_DIR}/locales/wxMaxima/${LANG}.po ${CMAKE_BINARY_DIR}/wxMaxima.pot -U)
+	add_dependencies(update-locale build-locale-${LANG})
     endforeach()
 
     message(STATUS "The updated POT and PO files were generated in the build directory.")
     message(STATUS "Call 'make update-locale' to update the .po files in the source tree, too.")
     file(GLOB NEW_PO_FILES "${CMAKE_BINARY_DIR}/locales/*.po")
-
-    add_custom_command(
-	TARGET update-locale
-	COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/wxMaxima.pot" "${CMAKE_SOURCE_DIR}/locales/wxMaxima/wxMaxima.pot"
-	COMMAND ${CMAKE_COMMAND} -E copy "*.po" "${CMAKE_SOURCE_DIR}/locales/wxMaxima/"
-	COMMENT "Installing wxMaxima.pot and po-files in the source directory ${CMAKE_SOURCE_DIR}/locales/wxMaxima")
 else()
     message(STATUS "Gettext not found - translations of wxMaxima will be disabled")
 endif()
