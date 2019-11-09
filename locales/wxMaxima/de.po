@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-09 15:50+0100\n"
-"PO-Revision-Date: 2019-11-09 15:48+0100\n"
+"PO-Revision-Date: 2019-11-09 16:02+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -2892,7 +2892,7 @@ msgstr "Erstes"
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:910
 #, fuzzy, c-format
 msgid "Fix reordered reference indices (of %i, %o) before saving"
-msgstr "Neunummerierung der Ein- und Ausgabemarken beim Speichern"
+msgstr "Neunummerierung der Ein- und Ausgabemarken (%ixxx und %oxxx) beim Speichern"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:647
 msgid "Fixed font in text controls"
@@ -3411,7 +3411,7 @@ msgid ""
 "and every few minutes giving wxMaxima a more cellphone-app-like feeel as the "
 "file is virtually always saved. If this checkbox is unchecked from time to "
 "time a backup is made in the temp folder instead."
-msgstr ""
+msgstr "Ist dieses Häkchen gesetzt, speichert wxMaxima die Datei automatisch alle paar Minuten und, wenn sie geschlossen wird, so dass die Datei wie in einer Handy-App nahezu immer gespeichert ist. Ist es nicht gesetzt, speichert wxMaxima hin und wieder Kopien in einen Temp-Ordner."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:320
 msgid ""
@@ -4692,7 +4692,7 @@ msgstr "Neu\tCtrl+N"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:723
 msgid "New button"
-msgstr ""
+msgstr "Der \\\"Neu\"-Knopf"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:907
 msgid "New connection attempt when already connected."
@@ -4757,7 +4757,7 @@ msgstr "Keine Punkte"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7290
 msgid "No saving on close necessary."
-msgstr ""
+msgstr "Speichern beim Schließen fehlgeschlagen."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1629
 msgid "Normality Test..."
@@ -4910,7 +4910,7 @@ msgstr "OK"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:650
 msgid "Offer known answers"
-msgstr ""
+msgstr "Biete bekannte Antworten an"
 
 #: /home/gunter/src/wxmaxima/src/SubstituteWiz.cpp:34
 msgid "Old value:"
@@ -4968,7 +4968,7 @@ msgstr "Neues Fenster öffnen"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:714
 msgid "Open and save button"
-msgstr ""
+msgstr "Der \"Öffnen\"- und \"Speichern\"-Knopf"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:195
 msgid "Open document"
@@ -5291,7 +5291,7 @@ msgstr "Ziehe benutzerdefinierte Marken vor"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:720
 msgid "Preferences button"
-msgstr ""
+msgstr "Der \"Einstellungen\"-Knopf"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:695
 msgid "Preferences...\tCtrl+,"
@@ -5320,7 +5320,7 @@ msgstr "Drucken"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:717
 msgid "Print button"
-msgstr ""
+msgstr "Der \"Drucken\"-Knopf"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:213
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:630
@@ -5791,7 +5791,7 @@ msgstr "Speichere Layout in eine Datei"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:894
 msgid "Save the worksheet automatically"
-msgstr ""
+msgstr "Speichere das Arbeitsblatt automatisch"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:573
 msgid "Saving failed."
@@ -5819,7 +5819,7 @@ msgstr "Streudiagramm ..."
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:726
 msgid "Search button"
-msgstr ""
+msgstr "Der \"Finden\"-Knopf"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2974
 #, c-format
@@ -5916,11 +5916,11 @@ msgstr "Auswahl"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:303
 msgid "Send all cells to maxima"
-msgstr ""
+msgstr "Sende alle Zellen an Maxima"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:296
 msgid "Send the current cell to maxima"
-msgstr ""
+msgstr "Sende die aktuelle Zelle an Maxima"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1219
 msgid "Sending Maxima a SIGINT signal."
@@ -6178,19 +6178,19 @@ msgstr "Zeige Kapitelnummern"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:724
 msgid "Show the \"New\" button?"
-msgstr ""
+msgstr "Zeige den \"Neue Datei\"-Knopf?"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:730
 msgid "Show the \"help\" button?"
-msgstr ""
+msgstr "Zeige den \"Hilfe\"-Knopf?"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:727
 msgid "Show the \"search\" button?"
-msgstr ""
+msgstr "Zeige den \"Finden\"-Knopf?"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:712
 msgid "Show the Copy, Cut and the Paste button?"
-msgstr ""
+msgstr "Zeige die Knöpfe für \"Ausschneiden\", \"Kopieren\" und \"Einfügen\"?"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5090
 msgid "Show the definition of function:"
@@ -6198,15 +6198,15 @@ msgstr "Zeige die Definition der Funktion:"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:715
 msgid "Show the open and the save button?"
-msgstr ""
+msgstr "Zeige die Knöpfe für öffnen und speichern?"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:721
 msgid "Show the preferences button?"
-msgstr ""
+msgstr "Zeige den Knopf, der den \"Einstellungen\"-Dialog anzeigt."
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:718
 msgid "Show the print button?"
-msgstr ""
+msgstr "Zeige den \"Drucken\"-Knopf?"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:224
 msgid "Show tips at Startup"
@@ -8311,7 +8311,7 @@ msgid ""
 "wxMaxima remembers the answers to maxima's questions. If this checkbox is "
 "set it automatically offers to enter the last answer to this question the "
 "user has input."
-msgstr ""
+msgstr "wxMaxima erinnert sich an die Antworten, die der Benutzer auf Maxima's Fragen geantwortet hat Wenn dieses Häkchen gesetzt ist, bietet Maxima an, die letzte Antwort zu einer Frage einzutragen."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:709
 msgid "wxMaxima startup file location: "
