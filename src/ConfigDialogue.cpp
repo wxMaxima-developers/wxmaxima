@@ -327,8 +327,8 @@ void ConfigDialogue::SetProperties()
   m_texPreamble->SetToolTip(_("Additional commands to be added to the preamble of LaTeX output for pdftex."));
   m_useJSMath->SetToolTip(_("Use nice js math symbols in order to get nice integral, sum, product and sqrt signs\nWill only work if the corresponding js math fonts can be found by wxMaxima."));
   m_useUnicodeMaths->SetToolTip(_("If the font provides big parenthesis symbols: Use them when big parenthesis are needed for maths display."));
-  m_autoSaveAsTempFile->SetToolTip(
-          _("If this checkbox is checked wxMaxima does automatically save the file every few minutes in a temp file instead of keeping the currently-open file up-to-date all the time."));
+  m_autoSave->SetToolTip(
+          _("If this checkbox isn't checked wxMaxima does automatically saves the file every few minutes and while closing giving wxMaxima a more cellphone-app-like behavior as the file is virtually always saved. Else a backup in a temp file is made instead."));
   m_defaultFramerate->SetToolTip(_("Define the default speed (in frames per second) animations are played back with."));
   m_defaultPlotWidth->SetToolTip(
           _("The default width for embedded plots. Can be read out or overridden by the maxima variable wxplot_size"));
@@ -467,7 +467,7 @@ void ConfigDialogue::SetProperties()
   m_autodetectMathJaX->SetValue(!configuration->MathJaXURL_UseUser());
   m_noAutodetectMathJaX->SetValue(configuration->MathJaXURL_UseUser());
   m_texPreamble->SetValue(texPreamble);
-  m_autoSaveAsTempFile->SetValue(configuration->AutoSaveAsTempFile());
+  m_autoSave->SetValue(!configuration->AutoSaveAsTempFile());
 
   m_maximaUserLocation->SetValue(configuration->MaximaUserLocation());
   wxCommandEvent dummy;
@@ -891,8 +891,8 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   m_savePanes = new wxCheckBox(panel, -1, _("Save panes layout"));
   vsizer->Add(m_savePanes, 0, wxALL, 5);
 
-  m_autoSaveAsTempFile = new wxCheckBox(panel, -1, _("Don't save the worksheet automatically"));
-  vsizer->Add(m_autoSaveAsTempFile, 0, wxALL, 5);
+  m_autoSave = new wxCheckBox(panel, -1, _("Save the worksheet automatically"));
+  vsizer->Add(m_autoSave, 0, wxALL, 5);
 
   m_usepngCairo = new wxCheckBox(panel, -1, _("Use cairo to improve plot quality."));
   m_usepngCairo->Connect(wxEVT_CHECKBOX,
@@ -1214,7 +1214,7 @@ void ConfigDialogue::WriteSettings()
   configuration->UseUnicodeMaths(m_useUnicodeMaths->GetValue());
   config->Write(wxT("keepPercent"), m_keepPercentWithSpecials->GetValue());
   config->Write(wxT("texPreamble"), m_texPreamble->GetValue());
-  configuration->AutoSaveAsTempFile(m_autoSaveAsTempFile->GetValue());
+  configuration->AutoSaveAsTempFile(!m_autoSave->GetValue());
   configuration->Documentclass(m_documentclass->GetValue());
   configuration->DocumentclassOptions(m_documentclassOptions->GetValue());
   configuration->MathJaXURL(m_mathJaxURL->GetValue());
