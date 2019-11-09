@@ -18,7 +18,7 @@ if(GETTEXT_FOUND)
     # if that is okay, one may copy it to the source dir.
     # Currently the full source paths are used in the comments.
     message(STATUS "Create POT-file from current sourcecode")
-    execute_process(
+    add_custom_target(build-pot ALL
 	COMMAND ${XGETTEXT} -C -k_ -s -o "wxMaxima.pot" ${POT_SOURCE_FILES})
 
     add_custom_command(
@@ -42,6 +42,7 @@ if(GETTEXT_FOUND)
 	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/locale/${LANG}")
 	add_custom_target(build-locale-${LANG} ALL
 	    DEPENDS pofiles
+	    DEPENDS build-pot
 	    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo" "${CMAKE_BINARY_DIR}/locale/${LANG}/LC_MESSAGES/wxMaxima.mo")
 	# Call msgmerge for each language and create a merged language file
 	message(STATUS "Create PO-file for language ${LANG}")
