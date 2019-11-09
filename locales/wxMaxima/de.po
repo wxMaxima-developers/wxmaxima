@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-09 15:40+0100\n"
-"PO-Revision-Date: 2019-11-09 00:14+0100\n"
+"POT-Creation-Date: 2019-11-09 15:50+0100\n"
+"PO-Revision-Date: 2019-11-09 15:48+0100\n"
 "Last-Translator: Gunter Königsmann <wxMaxima@physikbuch.de>\n"
 "Language-Team: german <de@li.org>\n"
 "Language: \n"
@@ -876,11 +876,11 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4347
 msgid "Autosaving as temp file"
-msgstr "Speichere automatisch als Temporäre Datei"
+msgstr "Automatisches Speichern als Temporäre Datei"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4365
 msgid "Autosaving the .wxmx file"
-msgstr ""
+msgstr "Automatisches Speichern der .wxmx-Datei"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:735
 msgid "Autosubscript"
@@ -1826,7 +1826,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:711
 msgid "Copy, Cut and Paste button"
-msgstr ""
+msgstr "Knöpfe für Kopieren, Ausschneiden und Einfügen"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1182
 msgid ""
@@ -2527,7 +2527,7 @@ msgstr "Aktive oder ausgewählte Zelle(n) auswerten"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:298
 msgid "Evaluate all"
-msgstr ""
+msgstr "Alles Auswerten"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:772
 msgid "Evaluate all cells in the document"
@@ -2543,7 +2543,7 @@ msgstr "Alle sichtbaren Zellen im Dokument auswerten"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:291
 msgid "Evaluate current cell"
-msgstr ""
+msgstr "Werte aktuelle Zelle aus"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:310
 msgid "Evaluate the file from its beginning to the cell above the cursor"
@@ -3242,7 +3242,7 @@ msgstr "Hilfe"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:729
 msgid "Help button"
-msgstr ""
+msgstr "Der \"Hilfe\"-Knopf"
 
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:296
 msgid "Hide"
@@ -3405,20 +3405,23 @@ msgstr ""
 "Falls der Zeichensatz große Klammern enthält: Nutze diese, wo eine Formel "
 "eine große Klammer erfordert."
 
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:331
+msgid ""
+"If this checkbox is checked wxMaxima automatically saves the file closing "
+"and every few minutes giving wxMaxima a more cellphone-app-like feeel as the "
+"file is virtually always saved. If this checkbox is unchecked from time to "
+"time a backup is made in the temp folder instead."
+msgstr ""
+
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:320
 msgid ""
 "If this checkbox is set a new code cell is opened as soon as maxima requests "
 "data. If it isn't set a new code cell is opened in this case as soon as the "
 "user starts typing in code."
 msgstr ""
-
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:331
-msgid ""
-"If this checkbox isn't checked wxMaxima does automatically saves the file "
-"every few minutes and while closing giving wxMaxima a more cellphone-app-"
-"like behavior as the file is virtually always saved. Else a backup in a temp "
-"file is made instead."
-msgstr ""
+"Wenn dieses Häkchen gesetzt ist, wird eine neue Codezelle erzeugt, sobald "
+"Maxima Daten anfordert. Andererweise wird die neue Zelle erst erstellt, wenn "
+"der Benutzer Text eingibt."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:352
 msgid ""

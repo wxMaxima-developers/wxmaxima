@@ -328,7 +328,7 @@ void ConfigDialogue::SetProperties()
   m_useJSMath->SetToolTip(_("Use nice js math symbols in order to get nice integral, sum, product and sqrt signs\nWill only work if the corresponding js math fonts can be found by wxMaxima."));
   m_useUnicodeMaths->SetToolTip(_("If the font provides big parenthesis symbols: Use them when big parenthesis are needed for maths display."));
   m_autoSave->SetToolTip(
-          _("If this checkbox isn't checked wxMaxima does automatically saves the file every few minutes and while closing giving wxMaxima a more cellphone-app-like behavior as the file is virtually always saved. Else a backup in a temp file is made instead."));
+          _("If this checkbox is checked wxMaxima automatically saves the file closing and every few minutes giving wxMaxima a more cellphone-app-like feeel as the file is virtually always saved. If this checkbox is unchecked from time to time a backup is made in the temp folder instead."));
   m_defaultFramerate->SetToolTip(_("Define the default speed (in frames per second) animations are played back with."));
   m_defaultPlotWidth->SetToolTip(
           _("The default width for embedded plots. Can be read out or overridden by the maxima variable wxplot_size"));
