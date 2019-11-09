@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-09 15:28+0100\n"
+"POT-Creation-Date: 2019-11-09 15:40+0100\n"
 "PO-Revision-Date: 2019-03-10 23:19+0100\n"
 "Last-Translator: Marco Ciampa <ciampix@posteo.net>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -2160,10 +2160,6 @@ msgstr "Non passare al pedice dopo un carattere di sottolineato"
 msgid "Don't save"
 msgstr "Non salvare"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:894
-msgid "Don't save the worksheet automatically"
-msgstr ""
-
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1540
 msgid "Don't show labels"
 msgstr ""
@@ -3393,18 +3389,19 @@ msgstr ""
 "Se il font fornisce simboli di grandi parentesi: usali se servono per "
 "visualualizzare le formule matematiche."
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:331
-msgid ""
-"If this checkbox is checked wxMaxima does automatically save the file every "
-"few minutes in a temp file instead of keeping the currently-open file up-to-"
-"date all the time."
-msgstr ""
-
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:320
 msgid ""
 "If this checkbox is set a new code cell is opened as soon as maxima requests "
 "data. If it isn't set a new code cell is opened in this case as soon as the "
 "user starts typing in code."
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:331
+msgid ""
+"If this checkbox isn't checked wxMaxima does automatically saves the file "
+"every few minutes and while closing giving wxMaxima a more cellphone-app-"
+"like behavior as the file is virtually always saved. Else a backup in a temp "
+"file is made instead."
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:352
@@ -5772,6 +5769,10 @@ msgstr "Salva la selezione su file"
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1544
 msgid "Save style to file"
 msgstr "Salva lo stile su file"
+
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:894
+msgid "Save the worksheet automatically"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:573
 msgid "Saving failed."

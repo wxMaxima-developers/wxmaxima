@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wxMaxima HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-09 15:28+0100\n"
+"POT-Creation-Date: 2019-11-09 15:40+0100\n"
 "PO-Revision-Date: 2019-10-20 12:34+0800\n"
 "Last-Translator: litchi <kz-xy@163.com>\n"
 "Language-Team: amateur\n"
@@ -2073,10 +2073,6 @@ msgstr ""
 msgid "Don't save"
 msgstr "不保存"
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:894
-msgid "Don't save the worksheet automatically"
-msgstr ""
-
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1540
 msgid "Don't show labels"
 msgstr ""
@@ -3254,18 +3250,19 @@ msgid ""
 "are needed for maths display."
 msgstr ""
 
-#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:331
-msgid ""
-"If this checkbox is checked wxMaxima does automatically save the file every "
-"few minutes in a temp file instead of keeping the currently-open file up-to-"
-"date all the time."
-msgstr ""
-
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:320
 msgid ""
 "If this checkbox is set a new code cell is opened as soon as maxima requests "
 "data. If it isn't set a new code cell is opened in this case as soon as the "
 "user starts typing in code."
+msgstr ""
+
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:331
+msgid ""
+"If this checkbox isn't checked wxMaxima does automatically saves the file "
+"every few minutes and while closing giving wxMaxima a more cellphone-app-"
+"like behavior as the file is virtually always saved. Else a backup in a temp "
+"file is made instead."
 msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:352
@@ -5444,6 +5441,10 @@ msgstr "保存所选区域到文件"
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:1544
 msgid "Save style to file"
 msgstr "保存样式到文件"
+
+#: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:894
+msgid "Save the worksheet automatically"
+msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:573
 msgid "Saving failed."
