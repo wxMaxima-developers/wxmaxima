@@ -1,3 +1,24 @@
+# wxMaxima 19.11.0 - Stable
+  * Chinese translation updates from liulitchi
+  * Turkish translation updates from TufanSirin
+  * Hungarian translation updates from Blahota István
+  * German translation updates from Wolfgang Dautermann and Gunter Königsmann
+  * Better detection of the Gnuplot location
+  * Better detection of the right place to open autocomplete popups in
+  * Better formatting of special unicode operators
+  * If autosave on closing fails: Allow the user to ask to exit anyway
+  * Enable Autosave even if the option to keep the file saved is disabled
+  * A context menu with the "display labels" choices
+  * A context menu with "max number of digits" choices
+  * A speedup by preventing recursive calls to resize functions
+  * Corrected parametric plots in the plot wizard
+  * A command-line switch that copies all log messages to stderr.
+  * Batch mode no more adds documents to "recent documents"
+  * For purists: A "don't offer known answers" config option
+  * Now some toolbar items can be disabled
+  * Added more toolbar buttons that evaluate cells
+  * Many bug fixes
+
 # wxMaxima 19.10.0 - Stable
   * Corrected a Regression: The better display of exponents failed for exp(x^2).
   * Seems like some Windows computers only have a numpad enter key.

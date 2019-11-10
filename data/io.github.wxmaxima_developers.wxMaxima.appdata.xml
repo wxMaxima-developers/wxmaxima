@@ -50,6 +50,34 @@
     <content_attribute id="social-info">mild</content_attribute>
   </content_rating>
   <releases>
+    <release version="19.10.1" date="2019-11-11">
+      <description>
+	<p>
+	  Usability and bug fixes
+	</p>
+        <ul>
+	  <li>Chinese translation updates from liulitchi</li>
+	  <li>Turkish translation updates from TufanSirin</li>
+	  <li>Hungarian translation updates from Blahota István</li>
+	  <li>German translation updates from Wolfgang Dautermann and Gunter Königsmann</li>
+	  <li>Better detection of the Gnuplot location</li>
+	  <li>Better detection of the right place to open autocomplete popups in</li>
+	  <li>Better formatting of special unicode operators</li>
+	  <li>If autosave on closing fails: Allow the user to ask to exit anyway</li>
+	  <li>Enable Autosave even if the option to keep the file saved is disabled</li>
+	  <li>A context menu with the "display labels" choices</li>
+	  <li>A context menu with "max number of digits" choices</li>
+	  <li>A speedup by preventing recursive calls to resize functions</li>
+	  <li>Corrected parametric plots in the plot wizard</li>
+	  <li>A command-line switch that copies all log messages to stderr.</li>
+	  <li>Batch mode no more adds documents to "recent documents".</li>
+	  <li>For purists: A "don't offer known answers" config option.</li>
+	  <li>Now some toolbar items can be disabled.</li>
+	  <li>Added more toolbar buttons that evaluate cells.</li>
+	  <li>Many bug fixes</li>
+        </ul>
+      </description>
+    </release>
     <release version="19.10.0" date="2019-10-04">
       <description>
 	<p>
