@@ -720,7 +720,7 @@ Cell *MathParser::ParseTableTag(wxXmlNode *node)
       matrix->AddNewCell(HandleNullPointer(ParseTag(cells, false)));
       cells = GetNextTag(cells);
     }
-    rows = rows->GetNext();
+    rows = GetNextTag(rows);
   }
   matrix->SetType(m_ParserStyle);
   matrix->SetStyle(TS_VARIABLE);
@@ -1042,10 +1042,10 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       }
     }
 
+    node = GetNextTag(node);
+    
     if (!all)
       break;
-
-    node = GetNextTag(node);
   }
 
   return retval;
