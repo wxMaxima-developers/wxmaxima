@@ -705,7 +705,7 @@ void ToolBar::OnSize(wxSizeEvent &event)
   event.Skip();
 }
 
-void ToolBar::OnMouseRightDown(wxMouseEvent &event)
+void ToolBar::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
 {
   wxMenu *popupMenu = new wxMenu();
   popupMenu->AppendCheckItem(copy_paste, _("Copy, Cut and Paste button"),
