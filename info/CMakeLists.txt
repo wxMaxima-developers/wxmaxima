@@ -1,5 +1,7 @@
 # -*- mode: CMake; cmake-tab-width: 4; -*-
 
+include(FindPerl)
+
 # "make pdf" creates the manual in PDF form. The other of the targets that now
 # follow do the same for other formats
 add_custom_target(pdf)

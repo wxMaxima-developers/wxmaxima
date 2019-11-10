@@ -19,7 +19,8 @@ if(GETTEXT_FOUND)
     # generate a wxMaxima.pot in the build dir - don't touch the existing source (for now)
     # if that is okay, one may copy it to the source dir.
     # Currently the full source paths are used in the comments.
-    add_custom_target(build-pot ALL
+    add_custom_command(
+	OUTPUT wxMaxima.pot
 	COMMAND ${XGETTEXT} -C -k_ -s -o "wxMaxima.pot" ${POT_SOURCE_FILES}
 	COMMAND ${CMAKE_COMMAND} -E copy "wxMaxima.pot" "${CMAKE_CURRENT_SOURCE_DIR}/wxMaxima.pot"
 	COMMENT "Updating the POT-file from the current sourcecode")
@@ -41,7 +42,7 @@ if(GETTEXT_FOUND)
 	add_custom_target(
 	    ${LANG}_po
 	    DEPENDS ${LANG}.po
-	    DEPENDS build-pot
+	    DEPENDS wxMaxima.pot
 	    )
 	add_custom_command(
 	    TARGET ${LANG}_po
