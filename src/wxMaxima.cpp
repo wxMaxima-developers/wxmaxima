@@ -3760,10 +3760,7 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
   {
     GroupCell *group = NULL;
     if(m_worksheet->GetSelectionStart() != NULL)
-    {
-      if(m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_GROUP)
-        group = dynamic_cast<GroupCell *>(m_worksheet->GetSelectionStart());
-    }
+      group = dynamic_cast<GroupCell *>(m_worksheet->GetSelectionStart()->GetGroup());
 
     if(group != NULL)
       editor = group->GetEditable();
