@@ -13,11 +13,7 @@ file(GLOB TRANSLATION_FILES *.po)
 file(GLOB POT_SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*.cpp ${CMAKE_SOURCE_DIR}/src/*.h)
 
 if(GETTEXT_FOUND)
-    add_custom_command(
-	TARGET update-locale
-	COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/wxMaxima.pot" "${CMAKE_SOURCE_DIR}/locales/wxMaxima/wxMaxima.pot"
-	COMMAND ${CMAKE_COMMAND} -E copy "*.po" "${CMAKE_CURRENT_SOURCE_DIR}"
-	COMMENT "Installing wxMaxima.pot and po-files in the source directory ${CMAKE_SOURCE_DIR}/locales/wxMaxima")
+    add_dependencies(update-locale build-pot)
 
     find_program(XGETTEXT xgettext)
     # generate a wxMaxima.pot in the build dir - don't touch the existing source (for now)
@@ -41,8 +37,14 @@ if(GETTEXT_FOUND)
 	# too (at build time, not at install time), so that running ./wxmaxima-local
 	# (without installing it) can find the message files and i18n works.
 	file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/locale/${LANG}")
+
+	add_custom_target(
+	    ${LANG}_po
+	    DEPENDS ${LANG}.po
+	    DEPENDS build-pot
+	    )
 	add_custom_command(
-	    OUTPUT ${LANG}.gmo
+	    TARGET ${LANG}_po
 	    DEPENDS ${LANG}.po
 	    DEPENDS build-pot
 	    COMMENT "Creating and installing the PO- and GMO-file for language ${LANG}"
@@ -50,7 +52,7 @@ if(GETTEXT_FOUND)
 	    COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/${LANG}.po -o "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo"
 	    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo" "${CMAKE_BINARY_DIR}/locale/${LANG}/LC_MESSAGES/wxMaxima.mo")
 	# Call msgmerge for each language and create a merged language file
-	add_dependencies(update-locale ${LANG}.gmo)
+	add_dependencies(update-locale ${LANG}_po)
     endforeach()
 
     message(STATUS "The updated POT and PO files were generated in the build directory.")
