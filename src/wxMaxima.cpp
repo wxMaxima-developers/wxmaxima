@@ -3754,14 +3754,22 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
       m_worksheet->m_mainToolBar->EnableTool(ToolBar::tb_follow, false);
       break;
   }
-  if(
-    ((m_worksheet->GetActiveCell() != NULL) &&
-     (m_worksheet->GetActiveCell()->GetStyle() == TS_INPUT)
-      ) ||
-    (
-      (m_worksheet->GetSelectionStart() != NULL) &&
-      (m_worksheet->GetSelectionStart() == m_worksheet->GetSelectionEnd()) &&
-      (dynamic_cast<GroupCell *>(m_worksheet->GetSelectionStart())->GetEditable()->GetStyle() == TS_INPUT)))
+  EditorCell *editor = m_worksheet->GetActiveCell();
+
+  if(editor == NULL)
+  {
+    GroupCell *group = NULL;
+    if(m_worksheet->GetSelectionStart() != NULL)
+    {
+      if(m_worksheet->GetSelectionStart()->GetType() == MC_TYPE_GROUP)
+        group = dynamic_cast<GroupCell *>(m_worksheet->GetSelectionStart());
+    }
+
+    if(group != NULL)
+      editor = group->GetEditable();
+  }
+
+  if((editor != NULL) && (editor->GetStyle() == TS_INPUT))
     m_worksheet->m_mainToolBar->CanEvalThisCell(true);
   else
     m_worksheet->m_mainToolBar->CanEvalThisCell(false);
