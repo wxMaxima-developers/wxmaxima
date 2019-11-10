@@ -168,6 +168,12 @@ TipOfTheDay::TipOfTheDay(wxWindow *parent)
   m_tips.Add(
     _("The key combination Shift+Space results in a non-breakable space.")
     );
+  m_tips.Add(
+    _("wxMaxima needs more translators. We do not speak every language. Help us to translate wxMaxima and the manual to your language. Join the wxMaxima development at: https://github.com/wxMaxima-developers/wxmaxima")
+    );
+  m_tips.Add(
+    _("wxMaxima needs more developers. It is an open source project where you can contribute. Join the wxMaxima development at: https://github.com/wxMaxima-developers/wxmaxima")
+    );
 
   m_num = 0;
   wxConfigBase *config = wxConfig::Get();
