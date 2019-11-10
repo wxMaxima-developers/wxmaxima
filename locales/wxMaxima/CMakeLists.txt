@@ -13,8 +13,6 @@ file(GLOB TRANSLATION_FILES *.po)
 file(GLOB POT_SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*.cpp ${CMAKE_SOURCE_DIR}/src/*.h)
 
 if(GETTEXT_FOUND)
-    add_dependencies(update-locale build-pot)
-
     find_program(XGETTEXT xgettext)
     # generate a wxMaxima.pot in the build dir - don't touch the existing source (for now)
     # if that is okay, one may copy it to the source dir.
@@ -47,7 +45,6 @@ if(GETTEXT_FOUND)
 	add_custom_command(
 	    TARGET ${LANG}_po
 	    DEPENDS ${LANG}.po
-	    DEPENDS build-pot
 	    COMMENT "Creating and installing the PO- and GMO-file for language ${LANG}"
 	    COMMAND ${GETTEXT_MSGMERGE_EXECUTABLE} -N ${CMAKE_CURRENT_SOURCE_DIR}/${LANG}.po wxMaxima.pot -U
 	    COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/${LANG}.po -o "${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo"
