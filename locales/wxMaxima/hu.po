@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: hu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-10 15:01+0100\n"
-"PO-Revision-Date: 2019-11-04 12:48+0100\n"
+"PO-Revision-Date: 2019-11-11 09:47+0100\n"
 "Last-Translator: Blahota István <blahota@fsf.hu>\n"
 "Language-Team: Hungarian\n"
 "Language: hu\n"
@@ -724,7 +724,7 @@ msgstr "Aláhúzás után mindig automatikusan indexel"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1529
 msgid "Always show all digits"
-msgstr ""
+msgstr "Mindig megmutatja az összes számjegyet"
 
 #: /home/gunter/src/wxmaxima/src/DrawWiz.cpp:446
 msgid "An animation with multiple frames"
@@ -837,7 +837,7 @@ msgstr "Automatikus"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1538
 msgid "Automatic labels"
-msgstr ""
+msgstr "Automatikus címkék"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:603
 #, c-format
@@ -867,11 +867,11 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4352
 msgid "Autosaving as temp file"
-msgstr ""
+msgstr "Automatikus mentés ideiglenes fájlként"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4370
 msgid "Autosaving the .wxmx file"
-msgstr ""
+msgstr "Automatikus mentés .wxmx fájlként"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:735
 msgid "Autosubscript"
@@ -1796,7 +1796,7 @@ msgstr ""
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:711
 msgid "Copy, Cut and Paste button"
-msgstr ""
+msgstr "Másolás, Kivágás és Beillesztés gomb"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1182
 msgid ""
@@ -2149,7 +2149,7 @@ msgstr "Nem ment"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1540
 msgid "Don't show labels"
-msgstr ""
+msgstr "Nem mutat címkéket"
 
 #: /home/gunter/src/wxmaxima/src/FindReplacePane.cpp:86
 msgid "Down"
@@ -2501,7 +2501,7 @@ msgstr "Kijelölt cellák újraszámolása"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:298
 msgid "Evaluate all"
-msgstr ""
+msgstr "Mindent kiértékel"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:772
 msgid "Evaluate all cells in the document"
@@ -2517,7 +2517,7 @@ msgstr "A dokumentum összes látható cellájának újraszámolása"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:291
 msgid "Evaluate current cell"
-msgstr ""
+msgstr "Aktuális cella kiértékelése"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:310
 msgid "Evaluate the file from its beginning to the cell above the cursor"
@@ -3216,7 +3216,7 @@ msgstr "Súgó"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:729
 msgid "Help button"
-msgstr ""
+msgstr "Súgó gomb"
 
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:296
 msgid "Hide"
@@ -3383,6 +3383,10 @@ msgid ""
 "file is virtually always saved. If this checkbox is unchecked from time to "
 "time a backup is made in the temp folder instead."
 msgstr ""
+"Ha ezt a jelölőnégyzetet bejelöli, a wxMaxima néhány percenként "
+"automatikusan menti a fájlt, és a wxMaxima számára mobiltelefon-alkalmazás-"
+"szerűbb érzetet ad. Ha ezt a jelölőnégyzetet nem jelöli be, helyette időről "
+"időre biztonsági másolat készül a fájlról az ideiglenes mappában."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:320
 msgid ""
@@ -3390,6 +3394,9 @@ msgid ""
 "data. If it isn't set a new code cell is opened in this case as soon as the "
 "user starts typing in code."
 msgstr ""
+"Ha ez a jelölőnégyzet be van állítva, akkor egy új kódcellát nyit meg, amint "
+"a Maxima adatokat kér. Ha nincs beállítva, akkor új kódcellát nyit meg, "
+"amint a felhasználó elkezdi gépelni a kódot."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:352
 msgid ""
@@ -4647,7 +4654,7 @@ msgstr "Ú&j\tCtrl+N"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:723
 msgid "New button"
-msgstr ""
+msgstr "Új gomb"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:907
 msgid "New connection attempt when already connected."
@@ -4712,7 +4719,7 @@ msgstr "Nincsenek pontok"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:7295
 msgid "No saving on close necessary."
-msgstr ""
+msgstr "Nincs szükség mentésre bezáráskor."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1629
 msgid "Normality Test..."
@@ -4866,7 +4873,7 @@ msgstr "OK"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:650
 msgid "Offer known answers"
-msgstr ""
+msgstr "Ajánljon ismert válaszokat"
 
 #: /home/gunter/src/wxmaxima/src/SubstituteWiz.cpp:34
 msgid "Old value:"
@@ -4924,7 +4931,7 @@ msgstr "Új ablak"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:714
 msgid "Open and save button"
-msgstr ""
+msgstr "Megnyitás és Mentés gomb"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:195
 msgid "Open document"
@@ -5245,11 +5252,11 @@ msgstr "Pontosság"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1537
 msgid "Prefer user labels"
-msgstr ""
+msgstr "Felhasználó által definiált címkék előnyben részesítése"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:720
 msgid "Preferences button"
-msgstr ""
+msgstr "Beállítások gomb"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:695
 msgid "Preferences...\tCtrl+,"
@@ -5277,7 +5284,7 @@ msgstr "Nyomtatás"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:717
 msgid "Print button"
-msgstr ""
+msgstr "Nyomtatás gomb"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:213
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:630
@@ -5327,11 +5334,11 @@ msgstr "Nyers XML monitor"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1411
 #, c-format
 msgid "Re-Reading the config from %s."
-msgstr ""
+msgstr "A konfiguráció újraolvasása %s helyről."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:1406
 msgid "Re-Reading the config from the default location."
-msgstr ""
+msgstr "A konfiguráció újraolvasása annak alapértelmezett helyéről."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:774
 msgid "Re-evaluate all cells above the one the cursor is in"
@@ -5358,11 +5365,11 @@ msgstr "Maxima kimenet olvasása:%li bájt"
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:118
 #, c-format
 msgid "Reading the config from %s."
-msgstr ""
+msgstr "A konfiguráció beolvasása %s helyről."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:121
 msgid "Reading the config from the default location."
-msgstr ""
+msgstr "A konfiguráció beolvasása annak alapértelmezett helyéről."
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:495
 msgid "Ready for user input"
@@ -5747,7 +5754,7 @@ msgstr "Stílus mentése fájlba"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:894
 msgid "Save the worksheet automatically"
-msgstr ""
+msgstr "A munkalapot automatikus mentése"
 
 #: /home/gunter/src/wxmaxima/src/wxMaximaFrame.cpp:573
 msgid "Saving failed."
@@ -5775,7 +5782,7 @@ msgstr "Szóródási pont..."
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:726
 msgid "Search button"
-msgstr ""
+msgstr "Keresés gomb"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:2974
 #, c-format
@@ -5871,11 +5878,11 @@ msgstr "Kijelölés"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:303
 msgid "Send all cells to maxima"
-msgstr ""
+msgstr "Minden cella Maximához küldése"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:296
 msgid "Send the current cell to maxima"
-msgstr ""
+msgstr "Az aktuális cella Maximához küldése"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:1219
 msgid "Sending Maxima a SIGINT signal."
@@ -6119,15 +6126,15 @@ msgstr "Hosszú kifejezések megjelenítése:"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1528
 msgid "Show max. 100 digits"
-msgstr ""
+msgstr "Legfeljebb 100 számjegyet mutat"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1526
 msgid "Show max. 20 digits"
-msgstr ""
+msgstr "Legfeljebb 20 számjegyet mutat"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1527
 msgid "Show max. 50 digits"
-msgstr ""
+msgstr "Legfeljebb 50 számjegyet mutat"
 
 #: /home/gunter/src/wxmaxima/src/TableOfContents.cpp:304
 msgid "Show section numbers"
@@ -6135,19 +6142,19 @@ msgstr "Fejezetszámok megjelenítése"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:724
 msgid "Show the \"New\" button?"
-msgstr ""
+msgstr "Mutassa az Új gombot?"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:730
 msgid "Show the \"help\" button?"
-msgstr ""
+msgstr "Mutassa a Súgó gombot?"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:727
 msgid "Show the \"search\" button?"
-msgstr ""
+msgstr "Mutassa a Keresés gombot?"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:712
 msgid "Show the Copy, Cut and the Paste button?"
-msgstr ""
+msgstr "Mutassa a Másolás, Kivágás és Beillesztés gombokat?"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:5095
 msgid "Show the definition of function:"
@@ -6155,15 +6162,15 @@ msgstr "Megmutatja a függvény definícióját:"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:715
 msgid "Show the open and the save button?"
-msgstr ""
+msgstr "Mutassa a Megnyitás és Mentés gombokat?"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:721
 msgid "Show the preferences button?"
-msgstr ""
+msgstr "Mutassa a Beállítások gombot?"
 
 #: /home/gunter/src/wxmaxima/src/ToolBar.cpp:718
 msgid "Show the print button?"
-msgstr ""
+msgstr "Mutassa a Nyomtatás gombot?"
 
 #: /home/gunter/src/wxmaxima/src/TipOfTheDay.cpp:224
 msgid "Show tips at Startup"
@@ -7165,7 +7172,7 @@ msgstr "Megpróbál megnyitni a nem létező fájlt (% s)"
 
 #: /home/gunter/src/wxmaxima/src/wxMaxima.cpp:4360
 msgid "Trying to remove the old temp file"
-msgstr ""
+msgstr "Megpróbálja eltávolítani a régi ideiglenes fájlt"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:196
 msgid "Turkish"
@@ -7392,7 +7399,7 @@ msgstr "Unicode matematikai szimbólumok használata, amit az lehetséges"
 
 #: /home/gunter/src/wxmaxima/src/Worksheet.cpp:1539
 msgid "User labels only"
-msgstr ""
+msgstr "Csak a felhasználó által definiált címkék"
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:807
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:945
@@ -8268,6 +8275,9 @@ msgid ""
 "set it automatically offers to enter the last answer to this question the "
 "user has input."
 msgstr ""
+"A wxMaxima megjegyzi a Maxima kérdéseire adott válaszokat. Ha ez a "
+"jelölőnégyzet be van állítva, akkor automatikusan megadja az utolsó választ "
+"a felhasználó által bevitt kérdésre."
 
 #: /home/gunter/src/wxmaxima/src/ConfigDialogue.cpp:709
 msgid "wxMaxima startup file location: "
