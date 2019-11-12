@@ -780,7 +780,7 @@ void wxMaxima::SendMaxima(wxString s, bool addToHistory)
       }
       #endif
       if (m_client->Error()) {
-        DoRawConsoleAppend(_("Error writing to Maxima"), MC_TYPE_ERROR);
+        wxLogMessage(_("Error writing to Maxima"));
         return;
       }
       m_statusBar->NetworkStatus(StatusBar::transmit);
