@@ -8487,7 +8487,6 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
   if (editor == NULL)
     return false;
 
-
   wxString partial;
   if(type != AutoComplete::esccommand)
   {
@@ -8662,7 +8661,11 @@ bool Worksheet::Autocomplete(AutoComplete::autoCompletionType type)
   {
 
     // Find the position for the popup menu
+    RecalculateIfNeeded();
     wxPoint pos = editor->PositionToPoint(m_configuration->GetDefaultFontSize());
+    // There might be no current point yet in this EditorCell.
+    if((pos.x < 0) || (pos.y < 0))
+      pos = editor->GetGroup()->GetCurrentPoint();
     wxASSERT((pos.x>=0) && (pos.y >=0));
     CalcScrolledPosition(pos.x, pos.y, &pos.x, &pos.y);
     // The popup menu appears half a character too high.
