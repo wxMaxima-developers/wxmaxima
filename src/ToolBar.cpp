@@ -288,6 +288,10 @@ void ToolBar::AddTools()
           _("Return to the cell that is currently being evaluated"));
   EnableTool(tb_follow, false);
 
+#ifndef __WXOSX__
+  AddSeparator();
+#endif
+
   AddTool(tb_eval, _("Evaluate current cell"),
           GetImage(wxT("go-next"),
                    go_next_128_png,go_next_128_png_len,
