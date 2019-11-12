@@ -203,7 +203,8 @@ void ToolBar::AddTools()
   if(ShowPrint())
   {
 #ifndef __WXOSX__
-    AddSeparator();
+    if(ShowOpenSave() || ShowNew())
+      AddSeparator();
 #endif
     AddTool(tb_print, _("Print"),
             GetImage(wxT("gtk-print"),
@@ -243,16 +244,18 @@ void ToolBar::AddTools()
               ),
             _("Paste from clipboard"));
   }
-  AddTool(tb_select_all, _("Select all"),
-          GetImage(wxT("gtk-select-all"),
-                   gtk_select_all_128_png,gtk_select_all_128_png_len,
-                   gtk_select_all_192_png,gtk_select_all_192_png_len
-            ),
-          _("Select all"));
+  if(ShowSelectAll())
+    AddTool(tb_select_all, _("Select all"),
+            GetImage(wxT("gtk-select-all"),
+                     gtk_select_all_128_png,gtk_select_all_128_png_len,
+                     gtk_select_all_192_png,gtk_select_all_192_png_len
+              ),
+            _("Select all"));
   if(ShowSearch())
   {
 #ifndef __WXOSX__
-    AddSeparator();
+    if(ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint())
+      AddSeparator();
 #endif
     AddTool(tb_find, _("Find"),
             GetImage(wxT("gtk-find"),
@@ -262,7 +265,8 @@ void ToolBar::AddTools()
             _("Find and replace"));
   }
 #ifndef __WXOSX__
-  AddSeparator();
+  if(ShowSelectAll() || ShowOpenSave() || ShowNew() || ShowPrint() || ShowOptions())
+    AddSeparator();
 #endif
   AddTool(menu_restart_id, _("Restart maxima"),
           GetImage(wxT("view-refresh"),
@@ -712,21 +716,24 @@ void ToolBar::OnSize(wxSizeEvent &event)
 void ToolBar::OnMouseRightDown(wxMouseEvent &WXUNUSED(event))
 {
   wxMenu *popupMenu = new wxMenu();
-  popupMenu->AppendCheckItem(copy_paste, _("Copy, Cut and Paste button"),
-                             _("Show the Copy, Cut and the Paste button?"));
-  popupMenu->Check(copy_paste, ShowCopyPaste());
+  popupMenu->AppendCheckItem(shownew, _("New button"),
+                             _("Show the \"New\" button?"));
+  popupMenu->Check(shownew, ShowNew());
   popupMenu->AppendCheckItem(open_save, _("Open and save button"),
                              _("Show the open and the save button?"));
   popupMenu->Check(open_save, ShowOpenSave());
   popupMenu->AppendCheckItem(print, _("Print button"),
                              _("Show the print button?"));
   popupMenu->Check(print, ShowPrint());
+  popupMenu->AppendCheckItem(copy_paste, _("Copy, Cut and Paste button"),
+                             _("Show the Copy, Cut and the Paste button?"));
+  popupMenu->Check(copy_paste, ShowCopyPaste());
   popupMenu->AppendCheckItem(options, _("Preferences button"),
                              _("Show the preferences button?"));
   popupMenu->Check(options, ShowOptions());
-  popupMenu->AppendCheckItem(shownew, _("New button"),
-                             _("Show the \"New\" button?"));
-  popupMenu->Check(shownew, ShowNew());
+  popupMenu->AppendCheckItem(selectAll, _("Select All button"),
+                             _("Show the \"select all\" button?"));
+  popupMenu->Check(selectAll, ShowSelectAll());
   popupMenu->AppendCheckItem(search, _("Search button"),
                              _("Show the \"search\" button?"));
   popupMenu->Check(search, ShowSearch());
@@ -774,6 +781,10 @@ void ToolBar::OnMenu(wxMenuEvent &event)
     break;
   case help:
     ShowHelp(!ShowHelp());
+    AddTools();
+    break;
+  case selectAll:
+    ShowSelectAll(!ShowSelectAll());
     AddTools();
     break;
   }

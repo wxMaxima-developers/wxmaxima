@@ -56,7 +56,8 @@ public:
     options,
     shownew,
     search,
-    help
+    help,
+    selectAll
   };
 
   wxBitmap GetImage(wxString name,
@@ -242,6 +243,10 @@ public:
   bool ShowOptions(){bool show = true;wxConfig::Get()->Read("Toolbar/showOptions",&show);
     return show;}
   void ShowOptions(bool show){wxConfig::Get()->Write("Toolbar/showOptions",show);}
+
+  bool ShowSelectAll(){bool show = true;wxConfig::Get()->Read("Toolbar/showSelectAll",&show);
+    return show;}
+  void ShowSelectAll(bool show){wxConfig::Get()->Write("Toolbar/showSelectAll",show);}
 
 protected:
   void OnSize(wxSizeEvent &event);
