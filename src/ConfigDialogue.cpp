@@ -447,7 +447,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("incrementalSearch"), &incrementalSearch);
   config->Read(wxT("usejsmath"), &usejsmath);
   config->Read(wxT("keepPercent"), &keepPercent);
-  m_language->SetSelection(0);
   config->Read(wxT("symbolPaneAdditionalChars"), &symbolPaneAdditionalChars);
   
   m_documentclass->SetValue(configuration->Documentclass());
@@ -853,15 +852,28 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   grid_sizer->Add(
     new wxStaticText(panel, -1, _("Language:")), 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-  unsigned int i = 0;
   wxConfigBase *config = wxConfig::Get();
   int lang = wxLANGUAGE_DEFAULT;
   config->Read(wxT("language"), &lang);
-  for( Languages::iterator it = m_languages.begin(); it != m_languages.end(); ++it )
+  unsigned int i = 0;
+  for(Languages::iterator it = m_languages.begin(); it != m_languages.end(); ++it )
+  {
+    if(it->second == wxLANGUAGE_DEFAULT)
+    {
+      m_language->SetSelection(i);
+      break;
+    }
+    ++i;
+  }
+  i = 0;
+  for(Languages::iterator it = m_languages.begin(); it != m_languages.end(); ++it )
   {
     if(it->second == lang)
+    {
       m_language->SetSelection(i);
-    i++;
+      break;
+    }
+    ++i;
   }
 
   wxStaticText *additionalSymbols = new wxStaticText(panel, -1, _("Additional symbols for the \"symbols\" sidebar:"));
