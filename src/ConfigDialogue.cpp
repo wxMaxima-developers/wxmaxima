@@ -435,8 +435,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("wrapLatexMath"), &wrapLatexMath);
   config->Read(wxT("exportContainsWXMX"), &exportContainsWXMX);
   config->Read(wxT("HTMLequationFormat"), &exportWithMathJAX);
-  int lang = wxLANGUAGE_UNKNOWN;
-  config->Read(wxT("language"), &lang);
   config->Read(wxT("texPreamble"), &texPreamble);
   config->Read(wxT("fixedFontTC"), &fixedFontTC);
   config->Read(wxT("panelSize"), &panelSize);
@@ -450,15 +448,6 @@ void ConfigDialogue::SetProperties()
   config->Read(wxT("usejsmath"), &usejsmath);
   config->Read(wxT("keepPercent"), &keepPercent);
   m_language->SetSelection(0);
-  unsigned int i = 0;
-  for( Languages::iterator it = m_languages.begin(); it != m_languages.end(); ++it )
-  {
-    if(it->second == lang)
-      m_language->SetSelection(i);
-    i++;
-  }
-
-  
   config->Read(wxT("symbolPaneAdditionalChars"), &symbolPaneAdditionalChars);
   
   m_documentclass->SetValue(configuration->Documentclass());
@@ -859,12 +848,20 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   wxArrayString languages;
   for(Languages::iterator it = m_languages.begin(); it != m_languages.end(); ++it )
     languages.Add(it->first);
-
   
   wxStaticText *lang = new wxStaticText(panel, -1, _("Language:"));
   m_language = new wxChoice(panel, language_id, wxDefaultPosition, wxSize(230*GetContentScaleFactor(), -1), languages);
   grid_sizer->Add(lang, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  unsigned int i = 0;
+  int lang = wxLANGUAGE_DEFAULT;
+  config->Read(wxT("language"), &lang);
+  for( Languages::iterator it = m_languages.begin(); it != m_languages.end(); ++it )
+  {
+    if(it->second == lang)
+      m_language->SetSelection(i);
+    i++;
+  }
 
   wxStaticText *additionalSymbols = new wxStaticText(panel, -1, _("Additional symbols for the \"symbols\" sidebar:"));
   m_symbolPaneAdditionalChars = new wxTextCtrl(panel, -1);
@@ -1220,12 +1217,11 @@ void ConfigDialogue::WriteSettings()
   configuration->MathJaXURL(m_mathJaxURL->GetValue());
   configuration->MathJaXURL_UseUser(m_noAutodetectMathJaX->GetValue());
   long i = 0;
-  config->Write(wxT("language"), (int) wxLANGUAGE_UNKNOWN);
+  config->Write(wxT("language"), (int) wxLANGUAGE_DEFAULT);
   for(Languages::iterator it = m_languages.begin(); it != m_languages.end(); ++it )
   {
     if(i++ == m_language->GetSelection())
       config->Write(wxT("language"), it->second);
-
   }
   config->Write(wxT("symbolPaneAdditionalChars"), m_symbolPaneAdditionalChars->GetValue());
 
