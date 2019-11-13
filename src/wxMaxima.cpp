@@ -3766,7 +3766,32 @@ void wxMaxima::UpdateToolBar(wxUpdateUIEvent &WXUNUSED(event))
       editor = group->GetEditable();
   }
 
-  if((editor != NULL) && (editor->GetStyle() == TS_INPUT))
+  bool canEvaluateNext = ((editor != NULL) && (editor->GetStyle() == TS_INPUT));
+  
+  if(!canEvaluateNext)
+  {
+
+    GroupCell *group = NULL;
+    if(m_worksheet->HCaretActive())
+    {
+      group = m_worksheet->GetHCaret();
+      if(group == NULL)
+        group = m_worksheet->GetTree();
+      else
+        group = dynamic_cast<GroupCell *>(group->m_next);
+      while(
+        (group != NULL) &&
+        (!((group->GetEditable() != NULL) &&
+           (group->GetEditable()->GetType() == MC_TYPE_INPUT)) &&
+         (!m_worksheet->m_evaluationQueue.IsLastInQueue(group))
+          ))
+        group = dynamic_cast<GroupCell *>(group->m_next);
+
+      if(group != NULL)
+        canEvaluateNext = true;
+    }
+  }
+  if(canEvaluateNext)
     m_worksheet->m_mainToolBar->CanEvalThisCell(true);
   else
     m_worksheet->m_mainToolBar->CanEvalThisCell(false);
@@ -7937,26 +7962,53 @@ void wxMaxima::VarReadEvent(wxCommandEvent &WXUNUSED(event))
 // of the working group, handle it carefully.
 void wxMaxima::EvaluateEvent(wxCommandEvent &WXUNUSED(event))
 {
-  if(m_worksheet != NULL)
-    m_worksheet->CloseAutoCompletePopup();
+  if(m_worksheet == NULL)
+    return;
+  m_worksheet->CloseAutoCompletePopup();
 
   bool evaluating = !m_worksheet->m_evaluationQueue.Empty();
   if (!evaluating)
     m_worksheet->FollowEvaluation(true);
-  EditorCell *tmp = m_worksheet->GetActiveCell();
+
+  EditorCell *editor = m_worksheet->GetActiveCell();
+
+  if(editor == NULL)
+  {
+    GroupCell *group = NULL;
+    if(m_worksheet->HCaretActive())
+    {
+      group = m_worksheet->GetHCaret();
+      if(group == NULL)
+        group = m_worksheet->GetTree();
+      else
+        group = dynamic_cast<GroupCell *>(group->m_next);
+      while(
+        (group != NULL) &&
+        (!((group->GetEditable() != NULL) &&
+           (group->GetEditable()->GetType() == MC_TYPE_INPUT)) &&
+         (!m_worksheet->m_evaluationQueue.IsLastInQueue(group))
+          ))
+        group = dynamic_cast<GroupCell *>(group->m_next);
+    }
+    if(
+      (group != NULL) &&
+      (group->GetEditable() != NULL) &&
+      (group->GetEditable()->GetType() == MC_TYPE_INPUT))
+    editor = group->GetEditable();
+  }
   if (m_worksheet->QuestionPending())
     evaluating = true;
 
-  if (tmp != NULL) // we have an active cell
+  if (editor != NULL) // we have an active cell
   {
-    if (tmp->GetType() == MC_TYPE_INPUT && (!m_worksheet->m_configuration->InLispMode()))
-      tmp->AddEnding();
+    if (editor->GetType() == MC_TYPE_INPUT && (!m_worksheet->m_configuration->InLispMode()))
+      editor->AddEnding();
     // if active cell is part of a working group, we have a special
     // case - answering 1a question. Manually send answer to Maxima.
-    GroupCell *cell = dynamic_cast<GroupCell *>(tmp->GetGroup());
+    GroupCell *cell = dynamic_cast<GroupCell *>(editor->GetGroup());
     if (m_worksheet->GCContainsCurrentQuestion(cell))
     {
-      wxString answer = tmp->ToString(true);
+      wxString answer = editor->ToString(true);
       // Add the answer to the current working cell or update the answer
       // that is stored within it.
       cell->SetAnswer(m_worksheet->GetLastQuestion(), answer);
