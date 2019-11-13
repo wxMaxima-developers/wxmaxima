@@ -3187,143 +3187,19 @@ void Worksheet::OnKeyDown(wxKeyEvent &event)
     case WXK_RETURN:
       // If Ctrl+Shift are pressed at the same time this is an evaluate event.
       if (event.ControlDown() && event.ShiftDown())
-      {
-        // Queue an evaluate event for the window containing this worksheet.
-        wxCommandEvent *evaluateEvent = new wxCommandEvent;
-        evaluateEvent->SetEventType(wxEVT_MENU);
-        evaluateEvent->SetId(popid_evaluate_section);
-        GetParent()->GetEventHandler()->QueueEvent(evaluateEvent);
-      }
+        Evaluate();
       else
       {
-
-        // If we aren't inside a cell <ENTER> jumps to the next cell.
-        if (GetActiveCell() == NULL)
-        {
-          if (CellsSelected())
-          {
-            bool enterEvaluates = false;
-            bool controlOrShift = event.ControlDown() || event.ShiftDown();
-            wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
-            if ((!enterEvaluates && controlOrShift) ||
-                (enterEvaluates && !controlOrShift))
-            { // shift-enter pressed === menu_evaluate event
-              Evaluate();
-            }
-            else
-              event.Skip();
-          }
-          else
-          {
-            // We are instructed to evaluate something - but we aren't inside a cell
-            // and we haven't selected one. Let's see if we are in front of a cell
-            // we can jump into.
-            if (m_hCaretActive)
-            {
-              if (GetHCaret())
-              {
-                if (GetHCaret()->m_next)
-                {
-                  SetActiveCell(dynamic_cast<GroupCell *>(GetHCaret()->m_next)->GetEditable());
-
-                  // User has in a way moved the cursor manually and definitively doesn't want
-                  // to be returned to the end of the cell being evaluated if the evaluation
-                  // stops before the "evaluate" key can be pressed again.
-                  FollowEvaluation(false);
-                }
-              }
-              else
-              {
-                if (m_tree)
-                {
-                  SetActiveCell(m_tree->GetEditable());
-                  ScrollToCaret();
-                  // User has in a way moved the cursor manually and definitively doesn't want
-                  // to be returned to the end of the cell being evaluated if the evaluation
-                  // stops before the "evaluate" key can be pressed again.
-                  FollowEvaluation(false);
-                }
-              }
-            }
-            else
-              event.Skip();
-          }
+        bool enterEvaluates = false;
+        bool controlOrShift = event.ControlDown() || event.ShiftDown();
+        wxConfig::Get()->Read(wxT("enterEvaluates"), &enterEvaluates);
+        if ((!enterEvaluates && controlOrShift) ||
+            (enterEvaluates && !controlOrShift))
+        { // shift-enter pressed === menu_evaluate event
+          Evaluate();
         }
         else
-        {
-          // User pressed "Evaluate" inside an active cell.
-          if (GetActiveCell()->GetType() != MC_TYPE_INPUT)
-          {
-            // User pressed enter inside a cell that doesn't contain code.
-
-            if ((event.ControlDown()) || (event.ShiftDown()))
-            { // shift-enter pressed => The user doesn't want to make an ordinary
-              // line break.
-              //
-              // In this cell there isn't anything to evaluate. But we can jump to the next
-              // cell. Perhaps there is something there...
-              if (GetActiveCell()->GetGroup()->m_next)
-              {
-                // Jump to the next cell.
-                SetActiveCell(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()->m_next)->GetEditable());
-                ScrollToCaret();
-              }
-              else
-                // No next cell -> Jump to the end of the document.
-                SetHCaret(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
-            }
-            else
-            {
-              // The user pressed enter without Shift and Ctrl inside a non-code cell 
-              GetActiveCell()->ProcessEvent(event);
-              // Recalculate(dynamic_cast<GroupCell*>(GetActiveCell()->GetGroup()),false);
-              GroupCell *parent = dynamic_cast<GroupCell*>(GetActiveCell()->GetGroup());
-              parent->InputHeightChanged();
-              RequestRedraw();
-            }
-          }
-          else
-          {
-            // User pressed enter inside a cell that does contain code.
-
-            bool controlOrShift = event.ControlDown() || event.ShiftDown();
-            if ((!m_configuration->EnterEvaluates() && controlOrShift) ||
-                (m_configuration->EnterEvaluates() && !controlOrShift))
-            { // shift-enter pressed === menu_evaluate event
-              GroupCell *currentGroup = dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup());
-              if ((m_evaluationQueue.IsLastInQueue(currentGroup)) &&
-                  (!QuestionPending()) && (
-                          (GetWorkingGroup() != currentGroup) ||
-                          !currentGroup->GetInput()->ContainsChanges())
-                      )
-              {
-                // User tries to evaluate a cell that already is to be evaluated as the
-                // last element of the evaluation queue => It is most probable that
-                // the intention is to evaluate more than one cell => Move the cursor
-                // forward a bit.
-                //
-                // If the current cell isn't the last cell in the evaluation queue
-                // there is a chance tht the user has decided to re-evaluate something
-                // So we just do what we are requested to in this case.
-                SetHCaret(currentGroup);
-              }
-              else
-              {
-                // Finally evaluate the cell
-                Evaluate();
-              }
-            }
-            else
-            {
-              event.Skip();
-              // Sometimes and only in certain zoom factors pressing enter doesn't change the
-              // size of an EditorCell. Let's see if that helps...
-              GetActiveCell()->RecalculateWidths(m_configuration->GetDefaultFontSize());
-              Recalculate(dynamic_cast<GroupCell *>(GetActiveCell()->GetGroup()));
-              RequestRedraw();
-            }
-          }
-        }
+          event.Skip();
       }
       break;
 
