@@ -849,11 +849,12 @@ wxPanel *ConfigDialogue::CreateOptionsPanel()
   for(Languages::iterator it = m_languages.begin(); it != m_languages.end(); ++it )
     languages.Add(it->first);
   
-  wxStaticText *lang = new wxStaticText(panel, -1, _("Language:"));
   m_language = new wxChoice(panel, language_id, wxDefaultPosition, wxSize(230*GetContentScaleFactor(), -1), languages);
-  grid_sizer->Add(lang, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+  grid_sizer->Add(
+    new wxStaticText(panel, -1, _("Language:")), 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   grid_sizer->Add(m_language, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
   unsigned int i = 0;
+  wxConfigBase *config = wxConfig::Get();
   int lang = wxLANGUAGE_DEFAULT;
   config->Read(wxT("language"), &lang);
   for( Languages::iterator it = m_languages.begin(); it != m_languages.end(); ++it )
