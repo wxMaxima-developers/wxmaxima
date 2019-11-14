@@ -4710,20 +4710,27 @@ bool AutoComplete::LoadSymbols()
     GetMacFiles_includingSubdirs maximaLispIterator (m_builtInLoadFiles);
     if(m_configuration->MaximaShareDir() != wxEmptyString)
     {
+      wxFileName shareDir(m_configuration->MaximaShareDir() + "/");
+      shareDir.MakeAbsolute();
+
       wxLogMessage(
         wxString::Format(
           _("Autocompletion: Scanning %s for loadable lisp files."),
-          m_configuration->MaximaShareDir().utf8_str()));
-      wxDir maximadir(m_configuration->MaximaShareDir());
+          shareDir.GetFullPath().utf8_str()));
+      wxDir maximadir(shareDir.GetFullPath());
       if(maximadir.IsOpened())
         maximadir.Traverse(maximaLispIterator);
     }
     GetMacFiles userLispIterator (m_builtInLoadFiles);
-    wxDir maximauserfilesdir(Dirstructure::Get()->UserConfDir());
-      wxLogMessage(
-        wxString::Format(
-          _("Autocompletion: Scanning %s for loadable lisp files."),
-          Dirstructure::Get()->UserConfDir().utf8_str()));
+
+    
+    wxFileName userDir(Dirstructure::Get()->UserConfDir() + "/");
+    userDir.MakeAbsolute();
+    wxDir maximauserfilesdir(userDir.GetFullPath());
+    wxLogMessage(
+      wxString::Format(
+        _("Autocompletion: Scanning %s for loadable lisp files."),
+        userDir.GetFullPath().utf8_str()));
     if(maximauserfilesdir.IsOpened())
       maximauserfilesdir.Traverse(userLispIterator);
   }
@@ -4731,8 +4738,9 @@ bool AutoComplete::LoadSymbols()
 
   // Prepare a list of all built-in demos of maxima.
   {
-    wxFileName demoDir(m_configuration->MaximaShareDir() + "/..");
+    wxFileName demoDir(m_configuration->MaximaShareDir() + "/");
     demoDir.MakeAbsolute();
+    demoDir.RemoveLastDir();
     GetDemoFiles_includingSubdirs maximaLispIterator (m_builtInDemoFiles);
     wxLogMessage(
       wxString::Format(
