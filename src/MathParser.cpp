@@ -1035,7 +1035,7 @@ Cell *MathParser::ParseTag(wxXmlNode *node, bool all)
       if (cell != NULL) name = cell->ToString();
       if (name.Length() != 0)
       {
-        wxMessageBox(_("Parts of the document will not be loaded correctly:\nFound unknown XML Tag name " + name),
+        LoggingMessageBox(_("Parts of the document will not be loaded correctly:\nFound unknown XML Tag name " + name),
                      _("Warning"),
                      wxOK | wxICON_WARNING);
         warning = false;

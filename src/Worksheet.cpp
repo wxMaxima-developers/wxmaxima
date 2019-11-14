@@ -8203,7 +8203,7 @@ bool Worksheet::FindNext(wxString str, bool down, bool ignoreCase, bool warn)
         RequestRedraw();
         if ((wrappedSearch) && warn)
         {
-          wxMessageDialog dialog(m_findDialog,
+          LoggingMessageDialog dialog(m_findDialog,
                                  _("Wrapped search"),
                                  wxEmptyString, wxCENTER | wxOK);
           dialog.ShowModal();

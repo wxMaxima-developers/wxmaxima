@@ -111,7 +111,7 @@ elseif(APPLE)
 else()
     add_executable(wxmaxima ${SOURCE_FILES})
 endif()
-
+ 
 get_target_property(EXEPATH wxmaxima BINARY_DIR)
 get_target_property(RUNTIME wxmaxima RUNTIME_OUTPUT_DIRECTORY)
 get_target_property(OUTPUTNAME wxmaxima OUTPUT_NAME)

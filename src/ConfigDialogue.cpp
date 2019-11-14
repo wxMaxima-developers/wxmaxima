@@ -1300,7 +1300,7 @@ void ConfigDialogue::OnMpBrowse(wxCommandEvent&  WXUNUSED(event))
   if (file.Length())
   {
     if (file.Right(8).Lower() == wxT("wxmaxima") || file.Right(12).Lower() == wxT("wxmaxima.exe"))
-      wxMessageBox(_("Invalid entry for Maxima program.\n\nPlease enter the path to Maxima program again."),
+      LoggingMessageBox(_("Invalid entry for Maxima program.\n\nPlease enter the path to Maxima program again."),
                    _("Error"),
                    wxOK | wxICON_ERROR);
     else
@@ -1469,7 +1469,7 @@ void ConfigDialogue::OnCheckbox(wxCommandEvent&  WXUNUSED(event))
 
 void ConfigDialogue::OnChangeWarning(wxCommandEvent&  WXUNUSED(event))
 {
-  wxMessageBox(_("Please restart wxMaxima for changes to take effect!"),
+  LoggingMessageBox(_("Please restart wxMaxima for changes to take effect!"),
                _("Configuration warning"),
                wxOK | wxICON_WARNING);
   UpdateExample();

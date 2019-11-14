@@ -26,7 +26,7 @@
 #include <wx/config.h>
 #include <wx/display.h>
 #include <wx/fontenum.h>
-
+#include "LoggingMessageDialog.h"
 #include "TextStyle.h"
 
 #define MC_LINE_SKIP Scale_Px(2)

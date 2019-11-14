@@ -36,6 +36,7 @@
 //#include <wchar.h>
 #endif
 #include <wx/app.h>
+#include "LoggingMessageDialog.h"
 #include "wxMaxima.h"
 #include "wxMathml.h"
 #include "ImgCell.h"
@@ -357,7 +358,7 @@ void wxMaxima::InitSession()
     m_port++;
     if ((m_port > m_worksheet->m_configuration->DefaultPort() + 15000) || (m_port > 65535))
     {
-      wxMessageBox(_("wxMaxima could not start the server.\n\n"
+      LoggingMessageBox(_("wxMaxima could not start the server.\n\n"
                              "Please check you have network support\n"
                              "enabled and try again!"),
                    _("Fatal error"),
@@ -1052,7 +1053,7 @@ bool wxMaxima::StartMaxima(bool force)
         m_maximaStdout = NULL;
         m_maximaStderr = NULL;
         m_statusBar->NetworkStatus(StatusBar::offline);
-        wxMessageBox(_("Can not start maxima. The most probable cause is that maxima isn't installed (it can be downloaded from http://maxima.sourceforge.net) or in wxMaxima's config dialogue the setting for maxima's location is wrong."), _("Error"),
+        LoggingMessageBox(_("Can not start maxima. The most probable cause is that maxima isn't installed (it can be downloaded from http://maxima.sourceforge.net) or in wxMaxima's config dialogue the setting for maxima's location is wrong."), _("Error"),
                      wxOK | wxICON_ERROR);
         return false;
       }
@@ -1330,7 +1331,7 @@ void wxMaxima::OnProcessEvent(wxProcessEvent& WXUNUSED(event))
 
     if(m_first)
     {
-      wxMessageBox(_("Can not start maxima. The most probable cause is that maxima isn't installed (it can be downloaded from http://maxima.sourceforge.net) or in wxMaxima's config dialogue the setting for maxima's location is wrong."), _("Error"),
+      LoggingMessageBox(_("Can not start maxima. The most probable cause is that maxima isn't installed (it can be downloaded from http://maxima.sourceforge.net) or in wxMaxima's config dialogue the setting for maxima's location is wrong."), _("Error"),
                    wxOK | wxICON_ERROR);
     }
     
@@ -2121,7 +2122,7 @@ wxString wxMaxima::ReadMacContents(wxString file)
 
   if (!inputFile.Open())
   {
-    wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
+    LoggingMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
     RightStatusText(_("File could not be opened"));
     return wxEmptyString;
@@ -2426,7 +2427,7 @@ bool wxMaxima::OpenWXMFile(wxString file, Worksheet *document, bool clearDocumen
 
   if (!inputFile.Open())
   {
-    wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
+    LoggingMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
     RightStatusText(_("File could not be opened"));
     return false;
@@ -2436,7 +2437,7 @@ bool wxMaxima::OpenWXMFile(wxString file, Worksheet *document, bool clearDocumen
       wxT("/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/"))
   {
     inputFile.Close();
-    wxMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
+    LoggingMessageBox(_("wxMaxima encountered an error loading ") + file, _("Error"), wxOK | wxICON_EXCLAMATION);
     return false;
   }
   wxmLines = new wxArrayString();
@@ -2596,7 +2597,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
       m_worksheet->RecalculateForce();
       m_worksheet->RecalculateIfNeeded();
     }
-    wxMessageBox(_("wxMaxima cannot open content.xml in the .wxmx zip archive ") + file +
+    LoggingMessageBox(_("wxMaxima cannot open content.xml in the .wxmx zip archive ") + file +
                  wxT(", URI=") + filename, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
@@ -2608,7 +2609,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
 
   if (!xmldoc.IsOk())
   {
-    wxMessageBox(_("wxMaxima cannot read the xml contents of ") + file, _("Error"),
+    LoggingMessageBox(_("wxMaxima cannot read the xml contents of ") + file, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
     RightStatusText(_("File could not be opened"));
@@ -2618,7 +2619,7 @@ bool wxMaxima::OpenWXMXFile(wxString file, Worksheet *document, bool clearDocume
   // start processing the XML file
   if (xmldoc.GetRoot()->GetName() != wxT("wxMaximaDocument"))
   {
-    wxMessageBox(_("xml contained in the file claims not to be a wxMaxima worksheet. ") + file, _("Error"),
+    LoggingMessageBox(_("xml contained in the file claims not to be a wxMaxima worksheet. ") + file, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
     RightStatusText(_("File could not be opened"));
@@ -2717,13 +2718,13 @@ bool wxMaxima::CheckWXMXVersion(wxString docversion)
 
     if (version_major > DOCUMENT_VERSION_MAJOR)
     {
-      wxMessageBox(_("Document was saved using a newer version of wxMaxima. Please update your wxMaxima."),
+      LoggingMessageBox(_("Document was saved using a newer version of wxMaxima. Please update your wxMaxima."),
                    _("Error"), wxOK | wxICON_EXCLAMATION);
       RightStatusText(_("File could not be opened"));
       return false;
     }
     if (version_minor > DOCUMENT_VERSION_MINOR)
-      wxMessageBox(
+      LoggingMessageBox(
               _("Document was saved using a newer version of wxMaxima so it may not load correctly. Please update your wxMaxima."),
               _("Warning"), wxOK | wxICON_EXCLAMATION);
   }
@@ -2746,7 +2747,7 @@ bool wxMaxima::OpenXML(wxString file, Worksheet *document)
 
   if (!xmldoc.IsOk())
   {
-    wxMessageBox(
+    LoggingMessageBox(
             _("The .xml file doesn't seem to be valid xml or isn't a content.xml extracted from a .wxmx zip archive"),
             _("Error"),
             wxOK | wxICON_EXCLAMATION);
@@ -2758,7 +2759,7 @@ bool wxMaxima::OpenXML(wxString file, Worksheet *document)
   // Process the XML document
   if (xmldoc.GetRoot()->GetName() != wxT("wxMaximaDocument"))
   {
-    wxMessageBox(_("xml contained in the file claims not to be a wxMaxima worksheet. ") + file, _("Error"),
+    LoggingMessageBox(_("xml contained in the file claims not to be a wxMaxima worksheet. ") + file, _("Error"),
                  wxOK | wxICON_EXCLAMATION);
     StatusMaximaBusy(waiting);
     RightStatusText(_("File could not be opened"));
@@ -2827,7 +2828,7 @@ GroupCell *wxMaxima::CreateTreeFromXMLNode(wxXmlNode *xmlcells, wxString wxmxfil
       }
       else if (warning)
       {
-        wxMessageBox(_("Parts of the document will not be loaded correctly!"), _("Warning"),
+        LoggingMessageBox(_("Parts of the document will not be loaded correctly!"), _("Warning"),
                      wxOK | wxICON_WARNING);
         warning = false;
       }
@@ -2902,7 +2903,7 @@ wxString wxMaxima::GetCommand(bool params)
    // if 'maxima' is not searched in the path, check, if the file exists.
   if (command.Cmp("maxima")!=0) {
     if (!wxFileExists(command)) {
-      wxMessageBox(_("Can not start maxima. The most probable cause is that maxima isn't installed (it can be downloaded from http://maxima.sourceforge.net) or in wxMaxima's config dialogue the setting for maxima's location is wrong."),
+      LoggingMessageBox(_("Can not start maxima. The most probable cause is that maxima isn't installed (it can be downloaded from http://maxima.sourceforge.net) or in wxMaxima's config dialogue the setting for maxima's location is wrong."),
                    _("Warning"),
                    wxOK | wxICON_EXCLAMATION);
       LeftStatusText(_("Please configure wxMaxima with 'Edit->Configure'."));
@@ -3192,7 +3193,7 @@ void wxMaxima::ShowMaximaHelp(wxString keyword)
   wxString MaximaHelpFile = GetHelpFile();
   if (MaximaHelpFile.Length() == 0)
   {
-    wxMessageBox(_("wxMaxima could not find help files."
+    LoggingMessageBox(_("wxMaxima could not find help files."
                            "\n\nPlease check your installation."),
                  _("Error"), wxICON_ERROR | wxOK);
     return;
@@ -4542,7 +4543,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
             wxBusyCursor crs;
             if (!m_worksheet->ExportToTeX(file))
             {
-              wxMessageBox(_("Exporting to TeX failed!"), _("Error!"),
+              LoggingMessageBox(_("Exporting to TeX failed!"), _("Error!"),
                            wxOK);
               StatusExportFailed();
             }
@@ -4558,7 +4559,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
             fileExt = wxT("mac");
             if (!m_worksheet->ExportToMAC(file))
             {
-              wxMessageBox(_("Exporting to maxima batch file failed!"), _("Error!"),
+              LoggingMessageBox(_("Exporting to maxima batch file failed!"), _("Error!"),
                            wxOK);
               StatusExportFailed();
             }
@@ -4574,7 +4575,7 @@ void wxMaxima::FileMenu(wxCommandEvent &event)
             fileExt = wxT("html");
             if (!m_worksheet->ExportToHTML(file))
             {
-              wxMessageBox(_("Exporting to HTML failed!"), _("Error!"),
+              LoggingMessageBox(_("Exporting to HTML failed!"), _("Error!"),
                            wxOK);
               StatusExportFailed();
             }
@@ -5012,7 +5013,7 @@ void wxMaxima::OnFind(wxFindDialogEvent &event)
   if (!m_worksheet->FindNext(event.GetFindString(),
                            event.GetFlags() & wxFR_DOWN,
                            !(event.GetFlags() & wxFR_MATCHCASE)))
-    wxMessageBox(_("No matches found!"));
+    LoggingMessageBox(_("No matches found!"));
 }
 
 void wxMaxima::OnFindClose(wxFindDialogEvent &WXUNUSED(event))
@@ -5035,7 +5036,7 @@ void wxMaxima::OnReplace(wxFindDialogEvent &event)
                            !(event.GetFlags() & wxFR_MATCHCASE)
   )
           )
-    wxMessageBox(_("No matches found!"));
+    LoggingMessageBox(_("No matches found!"));
   else
     m_worksheet->UpdateTableOfContents();
 }
@@ -5048,7 +5049,7 @@ void wxMaxima::OnReplaceAll(wxFindDialogEvent &event)
           !(event.GetFlags() & wxFR_MATCHCASE)
   );
 
-  wxMessageBox(wxString::Format(_("Replaced %d occurrences."), count));
+  LoggingMessageBox(wxString::Format(_("Replaced %d occurrences."), count));
   if (count > 0)
     m_worksheet->UpdateTableOfContents();
 }
@@ -5398,7 +5399,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
       long isz;
       if (!sz.ToLong(&isz) || isz <= 0)
       {
-        wxMessageBox(_("Not a valid number of equations!"), _("Error!"),
+        LoggingMessageBox(_("Not a valid number of equations!"), _("Error!"),
                      wxOK | wxICON_ERROR);
         return;
       }
@@ -5423,7 +5424,7 @@ void wxMaxima::EquationsMenu(wxCommandEvent &event)
       long isz;
       if (!sz.ToLong(&isz) || isz <= 0)
       {
-        wxMessageBox(_("Not a valid number of equations!"), _("Error!"),
+        LoggingMessageBox(_("Not a valid number of equations!"), _("Error!"),
                      wxOK | wxICON_ERROR);
         return;
       }
@@ -5553,7 +5554,7 @@ void wxMaxima::AlgebraMenu(wxCommandEvent &event)
             !(wiz->GetValue1()).ToLong(&h) ||
             w <= 0 || h <= 0)
         {
-          wxMessageBox(_("Not a valid matrix dimension!"), _("Error!"),
+          LoggingMessageBox(_("Not a valid matrix dimension!"), _("Error!"),
                        wxOK | wxICON_ERROR);
           return;
         }
@@ -7849,7 +7850,7 @@ void wxMaxima::OnRecentDocument(wxCommandEvent &event)
     OpenFile(file);
   else
   {
-    wxMessageBox(_("File you tried to open does not exist."), _("File not found"), wxOK);
+    LoggingMessageBox(_("File you tried to open does not exist."), _("File not found"), wxOK);
   }
 }
 
@@ -7904,7 +7905,7 @@ void wxMaxima::OnUnsavedDocument(wxCommandEvent &event)
   }
   else
   {
-    wxMessageBox(_("File you tried to open does not exist."), _("File not found"), wxOK);
+    LoggingMessageBox(_("File you tried to open does not exist."), _("File not found"), wxOK);
   }
 }
 
@@ -8733,7 +8734,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
 
   if (!connection.Connect(wxT("wxMaxima-developers.github.io")))
   {
-    wxMessageBox(_("Can not connect to the web server."), _("Error"),
+    LoggingMessageBox(_("Can not connect to the web server."), _("Error"),
                  wxOK | wxICON_ERROR);
     return;
   }
@@ -8760,7 +8761,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
 
       if (upgrade)
       {
-        bool visit = wxMessageBox(wxString::Format(
+        bool visit = LoggingMessageBox(wxString::Format(
                                           _("You have version %s. Current version is %s.\n\n"
                                                     "Select OK to visit the wxMaxima webpage."),
                                           wxT(GITVERSION), version.utf8_str()),
@@ -8771,7 +8772,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
           wxLaunchDefaultBrowser(wxT("https://wxMaxima-developers.github.io/wxmaxima"));
       }
       else if (reportUpToDate)
-        wxMessageBox(_("Your version of wxMaxima is up to date."), _("Upgrade"),
+        LoggingMessageBox(_("Your version of wxMaxima is up to date."), _("Upgrade"),
                      wxOK | wxICON_INFORMATION);
 
       delete[] myVersion;
@@ -8779,7 +8780,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
     }
     else
     {
-      wxMessageBox(
+      LoggingMessageBox(
               _("Unable to interpret the version info I got from http://wxMaxima-developers.github.io//wxmaxima/version.txt: ") +
               version, _("Upgrade"),
               wxOK | wxICON_INFORMATION);
@@ -8788,7 +8789,7 @@ void wxMaxima::CheckForUpdates(bool reportUpToDate)
   }
   else
   {
-    wxMessageBox(_("Can not download version info."), _("Error"),
+    LoggingMessageBox(_("Can not download version info."), _("Error"),
                  wxOK | wxICON_ERROR);
   }
 
@@ -8827,7 +8828,7 @@ int wxMaxima::SaveDocumentP()
     file += wxT(".") + ext;
   }
 
-  wxMessageDialog dialog(this,
+  LoggingMessageDialog dialog(this,
                          wxString::Format(_("Do you want to save the changes you made in the document \"%s\"?"),
                                           file.utf8_str()),
                          "wxMaxima", wxCENTER | wxYES_NO | wxCANCEL);
