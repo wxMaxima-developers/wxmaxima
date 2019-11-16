@@ -128,11 +128,15 @@ else()
     # allow local execution (./wxmaxima-local) from the build directory without installation
     # and ensure that the images will be found by pandoc
     file(COPY ${WXMAXIMA_HELP_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+    foreach(BASENAME ${BASENAMES})
+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.html DESTINATION share/doc/wxmaxima)
+	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/wxmaxima.hhp.in ${BASENAME}.hhp)
+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.hhp DESTINATION share/doc/wxmaxima)
+    endforeach()
 endif()
 
-
-
-file(GLOB WXMAXIMA_HELP_FILES *.jpg *.png *.pdf *.html *.hhp)
-install(FILES ${WXMAXIMA_HELP_FILES} DESTINATION share/doc/wxmaxima)
+file(GLOB WXMAXIMA_ADDITIONAL_HELP_FILES *.jpg *.png *.pdf)
+install(FILES ${WXMAXIMA_ADDITIONAL_HELP_FILES} DESTINATION share/doc/wxmaxima)
 
 
