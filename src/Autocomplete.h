@@ -150,9 +150,12 @@ private:
         }
         return wxDIR_CONTINUE;
       }
-    virtual wxDirTraverseResult OnDir(const wxString& WXUNUSED(dirname))
+    virtual wxDirTraverseResult OnDir(const wxString& dirname)
       {
-        return wxDIR_CONTINUE;
+        if(dirname.EndsWith(".git"))
+          return wxDIR_STOP;
+        else
+          return wxDIR_CONTINUE;
       }
     wxArrayString& GetResult(){return m_files;}
   protected: 
@@ -193,9 +196,12 @@ private:
         }
         return wxDIR_CONTINUE;
       }
-    virtual wxDirTraverseResult OnDir(const wxString& WXUNUSED(dirname))
+    virtual wxDirTraverseResult OnDir(const wxString& dirname)
       {
-        return wxDIR_CONTINUE;
+        if(dirname.EndsWith(".git"))
+          return wxDIR_STOP;
+        else
+          return wxDIR_CONTINUE;
       }
     wxArrayString& GetResult(){return m_files;}
   protected: 
