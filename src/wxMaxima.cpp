@@ -838,6 +838,8 @@ void wxMaxima::ClientEvent(wxSocketEvent &event)
           m_newCharsFromMaxima += chr;
       }
 
+    if(m_pipeToStdout)
+      std::cout << m_newCharsFromMaxima;
     m_bytesFromMaxima += m_newCharsFromMaxima.Length();
 
     if(m_newCharsFromMaxima.EndsWith("\n") || m_newCharsFromMaxima.EndsWith(m_promptSuffix) || (m_first))
@@ -4124,7 +4126,11 @@ void wxMaxima::ReadStdErr()
     o = _("Message from the stdout of Maxima: ") + o;
     if ((o_trimmed != wxEmptyString) && (!o.StartsWith("Connecting Maxima to server on port")) &&
         (!m_first))
+    {
       DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
+      if(m_pipeToStdout)
+        std::cout << o;
+    }
   }
   if (m_process->IsErrorAvailable())
   {
@@ -4152,6 +4158,9 @@ void wxMaxima::ReadStdErr()
       AbortOnError();
       TriggerEvaluation();
       m_worksheet->m_cellPointers.m_errorList.Add(m_worksheet->GetWorkingGroup(true));
+      
+      if(m_pipeToStdout)
+        std::cout << o;
     }
     else
       DoRawConsoleAppend(o, MC_TYPE_DEFAULT);
@@ -9290,6 +9299,8 @@ BEGIN_EVENT_TABLE(wxMaxima, wxFrame)
                 EVT_ICONIZE(wxMaxima::OnMinimize)
 END_EVENT_TABLE()
 
+
+bool wxMaxima::m_pipeToStdout = false;
 
 /* Local Variables:       */
 /* mode: text             */

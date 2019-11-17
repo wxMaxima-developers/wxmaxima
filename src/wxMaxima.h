@@ -104,6 +104,10 @@ public:
   
   ~wxMaxima();
 
+  //! Pipe maxima's output to stdout
+  static void PipeToStdout(){m_pipeToStdout = true;}
+
+  //! Clean up on exit
   void CleanUp();                                  //!< shuts down server and client on exit
   //! An enum of individual IDs for all timers this class handles
   enum TimerIDs
@@ -194,6 +198,7 @@ public:
   bool QueryVariableValue();
 
 private:
+  static bool m_pipeToStdout;
   //! Search for the wxMaxima help file
   wxString SearchwxMaximaHelp();
   wxLocale *m_locale;
@@ -767,6 +772,7 @@ public:
   void BecomeLogTarget();
 
   virtual void MacOpenFile(const wxString &file);
+
 private:
   //! The name of the config file. Empty = Use the default one.
   wxString m_configFileName;
