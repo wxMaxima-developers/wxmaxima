@@ -4712,7 +4712,6 @@ bool AutoComplete::LoadSymbols()
     {
       wxFileName shareDir(m_configuration->MaximaShareDir() + "/");
       shareDir.MakeAbsolute();
-
       wxLogMessage(
         wxString::Format(
           _("Autocompletion: Scanning %s for loadable lisp files."),

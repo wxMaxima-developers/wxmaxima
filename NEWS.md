@@ -1,3 +1,11 @@
+# wxMaxima 19.11.1 - Stable
+  * Improved italian translation by Marco Ciampa
+  * Autocompletion no more causes asserts
+  * A better logic that decides which cell to send to maxima
+  * wxMaxima now supports "-l", "-u" and "-X" command-line args like maxima
+  * The help files now are installed in the Right Place
+  * Many additional small bug fixes
+
 # wxMaxima 19.11.0 - Stable
   * Chinese translation updates from liulitchi
   * Turkish translation updates from TufanSirin

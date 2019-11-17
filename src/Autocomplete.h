@@ -198,6 +198,7 @@ private:
       }
     virtual wxDirTraverseResult OnDir(const wxString& dirname)
       {
+        std::cerr<<"Dir: "<<dirname<<"\n";
         if(dirname.EndsWith(".git"))
           return wxDIR_STOP;
         else
