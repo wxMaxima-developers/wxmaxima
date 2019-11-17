@@ -2915,14 +2915,17 @@ wxString wxMaxima::GetCommand(bool params)
     // escape quotes
     command.Replace(wxT("\""), wxT("\\\""));
     // surround with quotes
-    return wxT("\"") + command + wxT("\" ") + parameters;
+    command = wxT("\"") + command + wxT("\" ") + parameters;
   }
   else
   {
     command = wxT("\"") + command + wxT("\"");
-    return command;
   }
-}
+  if(!m_extraMaximaArgs.IsEmpty())
+    wxASSERT(m_extraMaximaArgs.StartsWith(" "));
+  command += m_extraMaximaArgs;
+  return command;
+  }
 
 ///--------------------------------------------------------------------------------
 ///  Tips and help
@@ -9301,6 +9304,7 @@ END_EVENT_TABLE()
 
 
 bool wxMaxima::m_pipeToStdout = false;
+wxString wxMaxima::m_extraMaximaArgs;
 
 /* Local Variables:       */
 /* mode: text             */

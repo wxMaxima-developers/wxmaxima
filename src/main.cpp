@@ -174,12 +174,18 @@ bool MyApp::OnInit()
                    "Log all \"debug messages\" sidebar messages to stderr, too.",  wxCMD_LINE_VAL_NONE, 0},
                   {wxCMD_LINE_SWITCH, "", "pipe",
                    "Pipe messages from Maxima to stdout.",  wxCMD_LINE_VAL_NONE, 0},
-                  { wxCMD_LINE_OPTION, "f", "ini", "allows to specify a file to store the configuration in", wxCMD_LINE_VAL_STRING , 0},
+                  {wxCMD_LINE_OPTION, "f", "ini", "allows to specify a file to store the configuration in", wxCMD_LINE_VAL_STRING , 0},
+                  {wxCMD_LINE_OPTION, "u", "use-version",
+                   "Use maxima version <str>.",  wxCMD_LINE_VAL_STRING, 0},
+                  {wxCMD_LINE_OPTION, "l", "lisp",
+                   "Use a maxima compiled with lisp compiler <str>.",  wxCMD_LINE_VAL_STRING, 0},
+                  {wxCMD_LINE_OPTION, "X", "extra-args",
+                   "Allows to specify extra maxima arguments",  wxCMD_LINE_VAL_STRING, 0},
                   { wxCMD_LINE_OPTION, "m", "maxima", "allows to specify the location of the maxima binary", wxCMD_LINE_VAL_STRING , 0},
                   {wxCMD_LINE_PARAM, NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE},
             {wxCMD_LINE_NONE, "", "", "", wxCMD_LINE_VAL_NONE, 0}
           };
-
+       
   cmdLineParser.SetDesc(cmdLineDesc);
   cmdLineParser.Parse();
 
@@ -204,6 +210,19 @@ bool MyApp::OnInit()
     wxMaxima::PipeToStdout();
 
   config = wxConfig::Get();
+
+  wxString extraMaximaArgs;
+  wxString arg;
+  if (cmdLineParser.Found(wxT("l"), &arg))
+    extraMaximaArgs += " -l " +  arg;
+  
+  if (cmdLineParser.Found(wxT("X"), &arg))
+    extraMaximaArgs += " -X " +  arg;
+
+  if (cmdLineParser.Found(wxT("u"), &arg))
+    extraMaximaArgs += " -u " +  arg;
+
+  wxMaxima::ExtraMaximaArgs(extraMaximaArgs);
   
   wxImage::AddHandler(new wxPNGHandler);
   wxImage::AddHandler(new wxXPMHandler);

@@ -106,6 +106,7 @@ public:
 
   //! Pipe maxima's output to stdout
   static void PipeToStdout(){m_pipeToStdout = true;}
+  static void ExtraMaximaArgs(wxString args){m_extraMaximaArgs = args;}
 
   //! Clean up on exit
   void CleanUp();                                  //!< shuts down server and client on exit
@@ -199,6 +200,7 @@ public:
 
 private:
   static bool m_pipeToStdout;
+  static wxString m_extraMaximaArgs;
   //! Search for the wxMaxima help file
   wxString SearchwxMaximaHelp();
   wxLocale *m_locale;
