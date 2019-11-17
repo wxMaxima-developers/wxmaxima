@@ -283,6 +283,12 @@ add_test(
     COMMAND ../../wxmaxima-local --logtostdout --pipe -f config_from_19.11.cfg --batch testbench_automatic_unicode.wxm)
 set_tests_properties(config_from_19.11 PROPERTIES TIMEOUT 60)
 
+add_test(
+    NAME invalid_commandline_arg
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND ../../wxmaxima-local --gibberish --batch testbench_automatic_unicode.wxm)
+set_tests_properties(invalid_commandline_arg PROPERTIES TIMEOUT 60 WILL_FAIL true)
+
 find_program(DESKTOP_FILE_VALIDATE_FOUND desktop-file-validate)
 if(DESKTOP_FILE_VALIDATE_FOUND)
     add_test(

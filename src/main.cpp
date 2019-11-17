@@ -187,8 +187,18 @@ bool MyApp::OnInit()
           };
        
   cmdLineParser.SetDesc(cmdLineDesc);
-  cmdLineParser.Parse();
+  int cmdLineError = cmdLineParser.Parse();
 
+  if (cmdLineParser.Found(wxT("h")))
+  {
+    std::cout << "A feature-rich graphical user interface for the computer algebra system maxima\n";
+    std::cout << cmdLineParser.GetUsageString();
+    exit(0);
+  }
+
+  if(cmdLineError != 0)
+    exit(-1);
+  
   wxString ini, file;
   // Attention: The config file is changed by wxMaximaFrame::wxMaximaFrame::ReReadConfig
   if (cmdLineParser.Found(wxT("f"),&ini))
@@ -291,12 +301,6 @@ bool MyApp::OnInit()
     std::cout << " (Git version: " << WXMAXIMA_GIT_VERSION << ")";
 #endif
     std::cout << "\n";
-    exit(0);
-  }
-  if (cmdLineParser.Found(wxT("h")))
-  {
-    std::cout << "A feature-rich graphical user interface for the computer algebra system maxima\n";
-    std::cout << cmdLineParser.GetUsageString();
     exit(0);
   }
 
