@@ -55,6 +55,24 @@ add_test(
     COMMAND ../../wxmaxima-local --logtostdout --pipe --version)
 set_tests_properties(wxmaxima_version_returncode PROPERTIES TIMEOUT 60)
 
+#add_test(
+#    NAME maxima_lisp_switch
+#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+#    COMMAND ../../wxmaxima-local --logtostdout --pipe -l undefined_lisp)
+#set_tests_properties(maxima_lisp_switch PROPERTIES TIMEOUT 60 WILL_FAIL true)
+
+#add_test(
+#    NAME maxima_version_switch
+#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+#    COMMAND ../../wxmaxima-local --logtostdout --pipe -u undefined_version)
+#set_tests_properties(maxima_version_switch PROPERTIES TIMEOUT 60 WILL_FAIL true)
+
+#add_test(
+#    NAME maxima_args_switch
+#    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+#    COMMAND ../../wxmaxima-local --logtostdout --pipe -X gibberish)
+#set_tests_properties(maxima_args_switch PROPERTIES TIMEOUT 60 WILL_FAIL true)
+
 add_test(
     NAME wxmaxima_help
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
