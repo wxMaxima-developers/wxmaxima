@@ -3124,9 +3124,6 @@ wxString wxMaxima::SearchwxMaximaHelp()
     
   helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima_") + lang_short + ".hhp";
 #if defined (__WXMSW__)
-  // Cygwin uses /c/something instead of c:/something and passes this path to the
-  // web browser - which doesn't support cygwin paths => convert the path to a
-  // native windows pathname if needed.
   if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
   if(wxFileExists(helpfile))
@@ -3135,9 +3132,6 @@ wxString wxMaxima::SearchwxMaximaHelp()
 
   helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_long + ".hhp";
 #if defined (__WXMSW__)
-  // Cygwin uses /c/something instead of c:/something and passes this path to the
-  // web browser - which doesn't support cygwin paths => convert the path to a
-  // native windows pathname if needed.
   if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
   if(wxFileExists(helpfile))
@@ -3146,9 +3140,6 @@ wxString wxMaxima::SearchwxMaximaHelp()
     
   helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.") + lang_short + ".hhp";
 #if defined (__WXMSW__)
-  // Cygwin uses /c/something instead of c:/something and passes this path to the
-  // web browser - which doesn't support cygwin paths => convert the path to a
-  // native windows pathname if needed.
   if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
   if(wxFileExists(helpfile))
@@ -3157,9 +3148,6 @@ wxString wxMaxima::SearchwxMaximaHelp()
   
   helpfile = Dirstructure::Get()->HelpDir() + wxT("/wxmaxima.hhp");
 #if defined (__WXMSW__)
-  // Cygwin uses /c/something instead of c:/something and passes this path to the
-  // web browser - which doesn't support cygwin paths => convert the path to a
-  // native windows pathname if needed.
   if(helpfile.Length()>1 && helpfile[1]==wxT('/')){helpfile[1]=helpfile[2];helpfile[2]=wxT(':');}
 #endif // __WXMSW__
   if(!wxFileExists(helpfile))

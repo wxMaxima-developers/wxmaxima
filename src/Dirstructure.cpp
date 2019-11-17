@@ -46,17 +46,19 @@ Dirstructure::Dirstructure()
 
   if(wxDirExists(m_helpDir + wxT("/doc/wxmaxima")))
     m_helpDir += wxT("/doc/wxmaxima");
-  
-  if(wxDirExists(m_helpDir + wxT("/help")))
-    m_helpDir += wxT("/help");
-  
+
+  if(wxDirExists(m_helpDir + wxT("/html")))
+    m_helpDir += wxT("/html");
+
   if(wxDirExists(m_helpDir + wxT("/info")))
     m_helpDir += wxT("/info");
+
+  if(wxDirExists(m_helpDir + wxT("/help")))
+    m_helpDir += wxT("/help");
   
   if(!wxGetEnv(wxT("MAXIMA_USERDIR"),&m_userConfDir))
     m_userConfDir = wxGetHomeDir();
   m_userConfDir += "/";
-  
   
 #ifndef __WXMSW__
   m_userConfDir += wxT(".");
