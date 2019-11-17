@@ -145,7 +145,6 @@ add_test(
     COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_functionCells.wxm)
 set_tests_properties(functionCells PROPERTIES TIMEOUT 60)
 
-# Broken on Travis:
 add_test(
     NAME slideshowCells
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
@@ -200,7 +199,6 @@ add_test(
     COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_sumCells.wxm)
 set_tests_properties(sumCells PROPERTIES TIMEOUT 60)
 
-# Is mysteriously broken on travis.
 add_test(
     NAME printf_simple
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
@@ -267,7 +265,6 @@ add_test(
     COMMAND ../../wxmaxima-local --logtostdout --pipe --batch testbench_automatic_unicode.wxm)
 set_tests_properties(unicode PROPERTIES TIMEOUT 60)
 
-# Broken on Travis
 add_test(
     NAME autosave
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
@@ -279,6 +276,12 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
     COMMAND ../../wxmaxima-local --logtostdout --pipe -f noautosave.cfg --batch testbench_automatic_unicode.wxm)
 set_tests_properties(noautosave PROPERTIES TIMEOUT 60)
+
+add_test(
+    NAME config_from_19.11
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/automatic_test_files
+    COMMAND ../../wxmaxima-local --logtostdout --pipe -f config_from_19.11.cfg --batch testbench_automatic_unicode.wxm)
+set_tests_properties(config_from_19.11 PROPERTIES TIMEOUT 60)
 
 find_program(DESKTOP_FILE_VALIDATE_FOUND desktop-file-validate)
 if(DESKTOP_FILE_VALIDATE_FOUND)
