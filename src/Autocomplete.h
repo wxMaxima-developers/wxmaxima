@@ -152,7 +152,12 @@ private:
       }
     virtual wxDirTraverseResult OnDir(const wxString& dirname)
       {
-        if(dirname.EndsWith(".git"))
+        if((dirname.EndsWith(".git")) ||
+           (dirname.EndsWith("/share/share")) ||
+           (dirname.EndsWith("/src/src")) ||
+           (dirname.EndsWith("/doc/doc")) ||
+           (dirname.EndsWith("/interfaces/interfaces"))
+          )
           return wxDIR_STOP;
         else
           return wxDIR_CONTINUE;
@@ -198,8 +203,12 @@ private:
       }
     virtual wxDirTraverseResult OnDir(const wxString& dirname)
       {
-        std::cerr<<"Dir: "<<dirname<<"\n";
-        if(dirname.EndsWith(".git"))
+        if((dirname.EndsWith(".git")) ||
+           (dirname.EndsWith("/share/share")) ||
+           (dirname.EndsWith("/src/src")) ||
+           (dirname.EndsWith("/doc/doc")) ||
+           (dirname.EndsWith("/interfaces/interfaces"))
+          )
           return wxDIR_STOP;
         else
           return wxDIR_CONTINUE;
