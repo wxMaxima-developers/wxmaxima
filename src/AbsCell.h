@@ -55,7 +55,7 @@
 class AbsCell : public Cell
 {
 public:
-  AbsCell(Cell *parent, Configuration **config, CellPointers *m_cellPointers);
+  AbsCell(Cell *parent, Configuration **config, CellPointers *cellPointers);
 
   ~AbsCell();
   

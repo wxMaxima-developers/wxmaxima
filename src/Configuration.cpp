@@ -296,7 +296,8 @@ wxSize Configuration::GetPPI(wxWindow *win)
   return ppi;
 }
 
-wxString Configuration::GetAutosubscript_string(){
+wxString Configuration::GetAutosubscript_string() const
+{
   switch (m_autoSubscript)
   {
   case 0:
@@ -682,7 +683,7 @@ bool Configuration::CharsExistInFont(wxFont font, wxString char1,wxString char2,
   }
 }
 
-wxString Configuration::GetFontName(int type)
+wxString Configuration::GetFontName(int type) const
 {
   wxString retval = m_fontName;
   if (type == TS_TITLE || type == TS_SUBSECTION || type == TS_SUBSUBSECTION ||
@@ -883,7 +884,7 @@ wxColour Configuration::GetColor(int st)
   return m_styles[st].Color();
 }
 
-int Configuration::Scale_Px(double px)
+int Configuration::Scale_Px(double px) const
 {
   int retval = round(px * GetZoomFactor());
   if (retval < 1)

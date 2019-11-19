@@ -1074,7 +1074,7 @@ void Cell::SelectInner(const wxRect &rect, Cell **first, Cell **last)
   }
 }
 
-bool Cell::BreakLineHere()
+bool Cell::BreakLineHere() const
 {
   return (((!m_isBrokenIntoLines) && m_breakLine) || m_forceBreakLine);
 }
@@ -1244,7 +1244,7 @@ void Cell::SetForeground()
   dc->SetTextForeground(color);
 }
 
-bool Cell::IsMath()
+bool Cell::IsMath() const
 {
   return !(m_textStyle == TS_LABEL ||
            m_textStyle == TS_USERLABEL ||

@@ -114,7 +114,7 @@ public:
   void SetWorkingDirectory(wxString dir)
   { m_workingdir = dir; }
 
-  wxString GetWorkingDirectory()
+  wxString GetWorkingDirectory() const
   { return m_workingdir; }
 
   void ReadConfig();
@@ -133,7 +133,7 @@ public:
   }
 
   void SetBackgroundBrush(wxBrush brush){m_BackgroundBrush = brush;}
-  wxBrush GetBackgroundBrush(){return m_BackgroundBrush;}
+  wxBrush GetBackgroundBrush() const {return m_BackgroundBrush;}
   void SetAntialiassingDC(wxDC &antialiassingDC)
     {m_antialiassingDC = &antialiassingDC;}
 
@@ -165,13 +165,13 @@ public:
       return GetZoomFactor() * m_mathFontSize / 2;
   }
 
-  int GetCellBracketWidth()
+  int GetCellBracketWidth() const
   {
     return (int) (GetZoomFactor() * 16);
   }
 
   //! Hide brackets that are not under the pointer?
-  bool HideBrackets()
+  bool HideBrackets() const
   { return m_hideBrackets; }
 
   //! Define if we want to hide brackets that are not under the pointer.
@@ -181,7 +181,7 @@ public:
   }
 
   //! Hide brackets that are not under the pointer?
-  double PrintScale()
+  double PrintScale() const
   { return m_printScale; }
 
   //! Define if we want to hide brackets that are not under the pointer.
@@ -207,10 +207,10 @@ public:
 
     Is used for displaying/printing/exporting of text/maths.
    */
-  int Scale_Px(double px);
+  int Scale_Px(double px) const;
 
   //! Determines the zoom factor the worksheet is displayed at
-  double GetZoomFactor()
+  double GetZoomFactor() const
   { return m_zoomFactor; }
 
   //! Get a drawing context suitable for size calculations
@@ -226,7 +226,7 @@ public:
         return m_dc;
     }
   
-  wxString GetFontName(int type = TS_DEFAULT);
+  wxString GetFontName(int type = TS_DEFAULT) const;
 
   wxString GetSymbolFontName();
 
@@ -245,12 +245,12 @@ public:
   }
 
   //! Force a full recalculation?
-  bool RecalculationForce()
+  bool RecalculationForce() const 
   {
     return m_forceUpdate;
   }
 
-  wxFontEncoding GetFontEncoding()
+  wxFontEncoding GetFontEncoding() const
   {
     return m_fontEncoding;
   }
@@ -260,7 +260,7 @@ public:
     m_fontEncoding = encoding;
   }
 
-  int GetLabelWidth()
+  int GetLabelWidth() const
   { return m_labelWidth * 14; }
 
   //! Get the indentation of GroupCells.
@@ -330,7 +330,7 @@ public:
     m_clientWidth = width;
   }
   //! Has a font changed?
-  bool FontChanged(){return m_fontChanged;}
+  bool FontChanged() const {return m_fontChanged;}
   WX_DECLARE_STRING_HASH_MAP( bool, CharsInFontMap);
   CharsInFontMap m_charsInFontMap;
   //! Has a font changed?
@@ -347,15 +347,15 @@ public:
   { m_clientHeight = height; }
 
   //! Returns the width of the visible portion of the worksheet
-  int GetClientWidth()
+  int GetClientWidth() const
   { return m_clientWidth; }
 
   //! Returns the height of the visible portion of the worksheet
-  int GetClientHeight()
+  int GetClientHeight() const
   { return m_clientHeight; }
 
   //! Calculates the default line width for the worksheet
-  double GetDefaultLineWidth()
+  double GetDefaultLineWidth() const
   {
     if (GetZoomFactor() < 1.0)
       return 1.0;
@@ -364,7 +364,7 @@ public:
   }
 
   //! The minimum sensible line width in withs of a letter.
-  int LineWidth_em()
+  int LineWidth_em() const 
   {
     if(!m_printing)
       return m_lineWidth_em;
@@ -372,7 +372,7 @@ public:
       return 10000;
   }
 
-  bool AutoSaveAsTempFile(){return m_autoSaveAsTempFile;}
+  bool AutoSaveAsTempFile() const {return m_autoSaveAsTempFile;}
   void AutoSaveAsTempFile(bool asTempFile){wxConfig::Get()->Write(wxT("AutoSaveAsTempFile"), m_autoSaveAsTempFile = asTempFile);}
 
   //! Set the minimum sensible line width in widths of a letter.
@@ -382,7 +382,7 @@ public:
   //! Returns the maximum sensible width for a text line [in characters]:
   // On big 16:9 screens text tends to get \b very wide before it hits the right margin.
   // But text blocks that are 1 meter wide and 2 cm high feel - weird.
-  int GetLineWidth()
+  int GetLineWidth() const
   {
     if (
       (m_clientWidth <= m_zoomFactor * double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor) ||
@@ -393,24 +393,24 @@ public:
       return (int) (double(m_defaultFontSize) * LineWidth_em() * m_zoomFactor);
   }
 
-  int GetDefaultFontSize()
+  int GetDefaultFontSize() const
   { return m_defaultFontSize; }
 
   void SetDefaultFontSize(int fontSize)
   { m_defaultFontSize = fontSize; }
 
-  int GetMathFontSize()
+  int GetMathFontSize() const
   { return m_mathFontSize; }
 
   void SetMathFontSize(double size)
   { m_mathFontSize = size; }
 
   //! Do we want to have automatic line breaks for text cells?
-  bool GetAutoWrap()
+  bool GetAutoWrap() const
   { return m_autoWrap > 0; }
 
   //! Do we want to have automatic line breaks for code cells?
-  bool GetAutoWrapCode()
+  bool GetAutoWrapCode() const
   { return false; }
 
   /*! Sets the auto wrap mode
@@ -425,7 +425,7 @@ public:
   }
 
   //! Do we want automatic indentation?
-  bool GetAutoIndent()
+  bool GetAutoIndent() const
   { return m_autoIndent; }
 
   void SetAutoIndent(bool autoIndent)
@@ -434,9 +434,9 @@ public:
   }
 
   //! Do we want to indent all maths?
-  bool IndentMaths(){return m_indentMaths;}
+  bool IndentMaths() const {return m_indentMaths;}
   void IndentMaths(bool indent){wxConfig::Get()->Write(wxT("indentMaths"), m_indentMaths=indent);}
-  int GetFontSize(TextStyle st)
+  int GetFontSize(TextStyle st) const
   {
     if (st == TS_TEXT || st == TS_HEADING5 || st == TS_HEADING6 || st == TS_SUBSUBSECTION || st == TS_SUBSECTION || st == TS_SECTION || st == TS_TITLE)
       return m_styles[st].FontSize();
@@ -459,28 +459,28 @@ public:
   void Outdated(bool outdated)
   { m_outdated = outdated; }
 
-  bool CheckTeXFonts()
+  bool CheckTeXFonts() const
   { return m_TeXFonts; }
 
-  bool CheckKeepPercent()
+  bool CheckKeepPercent() const
   { return m_keepPercent; }
 
-  const wxString GetTeXCMRI()
+  wxString GetTeXCMRI() const
   { return m_fontCMRI; }
 
-  const wxString GetTeXCMSY()
+  wxString GetTeXCMSY() const
   { return m_fontCMSY; }
 
-  const wxString GetTeXCMEX()
+  wxString GetTeXCMEX() const
   { return m_fontCMEX; }
 
-  const wxString GetTeXCMMI()
+  wxString GetTeXCMMI() const
   { return m_fontCMMI; }
 
-  const wxString GetTeXCMTI()
+  wxString GetTeXCMTI() const
   { return m_fontCMTI; }
 
-  bool ShowCodeCells()
+  bool ShowCodeCells() const
   { return m_showCodeCells; }
 
   void ShowCodeCells(bool show);
@@ -504,13 +504,13 @@ public:
     to output objects that are outside the region that currently is
     redrawn.
   */
-  bool GetPrinting()
+  bool GetPrinting() const
   { return m_printing; }
 
-  bool GetMatchParens()
+  bool GetMatchParens() const
   { return m_matchParens; }
 
-  bool GetChangeAsterisk()
+  bool GetChangeAsterisk() const
   { return m_changeAsterisk; }
 
   void SetChangeAsterisk(bool changeAsterisk)
@@ -518,7 +518,7 @@ public:
     wxConfig::Get()->Write(wxT("changeAsterisk"), m_changeAsterisk = changeAsterisk);
   }
 
-  bool Latin2Greek()
+  bool Latin2Greek() const
     {return m_latin2greek;}
 
   void Latin2Greek(bool latin2greek)
@@ -527,7 +527,7 @@ public:
     }
   
   //! Notify the user if maxima is idle?
-  bool NotifyIfIdle()
+  bool NotifyIfIdle() const
   { return m_notifyIfIdle; }
 
   void NotifyIfIdle(bool notify)
@@ -539,7 +539,7 @@ public:
 
     m_displayedDigits is always >= 20, so we can guarantee the number we return to be unsigned.
    */
-  int GetDisplayedDigits()
+  int GetDisplayedDigits() const
   { return m_displayedDigits; }
 
   void SetDisplayedDigits(int displayedDigits)
@@ -548,9 +548,9 @@ public:
     wxConfig::Get()->Write(wxT("displayedDigits"), m_displayedDigits = displayedDigits);
   }
   
-  wxRect GetUpdateRegion(){return m_updateRegion;}
+  wxRect GetUpdateRegion() const {return m_updateRegion;}
   void SetUpdateRegion(wxRect rect){m_updateRegion = rect;}
-  bool GetInsertAns()
+  bool GetInsertAns() const
   { return m_insertAns; }
 
   void SetInsertAns(bool insertAns)
@@ -558,7 +558,7 @@ public:
     wxConfig::Get()->Write(wxT("insertAns"), m_insertAns = insertAns);
   }
 
-  bool GetOpenHCaret()
+  bool GetOpenHCaret() const
   { return m_openHCaret; }
 
   void SetOpenHCaret(bool openHCaret)
@@ -566,7 +566,7 @@ public:
     wxConfig::Get()->Write(wxT("openHCaret"), m_openHCaret = openHCaret);
   }
 
-  bool RestartOnReEvaluation()
+  bool RestartOnReEvaluation() const
   { return m_restartOnReEvaluation; }
 
   void RestartOnReEvaluation(bool arg)
@@ -575,7 +575,7 @@ public:
   }
 
   //! Reads the size of the current worksheet's visible window. See SetCanvasSize
-  wxSize GetCanvasSize()
+  wxSize GetCanvasSize() const
   { return m_canvasSize; }
 
   //! Sets the size of the current worksheet's visible window.
@@ -583,29 +583,29 @@ public:
   { m_canvasSize = siz; }
 
   //! Show the cell brackets [displayed left to each group cell showing its extend]?
-  bool ShowBrackets()
+  bool ShowBrackets() const
   { return m_showBrackets; }
 
   bool ShowBrackets(bool show)
   { return m_showBrackets = show; }
 
   //! Print the cell brackets [displayed left to each group cell showing its extend]?
-  bool PrintBrackets()
+  bool PrintBrackets() const
   { return m_printBrackets; }
 
-  showLabels GetLabelChoice()
+  showLabels GetLabelChoice() const
   { return m_showLabelChoice; }
 
   //! Do we want to show maxima's automatic labels (%o1, %t1, %i1,...)?
-  bool ShowAutomaticLabels()
+  bool ShowAutomaticLabels() const
   { return (m_showLabelChoice < labels_useronly); }
 
   //! Do we want at all to show labels?
-  bool UseUserLabels()
+  bool UseUserLabels() const
   { return m_showLabelChoice > labels_automatic; }
 
   //! Do we want at all to show labels?
-  bool ShowLabels()
+  bool ShowLabels() const
   { return m_showLabelChoice < labels_none; }
 
   //! Sets the value of the Configuration ChoiceBox that treads displaying labels
@@ -621,7 +621,7 @@ public:
   }
 
   //! Autodetect maxima's location? (If false the user-specified location is used)
-  bool AutodetectMaxima(){return m_autodetectMaxima;}
+  bool AutodetectMaxima() const {return m_autodetectMaxima;}
   //! Autodetect maxima's location?
   void AutodetectMaxima(bool autodetectmaxima){wxConfig::Get()->Write(
       wxT("autodetectMaxima"),
@@ -635,7 +635,7 @@ public:
   wxString MaximaLocation();
 
   //! Returns the location of the maxima binary the user has selected.
-  wxString MaximaUserLocation(){return m_maximaUserLocation;}
+  wxString MaximaUserLocation() const {return m_maximaUserLocation;}
 
   //! Sets the location of the maxima binary.
   void MaximaUserLocation(wxString maxima)
@@ -652,7 +652,7 @@ public:
   bool MaximaFound(wxString location = wxEmptyString);
 
   //! Renumber out-of-order cell labels on saving.
-  bool FixReorderedIndices()
+  bool FixReorderedIndices() const
   { return m_fixReorderedIndices; }
 
   void FixReorderedIndices(bool fix)
@@ -661,51 +661,51 @@ public:
   }
 
   //! Returns the URL MathJaX can be found at.
-  wxString MathJaXURL(){if(m_mathJaxURL_UseUser) return m_mathJaxURL; else return MathJaXURL_Auto();}
-  wxString MathJaXURL_User(){ return m_mathJaxURL;}
-  bool MathJaXURL_UseUser(){ return m_mathJaxURL_UseUser;}
+  wxString MathJaXURL() const {if(m_mathJaxURL_UseUser) return m_mathJaxURL; else return MathJaXURL_Auto();}
+  wxString MathJaXURL_User() const { return m_mathJaxURL;}
+  bool MathJaXURL_UseUser() const { return m_mathJaxURL_UseUser;}
   void MathJaXURL_UseUser(bool useUser){wxConfig::Get()->Write(wxT("mathJaxURL_UseUser"),
                                                                m_mathJaxURL_UseUser = useUser);}
 
-  bool EnterEvaluates() {return m_enterEvaluates;}
+  bool EnterEvaluates() const {return m_enterEvaluates;}
   void EnterEvaluates(bool enterEvaluates) {wxConfig::Get()->Write(wxT("enterEvaluates"),
                                                                 m_enterEvaluates = enterEvaluates);}
-  wxString MathJaXURL_Auto(){ return wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML");}
+  wxString MathJaXURL_Auto() const { return wxT("https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML");}
   //! Returns the URL MathJaX can be found at.
   void MathJaXURL(wxString url){wxConfig::Get()->Write(wxT("mathJaxURL"), m_mathJaxURL = url);}
-  bool AntiAliasLines(){return m_antiAliasLines;}
+  bool AntiAliasLines() const {return m_antiAliasLines;}
   void AntiAliasLines(bool antiAlias)
     {
       wxConfig::Get()->Write(wxT("antiAliasLines"), m_antiAliasLines = antiAlias );
     }
 
-  bool CopyBitmap(){return m_copyBitmap;}
+  bool CopyBitmap() const {return m_copyBitmap;}
   void CopyBitmap(bool copyBitmap)
     {
       wxConfig::Get()->Write(wxT("copyBitmap"), m_copyBitmap = copyBitmap );
     }
   
-  bool CopyMathML(){return m_copyMathML;}
+  bool CopyMathML() const {return m_copyMathML;}
   void CopyMathML(bool copyMathML)
     {
       wxConfig::Get()->Write(wxT("copyMathML"), m_copyMathML = copyMathML );
     }
-  bool CopyMathMLHTML(){return m_copyMathMLHTML;}
+  bool CopyMathMLHTML() const {return m_copyMathMLHTML;}
   void CopyMathMLHTML(bool copyMathMLHTML)
     {
       wxConfig::Get()->Write(wxT("copyMathMLHTML"), m_copyMathMLHTML = copyMathMLHTML );
     }
-  bool CopyRTF(){return m_copyRTF;}
+  bool CopyRTF() const {return m_copyRTF;}
   void CopyRTF(bool copyRTF)
     {
       wxConfig::Get()->Write(wxT("copyRTF"), m_copyRTF = copyRTF );
     }
-  bool CopySVG(){return m_copySVG;}
+  bool CopySVG() const {return m_copySVG;}
   void CopySVG(bool copySVG)
     {
       wxConfig::Get()->Write(wxT("copySVG"), m_copySVG = copySVG );
     }
-  bool CopyEMF(){return m_copyEMF;}
+  bool CopyEMF() const {return m_copyEMF;}
   void CopyEMF(bool copyEMF)
     {
       wxConfig::Get()->Write(wxT("copyEMF"), m_copyEMF = copyEMF );
@@ -714,12 +714,12 @@ public:
     {
       wxConfig::Get()->Write(wxT("showLength"), m_showLength = length);
     }
-  int ShowLength(){return m_showLength;}
+  int ShowLength() const {return m_showLength;}
 
   //! Sets the default toolTip for new cells
   void SetDefaultCellToolTip(wxString defaultToolTip){m_defaultToolTip = defaultToolTip;}
   //! Gets the default toolTip for new cells
-  wxString GetDefaultCellToolTip(){return m_defaultToolTip;}
+  wxString GetDefaultCellToolTip() const {return m_defaultToolTip;}
   //! Which way do we want to draw parenthesis?
   void SetGrouphesisDrawMode(drawMode mode){m_parenthesisDrawMode = mode;}
 
@@ -728,13 +728,13 @@ public:
       wxConfig::Get()->Write(wxT("TOCshowsSectionNumbers"), (m_TOCshowsSectionNumbers = showSectionNumbers));
     }
 
-  bool TocShowsSectionNumbers(){return m_TOCshowsSectionNumbers;}
+  bool TocShowsSectionNumbers() const {return m_TOCshowsSectionNumbers;}
 
   void UseUnicodeMaths(bool useunicodemaths)
     {
       wxConfig::Get()->Write(wxT("useUnicodeMaths"), (m_useUnicodeMaths = useunicodemaths));
     }
-  bool UseUnicodeMaths(){return m_useUnicodeMaths;}
+  bool UseUnicodeMaths() const {return m_useUnicodeMaths;}
 
   drawMode GetGrouphesisDrawMode();
   /*! Get the font for a given text style
@@ -746,54 +746,54 @@ public:
   wxFont GetFont(TextStyle textStyle, int fontSize);
 
   //! Get the worksheet this configuration storage is valid for
-  wxWindow *GetWorkSheet(){return m_workSheet;}
+  wxWindow *GetWorkSheet() const {return m_workSheet;}
   //! Set the worksheet this configuration storage is valid for
   void SetWorkSheet(wxWindow *workSheet){m_workSheet = workSheet;}
 
-  int DefaultPort(){return m_defaultPort;}
+  int DefaultPort() const {return m_defaultPort;}
   void DefaultPort(int port){wxConfig::Get()->Write("defaultPort",m_defaultPort = port);}
-  bool GetAbortOnError(){return m_abortOnError;}
+  bool GetAbortOnError() const {return m_abortOnError;}
   void SetAbortOnError(bool abortOnError)
     {wxConfig::Get()->Write("abortOnError",m_abortOnError = abortOnError);}
 
-  bool OfferKnownAnswers(){return m_offerKnownAnswers;}
+  bool OfferKnownAnswers() const {return m_offerKnownAnswers;}
   void OfferKnownAnswers(bool offerKnownAnswers)
     {wxConfig::Get()->Write("offerKnownAnswers",m_offerKnownAnswers = offerKnownAnswers);}
   
-  wxString Documentclass(){return m_documentclass;}
+  wxString Documentclass() const {return m_documentclass;}
   void Documentclass(wxString clss){wxConfig::Get()->Write("documentclass",m_documentclass = clss);}
-  wxString DocumentclassOptions(){return m_documentclassOptions;}
+  wxString DocumentclassOptions() const {return m_documentclassOptions;}
   void DocumentclassOptions(wxString classOptions){wxConfig::Get()->Write("documentclassoptions",m_documentclassOptions = classOptions);}
 
   
-  htmlExportFormat HTMLequationFormat(){return m_htmlEquationFormat;}
+  htmlExportFormat HTMLequationFormat() const {return m_htmlEquationFormat;}
   void HTMLequationFormat(htmlExportFormat HTMLequationFormat)
     {wxConfig::Get()->Write("HTMLequationFormat", (int) (m_htmlEquationFormat = HTMLequationFormat));}
 
   //! Get the worksheet this configuration storage is valid for
-  int GetAutosubscript_Num(){return m_autoSubscript;}
+  int GetAutosubscript_Num() const {return m_autoSubscript;}
   void SetAutosubscript_Num(int autosubscriptnum)
     {wxConfig::Get()->Write("autosubscript",m_autoSubscript = autosubscriptnum);}
-  wxString GetAutosubscript_string();
+  wxString GetAutosubscript_string() const;
   //! Determine the default background color of the worksheet
-  wxColor DefaultBackgroundColor(){return m_styles[TS_DOCUMENT_BACKGROUND].GetColor();}
+  wxColor DefaultBackgroundColor() const {return m_styles[TS_DOCUMENT_BACKGROUND].GetColor();}
   //! Do we want to save time by only redrawing the area currently shown on the screen?
-  bool ClipToDrawRegion(){return m_clipToDrawRegion;}
+  bool ClipToDrawRegion() const {return m_clipToDrawRegion;}
   //! Do we want to save time by only redrawing the area currently shown on the screen?
   void ClipToDrawRegion(bool clipToDrawRegion){m_clipToDrawRegion = clipToDrawRegion; m_forceUpdate = true;}
   //! Request adjusting the worksheet size?
   void AdjustWorksheetSize(bool adjust)
     { m_adjustWorksheetSizeNeeded = adjust; }
-  bool AdjustWorksheetSize()
+  bool AdjustWorksheetSize() const
     { return m_adjustWorksheetSizeNeeded; }
   void SetVisibleRegion(wxRect visibleRegion){m_visibleRegion = visibleRegion;}
-  wxRect GetVisibleRegion(){return m_visibleRegion;}
+  wxRect GetVisibleRegion() const {return m_visibleRegion;}
   void SetWorksheetPosition(wxPoint worksheetPosition){m_worksheetPosition = worksheetPosition;}
-  wxPoint GetWorksheetPosition(){return m_worksheetPosition;}
-  wxString MaximaShareDir(){return m_maximaShareDir;}
+  wxPoint GetWorksheetPosition() const {return m_worksheetPosition;}
+  wxString MaximaShareDir() const {return m_maximaShareDir;}
   void MaximaShareDir(wxString dir){m_maximaShareDir = dir;}
   void InLispMode(bool lisp){m_inLispMode = lisp;}
-  bool InLispMode(){return m_inLispMode;}
+  bool InLispMode() const {return m_inLispMode;}
   Style m_styles[NUMBEROFSTYLES];
 private:
   //! true = Autosave doesn't save into the current file.

@@ -185,7 +185,7 @@ class Cell
   { m_breakLine = breakLine; }
 
   //! Does this cell to start with a linebreak?
-  bool LineBreakAtBeginning()
+  bool LineBreakAtBeginning() const
   { return m_breakLine || m_breakPage || m_forceBreakLine; }
 
   //! Do we want this cell to start with a pagebreak?
@@ -193,14 +193,14 @@ class Cell
   { m_breakPage = breakPage; }
 
   //! Are we allowed to break a line here?
-  bool BreakLineHere();
+  bool BreakLineHere() const;
 
   //! Does this cell begin with a manual linebreak?
-  bool HardLineBreak()
+  bool HardLineBreak() const
   { return m_forceBreakLine; }
 
   //! Does this cell begin with a manual page break?
-  bool BreakPageHere()
+  bool BreakPageHere() const
   { return m_breakPage; }
 
   /*! Try to split this command into lines to make it fit on the screen
@@ -289,14 +289,14 @@ class Cell
 
     This value is recalculated by RecalculateHeight; -1 means: Needs to be recalculated.
   */
-  int GetHeight()
+  int GetHeight() const
   { return m_height; }
 
   /*! Get the width of this cell
 
     This value is recalculated by RecalculateWidth; -1 means: Needs to be recalculated.
   */
-  int GetWidth()
+  int GetWidth() const
   { return m_width; }
 
   /*! Get the distance between the top and the center of this cell.
@@ -304,7 +304,7 @@ class Cell
     Remember that (for example with double fractions) the center does not have to be in the 
     middle of a cell even if this object is --- by definition --- center-aligned.
    */
-  int GetCenter()
+  int GetCenter() const
   { return m_center; }
 
   /*! Get the distance between the center and the bottom of this cell
@@ -316,13 +316,13 @@ class Cell
 
     This value is recalculated by RecalculateHeight; -1 means: Needs to be recalculated.
    */
-  int GetDrop()
+  int GetDrop() const
   { return m_height - m_center; }
 
   /*! 
     Returns the type of this cell.
    */
-  CellType GetType()
+  CellType GetType() const
   { return m_type; }
 
   /*! Returns the maximum distance between center and bottom of this line
@@ -361,14 +361,14 @@ class Cell
 
     See m_currentPoint for more details.
    */
-  int GetCurrentX()
+  int GetCurrentX() const
   { return m_currentPoint.x; }
 
   /*! Get the y position of the top left of this cell
 
     See m_currentPoint for more details.
    */
-  int GetCurrentY()
+  int GetCurrentY() const
   { return m_currentPoint.y; }
 
   /*! Get the smallest rectangle this cell fits in
@@ -439,8 +439,8 @@ class Cell
   //! Sets the text style according to the type
   virtual void SetType(CellType type);
 
-  TextStyle GetStyle()
-  { return m_textStyle; }  //l'ho aggiunto io
+  TextStyle GetStyle() const
+  { return m_textStyle; }
 
   void SetPen(double lineWidth = 1.0);
 
@@ -449,7 +449,7 @@ class Cell
   { m_highlight = highlight; }
 
   //! Is this cell highlighted (e.G. inside a maxima box)
-  bool GetHighlight()
+  bool GetHighlight() const
   { return m_highlight; }
 
   virtual void SetExponentFlag()
@@ -661,14 +661,14 @@ class Cell
 
     \return true, if this is a text cell, a title cell, a section, a subsection or a sub(n)section cell.
    */
-  bool IsComment()
+  bool IsComment() const
   {
     return m_type == MC_TYPE_TEXT || m_type == MC_TYPE_SECTION ||
            m_type == MC_TYPE_SUBSECTION || m_type == MC_TYPE_SUBSUBSECTION ||
            m_type == MC_TYPE_HEADING5 || m_type == MC_TYPE_HEADING6 || m_type == MC_TYPE_TITLE;
   }
 
-  bool IsEditable(bool input = false)
+  bool IsEditable(bool input = false) const
   {
     return (m_type == MC_TYPE_INPUT &&
             m_previous != NULL && m_previous->m_type == MC_TYPE_MAIN_PROMPT)
@@ -749,7 +749,7 @@ class Cell
     ResetData();
   }
 
-  bool IsMath();
+  bool IsMath() const;
 
   void SetAltCopyText(wxString text)
   { m_altCopyText = text; }
@@ -787,7 +787,7 @@ class Cell
   m_currentPoint_Last = point;
   }
   void SetCurrentPoint(int x, int y){m_currentPoint = wxPoint(x,y);}
-  wxPoint GetCurrentPoint(){return m_currentPoint;}
+  wxPoint GetCurrentPoint() const {return m_currentPoint;}
   
 protected:
   /*! The point in the work sheet at which this cell begins.
@@ -900,7 +900,7 @@ public:
     
     wxString WXMXGetNewFileName();
     
-    int WXMXImageCount()
+    int WXMXImageCount() const
       { return m_wxmxImgCounter; }
 
     //! A list of editor cells containing error messages.
@@ -909,7 +909,7 @@ public:
     public:
       ErrorList(){};
       //! Is the list of errors empty?
-      bool Empty(){return m_errorList.empty();}
+      bool Empty() const {return m_errorList.empty();}
       //! Remove one specific GroupCell from the list of errors
       void Remove(Cell * cell){m_errorList.remove(cell);}
       //! Does the list of GroupCell with errors contain cell?
