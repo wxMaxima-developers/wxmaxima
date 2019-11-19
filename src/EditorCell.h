@@ -113,7 +113,7 @@ public:
   void AutoAnswer(bool autoAnswer){m_autoAnswer = autoAnswer;}
 
   //! Which cell the blinking cursor is in?
-  EditorCell *GetActiveCell()
+  EditorCell *GetActiveCell() const
   { return dynamic_cast<EditorCell *>(m_cellPointers->m_activeCell); }
 
   /*! Tells where the mouse selection has started.
@@ -121,7 +121,7 @@ public:
     Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
     remove this pointer.
    */
-  EditorCell *MouseSelectionStart()
+  EditorCell *MouseSelectionStart() const
   { return dynamic_cast<EditorCell *>(m_cellPointers->m_cellMouseSelectionStartedIn); }
 
   /*! Tells where the keyboard selection has started.
@@ -129,7 +129,7 @@ public:
     Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
     remove this pointer.
    */
-  EditorCell *KeyboardSelectionStart()
+  EditorCell *KeyboardSelectionStart() const
   { return dynamic_cast<EditorCell *>(m_cellPointers->m_cellKeyboardSelectionStartedIn); }
 
   /*! Tells where the search has started.
@@ -137,7 +137,7 @@ public:
     Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
     remove this pointer.
    */
-  EditorCell *SearchStart()
+  EditorCell *SearchStart() const
   { return dynamic_cast<EditorCell *>(m_cellPointers->m_cellSearchStartedIn); }
 
   /*! At which character inside its cell has the search started?
@@ -145,7 +145,7 @@ public:
     Needs to be kept in EditorCell so if an EditorCell is deleted it can automatically
     remove this pointer.
    */
-  int IndexSearchStartedAt()
+  int IndexSearchStartedAt() const
   { return m_cellPointers->m_indexSearchStartedAt; }
 
   /*! Remember that this is the cell the search was started in.
@@ -182,7 +182,7 @@ public:
   { m_cellPointers->m_selectionString = string; }
 
   //! A list of words that might be applicable to the autocomplete function.
-  wxArrayString GetWordList()
+  wxArrayString GetWordList() const
   { return m_wordList; }
 
   //! Has the selection changed since the last draw event?
@@ -264,7 +264,7 @@ public:
 
     Naturally all soft line breaks are converted back to spaces beforehand.
    */
-  wxString GetValue()
+  wxString GetValue() const
   {
     return m_text;
   }
@@ -335,11 +335,11 @@ public:
   void PasteFromClipboard(const bool &primary = false);
 
   //! Get the character position the selection has been started with
-  int GetSelectionStart()
+  int GetSelectionStart() const
   { return m_selectionStart; }
 
   //! Get the character position the selection has been ended with
-  int GetSelectionEnd()
+  int GetSelectionEnd() const
   { return m_selectionEnd; }
 
   //! Select the whole text contained in this Cell
@@ -350,7 +350,7 @@ public:
   }
 
   //! Does the selection currently span the whole cell?
-  bool AllSelected()
+  bool AllSelected() const
   {
     return (m_selectionStart == 0) && (m_selectionEnd == (long) m_text.Length());
   }
@@ -362,12 +362,12 @@ public:
   }
 
   //! Is there any text selected right now?
-  bool SelectionActive()
+  bool SelectionActive() const
   {
     return (m_selectionStart >= 0) && (m_selectionEnd >= 0);
   }
 
-  bool CanCopy()
+  bool CanCopy() const
   {
     return m_selectionStart != -1;
   }
@@ -379,7 +379,7 @@ public:
   int GetLineWidth(unsigned int line, int end);
 
   //! true, if this cell's width has to be recalculated.
-  bool IsDirty()
+  bool IsDirty() const
   {
     return m_isDirty;
   }
@@ -406,18 +406,18 @@ public:
     StyleText();
   }
 
-  bool IsActive()
+  bool IsActive() const
   { return this == m_cellPointers->m_activeCell; }
 
   //! Is the cursor at the start of this cell?
-  bool CaretAtStart()
+  bool CaretAtStart() const
   { return m_positionOfCaret == 0; }
 
   //! Move the cursor to the start of this cell
   void CaretToStart();
 
   //! Is the cursor at the end of this cell?
-  bool CaretAtEnd()
+  bool CaretAtEnd() const
   { return m_positionOfCaret == (long) m_text.Length(); }
 
   //! Move the cursor to the end of this cell
@@ -454,7 +454,7 @@ public:
   void ClearUndo();
 
   //! Query if this cell needs to be re-evaluated by maxima
-  bool ContainsChanges()
+  bool ContainsChanges() const
   { return m_containsChanges; }
 
   //! Set the information if this cell needs to be re-evaluated by maxima
@@ -516,7 +516,7 @@ public:
   //! Sets the index the error is at
   void SetErrorIndex(int index){m_errorIndex = index;}
 
-  bool ErrorIndexSet(){return m_errorIndex >= 0;}
+  bool ErrorIndexSet() const {return m_errorIndex >= 0;}
 
   void GotoError(){SetCaretPosition(m_errorIndex);ActivateCursor();}
 
@@ -524,7 +524,7 @@ public:
   void ProcessNewline(bool keepCursorAtStartOfLine = true);
 
   //! Get the cursor's current position inside the cell.
-  int GetCaretPosition()
+  int GetCaretPosition() const
   { return m_positionOfCaret; }
 
   //! Set the cursor's current position inside the cell.
@@ -540,7 +540,7 @@ public:
 
   void InsertText(wxString text);
 
-  wxString TextInFrontOfSelection()
+  wxString TextInFrontOfSelection() const
   {
     return GetValue().Mid(1, m_selectionStart);
   }
@@ -558,7 +558,7 @@ public:
   }
 
   //! Get the lost of commands, parenthesis, strings and whitespaces in a code cell
-  MaximaTokenizer::TokenList GetTokens(){return m_tokens;}
+  MaximaTokenizer::TokenList GetTokens() const {return m_tokens;}
 
 private:
   //! Mark this cell as "Automatically answer questions".
@@ -624,10 +624,10 @@ private:
 
     void SetWidth(int width){m_width = width;}
     void ResetSize(){SetWidth(-1);}
-    int GetWidth(){return m_width;}
-    bool SizeKnown(){return GetWidth() >= 0;}
+    int GetWidth() const {return m_width;}
+    bool SizeKnown() const {return GetWidth() >= 0;}
     //! Returns the piece of text
-    wxString GetText()
+    wxString GetText() const
     {
       return m_text;
     }
@@ -646,24 +646,24 @@ private:
     }
 
     //! By how many pixels do we need to indent this line due to a bullet list or similar?
-    int GetIndentPixels()
+    int GetIndentPixels() const
     {
       return m_indentPixels;
     }
 
-    wxString GetIndentChar()
+    wxString GetIndentChar() const
     {
       return m_indentChar;
     }
 
 //! If StyleSet() is true this function returns the color of this text portion
-    TextStyle GetStyle()
+    TextStyle GetStyle() const
     {
       return m_style;
     }
 
     // Has a individual text style been set for this text portion?
-    bool StyleSet()
+    bool StyleSet() const
     {
       return m_styleThisText;
     }
@@ -707,7 +707,6 @@ private:
   long m_lastSelectionStart;
 //  long m_oldStart, m_oldEnd;
   unsigned int m_numberOfLines;
-  double m_fontSize;
   /*! The font size we were called with  the last time
 
     We need to know this in order to be able to detect we need a full recalculation.

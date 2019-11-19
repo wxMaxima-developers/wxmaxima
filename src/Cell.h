@@ -859,7 +859,7 @@ protected:
   CellType m_type;
   TextStyle m_textStyle;
   //! The font size is smaller in super- and subscripts.
-  int m_fontSize;
+  double m_fontSize;
 
 public:
   /*! The storage for pointers to cells.
