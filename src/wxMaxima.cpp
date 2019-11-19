@@ -38,6 +38,7 @@
 #include <wx/app.h>
 #include "LoggingMessageDialog.h"
 #include "wxMaxima.h"
+#include <wx/wupdlock.h>
 #include "wxMathml.h"
 #include "ImgCell.h"
 #include "DrawWiz.h"
@@ -3845,6 +3846,8 @@ bool wxMaxima::OpenFile(wxString file, wxString cmd)
   unixFilename.Replace(wxT("\\"), wxT("/"));
 #endif
 
+  wxWindowUpdateLocker dontUpdateTheWorksheet (m_worksheet);
+  
   if (cmd.Length() > 0)
   {
     MenuCommand(cmd + wxT("(\"") + unixFilename + wxT("\")$"));

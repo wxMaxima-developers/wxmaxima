@@ -37,6 +37,7 @@
 #include <wx/richtext/richtextbuffer.h>
 #include <wx/tooltip.h>
 #include <wx/dcbuffer.h>
+#include <wx/wupdlock.h>
 #include "wxMaximaFrame.h"
 #include "Worksheet.h"
 #include "BitmapOut.h"
@@ -4767,6 +4768,9 @@ bool Worksheet::ExportToHTML(wxString file)
   // Show a busy cursor as long as we export.
   wxBusyCursor crs;
 
+  // Don't update the worksheet whilst exporting
+  wxWindowUpdateLocker noUpdates(this);
+
   // The path to the image directory as seen from the html directory
   wxString imgDir_rel;
   // The absolute path to the image directory
@@ -6057,6 +6061,9 @@ bool Worksheet::ExportToTeX(wxString file)
   // Show a busy cursor as long as we export.
   wxBusyCursor crs;
 
+  // Don't update the worksheet whilst exporting
+  wxWindowUpdateLocker noUpdates(this);
+
   wxString imgDir;
   wxString path, filename, ext;
   GroupCell *tmp = m_tree;
@@ -6281,6 +6288,9 @@ void Worksheet::ExportToMAC(wxTextFile &output, GroupCell *tree, bool wxm, const
   // Show a busy cursor as long as we open a file.
   wxBusyCursor crs;
 
+  // Don't update the worksheet whilst exporting
+  wxWindowUpdateLocker noUpdates(this);
+
   GroupCell *tmp = tree;
 
   //
@@ -6328,6 +6338,8 @@ bool Worksheet::ExportToMAC(wxString file)
   
   // Show a busy cursor as long as we export or save.
   wxBusyCursor crs;
+  // Don't update the worksheet whilst exporting
+  wxWindowUpdateLocker noUpdates(this);
 
   bool wxm;
 
@@ -6412,6 +6424,8 @@ bool Worksheet::ExportToWXMX(wxString file, bool markAsSaved)
 {
   // Show a busy cursor as long as we export a file.
   wxBusyCursor crs;
+  // Don't update the worksheet whilst exporting
+  wxWindowUpdateLocker noUpdates(this);
   wxLogMessage(_("Starting to save the worksheet as .wxmx"));
   // delete temp file if it already exists
   wxString backupfile = file + wxT("~");
