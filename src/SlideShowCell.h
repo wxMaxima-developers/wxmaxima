@@ -78,7 +78,7 @@ public:
     wxCharBuffer m_databuf;
   };
 
-  bool IsOk(){return (m_size>0) && (m_images[m_displayed]->IsOk());}
+  bool IsOk() const {return (m_size>0) && (m_images[m_displayed]->IsOk());}
   
   virtual wxString GetToolTip(const wxPoint &point);
 
@@ -96,15 +96,15 @@ public:
 
   Cell *Copy();
 
-  int GetDisplayedIndex()
+  int GetDisplayedIndex() const
   { return m_displayed; }
 
-  wxImage GetBitmap(int n)
+  wxImage GetBitmap(int n) const
   { return m_images[n]->GetUnscaledBitmap().ConvertToImage(); }
 
   void SetDisplayedIndex(int ind);
 
-  int Length()
+  int Length() const
   { return m_size; }
 
   //! Exports the image the slideshow currently displays
@@ -144,7 +144,7 @@ public:
    */
   int SetFrameRate(int Freq);
 
-  bool AnimationRunning() {return m_animationRunning;}
+  bool AnimationRunning() const {return m_animationRunning;}
   void AnimationRunning(bool run);
 protected:
   wxTimer *m_timer;

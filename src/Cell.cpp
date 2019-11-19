@@ -566,7 +566,7 @@ bool Cell::IsCompound()
 /***
  * Is operator - draw () in frac...
  */
-bool Cell::IsOperator()
+bool Cell::IsOperator() const
 {
   return false;
 }

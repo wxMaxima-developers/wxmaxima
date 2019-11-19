@@ -111,7 +111,7 @@ class Cell
 
     Is used for displaying/printing/exporting of text/maths
    */
-  int Scale_Px(double px){ return (*m_configuration)->Scale_Px(px);}
+  int Scale_Px(double px) const {return (*m_configuration)->Scale_Px(px);}
 #if wxUSE_ACCESSIBILITY
   //! Accessibility: Describe the current cell to a Screen Reader
   virtual wxAccStatus GetDescription(int childId, wxString *description);
@@ -458,7 +458,7 @@ class Cell
   virtual void SetValue(const wxString &WXUNUSED(text))
   {}
 
-  virtual wxString GetValue()
+  virtual wxString GetValue() const
   { return wxEmptyString; }
 
   //! Get the first cell in this list of cells
@@ -494,7 +494,7 @@ class Cell
   virtual void SelectInner(const wxRect &rect, Cell **first, Cell **last);
 
   //! Is this cell an operator?
-  virtual bool IsOperator();
+  virtual bool IsOperator() const;
 
   bool IsCompound();
 

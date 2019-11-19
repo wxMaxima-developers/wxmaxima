@@ -63,7 +63,7 @@ public:
   void SetPower(Cell *power);
 
   //! By how much do we want to rise the power?
-  double PowRise(){return Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);}
+  double PowRise() const {return Scale_Px(.8 * m_fontSize + MC_EXP_INDENT);}
   
   void RecalculateHeight(int fontsize);
 

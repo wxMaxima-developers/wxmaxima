@@ -82,9 +82,9 @@ public:
 
   wxString GetDiffPart();
 
-  bool IsOperator();
+  bool IsOperator() const;
 
-  wxString GetValue()
+  wxString GetValue() const
   { return m_text; }
 
   wxString GetGreekStringTeX();

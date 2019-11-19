@@ -76,7 +76,7 @@ public:
   void SetDenom(Cell *denom);
 
   //! Answers the question if this is an operator by returning "true".
-  bool IsOperator()
+  bool IsOperator() const
   {
     return true;
   }

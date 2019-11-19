@@ -88,7 +88,7 @@ public:
       return answer;
     }
   //! Does this GroupCell save the answer to a question?
-  bool AutoAnswer(){return m_autoAnswer;}
+  bool AutoAnswer() const {return m_autoAnswer;}
   //! Does this GroupCell save the answer to a question?
   void AutoAnswer(bool autoAnswer){
     m_autoAnswer = autoAnswer;
@@ -117,7 +117,7 @@ public:
     Must be kept in GroupCell as on deletion a GroupCell will unlink itself from
     this pointer.
    */
-  GroupCell *GetLastWorkingGroup()
+  GroupCell *GetLastWorkingGroup() const
   {
     return dynamic_cast<GroupCell *>(m_cellPointers->m_lastWorkingGroup);
   }
@@ -138,7 +138,7 @@ public:
   Cell *Copy();
 
   // general methods
-  GroupType GetGroupType()
+  GroupType GetGroupType() const
   { return m_groupType; }
 
   void SetGroupType(GroupType type)
@@ -162,7 +162,7 @@ public:
   // methods for manipulating GroupCell
   bool SetEditableContent(wxString text);
 
-  EditorCell *GetEditable(); // returns pointer to editor (if there is one)
+  EditorCell *GetEditable() const; // returns pointer to editor (if there is one)
   void AppendOutput(Cell *cell);
 
   /*! Remove all output cells attached to this one
@@ -218,7 +218,7 @@ public:
   Cell *GetPrompt()
   { return m_inputLabel; }
 
-  EditorCell *GetInput()
+  EditorCell *GetInput() const
   {
     if (m_inputLabel != NULL)
       return dynamic_cast<EditorCell *>(m_inputLabel->m_next);

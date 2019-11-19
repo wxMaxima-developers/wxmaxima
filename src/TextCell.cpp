@@ -667,7 +667,7 @@ void TextCell::SetFont(int fontsize)
   }
 }
 
-bool TextCell::IsOperator()
+bool TextCell::IsOperator() const
 {
   if (wxString(wxT("+*/-")).Find(m_text) >= 0)
     return true;

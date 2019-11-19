@@ -1965,7 +1965,7 @@ bool GroupCell::SetEditableContent(wxString text)
     return false;
 }
 
-EditorCell *GroupCell::GetEditable()
+EditorCell *GroupCell::GetEditable() const
 {
   switch (m_groupType)
   {

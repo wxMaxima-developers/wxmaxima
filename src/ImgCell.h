@@ -51,19 +51,21 @@ public:
         m_image->GnuplotSource(sourcefile,datafile, filesystem);
     }
   //! The name of the file with gnuplot commands that created this file
-  wxString GnuplotSource(){
-    if(m_image == NULL)
-      return wxEmptyString;
-    else
-      return m_image->GnuplotSource();
-  }
+  wxString GnuplotSource() const
+    {
+      if(m_image == NULL)
+        return wxEmptyString;
+      else
+        return m_image->GnuplotSource();
+    }
   //! The name of the file with gnuplot data needed for creating this file
-  wxString GnuplotData(){
-    if(m_image == NULL)
-      return wxEmptyString;
-    else
-      return m_image->GnuplotData();
-  }
+  wxString GnuplotData() const
+    {
+      if(m_image == NULL)
+        return wxEmptyString;
+      else
+        return m_image->GnuplotData();
+    }
 
   std::list<Cell *> GetInnerCells();
   void MarkAsDeleted();
@@ -104,17 +106,17 @@ public:
   { m_drawRectangle = draw; }
 
   //! Returns the file name extension that matches the image type
-  wxString GetExtension()
+  wxString GetExtension() const
   { if (m_image)return m_image->GetExtension(); else return wxEmptyString; }
 
-  //! Returnes the original compressed version of the image
-  wxMemoryBuffer GetCompressedImage()
+  //! Returns the original compressed version of the image
+  wxMemoryBuffer GetCompressedImage() const
   { return m_image->m_compressedImage; }
 
-  double GetMaxWidth(){if(m_image != NULL) return m_image->GetMaxWidth(); else return -1;}
-  double GetMaxHeight(){if(m_image != NULL) return m_image->GetMaxHeight();else return -1;}
-  void SetMaxWidth(double width){if(m_image != NULL) return m_image->SetMaxWidth(width);}
-  void SetMaxHeight(double height){if(m_image != NULL) return m_image->SetMaxHeight(height);}
+  double GetMaxWidth() const {if(m_image != NULL) return m_image->GetMaxWidth(); else return -1;}
+  double GetMaxHeight() const {if(m_image != NULL) return m_image->GetMaxHeight();else return -1;}
+  void SetMaxWidth(double width) const {if(m_image != NULL) return m_image->SetMaxWidth(width);}
+  void SetMaxHeight(double height) const {if(m_image != NULL) return m_image->SetMaxHeight(height);}
 
 protected:
   Image *m_image;
