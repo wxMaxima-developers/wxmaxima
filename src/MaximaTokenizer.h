@@ -49,9 +49,10 @@ public:
   {
   public:
     Token(){m_style = TS_DEFAULT;}
-    Token(wxString text, TextStyle style)
+    Token(wxString text, TextStyle style) :
+      m_text(text),
+      m_style(style)
       {
-        m_text = text; m_style = style;
       }
     Token& operator=(const Token& t){m_text = t.m_text;m_style = t.m_style; return *this;}
     Token(wxString text){m_text = text; m_style = TS_DEFAULT;}

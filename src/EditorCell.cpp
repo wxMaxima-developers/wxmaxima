@@ -39,7 +39,10 @@
 #define ESC_CHAR wxT('\xA6')
 
 EditorCell::EditorCell(Cell *parent, Configuration **config,
-                       CellPointers *cellPointers, wxString text) : Cell(parent, config)
+                       CellPointers *cellPointers, wxString text) :
+  Cell(parent, config),
+  m_text(text),
+  m_indentChar(wxEmptyString)
 {
   m_errorIndex = -1;
   m_autoAnswer = false;
@@ -1175,7 +1178,7 @@ wxString EditorCell::TabExpand(wxString input, long posInLine)
   return retval;
 }
 
-size_t EditorCell::BeginningOfLine(long pos)
+size_t EditorCell::BeginningOfLine(long pos) const
 {
   if (pos > 0)
     pos--;
@@ -2559,7 +2562,7 @@ void EditorCell::FindMatchingParens()
     m_paren1 = m_paren2 = -1;
 }
 
-wxString EditorCell::InterpretEscapeString(wxString txt)
+wxString EditorCell::InterpretEscapeString(wxString txt) const
 {
   wxString retval = (*m_configuration)->m_escCodes[txt];
 
@@ -4095,7 +4098,7 @@ bool EditorCell::ReplaceSelection(wxString oldStr, wxString newStr, bool keepSel
   return false;
 }
 
-wxString EditorCell::GetSelectionString()
+wxString EditorCell::GetSelectionString() const 
 {
   if (m_selectionStart >= 0)
     return m_cellPointers->m_selectionString;

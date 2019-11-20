@@ -1542,7 +1542,7 @@ void TextCell::SetAltText()
   }
 }
 
-wxString TextCell::GetGreekStringUnicode()
+wxString TextCell::GetGreekStringUnicode() const
 {
   wxString txt(m_text);
 
@@ -1649,7 +1649,7 @@ wxString TextCell::GetGreekStringUnicode()
   return m_text;
 }
 
-wxString TextCell::GetSymbolUnicode(bool keepPercent)
+wxString TextCell::GetSymbolUnicode(bool keepPercent) cost
 {
   if (m_text == wxT("+"))
     return wxT("+");
@@ -1708,7 +1708,7 @@ wxString TextCell::GetSymbolUnicode(bool keepPercent)
   return wxEmptyString;
 }
 
-wxString TextCell::GetGreekStringTeX()
+wxString TextCell::GetGreekStringTeX() const
 {
   if (m_text == wxT("gamma"))
     return wxT("\xC0");
@@ -1821,7 +1821,7 @@ wxString TextCell::GetGreekStringTeX()
   return wxEmptyString;
 }
 
-wxString TextCell::GetSymbolTeX()
+wxString TextCell::GetSymbolTeX() const
 {
   if (m_text == wxT("inf"))
     return wxT("\x31");

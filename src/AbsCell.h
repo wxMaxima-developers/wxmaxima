@@ -59,15 +59,33 @@ public:
 
   ~AbsCell();
   
-  std::list<Cell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells() override;
 
   void SetInner(Cell *inner);
 
-  Cell *Copy();
+  Cell *Copy() override;
 
-  bool BreakUp();
+  bool BreakUp() override;
 
-  void Unbreak();
+  void Unbreak() override;
+
+  void RecalculateHeight(int fontsize) override;
+  
+  void RecalculateWidths(int fontsize) override;
+
+  virtual void Draw(wxPoint point) override;
+
+  wxString ToString() override;
+
+  wxString ToMatlab() override;
+
+  wxString ToTeX() override;
+
+  wxString ToMathML() override;
+
+  wxString ToXML() override;
+
+  wxString ToOMML() override;
 
 protected:
   //! The contents of the abs() comand
@@ -78,24 +96,6 @@ protected:
   TextCell *m_close;
   //! The last element of m_innerCell
   Cell *m_last;
-
-  void RecalculateHeight(int fontsize);
-
-  void RecalculateWidths(int fontsize);
-
-  virtual void Draw(wxPoint point);
-
-  wxString ToString();
-
-  wxString ToMatlab();
-
-  wxString ToTeX();
-
-  wxString ToMathML();
-
-  wxString ToXML();
-
-  wxString ToOMML();
 };
 
 #endif // ABSCELL_H

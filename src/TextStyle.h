@@ -37,14 +37,13 @@ class Style
 {
 public:
   //! The constructor
-  Style()
-  {
-    m_bold = false;
-    m_italic = false;
-    m_underlined = false;
-    m_fontSize = 10;
-    m_color = *wxBLACK;
-  };
+  Style():m_color(*wxBLACK),
+          m_bold(false),
+          m_italic(false),
+          m_underlined(false)
+    {
+      m_fontSize = 10;
+    };
   //! Read thisstyle from a config source
   void Read(wxConfigBase *config, wxString where);
   //! Write this style to a config source

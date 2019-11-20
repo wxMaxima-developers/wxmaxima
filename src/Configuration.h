@@ -157,7 +157,7 @@ public:
     which line begins a new equation and which line merely continues a multi-line
     equation.
    */
-  double GetInterEquationSkip()
+  double GetInterEquationSkip() const 
   {
     if (ShowAutomaticLabels())
       return 0;
@@ -228,15 +228,15 @@ public:
   
   wxString GetFontName(int type = TS_DEFAULT) const;
 
-  wxString GetSymbolFontName();
+  wxString GetSymbolFontName() const;
 
-  wxColour GetColor(int st);
+  wxColour GetColor(int st) const;
 
-  wxFontWeight IsBold(int st);
+  wxFontWeight IsBold(int st) const;
 
-  wxFontStyle IsItalic(int st);
+  wxFontStyle IsItalic(int st) const;
 
-  bool IsUnderlined(int st);
+  bool IsUnderlined(int st) const {return m_styles[st].Underlined();}
 
   //! Force a full recalculation?
   void RecalculationForce(bool force)
@@ -264,7 +264,7 @@ public:
   { return m_labelWidth * 14; }
 
   //! Get the indentation of GroupCells.
-  int GetIndent()
+  int GetIndent() const
   {
     if (m_indent < 0)
       return 3 * GetCellBracketWidth() / 2;
@@ -273,9 +273,9 @@ public:
   }
 
   //! Get the resolution of the display showing the worksheet
-  wxSize GetPPI(){return GetPPI(GetWorkSheet());}
+  wxSize GetPPI() const {return GetPPI(GetWorkSheet());}
   //! Get the resolution of an arbitrary display
-  wxSize GetPPI(wxWindow *win);
+  wxSize GetPPI(wxWindow *win) const;
   
   //! How much vertical space is to be left between two group cells?
   int GetCursorWidth()
@@ -629,10 +629,10 @@ public:
   }
 
   //! The auto-detected maxima location
-  wxString MaximaDefaultLocation();
+  wxString MaximaDefaultLocation() const;
 
   //! Returns the location of the maxima binary.
-  wxString MaximaLocation();
+  wxString MaximaLocation() const;
 
   //! Returns the location of the maxima binary the user has selected.
   wxString MaximaUserLocation() const {return m_maximaUserLocation;}

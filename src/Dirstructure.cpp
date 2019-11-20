@@ -73,7 +73,7 @@ Dirstructure::Dirstructure()
 
 }
 
-wxString Dirstructure::ResourcesDir()
+wxString Dirstructure::ResourcesDir() const
 {
   // Our ressources dir is somewhere near to the dir the binary can be found.
   wxFileName exe(wxStandardPaths::Get().GetExecutablePath());
@@ -115,7 +115,7 @@ wxString Dirstructure::ResourcesDir()
   return exe.GetPath();
 }
 
-wxString Dirstructure::DataDir()
+wxString Dirstructure::DataDir() const
 {
   wxString dir = ResourcesDir();
   if(wxDirExists(dir + wxT("/data")))
@@ -126,7 +126,7 @@ wxString Dirstructure::DataDir()
   return dir;
 }
 
-wxString Dirstructure::ArtDir()
+wxString Dirstructure::ArtDir() const
 {
   wxString dir = ResourcesDir();
   if(wxDirExists(dir + wxT("/wxMaxima")))

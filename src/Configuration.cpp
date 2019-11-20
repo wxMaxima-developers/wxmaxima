@@ -272,7 +272,7 @@ Configuration::Configuration(wxDC *dc) : m_dc(dc)
   m_styles[TS_OUTDATED].Set(_("Outdated cells"),wxColor(wxT("rgb(153,153,153)")));
 }
 
-wxSize Configuration::GetPPI(wxWindow *win)
+wxSize Configuration::GetPPI(wxWindow *win) const
 {
   if(win == NULL)
     return wxSize(96,96);
@@ -698,7 +698,7 @@ wxString Configuration::GetFontName(int type) const
   return retval;
 }
 
-wxString Configuration::MaximaLocation()
+wxString Configuration::MaximaLocation() const
 {
   if(m_autodetectMaxima)
     return MaximaDefaultLocation();
@@ -706,7 +706,7 @@ wxString Configuration::MaximaLocation()
     return m_maximaUserLocation;
 }
 
-wxString Configuration::MaximaDefaultLocation()
+wxString Configuration::MaximaDefaultLocation() const
 { 
   return Dirstructure::Get()->MaximaDefaultLocation();
 }
@@ -850,26 +850,21 @@ void Configuration::WriteStyles(wxString file)
   }
 }
 
-wxFontWeight Configuration::IsBold(int st)
+wxFontWeight Configuration::IsBold(int st) const
 {
   if (m_styles[st].Bold())
     return wxFONTWEIGHT_BOLD;
   return wxFONTWEIGHT_NORMAL;
 }
 
-wxFontStyle Configuration::IsItalic(int st)
+wxFontStyle Configuration::IsItalic(int st) const
 {
   if (m_styles[st].Italic())
     return wxFONTSTYLE_SLANT;
   return wxFONTSTYLE_NORMAL;
 }
 
-bool Configuration::IsUnderlined(int st)
-{
-  return m_styles[st].Underlined();
-}
-
-wxString Configuration::GetSymbolFontName()
+wxString Configuration::GetSymbolFontName() const
 {
 #if defined __WXMSW__
   return wxT("Symbol");
@@ -877,7 +872,7 @@ wxString Configuration::GetSymbolFontName()
   return m_fontName;
 }
 
-wxColour Configuration::GetColor(int st)
+wxColour Configuration::GetColor(int st) const
 {
   if (m_outdated)
     return m_styles[TS_OUTDATED].Color();

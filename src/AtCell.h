@@ -32,29 +32,29 @@ public:
 
   ~AtCell();
 
-  std::list<Cell *> GetInnerCells();
-  Cell *Copy();
+  std::list<Cell *> GetInnerCells() override;
+  Cell *Copy() override;
   
   void SetBase(Cell *base);
   void SetIndex(Cell *index);
 
-  void RecalculateHeight(int fontsize);
+  void RecalculateHeight(int fontsize) override;
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
 protected:
   Cell *m_baseCell;

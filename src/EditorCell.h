@@ -298,7 +298,7 @@ public:
   void DeactivateCursor();
 
   //! Return the index of the 1st char of the line containing the letter pos.
-  size_t BeginningOfLine(long pos);
+  size_t BeginningOfLine(long pos) const;
 
   //! Return the index of the last char of the line containing the letter \#pos,
   size_t EndOfLine(long pos);
@@ -502,7 +502,7 @@ public:
   bool ReplaceSelection(wxString oldStr, wxString newString, bool keepSelected = false, bool ignoreCase = false, bool replaceMaximaString = false);
 
   //! Convert the current selection to a string
-  wxString GetSelectionString();
+  wxString GetSelectionString() const;
 
   //! The word the cursor currently is at
   wxString GetWordUnderCaret();
@@ -693,7 +693,7 @@ private:
     TextCell::ToTeX and EditorCell::ToTeX. They can also be
     converted to maxima strings in wxMaxima::SendMaxima.
    */
-  wxString InterpretEscapeString(wxString txt);
+  wxString InterpretEscapeString(wxString txt) const;
 
   wxString m_text;
   wxArrayString m_textHistory;

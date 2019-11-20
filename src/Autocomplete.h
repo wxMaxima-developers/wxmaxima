@@ -104,7 +104,7 @@ private:
   {
   public:
     GetGeneralFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
-      m_files(files) { m_prefix = prefix; }
+      m_files(files), m_prefix(prefix) { }
     virtual wxDirTraverseResult OnFile(const wxString& filename)
       {
         wxFileName newItemName(filename);
@@ -133,7 +133,7 @@ private:
   {
   public:
     GetMacFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
-      m_files(files) { m_prefix = prefix; }
+      m_files(files), m_prefix(prefix)  { }
     virtual wxDirTraverseResult OnFile(const wxString& filename)
       {
         if(
@@ -188,7 +188,7 @@ private:
   {
   public:
     GetDemoFiles_includingSubdirs(wxArrayString& files, wxString prefix = wxEmptyString) :
-      m_files(files) { m_prefix = prefix; }
+      m_files(files), m_prefix(prefix) { }
     virtual wxDirTraverseResult OnFile(const wxString& filename)
       {
         if(filename.EndsWith(".dem"))
@@ -201,7 +201,7 @@ private:
         }
         return wxDIR_CONTINUE;
       }
-    virtual wxDirTraverseResult OnDir(const wxString& dirname)
+    virtual wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         if((dirname.EndsWith(".git")) ||
            (dirname.EndsWith("/share/share")) ||
@@ -224,7 +224,7 @@ private:
   public:
     GetDemoFiles(wxArrayString& files, wxString prefix = wxEmptyString) :
       GetDemoFiles_includingSubdirs(files, prefix){ }
-    virtual wxDirTraverseResult OnDir(const wxString& dirname)
+    virtual wxDirTraverseResult OnDir(const wxString& dirname) override
       {
         wxFileName newItemName(dirname);
         wxString newItem = "\"" + m_prefix + newItemName.GetFullName() + "/\"";

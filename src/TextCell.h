@@ -39,13 +39,13 @@ private:
 public:
   TextCell(Cell *parent, Configuration **config, CellPointers *cellPointers, wxString text = wxEmptyString, TextStyle style = TS_DEFAULT);
 
-  std::list<Cell *> GetInnerCells();
+  std::list<Cell *> GetInnerCells() override;
   
   ~TextCell();
   
-  Cell *Copy();
+  Cell *Copy() override;
 
-  virtual void SetStyle(TextStyle style);
+  virtual void SetStyle(TextStyle style) override;
   
   //! Set the text contained in this cell
   void SetValue(const wxString &text);
@@ -53,9 +53,9 @@ public:
   //! Set the automatic label maxima has assigned the current equation
   void SetUserDefinedLabel(wxString userDefinedLabel){m_userDefinedLabel = userDefinedLabel;}
 
-  void RecalculateWidths(int fontsize);
+  void RecalculateWidths(int fontsize) override;
 
-  virtual void Draw(wxPoint point);
+  virtual void Draw(wxPoint point) override;
 
   void SetFont(int fontsize);
 
@@ -66,38 +66,38 @@ public:
   void DontEscapeOpeningParenthesis()
   { m_dontEscapeOpeningParenthesis = true; }
 
-  wxString ToString();
+  wxString ToString() override;
 
-  wxString ToMatlab();
+  wxString ToMatlab() override;
 
-  wxString ToTeX();
+  wxString ToTeX() override;
 
-  wxString ToMathML();
+  wxString ToMathML() override;
 
-  wxString ToOMML();
+  wxString ToOMML() override;
 
-  wxString ToRTF();
+  wxString ToRTF() override;
 
-  wxString ToXML();
+  wxString ToXML() override;
 
   wxString GetDiffPart();
 
-  bool IsOperator() const;
+  bool IsOperator() const override;
 
-  wxString GetValue() const
+  wxString GetValue() const override
   { return m_text; }
 
-  wxString GetGreekStringTeX();
+  wxString GetGreekStringTeX() const;
 
-  wxString GetSymbolTeX();
+  wxString GetSymbolTeX() const;
 
-  wxString GetGreekStringUnicode();
+  wxString GetGreekStringUnicode() const;
 
-  wxString GetSymbolUnicode(bool keepPercent);
+  wxString GetSymbolUnicode(bool keepPercent) const;
 
   bool IsShortNum();
 
-  virtual void SetType(CellType type);
+  virtual void SetType(CellType type) override;
 
 protected:
   void SetAltText();
@@ -105,7 +105,7 @@ protected:
   //! Resets the font size to label size
   void SetFontSizeForLabel(wxDC *dc);
 
-  bool NeedsRecalculation();
+  bool NeedsRecalculation() override;
   static wxRegEx m_unescapeRegEx;
   static wxRegEx m_roundingErrorRegEx1;
   static wxRegEx m_roundingErrorRegEx2;
@@ -131,8 +131,6 @@ protected:
     size has changed and we need to re-calculate the text width.
    */
   double m_lastCalculationFontSize;
-  //! The line height
-  double m_fontSize;
   //! The actual font size for labels (that have a fixed width)
   double m_fontSizeLabel;
   double m_lastZoomFactor;
